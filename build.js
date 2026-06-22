@@ -98,12 +98,13 @@ function injectViewVoteScript(html, symbol) {
     `if(typeof d.likes==="number"&&ln)ln.textContent=d.likes.toLocaleString();` +
     `if(typeof d.dislikes==="number"&&dn)dn.textContent=d.dislikes.toLocaleString();` +
     `if(bar)bar.hidden=false;hi();}` +
+    `function api(path,method){return fetch(path,{method:method}).then(function(r){` +
+    `if(method==="POST"&&r.status===429&&path.indexOf("/api/views/")===0)return fetch(path).then(function(r2){return r2.json()});` +
+    `if(!r.ok&&path.indexOf("/api/vote/")===0)return null;return r.json();});}` +
     `var seen=null;try{seen=sessionStorage.getItem(vk)}catch(e){}` +
-    `fetch("/api/views/"+encodeURIComponent(S),{method:seen?"GET":"POST"})` +
-    `.then(function(r){return r.json()}).then(function(d){fill(d);try{sessionStorage.setItem(vk,"1")}catch(e){}}).catch(function(){});` +
+    `api("/api/views/"+encodeURIComponent(S),seen?"GET":"POST").then(function(d){fill(d);try{sessionStorage.setItem(vk,"1")}catch(e){}}).catch(function(){});` +
     `var busy=false;function send(to){if(busy)return;busy=true;var from=vote||"none";` +
-    `fetch("/api/vote/"+encodeURIComponent(S)+"?from="+from+"&to="+to,{method:"POST"})` +
-    `.then(function(r){return r.json()}).then(function(d){vote=(to==="none")?null:to;setVote(vote);fill(d);})` +
+    `api("/api/vote/"+encodeURIComponent(S)+"?from="+from+"&to="+to,"POST").then(function(d){if(!d)return;vote=(to==="none")?null:to;setVote(vote);fill(d);})` +
     `.catch(function(){}).then(function(){busy=false;});}` +
     `if(lb)lb.addEventListener("click",function(){send(vote==="like"?"none":"like")});` +
     `if(db)db.addEventListener("click",function(){send(vote==="dislike"?"none":"dislike")});` +

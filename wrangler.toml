@@ -24,3 +24,19 @@ binding = "ASSETS"
 binding = "DB"
 database_name = "stockai_d1"
 database_id = "e7cab704-7053-468d-94c9-41ed6b08f843"
+
+# Rate limiting ในตัว Worker — กันสแปม /api/vote และ /api/views
+# ทำงานบน workers.dev (ไม่ต้องมี custom domain/WAF) · period ได้แค่ 10 หรือ 60 วิ · ต้องใช้ Wrangler >= 4.36.0
+[[ratelimits]]
+name = "VOTE_LIMITER"
+namespace_id = "1001"
+[ratelimits.simple]
+limit = 5            # โหวตได้ 5 ครั้ง
+period = 60          # ต่อ 60 วิ ต่อ (IP + หุ้น)
+
+[[ratelimits]]
+name = "VIEW_LIMITER"
+namespace_id = "1002"
+[ratelimits.simple]
+limit = 30           # นับวิว (POST) ได้ 30 ครั้ง
+period = 60          # ต่อ 60 วิ ต่อ IP

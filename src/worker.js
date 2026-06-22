@@ -71,6 +71,10 @@ export default {
       if (request.method !== 'POST') return json({ error: 'method not allowed' }, { status: 405 });
       const { sym, err } = await validSym(mv[1], env, url);
       if (err) return err;
+      // rate limit: 5 โหวต/60วิ ต่อ (IP + หุ้น)
+      const ip = request.headers.get('CF-Connecting-IP') || 'anon';
+      const { success } = await env.VOTE_LIMITER.limit({ key: `${ip}:${sym}` });
+      if (!success) return json({ error: 'rate_limited' }, { status: 429 });
       const from = url.searchParams.get('from') || 'none';
       const to = url.searchParams.get('to') || 'none';
       if (!VOTES.has(from) || !VOTES.has(to)) return json({ error: 'bad vote' }, { status: 400 });
@@ -105,6 +109,10 @@ export default {
       if (err) return err;
       try {
         if (request.method === 'POST') {
+          // rate limit: 30 view-counts/60วิ ต่อ IP
+          const ip = request.headers.get('CF-Connecting-IP') || 'anon';
+          const { success } = await env.VIEW_LIMITER.limit({ key: ip });
+          if (!success) return json({ error: 'rate_limited' }, { status: 429 });
           const row = await env.DB.prepare(
             `INSERT INTO views (symbol, count, updated) VALUES (?1, 1, ?2)
              ON CONFLICT(symbol) DO UPDATE SET count = count + 1, updated = ?2
