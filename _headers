@@ -1,0 +1,11 @@
+# Cloudflare Pages — HTTP headers
+# https://developers.cloudflare.com/pages/configuration/headers/
+
+/*
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: SAMEORIGIN
+  Referrer-Policy: strict-origin-when-cross-origin
+
+# รายงาน HTML — ให้ revalidate เสมอ เพื่อให้เห็นรายงานล่าสุด
+/*.html
+  Cache-Control: public, max-age=0, must-revalidate

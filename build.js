@@ -1,0 +1,172 @@
+#!/usr/bin/env node
+/**
+ * build.js — สร้างหน้าเว็บ static สำหรับ Cloudflare Pages
+ *
+ * โครงสร้างต้นฉบับ:
+ *   reports/<SYMBOL>.html   ← วางไฟล์รายงานหุ้นแต่ละตัวไว้ในโฟลเดอร์นี้
+ *
+ * ทำงาน:
+ *   1. สแกนไฟล์รายงานทั้งหมดใน reports/
+ *   2. ดึง metadata (title / ชื่อบริษัท) จากแต่ละไฟล์
+ *   3. สร้างหน้า index.html (landing page รวมรายงาน) ลง dist/
+ *   4. คัดลอกรายงานแบบ "flatten" ลง dist/ (เอาออกจากโฟลเดอร์ย่อย)
+ *      → เข้าถึงได้ที่ domain/<SYMBOL>.html  และ  domain/<SYMBOL>  (clean URL ของ Cloudflare)
+ *
+ * รันด้วย:  node build.js   (หรือ npm run build)  — ไม่ต้องติดตั้ง dependency ใด ๆ
+ */
+
+'use strict';
+
+const fs = require('fs');
+const path = require('path');
+
+const ROOT = __dirname;
+const REPORTS_DIR = path.join(ROOT, 'reports');
+const OUT = path.join(ROOT, 'dist');
+
+// โฟลเดอร์ static ที่อนุญาตให้คัดลอกทั้งก้อน (ถ้ามีใน root)
+const ASSET_DIRS = new Set(['assets', 'public', 'static', 'img', 'images', 'css', 'js', 'fonts']);
+
+const log = (...a) => console.log('[build]', ...a);
+
+const stripTags = (s) => (s || '').replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
+const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+function extractMeta(html, symbol) {
+  const titleM = html.match(/<title>([\s\S]*?)<\/title>/i);
+  const h1M = html.match(/<h1[^>]*>([\s\S]*?)<\/h1>/i);
+  const title = stripTags(titleM && titleM[1]) || symbol;
+  const name = stripTags(h1M && h1M[1]) || title;
+  return { title, name };
+}
+
+// ---- 1) เตรียมโฟลเดอร์ dist ----
+fs.rmSync(OUT, { recursive: true, force: true });
+fs.mkdirSync(OUT, { recursive: true });
+
+// ---- 2) อ่านรายงานจาก reports/ แล้ว flatten ลง dist/ ----
+const reports = [];
+const seen = new Map(); // กันชื่อซ้ำหลัง flatten
+
+if (fs.existsSync(REPORTS_DIR)) {
+  for (const entry of fs.readdirSync(REPORTS_DIR, { withFileTypes: true })) {
+    if (!entry.isFile() || !/\.html$/i.test(entry.name)) continue;
+
+    const src = path.join(REPORTS_DIR, entry.name);
+    const dest = path.join(OUT, entry.name);
+    if (seen.has(entry.name)) {
+      log(`⚠️  ชื่อไฟล์ซ้ำ: ${entry.name} (ข้าม, ใช้ตัวแรกจาก ${seen.get(entry.name)})`);
+      continue;
+    }
+    seen.set(entry.name, 'reports/');
+
+    const html = fs.readFileSync(src, 'utf8');
+    const symbol = entry.name.replace(/\.html$/i, '');
+    reports.push({ file: entry.name, symbol, ...extractMeta(html, symbol) });
+    fs.copyFileSync(src, dest);
+    log('report:', entry.name);
+  }
+} else {
+  log('⚠️  ไม่พบโฟลเดอร์ reports/ — สร้างแล้ววางไฟล์ <SYMBOL>.html ไว้ในนั้น');
+}
+
+reports.sort((a, b) => a.symbol.localeCompare(b.symbol));
+
+// ---- 3) คัดลอก assets + ไฟล์พิเศษของ Cloudflare (จาก root) ----
+for (const nm of fs.readdirSync(ROOT)) {
+  const p = path.join(ROOT, nm);
+  if (ASSET_DIRS.has(nm.toLowerCase()) && fs.statSync(p).isDirectory()) {
+    fs.cpSync(p, path.join(OUT, nm), { recursive: true });
+    log('assets:', nm + '/');
+  }
+}
+for (const special of ['_headers', '_redirects']) {
+  const src = path.join(ROOT, special);
+  if (fs.existsSync(src)) {
+    fs.copyFileSync(src, path.join(OUT, special));
+    log('special:', special);
+  }
+}
+
+if (reports.length === 0) log('⚠️  ไม่มีรายงานให้ build');
+
+// ---- 4) สร้างการ์ดรายงาน ----
+const buildDate = new Date().toLocaleDateString('th-TH', {
+  year: 'numeric', month: 'long', day: 'numeric',
+});
+
+const cards = reports.map((r) => `
+      <a class="card" href="./${encodeURIComponent(r.file)}">
+        <div class="badge">${esc(r.symbol)}</div>
+        <div class="cname">${esc(r.name)}</div>
+        <div class="ctitle">${esc(r.title)}</div>
+        <span class="go">เปิดรายงาน →</span>
+      </a>`).join('\n');
+
+const emptyState = `
+      <div class="empty">
+        <p>ยังไม่มีรายงานในโฟลเดอร์นี้</p>
+        <p class="hint">เพิ่มไฟล์ <code>reports/&lt;SYMBOL&gt;.html</code> แล้ว build ใหม่</p>
+      </div>`;
+
+// ---- 5) เขียน index.html ----
+const indexHtml = `<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stock Analysis — รวมรายงานวิเคราะห์หุ้น</title>
+<meta name="description" content="รวมรายงานวิเคราะห์หุ้น (Fair Value, Margin of Safety, จุดเข้าซื้อ)">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#eef1f5; --card:#fff; --ink:#1a1d23; --muted:#5f6675; --line:#e4e8ee;
+    --blue:#1a73e8; --blue-d:#1557b0;
+    --shadow:0 1px 3px rgba(16,24,40,.06),0 8px 24px rgba(16,24,40,.06);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Sarabun','Noto Sans Thai',system-ui,-apple-system,Segoe UI,sans-serif;background:var(--bg);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased}
+  .mono{font-family:'IBM Plex Mono',ui-monospace,monospace}
+  .wrap{max-width:1080px;margin:0 auto;padding:24px 16px 64px}
+  header{background:linear-gradient(135deg,#202938 0%,#2c3a52 60%,#1557b0 140%);border-radius:20px;padding:32px 28px;color:#fff;position:relative;overflow:hidden;box-shadow:var(--shadow)}
+  header::after{content:"";position:absolute;right:-40px;top:-40px;width:240px;height:240px;border-radius:50%;background:radial-gradient(circle,rgba(66,133,244,.35),transparent 70%)}
+  .tag{display:inline-block;font-size:12px;font-weight:600;padding:3px 10px;border-radius:99px;background:rgba(255,255,255,.14);margin-bottom:12px}
+  h1{font-size:30px;font-weight:800;letter-spacing:-.5px}
+  .sub{color:#c7d2e4;font-size:14.5px;margin-top:4px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;margin-top:24px}
+  .card{display:flex;flex-direction:column;gap:6px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px;text-decoration:none;color:inherit;box-shadow:var(--shadow);transition:transform .15s ease,box-shadow .15s ease}
+  .card:hover{transform:translateY(-3px);box-shadow:0 4px 12px rgba(16,24,40,.10),0 14px 32px rgba(16,24,40,.10)}
+  .badge{font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:13px;color:var(--blue-d);background:#e8f0fe;align-self:flex-start;padding:3px 10px;border-radius:8px}
+  .cname{font-size:18px;font-weight:700;margin-top:6px}
+  .ctitle{font-size:13px;color:var(--muted);flex:1}
+  .go{font-size:13.5px;font-weight:600;color:var(--blue);margin-top:8px}
+  .empty{grid-column:1/-1;text-align:center;padding:48px;background:var(--card);border:1px dashed var(--line);border-radius:16px;color:var(--muted)}
+  .empty .hint{font-size:13px;margin-top:6px}
+  .empty code{font-family:'IBM Plex Mono',monospace;background:#eef1f5;padding:2px 6px;border-radius:6px}
+  footer{margin-top:32px;text-align:center;color:var(--muted);font-size:12.5px}
+  footer a{color:var(--blue);text-decoration:none}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <span class="tag">📊 Stock Analysis</span>
+      <h1>รายงานวิเคราะห์หุ้น</h1>
+      <div class="sub">Fair Value · Margin of Safety · จุดเข้าซื้อ · ผลตอบแทนคาดการณ์ — รวม ${reports.length} รายงาน</div>
+    </header>
+    <div class="grid">
+${reports.length ? cards : emptyState}
+    </div>
+    <footer>
+      อัปเดตล่าสุด ${buildDate} · สร้างอัตโนมัติด้วย build.js<br>
+      ข้อมูลเพื่อการศึกษา ไม่ใช่คำแนะนำการลงทุน
+    </footer>
+  </div>
+</body>
+</html>
+`;
+
+fs.writeFileSync(path.join(OUT, 'index.html'), indexHtml, 'utf8');
+log(`✅ สร้าง dist/ เสร็จ — ${reports.length} รายงาน + index.html`);
