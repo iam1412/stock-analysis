@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * build.js — สร้างหน้าเว็บ static สำหรับ Cloudflare Pages
+ * build.js — สร้างหน้าเว็บ static สำหรับ Cloudflare Workers (Static Assets)
  *
  * โครงสร้างต้นฉบับ:
  *   reports/<SYMBOL>.html   ← วางไฟล์รายงานหุ้นแต่ละตัวไว้ในโฟลเดอร์นี้
@@ -8,9 +8,9 @@
  * ทำงาน:
  *   1. สแกนไฟล์รายงานทั้งหมดใน reports/
  *   2. ดึง metadata (title / ชื่อบริษัท) จากแต่ละไฟล์
- *   3. สร้างหน้า index.html (landing page รวมรายงาน) ลง dist/
- *   4. คัดลอกรายงานแบบ "flatten" ลง dist/ (เอาออกจากโฟลเดอร์ย่อย)
- *      → เข้าถึงได้ที่ domain/<SYMBOL>.html  และ  domain/<SYMBOL>  (clean URL ของ Cloudflare)
+ *   3. ติดตามวันที่อัปเดตผ่าน reports.json (ถ้าเนื้อหาไฟล์เปลี่ยน → ประทับเวลาใหม่)
+ *   4. สร้างหน้า index.html (เรียงหุ้นที่อัปเดตล่าสุดขึ้นก่อน) + reports.json (manifest)
+ *   5. คัดลอกรายงานแบบ flatten ลง dist/ → เข้าถึงที่ /<SYMBOL>.html และ /<SYMBOL>
  *
  * รันด้วย:  node build.js   (หรือ npm run build)  — ไม่ต้องติดตั้ง dependency ใด ๆ
  */
@@ -19,18 +19,20 @@
 
 const fs = require('fs');
 const path = require('path');
+const crypto = require('crypto');
 
 const ROOT = __dirname;
 const REPORTS_DIR = path.join(ROOT, 'reports');
 const OUT = path.join(ROOT, 'dist');
+const MANIFEST = path.join(ROOT, 'reports.json'); // committed — เก็บ hash/วันที่อัปเดตของแต่ละรายงาน
 
-// โฟลเดอร์ static ที่อนุญาตให้คัดลอกทั้งก้อน (ถ้ามีใน root)
+const CONTACT_EMAIL = 'somchai.s@de.co.th';
 const ASSET_DIRS = new Set(['assets', 'public', 'static', 'img', 'images', 'css', 'js', 'fonts']);
 
 const log = (...a) => console.log('[build]', ...a);
-
 const stripTags = (s) => (s || '').replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+const hash = (s) => crypto.createHash('sha256').update(s).digest('hex').slice(0, 12);
 
 function extractMeta(html, symbol) {
   const titleM = html.match(/<title>([\s\S]*?)<\/title>/i);
@@ -44,35 +46,56 @@ function extractMeta(html, symbol) {
 fs.rmSync(OUT, { recursive: true, force: true });
 fs.mkdirSync(OUT, { recursive: true });
 
-// ---- 2) อ่านรายงานจาก reports/ แล้ว flatten ลง dist/ ----
-const reports = [];
-const seen = new Map(); // กันชื่อซ้ำหลัง flatten
+// ---- 2) โหลด manifest เดิม (เพื่อรักษาวันที่อัปเดตของไฟล์ที่ไม่เปลี่ยน) ----
+const prev = {};
+if (fs.existsSync(MANIFEST)) {
+  try {
+    for (const r of JSON.parse(fs.readFileSync(MANIFEST, 'utf8'))) prev[r.symbol] = r;
+  } catch {
+    log('⚠️  อ่าน reports.json เดิมไม่ได้ — สร้างใหม่');
+  }
+}
+const nowISO = new Date().toISOString();
 
+// ---- 3) อ่านรายงานจาก reports/ → flatten ลง dist/ ----
+const reports = [];
 if (fs.existsSync(REPORTS_DIR)) {
   for (const entry of fs.readdirSync(REPORTS_DIR, { withFileTypes: true })) {
     if (!entry.isFile() || !/\.html$/i.test(entry.name)) continue;
 
     const src = path.join(REPORTS_DIR, entry.name);
-    const dest = path.join(OUT, entry.name);
-    if (seen.has(entry.name)) {
-      log(`⚠️  ชื่อไฟล์ซ้ำ: ${entry.name} (ข้าม, ใช้ตัวแรกจาก ${seen.get(entry.name)})`);
-      continue;
-    }
-    seen.set(entry.name, 'reports/');
-
-    const html = fs.readFileSync(src, 'utf8');
+    const content = fs.readFileSync(src, 'utf8');
     const symbol = entry.name.replace(/\.html$/i, '');
-    reports.push({ file: entry.name, symbol, ...extractMeta(html, symbol) });
-    fs.copyFileSync(src, dest);
-    log('report:', entry.name);
+    const h = hash(content);
+    const old = prev[symbol];
+    const updated = old && old.hash === h && old.updated ? old.updated : nowISO; // เปลี่ยน → ประทับเวลาใหม่
+
+    reports.push({ symbol, file: entry.name, ...extractMeta(content, symbol), updated, hash: h });
+    fs.copyFileSync(src, path.join(OUT, entry.name));
+    log('report:', entry.name, updated === nowISO ? '(updated)' : '');
   }
 } else {
   log('⚠️  ไม่พบโฟลเดอร์ reports/ — สร้างแล้ววางไฟล์ <SYMBOL>.html ไว้ในนั้น');
 }
 
-reports.sort((a, b) => a.symbol.localeCompare(b.symbol));
+// เรียงตามวันที่อัปเดตล่าสุดก่อน, เสมอกันเรียงตามชื่อย่อ
+reports.sort((a, b) =>
+  a.updated < b.updated ? 1 : a.updated > b.updated ? -1 : a.symbol.localeCompare(b.symbol)
+);
 
-// ---- 3) คัดลอก assets + ไฟล์พิเศษของ Cloudflare (จาก root) ----
+// ---- 4) เขียน manifest ----
+// ตัวที่ root (committed): มี hash ไว้ตรวจการเปลี่ยนแปลงรอบหน้า
+fs.writeFileSync(
+  MANIFEST,
+  JSON.stringify(reports.map(({ symbol, file, name, title, updated, hash }) => ({ symbol, file, name, title, updated, hash })), null, 2) + '\n'
+);
+// ตัว public ใน dist (เสิร์ฟที่ /reports.json) — ไม่ใส่ hash, เพิ่ม url
+fs.writeFileSync(
+  path.join(OUT, 'reports.json'),
+  JSON.stringify(reports.map(({ symbol, file, name, title, updated }) => ({ symbol, file, name, title, updated, url: '/' + file })), null, 2) + '\n'
+);
+
+// ---- 5) คัดลอก assets + ไฟล์พิเศษของ Cloudflare ----
 for (const nm of fs.readdirSync(ROOT)) {
   const p = path.join(ROOT, nm);
   if (ASSET_DIRS.has(nm.toLowerCase()) && fs.statSync(p).isDirectory()) {
@@ -90,17 +113,15 @@ for (const special of ['_headers', '_redirects']) {
 
 if (reports.length === 0) log('⚠️  ไม่มีรายงานให้ build');
 
-// ---- 4) สร้างการ์ดรายงาน ----
-const buildDate = new Date().toLocaleDateString('th-TH', {
-  year: 'numeric', month: 'long', day: 'numeric',
-});
+// ---- 6) สร้างการ์ดรายงาน ----
+const fmtDate = (iso) => (iso || '').slice(0, 10); // YYYY-MM-DD (ชัดเจน ไม่สับสนปี พ.ศ./ค.ศ.)
 
 const cards = reports.map((r) => `
       <a class="card" href="./${encodeURIComponent(r.file)}">
         <div class="badge">${esc(r.symbol)}</div>
         <div class="cname">${esc(r.name)}</div>
         <div class="ctitle">${esc(r.title)}</div>
-        <span class="go">เปิดรายงาน →</span>
+        <div class="cmeta"><span class="go">เปิดรายงาน →</span><span class="cdate">${fmtDate(r.updated)}</span></div>
       </a>`).join('\n');
 
 const emptyState = `
@@ -109,7 +130,7 @@ const emptyState = `
         <p class="hint">เพิ่มไฟล์ <code>reports/&lt;SYMBOL&gt;.html</code> แล้ว build ใหม่</p>
       </div>`;
 
-// ---- 5) เขียน index.html ----
+// ---- 7) เขียน index.html ----
 const indexHtml = `<!DOCTYPE html>
 <html lang="th">
 <head>
@@ -141,7 +162,9 @@ const indexHtml = `<!DOCTYPE html>
   .badge{font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:13px;color:var(--blue-d);background:#e8f0fe;align-self:flex-start;padding:3px 10px;border-radius:8px}
   .cname{font-size:18px;font-weight:700;margin-top:6px}
   .ctitle{font-size:13px;color:var(--muted);flex:1}
-  .go{font-size:13.5px;font-weight:600;color:var(--blue);margin-top:8px}
+  .cmeta{display:flex;align-items:center;justify-content:space-between;margin-top:8px}
+  .go{font-size:13.5px;font-weight:600;color:var(--blue)}
+  .cdate{font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:var(--muted)}
   .empty{grid-column:1/-1;text-align:center;padding:48px;background:var(--card);border:1px dashed var(--line);border-radius:16px;color:var(--muted)}
   .empty .hint{font-size:13px;margin-top:6px}
   .empty code{font-family:'IBM Plex Mono',monospace;background:#eef1f5;padding:2px 6px;border-radius:6px}
@@ -160,7 +183,8 @@ const indexHtml = `<!DOCTYPE html>
 ${reports.length ? cards : emptyState}
     </div>
     <footer>
-      อัปเดตล่าสุด ${buildDate} · สร้างอัตโนมัติด้วย build.js<br>
+      อัปเดตล่าสุด ${fmtDate(nowISO)} · สร้างอัตโนมัติด้วย build.js<br>
+      ติดต่อ: <a href="mailto:${CONTACT_EMAIL}">${CONTACT_EMAIL}</a><br>
       ข้อมูลเพื่อการศึกษา ไม่ใช่คำแนะนำการลงทุน
     </footer>
   </div>
@@ -169,4 +193,4 @@ ${reports.length ? cards : emptyState}
 `;
 
 fs.writeFileSync(path.join(OUT, 'index.html'), indexHtml, 'utf8');
-log(`✅ สร้าง dist/ เสร็จ — ${reports.length} รายงาน + index.html`);
+log(`✅ สร้าง dist/ เสร็จ — ${reports.length} รายงาน + index.html + reports.json`);

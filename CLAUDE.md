@@ -13,19 +13,23 @@ stock-analysis/
 │  ├─ GOOGL.html
 │  ├─ AAPL.html
 │  └─ <SYMBOL>.html
-├─ build.js            # สแกน reports/ → สร้าง index.html → flatten ลง dist/
+├─ build.js            # สแกน reports/ → สร้าง index.html + reports.json → flatten ลง dist/
+├─ reports.json        # manifest (auto-generated โดย build.js, committed — เก็บวันที่อัปเดต) ห้ามแก้มือ
 ├─ package.json        # npm run build
 ├─ wrangler.toml       # Workers Static Assets ([assets] directory = "./dist")
 ├─ _headers            # HTTP headers (ต้นฉบับ — แก้ที่นี่ที่เดียว)
 ├─ .gitignore
+├─ README.md           # หน้าอธิบาย repo (สำหรับคน)
 ├─ DEPLOY.md           # คู่มือ deploy บน Cloudflare
 ├─ CLAUDE.md           # ไฟล์นี้
 └─ dist/               # ⚠️ build output (gitignore) — generate เอง ห้ามแก้มือ
 ```
 
 **ไฟล์ที่ห้ามแก้มือ** (สร้างอัตโนมัติทุกครั้งที่ build):
-- `dist/` ทั้งโฟลเดอร์ (รวม `dist/index.html`, `dist/<SYMBOL>.html`, `dist/_headers`)
-- หน้า `index.html` ถูกสร้างจาก `build.js` — ถ้าจะปรับหน้า landing ให้แก้ที่ template ใน `build.js`
+- `dist/` ทั้งโฟลเดอร์ (รวม `dist/index.html`, `dist/<SYMBOL>.html`, `dist/_headers`, `dist/reports.json`)
+- `reports.json` (root) — build.js เขียนเอง ใช้ track วันที่อัปเดต/hash ของแต่ละรายงาน (commit ไปด้วย)
+- หน้า landing / การ์ด / footer (อีเมลติดต่อ) อยู่ใน template ของ `build.js` — แก้ที่นั่น
+- หน้า index เรียงหุ้นที่ **อัปเดตล่าสุดขึ้นก่อน** อัตโนมัติ (อิงวันที่ใน reports.json)
 
 ---
 
