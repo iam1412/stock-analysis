@@ -1,7 +1,9 @@
-# Deploy ขึ้น Cloudflare Workers (Static Assets)
+# Deploy ขึ้น Cloudflare Pages
 
-เว็บนี้เป็น static site — Cloudflare ดึงโค้ดจาก GitHub → รัน `npm run build` → `wrangler deploy`
-เสิร์ฟไฟล์ในโฟลเดอร์ `dist/` เป็นเว็บ static (assets-only Worker ไม่ต้องมีโค้ด Worker)
+เว็บนี้เป็น static site — Cloudflare ดึงโค้ดจาก GitHub → รัน `npm run build` → เอาไฟล์ใน `dist/` ไป deploy
+
+> ⚠️ **โปรเจกต์นี้เป็น Pages project** ต้อง deploy ด้วย `wrangler pages deploy` เท่านั้น
+> ห้ามใช้ `wrangler deploy` (เป็นคำสั่งของ Workers — จะ error `Missing entry-point`)
 
 ## โครงสร้างโปรเจกต์
 
@@ -13,7 +15,7 @@ stock-analysis/
 │  └─ ...
 ├─ build.js            ← สคริปต์ build
 ├─ package.json        ← npm run build
-├─ wrangler.toml       ← [assets] directory = "./dist"
+├─ wrangler.toml       ← pages_build_output_dir = "dist"
 ├─ _headers            ← HTTP headers
 └─ dist/               ← ผลลัพธ์ build (gitignore — Cloudflare สร้างเอง)
 ```
@@ -28,16 +30,11 @@ stock-analysis/
 
 ## URL หลัง deploy
 
-เพราะ build flatten ไฟล์ลง root ของ `dist/` รายงานจึงเข้าถึงได้ที่ root:
-
 ```
-https://stock-analysis.<subdomain>.workers.dev            → หน้ารวมรายงาน (index)
-https://stock-analysis.<subdomain>.workers.dev/GOOGL.html → รายงาน GOOGL
-https://stock-analysis.<subdomain>.workers.dev/GOOGL      → ได้เหมือนกัน (clean URL)
+https://stock-analysis.pages.dev            → หน้ารวมรายงาน (index)
+https://stock-analysis.pages.dev/GOOGL.html → รายงาน GOOGL
+https://stock-analysis.pages.dev/GOOGL      → ได้เหมือนกัน (clean URL ของ Pages)
 ```
-
-> Workers Static Assets รองรับ clean URL อัตโนมัติ (`html_handling = "auto-trailing-slash"`):
-> ไฟล์ `GOOGL.html` เปิดได้ทั้ง `/GOOGL` (เสิร์ฟตรง) และ `/GOOGL.html` (redirect ไป `/GOOGL`)
 
 ## รัน build ในเครื่อง (ทดสอบ)
 
@@ -50,40 +47,32 @@ open dist/index.html
 
 ---
 
-## ตั้งค่าบน Cloudflare (ครั้งเดียว)
+## ตั้งค่าบน Cloudflare
 
-### วิธี A — เชื่อม GitHub ผ่าน Dashboard (แนะนำ)
+### ✅ วิธีที่ถูก: ตั้ง build settings ของ Pages project
 
-1. เข้า **Cloudflare Dashboard → Workers & Pages → Create → Workers → Import a repository**
-2. เลือก repo `iam1412/stock-analysis`
-3. ตั้งค่า build:
+ใน **Pages project → Settings → Builds & deployments**:
 
-   | ช่อง | ค่า |
-   |------|-----|
-   | **Build command** | `npm run build` |
-   | **Deploy command** | `npx wrangler deploy` |
-   | **Production branch** | `main` |
+| ช่อง | ค่า |
+|------|-----|
+| **Build command** | `npm run build` |
+| **Build output directory** | `dist` |
+| **Deploy command** (ถ้ามีช่องนี้) | `npx wrangler pages deploy dist` |
+| **Production branch** | `main` |
 
-4. กด **Save and Deploy**
+> **จุดที่ทำให้ deploy fail ก่อนหน้านี้:** ช่อง Deploy command ถูกตั้งเป็น `npx wrangler deploy`
+> ให้แก้เป็น **`npx wrangler pages deploy dist`** (เติมคำว่า `pages`)
+> หรือถ้าเป็น Pages Git แบบดั้งเดิมที่ไม่มีช่อง Deploy command → แค่ตั้ง Build output directory = `dist` ก็พอ (Pages deploy ให้เอง)
 
-`wrangler.toml` ในรีโปกำหนด `[assets] directory = "./dist"` ไว้แล้ว → `wrangler deploy` จะอัปโหลดไฟล์ใน `dist/` ให้อัตโนมัติ
-หลังจากนี้ทุกครั้งที่ `git push` ขึ้น `main` → Cloudflare build & deploy ใหม่อัตโนมัติ
-
-### วิธี B — Deploy ตรงจากเครื่องด้วย Wrangler CLI
+### Deploy ตรงจากเครื่องด้วย Wrangler CLI
 
 ```bash
 npm install -g wrangler
 wrangler login
 npm run build
-wrangler deploy        # อ่าน [assets] จาก wrangler.toml
+wrangler pages deploy dist --project-name stock-analysis   # ← pages deploy, ไม่ใช่ deploy เฉย ๆ
 ```
 
 ---
 
-## หมายเหตุ: ถ้าอยากใช้ Cloudflare Pages แทน Workers
-
-ลบ/เปลี่ยน `wrangler.toml` เป็น `pages_build_output_dir = "dist"` แล้วสร้างโปรเจกต์แบบ
-**Workers & Pages → Pages → Connect to Git** (Build command `npm run build`, Output dir `dist`)
-จะได้ URL `https://stock-analysis.pages.dev` แทน
-
-ผูก custom domain ได้ที่ตั้งค่าโปรเจกต์ → **Custom domains / Routes**
+ผูก custom domain ได้ที่ **Pages project → Custom domains**
