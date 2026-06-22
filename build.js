@@ -43,16 +43,23 @@ function extractMeta(html, symbol) {
   return { title, name };
 }
 
-// แทรกแถบติดต่อ + ลิงก์กลับหน้ารวม ต่อท้ายรายงานแต่ละหน้า (ใช้ inline style กันชน CSS)
+// แทรกแถบติดต่อ + ลิงก์กลับหน้ารวม ในแต่ละหน้ารายงาน
+// ถ้ามี <footer> เดิมอยู่แล้ว → ต่อท้ายเข้าไปข้างใน (ขึ้นบรรทัดใหม่) ไม่สร้าง footer ซ้อน
 function injectContactFooter(html) {
+  const link =
+    `<a href="/" style="color:#1a73e8;text-decoration:none">← ดูรายงานทั้งหมด</a> · ` +
+    `ติดต่อ <a href="mailto:${CONTACT_EMAIL}" style="color:#1a73e8;text-decoration:none">${CONTACT_EMAIL}</a>`;
+
+  const fi = html.toLowerCase().lastIndexOf('</footer>');
+  if (fi !== -1) {
+    return html.slice(0, fi) + `<br>${link}` + html.slice(fi); // ต่อท้ายใน <footer> เดิม
+  }
+  // ไม่มี footer เดิม → ใส่ footer ใหม่ก่อน </body>
   const bar =
     `\n<footer style="max-width:1080px;margin:0 auto;padding:14px 16px 40px;text-align:center;` +
-    `font-family:'Sarabun',system-ui,-apple-system,Segoe UI,sans-serif;font-size:12px;color:#5f6675">` +
-    `<a href="/" style="color:#1a73e8;text-decoration:none">← ดูรายงานทั้งหมด</a> · ` +
-    `ติดต่อ <a href="mailto:${CONTACT_EMAIL}" style="color:#1a73e8;text-decoration:none">${CONTACT_EMAIL}</a>` +
-    `</footer>\n`;
-  const i = html.toLowerCase().lastIndexOf('</body>');
-  return i === -1 ? html + bar : html.slice(0, i) + bar + html.slice(i);
+    `font-family:'Sarabun',system-ui,-apple-system,Segoe UI,sans-serif;font-size:12px;color:#5f6675">${link}</footer>\n`;
+  const bi = html.toLowerCase().lastIndexOf('</body>');
+  return bi === -1 ? html + bar : html.slice(0, bi) + bar + html.slice(bi);
 }
 
 // ---- 1) เตรียมโฟลเดอร์ dist ----
