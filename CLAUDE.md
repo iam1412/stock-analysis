@@ -66,12 +66,12 @@ stock-analysis/
 
 **หลังวิเคราะห์หุ้นเสร็จ หรือมีการสร้าง/แก้ไขไฟล์ใน `reports/` → ให้ commit + push ขึ้น `main` อัตโนมัติทันที โดยไม่ต้องถามยืนยัน**
 
-ลำดับที่ต้องทำ:
+ลำดับที่ต้องทำ (commit **ก่อน** pull --rebase เสมอ ไม่งั้น rebase จะ error "Please commit or stash"):
 ```bash
-node build.js                      # 1. ตรวจ build ผ่าน (กัน HTML พัง)
+node build.js                      # 1. ตรวจ build ผ่าน + อัปเดต index.html/reports.json
 git add -A                         # 2. stage
-git pull --rebase origin main      # 3. sync กันชนกับ remote
-git commit -m "<message>"          # 4. commit
+git commit -m "<message>"          # 3. commit (working tree ต้องสะอาดก่อน rebase)
+git pull --rebase origin main      # 4. sync กันชนกับ remote
 git push origin main               # 5. push → Cloudflare build & deploy เอง
 ```
 
