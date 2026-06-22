@@ -28,9 +28,9 @@ stock-analysis/
 ## URL หลัง deploy
 
 ```
-https://stock-analysis.<subdomain>.workers.dev/            → หน้ารวมรายงาน
-https://stock-analysis.<subdomain>.workers.dev/GOOGL.html  → รายงาน GOOGL
-https://stock-analysis.<subdomain>.workers.dev/GOOGL       → ได้เหมือนกัน (clean URL)
+https://stock-ai.dotent.workers.dev/            → หน้ารวมรายงาน
+https://stock-ai.dotent.workers.dev/GOOGL.html  → รายงาน GOOGL
+https://stock-ai.dotent.workers.dev/GOOGL       → ได้เหมือนกัน (clean URL)
 ```
 
 ## รัน build ในเครื่อง (ทดสอบ)

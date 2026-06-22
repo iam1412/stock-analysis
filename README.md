@@ -8,11 +8,10 @@
 ## 🔗 เว็บไซต์
 
 ```
-https://stock-analysis.<your-subdomain>.workers.dev/          → หน้ารวมรายงาน
-https://stock-analysis.<your-subdomain>.workers.dev/GOOGL     → รายงาน GOOGL
-https://stock-analysis.<your-subdomain>.workers.dev/GOOGL.html
+https://stock-ai.dotent.workers.dev/          → หน้ารวมรายงาน
+https://stock-ai.dotent.workers.dev/GOOGL     → รายงาน GOOGL
+https://stock-ai.dotent.workers.dev/GOOGL.html
 ```
-*(แก้ลิงก์ด้านบนเป็น URL จริงของคุณหลัง deploy)*
 
 API/manifest รายชื่อหุ้นทั้งหมด: [`/reports.json`](reports.json)
 

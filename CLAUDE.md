@@ -46,7 +46,7 @@ stock-analysis/
 3. รัน `node build.js` ตรวจว่า build ผ่าน (index.html อัปเดต, ไฟล์ flatten ถูกต้อง)
 4. **Auto-push** (ดูข้อ 4)
 
-> **URL ปลายทาง:** `https://<worker>.workers.dev/<SYMBOL>.html` (และ `/<SYMBOL>` ก็เข้าได้)
+> **URL ปลายทาง:** `https://stock-ai.dotent.workers.dev/<SYMBOL>.html` (และ `/<SYMBOL>` ก็เข้าได้)
 
 ---
 
