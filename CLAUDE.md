@@ -39,12 +39,19 @@ stock-analysis/
 
 1. เรียก skill **`/stock-analyzer`** ทำตาม workflow ของมัน (รวบรวมข้อมูล ≥3 แหล่ง →
    คำนวณ Fair Value 3 วิธี → Margin of Safety → Return projection → สร้าง dashboard HTML)
-2. **Export ไฟล์ผลลัพธ์เป็น `reports/<SYMBOL>.html`** เสมอ
+2. **★ ตรวจข้ามแหล่ง (cross-source verify) — บังคับก่อนเขียนตัวเลขลงรายงาน**
+   ยืนยัน **ราคาปัจจุบัน + EPS (TTM)** (และถ้าทำได้: ปันผล, ราคาเป้านักวิเคราะห์) จาก **≥2 แหล่งอิสระ**:
+   - ตรงกัน (ราคาต่าง ≤ ~2%) → ใช้ค่านั้น และระบุ "ราคา ณ วันที่ + แหล่ง"
+   - ขัดกันเกิน tolerance → **ห้ามเดา**: เลือกแหล่งที่น่าเชื่อถือ/ใหม่สุด + เขียนกำกับความไม่ตรงกันไว้ในหมายเหตุ;
+     ถ้าต่างกันมาก (เช่น ราคา >5% หรือ EPS คนละค่า) ให้ **หยุดแล้วถามผู้ใช้** อย่าเผยแพร่
+   - อ้างอิงแหล่งที่ใช้จริง **≥2** (ชื่อ + ถ้าได้ใส่ลิงก์) ในรายงาน
+   > นี่คือ **ด่านเดียวที่กัน "เลขผิด/เก่า" หลุดขึ้นเว็บ** — quality gate (ข้อ 7) ตรวจ "ความถูกต้องตามจริง" ไม่ได้ ตรวจได้แค่ความสอดคล้อง/ความสด/การอ้างอิง
+3. **Export ไฟล์ผลลัพธ์เป็น `reports/<SYMBOL>.html`** เสมอ
    - ใช้ **ชื่อย่อหุ้นตัวพิมพ์ใหญ่** เป็นชื่อไฟล์: `GOOGL.html`, `AAPL.html`, `PTT.html`
    - ⚠️ **override default ของ skill** ที่ตั้งชื่อ `[SYMBOL]_analysis.html` / save ลง outputs
      → ในโปรเจกต์นี้ให้ใช้ `reports/<SYMBOL>.html` เท่านั้น (เพื่อให้ URL สั้น เรียกง่าย)
-3. รัน `node build.js` ตรวจว่า build ผ่าน (index.html อัปเดต, ไฟล์ flatten ถูกต้อง)
-4. **Auto-push** (ดูข้อ 4)
+4. รัน `npm run verify` (check-reports → build → check-site) ให้ผ่านทั้งหมด
+5. **Auto-push** (ดูข้อ 4)
 
 > **URL ปลายทาง:** `https://stock-ai.dotent.workers.dev/<SYMBOL>.html` (และ `/<SYMBOL>` ก็เข้าได้)
 
@@ -56,9 +63,9 @@ stock-analysis/
 
 - **spawn 1 Agent ต่อ 1 หุ้น** ส่ง tool call หลายตัวในข้อความเดียวเพื่อรันขนานกัน
 - แต่ละ agent ทำ full analysis ของหุ้นตัวเองตาม workflow `/stock-analyzer`
-  แล้วเขียนผลลง **`reports/<SYMBOL>.html` ของตัวเองเท่านั้น** (คง 1 ไฟล์/1 หุ้น)
+  **รวมขั้นตรวจข้ามแหล่ง (ข้อ 2)** แล้วเขียนผลลง **`reports/<SYMBOL>.html` ของตัวเองเท่านั้น** (คง 1 ไฟล์/1 หุ้น)
 - **ห้ามให้ agent แต่ละตัว push เอง** → รอทุก agent เสร็จก่อน แล้ว main session
-  ทำ `node build.js` + **commit + push ครั้งเดียว** (กัน git race/conflict)
+  ทำ `npm run verify` + **commit + push ครั้งเดียว** (กัน git race/conflict)
 
 ---
 
