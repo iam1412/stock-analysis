@@ -22,6 +22,9 @@ API/manifest รายชื่อหุ้นทั้งหมด: [`/reports.
 reports/<SYMBOL>.html   # ★ รายงานหุ้น (1 ไฟล์ = 1 หุ้น)
 build.js                # สร้าง index.html + reports.json → flatten ลง dist/
 reports.json            # manifest (auto-generated, เก็บวันที่อัปเดต)
+test/check-reports.js   # quality gate — ตรวจรายงานก่อน push (npm test)
+test/self-test.js       # meta-test ของ checker (npm run test:self)
+.githooks/pre-push      # บล็อก git push อัตโนมัติถ้า gate ไม่ผ่าน
 wrangler.toml           # Cloudflare Workers (Static Assets)
 _headers                # HTTP headers
 DEPLOY.md               # คู่มือ deploy
@@ -42,8 +45,20 @@ git add -A && git commit -m "analyze: add AAPL stock analysis" && git push
 ## 🛠 พัฒนา / ทดสอบในเครื่อง
 
 ```bash
+npm test           # ★ quality gate — ตรวจคุณภาพรายงานทุกไฟล์ (ต้องผ่านก่อน push)
 npm run build      # = node build.js (ไม่ต้องติดตั้ง dependency, Node ≥ 18)
 open dist/index.html
+```
+
+## ✅ Quality gate (ตรวจก่อนเผยแพร่)
+
+`npm test` ตรวจทุก `reports/<SYMBOL>.html` ว่า **โครงสร้างครบ + ตัวเลขสอดคล้องกันเอง + ไม่มี placeholder ค้าง**
+(เช่น ค่า `FV` ในเครื่องคิดเลขตรงกับ Fair Value, `MOS = (FV−ราคา)/FV`, มี disclaimer/แหล่งที่มา) — มี error เมื่อไหร่ push ไม่ได้
+
+```bash
+npm test                 # ตรวจทั้งหมด        npm test -- BBL   # เฉพาะบางตัว
+npm run test:self        # ทดสอบ checker เองว่ายังจับ bug ได้
+git config core.hooksPath .githooks   # เปิดใช้ pre-push hook (ครั้งเดียวต่อ clone)
 ```
 
 ## 🚀 Deploy

@@ -1,0 +1,21 @@
+#!/bin/sh
+# pre-push hook — บล็อกการ push ถ้ารายงานใน reports/ ไม่ผ่าน quality gate
+# เปิดใช้ครั้งเดียวต่อ clone:  git config core.hooksPath .githooks
+# ดู: test/check-reports.js, CLAUDE.md ข้อ 4
+
+repo_root=$(git rev-parse --show-toplevel 2>/dev/null) || exit 0
+cd "$repo_root" || exit 0
+
+# หา node (รองรับกรณีรันจาก GUI git ที่ PATH ไม่ครบ)
+command -v node >/dev/null 2>&1 || { echo "⚠️  pre-push: ไม่พบ node — ข้ามการตรวจ (ควรตรวจเองด้วย npm test)"; exit 0; }
+
+echo "🔍 pre-push: ตรวจคุณภาพรายงานก่อน push…"
+node test/check-reports.js
+status=$?
+if [ "$status" -ne 0 ]; then
+  echo ""
+  echo "❌ push ถูกบล็อก: รายงานไม่ผ่าน quality gate (ดูปัญหาด้านบน)"
+  echo "   แก้ให้ผ่าน แล้วลองใหม่  •  ข้ามชั่วคราว (ไม่แนะนำ): git push --no-verify"
+  exit 1
+fi
+exit 0
