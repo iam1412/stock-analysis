@@ -43,6 +43,18 @@ function extractMeta(html, symbol) {
   return { title, name };
 }
 
+// แทรกแถบติดต่อ + ลิงก์กลับหน้ารวม ต่อท้ายรายงานแต่ละหน้า (ใช้ inline style กันชน CSS)
+function injectContactFooter(html) {
+  const bar =
+    `\n<footer style="max-width:1080px;margin:0 auto;padding:14px 16px 40px;text-align:center;` +
+    `font-family:'Sarabun',system-ui,-apple-system,Segoe UI,sans-serif;font-size:12px;color:#5f6675">` +
+    `<a href="/" style="color:#1a73e8;text-decoration:none">← ดูรายงานทั้งหมด</a> · ` +
+    `ติดต่อ <a href="mailto:${CONTACT_EMAIL}" style="color:#1a73e8;text-decoration:none">${CONTACT_EMAIL}</a>` +
+    `</footer>\n`;
+  const i = html.toLowerCase().lastIndexOf('</body>');
+  return i === -1 ? html + bar : html.slice(0, i) + bar + html.slice(i);
+}
+
 // ---- 1) เตรียมโฟลเดอร์ dist ----
 fs.rmSync(OUT, { recursive: true, force: true });
 fs.mkdirSync(OUT, { recursive: true });
@@ -72,7 +84,7 @@ if (fs.existsSync(REPORTS_DIR)) {
     const updated = old && old.hash === h && old.updated ? old.updated : nowISO; // เปลี่ยน → ประทับเวลาใหม่
 
     reports.push({ symbol, file: entry.name, ...extractMeta(content, symbol), updated, hash: h });
-    fs.copyFileSync(src, path.join(OUT, entry.name));
+    fs.writeFileSync(path.join(OUT, entry.name), injectContactFooter(content)); // hash อิงต้นฉบับ, footer ใส่เฉพาะใน dist
     log('report:', entry.name, updated === nowISO ? '(updated)' : '');
   }
 } else {
@@ -219,8 +231,7 @@ const indexHtml = `<!DOCTYPE html>
 ${reports.length ? cards : emptyState}
     </div>${noResult}
     <footer>
-      อัปเดตล่าสุด ${fmtDate(nowISO)} · สร้างอัตโนมัติด้วย build.js<br>
-      ติดต่อ: <a href="mailto:${CONTACT_EMAIL}">${CONTACT_EMAIL}</a><br>
+      อัปเดตล่าสุด ${fmtDate(nowISO)} · สร้างด้วย build.js · ติดต่อ <a href="mailto:${CONTACT_EMAIL}">${CONTACT_EMAIL}</a><br>
       ข้อมูลเพื่อการศึกษา ไม่ใช่คำแนะนำการลงทุน
     </footer>
   </div>${searchScript}
