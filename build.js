@@ -196,7 +196,7 @@ const cards = reports.map((r) => `
         <div class="badge">${esc(r.symbol)}</div>
         <div class="cname">${esc(r.name)}</div>
         <div class="ctitle">${esc(r.title)}</div>
-        <div class="cmeta"><span class="go">เปิดรายงาน →</span><span class="cviews" data-sym="${escAttr(r.symbol)}" hidden>👁 <b class="v">0</b> · 👍 <b class="l">0</b></span><span class="cdate">${fmtDate(r.updated)}</span></div>
+        <div class="cmeta"><span class="go">เปิดรายงาน →</span><span class="cviews" data-sym="${escAttr(r.symbol)}" hidden>👁 <b class="v">0</b> · 👍 <b class="l">0</b> · 👎 <b class="d">0</b></span><span class="cdate">${fmtDate(r.updated)}</span></div>
       </a>`).join('\n');
 
 // ช่องค้นหา + ข้อความ "ไม่พบ" + สคริปต์กรอง (เฉพาะเมื่อมีรายงาน)
@@ -253,9 +253,10 @@ const searchScript = reports.length ? `
       fetch('/api/views').then(function (r) { return r.json(); }).then(function (map) {
         [].slice.call(document.querySelectorAll('.cviews')).forEach(function (s) {
           var e = (map && map[s.getAttribute('data-sym')]) || {};
-          var v = s.querySelector('.v'), l = s.querySelector('.l');
+          var v = s.querySelector('.v'), l = s.querySelector('.l'), d = s.querySelector('.d');
           if (v) v.textContent = (e.c || 0).toLocaleString();
           if (l) l.textContent = (e.l || 0).toLocaleString();
+          if (d) d.textContent = (e.d || 0).toLocaleString();
           s.hidden = false;
         });
       }).catch(function () {});
