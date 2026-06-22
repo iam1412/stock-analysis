@@ -28,7 +28,7 @@ stock-analysis/
 **ไฟล์ที่ห้ามแก้มือ** (สร้างอัตโนมัติทุกครั้งที่ build):
 - `dist/` ทั้งโฟลเดอร์ (รวม `dist/index.html`, `dist/<SYMBOL>.html`, `dist/_headers`, `dist/reports.json`)
 - `reports.json` (root) — build.js เขียนเอง ใช้ track วันที่อัปเดต/hash ของแต่ละรายงาน (commit ไปด้วย)
-- หน้า landing / การ์ด / footer (อีเมลติดต่อ) อยู่ใน template ของ `build.js` — แก้ที่นั่น
+- หน้า landing / การ์ด / footer (อีเมลติดต่อ) / ช่องค้นหา อยู่ใน template ของ `build.js` — แก้ที่นั่น
 - หน้า index เรียงหุ้นที่ **อัปเดตล่าสุดขึ้นก่อน** อัตโนมัติ (อิงวันที่ใน reports.json)
 
 ---
