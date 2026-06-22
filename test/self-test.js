@@ -58,6 +58,29 @@ expect('E19', 'error', (h) => h.replace('gpos(178)', 'gpos(300)'), 'gauge marker
 expect('E20', 'error', (h) => h.replace(/กรอบ\s*฿162\s*[–-]\s*฿225/, 'กรอบ ฿300 – ฿320'), 'Fair Value อยู่นอกกรอบ');
 expect('W04', 'warn', (h) => h.replace('class="mos-verdict ok"', 'class="mos-verdict good"'), 'สี verdict (good) ขัดกับ MOS ต่ำ');
 expect('W05', 'warn', (h) => h.replace('class="mval">฿225</div>', 'class="mval">฿600</div>'), 'FV ไม่ใกล้ค่าเฉลี่ยวิธี');
+// ── Tier 1/2: valuation-math, consistency, freshness, sourcing ──
+expect('E21', 'error', (h) => h.replace('<div class="mval">฿198</div>', '<div class="mval">฿300</div>'), 'วิธี P/E: ค่าไม่ตรง EPS×P/E');
+expect('E22', 'error', (h) => h.replace('<div class="mval">฿225</div>', '<div class="mval">฿300</div>'), 'วิธี P/BV: ค่าไม่ตรง ratio×BVPS');
+expect('E23', 'error', (h) => h.replace('value="178"', 'value="999"'), 'ราคา header ≠ ค่าตั้งต้นเครื่องคิดเลข');
+expect('E24', 'error', (h) => h.replace('<span>~฿24.0</span>', '<span>~฿40.0</span>'), 'EPS ปี3 ไม่ตรงการทบต้น (1+g)³');
+expect('E25', 'error', (h) => h.replace('มูลค่าเหมาะสม</div><div class="v">฿195', 'มูลค่าเหมาะสม</div><div class="v">฿250'), 'FV ในสรุป ≠ FV ในกล่อง');
+expect('E26', 'error', (h) => h.replace('฿156<br><small>MOS 20%', '฿250<br><small>MOS 20%'), 'gauge scale MOS20 ≠ FV×0.8');
+expect('W06', 'warn', (h) => h.replace('MOS ~ +9%', 'แพง ~9%'), 'สรุปพลิกขั้ว (แพง) ขัดกับ MOS บวก');
+expect('W07', 'warn', (h) => h.replace('class="v pos">~7.5x', 'class="v pos">~750x'), 'P/E ผิดวิสัย (750x)');
+expect('W08', 'warn', (h) => h.replace('ที่มา: SET / stockanalysis.com / Investing', 'ที่มา: SET'), 'แหล่งข้อมูล < 3');
+// freshness — จำลอง "วันนี้" ผ่าน env STALE_TODAY (รายงานลงวันที่ มิ.ย. 2026)
+{
+  process.env.STALE_TODAY = '2027-06-23';
+  const r = checkHtml(base, 'BBL.html');
+  ok(errIds(r).has('E27'), 'ราคาเก่า > 120 วัน (จำลองวันนี้ 2027-06-23) → ต้องเจอ E27' + (errIds(r).has('E27') ? '' : ' (เจอ: ' + [...errIds(r)].join(',') + ')'));
+  delete process.env.STALE_TODAY;
+}
+{
+  process.env.STALE_TODAY = '2026-08-20';
+  const r = checkHtml(base, 'BBL.html');
+  ok(allIds(r).has('W09') && !errIds(r).has('E27'), 'ราคาเก่า 45–120 วัน → ต้องเตือน W09 (ไม่ block)' + (allIds(r).has('W09') ? '' : ' (เจอ: ' + [...allIds(r)].join(',') + ')'));
+  delete process.env.STALE_TODAY;
+}
 
 // ── กัน false-positive (จากผล adversarial review) ──
 reject('E13', (h) => h.replace('<h1>', '<h1>[NASDAQ] '), 'ticker/exchange ในวงเล็บ [NASDAQ] ไม่ใช่ placeholder');

@@ -49,9 +49,48 @@ function parseScenarios(html) {
       tgt: firstNum(grab(/<div class="tgt">([\s\S]*?)<\/div>/, seg)),
       eps: firstNum(grab(/EPS ปี 3<\/span>\s*<span>([\s\S]*?)<\/span>/, seg)),
       pe: firstNum(grab(/P\/E ออก<\/span>\s*<span>([\s\S]*?)<\/span>/, seg)),
+      g: firstNum(grab(/EPS\s*([+\-−]?[0-9.]+)\s*%\s*\/\s*ปี/, norm(seg))),
+      ret: firstNum(grab(/class="ret[^"]*">([\s\S]*?)<\/div>/, seg)),
     });
   }
   return cols;
+}
+
+// แต่ละวิธีประเมินมูลค่า (.vmethod) → { name, desc, val }
+function parseMethods(html) {
+  return html.split('<div class="vmethod">').slice(1).map((seg) => ({
+    name: stripTags(grab(/class="mname">([\s\S]*?)<\/div>/, seg) || '').replace(/\s+/g, ' ').trim(),
+    desc: norm(stripTags(grab(/class="mdesc">([\s\S]*?)<\/div>/, seg) || '')).replace(/\s+/g, ' ').trim(),
+    val: firstNum(grab(/class="mval">([\s\S]*?)<\/div>/, seg)),
+  }));
+}
+
+const THAI_MONTHS = ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'];
+// แปลง "ราคา ณ <วัน[–วัน]> <เดือนไทย> <ปี ค.ศ./พ.ศ.>" → อายุเป็นวันเทียบ "วันนี้"
+// ช่วงวัน (เช่น 14–18 มิ.ย.) ใช้ "วันท้าย" (ราคาที่สดสุด). พ.ศ.→ค.ศ. อัตโนมัติ.
+function parsePriceAge(header) {
+  const txt = norm(stripTags(header));
+  const i = txt.indexOf('ราคา');
+  const region = i === -1 ? txt : txt.slice(i, i + 140);
+  const monthAlt = THAI_MONTHS.map((m) => m.replace(/\./g, '\\.')).join('|');
+  const re = new RegExp(`(\\d{1,2})(?:\\s*[–\\-]\\s*(\\d{1,2}))?\\s*(${monthAlt})\\s*(20\\d\\d|25\\d\\d|26\\d\\d)`, 'g');
+  let m, last = null;
+  while ((m = re.exec(region))) last = m;
+  if (!last) return null;
+  const day = parseInt(last[2] || last[1], 10);
+  const mon = THAI_MONTHS.indexOf(last[3]);
+  let year = parseInt(last[4], 10);
+  if (year >= 2400) year -= 543; // พ.ศ. → ค.ศ.
+  if (mon < 0) return null;
+  const now = process.env.STALE_TODAY ? Date.parse(process.env.STALE_TODAY) : Date.now();
+  const dt = Date.UTC(year, mon, day);
+  return { iso: `${year}-${String(mon + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`, ageDays: Math.round((now - dt) / 86400000) };
+}
+
+// ดึง key metric (ค่าในการ์ด .metric) ตามชื่อ label
+function metricNum(html, labelRe) {
+  const m = html.match(new RegExp(`<div class="k">[^<]*${labelRe}[^<]*</div>\\s*<div class="v[^"]*">([^<]*)<`));
+  return m ? firstNum(m[1]) : null;
 }
 
 function buildCtx(html, name) {
@@ -72,6 +111,18 @@ function buildCtx(html, name) {
     // (กัน USD report ที่อ้างอิงค่าเงินบาทในข้อความ ไม่ให้ถูกตีว่าเป็นรายงานบาท)
     isTHB: (() => { const m = html.match(/<div class="px">\s*([฿$])/); return m ? m[1] === '฿' : (text.includes('฿') && !text.includes('$')); })(),
     scenarios: parseScenarios(html),
+    methods: parseMethods(html),
+    pxInput: firstNum(grab(/id="pxIn"[^>]*value="([^"]*)"/, html)),
+    baseEPS: firstNum(grab(/EPS ฐาน\s*~?\s*[฿$]?\s*([0-9.]+)/, norm(html))),
+    vgridFV: (() => { const i = html.indexOf('class="vgrid"'); if (i === -1) return null; return firstNum(grab(/มูลค่าเหมาะสม<\/div>\s*<div class="v">([\s\S]*?)<\/div>/, html.slice(i))); })(),
+    scaleNums: (() => { const seg = grab(/<div class="scale">([\s\S]*?)<\/div>\s*<\/div>/, html); if (!seg) return []; return seg.split('<span').slice(1).map((s) => firstNum(s)).filter((v) => v != null); })(),
+    priceAge: parsePriceAge(headerM ? headerM[0] : ''),
+    metrics: {
+      pe: metricNum(html, 'P/E \\(TTM\\)'),
+      pbv: metricNum(html, 'P/BV'),
+      yield: metricNum(html, 'เงินปันผล'),
+      roe: (() => { const m = norm(html).match(/ROE[^<]*<\/div>\s*<div class="v[^"]*">\s*~?\s*([0-9.]+)\s*%/); return m ? parseFloat(m[1]) : null; })(),
+    },
   };
 }
 
@@ -100,11 +151,23 @@ const CHECKS = [
   { id: 'E19', level: 'error', label: 'gauge marker ตรงกับ ราคา/FV', fn: (c) => { const cur = firstNum(grab(/getElementById\("mCur"\)\.style\.left\s*=\s*gpos\(([0-9.]+)\)/, c.html)); const fair = firstNum(grab(/getElementById\("mFair"\)\.style\.left\s*=\s*gpos\(([0-9.]+)\)/, c.html)); const bad = []; if (cur != null && c.px != null && Math.abs(cur - c.px) > Math.max(0.02 * c.px, 0.02)) bad.push(`marker ปัจจุบัน gpos(${cur}) ≠ ราคา ${c.px}`); if (fair != null && c.fvBox != null && Math.abs(fair - c.fvBox) > Math.max(0.02 * c.fvBox, 0.02)) bad.push(`marker เหมาะสม gpos(${fair}) ≠ Fair Value ${c.fvBox}`); return bad.length ? bad.join(' ; ') : null; } },
   { id: 'E20', level: 'error', label: 'Fair Value อยู่ในกรอบ low–high', fn: (c) => { if (c.fvBox == null) return null; const i = c.html.indexOf('class="fv-box"'); if (i === -1) return null; const m = c.html.slice(i, i + 700).match(/กรอบ\s*[฿$]?\s*([0-9.,]+)\s*[–\-]\s*[฿$]?\s*([0-9.,]+)/); if (!m) return null; const lo = firstNum(m[1]), hi = firstNum(m[2]); if (lo == null || hi == null) return null; if (lo > hi) return `กรอบ Fair Value สลับด้าน (${lo} > ${hi})`; if (c.fvBox < lo - 1e-9 || c.fvBox > hi + 1e-9) return `Fair Value ${c.fvBox} อยู่นอกกรอบ ${lo}–${hi}`; return null; } },
 
+  { id: 'E21', level: 'error', label: 'วิธี P/E: ค่า = EPS × P/E ในคำอธิบาย', fn: (c) => { const m = c.methods.find((x) => /P\/E/i.test(x.name) && !/P\/BV/i.test(x.name)); if (!m || m.val == null) return null; const eps = firstNum(grab(/EPS[^0-9\-]*([0-9]+(?:\.[0-9]+)?)/i, m.desc)); const pe = firstNum(grab(/([0-9]+(?:\.[0-9]+)?)\s*x\b/i, m.desc)); if (eps == null || pe == null) return null; const exp = eps * pe; return Math.abs(exp - m.val) / m.val <= 0.03 ? null : `วิธี P/E แสดง ${m.val} แต่ EPS ${eps} × P/E ${pe} = ${exp.toFixed(2)}`; } },
+  { id: 'E22', level: 'error', label: 'วิธี P/BV: ค่า = ratio × BVPS, ratio = (ROE−g)/(r−g)', fn: (c) => { const m = c.methods.find((x) => /P\/BV/i.test(x.name)); if (!m || m.val == null) return null; const ratio = firstNum(grab(/[≈=]\s*([0-9.]+)x?\s*[×x]\s*BVPS/, m.desc)); const bvps = firstNum(grab(/BVPS[^0-9]*([0-9]+(?:\.[0-9]+)?)/, m.desc)); if (ratio == null || bvps == null) return null; const bad = []; const exp = ratio * bvps; if (Math.abs(exp - m.val) / m.val > 0.03) bad.push(`แสดง ${m.val} แต่ ${ratio} × BVPS ${bvps} = ${exp.toFixed(2)}`); const roe = firstNum(grab(/ROE\s*([0-9.]+)\s*%/, m.desc)); const gg = firstNum(grab(/g\s*([0-9.]+)\s*%/, m.desc)); const rr = firstNum(grab(/r\s*([0-9.]+)\s*%/, m.desc)); if (roe != null && gg != null && rr != null && rr > gg) { const er = (roe - gg) / (rr - gg); if (Math.abs(er - ratio) > 0.05) bad.push(`ratio ${ratio} ≠ (ROE ${roe}−g ${gg})/(r ${rr}−g ${gg}) = ${er.toFixed(2)}`); } return bad.length ? bad.join(' ; ') : null; } },
+  { id: 'E23', level: 'error', label: 'ราคา header = ค่าตั้งต้นเครื่องคิดเลข', fn: (c) => { if (c.px == null || c.pxInput == null) return null; return Math.abs(c.px - c.pxInput) <= Math.max(0.02 * c.px, 0.02) ? null : `ราคา header ${c.px} ≠ ค่าเริ่มต้น input เครื่องคิดเลข ${c.pxInput} (ผู้ใช้จะเห็น MOS เริ่มต้นผิด)`; } },
+  { id: 'E24', level: 'error', label: 'scenario: EPS ปี3 = EPS ฐาน×(1+g)³', fn: (c) => { if (c.baseEPS == null) return null; const nm = ['Bear', 'Base', 'Bull']; const bad = []; c.scenarios.forEach((s, i) => { if (s.eps == null || s.g == null) return; const exp = c.baseEPS * Math.pow(1 + s.g / 100, 3); if (Math.abs(exp - s.eps) / s.eps > 0.05) bad.push(`${nm[i] || i}: EPS ฐาน ${c.baseEPS}×(1+${s.g}%)³=${exp.toFixed(2)} ≠ EPS ปี3 ${s.eps}`); }); return bad.length ? bad.join(' ; ') : null; } },
+  { id: 'E25', level: 'error', label: 'FV ในสรุป (verdict) = FV ในกล่อง', fn: (c) => { if (c.fvBox == null || c.vgridFV == null) return null; return Math.abs(c.vgridFV - c.fvBox) / c.fvBox <= 0.02 ? null : `สรุปแสดงมูลค่าเหมาะสม ${c.vgridFV} แต่กล่อง valuation = ${c.fvBox}`; } },
+  { id: 'E26', level: 'error', label: 'gauge scale: เรียงขึ้น + MOS20/30 = FV×0.8/0.7', fn: (c) => { const bad = []; if (c.scaleNums.length >= 4) { const sorted = c.scaleNums.slice().sort((a, b) => a - b); if (c.scaleNums.join(',') !== sorted.join(',')) bad.push(`ป้าย scale ไม่เรียงน้อย→มาก: [${c.scaleNums.join(', ')}]`); } const FV = c.fvBox != null ? c.fvBox : c.constFV; if (FV != null) { const h = norm(c.html); const t20 = firstNum(grab(/([฿$]?[0-9.,]+)\s*<br>\s*<small>MOS 20%/, h)); const t30 = firstNum(grab(/([฿$]?[0-9.,]+)\s*<br>\s*<small>MOS 30%/, h)); if (t20 != null && Math.abs(t20 - FV * 0.8) > Math.max(0.025 * FV * 0.8, 0.01)) bad.push(`gauge MOS20% ${t20} ≠ FV×0.8 = ${(FV * 0.8).toFixed(2)}`); if (t30 != null && Math.abs(t30 - FV * 0.7) > Math.max(0.025 * FV * 0.7, 0.01)) bad.push(`gauge MOS30% ${t30} ≠ FV×0.7 = ${(FV * 0.7).toFixed(2)}`); } return bad.length ? bad.join(' ; ') : null; } },
+  { id: 'E27', level: 'error', label: 'ราคาไม่เก่า/ไม่อยู่อนาคต', fn: (c) => { if (!c.priceAge) return null; const a = c.priceAge.ageDays; const errDays = parseInt(process.env.STALE_ERROR_DAYS || '120', 10); if (a < -7) return `วันที่ราคา (${c.priceAge.iso}) อยู่ในอนาคต ${-a} วัน`; if (a > errDays) return `ราคาเก่าเกินไป: ${c.priceAge.iso} (${a} วันที่แล้ว > ${errDays} วัน)`; return null; } },
+
   { id: 'W01', level: 'warn', label: 'scenario: EPS×P/E ≈ ราคาเป้า', fn: (c) => { const bad = []; const nm = ['Bear', 'Base', 'Bull']; c.scenarios.forEach((s, i) => { if (s.tgt == null || s.eps == null || s.pe == null) return; const calc = s.eps * s.pe; const d = Math.abs(calc - s.tgt) / s.tgt; if (d > TOL_SCN_REL) bad.push(`${nm[i] || ('#' + i)}: EPS ${s.eps}×P/E ${s.pe}=${calc.toFixed(0)} ≠ target ${s.tgt} (ต่าง ${(d * 100).toFixed(0)}%)`); }); return bad.length ? bad.join(' ; ') : null; } },
   { id: 'W02', level: 'warn', label: 'สกุลเงินปน', fn: (c) => { if (c.isTHB && /\$/.test(c.text)) { const n = (c.text.match(/\$/g) || []).length; return `รายงานสกุลบาท (฿) แต่พบ "$" ${n} จุดในเนื้อหา (ควรใช้ ฿)`; } if (!c.isTHB && /฿/.test(c.text)) { const n = (c.text.match(/฿/g) || []).length; return `รายงานสกุลดอลลาร์ ($) แต่พบ "฿" ${n} จุดในเนื้อหา`; } return null; } },
   { id: 'W03', level: 'warn', label: 'CSS เพี้ยน .seg-label', fn: (c) => /transform:transl\(/.test(c.html) ? 'พบ transform:transl( (ควรเป็น translate) — dead CSS .seg-label ใน template' : null },
   { id: 'W04', level: 'warn', label: 'สี verdict ตรงกับโซน MOS', fn: (c) => { if (c.mosBig == null) return null; const m = c.html.match(/class="mos-verdict (bad|ok|good)"/); if (!m) return null; const rank = { bad: 0, ok: 1, good: 2 }; const band = c.mosBig < 10 ? 'bad' : c.mosBig < 20 ? 'ok' : 'good'; return Math.abs(rank[m[1]] - rank[band]) >= 2 ? `กล่อง verdict เป็น "${m[1]}" แต่ MOS ${c.mosBig}% ควรอยู่โซน "${band}"` : null; } },
   { id: 'W05', level: 'warn', label: 'FV ≈ ค่าเฉลี่ยวิธีที่แสดง', fn: (c) => { if (c.fvBox == null) return null; const vals = [...c.html.matchAll(/class="mval">([^<]*)</g)].map((m) => firstNum(m[1])).filter((v) => v != null); if (vals.length < 2) return null; const mean = vals.reduce((a, b) => a + b, 0) / vals.length; const d = Math.abs(mean - c.fvBox) / c.fvBox; return d > 0.07 ? `Fair Value ${c.fvBox} ต่างจากค่าเฉลี่ยวิธี (${vals.join(', ')} → เฉลี่ย ${mean.toFixed(2)}) ${(d * 100).toFixed(0)}%` : null; } },
+  { id: 'W06', level: 'warn', label: 'สรุป "ส่วนต่างจากราคา" ตรงกับ MOS', fn: (c) => { const FV = c.fvBox != null ? c.fvBox : c.constFV; if (FV == null || c.px == null) return null; const i = c.html.indexOf('ส่วนต่างจากราคา'); if (i === -1) return null; const cell = norm(c.html).slice(i, i + 120); const expensive = /แพง/.test(cell); const mos = (FV - c.px) / FV * 100; if (expensive !== (mos < 0)) return `สรุประบุ "${expensive ? 'แพง' : 'ถูก/MOS+'}" แต่ MOS จริง = ${mos.toFixed(1)}%`; const pct = firstNum(grab(/(-?[0-9.]+)\s*%/, cell)); if (pct != null && Math.abs(Math.abs(pct) - Math.abs(mos)) > 2.5) return `สรุประบุส่วนต่าง ~${pct}% แต่ MOS จริง = ${mos.toFixed(1)}%`; return null; } },
+  { id: 'W07', level: 'warn', label: 'ตัวเลขพื้นฐานสมเหตุสมผล', fn: (c) => { const bad = []; if (c.px != null && c.px <= 0) bad.push(`ราคา ${c.px} ≤ 0`); const m = c.metrics; if (m.pe != null && (m.pe <= 0 || m.pe > 150)) bad.push(`P/E ${m.pe} ผิดวิสัย`); if (m.pbv != null && (m.pbv <= 0 || m.pbv > 20)) bad.push(`P/BV ${m.pbv} ผิดวิสัย`); if (m.yield != null && (m.yield < 0 || m.yield > 20)) bad.push(`Div yield ${m.yield}% ผิดวิสัย`); if (m.roe != null && (m.roe < -100 || m.roe > 200)) bad.push(`ROE ${m.roe}% ผิดวิสัย`); return bad.length ? bad.join(' ; ') : null; } },
+  { id: 'W08', level: 'warn', label: 'แหล่งข้อมูล ≥3 + อ้างอิงครบ', fn: (c) => { const bad = []; const line = grab(/(?:ที่มา|แหล่ง|อ้างอิง|ข้อมูลจาก|source)\s*[:：]?\s*([^<\n][^\n]*)/i, stripTags(c.header)); if (line) { const srcs = line.split(/\s*[\/,]\s*|\s+•\s+|\s+และ\s+/).map((s) => s.trim()).filter((s) => s.length >= 2 && s.length <= 40); if (srcs.length < 3) bad.push(`ระบุแหล่งที่มาเพียง ${srcs.length} แหล่ง (ควร ≥3)`); } if (!/เป้า|นักวิเคราะห์|consensus/i.test(c.text)) bad.push('ไม่พบราคาเป้านักวิเคราะห์'); if (!/52\s*สัปดาห์|52-week/i.test(c.text)) bad.push('ไม่พบช่วง 52 สัปดาห์'); if (!/FY\s?20\d\d|ไตรมาส|[1-4]Q\s?\/?\s?20\d\d|Q[1-4]\s?\/?\s?20\d\d/i.test(c.text)) bad.push('ไม่พบการอ้างอิงงวดงบ (FY/ไตรมาส)'); return bad.length ? bad.join(' ; ') : null; } },
+  { id: 'W09', level: 'warn', label: 'ความสดของราคา', fn: (c) => { if (!c.priceAge) return null; const a = c.priceAge.ageDays; const warnDays = parseInt(process.env.STALE_WARN_DAYS || '45', 10); const errDays = parseInt(process.env.STALE_ERROR_DAYS || '120', 10); if (a > warnDays && a <= errDays) return `ราคาเริ่มเก่า: ${c.priceAge.iso} (${a} วันที่แล้ว) — ควรอัปเดตก่อนเผยแพร่`; return null; } },
 ];
 
 function checkHtml(html, name) {

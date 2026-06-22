@@ -44,21 +44,26 @@ git add -A && git commit -m "analyze: add AAPL stock analysis" && git push
 ## 🛠 พัฒนา / ทดสอบในเครื่อง
 
 ```bash
-npm test           # ★ quality gate — ตรวจคุณภาพรายงานทุกไฟล์ (ต้องผ่านก่อน push)
+npm run verify     # ★ quality gate ครบชุด — ต้องผ่านก่อน push
 npm run build      # = node build.js (ไม่ต้องติดตั้ง dependency, Node ≥ 18)
 open dist/index.html
 ```
 
 ## ✅ Quality gate (ตรวจก่อนเผยแพร่)
 
-`npm test` ตรวจทุก `reports/<SYMBOL>.html` ว่า **โครงสร้างครบ + ตัวเลขสอดคล้องกันเอง + ไม่มี placeholder ค้าง**
-(เช่น ค่า `FV` ในเครื่องคิดเลขตรงกับ Fair Value, `MOS = (FV−ราคา)/FV`, มี disclaimer/แหล่งที่มา) — มี error เมื่อไหร่ push ไม่ได้
+`npm run verify` ตรวจ 2 ชั้น — มี error เมื่อไหร่ push ไม่ได้:
+
+1. **`check-reports.js`** (source ทีละไฟล์): โครงสร้างครบ • **ตัวเลขสอดคล้องกันเอง** (ค่า `FV` ในเครื่องคิดเลข = Fair Value = สรุป, `MOS=(FV−ราคา)/FV`, จุดซื้อ MOS = FV×0.8/0.7, คณิตแต่ละวิธี P/E & P/BV, scenario EPS ทบต้น) • **ความสดของราคา** (เตือน >45 วัน, บล็อก >120 วัน) • แหล่งข้อมูล ≥3 + ตัวเลขสมเหตุสมผล • ไม่มี placeholder/undefined
+2. **`check-site.js`** (หลัง build, ระดับเว็บไซต์): ทุก report อยู่ใน index/manifest ครบ • `<script>` ไม่พัง + id ครบ • **ความปลอดภัย: external resource = Google Fonts เท่านั้น ห้าม `<script src>` ภายนอก**
 
 ```bash
-npm test                 # ตรวจทั้งหมด        npm test -- BBL   # เฉพาะบางตัว
-npm run test:self        # ทดสอบ checker เองว่ายังจับ bug ได้
+npm test                 # ชั้น 1 อย่างเดียว    npm test -- BBL   # เฉพาะบางตัว
+npm run check:site       # ชั้น 2 อย่างเดียว (ต้อง build ก่อน)
+npm run test:self        # พิสูจน์ว่า checker เองยังจับ bug ได้ (32 เคส)
 git config core.hooksPath .githooks   # เปิดใช้ pre-push hook (ครั้งเดียวต่อ clone)
 ```
+
+> ⚠️ gate ตรวจ "ความสอดคล้อง + ความสด + การอ้างอิง" ได้ แต่ **ตรวจ "ความถูกต้องตามจริง" ของราคา/งบเทียบตลาดไม่ได้** — ส่วนนั้นต้องทวนแหล่งข้อมูล ≥3 ตอนสร้าง + วิจารณญาณคน
 
 ## 🚀 Deploy
 

@@ -9,13 +9,20 @@ cd "$repo_root" || exit 0
 # หา node (รองรับกรณีรันจาก GUI git ที่ PATH ไม่ครบ)
 command -v node >/dev/null 2>&1 || { echo "⚠️  pre-push: ไม่พบ node — ข้ามการตรวจ (ควรตรวจเองด้วย npm test)"; exit 0; }
 
-echo "🔍 pre-push: ตรวจคุณภาพรายงานก่อน push…"
-node test/check-reports.js
-status=$?
-if [ "$status" -ne 0 ]; then
+block() {
   echo ""
-  echo "❌ push ถูกบล็อก: รายงานไม่ผ่าน quality gate (ดูปัญหาด้านบน)"
+  echo "❌ push ถูกบล็อก: $1 ไม่ผ่าน (ดูปัญหาด้านบน)"
   echo "   แก้ให้ผ่าน แล้วลองใหม่  •  ข้ามชั่วคราว (ไม่แนะนำ): git push --no-verify"
   exit 1
-fi
+}
+
+echo "🔍 pre-push 1/3: ตรวจคุณภาพรายงาน (check-reports)…"
+node test/check-reports.js || block "report quality gate"
+
+echo "🔧 pre-push 2/3: build dist/ …"
+node build.js >/dev/null || block "build"
+
+echo "🌐 pre-push 3/3: ตรวจความสมบูรณ์เว็บไซต์ (check-site)…"
+node test/check-site.js || block "site integrity gate"
+
 exit 0
