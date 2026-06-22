@@ -1,7 +1,14 @@
-# Cloudflare Pages config
-# โปรเจกต์นี้เป็น "Pages project" → ต้อง deploy ด้วย `wrangler pages deploy`
-# (ห้ามใช้ `wrangler deploy` ซึ่งเป็นของ Workers)
-# docs: https://developers.cloudflare.com/pages/configuration/build-configuration/
+# Cloudflare Workers — Static Assets (assets-only Worker)
+# เสิร์ฟไฟล์ใน ./dist เป็นเว็บ static โดยไม่ต้องมีโค้ด Worker
+# deploy ด้วย `wrangler deploy` (ค่าเริ่มต้นของ Workers Builds)
+# docs: https://developers.cloudflare.com/workers/static-assets/
 
 name = "stock-analysis"
-pages_build_output_dir = "dist"
+compatibility_date = "2026-06-23"
+
+[assets]
+directory = "./dist"
+# html_handling ค่าเริ่มต้น = "auto-trailing-slash":
+#   /            → index.html
+#   /GOOGL       → GOOGL.html (เสิร์ฟตรง)
+#   /GOOGL.html  → ก็เข้าได้ (redirect ไป /GOOGL)

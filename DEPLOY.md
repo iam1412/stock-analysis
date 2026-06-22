@@ -1,9 +1,7 @@
-# Deploy ขึ้น Cloudflare Pages
+# Deploy ขึ้น Cloudflare Workers (Static Assets)
 
-เว็บนี้เป็น static site — Cloudflare ดึงโค้ดจาก GitHub → รัน `npm run build` → เอาไฟล์ใน `dist/` ไป deploy
-
-> ⚠️ **โปรเจกต์นี้เป็น Pages project** ต้อง deploy ด้วย `wrangler pages deploy` เท่านั้น
-> ห้ามใช้ `wrangler deploy` (เป็นคำสั่งของ Workers — จะ error `Missing entry-point`)
+เว็บนี้เป็น static site — Cloudflare ดึงโค้ดจาก GitHub → รัน `npm run build` → `wrangler deploy`
+เสิร์ฟไฟล์ในโฟลเดอร์ `dist/` เป็นเว็บ static (assets-only Worker ไม่ต้องมีโค้ด Worker)
 
 ## โครงสร้างโปรเจกต์
 
@@ -11,11 +9,10 @@
 stock-analysis/
 ├─ reports/            ← วางไฟล์รายงานหุ้นแต่ละตัวไว้ที่นี่
 │  ├─ GOOGL.html
-│  ├─ AAPL.html
 │  └─ ...
 ├─ build.js            ← สคริปต์ build
 ├─ package.json        ← npm run build
-├─ wrangler.toml       ← pages_build_output_dir = "dist"
+├─ wrangler.toml       ← [assets] directory = "./dist"
 ├─ _headers            ← HTTP headers
 └─ dist/               ← ผลลัพธ์ build (gitignore — Cloudflare สร้างเอง)
 ```
@@ -23,17 +20,17 @@ stock-analysis/
 ## build.js ทำอะไร
 
 1. สแกนไฟล์รายงาน `reports/<SYMBOL>.html` ทั้งหมด
-2. ดึงชื่อบริษัท/title จากแต่ละไฟล์ มาสร้างหน้า `index.html` (รวมรายงานทั้งหมด)
-3. คัดลอกรายงานแบบ **flatten** ลง `dist/` (เอาออกจากโฟลเดอร์ย่อย) + คัดลอก `_headers`
+2. สร้างหน้า `index.html` (รวมรายงาน) จาก metadata ของแต่ละไฟล์
+3. คัดลอกรายงานแบบ **flatten** ลง `dist/` + คัดลอก `_headers`
 
-> **เพิ่มหุ้นใหม่:** วางไฟล์ `reports/<SYMBOL>.html` แล้ว push — หน้า index อัปเดตการ์ดเองตอน build
+> **เพิ่มหุ้นใหม่:** วางไฟล์ `reports/<SYMBOL>.html` แล้ว push — หน้า index อัปเดตเองตอน build
 
 ## URL หลัง deploy
 
 ```
-https://stock-analysis.pages.dev            → หน้ารวมรายงาน (index)
-https://stock-analysis.pages.dev/GOOGL.html → รายงาน GOOGL
-https://stock-analysis.pages.dev/GOOGL      → ได้เหมือนกัน (clean URL ของ Pages)
+https://stock-analysis.<subdomain>.workers.dev/            → หน้ารวมรายงาน
+https://stock-analysis.<subdomain>.workers.dev/GOOGL.html  → รายงาน GOOGL
+https://stock-analysis.<subdomain>.workers.dev/GOOGL       → ได้เหมือนกัน (clean URL)
 ```
 
 ## รัน build ในเครื่อง (ทดสอบ)
@@ -47,32 +44,41 @@ open dist/index.html
 
 ---
 
-## ตั้งค่าบน Cloudflare
+## ตั้งค่าบน Cloudflare (UI ใหม่ — ใช้ Workers)
 
-### ✅ วิธีที่ถูก: ตั้ง build settings ของ Pages project
+### 1. ลบโปรเจกต์เดิมที่พังก่อน (กันชื่อชนกัน)
 
-ใน **Pages project → Settings → Builds & deployments**:
+**Workers & Pages** → คลิกโปรเจกต์ `stock-analysis` → **Settings** → ล่างสุด → **Delete**
+(ลบให้หมดทุกตัวที่ชื่อ `stock-analysis`)
+
+### 2. สร้าง Worker จาก GitHub
+
+**Workers & Pages → Create → Workers → Import a repository** (หรือ "Deploy from Git")
+→ เลือก repo `iam1412/stock-analysis`
+
+### 3. ตั้งค่า build
 
 | ช่อง | ค่า |
 |------|-----|
 | **Build command** | `npm run build` |
-| **Build output directory** | `dist` |
-| **Deploy command** (ถ้ามีช่องนี้) | `npx wrangler pages deploy dist` |
-| **Production branch** | `main` |
+| **Deploy command** | `npx wrangler deploy` |
+| **Branch** | `main` |
 
-> **จุดที่ทำให้ deploy fail ก่อนหน้านี้:** ช่อง Deploy command ถูกตั้งเป็น `npx wrangler deploy`
-> ให้แก้เป็น **`npx wrangler pages deploy dist`** (เติมคำว่า `pages`)
-> หรือถ้าเป็น Pages Git แบบดั้งเดิมที่ไม่มีช่อง Deploy command → แค่ตั้ง Build output directory = `dist` ก็พอ (Pages deploy ให้เอง)
+`wrangler.toml` มี `[assets] directory = "./dist"` อยู่แล้ว → `wrangler deploy` จะอัปโหลดไฟล์ใน `dist/` เป็นเว็บ static อัตโนมัติ
 
-### Deploy ตรงจากเครื่องด้วย Wrangler CLI
+### 4. กด Save and Deploy
+
+หลังจากนี้ทุกครั้งที่ push ขึ้น `main` → Cloudflare build & deploy ใหม่อัตโนมัติ
+
+---
+
+### Deploy ตรงจากเครื่อง (สำรอง)
 
 ```bash
 npm install -g wrangler
 wrangler login
 npm run build
-wrangler pages deploy dist --project-name stock-analysis   # ← pages deploy, ไม่ใช่ deploy เฉย ๆ
+wrangler deploy        # อ่าน [assets] จาก wrangler.toml
 ```
 
----
-
-ผูก custom domain ได้ที่ **Pages project → Custom domains**
+ผูก custom domain ได้ที่ **Worker → Settings → Domains & Routes**
