@@ -1,14 +1,26 @@
-# Cloudflare Workers — Static Assets (assets-only Worker)
-# เสิร์ฟไฟล์ใน ./dist เป็นเว็บ static โดยไม่ต้องมีโค้ด Worker
-# deploy ด้วย `wrangler deploy` (ค่าเริ่มต้นของ Workers Builds)
-# docs: https://developers.cloudflare.com/workers/static-assets/
+# Cloudflare Workers — Worker + Static Assets + D1 (ตัวนับยอดวิว)
+# เสิร์ฟไฟล์ใน ./dist เป็นเว็บ static (ไฟล์ .html เสิร์ฟตรงจาก edge ไม่ผ่าน Worker)
+# Worker (src/worker.js) ทำงานเฉพาะเส้นทางที่ไม่มีไฟล์ static ตรงกัน เช่น /api/views/*
+# deploy ด้วย `wrangler deploy`
+# docs: https://developers.cloudflare.com/workers/static-assets/binding/
 
 name = "stock-ai"
+main = "src/worker.js"
 compatibility_date = "2026-06-23"
 
 [assets]
 directory = "./dist"
+binding = "ASSETS"
+# run_worker_first ค่าเริ่มต้น = false → ถ้ามีไฟล์ static ตรง path จะเสิร์ฟก่อน (Worker ไม่ถูกเรียก)
+# มีแต่ /api/* (ไม่มีไฟล์ตรง) ที่ตกมาถึง fetch handler ของ Worker
 # html_handling ค่าเริ่มต้น = "auto-trailing-slash":
 #   /            → index.html
 #   /GOOGL       → GOOGL.html (เสิร์ฟตรง)
 #   /GOOGL.html  → ก็เข้าได้ (redirect ไป /GOOGL)
+
+# ★ D1: ต้องรัน `npx wrangler d1 create stockai_d1` แล้วเอา database_id มาใส่ด้านล่าง
+#   แล้วสร้างตาราง: `npx wrangler d1 execute stockai_d1 --remote --file=./schema.sql`
+[[d1_databases]]
+binding = "DB"
+database_name = "stockai_d1"
+database_id = "e7cab704-7053-468d-94c9-41ed6b08f843"

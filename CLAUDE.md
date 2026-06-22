@@ -148,3 +148,21 @@ npm run test:self        # meta-test: พิสูจน์ว่า checker เ
 
 > **สิ่งที่ gate ตรวจไม่ได้ (ต้องพึ่งคน/LLM):** ความ "ถูกต้องตามจริง" ของราคา/EPS/ปันผล/เป้าเทียบตลาดจริง —
 > gate ยืนยันได้แค่ว่ารายงาน "สอดคล้องกันเอง + สด + มีแหล่งอ้างอิง" เท่านั้น ความถูกต้องของตัวเลขต้นทางต้องทวนแหล่ง ≥3 ตอนสร้าง (skill) + วิจารณญาณคน
+
+---
+
+## 8. ระบบนับยอดวิว + Like/Dislike (Cloudflare Worker + D1)
+
+นับ/แสดงยอดเข้าชม + 👍/👎 — footer ของแต่ละ report + ต่อการ์ดในหน้า index (รายละเอียด deploy ใน `DEPLOY.md`)
+
+- **โครงสร้าง:** เว็บยังเป็น static (ไฟล์ `.html` เสิร์ฟตรงจาก edge ไม่ผ่าน Worker) มี Worker เล็ก ๆ
+  `src/worker.js` + D1 (`stockai_d1`, ตาราง `views`: count/likes/dislikes) ทำงานเฉพาะ `/api/*`
+  - `POST /api/views/<SYM>` = +1 view · `GET …/<SYM>` = อ่าน {count,likes,dislikes} · `GET /api/views` = batch `{SYM:{c,l,d}}` (แคช edge 60 วิ → page size ไม่กระทบ API)
+  - `POST /api/vote/<SYM>?from=&to=` = โหวต (none|like|dislike); **server คิด delta เอง (∈ -1..1)** กัน client ยิงเลขมั่ว
+- **กันซ้ำ:** view = `sessionStorage` · vote = `localStorage` (toggle/สลับได้) · symbol = whitelist จาก `/reports.json`
+- **inject ตอน build เฉพาะใน `dist/`** (เหมือน footer ติดต่อ) — `reports/<SYMBOL>.html` ต้นฉบับไม่ต้องแก้
+- **ผ่าน quality gate:** inline `<script>` + `fetch()` same-origin (ห้าม `<script src>`) · ทุก `getElementById` มี element รองรับ · ไม่มี top-level await
+- **ตั้งค่าครั้งแรก (บัญชี Cloudflare):** `wrangler d1 create stockai_d1` → ใส่ `database_id` ใน `wrangler.toml` →
+  `npm run d1:init:remote` (ตารางใหม่) **หรือ** `npm run d1:migrate:remote` (ตารางเดิม เพิ่ม likes/dislikes) — Workers Builds ไม่รัน migration ให้
+- **ขอบเขต gate:** `npm run verify` ตรวจเฉพาะ static — Worker/D1 ทดสอบผ่าน `wrangler dev` (ดู `DEPLOY.md`)
+- ปรับจำนวนหุ้น/หน้า (pagination) ที่ `PAGE_SIZE` ใน `build.js` (ค่าเริ่มต้น 12)
