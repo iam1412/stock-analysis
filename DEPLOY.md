@@ -104,6 +104,8 @@ wrangler deploy        # อ่าน [assets] จาก wrangler.toml
 - กันนับวิวซ้ำด้วย `sessionStorage` · กันโหวตซ้ำด้วย `localStorage` (toggle/สลับได้) · กัน symbol ขยะด้วย whitelist จาก `/reports.json`
 - **rate limit** (binding `VOTE_LIMITER` 5/60วิ, `VIEW_LIMITER` 30/60วิ) ยังอยู่ที่ขอบ — เป็นด่านกัน spam ก่อนใช้โควต้า DO
   (ความ "ไม่เป๊ะ per-colo" ของมันไม่กระทบยอดอีกต่อไป เพราะตัวนับจริงอยู่ใน DO ที่ double-count ไม่ได้)
+- **กันบอต** (`countable()`): นับ view/vote เฉพาะคำขอที่มาจากหน้าเว็บเราเอง (`Origin`/`Sec-Fetch-Site: same-origin`) + UA ไม่ใช่บอต
+  → บอต/การยิง API ตรง (curl, headless, crawler) ได้ค่าปัจจุบันแต่ไม่ถูกนับ · ชั้นแรกคือ JS-required (บอตไม่รัน JS ไม่ยิง POST)
 - **เริ่มนับใหม่จาก 0** — ไม่ migrate เลขเก่า; DO เป็น source of truth ตั้งแต่ deploy แรก
 - **D1 = mirror สำรอง**: ทุก view/vote เขียน D1 แบบ best-effort (`waitUntil`) ไม่อ่านกลับบน hot path —
   เก็บไว้เป็น backup เฉย ๆ (ไม่ต้อง setup) · จะถอดทิ้งทีหลังก็ได้ (ดู "ถอด D1" ท้ายหัวข้อ)

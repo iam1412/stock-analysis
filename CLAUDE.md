@@ -163,6 +163,7 @@ npm run test:self        # meta-test: พิสูจน์ว่า checker เ
 - **เริ่มนับใหม่จาก 0** — ไม่ migrate เลขเก่า; DO เป็น source of truth ตั้งแต่ deploy แรก (DO SQL ใช้ placeholder `?` ธรรมดา รองรับ workerd ชัวร์)
 - **D1 = mirror สำรอง:** เขียน best-effort (`waitUntil`) ไม่อ่านบน hot path — `mirrorD1()` ใน worker · เก็บเป็น backup เฉย ๆ (ไม่ต้อง setup) ถอดทิ้งทีหลังก็ได้ (ดู DEPLOY.md "ถอด D1")
 - **rate limit:** binding `VOTE_LIMITER`/`VIEW_LIMITER` ที่ขอบ (กัน spam ก่อนใช้โควต้า DO) — ความไม่เป๊ะ per-colo ไม่กระทบยอดแล้ว เพราะตัวนับจริงอยู่ใน DO
+- **กันบอต (`countable()` ใน worker):** view/vote นับเฉพาะคำขอ "จากหน้าเว็บเราเอง" (`Origin`/`Sec-Fetch-Site: same-origin`) + UA ไม่เข้าข่ายบอต (`BOT_RE`, รวม HeadlessChrome/curl/python ฯลฯ) — บอตได้ค่าปัจจุบัน (200) แต่ไม่ +1 · ชั้นแรกคือดีไซน์ JS-required (บอตไม่รัน JS ไม่ยิง POST อยู่แล้ว) · ระดับ Cloudflare Bot Management ต้องมี zone/แพ็กเสียเงิน
 - **กันซ้ำ:** view = `sessionStorage` · vote = `localStorage` (toggle/สลับได้) · symbol = whitelist จาก `/reports.json`
 - **inject ตอน build เฉพาะใน `dist/`** (เหมือน footer ติดต่อ) — `reports/<SYMBOL>.html` ต้นฉบับไม่ต้องแก้ · route/JSON เหมือนเดิม สคริปต์ที่ inject ไม่ต้องแก้
 - **ผ่าน quality gate:** inline `<script>` + `fetch()` same-origin (ห้าม `<script src>`) · ทุก `getElementById` มี element รองรับ · ไม่มี top-level await

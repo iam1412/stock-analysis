@@ -11,6 +11,8 @@
 //                                       คืน { symbol, likes, dislikes }
 //   อื่น ๆ                            → เสิร์ฟไฟล์ static ผ่าน ASSETS
 //
+// กันบอต: view/vote นับเฉพาะคำขอที่ "มาจากหน้าเว็บเราเอง (Origin/Sec-Fetch) + UA ไม่ใช่บอต" (ดู countable())
+//   บอตได้รับค่าปัจจุบัน (200) แต่ไม่ถูก +1 → หน้าเว็บไม่พัง แต่ยอดไม่เพี้ยนจากบอต/การยิง API ตรง
 // เริ่มนับใหม่จาก 0 (ไม่ migrate เลขเก่า) — DO เป็น source of truth ตั้งแต่ deploy แรก
 // D1 (ตาราง views เดิม) เหลือเป็นแค่ "mirror สำรอง" — เขียนแบบ best-effort (waitUntil) ไม่อ่านบน hot path
 //   เก็บไว้เป็น backup เฉย ๆ (ไม่ต้อง setup อะไร) — จะถอดทิ้งทีหลังก็ได้ (ดู DEPLOY.md)
@@ -22,6 +24,23 @@ import { DurableObject } from 'cloudflare:workers';
 const SYM_RE = /^[A-Z0-9.\-]{1,10}$/;
 const VOTES = new Set(['none', 'like', 'dislike']);
 let KNOWN = null; // cache รายชื่อ symbol ที่ถูกต้อง (ต่อ isolate) — กันสร้าง row ขยะ
+
+// ── กันบอต: นับ view/vote เฉพาะคำขอที่ "มาจากหน้าเว็บเราเอง + ไม่ใช่บอต" ──
+// บอตที่ไม่รัน JS จะไม่ยิง POST อยู่แล้ว; 2 ด่านนี้กันบอตที่ render JS + การยิง API ตรง (curl/script)
+const BOT_RE =
+  /bot|crawl|spider|slurp|headless|python-requests|curl|wget|libwww|scrapy|phantom|puppeteer|playwright|lighthouse|monitor|uptime|preview|facebookexternalhit|whatsapp|telegram|discord|embedly|bingpreview|go-http|java\/|okhttp|axios|httpclient/i;
+function isBot(request) {
+  const ua = request.headers.get('User-Agent') || '';
+  return !ua || BOT_RE.test(ua); // ไม่มี UA = ถือเป็นบอต (เบราว์เซอร์จริงส่ง UA เสมอ)
+}
+// เบราว์เซอร์จริงส่ง Origin (บน POST) + Sec-Fetch-Site บนคำขอ same-origin; curl/script ทั่วไปไม่ส่ง
+function fromOurPage(request, url) {
+  return request.headers.get('Origin') === url.origin || request.headers.get('Sec-Fetch-Site') === 'same-origin';
+}
+// คำขอที่ "ควรนับ" = จากหน้าเว็บเราเอง และไม่ใช่บอต
+function countable(request, url) {
+  return fromOurPage(request, url) && !isBot(request);
+}
 
 async function knownSymbols(env, url) {
   if (KNOWN) return KNOWN;
@@ -188,6 +207,11 @@ export default {
       const dl = (to === 'like' ? 1 : 0) - (from === 'like' ? 1 : 0);
       const dd = (to === 'dislike' ? 1 : 0) - (from === 'dislike' ? 1 : 0);
       try {
+        // กันบอต/vote stuffing: นับเฉพาะโหวตจากหน้าเว็บเราเอง — อื่น ๆ คืนค่าปัจจุบันแต่ไม่เปลี่ยน
+        if (!countable(request, url)) {
+          const cur = await stub.getOne(sym);
+          return json({ symbol: sym, likes: cur.likes, dislikes: cur.dislikes });
+        }
         const d = await stub.vote(sym, dl, dd);
         if (dl !== 0 || dd !== 0) mirrorD1(env, ctx, d); // mirror เฉพาะตอนมีการเปลี่ยนจริง
         return json({ symbol: sym, likes: d.likes, dislikes: d.dislikes });
@@ -207,6 +231,11 @@ export default {
           const ip = request.headers.get('CF-Connecting-IP') || 'anon';
           const { success } = await env.VIEW_LIMITER.limit({ key: ip });
           if (!success) return json({ error: 'rate_limited' }, { status: 429 });
+          // นับเฉพาะ view จากหน้าเว็บเราเอง (กันบอต/ยิง API ตรง) — บอตได้ค่าปัจจุบันแต่ไม่ +1
+          if (!countable(request, url)) {
+            const cur = await stub.getOne(sym);
+            return json({ symbol: sym, count: cur.count, likes: cur.likes, dislikes: cur.dislikes });
+          }
           const d = await stub.addView(sym);
           mirrorD1(env, ctx, d);
           return json({ symbol: sym, count: d.count, likes: d.likes, dislikes: d.dislikes });
