@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น Lightwave Logic (LWLG) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Opus 4.8">
+<script type="application/json" id="stock-meta">
+{"symbol":"LWLG","currency":"USD","price":9.6,"fairValue":9.4,"mos":-2.1,"upside":-2.1,"pe":null,"dividendYield":0,"roe":null}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#eef1f5; --card:#ffffff; --ink:#1a1d23; --muted:#5f6675; --line:#e4e8ee;
+    --blue:#1a73e8; --blue-d:#1557b0; --red:#ea4335; --yellow:#f9ab00; --green:#1e8e3e;
+    --green-soft:#e6f4ea; --red-soft:#fce8e6; --amber-soft:#fef7e0; --blue-soft:#e8f0fe;
+    --shadow:0 1px 3px rgba(16,24,40,.06),0 8px 24px rgba(16,24,40,.06);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Sarabun','Noto Sans Thai',system-ui,-apple-system,Segoe UI,sans-serif;background:var(--bg);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased}
+  .mono{font-family:'IBM Plex Mono',ui-monospace,monospace;font-variant-numeric:tabular-nums}
+  .wrap{max-width:1080px;margin:0 auto;padding:20px 16px 64px}
+
+  /* Header */
+  header{background:linear-gradient(135deg,#202938 0%,#2c3a52 60%,#1557b0 140%);border-radius:20px;padding:28px 28px 24px;color:#fff;position:relative;overflow:hidden;box-shadow:var(--shadow)}
+  header::after{content:"";position:absolute;right:-40px;top:-40px;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,rgba(66,133,244,.35),transparent 70%)}
+  .gdots{display:inline-flex;gap:5px;margin-bottom:14px}
+  .gdots span{width:11px;height:11px;border-radius:50%}
+  .tag{display:inline-block;font-size:12px;font-weight:600;padding:3px 10px;border-radius:99px;background:rgba(255,255,255,.14);backdrop-filter:blur(4px);margin-right:6px}
+  h1{font-size:30px;font-weight:800;letter-spacing:-.5px;margin:2px 0 2px}
+  .sub{color:#c7d2e4;font-size:14.5px}
+  .price-row{display:flex;align-items:flex-end;gap:18px;flex-wrap:wrap;margin-top:18px;position:relative;z-index:2}
+  .px{font-size:44px;font-weight:800;letter-spacing:-1px}
+  .px small{font-size:18px;font-weight:600;color:#aebfd6;margin-left:4px}
+  .chg{font-weight:700;font-size:16px;padding:5px 12px;border-radius:10px;background:var(--red-soft);color:#c5221f}
+  .px-meta{font-size:12.5px;color:#aebfd6;margin-left:auto;text-align:right;line-height:1.5}
+
+  /* Section */
+  section{margin-top:26px}
+  .s-head{display:flex;align-items:center;gap:10px;margin:0 4px 14px}
+  .s-head .n{width:26px;height:26px;border-radius:8px;background:var(--blue);color:#fff;display:grid;place-items:center;font-size:13px;font-weight:700;flex:none}
+  .s-head h2{font-size:19px;font-weight:700;letter-spacing:-.3px}
+  .s-head .hint{font-size:12.5px;color:var(--muted);margin-left:auto}
+
+  /* Grid metrics */
+  .grid{display:grid;gap:12px}
+  .g4{grid-template-columns:repeat(4,1fr)}
+  .g3{grid-template-columns:repeat(3,1fr)}
+  .g2{grid-template-columns:repeat(2,1fr)}
+  .metric{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 15px;box-shadow:var(--shadow)}
+  .metric .k{font-size:12.5px;color:var(--muted);font-weight:500;display:flex;align-items:center;gap:5px}
+  .metric .v{font-size:23px;font-weight:700;margin-top:3px;letter-spacing:-.3px}
+  .metric .d{font-size:11.5px;color:var(--muted);margin-top:1px}
+  .pos{color:var(--green)} .neg{color:var(--red)} .neu{color:var(--yellow)}
+  .pill{font-size:10px;font-weight:700;padding:1px 7px;border-radius:99px;vertical-align:middle}
+  .pill.g{background:var(--green-soft);color:var(--green)} .pill.r{background:var(--red-soft);color:#c5221f} .pill.a{background:var(--amber-soft);color:#b06000}
+
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px;box-shadow:var(--shadow)}
+
+  /* Chart */
+  .chart-wrap{padding:8px 4px 0}
+  .legend{display:flex;gap:18px;font-size:12px;color:var(--muted);margin-top:10px;flex-wrap:wrap}
+  .legend i{display:inline-block;width:11px;height:3px;border-radius:2px;vertical-align:middle;margin-right:5px}
+
+  /* Valuation gauge */
+  .gauge{margin:8px 0 4px}
+  .gbar{position:relative;height:48px;border-radius:12px;overflow:hidden;background:linear-gradient(90deg,#1e8e3e 0%,#34a853 22%,#f9ab00 46%,#ea4335 100%)}
+  .gbar .seg-label{position:absolute;top:50%;transform:translate(-50%,-50%);font-size:10.5px;font-weight:700;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.25);white-space:nowrap}
+  .marker{position:absolute;top:-6px;bottom:-6px;width:3px;background:#111;border-radius:2px}
+  .marker .lab{position:absolute;top:-34px;left:50%;transform:translateX(-50%);background:#111;color:#fff;font-size:11px;font-weight:700;padding:3px 8px;border-radius:7px;white-space:nowrap}
+  .marker .lab::after{content:"";position:absolute;bottom:-4px;left:50%;transform:translateX(-50%) rotate(45deg);width:8px;height:8px;background:#111}
+  .marker.cur{background:#1a73e8} .marker.cur .lab{background:#1a73e8} .marker.cur .lab::after{background:#1a73e8}
+  .scale{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-top:14px}
+
+  .vmethod{display:flex;align-items:center;justify-content:space-between;padding:13px 0;border-bottom:1px solid var(--line)}
+  .vmethod:last-child{border-bottom:none}
+  .vmethod .mname{font-weight:600;font-size:14.5px}
+  .vmethod .mdesc{font-size:12px;color:var(--muted)}
+  .vmethod .mval{font-size:20px;font-weight:700;text-align:right}
+  .fv-box{margin-top:14px;background:var(--blue-soft);border:1px solid #c6dafc;border-radius:14px;padding:16px 18px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+  .fv-box .l{font-size:13.5px;color:var(--blue-d);font-weight:600}
+  .fv-box .r{font-size:30px;font-weight:800;color:var(--blue-d);letter-spacing:-.5px}
+
+  /* MOS */
+  .mos-verdict{border-radius:14px;padding:16px 18px;margin-bottom:14px;display:flex;align-items:center;gap:14px}
+  .mos-verdict.bad{background:var(--red-soft)} .mos-verdict.ok{background:var(--amber-soft)} .mos-verdict.good{background:var(--green-soft)}
+  .mos-verdict .big{font-size:34px;font-weight:800;letter-spacing:-1px;flex:none}
+  .mos-verdict.bad .big{color:#c5221f} .mos-verdict.ok .big{color:#b06000} .mos-verdict.good .big{color:var(--green)}
+  .mos-verdict .txt{font-size:13.5px}
+  .mos-verdict .txt b{font-size:15px}
+  .calc{margin-top:16px;border:1px dashed var(--line);border-radius:14px;padding:16px}
+  .calc label{font-size:12.5px;color:var(--muted);font-weight:600;display:block;margin-bottom:6px}
+  .calc-row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+  .calc input{font-family:'IBM Plex Mono',monospace;font-size:18px;font-weight:600;border:1.5px solid var(--line);border-radius:10px;padding:9px 12px;width:140px;outline:none}
+  .calc input:focus{border-color:var(--blue)}
+  .calc-out{font-size:14px;font-weight:600}
+
+  /* Scenarios */
+  .scn{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  .scn .col{border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--card)}
+  .scn .top{padding:12px 15px;color:#fff;font-weight:700;display:flex;justify-content:space-between;align-items:center}
+  .scn .bear .top{background:#c5221f} .scn .base .top{background:#1557b0} .scn .bull .top{background:#1e8e3e}
+  .scn .body{padding:14px 15px}
+  .scn .tgt{font-size:26px;font-weight:800;letter-spacing:-.5px}
+  .scn .ret{font-size:13px;font-weight:600;margin-top:2px}
+  .scn ul{list-style:none;margin-top:10px;font-size:12px;color:var(--muted)}
+  .scn li{display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px dotted var(--line)}
+  .scn li:last-child{border:none}
+  .scn li span:last-child{font-weight:600;color:var(--ink)}
+
+  /* Catalyst / Risk */
+  .cr{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .cr .box{border-radius:16px;padding:18px 20px;border:1px solid var(--line);box-shadow:var(--shadow)}
+  .cr .box.cat{background:linear-gradient(180deg,#f3faf5,#ffffff)}
+  .cr .box.risk{background:linear-gradient(180deg,#fef4f3,#ffffff)}
+  .cr h3{font-size:15px;font-weight:700;display:flex;align-items:center;gap:8px;margin-bottom:12px}
+  .cr .ic{width:24px;height:24px;border-radius:7px;display:grid;place-items:center;font-size:14px;flex:none}
+  .cr .cat .ic{background:var(--green-soft);color:var(--green)} .cr .risk .ic{background:var(--red-soft);color:#c5221f}
+  .cr ul{list-style:none}
+  .cr li{font-size:13px;padding:8px 0;border-bottom:1px solid var(--line);display:flex;gap:9px}
+  .cr li:last-child{border:none}
+  .cr li::before{content:"";width:6px;height:6px;border-radius:50%;margin-top:8px;flex:none}
+  .cr .cat li::before{background:var(--green)} .cr .risk li::before{background:var(--red)}
+  .cr li b{font-weight:700}
+
+  /* Verdict */
+  .verdict{background:linear-gradient(135deg,#202938,#2c3a52);color:#fff;border-radius:18px;padding:24px 26px;box-shadow:var(--shadow)}
+  .verdict h2{font-size:20px;font-weight:700;margin-bottom:6px}
+  .verdict p{color:#d4dded;font-size:14px;margin-bottom:14px}
+  .vgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:6px}
+  .vcell{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:13px 15px}
+  .vcell .k{font-size:11.5px;color:#a8b6cc;font-weight:500}
+  .vcell .v{font-size:17px;font-weight:700;margin-top:3px}
+  .zone{margin-top:16px;font-size:13px;color:#d4dded;background:rgba(255,255,255,.05);border-left:3px solid var(--yellow);border-radius:0 10px 10px 0;padding:11px 15px}
+
+  .disc{margin-top:24px;font-size:12px;color:var(--muted);background:#fafbfc;border:1px solid var(--line);border-radius:12px;padding:14px 16px;line-height:1.7}
+  .disc b{color:var(--ink)}
+  footer{text-align:center;font-size:11.5px;color:var(--muted);margin-top:22px}
+
+  @media(max-width:760px){
+    .g4{grid-template-columns:repeat(2,1fr)} .g3{grid-template-columns:repeat(2,1fr)}
+    .scn{grid-template-columns:1fr} .cr{grid-template-columns:1fr} .vgrid{grid-template-columns:1fr}
+    .px{font-size:36px} h1{font-size:24px} .px-meta{margin-left:0;text-align:left;width:100%}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots"><span style="background:#2b6cff"></span><span style="background:#34a853"></span><span style="background:#f9ab00"></span><span style="background:#ea4335"></span></div>
+    <div>
+      <span class="tag">NASDAQ: LWLG</span>
+      <span class="tag">Photonics • Electro-optic Polymer / CPO</span>
+      <span class="tag">Micro-cap • เก็งกำไรเสี่ยงสูงมาก</span>
+    </div>
+    <h1>Lightwave Logic, Inc.</h1>
+    <div class="sub">บริษัท <b>electro-optic (EO) polymer</b> แบบ pure-play — วัสดุพอลิเมอร์ Perkinamine® + โมดูเลเตอร์ความเร็วสูง (110GHz+) สำหรับ silicon photonics และ co-packaged optics (CPO) ของ AI data center • ยังเป็นช่วง pre-/early-commercial เกือบไม่มีรายได้</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$9.60<small>(LWLG)</small></div>
+      </div>
+      <div class="chg">▼ −4.3% (23 มิ.ย.)</div>
+      <div class="px-meta">
+        ราคา ณ 23 มิ.ย. 2026 (ระหว่างวัน) • ปิดก่อนหน้า ~$9.78 (21 มิ.ย.)<br>
+        52 สัปดาห์ $1.19 – $18.71 • ผันผวนสูงมาก<br>
+        ที่มา: StockAnalysis.com / Yahoo Finance / Investing.com
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">งบ FY2025 (10-K) + Q1 2026 (10-Q)</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~$1.48B</div><div class="d">~154 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neg">N/A</div><div class="d">ขาดทุน — ไม่มี P/E <span class="pill r">loss-making</span></div></div>
+      <div class="metric"><div class="k">P/S (TTM)</div><div class="v neu">สูงมหาศาล</div><div class="d">รายได้ TTM &lt;$0.2M • valuation อิงอนาคต</div></div>
+      <div class="metric"><div class="k">EPS (Q1 2026, GAAP)</div><div class="v neg">−$0.04</div><div class="d">ขาดทุนสุทธิ Q1 ~$6.3M</div></div>
+
+      <div class="metric"><div class="k">รายได้ Q1 2026</div><div class="v">$29.2K</div><div class="d pos">▲ +27% YoY (ฐานต่ำมาก)</div></div>
+      <div class="metric"><div class="k">EPS (TTM, GAAP)</div><div class="v neg">−$0.16</div><div class="d">ขาดทุนต่อเนื่อง • ยัง pre-revenue</div></div>
+      <div class="metric"><div class="k">ROE</div><div class="v neg">N/A</div><div class="d">ขาดทุน → ROE ติดลบ</div></div>
+      <div class="metric"><div class="k">R&D + G&A (Q1)</div><div class="v">~$6.8M</div><div class="d">R&D $3.49M • G&A $3.26M</div></div>
+
+      <div class="metric"><div class="k">เงินสด (สิ้น Q1)</div><div class="v">~$75.1M</div><div class="d pos">▲ ~$100M (11 พ.ค. หลังใช้ shelf)</div></div>
+      <div class="metric"><div class="k">Cash burn</div><div class="v neg">~$6–7M/ไตรมาส</div><div class="d">runway หลายปีหลังเพิ่มทุน</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">0%</div><div class="d">ไม่จ่ายปันผล</div></div>
+      <div class="metric"><div class="k">ช่วง 52 สัปดาห์</div><div class="v" style="font-size:18px">$1.19 – $18.71</div><div class="d">beta สูงมาก • เพิ่มทุนผ่าน ATM/shelf</div></div>
+    </div>
+  </section>
+
+  <!-- ===== PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ • micro-cap ผันผวนสูงมาก</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#1a73e8"></i>ราคา LWLG</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $9.4</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        หุ้นวิ่งจากฐานต่ำราว <b>$1.2 (กลางปี 2025)</b> ขึ้นแรงเป็น <b>~15 เท่า</b> ไปทำจุดสูงสุด 52 สัปดาห์ <b>$18.71</b>
+        จากกระแส <b>CPO / silicon photonics สำหรับ AI</b> และข่าวดีลกับ foundry (Tower Semiconductor, GlobalFoundries) — แต่แกว่งรุนแรงทั้งสองทาง
+        ย่อลงมาบริเวณ <b>~$9.6 (23 มิ.ย. 2026)</b> หลังราคาวิ่งล่วงหน้าพื้นฐานไปไกล (บริษัทยังเกือบไม่มีรายได้)
+        — สะท้อนลักษณะ <b>หุ้นเก็งกำไรความเสี่ยงสูงมาก</b> ที่ valuation อิงอนาคตล้วน
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">3 วิธี เฉลี่ย • อิงรายได้อนาคต (ยังไม่มีกำไร)</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/S (forward, โมเดล) <span class="pill r">ใช้แทน P/E</span></div><div class="mdesc">LWLG ยังขาดทุน → ใช้ยอดขายอนาคตแทนกำไร: รายได้โมเดล FY2028E ~$60M (เริ่มรับ royalty/licensing พอลิเมอร์ผ่าน foundry) ÷ ~154M หุ้น = รายได้ฐาน ~$0.39/หุ้น × P/S ~22x = <b>$8.6</b> (P/S สูงสะท้อน hypergrowth แต่ลดทอนความเสี่ยง execution/ขาดทุน)</div></div>
+        <div class="mval">$8.6</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. Probability-weighted option value</div><div class="mdesc">มองเป็นออปชันบนการพิสูจน์เชิงพาณิชย์: สมมติมูลค่าหากสำเร็จเต็มที่ ~$28/หุ้น (โมเดล CPO scale) × ความน่าจะเป็นสำเร็จ ~30% + กรณีล้มเหลว ~$3 × 70% ≈ <b>$9.5</b> (ถ่วงด้วยโอกาสที่ดีล foundry/CPO จะกลายเป็นรายได้จริง)</div></div>
+        <div class="mval">$9.5</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Scenario / Intrinsic + range</div><div class="mdesc">ค่าถ่วงน้ำหนักความน่าจะเป็น 3 ฉาก: bear ~$2 (ดีลไม่ scale/เพิ่มทุนต่อ), base ~$10 (foundry transfer + design win แรกตามแผน), bull ~$28 (ชนะดีล CPO ใหญ่) → ค่ากลาง ~<b>$10.0</b></div></div>
+        <div class="mval">$10.0</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบกว้างมาก $3 – $20 (ความไม่แน่นอนสูงสุด)</span></div>
+        <div class="r">$9.4</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        <b>หมายเหตุ:</b> ข้าม <b>DDM/P/BV</b> และ <b>P/E</b> เพราะ <b>ไม่จ่ายปันผล</b> และ <b>ยังขาดทุน/เกือบไม่มีรายได้</b> (รายได้ TTM &lt;$0.2M) — ประเมินด้วย <b>รายได้อนาคต (P/S forward)</b> และ <b>option value</b> แทน
+        • กรอบมูลค่ากว้างผิดปกติ ($3–$20) เพราะ LWLG เป็น <b>micro-cap เก็งกำไรเสี่ยงสูงมาก</b>: รายได้ยังไม่มีนัย, ขึ้นกับว่าดีล foundry/design win จะกลายเป็นรายได้ production จริงหรือไม่, และเพิ่มทุนผ่าน shelf/ATM บ่อย
+        • ตัวเลขเหล่านี้อ่อนไหวต่อสมมติฐาน P/S/รายได้อนาคตอย่างสุดขีด — ถือเป็น <b>กรอบอ้างอิงเชิงความน่าจะเป็น ไม่ใช่ราคาเป้าที่แน่นอน</b>
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $9.6</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $9.4</div></div>
+        </div>
+        <div class="scale">
+          <span>$6.58<br><small>MOS 30%</small></span>
+          <span>$7.52<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$9.4<br><small>Fair Value</small></span>
+          <span style="text-align:right">$13.0<br><small>เป้า aggregator (กลาง)</small></span>
+          <span style="text-align:right">$14.0<br><small>เป้าสูงสุด</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคา $9.6 อยู่ <b>สูงกว่ามูลค่าเหมาะสม $9.4 เล็กน้อย</b> (~2%) — สาย value มองว่า <b>ราคาวิ่งล่วงหน้าพื้นฐานไปไกล</b> เพราะบริษัทยังเกือบไม่มีรายได้และขาดทุน
+        ส่วนสายเก็งกำไรเดิมพันว่า <b>คลื่น CPO / EO polymer</b> จะทำให้ดีล foundry (Tower PH18, GlobalFoundries) และโปรแกรม CPO Fortune 500 กลายเป็นรายได้จริง และดันราคาสู่กรอบเป้าบน
+        — โปรดทราบ: เป้านักวิเคราะห์ <b>น้อย/ยังไม่มี consensus</b> (MarketBeat ~1 sell rating ไม่มีเป้าชัด; aggregator เชิงอัลกอริทึมกระจาย ~$2.9–$14)
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">−2.1%</div>
+        <div class="txt"><b>แทบไม่มี Margin of Safety</b><br>ราคาปัจจุบัน $9.6 สูงกว่ามูลค่าเหมาะสม $9.4 ราว 2% → ตามเกณฑ์ value investor ถือว่า <b>เต็มมูลค่าถึงแพงเล็กน้อย</b> โดยเฉพาะเมื่อยังขาดทุน/เกือบไม่มีรายได้ และ valuation อิงอนาคตล้วน ยังไม่ใช่จุดซื้อที่ปลอดภัย (และ FV เองก็มีกรอบกว้างมาก $3–$20)</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$7.52</div><div class="d">โซนน่าสนใจ (เผื่อความเสี่ยงสูง)</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$6.58</div><div class="d">โซนถูก (สำหรับสายรับความเสี่ยง)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $8</div><div class="d">ใกล้ขอบล่างของ fair value</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="9.6" step="0.1">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== RETURN PROJECTION ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $9.6 • รายได้/หุ้นฐาน ~$0.39 (FY2028E)</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS +10%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$3.6</div>
+          <div class="ret neg">รวม ~ −62% (≈ −28%/ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>$0.52</span></li>
+            <li><span>P/S ออก</span><span>7x</span></li>
+            <li><span>สถานการณ์</span><span>ดีล foundry ไม่ scale / เพิ่มทุนต่อ / ขาดทุนต่อเนื่อง</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +45%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$14.4</div>
+          <div class="ret pos">รวม ~ +50% (≈ +14%/ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>$1.20</span></li>
+            <li><span>P/S ออก</span><span>12x</span></li>
+            <li><span>สถานการณ์</span><span>foundry transfer + design win แรกตามแผน</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +75%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$36.5</div>
+          <div class="ret pos">รวม ~ +280% (≈ +56%/ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>$2.09</span></li>
+            <li><span>P/S ออก</span><span>17.5x</span></li>
+            <li><span>สถานการณ์</span><span>ชนะดีล CPO ใหญ่ • พลิกขึ้นเชิงพาณิชย์</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      หมายเหตุ: "EPS ฐาน/ปี 3" ในตารางนี้ใช้ <b>รายได้ต่อหุ้น (rev/share)</b> เป็นฐาน (FY2028E ~$0.39) เพราะบริษัท <b>ยังไม่มี EPS เป็นบวก</b> — เป้าใช้ตัวคูณ P/S
+      กระจายผลลัพธ์ <b>กว้างมาก</b> (−62% ถึง +280%) สะท้อนว่าผลตอบแทนแทบทั้งหมดขึ้นกับ <b>เหตุการณ์ binary</b>: ดีล foundry/design win จะกลายเป็นรายได้ production จริงและ scale ได้หรือไม่
+      — นี่คือ <b>หุ้นออปชันความเสี่ยงสูง</b> ที่ downside อาจหนัก (เพิ่มทุน/เจือจาง) ขณะที่ upside พึ่งการพิสูจน์เชิงพาณิชย์ที่ยังไม่เกิด
+    </p>
+  </section>
+
+  <!-- ===== CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><div><b>ดีล Tower Semiconductor (PH18):</b> ข้อตกลงพัฒนา (มี.ค. 2026) นำ EO polymer modulator ของ LWLG เข้าสู่ PDK ของ Tower เป้าหมาย <b>110GHz+, 200G/400G</b> มี engineering tapeout หลายรอบในปี 2026 เพื่อ customer validation — เส้นทางสู่การผลิตจริงผ่าน foundry</div></li>
+          <li><div><b>GlobalFoundries PDK:</b> โมดูเลเตอร์ความเร็วสูงพร้อมใช้ใน GDSFactory PDK ของแพลตฟอร์ม silicon photonics ของ GF (มี.ค. 2026) เป้า <b>200G/400G per lane</b> — เพิ่มช่องทาง foundry รายที่สอง</div></li>
+          <li><div><b>PDK 1.1 พร้อมโอนสู่การผลิต:</b> Process Design Kit เวอร์ชัน 1.1 (BEOL) <b>พร้อมโอนสู่สภาพแวดล้อม high-volume production</b> งานบูรณาการส่วนใหญ่คาดเกิดครึ่งหลังปี 2026 — ก้าวสำคัญจาก R&D สู่เชิงพาณิชย์</div></li>
+          <li><div><b>โปรแกรม CPO กับพันธมิตร Fortune Global 500:</b> ร่วมพัฒนา Perkinamine® variant สำหรับ AI scale-up/scale-out และโซลูชัน <b>400Gb/s CPO</b> — วาง EO polymer ตรงจุดเปลี่ยน co-packaged optics ของ AI data center พอดี</div></li>
+          <li><div><b>คลื่น CPO ของ AI:</b> co-packaged optics เป็นสถาปัตยกรรมถัดไป (ลด power/latency) — EO polymer ให้ <b>bandwidth สูง + แรงดันขับต่ำ</b> เทียบ silicon/LiNbO3 อาจได้เปรียบเชิงพลังงานเมื่อ scale</div></li>
+          <li><div><b>งบดุลแกร่งขึ้นชั่วคราว:</b> เงินสด ~<b>$100M</b> (11 พ.ค. 2026 หลังใช้ shelf) ซื้อ runway ~หลายปี ลดความเสี่ยง going-concern ระยะใกล้ และมีเงินทำ R&D/เร่ง qualification</div></li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><div><b>เกือบยังไม่มีรายได้ + ขาดทุน:</b> รายได้ Q1 2026 เพียง <b>$29.2K</b> (จากสัญญา supply/license เริ่มต้น), ขาดทุนสุทธิ Q1 <b>~$6.3M</b> (−$0.04/หุ้น), EPS TTM <b>−$0.16</b> — valuation อิงอนาคตล้วน ถ้ารายได้ไม่มา downside มหาศาล</div></li>
+          <li><div><b>เจือจางหุ้นต่อเนื่อง (dilution):</b> เพิ่มทุนผ่าน <b>shelf/ATM</b> สม่ำเสมอ (ใช้ shelf เดือน ส.ค. 2024 จนหมดเพื่อยกเงินสดสู่ ~$100M) — ออกหุ้นใหม่กดมูลค่าต่อหุ้น และมีแนวโน้มต้องระดมทุนอีกหากรายได้ยังไม่มา</div></li>
+          <li><div><b>Cash burn / going-concern ระยะยาว:</b> เผาเงินสด R&D+G&A ~$6–7M/ไตรมาส แม้มี ~$100M แต่ถ้ายอดขาย production ไม่ตามมา ต้อง <b>เพิ่มทุนอีก</b> (วน dilution)</div></li>
+          <li><div><b>ความเสี่ยง execution (binary):</b> ดีล foundry/PDK ≠ รายได้ — ต้องผ่าน qualification, yield, reliability ของ polymer และการ ramp การผลิต บริษัท <b>ยังไม่เคยพิสูจน์รายได้ production จริง</b> ความเสี่ยงเทคนิค/timing สูง</div></li>
+          <li><div><b>การแข่งขัน + ความทนทานวัสดุ:</b> ชนกับ <b>silicon photonics</b> และ <b>thin-film lithium niobate (TFLN/LiNbO3)</b> ที่โตเร็วและพิสูจน์แล้ว — EO polymer ต้องพิสูจน์ความเสถียร/อายุการใช้งานระยะยาวในสภาพอุณหภูมิจริง</div></li>
+          <li><div><b>micro-cap volatility:</b> หุ้น beta สูงมาก swing รุนแรง (52 สัปดาห์ <b>$1.19–$18.71</b>, ~15 เท่า) • coverage นักวิเคราะห์บางมาก (consensus เชิงสถาบันแทบไม่มี) → ราคาขับด้วยข่าว/sentiment เป็นหลัก</div></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>เดิมพัน EO polymer / CPO ความเสี่ยงสูงมาก — "เรื่องราวดี" แต่เกือบไม่มีรายได้และราคาเต็มมูลค่า</h2>
+      <p>Lightwave Logic เป็น micro-cap <b>pure-play electro-optic polymer</b> ที่วางตัวตรงคลื่น CPO / silicon photonics ของ AI data center — มีดีล foundry สำคัญ (Tower PH18, GlobalFoundries), PDK 1.1 พร้อมโอนสู่การผลิต และโปรแกรม CPO 400Gb/s กับพันธมิตร Fortune 500 และเพิ่งยกเงินสดสู่ ~$100M แต่บริษัทยัง <b>เกือบไม่มีรายได้</b> (Q1 2026 เพียง $29.2K), <b>ขาดทุนต่อเนื่อง</b> (EPS TTM −$0.16), เผาเงินสด และเจือจางหุ้นผ่าน shelf/ATM สม่ำเสมอ ที่ราคา ~$9.6 ตลาดได้สะท้อนความหวัง CPO ไปจนเต็มมูลค่า (สูงกว่า fair value $9.4 ~2%) นี่คือ <b>หุ้นออปชัน/เก็งกำไรความเสี่ยงสูงมาก</b> — ผลตอบแทนเป็น binary และเหมาะกับสายรับความเสี่ยงสูงและขนาดสถานะเล็กเท่านั้น</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$9.4 <span style="font-size:12px;color:#a8b6cc">($3–$20)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ff8a80">แพง ~2%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#ffcc80">น้อย/ยังไม่มี consensus</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> สาย value — โดยพื้นฐานยัง <b>ไม่น่าซื้อ</b> (รอย่อแรงต่ำกว่า ~$8 หรือ $6.6–$7.5 และจำกัดขนาดสถานะให้เล็กมาก) • สายเก็งกำไร — เข้าได้แต่ถือเป็น <b>เงินเสี่ยงได้ทั้งก้อน</b> โดยติดตาม <b>การแปลงดีล foundry/PDK → รายได้ production จริง</b>, <b>cash burn/การเพิ่มทุน (shelf/ATM)</b>, <b>ความคืบหน้า CPO 400G/tapeout</b> และ <b>การพิสูจน์ความเสถียรของ polymer</b> เป็นตัวชี้วัดหลัก
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    LWLG เป็น <b>micro-cap เก็งกำไรที่ผันผวนสูงมาก, เกือบยังไม่มีรายได้ และยังขาดทุน</b> — การประเมินมูลค่าใช้รายได้อนาคต (P/S forward) และ option value แทน P/E เพราะไม่มีกำไร/รายได้ที่มีนัย จึงอ่อนไหวต่อสมมติฐานอย่างสุดขีด กรอบมูลค่าจึงกว้างผิดปกติ ($3–$20)
+    ราคาหุ้นกลุ่ม AI photonics/CPO แกว่งรุนแรง (52 สัปดาห์ $1.19–$18.71) มีความเสี่ยง dilution/going-concern ผู้ลงทุนควรศึกษาเพิ่มเติมและพิจารณาความเสี่ยง/ขนาดสถานะของตนเองก่อนตัดสินใจ • อ้างอิงงบจริง SEC (10-K FY2025, 10-Q Q1 2026) — หมายเหตุ: ราคา ณ 23 มิ.ย. 2026 ใกล้เคียงกันระหว่างแหล่ง (StockAnalysis ~$9.60 ระหว่างวัน, Yahoo/Investing ~$9.78 ปิด 21 มิ.ย., ปิดก่อนหน้า $9.28) ต่างกัน ~2% ใช้ค่าใหม่สุด ~$9.6 • เป้านักวิเคราะห์มี <b>น้อยมาก/ยังไม่มี consensus</b> (MarketBeat ~1 sell rating ไม่มีเป้า; aggregator เชิงอัลกอริทึมกระจาย ~$2.9–$14) สะท้อน coverage บางและความไม่แน่นอนสูง
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 23 มิ.ย. 2026 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<script>
+(function(){
+  /* ---------- Price chart ---------- */
+  // [label, price] approximate
+  const data=[["มิ.ย.25",1.4],["ส.ค.25",3],["ต.ค.25",6],["ธ.ค.25",10],["ก.พ.26",18],["เม.ย.26",13],["พ.ค.26",11],["มิ.ย.26",9.6]];
+  const W=920,H=300;
+  const padL=48,padR=16,padT=18,padB=34;
+  const min=0,max=20;
+  const xs=i=>padL+(W-padL-padR)*(i/(data.length-1));
+  const ys=v=>padT+(H-padT-padB)*(1-(v-min)/(max-min));
+  let path="",area="";
+  data.forEach((d,i)=>{const x=xs(i),y=ys(d[1]);path+=(i?"L":"M")+x.toFixed(1)+" "+y.toFixed(1)+" ";});
+  area=path+`L${xs(data.length-1).toFixed(1)} ${ys(min).toFixed(1)} L${padL} ${ys(min).toFixed(1)} Z`;
+  let svg=`<defs><linearGradient id="ag" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1a73e8" stop-opacity=".22"/><stop offset="1" stop-color="#1a73e8" stop-opacity="0"/></linearGradient></defs>`;
+  // gridlines
+  [5,10,15,20].forEach(v=>{const y=ys(v);svg+=`<line x1="${padL}" y1="${y}" x2="${W-padR}" y2="${y}" stroke="#eef1f5" stroke-width="1"/><text x="${padL-8}" y="${y+4}" text-anchor="end" font-size="11" fill="#9aa3b2" font-family="IBM Plex Mono">$${v}</text>`;});
+  // fair value line
+  const fy=ys(9.4);svg+=`<line x1="${padL}" y1="${fy}" x2="${W-padR}" y2="${fy}" stroke="#1e8e3e" stroke-width="1.5" stroke-dasharray="6 5"/>`;
+  // area + line
+  svg+=`<path d="${area}" fill="url(#ag)"/><path d="${path}" fill="none" stroke="#1a73e8" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"/>`;
+  // points + x labels
+  data.forEach((d,i)=>{const x=xs(i),y=ys(d[1]);const hi=(i===4||i===7);
+    svg+=`<circle cx="${x}" cy="${y}" r="${hi?5:3.2}" fill="${hi?'#ea4335':'#1a73e8'}" stroke="#fff" stroke-width="2"/>`;
+    svg+=`<text x="${x}" y="${H-12}" text-anchor="middle" font-size="11" fill="#9aa3b2">${d[0]}</text>`;
+    if(hi)svg+=`<text x="${x}" y="${y-12}" text-anchor="middle" font-size="11" font-weight="700" fill="${i===7?'#1a73e8':'#ea4335'}" font-family="IBM Plex Mono">$${d[1]}</text>`;
+  });
+  document.getElementById("priceChart").innerHTML=svg;
+
+  /* ---------- Gauge marker positions ---------- */
+  const gmin=5,gmax=15;
+  const gpos=v=>Math.max(2,Math.min(98,(v-gmin)/(gmax-gmin)*100));
+  document.getElementById("mCur").style.left=gpos(9.6)+"%";
+  document.getElementById("mFair").style.left=gpos(9.4)+"%";
+  // nudge fair label up to avoid overlap
+  document.querySelector("#mFair .lab").style.top="-58px";
+
+  /* ---------- MOS calculator ---------- */
+  const FV=9.4;
+  const out=document.getElementById("mosOut");
+  const inp=document.getElementById("pxIn");
+  function calc(){
+    const p=parseFloat(inp.value);
+    if(isNaN(p)||p<=0){out.innerHTML="<span style='color:#9aa3b2'>กรอกราคา…</span>";return;}
+    const mos=(FV-p)/FV*100;
+    let c,msg;
+    if(mos<10){c="#c5221f";msg=mos<0?"แพงกว่ามูลค่า — ไม่ปลอดภัย":"ส่วนเผื่อบาง — ยังไม่น่าซื้อ";}
+    else if(mos<20){c="#b06000";msg="พอใช้ — ทยอยสะสมได้";}
+    else if(mos<30){c="#1e8e3e";msg="น่าซื้อ — โซน Value Investor";}
+    else{c="#1e8e3e";msg="ถูกมาก — เช็คว่าไม่ใช่ value trap";}
+    out.innerHTML=`MOS = <span class="mono" style="color:${c};font-size:18px">${mos>0?'+':''}${mos.toFixed(1)}%</span> &nbsp;<span style="color:${c}">${msg}</span>`;
+  }
+  inp.addEventListener("input",calc);
+  calc();
+})();
+</script>
+</body>
+</html>
