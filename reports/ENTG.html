@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น Entegris (ENTG) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Opus 4.8">
+<script type="application/json" id="stock-meta">
+{"symbol":"ENTG","currency":"USD","price":168,"fairValue":158,"mos":-6,"upside":-6.0,"pe":57,"dividendYield":0.24,"roe":6}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#eef1f5; --card:#ffffff; --ink:#1a1d23; --muted:#5f6675; --line:#e4e8ee;
+    --blue:#1a73e8; --blue-d:#1557b0; --red:#ea4335; --yellow:#f9ab00; --green:#1e8e3e;
+    --green-soft:#e6f4ea; --red-soft:#fce8e6; --amber-soft:#fef7e0; --blue-soft:#e8f0fe;
+    --shadow:0 1px 3px rgba(16,24,40,.06),0 8px 24px rgba(16,24,40,.06);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Sarabun','Noto Sans Thai',system-ui,-apple-system,Segoe UI,sans-serif;background:var(--bg);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased}
+  .mono{font-family:'IBM Plex Mono',ui-monospace,monospace;font-variant-numeric:tabular-nums}
+  .wrap{max-width:1080px;margin:0 auto;padding:20px 16px 64px}
+
+  /* Header */
+  header{background:linear-gradient(135deg,#10243b 0%,#16487a 60%,#1f7a8c 140%);border-radius:20px;padding:28px 28px 24px;color:#fff;position:relative;overflow:hidden;box-shadow:var(--shadow)}
+  header::after{content:"";position:absolute;right:-40px;top:-40px;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,rgba(66,175,244,.35),transparent 70%)}
+  .gdots{display:inline-flex;gap:5px;margin-bottom:14px}
+  .gdots span{width:11px;height:11px;border-radius:50%}
+  .tag{display:inline-block;font-size:12px;font-weight:600;padding:3px 10px;border-radius:99px;background:rgba(255,255,255,.14);backdrop-filter:blur(4px);margin-right:6px}
+  h1{font-size:30px;font-weight:800;letter-spacing:-.5px;margin:2px 0 2px}
+  .sub{color:#c7d2e4;font-size:14.5px}
+  .price-row{display:flex;align-items:flex-end;gap:18px;flex-wrap:wrap;margin-top:18px;position:relative;z-index:2}
+  .px{font-size:44px;font-weight:800;letter-spacing:-1px}
+  .px small{font-size:18px;font-weight:600;color:#aebfd6;margin-left:4px}
+  .chg{font-weight:700;font-size:16px;padding:5px 12px;border-radius:10px;background:var(--red-soft);color:#c5221f}
+  .px-meta{font-size:12.5px;color:#aebfd6;margin-left:auto;text-align:right;line-height:1.5}
+
+  /* Section */
+  section{margin-top:26px}
+  .s-head{display:flex;align-items:center;gap:10px;margin:0 4px 14px}
+  .s-head .n{width:26px;height:26px;border-radius:8px;background:var(--blue);color:#fff;display:grid;place-items:center;font-size:13px;font-weight:700;flex:none}
+  .s-head h2{font-size:19px;font-weight:700;letter-spacing:-.3px}
+  .s-head .hint{font-size:12.5px;color:var(--muted);margin-left:auto}
+
+  /* Grid metrics */
+  .grid{display:grid;gap:12px}
+  .g4{grid-template-columns:repeat(4,1fr)}
+  .g3{grid-template-columns:repeat(3,1fr)}
+  .g2{grid-template-columns:repeat(2,1fr)}
+  .metric{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 15px;box-shadow:var(--shadow)}
+  .metric .k{font-size:12.5px;color:var(--muted);font-weight:500;display:flex;align-items:center;gap:5px}
+  .metric .v{font-size:23px;font-weight:700;margin-top:3px;letter-spacing:-.3px}
+  .metric .d{font-size:11.5px;color:var(--muted);margin-top:1px}
+  .pos{color:var(--green)} .neg{color:var(--red)} .neu{color:var(--yellow)}
+  .pill{font-size:10px;font-weight:700;padding:1px 7px;border-radius:99px;vertical-align:middle}
+  .pill.g{background:var(--green-soft);color:var(--green)} .pill.r{background:var(--red-soft);color:#c5221f} .pill.a{background:var(--amber-soft);color:#b06000}
+
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px;box-shadow:var(--shadow)}
+
+  /* Chart */
+  .chart-wrap{padding:8px 4px 0}
+  .legend{display:flex;gap:18px;font-size:12px;color:var(--muted);margin-top:10px;flex-wrap:wrap}
+  .legend i{display:inline-block;width:11px;height:3px;border-radius:2px;vertical-align:middle;margin-right:5px}
+
+  /* Valuation gauge */
+  .gauge{margin:8px 0 4px}
+  .gbar{position:relative;height:48px;border-radius:12px;overflow:hidden;background:linear-gradient(90deg,#1e8e3e 0%,#34a853 22%,#f9ab00 46%,#ea4335 100%)}
+  .gbar .seg-label{position:absolute;top:50%;transform:translate(-50%,-50%);font-size:10.5px;font-weight:700;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.25);white-space:nowrap}
+  .marker{position:absolute;top:-6px;bottom:-6px;width:3px;background:#111;border-radius:2px}
+  .marker .lab{position:absolute;top:-34px;left:50%;transform:translateX(-50%);background:#111;color:#fff;font-size:11px;font-weight:700;padding:3px 8px;border-radius:7px;white-space:nowrap}
+  .marker .lab::after{content:"";position:absolute;bottom:-4px;left:50%;transform:translateX(-50%) rotate(45deg);width:8px;height:8px;background:#111}
+  .marker.cur{background:#1a73e8} .marker.cur .lab{background:#1a73e8} .marker.cur .lab::after{background:#1a73e8}
+  .scale{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-top:14px}
+
+  .vmethod{display:flex;align-items:center;justify-content:space-between;padding:13px 0;border-bottom:1px solid var(--line)}
+  .vmethod:last-child{border-bottom:none}
+  .vmethod .mname{font-weight:600;font-size:14.5px}
+  .vmethod .mdesc{font-size:12px;color:var(--muted)}
+  .vmethod .mval{font-size:20px;font-weight:700;text-align:right}
+  .fv-box{margin-top:14px;background:var(--blue-soft);border:1px solid #c6dafc;border-radius:14px;padding:16px 18px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+  .fv-box .l{font-size:13.5px;color:var(--blue-d);font-weight:600}
+  .fv-box .r{font-size:30px;font-weight:800;color:var(--blue-d);letter-spacing:-.5px}
+
+  /* MOS */
+  .mos-verdict{border-radius:14px;padding:16px 18px;margin-bottom:14px;display:flex;align-items:center;gap:14px}
+  .mos-verdict.bad{background:var(--red-soft)} .mos-verdict.ok{background:var(--amber-soft)} .mos-verdict.good{background:var(--green-soft)}
+  .mos-verdict .big{font-size:34px;font-weight:800;letter-spacing:-1px;flex:none}
+  .mos-verdict.bad .big{color:#c5221f} .mos-verdict.ok .big{color:#b06000} .mos-verdict.good .big{color:var(--green)}
+  .mos-verdict .txt{font-size:13.5px}
+  .mos-verdict .txt b{font-size:15px}
+  .calc{margin-top:16px;border:1px dashed var(--line);border-radius:14px;padding:16px}
+  .calc label{font-size:12.5px;color:var(--muted);font-weight:600;display:block;margin-bottom:6px}
+  .calc-row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+  .calc input{font-family:'IBM Plex Mono',monospace;font-size:18px;font-weight:600;border:1.5px solid var(--line);border-radius:10px;padding:9px 12px;width:140px;outline:none}
+  .calc input:focus{border-color:var(--blue)}
+  .calc-out{font-size:14px;font-weight:600}
+
+  /* Scenarios */
+  .scn{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  .scn .col{border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--card)}
+  .scn .top{padding:12px 15px;color:#fff;font-weight:700;display:flex;justify-content:space-between;align-items:center}
+  .scn .bear .top{background:#c5221f} .scn .base .top{background:#1557b0} .scn .bull .top{background:#1e8e3e}
+  .scn .body{padding:14px 15px}
+  .scn .tgt{font-size:26px;font-weight:800;letter-spacing:-.5px}
+  .scn .ret{font-size:13px;font-weight:600;margin-top:2px}
+  .scn ul{list-style:none;margin-top:10px;font-size:12px;color:var(--muted)}
+  .scn li{display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px dotted var(--line)}
+  .scn li:last-child{border:none}
+  .scn li span:last-child{font-weight:600;color:var(--ink)}
+
+  /* Catalyst / Risk */
+  .cr{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .cr .box{border-radius:16px;padding:18px 20px;border:1px solid var(--line);box-shadow:var(--shadow)}
+  .cr .box.cat{background:linear-gradient(180deg,#f3faf5,#ffffff)}
+  .cr .box.risk{background:linear-gradient(180deg,#fef4f3,#ffffff)}
+  .cr h3{font-size:15px;font-weight:700;display:flex;align-items:center;gap:8px;margin-bottom:12px}
+  .cr .ic{width:24px;height:24px;border-radius:7px;display:grid;place-items:center;font-size:14px;flex:none}
+  .cr .cat .ic{background:var(--green-soft);color:var(--green)} .cr .risk .ic{background:var(--red-soft);color:#c5221f}
+  .cr ul{list-style:none}
+  .cr li{font-size:13px;padding:8px 0;border-bottom:1px solid var(--line);display:flex;gap:9px}
+  .cr li:last-child{border:none}
+  .cr li::before{content:"";width:6px;height:6px;border-radius:50%;margin-top:8px;flex:none}
+  .cr .cat li::before{background:var(--green)} .cr .risk li::before{background:var(--red)}
+  .cr li b{font-weight:700}
+
+  /* Verdict */
+  .verdict{background:linear-gradient(135deg,#10243b,#16487a);color:#fff;border-radius:18px;padding:24px 26px;box-shadow:var(--shadow)}
+  .verdict h2{font-size:20px;font-weight:700;margin-bottom:6px}
+  .verdict p{color:#d4dded;font-size:14px;margin-bottom:14px}
+  .vgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:6px}
+  .vcell{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:13px 15px}
+  .vcell .k{font-size:11.5px;color:#a8b6cc;font-weight:500}
+  .vcell .v{font-size:17px;font-weight:700;margin-top:3px}
+  .zone{margin-top:16px;font-size:13px;color:#d4dded;background:rgba(255,255,255,.05);border-left:3px solid var(--yellow);border-radius:0 10px 10px 0;padding:11px 15px}
+
+  .disc{margin-top:24px;font-size:12px;color:var(--muted);background:#fafbfc;border:1px solid var(--line);border-radius:12px;padding:14px 16px;line-height:1.7}
+  .disc b{color:var(--ink)}
+  footer{text-align:center;font-size:11.5px;color:var(--muted);margin-top:22px}
+
+  @media(max-width:760px){
+    .g4{grid-template-columns:repeat(2,1fr)} .g3{grid-template-columns:repeat(2,1fr)}
+    .scn{grid-template-columns:1fr} .cr{grid-template-columns:1fr} .vgrid{grid-template-columns:1fr}
+    .px{font-size:36px} h1{font-size:24px} .px-meta{margin-left:0;text-align:left;width:100%}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots"><span style="background:#1f7a8c"></span><span style="background:#1a73e8"></span><span style="background:#34a853"></span><span style="background:#f9ab00"></span></div>
+    <div>
+      <span class="tag">NASDAQ: ENTG</span>
+      <span class="tag">Semiconductors — Materials</span>
+      <span class="tag">Large-cap • AI Supply Chain</span>
+    </div>
+    <h1>Entegris, Inc.</h1>
+    <div class="sub">วัสดุและโซลูชันความบริสุทธิ์สูงสำหรับการผลิตเซมิคอนดักเตอร์ • ตัวกรอง วัสดุพิเศษ เคมีภัณฑ์ — ขาดไม่ได้ในการผลิตชิป AI ระดับล้ำหน้า</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$168<small>(ENTG)</small></div>
+      </div>
+      <div class="chg">▼ −8.5% (23 มิ.ย.)</div>
+      <div class="px-meta">
+        ราคา ≈ 23 มิ.ย. 2026 (ผันผวนแรงระหว่างวัน)<br>
+        ปิด 22 มิ.ย. ที่ $184.00 ก่อนย่อ ~8% เช้า 23 มิ.ย.<br>
+        ที่มา: StockAnalysis / Yahoo Finance / Google Finance
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">งบ FY2025 + Q1 2026 (8-K)</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~$25.7B</div><div class="d">~152.5 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~57x</div><div class="d">non-GAAP EPS TTM ~$2.94 <span class="pill a">GAAP บิดเบือน</span></div></div>
+      <div class="metric"><div class="k">P/E (TTM, GAAP)</div><div class="v neg">~97x</div><div class="d">GAAP EPS TTM ~$1.73 <span class="pill r">บวมจากตัดจำหน่าย CMC</span></div></div>
+      <div class="metric"><div class="k">Forward P/E</div><div class="v">~48x</div><div class="d">EPS 2026E ~$3.4 (non-GAAP)</div></div>
+
+      <div class="metric"><div class="k">รายได้ FY2025</div><div class="v">$3.20B</div><div class="d neg">▼ −1% YoY (จาก $3.24B)</div></div>
+      <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">$235.6M</div><div class="d neg">▼ −20% YoY (จาก $292.8M)</div></div>
+      <div class="metric"><div class="k">Q1 2026 ยอดขาย</div><div class="v">$811.9M</div><div class="d pos">▲ +5% YoY • non-GAAP EPS $0.86</div></div>
+      <div class="metric"><div class="k">Gross Margin (non-GAAP)</div><div class="v">~44–47%</div><div class="d">ROE ~6% (กดจากหนี้/ตัดจำหน่าย)</div></div>
+
+      <div class="metric"><div class="k">Free Cash Flow FY2025</div><div class="v">$404M</div><div class="d">ลดหนี้สุทธิต่อเนื่อง</div></div>
+      <div class="metric"><div class="k">หนี้สุทธิ / Leverage</div><div class="v">$3.3B</div><div class="d neg">net leverage ~3.6x → เป้า ~3x</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">0.24%</div><div class="d">$0.40/ปี • Payout ต่ำ</div></div>
+      <div class="metric"><div class="k">ช่วง 52 สัปดาห์</div><div class="v" style="font-size:18px">$68 – $187</div><div class="d">High $186.94 • Low $67.97</div></div>
+    </div>
+  </section>
+
+  <!-- ===== PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ (USD)</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#1a73e8"></i>ราคา ENTG</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $158</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        หุ้นพุ่ง <b>~2.4 เท่าในรอบปี</b> จากจุดต่ำ ~$68 (มิ.ย. 2025 ช่วงตลาดชิปซบ + จีนคุมส่งออก) สู่จุดสูงสุดตลอดกาล $186.94 (มิ.ย. 2026)
+        แรงหนุนจาก <b>ดีลและการอัปเกรดของนักวิเคราะห์เรื่อง EUV/AI</b> และความเข้มข้นของวัสดุที่เพิ่มขึ้นตามโหนดล้ำหน้า — แล้วย่อแรง ~8% เช้า 23 มิ.ย. สู่ ~$168
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">3 วิธี เฉลี่ยถ่วงน้ำหนัก</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation <span class="pill r">ระมัดระวัง</span></div><div class="mdesc">EPS ~$3.35 (non-GAAP 2026E) × P/E ~45x — ใช้กำไรหลักไม่รวมตัดจำหน่ายดีล CMC (GAAP บิดเบือน)</div></div>
+        <div class="mval">$151</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. DCF (2-stage)</div><div class="mdesc">FCF ฟื้นตามวัฏจักรชิปและความเข้มข้นวัสดุของโหนด AI, WACC ~9.5%, Terminal 3.5%</div></div>
+        <div class="mval">$165</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Analyst Intrinsic</div><div class="mdesc">ค่ากลางจากกรอบโมเดล fair value ของนักวิเคราะห์ (เป้า $115–$205)</div></div>
+        <div class="mval">$158</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $151 – $165</span></div>
+        <div class="r">$158</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        <b>หมายเหตุ:</b> ข้าม DDM เพราะปันผลน้อยมาก (0.24%) ไม่มีนัยสำคัญ • ใช้ <b>non-GAAP EPS</b> เพราะ GAAP ถูกกดด้วยค่าตัดจำหน่ายสินทรัพย์ไม่มีตัวตน
+        และดอกเบี้ยจากหนี้ดีล <b>CMC Materials</b> ทำให้ P/E แบบ GAAP (~97x) ไม่สะท้อนกำลังทำกำไรที่แท้จริง • มูลค่านี้ <b>ต่ำกว่าราคาตลาดปัจจุบัน</b> ที่สะท้อนความคาดหวัง AI ไปมากแล้ว
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $168</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $158</div></div>
+        </div>
+        <div class="scale">
+          <span>$111<br><small>MOS 30%</small></span>
+          <span>$126<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$158<br><small>Fair Value</small></span>
+          <span style="text-align:right">$161<br><small>เป้า Analyst</small></span>
+          <span style="text-align:right">$205<br><small>เป้าสูงสุด</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคา $168 อยู่ <b>เหนือมูลค่าเหมาะสม</b> เล็กน้อย และ <b>เกินเป้าหมายเฉลี่ย 12 เดือน</b> ของนักวิเคราะห์ ($160.60) ไปแล้ว —
+        หลังหุ้นวิ่งแรงในรอบปี เป้าฉันทามติกลายเป็น downside เล็กน้อย สะท้อนว่าราคาวิ่งนำพื้นฐาน แม้สตอรี่ AI ยังแข็งแกร่ง
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">−6%</div>
+        <div class="txt"><b>ไม่มี Margin of Safety</b><br>ราคาปัจจุบัน $168 สูงกว่ามูลค่าเหมาะสม $158 ราว 6% → ตามเกณฑ์ value investor ถือว่า <b>แพงเล็กน้อย</b> ยังไม่ใช่จุดซื้อที่ปลอดภัย</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$126</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$111</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $150</div><div class="d">ใกล้ขอบล่างของ fair value</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="168" step="1">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== RETURN PROJECTION ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $168 • EPS ฐาน ~$3.0 (non-GAAP)</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS +4%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$102</div>
+          <div class="ret neg">รวม ~ −39% (≈ −15%/ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>$3.4</span></li>
+            <li><span>P/E ออก</span><span>30x</span></li>
+            <li><span>สถานการณ์</span><span>จีนคุมส่งออกแรง / วัฏจักรชิปซบ</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +12%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$160</div>
+          <div class="ret neg">รวม ~ −5% (≈ −1.6%/ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>$4.2</span></li>
+            <li><span>P/E ออก</span><span>38x</span></li>
+            <li><span>สถานการณ์</span><span>วัสดุโตตามโหนด AI / ลดหนี้</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +20%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$234</div>
+          <div class="ret pos">รวม ~ +39% (≈ +12%/ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>$5.2</span></li>
+            <li><span>P/E ออก</span><span>45x</span></li>
+            <li><span>สถานการณ์</span><span>materials intensity พุ่ง + share gain</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      ความเสี่ยง–ผลตอบแทน <b>เอียงลบในระยะกลาง</b> เพราะเข้าซื้อที่ราคาแพงกว่ามูลค่าพื้นฐานและ P/E สูง — แม้แต่ base case ก็ให้ผลตอบแทนใกล้ศูนย์/ติดลบเล็กน้อย
+      ตัวแปรชี้ขาดคือ <b>ความเข้มข้นของวัสดุต่อแผ่นเวเฟอร์</b> ที่เพิ่มตามโหนด AI และความสามารถในการ <b>ลดหนี้</b> เพื่อปลดล็อกกำไร
+    </p>
+  </section>
+
+  <!-- ===== CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><div><b>วัสดุเข้มข้นขึ้นตามโหนด AI:</b> ชิป AI ระดับล้ำหน้า (GAA, EUV, HBM, advanced packaging) ใช้ตัวกรอง เคมีบริสุทธิ์ และ CMP consumables มากขึ้นต่อแผ่นเวเฟอร์ — โครงสร้างหนุนระยะยาว</div></li>
+          <li><div><b>โมเดล consumable ทนทาน:</b> รายได้ส่วนใหญ่เป็นวัสดุสิ้นเปลืองผูกกับ "ปริมาณการผลิต" (wafer starts) ไม่ใช่รอบ capex เครื่องจักร — กระแสเงินสดสม่ำเสมอกว่าผู้ผลิตอุปกรณ์</div></li>
+          <li><div><b>Q1 2026 ฟื้น:</b> ยอดขาย +5% YoY ($811.9M), non-GAAP EPS $0.86 เกินคาด ~15% — โมเมนตัมปริมาณกลับมาในเทคโนโลยีล้ำหน้า</div></li>
+          <li><div><b>ดีล/อัปเกรด EUV:</b> สตอรี่วัสดุสำหรับ EUV และความร่วมมือเชิงเทคโนโลยีหนุน sentiment + การปรับเป้าขึ้นของนักวิเคราะห์ในเดือน มิ.ย. 2026</div></li>
+          <li><div><b>ลดหนี้ต่อเนื่อง:</b> FCF FY2025 ~$404M ทยอยลดหนี้สุทธิจากดีล CMC — net leverage จาก ~3.6x สู่เป้า ~3x ปลดล็อกกำไร GAAP ในอนาคต</div></li>
+          <li><div><b>ตำแหน่งคูเมือง:</b> เป็นซัพพลายเออร์วัสดุความบริสุทธิ์สูงที่ผ่าน qualification ยากและเปลี่ยนยาก (sticky) ในไลน์ผลิตของฟาวน์ดรีชั้นนำ</div></li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><div><b>จีน/กฎส่งออก:</b> มาตรการคุมส่งออกเทคโนโลยีชิปสหรัฐฯ–จีน กระทบดีมานด์และยอดขายบางส่วนในจีน — ปัจจัยกดดันที่คาดเดายาก</div></li>
+          <li><div><b>หนี้จากดีล CMC:</b> หนี้สุทธิ ~$3.3B, net leverage ~3.6x — ดอกเบี้ยและค่าตัดจำหน่ายกดกำไร GAAP (EPS TTM เพียง ~$1.73, ROE ~6%)</div></li>
+          <li><div><b>วัฏจักรชิป:</b> รายได้ FY2025 หด ~1% YoY และกำไรสุทธิ −20% — ธุรกิจยังอ่อนไหวต่อรอบ wafer starts และ inventory ของลูกค้า</div></li>
+          <li><div><b>Valuation แพง:</b> non-GAAP P/E ~57x, forward ~48x, GAAP ~97x — ราคาวิ่งนำพื้นฐานและ <b>เกินเป้าเฉลี่ยนักวิเคราะห์</b> ($160.60) แล้ว</div></li>
+          <li><div><b>กระจุกตัวลูกค้า:</b> พึ่งพาฟาวน์ดรี/ผู้ผลิตหน่วยความจำรายใหญ่ไม่กี่ราย — การชะลอ capex ของลูกค้าใหญ่กระทบโดยตรง</div></li>
+          <li><div><b>ผันผวนสูง:</b> หุ้นวิ่ง ~2.4 เท่าในปี แล้วแกว่งแรง (−8% ใน 1 วัน) — มูลค่าตึงตัว ความเสี่ยง drawdown สูงหากผลประกอบการพลาด</div></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>ธุรกิจคูเมืองแข็ง โครงสร้าง AI หนุน — แต่ราคา ณ ตอนนี้ "วิ่งนำพื้นฐาน"</h2>
+      <p>Entegris เป็นซัพพลายเออร์วัสดุและความบริสุทธิ์สูงที่ขาดไม่ได้ในการผลิตชิป AI ระดับล้ำหน้า โมเดล consumable ทนทานและความเข้มข้นของวัสดุที่เพิ่มตามโหนดใหม่เป็นแรงหนุนระยะยาวจริง — แต่ที่ราคา ~$168 หุ้นวิ่ง ~2.4 เท่าในรอบปีและเทรดบน P/E สูงมาก (non-GAAP ~57x) เกินทั้งมูลค่าพื้นฐานและเป้าเฉลี่ยนักวิเคราะห์ ($160.60) ส่วนเผื่อความปลอดภัยจึงยังไม่มี ภาระหนี้จากดีล CMC ยังกดกำไร GAAP</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$158 <span style="font-size:12px;color:#a8b6cc">($151–$165)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ff8a80">แพง ~6%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#ffcf80">$160.60 (−4%)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> สาย value — รอย่อ/ทยอยสะสมเมื่อราคา <b>ต่ำกว่า ~$150</b> (น่าสนใจที่ &lt;$126) • สาย growth — หากเชื่อสตอรี่ materials intensity ระยะยาว ให้เข้าแบบ DCA และยอมรับความผันผวน โดยติดตาม <b>ปริมาณ wafer starts</b>, <b>การลดหนี้</b> และ <b>ผลกระทบกฎส่งออกจีน</b> เป็นตัวชี้วัดหลัก
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ "non-GAAP EPS / กำไรหลัก" และสมมติฐานการเติบโตของความเข้มข้นวัสดุตามโหนด AI ซึ่งเป็นจุดถกเถียงหลัก
+    ราคาหุ้นช่วงนี้ผันผวนแรงระหว่างวัน (−8% ใน 23 มิ.ย.) ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • อ้างอิงงบจริงจาก SEC (8-K Q4 2025 / Q1 2026) และข้อมูลราคาจาก StockAnalysis / Yahoo Finance / Google Finance
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 22–23 มิ.ย. 2026 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<script>
+(function(){
+  /* ---------- Price chart ---------- */
+  // [label, price] approximate (USD)
+  const data=[["มิ.ย.25",70],["ส.ค.25",88],["ต.ค.25",105],["ธ.ค.25",122],["ก.พ.26",138],["เม.ย.26",150],["พ.ค.26",182],["มิ.ย.26",168]];
+  const W=920,H=300;
+  const padL=48,padR=16,padT=18,padB=34;
+  const min=50,max=200;
+  const xs=i=>padL+(W-padL-padR)*(i/(data.length-1));
+  const ys=v=>padT+(H-padT-padB)*(1-(v-min)/(max-min));
+  let path="",area="";
+  data.forEach((d,i)=>{const x=xs(i),y=ys(d[1]);path+=(i?"L":"M")+x.toFixed(1)+" "+y.toFixed(1)+" ";});
+  area=path+`L${xs(data.length-1).toFixed(1)} ${ys(min).toFixed(1)} L${padL} ${ys(min).toFixed(1)} Z`;
+  let svg=`<defs><linearGradient id="ag" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1a73e8" stop-opacity=".22"/><stop offset="1" stop-color="#1a73e8" stop-opacity="0"/></linearGradient></defs>`;
+  // gridlines
+  [50,80,110,140,170,200].forEach(v=>{const y=ys(v);svg+=`<line x1="${padL}" y1="${y}" x2="${W-padR}" y2="${y}" stroke="#eef1f5" stroke-width="1"/><text x="${padL-8}" y="${y+4}" text-anchor="end" font-size="11" fill="#9aa3b2" font-family="IBM Plex Mono">$${v}</text>`;});
+  // fair value line
+  const fy=ys(158);svg+=`<line x1="${padL}" y1="${fy}" x2="${W-padR}" y2="${fy}" stroke="#1e8e3e" stroke-width="1.5" stroke-dasharray="6 5"/>`;
+  // area + line
+  svg+=`<path d="${area}" fill="url(#ag)"/><path d="${path}" fill="none" stroke="#1a73e8" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"/>`;
+  // points + x labels
+  data.forEach((d,i)=>{const x=xs(i),y=ys(d[1]);const hi=(i===6||i===7);
+    svg+=`<circle cx="${x}" cy="${y}" r="${hi?5:3.2}" fill="${hi?'#ea4335':'#1a73e8'}" stroke="#fff" stroke-width="2"/>`;
+    svg+=`<text x="${x}" y="${H-12}" text-anchor="middle" font-size="11" fill="#9aa3b2">${d[0]}</text>`;
+    if(hi)svg+=`<text x="${x}" y="${y-12}" text-anchor="middle" font-size="11" font-weight="700" fill="${i===7?'#1a73e8':'#ea4335'}" font-family="IBM Plex Mono">$${d[1]}</text>`;
+  });
+  document.getElementById("priceChart").innerHTML=svg;
+
+  /* ---------- Gauge marker positions ---------- */
+  // scale: $100 -> 0%, $230 -> 100%
+  const gmin=100,gmax=230;
+  const gpos=v=>Math.max(2,Math.min(98,(v-gmin)/(gmax-gmin)*100));
+  document.getElementById("mCur").style.left=gpos(168)+"%";
+  document.getElementById("mFair").style.left=gpos(158)+"%";
+  // nudge fair label up to avoid overlap
+  document.querySelector("#mFair .lab").style.top="-58px";
+
+  /* ---------- MOS calculator ---------- */
+  const FV=158;
+  const out=document.getElementById("mosOut");
+  const inp=document.getElementById("pxIn");
+  function calc(){
+    const p=parseFloat(inp.value);
+    if(isNaN(p)||p<=0){out.innerHTML="<span style='color:#9aa3b2'>กรอกราคา…</span>";return;}
+    const mos=(FV-p)/FV*100;
+    let c,msg;
+    if(mos<10){c="#c5221f";msg=mos<0?"แพงกว่ามูลค่า — ไม่ปลอดภัย":"ส่วนเผื่อบาง — ยังไม่น่าซื้อ";}
+    else if(mos<20){c="#b06000";msg="พอใช้ — ทยอยสะสมได้";}
+    else if(mos<30){c="#1e8e3e";msg="น่าซื้อ — โซน Value Investor";}
+    else{c="#1e8e3e";msg="ถูกมาก — เช็คว่าไม่ใช่ value trap";}
+    out.innerHTML=`MOS = <span class="mono" style="color:${c};font-size:18px">${mos>0?'+':''}${mos.toFixed(1)}%</span> &nbsp;<span style="color:${c}">${msg}</span>`;
+  }
+  inp.addEventListener("input",calc);
+  calc();
+})();
+</script>
+</body>
+</html>
