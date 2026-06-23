@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น GE Vernova (GEV) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Opus 4.8">
+<script type="application/json" id="stock-meta">
+{"symbol":"GEV","currency":"USD","price":1128,"fairValue":1020,"mos":-11,"upside":-9.6,"pe":33,"dividendYield":0.18,"roe":76}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#eef1f5; --card:#ffffff; --ink:#1a1d23; --muted:#5f6675; --line:#e4e8ee;
+    --blue:#1a73e8; --blue-d:#1557b0; --red:#ea4335; --yellow:#f9ab00; --green:#1e8e3e;
+    --green-soft:#e6f4ea; --red-soft:#fce8e6; --amber-soft:#fef7e0; --blue-soft:#e8f0fe;
+    --shadow:0 1px 3px rgba(16,24,40,.06),0 8px 24px rgba(16,24,40,.06);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Sarabun','Noto Sans Thai',system-ui,-apple-system,Segoe UI,sans-serif;background:var(--bg);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased}
+  .mono{font-family:'IBM Plex Mono',ui-monospace,monospace;font-variant-numeric:tabular-nums}
+  .wrap{max-width:1080px;margin:0 auto;padding:20px 16px 64px}
+
+  /* Header */
+  header{background:linear-gradient(135deg,#0d2a23 0%,#13453a 55%,#1e8e3e 140%);border-radius:20px;padding:28px 28px 24px;color:#fff;position:relative;overflow:hidden;box-shadow:var(--shadow)}
+  header::after{content:"";position:absolute;right:-40px;top:-40px;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,rgba(52,168,83,.4),transparent 70%)}
+  .gdots{display:inline-flex;gap:5px;margin-bottom:14px}
+  .gdots span{width:11px;height:11px;border-radius:50%}
+  .tag{display:inline-block;font-size:12px;font-weight:600;padding:3px 10px;border-radius:99px;background:rgba(255,255,255,.14);backdrop-filter:blur(4px);margin-right:6px}
+  h1{font-size:30px;font-weight:800;letter-spacing:-.5px;margin:2px 0 2px}
+  .sub{color:#c2dcd2;font-size:14.5px}
+  .price-row{display:flex;align-items:flex-end;gap:18px;flex-wrap:wrap;margin-top:18px;position:relative;z-index:2}
+  .px{font-size:44px;font-weight:800;letter-spacing:-1px}
+  .px small{font-size:18px;font-weight:600;color:#a9cabd;margin-left:4px}
+  .chg{font-weight:700;font-size:16px;padding:5px 12px;border-radius:10px;background:var(--green-soft);color:#137333}
+  .px-meta{font-size:12.5px;color:#a9cabd;margin-left:auto;text-align:right;line-height:1.5}
+
+  /* Section */
+  section{margin-top:26px}
+  .s-head{display:flex;align-items:center;gap:10px;margin:0 4px 14px}
+  .s-head .n{width:26px;height:26px;border-radius:8px;background:var(--blue);color:#fff;display:grid;place-items:center;font-size:13px;font-weight:700;flex:none}
+  .s-head h2{font-size:19px;font-weight:700;letter-spacing:-.3px}
+  .s-head .hint{font-size:12.5px;color:var(--muted);margin-left:auto}
+
+  /* Grid metrics */
+  .grid{display:grid;gap:12px}
+  .g4{grid-template-columns:repeat(4,1fr)}
+  .g3{grid-template-columns:repeat(3,1fr)}
+  .g2{grid-template-columns:repeat(2,1fr)}
+  .metric{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 15px;box-shadow:var(--shadow)}
+  .metric .k{font-size:12.5px;color:var(--muted);font-weight:500;display:flex;align-items:center;gap:5px}
+  .metric .v{font-size:23px;font-weight:700;margin-top:3px;letter-spacing:-.3px}
+  .metric .d{font-size:11.5px;color:var(--muted);margin-top:1px}
+  .pos{color:var(--green)} .neg{color:var(--red)} .neu{color:var(--yellow)}
+  .pill{font-size:10px;font-weight:700;padding:1px 7px;border-radius:99px;vertical-align:middle}
+  .pill.g{background:var(--green-soft);color:var(--green)} .pill.r{background:var(--red-soft);color:#c5221f} .pill.a{background:var(--amber-soft);color:#b06000}
+
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px;box-shadow:var(--shadow)}
+
+  /* Chart */
+  .chart-wrap{padding:8px 4px 0}
+  .legend{display:flex;gap:18px;font-size:12px;color:var(--muted);margin-top:10px;flex-wrap:wrap}
+  .legend i{display:inline-block;width:11px;height:3px;border-radius:2px;vertical-align:middle;margin-right:5px}
+
+  /* Valuation gauge */
+  .gauge{margin:8px 0 4px}
+  .gbar{position:relative;height:48px;border-radius:12px;overflow:hidden;background:linear-gradient(90deg,#1e8e3e 0%,#34a853 22%,#f9ab00 46%,#ea4335 100%)}
+  .gbar .seg-label{position:absolute;top:50%;transform:translate(-50%,-50%);font-size:10.5px;font-weight:700;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.25);white-space:nowrap}
+  .marker{position:absolute;top:-6px;bottom:-6px;width:3px;background:#111;border-radius:2px}
+  .marker .lab{position:absolute;top:-34px;left:50%;transform:translateX(-50%);background:#111;color:#fff;font-size:11px;font-weight:700;padding:3px 8px;border-radius:7px;white-space:nowrap}
+  .marker .lab::after{content:"";position:absolute;bottom:-4px;left:50%;transform:translateX(-50%) rotate(45deg);width:8px;height:8px;background:#111}
+  .marker.cur{background:#1a73e8} .marker.cur .lab{background:#1a73e8} .marker.cur .lab::after{background:#1a73e8}
+  .scale{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-top:14px}
+
+  .vmethod{display:flex;align-items:center;justify-content:space-between;padding:13px 0;border-bottom:1px solid var(--line)}
+  .vmethod:last-child{border-bottom:none}
+  .vmethod .mname{font-weight:600;font-size:14.5px}
+  .vmethod .mdesc{font-size:12px;color:var(--muted)}
+  .vmethod .mval{font-size:20px;font-weight:700;text-align:right}
+  .fv-box{margin-top:14px;background:var(--blue-soft);border:1px solid #c6dafc;border-radius:14px;padding:16px 18px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+  .fv-box .l{font-size:13.5px;color:var(--blue-d);font-weight:600}
+  .fv-box .r{font-size:30px;font-weight:800;color:var(--blue-d);letter-spacing:-.5px}
+
+  /* MOS */
+  .mos-verdict{border-radius:14px;padding:16px 18px;margin-bottom:14px;display:flex;align-items:center;gap:14px}
+  .mos-verdict.bad{background:var(--red-soft)} .mos-verdict.ok{background:var(--amber-soft)} .mos-verdict.good{background:var(--green-soft)}
+  .mos-verdict .big{font-size:34px;font-weight:800;letter-spacing:-1px;flex:none}
+  .mos-verdict.bad .big{color:#c5221f} .mos-verdict.ok .big{color:#b06000} .mos-verdict.good .big{color:var(--green)}
+  .mos-verdict .txt{font-size:13.5px}
+  .mos-verdict .txt b{font-size:15px}
+  .calc{margin-top:16px;border:1px dashed var(--line);border-radius:14px;padding:16px}
+  .calc label{font-size:12.5px;color:var(--muted);font-weight:600;display:block;margin-bottom:6px}
+  .calc-row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+  .calc input{font-family:'IBM Plex Mono',monospace;font-size:18px;font-weight:600;border:1.5px solid var(--line);border-radius:10px;padding:9px 12px;width:140px;outline:none}
+  .calc input:focus{border-color:var(--blue)}
+  .calc-out{font-size:14px;font-weight:600}
+
+  /* Scenarios */
+  .scn{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  .scn .col{border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--card)}
+  .scn .top{padding:12px 15px;color:#fff;font-weight:700;display:flex;justify-content:space-between;align-items:center}
+  .scn .bear .top{background:#c5221f} .scn .base .top{background:#1557b0} .scn .bull .top{background:#1e8e3e}
+  .scn .body{padding:14px 15px}
+  .scn .tgt{font-size:26px;font-weight:800;letter-spacing:-.5px}
+  .scn .ret{font-size:13px;font-weight:600;margin-top:2px}
+  .scn ul{list-style:none;margin-top:10px;font-size:12px;color:var(--muted)}
+  .scn li{display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px dotted var(--line)}
+  .scn li:last-child{border:none}
+  .scn li span:last-child{font-weight:600;color:var(--ink)}
+
+  /* Catalyst / Risk */
+  .cr{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .cr .box{border-radius:16px;padding:18px 20px;border:1px solid var(--line);box-shadow:var(--shadow)}
+  .cr .box.cat{background:linear-gradient(180deg,#f3faf5,#ffffff)}
+  .cr .box.risk{background:linear-gradient(180deg,#fef4f3,#ffffff)}
+  .cr h3{font-size:15px;font-weight:700;display:flex;align-items:center;gap:8px;margin-bottom:12px}
+  .cr .ic{width:24px;height:24px;border-radius:7px;display:grid;place-items:center;font-size:14px;flex:none}
+  .cr .cat .ic{background:var(--green-soft);color:var(--green)} .cr .risk .ic{background:var(--red-soft);color:#c5221f}
+  .cr ul{list-style:none}
+  .cr li{font-size:13px;padding:8px 0;border-bottom:1px solid var(--line);display:flex;gap:9px}
+  .cr li:last-child{border:none}
+  .cr li::before{content:"";width:6px;height:6px;border-radius:50%;margin-top:8px;flex:none}
+  .cr .cat li::before{background:var(--green)} .cr .risk li::before{background:var(--red)}
+  .cr li b{font-weight:700}
+
+  /* Verdict */
+  .verdict{background:linear-gradient(135deg,#0d2a23,#13453a);color:#fff;border-radius:18px;padding:24px 26px;box-shadow:var(--shadow)}
+  .verdict h2{font-size:20px;font-weight:700;margin-bottom:6px}
+  .verdict p{color:#d2e4dc;font-size:14px;margin-bottom:14px}
+  .vgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:6px}
+  .vcell{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:13px 15px}
+  .vcell .k{font-size:11.5px;color:#a6c4b8;font-weight:500}
+  .vcell .v{font-size:17px;font-weight:700;margin-top:3px}
+  .zone{margin-top:16px;font-size:13px;color:#d2e4dc;background:rgba(255,255,255,.05);border-left:3px solid var(--yellow);border-radius:0 10px 10px 0;padding:11px 15px}
+
+  .disc{margin-top:24px;font-size:12px;color:var(--muted);background:#fafbfc;border:1px solid var(--line);border-radius:12px;padding:14px 16px;line-height:1.7}
+  .disc b{color:var(--ink)}
+  footer{text-align:center;font-size:11.5px;color:var(--muted);margin-top:22px}
+
+  @media(max-width:760px){
+    .g4{grid-template-columns:repeat(2,1fr)} .g3{grid-template-columns:repeat(2,1fr)}
+    .scn{grid-template-columns:1fr} .cr{grid-template-columns:1fr} .vgrid{grid-template-columns:1fr}
+    .px{font-size:36px} h1{font-size:24px} .px-meta{margin-left:0;text-align:left;width:100%}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots"><span style="background:#1e8e3e"></span><span style="background:#34A853"></span><span style="background:#f9ab00"></span><span style="background:#1a73e8"></span></div>
+    <div>
+      <span class="tag">NYSE: GEV</span>
+      <span class="tag">Industrials • Electrical Equipment</span>
+      <span class="tag">Large-cap • AI Power</span>
+    </div>
+    <h1>GE Vernova Inc.</h1>
+    <div class="sub">อุปกรณ์ผลิตไฟฟ้า–ส่งไฟ • กังหันก๊าซ, กริด, นิวเคลียร์, ลม • ซัพพลายเออร์หลักของ "AI power buildout"</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$1,128<small>(GEV)</small></div>
+      </div>
+      <div class="chg">▲ +1.6% (22 มิ.ย.)</div>
+      <div class="px-meta">
+        ราคา ณ 22 มิ.ย. 2026 (ปิด 16:00 ET) ที่ $1,127.59<br>
+        ปิดก่อนหน้า $1,109.73 • ใกล้จุดสูงสุดตลอดกาล<br>
+        ที่มา: StockAnalysis / Yahoo Finance / CNBC
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">งบ FY2025 + Q1/2026 (8-K)</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~$303B</div><div class="d">~269 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM, GAAP)</div><div class="v">~33x</div><div class="d">EPS TTM $34.17 <span class="pill a">บวมจากกำไรพิเศษ</span></div></div>
+      <div class="metric"><div class="k">P/E (Forward)</div><div class="v neu">~61x</div><div class="d">EPS หลักคาด ~$14–15/หุ้น</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">0.18%</div><div class="d">$2.00/ปี • เพิ่งเพิ่ม 2 เท่า</div></div>
+
+      <div class="metric"><div class="k">รายได้ FY2025</div><div class="v">$38.1B</div><div class="d pos">▲ +9% YoY</div></div>
+      <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">$4.88B</div><div class="d pos">▲ +215% YoY</div></div>
+      <div class="metric"><div class="k">EPS FY2025 (GAAP)</div><div class="v">$17.69</div><div class="d pos">▲ +217% (จาก $5.58)</div></div>
+      <div class="metric"><div class="k">ROE</div><div class="v">~76%</div><div class="d">ROIC ~36% (ฐานทุนบาง)</div></div>
+
+      <div class="metric"><div class="k">รายได้ Q1/2026</div><div class="v">$9.34B</div><div class="d pos">▲ +16% YoY</div></div>
+      <div class="metric"><div class="k">Adj. EPS Q1/2026</div><div class="v neu">$1.98</div><div class="d">GAAP $17.44 (กำไรครั้งเดียว)</div></div>
+      <div class="metric"><div class="k">Gas Power Backlog</div><div class="v">62 GW</div><div class="d pos">slot จองยาว • +55% orders</div></div>
+      <div class="metric"><div class="k">ช่วง 52 สัปดาห์</div><div class="v" style="font-size:18px">$479 – $1,182</div><div class="d">All-time high $1,181.95</div></div>
+    </div>
+  </section>
+
+  <!-- ===== PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#1a73e8"></i>ราคา GEV</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $1,020</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        นับจากแยกตัวออกจาก GE (เม.ย. 2024) หุ้น GEV วิ่งขึ้น <b>หลายเท่าตัว</b> จากช่วงต่ำราว $480 (กลางปี 2025)
+        สู่จุดสูงสุดตลอดกาล $1,181.95 (พ.ค. 2026) ด้วยธีม <b>ไฟฟ้าสำหรับดาต้าเซ็นเตอร์ AI</b> — ความต้องการกังหันก๊าซล้น
+        จน slot การผลิตเต็มถึงปลายทศวรรษ ปัจจุบันย่อมาเคลื่อนไหวแถว ~$1,128
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">3 วิธี เฉลี่ยถ่วงน้ำหนัก</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation <span class="pill r">ระมัดระวัง</span></div><div class="mdesc">EPS หลัก ~$14.5 × P/E เติบโตสูง ~62x (อิงกำไรปกติ ไม่รวมกำไรพิเศษครั้งเดียว Q1/2026)</div></div>
+        <div class="mval">$899</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. DCF (2-stage)</div><div class="mdesc">FCF เป้า $6.5–7.5B ปี 2026 โต 2 เฟส, WACC ~9.5%, Terminal 3.5% — สะท้อนช่วงเร่งตัวของ capex ไฟฟ้า</div></div>
+        <div class="mval">$1,050</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Analyst Intrinsic</div><div class="mdesc">ค่าเฉลี่ยจากโมเดล fair value/SOTP ของนักวิเคราะห์ (กรอบ ~$900–$1,250)</div></div>
+        <div class="mval">$1,110</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $899 – $1,110</span></div>
+        <div class="r">$1,020</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        <b>หมายเหตุ:</b> ข้าม DDM เพราะปันผลน้อยมาก (0.18%) ไม่มีนัยสำคัญ • EPS TTM แบบ GAAP ($34.17) <b>บวมจากกำไรครั้งเดียว</b>
+        ใน Q1/2026 (adj. EPS จริงแค่ $1.98) จึงต้องวาลู ด้วย <b>กำไรหลัก/ปกติ ~$14–15</b> • วิธี P/E ใช้ตัวคูณสูงมากเพราะ
+        ตลาดราคา GEV เป็นหุ้นเติบโตในเมกะเทรนด์ไฟฟ้า แต่ทำให้ margin of safety เปราะ
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $1,128</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $1,020</div></div>
+        </div>
+        <div class="scale">
+          <span>$714<br><small>MOS 30%</small></span>
+          <span>$816<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$1,020<br><small>Fair Value</small></span>
+          <span style="text-align:right">$1,212<br><small>เป้า Analyst</small></span>
+          <span style="text-align:right">$1,424<br><small>เป้าสูงสุด</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคา $1,128 อยู่ <b>เหนือมูลค่าเหมาะสม</b> ในเชิงพื้นฐาน — แต่ยัง <b>ต่ำกว่าเป้าหมาย 12 เดือน</b> ของนักวิเคราะห์ (เฉลี่ย $1,212, สูงสุด $1,424; เรตติ้ง Buy จาก 38 ราย)
+        สะท้อนความเห็น 2 ขั้ว: สาย value มองว่าแพง, สาย growth มองว่าธีมไฟฟ้า AI ยังให้ upside
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">−11%</div>
+        <div class="txt"><b>ไม่มี Margin of Safety</b><br>ราคาปัจจุบัน $1,128 สูงกว่ามูลค่าเหมาะสม $1,020 ราว 11% → ตามเกณฑ์ value investor ถือว่า <b>แพงเล็กน้อย</b> ยังไม่ใช่จุดซื้อที่ปลอดภัย</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$816</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$714</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $980</div><div class="d">ใกล้ขอบล่างของ fair value</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="1128" step="1">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== RETURN PROJECTION ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $1,128 • EPS ฐาน ~$14.5</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS +8%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$732</div>
+          <div class="ret neg">รวม ~ −35% (≈ −13%/ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>$18.3</span></li>
+            <li><span>P/E ออก</span><span>40x</span></li>
+            <li><span>สถานการณ์</span><span>orders ชะลอ / wind ขาดทุนต่อ</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +18%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$1,190</div>
+          <div class="ret pos">รวม ~ +5% (≈ +1.8%/ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>$23.8</span></li>
+            <li><span>P/E ออก</span><span>50x</span></li>
+            <li><span>สถานการณ์</span><span>backlog ทยอยส่งมอบ มาร์จิ้นขยาย</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +28%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$1,824</div>
+          <div class="ret pos">รวม ~ +62% (≈ +17%/ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>$30.4</span></li>
+            <li><span>P/E ออก</span><span>60x</span></li>
+            <li><span>สถานการณ์</span><span>ดีมานด์ไฟ AI ระเบิด • slot เต็มยาว</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      ความเสี่ยง–ผลตอบแทนค่อนข้าง <b>เอียงไปทางผันผวนสูง</b> — <b>base case ให้ผลตอบแทนไม่สูง</b> (~2%/ปี) เพราะเข้าซื้อที่ราคาแพงกว่ามูลค่าพื้นฐานและตัวคูณกำไรอยู่ระดับพรีเมียม
+      upside ที่แท้จริงขึ้นกับว่าดีมานด์ไฟฟ้าจากดาต้าเซ็นเตอร์ AI ยังเร่งจริงและ GEV รักษ์ความสามารถทำกำไรไว้ได้หรือไม่ • ตัวคูณ P/E ที่ใช้สูงมากตามลักษณะหุ้นเติบโต
+    </p>
+  </section>
+
+  <!-- ===== CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><div><b>ดีมานด์ไฟฟ้า AI:</b> ดาต้าเซ็นเตอร์ดูดไฟมหาศาล กริดสหรัฐตึง → กังหันก๊าซ GEV เป็นแหล่งจ่ายไฟพร้อมใช้ที่ขาดแคลน — <b>slot การผลิตจองยาวถึงปลายทศวรรษ</b></div></li>
+          <li><div><b>Backlog แข็ง + orders พุ่ง:</b> Gas Power backlog/slot reservation โต 55→62 GW, Q3/2025 orders $14.6B (+55% organic) — รายได้ส่งมอบล่วงหน้าชัดเจน</div></li>
+          <li><div><b>มาร์จิ้นขยายตัว:</b> ยกไกด์ปี 2026 เป็นรายได้ $44.5–45.5B, adj. EBITDA margin 12–14%, FCF $6.5–7.5B — กำไรหลักเร่งตัวจากราคาดีและสเกล</div></li>
+          <li><div><b>กลุ่มไฟฟ้า–กริด:</b> Electrification (หม้อแปลง/อุปกรณ์ส่งจ่าย) ดีมานด์ล้นทั่วโลกจาก capex โครงข่าย — backlog และ pricing ดีขึ้นต่อเนื่อง</div></li>
+          <li><div><b>นิวเคลียร์ขนาดเล็ก (SMR):</b> ออปชันระยะยาวจาก BWRX-300 ตอบโจทย์ไฟสะอาดฐาน (baseload) สำหรับลูกค้าเทคโนโลยี</div></li>
+          <li><div><b>คืนทุนผู้ถือหุ้น:</b> เพิ่มปันผล 2 เท่า + เพิ่มวงเงินซื้อหุ้นคืน • งบดุลเงินสดสุทธิ สะท้อนกระแสเงินสดที่ดีขึ้น</div></li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><div><b>Valuation แพงมาก:</b> Forward P/E ~61x, P/S ~7.7x, P/B ~22x — ราคาสะท้อนการเติบโตสูงไว้แล้ว margin of safety เปราะ ผิดหวังนิดเดียวก็ลงแรง</div></li>
+          <li><div><b>EPS GAAP หลอกตา:</b> EPS TTM $34.17 และ Q1/2026 GAAP $17.44 <b>บวมจากกำไรครั้งเดียว</b> (adj. แค่ $1.98) — P/E TTM 33x ดู "ถูก" กว่าความเป็นจริงมาก</div></li>
+          <li><div><b>ขาดทุนกลุ่ม Wind:</b> ธุรกิจลม (โดยเฉพาะ offshore เช่น Vineyard Wind) ยังขาดทุน มีข้อพิพาทคุณภาพ/การจ่ายเงินและคำสั่งศาล — ถ่วงกำไรรวม</div></li>
+          <li><div><b>วัฏจักร & การส่งมอบ:</b> เป็นธุรกิจทุนหนักวัฏจักรสูง — ดีมานด์ AI อาจชะลอ, ซัพพลายเชน/ต้นทุนวัตถุดิบ และความเสี่ยงการดำเนินโครงการระยะยาว</div></li>
+          <li><div><b>การแข่งขัน:</b> Siemens Energy, Mitsubishi Power แย่งคำสั่งกังหัน — ระยะยาวอาจมีกำลังผลิตใหม่เข้ามากดราคา/มาร์จิ้น</div></li>
+          <li><div><b>นโยบาย/พลังงาน:</b> เปลี่ยนแปลงเชิงนโยบายพลังงาน เงินอุดหนุน และอัตราดอกเบี้ยกระทบทั้งดีมานด์โครงการและการประเมินมูลค่าหุ้นเติบโต</div></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>ธุรกิจอยู่ใจกลางเมกะเทรนด์ไฟ AI แต่ราคา ณ ตอนนี้ "ไม่ถูก"</h2>
+      <p>GE Vernova เป็นซัพพลายเออร์หลักของการสร้างกำลังไฟฟ้าเพื่อรองรับ AI — backlog กังหันก๊าซแน่น มาร์จิ้นกำลังขยาย และเพิ่งยกไกด์/คืนทุนผู้ถือหุ้น แต่ที่ราคา ~$1,128 ตลาดสะท้อนการเติบโตไว้มากแล้ว (forward P/E ~61x) สำหรับสาย value จึงยังไม่มีส่วนเผื่อความปลอดภัย ส่วนสาย growth ที่เชื่อธีมไฟ AI ยังพอเห็น upside แต่ความเสี่ยงสูงขึ้น</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$1,020 <span style="font-size:12px;color:#a6c4b8">($899–$1,110)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ff8a80">แพง ~11%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">$1,212 (+7%)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> สาย value — รอย่อ/ทยอยสะสมเมื่อราคา <b>ต่ำกว่า ~$980</b> (น่าสนใจที่ &lt;$816) • สาย growth — เข้าได้แบบ DCA และยอมรับความผันผวนสูง โดยติดตาม <b>orders/backlog กังหันก๊าซ</b>, <b>การขยายมาร์จิ้น</b> และ <b>FCF</b> เป็นตัวชี้วัดหลัก
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ "EPS หลัก/Normalized" (เพราะ EPS GAAP บวมจากกำไรครั้งเดียว) และตัวคูณ P/E ที่ใช้สูงตามลักษณะหุ้นเติบโต ซึ่งเป็นจุดถกเถียงหลัก
+    GEV เป็นหุ้นวัฏจักร–ทุนหนัก ราคาผันผวนสูงและเคลื่อนไหวแรงตามธีม AI ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • อ้างอิงงบจริงจาก SEC (8-K FY2025 และ Q1 2026)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 22–23 มิ.ย. 2026 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<script>
+(function(){
+  /* ---------- Price chart ---------- */
+  // [label, price] approximate
+  const data=[["มิ.ย.25",490],["ส.ค.25",560],["ต.ค.25",680],["ธ.ค.25",820],["ก.พ.26",950],["เม.ย.26",1040],["พ.ค.26",1182],["มิ.ย.26",1128]];
+  const W=920,H=300;
+  const padL=56,padR=16,padT=18,padB=34;
+  const min=420,max=1240;
+  const xs=i=>padL+(W-padL-padR)*(i/(data.length-1));
+  const ys=v=>padT+(H-padT-padB)*(1-(v-min)/(max-min));
+  let path="",area="";
+  data.forEach((d,i)=>{const x=xs(i),y=ys(d[1]);path+=(i?"L":"M")+x.toFixed(1)+" "+y.toFixed(1)+" ";});
+  area=path+`L${xs(data.length-1).toFixed(1)} ${ys(min).toFixed(1)} L${padL} ${ys(min).toFixed(1)} Z`;
+  let svg=`<defs><linearGradient id="ag" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1a73e8" stop-opacity=".22"/><stop offset="1" stop-color="#1a73e8" stop-opacity="0"/></linearGradient></defs>`;
+  // gridlines
+  [500,700,900,1100].forEach(v=>{const y=ys(v);svg+=`<line x1="${padL}" y1="${y}" x2="${W-padR}" y2="${y}" stroke="#eef1f5" stroke-width="1"/><text x="${padL-8}" y="${y+4}" text-anchor="end" font-size="11" fill="#9aa3b2" font-family="IBM Plex Mono">$${v}</text>`;});
+  // fair value line
+  const fy=ys(1020);svg+=`<line x1="${padL}" y1="${fy}" x2="${W-padR}" y2="${fy}" stroke="#1e8e3e" stroke-width="1.5" stroke-dasharray="6 5"/>`;
+  // area + line
+  svg+=`<path d="${area}" fill="url(#ag)"/><path d="${path}" fill="none" stroke="#1a73e8" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"/>`;
+  // points + x labels
+  data.forEach((d,i)=>{const x=xs(i),y=ys(d[1]);const hi=(i===6||i===7);
+    svg+=`<circle cx="${x}" cy="${y}" r="${hi?5:3.2}" fill="${hi?'#ea4335':'#1a73e8'}" stroke="#fff" stroke-width="2"/>`;
+    svg+=`<text x="${x}" y="${H-12}" text-anchor="middle" font-size="11" fill="#9aa3b2">${d[0]}</text>`;
+    if(hi)svg+=`<text x="${x}" y="${y-12}" text-anchor="middle" font-size="11" font-weight="700" fill="${i===7?'#1a73e8':'#ea4335'}" font-family="IBM Plex Mono">$${d[1]}</text>`;
+  });
+  document.getElementById("priceChart").innerHTML=svg;
+
+  /* ---------- Gauge marker positions ---------- */
+  // scale: $680 -> 0%, $1480 -> 100%
+  const gmin=680,gmax=1480;
+  const gpos=v=>Math.max(2,Math.min(98,(v-gmin)/(gmax-gmin)*100));
+  document.getElementById("mCur").style.left=gpos(1128)+"%";
+  document.getElementById("mFair").style.left=gpos(1020)+"%";
+  // nudge fair label up to avoid overlap
+  document.querySelector("#mFair .lab").style.top="-58px";
+
+  /* ---------- MOS calculator ---------- */
+  const FV=1020;
+  const out=document.getElementById("mosOut");
+  const inp=document.getElementById("pxIn");
+  function calc(){
+    const p=parseFloat(inp.value);
+    if(isNaN(p)||p<=0){out.innerHTML="<span style='color:#9aa3b2'>กรอกราคา…</span>";return;}
+    const mos=(FV-p)/FV*100;
+    let c,msg;
+    if(mos<10){c="#c5221f";msg=mos<0?"แพงกว่ามูลค่า — ไม่ปลอดภัย":"ส่วนเผื่อบาง — ยังไม่น่าซื้อ";}
+    else if(mos<20){c="#b06000";msg="พอใช้ — ทยอยสะสมได้";}
+    else if(mos<30){c="#1e8e3e";msg="น่าซื้อ — โซน Value Investor";}
+    else{c="#1e8e3e";msg="ถูกมาก — เช็คว่าไม่ใช่ value trap";}
+    out.innerHTML=`MOS = <span class="mono" style="color:${c};font-size:18px">${mos>0?'+':''}${mos.toFixed(1)}%</span> &nbsp;<span style="color:${c}">${msg}</span>`;
+  }
+  inp.addEventListener("input",calc);
+  calc();
+})();
+</script>
+</body>
+</html>
