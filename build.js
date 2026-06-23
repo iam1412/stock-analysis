@@ -102,7 +102,8 @@ function injectViewVoteScript(html, symbol) {
     `if(method==="POST"&&r.status===429&&path.indexOf("/api/views/")===0)return fetch(path).then(function(r2){return r2.json()});` +
     `if(!r.ok&&path.indexOf("/api/vote/")===0)return null;return r.json();});}` +
     `var seen=null;try{seen=sessionStorage.getItem(vk)}catch(e){}` +
-    `api("/api/views/"+encodeURIComponent(S),seen?"GET":"POST").then(function(d){fill(d);try{sessionStorage.setItem(vk,"1")}catch(e){}}).catch(function(){});` +
+    // ตั้ง flag "นับแล้ว" เฉพาะตอน POST นับเพิ่มสำเร็จจริง (d.count เป็นตัวเลข) — ถ้า request พลาดจะ retry รอบหน้า ไม่ล็อกเป็น GET-only
+    `api("/api/views/"+encodeURIComponent(S),seen?"GET":"POST").then(function(d){fill(d);if(!seen&&d&&typeof d.count==="number"){try{sessionStorage.setItem(vk,"1")}catch(e){}}}).catch(function(){});` +
     `var busy=false;function send(to){if(busy)return;busy=true;var from=vote||"none";` +
     `api("/api/vote/"+encodeURIComponent(S)+"?from="+from+"&to="+to,"POST").then(function(d){if(!d)return;vote=(to==="none")?null:to;setVote(vote);fill(d);})` +
     `.catch(function(){}).then(function(){busy=false;});}` +
