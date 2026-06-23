@@ -2,6 +2,7 @@
 
 รวม **รายงานวิเคราะห์หุ้น** (Fair Value, Margin of Safety, จุดเข้าซื้อ, ผลตอบแทนคาดการณ์)
 เป็นเว็บ static (1 หุ้น = 1 ไฟล์ HTML) + **screener เรียง/คัดกรองด้วย MOS · P/E · Yield · ROE · Upside** (เรียงฝั่ง client, 0 request)
+\+ **ป้ายไฮไลต์ "จุดเด่น" อัตโนมัติต่อหุ้น** (เลือก metric ที่เด่นสุด + มงกุฎให้ตัวที่ดีสุดในกลุ่ม — คำนวณตอน build)
 \+ **ระบบนับยอดวิว / 👍👎 แบบนับเป๊ะทั่วโลกด้วย Durable Object** — deploy อัตโนมัติบน Cloudflare Workers
 
 > ⚠️ ข้อมูลทั้งหมดเพื่อการศึกษาเท่านั้น **ไม่ใช่คำแนะนำการลงทุน**
@@ -88,12 +89,12 @@ open dist/index.html
 `npm run verify` ตรวจ 3 ชั้น — มี error เมื่อไหร่ push ไม่ได้:
 
 1. **`check-reports.js`** (source ทีละไฟล์): โครงสร้างครบ (รวม meta `ai-model` ระบุโมเดล AI) • **ตัวเลขสอดคล้องกันเอง** (ค่า `FV` ในเครื่องคิดเลข = Fair Value = สรุป, `MOS=(FV−ราคา)/FV`, จุดซื้อ MOS = FV×0.8/0.7, คณิตแต่ละวิธี P/E & P/BV, scenario EPS ทบต้น) • **บล็อก `stock-meta` (screener) = เลขที่โชว์จริง** (E29–31: ครบ key + price/FV/MOS ตรงกล่อง + mos/upside สอดคล้อง) • **ความสดของราคา** (เตือน >45 วัน, บล็อก >120 วัน) • แหล่งข้อมูล ≥3 + ตัวเลขสมเหตุสมผล • ไม่มี placeholder/undefined
-2. **`build-test.js`** (unit-test build.js): `freshHash` (เปลี่ยนโมเดล/บล็อก stock-meta ไม่ดันวันที่) • เครดิตโมเดล AI ต่อ report • `extractMetrics` ดึง metric จากบล็อก stock-meta
+2. **`build-test.js`** (unit-test build.js): `freshHash` (เปลี่ยนโมเดล/บล็อก stock-meta ไม่ดันวันที่) • เครดิตโมเดล AI ต่อ report • `extractMetrics` ดึง metric จากบล็อก stock-meta • `pickHighlight`/`computeLeaders` เลือก "จุดเด่น" + ป้าย "…สุดในกลุ่ม" บนการ์ด
 3. **`check-site.js`** (หลัง build, ระดับเว็บไซต์): ทุก report อยู่ใน index/manifest ครบ • `<script>` JS ไม่พัง + id ครบ (ข้าม data block `application/json`) • โมเดลใน footer = meta `ai-model` • **การ์ด index `data-*` = บล็อก stock-meta ของ report** • **ความปลอดภัย: external resource = Google Fonts เท่านั้น ห้าม `<script src>` ภายนอก**
 
 ```bash
 npm test                 # ชั้น 1 อย่างเดียว    npm test -- BBL   # เฉพาะบางตัว
-npm run test:build       # ชั้น 1.5 อย่างเดียว (unit-test build.js — 19 เคส)
+npm run test:build       # ชั้น 1.5 อย่างเดียว (unit-test build.js — 27 เคส)
 npm run check:site       # ชั้น 3 อย่างเดียว (ต้อง build ก่อน)
 npm run test:self        # พิสูจน์ว่า checker เองยังจับ bug ได้ (42 เคส)
 git config core.hooksPath .githooks   # เปิดใช้ pre-push hook (ครั้งเดียวต่อ clone)

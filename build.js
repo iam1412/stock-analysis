@@ -193,8 +193,73 @@ function decorateReport(html, r) {
   return h;
 }
 
+// ── จุดเด่น (standout metric) สำหรับไฮไลต์บนการ์ดหน้า index ──────────────────────
+// เลือก metric ที่ "เด่นที่สุด" ของหุ้นแต่ละตัวจากเกณฑ์เชิงคุณค่า (value investing) แล้วทำเป็นป้ายเด่น ๆ
+//   dir:'hi' = ค่ามากยิ่งดี · dir:'lo' = ค่าน้อยยิ่งดี (P/E) · t3/t2/t1 = เกณฑ์ เด่นมาก/เด่น/พอเด่น
+//   โชว์ป้ายเฉพาะที่เด่นจริง (tier ≥ 2) · ถ้าเป็นค่าดีสุดในกลุ่มรายงานทั้งหมด → มงกุฎ 👑 "…สุดในกลุ่ม"
+const HL_DEFS = [
+  { k: 'mos',           lab: 'MOS',    suf: '%', dir: 'hi', t3: 30, t2: 15, t1: 5,  icon: '🛡️', cls: 'val',
+    d3: 'ส่วนเผื่อปลอดภัยสูง', d2: 'ส่วนเผื่อปลอดภัยดี', lead: 'ส่วนเผื่อสูงสุดในกลุ่ม' },
+  { k: 'upside',        lab: 'Upside', suf: '%', dir: 'hi', t3: 30, t2: 15, t1: 8,  icon: '🚀', cls: 'val',
+    d3: 'อัพไซด์สูง', d2: 'อัพไซด์ดี', lead: 'อัพไซด์สูงสุดในกลุ่ม' },
+  { k: 'roe',           lab: 'ROE',    suf: '%', dir: 'hi', t3: 25, t2: 18, t1: 12, icon: '💎', cls: 'qual',
+    d3: 'ทำกำไรสูงมาก', d2: 'ทำกำไรเด่น', lead: 'ROE สูงสุดในกลุ่ม' },
+  { k: 'dividendYield', lab: 'Yield',  suf: '%', dir: 'hi', t3: 6,  t2: 4,  t1: 3,  icon: '💰', cls: 'inc',
+    d3: 'ปันผลสูง', d2: 'ปันผลดี', lead: 'ปันผลสูงสุดในกลุ่ม' },
+  { k: 'pe',            lab: 'P/E',    suf: '',  dir: 'lo', t3: 8,  t2: 11, t1: 14, icon: '🏷️', cls: 'cheap',
+    d3: 'ราคาถูกมาก', d2: 'ราคาน่าสนใจ', lead: 'P/E ต่ำสุดในกลุ่ม' },
+];
+function hlTier(def, v) {
+  // P/E (dir 'lo') ติดลบ/ศูนย์ = ขาดทุน ไม่ใช่ "ถูก" → tier 0
+  if (def.dir === 'lo') return v <= 0 ? 0 : v <= def.t3 ? 3 : v <= def.t2 ? 2 : v <= def.t1 ? 1 : 0;
+  return v >= def.t3 ? 3 : v >= def.t2 ? 2 : v >= def.t1 ? 1 : 0;
+}
+// เลือกจุดเด่น 1 ค่าของหุ้น — คืน null ถ้าไม่มี metric ที่เด่นพอ (tier<2) หรือไม่มี stock-meta
+// leaders: { k: ค่าดีสุดในกลุ่ม } (optional) → ถ้าหุ้นถือค่านั้น ติดมงกุฎ "…สุดในกลุ่ม"
+// คะแนนเลือก: tier สำคัญสุด > เป็นผู้นำกลุ่ม > strength (กันเสมอใน tier เดียวกัน) — leader ไม่ข้าม tier
+function pickHighlight(metrics, leaders) {
+  if (!metrics) return null;
+  leaders = leaders || {};
+  let best = null;
+  for (const d of HL_DEFS) {
+    const v = metrics[d.k];
+    if (typeof v !== 'number' || !isFinite(v)) continue;
+    const tier = hlTier(d, v);
+    if (tier < 2) continue;                                     // โชว์เฉพาะที่เด่นจริง
+    const isLeader = leaders[d.k] != null && v === leaders[d.k];
+    const strength = d.dir === 'lo' ? (d.t1 - v) / d.t1 : v / d.t3;
+    const score = tier * 100 + (isLeader ? 50 : 0) + strength;
+    if (!best || score > best.score) best = { d, v, tier, isLeader, score };
+  }
+  if (!best) return null;
+  const { d, v, tier, isLeader } = best;
+  const val = Math.round(v * 100) / 100;
+  return {
+    cls: d.cls,
+    icon: isLeader ? '👑' : d.icon,
+    lead: isLeader,
+    value: d.lab + ' ' + val + d.suf,
+    desc: isLeader ? d.lead : tier === 3 ? d.d3 : d.d2,
+  };
+}
+// ค่าดีสุดของแต่ละ metric ในกลุ่มรายงาน (max สำหรับ dir 'hi', min สำหรับ P/E) — ใช้ป้าย "…สุดในกลุ่ม"
+function computeLeaders(reps) {
+  const out = {};
+  for (const d of HL_DEFS) {
+    let best = null;
+    for (const r of reps) {
+      const v = r.metrics && r.metrics[d.k];
+      if (typeof v !== 'number' || !isFinite(v)) continue;
+      if (d.dir === 'lo' && v <= 0) continue;                   // P/E ติดลบไม่นับเป็นผู้นำ
+      best = best == null ? v : d.dir === 'lo' ? Math.min(best, v) : Math.max(best, v);
+    }
+    out[d.k] = best;
+  }
+  return out;
+}
+
 // export ฟังก์ชันให้ unit-test (test/build-test.js) — ต้องอยู่ก่อนโค้ดที่รัน build จริง
-module.exports = { extractMeta, extractMetrics, freshHash, injectModelCredit, injectContactFooter, decorateReport, AI_MODEL, AI_MAKER };
+module.exports = { extractMeta, extractMetrics, freshHash, injectModelCredit, injectContactFooter, decorateReport, pickHighlight, computeLeaders, HL_DEFS, AI_MODEL, AI_MAKER };
 // ถูก require เข้ามาเพื่อเทส → ส่งออกฟังก์ชันแล้วหยุด ไม่รัน build (top-level return ใช้ได้ใน CommonJS module)
 if (require.main !== module) return;
 
@@ -288,11 +353,19 @@ const metricAttrs = (m) => !m ? '' : METRIC_DEFS.map((d) => m[d.k] == null ? '' 
 const metricStrip = (m) => !m ? '' : `
         <div class="cmetrics">${METRIC_DEFS.map((d) => `<span class="cm" data-m="${d.dk}">${d.lab} <b>${esc(fmtMetric(m[d.k], d.suf))}</b></span>`).join('')}</div>`;
 
+// ป้ายไฮไลต์ "จุดเด่น" ของหุ้นแต่ละตัว — คำนวณตอน build จาก stock-meta (static, ไม่พึ่ง JS)
+const leaders = computeLeaders(reports);
+const highlightChip = (m) => {
+  const h = pickHighlight(m, leaders);
+  return h ? `
+        <div class="hl hl-${h.cls}${h.lead ? ' lead' : ''}"><span class="hl-ic">${h.icon}</span><span class="hl-v">${esc(h.value)}</span><span class="hl-d">${esc(h.desc)}</span></div>` : '';
+};
+
 const cards = reports.map((r) => `
       <a class="card" data-search="${escAttr((r.symbol + ' ' + r.name + ' ' + r.title).toLowerCase())}"${metricAttrs(r.metrics)} href="./${encodeURIComponent(r.file)}">
         <div class="badge">${esc(r.symbol)}</div>
         <div class="cname">${esc(r.name)}</div>
-        <div class="ctitle">${esc(r.title)}</div>${metricStrip(r.metrics)}
+        <div class="ctitle">${esc(r.title)}</div>${highlightChip(r.metrics)}${metricStrip(r.metrics)}
         <div class="cmeta"><span class="go">เปิดรายงาน →</span><span class="cviews" data-sym="${escAttr(r.symbol)}" hidden>👁 <b class="v">0</b> · 👍 <b class="l">0</b> · 👎 <b class="d">0</b></span><span class="cdate">${fmtDate(r.updated)}</span></div>
       </a>`).join('\n');
 
@@ -506,6 +579,15 @@ const indexHtml = `<!DOCTYPE html>
   .badge{font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:13px;color:var(--blue-d);background:#e8f0fe;align-self:flex-start;padding:3px 10px;border-radius:8px}
   .cname{font-size:18px;font-weight:700;margin-top:6px}
   .ctitle{font-size:13px;color:var(--muted)}
+  .hl{display:inline-flex;align-items:center;gap:6px;align-self:flex-start;max-width:100%;margin-top:9px;padding:5px 11px 5px 9px;border-radius:99px;font-size:12.5px;font-weight:600;line-height:1.3;border:1px solid transparent}
+  .hl .hl-ic{font-size:13.5px;line-height:1}
+  .hl .hl-v{font-family:'IBM Plex Mono',monospace;font-weight:700;white-space:nowrap}
+  .hl .hl-d{font-weight:500;opacity:.9;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .hl-val{background:#e7f5ec;color:#0b7a3b;border-color:#bfe6cd}
+  .hl-qual{background:#f1ebfb;color:#6a3da3;border-color:#ded0f2}
+  .hl-inc{background:#fff3e0;color:#a85d00;border-color:#ffe0b0}
+  .hl-cheap{background:#e3f3f7;color:#0b6e84;border-color:#bce4ee}
+  .hl.lead{border-color:#e6b315;box-shadow:0 0 0 2px rgba(230,179,21,.18)}
   .cmetrics{display:flex;flex-wrap:wrap;gap:3px 10px;margin-top:8px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted);line-height:1.5}
   .cmetrics .cm b{font-weight:600;color:var(--ink)}
   .cmetrics .cm.on{color:var(--blue-d)}
