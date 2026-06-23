@@ -37,6 +37,14 @@ const log = (...a) => console.log('[build]', ...a);
 const stripTags = (s) => (s || '').replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 const escAttr = (s) => esc(s).replace(/"/g, '&quot;'); // ปลอดภัยสำหรับใส่ใน attribute
+// ถอดรหัส HTML entity พื้นฐาน (named + numeric) — แต่ละ match อิสระต่อกัน ไม่มีปัญหาลำดับ decode ซ้อน
+// ต้องถอดก่อนเก็บข้อความ (เช่น "specialty &amp; mature") ไม่งั้น esc() ตอน render จะกลายเป็น &amp;amp; (double-escape)
+const decodeEntities = (s) => String(s).replace(/&(#x?[0-9a-f]+|amp|lt|gt|quot|apos|nbsp);/gi, (m, e) => {
+  e = e.toLowerCase();
+  if (e[0] === '#') { const n = e[1] === 'x' ? parseInt(e.slice(2), 16) : parseInt(e.slice(1), 10); return isFinite(n) ? String.fromCodePoint(n) : m; }
+  return { amp: '&', lt: '<', gt: '>', quot: '"', apos: "'", nbsp: ' ' }[e] || m;
+});
+const cleanText = (s) => decodeEntities(stripTags(s)); // ตัดแท็ก + ถอด entity → ข้อความดิบพร้อม esc() ตอน render
 const hash = (s) => crypto.createHash('sha256').update(s).digest('hex').slice(0, 12);
 // hash สำหรับ track "อัปเดตล่าสุด": ตัด metadata ที่ไม่ใช่เนื้อหาวิเคราะห์ออกก่อน —
 //  • meta ai-model (ประทับโมเดล)  • บล็อก stock-meta (ตัวเลขสรุปสำหรับเรียง index — เป็น "กระจก" ของเลขที่โชว์อยู่แล้ว)
@@ -49,10 +57,13 @@ function extractMeta(html, symbol) {
   const titleM = html.match(/<title>([\s\S]*?)<\/title>/i);
   const h1M = html.match(/<h1[^>]*>([\s\S]*?)<\/h1>/i);
   const modelM = html.match(/<meta\s+name=["']ai-model["']\s+content=["']([^"']*)["']/i); // โมเดล AI ที่ report ประกาศของตัวเอง
-  const title = stripTags(titleM && titleM[1]) || symbol;
-  const name = stripTags(h1M && h1M[1]) || title;
+  // คำโปรย "บริษัททำธุรกิจอะไร" = <div class="sub"> ที่อยู่ใต้ <h1> ในหัวรายงาน — ใช้โชว์บนการ์ดหน้า index แทน title
+  const descM = html.match(/<h1[^>]*>[\s\S]*?<\/h1>\s*<div[^>]*\bclass=["'][^"']*\bsub\b[^"']*["'][^>]*>([\s\S]*?)<\/div>/i);
+  const title = cleanText(titleM && titleM[1]) || symbol;
+  const name = cleanText(h1M && h1M[1]) || title;
+  const desc = cleanText(descM && descM[1]); // คำโปรยธุรกิจ ('' ถ้าไม่มี → การ์ด fallback ไปใช้ title)
   const aiModel = (modelM && modelM[1].trim()) || null; // null → footer ใช้ค่ากลาง AI_MODEL
-  return { title, name, aiModel };
+  return { title, name, desc, aiModel };
 }
 
 // อ่านบล็อก <script type="application/json" id="stock-meta"> ที่ report ประกาศ → metric สำหรับเรียง/แสดงบนหน้า index
@@ -309,12 +320,12 @@ reports.sort((a, b) =>
 // ตัวที่ root (committed): มี hash ไว้ตรวจการเปลี่ยนแปลงรอบหน้า
 fs.writeFileSync(
   MANIFEST,
-  JSON.stringify(reports.map(({ symbol, file, name, title, updated, hash, metrics }) => ({ symbol, file, name, title, updated, hash, metrics })), null, 2) + '\n'
+  JSON.stringify(reports.map(({ symbol, file, name, title, desc, updated, hash, metrics }) => ({ symbol, file, name, title, desc, updated, hash, metrics })), null, 2) + '\n'
 );
 // ตัว public ใน dist (เสิร์ฟที่ /reports.json) — ไม่ใส่ hash, เพิ่ม url + metrics (สำหรับเรียงฝั่ง client)
 fs.writeFileSync(
   path.join(OUT, 'reports.json'),
-  JSON.stringify(reports.map(({ symbol, file, name, title, updated, metrics }) => ({ symbol, file, name, title, updated, url: '/' + file, metrics })), null, 2) + '\n'
+  JSON.stringify(reports.map(({ symbol, file, name, title, desc, updated, metrics }) => ({ symbol, file, name, title, desc, updated, url: '/' + file, metrics })), null, 2) + '\n'
 );
 
 // ---- 5) คัดลอก assets + ไฟล์พิเศษของ Cloudflare ----
@@ -361,13 +372,16 @@ const highlightChip = (m) => {
         <div class="hl hl-${h.cls}${h.lead ? ' lead' : ''}"><span class="hl-ic">${h.icon}</span><span class="hl-v">${esc(h.value)}</span><span class="hl-d">${esc(h.desc)}</span></div>` : '';
 };
 
-const cards = reports.map((r) => `
-      <a class="card" data-search="${escAttr((r.symbol + ' ' + r.name + ' ' + r.title).toLowerCase())}"${metricAttrs(r.metrics)} href="./${encodeURIComponent(r.file)}">
+const cards = reports.map((r) => {
+  const blurb = r.desc || r.title; // คำโปรยธุรกิจ (fallback ไป title ถ้ารายงานไม่มี <div class="sub">)
+  return `
+      <a class="card" data-search="${escAttr((r.symbol + ' ' + r.name + ' ' + r.title + ' ' + (r.desc || '')).toLowerCase())}"${metricAttrs(r.metrics)} href="./${encodeURIComponent(r.file)}">
         <div class="badge">${esc(r.symbol)}</div>
         <div class="cname">${esc(r.name)}</div>
-        <div class="ctitle">${esc(r.title)}</div>${highlightChip(r.metrics)}${metricStrip(r.metrics)}
+        <div class="ctitle" title="${escAttr(blurb)}">${esc(blurb)}</div>${highlightChip(r.metrics)}${metricStrip(r.metrics)}
         <div class="cmeta"><span class="go">เปิดรายงาน →</span><span class="cviews" data-sym="${escAttr(r.symbol)}" hidden>👁 <b class="v">0</b> · 👍 <b class="l">0</b> · 👎 <b class="d">0</b></span><span class="cdate">${fmtDate(r.updated)}</span></div>
-      </a>`).join('\n');
+      </a>`;
+}).join('\n');
 
 // ช่องค้นหา + ข้อความ "ไม่พบ" + สคริปต์กรอง (เฉพาะเมื่อมีรายงาน)
 const searchBox = reports.length ? `
@@ -578,7 +592,7 @@ const indexHtml = `<!DOCTYPE html>
   .card:hover{transform:translateY(-3px);box-shadow:0 4px 12px rgba(16,24,40,.10),0 14px 32px rgba(16,24,40,.10)}
   .badge{font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:13px;color:var(--blue-d);background:#e8f0fe;align-self:flex-start;padding:3px 10px;border-radius:8px}
   .cname{font-size:18px;font-weight:700;margin-top:6px}
-  .ctitle{font-size:13px;color:var(--muted)}
+  .ctitle{font-size:13px;color:var(--muted);line-height:1.35;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;overflow:hidden;min-height:calc(1.35em * 2)}
   .hl{display:inline-flex;align-items:center;gap:6px;align-self:flex-start;max-width:100%;margin-top:9px;padding:5px 11px 5px 9px;border-radius:99px;font-size:12.5px;font-weight:600;line-height:1.3;border:1px solid transparent}
   .hl .hl-ic{font-size:13.5px;line-height:1}
   .hl .hl-v{font-family:'IBM Plex Mono',monospace;font-weight:700;white-space:nowrap}
