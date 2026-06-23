@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น Cohu (COHU) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Opus 4.8">
+<script type="application/json" id="stock-meta">
+{"symbol":"COHU","currency":"USD","price":70,"fairValue":53,"mos":-32.1,"upside":-24.3,"pe":32,"dividendYield":0,"roe":null}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#eef1f5; --card:#ffffff; --ink:#1a1d23; --muted:#5f6675; --line:#e4e8ee;
+    --blue:#1a73e8; --blue-d:#1557b0; --red:#ea4335; --yellow:#f9ab00; --green:#1e8e3e;
+    --green-soft:#e6f4ea; --red-soft:#fce8e6; --amber-soft:#fef7e0; --blue-soft:#e8f0fe;
+    --shadow:0 1px 3px rgba(16,24,40,.06),0 8px 24px rgba(16,24,40,.06);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Sarabun','Noto Sans Thai',system-ui,-apple-system,Segoe UI,sans-serif;background:var(--bg);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased}
+  .mono{font-family:'IBM Plex Mono',ui-monospace,monospace;font-variant-numeric:tabular-nums}
+  .wrap{max-width:1080px;margin:0 auto;padding:20px 16px 64px}
+
+  /* Header */
+  header{background:linear-gradient(135deg,#202938 0%,#2c3a52 60%,#1557b0 140%);border-radius:20px;padding:28px 28px 24px;color:#fff;position:relative;overflow:hidden;box-shadow:var(--shadow)}
+  header::after{content:"";position:absolute;right:-40px;top:-40px;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,rgba(66,133,244,.35),transparent 70%)}
+  .gdots{display:inline-flex;gap:5px;margin-bottom:14px}
+  .gdots span{width:11px;height:11px;border-radius:50%}
+  .tag{display:inline-block;font-size:12px;font-weight:600;padding:3px 10px;border-radius:99px;background:rgba(255,255,255,.14);backdrop-filter:blur(4px);margin-right:6px}
+  h1{font-size:30px;font-weight:800;letter-spacing:-.5px;margin:2px 0 2px}
+  .sub{color:#c7d2e4;font-size:14.5px}
+  .price-row{display:flex;align-items:flex-end;gap:18px;flex-wrap:wrap;margin-top:18px;position:relative;z-index:2}
+  .px{font-size:44px;font-weight:800;letter-spacing:-1px}
+  .px small{font-size:18px;font-weight:600;color:#aebfd6;margin-left:4px}
+  .chg{font-weight:700;font-size:16px;padding:5px 12px;border-radius:10px;background:var(--red-soft);color:#c5221f}
+  .px-meta{font-size:12.5px;color:#aebfd6;margin-left:auto;text-align:right;line-height:1.5}
+
+  /* Section */
+  section{margin-top:26px}
+  .s-head{display:flex;align-items:center;gap:10px;margin:0 4px 14px}
+  .s-head .n{width:26px;height:26px;border-radius:8px;background:var(--blue);color:#fff;display:grid;place-items:center;font-size:13px;font-weight:700;flex:none}
+  .s-head h2{font-size:19px;font-weight:700;letter-spacing:-.3px}
+  .s-head .hint{font-size:12.5px;color:var(--muted);margin-left:auto}
+
+  /* Grid metrics */
+  .grid{display:grid;gap:12px}
+  .g4{grid-template-columns:repeat(4,1fr)}
+  .g3{grid-template-columns:repeat(3,1fr)}
+  .g2{grid-template-columns:repeat(2,1fr)}
+  .metric{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 15px;box-shadow:var(--shadow)}
+  .metric .k{font-size:12.5px;color:var(--muted);font-weight:500;display:flex;align-items:center;gap:5px}
+  .metric .v{font-size:23px;font-weight:700;margin-top:3px;letter-spacing:-.3px}
+  .metric .d{font-size:11.5px;color:var(--muted);margin-top:1px}
+  .pos{color:var(--green)} .neg{color:var(--red)} .neu{color:var(--yellow)}
+  .pill{font-size:10px;font-weight:700;padding:1px 7px;border-radius:99px;vertical-align:middle}
+  .pill.g{background:var(--green-soft);color:var(--green)} .pill.r{background:var(--red-soft);color:#c5221f} .pill.a{background:var(--amber-soft);color:#b06000}
+
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px;box-shadow:var(--shadow)}
+
+  /* Chart */
+  .chart-wrap{padding:8px 4px 0}
+  .legend{display:flex;gap:18px;font-size:12px;color:var(--muted);margin-top:10px;flex-wrap:wrap}
+  .legend i{display:inline-block;width:11px;height:3px;border-radius:2px;vertical-align:middle;margin-right:5px}
+
+  /* Valuation gauge */
+  .gauge{margin:8px 0 4px}
+  .gbar{position:relative;height:48px;border-radius:12px;overflow:hidden;background:linear-gradient(90deg,#1e8e3e 0%,#34a853 22%,#f9ab00 46%,#ea4335 100%)}
+  .gbar .seg-label{position:absolute;top:50%;transform:translate(-50%,-50%);font-size:10.5px;font-weight:700;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.25);white-space:nowrap}
+  .marker{position:absolute;top:-6px;bottom:-6px;width:3px;background:#111;border-radius:2px}
+  .marker .lab{position:absolute;top:-34px;left:50%;transform:translateX(-50%);background:#111;color:#fff;font-size:11px;font-weight:700;padding:3px 8px;border-radius:7px;white-space:nowrap}
+  .marker .lab::after{content:"";position:absolute;bottom:-4px;left:50%;transform:translateX(-50%) rotate(45deg);width:8px;height:8px;background:#111}
+  .marker.cur{background:#1a73e8} .marker.cur .lab{background:#1a73e8} .marker.cur .lab::after{background:#1a73e8}
+  .scale{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-top:14px}
+
+  .vmethod{display:flex;align-items:center;justify-content:space-between;padding:13px 0;border-bottom:1px solid var(--line)}
+  .vmethod:last-child{border-bottom:none}
+  .vmethod .mname{font-weight:600;font-size:14.5px}
+  .vmethod .mdesc{font-size:12px;color:var(--muted)}
+  .vmethod .mval{font-size:20px;font-weight:700;text-align:right}
+  .fv-box{margin-top:14px;background:var(--blue-soft);border:1px solid #c6dafc;border-radius:14px;padding:16px 18px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+  .fv-box .l{font-size:13.5px;color:var(--blue-d);font-weight:600}
+  .fv-box .r{font-size:30px;font-weight:800;color:var(--blue-d);letter-spacing:-.5px}
+
+  /* MOS */
+  .mos-verdict{border-radius:14px;padding:16px 18px;margin-bottom:14px;display:flex;align-items:center;gap:14px}
+  .mos-verdict.bad{background:var(--red-soft)} .mos-verdict.ok{background:var(--amber-soft)} .mos-verdict.good{background:var(--green-soft)}
+  .mos-verdict .big{font-size:34px;font-weight:800;letter-spacing:-1px;flex:none}
+  .mos-verdict.bad .big{color:#c5221f} .mos-verdict.ok .big{color:#b06000} .mos-verdict.good .big{color:var(--green)}
+  .mos-verdict .txt{font-size:13.5px}
+  .mos-verdict .txt b{font-size:15px}
+  .calc{margin-top:16px;border:1px dashed var(--line);border-radius:14px;padding:16px}
+  .calc label{font-size:12.5px;color:var(--muted);font-weight:600;display:block;margin-bottom:6px}
+  .calc-row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+  .calc input{font-family:'IBM Plex Mono',monospace;font-size:18px;font-weight:600;border:1.5px solid var(--line);border-radius:10px;padding:9px 12px;width:140px;outline:none}
+  .calc input:focus{border-color:var(--blue)}
+  .calc-out{font-size:14px;font-weight:600}
+
+  /* Scenarios */
+  .scn{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  .scn .col{border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--card)}
+  .scn .top{padding:12px 15px;color:#fff;font-weight:700;display:flex;justify-content:space-between;align-items:center}
+  .scn .bear .top{background:#c5221f} .scn .base .top{background:#1557b0} .scn .bull .top{background:#1e8e3e}
+  .scn .body{padding:14px 15px}
+  .scn .tgt{font-size:26px;font-weight:800;letter-spacing:-.5px}
+  .scn .ret{font-size:13px;font-weight:600;margin-top:2px}
+  .scn ul{list-style:none;margin-top:10px;font-size:12px;color:var(--muted)}
+  .scn li{display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px dotted var(--line)}
+  .scn li:last-child{border:none}
+  .scn li span:last-child{font-weight:600;color:var(--ink)}
+
+  /* Catalyst / Risk */
+  .cr{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .cr .box{border-radius:16px;padding:18px 20px;border:1px solid var(--line);box-shadow:var(--shadow)}
+  .cr .box.cat{background:linear-gradient(180deg,#f3faf5,#ffffff)}
+  .cr .box.risk{background:linear-gradient(180deg,#fef4f3,#ffffff)}
+  .cr h3{font-size:15px;font-weight:700;display:flex;align-items:center;gap:8px;margin-bottom:12px}
+  .cr .ic{width:24px;height:24px;border-radius:7px;display:grid;place-items:center;font-size:14px;flex:none}
+  .cr .cat .ic{background:var(--green-soft);color:var(--green)} .cr .risk .ic{background:var(--red-soft);color:#c5221f}
+  .cr ul{list-style:none}
+  .cr li{font-size:13px;padding:8px 0;border-bottom:1px solid var(--line);display:flex;gap:9px}
+  .cr li:last-child{border:none}
+  .cr li::before{content:"";width:6px;height:6px;border-radius:50%;margin-top:8px;flex:none}
+  .cr .cat li::before{background:var(--green)} .cr .risk li::before{background:var(--red)}
+  .cr li b{font-weight:700}
+
+  /* Verdict */
+  .verdict{background:linear-gradient(135deg,#202938,#2c3a52);color:#fff;border-radius:18px;padding:24px 26px;box-shadow:var(--shadow)}
+  .verdict h2{font-size:20px;font-weight:700;margin-bottom:6px}
+  .verdict p{color:#d4dded;font-size:14px;margin-bottom:14px}
+  .vgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:6px}
+  .vcell{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:13px 15px}
+  .vcell .k{font-size:11.5px;color:#a8b6cc;font-weight:500}
+  .vcell .v{font-size:17px;font-weight:700;margin-top:3px}
+  .zone{margin-top:16px;font-size:13px;color:#d4dded;background:rgba(255,255,255,.05);border-left:3px solid var(--yellow);border-radius:0 10px 10px 0;padding:11px 15px}
+
+  .disc{margin-top:24px;font-size:12px;color:var(--muted);background:#fafbfc;border:1px solid var(--line);border-radius:12px;padding:14px 16px;line-height:1.7}
+  .disc b{color:var(--ink)}
+  footer{text-align:center;font-size:11.5px;color:var(--muted);margin-top:22px}
+
+  @media(max-width:760px){
+    .g4{grid-template-columns:repeat(2,1fr)} .g3{grid-template-columns:repeat(2,1fr)}
+    .scn{grid-template-columns:1fr} .cr{grid-template-columns:1fr} .vgrid{grid-template-columns:1fr}
+    .px{font-size:36px} h1{font-size:24px} .px-meta{margin-left:0;text-align:left;width:100%}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots"><span style="background:#2b6cff"></span><span style="background:#34a853"></span><span style="background:#f9ab00"></span><span style="background:#ea4335"></span></div>
+    <div>
+      <span class="tag">NASDAQ: COHU</span>
+      <span class="tag">Semiconductor • Back-end Test</span>
+      <span class="tag">Small/Mid-cap • วัฏจักรขาขึ้น</span>
+    </div>
+    <h1>Cohu, Inc.</h1>
+    <div class="sub">ผู้ผลิต test handler, contactor และเครื่อง inspection/metrology สำหรับการทดสอบชิป (back-end test) — เกาะคลื่น HPC/AI, advanced packaging และ optical/CPO test ขณะวัฏจักรเซมิฯ ฟื้นตัว</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$70<small>(COHU)</small></div>
+      </div>
+      <div class="chg">▼ −8.8% (23 มิ.ย.)</div>
+      <div class="px-meta">
+        ราคาปิด ณ 22 มิ.ย. 2026 ~$70 • อ่อนแรงแรงวันที่ 23 มิ.ย.<br>
+        52 สัปดาห์ $17.80 – $72.18 • เด้งจากก้นวัฏจักร ~4 เท่า<br>
+        ที่มา: Yahoo Finance / WallStreetZen / StockAnalysis.com
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">งบ FY2025 + Q1 2026</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~$3.0–3.3B</div><div class="d">~47.2 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neg">N/A</div><div class="d">ขาดทุน GAAP — ไม่มี P/E <span class="pill r">ก้นวัฏจักร</span></div></div>
+      <div class="metric"><div class="k">P/E (ฟอร์เวิร์ด/ปกติ)</div><div class="v neu">~32x</div><div class="d">อิง EPS ปกติ ~$2.2 (ฟื้นตัว)</div></div>
+      <div class="metric"><div class="k">EPS (TTM, GAAP)</div><div class="v neg">−$1.19</div><div class="d">non-GAAP FY25 −$0.22</div></div>
+
+      <div class="metric"><div class="k">รายได้ FY2025</div><div class="v">$453.0M</div><div class="d pos">▲ ฟื้นจากก้นวัฏจักร</div></div>
+      <div class="metric"><div class="k">ขาดทุนสุทธิ FY2025</div><div class="v neg">−$74.3M</div><div class="d">GAAP −$1.59/หุ้น • non-GAAP −$10.1M</div></div>
+      <div class="metric"><div class="k">ROE</div><div class="v neg">N/A</div><div class="d">ขาดทุน → ROE ติดลบชั่วคราว</div></div>
+      <div class="metric"><div class="k">Recurring revenue</div><div class="v">~60%</div><div class="d">consumables/บริการ • รายได้นิ่งกว่าระบบ</div></div>
+
+      <div class="metric"><div class="k">รายได้ Q1 2026</div><div class="v">$125.1M</div><div class="d pos">▲ +29% YoY (เกิน guidance)</div></div>
+      <div class="metric"><div class="k">EPS Q1 2026 (GAAP)</div><div class="v neu">$0.01</div><div class="d">เริ่มกลับมาคุ้มทุน • GM 46.5%</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">0%</div><div class="d">ไม่จ่ายปันผล • เน้นลงทุน/ซื้อหุ้นคืน</div></div>
+      <div class="metric"><div class="k">ช่วง 52 สัปดาห์</div><div class="v" style="font-size:18px">$17.80 – $72.18</div><div class="d">เงินสด+ลงทุน ~$484M (net cash หนา)</div></div>
+    </div>
+  </section>
+
+  <!-- ===== PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ • เด้งจากก้นวัฏจักร</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#1a73e8"></i>ราคา COHU</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $53</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        หุ้นวิ่งจากฐานต่ำราว <b>$18 (กลางปี 2025)</b> ซึ่งเป็น <b>ก้นวัฏจักรเซมิฯ back-end</b> ขึ้นแรงไปทำจุดสูงสุด 52 สัปดาห์ <b>$72.18 (มิ.ย. 2026)</b>
+        ~4 เท่า จากความหวัง <b>คำสั่งซื้อ HPC/AI test handler</b> ที่เร่งตัว (ออเดอร์ +57% YoY) — แต่ย่อแรงปลายเดือน มิ.ย. (−8.8% วันที่ 23)
+        จากความกังวลว่า <b>ราคาวิ่งนำการพลิกกำไรจริง</b> ขณะที่บริษัทยังขาดทุน GAAP และฟื้นตัวเป็นขั้น ๆ
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">3 วิธี เฉลี่ย • อิงกำไรปกติ (ก้นวัฏจักร)</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation (กำไรปกติ/mid-cycle) <span class="pill a">ใช้กำไรปกติ</span></div><div class="mdesc">COHU ขาดทุน GAAP ชั่วคราวที่ก้นวัฏจักร จึงใช้ <b>EPS ปกติ (normalized) ~$2.2/หุ้น</b> (กำลังกำไรช่วงกลางวัฏจักรเมื่อ utilization ฟื้น) × P/E ~22x = ค่า โดย <b>ไม่ใช้ EPS TTM ที่ติดลบ</b></div></div>
+        <div class="mval">$48</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. EV/Sales (2-stage)</div><div class="mdesc">รายได้ FY2026E ~$558M (โต ~23%) แล้วชะลอเป็น ~10–12% ต่อปี, EV/Sales ออก ~5x, บวกเงินสดสุทธิ — สะท้อนรายได้ recurring 60% และโมเดล asset-light ของ back-end test</div></div>
+        <div class="mval">$58</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Analyst Intrinsic + range</div><div class="mdesc">ค่ากลางเป้านักวิเคราะห์ 12 เดือน (เฉลี่ย ~$51.5–$57.4, กรอบ $33–$80, 6–8 ราย, เรตติ้ง Buy/Strong Buy) ถ่วงด้วยส่วนเผื่อความเสี่ยงวัฏจักร</div></div>
+        <div class="mval">$52</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $48 – $58 (ความไม่แน่นอนสูงตามวัฏจักร)</span></div>
+        <div class="r">$53</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        <b>หมายเหตุ:</b> ข้าม <b>DDM</b> (ไม่จ่ายปันผล) และ <b>P/BV</b> (มูลค่าทางบัญชีบิดเบือนจากขาดทุนสะสมชั่วคราว) — วิธีหลักอิง <b>กำไรปกติ (normalized) ไม่ใช่ EPS TTM ที่ติดลบ</b>
+        เพราะ COHU อยู่ที่ <b>ก้นวัฏจักรเซมิฯ back-end</b> EPS GAAP จึงติดลบและไม่สะท้อนกำลังกำไรที่แท้จริง • กรอบมูลค่ากว้างเพราะการพลิกกำไรขึ้นกับจังหวะ utilization
+        และดีล HPC/AI ที่ยังอยู่ในไปป์ไลน์ ($750M) ตัวเลขจึงอ่อนไหวต่อสมมติฐานกำไรปกติ/EV-Sales มาก — ถือเป็น <b>กรอบอ้างอิง</b> ไม่ใช่ราคาเป้าที่แน่นอน
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $70</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $53</div></div>
+        </div>
+        <div class="scale">
+          <span>$37<br><small>MOS 30%</small></span>
+          <span>$42<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$53<br><small>Fair Value</small></span>
+          <span style="text-align:right">$57<br><small>เป้า Analyst (เฉลี่ย)</small></span>
+          <span style="text-align:right">$80<br><small>เป้าสูงสุด</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคา $70 อยู่ <b>สูงกว่ามูลค่าเหมาะสม $53</b> ราว 32% และ <b>สูงกว่าเป้านักวิเคราะห์เฉลี่ย ~$57</b> ด้วย (แม้ต่ำกว่าเป้าสูงสุด $80) —
+        สาย value มองว่า <b>แพง</b> เพราะตลาดได้สะท้อนการพลิกกำไรจาก HPC/AI ไปล่วงหน้าแล้ว ขณะที่ <b>กำไรจริงยังอยู่ในขั้นเริ่มฟื้น</b> (Q1 EPS เพิ่งกลับมาคุ้มทุน)
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">−32.1%</div>
+        <div class="txt"><b>ไม่มี Margin of Safety</b><br>ราคาปัจจุบัน $70 สูงกว่ามูลค่าเหมาะสม $53 ราว 32% → ตามเกณฑ์ value investor ถือว่า <b>แพง</b> โดยเฉพาะเมื่อบริษัทยังขาดทุน GAAP และอยู่ในช่วงเริ่มพลิกกำไร — valuation อิงกำไรปกติในอนาคต ยังไม่ใช่จุดซื้อที่ปลอดภัย</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$42</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$37</div><div class="d">โซนถูก (เผื่อความเสี่ยงวัฏจักร)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $50</div><div class="d">ใกล้ขอบล่างของ fair value</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="70" step="1">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== RETURN PROJECTION ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $70 • EPS ฐาน ~$2.2 (กำไรปกติ)</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS +5%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$41</div>
+          <div class="ret neg">รวม ~ −41% (≈ −16%/ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>$2.5</span></li>
+            <li><span>P/E ออก</span><span>16x</span></li>
+            <li><span>สถานการณ์</span><span>วัฏจักรฟื้นช้า / ดีล HPC ลื่นไหลช้า</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +20%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$76</div>
+          <div class="ret pos">รวม ~ +9% (≈ +3%/ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>$3.8</span></li>
+            <li><span>P/E ออก</span><span>20x</span></li>
+            <li><span>สถานการณ์</span><span>วัฏจักรฟื้น + HPC/auto test โตตามแผน</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +35%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$119</div>
+          <div class="ret pos">รวม ~ +70% (≈ +19%/ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>$5.4</span></li>
+            <li><span>P/E ออก</span><span>22x</span></li>
+            <li><span>สถานการณ์</span><span>ชนะดีล HPC/CPO test + margin ฟื้นเต็มที่</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      ความเสี่ยง–ผลตอบแทน <b>เอียงลงในกรณีฐาน</b> (~3%/ปี) เพราะเข้าซื้อ <b>หลังหุ้นเด้ง ~4 เท่าจากก้นวัฏจักรแล้ว</b> —
+      upside ขึ้นกับว่าวัฏจักร back-end test จะ <b>ฟื้นเต็มรอบ</b> และ COHU แปลงไปป์ไลน์ HPC/AI ($750M) เป็นรายได้/กำไรจริงได้แค่ไหน
+      เป้าหมายใช้ EPS ปกติ × P/E ออก จึงไวต่อทั้งจังหวะการพลิกกำไรและตัวคูณ — <b>downside กว้างหากวัฏจักรฟื้นช้ากว่าคาด</b>
+    </p>
+  </section>
+
+  <!-- ===== CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><div><b>วัฏจักร back-end test ฟื้นตัว:</b> รายได้ Q1 2026 <b>+29% YoY ($125.1M)</b> เกินกรอบ guidance, gross margin ฟื้นเป็น <b>46.5%</b>, Q2 คาดโต ~15% q/q — สัญญาณกลับสู่รอบขาขึ้น</div></li>
+          <li><div><b>คลื่น HPC/AI test:</b> ออเดอร์ Q1 <b>+57% YoY</b>, ไปป์ไลน์ HPC ~<b>$750M</b> (ในนั้น test handler ~$650M) บริษัทยกเป้ารายได้ HPC ปี 2026 เป็น <b>$80–100M</b> — เกาะคลื่นชิป AI/advanced packaging</div></li>
+          <li><div><b>รายได้ recurring สูง:</b> consumables (contactor/socket) และบริการ ~<b>60%</b> ของรายได้ — กระแสเงินสดนิ่งกว่ายอดขายเครื่อง ลดความผันผวนช่วง downturn</div></li>
+          <li><div><b>งบดุล net cash หนา:</b> เงินสด+ลงทุน ~<b>$484M</b> เทียบหุ้นกู้แปลงสภาพ 1.5% ครบ 2031 ($287.5M) → มี <b>กันชนสภาพคล่อง</b> ผ่านช่วงวัฏจักรลงได้สบาย + ลงทุน R&D ต่อเนื่อง</div></li>
+          <li><div><b>โอกาส optical/CPO test:</b> เครื่องทดสอบและ contactor สำหรับชิ้นส่วน optical และ co-packaged optics (CPO) เป็น TAM ใหม่เมื่อ data center ย้ายไป optical interconnect</div></li>
+          <li><div><b>กระจายปลายทางการใช้งาน:</b> นอกจาก HPC/AI ยังจับ <b>automotive, industrial และ mobile</b> — เมื่อกลุ่ม auto/industrial ที่อ่อนแอกลับมา จะเป็น upside รอบสอง</div></li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><div><b>ยังขาดทุน GAAP:</b> FY2025 net loss <b>−$74.3M (−$1.59/หุ้น)</b>, EPS TTM −$1.19 — valuation อิงกำไรปกติในอนาคต หากพลิกกำไรช้ากว่าคาด ราคามี downside มาก</div></li>
+          <li><div><b>ธุรกิจวัฏจักรจัด:</b> ยอดขายเครื่อง back-end test ผูกกับรอบลงทุนของโรงงานเซมิฯ/OSAT — ขึ้นลงแรง รายได้เคยทรุดหนักช่วง downturn 2023–2025</div></li>
+          <li><div><b>ราคาวิ่งนำพื้นฐาน:</b> หุ้นเด้ง <b>~4 เท่าจาก $18</b> สู่ ~$70 ในรอบปี ขณะกำไรเพิ่งเริ่มฟื้น — สูงกว่าทั้ง fair value $53 และเป้านักวิเคราะห์เฉลี่ย ~$57</div></li>
+          <li><div><b>การพึ่งดีลใหญ่/ลูกค้ากระจุก:</b> ไปป์ไลน์ HPC พึ่งดีลกับลูกค้าไม่กี่ราย (12 ราย, 5 อยู่ขั้น qualification) — หากดีลลื่นช้าหรือหลุด รายได้ที่คาดไว้คลาดได้มาก</div></li>
+          <li><div><b>auto/industrial ยังอ่อน:</b> ปลายทางรถยนต์และอุตสาหกรรม (ฐานเดิมที่ใหญ่) ยังฟื้นช้า — ถ่วงการกลับสู่กำลังกำไรปกติเต็มรอบ</div></li>
+          <li><div><b>การแข่งขัน + dilution:</b> คู่แข่ง test/handler (Teradyne, Advantest, Aehr ฯลฯ) แข่งกดราคา • หุ้นกู้แปลงสภาพ $287.5M (ครบ 2031) มีความเสี่ยงเจือจางหุ้นในอนาคต</div></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>ผู้เล่น back-end test ที่กำลังพลิกวัฏจักร — แต่ราคา ณ ตอนนี้ "วิ่งนำกำไรจริง"</h2>
+      <p>Cohu เป็นผู้ผลิต test handler/contactor และเครื่อง inspection สำหรับการทดสอบชิป (back-end test) ที่ได้อานิสงส์จากคลื่น HPC/AI และ advanced packaging — ออเดอร์ Q1 2026 <b>+57% YoY</b>, ไปป์ไลน์ HPC ~$750M, รายได้ recurring 60% และงบดุล net cash หนา ($484M) เป็นจุดแข็งระยะยาว แต่บริษัทยัง <b>ขาดทุน GAAP</b> (EPS TTM −$1.19) และเพิ่งกลับมาคุ้มทุนใน Q1 ที่ราคา ~$70 ตลาดได้สะท้อนการพลิกกำไรไปล่วงหน้ามากแล้ว (สูงกว่าทั้ง fair value $53 และเป้านักวิเคราะห์เฉลี่ย ~$57) เหมาะกับสายที่เชื่อรอบฟื้นวัฏจักรและรับความผันผวนได้</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$53 <span style="font-size:12px;color:#a8b6cc">($48–$58)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ff8a80">แพง ~32%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#ffcc80">$57 (−19%)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> สาย value — รอย่อ/ทยอยสะสมเมื่อราคา <b>ต่ำกว่า ~$50</b> (น่าสนใจที่ &lt;$42) และจำกัดขนาดสถานะตามความเสี่ยงวัฏจักร • สาย growth/รอบฟื้น — เข้าได้แบบ DCA โดยติดตาม <b>การพลิกกำไร (gross margin/EPS)</b>, <b>การแปลงไปป์ไลน์ HPC เป็นออเดอร์จริง</b>, <b>รอบฟื้นของ auto/industrial</b> และ <b>กระแสเงินสด</b> เป็นตัวชี้วัดหลัก
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    COHU เป็นหุ้น <b>วัฏจักรเซมิฯ ที่ยังขาดทุน GAAP และอยู่ช่วงเริ่มพลิกกำไร</b> — การประเมินมูลค่าใช้ <b>กำไรปกติ (normalized EPS) และ EV/Sales</b> แทน P/E TTM ที่ติดลบ จึงอ่อนไหวต่อสมมติฐานอย่างมาก กรอบมูลค่าจึงกว้างตามวัฏจักร ($48–$58)
+    ราคาหุ้นกลุ่มเซมิฯ back-end แกว่งรุนแรงตามรอบ (52 สัปดาห์ $17.80–$72.18) ผู้ลงทุนควรศึกษาเพิ่มเติมและพิจารณาความเสี่ยง/ขนาดสถานะของตนเองก่อนตัดสินใจ • อ้างอิงงบจริง SEC (8-K Q4/FY2025, Q1 2026) — หมายเหตุ: ราคาต่างกันระหว่างแหล่ง — ราคาปิด 22 มิ.ย. ~$70.07–$70.12 (Yahoo/WallStreetZen) ส่วน StockAnalysis.com แสดงราคาซื้อขายระหว่างวัน 23 มิ.ย. ที่ ~$63.9 (−8.8%) ใช้ราคาปิดล่าสุดที่ยืนยันได้ ~$70
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 22–23 มิ.ย. 2026 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<script>
+(function(){
+  /* ---------- Price chart ---------- */
+  // [label, price] approximate
+  const data=[["มิ.ย.25",18],["ส.ค.25",24],["ต.ค.25",30],["ธ.ค.25",34],["ก.พ.26",44],["เม.ย.26",52],["พ.ค.26",66],["มิ.ย.26",70]];
+  const W=920,H=300;
+  const padL=48,padR=16,padT=18,padB=34;
+  const min=0,max=80;
+  const xs=i=>padL+(W-padL-padR)*(i/(data.length-1));
+  const ys=v=>padT+(H-padT-padB)*(1-(v-min)/(max-min));
+  let path="",area="";
+  data.forEach((d,i)=>{const x=xs(i),y=ys(d[1]);path+=(i?"L":"M")+x.toFixed(1)+" "+y.toFixed(1)+" ";});
+  area=path+`L${xs(data.length-1).toFixed(1)} ${ys(min).toFixed(1)} L${padL} ${ys(min).toFixed(1)} Z`;
+  let svg=`<defs><linearGradient id="ag" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1a73e8" stop-opacity=".22"/><stop offset="1" stop-color="#1a73e8" stop-opacity="0"/></linearGradient></defs>`;
+  // gridlines
+  [20,40,60,80].forEach(v=>{const y=ys(v);svg+=`<line x1="${padL}" y1="${y}" x2="${W-padR}" y2="${y}" stroke="#eef1f5" stroke-width="1"/><text x="${padL-8}" y="${y+4}" text-anchor="end" font-size="11" fill="#9aa3b2" font-family="IBM Plex Mono">$${v}</text>`;});
+  // fair value line
+  const fy=ys(53);svg+=`<line x1="${padL}" y1="${fy}" x2="${W-padR}" y2="${fy}" stroke="#1e8e3e" stroke-width="1.5" stroke-dasharray="6 5"/>`;
+  // area + line
+  svg+=`<path d="${area}" fill="url(#ag)"/><path d="${path}" fill="none" stroke="#1a73e8" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"/>`;
+  // points + x labels
+  data.forEach((d,i)=>{const x=xs(i),y=ys(d[1]);const hi=(i===0||i===7);
+    svg+=`<circle cx="${x}" cy="${y}" r="${hi?5:3.2}" fill="${hi?'#ea4335':'#1a73e8'}" stroke="#fff" stroke-width="2"/>`;
+    svg+=`<text x="${x}" y="${H-12}" text-anchor="middle" font-size="11" fill="#9aa3b2">${d[0]}</text>`;
+    if(hi)svg+=`<text x="${x}" y="${y-12}" text-anchor="middle" font-size="11" font-weight="700" fill="${i===7?'#1a73e8':'#ea4335'}" font-family="IBM Plex Mono">$${d[1]}</text>`;
+  });
+  document.getElementById("priceChart").innerHTML=svg;
+
+  /* ---------- Gauge marker positions ---------- */
+  const gmin=33,gmax=85;
+  const gpos=v=>Math.max(2,Math.min(98,(v-gmin)/(gmax-gmin)*100));
+  document.getElementById("mCur").style.left=gpos(70)+"%";
+  document.getElementById("mFair").style.left=gpos(53)+"%";
+  // nudge fair label up to avoid overlap
+  document.querySelector("#mFair .lab").style.top="-58px";
+
+  /* ---------- MOS calculator ---------- */
+  const FV=53;
+  const out=document.getElementById("mosOut");
+  const inp=document.getElementById("pxIn");
+  function calc(){
+    const p=parseFloat(inp.value);
+    if(isNaN(p)||p<=0){out.innerHTML="<span style='color:#9aa3b2'>กรอกราคา…</span>";return;}
+    const mos=(FV-p)/FV*100;
+    let c,msg;
+    if(mos<10){c="#c5221f";msg=mos<0?"แพงกว่ามูลค่า — ไม่ปลอดภัย":"ส่วนเผื่อบาง — ยังไม่น่าซื้อ";}
+    else if(mos<20){c="#b06000";msg="พอใช้ — ทยอยสะสมได้";}
+    else if(mos<30){c="#1e8e3e";msg="น่าซื้อ — โซน Value Investor";}
+    else{c="#1e8e3e";msg="ถูกมาก — เช็คว่าไม่ใช่ value trap";}
+    out.innerHTML=`MOS = <span class="mono" style="color:${c};font-size:18px">${mos>0?'+':''}${mos.toFixed(1)}%</span> &nbsp;<span style="color:${c}">${msg}</span>`;
+  }
+  inp.addEventListener("input",calc);
+  calc();
+})();
+</script>
+</body>
+</html>
