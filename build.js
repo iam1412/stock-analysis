@@ -27,6 +27,8 @@ const OUT = path.join(ROOT, 'dist');
 const MANIFEST = path.join(ROOT, 'reports.json'); // committed — เก็บ hash/วันที่อัปเดตของแต่ละรายงาน
 
 const CONTACT_EMAIL = 'somchai.s@de.co.th';
+const SITE_ORIGIN = 'https://stock-ai.dotent.workers.dev'; // ใช้สร้าง absolute URL ให้ og:url / og:image (social scraper ต้องการ URL เต็ม)
+const OG_IMAGE = SITE_ORIGIN + '/static/og.png'; // banner 1200×630 สำหรับการ์ดแชร์ (static/og.png — regenerate จาก static/og.svg)
 const ASSET_DIRS = new Set(['assets', 'public', 'static', 'img', 'images', 'css', 'js', 'fonts']);
 
 const log = (...a) => console.log('[build]', ...a);
@@ -114,9 +116,42 @@ function injectViewVoteScript(html, symbol) {
   return bi === -1 ? html + script : html.slice(0, bi) + script + html.slice(bi);
 }
 
-// ตกแต่งไฟล์รายงานก่อนเขียนลง dist: footer ติดต่อ + ตัวนับยอดวิว + ปุ่ม Like/Dislike
-function decorateReport(html, symbol) {
-  return injectViewVoteScript(injectVoteStyle(injectContactFooter(html)), symbol);
+// แทรก meta สำหรับ Social share card (Open Graph + Twitter) + description + canonical เข้า <head>
+// — ฉีดเฉพาะใน dist/ (ต้นฉบับ reports/ ไม่แตะ) · ใช้ content="https://…" (gate สแกนเฉพาะ href/src จึงไม่โดนแฟลก)
+//   canonical ใช้ relative (/SYM) กัน gate เข้าใจผิดว่าเป็น external resource
+function injectShareMeta(html, r) {
+  const cleanUrl = SITE_ORIGIN + '/' + encodeURIComponent(r.symbol); // /<SYM> (clean URL)
+  const desc =
+    `วิเคราะห์หุ้น ${r.name} (${r.symbol}) — มูลค่าที่เหมาะสม (Fair Value), Margin of Safety, ` +
+    `จุดเข้าซื้อ และผลตอบแทนคาดการณ์ · ข้อมูลเพื่อการศึกษา ไม่ใช่คำแนะนำการลงทุน`;
+  const tags = [
+    `<link rel="canonical" href="/${escAttr(r.symbol)}">`,
+    `<meta name="description" content="${escAttr(desc)}">`,
+    `<meta property="og:type" content="article">`,
+    `<meta property="og:site_name" content="Stock Analysis">`,
+    `<meta property="og:locale" content="th_TH">`,
+    `<meta property="og:title" content="${escAttr(r.title)}">`,
+    `<meta property="og:description" content="${escAttr(desc)}">`,
+    `<meta property="og:url" content="${escAttr(cleanUrl)}">`,
+    `<meta property="og:image" content="${escAttr(OG_IMAGE)}">`,
+    `<meta property="og:image:width" content="1200">`,
+    `<meta property="og:image:height" content="630">`,
+    `<meta property="og:image:alt" content="${escAttr(r.symbol)} — Stock Analysis">`,
+    `<meta property="article:modified_time" content="${escAttr(r.updated)}">`,
+    `<meta name="twitter:card" content="summary_large_image">`,
+    `<meta name="twitter:title" content="${escAttr(r.title)}">`,
+    `<meta name="twitter:description" content="${escAttr(desc)}">`,
+    `<meta name="twitter:image" content="${escAttr(OG_IMAGE)}">`,
+  ].join('\n');
+  const at = html.toLowerCase().indexOf('</title>');
+  if (at !== -1) { const i = at + '</title>'.length; return html.slice(0, i) + '\n' + tags + html.slice(i); }
+  const hi = html.toLowerCase().lastIndexOf('</head>');
+  return hi === -1 ? tags + '\n' + html : html.slice(0, hi) + tags + '\n' + html.slice(hi);
+}
+
+// ตกแต่งไฟล์รายงานก่อนเขียนลง dist: share meta + footer ติดต่อ + ตัวนับยอดวิว + ปุ่ม Like/Dislike
+function decorateReport(html, r) {
+  return injectViewVoteScript(injectVoteStyle(injectContactFooter(injectShareMeta(html, r))), r.symbol);
 }
 
 // ---- 1) เตรียมโฟลเดอร์ dist ----
@@ -147,8 +182,9 @@ if (fs.existsSync(REPORTS_DIR)) {
     const old = prev[symbol];
     const updated = old && old.hash === h && old.updated ? old.updated : nowISO; // เปลี่ยน → ประทับเวลาใหม่
 
-    reports.push({ symbol, file: entry.name, ...extractMeta(content, symbol), updated, hash: h });
-    fs.writeFileSync(path.join(OUT, entry.name), decorateReport(content, symbol)); // hash อิงต้นฉบับ, footer+ตัวนับใส่เฉพาะใน dist
+    const rec = { symbol, file: entry.name, ...extractMeta(content, symbol), updated, hash: h };
+    reports.push(rec);
+    fs.writeFileSync(path.join(OUT, entry.name), decorateReport(content, rec)); // hash อิงต้นฉบับ, share meta+footer+ตัวนับใส่เฉพาะใน dist
     log('report:', entry.name, updated === nowISO ? '(updated)' : '');
   }
 } else {
@@ -324,6 +360,20 @@ const indexHtml = `<!DOCTYPE html>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Stock Analysis — รวมรายงานวิเคราะห์หุ้น</title>
 <meta name="description" content="รวมรายงานวิเคราะห์หุ้น (Fair Value, Margin of Safety, จุดเข้าซื้อ)">
+<link rel="canonical" href="/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Stock Analysis">
+<meta property="og:locale" content="th_TH">
+<meta property="og:title" content="Stock Analysis — รวมรายงานวิเคราะห์หุ้น">
+<meta property="og:description" content="รวมรายงานวิเคราะห์หุ้น (Fair Value, Margin of Safety, จุดเข้าซื้อ) — ${reports.length} รายงาน">
+<meta property="og:url" content="${SITE_ORIGIN}/">
+<meta property="og:image" content="${OG_IMAGE}">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Stock Analysis — รวมรายงานวิเคราะห์หุ้น">
+<meta name="twitter:description" content="รวมรายงานวิเคราะห์หุ้น (Fair Value, Margin of Safety, จุดเข้าซื้อ) — ${reports.length} รายงาน">
+<meta name="twitter:image" content="${OG_IMAGE}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
