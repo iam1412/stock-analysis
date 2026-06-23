@@ -61,6 +61,11 @@ stock-analysis/
      · `mos` = (FV−price)/FV·100 (= กล่อง MOS) · `upside` = (FV−price)/price·100 · `pe/dividendYield/roe` ใส่ `null` ได้ถ้า N/A (จะเรียงไปท้าย)
      · **ตัวเลขต้องตรงกับที่โชว์ในรายงาน** — gate **E29–31 บังคับ** (price/FV/MOS = กล่อง + mos/upside สอดคล้องราคา/FV; เพี้ยน = push ไม่ได้) · **W10** เตือนถ้า pe/yield/roe ต่างจากที่โชว์
      · build.js ดึงบล็อกนี้ → `reports.json` + `data-*` บนการ์ด → ปุ่มเรียง MOS/Upside/P/E/Yield/ROE (เรียงฝั่ง client, 0 request) + **ป้าย "จุดเด่น" บนการ์ดแต่ละใบ** (เลือก metric เด่นสุด + มงกุฎ 👑 ตัวที่ดีสุดในกลุ่ม — คำนวณตอน build จากบล็อกนี้ ไม่ต้องใส่อะไรเพิ่มในรายงาน) · บล็อกนี้ไม่นับเป็น "อัปเดต" (ตัดออกจาก freshHash เหมือน ai-model)
+   - **★ คำโปรยธุรกิจใต้ `<h1>`** (`<div class="sub">…</div>`) — **บังคับให้มีเสมอ** สรุปสั้น ๆ ว่า **บริษัททำธุรกิจอะไร**
+     (เช่น AAPL → `iPhone, Mac, iPad, Apple Watch, AirPods, Vision Pro • Services • Apple Intelligence`)
+     · **เขียนคำโปรยจริง ไม่ใช่ "วิเคราะห์หุ้น X (X) - Dashboard" ซ้ำ ๆ** — ใช้ `•` คั่นกลุ่มธุรกิจ/ผลิตภัณฑ์หลัก
+     · build.js ดึงข้อความนี้เป็นฟิลด์ `desc` → **โชว์บนการ์ดหน้า index แทน title** (ผู้อ่านเห็นเบื้องต้นว่าบริษัททำอะไร) + รวมใน `data-search` (ค้นด้วยชื่อผลิตภัณฑ์ได้) · การ์ดตัดเหลือ **2 บรรทัด** อัตโนมัติ (ยาวแค่ไหนก็การ์ดสูงเท่ากัน)
+     · quality gate **E32 บังคับให้มี** (ไม่มี/สั้นเกิน = push ไม่ได้) · ถ้าไฟล์ไม่มี `.sub` การ์ดจะ fallback ไปโชว์ title ซ้ำ ๆ (สิ่งที่เลิกทำไปแล้ว) — E32 กันไม่ให้เกิด
 4. รัน `npm run verify` (check-reports → build → build-test → check-site) ให้ผ่านทั้งหมด
 5. **Auto-push** (ดูข้อ 4)
 
@@ -157,8 +162,8 @@ npm run check:site       # ชั้น 2 อย่างเดียว (ต้
 npm run test:self        # meta-test: พิสูจน์ว่า checker เองยังจับ bug ได้ (รันหลังแก้ checker)
 ```
 
-**ชั้น 1 — `test/check-reports.js`** (ตรวจ source `reports/<SYMBOL>.html` ทีละไฟล์ — 31 error + 10 warning):
-- **โครงสร้าง:** DOCTYPE/`lang="th"`/ปิด `</html>`, `<title>` มีชื่อย่อ, `<h1>`, ครบ 8 section, กราฟ, gauge, เครื่องคิดเลข MOS, disclaimer, footer, header (ราคา+วันที่+แหล่งที่มา), **meta `ai-model` (E28: ต้องระบุโมเดล AI ที่ใช้วิเคราะห์ ขึ้นต้น "Claude ")**
+**ชั้น 1 — `test/check-reports.js`** (ตรวจ source `reports/<SYMBOL>.html` ทีละไฟล์ — 32 error + 10 warning):
+- **โครงสร้าง:** DOCTYPE/`lang="th"`/ปิด `</html>`, `<title>` มีชื่อย่อ, `<h1>`, ครบ 8 section, กราฟ, gauge, เครื่องคิดเลข MOS, disclaimer, footer, header (ราคา+วันที่+แหล่งที่มา), **meta `ai-model` (E28: ต้องระบุโมเดล AI ที่ใช้วิเคราะห์ ขึ้นต้น "Claude ")**, **คำโปรยธุรกิจ `<div class="sub">` ใต้ `<h1>` (E32: ต้องมี + ยาวพอ → build ดึงเป็น `desc` โชว์บนการ์ดหน้า index)**
 - **ตัวเลขสอดคล้องกันเอง:** `const FV` = Fair Value กล่อง = FV ในสรุป (vgrid) • MOS = (FV−ราคา)/FV • จุดซื้อ MOS20/30 = FV×0.8/0.7 (ทั้งกล่องและแกน gauge) • ราคา header = ค่าตั้งต้นเครื่องคิดเลข • **คณิตแต่ละวิธี: P/E = EPS×P/E, Justified P/BV = ratio×BVPS และ ratio=(ROE−g)/(r−g)** • scenario: EPS ปี3 = EPS ฐาน×(1+g)³ และ tgt = EPS×P/E
 - **stock-meta (screener) [E29–31, W10]:** บล็อก `<script id="stock-meta">` JSON ครบ key + ชนิดถูก + symbol/currency ตรง (E29) • ตัวเลข = ที่โชว์จริง: price/fairValue/MOS ตรงกล่อง (E30) + mos/upside สอดคล้องราคา&FV (E31) • (warn W10) pe/yield/roe ≈ ที่โชว์เท่าที่ดึงได้
 - **ความสด/แหล่งข้อมูล:** ราคาไม่เก่า > 120 วัน/ไม่อยู่อนาคต (warn > 45 วัน) • (warn) แหล่งข้อมูล ≥3 + มีราคาเป้า/52 สัปดาห์/งวดงบ • (warn) ตัวเลขพื้นฐานอยู่ในวิสัย (P/E, P/BV, yield, ROE)
@@ -168,6 +173,7 @@ npm run test:self        # meta-test: พิสูจน์ว่า checker เ
 - **freshHash:** เปลี่ยน/เพิ่ม meta `ai-model` **หรือบล็อก `stock-meta`** → hash เท่าเดิม (วันที่ไม่ขยับ) แต่เนื้อหาวิเคราะห์จริงเปลี่ยน → hash เปลี่ยน
 - **injectModelCredit:** แทน "stock-analyzer workflow" → เครดิตโมเดล + fallback ผนวกท้าย `<footer>` • **decorateReport:** per-report model ไหลจาก meta → footer ถูกตัว (Opus/Sonnet) + ตกลงค่ากลาง `AI_MODEL` เมื่อไม่มี tag
 - **extractMetrics / pickHighlight / computeLeaders:** ดึง metric จากบล็อก `stock-meta` → เลือก "จุดเด่น" ของหุ้นต่อการ์ด (tier ของแต่ละ metric + ป้ายมงกุฎ 👑 เมื่อเป็นค่าดีสุดในกลุ่ม) · computeLeaders หาค่าดีสุดต่อ metric (มาก = ดีสุด, P/E น้อย = ดีสุด ข้ามค่าติดลบ)
+- **extractMeta `desc`:** ดึงคำโปรยธุรกิจจาก `<div class="sub">` ใต้ `<h1>` + ถอด HTML entity (`&amp;` → `&` กัน double-escape ตอน render) → ฟิลด์ `desc` ที่โชว์บนการ์ด (ไม่มี `.sub` → `desc = ""` การ์ด fallback ไป title)
 
 **ชั้น 2 — `test/check-site.js`** (ตรวจ `dist/` หลัง build — ระดับเว็บไซต์):
 - **ความครบ:** ทุก report อยู่ใน `dist/`, `reports.json`, และมีการ์ดใน `index.html` • ชื่อไฟล์พิมพ์ใหญ่ ไม่ซ้ำ

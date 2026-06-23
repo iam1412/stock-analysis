@@ -104,6 +104,8 @@ function buildCtx(html, name) {
     text,
     header: headerM ? headerM[0] : '',
     aiModel: (() => { const m = html.match(/<meta\s+name=["']ai-model["']\s+content=["']([^"']*)["']/i); return m ? m[1].trim() : null; })(),
+    // คำโปรยธุรกิจใต้ <h1> = <div class="sub"> — build.js ดึงไปเป็น desc โชว์บนการ์ดหน้า index (สรุปว่าบริษัททำธุรกิจอะไร)
+    sub: (() => { const m = html.match(/<h1[^>]*>[\s\S]*?<\/h1>\s*<div[^>]*\bclass=["'][^"']*\bsub\b[^"']*["'][^>]*>([\s\S]*?)<\/div>/i); return m ? stripTags(m[1]).trim() : ''; })(),
     px: firstNum(grab(/<div class="px">([\s\S]*?)<\/div>/, html)),
     constFV: (() => { const m = html.match(/const\s+FV\s*=\s*([0-9]+(?:\.[0-9]+)?)/); return m ? parseFloat(m[1]) : null; })(),
     fvBox: fvIdx === -1 ? null : firstNum(grab(/class="r">([\s\S]*?)<\/div>/, html.slice(fvIdx))),
@@ -206,6 +208,14 @@ const CHECKS = [
     if (isFiniteNum(d.mos)) { const exp = (d.fairValue - d.price) / d.fairValue * 100; if (Math.abs(d.mos - exp) > TOL_MOS_PP) bad.push(`mos ${d.mos} ≠ (FV ${d.fairValue}−price ${d.price})/FV·100 = ${exp.toFixed(1)}`); }
     if (isFiniteNum(d.upside)) { const exp = (d.fairValue - d.price) / d.price * 100; const tol = Math.max(0.6, Math.abs(exp) * 0.05); if (Math.abs(d.upside - exp) > tol) bad.push(`upside ${d.upside} ≠ (FV ${d.fairValue}−price ${d.price})/price·100 = ${exp.toFixed(1)}`); }
     return bad.length ? bad.join(' ; ') : null;
+  } },
+
+  // คำโปรยธุรกิจใต้ <h1> (<div class="sub">) — build.js ดึงไปเป็น desc บนการ์ดหน้า index (ให้ผู้อ่านเห็นว่าบริษัททำธุรกิจอะไร)
+  // บังคับให้ทุก report มี → การ์ดหน้ารวมไม่ fallback ไปโชว์ title ซ้ำ ๆ แทน
+  { id: 'E32', level: 'error', label: 'คำโปรยธุรกิจใต้ <h1> (.sub → desc การ์ด index)', fn: (c) => {
+    if (!c.sub) return 'ไม่มีคำโปรยธุรกิจ (<div class="sub"> ใต้ <h1>) — build.js ใช้เป็น desc บนการ์ดหน้า index (สรุปสั้น ๆ ว่าบริษัททำธุรกิจอะไร)';
+    if (c.sub.length < 10) return `คำโปรยธุรกิจ (.sub) สั้นผิดปกติ (${c.sub.length} อักขระ): "${c.sub}" — ควรสรุปธุรกิจหลักของบริษัทพอให้เข้าใจ`;
+    return null;
   } },
 
   { id: 'W01', level: 'warn', label: 'scenario: EPS×P/E ≈ ราคาเป้า', fn: (c) => { const bad = []; const nm = ['Bear', 'Base', 'Bull']; c.scenarios.forEach((s, i) => { if (s.tgt == null || s.eps == null || s.pe == null) return; const calc = s.eps * s.pe; const d = Math.abs(calc - s.tgt) / s.tgt; if (d > TOL_SCN_REL) bad.push(`${nm[i] || ('#' + i)}: EPS ${s.eps}×P/E ${s.pe}=${calc.toFixed(0)} ≠ target ${s.tgt} (ต่าง ${(d * 100).toFixed(0)}%)`); }); return bad.length ? bad.join(' ; ') : null; } },

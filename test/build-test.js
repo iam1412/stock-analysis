@@ -46,6 +46,11 @@ ok(b.freshHash(withOpus) !== b.freshHash(doc('Claude Opus 4.8', WF + ' EXTRA')),
 ok(b.extractMeta(withOpus, 'X').aiModel === 'Claude Opus 4.8', 'extractMeta: อ่าน aiModel จาก meta tag');
 ok(b.extractMeta(noTag, 'X').aiModel === null, 'extractMeta: ไม่มี tag → aiModel = null');
 
+// ── extractMeta: ดึง desc (คำโปรยธุรกิจ) จาก <div class="sub"> ใต้ <h1> + ถอด entity ──
+const withSub = `<!DOCTYPE html><html lang="th"><head><title>X (X)</title></head><body><h1>Acme</h1><div class="sub">ผลิตชิป A &amp; B • cloud</div><footer>f</footer></body></html>`;
+ok(b.extractMeta(withSub, 'X').desc === 'ผลิตชิป A & B • cloud', 'extractMeta: ดึง desc จาก .sub + ถอด &amp; → & (กัน double-escape)');
+ok(b.extractMeta(noTag, 'X').desc === '', 'extractMeta: ไม่มี .sub → desc = "" (การ์ด fallback ไป title)');
+
 // ── injectModelCredit: replace + fallback ──
 const repl = b.injectModelCredit(withOpus, 'Claude Opus 4.8');
 ok(!/สร้างด้วย\s*stock-analyzer\s*workflow/.test(repl), 'injectModelCredit: ลบข้อความ "stock-analyzer workflow" เดิม');
