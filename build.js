@@ -29,6 +29,8 @@ const MANIFEST = path.join(ROOT, 'reports.json'); // committed — เก็บ 
 const CONTACT_EMAIL = 'somchai.s@de.co.th';
 const SITE_ORIGIN = 'https://stock-ai.dotent.workers.dev'; // ใช้สร้าง absolute URL ให้ og:url / og:image (social scraper ต้องการ URL เต็ม)
 const OG_IMAGE = SITE_ORIGIN + '/static/og.png'; // banner 1200×630 สำหรับการ์ดแชร์ (static/og.png — regenerate จาก static/og.svg)
+const AI_MODEL = 'Claude Opus 4.8'; // โมเดล AI ที่ใช้วิเคราะห์+จัดทำรายงาน — แสดงใน footer เพื่อความโปร่งใส/น่าเชื่อถือ (อัปเดตเมื่อเปลี่ยนรุ่น)
+const AI_MAKER = 'Anthropic';
 const ASSET_DIRS = new Set(['assets', 'public', 'static', 'img', 'images', 'css', 'js', 'fonts']);
 
 const log = (...a) => console.log('[build]', ...a);
@@ -36,13 +38,18 @@ const stripTags = (s) => (s || '').replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 const escAttr = (s) => esc(s).replace(/"/g, '&quot;'); // ปลอดภัยสำหรับใส่ใน attribute
 const hash = (s) => crypto.createHash('sha256').update(s).digest('hex').slice(0, 12);
+// hash สำหรับ track "อัปเดตล่าสุด": ตัด meta ai-model ออกก่อน — การเปลี่ยน/เพิ่มโมเดลเป็น metadata
+// ไม่ใช่การแก้เนื้อหาวิเคราะห์ จึงไม่ควรดันวันที่ให้ดูสดใหม่ (กันทุก report เด้งเป็น "วันนี้" เพราะแค่ประทับโมเดล)
+const freshHash = (content) => hash(content.replace(/\n?<meta\s+name=["']ai-model["'][^>]*>/i, ''));
 
 function extractMeta(html, symbol) {
   const titleM = html.match(/<title>([\s\S]*?)<\/title>/i);
   const h1M = html.match(/<h1[^>]*>([\s\S]*?)<\/h1>/i);
+  const modelM = html.match(/<meta\s+name=["']ai-model["']\s+content=["']([^"']*)["']/i); // โมเดล AI ที่ report ประกาศของตัวเอง
   const title = stripTags(titleM && titleM[1]) || symbol;
   const name = stripTags(h1M && h1M[1]) || title;
-  return { title, name };
+  const aiModel = (modelM && modelM[1].trim()) || null; // null → footer ใช้ค่ากลาง AI_MODEL
+  return { title, name, aiModel };
 }
 
 // แทรกแถบติดต่อ + ลิงก์กลับหน้ารวม + ตัวนับยอดวิว + ปุ่ม Like/Dislike ในแต่ละหน้ารายงาน
@@ -149,10 +156,32 @@ function injectShareMeta(html, r) {
   return hi === -1 ? tags + '\n' + html : html.slice(0, hi) + tags + '\n' + html.slice(hi);
 }
 
-// ตกแต่งไฟล์รายงานก่อนเขียนลง dist: share meta + footer ติดต่อ + ตัวนับยอดวิว + ปุ่ม Like/Dislike
-function decorateReport(html, r) {
-  return injectViewVoteScript(injectVoteStyle(injectContactFooter(injectShareMeta(html, r))), r.symbol);
+// แทนข้อความ "สร้างด้วย stock-analyzer workflow" ใน footer ต้นฉบับ ด้วยเครดิตโมเดล AI ที่ใช้วิเคราะห์
+// (ดึงจาก meta ai-model ต่อ report → ระบุรุ่นที่สร้างรายงานนั้นจริง · ทำตอน build เฉพาะใน dist)
+function injectModelCredit(html, model) {
+  const credit = `🤖 วิเคราะห์และจัดทำด้วย AI · <b>${escAttr(model)}</b> · ${AI_MAKER}`;
+  const re = /สร้างด้วย\s*stock-analyzer\s*workflow/i;
+  if (re.test(html)) return html.replace(re, credit);
+  // ไม่พบข้อความเดิม → ผนวกเครดิตเข้าใน <footer> ท้ายสุด (กันรายงานที่ไม่มีบรรทัดนี้ ให้ยังมี attribution)
+  const fi = html.toLowerCase().lastIndexOf('</footer>');
+  return fi === -1 ? html : html.slice(0, fi) + ` • ${credit}` + html.slice(fi);
 }
+
+// ตกแต่งไฟล์รายงานก่อนเขียนลง dist: share meta + เครดิตโมเดล + footer ติดต่อ + ตัวนับยอดวิว + ปุ่ม Like/Dislike
+function decorateReport(html, r) {
+  const model = r.aiModel || AI_MODEL;
+  let h = injectShareMeta(html, r);
+  h = injectModelCredit(h, model);
+  h = injectContactFooter(h);
+  h = injectVoteStyle(h);
+  h = injectViewVoteScript(h, r.symbol);
+  return h;
+}
+
+// export ฟังก์ชันให้ unit-test (test/build-test.js) — ต้องอยู่ก่อนโค้ดที่รัน build จริง
+module.exports = { extractMeta, freshHash, injectModelCredit, injectContactFooter, decorateReport, AI_MODEL, AI_MAKER };
+// ถูก require เข้ามาเพื่อเทส → ส่งออกฟังก์ชันแล้วหยุด ไม่รัน build (top-level return ใช้ได้ใน CommonJS module)
+if (require.main !== module) return;
 
 // ---- 1) เตรียมโฟลเดอร์ dist ----
 fs.rmSync(OUT, { recursive: true, force: true });
@@ -178,7 +207,7 @@ if (fs.existsSync(REPORTS_DIR)) {
     const src = path.join(REPORTS_DIR, entry.name);
     const content = fs.readFileSync(src, 'utf8');
     const symbol = entry.name.replace(/\.html$/i, '');
-    const h = hash(content);
+    const h = freshHash(content); // ตัด meta ai-model ออกจาก hash → ประทับโมเดลไม่นับเป็น "อัปเดต"
     const old = prev[symbol];
     const updated = old && old.hash === h && old.updated ? old.updated : nowISO; // เปลี่ยน → ประทับเวลาใหม่
 
@@ -437,6 +466,7 @@ ${reports.length ? cards : emptyState}
     </div>${noResult}${pagerEl}
     <footer>
       อัปเดตล่าสุด ${fmtDate(nowISO)} · สร้างด้วย build.js · ติดต่อ <a href="mailto:${CONTACT_EMAIL}">${CONTACT_EMAIL}</a><br>
+      🤖 วิเคราะห์และจัดทำด้วย AI · <b>${AI_MODEL}</b> · ${AI_MAKER}<br>
       ข้อมูลเพื่อการศึกษา ไม่ใช่คำแนะนำการลงทุน
     </footer>
   </div>${searchScript}

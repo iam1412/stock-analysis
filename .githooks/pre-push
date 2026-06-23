@@ -16,13 +16,16 @@ block() {
   exit 1
 }
 
-echo "🔍 pre-push 1/3: ตรวจคุณภาพรายงาน (check-reports)…"
+echo "🔍 pre-push 1/4: ตรวจคุณภาพรายงาน (check-reports)…"
 node test/check-reports.js || block "report quality gate"
 
-echo "🔧 pre-push 2/3: build dist/ …"
+echo "🔧 pre-push 2/4: build dist/ …"
 node build.js >/dev/null || block "build"
 
-echo "🌐 pre-push 3/3: ตรวจความสมบูรณ์เว็บไซต์ (check-site)…"
+echo "🧪 pre-push 3/4: unit-test build.js (เครดิตโมเดล + freshHash)…"
+node test/build-test.js >/dev/null || block "build-test"
+
+echo "🌐 pre-push 4/4: ตรวจความสมบูรณ์เว็บไซต์ (check-site)…"
 node test/check-site.js || block "site integrity gate"
 
 exit 0

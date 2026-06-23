@@ -68,6 +68,8 @@ expect('E26', 'error', (h) => h.replace('฿156<br><small>MOS 20%', '฿250<br><
 expect('W06', 'warn', (h) => h.replace('MOS ~ +9%', 'แพง ~9%'), 'สรุปพลิกขั้ว (แพง) ขัดกับ MOS บวก');
 expect('W07', 'warn', (h) => h.replace('class="v pos">~7.5x', 'class="v pos">~750x'), 'P/E ผิดวิสัย (750x)');
 expect('W08', 'warn', (h) => h.replace('ที่มา: SET / stockanalysis.com / Investing', 'ที่มา: SET'), 'แหล่งข้อมูล < 3');
+expect('E28', 'error', (h) => h.replace(/<meta\s+name="ai-model"[^>]*>/i, ''), 'ลบ meta ai-model → ต้องบังคับให้ระบุโมเดล');
+expect('E28', 'error', (h) => h.replace(/content="Claude[^"]*"/i, 'content="GPT-4"'), 'ai-model ไม่ใช่ Claude → ค่าผิด');
 // freshness — จำลอง "วันนี้" ผ่าน env STALE_TODAY (รายงานลงวันที่ มิ.ย. 2026)
 {
   process.env.STALE_TODAY = '2027-06-23';

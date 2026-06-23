@@ -85,15 +85,17 @@ open dist/index.html
 
 ## ✅ Quality gate (ตรวจก่อนเผยแพร่)
 
-`npm run verify` ตรวจ 2 ชั้น — มี error เมื่อไหร่ push ไม่ได้:
+`npm run verify` ตรวจ 3 ชั้น — มี error เมื่อไหร่ push ไม่ได้:
 
-1. **`check-reports.js`** (source ทีละไฟล์): โครงสร้างครบ • **ตัวเลขสอดคล้องกันเอง** (ค่า `FV` ในเครื่องคิดเลข = Fair Value = สรุป, `MOS=(FV−ราคา)/FV`, จุดซื้อ MOS = FV×0.8/0.7, คณิตแต่ละวิธี P/E & P/BV, scenario EPS ทบต้น) • **ความสดของราคา** (เตือน >45 วัน, บล็อก >120 วัน) • แหล่งข้อมูล ≥3 + ตัวเลขสมเหตุสมผล • ไม่มี placeholder/undefined
-2. **`check-site.js`** (หลัง build, ระดับเว็บไซต์): ทุก report อยู่ใน index/manifest ครบ • `<script>` ไม่พัง + id ครบ • **ความปลอดภัย: external resource = Google Fonts เท่านั้น ห้าม `<script src>` ภายนอก**
+1. **`check-reports.js`** (source ทีละไฟล์): โครงสร้างครบ (รวม meta `ai-model` ระบุโมเดล AI) • **ตัวเลขสอดคล้องกันเอง** (ค่า `FV` ในเครื่องคิดเลข = Fair Value = สรุป, `MOS=(FV−ราคา)/FV`, จุดซื้อ MOS = FV×0.8/0.7, คณิตแต่ละวิธี P/E & P/BV, scenario EPS ทบต้น) • **ความสดของราคา** (เตือน >45 วัน, บล็อก >120 วัน) • แหล่งข้อมูล ≥3 + ตัวเลขสมเหตุสมผล • ไม่มี placeholder/undefined
+2. **`build-test.js`** (unit-test build.js): `freshHash` (เปลี่ยนโมเดลไม่ดันวันที่) • เครดิตโมเดล AI ต่อ report (แทน "stock-analyzer workflow")
+3. **`check-site.js`** (หลัง build, ระดับเว็บไซต์): ทุก report อยู่ใน index/manifest ครบ • `<script>` ไม่พัง + id ครบ • โมเดลใน footer = meta `ai-model` ของไฟล์ • **ความปลอดภัย: external resource = Google Fonts เท่านั้น ห้าม `<script src>` ภายนอก**
 
 ```bash
 npm test                 # ชั้น 1 อย่างเดียว    npm test -- BBL   # เฉพาะบางตัว
-npm run check:site       # ชั้น 2 อย่างเดียว (ต้อง build ก่อน)
-npm run test:self        # พิสูจน์ว่า checker เองยังจับ bug ได้ (32 เคส)
+npm run test:build       # ชั้น 1.5 อย่างเดียว (unit-test build.js — 12 เคส)
+npm run check:site       # ชั้น 3 อย่างเดียว (ต้อง build ก่อน)
+npm run test:self        # พิสูจน์ว่า checker เองยังจับ bug ได้ (34 เคส)
 git config core.hooksPath .githooks   # เปิดใช้ pre-push hook (ครั้งเดียวต่อ clone)
 ```
 

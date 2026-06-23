@@ -10,6 +10,7 @@
  *   3) ความปลอดภัย: external resource = Google Fonts (https) เท่านั้น, ห้าม <script src> ภายนอก, ห้าม http://
  *   4) โครงสร้าง: container tag สมดุล, มี <title>/<h1> อย่างละ 1
  *   5) กราฟ/gauge สมเหตุสมผล: จุดสุดท้าย≈ราคา, min/max ครอบข้อมูล, marker อยู่ในช่วง gmin–gmax
+ *   6) เครดิตโมเดล AI: ไม่เหลือ "stock-analyzer workflow", มีเครดิต 🤖 …·Anthropic, โมเดลใน footer = meta ai-model
  *
  * ใช้: node test/check-site.js   (npm run verify จะรัน build แล้วตามด้วยตัวนี้)
  * exit 0 = ผ่าน, 1 = มี error → ห้าม publish. ไม่มี dependency ภายนอก
@@ -63,6 +64,22 @@ function checkSecurityStructure(html, name, isReport) {
     if ((html.match(/<h1[\s>]/gi) || []).length !== 1) errors.push('ต้องมี <h1> เพียง 1');
   }
   return { errors, warnings };
+}
+
+// ---- เครดิตโมเดล AI ในรายงาน dist (build.js แทน "stock-analyzer workflow" → 🤖 … <model> · Anthropic) ----
+// ตรวจ end-to-end ว่า: (1) ไม่เหลือข้อความ workflow เดิม (2) มีเครดิตโมเดล (3) โมเดลใน footer = meta ai-model ของไฟล์นั้น
+function checkModelCredit(html, name) {
+  const errors = [];
+  if (/สร้างด้วย\s*stock-analyzer\s*workflow/i.test(html))
+    errors.push('ยังพบ "สร้างด้วย stock-analyzer workflow" ใน dist (build แทนเครดิตโมเดลไม่สำเร็จ)');
+  const m = html.match(/🤖[^<]*<b>([^<]+)<\/b>\s*·\s*Anthropic/);
+  if (!m) { errors.push('footer ไม่มีเครดิตโมเดล AI (🤖 … · <model> · Anthropic)'); return { errors, warnings: [] }; }
+  const footerModel = m[1].trim();
+  if (!/^Claude\s/i.test(footerModel)) errors.push(`โมเดลใน footer ควรขึ้นต้น "Claude " — พบ "${footerModel}"`);
+  const meta = grab(/<meta\s+name=["']ai-model["']\s+content=["']([^"']+)["']/i, html);
+  if (meta && footerModel !== meta.trim())
+    errors.push(`โมเดลใน footer "${footerModel}" ≠ meta ai-model "${meta.trim()}" (per-report ไม่ตรงกัน)`);
+  return { errors, warnings: [] };
 }
 
 // ---- chart/gauge plausibility (เฉพาะไฟล์รายงาน) ----
@@ -141,6 +158,8 @@ function main() {
       rr = checkRender(html, f);
       const h1 = stripTags(grab(/<h1[^>]*>([\s\S]*?)<\/h1>/i, html) || '').trim();
       if (!h1) ss.errors.push('h1 (ชื่อบริษัท) ว่างเปล่า');
+      const mc = checkModelCredit(html, f);
+      ss.errors.push(...mc.errors);
     }
     add(f, { errors: [...ss.errors, ...rr.errors], warnings: [...ss.warnings, ...rr.warnings] });
   }
@@ -160,4 +179,4 @@ function main() {
 }
 
 if (require.main === module) main();
-module.exports = { checkSecurityStructure, checkRender };
+module.exports = { checkSecurityStructure, checkRender, checkModelCredit };
