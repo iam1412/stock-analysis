@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น Arm Holdings (ARM) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Opus 4.8">
+<script type="application/json" id="stock-meta">
+{"symbol":"ARM","currency":"USD","price":408,"fairValue":264,"mos":-55,"upside":-35.3,"pe":482,"dividendYield":0,"roe":12}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#eef1f5; --card:#ffffff; --ink:#1a1d23; --muted:#5f6675; --line:#e4e8ee;
+    --blue:#1a73e8; --blue-d:#1557b0; --red:#ea4335; --yellow:#f9ab00; --green:#1e8e3e;
+    --green-soft:#e6f4ea; --red-soft:#fce8e6; --amber-soft:#fef7e0; --blue-soft:#e8f0fe;
+    --shadow:0 1px 3px rgba(16,24,40,.06),0 8px 24px rgba(16,24,40,.06);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Sarabun','Noto Sans Thai',system-ui,-apple-system,Segoe UI,sans-serif;background:var(--bg);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased}
+  .mono{font-family:'IBM Plex Mono',ui-monospace,monospace;font-variant-numeric:tabular-nums}
+  .wrap{max-width:1080px;margin:0 auto;padding:20px 16px 64px}
+
+  /* Header */
+  header{background:linear-gradient(135deg,#1a2433 0%,#1f3a52 60%,#0b7c8c 140%);border-radius:20px;padding:28px 28px 24px;color:#fff;position:relative;overflow:hidden;box-shadow:var(--shadow)}
+  header::after{content:"";position:absolute;right:-40px;top:-40px;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,rgba(0,194,203,.35),transparent 70%)}
+  .gdots{display:inline-flex;gap:5px;margin-bottom:14px}
+  .gdots span{width:11px;height:11px;border-radius:50%}
+  .tag{display:inline-block;font-size:12px;font-weight:600;padding:3px 10px;border-radius:99px;background:rgba(255,255,255,.14);backdrop-filter:blur(4px);margin-right:6px}
+  h1{font-size:30px;font-weight:800;letter-spacing:-.5px;margin:2px 0 2px}
+  .sub{color:#bfe4e9;font-size:14.5px}
+  .price-row{display:flex;align-items:flex-end;gap:18px;flex-wrap:wrap;margin-top:18px;position:relative;z-index:2}
+  .px{font-size:44px;font-weight:800;letter-spacing:-1px}
+  .px small{font-size:18px;font-weight:600;color:#a6c6cc;margin-left:4px}
+  .chg{font-weight:700;font-size:16px;padding:5px 12px;border-radius:10px;background:var(--red-soft);color:#c5221f}
+  .px-meta{font-size:12.5px;color:#a6c6cc;margin-left:auto;text-align:right;line-height:1.5}
+
+  /* Section */
+  section{margin-top:26px}
+  .s-head{display:flex;align-items:center;gap:10px;margin:0 4px 14px}
+  .s-head .n{width:26px;height:26px;border-radius:8px;background:var(--blue);color:#fff;display:grid;place-items:center;font-size:13px;font-weight:700;flex:none}
+  .s-head h2{font-size:19px;font-weight:700;letter-spacing:-.3px}
+  .s-head .hint{font-size:12.5px;color:var(--muted);margin-left:auto}
+
+  /* Grid metrics */
+  .grid{display:grid;gap:12px}
+  .g4{grid-template-columns:repeat(4,1fr)}
+  .g3{grid-template-columns:repeat(3,1fr)}
+  .g2{grid-template-columns:repeat(2,1fr)}
+  .metric{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 15px;box-shadow:var(--shadow)}
+  .metric .k{font-size:12.5px;color:var(--muted);font-weight:500;display:flex;align-items:center;gap:5px}
+  .metric .v{font-size:23px;font-weight:700;margin-top:3px;letter-spacing:-.3px}
+  .metric .d{font-size:11.5px;color:var(--muted);margin-top:1px}
+  .pos{color:var(--green)} .neg{color:var(--red)} .neu{color:var(--yellow)}
+  .pill{font-size:10px;font-weight:700;padding:1px 7px;border-radius:99px;vertical-align:middle}
+  .pill.g{background:var(--green-soft);color:var(--green)} .pill.r{background:var(--red-soft);color:#c5221f} .pill.a{background:var(--amber-soft);color:#b06000}
+
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px;box-shadow:var(--shadow)}
+
+  /* Chart */
+  .chart-wrap{padding:8px 4px 0}
+  .legend{display:flex;gap:18px;font-size:12px;color:var(--muted);margin-top:10px;flex-wrap:wrap}
+  .legend i{display:inline-block;width:11px;height:3px;border-radius:2px;vertical-align:middle;margin-right:5px}
+
+  /* Valuation gauge */
+  .gauge{margin:8px 0 4px}
+  .gbar{position:relative;height:48px;border-radius:12px;overflow:hidden;background:linear-gradient(90deg,#1e8e3e 0%,#34a853 22%,#f9ab00 46%,#ea4335 100%)}
+  .gbar .seg-label{position:absolute;top:50%;transform:translate(-50%,-50%);font-size:10.5px;font-weight:700;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.25);white-space:nowrap}
+  .marker{position:absolute;top:-6px;bottom:-6px;width:3px;background:#111;border-radius:2px}
+  .marker .lab{position:absolute;top:-34px;left:50%;transform:translateX(-50%);background:#111;color:#fff;font-size:11px;font-weight:700;padding:3px 8px;border-radius:7px;white-space:nowrap}
+  .marker .lab::after{content:"";position:absolute;bottom:-4px;left:50%;transform:translateX(-50%) rotate(45deg);width:8px;height:8px;background:#111}
+  .marker.cur{background:#1a73e8} .marker.cur .lab{background:#1a73e8} .marker.cur .lab::after{background:#1a73e8}
+  .scale{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-top:14px}
+
+  .vmethod{display:flex;align-items:center;justify-content:space-between;padding:13px 0;border-bottom:1px solid var(--line)}
+  .vmethod:last-child{border-bottom:none}
+  .vmethod .mname{font-weight:600;font-size:14.5px}
+  .vmethod .mdesc{font-size:12px;color:var(--muted)}
+  .vmethod .mval{font-size:20px;font-weight:700;text-align:right}
+  .fv-box{margin-top:14px;background:var(--blue-soft);border:1px solid #c6dafc;border-radius:14px;padding:16px 18px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+  .fv-box .l{font-size:13.5px;color:var(--blue-d);font-weight:600}
+  .fv-box .r{font-size:30px;font-weight:800;color:var(--blue-d);letter-spacing:-.5px}
+
+  /* MOS */
+  .mos-verdict{border-radius:14px;padding:16px 18px;margin-bottom:14px;display:flex;align-items:center;gap:14px}
+  .mos-verdict.bad{background:var(--red-soft)} .mos-verdict.ok{background:var(--amber-soft)} .mos-verdict.good{background:var(--green-soft)}
+  .mos-verdict .big{font-size:34px;font-weight:800;letter-spacing:-1px;flex:none}
+  .mos-verdict.bad .big{color:#c5221f} .mos-verdict.ok .big{color:#b06000} .mos-verdict.good .big{color:var(--green)}
+  .mos-verdict .txt{font-size:13.5px}
+  .mos-verdict .txt b{font-size:15px}
+  .calc{margin-top:16px;border:1px dashed var(--line);border-radius:14px;padding:16px}
+  .calc label{font-size:12.5px;color:var(--muted);font-weight:600;display:block;margin-bottom:6px}
+  .calc-row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+  .calc input{font-family:'IBM Plex Mono',monospace;font-size:18px;font-weight:600;border:1.5px solid var(--line);border-radius:10px;padding:9px 12px;width:140px;outline:none}
+  .calc input:focus{border-color:var(--blue)}
+  .calc-out{font-size:14px;font-weight:600}
+
+  /* Scenarios */
+  .scn{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  .scn .col{border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--card)}
+  .scn .top{padding:12px 15px;color:#fff;font-weight:700;display:flex;justify-content:space-between;align-items:center}
+  .scn .bear .top{background:#c5221f} .scn .base .top{background:#1557b0} .scn .bull .top{background:#1e8e3e}
+  .scn .body{padding:14px 15px}
+  .scn .tgt{font-size:26px;font-weight:800;letter-spacing:-.5px}
+  .scn .ret{font-size:13px;font-weight:600;margin-top:2px}
+  .scn ul{list-style:none;margin-top:10px;font-size:12px;color:var(--muted)}
+  .scn li{display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px dotted var(--line)}
+  .scn li:last-child{border:none}
+  .scn li span:last-child{font-weight:600;color:var(--ink)}
+
+  /* Catalyst / Risk */
+  .cr{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .cr .box{border-radius:16px;padding:18px 20px;border:1px solid var(--line);box-shadow:var(--shadow)}
+  .cr .box.cat{background:linear-gradient(180deg,#f3faf5,#ffffff)}
+  .cr .box.risk{background:linear-gradient(180deg,#fef4f3,#ffffff)}
+  .cr h3{font-size:15px;font-weight:700;display:flex;align-items:center;gap:8px;margin-bottom:12px}
+  .cr .ic{width:24px;height:24px;border-radius:7px;display:grid;place-items:center;font-size:14px;flex:none}
+  .cr .cat .ic{background:var(--green-soft);color:var(--green)} .cr .risk .ic{background:var(--red-soft);color:#c5221f}
+  .cr ul{list-style:none}
+  .cr li{font-size:13px;padding:8px 0;border-bottom:1px solid var(--line);display:flex;gap:9px}
+  .cr li:last-child{border:none}
+  .cr li::before{content:"";width:6px;height:6px;border-radius:50%;margin-top:8px;flex:none}
+  .cr .cat li::before{background:var(--green)} .cr .risk li::before{background:var(--red)}
+  .cr li b{font-weight:700}
+
+  /* Verdict */
+  .verdict{background:linear-gradient(135deg,#1a2433,#1f3a52);color:#fff;border-radius:18px;padding:24px 26px;box-shadow:var(--shadow)}
+  .verdict h2{font-size:20px;font-weight:700;margin-bottom:6px}
+  .verdict p{color:#d4dded;font-size:14px;margin-bottom:14px}
+  .vgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:6px}
+  .vcell{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:13px 15px}
+  .vcell .k{font-size:11.5px;color:#a8b6cc;font-weight:500}
+  .vcell .v{font-size:17px;font-weight:700;margin-top:3px}
+  .zone{margin-top:16px;font-size:13px;color:#d4dded;background:rgba(255,255,255,.05);border-left:3px solid var(--yellow);border-radius:0 10px 10px 0;padding:11px 15px}
+
+  .disc{margin-top:24px;font-size:12px;color:var(--muted);background:#fafbfc;border:1px solid var(--line);border-radius:12px;padding:14px 16px;line-height:1.7}
+  .disc b{color:var(--ink)}
+  footer{text-align:center;font-size:11.5px;color:var(--muted);margin-top:22px}
+
+  @media(max-width:760px){
+    .g4{grid-template-columns:repeat(2,1fr)} .g3{grid-template-columns:repeat(2,1fr)}
+    .scn{grid-template-columns:1fr} .cr{grid-template-columns:1fr} .vgrid{grid-template-columns:1fr}
+    .px{font-size:36px} h1{font-size:24px} .px-meta{margin-left:0;text-align:left;width:100%}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots"><span style="background:#00C2CB"></span><span style="background:#0091EA"></span><span style="background:#26C6DA"></span><span style="background:#1DE9B6"></span></div>
+    <div>
+      <span class="tag">NASDAQ: ARM</span>
+      <span class="tag">Semiconductors / IP</span>
+      <span class="tag">Large-cap • AI</span>
+    </div>
+    <h1>Arm Holdings plc (ADR)</h1>
+    <div class="sub">เจ้าของสถาปัตยกรรม CPU ที่อยู่ในชิปมือถือเกือบทุกตัว • โมเดล Royalty + License • รุกตลาด AI / Data Center</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$408<small>(ARM)</small></div>
+      </div>
+      <div class="chg">▼ −7.2% (22 มิ.ย.)</div>
+      <div class="px-meta">
+        ราคาปิด 22 มิ.ย. 2026 ที่ $407.72 (after-hours ~$404.5)<br>
+        ระหว่างวัน 23 มิ.ย. แกว่ง $405–445 (ผันผวนสูงมาก)<br>
+        ที่มา: StockAnalysis / Nasdaq / Yahoo Finance
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">งบ FY2026 (สิ้นสุด 31 มี.ค. 2026)</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~$435B</div><div class="d">1.07 พันล้านหุ้น (ADR)</div></div>
+      <div class="metric"><div class="k">P/E (TTM, GAAP)</div><div class="v neu">~482x</div><div class="d">EPS GAAP $0.85 <span class="pill r">แพงสุดขั้ว</span></div></div>
+      <div class="metric"><div class="k">P/E (Fwd, non-GAAP)</div><div class="v neu">~188x</div><div class="d">EPS คาด FY27 ~$2.17</div></div>
+      <div class="metric"><div class="k">EPS non-GAAP FY2026</div><div class="v">$1.77</div><div class="d pos">▲ สถิติสูงสุด</div></div>
+
+      <div class="metric"><div class="k">รายได้ FY2026</div><div class="v">$4.92B</div><div class="d pos">▲ +23% YoY</div></div>
+      <div class="metric"><div class="k">กำไรสุทธิ FY2026 (GAAP)</div><div class="v">$904M</div><div class="d">Net margin ~18%</div></div>
+      <div class="metric"><div class="k">Royalty FY2026</div><div class="v">$2.61B</div><div class="d pos">▲ +21% • Armv9/CSS หนุน</div></div>
+      <div class="metric"><div class="k">EPS FY2026 (GAAP)</div><div class="v">$0.85</div><div class="d">non-GAAP สูงกว่ามาก</div></div>
+
+      <div class="metric"><div class="k">Gross Margin</div><div class="v">~97%</div><div class="d">โมเดล IP แทบไม่มีต้นทุนขาย</div></div>
+      <div class="metric"><div class="k">ROE</div><div class="v">~12%</div><div class="d neu">ต่ำเทียบราคา • ROIC ~14%</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">0%</div><div class="d">ไม่จ่ายปันผล (reinvest R&D)</div></div>
+      <div class="metric"><div class="k">ช่วง 52 สัปดาห์</div><div class="v" style="font-size:18px">$100 – $453</div><div class="d">High ล่าสุด $452.70</div></div>
+    </div>
+  </section>
+
+  <!-- ===== PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#1a73e8"></i>ราคา ARM</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $264</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        หุ้นวิ่งขึ้น <b>กว่า +170% ในรอบปี</b> จากจุดต่ำ ~$100 (ก.ค. 2025) สู่จุดสูงสุด $452.70 ก่อนย่อลงมา ~$408
+        หลังกระแส <b>AI / data center</b> ดันความคาดหวังสูงลิ่ว แล้วเจอแรงขายทำกำไร + กังวลเรื่อง valuation ที่ตึงตัวมาก
+        และความไม่แน่นอนของนโยบายดอกเบี้ย Fed ชุดใหม่
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">3 วิธี เฉลี่ยถ่วงน้ำหนัก</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation <span class="pill r">ระมัดระวัง</span></div><div class="mdesc">EPS ~$2.17 (non-GAAP คาด FY2027) × P/E ~130x (ยังพรีเมียมมากเทียบ semis ทั่วไป)</div></div>
+        <div class="mval">$282</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. DCF (2-stage)</div><div class="mdesc">Royalty โต ~20%/ปี ช่วงแรก, WACC ~11%, Terminal 4% — สะท้อนการเติบโตสูงแต่ฐานกำไรยังเล็ก</div></div>
+        <div class="mval">$250</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Analyst Intrinsic</div><div class="mdesc">ค่ากลางจากโมเดล fair value สาย fundamental (กรอบ ~$238–$300) — ต่ำกว่าราคาตลาดมาก</div></div>
+        <div class="mval">$260</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $250 – $282</span></div>
+        <div class="r">$264</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        <b>หมายเหตุ:</b> ข้าม DDM เพราะ ARM <b>ไม่จ่ายปันผล</b> • เราใช้กรอบ <b>Value / Margin of Safety</b> ที่อนุรักษ์นิยม
+        จึงต่ำกว่าราคาตลาด (~$408) อย่างมาก — แต่ก็ยัง <b>สูงกว่าเป้าเฉลี่ยนักวิเคราะห์ (~$255)</b> เพราะให้น้ำหนัก
+        การเติบโต royalty ระยะยาว ทั้งนี้ค่าจริงไวต่อสมมติฐานการเติบโตและตัวคูณ P/E อย่างยิ่ง
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $408</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $264</div></div>
+        </div>
+        <div class="scale">
+          <span>$185<br><small>MOS 30%</small></span>
+          <span>$211<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$264<br><small>Fair Value</small></span>
+          <span style="text-align:right">$408<br><small>ราคาตลาด</small></span>
+          <span style="text-align:right">$500<br><small>เป้าสูงสุด</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคา $408 อยู่ <b>สูงกว่ามูลค่าเหมาะสม $264 อย่างมาก</b> (~+55%) ในเชิงพื้นฐาน — และยัง <b>สูงกว่าเป้าหมาย 12 เดือน</b>
+        เฉลี่ยของนักวิเคราะห์ (~$255) ด้วย สะท้อนว่าตลาดให้พรีเมียมเดิมพันการเติบโต AI/data center เต็มที่
+        มีเพียงเป้า bull สุดขั้ว (Mizuho/Bernstein ~$500) ที่ยังเห็น upside
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">−55%</div>
+        <div class="txt"><b>ไม่มี Margin of Safety (ติดลบลึก)</b><br>ราคาปัจจุบัน $408 สูงกว่ามูลค่าเหมาะสม $264 ราว 55% → ตามเกณฑ์ value investor ถือว่า <b>แพงมาก</b> ราคาสะท้อนความคาดหวังการเติบโตในอนาคตไปไกลแล้ว</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$211</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$185</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $264</div><div class="d">ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="408" step="1">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== RETURN PROJECTION ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $408 • EPS ฐาน ~$1.77 (non-GAAP)</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS +8%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$201</div>
+          <div class="ret neg">รวม ~ −51% (≈ −21%/ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>$2.2</span></li>
+            <li><span>P/E ออก</span><span>90x</span></li>
+            <li><span>สถานการณ์</span><span>โตช้า + P/E หดตัว</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +22%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$386</div>
+          <div class="ret neg">รวม ~ −5% (≈ −1.8%/ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>$3.2</span></li>
+            <li><span>P/E ออก</span><span>120x</span></li>
+            <li><span>สถานการณ์</span><span>โตต่อเนื่อง P/E ยังพรีเมียม</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +35%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$653</div>
+          <div class="ret pos">รวม ~ +60% (≈ +17%/ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>$4.4</span></li>
+            <li><span>P/E ออก</span><span>150x</span></li>
+            <li><span>สถานการณ์</span><span>AI/data center ระเบิด + ขึ้นค่า royalty</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      ความเสี่ยง–ผลตอบแทน <b>เอียงลบชัดเจน</b> ที่จุดเข้านี้: แม้ base case (โต ~22%/ปี ซึ่งสูงมากอยู่แล้ว) ก็ยังให้ผลตอบแทน
+      <b>เกือบศูนย์ถึงติดลบ</b> เพราะต้องคง P/E ระดับ 120x ไว้ การจะได้กำไรต้องอาศัย bull case ที่ทุกอย่างเป็นใจพร้อมกัน
+      จุดอ่อนหลักคือ <b>P/E ที่สูงเกินจะมี downside เวลาหดตัว</b>
+    </p>
+  </section>
+
+  <!-- ===== CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><div><b>Royalty โตเร่งจาก Armv9 + CSS:</b> Armv9 และ Compute Subsystem คิดค่า royalty ต่อชิปสูงกว่า (CSS ~2 เท่าของ Armv9 มาตรฐาน) → royalty FY2026 +21% เป็น $2.61B แม้ปริมาณชิปไม่ได้โตเท่า</div></li>
+          <li><div><b>Data center โตทวีคูณ:</b> Q4 royalty จาก data center "มากกว่าเท่าตัว" YoY — ARM แทรกเข้า server/AI ที่เคยเป็นถิ่นของ x86</div></li>
+          <li><div><b>เริ่มทำชิปเอง (AGI CPU):</b> เปิดตัว CPU สำหรับ data center ของตัวเอง — ขยับจาก IP licensing สู่ผลิตภัณฑ์ที่มูลค่าต่อหน่วยสูงขึ้น</div></li>
+          <li><div><b>License แข็งแกร่ง:</b> license + อื่นๆ FY2026 +25% เป็น $2.31B — backlog/ดีลใหม่บ่งชี้ความต้องการออกแบบชิป custom เพิ่ม</div></li>
+          <li><div><b>โมเดลกำไรขั้นสูง:</b> gross margin ~97%, non-GAAP op margin ~43% — IP business ขยายได้โดยต้นทุนเพิ่มน้อย</div></li>
+          <li><div><b>อยู่ทุกที่:</b> สถาปัตยกรรม Arm อยู่ในสมาร์ตโฟนเกือบทุกเครื่องทั่วโลก + ขยายสู่ PC, รถยนต์, IoT, edge AI</div></li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><div><b>Valuation สุดขั้ว:</b> P/E TTM ~482x (GAAP), forward ~188x — แทบไม่มี margin of safety, ราคาทุกระดับ pricing in การเติบโตหลายปีล่วงหน้า</div></li>
+          <li><div><b>ฐานกำไร GAAP ยังเล็ก:</b> กำไรสุทธิ FY2026 เพียง $904M เทียบ market cap ~$435B — ช่องว่างมหาศาลระหว่างราคากับกำไรจริง</div></li>
+          <li><div><b>ลูกค้ากระจุกตัว:</b> รายได้พึ่งลูกค้ารายใหญ่ไม่กี่ราย (Apple, Qualcomm ฯลฯ) — เสียรายใดรายหนึ่งกระทบหนัก; ดีลข้อพิพาทกับ Qualcomm เคยสะเทือนตลาด</div></li>
+          <li><div><b>ความเสี่ยงจีน:</b> Arm China เป็นนิติบุคคลที่ควบคุมได้จำกัด + ความตึงเครียดภูมิรัฐศาสตร์/มาตรการส่งออกชิป กระทบรายได้ส่วนสำคัญ</div></li>
+          <li><div><b>การแข่งขัน RISC-V:</b> สถาปัตยกรรมโอเพนซอร์สฟรี (RISC-V) เป็นภัยระยะยาวต่อโมเดล royalty โดยเฉพาะกลุ่มที่อ่อนไหวต่อต้นทุน</div></li>
+          <li><div><b>P/E หดตัว:</b> หากการเติบโตชะลอหรือดอกเบี้ยสูงนาน ตัวคูณระดับ 100–500x มี downside มากเมื่อ de-rate</div></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>ธุรกิจ IP ชั้นยอด แต่ราคา "แพงสุดขั้ว"</h2>
+      <p>Arm คือเจ้าของสถาปัตยกรรมที่อยู่ใจกลางชิปเกือบทุกตัวบนโลก โตเร็ว มาร์จิ้นสูง และกำลังรุก AI/data center ได้ดี — แต่ที่ราคา ~$408 ตลาดได้สะท้อนการเติบโตในอนาคตหลายปีไปจนหมดแล้ว P/E ระดับ 400–500x ทำให้แทบไม่มีส่วนเผื่อความปลอดภัย แม้ base case ที่โตแรงก็ยังให้ผลตอบแทนแทบไม่ได้ — ความเสี่ยงเอียงลง</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$264 <span style="font-size:12px;color:#a8b6cc">($250–$282)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ff8a80">แพง ~55%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#ffcc80">เฉลี่ย ~$255 (−37%)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> สาย value — รอย่อลึก ทยอยสะสมเมื่อราคา <b>ต่ำกว่า ~$264</b> (น่าสนใจที่ &lt;$211) • สาย growth — หากเชื่อเรื่อง AI ให้ใช้ DCA ขนาดเล็กและยอมรับความผันผวนสูงมาก โดยติดตาม <b>อัตราการเติบโต royalty/data center</b> และ <b>การขยายตัวของ EPS จริง</b> เป็นตัวชี้วัดหลัก
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะตัวคูณ P/E และอัตราการเติบโต royalty ระยะยาว ซึ่งเป็นจุดถกเถียงหลักของหุ้นที่มี valuation สูงมากเช่นนี้
+    ราคาหุ้น ARM มีความผันผวนสูงมากและช่วงนี้เคลื่อนไหวแรงจากกระแส AI ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • อ้างอิงงบจริงจาก SEC (Form 6-K FY2026 Q4, สิ้นสุด 31 มี.ค. 2026)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 22–23 มิ.ย. 2026 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<script>
+(function(){
+  /* ---------- Price chart ---------- */
+  // [label, price] approximate
+  const data=[["มิ.ย.25",105],["ส.ค.25",140],["ต.ค.25",185],["ธ.ค.25",240],["ก.พ.26",300],["เม.ย.26",380],["พ.ค.26",452],["มิ.ย.26",408]];
+  const W=920,H=300;
+  const padL=48,padR=16,padT=18,padB=34;
+  const min=80,max=480;
+  const xs=i=>padL+(W-padL-padR)*(i/(data.length-1));
+  const ys=v=>padT+(H-padT-padB)*(1-(v-min)/(max-min));
+  let path="",area="";
+  data.forEach((d,i)=>{const x=xs(i),y=ys(d[1]);path+=(i?"L":"M")+x.toFixed(1)+" "+y.toFixed(1)+" ";});
+  area=path+`L${xs(data.length-1).toFixed(1)} ${ys(min).toFixed(1)} L${padL} ${ys(min).toFixed(1)} Z`;
+  let svg=`<defs><linearGradient id="ag" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1a73e8" stop-opacity=".22"/><stop offset="1" stop-color="#1a73e8" stop-opacity="0"/></linearGradient></defs>`;
+  // gridlines
+  [100,200,300,400,450].forEach(v=>{const y=ys(v);svg+=`<line x1="${padL}" y1="${y}" x2="${W-padR}" y2="${y}" stroke="#eef1f5" stroke-width="1"/><text x="${padL-8}" y="${y+4}" text-anchor="end" font-size="11" fill="#9aa3b2" font-family="IBM Plex Mono">$${v}</text>`;});
+  // fair value line
+  const fy=ys(264);svg+=`<line x1="${padL}" y1="${fy}" x2="${W-padR}" y2="${fy}" stroke="#1e8e3e" stroke-width="1.5" stroke-dasharray="6 5"/>`;
+  // area + line
+  svg+=`<path d="${area}" fill="url(#ag)"/><path d="${path}" fill="none" stroke="#1a73e8" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"/>`;
+  // points + x labels
+  data.forEach((d,i)=>{const x=xs(i),y=ys(d[1]);const hi=(i===6||i===7);
+    svg+=`<circle cx="${x}" cy="${y}" r="${hi?5:3.2}" fill="${hi?'#ea4335':'#1a73e8'}" stroke="#fff" stroke-width="2"/>`;
+    svg+=`<text x="${x}" y="${H-12}" text-anchor="middle" font-size="11" fill="#9aa3b2">${d[0]}</text>`;
+    if(hi)svg+=`<text x="${x}" y="${y-12}" text-anchor="middle" font-size="11" font-weight="700" fill="${i===7?'#1a73e8':'#ea4335'}" font-family="IBM Plex Mono">$${d[1]}</text>`;
+  });
+  document.getElementById("priceChart").innerHTML=svg;
+
+  /* ---------- Gauge marker positions ---------- */
+  // scale: $160 -> 0%, $530 -> 100%
+  const gmin=160,gmax=530;
+  const gpos=v=>Math.max(2,Math.min(98,(v-gmin)/(gmax-gmin)*100));
+  document.getElementById("mCur").style.left=gpos(408)+"%";
+  document.getElementById("mFair").style.left=gpos(264)+"%";
+  // nudge fair label up to avoid overlap
+  document.querySelector("#mFair .lab").style.top="-58px";
+
+  /* ---------- MOS calculator ---------- */
+  const FV=264;
+  const out=document.getElementById("mosOut");
+  const inp=document.getElementById("pxIn");
+  function calc(){
+    const p=parseFloat(inp.value);
+    if(isNaN(p)||p<=0){out.innerHTML="<span style='color:#9aa3b2'>กรอกราคา…</span>";return;}
+    const mos=(FV-p)/FV*100;
+    let c,msg;
+    if(mos<10){c="#c5221f";msg=mos<0?"แพงกว่ามูลค่า — ไม่ปลอดภัย":"ส่วนเผื่อบาง — ยังไม่น่าซื้อ";}
+    else if(mos<20){c="#b06000";msg="พอใช้ — ทยอยสะสมได้";}
+    else if(mos<30){c="#1e8e3e";msg="น่าซื้อ — โซน Value Investor";}
+    else{c="#1e8e3e";msg="ถูกมาก — เช็คว่าไม่ใช่ value trap";}
+    out.innerHTML=`MOS = <span class="mono" style="color:${c};font-size:18px">${mos>0?'+':''}${mos.toFixed(1)}%</span> &nbsp;<span style="color:${c}">${msg}</span>`;
+  }
+  inp.addEventListener("input",calc);
+  calc();
+})();
+</script>
+</body>
+</html>
