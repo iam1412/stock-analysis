@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น SAP SE (SAP) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Opus 4.8">
+<script type="application/json" id="stock-meta">
+{"symbol":"SAP","currency":"USD","price":149.51,"fairValue":181,"mos":17,"upside":21,"pe":21,"dividendYield":1.9,"roe":16}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#eef1f5; --card:#ffffff; --ink:#1a1d23; --muted:#5f6675; --line:#e4e8ee;
+    --blue:#1a73e8; --blue-d:#1557b0; --red:#ea4335; --yellow:#f9ab00; --green:#1e8e3e;
+    --green-soft:#e6f4ea; --red-soft:#fce8e6; --amber-soft:#fef7e0; --blue-soft:#e8f0fe;
+    --shadow:0 1px 3px rgba(16,24,40,.06),0 8px 24px rgba(16,24,40,.06);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Sarabun','Noto Sans Thai',system-ui,-apple-system,Segoe UI,sans-serif;background:var(--bg);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased}
+  .mono{font-family:'IBM Plex Mono',ui-monospace,monospace;font-variant-numeric:tabular-nums}
+  .wrap{max-width:1080px;margin:0 auto;padding:20px 16px 64px}
+
+  /* Header */
+  header{background:linear-gradient(135deg,#202938 0%,#2c3a52 60%,#1557b0 140%);border-radius:20px;padding:28px 28px 24px;color:#fff;position:relative;overflow:hidden;box-shadow:var(--shadow)}
+  header::after{content:"";position:absolute;right:-40px;top:-40px;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,rgba(66,133,244,.35),transparent 70%)}
+  .gdots{display:inline-flex;gap:5px;margin-bottom:14px}
+  .gdots span{width:11px;height:11px;border-radius:50%}
+  .tag{display:inline-block;font-size:12px;font-weight:600;padding:3px 10px;border-radius:99px;background:rgba(255,255,255,.14);backdrop-filter:blur(4px);margin-right:6px}
+  h1{font-size:30px;font-weight:800;letter-spacing:-.5px;margin:2px 0 2px}
+  .sub{color:#c7d2e4;font-size:14.5px}
+  .price-row{display:flex;align-items:flex-end;gap:18px;flex-wrap:wrap;margin-top:18px;position:relative;z-index:2}
+  .px{font-size:44px;font-weight:800;letter-spacing:-1px}
+  .px small{font-size:18px;font-weight:600;color:#aebfd6;margin-left:4px}
+  .chg{font-weight:700;font-size:16px;padding:5px 12px;border-radius:10px;background:var(--red-soft);color:#c5221f}
+  .px-meta{font-size:12.5px;color:#aebfd6;margin-left:auto;text-align:right;line-height:1.5}
+
+  /* Section */
+  section{margin-top:26px}
+  .s-head{display:flex;align-items:center;gap:10px;margin:0 4px 14px}
+  .s-head .n{width:26px;height:26px;border-radius:8px;background:var(--blue);color:#fff;display:grid;place-items:center;font-size:13px;font-weight:700;flex:none}
+  .s-head h2{font-size:19px;font-weight:700;letter-spacing:-.3px}
+  .s-head .hint{font-size:12.5px;color:var(--muted);margin-left:auto}
+
+  /* Grid metrics */
+  .grid{display:grid;gap:12px}
+  .g4{grid-template-columns:repeat(4,1fr)}
+  .g3{grid-template-columns:repeat(3,1fr)}
+  .g2{grid-template-columns:repeat(2,1fr)}
+  .metric{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 15px;box-shadow:var(--shadow)}
+  .metric .k{font-size:12.5px;color:var(--muted);font-weight:500;display:flex;align-items:center;gap:5px}
+  .metric .v{font-size:23px;font-weight:700;margin-top:3px;letter-spacing:-.3px}
+  .metric .d{font-size:11.5px;color:var(--muted);margin-top:1px}
+  .pos{color:var(--green)} .neg{color:var(--red)} .neu{color:var(--yellow)}
+  .pill{font-size:10px;font-weight:700;padding:1px 7px;border-radius:99px;vertical-align:middle}
+  .pill.g{background:var(--green-soft);color:var(--green)} .pill.r{background:var(--red-soft);color:#c5221f} .pill.a{background:var(--amber-soft);color:#b06000}
+
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px;box-shadow:var(--shadow)}
+
+  /* Chart */
+  .chart-wrap{padding:8px 4px 0}
+  .legend{display:flex;gap:18px;font-size:12px;color:var(--muted);margin-top:10px;flex-wrap:wrap}
+  .legend i{display:inline-block;width:11px;height:3px;border-radius:2px;vertical-align:middle;margin-right:5px}
+
+  /* Valuation gauge */
+  .gauge{margin:8px 0 4px}
+  .gbar{position:relative;height:48px;border-radius:12px;overflow:hidden;background:linear-gradient(90deg,#1e8e3e 0%,#34a853 22%,#f9ab00 46%,#ea4335 100%)}
+  .gbar .seg-label{position:absolute;top:50%;transform:translate(-50%,-50%);font-size:10.5px;font-weight:700;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.25);white-space:nowrap}
+  .marker{position:absolute;top:-6px;bottom:-6px;width:3px;background:#111;border-radius:2px}
+  .marker .lab{position:absolute;top:-34px;left:50%;transform:translateX(-50%);background:#111;color:#fff;font-size:11px;font-weight:700;padding:3px 8px;border-radius:7px;white-space:nowrap}
+  .marker .lab::after{content:"";position:absolute;bottom:-4px;left:50%;transform:translateX(-50%) rotate(45deg);width:8px;height:8px;background:#111}
+  .marker.cur{background:#1a73e8} .marker.cur .lab{background:#1a73e8} .marker.cur .lab::after{background:#1a73e8}
+  .scale{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-top:14px}
+
+  .vmethod{display:flex;align-items:center;justify-content:space-between;padding:13px 0;border-bottom:1px solid var(--line)}
+  .vmethod:last-child{border-bottom:none}
+  .vmethod .mname{font-weight:600;font-size:14.5px}
+  .vmethod .mdesc{font-size:12px;color:var(--muted)}
+  .vmethod .mval{font-size:20px;font-weight:700;text-align:right}
+  .fv-box{margin-top:14px;background:var(--blue-soft);border:1px solid #c6dafc;border-radius:14px;padding:16px 18px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+  .fv-box .l{font-size:13.5px;color:var(--blue-d);font-weight:600}
+  .fv-box .r{font-size:30px;font-weight:800;color:var(--blue-d);letter-spacing:-.5px}
+
+  /* MOS */
+  .mos-verdict{border-radius:14px;padding:16px 18px;margin-bottom:14px;display:flex;align-items:center;gap:14px}
+  .mos-verdict.bad{background:var(--red-soft)} .mos-verdict.ok{background:var(--amber-soft)} .mos-verdict.good{background:var(--green-soft)}
+  .mos-verdict .big{font-size:34px;font-weight:800;letter-spacing:-1px;flex:none}
+  .mos-verdict.bad .big{color:#c5221f} .mos-verdict.ok .big{color:#b06000} .mos-verdict.good .big{color:var(--green)}
+  .mos-verdict .txt{font-size:13.5px}
+  .mos-verdict .txt b{font-size:15px}
+  .calc{margin-top:16px;border:1px dashed var(--line);border-radius:14px;padding:16px}
+  .calc label{font-size:12.5px;color:var(--muted);font-weight:600;display:block;margin-bottom:6px}
+  .calc-row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+  .calc input{font-family:'IBM Plex Mono',monospace;font-size:18px;font-weight:600;border:1.5px solid var(--line);border-radius:10px;padding:9px 12px;width:140px;outline:none}
+  .calc input:focus{border-color:var(--blue)}
+  .calc-out{font-size:14px;font-weight:600}
+
+  /* Scenarios */
+  .scn{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  .scn .col{border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--card)}
+  .scn .top{padding:12px 15px;color:#fff;font-weight:700;display:flex;justify-content:space-between;align-items:center}
+  .scn .bear .top{background:#c5221f} .scn .base .top{background:#1557b0} .scn .bull .top{background:#1e8e3e}
+  .scn .body{padding:14px 15px}
+  .scn .tgt{font-size:26px;font-weight:800;letter-spacing:-.5px}
+  .scn .ret{font-size:13px;font-weight:600;margin-top:2px}
+  .scn ul{list-style:none;margin-top:10px;font-size:12px;color:var(--muted)}
+  .scn li{display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px dotted var(--line)}
+  .scn li:last-child{border:none}
+  .scn li span:last-child{font-weight:600;color:var(--ink)}
+
+  /* Catalyst / Risk */
+  .cr{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .cr .box{border-radius:16px;padding:18px 20px;border:1px solid var(--line);box-shadow:var(--shadow)}
+  .cr .box.cat{background:linear-gradient(180deg,#f3faf5,#ffffff)}
+  .cr .box.risk{background:linear-gradient(180deg,#fef4f3,#ffffff)}
+  .cr h3{font-size:15px;font-weight:700;display:flex;align-items:center;gap:8px;margin-bottom:12px}
+  .cr .ic{width:24px;height:24px;border-radius:7px;display:grid;place-items:center;font-size:14px;flex:none}
+  .cr .cat .ic{background:var(--green-soft);color:var(--green)} .cr .risk .ic{background:var(--red-soft);color:#c5221f}
+  .cr ul{list-style:none}
+  .cr li{font-size:13px;padding:8px 0;border-bottom:1px solid var(--line);display:flex;gap:9px}
+  .cr li:last-child{border:none}
+  .cr li::before{content:"";width:6px;height:6px;border-radius:50%;margin-top:8px;flex:none}
+  .cr .cat li::before{background:var(--green)} .cr .risk li::before{background:var(--red)}
+  .cr li b{font-weight:700}
+
+  /* Verdict */
+  .verdict{background:linear-gradient(135deg,#202938,#2c3a52);color:#fff;border-radius:18px;padding:24px 26px;box-shadow:var(--shadow)}
+  .verdict h2{font-size:20px;font-weight:700;margin-bottom:6px}
+  .verdict p{color:#d4dded;font-size:14px;margin-bottom:14px}
+  .vgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:6px}
+  .vcell{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:13px 15px}
+  .vcell .k{font-size:11.5px;color:#a8b6cc;font-weight:500}
+  .vcell .v{font-size:17px;font-weight:700;margin-top:3px}
+  .zone{margin-top:16px;font-size:13px;color:#d4dded;background:rgba(255,255,255,.05);border-left:3px solid var(--yellow);border-radius:0 10px 10px 0;padding:11px 15px}
+
+  .disc{margin-top:24px;font-size:12px;color:var(--muted);background:#fafbfc;border:1px solid var(--line);border-radius:12px;padding:14px 16px;line-height:1.7}
+  .disc b{color:var(--ink)}
+  footer{text-align:center;font-size:11.5px;color:var(--muted);margin-top:22px}
+
+  @media(max-width:760px){
+    .g4{grid-template-columns:repeat(2,1fr)} .g3{grid-template-columns:repeat(2,1fr)}
+    .scn{grid-template-columns:1fr} .cr{grid-template-columns:1fr} .vgrid{grid-template-columns:1fr}
+    .px{font-size:36px} h1{font-size:24px} .px-meta{margin-left:0;text-align:left;width:100%}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots"><span style="background:#008FD3"></span><span style="background:#0FAAFF"></span><span style="background:#003E6B"></span><span style="background:#54C4F4"></span></div>
+    <div>
+      <span class="tag">NYSE: SAP (ADR)</span>
+      <span class="tag">Technology • Enterprise Software</span>
+      <span class="tag">Mega-cap • Business AI</span>
+    </div>
+    <h1>SAP SE (ADR)</h1>
+    <div class="sub">บริษัทซอฟต์แวร์ใหญ่ที่สุดในยุโรป • ERP / S/4HANA Cloud, Business AI (Joule), BTP, Ariba, SuccessFactors</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$149.51<small>(SAP)</small></div>
+      </div>
+      <div class="chg">▼ −3.7% (22 มิ.ย.)</div>
+      <div class="px-meta">
+        ราคา ณ 22 มิ.ย. 2026 (ปิดตลาด NYSE)<br>
+        ดิ่ง ~47% ใน 1 ปี · ใกล้จุดต่ำสุด 52 สัปดาห์<br>
+        ที่มา: Yahoo Finance / StockAnalysis / CNBC
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">งบ FY2025 (IFRS 20-F) + Q1/2026</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~$176B</div><div class="d">~1.17 พันล้านหุ้น (1 ADR = 1 หุ้น)</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v">~21x</div><div class="d">EPS TTM ~$7.18 (GAAP/IFRS)</div></div>
+      <div class="metric"><div class="k">P/E (non-IFRS)</div><div class="v neu">~20x</div><div class="d">non-IFRS EPS ~$7.5/ADR <span class="pill a">ใช้ในโมเดล</span></div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย 5 ปี</div><div class="v">~26x</div><div class="d">หุ้นถูกลงจากค่าเฉลี่ยเดิม</div></div>
+
+      <div class="metric"><div class="k">รายได้ FY2025</div><div class="v">€36.8B</div><div class="d pos">▲ +8% YoY (+11% cc)</div></div>
+      <div class="metric"><div class="k">รายได้ Cloud FY2025</div><div class="v">€21.0B</div><div class="d pos">▲ +23% YoY (+26% cc)</div></div>
+      <div class="metric"><div class="k">Operating Profit (non-IFRS)</div><div class="v">€10.4B</div><div class="d">ROE ~16% (มั่นคง)</div></div>
+      <div class="metric"><div class="k">non-IFRS EPS FY2025</div><div class="v">€6.15</div><div class="d pos">▲ +36% YoY</div></div>
+
+      <div class="metric"><div class="k">Free Cash Flow FY2025</div><div class="v">€8.2B</div><div class="d pos">▲ เกือบ 2 เท่า (จาก €4.2B)</div></div>
+      <div class="metric"><div class="k">Current Cloud Backlog</div><div class="v neu">€21.9B</div><div class="d">Q1/2026 +20% YoY (+25% cc)</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~1.9%</div><div class="d">€2.50/หุ้น FY2025 (+6.4%)</div></div>
+      <div class="metric"><div class="k">ช่วง 52 สัปดาห์</div><div class="v" style="font-size:18px">$149 – $313</div><div class="d">ราคาปัจจุบันแทบชนขอบล่าง</div></div>
+    </div>
+  </section>
+
+  <!-- ===== PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ (ADR, USD)</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#1a73e8"></i>ราคา SAP (ADR)</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $181</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        หุ้น <b>ร่วงราว −47% ในรอบปี</b> จากจุดสูงสุด $313.28 (กลางปี 2025) ลงมาแตะ ~$149.51 ใกล้ <b>จุดต่ำสุด 52 สัปดาห์</b>
+        แรงขายหลักมาจาก <b>guidance รายได้ Cloud ปี 2026 ต่ำกว่าคาด</b> (one-day drop แรงสุดตั้งแต่ปี 2020) + ช่องโหว่ความปลอดภัย (SAP Kernel CVSS 9.8)
+        + แรงกดดันด้านกฎหมาย (antitrust, ดีลข้อมูลกับ Celonis) ทำให้ตลาดรีเซ็ตมุมมองการเติบโตของ SAP อย่างรุนแรง
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">3 วิธี เฉลี่ยถ่วงน้ำหนัก</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS ~$7.5 (non-IFRS/ADR) × P/E ~24x (ต่ำกว่าค่าเฉลี่ย 5 ปี ~26x สะท้อนการเติบโตที่ชะลอ)</div></div>
+        <div class="mval">$180</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. DCF (2-stage)</div><div class="mdesc">FCF ~€10B (2026E) โต Cloud 2 หลักช่วงแรก, WACC ~9%, Terminal 3% — สมมติ Cloud/AI ยังขยายฐานต่อ</div></div>
+        <div class="mval">$184</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Analyst Intrinsic</div><div class="mdesc">ค่ากลางจากโมเดล fair value นักวิเคราะห์ที่อนุรักษ์นิยม (กรอบ ~$170–$255, GF Value ~$255)</div></div>
+        <div class="mval">$179</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $179 – $184</span></div>
+        <div class="r">$181</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        <b>หมายเหตุ:</b> ใช้ <b>non-IFRS EPS</b> ในวิธี P/E เพราะ IFRS มีค่าใช้จ่าย share-based / amortization บิดเบือนกำไรหลัก • ข้าม DDM เพราะปันผล ~1.9% เป็นองค์ประกอบรอง
+        • Fair Value ที่ $181 ต่ำกว่าเป้านักวิเคราะห์เฉลี่ย (~$256) เพราะใช้กรอบ <b>Margin of Safety</b> ที่ระมัดระวังกับความเสี่ยงการชะลอตัวของ Cloud
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $150</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $181</div></div>
+        </div>
+        <div class="scale">
+          <span>$127<br><small>MOS 30%</small></span>
+          <span>$145<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$181<br><small>Fair Value</small></span>
+          <span style="text-align:right">$256<br><small>เป้า Analyst</small></span>
+          <span style="text-align:right">$323<br><small>เป้าสูงสุด</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคา $149.51 อยู่ <b>ต่ำกว่ามูลค่าเหมาะสม</b> $181 ราว 17% — เข้าโซนที่เริ่มมี Margin of Safety แล้ว
+        และต่ำกว่า <b>เป้าหมาย 12 เดือน</b> ของนักวิเคราะห์ (เฉลี่ย ~$256, consensus "Buy") อย่างมีนัยสำคัญ
+        จุดที่ต้องระวังคือ ราคา <b>ถูกลงเพราะการเติบโต Cloud ชะลอจริง</b> ไม่ใช่แค่ตลาดตกใจ
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict ok">
+        <div class="big">+17%</div>
+        <div class="txt"><b>เริ่มมี Margin of Safety พอประมาณ</b><br>ราคาปัจจุบัน $149.51 ต่ำกว่ามูลค่าเหมาะสม $181 ราว 17% → ตามเกณฑ์ value investor ถือว่า <b>เริ่มน่าสนใจ ทยอยสะสมได้</b> แต่ยังไม่ถึงโซนถูกมาก (MOS 20–30%)</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$145</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$127</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $155</div><div class="d">ใกล้ขอบล่างของ fair value</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="149.51" step="1">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== RETURN PROJECTION ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $149.51 • EPS ฐาน ~$7.5</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS +5%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$148</div>
+          <div class="ret neg">รวม ~ −1% (≈ −0.3%/ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>$8.7</span></li>
+            <li><span>P/E ออก</span><span>17x</span></li>
+            <li><span>สถานการณ์</span><span>Cloud ชะลอ / margin ถูกบีบ</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +10%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$210</div>
+          <div class="ret pos">รวม ~ +40% (≈ +12%/ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>$10.0</span></li>
+            <li><span>P/E ออก</span><span>21x</span></li>
+            <li><span>สถานการณ์</span><span>Cloud โตปกติ AI เริ่มมีรายได้</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +15%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$285</div>
+          <div class="ret pos">รวม ~ +91% (≈ +24%/ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>$11.4</span></li>
+            <li><span>P/E ออก</span><span>25x</span></li>
+            <li><span>สถานการณ์</span><span>Business AI/S4 migration จ่ายผลเต็มที่</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      ความเสี่ยง–ผลตอบแทน <b>เอียงไปทางบวกชัดเจน</b> เพราะเข้าซื้อหลังหุ้นร่วงมาแล้ว ~47% และต่ำกว่ามูลค่าพื้นฐาน
+      <b>downside จำกัด</b> (bear ~ทรงตัว) ขณะที่ base/bull ให้ upside สูง — กุญแจคือ Cloud จะกลับมาเร่งตัวและ <b>Business AI สร้างรายได้จริง</b> ได้หรือไม่
+    </p>
+  </section>
+
+  <!-- ===== CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><div><b>Cloud ยังโตแรง:</b> Q1/2026 รายได้ Cloud +27% cc, Cloud ERP Suite +30% cc, Current Cloud Backlog €21.9B (+25% cc) — ฐานรายได้ recurring เพิ่มต่อเนื่อง</div></li>
+          <li><div><b>Business AI / Joule:</b> ฝัง AI agent ทั่ว Suite — EY/KPMG รายงาน migration เร็วขึ้น 20–30% ด้วย Joule for Consultants, เป็น upsell ที่ยังไม่สะท้อนเต็มในราคา</div></li>
+          <li><div><b>S/4HANA 2027 deadline:</b> เส้นตายเลิกซัพพอร์ต ECC ดันลูกค้าหลักหมื่นรายต้องย้ายขึ้น Cloud ERP — runway การเติบโตที่ค่อนข้าง "บังคับ"</div></li>
+          <li><div><b>FCF ทะยาน:</b> FCF FY2025 เกือบ 2 เท่าเป็น €8.2B, guidance 2026 ~€10B — สะท้อนคุณภาพกำไรของโมเดล subscription</div></li>
+          <li><div><b>Valuation รีเซ็ตแล้ว:</b> P/E ~21x ต่ำกว่าค่าเฉลี่ย 5 ปี ~26x · ราคาแทบชนจุดต่ำ 52 สัปดาห์ → downside เริ่มถูกราคาเข้าไปแล้ว</div></li>
+          <li><div><b>คูเมืองกว้าง:</b> ERP เป็นระบบแกนกลางองค์กร ย้ายยาก ต้นทุนสลับสูง — รายได้ทนทาน, นักวิเคราะห์ส่วนใหญ่ยังให้ "Buy" เป้าเฉลี่ย ~$256</div></li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><div><b>Cloud growth ชะลอ:</b> guidance Cloud 2026 (+23–25% cc) ต่ำกว่าตลาดคาด → ทริกเกอร์ร่วงแรงสุดตั้งแต่ปี 2020 · ตลาดกังวลว่าฐานใหญ่ขึ้นทำให้โตช้าลงเชิงโครงสร้าง</div></li>
+          <li><div><b>Margin ถูกบีบ:</b> Goldman Sachs หั่นประมาณการ gross margin ครึ่งหลังปี 2026 จากต้นทุน hardware/infra ของ Cloud ที่สูงขึ้น</div></li>
+          <li><div><b>ความปลอดภัย:</b> แพตช์ มิ.ย. 2026 พบช่องโหว่ร้ายแรง (SAP Kernel RFC CVSS 9.8, SAML signature wrapping) กระทบความเชื่อมั่นลูกค้าองค์กร</div></li>
+          <li><div><b>กฎหมาย/Antitrust:</b> คดีผูกขาดในสหรัฐ (ขึ้นศาลปลายปี 2026) + การสอบของ European Commission + ข้อพิพาทเข้าถึงข้อมูลกับ Celonis</div></li>
+          <li><div><b>ความเสี่ยง FX:</b> รายได้/กำไรฐานยูโร แต่ ADR เป็น USD — เลขรายงาน (actual currency) โตช้ากว่า constant currency ชัดเจน (เช่น รายได้ +6% vs +12% cc)</div></li>
+          <li><div><b>AI ยังพิสูจน์รายได้:</b> Business AI/Joule เป็นเรื่องเล่าหลัก แต่สัดส่วนรายได้ที่วัดได้จริงยังเล็ก — ถ้า monetize ช้า มูลค่าส่วน premium จะหด</div></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>ธุรกิจคุณภาพสูง ราคาถูกรีเซ็ต — เริ่มมีส่วนเผื่อความปลอดภัย</h2>
+      <p>SAP เป็นแกนกลาง ERP ขององค์กรทั่วโลกที่มีคูเมืองกว้างและรายได้ recurring โตต่อเนื่อง หลังหุ้นร่วง ~47% ในรอบปีจาก guidance Cloud ที่น่าผิดหวัง ราคาที่ ~$149.51 ลงมาต่ำกว่ามูลค่าเหมาะสม $181 ราว 17% — สำหรับสาย value เริ่มน่าทยอยสะสม โดยมี downside ที่ถูกราคาเข้าไปมากแล้ว แต่ต้องยอมรับความเสี่ยงว่าการเติบโตอาจช้าลงเชิงโครงสร้างจริง</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$181 <span style="font-size:12px;color:#a8b6cc">($179–$184)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#a5d6a7">ถูก ~17%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">$256 (+71%)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> สาย value — ทยอยสะสมที่โซนปัจจุบัน (น่าสนใจขึ้นเมื่อ &lt; $145 และถูกมากที่ &lt; $127) • สาย growth — เข้าแบบ DCA และยอมรับความผันผวน โดยติดตาม <b>อัตราเติบโต Cloud (cc)</b>, <b>Current Cloud Backlog</b> และ <b>การ monetize ของ Business AI/Joule</b> เป็นตัวชี้วัดหลัก
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ "non-IFRS EPS", อัตราเติบโต Cloud และผลตอบแทนจาก Business AI ซึ่งเป็นจุดถกเถียงหลัก
+    SAP เป็นบริษัทเยอรมัน รายงานงบเป็นยูโร — ตัวเลขราคา/มูลค่าในรายงานนี้แปลงเป็น USD ผ่าน ADR (NYSE: SAP) จึงมีความเสี่ยงด้านอัตราแลกเปลี่ยน
+    ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • อ้างอิงงบจริงจาก SEC (20-F FY2025, 6-K Q1 2026) และ SAP Investor Relations
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 22–23 มิ.ย. 2026 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<script>
+(function(){
+  /* ---------- Price chart ---------- */
+  // [label, price] approximate, ADR USD
+  const data=[["มิ.ย.25",295],["ส.ค.25",310],["ต.ค.25",288],["ธ.ค.25",262],["ก.พ.26",228],["เม.ย.26",195],["พ.ค.26",168],["มิ.ย.26",149.51]];
+  const W=920,H=300;
+  const padL=48,padR=16,padT=18,padB=34;
+  const min=120,max=330;
+  const xs=i=>padL+(W-padL-padR)*(i/(data.length-1));
+  const ys=v=>padT+(H-padT-padB)*(1-(v-min)/(max-min));
+  let path="",area="";
+  data.forEach((d,i)=>{const x=xs(i),y=ys(d[1]);path+=(i?"L":"M")+x.toFixed(1)+" "+y.toFixed(1)+" ";});
+  area=path+`L${xs(data.length-1).toFixed(1)} ${ys(min).toFixed(1)} L${padL} ${ys(min).toFixed(1)} Z`;
+  let svg=`<defs><linearGradient id="ag" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1a73e8" stop-opacity=".22"/><stop offset="1" stop-color="#1a73e8" stop-opacity="0"/></linearGradient></defs>`;
+  // gridlines
+  [150,200,250,300].forEach(v=>{const y=ys(v);svg+=`<line x1="${padL}" y1="${y}" x2="${W-padR}" y2="${y}" stroke="#eef1f5" stroke-width="1"/><text x="${padL-8}" y="${y+4}" text-anchor="end" font-size="11" fill="#9aa3b2" font-family="IBM Plex Mono">$${v}</text>`;});
+  // fair value line
+  const fy=ys(181);svg+=`<line x1="${padL}" y1="${fy}" x2="${W-padR}" y2="${fy}" stroke="#1e8e3e" stroke-width="1.5" stroke-dasharray="6 5"/>`;
+  // area + line
+  svg+=`<path d="${area}" fill="url(#ag)"/><path d="${path}" fill="none" stroke="#1a73e8" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"/>`;
+  // points + x labels
+  data.forEach((d,i)=>{const x=xs(i),y=ys(d[1]);const hi=(i===1||i===7);
+    svg+=`<circle cx="${x}" cy="${y}" r="${hi?5:3.2}" fill="${hi?'#ea4335':'#1a73e8'}" stroke="#fff" stroke-width="2"/>`;
+    svg+=`<text x="${x}" y="${H-12}" text-anchor="middle" font-size="11" fill="#9aa3b2">${d[0]}</text>`;
+    if(hi)svg+=`<text x="${x}" y="${y-12}" text-anchor="middle" font-size="11" font-weight="700" fill="${i===7?'#1a73e8':'#ea4335'}" font-family="IBM Plex Mono">$${d[1]}</text>`;
+  });
+  document.getElementById("priceChart").innerHTML=svg;
+
+  /* ---------- Gauge marker positions ---------- */
+  // scale: $110 -> 0%, $340 -> 100%
+  const gmin=110,gmax=340;
+  const gpos=v=>Math.max(2,Math.min(98,(v-gmin)/(gmax-gmin)*100));
+  document.getElementById("mCur").style.left=gpos(149.51)+"%";
+  document.getElementById("mFair").style.left=gpos(181)+"%";
+  // nudge fair label up to avoid overlap
+  document.querySelector("#mFair .lab").style.top="-58px";
+
+  /* ---------- MOS calculator ---------- */
+  const FV=181;
+  const out=document.getElementById("mosOut");
+  const inp=document.getElementById("pxIn");
+  function calc(){
+    const p=parseFloat(inp.value);
+    if(isNaN(p)||p<=0){out.innerHTML="<span style='color:#9aa3b2'>กรอกราคา…</span>";return;}
+    const mos=(FV-p)/FV*100;
+    let c,msg;
+    if(mos<10){c="#c5221f";msg=mos<0?"แพงกว่ามูลค่า — ไม่ปลอดภัย":"ส่วนเผื่อบาง — ยังไม่น่าซื้อ";}
+    else if(mos<20){c="#b06000";msg="พอใช้ — ทยอยสะสมได้";}
+    else if(mos<30){c="#1e8e3e";msg="น่าซื้อ — โซน Value Investor";}
+    else{c="#1e8e3e";msg="ถูกมาก — เช็คว่าไม่ใช่ value trap";}
+    out.innerHTML=`MOS = <span class="mono" style="color:${c};font-size:18px">${mos>0?'+':''}${mos.toFixed(1)}%</span> &nbsp;<span style="color:${c}">${msg}</span>`;
+  }
+  inp.addEventListener("input",calc);
+  calc();
+})();
+</script>
+</body>
+</html>
