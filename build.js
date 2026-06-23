@@ -207,6 +207,16 @@ const searchBox = reports.length ? `
       <input id="q" type="search" placeholder="ค้นหาหุ้น… ชื่อย่อ หรือ ชื่อบริษัท" autocomplete="off" spellcheck="false" aria-label="ค้นหาหุ้น">
     </div>` : '';
 
+// แถบเรียงลำดับ — ค่าเริ่มต้น "ล่าสุด" (อัปเดตล่าสุดก่อน, เรียงฝั่ง server แล้ว);
+// "ไลก์/วิว" เรียงฝั่ง client หลังโหลดยอดจาก /api/views (เฉพาะเมื่อมี ≥2 รายงาน)
+const sortBar = reports.length > 1 ? `
+    <div class="sortbar" id="sortbar" role="group" aria-label="เรียงลำดับหุ้น">
+      <span class="sortlab">เรียงโดย</span>
+      <button type="button" class="sortbtn on" data-sort="updated">🕒 ล่าสุด</button>
+      <button type="button" class="sortbtn" data-sort="likes">👍 ไลก์</button>
+      <button type="button" class="sortbtn" data-sort="views">👁 วิว</button>
+    </div>` : '';
+
 const noResult = reports.length ? `
     <div class="noresult" id="noresult" hidden>ไม่พบหุ้นที่ตรงกับ “<span id="qterm"></span>”</div>` : '';
 
@@ -217,11 +227,34 @@ const searchScript = reports.length ? `
     (function () {
       var PAGE = ${PAGE_SIZE};
       var q = document.getElementById('q');
+      var grid = document.querySelector('.grid');
       var cards = [].slice.call(document.querySelectorAll('.card'));
       var nr = document.getElementById('noresult');
       var term = document.getElementById('qterm');
       var pager = document.getElementById('pager');
-      var page = 1, filtered = cards;
+      var sortbar = document.getElementById('sortbar');
+      var page = 1, sortKey = 'updated';
+
+      // ลำดับเดิมจาก server = อัปเดตล่าสุดก่อน (ดัชนีน้อย = ใหม่กว่า) + ค่ายอดเริ่มต้น 0 จนกว่า /api/views จะตอบ
+      cards.forEach(function (c, i) { c._ord = i; c._views = 0; c._likes = 0; });
+      var base = cards.slice();        // ลำดับที่จัดเรียงแล้ว (เริ่มต้น = เดิม)
+      var filtered = base.slice();
+
+      var CMP = {
+        updated: function (a, b) { return a._ord - b._ord; },
+        likes:   function (a, b) { return (b._likes - a._likes) || (b._views - a._views) || (a._ord - b._ord); },
+        views:   function (a, b) { return (b._views - a._views) || (b._likes - a._likes) || (a._ord - b._ord); }
+      };
+
+      function applyFilter() {
+        var v = q.value.toLowerCase().trim();
+        filtered = v ? base.filter(function (c) { return c.getAttribute('data-search').indexOf(v) !== -1; }) : base.slice();
+      }
+      function sortNow() {                                  // จัดเรียง base + ย้าย DOM ให้ตรงลำดับ แล้วกรองซ้ำ
+        base = cards.slice().sort(CMP[sortKey] || CMP.updated);
+        base.forEach(function (c) { grid.appendChild(c); });
+        applyFilter();
+      }
 
       function pages() { return Math.max(1, Math.ceil(filtered.length / PAGE)); }
       function render() {
@@ -245,22 +278,29 @@ const searchScript = reports.length ? `
         page = g === 'prev' ? Math.max(1, page - 1) : g === 'next' ? Math.min(tp, page + 1) : parseInt(g, 10);
         render(); window.scrollTo(0, 0);
       });
-      q.addEventListener('input', function () {
-        var v = q.value.toLowerCase().trim();
-        filtered = v ? cards.filter(function (c) { return c.getAttribute('data-search').indexOf(v) !== -1; }) : cards;
-        page = 1; render();
+      q.addEventListener('input', function () { applyFilter(); page = 1; render(); });
+
+      if (sortbar) sortbar.addEventListener('click', function (e) {
+        var b = e.target.closest('[data-sort]'); if (!b) return;
+        var k = b.getAttribute('data-sort'); if (k === sortKey) return;
+        sortKey = k;
+        [].slice.call(sortbar.querySelectorAll('.sortbtn')).forEach(function (x) { x.className = 'sortbtn' + (x === b ? ' on' : ''); });
+        sortNow(); page = 1; render(); window.scrollTo(0, 0);
       });
 
-      // โหลดยอดวิว + likes ทั้งหมดครั้งเดียว (read-only ไม่นับเพิ่ม) แล้วเติมลงการ์ด
+      // โหลดยอดวิว + likes ทั้งหมดครั้งเดียว (read-only ไม่นับเพิ่ม) เติมลงการ์ด แล้วจัดเรียงใหม่ถ้าเรียงตามไลก์/วิวอยู่
       fetch('/api/views').then(function (r) { return r.json(); }).then(function (map) {
-        [].slice.call(document.querySelectorAll('.cviews')).forEach(function (s) {
+        cards.forEach(function (c) {
+          var s = c.querySelector('.cviews'); if (!s) return;
           var e = (map && map[s.getAttribute('data-sym')]) || {};
+          c._views = e.c || 0; c._likes = e.l || 0;
           var v = s.querySelector('.v'), l = s.querySelector('.l'), d = s.querySelector('.d');
           if (v) v.textContent = (e.c || 0).toLocaleString();
           if (l) l.textContent = (e.l || 0).toLocaleString();
           if (d) d.textContent = (e.d || 0).toLocaleString();
           s.hidden = false;
         });
+        if (sortKey !== 'updated') { sortNow(); render(); }
       }).catch(function () {});
 
       render();
@@ -307,6 +347,11 @@ const indexHtml = `<!DOCTYPE html>
   .search input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(26,115,232,.15)}
   .search input::placeholder{color:var(--muted)}
   .noresult{text-align:center;color:var(--muted);padding:32px;font-size:14px}
+  .sortbar{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:14px}
+  .sortlab{font-size:13px;color:var(--muted);margin-right:2px}
+  .sortbtn{font-family:inherit;font-size:13px;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:99px;padding:6px 14px;cursor:pointer;box-shadow:var(--shadow);transition:border-color .15s ease,color .15s ease,background .15s ease}
+  .sortbtn:hover:not(.on){border-color:var(--blue);color:var(--blue)}
+  .sortbtn.on{background:var(--blue);border-color:var(--blue);color:#fff;font-weight:600}
   .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;margin-top:24px}
   .card{display:flex;flex-direction:column;gap:6px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px;text-decoration:none;color:inherit;box-shadow:var(--shadow);transition:transform .15s ease,box-shadow .15s ease}
   .card:hover{transform:translateY(-3px);box-shadow:0 4px 12px rgba(16,24,40,.10),0 14px 32px rgba(16,24,40,.10)}
@@ -336,7 +381,7 @@ const indexHtml = `<!DOCTYPE html>
       <span class="tag">📊 Stock Analysis</span>
       <h1>รายงานวิเคราะห์หุ้น</h1>
       <div class="sub">Fair Value · Margin of Safety · จุดเข้าซื้อ · ผลตอบแทนคาดการณ์ — รวม ${reports.length} รายงาน</div>
-    </header>${searchBox}
+    </header>${searchBox}${sortBar}
     <div class="grid">
 ${reports.length ? cards : emptyState}
     </div>${noResult}${pagerEl}
