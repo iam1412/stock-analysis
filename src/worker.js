@@ -1,6 +1,9 @@
-// src/worker.js — Stock-AI: ตัวนับยอดวิว + Like/Dislike (Cloudflare Worker + D1)
+// src/worker.js — Stock-AI: ตัวนับยอดวิว + Like/Dislike
+// แหล่งข้อมูลจริง (source of truth) = Durable Object เดียวทั้งระบบ (SQLite-backed)
+//   env.COUNTERS.idFromName('global') → instance เดียวทั่วโลก → นับเป๊ะ strongly-consistent
+//   ไม่มี per-colo divergence แบบ rate-limit binding อีกต่อไป
 //
-// เส้นทาง:
+// เส้นทาง (route/JSON เหมือนเดิมทุกอย่าง — ฝั่ง client/อินเจกต์ไม่ต้องแก้):
 //   POST /api/views/<SYM>            → +1 view, คืน { symbol, count, likes, dislikes }
 //   GET  /api/views/<SYM>            → อ่าน { symbol, count, likes, dislikes }
 //   GET  /api/views                  → batch { "<SYM>": {c,l,d}, ... } (หน้า index — แคช edge 60 วิ)
@@ -8,8 +11,13 @@
 //                                       คืน { symbol, likes, dislikes }
 //   อื่น ๆ                            → เสิร์ฟไฟล์ static ผ่าน ASSETS
 //
-// หมายเหตุ: ไฟล์ static เสิร์ฟจาก edge cache ไม่ผ่าน Worker → ฟรี/ไม่จำกัด; มีเฉพาะ /api/* ที่เรียก Worker + D1
-'use strict';
+// เริ่มนับใหม่จาก 0 (ไม่ migrate เลขเก่า) — DO เป็น source of truth ตั้งแต่ deploy แรก
+// D1 (ตาราง views เดิม) เหลือเป็นแค่ "mirror สำรอง" — เขียนแบบ best-effort (waitUntil) ไม่อ่านบน hot path
+//   เก็บไว้เป็น backup เฉย ๆ (ไม่ต้อง setup อะไร) — จะถอดทิ้งทีหลังก็ได้ (ดู DEPLOY.md)
+//
+// หมายเหตุ: ไฟล์ static เสิร์ฟจาก edge cache ไม่ผ่าน Worker → ฟรี/ไม่จำกัด; มีเฉพาะ /api/* ที่เรียก Worker + DO
+
+import { DurableObject } from 'cloudflare:workers';
 
 const SYM_RE = /^[A-Z0-9.\-]{1,10}$/;
 const VOTES = new Set(['none', 'like', 'dislike']);
@@ -43,22 +51,120 @@ async function validSym(raw, env, url) {
   return { sym };
 }
 
+// เขียน mirror ลง D1 แบบ best-effort (ไม่ await บน response path, ไม่เคยอ่านกลับบน hot path)
+// — ถอด [[d1_databases]] ออกเมื่อไรโค้ดนี้จะข้ามไปเอง(env.DB undefined)
+function mirrorD1(env, ctx, d) {
+  if (!env.DB) return;
+  ctx.waitUntil(
+    env.DB.prepare(
+      `INSERT INTO views (symbol, count, likes, dislikes, updated) VALUES (?1, ?2, ?3, ?4, ?5)
+       ON CONFLICT(symbol) DO UPDATE SET count = ?2, likes = ?3, dislikes = ?4, updated = ?5`
+    )
+      .bind(d.symbol, d.count | 0, d.likes | 0, d.dislikes | 0, new Date().toISOString())
+      .run()
+      .catch(() => {})
+  );
+}
+
+// ───────────────────────── Durable Object: ตัวนับเดียวทั้งระบบ ─────────────────────────
+// instance เดียว (idFromName('global')) → ทุก isolate/colo ชี้มาที่เดียวกัน → single-threaded → นับไม่มีหลุด
+export class Counters extends DurableObject {
+  constructor(ctx, env) {
+    super(ctx, env);
+    this.sql = ctx.storage.sql; // SQLite-backed (ต้องสร้างด้วย new_sqlite_classes)
+    this.sql.exec(
+      `CREATE TABLE IF NOT EXISTS counters (
+         symbol   TEXT PRIMARY KEY,
+         count    INTEGER NOT NULL DEFAULT 0,
+         likes    INTEGER NOT NULL DEFAULT 0,
+         dislikes INTEGER NOT NULL DEFAULT 0,
+         updated  TEXT
+       )`
+    );
+  }
+
+  _row(symbol) {
+    const r = this.sql.exec('SELECT count, likes, dislikes FROM counters WHERE symbol = ?', symbol).toArray()[0];
+    return { symbol, count: r ? r.count : 0, likes: r ? r.likes : 0, dislikes: r ? r.dislikes : 0 };
+  }
+
+  // +1 view — single-threaded read-modify-write, ไม่มี lost update
+  // ใช้ placeholder `?` ธรรมดา (ส่งค่าซ้ำตามจำนวนที่อ้าง) — รองรับชัวร์ทั้ง workerd DO / D1 / sqlite
+  addView(symbol) {
+    const now = new Date().toISOString();
+    const r = this.sql
+      .exec(
+        `INSERT INTO counters (symbol, count, updated) VALUES (?, 1, ?)
+         ON CONFLICT(symbol) DO UPDATE SET count = count + 1, updated = ?
+         RETURNING count, likes, dislikes`,
+        symbol,
+        now,
+        now
+      )
+      .toArray()[0];
+    return { symbol, count: r.count, likes: r.likes, dislikes: r.dislikes };
+  }
+
+  // โหวต: dl/dd ถูก clamp -1..1 มาจาก Worker แล้ว; ที่นี่กันยอดรวมไม่ให้ติดลบ
+  vote(symbol, dl, dd) {
+    if (dl === 0 && dd === 0) return this._row(symbol);
+    const now = new Date().toISOString();
+    const r = this.sql
+      .exec(
+        `INSERT INTO counters (symbol, likes, dislikes, updated)
+         VALUES (?, MAX(0, ?), MAX(0, ?), ?)
+         ON CONFLICT(symbol) DO UPDATE SET
+           likes    = MAX(0, likes + ?),
+           dislikes = MAX(0, dislikes + ?),
+           updated  = ?
+         RETURNING count, likes, dislikes`,
+        symbol,
+        dl,
+        dd,
+        now,
+        dl,
+        dd,
+        now
+      )
+      .toArray()[0];
+    return { symbol, count: r.count, likes: r.likes, dislikes: r.dislikes };
+  }
+
+  getOne(symbol) {
+    return this._row(symbol);
+  }
+
+  // batch ทั้ง index — scan ตารางเดียวในเครื่องเดียวกับที่เขียน → เป๊ะเสมอ
+  all() {
+    const map = {};
+    for (const r of this.sql.exec('SELECT symbol, count, likes, dislikes FROM counters').toArray()) {
+      map[r.symbol] = { c: r.count, l: r.likes, d: r.dislikes };
+    }
+    return map;
+  }
+}
+
 export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
     const p = url.pathname;
+
+    // ไม่ใช่ API → เสิร์ฟ static (ไฟล์ส่วนใหญ่ถูก edge cache ตัดไปก่อนไม่ถึง Worker อยู่แล้ว)
+    if (!p.startsWith('/api/')) return env.ASSETS.fetch(request);
+
+    // DO เดียวทั้งระบบ (สร้าง stub ตอนนี้ ราคาถูก ยังไม่มี I/O จนกว่าจะเรียกเมธอด)
+    const stub = env.COUNTERS.get(env.COUNTERS.idFromName('global'));
 
     // ---- batch: ยอดวิว + likes ทุกตัว (หน้า index) — read-only + แคช 60 วิที่ edge ----
     if (p === '/api/views' && request.method === 'GET') {
       const cache = caches.default;
       const hit = await cache.match(request);
       if (hit) return hit;
-      const map = {};
+      let map;
       try {
-        const { results } = await env.DB.prepare('SELECT symbol, count, likes, dislikes FROM views').all();
-        for (const r of results) map[r.symbol] = { c: r.count, l: r.likes, d: r.dislikes };
+        map = await stub.all();
       } catch {
-        return json({ error: 'db' }, { status: 500 });
+        return json({ error: 'do' }, { status: 500 });
       }
       const res = json(map, { cache: 'public, max-age=60' });
       ctx.waitUntil(cache.put(request, res.clone()));
@@ -71,7 +177,7 @@ export default {
       if (request.method !== 'POST') return json({ error: 'method not allowed' }, { status: 405 });
       const { sym, err } = await validSym(mv[1], env, url);
       if (err) return err;
-      // rate limit: 5 โหวต/60วิ ต่อ (IP + หุ้น)
+      // rate limit (edge, per-colo) — ด่านกัน spam ก่อนใช้โควต้า DO; ความเป๊ะของยอดมาจาก DO แล้ว
       const ip = request.headers.get('CF-Connecting-IP') || 'anon';
       const { success } = await env.VOTE_LIMITER.limit({ key: `${ip}:${sym}` });
       if (!success) return json({ error: 'rate_limited' }, { status: 429 });
@@ -82,23 +188,11 @@ export default {
       const dl = (to === 'like' ? 1 : 0) - (from === 'like' ? 1 : 0);
       const dd = (to === 'dislike' ? 1 : 0) - (from === 'dislike' ? 1 : 0);
       try {
-        if (dl === 0 && dd === 0) {
-          const row = await env.DB.prepare('SELECT likes, dislikes FROM views WHERE symbol = ?1').bind(sym).first();
-          return json({ symbol: sym, likes: row ? row.likes : 0, dislikes: row ? row.dislikes : 0 });
-        }
-        const row = await env.DB.prepare(
-          `INSERT INTO views (symbol, likes, dislikes, updated) VALUES (?1, MAX(0, ?2), MAX(0, ?3), ?4)
-           ON CONFLICT(symbol) DO UPDATE SET
-             likes = MAX(0, likes + ?2),
-             dislikes = MAX(0, dislikes + ?3),
-             updated = ?4
-           RETURNING likes, dislikes`
-        )
-          .bind(sym, dl, dd, new Date().toISOString())
-          .first();
-        return json({ symbol: sym, likes: row ? row.likes : 0, dislikes: row ? row.dislikes : 0 });
+        const d = await stub.vote(sym, dl, dd);
+        if (dl !== 0 || dd !== 0) mirrorD1(env, ctx, d); // mirror เฉพาะตอนมีการเปลี่ยนจริง
+        return json({ symbol: sym, likes: d.likes, dislikes: d.dislikes });
       } catch {
-        return json({ error: 'db' }, { status: 500 });
+        return json({ error: 'do' }, { status: 500 });
       }
     }
 
@@ -109,30 +203,24 @@ export default {
       if (err) return err;
       try {
         if (request.method === 'POST') {
-          // rate limit: 30 view-counts/60วิ ต่อ IP
+          // rate limit (edge): 30 view-counts/60วิ ต่อ IP
           const ip = request.headers.get('CF-Connecting-IP') || 'anon';
           const { success } = await env.VIEW_LIMITER.limit({ key: ip });
           if (!success) return json({ error: 'rate_limited' }, { status: 429 });
-          const row = await env.DB.prepare(
-            `INSERT INTO views (symbol, count, updated) VALUES (?1, 1, ?2)
-             ON CONFLICT(symbol) DO UPDATE SET count = count + 1, updated = ?2
-             RETURNING count, likes, dislikes`
-          )
-            .bind(sym, new Date().toISOString())
-            .first();
-          return json({ symbol: sym, count: row ? row.count : 0, likes: row ? row.likes : 0, dislikes: row ? row.dislikes : 0 });
+          const d = await stub.addView(sym);
+          mirrorD1(env, ctx, d);
+          return json({ symbol: sym, count: d.count, likes: d.likes, dislikes: d.dislikes });
         }
         if (request.method === 'GET') {
-          const row = await env.DB.prepare('SELECT count, likes, dislikes FROM views WHERE symbol = ?1').bind(sym).first();
-          return json({ symbol: sym, count: row ? row.count : 0, likes: row ? row.likes : 0, dislikes: row ? row.dislikes : 0 });
+          const d = await stub.getOne(sym);
+          return json({ symbol: sym, count: d.count, likes: d.likes, dislikes: d.dislikes });
         }
         return json({ error: 'method not allowed' }, { status: 405 });
       } catch {
-        return json({ error: 'db' }, { status: 500 });
+        return json({ error: 'do' }, { status: 500 });
       }
     }
 
-    // ---- ไม่ใช่ API → เสิร์ฟ static ----
-    return env.ASSETS.fetch(request);
+    return json({ error: 'not found' }, { status: 404 });
   },
 };

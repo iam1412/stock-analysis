@@ -18,8 +18,20 @@ binding = "ASSETS"
 #   /GOOGL       → GOOGL.html (เสิร์ฟตรง)
 #   /GOOGL.html  → ก็เข้าได้ (redirect ไป /GOOGL)
 
-# ★ D1: ต้องรัน `npx wrangler d1 create stockai_d1` แล้วเอา database_id มาใส่ด้านล่าง
-#   แล้วสร้างตาราง: `npx wrangler d1 execute stockai_d1 --remote --file=./schema.sql`
+# ★ Durable Object: ตัวนับเดียวทั้งระบบ (source of truth — นับเป๊ะ strongly-consistent ทั่วโลก)
+#   instance เดียว env.COUNTERS.idFromName('global') เก็บทุกหุ้นในตาราง SQLite เดียว
+[[durable_objects.bindings]]
+name = "COUNTERS"
+class_name = "Counters"
+
+# ⚠️ ต้องเป็น new_sqlite_classes (ไม่ใช่ new_classes!) — KV backend แบบเก่าเป็น paid-only
+#   มีแต่ SQLite-backed DO ที่สร้างได้บน Free plan · deploy ครั้งแรกจะสร้าง class ให้เอง
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["Counters"]
+
+# D1 (ตาราง views เดิม): เหลือเป็นแค่ "mirror สำรอง" — เขียน best-effort, ไม่อ่านบน hot path
+#   เริ่มนับใหม่จาก 0 (ไม่ migrate เลขเก่า) · เก็บ D1 เป็น backup เฉย ๆ แล้วค่อยลบบล็อกนี้ + โค้ด mirror ทีหลังก็ได้ (ดู DEPLOY.md)
 [[d1_databases]]
 binding = "DB"
 database_name = "stockai_d1"

@@ -151,18 +151,22 @@ npm run test:self        # meta-test: พิสูจน์ว่า checker เ
 
 ---
 
-## 8. ระบบนับยอดวิว + Like/Dislike (Cloudflare Worker + D1)
+## 8. ระบบนับยอดวิว + Like/Dislike (Worker + Durable Object)
 
 นับ/แสดงยอดเข้าชม + 👍/👎 — footer ของแต่ละ report + ต่อการ์ดในหน้า index (รายละเอียด deploy ใน `DEPLOY.md`)
 
-- **โครงสร้าง:** เว็บยังเป็น static (ไฟล์ `.html` เสิร์ฟตรงจาก edge ไม่ผ่าน Worker) มี Worker เล็ก ๆ
-  `src/worker.js` + D1 (`stockai_d1`, ตาราง `views`: count/likes/dislikes) ทำงานเฉพาะ `/api/*`
-  - `POST /api/views/<SYM>` = +1 view · `GET …/<SYM>` = อ่าน {count,likes,dislikes} · `GET /api/views` = batch `{SYM:{c,l,d}}` (แคช edge 60 วิ → page size ไม่กระทบ API)
+- **โครงสร้าง:** เว็บยังเป็น static (ไฟล์ `.html` เสิร์ฟตรงจาก edge ไม่ผ่าน Worker) มี Worker เล็ก ๆ `src/worker.js`
+  ส่งต่อ `/api/*` ให้ **Durable Object `Counters` instance เดียว** (`env.COUNTERS.idFromName('global')`, SQLite-backed)
+  = **source of truth** นับเป๊ะ strongly-consistent ทั่วโลก (single-threaded → ไม่มี per-colo divergence / lost update)
+  - `POST /api/views/<SYM>` = +1 view · `GET …/<SYM>` = อ่าน {count,likes,dislikes} · `GET /api/views` = batch `{SYM:{c,l,d}}` (แคช edge 60 วิ; cache miss = 1 RPC `all()` → page size ไม่กระทบ API)
   - `POST /api/vote/<SYM>?from=&to=` = โหวต (none|like|dislike); **server คิด delta เอง (∈ -1..1)** กัน client ยิงเลขมั่ว
+- **เริ่มนับใหม่จาก 0** — ไม่ migrate เลขเก่า; DO เป็น source of truth ตั้งแต่ deploy แรก (DO SQL ใช้ placeholder `?` ธรรมดา รองรับ workerd ชัวร์)
+- **D1 = mirror สำรอง:** เขียน best-effort (`waitUntil`) ไม่อ่านบน hot path — `mirrorD1()` ใน worker · เก็บเป็น backup เฉย ๆ (ไม่ต้อง setup) ถอดทิ้งทีหลังก็ได้ (ดู DEPLOY.md "ถอด D1")
+- **rate limit:** binding `VOTE_LIMITER`/`VIEW_LIMITER` ที่ขอบ (กัน spam ก่อนใช้โควต้า DO) — ความไม่เป๊ะ per-colo ไม่กระทบยอดแล้ว เพราะตัวนับจริงอยู่ใน DO
 - **กันซ้ำ:** view = `sessionStorage` · vote = `localStorage` (toggle/สลับได้) · symbol = whitelist จาก `/reports.json`
-- **inject ตอน build เฉพาะใน `dist/`** (เหมือน footer ติดต่อ) — `reports/<SYMBOL>.html` ต้นฉบับไม่ต้องแก้
+- **inject ตอน build เฉพาะใน `dist/`** (เหมือน footer ติดต่อ) — `reports/<SYMBOL>.html` ต้นฉบับไม่ต้องแก้ · route/JSON เหมือนเดิม สคริปต์ที่ inject ไม่ต้องแก้
 - **ผ่าน quality gate:** inline `<script>` + `fetch()` same-origin (ห้าม `<script src>`) · ทุก `getElementById` มี element รองรับ · ไม่มี top-level await
-- **ตั้งค่าครั้งแรก (บัญชี Cloudflare):** `wrangler d1 create stockai_d1` → ใส่ `database_id` ใน `wrangler.toml` →
-  `npm run d1:init:remote` (ตารางใหม่) **หรือ** `npm run d1:migrate:remote` (ตารางเดิม เพิ่ม likes/dislikes) — Workers Builds ไม่รัน migration ให้
-- **ขอบเขต gate:** `npm run verify` ตรวจเฉพาะ static — Worker/D1 ทดสอบผ่าน `wrangler dev` (ดู `DEPLOY.md`)
+- **deploy ครั้งเดียว (บัญชี Cloudflare):** แค่ `wrangler deploy` (push → Workers Builds รันให้เอง) — `[[migrations]] new_sqlite_classes` สร้าง DO class ให้ เริ่มนับจาก 0 ไม่ต้องตั้ง secret/seed
+  - ⚠️ migration ต้องเป็น **`new_sqlite_classes`** (ไม่ใช่ `new_classes`) — KV backend เก่าเป็น paid-only; SQLite-backed DO เท่านั้นที่ฟรี
+- **ขอบเขต gate:** `npm run verify` ตรวจเฉพาะ static — Worker/DO ทดสอบผ่าน `wrangler dev` (ดู `DEPLOY.md`)
 - ปรับจำนวนหุ้น/หน้า (pagination) ที่ `PAGE_SIZE` ใน `build.js` (ค่าเริ่มต้น 12)
