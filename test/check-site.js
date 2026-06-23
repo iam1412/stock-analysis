@@ -45,6 +45,9 @@ function checkSecurityStructure(html, name, isReport) {
   // script parse + referenced ids
   for (const m of html.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/gi)) {
     if (/\bsrc\s*=/i.test(m[1])) continue;
+    // ตรวจเฉพาะสคริปต์ JS จริง — data block (เช่น type="application/json" id="stock-meta") ไม่ใช่โค้ด จึงไม่ต้อง parse/ตรวจ id
+    const tt = (m[1].match(/\btype\s*=\s*["']([^"']+)["']/i) || [])[1];
+    if (tt && !/^(text\/javascript|application\/javascript|module)$/i.test(tt.trim())) continue;
     const body = m[2];
     try { new Function(body); } catch (e) { errors.push(`<script> มี syntax error: ${e.message}`); continue; }
     const ids = new Set();
@@ -109,6 +112,30 @@ function checkRender(html, name) {
   return { errors, warnings };
 }
 
+// ---- metric บนการ์ดหน้า index = stock-meta ของ report (build ส่งตัวเลขขึ้นการ์ดถูกต้อง, end-to-end) ----
+const SM_CARD_MAP = [['mos', 'mos'], ['upside', 'upside'], ['pe', 'pe'], ['yield', 'dividendYield'], ['roe', 'roe']]; // [data-attr บนการ์ด, key ใน stock-meta]
+function checkMetricsCards(indexHtml, distDir, distSyms) {
+  const errors = [], warnings = [];
+  for (const s of distSyms) {
+    const blk = fs.readFileSync(path.join(distDir, s + '.html'), 'utf8').match(/<script[^>]*\bid=["']stock-meta["'][^>]*>([\s\S]*?)<\/script>/i);
+    if (!blk) { errors.push(`${s}: dist ไม่มีบล็อก stock-meta`); continue; }
+    let data; try { data = JSON.parse(blk[1]); } catch (e) { errors.push(`${s}: stock-meta ใน dist parse ไม่ได้: ${e.message}`); continue; }
+    const tagM = indexHtml.match(new RegExp(`<a class="card"[^>]*href="\\./${s}\\.html"[^>]*>`));
+    if (!tagM) { errors.push(`${s}: ไม่พบการ์ดในหน้า index`); continue; }
+    const tag = tagM[0];
+    for (const [attr, jkey] of SM_CARD_MAP) {
+      const exp = data[jkey], cardVal = grab(new RegExp(`data-${attr}="([^"]*)"`), tag);
+      if (typeof exp === 'number' && isFinite(exp)) {
+        if (cardVal == null) errors.push(`${s}: การ์ดขาด data-${attr} (stock-meta มี ${jkey}=${exp})`);
+        else if (Math.abs(firstNum(cardVal) - exp) > 1e-9) errors.push(`${s}: การ์ด data-${attr}="${cardVal}" ≠ stock-meta ${jkey}=${exp}`);
+      } else if (cardVal != null) {
+        errors.push(`${s}: การ์ดมี data-${attr}="${cardVal}" แต่ stock-meta ${jkey} ไม่ใช่ตัวเลข (${JSON.stringify(exp)})`);
+      }
+    }
+  }
+  return { errors, warnings };
+}
+
 function main() {
   if (!fs.existsSync(DIST)) { console.error('❌ ไม่พบ dist/ — รัน `node build.js` ก่อน'); process.exit(1); }
 
@@ -147,6 +174,9 @@ function main() {
   for (const s of distSyms) if (!A.has(s)) cov.errors.push(`${s}: อยู่ใน dist/ แต่ไม่มีต้นฉบับใน reports/ (ไฟล์ค้าง)`);
   add('site (coverage)', cov);
 
+  // 1.5) metric บนการ์ด index = stock-meta ของ report (build wiring ถูกต้อง)
+  if (indexHtml) add('site (metric cards)', checkMetricsCards(indexHtml, DIST, distSyms));
+
   // 2) ต่อไฟล์ใน dist
   for (const f of fs.readdirSync(DIST).filter((f) => /\.html$/i.test(f)).sort()) {
     const html = fs.readFileSync(path.join(DIST, f), 'utf8');
@@ -179,4 +209,4 @@ function main() {
 }
 
 if (require.main === module) main();
-module.exports = { checkSecurityStructure, checkRender, checkModelCredit };
+module.exports = { checkSecurityStructure, checkRender, checkModelCredit, checkMetricsCards };

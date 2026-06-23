@@ -55,7 +55,13 @@ stock-analysis/
      **แทนข้อความ "สร้างด้วย stock-analyzer workflow" ใน footer** เป็น "🤖 วิเคราะห์และจัดทำด้วย AI · `<รุ่น>` · Anthropic" **ต่อ report**
      บอกผู้อ่านว่ารายงานนั้นวิเคราะห์ด้วยโมเดลไหน · quality gate **E28 บังคับให้มี** (ลืม/ใส่ผิด = push ไม่ได้)
      · ค่ากลาง `AI_MODEL` ใน build.js เป็นแค่ fallback เผื่อไม่มี tag · meta นี้ไม่นับเป็น "อัปเดต" (ตัดออกจาก freshHash)
-4. รัน `npm run verify` (check-reports → build → check-site) ให้ผ่านทั้งหมด
+   - **★ ใส่บล็อก `stock-meta`** (ตัวเลขสำหรับ **เรียง/คัดกรองหน้า index** — screener) — ถัดจาก meta ai-model ใน `<head>` ใส่
+     `<script type="application/json" id="stock-meta">{…}</script>` มีคีย์:
+     `{ symbol, currency, price, fairValue, mos, upside, pe, dividendYield, roe }`
+     · `mos` = (FV−price)/FV·100 (= กล่อง MOS) · `upside` = (FV−price)/price·100 · `pe/dividendYield/roe` ใส่ `null` ได้ถ้า N/A (จะเรียงไปท้าย)
+     · **ตัวเลขต้องตรงกับที่โชว์ในรายงาน** — gate **E29–31 บังคับ** (price/FV/MOS = กล่อง + mos/upside สอดคล้องราคา/FV; เพี้ยน = push ไม่ได้) · **W10** เตือนถ้า pe/yield/roe ต่างจากที่โชว์
+     · build.js ดึงบล็อกนี้ → `reports.json` + `data-*` บนการ์ด → ปุ่มเรียง MOS/Upside/P/E/Yield/ROE (เรียงฝั่ง client, 0 request) · บล็อกนี้ไม่นับเป็น "อัปเดต" (ตัดออกจาก freshHash เหมือน ai-model)
+4. รัน `npm run verify` (check-reports → build → build-test → check-site) ให้ผ่านทั้งหมด
 5. **Auto-push** (ดูข้อ 4)
 
 > **URL ปลายทาง:** `https://stock-ai.dotent.workers.dev/<SYMBOL>.html` (และ `/<SYMBOL>` ก็เข้าได้)
@@ -136,9 +142,10 @@ npm run check:site       # ชั้น 2 อย่างเดียว (ต้
 npm run test:self        # meta-test: พิสูจน์ว่า checker เองยังจับ bug ได้ (รันหลังแก้ checker)
 ```
 
-**ชั้น 1 — `test/check-reports.js`** (ตรวจ source `reports/<SYMBOL>.html` ทีละไฟล์ — 28 error + 9 warning):
+**ชั้น 1 — `test/check-reports.js`** (ตรวจ source `reports/<SYMBOL>.html` ทีละไฟล์ — 31 error + 10 warning):
 - **โครงสร้าง:** DOCTYPE/`lang="th"`/ปิด `</html>`, `<title>` มีชื่อย่อ, `<h1>`, ครบ 8 section, กราฟ, gauge, เครื่องคิดเลข MOS, disclaimer, footer, header (ราคา+วันที่+แหล่งที่มา), **meta `ai-model` (E28: ต้องระบุโมเดล AI ที่ใช้วิเคราะห์ ขึ้นต้น "Claude ")**
 - **ตัวเลขสอดคล้องกันเอง:** `const FV` = Fair Value กล่อง = FV ในสรุป (vgrid) • MOS = (FV−ราคา)/FV • จุดซื้อ MOS20/30 = FV×0.8/0.7 (ทั้งกล่องและแกน gauge) • ราคา header = ค่าตั้งต้นเครื่องคิดเลข • **คณิตแต่ละวิธี: P/E = EPS×P/E, Justified P/BV = ratio×BVPS และ ratio=(ROE−g)/(r−g)** • scenario: EPS ปี3 = EPS ฐาน×(1+g)³ และ tgt = EPS×P/E
+- **stock-meta (screener) [E29–31, W10]:** บล็อก `<script id="stock-meta">` JSON ครบ key + ชนิดถูก + symbol/currency ตรง (E29) • ตัวเลข = ที่โชว์จริง: price/fairValue/MOS ตรงกล่อง (E30) + mos/upside สอดคล้องราคา&FV (E31) • (warn W10) pe/yield/roe ≈ ที่โชว์เท่าที่ดึงได้
 - **ความสด/แหล่งข้อมูล:** ราคาไม่เก่า > 120 วัน/ไม่อยู่อนาคต (warn > 45 วัน) • (warn) แหล่งข้อมูล ≥3 + มีราคาเป้า/52 สัปดาห์/งวดงบ • (warn) ตัวเลขพื้นฐานอยู่ในวิสัย (P/E, P/BV, yield, ROE)
 - **ไม่มีของค้าง:** placeholder `[SYMBOL]`/`${...}`, `undefined`/`NaN`, สกุลเงินปน
 
@@ -148,8 +155,9 @@ npm run test:self        # meta-test: พิสูจน์ว่า checker เ
 
 **ชั้น 2 — `test/check-site.js`** (ตรวจ `dist/` หลัง build — ระดับเว็บไซต์):
 - **ความครบ:** ทุก report อยู่ใน `dist/`, `reports.json`, และมีการ์ดใน `index.html` • ชื่อไฟล์พิมพ์ใหญ่ ไม่ซ้ำ
-- **Render:** `<script>` parse ได้ (ไม่พังทั้งหน้า) + id ที่ JS อ้างมีจริง • (warn) จุดสุดท้ายกราฟ≈ราคา, min/max ครอบข้อมูล, gauge marker ไม่ติดขอบ
+- **Render:** `<script>` (JS เท่านั้น — ข้าม `<script type="application/json">` เพราะเป็น data block ไม่ใช่โค้ด) parse ได้ + id ที่ JS อ้างมีจริง • (warn) จุดสุดท้ายกราฟ≈ราคา, min/max ครอบข้อมูล, gauge marker ไม่ติดขอบ
 - **เครดิตโมเดล AI (end-to-end):** dist ไม่เหลือ "stock-analyzer workflow" • มีเครดิต 🤖 …·Anthropic • **โมเดลใน footer = meta `ai-model` ของไฟล์นั้น** (per-report ตรงกัน)
+- **screener metric (end-to-end):** การ์ดหน้า index มี `data-mos/upside/pe/yield/roe` = บล็อก `stock-meta` ของ report นั้น (build ส่งตัวเลขขึ้นการ์ดถูกต้อง)
 - **ความปลอดภัย:** external resource = Google Fonts (https) เท่านั้น • **ห้าม `<script src>` ภายนอก** • ห้าม `http://`
 
 > **ปรับ threshold ความสดได้ผ่าน env:** `STALE_WARN_DAYS` (45), `STALE_ERROR_DAYS` (120), `STALE_TODAY` (สำหรับเทส)

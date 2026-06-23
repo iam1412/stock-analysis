@@ -124,8 +124,19 @@ function buildCtx(html, name) {
       yield: metricNum(html, 'เงินปันผล'),
       roe: (() => { const m = norm(html).match(/ROE[^<]*<\/div>\s*<div class="v[^"]*">\s*~?\s*([0-9.]+)\s*%/); return m ? parseFloat(m[1]) : null; })(),
     },
+    // บล็อก stock-meta (JSON ตัวเลขสำหรับเรียง index) — present/ok/data ใช้โดย E29–31, W10
+    sm: (() => {
+      const m = html.match(/<script[^>]*\bid=["']stock-meta["'][^>]*>([\s\S]*?)<\/script>/i);
+      if (!m) return { present: false };
+      try { return { present: true, ok: true, data: JSON.parse(m[1]) }; }
+      catch (e) { return { present: true, ok: false, err: e.message }; }
+    })(),
   };
 }
+
+const SM_NUM_KEYS = ['price', 'fairValue', 'mos', 'upside', 'pe', 'dividendYield', 'roe']; // ต้องเป็นตัวเลข (price/fairValue/mos/upside) หรือตัวเลข|null (pe/yield/roe)
+const SM_REQ_NUM = ['price', 'fairValue', 'mos', 'upside'];                                 // ต้องมีค่าเสมอ (คำนวณได้จากราคา/FV)
+const isFiniteNum = (v) => typeof v === 'number' && isFinite(v);
 
 // ---------- checks ----------
 // level 'error' → block push ; level 'warn' → แจ้งเตือน ไม่ block
@@ -162,6 +173,41 @@ const CHECKS = [
   // ระบุโมเดล AI ที่ใช้วิเคราะห์ (footer แสดงโมเดลต่อ report จาก tag นี้ — บังคับให้ทุก report ประกาศโมเดลที่รันจริง)
   { id: 'E28', level: 'error', label: 'ระบุโมเดล AI (meta ai-model)', fn: (c) => { if (c.aiModel == null) return 'ไม่มี <meta name="ai-model" content="..."> — ต้องประทับโมเดล AI ที่ใช้วิเคราะห์ (เช่น "Claude Opus 4.8")'; if (!c.aiModel) return 'meta ai-model ว่างเปล่า'; if (/\[|\$\{|MODEL_NAME|TODO|xxx/i.test(c.aiModel)) return `ค่า ai-model ยังเป็น placeholder: "${c.aiModel}"`; if (!/^Claude\s+\S/i.test(c.aiModel)) return `ค่า ai-model ควรขึ้นต้นด้วย "Claude " (เช่น "Claude Opus 4.8") — พบ: "${c.aiModel}"`; return null; } },
 
+  // ── stock-meta: บล็อก JSON ตัวเลขสำหรับเรียง/แสดงบนหน้า index — ต้อง "ตรงกับเลขที่โชว์" (กัน sort เพี้ยนจากเนื้อหา) ──
+  { id: 'E29', level: 'error', label: 'มีบล็อก stock-meta (JSON ครบ key)', fn: (c) => {
+    const sm = c.sm;
+    if (!sm.present) return 'ไม่มี <script type="application/json" id="stock-meta"> — ต้องประกาศตัวเลขสรุป (price/fairValue/mos/upside/pe/dividendYield/roe) สำหรับเรียงหน้า index';
+    if (!sm.ok) return `บล็อก stock-meta ไม่ใช่ JSON ที่ถูกต้อง: ${sm.err}`;
+    const d = sm.data;
+    if (!d || typeof d !== 'object' || Array.isArray(d)) return 'stock-meta ต้องเป็น JSON object';
+    if (typeof d.symbol !== 'string' || !d.symbol.trim()) return 'stock-meta ขาด "symbol" (string)';
+    if (d.symbol.trim().toUpperCase() !== c.symbol.toUpperCase()) return `stock-meta.symbol "${d.symbol}" ≠ ชื่อไฟล์ "${c.symbol}"`;
+    if (typeof d.currency !== 'string' || !/^[A-Z]{3}$/.test(d.currency)) return `stock-meta.currency ต้องเป็นรหัสสกุลเงิน 3 ตัว (เช่น "USD"/"THB") — พบ ${JSON.stringify(d.currency)}`;
+    for (const k of SM_NUM_KEYS) {
+      if (!(k in d)) return `stock-meta ขาดคีย์ "${k}"`;
+      const v = d[k], allowNull = !SM_REQ_NUM.includes(k);
+      if (allowNull) { if (v !== null && !isFiniteNum(v)) return `stock-meta.${k} ต้องเป็นตัวเลข หรือ null — พบ ${JSON.stringify(v)}`; }
+      else if (!isFiniteNum(v)) return `stock-meta.${k} ต้องเป็นตัวเลข — พบ ${JSON.stringify(v)}`;
+    }
+    return null;
+  } },
+  { id: 'E30', level: 'error', label: 'stock-meta = เลขที่โชว์ (ราคา/FV/MOS)', fn: (c) => {
+    const sm = c.sm; if (!sm.present || !sm.ok || !sm.data) return null; // E29 จับบล็อกเสีย/ขาดแล้ว
+    const d = sm.data, bad = [];
+    if (c.px != null && isFiniteNum(d.price) && Math.abs(d.price - c.px) > Math.max(0.02 * Math.abs(c.px), 0.02)) bad.push(`price ${d.price} ≠ ราคา header ${c.px}`);
+    if (c.fvBox != null && isFiniteNum(d.fairValue) && Math.abs(d.fairValue - c.fvBox) > Math.max(0.01 * Math.abs(c.fvBox), 0.01)) bad.push(`fairValue ${d.fairValue} ≠ Fair Value ในกล่อง ${c.fvBox}`);
+    if (c.mosBig != null && isFiniteNum(d.mos) && Math.abs(d.mos - c.mosBig) > TOL_MOS_PP) bad.push(`mos ${d.mos}% ≠ MOS ที่โชว์ ${c.mosBig}% (ต่าง > ${TOL_MOS_PP} จุด)`);
+    return bad.length ? bad.join(' ; ') : null;
+  } },
+  { id: 'E31', level: 'error', label: 'stock-meta สอดคล้องในตัว (mos/upside)', fn: (c) => {
+    const sm = c.sm; if (!sm.present || !sm.ok || !sm.data) return null;
+    const d = sm.data; if (!isFiniteNum(d.price) || !isFiniteNum(d.fairValue) || d.price === 0 || d.fairValue === 0) return null;
+    const bad = [];
+    if (isFiniteNum(d.mos)) { const exp = (d.fairValue - d.price) / d.fairValue * 100; if (Math.abs(d.mos - exp) > TOL_MOS_PP) bad.push(`mos ${d.mos} ≠ (FV ${d.fairValue}−price ${d.price})/FV·100 = ${exp.toFixed(1)}`); }
+    if (isFiniteNum(d.upside)) { const exp = (d.fairValue - d.price) / d.price * 100; const tol = Math.max(0.6, Math.abs(exp) * 0.05); if (Math.abs(d.upside - exp) > tol) bad.push(`upside ${d.upside} ≠ (FV ${d.fairValue}−price ${d.price})/price·100 = ${exp.toFixed(1)}`); }
+    return bad.length ? bad.join(' ; ') : null;
+  } },
+
   { id: 'W01', level: 'warn', label: 'scenario: EPS×P/E ≈ ราคาเป้า', fn: (c) => { const bad = []; const nm = ['Bear', 'Base', 'Bull']; c.scenarios.forEach((s, i) => { if (s.tgt == null || s.eps == null || s.pe == null) return; const calc = s.eps * s.pe; const d = Math.abs(calc - s.tgt) / s.tgt; if (d > TOL_SCN_REL) bad.push(`${nm[i] || ('#' + i)}: EPS ${s.eps}×P/E ${s.pe}=${calc.toFixed(0)} ≠ target ${s.tgt} (ต่าง ${(d * 100).toFixed(0)}%)`); }); return bad.length ? bad.join(' ; ') : null; } },
   { id: 'W02', level: 'warn', label: 'สกุลเงินปน', fn: (c) => { if (c.isTHB && /\$/.test(c.text)) { const n = (c.text.match(/\$/g) || []).length; return `รายงานสกุลบาท (฿) แต่พบ "$" ${n} จุดในเนื้อหา (ควรใช้ ฿)`; } if (!c.isTHB && /฿/.test(c.text)) { const n = (c.text.match(/฿/g) || []).length; return `รายงานสกุลดอลลาร์ ($) แต่พบ "฿" ${n} จุดในเนื้อหา`; } return null; } },
   { id: 'W03', level: 'warn', label: 'CSS เพี้ยน .seg-label', fn: (c) => /transform:transl\(/.test(c.html) ? 'พบ transform:transl( (ควรเป็น translate) — dead CSS .seg-label ใน template' : null },
@@ -171,6 +217,8 @@ const CHECKS = [
   { id: 'W07', level: 'warn', label: 'ตัวเลขพื้นฐานสมเหตุสมผล', fn: (c) => { const bad = []; if (c.px != null && c.px <= 0) bad.push(`ราคา ${c.px} ≤ 0`); const m = c.metrics; if (m.pe != null && (m.pe <= 0 || m.pe > 150)) bad.push(`P/E ${m.pe} ผิดวิสัย`); if (m.pbv != null && (m.pbv <= 0 || m.pbv > 20)) bad.push(`P/BV ${m.pbv} ผิดวิสัย`); if (m.yield != null && (m.yield < 0 || m.yield > 20)) bad.push(`Div yield ${m.yield}% ผิดวิสัย`); if (m.roe != null && (m.roe < -100 || m.roe > 200)) bad.push(`ROE ${m.roe}% ผิดวิสัย`); return bad.length ? bad.join(' ; ') : null; } },
   { id: 'W08', level: 'warn', label: 'แหล่งข้อมูล ≥3 + อ้างอิงครบ', fn: (c) => { const bad = []; const line = grab(/(?:ที่มา|แหล่ง|อ้างอิง|ข้อมูลจาก|source)\s*[:：]?\s*([^<\n][^\n]*)/i, stripTags(c.header)); if (line) { const srcs = line.split(/\s*[\/,]\s*|\s+•\s+|\s+และ\s+/).map((s) => s.trim()).filter((s) => s.length >= 2 && s.length <= 40); if (srcs.length < 3) bad.push(`ระบุแหล่งที่มาเพียง ${srcs.length} แหล่ง (ควร ≥3)`); } if (!/เป้า|นักวิเคราะห์|consensus/i.test(c.text)) bad.push('ไม่พบราคาเป้านักวิเคราะห์'); if (!/52\s*สัปดาห์|52-week/i.test(c.text)) bad.push('ไม่พบช่วง 52 สัปดาห์'); if (!/FY\s?20\d\d|ไตรมาส|[1-4]Q\s?\/?\s?20\d\d|Q[1-4]\s?\/?\s?20\d\d/i.test(c.text)) bad.push('ไม่พบการอ้างอิงงวดงบ (FY/ไตรมาส)'); return bad.length ? bad.join(' ; ') : null; } },
   { id: 'W09', level: 'warn', label: 'ความสดของราคา', fn: (c) => { if (!c.priceAge) return null; const a = c.priceAge.ageDays; const warnDays = parseInt(process.env.STALE_WARN_DAYS || '45', 10); const errDays = parseInt(process.env.STALE_ERROR_DAYS || '120', 10); if (a > warnDays && a <= errDays) return `ราคาเริ่มเก่า: ${c.priceAge.iso} (${a} วันที่แล้ว) — ควรอัปเดตก่อนเผยแพร่`; return null; } },
+  // stock-meta P/E·Yield·ROE เทียบค่าที่โชว์ — เตือนเท่านั้น (label P/E/ROE ในรายงานไม่ standard เสมอ → ดึงไม่ได้บางไฟล์)
+  { id: 'W10', level: 'warn', label: 'stock-meta P/E·Yield·ROE ≈ ที่โชว์', fn: (c) => { const sm = c.sm; if (!sm.present || !sm.ok || !sm.data) return null; const d = sm.data, m = c.metrics, bad = []; if (m.pe != null && isFiniteNum(d.pe) && Math.abs(d.pe - m.pe) > Math.max(0.05 * Math.abs(m.pe), 0.1)) bad.push(`pe ${d.pe} ≠ P/E ที่โชว์ ${m.pe}`); if (m.yield != null && isFiniteNum(d.dividendYield) && Math.abs(d.dividendYield - m.yield) > Math.max(0.1 * Math.abs(m.yield), 0.15)) bad.push(`dividendYield ${d.dividendYield} ≠ ปันผลที่โชว์ ${m.yield}`); if (m.roe != null && isFiniteNum(d.roe) && Math.abs(d.roe - m.roe) > Math.max(0.08 * Math.abs(m.roe), 0.5)) bad.push(`roe ${d.roe} ≠ ROE ที่โชว์ ${m.roe}`); return bad.length ? bad.join(' ; ') : null; } },
 ];
 
 function checkHtml(html, name) {

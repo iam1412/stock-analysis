@@ -70,6 +70,13 @@ expect('W07', 'warn', (h) => h.replace('class="v pos">~7.5x', 'class="v pos">~75
 expect('W08', 'warn', (h) => h.replace('ที่มา: SET / stockanalysis.com / Investing', 'ที่มา: SET'), 'แหล่งข้อมูล < 3');
 expect('E28', 'error', (h) => h.replace(/<meta\s+name="ai-model"[^>]*>/i, ''), 'ลบ meta ai-model → ต้องบังคับให้ระบุโมเดล');
 expect('E28', 'error', (h) => h.replace(/content="Claude[^"]*"/i, 'content="GPT-4"'), 'ai-model ไม่ใช่ Claude → ค่าผิด');
+// ── stock-meta (E29–31, W10) — บล็อก JSON ตัวเลขสำหรับเรียง index ──
+expect('E29', 'error', (h) => h.replace(/<script[^>]*id="stock-meta"[\s\S]*?<\/script>/i, ''), 'ลบบล็อก stock-meta → ต้องบังคับให้มี');
+expect('E29', 'error', (h) => h.replace(',"roe":7.8}', '}'), 'stock-meta ขาดคีย์ roe');
+expect('E29', 'error', (h) => h.replace('"price":178', '"price":"178"'), 'stock-meta.price เป็น string ไม่ใช่ตัวเลข');
+expect('E30', 'error', (h) => h.replace('"price":178', '"price":999'), 'stock-meta.price ≠ ราคาที่โชว์ → ตรวจข้ามแหล่งในไฟล์');
+expect('E31', 'error', (h) => h.replace('"upside":9.6', '"upside":99'), 'stock-meta.upside ไม่สอดคล้องกับราคา&FV');
+expect('W10', 'warn', (h) => h.replace('"pe":7.5', '"pe":50'), 'stock-meta.pe ≠ P/E ที่โชว์ (เตือน)');
 // freshness — จำลอง "วันนี้" ผ่าน env STALE_TODAY (รายงานลงวันที่ มิ.ย. 2026)
 {
   process.env.STALE_TODAY = '2027-06-23';
@@ -89,6 +96,8 @@ reject('E13', (h) => h.replace('<h1>', '<h1>[NASDAQ] '), 'ticker/exchange ใน
 reject('E13', (h) => h.replace('<h1>', '<h1>[ADR] '), 'acronym [ADR] ไม่ใช่ placeholder');
 reject('E12', (h) => h.replace('2026', '2569'), 'ปี พ.ศ. 2569 ยังถือว่ามีปีในวันที่ราคา');
 reject('E06', (h) => h.replace('<div class="n">1</div>', '<div class="n active">1</div>'), 'section badge มี class เพิ่มก็ยังนับว่าครบ');
+reject('E29', (h) => h.replace('"dividendYield":6.7', '"dividendYield":null'), 'stock-meta: dividendYield = null (หุ้นไม่จ่ายปันผล) ยังถือว่าถูกต้อง');
+reject('W10', (h) => h.replace('"dividendYield":6.7', '"dividendYield":null'), 'stock-meta: yield = null → ข้ามการเทียบ ไม่เตือน W10');
 
 console.log('\n' + '─'.repeat(50));
 console.log(`self-test: ${n - fails}/${n} ผ่าน`);

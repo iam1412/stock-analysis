@@ -24,11 +24,13 @@ const reEsc = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
 console.log('\n🧪 build-test: เครดิตโมเดล AI + freshHash\n');
 
-// fixture HTML ขั้นต่ำ (มี/ไม่มี meta ai-model, footer แบบ workflow text)
+// fixture HTML ขั้นต่ำ (มี/ไม่มี meta ai-model, บล็อก stock-meta, footer แบบ workflow text)
 const WF = 'Stock Analysis Dashboard • ข้อมูล ณ 1 ม.ค. 2026 • สร้างด้วย stock-analyzer workflow';
-const doc = (model, footer) =>
+const smBlock = (o) => o == null ? '' : `\n<script type="application/json" id="stock-meta">\n${typeof o === 'string' ? o : JSON.stringify(o)}\n</script>`;
+const doc = (model, footer, sm) =>
   `<!DOCTYPE html><html lang="th"><head><title>X (X)</title>` +
   (model ? `\n<meta name="ai-model" content="${model}">` : '') +
+  smBlock(sm) +
   `</head><body><h1>X</h1><footer>${footer}</footer></body></html>`;
 
 const withOpus = doc('Claude Opus 4.8', WF);
@@ -58,6 +60,22 @@ ok(/🤖[^<]*<b>Claude Opus 4\.8<\/b>\s*·\s*Anthropic/.test(decOpus), 'decorate
 ok(!/สร้างด้วย\s*stock-analyzer\s*workflow/.test(decOpus), 'decorateReport: ไม่เหลือ workflow text ใน output');
 ok(/<b>Claude Sonnet 4\.6<\/b>/.test(b.decorateReport(withSonnet, rec(withSonnet, 'Y'))), 'decorateReport: per-report — report tag=Sonnet → footer=Sonnet (ไม่ใช่ค่ากลาง)');
 ok(new RegExp('<b>' + reEsc(b.AI_MODEL) + '</b>').test(b.decorateReport(noTag, rec(noTag, 'Z'))), `decorateReport: ไม่มี tag → ใช้ค่ากลาง AI_MODEL (${b.AI_MODEL})`);
+
+// ── extractMetrics: อ่านบล็อก stock-meta → metric สำหรับเรียง index ──
+const SM = { symbol: 'X', currency: 'USD', price: 100, fairValue: 120, mos: 16.7, upside: 20, pe: 15, dividendYield: 2.5, roe: 18 };
+const withSM = doc('Claude Opus 4.8', WF, SM);
+const em = b.extractMetrics(withSM);
+ok(em && em.mos === 16.7 && em.upside === 20 && em.pe === 15 && em.dividendYield === 2.5 && em.roe === 18, 'extractMetrics: อ่าน metric ครบ (mos/upside/pe/dividendYield/roe)');
+ok(b.extractMetrics(doc('Claude Opus 4.8', WF)) === null, 'extractMetrics: ไม่มีบล็อก → null');
+ok(b.extractMetrics(doc('Claude Opus 4.8', WF, '{bad json')) === null, 'extractMetrics: JSON เสีย → null (ไม่ throw)');
+ok((() => { const r = b.extractMetrics(doc('Claude Opus 4.8', WF, { mos: 5 })); return r && r.mos === 5 && r.pe === null; })(), 'extractMetrics: key ที่ไม่มี → null (ไม่ใช่ undefined)');
+
+// ── freshHash: ตัดบล็อก stock-meta ออก (เปลี่ยนตัวเลข metric ไม่ดันวันที่) ──
+const smA = doc('Claude Opus 4.8', WF, { symbol: 'X', mos: 10, pe: 15 });
+const smB = doc('Claude Opus 4.8', WF, { symbol: 'X', mos: 99, pe: 99 });
+ok(b.freshHash(smA) === b.freshHash(smB), 'freshHash: เปลี่ยนตัวเลขในบล็อก stock-meta → hash เท่าเดิม (วันที่ไม่ขยับ)');
+ok(b.freshHash(withOpus) === b.freshHash(smA), 'freshHash: มี/ไม่มีบล็อก stock-meta → hash เท่าเดิม');
+ok(b.freshHash(smA) !== b.freshHash(doc('Claude Opus 4.8', WF + ' XTRA', { symbol: 'X', mos: 10 })), 'freshHash: เนื้อหาจริง (นอกบล็อก) เปลี่ยน → hash เปลี่ยน');
 
 console.log('\n' + '─'.repeat(50));
 console.log(`build-test: ${n - fails}/${n} ผ่าน`);
