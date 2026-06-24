@@ -74,6 +74,10 @@ ok(em && em.mos === 16.7 && em.upside === 20 && em.pe === 15 && em.dividendYield
 ok(b.extractMetrics(doc('Claude Opus 4.8', WF)) === null, 'extractMetrics: ไม่มีบล็อก → null');
 ok(b.extractMetrics(doc('Claude Opus 4.8', WF, '{bad json')) === null, 'extractMetrics: JSON เสีย → null (ไม่ throw)');
 ok((() => { const r = b.extractMetrics(doc('Claude Opus 4.8', WF, { mos: 5 })); return r && r.mos === 5 && r.pe === null; })(), 'extractMetrics: key ที่ไม่มี → null (ไม่ใช่ undefined)');
+// ── extractMetrics: market (TH/US) derive จาก currency — ใช้กรองตลาดหน้า index ──
+ok(em && em.market === 'US', "extractMetrics: currency USD → market 'US'");
+ok(b.extractMetrics(doc('Claude Opus 4.8', WF, { ...SM, currency: 'THB' })).market === 'TH', "extractMetrics: currency THB → market 'TH'");
+ok(b.extractMetrics(doc('Claude Opus 4.8', WF, { mos: 5 })).market === null, 'extractMetrics: ไม่มี currency → market = null (ไม่ใส่ data-market บนการ์ด)');
 
 // ── pickHighlight / computeLeaders: เลือก "จุดเด่น" ของหุ้นสำหรับการ์ดหน้า index ──
 const HLM = (o) => ({ mos: null, upside: null, pe: null, dividendYield: null, roe: null, ...o });

@@ -132,6 +132,13 @@ function checkMetricsCards(indexHtml, distDir, distSyms) {
         errors.push(`${s}: การ์ดมี data-${attr}="${cardVal}" แต่ stock-meta ${jkey} ไม่ใช่ตัวเลข (${JSON.stringify(exp)})`);
       }
     }
+    // data-market (TH/US) บนการ์ด = ตลาดที่ derive จาก currency (THB→TH, รหัสอื่น→US) — กรองไทย/สหรัฐหน้า index
+    if (typeof data.currency === 'string') {
+      const expMkt = data.currency === 'THB' ? 'TH' : (/^[A-Z]{3}$/.test(data.currency) ? 'US' : null);
+      const cardMkt = grab(/data-market="([^"]*)"/, tag);
+      if (expMkt && cardMkt !== expMkt) errors.push(`${s}: การ์ด data-market="${cardMkt}" ≠ ตลาดจาก currency ${data.currency} (ควรเป็น "${expMkt}")`);
+      else if (!expMkt && cardMkt != null) errors.push(`${s}: การ์ดมี data-market="${cardMkt}" แต่ currency ${data.currency} ไม่ map เป็นตลาด`);
+    }
   }
   return { errors, warnings };
 }

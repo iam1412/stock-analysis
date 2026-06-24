@@ -166,13 +166,16 @@ function extractMeta(html, symbol) {
 // อ่านบล็อก <script type="application/json" id="stock-meta"> ที่ report ประกาศ → metric สำหรับเรียง/แสดงบนหน้า index
 // คืน null ถ้าไม่มีบล็อก/JSON เสีย · คืนเฉพาะ metric ที่ใช้เรียง (number หรือ null ถ้าไม่มีค่า → เรียงไปท้ายเสมอ)
 // ตัวเลขเป็น "กระจก" ของเลขในรายงาน — quality gate (E29–31) บังคับให้ตรงกับที่โชว์จริง กัน sort เพี้ยนจากเนื้อหา
+// market = ตลาดของหุ้น (TH/US) derive จาก currency (THB→TH · รหัสสกุลอื่นที่ถูกต้อง→US เพราะรีโปนี้มีแค่ THB/USD) —
+//   ใช้กรองหน้า index แยกไทย/สหรัฐ · gate E29 บังคับ currency เป็นรหัส 3 ตัวอยู่แล้ว → ไม่ต้องเขียนเพิ่มในรายงาน
 function extractMetrics(html) {
   const m = html.match(/<script[^>]*\bid=["']stock-meta["'][^>]*>([\s\S]*?)<\/script>/i);
   if (!m) return null;
   let o;
   try { o = JSON.parse(m[1]); } catch { return null; }
   const num = (v) => (typeof v === 'number' && isFinite(v)) ? v : null;
-  return { mos: num(o.mos), upside: num(o.upside), pe: num(o.pe), dividendYield: num(o.dividendYield), roe: num(o.roe) };
+  const market = o.currency === 'THB' ? 'TH' : (typeof o.currency === 'string' && /^[A-Z]{3}$/.test(o.currency) ? 'US' : null);
+  return { mos: num(o.mos), upside: num(o.upside), pe: num(o.pe), dividendYield: num(o.dividendYield), roe: num(o.roe), market };
 }
 
 // แทรกแถบติดต่อ + ลิงก์กลับหน้ารวม + ตัวนับยอดวิว + ปุ่ม Like/Dislike ในแต่ละหน้ารายงาน
@@ -458,6 +461,10 @@ const METRIC_DEFS = [
 const fmtMetric = (v, suf) => v == null ? '—' : (Math.round(v * 100) / 100) + suf;
 // data-* บน <a class="card"> ใช้เรียงฝั่ง client (เฉพาะ metric ที่มีค่า — ไม่มีค่า = ไม่ใส่ attr → เรียงไปท้าย)
 const metricAttrs = (m) => !m ? '' : METRIC_DEFS.map((d) => m[d.k] == null ? '' : ` data-${d.dk}="${escAttr(String(m[d.k]))}"`).join('');
+// ตลาด (TH/US) — data-market บนการ์ดใช้กรองไทย/สหรัฐ + ธงเล็ก ๆ ข้างชื่อย่อให้เห็นตลาดทันที (text emoji ไม่ใช่ external resource)
+const MKT_FLAG = { TH: '🇹🇭', US: '🇺🇸' };
+const marketAttr = (m) => (m && m.market) ? ` data-market="${escAttr(m.market)}"` : '';
+const marketFlag = (m) => (m && m.market && MKT_FLAG[m.market]) ? `<span class="cflag" title="${m.market === 'TH' ? 'ตลาดไทย (SET)' : 'ตลาดสหรัฐ'}">${MKT_FLAG[m.market]}</span>` : '';
 // แถบ metric เล็ก ๆ ใต้ชื่อหุ้น (โชว์ทั้ง 5 ค่า — ตัวที่กำลังเรียงจะถูกไฮไลต์ด้วย JS)
 const metricStrip = (m) => !m ? '' : `
         <div class="cmetrics">${METRIC_DEFS.map((d) => `<span class="cm" data-m="${d.dk}">${d.lab} <b>${esc(fmtMetric(m[d.k], d.suf))}</b></span>`).join('')}</div>`;
@@ -473,8 +480,8 @@ const highlightChip = (m) => {
 const cards = reports.map((r) => {
   const blurb = r.desc || r.title; // คำโปรยธุรกิจ (fallback ไป title ถ้ารายงานไม่มี <div class="sub">)
   return `
-      <a class="card" data-search="${escAttr((r.symbol + ' ' + r.name + ' ' + r.title + ' ' + (r.desc || '')).toLowerCase())}"${metricAttrs(r.metrics)} href="./${encodeURIComponent(r.file)}">
-        <div class="badge">${esc(r.symbol)}</div>
+      <a class="card" data-search="${escAttr((r.symbol + ' ' + r.name + ' ' + r.title + ' ' + (r.desc || '')).toLowerCase())}"${metricAttrs(r.metrics)}${marketAttr(r.metrics)} href="./${encodeURIComponent(r.file)}">
+        <div class="ctop"><div class="badge">${esc(r.symbol)}</div>${marketFlag(r.metrics)}</div>
         <div class="cname">${esc(r.name)}</div>
         <div class="ctitle" title="${escAttr(blurb)}">${esc(blurb)}</div>${highlightChip(r.metrics)}${metricStrip(r.metrics)}
         <div class="cmeta"><span class="go">เปิดรายงาน →</span><span class="cviews" data-sym="${escAttr(r.symbol)}" hidden>👁 <b class="v">0</b> · 👍 <b class="l">0</b> · 👎 <b class="d">0</b></span><span class="cdate">${fmtDate(r.updated)}</span></div>
@@ -487,9 +494,20 @@ const searchBox = reports.length ? `
       <input id="q" type="search" placeholder="ค้นหาหุ้น… ชื่อย่อ หรือ ชื่อบริษัท" autocomplete="off" spellcheck="false" aria-label="ค้นหาหุ้น">
     </div>` : '';
 
+// แถบกรองตลาด — สลับเดียว ทั้งหมด/ไทย/สหรัฐ (filter จริง · AND กับช่องค้นหา · คงค่าข้ามการเปลี่ยน sort)
+const mktCount = reports.reduce((a, r) => { const mk = r.metrics && r.metrics.market; if (mk === 'TH') a.TH++; else if (mk === 'US') a.US++; return a; }, { TH: 0, US: 0 });
+const marketBar = (reports.length > 1 && (mktCount.TH && mktCount.US)) ? `
+    <div class="marketbar" id="marketbar" role="group" aria-label="กรองตามตลาด">
+      <span class="sortlab">ตลาด</span>
+      <button type="button" class="mktbtn on" data-market="all">ทั้งหมด <span class="mc">${reports.length}</span></button>
+      <button type="button" class="mktbtn" data-market="TH">🇹🇭 ไทย <span class="mc">${mktCount.TH}</span></button>
+      <button type="button" class="mktbtn" data-market="US">🇺🇸 สหรัฐ <span class="mc">${mktCount.US}</span></button>
+    </div>` : '';
+
 // แถบเรียงลำดับ — ค่าเริ่มต้น "ล่าสุด" (อัปเดตล่าสุดก่อน, เรียงฝั่ง server แล้ว);
 // "ไลก์/วิว" เรียงฝั่ง client หลังโหลดยอดจาก /api/views · metric (MOS/Upside/PE/Yield/ROE) เรียงจาก data-* บนการ์ด (0 request)
-// คลิกปุ่ม metric ซ้ำ = สลับทิศ (ลูกศร ▼/▲) — ค่าเริ่มต้น: MOS/Upside/Yield/ROE มาก→น้อย, P/E น้อย→มาก
+// ★ ปุ่ม metric = multi-select toggle: เลือก ≥1 ตัว → จัดอันดับด้วย "คะแนนรวม (composite)" หุ้นที่เด่นทุกเกณฑ์ที่เลือกขึ้นบน
+//   (มาก=ดี, P/E น้อย=ดี) · กดล่าสุด/ไลก์/วิว = ล้าง metric · deselect หมด = กลับเป็นล่าสุด
 const sortBar = reports.length > 1 ? `
     <div class="sortbar" id="sortbar" role="group" aria-label="เรียงลำดับหุ้น">
       <span class="sortlab">เรียงโดย</span>
@@ -497,11 +515,11 @@ const sortBar = reports.length > 1 ? `
       <button type="button" class="sortbtn" data-sort="likes">👍 ไลก์</button>
       <button type="button" class="sortbtn" data-sort="views">👁 วิว</button>
       <span class="sortsep" aria-hidden="true"></span>
-      <button type="button" class="sortbtn" data-sort="mos">🛡️ MOS<span class="ar"></span></button>
-      <button type="button" class="sortbtn" data-sort="upside">📈 Upside<span class="ar"></span></button>
-      <button type="button" class="sortbtn" data-sort="pe">⚖️ P/E<span class="ar"></span></button>
-      <button type="button" class="sortbtn" data-sort="yield">💰 Yield<span class="ar"></span></button>
-      <button type="button" class="sortbtn" data-sort="roe">📊 ROE<span class="ar"></span></button>
+      <button type="button" class="sortbtn" data-sort="mos">🛡️ MOS</button>
+      <button type="button" class="sortbtn" data-sort="upside">📈 Upside</button>
+      <button type="button" class="sortbtn" data-sort="pe">⚖️ P/E</button>
+      <button type="button" class="sortbtn" data-sort="yield">💰 Yield</button>
+      <button type="button" class="sortbtn" data-sort="roe">📊 ROE</button>
     </div>` : '';
 
 const noResult = reports.length ? `
@@ -520,41 +538,56 @@ const searchScript = reports.length ? `
       var term = document.getElementById('qterm');
       var pager = document.getElementById('pager');
       var sortbar = document.getElementById('sortbar');
-      var page = 1, sortKey = 'updated';
+      var marketbar = document.getElementById('marketbar');
+      // market = 'all'|'TH'|'US' (ตัวกรองตลาด) · orderMode = updated|likes|views|composite · selected = metric ที่เลือก (multi)
+      var page = 1, market = 'all', orderMode = 'updated', selected = [];
 
       // ลำดับเดิมจาก server = อัปเดตล่าสุดก่อน (ดัชนีน้อย = ใหม่กว่า) + ค่ายอดเริ่มต้น 0 จนกว่า /api/views จะตอบ
       cards.forEach(function (c, i) { c._ord = i; c._views = 0; c._likes = 0; });
-      var base = cards.slice();        // ลำดับที่จัดเรียงแล้ว (เริ่มต้น = เดิม)
-      var filtered = base.slice();
+      var filtered = cards.slice();
 
-      // metric: ทิศธรรมชาติ (false = มาก→น้อย/ดีสุดก่อน, true = น้อย→มาก) · rev[k]=true → สลับทิศ (คลิกซ้ำ)
-      var NAT = { mos: false, upside: false, yield: false, roe: false, pe: true }, rev = {};
+      var METRIC_KEYS = ['mos', 'upside', 'pe', 'yield', 'roe']; // ปุ่ม metric (multi-select) · GOOD_LO = ค่าน้อยยิ่งดี (P/E)
+      var GOOD_LO = { pe: true };
+      function isMetric(k) { return METRIC_KEYS.indexOf(k) !== -1; }
       function mnum(c, k) { var v = parseFloat(c.getAttribute('data-' + k)); return isNaN(v) ? null : v; }
-      function metricCmp(k) {
-        return function (a, b) {
-          var x = mnum(a, k), y = mnum(b, k);
-          if (x === null && y === null) return a._ord - b._ord;
-          if (x === null) return 1;        // ไม่มีค่า → ท้ายเสมอ ไม่ว่าทิศใด
-          if (y === null) return -1;
-          var asc = rev[k] ? !NAT[k] : NAT[k];
-          return (asc ? x - y : y - x) || (a._ord - b._ord);
-        };
-      }
       var CMP = {
         updated: function (a, b) { return a._ord - b._ord; },
         likes:   function (a, b) { return (b._likes - a._likes) || (b._views - a._views) || (a._ord - b._ord); },
-        views:   function (a, b) { return (b._views - a._views) || (b._likes - a._likes) || (a._ord - b._ord); },
-        mos: metricCmp('mos'), upside: metricCmp('upside'), pe: metricCmp('pe'), yield: metricCmp('yield'), roe: metricCmp('roe')
+        views:   function (a, b) { return (b._views - a._views) || (b._likes - a._likes) || (a._ord - b._ord); }
       };
 
-      function applyFilter() {
-        var v = q.value.toLowerCase().trim();
-        filtered = v ? base.filter(function (c) { return c.getAttribute('data-search').indexOf(v) !== -1; }) : base.slice();
+      // คะแนนรวม (composite): min-max normalize แต่ละ metric ที่เลือก เหนือ "ชุดที่กรองแล้ว" (0..1, มาก=ดี) แล้วบวกกัน
+      // ไม่มีค่า/ค่าเดียวกันหมด/ P/E ≤ 0 → +0 (ตกท้าย) · P/E กลับด้าน (ต่ำ=ดี → 1-n)
+      function scoreComposite(pool) {
+        var stats = {};
+        selected.forEach(function (k) {
+          var vals = [];
+          pool.forEach(function (c) { var v = mnum(c, k); if (v !== null && !(GOOD_LO[k] && v <= 0)) vals.push(v); });
+          stats[k] = vals.length ? { mn: Math.min.apply(null, vals), mx: Math.max.apply(null, vals) } : null;
+        });
+        pool.forEach(function (c) {
+          var s = 0;
+          selected.forEach(function (k) {
+            var st = stats[k], v = mnum(c, k);
+            if (!st || v === null || (GOOD_LO[k] && v <= 0) || st.mx === st.mn) return;
+            var n = (v - st.mn) / (st.mx - st.mn);
+            s += GOOD_LO[k] ? (1 - n) : n;
+          });
+          c._score = s;
+        });
       }
-      function sortNow() {                                  // จัดเรียง base + ย้าย DOM ให้ตรงลำดับ แล้วกรองซ้ำ
-        base = cards.slice().sort(CMP[sortKey] || CMP.updated);
-        base.forEach(function (c) { grid.appendChild(c); });
-        applyFilter();
+
+      function marketOK(c) { return market === 'all' || c.getAttribute('data-market') === market; }
+      function searchOK(c) { var v = q.value.toLowerCase().trim(); return !v || c.getAttribute('data-search').indexOf(v) !== -1; }
+      function recompute() {                                // กรอง (ตลาด+ค้นหา) → จัดอันดับ (composite หรือ CMP) → ย้าย DOM
+        filtered = cards.filter(function (c) { return marketOK(c) && searchOK(c); });
+        if (orderMode === 'composite' && selected.length) {
+          scoreComposite(filtered);
+          filtered.sort(function (a, b) { return (b._score - a._score) || (a._ord - b._ord); });
+        } else {
+          filtered.sort(CMP[orderMode] || CMP.updated);
+        }
+        filtered.forEach(function (c) { grid.appendChild(c); });
       }
 
       function pages() { return Math.max(1, Math.ceil(filtered.length / PAGE)); }
@@ -579,30 +612,37 @@ const searchScript = reports.length ? `
         page = g === 'prev' ? Math.max(1, page - 1) : g === 'next' ? Math.min(tp, page + 1) : parseInt(g, 10);
         render(); window.scrollTo(0, 0);
       });
-      q.addEventListener('input', function () { applyFilter(); page = 1; render(); });
+      q.addEventListener('input', function () { recompute(); page = 1; render(); });
 
-      function curAsc() { return rev[sortKey] ? !NAT[sortKey] : NAT[sortKey]; }
-      function updateArrows() {                              // ลูกศร ▼/▲ บนปุ่ม metric ที่กำลังใช้เรียง
-        [].slice.call(document.querySelectorAll('#sortbar .sortbtn')).forEach(function (x) {
-          var ar = x.querySelector('.ar'); if (!ar) return;
-          var k = x.getAttribute('data-sort');
-          ar.textContent = (k === sortKey && (k in NAT)) ? (curAsc() ? ' \\u25b2' : ' \\u25bc') : '';
-        });
-      }
-      function highlightMetric() {                           // ไฮไลต์ค่า metric ที่กำลังเรียงบนทุกการ์ด
-        var k = (sortKey in NAT) ? sortKey : null;
+      function highlightMetric() {                           // ไฮไลต์ค่า metric ทุกตัวที่เลือก (composite) บนทุกการ์ด
         [].slice.call(document.querySelectorAll('.cmetrics .cm')).forEach(function (s) {
-          s.className = 'cm' + (k && s.getAttribute('data-m') === k ? ' on' : '');
+          s.className = 'cm' + (selected.indexOf(s.getAttribute('data-m')) !== -1 ? ' on' : '');
         });
       }
+      function syncSortBtns() {                              // metric ใน selected = on · ล่าสุด/ไลก์/วิว = on เฉพาะตอน orderMode ตรง
+        if (!sortbar) return;
+        [].slice.call(sortbar.querySelectorAll('.sortbtn')).forEach(function (x) {
+          var xk = x.getAttribute('data-sort');
+          var on = isMetric(xk) ? (selected.indexOf(xk) !== -1) : (orderMode === xk);
+          x.className = 'sortbtn' + (on ? ' on' : '');
+        });
+      }
+      if (marketbar) marketbar.addEventListener('click', function (e) {
+        var b = e.target.closest('[data-market]'); if (!b) return;
+        market = b.getAttribute('data-market');
+        [].slice.call(marketbar.querySelectorAll('.mktbtn')).forEach(function (x) { x.className = 'mktbtn' + (x === b ? ' on' : ''); });
+        recompute(); page = 1; render(); window.scrollTo(0, 0);
+      });
       if (sortbar) sortbar.addEventListener('click', function (e) {
         var b = e.target.closest('[data-sort]'); if (!b) return;
         var k = b.getAttribute('data-sort');
-        if (k === sortKey) { if (!(k in NAT)) return; rev[k] = !rev[k]; }  // คลิกซ้ำที่ metric → สลับทิศ (อื่น ๆ ไม่สลับ)
-        else { sortKey = k; }
-        [].slice.call(sortbar.querySelectorAll('.sortbtn')).forEach(function (x) { x.className = 'sortbtn' + (x === b ? ' on' : ''); });
-        updateArrows(); highlightMetric();
-        sortNow(); page = 1; render(); window.scrollTo(0, 0);
+        if (isMetric(k)) {                                   // metric = toggle เข้า/ออก selected → โหมด composite
+          var i = selected.indexOf(k);
+          if (i === -1) selected.push(k); else selected.splice(i, 1);
+          orderMode = selected.length ? 'composite' : 'updated';
+        } else { orderMode = k; selected = []; }             // ล่าสุด/ไลก์/วิว = single-select + ล้าง metric
+        syncSortBtns(); highlightMetric();
+        recompute(); page = 1; render(); window.scrollTo(0, 0);
       });
 
       // โหลดยอดวิว + likes ทั้งหมดครั้งเดียว (read-only ไม่นับเพิ่ม) เติมลงการ์ด แล้วจัดเรียงใหม่ถ้าเรียงตามไลก์/วิวอยู่
@@ -617,9 +657,10 @@ const searchScript = reports.length ? `
           if (d) d.textContent = (e.d || 0).toLocaleString();
           s.hidden = false;
         });
-        if (sortKey !== 'updated') { sortNow(); render(); }
+        if (orderMode === 'likes' || orderMode === 'views') { recompute(); render(); }
       }).catch(function () {});
 
+      recompute();
       render();
     })();
   </script>` : '';
@@ -678,16 +719,19 @@ const indexHtml = `<!DOCTYPE html>
   .search input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(26,115,232,.15)}
   .search input::placeholder{color:var(--muted)}
   .noresult{text-align:center;color:var(--muted);padding:32px;font-size:14px}
-  .sortbar{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:14px}
+  .sortbar,.marketbar{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:14px}
   .sortlab{font-size:13px;color:var(--muted);margin-right:2px}
   .sortsep{width:1px;align-self:stretch;background:var(--line);margin:2px 2px}
-  .sortbtn .ar{font-size:11px}
-  .sortbtn{font-family:inherit;font-size:13px;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:99px;padding:6px 14px;cursor:pointer;box-shadow:var(--shadow);transition:border-color .15s ease,color .15s ease,background .15s ease}
-  .sortbtn:hover:not(.on){border-color:var(--blue);color:var(--blue)}
-  .sortbtn.on{background:var(--blue);border-color:var(--blue);color:#fff;font-weight:600}
+  .sortbtn,.mktbtn{font-family:inherit;font-size:13px;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:99px;padding:6px 14px;cursor:pointer;box-shadow:var(--shadow);transition:border-color .15s ease,color .15s ease,background .15s ease}
+  .sortbtn:hover:not(.on),.mktbtn:hover:not(.on){border-color:var(--blue);color:var(--blue)}
+  .sortbtn.on,.mktbtn.on{background:var(--blue);border-color:var(--blue);color:#fff;font-weight:600}
+  .mktbtn .mc{font-family:'IBM Plex Mono',monospace;font-size:11px;opacity:.7;margin-left:1px}
+  .mktbtn.on .mc{opacity:.9}
   .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;margin-top:24px}
   .card{display:flex;flex-direction:column;gap:6px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px;text-decoration:none;color:inherit;box-shadow:var(--shadow);transition:transform .15s ease,box-shadow .15s ease}
   .card:hover{transform:translateY(-3px);box-shadow:0 4px 12px rgba(16,24,40,.10),0 14px 32px rgba(16,24,40,.10)}
+  .ctop{display:flex;align-items:center;justify-content:space-between;gap:8px}
+  .cflag{font-size:15px;line-height:1;flex:none}
   .badge{font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:13px;color:var(--blue-d);background:#e8f0fe;align-self:flex-start;padding:3px 10px;border-radius:8px}
   .cname{font-size:18px;font-weight:700;margin-top:6px}
   .ctitle{font-size:13px;color:var(--muted);line-height:1.35;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;overflow:hidden;min-height:calc(1.35em * 2)}
@@ -727,7 +771,7 @@ const indexHtml = `<!DOCTYPE html>
       <span class="tag">📊 Stock Analysis</span>
       <h1>รายงานวิเคราะห์หุ้น</h1>
       <div class="sub">Fair Value · Margin of Safety · จุดเข้าซื้อ · ผลตอบแทนคาดการณ์ — รวม ${reports.length} รายงาน</div>
-    </header>${searchBox}${sortBar}
+    </header>${searchBox}${marketBar}${sortBar}
     <div class="grid">
 ${reports.length ? cards : emptyState}
     </div>${noResult}${pagerEl}
