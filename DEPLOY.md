@@ -11,23 +11,32 @@
 
 ```
 stock-analysis/
-├─ reports/            ← วางไฟล์รายงานหุ้นแต่ละตัวไว้ที่นี่
+├─ reports/            ← วางไฟล์รายงานหุ้นแต่ละตัวไว้ที่นี่ (content-only template)
 │  ├─ GOOGL.html
 │  └─ ...
-├─ build.js            ← สคริปต์ build
-├─ package.json        ← npm run build
-├─ wrangler.toml       ← [assets] directory = "./dist"
+├─ _template/          ← โครงร่วม (dashboard.css, engine.js) + skeleton-{th,us}.html — build inject ตอน expand
+├─ build.js            ← สคริปต์ build (expand template + สร้าง index + screener + เครดิตโมเดล + inject ตัวนับวิว)
+├─ reports.json        ← manifest (committed — เก็บ hash/วันที่อัปเดต) ห้ามแก้มือ
+├─ package.json        ← npm run build / verify
+├─ wrangler.toml       ← Worker + [assets] directory = "./dist" + DO + D1 + rate limit
+├─ src/worker.js       ← Worker: route /api/* → Durable Object (ตัวนับวิว/ไลก์)
+├─ schema.sql · migrate-votes.sql  ← D1 (mirror สำรอง)
 ├─ _headers            ← HTTP headers
+├─ static/             ← og.png / og.svg (social card)
+├─ test/               ← quality gate (check-reports, build-test, engine-exec, skeleton-test, check-site)
+├─ tools/              ← migrate.js, brandtheme.js ฯลฯ
+├─ .githooks/pre-push  ← บล็อก push ถ้า gate ไม่ผ่าน (เปิดใช้: git config core.hooksPath .githooks)
 └─ dist/               ← ผลลัพธ์ build (gitignore — Cloudflare สร้างเอง)
 ```
 
 ## build.js ทำอะไร
 
-1. สแกนไฟล์รายงาน `reports/<SYMBOL>.html` ทั้งหมด
-2. สร้างหน้า `index.html` (รวมรายงาน) จาก metadata ของแต่ละไฟล์
-3. คัดลอกรายงานแบบ **flatten** ลง `dist/` + คัดลอก `_headers`
+1. สแกนไฟล์รายงาน `reports/<SYMBOL>.html` ทั้งหมด แล้ว **expand template** (inject `_template/dashboard.css` + `engine.js`)
+2. ติดตามวันที่อัปเดตผ่าน `reports.json` (เนื้อหาวิเคราะห์เปลี่ยน → ประทับเวลาใหม่; เปลี่ยนแค่ meta `ai-model`/`stock-meta` ไม่นับ)
+3. สร้างหน้า `index.html` (เรียงหุ้นที่อัปเดตล่าสุดขึ้นก่อน) — ดึง `stock-meta` ของแต่ละไฟล์ไปทำ **screener** (ปุ่มเรียง MOS/Upside/P-E/Yield/ROE + ป้าย "จุดเด่น"/มงกุฎ) + แทนเครดิตโมเดล AI ใน footer (จาก meta `ai-model`) + inject สคริปต์ตัวนับวิว/ไลก์
+4. คัดลอกรายงานแบบ **flatten** ลง `dist/` (`/<SYMBOL>.html` และ `/<SYMBOL>`) + คัดลอก `_headers` + เขียน `dist/reports.json`
 
-> **เพิ่มหุ้นใหม่:** วางไฟล์ `reports/<SYMBOL>.html` แล้ว push — หน้า index อัปเดตเองตอน build
+> **เพิ่มหุ้นใหม่:** วางไฟล์ `reports/<SYMBOL>.html` แล้ว push — หน้า index อัปเดตเองตอน build (ปรับจำนวนหุ้น/หน้าได้ที่ `PAGE_SIZE` ใน `build.js`, ค่าเริ่มต้น 12)
 
 ## URL หลัง deploy
 
@@ -45,6 +54,22 @@ open dist/index.html
 ```
 
 ไม่ต้องติดตั้ง dependency ใด ๆ (ใช้แค่ Node.js ≥ 18)
+
+## Quality gate ก่อน push (บังคับ)
+
+`push → main` คือสิ่งที่ trigger ให้ Cloudflare deploy → **ต้องผ่าน gate ก่อนเสมอ**:
+
+```bash
+npm run verify     # 6 ขั้น: check-reports → build → build-test → engine-exec → skeleton-test → check-site
+```
+
+เปิด git pre-push hook (ครั้งเดียวต่อ clone) ให้บล็อก `git push` อัตโนมัติถ้า gate ไม่ผ่าน:
+
+```bash
+git config core.hooksPath .githooks   # .githooks/pre-push รัน 6 ขั้นเดียวกัน
+```
+
+> มี error = ห้าม push · รายละเอียด gate ดู `CLAUDE.md` ข้อ 7 · gate ตรวจเฉพาะ static — Worker/DO ต้องทดสอบผ่าน `wrangler dev`
 
 ---
 
