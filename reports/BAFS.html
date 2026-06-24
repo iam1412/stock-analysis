@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น บริการเชื้อเพลิงการบินกรุงเทพ (BAFS) — Stock Analysis Dashboard</title>
+<!-- ★ โมเดล AI ที่ใช้วิเคราะห์จริง -->
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) -->
+<script type="application/json" id="stock-meta">
+{"symbol":"BAFS","currency":"THB","price":9.45,"fairValue":7.40,"mos":-27.7,"upside":-21.7,"pe":27.0,"dividendYield":3.49,"roe":2.5}
+</script>
+<!--
+  report-data: ธีมสี + ข้อมูลกราฟ/gauge ต่อหุ้น
+  สีแบรนด์: teal/aviation blue — สื่อถึงท้องฟ้าและน้ำมันเครื่องบิน
+  chart.data: ~1 ปี ราคา BAFS (มิ.ย. 2568 – มิ.ย. 2569) — 13 จุด (E37)
+  ผลตอบแทน จุดแรก→จุดท้าย: (9.45 - 8.15)/8.15 = +16.0% (รอบปี) → ป้าย header (E36)
+-->
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent":        "#0097a7",
+    "accentDark":    "#006978",
+    "darkGrad":      "linear-gradient(135deg,#004d5e 0%,#006978 60%,#0097a7 100%)",
+    "glow":          "rgba(0,151,167,0.18)",
+    "subColor":      "#b2ebf2",
+    "headerMuted":   "#80deea",
+    "verdictText":   "#e0f7fa",
+    "vcellLabel":    "#4dd0e1",
+    "badge":         "#0097a7",
+    "chgBg":         "var(--green-soft)",
+    "chgColor":      "#1e8e3e"
+  },
+  "chart": {
+    "data": [
+      ["มิ.ย. 25", 8.15],
+      ["ก.ค. 25", 8.55],
+      ["ส.ค. 25", 8.50],
+      ["ก.ย. 25", 9.20],
+      ["ต.ค. 25", 9.95],
+      ["พ.ย. 25", 8.80],
+      ["ธ.ค. 25", 8.70],
+      ["ม.ค. 26", 8.60],
+      ["ก.พ. 26", 8.50],
+      ["มี.ค. 26", 8.45],
+      ["เม.ย. 26", 8.45],
+      ["พ.ค. 26", 8.45],
+      ["มิ.ย. 26", 9.45]
+    ],
+    "min": 7.50,
+    "max": 11.00,
+    "grid": [8.00, 9.00, 10.00],
+    "fairLine": 7.40,
+    "currency": "฿",
+    "highlight": [4, 12]
+  },
+  "gauge": {
+    "min": 5.00,
+    "max": 13.00,
+    "cur": 9.45,
+    "fair": 7.40,
+    "fairLabelTop": true
+  },
+  "fv": 7.40
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">✈ ⛽ 🛬 💡 🔋</div>
+    <div>
+      <span class="tag">SET: BAFS</span>
+      <span class="tag">พลังงาน &amp; สาธารณูปโภค</span>
+      <span class="tag">สัมปทานน้ำมันอากาศยาน</span>
+    </div>
+    <h1>Bangkok Aviation Fuel Services (BAFS)</h1>
+    <div class="sub">บริการเติมน้ำมันอากาศยานที่สุวรรณภูมิ &amp; ดอนเมือง • สัมปทาน AOT • ระบบท่อขนส่งเชื้อเพลิง Eastern Pipeline • โซลาร์และพลังงานทดแทน • BAFS Digital Solutions</div>
+    <div class="price-row">
+      <div>
+        <div class="px">฿9.45<small>(BAFS)</small></div>
+      </div>
+      <div class="chg">▲ +16.0% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 24 มิ.ย. 2569<br>
+        กรอบ 52 สัปดาห์ ฿7.00 – ฿10.90<br>
+        ที่มา: StockAnalysis.com, SET Factsheet, Investing.com
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ มิ.ย. 2569</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">฿5,909 ล้าน</div><div class="d">637.5 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~27.0x</div><div class="d">EPS TTM ฿0.35</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~22x</div><div class="d">ปีขาดทุน 2563–64 ตัดออก</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">1.11x</div><div class="d">BVPS ฿8.55</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2024</div><div class="v">฿211.9 ล้าน</div><div class="d">+106% YoY (ฟื้นตัว)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿0.35</div><div class="d">Q2–Q4/68 + Q1/69</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~฿8.55</div><div class="d">ส่วนผู้ถือหุ้น ÷ หุ้น</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v neu">~2.5% / −4.3%</div><div class="d">ภาระหนี้สูงจากลงทุนท่อ</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">~฿3,707 ล้าน</div><div class="d">+5.7% YoY (FY2024)</div></div>
+      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">~45.2%</div><div class="d">Operating margin ~23%</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~3.49%</div><div class="d">฿0.33/หุ้น (0.22+0.11)</div></div>
+      <div class="metric"><div class="k">อัตราส่วนหนี้สิน</div><div class="v neg">D/E ~1.99x</div><div class="d">ลงทุนท่อ Eastern Pipeline</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART (~1 ปี, 13 จุด) ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ รายเดือน</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#0097a7"></i>ราคา BAFS</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿7.40</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ในช่วง ~1 ปีที่ผ่านมา (มิ.ย. 2568 – มิ.ย. 2569) ราคา BAFS ปรับตัวจาก ฿8.15 มาแตะสูงสุดที่ ฿9.95 ในเดือน ต.ค. 2568
+        ตามฤดูกาลท่องเที่ยวสูง (High Season) จากนั้นปรับฐานในช่วง พ.ย. 2568 – พ.ค. 2569 ที่ระดับ ฿8.45–฿8.80
+        ก่อนฟื้นตัวขึ้นมาที่ ฿9.45 ในเดือน มิ.ย. 2569 หลังรายงานกำไร Q1/2569 แข็งแกร่ง (฿143 ล้าน +73% YoY)
+        รวมผลตอบแทน ~1 ปี ณ ราคาปัจจุบัน +16.0% ราคาซื้อขายสูงกว่ามูลค่าเหมาะสมที่ประเมินไว้ที่ ฿7.40
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION (3 วิธี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS (TTM) ฿0.35 × P/E เป้าหมาย ~22x — P/E เฉลี่ยช่วงฟื้นตัว 2566–2567 ไม่รวมปีขาดทุน</div></div>
+        <div class="mval">฿7.70</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล ฿0.33 × (1+g); g 4%, r 9% → ฿0.343/0.05 — สมมติเติบโตปันผลตามการฟื้นตัวท่องเที่ยว</div></div>
+        <div class="mval">฿6.86</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. DCF (Free Cash Flow)</div><div class="mdesc">FCF/หุ้น ~฿0.40 ÷ (WACC 9% − g 3%) — FCF ฿254M/637.5M หุ้น; WACC 9% terminal 3%</div></div>
+        <div class="mval">฿6.67</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿6.67 – ฿7.70</span></div>
+        <div class="r">฿7.40</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        วิธี P/E ให้ค่าสูงสุด (฿7.70) เพราะ EPS TTM ได้รับแรงหนุนจาก Q1/2569 ที่แข็งแกร่งผิดปกติ (High Season)
+        DDM ให้ค่า ฿6.86 สะท้อนภาระดอกเบี้ยจากการลงทุนโครงการท่อ Eastern Pipeline ที่ยังกดปันผลได้จำกัด
+        DCF (฿6.67) สอดคล้องกับ FCF ที่แท้จริง แม้จะเริ่มฟื้นตัว
+        มูลค่าเฉลี่ย ฿7.40 เป็นกรอบอ้างอิงที่สมเหตุสมผล — ราคาปัจจุบัน ฿9.45 สูงกว่า FV ราว 28%
+        สะท้อนว่าตลาด Pricing-in การเติบโตจากท่อ Eastern Pipeline และฟื้นตัวการบินไปบางส่วนแล้ว
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿9.45</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿7.40</div></div>
+        </div>
+        <div class="scale">
+          <span>฿5.18<br><small>MOS 30%</small></span>
+          <span>฿5.92<br><small>MOS 20%</small></span>
+          <span style="text-align:center">฿7.40<br><small>Fair Value</small></span>
+          <span style="text-align:right">฿7.70<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">฿10.00<br><small>เป้าเฉลี่ย Analyst</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน ฿9.45 อยู่สูงกว่ามูลค่าเหมาะสมเฉลี่ย ฿7.40 ประมาณ 27.7%
+        ตลาดให้ Valuation Premium สะท้อนการเป็น "สัมปทานผู้เดียว" ที่สุวรรณภูมิและดอนเมือง
+        ซึ่งเป็น Natural Monopoly ที่มีความแน่นอนของรายได้สูง แต่มีความเสี่ยงต่ออัตราค่าบริการที่ AOT กำหนด
+        นักวิเคราะห์ส่วนใหญ่มีราคาเป้าหมายที่ ~฿10.00 ซึ่งไม่ได้ Upside มากนักจากราคาปัจจุบัน
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">−27.7%</div>
+        <div class="txt">ราคาสูงกว่ามูลค่าเหมาะสม — ไม่มี Margin of Safety ณ ราคาปัจจุบัน</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿5.92</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿5.18</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มพิจารณา</div><div class="v neu">&lt; ฿7.40</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="9.45" step="0.05">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿9.45 • EPS ฐาน ~฿0.35 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS 0%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿7.00</div>
+          <div class="ret neg">−18.3% / ปี</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.35</span></li>
+            <li><span>P/E ออก</span><span>20x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.99</span></li>
+            <li><span>สถานการณ์</span><span>ท่องเที่ยวซบ ดอกเบี้ยสูง</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +8%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿9.70</div>
+          <div class="ret pos">+4.1% / ปี</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.44</span></li>
+            <li><span>P/E ออก</span><span>22x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿1.05</span></li>
+            <li><span>สถานการณ์</span><span>ท่องเที่ยวฟื้น ท่อ Eastern เพิ่มรายได้</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +15%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿14.00</div>
+          <div class="ret pos">+16.4% / ปี</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.53</span></li>
+            <li><span>P/E ออก</span><span>26x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿1.20</span></li>
+            <li><span>สถานการณ์</span><span>ท่อ Eastern เต็มกำลัง AOT ต่อสัมปทาน</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      Base case คาด EPS เติบโต +8%/ปี หนุนโดยปริมาณน้ำมันเครื่องบินเพิ่มตามจำนวนผู้โดยสารฟื้นตัวสู่ระดับ Pre-COVID
+      และรายได้จากโครงการท่อ Eastern Pipeline Phase 3 (เป้า 70% market share ภาคตะวันออกปี 2570)
+      ราคาเป้า Base = ฿0.44 × 22 = ฿9.68 + ปันผล ฿1.05 รวม 3 ปี → Total Return ~+17.5% (~4.1%/ปี)
+      ซึ่งไม่โดดเด่นนักจากจุดซื้อ ฿9.45 ที่ไม่มี MOS เหลือ แต่ได้ปันผล ~3.5%/ปีเพิ่มเติม
+      Bull case (ต่อสัมปทาน + ท่อเต็มกำลัง + P/E re-rating): ฿0.53 × 26 = ฿13.78 + ฿1.20 → ~+58.5% ใน 3 ปี (~16.4%/ปี)
+      Bear case: Derating สู่ ฿7.00 + ปันผล ฿0.99 → −24.9% / 3 ปี (−8.6%/ปี)
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก &amp; ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>สัมปทานผู้เดียว (Natural Monopoly):</b> BAFS เป็นผู้ให้บริการเติมน้ำมันอากาศยานรายเดียวที่ท่าอากาศยานสุวรรณภูมิและดอนเมือง สัญญาสัมปทานจาก AOT รับประกันรายได้พื้นฐานที่มั่นคง</li>
+          <li><b>การฟื้นตัวของการท่องเที่ยว:</b> จำนวนผู้โดยสารระหว่างประเทศฟื้นตัวต่อเนื่อง คาดปริมาณน้ำมันเครื่องบินทั้งปี 2568 อยู่ที่ 5,400 ล้านลิตร เพิ่ม 8% YoY สู่ระดับ 88% ของ Pre-COVID</li>
+          <li><b>โครงการท่อ Eastern Pipeline Phase 3:</b> ขยายระบบท่อขนส่งเชื้อเพลิงภาคตะวันออก ปัจจุบัน 14% ของแผน เป้าหมาย Market Share 70% ภายในปี 2570 เพิ่มแหล่งรายได้ใหม่ที่มั่นคง</li>
+          <li><b>กำไร Q1/2569 แข็งแกร่ง:</b> กำไร Q1/2569 ฟื้นตัวแรง +73% YoY (฿143 ล้าน) EBITDA +14% สะท้อนความสามารถทำกำไรในช่วง High Season ที่ดีขึ้นต่อเนื่อง</li>
+          <li><b>ธุรกิจพลังงานสะอาดและ Digital:</b> BAFS Digital Solutions Group และพลังงานแสงอาทิตย์กระจายแหล่งรายได้ลดการพึ่งพา Aviation เพียงอย่างเดียว</li>
+          <li><b>นโยบาย Free Visa และส่งเสริมท่องเที่ยว:</b> รัฐบาลไทยหนุนการท่องเที่ยวต่อเนื่อง เพิ่มจำนวนเที่ยวบินและปริมาณเติมน้ำมัน</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>ภาระหนี้สูงจากการลงทุนท่อ:</b> D/E ~2.0x จากการลงทุนโครงการท่อ Eastern Pipeline กดดัน ROE และ FCF ดอกเบี้ยสูงขึ้นกระทบกำไรสุทธิโดยตรง ROA ติดลบที่ −4.3%</li>
+          <li><b>ความเสี่ยงการต่อสัมปทาน AOT:</b> หากสัมปทานกับ AOT ไม่ได้รับการต่ออายุหรือมีเงื่อนไขที่เปลี่ยนแปลง จะกระทบรายได้หลักอย่างมีนัยสำคัญ (Cliff Risk)</li>
+          <li><b>อัตราค่าบริการถูกกำกับ:</b> ค่าบริการเติมน้ำมันถูก AOT ควบคุม ทำให้ BAFS มีอำนาจต่อรองด้านราคาจำกัด บริษัทขอให้รัฐยกเว้นภาษีสรรพสามิต Jet Fuel ฿4.72/ลิตร เพื่อลดภาระ</li>
+          <li><b>ความผันผวนของอุตสาหกรรมการบิน:</b> โรคระบาด ภัยธรรมชาติ หรือเหตุการณ์ไม่คาดฝันที่กระทบการเดินทางทางอากาศ (เช่น COVID-19) สามารถทำให้รายได้ลดลงอย่างรวดเร็วรุนแรง</li>
+          <li><b>Valuation Premium สูงเสี่ยง Derating:</b> ราคาปัจจุบัน P/E ~27x สูงกว่า FV โดยประมาณ 28% ถ้ากำไรในไตรมาสต่อไปต่ำกว่าคาด อาจเกิด Derating ได้</li>
+          <li><b>ต้นทุนดอกเบี้ยและการลงทุนเพิ่ม:</b> กำไร Q4/2568 ต่ำมากที่ EPS 0.01 สะท้อนภาระต้นทุนบางส่วน ความล่าช้าในโครงการท่ออาจกดดัน FCF ในระยะสั้น</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>BAFS: ธุรกิจสัมปทานมั่นคง แต่ราคาตลาดวิ่งนำ Fundamental ไปแล้ว</h2>
+      <p>
+        BAFS เป็นหุ้นสัมปทานที่มีโมเดลธุรกิจมั่นคงในฐานะ Natural Monopoly ด้านบริการเติมน้ำมันอากาศยานในไทย
+        ธุรกิจได้รับประโยชน์โดยตรงจากการฟื้นตัวของอุตสาหกรรมการบินและท่องเที่ยวหลัง COVID-19
+        กำไร Q1/2569 ที่ฟื้นตัวแรง +73% YoY (฿143 ล้าน) และโครงการท่อ Eastern Pipeline Phase 3 เป็น Catalyst ระยะกลาง
+        อย่างไรก็ตาม ราคาปัจจุบัน ฿9.45 ซื้อขายสูงกว่ามูลค่าเหมาะสมที่ประเมินไว้ (฿7.40) ประมาณ 28%
+        บ่งชี้ว่าตลาด Priced-In การเติบโตระยะกลางไปแล้ว ทำให้ Margin of Safety เป็นลบ
+        นักลงทุนเน้นคุณค่า (Value Investor) ควรรอจังหวะราคาย่อลงใกล้ ฿7.40–฿8.00 ก่อนพิจารณาสะสม
+        ขณะที่ผู้ถือหุ้นระยะยาวยังได้รับปันผล ~3.5%/ปี และ Upside จาก Bull Case ที่สูงกว่า
+      </p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿7.40 <span style="font-size:12px;color:#cab9a8">(฿6.67–฿7.70)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −27.7% (แพง)</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿10.00 (Neutral)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> HOLD หากถือไว้อยู่ — รอย่อที่ ฿7.40–฿8.00 ก่อนสะสมเพิ่ม
+        MOS 20%+ อยู่ที่฿5.92 (Deep Value Zone) ผลตอบแทน Base Case ~4%/ปี + ปันผล ~3.5%/ปี รวม ~7.5%
+        Bull Case (ต่อสัมปทาน + ท่อ Eastern เต็มกำลัง) อาจให้ผลตอบแทน ~16%/ปี ในระยะ 3–5 ปี
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    แหล่งข้อมูล: (1) StockAnalysis.com — ราคา ฿9.45, EPS TTM ฿0.35, รายได้ FY2024 ฿3,707M; (2) SET Factsheet (set.or.th) — P/E 27.33x, P/BV 1.11x, Market Cap ฿6,024M; (3) Investing.com — ปันผลรายปี ฿0.33/หุ้น (May 2026 + Sep 2025), กำไรรายไตรมาส; (4) Google Finance — งบดุล equity ฿6.47B, FCF ฿253.81M; (5) Share2Trade.com — กำไร Q1/2569 ฿143M +73% YoY; (6) AiO Panphol — BVPS ฿8.55 ยืนยัน P/BV 1.11x — ราคาตรวจสอบข้ามแหล่ง ≥2 แหล่งอิสระ ต่างกัน 0%
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 24 มิ.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>

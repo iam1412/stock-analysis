@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น อมตะ คอร์ปอเรชั่น (AMATA) — Stock Analysis Dashboard</title>
+<!-- ★ ใส่รุ่นโมเดล AI ที่ใช้วิเคราะห์จริง -->
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
+<script type="application/json" id="stock-meta">
+{"symbol":"AMATA","currency":"THB","price":27.00,"fairValue":29.50,"mos":8.47,"upside":9.26,"pe":8.39,"dividendYield":4.07,"roe":15.01}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#e8700a",
+    "accentDark": "#b85500",
+    "darkGrad": "linear-gradient(135deg,#1a0e00 0%,#2d1800 40%,#1a2a0a 100%)",
+    "glow": "rgba(232,112,10,0.25)",
+    "subColor": "#f4a84a",
+    "headerMuted": "#c4956b",
+    "verdictText": "#fff8f0",
+    "vcellLabel": "#c4956b",
+    "badge": "#e8700a",
+    "chgBg": "#0d3b0f",
+    "chgColor": "#4caf50"
+  },
+  "chart": {
+    "data": [
+      ["มิ.ย. 25", 13.00],
+      ["ก.ค. 25", 13.50],
+      ["ส.ค. 25", 14.20],
+      ["ก.ย. 25", 16.40],
+      ["ต.ค. 25", 17.50],
+      ["พ.ย. 25", 19.00],
+      ["ธ.ค. 25", 18.50],
+      ["ม.ค. 26", 17.80],
+      ["ก.พ. 26", 18.00],
+      ["มี.ค. 26", 18.30],
+      ["เม.ย. 26", 20.40],
+      ["พ.ค. 26", 24.90],
+      ["มิ.ย. 26", 27.00]
+    ],
+    "min": 11,
+    "max": 32,
+    "grid": [12, 16, 20, 24, 28],
+    "fairLine": 29.50,
+    "currency": "฿",
+    "highlight": [3, 11, 12]
+  },
+  "gauge": {
+    "min": 15,
+    "max": 40,
+    "cur": 27.00,
+    "fair": 29.50,
+    "fairLabelTop": true
+  },
+  "fv": 29.50
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">●●●</div>
+    <div>
+      <span class="tag">SET: AMATA</span>
+      <span class="tag">นิคมอุตสาหกรรม</span>
+      <span class="tag">EEC / EV Supply Chain</span>
+    </div>
+    <h1>อมตะ คอร์ปอเรชั่น (AMATA)</h1>
+    <div class="sub">นิคมอุตสาหกรรม Amata City ชลบุรี &amp; ระยอง (EEC) • Amata City เบียนฮหว่า &amp; Long Thanh เวียดนาม • สาธารณูปโภค (ไฟฟ้า น้ำ ก๊าซ) • ผู้รับประโยชน์หลัก China+1 &amp; EV Supply Chain ใน ASEAN</div>
+    <div class="price-row">
+      <div>
+        <div class="px">฿27.00<small>(AMATA)</small></div>
+      </div>
+      <div class="chg">▲ +107.7% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 25 มิ.ย. 2569<br>
+        กรอบ 52 สัปดาห์ ฿13.00–฿28.00<br>
+        ที่มา: SET.or.th, Investing.com, StockAnalysis.com
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ มิ.ย. 2569 · ที่มา SET, Investing.com, StockAnalysis</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">฿31.05B</div><div class="d">หุ้น 1,150 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~8.39x</div><div class="d">ต่ำกว่า sector avg ~12x</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~10.0x</div><div class="d">กรอบ 7–14x (cyclical)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">~1.24x</div><div class="d">BVPS ฿21.81</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">฿3,149M</div><div class="d">+28% YoY (สถิติใหม่)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿3.22</div><div class="d">FY2025: ฿2.74 · FY2024: ฿2.15</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~฿21.81</div><div class="d">ทุน ณ สิ้นปี 2568</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~15.01% / 4.56%</div><div class="d">TTM · ปรับตาม net income ล่าสุด</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">~฿15.03B</div><div class="d">FY2025: ฿14.52B (-3% YoY)</div></div>
+      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">~45%</div><div class="d">ที่ดินไฮมาร์จิน 54%+ · util 30%+</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~4.07%</div><div class="d">฿1.10/หุ้น FY2025 · payout 28%</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">0.40</div><div class="d">ความผันผวนต่ำกว่าตลาด</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART (ราคาย้อนหลัง ~1 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ · รายเดือน มิ.ย. 2568–มิ.ย. 2569</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#e8700a"></i>ราคา AMATA</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿29.50</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        AMATA ปรับตัวขึ้น <b>+107.7% ในรอบปี</b> (มิ.ย. 2568–มิ.ย. 2569) จากฐาน ฿13.00 —
+        ช่วง ก.ค.–ก.ย. 2568 หุ้นทรงตัวแถว ฿13–฿16 สะท้อนความกังวลสงครามการค้าและการเลื่อนโอนที่ดินของลูกค้า
+        ตั้งแต่ต.ค. 2568 หุ้นเร่งขึ้นต่อเนื่องหลังผลประกอบการ 4Q2568 (กำไรสถิติ ฿3,149M) + แบ็คล็อก ฿21,131M + แผน CAPEX ฿10B ปี 2569 ดึงดูด EV และ data center ใหม่
+        ราคาปัจจุบัน ฿27.00 ยังต่ำกว่า ATH ฿31.00 (พ.ย. 2567) และต่ำกว่า Fair Value ฿29.50 เล็กน้อย
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION (เฉลี่ย 3 วิธี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS (TTM) ฿3.22 × P/E เป้าหมาย ~10.0x — P/E เฉลี่ย sector นิคมอุตสาหกรรม SET ประมาณ 10–12x; ใช้ 10x แบบอนุรักษ์นิยมสำหรับ cyclical</div></div>
+        <div class="mval">฿32.20</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล ฿1.10 × (1+g); g 5%, r 9% → D₁ = ฿1.155; FV = 1.155/(0.09−0.05) — อัตราเติบโตปันผล 5% สอดคล้องกับการขยาย Vietnam + utility revenue</div></div>
+        <div class="mval">฿28.88</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 10% − g 5%)/(r 9% − g 5%) ≈ 1.25 × BVPS ฿21.81 — ใช้ ROE ปกติ 10% (ระหว่าง FY2025 8.4% และ TTM 15%)</div></div>
+        <div class="mval">฿27.26</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿27.00 – ฿32.00</span></div>
+        <div class="r">฿29.50</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        วิธี P/E ให้ค่าสูงสุด (฿32.20) สะท้อน EPS TTM ที่แข็งแกร่งจากกำไรสถิติ · DDM (฿28.88) อิงกระแสปันผลเติบโตคงที่ · Justified P/BV (฿27.26) ให้ค่าต่ำสุดเนื่องจากใช้ ROE ปกติ 10% (บางปีต่ำกว่า)
+        Fair Value เฉลี่ย ฿29.50 สมเหตุสมผลสำหรับหุ้น cyclical ที่มีแบ็คล็อกรายได้แข็งแกร่งและ earnings momentum บวก
+        ทั้งนี้ FV อาจปรับขึ้นหากการโอนที่ดิน 2,800 ไร่ปี 2569 เป็นไปตามเป้า และ CAPEX ฿10B สร้างรายได้ utility ใหม่
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿27.00</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿29.50</div></div>
+        </div>
+        <div class="scale">
+          <span>฿20.65<br><small>MOS 30%</small></span>
+          <span>฿23.60<br><small>MOS 20%</small></span>
+          <span style="text-align:center">฿26.80<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">฿29.50<br><small>Fair Value</small></span>
+          <span style="text-align:right">฿32.00<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคา ฿27.00 อยู่ <b>ใต้ Fair Value ฿29.50</b> เพียงเล็กน้อย (MOS ~8.5%) — ไม่ถูกพอสำหรับ deep value แต่ยังต่ำกว่า intrinsic value
+        Analyst consensus เฉลี่ย ฿26.80 (11 Buy, 2 Sell) ต่ำกว่าราคาปัจจุบันเล็กน้อย เนื่องจาก target ส่วนใหญ่ออกก่อนที่ราคาจะพุ่งแรงในช่วงพ.ค.–มิ.ย. 2569
+        โซนน่าสนใจสำหรับ value investor อยู่ที่ ฿23.60 (MOS 20%) ลงไปถึง ฿20.65 (MOS 30%)
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict ok">
+        <div class="big">+8.47%</div>
+        <div class="txt">ราคาพอใช้ — ต่ำกว่า Fair Value เล็กน้อย ทยอยสะสมได้ในราคาต่ำกว่า ฿26</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿23.60</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿20.65</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿29.50</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="27.00" step="0.05">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿27.00 • EPS ฐาน ~฿3.22 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS +2%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿27.36</div>
+          <div class="ret neg">+13.6% รวม (~4.3%/ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿3.42</span></li>
+            <li><span>P/E ออก</span><span>8x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿3.30</span></li>
+            <li><span>สถานการณ์</span><span>สงครามการค้ากด FDI ชะลอ · ลูกค้าเลื่อนโอนที่ดิน</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +8%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿40.60</div>
+          <div class="ret pos">+63.6% รวม (~17.8%/ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿4.06</span></li>
+            <li><span>P/E ออก</span><span>10x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿3.56</span></li>
+            <li><span>สถานการณ์</span><span>China+1 ดำเนินต่อ · Vietnam phase 4 เปิด · CAPEX ฿10B ให้ผล</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +15%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿58.80</div>
+          <div class="ret pos">+131.9% รวม (~32.4%/ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿4.90</span></li>
+            <li><span>P/E ออก</span><span>12x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿3.82</span></li>
+            <li><span>สถานการณ์</span><span>FDI ทะลักหนักจาก EV/data center · re-rating P/E · แบ็คล็อก ฿21B+ recognize เร็ว</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      Base case ที่ +17.8%/ปีมีความน่าเชื่อถือ เนื่องจาก AMATA มีแบ็คล็อก ฿21,131M รองรับรายได้ · EPS growth 8% ต่ำกว่า CAGR 5 ปีที่ผ่านมา (30.42%)
+      ความเสี่ยงหลักคือ Bear case — สงครามการค้าหรือ FDI ชะลอตัวทำให้การโอนที่ดินไม่เป็นไปตามเป้า 2,800 ไร่ปี 2569
+      ปันผล ฿1.10/หุ้น (~4.07% yield) ช่วย cushion ผลตอบแทนในทุก scenario
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>China+1 Supply Chain Relocation:</b> สงครามการค้าสหรัฐ-จีนเร่งให้ผู้ผลิต EV, อิเล็กทรอนิกส์ และ data center ย้ายฐานผลิตมา ASEAN — AMATA เป็นผู้ได้รับประโยชน์โดยตรงทั้งไทยและเวียดนาม</li>
+          <li><b>แบ็คล็อกสูงสุดตลอดกาล ฿21,131M:</b> รายได้ที่รับรู้ล่วงหน้าสูงสุดในประวัติศาสตร์บริษัท รองรับรายได้ 1–2 ปีข้างหน้า ลด downside risk</li>
+          <li><b>Vietnam Phase 4 (Long Thanh) ปี 2569:</b> นิคมอุตสาหกรรมแห่งที่ 4 ในเวียดนามเปิดให้บริการ ขยาย land bank ที่มีอุปทานรองรับ FDI จากจีนโดยตรง</li>
+          <li><b>EEC + Eastern Economic Corridor:</b> นโยบายรัฐบาลไทยสนับสนุนการลงทุนใน EEC ตรงกับทำเลนิคมชลบุรี-ระยอง ของ AMATA — ได้รับประโยชน์จากสิทธิ BOI และ Infrastructure พิเศษ</li>
+          <li><b>Utility Revenue เติบโตสม่ำเสมอ:</b> รายได้สาธารณูปโภค (ไฟฟ้า น้ำ ก๊าซ) ฿4,545M (+Recurring) ขยายตามจำนวนผู้เช่าที่เพิ่มขึ้น — margin คงที่ บรรเทาความผันผวนของรายได้ที่ดิน</li>
+          <li><b>CAPEX ฿10B ปี 2569 (เพิ่มจาก ฿9B):</b> ลงทุนเชิงรุกพัฒนา Phase ใหม่ในไทย-เวียดนาม-ลาว สัญญาณว่าบริษัทมองเห็น demand pipeline ที่แข็งแกร่ง</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>ความผันผวน FDI จากสงครามการค้า:</b> ลูกค้าเลื่อนการตัดสินใจโอนที่ดินระหว่างช่วงนโยบายภาษีสหรัฐไม่แน่นอน — กระทบรายได้ราคาที่ดินที่รับรู้เป็นก้อน</li>
+          <li><b>รายได้ผันผวนตาม land transfer:</b> รายได้ที่ดิน (60%) ขึ้นกับจำนวนไร่ที่โอนในแต่ละปี ปี 2568 โอนได้ 1,645 ไร่ ต่ำกว่าเป้า 3,500 ไร่ — ความเสี่ยงไม่บรรลุเป้า 2,800 ไร่ปี 2569</li>
+          <li><b>หนี้สินสูง (D/E 0.68x · Total Debt ฿22B):</b> CAPEX เชิงรุกกด FCF และเพิ่มภาระดอกเบี้ย โดยเฉพาะในสภาพแวดล้อมดอกเบี้ยสูง</li>
+          <li><b>ความเสี่ยงเวียดนาม:</b> กฎระเบียบและนโยบายภาษีเวียดนามเปลี่ยนแปลงบ่อย · การพัฒนา Long Thanh อาจล่าช้าจากการขออนุญาต</li>
+          <li><b>Re-rating ลง (Cyclical Valuation):</b> เมื่อ FDI ชะลอหรือ SET ปรับตัวลง หุ้นนิคมอุตสาหกรรมมักถูก de-rate P/E ก่อน เนื่องจากตลาดมอง forward earnings เป็นหลัก</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>AMATA — หุ้นนิคมฯ ที่ราคา "พอใช้" ในธีม China+1 ระยะยาว</h2>
+      <p>อมตะ คอร์ปอเรชั่น เป็น Pure Play ผู้พัฒนานิคมอุตสาหกรรมที่ได้ประโยชน์โดยตรงจากการย้ายฐานการผลิต EV, อิเล็กทรอนิกส์ และ data center มา ASEAN — มีแบ็คล็อกสูงสุดประวัติการณ์ ฿21,131M และกำไรปี 2568 สถิติใหม่ ฿3,149M (+28%) บ่งชี้ว่า earnings momentum แข็งแกร่ง ราคา ฿27.00 ยังต่ำกว่า Fair Value ฿29.50 (~8.5% MOS) และ P/E เพียง 8.4x ต่ำกว่า sector ในขณะที่ yield 4.07% ให้ passive income ระหว่างรอ catalyst ระยะกลาง</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿29.50 <span style="font-size:12px;color:#cab9a8">(฿27.00–฿32.00)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +8.47%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿26.80 (Buy 11/13)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ทยอยสะสมที่ระดับ ฿26–฿24 (MOS เข้าสู่ 10–15%) — ถือระยะกลาง 2–3 ปีรอ backlog recognition + Vietnam expansion + re-rating P/E กลับสู่ 10x; ตัดขาดทุนหากหุ้นร่วงกลับต่ำกว่า ฿20 อย่างมีนัยสำคัญ (EPS outlook แย่ลง)
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    ที่มาข้อมูล: SET.or.th (ราคา ฿27.00 · 25 มิ.ย. 2569), Investing.com (P/E 8.39 · EPS 3.22), StockAnalysis.com (ROE 15.01% · BVPS ฿21.81), investor.amata.com (FY2025 results), ThaiPR.net (2025 annual report PR), Kaohoon International (CAPEX plan 2026)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 25 มิ.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
