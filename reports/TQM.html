@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น TQM Alpha (TQM) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"TQM","currency":"THB","price":14.00,"fairValue":16.50,"mos":15.2,"upside":17.9,"pe":12.07,"dividendYield":7.86,"roe":25.6}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#3f67ca",
+    "accentDark": "#2a4a98",
+    "darkGrad": "linear-gradient(135deg,#0c1836 0%,#172d64 58%,#24479e 140%)",
+    "glow": "rgba(55,97,200,.35)",
+    "subColor": "#c7d0e5",
+    "headerMuted": "#aeb7cb",
+    "verdictText": "#d5dbec",
+    "vcellLabel": "#b0bad3",
+    "badge": "#3f67ca",
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#1e8e3e"
+  },
+  "chart": {
+    "data": [
+      ["ม.ค.25",19.00],["ก.พ.25",15.30],["มี.ค.25",15.00],["เม.ย.25",16.60],
+      ["พ.ค.25",16.40],["มิ.ย.25",14.70],["ก.ค.25",15.20],["ส.ค.25",13.40],
+      ["ก.ย.25",13.60],["ต.ค.25",12.30],["พ.ย.25",11.70],["ธ.ค.25",11.50],
+      ["ม.ค.26",12.00],["ก.พ.26",14.40],["มี.ค.26",12.30],["เม.ย.26",14.50],
+      ["พ.ค.26",13.50],["มิ.ย.26",14.00]
+    ],
+    "min": 10,
+    "max": 21,
+    "grid": [11,13,15,17,19],
+    "fairLine": 16.50,
+    "currency": "฿",
+    "highlight": [0, 11, 17],
+    "gridFmt": "v.toFixed(0)",
+    "dataFmt": "d[1].toFixed(2)"
+  },
+  "gauge": { "min": 9, "max": 22, "cur": 14.00, "fair": 16.50, "fairLabelTop": "-58px" },
+  "fv": 16.50
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">TQM · SET · ประกันภัย · Insurtech</div>
+    <div>
+      <span class="tag">SET: TQM</span>
+      <span class="tag">ประกันภัย &amp; Fintech</span>
+      <span class="tag">โบรกเกอร์ประกันภัย</span>
+    </div>
+    <h1>TQM Alpha PCL</h1>
+    <div class="sub">โบรกเกอร์ประกันภัยอันดับ 1 ของไทย • ประกันชีวิต &amp; ประกันภัย • Fintech สินเชื่อ &amp; Insurtech Platform • ~15 บริษัทในเครือ</div>
+    <div class="price-row">
+      <div>
+        <div class="px">฿14.00<small>(TQM)</small></div>
+      </div>
+      <div class="chg" style="background:var(--green-soft);color:#1e8e3e">▲ +2.94% (+0.40)</div>
+      <div class="px-meta">
+        ราคา ณ 25 มิ.ย. 2569<br>
+        กรอบ 52 สัปดาห์ ฿10.60 – ฿15.70<br>
+        ที่มา: StockAnalysis.com, Yahoo Finance, Investing.com
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล TTM ณ มิ.ย. 2569</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~฿8.26B</div><div class="d">590.35 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~12.07x</div><div class="d">EPS TTM ฿1.16 / ราคา ฿14.00</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~15–18x</div><div class="d">ช่วงสูง ≤ 20x ช่วงต่ำ ~11x</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">~2.86x</div><div class="d">BVPS ฿4.90 (2568)</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ TTM</div><div class="v">฿694M</div><div class="d">−14.4% YoY (vs FY2024 ฿811M)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿1.16</div><div class="d">Q2-Q3 ฿0.27x2, Q4-Q1 ฿0.31x2</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~฿4.90</div><div class="d">Equity ฿3,451M / 593.77M หุ้น</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~25.6% / ~15.4%</div><div class="d">FY2567 (official: tqmalpha.com)</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">฿3,794M</div><div class="d">−4.7% YoY จากรายได้ FY2568 ฿3,959M</div></div>
+      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">~48.3%</div><div class="d">ลดจาก 54% (2565) ต้นทุนสูงขึ้น</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~7.86%</div><div class="d">DPS FY2568 ฿1.10 | ex-div มี.ค.69</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">0.29</div><div class="d">ความผันผวนต่ำมาก vs ตลาด</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง 18 เดือน</h2><div class="hint">ม.ค. 2568 – มิ.ย. 2569 (ราคาจริงจาก Yahoo Finance)</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#3f67ca"></i>ราคา TQM</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿16.50</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        TQM เริ่มปี 2568 ที่ ฿19.00 ก่อนปรับลงแรงเหลือ ฿11.50 ในเดือน ธ.ค. 2568 (ลดลงกว่า 39%) สาเหตุหลักจากกำไร TTM หดตัว ~14% YoY กดดัน Sentiment ประกอบกับ sector rotation ออกจากหุ้นปันผลขนาดกลาง ปี 2569 เริ่มฟื้นตัวได้ดีขึ้น โดยเดือน ก.พ. 69 แตะ ฿14.40 ก่อนย่อกลับ ปัจจุบันราคา ฿14.00 ยังต่ำกว่า Fair Value ฿16.50 อยู่ประมาณ 15%
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS (TTM) ฿1.16 × P/E เป้าหมาย ~15x — P/E ปกติ 5 ปีของ TQM อยู่ที่ 15–18x; ใช้ 15x (conservative) เพื่อสะท้อนกำไรที่ผันผวน</div></div>
+        <div class="mval">฿17.40</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล ฿1.10 × (1+3%); g = 3% (sustainable, ต่ำกว่า ROE 25.6%), r = 10% → ฿1.133 / (10%−3%) — เหมาะกับ TQM ที่จ่ายปันผลสม่ำเสมอ</div></div>
+        <div class="mval">฿16.19</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 25.6% − g 3%)/(r 10% − g 3%) ≈ 3.23 × BVPS ฿4.90 — สะท้อน ROE สูงกว่า cost of equity อย่างมีนัยสำคัญ</div></div>
+        <div class="mval">฿15.82</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿14.80 – ฿18.20</span></div>
+        <div class="r">฿16.50</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        วิธี P/E ให้มูลค่าสูงสุด (฿17.40) สะท้อน P/E ปกติที่ 15x ซึ่งต่ำกว่าอดีตช่วงดี (18–20x) · DDM (฿16.19) ระวังอ่อนไหวต่อ g สูง จึงใช้ g อนุรักษ์ที่ 3% · Justified P/BV (฿15.82) ต่ำสุดเพราะ BVPS ยังต่ำ (~฿4.90) แม้ ROE สูง 25.6% · FV เฉลี่ย ≈ ฿16.47 → ปัดเป็น ฿16.50 ซึ่งบังเอิญตรงกับ Analyst Consensus Target ฿16.50 (2 นักวิเคราะห์ Strong Buy)
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿14.00</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿16.50</div></div>
+        </div>
+        <div class="scale">
+          <span>฿11.55<br><small>MOS 30%</small></span>
+          <span>฿13.20<br><small>MOS 20%</small></span>
+          <span style="text-align:center">฿16.50<br><small>Fair Value</small></span>
+          <span style="text-align:right">฿16.50<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">฿18.20<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน ฿14.00 อยู่ใน "โซนน่าสนใจ" ระหว่าง MOS20% (฿13.20) และ Fair Value (฿16.50) — MOS ~15.2% บ่งชี้ว่าหุ้นยังซื้อขายต่ำกว่ามูลค่าเหมาะสม แต่ไม่ถึง deep value zone (MOS30% = ฿11.55) ซึ่งสะท้อนภาพว่าตลาดเริ่มรับรู้ recovery แล้วบางส่วน
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict ok">
+        <div class="big">+15.2%</div>
+        <div class="txt">MOS อยู่ในโซนพอรับได้ — ราคา ฿14.00 ต่ำกว่า Fair Value ฿16.50 อยู่ 15.2% เหมาะสำหรับนักลงทุนที่ยอมรับความเสี่ยงปานกลางและต้องการ Dividend Yield ~8%</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿13.20</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿11.55</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿16.50</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="14.00" step="0.05">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿14.00 • EPS ฐาน ~฿1.16 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS −2%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿12.01</div>
+          <div class="ret neg">−14.2%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿1.09</span></li>
+            <li><span>P/E ออก</span><span>11x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿3.30</span></li>
+            <li><span>สถานการณ์</span><span>กำไรหดต่อเนื่อง ตลาดกดดัน</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +8%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿20.46</div>
+          <div class="ret pos">+46.1%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿1.46</span></li>
+            <li><span>P/E ออก</span><span>14x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿3.30</span></li>
+            <li><span>สถานการณ์</span><span>ธุรกิจฟื้นตัว Fintech โต</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +12%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿26.08</div>
+          <div class="ret pos">+86.3%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿1.63</span></li>
+            <li><span>P/E ออก</span><span>16x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿3.30</span></li>
+            <li><span>สถานการณ์</span><span>Fintech ขยายเร็ว cross-sell แข็งแกร่ง</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      EPS ฐาน ฿1.16 (TTM) อาจยังอยู่ในช่วง trough จากต้นทุนที่เพิ่มขึ้น · Base case (+8%/ปี) สอดคล้องกับ target กำไรกลับมา ~฿1.46 ใกล้ระดับ FY2024 · Dividend Yield ~7.9% ช่วยหนุน total return ทุก scenario · Beta 0.29 ความผันผวนต่ำเหมาะผู้ลงทุนระยะกลาง-ยาว ที่ต้องการ Passive Income + Upside
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก &amp; ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>โบรกเกอร์ประกันภัยอันดับ 1:</b> ครองส่วนแบ่งตลาดสูงในไทย ทั้งประกันชีวิตและประกันภัย เป็น brand ที่ consumer trust สูง</li>
+          <li><b>Dividend Yield สูง ~7.9%:</b> จ่ายปันผลสม่ำเสมอทุกปีตั้งแต่ IPO เป็นแม่เหล็กดึง Passive Income investor โดยเฉพาะเมื่อดอกเบี้ยนโยบายอาจปรับลง</li>
+          <li><b>Fintech &amp; Insurtech Platform:</b> ลงทุนในแพลตฟอร์มดิจิทัล (Casmatt, Easy Lending, Cashnow Plus) เพิ่มช่องทางรายได้ใหม่ ลด Customer Acquisition Cost</li>
+          <li><b>ROE สูงอย่างต่อเนื่อง:</b> ROE 25.6% ROA 15.4% บ่งชี้ประสิทธิภาพใช้ทุนดีเยี่ยม เหนือกว่าค่าเฉลี่ยกลุ่มประกัน</li>
+          <li><b>Beta ต่ำ 0.29:</b> หุ้น defensive ผันผวนน้อย เหมาะช่วงตลาดผันผวน</li>
+          <li><b>Penetration ประกันภัยไทยยังต่ำ:</b> อัตราการถือครองประกันคนไทยยังต่ำกว่าอาเซียน = runway การเติบโตระยะยาว</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>กำไรหดตัวต่อเนื่อง:</b> EPS TTM ฿1.16 ต่ำสุดในรอบ 4 ปี Gross Margin ลดจาก 54% → 48% สะท้อนต้นทุนที่สูงขึ้นและ competitive pressure</li>
+          <li><b>การแข่งขัน Insurtech ใหม่:</b> Startup ดิจิทัลและ InsurTech local/regional ที่มี tech ดีกว่า อาจแย่ง share ใน segment ออนไลน์</li>
+          <li><b>Regulatory Risk:</b> คปภ. ปรับกฎเกณฑ์กระทบค่าธรรมเนียมโบรกเกอร์หรือ capital requirement</li>
+          <li><b>Concentration Risk:</b> รายได้กระจุกตัวในไทย ไม่มี geographic diversification</li>
+          <li><b>Fintech ยังขาดทุน/ยังไม่ scale:</b> บริษัท Fintech (Easy Lending ฯลฯ) ยังอยู่ช่วงเผาเงิน อาจกดดันกำไรระยะสั้น</li>
+          <li><b>Payout Ratio สูง:</b> DPS ฿1.10 จ่ายจาก EPS ฿1.16 = Payout ~95% ยืดหยุ่นน้อย ถ้ากำไรลดลงต่อ ปันผลอาจถูกปรับลด</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>โบรกเกอร์ประกันภัยเบอร์ 1 ราคาน่าสนใจ — Dividend Play + Turnaround Potential</h2>
+      <p>TQM Alpha PCL คือผู้นำตลาดโบรกเกอร์ประกันภัยไทยที่กำลังผ่านช่วง margin compression จากต้นทุนที่เพิ่มขึ้น แต่ยังรักษา ROE ~25.6% และจ่ายปันผล Yield ~7.9% ได้อย่างสม่ำเสมอ ราคาปัจจุบัน ฿14.00 ซื้อขายที่ P/E 12x ซึ่งต่ำกว่าค่าเฉลี่ยอดีต 15–18x บ่งชี้ว่าตลาดยัง price-in ความกังวลกำไรระยะสั้น สร้าง MOS ~15.2% จาก Fair Value ฿16.50 (สอดคล้องกับ Consensus Analyst Target) นักวิเคราะห์ 2 ราย (Strong Buy) มองว่า Upside +17.9% ในระยะ 12 เดือน Catalyst หลักคือ Fintech platform ที่จะเริ่ม contribute positively + กำไรฟื้นตัวจาก trough</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿16.50 <span style="font-size:12px;color:#b0bad3">(฿14.80–฿18.20)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +15.2%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿16.50 (Strong Buy)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ทยอยสะสมที่ราคา &lt; ฿14.50 (MOS &gt; 12%) รับ Dividend Yield &gt;7.5% ระหว่างรอ Turnaround · เพิ่มน้ำหนักอีกรอบหาก ฿13.20 (MOS20%) ถูกทดสอบ · ตั้ง Target ฿16.50–฿18.00 ระยะ 12–18 เดือน · Stop loss แนว ฿10.60 (52W low) หากกำไรหดต่อเกิน 3 ไตรมาสติดต่อกัน
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ที่มาข้อมูล: StockAnalysis.com (BKK:TQM), Yahoo Finance (TQM.BK), Investing.com, tqmalpha.com (Investor Relations) — ราคา ณ 25 มิ.ย. 2569
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 25 มิ.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
