@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น ไทยออยล์ (TOP) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Opus 4.8">
+<script type="application/json" id="stock-meta">
+{"symbol":"TOP","currency":"THB","price":44.75,"fairValue":52.00,"mos":13.9,"upside":16.2,"pe":3.3,"dividendYield":4.0,"roe":8.0}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#f57c00",
+    "accentDark": "#c25e00",
+    "darkGrad": "linear-gradient(135deg,#3a2200 0%,#7a4a00 55%,#f57c00 100%)",
+    "glow": "rgba(245,124,0,0.35)",
+    "subColor": "#f7d6ad",
+    "headerMuted": "#f5dcc0",
+    "verdictText": "#f8e2cb",
+    "vcellLabel": "#eecba2",
+    "badge": "#f57c00",
+    "chgBg": "#e6f4ea",
+    "chgColor": "#1e8e3e"
+  },
+  "chart": {
+    "data": [
+      ["ม.ค.68", 26.00],
+      ["ก.พ.68", 22.80],
+      ["มี.ค.68", 24.50],
+      ["เม.ย.68", 26.75],
+      ["พ.ค.68", 29.75],
+      ["มิ.ย.68", 27.00],
+      ["ก.ค.68", 34.50],
+      ["ส.ค.68", 32.00],
+      ["ก.ย.68", 35.25],
+      ["ต.ค.68", 35.75],
+      ["พ.ย.68", 35.00],
+      ["ธ.ค.68", 36.00],
+      ["ม.ค.69", 42.75],
+      ["ก.พ.69", 54.75],
+      ["มี.ค.69", 48.75],
+      ["เม.ย.69", 48.00],
+      ["พ.ค.69", 46.25],
+      ["มิ.ย.69", 44.75]
+    ],
+    "min": 20,
+    "max": 60,
+    "grid": [20, 30, 40, 50, 60],
+    "fairLine": 52.00,
+    "currency": "฿",
+    "highlight": [1, 13],
+    "gridFmt": "v.toFixed(0)",
+    "dataFmt": "d[1].toFixed(2)"
+  },
+  "gauge": { "min": 33, "max": 58, "cur": 44.75, "fair": 52.00, "fairLabelTop": true },
+  "fv": 52.00
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots"></div>
+    <div>
+      <span class="tag">SET: TOP</span>
+      <span class="tag">พลังงาน (Energy)</span>
+      <span class="tag">โรงกลั่น &amp; ปิโตรเคมี (Refining)</span>
+    </div>
+    <h1>ไทยออยล์ — Thai Oil Public Company Limited</h1>
+    <div class="sub">โรงกลั่นน้ำมันคอมเพล็กซ์ใหญ่สุดในไทย (กำลังกลั่น ~275,000 บาร์เรล/วัน) • อะโรเมติกส์ &amp; ปิโตรเคมี • น้ำมันหล่อลื่นพื้นฐาน (lube base oil) • โครงการพลังงานสะอาด CFP</div>
+    <div class="price-row">
+      <div>
+        <div class="px">฿44.75<small>(TOP)</small></div>
+      </div>
+      <div class="chg">▲ +72.1% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 20 มิ.ย. 2569 (2026)<br>
+        กรอบ 52 สัปดาห์ ฿26.00 – ฿56.75<br>
+        ที่มา: SET, StockAnalysis.com, Yahoo Finance, Investing.com
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล TTM ถึงงบไตรมาส 1/2569 (Q1 2026)</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~฿99,400 ล้าน</div><div class="d">หุ้น ~2.23 พันล้าน</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~3.3x</div><div class="d">⚠ ต่ำผิดปกติ (กำไรสต๊อก)</div></div>
+      <div class="metric"><div class="k">P/E (Normalized)</div><div class="v">~5–6x</div><div class="d">บนกำไร mid-cycle</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">0.42x</div><div class="d">ดิสเคานต์หนักจากวัฏจักร</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ TTM</div><div class="v">~฿30,000 ล้าน</div><div class="d">รวมกำไรสต๊อกน้ำมัน</div></div>
+      <div class="metric"><div class="k">EPS (TTM / Normalized)</div><div class="v">฿13.68 / ~฿8.00</div><div class="d">TTM พีค · ใช้ ฿8 ประเมินมูลค่า</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~฿106</div><div class="d">ฐานทุนใหญ่ หลังลงทุน CFP</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~8.0% / 1.5%</div><div class="d">หนี้สูงกด ROA</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">~฿420,000 ล้าน</div><div class="d">อิงค่าการกลั่น (GRM)</div></div>
+      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">~8%</div><div class="d">โรงกลั่นมาร์จิ้นบาง ผันผวน</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~4.0%</div><div class="d">DPS ฿1.80 · payout ต่ำชั่วคราว</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">~1.2</div><div class="d">ผันผวนสูงตามค่าการกลั่น</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#f57c00"></i>ราคา TOP</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿52.00</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        TOP ฟื้นตัวแรงสุดในกลุ่ม — จากจุดต่ำสุด ~฿22.8 (ก.พ. 2568) ช่วงค่าการกลั่นตกต่ำ ไต่ขึ้นต่อเนื่องตลอดปี
+        แล้วพุ่งทะยานต้นปี 2569 แตะจุดสูงสุด ~฿54.75 (ก.พ. 2569) เมื่อค่าการกลั่นฟื้นแรง + กำไรสต๊อกน้ำมัน
+        ก่อนย่อกลับมาแถว ฿44–45 ปัจจุบัน — ราคาขึ้นเกือบเท่าตัวในรอบปี สะท้อนวัฏจักรค่าการกลั่นที่กลับมาเป็นบวก
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS normalized ฿8.00 × P/E เป้าหมาย ~7x — ใช้กำไร mid-cycle ไม่ใช่ TTM ที่พองจากกำไรสต๊อก</div></div>
+        <div class="mval">฿56.00</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 8.0% − g 2.0%)/(r 12.0% − g 2.0%) ≈ 0.60 × BVPS ฿106</div></div>
+        <div class="mval">฿63.60</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. P/BV เชิงอนุรักษ์ (วัฏจักร)</div><div class="mdesc">ใช้ P/BV ตลาดเชิงระมัดระวัง ~0.40x × BVPS ฿106 — สะท้อนดิสเคานต์โครงสร้าง (หนี้ CFP สูง)</div></div>
+        <div class="mval">฿42.40</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿42 – ฿64</span></div>
+        <div class="r">฿52.00</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ⚠ <b>หมายเหตุสำคัญ:</b> P/E (TTM) ที่ ~3.3x <u>หลอกตา</u> — กำไร TTM พองจากกำไรสต๊อกน้ำมัน/ค่าการกลั่นพีค จึงประเมินบน EPS normalized ฿8 แทน •
+        Justified P/BV ให้ค่าสูงสุด (฿64) จาก ROE>g แต่ตลาดให้ดิสเคานต์หนัก (P/BV จริง 0.42x) เพราะหนี้สูงจากโครงการ CFP และความผันผวนของค่าการกลั่น •
+        ค่ากลาง ฿52 ใกล้เป้านักวิเคราะห์เฉลี่ย ฿52.66 พอดี
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿44.75</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿52.00</div></div>
+        </div>
+        <div class="scale">
+          <span>฿36.40<br><small>MOS 30%</small></span>
+          <span>฿41.60<br><small>MOS 20%</small></span>
+          <span style="text-align:center">฿52.00<br><small>Fair Value</small></span>
+          <span style="text-align:right">฿52.66<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">฿64.00<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน ฿44.75 อยู่ต่ำกว่ามูลค่าเหมาะสม ฿52 (MOS ~14%) — โซนน่าสนใจระดับปานกลาง
+        จุดซื้อ MOS 20% ที่ ฿41.60 และ MOS 30% ที่ ฿36.40 เป็นไปได้จริงในจังหวะค่าการกลั่นอ่อนตัว (เคยต่ำกว่านี้กลางปี 2568)
+        TOP เหมาะนักลงทุนรับความผันผวนสูงและจับจังหวะวัฏจักรได้
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict ok">
+        <div class="big">+13.9%</div>
+        <div class="txt">ส่วนเผื่อปานกลาง — ราคาต่ำกว่ามูลค่าเหมาะสมพอควร แต่เป็นหุ้นวัฏจักรค่าการกลั่นที่ผันผวนสูง ควรซื้อเป็นจังหวะและกระจายความเสี่ยง ไม่ทุ่มจุดเดียว</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿41.60</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿36.40</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿52.00</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="44.75" step="0.25">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿44.75 • EPS ฐาน normalized ~฿8.00 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS −10%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿34.98</div>
+          <div class="ret neg">−13% (รวมปันผล)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿5.83</span></li>
+            <li><span>P/E ออก</span><span>6x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿4</span></li>
+            <li><span>สถานการณ์</span><span>ค่าการกลั่นตกต่ำ ขาดทุนสต๊อก</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +3%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿61.18</div>
+          <div class="ret pos">+50% (รวมปันผล)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿8.74</span></li>
+            <li><span>P/E ออก</span><span>7x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿6</span></li>
+            <li><span>สถานการณ์</span><span>ค่าการกลั่น mid-cycle ปกติ</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +8%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿80.64</div>
+          <div class="ret pos">+96% (รวมปันผล)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿10.08</span></li>
+            <li><span>P/E ออก</span><span>8x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿7</span></li>
+            <li><span>สถานการณ์</span><span>ค่าการกลั่นสูง + CFP เดินเครื่องเต็ม</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      TOP เป็นหุ้นวัฏจักรที่ "ผันผวนสูงสุด" ในสามตัว — ผลตอบแทนแกว่งกว้างตามค่าการกลั่น (GRM) กรณีฐาน ~+50% (3 ปี)
+      มาจาก EPS normalize กลับสู่ระดับปกติ + re-rate เล็กน้อย แต่ดาวน์ไซด์กรณีค่าการกลั่นตกชัดเจน (−13%)
+      เหมาะนักลงทุนที่เข้าใจวัฏจักรโรงกลั่นและจับจังหวะเข้าซื้อช่วงราคาอ่อนตัว
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>ค่าการกลั่นฟื้นตัว:</b> GRM ในภูมิภาคกลับมาเป็นบวก หนุนกำไรหลักของโรงกลั่นโดยตรง</li>
+          <li><b>โครงการ CFP (Clean Fuel Project):</b> เมื่อเดินเครื่องเต็มจะเพิ่มกำลังกลั่น + ผลิตน้ำมันคุณภาพสูงขึ้น หนุนมาร์จิ้นระยะยาว</li>
+          <li><b>P/BV ต่ำมาก (0.42x):</b> ซื้อขายต่ำกว่ามูลค่าทางบัญชีครึ่งหนึ่ง เปิด upside หากตลาด re-rate เมื่อ CFP สำเร็จ</li>
+          <li><b>ส่วนหนึ่งของกลุ่ม ปตท.:</b> ได้ synergy ด้านวัตถุดิบและการตลาดจากเครือพลังงานที่ใหญ่ที่สุดของไทย</li>
+          <li><b>ปิโตรเคมี-lube หลากหลาย:</b> รายได้ไม่พึ่งโรงกลั่นล้วน ช่วยลดความผันผวนเมื่อค่าการกลั่นอ่อน</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>ค่าการกลั่นผันผวนรุนแรง:</b> กำไรอิง GRM โดยตรง ช่วงค่าการกลั่นต่ำอาจขาดทุนได้ (เป็นหุ้นผันผวนสูงสุดในกลุ่ม)</li>
+          <li><b>กำไรสต๊อกบิดเบือน:</b> กำไร/ขาดทุนสต๊อกน้ำมันทำให้ EPS รายงวดและ P/E TTM หลอกตา ประเมินมูลค่ายาก</li>
+          <li><b>หนี้สูงจาก CFP:</b> โครงการลงทุนใหญ่ทำให้ภาระหนี้และดอกเบี้ยสูง กด ROA และความยืดหยุ่นทางการเงิน</li>
+          <li><b>เปลี่ยนผ่านพลังงาน:</b> ดีมานด์น้ำมันเชื้อเพลิงฟอสซิลระยะยาวเสี่ยงลดลงจากกระแส EV/ลดคาร์บอน</li>
+          <li><b>ปันผลไม่แน่นอน:</b> payout ผันตามกำไรวัฏจักร ปีค่าการกลั่นต่ำอาจลดปันผลลงมาก</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>หุ้นวัฏจักรโรงกลั่น — undervalue แต่ผันผวนสูง เหมาะจับจังหวะ</h2>
+      <p>TOP เป็นโรงกลั่นคอมเพล็กซ์ใหญ่สุดในไทย จุดเด่นคือ P/BV ต่ำมาก (0.42x) และ upside จากโครงการ CFP
+      แต่ต้องระวังว่า P/E (TTM) ~3.3x นั้น "หลอกตา" เพราะกำไร TTM พองจากกำไรสต๊อก — เราจึงประเมินบน EPS normalized ฿8
+      ที่ราคา ฿44.75 มี MOS ~14% เทียบ FV ฿52 แต่เป็นหุ้นผันผวนสูงสุดในสามตัว ควรซื้อเป็นจังหวะและรับความเสี่ยงวัฏจักรได้</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿52.00 <span style="font-size:12px;color:#cab9a8">(฿42–฿64)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +13.9%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿52.66 (Buy)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ทยอยสะสมเมื่อราคา ≤ ฿44 และเน้นหนักที่โซน MOS 20–30% (฿36–42) ในจังหวะค่าการกลั่นอ่อน — มองเป็นหุ้น cyclical-value สำหรับนักลงทุนที่จับจังหวะวัฏจักรได้ ไม่ใช่หุ้น income หลักของพอร์ต
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ EPS normalized, P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    หมายเหตุ: P/E (TTM) ของ TOP ต่ำผิดปกติเพราะกำไรสต๊อกน้ำมัน รายงานนี้จึงใช้กำไร normalized ในการประเมิน •
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ที่มาข้อมูล: SET, StockAnalysis.com, Yahoo Finance, Investing.com (ดึงข้อมูล มิ.ย. 2569)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 20 มิ.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>

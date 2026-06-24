@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น ปตท.สผ. (PTTEP) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Opus 4.8">
+<script type="application/json" id="stock-meta">
+{"symbol":"PTTEP","currency":"THB","price":131.50,"fairValue":142.00,"mos":7.4,"upside":8.0,"pe":9.4,"dividendYield":6.6,"roe":11.0}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#2e9e4f",
+    "accentDark": "#1f6f37",
+    "darkGrad": "linear-gradient(135deg,#0e3a1e 0%,#1c5f31 55%,#2e9e4f 100%)",
+    "glow": "rgba(46,158,79,0.35)",
+    "subColor": "#bfe7c9",
+    "headerMuted": "#cdebd4",
+    "verdictText": "#d6f2dd",
+    "vcellLabel": "#a9deb6",
+    "badge": "#2e9e4f",
+    "chgBg": "#e6f4ea",
+    "chgColor": "#1e8e3e"
+  },
+  "chart": {
+    "data": [
+      ["ม.ค.68", 127.5],
+      ["ก.พ.68", 109.0],
+      ["มี.ค.68", 116.5],
+      ["เม.ย.68", 99.5],
+      ["พ.ค.68", 98.0],
+      ["มิ.ย.68", 109.5],
+      ["ก.ค.68", 126.0],
+      ["ส.ค.68", 112.0],
+      ["ก.ย.68", 115.5],
+      ["ต.ค.68", 107.0],
+      ["พ.ย.68", 106.5],
+      ["ธ.ค.68", 113.0],
+      ["ม.ค.69", 122.5],
+      ["ก.พ.69", 137.0],
+      ["มี.ค.69", 161.5],
+      ["เม.ย.69", 154.0],
+      ["พ.ค.69", 141.5],
+      ["มิ.ย.69", 131.5]
+    ],
+    "min": 90,
+    "max": 170,
+    "grid": [90, 110, 130, 150, 170],
+    "fairLine": 142.00,
+    "currency": "฿",
+    "highlight": [4, 14],
+    "gridFmt": "v.toFixed(0)",
+    "dataFmt": "d[1].toFixed(1)"
+  },
+  "gauge": { "min": 95, "max": 170, "cur": 131.50, "fair": 142.00, "fairLabelTop": true },
+  "fv": 142.00
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots"></div>
+    <div>
+      <span class="tag">SET: PTTEP</span>
+      <span class="tag">พลังงาน (Energy)</span>
+      <span class="tag">สำรวจ-ผลิตปิโตรเลียม (E&amp;P)</span>
+    </div>
+    <h1>ปตท.สผ. — PTT Exploration and Production</h1>
+    <div class="sub">สำรวจ-ผลิตก๊าซธรรมชาติ &amp; น้ำมันดิบ • แหล่งอ่าวไทย (เอราวัณ-บงกช) • โครงการต่างประเทศ (มาเลเซีย, โอมาน, แอลจีเรีย, โมซัมบิก LNG) • CCS / พลังงานคาร์บอนต่ำ</div>
+    <div class="price-row">
+      <div>
+        <div class="px">฿131.50<small>(PTTEP)</small></div>
+      </div>
+      <div class="chg">▲ +3.1% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 18 มิ.ย. 2569 (2026)<br>
+        กรอบ 52 สัปดาห์ ฿104.00 – ฿164.00<br>
+        ที่มา: SET, StockAnalysis.com, Yahoo Finance, Investing.com
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล TTM ถึงงบไตรมาส 1/2569 (Q1 2026)</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~฿526,000 ล้าน</div><div class="d">หุ้น ~3.97 พันล้าน</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~9.4x</div><div class="d">ถูกเมื่อเทียบ E&amp;P โลก</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~9–11x</div><div class="d">กรอบ 7–13x ตามวงจรน้ำมัน</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">0.95x</div><div class="d">ใกล้มูลค่าทางบัญชี</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY68</div><div class="v">~฿56,000 ล้าน</div><div class="d">อิงราคาน้ำมัน+ปริมาณขาย</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿14.00</div><div class="d">งวด TTM ถึง Q1/2569</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~฿138</div><div class="d">ฐานทุนแข็งแกร่ง หนี้ต่ำ</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~11.0% / 6.5%</div><div class="d">สูงสุดในกลุ่ม ปตท.</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">~฿320,000 ล้าน</div><div class="d">ปริมาณขาย ~5 แสน boed</div></div>
+      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">~55%</div><div class="d">ต้นทุนต่อหน่วยต่ำ (unit cost)</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~6.6%</div><div class="d">DPS ฿8.75 · payout ~64%</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">~1.0</div><div class="d">ผันผวนตามราคาน้ำมัน</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#2e9e4f"></i>ราคา PTTEP</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿142.00</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        PTTEP ผันผวนกว้างตามราคาน้ำมัน — จุดต่ำสุด ~฿98 (พ.ค. 2568) ช่วงน้ำมันอ่อน แล้วพุ่งแรงต้นปี 2569
+        แตะจุดสูงสุด ~฿161.5 (มี.ค. 2569) ตามราคาน้ำมันดิบที่ฟื้นและความตึงเครียดภูมิรัฐศาสตร์
+        ก่อนย่อกลับมาแถว ฿131–132 ปัจจุบัน — หุ้นนี้สะท้อนราคาน้ำมันโดยตรงและผันผวนสูงกว่ากลุ่มพลังงานอื่น
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS (TTM) ฿14.00 × P/E เป้าหมาย ~10x — สะท้อนวงจรน้ำมันปกติ ใกล้ค่าเฉลี่ยในอดีต</div></div>
+        <div class="mval">฿140.00</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล ฿8.75 × (1+g); g 3.0%, r 10.0% → ปันผลสูง กระแสเงินสดดี ให้ค่าระมัดระวัง</div></div>
+        <div class="mval">฿128.70</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 11.0% − g 3.0%)/(r 10.0% − g 3.0%) ≈ 1.14 × BVPS ฿138</div></div>
+        <div class="mval">฿157.32</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿129 – ฿157</span></div>
+        <div class="r">฿142.00</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        วิธี Justified P/BV ให้ค่าสูงสุด (฿157) เพราะ ROE 11% สูงกว่า r ที่ตั้งไว้ ส่วนต่างจึงหนุนมูลค่า •
+        DDM ให้ค่าต่ำสุด (฿129) สะท้อนความเป็นหุ้น cyclical ที่กระแสปันผลไม่นิ่ง • ค่ากลาง ฿142 อยู่ใต้เป้านักวิเคราะห์เฉลี่ย ~฿164.7
+        ซึ่งสะท้อนมุมมองเชิงบวกต่อปริมาณขายและราคาน้ำมัน เราเลือกค่ากลางที่ระมัดระวังกว่า
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿131.50</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿142.00</div></div>
+        </div>
+        <div class="scale">
+          <span>฿99.40<br><small>MOS 30%</small></span>
+          <span>฿113.60<br><small>MOS 20%</small></span>
+          <span style="text-align:center">฿142.00<br><small>Fair Value</small></span>
+          <span style="text-align:right">฿157.00<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">฿164.70<br><small>เป้าเฉลี่ย Analyst</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน ฿131.50 อยู่ต่ำกว่ามูลค่าเหมาะสม ฿142 (MOS ~7%) — โซนน่าทยอยสะสม
+        จุดซื้อ MOS 20% ที่ ฿113.60 เคยแตะช่วงน้ำมันอ่อนกลางปี 2568 จึงเป็นไปได้จริงในรอบ cyclical
+        นักลงทุนเน้นปันผลได้ yield ~6.6% ระหว่างถือ
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">+7.4%</div>
+        <div class="txt">ส่วนเผื่อปานกลาง-บาง — ราคาต่ำกว่ามูลค่าเหมาะสมเล็กน้อย เหมาะทยอยสะสมรับปันผล แต่ควรรอย่อช่วงน้ำมันอ่อนเพื่อ MOS ที่ปลอดภัยกว่า</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿113.60</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿99.40</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿142.00</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="131.50" step="0.25">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿131.50 • EPS ฐาน ~฿14.00 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS −5%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿96.00</div>
+          <div class="ret neg">−12% (รวมปันผล)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿12.00</span></li>
+            <li><span>P/E ออก</span><span>8x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿20</span></li>
+            <li><span>สถานการณ์</span><span>ราคาน้ำมันต่ำยาว ปริมาณขายลด</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +3%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿153.00</div>
+          <div class="ret pos">+36% (รวมปันผล)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿15.30</span></li>
+            <li><span>P/E ออก</span><span>10x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿26</span></li>
+            <li><span>สถานการณ์</span><span>น้ำมันทรงตัว ปริมาณขายคงที่</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +8%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿194.04</div>
+          <div class="ret pos">+69% (รวมปันผล)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿17.64</span></li>
+            <li><span>P/E ออก</span><span>11x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿28</span></li>
+            <li><span>สถานการณ์</span><span>น้ำมันสูง + โครงการ LNG เดินเครื่อง</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      PTTEP เป็นหุ้น cyclical ที่ผลตอบแทนแกว่งตามราคาน้ำมันมากกว่า PTT — upside กรณีฐาน ~+36% (3 ปี รวมปันผล)
+      มาจากทั้ง EPS โตเล็กน้อยและปันผล ~6.6%/ปี กรณีน้ำมันสูงผลตอบแทนเร่งได้ถึง ~+69% แต่ก็มีดาวน์ไซด์ในกรณีน้ำมันอ่อน
+      เหมาะนักลงทุนที่รับความผันผวน commodity ได้และมองรอบ 3–5 ปี
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>ต้นทุนต่อหน่วยต่ำ:</b> unit cost ระดับแข่งขันได้ ทำให้ทำกำไรได้แม้ราคาน้ำมันปานกลาง มาร์จิ้นขั้นต้น ~55%</li>
+          <li><b>ปริมาณขายเพิ่ม:</b> แหล่งเอราวัณ-บงกชเดินกำลังผลิตเต็มที่ + โครงการต่างประเทศ หนุนปริมาณขายระยะยาว</li>
+          <li><b>ปันผลสูง + ฐานะการเงินแข็ง:</b> yield ~6.6% บน payout ~64% เงินสดเหลือมาก หนี้ต่ำ รองรับการลงทุนใหม่</li>
+          <li><b>โครงการ LNG โมซัมบิก:</b> เมื่อเดินเครื่องจะเพิ่มปริมาณขายและกระจายแหล่งรายได้นอกอ่าวไทย</li>
+          <li><b>Leverage ต่อราคาน้ำมัน:</b> เมื่อราคาน้ำมันสูง กำไรและราคาหุ้นตอบสนองแรงกว่ากลุ่มพลังงานอื่น</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>ราคาน้ำมันผันผวนสูง:</b> กำไรอิงราคาน้ำมัน-ก๊าซโดยตรง ราคาน้ำมันต่ำกระทบ EPS ทันที (ดาวน์ไซด์ชัด)</li>
+          <li><b>ปริมาณสำรองลดลง:</b> ต้องลงทุนสำรวจ-พัฒนาแหล่งใหม่ต่อเนื่องเพื่อรักษา reserve replacement</li>
+          <li><b>ความเสี่ยงประเทศ:</b> โครงการในต่างประเทศ (โมซัมบิก, แอลจีเรีย) มีความเสี่ยงการเมือง/ความมั่นคง</li>
+          <li><b>เปลี่ยนผ่านพลังงาน:</b> แรงกดดันลดคาร์บอนระยะยาวอาจลดดีมานด์ฟอสซิลและมูลค่าสินทรัพย์</li>
+          <li><b>ค่าเงิน/นโยบายภาษี:</b> รายได้อิงดอลลาร์ + โครงสร้างภาษีปิโตรเลียมไทยกระทบกำไรสุทธิ</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>หุ้น E&amp;P คุณภาพดี — ราคาต่ำกว่ามูลค่าเหมาะสมเล็กน้อย</h2>
+      <p>PTTEP เป็นบริษัทสำรวจ-ผลิตปิโตรเลียมชั้นนำที่มี ROE สูงสุด (~11%) ในกลุ่ม ปตท. ต้นทุนต่อหน่วยต่ำ ฐานะการเงินแข็ง
+      และปันผล ~6.6% ที่ราคา ฿131.50 หุ้นซื้อขายต่ำกว่ามูลค่าเหมาะสม ฿142 (MOS ~7%) เป็นโซนน่าทยอยสะสม
+      แต่ต้องตระหนักว่านี่คือหุ้น cyclical ที่แกว่งตามราคาน้ำมัน — ควรกระจายเข้าซื้อและไม่ทุ่มในจุดเดียว</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿142.00 <span style="font-size:12px;color:#cab9a8">(฿129–฿157)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +7.4%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿164.70 (Buy)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ทยอยสะสมเมื่อราคา ≤ ฿132 และเพิ่มน้ำหนักจริงจังที่โซน MOS 20% (≤ ฿113.60) ในจังหวะน้ำมันอ่อน — มองเป็นหุ้น income + cyclical upside ของพอร์ตพลังงาน
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ที่มาข้อมูล: SET, StockAnalysis.com, Yahoo Finance, Investing.com (ดึงข้อมูล มิ.ย. 2569)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 18 มิ.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
