@@ -83,7 +83,7 @@ const HMPRO = {
   exchange: 'SET', sectorTag: 'Consumer • Home Improvement Retail', nicheTag: 'ค้าปลีกตกแต่ง/ปรับปรุงบ้าน เบอร์ 1 ไทย',
   sub: 'ค้าปลีกสินค้าตกแต่ง/ปรับปรุงบ้าน HomePro • Mega Home วัสดุก่อสร้าง/ค้าส่ง • เครื่องใช้ไฟฟ้า/เฟอร์นิเจอร์ • บริการติดตั้ง/รีโนเวท • สาขาในมาเลเซีย',
   gdots: '<span style="background:#ffb066"></span><span style="background:#f9923a"></span><span style="background:#f57c00"></span><span style="background:#c25e00"></span>',
-  change: '▼ −1% ในรอบปี', priceDate: '23–24 มิ.ย. 2026', range52w: '฿5.70–฿8.00', sources: 'SET / stockanalysis.com / Investing.com',
+  change: '▼ −5% ในรอบปี', priceDate: '23–24 มิ.ย. 2026', range52w: '฿5.70–฿8.00', sources: 'SET / stockanalysis.com / Investing.com',
   fy: '2025', footerDate: '24 มิ.ย. 2026',
   price: 6.15, fv: 6.9, mos: 11, upside: 12, pe: 14.0, divYield: 6.18, roe: 20.4,
   fvLow: 6.15, fvHigh: 7.92, analystTgt: 7.15, analystRating: 'Buy', baseEps: 0.44,
@@ -95,7 +95,7 @@ const HMPRO = {
   m1eps: 0.44, m1pe: 18, m1note: 'ต่ำกว่าค่าเฉลี่ย 5 ปี ~29x มาก', m2div: 0.38, m2g: 3, m2r: 9, m2val: 6.52, m2note: '฿0.391 / (0.09−0.03)',
   m3roe: 20.4, m3g: 3, m3r: 9, m3ratio: 2.90, m3bvps: 2.12,
   valuationNote: 'วิธี P/E ให้ค่าสูงสุดเพราะเคยเทรดพรีเมียม; Justified P/BV น่าเชื่อเพราะ ROE สูง — ค่ากลางใกล้ราคาตลาด',
-  chartNarrative: 'ราคาขึ้นแตะ ~฿8.0 (สูงสุด 52 สัปดาห์) แล้วย่อทรงตัวแถว ~฿6.15 — แทบไม่เปลี่ยนในรอบปี (~−1%) สะท้อนกำไรอ่อนลงและ P/E ลดจาก ~29x เหลือ ~14x',
+  chartNarrative: 'ราคาแกว่ง ~฿6.0–7.5 (สูงสุด 52 สัปดาห์ ~฿8.0) จาก ฿6.50 (มิ.ย.25) มา ฿6.15 — ลง ~−5% ในรอบปี (รวมปันผล ~ทรงตัว) สะท้อนกำไรอ่อนลงและ P/E ลดจาก ~29x เหลือ ~14x',
   gaugeNote: 'ราคา ฿6.15 ต่ำกว่ามูลค่าเหมาะสมเล็กน้อย (FV ฿6.9) และต่ำกว่าเป้าหมายเฉลี่ยของนักวิเคราะห์ (~฿7.15) — เปิดช่อง upside หากกำไรฟื้น',
   mosClass: 'ok', mosText: '<b>ส่วนเผื่อความปลอดภัยบาง</b><br>ราคา ฿6.15 ต่ำกว่ามูลค่าเหมาะสม ฿6.9 ราว 11% → พอใช้–ทยอยสะสมได้ แต่ยังไม่ถึงโซน "น่าซื้อ" (MOS 20%+)',
   sc: [
@@ -111,8 +111,8 @@ const HMPRO = {
   strategy: 'สาย value/ปันผล — ทยอยสะสมเมื่อราคา <b>ต่ำกว่า ฿6.9</b> (น่าสนใจมากที่ &lt;฿5.52) ล็อก yield ~6% • ติดตาม SSSG, กำไรรายไตรมาส และการแข่งขันค้าปลีกวัสดุ',
   disclaimerSources: 'อ้างอิงงบ FY2025 (กำไรสุทธิ ฿6,011 ล้าน) จาก stockanalysis.com / SET • ราคา ณ 23–24 มิ.ย. 2026 จาก SET, stockanalysis.com, Investing.com',
   reportData: {
-    theme: { accent: '#f57c00', accentDark: '#c25e00', darkGrad: 'linear-gradient(135deg,#3a2410 0%,#5e3a12 55%,#8a5418 140%)', glow: 'rgba(245,150,70,.35)', subColor: '#e0d2c2', headerMuted: '#cdbfb0', chgBg: 'var(--green-soft)', chgColor: '#1e6e30', badge: 'var(--orange)', verdictText: '#e4d8cc', vcellLabel: '#cab9a8' },
-    chart: { data: [['มิ.ย.25', 6.2], ['ส.ค.25', 7.1], ['ต.ค.25', 7.6], ['ธ.ค.25', 7.3], ['ก.พ.26', 6.8], ['เม.ย.26', 6.25], ['พ.ค.26', 6.1], ['มิ.ย.26', 6.15]], min: 5.5, max: 8.2, grid: [6.0, 6.9, 7.5, 8.0], fairLine: 6.9, currency: '฿', highlight: [2, 7], gridFmt: 'v.toFixed(1)', dataFmt: 'd[1].toFixed(2)' },
+    theme: { accent: '#f57c00', accentDark: '#c25e00', darkGrad: 'linear-gradient(135deg,#3a2410 0%,#5e3a12 55%,#8a5418 140%)', glow: 'rgba(245,150,70,.35)', subColor: '#e0d2c2', headerMuted: '#cdbfb0', chgBg: 'var(--red-soft)', chgColor: '#c5221f', badge: 'var(--orange)', verdictText: '#e4d8cc', vcellLabel: '#cab9a8' },
+    chart: { data: [['มิ.ย.25', 6.50], ['ส.ค.25', 7.10], ['ต.ค.25', 6.55], ['ธ.ค.25', 6.65], ['ก.พ.26', 7.40], ['เม.ย.26', 6.05], ['พ.ค.26', 6.05], ['มิ.ย.26', 6.15]], min: 5.5, max: 8.2, grid: [6.0, 6.9, 7.5, 8.0], fairLine: 6.9, currency: '฿', highlight: [4, 7], gridFmt: 'v.toFixed(1)', dataFmt: 'd[1].toFixed(2)' },
     gauge: { min: 4.5, max: 9.0, cur: 6.15, fair: 6.9, fairLabelTop: '-58px' }, fv: 6.9,
   },
 };

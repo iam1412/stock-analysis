@@ -136,6 +136,15 @@ function buildCtx(html, name) {
       try { return { present: true, ok: true, data: JSON.parse(m[1]) }; }
       catch (e) { return { present: true, ok: false, err: e.message }; }
     })(),
+    // ป้าย change ใน header (.chg) — เช่น "▲ +31% ในรอบปี" / "▼ −5%" (ทิศทาง + %) — ใช้โดย E34 (สี↔ทิศทาง), W11 (กราฟ↔headline)
+    chg: (() => { const m = html.match(/<div class="chg">([\s\S]*?)<\/div>/i); return m ? stripTags(m[1]).replace(/\s+/g, ' ').trim() : null; })(),
+    // บล็อก report-data (chart/gauge/theme ต่อหุ้น) — ใช้โดย E34 (theme.chgBg/chgColor), W11 (chart.data), W12 (label ว่าง)
+    rd: (() => {
+      const m = html.match(/<script[^>]*\bid=["']report-data["'][^>]*>([\s\S]*?)<\/script>/i);
+      if (!m) return { present: false };
+      try { return { present: true, ok: true, data: JSON.parse(m[1]) }; }
+      catch (e) { return { present: true, ok: false, err: e.message }; }
+    })(),
   };
 }
 
@@ -233,6 +242,24 @@ const CHECKS = [
     return missing.size ? `อ้างถึง CSS var ที่ไม่ถูกนิยาม: ${[...missing].join(', ')} — สี/พื้นหลังจะหายเงียบ ๆ (เช่น พื้นหลังเลขหัวข้อ 1–8) เพิ่มตัวแปรใน _template/dashboard.css :root หรือแก้ theme ให้อ้างตัวที่มี` : null;
   } },
 
+  // ── E34: สีป้าย change (.chg) ต้องตรงทิศทาง (เขียว = ขึ้น / แดง = ลง) ──
+  // เคส HMPRO & CPF (มิ.ย. 2026): chg = "▼ −X%" (ขาลง) แต่ theme.chgBg/chgColor เป็นเขียว → พื้นหลังเขียวคู่ลูกศรลง
+  // gate อื่นมองไม่เห็น (สี parse เป็น CSS ปกติ ไม่ขัดเลขใด ๆ) — เป็น "ความหมายสีผิด" ที่ต้องดักด้วย consistency เฉพาะทาง
+  { id: 'E34', level: 'error', label: 'สีป้าย change ตรงทิศทาง (เขียว=ขึ้น/แดง=ลง)', fn: (c) => {
+    if (!c.chg) return null;
+    const t = (c.rd && c.rd.ok && c.rd.data && c.rd.data.theme) ? c.rd.data.theme : null;
+    if (!t || (t.chgBg == null && t.chgColor == null)) return null;            // ไม่มีธีมสี change (รายงานเก่า) → ข้าม
+    const up = /▲/.test(c.chg) || (/\+\s*\d/.test(c.chg) && !/▼/.test(c.chg));
+    const down = /▼/.test(c.chg) || (/[−–]\s*\d/.test(c.chg) && !/▲/.test(c.chg));
+    if (up === down) return null;                                             // "ทรงตัว"/กำกวม (ทั้งคู่หรือไม่มีเลย) → ข้าม
+    const col = `${t.chgBg || ''} ${t.chgColor || ''}`;
+    const green = /green/i.test(col) || /#1e6e30|#1e8e3e|#2e7d32|#137333/i.test(col);
+    const red = /red/i.test(col) || /#c5221f|#ea4335|#b3261e|#d93025|#a50e0e/i.test(col);
+    if (down && green && !red) return `ป้าย change เป็นขาลง ("${c.chg}") แต่สีเป็นเขียว (chgBg:${t.chgBg || '-'} / chgColor:${t.chgColor || '-'}) — ควรใช้โทนแดง (เคส HMPRO/CPF)`;
+    if (up && red && !green) return `ป้าย change เป็นขาขึ้น ("${c.chg}") แต่สีเป็นแดง (chgBg:${t.chgBg || '-'} / chgColor:${t.chgColor || '-'}) — ควรใช้โทนเขียว`;
+    return null;
+  } },
+
   { id: 'W01', level: 'warn', label: 'scenario: EPS×P/E ≈ ราคาเป้า', fn: (c) => { const bad = []; const nm = ['Bear', 'Base', 'Bull']; c.scenarios.forEach((s, i) => { if (s.tgt == null || s.eps == null || s.pe == null) return; const calc = s.eps * s.pe; const d = Math.abs(calc - s.tgt) / s.tgt; if (d > TOL_SCN_REL) bad.push(`${nm[i] || ('#' + i)}: EPS ${s.eps}×P/E ${s.pe}=${calc.toFixed(0)} ≠ target ${s.tgt} (ต่าง ${(d * 100).toFixed(0)}%)`); }); return bad.length ? bad.join(' ; ') : null; } },
   { id: 'W02', level: 'warn', label: 'สกุลเงินปน', fn: (c) => { if (c.isTHB && /\$/.test(c.text)) { const n = (c.text.match(/\$/g) || []).length; return `รายงานสกุลบาท (฿) แต่พบ "$" ${n} จุดในเนื้อหา (ควรใช้ ฿)`; } if (!c.isTHB && /฿/.test(c.text)) { const n = (c.text.match(/฿/g) || []).length; return `รายงานสกุลดอลลาร์ ($) แต่พบ "฿" ${n} จุดในเนื้อหา`; } return null; } },
   { id: 'W03', level: 'warn', label: 'CSS เพี้ยน .seg-label', fn: (c) => /transform:transl\(/.test(c.html) ? 'พบ transform:transl( (ควรเป็น translate) — dead CSS .seg-label ใน template' : null },
@@ -244,6 +271,30 @@ const CHECKS = [
   { id: 'W09', level: 'warn', label: 'ความสดของราคา', fn: (c) => { if (!c.priceAge) return null; const a = c.priceAge.ageDays; const warnDays = parseInt(process.env.STALE_WARN_DAYS || '45', 10); const errDays = parseInt(process.env.STALE_ERROR_DAYS || '120', 10); if (a > warnDays && a <= errDays) return `ราคาเริ่มเก่า: ${c.priceAge.iso} (${a} วันที่แล้ว) — ควรอัปเดตก่อนเผยแพร่`; return null; } },
   // stock-meta P/E·Yield·ROE เทียบค่าที่โชว์ — เตือนเท่านั้น (label P/E/ROE ในรายงานไม่ standard เสมอ → ดึงไม่ได้บางไฟล์)
   { id: 'W10', level: 'warn', label: 'stock-meta P/E·Yield·ROE ≈ ที่โชว์', fn: (c) => { const sm = c.sm; if (!sm.present || !sm.ok || !sm.data) return null; const d = sm.data, m = c.metrics, bad = []; if (m.pe != null && isFiniteNum(d.pe) && Math.abs(d.pe - m.pe) > Math.max(0.05 * Math.abs(m.pe), 0.1)) bad.push(`pe ${d.pe} ≠ P/E ที่โชว์ ${m.pe}`); if (m.yield != null && isFiniteNum(d.dividendYield) && Math.abs(d.dividendYield - m.yield) > Math.max(0.1 * Math.abs(m.yield), 0.15)) bad.push(`dividendYield ${d.dividendYield} ≠ ปันผลที่โชว์ ${m.yield}`); if (m.roe != null && isFiniteNum(d.roe) && Math.abs(d.roe - m.roe) > Math.max(0.08 * Math.abs(m.roe), 0.5)) bad.push(`roe ${d.roe} ≠ ROE ที่โชว์ ${m.roe}`); return bad.length ? bad.join(' ; ') : null; } },
+
+  // ── W11: ป้าย change แบบ "รอบปี" ควรสอดคล้องกับปลายกราฟ (จุดแรก→จุดท้าย) — กันแก้ headline แต่ลืมแก้กราฟ ──
+  // เฉพาะป้ายที่ระบุ "รอบปี" (ป้ายรายวันเช่น "▲ +6.8% (22 มิ.ย.)" ไม่ใช่ผลตอบแทนรอบปี → ข้าม)  •  พบ PANW/PWR เพี้ยน
+  { id: 'W11', level: 'warn', label: 'change "รอบปี" ≈ ปลายกราฟ (จุดแรก→ท้าย)', fn: (c) => {
+    if (!c.chg || !/รอบปี/.test(c.chg)) return null;
+    const data = (c.rd && c.rd.ok && c.rd.data && c.rd.data.chart) ? c.rd.data.chart.data : null;
+    if (!Array.isArray(data) || data.length < 2) return null;
+    const m = c.chg.match(/([▲▼]?)\s*([+\-−]?\s*\d+(?:\.\d+)?)\s*%/);
+    if (!m) return null;
+    let stated = parseFloat(m[2].replace('−', '-').replace(/\s/g, ''));
+    if (m[1] === '▼' && stated > 0) stated = -stated;
+    const first = data[0] && data[0][1], last = data[data.length - 1] && data[data.length - 1][1];
+    if (typeof first !== 'number' || typeof last !== 'number' || first === 0) return null;
+    const chartPct = (last - first) / first * 100, diff = Math.abs(chartPct - stated);
+    return diff > 10 ? `ป้าย "${c.chg}" = ${stated}% แต่กราฟจุดแรก ${first} → จุดท้าย ${last} = ${chartPct.toFixed(1)}% (ต่าง ${diff.toFixed(1)} จุด %) — headline กับกราฟไม่ตรงกัน` : null;
+  } },
+  // ── W12: ทุกจุดกราฟต้องมี label (แกน x) ไม่ว่าง — กัน ["",value] ที่ทำให้แกน x โชว์ช่องว่าง (พบ DDOG/WDC) ──
+  { id: 'W12', level: 'warn', label: 'label จุดกราฟไม่ว่าง', fn: (c) => {
+    const data = (c.rd && c.rd.ok && c.rd.data && c.rd.data.chart) ? c.rd.data.chart.data : null;
+    if (!Array.isArray(data)) return null;
+    const blanks = [];
+    data.forEach((p, i) => { if (!Array.isArray(p) || typeof p[0] !== 'string' || !p[0].trim()) blanks.push(i); });
+    return blanks.length ? `จุดกราฟมี label ว่างที่ดัชนี ${blanks.join(', ')} — แกน x จะโชว์ช่องว่าง` : null;
+  } },
 ];
 
 function checkHtml(html, name) {

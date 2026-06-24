@@ -169,13 +169,15 @@ npm run check:site       # ชั้น 2 อย่างเดียว (ต้
 npm run test:self        # meta-test: พิสูจน์ว่า checker เองยังจับ bug ได้ (รันหลังแก้ checker)
 ```
 
-**ชั้น 1 — `test/check-reports.js`** (ตรวจ source `reports/<SYMBOL>.html` ทีละไฟล์ — 33 error + 10 warning):
+**ชั้น 1 — `test/check-reports.js`** (ตรวจ source `reports/<SYMBOL>.html` ทีละไฟล์ — 34 error + 12 warning):
 - **โครงสร้าง:** DOCTYPE/`lang="th"`/ปิด `</html>`, `<title>` มีชื่อย่อ, `<h1>`, ครบ 8 section, กราฟ, gauge, เครื่องคิดเลข MOS, disclaimer, footer, header (ราคา+วันที่+แหล่งที่มา), **meta `ai-model` (E28: ต้องระบุโมเดล AI ที่ใช้วิเคราะห์ ขึ้นต้น "Claude ")**, **คำโปรยธุรกิจ `<div class="sub">` ใต้ `<h1>` (E32: ต้องมี + ยาวพอ → build ดึงเป็น `desc` โชว์บนการ์ดหน้า index)**
 - **ตัวเลขสอดคล้องกันเอง:** `const FV` = Fair Value กล่อง = FV ในสรุป (vgrid) • MOS = (FV−ราคา)/FV • จุดซื้อ MOS20/30 = FV×0.8/0.7 (ทั้งกล่องและแกน gauge) • ราคา header = ค่าตั้งต้นเครื่องคิดเลข • **คณิตแต่ละวิธี: P/E = EPS×P/E, Justified P/BV = ratio×BVPS และ ratio=(ROE−g)/(r−g)** • scenario: EPS ปี3 = EPS ฐาน×(1+g)³ และ tgt = EPS×P/E
 - **stock-meta (screener) [E29–31, W10]:** บล็อก `<script id="stock-meta">` JSON ครบ key + ชนิดถูก + symbol/currency ตรง (E29) • ตัวเลข = ที่โชว์จริง: price/fairValue/MOS ตรงกล่อง (E30) + mos/upside สอดคล้องราคา&FV (E31) • (warn W10) pe/yield/roe ≈ ที่โชว์เท่าที่ดึงได้
 - **ความสด/แหล่งข้อมูล:** ราคาไม่เก่า > 120 วัน/ไม่อยู่อนาคต (warn > 45 วัน) • (warn) แหล่งข้อมูล ≥3 + มีราคาเป้า/52 สัปดาห์/งวดงบ • (warn) ตัวเลขพื้นฐานอยู่ในวิสัย (P/E, P/BV, yield, ROE)
 - **ไม่มีของค้าง:** placeholder `[SYMBOL]`/`${...}`, `undefined`/`NaN`, สกุลเงินปน
 - **CSS var ครบ (E33):** ทุก `var(--x)` ที่อ้างในรายงาน (รวม theme.badge/chgBg + inline style) ต้องถูกนิยามใน `<style>` เดียวกัน (ข้าม `var(--x, fallback)`) — กันสี/พื้นหลัง "หายเงียบ ๆ" (เช่น badge อ้าง `var(--orange)` ที่ยังไม่อยู่ในพาเลต → พื้นหลังเลขหัวข้อ 1–8 หาย)
+- **ป้าย change ↔ สี/กราฟ (E34, W11, W12) [เพิ่ม มิ.ย. 2026 จากบั๊ก HMPRO/CPN/CPF]:** ทิศทางป้าย `.chg` (▲/▼, +/−) ต้องตรงกับสี `theme.chgBg/chgColor` — **ลง = แดง, ขึ้น = เขียว** (E34: เคส HMPRO/CPF ใส่ ▼ −X% บนพื้นเขียว = push ไม่ได้; "ทรงตัว"/ไม่มีลูกศร = ข้าม) • (warn W11) ป้ายที่เขียน **"รอบปี"** ต้อง ≈ ผลตอบแทนจากปลายกราฟ (จุดแรก→จุดท้าย, ต่าง ≤ 10 จุด %) — กันแก้ headline แต่ลืมแก้กราฟ (ป้ายรายวัน "(22 มิ.ย.)" ข้าม) • (warn W12) ทุกจุดกราฟต้องมี label แกน x ไม่ว่าง (กัน `["",value]`)
+  > ⚠️ **สิ่งที่ E34/W11 ตรวจไม่ได้:** ราคาในกราฟ **ตรงกับราคาตลาดจริงไหม** — gate ไม่มี network/ข้อมูลจริง จับได้แค่ "headline ↔ ปลายกราฟ สอดคล้องกัน" เท่านั้น · ความถูกต้องของ **ข้อมูลกราฟรายเดือน** ต้องดึงราคาจริง (Yahoo `?range=18mo&interval=1mo`) ตอนสร้าง (ดู memory `chart-data-must-be-real`)
 
 **ชั้น 1.5 — `test/build-test.js`** (unit-test ฟังก์ชันใน build.js — require แบบไม่รัน build จริง):
 - **freshHash:** เปลี่ยน/เพิ่ม meta `ai-model` **หรือบล็อก `stock-meta`** → hash เท่าเดิม (วันที่ไม่ขยับ) แต่เนื้อหาวิเคราะห์จริงเปลี่ยน → hash เปลี่ยน
