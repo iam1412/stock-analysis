@@ -71,6 +71,10 @@ expect('E25', 'error', (h) => h.replace('มูลค่าเหมาะสม
 expect('E26', 'error', (h) => h.replace('฿156<br><small>MOS 20%', '฿250<br><small>MOS 20%'), 'gauge scale MOS20 ≠ FV×0.8');
 expect('W06', 'warn', (h) => h.replace('MOS ~ +9%', 'แพง ~9%'), 'สรุปพลิกขั้ว (แพง) ขัดกับ MOS บวก');
 expect('W07', 'warn', (h) => h.replace('class="v pos">~7.5x', 'class="v pos">~750x'), 'P/E ผิดวิสัย (750x)');
+reject('W07', (h) => h.replace('class="v pos">~7.5x', 'class="v pos">~480x'), 'P/E ~480x (มัลติเพิลสูงจริงในตลาด AI เช่น ARM) → ไม่ใช่ค่าผิดวิสัย');
+// W06: โซนกลาง — "เต็มมูลค่า" ขัดทิศเมื่อหุ้นถูกชัด (MOS +9%) แต่ไม่ขัดเมื่อ MOS ~0 (เคส MPWR)
+expect('W06', 'warn', (h) => h.replace('MOS ~ +9%', 'เต็มมูลค่า ~9%'), 'หุ้นถูก (MOS +9%) แต่เขียน "เต็มมูลค่า" → ขัดทิศ');
+reject('W06', (h) => h.replace('class="r">฿195', 'class="r">฿179').replace('MOS ~ +9%', 'เต็มมูลค่า ~1%'), 'MOS ~0% เขียน "เต็มมูลค่า" (เคส MPWR) → ไม่ฟ้องว่าขัดแย้ง');
 expect('W08', 'warn', (h) => h.replace('ที่มา: SET / stockanalysis.com / Investing', 'ที่มา: SET'), 'แหล่งข้อมูล < 3');
 expect('E28', 'error', (h) => h.replace(/<meta\s+name="ai-model"[^>]*>/i, ''), 'ลบ meta ai-model → ต้องบังคับให้ระบุโมเดล');
 expect('E28', 'error', (h) => h.replace(/content="Claude[^"]*"/i, 'content="GPT-4"'), 'ai-model ไม่ใช่ Claude → ค่าผิด');
