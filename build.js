@@ -53,6 +53,87 @@ const freshHash = (content) => hash(content
   .replace(/\n?<meta\s+name=["']ai-model["'][^>]*>/i, '')
   .replace(/\n?<script[^>]*\bid=["']stock-meta["'][^>]*>[\s\S]*?<\/script>/i, ''));
 
+// ── Template system (build-time injection) ───────────────────────────────────
+// รายงานแบบใหม่ (content-only) เก็บเฉพาะ "เนื้อหา + ข้อมูลต่อหุ้น" ส่วนโครงที่ซ้ำทุกไฟล์
+// (CSS 130 บรรทัด + engine JS วาดกราฟ/gauge/เครื่องคิดเลข) อยู่ใน _template/ แล้ว inject ตอน build/ตรวจ
+//   • source ใหม่มี marker <!--TEMPLATE:STYLE--> + <!--TEMPLATE:ENGINE--> + <script id="report-data"> (ตัวเลขต่อหุ้น)
+//   • source เก่า (ไม่มี marker) → expandReport คืนค่าเดิมเป๊ะ (identity) → ไม่กระทบไฟล์เดิมเลย
+// engine bake ค่าเป็น literal (const FV=, gpos(ราคา), const data=[…]) เพื่อให้ quality gate (E08/E15/E19,
+// check-site) ยัง regex เจอเลขจริงเหมือนรายงานที่เขียน HTML เต็ม
+const TEMPLATE_DIR = path.join(ROOT, '_template');
+const FONT_LINKS =
+  '<link rel="preconnect" href="https://fonts.googleapis.com">\n' +
+  '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n' +
+  '<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">';
+// ธีมเริ่มต้น (โทนน้ำเงิน เหมือนหน้า index) — ใช้เมื่อ report-data.theme ไม่ระบุคีย์ใด
+const THEME_DEFAULTS = {
+  accent: '#1a73e8', accentDark: '#1557b0',
+  darkGrad: 'linear-gradient(135deg,#202938 0%,#2c3a52 60%,#1557b0 140%)',
+  glow: 'rgba(66,133,244,.35)', subColor: '#c7d2e4', headerMuted: '#aebfd6',
+  chgBg: 'var(--red-soft)', chgColor: '#c5221f', badge: 'var(--blue)',
+  verdictText: '#d4dded', vcellLabel: '#a8b6cc',
+};
+const _partialCache = {};
+const readPartial = (name) => (_partialCache[name] || (_partialCache[name] = fs.readFileSync(path.join(TEMPLATE_DIR, name), 'utf8')));
+// แทน token ทุกตัว — ใช้ split/join (ไม่ใช่ .replace) เพื่อ "ไม่" ตีความ $$/$& ในค่าแทนที่ (engine มี $${v})
+const fillTokens = (tmpl, map) => { let s = tmpl; for (const k in map) s = s.split(k).join(map[k]); return s; };
+
+function renderHead(theme) {
+  const t = { ...THEME_DEFAULTS, ...(theme || {}) };
+  const css = fillTokens(readPartial('dashboard.css'), {
+    __RD_ACCENT__: t.accent, __RD_ACCENTD__: t.accentDark, __RD_DARKGRAD__: t.darkGrad,
+    __RD_GLOW__: t.glow, __RD_SUBCOL__: t.subColor, __RD_HMUTED__: t.headerMuted,
+    __RD_CHGBG__: t.chgBg, __RD_CHGFG__: t.chgColor, __RD_BADGE__: t.badge,
+    __RD_VTEXT__: t.verdictText, __RD_VCELLK__: t.vcellLabel,
+  });
+  return FONT_LINKS + '\n<style>\n' + css + '</style>';
+}
+function renderEngine(data) {
+  const c = data.chart, g = data.gauge, t = { ...THEME_DEFAULTS, ...(data.theme || {}) };
+  const js = fillTokens(readPartial('engine.js'), {
+    __RD_DATA__: JSON.stringify(c.data), __RD_MIN__: String(c.min), __RD_MAX__: String(c.max),
+    __RD_GRID__: c.grid.join(','), __RD_FAIRLINE__: String(c.fairLine), __RD_ACCENT__: t.accent,
+    __RD_CURSYM__: c.currency || '$', __RD_HL__: JSON.stringify(c.highlight),
+    __RD_GRIDVAL__: c.gridFmt || 'v',          // นิพจน์ format ป้ายแกน (v / v.toFixed(2) / Math.round(v))
+    __RD_DATAVAL__: c.dataFmt || 'd[1]',       // นิพจน์ format ป้ายจุด (d[1] / d[1].toFixed(2) / Math.round(d[1]))
+    __RD_GMIN__: String(g.min), __RD_GMAX__: String(g.max), __RD_CUR__: String(g.cur), __RD_FAIR__: String(g.fair),
+    __RD_FAIRTOP__: g.fairLabelTop || '-58px', __RD_FV__: String(data.fv),
+  });
+  return '<script>\n' + js + '</script>';
+}
+// ตรวจ report-data ให้ครบ/เป็นตัวเลข — ขาด/ผิด = throw (build & gate ล้มทันที ดีกว่า render เพี้ยนเงียบ ๆ)
+function validateReportData(d) {
+  const need = (v, p) => { if (typeof v !== 'number' || !isFinite(v)) throw new Error(`report-data.${p} ต้องเป็นตัวเลข — พบ ${JSON.stringify(v)}`); };
+  if (!d || typeof d !== 'object' || Array.isArray(d)) throw new Error('report-data ต้องเป็น JSON object');
+  const c = d.chart, g = d.gauge;
+  if (!c || !Array.isArray(c.data) || c.data.length < 2) throw new Error('report-data.chart.data ต้องเป็น array ≥ 2 จุด');
+  if (!Array.isArray(c.grid) || !c.grid.length) throw new Error('report-data.chart.grid ต้องเป็น array ของเส้นกริด');
+  if (!Array.isArray(c.highlight) || !c.highlight.length) throw new Error('report-data.chart.highlight ต้องเป็น array ของดัชนีจุดที่ไฮไลต์ (เช่น [6,7])');
+  for (const idx of c.highlight) if (!Number.isInteger(idx) || idx < 0 || idx >= c.data.length) throw new Error(`report-data.chart.highlight ดัชนีนอกช่วง: ${JSON.stringify(idx)} (ต้องเป็นจำนวนเต็ม 0..${c.data.length - 1})`);
+  if (c.currency != null && (typeof c.currency !== 'string' || !c.currency || c.currency.length > 3)) throw new Error(`report-data.chart.currency ต้องเป็นสัญลักษณ์สั้น (เช่น "$"/"฿") — พบ ${JSON.stringify(c.currency)}`);
+  const FMT_OK = /^(v|d\[1\])(\.toFixed\([0-4]\))?$|^Math\.round\((?:v|d\[1\])\)$/;  // whitelist นิพจน์ format (กัน inject)
+  if (c.gridFmt != null && !FMT_OK.test(c.gridFmt)) throw new Error(`report-data.chart.gridFmt ต้องเป็น v / v.toFixed(n) / Math.round(v) — พบ ${JSON.stringify(c.gridFmt)}`);
+  if (c.dataFmt != null && !FMT_OK.test(c.dataFmt)) throw new Error(`report-data.chart.dataFmt ต้องเป็น d[1] / d[1].toFixed(n) / Math.round(d[1]) — พบ ${JSON.stringify(c.dataFmt)}`);
+  need(c.min, 'chart.min'); need(c.max, 'chart.max'); need(c.fairLine, 'chart.fairLine');
+  if (!g || typeof g !== 'object') throw new Error('report-data.gauge ต้องเป็น object');
+  need(g.min, 'gauge.min'); need(g.max, 'gauge.max'); need(g.cur, 'gauge.cur'); need(g.fair, 'gauge.fair');
+  need(d.fv, 'fv');
+}
+// คืน HTML เต็ม: source เก่า (ไม่มี marker) = identity ; source ใหม่ = แทน marker ด้วย <style>/engine ที่ inject ค่าต่อหุ้น
+function expandReport(html) {
+  if (typeof html !== 'string' || !html.includes('<!--TEMPLATE:STYLE-->')) return html;
+  const m = html.match(/<script[^>]*\bid=["']report-data["'][^>]*>([\s\S]*?)<\/script>/i);
+  if (!m) throw new Error('expandReport: มี <!--TEMPLATE:STYLE--> แต่ไม่มีบล็อก <script id="report-data">');
+  if (!html.includes('<!--TEMPLATE:ENGINE-->')) throw new Error('expandReport: ขาด marker <!--TEMPLATE:ENGINE--> (ต้องมีคู่กับ STYLE)');
+  let data;
+  try { data = JSON.parse(m[1]); } catch (e) { throw new Error('expandReport: report-data JSON ไม่ถูกต้อง: ' + e.message); }
+  validateReportData(data);
+  // function replacer → ไม่ตีความ $ ในค่าแทนที่ (engine/CSS มี $)
+  return html
+    .replace('<!--TEMPLATE:STYLE-->', () => renderHead(data.theme))
+    .replace('<!--TEMPLATE:ENGINE-->', () => renderEngine(data));
+}
+
 function extractMeta(html, symbol) {
   const titleM = html.match(/<title>([\s\S]*?)<\/title>/i);
   const h1M = html.match(/<h1[^>]*>([\s\S]*?)<\/h1>/i);
@@ -270,7 +351,7 @@ function computeLeaders(reps) {
 }
 
 // export ฟังก์ชันให้ unit-test (test/build-test.js) — ต้องอยู่ก่อนโค้ดที่รัน build จริง
-module.exports = { extractMeta, extractMetrics, freshHash, injectModelCredit, injectContactFooter, decorateReport, pickHighlight, computeLeaders, HL_DEFS, AI_MODEL, AI_MAKER };
+module.exports = { extractMeta, extractMetrics, freshHash, injectModelCredit, injectContactFooter, decorateReport, pickHighlight, computeLeaders, HL_DEFS, AI_MODEL, AI_MAKER, expandReport, renderHead, renderEngine, validateReportData };
 // ถูก require เข้ามาเพื่อเทส → ส่งออกฟังก์ชันแล้วหยุด ไม่รัน build (top-level return ใช้ได้ใน CommonJS module)
 if (require.main !== module) return;
 
@@ -304,7 +385,8 @@ if (fs.existsSync(REPORTS_DIR)) {
 
     const rec = { symbol, file: entry.name, ...extractMeta(content, symbol), metrics: extractMetrics(content), updated, hash: h };
     reports.push(rec);
-    fs.writeFileSync(path.join(OUT, entry.name), decorateReport(content, rec)); // hash อิงต้นฉบับ, share meta+footer+ตัวนับใส่เฉพาะใน dist
+    // expandReport: source แบบ template (content-only) → inject โครงที่ใช้ร่วม ; source เก่า → identity (ไม่เปลี่ยน)
+    fs.writeFileSync(path.join(OUT, entry.name), decorateReport(expandReport(content), rec)); // hash อิงต้นฉบับ, share meta+footer+ตัวนับใส่เฉพาะใน dist
     log('report:', entry.name, updated === nowISO ? '(updated)' : '');
   }
 } else {
