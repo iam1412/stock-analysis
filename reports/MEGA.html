@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น เมก้า ไลฟ์ไซแอ็นซ์ (MEGA) — Stock Analysis Dashboard</title>
+<!-- ★ โมเดล AI ที่วิเคราะห์จริง — gate E28 บังคับ -->
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
+<script type="application/json" id="stock-meta">
+{"symbol":"MEGA","currency":"THB","price":34.50,"fairValue":40.00,"mos":13.75,"upside":15.94,"pe":14.55,"dividendYield":4.12,"roe":19.7}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#1deca8",
+    "accentDark": "#0fb37d",
+    "darkGrad": "linear-gradient(135deg,#043e2b 0%,#07734f 58%,#0cb67e 140%)",
+    "glow": "rgba(13,236,164,.35)",
+    "subColor": "#c2ebdd",
+    "headerMuted": "#a5d4c5",
+    "verdictText": "#d0f1e6",
+    "vcellLabel": "#a6ddcb",
+    "badge": "#1deca8",
+    "chgBg": "#e6f4ea",
+    "chgColor": "#1e8e3e"
+  },
+  "chart": {
+    "data": [
+      ["ม.ค.68", 31.50],
+      ["ก.พ.68", 32.50],
+      ["มี.ค.68", 29.25],
+      ["เม.ย.68", 30.25],
+      ["พ.ค.68", 25.50],
+      ["มิ.ย.68", 25.75],
+      ["ก.ค.68", 30.75],
+      ["ส.ค.68", 28.00],
+      ["ก.ย.68", 31.00],
+      ["ต.ค.68", 29.50],
+      ["พ.ย.68", 31.50],
+      ["ธ.ค.68", 33.50],
+      ["ม.ค.69", 36.00],
+      ["ก.พ.69", 38.00],
+      ["มี.ค.69", 34.00],
+      ["เม.ย.69", 35.75],
+      ["พ.ค.69", 36.00],
+      ["มิ.ย.69", 34.50]
+    ],
+    "min": 22,
+    "max": 42,
+    "grid": [22, 26, 30, 34, 38, 42],
+    "fairLine": 40.00,
+    "currency": "฿",
+    "highlight": [4, 13],
+    "gridFmt": "v.toFixed(0)",
+    "dataFmt": "d[1].toFixed(2)"
+  },
+  "gauge": { "min": 22, "max": 48, "cur": 34.50, "fair": 40.00, "fairLabelTop": true },
+  "fv": 40.00
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots"></div>
+    <div>
+      <span class="tag">SET: MEGA</span>
+      <span class="tag">สุขภาพ &amp; เภสัชกรรม (Healthcare &amp; Pharma)</span>
+      <span class="tag">จัดจำหน่ายยา OTC ตลาดเกิดใหม่</span>
+    </div>
+    <h1>เมก้า ไลฟ์ไซแอ็นซ์ (MEGA)</h1>
+    <div class="sub">จัดจำหน่ายยา OTC · ผลิตภัณฑ์สุขภาพ · FMCG ใน 30+ ประเทศ • เมียนมา · เวียดนาม · กัมพูชา · แอฟริกา · CIS • แบรนด์เป็ดแดง · Cenovis · Enervon · Mega We Care</div>
+    <div class="price-row">
+      <div>
+        <div class="px">฿34.50<small>(MEGA)</small></div>
+      </div>
+      <div class="chg">▲ +0.73% (วันนี้)</div>
+      <div class="px-meta">
+        ราคา ณ 24 มิ.ย. 2569<br>
+        กรอบ 52 สัปดาห์ ฿25.00 – ฿40.00<br>
+        ที่มา: SET Factsheet (set.or.th) • Yahoo Finance API • Kaohoon International
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">TTM / ปี 2567</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~฿30,080 ล้าน</div><div class="d">~871.87 ล้านหุ้น (par ฿0.50)</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~14.55x</div><div class="d">ต่ำกว่าค่าเฉลี่ยกลุ่มยา ~16–20x</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~16–20x</div><div class="d">ช่วง 2561–2565 เทรด 15–22x</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">~2.86x</div><div class="d">BVPS ~฿12.06 — ROE แข็งแกร่ง</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2024 (FY2567)</div><div class="v">~฿2,250 ล้าน</div><div class="d">Q2/2024: ฿563 ล้าน · EPS ~฿2.58</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿2.37</div><div class="d">คำนวณจาก P/E 14.55x × ราคา ฿34.50</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~฿12.06</div><div class="d">equity/หุ้น จาก P/BV 2.86x</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~19.7% / ~8.5%</div><div class="d">ROE สูงต่อเนื่อง สะท้อน asset-light model</div></div>
+
+      <div class="metric"><div class="k">รายได้รวม TTM</div><div class="v neu">~฿9,500 ล้าน</div><div class="d">เติบโตใน GDC (ประเทศกำลังพัฒนา)</div></div>
+      <div class="metric"><div class="k">EBITDA / EV/EBITDA</div><div class="v">~฿2,990 ล้าน / 8.85x</div><div class="d">EV ฿26,463 ล้าน (net cash position)</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~4.12%</div><div class="d">DPS ~฿1.42/หุ้น · payout ~60%</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">~0.60</div><div class="d">ความผันผวนต่ำกว่าตลาด SET โดยรวม</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~18 เดือน</h2><div class="hint">ราคาปิดรายเดือนจริง (Yahoo Finance API)</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#1deca8"></i>ราคา MEGA</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿40.00</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคา MEGA แกว่งในกรอบ ฿25–38 ตลอด 18 เดือน — ทำจุดต่ำสุด ฿25.50 ในเดือน พ.ค. 2568 (ไฮไลต์)
+        จากแรงขายเชิงเทคนิคและความกังวลตลาดเกิดใหม่ ก่อนฟื้นตัวแข็งแกร่งทะลุ ฿38 ในเดือน ก.พ. 2569 (ไฮไลต์)
+        ตามงบกำไรที่ดีกว่าคาดและความเชื่อมั่นนักลงทุนที่กลับมา ปัจจุบันราคาดึงกลับมาที่ ฿34.50
+        ยังต่ำกว่ามูลค่าเหมาะสม ฿40 ราว 14% — สะท้อนโอกาสสะสมสำหรับนักลงทุนระยะกลาง-ยาวในหุ้นยา OTC ตลาดเกิดใหม่
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION (เฉลี่ย 3 วิธี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS (TTM) ฿2.37 × P/E เป้าหมาย ~16x — อนุรักษ์นิยม (ต่ำกว่า hist. avg 18–20x); กลุ่มยา consumer ASEAN เทรด ~18–22x</div></div>
+        <div class="mval">฿37.92</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ฿1.42 × 1.05 = ฿1.491; g 5%, r 9% → ฿1.491 / (0.09−0.05) — อิงปันผล payout ~60% เติบโต 5%/ปี ระยะยาว</div></div>
+        <div class="mval">฿37.28</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 19.7% − g 5%)/(r 9% − g 5%) ≈ 3.68 × BVPS ฿12.06 — ROE สูงกว่าต้นทุนทุนมาก ควรเทรดบน BV</div></div>
+        <div class="mval">฿44.38</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿37.00 – ฿44.00</span></div>
+        <div class="r">฿40.00</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        วิธี P/E (฿37.92) และ DDM (฿37.28) ให้ค่าใกล้เคียงกันในฝั่งอนุรักษ์นิยม วิธี Justified P/BV (฿44.38) ให้ค่าสูงสุด
+        สะท้อน ROE ~20% ที่แข็งแกร่งกว่าต้นทุนทุน (r=9%) อย่างมีนัยสำคัญ — เฉลี่ย 3 วิธีได้ ~฿39.86 ปัดเป็น ฿40.00
+        สอดคล้องกับเป้านักวิเคราะห์ล่าสุดที่ ฿44–48 (ซื้อ Kaohoon 2567) ซึ่งใช้สมมติฐาน g และ r ที่แตกต่างกัน
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿34.50</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿40.00</div></div>
+        </div>
+        <div class="scale">
+          <span>฿28.00<br><small>MOS 30%</small></span>
+          <span>฿32.00<br><small>MOS 20%</small></span>
+          <span style="text-align:center">฿40.00<br><small>Fair Value</small></span>
+          <span style="text-align:right">฿44.00<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">฿46.00<br><small>เป้าเฉลี่ย Analyst</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน ฿34.50 อยู่ระหว่างจุดซื้อ MOS 20% (฿32.00) กับมูลค่าเหมาะสม (฿40.00) — ต่ำกว่ามูลค่าจริงราว 14%
+        โซนน่าสนใจสำหรับ value investor คือต่ำกว่า ฿32 (MOS 20%) โซน deep value ที่ ฿28 ใกล้ 52W low
+        นักวิเคราะห์ล่าสุดประเมินเป้า ฿44–48 (ซื้อ) บ่งชี้ upside +27–39% ในระยะ 12 เดือน
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict ok">
+        <div class="big">+13.8%</div>
+        <div class="txt">ราคาปัจจุบันต่ำกว่ามูลค่าเหมาะสม ~13.8% — MOS พอประมาณ เหมาะทยอยสะสม (ยังไม่ถึงโซน deep value)</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿32.00</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿28.00</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿40.00</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="34.50" step="0.05">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿34.50 • EPS ฐาน ~฿2.37 (TTM) • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS −2%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿26.76</div>
+          <div class="ret neg">−10.1%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿2.23</span></li>
+            <li><span>P/E ออก</span><span>12x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿4.26</span></li>
+            <li><span>สถานการณ์</span><span>ตลาดเกิดใหม่ชะลอ · ค่าเงิน · กฎระเบียบ</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +6%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿45.12</div>
+          <div class="ret pos">+43.1%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿2.82</span></li>
+            <li><span>P/E ออก</span><span>16x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿4.26</span></li>
+            <li><span>สถานการณ์</span><span>ขยายตลาด GDC + แบรนด์แข็งแกร่งต่อเนื่อง</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +10%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿56.88</div>
+          <div class="ret pos">+77.2%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿3.16</span></li>
+            <li><span>P/E ออก</span><span>18x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿4.26</span></li>
+            <li><span>สถานการณ์</span><span>ขยายตลาดใหม่ + re-rating สู่ระดับ regional pharma</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      ใช้ EPS TTM ฿2.37 เป็นฐาน · ปันผลรวม 3 ปี = DPS ~฿1.42/ปี × 3 = ฿4.26 · กรณี Base สอดคล้องกับ FV ฿40 และเป้านักวิเคราะห์
+      ผลตอบแทนหลักมาจากการเติบโต EPS ในตลาดเกิดใหม่ + re-rating เมื่อกลับสู่ระดับ P/E ปกติ · ปันผล ~4% ช่วยรองรับในกรณี Bear
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก &amp; ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>ผู้นำตลาดยา OTC ตลาดเกิดใหม่:</b> MEGA ครองตลาดเมียนมา กัมพูชา เวียดนาม และขยายสู่แอฟริกา/CIS — ชนชั้นกลางที่เพิ่มขึ้นหนุนการใช้จ่ายด้านสุขภาพระยะยาว</li>
+          <li><b>แบรนด์แข็งแกร่ง + Moat ในกลุ่ม GDC:</b> เป็ดแดง · Cenovis · Enervon · Mega We Care เป็นแบรนด์ที่ consumer trust สูงใน 30+ ประเทศ — ยากถูกแทนที่</li>
+          <li><b>ROE สูงอย่างต่อเนื่อง (~20%):</b> รูปแบบธุรกิจ asset-light (จัดจำหน่ายไม่ผลิตเอง) ต้องการเงินลงทุนน้อย FCF สูง — ROE ดีกว่าค่าเฉลี่ยกลุ่มยา</li>
+          <li><b>งบดุลแข็งแกร่ง + Net Cash:</b> EV &lt; Market Cap แสดงถึง net cash position — ยืดหยุ่นขยายธุรกิจ M&amp;A หรือเพิ่มปันผลพิเศษได้</li>
+          <li><b>Valuation ต่ำกว่าระดับปกติ:</b> P/E 14.55x ต่ำกว่า hist. avg (~18–20x) และต่ำกว่ากลุ่มยา ASEAN — มี re-rating upside เมื่อตลาดมองข้ามความกังวลชั่วคราว</li>
+          <li><b>การฟื้นตัวของตลาดหลัก:</b> เมียนมาและกัมพูชาทยอยฟื้นตัว + เวียดนามเติบโตแข็งแกร่ง หนุนรายได้กลับสู่ระดับก่อนหน้า</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>ความเสี่ยงการเมือง/ภูมิรัฐศาสตร์:</b> เมียนมา กัมพูชา เวียดนาม มีความเสี่ยงการเมืองและกฎระเบียบสูง — การเปลี่ยนนโยบายอาจกระทบรายได้รุนแรง</li>
+          <li><b>ความเสี่ยงค่าเงิน (Multi-currency):</b> รายได้ใน 30+ ประเทศมีค่าเงินหลากหลาย — การแข็งค่าของบาทหรืออ่อนค่าของสกุลเงินท้องถิ่นกดกำไรสุทธิเมื่อแปลงค่า</li>
+          <li><b>การแข่งขันจากยาสามัญ/แบรนด์ท้องถิ่น:</b> ตลาดเกิดใหม่มีผู้ผลิตยาราคาถูกเพิ่มขึ้น — อาจกดดัน margin ในระยะยาวหากไม่พัฒนาแบรนด์ต่อเนื่อง</li>
+          <li><b>Concentration Risk:</b> รายได้พึ่งพาตลาดหลักไม่กี่ประเทศ — หากตลาดใดชะลอรุนแรงกระทบงบรวมมาก โดยเฉพาะเมียนมาที่ยังไม่เสถียร</li>
+          <li><b>Regulatory / Quality Risk:</b> ธุรกิจยาอยู่ภายใต้กฎระเบียบเข้มงวด — การปรับเปลี่ยนกฎหมายยา/นำเข้าในตลาดเป้าหมายสร้างต้นทุนสูงและชะลอการขาย</li>
+          <li><b>การเติบโตช้าในตลาดอิ่มตัว:</b> ในตลาดเก่าที่ครองนาน การเติบโตจะ low-single-digit — ต้องพึ่งการขยายสู่ตลาดใหม่ที่มี execution risk สูงกว่า</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>หุ้นยา OTC ตลาดเกิดใหม่คุณภาพสูง — ราคาต่ำกว่ามูลค่าจริงในช่วงชั่วคราว</h2>
+      <p>
+        MEGA Lifesciences เป็นผู้นำการจัดจำหน่ายยา OTC ผลิตภัณฑ์สุขภาพ และ FMCG ใน 30+ ประเทศตลาดเกิดใหม่
+        ด้วย ROE สูงต่อเนื่อง ~20% งบดุลแข็งแกร่ง (net cash) และแบรนด์ที่เป็นที่รู้จักสูง ธุรกิจสร้างกระแสเงินสดสม่ำเสมอ
+        ราคาปัจจุบัน ฿34.50 เทรดที่ P/E 14.55x — ต่ำกว่าค่าเฉลี่ย 5 ปี (~18–20x) และต่ำกว่ามูลค่าเหมาะสม ฿40 ราว 14%
+        ให้ yield ปันผล ~4.1% ในขณะที่รอ re-rating — นักวิเคราะห์ Buy เป้า ฿44–48 บ่งชี้ upside +27–39%
+      </p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿40.00 <span style="font-size:12px;color:#cab9a8">(฿37.00–฿44.00)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +13.8%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿46.00 (ซื้อ)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ทยอยสะสมในราคาปัจจุบัน ฿34–35 (MOS ~14%) เพิ่มน้ำหนักหากย่อต่ำกว่า ฿32.00 (MOS 20%) และสะสมหนักที่ ฿28 (MOS 30%) — เหมาะกับนักลงทุนที่ต้องการหุ้น Healthcare consumer ปันผลดี ในธีมชนชั้นกลางตลาดเกิดใหม่ระยะ 3–5 ปี
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • อ้างอิง: SET Factsheet (set.or.th) ณ 24 มิ.ย. 2569 (P/E 14.55x, P/BV 2.86x, Market Cap, EV/EBITDA; งวด FY2567) • Yahoo Finance API (ราคาปิดรายเดือนจริง 18 เดือน ม.ค. 2568–มิ.ย. 2569) • Kaohoon International (บทวิเคราะห์นักวิเคราะห์ เป้า ฿44–48 ซื้อ ปี 2567; กำไรสุทธิ Q2/67 ฿563 ล้าน; FY2567 ~฿2,250 ล้าน)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 24 มิ.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
