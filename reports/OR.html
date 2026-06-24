@@ -13,50 +13,45 @@
 <script type="application/json" id="report-data">
 {
   "theme": {
-    "accent":       "#1e8e3e",
-    "accentDark":   "#145c2a",
-    "darkGrad":     "linear-gradient(135deg,#0d3320 0%,#1a5c30 60%,#0d3320 100%)",
-    "glow":         "rgba(30,142,62,0.35)",
-    "subColor":     "#a5d6a7",
-    "headerMuted":  "rgba(255,255,255,0.55)",
-    "verdictText":  "#e8f5e9",
-    "vcellLabel":   "#a5d6a7",
-    "badge":        "#1e8e3e",
-    "chgBg":        "rgba(234,67,53,0.18)",
-    "chgColor":     "#ef9a9a"
+    "accent": "#1e8e3e",
+    "accentDark": "#145c2a",
+    "darkGrad": "linear-gradient(135deg,#0d3320 0%,#1a5c30 60%,#0d3320 100%)",
+    "glow": "rgba(30,142,62,0.35)",
+    "subColor": "#a5d6a7",
+    "headerMuted": "rgba(255,255,255,0.55)",
+    "verdictText": "#e8f5e9",
+    "vcellLabel": "#a5d6a7",
+    "badge": "#1e8e3e",
+    "chgBg": "var(--red-soft)",
+    "chgColor": "#c5221f"
   },
   "chart": {
     "data": [
-      ["ม.ค. 25", 11.00],
-      ["ก.พ. 25", 11.80],
-      ["มี.ค. 25", 14.50],
-      ["เม.ย. 25", 11.80],
-      ["พ.ค. 25", 11.30],
-      ["มิ.ย. 25", 13.90],
-      ["ก.ค. 25", 13.30],
-      ["ส.ค. 25", 14.20],
-      ["ก.ย. 25", 14.70],
-      ["ต.ค. 25", 13.50],
-      ["พ.ย. 25", 13.30],
-      ["ธ.ค. 25", 13.60],
-      ["ม.ค. 26", 13.40],
-      ["ก.พ. 26", 13.10],
-      ["มี.ค. 26", 12.30],
-      ["เม.ย. 26", 12.40],
-      ["พ.ค. 26", 12.10],
-      ["มิ.ย. 26", 12.20]
+      ["มิ.ย. 25", 13.9],
+      ["ก.ค. 25", 13.3],
+      ["ส.ค. 25", 14.2],
+      ["ก.ย. 25", 14.7],
+      ["ต.ค. 25", 13.5],
+      ["พ.ย. 25", 13.3],
+      ["ธ.ค. 25", 13.6],
+      ["ม.ค. 26", 13.4],
+      ["ก.พ. 26", 13.1],
+      ["มี.ค. 26", 12.3],
+      ["เม.ย. 26", 12.4],
+      ["พ.ค. 26", 12.1],
+      ["มิ.ย. 26", 12.2]
     ],
     "min": 9.5,
     "max": 16.5,
     "grid": [10, 11, 12, 13, 14, 15, 16],
     "fairLine": 13.9,
     "currency": "฿",
-    "highlight": [2, 8]
+    "highlight": [3, 11]
   },
   "gauge": {
-    "min":  8.0,
-    "max":  18.0,
-    "cur":  12.2,
+    "min": 8,
+    "max": 18,
+    "cur": 12.2,
     "fair": 13.9,
     "fairLabelTop": true
   },
@@ -82,7 +77,7 @@
       <div>
         <div class="px">฿12.20<small>(OR)</small></div>
       </div>
-      <div class="chg">▼ −5.4% (ม.ค.–มิ.ย. 2569)</div>
+      <div class="chg">▼ −12.2% (รอบปี)</div>
       <div class="px-meta">
         ราคา ณ 24 มิถุนายน 2569 (FY2025 งบสิ้น ธ.ค. 2025)<br>
         กรอบ 52 สัปดาห์ ฿10.10 – ฿15.60<br>
@@ -114,7 +109,7 @@
 
   <!-- ===== 2. PRICE CHART ===== -->
   <section>
-    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~18 เดือน</h2><div class="hint">ข้อมูลจริงจาก Yahoo Finance API (OR.BK, monthly)</div></div>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ข้อมูลจริงจาก Yahoo Finance API (OR.BK, monthly)</div></div>
     <div class="card">
       <div class="chart-wrap">
         <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>

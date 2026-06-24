@@ -27,6 +27,7 @@ const REPORTS_DIR = path.join(__dirname, '..', 'reports');
 const TOL_MOS_PP = 2.0;   // MOS แสดง vs คำนวณ — ต่างได้ ≤ 2 จุด %
 const TOL_FV_REL = 0.01;  // FV ใน JS vs ในกล่อง — ต่างได้ ≤ 1%
 const TOL_SCN_REL = 0.07; // scenario EPS×P/E vs target — ต่างได้ ≤ 7%
+const TOL_CHG_PP = 12;    // ป้าย % รอบปี (header) vs ผลตอบแทนปลายกราฟ — ต่างได้ ≤ 12 จุด % (E36)
 
 // ---------- helpers ----------
 const stripCode = (h) =>
@@ -137,7 +138,7 @@ function buildCtx(html, name) {
       catch (e) { return { present: true, ok: false, err: e.message }; }
     })(),
     // ป้าย change ใน header (.chg) — เช่น "▲ +31% ในรอบปี" / "▼ −5%" (ทิศทาง + %) — ใช้โดย E34 (สี↔ทิศทาง), W11 (กราฟ↔headline)
-    chg: (() => { const m = html.match(/<div class="chg">([\s\S]*?)<\/div>/i); return m ? stripTags(m[1]).replace(/\s+/g, ' ').trim() : null; })(),
+    chg: (() => { const m = html.match(/<div class="chg"[^>]*>([\s\S]*?)<\/div>/i); return m ? stripTags(m[1]).replace(/\s+/g, ' ').trim() : null; })(),
     // บล็อก report-data (chart/gauge/theme ต่อหุ้น) — ใช้โดย E34 (theme.chgBg/chgColor), W11 (chart.data), W12 (label ว่าง)
     rd: (() => {
       const m = html.match(/<script[^>]*\bid=["']report-data["'][^>]*>([\s\S]*?)<\/script>/i);
@@ -260,6 +261,45 @@ const CHECKS = [
     return null;
   } },
 
+  // ── E35: ป้าย % ใน header (.chg) ต้องเป็น "ผลตอบแทนรอบปี" (เทียบราคา ~1 ปีก่อน) ไม่ใช่ % รายวัน/ช่วงอื่น ──
+  // กฎ CLAUDE.md ข้อ 2: รูปแบบ "▲/▼ ±X.X% (รอบปี)" = ผลตอบแทนปลายกราฟ ~1 ปี (จุดแรก→ท้าย ; ตรวจคู่กับ E36)
+  // ยกเว้นหุ้น IPO ใหม่ (<1 ปี ยังไม่มีผลตอบแทนรอบปี) → ใช้ "(ตั้งแต่ IPO)" แทน · "≈ ทรงตัว (รอบปี)" สำหรับหุ้นที่แทบไม่ขยับ
+  { id: 'E35', level: 'error', label: 'header % = ผลตอบแทนรอบปี (รอบปี)', fn: (c) => {
+    if (!c.chg) return 'header ไม่มีป้าย % เปลี่ยนแปลง (.chg) — ต้องแสดงผลตอบแทน "รอบปี" เช่น "▲ +72.1% (รอบปี)"';
+    const annual = /รอบปี/.test(c.chg);
+    const ipo = /IPO/i.test(c.chg);   // หุ้น IPO ใหม่ <1 ปี — ผลตอบแทนตั้งแต่ IPO
+    if (!annual && !ipo) return `ป้าย % ใน header ("${c.chg}") ต้องเป็นผลตอบแทน "รอบปี" (เทียบราคา ~1 ปีก่อน) ไม่ใช่ % รายวัน/ช่วงอื่น — รูปแบบ "▲ +72.1% (รอบปี)" (หุ้น IPO <1 ปี ใช้ "(ตั้งแต่ IPO)")`;
+    const hasDir = /[▲▼]/.test(c.chg) && /\d/.test(c.chg);
+    const flat = /ทรงตัว/.test(c.chg);
+    if (!hasDir && !flat) return `ป้าย % รอบปี ("${c.chg}") ต้องมีทิศทาง (▲/▼) + ตัวเลข % หรือระบุ "ทรงตัว"`;
+    return null;
+  } },
+
+  // ── E36: ป้าย % รอบปี ต้อง = ผลตอบแทนปลายกราฟ (จุดแรก→จุดท้าย) — header กับกราฟต้องมาจากชุดราคาเดียวกัน ──
+  // (เดิมเป็น W11 warning · เลื่อนเป็น error เพราะ "รอบปี = ผลตอบแทนกราฟ ~1 ปี" เป็นกฎบังคับแล้ว — CLAUDE.md ข้อ 2)
+  // "≈ ทรงตัว" (ไม่มี %) → ข้าม · ยังจับ "ตั้งแต่ IPO" ด้วย (มี % → ต้องตรงปลายกราฟเช่นกัน)
+  { id: 'E36', level: 'error', label: '% รอบปี = ผลตอบแทนปลายกราฟ (จุดแรก→ท้าย)', fn: (c) => {
+    if (!c.chg) return null;                                                   // E35 จับ chg ขาดแล้ว
+    const m = c.chg.match(/([▲▼]?)\s*([+\-−]?\s*\d+(?:\.\d+)?)\s*%/);
+    if (!m) return null;                                                       // "ทรงตัว" ไม่มี % → ข้าม
+    const data = (c.rd && c.rd.ok && c.rd.data && c.rd.data.chart) ? c.rd.data.chart.data : null;
+    if (!Array.isArray(data) || data.length < 2) return null;
+    let stated = parseFloat(m[2].replace('−', '-').replace(/\s/g, ''));
+    if (m[1] === '▼' && stated > 0) stated = -stated;
+    const first = data[0] && data[0][1], last = data[data.length - 1] && data[data.length - 1][1];
+    if (typeof first !== 'number' || typeof last !== 'number' || first === 0) return null;
+    const chartPct = (last - first) / first * 100, diff = Math.abs(chartPct - stated);
+    return diff > TOL_CHG_PP ? `ป้าย "${c.chg}" = ${stated}% แต่กราฟจุดแรก ${first} → จุดท้าย ${last} = ${chartPct.toFixed(1)}% (ต่าง ${diff.toFixed(1)} จุด %) — header กับกราฟต้องมาจากชุดราคาเดียวกัน` : null;
+  } },
+
+  // ── E37: กราฟราคา (section 2) ต้องเป็น ~1 ปี — ไม่เกิน ~13 จุด (รายเดือน 12 เดือน = 13 จุด, รายสองเดือน = ~8 จุด) ──
+  // กฎ CLAUDE.md ข้อ 2: ตัดกราฟ 18 เดือน/1.5 ปี ให้เหลือ ~1 ปี (12 เดือนล่าสุด) เพื่อให้ "รอบปี" ของ header ตรงกับช่วงกราฟ
+  { id: 'E37', level: 'error', label: 'กราฟ ~1 ปี (ไม่เกิน ~13 จุด)', fn: (c) => {
+    const data = (c.rd && c.rd.ok && c.rd.data && c.rd.data.chart) ? c.rd.data.chart.data : null;
+    if (!Array.isArray(data)) return null;
+    return data.length > 13 ? `กราฟมี ${data.length} จุด — เกิน ~1 ปี (กราฟรายเดือน ~1 ปี = ไม่เกิน 13 จุด) · section 2 ต้องเป็น "ราคาย้อนหลัง ~1 ปี" (ตัดให้เหลือ ~12 เดือนล่าสุด)` : null;
+  } },
+
   { id: 'W01', level: 'warn', label: 'scenario: EPS×P/E ≈ ราคาเป้า', fn: (c) => { const bad = []; const nm = ['Bear', 'Base', 'Bull']; c.scenarios.forEach((s, i) => { if (s.tgt == null || s.eps == null || s.pe == null) return; const calc = s.eps * s.pe; const d = Math.abs(calc - s.tgt) / s.tgt; if (d > TOL_SCN_REL) bad.push(`${nm[i] || ('#' + i)}: EPS ${s.eps}×P/E ${s.pe}=${calc.toFixed(0)} ≠ target ${s.tgt} (ต่าง ${(d * 100).toFixed(0)}%)`); }); return bad.length ? bad.join(' ; ') : null; } },
   { id: 'W02', level: 'warn', label: 'สกุลเงินปน', fn: (c) => { if (c.isTHB && /\$/.test(c.text)) { const n = (c.text.match(/\$/g) || []).length; return `รายงานสกุลบาท (฿) แต่พบ "$" ${n} จุดในเนื้อหา (ควรใช้ ฿)`; } if (!c.isTHB && /฿/.test(c.text)) { const n = (c.text.match(/฿/g) || []).length; return `รายงานสกุลดอลลาร์ ($) แต่พบ "฿" ${n} จุดในเนื้อหา`; } return null; } },
   { id: 'W03', level: 'warn', label: 'CSS เพี้ยน .seg-label', fn: (c) => /transform:transl\(/.test(c.html) ? 'พบ transform:transl( (ควรเป็น translate) — dead CSS .seg-label ใน template' : null },
@@ -273,21 +313,6 @@ const CHECKS = [
   // stock-meta P/E·Yield·ROE เทียบค่าที่โชว์ — เตือนเท่านั้น (label P/E/ROE ในรายงานไม่ standard เสมอ → ดึงไม่ได้บางไฟล์)
   { id: 'W10', level: 'warn', label: 'stock-meta P/E·Yield·ROE ≈ ที่โชว์', fn: (c) => { const sm = c.sm; if (!sm.present || !sm.ok || !sm.data) return null; const d = sm.data, m = c.metrics, bad = []; if (m.pe != null && isFiniteNum(d.pe) && Math.abs(d.pe - m.pe) > Math.max(0.05 * Math.abs(m.pe), 0.1)) bad.push(`pe ${d.pe} ≠ P/E ที่โชว์ ${m.pe}`); if (m.yield != null && isFiniteNum(d.dividendYield) && Math.abs(d.dividendYield - m.yield) > Math.max(0.1 * Math.abs(m.yield), 0.15)) bad.push(`dividendYield ${d.dividendYield} ≠ ปันผลที่โชว์ ${m.yield}`); if (m.roe != null && isFiniteNum(d.roe) && Math.abs(d.roe - m.roe) > Math.max(0.08 * Math.abs(m.roe), 0.5)) bad.push(`roe ${d.roe} ≠ ROE ที่โชว์ ${m.roe}`); return bad.length ? bad.join(' ; ') : null; } },
 
-  // ── W11: ป้าย change แบบ "รอบปี" ควรสอดคล้องกับปลายกราฟ (จุดแรก→จุดท้าย) — กันแก้ headline แต่ลืมแก้กราฟ ──
-  // เฉพาะป้ายที่ระบุ "รอบปี" (ป้ายรายวันเช่น "▲ +6.8% (22 มิ.ย.)" ไม่ใช่ผลตอบแทนรอบปี → ข้าม)  •  พบ PANW/PWR เพี้ยน
-  { id: 'W11', level: 'warn', label: 'change "รอบปี" ≈ ปลายกราฟ (จุดแรก→ท้าย)', fn: (c) => {
-    if (!c.chg || !/รอบปี/.test(c.chg)) return null;
-    const data = (c.rd && c.rd.ok && c.rd.data && c.rd.data.chart) ? c.rd.data.chart.data : null;
-    if (!Array.isArray(data) || data.length < 2) return null;
-    const m = c.chg.match(/([▲▼]?)\s*([+\-−]?\s*\d+(?:\.\d+)?)\s*%/);
-    if (!m) return null;
-    let stated = parseFloat(m[2].replace('−', '-').replace(/\s/g, ''));
-    if (m[1] === '▼' && stated > 0) stated = -stated;
-    const first = data[0] && data[0][1], last = data[data.length - 1] && data[data.length - 1][1];
-    if (typeof first !== 'number' || typeof last !== 'number' || first === 0) return null;
-    const chartPct = (last - first) / first * 100, diff = Math.abs(chartPct - stated);
-    return diff > 10 ? `ป้าย "${c.chg}" = ${stated}% แต่กราฟจุดแรก ${first} → จุดท้าย ${last} = ${chartPct.toFixed(1)}% (ต่าง ${diff.toFixed(1)} จุด %) — headline กับกราฟไม่ตรงกัน` : null;
-  } },
   // ── W12: ทุกจุดกราฟต้องมี label (แกน x) ไม่ว่าง — กัน ["",value] ที่ทำให้แกน x โชว์ช่องว่าง (พบ DDOG/WDC) ──
   { id: 'W12', level: 'warn', label: 'label จุดกราฟไม่ว่าง', fn: (c) => {
     const data = (c.rd && c.rd.ok && c.rd.data && c.rd.data.chart) ? c.rd.data.chart.data : null;
