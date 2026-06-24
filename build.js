@@ -111,9 +111,13 @@ function validateReportData(d) {
   if (!Array.isArray(c.highlight) || !c.highlight.length) throw new Error('report-data.chart.highlight ต้องเป็น array ของดัชนีจุดที่ไฮไลต์ (เช่น [6,7])');
   for (const idx of c.highlight) if (!Number.isInteger(idx) || idx < 0 || idx >= c.data.length) throw new Error(`report-data.chart.highlight ดัชนีนอกช่วง: ${JSON.stringify(idx)} (ต้องเป็นจำนวนเต็ม 0..${c.data.length - 1})`);
   if (c.currency != null && (typeof c.currency !== 'string' || !c.currency || c.currency.length > 3)) throw new Error(`report-data.chart.currency ต้องเป็นสัญลักษณ์สั้น (เช่น "$"/"฿") — พบ ${JSON.stringify(c.currency)}`);
-  const FMT_OK = /^(v|d\[1\])(\.toFixed\([0-4]\))?$|^Math\.round\((?:v|d\[1\])\)$/;  // whitelist นิพจน์ format (กัน inject)
-  if (c.gridFmt != null && !FMT_OK.test(c.gridFmt)) throw new Error(`report-data.chart.gridFmt ต้องเป็น v / v.toFixed(n) / Math.round(v) — พบ ${JSON.stringify(c.gridFmt)}`);
-  if (c.dataFmt != null && !FMT_OK.test(c.dataFmt)) throw new Error(`report-data.chart.dataFmt ต้องเป็น d[1] / d[1].toFixed(n) / Math.round(d[1]) — พบ ${JSON.stringify(c.dataFmt)}`);
+  // whitelist นิพจน์ format (กัน inject) — แยกตามตัวแปรใน scope จริงของ engine:
+  //   gridFmt อยู่ใน grid.forEach(v=>…) → ต้องใช้ v เท่านั้น  •  dataFmt อยู่ใน data.forEach((d,i)=>…) → ต้องใช้ d[1] เท่านั้น
+  //   (รวมเป็น regex เดียวเหมือนเดิมจะรับ v ให้ dataFmt ได้ → runtime ReferenceError: v is not defined → กราฟ/gauge/calc ดับเงียบ ๆ)
+  const GRID_FMT_OK = /^v(\.toFixed\([0-4]\))?$|^Math\.round\(v\)$/;
+  const DATA_FMT_OK = /^d\[1\](\.toFixed\([0-4]\))?$|^Math\.round\(d\[1\]\)$/;
+  if (c.gridFmt != null && !GRID_FMT_OK.test(c.gridFmt)) throw new Error(`report-data.chart.gridFmt ต้องอ้างตัวแปร v เท่านั้น: v / v.toFixed(n) / Math.round(v) — พบ ${JSON.stringify(c.gridFmt)}`);
+  if (c.dataFmt != null && !DATA_FMT_OK.test(c.dataFmt)) throw new Error(`report-data.chart.dataFmt ต้องอ้างตัวแปร d[1] เท่านั้น: d[1] / d[1].toFixed(n) / Math.round(d[1]) — พบ ${JSON.stringify(c.dataFmt)}`);
   need(c.min, 'chart.min'); need(c.max, 'chart.max'); need(c.fairLine, 'chart.fairLine');
   if (!g || typeof g !== 'object') throw new Error('report-data.gauge ต้องเป็น object');
   need(g.min, 'gauge.min'); need(g.max, 'gauge.max'); need(g.cur, 'gauge.cur'); need(g.fair, 'gauge.fair');

@@ -139,6 +139,19 @@ ok(threw(() => b.expandReport(NEWDOC.replace('[["a",1],["b",2],["c",3]]', '[["a"
 ok(threw(() => b.expandReport('<!--TEMPLATE:STYLE--><html></html>')), 'expandReport: มี STYLE marker แต่ไม่มีบล็อก report-data → throw');
 ok(threw(() => b.expandReport(NEWDOC.replace('<!--TEMPLATE:ENGINE-->', ''))), 'expandReport: ขาด ENGINE marker (มีแต่ STYLE) → throw');
 
+// ── gridFmt/dataFmt: ต้องอ้างตัวแปรให้ตรง scope ของ engine (regression: bug CPN/CPF/HMPRO) ──
+//   engine: gridFmt อยู่ใน grid.forEach(v=>…) ใช้ v  •  dataFmt อยู่ใน data.forEach((d,i)=>…) ใช้ d[1]
+//   ก่อนแก้: regex รวมรับ "v.toFixed(2)" ให้ dataFmt ได้ → ตอน render โยน ReferenceError: v is not defined → กราฟ/gauge/calc ดับทั้ง IIFE
+const withFmt = (g, dd) => NEWDOC.replace('"highlight":[0,2]', `"highlight":[0,2],"gridFmt":"${g}","dataFmt":"${dd}"`);
+ok(threw(() => b.expandReport(withFmt('v.toFixed(0)', 'v.toFixed(2)'))), 'validateReportData: dataFmt อ้าง v (ไม่มีใน scope data.forEach) → throw (กันกราฟดับเงียบ — bug CPN/CPF/HMPRO)');
+ok(threw(() => b.expandReport(withFmt('d[1].toFixed(0)', 'd[1].toFixed(2)'))), 'validateReportData: gridFmt อ้าง d[1] (ไม่มีใน scope grid.forEach) → throw (reverse)');
+ok(threw(() => b.expandReport(withFmt('v', 'Math.round(v)'))), 'validateReportData: dataFmt = Math.round(v) → throw (ต้องเป็น d[1])');
+{
+  const exFmt = b.expandReport(withFmt('v.toFixed(0)', 'd[1].toFixed(1)'));
+  ok(/>\$\{cur\}\$\{d\[1\]\.toFixed\(1\)\}</.test(exFmt), 'validateReportData: dataFmt = d[1].toFixed(1) ถูก scope → bake เป็น ${cur}${d[1].toFixed(1)} (รันได้จริง ไม่ throw runtime)');
+  ok(/>\$\{cur\}\$\{v\.toFixed\(0\)\}</.test(exFmt), 'validateReportData: gridFmt = v.toFixed(0) ถูก scope → bake เป็น ${cur}${v.toFixed(0)}');
+}
+
 console.log('\n' + '─'.repeat(50));
 console.log(`build-test: ${n - fails}/${n} ผ่าน`);
 if (fails) { console.log('\n❌ build.js มีพฤติกรรมผิด — แก้ build.js ก่อน push\n'); process.exit(1); }
