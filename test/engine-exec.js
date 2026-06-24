@@ -87,6 +87,12 @@ function assertRendered(doc) {
   if (!fair || !/%$/.test(String(fair.style.left || ''))) e.push('เข็ม gauge "เหมาะสม" (#mFair) ไม่ถูกตั้งตำแหน่ง (style.left)');
   const mos = doc.els.mosOut;
   if (!mos || !/MOS/.test(String(mos.innerHTML || ''))) e.push('เครื่องคิดเลข MOS (#mosOut) ไม่ให้ผลลัพธ์ (calc() ไม่ทำงาน)');
+  // พิกัด NaN/Infinity = render "สำเร็จแต่ล่องหน" (เช่น min==max → ys หาร 0, fv=0 → MOS Infinity) — substring <path>/<circle> ยังผ่าน จึงต้องเช็คเพิ่ม
+  const bad = /NaN|Infinity/;
+  if (chart && bad.test(String(chart.innerHTML))) e.push('priceChart มีพิกัด NaN/Infinity (กราฟล่องหน — bounds degenerate/ข้อมูลไม่เป็นตัวเลข)');
+  if (cur && bad.test(String(cur.style.left || ''))) e.push('#mCur.left = NaN/Infinity (gauge bounds degenerate)');
+  if (fair && bad.test(String(fair.style.left || ''))) e.push('#mFair.left = NaN/Infinity (gauge bounds degenerate)');
+  if (mos && bad.test(String(mos.innerHTML || ''))) e.push('#mosOut = NaN/Infinity (fv=0?)');
   return e;
 }
 
@@ -108,6 +114,10 @@ function selfCheck() {
   const broken = body.replace('${cur}${d[1]}', '${cur}${v}');
   if (broken === body) fails.push('selfCheck: หา token ป้ายจุด ${cur}${d[1]} ไม่เจอ (engine เปลี่ยนรูปแบบ? อัปเดต self-check)');
   else if (runEngine(broken, 100).ok) fails.push('selfCheck: engine ที่อ้าง v นอก scope ไม่ถูกจับเป็น throw (harness เป็น no-op!)');
+  // bounds degenerate (min==max → ys หาร 0 → พิกัด NaN, fv=0 → MOS Infinity) — engine ไม่ throw แต่ render ล่องหน → assertRendered ต้องจับ
+  const degen = renderEngine({ theme: { accent: '#0071e3' }, chart: { data: [['a', 2], ['b', 2], ['c', 2]], min: 2, max: 2, grid: [2], fairLine: 2, currency: '฿', highlight: [0, 2] }, gauge: { min: 2, max: 2, cur: 2, fair: 2 }, fv: 0 });
+  const rDeg = runEngine(extractEngine(degen), 100);
+  if (rDeg.ok && assertRendered(rDeg.doc).length === 0) fails.push('selfCheck: bounds degenerate (พิกัด NaN/Infinity) ไม่ถูกจับ — guard NaN ใน assertRendered หาย?');
   return fails;
 }
 

@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="th">
+<!--
+  ════════════════════════════════════════════════════════════════════════════
+  SKELETON — หุ้นไทย (THB ฿ / ตลาด SET)        ★ ก๊อปไฟล์นี้เป็นจุดตั้งต้นหุ้นไทย
+  ════════════════════════════════════════════════════════════════════════════
+  วิธีใช้:  cp _template/skeleton-th.html reports/<SYMBOL>.html  แล้วแทนทุก {{...}} ด้วยข้อมูลจริง
+  • ทุกช่องที่ต้องแก้คือ {{...}}  — ห้ามเหลือค้าง (gate E13 จะ error ถ้าเจอ {{ }} ในรายงาน)
+  • ตัวเลขต้องสอดคล้องกันตามกฎใน CLAUDE.md ข้อ 7 — เช่น MOS20={{FV}}×0.8, MOS=(FV−price)/FV
+  • เลือกสีแบรนด์ใน theme (ห้ามปล่อย default) — ดู tools/brand-colors.md + tools/seeds.json
+  • โครง CSS/engine ถูก inject ตอน build (marker STYLE/ENGINE) — ไม่ต้องแตะ
+  ════════════════════════════════════════════════════════════════════════════
+-->
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น {{COMPANY_TITLE}} ({{SYMBOL}}) — Stock Analysis Dashboard</title>
+<!-- ★ ใส่รุ่นโมเดล AI ที่ใช้วิเคราะห์จริง (Opus→"Claude Opus 4.8", Sonnet→"Claude Sonnet 4.6") — gate E28 บังคับ -->
+<meta name="ai-model" content="Claude Opus 4.8">
+<!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
+<script type="application/json" id="stock-meta">
+{"symbol":"{{SYMBOL}}","currency":"THB","price":{{PRICE}},"fairValue":{{FV}},"mos":{{MOS}},"upside":{{UPSIDE}},"pe":{{PE}},"dividendYield":{{DIV_YIELD}},"roe":{{ROE}}}
+</script>
+<!--
+  report-data: ธีมสี + ข้อมูลกราฟ/gauge ต่อหุ้น (build เอาไปวาด)  ดู schema เต็มใน CLAUDE.md ข้อ 9
+  • theme.* = สีแบรนด์ (accent ห้ามเป็นน้ำเงิน default) • chart.fairLine = gauge.fair = fv = {{FV}}
+  • gauge.cur = ราคาปัจจุบัน = {{PRICE}} • highlight = ดัชนีจุดเด่นบนกราฟ (เช่น [2,7])
+  • dataFmt อ้าง d[1] เท่านั้น, gridFmt อ้าง v เท่านั้น (ผิด scope = กราฟดับ)
+-->
+<script type="application/json" id="report-data">
+{{REPORT_DATA}}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">{{GDOTS}}</div>
+    <div>
+      <span class="tag">SET: {{SYMBOL}}</span>
+      <span class="tag">{{SECTOR_TAG}}</span>
+      <span class="tag">{{NICHE_TAG}}</span>
+    </div>
+    <!-- ★ คำโปรยธุรกิจ (gate E32) — .sub ต้องอยู่ติดใต้ </h1> (ห้ามมีคอมเมนต์/แท็กคั่น) : บริษัททำอะไร ใช้ • คั่นกลุ่ม -->
+    <h1>{{COMPANY_H1}}</h1>
+    <div class="sub">{{SUB}}</div>
+    <div class="price-row">
+      <div>
+        <div class="px">฿{{PRICE}}<small>({{SYMBOL}})</small></div>
+      </div>
+      <div class="chg">{{CHANGE}}</div>
+      <div class="px-meta">
+        ราคา ณ {{PRICE_DATE}}<br>
+        กรอบ 52 สัปดาห์ {{RANGE_52W}}<br>
+        ที่มา: {{SOURCES}}
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">{{METRICS_HINT}}</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">{{MKT_CAP}}</div><div class="d">{{SHARES}}</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~{{PE}}x</div><div class="d">{{PE_NOTE}}</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">{{PE_AVG}}</div><div class="d">{{PE_RANGE}}</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">{{PBV}}</div><div class="d">{{PBV_NOTE}}</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY{{FY}}</div><div class="v">{{NET_PROFIT}}</div><div class="d">{{NET_PROFIT_YOY}}</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿{{EPS_TTM}}</div><div class="d">{{EPS_FY_NOTE}}</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~฿{{BVPS}}</div><div class="d">{{BVPS_NOTE}}</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~{{ROE}}% / {{ROA}}%</div><div class="d">{{ROE_NOTE}}</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">{{REV_TTM}}</div><div class="d">{{REV_NOTE}}</div></div>
+      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">{{MARGIN}}</div><div class="d">{{MARGIN_NOTE}}</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~{{DIV_YIELD}}%</div><div class="d">{{DIV_NOTE}}</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">{{BETA}}</div><div class="d">{{BETA_NOTE}}</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:{{ACCENT}}"></i>ราคา {{SYMBOL}}</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿{{FV}}</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        <!-- ✏️ บรรยายการเคลื่อนไหวราคา ~1 ปี: จุดสูง/ต่ำ, เปลี่ยนแปลง %, สาเหตุหลัก -->
+        {{CHART_NARRATIVE}}
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION (เฉลี่ย 3 วิธี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS (TTM) ฿{{M1_EPS}} × P/E เป้าหมาย ~{{M1_PE}}x — {{M1_NOTE}}</div></div>
+        <div class="mval">฿{{M1_VAL}}</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล ฿{{M2_DIV}} × (1+g); g {{M2_G}}%, r {{M2_R}}% → {{M2_NOTE}}</div></div>
+        <div class="mval">฿{{M2_VAL}}</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE {{M3_ROE}}% − g {{M3_G}}%)/(r {{M3_R}}% − g {{M3_G}}%) ≈ {{M3_RATIO}} × BVPS ฿{{M3_BVPS}}</div></div>
+        <div class="mval">฿{{M3_VAL}}</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿{{FV_LOW}} – ฿{{FV_HIGH}}</span></div>
+        <div class="r">฿{{FV}}</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        <!-- ✏️ หมายเหตุ: วิธีไหนให้ค่าสูง/ต่ำเพราะอะไร, ทำไม FV กลางจึงสมเหตุสมผล -->
+        {{VALUATION_NOTE}}
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿{{PRICE}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿{{FV}}</div></div>
+        </div>
+        <div class="scale">
+          <span>฿{{MOS30}}<br><small>MOS 30%</small></span>
+          <span>฿{{MOS20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">฿{{FV}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">฿{{ANALYST_TGT}}<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">฿{{FV_HIGH}}<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        {{GAUGE_NOTE}}
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <!-- ✏️ class ของ mos-verdict: MOS<10 → "bad", 10–20 → "ok", ≥20 → "good" -->
+      <div class="mos-verdict {{MOS_CLASS}}">
+        <div class="big">+{{MOS}}%</div>
+        <div class="txt">{{MOS_TEXT}}</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿{{MOS20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿{{MOS30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿{{FV}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="{{PRICE}}" step="0.05">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿{{PRICE}} • EPS ฐาน ~฿{{BASE_EPS}} • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS {{SC1_G}}%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿{{SC1_TGT}}</div>
+          <div class="ret neg">{{SC1_RET}}</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿{{SC1_EPS3}}</span></li>
+            <li><span>P/E ออก</span><span>{{SC1_PE}}x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿{{SC1_DIV}}</span></li>
+            <li><span>สถานการณ์</span><span>{{SC1_DESC}}</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +{{SC2_G}}%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿{{SC2_TGT}}</div>
+          <div class="ret pos">{{SC2_RET}}</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿{{SC2_EPS3}}</span></li>
+            <li><span>P/E ออก</span><span>{{SC2_PE}}x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿{{SC2_DIV}}</span></li>
+            <li><span>สถานการณ์</span><span>{{SC2_DESC}}</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +{{SC3_G}}%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿{{SC3_TGT}}</div>
+          <div class="ret pos">{{SC3_RET}}</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿{{SC3_EPS3}}</span></li>
+            <li><span>P/E ออก</span><span>{{SC3_PE}}x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿{{SC3_DIV}}</span></li>
+            <li><span>สถานการณ์</span><span>{{SC3_DESC}}</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      {{PROJECTION_NOTE}}
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <!-- ✏️ 4–6 ข้อ: เขียน <b>หัวข้อ:</b> รายละเอียด -->
+          {{CATALYSTS}}
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <!-- ✏️ 4–6 ข้อ: เขียน <b>หัวข้อ:</b> รายละเอียด -->
+          {{RISKS}}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>{{VERDICT_HEADLINE}}</h2>
+      <p>{{VERDICT_BODY}}</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿{{FV}} <span style="font-size:12px;color:#cab9a8">(฿{{FV_LOW}}–฿{{FV_HIGH}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +{{MOS}}%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿{{ANALYST_TGT}} ({{ANALYST_RATING}})</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> {{STRATEGY}}
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • {{DISCLAIMER_SOURCES}}
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ {{FOOTER_DATE}} • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>

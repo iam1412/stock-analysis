@@ -49,6 +49,7 @@ expect('E04', 'error', (h) => h.replace(/<title>[\s\S]*?<\/title>/i, '<title>ว
 expect('E06', 'error', (h) => h.replace('<div class="n">8</div>', '<div class="n">9</div>'), 'section 8 หาย');
 expect('E10', 'error', (h) => h.replace(/ไม่ใช่คำแนะนำ[\s\S]*?หลักทรัพย์/, 'ข้อมูลทั่วไป'), 'ลบ disclaimer');
 expect('E13', 'error', (h) => h.replace('<h1>', '<h1>[SYMBOL] '), 'แทรก placeholder [SYMBOL]');
+expect('E13', 'error', (h) => h.replace('<div class="sub">', '<div class="sub">{{COMPANY}} '), 'เหลือ {{token}} จากโครงต้นแบบ (skeleton) ที่ยังไม่เติม');
 expect('E14', 'error', (h) => h.replace('<div class="sub">', '<div class="sub">undefined '), 'แทรก "undefined" ในเนื้อหา');
 expect('E15', 'error', (h) => h.replace('const FV=195', 'const FV=250'), 'FV ใน JS ไม่ตรงกล่อง');
 expect('E16', 'error', (h) => h.replace('<div class="big">+9%</div>', '<div class="big">+40%</div>'), 'MOS ไม่สอดคล้องกับ FV/ราคา');

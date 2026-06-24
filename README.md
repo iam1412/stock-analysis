@@ -23,10 +23,16 @@ API/manifest รายชื่อหุ้นทั้งหมด: [`/reports.
 ```
 reports/<SYMBOL>.html   # ★ รายงานหุ้น content-only (เนื้อหา + report-data: ตัวเลขกราฟ/gauge + ธีมสีแบรนด์)
 _template/              # โครงที่ใช้ร่วม (dashboard.css + engine.js) — build inject ตอน build/ตรวจ
+_template/skeleton-th.html  # ★ โครงต้นแบบหุ้น "ไทย" (฿/SET) — ก๊อปเป็นจุดตั้งต้นรายงานใหม่ (แทน {{TOKEN}})
+_template/skeleton-us.html  # ★ โครงต้นแบบหุ้น "ต่างประเทศ" ($/NASDAQ·NYSE)
 build.js                # expandReport (ขยาย template) + สร้าง index.html + reports.json → flatten ลง dist/
 reports.json            # manifest (auto-generated, เก็บวันที่อัปเดต)
 tools/                  # migrate.js (HTML เต็ม→template), brandtheme.js (สร้างธีมจาก seed), seeds.json, preserve-dates.js, brand-colors.md
-test/check-reports.js   # quality gate — ตรวจรายงาน (หลัง expand) ก่อน push (npm test)
+test/check-reports.js   # gate ชั้น 1 — ตรวจรายงาน (หลัง expand) ทีละไฟล์ (npm test)
+test/build-test.js      # gate ชั้น 1.5 — unit-test build.js (expandReport/validate/freshHash)
+test/engine-exec.js     # gate ชั้น 1.7 — รัน engine ทุกรายงานใน mock DOM (กราฟ/gauge/calc ต้อง render จริง)
+test/skeleton-test.js   # gate — โครงต้นแบบ TH/US เติมข้อมูลจริงแล้วต้องผ่าน gate
+test/check-site.js      # gate ชั้น 2 — ตรวจ dist/ ระดับเว็บไซต์
 test/self-test.js       # meta-test ของ checker (npm run test:self)
 .githooks/pre-push      # บล็อก git push อัตโนมัติถ้า gate ไม่ผ่าน
 src/worker.js           # Worker + Durable Object (ตัวนับวิว/ไลก์ — ดู 🏗️ สถาปัตยกรรม)
@@ -71,17 +77,21 @@ flowchart TD
 ## ➕ เพิ่มหุ้นใหม่
 
 ```bash
-# 1. วางไฟล์รายงาน (ชื่อย่อหุ้นตัวพิมพ์ใหญ่)
-reports/AAPL.html
+# 1. ก๊อปโครงต้นแบบให้ตรงสกุลเงิน (ไทย ฿/SET = -th, ต่างประเทศ $/NASDAQ = -us)
+cp _template/skeleton-th.html reports/AAPL.html      # หรือ skeleton-us.html
 
-# 2. push — Cloudflare build & deploy ให้เอง
-git add -A && git commit -m "analyze: add AAPL stock analysis" && git push
+# 2. แทนทุก {{TOKEN}} ด้วยข้อมูลจริง (gate E13 จะ error ถ้าเหลือ {{...}} ค้าง)
+#    เลือกสีแบรนด์ใน report-data.theme (ดู tools/brand-colors.md) + ให้ตัวเลขสอดคล้องกัน (CLAUDE.md §7)
+
+# 3. push — Cloudflare build & deploy ให้เอง
+npm run verify && git add -A && git commit -m "analyze: add AAPL stock analysis" && git push
 ```
 หน้า index จะเพิ่มการ์ดหุ้นใหม่ + เรียงตัวที่อัปเดตล่าสุดขึ้นบนสุดให้อัตโนมัติ
 
-> รายงานเป็น **content-only template** (มีบล็อก `report-data` + marker `<!--TEMPLATE:STYLE/ENGINE-->`) พร้อม **สีแบรนด์เฉพาะตัว** —
-> ดูรูปแบบ + หลักการเลือกสีใน [CLAUDE.md](CLAUDE.md) §9 และ [`tools/brand-colors.md`](tools/brand-colors.md) ·
-> ไฟล์ HTML เต็มแบบเก่าก็ยังใช้ได้ (`expandReport` ปล่อยผ่าน) แปลงเป็น template ได้ด้วย `node tools/migrate.js <SYM> --write`
+> **โครงต้นแบบ** `_template/skeleton-{th,us}.html` คือจุดตั้งต้นที่สะอาด (ไม่มีตัวเลขหุ้นเก่าติดมา) — มีครบ 8 section,
+> marker, บล็อก `stock-meta`/`report-data`, comment กำกับทุกช่อง · เติมแล้ว **การันตีผ่าน gate** (มี `test/skeleton-test.js` คุม) ·
+> รูปแบบ + หลักเลือกสีใน [CLAUDE.md](CLAUDE.md) §9 + [`tools/brand-colors.md`](tools/brand-colors.md) ·
+> ไฟล์ HTML เต็มแบบเก่าก็ยังใช้ได้ (`expandReport` ปล่อยผ่าน) แปลงเป็น template ด้วย `node tools/migrate.js <SYM> --write`
 
 ## 🛠 พัฒนา / ทดสอบในเครื่อง
 
@@ -93,17 +103,21 @@ open dist/index.html
 
 ## ✅ Quality gate (ตรวจก่อนเผยแพร่)
 
-`npm run verify` ตรวจ 3 ชั้น — มี error เมื่อไหร่ push ไม่ได้:
+`npm run verify` ตรวจหลายชั้น — มี error เมื่อไหร่ push ไม่ได้:
 
-1. **`check-reports.js`** (source ทีละไฟล์): โครงสร้างครบ (รวม meta `ai-model` ระบุโมเดล AI) • **ตัวเลขสอดคล้องกันเอง** (ค่า `FV` ในเครื่องคิดเลข = Fair Value = สรุป, `MOS=(FV−ราคา)/FV`, จุดซื้อ MOS = FV×0.8/0.7, คณิตแต่ละวิธี P/E & P/BV, scenario EPS ทบต้น) • **บล็อก `stock-meta` (screener) = เลขที่โชว์จริง** (E29–31: ครบ key + price/FV/MOS ตรงกล่อง + mos/upside สอดคล้อง) • **ความสดของราคา** (เตือน >45 วัน, บล็อก >120 วัน) • แหล่งข้อมูล ≥3 + ตัวเลขสมเหตุสมผล • ไม่มี placeholder/undefined
-2. **`build-test.js`** (unit-test build.js): `freshHash` (เปลี่ยนโมเดล/บล็อก stock-meta ไม่ดันวันที่) • เครดิตโมเดล AI ต่อ report • `extractMetrics` ดึง metric จากบล็อก stock-meta • `pickHighlight`/`computeLeaders` เลือก "จุดเด่น" + ป้าย "…สุดในกลุ่ม" บนการ์ด
-3. **`check-site.js`** (หลัง build, ระดับเว็บไซต์): ทุก report อยู่ใน index/manifest ครบ • `<script>` JS ไม่พัง + id ครบ (ข้าม data block `application/json`) • โมเดลใน footer = meta `ai-model` • **การ์ด index `data-*` = บล็อก stock-meta ของ report** • **ความปลอดภัย: external resource = Google Fonts เท่านั้น ห้าม `<script src>` ภายนอก**
+1. **`check-reports.js`** (source ทีละไฟล์ — 33 error): โครงสร้างครบ (รวม meta `ai-model` ระบุโมเดล AI) • **ตัวเลขสอดคล้องกันเอง** (ค่า `FV` ในเครื่องคิดเลข = Fair Value = สรุป, `MOS=(FV−ราคา)/FV`, จุดซื้อ MOS = FV×0.8/0.7, คณิตแต่ละวิธี P/E & P/BV, scenario EPS ทบต้น) • **บล็อก `stock-meta` (screener) = เลขที่โชว์จริง** (E29–31) • **CSS var ครบ (E33)** • **ความสดของราคา** (เตือน >45 วัน, บล็อก >120 วัน) • ไม่มี placeholder/`{{token}}` ค้าง
+2. **`build-test.js`** (unit-test build.js): `freshHash` • เครดิตโมเดล AI ต่อ report • `extractMetrics`/`pickHighlight`/`computeLeaders` • **`validateReportData`** กัน render พังเงียบ (gridFmt/dataFmt ตรง scope, bounds ไม่ degenerate, fv>0, ค่าสี theme ถูกต้อง/ไม่ inject)
+3. **`engine-exec.js`** (รัน engine ทุกรายงานใน mock DOM): กราฟ (`<path>`+`<circle>`), เข็ม gauge, เครื่องคิดเลข MOS ต้อง render จริง **ไม่ throw + ไม่มีพิกัด NaN/Infinity** — ปิดช่อง "syntax ผ่านแต่ runtime พัง"
+4. **`skeleton-test.js`**: โครงต้นแบบ TH/US เติมข้อมูลจริง (ไทย = HMPRO) แล้วต้องผ่าน gate + engine รันได้
+5. **`check-site.js`** (หลัง build, ระดับเว็บไซต์): ทุก report อยู่ใน index/manifest ครบ • `<script>` JS ไม่พัง + id ครบ • โมเดลใน footer = meta `ai-model` • **การ์ด index `data-*` = บล็อก stock-meta** • **ความปลอดภัย: external resource = Google Fonts เท่านั้น ห้าม `<script src>` ภายนอก**
 
 ```bash
 npm test                 # ชั้น 1 อย่างเดียว    npm test -- BBL   # เฉพาะบางตัว
-npm run test:build       # ชั้น 1.5 อย่างเดียว (unit-test build.js + expandReport — 44 เคส)
-npm run check:site       # ชั้น 3 อย่างเดียว (ต้อง build ก่อน)
-npm run test:self        # พิสูจน์ว่า checker เองยังจับ bug ได้ (44 เคส)
+npm run test:build       # ชั้น 1.5 (unit-test build.js + expandReport/validate — 61 เคส)
+npm run test:engine      # ชั้น 1.7 (รัน engine ใน mock DOM)    test:engine -- BBL = เฉพาะตัว
+npm run test:skeleton    # โครงต้นแบบ TH/US เติมแล้วผ่าน gate
+npm run check:site       # ชั้น 2 (ต้อง build ก่อน)
+npm run test:self        # พิสูจน์ว่า checker เองยังจับ bug ได้
 git config core.hooksPath .githooks   # เปิดใช้ pre-push hook (ครั้งเดียวต่อ clone)
 ```
 

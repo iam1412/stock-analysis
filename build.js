@@ -122,6 +122,18 @@ function validateReportData(d) {
   if (!g || typeof g !== 'object') throw new Error('report-data.gauge ต้องเป็น object');
   need(g.min, 'gauge.min'); need(g.max, 'gauge.max'); need(g.cur, 'gauge.cur'); need(g.fair, 'gauge.fair');
   need(d.fv, 'fv');
+  // bounds ห้าม degenerate — engine ys()/gpos() หารด้วย (max−min); ถ้า =0/ติดลบ → NaN/Infinity → กราฟล่องหน/เข็มเพี้ยน "เงียบ ๆ"
+  if (c.max <= c.min) throw new Error(`report-data.chart.max (${c.max}) ต้อง > chart.min (${c.min}) — ไม่งั้นแกน y หาร 0 → พิกัด NaN`);
+  if (g.max <= g.min) throw new Error(`report-data.gauge.max (${g.max}) ต้อง > gauge.min (${g.min}) — gpos() หาร 0`);
+  if (!(d.fv > 0)) throw new Error(`report-data.fv ต้อง > 0 (เครื่องคิดเลข MOS = (FV−price)/FV) — พบ ${JSON.stringify(d.fv)}`);
+  for (const p of c.data) if (!Array.isArray(p) || typeof p[0] !== 'string' || typeof p[1] !== 'number' || !isFinite(p[1])) throw new Error(`report-data.chart.data ทุกจุดต้องเป็น [label:string, price:number(finite)] — พบ ${JSON.stringify(p)}`);
+  for (const v of c.grid) if (typeof v !== 'number' || !isFinite(v)) throw new Error(`report-data.chart.grid ต้องเป็นตัวเลขล้วน — พบ ${JSON.stringify(v)}`);
+  // theme: ค่าสีต้องเป็น token สีที่ถูกต้อง — กัน CSS declaration breakout (เช่น "x;}") + สีพังเงียบ (เช่น hex 5 หลัก → เส้นกราฟล่องหน)
+  const t = { ...THEME_DEFAULTS, ...(d.theme || {}) };
+  const HEX = /^#([0-9a-f]{3}|[0-9a-f]{6}|[0-9a-f]{8})$/i, FN = /^(rgb|rgba|hsl|hsla)\([^;{}]*\)$/i, VAR = /^var\(--[a-z0-9-]+(,[^;{}]*)?\)$/i, GRAD = /^(linear|radial)-gradient\([^;{}]*\)$/i, NAMED = /^[a-z]+$/i;
+  const colorOK = (v, grad) => { v = String(v).trim(); if (/[;{}]/.test(v)) return false; return HEX.test(v) || FN.test(v) || VAR.test(v) || NAMED.test(v) || (grad && GRAD.test(v)); };
+  for (const k of ['accent', 'accentDark', 'glow', 'subColor', 'headerMuted', 'chgColor', 'verdictText', 'vcellLabel']) if (t[k] != null && !colorOK(t[k], false)) throw new Error(`report-data.theme.${k} ไม่ใช่ค่าสีที่ถูกต้อง (hex/rgb/hsl/var/named): ${JSON.stringify(t[k])}`);
+  for (const k of ['darkGrad', 'chgBg', 'badge']) if (t[k] != null && !colorOK(t[k], true)) throw new Error(`report-data.theme.${k} ต้องเป็นสี/gradient/var(): ${JSON.stringify(t[k])}`);
 }
 // คืน HTML เต็ม: source เก่า (ไม่มี marker) = identity ; source ใหม่ = แทน marker ด้วย <style>/engine ที่ inject ค่าต่อหุ้น
 function expandReport(html) {

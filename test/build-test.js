@@ -152,6 +152,22 @@ ok(threw(() => b.expandReport(withFmt('v', 'Math.round(v)'))), 'validateReportDa
   ok(/>\$\{cur\}\$\{v\.toFixed\(0\)\}</.test(exFmt), 'validateReportData: gridFmt = v.toFixed(0) ถูก scope → bake เป็น ${cur}${v.toFixed(0)}');
 }
 
+// ── bounds/finite guards: ค่าที่ "ผ่าน JSON แต่ทำให้ render เป็น NaN/Infinity เงียบ ๆ" (degenerate) ต้อง throw ที่ validate ──
+ok(threw(() => b.expandReport(NEWDOC.replace('"min":1,"max":3', '"min":3,"max":3'))), 'validateReportData: chart.max==min → throw (กัน ys หาร 0 → พิกัด NaN)');
+ok(threw(() => b.expandReport(NEWDOC.replace('"min":1,"max":4', '"min":4,"max":4'))), 'validateReportData: gauge.max==min → throw (กัน gpos หาร 0)');
+ok(threw(() => b.expandReport(NEWDOC.replace('"fv":2', '"fv":0'))), 'validateReportData: fv=0 → throw (MOS=(FV−p)/FV หาร 0 → Infinity)');
+ok(threw(() => b.expandReport(NEWDOC.replace('[["a",1],["b",2],["c",3]]', '[["a",1],["b",null],["c",3]]'))), 'validateReportData: chart.data จุด price=null → throw');
+ok(threw(() => b.expandReport(NEWDOC.replace('[["a",1],["b",2],["c",3]]', '[["a",1],["b","2"],["c",3]]'))), 'validateReportData: chart.data price เป็น string → throw');
+ok(threw(() => b.expandReport(NEWDOC.replace('"grid":[1,2,3]', '"grid":[1,"x",3]'))), 'validateReportData: chart.grid มีค่าไม่ใช่ตัวเลข → throw');
+
+// ── theme color tokens: กัน CSS declaration breakout + ค่าสีพังเงียบ (เช่น hex 5 หลัก → เส้นกราฟล่องหน) ──
+ok(threw(() => b.expandReport(NEWDOC.replace('"accent":"#0071e3"', '"accent":"red;}body{display:none"'))), 'validateReportData: theme.accent มี ;{} (CSS breakout/injection) → throw');
+ok(threw(() => b.expandReport(NEWDOC.replace('"accent":"#0071e3"', '"accent":"#1a73e"'))), 'validateReportData: theme.accent hex 5 หลัก (ไม่ใช่สี) → throw');
+ok(threw(() => b.expandReport(NEWDOC.replace('"accent":"#0071e3"', '"accent":"#0071e3","darkGrad":"red;}"'))), 'validateReportData: theme.darkGrad มี ;} → throw');
+ok(!threw(() => b.expandReport(NEWDOC.replace('"accent":"#0071e3"', '"accent":"#f57c00"'))), 'validateReportData: theme.accent = hex6 ถูกต้อง → ไม่ throw');
+ok(!threw(() => b.expandReport(NEWDOC.replace('"accent":"#0071e3"', '"accent":"var(--blue)"'))), 'validateReportData: theme.accent = var(--blue) → ไม่ throw');
+ok(!threw(() => b.expandReport(NEWDOC.replace('"accent":"#0071e3"', '"accent":"rgba(20,30,40,.5)"'))), 'validateReportData: theme.accent = rgba() → ไม่ throw');
+
 console.log('\n' + '─'.repeat(50));
 console.log(`build-test: ${n - fails}/${n} ผ่าน`);
 if (fails) { console.log('\n❌ build.js มีพฤติกรรมผิด — แก้ build.js ก่อน push\n'); process.exit(1); }

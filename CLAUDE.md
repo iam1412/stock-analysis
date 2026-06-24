@@ -47,6 +47,9 @@ stock-analysis/
    - อ้างอิงแหล่งที่ใช้จริง **≥2** (ชื่อ + ถ้าได้ใส่ลิงก์) ในรายงาน
    > นี่คือ **ด่านเดียวที่กัน "เลขผิด/เก่า" หลุดขึ้นเว็บ** — quality gate (ข้อ 7) ตรวจ "ความถูกต้องตามจริง" ไม่ได้ ตรวจได้แค่ความสอดคล้อง/ความสด/การอ้างอิง
 3. **Export ไฟล์ผลลัพธ์เป็น `reports/<SYMBOL>.html`** เสมอ
+   - **★ เริ่มจากโครงต้นแบบ** (อย่าก๊อปรายงานหุ้นเก่ามาแก้ — เสี่ยงตัวเลขเดิมติดมา):
+     `cp _template/skeleton-th.html reports/<SYMBOL>.html` (หุ้นไทย ฿/SET) หรือ `skeleton-us.html` (หุ้นต่างประเทศ $/NASDAQ·NYSE)
+     แล้วแทนทุก `{{TOKEN}}` ด้วยข้อมูลจริง (มี comment กำกับทุกช่อง · เหลือ `{{...}}` ค้าง = gate E13 บล็อก · `test/skeleton-test.js` การันตีว่าเติมครบแล้วผ่าน gate)
    - ใช้ **ชื่อย่อหุ้นตัวพิมพ์ใหญ่** เป็นชื่อไฟล์: `GOOGL.html`, `AAPL.html`, `PTT.html`
    - ⚠️ **override default ของ skill** ที่ตั้งชื่อ `[SYMBOL]_analysis.html` / save ลง outputs
      → ในโปรเจกต์นี้ให้ใช้ `reports/<SYMBOL>.html` เท่านั้น (เพื่อให้ URL สั้น เรียกง่าย)
@@ -89,7 +92,7 @@ stock-analysis/
    > เหลือช่องชนแคบ ๆ เฉพาะกรณีสอง session เริ่ม "หุ้นตัวเดียวกัน" ก่อนฝ่ายใดฝ่ายหนึ่ง push ทัน — กรณีนี้แค่เสียแรงวิเคราะห์ซ้ำ (last push ชนะ ไม่เสียข้อมูล เพราะ 1 ไฟล์/1 หุ้น + rebase) ไม่ใช่บั๊ก
 
 ### 3.2 รัน — แบ่ง agent + push "ทีละตัวพอเสร็จ" (ไม่รอครบ)
-- **spawn 1 Agent ต่อ 1 หุ้น** (ส่งหลาย tool call ในข้อความเดียวให้รันขนาน) — แต่ละ agent ทำ full analysis ตาม `/stock-analyzer` **รวมตรวจข้ามแหล่ง (ข้อ 2)** เขียนผลลง **`reports/<SYMBOL>.html` ของตัวเองเท่านั้น** (1 ไฟล์/1 หุ้น)
+- **spawn 1 Agent ต่อ 1 หุ้น** (ส่งหลาย tool call ในข้อความเดียวให้รันขนาน) — แต่ละ agent ทำ full analysis ตาม `/stock-analyzer` **รวมตรวจข้ามแหล่ง (ข้อ 2)** **เริ่มจากโครงต้นแบบ `_template/skeleton-{th,us}.html` (ข้อ 2.3)** เขียนผลลง **`reports/<SYMBOL>.html` ของตัวเองเท่านั้น** (1 ไฟล์/1 หุ้น) — แต่ละ agent context แยกกัน จึงก๊อป/อ่านโครงต้นแบบเองได้เลย (ไฟล์เล็ก สะอาด ไม่มีตัวเลขหุ้นอื่นติดมา)
 - **ห้าม agent push เอง** (กฎเดิมยังอยู่) — แต่เปลี่ยนจาก "รวบ push ทีเดียวตอนจบ" เป็น: **agent ตัวไหนเสร็จ → main session รัน §4 (`verify → commit → pull --rebase → push`) ของหุ้นตัวนั้นทันที ไม่รอตัวอื่น**
 - **main session push ทีละครั้ง (serialize)** — ห้าม push ซ้อนพร้อมกันหลายตัว กัน git race/conflict (หุ้น 1 ตัว = 1 commit)
 - ผลดี: หุ้นที่เสร็จก่อนขึ้นเว็บก่อน · เป็น checkpoint (ตัวหลังพลาดไม่ลบของที่ push แล้ว) · session อื่นเห็นเร็ว (หนุน §3.1)
@@ -177,11 +180,15 @@ npm run test:self        # meta-test: พิสูจน์ว่า checker เ
 - **extractMetrics / pickHighlight / computeLeaders:** ดึง metric จากบล็อก `stock-meta` → เลือก "จุดเด่น" ของหุ้นต่อการ์ด (tier ของแต่ละ metric + ป้ายมงกุฎ 👑 เมื่อเป็นค่าดีสุดในกลุ่ม) · computeLeaders หาค่าดีสุดต่อ metric (มาก = ดีสุด, P/E น้อย = ดีสุด ข้ามค่าติดลบ)
 - **extractMeta `desc`:** ดึงคำโปรยธุรกิจจาก `<div class="sub">` ใต้ `<h1>` + ถอด HTML entity (`&amp;` → `&` กัน double-escape ตอน render) → ฟิลด์ `desc` ที่โชว์บนการ์ด (ไม่มี `.sub` → `desc = ""` การ์ด fallback ไป title)
 - **gridFmt/dataFmt scope:** `validateReportData` แยก regex ต่อฟิลด์ — gridFmt อ้าง `v` เท่านั้น, dataFmt อ้าง `d[1]` เท่านั้น (ผิด scope = throw กัน ReferenceError ตอน render)
+- **validateReportData guards (กัน render พังเงียบที่ค่า "ผ่าน JSON แต่ทำให้ NaN/Infinity"):** chart.max>min, gauge.max>min (กันหาร 0 → พิกัด NaN), fv>0 (กัน MOS Infinity), chart.data ทุกจุด = `[string, finite number]`, grid ตัวเลขล้วน · **ค่าสี theme** = hex/rgb/hsl/var/gradient ที่ถูกต้อง + ห้ามมี `;{}` (กัน CSS declaration breakout/inject + hex 5 หลัก → เส้นกราฟล่องหน)
 
 **ชั้น 1.7 — `test/engine-exec.js`** (รัน engine ที่ build bake แล้ว ของทุกรายงานใน mock DOM — ปิดช่อง "syntax ผ่านแต่ runtime พัง"):
 - check-site แค่ `new Function(body)` ตรวจ syntax — **ไม่เคยรันโค้ด** → ReferenceError/throw ตอนรันจริงหลุดได้ (เช่น dataFmt อ้าง `v` นอก scope → กราฟ/gauge/calc ดับทั้ง IIFE เงียบ ๆ)
-- expand รายงาน → ดึง `<script>` engine (ตัวที่อ้าง `priceChart`) → รันด้วย `new Function('document', body)(mockDoc)` (engine อ้าง `document` ตัวเดียว, ไม่ต้องใช้ vm/ไม่มี dependency) → assert: **ไม่ throw** + กราฟวาดจริง (`priceChart.innerHTML` มี `<path`+`<circle`) + เข็ม gauge ถูกตั้ง `style.left` + เครื่องคิดเลข MOS ให้ผล
-- **มี self-check ในตัว** (รันก่อนตรวจจริง): พิสูจน์ว่า harness จับ engine ที่จงใจทำพัง (ป้ายจุดอ้าง `v` นอก scope) ได้ — กัน harness กลายเป็น no-op
+- expand รายงาน → ดึง `<script>` engine (ตัวที่อ้าง `priceChart`) → รันด้วย `new Function('document', body)(mockDoc)` (engine อ้าง `document` ตัวเดียว, ไม่ต้องใช้ vm/ไม่มี dependency) → assert: **ไม่ throw** + กราฟวาดจริง (`priceChart.innerHTML` มี `<path`+`<circle`) + เข็ม gauge ถูกตั้ง `style.left` + เครื่องคิดเลข MOS ให้ผล + **ไม่มีพิกัด `NaN`/`Infinity`** (กัน "render สำเร็จแต่ล่องหน" จาก bounds degenerate)
+- **มี self-check ในตัว** (รันก่อนตรวจจริง): พิสูจน์ว่า harness จับ engine ที่จงใจทำพัง (ป้ายจุดอ้าง `v` นอก scope → throw, และ bounds degenerate → พิกัด NaN) ได้ — กัน harness กลายเป็น no-op
+
+**ชั้น skeleton — `test/skeleton-test.js`** (กำกับโครงต้นแบบ `_template/skeleton-{th,us}.html` — ดูข้อ 9):
+- โครงครบ (marker, `stock-meta`/`report-data`, `.sub`, 8 section, footer, สกุลเงินถูก ฿/$) + **เติม `{{TOKEN}}` ด้วยข้อมูลจริง (ไทย = HMPRO) แล้วผ่าน check-reports (0 error) + engine รันได้** + token coverage (ชุดเติมต้องครอบคลุมทุก token)
 
 **ชั้น 2 — `test/check-site.js`** (ตรวจ `dist/` หลัง build — ระดับเว็บไซต์):
 - **ความครบ:** ทุก report อยู่ใน `dist/`, `reports.json`, และมีการ์ดใน `index.html` • ชื่อไฟล์พิมพ์ใหญ่ ไม่ซ้ำ
@@ -237,6 +244,12 @@ npm run test:self        # meta-test: พิสูจน์ว่า checker เ
 - บล็อก `stock-meta` (ป้าย/มงกุฎการ์ด), meta `ai-model`, `<div class="sub">`, body 8 section, footer = **คงไว้ในไฟล์เหมือนเดิม**
 - ไฟล์ HTML เต็มแบบเก่า (ไม่มี marker) → `expandReport` คืนค่าเดิมเป๊ะ (backward-compatible)
 
+**★ โครงต้นแบบ (skeleton) — จุดตั้งต้นของรายงานใหม่:**
+- `_template/skeleton-th.html` (หุ้นไทย ฿/SET) · `_template/skeleton-us.html` (หุ้นต่างประเทศ $/NASDAQ·NYSE) — โครง content-only เปล่า ๆ มีครบ 8 section + marker + บล็อก `stock-meta`/`report-data` + comment กำกับทุกช่อง
+- **ทุกค่าต่อหุ้นเป็น `{{TOKEN}}`** (ไม่มีตัวเลขหุ้นเก่าติดมา ต่างจากการก๊อปรายงานเดิม) — `cp` แล้วแทนทุก token · เหลือ `{{...}}` ค้าง = **gate E13 บล็อก**
+- อยู่ใน `_template/` (ไม่ใช่ `reports/`) → ไม่ถูก build เป็นหน้า/ไม่ถูก gate ตรวจเป็นรายงานจริง · ทั้งสองไฟล์ต่างกันแค่สัญลักษณ์สกุลเงิน/ตลาด (โครงเดียวกัน)
+- `test/skeleton-test.js` กำกับ: เติม token ด้วยข้อมูลจริง (ไทย = HMPRO จริง) แล้ว **ต้องผ่าน check-reports (0 error) + engine รันได้** + token coverage (เพิ่ม token แล้วลืมอัปเดต = เทส fail)
+
 **★ สีแบรนด์ — เลือกตาม "ลักษณะของหุ้น" ทุกตัว (ห้ามปล่อย default น้ำเงิน):**
 ทุกรายงานต้องมีสีเฉพาะตัวใน `report-data.theme` — **มีสีแบรนด์/โลโก้จำได้ใช้สีนั้น** (Google ฟ้า, Tesla/TSMC แดง, Accenture ม่วง, PANW ส้ม…),
 **ไม่มีก็เลือกตามเซกเตอร์** (photonics→teal/cyan/magenta/violet · foundry/metrology→copper/bronze · power/energy→เขียว · memory→amber · cybersecurity→ส้ม/แดง)
@@ -246,4 +259,4 @@ npm run test:self        # meta-test: พิสูจน์ว่า checker เ
 **เครื่องมือ (`tools/`):**
 - `migrate.js <SYM…> [--write]` — แปลง HTML เต็ม → content-only + **round-trip faithful check** (resolve CSS var→สีจริง + body verbatim + stock-meta + brand/engine values ตรงเป๊ะจึงเขียน ไม่งั้น flag ปล่อย old-style)
 - `brandtheme.js` — `makeTheme(seed)` → ธีมเต็มชุด · `preserve-dates.js` — คงวันที่ `updated` หลัง migrate (source เปลี่ยน → freshHash ขยับ → ดึงวันเดิมจาก git HEAD)
-- gate ครอบคลุม template: `check-reports.js` ตรวจ **หลัง** expand · `build-test.js` ทดสอบ `expandReport`/validate
+- gate ครอบคลุม template: `check-reports.js` ตรวจ **หลัง** expand · `build-test.js` ทดสอบ `expandReport`/validate · `engine-exec.js` รัน engine จริง · `skeleton-test.js` กำกับโครงต้นแบบ
