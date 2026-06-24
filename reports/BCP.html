@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น บางจาก (BCP) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Opus 4.8">
+<script type="application/json" id="stock-meta">
+{"symbol":"BCP","currency":"THB","price":32.75,"fairValue":37,"mos":11.5,"upside":13,"pe":6.7,"dividendYield":3.21,"roe":7.7}
+</script>
+<script type="application/json" id="report-data">
+{"theme":{"accent":"#1deda0","accentDark":"#0fb377","darkGrad":"linear-gradient(135deg,#043e29 0%,#07734b 58%,#0cb677 140%)","glow":"rgba(19,236,156,.35)","subColor":"#c2ebdc","headerMuted":"#a5d4c3","verdictText":"#d0f1e5","vcellLabel":"#a6ddc9","badge":"#1deda0","chgBg":"rgba(30,200,90,.16)","chgColor":"#34c759"},"chart":{"data":[["ม.ค.68",34.5],["ก.พ.",38.5],["มี.ค.",38],["เม.ย.",35.75],["พ.ค.",36.25],["มิ.ย.",30.5],["ก.ค.",34],["ส.ค.",32.25],["ก.ย.",30.75],["ต.ค.",29.5],["พ.ย.",25],["ธ.ค.",26],["ม.ค.69",30.25],["ก.พ.",37.75],["มี.ค.",39.25],["เม.ย.",35.75],["พ.ค.",33.25],["มิ.ย.69",32.75]],"min":24,"max":40,"grid":[24,28,32,36,40],"fairLine":37,"currency":"฿","highlight":[14,17]},"gauge":{"min":24,"max":46,"cur":32.75,"fair":37,"fairLabelTop":true},"fv":37}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">🟢🟩🌿</div>
+    <div>
+      <span class="tag">SET: BCP</span>
+      <span class="tag">พลังงาน · โรงกลั่น</span>
+      <span class="tag">SET50</span>
+    </div>
+    <h1>บางจาก คอร์ปอเรชั่น (BCP)</h1>
+    <div class="sub">โรงกลั่นน้ำมัน (Phra Khanong + Sriracha/BSRC) • ปั๊มน้ำมัน &amp; ค้าปลีก • พลังงานหมุนเวียน-ชีวภาพ (BCPG/BBGI) • สำรวจ-ผลิตปิโตรเลียม (OKEA นอร์เวย์) • SAF เชื้อเพลิงอากาศยานยั่งยืน</div>
+    <div class="price-row">
+      <div>
+        <div class="px">฿32.75<small>(BCP)</small></div>
+      </div>
+      <div class="chg">▲ +0.25 (+0.77%)</div>
+      <div class="px-meta">
+        ราคา ณ 24 มิ.ย. 2569 (ปิดตลาด)<br>
+        กรอบ 52 สัปดาห์ ฿24.20 – ฿40.75<br>
+        ที่มา: SET (set.or.th) • StockAnalysis.com • Investing.com
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">หุ้นโรงกลั่น — กำไรผันผวนตามค่าการกลั่น/สต๊อกน้ำมัน</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~฿47.8 พันล้าน</div><div class="d">~1,470 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~6.7x</div><div class="d">⚠️ บิดเบือน — Q1/69 กำไรพิเศษสูง</div></div>
+      <div class="metric"><div class="k">P/E mid-cycle (ปกติ)</div><div class="v">~8–10x</div><div class="d">ช่วง 4–28x ตามรอบราคาน้ำมัน</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">~0.66x</div><div class="d">ต่ำกว่ามูลค่าทางบัญชีมาก</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2568 (FY2025)</div><div class="v">฿2,880 ล้าน</div><div class="d">core profit ฿10,240 ล้าน (+67% YoY)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿4.91</div><div class="d">⚠️ บิดเบือน · ปกติ ~฿4.0 (mid-cycle)</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~฿49.97</div><div class="d">ส่วนผู้ถือหุ้น ~฿73 พันล้าน</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~7.7% / 3.8%</div><div class="d">ปกติของหุ้นกลั่นรอบนี้</div></div>
+
+      <div class="metric"><div class="k">รายได้ FY2568</div><div class="v neu">~฿507.6 พันล้าน</div><div class="d">EBITDA ฿35.8 พันล้าน</div></div>
+      <div class="metric"><div class="k">อัตรากำไรสุทธิ</div><div class="v">~1.3%</div><div class="d">บางตามธรรมชาติธุรกิจกลั่น</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~3.2%</div><div class="d">งวด 2568 จ่ายรวม ฿1.05/หุ้น</div></div>
+      <div class="metric"><div class="k">Beta (5Y)</div><div class="v">~0.37</div><div class="d">เคลื่อนไหวน้อยกว่าตลาด</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#1deda0"></i>ราคา BCP</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿37</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคา BCP ผันผวนตามค่าการกลั่นและราคาน้ำมันโลก: ทำจุดสูงต้นปี 2568 (~฿38.5) แล้วไหลลงสู่จุดต่ำสุด ~฿25.00 ปลายปี 2568
+        (พ.ย.) จากค่าการกลั่นอ่อน + ความกังวลคดี SAF ก่อนเด้งกลับแรงต้นปี 2569 แตะ ~฿39.25 (มี.ค.) ตามผลประกอบการ Q1/69 ที่กำไรพุ่ง
+        แล้วย่อลงมาที่ ฿32.75 ปัจจุบัน — เคลื่อนไหวในกรอบ ฿25–฿40 ตลอดช่วง (ราคาจริงรายเดือน Yahoo Finance · จุดไฮไลต์ = จุดสูงสุด ฿39.25 และราคาปัจจุบัน)
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี · อิง EPS ปกติ</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS (TTM) ฿4 (ปรับเป็นค่ากลางรอบ — ตัดกำไรสต๊อก) × P/E เป้าหมาย ~9.5x — กลั่นไทย mid-cycle</div></div>
+        <div class="mval">฿38</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผลปกติ ฿1.80 × (1+g); g 2.5%, r 9.0% → ปันผลต่ำเพราะเก็บลงทุน E&amp;P/SAF (ให้ค่าต่ำสุด)</div></div>
+        <div class="mval">฿28</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 8.5% − g 2.5%)/(r 9.0% − g 2.5%) ≈ 0.92 × BVPS ฿49.97</div></div>
+        <div class="mval">฿46</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿28 – ฿46</span></div>
+        <div class="r">฿37</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        DDM ให้ค่าต่ำสุด (฿28) เพราะ BCP จ่ายปันผลในสัดส่วนต่ำ (กันเงินลงทุน E&amp;P/SAF/พลังงานสะอาด) จึงประเมินต่ำเกินสำหรับหุ้นที่มีสินทรัพย์หนุนสูง
+        ขณะที่ Justified P/BV (฿46) สะท้อนว่าหุ้นซื้อขายต่ำกว่ามูลค่าทางบัญชี (P/BV 0.66x) มาก ค่ากลาง ฿37 จึงถ่วงน้ำหนักให้สมดุล —
+        ต่ำกว่าเป้านักวิเคราะห์เฉลี่ย (~฿41) อย่างระมัดระวัง เพราะกำไรหุ้นกลั่นพยากรณ์ยาก
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿32.75</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿37</div></div>
+        </div>
+        <div class="scale">
+          <span>฿25.90<br><small>MOS 30%</small></span>
+          <span>฿29.60<br><small>MOS 20%</small></span>
+          <span style="text-align:center">฿37<br><small>Fair Value</small></span>
+          <span style="text-align:right">฿41<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">฿46<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน ฿32.75 อยู่ต่ำกว่ามูลค่าเหมาะสม ฿37 เล็กน้อย — ยังไม่ถึงโซนถูกชัด (MOS 20% = ฿29.60) แต่ก็ไม่แพง
+        การมีส่วนเผื่อ ~12% ทำให้เป็นจุดทยอยสะสมที่พอรับได้สำหรับนักลงทุนที่รับความผันผวนของกลุ่มโรงกลั่นได้
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict ok">
+        <div class="big">+11.5%</div>
+        <div class="txt">ส่วนเผื่อพอประมาณ — ราคาต่ำกว่ามูลค่าเหมาะสมเล็กน้อย ทยอยสะสมได้ แต่ยังไม่ถึงโซน deep value</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿29.60</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿25.90</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿37</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="32.75" step="0.05">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿32.75 • EPS ฐาน ~฿4.0 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS -5%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿27</div>
+          <div class="ret neg">-4%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿3.43</span></li>
+            <li><span>P/E ออก</span><span>8x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿4.5</span></li>
+            <li><span>สถานการณ์</span><span>ค่าการกลั่นอ่อน · ขาดทุนสต๊อก</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +5%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿44</div>
+          <div class="ret pos">+51%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿4.63</span></li>
+            <li><span>P/E ออก</span><span>9.5x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿5.4</span></li>
+            <li><span>สถานการณ์</span><span>ค่าการกลั่นปกติ · synergy BSRC</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +12%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿62</div>
+          <div class="ret pos">+109%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿5.62</span></li>
+            <li><span>P/E ออก</span><span>11x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿6.6</span></li>
+            <li><span>สถานการณ์</span><span>ค่าการกลั่นสูง · SAF/E&amp;P โต · re-rate</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      ผลตอบแทนหุ้นโรงกลั่นแกว่งกว้างมากตามวัฏจักรค่าการกลั่นและราคาน้ำมัน — Base case ให้ผลตอบแทนรวมน่าสนใจหากกำไรกลับสู่ระดับปกติ
+      และตลาด re-rate P/E ขึ้นจากระดับต่ำปัจจุบัน ส่วน Bear case สะท้อนปีกลั่นอ่อน + ขาดทุนสต๊อก สมมติฐานทั้งหมดอ่อนไหวต่อ crack spread สูง
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>Valuation ถูก:</b> ซื้อขาย P/BV เพียง ~0.66x และ P/E mid-cycle ต่ำ — มี margin of safety เชิงสินทรัพย์</li>
+          <li><b>Synergy BSRC (บางจากศรีราชา):</b> รวมโรงกลั่น 2 แห่ง กำลังกลั่นรวม ~294 KBD ดันประหยัดต่อขนาดและ core profit +67% ในปี 2568</li>
+          <li><b>กระจายธุรกิจ:</b> ปั๊ม + พลังงานสะอาด (BCPG) + E&amp;P (OKEA นอร์เวย์) ช่วยลดการพึ่งพาค่าการกลั่นล้วน</li>
+          <li><b>SAF เชื้อเพลิงอากาศยานยั่งยืน:</b> โรงงาน SAF แห่งแรกของไทย เปิดน่านน้ำธุรกิจมาร์จิ้นสูงระยะยาว</li>
+          <li><b>ปันผลสม่ำเสมอ + เป้านักวิเคราะห์สูง:</b> consensus "ซื้อ" เป้าเฉลี่ย ~฿41 (สูงสุด ฿49) จาก 14 โบรกฯ</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>กำไรผันผวนสูง:</b> EPS เด้งจาก ฿1.30 (2567) → ฿2.08 (2568 รายงาน) → กำไรสต๊อก/ขาดทุนสต๊อกทำ P/E TTM บิดเบือน (6.7x ไม่สะท้อนค่าจริง)</li>
+          <li><b>วัฏจักรค่าการกลั่น:</b> crack spread อ่อนตัวกระทบกำไรหลักโดยตรง — เป็นธุรกิจ price-taker</li>
+          <li><b>คดี SAF / กฎหมาย:</b> ความไม่แน่นอนด้านคดี/กฎเกณฑ์เป็นปัจจัยกดดันความเชื่อมั่นช่วงที่ผ่านมา</li>
+          <li><b>หนี้สิน & การลงทุนสูง:</b> เก็บปันผลต่ำเพราะลงทุนหนัก (BSRC, SAF, E&amp;P) — กระแสเงินสดอิสระไวต่อรอบราคาน้ำมัน</li>
+          <li><b>ราคาน้ำมัน & ค่าเงิน:</b> ราคาน้ำมันดิบ/ค่าเงินบาทกระทบทั้งกำไรสต๊อกและรายได้ E&amp;P (OKEA)</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>หุ้นโรงกลั่นราคาต่ำกว่ามูลค่าทางบัญชี — ทยอยสะสมได้ ถ้ารับวัฏจักรได้</h2>
+      <p>BCP เป็นกลุ่มพลังงานครบวงจร (กลั่น + ค้าปลีก + พลังงานสะอาด + E&amp;P) ที่ซื้อขายต่ำกว่ามูลค่าทางบัญชีมาก (P/BV ~0.66x)
+      จุดเด่นคือ valuation เชิงสินทรัพย์ที่ถูกและ synergy จากการรวม BSRC แต่ต้องระวังว่า P/E (TTM) 6.7x บิดเบือนจากกำไรพิเศษ Q1/69
+      จึงควรประเมินบน EPS ปกติ ~฿4 มูลค่าเหมาะสม ฿37 ให้ส่วนเผื่อ ~12% — น่าสนใจระดับปานกลาง เหมาะกับนักลงทุนที่รับความผันผวนของหุ้นกลั่นได้</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿37 <span style="font-size:12px;color:#cab9a8">(฿28–฿46)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +11.5%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿41 (ซื้อ)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ทยอยสะสมใกล้/ต่ำกว่า ฿37 เพิ่มน้ำหนักโซน MOS 20% (฿29.60) และ deep value ที่ ฿25.90 —
+        เหมาะกับพอร์ตที่ต้องการหุ้นพลังงาน valuation ถูก + ปันผล แต่ควรจำกัดสัดส่วนเพราะกำไรผันผวนตามรอบ
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ที่มาข้อมูล: SET (set.or.th), StockAnalysis.com, Investing.com, settrade.com, Bangchak IR (investor.bangchak.co.th) — ข้อมูลราคา ณ 24 มิ.ย. 2569
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 24 มิ.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
