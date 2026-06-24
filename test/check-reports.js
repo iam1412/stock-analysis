@@ -137,9 +137,9 @@ function buildCtx(html, name) {
       try { return { present: true, ok: true, data: JSON.parse(m[1]) }; }
       catch (e) { return { present: true, ok: false, err: e.message }; }
     })(),
-    // ป้าย change ใน header (.chg) — เช่น "▲ +31% ในรอบปี" / "▼ −5%" (ทิศทาง + %) — ใช้โดย E34 (สี↔ทิศทาง), W11 (กราฟ↔headline)
+    // ป้าย change ใน header (.chg) — เช่น "▲ +72.1% (รอบปี)" / "▼ −5% (รอบปี)" (ทิศทาง + %) — ใช้โดย E34 (สี↔ทิศทาง), E35 (รูปแบบรอบปี), E36 (กราฟ↔headline)
     chg: (() => { const m = html.match(/<div class="chg"[^>]*>([\s\S]*?)<\/div>/i); return m ? stripTags(m[1]).replace(/\s+/g, ' ').trim() : null; })(),
-    // บล็อก report-data (chart/gauge/theme ต่อหุ้น) — ใช้โดย E34 (theme.chgBg/chgColor), W11 (chart.data), W12 (label ว่าง)
+    // บล็อก report-data (chart/gauge/theme ต่อหุ้น) — ใช้โดย E34 (theme.chgBg/chgColor), E36 (chart.data↔headline), E37 (≤13 จุด), W12 (label ว่าง)
     rd: (() => {
       const m = html.match(/<script[^>]*\bid=["']report-data["'][^>]*>([\s\S]*?)<\/script>/i);
       if (!m) return { present: false };
