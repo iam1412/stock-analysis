@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น โอสถสภา (OSP) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Opus 4.8">
+<script type="application/json" id="stock-meta">
+{"symbol":"OSP","currency":"THB","price":17.40,"fairValue":18.20,"mos":4.4,"upside":4.6,"pe":14.7,"dividendYield":4.9,"roe":23.3}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#ed1d3e", "accentDark": "#b30f29",
+    "darkGrad": "linear-gradient(135deg,#3e040d 0%,#730719 58%,#b60c27 140%)",
+    "glow": "rgba(236,19,54,.35)", "subColor": "#ebc2c8", "headerMuted": "#d4a5ad",
+    "chgBg": "var(--green-soft)", "chgColor": "#1e8e3e", "badge": "#ed1d3e",
+    "verdictText": "#f1d0d5", "vcellLabel": "#dda6af"
+  },
+  "chart": {
+    "data": [["ม.ค.25",16.20],["ก.พ.25",14.90],["มี.ค.25",13.50],["เม.ย.25",15.80],["พ.ค.25",15.90],["มิ.ย.25",15.00],["ก.ค.25",17.90],["ส.ค.25",16.40],["ก.ย.25",17.20],["ต.ค.25",15.70],["พ.ย.25",15.80],["ธ.ค.25",16.10],["ม.ค.26",17.70],["ก.พ.26",17.20],["มี.ค.26",14.80],["เม.ย.26",14.90],["พ.ค.26",15.30],["มิ.ย.26",17.40]],
+    "min": 13, "max": 19, "grid": [14,16,18], "fairLine": 18.20, "currency": "฿", "highlight": [2,17], "gridFmt": "v.toFixed(0)", "dataFmt": "d[1].toFixed(2)"
+  },
+  "gauge": { "min": 12, "max": 19.5, "cur": 17.40, "fair": 18.20, "fairLabelTop": "-58px" },
+  "fv": 18.20
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots"><span></span><span></span><span></span></div>
+    <div>
+      <span class="tag">SET: OSP</span>
+      <span class="tag">Consumer Staples</span>
+      <span class="tag">เครื่องดื่มชูกำลัง</span>
+    </div>
+    <h1>โอสถสภา (Osotspa) — เจ้าตลาดเครื่องดื่มชูกำลังไทย</h1>
+    <div class="sub">เครื่องดื่มชูกำลัง M-150 • Shark • Lipo • เครื่องดื่มฟังก์ชัน C-vitt • ผลิตภัณฑ์ของใช้ส่วนตัว (Babi Mild, Twelve Plus) • OEM/รับจ้างผลิต-จัดจำหน่าย • ขยายตลาด CLMV (เมียนมา ลาว กัมพูชา เวียดนาม)</div>
+    <div class="price-row">
+      <div>
+        <div class="px">฿17.40<small>(OSP)</small></div>
+      </div>
+      <div class="chg">▲ +0.50 (+2.96%) วันนี้</div>
+      <div class="px-meta">
+        ราคา ณ 24 มิ.ย. 2026<br>
+        กรอบ 52 สัปดาห์ ฿13.70 – ฿19.50<br>
+        ที่มา: StockAnalysis.com • Investing.com • SET/settrade
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">FY2025 / ล่าสุด</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~฿51,000 ล้าน</div><div class="d">~3,003 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~14.7x</div><div class="d">ต่ำกว่าเฉลี่ยในอดีต</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~22x</div><div class="d">เคยพรีเมียมช่วงเติบโต</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">~2.8x</div><div class="d">BVPS ~฿6.2</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">฿3,667 ล้าน</div><div class="d">+123.8% YoY (ฐานต่ำปี 24) • ปกติ ฿3,503 ลบ. +15.3%</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿1.18</div><div class="d">EPS FY2025 (basic) ~฿1.22</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~฿6.2</div><div class="d">ส่วนของผู้ถือหุ้น (FY2025)</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~23.3% / 9.7%</div><div class="d">ROE สูง (FY2025) • D/E ~0.04</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">฿25,561 ล้าน</div><div class="d">−5.6% YoY (รีเซ็ตช่องทางขายในประเทศ)</div></div>
+      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">~40.1%</div><div class="d">ดีขึ้นจากลดต้นทุน/ปรับราคา (FY2025)</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~4.9%</div><div class="d">DPS ~฿0.85/ปี • จ่ายสม่ำเสมอ</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">~0.7</div><div class="d">หุ้น defensive ความผันผวนต่ำ</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#ed1d3e"></i>ราคา OSP</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿18.20</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคา OSP แกว่งในกรอบ ~฿13.5–฿17.9 ตลอด 18 เดือนที่ผ่านมา ทำจุดต่ำสุด ~฿13.50 (มี.ค. 2025) ช่วงตลาดกังวลผลกระทบจากการรีเซ็ตช่องทางจัดจำหน่ายในประเทศ จากนั้นฟื้นตัวตามผลประกอบการที่อัตรากำไรดีขึ้นจากโครงการลดต้นทุน ราคาดีดกลับสู่ ~฿17.40 (มิ.ย. 2026) ใกล้กรอบบนของช่วง 52 สัปดาห์ (฿19.50) สะท้อนความเชื่อมั่นต่อ margin recovery story
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION (เฉลี่ย 3 วิธี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS (TTM) ฿1.18 × P/E เป้าหมาย ~16.0x — ต่ำกว่าค่าเฉลี่ยในอดีต (~22x) สะท้อนการเติบโตที่ชะลอ แต่ให้พรีเมียมจากคุณภาพกำไร/หนี้ต่ำ</div></div>
+        <div class="mval">฿18.90</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล ฿0.85 × (1+g); g 3.5%, r 8.5% → D₁ ฿0.88 / (r−g) = หุ้นปันผลสม่ำเสมอ defensive</div></div>
+        <div class="mval">฿17.60</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 18% − g 3.5%)/(r 8.5% − g 3.5%) ≈ 2.90 × BVPS ฿6.24 (ใช้ ROE ปกติ ~18% ต่ำกว่า trailing 23% ที่สูงผิดปกติ)</div></div>
+        <div class="mval">฿18.10</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿17.60 – ฿18.90</span></div>
+        <div class="r">฿18.20</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        P/E ให้ค่าสูงสุด (฿18.90) จากสมมติฐานพรีเมียมคุณภาพ ส่วน DDM อนุรักษ์นิยมสุด (฿17.60) เพราะ Gordon Growth อ่อนไหวต่อ g/r สูง ค่าเฉลี่ย ฿18.20 สอดคล้องใกล้เคียงกับเป้าเฉลี่ยนักวิเคราะห์ (~฿18.50) เป็นการ cross-check ที่ดี
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿17.40</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿18.20</div></div>
+        </div>
+        <div class="scale">
+          <span>฿12.74<br><small>MOS 30%</small></span>
+          <span>฿14.56<br><small>MOS 20%</small></span>
+          <span style="text-align:center">฿18.20<br><small>Fair Value</small></span>
+          <span style="text-align:right">฿18.50<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">฿18.90<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน ฿17.40 อยู่ใกล้มูลค่าเหมาะสม ฿18.20 และเป้าเฉลี่ยนักวิเคราะห์ ฿18.50 (consensus "Buy" จาก 18 นักวิเคราะห์, กรอบ ฿16–฿22) — ราคา "ค่อนข้างสมเหตุสมผล" มี upside บางเบา ส่วนเผื่อความปลอดภัยจะกว้างขึ้นมากหากราคาย่อต่ำกว่า ฿14.56
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">+4.4%</div>
+        <div class="txt">ส่วนเผื่อบาง — ราคาใกล้มูลค่าเหมาะสม เหมาะรอย่อหรือทยอยสะสมเมื่อราคาต่ำกว่า ฿14.56 เพื่อ MOS ที่ปลอดภัยขึ้น</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿14.56</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿12.74</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿18.20</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="17.40" step="0.05">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿17.40 • EPS ฐาน ~฿1.18 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS -3%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿13.5</div>
+          <div class="ret neg">−10%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿1.08</span></li>
+            <li><span>P/E ออก</span><span>12.5x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿2.2</span></li>
+            <li><span>สถานการณ์</span><span>ยอดขายในประเทศหดต่อ</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +6%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿22.5</div>
+          <div class="ret pos">+45%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿1.41</span></li>
+            <li><span>P/E ออก</span><span>16.0x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿2.7</span></li>
+            <li><span>สถานการณ์</span><span>margin ฟื้น + CLMV โต</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +12%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿29.8</div>
+          <div class="ret pos">+90%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿1.66</span></li>
+            <li><span>P/E ออก</span><span>18.0x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿3.2</span></li>
+            <li><span>สถานการณ์</span><span>ขยายต่างประเทศเร่งตัว + re-rating</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      ผลตอบแทนรวมปันผลโดยประมาณ (3 ปี): Bear ~−10%, Base ~+45% (CAGR ~13%), Bull ~+90% (CAGR ~24%) จากจุดเข้า ฿17.40 — โครงสร้างความเสี่ยง/ผลตอบแทนเอนเอียงไปทางบวกหากการฟื้นตัวของอัตรากำไรและการเติบโตในต่างประเทศดำเนินต่อ
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>Margin recovery:</b> โครงการลดต้นทุน/เพิ่มประสิทธิภาพดันอัตรากำไรขั้นต้นขึ้นสู่ ~40% หนุนกำไรปกติโต ~15% แม้ยอดขายลด</li>
+          <li><b>ขยายตลาด CLMV:</b> รายได้เครื่องดื่มต่างประเทศโต ~4.8% สู่ ฿6,493 ล้าน เด่นที่เมียนมา–ลาว เป็นเครื่องยนต์เติบโตใหม่</li>
+          <li><b>ปันผลสูง defensive:</b> yield ~4.9% สูงกว่าค่าเฉลี่ยอุตสาหกรรม (~2.4%) งบดุลแข็ง D/E ~0.04 รองรับการจ่ายปันผลสม่ำเสมอ</li>
+          <li><b>Brand power:</b> M-150 ครองส่วนแบ่งตลาดเครื่องดื่มชูกำลังไทยอันดับต้น ๆ มี pricing power และผู้บริโภคภักดี</li>
+          <li><b>Valuation ไม่แพง:</b> P/E ~14.7x ต่ำกว่าค่าเฉลี่ยในอดีต (~22x) มีพื้นที่ re-rating หากการเติบโตกลับมา</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>ยอดขายในประเทศหด:</b> การรีเซ็ตช่องทางจัดจำหน่ายทำรายได้ในประเทศลด −6.4% ต้องพิสูจน์ว่ากลับมาโตได้จริง</li>
+          <li><b>กำลังซื้อ-เศรษฐกิจไทยอ่อน:</b> เครื่องดื่มชูกำลังอิงกลุ่มผู้บริโภครายได้น้อย-แรงงาน อ่อนไหวต่อกำลังซื้อ</li>
+          <li><b>ต้นทุนวัตถุดิบ/น้ำตาล/บรรจุภัณฑ์:</b> ราคาผันผวนกระทบอัตรากำไรหากปรับราคาขายตามไม่ทัน</li>
+          <li><b>การแข่งขันสูง:</b> ตลาดเครื่องดื่มชูกำลัง/ฟังก์ชันแข่งดุ (คาราบาว ฯลฯ) กดดันส่วนแบ่งและงบการตลาด</li>
+          <li><b>กำไรพิเศษ FY2025:</b> +123.8% YoY บิดเบือนจากฐานต่ำ/รายการพิเศษ — กำไรปกติโตเพียง ~15% ต้องดูคุณภาพกำไรต่อเนื่อง</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>หุ้น defensive คุณภาพดี ราคาค่อนข้างสมเหตุสมผล — รอย่อเพื่อ MOS ที่ดีขึ้น</h2>
+      <p>OSP เป็นเจ้าตลาดเครื่องดื่มชูกำลังไทยที่มีแบรนด์แข็ง (M-150) งบดุลแกร่ง (D/E ~0.04) ROE สูง ~23% และปันผลสม่ำเสมอ ~4.9% เรื่องราวหลักคือการฟื้นตัวของอัตรากำไรจากโครงการลดต้นทุน บวกการขยายตลาด CLMV ที่ราคาปัจจุบัน ฿17.40 ใกล้มูลค่าเหมาะสม ฿18.20 และเป้านักวิเคราะห์ ฿18.50 — upside บางเบา (MOS ~+4%) จึงเหมาะถือเพื่อปันผล/defensive และทยอยสะสมเพิ่มเมื่อราคาย่อ</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿18.20 <span style="font-size:12px;color:#cab9a8">(฿17.60–฿18.90)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +4.4%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿18.50 (Buy)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> เหมาะเป็นหุ้นปันผล/defensive ในพอร์ต — ทยอยสะสมที่ราคาปัจจุบันได้บางส่วน และเพิ่มน้ำหนักเมื่อราคาย่อต่ำกว่า ฿14.56 (MOS 20%) เพื่อส่วนเผื่อความปลอดภัยที่ปลอดภัยขึ้น
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ข้อมูลจาก StockAnalysis.com • Investing.com • SET/settrade • Simply Wall St (24 มิ.ย. 2026)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 24 มิ.ย. 2026 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
