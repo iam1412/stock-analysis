@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น ทางด่วนและรถไฟฟ้ากรุงเทพ (BEM) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Opus 4.8">
+<script type="application/json" id="stock-meta">
+{"symbol":"BEM","currency":"THB","price":5.95,"fairValue":6.50,"mos":8.5,"upside":9.2,"pe":23.8,"dividendYield":2.5,"roe":10.1}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#6a2fb5",
+    "accentDark": "#4a1f80",
+    "darkGrad": "linear-gradient(135deg,#2c1150 0%,#4a1f80 55%,#6a2fb5 100%)",
+    "glow": "rgba(106,47,181,0.35)",
+    "subColor": "#d8c6f0",
+    "headerMuted": "#e0d2f2",
+    "verdictText": "#e7dbf6",
+    "vcellLabel": "#cbb4ea",
+    "badge": "#6a2fb5",
+    "chgBg": "#fce8e6",
+    "chgColor": "#c5221f"
+  },
+  "chart": {
+    "data": [
+      ["เม.ย.68", 5.90],
+      ["พ.ค.68", 5.35],
+      ["มิ.ย.68", 4.78],
+      ["ก.ค.68", 5.55],
+      ["ส.ค.68", 5.30],
+      ["ก.ย.68", 5.15],
+      ["ต.ค.68", 5.15],
+      ["พ.ย.68", 5.55],
+      ["ธ.ค.68", 5.35],
+      ["ม.ค.69", 5.25],
+      ["ก.พ.69", 6.30],
+      ["มี.ค.69", 5.25],
+      ["เม.ย.69", 5.30],
+      ["พ.ค.69", 5.20],
+      ["มิ.ย.69", 5.95]
+    ],
+    "min": 4.40,
+    "max": 6.60,
+    "grid": [4.40, 4.95, 5.50, 6.05, 6.60],
+    "fairLine": 6.50,
+    "currency": "฿",
+    "highlight": [2, 14],
+    "gridFmt": "v.toFixed(2)",
+    "dataFmt": "d[1].toFixed(2)"
+  },
+  "gauge": { "min": 4.20, "max": 8.60, "cur": 5.95, "fair": 6.50, "fairLabelTop": true },
+  "fv": 6.50
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots"></div>
+    <div>
+      <span class="tag">SET: BEM</span>
+      <span class="tag">ขนส่ง &amp; โครงสร้างพื้นฐาน</span>
+      <span class="tag">ทางด่วน-รถไฟฟ้า (สัมปทาน)</span>
+    </div>
+    <h1>ทางด่วนและรถไฟฟ้ากรุงเทพ (BEM)</h1>
+    <div class="sub">ทางด่วนในกรุงเทพฯ • รถไฟฟ้า MRT สายสีน้ำเงิน &amp; สีม่วง • พัฒนาพื้นที่เชิงพาณิชย์ในสถานี • กระแสเงินสดสัมปทานระยะยาว</div>
+    <div class="price-row">
+      <div>
+        <div class="px">฿5.95<small>(BEM)</small></div>
+      </div>
+      <div class="chg">▼ −0.83% (วันล่าสุด)</div>
+      <div class="px-meta">
+        ราคา ณ 24 มิ.ย. 2569 (2026)<br>
+        กรอบ 52 สัปดาห์ ฿4.56 – ฿6.30<br>
+        ที่มา: SET (set.or.th) • StockAnalysis.com • TradingView
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ปี FY2025 / TTM</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~฿89.9 พันล้าน</div><div class="d">14,984 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~23.8x</div><div class="d">สูงกว่าตลาด SET แต่ปกติของหุ้นสัมปทาน</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~28–32x</div><div class="d">เคยซื้อขายแพงช่วงโควิดกดกำไร</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">2.37x</div><div class="d">สะท้อนสินทรัพย์สัมปทานสร้างกระแสเงินสด</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">~฿3,781 ล้าน</div><div class="d">ฟื้นตามผู้โดยสาร/รถใช้ทาง</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿0.25</div><div class="d">FY2025 ทั้งปี ฿0.25</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~฿2.53</div><div class="d">ส่วนของผู้ถือหุ้น/หุ้น</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~10.1% / 2.8%</div><div class="d">หนี้สูงจากลงทุนโครงสร้างพื้นฐาน</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">~฿16.9 พันล้าน</div><div class="d">ทางด่วน + รถไฟฟ้า + เชิงพาณิชย์</div></div>
+      <div class="metric"><div class="k">EV/EBITDA</div><div class="v">~22.8x</div><div class="d">หนี้สุทธิสูง (D/E ~3.2x)</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~2.5%</div><div class="d">฿0.15/หุ้น • payout ~59%</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">~0.4–0.9</div><div class="d">หุ้นเชิงรับ (defensive) ผันผวนต่ำ</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ราคาปิดรายเดือนจริง (Yahoo Finance)</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#6a2fb5"></i>ราคา BEM</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿6.50</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ในรอบ ~1 ปี ราคา BEM แกว่งในกรอบแคบ ฿4.78–6.30 ตามลักษณะหุ้นเชิงรับ จุดต่ำสุดราว ฿4.78 (มิ.ย. 2568) ช่วงตลาดกังวลกำลังซื้อ
+        ก่อนทยอยฟื้นตามผู้โดยสารรถไฟฟ้า/รถใช้ทางด่วนที่กลับเข้าสู่ระดับปกติ และมีจังหวะพุ่งแตะ ฿6.30 (ก.พ. 2569) จากข่าวความคืบหน้าสายสีส้ม
+        ล่าสุดดีดกลับมาที่ ฿5.95 (+24% จากจุดต่ำ) ภาพรวมทั้งปียังทรงตัว เคลื่อนไหวต่ำกว่ามูลค่าเหมาะสมประเมิน ฿6.50 เล็กน้อย
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. DCF (กระแสเงินสดสัมปทาน)</div><div class="mdesc">NPV กระแสเงินสดสัมปทานทางด่วน+รถไฟฟ้าระยะยาว (WACC ~7%, อายุสัมปทานคงเหลือยาว) — วิธีหลักของหุ้นสัมปทาน</div></div>
+        <div class="mval">฿7.20</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. P/E Valuation</div><div class="mdesc">EPS (TTM) ฿0.25 × P/E เป้าหมาย ~28x — ต่ำกว่าค่าเฉลี่ยอดีต สะท้อนกำไรฟื้นตัวต่อเนื่อง</div></div>
+        <div class="mval">฿7.00</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 10.1% − g 4%)/(r 7.0% − g 4%) ≈ 2.03 × BVPS ฿2.53</div></div>
+        <div class="mval">฿5.15</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿5.80 – ฿7.30</span></div>
+        <div class="r">฿6.50</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        DCF ให้ค่าสูงสุด (฿7.20) เพราะจับมูลค่ากระแสเงินสดสัมปทานระยะยาวที่ P/E ระยะสั้นมองไม่เห็น • Justified P/BV ให้ค่าต่ำ (฿5.15)
+        เพราะ ROE ~10% ไม่สูงนัก (ฐานสินทรัพย์/หนี้หนัก) จึงทำหน้าที่เป็นกรอบล่างเชิงอนุรักษ์นิยม • FV กลาง ฿6.50 ถ่วงน้ำหนักให้
+        DCF/P/E เป็นหลัก (เหมาะกับหุ้นกระแสเงินสดสัมปทาน) ยังต่ำกว่าเป้านักวิเคราะห์เฉลี่ย ~฿8.45 ที่มองการเติบโตจากสายใหม่เชิงรุกกว่า
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿5.95</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿6.50</div></div>
+        </div>
+        <div class="scale">
+          <span>฿4.55<br><small>MOS 30%</small></span>
+          <span>฿5.20<br><small>MOS 20%</small></span>
+          <span style="text-align:center">฿6.50<br><small>Fair Value</small></span>
+          <span style="text-align:right">฿7.30<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">฿8.45<br><small>เป้าเฉลี่ย Analyst</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน ฿5.95 อยู่ต่ำกว่ามูลค่าเหมาะสม ฿6.50 เล็กน้อย (MOS ~8.5%) — ยังไม่ถึงโซนน่าสะสมเชิง value (ต้องต่ำกว่า ฿5.20)
+        แต่ก็ไม่ได้แพงเกินไป เป้านักวิเคราะห์เฉลี่ย ฿8.45 มองภาพบวกกว่าจากการเติบโตของสายใหม่และการฟื้นตัวของปริมาณผู้ใช้บริการ
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">+8.5%</div>
+        <div class="txt">ส่วนเผื่อความปลอดภัยบาง — ราคาใกล้มูลค่าเหมาะสม เหมาะรอย่อหรือทยอยสะสมในช่วงราคาอ่อนตัว</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿5.20</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿4.55</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿6.50</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="5.95" step="0.05">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿5.95 • EPS ฐาน ~฿0.25 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS −2%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿5.05</div>
+          <div class="ret neg">−7%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.235</span></li>
+            <li><span>P/E ออก</span><span>21x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.42</span></li>
+            <li><span>สถานการณ์</span><span>ผู้โดยสาร/รถใช้ทางทรงตัว สายสีส้มล่าช้า</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +6%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿7.45</div>
+          <div class="ret pos">+33%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.298</span></li>
+            <li><span>P/E ออก</span><span>25x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.48</span></li>
+            <li><span>สถานการณ์</span><span>ปริมาณใช้บริการฟื้นต่อเนื่อง ปันผลโต</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +11%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿9.10</div>
+          <div class="ret pos">+62%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.342</span></li>
+            <li><span>P/E ออก</span><span>27x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.54</span></li>
+            <li><span>สถานการณ์</span><span>ชนะสัมปทานสายสีส้ม + ต่ออายุ/ขยายสายใหม่</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      ผลตอบแทนรวมปันผล (total return) จากจุดเข้า ฿5.95 — กรณีฐาน +33% ใน 3 ปี (~10%/ปี) จากกำไรฟื้นตัว + ปันผลสม่ำเสมอ
+      จุดพลิกสำคัญคือผลสัมปทานสายสีส้มและการขยายเครือข่าย ซึ่งเป็น upside หลักของกรณี Bull
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>กระแสเงินสดสัมปทานยาว:</b> ทางด่วน + MRT สายสีน้ำเงิน/สีม่วง อายุสัมปทานคงเหลือยาว รายได้สม่ำเสมอ คาดเดาได้</li>
+          <li><b>ฟื้นตัวของผู้ใช้บริการ:</b> จำนวนผู้โดยสารรถไฟฟ้าและรถใช้ทางด่วนทยอยกลับสู่/เหนือระดับก่อนโควิด หนุนกำไร</li>
+          <li><b>สายสีส้ม (Orange Line):</b> โอกาสได้สัมปทานสายใหม่ เพิ่มเครือข่ายและฐานรายได้ระยะยาว เป็น upside หลัก</li>
+          <li><b>หุ้นเชิงรับ (defensive):</b> Beta ต่ำ ผันผวนน้อย เหมาะถือยามตลาดผันผวน + ปันผลสม่ำเสมอ payout ~59%</li>
+          <li><b>พื้นที่เชิงพาณิชย์:</b> รายได้ค่าเช่า/โฆษณาในสถานีและทางด่วนเสริมมาร์จิ้นโดยไม่ต้องลงทุนหนัก</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>หนี้สินสูง:</b> D/E ~3.2x จากลงทุนโครงสร้างพื้นฐาน — อ่อนไหวต่อดอกเบี้ยและภาระการเงิน</li>
+          <li><b>เงื่อนไข/ต่ออายุสัมปทาน:</b> ความไม่แน่นอนเชิงนโยบาย-การเมือง อาจกระทบเงื่อนไขค่าผ่านทาง/ค่าโดยสารและการต่ออายุ</li>
+          <li><b>Capex สายใหม่:</b> การลงทุนสายสีส้ม/สายใหม่ใช้เงินมหาศาล กดกระแสเงินสดอิสระและปันผลช่วงแรก</li>
+          <li><b>Valuation ไม่ถูก:</b> P/E ~24x และ EV/EBITDA ~23x สะท้อนความคาดหวังสูง MOS บางหากกำไรไม่ฟื้นตามคาด</li>
+          <li><b>ค่าโดยสาร/ค่าผ่านทางถูกควบคุม:</b> การปรับขึ้นราคาถูกกำกับโดยภาครัฐ จำกัด upside ด้านรายได้ระยะสั้น</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>หุ้นโครงสร้างพื้นฐานเชิงรับ คุณภาพดี — ราคาใกล้มูลค่าเหมาะสม รอจังหวะย่อ</h2>
+      <p>BEM เป็นเจ้าของสัมปทานทางด่วนและรถไฟฟ้า MRT ในกรุงเทพฯ ที่มีกระแสเงินสดยาวและคาดเดาได้ เหมาะกับนักลงทุนที่ต้องการ
+      ความมั่นคงและปันผลสม่ำเสมอ จุดเด่นคือการฟื้นตัวของปริมาณผู้ใช้บริการและ optionality จากสายสีส้ม แต่ราคาปัจจุบัน ฿5.95
+      อยู่ใกล้มูลค่าเหมาะสม ฿6.50 (MOS เพียง ~8.5%) และ valuation ไม่ถูก จึงเหมาะ "ทยอยสะสมในจังหวะราคาอ่อนตัว" มากกว่าไล่ราคา</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿6.50 <span style="font-size:12px;color:#cab9a8">(฿5.80–฿7.30)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +8.5%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿8.45 (Buy)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ทยอยสะสมเมื่อราคาย่อต่ำกว่า ฿5.20 (MOS 20%) เพื่อเพิ่มส่วนเผื่อความปลอดภัย • ถือรับปันผล ~2.5% ระหว่างรอ
+        ปัจจัยเร่ง (สายสีส้ม/การฟื้นตัวผู้โดยสาร) • เป็นหุ้นเชิงรับสำหรับพอร์ตระยะยาว ไม่ใช่หุ้นเก็งกำไรระยะสั้น
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ที่มาข้อมูล: SET (set.or.th), StockAnalysis.com, TradingView, Simply Wall St
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 24 มิ.ย. 2569 (2026) • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
