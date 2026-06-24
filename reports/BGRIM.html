@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น บี.กริม เพาเวอร์ (BGRIM) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Opus 4.8">
+<script type="application/json" id="stock-meta">
+{"symbol":"BGRIM","currency":"THB","price":17.10,"fairValue":14.59,"mos":-17.2,"upside":-14.7,"pe":53.4,"dividendYield":2.4,"roe":6.2}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#e69c24",
+    "accentDark": "#ae7414",
+    "darkGrad": "linear-gradient(135deg,#3d2805 0%,#714a09 58%,#b3750e 140%)",
+    "glow": "rgba(228,152,27,.35)",
+    "subColor": "#ebdbc2",
+    "headerMuted": "#d4c2a5",
+    "verdictText": "#f1e4d0",
+    "vcellLabel": "#ddc8a6",
+    "badge": "#e69c24",
+    "chgBg": "#e6f4ea",
+    "chgColor": "#1e8e3e"
+  },
+  "chart": {
+    "data": [
+      ["ม.ค.68", 15.20],
+      ["ก.พ.68", 11.20],
+      ["มี.ค.68", 10.20],
+      ["เม.ย.68", 11.30],
+      ["พ.ค.68", 9.75],
+      ["มิ.ย.68", 10.40],
+      ["ก.ค.68", 11.70],
+      ["ส.ค.68", 12.70],
+      ["ก.ย.68", 13.70],
+      ["ต.ค.68", 16.20],
+      ["พ.ย.68", 14.30],
+      ["ธ.ค.68", 14.10],
+      ["ม.ค.69", 12.80],
+      ["ก.พ.69", 15.30],
+      ["มี.ค.69", 11.90],
+      ["เม.ย.69", 12.90],
+      ["พ.ค.69", 13.90],
+      ["มิ.ย.69", 17.10]
+    ],
+    "min": 9,
+    "max": 18,
+    "grid": [9, 12, 15, 18],
+    "fairLine": 14.59,
+    "currency": "฿",
+    "highlight": [4, 17],
+    "gridFmt": "v.toFixed(0)",
+    "dataFmt": "d[1].toFixed(2)"
+  },
+  "gauge": { "min": 9, "max": 18, "cur": 17.10, "fair": 14.59, "fairLabelTop": true },
+  "fv": 14.59
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">⚡</div>
+    <div>
+      <span class="tag">SET: BGRIM</span>
+      <span class="tag">สาธารณูปโภคไฟฟ้า</span>
+      <span class="tag">SPP โคเจน + พลังงานหมุนเวียน</span>
+    </div>
+    <h1>บี.กริม เพาเวอร์ (B.Grimm Power)</h1>
+    <div class="sub">โรงไฟฟ้า SPP ก๊าซโคเจนป้อนนิคมอุตสาหกรรม (ไฟฟ้า+ไอน้ำให้โรงงาน) • พลังงานแสงอาทิตย์ ลม น้ำ • โครงการในเวียดนาม เกาหลี กัมพูชา ลาว • ผู้จ่ายปันผลยาวนาน</div>
+    <div class="price-row">
+      <div>
+        <div class="px">฿17.10<small>(BGRIM)</small></div>
+      </div>
+      <div class="chg">▲ +64% (12 ด.)</div>
+      <div class="px-meta">
+        ราคา ณ 24 มิ.ย. 2026<br>
+        กรอบ 52 สัปดาห์ ฿9.65 – ฿17.90<br>
+        ที่มา: StockAnalysis.com • SET (set.or.th) • Investing.com
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">งบ Q1/2026 (สิ้นสุด 31 มี.ค. 2026)</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">฿43.8 พันล้าน</div><div class="d">2,607 ล้านหุ้น • พาร์ ฿2.00</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~53.4x</div><div class="d">สูงผิดปกติ — กำไรกดต่ำชั่วคราว</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~25–35x</div><div class="d">โรงไฟฟ้าทุนหนัก ท่อโตสูง</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">~1.28x</div><div class="d">ส่วนผู้ถือหุ้นใหญ่ ฿13.32/หุ้น</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ TTM</div><div class="v">฿823 ล้าน</div><div class="d">โต y/y แต่หนุนด้วยกำไร FX ที่ยังไม่รับรู้</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿0.32</div><div class="d">EPS normalized ต่ำกว่ามาก (ดูหมายเหตุ)</div></div>
+      <div class="metric"><div class="k">BVPS (ส่วนผู้ถือหุ้นใหญ่)</div><div class="v">~฿13.32</div><div class="d">รวมทั้งกลุ่ม ฿19.5 (มี NCI ฿16.1 พันล้าน)</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~6.2% / 2.5%</div><div class="d">ต่ำเพราะดอกเบี้ย+ค่าก๊าซรอบกดดัน</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">฿54.4 พันล้าน</div><div class="d">Q1/26 −7.1% y/y (ค่าไฟ EGAT/ไอน้ำลด)</div></div>
+      <div class="metric"><div class="k">EV/EBITDA</div><div class="v">~11.5x</div><div class="d">EBITDA Q1/26 +1.9% y/y ฿3.8 พันล้าน</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~2.4%</div><div class="d">DPS ~฿0.41 • นโยบาย ≥50% normalized</div></div>
+      <div class="metric"><div class="k">Beta (5Y)</div><div class="v">~1.0</div><div class="d">หนี้โครงการสูง — ไวต่อดอกเบี้ย/FX</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1.5 ปี</h2><div class="hint">ราคาปิดรายเดือน (Yahoo Finance)</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#e69c24"></i>ราคา BGRIM</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿14.59</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคาทำจุดต่ำสุดราว ฿9.75 (พ.ค. 2025) ท่ามกลางค่าก๊าซ/ดอกเบี้ยสูงและบาทอ่อนกดกำไร จากนั้นฟื้นแรงตามต้นทุนก๊าซที่ลดลง ความหวัง demand ไฟฟ้าจากดาต้าเซ็นเตอร์/อุตสาหกรรม และวัฏจักรดอกเบี้ยขาลง ดีดขึ้นกว่า +75% สู่ ฿17.10 ใกล้จุดสูงสุด 52 สัปดาห์ (฿17.90) — ราคาวิ่งนำการฟื้นตัวของกำไรพื้นฐานไปมาก
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION (เฉลี่ย 3 วิธี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS (normalized) ฿0.62 × P/E เป้าหมาย ~26x — ใช้กำไร mid-cycle (ไม่ใช่ EPS TTM ฿0.32 ที่ผิดเพี้ยนชั่วคราว) คูณมัลติเพิลกลางวัฏจักรของกลุ่มโรงไฟฟ้าทุนหนัก</div></div>
+        <div class="mval">฿16.12</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล ฿0.41 × (1+g); g 4.5%, r 7.5% → ฿0.43 / (7.5%−4.5%) สะท้อนหุ้นปันผลโตช้าและต้นทุนเงินทุนสูงจากหนี้โครงการ</div></div>
+        <div class="mval">฿14.33</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 7.5% − g 4.0%)/(r 7.5% − g 4.0%) ≈ 1.0 × BVPS ฿13.32 — ROE ฟื้นพอ ๆ กับต้นทุนเงินทุน จึงคู่ควรราว 1 เท่าของมูลค่าทางบัญชี</div></div>
+        <div class="mval">฿13.32</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿13.32 – ฿16.12</span></div>
+        <div class="r">฿14.59</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        วิธี P/E ให้ค่าสูงสุดเพราะตั้งบน EPS normalized ที่สมมติว่ากำไรฟื้นจากกับดัก FX/ดอกเบี้ย ขณะ Justified P/BV ให้ค่าต่ำสุดเพราะ ROE ปัจจุบันเพียง ~6% ยังไม่ชนะต้นทุนเงินทุนชัดเจน — FV กลาง ฿14.59 จึงสะท้อนหุ้น "ฟื้นตัวแต่ราคาวิ่งนำพื้นฐาน" ค่านี้สอดคล้องในเชิงทิศทางกับเป้าเฉลี่ยนักวิเคราะห์ (~฿16.14) ว่าราคาปัจจุบันตึง
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿17.10</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿14.59</div></div>
+        </div>
+        <div class="scale">
+          <span>฿10.21<br><small>MOS 30%</small></span>
+          <span>฿11.67<br><small>MOS 20%</small></span>
+          <span style="text-align:center">฿14.59<br><small>Fair Value</small></span>
+          <span style="text-align:right">฿16.12<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">฿17.90<br><small>สูงสุด 52 สัปดาห์</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน ฿17.10 อยู่ <b>เหนือ</b> มูลค่าเหมาะสม ฿14.59 และเหนือกรอบบน FV รวมถึงเป้าเฉลี่ยนักวิเคราะห์ (฿16.14) — สะท้อนว่าหลังรีบาวด์ +75% ตลาดได้ price-in การฟื้นตัวล่วงหน้าไปมาก โซนน่าสนใจสำหรับ value จะอยู่ต่ำกว่า ฿11.67 ลงไป
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">−17.2%</div>
+        <div class="txt">ราคาปัจจุบัน <b>สูงกว่า</b> มูลค่าเหมาะสม — ไม่มีส่วนเผื่อความปลอดภัย (ซื้อตอนนี้คือจ่ายแพงกว่ามูลค่า)</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿11.67</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿10.21</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿14.59</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="17.10" step="0.05">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿17.10 • EPS ฐาน ~฿0.62 (normalized) • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS -2%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿10.4</div>
+          <div class="ret neg">−32%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.58</span></li>
+            <li><span>P/E ออก</span><span>18x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿1.20</span></li>
+            <li><span>สถานการณ์</span><span>ก๊าซ/ดอกเบี้ยสูงต่อ, FX ผันผวน</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +8%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿18.7</div>
+          <div class="ret pos">+16%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.78</span></li>
+            <li><span>P/E ออก</span><span>24x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿1.20</span></li>
+            <li><span>สถานการณ์</span><span>กำไรฟื้นตามต้นทุนก๊าซลด, โครงการใหม่ทยอย COD</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +16%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿27.2</div>
+          <div class="ret pos">+66%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.97</span></li>
+            <li><span>P/E ออก</span><span>28x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿1.20</span></li>
+            <li><span>สถานการณ์</span><span>demand ดาต้าเซ็นเตอร์พุ่ง, ดอกเบี้ยลง, รีไฟแนนซ์หนี้</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      ฉาก Base ให้ผลบวกได้ก็ต่อเมื่อกำไรพื้นฐานฟื้นจริงและตลาดยอมจ่าย P/E ~24x — สำคัญคือ "จุดเข้า" ฿17.10 ตึงอยู่แล้ว ผลตอบแทนคาดหวังจึงไม่กว้างเท่าเข้าในโซน MOS หากเข้าที่ ฿11–12 ฉาก Base จะให้ upside มากกว่านี้มาก
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>ต้นทุนก๊าซลดลง:</b> ราคาก๊าซธรรมชาติที่ปรับลงช่วยขยายสเปรด SPP — EBITDA Q1/26 ยัง +1.9% y/y แม้รายได้ลด</li>
+          <li><b>ดอกเบี้ยขาลง:</b> หนี้โครงการสูง (~฿126 พันล้าน) ทำให้กำไรไวต่อดอกเบี้ย การลดดอกเบี้ย/รีไฟแนนซ์ช่วยกำไรสุทธิตรง ๆ</li>
+          <li><b>Demand ไฟฟ้าอุตสาหกรรม/ดาต้าเซ็นเตอร์:</b> ลูกค้าในนิคมขยายตัว ยอดขายไฟ Q1/26 +2.0% y/y สู่ 3,763 GWh</li>
+          <li><b>ท่อโครงการพลังงานสะอาด:</b> โซลาร์ ลม และโครงการในเวียดนาม/เกาหลีทยอย COD เพิ่มกำลังผลิต</li>
+          <li><b>นโยบายปันผลปรับขึ้น:</b> จ่ายปันผล ≥50% ของกำไร normalized (จากเดิม ≥40%)</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>ราคาวิ่งนำพื้นฐาน:</b> รีบาวด์ +75% ทำให้ราคาเหนือ FV และเหนือเป้านักวิเคราะห์ — ไม่มี MOS</li>
+          <li><b>กำไรพึ่งรายการพิเศษ:</b> กำไรสุทธิ TTM หนุนด้วยกำไร FX ที่ยังไม่รับรู้ ขณะ normalized Q1/26 −32% y/y — EPS TTM ฿0.32 จึงไม่ใช่กำลังกำไรจริง</li>
+          <li><b>ความเสี่ยง FX:</b> หนี้สกุล USD จำนวนมาก บาทอ่อน = ขาดทุน FX + ภาระดอกเบี้ยสูงขึ้น</li>
+          <li><b>เลเวอเรจสูง:</b> หนี้รวม ~฿126 พันล้าน เทียบส่วนผู้ถือหุ้นใหญ่ ~฿35 พันล้าน — งบดุลตึง ไวต่อดอกเบี้ย</li>
+          <li><b>นโยบาย/ค่าไฟ EGAT:</b> ทาริฟและราคาขายไอน้ำที่ปรับลงตามนโยบายกดรายได้ (Q1/26 −7.1% y/y)</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>ธุรกิจดี กำไรกำลังฟื้น — แต่ราคาวิ่งนำไปไกล ยังไม่มี Margin of Safety</h2>
+      <p>BGRIM เป็นผู้ผลิตไฟฟ้า SPP ก๊าซโคเจนชั้นนำที่ป้อนไฟ+ไอน้ำให้นิคมอุตสาหกรรม มีกระแสเงินสดสม่ำเสมอและจ่ายปันผลต่อเนื่อง กำไรกำลังฟื้นจากต้นทุนก๊าซที่ลดและวัฏจักรดอกเบี้ยขาลง แต่ราคาหุ้นรีบาวด์แรงกว่า +75% ในรอบปีจนอยู่ <b>เหนือ</b> มูลค่าเหมาะสม ฿14.59 และเหนือเป้าเฉลี่ยนักวิเคราะห์ ขณะ P/E (TTM) ~53x ดูแพงเพราะกำไรฐานยังถูกกดด้วยรายการ FX/ดอกเบี้ย — ภาพคือ "หุ้นพื้นฐานฟื้น แต่ราคาตึง"</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿14.59 <span style="font-size:12px;color:#cab9a8">(฿13.32–฿16.12)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">เต็มมูลค่า ~ −17%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿16.14 (Buy ส่วนใหญ่)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ติดตามไว้ (watchlist) มากกว่าไล่ราคา — รอย่อเข้าโซน ฿11.67 (MOS 20%) หรือต่ำกว่า ค่อยทยอยสะสมเพื่อรับทั้งปันผลและ upside จากการฟื้นของกำไร; ที่ราคาปัจจุบันความเสี่ยงขาลงสูงกว่าผลตอบแทนที่คาดหวัง
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ที่มาข้อมูล: StockAnalysis.com • SET (set.or.th) • Investing.com • Yahoo Finance (ราคาปิดรายเดือน) • B.Grimm Power IR (งบ Q1/2026)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 24 มิ.ย. 2026 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>

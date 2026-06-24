@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น กัลฟ์ ดีเวลลอปเมนท์ (GULF) — Stock Analysis Dashboard</title>
+<!-- ★ ใส่รุ่นโมเดล AI ที่ใช้วิเคราะห์จริง (Opus→"Claude Opus 4.8", Sonnet→"Claude Sonnet 4.6") — gate E28 บังคับ -->
+<meta name="ai-model" content="Claude Opus 4.8">
+<!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
+<script type="application/json" id="stock-meta">
+{"symbol":"GULF","currency":"THB","price":61.50,"fairValue":59.00,"mos":-4.2,"upside":-4.1,"pe":10.1,"dividendYield":5.3,"roe":24.6}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#2064e9",
+    "accentDark": "#1147b0",
+    "darkGrad": "linear-gradient(135deg,#04183e 0%,#072c73 58%,#0c45b6 140%)",
+    "glow": "rgba(23,93,232,0.35)",
+    "subColor": "#c2d0eb",
+    "headerMuted": "#a5b5d4",
+    "verdictText": "#d0dbf1",
+    "vcellLabel": "#a6b9dd",
+    "badge": "#2064e9",
+    "chgBg": "#e6f4ea",
+    "chgColor": "#1e8e3e"
+  },
+  "chart": {
+    "data": [
+      ["เม.ย.68", 45.00],
+      ["พ.ค.68", 38.75],
+      ["มิ.ย.68", 47.25],
+      ["ก.ค.68", 47.00],
+      ["ส.ค.68", 43.50],
+      ["ก.ย.68", 44.25],
+      ["ต.ค.68", 40.75],
+      ["พ.ย.68", 41.75],
+      ["ธ.ค.68", 46.75],
+      ["ม.ค.69", 62.00],
+      ["ก.พ.69", 59.25],
+      ["มี.ค.69", 57.50],
+      ["เม.ย.69", 62.00],
+      ["พ.ค.69", 60.50],
+      ["มิ.ย.69", 61.50]
+    ],
+    "min": 36,
+    "max": 66,
+    "grid": [36, 42, 48, 54, 60, 66],
+    "fairLine": 59.00,
+    "currency": "฿",
+    "highlight": [1, 9],
+    "gridFmt": "v.toFixed(0)",
+    "dataFmt": "d[1].toFixed(2)"
+  },
+  "gauge": { "min": 38, "max": 78, "cur": 61.50, "fair": 59.00, "fairLabelTop": true },
+  "fv": 59.00
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">GULF</div>
+    <div>
+      <span class="tag">SET: GULF</span>
+      <span class="tag">SET50 • พลังงาน/Holding</span>
+      <span class="tag">IPP/SPP • Renewables • Data Center • ADVANC</span>
+    </div>
+    <!-- ★ คำโปรยธุรกิจ (gate E32) — .sub ต้องอยู่ติดใต้ </h1> (ห้ามมีคอมเมนต์/แท็กคั่น) : บริษัททำอะไร ใช้ • คั่นกลุ่ม -->
+    <h1>กัลฟ์ ดีเวลลอปเมนท์ (GULF)</h1>
+    <div class="sub">ผลิตไฟฟ้า (ก๊าซ IPP/SPP + พลังงานทดแทน) • โครงสร้างพื้นฐาน (ท่าเรือ, LNG) • Data Center &amp; Digital • ถือหุ้น ADVANC (AIS) 40.44% หลังควบรวม INTUCH</div>
+    <div class="price-row">
+      <div>
+        <div class="px">฿61.50<small>(GULF)</small></div>
+      </div>
+      <div class="chg">▲ +1.65% (วันนี้)</div>
+      <div class="px-meta">
+        ราคา ณ 24 มิ.ย. 2569 (24 Jun 2026)<br>
+        กรอบ 52 สัปดาห์ ฿37.75 – ฿68.50<br>
+        ที่มา: SET/SETTRADE • StockAnalysis.com • Investing.com • TradingView
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ 24 มิ.ย. 2569 • งบ FY2025 + Q1/2026</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~฿919 พันล้าน</div><div class="d">~14,940 ล้านหุ้น (พาร์ ฿1)</div></div>
+      <div class="metric"><div class="k">P/E (TTM) — ตามงบ</div><div class="v neu">~10.1x</div><div class="d">บิดเบือนจากกำไรพิเศษควบรวม ฿56,120 ลบ.</div></div>
+      <div class="metric"><div class="k">P/E แกนหลัก (core)</div><div class="v neu">~32x</div><div class="d">บนกำไรปกติ FY2025 ฿28,776 ลบ.</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">~2.61x</div><div class="d">BVPS ~฿23.6</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2025 (ตามงบ)</div><div class="v">฿86,562 ลบ.</div><div class="d">รวมกำไรพิเศษ bargain purchase ฿56,120 ลบ.</div></div>
+      <div class="metric"><div class="k">กำไรปกติ (Core) FY2025</div><div class="v pos">฿28,776 ลบ.</div><div class="d">+33.4% YoY • Q1/69 core ฿9,326 ลบ. (+43%)</div></div>
+      <div class="metric"><div class="k">EPS (TTM ตามงบ)</div><div class="v">~฿5.96</div><div class="d">EPS แกนหลัก (core) ~฿1.93</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~฿23.6</div><div class="d">ส่วนผู้ถือหุ้น ~฿352 พันล้าน</div></div>
+
+      <div class="metric"><div class="k">รายได้รวม FY2025</div><div class="v neu">฿135,596 ลบ.</div><div class="d">+8.8% เทียบ pro forma 2024</div></div>
+      <div class="metric"><div class="k">ROE (ตามงบ)</div><div class="v pos">~24.6%</div><div class="d">พองจากกำไรพิเศษ • core ROE ~8% (ผ่านวัฏจักร ~13%)</div></div>
+      <div class="metric"><div class="k">เงินปันผล (รวมพิเศษ)</div><div class="v">~5.3%</div><div class="d">฿3.25/หุ้น (ปกติ ฿1.05 + พิเศษ ฿2.20)</div></div>
+      <div class="metric"><div class="k">เป้านักวิเคราะห์</div><div class="v">~฿73.4</div><div class="d">17 โบรกฯ Buy 100% (฿66–91)</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#2064e9"></i>ราคา GULF</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿59</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        GULF (บริษัทใหม่หลังควบรวม Gulf Energy + INTUCH) เข้าซื้อขายในตลาด SET เมื่อ 1 เม.ย. 2568 ที่ราคาเปิด ~฿45
+        แล้วอ่อนตัวลงทำจุดต่ำ ฿38.75 ในเดือน พ.ค. 68 (ช่วงปรับพอร์ตหลัง relisting + ความกังวลกรณี VTO ADVANC/THCOM)
+        จากนั้นแกว่งในกรอบ ฿41–47 ตลอดครึ่งปีหลัง 2568 ก่อน <b>พุ่งแรงจาก ฿46.75 → ฿62 ในเดือน ม.ค. 69</b> (+33%)
+        หลังประกาศผลกำไร FY2025 แข็งแกร่งและ <b>ปันผลพิเศษ ฿2.20/หุ้น</b> ปัจจุบันทรงตัวบริเวณ ฿57–62 ใกล้กรอบสูงสุด
+        โดยราคาล่าสุด ฿61.50 สูงกว่ามูลค่าเหมาะสมที่ประเมินได้ ~฿59 เล็กน้อย (ข้อมูลกราฟ = ราคาปิดรายเดือนจริงจาก Yahoo Finance)
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION (เฉลี่ย 3 วิธี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี • บนกำไรแกนหลัก (core)</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation (กำไรแกนหลัก)</div><div class="mdesc">EPS แกนหลักล่วงหน้า ฿2.54 (กำไร core ปี 2569F ~฿38,000 ลบ.) × P/E เป้าหมาย ~28x — ระดับที่หุ้นเติบโต IPP+ดิจิทัล+ADVANC ควรได้</div></div>
+        <div class="mval">฿71</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผลปกติยั่งยืน ฿2.40 × (1+g); g 5%, r 9% → ฿2.40/(0.09−0.05) สะท้อนกระแสปันผลที่เพิ่มจากเงินสด ADVANC</div></div>
+        <div class="mval">฿60</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 13% − g 5%)/(r 9% − g 5%) ≈ 2.0 × BVPS ฿23.6 (ROE ผ่านวัฏจักรรวมส่วนแบ่งกำไร ADVANC)</div></div>
+        <div class="mval">฿47</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿47 – ฿74</span></div>
+        <div class="r">฿59</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ★ <b>หมายเหตุสำคัญ:</b> กำไร TTM ของ GULF ถูกบิดเบือนจาก <b>กำไรพิเศษ bargain purchase ฿56,120 ลบ.</b> จากการควบรวมกับ INTUCH (1 เม.ย. 2568)
+        ทำให้ P/E ตามงบ ~10x ดู "ถูก" ลวงตา — รายงานนี้จึงประเมินบน <b>กำไรแกนหลัก (core profit)</b> ทั้งหมด
+        วิธี P/E ให้ค่าสูงสุด (สะท้อนการเติบโต) ส่วน Justified P/BV ให้ค่าต่ำสุด (อนุรักษ์นิยม เพราะ ROE แกนหลักยังต่ำกว่าตัวเลขตามงบที่พองจากกำไรพิเศษ)
+        FV กลาง ฿59 อยู่ต่ำกว่าเป้านักวิเคราะห์ ~฿73 เพราะใช้สมมติฐาน core ที่ระมัดระวังกว่าและยังไม่รวมมูลค่าเต็มของท่อโครงการใหม่ (UK renewables ~2,000MW + Data Center)
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿61.50</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿59</div></div>
+        </div>
+        <div class="scale">
+          <span>฿41<br><small>MOS 30%</small></span>
+          <span>฿47<br><small>MOS 20%</small></span>
+          <span style="text-align:center">฿59<br><small>Fair Value</small></span>
+          <span style="text-align:right">฿73.4<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">฿74<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน ฿61.50 อยู่ <b>สูงกว่ามูลค่าเหมาะสม ฿59 เล็กน้อย</b> (เต็มมูลค่า/แพงเล็กน้อย) — ยังห่างจากโซน MOS 20% (฿47) พอสมควร
+        แต่ตลาดและนักวิเคราะห์ (เป้าเฉลี่ย ฿73.4) ให้มูลค่าสูงกว่าจากความเชื่อมั่นในท่อโครงการพลังงานทดแทน+Data Center และกระแสเงินสดจาก ADVANC
+        นักลงทุนสาย value ที่ต้องการส่วนเผื่อความปลอดภัยควรรอจังหวะย่อเข้าใกล้ ฿47–53 มากกว่าไล่ราคาบริเวณนี้
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <!-- MOS = −4.2% (ราคาแพงกว่ามูลค่าเหมาะสมเล็กน้อย) → โซน "bad" สำหรับ value investor -->
+      <div class="mos-verdict bad">
+        <div class="big">−4.2%</div>
+        <div class="txt">ราคาปัจจุบันสูงกว่ามูลค่าเหมาะสมเล็กน้อย (เต็มมูลค่า) — ไม่มีส่วนเผื่อความปลอดภัย ณ ราคานี้ ควรรอย่อ</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿47</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿41</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿59</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="61.50" step="0.05">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿61.50 • EPS ฐาน ~฿2.54 (core) • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS -5%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿39</div>
+          <div class="ret neg">-30%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿2.18</span></li>
+            <li><span>P/E ออก</span><span>18x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿4.0</span></li>
+            <li><span>สถานการณ์</span><span>โครงการล่าช้า, ก๊าซแพง, ดอกเบี้ยสูงกดดัน de-rating</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +10%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿81</div>
+          <div class="ret pos">+44%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿3.38</span></li>
+            <li><span>P/E ออก</span><span>24x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿7.5</span></li>
+            <li><span>สถานการณ์</span><span>กำลังผลิตใหม่ทยอย COD + ส่วนแบ่ง ADVANC เต็มปี</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +18%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿117</div>
+          <div class="ret pos">+105%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿4.17</span></li>
+            <li><span>P/E ออก</span><span>28x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿9.0</span></li>
+            <li><span>สถานการณ์</span><span>Data Center/AI โต + UK renewables 2,000MW เดินเครื่องครบ</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      ฐาน EPS ใช้ <b>กำไรแกนหลัก (core) ~฿2.54</b> ไม่รวมกำไรพิเศษควบรวม เพื่อสะท้อนความสามารถทำกำไรปกติ
+      กรณี Base (+10%/ปี, P/E ออก 24x) ให้ผลตอบแทนรวมปันผล ~+44% ใน 3 ปี ขณะที่ Bull สะท้อนการ re-rate เต็มที่หากท่อโครงการ Data Center + พลังงานทดแทนสำเร็จ
+      ความเสี่ยงหลักอยู่ที่หนี้สูง (ROE ตามงบพองจากกำไรพิเศษ) และความอ่อนไหวต่อดอกเบี้ย/ราคาก๊าซ
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>ส่วนแบ่งกำไร ADVANC เต็มปี:</b> หลังควบรวม INTUCH สัดส่วนถือ ADVANC เพิ่มเป็น 40.44% (จาก 19.16%) เพิ่มส่วนแบ่งกำไร ~฿3,500 ลบ./ปี + กระแสเงินสดปันผลสม่ำเสมอ</li>
+          <li><b>ท่อโครงการพลังงานทดแทน:</b> ตั้ง Gulf Energy UK (GUK) ลงทุนแล้ว ~2,000 MW ในยุโรป + พอร์ต renewables ในไทย/เวียดนาม หนุนการเติบโตระยะยาว</li>
+          <li><b>Data Center &amp; Digital:</b> ลงทุน Data Center/Cloud (ร่วม GSA, Google Cloud, Binance TH) รับเทรนด์ AI + Digital infrastructure ในไทย</li>
+          <li><b>กำไรแกนหลักเติบโตแกร่ง:</b> Core profit FY2025 +33.4% YoY และ Q1/2026 core +43% YoY จากโรงไฟฟ้าใหม่ COD + ประสิทธิภาพดีขึ้น</li>
+          <li><b>นโยบายปันผลดีขึ้น:</b> ปันผล 2025 รวม ฿3.25 (มีพิเศษ ฿2.20) จ่าย ≥30% กำไรงบเฉพาะกิจการ + มีโอกาสเพิ่มจากเงินสด ADVANC</li>
+          <li><b>นักวิเคราะห์มองบวกเต็มที่:</b> 17 โบรกฯ แนะนำ "ซื้อ" ทั้งหมด เป้าเฉลี่ย ฿73.4 (สูงสุด ฿91)</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>กำไรพิเศษบิดเบือน TTM:</b> กำไรสุทธิ FY2025 ฿86,562 ลบ. รวมกำไร bargain purchase ฿56,120 ลบ. ที่เกิดครั้งเดียว — P/E ~10x ตามงบ "ถูกลวงตา" (core P/E จริง ~32x)</li>
+          <li><b>หนี้สินสูง:</b> ธุรกิจโรงไฟฟ้าใช้เงินลงทุนสูง อ่อนไหวต่อดอกเบี้ย ROE ตามงบ ~25% พองจากกำไรพิเศษ (core ROE จริง ~8%)</li>
+          <li><b>ราคาเต็มมูลค่า:</b> ราคาปัจจุบัน ฿61.50 สูงกว่ามูลค่าเหมาะสมประเมิน ฿59 (MOS ติดลบ) ไม่มีส่วนเผื่อความปลอดภัย</li>
+          <li><b>ความเสี่ยงเชิงนโยบาย/กำกับดูแล:</b> ค่า Ft, โครงสร้างค่าไฟฟ้า, สัญญา PPA และผลพวงทางกฎหมายจาก VTO ADVANC/THCOM</li>
+          <li><b>ความเสี่ยงโครงการต่างประเทศ:</b> การลงทุน renewables ในยุโรป/เวียดนามมีความเสี่ยงค่าเงิน, ผลตอบแทน และความล่าช้าในการก่อสร้าง</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>บลูชิป SET50 คุณภาพสูง — แต่ราคา "เต็มมูลค่า" รอจังหวะย่อ</h2>
+      <p>GULF เป็นบริษัทพลังงาน+โครงสร้างพื้นฐาน+ดิจิทัลรายใหญ่ที่แข็งแกร่งขึ้นมากหลังควบรวม INTUCH โดยได้ส่วนแบ่งกำไรและกระแสเงินสดจาก ADVANC (AIS)
+      เพิ่มขึ้นชัดเจน และมีท่อโครงการพลังงานทดแทน+Data Center หนุนการเติบโต กำไรแกนหลักเติบโตเด่น (+33% FY2025) นักวิเคราะห์มองบวกพร้อมเพรียง
+      อย่างไรก็ตาม <b>กำไร TTM ถูกบิดเบือนจากกำไรพิเศษควบรวม ฿56,120 ลบ.</b> ทำให้ P/E ~10x ดูถูกลวงตา (core P/E จริง ~32x) เมื่อประเมินบนกำไรปกติ
+      ราคาปัจจุบัน ฿61.50 อยู่ "เต็มมูลค่า" สูงกว่ามูลค่าเหมาะสม ฿59 เล็กน้อย จึงยังไม่มีส่วนเผื่อความปลอดภัย</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿59 <span style="font-size:12px;color:#cab9a8">(฿47–฿74)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">เต็มมูลค่า MOS ~ −4%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿73.4 (Buy 100%, 17 โบรกฯ)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> เป็นหุ้นพื้นฐานดีเชิงคุณภาพสำหรับถือยาว แต่สำหรับสาย value ราคาบริเวณนี้ยังไม่มีส่วนเผื่อความปลอดภัย —
+        ควร <b>รอย่อเข้าเขต ฿47–53</b> (MOS ~10–20%) ค่อยทยอยสะสม หรือถ้ารับความเสี่ยง re-rate ได้และเชื่อในท่อโครงการ Data Center/ADVANC ก็ทยอยสะสมบางส่วนได้ แต่ไม่ควรไล่ราคา
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ที่มาข้อมูล: SET/SETTRADE.com • StockAnalysis.com • Investing.com • TradingView • Yahoo Finance (กราฟราคา) • Gulf IR/ข่าวบริษัท (งบ FY2025 + Q1/2026)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 24 มิ.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
