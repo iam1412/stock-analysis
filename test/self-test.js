@@ -14,10 +14,11 @@
 const fs = require('fs');
 const path = require('path');
 const { checkHtml } = require('./check-reports');
+const { expandReport } = require('../build.js');  // BBL เป็น content-only template → expand เป็น HTML เต็มก่อน (เหมือน gate)
 
 // ใช้รายงานจริงที่ผ่าน gate เป็น "ของดี" ฐาน แล้ว mutate เพื่อทดสอบ
 const BASE_FILE = path.join(__dirname, '..', 'reports', 'BBL.html');
-const base = fs.readFileSync(BASE_FILE, 'utf8');
+const base = expandReport(fs.readFileSync(BASE_FILE, 'utf8'));
 
 let n = 0, fails = 0;
 const ok = (cond, desc) => { n++; if (cond) console.log('  ✓ ' + desc); else { console.log('  ✗ ' + desc); fails++; } };

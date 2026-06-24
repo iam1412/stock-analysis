@@ -212,3 +212,30 @@ npm run test:self        # meta-test: พิสูจน์ว่า checker เ
   - ⚠️ migration ต้องเป็น **`new_sqlite_classes`** (ไม่ใช่ `new_classes`) — KV backend เก่าเป็น paid-only; SQLite-backed DO เท่านั้นที่ฟรี
 - **ขอบเขต gate:** `npm run verify` ตรวจเฉพาะ static — Worker/DO ทดสอบผ่าน `wrangler dev` (ดู `DEPLOY.md`)
 - ปรับจำนวนหุ้น/หน้า (pagination) ที่ `PAGE_SIZE` ใน `build.js` (ค่าเริ่มต้น 12)
+
+---
+
+## 9. Template system (รายงาน content-only) + สีแบรนด์ต่อหุ้น
+
+รายงานใน `reports/` เป็นแบบ **content-only template** — โครงที่ซ้ำทุกไฟล์ (CSS + engine วาดกราฟ/gauge/เครื่องคิดเลข)
+อยู่ใน `_template/` (`dashboard.css`, `engine.js`) แล้ว `build.js` **`expandReport()` inject ตอน build/ตรวจ**
+ไฟล์รายงานเก็บแค่ **เนื้อหา + ข้อมูลต่อหุ้น**:
+
+- **`<script type="application/json" id="report-data">`** ใน `<head>` — ตัวเลขกราฟ/gauge + **ธีมสี** ต่อหุ้น:
+  `{ theme:{accent, accentDark, darkGrad, glow, subColor, headerMuted, verdictText, vcellLabel, badge, chgBg, chgColor},
+     chart:{data, min, max, grid, fairLine, currency, highlight, gridFmt?, dataFmt?}, gauge:{min,max,cur,fair,fairLabelTop}, fv }`
+  · `highlight` = ดัชนีจุดที่ไฮไลต์บนกราฟ (เช่น `[6,7]`) · `currency` = สัญลักษณ์ (`$`/`฿`) · `gridFmt`/`dataFmt` = นิพจน์ format ป้าย (เช่น `v.toFixed(2)` หุ้นราคาต่ำ)
+- marker `<!--TEMPLATE:STYLE-->` (ใน head) + `<!--TEMPLATE:ENGINE-->` (ก่อน `</body>`) = จุดที่ build inject โครง
+- บล็อก `stock-meta` (ป้าย/มงกุฎการ์ด), meta `ai-model`, `<div class="sub">`, body 8 section, footer = **คงไว้ในไฟล์เหมือนเดิม**
+- ไฟล์ HTML เต็มแบบเก่า (ไม่มี marker) → `expandReport` คืนค่าเดิมเป๊ะ (backward-compatible)
+
+**★ สีแบรนด์ — เลือกตาม "ลักษณะของหุ้น" ทุกตัว (ห้ามปล่อย default น้ำเงิน):**
+ทุกรายงานต้องมีสีเฉพาะตัวใน `report-data.theme` — **มีสีแบรนด์/โลโก้จำได้ใช้สีนั้น** (Google ฟ้า, Tesla/TSMC แดง, Accenture ม่วง, PANW ส้ม…),
+**ไม่มีก็เลือกตามเซกเตอร์** (photonics→teal/cyan/magenta/violet · foundry/metrology→copper/bronze · power/energy→เขียว · memory→amber · cybersecurity→ส้ม/แดง)
+- หลักการ + เหตุผลรายตัว + วิธีทำ: ดู **`tools/brand-colors.md`** (record ถาวร)
+- เครื่องมือ: เก็บ "สีเมล็ด" 1 ค่า/หุ้นใน `tools/seeds.json` → `node tools/brandtheme.js tools/seeds.json --write` (`makeTheme()` สร้างธีมเต็มจาก seed ด้วย HSL)
+
+**เครื่องมือ (`tools/`):**
+- `migrate.js <SYM…> [--write]` — แปลง HTML เต็ม → content-only + **round-trip faithful check** (resolve CSS var→สีจริง + body verbatim + stock-meta + brand/engine values ตรงเป๊ะจึงเขียน ไม่งั้น flag ปล่อย old-style)
+- `brandtheme.js` — `makeTheme(seed)` → ธีมเต็มชุด · `preserve-dates.js` — คงวันที่ `updated` หลัง migrate (source เปลี่ยน → freshHash ขยับ → ดึงวันเดิมจาก git HEAD)
+- gate ครอบคลุม template: `check-reports.js` ตรวจ **หลัง** expand · `build-test.js` ทดสอบ `expandReport`/validate

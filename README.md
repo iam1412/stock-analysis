@@ -3,6 +3,7 @@
 รวม **รายงานวิเคราะห์หุ้น** (Fair Value, Margin of Safety, จุดเข้าซื้อ, ผลตอบแทนคาดการณ์)
 เป็นเว็บ static (1 หุ้น = 1 ไฟล์ HTML) + **screener เรียง/คัดกรองด้วย MOS · P/E · Yield · ROE · Upside** (เรียงฝั่ง client, 0 request)
 \+ **ป้ายไฮไลต์ "จุดเด่น" อัตโนมัติต่อหุ้น** (เลือก metric ที่เด่นสุด + มงกุฎให้ตัวที่ดีสุดในกลุ่ม — คำนวณตอน build)
+\+ **รายงานแบบ content-only template** (โครง CSS/กราฟใช้ร่วมใน `_template/` inject ตอน build — เล็กลง ~45%) + **สีแบรนด์เฉพาะตัวทุกหุ้น** (เลือกตามลักษณะหุ้น)
 \+ **ระบบนับยอดวิว / 👍👎 แบบนับเป๊ะทั่วโลกด้วย Durable Object** — deploy อัตโนมัติบน Cloudflare Workers
 
 > ⚠️ ข้อมูลทั้งหมดเพื่อการศึกษาเท่านั้น **ไม่ใช่คำแนะนำการลงทุน**
@@ -20,17 +21,19 @@ API/manifest รายชื่อหุ้นทั้งหมด: [`/reports.
 ## 📁 โครงสร้าง
 
 ```
-reports/<SYMBOL>.html   # ★ รายงานหุ้น (1 ไฟล์ = 1 หุ้น)
-build.js                # สร้าง index.html + reports.json → flatten ลง dist/
+reports/<SYMBOL>.html   # ★ รายงานหุ้น content-only (เนื้อหา + report-data: ตัวเลขกราฟ/gauge + ธีมสีแบรนด์)
+_template/              # โครงที่ใช้ร่วม (dashboard.css + engine.js) — build inject ตอน build/ตรวจ
+build.js                # expandReport (ขยาย template) + สร้าง index.html + reports.json → flatten ลง dist/
 reports.json            # manifest (auto-generated, เก็บวันที่อัปเดต)
-test/check-reports.js   # quality gate — ตรวจรายงานก่อน push (npm test)
+tools/                  # migrate.js (HTML เต็ม→template), brandtheme.js (สร้างธีมจาก seed), seeds.json, preserve-dates.js, brand-colors.md
+test/check-reports.js   # quality gate — ตรวจรายงาน (หลัง expand) ก่อน push (npm test)
 test/self-test.js       # meta-test ของ checker (npm run test:self)
 .githooks/pre-push      # บล็อก git push อัตโนมัติถ้า gate ไม่ผ่าน
 src/worker.js           # Worker + Durable Object (ตัวนับวิว/ไลก์ — ดู 🏗️ สถาปัตยกรรม)
 wrangler.toml           # Cloudflare Workers + Static Assets + Durable Object + D1
 _headers                # HTTP headers
 DEPLOY.md               # คู่มือ deploy
-CLAUDE.md               # กฎสำหรับ Claude (workflow วิเคราะห์/auto-push)
+CLAUDE.md               # กฎสำหรับ Claude (workflow วิเคราะห์/auto-push/§9 template+สี)
 ```
 
 ## 🏗️ สถาปัตยกรรมระบบ
@@ -76,6 +79,10 @@ git add -A && git commit -m "analyze: add AAPL stock analysis" && git push
 ```
 หน้า index จะเพิ่มการ์ดหุ้นใหม่ + เรียงตัวที่อัปเดตล่าสุดขึ้นบนสุดให้อัตโนมัติ
 
+> รายงานเป็น **content-only template** (มีบล็อก `report-data` + marker `<!--TEMPLATE:STYLE/ENGINE-->`) พร้อม **สีแบรนด์เฉพาะตัว** —
+> ดูรูปแบบ + หลักการเลือกสีใน [CLAUDE.md](CLAUDE.md) §9 และ [`tools/brand-colors.md`](tools/brand-colors.md) ·
+> ไฟล์ HTML เต็มแบบเก่าก็ยังใช้ได้ (`expandReport` ปล่อยผ่าน) แปลงเป็น template ได้ด้วย `node tools/migrate.js <SYM> --write`
+
 ## 🛠 พัฒนา / ทดสอบในเครื่อง
 
 ```bash
@@ -94,9 +101,9 @@ open dist/index.html
 
 ```bash
 npm test                 # ชั้น 1 อย่างเดียว    npm test -- BBL   # เฉพาะบางตัว
-npm run test:build       # ชั้น 1.5 อย่างเดียว (unit-test build.js — 27 เคส)
+npm run test:build       # ชั้น 1.5 อย่างเดียว (unit-test build.js + expandReport — 44 เคส)
 npm run check:site       # ชั้น 3 อย่างเดียว (ต้อง build ก่อน)
-npm run test:self        # พิสูจน์ว่า checker เองยังจับ bug ได้ (42 เคส)
+npm run test:self        # พิสูจน์ว่า checker เองยังจับ bug ได้ (44 เคส)
 git config core.hooksPath .githooks   # เปิดใช้ pre-push hook (ครั้งเดียวต่อ clone)
 ```
 

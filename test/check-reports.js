@@ -19,6 +19,9 @@
 
 const fs = require('fs');
 const path = require('path');
+// expandReport: ขยายรายงานแบบ template (content-only) ให้เป็น HTML เต็มก่อนตรวจ — ไฟล์เก่า (ไม่มี marker) = identity
+// (require build.js ได้ exports เฉย ๆ ไม่รัน build เพราะ guard `if (require.main !== module) return;`)
+const { expandReport } = require('../build.js');
 
 const REPORTS_DIR = path.join(__dirname, '..', 'reports');
 const TOL_MOS_PP = 2.0;   // MOS แสดง vs คำนวณ — ต่างได้ ≤ 2 จุด %
@@ -256,7 +259,7 @@ function main() {
   console.log(`\n🔍 ตรวจคุณภาพรายงาน ${files.length} ไฟล์ (reports/)\n`);
   let totErr = 0, totWarn = 0, failFiles = 0;
   for (const f of files) {
-    const r = checkHtml(fs.readFileSync(path.join(REPORTS_DIR, f), 'utf8'), f);
+    const r = checkHtml(expandReport(fs.readFileSync(path.join(REPORTS_DIR, f), 'utf8')), f);
     totErr += r.errors.length; totWarn += r.warnings.length;
     if (r.errors.length) { failFiles++; console.log(`✗ ${f.padEnd(13)} ${r.errPass}/${r.errTotal} ผ่าน — ${r.errors.length} ปัญหา`); }
     else console.log(`✓ ${f.padEnd(13)} ${r.errTotal}/${r.errTotal} ผ่าน${r.warnings.length ? `   (⚠ ${r.warnings.length})` : ''}`);
