@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น เคซีอี อีเลคโทรนิคส์ (KCE) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Opus 4.8">
+<script type="application/json" id="stock-meta">
+{"symbol":"KCE","currency":"THB","price":38.25,"fairValue":28.50,"mos":-34.2,"upside":-25.5,"pe":52.6,"dividendYield":3.1,"roe":6.3}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#31d875",
+    "accentDark": "#1fa355",
+    "darkGrad": "linear-gradient(135deg,#083a1d 0%,#106b35 58%,#19a953 140%)",
+    "glow": "rgba(40,215,111,.35)",
+    "subColor": "#c2ead3",
+    "headerMuted": "#a7d3b9",
+    "verdictText": "#d1f0de",
+    "vcellLabel": "#a9dbbd",
+    "badge": "#1fa355",
+    "chgBg": "#e6f4ea",
+    "chgColor": "#1e8e3e"
+  },
+  "chart": {
+    "data": [
+      ["ก.ค.68", 24.80],
+      ["ส.ค.68", 25.50],
+      ["ก.ย.68", 22.80],
+      ["ต.ค.68", 25.50],
+      ["พ.ย.68", 20.80],
+      ["ธ.ค.68", 18.20],
+      ["ม.ค.69", 18.80],
+      ["ก.พ.69", 19.50],
+      ["มี.ค.69", 22.70],
+      ["เม.ย.69", 31.25],
+      ["พ.ค.69", 37.50],
+      ["มิ.ย.69", 38.25]
+    ],
+    "min": 14,
+    "max": 42,
+    "grid": [14, 21, 28, 35, 42],
+    "fairLine": 28.50,
+    "currency": "฿",
+    "highlight": [5, 11],
+    "gridFmt": "v.toFixed(0)",
+    "dataFmt": "d[1].toFixed(2)"
+  },
+  "gauge": { "min": 16, "max": 42, "cur": 38.25, "fair": 28.50, "fairLabelTop": true },
+  "fv": 28.50
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots"></div>
+    <div>
+      <span class="tag">SET: KCE</span>
+      <span class="tag">ชิ้นส่วนอิเล็กทรอนิกส์</span>
+      <span class="tag">Automotive PCB</span>
+    </div>
+    <h1>เคซีอี อีเลคโทรนิคส์ (KCE)</h1>
+    <div class="sub">แผ่นวงจรพิมพ์ (PCB) • เน้น PCB ยานยนต์ระดับโลก • ส่งออกเป็นหลัก (รายได้สกุล USD) • อุตสาหกรรม/สื่อสาร • ผู้ผลิต laminate ต้นน้ำของตัวเอง</div>
+    <div class="price-row">
+      <div>
+        <div class="px">฿38.25<small>(KCE)</small></div>
+      </div>
+      <div class="chg">▲ +2.7% (24 มิ.ย.)</div>
+      <div class="px-meta">
+        ราคา ณ 24 มิ.ย. 2026<br>
+        กรอบ 52 สัปดาห์ ฿16.00 – ฿40.75<br>
+        ที่มา: StockAnalysis.com • Investing.com • TradingView
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">งบ FY2025 + ราคา ณ 24 มิ.ย. 2026</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">฿45.2 พันล้าน</div><div class="d">~1,182 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~52.6x</div><div class="d">สูงผิดปกติ — กำไรอยู่ก้นวัฏจักร</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~14–20x</div><div class="d">ช่วงปกติ 12–25x ตามรอบ</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">~3.4x</div><div class="d">สูงกว่าค่าเฉลี่ยอดีต ~2x</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">฿833 ลบ.</div><div class="d">−49% YoY (จาก ฿1,648 ลบ.)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿0.71</div><div class="d">FY2025 ~฿0.70 (ก้นรอบ)</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~฿11.11</div><div class="d">ส่วนผู้ถือหุ้น ฿13.2 พันล้าน</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v neu">~6.3% / 4.5%</div><div class="d">ต่ำชั่วคราว · กลางรอบเคยทำ ~13–18%</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">฿13.1 พันล้าน</div><div class="d">−12% YoY · กดดันจากบาทแข็ง</div></div>
+      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">~18.9%</div><div class="d">ลดจาก ~22% · ทองแดง/บาทแข็ง</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~3.1%</div><div class="d">FY2025 รวม ฿1.20 (0.60+0.60)</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">~1.3</div><div class="d">ผันผวนสูงกว่าตลาด (หุ้นวัฏจักร)</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#31d875"></i>ราคา KCE</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿28.50</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคา KCE เคลื่อนไหวเป็น "หุ้นฟื้นวัฏจักร" ชัดเจน — ลงไปทำจุดต่ำราว ฿18 ช่วงปลายปี 2025 (ธ.ค. ฿18.20) ขณะกำไรไหลลงสู่ก้นรอบ
+        จากนั้นพุ่งแรงตั้งแต่ มี.ค. 2026 (฿22.70 → เม.ย. ฿31.25 → พ.ค. ฿37.50 → ปัจจุบัน ฿38.25) ตามความคาดหวังว่าวัฏจักร PCB ยานยนต์/อุตสาหกรรมกำลังกลับตัว
+        และคำสั่งซื้อเริ่มฟื้น (ยอดขายสกุล USD ไตรมาส 1/2026 ทรงตัว +0.5%) — ราคาวิ่งขึ้นกว่า 2 เท่าจากก้นรอบ <b>นำหน้า</b> การฟื้นของกำไรไปมาก
+        เส้นมูลค่าเหมาะสม ฿28.50 อยู่ <b>ต่ำกว่า</b> ราคาปัจจุบัน สะท้อนว่าตลาดได้ priced-in การฟื้นตัวไปเกือบหมดแล้ว
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION (เฉลี่ย 3 วิธี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation (normalized)</div><div class="mdesc">EPS ปกติกลางรอบ ฿1.45 × P/E เป้าหมาย ~23x — ใช้กำไร normalized แทน EPS ก้นรอบ ฿0.71 (P/E 52x ปัจจุบันบิดเบือน)</div></div>
+        <div class="mval">฿33.35</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล ฿1.40 × (1+g 4.0%) = ฿1.456; r 9.0% → D₁ หาร (r−g) 5.0% = ฿29.10</div></div>
+        <div class="mval">฿29.10</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 13.5% − g 4.5%)/(r 9.0% − g 4.5%) ≈ 2.0 × BVPS ฿11.11 — ใช้ ROE กลางรอบ ไม่ใช่ ROE ก้นรอบ 6.3%</div></div>
+        <div class="mval">฿22.20</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿26 – ฿33</span></div>
+        <div class="r">฿28.50</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ทั้ง 3 วิธีอิง <b>กำไร/ROE กลางรอบ (normalized)</b> เพราะตัวเลขปัจจุบันอยู่ก้นวัฏจักร — ถ้าใช้ EPS TTM ฿0.71 ตรง ๆ จะได้ P/E 52x ที่ไม่มีความหมาย
+        วิธี P/E ให้ค่าสูงสุด (สะท้อนศักยภาพฟื้นตัว) ส่วน Justified P/BV ให้ค่าต่ำสุด (ระมัดระวัง — ROE ยังต้องพิสูจน์ว่าฟื้นกลับ ~13%)
+        FV กลาง ฿28.50 ใกล้เคียงเป้าเฉลี่ยนักวิเคราะห์ (~฿32, Hold) และ <b>ต่ำกว่าราคาตลาดปัจจุบัน ฿38.25</b> — บ่งชี้ว่าราคาแพงกว่ามูลค่าที่ประเมินได้
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿38.25</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿28.50</div></div>
+        </div>
+        <div class="scale">
+          <span>฿19.95<br><small>MOS 30%</small></span>
+          <span>฿22.80<br><small>MOS 20%</small></span>
+          <span style="text-align:center">฿28.50<br><small>Fair Value</small></span>
+          <span style="text-align:right">฿32.00<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">฿33.00<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน ฿38.25 อยู่ <b>เหนือ</b> ทั้งมูลค่าเหมาะสม (฿28.50) เป้านักวิเคราะห์ (฿32) และกรอบบน FV (฿33) — เข็ม "ปัจจุบัน" หลุดออกไปทางขวาของโซนมูลค่า
+        สะท้อนว่าตลาดให้พรีเมียมกับธีมฟื้นตัวล่วงหน้า · โซนน่าสะสมเชิงมูลค่าจริงอยู่ที่ ฿22.80 (MOS 20%) ลงไป
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">−34.2%</div>
+        <div class="txt">ราคาปัจจุบัน <b>สูงกว่า</b> มูลค่าเหมาะสม — ไม่มีส่วนเผื่อความปลอดภัย (MOS ติดลบ) ราคาวิ่งนำการฟื้นของกำไรไปแล้ว</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿22.80</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿19.95</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿28.50</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="38.25" step="0.05">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿38.25 • EPS ฐาน ~฿0.95 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS -5%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿13.0</div>
+          <div class="ret neg">−60%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.81</span></li>
+            <li><span>P/E ออก</span><span>16x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿2.4</span></li>
+            <li><span>สถานการณ์</span><span>วัฏจักรยืดเยื้อ บาทแข็งต่อ</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +18%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿28.0</div>
+          <div class="ret neg">−16%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿1.56</span></li>
+            <li><span>P/E ออก</span><span>18x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿4.0</span></li>
+            <li><span>สถานการณ์</span><span>ฟื้นตัวกลางรอบตามปกติ</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +30%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿46.0</div>
+          <div class="ret pos">+32%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿2.09</span></li>
+            <li><span>P/E ออก</span><span>22x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿4.5</span></li>
+            <li><span>สถานการณ์</span><span>วัฏจักรพีคใหม่ + EV/auto โต</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      หมายเหตุ: ใช้ EPS ฐาน ฿0.95 (สมมติฟื้นจากก้นรอบ ฿0.71 ในปี 2026) · ที่ราคาเข้า ฿38.25 แม้แต่ฉาก Base (ฟื้นตามปกติ) ก็ยัง <b>ขาดทุน −16%</b>
+      เพราะราคาวิ่งนำกำไรไปมาก · ต้องเป็นฉาก Bull (วัฏจักรพีคใหม่) เท่านั้นจึงให้ผลตอบแทนบวก — ความเสี่ยง/ผลตอบแทนที่ราคานี้ไม่สมดุล (asymmetric ฝั่งลบ)
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>วัฏจักรกลับตัว:</b> ยอดขายสกุล USD ไตรมาส 1/2026 ทรงตัว +0.5% หลังหดตัวมาหลายไตรมาส สัญญาณว่าก้นรอบผ่านไปแล้ว</li>
+          <li><b>ดีมานด์ PCB ยานยนต์ระยะยาว:</b> รถยนต์มีอิเล็กทรอนิกส์/ADAS/EV มากขึ้น → เนื้อหา PCB ต่อคันสูงขึ้น เป็นแรงหนุนเชิงโครงสร้าง</li>
+          <li><b>คุมต้นทุนได้ดี:</b> ค่าใช้จ่าย SG&amp;A ไตรมาส 1/2026 ลดลง 9% — เป็น operating leverage เมื่อรายได้ฟื้น</li>
+          <li><b>ผลิต laminate เอง:</b> integrate ต้นน้ำ ช่วยคุมต้นทุนวัตถุดิบและคุณภาพดีกว่าคู่แข่ง PCB ทั่วไป</li>
+          <li><b>ปันผลสม่ำเสมอ:</b> จ่ายต่อเนื่อง (FY2025 ฿1.20) แม้กำไรลด สะท้อนงบดุลแข็งแรง</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>ราคาแพงกว่ามูลค่า:</b> ซื้อขาย P/E 52x (ก้นรอบ) / P/BV 3.4x — ตลาด priced-in การฟื้นตัวล่วงหน้าไปเกือบหมด MOS ติดลบ</li>
+          <li><b>บาทแข็ง:</b> รายได้สกุล USD แต่ต้นทุนบางส่วนเป็นบาท — บาทแข็งกดทั้งรายได้แปลงและอัตรากำไร (ไตรมาส 1/2026 รายได้บาท −6%)</li>
+          <li><b>ต้นทุนวัตถุดิบ:</b> ทองแดง/ทอง/เงินขึ้น — ทองแดงดันต้นทุนสินค้าขึ้น 2.4% YoY กดมาร์จิน</li>
+          <li><b>วัฏจักรยานยนต์:</b> หากการผลิตรถโลกชะลอ/ดีมานด์ฟื้นช้ากว่าคาด กำไรอาจค้างก้นรอบนานกว่าที่ราคาสะท้อน</li>
+          <li><b>ผันผวนสูง:</b> Beta ~1.3 + เป็นหุ้นวัฏจักร — ราคาแกว่งแรงทั้งขึ้นและลง (จาก ฿15.70 → ฿38.25 ในเวลาราว 15 เดือน)</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>ธุรกิจดี วัฏจักรกำลังฟื้น — แต่ราคาวิ่งนำไปไกล (รอย่อ)</h2>
+      <p>KCE เป็นผู้นำ PCB ยานยนต์ระดับโลกที่มีคุณภาพธุรกิจสูงและฐานะการเงินแข็งแรง วัฏจักรกำลังกลับตัว (ยอดขาย USD ทรงตัวหลังหดตัวยาว)
+        แต่ราคาหุ้นพุ่งกว่า 2 เท่าจากก้นรอบ (~฿16 → ฿38) <b>นำหน้า</b> การฟื้นของกำไรไปมาก — ที่ราคานี้แทบไม่มีส่วนเผื่อความปลอดภัย และเสี่ยงขาลงมากกว่าขาขึ้น</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿28.50 <span style="font-size:12px;color:#cab9a8">(฿26–฿33)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ff8a80">MOS ~ −34.2% (แพงกว่ามูลค่า)</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿32.00 (Hold)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> คุณภาพธุรกิจน่าสนใจแต่ valuation ตึงเกินไป — รอย่อเข้าโซน ฿28.50 (Fair Value) หรือต่ำกว่าจึงค่อยพิจารณา · เริ่มน่าสะสมเชิงมูลค่าที่ ฿22.80 (MOS 20%) ลงไป · ผู้ที่ถืออยู่อาจทยอยลดเมื่อราคาเกินเป้านักวิเคราะห์มาก
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ข้อมูลราคา/งบจาก StockAnalysis.com, Investing.com, TradingView, Yahoo Finance, Kaohoon International (ณ 24 มิ.ย. 2026)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 24 มิ.ย. 2026 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
