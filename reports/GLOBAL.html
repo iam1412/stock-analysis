@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น สยาม โกลบอลเฮ้าส์ (GLOBAL) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Opus 4.8">
+<script type="application/json" id="stock-meta">
+{"symbol":"GLOBAL","currency":"THB","price":6.40,"fairValue":6.15,"mos":-4.1,"upside":-3.9,"pe":16.8,"dividendYield":2.9,"roe":8.2}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#ff6a00", "accentDark": "#c44e00",
+    "darkGrad": "linear-gradient(135deg,#3d1f06 0%,#6b3508 55%,#9c4f0a 140%)",
+    "glow": "rgba(255,120,30,.38)", "subColor": "#f0d8c4", "headerMuted": "#d8c2ad",
+    "chgBg": "var(--green-soft)", "chgColor": "#1e8e3e", "badge": "#ff6a00",
+    "verdictText": "#efddcd", "vcellLabel": "#d6bda5"
+  },
+  "chart": {
+    "data": [["มิ.ย.25",4.70],["ส.ค.25",6.68],["ต.ค.25",6.49],["ธ.ค.25",5.97],["ก.พ.26",7.56],["เม.ย.26",6.65],["พ.ค.26",7.40],["มิ.ย.26",6.40]],
+    "min": 4.0, "max": 8.0, "grid": [4.5,5.5,6.5,7.5], "fairLine": 6.15, "currency": "฿", "highlight": [0,4],
+    "gridFmt": "v.toFixed(1)", "dataFmt": "d[1].toFixed(2)"
+  },
+  "gauge": { "min": 4.0, "max": 8.0, "cur": 6.40, "fair": 6.15, "fairLabelTop": "-58px" },
+  "fv": 6.15
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots"><span style="background:#ffb066"></span><span style="background:#ff8a33"></span><span style="background:#ff6a00"></span><span style="background:#c44e00"></span></div>
+    <div>
+      <span class="tag">SET: GLOBAL</span>
+      <span class="tag">Commerce • Home Improvement / Building Materials</span>
+      <span class="tag">ค้าปลีกวัสดุก่อสร้างแบบ warehouse ต่างจังหวัด</span>
+    </div>
+    <h1>สยาม โกลบอลเฮ้าส์ (Siam Global House)</h1>
+    <div class="sub">ค้าปลีกวัสดุก่อสร้าง/ตกแต่งบ้านแบบ warehouse (Global House) • แข็งในต่างจังหวัด/ภาคเกษตร • ขยายสาขากัมพูชา ลาว เมียนมา อินโดนีเซีย • SCG ถือหุ้นใหญ่</div>
+    <div class="price-row">
+      <div>
+        <div class="px">฿6.40<small>(GLOBAL)</small></div>
+      </div>
+      <div class="chg">▲ +36% ในรอบปี</div>
+      <div class="px-meta">
+        ราคา ณ 24 มิ.ย. 2026<br>
+        กรอบ 52 สัปดาห์ ฿4.42–฿8.44<br>
+        ที่มา: stockanalysis.com • Investing.com • SET/settrade
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">งบ FY2025 + TTM ถึง Q1/2026</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~฿35.8 พันล้าน</div><div class="d">~5,602 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~16.8x</div><div class="d">EPS TTM ฿0.38</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~22x</div><div class="d">เคยสูง 25–30x ช่วงเติบโตเร็ว</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">~1.3x</div><div class="d">BVPS ~฿4.85</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">~฿1.96 พันล้าน</div><div class="d">−17% YoY (จาก ฿2.37 พันล้าน)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿0.38</div><div class="d">FY2025 ฿0.35 • ฟื้นจากฐานต่ำ</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~฿4.85</div><div class="d">ส่วนผู้ถือหุ้น ~฿27 พันล้าน</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~8.2% / 4.1%</div><div class="d">ต่ำกว่าค่าเฉลี่ย 10 ปี ~12%</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">~฿32.2 พันล้าน</div><div class="d">FY2025 ฿32.0 พันล้าน (−1.9%)</div></div>
+      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">~27%</div><div class="d">ทรงตัว 26–27% (มี house brand)</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~2.9%</div><div class="d">เงินสด ฿0.184 + หุ้นปันผล</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">~0.9</div><div class="d">อิงเศรษฐกิจ/รายได้เกษตร</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ราคาปิดรายเดือนจริง (Yahoo Finance)</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#ff6a00"></i>ราคา GLOBAL</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿6.15</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคาแตะจุดต่ำสุดรอบปีที่ ~฿4.42 (มิ.ย. 2025) ตามกำไรที่ทรุดและ SSSG ติดลบ จากนั้นฟื้นแรงขึ้นเป็น +36% ในรอบปี
+        ผ่านจุดสูง ~฿7.56 (ก.พ. 2026) ก่อนแกว่งกว้างในกรอบ ฿5.6–฿7.6 จากความไม่แน่นอนของรายได้เกษตร/ราคาเหล็กและการฟื้นตัวของยอดขายสาขาเดิม
+        ปัจจุบัน ฿6.40 อยู่ระดับกลางกรอบ — สูงกว่ามูลค่าเหมาะสมที่ประเมินไว้เล็กน้อย
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION (เฉลี่ย 3 วิธี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS (TTM) ฿0.38 × P/E เป้าหมาย ~20x — ต่ำกว่าค่าเฉลี่ยอดีต สะท้อนการฟื้นตัวของกำไรแบบค่อยเป็นค่อยไป</div></div>
+        <div class="mval">฿7.60</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล ฿0.23 × (1+g); g 4.5%, r 9.0% → ฿0.23/(0.09−0.045)</div></div>
+        <div class="mval">฿5.11</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 10% − g 3.5%)/(r 9% − g 3.5%) ≈ 1.18 × BVPS ฿4.85</div></div>
+        <div class="mval">฿5.73</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿5.11 – ฿7.60</span></div>
+        <div class="r">฿6.15</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        วิธี P/E ให้ค่าสูงสุด (฿7.60) เพราะอิง EPS ฟื้นตัว + P/E เป้าหมาย 20x (ยังต่ำกว่าค่าเฉลี่ย 5 ปี ~22x) สอดคล้องเป้านักวิเคราะห์ ฿7.41
+        ขณะที่ DDM และ Justified P/BV ให้ค่าต่ำกว่า เพราะ ROE ปัจจุบัน (~8%) กดต่ำกว่าระดับยั่งยืนในอดีต (~12%) และอัตราปันผลยังไม่สูง
+        FV กลาง ฿6.15 จึงสะท้อน "หุ้นคุณภาพในช่วงกำไรพักฐาน" — ใกล้ราคาปัจจุบัน ไม่ได้ถูกชัดเจน
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿6.40</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿6.15</div></div>
+        </div>
+        <div class="scale">
+          <span>฿4.30<br><small>MOS 30%</small></span>
+          <span>฿4.92<br><small>MOS 20%</small></span>
+          <span style="text-align:center">฿6.15<br><small>Fair Value</small></span>
+          <span style="text-align:right">฿7.41<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">฿7.60<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน ฿6.40 อยู่สูงกว่ามูลค่าเหมาะสมกลาง ฿6.15 เล็กน้อย (≈ เต็มมูลค่า) แต่ยังต่ำกว่าทั้งเป้านักวิเคราะห์เฉลี่ย ฿7.41 และกรอบบน ฿7.60
+        โซนน่าสะสมตามหลัก margin of safety อยู่ที่ ฿4.30–฿4.92 ซึ่งเป็นระดับใกล้จุดต่ำสุดรอบปีที่ผ่านมา
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">−4.1%</div>
+        <div class="txt">ราคาปัจจุบันสูงกว่ามูลค่าเหมาะสมเล็กน้อย — ไม่มี margin of safety ณ ราคานี้ ควรรอย่อหรือรอกำไรฟื้นชัดก่อนสะสม</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿4.92</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿4.30</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿6.15</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="6.40" step="0.05">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿6.40 • EPS ฐาน ~฿0.38 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS −3%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿5.10</div>
+          <div class="ret neg">−15%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.35</span></li>
+            <li><span>P/E ออก</span><span>14.5x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.55</span></li>
+            <li><span>สถานการณ์</span><span>เกษตร/ก่อสร้างซบ SSSG ติดลบต่อ</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +7%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿8.20</div>
+          <div class="ret pos">+38%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.47</span></li>
+            <li><span>P/E ออก</span><span>17.5x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.70</span></li>
+            <li><span>สถานการณ์</span><span>ฟื้นปกติ ขยายสาขาต่อเนื่อง</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +13%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿10.50</div>
+          <div class="ret pos">+75%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.55</span></li>
+            <li><span>P/E ออก</span><span>19x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.85</span></li>
+            <li><span>สถานการณ์</span><span>เกษตรคึก ภูมิภาคโต ราคาเหล็กหนุน</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      ผลตอบแทนผูกกับการฟื้นตัวของกำไรเป็นหลัก — กรณีฐานกำไรโต ~7%/ปี (EPS ฿0.38→฿0.47) ที่ P/E คืนสู่ระดับปกติ ~17.5x ให้ผลตอบแทนรวม ~+38% ใน 3 ปี
+      จุดเสี่ยงคือถ้า SSSG ยังติดลบและกำไรไม่ฟื้น downside อาจถึง −15% ตัวเลขทั้งหมดเป็นสมมติฐานเชิงประเมิน ไม่ใช่การการันตี
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>กำไรฟื้นจากฐานต่ำ:</b> FY2025 กำไรหดเหลือ ฿1.96 พันล้าน (−17%) ฐานต่ำเปิดทางให้ฟื้นตัวแรงเมื่อรายได้เกษตร/ก่อสร้างกลับมา</li>
+          <li><b>ขยายสาขาต่อเนื่อง:</b> เปิดสาขาใหม่ทั้งในไทยและภูมิภาค (กัมพูชา ลาว เมียนมา อินโดนีเซีย) เพิ่มพื้นที่ขายระยะยาว</li>
+          <li><b>SCG ถือหุ้นใหญ่:</b> ได้ความแข็งแกร่งด้าน supply chain วัสดุก่อสร้างและ house brand ช่วยคุมมาร์จิ้น</li>
+          <li><b>โครงสร้างหนี้ดีขึ้น:</b> D/E ลดจาก 0.43 เหลือ ~0.30 เพิ่มความยืดหยุ่นทางการเงิน</li>
+          <li><b>เป้านักวิเคราะห์สูงกว่าราคา:</b> เป้าเฉลี่ย ฿7.41 (สูงสุด ฿8.68) สะท้อนมุมมองการฟื้นตัว</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>SSSG ติดลบ:</b> ยอดขายสาขาเดิมหดต่อเนื่อง กดดันกำไรและทำให้ ROE ลงเหลือ ~8% ต่ำกว่าค่าเฉลี่ยอดีต</li>
+          <li><b>พึ่งรายได้เกษตร/ต่างจังหวัด:</b> กำลังซื้อผูกกับราคาพืชผลและภาวะหนี้ครัวเรือนภาคชนบทที่ยังสูง</li>
+          <li><b>วัฏจักรก่อสร้าง + ราคาเหล็ก:</b> ความผันผวนของราคาวัสดุ (เหล็ก) กระทบทั้งยอดขายและมาร์จิ้น</li>
+          <li><b>Valuation เต็ม:</b> ราคา ฿6.40 อยู่เหนือ FV กลาง ฿6.15 — ไม่มี MOS, อิงการฟื้นตัวที่ยังไม่ชัด</li>
+          <li><b>การแข่งขัน:</b> แข่งกับ HomePro/Thai Watsadu/Dohome ในตลาดวัสดุก่อสร้าง-ตกแต่งบ้าน</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>หุ้นคุณภาพในช่วงกำไรพักฐาน — ราคาเต็มมูลค่า รอจังหวะย่อ</h2>
+      <p>GLOBAL เป็นผู้นำค้าปลีกวัสดุก่อสร้าง/ตกแต่งบ้านแบบ warehouse ที่แข็งในต่างจังหวัด มี SCG เป็นผู้ถือหุ้นใหญ่และยังขยายสาขาในภูมิภาค
+      แต่กำไรกำลังพักฐาน (FY2025 −17%, SSSG ติดลบ, ROE เหลือ ~8%) ทำให้ valuation เฉลี่ย 3 วิธีออกมาที่ ฿6.15 ใกล้ราคาปัจจุบัน ฿6.40
+      — เป็นหุ้นพื้นฐานดีที่ "เต็มมูลค่า" ณ ราคานี้ ยังไม่มี margin of safety จุดน่าสนใจเชิง value อยู่ต่ำกว่า ฿5 ซึ่งใกล้จุดต่ำสุดรอบปี</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿6.15 <span style="font-size:12px;color:#cab9a8">(฿5.11–฿7.60)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">เต็มมูลค่า (MOS −4.1%)</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿7.41 (Buy/ถือ)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> หุ้นพื้นฐานดีแต่ราคาเต็มมูลค่า — รอย่อเข้าโซน &lt; ฿5.5 (เริ่มมี MOS) หรือรอสัญญาณกำไร/SSSG ฟื้นชัดก่อนทยอยสะสม ไม่ไล่ราคาที่ระดับนี้
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ที่มาข้อมูล: stockanalysis.com • Investing.com • SET/settrade • Yahoo Finance (ราคาปิดรายเดือน)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 24 มิ.ย. 2026 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>

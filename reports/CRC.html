@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น เซ็นทรัล รีเทล (CRC) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Opus 4.8">
+<script type="application/json" id="stock-meta">
+{"symbol":"CRC","currency":"THB","price":23.20,"fairValue":23.00,"mos":-0.9,"upside":-0.9,"pe":17.9,"dividendYield":2.3,"roe":10.0}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#e32644",
+    "accentDark": "#ab162e",
+    "darkGrad": "linear-gradient(135deg,#3d060e 0%,#700a1a 58%,#b1112a 140%)",
+    "glow": "rgba(226,29,60,.35)",
+    "subColor": "#ebc2c8",
+    "headerMuted": "#d4a5ad",
+    "verdictText": "#f1d0d5",
+    "vcellLabel": "#dda6af",
+    "badge": "#c01933",
+    "chgBg": "#e6f4ea",
+    "chgColor": "#1e8e3e"
+  },
+  "chart": {
+    "data": [
+      ["ม.ค.68", 33.25],
+      ["ก.พ.68", 33.50],
+      ["มี.ค.68", 25.00],
+      ["เม.ย.68", 23.70],
+      ["พ.ค.68", 18.70],
+      ["มิ.ย.68", 17.70],
+      ["ก.ค.68", 21.50],
+      ["ส.ค.68", 21.30],
+      ["ก.ย.68", 21.90],
+      ["ต.ค.68", 20.50],
+      ["พ.ย.68", 19.90],
+      ["ธ.ค.68", 18.00],
+      ["ม.ค.69", 19.70],
+      ["ก.พ.69", 20.60],
+      ["มี.ค.69", 18.70],
+      ["เม.ย.69", 18.30],
+      ["พ.ค.69", 21.10],
+      ["มิ.ย.69", 22.80]
+    ],
+    "min": 15,
+    "max": 35,
+    "grid": [15, 20, 25, 30, 35],
+    "fairLine": 23.00,
+    "currency": "฿",
+    "highlight": [5, 17],
+    "gridFmt": "v.toFixed(0)",
+    "dataFmt": "d[1].toFixed(2)"
+  },
+  "gauge": { "min": 14, "max": 28, "cur": 23.20, "fair": 23.00, "fairLabelTop": true },
+  "fv": 23.00
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots"></div>
+    <div>
+      <span class="tag">SET: CRC</span>
+      <span class="tag">ค้าปลีก (Commerce)</span>
+      <span class="tag">รีเทลหลายรูปแบบ (Omnichannel)</span>
+    </div>
+    <h1>เซ็นทรัล รีเทล — Central Retail Corporation</h1>
+    <div class="sub">ห้างสรรพสินค้า (Central, Robinson) • ฟู้ด (Tops, Central Food Hall) • วัสดุก่อสร้าง (ไทวัสดุ, go!) • เวียดนาม (GO!, Nguyen Kim) • อิตาลี (Rinascente)</div>
+    <div class="price-row">
+      <div>
+        <div class="px">฿23.20<small>(CRC)</small></div>
+      </div>
+      <div class="chg">▲ +31% (เทียบ มิ.ย. ปีก่อน)</div>
+      <div class="px-meta">
+        ราคา ณ 23 มิ.ย. 2569 (2026)<br>
+        กรอบ 52 สัปดาห์ ฿16.50 – ฿25.25<br>
+        ที่มา: StockAnalysis.com • TradingView • Yahoo Finance
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล TTM ถึง Q1/2569 • งบ FY2025</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~฿140,000 ล้าน</div><div class="d">หุ้น ~6.03 พันล้าน</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~17.9x</div><div class="d">บนกำไรหลัก · รายงาน ~17–19x</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~18–22x</div><div class="d">ลดลงจากช่วง IPO ที่สูง</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">~1.86x</div><div class="d">มีหนี้-ลีสจาก IFRS16 บิดเบือน</div></div>
+
+      <div class="metric"><div class="k">กำไรหลัก FY68</div><div class="v">~฿7,432 ล้าน</div><div class="d">−6% YoY (ไม่รวมรายการพิเศษ)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿1.23</div><div class="d">กำไรหลัก · รายงานรวม one-off ~฿1.30</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~฿11.59</div><div class="d">ส่วนของผู้ถือหุ้น</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~10.0% / 3.5%</div><div class="d">ฟื้นต่อเนื่องจากช่วงโควิด</div></div>
+
+      <div class="metric"><div class="k">รายได้ FY68</div><div class="v neu">~฿253,165 ล้าน</div><div class="d">+4% YoY</div></div>
+      <div class="metric"><div class="k">EV/EBITDA</div><div class="v">~10.8x</div><div class="d">เหมาะกับรีเทลที่มีลีสหนัก</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~2.3%</div><div class="d">ปกติ ฿0.53 · + พิเศษ ฿0.58 (รวม 4.8%)</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">~0.3</div><div class="d">ผันผวนต่ำกว่าตลาด</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ราคาปิดรายเดือนจริง (Yahoo Finance)</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#e32644"></i>ราคา CRC</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿23.00</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคา CRC ปรับลงแรงจากต้นปี 2568 ที่ ~฿33 ลงทำจุดต่ำสุดรอบ ~฿17.7 (มิ.ย. 2568) ตามความกังวลกำลังซื้อในประเทศอ่อนแอ
+        การแข่งขันรีเทล และ sentiment SET ที่ซบเซา จากนั้นทยอยฟื้นตัวเป็นขั้นบันได โดยเฉพาะตั้งแต่ เม.ย. 2569 (~฿18.3) ไต่ขึ้นมาที่ ~฿22.8–฿23.2
+        หลังกำไรหลักไตรมาส 4/2568 โต +17% และข่าวขายธุรกิจ Rinascente (กำไรพิเศษ + ปันผลพิเศษ) ปัจจุบันราคาใกล้มูลค่าเหมาะสม
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS (กำไรหลัก) ฿1.23 × P/E เป้าหมาย ~18.5x — ใกล้ค่าเฉลี่ยหลายปี สะท้อนการเติบโตปานกลาง</div></div>
+        <div class="mval">฿22.75</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. EV/EBITDA</div><div class="mdesc">EBITDA ~฿31,000 ล้าน × เป้าหมาย ~11x หักหนี้สุทธิ+ลีส แล้วหารหุ้น — มาตรวัดหลักของรีเทลที่มีลีสตามมาตรฐาน IFRS16</div></div>
+        <div class="mval">฿24.00</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. DCF (FCFE)</div><div class="mdesc">กระแสเงินสดอิสระต่อหุ้น ~฿1.05 โต ~4.5%/ปี 5 ปี ปลายทาง g 3%, r 9% — สะท้อนมูลค่ากระแสเงินสดระยะยาว</div></div>
+        <div class="mval">฿22.30</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿20 – ฿26</span></div>
+        <div class="r">฿23.00</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ไม่ใช้ Justified P/BV เพราะ BVPS ของธุรกิจรีเทลถูกบิดเบือนจากหนี้สินตามสัญญาเช่า (IFRS16) ทำให้ P/BV ไม่สะท้อนมูลค่าที่แท้จริง •
+        วิธี EV/EBITDA ให้ค่าสูงสุด (฿24) เพราะหักผลของลีสออกอย่างเหมาะสมกับโครงสร้างรีเทล • DCF ให้ค่าระมัดระวังสุด (฿22.3) จากสมมติฐานเติบโตปานกลาง •
+        ค่ากลาง ฿23 สอดคล้องกับเป้านักวิเคราะห์เฉลี่ย ~฿23 และสะท้อนว่าราคาปัจจุบันใกล้มูลค่าเหมาะสม (เต็มมูลค่าเล็กน้อย)
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿23.20</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿23.00</div></div>
+        </div>
+        <div class="scale">
+          <span>฿16.10<br><small>MOS 30%</small></span>
+          <span>฿18.40<br><small>MOS 20%</small></span>
+          <span style="text-align:center">฿23.00<br><small>Fair Value</small></span>
+          <span style="text-align:right">฿23.00<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">฿26.00<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน ฿23.20 อยู่สูงกว่ามูลค่าเหมาะสม ฿23.00 เพียงเล็กน้อย (MOS ~−0.9%) — ถือว่า "เต็มมูลค่า/ใกล้ราคาเหมาะสม"
+        หลังราคาฟื้นตัวจากจุดต่ำ ฿16–18 มาแล้ว โซนน่าสะสมเพิ่มที่ปลอดภัยกว่าอยู่ที่ ≤ ฿18.40 (MOS 20%) ซึ่งเคยแตะในช่วงราคาซบเซาปี 2568
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">−0.9%</div>
+        <div class="txt">ส่วนเผื่อติดลบเล็กน้อย — ราคาปัจจุบันใกล้/สูงกว่ามูลค่าเหมาะสมเล็กน้อย หลังราคาฟื้นจากจุดต่ำมาแล้ว เหมาะ "รอย่อ" เพื่อ MOS ที่ปลอดภัยกว่า มากกว่าไล่ราคา</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿18.40</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿16.10</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿23.00</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="23.20" step="0.05">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿23.20 • EPS ฐาน ~฿1.23 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS −2%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿17.36</div>
+          <div class="ret neg">−19% (รวมปันผล)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿1.16</span></li>
+            <li><span>P/E ออก</span><span>15x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿1.5</span></li>
+            <li><span>สถานการณ์</span><span>กำลังซื้อในประเทศซบเซายาว</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +5%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿25.63</div>
+          <div class="ret pos">+18% (รวมปันผล)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿1.42</span></li>
+            <li><span>P/E ออก</span><span>18x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿1.7</span></li>
+            <li><span>สถานการณ์</span><span>เศรษฐกิจฟื้น เวียดนามหนุนกำไร</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +9%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿31.86</div>
+          <div class="ret pos">+46% (รวมปันผล)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿1.59</span></li>
+            <li><span>P/E ออก</span><span>20x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿1.9</span></li>
+            <li><span>สถานการณ์</span><span>กำไรเร่งตัว + re-rating P/E</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      ผลตอบแทนของ CRC ขึ้นกับการฟื้นตัวของกำลังซื้อในประเทศและการขยายธุรกิจในเวียดนามเป็นหลัก ปันผล ~2–3%/ปี เป็นเพียงเบาะรองเสริม (ไม่นับปันผลพิเศษจากการขายสินทรัพย์) •
+      กรณีฐานให้ผลตอบแทนรวม ~6%/ปี — เหมาะนักลงทุนที่เชื่อในการฟื้นตัวของการบริโภคไทยและการเติบโตในตลาดต่างประเทศ มากกว่าหวังผลตอบแทนเร็วในระยะสั้น
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>ผู้นำรีเทลหลายรูปแบบ:</b> ครอบคลุมห้าง-ฟู้ด-วัสดุก่อสร้าง สเกลใหญ่สุดในไทย กระจายความเสี่ยงรายได้ข้ามกลุ่มสินค้า</li>
+          <li><b>เวียดนามเป็นเครื่องยนต์โต:</b> ธุรกิจในเวียดนาม (GO!, Nguyen Kim) เติบโตเร็วและช่วยถ่วงดุลตลาดไทยที่อิ่มตัว</li>
+          <li><b>กำไรหลักไตรมาส 4 โต +17%:</b> โมเมนตัมกำไรฟื้น จากการคุมต้นทุนและออมนิแชนแนลที่มีประสิทธิภาพขึ้น</li>
+          <li><b>ปรับพอร์ตปลดล็อกมูลค่า:</b> ขายธุรกิจ Rinascente (อิตาลี) สร้างกำไรพิเศษ + ปันผลพิเศษ และโฟกัสตลาดหลักไทย-เวียดนาม</li>
+          <li><b>ฐานออมนิแชนแนลแข็งแรง:</b> สมาชิก The1 + แพลตฟอร์มออนไลน์-ออฟไลน์ครบ หนุนยอดขายต่อหัวระยะยาว</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>กำลังซื้อในประเทศอ่อนแอ:</b> หนี้ครัวเรือนสูงและเศรษฐกิจไทยโตช้า กดยอดขายสาขาเดิม (SSSG) โดยตรง</li>
+          <li><b>หนี้-ลีสสูง:</b> ภาระหนี้จากการขยายสาขาและหนี้สินตามสัญญาเช่า (IFRS16) ทำให้ต้นทุนการเงินและ EV สูง</li>
+          <li><b>การแข่งขันรุนแรง:</b> ทั้งห้าง คู่แข่งออนไลน์ (e-commerce) และดิสเคานต์สโตร์ กดดันมาร์จิ้นต่อเนื่อง</li>
+          <li><b>ความเสี่ยงต่างประเทศ:</b> ผลงานเวียดนาม/ค่าเงินและเศรษฐกิจปลายทางส่งผ่านมาที่กำไรรวมในบางรอบ</li>
+          <li><b>กำไรรายงานมีรายการพิเศษ:</b> กำไร one-off จากการขายสินทรัพย์อาจทำให้ EPS รายงานดูสูงเกินจริง ต้องดูกำไรหลัก</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>ผู้นำรีเทลพื้นฐานดี — ราคาฟื้นมาเต็มมูลค่าแล้ว รอย่อจึงน่าสนใจ</h2>
+      <p>CRC เป็นผู้ประกอบการค้าปลีกหลายรูปแบบรายใหญ่ที่สุดของไทย มีจุดเด่นที่สเกลและการกระจายธุรกิจข้ามกลุ่มสินค้า-ประเทศ (ไทย เวียดนาม)
+      หลังราคาปรับลงแรงในปี 2568 และฟื้นตัวขึ้นมาที่ ฿23.20 หุ้นซื้อขายใกล้/สูงกว่ามูลค่าเหมาะสม ฿23.00 เล็กน้อย (MOS ~−0.9%)
+      จึงถือว่า "เต็มมูลค่า" ในระยะสั้น นักลงทุนเน้น value ควรรอย่อสู่โซน ฿18 หรือต่ำกว่า เพื่อ MOS ที่ปลอดภัยกว่า โดยจับตาการฟื้นตัวของกำลังซื้อไทยและเวียดนาม</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿23.00 <span style="font-size:12px;color:#cab9a8">(฿20–฿26)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −0.9%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿23.00 (Buy/Neutral)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ยังไม่ใช่จังหวะไล่ราคาที่ระดับนี้ — รอทยอยสะสมเมื่อราคาย่อสู่โซน ≤ ฿20 และเพิ่มน้ำหนักจริงจังที่ MOS 20% (≤ ฿18.40) มองเป็นหุ้นเติบโต-ฟื้นตัวระยะยาว ไม่ใช่หุ้นปันผลหรือเก็งกำไรสั้น
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ EBITDA ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ที่มาข้อมูล: StockAnalysis.com • TradingView • Yahoo Finance • Central Retail IR (ดึงข้อมูล มิ.ย. 2569)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 23 มิ.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
