@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น GFPT Public Company Limited (GFPT) — Stock Analysis Dashboard</title>
+<!-- ★ ใส่รุ่นโมเดล AI ที่ใช้วิเคราะห์จริง -->
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน -->
+<script type="application/json" id="stock-meta">
+{"symbol":"GFPT","currency":"THB","price":8.95,"fairValue":14.00,"mos":36.1,"upside":56.4,"pe":4.84,"dividendYield":2.23,"roe":11.02}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#e8a000",
+    "accentDark": "#b57800",
+    "darkGrad": "linear-gradient(135deg,#2a1f00 0%,#1a1400 100%)",
+    "glow": "rgba(232,160,0,0.18)",
+    "subColor": "#f0c040",
+    "headerMuted": "#b89040",
+    "verdictText": "#fff8e7",
+    "vcellLabel": "#c8a860",
+    "badge": "#e8a000",
+    "chgBg": "#3c1212",
+    "chgColor": "#ff6b6b"
+  },
+  "chart": {
+    "data": [
+      ["มิ.ย. 68", 10.60],
+      ["ก.ค. 68", 9.55],
+      ["ส.ค. 68", 9.75],
+      ["ก.ย. 68", 9.45],
+      ["ต.ค. 68", 9.15],
+      ["พ.ย. 68", 8.55],
+      ["ธ.ค. 68", 8.55],
+      ["ม.ค. 69", 8.60],
+      ["ก.พ. 69", 8.60],
+      ["มี.ค. 69", 8.70],
+      ["เม.ย. 69", 8.80],
+      ["พ.ค. 69", 8.85],
+      ["มิ.ย. 69", 8.95]
+    ],
+    "min": 7.50,
+    "max": 12.00,
+    "fairLine": 14.00,
+    "currency": "฿",
+    "highlight": [0, 5],
+    "grid": [8.00, 9.00, 10.00, 11.00, 12.00]
+  },
+  "gauge": {
+    "min": 7.00,
+    "max": 20.00,
+    "cur": 8.95,
+    "fair": 14.00,
+    "fairLabelTop": false
+  },
+  "fv": 14.00
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">🐔🌾🏭🚢🍗</div>
+    <div>
+      <span class="tag">SET: GFPT</span>
+      <span class="tag">Agro &amp; Food Industry</span>
+      <span class="tag">ผู้ส่งออกไก่ชั้นนำ</span>
+    </div>
+    <h1>GFPT Public Company Limited</h1>
+    <div class="sub">ไก่แปรรูปส่งออก (ญี่ปุ่น · EU · UK · ตะวันออกกลาง) • ซัพพลายเออร์หลัก McDonald's ไทย 30+ ปี • ธุรกิจครบวงจร "Farm to Fork" อาหารสัตว์ → ฟาร์ม → โรงชำแหละ → แปรรูป → ส่งออก</div>
+    <div class="price-row">
+      <div>
+        <div class="px">฿8.95<small>(GFPT)</small></div>
+      </div>
+      <div class="chg">▼ −15.6% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 24 มิ.ย. 2569<br>
+        กรอบ 52 สัปดาห์ ฿8.35 – ฿11.00<br>
+        ที่มา: SET Factsheet, Investing.com, Yahoo Finance
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ มิ.ย. 2569 | ที่มา: SET, Investing.com</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~฿11,222 ล้าน</div><div class="d">1,253.8 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~4.84x</div><div class="d">ต่ำกว่าค่าเฉลี่ยอุตสาหกรรม</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~6.5–8x</div><div class="d">ปัจจุบันต่ำกว่าเฉลี่ย (discount)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">0.51x</div><div class="d">ซื้อขายต่ำกว่ามูลค่าทางบัญชี</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2568</div><div class="v">฿2,439 ล้าน</div><div class="d">+23.6% YoY (ต้นทุนลดฉุด)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿1.85</div><div class="d">FY2568: ~฿1.95/หุ้น</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~฿17.55</div><div class="d">มูลค่าทางบัญชีต่อหุ้น</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~11.0% / 8.5%</div><div class="d">ผลตอบแทนผู้ถือหุ้นสม่ำเสมอ</div></div>
+
+      <div class="metric"><div class="k">รายได้ FY2568</div><div class="v neu">฿18,840 ล้าน</div><div class="d">−2.5% YoY (ราคาขายลด)</div></div>
+      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">16.35%</div><div class="d">ดีขึ้นจาก 13.82% ปีก่อน</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~2.23%</div><div class="d">฿0.20/หุ้น (จ่าย เม.ย. 2568)</div></div>
+      <div class="metric"><div class="k">D/E Ratio</div><div class="v">0.28x</div><div class="d">โครงสร้างการเงินแข็งแกร่ง</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART (~1 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#e8a000"></i>ราคา GFPT</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿14.00</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคาหุ้น GFPT ปรับตัวลงจาก ฿10.60 ในเดือนมิถุนายน 2568 มาอยู่ที่ ฿8.95 ปัจจุบัน คิดเป็นการปรับตัวลง −15.6% ในรอบปี ราคาทำจุดสูงสุดบริเวณ ฿10.60–11.00 ในปี 2568 ก่อนปรับตัวลงต่อเนื่อง เนื่องจากราคาขายไก่โลกอ่อนตัวและความกังวลเรื่องค่าเงินบาท แม้กำไรสุทธิ FY2568 จะเพิ่มขึ้น 23.6% จากต้นทุนวัตถุดิบที่ลดลง แต่ราคาหุ้นยังซื้อขายต่ำกว่า Fair Value อย่างมีนัยสำคัญ สะท้อนมุมมอง Discount ของตลาด
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS (TTM) ฿1.85 × P/E เป้าหมาย ~6.5x — P/E เฉลี่ย ~5 ปีของ GFPT อยู่ในช่วง 6–8x; ใช้ 6.5x เป็นค่ากลางอนุรักษ์นิยม</div></div>
+        <div class="mval">฿12.03</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผลเฉลี่ย (normalized 30% payout) ฿0.555 × (1+g); g 3%, r 9% → FV = ฿0.572/(0.09−0.03) — อิง Normalized Payout เนื่องจาก GFPT จ่ายปันผลต่ำกว่าความสามารถทำกำไร</div></div>
+        <div class="mval">฿9.53</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 11.02% − g 3%)/(r 10% − g 3%) ≈ 1.146 × BVPS ฿17.55 — สะท้อนมูลค่าเมื่อ ROE &gt; Cost of Equity ในระยะยาว</div></div>
+        <div class="mval">฿20.11</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿9.53 – ฿20.11</span></div>
+        <div class="r">฿14.00</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        วิธี P/E ให้ค่า ฿12.03 โดยใช้ P/E เป้าหมาย 6.5x ซึ่งอนุรักษ์นิยมกว่าค่าเฉลี่ยในอดีต · วิธี DDM ให้ค่าต่ำที่สุด ฿9.53 เพราะ GFPT มีนโยบายจ่ายปันผลต่ำกว่าศักยภาพ (Payout ~10% จากกำไร) จึง Normalize เป็น 30% · วิธี Justified P/BV ให้ค่าสูงสุด ฿20.11 เพราะ ROE 11% สูงกว่า Cost of Equity ซึ่งทำให้บริษัทควรซื้อขายเหนือ Book Value · ค่าเฉลี่ยสามวิธีที่ ฿14.00 ใกล้เคียงกับกรอบบนของเป้านักวิเคราะห์ (฿13.10 สูงสุด)
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿8.95</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿14.00</div></div>
+        </div>
+        <div class="scale">
+          <span>฿9.80<br><small>MOS 30%</small></span>
+          <span>฿11.20<br><small>MOS 20%</small></span>
+          <span style="text-align:center">฿11.51<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">฿14.00<br><small>Fair Value</small></span>
+          <span style="text-align:right">฿20.11<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน ฿8.95 ต่ำกว่า Fair Value เฉลี่ย ฿14.00 ถึง 36% และยังต่ำกว่าแม้แต่โซน MOS 30% ที่ ฿9.80 ซึ่งถือว่าเป็น "deep value zone" · ราคายังต่ำกว่าเป้าหมายเฉลี่ยนักวิเคราะห์ที่ ฿11.51 อีกด้วย · P/BV เพียง 0.51x แสดงว่าตลาดซื้อขายต่ำกว่ามูลค่าทรัพย์สินสุทธิ สะท้อน Pessimism เรื่องราคาสินค้าเกษตรและค่าเงิน
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict good">
+        <div class="big">+36.1%</div>
+        <div class="txt">MOS สูง — โซน Deep Value (ถูกมาก) ราคาต่ำกว่า Fair Value อย่างมีนัยสำคัญ</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿11.20</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿9.80</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿14.00</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="8.95" step="0.05">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿8.95 • EPS ฐาน ~฿1.85 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS 0%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿9.25</div>
+          <div class="ret neg">รวม ~+10% / ~3.2%/ปี</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿1.85</span></li>
+            <li><span>P/E ออก</span><span>5x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.60</span></li>
+            <li><span>สถานการณ์</span><span>ราคาไก่โลกอ่อน ต้นทุนพลังงานสูง</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +7%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿15.89</div>
+          <div class="ret pos">รวม ~+84% / ~22.3%/ปี</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿2.27</span></li>
+            <li><span>P/E ออก</span><span>7x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.60</span></li>
+            <li><span>สถานการณ์</span><span>ส่งออกฟื้น McDonald's ขยายสาขา</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +10%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿19.69</div>
+          <div class="ret pos">รวม ~+127% / ~31.8%/ปี</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿2.46</span></li>
+            <li><span>P/E ออก</span><span>8x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.60</span></li>
+            <li><span>สถานการณ์</span><span>ราคาไก่โลกฟื้นแกร่ง ขยายตลาดใหม่</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      การคาดการณ์อิงสมมติฐาน EPS ฐาน ฿1.85 (TTM) และ P/E กลับสู่ค่าเฉลี่ยในอดีต · Bear case: กำไรทรงตัว P/E 5x ยังให้ผลตอบแทนบวกเพราะ MOS สูง · Base case: EPS เติบโต 7%/ปีจากการขยายส่งออก EU/ญี่ปุ่น + McDonald's ขยายสาขา P/E กลับสู่ค่าเฉลี่ย 7x ให้ผลตอบแทนดีมาก · Bull case: ราคาสินค้าเกษตรฟื้นตัวรวดเร็ว ปริมาณส่งออกเพิ่ม กำไร Beat expectations P/E ขยาย 8x · ปันผล ฿0.20/ปี (ประมาณการ)
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก &amp; ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>สัญญา McDonald's ระยะยาว:</b> เป็น Exclusive Supplier ไก่แปรรูปให้ McDonald's ไทยมากกว่า 30 ปี มีรายได้มั่นคงระยะยาว ลดความเสี่ยงด้านตลาด</li>
+          <li><b>ตลาดส่งออกหลากหลาย:</b> ส่งออกไปญี่ปุ่น EU สหราชอาณาจักร และตะวันออกกลาง กระจายความเสี่ยงด้านราคาและ Demand ได้ดี</li>
+          <li><b>ห่วงโซ่ครบวงจร "Farm to Fork":</b> ควบคุมต้นทุนตั้งแต่อาหารสัตว์ → ฟาร์ม → โรงชำแหละ → แปรรูป ลดการพึ่งพาซัพพลายเออร์ภายนอก มีกำไรขั้นต้นดีขึ้น</li>
+          <li><b>ต้นทุนวัตถุดิบผ่อนคลาย:</b> ราคาข้าวโพดและถั่วเหลือง (อาหารสัตว์) ลดลงในปี 2567–2568 ช่วยหนุน Gross Margin ให้ดีขึ้นจาก 13.8% → 16.4%</li>
+          <li><b>Valuation ถูกมาก:</b> P/E 4.84x และ P/BV 0.51x ต่ำกว่าค่าเฉลี่ยทั้งอุตสาหกรรมและประวัติศาสตร์ของตัวเอง มี MOS สูง 36%</li>
+          <li><b>กำไรเพิ่มขึ้นแข็งแกร่ง:</b> FY2568 กำไรสุทธิโต 23.6% ต่อเนื่อง แสดงถึงความสามารถในการทำกำไรที่ดีขึ้นจากการควบคุมต้นทุน</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>ราคาสินค้าเกษตรผันผวน:</b> รายได้ผูกกับราคาไก่โลกซึ่งผันผวนตามอุปสงค์-อุปทาน หากราคาส่งออกไก่ตก รายได้จะลดแม้ปริมาณเพิ่ม</li>
+          <li><b>โรคระบาดในสัตว์ปีก (AI):</b> ความเสี่ยง Avian Influenza สูงเสมอ หากเกิดการระบาดในประเทศ อาจถูกแบนส่งออก กระทบรายได้รุนแรง</li>
+          <li><b>ความเสี่ยงค่าเงิน:</b> รายได้ส่วนใหญ่เป็นสกุลเงินต่างประเทศ (JPY/EUR/GBP/USD) หากเงินบาทแข็งค่า กำไรที่แปลงกลับจะลดลง</li>
+          <li><b>การพึ่งพาลูกค้ารายใหญ่:</b> McDonald's เป็นลูกค้ารายสำคัญ การสูญเสียสัญญาหรือปรับเงื่อนไขสัญญา จะกระทบรายได้อย่างมีนัยสำคัญ</li>
+          <li><b>ต้นทุนพลังงานและขนส่ง:</b> ธุรกิจโรงชำแหละและแปรรูปใช้พลังงานสูง หากราคาพลังงานพุ่ง Margin จะถูกกดดัน</li>
+          <li><b>การแข่งขันจากประเทศเพื่อนบ้าน:</b> เวียดนามและบราซิลเป็นคู่แข่งส่งออกไก่รายใหญ่ที่มีต้นทุนต่ำกว่า อาจกดราคาตลาด</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>Value Play — ราคาถูกกว่ามูลค่าเหมาะสมมาก แต่ต้องอดทนรอ Catalyst</h2>
+      <p>GFPT เป็นผู้ส่งออกไก่แปรรูปชั้นนำของไทย ด้วยห่วงโซ่ธุรกิจครบวงจรและสัญญา McDonald's ระยะยาวที่การันตีรายได้มั่นคง บริษัทสามารถทำกำไรสุทธิโต 23.6% ในปี 2568 จากต้นทุนวัตถุดิบที่ผ่อนคลาย · ราคาปัจจุบัน ฿8.95 ต่ำกว่า Fair Value เฉลี่ย ฿14.00 ถึง 36% และซื้อขายที่ P/E เพียง 4.84x ซึ่งเป็น Discount อย่างมีนัยสำคัญ · ความเสี่ยงหลักคือราคาไก่โลกผันผวน โรค AI และความเสี่ยงค่าเงิน · เหมาะสำหรับนักลงทุนเชิงคุณค่าที่มองระยะกลาง-ยาว 2–3 ปี</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿14.00 <span style="font-size:12px;color:#cab9a8">(฿9.53–฿20.11)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +36.1%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿11.51 (ซื้อ 6/7)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ราคาปัจจุบัน ฿8.95 อยู่ต่ำกว่าโซน MOS 30% (฿9.80) แล้ว เหมาะกับการ "ทยอยสะสม" สำหรับนักลงทุนระยะยาว · ควรติดตาม: 1) ราคาส่งออกไก่โลก 2) ข้อมูลโรค AI 3) อัตราแลกเปลี่ยนบาท/เยน · หากกำไรรายไตรมาสแข็งแกร่งต่อเนื่อง P/E อาจขยายกลับสู่ค่าเฉลี่ย และ Upside จะสูงมาก
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ข้อมูลราคา ณ 24 มิ.ย. 2569 จาก SET Factsheet และ Investing.com · ข้อมูลงบการเงิน FY2568 จาก SET/Investing.com/Kaohoon · เป้าหมายนักวิเคราะห์จาก Yahoo Finance/Investing.com (ครอสเช็ค ≥2 แหล่ง)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 24 มิ.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
