@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น บางกอก เชน ฮอสปิทอล (BCH) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Opus 4.8">
+<script type="application/json" id="stock-meta">
+{"symbol":"BCH","currency":"THB","price":9.45,"fairValue":10.00,"mos":5.5,"upside":5.8,"pe":18.4,"dividendYield":4.79,"roe":9.5}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#2bb673",
+    "accentDark": "#1c8a55",
+    "darkGrad": "linear-gradient(135deg,#0c3d27 0%,#16703f 55%,#2bb673 130%)",
+    "glow": "rgba(43,182,115,0.35)",
+    "subColor": "#bfeccf",
+    "headerMuted": "#c7ecd6",
+    "verdictText": "#d6f3e2",
+    "vcellLabel": "#a9e0bf",
+    "badge": "#1c8a55",
+    "chgBg": "#fce8e6",
+    "chgColor": "#d93025"
+  },
+  "chart": {
+    "data": [
+      ["ม.ค.68", 14.30],
+      ["ก.พ.68", 16.20],
+      ["มี.ค.68", 14.00],
+      ["เม.ย.68", 15.10],
+      ["พ.ค.68", 13.70],
+      ["มิ.ย.68", 12.80],
+      ["ก.ค.68", 14.00],
+      ["ส.ค.68", 13.00],
+      ["ก.ย.68", 13.00],
+      ["ต.ค.68", 11.30],
+      ["พ.ย.68", 9.95],
+      ["ธ.ค.68", 10.40],
+      ["ม.ค.69", 10.10],
+      ["ก.พ.69", 11.00],
+      ["มี.ค.69", 9.70],
+      ["เม.ย.69", 9.30],
+      ["พ.ค.69", 9.45],
+      ["มิ.ย.69", 9.45]
+    ],
+    "min": 8,
+    "max": 17,
+    "grid": [8, 10, 12, 14, 16],
+    "fairLine": 10.00,
+    "currency": "฿",
+    "highlight": [1, 16],
+    "gridFmt": "v.toFixed(0)",
+    "dataFmt": "d[1].toFixed(2)"
+  },
+  "gauge": { "min": 6, "max": 14, "cur": 9.45, "fair": 10.00, "fairLabelTop": true },
+  "fv": 10.00
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots"></div>
+    <div>
+      <span class="tag">SET: BCH</span>
+      <span class="tag">การแพทย์ (Healthcare)</span>
+      <span class="tag">โรงพยาบาลเอกชน mid-market</span>
+    </div>
+    <h1>บางกอก เชน ฮอสปิทอล — Bangkok Chain Hospital PCL</h1>
+    <div class="sub">เครือ รพ.เกษมราษฎร์ (ตลาด mass + ผู้ป่วยประกันสังคม) • รพ.เวิลด์เมดิคอล (พรีเมียม) • เกษมราษฎร์ อินเตอร์เนชั่นแนล &amp; สาขา สปป.ลาว • รายได้ผสมเงินสด + เหมาจ่ายประกันสังคม</div>
+    <div class="price-row">
+      <div>
+        <div class="px">฿9.45<small>(BCH)</small></div>
+      </div>
+      <div class="chg">▼ −23.2% (52 สัปดาห์)</div>
+      <div class="px-meta">
+        ราคา ณ 24 มิ.ย. 2569 (2026)<br>
+        กรอบ 52 สัปดาห์ ฿9.10 – ฿14.70<br>
+        ที่มา: StockAnalysis.com, Yahoo Finance, Investing.com
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล TTM ถึง Q1/2569</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~฿23,300 ล้าน</div><div class="d">หุ้น ~2,490 ล้าน</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~18.4x</div><div class="d">ต่ำกว่าค่าเฉลี่ยกลุ่ม รพ.</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~24–26x</div><div class="d">กรอบ 18–32x</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">1.61x</div><div class="d">ต่ำกว่าค่าเฉลี่ยในอดีต</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2568</div><div class="v">~฿1,260 ล้าน</div><div class="d">+2.7% YoY (FY2025)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿0.51</div><div class="d">งวด TTM ถึง Q1/2569</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~฿5.40</div><div class="d">ส่วนผู้ถือหุ้นแข็งแรง หนี้ต่ำ</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~9.5% / 6.2%</div><div class="d">ผลตอบแทนปานกลาง</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">~฿12,020 ล้าน</div><div class="d">+1.6% YoY</div></div>
+      <div class="metric"><div class="k">อัตรากำไรสุทธิ</div><div class="v">~10.5%</div><div class="d">มาร์จิ้น รพ. mid-market</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~4.79%</div><div class="d">DPS รวม ~฿0.45 (12 ด.)</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">~0.18</div><div class="d">ผันผวนต่ำกว่าตลาดมาก</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#2bb673"></i>ราคา BCH</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿10.00</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคา BCH อยู่ในขาลงตลอด ~18 เดือน จากจุดสูง ~฿16.2 (ก.พ. 2568) ลงต่อเนื่องเหลือ ~฿9.4 (มิ.ย. 2569) ลดลง ~23% รอบปี
+        แรงกดหลักมาจากรายได้ผู้ป่วยทั่วไป/ต่างชาติชะลอ (โดยเฉพาะกัมพูชาหลังปิดด่านครึ่งปีหลัง 2568) และตลาดลดมูลค่ากลุ่ม รพ. ที่เคยเทรด P/E สูง
+        ปัจจุบันราคาใกล้จุดต่ำสุด 52 สัปดาห์ (฿9.10) และซื้อขายใกล้มูลค่าเหมาะสมที่ประเมินไว้
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ยถ่วงน้ำหนัก 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS (TTM) ฿0.51 × P/E เป้าหมาย ~25x — ใกล้ค่าเฉลี่ย 5 ปี สะท้อนธุรกิจ รพ. ที่กระแสเงินสดสม่ำเสมอ (น้ำหนัก 50%)</div></div>
+        <div class="mval">฿12.75</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล ฿0.45 × (1+g); g 4.0%, r 9.5% → ฿0.468 / (0.095−0.04) (น้ำหนัก 25%)</div></div>
+        <div class="mval">฿8.51</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 10% − g 3%)/(r 9.5% − g 3%) ≈ 1.08 × BVPS ฿5.40 (น้ำหนัก 25%)</div></div>
+        <div class="mval">฿5.82</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿8.50 – ฿12.75</span></div>
+        <div class="r">฿10.00</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        วิธี Justified P/BV ให้ค่าต่ำสุด (฿5.82) เพราะ ROE ~10% สูงกว่า r ไม่มาก ตัวคูณ P/BV เหมาะสมจึงใกล้ 1x ขณะที่หุ้นเทรดที่ 1.61x —
+        เป็นสัญญาณว่าหุ้นยัง premium บนฐานทุน • วิธี P/E ให้ค่าสูงสุด (฿12.75) เพราะ รพ. เป็นธุรกิจ "กำไร/แฟรนไชส์" ไม่ใช่ asset-based จึงถ่วงน้ำหนัก P/E มากสุด (50%)
+        • ค่ากลางถ่วงน้ำหนัก ฿10.00 ต่ำกว่าเป้านักวิเคราะห์เฉลี่ย (~฿13) สะท้อนมุมมองระมัดระวังต่อการฟื้นตัวของผู้ป่วยทั่วไป
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿9.45</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿10.00</div></div>
+        </div>
+        <div class="scale">
+          <span>฿7.00<br><small>MOS 30%</small></span>
+          <span>฿8.00<br><small>MOS 20%</small></span>
+          <span style="text-align:center">฿10.00<br><small>Fair Value</small></span>
+          <span style="text-align:right">฿12.75<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">฿13.00<br><small>เป้าเฉลี่ย Analyst</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน ฿9.45 อยู่ต่ำกว่ามูลค่าเหมาะสม ฿10.00 เพียงเล็กน้อย (MOS ~5.5%) — ถือว่า "ใกล้ราคาเหมาะสม"
+        โซนน่าสะสมเพิ่มอยู่ที่ ≤ ฿8.00 (MOS 20%) ซึ่งต่ำกว่าจุดต่ำสุด 52 สัปดาห์ (฿9.10) • นักวิเคราะห์ส่วนใหญ่ให้เป้า ~฿13 (กรอบ ฿10.5–฿16) สูงกว่าราคา แต่ต้องอาศัยการฟื้นตัวของผู้ป่วยทั่วไป
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">+5.5%</div>
+        <div class="txt">ส่วนเผื่อบาง — ราคาปัจจุบันใกล้มูลค่าเหมาะสม ความน่าสนใจอยู่ที่ปันผล ~4.8% + ความเป็นไปได้ที่ผู้ป่วยทั่วไปฟื้นตัว รอย่อสู่โซน ฿8 เพื่อ MOS ที่ปลอดภัยกว่า</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿8.00</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿7.00</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿10.00</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="9.45" step="0.05">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿9.45 • EPS ฐาน ~฿0.51 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS −3%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿8.38</div>
+          <div class="ret neg">−6% (รวมปันผล)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.47</span></li>
+            <li><span>P/E ออก</span><span>18x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿1.3</span></li>
+            <li><span>สถานการณ์</span><span>ผู้ป่วยทั่วไป/ต่างชาติยังซบ มาร์จิ้นหด</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +8%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿14.13</div>
+          <div class="ret pos">+64% (รวมปันผล)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.64</span></li>
+            <li><span>P/E ออก</span><span>22x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿1.5</span></li>
+            <li><span>สถานการณ์</span><span>ประกันสังคมโต + ผู้ป่วยทั่วไปฟื้น</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +13%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿19.13</div>
+          <div class="ret pos">+120% (รวมปันผล)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.74</span></li>
+            <li><span>P/E ออก</span><span>26x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿1.7</span></li>
+            <li><span>สถานการณ์</span><span>ต่างชาติกลับ + re-rate P/E กลุ่ม รพ.</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      ผลตอบแทนของ BCH ขึ้นกับ 2 ตัวแปร: (1) การฟื้นตัวของผู้ป่วยทั่วไป/ต่างชาติ และ (2) การที่ตลาด re-rate P/E กลุ่ม รพ. ที่ปัจจุบันถูกกดลงมา
+      กรณีฐานให้ผลตอบแทนรวม ~18%/ปี โดยมีปันผล ~4.8% เป็นเบาะรอง — รายได้ประกันสังคมที่มั่นคงช่วยลด downside แต่ upside ต้องอาศัยฝั่งผู้ป่วยเงินสดกลับมา
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>ฐานประกันสังคมมั่นคง:</b> รายได้ SSO ~฿4,150 ล้าน (+6.7% YoY) เป็นรายได้เหมาจ่ายสม่ำเสมอ ลดความผันผวนของรอบเศรษฐกิจ</li>
+          <li><b>เรตเบิกจ่าย RW คงที่:</b> อัตราเบิกจ่ายโรคซับซ้อน ฿12,000/RW ทรงตัวทั้งปี หนุนมาร์จิ้นฝั่งประกันสังคม</li>
+          <li><b>Valuation ลงมาถูก:</b> P/E ~18x ต่ำกว่าค่าเฉลี่ย 5 ปี (~25x) และ P/BV 1.61x ต่ำกว่าในอดีต เปิด upside หาก re-rate</li>
+          <li><b>เครือข่ายกระจายเซกเมนต์:</b> เกษมราษฎร์ (mass), เวิลด์เมดิคอล (พรีเมียม), ลาว/อินเตอร์ ช่วยกระจายความเสี่ยงรายได้</li>
+          <li><b>หนี้ต่ำ-ปันผลสม่ำเสมอ:</b> งบดุลแข็งแรง Beta ต่ำ ~0.18 เหมาะเป็นหุ้น defensive พร้อมปันผล ~4.8%</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>ผู้ป่วยต่างชาติชะลอ:</b> รายได้ผู้ป่วยทั่วไป −2.1% หลังด่านกัมพูชาปิดครึ่งปีหลัง 2568 เป็นตัวฉุดหลัก</li>
+          <li><b>พึ่งพาประกันสังคมสูง:</b> สัดส่วน SSO ใหญ่ ทำให้อ่อนไหวต่อการเปลี่ยนนโยบาย/อัตราเบิกจ่ายของภาครัฐ</li>
+          <li><b>กลุ่ม รพ. ถูก de-rate:</b> ตลาดลดมูลค่ากลุ่มโรงพยาบาลที่เคยเทรดแพง กดราคา BCH ต่อเนื่อง 23% รอบปี</li>
+          <li><b>การแข่งขันสูง:</b> แข่งกับ BDMS/BH/CHG ในตลาด รพ.เอกชน ทั้งฝั่งพรีเมียมและ mass</li>
+          <li><b>ต้นทุนบุคลากร/ค่ายา:</b> แรงกดด้านต้นทุนแพทย์-พยาบาลและค่ายา อาจกดมาร์จิ้นหากรายได้ไม่โตตาม</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>หุ้น รพ. defensive ราคาลงมาใกล้มูลค่าเหมาะสม — รอ MOS ที่ดีกว่า</h2>
+      <p>BCH เป็นผู้ดำเนินการ รพ.เอกชน mid-market ที่มีฐานรายได้ประกันสังคมมั่นคงเป็นเบาะรอง จุดเด่นคืองบดุลแข็งแรง Beta ต่ำ และปันผล ~4.8%
+      ราคาที่ ฿9.45 ลงมา 23% รอบปีจากผู้ป่วยทั่วไป/ต่างชาติชะลอและกลุ่ม รพ. ถูก de-rate ปัจจุบันซื้อขายต่ำกว่ามูลค่าเหมาะสม ฿10.00 เพียงเล็กน้อย (MOS ~5.5%)
+      จึงเหมาะ "ทยอยสะสมเพื่อรับปันผล + ลุ้นฟื้นตัว" มากกว่าหวังกำไรเร็ว ผู้เน้น value ควรรอย่อสู่โซน ฿8 เพื่อ MOS ที่ปลอดภัยกว่า</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿10.00 <span style="font-size:12px;color:#cab9a8">(฿8.50–฿12.75)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +5.5%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿13.00 (Buy)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ทยอยสะสมเพื่อรับปันผลเมื่อราคา ≤ ฿9.50 และเพิ่มน้ำหนักจริงจังที่โซน MOS 20% (≤ ฿8.00) — มองเป็นหุ้น defensive + dividend ที่มี option การฟื้นตัวของผู้ป่วยเงินสด ไม่ใช่หุ้นเก็งกำไรระยะสั้น
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ที่มาข้อมูล: StockAnalysis.com, Yahoo Finance, Investing.com (ดึงข้อมูล มิ.ย. 2569)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 24 มิ.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
