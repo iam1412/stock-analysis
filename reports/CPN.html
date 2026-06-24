@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น เซ็นทรัลพัฒนา (CPN) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Opus 4.8">
+<script type="application/json" id="stock-meta">
+{"symbol":"CPN","currency":"THB","price":64.25,"fairValue":65,"mos":1,"upside":1,"pe":14.7,"dividendYield":3.69,"roe":16.8}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#e4002b", "accentDark": "#c00025",
+    "darkGrad": "linear-gradient(135deg,#3a0008 0%,#6e0014 55%,#a30021 140%)",
+    "glow": "rgba(228,40,55,.35)", "subColor": "#d8ccce", "headerMuted": "#cbb8bb",
+    "chgBg": "var(--green-soft)", "chgColor": "#1e6e30", "badge": "var(--red)",
+    "verdictText": "#e0d6d8", "vcellLabel": "#c4b2b5"
+  },
+  "chart": {
+    "data": [["มิ.ย.25",43.5],["ส.ค.25",48],["ต.ค.25",53],["ธ.ค.25",58.5],["ก.พ.26",64.5],["เม.ย.26",70.5],["พ.ค.26",66],["มิ.ย.26",64.25]],
+    "min": 40, "max": 75, "grid": [45,55,65,75], "fairLine": 65, "currency": "฿", "highlight": [5,7],
+    "dataFmt": "v.toFixed(2)", "gridFmt": "v.toFixed(0)"
+  },
+  "gauge": { "min": 40, "max": 95, "cur": 64.25, "fair": 65, "fairLabelTop": "-58px" },
+  "fv": 65
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots"><span style="background:#ff5a6e"></span><span style="background:#e4002b"></span><span style="background:#c00025"></span><span style="background:#8a0019"></span></div>
+    <div>
+      <span class="tag">SET: CPN</span>
+      <span class="tag">Property • Retail Developer</span>
+      <span class="tag">เจ้าของศูนย์การค้าใหญ่สุดในไทย</span>
+    </div>
+    <h1>เซ็นทรัลพัฒนา (Central Pattana)</h1>
+    <div class="sub">ศูนย์การค้า CentralWorld / Central ทั่วประเทศ • อาคารสำนักงานให้เช่า • ที่อยู่อาศัย (คอนโด/บ้าน) • โรงแรม — บริษัทอสังหาฯ ค้าปลีกในเครือเซ็นทรัล</div>
+    <div class="price-row">
+      <div>
+        <div class="px">฿64.25<small>(CPN)</small></div>
+      </div>
+      <div class="chg">▲ +49% ในรอบปี</div>
+      <div class="px-meta">
+        ราคา ≈ 23–24 มิ.ย. 2026<br>
+        ต่ำกว่าจุดสูงสุด 52 สัปดาห์ (฿70.50)<br>
+        ที่มา: stockanalysis.com / Investing.com / SET
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">งบ FY2025 + ไตรมาสล่าสุด</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~฿2.88 แสนล้าน</div><div class="d">~4.49 พันล้านหุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~14.7x</div><div class="d">ใกล้กลางกรอบในอดีต <span class="pill">เหมาะสม</span></div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5–10 ปี</div><div class="v">~16x</div><div class="d">กรอบ ~13–20x</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">~2.32x</div><div class="d">สะท้อน ROE สูง/asset เพิ่มมูลค่า</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">฿18,841 ล้าน</div><div class="d pos">▲ +12.6% YoY</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿4.37</div><div class="d">FY2025 ~฿4.20</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~฿25.6</div><div class="d">ส่วนของผู้ถือหุ้นโตต่อเนื่อง</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~16.8% / 5.5%</div><div class="d">สูงสุดกลุ่มอสังหาฯ ไทย</div></div>
+
+      <div class="metric"><div class="k">รายได้ FY2025</div><div class="v">฿54,123 ล้าน</div><div class="d pos">▲ +1.3% YoY (TTM ฿55,590 ล.)</div></div>
+      <div class="metric"><div class="k">กำไรสุทธิ TTM</div><div class="v">฿19,580 ล้าน</div><div class="d">โตต่อเนื่อง 3 ปีติด</div></div>
+      <div class="metric"><div class="k">52 สัปดาห์</div><div class="v">฿41.5 – ฿70.5</div><div class="d">ราคาปัจจุบันใกล้กรอบบน</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~3.69%</div><div class="d">฿2.40/ปี • Payout ~48%</div></div>
+    </div>
+  </section>
+
+  <!-- ===== PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#e4002b"></i>ราคา CPN</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿65</span>
+        <span><i style="background:#ff5a6e;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        หุ้นปรับขึ้น <b>+49% ในรอบปี</b> จากโซน ~฿43 (กลางปี 2025) สู่จุดสูงสุด 52 สัปดาห์ ~฿70.5 (เม.ย. 2026) แล้วย่อลงทรงตัวแถว ~฿64
+        ขับเคลื่อนด้วย <b>กำไรทำ new high 3 ปีติด</b> (FY2025 +12.6%), การเปิดศูนย์การค้าใหม่ และ traffic ที่ฟื้นตามเศรษฐกิจ/มาตรการกระตุ้น — เป็นหนึ่งใน <b>หุ้น property นำตลาด</b> ของปี
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี (อสังหาฯ ค้าปลีก — ROE สูง)</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">Normalized EPS ฿4.55 (FY26E) × P/E เฉลี่ย 16.0x (กลางกรอบอดีต)</div></div>
+        <div class="mval">฿72.80</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล ฿2.40 × (1+g); g 5%, r 9.5% → ฿2.52 / (0.095−0.05)</div></div>
+        <div class="mval">฿56.00</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Justified P/BV <span class="pill">แทน DCF</span></div><div class="mdesc">P/BV เหมาะสม = (ROE 16.8% − g 5%)/(r 9.5% − g 5%) ≈ 2.61x × BVPS ฿25.6</div></div>
+        <div class="mval">฿66.80</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿56 – ฿73</span></div>
+        <div class="r">฿65</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        <b>หมายเหตุ:</b> CPN เป็นอสังหาฯ ที่มี ROE สูง (~16.8%) และกระแสเงินสดสม่ำเสมอจากค่าเช่า — แต่กระแสเงินสดอิสระผันผวนจาก capex สร้างศูนย์การค้าใหม่ จึงเลี่ยง DCF
+        ใช้ <b>Justified P/BV</b> แทน (สะท้อน ROE สูงโดยตรง) คู่กับ <b>P/E</b> และ <b>DDM</b> วิธี DDM ให้ค่าต่ำสุดเพราะ payout ของ CPN ต่ำ (~48% เก็บกำไรไป reinvest โต) — ค่ากลาง ฿65 จึง <b>ใกล้เคียงราคาตลาดมาก</b> สะท้อนว่าราคาวิ่งขึ้นรับพื้นฐานที่แข็งแกร่งไปแล้วเกือบเต็ม
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿64.25</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿65</div></div>
+        </div>
+        <div class="scale">
+          <span>฿45.50<br><small>MOS 30%</small></span>
+          <span>฿52<br><small>MOS 20%</small></span>
+          <span style="text-align:center">฿65<br><small>Fair Value</small></span>
+          <span style="text-align:right">฿73<br><small>เป้าสูงสุด Analyst</small></span>
+          <span style="text-align:right">฿83<br><small>เป้าสูงสุด Bull</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคา ฿64.25 อยู่ <b>ใกล้มูลค่าเหมาะสม (FV ฿65)</b> — แต่ <b>ต่ำกว่าเป้าหมายเฉลี่ย 12 เดือน</b> ของนักวิเคราะห์ (~฿71–73, consensus "Strong Buy" 19 ราย)
+        ตลาดให้ premium กับ CPN จากคุณภาพกำไร/ROE สูง — upside มาจาก "การเติบโตของกำไร" มากกว่า re-rate (multiple ยังไม่ถูก)
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict ok">
+        <div class="big">+1%</div>
+        <div class="txt"><b>ราคาเต็มมูลค่า (fully valued)</b><br>ราคาปัจจุบัน ฿64.25 ต่ำกว่ามูลค่าเหมาะสม ฿65 เพียง ~1% → แทบไม่มีส่วนเผื่อความปลอดภัย เหมาะกับ <b>"รอย่อ"</b> มากกว่าซื้อที่ราคานี้ — สาย growth ถือได้แต่ value ควรรอ MOS</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿52</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿45.50</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿65</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="64.25" step="0.25">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== RETURN PROJECTION ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿64.25 • EPS ฐาน ~฿4.55 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS −2%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿51</div>
+          <div class="ret neg">รวม ~ −10% (≈ −3.6%/ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿4.28</span></li>
+            <li><span>P/E ออก</span><span>12.0x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿6.6</span></li>
+            <li><span>สถานการณ์</span><span>ศก.ชะลอ • traffic อ่อน • capex หนัก</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +5%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿79</div>
+          <div class="ret pos">รวม ~ +35% (≈ +10.5%/ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿5.27</span></li>
+            <li><span>P/E ออก</span><span>15.0x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿7.8</span></li>
+            <li><span>สถานการณ์</span><span>กำไรโตต่อ • เปิดศูนย์ใหม่ตามแผน</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +9%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿100</div>
+          <div class="ret pos">รวม ~ +69% (≈ +19%/ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿5.89</span></li>
+            <li><span>P/E ออก</span><span>17.0x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿8.7</span></li>
+            <li><span>สถานการณ์</span><span>ศก.ฟื้นแรง • mixed-use + ตปท. โต • re-rate</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      <b>ผลตอบแทนหลักมาจากการเติบโตของกำไร ไม่ใช่ปันผล:</b> ที่ yield เพียง ~3.7% และ payout ~48% CPN เก็บกำไรไป reinvest สร้างศูนย์การค้า/mixed-use ใหม่
+      Base case อิงกำไรโต ~5%/ปี และ P/E คงระดับ ~15x — upside แท้จริงอยู่ที่ความสามารถเปิดโครงการใหม่และดัน rental yield
+      แต่ Bear case เตือนว่าหาก traffic/เศรษฐกิจอ่อนลงพร้อม capex สูง กระแสเงินสดและ multiple อาจถูกกดดัน
+    </p>
+  </section>
+
+  <!-- ===== CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><div><b>กำไรทำ new high 3 ปีติด:</b> FY2025 กำไรสุทธิ ฿18,841 ล้าน (+12.6% YoY) รายได้ ฿54,123 ล้าน — เติบโตสม่ำเสมอแม้เศรษฐกิจไทยโตช้า สะท้อนความแข็งแกร่งของโมเดลค่าเช่า</div></li>
+          <li><div><b>ผู้นำตลาดศูนย์การค้าไทย:</b> เป็นเจ้าของ/บริหารศูนย์การค้าใหญ่สุดในประเทศ (CentralWorld + Central ทั่วประเทศ) อำนาจต่อรองค่าเช่าสูง อัตราการเช่าเต็มเกือบ 100% และ traffic ฟื้นตามการบริโภค/ท่องเที่ยว</div></li>
+          <li><div><b>ROE สูงสุดในกลุ่ม (~16.8%):</b> สูงกว่าอสังหาฯ ไทยทั่วไปมาก สะท้อนสินทรัพย์คุณภาพ + การบริหารทุนที่มีประสิทธิภาพ — เป็นเหตุผลที่ตลาดให้ P/BV ~2.3x (premium ที่สมเหตุสมผล)</div></li>
+          <li><div><b>โมเดล mixed-use ขยายตัว:</b> ต่อยอดศูนย์การค้าเป็นโครงการแบบผสม (ค้าปลีก + ที่อยู่อาศัย + ออฟฟิศ + โรงแรม) เพิ่ม recurring income และมูลค่าที่ดิน — รวมการขยายสู่ต่างจังหวัด/ต่างประเทศ</div></li>
+          <li><div><b>นักวิเคราะห์เชียร์ "Strong Buy":</b> 19 รายแนะนำซื้อ 0 รายแนะนำขาย เป้าเฉลี่ย 12 เดือน ~฿71–73 (สูงสุด ฿83) — สะท้อนความเชื่อมั่นในแนวโน้มกำไร</div></li>
+          <li><div><b>เครือเซ็นทรัล:</b> เป็นบริษัทอสังหาฯ หลักของกลุ่มเซ็นทรัล มี synergy กับธุรกิจค้าปลีก/โรงแรม/อาหารในเครือ ดึง anchor tenant และ traffic ได้เปรียบคู่แข่ง</div></li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><div><b>ราคาเต็มมูลค่า (MOS บางมาก):</b> ที่ ฿64.25 ราคาเกือบเท่ามูลค่าเหมาะสม ฿65 และ P/E ~14.7x ใกล้กลางกรอบ — ส่วนเผื่อความปลอดภัยน้อย หากกำไรพลาดเป้า downside เปิดได้ทันที</div></li>
+          <li><div><b>พึ่งพากำลังซื้อในประเทศ/ท่องเที่ยว:</b> รายได้ค่าเช่าผูกกับการบริโภคและ traffic ในศูนย์ — เศรษฐกิจไทยที่โตช้า (GDP ~1.5%) หรือนักท่องเที่ยวหดตัว จะกระทบยอดขายผู้เช่าและการต่อสัญญา</div></li>
+          <li><div><b>Capex สูง / กระแสเงินสดอิสระผันผวน:</b> การสร้างศูนย์การค้า/mixed-use ใหม่ใช้เงินลงทุนหนักและให้ผลตอบแทนช้า — หนี้สิน ~฿117,000 ล้าน หากดอกเบี้ย/ต้นทุนก่อสร้างสูงขึ้นจะกดผลตอบแทนโครงการ</div></li>
+          <li><div><b>ภัยจาก e-commerce / พฤติกรรมผู้บริโภค:</b> การช้อปออนไลน์ที่โตขึ้นอาจลดความถี่การมาห้าง ระยะยาวอาจกดดัน rental yield ของพื้นที่ค้าปลีกแบบดั้งเดิม</div></li>
+          <li><div><b>ปันผลต่ำ (yield ~3.7%):</b> payout ~48% เน้น reinvest — สำหรับนักลงทุนสายปันผล yield ไม่จูงใจเท่าหุ้นกลุ่มอื่น ผลตอบแทนต้องพึ่ง capital gain เป็นหลัก ซึ่งขึ้นกับการเติบโต</div></li>
+          <li><div><b>Supply ศูนย์การค้า/การแข่งขัน:</b> การเปิดศูนย์การค้าและ mixed-use ใหม่จากคู่แข่ง (เดอะมอลล์, สยามพิวรรธน์ ฯลฯ) อาจแย่ง traffic/ผู้เช่า โดยเฉพาะทำเลทับซ้อนในกรุงเทพฯ</div></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>อสังหาฯ ค้าปลีกคุณภาพสูง โตสม่ำเสมอ — แต่ราคา "เต็มมูลค่า" แล้ว</h2>
+      <p>เซ็นทรัลพัฒนาเป็นผู้นำศูนย์การค้าของไทยที่มี <b>กำไรทำ new high 3 ปีติด, ROE สูงสุดในกลุ่ม (~16.8%) และโมเดลค่าเช่า/mixed-use ที่แข็งแกร่ง</b> เป็นหุ้น property คุณภาพที่นักวิเคราะห์ให้ "Strong Buy" เกือบเป็นเอกฉันท์ — แต่หลังราคาวิ่งขึ้น +49% ในรอบปี ที่ ฿64.25 ราคาอยู่ <b>ใกล้มูลค่าเหมาะสม ฿65 พอดี (MOS เพียง ~1%)</b> และ P/E ~14.7x ก็ใกล้กลางกรอบอดีต ผลตอบแทนต่อจากนี้จึงต้องพึ่ง "การเติบโตของกำไร" มากกว่าส่วนลดราคา เหมาะกับสาย growth ที่ถือยาว มากกว่า value ที่มองหา margin of safety</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿65 <span style="font-size:12px;color:#c4b2b5">(฿56–฿73)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +1%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿71–73 (Strong Buy)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> สาย growth/ถือยาว — ทยอยสะสมตามจังหวะย่อ (น่าสนใจมากที่ <b>&lt;฿52</b>) เพื่อล็อก margin of safety • สาย value ควร <b>รอ MOS</b> ก่อนเข้า • ติดตาม <b>การเติบโตของกำไร/ยอดเช่า, แผนเปิดศูนย์ใหม่ &amp; capex</b> และ <b>traffic/กำลังซื้อในประเทศ</b> เป็นตัวชี้วัดหลัก — จุดเสี่ยงสำคัญคือราคาที่เต็มมูลค่าแล้ว ทำให้ downside เปิดง่ายหากกำไรพลาดเป้า
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ Normalized EPS, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต ซึ่งอ่อนไหวต่อกำลังซื้อในประเทศ ทิศทางดอกเบี้ย และแผนลงทุน (capex)
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • อ้างอิงงบจริง FY2025 (กำไรสุทธิ ฿18,841 ล้าน, รายได้ ฿54,123 ล้าน) จาก stockanalysis.com / Bangkok Post • ราคา ณ ~23–24 มิ.ย. 2026 จาก stockanalysis.com, Investing.com, SET
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 23–24 มิ.ย. 2026 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>

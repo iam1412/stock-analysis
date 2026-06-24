@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น เจริญโภคภัณฑ์อาหาร (CPF) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Opus 4.8">
+<script type="application/json" id="stock-meta">
+{"symbol":"CPF","currency":"THB","price":19.2,"fairValue":20,"mos":4,"upside":4,"pe":7.1,"dividendYield":6.5,"roe":7.5}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#009b4d", "accentDark": "#007a3d",
+    "darkGrad": "linear-gradient(135deg,#06291a 0%,#0c4429 55%,#13633c 140%)",
+    "glow": "rgba(90,200,140,.35)", "subColor": "#c7d4cb", "headerMuted": "#b3c2b8",
+    "chgBg": "var(--green-soft)", "chgColor": "#1e6e30", "badge": "var(--green)",
+    "verdictText": "#d4ddd6", "vcellLabel": "#aebdb2"
+  },
+  "chart": {
+    "data": [["มิ.ย.25",22.4],["ส.ค.25",24.1],["ต.ค.25",23.2],["ธ.ค.25",21.6],["ก.พ.26",20.4],["เม.ย.26",19.0],["พ.ค.26",19.0],["มิ.ย.26",19.2]],
+    "min": 17.5, "max": 25.5, "grid": [18,20,22,24], "fairLine": 20, "currency": "฿", "highlight": [1,5],
+    "gridFmt": "v.toFixed(0)", "dataFmt": "v.toFixed(1)"
+  },
+  "gauge": { "min": 13, "max": 28, "cur": 19.2, "fair": 20, "fairLabelTop": "-58px" },
+  "fv": 20
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots"><span style="background:#5ac88c"></span><span style="background:#33b06d"></span><span style="background:#13934f"></span><span style="background:#007a3d"></span></div>
+    <div>
+      <span class="tag">SET: CPF</span>
+      <span class="tag">Consumer Staples • Agro &amp; Food</span>
+      <span class="tag">อาหารครบวงจรระดับโลก</span>
+    </div>
+    <h1>เจริญโภคภัณฑ์อาหาร (CP Foods)</h1>
+    <div class="sub">อาหารสัตว์ • ฟาร์มปศุสัตว์ (หมู/ไก่/ไข่) • เพาะเลี้ยงสัตว์น้ำ (กุ้ง) • อาหารแปรรูป/พร้อมทาน • ธุรกิจต่างประเทศ (จีน/เวียดนาม) • ส่งออก ~50 ประเทศ</div>
+    <div class="price-row">
+      <div>
+        <div class="px">฿19.20<small>(CPF)</small></div>
+      </div>
+      <div class="chg">▼ −14% ในรอบปี</div>
+      <div class="px-meta">
+        ราคา ≈ 23–24 มิ.ย. 2026<br>
+        ใกล้จุดต่ำสุด 52 สัปดาห์ (฿18.10)<br>
+        ที่มา: SET / stockanalysis.com / TradingView / Investing
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">งบ FY2025 + ไตรมาสล่าสุด</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~฿1.57 แสนล้าน</div><div class="d">~8.16 พันล้านหุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v pos">~7.1x</div><div class="d">ต่ำกว่าค่าเฉลี่ย <span class="pill g">ถูกกว่าปกติ</span></div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ยอดีต</div><div class="v">~10.5x</div><div class="d">กรอบหุ้นอาหารวัฏจักร ~9–13x</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v pos">~0.59x</div><div class="d">ต่ำกว่ามูลค่าทางบัญชีมาก</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">฿25,197 ล้าน</div><div class="d pos">▲ +29% YoY</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿2.66</div><div class="d">Normalized กลางวัฏจักร ~฿2.30</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~฿28.5</div><div class="d">ธ.ค. 2025</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v">~7.5% / 3.1%</div><div class="d">ผันผวนตามวัฏจักรราคาสัตว์</div></div>
+
+      <div class="metric"><div class="k">รายได้ FY2025</div><div class="v neu">฿571,135 ล้าน</div><div class="d">▼ −2% YoY • Gross margin 16.9%</div></div>
+      <div class="metric"><div class="k">สัดส่วนรายได้ต่างประเทศ</div><div class="v">~62%</div><div class="d">ในประเทศ 33% • ส่งออก 5%</div></div>
+      <div class="metric"><div class="k">หนี้สินรวม</div><div class="v">~฿524,000 ล้าน</div><div class="d">หนี้สูง (ทุนเข้มข้น/ปศุสัตว์)</div></div>
+      <div class="metric"><div class="k">เงินปันผล FY2025</div><div class="v">~6.5%</div><div class="d">฿1.25/หุ้น (สถิติสูงสุด)</div></div>
+    </div>
+  </section>
+
+  <!-- ===== PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#009b4d"></i>ราคา CPF</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿20</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        หุ้นปรับลง <b>−14% ในรอบปี</b> จากโซน ~฿24 (กลางปี 2025) ลงมาทรงตัวแถว ~฿19 ใกล้ <b>จุดต่ำสุด 52 สัปดาห์ (฿18.10)</b>
+        สวนทางกับ <b>กำไรที่โตแรง +29% ในปี 2025</b> — ราคาที่ลงสะท้อนความกังวลต่อ <b>วัฏจักรราคาหมู/ไก่ที่กำลังผ่านจุดสูงสุด</b> และหนี้ที่สูง มากกว่าผลประกอบการปีล่าสุด
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี (หุ้นวัฏจักร — ใช้ EPS กลางวัฏจักร)</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">Normalized EPS ~฿2.30 × P/E เฉลี่ย ~10.5x (กลางกรอบในอดีต)</div></div>
+        <div class="mval">฿24</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผลยั่งยืน ~฿1.10 × (1+g); g 3%, r 10%</div></div>
+        <div class="mval">฿16</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Justified P/BV <span class="pill g">แทน DCF</span></div><div class="mdesc">P/BV เหมาะสม = (ROE 8% − g 3%)/(r 10% − g 3%) ≈ 0.71 × BVPS ฿28.5</div></div>
+        <div class="mval">฿20</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿16 – ฿24</span></div>
+        <div class="r">฿20</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        <b>หมายเหตุ:</b> CPF เป็นหุ้น <b>วัฏจักร (cyclical)</b> — กำไรแกว่งตามราคาเนื้อหมู/ไก่/กุ้งและต้นทุนอาหารสัตว์ จึงใช้ <b>EPS กลางวัฏจักร (normalized ~฿2.30)</b>
+        ไม่ใช่ EPS ปีล่าสุดที่สูง (฿2.66) เพื่อเลี่ยงการประเมินบนกำไรช่วงพีค วิธี DDM ให้ค่าต่ำสุดเพราะปันผลยั่งยืนผันผวน (เคยมีปีที่กำไรบางหรือขาดทุน)
+        ส่วน Justified P/BV ชี้ว่าแม้ ROE ปานกลาง มูลค่าทางบัญชี ฿28.5 ก็ยัง <b>สูงกว่าราคาตลาดมาก</b> — ค่ากลาง ฿20 จึง <b>ใกล้เคียงราคาปัจจุบัน</b>
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿19.2</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿20</div></div>
+        </div>
+        <div class="scale">
+          <span>฿14.0<br><small>MOS 30%</small></span>
+          <span>฿16.0<br><small>MOS 20%</small></span>
+          <span style="text-align:center">฿20<br><small>Fair Value</small></span>
+          <span style="text-align:right">฿22.8<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">฿24<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคา ฿19.2 อยู่ <b>ใกล้เคียงมูลค่าเหมาะสม</b> (FV ฿20) — แต่ <b>ต่ำกว่าเป้าหมายเฉลี่ย 12 เดือน</b> ของนักวิเคราะห์ (~฿22.8, consensus "Buy")
+        สะท้อนว่าตลาดยังกังวลวัฏจักรราคาสัตว์/หนี้ ขณะที่นักวิเคราะห์มองว่าราคาปัจจุบันลงมามากเกินพื้นฐานปี 2025
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict ok">
+        <div class="big">+4%</div>
+        <div class="txt"><b>ส่วนเผื่อความปลอดภัยบางมาก</b><br>ราคาปัจจุบัน ฿19.2 ต่ำกว่ามูลค่าเหมาะสม ฿20 ราว 4% → ถือว่า <b>ราคาพอเหมาะ</b> ยังไม่มี margin of safety มากพอ ควรรอย่อหรือทยอยสะสมเมื่อราคาต่ำกว่า ฿16 (MOS 20%+)</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿16.0</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿14.0</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿20</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="19.2" step="0.1">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== RETURN PROJECTION ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿19.2 • EPS ฐาน ~฿2.30 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS −4%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿15.3</div>
+          <div class="ret neg">รวม ~ −8% (≈ −2.7%/ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿2.03</span></li>
+            <li><span>P/E ออก</span><span>7.5x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿2.4</span></li>
+            <li><span>สถานการณ์</span><span>ราคาหมู/ไก่ตก • ต้นทุนพุ่ง</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +3%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿23.9</div>
+          <div class="ret pos">รวม ~ +42% (≈ +13.8%/ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿2.51</span></li>
+            <li><span>P/E ออก</span><span>9.5x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿3.3</span></li>
+            <li><span>สถานการณ์</span><span>วัฏจักรทรงตัว • ปันผลสูง</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +7%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿32.4</div>
+          <div class="ret pos">รวม ~ +89% (≈ +29.7%/ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿2.82</span></li>
+            <li><span>P/E ออก</span><span>11.5x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿3.9</span></li>
+            <li><span>สถานการณ์</span><span>ราคาสัตว์ขึ้น • re-rate • หนี้ลด</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      <b>ปันผลช่วยพยุงผลตอบแทน:</b> ที่ yield ~6.5% การเก็บปันผลช่วยลดความเสี่ยงในช่วงรอวัฏจักรฟื้น
+      โอกาส re-rate มาจาก P/BV ที่ต่ำเพียง ~0.59x และ P/E ~7.1x (ต่ำกว่าค่าเฉลี่ยในอดีต) — หากราคาเนื้อสัตว์ฟื้นและหนี้ลดลง upside มีนัยสำคัญ
+      แต่ Bear case เตือนว่าราคาหมู/ไก่/กุ้งที่ตกพร้อมต้นทุนอาหารสัตว์ที่สูง อาจกดกำไรและบีบ multiple ต่อเนื่อง
+    </p>
+  </section>
+
+  <!-- ===== CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><div><b>กำไรปี 2025 โตแรง +29%:</b> กำไรสุทธิ ฿25,197 ล้าน (สูงสุดเป็นประวัติการณ์) จาก gross margin ที่ดีขึ้นเป็น 16.9% (จาก 14.6%) — ฟื้นชัดจากวัฏจักรราคาสัตว์ที่ดีขึ้น โดยเฉพาะธุรกิจในจีน/เวียดนาม</div></li>
+          <li><div><b>ปันผลสูงสุดเป็นประวัติการณ์:</b> FY2025 จ่ายรวม ฿1.25/หุ้น (interim ฿1.00 + งวดหลัง ฿0.25) — yield ~6.5% ทำให้เป็น "หุ้นปันผล" ในกลุ่ม consumer staples</div></li>
+          <li><div><b>Valuation ถูก:</b> P/E ~7.1x และ P/BV ~0.59x ต่ำกว่าค่าเฉลี่ยอดีตมาก — ซื้อบริษัทอาหารระดับโลกที่ราคา ~60% ของมูลค่าบัญชี มี margin of safety เชิงทรัพย์สิน</div></li>
+          <li><div><b>ฐานธุรกิจกระจายทั่วโลก:</b> รายได้ ~62% มาจากต่างประเทศ (จีน เวียดนาม ฯลฯ) + ส่งออก ~50 ประเทศ — ลดการพึ่งพาเศรษฐกิจไทยและกระจายความเสี่ยงวัฏจักรรายภูมิภาค</div></li>
+          <li><div><b>ครบวงจร (vertically integrated):</b> ตั้งแต่อาหารสัตว์ → ฟาร์ม → แปรรูป → ค้าปลีก/ร้านอาหาร ทำให้คุมต้นทุนและมาร์จิ้นได้ดีกว่าคู่แข่งที่ทำเฉพาะส่วน</div></li>
+          <li><div><b>ดีลเสริมพอร์ต:</b> การเข้าถือ CPP เพิ่ม (จาก ITOCHU) และการขยายอาหารแปรรูป/พร้อมทานช่วยเพิ่มสัดส่วนสินค้ามูลค่าเพิ่มที่มาร์จิ้นสูงกว่าสินค้าโภคภัณฑ์</div></li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><div><b>วัฏจักรราคาสัตว์ (ตัวแปรหลัก):</b> กำไรแกว่งตามราคาเนื้อหมู/ไก่/กุ้ง — ปี 2025 อยู่ช่วงดี หากราคาสัตว์ตกในปี 2026–27 กำไรอาจหดแรง (เคยมีปีที่กำไรบางมาก) จึงต้องประเมินบน EPS กลางวัฏจักร</div></li>
+          <li><div><b>หนี้สูง:</b> หนี้สินรวม ~฿524,000 ล้าน (ธุรกิจปศุสัตว์ใช้เงินทุนเข้มข้น) — ดอกเบี้ยและภาระหนี้กดกำไรสุทธิ และจำกัดความยืดหยุ่นเมื่อวัฏจักรเป็นขาลง</div></li>
+          <li><div><b>ต้นทุนอาหารสัตว์ผันผวน:</b> ราคาข้าวโพด/กากถั่วเหลือง (วัตถุดิบหลัก) ขึ้นกับสภาพอากาศ/ราคาโภคภัณฑ์โลก — ต้นทุนพุ่งบีบมาร์จิ้นได้ทันที</div></li>
+          <li><div><b>โรคระบาดสัตว์:</b> ASF (อหิวาต์หมูแอฟริกา)/ไข้หวัดนกเป็นความเสี่ยงเชิงโครงสร้าง — การระบาดทำให้ต้องทำลายฝูงสัตว์และกระทบอุปทาน/ต้นทุนทั้งอุตสาหกรรม</div></li>
+          <li><div><b>ความเสี่ยงต่างประเทศ/ค่าเงิน:</b> รายได้ ~62% จากต่างประเทศ — เศรษฐกิจจีน/เวียดนามชะลอ หรือเงินบาทแข็ง กระทบรายได้แปลงกลับและความสามารถแข่งขันของการส่งออก</div></li>
+          <li><div><b>ปันผลอาจไม่ยั่งยืนทุกปี:</b> DPS ฿1.25 (FY25) อิงกำไรช่วงวัฏจักรดี — หากกำไรหดในปีถัดไป ปันผลอาจถูกปรับลด yield จึงไม่การันตี</div></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>อาหารครบวงจรระดับโลก ราคาถูกเชิงทรัพย์สิน — แต่เป็นหุ้นวัฏจักร ราคา "พอเหมาะ"</h2>
+      <p>เจริญโภคภัณฑ์อาหารเป็นบริษัทอาหารครบวงจรที่ใหญ่ที่สุดของไทยและมีฐานธุรกิจกระจายทั่วโลก (รายได้ ~62% จากต่างประเทศ) จุดเด่นคือ <b>กำไรปี 2025 ที่โตแรง +29% สู่ ฿25,197 ล้าน, ปันผลสูงสุดเป็นประวัติการณ์ ฿1.25/หุ้น (yield ~6.5%) และ valuation ที่ถูกมาก (P/E ~7.1x, P/BV ~0.59x)</b> — แต่เพราะเป็น <b>หุ้นวัฏจักร</b> ที่กำไรแกว่งตามราคาสัตว์/ต้นทุนอาหารสัตว์ และมีหนี้สูง การประเมินจึงต้องอิง EPS กลางวัฏจักร ที่ราคา ฿19.2 มี margin of safety บางมาก (~4%) เหมาะกับการ "ทยอยสะสมเมื่อย่อ" มากกว่าซื้อหนัก</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿20 <span style="font-size:12px;color:#aebdb2">(฿16–฿24)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +4%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿22.8 (Buy)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> สาย value/ปันผล — ทยอยสะสมเมื่อราคา <b>ต่ำกว่า ฿20</b> (น่าสนใจมากที่ &lt;฿16) เพื่อล็อก yield สูงและรอวัฏจักรฟื้น • ติดตาม <b>ราคาเนื้อหมู/ไก่/กุ้งและต้นทุนอาหารสัตว์</b>, <b>ระดับหนี้/ดอกเบี้ย</b> และ <b>เศรษฐกิจจีน/เวียดนาม</b> เป็นตัวชี้วัดหลัก — จุดเสี่ยงสำคัญคือวัฏจักรราคาสัตว์ที่อาจผ่านจุดสูงสุดแล้ว
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ Normalized EPS กลางวัฏจักร, อัตราเติบโตปันผล (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต ซึ่งอ่อนไหวมากต่อราคาเนื้อสัตว์/ต้นทุนอาหารสัตว์และวัฏจักรอุตสาหกรรม
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • อ้างอิงงบจริง FY2025 (กำไรสุทธิ ฿25,197 ล้าน • รายได้ ฿571,135 ล้าน • ปันผล ฿1.25) จาก CPF IR / Kaohoon / Nation Thailand • ราคา ณ ~23–24 มิ.ย. 2026 จาก SET, stockanalysis.com, TradingView, Investing.com
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 23–24 มิ.ย. 2026 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>

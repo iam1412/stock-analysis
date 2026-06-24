@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น โฮม โปรดักส์ เซ็นเตอร์ (HMPRO) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Opus 4.8">
+<script type="application/json" id="stock-meta">
+{"symbol":"HMPRO","currency":"THB","price":6.15,"fairValue":6.9,"mos":11,"upside":12,"pe":14.0,"dividendYield":6.18,"roe":20.4}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#f57c00", "accentDark": "#c25e00",
+    "darkGrad": "linear-gradient(135deg,#3a2410 0%,#5e3a12 55%,#8a5418 140%)",
+    "glow": "rgba(245,150,70,.35)", "subColor": "#e0d2c2", "headerMuted": "#cdbfb0",
+    "chgBg": "var(--green-soft)", "chgColor": "#1e6e30", "badge": "var(--orange)",
+    "verdictText": "#e4d8cc", "vcellLabel": "#cab9a8"
+  },
+  "chart": {
+    "data": [["มิ.ย.25",6.2],["ส.ค.25",7.1],["ต.ค.25",7.6],["ธ.ค.25",7.3],["ก.พ.26",6.8],["เม.ย.26",6.25],["พ.ค.26",6.1],["มิ.ย.26",6.15]],
+    "min": 5.5, "max": 8.2, "grid": [6.0,6.9,7.5,8.0], "fairLine": 6.9, "currency": "฿", "highlight": [2,7],
+    "gridFmt": "v.toFixed(1)", "dataFmt": "v.toFixed(2)"
+  },
+  "gauge": { "min": 4.5, "max": 9.0, "cur": 6.15, "fair": 6.9, "fairLabelTop": "-58px" },
+  "fv": 6.9
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots"><span style="background:#ffb066"></span><span style="background:#f9923a"></span><span style="background:#f57c00"></span><span style="background:#c25e00"></span></div>
+    <div>
+      <span class="tag">SET: HMPRO</span>
+      <span class="tag">Consumer • Home Improvement Retail</span>
+      <span class="tag">ค้าปลีกตกแต่ง/ปรับปรุงบ้าน เบอร์ 1 ไทย</span>
+    </div>
+    <h1>โฮม โปรดักส์ เซ็นเตอร์ (HomePro)</h1>
+    <div class="sub">ค้าปลีกสินค้าตกแต่ง/ปรับปรุงบ้าน HomePro • Mega Home วัสดุก่อสร้าง/ค้าส่ง • เครื่องใช้ไฟฟ้า/เฟอร์นิเจอร์ • บริการติดตั้ง/รีโนเวท • สาขาในมาเลเซีย</div>
+    <div class="price-row">
+      <div>
+        <div class="px">฿6.15<small>(HMPRO)</small></div>
+      </div>
+      <div class="chg">▼ −1% ในรอบปี</div>
+      <div class="px-meta">
+        ราคา ณ 23–24 มิ.ย. 2026<br>
+        กรอบ 52 สัปดาห์ ฿5.70–฿8.00<br>
+        ที่มา: SET / stockanalysis.com / Investing.com
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">งบ FY2025 + TTM ถึง Q1/2026</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~฿79.5 พันล้าน</div><div class="d">~12.93 พันล้านหุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v pos">~14.0x</div><div class="d">ถูกกว่าอดีตมาก <span class="pill g">ต่ำกว่าปกติ</span></div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~29x</div><div class="d">กรอบ 19–37x (อดีตพรีเมียมสูง)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">~2.9x</div><div class="d">สูง เพราะ ROE สูงเรื้อรัง</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">฿6,011 ล้าน</div><div class="d neg">▼ −7.6% YoY</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿0.44</div><div class="d">FY2025 ~฿0.46</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~฿2.12</div><div class="d">มี.ค. 2026</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~20.4% / 6.95%</div><div class="d">ROE สูงเด่นในกลุ่มค้าปลีก</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">~฿69.1 พันล้าน</div><div class="d">FY2025 ฿70,570 ล้าน (ทรงตัว–อ่อน)</div></div>
+      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v pos">~30.3%</div><div class="d">Margin ดี • Net margin ~8.9%</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~6.18%</div><div class="d">฿0.38/หุ้น • จ่ายปีละ 2 ครั้ง</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">~0.40</div><div class="d">ผันผวนต่ำ • หุ้นเชิงรับ</div></div>
+    </div>
+  </section>
+
+  <!-- ===== PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#f57c00"></i>ราคา HMPRO</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿6.9</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคาขึ้นไปแตะ <b>~฿8.0 (จุดสูงสุด 52 สัปดาห์ ปลายปี 2025)</b> แล้ว <b>ย่อลงมาทรงตัวแถว ~฿6.15</b> (ใกล้จุดต่ำสุดของกรอบ) —
+        แทบไม่เปลี่ยนแปลงในรอบปี (<b>~−1%</b>) สะท้อนกำไรที่อ่อนลงในปี 2025 จาก <b>กำลังซื้อภายในประเทศที่ฟื้นช้า</b>
+        และการแข่งขันค้าปลีก ขณะที่ <b>P/E ลดจากระดับพรีเมียม ~29x ในอดีตเหลือ ~14x</b> — ถูกที่สุดในรอบหลายปี
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS (TTM) ฿0.44 × P/E เป้าหมาย ~18x (ต่ำกว่าค่าเฉลี่ย 5 ปี ~29x มาก, ต่ำกว่าจุดต่ำสุด 19x เล็กน้อย)</div></div>
+        <div class="mval">฿7.92</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล ฿0.38 × (1+g); g 3%, r 9% → ฿0.391 / (0.09−0.03)</div></div>
+        <div class="mval">฿6.52</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Justified P/BV <span class="pill g">เน้น ROE สูง</span></div><div class="mdesc">P/BV เหมาะสม = (ROE 20.4% − g 3%)/(r 9% − g 3%) ≈ 2.90 × BVPS ฿2.12</div></div>
+        <div class="mval">฿6.15</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿6.15 – ฿7.92</span></div>
+        <div class="r">฿6.9</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        <b>หมายเหตุ:</b> วิธี P/E ให้ค่าสูงสุดเพราะหุ้นเคยเทรดที่พรีเมียมมาก (เฉลี่ย ~29x, สูงสุด ~37x ปี 2021) — เราใช้ <b>P/E เป้าหมายอนุรักษ์นิยม 18x</b> สะท้อนภาพการเติบโตที่ช้าลงและ de-rating ของหุ้นค้าปลีกไทย
+        ส่วน <b>Justified P/BV</b> น่าเชื่อถือสำหรับ HMPRO เพราะ <b>ROE สูง ~20%</b> (เด่นกว่าค้าปลีกทั่วไป) — ผลลัพธ์ ≈ ราคาตลาดพอดี
+        ค่ากลาง <b>฿6.9</b> จึง <b>สูงกว่าราคาปัจจุบันเล็กน้อย (~12%)</b> โดยมี upside หลักจากโอกาส re-rate หากกำไรกลับมาโต
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿6.15</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿6.9</div></div>
+        </div>
+        <div class="scale">
+          <span>฿4.83<br><small>MOS 30%</small></span>
+          <span>฿5.52<br><small>MOS 20%</small></span>
+          <span style="text-align:center">฿6.9<br><small>Fair Value</small></span>
+          <span style="text-align:right">฿7.15<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">฿7.92<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคา ฿6.15 อยู่ <b>ต่ำกว่ามูลค่าเหมาะสมเล็กน้อย</b> (FV ฿6.9) และ <b>ต่ำกว่าเป้าหมายเฉลี่ย 12 เดือน</b> ของนักวิเคราะห์ (~฿7.15, consensus "Buy" จาก 20 ราย)
+        สะท้อนว่าหุ้น de-rate ลงมามากจากความกังวลกำลังซื้อ — เปิดช่อง upside หากผลประกอบการ/กำลังซื้อในประเทศฟื้นตัว
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict ok">
+        <div class="big">+11%</div>
+        <div class="txt"><b>ส่วนเผื่อความปลอดภัยบาง</b><br>ราคาปัจจุบัน ฿6.15 ต่ำกว่ามูลค่าเหมาะสม ฿6.9 ราว 11% → ตามเกณฑ์ value investor ถือว่า <b>พอใช้–ทยอยสะสมได้</b> แต่ยังไม่ถึงโซน "น่าซื้อ" (MOS 20%+)</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿5.52</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿4.83</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿6.9</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="6.15" step="0.05">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== RETURN PROJECTION ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿6.15 • EPS ฐาน ~฿0.44 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS −3%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿4.83</div>
+          <div class="ret neg">รวม ~ −3% (≈ −1%/ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.40</span></li>
+            <li><span>P/E ออก</span><span>12x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿1.05</span></li>
+            <li><span>สถานการณ์</span><span>กำลังซื้อหด • แข่งขันรุนแรง</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +4%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿7.92</div>
+          <div class="ret pos">รวม ~ +47% (≈ +14%/ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.495</span></li>
+            <li><span>P/E ออก</span><span>16x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿1.20</span></li>
+            <li><span>สถานการณ์</span><span>กำไรฟื้นเบาๆ • re-rate บางส่วน</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +8%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿9.99</div>
+          <div class="ret pos">รวม ~ +85% (≈ +23%/ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.555</span></li>
+            <li><span>P/E ออก</span><span>18x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿1.35</span></li>
+            <li><span>สถานการณ์</span><span>ศก.ฟื้น • SSSG บวก • re-rate เต็ม</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      <b>หัวใจคือการกลับมาเติบโต + re-rate:</b> หุ้น de-rate จาก P/E ~29x เหลือ ~14x ทำให้ downside จำกัด — หากกำไร/SSSG (ยอดขายสาขาเดิม) กลับมาเป็นบวก
+      ตลาดมีโอกาสให้ P/E สูงขึ้น (re-rate) ซึ่งเป็นแรงหนุนหลักของ upside ใน Base/Bull case
+      ปันผล yield ~6% ช่วยพยุงผลตอบแทนระหว่างรอ แต่ Bear case เตือนว่ากำลังซื้อในประเทศที่ฟื้นช้า/แข่งขันรุนแรงอาจกดทั้งกำไรและ multiple ต่อเนื่อง
+    </p>
+  </section>
+
+  <!-- ===== CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><div><b>ผู้นำตลาด + ROE สูงเด่น:</b> เป็นเบอร์ 1 ค้าปลีกปรับปรุงบ้านของไทย (HomePro + Mega Home) ด้วย ROE ~20% สูงกว่าค้าปลีกทั่วไปมาก — สะท้อนแบรนด์แข็ง อำนาจต่อรอง และโมเดลธุรกิจที่ทำกำไรได้ดี</div></li>
+          <li><div><b>Valuation ถูกที่สุดในรอบหลายปี:</b> P/E ลดจากพรีเมียม ~29x เหลือ ~14x (ต่ำกว่าจุดต่ำสุด 5 ปีที่ 19x) — หากกำไรกลับมาโต โอกาส re-rate กลับสู่ค่าเฉลี่ยเป็น upside ที่มีนัยสำคัญ</div></li>
+          <li><div><b>ปันผลสม่ำเสมอ yield ~6%:</b> ฿0.38/หุ้น จ่ายปีละ 2 ครั้ง yield ~6.18% — กระแสเงินสดดี อัตรากำไรขั้นต้น ~30% หนุนความสามารถจ่ายปันผลต่อเนื่องระหว่างรอกำไรฟื้น</div></li>
+          <li><div><b>โมเดลรายได้กระจาย:</b> นอกจากขายสินค้า ยังมีรายได้ค่าเช่าพื้นที่ในศูนย์ MarketVillage/พื้นที่เช่า + บริการติดตั้ง/รีโนเวท (Home Service) ที่ margin สูงและสร้างรายได้ประจำ</div></li>
+          <li><div><b>Beta ต่ำ ~0.40 — หุ้นเชิงรับ:</b> ผันผวนต่ำกว่าตลาด เหมาะกับพอร์ตที่ต้องการความมั่นคง + ปันผล ในช่วงตลาดผันผวน/ดอกเบี้ยขาลง</div></li>
+          <li><div><b>โอกาสจากการฟื้นตัว/ซ่อมแซมบ้าน:</b> ความต้องการปรับปรุง/ซ่อมแซมบ้าน (โดยเฉพาะหลังภัยพิบัติ/น้ำท่วม) เป็นดีมานด์ที่ค่อนข้างคงทน หนุนยอดขายสินค้าวัสดุและบริการ</div></li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><div><b>กำลังซื้อในประเทศฟื้นช้า:</b> เศรษฐกิจไทยโตช้า หนี้ครัวเรือนสูง กดยอดขายสินค้าตกแต่ง/ปรับปรุงบ้านที่อ่อนไหวต่อกำลังซื้อ — กำไร FY2025 ลดลง −7.6% YoY สะท้อนแรงกดดันนี้</div></li>
+          <li><div><b>de-rating ต่อเนื่อง:</b> P/E ลดจาก ~29x เหลือ ~14x สะท้อนว่าตลาดลดความคาดหวังการเติบโต — หากกำไรไม่ฟื้น P/E อาจอยู่ระดับต่ำต่อไป (re-rate ที่หวังไว้อาจไม่เกิด)</div></li>
+          <li><div><b>การแข่งขันค้าปลีกรุนแรง:</b> แข่งกับ Global House (GLOBAL), ไทวัสดุ (CRC/Thai Watsadu), Dohome และ e-commerce/marketplace — กดดันราคาและส่วนแบ่งตลาด โดยเฉพาะกลุ่มวัสดุก่อสร้าง</div></li>
+          <li><div><b>P/BV สูง ~2.9x:</b> ต่างจากหุ้น value ทั่วไป HMPRO เทรดเหนือมูลค่าบัญชีมาก — margin of safety เชิงทรัพย์สินจำกัด หาก ROE ลดลงในอนาคต downside อาจมากกว่าที่คิด</div></li>
+          <li><div><b>การขยายสาขา/ต้นทุน:</b> การลงทุนสาขาใหม่ (รวมมาเลเซีย) มีความเสี่ยงด้านผลตอบแทน หากยอดขายต่อสาขาไม่เป็นไปตามเป้า + ต้นทุนค่าแรง/ค่าเช่าที่สูงขึ้นกดดัน margin</div></li>
+          <li><div><b>SSSG ติดลบ/ฤดูกาล:</b> ยอดขายสาขาเดิม (SSSG) ที่อ่อนแอเป็นสัญญาณเตือนการเติบโต — รายได้ยังขึ้นกับฤดูกาลและสภาพอากาศ (หน้าฝน/น้ำท่วมกระทบยอดบางหมวด)</div></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>ผู้นำค้าปลีกบ้าน ROE สูง ปันผลดี — ราคา de-rate มาถูก รอกำไรฟื้น</h2>
+      <p>HomePro เป็นผู้นำค้าปลีกสินค้าตกแต่ง/ปรับปรุงบ้านของไทยที่มีจุดเด่นคือ <b>ROE สูง ~20% อัตรากำไรขั้นต้น ~30% และปันผล yield ~6%</b> — คุณภาพธุรกิจชั้นดี แต่กำลังเผชิญ <b>กำลังซื้อในประเทศที่ฟื้นช้า</b> ทำให้กำไร FY2025 ลดลง −7.6% และหุ้น de-rate จากพรีเมียม ~29x เหลือ ~14x (ถูกสุดในรอบหลายปี) ที่ราคา ฿6.15 มูลค่าเหมาะสม ฿6.9 ให้ margin of safety บางๆ (~11%) และต่ำกว่าเป้านักวิเคราะห์ (~฿7.15) — เหมาะ "ทยอยสะสม" เน้นปันผล + ลุ้น re-rate มากกว่าคาดหวัง upside เร็ว</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿6.9 <span style="font-size:12px;color:#cab9a8">(฿6.15–฿7.92)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +11%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿7.15 (Buy)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> สาย value/ปันผล — ทยอยสะสมเมื่อราคา <b>ต่ำกว่า ฿6.9</b> (น่าสนใจมากที่ &lt;฿5.52) เพื่อล็อก yield ~6% ระหว่างรอ • ติดตาม <b>SSSG/ยอดขายสาขาเดิม</b>, <b>กำลังซื้อ-กำไรรายไตรมาส</b> และ <b>การแข่งขันค้าปลีกวัสดุ</b> เป็นตัวชี้วัดหลัก — จุดเสี่ยงสำคัญคือกำไรที่ไม่ฟื้นจะทำให้ P/E ต่ำต่อไป (re-rate ไม่เกิด) และ P/BV สูงทำให้ downside ไม่ได้น้อยอย่างหุ้น value ทั่วไป
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต ซึ่งอ่อนไหวต่อกำลังซื้อในประเทศและการแข่งขันค้าปลีก
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • อ้างอิงงบ FY2025 (กำไรสุทธิ ฿6,011 ล้าน, รายได้ ฿70,570 ล้าน) และ TTM ถึง Q1/2026 (กำไรสุทธิ ฿5,708 ล้าน) จาก stockanalysis.com / SET • ราคา ณ 23–24 มิ.ย. 2026 จาก SET, stockanalysis.com, Investing.com
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 24 มิ.ย. 2026 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
