@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น ซีพี แอ็กซ์ตร้า (CPAXT) — Stock Analysis Dashboard</title>
+<!-- ★ ใส่รุ่นโมเดล AI ที่ใช้วิเคราะห์จริง (Opus→"Claude Opus 4.8", Sonnet→"Claude Sonnet 4.6") — gate E28 บังคับ -->
+<meta name="ai-model" content="Claude Opus 4.8">
+<!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
+<script type="application/json" id="stock-meta">
+{"symbol":"CPAXT","currency":"THB","price":14.60,"fairValue":15.30,"mos":4.6,"upside":4.8,"pe":16.0,"dividendYield":4.8,"roe":3.1}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#1763e8",
+    "accentDark": "#0e47ad",
+    "darkGrad": "linear-gradient(135deg,#06183f 0%,#0b3a8f 58%,#1763e8 135%)",
+    "glow": "rgba(23,99,232,.35)",
+    "subColor": "#c2d4f4",
+    "headerMuted": "#a6bce4",
+    "verdictText": "#d2e0f7",
+    "vcellLabel": "#a8c0ea",
+    "badge": "#1763e8",
+    "chgBg": "var(--red-soft)",
+    "chgColor": "#c5221f"
+  },
+  "chart": {
+    "data": [["มิ.ย.68",17.90],["ก.ค.",20.60],["ส.ค.",17.90],["ก.ย.",22.50],["ต.ค.",19.60],["พ.ย.",16.20],["ธ.ค.",15.70],["ม.ค.69",14.80],["ก.พ.",16.80],["มี.ค.",16.00],["เม.ย.",14.70],["พ.ค.",15.20],["มิ.ย.",14.60]],
+    "min": 13,
+    "max": 23,
+    "grid": [13,15,17,19,21,23],
+    "fairLine": 15.30,
+    "currency": "฿",
+    "highlight": [3,12],
+    "gridFmt": "v.toFixed(0)",
+    "dataFmt": "d[1].toFixed(2)"
+  },
+  "gauge": { "min": 10, "max": 18, "cur": 14.60, "fair": 15.30, "fairLabelTop": true },
+  "fv": 15.30
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots"><span></span><span></span><span></span></div>
+    <div>
+      <span class="tag">SET: CPAXT</span>
+      <span class="tag">ค้าส่ง–ค้าปลีก (Commerce)</span>
+      <span class="tag">Makro • Lotus's</span>
+    </div>
+    <!-- ★ คำโปรยธุรกิจ (gate E32) — .sub ต้องอยู่ติดใต้ </h1> (ห้ามมีคอมเมนต์/แท็กคั่น) : บริษัททำอะไร ใช้ • คั่นกลุ่ม -->
+    <h1>ซีพี แอ็กซ์ตร้า (CP Axtra)</h1>
+    <div class="sub">Makro ค้าส่งแบบ Cash &amp; Carry (B2B) • Lotus's ไฮเปอร์มาร์เก็ต–ค้าปลีก • พื้นที่เช่าศูนย์การค้า • Makro PRO &amp; Lotus's SMART App (อีคอมเมิร์ซของชำเบอร์ 1 ไทย) • ขยายภูมิภาค</div>
+    <div class="price-row">
+      <div>
+        <div class="px">฿14.60<small>(CPAXT)</small></div>
+      </div>
+      <div class="chg">▼ −18% ในรอบปี</div>
+      <div class="px-meta">
+        ราคา ณ 24 มิ.ย. 2569 (2026)<br>
+        กรอบ 52 สัปดาห์ ฿13.90 – ฿23.40<br>
+        ที่มา: SET • StockAnalysis.com • Investing.com
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">งบ TTM ถึง Q1/2569</div></div>
+    <!-- ✏️ ปรับการ์ด metric ให้เหมาะกับหุ้น/เซกเตอร์ได้อิสระ — gate ไม่บังคับชุด metric (เปลี่ยน label / สลับ / เพิ่ม-ลดการ์ดได้)
+         • คงป้าย "P/E (TTM)", "P/BV", "เงินปันผล", "ROE" ไว้ถ้าหุ้นมีจริง → W10 cross-check กับ stock-meta · ไม่มี (ขาดทุน/ไม่ปันผล) = ตัดการ์ดออก + ตั้ง stock-meta เป็น null
+         • ธนาคาร → NIM / NPL / CASA / Loan growth / Cost-to-income   • REIT/กองอสังหา → Occupancy / DPU / NAV / Gearing   • ประกัน → Combined ratio / EV
+         • หุ้นเติบโต-ขาดทุน → Revenue growth / Gross margin / FCF / Cash runway (ตัด P/E ออก) -->
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">฿152.2 พันล้าน</div><div class="d">~10,428 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~16.0x</div><div class="d">EPS ฿0.91 · ราคา ฿14.60</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~22x</div><div class="d">เคยสูง 30x+ ช่วงควบ Lotus's</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">0.50x</div><div class="d">BVPS ~฿29 (book มี goodwill สูง)</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">฿9,356 ล.</div><div class="d">−11.5% YoY (จากฐานสูง FY24)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿0.91</div><div class="d">TTM ถึง Q1/2569 (กำไร ฿9.5 พันล.)</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~฿29.2</div><div class="d">รวม goodwill จากดีล Lotus's</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v neu">~3.1% / 1.9%</div><div class="d">ต่ำเพราะ equity ใหญ่จาก goodwill</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">฿523.9 พันล้าน</div><div class="d">+4.7% YoY (Q1/69 ฿136,050 ล.)</div></div>
+      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">~16.0%</div><div class="d">net margin บาง ~1.8% (ค้าปลีก)</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~4.8%</div><div class="d">DPS ฿0.71 · payout ~78%</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">~1.31</div><div class="d">ผันผวนสูงกว่าตลาด</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#1763e8"></i>ราคา CPAXT</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿15.30</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        <!-- ✏️ บรรยายการเคลื่อนไหวราคา ~1 ปี: จุดสูง/ต่ำ, เปลี่ยนแปลง %, สาเหตุหลัก -->
+        ราคา CPAXT อยู่ในแนวโน้มขาลงตลอด ~1 ปี — จากแถว ฿17.90 (มิ.ย. 68) ดีดขึ้นแตะจุดสูง ฿22.50 ช่วง ก.ย. 68
+        ก่อนไหลลงต่อเนื่องตามกำไร FY2025 ที่หดตัว −11.5% และแรงกดดันจากกำลังซื้อในประเทศที่ฟื้นช้า ลงมาทำจุดต่ำราว ฿14.7–14.8
+        ช่วงต้นปี 2569 แม้ Q1/69 กำไรกลับมาโต +5.7% แต่ราคายังไม่ฟื้นชัด ปิดล่าสุด ฿14.60 ใกล้ขอบล่างของกรอบ 52 สัปดาห์ (฿13.90–23.40)
+        รวมทั้งปีติดลบประมาณ −18% สะท้อนตลาด de-rate หุ้นค้าปลีกที่ margin บางและภาระดอกเบี้ยจากดีล Lotus's
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION (เฉลี่ย 3 วิธี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <!-- ✏️ เลือก ≥2 วิธีให้เหมาะกับหุ้น — gate เช็คคณิตเฉพาะวิธีชื่อ "P/E" (E21) และ "Justified P/BV" (E22) เมื่อมีวิธีนั้น
+           ใช้ P/E + DDM + EV/EBITDA — เลี่ยง Justified P/BV เพราะ book value มี goodwill จากดีล Lotus's สูงทำให้ ROE/BV ผิดเพี้ยน -->
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS (TTM) ฿0.91 × P/E เป้าหมาย ~17.5x — กลับสู่ค่ากลางของกลุ่มค้าปลีกไทยเมื่อกำไรกลับมาโต</div></div>
+        <div class="mval">฿15.93</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล ฿0.71 × (1+g); g 4%, r 9.5% → ฿0.738 / (0.095−0.04)</div></div>
+        <div class="mval">฿13.43</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. EV/EBITDA</div><div class="mdesc">EBITDA TTM ~฿33.4 พันล. × 10.0x = EV ฿334 พันล. − net debt ฿162 พันล. ÷ 10,428 ล.หุ้น</div></div>
+        <div class="mval">฿16.49</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿13.43 – ฿16.49</span></div>
+        <div class="r">฿15.30</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        <!-- ✏️ หมายเหตุ: วิธีไหนให้ค่าสูง/ต่ำเพราะอะไร, ทำไม FV กลางจึงสมเหตุสมผล -->
+        ทั้งสามวิธีให้ค่าใกล้เคียงกันที่ ฿13.4–16.5 — DDM ให้ค่าต่ำสุด (อิงปันผลปัจจุบันล้วน ไม่ได้ให้เครดิตการเติบโตของกำไร)
+        EV/EBITDA ให้ค่าสูงสุดเพราะใช้กระแสเงินสดจากการดำเนินงานทั้งกลุ่ม (ครอบคลุมทั้ง Makro+Lotus's ก่อนดอกเบี้ย/ค่าเสื่อม)
+        จงใจ <b>ไม่ใช้ Justified P/BV</b> เพราะ book value พอง goodwill จากดีล Lotus's ทำให้ ROE ต่ำเทียม (3.1%) และให้ค่าผิดเพี้ยนรุนแรง
+        ค่ากลาง <b>฿15.30</b> สะท้อนหุ้นที่ "ราคาใกล้มูลค่าเหมาะสม" — upside จำกัด ต้องรอกำไรเร่งตัวจริงจึงจะคุ้มเสี่ยง
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿14.60</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿15.30</div></div>
+        </div>
+        <div class="scale">
+          <span>฿10.71<br><small>MOS 30%</small></span>
+          <span>฿12.24<br><small>MOS 20%</small></span>
+          <span style="text-align:center">฿15.30<br><small>Fair Value</small></span>
+          <span style="text-align:right">฿16.36<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">฿16.49<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน ฿14.60 อยู่ <b>ต่ำกว่ามูลค่าเหมาะสม ฿15.30 เพียงเล็กน้อย</b> (MOS ~+5%) — ยังไม่เข้าโซนปลอดภัยที่น่าสะสมหนัก
+        เป้าเฉลี่ยนักวิเคราะห์ ฿16.36 (เรตติ้ง "Hold") สอดคล้องกับกรอบบน FV ของเรา (฿16.49) สะท้อนว่าตลาดมอง upside จำกัดเช่นกัน
+        นักลงทุนแบบ value ควรรอราคาย่อเข้าโซน MOS 20% (฿12.24) ขึ้นไปจึงจะมีส่วนเผื่อความปลอดภัยที่เหมาะสม
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <!-- ✏️ class ของ mos-verdict: MOS<10 → "bad", 10–20 → "ok", ≥20 → "good" -->
+      <div class="mos-verdict bad">
+        <div class="big">+4.6%</div>
+        <div class="txt">ส่วนเผื่อความปลอดภัยบาง — ราคาใกล้มูลค่าเหมาะสม ไม่ใช่จังหวะ "ของถูก"</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿12.24</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿10.71</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿15.30</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="14.60" step="0.05">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿14.60 • EPS ฐาน ~฿0.91 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS 0%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿12.74</div>
+          <div class="ret neg">+1.8%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.91</span></li>
+            <li><span>P/E ออก</span><span>14x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿2.13</span></li>
+            <li><span>สถานการณ์</span><span>กำลังซื้อในประเทศซบ กำไรไม่โต ตลาด de-rate</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +6%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿17.34</div>
+          <div class="ret pos">+34%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿1.08</span></li>
+            <li><span>P/E ออก</span><span>16x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿2.27</span></li>
+            <li><span>สถานการณ์</span><span>ขยายสาขา + ออนไลน์โต ดอกเบี้ยลด margin ฟื้น</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +10%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿21.80</div>
+          <div class="ret pos">+65%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿1.21</span></li>
+            <li><span>P/E ออก</span><span>18x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿2.35</span></li>
+            <li><span>สถานการณ์</span><span>synergy Lotus's เต็มที่ + ขยายภูมิภาคสำเร็จ re-rate</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      ผลตอบแทนรวมเงินปันผล (~4.8%/ปี) ตลอด 3 ปีจากจุดเข้า ฿14.60 — กรณีฐาน (+34%) อิงสมมติกำไรโต ~6%/ปีและ P/E กลับสู่ 16x
+      จุดสังเกต: กรณี Bear ยังให้ผลตอบแทนเป็นบวกเล็กน้อยเพราะปันผลสูงช่วยพยุง (downside ถูกจำกัดด้วย yield ~4.8%)
+      แต่ upside ของกรณีฐานต้องอาศัย "กำไรเร่งตัวจริง" — หากกำไรนิ่ง ราคาก็เสี่ยงย่ำอยู่แถวเดิม สมมติฐานทั้งหมดอาจคลาดเคลื่อนได้
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <!-- ✏️ 4–6 ข้อ: เขียน <b>หัวข้อ:</b> รายละเอียด -->
+          <li><b>อีคอมเมิร์ซโตแกร่ง:</b> ยอดขายออนไลน์ผ่าน Makro PRO + Lotus's SMART App โต +27.6% YoY (Q1/69) สัดส่วนนอกร้านขึ้นแตะ 22% ของรายได้รวม</li>
+          <li><b>Synergy จากดีล Lotus's:</b> รวมการจัดซื้อ–โลจิสติกส์–พื้นที่เช่า หลังควบรวมเริ่มออกผล หนุน gross margin และลดต้นทุนซ้ำซ้อน</li>
+          <li><b>ดอกเบี้ยขาลง:</b> ภาระดอกเบี้ยจากหนี้ดีล Lotus's ลดลงตามทิศทางดอกเบี้ย ช่วยให้กำไรสุทธิ Q1/69 กลับมาโต +5.7%</li>
+          <li><b>ขยายสาขา + ภูมิภาค:</b> เปิดสาขาใหม่ทั้ง Makro/Lotus's ในไทยและต่างประเทศ เพิ่มฐานรายได้ระยะยาว</li>
+          <li><b>ปันผลสูงพยุงราคา:</b> yield ~4.8% (payout ~78%) ให้ downside protection และดึงนักลงทุนสายปันผล</li>
+          <li><b>เป็นหุ้นค้าปลีกเบอร์ต้นของไทย:</b> สเกลใหญ่ ครอบทั้ง B2B (Makro) และ B2C (Lotus's) ป้องกันคู่แข่งเข้าตลาดยาก</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <!-- ✏️ 4–6 ข้อ: เขียน <b>หัวข้อ:</b> รายละเอียด -->
+          <li><b>กำไรเคยหดตัว:</b> FY2025 กำไรสุทธิ −11.5% YoY (จากฐานสูง FY24 ที่ +23.5%) สะท้อนการเติบโตไม่ราบรื่น</li>
+          <li><b>Margin บาง:</b> net margin เพียง ~1.8% — กำไรไวต่อต้นทุน ค่าแรง โปรโมชัน และการแข่งขันราคา</li>
+          <li><b>หนี้/ดอกเบี้ยจากดีล Lotus's:</b> net debt ~฿162 พันล. (D/E ~0.57) — หากดอกเบี้ยกลับเป็นขาขึ้น กดดันกำไรทันที</li>
+          <li><b>กำลังซื้อในประเทศฟื้นช้า:</b> เศรษฐกิจ/หนี้ครัวเรือนไทยกดดันการบริโภค กระทบยอดขายสาขาเดิม (SSSG)</li>
+          <li><b>Book มี goodwill สูง:</b> P/BV 0.50x ดู "ถูก" แต่ book พอง goodwill จากดีล Lotus's — เสี่ยง impairment ถ้าผลงานพลาดเป้า</li>
+          <li><b>Valuation ตึง:</b> P/E ~16x สำหรับหุ้นโตช้า + MOS เพียง ~5% ทำให้ส่วนเผื่อความปลอดภัยจำกัด</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>หุ้นค้าปลีกเบอร์ต้นของไทย ราคา "ใกล้มูลค่าเหมาะสม" — รอย่อจึงคุ้มเสี่ยง</h2>
+      <p>CPAXT เป็นธุรกิจค้าส่ง–ค้าปลีกสเกลใหญ่ (Makro + Lotus's) ที่มีคูเมืองแข็งแรงและปันผลสูง (~4.8%) แต่กำไร FY2025 หดตัว −11.5%
+      ก่อนจะกลับมาโต +5.7% ใน Q1/2569 หนุนด้วยอีคอมเมิร์ซและดอกเบี้ยขาลง มูลค่าเหมาะสมเฉลี่ย 3 วิธี (P/E · DDM · EV/EBITDA) อยู่ที่ ฿15.30
+      เทียบราคา ฿14.60 ให้ส่วนเผื่อความปลอดภัยเพียง ~5% — สอดคล้องกับเป้าเฉลี่ยนักวิเคราะห์ ฿16.36 ที่เรตติ้ง "Hold" คือ upside จำกัด
+      จุดเด่นคือ downside ถูกพยุงด้วยปันผลสูง แต่ต้องเห็นกำไรเร่งตัวจริงจึงจะปลดล็อก upside กรณีฐาน</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿15.30 <span style="font-size:12px;color:#cab9a8">(฿13.43–฿16.49)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +4.6%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿16.36 (Hold)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ราคาปัจจุบันถือเป็น "เต็มมูลค่า ค่อนถูกเล็กน้อย" — เหมาะถือสำหรับสายปันผล (yield ~4.8%) มากกว่าหวัง capital gain เร็ว
+        นักลงทุนแบบ value ควรรอย่อเข้าโซน MOS 20% (฿12.24) จึงทยอยสะสม หรือเข้าเมื่อเห็นสัญญาณกำไรกลับมาโตต่อเนื่องชัดเจน
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ที่มาข้อมูล: SET (set.or.th) • StockAnalysis.com • Investing.com • TradingView • ข่าวผลประกอบการ Q1/2569
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 24 มิ.ย. 2569 (2026) • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>

@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น คอมเซเว่น (COM7) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Opus 4.8">
+<script type="application/json" id="stock-meta">
+{"symbol":"COM7","currency":"THB","price":28.25,"fairValue":28.70,"mos":1.6,"upside":1.6,"pe":15.5,"dividendYield":3.9,"roe":41.0}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#1d6ded",
+    "accentDark": "#0f4fb3",
+    "darkGrad": "linear-gradient(135deg,#041b3e 0%,#073173 58%,#0c4eb6 140%)",
+    "glow": "rgba(19,103,236,.35)",
+    "subColor": "#c2d2eb",
+    "headerMuted": "#a5b8d4",
+    "verdictText": "#d0ddf1",
+    "vcellLabel": "#a6bcdd",
+    "badge": "#1d6ded",
+    "chgBg": "#e6f4ea",
+    "chgColor": "#1e8e3e"
+  },
+  "chart": {
+    "data": [
+      ["ม.ค.68", 22.00],
+      ["ก.พ.68", 21.90],
+      ["มี.ค.68", 19.20],
+      ["เม.ย.68", 20.60],
+      ["พ.ค.68", 19.90],
+      ["มิ.ย.68", 18.50],
+      ["ก.ค.68", 21.80],
+      ["ส.ค.68", 25.50],
+      ["ก.ย.68", 25.75],
+      ["ต.ค.68", 25.00],
+      ["พ.ย.68", 21.90],
+      ["ธ.ค.68", 19.60],
+      ["ม.ค.69", 21.90],
+      ["ก.พ.69", 24.10],
+      ["มี.ค.69", 21.80],
+      ["เม.ย.69", 22.80],
+      ["พ.ค.69", 26.00],
+      ["มิ.ย.69", 28.25]
+    ],
+    "min": 17,
+    "max": 31,
+    "grid": [18, 21, 24, 27, 30],
+    "fairLine": 28.70,
+    "currency": "฿",
+    "highlight": [5, 17],
+    "gridFmt": "v.toFixed(0)",
+    "dataFmt": "d[1].toFixed(2)"
+  },
+  "gauge": { "min": 18, "max": 32, "cur": 28.25, "fair": 28.70, "fairLabelTop": true },
+  "fv": 28.70
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">🔵🟦🔷🟦🔵</div>
+    <div>
+      <span class="tag">SET: COM7</span>
+      <span class="tag">ค้าปลีก IT/Gadget</span>
+      <span class="tag">Apple Premium Reseller</span>
+    </div>
+    <h1>คอมเซเว่น (COM7)</h1>
+    <div class="sub">Studio7 / iStudio (ตัวแทน Apple) • BaNANA ค้าปลีกไอที/มือถือ • อุปกรณ์เสริม-แกดเจ็ต • บริการ iCare ศูนย์ซ่อม • หน้าร้าน 1,000+ สาขา + ออนไลน์</div>
+    <div class="price-row">
+      <div>
+        <div class="px">฿28.25<small>(COM7)</small></div>
+      </div>
+      <div class="chg">▲ +28% รอบปี (จากต้นกราฟ ฿22)</div>
+      <div class="px-meta">
+        ราคา ณ 24 มิ.ย. 2026<br>
+        กรอบ 52 สัปดาห์ ฿16.70 – ฿29.00<br>
+        ที่มา: StockAnalysis • Investing.com • SET
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">TTM / FY2025</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~฿66.0 พันล.</div><div class="d">~2,372 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~15.5x</div><div class="d">EPS ฿1.82 (TTM)</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~14x</div><div class="d">กรอบ ~11–18x</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">~6.1x</div><div class="d">BVPS ฿4.63 (สูงตาม ROE)</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">~฿4,064 ล.</div><div class="d">+22% YoY</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿1.82</div><div class="d">FY2025 ฿1.71 • +24% TTM</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~฿4.63</div><div class="d">ส่วนผู้ถือหุ้น ฿10,970 ล.</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~41% / 11%</div><div class="d">asset-light • หมุนสต๊อกเร็ว</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">~฿90 พันล.</div><div class="d">+11% YoY</div></div>
+      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">~13.7%</div><div class="d">margin บางแบบค้าปลีก IT</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~3.9%</div><div class="d">฿1.10/หุ้น (FY2025)</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">~1.1</div><div class="d">ผันผวนตามวงจรบริโภค</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1.5 ปี</h2><div class="hint">ราคาปิดรายเดือน (Yahoo)</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#1d6ded"></i>ราคา COM7</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿28.70</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคาทำจุดต่ำสุดราว ฿18.5 (มิ.ย. 2025) จากความกังวลกำลังซื้ออ่อนและวงจรมือถือชะลอ จากนั้นฟื้นแรงตามยอด iPhone รุ่นใหม่และกำไรเร่งตัว ขึ้นมาแตะ ฿28+ (มิ.ย. 2026) — บวกราว +57% ในรอบปี และอยู่ใกล้กรอบบน 52 สัปดาห์ (฿29.00) เส้นมูลค่าเหมาะสม ฿28.70 จึงใกล้เคียงราคาตลาดปัจจุบัน
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS (TTM) ฿1.82 × P/E เป้าหมาย ~16x — สูงกว่า P/E ปัจจุบันเล็กน้อยสะท้อนกำไรโต ~20%+ และ consensus "Strong Buy"</div></div>
+        <div class="mval">฿29.12</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล ฿1.10 × (1+g); g 6%, r 10% → 1.166 / (0.10−0.06)</div></div>
+        <div class="mval">฿29.15</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 30% − g 6%)/(r 10% − g 6%) ≈ 6.0 × BVPS ฿4.63 (ใช้ ROE ปรับลงจาก peak 41% เผื่อ mean-revert)</div></div>
+        <div class="mval">฿27.8</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿27.5 – ฿31.0</span></div>
+        <div class="r">฿28.70</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ทั้งสามวิธีให้ค่าใกล้กัน (฿27.8–฿29.2) เพราะหุ้นซื้อขายใกล้มูลค่าพื้นฐานอยู่แล้ว Justified P/BV ให้ค่าต่ำสุดเพราะ "ลดทอน" ROE ลงจาก 41% เป็น 30% เผื่อความเสี่ยงที่อัตรากำไรค้าปลีก IT จะถูกบีบในระยะยาว ส่วน DDM/P-E ใกล้เคียงกัน FV กลางที่ ฿28.70 จึงสะท้อนทั้งกำไรเติบโตและความเสี่ยงวงจร — ต่ำกว่าเป้าเฉลี่ยนักวิเคราะห์ ฿30.56 เล็กน้อย (มุมมองอนุรักษ์นิยมกว่า)
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿28.25</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿28.70</div></div>
+        </div>
+        <div class="scale">
+          <span>฿20.09<br><small>MOS 30%</small></span>
+          <span>฿22.96<br><small>MOS 20%</small></span>
+          <span style="text-align:center">฿28.70<br><small>Fair Value</small></span>
+          <span style="text-align:right">฿30.56<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">฿31.00<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน ฿28.25 อยู่ "ชิด" มูลค่าเหมาะสม ฿28.70 (MOS เพียง ~1.6%) และยังต่ำกว่าเป้านักวิเคราะห์ ฿30.56 เล็กน้อย — โซน fair value ไม่ใช่โซนส่วนลด ผู้ลงทุนแบบ value ควรรอย่อลงเข้าใกล้ ฿23 (MOS 20%) จึงจะมีส่วนเผื่อความปลอดภัยที่เพียงพอ
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">+1.6%</div>
+        <div class="txt">ราคาเกือบเท่ามูลค่าเหมาะสม — ส่วนเผื่อความปลอดภัยน้อยมาก ยังไม่ใช่จุดเข้าของ value investor</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿22.96</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿20.09</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿28.70</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="28.25" step="0.05">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿28.25 • EPS ฐาน ~฿1.82 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS +5%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿25.28</div>
+          <div class="ret neg">+1.9%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿2.11</span></li>
+            <li><span>P/E ออก</span><span>12x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿3.5</span></li>
+            <li><span>สถานการณ์</span><span>กำลังซื้ออ่อน วงจรมือถือชะลอ</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +12%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿38.35</div>
+          <div class="ret pos">+49.9%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿2.56</span></li>
+            <li><span>P/E ออก</span><span>15x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿4.0</span></li>
+            <li><span>สถานการณ์</span><span>โตตามวงจร IT/AI device + ขยายสาขา</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +18%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿50.84</div>
+          <div class="ret pos">+95.9%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿2.99</span></li>
+            <li><span>P/E ออก</span><span>17x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿4.5</span></li>
+            <li><span>สถานการณ์</span><span>iPhone/AI PC cycle แรง + margin บริการดีขึ้น</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      Base case ให้ผลตอบแทนรวม ~50% ใน 3 ปี (~14%/ปี) จากกำไรโตเลขสองหลัก + ปันผล ~4% — เหมาะกับนักลงทุนที่รับความผันผวนของวงจรอุปกรณ์ผู้บริโภคได้ จุดสำคัญคือ "ราคาเข้า" ที่ใกล้ FV ทำให้ downside ใน Bear แทบไม่ขาดทุน แต่ upside จำกัดลงถ้าซื้อแพงไป
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>วงจร iPhone/AI device:</b> ในฐานะ Apple Premium Reseller รายใหญ่สุดของไทย ได้อานิสงส์ตรงจากการเปิดตัวรุ่นใหม่และเทรนด์ AI PC/สมาร์ทโฟน</li>
+          <li><b>ROE สูง ~41% • asset-light:</b> หมุนสต๊อกเร็ว ใช้เงินทุนต่ำต่อยอดขาย คืนกำไรเป็นปันผลได้สม่ำเสมอ</li>
+          <li><b>กำไรเร่งตัว:</b> กำไรสุทธิ FY2025 +22% YoY, EPS TTM +24% — โมเมนตัมกำไรชัดเจน</li>
+          <li><b>ขยายสาขา + บริการ:</b> เครือข่าย Studio7/BaNANA 1,000+ สาขา + บริการ iCare/ประกัน เพิ่ม margin ที่ดีกว่าการขายฮาร์ดแวร์ล้วน</li>
+          <li><b>นักวิเคราะห์เชียร์:</b> 8 สำนัก consensus "Strong Buy" เป้าเฉลี่ย ฿30.56 (สูงสุด ฿32.5)</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>ราคาใกล้ FV:</b> MOS เพียง ~1.6% — ซื้อตอนนี้แทบไม่มีส่วนเผื่อความปลอดภัย ผิดคาดเล็กน้อยก็เสี่ยงขาดทุน</li>
+          <li><b>Margin บาง:</b> อัตรากำไรขั้นต้น ~13.7% ทำให้กำไรอ่อนไหวต่อการแข่งขันราคา/โปรโมชัน</li>
+          <li><b>วงจรกำลังซื้อ:</b> ยอดขายอุปกรณ์ผู้บริโภคผูกกับเศรษฐกิจ/หนี้ครัวเรือนไทย หากชะลอกระทบยอดทันที</li>
+          <li><b>พึ่งพา Apple/ซัพพลายเออร์:</b> เงื่อนไข margin และสต๊อกขึ้นกับนโยบายแบรนด์ การเปลี่ยนแปลงกระทบกำไร</li>
+          <li><b>หนี้/หมุนสินค้า:</b> D/E ~1.1 จากเงินทุนหมุนเวียนสต๊อก หากขายช้าลงจะกดกระแสเงินสด</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>ธุรกิจดี ROE สูง — แต่ราคาปัจจุบันสะท้อนพื้นฐานเกือบเต็มแล้ว</h2>
+      <p>COM7 เป็นผู้นำค้าปลีก IT/แกดเจ็ตของไทยที่มีคุณภาพกิจการสูง: ROE ~41%, asset-light, กำไรโตเลขสองหลัก และปันผลสม่ำเสมอ ~3.9% ปัญหาเดียวคือ "ราคา" — ที่ ฿28.25 หุ้นซื้อขายใกล้มูลค่าเหมาะสม ฿28.70 (MOS เพียง ~1.6%) และเกือบแตะกรอบบน 52 สัปดาห์ จึงเป็นหุ้นพื้นฐานดีที่ควร "รอจังหวะ" มากกว่า "ไล่ราคา"</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿28.70 <span style="font-size:12px;color:#cab9a8">(฿27.5–฿31.0)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +1.6%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿30.56 (Strong Buy)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> หุ้นคุณภาพดีที่ราคาปัจจุบันแฟร์ — ผู้ถือเดิม "ถือรับปันผล + การเติบโต" ได้ ส่วนผู้เข้าใหม่ที่เน้น value ควรทยอยสะสมเมื่อย่อเข้าใกล้ ฿23 (MOS 20%) เพื่อให้มีส่วนเผื่อความปลอดภัยที่เพียงพอ
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ที่มาข้อมูล: StockAnalysis.com • Investing.com • SET (ตลาดหลักทรัพย์ฯ) • ราคา ณ 24 มิ.ย. 2026
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 24 มิ.ย. 2026 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
