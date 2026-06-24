@@ -221,6 +221,18 @@ const CHECKS = [
     return null;
   } },
 
+  // ทุก var(--x) ที่อ้างถึงต้องถูกนิยามใน <style> เดียวกัน (รายงาน expand แล้วมี palette ครบในตัว)
+  // กันกรณี theme.badge/chgBg อ้าง var ที่ไม่มีในพาเลต (เช่น HMPRO ใช้ var(--orange) ที่ยังไม่ถูกนิยาม)
+  // → CSS var ที่ resolve ไม่ได้ทำให้ background/สี "หายเงียบ ๆ" (เลขหัวข้อ 1–8 ไม่มีพื้นหลัง) โดย gate อื่นมองไม่เห็น
+  // ข้าม var(--x, fallback) (มี fallback = ตั้งใจ) — จับเฉพาะ var(--x) ที่ไม่มี fallback และไม่ถูกนิยาม
+  { id: 'E33', level: 'error', label: 'CSS var ที่อ้างถึงต้องถูกนิยาม (กันสี/พื้นหลังหายเงียบ)', fn: (c) => {
+    const defined = new Set();
+    for (const m of c.html.matchAll(/(--[a-z0-9-]+)\s*:/gi)) defined.add(m[1]);
+    const missing = new Set();
+    for (const m of c.html.matchAll(/var\(\s*(--[a-z0-9-]+)\s*\)/gi)) if (!defined.has(m[1])) missing.add(m[1]);
+    return missing.size ? `อ้างถึง CSS var ที่ไม่ถูกนิยาม: ${[...missing].join(', ')} — สี/พื้นหลังจะหายเงียบ ๆ (เช่น พื้นหลังเลขหัวข้อ 1–8) เพิ่มตัวแปรใน _template/dashboard.css :root หรือแก้ theme ให้อ้างตัวที่มี` : null;
+  } },
+
   { id: 'W01', level: 'warn', label: 'scenario: EPS×P/E ≈ ราคาเป้า', fn: (c) => { const bad = []; const nm = ['Bear', 'Base', 'Bull']; c.scenarios.forEach((s, i) => { if (s.tgt == null || s.eps == null || s.pe == null) return; const calc = s.eps * s.pe; const d = Math.abs(calc - s.tgt) / s.tgt; if (d > TOL_SCN_REL) bad.push(`${nm[i] || ('#' + i)}: EPS ${s.eps}×P/E ${s.pe}=${calc.toFixed(0)} ≠ target ${s.tgt} (ต่าง ${(d * 100).toFixed(0)}%)`); }); return bad.length ? bad.join(' ; ') : null; } },
   { id: 'W02', level: 'warn', label: 'สกุลเงินปน', fn: (c) => { if (c.isTHB && /\$/.test(c.text)) { const n = (c.text.match(/\$/g) || []).length; return `รายงานสกุลบาท (฿) แต่พบ "$" ${n} จุดในเนื้อหา (ควรใช้ ฿)`; } if (!c.isTHB && /฿/.test(c.text)) { const n = (c.text.match(/฿/g) || []).length; return `รายงานสกุลดอลลาร์ ($) แต่พบ "฿" ${n} จุดในเนื้อหา`; } return null; } },
   { id: 'W03', level: 'warn', label: 'CSS เพี้ยน .seg-label', fn: (c) => /transform:transl\(/.test(c.html) ? 'พบ transform:transl( (ควรเป็น translate) — dead CSS .seg-label ใน template' : null },

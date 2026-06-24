@@ -52,6 +52,8 @@ expect('E13', 'error', (h) => h.replace('<h1>', '<h1>[SYMBOL] '), 'แทรก 
 expect('E14', 'error', (h) => h.replace('<div class="sub">', '<div class="sub">undefined '), 'แทรก "undefined" ในเนื้อหา');
 expect('E15', 'error', (h) => h.replace('const FV=195', 'const FV=250'), 'FV ใน JS ไม่ตรงกล่อง');
 expect('E16', 'error', (h) => h.replace('<div class="big">+9%</div>', '<div class="big">+40%</div>'), 'MOS ไม่สอดคล้องกับ FV/ราคา');
+expect('E33', 'error', (h) => h.replace('var(--badge)', 'var(--orange-missing)'), 'อ้าง CSS var ที่ไม่ถูกนิยาม (เคส HMPRO badge → var(--orange) ก่อนเพิ่มในพาเลต)');
+reject('E33', (h) => h.replace('var(--badge)', 'var(--ghost, #000)'), 'var(--x, fallback) มี fallback = ตั้งใจ → ต้องไม่ฟ้อง E33');
 expect('W01', 'warn', (h) => h.replace('<div class="tgt">฿150</div>', '<div class="tgt">฿999</div>'), 'scenario target เพี้ยน (EPS×P/E ไม่ตรง)');
 expect('W02', 'warn', (h) => h.replace('<div class="sub">', '<div class="sub">ราคา $999 '), 'แทรก "$" ในรายงานสกุลบาท');
 expect('E18', 'error', (h) => h.replace('class="v pos">฿156</div>', 'class="v pos">฿199</div>'), 'จุดซื้อ MOS20 ≠ FV×0.8');
