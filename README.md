@@ -90,6 +90,7 @@ npm run verify && git add -A && git commit -m "analyze: add AAPL stock analysis"
 
 > **โครงต้นแบบ** `_template/skeleton-{th,us}.html` คือจุดตั้งต้นที่สะอาด (ไม่มีตัวเลขหุ้นเก่าติดมา) — มีครบ 8 section,
 > marker, บล็อก `stock-meta`/`report-data`, comment กำกับทุกช่อง · เติมแล้ว **การันตีผ่าน gate** (มี `test/skeleton-test.js` คุม) ·
+> **ปรับ metric/วิธี valuation ตามเซกเตอร์ได้อิสระ** (โครงเป็นแค่ตัวอย่าง — ธนาคารใช้ NIM/NPL, REIT ใช้ Occupancy/DPU, หุ้นขาดทุนตัด P/E ออก; gate ไม่บังคับชุด metric, cross-check เฉพาะ P/E·P/BV·ปันผล·ROE = warning) ·
 > รูปแบบ + หลักเลือกสีใน [CLAUDE.md](CLAUDE.md) §9 + [`tools/brand-colors.md`](tools/brand-colors.md) ·
 > ไฟล์ HTML เต็มแบบเก่าก็ยังใช้ได้ (`expandReport` ปล่อยผ่าน) แปลงเป็น template ด้วย `node tools/migrate.js <SYM> --write`
 

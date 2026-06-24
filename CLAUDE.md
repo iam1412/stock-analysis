@@ -50,6 +50,9 @@ stock-analysis/
    - **★ เริ่มจากโครงต้นแบบ** (อย่าก๊อปรายงานหุ้นเก่ามาแก้ — เสี่ยงตัวเลขเดิมติดมา):
      `cp _template/skeleton-th.html reports/<SYMBOL>.html` (หุ้นไทย ฿/SET) หรือ `skeleton-us.html` (หุ้นต่างประเทศ $/NASDAQ·NYSE)
      แล้วแทนทุก `{{TOKEN}}` ด้วยข้อมูลจริง (มี comment กำกับทุกช่อง · เหลือ `{{...}}` ค้าง = gate E13 บล็อก · `test/skeleton-test.js` การันตีว่าเติมครบแล้วผ่าน gate)
+   - **★ ปรับเนื้อหาตามเซกเตอร์ได้อิสระ** — gate บังคับแค่ "ครบ 8 section + ตัวเลขสอดคล้องกันเอง" **ไม่บังคับชุด metric/วิธี valuation** (โครงต้นแบบเป็น "ตัวอย่าง" ไม่ใช่แบบฟอร์มตายตัว):
+     · **Section 1 (Key Metrics):** เปลี่ยน label / สลับ / เพิ่ม-ลดการ์ดได้ (ธนาคาร→NIM/NPL/CASA/Cost-to-income · REIT→Occupancy/DPU/NAV/Gearing · ประกัน→Combined ratio/EV · หุ้นเติบโต-ขาดทุน→Revenue growth/Gross margin/FCF/Cash runway) — gate "อ่าน" แค่ป้าย **P/E (TTM) · P/BV · เงินปันผล · ROE** ไป cross-check กับ `stock-meta` และเป็นเพียง **warning** (W07/W10) · ถ้าหุ้นไม่มี (ขาดทุน/ไม่ปันผล) → ตัดการ์ดออก + ตั้ง `stock-meta.pe/dividendYield/roe = null` (screener เรียงไปท้าย ไม่ error)
+     · **Section 3 (Valuation):** เลือก ≥2 วิธี (E17) ให้เหมาะกับหุ้น — gate เช็คคณิตเฉพาะวิธีชื่อ **"P/E"** (E21) และ **"Justified P/BV"** (E22) เมื่อมีวิธีนั้น (ธนาคารเน้น P/BV/Residual income · REIT ใช้ DDM/NAV · หุ้นไม่ปันผลตัด DDM)
    - ใช้ **ชื่อย่อหุ้นตัวพิมพ์ใหญ่** เป็นชื่อไฟล์: `GOOGL.html`, `AAPL.html`, `PTT.html`
    - ⚠️ **override default ของ skill** ที่ตั้งชื่อ `[SYMBOL]_analysis.html` / save ลง outputs
      → ในโปรเจกต์นี้ให้ใช้ `reports/<SYMBOL>.html` เท่านั้น (เพื่อให้ URL สั้น เรียกง่าย)

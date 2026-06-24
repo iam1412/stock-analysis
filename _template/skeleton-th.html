@@ -62,6 +62,10 @@
   <!-- ===== 1. KEY METRICS ===== -->
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">{{METRICS_HINT}}</div></div>
+    <!-- ✏️ ปรับการ์ด metric ให้เหมาะกับหุ้น/เซกเตอร์ได้อิสระ — gate ไม่บังคับชุด metric (เปลี่ยน label / สลับ / เพิ่ม-ลดการ์ดได้)
+         • คงป้าย "P/E (TTM)", "P/BV", "เงินปันผล", "ROE" ไว้ถ้าหุ้นมีจริง → W10 cross-check กับ stock-meta · ไม่มี (ขาดทุน/ไม่ปันผล) = ตัดการ์ดออก + ตั้ง stock-meta เป็น null
+         • ธนาคาร → NIM / NPL / CASA / Loan growth / Cost-to-income   • REIT/กองอสังหา → Occupancy / DPU / NAV / Gearing   • ประกัน → Combined ratio / EV
+         • หุ้นเติบโต-ขาดทุน → Revenue growth / Gross margin / FCF / Cash runway (ตัด P/E ออก) -->
     <div class="grid g4">
       <div class="metric"><div class="k">Market Cap</div><div class="v">{{MKT_CAP}}</div><div class="d">{{SHARES}}</div></div>
       <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~{{PE}}x</div><div class="d">{{PE_NOTE}}</div></div>
@@ -103,6 +107,8 @@
   <section>
     <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
     <div class="card">
+      <!-- ✏️ เลือก ≥2 วิธีให้เหมาะกับหุ้น — gate เช็คคณิตเฉพาะวิธีชื่อ "P/E" (E21) และ "Justified P/BV" (E22) เมื่อมีวิธีนั้น
+           ธนาคาร → เน้น P/BV / Residual income   • REIT → DDM / NAV   • หุ้นไม่ปันผล → ตัด DDM ออก ใช้ P/E + DCF/Justified P/BV -->
       <div class="vmethod">
         <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS (TTM) ฿{{M1_EPS}} × P/E เป้าหมาย ~{{M1_PE}}x — {{M1_NOTE}}</div></div>
         <div class="mval">฿{{M1_VAL}}</div>
