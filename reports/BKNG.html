@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น Booking Holdings (BKNG) — Stock Analysis Dashboard</title>
+<!-- ★ ใส่รุ่นโมเดล AI ที่ใช้วิเคราะห์จริง (Opus→"Claude Opus 4.8", Sonnet→"Claude Sonnet 4.6") — gate E28 บังคับ -->
+<meta name="ai-model" content="Claude Opus 4.8">
+<!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
+<script type="application/json" id="stock-meta">
+{"symbol":"BKNG","currency":"USD","price":181.46,"fairValue":216,"mos":16.0,"upside":19.0,"pe":23.82,"dividendYield":0.93,"roe":null}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#0071c2", "accentDark": "#00224f",
+    "darkGrad": "linear-gradient(135deg,#00224f 0%,#003580 55%,#0071c2 140%)",
+    "glow": "rgba(0,113,194,.35)", "subColor": "#bcd4ec", "headerMuted": "#a9c2dd",
+    "chgBg": "var(--red-soft)", "chgColor": "#c5221f", "badge": "var(--blue)",
+    "verdictText": "#cfdcea", "vcellLabel": "#a4b8cf"
+  },
+  "chart": {
+    "data": [["ก.ค.25",218.86],["ส.ค.25",222.64],["ก.ย.25",215.07],["ต.ค.25",202.26],["พ.ย.25",195.77],["ธ.ค.25",213.73],["ม.ค.26",199.62],["ก.พ.26",169.19],["มี.ค.26",168.41],["เม.ย.26",168.36],["พ.ค.26",167.43],["มิ.ย.26",181.46]],
+    "min": 160, "max": 240, "grid": [160,180,200,220,240], "fairLine": 216, "currency": "$", "highlight": [10,11]
+  },
+  "gauge": { "min": 151.20, "max": 233.58, "cur": 181.46, "fair": 216, "fairLabelTop": "-58px" },
+  "fv": 216
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots"><span style="background:#0071c2"></span><span style="background:#003580"></span><span style="background:#00224f"></span><span style="background:#5aa9e6"></span></div>
+    <div>
+      <span class="tag">NASDAQ: BKNG</span>
+      <span class="tag">Cons. Disc. · Travel</span>
+      <span class="tag">OTA ระดับโลก</span>
+    </div>
+    <!-- ★ คำโปรยธุรกิจ (gate E32) — .sub ต้องอยู่ติดใต้ </h1> (ห้ามมีคอมเมนต์/แท็กคั่น) : บริษัททำอะไร ใช้ • คั่นกลุ่ม -->
+    <h1>Booking Holdings Inc.</h1>
+    <div class="sub">Booking.com • Priceline • Agoda • KAYAK • OpenTable — ผู้นำโลกแพลตฟอร์มจองท่องเที่ยวออนไลน์ (ที่พัก·เที่ยวบิน·รถเช่า·ร้านอาหาร)</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$181.46<small>(BKNG)</small></div>
+      </div>
+      <!-- ★ ป้าย % รอบปี (gate E35/E36) — ผลตอบแทน ~1 ปี (เทียบราคา ~1 ปีก่อน) = ผลตอบแทนปลายกราฟ section 2 (จุดแรก→ท้าย)
+           รูปแบบ: "▲ +X.X% (รอบปี)" ขึ้น · "▼ −X.X% (รอบปี)" ลง · "≈ ทรงตัว (รอบปี)" · หุ้น IPO <1 ปี ใช้ "(ตั้งแต่ IPO)"
+           ไม่ใช่ % รายวัน/YTD/52 สัปดาห์ · ตั้งสี theme.chgBg/chgColor ให้ตรงทิศ (ขึ้น=เขียว/ลง=แดง · E34) -->
+      <div class="chg">▼ −17.1% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 26 มิ.ย. 2026<br>
+        กรอบ 52 สัปดาห์ $150.14 – $233.58<br>
+        ที่มา: StockAnalysis.com • Yahoo Finance • digrin.com
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">หลังแตกพาร์ 25:1 (6 เม.ย. 2026)</div></div>
+    <!-- ✏️ ปรับการ์ด metric ให้เหมาะกับหุ้น/เซกเตอร์ได้อิสระ — gate ไม่บังคับชุด metric (เปลี่ยน label / สลับ / เพิ่ม-ลดการ์ดได้)
+         • คงป้าย "P/E (TTM)", "P/BV", "เงินปันผล", "ROE" ไว้ถ้าหุ้นมีจริง → W10 cross-check กับ stock-meta · ไม่มี (ขาดทุน/ไม่ปันผล) = ตัดการ์ดออก + ตั้ง stock-meta เป็น null
+         • ธนาคาร → NIM / NPL / CASA / Loan growth / Cost-to-income   • REIT/กองอสังหา → Occupancy / DPU / NAV / Gearing   • ประกัน → Combined ratio / EV
+         • หุ้นเติบโต-ขาดทุน → Revenue growth / Gross margin / FCF / Cash runway (ตัด P/E ออก) -->
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">$140.6B</div><div class="d">หุ้น 775 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~23.82x</div><div class="d">บน EPS $7.62 (Yahoo $7.59)</div></div>
+      <div class="metric"><div class="k">P/E (Forward)</div><div class="v">~17.4x</div><div class="d">บน FY26E EPS ~$10.45</div></div>
+      <div class="metric"><div class="k">ROIC</div><div class="v pos">~24.5%</div><div class="d">ใช้แทน ROE (ส่วนทุนติดลบ)</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">$5.4B</div><div class="d">EPS ปรับพาร์ $6.62</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$7.62</div><div class="d">FY26E ~$10.45 (+~14–15%)</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v neg">~−$10.80</div><div class="d">ส่วนทุนติดลบจากซื้อหุ้นคืน</div></div>
+      <div class="metric"><div class="k">ROA / Op. Margin</div><div class="v pos">~18.5% / 32.8%</div><div class="d">สร้างผลตอบแทนสูงมาก</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$27.7B</div><div class="d">YoY +15.0%</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~0.93%</div><div class="d">$1.68/หุ้น (ปรับพาร์)</div></div>
+      <div class="metric"><div class="k">เป้านักวิเคราะห์</div><div class="v pos">~$224</div><div class="d">+23.7% (Buy, 37 ราย)</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">1.09</div><div class="d">ผันผวนใกล้ตลาด</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART (ราคาย้อนหลัง ~1 ปี) ===== -->
+  <!-- ★ กราฟต้องเป็น "ราคาย้อนหลัง ~1 ปี" (gate E37): ไม่เกิน 13 จุด (รายเดือน 12 เดือน = 13 จุด · รายสองเดือน = ~8 จุด)
+       ห้ามใส่ 18 เดือน/1.5 ปี · จุดสุดท้าย = ราคาปัจจุบัน · ผลตอบแทน จุดแรก→จุดท้าย ต้องตรงกับป้าย % รอบปีใน header (E36) -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#0071c2"></i>ราคา BKNG</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $216</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคาแสดงเป็น <b>split-adjusted</b> ทั้งกราฟ — BKNG แตกพาร์ <b>25:1 เมื่อ 6 เม.ย. 2026</b> (ราคาเดิม ~$4,500 → ~$181 ต่อหุ้นใหม่) เส้นจึงต่อเนื่อง ไม่มีรอยหักเทียม.
+        รอบปีที่ผ่านมาราคาทำจุดสูงราว <b>$222.64</b> (ส.ค. 25) แล้วถอยลงต่อเนื่อง ทำจุดต่ำราว <b>$167–168</b> (มี.ค.–พ.ค. 26) ก่อนฟื้นกลับมาที่ <b>$181.46</b>.
+        ผลตอบแทนรอบปี <b>−17.1%</b> สะท้อนความกังวลการชะลอตัวของการเดินทาง/มาโคร และการเก็งกำไรหลังราคาวิ่งแรงช่วงก่อนหน้า — แต่พื้นฐาน (รายได้ +15%, มาร์จิ้นสูง) ยังแข็งแกร่ง ทำให้ราคาปัจจุบันต่ำกว่าทั้งมูลค่าเหมาะสมและเป้านักวิเคราะห์.
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION (เฉลี่ย 3 วิธี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <!-- ✏️ เลือก ≥2 วิธีให้เหมาะกับหุ้น — gate เช็คคณิตเฉพาะวิธีชื่อ "P/E" (E21) และ "Justified P/BV" (E22) เมื่อมีวิธีนั้น
+           ธนาคาร → เน้น P/BV / Residual income   • REIT → DDM / NAV   • หุ้นไม่ปันผล → ตัด DDM ออก ใช้ P/E + DCF/Justified P/BV -->
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS $10.45 (Forward, FY ปีหน้า) × P/E เป้าหมาย ~22x — justified สำหรับธุรกิจ FCF สูง โต ~14–15%/ปี (ต่ำกว่า P/E เฉลี่ยในอดีต)</div></div>
+        <div class="mval">$229.90</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. DCF / FCF-Yield</div><div class="mdesc">FCF ~$7.5B (~$9.7/หุ้น), คิดส่วนลด WACC ~9% โต ~13%→3% terminal · เทียบ FCF yield ~4.3% ของผู้นำตลาดที่โตสูง</div></div>
+        <div class="mval">$215.00</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. EV/EBITDA</div><div class="mdesc">EBITDA ~$9.5B × ~18.5x (ค่ากลางในอดีต) = EV ~$176B หัก net debt ~$10B → ส่วนทุน ~$166B ÷ 775M หุ้น</div></div>
+        <div class="mval">$203.00</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $205 – $230</span></div>
+        <div class="r">$216</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ไม่ใช้ Justified P/BV เพราะ <b>ส่วนทุนติดลบ</b> (BVPS −$10.80 จากการซื้อหุ้นคืนหนัก) ทำให้ P/BV ไร้ความหมาย.
+        วิธี P/E ให้ค่าสูงสุด (สะท้อนกำไรในอนาคต) ส่วน EV/EBITDA ให้ค่าระมัดระวังสุด (อิงค่าทวีคูณในอดีต).
+        ค่ากลาง <b>$216</b> อยู่ในกรอบที่สมเหตุสมผล ต่ำกว่าเป้าเฉลี่ยนักวิเคราะห์ ($224) เล็กน้อย และให้ MOS ~16% จากราคาปัจจุบัน.
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $181.46</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $216</div></div>
+        </div>
+        <div class="scale">
+          <span>$151.20<br><small>MOS 30%</small></span>
+          <span>$172.80<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$216<br><small>Fair Value</small></span>
+          <span style="text-align:right">$224<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">$230<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน <b>$181.46</b> อยู่ <b>สูงกว่า</b> โซน MOS 20% ($172.80) เล็กน้อย แต่ <b>ต่ำกว่า</b> มูลค่าเหมาะสม $216 ราว 16% และต่ำกว่าเป้าเฉลี่ยนักวิเคราะห์ $224 ราว 19%.
+        ถือเป็นโซน <b>เริ่มทยอยสะสม</b> สำหรับนักลงทุนที่เชื่อในคุณภาพธุรกิจ — ส่วนเผื่อความปลอดภัยพอใช้แต่ยังไม่ลึก หากต้องการ deep value ควรรอแถว $172 หรือต่ำกว่า.
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <!-- ✏️ class ของ mos-verdict: MOS<10 → "bad", 10–20 → "ok", ≥20 → "good" -->
+      <div class="mos-verdict ok">
+        <div class="big">+16.0%</div>
+        <div class="txt">ราคาต่ำกว่ามูลค่าเหมาะสม $216 ราว 16% — ส่วนเผื่อความปลอดภัยพอใช้ เหมาะเริ่มทยอยสะสม</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$172.80</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$151.20</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $216</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="181.46" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $181.46 • EPS ฐาน ~$7.62 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS +8%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$172.78</div>
+          <div class="ret neg">−2.0%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$9.60</span></li>
+            <li><span>P/E ออก</span><span>18x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$5.04</span></li>
+            <li><span>สถานการณ์</span><span>ท่องเที่ยวชะลอ มาร์จิ้นถูกบีบ</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +14%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$237.08</div>
+          <div class="ret pos">+33.4%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$11.29</span></li>
+            <li><span>P/E ออก</span><span>21x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$5.04</span></li>
+            <li><span>สถานการณ์</span><span>โตตามแนวโน้ม ซื้อหุ้นคืนต่อ</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +18%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$300.48</div>
+          <div class="ret pos">+68.4%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$12.52</span></li>
+            <li><span>P/E ออก</span><span>24x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$5.04</span></li>
+            <li><span>สถานการณ์</span><span>Connected Trip + AI หนุนยอดจอง</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      ผลตอบแทนรวมปันผล (~$5.04/3 ปี จากปันผลคงที่ ~$1.68/ปี) — กรณีฐานให้ ~+33% ใน 3 ปี (~10%/ปี ทบต้น).
+      กรณี Bear ติดลบเล็กน้อยเพราะ P/E หดและกำไรโตช้า ส่วน Bull สะท้อนการ re-rate กลับเมื่อตลาดมั่นใจการเติบโต. ความเสี่ยงหลักคือวงจรการเดินทาง/มาโครและการแข่งขัน.
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>ผู้นำตลาด OTA:</b> Booking.com ครองส่วนแบ่งจองที่พักออนไลน์ทั่วโลก เครือข่ายโรงแรม·ดีมานด์ขนาดใหญ่สร้าง network effect ที่ลอกเลียนยาก</li>
+          <li><b>กำไร/FCF สูงมาก:</b> Operating margin ~33% · ROIC ~24.5% · FCF แข็งแรง ใช้ซื้อหุ้นคืนหนัก (ดัน EPS แม้รายได้โตปกติ)</li>
+          <li><b>Connected Trip + AI:</b> รวมที่พัก·เที่ยวบิน·รถเช่า·ร้านอาหารในแพลตฟอร์มเดียว + AI ผู้ช่วยวางแผนทริป เพิ่ม cross-sell และ retention</li>
+          <li><b>รายได้โตต่อเนื่อง:</b> TTM +15% YoY · FY26E EPS ~$10.45 (+~14–15%) จากดีมานด์ท่องเที่ยวระยะยาวและการขยายในเอเชีย (Agoda)</li>
+          <li><b>ราคาต่ำกว่ามูลค่า:</b> เป้าเฉลี่ยนักวิเคราะห์ $224 (+24%, Buy 37 ราย) · P/E forward ~17x ต่ำกว่าค่าเฉลี่ยในอดีต</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>วงจรการเดินทาง/มาโคร:</b> ดีมานด์ท่องเที่ยวอ่อนไหวต่อภาวะเศรษฐกิจ·ค่าครองชีพ·เหตุการณ์โลก — ถดถอยกระทบยอดจองและราคาห้องโดยตรง</li>
+          <li><b>ส่วนทุนติดลบ:</b> BVPS −$10.80 จากซื้อหุ้นคืนหนัก ทำให้ P/BV·ROE ไร้ความหมาย และเพิ่มความเปราะหากกระแสเงินสดสะดุด</li>
+          <li><b>การแข่งขัน:</b> แข่งกับ Airbnb·Expedia·Google Travel·เมต้าเสิร์ช และโรงแรมที่ผลักดันการจองตรง อาจกดดันค่าคอมมิชชั่น</li>
+          <li><b>ความเสี่ยงกำกับ/ภาษี:</b> กฎ DMA ยุโรป·ภาษีดิจิทัล·ข้อพิพาทภาษีในรัฐต่าง ๆ เพิ่มต้นทุนปฏิบัติตามกฎ</li>
+          <li><b>พึ่งค่าโฆษณา:</b> ต้นทุนการตลาด (Google Ads) สูง หาก ROI โฆษณาแย่ลงจะบีบมาร์จิ้น</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>ผู้นำ OTA โลกคุณภาพสูง ราคาย่อหลังแตกพาร์ — โซนเริ่มทยอยสะสม</h2>
+      <p>Booking Holdings เป็นแพลตฟอร์มจองท่องเที่ยวออนไลน์ที่มีตำแหน่งผู้นำ มาร์จิ้นและ ROIC สูงมาก กระแสเงินสดแข็งแรงพอจะซื้อหุ้นคืนต่อเนื่อง.
+      หลังแตกพาร์ 25:1 (เม.ย. 2026) ราคาปรับลง ~17% รอบปี มาที่ $181.46 ซึ่ง <b>ต่ำกว่ามูลค่าเหมาะสม $216 ราว 16%</b> และต่ำกว่าเป้าเฉลี่ยนักวิเคราะห์ $224 ราว 19%.
+      จุดที่ต้องระวังคือส่วนทุนติดลบ (จากซื้อหุ้นคืน) และวงจรการเดินทางตามมาโคร — แต่พื้นฐานยังโต ~14–15%/ปี ทำให้ระดับราคาปัจจุบันให้ส่วนเผื่อความปลอดภัยพอใช้.</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$216 <span style="font-size:12px;color:#cab9a8">($205–$230)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +16.0%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$224 (Buy)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> เริ่มทยอยสะสมที่ระดับปัจจุบัน ($181) สำหรับนักลงทุนระยะยาวที่รับความผันผวนได้ · เพิ่มน้ำหนักเมื่อแตะโซน MOS 20% (~$173) หรือต่ำกว่า · ติดตามแนวโน้มยอดจอง·มาร์จิ้น·ดีมานด์ท่องเที่ยวรายไตรมาส
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ที่มาข้อมูล: StockAnalysis.com, Yahoo Finance, Booking Holdings IR/10-K, digrin.com (ราคา split-adjusted)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 26 มิ.ย. 2026 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
