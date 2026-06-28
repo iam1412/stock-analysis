@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น RELX plc (RELX) — Stock Analysis Dashboard</title>
+<!-- ★ ใส่รุ่นโมเดล AI ที่ใช้วิเคราะห์จริง -->
+<meta name="ai-model" content="Claude Opus 4.8">
+<!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
+<script type="application/json" id="stock-meta">
+{"symbol":"RELX","currency":"USD","price":31.34,"fairValue":38.00,"mos":17.5,"upside":21.3,"pe":21.3,"dividendYield":2.87,"roe":null}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#ED7000",
+    "accentDark": "#B85500",
+    "darkGrad": "linear-gradient(135deg,#1e1408 0%,#111111 100%)",
+    "glow": "rgba(237,112,0,0.18)",
+    "subColor": "#F5A040",
+    "headerMuted": "#C07030",
+    "verdictText": "#fff8f0",
+    "vcellLabel": "#D09050",
+    "badge": "#ED7000",
+    "chgBg": "#3c1212",
+    "chgColor": "#c5221f"
+  },
+  "chart": {
+    "data": [
+      ["มิ.ย.25",53.01],
+      ["ก.ค.25",50.62],
+      ["ส.ค.25",45.77],
+      ["ก.ย.25",46.84],
+      ["ต.ค.25",43.39],
+      ["พ.ย.25",39.44],
+      ["ธ.ค.25",39.64],
+      ["ม.ค.26",35.11],
+      ["ก.พ.26",34.12],
+      ["มี.ค.26",32.51],
+      ["เม.ย.26",35.89],
+      ["พ.ค.26",32.79],
+      ["มิ.ย.26",31.34]
+    ],
+    "min": 25,
+    "max": 58,
+    "fairLine": 38.00,
+    "currency": "$",
+    "highlight": [0, 12],
+    "grid": [30, 35, 40, 45, 50, 55]
+  },
+  "gauge": {
+    "min": 26.60,
+    "max": 55,
+    "cur": 31.34,
+    "fair": 38.00,
+    "fairLabelTop": false
+  },
+  "fv": 38.00
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">📚⚖️🔬📊🌐</div>
+    <div>
+      <span class="tag">NYSE ADR: RELX</span>
+      <span class="tag">Communication Services</span>
+      <span class="tag">ข้อมูลวิเคราะห์เชิงวิชาชีพ (de-rated จากกลัว AI)</span>
+    </div>
+    <h1>RELX plc</h1>
+    <div class="sub">LexisNexis Risk Solutions (ข้อมูลความเสี่ยง/กันฉ้อโกง/KYC) • Elsevier (วารสารวิทยาศาสตร์ • ScienceDirect • Scopus) • LexisNexis Legal (Lexis+ AI) • RX (งานแสดงสินค้า)</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$31.34<small>(RELX)</small></div>
+      </div>
+      <div class="chg" style="background:#3c1212;color:#c5221f">▼ −40.9% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 27 มิ.ย. 2026<br>
+        กรอบ 52 สัปดาห์ $27.57 – $54.37<br>
+        ที่มา: StockAnalysis.com, Yahoo Finance, RELX IR
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ มิ.ย. 2026 | ที่มา: StockAnalysis.com, Yahoo Finance, RELX IR</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~$55B</div><div class="d">1.82B หุ้น (ADR 1:1 LSE)</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~21.3x</div><div class="d">de-rated จาก ~30x (AI fear)</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~28–32x</div><div class="d">ปัจจุบันต่ำกว่าเฉลี่ยมาก</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">~17x</div><div class="d">Equity เล็ก (buyback/net-debt) — ไม่ Meaningful</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">~$2.67B</div><div class="d">EPS +9% YoY (กำไรยังแข็งแกร่ง)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$1.47</div><div class="d">ประวัติ: 2021 $1.04 → 2025 $1.47 (CAGR ~9%)</div></div>
+      <div class="metric"><div class="k">อัตรากำไรจากการดำเนินงาน</div><div class="v pos">~31.6%</div><div class="d">Margin สูง เสถียร (ROE distorted — ไม่แสดง)</div></div>
+      <div class="metric"><div class="k">Revenue TTM</div><div class="v neu">~$12.7B</div><div class="d">+7% Constant Currency (+1.65% USD)</div></div>
+
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~2.87%</div><div class="d">$0.90/ADR ปี (เติบโตต่อเนื่อง)</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v pos">0.25</div><div class="d">Defensive มาก — ต่ำกว่าตลาดอย่างมีนัย</div></div>
+      <div class="metric"><div class="k">FCF Conversion</div><div class="v pos">~85%</div><div class="d">FCF/Net Income สูง (asset-light data model)</div></div>
+      <div class="metric"><div class="k">เป้านักวิเคราะห์ (ADR)</div><div class="v neu">~$52.45</div><div class="d">⚠️ ข้อมูลจาก 3 นักวิเคราะห์เท่านั้น — ระวัง</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART (~1 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#ED7000"></i>ราคา RELX ADR</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $38.00</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        RELX ADR ปรับตัวลงอย่างต่อเนื่องจาก $53.01 ในมิถุนายน 2025 มาอยู่ที่ $31.34 ปัจจุบัน คิดเป็น −40.9% ในรอบปี การปรับลดนี้ไม่ได้เกิดจากผลประกอบการที่แย่ลง (EPS FY2025 ยังโต +9%) แต่เป็น <b>Valuation de-rating จากความกลัว AI-disruption</b> — P/E ร่วงจาก ~30x เหลือ ~21x เนื่องจากตลาดกังวลว่า LLMs จะกัดเซาะ Moat ของ LexisNexis และ Elsevier ราคาแตะจุดต่ำสุดบริเวณ $32–34 ในช่วง ก.พ.–มี.ค. 2026 ก่อนฟื้นเล็กน้อยในเมษายน แล้วกลับมาอ่อนตัวอีกครั้ง
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">3 วิธี (P/E + DCF + DDM)</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS (TTM) $1.47 × P/E เป้าหมาย ~25x — ต่ำกว่าค่าเฉลี่ยประวัติศาสตร์ ~30x เพื่อสะท้อน AI-risk premium; ยังสมเหตุสมผลสำหรับธุรกิจข้อมูลที่มี Recurring Revenue ~80%</div></div>
+        <div class="mval">$36.75</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. DCF (FCF-based, 2-stage)</div><div class="mdesc">FCF/ADR ~$1.25 (FCF Conversion 85%) · Stage 1: 8%/ปี × 5 ปี · Stage 2 terminal: 4% · WACC 8% — ใช้ WACC สูงกว่า Beta ที่แนะนำ (r ≈ 5.5%) เพื่อสะท้อน AI-risk haircut</div></div>
+        <div class="mval">$38.75</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. DDM / Gordon Growth</div><div class="mdesc">D₁ = $0.90 × (1+6%) = $0.954; g 6%, r 8% → FV = D₁/(r−g) = $0.954/0.02 = $47.70 — ปันผลเติบโตสม่ำเสมอ ~6%/ปี; yield 2.87% เหมาะสมสำหรับ DDM (>1.5%)</div></div>
+        <div class="mval">$47.70</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสม (อนุรักษ์นิยม — ใช้ต่ำกว่าค่าเฉลี่ยเลขคณิต เนื่องจากความเสี่ยง AI)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $36.75 – $47.70 | ค่าเฉลี่ยเลขคณิต 3 วิธี = $41.07</span></div>
+        <div class="r">$38.00</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        วิธี P/E ให้ $36.75 โดยใช้ P/E 25x ซึ่งต่ำกว่าค่าเฉลี่ยประวัติ ~30x อย่างตั้งใจเพื่อสะท้อน AI-risk discount · DCF ให้ $38.75 โดยใช้ FCF จริงและ WACC 8% สูงกว่า Beta ที่แท้จริง (r ~5.5%) เพื่อ conservative buffer · DDM ให้ $47.70 ซึ่งสูงที่สุดเพราะ RELX มีปันผลเติบโตสม่ำเสมอ แต่ sensitive ต่อสมมติฐาน r · <b>เลือก FV $38.00 ต่ำกว่าค่าเฉลี่ย $41.07</b> เพื่อรับ AI-disruption risk ที่ยังไม่แน่ใจทิศทาง · <b>⚠️ เป้าเฉลี่ยนักวิเคราะห์ $52.45 มาจาก 3 คนเท่านั้น — ไม่นำมาเฉลี่ยใน FV</b>
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $31.34</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $38.00</div></div>
+        </div>
+        <div class="scale">
+          <span>$26.60<br><small>MOS 30%</small></span>
+          <span>$30.40<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$38.00<br><small>Fair Value</small></span>
+          <span style="text-align:right">$47.70<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">$52.45<br><small>เป้า Analyst*</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน $31.34 อยู่ระหว่าง MOS 20% ($30.40) และ Fair Value $38.00 — ใกล้โซน "น่าสนใจสำหรับ Value Investor" แต่ยังไม่ถึง Deep Value · ถ้าซื้อต่ำกว่า $30.40 จะมี MOS 20% เต็ม ๆ · <b>⚠️ เป้า Analyst $52.45 (*) มาจากนักวิเคราะห์เพียง 3 คน</b> ที่แปลงเป้า LSE เป็น USD — ใช้เป็น Reference Optimistic ไม่ใช่ Consensus
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict ok">
+        <div class="big">+17.5%</div>
+        <div class="txt">MOS ระดับกลาง — ราคาต่ำกว่า Fair Value พอสมควร แต่ AI-risk ยังไม่แน่ใจทิศทาง</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$30.40</div><div class="d">โซนน่าสนใจสำหรับ value (ใกล้ราคาปัจจุบัน)</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$26.60</div><div class="d">โซนถูกมาก (deep value) หาก AI-risk escalate</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $38.00</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="31.34" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $31.34 • EPS ฐาน ~$1.47 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS +3%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$32.20</div>
+          <div class="ret neg">รวม ~+11.4% (~$34.90 รวมปันผล) / ~3.7%/ปี</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$1.61</span></li>
+            <li><span>P/E ออก</span><span>20x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$2.70</span></li>
+            <li><span>สถานการณ์</span><span>AI กัดเซาะ Moat ชัด รายได้ Legal/Research ลด P/E ยังกดต่อ</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +8%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$45.38</div>
+          <div class="ret pos">รวม ~+44.8% / ~13.2%/ปี</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$1.85</span></li>
+            <li><span>P/E ออก</span><span>23x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$2.83</span></li>
+            <li><span>สถานการณ์</span><span>AI ไม่กัดเซาะรายได้จริง Lexis+ AI ดึงลูกค้าใหม่ P/E ฟื้นบางส่วน</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +12%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$58.86</div>
+          <div class="ret pos">รวม ~+87.8% / ~23.8%/ปี</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$2.07</span></li>
+            <li><span>P/E ออก</span><span>27x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$2.97</span></li>
+            <li><span>สถานการณ์</span><span>AI กลายเป็น Enabler: Lexis+ AI ชนะตลาด LegalTech Elsevier ขยาย AI licensing</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      การคาดการณ์อิงสมมติฐาน EPS ฐาน $1.47 (TTM) · Bear case: EPS เติบโตช้า 3%/ปี จาก AI-erosion จริง P/E หดเหลือ 20x — ยังให้ผลตอบแทนบวกเล็กน้อย (+11%) เพราะราคาเริ่มต้น de-rated มากแล้ว · Base case: กำไรโต 8%/ปีตาม GBP EPS CAGR ประวัติ P/E ฟื้นบางส่วนสู่ 23x ให้ผลตอบแทนดี ~45% · Bull case: AI กลายเป็น Tailwind P/E re-rates 27x ผลตอบแทน ~88% · ปันผลเติบโตช้า ๆ อยู่ที่ $0.90–$1.00/ADR ต่อปี
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก &amp; ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>Recurring Revenue ~80%:</b> รายได้ส่วนใหญ่มาจาก Subscription/Renewal ระยะยาว — กองทุน บริษัทกฎหมาย สถาบันการศึกษาต่ออายุสม่ำเสมอ ลดความผันผวนในสภาวะเศรษฐกิจถดถอย</li>
+          <li><b>Lexis+ AI เป็น Catalyst แทน Disruptor:</b> RELX ลงทุน Lexis+ AI เชิงรุก ลูกค้าใช้งาน AI Layer บน Database ของ RELX แทนที่จะไปใช้ ChatGPT ตรง ๆ — AI อาจเพิ่ม ARPU ไม่ใช่ลดรายได้</li>
+          <li><b>LexisNexis Risk Solutions = Defensive Moat:</b> ธุรกิจ KYC/AML/Fraud Detection สำหรับธนาคาร ประกัน รัฐบาล — AI ไม่กัดเซาะ เพราะ AI ต้องการข้อมูล (ที่ RELX มี) ไม่ใช่แข่งกัน</li>
+          <li><b>Elsevier — Unique Data Moat:</b> คลัง 17+ ล้านบทความ Peer-reviewed ที่สะสมมาหลายสิบปี ไม่มีใครลอกเลียนได้ — โมเดล AI ยังต้องการ Elsevier เป็น Training/Licensing Data</li>
+          <li><b>FCF สูง + การจัดสรรทุนที่ดี:</b> FCF Conversion ~85% Buyback สม่ำเสมอ ปันผลเติบโต Beta 0.25 — "Defensive Compounder" ในพอร์ต</li>
+          <li><b>Valuation de-rated เกินจริง:</b> P/E ลงจาก ~30x เหลือ ~21x ทั้งที่กำไรยังโต +9% FY2025 — หากความกลัว AI ไม่เป็นจริง P/E ฟื้นกลับสู่ 25–28x ให้ Upside สูงมาก</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>⚠️ ความเสี่ยงหลัก — AI Disruption:</b> LLMs เช่น ChatGPT/Gemini อาจทำให้นักกฎหมาย/นักวิจัยลด dependency บน LexisNexis/Elsevier — ยังไม่เห็นใน revenue จริง แต่ตลาดกำลัง Price in Scenario นี้แล้ว (P/E ลง 30x→21x = −41% sentiment โดยไม่มี Earnings Collapse)</li>
+          <li><b>Elsevier — Open Access Pressure:</b> Mandate ของรัฐบาล/มหาวิทยาลัยให้งานวิจัยที่ได้ทุนหลวงต้อง Open Access กดรายได้ Subscription ระยะยาว — Structural Headwind ที่ดำเนินมา 10+ ปี</li>
+          <li><b>ความเสี่ยงค่าเงิน GBP/USD:</b> RELX รายงานในปอนด์ แต่ ADR ซื้อขายใน USD — ถ้า GBP อ่อน EPS USD ลดลง (FY2025: constant-currency +7% แต่ USD +1.65%)</li>
+          <li><b>ความเสี่ยงด้านกฎระเบียบ:</b> GDPR/Privacy Law ใหม่อาจกระทบ LexisNexis Risk · RX (งานแสดงสินค้า) ถูกคุกคามจาก Virtual Events หลัง COVID</li>
+          <li><b>Valuation ยังไม่ Cheap มาก:</b> P/E 21x ไม่ได้ถูกในแบบ "Value Trap Cheap" — ถ้า EPS โตช้าลงเหลือ 3–5%/ปี FV จะต่ำกว่าราคาปัจจุบัน</li>
+          <li><b>เป้านักวิเคราะห์ ADR น้ำหนักน้อย:</b> Coverage เพียง 3 คน เป้า $52.45 อาจแปลจากเป้า LSE โดยตรงโดยไม่ปรับ FX อย่างละเอียด — ควรระวังการยึดตัวเลขนี้เป็นหลัก</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>Defensive Compounder ที่ถูก De-rate ด้วยกลัว AI — Opportunity หรือ Value Trap?</h2>
+      <p>RELX เป็นธุรกิจข้อมูลเชิงวิชาชีพที่มี Moat ยาวนาน (คลัง Elsevier 17M+ บทความ + Database LexisNexis ที่สะสมหลายสิบปี) รายได้ Recurring ~80% FCF Conversion ~85% และกำไร EPS FY2025 ยังโต +9% · ราคา ADR ร่วง −41% ในรอบปีเป็น Sentiment De-rating จากความกลัว AI — ไม่ใช่ Earnings Collapse · ณ $31.34 ซื้อขายที่ P/E 21x ต่ำกว่าค่าเฉลี่ยประวัติ ~30x อย่างมีนัยสำคัญ · อย่างไรก็ตาม ความเสี่ยง AI-disruption เป็นความเสี่ยงที่แท้จริง ไม่ใช่แค่ Noise — ผลตอบแทนขึ้นอยู่กับว่า AI จะเป็น Enabler หรือ Disruptor ในอีก 3–5 ปีข้างหน้า</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$38.00 <span style="font-size:12px;color:#cab9a8">($36.75–$47.70)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +17.5%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$52.45 (⚠️ ข้อมูล 3 คน)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ราคาปัจจุบัน $31.34 อยู่ใกล้โซน MOS 20% ($30.40) — เหมาะสำหรับนักลงทุนที่มองว่า RELX จะ Adapt กับ AI ได้ (Lexis+ AI เป็นหลักฐาน) · <b>ทยอยสะสมใกล้ $30–31</b> และเพิ่มถ้าราคาถึง $26.60 (MOS 30%) · ติดตาม: Revenue Growth ต่อไตรมาส — ถ้า Organic Growth ยังอยู่ที่ +5–7% Constant Currency แปลว่า AI ยังไม่กัดเซาะ · Beta 0.25 เหมาะสำหรับพอร์ต Defensive ที่ต้องการ Compounder ที่ไม่แกว่งตามตลาด
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และสมมติฐาน AI-risk ที่มีความไม่แน่นอนสูง
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ข้อมูลราคา ณ 27 มิ.ย. 2026 จาก StockAnalysis.com + Yahoo Finance (ครอสเช็ค ≥2 แหล่ง ราคาต่าง &lt;1%) · ข้อมูลงบการเงิน/EPS จาก RELX IR (FY2025 Results) + StockAnalysis.com · ราคาประวัติ ADR จาก digrin.com · เป้านักวิเคราะห์ ADR จาก Yahoo Finance (3 นักวิเคราะห์ แปลงจาก LSE targets)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 27 มิ.ย. 2026 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
