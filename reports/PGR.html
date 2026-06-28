@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น Progressive (PGR) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Opus 4.8">
+<script type="application/json" id="stock-meta">
+{"symbol":"PGR","currency":"USD","price":224.34,"fairValue":226.81,"mos":1.09,"upside":1.10,"pe":11.41,"dividendYield":6.20,"roe":37.29}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#1862c6", "accentDark": "#0033a0",
+    "darkGrad": "linear-gradient(135deg,#0a1a3a 0%,#0033a0 55%,#1862c6 140%)",
+    "glow": "rgba(24,98,198,.35)", "subColor": "#c5d4ee", "headerMuted": "#aebbd6",
+    "chgBg": "var(--red-soft)", "chgColor": "#c5221f", "badge": "var(--blue)",
+    "verdictText": "#d4dbe8", "vcellLabel": "#a8b4cc"
+  },
+  "chart": {
+    "data": [["มิ.ย.25",250.59],["ก.ค.25",227.38],["ส.ค.25",232.09],["ก.ย.25",231.99],["ต.ค.25",193.60],["พ.ย.25",215.02],["ธ.ค.25",214.01],["ม.ค.26",207.89],["ก.พ.26",213.55],["มี.ค.26",198.14],["เม.ย.26",201.28],["พ.ค.26",190.40],["มิ.ย.26",224.34]],
+    "min": 185, "max": 268, "grid": [200,220,240,260], "fairLine": 226.81, "currency": "$", "highlight": [11,12]
+  },
+  "gauge": { "min": 159, "max": 268, "cur": 224.34, "fair": 226.81, "fairLabelTop": "-58px" },
+  "fv": 226.81
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots"></div>
+    <div>
+      <span class="tag">NYSE: PGR</span>
+      <span class="tag">Financials · Insurance</span>
+      <span class="tag">ผู้นำประกันรถยนต์สหรัฐ — วินัย underwriting + telematics</span>
+    </div>
+    <h1>Progressive Corporation (PGR)</h1>
+    <div class="sub">ประกันรถยนต์ส่วนบุคคล/เชิงพาณิชย์ • ประกันบ้าน/ทรัพย์สิน • ประกันรถจักรยานยนต์·เรือ·ยานพาหนะพิเศษ • ช่องทาง Direct + Agency (telematics Snapshot®)</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$224.34<small>(PGR)</small></div>
+      </div>
+      <div class="chg">▼ −10.5% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 27 มิ.ย. 2026<br>
+        กรอบ 52 สัปดาห์ $189.20 – $267.93<br>
+        ที่มา: StockAnalysis.com, Yahoo Finance, Progressive IR
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">งบ TTM · Q1 FY2026</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">$131.1B</div><div class="d">หุ้น ~584M shares</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~11.41x</div><div class="d">ถูกในเชิงตัวเลข — แต่ EPS อยู่จุดสูงรอบ</div></div>
+      <div class="metric"><div class="k">Combined Ratio</div><div class="v pos">~87.4%</div><div class="d">Q1'26 86.4% — underwriting ดีเยี่ยม (&lt;100 = กำไร)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">4.08</div><div class="d">พรีเมียมเพราะ ROE/คุณภาพสูง</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">$11.31B</div><div class="d">YoY +33.5%</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$19.66</div><div class="d">FY2025 $19.23 · คาดปี 2026 ~$17.22 (ย่อตัว)</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~$51.56</div><div class="d">มูลค่าทางบัญชีต่อหุ้น</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~37.29% / 9.89%</div><div class="d">ROE ของจริง (อิงทุนเจ้าของแท้) ระดับท็อปกลุ่มประกัน</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$89.42B</div><div class="d">YoY +16.3%</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~16–18x</div><div class="d">กรอบ ~11–22x ตามวัฏจักร underwriting</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~6.20%</div><div class="d">⚠️ ปันผลพิเศษ "ผันแปรรายปี" อิงกำไร (ไม่คงที่)</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">0.27</div><div class="d">ผันผวนต่ำมากเทียบตลาด — ลักษณะ defensive</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART (ราคาย้อนหลัง ~1 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#1862c6"></i>ราคา PGR</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $226.81</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ในรอบปี PGR ปรับลง ~−10.5% (จาก ~$250.6 มิ.ย.25 → $224.34 มิ.ย.26) แม้กำไรทำสถิติ — ตลาดเริ่มมองว่าอัตรากำไร underwriting อยู่จุดสูงรอบและจะ "normalize" ลง ราคาแตะจุดต่ำ ~$190 (ต.ค.25 และ พ.ค.26) ก่อนเด้งกลับสู่ $224 ปลายเดือน มิ.ย. กรอบ 52 สัปดาห์ $189.20–$267.93 สะท้อนความผันผวนของมุมมองวงจรกำไรประกัน
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION (เฉลี่ย 3 วิธี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี (วิธีเหมาะกับหุ้นประกัน)</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS "ปรับเป็นปกติ" ~$18.00 × P/E เป้าหมาย ~12.5x — ใช้กำไรที่ normalize แล้ว ไม่ใช่ EPS TTM จุดสูง</div></div>
+        <div class="mval">$225.00</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. Excess-Return / Earnings Power</div><div class="mdesc">อิงกำลังกำไรปกติ (normalized EPS ~$17.5) + ปันผลพิเศษผันแปรอิงกำไร (ไม่ใช้ DDM ปกติเพราะปันผลไม่คงที่)</div></div>
+        <div class="mval">$232.00</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 19% − g 6%)/(r 9% − g 6%) ≈ 4.33 × BVPS $51.56 (ใช้ ROE "ปกติ" ~19% ไม่ใช่ 37% จุดสูง)</div></div>
+        <div class="mval">$223.43</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $223 – $232</span></div>
+        <div class="r">$226.81</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ทั้ง 3 วิธีอยู่ในกรอบแคบ $223–$232 เพราะตั้งใจ "ปรับกำไร/ROE เป็นปกติ" (EPS ~$17.5–18 · ROE ~19%) แทนการใช้ค่าจุดสูงรอบ (EPS TTM $19.66 · ROE 37%) ที่จะให้ FV สูงเกินจริง P/E ที่ดูถูก ~11x เกิดจากกำไรอยู่จุดพีค ไม่ใช่หุ้นถูกจริง FV กลาง $226.81 ใกล้เคียงราคาตลาด ($224.34) และเป้านักวิเคราะห์ ($230) → หุ้นซื้อขายใกล้มูลค่าเหมาะสม
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $224.34</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $226.81</div></div>
+        </div>
+        <div class="scale">
+          <span>$158.77<br><small>MOS 30%</small></span>
+          <span>$181.45<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$226.81<br><small>Fair Value</small></span>
+          <span style="text-align:right">$230.19<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">$232<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน $224.34 เกาะติด Fair Value $226.81 พอดี — MOS บางมาก (~+1%) ส่วนเผื่อความปลอดภัยแทบไม่มี โซนน่าสะสมจริงต้องต่ำกว่า ~$181 (MOS 20%) ซึ่งใกล้จุดต่ำ 52 สัปดาห์ $189 หุ้นนี้คุณภาพสูงแต่ "ไม่ถูก" ที่ราคานี้
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">+1.09%</div>
+        <div class="txt">MOS บางมาก — ราคาเกือบเท่ามูลค่าเหมาะสม แทบไม่มีส่วนเผื่อความปลอดภัย รอย่อตัวก่อนสะสมจะปลอดภัยกว่า</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$181.45</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$158.77</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $226.81</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="224.34" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $224.34 • EPS ฐาน ~$17.5 (normalized) • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS −6%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$159.89</div>
+          <div class="ret neg">−20.7%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$14.54</span></li>
+            <li><span>P/E ออก</span><span>11x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$18</span></li>
+            <li><span>สถานการณ์</span><span>วงจร underwriting พลิก · cat-loss สูง · เบี้ยแข่งราคา</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +4%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$246.06</div>
+          <div class="ret pos">+23.1%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$19.69</span></li>
+            <li><span>P/E ออก</span><span>12.5x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$30</span></li>
+            <li><span>สถานการณ์</span><span>margin ย่อสู่ปกติ · เบี้ยโตต่อเนื่อง · ปันผลพิเศษคงระดับ</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +10%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$326.10</div>
+          <div class="ret pos">+64.1%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$23.29</span></li>
+            <li><span>P/E ออก</span><span>14x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$42</span></li>
+            <li><span>สถานการณ์</span><span>ครองส่วนแบ่งเพิ่ม · telematics หนุน combined ratio ต่ำต่อ · re-rate</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      ผลตอบแทนรวมปันผล (ปันผลพิเศษผันแปรอิงกำไร — ไม่การันตี) จากจุดเข้า $224.34 ใน 3 ปี Base +23% มาจากกำไรโตเล็กน้อยบนฐาน normalized คีย์คือ combined ratio จะ "อยู่ต่ำได้นานแค่ไหน" ก่อน normalize · จุดเสี่ยงหลักคือกำไรอยู่จุดสูงรอบและ EPS ปี 2026 คาดย่อ ~−12%
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>วินัย underwriting ระดับโลก:</b> combined ratio ~87% (Q1'26 86.4%) ต่ำกว่าคู่แข่งทั้งกลุ่มมาก — กำไรจาก underwriting ของจริง ไม่พึ่งดอกเบี้ยลงทุนอย่างเดียว</li>
+          <li><b>telematics Snapshot®:</b> ข้อมูลพฤติกรรมขับขี่ทำให้ตั้งราคาเบี้ยแม่นกว่าคู่แข่ง → คัดลูกค้าดี กำไรต่อกรมธรรม์สูง</li>
+          <li><b>ครองส่วนแบ่งตลาดเพิ่มต่อเนื่อง:</b> ช่องทาง Direct ต้นทุนต่ำ + แบรนด์แข็ง รายได้ TTM +16.3% · กำไรสุทธิ +33.5%</li>
+          <li><b>ROE 37% ของจริง:</b> ผลตอบแทนต่อทุนเจ้าของระดับท็อปกลุ่มประกัน สะท้อนคุณภาพธุรกิจ</li>
+          <li><b>Beta 0.27 — defensive:</b> ผันผวนต่ำมาก ทนตลาดหมีได้ดี เหมาะพอร์ตระยะยาว</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>กำไรอยู่จุดสูงรอบ — กำลัง normalize:</b> EPS 2026 คาด ~$17.22 (≈ −12% จาก TTM) เมื่อ margin underwriting ย่อสู่ปกติ → P/E ที่ดู 11x จะ "แพงขึ้น" เมื่อกำไรลด</li>
+          <li><b>ราคาเกือบเท่า FV:</b> MOS บางมาก (~+1%) เป้านักวิเคราะห์ +2.6% (Hold) — ไม่มีส่วนลดให้ผิดพลาด</li>
+          <li><b>ปันผล 6.2% ไม่คงที่:</b> เป็นปันผล "พิเศษผันแปรรายปี" อิงกำไรปีนั้น (ปันผลปกติรายไตรมาส ~$0.10 เท่านั้น) — ปีกำไรน้อยปันผลหด ห้ามคาดเป็น yield คงที่</li>
+          <li><b>วงจรประกัน + cat-loss:</b> ภัยพิบัติ (พายุ/น้ำท่วม/ไฟป่า) หรือสงครามราคาเบี้ยทำให้ combined ratio พุ่ง > 100 ได้ (เคยเกิดปี 2022 EPS ร่วงเหลือ $1.18)</li>
+          <li><b>P/BV 4.08 พรีเมียมสูง:</b> ถ้า ROE ถอยจากจุดสูง valuation อาจ de-rate แรง</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>ผู้นำประกันรถยนต์คุณภาพสูงสุดในกลุ่ม — แต่ราคาเต็มมูลค่าแล้ว</h2>
+      <p>Progressive คือ best-in-class underwriter: combined ratio ~87% · ROE 37% ของจริง · telematics ที่ทำให้ตั้งราคาเบี้ยแม่นกว่าใคร P/E ~11x ดูถูกเชิงตัวเลข แต่นั่นเพราะ "กำไรอยู่จุดสูงรอบ" และคาดย่อ ~12% ในปี 2026 เมื่อ valuation บนกำไร normalized แล้ว Fair Value ~$226.81 เกาะติดราคาตลาด $224.34 พอดี — MOS บางมาก (~+1%) ตรงกับมุมมองนักวิเคราะห์ (Hold, เป้า $230, +2.6%) เป็นหุ้นดีที่ "ราคาเต็มมูลค่า" รอย่อตัวก่อนสะสมจะคุ้มความเสี่ยงกว่า</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$226.81 <span style="font-size:12px;color:#cab9a8">($223–$232)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +1.09%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$230.19 (Hold, 25 ราย)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> หุ้นคุณภาพสูงแต่ราคาเต็มมูลค่า — ผู้ถืออยู่แล้วถือต่อได้ (ธุรกิจแข็ง) · ผู้สนใจเข้าใหม่ควรรอย่อสู่โซน &lt; $181 (MOS 20%) ใกล้จุดต่ำ 52 สัปดาห์ เพื่อให้มีส่วนเผื่อความปลอดภัยจริง อย่าซื้อเพราะ "ปันผล 6%" เพราะเป็นปันผลพิเศษผันแปร ไม่คงที่
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ที่มาข้อมูล: StockAnalysis.com, Yahoo Finance, Progressive IR/10-K, digrin.com (ราคาย้อนหลัง) — ราคา ณ 27 มิ.ย. 2026
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 27 มิ.ย. 2026 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>

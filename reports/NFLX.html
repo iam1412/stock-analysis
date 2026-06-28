@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น Netflix (NFLX) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Opus 4.8">
+<script type="application/json" id="stock-meta">
+{"symbol":"NFLX","currency":"USD","price":73.81,"fairValue":110,"mos":32.9,"upside":49.0,"pe":23.84,"dividendYield":null,"roe":42.76}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#E50914", "accentDark": "#B0060F",
+    "darkGrad": "linear-gradient(135deg,#141414 0%,#1f0708 55%,#3a0a0d 140%)",
+    "glow": "rgba(229,9,20,.30)", "subColor": "#f0cdce", "headerMuted": "#e3b3b5",
+    "chgBg": "var(--red-soft)", "chgColor": "#c5221f", "badge": "var(--blue)",
+    "verdictText": "#e8d2d3", "vcellLabel": "#d3a9ab"
+  },
+  "chart": {
+    "data": [["มิ.ย.25",133.91],["ก.ค.25",115.94],["ส.ค.25",120.82],["ก.ย.25",119.89],["ต.ค.25",111.89],["พ.ย.25",107.58],["ธ.ค.25",93.76],["ม.ค.26",83.49],["ก.พ.26",96.24],["มี.ค.26",96.15],["เม.ย.26",93.61],["พ.ค.26",86.02],["มิ.ย.26",73.81]],
+    "min": 68, "max": 138, "grid": [80,95,110,125], "fairLine": 110, "currency": "$", "highlight": [11,12],
+    "gridFmt": "v.toFixed(0)", "dataFmt": "d[1].toFixed(0)"
+  },
+  "gauge": { "min": 70, "max": 124, "cur": 73.81, "fair": 110, "fairLabelTop": "-58px" },
+  "fv": 110
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots"><span style="background:#E50914"></span><span style="background:#B0060F"></span><span style="background:#831010"></span><span style="background:#141414"></span></div>
+    <div>
+      <span class="tag">NASDAQ: NFLX</span>
+      <span class="tag">Communication Services • Streaming</span>
+      <span class="tag">ผู้นำสตรีมมิง (SVOD) ระดับโลก</span>
+    </div>
+    <h1>Netflix, Inc.</h1>
+    <div class="sub">สตรีมมิงทั่วโลก 300M+ สมาชิก • คอนเทนต์ Original (หนัง·ซีรีส์·สารคดี) • โฆษณา (ad-supported tier) • เกม • Live events/กีฬา</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$73.81<small>(NFLX)</small></div>
+      </div>
+      <div class="chg">▼ −44.9% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 27 มิ.ย. 2026<br>
+        กรอบ 52 สัปดาห์ $70.86 – $134.12 (หลังแตกพาร์)<br>
+        ที่มา: StockAnalysis.com / Yahoo Finance / Netflix IR / digrin.com
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ตัวเลขหลังแตกพาร์ 10:1 (17 พ.ย. 2025)</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">$310.8B</div><div class="d">หุ้น ~4.21B</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~23.84x</div><div class="d">ลดจาก ~50x เมื่อปีก่อน (de-rate)</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~35–45x</div><div class="d">หุ้นเติบโต — เคยซื้อขายแพง</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">~14.9x</div><div class="d">~10.3x (เมื่อใช้ส่วนทุน TTM)</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">$13.37B</div><div class="d">YoY +44.3%</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$3.10</div><div class="d">FY2026E ~$4.4 (consensus)</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~$6.13</div><div class="d">~$7.19 (TTM)</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~42.76% / 21.06%</div><div class="d">ROE จากส่วนทุนจริง — สูงมาก</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$46.89B</div><div class="d">YoY +16.7%</div></div>
+      <div class="metric"><div class="k">อัตรากำไรจากการดำเนินงาน</div><div class="v">32.3%</div><div class="d">กำลังขยายตัว (margin expansion)</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">ไม่จ่าย</div><div class="d">นำกระแสเงินสดไปลงทุนคอนเทนต์/ซื้อหุ้นคืน</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">1.49</div><div class="d">ผันผวนสูงกว่าตลาด</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART (ราคาย้อนหลัง ~1 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ • ปรับผลแตกพาร์แล้ว</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#E50914"></i>ราคา NFLX</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $110</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคา (ปรับผลแตกพาร์ 10:1 เมื่อ 17 พ.ย. 2025 — ทุกตัวเลขเทียบเป็นฐานหลังแตกพาร์อย่างต่อเนื่อง) ปรับลงตลอดปี
+        จากจุดสูง ~$134 (มิ.ย. 2025) ลงทำจุดต่ำ ~$83 (ม.ค. 2026) ก่อนเด้งสั้น ๆ แถว $96 แล้วไหลลงต่อมาปิดที่ $73.81 —
+        <b>−44.9% รอบปี</b> ทั้งที่กำไรเกือบเท่าตัว เป็นภาพ "หุ้นเติบโตถูก de-rate แรง" (P/E ร่วงจาก ~50x เหลือ ~24x)
+        จากความกังวลเรื่องการเติบโตของสมาชิก การแข่งขัน และการบีบมัลติเพิลของหุ้นเทคทั้งกลุ่ม
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION (เฉลี่ย 3 วิธี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS $4.4 (คาดการณ์ปีหน้า) × P/E เป้าหมาย ~28x — สมเหตุสมผลกับหุ้นโต ~40% margin 32%</div></div>
+        <div class="mval">$123</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. DCF (กระแสเงินสด)</div><div class="mdesc">FCF เติบโตช่วงต้น ~15–18%/ปี แล้วชะลอสู่ terminal, WACC ~9.5% — กลางกรอบ</div></div>
+        <div class="mval">$108</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. EV/EBITDA</div><div class="mdesc">EBITDA FY2026E × multiple ~20x (เทียบกลุ่มสื่อ/สตรีมมิงพรีเมียม) — ค่าระมัดระวังสุด</div></div>
+        <div class="mval">$99</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $99 – $123</span></div>
+        <div class="r">$110</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ทั้งสามวิธีให้ค่าใกล้เคียงกันที่ ~$99–123 (เฉลี่ย $110) สอดคล้องเป้านักวิเคราะห์เฉลี่ย $114.15 — บ่งชี้ว่าราคาปัจจุบัน $73.81
+        สะท้อนความกังวลที่อาจมากเกินไป <b>แต่ค่า FV นี้อ่อนไหวสูงต่อสมมติฐาน P/E เป้าหมายและความยั่งยืนของการเติบโต</b>:
+        ถ้า EPS Fwd หรือ multiple พลาด FV จะปรับลงเร็ว เราจึง <b>ไม่ใช้วิธี Justified P/BV</b> (หุ้นเติบโต — มูลค่าตามบัญชีไม่สื่อความหมาย) และเน้น P/E + DCF เป็นหลัก
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $73.81</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $110</div></div>
+        </div>
+        <div class="scale">
+          <span>$77<br><small>MOS 30%</small></span>
+          <span>$88<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$110<br><small>Fair Value</small></span>
+          <span style="text-align:right">$114<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">$123<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน $73.81 อยู่ <b>ต่ำกว่า</b> ทั้งจุดซื้อ MOS 30% ($77) และใกล้จุดต่ำของกรอบ 52 สัปดาห์ ($70.86) —
+        เป็นโซน deep value <b>ถ้า</b> ประมาณการเติบโต/มัลติเพิลเป็นจริง ส่วน FV $110 และเป้านักวิเคราะห์ $114 อยู่สูงกว่าราคามาก
+        สะท้อนช่องว่าง upside ที่กว้างผิดปกติ (และความเสี่ยงที่กว้างพอ ๆ กันถ้าสมมติฐานพลาด)
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict good">
+        <div class="big">+32.9%</div>
+        <div class="txt">ราคาต่ำกว่ามูลค่าเหมาะสม $110 อยู่มาก — ส่วนเผื่อความปลอดภัยกว้าง <b>แต่ขึ้นกับสมมติฐาน P/E/การเติบโต</b> (เช็คให้แน่ใจว่าไม่ใช่ value trap จากการชะลอตัวเชิงโครงสร้าง)</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$88</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$77</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $110</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="73.81" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $73.81 • EPS ฐาน ~$3.10 • ไม่มีปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS 8%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$63</div>
+          <div class="ret neg">−15%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$3.91</span></li>
+            <li><span>P/E ออก</span><span>16x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$0</span></li>
+            <li><span>สถานการณ์</span><span>สมาชิกชะลอ + มัลติเพิลหดต่อ</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +18%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$112</div>
+          <div class="ret pos">+52%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$5.09</span></li>
+            <li><span>P/E ออก</span><span>22x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$0</span></li>
+            <li><span>สถานการณ์</span><span>โฆษณา+ราคาแพ็กเกจหนุนกำไร มัลติเพิลทรงตัว</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +28%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$169</div>
+          <div class="ret pos">+129%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$6.50</span></li>
+            <li><span>P/E ออก</span><span>26x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$0</span></li>
+            <li><span>สถานการณ์</span><span>โฆษณา/เกม/Live สเกลแรง re-rate กลับ</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      EPS ฐาน $3.10 (TTM) ใช้คำนวณแบบระมัดระวัง (consensus FY2026E สูงกว่าที่ ~$4.4) — ผลตอบแทนกระจายตัวกว้างมาก
+      จาก −15% (Bear) ถึง +129% (Bull) เพราะมูลค่าหุ้นนี้ขึ้นกับ <b>ทั้งการเติบโต EPS และ P/E ออก</b> พร้อมกัน (Beta 1.49 ผันผวนสูง)
+      ไม่มีปันผลช่วยพยุง ดังนั้นผลตอบแทนล้วนมาจาก capital gain
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>โฆษณา (Ad-tier) สเกลขึ้น:</b> รายได้โฆษณากำลังขยายฐานสมาชิกราคาถูก + ARPU เพิ่ม เป็นเครื่องยนต์กำไรใหม่</li>
+          <li><b>Margin ขยายต่อเนื่อง:</b> Operating margin 32.3% และยังมีช่องโตจากวินัยต้นทุนคอนเทนต์ + ขึ้นราคาแพ็กเกจ</li>
+          <li><b>กำไรโตเร็วกว่ารายได้:</b> กำไรสุทธิ FY2025 +44% บนรายได้ +17% — operating leverage ชัด</li>
+          <li><b>เครื่องยนต์ใหม่:</b> เกม, Live events/กีฬา, สิทธิ์ถ่ายทอดสด เพิ่ม engagement และโอกาสรายได้</li>
+          <li><b>De-rate แรงเปิด upside:</b> P/E ร่วงจาก ~50x เหลือ ~24x ทั้งที่กำไรเกือบเท่าตัว — analyst เห็น upside +54.7%</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>มูลค่าขึ้นกับ P/E multiple:</b> FV $110 อ่อนไหวมากต่อ P/E เป้าหมาย — ถ้า multiple หดเหลือ ~16x มูลค่าลงต่ำกว่าราคาปัจจุบันได้</li>
+          <li><b>การเติบโตสมาชิกชะลอ:</b> ตลาดอิ่มตัวในประเทศพัฒนาแล้ว ต้องพึ่งราคา/โฆษณามากขึ้น เสี่ยง churn เมื่อขึ้นราคา</li>
+          <li><b>แข่งขันรุนแรง:</b> Disney+, Amazon, Apple, YouTube ฯลฯ แย่งเวลาผู้ชม + ดันต้นทุนคอนเทนต์</li>
+          <li><b>Beta สูง 1.49 + ไม่มีปันผล:</b> ผันผวนแรงกว่าตลาด ผลตอบแทนล้วนเป็น capital gain ไม่มี yield พยุง</li>
+          <li><b>Value trap เชิงโครงสร้าง:</b> ถ้าการ de-rate สะท้อนการชะลอตัวถาวร (ไม่ใช่อารมณ์ตลาด) ส่วนลดอาจไม่ปิด</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>หุ้นเติบโตที่ถูก de-rate แรง — มี MOS กว้างถ้าการเติบโตยังจริง แต่ขึ้นกับมัลติเพิลสูง</h2>
+      <p>Netflix เป็นผู้นำสตรีมมิงระดับโลก กำไรเกือบเท่าตัวในปีที่ราคาหุ้นร่วง −44.9% ทำให้ P/E ร่วงจาก ~50x เหลือ ~24x —
+        ที่ราคา $73.81 ต่ำกว่ามูลค่าเหมาะสม $110 (เฉลี่ย 3 วิธี, กรอบ $99–123) ราว <b>+33%</b> และต่ำกว่าเป้านักวิเคราะห์เฉลี่ย $114 มาก
+        จุดเด่นคือ margin ขยาย โฆษณา/เกม/Live เป็นเครื่องยนต์ใหม่ และ ROE 42.76% — <b>แต่ FV อ่อนไหวสูงต่อ P/E เป้าหมายและความยั่งยืนของการเติบโต</b>
+        เหมาะกับนักลงทุนที่รับความผันผวน (Beta 1.49) และเชื่อว่าการ de-rate เกินจริง มากกว่าผู้ที่ต้องการ yield/ความนิ่ง</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$110 <span style="font-size:12px;color:#cab9a8">($99–123)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +32.9%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$114 (Buy, 50 ราย)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> โซนปัจจุบัน $73.81 ต่ำกว่าจุดซื้อ MOS 30% ($77) — น่าสนใจสำหรับ value ที่รับความเสี่ยงมัลติเพิลได้
+        ทยอยสะสมแบบ DCA ใต้ $88 และเผื่อความผันผวน อย่าทุ่มก้อนเดียว เพราะมูลค่าขึ้นกับ P/E เป้าหมาย/การเติบโตที่ต้องพิสูจน์ต่อ
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    หุ้น NFLX เป็นหุ้นเติบโตที่มูลค่าเหมาะสม <b>อ่อนไหวสูงต่อ P/E multiple</b> หากการเติบโต/มัลติเพิลพลาด มูลค่าจะปรับลงเร็ว
+    ราคาหุ้นมีความผันผวนสูง (Beta 1.49) ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ที่มา: StockAnalysis.com, Yahoo Finance, Netflix IR, digrin.com
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 27 มิ.ย. 2026 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
