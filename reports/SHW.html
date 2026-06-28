@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น Sherwin-Williams (SHW) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Opus 4.8">
+<script type="application/json" id="stock-meta">
+{"symbol":"SHW","currency":"USD","price":344.07,"fairValue":345,"mos":0.3,"upside":0.3,"pe":33.02,"dividendYield":0.93,"roe":60.72}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#D31245", "accentDark": "#9e0d33",
+    "darkGrad": "linear-gradient(135deg,#2a0a12 0%,#5a1020 55%,#8a1730 140%)",
+    "glow": "rgba(211,18,69,.32)", "subColor": "#f3c9d2", "headerMuted": "#e0a8b3",
+    "chgBg": "var(--green-soft)", "chgColor": "#1e8e3e", "badge": "var(--red)",
+    "verdictText": "#f0d6dc", "vcellLabel": "#d8a9b3"
+  },
+  "chart": {
+    "data": [["ก.ค.25",328.67],["ส.ค.25",364.17],["ก.ย.25",344.69],["ต.ค.25",343.38],["พ.ย.25",342.93],["ธ.ค.25",323.32],["ม.ค.26",353.86],["ก.พ.26",361.79],["มี.ค.26",320.55],["เม.ย.26",321.61],["พ.ค.26",303.84],["มิ.ย.26",344.07]],
+    "min": 298, "max": 372, "grid": [310,330,350,370], "fairLine": 345, "currency": "$", "highlight": [10,11],
+    "dataFmt": "d[1].toFixed(0)", "gridFmt": "v.toFixed(0)"
+  },
+  "gauge": { "min": 241, "max": 380, "cur": 344.07, "fair": 345, "fairLabelTop": "-58px" },
+  "fv": 345
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots"><span style="background:#D31245"></span><span style="background:#b30f3a"></span><span style="background:#8a1730"></span><span style="background:#5a1020"></span></div>
+    <div>
+      <span class="tag">NYSE: SHW</span>
+      <span class="tag">Materials • Specialty Chemicals</span>
+      <span class="tag">ผู้นำตลาดสีทาอาคาร/เคลือบอุตสาหกรรมอเมริกาเหนือ</span>
+    </div>
+    <h1>Sherwin-Williams (SHW)</h1>
+    <div class="sub">สีทาอาคาร/ตกแต่งผ่านร้าน Paint Stores ~4,900 สาขา • สีอุตสาหกรรม/เคลือบป้องกัน (Performance Coatings) • Consumer Brands (DIY/ค้าปลีก)</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$344.07<small>(SHW)</small></div>
+      </div>
+      <div class="chg">▲ +4.7% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 29 มิ.ย. 2026<br>
+        กรอบ 52 สัปดาห์ $289.86 – $379.65<br>
+        ที่มา: StockAnalysis.com, Yahoo Finance, digrin.com
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ 29 มิ.ย. 2026</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">$84.4B</div><div class="d">หุ้นหมุนเวียน ~245M หุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~33.02x</div><div class="d">พรีเมียม — คุณภาพสูง/มาร์จิ้นกว้าง</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~30x</div><div class="d">กรอบ ~26–36x</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">~19.04</div><div class="d">สูงจาก buyback + goodwill Valspar</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">$2.60B</div><div class="d">YoY −3.0% (ตลาดบ้านอ่อน)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$10.42</div><div class="d">FY25 ~$10.26 • ไกด์ 2026 ~$11.5–11.9</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~$18.07</div><div class="d">ฐานทุนบางจากซื้อหุ้นคืนหนัก</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~60.72% / 9.44%</div><div class="d">ROE สูงจาก leverage + goodwill (ระวังตีความ)</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$23.9B</div><div class="d">YoY +3.9% • CAGR ~2%</div></div>
+      <div class="metric"><div class="k">อัตรากำไรจากการดำเนินงาน</div><div class="v">~16.21%</div><div class="d">แรงกดดันมาร์จิ้นช่วงวัฏจักรบ้าน</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~0.93%</div><div class="d">$3.20/หุ้น • จ่ายน้อย เน้น buyback</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">1.13</div><div class="d">ผันผวนใกล้ตลาด (วัฏจักรบ้าน)</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART (ราคาย้อนหลัง ~1 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#D31245"></i>ราคา SHW</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $345</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคาแกว่งในกรอบ ~$290–380 ตลอดปี สะท้อนหุ้นคุณภาพที่ตลาด "ตีราคาเต็ม" แล้ว — ขึ้นทำจุดสูงช่วง ส.ค.25 ($364) และ ก.พ.26 ($362) แล้วย่อแรงไป $304 ใน พ.ค.26 ตามความกังวลตลาดบ้านสหรัฐที่ชะลอ (อัตราดอกเบี้ยจำนองสูง ปริมาณซื้อ-ขายบ้านลด) ก่อนรีบาวด์กลับมา $344 ณ ปัจจุบัน รวมรอบปีผลตอบแทน ~+4.7% — ทรง ๆ ไม่หวือหวา เป็นภาพหุ้น defensive-cyclical ที่รอจังหวะวัฏจักร
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION (เฉลี่ย 3 วิธี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS ล่วงหน้า ~$11.70 × P/E เป้าหมาย ~30x — กลางกรอบ 5 ปี สำหรับหุ้นคุณภาพมาร์จิ้นกว้าง</div></div>
+        <div class="mval">$351.00</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล $3.20 × (1+g); g 8%, r 9.5% → ปันผลต่ำเทียบราคา ทำให้วิธีนี้ "ต่ำกว่าความจริง" (บริษัทคืนเงินผ่าน buyback มากกว่าปันผล) ใช้เป็นกรอบล่าง</div></div>
+        <div class="mval">$230</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. DCF (กระแสเงินสด)</div><div class="mdesc">FCF เติบโต ~7–8%/ปี, WACC ~8.5%, terminal g 3% — สะท้อนเครื่องผลิตเงินสดที่สม่ำเสมอของ Paint Stores</div></div>
+        <div class="mval">$355</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $310 – $370</span></div>
+        <div class="r">$345</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        วิธี P/E ($351) และ DCF ($355) ให้ค่าใกล้กันและเป็นตัวขับหลักของ FV กลาง ส่วน DDM ($230) ต่ำกว่ามากเพราะ SHW จ่ายปันผลเพียง ~0.93% โดยเลือกคืนเงินผู้ถือหุ้นผ่านการ <b>ซื้อหุ้นคืน</b>เป็นหลัก — จึง <b>ถ่วงน้ำหนัก DDM น้อย</b> และใช้เป็นเพียงกรอบล่างเชิงอนุรักษ์นิยม FV กลางที่ $345 จึงสะท้อนว่าหุ้น <b>ซื้อขายใกล้มูลค่าเหมาะสม (fairly valued)</b> — ตรงกับเป้านักวิเคราะห์ที่ +9%
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $344.07</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $345</div></div>
+        </div>
+        <div class="scale">
+          <span>$241.50<br><small>MOS 30%</small></span>
+          <span>$276.00<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$345<br><small>Fair Value</small></span>
+          <span style="text-align:right">$374.20<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">$380<br><small>กรอบบน gauge</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน $344.07 แทบแนบกับมูลค่าเหมาะสม $345 — แปลว่าตลาด "ตีราคาเต็ม" ไปแล้ว แทบไม่มีส่วนเผื่อความปลอดภัย โซนน่าสะสมเชิง value อยู่ที่ต่ำกว่า $276 (MOS 20%) ซึ่งจะเกิดเมื่อวัฏจักรบ้านอ่อนแรงชัด ส่วนเป้านักวิเคราะห์เฉลี่ย $374.20 (+8.8%) สะท้อน upside ที่จำกัด
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">+0.3%</div>
+        <div class="txt">ส่วนเผื่อความปลอดภัยแทบเป็นศูนย์ — ราคาซื้อขายใกล้มูลค่าเหมาะสม ไม่ใช่จุดเข้าแบบมีส่วนลด ควรรอราคาย่อ</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$276.00</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$241.50</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $345</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="344.07" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $344.07 • EPS ฐาน ~$10.42 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS -2%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$254.99</div>
+          <div class="ret neg">-23.1%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$9.81</span></li>
+            <li><span>P/E ออก</span><span>26x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$9.6</span></li>
+            <li><span>สถานการณ์</span><span>ตลาดบ้านถดถอยยืดเยื้อ มาร์จิ้นหด</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +9%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$404.83</div>
+          <div class="ret pos">+20.7%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$13.49</span></li>
+            <li><span>P/E ออก</span><span>30x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$10.4</span></li>
+            <li><span>สถานการณ์</span><span>วัฏจักรบ้านฟื้น + buyback หนุน EPS</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +14%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$509.44</div>
+          <div class="ret pos">+51.2%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$15.44</span></li>
+            <li><span>P/E ออก</span><span>33x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$10.7</span></li>
+            <li><span>สถานการณ์</span><span>บ้านฟื้นแรง + ขยายส่วนแบ่ง Paint Stores</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      ฉาก Base ให้ผลตอบแทนรวม ~+20.7% ใน 3 ปี (~6.5%/ปี) — พึ่งทั้งการฟื้นของวัฏจักรบ้านและการซื้อหุ้นคืนที่หนุน EPS ต่อหุ้น แต่เพราะเข้าที่ราคาเต็ม (P/E 33x) ผลตอบแทนจึงไวต่อ P/E ออกมาก: ฉาก Bear ที่ P/E หดเหลือ 26x ทำให้ขาดทุนได้ถึง −23% สะท้อนความเสี่ยง "ของดีแต่ราคาแพง"
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>Wide moat ตลาดสี NA:</b> เครือข่าย Paint Stores ~4,900 สาขา + สัมพันธ์ช่างมืออาชีพ เป็นกำแพงที่คู่แข่งลอกเลียนยาก ครองส่วนแบ่งผู้นำ</li>
+          <li><b>Pricing power:</b> มาร์จิ้นการดำเนินงาน ~16% ปรับราคาส่งผ่านต้นทุนวัตถุดิบได้สม่ำเสมอ</li>
+          <li><b>Buyback เครื่องอัด EPS:</b> ลดจำนวนหุ้นต่อเนื่อง EPS CAGR ~10% สูงกว่ารายได้ CAGR ~2% มาก</li>
+          <li><b>ไกด์ 2026 โต:</b> adj EPS $11.50–11.90 (โต ~9% จากฐาน) เมื่อตลาดบ้านฟื้น</li>
+          <li><b>Dividend Aristocrat:</b> เพิ่มปันผลต่อเนื่องหลายสิบปี สะท้อนวินัยกระแสเงินสด</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>ราคาเต็มแล้ว:</b> P/E 33x สูงกว่าค่าเฉลี่ย 5 ปี MOS แทบเป็นศูนย์ — เสี่ยง P/E หดถ้าเติบโตสะดุด</li>
+          <li><b>วัฏจักรบ้านสหรัฐ:</b> ดอกเบี้ยจำนองสูง ปริมาณซื้อ-ขาย/รีโนเวตบ้านลด กดดันยอดขายและมาร์จิ้น (กำไร YoY −3%)</li>
+          <li><b>ภาระหนี้ + goodwill:</b> ROE 60% สูงจาก leverage และ goodwill Valspar — ฐานทุนบาง อ่อนไหวต่อภาวะสินเชื่อ</li>
+          <li><b>ต้นทุนวัตถุดิบ:</b> ราคาเรซิน/ไทเทเนียมไดออกไซด์/น้ำมันผันผวน กระทบมาร์จิ้นระยะสั้น</li>
+          <li><b>ปันผลต่ำ:</b> yield ~0.93% นักลงทุนสายปันผลได้ผลตอบแทนเงินสดน้อย พึ่ง capital gain เป็นหลัก</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>Wide-moat compounder คุณภาพสูง — แต่ราคาเต็ม รอย่อค่อยสะสม</h2>
+      <p>Sherwin-Williams เป็นผู้นำตลาดสีทาอาคาร/เคลือบอุตสาหกรรมอเมริกาเหนือ ที่มีคูเมืองธุรกิจกว้าง (เครือข่ายร้าน + สัมพันธ์ช่างมือ + pricing power) และเป็นเครื่องอัด EPS ชั้นดีผ่านการซื้อหุ้นคืน อย่างไรก็ตามราคาปัจจุบัน $344.07 ซื้อขายที่ P/E ~33x แทบเท่ามูลค่าเหมาะสม $345 — ส่วนเผื่อความปลอดภัยเกือบเป็นศูนย์ ตรงกับเป้านักวิเคราะห์ที่ upside เพียง ~+9% เป็นหุ้น "ของดีแต่ไม่ถูก" ที่ผลตอบแทนระยะข้างหน้าไวต่อ P/E ออกและวัฏจักรตลาดบ้าน</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$345 <span style="font-size:12px;color:#cab9a8">($310–$370)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +0.3%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$374.20 (Buy, 24 ราย)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> หุ้นคุณภาพสำหรับถือยาว แต่ราคาปัจจุบันไม่มีส่วนลด — แนะนำ <b>ทยอยสะสมเมื่อราคาอ่อนตามวัฏจักรบ้าน</b> โดยเฉพาะโซน &lt; $276 (MOS 20%) เพื่อให้ได้ทั้งคุณภาพและส่วนเผื่อความปลอดภัย ไม่ใช่จุดไล่ราคาที่ระดับนี้
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ที่มาข้อมูล: StockAnalysis.com, Yahoo Finance, Sherwin-Williams IR/10-K, digrin.com
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 29 มิ.ย. 2026 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
