@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น McDonald's Corporation (MCD) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"MCD","currency":"USD","price":269.76,"fairValue":280,"mos":3.7,"upside":3.8,"pe":22.24,"dividendYield":2.76,"roe":null}
+</script>
+<script type="application/json" id="report-data">
+{"theme":{"accent":"#F2B600","accentDark":"#B88A00","darkGrad":"linear-gradient(135deg, #100D00 0%, #201A00 100%)","glow":"rgba(242,182,0,0.35)","subColor":"#FFD23F","headerMuted":"rgba(242,182,0,0.12)","verdictText":"#F5E8BC","vcellLabel":"rgba(245,232,188,0.6)","badge":"#F2B600","chgBg":"rgba(239,68,68,0.15)","chgColor":"#EF4444"},"chart":{"data":[["ก.ค. 68",300.07],["ส.ค. 68",313.54],["ก.ย. 68",303.89],["ต.ค. 68",298.43],["พ.ย. 68",311.82],["ธ.ค. 68",305.63],["ม.ค. 69",315.00],["ก.พ. 69",341.06],["มี.ค. 69",310.79],["เม.ย. 69",293.59],["พ.ค. 69",279.20],["มิ.ย. 69",269.76]],"min":260,"max":345,"grid":[285,310,335],"fairLine":280,"currency":"$","highlight":[7]},"gauge":{"min":255,"max":345,"cur":269.76,"fair":280,"fairLabelTop":false},"fv":280}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">🍟🍔🥤</div>
+    <div>
+      <span class="tag">NYSE: MCD</span>
+      <span class="tag">Consumer Discretionary</span>
+      <span class="tag">Quick Service Restaurant</span>
+    </div>
+    <h1>McDonald's Corporation</h1>
+    <div class="sub">เครือร้านอาหารจานด่วนใหญ่สุดในโลก ~43,000 สาขา • โมเดล franchise ~95% (ค่าเช่า+royalty) • real estate ขนาดมหึมา • digital/delivery/loyalty (McDonald's Rewards)</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$269.76<small>(MCD)</small></div>
+      </div>
+      <div class="chg">▼ −10.1% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 26 มิ.ย. 2569<br>
+        กรอบ 52 สัปดาห์ $264.53 / $341.75<br>
+        ที่มา: StockAnalysis.com / Yahoo Finance / McDonald's Investor Relations / Macrotrends
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ มิ.ย. 2569</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~$194B</div><div class="d">~720M หุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~22.2x</div><div class="d">EPS TTM $12.13</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~24–26x</div><div class="d">ปัจจุบัน discount</div></div>
+      <div class="metric"><div class="k">P/FCF</div><div class="v neu">~26.9x</div><div class="d">FCF/Share $10.03</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY25</div><div class="v">~$8.4B</div><div class="d">EPS $11.95 (+5% YoY)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$12.13</div><div class="d">FY26E $13.00</div></div>
+      <div class="metric"><div class="k">Operating Margin</div><div class="v pos">46.1%</div><div class="d">franchise-heavy model</div></div>
+      <div class="metric"><div class="k">ROIC</div><div class="v pos">~19.0%</div><div class="d">equity neg จาก buyback</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">~$26.9B</div><div class="d">+3.7% YoY (FY25)</div></div>
+      <div class="metric"><div class="k">Net Margin</div><div class="v">31.9%</div><div class="d">franchise royalty สูง</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~2.76%</div><div class="d">$7.44/ปี · Dividend Aristocrat</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">0.72</div><div class="d">defensive QSR</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART (ราคาย้อนหลัง ~1 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#F2B600"></i>ราคา MCD</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $280</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        MCD เปิดปีงบประมาณที่ $300 (ก.ค. 68) ก่อนพุ่งแตะ <b>$341.06 (ก.พ. 69)</b> จากกำไร Q4 FY25 ที่แข็งแกร่ง และความหวัง McValue ฟื้น traffic
+        จากนั้นร่วงต่อเนื่องตลอดไตรมาส 2 จากแรงกดดันด้าน consumer spending ที่อ่อนแอ ค่าจ้างและต้นทุนอาหารสูง
+        ราคาปัจจุบัน <b>$269.76</b> ใกล้จุดต่ำสุด 52 สัปดาห์ ($264.53) สะท้อนการ de-rating จาก high-P/E → valuation สมเหตุสมผลมากขึ้น
+        ผลตอบแทนรอบปี <b>−10.1%</b>
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION (เฉลี่ย 3 วิธี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation (TTM)</div><div class="mdesc">EPS (TTM) $12.13 × P/E เป้าหมาย ~23x — ค่ากลาง 5y avg ปรับ discount traffic อ่อน</div></div>
+        <div class="mval">$278.99</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. Forward P/E (FY26E)</div><div class="mdesc">EPS FY26E $13.00 × Forward P/E ~23x — consensus นักวิเคราะห์ FY26</div></div>
+        <div class="mval">$299.00</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. P/FCF Valuation</div><div class="mdesc">FCF/Share $10.03 × P/FCF เป้าหมาย ~26x — อิง franchise cash generation คุณภาพสูง</div></div>
+        <div class="mval">$260.78</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $261 – $299</span></div>
+        <div class="r">$280</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        วิธี P/E TTM ($279) และ P/FCF ($261) ให้ค่าใกล้เคียงกัน สะท้อนกำไรที่ stabilize Forward P/E ($299) สูงกว่าเพราะ consensus คาด EPS growth ~7% FY26
+        DDM อ้างอิงรอง: yield 2.76% aristocrat ยืนยันความ defensive แต่ไม่เหมาะเป็น primary เพราะ McDonald's ไม่ได้ hold ยาวแบบ pure income
+        เฉลี่ยสามวิธีได้ $279.59 → <b>FV $280</b> สมเหตุสมผล · หมายเหตุ: equity ติดลบ −$1.8B จาก buyback $79B → ROE บิดเบือน ใช้ ROIC 19% แทน
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $269.76</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $280</div></div>
+        </div>
+        <div class="scale">
+          <span>$196.00<br><small>MOS 30%</small></span>
+          <span>$224.00<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$280<br><small>Fair Value</small></span>
+          <span style="text-align:right">$299<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">$331<br><small>เป้าเฉลี่ย Analyst</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน $269.76 ต่ำกว่า FV $280 เล็กน้อย (MOS +3.7%) อยู่ในโซน "ราคาพอเหมาะ" ใกล้เคียงมูลค่าเหมาะสม
+        ห่างจาก MOS 20% ($224) มาก แสดงว่าไม่ใช่ "ถูกมาก" แต่ valuation สมเหตุสมผลเมื่อเทียบประวัติ
+        นักวิเคราะห์ 35 รายมีเป้าเฉลี่ย $331 (+23% upside) สะท้อน consensus เชิงบวกจากการฟื้น traffic ในระยะกลาง
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">+3.7%</div>
+        <div class="txt">MOS ต่ำ — ราคาใกล้เคียงมูลค่าเหมาะสม (defensive+ปันผลชดเชย)</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$224.00</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$196.00</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $280</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="269.76" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $269.76 • EPS ฐาน ~$12.13 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS +5%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$294.84</div>
+          <div class="ret neg">+9%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$14.04</span></li>
+            <li><span>P/E ออก</span><span>21x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$22.32</span></li>
+            <li><span>สถานการณ์</span><span>traffic อ่อน ต่อเนื่อง</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +7%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$341.78</div>
+          <div class="ret pos">+27%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$14.86</span></li>
+            <li><span>P/E ออก</span><span>23x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$22.32</span></li>
+            <li><span>สถานการณ์</span><span>traffic ฟื้น + digital growth</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +9%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$377.04</div>
+          <div class="ret pos">+40%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$15.71</span></li>
+            <li><span>P/E ออก</span><span>24x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$22.32</span></li>
+            <li><span>สถานการณ์</span><span>McValue ฟื้น+ขยายระหว่างประเทศ</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      การคาดการณ์อิง EPS TTM $12.13 เติบโต 5–9%/ปี (consensus ระยะกลาง +6–8%) ปันผล $7.44/ปี รวม 3 ปี ~$22.32
+      Base case P/E ออก 23x สอดคล้องกับค่าเฉลี่ย historical ที่ปรับ discount traffic อ่อน
+      ผลตอบแทน Base +27% ใน 3 ปี หรือ ~8.3% CAGR รวมปันผล defensive เหมาะสำหรับนักลงทุนระยะกลาง-ยาว
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>McValue menu ฟื้น traffic:</b> โปรแกรม value offering ดึง price-sensitive consumer กลับ ช่วยแก้จุดอ่อนด้าน comp sales</li>
+          <li><b>Digital / Loyalty (McDonald's Rewards):</b> สมาชิก 170M+ คน ช่วยเพิ่ม frequency และ basket size อย่างต่อเนื่อง</li>
+          <li><b>Franchise model (95%):</b> รายได้ค่าเช่า + royalty แทบไม่มี operating leverage ลบ margin สูงคงที่แม้ traffic ขึ้น-ลง</li>
+          <li><b>Real estate portfolio:</b> เป็นเจ้าของที่ดิน/อาคาร เป็นแหล่ง asset value ที่ไม่ถูก reflect ใน book equity</li>
+          <li><b>ขยายตลาดโลก:</b> IOM + Developmental market ยังเติบโตได้ โดยเฉพาะ Asia ที่ penetration ยังต่ำ</li>
+          <li><b>Dividend Aristocrat:</b> ปันผลเติบโต ~8% CAGR 10 ปี ดึงดูดนักลงทุน income เป็น floor ราคา</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>Consumer spending อ่อน:</b> เศรษฐกิจชะลอ ผู้บริโภคระวังจ่าย comp sales ติดลบต่อเนื่องกดดันรายได้ franchisee</li>
+          <li><b>Negative equity (leverage สูง):</b> หนี้สิน $54.8B จาก buyback มหาศาล ดอกเบี้ยจ่ายสูงขึ้นจาก rate environment</li>
+          <li><b>ต้นทุนอาหาร / ค่าจ้าง:</b> แรงกดดันค่าแรงขั้นต่ำและต้นทุนวัตถุดิบกดดัน franchisee margin</li>
+          <li><b>FX risk:</b> รายได้ต่างประเทศ ~59% รายงานเป็น USD ค่าเงิน USD แข็งลด EPS reported</li>
+          <li><b>การแข่งขัน QSR:</b> Wendy's, Burger King, Chick-fil-A, และ fast casual (Chipotle, Shake Shack) แย่งชิง value customer</li>
+          <li><b>Reputational / Health trend:</b> กระแสสุขภาพ + ข่าว food safety อาจกระทบ traffic ระยะสั้น</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>McDonald's — QSR อันดับ 1 โลก ราคาพอเหมาะ + ปันผล Aristocrat</h2>
+      <p>McDonald's เป็นเครือ QSR ขนาดใหญ่ที่สุดในโลก ~43,000 สาขา โมเดล franchise/real-estate ให้ margin ระดับ 46% เสถียร
+      ถูกกดราคา −10% รอบปีจาก traffic อ่อนและ consumer spending ชะลอ แต่พื้นฐานยังแข็งแกร่ง ROIC 19% และ FCF generation สม่ำเสมอ
+      ราคา $269.76 ใกล้ 52w low ให้ P/E 22x ต่ำกว่าค่าเฉลี่ย 5 ปี (24–26x) FV $280 (MOS +3.7%)
+      นักวิเคราะห์ 35 รายมีเป้าเฉลี่ย $331 (+23%) สะท้อน upside เมื่อ traffic ฟื้น
+      เหมาะสำหรับนักลงทุน defensive ที่ต้องการ dividend + capital gain ระยะกลาง</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$280 <span style="font-size:12px;color:#cab9a8">($261–$299)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +3.7%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$331 (Buy consensus)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ราคาปัจจุบัน ~FV ทยอยสะสมได้สำหรับ defensive portfolio · เพิ่มน้ำหนักถ้าราคาลงใกล้ $240–250 (MOS 11–14%) · รอ MOS 20% ($224) สำหรับ aggressive entry · ปันผล 2.76% ช่วย total return ระหว่างถือ
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ที่มา: StockAnalysis.com · Yahoo Finance · McDonald's Investor Relations · Macrotrends (ข้อมูล ณ 26 มิ.ย. 2569)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 26 มิ.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
