@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น JPMorgan Chase (JPM) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"JPM","currency":"USD","price":329.39,"fairValue":302.00,"mos":-9.1,"upside":-8.3,"pe":15.8,"dividendYield":1.82,"roe":17.0}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#003087",
+    "accentDark": "#001f5c",
+    "darkGrad": "linear-gradient(135deg,#000a1e 0%,#001840 100%)",
+    "glow": "rgba(0,48,135,0.4)",
+    "subColor": "#5b9bd5",
+    "headerMuted": "rgba(255,255,255,0.55)",
+    "verdictText": "#ffd180",
+    "vcellLabel": "#a0b4cc",
+    "badge": "#1565c0",
+    "chgBg": "#1e8e3e",
+    "chgColor": "#ffffff"
+  },
+  "chart": {
+    "data": [
+      ["ก.ค. 2568", 305.89],
+      ["ส.ค. 2568", 300.30],
+      ["ก.ย. 2568", 294.16],
+      ["ต.ค. 2568", 313.23],
+      ["พ.ย. 2568", 299.31],
+      ["ธ.ค. 2568", 329.05],
+      ["ม.ค. 2569", 329.39]
+    ],
+    "min": 270,
+    "max": 360,
+    "grid": [270, 290, 310, 330, 350],
+    "fairLine": 302.00,
+    "currency": "$",
+    "highlight": [5, 6]
+  },
+  "gauge": {
+    "min": 200,
+    "max": 400,
+    "cur": 329.39,
+    "fair": 302.00,
+    "fairLabelTop": true
+  },
+  "fv": 302.00
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">NYSE · Banking · Financials · Megacap</div>
+    <div>
+      <span class="tag">NYSE: JPM</span>
+      <span class="tag">ธนาคาร (Banking)</span>
+      <span class="tag">Financial Services</span>
+    </div>
+    <h1>JPMorgan Chase &amp; Co.</h1>
+    <div class="sub">Consumer &amp; Community Banking • Commercial Banking • Corporate &amp; Investment Bank (CIB) • Asset &amp; Wealth Management</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$329.39<small>(JPM)</small></div>
+      </div>
+      <div class="chg" style="background:#1e8e3e;color:#ffffff">▲ +7.7% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 30 มิถุนายน 2569<br>
+        กรอบ 52 สัปดาห์ $279.10 – $343.45<br>
+        ที่มา: StockAnalysis.com, Yahoo Finance, JPMorgan Chase IR Q1 2026/FY2025
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">Q1 2569 / FY2568</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">$882.6B</div><div class="d">ใหญ่สุดในกลุ่ม US Banks</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~15.8x</div><div class="d">EPS TTM $20.88 — ต่ำกว่า S&amp;P 500</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">~2.56x</div><div class="d">BVPS $128.38 (Q1 2569)</div></div>
+      <div class="metric"><div class="k">P/TBV</div><div class="v neu">~3.03x</div><div class="d">TBVPS $108.87 (Q1 2569)</div></div>
+
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$20.88</div><div class="d">FY2568: $20.02 · FY2567: $19.75</div></div>
+      <div class="metric"><div class="k">ROE</div><div class="v pos">~17–19%</div><div class="d">FY2568: 17% · Q1 2569: 19%</div></div>
+      <div class="metric"><div class="k">ROTCE</div><div class="v pos">~20–23%</div><div class="d">Return on Tangible Common Equity</div></div>
+      <div class="metric"><div class="k">CET1 Capital Ratio</div><div class="v pos">14.3%</div><div class="d">Q1 2569 — แข็งแกร่งมาก</div></div>
+
+      <div class="metric"><div class="k">รายได้สุทธิ TTM</div><div class="v neu">$173.6B</div><div class="d">Q1 2569: $50.5B (+10% YoY)</div></div>
+      <div class="metric"><div class="k">กำไรสุทธิ FY2568</div><div class="v">$57.0B</div><div class="d">Profit Margin ~33.9%</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~1.82%</div><div class="d">$6.00/ปี · Ex-div ก.ค. 2569</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">1.00</div><div class="d">เคลื่อนไหวสอดคล้องตลาด</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART (ราคาย้อนหลัง ~1 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ก.ค. 2568 – มิ.ย. 2569</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#003087"></i>ราคา JPM</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $302</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        JPM ปรับตัวลงแตะระดับต่ำสุดในรอบ 1 ปี ที่ ~$294 ในเดือน ก.ย. 2568 จากความกังวลเรื่องอัตราดอกเบี้ยและเศรษฐกิจชะลอตัว
+        ก่อนจะฟื้นตัวแข็งแกร่งกลับสู่ระดับ $329 ในช่วงปลายปี 2568 และต้นปี 2569 หนุนโดยผลกำไร Q1 2569 ที่แข็งแกร่ง
+        ($16.5B, +13% YoY) และการประกาศ Buyback $50B หลังผ่าน Fed Stress Test
+        ผลตอบแทนรอบปี +7.7% (ก.ค. 2568 $305.89 → มิ.ย. 2569 $329.39)
+        แหล่งข้อมูลราคา: Yahoo Finance API (query1.finance.yahoo.com)
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION (เฉลี่ย 3 วิธี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation (TTM)</div><div class="mdesc">EPS adj. $20.88 × P/E 15x — อิง P/E เฉลี่ยประวัติศาสตร์ธนาคารขนาดใหญ่ US (13–15x) ให้ premium เล็กน้อยจาก ROE สูง</div></div>
+        <div class="mval">$313</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. Forward P/E</div><div class="mdesc">EPS FY2569 consensus $22.45 × P/E 14x — อิง EPS ประมาณการนักวิเคราะห์ 24 ราย (StockAnalysis) × multiple ระมัดระวัง</div></div>
+        <div class="mval">$314</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 17% − g 4%)/(r 10% − g 4%) ≈ 2.17x × BVPS $128.38 — อิง cost of equity 10% สำหรับธนาคาร US</div></div>
+        <div class="mval">$278</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $278 – $314</span></div>
+        <div class="r">$302</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        วิธี P/E (TTM) และ Forward P/E ให้ค่าใกล้เคียงกันที่ $313–$314 สะท้อน EPS ที่แข็งแกร่ง
+        วิธี Justified P/BV ให้ค่าต่ำสุดที่ $278 เพราะ cost of equity 10% ค่อนข้างสูง หากใช้ r=9%
+        Justified P/BV จะขยับขึ้นเป็น ~$297 · ราคาปัจจุบัน $329 อยู่เหนือ Fair Value เฉลี่ย $302 ประมาณ 9%
+        สะท้อน premium ที่ตลาดให้กับ JPM ในฐานะ "best-in-class" universal bank ที่มี franchise value สูง ·
+        อ้างอิง: StockAnalysis.com (stockanalysis.com/stocks/jpm), Yahoo Finance (finance.yahoo.com/quote/JPM),
+        JPM Q1 2569 Earnings Release (jpmorganchase.com)
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $329.39</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $302</div></div>
+        </div>
+        <div class="scale">
+          <span>$211.40<br><small>MOS 30%</small></span>
+          <span>$241.60<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$302<br><small>Fair Value</small></span>
+          <span style="text-align:right">$314<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">$344.71<br><small>เป้าเฉลี่ย Analyst</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน $329.39 อยู่เหนือ Fair Value $302 ประมาณ 9% สะท้อนว่าตลาดให้ premium กับ JPM
+        เป้าหมายนักวิเคราะห์เฉลี่ย $344.71 (24 ราย, Buy consensus) แสดงถึง upside ~4.7% จากราคาปัจจุบัน
+        โซน MOS 20% ที่ $241.60 และ MOS 30% ที่ $211.40 ยังห่างไกลจากระดับปัจจุบันมาก
+        นักลงทุน Value ที่เน้น MOS ควรรอโอกาสราคาอ่อนตัวลงสู่โซน $280–$300
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">-9.1%</div>
+        <div class="txt">ราคาปัจจุบันสูงกว่า Fair Value ~9% — ตลาดให้ premium กับ JPM ในฐานะ best-in-class bank</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$241.60</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$211.40</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $302</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>&#x1F9EE; ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="329.39" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $329.39 • EPS ฐาน ~$20.88 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>&#x1F43B; Bear</span><span>EPS -3%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$210</div>
+          <div class="ret neg">-36.2%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$19.12</span></li>
+            <li><span>P/E ออก</span><span>11x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$18.00</span></li>
+            <li><span>สถานการณ์</span><span>เศรษฐกิจถดถอย NII ลด NPL สูง</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>&#x2696; Base</span><span>EPS +7%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$358</div>
+          <div class="ret pos">+13.9%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$25.56</span></li>
+            <li><span>P/E ออก</span><span>14x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$19.80</span></li>
+            <li><span>สถานการณ์</span><span>เติบโตสม่ำเสมอ ดอกเบี้ยทรงตัว</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>&#x1F680; Bull</span><span>EPS +12%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$430</div>
+          <div class="ret pos">+37.5%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$29.33</span></li>
+            <li><span>P/E ออก</span><span>14.5x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$21.60</span></li>
+            <li><span>สถานการณ์</span><span>M&amp;A ฟื้น IB แข็งแกร่ง AI Banking โต</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      การคาดการณ์นี้เป็นเพียงสมมติฐาน — EPS ฐาน +7%/ปี อิงอัตราเติบโตเฉลี่ย 5 ปีที่ผ่านมา (~8%)
+      ปรับลดเล็กน้อยเพราะ base effect สูงและ NII อาจชะลอถ้าดอกเบี้ยปรับลด
+      ปันผล $6.00/ปี คิดเป็น Dividend Yield 1.82% จากราคาปัจจุบัน คาดเติบโต ~10%/ปีตามกำไร ·
+      Base case ผลตอบแทนรวม ~13.9% ใน 3 ปี (~4.4%/ปีทบต้น) ต่ำกว่า historical เพราะ starting valuation สูง
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก &amp; ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">&#x25B2;</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>Franchise ที่แข็งแกร่งที่สุดในอุตสาหกรรม:</b> JPM ครองตำแหน่ง #1 US bank ด้าน Investment Banking, Consumer Banking และ Asset Management ให้ competitive moat ยาวนาน</li>
+          <li><b>CET1 14.3% + Buyback $50B:</b> ผ่าน Fed Stress Test 2569 ด้วยเครดิตสูง เปิดทาง buyback $50B และขึ้นปันผล สะท้อนความแข็งแกร่งงบดุล</li>
+          <li><b>Q1 2569 แข็งแกร่ง:</b> รายได้ $50.5B (+10% YoY), กำไร $16.5B (+13% YoY), EPS $5.94 (+17% YoY) ทุก segment เติบโตพร้อมกัน</li>
+          <li><b>NII ขยายตัว:</b> Net Interest Income $25.5B Q1 2569 (+9% YoY) แม้อัตราดอกเบี้ยเริ่มลดลง — pricing power สูง</li>
+          <li><b>AI Banking &amp; Technology Investment:</b> ลงทุน technology $17B/ปี พัฒนา AI สำหรับ fraud detection, credit scoring และ CIB deal execution สร้าง efficiency ระยะยาว</li>
+          <li><b>Crypto &amp; Digital Asset Strategy:</b> JPM เข้าสู่ตลาด Crypto หลังกฎหมายชัดขึ้น เป็น catalyst ใหม่สำหรับ revenue diversification</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">&#x25BC;</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>Valuation Premium สูง:</b> P/BV 2.56x สูงกว่าคู่แข่ง (WFC ~1.6x, BAC ~1.3x, C ~0.8x) — ถ้ากำไรหดตัว de-rating จะรุนแรง</li>
+          <li><b>NII Sensitivity:</b> รายได้ดอกเบี้ยสุทธิขึ้นอยู่กับนโยบาย Fed — การลดดอกเบี้ย 2–3 ครั้งอาจกดดัน NIM และ NII ในปีถัดไป</li>
+          <li><b>Credit Quality Risk:</b> สัดส่วน Charge-off อาจเพิ่มขึ้นถ้าเศรษฐกิจชะลอ โดยเฉพาะ Consumer Credit Card และ Commercial Real Estate</li>
+          <li><b>Regulatory &amp; Capital Requirements:</b> Basel III Endgame อาจเพิ่ม capital requirement สำหรับ G-SIBs ลด ROE และ capital return capacity</li>
+          <li><b>Geopolitical &amp; Market Risk:</b> CIB ขึ้นอยู่กับ deal flow ซึ่งอ่อนแอในภาวะ uncertainty สูง — ตลาดทุนผันผวน = fee income ลด</li>
+          <li><b>CEO Succession Risk:</b> Jamie Dimon (CEO ที่ยาวนาน) มีแผนสืบทอด แต่ transition risk ยังเป็นคำถามที่ตลาดติดตามใกล้ชิด</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>JPM: Quality Premium ที่ราคาสะท้อน Franchise Value แล้ว</h2>
+      <p>JPMorgan Chase คือธนาคารที่ดีที่สุดในโลก — ROE 17–19%, CET1 14.3%, กำไร $57B/ปี และ franchise ครอบคลุมทุก segment
+      อย่างไรก็ตาม ราคา $329 ซื้อขายที่ P/BV 2.56x และ P/E 15.8x ซึ่งสูงกว่า Fair Value $302 ประมาณ 9%
+      นักลงทุนที่ซื้อในวันนี้จ่าย premium สำหรับ "best-in-class" franchise — ซึ่งมีเหตุผลในระยะยาว
+      แต่ผลตอบแทนในระยะ 3 ปีอาจต่ำกว่าค่าเฉลี่ยประวัติศาสตร์เพราะ starting valuation สูง
+      กลยุทธ์ที่ดีที่สุดคือ "รอจังหวะ" เมื่อ valuation อ่อนตัวสู่ ~$280–$300</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$302 <span style="font-size:12px;color:#cab9a8">($278–$314)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ -9.1% (เหนือ FV)</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$344.71 (Buy)</div></div>
+      </div>
+      <div class="zone">
+        &#x1F4A1; <b>กลยุทธ์:</b> Hold ถ้ามีอยู่แล้ว — JPM เป็น core holding ระยะยาวที่ดีเยี่ยม
+        สำหรับนักลงทุนใหม่ รอซื้อเมื่อราคาอ่อนตัวลงสู่ $280–$300 (ใกล้ Fair Value) หรือที่ $241 (MOS 20%)
+        หลีกเลี่ยงการซื้อที่ระดับ $329+ ถ้าเน้น Margin of Safety — upside จาก analyst target (~$345) มีเพียง ~4.7%
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>&#x26A0;&#xFE0F; คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    แหล่งข้อมูล: StockAnalysis.com (stockanalysis.com/stocks/jpm/), Yahoo Finance (finance.yahoo.com/quote/JPM),
+    JPMorgan Chase Q1 2569 Earnings Release (jpmorganchase.com), Quartr.com, SEC EDGAR Filings
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 30 มิถุนายน 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
