@@ -259,6 +259,7 @@ npm run test:self        # meta-test: พิสูจน์ว่า checker เ
      chart:{data, min, max, grid, fairLine, currency, highlight, gridFmt?, dataFmt?}, gauge:{min,max,cur,fair,fairLabelTop}, fv }`
   · `highlight` = ดัชนีจุดที่ไฮไลต์บนกราฟ (เช่น `[6,7]`) · `currency` = สัญลักษณ์ (`$`/`฿`) · `gridFmt`/`dataFmt` = นิพจน์ format ป้าย (เช่น `v.toFixed(2)` หุ้นราคาต่ำ)
 - marker `<!--TEMPLATE:STYLE-->` (ใน head) + `<!--TEMPLATE:ENGINE-->` (ก่อน `</body>`) = จุดที่ build inject โครง
+- **★ ตัวย่อหุ้นใน header (`.px small` = `({{SYMBOL}})` ข้างราคา) ใช้สีเดียวกับราคา** (`color:inherit` = ขาว) ใน `_template/dashboard.css` — **อย่าเปลี่ยนกลับไปใช้ `var(--header-muted)`** (alpha ต่ำ ทำให้ตัวย่อกลืนพื้นหลัง อ่านไม่ออก — แก้ มิ.ย. 2569 ตาม user) · แก้ที่ dashboard.css ที่เดียว → ทุกรายงาน content-only ได้สีใหม่อัตโนมัติตอน build
 - บล็อก `stock-meta` (ป้าย/มงกุฎการ์ด), meta `ai-model`, `<div class="sub">`, body 8 section, footer = **คงไว้ในไฟล์เหมือนเดิม**
 - ไฟล์ HTML เต็มแบบเก่า (ไม่มี marker) → `expandReport` คืนค่าเดิมเป๊ะ (backward-compatible)
 
