@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น Ross Stores (ROST) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"ROST","currency":"USD","price":213.26,"fairValue":184,"mos":-15.9,"upside":-13.7,"pe":29.78,"dividendYield":0.83,"roe":38.98}
+</script>
+<script type="application/json" id="report-data">
+{"theme":{"accent":"#6B3FA0","accentDark":"#492A6E","darkGrad":"linear-gradient(135deg, #08050F 0%, #120A20 100%)","glow":"rgba(107,63,160,0.35)","subColor":"#9B72CE","headerMuted":"rgba(107,63,160,0.12)","verdictText":"#E0D2F0","vcellLabel":"rgba(224,210,240,0.6)","badge":"#6B3FA0","chgBg":"rgba(34,197,94,0.15)","chgColor":"#22C55E"},"chart":{"data":[["ก.ค. 68",136.54],["ส.ค. 68",147.16],["ก.ย. 68",152.39],["ต.ค. 68",158.92],["พ.ย. 68",176.36],["ธ.ค. 68",180.14],["ม.ค. 69",188.65],["ก.พ. 69",205.64],["มี.ค. 69",216.63],["เม.ย. 69",227.79],["พ.ค. 69",231.73],["มิ.ย. 69",213.26]],"min":130,"max":235,"grid":[155,185,215],"fairLine":184,"currency":"$","highlight":[10]},"gauge":{"min":125,"max":240,"cur":213.26,"fair":184,"fairLabelTop":false},"fv":184}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">◆ ◆ ◆</div>
+    <div>
+      <span class="tag">NASDAQ: ROST</span>
+      <span class="tag">Consumer Discretionary</span>
+      <span class="tag">Off-Price Retail</span>
+    </div>
+    <h1>Ross Stores, Inc.</h1>
+    <div class="sub">ค้าปลีก off-price • Ross Dress for Less • dd's DISCOUNTS • treasure-hunt model • เสื้อผ้า/ของแต่งบ้านราคาประหยัด • ขยายสาขาตะวันออก</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$213.26<small>(ROST)</small></div>
+      </div>
+      <div class="chg">▲ +56.2% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 26 มิ.ย. 2569<br>
+        กรอบ 52 สัปดาห์ $124.49 / $242.81<br>
+        งบ Q1 FY2026 (งวดสิ้นสุด พ.ค. 2569)<br>
+        ที่มา: StockAnalysis.com / Yahoo Finance / Ross Stores Investor Relations / Macrotrends
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ มิ.ย. 2569</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~$73.4B</div><div class="d">344M shares outstanding</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~29.8x</div><div class="d">premium vs. ค่าเฉลี่ยประวัติ</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~24x</div><div class="d">ช่วง 18x – 30x</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">~11.0x</div><div class="d">ROE สูง → P/BV สูงตาม</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY25</div><div class="v">$2.28B</div><div class="d">+7% YoY (FY ม.ค.)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$7.16</div><div class="d">FY25 $6.61 · Q1 FY26 $2.02</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~$19.4</div><div class="d">buyback ต่อเนื่องลด equity</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~39.0% / 12.8%</div><div class="d">ROIC 32.3% — สูงมาก</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">~$23.1B</div><div class="d">FY25 $22.75B (+7.7% YoY)</div></div>
+      <div class="metric"><div class="k">Operating Margin</div><div class="v">11.9%</div><div class="d">Gross Margin 27.7%</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~0.83%</div><div class="d">$1.78/ปี · Payout ~24%</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">0.72</div><div class="d">ผันผวนน้อยกว่าตลาด</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART (ราคาย้อนหลัง ~1 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#6B3FA0"></i>ราคา ROST</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $184</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคา ROST พุ่งขึ้น <b>+56.2%</b> ในรอบปี (ก.ค. 68 – มิ.ย. 69) จาก $136.54 ขึ้นไปแตะจุดสูงสุด <b>$231.73</b> ในเดือน พ.ค. 69
+        ก่อนย่อลงมา $213.26 ปัจจุบัน แรงหนุนหลักคือผลประกอบการ Q1 FY26 แกร่ง (+37% YoY) และกระแส value-shopping ที่เร่งตัว
+        ราคาวิ่งเหนือ Fair Value $184 ตั้งแต่ ก.พ. 69 ชี้ว่าตลาดรวม premium ไว้แล้ว
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION (เฉลี่ย 3 วิธี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation (TTM)</div><div class="mdesc">EPS (TTM) $7.16 × P/E เป้าหมาย ~24x — ค่าเฉลี่ย 5 ปีก่อนช่วง post-COVID run</div></div>
+        <div class="mval">$171.84</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. Forward P/E (FY26E)</div><div class="mdesc">EPS คาดการณ์ FY26E $7.80 × P/E เป้าหมาย 25x — นักวิเคราะห์คาด EPS โต +8-10%/ปี</div></div>
+        <div class="mval">$195.00</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. DCF (5 ปี)</div><div class="mdesc">FCF โต 9%/ปี 5 ปี, terminal growth 3%, discount rate 9% — สะท้อน ROIC 32% + ขยายสาขา</div></div>
+        <div class="mval">$185.00</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $172 – $195</span></div>
+        <div class="r">$184</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        วิธี P/E (TTM) ให้ค่าต่ำสุด $171.84 เพราะอิง P/E เฉลี่ย 24x ซึ่งอนุรักษ์นิยม · Forward P/E ให้ $195 สูงกว่าเพราะ EPS FY26E โตต่อ ·
+        DCF $185 เป็นกลาง สะท้อนคุณภาพธุรกิจสูง (ROIC 32%) แต่ยังใช้ terminal rate พอดี · เฉลี่ย 3 วิธี = $183.95 ≈ <b>$184</b>
+        DDM ใช้เพียง floor check (yield 0.83% ต่ำมาก ไม่เหมาะเป็นวิธีหลัก)
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $213.26</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $184</div></div>
+        </div>
+        <div class="scale">
+          <span>$128.80<br><small>MOS 30%</small></span>
+          <span>$147.20<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$184<br><small>Fair Value</small></span>
+          <span style="text-align:right">$195<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">$256<br><small>เป้าเฉลี่ย Analyst</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน $213.26 อยู่ <b>สูงกว่า Fair Value $184</b> ประมาณ 15.9% หมายความว่าตลาดรวม premium ไว้แล้ว ·
+        โซนน่าสนใจสำหรับ value investor คือต่ำกว่า $184 · จุดซื้อ MOS 20% อยู่ที่ $147.20 ·
+        นักวิเคราะห์ 19 ราย มีเป้าเฉลี่ย $256 ชี้ว่าตลาดเชื่อ premium นี้ justify ได้จากการเติบโตต่อเนื่อง
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">−15.9%</div>
+        <div class="txt">ราคาแพงกว่า Fair Value — ยังไม่มี Margin of Safety · รอย่อก่อนสะสม</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$147.20</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$128.80</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $184</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="213.26" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $213.26 • EPS ฐาน ~$7.16 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS +6%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$179.13</div>
+          <div class="ret neg">−16%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$8.53</span></li>
+            <li><span>P/E ออก</span><span>21x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$5.55</span></li>
+            <li><span>สถานการณ์</span><span>ค่าจ้าง/ต้นทุนพุ่ง, macro อ่อน</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +9%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$222.48</div>
+          <div class="ret pos">+4%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$9.27</span></li>
+            <li><span>P/E ออก</span><span>24x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$5.55</span></li>
+            <li><span>สถานการณ์</span><span>comp sales บวก, ขยายสาขาปกติ</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +12%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$261.56</div>
+          <div class="ret pos">+23%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$10.06</span></li>
+            <li><span>P/E ออก</span><span>26x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$5.55</span></li>
+            <li><span>สถานการณ์</span><span>ขยายตะวันออก เร็ว, value-shopping붐</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      Scenario Base คาด EPS โต 9%/ปี (สอดคล้องกับ consensus ~8-10%) ให้ราคาเป้า $222.48 จากจุดเข้า $213.26 (+4% รวมปันผล ~$5.55) ·
+      ผลตอบแทนน้อยในกรณี Base เพราะราคาวิ่งไปก่อนแล้ว · Bull case (+23%) ต้องอาศัย P/E re-rating ขึ้นไป 26x พร้อมการเติบโตเร็ว ·
+      Bear (-16%) เกิดได้หาก consumer อ่อนแอและ P/E compress กลับ 21x · ปันผล $1.78/ปี ≈ $5.55 รวม 3 ปี
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>Recession-resilient model:</b> off-price ขายดีในช่วง consumer ตึงตัว — ลูกค้า trade down มา Ross</li>
+          <li><b>ขยายสาขาตะวันออก US:</b> ยังมีพื้นที่เติบโตอีก 500-800 สาขาในตลาดที่ยังไม่포รต (Northeastern US)</li>
+          <li><b>ROIC 32% — คุณภาพธุรกิจสูง:</b> Treasure-hunt model สร้าง stickiness สูง ลูกค้ากลับมาซ้ำ</li>
+          <li><b>Q1 FY26 EPS +37% YoY:</b> แสดงว่า momentum ยังแข็ง comp sales บวกต่อเนื่อง</li>
+          <li><b>Value-conscious consumer tailwind:</b> ภาวะดอกเบี้ยสูง/เงินเฟ้อ → ผู้บริโภคหันมา off-price มากขึ้น</li>
+          <li><b>นักวิเคราะห์เป้า $256:</b> 19 รายคาด upside 20% จากราคาปัจจุบัน สะท้อน long-term confidence</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>Valuation แพง P/E 30x:</b> ราคาวิ่ง +56% แล้ว — MOS ติดลบ 15.9% หากเติบโตต่ำกว่าคาดจะถูก de-rate</li>
+          <li><b>ต้นทุนสินค้า/ค่าขนส่ง/ค่าจ้าง:</b> ความผันผวนด้าน supply chain กระทบ Gross Margin</li>
+          <li><b>พึ่งลูกค้ารายได้น้อย-กลาง:</b> Sensitive ต่อภาวะ macro — หากตลาดแรงงานอ่อนแรงกระทบโดยตรง</li>
+          <li><b>การแข่งขัน off-price:</b> TJX Companies (ใหญ่กว่า) และ Burlington เป็นคู่แข่งหลัก กดดัน market share</li>
+          <li><b>Inventory risk:</b> หากซื้อสต็อกผิดจังหวะอาจติด unsold merchandise กดดัน margin</li>
+          <li><b>ไม่มี e-commerce:</b> Ross ยังไม่มีช่องทางออนไลน์ — ความเสี่ยงระยะยาวหากพฤติกรรมผู้บริโภคเปลี่ยน</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>Ross Stores — ธุรกิจเยี่ยม ราคาเต็ม รอย่อแล้วค่อยสะสม</h2>
+      <p>Ross Stores เป็นผู้นำ off-price retail อันดับ 2 (รองจาก TJX) ที่มีคุณภาพธุรกิจสูงมาก ROIC 32% Recession-resilient
+        และยังมีพื้นที่ขยายสาขาในตะวันออก US ได้อีก อย่างไรก็ตาม ราคาหุ้นพุ่ง +56% ในรอบปีทำให้ valuation แพง
+        P/E 30x เทียบ Fair Value $184 (MOS −15.9%) นักวิเคราะห์ 19 ราย มีเป้าเฉลี่ย $256 (+20%)
+        แต่สำหรับ value investor ควรรอราคาย่อลงใกล้ $147–$184 จึงจะมี MOS ที่สมเหตุสมผล</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$184 <span style="font-size:12px;color:#cab9a8">($172–$195)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −15.9%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$256 (Buy/Outperform)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ธุรกิจคุณภาพสูง recession-resilient แต่ราคาวิ่งเกิน Fair Value แล้ว — <b>รอย่อลงใกล้ $147 (MOS 20%) หรือต่ำกว่า $184</b>
+        ก่อนเริ่มสะสม · ถ้าเชื่อการเติบโต 10%+ และ P/E premium 26-28x จะ justify ได้ในระยะยาว
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ข้อมูลอ้างอิง: StockAnalysis.com · Yahoo Finance · Ross Stores Investor Relations · Macrotrends (ณ 26 มิ.ย. 2569)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 26 มิ.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
