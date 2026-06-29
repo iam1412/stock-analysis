@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น Abbott Laboratories (ABT) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"ABT","currency":"USD","price":94.12,"fairValue":105,"mos":10.4,"upside":11.6,"pe":18.3,"dividendYield":2.76,"roe":12.51}
+</script>
+<script type="application/json" id="report-data">
+{"theme":{"accent":"#0095CA","accentDark":"#006B92","darkGrad":"linear-gradient(135deg, #020A0F 0%, #04181F 100%)","glow":"rgba(0,149,202,0.35)","subColor":"#40B5DE","headerMuted":"rgba(0,149,202,0.12)","verdictText":"#CDE9F2","vcellLabel":"rgba(205,233,242,0.6)","badge":"#0095CA","chgBg":"rgba(239,68,68,0.15)","chgColor":"#EF4444"},"chart":{"data":[["ก.ค. 68",126.19],["ส.ค. 68",132.66],["ก.ย. 68",133.94],["ต.ค. 68",123.62],["พ.ย. 68",128.90],["ธ.ค. 68",125.29],["ม.ค. 69",109.30],["ก.พ. 69",116.35],["มี.ค. 69",102.67],["เม.ย. 69",90.79],["พ.ค. 69",85.60],["มิ.ย. 69",94.12]],"min":82,"max":138,"grid":[95,110,125],"fairLine":105,"currency":"$","highlight":[10]},"gauge":{"min":80,"max":138,"cur":94.12,"fair":105,"fairLabelTop":false},"fv":105}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">NYSE · Healthcare · Medical Devices</div>
+    <div>
+      <span class="tag">NYSE: ABT</span>
+      <span class="tag">Healthcare</span>
+      <span class="tag">Medical Devices &amp; Diagnostics</span>
+    </div>
+    <h1>Abbott Laboratories</h1>
+    <div class="sub">เครื่องมือแพทย์กระจายตัว • Medical Devices (FreeStyle Libre CGM, structural heart) • Diagnostics • Established Pharmaceuticals (EM) • Nutrition (Ensure/Similac)</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$94.12<small>(ABT)</small></div>
+      </div>
+      <div class="chg">▼ −25.4% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 26 มิ.ย. 2569<br>
+        กรอบ 52 สัปดาห์ $81.97 / $137.54<br>
+        ที่มา: StockAnalysis.com / Yahoo Finance / Abbott Investor Relations / Macrotrends · อิงงบ FY2025 (Q4 2025)
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">Adj. EPS $5.15 TTM · Dividend King 50 ปี</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~$163B</div><div class="d">~1.73B หุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~18.3x</div><div class="d">อิง Adj. EPS $5.15 (GAAP EPS $3.57)</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~22–24x</div><div class="d">ปัจจุบัน Discount ต่ำกว่าค่าเฉลี่ย</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">~3.9x</div><div class="d">BVPS ~$24.09</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY25</div><div class="v">~$6.19B (adj)</div><div class="d">GAAP Net Income ~$3.87B</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$5.15 (adj)</div><div class="d">GAAP TTM $3.57 · distorted by tax/legal</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~$24.09</div><div class="d">Book Value ~$41.7B</div></div>
+      <div class="metric"><div class="k">ROE / ROIC</div><div class="v pos">~12.5% / 11.4%</div><div class="d">FCF/Share ~$4.23</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">~$44.3B</div><div class="d">FY25 · YoY +5.7%</div></div>
+      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">56.4%</div><div class="d">Margin ดีในอุตสาหกรรม</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~2.76%</div><div class="d">$2.52/ปี · Dividend King 50 ปีต่อเนื่อง</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">~0.62</div><div class="d">ผันผวนต่ำกว่าตลาด</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART (ราคาย้อนหลัง ~1 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#0095CA"></i>ราคา ABT</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $105</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ABT ปรับตัวลงอย่างต่อเนื่องตลอดปีที่ผ่านมา จากระดับ ~$126 (ก.ค. 2568) ร่วงแตะจุดต่ำสุด ~$85.60 (พ.ค. 2569) คิดเป็น −32% จากจุดสูง แรงกดดันหลักมาจาก 1) กระแส Sector Rotation ออกจาก Healthcare 2) ความกังวลเรื่องคดี NEC litigation (สูตรนมสำหรับทารกคลอดก่อนกำหนด) ซึ่งตลาดวิตกว่าอาจนำไปสู่ liability ขนาดใหญ่คล้ายคดี Talc ของ J&amp;J 3) ยอดขาย COVID test ที่หายไป ก่อนจะรีบาวด์กลับมาที่ ~$94 ในเดือน มิ.ย. 2569 หลังนักลงทุนบางส่วนเริ่มเห็นว่า Core Business (Libre CGM, Structural Heart) ยังแข็งแกร่ง
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION (เฉลี่ย 3 วิธี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี อิง Adj. EPS</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation (Adjusted EPS)</div><div class="mdesc">Adj. EPS (TTM) $5.15 × P/E เป้าหมาย ~20x — ต่ำกว่าค่าเฉลี่ย 5 ปี (22–24x) สะท้อน NEC overhang + sector discount</div></div>
+        <div class="mval">$103.00</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. Forward P/E (FY26E)</div><div class="mdesc">FY26E Adj. EPS $5.65 × P/E 19x — Consensus FY26E คาด adj EPS $5.55–5.80 (mid $5.65) × discount multiple</div></div>
+        <div class="mval">$107.35</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. DCF (10 ปี, FCF-based)</div><div class="mdesc">FCF/Share ~$4.23 · g 8% ปี 1–5, 5% ปี 6–10, terminal 3% · WACC ~8.5% — สะท้อน FCF ที่แข็งแกร่งของ ABT</div></div>
+        <div class="mval">$104.65</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $103 – $107</span></div>
+        <div class="r">$105</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ทั้งสามวิธีให้ค่าใกล้เคียงกันในกรอบ $103–$107 สะท้อนความสอดคล้องสูง P/E Valuation ใช้ multiple 20x (ต่ำกว่าค่าเฉลี่ย 22–24x) เพื่อสะท้อน NEC litigation overhang ที่ยังค้างอยู่ DDM อ้างอิงรองยืนยันว่า Dividend King ที่จ่ายต่อเนื่อง 50 ปีให้ yield 2.76% ถือว่า sustainable · Fair Value $105 จึงสมเหตุสมผลสำหรับหุ้นคุณภาพที่ถูกกดจาก sentiment เชิงลบชั่วคราว
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $94.12</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $105</div></div>
+        </div>
+        <div class="scale">
+          <span>$73.50<br><small>MOS 30%</small></span>
+          <span>$84.00<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$105<br><small>Fair Value</small></span>
+          <span style="text-align:right">$107<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">$117<br><small>เป้าเฉลี่ย Analyst</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน $94.12 ต่ำกว่า Fair Value $105 อยู่ ~10.4% (MOS บวก) อยู่ในโซน "ต่ำกว่าเหมาะสม" แต่ยังไม่ถึง Deep Value (MOS 20% = $84) นักวิเคราะห์ 27 ราย เป้าเฉลี่ย $117 (+24% จากราคาปัจจุบัน) สะท้อนว่าตลาดนักวิเคราะห์มองว่า downside ถูก Price-in ไปมากพอสมควรแล้ว
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict ok">
+        <div class="big">+10.4%</div>
+        <div class="txt">MOS เป็นบวก — ราคาต่ำกว่า Fair Value อยู่พอสมควร แต่ NEC litigation overhang ทำให้ความเสี่ยงยังสูง ควรทยอยสะสมในโซน $84–$95</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$84.00</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$73.50</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $105</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="94.12" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $94.12 • EPS ฐาน ~$5.15 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS +6%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$110.34</div>
+          <div class="ret neg">+17% (~+5.4%/ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$6.13</span></li>
+            <li><span>P/E ออก</span><span>18x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$7.56</span></li>
+            <li><span>สถานการณ์</span><span>NEC liability ใหญ่ + Libre growth ชะลอ</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +9%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$133.40</div>
+          <div class="ret pos">+42% (~+12.4%/ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$6.67</span></li>
+            <li><span>P/E ออก</span><span>20x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$7.56</span></li>
+            <li><span>สถานการณ์</span><span>Libre CGM เติบโต + NEC ค่อยๆ คลาย</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +11%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$145.95</div>
+          <div class="ret pos">+55% (~+15.7%/ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$6.95</span></li>
+            <li><span>P/E ออก</span><span>21x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$7.56</span></li>
+            <li><span>สถานการณ์</span><span>Libre dominates CGM + NEC ยุติ + M&amp;A Exact Sciences</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      ผลตอบแทนอิง Adj. EPS ฐาน $5.15 · Base scenario คาด +9%/ปี สะท้อน FreeStyle Libre CGM +13%/ปี + Structural Heart recovery + Diagnostics base ที่มั่นคง · Bear scenario ฉุดราคาได้หาก NEC settlement ขนาดใหญ่บีบ EPS ลง · ปันผลรวม 3 ปี ~$7.56 เพิ่ม cushion ทุก scenario
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>FreeStyle Libre CGM Growth Engine:</b> ยอดขาย +13% YoY ต่อเนื่อง ตลาด CGM ยังเติบโตสูงจาก Type 2 Diabetes ที่แพร่หลาย + ABT กำลัง expand ใน non-diabetic wellness monitoring</li>
+          <li><b>Structural Heart Leadership:</b> ผลิตภัณฑ์ TAVR/MitraClip ขยายตลาด structural heart intervention ซึ่งยังมี unmet need สูง</li>
+          <li><b>Dividend King 50 ปี:</b> เพิ่มปันผลต่อเนื่อง 50 ปี สะท้อนความมั่นคงของ cash flow และ commitment ต่อผู้ถือหุ้น · yield 2.76% เป็น income ที่ดี</li>
+          <li><b>Healthcare Diversification:</b> รายได้กระจาย 4 segments (Medical Devices 48% · Diagnostics 20% · Nutrition 19% · Est. Pharma 12%) ลด single-point risk</li>
+          <li><b>M&amp;A Potential (Exact Sciences):</b> รายงานข่าวว่า ABT สนใจ Exact Sciences (EXAS) จะเสริม Diagnostics ด้วย cancer liquid biopsy</li>
+          <li><b>Analyst Support:</b> 27 นักวิเคราะห์มีเป้าเฉลี่ย $117 (+24%) สะท้อนว่า consensus เชื่อว่า NEC ถูก price-in เกินจริง</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>⚠️ NEC Litigation (ความเสี่ยงหลัก):</b> คดีเกี่ยวกับสูตรนมสำหรับทารกคลอดก่อนกำหนด (premature-infant formula) เสี่ยง settlement ขนาดใหญ่คล้าย Talc — ยังเป็น overhang กดราคา จนกว่าตัวเลขจะชัดเจน</li>
+          <li><b>CGM Competition:</b> Dexcom (DXCM) ยังแข็งแกร่ง + Google/Samsung เข้าสู่ wearable glucose monitoring อาจกดดัน margin ระยะยาว</li>
+          <li><b>Reimbursement Risk:</b> นโยบาย Medicare/Medicaid ในสหรัฐ + CMS coverage ของ CGM สำหรับ non-insulin users ยังอยู่ระหว่างปรับ</li>
+          <li><b>FX Exposure:</b> รายได้ Established Pharmaceuticals เน้น Emerging Markets (EM) มี FX risk สูง หากดอลลาร์แข็งค่า</li>
+          <li><b>GAAP vs Adjusted Gap:</b> ช่องว่าง GAAP EPS $3.57 vs Adj. EPS $5.15 สูงกว่า 44% สะท้อนรายการพิเศษที่บ่อยกว่าปกติ อาจทำให้นักลงทุนบางส่วนกังขา</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>ABT — Healthcare กระจายตัวคุณภาพสูง · ถูกกด Sector Selloff + NEC Overhang · Value Play พร้อม Income</h2>
+      <p>Abbott เป็นบริษัท Healthcare ระดับโลกที่มีธุรกิจกระจายตัวดีเยี่ยม โดย FreeStyle Libre CGM เป็น Growth Engine หลักที่เติบโต +13% ต่อเนื่อง ราคาร่วง −25% ในรอบปีจาก Sector Selloff + ความกังวล NEC litigation ทำให้ P/E (adj) ลดเหลือ 18.3x ต่ำกว่าค่าเฉลี่ย 5 ปีที่ 22–24x อย่างมีนัยสำคัญ Fair Value $105 (avg 3 วิธี) ให้ MOS +10.4% บนราคาปัจจุบัน บวกปันผล Dividend King 2.76%/ปี รวม Total Return Potential ระดับน่าสนใจสำหรับ value investor ที่รับ litigation overhang ได้</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$105 <span style="font-size:12px;color:#cab9a8">($103–$107)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +10.4%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$117 (Buy consensus)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ทยอยสะสมในโซน $84–$95 (ปัจจุบัน $94.12 ใกล้ขอบบน) · ถือได้ใน Port สำหรับ income + capital gain · ตั้ง stop-loss หาก NEC settlement ใหญ่ผิดปกติ ($70–75) · เป้าหมายระยะกลาง (2–3 ปี) $120–135 (Base–Bull) รวมปันผล Total Return ~42–55%
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ข้อมูลอ้างอิง: StockAnalysis.com · Yahoo Finance · Abbott Investor Relations (ir.abbott.com) · Macrotrends.net · ราคา ณ 26 มิ.ย. 2569
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 26 มิ.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
