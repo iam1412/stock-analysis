@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น PepsiCo (PEP) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"PEP","currency":"USD","price":138.68,"fairValue":150,"mos":7.5,"upside":8.2,"pe":16.7,"dividendYield":4.1,"roe":43.88}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#003087",
+    "accentDark": "#001f5c",
+    "darkGrad": "linear-gradient(135deg,#000a1e 0%,#001840 100%)",
+    "glow": "rgba(0,48,135,0.35)",
+    "subColor": "#5b9bd5",
+    "headerMuted": "rgba(255,255,255,0.55)",
+    "verdictText": "#e8f0fe",
+    "vcellLabel": "#a8bce8",
+    "badge": "#003087",
+    "chgBg": "rgba(30,142,62,0.18)",
+    "chgColor": "#1e8e3e"
+  },
+  "chart": {
+    "data": [
+      ["ก.ค. 2568", 132.67],
+      ["ส.ค. 2568", 142.99],
+      ["ก.ย. 2568", 135.09],
+      ["ต.ค. 2568", 141.90],
+      ["พ.ย. 2568", 144.47],
+      ["ธ.ค. 2568", 139.40],
+      ["ม.ค. 2569", 150.68],
+      ["ก.พ. 2569", 166.49],
+      ["มี.ค. 2569", 152.31],
+      ["เม.ย. 2569", 156.84],
+      ["พ.ค. 2569", 142.69],
+      ["มิ.ย. 2569", 138.68]
+    ],
+    "min": 120,
+    "max": 180,
+    "grid": [120, 130, 140, 150, 160, 170, 180],
+    "fairLine": 150,
+    "currency": "$",
+    "highlight": [7, 9]
+  },
+  "gauge": {
+    "min": 100,
+    "max": 200,
+    "cur": 138.68,
+    "fair": 150,
+    "fairLabelTop": true
+  },
+  "fv": 150
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">●●●</div>
+    <div>
+      <span class="tag">NASDAQ: PEP</span>
+      <span class="tag">Consumer Staples</span>
+      <span class="tag">Food &amp; Beverage</span>
+    </div>
+    <h1>PepsiCo, Inc. (PEP)</h1>
+    <div class="sub">Frito-Lay (Lay's · Doritos · Cheetos) • PepsiCo Beverages (Pepsi · Gatorade · Mountain Dew) • Quaker Foods • International Markets</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$138.68<small>(PEP)</small></div>
+      </div>
+      <div class="chg">▲ +4.5% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 29 มิ.ย. 2569<br>
+        กรอบ 52 สัปดาห์ $130.59 – $171.48<br>
+        ที่มา: StockAnalysis.com, Yahoo Finance, WallStreetZen
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ มิ.ย. 2569</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">$189.5B</div><div class="d">1.37 พันล้านหุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM core adj.)</div><div class="v neu">~16.7x</div><div class="d">Core EPS TTM $8.28 · ถูกกว่าประวัติ 22–27x</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~24x</div><div class="d">เคยซื้อขาย 22–27x · ปัจจุบัน de-rate</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">8.87x</div><div class="d">BVPS $15.63 · leverage สูง</div></div>
+
+      <div class="metric"><div class="k">EPS GAAP (TTM)</div><div class="v">$6.37</div><div class="d">GAAP · adj. core EPS TTM ~$8.28</div></div>
+      <div class="metric"><div class="k">Core EPS TTM</div><div class="v">~$8.28</div><div class="d">Q2–Q4/68 + Q1/69 · FY68: $8.14</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~$15.63</div><div class="d">สุทธิ · Debt/Equity 2.45x</div></div>
+      <div class="metric"><div class="k">ROE / ROIC</div><div class="v pos">~43.9% / 19.6%</div><div class="d">ROE สูงเนื่องจาก leverage · ROIC 19.6%</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$95.4B</div><div class="d">YoY +4.3% · Organic growth +2.6%</div></div>
+      <div class="metric"><div class="k">EBITDA TTM</div><div class="v">$16.4B</div><div class="d">EV/EBITDA 12.4x · ถูกกว่า KO ~22x</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~4.1%</div><div class="d">$5.69/หุ้น · Dividend King 52+ ปีต่อเนื่อง</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">0.36</div><div class="d">Defensive · ผันผวนน้อยกว่าตลาด</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ก.ค. 2568 – มิ.ย. 2569</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#003087"></i>ราคา PEP</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $150</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        PEP ปรับตัวขึ้นจาก $132.67 (ก.ค. 68) ถึงจุดสูงสุด <b>$166.49 (ก.พ. 69)</b> หนุนโดยผลประกอบการ Q4/68 และ Q1/69 ที่ beat consensus
+        และการฟื้นตัวของ volume Frito-Lay NA จากนั้นราคาร่วงลงมา $138–142 ในช่วง เม.ย.–มิ.ย. 69
+        เนื่องจากกังวลเรื่อง North America snack volume และผลกระทบจากยา GLP-1
+        ผลตอบแทนรอบปี +4.5% เทียบจุด ก.ค. 68 ถึง มิ.ย. 69 · ราคาปัจจุบัน <b>ต่ำกว่า Fair Value $150</b> ประมาณ 7.5%
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation (core EPS)</div><div class="mdesc">EPS adj. $8.28 × P/E เป้าหมาย 20x — ประวัติ PEP ซื้อขาย 22–27x; ใช้ 20x สะท้อน premium ลดลงจาก volume headwinds</div></div>
+        <div class="mval">$165.60</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. DDM / Gordon Growth Model</div><div class="mdesc">D₁ = ปันผล $5.69 × (1+4.5%); g=4.5% (ลดจากประวัติ 7% · สะท้อน organic growth ชะลอ), r=8.5% → $5.946 ÷ 4.0%</div></div>
+        <div class="mval">$148.65</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. EV/EBITDA</div><div class="mdesc">EBITDA TTM $16.4B × 14x (ส่วนลดจาก KO ~22x/Sector ~18x สะท้อน volume decline) − Net Debt $41.9B ÷ 1.37B หุ้น</div></div>
+        <div class="mval">$136.81</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $136.81 – $165.60</span></div>
+        <div class="r">$150</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        <b>P/E</b> ให้ค่าสูงสุด ($166) สะท้อน re-rating กลับสู่ระดับประวัติเมื่อ volume ฟื้น ·
+        <b>DDM</b> ให้ $149 เหมาะสมที่สุดสำหรับ Dividend King — ถ้า g ลดเหลือ 3.5% จะได้ $118 (downside scenario) ·
+        <b>EV/EBITDA</b> ให้ต่ำสุด ($137) สะท้อนการ de-rate จาก sector peers; ปัจจุบัน PEP ซื้อขาย discount ต่อ KO อย่างผิดปกติ ·
+        FV $150 เป็นค่ากลางที่สมเหตุสมผล: สะท้อนทั้งโอกาสฟื้นตัวและความเสี่ยงเชิงโครงสร้าง
+        แหล่งข้อมูล: StockAnalysis.com (https://stockanalysis.com/stocks/pep/), Yahoo Finance (https://finance.yahoo.com/quote/PEP), SEC 8-K Q1/2026 (https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000077476)
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $138.68</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $150</div></div>
+        </div>
+        <div class="scale">
+          <span>$105<br><small>MOS 30%</small></span>
+          <span>$120<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$150<br><small>Fair Value</small></span>
+          <span style="text-align:right">$166<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">$167<br><small>เป้าเฉลี่ย Analyst</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคา $138.68 ต่ำกว่า Fair Value $150 ประมาณ <b>7.5%</b> — ยังไม่ถึงโซน MOS 20% ($120) หรือ MOS 30% ($105)
+        ซึ่งหมายความว่าปัจจุบันเป็น "<b>ใกล้ Fair Value แต่ margin of safety จำกัด</b>"
+        นักวิเคราะห์ส่วนใหญ่ (24 คน) ให้ Hold ที่เป้าเฉลี่ย $167 (+20.6% upside)
+        หากราคาร่วงสู่โซน $120–130 จะเป็นจุดเข้าสะสมที่น่าสนใจมากขึ้น
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">+7.5%</div>
+        <div class="txt">MOS ต่ำ — ต่ำกว่า Fair Value เล็กน้อย แต่ยังไม่มี margin of safety เพียงพอ · ยังไม่ถึงโซนน่าสนใจ (MOS ≥ 20%)</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$120</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$105</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $150</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="138.68" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $138.68 • EPS ฐาน ~$8.28 • รวมปันผล ~$17.7</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS −2%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$116.9</div>
+          <div class="ret neg">−2.9% รวม 3 ปี (รวมปันผล $17.7)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$7.79</span></li>
+            <li><span>P/E ออก</span><span>15x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$17.7</span></li>
+            <li><span>สถานการณ์</span><span>GLP-1 กดปริมาณขาย Frito-Lay / ราคา de-rate ต่อ</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +5%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$172.6</div>
+          <div class="ret pos">+37.2% รวม 3 ปี (~+11.1%/ปี รวมปันผล)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$9.59</span></li>
+            <li><span>P/E ออก</span><span>18x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$17.7</span></li>
+            <li><span>สถานการณ์</span><span>Frito-Lay ฟื้นตัว / International แข็งแกร่ง / dividend เพิ่มต่อเนื่อง</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +8%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$219.0</div>
+          <div class="ret pos">+70.7% รวม 3 ปี (~+19.9%/ปี รวมปันผล)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$10.43</span></li>
+            <li><span>P/E ออก</span><span>21x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$17.7</span></li>
+            <li><span>สถานการณ์</span><span>GLP-1 impacts diminish / Pricing power กลับมา / re-rate สู่ระดับประวัติ</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      Base case: PEP คาดว่า Core EPS จะเติบโต 4–6% ในปี 69 (guidance ล่าสุด) และ 5–7% ระยะกลาง — หาก volume ฟื้นตัวได้ตามที่หวัง
+      ผลตอบแทนรวมน่าจะอยู่ที่ <b>~10–12%/ปี</b> รวมปันผล 4.1% ซึ่งดีกว่า S&P 500 ในสภาวะ risk-off
+      Bear case: ถ้า GLP-1 grinds down snack consumption เป็นเทรนด์ถาวร หรือ North America market share loss เร่งตัว
+      upside อาจจำกัด; ผู้ลงทุนยังได้ปันผล ~4% ป้องกัน downside ได้บางส่วน
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก &amp; ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>Dividend King + Defensive Moat:</b> PEP เพิ่มเงินปันผลต่อเนื่อง 52+ ปี yield 4.1% ป้องกัน downside ในสภาวะ risk-off และดึงดูดนักลงทุนระยะยาว</li>
+          <li><b>Volume Recovery สัญญาณ Q1/69:</b> PFNA (Frito-Lay NA) ปริมาณ +2% Q1/69 หลัง volume decline หลายไตรมาส; PBNA Organic Growth +2% แสดงโมเมนตัมฟื้นตัว</li>
+          <li><b>International Growth Engine:</b> ตลาดต่างประเทศยังแข็งแกร่ง ครอบคลุม emerging markets ที่ snacking penetration ยังต่ำ — diversify จาก US headwinds</li>
+          <li><b>Valuation De-rated มาก:</b> P/E core 16.7x เทียบประวัติ 22–27x และ EV/EBITDA 12.4x ต่อ KO 22x — margin of re-rating ที่เป็นไปได้สูง เมื่อ sentiment เปลี่ยน</li>
+          <li><b>Cost Discipline + Pricing Power:</b> Core operating margin เพิ่มขึ้น 10 bps Q1/69; portfolio brand strength (Lay's, Gatorade, Pepsi) รักษา pricing power ในตลาดหลัก</li>
+          <li><b>Quaker Rebound:</b> Quaker Foods ฟื้นตัวหลัง recall ปลายปี 67; ลดผลลบต่อ overall margins</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>GLP-1 Weight-Loss Drugs:</b> ยา Ozempic/Wegovy อาจลด long-term snack consumption โดยเฉพาะ salty snacks — Frito-Lay เป็นกำไรสูงสุดของ PEP; structural risk ยากประเมิน</li>
+          <li><b>Private Label Competition:</b> Consumer trade-down จาก branded snacks → private label ในช่วง inflation; market share ฟื้นช้ากว่าคาด</li>
+          <li><b>North America Beverage Headwinds:</b> PBNA แข่งขันดุเดือดกับ Coca-Cola; organic growth ยังต่ำ; distribution deal Celsius ฯลฯ ต้องพิสูจน์</li>
+          <li><b>FX Risk:</b> ~40% ของรายได้มาจากนอกสหรัฐ; USD แข็งกดดันรายได้และ EPS reported; บาง EM currency volatile</li>
+          <li><b>High Leverage:</b> Debt/Equity 2.45x · Net Debt $41.9B; อัตราดอกเบี้ยสูงกด net income; refinancing risk ในระยะกลาง</li>
+          <li><b>EPS Growth Slowdown:</b> Core EPS ปี 68 $8.14 ลดลงเล็กน้อยจาก $8.16 ปี 67 — ถ้าปี 69 ไม่โต 4–6% ตาม guidance ตลาดอาจ de-rate ต่อ</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>PEP: Dividend King ที่ De-rated มาก — น่าสะสม แต่ยังรอ MOS เพิ่มเติม</h2>
+      <p>PepsiCo เป็น Dividend King ที่ได้รับการลงทุนในพอร์ต Defensive มาตลอด แต่ช่วง 2 ปีที่ผ่านมา
+        หุ้น de-rate ลงจากจุดสูงสุดประมาณ 19% เนื่องจากความกังวล GLP-1, consumer trade-down และ volume decline ใน North America
+        ราคาปัจจุบัน $138.68 ซื้อขายที่ core P/E ~16.7x ซึ่งต่ำกว่าประวัติมาก
+        Fair Value เฉลี่ย 3 วิธีอยู่ที่ <b>$150</b> — MOS ปัจจุบัน 7.5% ยังจำกัด
+        แต่ yield 4.1% + สัญญาณ volume recovery Q1/69 ทำให้ <b>ระดับต่ำกว่า $130 น่าสนใจมากขึ้น</b>
+        สำหรับนักลงทุนระยะยาวที่ต้องการ passive income สม่ำเสมอ PEP ยังเป็นตัวเลือกที่แข็งแกร่ง</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$150 <span style="font-size:12px;color:#cab9a8">($136.81–$165.60)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +7.5%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$167 (Hold · 24 คน)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ราคาปัจจุบัน $138.68 เป็น <b>โซนสะสมได้ในระดับหนึ่ง</b> สำหรับ income investor (yield 4.1%)
+        แต่ value investor ควรรอโซน <b>$120–130 (MOS 13–20%)</b> เพื่อ margin of safety ที่ดีกว่า
+        หลีกเลี่ยงซื้อเยอะหากไม่มั่นใจว่า volume headwinds เป็นชั่วคราว · กลยุทธ์ DCA เหมาะสมที่สุด
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    แหล่งข้อมูลหลัก: StockAnalysis.com (https://stockanalysis.com/stocks/pep/), Yahoo Finance (https://finance.yahoo.com/quote/PEP), SEC EDGAR Q1/2026 8-K, WallStreetZen (https://www.wallstreetzen.com/stocks/us/nasdaq/pep/) ราคา ณ 29 มิ.ย. 2569
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 29 มิ.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>

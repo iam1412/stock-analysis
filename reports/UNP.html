@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น Union Pacific (UNP) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"UNP","currency":"USD","price":272.70,"fairValue":275,"mos":0.8,"upside":0.8,"pe":22.44,"dividendYield":2.02,"roe":40.69}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#E8B800",
+    "accentDark": "#b08a00",
+    "darkGrad": "linear-gradient(135deg,#0d0d00 0%,#1a1800 100%)",
+    "glow": "rgba(232,184,0,0.35)",
+    "subColor": "#ffe066",
+    "headerMuted": "rgba(255,255,255,0.55)",
+    "verdictText": "#fff8dc",
+    "vcellLabel": "rgba(255,248,220,0.7)",
+    "badge": "#E8B800",
+    "chgBg": "#0d3321",
+    "chgColor": "#34c77b"
+  },
+  "chart": {
+    "data": [
+      ["ก.ค. 2568", 217.04],
+      ["ส.ค. 2568", 218.61],
+      ["ก.ย. 2568", 232.57],
+      ["ต.ค. 2568", 216.82],
+      ["พ.ย. 2568", 228.10],
+      ["ธ.ค. 2568", 227.60],
+      ["ม.ค. 2569", 232.67],
+      ["ก.พ. 2569", 262.24],
+      ["มี.ค. 2569", 241.37],
+      ["เม.ย. 2569", 268.09],
+      ["พ.ค. 2569", 261.28],
+      ["มิ.ย. 2569", 268.35],
+      ["29 มิ.ย. 2569", 272.70]
+    ],
+    "min": 200,
+    "max": 300,
+    "grid": [200, 225, 250, 275, 300],
+    "fairLine": 275,
+    "currency": "$",
+    "highlight": [7, 9]
+  },
+  "gauge": {
+    "min": 180,
+    "max": 330,
+    "cur": 272.70,
+    "fair": 275,
+    "fairLabelTop": true
+  },
+  "fv": 275
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">&#9679;&#9679;&#9679;</div>
+    <div>
+      <span class="tag">NYSE: UNP</span>
+      <span class="tag">Transportation</span>
+      <span class="tag">Class I Railroad</span>
+    </div>
+    <h1>Union Pacific Corporation</h1>
+    <div class="sub">Class I railroad (ตะวันตกสหรัฐ · 32,000 ไมล์เส้นทาง) • Intermodal • เกษตร (ธัญพืช · โพแทช) • พลังงาน (ถ่านหินลดลง) • อุตสาหกรรม &amp; เคมี • Nearshoring เม็กซิโก</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$272.70<small>(UNP)</small></div>
+      </div>
+      <div class="chg">▲ +25.6% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 29 มิถุนายน 2569<br>
+        กรอบ 52 สัปดาห์ $210.84 – $279.70<br>
+        ที่มา: StockAnalysis.com, Yahoo Finance, WallStreetZen
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ มิถุนายน 2569</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">$161.9B</div><div class="d">594 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~22.4x</div><div class="d">EPS TTM $12.15 · ต่ำกว่า 5 ปี ~24x</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~24x</div><div class="d">กรอบ 19–28x (railroad premium)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">8.3x</div><div class="d">BVPS $32.70 · ROE สูงหนุน premium</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">$7.21B</div><div class="d">+7.1% YoY · margin สูงสุดในกลุ่ม</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$12.15</div><div class="d">Q1 2569 adj. $2.93 (+9% YoY)</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~$32.70</div><div class="d">Equity $19.4B / 594M shares</div></div>
+      <div class="metric"><div class="k">ROE / EV/EBITDA</div><div class="v pos">~40.7% / 15.3x</div><div class="d">ROE สูงกว่า peer CSX/NSC ทุกปี</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$24.7B</div><div class="d">+1.9% YoY · Q1 2569 $6.22B (+3%)</div></div>
+      <div class="metric"><div class="k">Operating Ratio (adj.)</div><div class="v pos">59.9%</div><div class="d">Q1 2569 · ดีกว่า CSX 64% · NSC 69%</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~2.02%</div><div class="d">$5.48/หุ้น/ปี ($1.38/ไตรมาส)</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">0.97</div><div class="d">ความผันผวนใกล้เคียงตลาด S&amp;P 500</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ก.ค. 2568 – มิ.ย. 2569</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#E8B800"></i>ราคา UNP</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $275</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคา UNP เริ่มต้นที่ ~$217 ในเดือน ก.ค. 2568 แล้วผันผวนในกรอบ $210–$235 ช่วงครึ่งปีแรก ก่อนพุ่งขึ้นแรงในเดือน ก.พ. 2569 ($262) หลังรายงานผลประกอบการ Q4 ดีกว่าคาด และแรงซื้อจากธีม nearshoring เม็กซิโก ราคาปรับลดชั่วคราวเดือน มี.ค. ($241) แล้วฟื้นตัวและทยอยปิดที่ $272.70 ณ 29 มิ.ย. 2569 รวมผลตอบแทน ~1 ปี +25.6% สูงกว่า S&amp;P 500
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS adj. $12.15 × P/E เป้าหมาย ~24x — ค่าเฉลี่ย 5 ปี UNP (railroad premium: pricing power + PSR + monopoly-like moat); CSX ~19x, NSC ~21x → UNP เหมาะ 23–25x</div></div>
+        <div class="mval">$292</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. EV/EBITDA</div><div class="mdesc">EBITDA TTM $12.42B × 15.5x (กรอบ Class I railroad 14–17x) → EV $192.5B; หักหนี้สุทธิ ~$30.3B → Equity $162.2B / 594M หุ้น</div></div>
+        <div class="mval">$273</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. DCF (5-year FCF)</div><div class="mdesc">FCF/share ~$10.1 (net income + D&amp;A − capex ≈ revenue ×17%) เติบโต 6%/ปี 5 ปี; terminal g 3.5%; discount r 8.5% → PV FCFs + Terminal</div></div>
+        <div class="mval">$260</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $260 – $292</span></div>
+        <div class="r">$275</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        วิธี P/E ให้ค่าสูงสุด ($292) สะท้อน pricing power และ PSR; EV/EBITDA ($273) ใกล้ราคาตลาดมากที่สุด; DCF ($260) อนุรักษ์นิยมเพราะ capex หนัก ราคาปัจจุบัน $272.70 อยู่ในกรอบ Fair Value — ถือว่า "ราคาสมเหตุสมผล" แหล่งข้อมูล: StockAnalysis.com (https://stockanalysis.com/stocks/unp/statistics/) · Yahoo Finance (https://finance.yahoo.com/quote/UNP) · TIKR.com
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $272.70</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $275</div></div>
+        </div>
+        <div class="scale">
+          <span>$192.50<br><small>MOS 30%</small></span>
+          <span>$220<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$275<br><small>Fair Value</small></span>
+          <span style="text-align:right">$292.50<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">$310<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน $272.70 อยู่ใกล้ Fair Value $275 มาก (ห่างแค่ ~1%) สะท้อนว่าตลาดให้ราคา UNP "สมเหตุสมผล" ณ ระดับนี้ จุดซื้อ MOS 20% อยู่ที่ $220 และ MOS 30% ที่ $192.50 นักวิเคราะห์ 23 ราย (consensus "Buy") ให้ราคาเป้าเฉลี่ย $292.50 ซึ่งสูงกว่าราคาปัจจุบัน ~7.3%
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">+0.8%</div>
+        <div class="txt">ราคาปัจจุบันใกล้เคียง Fair Value — ยังไม่มี Margin of Safety ที่ชัดเจน รอโอกาสซื้อที่ดีกว่าหาก pullback ลงมาใต้ $250</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$220</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$192.50</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $275</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>&#x1F9EE; ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="272.70" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $272.70 • EPS ฐาน ~$12.15 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>&#x1F43B; Bear</span><span>EPS -2%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$233</div>
+          <div class="ret neg">-14.6%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$11.43</span></li>
+            <li><span>P/E ออก</span><span>19x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$16</span></li>
+            <li><span>สถานการณ์</span><span>เศรษฐกิจถดถอย volume ลด</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>&#x2696;&#xFE0F; Base</span><span>EPS +5%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$327</div>
+          <div class="ret pos">+19.9%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$14.07</span></li>
+            <li><span>P/E ออก</span><span>22x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$18</span></li>
+            <li><span>สถานการณ์</span><span>PSR + nearshoring หนุน volume</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>&#x1F680; Bull</span><span>EPS +8%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$386</div>
+          <div class="ret pos">+41.6%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$15.31</span></li>
+            <li><span>P/E ออก</span><span>24x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$19</span></li>
+            <li><span>สถานการณ์</span><span>OR ทะลุ 58% + Mexico boom</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      การคาดการณ์ EPS อ้างอิง guidance ของ UNP ที่ mid-single-digit growth สำหรับปี 2569 และ consensus ของนักวิเคราะห์ 23 ราย (EPS FY2026 เฉลี่ย $12.71) โซน Base ให้ผลตอบแทนรวม ~20% ใน 3 ปี หรือ ~6.3%/ปี บวกปันผล ~2% รวมกัน ~8.3%/ปี ซึ่งสมเหตุสมผลสำหรับหุ้น "เสาหลัก" ที่มีความผันผวนต่ำ Bear case: EPS yr3 = $12.15 × 0.98^3 = $11.43; Bull case: EPS yr3 = $12.15 × 1.08^3 = $15.31
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก &amp; ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">&#9650;</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>Nearshoring &amp; Mexico Corridor:</b> สงครามการค้า US-China ผลักดันการย้ายฐานผลิตมาเม็กซิโก UNP ควบคุมเส้นทาง El Paso / Laredo / Eagle Pass — ปริมาณสินค้าข้ามพรมแดน US-Mexico เติบโต 15–20% YoY</li>
+          <li><b>Precision Scheduled Railroading (PSR):</b> Operating Ratio adj. 59.9% ใน Q1 2569 ดีกว่า peer ทุกราย; เป้า &lt;58% ใน 3 ปีข้างหน้าจะหนุน margin ต่อเนื่อง; workforce productivity +7% ใน Q1</li>
+          <li><b>Intermodal Growth:</b> ปริมาณ intermodal container เติบโตจากอีคอมเมิร์ซและ logistics — UNP เชื่อมท่าเรือชายฝั่งตะวันตก (LA/Long Beach) กับ Midwest ด้วยเวลา transit สั้นกว่า truck</li>
+          <li><b>Pricing Power สูงสุดในอุตสาหกรรม:</b> ราง Class I = natural monopoly ราคาขึ้นได้เหนือ inflation ต่อเนื่อง — revenue/carload เพิ่มทุกปีแม้ volume ทรงตัว</li>
+          <li><b>Buyback &amp; Dividend:</b> UNP คืนเงินผู้ถือหุ้น $5–7B/ปี ผ่าน buyback + ปันผล — หุ้นคงค้างลดทุก 2–3 ปีช่วยหนุน EPS growth แม้ revenue ไม่ขยายมาก</li>
+          <li><b>Agricultural Export:</b> US ผู้ส่งออกธัญพืช/โพแทชรายใหญ่ UNP ขนส่งไปท่าเรืออ่าว Gulf — demand ยั่งยืนจากประชากรโลกที่เติบโต</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">&#9660;</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>ถ่านหิน (Coal) เสื่อมถอย:</b> สัดส่วน coal ใน revenue ลดลงต่อเนื่อง (จาก 20%+ เหลือ ~12%) เป็นแรงกดดันต่อ volume — แม้ UNP ทดแทนด้วย intermodal/chemicals แต่ยังเป็นตัวฉุด</li>
+          <li><b>เศรษฐกิจ Cyclical:</b> volume railroad ผูกกับ GDP manufacturing; ภาวะถดถอยกดดัน carload — คาดกำไรลด 20–30% ใน recession scenario รุนแรง</li>
+          <li><b>Regulation ราคา:</b> STB (Surface Transportation Board) สามารถบังคับลดราคาได้หากพบ market dominance — UNP อยู่ภายใต้การตรวจสอบต่อเนื่องโดยเฉพาะ captive shippers</li>
+          <li><b>Labor Cost สูง:</b> ค่าแรงวิศวกรและพนักงาน railroad สูงกว่า inflation ปกติ — UNP ประมาณ labor cost เพิ่ม 4–5%/ปี ต้องผลักผ่านราคาหรือลด headcount</li>
+          <li><b>Capex สูงต่อเนื่อง:</b> บำรุงรักษาโครงข่ายรางต้องใช้ capex ~17% ของรายได้ (~$4.2B/ปี) กด FCF yield — ไม่สามารถหยุดลงทุนได้โดยไม่กระทบความปลอดภัย</li>
+          <li><b>ภัยธรรมชาติ / อุบัติเหตุ:</b> derailment ครั้งใหญ่ส่งผลกระทบเชิง reputational และต้นทุนฟ้องร้อง — เป็น tail risk ที่ market มักประเมินต่ำ</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>Union Pacific — เสาหลักโครงสร้างพื้นฐาน ราคาสมเหตุสมผล รอโอกาสซื้อ</h2>
+      <p>UNP เป็น railroad ที่ดีที่สุดในสหรัฐอเมริกาด้านประสิทธิภาพ (Operating Ratio 59.9% ดีที่สุดในกลุ่ม) และเป็น natural monopoly ที่ไม่สามารถทดแทนได้ในระยะสั้น-กลาง โครงข่าย 32,000 ไมล์ทางตะวันตกสหรัฐเชื่อม Pacific Coast กับ Midwest และ Mexico Border — ตำแหน่งเชิงยุทธศาสตร์ที่ไม่มีคู่แข่งสามารถจำลองได้ ราคาปัจจุบัน $272.70 ใกล้ Fair Value $275 มาก ผู้ถือหุ้นสามารถ hold ได้อย่างสบายใจ — แต่ถ้าต้องการ Margin of Safety รอ pullback ใต้ $250–$260 จะเป็น entry point ที่ดีกว่า consensus นักวิเคราะห์ $292.50 (+7.3%) และ PSR upside ระยะยาวยังมีอยู่</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$275 <span style="font-size:12px;color:#cab9a8">($260–$292)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +0.8%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$292.50 (Buy · 23 ราย)</div></div>
+      </div>
+      <div class="zone">
+        &#x1F4A1; <b>กลยุทธ์:</b> ราคาปัจจุบัน $272.70 ใกล้ Fair Value — เหมาะ hold สำหรับผู้ถือหุ้น ผู้ที่ยังไม่มีในพอร์ตให้รอ pullback ใต้ $250 (MOS ~9%) ก่อนเพิ่มสัดส่วน จุดซื้อ deep value อยู่ที่ $220–$192.50 (MOS 20–30%) ซึ่งอาจเกิดหาก recession หรือ volume ลดแรง UNP เหมาะเป็น Core holding ระยะยาว 5+ ปีในพอร์ต defensive
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>&#x26A0;&#xFE0F; คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • แหล่งข้อมูล: StockAnalysis.com (https://stockanalysis.com/stocks/unp/) · Yahoo Finance (https://finance.yahoo.com/quote/UNP) · WallStreetZen (https://www.wallstreetzen.com/stocks/us/nyse/unp/stock-forecast) · ราคา ณ 29 มิถุนายน 2569
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 29 มิถุนายน 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
