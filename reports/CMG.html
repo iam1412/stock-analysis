@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น Chipotle Mexican Grill (CMG) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"CMG","currency":"USD","price":33.34,"fairValue":38,"mos":12.3,"upside":14.0,"pe":30.55,"dividendYield":null,"roe":49.2}
+</script>
+<script type="application/json" id="report-data">
+{"theme":{"accent":"#964B2E","accentDark":"#5E2D1A","darkGrad":"linear-gradient(135deg, #0F0603 0%, #1F0F08 100%)","glow":"rgba(150,75,46,0.35)","subColor":"#C47A55","headerMuted":"rgba(150,75,46,0.12)","verdictText":"#EAD6C8","vcellLabel":"rgba(234,214,200,0.6)","badge":"#964B2E","chgBg":"rgba(239,68,68,0.15)","chgColor":"#EF4444"},"chart":{"data":[["ก.ค. 68",42.88],["ส.ค. 68",42.14],["ก.ย. 68",39.19],["ต.ค. 68",31.69],["พ.ย. 68",34.52],["ธ.ค. 68",37.00],["ม.ค. 69",38.87],["ก.พ. 69",37.22],["มี.ค. 69",32.01],["เม.ย. 69",33.99],["พ.ค. 69",31.86],["มิ.ย. 69",33.34]],"min":30,"max":44,"grid":[33,37,41],"fairLine":38,"currency":"$","highlight":[3],"gridFmt":"v.toFixed(0)","dataFmt":"d[1].toFixed(2)"},"gauge":{"min":28,"max":46,"cur":33.34,"fair":38,"fairLabelTop":false},"fv":38}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">CMG</div>
+    <div>
+      <span class="tag">NYSE: CMG</span>
+      <span class="tag">Restaurants / Fast-Casual</span>
+      <span class="tag">Consumer Discretionary</span>
+    </div>
+    <h1>Chipotle Mexican Grill, Inc.</h1>
+    <div class="sub">เครือร้านอาหาร fast-casual เม็กซิกัน • ~4,056 สาขา company-owned ล้วน (ไม่ franchise) • digital + Chipotlane drive-thru • ขยายสู่ 7,000 สาขาในอเมริกาเหนือ</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$33.34<small>(CMG)</small></div>
+      </div>
+      <div class="chg">▼ −22.2% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 26 มิ.ย. 2569<br>
+        กรอบ 52 สัปดาห์ $28.04 / $58.42<br>
+        ที่มา: StockAnalysis.com / Yahoo Finance / Chipotle Investor Relations
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ มิ.ย. 2569 · หลัง 50:1 split มิ.ย. 2024</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~$9.4B</div><div class="d">~282M หุ้น (post-split)</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~30.6x</div><div class="d">EPS TTM $1.09</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~55x</div><div class="d">ช่วง 30x–75x (premium)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">~14x</div><div class="d">BVPS ~$2.38</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">~$1.24B</div><div class="d">+รายได้ $11.93B (+5.5% YoY)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$1.09</div><div class="d">FY25 $1.14 · FY24 $1.11</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~$2.38</div><div class="d">ส่วนใหญ่เป็น lease ROU asset</div></div>
+      <div class="metric"><div class="k">ROE / ROIC</div><div class="v pos">~49.2% / 21.5%</div><div class="d">unit economics แกร่ง</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">~$11.93B</div><div class="d">CAGR ~12% (5 ปี)</div></div>
+      <div class="metric"><div class="k">Restaurant Margin</div><div class="v">~25.4%</div><div class="d">Operating Margin 16.2%</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">ไม่ปันผล</div><div class="d">Reinvest ขยายสาขา</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">~0.92</div><div class="d">ใกล้เคียงตลาด</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART (ราคาย้อนหลัง ~1 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#964B2E"></i>ราคา CMG</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $38</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคา CMG ร่วงลง −22.2% ในรอบ 1 ปี จาก $42.88 (ก.ค. 2568) มาอยู่ที่ $33.34 (มิ.ย. 2569)
+        จุดต่ำสุดแตะ $31.69 ในเดือน ต.ค. 2568 หลังประกาศ comp sales −1.7% และ transaction −2.9%
+        ก่อนดีดขึ้นสู่ $38.87 (ม.ค. 2569) แล้วปรับตัวลงอีกรอบตาม macro pressure และ consumer
+        spending ชะลอ ราคาปัจจุบันต่ำกว่า Fair Value $38 ที่ระดับ MOS +12.3%
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION (เฉลี่ย 3 วิธี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation (TTM)</div><div class="mdesc">EPS (TTM) $1.09 × P/E เป้าหมาย ~32x — P/E ปรับลดจาก avg 5 ปี (~55x) สะท้อน comp sales ชะลอ; 32x = ส่วนต่ำของ premium เหมาะสม</div></div>
+        <div class="mval">$34.88</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. Forward P/E (FY2026E)</div><div class="mdesc">EPS FY26E $1.22 × P/E เป้าหมาย ~32x — อิง consensus EPS FY26 growth ~12% จาก digital + Chipotlane expansion; 32x เดียวกันเพื่อ consistency</div></div>
+        <div class="mval">$39.04</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. DCF (Unit Growth Model)</div><div class="mdesc">อิง unit expansion สู่ 7,000 สาขา + FCF margin ~10%; WACC ~9%, terminal growth 3% — premium ชนะ P/E เพราะ long-run unit story ยังสมบูรณ์</div></div>
+        <div class="mval">$40.00</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $34.88 – $40.00</span></div>
+        <div class="r">$38</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        วิธี P/E TTM ให้ค่าต่ำสุด ($34.88) เพราะ EPS ปัจจุบันถูก comp sales กด; Forward P/E และ DCF
+        สะท้อน story ขยายสาขาที่ยังสมบูรณ์ ($39–40) เฉลี่ยทั้ง 3 วิธี ≈ $37.97 ปัดเป็น $38
+        ไม่มีวิธี DDM เนื่องจาก CMG ไม่จ่ายเงินปันผล (reinvest ขยาย 334 สาขา/ปี)
+        ราคาตลาด $33.34 ต่ำกว่า FV $38 → MOS +12.3%
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $33.34</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $38</div></div>
+        </div>
+        <div class="scale">
+          <span>$26.60<br><small>MOS 30%</small></span>
+          <span>$30.40<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$38<br><small>Fair Value</small></span>
+          <span style="text-align:right">$40.00<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">$42.88<br><small>เป้าเฉลี่ย Analyst</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน $33.34 อยู่ในโซนระหว่าง MOS 20% ($30.40) และ Fair Value ($38) — สะท้อนราคา
+        ที่ถูกกว่า FV แต่ยังไม่ถึง deep value zone (MOS 30% = $26.60) นักวิเคราะห์ 36 ราย
+        ให้เป้าเฉลี่ย $42.88 (+29% จากปัจจุบัน) สะท้อนความเชื่อในการฟื้นตัวของ comp sales
+        และการขยายสาขาสู่ 7,000 แห่ง
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict ok">
+        <div class="big">+12.3%</div>
+        <div class="txt">MOS ระดับปานกลาง — ราคาต่ำกว่า Fair Value แต่ยังไม่เข้า deep value zone</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$30.40</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$26.60</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $38</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="33.34" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $33.34 • EPS ฐาน ~$1.09 • ไม่รวมปันผล (ไม่มี)</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS +8%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$38.36</div>
+          <div class="ret neg">+15%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$1.37</span></li>
+            <li><span>P/E ออก</span><span>28x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$0</span></li>
+            <li><span>สถานการณ์</span><span>comp sales ฟื้นช้า, margin กด</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +12%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$50.49</div>
+          <div class="ret pos">+51%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$1.53</span></li>
+            <li><span>P/E ออก</span><span>33x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$0</span></li>
+            <li><span>สถานการณ์</span><span>comp sales ฟื้น, unit growth ดำเนินต่อ</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +15%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$59.76</div>
+          <div class="ret pos">+79%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$1.66</span></li>
+            <li><span>P/E ออก</span><span>36x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$0</span></li>
+            <li><span>สถานการณ์</span><span>comp sales ฟื้นแกร่ง, Chipotlane ดัน margin</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      การฉายภาพอิง EPS TTM $1.09 × อัตราเติบโต 3 ปี × P/E exit ที่ปรับตามสถานการณ์
+      CMG ไม่จ่ายเงินปันผล ดังนั้นผลตอบแทนมาจาก capital gain ล้วน · กรณี Base (+51%)
+      สอดคล้องกับ consensus นักวิเคราะห์ที่เชื่อว่า comp sales จะฟื้น H2/FY26
+      และ unit growth สู่ 7,000 สาขาจะ re-rate P/E กลับสู่ระดับปกติ ~33x
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>Unit growth ต่อเนื่อง:</b> เปิดใหม่ 334 สาขา (FY25 record) บนเส้นทาง 7,000 สาขา — long-run revenue engine ยังแข็ง</li>
+          <li><b>Chipotlane drive-thru:</b> ~80% ของสาขาใหม่มี Chipotlane → เพิ่ม throughput, digital order share; margin upside ชัดเจน</li>
+          <li><b>Digital ecosystem:</b> digital order ~35% ของยอดขาย + loyalty members สูง → pricing power + เก็บข้อมูลลูกค้าดีกว่าคู่แข่ง</li>
+          <li><b>Comp sales ฟื้นตัว:</b> consensus คาด comp sales กลับ +low-single-digit FY26 หลังลูกค้า trade-down fatigue คลาย</li>
+          <li><b>ROE/ROIC แกร่ง:</b> ROE 49%, ROIC 21.5% + net cash ~$871M = flexibility buyback/capex โดยไม่ต้องกู้</li>
+          <li><b>Valuation ถูกกว่าอดีต:</b> P/E 30.6x ต่ำที่สุดในรอบ 5 ปี เทียบ avg ~55x → risk/reward เอียงบวกถ้า story ขยายสาขายังอยู่</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>Comp sales ติดลบต่อเนื่อง:</b> transaction −2.9% (FY25) สะท้อน consumer ประหยัดมากขึ้น — ถ้า trend ไม่ฟื้น EPS ปี 3 อาจต่ำกว่า base case</li>
+          <li><b>ต้นทุนวัตถุดิบ:</b> เนื้อวัว/ไก่/อาโวคาโดผันผวนกด restaurant margin — ราคา commodity ขึ้น 10% = margin เพิ่ม 1-2%</li>
+          <li><b>Valuation ยัง premium:</b> แม้ P/E ต่ำสุดในรอบ 5 ปี แต่ 30x ยังแพงกว่า S&P 500 (~20x) — ถ้า growth miss อีก de-rate หนัก</li>
+          <li><b>ต้นทุนแรงงาน:</b> ค่าจ้างขั้นต่ำขึ้นในรัฐ CA/NY กด labor cost; CMG พึ่งพาแรงงานสูงกว่า QSR ที่ automate มากกว่า</li>
+          <li><b>การแข่งขัน fast-casual:</b> CAVA, Sweetgreen, local players กำลังขยายตัว — ดึงลูกค้ากลุ่ม health-conscious</li>
+          <li><b>food safety incident:</b> ประวัติ E.coli/norovirus outbreaks (2015-2016) ยังเป็น tail risk ต่อ brand trust และยอดขาย</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>CMG: Fast-Casual ชั้นนำที่ราคาปรับลง — MOS เริ่มน่าสนใจ</h2>
+      <p>Chipotle เป็นเครือ fast-casual คุณภาพสูงที่หาได้ยาก (company-owned 100%, ROE 49%, unit economics แกร่ง) การร่วงของราคา −22% ในรอบปีเปิดโอกาส — ณ $33.34 ต่ำกว่า Fair Value $38 (MOS +12.3%) สะท้อนความกังวล comp sales ชะลอระยะสั้นที่อาจเกินจริง story ขยาย 7,000 สาขา + Chipotlane ยังสมบูรณ์ นักวิเคราะห์ 36 ราย เป้าเฉลี่ย $42.88 (+29%) เหมาะสำหรับนักลงทุนที่เชื่อในแบรนด์ระยะกลาง-ยาว</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$38 <span style="font-size:12px;color:#cab9a8">($34.88–$40.00)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +12.3%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$42.88 (Buy consensus)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ทยอยสะสมที่ราคาต่ำกว่า $38 (ใต้ Fair Value) — จุดเข้าที่ดีขึ้นถ้าราคาทดสอบ MOS 20% ($30.40) อีกครั้ง; ถือระยะกลาง 2-3 ปีรอ comp sales ฟื้นและ re-rate P/E; ตัดใจ stop ถ้า comp sales ติดลบต่อเนื่อง &gt;2 ไตรมาส
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    ที่มาข้อมูล: StockAnalysis.com / Yahoo Finance / Chipotle Investor Relations / Macrotrends (ราคา ณ 26 มิ.ย. 2569)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 26 มิ.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
