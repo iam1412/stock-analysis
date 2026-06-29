@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น Vulcan Materials (VMC) — Stock Analysis Dashboard</title>
+<!-- ★ ใส่รุ่นโมเดล AI ที่ใช้วิเคราะห์จริง -->
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) -->
+<script type="application/json" id="stock-meta">
+{"symbol":"VMC","currency":"USD","price":307.27,"fairValue":265,"mos":-16.0,"upside":-13.8,"pe":36.5,"dividendYield":0.68,"roe":13.46}
+</script>
+<script type="application/json" id="report-data">
+{"theme":{"accent":"#9C7B3E","accentDark":"#6E552A","darkGrad":"linear-gradient(135deg, #0F0C04 0%, #1F1809 100%)","glow":"rgba(156,123,62,0.35)","subColor":"#C2A062","headerMuted":"rgba(156,123,62,0.12)","verdictText":"#EEE2C8","vcellLabel":"rgba(238,226,200,0.6)","badge":"#9C7B3E","chgBg":"rgba(34,197,94,0.15)","chgColor":"#22C55E"},"chart":{"data":[["ก.ค. 68",274.67],["ส.ค. 68",291.16],["ก.ย. 68",307.62],["ต.ค. 68",289.50],["พ.ย. 68",297.24],["ธ.ค. 68",285.22],["ม.ค. 69",300.54],["ก.พ. 69",310.00],["มี.ค. 69",272.30],["เม.ย. 69",301.74],["พ.ค. 69",282.92],["มิ.ย. 69",307.27]],"min":260,"max":315,"grid":[275,290,305],"fairLine":265,"currency":"$","highlight":[7]},"gauge":{"min":258,"max":315,"cur":307.27,"fair":265,"fairLabelTop":false},"fv":265}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">◆ ◆ ◆</div>
+    <div>
+      <span class="tag">NYSE: VMC</span>
+      <span class="tag">Construction Materials</span>
+      <span class="tag">Aggregates / Infrastructure</span>
+    </div>
+    <h1>Vulcan Materials Company</h1>
+    <div class="sub">ผู้ผลิตวัสดุก่อสร้างมวลรวม (aggregates) รายใหญ่สุดสหรัฐ • หิน/ทราย/กรวด (~79% รายได้) • asphalt &amp; concrete • pricing power local-monopoly • ได้ประโยชน์ infrastructure (IIJA)</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$307.27<small>(VMC)</small></div>
+      </div>
+      <div class="chg">▲ +11.9% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 26 มิ.ย. 2569<br>
+        กรอบ 52 สัปดาห์ $252.35 / $331.09<br>
+        ที่มา: StockAnalysis.com / Yahoo Finance / Vulcan Materials IR / Macrotrends
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ มิ.ย. 2569 · adj EPS $8.42 (TTM)</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~$40.3B</div><div class="d">131.1M shares outstanding</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~36.5x</div><div class="d">adj EPS $8.42 · premium sector</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~32x</div><div class="d">ช่วง 25–45x (moat premium)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">~4.9x</div><div class="d">BVPS ~$62.50 · asset-heavy</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY25</div><div class="v">~$1.05B</div><div class="d">adj net margin ~13.2%</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$8.42</div><div class="d">adj EPS FY25 $8.00 / FY26E $9.20</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~$62.50</div><div class="d">book per share FY25</div></div>
+      <div class="metric"><div class="k">ROE / ROIC</div><div class="v pos">~13.5% / 15.7%</div><div class="d">ROIC สูงกว่า WACC = value creation</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">~$7.94B</div><div class="d">FY25 +7.0% YoY</div></div>
+      <div class="metric"><div class="k">Gross / Operating Margin</div><div class="v">27.4% / 20.4%</div><div class="d">pricing power ดันมาร์จิ้น</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~0.68%</div><div class="d">$2.08/ปี · ขึ้นต่อเนื่อง 14+ ปี</div></div>
+      <div class="metric"><div class="k">FCF/Share</div><div class="v pos">~$8.56</div><div class="d">Beta ~0.8 · defensive cyclical</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART (ราคาย้อนหลัง ~1 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#9C7B3E"></i>ราคา VMC</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $265</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคา VMC เคลื่อนไหว +11.9% ในรอบปี (ก.ค. 68 $274.67 → มิ.ย. 69 $307.27) สะท้อนความแข็งแกร่งของธุรกิจ aggregates
+        จุดสูงสุด ก.พ. 69 ที่ $310.00 หลัง Q4 FY25 งบดีและ IIJA spending เร่งตัว
+        แต่มี.ค. 69 ย่อลงสู่ $272.30 จากความกังวลเศรษฐกิจชะลอ ก่อนดีดกลับสู่ระดับปัจจุบัน
+        ราคาซื้อขายเหนือ Fair Value $265 ตลอดช่วงปี บ่งชี้ว่าตลาด pricing moat premium ไว้สูง
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION (เฉลี่ย 3 วิธี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี · อิง adj EPS</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation (adj EPS TTM)</div><div class="mdesc">adj EPS (TTM) $8.42 × P/E เป้าหมาย ~30x — P/E เฉลี่ยระยะยาว sector ~28–32x; ใช้ 30x สะท้อน moat แต่ระมัดระวัง</div></div>
+        <div class="mval">$252.60</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. Forward P/E (FY26E)</div><div class="mdesc">EPS FY26E $9.20 × P/E เป้าหมาย ~30x — consensus analyst EPS estimate FY2026; P/E 30x เดิม</div></div>
+        <div class="mval">$276.00</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. P/FCF Valuation</div><div class="mdesc">FCF/Share $8.56 × P/FCF เป้าหมาย ~31x — สะท้อน free cash flow generation จริง หลัก capex บำรุง quarry</div></div>
+        <div class="mval">$265.36</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $252.60 – $276.00</span></div>
+        <div class="r">$265</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        วิธี P/E (adj TTM) ให้ค่าต่ำสุด $252.60 เพราะ TTM EPS รวมผลขาดทุนพิเศษบางไตรมาส
+        วิธี Forward P/E FY26E สูงสุด $276.00 สะท้อนการเติบโตที่คาดไว้
+        วิธี P/FCF $265.36 อยู่กลางและมีความน่าเชื่อถือสูงสำหรับธุรกิจ asset-heavy ที่กระแสเงินสดมั่นคง
+        ค่าเฉลี่ยสาม วิธี = $264.65 ≈ <b>$265</b> · ราคาปัจจุบัน $307.27 สูงกว่า FV ทุกวิธี (MOS −16.0%)
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $307.27</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $265</div></div>
+        </div>
+        <div class="scale">
+          <span>$185.50<br><small>MOS 30%</small></span>
+          <span>$212.00<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$265<br><small>Fair Value</small></span>
+          <span style="text-align:right">$276.00<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">$327<br><small>เป้าเฉลี่ย Analyst</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคา $307.27 สูงกว่า Fair Value $265 อยู่ ~16% (MOS ติดลบ) บ่งชี้ว่าตลาด pricing moat และ IIJA tailwind ไว้แล้ว
+        นักวิเคราะห์ 23 ราย เป้าเฉลี่ย $327 (+6% จากราคาปัจจุบัน) แต่ยังต่ำกว่า P/E ปัจจุบัน 36.5x
+        โซนน่าสนใจเริ่มต้นที่ &lt;$265 (Fair Value) · โซน MOS 20% ที่ $212.00 เป็นจุด deep value
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">−16.0%</div>
+        <div class="txt">ราคาแพงกว่ามูลค่าเหมาะสม ~16% · รอย่อก่อนสะสม</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$212.00</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$185.50</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $265</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="307.27" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $307.27 • EPS ฐาน ~$8.42 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS +5%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$253.50</div>
+          <div class="ret neg">−16% (รวมปันผล ~−14%)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$9.75</span></li>
+            <li><span>P/E ออก</span><span>26x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$6.24</span></li>
+            <li><span>สถานการณ์</span><span>volume ชะลอ ดอกเบี้ยสูงกดหุ้น infrastructure</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +9%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$327.00</div>
+          <div class="ret pos">+6% (รวมปันผล ~+8%)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$10.90</span></li>
+            <li><span>P/E ออก</span><span>30x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$6.24</span></li>
+            <li><span>สถานการณ์</span><span>IIJA execution ต่อเนื่อง pricing ขึ้นทุกปี</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +12%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$378.56</div>
+          <div class="ret pos">+23% (รวมปันผล ~+25%)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$11.83</span></li>
+            <li><span>P/E ออก</span><span>32x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$6.24</span></li>
+            <li><span>สถานการณ์</span><span>reshoring + housing rebound + pricing beat ต่อเนื่อง</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      Base case อิง EPS ฐาน $8.42 เติบโต 9%/ปี 3 ปี → EPS $10.90 × P/E 30x = $327 ตรงกับเป้านักวิเคราะห์เฉลี่ย
+      แต่ upside จากราคาปัจจุบัน ~+6% เท่านั้น (หัก risk-free rate แทบไม่มีส่วนต่าง) · Bull case ต้อง P/E rerating 32x
+      Bear case เกิดถ้า housing + commercial construction ชะลอต่อเนื่อง 2–3 ปี กดให้ P/E หด · ปันผลรวม ~$6.24 (3 ปี) เป็น cushion เล็กน้อย
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก &amp; ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>IIJA (Infrastructure Investment &amp; Jobs Act):</b> $1.2T ใช้จ่ายโครงสร้างพื้นฐาน 5–10 ปี demand aggregates โดยตรง VMC อยู่ในตำแหน่งที่ดีสุด</li>
+          <li><b>Local Pricing Monopoly (moat แข็งแกร่ง):</b> ขออนุญาตเปิด quarry ใหม่แทบเป็นไปไม่ได้ ทำให้ VMC มีอำนาจกำหนดราคาในแต่ละตลาดท้องถิ่น</li>
+          <li><b>Pricing Power เหนือเงินเฟ้อ:</b> ราคา aggregates ขึ้นทุกปีต่อเนื่อง >5 ปี กดดัน cost ต่อหน่วยลดลง → margin expansion ต่อเนื่อง</li>
+          <li><b>Reshoring &amp; Data Center Boom:</b> โรงงาน chip, ศูนย์ข้อมูล, logistics hub = demand หิน/ทราย/กรวดปริมาณมหาศาล หนุน volume ระยะยาว</li>
+          <li><b>ROIC &gt; WACC อย่างมีนัยสำคัญ:</b> ROIC 15.7% สูงกว่า WACC ~8–9% สะท้อน asset irreplaceable สร้าง economic value ต่อเนื่อง</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>Valuation สูงเกินกว่าการเติบโต:</b> P/E 36.5x สำหรับธุรกิจโต ~9%/ปี แทบไม่มี margin of safety · รอย่อสำคัญมาก</li>
+          <li><b>Cyclical Volume Risk:</b> ดอกเบี้ยสูง กดตลาด residential &amp; commercial construction → volume aggregates ลด (เคยเกิด 2022–2023)</li>
+          <li><b>ต้นทุนพลังงานและขนส่ง:</b> diesel/natural gas คือ cost หลักของ quarry &amp; trucking · spike ราคาพลังงานกดมาร์จิ้นได้ทันที</li>
+          <li><b>Weather &amp; Seasonality:</b> ฤดูหนาวในเขต Midwest/Northeast ทำให้รายได้ Q1 ต่ำทุกปี · ภัยธรรมชาติกระทบ site บางแห่ง</li>
+          <li><b>Execution IIJA ล่าช้า:</b> รัฐบาลกลาง/รัฐอาจเบิกจ่ายช้ากว่าแผน → demand ไม่ได้รับ catalyst ทันที</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>ธุรกิจชั้นเยี่ยม แต่ราคาแพง — รอย่อใกล้ $212</h2>
+      <p>Vulcan Materials คือผู้นำ aggregates สหรัฐที่มี moat แข็งแกร่งที่สุดในเซกเตอร์ (quarry permit = irreplaceable asset, pricing power ท้องถิ่น)
+         ได้ประโยชน์โดยตรงจาก IIJA $1.2T และ reshoring mega-projects ทำให้ demand ระยะยาวสดใส
+         อย่างไรก็ตาม ราคา $307.27 ที่ P/E 36.5x แพงเกินกว่าการเติบโต ~9%/ปี — Fair Value 3 วิธีเฉลี่ย $265 (MOS −16.0%)
+         นักวิเคราะห์ 23 ราย เป้าเฉลี่ย $327 ให้ upside เพียง +6% จากระดับปัจจุบัน ไม่คุ้มค่าความเสี่ยง
+         สำหรับนักลงทุนระยะยาว: ธุรกิจดีมากแต่ต้องรอราคาย่อ</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$265 <span style="font-size:12px;color:#cab9a8">($252.60–$276.00)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −16.0%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$327 (Buy/Outperform)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> รอราคาย่อใกล้ $265 (Fair Value) เพื่อ MOS เป็นบวก · จุดสะสมแรก &lt;$265 · deep value zone $212 (MOS 20%) · ที่ $307 ราคาแพงเกินไปสำหรับ return ที่คาดหวัง — moat ดีมากแต่ต้องรอจังหวะ
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    แหล่งข้อมูล: StockAnalysis.com / Yahoo Finance / Vulcan Materials Investor Relations / Macrotrends · ราคา ณ 26 มิ.ย. 2569
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 26 มิ.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
