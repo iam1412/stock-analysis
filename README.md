@@ -84,7 +84,7 @@ cp _template/skeleton-th.html reports/AAPL.html      # หรือ skeleton-us.
 #    เลือกสีแบรนด์ใน report-data.theme (ดู tools/brand-colors.md) + ให้ตัวเลขสอดคล้องกัน (CLAUDE.md §7)
 
 # 3. push — Cloudflare build & deploy ให้เอง
-npm run verify && git add -A && git commit -m "analyze: add AAPL stock analysis" && git push
+npm run verify && git add -A && git commit -m "analyze: add AAPL stock analysis" && git pull --rebase origin main && git push origin HEAD:main
 ```
 หน้า index จะเพิ่มการ์ดหุ้นใหม่ + เรียงตัวที่อัปเดตล่าสุดขึ้นบนสุดให้อัตโนมัติ
 
