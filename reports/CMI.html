@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น Cummins Inc. (CMI) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"CMI","currency":"USD","price":693.16,"fairValue":557,"mos":-24.4,"upside":-19.6,"pe":29.1,"dividendYield":1.16,"roe":21.99}
+</script>
+<script type="application/json" id="report-data">
+{"theme":{"accent":"#D11F2D","accentDark":"#9A1620","darkGrad":"linear-gradient(135deg, #120303 0%, #240608 100%)","glow":"rgba(209,31,45,0.35)","subColor":"#E85A64","headerMuted":"rgba(209,31,45,0.12)","verdictText":"#F8D2D5","vcellLabel":"rgba(248,210,213,0.6)","badge":"#D11F2D","chgBg":"rgba(34,197,94,0.15)","chgColor":"#22C55E"},"chart":{"data":[["ก.ค. 68",367.62],["ส.ค. 68",398.44],["ก.ย. 68",422.37],["ต.ค. 68",437.68],["พ.ย. 68",497.98],["ธ.ค. 68",510.45],["ม.ค. 69",578.82],["ก.พ. 69",583.87],["มี.ค. 69",538.02],["เม.ย. 69",671.01],["พ.ค. 69",646.63],["มิ.ย. 69",693.16]],"min":350,"max":700,"grid":[430,520,610],"fairLine":557,"currency":"$","highlight":[11]},"gauge":{"min":345,"max":700,"cur":693.16,"fair":557,"fairLabelTop":false},"fv":557}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">CMI</div>
+    <div>
+      <span class="tag">NYSE: CMI</span>
+      <span class="tag">Industrials</span>
+      <span class="tag">Engine & Power Systems</span>
+    </div>
+    <h1>Cummins Inc.</h1>
+    <div class="sub">ผู้นำเครื่องยนต์ดีเซล/ก๊าซธรรมชาติ • Engine (truck/industrial) • Power Systems (gensets/data-center backup power) • Components • Distribution • Accelera (hydrogen/zero-emission)</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$693.16<small>(CMI)</small></div>
+      </div>
+      <div class="chg">▲ +88.6% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 26 มิ.ย. 2569<br>
+        กรอบ 52 สัปดาห์ $319.37 / $737.76<br>
+        ที่มา: StockAnalysis.com / Yahoo Finance / Cummins Investor Relations
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล TTM / FY2025</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~$27.0B</div><div class="d">~38.9M shares outstanding</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~29.1x</div><div class="d">adj EPS $23.78 · GAAP EPS $19.25</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~17–22x</div><div class="d">ปัจจุบันสูงกว่าเฉลี่ยประวัติศาสตร์</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">~5.5x</div><div class="d">BVPS ~$126</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">~$0.75B</div><div class="d">GAAP · adj net income ~$0.93B</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$19.25</div><div class="d">adj EPS $23.78 · กำลังดี</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~$126</div><div class="d">Book value per share FY2025</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~22.0% / ~8.5%</div><div class="d">ROIC ~15.8% · แข็งแกร่ง</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">~$33.7B</div><div class="d">FY2025 · −1.2% YoY (truck NA อ่อน)</div></div>
+      <div class="metric"><div class="k">Operating Margin</div><div class="v">~12.0%</div><div class="d">FCF/Share ~$17.20</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~1.16%</div><div class="d">$8.00/ปี · grower ต่อเนื่อง</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">~1.1</div><div class="d">ความผันผวนใกล้ตลาด (cyclical)</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART (ราคาย้อนหลัง ~1 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#D11F2D"></i>ราคา CMI</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $557</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        CMI พุ่ง <b>+88.6% ในรอบปี</b> ($368 → $693) หนุนหลักจาก <b>Power Systems segment ทำสถิติสูงสุด</b> — ดีมานด์ genset/backup power จาก data center boom พุ่งแรง +18% YoY
+        ราคาฝ่าแนวต้านทะลุ $500 ช่วง พ.ย. 68 และไต่ระดับต่อเนื่องถึง $693 ณ มิ.ย. 69
+        ปัจจุบันใกล้ 52w high $737.76 · fair value $557 ต่ำกว่าราคาปัจจุบันมาก
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION (เฉลี่ย 3 วิธี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation (adj EPS)</div><div class="mdesc">adj EPS (TTM) $23.78 × P/E เป้าหมาย ~24x — P/E เหมาะสมสำหรับ cyclical industrial ผู้นำตลาด ผลตอบแทนดี</div></div>
+        <div class="mval">$570.72</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. Forward P/E (FY26E)</div><div class="mdesc">EPS FY26E $26.50 × P/E เป้าหมาย ~24x — ใช้ consensus estimate นักวิเคราะห์ปีหน้า สะท้อน growth data-center</div></div>
+        <div class="mval">$636.00</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. P/FCF Valuation</div><div class="mdesc">FCF/Share $17.20 × P/FCF เป้าหมาย ~27x — สะท้อน cash generation คุณภาพสูง + dividend grower</div></div>
+        <div class="mval">$464.40</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $464 – $636</span></div>
+        <div class="r">$557</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        วิธี Forward P/E ให้ค่าสูงสุด ($636) สะท้อน optimism data-center genset; วิธี P/FCF ให้ต่ำสุด ($464) สะท้อนความระวังเรื่อง cyclicality
+        ค่าเฉลี่ยสามวิธี ($570.72 + $636 + $464.40) / 3 = <b>$557</b> เป็น fair value กลางที่สมดุล
+        หมายเหตุ: DDM ใช้เป็นเพียง floor เนื่องจาก yield 1.16% ต่ำ ไม่ represent value หลัก
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $693.16</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $557</div></div>
+        </div>
+        <div class="scale">
+          <span>$389.90<br><small>MOS 30%</small></span>
+          <span>$445.60<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$557<br><small>Fair Value</small></span>
+          <span style="text-align:right">$636<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">$749<br><small>เป้าเฉลี่ย Analyst</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคา $693.16 สูงกว่า fair value $557 อยู่ <b>24.4%</b> — ตลาด price-in การเติบโต data-center power ไปแล้วมาก
+        จุดซื้อ MOS 20% อยู่ที่ $445.60 และ MOS 30% ที่ $389.90 ต่ำกว่าราคาปัจจุบันมาก
+        นักวิเคราะห์ 22 รายมีเป้าเฉลี่ย $749 (+8% จากปัจจุบัน) สะท้อน bull case data-center แต่ upside จำกัด
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">−24.4%</div>
+        <div class="txt">ราคาแพงกว่ามูลค่าเหมาะสม — ไม่มี Margin of Safety ในปัจจุบัน</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$445.60</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$389.90</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $557</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="693.16" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $693.16 • EPS ฐาน ~$23.78 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS +5%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$495.54</div>
+          <div class="ret neg">−29%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$27.53</span></li>
+            <li><span>P/E ออก</span><span>18x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$24.00</span></li>
+            <li><span>สถานการณ์</span><span>truck NA ซึม + data-center ชะลอ + multiple หด</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +10%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$696.30</div>
+          <div class="ret pos">+0.5%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$31.65</span></li>
+            <li><span>P/E ออก</span><span>22x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$24.00</span></li>
+            <li><span>สถานการณ์</span><span>Power Systems เติบโต ชดเชย truck อ่อน · multiple normalize</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +13%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$823.68</div>
+          <div class="ret pos">+19%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$34.32</span></li>
+            <li><span>P/E ออก</span><span>24x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$24.00</span></li>
+            <li><span>สถานการณ์</span><span>data-center genset boom ต่อเนื่อง + EPA 2027 truck prebuy</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      การคาดการณ์อิง adj EPS ฐาน $23.78 (FY2025) · Base case EPS +10%/ปี ใกล้เคียง consensus นักวิเคราะห์
+      ผลตอบแทน Base +0.5% (3 ปีรวมปันผล) สะท้อนว่าราคาปัจจุบันตั้งเป้าไว้สูงมากแล้ว
+      Bear case ให้ผลตอบแทนติดลบ −29% หากตลาดกลับมาประเมิน multiple ที่เหมาะกับ cyclical industrial มากขึ้น
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>Data-Center Power Boom:</b> Power Systems segment record revenue +18% YoY จากดีมานด์ genset/UPS สำหรับ hyperscaler — AI infrastructure boom ยังไม่หยุด</li>
+          <li><b>EPA 2027 Prebuy:</b> กฎ EPA emission ใหม่ปี 2027 กระตุ้นผู้ซื้อรถบรรทุกมาสั่งซื้อล่วงหน้า ช่วยชดเชย cycle ซบเซา</li>
+          <li><b>Dividend Grower:</b> ปันผล $8.00/ปี เพิ่มต่อเนื่อง 16+ ปี · FCF ดีรองรับการเพิ่มปันผล</li>
+          <li><b>Distribution Segment:</b> รายได้ recurring ~37% ของยอดขาย — cushion รายได้ในช่วง cycle อ่อน</li>
+          <li><b>Accelera Optionality:</b> hydrogen/zero-emission vehicle option ระยะยาว + strategic review อาจ unlock value</li>
+          <li><b>Global Installed Base:</b> เครื่องยนต์ CMI ทั่วโลก >1.4M เครื่อง — aftermarket/parts revenue มั่นคง</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>Valuation Premium:</b> P/E 29x สูงมากสำหรับ cyclical industrial — ถ้า multiple หดกลับ 18–20x ราคาดิ่งแรง</li>
+          <li><b>Truck Cycle Downturn:</b> ตลาดรถบรรทุก North America ยังอ่อนแรง — Engine segment (~32% รายได้) กดดัน</li>
+          <li><b>Data-Center Deceleration:</b> ถ้า hyperscaler ลดงบ capex หรือ self-supply genset — Power Systems growth ชะลอ multiple หด</li>
+          <li><b>Accelera Losses:</b> สำรอง $458M · ขาดทุนต่อเนื่อง · ถ้า strategic review ล่าช้า drag earnings</li>
+          <li><b>Atmus Spinoff Impact:</b> แยก Filtration เป็น Atmus (2023) ลด diversification เดิม</li>
+          <li><b>Currency & Supply Chain:</b> รายได้ต่างประเทศ ~50% + ราคา commodity ผันผวนกดดัน margin</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>ของดี แต่ราคาแพงหลังวิ่ง +88.6% — รอย่อก่อน</h2>
+      <p>Cummins ผู้นำเครื่องยนต์/power generation คุณภาพดี ได้ tailwind จาก data-center genset boom ที่ Power Systems ทำสถิติ record ต่อเนื่อง แต่ราคาพุ่ง +88.6% ในรอบปีไปไกลเกิน fair value $557 แล้ว ที่ P/E 29x adj EPS = ตลาด price-in การเติบโตไปมากแล้ว · นักวิเคราะห์ 22 รายตั้งเป้าเฉลี่ย $749 (+8%) ใน bull case data-center แต่วิเคราะห์ระมัดระวังกว่าเรื่อง cyclicality + multiple rerating · Base case ผลตอบแทน 3 ปี แค่ +0.5% · รอย่อใกล้ $446 (MOS 20%) ก่อนพิจารณาสะสม</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$557 <span style="font-size:12px;color:#cab9a8">($464–$636)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −24.4%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$749 (Buy/Outperform)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ถือ/ชมหุ้นได้ถ้าเข้าช่วง $400–500 — ราคาปัจจุบัน $693 ไม่มี MOS · รอย่อสู่ &lt;$446 (MOS 20%) ก่อนสะสม · ผู้ที่มีอยู่แล้วพิจารณา trim บางส่วนใกล้ 52w high $737
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ที่มา: StockAnalysis.com / Yahoo Finance / Cummins Investor Relations / Macrotrends
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 26 มิ.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
