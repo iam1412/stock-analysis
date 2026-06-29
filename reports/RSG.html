@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น Republic Services (RSG) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"RSG","currency":"USD","price":216.41,"fairValue":190,"mos":-13.9,"upside":-12.2,"pe":30.8,"dividendYield":1.16,"roe":18.35}
+</script>
+<script type="application/json" id="report-data">
+{"theme":{"accent":"#1B6CA8","accentDark":"#114A75","darkGrad":"linear-gradient(135deg, #02080F 0%, #041626 100%)","glow":"rgba(27,108,168,0.35)","subColor":"#4E97CB","headerMuted":"rgba(27,108,168,0.12)","verdictText":"#CFE3F2","vcellLabel":"rgba(207,227,242,0.6)","badge":"#1B6CA8","chgBg":"rgba(239,68,68,0.15)","chgColor":"#EF4444"},"chart":{"data":[["ก.ค. 68",230.65],["ส.ค. 68",233.97],["ก.ย. 68",229.48],["ต.ค. 68",208.24],["พ.ย. 68",217.06],["ธ.ค. 68",211.93],["ม.ค. 69",215.09],["ก.พ. 69",229.00],["มี.ค. 69",219.02],["เม.ย. 69",209.22],["พ.ค. 69",200.44],["มิ.ย. 69",215.99]],"min":185,"max":240,"grid":[200,215,230],"fairLine":190,"currency":"$","highlight":[10]},"gauge":{"min":182,"max":245,"cur":216.41,"fair":190,"fairLabelTop":false},"fv":190}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">● ● ●</div>
+    <div>
+      <span class="tag">NYSE: RSG</span>
+      <span class="tag">Industrials</span>
+      <span class="tag">Waste Management</span>
+    </div>
+    <h1>Republic Services, Inc.</h1>
+    <div class="sub">เก็บ-ขนส่ง-กำจัดขยะอันดับ 2 อเมริกาเหนือ • Collection ~68% • Landfill (207 แห่ง) • Environmental Solutions (hazardous) • Recycling • RNG/sustainability • pricing power</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$216.41<small>(RSG)</small></div>
+      </div>
+      <div class="chg">▼ −6.4% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 26 มิ.ย. 2569<br>
+        กรอบ 52 สัปดาห์ $196.41 / $246.82<br>
+        ที่มา: StockAnalysis.com / Yahoo Finance / Republic Services IR / Macrotrends
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">FY2025 · ปีงบสิ้น ธ.ค.</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~$69B</div><div class="d">~318M shares</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~30.8x</div><div class="d">adj EPS $7.02 · GAAP P/E ~31.6x</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~28–32x</div><div class="d">defensive premium สม่ำเสมอ</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">~5.7x</div><div class="d">BV/share ~$38 (asset-heavy)</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">~$2.17B</div><div class="d">GAAP EPS $6.85 · adj EPS $7.02</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$7.02</div><div class="d">adj · GAAP $6.85 · +8.7% YoY</div></div>
+      <div class="metric"><div class="k">FCF/Share</div><div class="v">~$8.34</div><div class="d">FCF yield ~3.9%</div></div>
+      <div class="metric"><div class="k">ROE / ROIC</div><div class="v pos">~18.4% / 10.9%</div><div class="d">stable, asset-heavy moat</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">~$16.59B</div><div class="d">+3.5% YoY · 5y CAGR ~8%</div></div>
+      <div class="metric"><div class="k">Operating/EBITDA Margin</div><div class="v">19.9% / 32%</div><div class="d">ค่อนข้างคงที่ทุกปี</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~1.16%</div><div class="d">$2.50/ปี · grower 22 ปีติด</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">~0.72</div><div class="d">defensive · ต่ำกว่าตลาด</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#1B6CA8"></i>ราคา RSG</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $190</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคา RSG เปิดปี (ก.ค. 68) ที่ ~$231 แล้วแตะจุดสูงสุดช่วง ส.ค. ที่ $234 ก่อนปรับลงรับแรงกดดันดอกเบี้ยและตลาดโดยรวม
+        ช่วง ต.ค. 68 ร่วงมาที่ ~$208 ก่อนฟื้นตัว แต่ใน พ.ค. 69 ลงแตะจุดต่ำสุด ~$200 (ไฮไลต์) จากความกังวลต้นทุนแรงงาน/น้ำมัน
+        ล่าสุด มิ.ย. 69 ฟื้นมาที่ $216 — ผลตอบแทนรอบปี −6.4% ยังคงเหนือกว่า FV $190
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation (adj EPS)</div><div class="mdesc">adj EPS (TTM) $7.02 × P/E เป้าหมาย ~26x — discount จาก P/E ปัจจุบัน 31x สะท้อนการเติบโต ~8% ระยะยาว</div></div>
+        <div class="mval">$182.52</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. Forward P/E (FY26E)</div><div class="mdesc">FY26E EPS $7.24 × Forward P/E ~26x — consensus estimate นักวิเคราะห์ EPS ปีหน้า</div></div>
+        <div class="mval">$188.24</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. P/FCF Valuation</div><div class="mdesc">FCF/Share $8.34 × P/FCF ~24x — waste sector ให้ premium FCF เพราะ predictable cash flow; DDM yield 1.16% ใช้เป็น floor เท่านั้น</div></div>
+        <div class="mval">$200.16</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $182.52 – $200.16</span></div>
+        <div class="r">$190</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        วิธี P/FCF ให้ค่าสูงสุด $200 สะท้อน free cash flow ที่แข็งแกร่งของ Republic Services
+        ขณะที่ P/E adj ให้ค่าต่ำสุด $182 โดย P/E เป้า 26x คือระดับ "fair" สำหรับธุรกิจ waste ที่โต ~8%/ปี
+        เฉลี่ยทั้ง 3 วิธี = $190.31 → ปัดลง $190 เป็น Fair Value กลาง
+        ราคาปัจจุบัน $216 สูงกว่า FV ทั้ง 3 วิธี สะท้อน defensive premium ที่นักลงทุนให้กับหุ้น waste quality
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $216.41</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $190</div></div>
+        </div>
+        <div class="scale">
+          <span>$133<br><small>MOS 30%</small></span>
+          <span>$152<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$190<br><small>Fair Value</small></span>
+          <span style="text-align:right">$200<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">$244<br><small>เป้าเฉลี่ย Analyst</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคา $216.41 อยู่เหนือ Fair Value $190 ประมาณ 14% — อยู่ใน "overvalued zone" ตาม DCF/valuation กลาง
+        อย่างไรก็ตาม นักวิเคราะห์ 27 รายให้เป้าเฉลี่ย $244 (+13%) สะท้อน premium สำหรับคุณภาพธุรกิจและ pricing power
+        จุดซื้อ MOS 20% อยู่ที่ $152 และ MOS 30% ที่ $133 ซึ่งต้องรอ correction ใหญ่
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">−13.9%</div>
+        <div class="txt">ราคาแพงกว่ามูลค่าเหมาะสม — ยังไม่มี Margin of Safety</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$152.00</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$133.00</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $190</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="216.41" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $216.41 • EPS ฐาน ~$7.02 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS +6%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$183.92</div>
+          <div class="ret neg">−15%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$8.36</span></li>
+            <li><span>P/E ออก</span><span>22x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$7.50</span></li>
+            <li><span>สถานการณ์</span><span>ถดถอย-pricing power ลด</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +9%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$227.25</div>
+          <div class="ret pos">+5%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$9.09</span></li>
+            <li><span>P/E ออก</span><span>25x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$7.50</span></li>
+            <li><span>สถานการณ์</span><span>เติบโตสม่ำเสมอ pricing +4-5%</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +12%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$266.22</div>
+          <div class="ret pos">+23%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$9.86</span></li>
+            <li><span>P/E ออก</span><span>27x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$7.50</span></li>
+            <li><span>สถานการณ์</span><span>Environmental Solutions เร่งตัว + RNG</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      Base case คาด EPS โต ~9%/ปี (สอดคล้อง consensus) ออก P/E 25x ให้ราคาเป้า $227 (+5% รวมปันผล ~3 ปี)
+      ผลตอบแทนไม่สูงเมื่อเทียบกับ risk จากจุดเข้าที่แพง — Bull case $266 (+23%) ต้องการ re-rating + EPS เร่งตัว
+      Bear case $184 (−15%) เกิดได้หาก recession กดดัน pricing power หรือ P/E compression มาที่ 22x
+      ปันผล $7.50 ตลอด 3 ปี เป็น cushion แต่ไม่เพียงพอชดเชย downside ที่จุดเข้าปัจจุบัน
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>Landfill moat:</b> 207 landfills ทั่วประเทศเป็น barrier-to-entry สูง ขออนุญาตใหม่แทบเป็นไปไม่ได้ในปัจจุบัน</li>
+          <li><b>Pricing power เหนือเงินเฟ้อ:</b> ขึ้นราคาได้ +4-5%/ปีสม่ำเสมอโดยไม่สูญเสีย volume (contracts ระยะยาว)</li>
+          <li><b>Recession-resistant:</b> ขยะเกิดขึ้นเสมอ ไม่ว่าเศรษฐกิจจะเป็นอย่างไร — revenue ขึ้นแม้ปี GDP ลบ</li>
+          <li><b>Environmental Solutions / hazardous:</b> US Ecology acquisition เพิ่ม margin สูง + diversify revenue stream</li>
+          <li><b>RNG & sustainability:</b> Renewable Natural Gas จาก landfill gas = revenue stream ใหม่ + ESG premium</li>
+          <li><b>Dividend grower 22 ปีติด:</b> เพิ่มปันผลทุกปี สร้าง shareholder confidence + institutional flow</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>Valuation แพง P/E 31x:</b> Premium สูงสำหรับธุรกิจที่โต ~8% — P/E compression เสี่ยงสูงหาก sentiment เปลี่ยน</li>
+          <li><b>Leverage / ดอกเบี้ย:</b> D/E ~1.18 — ดอกเบี้ยสูงกดดัน interest expense และ FCF generation</li>
+          <li><b>ต้นทุนแรงงาน/น้ำมัน:</b> แรงงานขับรถ/ช่างและน้ำมัน diesel เป็นต้นทุนหลัก — เงินเฟ้อกด margin</li>
+          <li><b>Recycling commodity ผันผวน:</b> ราคา commodity (กระดาษ, พลาสติก) ผันผวนรุนแรง กระทบรายได้ recycling</li>
+          <li><b>M&A integration risk:</b> US Ecology และ acquisition อื่น ๆ ต้องการเวลา integrate ก่อนจะเห็น synergy จริง</li>
+          <li><b>กฎระเบียบสิ่งแวดล้อม:</b> EPA regulation เข้มงวดขึ้นเพิ่มต้นทุน compliance และ closure liability ของ landfill</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>คุณภาพดีเยี่ยม แต่ราคาเต็มมูลค่า — รอย่อใกล้ $152 ถึงจะน่าสนใจ</h2>
+      <p>Republic Services เป็นธุรกิจ waste management อันดับ 2 ของอเมริกาเหนือที่มีคุณภาพสูงมาก — landfill 207 แห่งเป็น moat แท้จริง, pricing power เหนือเงินเฟ้อ, recession-resistant และ dividend grower 22 ปีติด อย่างไรก็ตาม ราคาปัจจุบัน $216 ที่ P/E 31x adj แพงสำหรับการเติบโต ~8%/ปี — Fair Value สามวิธีเฉลี่ยที่ $190 (MOS −13.9%) สะท้อนว่าตลาดให้ defensive premium ไปล่วงหน้าแล้ว นักวิเคราะห์ 27 รายให้เป้าเฉลี่ย $244 (+13%) แต่ upside จำกัดจากจุดนี้ เปรียบได้กับ WM (Waste Management) ที่คล้ายกัน — ธุรกิจดีแต่ต้องรอราคาที่สมเหตุสมผลกว่านี้</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$190 <span style="font-size:12px;color:#cab9a8">($182.52–$200.16)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −13.9%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$244 (Buy consensus)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ถือไว้ถ้ามีอยู่แล้ว (ธุรกิจยังดี) · ไม่แนะนำซื้อเพิ่มที่ราคานี้ · รอย่อมาใกล้ $190 (FV) หรือ $152 (MOS 20%) ก่อนทยอยสะสม · เป้าระยะยาวที่ $133 (MOS 30%) คือ deep value entry ที่ดีที่สุด
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    แหล่งข้อมูล: StockAnalysis.com · Yahoo Finance · Republic Services Investor Relations (ir.republicservices.com) · Macrotrends
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 26 มิ.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
