@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น Waste Management (WM) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"WM","currency":"USD","price":225.53,"fairValue":199,"mos":-13.3,"upside":-11.8,"pe":32.64,"dividendYield":1.68,"roe":29.94}
+</script>
+<script type="application/json" id="report-data">
+{"theme":{"accent":"#0E9D4E","accentDark":"#0A6E37","darkGrad":"linear-gradient(135deg, #02100A 0%, #051F12 100%)","glow":"rgba(14,157,78,0.35)","subColor":"#42C47E","headerMuted":"rgba(14,157,78,0.12)","verdictText":"#CFEDD9","vcellLabel":"rgba(207,237,217,0.6)","badge":"#0E9D4E","chgBg":"rgba(239,68,68,0.15)","chgColor":"#EF4444"},"chart":{"data":[["ก.ค. 68",229.16],["ส.ค. 68",226.39],["ก.ย. 68",220.83],["ต.ค. 68",199.77],["พ.ย. 68",217.87],["ธ.ค. 68",219.71],["ม.ค. 69",222.24],["ก.พ. 69",240.84],["มี.ค. 69",229.79],["เม.ย. 69",232.55],["พ.ค. 69",211.46],["มิ.ย. 69",225.53]],"min":195,"max":245,"grid":[205,220,235],"fairLine":199,"currency":"$","highlight":[3]},"gauge":{"min":190,"max":250,"cur":225.53,"fair":199,"fairLabelTop":false},"fv":199}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">▪▪▪</div>
+    <div>
+      <span class="tag">NYSE: WM</span>
+      <span class="tag">Industrials</span>
+      <span class="tag">Waste Management</span>
+    </div>
+    <h1>Waste Management, Inc.</h1>
+    <div class="sub">เก็บ-ขนส่ง-กำจัดขยะรายใหญ่สุดอเมริกาเหนือ • Collection/Transfer/Landfill (257 แห่ง) • Recycling • Renewable Natural Gas (RNG) • WM Healthcare Solutions (Stericycle)</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$225.53<small>(WM)</small></div>
+      </div>
+      <div class="chg">▼ −1.6% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 26 มิ.ย. 2569<br>
+        กรอบ 52 สัปดาห์ $194.11 / $248.13<br>
+        ที่มา: StockAnalysis.com / Yahoo Finance / Waste Management IR / Macrotrends
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ มิ.ย. 2569 · TTM</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~$90.6B</div><div class="d">401.58M shares</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~32.6x</div><div class="d">Premium defensive sector</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~29–33x</div><div class="d">ช่วงปกติ WM</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">~9.3x</div><div class="d">ROE สูง leverage moderate</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">~$2.69B</div><div class="d">EPS ~$6.70 (FY25)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$6.91</div><div class="d">FY26E ~$7.80</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~$24.20</div><div class="d">Goodwill จาก Stericycle</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~29.9% / 5.8%</div><div class="d">ROIC ~11.3%</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">~$25.2B</div><div class="d">CAGR ~9% (5Y)</div></div>
+      <div class="metric"><div class="k">Operating/EBITDA Margin</div><div class="v">17.1% / >30%</div><div class="d">FCF/Share ~$7.29</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~1.68%</div><div class="d">$3.78/ปี · Aristocrat 23 ปี</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">~0.72</div><div class="d">Defensive / Recession-resistant</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART (ราคาย้อนหลัง ~1 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#0E9D4E"></i>ราคา WM</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $199</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคา WM ทรงตัวในกรอบ $200–$241 ตลอดปีที่ผ่านมา โดยจุดต่ำสุดที่ <b>$199.77 ใน ต.ค. 2568</b> (ใกล้เคียง Fair Value) ก่อนจะฟื้นตัวขึ้นในช่วง ก.พ. 2569 ที่ $240.84 จากผลประกอบการ Q4 ที่แข็งแกร่ง จากนั้นปรับตัวลงอีกครั้งในช่วง เม.ย.–พ.ค. 2569 จากแรงกดดัน Stericycle integration ปิดที่ $225.53 ณ มิ.ย. 2569 เปลี่ยนแปลง −1.6% จากราคา ~1 ปีก่อน
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION (เฉลี่ย 3 วิธี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation (TTM)</div><div class="mdesc">EPS (TTM) $6.91 × P/E เป้าหมาย ~27x — P/E เหมาะสมสำหรับธุรกิจ defensive เติบโต ~8%/ปี (ต่ำกว่า current 32x เพื่อ normalize premium)</div></div>
+        <div class="mval">$186.57</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. Forward P/E FY26E</div><div class="mdesc">EPS FY26E $7.80 × P/E เป้าหมาย ~26x — อิง consensus estimate FY2026 และ P/E ที่สมเหตุสมผลกว่าราคาปัจจุบัน</div></div>
+        <div class="mval">$202.80</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. EV/EBITDA</div><div class="mdesc">EBITDA ~$7.5B × 14x EV − Net Debt $22B ÷ 401.58M shares — อิงมาตรฐานอุตสาหกรรมขยะ EV/EBITDA ~14x</div></div>
+        <div class="mval">$206.69</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $186 – $207</span></div>
+        <div class="r">$199</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        วิธี EV/EBITDA ให้ค่าสูงสุด ($206.69) เพราะ EBITDA margin แข็งแกร่ง >30% วิธี P/E TTM ให้ค่าต่ำสุด ($186.57) สะท้อนว่า P/E ปัจจุบัน 32x แพงเกินสำหรับการเติบโต ~8% WM ซื้อขายด้วย premium defensive แต่ราคาปัจจุบัน $225.53 อยู่เหนือ FV ทั้ง 3 วิธี · นักวิเคราะห์ 28 ราย ตั้งเป้าเฉลี่ย ~$253 (Overweight ส่วนใหญ่) อิงการเติบโตระยะยาวและ RNG upside
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $225.53</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $199</div></div>
+        </div>
+        <div class="scale">
+          <span>$139.30<br><small>MOS 30%</small></span>
+          <span>$159.20<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$199<br><small>Fair Value</small></span>
+          <span style="text-align:right">$207<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">$253<br><small>เป้าเฉลี่ย Analyst</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคา WM ที่ $225.53 อยู่สูงกว่า Fair Value $199 ประมาณ 13% (MOS −13.3%) แสดงว่าตลาดกำหนด premium สำหรับ moat แน่น, ความมั่นคงระยะยาว และ dividend aristocrat จุดซื้อที่น่าสนใจที่ MOS 20% คือ $159.20 ซึ่งห่างจากราคาปัจจุบันพอสมควร · นักวิเคราะห์ 28 ราย เป้า $253 สะท้อน upside ~12% จากราคาปัจจุบัน (แต่ยังเหนือ intrinsic FV)
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">−13.3%</div>
+        <div class="txt">ราคาแพงกว่า Fair Value — ยังไม่มี Margin of Safety · รอจังหวะย่อ</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$159.20</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$139.30</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $199</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="225.53" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $225.53 • EPS ฐาน ~$6.91 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS +6%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$189.29</div>
+          <div class="ret neg">−16%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$8.23</span></li>
+            <li><span>P/E ออก</span><span>23x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$11.52</span></li>
+            <li><span>สถานการณ์</span><span>Stericycle drag + P/E compress</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +9%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$232.70</div>
+          <div class="ret pos">+3%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$8.95</span></li>
+            <li><span>P/E ออก</span><span>26x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$11.97</span></li>
+            <li><span>สถานการณ์</span><span>Stericycle ผนึกสำเร็จ + RNG ramp</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +12%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$271.88</div>
+          <div class="ret pos">+21%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$9.71</span></li>
+            <li><span>P/E ออก</span><span>28x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$12.42</span></li>
+            <li><span>สถานการณ์</span><span>RNG EBITDA >$1B + pricing power</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      การคาดการณ์อิงสมมติฐาน EPS ฐาน $6.91 (TTM) เติบโตตาม scenario · ปันผลสะสม 3 ปี ~$11.52–$12.42 (อิงอัตราเติบโตปันผล ~3%/ปี) · P/E ออกปรับลดจาก premium ปัจจุบัน 32x สะท้อน normalization หลัง Stericycle integration สมบูรณ์ · Base case ให้ผลตอบแทนต่ำ (+3%) เพราะราคาเริ่มต้นค่อนข้างแพง
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>Landfill Barrier สูงมาก:</b> ขออนุญาตเปิด landfill ใหม่ยากระดับ decade — moat ป้องกันคู่แข่งแทบเป็นไปไม่ได้</li>
+          <li><b>Pricing Power เหนือเงินเฟ้อ:</b> สัญญา long-term มีกลไก price escalation อัตโนมัติ ลูกค้าเปลี่ยนผู้ให้บริการยากเพราะ switching cost สูง</li>
+          <li><b>Dividend Aristocrat 23 ปีต่อเนื่อง:</b> ปันผลเพิ่มต่อเนื่องทุกปีสร้างความเชื่อมั่นนักลงทุนระยะยาว</li>
+          <li><b>Renewable Natural Gas (RNG):</b> แปลง landfill gas → RNG ขาย — EBITDA RNG ตั้งเป้า >$1B ภายในปี 2027 เป็น margin kicker สำคัญ</li>
+          <li><b>Stericycle Synergy (2024):</b> การซื้อ WM Healthcare Solutions (ขยะการแพทย์) เปิดตลาดใหม่ healthcare waste ~$7B ของอเมริกา</li>
+          <li><b>Recession-Resistant:</b> ขยะยังเกิดแม้เศรษฐกิจชะลอ — รายได้มั่นคงตลอดวัฏจักรเศรษฐกิจ</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>Valuation แพง P/E 32x:</b> สำหรับธุรกิจเติบโต ~8%/ปี premium สูง — หาก P/E compress ราคาปรับลงได้มาก</li>
+          <li><b>Stericycle Integration Risk:</b> การผสานกิจการใหม่ยังกด EPS FY2025–2026 ผลลัพธ์ต่ำกว่าคาดกระทบ sentiment</li>
+          <li><b>อัตราดอกเบี้ยสูง:</b> D/E ~2.29 ต้นทุนดอกเบี้ยกระทบ net income โดยตรงในสภาพแวดล้อมดอกเบี้ยสูง</li>
+          <li><b>ราคา Recycling Commodity:</b> รายได้ recycling (~6%) ขึ้นกับราคาตลาด scrap ผันผวนตาม commodity cycle</li>
+          <li><b>ต้นทุนแรงงาน/เชื้อเพลิง:</b> driver/collector เป็น labor-intensive + น้ำมันดีเซลกระทบ margin อย่างมีนัยสำคัญ</li>
+          <li><b>Environmental Liability:</b> landfill closure cost และ environmental remediation ถ้าเกิดเหตุรั่วไหล</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>ธุรกิจชั้นเลิศ · ราคาเต็มมูลค่า · รอโอกาส</h2>
+      <p>Waste Management คือผู้นำขยะอเมริกาเหนือที่มี moat แน่นที่สุดในอุตสาหกรรม — landfill barrier สูงระดับ decade, pricing power เหนือเงินเฟ้อ, dividend aristocrat 23 ปีต่อเนื่อง, และ recession-resistant ที่แท้จริง ธุรกิจคุณภาพสูงมาก แต่ราคา $225.53 ที่ P/E 32x แพงกว่า Fair Value $199 ประมาณ 13% ทำให้ยังไม่มี margin of safety สำหรับนักลงทุน value · โอกาสที่ดีคือรอราคาย่อมาใกล้ $159–$199 ก่อนเข้าสะสม</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$199 <span style="font-size:12px;color:#cab9a8">($186–$207)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −13.3%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$253 (Overweight)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ถือ/รอ — ธุรกิจยอดเยี่ยมแต่ราคาแพง ไม่แนะนำซื้อที่ $225 สำหรับ value investor · รอ Stericycle drag + ดอกเบี้ยกดดันให้ราคาย่อใกล้ $199 (Fair Value) หรือ $159 (MOS 20%) · ระยะสั้น นักวิเคราะห์ยังมองเป้า $253 แต่ upside จำกัดจากราคาปัจจุบัน
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ที่มา: StockAnalysis.com / Yahoo Finance / Waste Management Investor Relations / Macrotrends (ข้อมูล ณ มิ.ย. 2569)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 26 มิ.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
