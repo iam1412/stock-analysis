@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น Public Storage (PSA) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"PSA","currency":"USD","price":324.39,"fairValue":316,"mos":-2.7,"upside":-2.6,"pe":19.1,"dividendYield":3.70,"roe":20.17}
+</script>
+<script type="application/json" id="report-data">
+{"theme":{"accent":"#E8862E","accentDark":"#B0631C","darkGrad":"linear-gradient(135deg, #100A02 0%, #201506 100%)","glow":"rgba(232,134,46,0.35)","subColor":"#F0A85E","headerMuted":"rgba(232,134,46,0.12)","verdictText":"#F5E2CC","vcellLabel":"rgba(245,226,204,0.6)","badge":"#E8862E","chgBg":"rgba(34,197,94,0.15)","chgColor":"#22C55E"},"chart":{"data":[["ก.ค. 68",271.94],["ส.ค. 68",294.59],["ก.ย. 68",288.85],["ต.ค. 68",278.56],["พ.ย. 68",274.54],["ธ.ค. 68",259.50],["ม.ค. 69",276.19],["ก.พ. 69",307.06],["มี.ค. 69",270.88],["เม.ย. 69",302.45],["พ.ค. 69",303.69],["มิ.ย. 69",324.39]],"min":255,"max":328,"grid":[275,295,315],"fairLine":316,"currency":"$","highlight":[11]},"gauge":{"min":250,"max":330,"cur":324.39,"fair":316,"fairLabelTop":false},"fv":316}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">PSA · NYSE · Self-Storage REIT</div>
+    <div>
+      <span class="tag">NYSE: PSA</span>
+      <span class="tag">Real Estate — REIT</span>
+      <span class="tag">Self-Storage</span>
+    </div>
+    <h1>Public Storage</h1>
+    <div class="sub">REIT self-storage รายใหญ่สุดในสหรัฐ • ~3,200 facilities • Public Storage + Shurgard (ยุโรป) • โมเดล high-margin low-capex • ปันผล $12/หุ้น/ปี</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$324.39<small>(PSA)</small></div>
+      </div>
+      <div class="chg">▲ +19.3% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 26 มิ.ย. 2569<br>
+        กรอบ 52 สัปดาห์ $256.54 / $331.79<br>
+        ที่มา: StockAnalysis.com / Yahoo Finance / Public Storage Investor Relations / Macrotrends
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">REIT — ใช้ Core FFO/share แทน EPS</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~$56.8B</div><div class="d">~175M หุ้น</div></div>
+      <div class="metric"><div class="k">P/FFO (TTM)</div><div class="v neu">~19.1x</div><div class="d">Core FFO/share $16.97</div></div>
+      <div class="metric"><div class="k">Core FFO/Share</div><div class="v pos">$16.97</div><div class="d">+1.8% YoY (ชะลอ)</div></div>
+      <div class="metric"><div class="k">GAAP EPS (TTM)</div><div class="v neu">$9.01</div><div class="d">P/E ~33.5x (ไม่สื่อ REIT)</div></div>
+
+      <div class="metric"><div class="k">รายได้ FY2025</div><div class="v">$4.82B</div><div class="d">+2.6% YoY</div></div>
+      <div class="metric"><div class="k">NOI Margin</div><div class="v pos">~73%</div><div class="div">high-margin low-capex</div></div>
+      <div class="metric"><div class="k">Occupancy</div><div class="v neu">91%</div><div class="d">ฟื้นตัวหลัง COVID boom</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~20.2% / ~8%</div><div class="d">REIT ใช้ leverage สูง</div></div>
+
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~3.70%</div><div class="d">$12.00/ปี (คงที่ตั้งแต่ 2023)</div></div>
+      <div class="metric"><div class="k">FY26E FFO/Share</div><div class="v">$16.35–$17.00</div><div class="d">Guidance กลางปี 2026</div></div>
+      <div class="metric"><div class="k">Same-Store NOI</div><div class="v neg">−0.5%</div><div class="d">Normalize หลัง COVID boom</div></div>
+      <div class="metric"><div class="k">52 สัปดาห์</div><div class="v">$256.54–$331.79</div><div class="d">ปัจจุบันใกล้ 52w high</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART (ราคาย้อนหลัง ~1 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#E8862E"></i>ราคา PSA</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $316</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคา PSA ฟื้นตัวแข็งแกร่งตลอดปี จาก $272 (ก.ค. 68) ขึ้น +19.3% สู่ $324 (มิ.ย. 69)
+        มีจุดต่ำช่วง ธ.ค. 68 ที่ $259 (ดอกเบี้ยสูง กดดัน REIT) จากนั้นฟื้นแรงเดือน ก.พ.–เม.ย. 69
+        ปัจจุบันอยู่ใกล้ 52w high $331.79 และเหนือ Fair Value $316
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION (เฉลี่ย 3 วิธี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี — FFO-based</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/FFO (TTM)</div><div class="mdesc">Core FFO/share $16.97 × P/FFO เป้าหมาย 18.5x — ค่าเฉลี่ยอุตสาหกรรม self-storage</div></div>
+        <div class="mval">$313.95</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. Forward P/FFO</div><div class="mdesc">FFO FY26E midpoint $16.70 × Forward P/FFO 19x — อิง guidance + consensus</div></div>
+        <div class="mval">$317.30</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Dividend Yield Fair Value</div><div class="mdesc">ปันผล $12.00/ปี ÷ Yield เป้าหมาย 3.8% — fair yield REIT self-storage คุณภาพสูง</div></div>
+        <div class="mval">$315.79</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $313 – $318</span></div>
+        <div class="r">$316</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ทั้ง 3 วิธีให้ผลใกล้เคียงกัน ($314–$318) สะท้อนความสม่ำเสมอของ FFO และปันผลคงที่ PSA
+        ราคาปัจจุบัน $324.39 สูงกว่า FV เล็กน้อย (~2.7%) อยู่ใน "fair-to-slightly-rich zone"
+        P/FFO TTM 19.1x อยู่เหนือค่าเฉลี่ย 5 ปีเล็กน้อย (~18x) แต่ยังสมเหตุสมผลสำหรับ REIT คุณภาพ
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $324.39</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $316</div></div>
+        </div>
+        <div class="scale">
+          <span>$221.20<br><small>MOS 30%</small></span>
+          <span>$252.80<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$316<br><small>Fair Value</small></span>
+          <span style="text-align:right">$318<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">$328<br><small>เป้าเฉลี่ย Analyst</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน $324.39 สูงกว่า Fair Value $316 ประมาณ 2.7% — อยู่ใน "ตึงเล็กน้อย"
+        โซน MOS 20% ($252.80) อยู่ห่างลงไป ~22% ต้องรอปรับฐานพอสมควร
+        เป้านักวิเคราะห์ส่วนใหญ่ที่ $328 ใกล้เคียงราคาปัจจุบัน สะท้อนมุมมอง "เหมาะสม-ตึงเล็กน้อย"
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">−2.7%</div>
+        <div class="txt">ราคาสูงกว่ามูลค่าเหมาะสม — ยังไม่มี Margin of Safety · รอจังหวะย่อ</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$252.80</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$221.20</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $316</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="324.39" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $324.39 • Core FFO ฐาน ~$16.97 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>FFO +2%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$306.17</div>
+          <div class="ret neg">−6%</div>
+          <ul>
+            <li><span>FFO ปี 3</span><span>~$18.01</span></li>
+            <li><span>P/FFO ออก</span><span>17x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$36</span></li>
+            <li><span>สถานการณ์</span><span>NOI ลด, supply กด, ดอกเบี้ยสูง</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>FFO +4%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$343.62</div>
+          <div class="ret pos">+6%</div>
+          <ul>
+            <li><span>FFO ปี 3</span><span>~$19.09</span></li>
+            <li><span>P/FFO ออก</span><span>18x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$36</span></li>
+            <li><span>สถานการณ์</span><span>FFO ฟื้น, occupancy คงที่ ~91%</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>FFO +6%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$383.99</div>
+          <div class="ret pos">+18%</div>
+          <ul>
+            <li><span>FFO ปี 3</span><span>~$20.21</span></li>
+            <li><span>P/FFO ออก</span><span>19x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$36</span></li>
+            <li><span>สถานการณ์</span><span>ดอกเบี้ยลด + ขยาย Shurgard, FFO re-rate</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      โปรเจกชันอิง Core FFO/share ฐาน $16.97 × P/FFO ออก สถานการณ์ละ + ปันผล $12/ปี × 3 ปี = $36
+      Base case ให้ผลตอบแทนรวมประมาณ +17% ใน 3 ปี (capital gain ~6% + yield ~3.7%/ปี)
+      จุดเสี่ยง: FFO growth ชะลอ ~2% ปัจจุบัน ถ้า normalize ได้ไม่ถึง 4% → ผลตอบแทนใกล้ Bull Bear
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>Scale moat อันดับ 1 US:</b> ~3,200 facilities ใน 40 รัฐ + brand recognition กัน churn ลูกค้า</li>
+          <li><b>High-margin low-capex:</b> NOI margin ~73% + maintenance capex ต่ำมาก → FCF แข็ง จ่ายปันผลได้คงที่</li>
+          <li><b>Shurgard Europe + Simply Self Storage:</b> ขยายรายได้นอก US กระจาย risk ภูมิศาสตร์</li>
+          <li><b>ดอกเบี้ยขาลง:</b> Fed ลด rate → ต้นทุนหนี้ลด + re-rate P/FFO REIT ทั้งกลุ่ม</li>
+          <li><b>Urbanization + downsizing:</b> demand self-storage เชิงโครงสร้างจาก baby boomers + คนย้ายเมือง</li>
+          <li><b>ปันผล yield 3.7% คงที่:</b> income play คุณภาพในพอร์ต defensive</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>FFO growth ชะลอ ~2%:</b> same-store NOI −0.5% ปี 2025 จาก move-in rate / occupancy normalize หลัง COVID boom</li>
+          <li><b>Supply ใหม่บางตลาด:</b> Sunbelt (Texas, Florida) มี new supply กด rental rate</li>
+          <li><b>ดอกเบี้ยยังสูง:</b> กดดัน P/FFO multiple + ต้นทุนหนี้ (PSA มี debt/equity สูง ตามธรรมชาติ REIT)</li>
+          <li><b>ราคาวิ่ง +19% แล้ว:</b> valuation ตึง MOS ติดลบ → upside จำกัด risk/reward ไม่เอื้อ</li>
+          <li><b>Consumer discretionary:</b> ถ้า macro อ่อน → ลูกค้า downsize/ยกเลิก unit กด occupancy</li>
+          <li><b>Competition:</b> Extra Space Storage, CubeSmart ขยายตัว + แพลตฟอร์ม digital booking กด brand premium</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>REIT คุณภาพสูง — ตึงเล็กน้อย · รอจังหวะย่อ</h2>
+      <p>Public Storage คือ REIT self-storage อันดับ 1 สหรัฐ ด้วย NOI margin ~73%, ปันผลคงที่ $12/ปี (yield 3.7%) และโมเดลธุรกิจ high-margin low-capex ที่ยืดหยุ่นต่อวัฏจักรเศรษฐกิจ อย่างไรก็ตาม FFO growth ชะลอเหลือ ~2% หลัง COVID boom และราคาวิ่งขึ้น +19% แล้ว ทำให้ P/FFO อยู่ที่ 19.1x — เหนือ FV $316 เล็กน้อย MOS ติดลบ −2.7% นักวิเคราะห์ 19 รายเป้าเฉลี่ย $328 ใกล้เคียงราคาปัจจุบัน สะท้อนมุมมอง "เหมาะสม-ตึงเล็กน้อย" เหมาะเป็น income play ระยะยาว แต่ควรรอจังหวะย่อใกล้ $300 หรือต่ำกว่า</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$316 <span style="font-size:12px;color:#cab9a8">($313–$318)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −2.7%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$328 (Hold/Moderate Buy)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> Income play คุณภาพสูง — ราคาปัจจุบันตึงเล็กน้อย รอย่อใกล้ $290–$300 (MOS ~5–8%) ทยอยสะสมได้ หรือถือต่อเก็บ yield 3.7% ถ้ามีต้นทุนต่ำกว่า $300 อยู่แล้ว ไม่เหมาะสำหรับ growth investor เนื่องจาก FFO growth ชะลอ
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/FFO เป้าหมาย, อัตราเติบโต (g), FFO ในอนาคต และ yield เป้าหมาย
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ข้อมูลอ้างอิง: StockAnalysis.com / Yahoo Finance / Public Storage Investor Relations / Macrotrends · ราคา ณ 26 มิ.ย. 2569
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 26 มิ.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
