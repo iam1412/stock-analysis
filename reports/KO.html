@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น The Coca-Cola Company (KO) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"KO","currency":"USD","price":82.63,"fairValue":76,"mos":-8.7,"upside":-8.0,"pe":27.5,"dividendYield":2.57,"roe":40.74}
+</script>
+<script type="application/json" id="report-data">
+{"theme":{"accent":"#E61A27","accentDark":"#A8121C","darkGrad":"linear-gradient(135deg, #120303 0%, #240708 100%)","glow":"rgba(230,26,39,0.35)","subColor":"#F25C66","headerMuted":"rgba(230,26,39,0.12)","verdictText":"#F8D2D5","vcellLabel":"rgba(248,210,213,0.6)","badge":"#E61A27","chgBg":"rgba(34,197,94,0.15)","chgColor":"#22C55E"},"chart":{"data":[["ก.ค. 68",67.89],["ส.ค. 68",68.99],["ก.ย. 68",66.32],["ต.ค. 68",68.90],["พ.ย. 68",73.12],["ธ.ค. 68",69.91],["ม.ค. 69",74.81],["ก.พ. 69",81.56],["มี.ค. 69",76.05],["เม.ย. 69",78.76],["พ.ค. 69",79.01],["มิ.ย. 69",82.63]],"min":64,"max":85,"grid":[70,76,82],"fairLine":76,"currency":"$","highlight":[11]},"gauge":{"min":62,"max":86,"cur":82.63,"fair":76,"fairLabelTop":false},"fv":76}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">KO · The Coca-Cola Company</div>
+    <div>
+      <span class="tag">NYSE: KO</span>
+      <span class="tag">Consumer Staples</span>
+      <span class="tag">Beverages</span>
+    </div>
+    <h1>The Coca-Cola Company</h1>
+    <div class="sub">เครื่องดื่มไม่มีแอลกอฮอล์รายใหญ่สุดโลก • Coca-Cola/Sprite/Fanta/Minute Maid • น้ำ/กีฬา/กาแฟ/ชา (Dasani, Powerade, Costa) • โมเดล asset-light (concentrate+bottler) • Dividend King 63 ปี</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$82.63<small>(KO)</small></div>
+      </div>
+      <div class="chg">▲ +21.7% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 26 มิ.ย. 2569<br>
+        กรอบ 52 สัปดาห์ $65.35 / $84.04 · งบ FY2025 (Q4 ก.พ. 69)<br>
+        ที่มา: StockAnalysis.com / Yahoo Finance / Coca-Cola Investor Relations
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ มิ.ย. 2569</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~$356B</div><div class="d">หุ้นหมุนเวียน ~4.3B หุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~27.5x</div><div class="d">comparable EPS $3.00 · GAAP EPS $3.04</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~24x</div><div class="d">ช่วง 20–30x; ปัจจุบันตึง</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">~11.0x</div><div class="d">BVPS ~$7.50; intangible-heavy brand</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY25</div><div class="v">~$12.8B</div><div class="d">+3% YoY · Net Margin 27.4%</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$3.00</div><div class="d">comparable · GAAP $3.04 FY25</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~$7.50</div><div class="d">goodwill/brand หนุน equity</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~40.7% / ~10.5%</div><div class="d">ROE สูงจาก asset-light + leverage</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">~$47.9B</div><div class="d">organic growth +5%; FX headwind</div></div>
+      <div class="metric"><div class="k">อัตรากำไรดำเนินงาน</div><div class="v">~28.7%</div><div class="d">Net Margin ~27.4%; ขยายตัวได้ดี</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~2.57%</div><div class="d">$2.12/ปี · Dividend King 63 ปีต่อเนื่อง</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">~0.6</div><div class="d">defensive · ต่ำกว่าตลาด · safe haven</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#E61A27"></i>ราคา KO</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $76</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคา KO ปรับตัวขึ้น <b>+21.7%</b> ในรอบปีที่ผ่านมา (ก.ค. 68 → มิ.ย. 69) สะท้อน defensive rotation จากนักลงทุนที่หลีกเลี่ยงความผันผวนในตลาดหุ้นเติบโต
+        จุดต่ำสุดในช่วงนี้อยู่ที่ ~$66 (ก.ย. 68) ก่อนที่ราคาจะฟื้นตัวแข็งแกร่งและทำ 52w high ใกล้ $84 ในเดือน ก.พ. 69
+        ราคา ณ มิ.ย. 69 ที่ $82.63 ใกล้ระดับสูงสุดรอบปี และ <b>สูงกว่า Fair Value $76</b> ของเราราว 8.7%
+        บ่งชี้ว่า defensive premium ถูก price-in ไปมากแล้ว
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation (comparable)</div><div class="mdesc">EPS (TTM comparable) $3.00 × P/E เป้าหมาย ~23x — P/E ที่เหมาะสมสำหรับโตระยะยาว ~7%/ปี; ปัจจุบัน 27.5x ตึงเกินการเติบโต</div></div>
+        <div class="mval">$69.00</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. Forward P/E FY26E</div><div class="mdesc">EPS FY26E $3.22 × P/E เป้าหมาย ~23x — อิง consensus EPS ปี 2026 ที่ $3.21–3.24; สะท้อนการเติบโต comparable ~7%</div></div>
+        <div class="mval">$74.06</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. DDM / Gordon Growth</div><div class="mdesc">D₁ = $2.12 / (r 7.5% − g 5%) = 2.12 ÷ 0.025 — g=5% (organic+pricing), r=7.5% (ปลอดภัย+risk premium สำหรับ large-cap defensive)</div></div>
+        <div class="mval">$84.80</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $69.00 – $84.80</span></div>
+        <div class="r">$76</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        วิธี P/E comparable ($69) ให้ค่าต่ำที่สุด สะท้อนว่า valuation ตึงบน EPS ปัจจุบัน
+        วิธี Forward P/E ($74) ใกล้เคียงกัน รอให้ EPS โตขึ้นปีหน้า
+        วิธี DDM ($84.80) ให้ค่าสูงสุด เพราะ KO เป็น Dividend King คงปันผลระยาวได้ดี
+        เฉลี่ย 3 วิธี = $75.95 ≈ <b>$76</b> เป็น Fair Value ที่สมเหตุสมผล
+        ราคาปัจจุบัน $82.63 <b>สูงกว่า FV ~8.7%</b>
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $82.63</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $76</div></div>
+        </div>
+        <div class="scale">
+          <span>$53.20<br><small>MOS 30%</small></span>
+          <span>$60.80<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$76<br><small>Fair Value</small></span>
+          <span style="text-align:right">$84.80<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">$86<br><small>เป้าเฉลี่ย Analyst</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน $82.63 อยู่ <b>เหนือ Fair Value $76</b> ราว 8.7% → ไม่มี Margin of Safety
+        โซนน่าสนใจเริ่มต้นที่ใกล้ $76 (fair) และโซน deep value MOS 20% อยู่ที่ $60.80
+        นักวิเคราะห์ 25 รายให้เป้าเฉลี่ย $86 ซึ่งใกล้เคียงราคาปัจจุบัน upside จำกัด
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">−8.7%</div>
+        <div class="txt"><b>ไม่มี Margin of Safety</b><br>ราคาปัจจุบัน $82.63 <b>สูงกว่า Fair Value $76</b> ราว 8.7% → ตามเกณฑ์ value investor ถือว่า <b>แพงกว่ามูลค่า</b> ยังไม่ใช่จุดซื้อที่ปลอดภัย แต่ Dividend King 63 ปียังคุ้มค่าสะสมในระยะยาว</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$60.80</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$53.20</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $76</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="82.63" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $82.63 • EPS ฐาน ~$3.00 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS +5%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$72.87</div>
+          <div class="ret neg">−12%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$3.47</span></li>
+            <li><span>P/E ออก</span><span>21x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$5.73</span></li>
+            <li><span>สถานการณ์</span><span>FX/GLP-1 กดดัน volume</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +7%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$84.64</div>
+          <div class="ret pos">+2%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$3.68</span></li>
+            <li><span>P/E ออก</span><span>23x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$6.36</span></li>
+            <li><span>สถานการณ์</span><span>organic +5–7% ต่อเนื่อง</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +9%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$93.36</div>
+          <div class="ret pos">+13%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$3.89</span></li>
+            <li><span>P/E ออก</span><span>24x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$6.36</span></li>
+            <li><span>สถานการณ์</span><span>pricing power ขยายตัว EM</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      Scenario Base อิง comparable EPS ฐาน $3.00 × growth +7%/ปี 3 ปี = $3.68 × P/E 23x = $84.64 + ปันผลรวม ~$6.36 → total return ~+10% (3 ปี) ≈ +2% เทียบ entry $82.63
+      สังเกตว่าแม้ base scenario ได้ upside น้อยมากเพราะเริ่มจากราคาที่ตึง
+      Bull case (EPS +9%, P/E 24x) ให้ upside ดีขึ้นที่ +13%; Bear (EPS +5%, P/E 21x) มี downside −12%
+      ทั้ง 3 scenario รวมปันผล defensive ที่สม่ำเสมอ ($2.12/ปี)
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>Dividend King 63 ปี:</b> ขึ้นปันผลต่อเนื่องมากกว่า 6 ทศวรรษ ดึงดูด income investor และ pension fund ระยะยาว</li>
+          <li><b>Pricing Power แข็งแกร่ง:</b> organic revenue growth +5% แม้ volume เกือบ flat สะท้อนว่า KO ขึ้นราคาได้โดยไม่สูญเสีย loyalty</li>
+          <li><b>Asset-light Model:</b> รายได้จาก concentrate ขายให้ bottler ~300 ราย margin สูง ความเสี่ยงจากต้นทุน commodity ต่ำ</li>
+          <li><b>Defensive Rotation:</b> สภาพแวดล้อม macro ไม่แน่นอน (tariff/inflation) ทำให้ consumer staples เป็นที่หลบภัย</li>
+          <li><b>Emerging Market Growth:</b> EM &gt;60% ของรายได้ — ตลาด Africa/Asia มีพื้นที่เติบโตสูง เมื่อ FX stabilize</li>
+          <li><b>นักวิเคราะห์เป้า $86:</b> consensus 25 ราย ยังให้ราคาเป้าเหนือปัจจุบันเล็กน้อย สะท้อนความเชื่อมั่นระยะสั้น</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>Valuation ตึง:</b> P/E 27.5x สำหรับการเติบโต comparable ~7%/ปี ถือว่าตึง (PEG &gt;3.9x) เสี่ยง re-rating ลงหาก sentiment เปลี่ยน</li>
+          <li><b>FX Headwind:</b> รายได้ EM &gt;60% กระทบทุกครั้ง USD แข็ง — ฉุด reported revenue/EPS หนักในระยะสั้น</li>
+          <li><b>Volume Flat:</b> volume ไม่เติบโต พึ่งการขึ้นราคาเป็นหลัก มีขีดจำกัด โดยเฉพาะในตลาดที่ consumer ราคาไว</li>
+          <li><b>GLP-1/Health Trend:</b> ยาลดน้ำหนัก GLP-1 และกระแส healthy eating กดดันความต้องการ soda ระยะยาวในตลาด developed</li>
+          <li><b>Tariff อลูมิเนียม:</b> มาตรการ tariff ของสหรัฐฯ กดดันต้นทุน packaging ซึ่ง bottler อาจส่งผ่านบางส่วนมายัง KO</li>
+          <li><b>BODYARMOR Impairment:</b> การซื้อกิจการ BODYARMOR มูลค่าสูงยังไม่ได้ผลตามเป้า มีความเสี่ยง impairment เพิ่มเติม</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>Coca-Cola — ของดี Defensive แต่ราคาเต็ม รอย่อใกล้ $61</h2>
+      <p>Coca-Cola คือเครื่องดื่มอันดับ 1 โลกที่มีคุณภาพธุรกิจระดับ best-in-class: asset-light concentrate model, pricing power สูง, Dividend King 63 ปีต่อเนื่อง และ brand ที่ทรงพลังที่สุดในโลก ทว่าราคาหุ้นที่วิ่งขึ้น +22% จาก defensive rotation ทำให้ P/E ขยับมาอยู่ที่ 27.5x ซึ่งตึงเกินอัตราการเติบโต comparable ~7%/ปี Fair Value เฉลี่ย 3 วิธีอยู่ที่ $76 ราคาปัจจุบัน $82.63 มี MOS −8.7% (แพงกว่ามูลค่า) นักวิเคราะห์ 25 รายให้เป้าเฉลี่ย $86 ซึ่งใกล้เคียงกับราคาตลาด upside จำกัด แนะนำรอย่อลงใกล้ $61 (MOS 20%) แล้วค่อยทยอยสะสม รับปันผล Dividend King 2.6% ระหว่างรอ</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$76 <span style="font-size:12px;color:#cab9a8">($69.00–$84.80)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −8.7% (ราคาแพงกว่า FV)</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$86 (Moderate Buy)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> รอย่อใกล้ $76 (fair value) หรือดีกว่าคือ $61 (MOS 20%) แล้วค่อยทยอยสะสม · รับปันผล Dividend King 2.57% ระหว่างรอ · หากซื้อที่ราคาปัจจุบัน ~$83 upside จำกัด base scenario ให้ผลตอบแทนรวม 3 ปีเพียง ~2%
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    ที่มา: StockAnalysis.com / Yahoo Finance / Coca-Cola Investor Relations / Macrotrends
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 26 มิ.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
