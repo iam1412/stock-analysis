@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น Deere &amp; Company (DE) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"DE","currency":"USD","price":626.63,"fairValue":521,"mos":-20.3,"upside":-16.9,"pe":35.48,"dividendYield":1.03,"roe":18.35}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#367C2B",
+    "accentDark": "#1f4d18",
+    "darkGrad": "linear-gradient(135deg,#071a04 0%,#0d2e08 100%)",
+    "glow": "rgba(54,124,43,0.35)",
+    "subColor": "#78c46e",
+    "headerMuted": "rgba(255,255,255,0.55)",
+    "verdictText": "#e8f5e9",
+    "vcellLabel": "rgba(255,255,255,0.65)",
+    "badge": "#FFDE00",
+    "chgBg": "#1e8e3e",
+    "chgColor": "#ffffff"
+  },
+  "chart": {
+    "data": [
+      ["ก.ค. 2568", 524.37],
+      ["ส.ค. 2568", 478.64],
+      ["ก.ย. 2568", 457.26],
+      ["ต.ค. 2568", 461.63],
+      ["พ.ย. 2568", 464.49],
+      ["ธ.ค. 2568", 465.57],
+      ["ม.ค. 2569", 528.00],
+      ["ก.พ. 2569", 629.71],
+      ["มี.ค. 2569", 563.30],
+      ["เม.ย. 2569", 589.87],
+      ["พ.ค. 2569", 542.18],
+      ["มิ.ย. 2569", 613.24],
+      ["ปัจจุบัน", 626.63]
+    ],
+    "min": 400,
+    "max": 700,
+    "grid": [400, 450, 500, 550, 600, 650, 700],
+    "fairLine": 521,
+    "currency": "$",
+    "highlight": [1, 7]
+  },
+  "gauge": {
+    "min": 300,
+    "max": 760,
+    "cur": 626.63,
+    "fair": 521,
+    "fairLabelTop": true
+  },
+  "fv": 521
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">🟡🟢⬛🟡🟢</div>
+    <div>
+      <span class="tag">NYSE: DE</span>
+      <span class="tag">Capital Goods</span>
+      <span class="tag">Agricultural Equipment</span>
+    </div>
+    <h1>Deere &amp; Company</h1>
+    <div class="sub">Agricultural equipment (John Deere) • Production &amp; Precision Ag • Small Ag &amp; Turf • Construction &amp; Forestry • Precision Agriculture technology • Financial Services</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$626.63<small>(DE)</small></div>
+      </div>
+      <div class="chg">▲ +19.5% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 29 มิถุนายน 2569<br>
+        กรอบ 52 สัปดาห์ $433.00 – $674.19<br>
+        ที่มา: StockAnalysis.com, Yahoo Finance, SEC EDGAR, MarketBeat
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล TTM ณ มิถุนายน 2569</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">$169.2B</div><div class="d">270M shares outstanding</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~35.5x</div><div class="d">ทรอฟวัฏจักร EPS ต่ำกว่าปกติ</div></div>
+      <div class="metric"><div class="k">P/E Normalized (~5 ปี)</div><div class="v">~19x</div><div class="d">EPS เฉลี่ย 5 ปี $23.68</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">6.04x</div><div class="d">BVPS $101.53 (ม.ค. 2569)</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">$5.03B</div><div class="d">ลด 29% จาก FY2024 ($7.1B)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$17.65</div><div class="d">Q3 2025–Q2 2026 รวมกัน</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~$101.53</div><div class="d">Book Value ต่อหุ้น</div></div>
+      <div class="metric"><div class="k">ROE / ROIC</div><div class="v pos">~18.4% / 5.9%</div><div class="d">กลางวัฏจักรปกติ ROE ~30-40%</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$47.3B</div><div class="d">ลดลง 23% จาก FY2023 peak</div></div>
+      <div class="metric"><div class="k">Operating Margin</div><div class="v">19.3%</div><div class="d">EBITDA TTM $11.5B (24.2%)</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~1.03%</div><div class="d">$6.48/หุ้น/ปี (+10.2% YoY)</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">0.93</div><div class="d">ความผันผวนใกล้ตลาด</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ก.ค. 2568 – มิ.ย. 2569</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#367C2B"></i>ราคา DE</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $521</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        DE แตะจุดต่ำสุด ~$457 เดือน ก.ย. 2568 จากความกังวลวัฏจักรเกษตรซบเซา ก่อนพุ่งขึ้นแตะ $630 เดือน ก.พ. 2569 หลัง Q1 FY2026 ดีกว่าคาดและ CEO ยืนยัน "bottom of farm slump" ราคาย่อลงช่วงมีนาคม–พฤษภาคม ก่อนฟื้นสู่ $626 ปัจจุบัน ผลตอบแทนรอบปี +19.5% (ก.ค. 2568: $524 → ปัจจุบัน $626) สะท้อนการรีเรทล่วงหน้าถึงการฟื้นตัววัฏจักร เส้นสีเขียว = Fair Value $521 (ราคาอยู่เหนือ FV ในปัจจุบัน)
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี — Cyclical-adjusted</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. Normalized P/E Valuation</div><div class="mdesc">EPS norm. $23.68 (เฉลี่ย 5 ปี FY2022–FY2026E) × P/E เป้าหมาย ~19x — พรีเมียมผู้นำตลาด + Precision Ag Tech (ประวัติ P/E 13–22x)</div></div>
+        <div class="mval">$450</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. EV/EBITDA Valuation</div><div class="mdesc">EBITDA normalize ~$13.2B × 14x (Capital Goods + Tech premium) − Net Debt $55.5B ÷ 270M หุ้น — เพื่อ bypass ผลกระทบ Financial Services segment</div></div>
+        <div class="mval">$479</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 30% − g 5%)/(r 9% − g 5%) ≈ 6.25x × BVPS $101.53 — ROE กลางวัฏจักร 30% (peak ~40%, trough 18%)</div></div>
+        <div class="mval">$635</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $450 – $635</span></div>
+        <div class="r">$521</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        <b>สำคัญ — Cyclical Stock:</b> DE อยู่ในทรอฟวัฏจักร ห้ามใช้ P/E TTM ~35x เปรียบเทียบตรงๆ (EPS ต่ำชั่วคราว ทำให้ P/E ดูแพงเกินจริง) • Method 1 (Normalized P/E $450): conservative ใช้ EPS 5 ปีเฉลี่ย • Method 2 (EV/EBITDA $479): กลาง — สะท้อน asset ทั้งบริษัทรวม balance sheet • Method 3 (Justified P/BV $635): optimistic — สมมติ ROE ฟื้นสู่ 30% กลางวัฏจักร = สะท้อน Precision Ag premium • FV เฉลี่ย $521 แสดงว่าราคาปัจจุบัน $626 ซื้อขายที่ Premium ~20% เหนือ Fair Value — ตลาดกำลัง Price-in การฟื้นตัวในอีก 1–2 ปีข้างหน้าแล้ว
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $626.63</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $521</div></div>
+        </div>
+        <div class="scale">
+          <span>$365<br><small>MOS 30%</small></span>
+          <span>$417<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$521<br><small>Fair Value</small></span>
+          <span style="text-align:right">$635<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">$644<br><small>เป้าเฉลี่ย Analyst</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน $626.63 อยู่ <b>เหนือ Fair Value $521 ประมาณ 20%</b> แต่ใกล้เคียงกับ Analyst consensus target $644 (24 นักวิเคราะห์, Buy consensus) — บ่งชี้ว่าตลาดซื้อขายล่วงหน้าถึงการฟื้นตัววัฏจักรเกษตร 2027–2028 • โซนน่าสนใจสำหรับ Value Investor: $417–$521 (MOS 20%–0%) • โซน Deep Value: $365 (MOS 30%) ต้องรอการย่อตัวรุนแรงหากเกษตรยังซบเซา
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">−20.3%</div>
+        <div class="txt">ราคาสูงกว่า Fair Value — ซื้อขายในโซน Premium เหนือมูลค่าพื้นฐาน (ตลาด Price-in การฟื้นตัวล่วงหน้าแล้ว)</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$417</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$365</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $521</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="626.63" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $626.63 • EPS ฐาน ~$17.65 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS +5%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$368</div>
+          <div class="ret neg">−38.1%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$20.43</span></li>
+            <li><span>P/E ออก</span><span>18x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$20</span></li>
+            <li><span>สถานการณ์</span><span>เกษตรยังซบเซา ฝนแล้ง</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +15%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$537</div>
+          <div class="ret neg">−11.0%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$26.84</span></li>
+            <li><span>P/E ออก</span><span>20x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$21</span></li>
+            <li><span>สถานการณ์</span><span>ฟื้นตัวค่อยๆ สู่ระดับปกติ</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +25%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$758</div>
+          <div class="ret pos">+24.3%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$34.47</span></li>
+            <li><span>P/E ออก</span><span>22x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$21</span></li>
+            <li><span>สถานการณ์</span><span>ฟื้นตัวเร็ว Precision Ag boom</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      <b>หมายเหตุ:</b> จากราคา $626 ที่ซื้อขายที่ Premium เหนือ Fair Value — ในกรณี Base (ฟื้นตัวปกติ) ผลตอบแทนยังติดลบ −11% เพราะมัลติเพิลปัจจุบันสูง ต้องการการฟื้นตัวเร็ว (Bull) หรือ Precision Ag Premium ขยายเพิ่มเติมเพื่อให้ได้ผลตอบแทนเป็นบวกดี • นักวิเคราะห์ 24 ราย ให้เป้า $644 (Buy consensus) บ่งชี้ upside จำกัดจากราคานี้ระยะสั้น
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก &amp; ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>Precision Agriculture Platform:</b> John Deere Operations Center, See &amp; Spray (AI weed detection ลดสารเคมี 90%), StarFire GPS และ autonomous tractor สร้างรายได้ recurring software/subscription ที่ควรได้มัลติเพิลสูงกว่าผู้ผลิตเครื่องจักรทั่วไป</li>
+          <li><b>การฟื้นตัววัฏจักรเกษตร 2027–2028:</b> CEO ประกาศ FY2026 เป็น "bottom of the farm slump" ราคาสินค้าเกษตรฟื้นตัว + รายได้เกษตรกรดีขึ้น = อุปสงค์เครื่องจักรฟื้น</li>
+          <li><b>Construction &amp; Forestry ฟื้นแข็ง:</b> Q2 FY2026 C&amp;F net sales +29% YoY, operating profit +48% — ชดเชยความอ่อนแอของ Large Ag ในระยะสั้น</li>
+          <li><b>Buyback ลด share count ต่อเนื่อง:</b> หุ้นลดจาก 322M (FY2022) เหลือ 270M (FY2026) ช่วยเพิ่ม EPS per share แม้กำไรรวมลด — ผลดีชัดเจนในช่วงฟื้นตัว</li>
+          <li><b>ส่วนแบ่งตลาดแข็งแกร่ง:</b> Large Ag อเมริกาเหนือ &gt;50% dealer network ครอบคลุมและ switching cost สูง — ป้องกันการสูญเสียส่วนแบ่งตลาดในช่วงดาวน์</li>
+          <li><b>ปรับต้นทุนเชิงรุก:</b> Operating margin รักษา &gt;19% แม้รายได้ลด 23% จาก peak — แสดงถึงประสิทธิภาพการจัดการต้นทุนที่เหนือกว่าคู่แข่ง</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>วัฏจักรเกษตรยืดเยื้อ:</b> U.S. &amp; Canada Large Ag demand ปี 2026 คาดลด 15–20% — หากราคาข้าวโพด/ถั่วเหลืองยังต่ำและรายได้เกษตรกรไม่ฟื้น วัฏจักรอาจกดดันอีก 1–2 ปี</li>
+          <li><b>Valuation สูงเกินพื้นฐาน:</b> ราคา $626 ซื้อขายที่ P/E TTM ~35x และเหนือ Fair Value normalize ~20% — หากการฟื้นตัวช้ากว่าคาด การปรับฐานอาจรุนแรง (Bear case: −38%)</li>
+          <li><b>สงครามการค้า / ภาษีนำเข้า:</b> นโยบาย tariff สหรัฐฯ ต่อจีน/ยุโรปอาจกระทบต้นทุนวัตถุดิบ (เหล็ก อะลูมิเนียม) และตลาดส่งออก</li>
+          <li><b>ความเสี่ยงสภาพอากาศ/ภัยแล้ง:</b> ฤดูกาลเกษตรที่ไม่ดีลดความต้องการเครื่องจักรใหม่ทันที และกดรายได้เกษตรกรต่อเนื่อง</li>
+          <li><b>Competition จาก CNH Industrial, AGCO:</b> คู่แข่งลงทุน Precision Ag Tech เช่นกัน ช่องว่างเทคโนโลยีอาจแคบลงในระยะยาว</li>
+          <li><b>Net Debt สูง $55.5B:</b> รวม Financial Services — ต้นทุนดอกเบี้ยในช่วงอัตราดอกเบี้ยสูงกดดัน free cash flow และ Financial Services segment</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>Premium Cyclical — ตลาด Price-in การฟื้นตัวแล้ว รอโอกาสดีกว่าจากราคานี้</h2>
+      <p>Deere &amp; Company (DE) คือผู้นำระดับโลกด้านเครื่องจักรเกษตร (John Deere) ที่กำลังอยู่ในช่วงทรอฟวัฏจักร FY2024–2026 — รายได้ลดจาก $61.3B (FY2023 peak) เหลือ $47B TTM และ EPS ลดจาก $34.64 เหลือ $17.65 TTM อย่างไรก็ตาม ตลาดรับรู้การฟื้นตัวล่วงหน้าแล้ว ราคาพุ่ง +19.5% ในรอบปีและซื้อขายที่ Premium ~20% เหนือ Fair Value normalize $521 • จุดแข็งระยะยาว: Precision Agriculture Platform (See &amp; Spray AI, Operations Center, StarFire GPS) สร้างรายได้ recurring + ส่วนแบ่งตลาด Large Ag &gt;50% + การปรับต้นทุนเชิงรุก • CEO ยืนยัน FY2026 เป็น "bottom" และ C&amp;F segment ฟื้นแข็ง ชดเชยความอ่อนแอของ Large Ag ได้บางส่วน</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$521 <span style="font-size:12px;color:#cab9a8">($450–$635)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −20.3%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$644 (Buy — 24 นักวิเคราะห์)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> DE เป็นหุ้นคุณภาพสูงในธุรกิจวัฏจักรที่กำลังฟื้นตัว แต่ราคาปัจจุบัน $626 ซื้อขายที่ Premium เหนือมูลค่าพื้นฐาน — <b>Value Investor</b>: รอโอกาสที่ราคาใกล้/ต่ำกว่า $521 (FV) เป้าสะสม $417–$521 • <b>Growth/Quality Investor</b>: ยอมรับ Premium ของ Precision Ag Tech ได้หากมั่นใจวัฏจักรฟื้นปี 2027 • <b>ความเสี่ยงหลัก</b>: Bear case −38% เป็นไปได้หากเกษตรยังซบเซาจากราคานี้
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ EPS normalize, P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE กลางวัฏจักร ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    แหล่งข้อมูล: StockAnalysis.com (https://stockanalysis.com/stocks/de/), Yahoo Finance (https://finance.yahoo.com/quote/DE), Yahoo Finance Chart API (https://query1.finance.yahoo.com/v8/finance/chart/DE?interval=1mo&amp;range=1y), SEC EDGAR 10-Q Q2 FY2026 (https://www.sec.gov/Archives/edgar/data/0000315189/000110465926064747/), MarketBeat Analyst Forecasts (https://www.marketbeat.com/stocks/NYSE/DE/forecast/)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 29 มิถุนายน 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
