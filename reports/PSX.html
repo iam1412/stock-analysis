@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น Phillips 66 (PSX) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"PSX","currency":"USD","price":169.93,"fairValue":127,"mos":-33.8,"upside":-25.3,"pe":16.7,"dividendYield":2.99,"roe":14.2}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#D62000",
+    "accentDark": "#a31800",
+    "darkGrad": "linear-gradient(135deg,#1a0a00 0%,#2d1000 50%,#1a0800 100%)",
+    "glow": "rgba(214,32,0,0.18)",
+    "subColor": "#ff7043",
+    "headerMuted": "rgba(255,112,67,0.55)",
+    "verdictText": "#ff8a65",
+    "vcellLabel": "#ffccbc",
+    "badge": "#D62000",
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#1e8e3e"
+  },
+  "chart": {
+    "data": [
+      ["ก.ค. 25", 123.58],
+      ["ส.ค. 25", 133.58],
+      ["ก.ย. 25", 136.02],
+      ["ต.ค. 25", 136.14],
+      ["พ.ย. 25", 136.96],
+      ["ธ.ค. 25", 129.04],
+      ["ม.ค. 26", 143.56],
+      ["ก.พ. 26", 154.33],
+      ["มี.ค. 26", 182.18],
+      ["เม.ย. 26", 179.15],
+      ["พ.ค. 26", 175.88],
+      ["มิ.ย. 26", 174.05],
+      ["ปัจจุบัน", 169.93]
+    ],
+    "min": 100,
+    "max": 210,
+    "grid": [105, 125, 145, 165, 185],
+    "fairLine": 127,
+    "currency": "$",
+    "highlight": [8, 12]
+  },
+  "gauge": {
+    "min": 80,
+    "max": 220,
+    "cur": 169.93,
+    "fair": 127,
+    "fairLabelTop": false
+  },
+  "fv": 127
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">■ ■ ■</div>
+    <div>
+      <span class="tag">NYSE: PSX</span>
+      <span class="tag">Downstream Energy</span>
+      <span class="tag">Refining • Chemicals • Midstream</span>
+    </div>
+    <h1>Phillips 66</h1>
+    <div class="sub">Diversified downstream energy (spun off ConocoPhillips 2012) • Refining (~2M bbl/day, US + Europe) • CPChem (50/50 JV w/ Chevron — world-scale ethylene/polyolefin) • Midstream (DCP/Gray Oak pipelines) • Marketing &amp; lubes • Lower cycle exposure than pure refiners via CPChem/midstream • ~3% dividend yield</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$169.93<small>(PSX)</small></div>
+      </div>
+      <div class="chg">▲ +37.5% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 30 มิถุนายน 2569<br>
+        กรอบ 52 สัปดาห์ $118.07 – $190.61<br>
+        ที่มา: StockAnalysis.com, Yahoo Finance, Macrotrends
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ มิ.ย. 2569 • ราคา/EPS ยืนยัน ≥2 แหล่ง</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~$68.1B</div><div class="d">~401M shares outstanding</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~16.7x</div><div class="d">EPS TTM $10.15 (รวม Q4'25 แรง $7.17)</div></div>
+      <div class="metric"><div class="k">P/E Forward (2026E)</div><div class="v">~9.6x</div><div class="d">EPS 2026E ~$17.74 (analyst consensus)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">2.42x</div><div class="d">BVPS ~$70.36</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ TTM</div><div class="v">$4.22B</div><div class="d">FY2025: $4.53B | FY2024: $2.18B (ต่ำสุด)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$10.15</div><div class="d">Diluted; cyclical — normalized ~$11-12</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~$70.36</div><div class="d">Equity $29.7B / ~401M shares</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~14.2% / 5.0%</div><div class="d">Net income $4.2B / Equity $29.7B</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$134.5B</div><div class="d">ลดจาก FY2022 $170B (ราคาพลังงานลด)</div></div>
+      <div class="metric"><div class="k">EBITDA TTM</div><div class="v">$5.87B</div><div class="d">Margin ~4.4% (refining margin-dependent)</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~3.0%</div><div class="d">$5.08/share/ปี • ปรับขึ้นต่อเนื่อง</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">0.67</div><div class="d">ต่ำกว่า market (CPChem/midstream หนุน)</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#D62000"></i>ราคา PSX</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $127</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        PSX เริ่มต้นปีที่ $123.58 (ก.ค. 2025) ท่ามกลาง crack spread ที่อ่อนตัว ก่อนพุ่งแรงในช่วงมี.ค. 2026 ที่ $182.18 (สูงสุดในรอบปี) จากการฟื้นตัวของ CPChem และ refining margin ที่ดีขึ้น ก่อนปรับลดมาที่ $169.93 ณ สิ้นมิ.ย. 2026 ผลตอบแทนรอบปี +37.5% สูงกว่า S&amp;P 500 — แต่ราคาปัจจุบันสูงกว่ามูลค่าเหมาะสมเชิง normalized อย่างมีนัย
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี • Normalized mid-cycle</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation (Normalized)</div><div class="mdesc">EPS adj. (norm. mid-cycle) $11.50 × P/E 10.5x = $120.75 — ใช้ EPS normalize mid-cycle crack $14-16/bbl + CPChem average; P/E premium เล็กน้อยเหนือ pure refiner (8-9x) สำหรับความหลากหลาย CPChem + midstream</div></div>
+        <div class="mval">$121</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. EV/EBITDA (Normalized)</div><div class="mdesc">EBITDA normalized mid-cycle ~$8.5B × 8.5x EV/EBITDA = EV $72.3B; หัก Net Debt $22.0B = Equity $50.3B ÷ 401M shares ≈ $125 — multiple 8.5x สะท้อน segment diversification (refining + CPChem + midstream)</div></div>
+        <div class="mval">$125</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. DDM (Gordon Growth)</div><div class="mdesc">D₁ = $5.38 (ปันผล $5.08 × 1+6%); g 5%, r 9% → $5.38 / (9%−5%) = $134.5 — ปันผลเติบโตต่อเนื่อง; r=9% สอดคล้อง beta 0.67 ต่ำกว่า market</div></div>
+        <div class="mval">$135</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $121 – $135</span></div>
+        <div class="r">$127</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ทั้ง 3 วิธีให้ FV ใกล้เคียงกัน $121-135 สะท้อน "mid-cycle normalization" ที่จำเป็นสำหรับ PSX: EPS TTM $10.15 มีผลจาก Q4 2025 ที่แรงผิดปกติ ($7.17/Q เดี่ยว) ขณะที่ Q1/Q3 2025 อ่อนมาก ($0.51/$0.32) ราคาปัจจุบัน $169.93 สูงกว่า FV $127 ราว 34% บ่งชี้ว่า market กำลัง price in การฟื้นตัวของ EPS ไปแล้ว EPS forward 2026E ที่ $17.74 (consensus) อาจสะท้อน CPChem expansion cycle ใหม่ แต่ยังมีความไม่แน่นอนสูง
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $169.93</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $127</div></div>
+        </div>
+        <div class="scale">
+          <span>$89<br><small>MOS 30%</small></span>
+          <span>$102<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$127<br><small>Fair Value</small></span>
+          <span style="text-align:right">$160<br><small>โซน Premium</small></span>
+          <span style="text-align:right">$195<br><small>เป้าเฉลี่ย Analyst</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคา $169.93 อยู่สูงกว่า Fair Value $127 ราว 34% อยู่ใน "โซน Premium" ต่อ normalized valuation แต่ต่ำกว่าเป้าเฉลี่ย analyst $194.5 ราว 13% Analyst consensus "Buy" (19 คน) สะท้อนมุมมองบวกต่อ EPS recovery และ CPChem expansion ผู้ลงทุน value ควรรอ pull-back มาโซน $102-127 ก่อนสะสม
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">−33.8%</div>
+        <div class="txt">ราคาสูงกว่ามูลค่าเหมาะสม (Overvalued vs. Normalized FV) — market กำลัง price in การฟื้นตัว EPS ล่วงหน้าแล้ว</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$102</div><div class="d">โซนน่าสนใจสำหรับ value investor</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$89</div><div class="d">โซนถูกมาก (deep value) — หากเกิด cycle trough ซ้ำ</div></div>
+        <div class="metric"><div class="k">โซนสะสมเริ่มต้น</div><div class="v neu">&lt; $127</div><div class="d">ต่ำกว่า normalized Fair Value</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="169.93" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $169.93 • EPS ฐาน normalized ~$11.50 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS −5%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$79</div>
+          <div class="ret neg">−44.7%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$9.86</span></li>
+            <li><span>P/E ออก</span><span>8x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$15</span></li>
+            <li><span>สถานการณ์</span><span>Crack spread ตกต่ำ + CPChem อ่อน + demand destruction</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +10%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$168</div>
+          <div class="ret pos">+7.7%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$15.31</span></li>
+            <li><span>P/E ออก</span><span>11x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$15</span></li>
+            <li><span>สถานการณ์</span><span>Mid-cycle recovery + CPChem expansion เสร็จ + midstream EBITDA เพิ่ม</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +20%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$258</div>
+          <div class="ret pos">+60.7%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$19.87</span></li>
+            <li><span>P/E ออก</span><span>13x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$15</span></li>
+            <li><span>สถานการณ์</span><span>Peak-cycle crack spread + CPChem เต็มกำลัง + midstream expansion + buyback ต่อเนื่อง</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      PSX เป็นหุ้น cyclical สูง — ผลตอบแทน 3 ปีขึ้นกับ crack spread เป็นหลัก ใน Base case EPS ฟื้นตัวจาก normalized $11.50 ด้วย CPChem expansion + midstream growth ให้ผลตอบแทนรวม ~8% (ต่ำ เพราะเริ่มต้น overvalued) ใน Bear case refining downturn ซ้ำ 2024 ให้ผลขาดทุนหนัก ความหลากหลาย CPChem + midstream ช่วยลด downside vs pure refiner (เช่น MPC/VLO) แต่ไม่ใช่ insulator เต็มที่ — beta 0.67 สะท้อนเรื่องนี้ ปันผล $5.08/ปี (3%) เป็นตัวช่วยในช่วง cycle ต่ำ
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก &amp; ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>CPChem Expansion Project:</b> โรงงาน ethylene ขนาด world-scale แห่งใหม่ใน Texas (Gulf Coast II) + Qatar Project — เมื่อเสร็จจะเพิ่ม capacity อย่างมีนัย หนุน EBITDA ระยะยาว</li>
+          <li><b>Midstream Growth:</b> Gray Oak Pipeline + Coastal Bend Fractionator 3 + Zeus Gas Plant (Permian) — ขยายรายได้ fee-based ที่ stable กว่า refining</li>
+          <li><b>Portfolio Transformation:</b> ออกจาก legacy refinery ที่ margin ต่ำ เน้น high-value assets — ลด CAPEX waste เพิ่ม FCF quality</li>
+          <li><b>Refining Margin Recovery:</b> consensus EPS 2026E $17.74 (+75% vs TTM) สะท้อน expectation ว่า crack spread จะฟื้น — หาก materializes จะ re-rate ราคา</li>
+          <li><b>Capital Return:</b> Buyback ต่อเนื่อง ($1.2B/ปี 2025) + ปันผลเติบโต; shares ลดลงช่วยหนุน EPS per share</li>
+          <li><b>Sector Diversification Moat:</b> CPChem world-scale ethylene + midstream fee-based income ลด sensitivity ต่อ crack spread cycle — beta 0.67 ต่ำที่สุดในกลุ่ม refiner</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>Crack Spread Volatility:</b> refining margin ขึ้นกับส่วนต่าง crude-product ซึ่งผันผวนสูง FY2024 EPS เพียง $4.99 สะท้อน downside ที่รุนแรงในปีที่ margin แย่</li>
+          <li><b>CPChem Cycle Risk:</b> ธุรกิจ petrochemical มี cycle ยาวกว่า refining — overcapacity จากโรงใหม่ในเอเชีย/ตะวันออกกลาง กดดัน ethylene margin</li>
+          <li><b>Debt Load:</b> Total debt เพิ่มจาก $19.7B (FY2025) เป็น $27.1B (TTM) — leverage สูงขึ้นในช่วง investment cycle ทำให้ balance sheet ยืดหยุ่นน้อยลง</li>
+          <li><b>Energy Transition:</b> demand น้ำมันระยะยาวถูก pressure จาก EV + policy — refinery asset อาจ stranded ในอีก 10-15 ปี</li>
+          <li><b>EPS Lumpiness:</b> Q4 2025 EPS $7.17 (สูงผิดปกติ) vs Q1/Q3 2025 $0.51/$0.32 — คาดการณ์ annual EPS ยาก; analyst estimate range กว้าง ($138-220 target) สะท้อนความไม่แน่นอน</li>
+          <li><b>Regulatory/Tariff Risk:</b> PSX มีโรงกลั่นใน Europe — policy ด้านพลังงาน/สภาพอากาศของ EU + tariff trade war อาจกระทบ margin</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>PSX — Diversified Downstream ที่ดี แต่ Overvalued vs. Normalized Mid-Cycle</h2>
+      <p>Phillips 66 เป็นบริษัท downstream energy ที่มีคุณภาพสูงกว่า pure refiner ทั่วไป ด้วย CPChem (50/50 JV กับ Chevron) ที่มี structural cost advantage จาก world-scale ethylene plants และ midstream assets ที่ให้ fee-based income ที่ stable กว่า refining ธุรกิจเหล่านี้ช่วยลด cycle sensitivity (beta 0.67 ต่ำ) ปันผล $5.08/ปี (3%) มีการเติบโตต่อเนื่อง แต่ ณ ราคา $169.93 ซึ่งสูงกว่า normalized Fair Value $127 ราว 34% margin of safety เป็นลบอย่างมีนัย ผลตอบแทน Base case 3 ปีเพียง ~8% รวมปันผล ไม่น่าดึงดูดสำหรับ value investor โดย consensus analyst $194.5 (+14%) บ่งชี้ว่า market กำลัง price in EPS recovery 2026E $17.74 ล่วงหน้าแล้ว รอโอกาสสะสมที่โซน $102-127</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$127 <span style="font-size:12px;color:#cab9a8">($121–$135)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −33.8% (Overvalued)</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$194.5 (Buy — 19 analysts)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> PSX เป็น high-quality diversified downstream ที่เหมาะสะสมในช่วง cycle trough โซน $102-127 (MOS 0-20%) คือ entry zone ที่ดี สำหรับผู้ถืออยู่แล้ว ราคา $169.93 สูงกว่า normalized FV — พิจารณา trim บางส่วน แต่ยังถือต่อได้หากเชื่อใน EPS recovery 2026E $17.74 (Forward P/E 9.6x ซึ่ง attractive หากเป็นจริง) ติดตาม crack spread และ CPChem margin รายไตรมาส
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ EPS normalized mid-cycle, P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ EBITDA ที่ปรับ crack spread แล้ว
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ราคา ณ 30 มิ.ย. 2569 ยืนยันจาก StockAnalysis.com ($169.93) และ Yahoo Finance (~$174) ±2.4% • EPS TTM $10.15 จาก StockAnalysis.com และ Yahoo Finance (ตรงกัน) • งบการเงิน/อัตราส่วน: Macrotrends
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 30 มิถุนายน 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
