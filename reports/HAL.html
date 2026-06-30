@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น Halliburton (HAL) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"HAL","currency":"USD","price":33.94,"fairValue":32,"mos":-6.1,"upside":-5.7,"pe":18.82,"dividendYield":2.00,"roe":14.63}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#CC2200",
+    "accentDark": "#991a00",
+    "darkGrad": "linear-gradient(135deg,#1a0600 0%,#2d0a00 50%,#1a0600 100%)",
+    "glow": "rgba(204,34,0,0.35)",
+    "subColor": "#ff6644",
+    "headerMuted": "rgba(255,255,255,0.55)",
+    "verdictText": "#ff8866",
+    "vcellLabel": "#c0a090",
+    "badge": "#CC2200",
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#1e8e3e"
+  },
+  "chart": {
+    "data": [
+      ["ก.ค. 25", 22.40],
+      ["ส.ค. 25", 22.73],
+      ["ก.ย. 25", 24.60],
+      ["ต.ค. 25", 26.84],
+      ["พ.ย. 25", 26.22],
+      ["ธ.ค. 25", 28.26],
+      ["ม.ค. 26", 33.52],
+      ["ก.พ. 26", 36.00],
+      ["มี.ค. 26", 38.99],
+      ["เม.ย. 26", 42.30],
+      ["พ.ค. 26", 38.85],
+      ["มิ.ย. 26", 34.09],
+      ["ปัจจุบัน", 33.94]
+    ],
+    "min": 20,
+    "max": 45,
+    "grid": [20, 25, 30, 35, 40, 45],
+    "fairLine": 32,
+    "currency": "$",
+    "highlight": [9, 12]
+  },
+  "gauge": {
+    "min": 20,
+    "max": 45,
+    "cur": 33.94,
+    "fair": 32,
+    "fairLabelTop": false
+  },
+  "fv": 32
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">◆ ◆ ◆</div>
+    <div>
+      <span class="tag">NYSE: HAL</span>
+      <span class="tag">Energy Services</span>
+      <span class="tag">Oilfield Services (OFS)</span>
+    </div>
+    <h1>Halliburton Company</h1>
+    <div class="sub">Halliburton: #2 global oilfield services (OFS) • Dominant in North American completion/fracking (C&amp;P ~60% revenue) + international Drilling &amp; Evaluation (D&amp;E ~40%) • NA land cyclical (rig count exposure) + international resilience (Middle East/OPEC+ NOC CapEx) • Cyclical EPS normalized at mid-cycle oil $65-70/bbl + NA rig count ~550-600 • ~2% dividend yield + buybacks</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$33.94<small>(HAL)</small></div>
+      </div>
+      <div class="chg">▲ +51.5% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 30 มิ.ย. 2569<br>
+        กรอบ 52 สัปดาห์ $20.09 – $43.59<br>
+        ที่มา: StockAnalysis.com, Yahoo Finance, Halliburton IR
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ มิ.ย. 2569 · ตัวเลข TTM / Q1 2026</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~$28.4B</div><div class="d">~835M shares outstanding</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~18.8x</div><div class="d">Forward P/E 2026E ~14.3x</div></div>
+      <div class="metric"><div class="k">P/E Mid-Cycle (norm.)</div><div class="v">~14x</div><div class="d">Historical OFS range 10–18x ต่อรอบ</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">2.67x</div><div class="d">BVPS ~$12.73 (Q1 2026)</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ TTM</div><div class="v">$1.55B</div><div class="d">FY2024: $2.52B (peak cycle)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$1.81</div><div class="d">Norm. mid-cycle EPS ~$2.40</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~$12.73</div><div class="d">Equity $10.8B · D/E ~0.75x</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~14.6% / ~6.2%</div><div class="d">ROE ลดจาก FY2024 ที่ peak ~24%</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$22.2B</div><div class="d">−1.7% YoY · C&amp;P ~60% · D&amp;E ~40%</div></div>
+      <div class="metric"><div class="k">EBITDA Margin</div><div class="v">~13.9%</div><div class="d">EBITDA TTM $3.1B · norm ~$4.5B</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~2.0%</div><div class="d">$0.68/share ต่อปี · จ่ายสม่ำเสมอ</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">0.70</div><div class="d">ความผันผวนต่ำกว่าตลาด · cyclical OFS</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#CC2200"></i>ราคา HAL</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $32</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        HAL ปรับตัวขึ้นแรง +51.5% ในรอบ 1 ปี (ก.ค. 2568 – มิ.ย. 2569) จากจุดต่ำสุดที่ $22.40 ไปแตะจุดสูงสุดที่ $42.30 ในเดือน เม.ย. 2569
+        ก่อนปรับฐานกลับมาที่ $33.94 ในปัจจุบัน ตลาดตอบรับเชิงบวกต่อการฟื้นตัวของกิจกรรมอุตสาหกรรมน้ำมัน
+        การขยายงานต่างประเทศ (Middle East/Latin America) และการปรับโครงสร้างต้นทุน ราคาปัจจุบันเทียบกับ Fair Value
+        ~$32 (mid-cycle normalized) แสดงว่าตลาดกำลัง price in ความคาดหวังการฟื้นตัวของ EPS ใน FY2026–2027 แล้ว
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">3 วิธี — ใช้ mid-cycle normalized (cyclical OFS)</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Normalized (Mid-Cycle)</div><div class="mdesc">EPS $2.40 (normalized, avg FY2023–FY2025) × P/E 13x = $31.20 · ใช้ EPS เฉลี่ย 3 ปี ≈ $2.40 สะท้อน oil ~$65-70/bbl, NA rig ~550-600 · P/E 13x = กลางช่วง historical OFS 10–18x</div></div>
+        <div class="mval">$31.20</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. EV/EBITDA Normalized</div><div class="mdesc">norm EBITDA ~$4,459M (เฉลี่ย FY2023–2025) × 7x = EV $31,213M − Net Debt $6,078M = $25,135M ÷ 835M shares ≈ $30.10 · EV/EBITDA 7x = mid-cycle สำหรับ large-cap OFS ที่มี FCF สม่ำเสมอ</div></div>
+        <div class="mval">$30.10</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Normalized FCF Yield</div><div class="mdesc">norm FCF ~$2,058M ÷ 835M shares = $2.46/sh · ที่ target FCF yield 7% (cyclical industrial mid-quality) = $35.21 · FCF conversion ดีสม่ำเสมอ (FCF margin ~9–10% ใน FY2023–2024)</div></div>
+        <div class="mval">$35.21</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $30 – $35</span></div>
+        <div class="r">$32</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ทั้ง 3 วิธีให้ค่า $30–35 ค่อนข้างสอดคล้อง สะท้อน mid-cycle normalized โดย FCF yield ให้ค่าสูงสุด ($35) เพราะ HAL
+        มี FCF conversion ดีและลดหนี้ได้ต่อเนื่อง ส่วน EV/EBITDA ให้ค่าต่ำสุดเพราะภาระ Net Debt ~$6B
+        ราคาปัจจุบัน $33.94 อยู่เหนือ FV $32 เล็กน้อย (~+6%) ตลาดกำลัง price in การฟื้นตัวของ earnings ที่คาดว่าจะกลับมาที่ $2.37–2.93/share ใน FY2026–2027
+        EPS TTM $1.81 ต่ำเพราะมี write-off ใน Q3 2025 กดกำไร — normalized EPS สะท้อนธุรกิจจริงกว่า
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $33.94</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $32</div></div>
+        </div>
+        <div class="scale">
+          <span>$22.40<br><small>MOS 30%</small></span>
+          <span>$25.60<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$32<br><small>Fair Value</small></span>
+          <span style="text-align:right">$35<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">$44.24<br><small>เป้าเฉลี่ย Analyst</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน $33.94 อยู่เหนือ Fair Value mid-cycle $32 ราว 6% สะท้อนว่าตลาดกำลัง price in
+        การฟื้นตัวของ EPS ใน FY2026–2027 ที่คาดว่าจะอยู่ที่ $2.37–2.93 เป้านักวิเคราะห์เฉลี่ย $44.24
+        (Buy consensus จาก 27 คน) สูงกว่าปัจจุบัน ~30% สะท้อนมุมมอง bull case ที่ P/E 15–18x บน EPS ฟื้นตัว
+        โซนสะสมที่น่าสนใจสำหรับ value investor คือ $25–27 (MOS 15–20%) ที่จะมี downside protection เพียงพอ
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">−6.1%</div>
+        <div class="txt">ราคาปัจจุบันสูงกว่า Fair Value mid-cycle เล็กน้อย — ยังไม่มี margin of safety · รอโซนสะสม</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$25.60</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$22.40</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $32</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="33.94" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $33.94 • EPS ฐาน ~$2.37 (2026E) • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS −5%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$22.33</div>
+          <div class="ret neg">−34.2%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$2.03</span></li>
+            <li><span>P/E ออก</span><span>11x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$2.04</span></li>
+            <li><span>สถานการณ์</span><span>น้ำมัน &lt;$55 · NA rig ร่วง · competition เพิ่ม</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +8%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$40.91</div>
+          <div class="ret pos">+20.5%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$2.99</span></li>
+            <li><span>P/E ออก</span><span>13x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$2.04</span></li>
+            <li><span>สถานการณ์</span><span>NA rig ทรงตัว-ฟื้น + international ขยาย</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +15%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$56.04</div>
+          <div class="ret pos">+65.1%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$3.60</span></li>
+            <li><span>P/E ออก</span><span>15x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$2.04</span></li>
+            <li><span>สถานการณ์</span><span>NA rig ฟื้นแรง + Middle East เร่ง + pricing power</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      การประมาณการใช้ EPS ฐาน $2.37 (analyst consensus FY2026) ซึ่งสะท้อน mid-cycle activity แล้ว
+      Base case (+8%/yr) สอดคล้องกับ analyst forecast FY2027 ที่ $2.93 (+23% จาก 2026)
+      Bear case สะท้อนความเสี่ยงจากราคาน้ำมันต่ำ/NA rig count ลดเพิ่ม ซึ่ง HAL มีความเสี่ยงสูงกว่า SLB
+      เนื่องจากพึ่งพา NA fracking มากกว่า · ปันผล $0.68/yr เป็น cushion เพิ่มเติม (yield ~2%)
+      ควรทบทวนทุก 6 เดือนตามทิศทาง rig count + oil price outlook
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก &amp; ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>International expansion:</b> Middle East, Latin America (Mexico/Saudi Aramco NOC programs) เติบโตแข็งแกร่ง — HAL ดึง margin จาก international ได้ดีขึ้นต่อเนื่อง ลดการพึ่งพา NA cyclicality</li>
+          <li><b>NA rig count recovery:</b> หาก US natural gas price ฟื้น (LNG exports + AI datacenter demand) → frac activity กลับมา → HAL ได้ประโยชน์เต็มๆ ในฐานะผู้นำ NA completion services</li>
+          <li><b>Pricing power ใน completion services:</b> ความต้องการ high-intensity fracking (longer laterals, more proppant) เพิ่มขึ้นต่อเนื่อง — HAL มีเทคโนโลยี Zeus electric frac fleet ที่ efficient และ premium-priced</li>
+          <li><b>FCF generation &amp; capital return:</b> FCF สม่ำเสมอ $1.7–2.4B/yr ใช้ buyback + ลดหนี้ (Net Debt ลดจาก $6.5B → $6.1B) + ปันผล $0.68/yr — ROIC ดี</li>
+          <li><b>Analyst bull case $44–55:</b> 27 analysts ให้ Buy/Strong Buy 74% สะท้อนความเชื่อมั่นใน earnings recovery cycle FY2026–2027</li>
+          <li><b>Valuation reset ต่ำกว่า peak:</b> ราคา $33 ต่ำกว่า 52-wk high $43.59 ราว 22% ขณะที่ fundamentals ไม่ได้แย่ลงถาวร — เป็นโอกาส entry สำหรับ cyclical investor</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>NA rig count ลดเพิ่มเติม:</b> หากราคา natural gas ต่ำต่อเนื่อง/E&amp;P capex ลด → C&amp;P revenue (60%) กระทบหนัก — HAL sensitive ต่อ NA cycle มากกว่า SLB หลายเท่า</li>
+          <li><b>Oil price downturn:</b> ราคาน้ำมัน Brent ต่ำกว่า $60/bbl → E&amp;P capex freeze → ทั้ง C&amp;P และ D&amp;E ได้รับผลกระทบ — correlation สูง</li>
+          <li><b>OPEC+ supply disruption:</b> การเพิ่ม supply ของ OPEC+ หรือ trade war กดราคาน้ำมัน → กระทบ international activity ที่เป็น bright spot ของ HAL</li>
+          <li><b>Competition จาก SLB &amp; Baker Hughes:</b> SLB มี scale ใหญ่กว่า + international mix ดีกว่า · Baker Hughes มีความแข็งแกร่งใน LNG technology — ราคาบริการอาจถูกกดในช่วง activity ต่ำ</li>
+          <li><b>Net Debt $6.1B:</b> leverage อยู่ที่ D/E ~0.75x — ยังจัดการได้แต่หาก downcycle ยาว FCF ลดอาจกดดัน balance sheet</li>
+          <li><b>EPS ผันผวนสูง (cyclical):</b> EPS จาก $2.92 (2023) → $2.83 (2024) → $1.50 (2025) → คาด $2.37 (2026) — ความไม่แน่นอนสูง ยากกำหนด "normalized" EPS ที่แม่นยำ</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>HAL: Leader ใน NA Fracking — ราคาปัจจุบัน Priced-In Mid-Cycle Recovery แล้ว · รอโซนสะสม</h2>
+      <p>Halliburton เป็นผู้นำอันดับ 1 ใน North America completion services (fracking/stimulation) และมีธุรกิจ Drilling &amp; Evaluation ระดับโลก
+        ธุรกิจฟื้นตัวจากจุดต่ำ 2025 (EPS $1.50) สู่ consensus 2026E $2.37 (+58% YoY) และ 2027E $2.93
+        แต่ราคาปัจจุบัน $33.94 ได้ขึ้นมาล่วงหน้าแล้ว +51.5% ใน 1 ปี ทำให้ FV mid-cycle $32 ไม่มี MOS
+        สำหรับ cyclical investor ที่รอโอกาส: โซนสะสม $25–28 (pullback จาก oil price correction/NA rig weakness) ให้ risk/reward ดีกว่า
+        สำหรับ momentum investor: bull case $44–56 ทำได้หาก EPS ฟื้นตามแผน + multiple re-rating
+        ปัจจัยสำคัญที่ต้องติดตาม: ราคา natural gas + NA rig count + international contract wins (Middle East)</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$32 <span style="font-size:12px;color:#cab9a8">($30–$35)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −6.1%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$44.24 (Buy · 27 คน)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ราคาปัจจุบัน $33.94 อยู่เหนือ FV mid-cycle $32 — ยังไม่มี MOS สำหรับ value investor
+        หากราคาลงสู่ $25–28 (MOS 12–22%) จะเป็นโซนสะสมที่น่าสนใจ · สำหรับ momentum investor ที่รับ cyclical risk ได้
+        การ hold ที่ราคาปัจจุบันมี upside ถ้า earnings cycle ฟื้นตาม analyst consensus ·
+        ติดตาม: Baker Hughes rig count รายสัปดาห์ + HAL Q2 2026 earnings (21 ก.ค. 2569)
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐาน mid-cycle normalized ที่อาจคลาดเคลื่อน โดยเฉพาะ normalized EPS, EV/EBITDA multiple, FCF yield target และ oil price outlook
+    หุ้น OFS มีความผันผวนสูงตามวัฏจักรราคาน้ำมัน ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    แหล่งข้อมูล: StockAnalysis.com (ราคา $33.94 · EPS TTM $1.81 · revenue/EBITDA/FCF · analyst consensus $44.24), Yahoo Finance (ราคา $34.09 ยืนยัน ±0.4% · 52wk $20.09–$43.59 · forward P/E 13.21x · ROE 14.63% · market cap $28.5B), Halliburton Investor Relations / SEC filings (EPS quarterly FY2023–FY2025 · balance sheet Net Debt $6.1B · segment mix C&amp;P/D&amp;E) — ข้อมูล ณ 30 มิ.ย. 2569
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 30 มิ.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
