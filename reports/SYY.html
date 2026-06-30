@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น Sysco Corporation (SYY) — Stock Analysis Dashboard</title>
+<!-- ★ ใส่รุ่นโมเดล AI ที่ใช้วิเคราะห์จริง -->
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
+<script type="application/json" id="stock-meta">
+{"symbol":"SYY","currency":"USD","price":82.93,"fairValue":87.00,"mos":4.7,"upside":4.9,"pe":18.2,"dividendYield":2.65,"roe":81.9}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent":       "#003087",
+    "accentDark":   "#001a52",
+    "darkGrad":     "linear-gradient(135deg,#001a52 0%,#003087 60%,#0051c3 100%)",
+    "glow":         "rgba(0,48,135,0.35)",
+    "subColor":     "#c8d8f5",
+    "headerMuted":  "rgba(200,216,245,0.72)",
+    "verdictText":  "#e8f0fe",
+    "vcellLabel":   "#a8bce8",
+    "badge":        "#ffd180",
+    "chgBg":        "var(--green-soft)",
+    "chgColor":     "#1e8e3e"
+  },
+  "chart": {
+    "data": [
+      ["Jul 2025", 79.60],
+      ["Aug 2025", 80.47],
+      ["Sep 2025", 82.34],
+      ["Oct 2025", 74.28],
+      ["Nov 2025", 76.20],
+      ["Dec 2025", 73.69],
+      ["Jan 2026", 83.85],
+      ["Feb 2026", 91.16],
+      ["Mar 2026", 71.33],
+      ["Apr 2026", 74.71],
+      ["May 2026", 75.81],
+      ["Jun 2026", 83.40],
+      ["Jun-30", 82.93]
+    ],
+    "min": 65,
+    "max": 100,
+    "grid": [68, 75, 82, 89, 96],
+    "fairLine": 87.00,
+    "currency": "$",
+    "highlight": [7, 8]
+  },
+  "gauge": {
+    "min": 55,
+    "max": 110,
+    "cur": 82.93,
+    "fair": 87.00,
+    "fairLabelTop": false
+  },
+  "fv": 87.00
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">◉ ◎ ◉ ◎ ◉</div>
+    <div>
+      <span class="tag">NYSE: SYY</span>
+      <span class="tag">Consumer Staples</span>
+      <span class="tag">Foodservice Distribution</span>
+    </div>
+    <h1>Sysco Corporation</h1>
+    <div class="sub">ผู้จัดจำหน่ายอาหาร-เครื่องดื่มรายใหญ่สุดในสหรัฐฯ (~17% market share) • รายได้ ~$83B TTM • ลูกค้า: ร้านอาหาร, โรงพยาบาล, โรงเรียน, โรงแรม, ผู้จัดเลี้ยง • ฝูงรถบรรทุกห้องเย็นใหญ่สุดในสหรัฐฯ (cold chain scale moat) • ปันผลต่อเนื่อง ~2.65% • ราคาสินค้าโภคภัณฑ์ลดหนุนกำไร</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$82.93<small>(SYY)</small></div>
+      </div>
+      <div class="chg">▲ +4.2% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 30 มิ.ย. 2569<br>
+        กรอบ 52 สัปดาห์ $68.19 – $91.85<br>
+        ที่มา: Yahoo Finance, StockAnalysis.com, SEC EDGAR (8-K)
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ มิ.ย. 2569 · FY2025 สิ้นสุด มิ.ย. 2568</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~$39.6B</div><div class="d">478M หุ้น outstanding</div></div>
+      <div class="metric"><div class="k">P/E (TTM adj.)</div><div class="v neu">~18.2x</div><div class="d">Adj. EPS TTM $4.56 · GAAP P/E ~23x</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~19–21x</div><div class="d">ปัจจุบันต่ำกว่าค่าเฉลี่ยประวัติศาสตร์</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">~17.4x</div><div class="d">BVPS $4.80 · สูงเพราะ leverage</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$83.6B</div><div class="d">+3.4% YoY · FY2025: $81.4B</div></div>
+      <div class="metric"><div class="k">EPS (TTM adj.)</div><div class="v">~$4.56</div><div class="d">FY2025 adj. EPS: $4.46 (+3.5%) · FY2026E: $4.59</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~$4.80</div><div class="d">D/E 6.7x · หนี้สุทธิ ~$13.5B</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~81.9% / 8.3%</div><div class="d">ROE สูงเพราะ leverage สูง (buyback)</div></div>
+
+      <div class="metric"><div class="k">Gross Margin</div><div class="v">~18.6%</div><div class="d">Q3 FY2026 +31bps YoY</div></div>
+      <div class="metric"><div class="k">Adjusted Operating Margin</div><div class="v">~3.7%</div><div class="d">FY2025: 3.8% · ค่อยๆ ขยาย</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~2.65%</div><div class="d">$2.20/หุ้น/ปี · ปรับขึ้นต่อเนื่อง 55+ ปี</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">0.66</div><div class="d">ความผันผวนต่ำกว่าตลาด</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART (~1 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ · รายเดือน</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#003087"></i>ราคา SYY</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $87.00</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคา SYY เคลื่อนไหวในกรอบ $71–$91 ตลอดรอบปีที่ผ่านมา เริ่มต้นที่ ~$79.60 (ก.ค. 2568) ก่อนไต่ระดับสูงสุดที่ $91.16 (ก.พ. 2569) หลังผลประกอบการ Q2 FY2026 ดีเกินคาด จากนั้นปรับฐานแรงลงแตะ $71.33 (มี.ค. 2569) เพราะกำไร Q3 FY2026 ต่ำกว่าคาด (incentive compensation costs สูงขึ้น $63M) ก่อนฟื้นตัวกลับสู่ ~$82.93 ณ สิ้น มิ.ย. 2569 ผลตอบแทนรวมรอบปี +4.2% ยังต่ำกว่า S&amp;P 500 สะท้อนการฟื้นตัวที่ช้าของอุตสาหกรรมร้านอาหาร
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation (Trailing)</div><div class="mdesc">EPS adj. $4.56 × P/E 19x — กลุ่ม food distribution ซื้อขายที่ 17–21x; Sysco ควรได้ค่าพรีเมียมจาก market leadership และ dividend track record 55+ ปี</div></div>
+        <div class="mval">$86.64</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. EV/EBITDA Valuation</div><div class="mdesc">TTM adj. EBITDA ~$4,208M × 13x EV/EBITDA — US&amp;Sysco ซื้อขายที่ 11–14x ในประวัติศาสตร์; 13x สะท้อน stable cash generation หักหนี้สุทธิ $13,500M ÷ 478M หุ้น</div></div>
+        <div class="mval">$86.17</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Forward P/E Valuation</div><div class="mdesc">EPS adj. $4.59 (FY2026E consensus) × P/E 19x — FY2026 guidance ที่ high end $4.50–$4.60; U.S. local volumes +3.3% QoQ สูงสุดในรอบ 3 ปี สนับสนุน EPS growth</div></div>
+        <div class="mval">$87.21</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $82.00 – $92.00</span></div>
+        <div class="r">$87.00</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ทั้ง 3 วิธีให้ Fair Value ใกล้เคียงกันที่ $86–$87 สะท้อนลักษณะธุรกิจ Sysco ที่ stable, สร้าง FCF สม่ำเสมอ แม้ margin บางแต่ขนาดธุรกิจใหญ่ ($83B revenue) ชดเชยด้วย volume P/E ที่ 19x บน adj. EPS สอดคล้องกับ historical multiple ของ Sysco (17–21x) หุ้นซื้อขายใกล้ fair value ปัจจุบัน MOS เหลือ ~4.7% เท่านั้น ผู้ลงทุนแบบ value ควรรอโซน $70–$75 ซึ่งจะให้ MOS 15–20% ที่น่าสนใจกว่า
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $82.93</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $87.00</div></div>
+        </div>
+        <div class="scale">
+          <span>$60.90<br><small>MOS 30%</small></span>
+          <span>$69.60<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$87.00<br><small>Fair Value</small></span>
+          <span style="text-align:right">$87.00<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">$92.00<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน $82.93 อยู่ต่ำกว่า Fair Value $87.00 เพียง ~4.7% แสดงว่าหุ้น SYY ซื้อขายใกล้มูลค่าเหมาะสม ไม่แพง แต่ก็ไม่ได้มี margin of safety มากพอสำหรับ value investor ที่ต้องการ MOS ≥ 20% (จุดซื้อที่ $69.60) นักวิเคราะห์ 17 ราย consensus "Buy" เป้าเฉลี่ย $87 (range $77–$100) ผลตอบแทนรวมจากจุดนี้ส่วนใหญ่จะมาจาก dividend yield ~2.65% + EPS growth ปานกลาง
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">+4.7%</div>
+        <div class="txt">MOS ต่ำ — ราคาใกล้มูลค่าเหมาะสม รอโอกาสจุดเข้าที่ดีกว่า</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$69.60</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$60.90</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $87.00</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="82.93" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $82.93 • EPS ฐาน ~$4.59 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS −1%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$71.20</div>
+          <div class="ret neg">−6.1% รวม 3 ปี (รวมปันผล)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$4.45</span></li>
+            <li><span>P/E ออก</span><span>16x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$6.60</span></li>
+            <li><span>สถานการณ์</span><span>ร้านอาหารปิดกิจการ, volume ลด, margin กดดัน</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +5%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$107.89</div>
+          <div class="ret pos">+30.1% รวม 3 ปี (~9.2%/ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$5.31</span></li>
+            <li><span>P/E ออก</span><span>19x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$6.93</span></li>
+            <li><span>สถานการณ์</span><span>U.S. local volume โต 2–3%/ปี, margin ขยายช้าๆ</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +8%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$128.68</div>
+          <div class="ret pos">+55.2% รวม 3 ปี (~15.8%/ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$5.78</span></li>
+            <li><span>P/E ออก</span><span>21x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$7.26</span></li>
+            <li><span>สถานการณ์</span><span>M&amp;A ระหว่างประเทศ, local case vol +4%, margin re-rating</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      การคาดการณ์อิงสมมติฐาน EPS growth และ P/E exit ซึ่งอาจผิดพลาดได้ Base case คาดผลตอบแทนรวมประมาณ 9–10%/ปี ซึ่งน่าสนใจสำหรับหุ้น defensive ที่มี beta ต่ำ (0.66) อย่างไรก็ตาม ณ ราคาปัจจุบัน total return ส่วนใหญ่มาจาก EPS growth + dividend มากกว่า re-rating ผู้ลงทุนควรประเมินว่าจะได้ผลตอบแทนเพียงพอเทียบกับความเสี่ยงของธุรกิจ leverage สูง
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก &amp; ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>Scale moat ที่แข็งแกร่ง:</b> ฝูงรถบรรทุกห้องเย็นใหญ่สุดในสหรัฐฯ + network logistics สร้างต้นทุนต่อหน่วยที่คู่แข่งเทียบไม่ได้ ปกป้อง market share ~17% ระยะยาว</li>
+          <li><b>U.S. local volume acceleration:</b> Q3 FY2026 local case volume +3.3% QoQ สูงสุดในรอบ 3 ปี สะท้อนการฟื้นตัวของอุตสาหกรรม foodservice และ share gain จากลูกค้าท้องถิ่น</li>
+          <li><b>Gross margin expansion:</b> +31bps ใน Q3 FY2026 จาก commodity deflation + mix shift ไปหา higher-value products เป็น structural tailwind ที่ยั่งยืน</li>
+          <li><b>M&amp;A ขยายระหว่างประเทศ:</b> Sysco มุ่งขยายใน Europe/LatAm เพิ่ม TAM นอกตลาดสหรัฐฯ ลดการพึ่งพา domestic foodservice cycle</li>
+          <li><b>Dividend Aristocrat (55+ ปี):</b> ปรับขึ้นเงินปันผลต่อเนื่องดึงดูดนักลงทุนสถาบัน + income investors สร้าง floor support ราคา</li>
+          <li><b>FY2026 guidance high end:</b> management reiterate adj. EPS ที่ high end ของ $4.50–$4.60 + Q4 FY2026 adj. EPS guidance ~$1.51 แสดงถึง operational visibility สูง</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>Leverage สูง (D/E 6.7x):</b> หนี้สุทธิ ~$13.5B ดอกเบี้ยเป็นภาระหนัก หากอัตราดอกเบี้ยสูงขึ้นหรือ EBITDA ลดจะกดดัน FCF และความสามารถในการจ่ายเงินปันผล</li>
+          <li><b>Incentive compensation headwinds:</b> ค่าใช้จ่าย incentive comp สูงขึ้น $63M ใน Q3 FY2026 (กดดัน EPS $0.10/หุ้น) รวม FY2026 headwind ~$100M เทียบปีก่อน</li>
+          <li><b>Food commodity inflation:</b> deflation ดี แต่ inflation จะกดดัน gross margin และทำให้ลูกค้าลด order แม้ Sysco มีอำนาจต่อรองพอสมควร</li>
+          <li><b>Restaurant industry slowdown:</b> consumer spending ชะลอ → ร้านอาหารลด traffic → case volume growth ต่ำกว่าคาด โดยเฉพาะในช่วง recession</li>
+          <li><b>Competition:</b> US Foods (USFD) เป็นคู่แข่งหลัก + private label distributors รายย่อยในตลาดท้องถิ่น ราคาสงครามราคาสามารถกดดัน margin</li>
+          <li><b>Thin margin business:</b> operating margin ~3.7–3.8% หมายความว่าต้นทุนที่เพิ่มขึ้นเพียงเล็กน้อย (fuel, labor, insurance) สามารถกระทบ profitability มาก</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>Sysco — Defensive Leader ใกล้ Fair Value · รอจุดเข้าที่ดีกว่า</h2>
+      <p>Sysco คือธุรกิจ foodservice distribution อันดับ 1 ของสหรัฐฯ ที่มี competitive moat แข็งแกร่งจาก scale + logistics network ซึ่งสร้างมาตลอด 50+ ปี รายได้ ~$83B TTM เติบโตสม่ำเสมอ U.S. local case volume กลับมาเร่งตัว +3.3% QoQ ใน Q3 FY2026 — สูงสุดในรอบ 3 ปี ขณะที่ gross margin ขยายตัวจาก commodity deflation อย่างไรก็ตาม ณ ราคา $82.93 หุ้นซื้อขายใกล้ Fair Value $87 (MOS เพียง ~4.7%) ไม่มีส่วนเผื่อความปลอดภัยมากพอสำหรับ value investor ผู้ลงทุนที่ต้องการ total return จะได้รับ ~9%/ปี ใน base case จาก EPS growth 5% + dividend 2.65% ซึ่งน่าสนใจสำหรับ defensive portfolio แต่ไม่น่าตื่นเต้นในแง่ capital gain</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$87.00 <span style="font-size:12px;color:#cab9a8">($82.00–$92.00)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +4.7%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$87.00 (Buy)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> SYY เหมาะสำหรับ defensive income investor ที่ต้องการ dividend + ความมั่นคง ณ ราคาปัจจุบัน ~$83 MOS น้อยเกินไปสำหรับ value investor ทั่วไป ควรรอโอกาสซื้อในโซน $70–$75 (MOS 14–20%) ซึ่งเกิดขึ้นได้เมื่อตลาดกังวล recession หรือ earnings miss หากถือแล้วสามารถถือต่อได้ รับเงินปันผล ~2.65%/ปี ระหว่างรอ re-rating
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), และ EPS ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    แหล่งข้อมูล: Yahoo Finance (ราคา/chart), StockAnalysis.com (ตัวเลขงบ), SEC EDGAR 8-K (Q3 FY2026 press release), StockTitan.net (quarterly earnings), StockAnalysis.com/forecast (analyst targets)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 30 มิ.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
