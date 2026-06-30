@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น CSX Corporation (CSX) — Stock Analysis Dashboard</title>
+<!-- ★ ใส่รุ่นโมเดล AI ที่ใช้วิเคราะห์จริง -->
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
+<script type="application/json" id="stock-meta">
+{"symbol":"CSX","currency":"USD","price":48.01,"fairValue":43,"mos":-11.7,"upside":-10.4,"pe":29.45,"dividendYield":1.17,"roe":23.68}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#003087",
+    "accentDark": "#001a52",
+    "darkGrad": "linear-gradient(135deg,#001a52 0%,#003087 60%,#004db3 100%)",
+    "glow": "rgba(0,48,135,0.35)",
+    "subColor": "#b3c6e8",
+    "headerMuted": "rgba(179,198,232,0.75)",
+    "verdictText": "#e8f0fc",
+    "vcellLabel": "rgba(179,198,232,0.85)",
+    "badge": "#003087",
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#1e8e3e"
+  },
+  "chart": {
+    "data": [
+      ["ก.ค. 67", 35.54],
+      ["ส.ค. 67", 32.51],
+      ["ก.ย. 67", 35.51],
+      ["ต.ค. 67", 36.02],
+      ["พ.ย. 67", 35.36],
+      ["ธ.ค. 67", 36.25],
+      ["ม.ค. 68", 37.76],
+      ["ก.พ. 68", 42.69],
+      ["มี.ค. 68", 41.05],
+      ["เม.ย. 68", 45.43],
+      ["พ.ค. 68", 45.26],
+      ["มิ.ย. 68", 48.01]
+    ],
+    "min": 28,
+    "max": 52,
+    "grid": [30, 35, 40, 45, 50],
+    "fairLine": 43,
+    "currency": "$",
+    "highlight": [7, 11]
+  },
+  "gauge": {
+    "min": 25,
+    "max": 55,
+    "cur": 48.01,
+    "fair": 43,
+    "fairLabelTop": false
+  },
+  "fv": 43
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">●●●</div>
+    <div>
+      <span class="tag">NASDAQ: CSX</span>
+      <span class="tag">Transportation / Railroad</span>
+      <span class="tag">Class I Freight Railroad</span>
+    </div>
+    <h1>CSX Corporation</h1>
+    <div class="sub">Eastern US freight railroad (~19,500 miles) • Merchandise freight • Intermodal • Coal • Precision Scheduled Railroading (PSR)</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$48.01<small>(CSX)</small></div>
+      </div>
+      <div class="chg">▲ +35.1% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 29 มิ.ย. 2569<br>
+        กรอบ 52 สัปดาห์ $31.80 – $48.42<br>
+        ที่มา: Yahoo Finance, Investing.com, StockAnalysis.com
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ มิ.ย. 2569</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~$89.2B</div><div class="d">~1.86 พันล้านหุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~29.45x</div><div class="d">EPS TTM $1.63 · พรีเมียมเทียบ Peers</div></div>
+      <div class="metric"><div class="k">Forward P/E (FY2026E)</div><div class="v">~25.0x</div><div class="d">EPS 2026E $1.92 · ลดลงจาก TTM</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">~6.6x</div><div class="d">BVPS $7.02 · ROE สูงหนุน P/BV</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">$2.89B</div><div class="d">EPS $1.54 · ลด 16.7% yoy</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$1.63</div><div class="d">Q1'26: $0.43 · Q2'26E: $0.48</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~$7.02</div><div class="d">Book Value Per Share FY2025</div></div>
+      <div class="metric"><div class="k">ROE / ROIC</div><div class="v pos">~23.7% / ~11.9%</div><div class="d">Leverage หนุน ROE · ROIC สุทธิ</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">~$14.15B</div><div class="d">+2% yoy · 2026E $14.83B</div></div>
+      <div class="metric"><div class="k">Operating Ratio Q1'26</div><div class="v pos">64.0%</div><div class="d">ดีขึ้นจาก 70.1% Q1'25 · PSR ผลดี</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~1.17%</div><div class="d">$0.56/ปี · $0.14/ไตรมาส</div></div>
+      <div class="metric"><div class="k">Beta (5Y)</div><div class="v">1.22</div><div class="d">ผันผวนมากกว่าตลาดเล็กน้อย</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#003087"></i>ราคา CSX</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $43</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        CSX ปรับตัวขึ้น <b>+35.1%</b> ในช่วง 1 ปีที่ผ่านมา (ก.ค. 2567 – มิ.ย. 2568) จากระดับ $35.54 สู่ $48.01
+        จุดต่ำสุดอยู่ที่ $32.51 ในเดือน ส.ค. 2567 ก่อนฟื้นตัวอย่างแข็งแกร่ง
+        ตัวเร่งสำคัญคือ Q1 2026 (เม.ย. 2569) ที่กำไรต่อหุ้นโตขึ้น 26% yoy และ Operating Margin ขยายตัวสู่ 36%
+        ราคาปัจจุบัน $48.01 ใกล้จุดสูงสุด 52 สัปดาห์ที่ $48.42 — สะท้อน Valuation พรีเมียมเทียบคู่แข่ง
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. Forward P/E Valuation</div><div class="mdesc">EPS adj. $1.92 × P/E 22x — EPS FY2026E ที่ Analyst Consensus คาด × Fair P/E สำหรับ Railroad Oligopoly (UNP ~22x, NSC ~20x)</div></div>
+        <div class="mval">$42.24</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. EV/EBITDA Peer Comparison</div><div class="mdesc">EBITDA 2026E ~$6.5B × 15.5x (Peer Median UNP/NSC) − Net Debt ~$18.0B = Equity $82.8B ÷ 1.858B shares</div></div>
+        <div class="mval">$44.54</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. FY2027 Forward P/E (Discounted)</div><div class="mdesc">EPS adj. $2.19 × P/E 21x = $45.99 Discounted 1 ปีที่ r=10% — สะท้อน Earnings Trajectory การฟื้นตัวปี 2027</div></div>
+        <div class="mval">$41.81</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $40 – $48</span></div>
+        <div class="r">$43</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ทั้ง 3 วิธีให้ค่าใกล้เคียงกันในช่วง <b>$41.81–$44.54</b> สะท้อนว่า CSX ที่ $48.01 ซื้อขายที่ <b>พรีเมียมประมาณ 12%</b> เหนือ Fair Value
+        วิธี EV/EBITDA ให้ค่าสูงสุดเพราะ EBITDA Margin ปรับตัวดีขึ้น ส่วนวิธี Forward P/E บีบมาที่ $42.24 เพราะ Current P/E 29.45x สูงกว่า Peers อย่าง UNP (~22x) และ NSC (~20x) อยู่มาก
+        <b>FV $43</b> เป็นค่ากลางที่เหมาะสม — ราคาปัจจุบันใกล้ Ceiling ของ Valuation ที่สมเหตุสมผล
+        ยืนยันราคาจาก 2 แหล่ง: Yahoo Finance ($48.01) และ Investing.com ($48.01) ณ 29 มิ.ย. 2569 ตรงกัน 100%
+        EPS TTM $1.63 ยืนยันจาก StockAnalysis.com และ Yahoo Finance ตรงกัน
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $48.01</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $43</div></div>
+        </div>
+        <div class="scale">
+          <span>$30.10<br><small>MOS 30%</small></span>
+          <span>$34.40<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$43<br><small>Fair Value</small></span>
+          <span style="text-align:right">$47.02<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">$48<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน <b>$48.01</b> อยู่เหนือ Fair Value $43 ประมาณ <b>12%</b> และใกล้เคียงกับกรอบบนของ Valuation ที่ $48
+        ชี้ว่าหุ้นอยู่ในภาวะ <b>Fairly Valued ถึง Overvalued เล็กน้อย</b>
+        นักวิเคราะห์ Wall Street 23 คน มีเป้าเฉลี่ย $47.02 (ต่ำกว่าราคาตลาด 2%) — Bull Case สูงสุดที่ $55
+        โซน MOS 20% ที่ $34.40 และ MOS 30% ที่ $30.10 เป็นจุดเข้าที่น่าสนใจสำหรับนักลงทุน Value
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">−11.7%</div>
+        <div class="txt">ราคาสูงกว่า Fair Value — หุ้น Overvalued ที่ราคาปัจจุบัน รอจังหวะราคาย่อลง</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$34.40</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$30.10</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $43</div><div class="d">ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="48.01" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $48.01 • EPS ฐาน ~$1.63 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS 0%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$34.28</div>
+          <div class="ret neg">−29%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$1.63</span></li>
+            <li><span>P/E ออก</span><span>20x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$1.68</span></li>
+            <li><span>สถานการณ์</span><span>เศรษฐกิจถดถอย ปริมาณขนส่งลด</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +10%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$49.42</div>
+          <div class="ret pos">+3%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$2.17</span></li>
+            <li><span>P/E ออก</span><span>22x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$1.68</span></li>
+            <li><span>สถานการณ์</span><span>PSR ปรับ OR ลง Pricing Power คงตัว</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +15%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$63.68</div>
+          <div class="ret pos">+33%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$2.48</span></li>
+            <li><span>P/E ออก</span><span>25x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$1.68</span></li>
+            <li><span>สถานการณ์</span><span>Intermodal เติบโต OR ต่ำสุดใหม่</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      Scenario Base คาด EPS โต 10%/ปี สอดคล้องกับ Analyst Consensus ที่คาด EPS FY2026E $1.92 (+18% yoy) และ FY2027E $2.19
+      ได้ผลตอบแทนรวม 3 ปีเพียง <b>+3%</b> เพราะ P/E Compression จาก 29x สู่ 22x กลบ Earnings Growth ส่วนใหญ่
+      Scenario Bull (Intermodal ฟื้นตัวแรง + OR ดีต่อเนื่อง) ให้ +33% แต่ต้องอาศัย P/E 25x ซึ่งยังสูงกว่า Peers
+      <b>สรุป:</b> ที่ราคา $48 ผลตอบแทนที่คาดหวังอยู่ในระดับต่ำ เหมาะกว่าสำหรับนักลงทุน Long-Term ที่รอจังหวะราคาย่อ
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>Precision Scheduled Railroading (PSR):</b> CSX ยังมี Room ปรับ Operating Ratio ลงสู่ระดับ 60% ในระยะกลาง เทียบ CN (~57%) และ CP (~59%) ที่ทำได้ดีกว่า — OR ลงทุก 1% = EPS เพิ่ม ~$0.05-0.08</li>
+          <li><b>Intermodal Recovery:</b> ปริมาณ Intermodal โต 3% yoy ใน Q1 2026 และคาดเร่งตัวตาม E-commerce growth และ Truck-to-Rail conversion trend ระยะยาว</li>
+          <li><b>Pricing Power (Oligopoly):</b> CSX ควบคุมเส้นทางรถไฟฝั่งตะวันออกสหรัฐฯ เป็น Duopoly กับ NS — Pricing Power สูงในตลาด Merchandise และ Coal ที่ไม่มีคู่แข่งทดแทน</li>
+          <li><b>Q2 2026 Earnings Catalyst:</b> Analyst คาด EPS Q2 $0.48 (+9.1% yoy) และ CSX Guidance Operating Margin +200-300 bps yoy — ผลดีกว่าคาดอาจหนุนราคา</li>
+          <li><b>Buyback Program:</b> CSX มีประวัติ Buyback ต่อเนื่อง ลด Share Count ช่วยหนุน EPS/Share แม้ Net Income เติบโตช้าลง</li>
+          <li><b>Infrastructure Demand:</b> การเติบโตของ Data Centers, Reshoring Manufacturing และ Nearshoring หนุน Freight Volume ระยะยาวบนเส้นทางฝั่งตะวันออก</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>Valuation Stretched:</b> P/E 29.45x สูงกว่า Peers (UNP ~22x, NSC ~20x) อย่างมีนัย — ถ้า Earnings Disappoint แม้เล็กน้อย ราคาอาจ De-rate รุนแรง</li>
+          <li><b>Coal Volume Secular Decline:</b> Coal คิดเป็น ~15% ของรายได้ อยู่ในช่วง Structural Decline ตาม Clean Energy Transition — กระทบ Revenue Mix ระยะยาว</li>
+          <li><b>Economic Sensitivity:</b> ปริมาณขนส่ง Merchandise สัมพันธ์ใกล้ชิดกับ GDP สหรัฐฯ — Recession Risk จาก High Interest Rates อาจกดดัน Volume</li>
+          <li><b>Labor Cost Pressure:</b> Unionized Workforce และ Regulatory Requirements เพิ่มต้นทุน — เคยเกิด Strike Threat ปี 2022 ที่ต้องการ Congressional Intervention</li>
+          <li><b>Debt Load:</b> Net Debt ~$18B เทียบ Market Cap $89B — Rising Rates กดดัน Interest Expense และลด FCF ที่ดิ่งลงจาก $3.26B (FY2023) สู่ $1.71B (FY2025)</li>
+          <li><b>Capex Cycle:</b> FCF กดดันจาก Capex ที่เพิ่มขึ้นในช่วง Network Modernization — จำกัด Shareholder Returns ในระยะสั้น</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>CSX: กิจการดี แต่ราคา Stretched — รอจังหวะ</h2>
+      <p>CSX Corporation เป็นหนึ่งใน 7 Class I Railroad ของอเมริกาเหนือ ควบคุมเครือข่ายรถไฟ ~19,500 ไมล์ฝั่งตะวันออกสหรัฐฯ
+      ธุรกิจมี Economic Moat ชัดเจนในฐานะ Oligopoly กับ Norfolk Southern (NS) — ลูกค้าแทบไม่มีทางเลือกอื่น
+      Precision Scheduled Railroading (PSR) ช่วยปรับ Operating Ratio ลงอย่างต่อเนื่อง Q1 2026 ทำได้ดีมากที่ 64% และ Guidance ปรับขึ้น +200-300 bps ปี 2026
+      อย่างไรก็ดี ราคาหุ้นที่ $48.01 สะท้อน P/E 29.45x สูงกว่า Fair Value $43 ถึง 12% และสูงกว่า Peers (UNP/NSC) 30-50%
+      ความเสี่ยงหลักคือ P/E Compression ที่อาจกลบ Earnings Growth ทั้งหมด แนะนำ <b>รอราคาย่อลงสู่โซน $40-44</b> ก่อนเข้าลงทุน</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$43 <span style="font-size:12px;color:#cab9a8">($40–$48)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −11.7%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$47.02 (Buy — 23 คน)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> CSX เป็นหุ้น Railroad คุณภาพสูงเหมาะสำหรับ Long-Term Hold แต่ <b>ที่ $48 Valuation ตึงตัว</b>
+        นักลงทุน Value ควรรอราคาย่อสู่ <b>$40–44</b> (Near Fair Value) หรือ <b>$34.40</b> (MOS 20%) ก่อนทยอยสะสม
+        นักลงทุนที่ถือ Position อยู่แล้วอาจ Hold รับปันผล 1.17%/ปี พร้อมติดตาม Q2 2026 Earnings (22 ก.ค. 2569)
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข Valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ EBITDA Margin ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ
+    • แหล่งข้อมูล: Yahoo Finance (ราคา/EPS/Yield ณ 29 มิ.ย. 2569), Investing.com (ยืนยันราคา/P/E), StockAnalysis.com (Financials/ROE/EPS Estimates), CSX Q1 2026 Earnings Release (SEC Form 8-K), CSIMarket.com (ROE History)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 29 มิ.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
