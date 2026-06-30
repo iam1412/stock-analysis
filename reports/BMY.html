@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น Bristol-Myers Squibb (BMY) — Stock Analysis Dashboard</title>
+<!-- ★ ใส่รุ่นโมเดล AI ที่ใช้วิเคราะห์จริง -->
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
+<script type="application/json" id="stock-meta">
+{"symbol":"BMY","currency":"USD","price":58.42,"fairValue":53.0,"mos":-10.2,"upside":-9.3,"pe":9.5,"dividendYield":4.31,"roe":38.7}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#8B1A2E",
+    "accentDark": "#5C0F1E",
+    "darkGrad": "linear-gradient(135deg,#2a0a12 0%,#1a0008 100%)",
+    "glow": "rgba(139,26,46,0.35)",
+    "subColor": "#d4879a",
+    "headerMuted": "rgba(212,135,154,0.65)",
+    "verdictText": "#f5c6d0",
+    "vcellLabel": "rgba(212,135,154,0.75)",
+    "badge": "#8B1A2E",
+    "chgBg": "#1e8e3e",
+    "chgColor": "#ffffff"
+  },
+  "chart": {
+    "data": [
+      ["ก.ค. 25", 41.25],
+      ["ส.ค. 25", 45.53],
+      ["ก.ย. 25", 43.52],
+      ["ต.ค. 25", 44.46],
+      ["พ.ย. 25", 48.13],
+      ["ธ.ค. 25", 52.77],
+      ["ม.ค. 26", 53.85],
+      ["ก.พ. 26", 61.73],
+      ["มี.ค. 26", 60.03],
+      ["เม.ย. 26", 59.97],
+      ["พ.ค. 26", 57.18],
+      ["มิ.ย. 26", 58.56],
+      ["30 มิ.ย. 26", 58.42]
+    ],
+    "min": 35,
+    "max": 70,
+    "grid": [35, 42, 49, 56, 63, 70],
+    "fairLine": 53.0,
+    "currency": "$",
+    "highlight": [7]
+  },
+  "gauge": {
+    "min": 30,
+    "max": 75,
+    "cur": 58.42,
+    "fair": 53.0,
+    "fairLabelTop": true
+  },
+  "fv": 53.0
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">◆◆◆</div>
+    <div>
+      <span class="tag">NYSE: BMY</span>
+      <span class="tag">Healthcare / Pharma</span>
+      <span class="tag">Large Cap</span>
+    </div>
+    <h1>Bristol-Myers Squibb</h1>
+    <div class="sub">Major pharma navigating patent cliff • Revlimid (declining) • Eliquis (cliff 2026–2028) • Opdivo (immuno-oncology) • KarXT/Cobenfy (schizophrenia, approved 2024) • Reblozyl (myelofibrosis) • Camzyos (HCM) • Sotyktu (dermatology) • Breyanzi (CAR-T) • ~4.3% dividend yield</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$58.42<small>(BMY)</small></div>
+      </div>
+      <div class="chg">▲ +41.6% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 30 มิถุนายน 2569<br>
+        กรอบ 52 สัปดาห์ $42.52 – $62.89<br>
+        ที่มา: Yahoo Finance, StockAnalysis.com, SEC EDGAR
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ มิ.ย. 2569 · non-GAAP EPS เป็นเกณฑ์หลัก (GAAP ถูกกดจาก amortization ซื้อกิจการ Celgene)</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~$119.6B</div><div class="d">2.04 พันล้านหุ้น</div></div>
+      <div class="metric"><div class="k">P/E (non-GAAP TTM)</div><div class="v neu">~9.5x</div><div class="d">EPS non-GAAP $6.15 (FY2025)</div></div>
+      <div class="metric"><div class="k">P/E (GAAP TTM)</div><div class="v">~16.4x</div><div class="d">GAAP EPS $3.57 (หลังหักค่า amort.)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">6.4x</div><div class="d">BVPS $9.06 (ต่ำจาก goodwill write-down)</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM (FY2025)</div><div class="v neu">$48.2B</div><div class="d">+7.1% vs FY2023; แทบทรงตัว vs FY2024</div></div>
+      <div class="metric"><div class="k">EPS non-GAAP TTM</div><div class="v">~$6.15</div><div class="d">FY2025 actual; guidance 2569: $6.05–$6.35</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~$9.06</div><div class="d">FY2025; ลดจาก $14.16 (FY2023) จาก impairment</div></div>
+      <div class="metric"><div class="k">ROE</div><div class="v pos">~38.7%</div><div class="d">สูงแต่ distorted (equity ต่ำจาก write-down)</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">$7.1B</div><div class="d">ฟื้นตัวจากขาดทุน $8.9B ใน FY2024</div></div>
+      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">~76%</div><div class="d">ทั่วไปของ Big Pharma ที่ branded drug</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~4.31%</div><div class="d">$2.52/yr; เพิ่มต่อเนื่อง &gt;10 ปี</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">0.24</div><div class="d">ผันผวนต่ำมาก เทียบ S&amp;P 500</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART (ราคาย้อนหลัง ~1 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ก.ค. 2568 – มิ.ย. 2569 · Adjusted Close (Yahoo Finance)</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#8B1A2E"></i>ราคา BMY</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $53.00</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        BMY ปรับตัวขึ้นแรง +41.6% ในรอบปี (ก.ค. 2568 – มิ.ย. 2569) จากจุดต่ำ $41.25 ขึ้นสู่ระดับ $61.73 ในเดือน ก.พ. 2569
+        ขับเคลื่อนจากการฟื้นตัวของกำไร FY2025 ($7.1B GAAP), ผลลัพธ์เชิงบวกของ Cobenfy/KarXT ในตลาด และการที่ตลาดปรับมุมมองต่อการบริหาร patent cliff ให้ดีขึ้น
+        ราคาได้ปรับลงหลังแตะ peak และทรงตัวบริเวณ $57–$59 ณ ปลายปี 2569 ใกล้เคียงกับเป้านักวิเคราะห์ $63 — แต่ยังซื้อขายเหนือ Fair Value ตามการประเมินนี้ที่ $53
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION (เฉลี่ย 3 วิธี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี · ใช้ non-GAAP EPS เป็นหลัก</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation (non-GAAP)</div><div class="mdesc">EPS non-GAAP adj. $6.15 × P/E เป้าหมาย 9.5x — ส่วนลด vs Big Pharma avg 12–15x เพราะ patent cliff Eliquis (2026–2028) + Revlimid ลดแล้ว</div></div>
+        <div class="mval">$58.43</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = $2.52 × (1+2%) = $2.57; g 2%, r 8% → ปันผลมีความเสี่ยงจาก patent cliff; g ต่ำสะท้อนความไม่แน่นอนของ EPS ในช่วง 2026–2028</div></div>
+        <div class="mval">$42.84</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. EV/Revenue</div><div class="mdesc">EV = Revenue $48.2B × 3.0x = $144.6B; หัก Net Debt ~$37B = Equity ~$107.6B ÷ 2.04B หุ้น — เหมาะกับ pharma ที่ GAAP earnings ผิดเพี้ยน</div></div>
+        <div class="mval">$52.75</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $43 – $61</span></div>
+        <div class="r">$53.00</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        วิธี P/E ให้ค่าสูงสุด ($58.43) เพราะ non-GAAP EPS แข็งแกร่ง แต่ต้องตระหนักว่า EPS ในช่วง 2026–2028 อาจถูกกดจาก Eliquis cliff และ Revlimid ที่ลดต่อเนื่อง
+        DDM ให้ค่าต่ำสุด ($42.84) เพราะ g ต่ำสะท้อนความเสี่ยงด้านรายได้
+        EV/Revenue ที่ 3.0x (ต่ำกว่า peer ที่ 3.5–4.5x เพื่อสะท้อน patent cliff) ให้ $52.75
+        Fair Value เฉลี่ยที่ $53 สะท้อนว่าหุ้นซื้อขายเหนือ FV ที่ราคาปัจจุบัน $58.42 — แต่ถ้านับ P/E อย่างเดียว (วิธีที่ตลาดมักใช้กับ pharma) หุ้นเกือบ Fair Value
+        ความเสี่ยงหลักคือ EPS ขาลง 2026–2028 ก่อนที่ growth portfolio จะชดเชยได้เต็มที่
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $58.42</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $53.00</div></div>
+        </div>
+        <div class="scale">
+          <span>$37.10<br><small>MOS 30%</small></span>
+          <span>$42.40<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$53.00<br><small>Fair Value</small></span>
+          <span style="text-align:right">$61.00<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">$63.08<br><small>เป้าเฉลี่ย Analyst</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคา $58.42 ซื้อขายเหนือ Fair Value $53 ประมาณ 10.2% — ไม่มี Margin of Safety ณ ราคาปัจจุบัน
+        โซน MOS 20% ที่ $42.40 คือจุดที่น่าสนใจสำหรับ value investor; MOS 30% ที่ $37.10 ใกล้จุดต่ำสุด 52 สัปดาห์ ($42.52)
+        นักวิเคราะห์ 29 ท่าน (Hold consensus) ตั้งเป้าเฉลี่ย $63.08 — สูงกว่า FV ที่ประเมินนี้ แสดงว่า Wall Street ให้ P/E เป้าสูงกว่า (ราว 10–11x non-GAAP)
+        ระวัง downside risk จาก Eliquis cliff 2028 ที่อาจกด EPS ลง &gt;15% ในปีนั้น
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">−10.2%</div>
+        <div class="txt">ราคาปัจจุบันเหนือ Fair Value — ยังไม่มี Margin of Safety · รอโซน $42–$48 เพื่อ MOS 10–20%</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$42.40</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$37.10</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $53.00</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="58.42" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $58.42 • EPS ฐาน ~$6.15 non-GAAP • รวมปันผล $2.52/yr</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS −8%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$38.32</div>
+          <div class="ret neg">−34.4% capital gain + ~$7.56 ปันผล 3 ปี</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$4.79</span></li>
+            <li><span>P/E ออก</span><span>8.0x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$7.56</span></li>
+            <li><span>สถานการณ์</span><span>Eliquis cliff รุนแรง; KarXT โตช้า; กดดัน margin</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS −2%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$55.01</div>
+          <div class="ret neg">−5.8% capital gain + ~$7.56 ปันผล 3 ปี</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$5.79</span></li>
+            <li><span>P/E ออก</span><span>9.5x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$7.56</span></li>
+            <li><span>สถานการณ์</span><span>Patent cliff ชดเชยบางส่วนด้วย growth portfolio; total return +7.1%</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +4%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$76.12</div>
+          <div class="ret pos">+30.3% capital gain + ~$7.56 ปันผล 3 ปี</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$6.92</span></li>
+            <li><span>P/E ออก</span><span>11.0x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$7.56</span></li>
+            <li><span>สถานการณ์</span><span>KarXT/Cobenfy blockbuster; Reblozyl แจ้งเกิด; re-rating P/E ขึ้น</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      ช่วง 3 ปีข้างหน้าเป็นช่วงเปลี่ยนผ่านสำคัญ — Eliquis (สัดส่วน ~30% ของรายได้) จะเผชิญ generic ในสหรัฐปี 2028 ทำให้ Base case EPS ปีที่ 3 ต่ำกว่า EPS ปัจจุบัน
+      การฟื้นตัวขึ้นอยู่กับ (1) Cobenfy/KarXT ยอดขายแตะ $1B+ (ตลาดคาดปี 2027–2028) (2) Reblozyl + Camzyos เร่งตัว (3) pipeline phase 3 ที่มีมากกว่า 40 compound
+      ปันผล $7.56 รวม 3 ปี (yield ~4.3%) ช่วย buffer ผลตอบแทนในทุก scenario
+      หากซื้อที่ MOS 20% ($42.40) base case ผลตอบแทนรวมปันผลจะเป็น ~+65% ใน 3 ปี — น่าสนใจกว่ามาก
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>Cobenfy (KarXT) — ยาเด่นแห่งทศวรรษ:</b> ยาโรคจิตเภท (schizophrenia) กลไก muscarinic ใหม่ที่แตกต่างจาก antipsychotic เดิม อนุมัติ FDA ต.ค. 2567; ยอดขายปี 2568 $155M; คาดแตะ $1B ภายใน 2570–2571 ตลาดรวม $10B+</li>
+          <li><b>Reblozyl — myelofibrosis &amp; MDS:</b> โตเร็วในข้อบ่งใช้ใหม่; ร่วมกับ Karyopharm สำหรับ MDS; คาดยอดขาย $1B+ ในอีก 2 ปี — ช่วยลบล้างการลดลงของ Revlimid</li>
+          <li><b>Camzyos (mavacamten) — โรคหัวใจหนา HCM:</b> ยาแรกในกลุ่ม myosin inhibitor ที่ได้รับอนุมัติ; ตลาด HCM ยังเป็น unmet need ขนาดใหญ่ในสหรัฐและยุโรป; การขยายข้อบ่งใช้กำลังดำเนินการ</li>
+          <li><b>Pipeline แข็งแกร่ง 40+ compound:</b> ใน Phase 3 รวม BMS-986325 (solid tumor) + milvexian (anticoagulant ทดแทน Eliquis ระยะยาว) + สาขา neuroscience (ต่อยอด KarXT)</li>
+          <li><b>Opdivo + Yervoy — immuno-oncology franchise:</b> ยังเป็น backbone รายได้หลัก; ข้อบ่งใช้ใหม่ NSCLC/GI/HCC ต่อเนื่อง; biosimilar risk ยังห่างออกไป</li>
+          <li><b>Dividend yield สูง + ประวัติเพิ่มปันผลต่อเนื่อง:</b> yield ~4.3% เป็น cushion สำหรับผู้ถือระยะยาว; FCF แข็งแกร่ง; ลดหนี้จาก $49.6B → $45.1B ในปี 2568</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>Eliquis patent cliff 2026–2028:</b> สูญเสีย EU exclusivity พ.ค. 2569; สหรัฐปี 2571 คาดรายได้ลดเกือบ 50% ในปีนั้น — Eliquis ปัจจุบันสัดส่วน ~28–30% ของรายได้รวม; risk ที่ใหญ่ที่สุดในระยะสั้น</li>
+          <li><b>Revlimid decline ยังต่อเนื่อง:</b> รายได้ลด 48.9% เหลือ $2.9B ในปี 2568; ปี 2569–2570 คาดลดต่อ ดึงรายได้รวมลง; Sprycel ก็ลด 61.7% เช่นกัน</li>
+          <li><b>Cobenfy uptake ช้ากว่าคาด:</b> Q1 2569 รายได้ต่ำกว่า consensus; แพทย์เปลี่ยนยาช้า; reimbursement ปัญหา; ถ้า KarXT ไม่ถึง $1B ตาม timeline = downside สำคัญ</li>
+          <li><b>หนี้สูง $45B:</b> ต้นทุนดอกเบี้ยในยุค rates สูง; ข้อจำกัดความยืดหยุ่นทางการเงิน; ซื้อ Karuna $14B + RayzeBio 2567 เพิ่มภาระ</li>
+          <li><b>IRA Drug Pricing (US Medicare):</b> Eliquis และ Opdivo อยู่ใน IRA negotiation list; ราคาที่ถูกบีบอาจกดรายได้ 2026–2029 เพิ่มจากที่คาด</li>
+          <li><b>GAAP EPS บิดเบือนจาก M&amp;A amortization:</b> Celgene ($74B), Karuna ($14B) ทำให้ amortization หนักมาก; นักลงทุนที่อ้าง GAAP P/E 16x อาจสับสน; ความเสี่ยงจาก goodwill impairment ถ้า pipeline ล้มเหลว</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>Yield Trap หรือ Turnaround? — รอ Patent Cliff ผ่านพ้น · ราคาปัจจุบันเหนือ FV</h2>
+      <p>Bristol-Myers Squibb เป็น Big Pharma ที่มีรายได้แข็งแกร่ง $48.2B ในปี 2568 พร้อม yield สูง 4.3% และ non-GAAP EPS $6.15 ที่แข็งแกร่ง แต่กำลังเข้าสู่ช่วงเปลี่ยนผ่านที่ยากลำบาก: Eliquis (~30% รายได้) จะสูญเสีย exclusivity ในสหรัฐปี 2571 ซึ่งอาจกด EPS ลงอย่างมีนัยสำคัญในช่วง 2570–2572 ก่อนที่ growth portfolio (Cobenfy, Reblozyl, Camzyos) จะชดเชยได้เต็มที่ ราคาปัจจุบัน $58.42 เกินกว่า Fair Value ที่ประเมินไว้ที่ $53 (เฉลี่ย 3 วิธี) แสดงว่าตลาดกำลัง price ใน Bull scenario ของ growth portfolio ในระดับหนึ่ง ผู้ลงทุนที่ต้องการ margin of safety ควรรอโซน $42–$48 ซึ่งจะให้ MOS 10–20% และ yield ที่เพิ่มขึ้น</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$53.00 <span style="font-size:12px;color:#cab9a8">($43–$61)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −10.2% (เหนือ FV)</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$63.08 (Hold, 29 ท่าน)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ณ ราคา $58.42 ยังไม่มี Margin of Safety — <b>รอสะสมที่ $42–$48 (MOS 10–20%)</b> หากต้องการ entry จาก value perspective ปันผล ~4.3% เป็น cushion ที่ดีระหว่างรอ สำหรับนักลงทุนระยะยาวที่เชื่อใน growth portfolio (โดยเฉพาะ Cobenfy + Reblozyl) อาจทยอยสะสมบางส่วนที่ราคาปัจจุบันได้ เนื่องจาก P/E non-GAAP ที่ 9.5x ถือว่าไม่แพงเมื่อเทียบ peer Big Pharma ที่ 12–15x แต่ต้องรับความเสี่ยง EPS ขาลงปี 2571–2572
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    แหล่งข้อมูล: (1) Yahoo Finance — ราคาปัจจุบัน $58.42, กราฟรายเดือน Adj.Close ก.ค. 2568–มิ.ย. 2569, 52-wk range $42.52–$62.89 (2) StockAnalysis.com — financials FY2022–2025, analyst consensus target $63.08, 29 analysts, Forward P/E (3) SEC EDGAR 8-K BMS Q4/FY2025 &amp; Q1 2026 — non-GAAP EPS FY2025 $6.15, 2026 guidance $6.05–$6.35, Q1 2026 non-GAAP EPS $1.58 (4) MarketBeat — analyst breakdown Buy 8/Hold 10/Sell 1, price target high $75/low $40 — ราคา/EPS non-GAAP ตรวจสอบครบ ≥2 แหล่งอิสระ (Yahoo Finance + SEC 8-K ≈ ต่าง 0%)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 30 มิถุนายน 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
