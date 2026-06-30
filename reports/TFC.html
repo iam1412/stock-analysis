@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น Truist Financial (TFC) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"TFC","currency":"USD","price":50.10,"fairValue":52,"mos":3.7,"upside":3.8,"pe":12.4,"dividendYield":4.15,"roe":8.28}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#5B2C8D",
+    "accentDark": "#3D1A6B",
+    "darkGrad": "linear-gradient(135deg,#1a0a2e 0%,#2d1660 50%,#1a0a2e 100%)",
+    "glow": "rgba(91,44,141,0.35)",
+    "subColor": "#b39ddb",
+    "headerMuted": "rgba(179,157,219,0.7)",
+    "verdictText": "#ce93d8",
+    "vcellLabel": "rgba(179,157,219,0.8)",
+    "badge": "#7b3fa8",
+    "chgBg": "#1e4620",
+    "chgColor": "#81c784"
+  },
+  "chart": {
+    "data": [
+      ["ก.ค. 25", 43.71],
+      ["ส.ค. 25", 46.82],
+      ["ก.ย. 25", 45.72],
+      ["ต.ค. 25", 44.63],
+      ["พ.ย. 25", 46.50],
+      ["ธ.ค. 25", 49.21],
+      ["ม.ค. 26", 51.42],
+      ["ก.พ. 26", 49.31],
+      ["มี.ค. 26", 45.97],
+      ["เม.ย. 26", 51.50],
+      ["พ.ค. 26", 48.21],
+      ["มิ.ย. 26", 50.58],
+      ["30 มิ.ย. 26", 50.08]
+    ],
+    "min": 38,
+    "max": 60,
+    "grid": [40, 44, 48, 52, 56],
+    "fairLine": 52,
+    "currency": "$",
+    "highlight": [6, 9]
+  },
+  "gauge": {
+    "min": 32,
+    "max": 67,
+    "cur": 50.10,
+    "fair": 52,
+    "fairLabelTop": false
+  },
+  "fv": 52
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">●●●●●●</div>
+    <div>
+      <span class="tag">NYSE: TFC</span>
+      <span class="tag">Financials</span>
+      <span class="tag">Regional Bank</span>
+    </div>
+    <h1>Truist Financial Corporation</h1>
+    <div class="sub">7th largest US bank (BB&amp;T + SunTrust merger 2019, ~$530B assets) • SE US geography (Sun Belt growth) • McGriff Insurance divested 2023 ($7.75B) → capital return focus • Integration complete • ~4.5% dividend yield • NIM recovery in rate cycle</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$50.10<small>(TFC)</small></div>
+      </div>
+      <div class="chg">▲ +14.6% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 30 มิ.ย. 2569<br>
+        กรอบ 52 สัปดาห์ $40.78 – $56.20<br>
+        ที่มา: Yahoo Finance, Finviz, StockAnalysis.com
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">Q1 2026 · FY2025</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~$62.4B</div><div class="d">~1.24B หุ้นในตลาด</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~12.4x</div><div class="d">EPS TTM $4.04 · Forward P/E ~11x</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~11–14x</div><div class="d">ส่วนลดจากรอบ integration</div></div>
+      <div class="metric"><div class="k">P/BV / P/TBV</div><div class="v neu">1.0x / 1.5x</div><div class="d">BVPS $50.04 · TBVPS $33.19 (Q1 26)</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">$5.31B</div><div class="d">EPS $3.82 · +14% YoY (vs FY24 -\$45M)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$4.04</div><div class="d">oper. ~$4.19 · Q1 26 EPS $1.09 (+25% YoY)</div></div>
+      <div class="metric"><div class="k">NIM (Q1 2026)</div><div class="v pos">3.02%</div><div class="d">-5bp QoQ · ยังอยู่เหนือ 3% · NIM recovery</div></div>
+      <div class="metric"><div class="k">ROE / ROTCE</div><div class="v pos">~8.3% / 13.8%</div><div class="d">ROE ต่ำเพราะ goodwill · ROTCE สะท้อนผลจริง</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">~$18.7B</div><div class="d">FY25 $18.4B · +61% vs FY24 (revenue recovery)</div></div>
+      <div class="metric"><div class="k">Efficiency Ratio</div><div class="v">57.9%</div><div class="d">ปรับดีขึ้น Q1 26 · เป้า &lt;56% ปลาย 26</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~4.15%</div><div class="d">$2.08/ปี · payout ~50% · ทรงตัว 3 ปี</div></div>
+      <div class="metric"><div class="k">CET1 Ratio</div><div class="v pos">10.8%</div><div class="d">Q1 26 · buyback $1.1B Q1 · โปรแกรม $5B</div></div>
+    </div>
+
+    <!-- Bank-specific metrics -->
+    <div class="grid g4" style="margin-top:12px">
+      <div class="metric"><div class="k">Beta (5Y)</div><div class="v">0.88</div><div class="d">ผันผวนต่ำกว่าตลาดเล็กน้อย</div></div>
+      <div class="metric"><div class="k">ROA</div><div class="v">~0.97%</div><div class="d">FY25 · ปรับดีขึ้นจาก -0.008% FY24</div></div>
+      <div class="metric"><div class="k">Total Assets</div><div class="v">$547B</div><div class="d">อันดับ 7 สหรัฐ · ฐานใน SE US</div></div>
+      <div class="metric"><div class="k">Stress Test</div><div class="v pos">ผ่าน Strong</div><div class="d">Fed stress test 2026 · ทุนแข็งแกร่ง</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#5B2C8D"></i>ราคา TFC</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $52</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        TFC ปรับตัวขึ้น <b>+14.6%</b> ในรอบปีที่ผ่านมา (ก.ค. 2568 – มิ.ย. 2569) จาก $43.71 สู่ $50.08
+        จุดสูงสุดอยู่ที่ <b>$51.42 ม.ค. 2569</b> หลัง Q4 2025 earnings ดีกว่าคาด และ <b>$51.50 เม.ย. 2569</b> หลัง Q1 2026 EPS +25% YoY
+        ช่วง มี.ค. 2569 ราคาถอยลงสู่ $45.97 จากความกังวลเรื่อง NIM compression และ macro uncertainty
+        แนวต้านสำคัญอยู่ที่ระดับ $52–$56 (Fair Value / 52wk high $56.20) · ราคาปัจจุบัน $50.10 ต่ำกว่า FV เล็กน้อย
+        ที่มา: Yahoo Finance (ปิดรายเดือน ก.ค. 68 – มิ.ย. 69)
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation (Forward EPS)</div><div class="mdesc">EPS oper. $4.54 × P/E 12x = $54.5 — ใช้ consensus EPS 2026 $4.54 (21 นักวิเคราะห์) × P/E 12x (ต่ำกว่าค่าเฉลี่ยของ PNC/USB ที่ 12–13x เล็กน้อย เพื่อสะท้อนความเสี่ยงรอบ integration + CEO transition)</div></div>
+        <div class="mval">$54.5</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = $2.08 × (1+4%) = $2.163; g 4%, r 8.5% → $2.163 / (8.5%−4%) = $48.1 — ใช้ g 4% (Sun Belt loan growth + NIM recovery) และ r 8.5% (cost of equity regional bank)</div></div>
+        <div class="mval">$48.1</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Justified P/TBV</div><div class="mdesc">P/TBV เหมาะสม = (ROTCE 13.8% − g 4%)/(r 10% − g 4%) ≈ 1.63 × TBVPS $33.19 — ใช้ ROTCE (13.8%) แทน ROE เพราะ TFC มี goodwill สูงจาก merger; TBVPS $33.19 (Q1 2026); r 10% สะท้อนความเสี่ยงรอบ integration</div></div>
+        <div class="mval">$54.2</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $48 – $55</span></div>
+        <div class="r">$52</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        P/E และ Justified P/TBV ให้ค่าใกล้เคียงกันที่ $54–$55 สะท้อน ROTCE 13.8% ที่แข็งแกร่งและ EPS recovery
+        DDM ให้ค่าต่ำกว่าที่ $48.1 เนื่องจาก payout ratio ~50% ต่ำกว่าธนาคารขนาดใหญ่บางแห่ง และบริษัทเน้น buyback มากกว่าปันผลในระยะนี้
+        FV เฉลี่ย $52 ใกล้เคียงกับ consensus analyst target $55.88 · ราคาปัจจุบัน $50.10 ต่ำกว่า FV เล็กน้อย MOS ~3.7%
+        ที่มาข้อมูล: StockAnalysis.com (EPS $4.54 consensus), Yahoo Finance (price $50.10), Finviz (P/E 12.43), Grafa/Investing.com (Q1 2026 ROTCE 13.8%, TBVPS $33.19), GuruFocus (ROE 8.28%)
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $50.10</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $52</div></div>
+        </div>
+        <div class="scale">
+          <span>$36.4<br><small>MOS 30%</small></span>
+          <span>$41.6<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$52<br><small>Fair Value</small></span>
+          <span style="text-align:right">$55<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">$55.9<br><small>เป้าเฉลี่ย Analyst</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคา $50.10 ต่ำกว่า Fair Value $52 เล็กน้อย (~3.7%) และต่ำกว่า analyst target $55.88 (~10.5%)
+        โซน MOS 20% ($41.6) จะเป็นจุดเข้าซื้อที่น่าสนใจมากขึ้น — ช่วงนี้เคยทดสอบครั้งสุดท้ายที่ $40.78 (52wk low)
+        การที่ราคาอยู่ใกล้ FV ($52) แสดงว่าตลาดรับรู้ศักยภาพการฟื้นตัวบางส่วนแล้ว แต่ยังมีส่วนต่างจาก analyst consensus
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict ok">
+        <div class="big">+3.7%</div>
+        <div class="txt">MOS ต่ำ — ราคาปัจจุบันใกล้ Fair Value · ยังมีส่วนต่างเล็กน้อย · เหมาะสำหรับนักลงทุนที่ยอมรับ MOS ต่ำแลกกับปันผล ~4.15%</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$41.6</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$36.4</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $52</div><div class="d">ต่ำกว่า Fair Value</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="50.10" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $50.10 • EPS ฐาน ~$4.19 (oper. TTM) • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS +2%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$44.5</div>
+          <div class="ret neg">-1%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$4.45</span></li>
+            <li><span>P/E ออก</span><span>10x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$6.24</span></li>
+            <li><span>สถานการณ์</span><span>NIM กดดัน, สินเชื่อชะลอ</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +9%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$65.2</div>
+          <div class="ret pos">+30%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$5.43</span></li>
+            <li><span>P/E ออก</span><span>12x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$6.24</span></li>
+            <li><span>สถานการณ์</span><span>NIM ฟื้น, efficiency &lt;56%, Sun Belt</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +15%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$86.0</div>
+          <div class="ret pos">+71%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$6.37</span></li>
+            <li><span>P/E ออก</span><span>13.5x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$6.24</span></li>
+            <li><span>สถานการณ์</span><span>re-rating, ROTCE &gt;16%, buyback ต่อเนื่อง</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      กรณี Base (+42%) อิงการเติบโต EPS 9%/ปี ซึ่งสอดคล้องกับ consensus analyst ที่คาด EPS ปี 2026 = $4.54 และ 2027–2028 เพิ่มขึ้นจาก
+      NIM ฟื้นตัว + efficiency ratio ดีขึ้น + buyback $5B ลด share count · กรณี Bear (+1%) สะท้อน NIM ที่กดดันต่อเนื่อง
+      และ rate environment ที่ไม่เอื้อ แต่ยังมีปันผล $6.24 ช่วยพยุง total return · กรณี Bull อิงการ re-rating
+      เมื่อ ROTCE ผ่าน 15%+ และตลาดให้ multiple สูงขึ้นเทียบเท่า PNC/USB
+      <b>คำเตือน:</b> ตัวเลขนี้เป็นการคาดการณ์ ไม่ใช่การรับประกันผลตอบแทน
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก &amp; ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>Sun Belt / SE US growth:</b> ประชากรอพยพเข้า Southeast US ต่อเนื่อง (Florida, Georgia, Carolina, Virginia, Tennessee) หนุนสินเชื่อบ้าน-SME และ deposit growth ในพื้นที่ที่ TFC มีสาขาหนาแน่น</li>
+          <li><b>NIM recovery:</b> NIM ยืนที่ 3.02% Q1 2026 และคาดฟื้นตัวเมื่อ Fed เริ่มปรับดอกเบี้ยในวงจรใหม่ ต้นทุน deposit เริ่มลดลง QoQ ส่งผลดีต่อ spread</li>
+          <li><b>Efficiency improvement:</b> efficiency ratio ดีขึ้นสู่ 57.9% Q1 2026 (จาก ~60%+ ยุค post-merger) ยังมีพื้นที่ลดลงอีกสู่เป้า &lt;56% ปลายปี 2026 จาก cost synergy ที่สมบูรณ์แล้ว</li>
+          <li><b>Capital return program:</b> buyback $5B (2026) + payout ratio 129% Q1 2026 → share count ลดลงหนุน EPS per share ต่อเนื่อง CET1 10.8% แข็งแกร่งรองรับการคืนทุน</li>
+          <li><b>McGriff divestiture windfall:</b> เงิน $7.75B จากขาย McGriff Insurance (พ.ย. 2566) ใช้ buyback + เสริมทุน → ROE/ROTCE ฟื้นโดยไม่ต้องพึ่ง revenue growth เพียงอย่างเดียว</li>
+          <li><b>Q1 2026 earnings beat:</b> EPS $1.09 vs consensus $1.00 (+9%) · net income $1.4B · ROTCE 13.8% · ยืนยัน trajectory การฟื้นตัว</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>NIM compression:</b> NIM ลด 5bp QoQ ใน Q1 2026 จาก loan repricing ทำให้ revenue guidance 2026 ถูก scale back → ความเสี่ยงหลักที่กด multiple ของ TFC ให้ต่ำกว่า peer</li>
+          <li><b>CEO transition:</b> CEO ใหม่มีผลกันยายน 2026 ความไม่แน่นอนด้านกลยุทธ์ระยะสั้น อาจกดดัน sentiment ของนักลงทุน</li>
+          <li><b>Integration risk (legacy):</b> แม้ระบบหลักรวมกันแล้ว แต่ยังมีความเสี่ยงด้าน technology + talent retention จาก BB&T+SunTrust culture ที่แตกต่างกัน</li>
+          <li><b>Credit quality:</b> NPL ratio ยังต้องติดตามในสภาพ rate สูง โดยเฉพาะ CRE (Commercial Real Estate) exposure ในพอร์ตธนาคาร SE US</li>
+          <li><b>Regulatory environment:</b> stress test ผ่านแล้ว แต่ DFAST / Basel III endgame อาจบังคับ capital ratio สูงขึ้น จำกัดความสามารถคืนทุน</li>
+          <li><b>PE multiple discount:</b> TFC ซื้อขายที่ discount ต่อ PNC/USB เนื่องจาก ROE ต่ำกว่า (8.3% vs 10.9% PNC) → re-rating ต้องการ ROE ที่ดีขึ้นอย่างชัดเจน</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>Truist: ธนาคาร SE US ฟื้นตัว • ปันผลสม่ำเสมอ • MOS ต่ำ — เหมาะซื้อที่อ่อนตัว</h2>
+      <p>TFC เป็นธนาคารภูมิภาคอันดับ 7 ของสหรัฐ ผ่านช่วงยากของการรวม BB&T+SunTrust มาได้แล้ว
+        ROTCE 13.8% Q1 2026 แสดงว่า profitability กลับมาแข็งแกร่ง buyback $5B และ efficiency ที่ดีขึ้น
+        หนุน EPS trajectory · จุดแข็งคือ geography ใน Sun Belt ที่เติบโตสูง + ปันผล ~4.15% ที่สม่ำเสมอ
+        จุดอ่อนคือ ROE ยังต่ำกว่า peer (PNC/USB) เพราะ goodwill สูง + NIM ยังกดดัน ราคา $50.10 อยู่ใกล้ FV $52
+        (MOS ~3.7%) ยังมี upside จาก analyst consensus $55.88 · เหมาะสำหรับนักลงทุนที่ต้องการ income (4.15%)
+        + upside moderate จากการ re-rating เมื่อ ROTCE ผ่าน 15%+ และ efficiency &lt;56%</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$52 <span style="font-size:12px;color:#cab9a8">($48–$55)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +3.7%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$55.9 (Buy · 21 นักวิเคราะห์)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ราคาปัจจุบัน $50.10 ใกล้ Fair Value — <b>เหมาะซื้อสะสมเมื่ออ่อนตัวสู่ $44–$46 (MOS ~12–16%)</b>
+        หรือทยอยสะสมเล็กน้อยที่ราคาปัจจุบันสำหรับ income investor ที่ต้องการปันผล 4.15%
+        กรณีราคาต่ำกว่า $41.6 (MOS 20%) ถือเป็นโอกาสเข้าที่ดี · stop loss พิจารณาที่ &lt;$40 (52wk low)
+        เหมาะสำหรับนักลงทุนที่มีขอบเขตเวลา 2–3 ปีขึ้นไป
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    ที่มา: Yahoo Finance (ราคา $50.10 · 30 มิ.ย. 2569), Finviz (EPS TTM $4.03, P/BV), StockAnalysis.com (EPS consensus $4.54, BVPS $50.04),
+    Investing.com / Grafa (Q1 2026: EPS $1.09, ROTCE 13.8%, TBVPS $33.19, NIM 3.02%, CET1 10.8%), GuruFocus (ROE 8.28%), WallStreetZen ($57.33 avg target)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 30 มิ.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
