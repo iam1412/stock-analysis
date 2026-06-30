@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น American Electric Power (AEP) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"AEP","currency":"USD","price":136.56,"fairValue":145,"mos":5.8,"upside":6.2,"pe":22.5,"dividendYield":2.78,"roe":9.3}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#003DA5",
+    "accentDark": "#002B7A",
+    "darkGrad": "linear-gradient(135deg,#001A4D 0%,#003DA5 60%,#005BBF 100%)",
+    "glow": "rgba(0,61,165,0.35)",
+    "subColor": "#93B8FF",
+    "headerMuted": "rgba(147,184,255,0.75)",
+    "verdictText": "#E8F0FF",
+    "vcellLabel": "#93B8FF",
+    "badge": "#003DA5",
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#1e8e3e"
+  },
+  "chart": {
+    "data": [
+      ["มิ.ย. 68", 100.57],
+      ["ก.ค. 68", 109.67],
+      ["ส.ค. 68", 108.50],
+      ["ก.ย. 68", 109.95],
+      ["ต.ค. 68", 117.53],
+      ["พ.ย. 68", 121.91],
+      ["ธ.ค. 68", 113.58],
+      ["ม.ค. 69", 117.98],
+      ["ก.พ. 69", 132.86],
+      ["มี.ค. 69", 130.13],
+      ["เม.ย. 69", 136.12],
+      ["พ.ค. 69", 126.67],
+      ["มิ.ย. 69", 136.56]
+    ],
+    "min": 92,
+    "max": 148,
+    "grid": [95, 105, 115, 125, 135, 145],
+    "fairLine": 145,
+    "currency": "$",
+    "highlight": [5, 12]
+  },
+  "gauge": {
+    "min": 88,
+    "max": 170,
+    "cur": 136.56,
+    "fair": 145
+  },
+  "fv": 145
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">● ● ●</div>
+    <div>
+      <span class="tag">NASDAQ: AEP</span>
+      <span class="tag">Regulated Electric Utility</span>
+      <span class="tag">Transmission &amp; Distribution</span>
+    </div>
+    <h1>American Electric Power (AEP)</h1>
+    <div class="sub">One of the largest US electric utilities • Largest US transmission network (~40K route miles) • 11 states (TX/OH/OK/WV/MI/IN/KY/WI/AR/MN/LA) • $78B+ capex 2026–2030 (grid modernization, generation transition) • Data center load growth in OH/TX • ~2.8% dividend yield • Coal→solar/wind/battery transition</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$136.56<small>(AEP)</small></div>
+      </div>
+      <div class="chg">▲ +35.8% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 30 มิ.ย. 2569<br>
+        กรอบ 52 สัปดาห์ $102.06 – $139.44<br>
+        ที่มา: Yahoo Finance, StockAnalysis.com, AEP Investor Relations (PRNewsWire)
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ มิ.ย. 2569</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">$74.2B</div><div class="d">~544M shares outstanding</div></div>
+      <div class="metric"><div class="k">P/E (TTM oper.)</div><div class="v neu">~22.5x</div><div class="d">Operating EPS TTM $6.07 · Forward P/E 21.7x (2026E)</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~19x</div><div class="d">ปัจจุบัน premium เพราะ data center growth</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">~3.0x</div><div class="d">BVPS ~$46 · สูงกว่า utility ทั่วไป</div></div>
+
+      <div class="metric"><div class="k">กำไรดำเนินงาน FY2025</div><div class="v">$3.19B</div><div class="d">Operating EPS $5.97 (+6.2% YoY)</div></div>
+      <div class="metric"><div class="k">EPS (TTM oper.)</div><div class="v">~$6.07</div><div class="d">Q2'25 $1.44 · Q3'25 $1.80 · Q4'25 $1.19 · Q1'26 $1.64</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~$46</div><div class="d">Equity base grows ตาม rate base expansion</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~9.3% / ~2.5%</div><div class="d">Regulated earned ROE Q1 2026 · target ~9.5% by 2030</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$22.4B</div><div class="d">Commercial load growth +10.6% in 2024</div></div>
+      <div class="metric"><div class="k">อัตรากำไรดำเนินงาน</div><div class="v">~24%</div><div class="d">Regulated utility: margin มั่นคงจาก rate case</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~2.78%</div><div class="d">$3.80/yr ($0.95/Q) · 15 ปีต่อเนื่อง · 5yr CAGR 5.7%</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">~0.5</div><div class="d">Defensive utility · ความผันผวนต่ำกว่า S&amp;P500</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">มิ.ย. 2568 – มิ.ย. 2569</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#003DA5"></i>ราคา AEP</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $145</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        AEP เปิดปี (มิ.ย. 2568) ที่ $100.57 แล้วไต่ขึ้นอย่างต่อเนื่องตลอด 12 เดือน สะท้อนความคาดหวังต่อ $78B capex plan และ data center load growth ในโอไฮโอและเท็กซัส ราคาแตะ $121.91 ในเดือนพ.ย. 2568 ก่อนปรับตัวลงช่วงสั้น แล้วพุ่งทำ new high ที่ $136.56 ณ สิ้นมิ.ย. 2569 ให้ผลตอบแทนรอบปี +35.8% สูงกว่า utility sector ทั่วไปมาก เป็นผลจากการ re-rating ของ utility ที่มีการเติบโตสูงจาก AI/data center demand
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS oper. adj. $6.30 × P/E 22.5x = $141.75 — ใช้ EPS guide 2026 midpoint ($6.15–$6.45) × 22.5x (premium utility มี 7–9% growth + AI/data center tailwind)</div></div>
+        <div class="mval">$142</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. DCF (5 ปี + Terminal)</div><div class="mdesc">EPS ฐาน $6.30 เติบโต 8%/ปี (midpoint guidance) 5 ปี · Terminal 18x EPS 2030 · Discount rate 8.5% → PV earnings $28.8 + Terminal PV $111.3</div></div>
+        <div class="mval">$140</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Analyst Consensus</div><div class="mdesc">Consensus ของ 24 นักวิเคราะห์ (14 Buy, 10 Hold, 0 Sell) · TD Cowen ให้ $148 · ค่าเฉลี่ย $144.76 · กรอบ $133–$173</div></div>
+        <div class="mval">$145</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $130 – $155</span></div>
+        <div class="r">$145</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ทั้ง 3 วิธีให้ค่าใกล้เคียงกัน ($140–$145) สะท้อนว่าราคาปัจจุบัน $136.56 อยู่ใกล้ fair value มาก P/E method ใช้ 22.5x ซึ่งสูงกว่า sector เฉลี่ย (~19x) เพราะ AEP มี EPS growth 7–9%/ปีที่ชัดเจนจาก $78B capital plan และ 56 GW load growth ที่ signed ไว้แล้ว DCF method ใช้ terminal P/E 18x (conservative) ยืนยัน downside protection แข็งแกร่ง Analyst consensus $144.76 สอดคล้องกับทั้ง P/E และ DCF
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $136.56</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $145</div></div>
+        </div>
+        <div class="scale">
+          <span>$101.50<br><small>MOS 30%</small></span>
+          <span>$116<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$144.76<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">$145<br><small>Fair Value</small></span>
+          <span style="text-align:right">$155<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคา $136.56 อยู่ต่ำกว่า Fair Value $145 ประมาณ 5.8% (MOS น้อย) สะท้อนว่าตลาดกำหนดราคา AEP ใกล้ fair value แล้ว โซนน่าสนใจสำหรับ value investor คือต่ำกว่า $116 (MOS 20%) หรือ $101.50 (MOS 30% deep value) ซึ่งอาจเกิดในช่วง interest rate spike หรือ regulatory headwind ทั่วไป utility สำหรับ long-term investor ที่เน้น dividend growth ราคาปัจจุบันยังถือว่าสมเหตุสมผล
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict ok">
+        <div class="big">+5.8%</div>
+        <div class="txt">MOS น้อย — ราคาใกล้ Fair Value · เหมาะสำหรับ Dividend Growth Investor มากกว่า Deep Value</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$116</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$101.50</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $145</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="136.56" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $136.56 • EPS ฐาน ~$6.30 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS +4%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$128</div>
+          <div class="ret neg">−6%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$7.09</span></li>
+            <li><span>P/E ออก</span><span>18x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$11.86</span></li>
+            <li><span>สถานการณ์</span><span>Rate case ล้มเหลว · interest rate spike · capex overrun · total return (รวมปันผล) ≈ +2%</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +8%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$179</div>
+          <div class="ret pos">+31%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$7.94</span></li>
+            <li><span>P/E ออก</span><span>21x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$12.10</span></li>
+            <li><span>สถานการณ์</span><span>Capex plan ตามแผน · data center load ตรงเป้า · rate base +10%/ปี</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +10%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$205</div>
+          <div class="ret pos">+50%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$8.39</span></li>
+            <li><span>P/E ออก</span><span>23x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$12.10</span></li>
+            <li><span>สถานการณ์</span><span>Load growth เกินเป้า ($78B+ capex) · rate base ขยายเร็ว · multiple expansion</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      Bear case แสดงว่า downside จำกัดมาก (return เกือบ flat แต่ได้ปันผล $11.86) เป็น characteristic ของ regulated utility ที่มี earnings floor แข็ง Base case (+31% total return ใน 3 ปี = ~9.5%/ปี) สอดคล้องกับ guidance EPS growth 7–9% + dividend yield ~2.8% รวม ~10%/ปี Bull case (+50%) อิงการ re-rating P/E ไปที่ 23x จากการ AI/data center demand เกินคาด AEP เป็น dividend growth story ที่เหมาะกับ portfolio ระยะยาว ไม่ใช่ momentum trade
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก &amp; ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>$78B+ Capital Plan (2026–2030):</b> แผนลงทุน 5 ปีที่ใหญ่ที่สุดในประวัติศาสตร์บริษัท ครอบคลุม Transmission $30B + Generation $20B+ + Distribution $17B → rate base โต 11% CAGR ถึง $128B ในปี 2030</li>
+          <li><b>Data Center &amp; AI Load Growth:</b> มี signed agreements 56 GW incremental load ภายในปี 2030 (เดิมคาด 28 GW — เพิ่มเป็น 2 เท่า) โดยเฉพาะ OH/TX ที่เป็น hyperscaler hub ขับเคลื่อน revenue certainty</li>
+          <li><b>EPS Growth Rate เพิ่มเป็น >9%:</b> หลัง Q1 2026 AEP ปรับ long-term EPS CAGR จาก 7–9% เป็น &quot;greater than 9%&quot; ผ่านการเพิ่ม capex อีก $6B (transmission $3.5B + gas generation $2.5B)</li>
+          <li><b>Regulated Business Model:</b> รายได้ 100% regulated = earnings visibility สูง ไม่มีความเสี่ยงตลาด commodity · allowed ROE ~9.5% ใน most jurisdictions ปกป้อง earnings floor</li>
+          <li><b>Dividend Growth 15 ปีต่อเนื่อง:</b> CAGR 5.7% ใน 5 ปีที่ผ่านมา ยังสามารถเติบโตได้ต่อเนื่องตาม payout ratio ที่ ~64% (มี headroom) + EPS growth</li>
+          <li><b>Transmission Network ที่ใหญ่ที่สุดในสหรัฐ:</b> ~40,000 route miles สร้าง competitive moat ที่ยากจะ replicate FERC regulated transmission ให้ ROE allowed ~10.5–11%</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>Interest Rate Sensitivity:</b> Utility เป็น bond proxy — ถ้า 10-year Treasury สูงขึ้น (เช่น >5%) P/E multiple จะถูกกด ราคาหุ้นปรับลง แม้ earnings ไม่เปลี่ยน</li>
+          <li><b>Regulatory Risk (Rate Cases):</b> ต้องผ่าน PUC approvals ใน 11 รัฐ หาก regulator ให้ ROE ต่ำกว่าที่ขอ หรือ disallow cost recovery จะกระทบ earnings โดยตรง</li>
+          <li><b>Execution Risk ของ $78B Capex:</b> Capital plan ขนาดใหญ่เป็น unprecedented สำหรับ AEP ความเสี่ยง cost overrun, delay, supply chain · ต้องออก equity เพิ่มกด dilution</li>
+          <li><b>High Leverage (Utility Typical):</b> Debt/equity ratio สูง ต้นทุนดอกเบี้ยกดกำไรถ้า refinancing ราคาสูง · credit rating อยู่ใน investment-grade แต่ต้องรักษา</li>
+          <li><b>Data Center Load: Timing &amp; Cancellation Risk:</b> 56 GW signed ยังต้อง convert เป็น actual construction · ถ้า hyperscaler ชะลอหรือย้าย site จะกระทบ revenue</li>
+          <li><b>Coal Phase-Out &amp; Stranded Assets:</b> การเลิกใช้ถ่านหินก่อนกำหนดอาจมี stranded cost ที่ regulator ไม่ allow recovery ทั้งหมด กดทอน book value</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>Dividend Growth Utility ที่มี AI/Data Center Tailwind — ราคาใกล้ Fair Value แต่ Story ยังแข็งแกร่ง</h2>
+      <p>AEP เป็น Regulated Electric Utility ที่ได้รับอานิสงส์โดยตรงจาก AI/Data Center buildout ในโอไฮโอและเท็กซัส ซึ่งอยู่ในพื้นที่ให้บริการของบริษัท capex plan $78B+ (2026–2030) ที่ signed load agreements ไว้แล้ว 56 GW ทำให้ EPS visibility สูงผิดปกติสำหรับ utility ทำให้ EPS growth rate เพิ่มเป็น "greater than 9%/ปี" ซึ่งสูงกว่า utility sector ทั่วไปมาก ราคา $136.56 อยู่ใกล้ Fair Value $145 (MOS 5.8%) จึงเหมาะกับ dividend growth investor มากกว่า deep value hunter การรอโซน $116–$101 จะให้ MOS ที่ดีกว่า แต่ถ้าต้องการ exposure กับ utility + AI demand ณ ราคานี้ก็สมเหตุสมผลในระยะยาว</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$145 <span style="font-size:12px;color:#cab9a8">($130–$155)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +5.8%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$144.76 (Buy 14/24)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ณ ราคา $136.56 มี MOS น้อย (~5.8%) เหมาะกับ dividend growth investor ที่มอง 3–5 ปี รับ yield 2.78% + EPS growth 7–9%/ปี รวม total return ~10%/ปี สำหรับ value investor รอสะสมที่ $116 (MOS 20%) หรือ $101.50 (MOS 30%) ซึ่งอาจเกิดใน rising rate environment หรือ temporary regulatory setback ไม่แนะนำ overweight ที่ราคาปัจจุบัน เนื่องจาก upside จำกัดในระยะสั้น
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    แหล่งข้อมูล: Yahoo Finance (ราคา ณ 30 มิ.ย. 2569), StockAnalysis.com (EPS/Financials), AEP Press Release Q3 2025 &amp; Q1 2026, PRNewsWire (2024 Annual Results, Q3 2025 Results), Investing.com (Q1 2026 Earnings Call Transcript)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 30 มิ.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
