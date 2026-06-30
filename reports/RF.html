@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น Regions Financial (RF) — Stock Analysis Dashboard</title>
+<!-- ★ ใส่รุ่นโมเดล AI ที่ใช้วิเคราะห์จริง -->
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
+<script type="application/json" id="stock-meta">
+{"symbol":"RF","currency":"USD","price":30.25,"fairValue":27.7,"mos":-9.2,"upside":-8.4,"pe":12.56,"dividendYield":3.50,"roe":11.73}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#1ded96",
+    "accentDark": "#0fb36e",
+    "darkGrad": "linear-gradient(135deg,#043e26 0%,#077346 58%,#0cb66f 140%)",
+    "glow": "rgba(19,236,145,.35)",
+    "subColor": "#c2ebda",
+    "headerMuted": "#a5d4c1",
+    "verdictText": "#d0f1e3",
+    "vcellLabel": "#a6ddc6",
+    "badge": "#1ded96",
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#1e8e3e"
+  },
+  "chart": {
+    "data": [
+      ["ก.ค. 25", 25.33],
+      ["ส.ค. 25", 27.39],
+      ["ก.ย. 25", 26.37],
+      ["ต.ค. 25", 24.20],
+      ["พ.ย. 25", 25.45],
+      ["ธ.ค. 25", 27.10],
+      ["ม.ค. 26", 28.50],
+      ["ก.พ. 26", 27.83],
+      ["มี.ค. 26", 26.12],
+      ["เม.ย. 26", 28.55],
+      ["พ.ค. 26", 28.00],
+      ["มิ.ย. 26", 30.27],
+      ["30 มิ.ย.", 30.25]
+    ],
+    "min": 22.0,
+    "max": 33.0,
+    "grid": [22, 25, 28, 31],
+    "fairLine": 27.7,
+    "currency": "$",
+    "highlight": [3, 12]
+  },
+  "gauge": {
+    "min": 17.0,
+    "max": 35.0,
+    "cur": 30.25,
+    "fair": 27.7,
+    "fairLabelTop": false
+  },
+  "fv": 27.7
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">🏦 🌿 💵 🏙️ 📊</div>
+    <div>
+      <span class="tag">NYSE: RF</span>
+      <span class="tag">Financials — Regional Banking</span>
+      <span class="tag">Sun Belt / Southeast US</span>
+    </div>
+    <h1>Regions Financial Corporation</h1>
+    <div class="sub">Top-10 US bank by assets (~$160B, 15 Sun Belt + Midwest states, ~1,300 branches) • Commercial + Consumer Banking + Wealth Management/Capital Markets • Sun Belt growth exposure (AL, FL, GA, TN, TX focus) • Conservative CRE underwriting vs peers • NIM beneficiary in rising rate cycle; normalization as rates decline • ~3.5% dividend yield + buyback capacity</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$30.25<small>(RF)</small></div>
+      </div>
+      <div class="chg">▲ +19.4% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 30 มิถุนายน 2569<br>
+        กรอบ 52 สัปดาห์ $22.70 – $31.53<br>
+        ที่มา: Yahoo Finance, StockAnalysis.com, MarketBeat
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ Q1 2569 / TTM</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~$25.8B</div><div class="d">853M หุ้น • NYSE: RF</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~12.56x</div><div class="d">EPS TTM $2.41 (YoY +16.4%)</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~11–14x</div><div class="d">Regional bank range; ต่ำกว่า Big Banks</div></div>
+      <div class="metric"><div class="k">P/BV / P/TBV</div><div class="v neu">1.48x / 2.24x</div><div class="d">BVPS $21.21 · TBVPS $13.69 (Q1 2569)</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ TTM</div><div class="v">$2,225M</div><div class="d">FY2025: $2,156M (YoY +14%)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$2.41</div><div class="d">Q1 2569 EPS $0.62 (YoY +22%)</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~$21.21</div><div class="d">TBVPS $13.69 (+11% YoY)</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~11.73% / 1.42%</div><div class="d">ROTCE Q1 2569 = 18.26% (record)</div></div>
+
+      <div class="metric"><div class="k">รายได้รวม TTM</div><div class="v neu">$7,351M</div><div class="d">NII TTM $5,045M (NIM FTE 3.67%)</div></div>
+      <div class="metric"><div class="k">NIM / CET1 Ratio</div><div class="v">3.67% / 10.7%</div><div class="d">NIM Q1 2569 FTE; CET1 แข็งแกร่ง</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~3.50%</div><div class="d">$1.06/หุ้น/ปี · Payout ~44% · Ex-div 1 มิ.ย. 2569</div></div>
+      <div class="metric"><div class="k">Beta / NCO ratio</div><div class="v">1.03 / 0.54%</div><div class="d">NPL 0.71% · Credit quality ดีต่อเนื่อง</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART (ราคาย้อนหลัง ~1 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ราคาปิดรายเดือน · ก.ค. 2568 – มิ.ย. 2569</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#1ded96"></i>ราคา RF</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $27.70</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคา RF ในรอบปีปรับตัวขึ้น <b>+19.4%</b> จาก $25.33 (ก.ค. 2568) สู่ $30.25 (มิ.ย. 2569) สะท้อนผลประกอบการที่แข็งแกร่งและ sentiment ที่ดีขึ้นต่อ regional banks หลังวิกฤต SVB/First Republic ผ่านพ้น
+        ราคาแตะจุดต่ำสุดรอบนี้ที่ <b>$24.20</b> ในตุลาคม 2568 จากความกังวล NIM normalization และ credit quality ก่อนดีดกลับแรงหลัง Q4 2568 และ Q1 2569 ที่ EPS beats estimates
+        ราคาปัจจุบัน $30.25 สูงกว่า Fair Value ที่ประเมิน $27.70 สะท้อนว่า market pricing ความแข็งแกร่งของ ROTCE record 18.26% + Sun Belt premium ไปแล้ว
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION (เฉลี่ย 3 วิธี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS adj. $2.41 × P/E 13x — P/E เหมาะสมสำหรับ regional bank Sun Belt ที่มี ROTCE สูง; ค่าเฉลี่ยประวัติศาสตร์ 10–14x ใช้ 13x สะท้อน quality premium</div></div>
+        <div class="mval">$31.33</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. Justified P/BV</div><div class="mdesc">ratio=(ROE 11.7% - g 4.0%)/(r 9.5% - g 4.0%) = 1.41x; BVPS $21.21 × 1.41x = $29.81 — ใช้ book ROE conservative anchor กับ BVPS จริง</div></div>
+        <div class="mval">$29.81</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. DDM (Gordon Growth)</div><div class="mdesc">D₁ = $1.06 × (1+4%) = $1.10; r 9%, g 4% → $1.10 / (9%−4%) = $22.05 — ให้มูลค่าต่ำกว่าเพราะ dividend yield ~3.5% ต่ำกว่า cost of equity 9%</div></div>
+        <div class="mval">$22.05</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $22.10 – $31.33</span></div>
+        <div class="r">$27.70</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        P/E และ Justified P/BV ให้มูลค่าใกล้เคียงกัน ($29–31) สะท้อน earnings power ปัจจุบัน DDM ให้ค่าต่ำกว่า ($22) เพราะ dividend yield ของ RF (~3.5%) ต่ำกว่า cost of equity สมมติ (9%) — บ่งชี้ว่า market ให้ premium กับ capital gain มากกว่า income return
+        มูลค่าเฉลี่ย $27.70 บ่งชี้ว่าราคาปัจจุบัน $30.25 <b>สูงกว่า intrinsic value</b> ประมาณ 9% — สอดคล้องกับ analyst consensus "Hold" ที่ target $30.80
+        นักลงทุน value ควรรอจังหวะ pullback สู่โซน $25–27 เพื่อ MOS ที่เหมาะสม
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $30.25</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $27.70</div></div>
+        </div>
+        <div class="scale">
+          <span>$19.39<br><small>MOS 30%</small></span>
+          <span>$22.16<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$27.70<br><small>Fair Value</small></span>
+          <span style="text-align:right">$30.80<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">$31.33<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน $30.25 อยู่ <b>เหนือ Fair Value $27.70</b> ประมาณ 9.2% — stock ซื้อขายที่ premium ต่อ intrinsic value
+        โซนน่าสนใจสำหรับ value investor คือ <b>ต่ำกว่า $27.70</b> (Fair Value) โดยเฉพาะ $22–25 (MOS 10–20%)
+        Analyst consensus "Hold" ที่เป้า $30.80 สะท้อนว่า upside จำกัด (&lt;2%) ณ ราคาปัจจุบัน
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">-9.2%</div>
+        <div class="txt">ราคาสูงกว่ามูลค่าเหมาะสม — รอ Pullback</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$22.16</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$19.39</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $27.70</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="30.25" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $30.25 • EPS ฐาน ~$2.41 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS -3%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$25.18</div>
+          <div class="ret neg">-16.8%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$2.20</span></li>
+            <li><span>P/E ออก</span><span>10x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$3.18</span></li>
+            <li><span>สถานการณ์</span><span>ภาวะถดถอย NIM ลดแรง NPL พุ่ง</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +5%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$36.66</div>
+          <div class="ret pos">+21.2%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$2.79</span></li>
+            <li><span>P/E ออก</span><span>12x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$3.18</span></li>
+            <li><span>สถานการณ์</span><span>NIM ทรง loan growth 3–5% Sun Belt แข็งแกร่ง</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +10%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$48.12</div>
+          <div class="ret pos">+59.1%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$3.21</span></li>
+            <li><span>P/E ออก</span><span>14x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$3.18</span></li>
+            <li><span>สถานการณ์</span><span>Fed ลดดอกเบี้ย NIM ฟื้น loan growth เร่ง re-rating</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      ผลตอบแทนรวม 3 ปีรวมปันผลสะสม ~$3.18 (ประมาณ $1.06/ปี) • Base case ให้ total return ~21% (~7%/ปี) สมเหตุสมผลสำหรับ mature bank ที่มี dividend yield 3.5% + EPS growth ~5% •
+      ความเสี่ยงสำคัญ: NIM normalization จาก Fed rate cuts + credit cycle กลับมา (NCO ปัจจุบัน 0.54% ยังต่ำ) + ความผันผวน commercial real estate exposure
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>Sun Belt / Southeast Growth:</b> ประชากรและ GDP ในรัฐ FL, GA, TN, TX, AL เติบโตเหนือค่าเฉลี่ยสหรัฐ หนุน loan growth และ deposit inflows อย่างต่อเนื่อง</li>
+          <li><b>ROTCE สูงสุดในประวัติ (18.26% Q1 2569):</b> สะท้อนประสิทธิภาพการดำเนินงานและ credit discipline — หนุน dividend growth + buyback ต่อเนื่อง</li>
+          <li><b>Capital strength (CET1 10.7%):</b> ทุนแข็งแกร่งเหนือ requirement รองรับ buyback ~$401M ต่อไตรมาส ควบคู่ NII growth 2.5–4% FY2026</li>
+          <li><b>NIM ฟื้นตัว Q2 2026:</b> Management คาด Q2 2026 NII rebound — exit NIM target "low 3.70s" ปลายปี 2026 หนุน earnings ครึ่งปีหลัง</li>
+          <li><b>Conservative CRE underwriting:</b> CRE exposure ต่ำกว่าคู่แข่ง ลดความเสี่ยง credit event จาก office/retail CRE ที่กดดัน peers หลายราย</li>
+          <li><b>Dividend growth track record:</b> เพิ่มปันผลจาก $0.74 (2022) → $1.06 (2026) = CAGR ~12% สะท้อน confidence ของ management ใน earnings sustainability</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>NIM normalization:</b> Fed rate cuts กดดัน asset yields เร็วกว่า funding cost ลด — Q1 NIM ต่ำกว่าคาดจาก "tighter asset spreads" + higher-quality credit remixing</li>
+          <li><b>Credit cycle กลับมา:</b> NCO 0.54% และ NPL 0.71% ยังต่ำ แต่ criticized loans 5.15% ของ business loans = signal ต้องติดตาม หากเศรษฐกิจไม่ soft landing</li>
+          <li><b>Valuation stretch:</b> ราคา $30.25 สูงกว่า intrinsic value ~9% — Margin of Safety เป็นลบ หมายความว่าไม่มี cushion หากผลประกอบการผิดคาด</li>
+          <li><b>Rate sensitivity:</b> Beta 1.03 และ NIM sensitivity สูง — หาก Fed ลดดอกเบี้ยเร็วกว่าคาด NII อาจต่ำกว่า guidance 2.5–4% YoY</li>
+          <li><b>Geographic concentration:</b> พึ่งพา Southeast/Midwest — natural disaster (hurricane season FL/Gulf Coast) หรือ economic weakness เฉพาะภูมิภาคกระทบ portfolio</li>
+          <li><b>Regulatory / Basel III:</b> AOCI inclusion ลด CET1 จาก 10.7% เหลือ ~9.4% — Basel III endgame อาจเพิ่ม capital requirement กด ROE และ buyback capacity</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>Quality Regional Bank ที่ราคาสะท้อน Sun Belt Premium ไปแล้ว — รอ Pullback ก่อนเข้า</h2>
+      <p>Regions Financial เป็น top-10 US bank ที่มีคุณภาพพอร์ตโฟลิโอดีกว่าคู่แข่ง regional — NCO ต่ำ, CRE conservative, CET1 แข็งแกร่ง, ROTCE 18.26% สูงสุดในประวัติ Q1 2569 สะท้อน execution ที่แข็งแกร่ง อย่างไรก็ดี ราคาปัจจุบัน $30.25 สูงกว่ามูลค่าเหมาะสมโดยรวม $27.70 อยู่ประมาณ 9% และ analyst consensus เป็น "Hold" ที่ target $30.80 (upside เพียง 1.8%) จึงไม่ใช่จังหวะ aggressive buy ณ ขณะนี้ นักลงทุน value ควรรอ pullback สู่โซน $25–27 ซึ่งจะให้ dividend yield ~4%+ และ MOS ที่มีความหมายก่อนเริ่มสะสม</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$27.70 <span style="font-size:12px;color:#cab9a8">($22.10–$31.33)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ -9.2%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$30.80 (Hold · 22 analysts)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> RF คือ quality regional bank ที่เหมาะกับ income investor ที่ต้องการ dividend yield 3.5%+ พร้อม Sun Belt growth optionality แต่ราคาปัจจุบันสะท้อน upside ส่วนใหญ่ไปแล้ว — รอจังหวะ pullback สู่ $25–27 (MOS 0–9%) เพื่อ entry ที่มี margin of safety หรือสะสมทยอยในโซน $27–28 หากต้องการ exposure Sun Belt banking ระยะยาว
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    ที่มา: Yahoo Finance (ราคา ณ 30 มิ.ย. 2569), StockAnalysis.com (Financial data, Analyst consensus), Regions Financial Q1 2569 Earnings Release (SEC 8-K, 17 เม.ย. 2569 ผ่าน Stocktitan.net), MarketBeat (Analyst forecasts)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 30 มิถุนายน 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
