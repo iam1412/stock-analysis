@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น Citigroup (C) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"C","currency":"USD","price":142.49,"fairValue":145,"mos":1.7,"upside":1.8,"pe":17.7,"dividendYield":1.68,"roe":13.1}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#003B70",
+    "accentDark": "#00264d",
+    "darkGrad": "linear-gradient(135deg,#001f45 0%,#003B70 60%,#0057a8 100%)",
+    "glow": "rgba(0,91,172,0.35)",
+    "subColor": "#a8c8f0",
+    "headerMuted": "rgba(168,200,240,0.7)",
+    "verdictText": "#e8f0fe",
+    "vcellLabel": "#a8c8f0",
+    "badge": "#0057a8",
+    "chgBg": "#1e8e3e",
+    "chgColor": "#ffffff"
+  },
+  "chart": {
+    "data": [
+      ["ก.ค. 25", 93.70],
+      ["ส.ค. 25", 96.57],
+      ["ก.ย. 25", 101.50],
+      ["ต.ค. 25", 101.23],
+      ["พ.ย. 25", 103.60],
+      ["ธ.ค. 25", 116.69],
+      ["ม.ค. 26", 115.71],
+      ["ก.พ. 26", 110.19],
+      ["มี.ค. 26", 113.41],
+      ["เม.ย. 26", 127.98],
+      ["พ.ค. 26", 125.90],
+      ["มิ.ย. 26", 142.49]
+    ],
+    "min": 80,
+    "max": 160,
+    "grid": [85, 100, 115, 130, 145],
+    "fairLine": 145,
+    "currency": "$",
+    "highlight": [5, 11]
+  },
+  "gauge": {
+    "min": 70,
+    "max": 175,
+    "cur": 142.49,
+    "fair": 145,
+    "fairLabelTop": true
+  },
+  "fv": 145
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">●●●●●●</div>
+    <div>
+      <span class="tag">NYSE: C</span>
+      <span class="tag">Financial Services</span>
+      <span class="tag">Universal Bank</span>
+    </div>
+    <h1>Citigroup Inc.</h1>
+    <div class="sub">Global universal bank • Services (Treasury &amp; Trade Solutions, Securities Services) • Markets (FICC, Equities) • US Personal Banking (Cards) • Wealth management • Jane Fraser transformation 2021–2026</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$142.49<small>(C)</small></div>
+      </div>
+      <div class="chg">▲ +52.1% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 29 มิถุนายน 2569<br>
+        กรอบ 52 สัปดาห์ $84.61 – $147.96<br>
+        ที่มา: Yahoo Finance, StockAnalysis.com, Citigroup IR (Q1 2026 Earnings)
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล Q1 2569 / TTM</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">$243 B</div><div class="d">~1,707 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~17.7x</div><div class="d">EPS TTM $8.04 (GAAP)</div></div>
+      <div class="metric"><div class="k">P/TBV (Price/TBV)</div><div class="v neu">~1.44x</div><div class="d">TBV/sh $99.01 (Q1 2569)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">~1.27x</div><div class="d">BV/sh $112.22 (Q1 2569)</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$74.96 B</div><div class="d">FY2568 +6% YoY</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$8.04</div><div class="d">FY2568: $6.99 · FY2567: $5.94</div></div>
+      <div class="metric"><div class="k">EPS (adj. FY2569E)</div><div class="v pos">~$10.93</div><div class="d">consensus 22 นักวิเคราะห์</div></div>
+      <div class="metric"><div class="k">ROTE (Q1 2569)</div><div class="v pos">~13.1%</div><div class="d">เกินเป้า 10–11% ของปี</div></div>
+
+      <div class="metric"><div class="k">CET1 Ratio</div><div class="v pos">~12.7%</div><div class="d">Q1 2569 (ก่อน = 13.2%)</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~1.68%</div><div class="d">$2.40/ปี ($0.60/ไตรมาส)</div></div>
+      <div class="metric"><div class="k">ROE</div><div class="v pos">~13.1%</div><div class="d">ROTE สูงสุดในรอบทศวรรษ</div></div>
+      <div class="metric"><div class="k">Efficiency Ratio</div><div class="v neu">58.1%</div><div class="d">Q1 2569 (ต่ำลง = ดีขึ้น)</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#003B70"></i>ราคา C</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $145</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        หุ้น C ปรับตัวขึ้นแรง +52.1% ในรอบปีที่ผ่านมา (ก.ค. 2568 $93.70 → มิ.ย. 2569 $142.49) สะท้อนความเชื่อมั่นว่า
+        การปฏิรูปองค์กรของ CEO Jane Fraser เริ่มให้ผล โดยเฉพาะ Q1 2569 ที่รายได้แตะ $24.6 พันล้าน สูงสุดในรอบทศวรรษ
+        และ ROTE พุ่งขึ้น 13.1% เกินเป้าหมายทั้งปีที่ตั้งไว้ 10–11% กราฟแสดงฐานต่ำ กรกฎาคม 2568 ช่วงที่นักลงทุน
+        ยังไม่แน่ใจผลลัพธ์การปฏิรูป ก่อนไต่ระดับขึ้นอย่างต่อเนื่อง สูงสุด ธ.ค. 2568 ที่ $116 ปรับฐานเล็กน้อยต้นปี
+        และกลับมาทำจุดสูงใหม่ที่ $142+ ใน มิ.ย. 2569
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/TBV Valuation</div><div class="mdesc">TBV/sh $99.01 × P/TBV เป้าหมาย 1.20x — ที่ ROTE 13%+ Citi ควรได้รับ P/TBV ~1.2x (ยังส่วนลดจากคู่แข่ง JPM 2.2x, BAC 1.4x เพื่อสะท้อน execution risk)</div></div>
+        <div class="mval">$118.81</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. P/E (Forward)</div><div class="mdesc">EPS adj. $10.93 × P/E 13x = $142.09 — ใช้ consensus EPS FY2569 ($10.93) × P/E 13x ซึ่งยังต่ำกว่า peer ธนาคารใหญ่ (JPM 14x, BAC 13x) เพื่อสะท้อนความซับซ้อนและความเสี่ยงการปฏิรูป</div></div>
+        <div class="mval">$142.09</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Justified P/TBV (Residual Income)</div><div class="mdesc">P/TBV เหมาะสม = 1 + (ROTE 13.1% − g 4%) / (r 10% − g 4%) ≈ 1.52x × TBV $99.01 — สะท้อน excess return เหนือต้นทุนส่วนทุน; ใช้ g ระมัดระวัง 4% (ธนาคาร stable)</div></div>
+        <div class="mval">$150.49</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $120 – $150</span></div>
+        <div class="r">$145</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        วิธีที่ 1 (P/TBV 1.2x = $118) ให้ค่าอนุรักษ์นิยมที่สุด เหมาะสำหรับนักลงทุนที่มองว่า Citi ยังต้องพิสูจน์ตัวเอง
+        วิธีที่ 2 (P/E forward = $142) ใกล้เคียงราคาปัจจุบันมากที่สุด สะท้อนว่าตลาดให้ราคาสมเหตุสมผล
+        วิธีที่ 3 (Residual Income = $150) ให้ค่าสูงสุดโดยอิงสมมติฐานว่า ROTE จะคงอยู่ที่ระดับปัจจุบัน
+        เฉลี่ยทั้ง 3 วิธีได้ ~$137 แต่เราปรับขึ้นเล็กน้อยเป็น $145 โดยให้น้ำหนักวิธีที่ 2–3 มากกว่า
+        เพื่อสะท้อน momentum การปฏิรูปที่ชัดเจนขึ้น และ consensus นักวิเคราะห์ที่ $149
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $142.49</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $145</div></div>
+        </div>
+        <div class="scale">
+          <span>$101.50<br><small>MOS 30%</small></span>
+          <span>$116.00<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$145<br><small>Fair Value</small></span>
+          <span style="text-align:right">$149<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">$150<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน $142.49 อยู่ใกล้มูลค่าเหมาะสม $145 มาก (ห่างเพียง ~1.7%) และใกล้เคียงกับเป้าเฉลี่ยนักวิเคราะห์ $149
+        บ่งชี้ว่าหุ้น C ซื้อขายสมเหตุสมผลในขณะนี้ ไม่ถูกหรือแพงอย่างชัดเจน
+        โซนสะสมที่น่าสนใจ: ต่ำกว่า $145 (< FV) · โซน deep value: ต่ำกว่า $116 (MOS 20%) ซึ่งคงเกิดได้เฉพาะเมื่อตลาดตื่นตระหนก
+        หรือผลประกอบการเสื่อมถอยอย่างมีนัยสำคัญ
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">+1.7%</div>
+        <div class="txt">MOS ต่ำ — ราคาปัจจุบันใกล้มูลค่าเหมาะสมมาก ไม่มี cushion เพียงพอสำหรับนักลงทุน value เชิงอนุรักษ์นิยม ควรรอโอกาสซื้อที่ดีกว่า หรือทยอยสะสมเมื่อราคาย่อลงใกล้ $130–140</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$116.00</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$101.50</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $145</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="142.49" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $142.49 • EPS ฐาน ~$10.93 (adj. FY2569E) • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS flat 0%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$116.50</div>
+          <div class="ret neg">−18.2%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$10.93</span></li>
+            <li><span>P/E ออก</span><span>10x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$7.20</span></li>
+            <li><span>สถานการณ์</span><span>ภาวะเศรษฐกิจถดถอย NII หด credit loss พุ่ง</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +10%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$197.00</div>
+          <div class="ret pos">+38.3%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$14.55</span></li>
+            <li><span>P/E ออก</span><span>13x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$7.90</span></li>
+            <li><span>สถานการณ์</span><span>การปฏิรูปสำเร็จ ROTE ยืนเหนือ 12% ต่อเนื่อง</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +15%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$241.00</div>
+          <div class="ret pos">+69.1%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$16.62</span></li>
+            <li><span>P/E ออก</span><span>14x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$8.40</span></li>
+            <li><span>สถานการณ์</span><span>P/E re-rate เข้าใกล้ peer ขายสินทรัพย์ Banamex สำเร็จ buyback ต่อเนื่อง</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      การคาดการณ์อิง EPS adj. consensus FY2569 ที่ $10.93 เป็นฐาน ผลตอบแทน Base +38% ใน 3 ปีดูน่าสนใจ แต่ต้องย้ำว่า
+      Citi ยังอยู่ระหว่างการปฏิรูปครั้งใหญ่ ความเสี่ยงด้านลบมีมากกว่าค่าเฉลี่ยอุตสาหกรรม โดยเฉพาะหาก macro เสื่อมถอย
+      หรือ execution ล่าช้า นักลงทุนควรตระหนักว่า Bear case ให้ผลตอบแทนติดลบได้ถึง −18%
+      ค่า P/E ขาออกอนุรักษ์นิยมกว่า P/E ปัจจุบัน เพื่อสะท้อนความไม่แน่นอนระยะยาว
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก &amp; ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>ROTE ทะลุเป้า:</b> Q1 2569 ROTE 13.1% เกินเป้าทั้งปีที่ 10–11% เป็นสัญญาณว่าการปฏิรูปได้ผล และอาจทำให้ตลาดปรับเป้าหมายราคาขึ้น</li>
+          <li><b>รายได้สูงสุดในรอบทศวรรษ:</b> Q1 2569 รายได้ $24.6 B (+14% YoY) นำโดย Markets (+19%) และ Services (+17%) แสดงถึงแรงหนุนหลายทิศทาง</li>
+          <li><b>Banamex Divestiture:</b> การขายธุรกิจ consumer banking ในเม็กซิโก (Banamex) เมื่อเสร็จจะปลดล็อกทุนจำนวนมาก เพิ่ม capital return ให้ผู้ถือหุ้น</li>
+          <li><b>Buyback เชิงรุก:</b> Q1 2569 คืนทุน $7.4 B ($6.3 B buyback + ปันผล) สะท้อนความมั่นใจของผู้บริหารในฐานทุน</li>
+          <li><b>TBV/sh เติบโต 8% YoY:</b> TBV $99.01 (+8%) เป็น floor ราคาที่แข็งแกร่ง รองรับ downside ในกรณีเลวร้าย</li>
+          <li><b>Capital Markets โต:</b> Banking segment +15% และ Markets +19% สะท้อนความแข็งแกร่งในตลาดทุนทั่วโลกที่ยังเติบโต</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>Execution Risk:</b> Citi อยู่ระหว่างการปฏิรูปองค์กรครั้งใหญ่ ล่าช้าหรือผิดพลาดอาจทำให้ค่าใช้จ่ายเพิ่มขึ้นและ ROTE ถดถอย</li>
+          <li><b>Regulatory Consent Orders:</b> Citi ยังอยู่ภายใต้ consent orders จาก OCC/Fed เกี่ยวกับ risk management ซึ่งเป็นภาระทั้งด้านค่าใช้จ่ายและชื่อเสียง</li>
+          <li><b>Credit Card Loss:</b> US Personal Banking (Cards) เผชิญ provision เพิ่มขึ้น หากเศรษฐกิจชะลอตัวอาจทำให้ net charge-off พุ่งแรง</li>
+          <li><b>ดอกเบี้ยขาลง:</b> หาก Fed ลดอัตราดอกเบี้ยแรง จะกดดัน Net Interest Income โดยเฉพาะ TTS (Treasury &amp; Trade Solutions)</li>
+          <li><b>Geopolitical &amp; FX Risk:</b> ธุรกิจ 160+ ประเทศ เปิดรับ FX risk และความไม่แน่นอนทางภูมิรัฐศาสตร์มากกว่า peer ในประเทศ</li>
+          <li><b>Valuation ใกล้ FV:</b> MOS เพียง 1.7% หมายความว่า upside จำกัด หากผลประกอบการชะลอตัวหรือ sentiment เปลี่ยน ราคาอาจปรับฐานได้</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>Citi: ราคาสมเหตุสมผล — รอโอกาสซื้อที่ดีกว่า</h2>
+      <p>Citigroup ก้าวสำคัญในการปฏิรูปองค์กรภายใต้ CEO Jane Fraser ได้รับการพิสูจน์ชัดเจนใน Q1 2569 ด้วย ROTE 13.1% รายได้สูงสุดในรอบทศวรรษ และ TBV/sh โตต่อเนื่อง 8% อย่างไรก็ตาม หุ้นปรับตัวขึ้น 52% ในช่วงปีที่ผ่านมา ทำให้ MOS หดแคบลงเหลือเพียง ~1.7% เทียบกับ FV $145 ณ ราคา $142.49 ราคาปัจจุบันซื้อขายสมเหตุสมผลแต่ไม่ถูกอย่างชัดเจน สำหรับนักลงทุนระยะยาวที่เชื่อว่า Citi จะ re-rate เข้าหา peer ที่ P/TBV 1.5–2.0x เมื่อ ROTE ยืนอยู่เหนือ 13%+ ยังมีศักยภาพ upside ในระยะ 3–5 ปี</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$145 <span style="font-size:12px;color:#cab9a8">($120–$150)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +1.7%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$149 (Buy)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ถือระยะยาวได้หากซื้อมาแล้ว — แต่สำหรับนักลงทุนใหม่ ควรรอให้ราคาย่อลงใกล้ $130–135 (MOS ~10%) จึงจะมี cushion พอ หรือรอให้ผลประกอบการ Q2/Q3 2569 ยืนยัน ROTE เหนือ 12% อย่างสม่ำเสมอก่อนสะสมเพิ่ม เป้าระยะกลาง (2–3 ปี): $180–200 หาก P/E re-rate เข้าใกล้ peer
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROTE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    แหล่งข้อมูล: Yahoo Finance (ราคา ณ 29 มิ.ย. 2569), StockAnalysis.com (EPS/รายได้), Citigroup Q1 2026 Earnings Release (ROTE/CET1/TBV), StockAnalysis Forecast (consensus EPS/target), Tickeron (Q1 2569 earnings highlights)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 29 มิถุนายน 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>

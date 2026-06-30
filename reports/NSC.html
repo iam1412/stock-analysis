@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น Norfolk Southern (NSC) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"NSC","currency":"USD","price":316.65,"fairValue":278.0,"mos":-13.9,"upside":-12.2,"pe":26.68,"dividendYield":1.71,"roe":17.62}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#00833E",
+    "accentDark": "#005a2b",
+    "darkGrad": "linear-gradient(135deg,#00411e 0%,#006630 60%,#00833E 100%)",
+    "glow": "rgba(0,131,62,0.28)",
+    "subColor": "#a3d9b8",
+    "headerMuted": "rgba(163,217,184,0.72)",
+    "verdictText": "#e8f5ee",
+    "vcellLabel": "#b2dfc5",
+    "badge": "#00833E",
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#1e8e3e"
+  },
+  "chart": {
+    "data": [
+      ["มิ.ย. 25", 255.97],
+      ["ก.ค. 25", 278.00],
+      ["ส.ค. 25", 279.98],
+      ["ก.ย. 25", 300.41],
+      ["ต.ค. 25", 283.38],
+      ["พ.ย. 25", 292.09],
+      ["ธ.ค. 25", 288.72],
+      ["ม.ค. 26", 291.24],
+      ["ก.พ. 26", 314.74],
+      ["มี.ค. 26", 287.00],
+      ["เม.ย. 26", 315.83],
+      ["พ.ค. 26", 304.96],
+      ["มิ.ย. 26", 316.65]
+    ],
+    "min": 230,
+    "max": 340,
+    "grid": [240, 260, 280, 300, 320],
+    "fairLine": 278.0,
+    "currency": "$",
+    "highlight": [3, 8, 10, 12]
+  },
+  "gauge": {
+    "min": 180,
+    "max": 400,
+    "cur": 316.65,
+    "fair": 278.0,
+    "fairLabelTop": false
+  },
+  "fv": 278.0
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">■ ■ ■</div>
+    <div>
+      <span class="tag">NYSE: NSC</span>
+      <span class="tag">Transportation</span>
+      <span class="tag">Class I Railroad</span>
+    </div>
+    <h1>Norfolk Southern Corporation</h1>
+    <div class="sub">Eastern US freight railroad (~19,300 miles) • Merchandise • Intermodal • Coal • Precision Scheduled Railroading • Post-East-Palestine turnaround • UNP merger pending STB</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$316.65<small>(NSC)</small></div>
+      </div>
+      <div class="chg">▲ +23.7% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 29 มิ.ย. 2569<br>
+        กรอบ 52 สัปดาห์ $255.03 – $326.00<br>
+        ที่มา: Yahoo Finance, StockAnalysis.com, SEC EDGAR 8-K
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ มิ.ย. 2569</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">$71.1B</div><div class="d">224.6M shares outstanding</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~26.7x</div><div class="d">GAAP EPS TTM $11.87; adj EPS FY2025 $12.49</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~22x</div><div class="d">ปัจจุบันสูงกว่าค่าเฉลี่ย</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">4.5x</div><div class="d">BVPS $70.37 — leverage สูงตามโครงสร้างราง</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">$2,873M</div><div class="d">+10% YoY; adj EPS $12.49 (+5%)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$11.87</div><div class="d">adj FY2025 $12.49 · Q1 2026 adj $2.65</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~$70.37</div><div class="d">หนี้สุทธิ $16.3B (ลงทุนโครงสร้างพื้นฐาน)</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~17.6% / 5.9%</div><div class="d">ROIC ~10.3%; ฟื้นตัวจาก East Palestine</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$12.18B</div><div class="d">FY2025 $12.18B (+0.5% YoY) — flat แต่มี OR ดีขึ้น</div></div>
+      <div class="metric"><div class="k">Operating Ratio (adj)</div><div class="v">65.0% (FY25)</div><div class="d">Q1 2026 adj 68.7% — headwinds ชั่วคราว; เป้า &lt;60%</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~1.71%</div><div class="d">$5.40/ปี; จ่ายต่อเนื่อง + ขึ้นสม่ำเสมอ</div></div>
+      <div class="metric"><div class="k">EV/EBITDA</div><div class="v">15.7x</div><div class="d">vs 5-yr median ~12.5x — premium สูง</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">รายเดือน มิ.ย. 2568 – มิ.ย. 2569</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#00833E"></i>ราคา NSC</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $278</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        NSC ปรับตัวขึ้น +23.7% ในรอบ 1 ปี (มิ.ย. 2568 $255.97 → มิ.ย. 2569 $316.65) หนุนโดยการประกาศควบรวม Union Pacific (UNP) กลางปี 2568 ที่มูลค่า $320/หุ้น (+25% premium) ราคาพุ่งขึ้นถึง $326 (52w high) ก่อนย่อลงมา ส.ค.–ก.ย. 2568 จากความกังวล STB และต้นทุนเชื้อเพลิง จุดต่ำสุด $255 เกิดในมิ.ย. 2568 ก่อนข่าวควบรวม
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS adj. $12.49 × P/E 21x = $262 — railroad ชั้นนำ PSR เต็มรูปแบบ; UNP/CSX ซื้อขายที่ 20–22x</div></div>
+        <div class="mval">$262</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. EV/EBITDA</div><div class="mdesc">EBITDA FY2025 $5.75B × 13.5x EV/EBITDA (peer median) − net debt $16.3B ÷ 224.6M หุ้น</div></div>
+        <div class="mval">$273</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. FCF Yield</div><div class="mdesc">FCF/share FY2025 $9.60 ÷ FCF yield เป้า 3.2% (คุณภาพสูง + สภาพคล่องดี)</div></div>
+        <div class="mval">$300</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $257 – $300</span></div>
+        <div class="r">$278</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        วิธี P/E ให้ค่าต่ำสุด ($262) สะท้อนว่า valuation ปัจจุบันแพงกว่าพื้นฐาน EPS · EV/EBITDA ที่ 13.5x (ระดับ peer ดีสุด) ให้ $273 · FCF yield ให้ $300 อิงคุณภาพ FCF margin ที่ดีขึ้นหลัง PSR ราคาปัจจุบัน $316.65 สูงกว่า FV เฉลี่ย $278 ประมาณ 14% — ส่วนต่างนี้คือ "merger premium" จากการควบรวม UNP ที่ $320/หุ้น (pending STB) · หาก merger ล้มเหลว ราคาน่าจะปรับลงสู่ $260–$280
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $316.65</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $278</div></div>
+        </div>
+        <div class="scale">
+          <span>$195<br><small>MOS 30%</small></span>
+          <span>$222<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$278<br><small>Fair Value</small></span>
+          <span style="text-align:right">$300<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">$333<br><small>เป้าเฉลี่ย Analyst</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคา $316.65 สูงกว่า Fair Value $278 ประมาณ 14% — อยู่ในโซน "Pricey" ตามพื้นฐาน แต่สะท้อน merger premium จาก UNP ที่เสนอซื้อ $320/หุ้น · นักวิเคราะห์ 20 คนให้เป้าเฉลี่ย $333 (5 คน Strong Buy, 15 Hold) · โซนน่าสนใจเริ่มต้น &lt;$278 (เข้าสู่ FV); deep value &lt;$222 (MOS 20%) หรือ &lt;$195 (MOS 30%)
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">−13.9%</div>
+        <div class="txt">ราคาสูงกว่ามูลค่าเหมาะสม — ไม่มี Margin of Safety ณ ราคาปัจจุบัน (merger premium ถูก bake-in)</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$222</div><div class="d">โซนน่าสนใจสำหรับ value (หาก merger ล้มเหลว)</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$195</div><div class="d">โซนถูกมาก (deep value) — ต้อง catalyst เชิงลบ</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $278</div><div class="d">ต่ำกว่ามูลค่าเหมาะสมพื้นฐาน</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="316.65" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $316.65 • EPS ฐาน ~$12.49 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS −2%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$212</div>
+          <div class="ret neg">−33%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$11.76</span></li>
+            <li><span>P/E ออก</span><span>18x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$16.20</span></li>
+            <li><span>สถานการณ์</span><span>STB บล็อก merger + ปริมาณขนส่งลด</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +8%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$347</div>
+          <div class="ret pos">+9%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$15.73</span></li>
+            <li><span>P/E ออก</span><span>21x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$16.20</span></li>
+            <li><span>สถานการณ์</span><span>PSR กด OR ลง + merger อนุมัติหรือ standalone แข็งแกร่ง</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +13%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$431</div>
+          <div class="ret pos">+36%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$18.02</span></li>
+            <li><span>P/E ออก</span><span>23x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$16.20</span></li>
+            <li><span>สถานการณ์</span><span>STB อนุมัติ merger + synergy $2.75B/ปี เต็มรูปแบบ</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      Scenario Base อิง EPS adj FY2025 $12.49 × (1+8%)³ = $15.73, P/E ออก 21x + ปันผลสะสม $16.20 รวม $347 · Base คาดการณ์ผลตอบแทนรวม +9% ใน 3 ปี (~3%/ปี) ซึ่งไม่น่าดึงดูดนักจากราคาปัจจุบัน เพราะ merger premium ถูก priced in แล้ว · Bull case ขึ้นกับ STB อนุมัติ merger ซึ่งมีความไม่แน่นอนสูง (กระบวนการอาจใช้เวลา 2–3 ปี) · Bear case เกิดจาก merger ล้มเหลว + volume ลด + fuel สูง
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>UNP Merger Premium:</b> Union Pacific เสนอซื้อ NSC ที่ $320/หุ้น (+25% premium) สร้าง transcontinental railroad แห่งแรกของอเมริกา — STB รับ application แล้ว reverse termination fee $2.5B หากล้ม</li>
+          <li><b>PSR Implementation:</b> Precision Scheduled Railroading กำลังกด Adjusted OR ลง — FY2025 adj OR 65.0% (ดีขึ้น 80bps YoY); เป้าระยะยาว &lt;60%; ประหยัด &gt;$215M ต่อปี</li>
+          <li><b>CEO Mark George Turnaround:</b> นับตั้งแต่ Q4 2023 (หลัง Alan Shaw ถูกปลด) ทีมใหม่มุ่ง safety/service/cost; injury rate ต่ำสุดในรอบ 10 ปี; GAAP EPS FY2025 +10% YoY</li>
+          <li><b>East Palestine ส่วนใหญ่จบแล้ว:</b> ประนีประนอม class action $600M ใน Q1 2024; Q1 2026 เหลือ net cost เพียง $10M (vs $185M recovery FY2025) — ภาระลดลงมาก</li>
+          <li><b>Merchandise &amp; Intermodal Growth:</b> ปริมาณ intermodal ขยายตัว; เส้นทาง eastern US ไม่มีคู่แข่งทดแทนโดยตรง (oligopoly); railroad เป็น low-carbon freight vs truck</li>
+          <li><b>Synergy ควบรวม:</b> UNP+NSC ประเมิน synergy $2.75B/ปี + ประหยัดต้นทุนผู้ขนส่ง $3.5B/ปี หาก STB อนุมัติ</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>STB Regulatory Risk:</b> Surface Transportation Board อาจปฏิเสธ/กำหนดเงื่อนไขหนัก (trackage rights ขนาดใหญ่) ทำให้ UNP ถอนตัว — ราคาอาจร่วงกลับสู่ $260–$280</li>
+          <li><b>OR Q1 2026 แย่ลง:</b> adj OR Q1 2026 = 68.7% (เพิ่มขึ้น 80bps YoY) เพราะ fuel +45% YoY + พายุหิมะ — แนวโน้ม Q2 ดีขึ้น แต่ fuel สูงยังเป็นความเสี่ยง</li>
+          <li><b>Volume Uncertainty:</b> ปริมาณ Q1 2026 ลด 1% YoY; tariff นโยบายการค้า US อาจกระทบ coal + intermodal; GDP ชะลอตัว = freight volume ต่ำลง</li>
+          <li><b>Valuation แพง:</b> P/E 26.7x สูงกว่า 5-yr median ~22x; EV/EBITDA 15.7x vs median 12.5x — หาก merger ล้มเหลว de-rating ทันที</li>
+          <li><b>หนี้สูง:</b> Total debt $17.6B (Net debt $16.3B); ดอกเบี้ยสูงเป็นภาระ; merger เพิ่มหนี้อีกมหาศาล</li>
+          <li><b>East Palestine Tail Risk:</b> แม้ส่วนใหญ่จบแล้ว แต่ยังมีคดีแยกที่อาจเพิ่มต้นทุน; reputational risk ยังคงอยู่บ้าง</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>ราคา Priced-In Merger Premium — รอจังหวะย่อ หากไม่มี STB อนุมัติ</h2>
+      <p>Norfolk Southern เป็น Class I Railroad ชั้นนำ มีเส้นทาง 19,300 ไมล์ครอบคลุม eastern US ที่แทนที่ไม่ได้ — ธุรกิจ Merchandise + Intermodal + Coal มีความมั่นคงสูง ทีม CEO ใหม่ (Mark George) กำลัง implement PSR อย่างเห็นผล (OR ลดลงต่อเนื่อง, FCF ดีขึ้น) และ East Palestine charges ส่วนใหญ่ผ่านพ้นแล้ว อย่างไรก็ตาม ราคาปัจจุบัน $316.65 แพงกว่า Fair Value พื้นฐาน $278 ประมาณ 14% เพราะ merger premium UNP $320 ถูก priced in แล้ว — ผู้ลงทุนกำลัง "จ่ายล่วงหน้า" สำหรับ merger ที่ยังต้องใช้เวลา 2–3 ปีในกระบวนการ STB และมีความเสี่ยงถูกปฏิเสธ</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$278 <span style="font-size:12px;color:#cab9a8">($257–$300)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −13.9%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$333 (Hold)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> หากถือ NSC อยู่แล้ว — Hold รอ merger progress; หากจะซื้อใหม่ ควรรอราคาย่อ &lt;$278 (เข้าสู่ FV) หรือ &lt;$222 (MOS 20%) เพื่อ margin of safety ที่แท้จริง หรือรอผลตัดสิน STB ที่ชัดเจนก่อน · ปันผล $5.40/ปี (~1.71%) ช่วยชดเชยระหว่างรอ แต่ upside จาก standalone fundamental ไม่มากจากระดับนี้
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ที่มาข้อมูล: Yahoo Finance (ราคา $316.65, 29 มิ.ย. 2569), StockAnalysis.com (งบการเงิน/analyst target), SEC EDGAR 8-K FY2025/Q1 2026 (OR/EPS adj), AlphaSpread (EV/EBITDA), Union Pacific press release (merger terms)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 29 มิ.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>

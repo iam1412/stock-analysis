@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น General Mills (GIS) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"GIS","currency":"USD","price":36.38,"fairValue":42.50,"mos":14,"upside":17,"pe":8.9,"dividendYield":6.71,"roe":23.6}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#003087",
+    "accentDark": "#001a52",
+    "darkGrad": "linear-gradient(135deg,#001a52 0%,#003087 60%,#0050b3 100%)",
+    "glow": "rgba(0,48,135,0.35)",
+    "subColor": "#7ba4db",
+    "headerMuted": "rgba(255,255,255,0.55)",
+    "verdictText": "#e8f0fe",
+    "vcellLabel": "rgba(255,255,255,0.6)",
+    "badge": "#0050b3",
+    "chgBg": "#c5221f",
+    "chgColor": "#ffffff"
+  },
+  "chart": {
+    "data": [
+      ["ม.ค. 25", 46.35],
+      ["ก.พ. 25", 47.24],
+      ["มี.ค. 25", 48.29],
+      ["เม.ย. 25", 44.64],
+      ["พ.ค. 25", 45.92],
+      ["มิ.ย. 25", 45.09],
+      ["ก.ค. 25", 44.86],
+      ["ส.ค. 25", 44.48],
+      ["ก.ย. 25", 36.60],
+      ["ต.ค. 25", 34.72],
+      ["พ.ย. 25", 33.81],
+      ["ธ.ค. 25", 36.38]
+    ],
+    "min": 28,
+    "max": 56,
+    "grid": [30, 36, 42, 48, 54],
+    "fairLine": 42.50,
+    "currency": "$",
+    "highlight": [2, 10]
+  },
+  "gauge": {
+    "min": 25,
+    "max": 55,
+    "cur": 36.38,
+    "fair": 42.50,
+    "fairLabelTop": true
+  },
+  "fv": 42.50
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">●●●</div>
+    <div>
+      <span class="tag">NYSE: GIS</span>
+      <span class="tag">Consumer Staples</span>
+      <span class="tag">Packaged Foods</span>
+    </div>
+    <h1>General Mills, Inc.</h1>
+    <div class="sub">Cheerios • Lucky Charms • Betty Crocker • Pillsbury • Haagen-Dazs • Blue Buffalo pet food • Yoplait • Old El Paso • Global food brands 100+ ประเทศ</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$36.38<small>(GIS)</small></div>
+      </div>
+      <div class="chg">▼ −21.5% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 29 มิ.ย. 2569<br>
+        กรอบ 52 สัปดาห์ $31.75 – $54.18<br>
+        ที่มา: Yahoo Finance, StockAnalysis.com
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ มิ.ย. 2569 / FY2025 สิ้นสุด พ.ค. 2568</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~$19.4B</div><div class="d">~542 ล้านหุ้น (diluted)</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~8.9x</div><div class="d">EPS TTM $4.09 GAAP</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~16–18x</div><div class="d">ปัจจุบันต่ำกว่าประวัติศาสตร์มาก</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">~2.2x</div><div class="d">BVPS ~$16.50 (FY2025)</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">$2,319M</div><div class="d">−8.5% YoY</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$4.09</div><div class="d">Adj. $4.21 FY2025; คาดลด 10–15% FY2026</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~$16.50</div><div class="d">Equity $9.2B / 557M shares</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~23.6% / 7.0%</div><div class="d">ROE สูงจาก leverage (D/E 2.2x)</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$18.4B</div><div class="d">FY2025: $19.5B (−2% YoY)</div></div>
+      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">~33%</div><div class="d">Gross profit $6.1B / Rev $18.4B TTM</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~6.71%</div><div class="d">$2.44/หุ้น/ปี • จ่ายต่อเนื่อง 126 ปี</div></div>
+      <div class="metric"><div class="k">Enterprise Value</div><div class="v">~$32.4B</div><div class="d">EV/EBITDA ~9.0x TTM</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ราคาปิดรายเดือน (Yahoo Finance)</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#003087"></i>ราคา GIS</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $42.50</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        หุ้น GIS ปรับตัวลงอย่างมีนัยสำคัญในช่วง 1 ปีที่ผ่านมา จากจุดสูงสุดที่ ~$48.29 ในเดือนมีนาคม 2568 ลดลงมาแตะ $33.81 ในเดือนพฤศจิกายน 2568 (−30%) ก่อนฟื้นตัวเล็กน้อยมาที่ $36.38 ณ ปัจจุบัน ผลตอบแทนรอบปี (ม.ค.–ธ.ค. 2568) อยู่ที่ −21.5% สาเหตุหลักมาจากปริมาณขายที่ลดลง (volume decline) ต่อเนื่อง, กระแสยา GLP-1 ที่กดความต้องการสินค้าแคลอรีสูง, และแรงกดดันจาก trade-down ของผู้บริโภคที่หันไปซื้อสินค้า private label แทน ราคาปัจจุบันซื้อขายต่ำกว่ามูลค่าเหมาะสมประมาณการที่ $42.50 อย่างมีนัยสำคัญ
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS adj. $4.21 × P/E 11x = $46.31 — discount ต่อ peer เพื่อสะท้อน volume headwinds + FY2026 guidance ลด 10–15%; peers CAG/CPB ซื้อขาย 12–15x</div></div>
+        <div class="mval">$46.31</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = $2.44 × 1.02 = $2.49; g = 2.0%, r = 8.5% → FV = $2.49 / (8.5% − 2.0%) — General Mills จ่ายปันผลต่อเนื่อง 126 ปี; ใช้ g อนุรักษ์นิยม</div></div>
+        <div class="mval">$38.31</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. EV/EBITDA</div><div class="mdesc">EBITDA FY2025 ~$3.5B × 10x peer multiple = EV $35B; หักหนี้ $12.7B + บวกเงินสด $0.9B = Equity $23.2B ÷ 542M หุ้น — peer CPB ~11x, CAG ~10x</div></div>
+        <div class="mval">$42.80</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $38.31 – $46.31</span></div>
+        <div class="r">$42.50</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        วิธี DDM ให้ค่าต่ำสุดที่ $38.31 เนื่องจากใช้ g เพียง 2% สะท้อนแนวโน้มรายได้ที่ชะลอตัว วิธี P/E ให้ค่าสูงสุดที่ $46.31 แต่ใช้ P/E 11x ซึ่งต่ำกว่าค่าเฉลี่ยประวัติศาสตร์ที่ 16–18x เพื่อสะท้อนความไม่แน่นอนของ FY2026 วิธี EV/EBITDA ให้ค่ากลางที่ $42.80 สอดคล้องกับ peer group มูลค่าเหมาะสมเฉลี่ย $42.50 สะท้อนราคาที่ยุติธรรมของ "cash cow" ที่มีปันผลสูงแต่เผชิญแรงกดดันด้านปริมาณ
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $36.38</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $42.50</div></div>
+        </div>
+        <div class="scale">
+          <span>$29.75<br><small>MOS 30%</small></span>
+          <span>$34.00<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$39.06<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">$42.50<br><small>Fair Value</small></span>
+          <span style="text-align:right">$46.31<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน $36.38 อยู่ในโซนระหว่าง MOS 20% ($34.00) และมูลค่าเหมาะสม ($42.50) ซึ่งเป็น "โซนน่าสนใจ" สำหรับนักลงทุนที่เน้น income (ปันผล 6.7%) เป้านักวิเคราะห์เฉลี่ย $39.06 ต่ำกว่า FV ที่ประเมิน สะท้อนความกังวลระยะสั้นเรื่อง FY2026 guidance ที่ดูแย่ การซื้อขายที่ P/E ~9x เทียบ avg. 16–18x บ่งชี้ว่าตลาดซื้อขาย GIS ในฐานะ "value trap" หรือ "deep value" ขึ้นอยู่กับความสามารถของ Blue Buffalo และ portfolio reorg
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict ok">
+        <div class="big">+14%</div>
+        <div class="txt">ส่วนต่างความปลอดภัยปานกลาง — ราคาต่ำกว่า FV แต่ไม่ถึง deep value; เหมาะสำหรับนักลงทุนที่รับ uncertainty FY2026 ได้ และมุ่งเน้นรับปันผล 6.7%</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$34.00</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$29.75</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $42.50</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="36.38" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $36.38 • EPS ฐาน ~$4.09 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS −5%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$31.59</div>
+          <div class="ret neg">+6.9% (3 ปี รวมปันผล)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$3.51</span></li>
+            <li><span>P/E ออก</span><span>9x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$7.32</span></li>
+            <li><span>สถานการณ์</span><span>Volume ลดต่อ GLP-1+Private label กัด share</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +2%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$56.42</div>
+          <div class="ret pos">+75.2% (3 ปี รวมปันผล)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$4.34</span></li>
+            <li><span>P/E ออก</span><span>13x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$7.32</span></li>
+            <li><span>สถานการณ์</span><span>EPS เสถียร Blue Buffalo โต ตลาดให้ multiple กลับ</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +5%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$71.10</div>
+          <div class="ret pos">+115.5% (3 ปี รวมปันผล)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$4.74</span></li>
+            <li><span>P/E ออก</span><span>15x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$7.32</span></li>
+            <li><span>สถานการณ์</span><span>Pet food accelerates, pricing power returns, re-rating</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      สถานการณ์ Bear สมมติ EPS หดตัว −5%/ปี และ P/E ออก 9x ยังให้ผลตอบแทนบวกเล็กน้อย +7% (3 ปี) เนื่องจากปันผลสะสม $7.32 เป็น downside protection ที่ดี สถานการณ์ Base สมมติ EPS ฟื้นตัวเล็กน้อยและ P/E re-rate จาก 9x กลับมา 13x ซึ่งยังต่ำกว่าค่าเฉลี่ยประวัติศาสตร์ ให้ผลตอบแทนสูงถึง +75% สมมติฐานสำคัญ: General Mills ต้องรักษาปันผล (payout ratio ~60% ปัจจุบัน ยังปลอดภัย) และ Blue Buffalo กลับมาขยายตัว ✱ ตัวเลขเป็นประมาณการเพื่อการศึกษา ไม่ใช่การรับประกันผลตอบแทน
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>ปันผลสูง 6.7% + ประวัติ 126 ปี:</b> General Mills จ่ายปันผลต่อเนื่องตั้งแต่ปี ค.ศ. 1898 เป็นหนึ่งใน dividend aristocrat ที่มั่นคง; yield 6.7% ดึงดูดนักลงทุน income ในช่วงอัตราดอกเบี้ยสูง</li>
+          <li><b>Blue Buffalo (Pet Food) — กลุ่มที่ยังโต:</b> ตลาดอาหารสัตว์เลี้ยง premium ยังขยายตัวได้ดี Blue Buffalo เป็นแบรนด์ natural pet food อันดับ 1 ในสหรัฐฯ เป็นเครื่องยนต์เติบโตที่ยังคาดหวังได้</li>
+          <li><b>Valuation ต่ำเป็นประวัติการณ์:</b> P/E ~9x เทียบค่าเฉลี่ย 5 ปีที่ 16–18x หมายความว่าตลาด price in ความเสี่ยงไปมากแล้ว; หากผลประกอบการ Q4 FY2026 ดีกว่าคาด อาจเกิด multiple expansion</li>
+          <li><b>Pricing Power + HMM Cost Savings:</b> โปรแกรม Holistic Margin Management (HMM) ช่วยประหยัดต้นทุน + บริษัทยังรักษา gross margin ~33% ได้แม้มี input cost inflation</li>
+          <li><b>Portfolio Reshaping:</b> General Mills กำลังทบทวน portfolio ขายแบรนด์ที่ไม่ใช่ core (เช่น pet treat) เพื่อ focus แบรนด์ที่แข็งแกร่ง อาจเพิ่ม capital allocation efficiency</li>
+          <li><b>Free Cash Flow แข็งแกร่ง:</b> FCF ~$2B+/ปี รองรับปันผล + share buyback; leverage อยู่ในระดับที่บริหารได้</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>GLP-1 Drug Impact:</b> ยาลดน้ำหนัก (Ozempic, Wegovy) ลดความต้องการอาหาร high-calorie โดยรวม กระทบยอดขายซีเรียล ขนมขบเคี้ยว และ ice cream ซึ่งเป็น core products ของ GIS โดยตรง</li>
+          <li><b>Volume Decline ต่อเนื่อง:</b> Organic net sales ลด 2% ใน FY2025 แม้ลงทุนเพิ่มใน marketing; ผู้บริโภค trade down ไป private label; FY2026 guidance ให้ organic net sales flat ถึง −1%</li>
+          <li><b>Adjusted EPS คาดลด 10–15% FY2026:</b> guidance ที่อ่อนแอเป็นสัญญาณว่าแรงกดดันด้านต้นทุนและราคายังคงอยู่; หาก miss guidance อาจกดหุ้นต่อ</li>
+          <li><b>หนี้สูง (D/E ~2.2x):</b> Long-term debt $12.7B เพิ่มขึ้นมากจาก $10B ใน FY2023; ในสภาพแวดล้อมอัตราดอกเบี้ยสูง ภาระดอกเบี้ยเพิ่มขึ้น กดดัน net income</li>
+          <li><b>แรงกดดันจาก Analyst และ Sentiment ลบ:</b> เพิ่งมี downgrades หลายรายในมิ.ย. 2569 (Morgan Stanley, JPMorgan, UBS, Wells Fargo) เป้าราคาเฉลี่ยบางสำนัก $30–$32 ต่ำกว่าราคาปัจจุบัน</li>
+          <li><b>Input Cost Volatility:</b> ราคาธัญพืช, น้ำตาล, บรรจุภัณฑ์ที่ผันผวนส่งผลต่อ gross margin; การป้องกันความเสี่ยง (hedging) ช่วยได้จำกัด</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>Value Play ที่ปันผลสูง — รอ Catalyst พลิกกลับ</h2>
+      <p>General Mills เป็นบริษัทอาหาร consumer staples ที่มีแบรนด์แข็งแกร่งระดับโลก (Cheerios, Lucky Charms, Haagen-Dazs, Blue Buffalo) แต่กำลังเผชิญ structural headwinds จาก GLP-1 drugs, volume decline และ trade-down ไป private label ราคาหุ้นที่ร่วงลงกว่า 30% จากจุดสูงสุดทำให้ P/E ลงมาที่ ~9x ซึ่งต่ำผิดปกติ และปันผลขึ้นมาสูงถึง 6.7% เป็นระดับที่ให้ downside protection ที่ดีแก่นักลงทุน income อย่างไรก็ตาม FY2026 guidance ที่อ่อนแอและ downgrades จากนักวิเคราะห์หลายรายชี้ว่ายังอาจมีแรงกดดันระยะสั้น การเข้าลงทุนที่ราคาปัจจุบันเหมาะสำหรับนักลงทุนที่รับ uncertainty ได้ มุ่งเน้นรับปันผลสูง และเชื่อว่า Blue Buffalo + portfolio reshaping จะขับเคลื่อนการฟื้นตัวในระยะกลาง</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$42.50 <span style="font-size:12px;color:#cab9a8">($38.31–$46.31)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +14%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$39.06 (Hold/Reduce)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ราคาปัจจุบัน $36.38 อยู่ระหว่าง MOS 20% ($34.00) และ FV ($42.50) เป็นโซนที่ "น่าสนใจแต่ไม่รีบร้อน" สำหรับนักลงทุน dividend เน้น income สะสมทยอยที่ $34–$36 และถ้าหุ้นลงทดสอบ $30–$32 (deep value / MOS 28–30%) ถือเป็นโอกาสสะสมเพิ่ม ระวัง: ไม่เหมาะกับนักลงทุนที่ต้องการ capital gain ระยะสั้น เนื่องจาก FY2026 guidance อ่อนแอและ sentiment ยังลบ
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    แหล่งข้อมูล: Yahoo Finance (ราคา $36.38 ณ 29 มิ.ย. 2569 + monthly chart), StockAnalysis.com (งบการเงิน + EPS TTM $4.09), General Mills Investor Relations / Nasdaq.com (FY2025 Annual Results — adj. EPS $4.21), MarketBeat (Analyst Consensus $39.06 / 21 นักวิเคราะห์)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 29 มิ.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
