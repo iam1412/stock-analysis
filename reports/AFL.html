@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น Aflac Incorporated (AFL) — Stock Analysis Dashboard</title>
+<!-- ★ ใส่รุ่นโมเดล AI ที่ใช้วิเคราะห์จริง -->
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
+<script type="application/json" id="stock-meta">
+{"symbol":"AFL","currency":"USD","price":120.08,"fairValue":102,"mos":-17.7,"upside":-15.1,"pe":15.8,"dividendYield":1.96,"roe":12.8}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#E31837",
+    "accentDark": "#a01027",
+    "darkGrad": "linear-gradient(135deg,#1a0508 0%,#2d0812 50%,#1a0508 100%)",
+    "glow": "rgba(227,24,55,0.18)",
+    "subColor": "#f4aab5",
+    "headerMuted": "rgba(244,170,181,0.70)",
+    "verdictText": "#fce8eb",
+    "vcellLabel": "rgba(244,170,181,0.65)",
+    "badge": "#E31837",
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#1e8e3e"
+  },
+  "chart": {
+    "data": [
+      ["ก.ค.68", 99.36],
+      ["ส.ค.68", 106.86],
+      ["ก.ย.68", 111.70],
+      ["ต.ค.68", 107.19],
+      ["พ.ย.68", 110.31],
+      ["ธ.ค.68", 110.27],
+      ["ม.ค.69", 110.95],
+      ["ก.พ.69", 112.93],
+      ["มี.ค.69", 109.71],
+      ["เม.ย.69", 113.67],
+      ["พ.ค.69", 112.42],
+      ["มิ.ย.69", 120.08]
+    ],
+    "min": 90,
+    "max": 132,
+    "grid": [90, 100, 110, 120, 130],
+    "fairLine": 102,
+    "currency": "$",
+    "highlight": [1, 11]
+  },
+  "gauge": {
+    "min": 68,
+    "max": 132,
+    "cur": 120.08,
+    "fair": 102,
+    "fairLabelTop": false
+  },
+  "fv": 102
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">●●●</div>
+    <div>
+      <span class="tag">NYSE: AFL</span>
+      <span class="tag">Insurance</span>
+      <span class="tag">Supplemental Health</span>
+    </div>
+    <h1>Aflac Incorporated</h1>
+    <div class="sub">Supplemental health insurance • Aflac Japan (~70% revenue, cancer &amp; medical) • Aflac US (accident, hospital indemnity, disability) • "Duck" brand • Dividend Champion 42yr • ~5% annual buyback</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$120.08<small>(AFL)</small></div>
+      </div>
+      <div class="chg">▲ +20.9% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 30 มิ.ย. 2569<br>
+        กรอบ 52 สัปดาห์ $96.95 – $120.29<br>
+        ที่มา: Yahoo Finance, StockAnalysis.com, MarketBeat
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ Q1 2026 (มี.ค. 2569)</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~$61.1B</div><div class="d">~527M shares outstanding</div></div>
+      <div class="metric"><div class="k">P/E (TTM, adjusted)</div><div class="v neu">~15.8x</div><div class="d">Adj. EPS TTM $7.59</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~13–15x</div><div class="d">ปัจจุบันแพงกว่า avg เล็กน้อย</div></div>
+      <div class="metric"><div class="k">P/BV (ex-AOCI)</div><div class="v neu">2.18x</div><div class="d">BVPS ex-AOCI $54.96</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">~$3.65B</div><div class="d">Adj. EPS FY2025 = $7.49 (+3.9% YoY)</div></div>
+      <div class="metric"><div class="k">EPS (TTM, adjusted)</div><div class="v">~$7.59</div><div class="d">Q2'25+Q3'25+Q4'25+Q1'26</div></div>
+      <div class="metric"><div class="k">BVPS (ex-AOCI)</div><div class="v">~$54.96</div><div class="d">Mar 2026; adj. book value/share</div></div>
+      <div class="metric"><div class="k">ROE (adj.) / ROA</div><div class="v pos">~12.8% / ~3.4%</div><div class="d">incl. FX drag; ex-FX ROE ~16.4%</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">~$18.1B</div><div class="d">Japan ~70% / US ~30%</div></div>
+      <div class="metric"><div class="k">Benefit Ratio (Japan)</div><div class="v">~68%</div><div class="d">เบี้ยประกันสุทธิ vs ค่าสินไหม</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~1.96%</div><div class="d">$2.35/share TTM · Div Champion 42yr</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">~0.63</div><div class="d">ความผันผวนต่ำกว่าตลาดมาก</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART (ราคาย้อนหลัง ~1 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ก.ค. 2568 – มิ.ย. 2569</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#E31837"></i>ราคา AFL</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $102</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        AFL ขึ้นมา <b>+20.9%</b> ในรอบ 12 เดือน จาก $99.36 (ก.ค. 2568) สู่ $120.08 (มิ.ย. 2569)
+        เริ่มต้นปีอ่อนตัวเล็กน้อยช่วง ต.ค. 2568 ($107) จากความกังวลเรื่อง FX (เยนอ่อน) แต่ฟื้นตัวได้ดีในช่วง Q4 2568
+        และปรับขึ้นต่อเนื่องมา ก.พ.–มิ.ย. 2569 โดยได้แรงหนุนจากผลประกอบการ Q1 2026 ที่ adjusted EPS +5.4% YoY
+        และโปรแกรม buyback ที่ต่อเนื่อง (shares outstanding ลดลง ~5.5%/ปี)
+        ราคาปัจจุบันอยู่เหนือมูลค่าเหมาะสมที่คำนวณไว้ที่ $102 ทำให้ MOS ติดลบ
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION (3 วิธี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS adj. $7.59 × P/E เป้าหมาย ~13x — ใกล้เคียง avg ประวัติ 5 ปี; ลดจาก 15.8x ปัจจุบัน เพื่อสะท้อน FX headwind ญี่ปุ่น</div></div>
+        <div class="mval">$99</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล $2.47 (= $2.35 × 1.05); g 5%, r 7.5% → $2.47 / (7.5%−5%) = $98.7 — dividend champion ให้ใช้ r ต่ำกว่าตลาด</div></div>
+        <div class="mval">$99</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 12.8% − g 5%)/(r 9% − g 5%) ≈ 1.95 × BVPS ex-AOCI $54.96 = $107.2 — r=9% สะท้อน FX risk</div></div>
+        <div class="mval">$107</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $99 – $107</span></div>
+        <div class="r">$102</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ทั้ง 3 วิธีสอดคล้องกัน: P/E และ DDM ให้ $99 ขณะที่ Justified P/BV ให้ $107 สูงกว่าเพราะ BVPS ที่แข็งแกร่ง
+        FV เฉลี่ย <b>$102</b> ต่ำกว่าราคาตลาด $120.08 ชี้ว่า AFL ซื้อขายอยู่ที่ <b>premium ~18%</b> จาก fair value
+        ราคาปัจจุบันสะท้อนความคาดหวังว่า JPY จะแข็งขึ้นและ buyback จะยังคงหนุน EPS
+        consensus นักวิเคราะห์ 14 คน ให้ราคาเป้าเฉลี่ย $112 (Hold) — ยังต่ำกว่าราคาตลาด
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $120.08</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $102</div></div>
+        </div>
+        <div class="scale">
+          <span>$71<br><small>MOS 30%</small></span>
+          <span>$82<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$102<br><small>Fair Value</small></span>
+          <span style="text-align:right">$112<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">$130<br><small>กรอบบน</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        AFL ซื้อขายที่ <b>$120.08</b> เหนือ Fair Value $102 ประมาณ 18% และเหนือ consensus นักวิเคราะห์ที่ $112
+        ผู้ลงทุนที่เน้น Margin of Safety ควรรอโซน <b>$82–99</b> (MOS 20–30%) ที่ราคาปัจจุบันยังไม่ถึง
+        จุดซื้อ MOS 20% อยู่ที่ $82 และ MOS 30% อยู่ที่ $71 ซึ่งไกลจากระดับปัจจุบันมาก
+        อย่างไรก็ดี Aflac มี quality สูง (dividend champion 42 ปี, buyback สม่ำเสมอ) จึงเหมาะกับ
+        นักลงทุนระยะยาวที่รับ premium ได้หากมั่นใจใน JPY recovery thesis
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">−17.7%</div>
+        <div class="txt">ราคาสูงกว่ามูลค่าเหมาะสม — ยังไม่มี Margin of Safety · รอโซน $82–99 ก่อนเข้าซื้อ</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$82</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$71</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $102</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="120.08" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $120.08 • EPS ฐาน ~$7.59 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS 0%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$83</div>
+          <div class="ret neg">−24.5%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$7.59</span></li>
+            <li><span>P/E ออก</span><span>11x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$7.2</span></li>
+            <li><span>สถานการณ์</span><span>JPY อ่อนต่อ, P/E compress</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +5%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$122</div>
+          <div class="ret pos">+1.4%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$8.79</span></li>
+            <li><span>P/E ออก</span><span>13x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$7.8</span></li>
+            <li><span>สถานการณ์</span><span>buyback + US growth ช่วยหนุน EPS</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +9%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$155</div>
+          <div class="ret pos">+29.2%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$9.83</span></li>
+            <li><span>P/E ออก</span><span>15x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$8.2</span></li>
+            <li><span>สถานการณ์</span><span>JPY ฟื้น + buyback เร่ง + US cross-sell</span></div>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      ในสถานการณ์ Base หุ้น AFL ให้ผลตอบแทน <b>+1.4%</b> ใน 3 ปี (total return รวมปันผล ~$7.8)
+      ซึ่งต่ำมากเมื่อเทียบกับราคาปัจจุบันที่ premium — ชี้ว่าราคาสูงเกินไปสำหรับ upside ในอนาคต
+      ความเสี่ยงหลักคือ JPY/USD: รายได้ญี่ปุ่น ~70% ในเยน เมื่อแปลงเป็น USD ในช่วง JPY อ่อนจะกดดัน EPS รายงาน
+      ปัจจัยหนุน: Aflac buyback ~5%/ปี ทำให้ EPS/share เติบโตแม้กำไรรวม flat; dividend 42 ปีไม่เคยตัด
+      ผู้ลงทุนระยะยาวที่เน้น income + quality อาจรับ Bull case ได้ถ้าเชื่อใน JPY recovery ใน 2-3 ปี
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก &amp; ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>JPY แข็งค่า:</b> ~70% รายได้มาจากญี่ปุ่น ทุก 1% JPY แข็งขึ้น = EPS USD เพิ่มขึ้น ~1.5% ตลาดคาด JPY จะฟื้นตัวในระยะกลาง</li>
+          <li><b>Buyback เร่งรัด:</b> Aflac ลด shares outstanding ~5.5%/ปี (535M → 527M ใน 1 ปี) หนุน EPS/share โดยตรง แม้กำไรรวมทรงตัว</li>
+          <li><b>Dividend Champion 42 ปี:</b> ปันผลเพิ่มต่อเนื่อง 42 ปี ทำให้ total return น่าสนใจในระยะยาว มั่นคงแม้ในวิกฤต</li>
+          <li><b>Aflac US ขยายตัว:</b> กลุ่มประกันสุขภาพเสริม (supplemental) กำลังขยายตัว โดยเฉพาะ employer-paid benefits หลัง ACA ยังมีช่องว่างด้าน out-of-pocket ค่ารักษา</li>
+          <li><b>Berkshire Hathaway ถือ ~20%:</b> Warren Buffett เชื่อมั่น Aflac ในฐานะ "quality insurer" ให้ความน่าเชื่อถือแก่นักลงทุน</li>
+          <li><b>Japan Reinsurance ลดความเสี่ยง:</b> โปรแกรมถ่ายโอนความเสี่ยงให้ partner เพิ่มขึ้น ช่วยลดความผันผวนของ claims</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>FX Risk (JPY/USD):</b> ความเสี่ยงหลัก — JPY อ่อนในปี 2023–2025 กดดัน EPS USD อย่างมีนัย แม้กำไรในเยนดี ตราบใด JPY อ่อน ผลประกอบการ USD จะถูกกด</li>
+          <li><b>ตลาดญี่ปุ่นอิ่มตัว:</b> Japan เป็นตลาดประกันเก่าแก่และมีการแข่งขันสูง อัตราการเติบโต premium ใหม่ชะลอตัว — growth ขึ้นกับ in-force policies และ pricing</li>
+          <li><b>ความเสี่ยงกฎหมาย/สุขภาพ:</b> ถ้าการรักษาโรคมะเร็งในญี่ปุ่นเปลี่ยนไป (เช่น การรักษาขึ้นจาก immunotherapy) อาจกระทบ claims เพิ่มขึ้น</li>
+          <li><b>P/E สูงกว่า avg:</b> ณ P/E 15.8x (adjusted) สูงกว่า avg ประวัติ ~13x — ถ้า earnings growth ชะลอหรือ FX กดดัน อาจเกิด P/E de-rating</li>
+          <li><b>อัตราดอกเบี้ยต่ำ:</b> รายได้การลงทุน (investment income) ของ Aflac อาจถูกกดดันในสภาวะ rate ต่ำ กระทบ total earnings</li>
+          <li><b>Population aging Japan:</b> ผู้เอาประกันสูงอายุขึ้น → claims สูงขึ้นในระยะยาว แต่ชดเชยบางส่วนด้วยเบี้ยสะสม</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>Aflac: คุณภาพสูง แต่ราคาตลาดแพงกว่า FV ~18% — รอโซน $82–99</h2>
+      <p>Aflac เป็นบริษัทประกันสุขภาพเสริมที่มีคุณภาพสูงและกระแสเงินสดมั่นคง ด้วยสถานะ Dividend Champion 42 ปีและ buyback เร่งรัด ~5%/ปี แต่ราคา $120.08 ณ ปัจจุบันสูงกว่า Fair Value $102 ประมาณ 18% ทำให้ไม่มี Margin of Safety สำหรับผู้ลงทุนแนว value ความเสี่ยงหลักคือ FX (JPY/USD) ที่อาจกดดัน EPS USD ต่อไป consensus นักวิเคราะห์ 14 คนให้ Hold เป้า $112 — ยังต่ำกว่าราคาตลาด แนะนำ <b>รอโซน $82–99</b> (MOS 20–30%) สำหรับนักลงทุน value; ผู้เน้น quality income อาจ accumulate อย่างระมัดระวังที่ &lt;$105</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$102 <span style="font-size:12px;color:#cab9a8">($99–$107)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −17.7%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$112 (Hold)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> รอโซน MOS 20% ที่ $82 สำหรับ value entry · ถ้าเน้น quality income อาจ accumulate ค่อยๆ &lt;$105 · ปัจจัยเร่ง: JPY ฟื้นตัวหรือ buyback เร่งจะเปิดทาง bull case ที่ EPS $9-10 · รายงานอ้างอิงราคา Yahoo Finance และ StockAnalysis.com ณ 30 มิ.ย. 2569
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    แหล่งข้อมูล: Yahoo Finance (ราคา/กราฟ), StockAnalysis.com (งบการเงิน/นักวิเคราะห์), MarketBeat (consensus), StockTitan/SEC 8-K (adjusted EPS Q1 2026, FY2025), ราคา ณ 30 มิ.ย. 2569
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 30 มิ.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
