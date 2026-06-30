@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น Chevron (CVX) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"CVX","currency":"USD","price":168.47,"fairValue":150,"mos":-12.3,"upside":-11.0,"pe":29.2,"dividendYield":4.23,"roe":5.91}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#003087",
+    "accentDark": "#001f5c",
+    "darkGrad": "linear-gradient(135deg,#001530 0%,#002060 60%,#001030 100%)",
+    "glow": "rgba(0,48,135,0.35)",
+    "subColor": "#7eb3e8",
+    "headerMuted": "rgba(126,179,232,0.7)",
+    "verdictText": "#e8f0fe",
+    "vcellLabel": "#a8c4f0",
+    "badge": "#003087",
+    "chgBg": "#1e4d2b",
+    "chgColor": "#34a853"
+  },
+  "chart": {
+    "data": [
+      ["Jul 25", 145.54],
+      ["Aug 25", 154.14],
+      ["Sep 25", 150.71],
+      ["Oct 25", 153.06],
+      ["Nov 25", 146.67],
+      ["Dec 25", 149.56],
+      ["Jan 26", 173.60],
+      ["Feb 26", 183.27],
+      ["Mar 26", 205.02],
+      ["Apr 26", 191.56],
+      ["May 26", 180.80],
+      ["Jun 26", 168.47]
+    ],
+    "min": 120,
+    "max": 215,
+    "grid": [130, 150, 170, 190, 210],
+    "fairLine": 150,
+    "currency": "$",
+    "highlight": [8]
+  },
+  "gauge": {
+    "min": 90,
+    "max": 230,
+    "cur": 168.47,
+    "fair": 150,
+    "fairLabelTop": true
+  },
+  "fv": 150
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">●●●</div>
+    <div>
+      <span class="tag">NYSE: CVX</span>
+      <span class="tag">Energy</span>
+      <span class="tag">Integrated Oil &amp; Gas</span>
+    </div>
+    <h1>Chevron Corporation</h1>
+    <div class="sub">Integrated oil &amp; gas • Upstream (crude oil, natural gas, LNG) • Downstream (refining, petrochemicals) • Midstream (pipelines, storage) • Global operations 180+ countries • Permian Basin leader</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$168.47<small>(CVX)</small></div>
+      </div>
+      <div class="chg">▲ +15.8% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 29 มิ.ย. 2569<br>
+        กรอบ 52 สัปดาห์ $142.40 – $214.71<br>
+        ที่มา: Yahoo Finance, StockAnalysis.com, Macrotrends
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ณ มิ.ย. 2569 · ที่มา: Yahoo Finance, StockAnalysis.com</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">$333.1B</div><div class="d">1.98B shares · NYSE blue-chip</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~29.2x</div><div class="d">EPS TTM $5.77 (depressed, low oil)</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~14.9x</div><div class="d">ช่วง 9.8x–22.9x (ตามวัฏจักรน้ำมัน)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">1.75x</div><div class="d">BVPS ~$96.02 (TTM Q1/2026)</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ TTM</div><div class="v">$11.4B</div><div class="d">↓ จาก $17.7B ปี 2024 (น้ำมันลง)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$5.77</div><div class="d">Q2'25–Q1'26 GAAP; mid-cycle ~$9.50</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~$96.02</div><div class="d">Equity $189.4B / 1.98B shares</div></div>
+      <div class="metric"><div class="k">ROE / D/E</div><div class="v pos">~5.9% / 0.24x</div><div class="d">ROE ต่ำตามวัฏจักร; หนี้ต่ำ AA-</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$185.9B</div><div class="d">EBITDA TTM $37.1B (EV/EBITDA 9.85x)</div></div>
+      <div class="metric"><div class="k">FCF TTM</div><div class="v">$16.6B</div><div class="d">Capex ~$15B/ปี หลังปรับ PDC</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~4.23%</div><div class="d">$7.12/share/ปี · ขึ้นต่อ 37 ปีติด</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">~0.85</div><div class="d">ต่ำกว่า S&amp;P 500 · ผันผวนน้อย</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ · Yahoo Finance monthly</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#003087"></i>ราคา CVX</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $150</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสูงสุด Mar 26</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคา CVX เริ่มต้นที่ ~$145.54 เดือน ก.ค. 2568 และซื้อขายในกรอบแคบ $143–$155 ตลอดครึ่งปีหลัง 2568
+        ก่อนพุ่งแรงตั้งแต่ ม.ค. 2569 สู่จุดสูงสุด $205 เดือน มี.ค. 2569
+        หนุนโดยราคาน้ำมันดิบที่ปรับตัวขึ้นและการปิดดีลซื้อ Hess Corporation
+        จากนั้นย่อลงมาซื้อขายที่ $168.47 ณ ปัจจุบัน หลังน้ำมัน WTI ปรับฐานในไตรมาส 2/2569
+        ผลตอบแทนรอบปีอยู่ที่ +15.8% ซึ่งสูงกว่า S&amp;P 500 เล็กน้อยในช่วงเดียวกัน
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี · ปรับตามวัฏจักรน้ำมัน</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. Normalized P/E (Mid-Cycle)</div><div class="mdesc">EPS adj. $9.50 × P/E 13x — EPS ปรับวัฏจักร (WTI $65–70/bbl; เทียบ FY2021 $8.14 + scale PDC) × 13x ระดับ premium integrated (น้ำหนัก 35%)</div></div>
+        <div class="mval">$124</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. EV/EBITDA</div><div class="mdesc">EBITDA TTM $37.1B × 9.0x (ค่าเฉลี่ย major integrated) − Net Debt $40.1B ÷ 1.98B หุ้น — XOM/BP/Shell trade 8–10x (น้ำหนัก 40%)</div></div>
+        <div class="mval">$148</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. DDM (Gordon Growth)</div><div class="mdesc">D₁ = $7.12 × 1.05 = $7.48; g 5%, r 9% → $7.48 ÷ (0.09−0.05) — CVX ขึ้นปันผลต่อเนื่อง 37 ปี · AA- credit rating (น้ำหนัก 25%)</div></div>
+        <div class="mval">$187</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $124 – $187</span></div>
+        <div class="r">$150</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        <b>หมายเหตุ:</b> CVX เป็นหุ้นวัฏจักร (cyclical) — EPS TTM $5.77 ต่ำผิดปกติเพราะน้ำมัน WTI อ่อนแอใน Q1/2026
+        การวิเคราะห์จึงอิง <b>EPS กลางวัฏจักร (mid-cycle) $9.50</b> ที่น้ำมัน $65–70/bbl แทน TTM ที่บิดเบือน
+        P/E TTM ปัจจุบัน 29.2x ดูแพงเพราะ EPS ซึก แต่ Forward P/E ที่ 10.3x บ่งชี้ตลาดมองผ่านไปถึงการฟื้นตัว
+        DDM ให้ค่าสูงสุด ($187) สะท้อน "ราคาซื้อปันผลรักษา" ที่ yield 4.23% + growth 5% ต่อปี
+        EV/EBITDA กลาง ($148) เป็นวิธีที่เหมาะสมที่สุดสำหรับหุ้น upstream energy
+        ราคาปัจจุบัน $168.47 อยู่เหนือ Fair Value ~$150 ประมาณ 12% — หุ้น overvalued เล็กน้อยในระดับ mid-cycle
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $168.47</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $150</div></div>
+        </div>
+        <div class="scale">
+          <span>$105<br><small>MOS 30%</small></span>
+          <span>$120<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$150<br><small>Fair Value</small></span>
+          <span style="text-align:right">$190<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">$217<br><small>เป้าเฉลี่ย Analyst</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคา $168.47 อยู่เหนือ Fair Value กลางที่ $150 ราว 12% สะท้อนว่าตลาด <b>กำลัง price-in การฟื้นตัวของน้ำมัน</b>
+        ก่อนที่ EPS จะกลับมาสู่ระดับกลางวัฏจักร หากน้ำมัน WTI ฟื้นแข็งแกร่งกว่า $75/bbl ราคาหุ้นอาจขึ้นทดสอบ $190–217 ได้
+        จุดซื้อ MOS 20% ที่ $120 และ MOS 30% ที่ $105 คือโซน deep value ที่น่าสะสมในกรณีน้ำมันดิ่งรุนแรง
+        นักวิเคราะห์ 24 คน เห็นเป้าเฉลี่ย $217 (+29%) โดยส่วนใหญ่มองบวก (Strong Buy 13, Buy 5, Hold 5)
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">−12.3%</div>
+        <div class="txt">ราคาสูงกว่ามูลค่าเหมาะสม (Overvalued) — แนะนำรอจุดเข้าที่ดีกว่า หรือซื้อเพื่อรับปันผล 4.2%</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$120</div><div class="d">โซนน่าสนใจสำหรับ value investor</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$105</div><div class="d">โซนถูกมาก (deep value · น้ำมันดิ่ง)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $150</div><div class="d">ใกล้/ต่ำกว่า Fair Value กลางวัฏจักร</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="168.47" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $168.47 • EPS ฐาน ~$9.50 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS −5%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$111</div>
+          <div class="ret neg">−34.2%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$8.15</span></li>
+            <li><span>P/E ออก</span><span>11x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$21.36</span></li>
+            <li><span>สถานการณ์</span><span>น้ำมัน WTI ทรงตัวต่ำ $55–60/bbl</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +0%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$137</div>
+          <div class="ret neg">−18.8%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$9.50</span></li>
+            <li><span>P/E ออก</span><span>12x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$22.73</span></li>
+            <li><span>สถานการณ์</span><span>น้ำมัน $65–70/bbl mid-cycle</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +11%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$193</div>
+          <div class="ret pos">+14.5%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$12.99</span></li>
+            <li><span>P/E ออก</span><span>13x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$24.00</span></li>
+            <li><span>สถานการณ์</span><span>น้ำมัน $80+/bbl + Hess synergy เต็มที่</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      <b>หมายเหตุ:</b> ผลตอบแทนรวมปันผล 3 ปี ≈ $21–24 (yield ~4.2%/ปี) ในทุก scenario
+      กรณี Base ราคาหุ้นอาจย่อลงมาใกล้ Fair Value กลางวัฏจักร $135 แต่ปันผลชดเชยบางส่วน
+      Bull case ต้องอาศัยน้ำมันฟื้นและ Hess deal ให้ synergy ตามเป้า
+      ราคาเข้าที่ดีกว่า: $120–150 ให้ผลตอบแทน base/bull ดีกว่าปัจจุบัน 20–40%
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก &amp; ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>Hess Acquisition Synergy:</b> ดีล $53B ปิดสำเร็จ — เพิ่ม Guyana asset ชั้นยอด (ต้นทุน &lt;$20/bbl) และ Bakken position ช่วยเพิ่ม EPS ระยะกลาง</li>
+          <li><b>Permian Basin Growth:</b> CVX เป็น top producer ใน Permian เป้าเพิ่ม production 10%/ปี ในช่วง 2024–2027</li>
+          <li><b>Dividend Aristocrat 37 ปี:</b> ขึ้นปันผลต่อเนื่อง 37 ปี ปัจจุบัน yield 4.23% ที่ชนะ T-Bill และ inflation</li>
+          <li><b>Balance Sheet แกร่ง (AA-):</b> Net Debt/EBITDA เพียง 1.1x · วงเงิน buyback $75B ที่ยังเหลือ — flexib­il­ity สูงยามน้ำมันดิ่ง</li>
+          <li><b>LNG &amp; Energy Transition:</b> Chevron New Energies ลงทุน hydrogen / CCUS / biofuel — hedge ระยะยาวต่อ energy transition</li>
+          <li><b>Oil Price Recovery:</b> ทุก $10/bbl ที่น้ำมันขึ้น เพิ่ม EPS ประมาณ $1.00–1.50/share — upside leverage สูง</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>ราคาน้ำมัน:</b> ความเสี่ยงหลัก — OPEC+ อาจเพิ่ม supply, demand จีนอ่อน, หรือ recession กด WTI &lt;$55/bbl ทำ EPS ดิ่งรุนแรง</li>
+          <li><b>Hess Integration Risk:</b> การรวมกิจการขนาดใหญ่มักมี cost overrun / ความล่าช้า อาจกด FCF ระยะสั้น 2–3 ปี</li>
+          <li><b>Geopolitical:</b> CVX มีสินทรัพย์ใน Kazakhstan, Nigeria, Venezuela — ความเสี่ยงการเมืองและ force majeure</li>
+          <li><b>Energy Transition:</b> ESG pressure ทำให้ cost of capital สูงขึ้น และอาจต้อง write-down asset หากดีมานด์น้ำมันถึง peak</li>
+          <li><b>Valuation ปัจจุบัน:</b> MOS ติดลบ 12% ที่ระดับราคานี้ — ผลตอบแทน 3 ปีใน base case อาจเป็นลบหักปันผล</li>
+          <li><b>ต้นทุนทุน Capex สูง:</b> Capex แผน $14–16B/ปี ต้องการน้ำมัน $50+/bbl เพื่อ breakeven FCF</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>CVX: หุ้นคุณภาพสูง แต่ราคาสะท้อนการฟื้นตัวไปบ้างแล้ว — รอโอกาสที่ดีกว่า</h2>
+      <p>Chevron คือหนึ่งใน integrated oil major ที่ดีที่สุดในโลก มีความแข็งแกร่งด้าน balance sheet (AA-), ขึ้นปันผล 37 ปีติดต่อกัน และ Permian Basin + Guyana เป็น growth engine คุณภาพสูง
+      อย่างไรก็ตาม ที่ราคา $168.47 หุ้นซื้อขายเหนือ Fair Value กลางวัฏจักร ~$150 ประมาณ 12%
+      ทำให้ Margin of Safety ติดลบ — ผลตอบแทนรวม 3 ปีใน base case (น้ำมัน $65–70/bbl) อาจเป็นลบแม้รวมปันผล
+      <br><br>
+      นักวิเคราะห์ 24 คน มีเป้าเฉลี่ย $217 (+29%) อิงกรณีน้ำมันฟื้นและ Hess synergy เต็มที่
+      สำหรับนักลงทุนที่เน้นปันผล yield 4.23% ยังน่าสนใจ แต่ควรพิจารณาทยอยสะสมเมื่อราคาย่อลงสู่ $140–150
+      ยิ่งถ้าได้ใกล้ $120–105 คือ deep value ที่น่าสะสมอย่างมาก</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$150 <span style="font-size:12px;color:#cab9a8">($124–$187)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −12.3%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$217 (Buy)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> CVX เป็นหุ้น quality ถือระยะยาวได้ดี แต่ราคาปัจจุบัน $168 มี MOS ติดลบ —
+        แนะนำ <b>รอย่อ $140–150</b> ก่อนเพิ่มน้ำหนัก หรือ <b>ทยอยสะสม DCA</b> เพื่อรับปันผล 4.2%+/ปี
+        จุด deep value ที่ $120–105 คือโซนที่น่าซื้อหนักหากน้ำมันดิ่งแรง · ระวัง: bear case ราคาอาจลง $76 ได้หากน้ำมันพัง
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ EPS กลางวัฏจักรที่ประมาณการ
+    ราคาหุ้นมีความผันผวนสูง โดยเฉพาะหุ้นพลังงานที่ผูกกับราคาน้ำมันโลก ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    ที่มาข้อมูล: Yahoo Finance (ราคา/กราฟ), StockAnalysis.com (งบการเงิน/อัตราส่วน/เป้านักวิเคราะห์), ราคา ณ 29 มิ.ย. 2569
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 29 มิ.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
