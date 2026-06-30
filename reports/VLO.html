@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น Valero Energy (VLO) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"VLO","currency":"USD","price":260.16,"fairValue":188,"mos":-38.4,"upside":-27.7,"pe":18.9,"dividendYield":1.85,"roe":15.7}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#C8102E",
+    "accentDark": "#96001F",
+    "darkGrad": "linear-gradient(135deg,#1a0005 0%,#2d0010 50%,#1a0005 100%)",
+    "glow": "rgba(200,16,46,0.35)",
+    "subColor": "#f8c8cc",
+    "headerMuted": "rgba(248,200,204,0.7)",
+    "verdictText": "#fff5f5",
+    "vcellLabel": "#f8c8cc",
+    "badge": "#C8102E",
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#1e8e3e"
+  },
+  "chart": {
+    "data": [
+      ["ก.ค. 68", 137.31],
+      ["ส.ค. 68", 152.01],
+      ["ก.ย. 68", 170.26],
+      ["ต.ค. 68", 169.56],
+      ["พ.ย. 68", 176.76],
+      ["ธ.ค. 68", 162.79],
+      ["ม.ค. 69", 181.43],
+      ["ก.พ. 69", 204.64],
+      ["มี.ค. 69", 247.08],
+      ["เม.ย. 69", 252.58],
+      ["พ.ค. 69", 244.82],
+      ["มิ.ย. 69", 266.32],
+      ["30 มิ.ย. 69", 259.95]
+    ],
+    "min": 120,
+    "max": 280,
+    "grid": [130, 160, 190, 220, 250],
+    "fairLine": 188,
+    "currency": "$",
+    "highlight": [8, 11]
+  },
+  "gauge": {
+    "min": 110,
+    "max": 320,
+    "cur": 260.16,
+    "fair": 188,
+    "fairLabelTop": false
+  },
+  "fv": 188
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">
+      <span style="background:#C8102E"></span>
+      <span style="background:#96001F"></span>
+      <span style="background:#ff6b6b"></span>
+    </div>
+    <div>
+      <span class="tag">NYSE: VLO</span>
+      <span class="tag">Energy — Refining</span>
+      <span class="tag">Pure-Play Refiner</span>
+    </div>
+    <h1>Valero Energy Corporation</h1>
+    <div class="sub">World's largest independent refiner (15 refineries, ~3.2M bbl/day) • Pure-play refining earnings + heavy crude advantage • Diamond Green Diesel (DGD, JV w/ Darling) — #1 renewable diesel producer (~1.3B gal/yr) + Ethanol 12 plants • Cyclical margins vs mid-cycle crack normalize $14–16/bbl • ~1.9% dividend yield + aggressive buybacks • Renewable diesel margin pressured by RIN/overcapacity</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$260.16<small>(VLO)</small></div>
+      </div>
+      <div class="chg">▲ +89.3% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 30 มิ.ย. 2569<br>
+        กรอบ 52 สัปดาห์ $130.78 – $272.17<br>
+        ที่มา: StockAnalysis.com, Yahoo Finance, MarketBeat
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ 30 มิ.ย. 2569 — Cyclical: ดู Normalized EPS</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">$77.3B</div><div class="d">~297M shares</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~18.9x</div><div class="d">TTM EPS $13.75 — ผลจากวัฏจักร</div></div>
+      <div class="metric"><div class="k">Forward P/E (FY2026)</div><div class="v">~8.5x</div><div class="d">Margin recovery ใน FY2026</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">3.33x</div><div class="d">BVPS $78.13 (มี.ค. 2569)</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ TTM</div><div class="v">$4.22B</div><div class="d">Q1 2026: $1.32B (+ฟื้นตัว)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$13.75</div><div class="d">Q1 2569: $4.22 (annualized ~$16.88)</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~$78.13</div><div class="d">Equity $26.9B (มี.ค. 2569)</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~15.7% / 6.5%</div><div class="d">TTM — ดีขึ้นจาก 2025 อ่อนแอ</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$124.8B</div><div class="d">Refining: ~96% ของ revenue</div></div>
+      <div class="metric"><div class="k">FCF TTM</div><div class="v pos">$4.59B</div><div class="d">FCF/sh ~$15.46 — buyback+ปันผล</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~1.85%</div><div class="d">$4.80/sh — ปรับขึ้นต่อเนื่อง 10+ ปี</div></div>
+      <div class="metric"><div class="k">EV/EBITDA (TTM)</div><div class="v">~9.1x</div><div class="d">EV $83.4B, EBITDA TTM $9.1B</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ก.ค. 2568 – มิ.ย. 2569 (รายเดือน)</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#C8102E"></i>ราคา VLO</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $188</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        VLO วิ่งขึ้น <b>+89.3%</b> ใน 1 ปี (ก.ค. 2568 → มิ.ย. 2569) จาก $137 สู่ $260 ขับเคลื่อนโดย crack spread ที่ฟื้นตัวแรง
+        — ทั้ง gasoline และ distillate margin ปรับขึ้นจากปัญหาอุปทาน global inventory ต่ำ + ขีดความสามารถกลั่นที่ตึงตัว
+        ช่วงต้น ก.ค.–ต.ค. 2568 ขึ้นช้า $137→$170 ก่อนพักตัวใน ธ.ค. 2568 ($162) จากนั้นพุ่งแรงไตรมาส 1/2569
+        ($181→$247 ใน 2 เดือน) เมื่อ Q1 2569 EPS แข็งแกร่ง $4.22 ทำให้นักลงทุนคาด FY2026 จะเป็นปีฟื้นตัวเต็มรูปแบบ
+        ราคาแตะสูงสุด $272.17 ก่อนปรับลงเล็กน้อย สิ้นเดือนอยู่ที่ $260 — <b>ราคาปัจจุบันสูงกว่า FV ปกติ ($188)</b> ชี้ว่าตลาดกำลัง Price-in crack spread ที่สูงกว่า mid-cycle
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี — Normalized Mid-Cycle</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation (Normalized)</div><div class="mdesc">EPS adj. $17.00 × P/E 9.5x = $162 — normalize mid-cycle crack spread ~$14–16/bbl; refiners mid-cycle 8–10x</div></div>
+        <div class="mval">$162</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. EV/EBITDA (Normalized)</div><div class="mdesc">EBITDA mid-cycle ~$9,100M × 5.5x = EV ~$50,050M − Net Debt $6,160M = Equity ~$43,890M ÷ 297M sh — refiners 5–6x</div></div>
+        <div class="mval">$148</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. FCF Yield</div><div class="mdesc">Normalized FCF mid-cycle ~$5,300M ÷ 297M sh = FCF/sh $17.85 ÷ Required yield 7.5% — cyclical energy FCF yield</div></div>
+        <div class="mval">$238</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $148 – $238</span></div>
+        <div class="r">$188</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        <b>หมายเหตุสำคัญ:</b> VLO เป็นหุ้น cyclical — การประเมินใช้ <b>EPS/EBITDA/FCF ที่ปรับ normalize ที่ mid-cycle crack spread ~$15/bbl</b>
+        ไม่ใช่ตัวเลขปีปัจจุบันที่อาจสูง/ต่ำผิดปกติ
+        P/E (norm.) ให้ $162 สะท้อน 9.5x บน EPS mid-cycle $17 — ต่ำที่สุดในสามวิธี เพราะ P/E refiners หดเร็วเมื่อ margin ร่วง
+        EV/EBITDA ให้ $148 (conservative สุด) โดยใช้ EBITDA เฉลี่ย 3 ปี $9.1B × 5.5x
+        FCF yield 7.5% ให้ $238 (generous สุด) เพราะ Valero มีประวัติ FCF แกร่ง buyback 10%+ ต่อปี
+        <b>ราคาปัจจุบัน $260 สูงกว่า FV กลาง $188 ราว +38%</b> — ตลาดกำลัง Price-in crack spread ที่สูงกว่า mid-cycle ต่อเนื่องไปอีก 1-2 ปี
+        แหล่งข้อมูล: StockAnalysis.com (ราคา $260.16 ณ 30 มิ.ย. 2569), Yahoo Finance (13 monthly closes ก.ค. 2568–มิ.ย. 2569)
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $260.16</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $188</div></div>
+        </div>
+        <div class="scale">
+          <span>$132<br><small>MOS 30%</small></span>
+          <span>$150<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$188<br><small>Fair Value</small></span>
+          <span style="text-align:right">$265<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">$300<br><small>Bull Case</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน <b>$260.16</b> อยู่เหนือ Fair Value mid-cycle <b>$188</b> ราว +38% ชี้ว่าตลาดยอม Premium
+        สำหรับ crack spread ที่ฟื้นตัวแรงใน FY2026 Analyst consensus target $264.56 (Buy, 19 analysts) ใกล้เคียงราคาปัจจุบัน
+        แสดงว่า upside จำกัดในระยะสั้นหากยึดมุมมอง Street ราคาเข้าซื้อที่น่าสนใจด้าน Value คือต่ำกว่า $188 (FV) หรือ <b>$150 (MOS 20%)</b>
+        ซึ่งหมายความว่า crack spread ต้องปรับลดลงอย่างมีนัยสำคัญจึงจะเห็นโอกาส deep value
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">−38.4%</div>
+        <div class="txt">ราคาสูงกว่ามูลค่าเหมาะสม mid-cycle — ตลาด Price-in crack spread ที่สูงกว่าปกติ</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$150</div><div class="d">โซนน่าสนใจสำหรับ value investor</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$132</div><div class="d">โซนถูกมาก (deep value / trough cycle)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $188</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม mid-cycle</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="260.16" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $260.16 • EPS ฐาน ~$17.00 (norm.) • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS −10%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$99</div>
+          <div class="ret neg">−56.4%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$12.39</span></li>
+            <li><span>P/E ออก</span><span>8.0x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$14.40</span></li>
+            <li><span>สถานการณ์</span><span>Crack spread ร่วง, DGD ขาดทุน</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +3%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$177</div>
+          <div class="ret neg">−26.4%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$18.58</span></li>
+            <li><span>P/E ออก</span><span>9.5x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$14.40</span></li>
+            <li><span>สถานการณ์</span><span>Mid-cycle crack spread, DGD ฟื้น</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +15%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$284</div>
+          <div class="ret pos">+14.7%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$25.85</span></li>
+            <li><span>P/E ออก</span><span>11.0x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$15.60</span></li>
+            <li><span>สถานการณ์</span><span>Crack spread สูงต่อเนื่อง, DGD กำไร</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      ผลตอบแทน 3 ปีขึ้นอยู่กับ <b>crack spread</b> เป็นสำคัญ — กรณีฐาน (mid-cycle $15/bbl) ให้ผลตอบแทนรวม <b>−26.6%</b> จากราคาปัจจุบัน
+      เพราะตลาดได้ตั้งราคาล่วงหน้าไปมากแล้ว กรณี Bull ต้องอาศัย crack spread สูงต่อเนื่อง + DGD กำไรฟื้น ซึ่งไม่แน่นอน
+      ปันผล $4.80/sh yield 1.85% เป็น cushion เล็กน้อย Valero มีประวัติ buyback 10%+ ต่อปีที่ช่วยหนุน EPS/sh ระยะยาว
+      <b>Risk/Reward จากระดับนี้ไม่น่าสนใจ</b> — จุดเข้าที่ดีกว่าคือ $150–$188 หาก crack spread อ่อนลงสู่ระดับปกติ
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>Heavy Crude Advantage:</b> Complex refineries ออกแบบสำหรับ heavy/sour crude ซื้อถูกกว่า WTI $5-10/bbl — margin พิเศษเมื่อ spread กว้าง</li>
+          <li><b>FY2026 Earnings Recovery:</b> Q1 2569 EPS $4.22 (annualized ~$16.88) แข็งแกร่ง Analyst consensus FY2026 EPS สูง หุ้นซื้อขายที่ Forward P/E เพียง 8.5x</li>
+          <li><b>Aggressive Capital Return:</b> Buyback 10%+ ต่อปี + เพิ่มปันผลต่อเนื่อง 10+ ปี — FCF ที่แข็งแกร่งรองรับ shareholder return แม้ margin อ่อน</li>
+          <li><b>Diamond Green Diesel (DGD) Potential:</b> JV กับ Darling Ingredients ขีดความสามารถ 1.3B gal/yr — เมื่อ RIN policy/margin ฟื้น จะเป็น earnings driver สำคัญ</li>
+          <li><b>Global Refining Tightness:</b> Closure ของ refineries เก่าทั่วโลก + ขีดความสามารถใหม่น้อยกว่าการปิด → structural support ระยะกลาง</li>
+          <li><b>Gulf Coast Scale &amp; Logistics:</b> Port Arthur + Texas City refineries ขนาดใหญ่ ต้นทุนต่อหน่วยต่ำ ใกล้ export terminal — competitive moat ด้านโลจิสติกส์</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>Crack Spread Cyclicality:</b> ความเสี่ยงหลัก — ถ้า crack spread กลับ $8-10/bbl (ระดับ 2024-2025) EPS จะหล่นแรง หุ้นอาจกลับ $130-160</li>
+          <li><b>DGD / Renewable Diesel Headwinds:</b> RIN credit ไม่แน่นอน + overcapacity ใน renewable diesel กดดัน margin DGD อาจขาดทุนหรือ breakeven ต่อไป</li>
+          <li><b>Demand Disruption:</b> EV adoption เร่งตัว + การประหยัดพลังงาน กดอุปสงค์น้ำมันสำเร็จรูประยะยาว โดยเฉพาะ gasoline ในตลาดพัฒนาแล้ว</li>
+          <li><b>New Capacity (Asia/Middle East):</b> โรงกลั่นใหม่ขนาดใหญ่ในเอเชียและตะวันออกกลาง (เช่น RAPID, Saudi Aramco) เพิ่มอุปทาน กด margin โลก</li>
+          <li><b>Environmental / Carbon Regulation:</b> EPA biofuel mandate ผันผวน, carbon tax อาจกระทบต้นทุน, สินทรัพย์โรงกลั่นอาจ stranded ในระยะยาว</li>
+          <li><b>Valuation Premium Risk:</b> ราคา $260 สูงกว่า mid-cycle FV $188 (+38%) — หาก earnings miss หรือ macro อ่อนแอ ราคาอาจปรับลงแรงและเร็ว</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>VLO: Pure-Play Refiner ชั้นนำ — แต่ราคาสูงกว่า Mid-Cycle FV แล้ว</h2>
+      <p>Valero Energy เป็น <b>best-in-class refiner</b> ด้วย scale ที่ใหญ่ที่สุดในโลก (15 refineries, ~3.2M bbl/day), heavy crude advantage, และ FCF แข็งแกร่ง หุ้นวิ่งขึ้น +89% ใน 1 ปีบน crack spread ที่ฟื้นตัวแรงและ Q1 FY2026 ที่ดีกว่าคาด ที่ราคา $260 หุ้นซื้อขายที่ Forward P/E ~8.5x ซึ่งดูถูกในบริบทปัจจุบัน <b>แต่สูงกว่า mid-cycle normalized FV $188 ถึง +38%</b> ชี้ว่าตลาดกำลัง Price-in crack spread ที่สูงต่อเนื่องไปอีก 2-3 ปี กรณีฐาน (crack spread กลับ mid-cycle) ให้ผลตอบแทน 3 ปีติดลบ −26% สำหรับ value investor จุดเข้าที่น่าสนใจคือ $150–$188 หาก crack spread ปรับลดลงในอนาคต</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$188 <span style="font-size:12px;color:#cab9a8">($148–$238)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ff8a80">MOS ~ −38.4% (แพงกว่า FV)</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$265 (Buy — 19 analysts)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ถือรอหาก crack spread ยังสูง + FY2026 earnings แข็งแกร่ง; <b>หลีกเลี่ยงเพิ่มสถานะที่ $260+</b> เพราะ upside จำกัด downside สูง; ตั้ง target ซื้อ $150–$188 สำหรับ value entry เมื่อ cycle ปรับตัว
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐาน mid-cycle crack spread ~$15/bbl ที่อาจคลาดเคลื่อนจากความเป็นจริง
+    หุ้น cyclical มีความผันผวนสูงมาก ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    ราคา $260.16 ณ 30 มิ.ย. 2569 จาก StockAnalysis.com; ข้อมูลรายเดือน 13 จุดจาก Yahoo Finance (ก.ค. 2568–มิ.ย. 2569); งบการเงิน StockAnalysis.com
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 30 มิถุนายน 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>

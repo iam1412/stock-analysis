@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น Lennox International (LII) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"LII","currency":"USD","price":572,"fairValue":594,"mos":3.7,"upside":3.8,"pe":25.4,"dividendYield":0.95,"roe":69.3}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#E8001A",
+    "accentDark": "#b50015",
+    "darkGrad": "linear-gradient(135deg,#1a0003 0%,#2d0008 50%,#1a0003 100%)",
+    "glow": "rgba(232,0,26,0.35)",
+    "subColor": "#ff6680",
+    "headerMuted": "rgba(255,255,255,0.55)",
+    "verdictText": "#fff0f2",
+    "vcellLabel": "#ffb3bc",
+    "badge": "#E8001A",
+    "chgBg": "#c5221f",
+    "chgColor": "#fff"
+  },
+  "chart": {
+    "data": [["ก.ค. 68",609.06],["ส.ค. 68",557.86],["ก.ย. 68",529.36],["ต.ค. 68",505.00],["พ.ย. 68",498.87],["ธ.ค. 68",485.58],["ม.ค. 69",495.08],["ก.พ. 69",569.94],["มี.ค. 69",464.13],["เม.ย. 69",534.89],["พ.ค. 69",502.16],["มิ.ย. 69",568.83],["ล่าสุด",571.90]],
+    "min": 440,
+    "max": 650,
+    "grid": [440, 490, 540, 590, 640],
+    "fairLine": 594,
+    "currency": "$",
+    "highlight": [7, 12]
+  },
+  "gauge": {
+    "min": 350,
+    "max": 750,
+    "cur": 572,
+    "fair": 594,
+    "fairLabelTop": true
+  },
+  "fv": 594
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">▪ ▪ ▪</div>
+    <div>
+      <span class="tag">NYSE: LII</span>
+      <span class="tag">Industrials / HVAC</span>
+      <span class="tag">North America Leader</span>
+    </div>
+    <h1>Lennox International</h1>
+    <div class="sub">ผู้นำ HVAC ระดับพรีเมียมในอเมริกาเหนือ • HCS (~70%): เครื่องทำความร้อน-เย็น-ปั๊มความร้อนที่บ้าน แบรนด์ Lennox / Armstrong Air + IRA incentives ดันฮีตปั๊ม • BCS (~30%): HVAC เชิงพาณิชย์ + Data Center cooling • เปลี่ยนสารทำความเย็น R-454B หนุนการเปลี่ยนอุปกรณ์ • รายได้ aftermarket/บริการ recurring • ซื้อหุ้นคืนเชิงรุก ~1% yield</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$572<small>(LII)</small></div>
+      </div>
+      <div class="chg">▼ −6.1% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 30 มิ.ย. 2569<br>
+        กรอบ 52 สัปดาห์ $434.06 – $689.44<br>
+        ที่มา: StockAnalysis.com, Yahoo Finance, Lennox IR
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ มิ.ย. 2569 | TTM = Trailing 12 Months</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">$19.9B</div><div class="d">~35.2M หุ้น diluted</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~25.4x</div><div class="d">EPS TTM $22.55 | ต่ำกว่าค่าเฉลี่ย 5 ปี</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~28–32x</div><div class="d">ปัจจุบัน de-rate จากจุดสูง 35x</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">16.6x</div><div class="d">BVPS $34.49 | สูงจาก buyback leverage</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">$805.8M</div><div class="d">+36% จาก FY2023 $591M</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$22.55</div><div class="d">FY2025 adj. $22.79 | FY2026E $24.34</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~$34.49</div><div class="d">TTM (Q1 2026) | buyback ลด equity</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~69.3% / 25.8%</div><div class="d">ROE สูงเพราะ leverage + buyback</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$5.26B</div><div class="d">FY2025 $5.20B | FY2024 $5.34B</div></div>
+      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">33.4%</div><div class="d">Operating margin 20% | EBITDA margin ~21.8%</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~0.95%</div><div class="d">$5.44/ปี ($1.36/ไตรมาส) | ex-div 30 มิ.ย. 69</div></div>
+      <div class="metric"><div class="k">FCF per share</div><div class="v">$18.77</div><div class="d">FCF TTM $660.7M | FCF yield ~3.3%</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#E8001A"></i>ราคา LII</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $594</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคา LII เปิด ก.ค. 68 ที่ $609 แล้วลงต่อเนื่องจนถึงจุดต่ำสุด $464 ในเดือน มี.ค. 69 (−23.8%) ก่อนฟื้นตัวกลับสู่ $572 ณ ปัจจุบัน
+        แรงกดดันหลักมาจากความกังวลเรื่องภาษีนำเข้าชิ้นส่วน ตลาดที่อยู่อาศัยชะลอตัว และการ de-rate ของกลุ่ม industrials
+        ผลตอบแทนรอบปีอยู่ที่ −6.1% ซึ่งต่ำกว่า S&amp;P 500 ราคาปัจจุบันยังต่ำกว่ามูลค่าเหมาะสม $594 อยู่เล็กน้อย
+        เป็นโอกาสสะสมสำหรับนักลงทุนที่เชื่อมั่นใน HVAC cycle และ IRA tailwind ระยะยาว
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS adj. $22.55 × P/E 28x = $631 — ใช้ multiple ปานกลางสำหรับ HVAC compounder คุณภาพสูง (ปัจจุบัน 25.4x, เฉลี่ย 5 ปี 28–32x)</div></div>
+        <div class="mval">$631</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. EV/EBITDA Valuation</div><div class="mdesc">EBITDA TTM $1,148M × 19x − Net Debt $1,907M = $19,905M ÷ 35.2M หุ้น — 19x สะท้อน premium HVAC ที่ตลาดยอมรับ (ปัจจุบัน 19.0x)</div></div>
+        <div class="mval">$565</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. FCF Yield Valuation</div><div class="mdesc">FCF/share $18.77 ÷ FCF yield เป้า 3.2% — คุณภาพ FCF ของ LII สูง (conversion rate ~85%) เหมาะกับ yield approach ระยะยาว</div></div>
+        <div class="mval">$587</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $565 – $631</span></div>
+        <div class="r">$594</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        P/E ให้ค่าสูงสุด $631 สะท้อน multiple re-rate เต็มกลับสู่ค่าเฉลี่ยประวัติศาสตร์ EV/EBITDA $565 อนุรักษ์นิยมกว่า
+        เพราะ net debt เพิ่มขึ้นจากการซื้อหุ้นคืน FCF Yield $587 สอดคล้องกับ quality compounders อเมริกา
+        มูลค่ากลาง $594 อยู่เหนือราคาปัจจุบัน $572 เล็กน้อย บ่งชี้ว่าหุ้น LII ซื้อขายใกล้ fair value
+        — ไม่ถูกมาก แต่ไม่แพง และ downside protection จาก HVAC replacement cycle ที่แข็งแกร่ง
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $572</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $594</div></div>
+        </div>
+        <div class="scale">
+          <span>$416<br><small>MOS 30%</small></span>
+          <span>$475<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$594<br><small>Fair Value</small></span>
+          <span style="text-align:right">$610<br><small>52W High/3</small></span>
+          <span style="text-align:right">$631<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน $572 อยู่ต่ำกว่า Fair Value $594 เล็กน้อย (MOS ~3.7%) และใกล้เคียงเป้า analyst $570
+        โซนสะสมที่น่าสนใจเริ่มต้น &lt;$594 (ต่ำกว่า FV) ส่วนโซน value เริ่มที่ &lt;$475 (MOS 20%)
+        โซน deep value ที่ $416 (MOS 30%) เป็น entry ที่ดีสำหรับนักลงทุนระยะยาว
+        นักวิเคราะห์ consensus = Buy (19 คน) โดยค่าเฉลี่ยเป้า $570 ใกล้เคียงราคาตลาด
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">+3.7%</div>
+        <div class="txt">ราคาใกล้มูลค่าเหมาะสม — รอโซนสะสมที่ดีกว่าต่ำกว่า $540</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$475</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$416</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $594</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="572" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $572 • EPS ฐาน ~$22.55 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS −3%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$428</div>
+          <div class="ret neg">−25.2%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$20.58</span></li>
+            <li><span>P/E ออก</span><span>20x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$16.32</span></li>
+            <li><span>สถานการณ์</span><span>ตลาดที่อยู่อาศัยหดตัว ภาษีนำเข้าเพิ่ม margin ชน</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +8%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$755</div>
+          <div class="ret pos">+32.0%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$28.41</span></li>
+            <li><span>P/E ออก</span><span>26x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$16.32</span></li>
+            <li><span>สถานการณ์</span><span>IRA ดันฮีตปั๊ม + HVAC replacement cycle ต่อเนื่อง</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +13%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$992</div>
+          <div class="ret pos">+73.5%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$32.54</span></li>
+            <li><span>P/E ออก</span><span>30x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$16.32</span></li>
+            <li><span>สถานการณ์</span><span>Data center cooling boom + R-454B transition surge + margin expansion</span></div>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      สถานการณ์ฐาน (Base) คาด EPS growth 8%/ปี อิง consensus FY2026E $24.34 (+8% จาก TTM $22.55) และ FY2027E $26.62 (+9.4%)
+      P/E 26x ในสถานการณ์ฐานสะท้อนการ re-rate กลับสู่ค่าเฉลี่ยบางส่วน จาก 25.4x ปัจจุบัน
+      ปันผลรวม 3 ปีอยู่ที่ ~$16.32 ($5.44/ปี) คิดเป็น ~2.9% yield ต่อปีบนราคา $572
+      ความเสี่ยงหลักคือ Bear scenario หากตลาดที่อยู่อาศัยอ่อนแอลงและ tariff กระทบ gross margin
+      <br><br>
+      <b>แหล่งข้อมูล (≥3 แหล่ง):</b> (1) StockAnalysis.com — ราคา $572.59, EPS TTM $22.55, P/E 25.35x, EBITDA TTM $1,148M, analyst consensus Buy เป้า $570.07 (19 คน), 30 มิ.ย. 2569
+      (2) Yahoo Finance — ราคา $571.90, EPS TTM $22.53, P/E 25.38x, เป้าเฉลี่ย $569.15, FCF/share $18.77, 30 มิ.ย. 2569
+      (3) StockAnalysis.com (Balance Sheet &amp; Cash Flow) — Total Debt $1,955M, Cash $48.2M, BVPS $34.49, Shares diluted ~35.2M, FCF TTM $660.7M, Q1 2026
+      ราคา (1) vs (2) ต่างกัน ~0.1% (ยอมรับได้ &lt;2%) • EPS ต่างกัน $0.02 → ใช้ $572 / EPS $22.55 เป็นค่ากลาง
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก &amp; ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>IRA Heat Pump Incentives:</b> รัฐบาลสหรัฐให้เครดิตภาษีสำหรับฮีตปั๊มประหยัดพลังงาน ดันอุปสงค์ผลิตภัณฑ์ HCS ระยะยาว LII มีไลน์ฮีตปั๊มพร้อม</li>
+          <li><b>R-454B Refrigerant Transition:</b> กฎ EPA 2025 บังคับเปลี่ยนสารทำความเย็นใหม่ทั้งวงการ กระตุ้นการเปลี่ยนอุปกรณ์ทั้ง HVAC เก่า → ใหม่ รายได้ replacement spike</li>
+          <li><b>Data Center Cooling (BCS):</b> การขยายตัวของ AI data centers ต้องการ cooling solution พิเศษ LII BCS segment มีผลิตภัณฑ์เชิงพาณิชย์สำหรับโอกาสนี้</li>
+          <li><b>Aftermarket &amp; Service Revenue:</b> รายได้จากอะไหล่และบริการมี recurring nature สูง dealer network แข็งแกร่งใน North America กัน margin จากการแข่งขัน</li>
+          <li><b>Disciplined Pricing Power:</b> LII รักษา gross margin เพิ่มต่อเนื่อง จาก 27% (2022) → 33.4% (TTM) บ่งชี้ pricing power ที่แข็งแกร่งในตลาด premium</li>
+          <li><b>Aggressive Buybacks:</b> ซื้อหุ้นคืนอย่างต่อเนื่อง ลด share count ช่วย EPS growth โดยไม่ต้องพึ่งแค่ organic growth เพียงอย่างเดียว</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>Housing Market Slowdown:</b> ตลาดที่อยู่อาศัยอ่อนแอจาก high mortgage rate กระทบ new construction HVAC demand ซึ่งเป็นส่วนหนึ่งของ HCS revenue</li>
+          <li><b>Tariff / Import Cost:</b> LII นำเข้าชิ้นส่วนจากต่างประเทศ ภาษีนำเข้าที่สูงขึ้นอาจกระทบ gross margin โดยเฉพาะถ้า pass-through ทำได้ไม่เต็มที่</li>
+          <li><b>Leverage Risk:</b> Net debt เพิ่มขึ้นจาก $1,074M (FY2024) → $1,907M (TTM) จากการซื้อหุ้นคืน หาก EBITDA ชะลอ interest coverage อาจตึง</li>
+          <li><b>Valuation Premium:</b> P/E 25x ไม่ถูกในสภาพ high-rate environment หาก Fed ไม่ลดดอกเบี้ย multiple อาจยังถูก discount ต่อ</li>
+          <li><b>Competition:</b> Carrier, Trane Technologies, Daikin แข่งขันในทุก segment การรักษา pricing power ต้องอาศัย brand equity และ dealer loyalty ต่อเนื่อง</li>
+          <li><b>Execution Risk (Acquisition):</b> การซื้อ Heat Controller และ JV กับ Ariston Group ต้องการ integration ที่ดี ความล่าช้าหรือ synergy ต่ำกว่าคาดอาจกดดัน</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>LII — HVAC Premium ใกล้ Fair Value · รอโซนสะสมที่ดีกว่า</h2>
+      <p>Lennox International เป็น HVAC compounder คุณภาพสูงที่มีปัจจัยหนุนระยะยาวชัดเจน ได้แก่ IRA incentives ดันฮีตปั๊ม
+      R-454B refrigerant transition กระตุ้น replacement cycle และโอกาส data center cooling ที่กำลังเติบโต
+      margin ขยายตัวต่อเนื่องจาก 27% → 33.4% (กำไรขั้นต้น) พร้อม buyback เชิงรุกเป็นเครื่องมือ capital allocation
+      ราคาปัจจุบัน $572 ใกล้เคียง Fair Value $594 (MOS เพียง 3.7%) — ไม่ถูกในแง่ value investing แต่ไม่แพง
+      สำหรับนักลงทุนเน้น quality compounder รอทยอยสะสมหาก pullback ลงโซน $475–530 จะให้ MOS ที่ดีกว่า
+      นักวิเคราะห์ consensus Buy (19 คน) เป้า $570 สอดคล้องกับราคาตลาด บ่งชี้ upside จำกัดในระยะสั้น</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$594 <span style="font-size:12px;color:#cab9a8">($565–$631)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +3.7%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$570 (Buy)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> สะสมทยอยได้หากราคาปรับลงสู่โซน $520–550 (ใกล้ MOS 10%) หรือรอ deep value ที่ $475 (MOS 20%)
+        ในระยะสั้นความ upside จำกัด (~3.8%) แต่ long-term HVAC cycle + IRA tailwind หนุน base case return 32%/3 ปี
+        ถือเป็น quality compounder ที่เหมาะกับพอร์ตระยะยาว ไม่ใช่ short-term trade
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    ข้อมูลอ้างอิง: StockAnalysis.com (ราคา $572.59, EPS $22.55, EBITDA $1,148M, consensus Buy ณ 30 มิ.ย. 2569) · Yahoo Finance (ราคา $571.90, EPS $22.53, เป้า $569.15 ณ 30 มิ.ย. 2569)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 30 มิ.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
