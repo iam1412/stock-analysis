@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น The Clorox Company (CLX) — Stock Analysis Dashboard</title>
+<!-- ★ ใส่รุ่นโมเดล AI ที่ใช้วิเคราะห์จริง -->
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
+<script type="application/json" id="stock-meta">
+{"symbol":"CLX","currency":"USD","price":94.42,"fairValue":125,"mos":24.5,"upside":32.4,"pe":15.33,"dividendYield":5.25,"roe":null}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#edb31d",
+    "accentDark": "#b3860f",
+    "darkGrad": "linear-gradient(135deg,#3e2e04 0%,#735507 58%,#b6870c 140%)",
+    "glow": "rgba(236,176,19,.35)",
+    "subColor": "#ebdfc2",
+    "headerMuted": "#d4c7a5",
+    "verdictText": "#f1e8d0",
+    "vcellLabel": "#ddcea6",
+    "badge": "var(--blue)",
+    "chgBg": "var(--red-soft)",
+    "chgColor": "#c5221f"
+  },
+  "chart": {
+    "data": [
+      ["มิ.ย. 25", 107.94],
+      ["ก.ค. 25", 100.83],
+      ["ส.ค. 25", 112.79],
+      ["ก.ย. 25", 127.16],
+      ["ต.ค. 25", 103.63],
+      ["พ.ย. 25", 96.44],
+      ["ธ.ค. 25", 90.02],
+      ["ม.ค. 26", 97.09],
+      ["ก.พ. 26", 94.11],
+      ["มี.ค. 26", 104.00],
+      ["เม.ย. 26", 100.00],
+      ["พ.ค. 26", 103.00],
+      ["มิ.ย. 26", 94.42]
+    ],
+    "min": 85,
+    "max": 135,
+    "grid": [85, 95, 105, 115, 125, 135],
+    "fairLine": 125,
+    "currency": "$",
+    "highlight": [3, 12]
+  },
+  "gauge": {
+    "min": 85,
+    "max": 155,
+    "cur": 94.42,
+    "fair": 125,
+    "fairLabelTop": true
+  },
+  "fv": 125
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">●●●●●</div>
+    <div>
+      <span class="tag">NYSE: CLX</span>
+      <span class="tag">Consumer Staples</span>
+      <span class="tag">Household Products</span>
+    </div>
+    <h1>The Clorox Company (CLX)</h1>
+    <div class="sub">Clorox bleach • Pine-Sol • Glad bags & wraps • Fresh Step cat litter • Burt's Bees • Hidden Valley Ranch • KC Masterpiece BBQ • Kingsford charcoal • ~25% international revenue • Recovering from 2023 ALPHV ransomware attack</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$94.42<small>(CLX)</small></div>
+      </div>
+      <div class="chg">▼ −12.5% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 30 มิ.ย. 2569<br>
+        กรอบ 52 สัปดาห์ $84.70 – $132.03<br>
+        ที่มา: Yahoo Finance / StockAnalysis.com / Clorox IR (PR Newswire)
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">FY2025 (สิ้นปี มิ.ย. 2568) · FY2026 guidance</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~$11.4B</div><div class="d">~121M shares</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~15.33x</div><div class="d">GAAP EPS TTM $6.16</div></div>
+      <div class="metric"><div class="k">Forward P/E (adj)</div><div class="v">~17x</div><div class="d">FY2026 adj EPS guide $5.45–$5.65</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~23x</div><div class="d">ปกติ 20–28x สำหรับ staples</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v pos">$824M</div><div class="d">+182% YoY · ฟื้นตัวจาก cyber</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$6.16</div><div class="d">GAAP; adj FY26 guide $5.55 mid</div></div>
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$6.76B</div><div class="d">FY2025: $7.10B (ERP impact)</div></div>
+      <div class="metric"><div class="k">EBITDA TTM</div><div class="v">$1.31B</div><div class="d">Margin ~19.3%</div></div>
+
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v pos">~5.25%</div><div class="d">$4.96/yr ($1.24/Q) · Dividend Aristocrat</div></div>
+      <div class="metric"><div class="k">FCF FY2025</div><div class="v">$761M</div><div class="d">TTM $380M (ERP transition ลด)</div></div>
+      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">~43.2%</div><div class="d">Q3 FY26; ลดจาก 44.6% YoY</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">~0.40</div><div class="d">Low volatility · defensive staple</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART (ราคาย้อนหลัง ~1 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">มิ.ย. 2568 – มิ.ย. 2569</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#edb31d"></i>ราคา CLX</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $125</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        CLX ขึ้นแตะ ~$127 ในเดือน ก.ย. 2568 ก่อนร่วงลงสู่ $90 ในเดือน ธ.ค. 2568 (−29%) จากความกังวลต่อ ERP migration ที่ยืดเยื้อกว่าคาด ซึ่งรบกวนห่วงโซ่อุปทานและดึงรายได้ลง ~6% YoY ใน FY2026 · ตั้งแต่ต้นปี 2569 ราคาฟื้นตัวบ้าง แต่ถูกกดอีกครั้งหลังประกาศ Q3 FY2026 (พ.ค. 2569) ที่ลด guidance adjusted EPS เหลือ $5.45–$5.65 (เดิม $5.95–$6.30) เพราะ ERP headwind ~$0.90/share · ผลตอบแทนรอบปี (มิ.ย. 25→มิ.ย. 26) = −12.5% · แหล่งข้อมูล: Yahoo Finance monthly closes
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION (3 วิธี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS adj. $5.55 × P/E 22x = $122 — FY2026 adj EPS guidance midpoint ($5.45–$5.65); P/E 22x สะท้อน consumer staples premium ที่มีแบรนด์แข็ง (ค่าเฉลี่ยประวัติศาสตร์ CLX ~23x) ลดลงบ้างเพราะ ERP disruption</div></div>
+        <div class="mval">$122</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. DDM (Gordon Growth Model)</div><div class="mdesc">D₁ = $4.96 × (1+4%) = $5.16; g 4%, r 9% → FV = $5.16/(9%−4%) = $103 — ปันผล Clorox เติบโตต่อเนื่อง ~4%/yr (Dividend Aristocrat 47 ปี ไม่เคยลดปันผลรวมช่วง cyber attack); r 9% = risk-free 4.3% + equity premium 4.7%</div></div>
+        <div class="mval">$103</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. EV/EBITDA</div><div class="mdesc">EBITDA TTM $1,306M × 15.5x = EV $20,243M; หัก net debt ~$2,600M = equity $17,643M / 121M shares ≈ $146 — consumer staples peer EV/EBITDA 15–20x; ใช้ 15.5x (conservative สำหรับ ERP transition); net debt อิง long-term debt ~$3.0B, cash ~$400M</div></div>
+        <div class="mval">$146</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $110 – $135</span></div>
+        <div class="r">$125</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        วิธี EV/EBITDA ให้ค่าสูงสุด ($146) เพราะ EBITDA TTM ยังแข็งแกร่ง; DDM ให้ต่ำสุด ($103) เพราะ yield-based model กดด้วยอัตราดอกเบี้ย; P/E ตรงกลาง ($122) อิงประมาณการปีปัจจุบัน · เฉลี่ย ~$124 ปัดเป็น $125 เป็น FV กลาง · ความเสี่ยงหลัก: ERP disruption ต่อเนื่อง, gross margin ต่ำกว่าคาด → หาก FY2026 adj EPS ออกมาที่ $5.45 จะกด FV ลงสู่ $115
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $94.42</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $125</div></div>
+        </div>
+        <div class="scale">
+          <span>$87.50<br><small>MOS 30%</small></span>
+          <span>$100.00<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$105<br><small>เป้า Analyst</small></span>
+          <span style="text-align:center">$125<br><small>Fair Value</small></span>
+          <span style="text-align:right">$155<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน $94.42 อยู่ในโซน "Deep Value" ต่ำกว่า MOS 20% ($100.00) — หมายความว่าหากมูลค่าเหมาะสม $125 ถูกต้อง มีส่วนเผื่อความปลอดภัยกว่า 24.5% · Analyst consensus "Reduce/Hold" ที่เป้าเฉลี่ย ~$103–$105 ต่ำกว่า FV เรา สะท้อนความกังวล ERP ระยะสั้น · ราคาปัจจุบันต่ำกว่าเป้า analyst เฉลี่ย ~11% และต่ำกว่า FV ~32%
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict good">
+        <div class="big">+24.5%</div>
+        <div class="txt">MOS สูง — ราคาต่ำกว่ามูลค่าเหมาะสมอย่างมีนัยสำคัญ · เหมาะสำหรับนักลงทุน Value ที่รับความเสี่ยง ERP ได้</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$100.00</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$87.50</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $125</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="94.42" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $94.42 • EPS ฐาน ~$5.55 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS −5%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$76</div>
+          <div class="ret neg">−15%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$4.76</span></li>
+            <li><span>P/E ออก</span><span>16x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$14.15</span></li>
+            <li><span>สถานการณ์</span><span>ERP ล้มเหลว ยาวนาน + gross margin ร่วงต่อ</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +8%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$154</div>
+          <div class="ret pos">+79%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$6.99</span></li>
+            <li><span>P/E ออก</span><span>22x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$15.20</span></li>
+            <li><span>สถานการณ์</span><span>ERP เสร็จ FY2027 · EPS ฟื้น + pricing power</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +15%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$211</div>
+          <div class="ret pos">+140%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$8.44</span></li>
+            <li><span>P/E ออก</span><span>25x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$15.60</span></li>
+            <li><span>สถานการณ์</span><span>ERP เสร็จเร็ว + M&amp;A synergy + international accelerate</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      Base case อิง EPS FY2026 adj $5.55 เติบโต 8%/ปีสู่ $6.99 ภายใน FY2029 (คล้ายระดับ pre-cyber ปรับ) · FY2025 GAAP EPS $6.52 พิสูจน์ว่าธุรกิจหลักแข็งแกร่งเมื่อไม่มี one-time ลบ · ปันผลรวมสมมติ $4.96 เติบโต ~2%/ปี (conservative กว่าประวัติ 4-6%/yr) · ผลตอบแทน Base case ~79% ใน 3 ปี (รวมปันผล) หรือ CAGR ~21%/yr · Bear case (-5%) เกิดเฉพาะกรณี structural brand erosion + ERP disaster ซึ่งไม่ใช่สถานการณ์หลัก
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก &amp; ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>ERP Transition สำเร็จ:</b> เมื่อ SAP ERP rollout เสร็จ (คาด FY2027) จะลด inventory disruption ~$0.90/share headwind → EPS ฟื้นทันที + gross margin กลับสู่ระดับปกติ 44-46%</li>
+          <li><b>Dividend Aristocrat ที่ดึงดูดรายได้:</b> yield ~5.25% สูงสุดในรอบหลายปี ดึง income investor + รักษาราคาขั้นต่ำ (floor); ปันผลเติบโต 47 ปีติดต่อกัน ไม่เคยลด</li>
+          <li><b>Brand Pricing Power:</b> Clorox bleach, Pine-Sol, Fresh Step มีส่วนแบ่งตลาดครองใน category ที่ผู้บริโภคไม่ sensitive ต่อราคา (necessity products) → ส่งผ่านต้นทุนได้</li>
+          <li><b>GOJO (Purell) Acquisition:</b> เข้าซื้อ GOJO Industries (Purell) — เพิ่ม hand sanitizer/hygiene ใน B2B segment; dilutive ระยะสั้น ($0.02-$0.04 FY2026) แต่ strategic long-term</li>
+          <li><b>Valuation ต่ำสุดในรอบ 10 ปี:</b> Forward P/E ~17x เทียบ historical 23x → Re-rating upside สูงเมื่อ ERP ปัญหาคลี่คลาย; ต่ำกว่า consumer staples peer เฉลี่ย</li>
+          <li><b>International Expansion:</b> ~25% revenue จากต่างประเทศ โดยเฉพาะ Latin America และ Middle East — diversification ระยะยาว + currency tailwind เมื่อดอลลาร์อ่อน</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>ERP Disruption ยืดเยื้อ:</b> SAP implementation ล่าช้ากว่าแผน → ส่งผลต่อ inventory/demand planning อย่างต่อเนื่อง; FY2026 net sales ลด ~6%, organic −9%; หาก FY2027 ยังมีปัญหา = downside risk หนัก</li>
+          <li><b>Gross Margin Compression:</b> Q3 FY2026 gross margin ลด 140bps; full-year guidance ลด 250-300bps (vs 100bps ก่อนหน้า) → manufacturing cost สูง, supply chain ไม่เสถียร</li>
+          <li><b>Negative Book Value:</b> Equity ติดลบจากการซื้อหุ้นคืนสะสม → ไม่มี balance sheet buffer; leverage สูง (net debt ~$2.6B) อาจกดดันถ้า cash flow ลด</li>
+          <li><b>Competition &amp; Private Label:</b> ช่วง economic uncertainty ผู้บริโภคหันไปใช้ private label ทดแทน Clorox/Glad; Amazon Basics ในหมวด trash bags เป็นภัยระยะยาว</li>
+          <li><b>Analyst Downgrade Wave:</b> Wells Fargo, Goldman Sachs, Zacks ต่างลดราคาเป้าหรือ downgrade → sentiment ลบกดราคา แม้ fundamental ยัง intact; consensus "Reduce" หายาก</li>
+          <li><b>Cyber Attack Legacy Risk:</b> ALPHV BlackCat ransomware ใน ส.ค. 2566 พิสูจน์ว่า CLX มี IT vulnerability; ระบบ ERP ใหม่อาจมีช่องโหว่ระหว่าง rollout; cyber insurance และ IR cost อาจสูงต่อเนื่อง</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>CLX: Value Play ในหุ้น Consumer Staples ที่ถูกกดชั่วคราว — ERP Headwind สร้างโอกาสซื้อ</h2>
+      <p>Clorox เป็นธุรกิจ consumer staples ที่แข็งแกร่งในระดับโลก มีแบรนด์ iconic หลายสิบปีที่ครอง market share ในหมวดที่จำเป็น ปัจจัยลบในปัจจุบันทั้งหมดเป็นชั่วคราว: ERP transition (SAP) กำลังกด EPS ~$0.90/share และลดรายได้ ~6-9% ใน FY2026 แต่เป็น one-time implementation cost ที่จะคลี่คลายเมื่อ rollout สำเร็จ · FY2025 GAAP EPS $6.52 พิสูจน์ว่าธุรกิจหลักแข็ง เมื่อไม่มี disruption · ปันผล 5.25% ให้ผลตอบแทนระหว่างรอฟื้นตัว · ราคาปัจจุบัน $94 อยู่ในโซน deep value เทียบ FV $125 และต่ำกว่าค่า P/E ประวัติศาสตร์อย่างมีนัยสำคัญ</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$125 <span style="font-size:12px;color:#cab9a8">($110–$135)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +24.5%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$103–$105 (Hold/Reduce)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ทยอยสะสมใต้ $100 (MOS&gt;20%) · จุดเข้าดีสุดที่ $87–$95 · รับปันผล ~5.25%/ปีระหว่างรอ · ตัดขาดทุนหาก ERP ล้มเหลวและ FY2027 guidance แย่ลงอีก · เป้าระยะ 2-3 ปี $125–$155 เมื่อ ERP เสร็จและ EPS ฟื้น
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ EPS ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    แหล่งข้อมูล: (1) Yahoo Finance — ราคา $94.42 ณ 30 มิ.ย. 2569 10:43 EDT, 52wk $84.70–$132.03, EPS TTM $6.15, yield 5.11% · (2) StockAnalysis.com — ราคา $94.25, งบการเงิน FY2023–FY2025, EBITDA TTM $1,306M · (3) Clorox Q3 FY2026 Press Release (PR Newswire, พ.ค. 2569) — adj EPS $1.64, FY2026 adj EPS guidance $5.45–$5.65, revenue guidance −6% · (4) MarketBeat / StockAnalysis analyst consensus — เป้าเฉลี่ย $103–$105, 17–19 analysts · ราคายืนยัน ≥2 แหล่ง ต่างกัน &lt;0.2% ✓
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 30 มิ.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>

@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น Allstate Corporation (ALL) — Stock Analysis Dashboard</title>
+<!-- ★ ใส่รุ่นโมเดล AI ที่ใช้วิเคราะห์จริง -->
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
+<script type="application/json" id="stock-meta">
+{"symbol":"ALL","currency":"USD","price":241.50,"fairValue":275,"mos":12.2,"upside":13.9,"pe":5.3,"dividendYield":1.79,"roe":44.4}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#003DA5",
+    "accentDark": "#002580",
+    "darkGrad": "linear-gradient(135deg,#002070 0%,#001040 100%)",
+    "glow": "rgba(0,61,165,0.35)",
+    "subColor": "#6b9ee8",
+    "headerMuted": "rgba(255,255,255,0.55)",
+    "verdictText": "#e8f0fe",
+    "vcellLabel": "#b0c8f5",
+    "badge": "#003DA5",
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#1e8e3e"
+  },
+  "chart": {
+    "data": [
+      ["ม.ค. 25", 203.25],
+      ["ก.พ. 25", 203.45],
+      ["มี.ค. 25", 214.65],
+      ["เม.ย. 25", 191.52],
+      ["พ.ค. 25", 212.98],
+      ["มิ.ย. 25", 208.15],
+      ["ก.ค. 25", 198.99],
+      ["ส.ค. 25", 214.52],
+      ["ก.ย. 25", 207.34],
+      ["ต.ค. 25", 217.26],
+      ["พ.ย. 25", 206.09],
+      ["ธ.ค. 25", 241.38],
+      ["มิ.ย. 26", 241.20]
+    ],
+    "min": 170,
+    "max": 295,
+    "grid": [180, 210, 240, 270, 295],
+    "fairLine": 275,
+    "currency": "$",
+    "highlight": [3, 11]
+  },
+  "gauge": {
+    "min": 130,
+    "max": 380,
+    "cur": 241.50,
+    "fair": 275,
+    "fairLabelTop": false
+  },
+  "fv": 275
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">●●●</div>
+    <div>
+      <span class="tag">NYSE: ALL</span>
+      <span class="tag">Insurance / P&amp;C</span>
+      <span class="tag">Large Cap</span>
+    </div>
+    <!-- ★ คำโปรยธุรกิจ (gate E32) -->
+    <h1>Allstate Corporation</h1>
+    <div class="sub">3rd largest US personal lines insurer (auto + home) • 50%+ auto rate increases 2022-24 → combined ratio recovery • Life/retirement divested 2022 → pure P&C focus • LA wildfire Jan 2025 exposure • Investment income tailwind (higher rates) • Customer retention post-hike key metric</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$241.50<small>(ALL)</small></div>
+      </div>
+      <!-- ★ ป้าย % รอบปี (gate E35/E36) — annual return จากกราฟ จุดแรก $203.25 → ท้าย $241.20 = +18.7% -->
+      <div class="chg">▲ +18.7% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 30 มิ.ย. 2569<br>
+        กรอบ 52 สัปดาห์ $188.08 – $241.78<br>
+        ที่มา: Yahoo Finance, Finviz, StockAnalysis
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ มิ.ย. 2569 · ปรับแต่งสำหรับบริษัทประกัน P&amp;C</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">$62.2B</div><div class="d">257.4 ล้านหุ้น · NYSE: ALL</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~5.3x</div><div class="d">EPS TTM $45.33 (GAAP) · สูงผิดปกติจากปีกำไรสูงสุด 2025</div></div>
+      <div class="metric"><div class="k">Forward P/E (FY26E)</div><div class="v">~9.0x</div><div class="d">EPS FY26E ~$27 · สะท้อนการ normalize กลับสู่ระดับปกติ</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">2.10x</div><div class="d">BVPS $113.52 (Q1'26) · เหมาะสมกับ ROE สูง 44%</div></div>
+
+      <div class="metric"><div class="k">Combined Ratio (FY25)</div><div class="v pos">84.4%</div><div class="d">Q4'25: 72.9% · Q1'26: 82.0% · &lt;100% = Underwriting profit</div></div>
+      <div class="metric"><div class="k">EPS adj. FY2025</div><div class="v">$34.83</div><div class="d">กำไรสุทธิปรับปรุง $9.3B · FY24: $16.99 · FY23: −$1.20</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~$113.52</div><div class="d">Q1'26 · FY25: $108.45 (↑49.9% YoY)</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~44.4% / 7.5%</div><div class="d">adj. ROE TTM 44.4% · GAAP ROE 48.4% · สูงผิดปกติ</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$62.0B</div><div class="d">FY25: $61.4B · FY24: $58.3B · FY23: $52.5B</div></div>
+      <div class="metric"><div class="k">Operating Margin</div><div class="v">21.0%</div><div class="d">FY25: 17.7% · FY24: 9.6% · FY23: 0.1% (ฟื้นตัว)</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~1.79%</div><div class="d">$4.32/ปี · ปรับขึ้นต่อเนื่อง · Buyback $4B (ถึง 2028)</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">0.19</div><div class="d">ต่ำมาก = Defensive · ตามลักษณะธุรกิจประกัน P&amp;C</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART (ราคาย้อนหลัง ~1 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">Yahoo Finance · รายเดือน</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#003DA5"></i>ราคา ALL</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $275</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคาเปิดต้นปี 2568 ที่ $203 ก่อนร่วงลงจุดต่ำสุด ~$192 ในเม.ย. 2568 (ผลจากไฟป่า LA ม.ค. 2568 + ความกังวลตลาด)
+        จากนั้นฟื้นตัวขึ้นโดยลำดับหนุนโดยผลการดำเนินงาน P&amp;C ที่แข็งแกร่ง combined ratio &lt;85% และกำไร Q4'25 สูงสุดเป็นประวัติการณ์
+        ราคาพุ่งแตะ $241 ปลายปี 2568 และทรงตัวระดับนี้ต่อเนื่องมา Q2'69 ผลตอบแทนรอบปี +18.7%
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION (เฉลี่ย 3 วิธี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี · เหมาะกับหุ้นประกัน P&amp;C</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation (Normalized)</div><div class="mdesc">EPS adj. $27 × P/E 12x = $324 — ใช้ EPS adj. FY26E ~$27 (normalize จาก FY25 peak $34.83) · P/E 12x สำหรับ P&amp;C insurer ที่ profitability ฟื้นตัวแข็ง</div></div>
+        <div class="mval">$324</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. Justified P/BV</div><div class="mdesc">P/BV = (ROE 15% − g 5%)/(r 9% − g 5%) ≈ 2.5x × BVPS $113.52 = $284 — ใช้ ROE 15% (mid-cycle normalized; ปัจจุบัน 44% สูงผิดปกติ)</div></div>
+        <div class="mval">$284</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Price/Premiums Written</div><div class="mdesc">0.9x × Premiums per share $241 = $217 — ทั่วไปประกัน P&amp;C US ซื้อขายที่ 0.7–1.1x premiums earned · ใช้ 0.9x สำหรับ market leader</div></div>
+        <div class="mval">$217</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $217 – $324</span></div>
+        <div class="r">$275</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        วิธี P/E ให้ค่าสูงสุด $324 เพราะ EPS adj. $27 × P/E 12x — อาจสูงเกินหาก EPS ยังปรับลดต่อ
+        วิธี Justified P/BV ให้ค่ากลาง $284 อิง ROE mid-cycle 15% (ปัจจุบัน 44% สูงเกินยั่งยืน)
+        วิธี Price/Premiums ให้ค่าอนุรักษ์ $217 สะท้อนการแข่งขันและความเสี่ยง catastrophe loss
+        เฉลี่ย 3 วิธี = $275 ซึ่งสูงกว่าราคาปัจจุบัน $241.50 ประมาณ +14% · เป้านักวิเคราะห์ $242 สอดคล้องราคาปัจจุบัน
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $241.50</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $275</div></div>
+        </div>
+        <div class="scale">
+          <span>$193<br><small>MOS 30%</small></span>
+          <span>$220<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$242<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">$275<br><small>Fair Value</small></span>
+          <span style="text-align:right">$324<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน $241.50 ต่ำกว่า Fair Value $275 ประมาณ 12% — อยู่ใน zone "MOS เล็กน้อย" ยังไม่ถึง MOS 20% ($220)
+        เป้านักวิเคราะห์เฉลี่ย $242 อยู่ระดับใกล้เคียงราคาปัจจุบัน บ่งชี้ตลาดมองว่า ALL ราคา fair value แล้วโดยเฉลี่ย
+        นักวิเคราะห์ Bull มองเป้าสูงสุด $295 ซึ่งยังต่ำกว่า FV method P/E ($324)
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict ok">
+        <div class="big">+12.2%</div>
+        <div class="txt">MOS พอประมาณ — ยังไม่ถึงโซนน่าสนใจมาก</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$220</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$193</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $275</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="241.50" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $241.50 • EPS ฐาน ~$27 (FY26E adj.) • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS −5%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$221</div>
+          <div class="ret neg">−8%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$23.15</span></li>
+            <li><span>P/E ออก</span><span>9x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$13</span></li>
+            <li><span>สถานการณ์</span><span>Cat losses พุ่ง / CR กลับสู่ 95%+</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +5%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$326</div>
+          <div class="ret pos">+35%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$31.26</span></li>
+            <li><span>P/E ออก</span><span>10x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$13</span></li>
+            <li><span>สถานการณ์</span><span>Underwriting ปกติ / CR 88-93%</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +8%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$421</div>
+          <div class="ret pos">+74%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$34.01</span></li>
+            <li><span>P/E ออก</span><span>12x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$13</span></li>
+            <li><span>สถานการณ์</span><span>Growth ฟื้น / CR 82-87% ต่อเนื่อง</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      EPS ฐาน ~$27 (FY26E adj. consensus) อาจดูต่ำกว่า FY25 adj. $34.83 เพราะ FY25 เป็นปีผลลัพธ์ exceptional — Combined Ratio ต่ำสุดในรอบหลายปี + investment gains
+      Base case ใช้ P/E exit 12x ที่ sector re-rating จาก current 5-9x เป็น mid-cycle ปกติ ผลตอบแทน +35% ใน 3 ปี (~10.7%/ปี) สมเหตุสมผล
+      ความเสี่ยง Bear case อยู่ที่ hurricane season รุนแรง / wildfire LA ปี 2568 พิสูจน์ให้เห็นว่า catastrophe loss สามารถกัดกินกำไรทั้งปีได้ใน quarter เดียว
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก &amp; ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>Underwriting profitability recovery ชัดเจน:</b> Combined ratio FY25 84.4%, Q1'26 82.0% ดีกว่า industry average อย่างมีนัย หลังเพิ่มอัตราเบี้ย 50%+ ตั้งแต่ปี 2565–67</li>
+          <li><b>Rate adequacy แข็งแกร่ง:</b> Premium growth ยังคงสูงกว่า loss costs — FY25 earned premiums +5.4% YoY, Q1'26 revenue +3.0% YoY บ่งชี้ pricing power ยังมีอยู่</li>
+          <li><b>Investment income tailwind:</b> Portfolio พันธบัตรขนาดใหญ่ได้ประโยชน์จากอัตราดอกเบี้ยที่สูงขึ้น — อัตราดอกเบี้ย Fed ยืนสูง → NII เพิ่ม</li>
+          <li><b>Policy growth ฟื้นตัว:</b> Policies in force เพิ่ม 2.0% YoY สู่ 210.9 ล้านกรมธรรม์ Q4'25 — new business +23% ใน Q3'25 แม้ retention ยังท้าทาย</li>
+          <li><b>Capital return:</b> Buyback program $4B (ถึงปี 2571) + ปันผลเพิ่มขึ้นต่อเนื่อง + statutory surplus $23B ณ FY25</li>
+          <li><b>Pure P&amp;C focus:</b> ขาย Life/Retirement ปี 2565 ทำให้ธุรกิจ Simple ขึ้น capital allocation ชัดเจน ไม่มี drag จากกลุ่มที่ให้ผลตอบแทนต่ำ</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>Catastrophe losses:</b> ไฟป่า LA ม.ค. 2568 สร้างความสูญเสีย $1.08B (net ของ reinsurance) — climate change ทำให้ cat losses ยากคาดเดามากขึ้น</li>
+          <li><b>Customer retention post rate hike:</b> ลูกค้าที่ถูกขึ้นเบี้ย 50%+ บางส่วนย้ายไปคู่แข่ง — retention challenge ใน Q3'25 กระทบ policies in force growth</li>
+          <li><b>EPS normalization:</b> FY25 GAAP EPS $38 และ FY26E ~$27 แสดงถึงการ normalize — ตลาดอาจ re-rate P/E ลง หาก combined ratio กลับสู่ระดับปกติ</li>
+          <li><b>California exposure:</b> ปัญหาในการกำหนดเบี้ยประกันภัยบ้านในแคลิฟอร์เนีย (Prop 103 rules) จำกัดความสามารถในการขึ้นราคา — ALL หยุดรับลูกค้าใหม่ใน CA บางส่วน</li>
+          <li><b>Competition:</b> Progressive (PGR) เติบโตแรงในออนไลน์ telematics — ALL ต้องลงทุน tech เพื่อ compete ในตลาด direct-to-consumer</li>
+          <li><b>Interest rate sensitivity:</b> Bond portfolio ขนาดใหญ่ — ดอกเบี้ยลดลงจะกระทบ investment income และ book value</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>ALL — P&amp;C Recovery Play ที่ Priced Near Fair Value</h2>
+      <p>Allstate ผ่านจุดต่ำสุดของวงจรประกัน P&amp;C แล้ว — การขึ้นเบี้ยสะสม 50%+ ตั้งแต่ปี 2565 ส่งผลให้ Combined Ratio ดีขึ้นอย่างชัดเจน (FY25: 84.4%, Q4'25: 72.9%) กำไรสุทธิ FY25 $10.2B สูงสุดเป็นประวัติการณ์ อย่างไรก็ตาม ราคาหุ้นสะท้อนการฟื้นตัวนี้ไปมากแล้ว — เป้านักวิเคราะห์เฉลี่ย $242 เกือบเท่าราคาปัจจุบัน ทำให้ upside ระยะสั้นจำกัด การลงทุนใน ALL เหมาะสำหรับนักลงทุนที่มองหา Defensive yield + Mid-cycle P/E re-rating story มากกว่า momentum play</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$275 <span style="font-size:12px;color:#cab9a8">($217–$324)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +12.2%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$242 (Buy 48%)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ทยอยสะสมหาก ALL ปรับลงสู่โซน $220–230 (MOS 20%+) จากผลกระทบ catastrophe หรือ EPS miss — ระดับ $241 ปัจจุบัน MOS เพียง 12% ยังไม่ใช่โซน value ที่ชัดเจน · คอยจังหวะ hurricane season ห รือ wildfire ที่อาจสร้าง entry point · Dividend 1.79% + buyback เป็น downside buffer ที่ดี
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    แหล่งข้อมูล: Yahoo Finance (ราคา $241.38 ณ 29 มิ.ย. 2569), Finviz (ราคา $241.50), StockAnalysis (EPS TTM $45.33, P/B 2.10x), Allstate Q4'25 Earnings Release (CR 72.9%, BVPS $108.45), Allstate Q1'26 Earnings Release (CR 82.0%, BVPS $113.52, adj. EPS $10.65), MarketBeat/StockAnalysis (Analyst avg target $242, 25 analysts)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 30 มิ.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>

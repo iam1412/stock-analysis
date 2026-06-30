@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น IQVIA Holdings (IQV) — Stock Analysis Dashboard</title>
+<!-- ★ โมเดล AI ที่ใช้วิเคราะห์จริง -->
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
+<script type="application/json" id="stock-meta">
+{"symbol":"IQV","currency":"USD","price":192.93,"fairValue":235,"mos":17.9,"upside":21.8,"pe":15.9,"dividendYield":0,"roe":22.5}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#00355F",
+    "accentDark": "#001f3d",
+    "darkGrad": "linear-gradient(135deg,#001a30 0%,#00355F 60%,#005a99 100%)",
+    "glow": "rgba(0,53,95,0.35)",
+    "subColor": "#a8c8e8",
+    "headerMuted": "rgba(168,200,232,0.7)",
+    "verdictText": "#cce3f8",
+    "vcellLabel": "#8ab4d4",
+    "badge": "#00355F",
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#1e8e3e"
+  },
+  "chart": {
+    "data": [
+      ["ก.ค. 68", 185.86],
+      ["ส.ค. 68", 190.81],
+      ["ก.ย. 68", 189.94],
+      ["ต.ค. 68", 216.46],
+      ["พ.ย. 68", 230.01],
+      ["ธ.ค. 68", 225.41],
+      ["ม.ค. 69", 230.15],
+      ["ก.พ. 69", 178.81],
+      ["มี.ค. 69", 170.54],
+      ["เม.ย. 69", 158.37],
+      ["พ.ค. 69", 182.21],
+      ["มิ.ย. 69", 193.28],
+      ["30 มิ.ย. 69", 192.93]
+    ],
+    "min": 145,
+    "max": 245,
+    "grid": [160, 180, 200, 220, 240],
+    "fairLine": 235,
+    "currency": "$",
+    "highlight": [4, 6]
+  },
+  "gauge": {
+    "min": 130,
+    "max": 290,
+    "cur": 192.93,
+    "fair": 235,
+    "fairLabelTop": false
+  },
+  "fv": 235
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">●●●</div>
+    <div>
+      <span class="tag">NYSE: IQV</span>
+      <span class="tag">Healthcare Technology</span>
+      <span class="tag">CRO / Data Analytics</span>
+    </div>
+    <h1>IQVIA Holdings Inc.</h1>
+    <div class="sub">World's largest CRO + healthcare data platform (IMS Health × Quintiles 2016) • Clinical trials management (R&amp;D Solutions) • TAS: pharma data, real-world evidence, AI analytics • Backlog $34.2B record high • IQVIA.ai — 192 AI agents deployed • ไม่จ่ายปันผล (reinvests FCF)</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$192.93<small>(IQV)</small></div>
+      </div>
+      <div class="chg">▲ +3.8% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 30 มิถุนายน 2569<br>
+        กรอบ 52 สัปดาห์ $154.50 – $247.05<br>
+        ที่มา: Yahoo Finance, StockAnalysis.com, IQVIA Investor Relations (ir.iqvia.com)
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ มิถุนายน 2569</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~$32.2B</div><div class="d">~167M shares outstanding</div></div>
+      <div class="metric"><div class="k">P/E (TTM adj.)</div><div class="v neu">~15.9x</div><div class="d">Fwd P/E 15.1x (vs ประวัติ 20–25x)</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~22x</div><div class="d">ช่วง 15x–32x (sector เคยเฟื่อง)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">5.2x</div><div class="d">BVPS ~$37.27 (leverage สูง)</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">$908M (GAAP)</div><div class="d">Adj. Net Income $2,068M (+1.3% YoY)</div></div>
+      <div class="metric"><div class="k">EPS (TTM adj.)</div><div class="v">~$12.12</div><div class="d">FY2025 adj. $11.92 · FY2026 guide $12.65–12.95</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~$37.27</div><div class="d">Equity ต่ำจาก goodwill IMS/Quintiles</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~22.5% / 5.1%</div><div class="d">ROE สูง asset-light model + leverage</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$16.63B</div><div class="d">FY2025 $16.31B (+5.9% YoY)</div></div>
+      <div class="metric"><div class="k">EBITDA margin</div><div class="v">~20.2%</div><div class="d">EBITDA TTM ~$3,367M</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">ไม่มี ($0)</div><div class="d">บริษัทใช้ FCF ซื้อหุ้นคืน + ลดหนี้</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">1.21</div><div class="d">ผันผวนมากกว่าตลาด — CRO cyclical</div></div>
+
+      <div class="metric"><div class="k">Backlog (R&amp;D)</div><div class="v pos">$34.2B</div><div class="d">All-time high · +mid-single-digit YoY</div></div>
+      <div class="metric"><div class="k">Book-to-Bill</div><div class="v">1.04x</div><div class="d">Q1 2026 (held down by low pass-throughs)</div></div>
+      <div class="metric"><div class="k">FCF TTM</div><div class="v pos">$2.12B</div><div class="d">FCF/share ~$12.69 · high conversion</div></div>
+      <div class="metric"><div class="k">Net Debt</div><div class="v">~$11.6B</div><div class="d">Leverage ~3.3x EBITDA · กำลังลดลง</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART (ราคาย้อนหลัง ~1 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#00355F"></i>ราคา IQV</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $235</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        IQV ปรับตัวขึ้นจาก $185.86 (ก.ค. 68) ไปแตะจุดสูงสุด <b>$230.15</b> ในเดือน ม.ค. 69 หนุนด้วยสัญญาณการฟื้นตัวของการระดมทุน biotech และ AI tailwind จาก IQVIA.ai
+        จากนั้นปรับลงแรงสู่ <b>$158.37</b> ในเดือน เม.ย. 69 กดดันจากผลประกอบการ Q4 2025 ที่เติบโตช้ากว่าคาดในบางตัวชี้วัด + Morgan Stanley ปรับลด outlook อ้างแรงกดดันส่วนแบ่งตลาด CRO
+        อย่างไรก็ตาม ผลประกอบการ Q1 2026 ที่ออกมาเกินคาด (adj. EPS $2.90 vs คาด $2.83) และการ raise guidance พา IQV ฟื้นตัวกลับสู่ <b>$192.93</b>
+        ผลตอบแทนรอบปี <b>+3.8%</b> สะท้อนตลาดยังให้ multiple ต่ำระหว่างรอหลักฐานการฟื้นตัว CRO sector ชัดเจน
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION (3 วิธี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation (Forward Adj. EPS)</div><div class="mdesc">EPS adj. $12.80 × P/E 20x = $256 — ใช้ FY2026 adj. EPS guidance midpoint ($12.80) × 20x forward P/E (conservative vs ประวัติ 22–25x เมื่อ CRO sector ปกติ); discount สะท้อนความไม่แน่นอนการฟื้นตัว</div></div>
+        <div class="mval">$256</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. EV/EBITDA</div><div class="mdesc">EBITDA TTM $3,367M × 18x − Net Debt $11,580M ÷ 167M shares = $294 — ใช้ 18x EV/EBITDA (ปลายล่างของกรอบ CRO 18–22x) สะท้อน leverage สูงและ CRO headwind; peer Charles River ซื้อขายที่ ~15–18x ช่วงกดดัน</div></div>
+        <div class="mval">$294</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. FCF Yield</div><div class="mdesc">FCF/share $12.69 ÷ FCF yield เป้า 6.0% = $212 — ใช้ yield 6% (สูงกว่าปกติ 5% สะท้อน leverage 3.3x EBITDA + sector risk); FCF TTM $2.12B แข็งแกร่ง (FCF conversion ~90%)</div></div>
+        <div class="mval">$212</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $212 – $256</span></div>
+        <div class="r">$235</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        วิธี EV/EBITDA ให้ค่าสูงสุด ($294) เพราะ EBITDA margin ~20% แข็งแกร่ง แต่ถูกหักด้วย net debt $11.6B
+        วิธี FCF yield ให้ค่าต่ำสุด ($212) เพราะใช้ yield เข้มงวดสะท้อน leverage สูง; วิธี P/E ให้ $256 จาก guidance ที่ raised แล้ว
+        FV เลือก <b>$235</b> ต่ำกว่า blend ($254) อย่างจงใจ — สะท้อนความเสี่ยง CRO sector recovery ที่ยังไม่สมบูรณ์
+        และแรงกดดันส่วนแบ่งตลาดที่ Morgan Stanley เตือน ราคาปัจจุบัน $192.93 ให้ MOS ~18% ถือว่า "น่าสนใจ" แต่ไม่ถึง deep value
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $192.93</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $235</div></div>
+        </div>
+        <div class="scale">
+          <span>$164<br><small>MOS 30%</small></span>
+          <span>$188<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$225<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">$235<br><small>Fair Value</small></span>
+          <span style="text-align:right">$256<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน $192.93 อยู่ระหว่างโซน MOS 20% ($188) และ Fair Value ($235) — ใกล้โซน "<b>น่าสนใจสำหรับ value</b>"
+        Analyst consensus ของ 22 นักวิเคราะห์อยู่ที่ $225 (16 Strong Buy, 3 Buy, 3 Hold) ต่ำกว่า FV ที่ประเมิน
+        นักลงทุนที่รอ MOS 30% ($164) อาจต้องรอจุดอ่อนตัวจาก macro risk หรือ CRO order softness อีกรอบ
+        หุ้น 52W range $154.50–$247.05 สะท้อนความผันผวนสูง (beta 1.21) ของ CRO sector
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict ok">
+        <div class="big">+17.9%</div>
+        <div class="txt">MOS พอใช้ — ราคาต่ำกว่า Fair Value แต่ยังไม่ถึง deep value; เหมาะสะสมทยอยหากเชื่อ CRO recovery thesis</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$188</div><div class="d">โซนน่าสนใจสำหรับ value — ใกล้ราคาปัจจุบัน</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$164</div><div class="d">โซนถูกมาก (deep value) — แถว 52W low</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $235</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="192.93" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $192.93 • EPS ฐาน ~$12.12 (adj. TTM) • ไม่มีปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS +3%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$199</div>
+          <div class="ret neg">+3.1% (3 ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$13.24</span></li>
+            <li><span>P/E ออก</span><span>15x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>$0</span></li>
+            <li><span>สถานการณ์</span><span>CRO ซบเซาต่อเนื่อง pharma ลดงบ R&amp;D</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +8%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$305</div>
+          <div class="ret pos">+58.1% (3 ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$15.27</span></li>
+            <li><span>P/E ออก</span><span>20x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>$0</span></li>
+            <li><span>สถานการณ์</span><span>CRO ฟื้น + AI analytics ขยาย TAS margin</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +13%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$420</div>
+          <div class="ret pos">+117.7% (3 ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$17.49</span></li>
+            <li><span>P/E ออก</span><span>24x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>$0</span></li>
+            <li><span>สถานการณ์</span><span>AI drug discovery + biotech boom + re-rating</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      Projection ทั้ง 3 scenarios ไม่รวมปันผล (IQV ไม่จ่ายปันผล ใช้ FCF ซื้อหุ้นคืน ~$1.35B/ปี และลดหนี้)
+      Base case +58% ใน 3 ปีขึ้นอยู่กับ: (1) backlog $34.2B convert เป็น revenue ตามแผน (2) TAS/AI analytics เป็น margin driver
+      (3) P/E re-rate กลับสู่ 20x (ยังต่ำกว่าประวัติ 22–25x) · Bear case เสี่ยงถ้า pharma M&amp;A wave ทำให้ลูกค้าลด trial ชั่วคราว
+      Bull case โอกาสดีถ้า FDA accelerate AI-assisted trial approval + IQVIA.ai กลายเป็น platform ที่ pharma ยอมจ่าย premium
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>Backlog ทำ All-Time High $34.2B:</b> R&amp;D backlog สูงสุดในประวัติศาสตร์ → $8.9B convertible ใน 12 เดือนหน้า (+8% YoY) สร้าง revenue visibility สูง</li>
+          <li><b>AI Transformation — IQVIA.ai:</b> 192 AI agents deployed ใน Q1 2026; บริษัทระบุ AI เพิ่ม demand จากลูกค้าแทนที่จะลด เป็น differentiator สำคัญจาก CRL/PPD</li>
+          <li><b>Biotech Funding Recovery:</b> VC funding สำหรับ biotech/clinical trials กลับมา 2025–2026 หลังจากซบเซา 2022–2024 → trial starts เพิ่ม → CRO demand เพิ่ม</li>
+          <li><b>Real-World Evidence (RWE) Growth:</b> ฐานข้อมูล pharma สุขภาพ &gt;1B ราย ใน 100+ ประเทศ → regulatory agencies ต้องการ RWE มากขึ้น = TAS segment เติบโต</li>
+          <li><b>EPS Guidance Raised:</b> IQV raise FY2026 adj. EPS guidance สู่ $12.65–12.95 หลัง Q1 beat → ยืนยัน thesis การฟื้นตัว</li>
+          <li><b>P/E Discount ใหญ่จากประวัติ:</b> ซื้อขายที่ 15x fwd adj. P/E ขณะที่ประวัติ peak 22–25x → re-rating potential ถ้า sector confidence กลับ</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>แรงกดดันส่วนแบ่งตลาด CRO:</b> Morgan Stanley ปรับลด outlook มิ.ย. 2569 อ้าง "market share pressure" — Labcorp/Syneos/Thermo Fisher ราคาแข่งดุ</li>
+          <li><b>Leverage สูง Net Debt $11.6B:</b> อัตราดอกเบี้ยสูงกระทบ interest cost; leverage ratio 3.3x EBITDA จำกัด flexibility ถ้า revenue เติบโตช้า</li>
+          <li><b>Pharma M&amp;A Disruption:</b> M&amp;A คลื่นใหญ่ใน pharma/biotech อาจให้ลูกค้าชะลอหรือยุบ trial programs ชั่วคราว → cancel/delay bookings</li>
+          <li><b>CRO Sector Cyclicality:</b> รายได้ผูกกับงบ R&amp;D ของ pharma/biotech ซึ่ง cyclical; FDA approval rate + PDUFA timeline ผลต่อ trial demand</li>
+          <li><b>Revenue Growth Deceleration:</b> FY2024 +3.4%, FY2025 +5.9% — ยังต่ำกว่าระดับ pre-2022 slump; บางนักวิเคราะห์กังวล organic growth quality</li>
+          <li><b>AI Disruption ในระยะยาว:</b> AI-driven drug discovery อาจเปลี่ยนรูปแบบการทำ trial ในอนาคต → กระทบ CRO model ระยะ 5–10 ปี</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>เจ้าตลาด CRO โลก — ถูกลงน่าสนใจ แต่รอ sector recovery ยืนยัน</h2>
+      <p>IQVIA คือผู้นำอันดับ 1 ของโลก (world's largest CRO + pharma data platform) ที่ซื้อขายในราคาถูกผิดปกติเทียบกับประวัติ — forward adj. P/E ~15x ขณะที่ประวัติ peak 22–25x
+      Backlog สูงสุดตลอดกาล $34.2B + EPS guidance ที่ raise สะท้อนความแข็งแกร่งพื้นฐาน
+      ความเสี่ยงหลักคือ sector recovery ยังไม่สมบูรณ์ (Morgan Stanley ปรับลดเมื่อ มิ.ย. 2569) และ leverage สูง
+      FV $235 บนสมมติฐาน conservative (20x fwd P/E) ให้ MOS ~18% — "<b>น่าสะสมทยอย</b>" สำหรับ long-term investor ที่เชื่อ CRO + AI analytics thesis
+      นักลงทุน conservative ควรรอแนวรับ $188 (MOS 20%) หรือ $164 (MOS 30%) ก่อน</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$235 <span style="font-size:12px;color:#cab9a8">($212–$256)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +17.9%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$225 (Strong Buy — 22 คน)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ราคาปัจจุบัน $192.93 ใกล้โซน MOS 20% ($188) — <b>เริ่มสะสมทยอยได้สำหรับนักลงทุนระยะกลาง-ยาว</b> ที่เชื่อ CRO sector recovery + IQVIA.ai monetization
+        Backlog $34.2B = revenue visibility 2–3 ปีข้างหน้า · ควรติดตาม Q2 2026 book-to-bill อย่างใกล้ชิด — ถ้ากลับ &gt;1.2x อีกรอบ = signal ซื้อเพิ่ม
+        ถ้าเน้น deep value รอแถว $164–$170 (MOS 30%) ซึ่งใกล้ 52W low ประวัติการณ์
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    แหล่งข้อมูล: Yahoo Finance (ราคา/กราฟ), StockAnalysis.com (งบการเงิน/statistics), IQVIA Investor Relations ir.iqvia.com (FY2024 annual results, Q1 2026 earnings), Tickeron/SeekingAlpha (Q1 2026 consensus/guidance)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 30 มิถุนายน 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
