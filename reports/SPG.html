@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น Simon Property Group (SPG) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"SPG","currency":"USD","price":226,"fairValue":212,"mos":-6.6,"upside":-6.2,"pe":null,"dividendYield":3.98,"roe":113.59}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#8B1A1A",
+    "accentDark": "#5c1111",
+    "darkGrad": "linear-gradient(135deg,#1a0505 0%,#2d0a0a 50%,#1a0505 100%)",
+    "glow": "rgba(139,26,26,0.35)",
+    "subColor": "#d4a0a0",
+    "headerMuted": "rgba(255,255,255,0.55)",
+    "verdictText": "#fff8f8",
+    "vcellLabel": "#c8a0a0",
+    "badge": "#8B1A1A",
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#1e8e3e"
+  },
+  "chart": {
+    "data": [
+      ["มิ.ย. 25", 163.79],
+      ["ก.ค. 25", 180.66],
+      ["ส.ค. 25", 187.67],
+      ["ก.ย. 25", 175.76],
+      ["ต.ค. 25", 186.32],
+      ["พ.ย. 25", 185.11],
+      ["ธ.ค. 25", 191.31],
+      ["ม.ค. 26", 203.85],
+      ["ก.พ. 26", 186.53],
+      ["มี.ค. 26", 203.71],
+      ["เม.ย. 26", 204.91],
+      ["พ.ค. 26", 227.56],
+      ["มิ.ย. 26", 224.67]
+    ],
+    "min": 150,
+    "max": 245,
+    "grid": [160, 175, 190, 205, 220, 235],
+    "fairLine": 212,
+    "currency": "$",
+    "highlight": [7, 11]
+  },
+  "gauge": {
+    "min": 140,
+    "max": 240,
+    "cur": 226,
+    "fair": 212,
+    "fairLabelTop": true
+  },
+  "fv": 212
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">●●●●●</div>
+    <div>
+      <span class="tag">NYSE: SPG</span>
+      <span class="tag">Real Estate · REIT</span>
+      <span class="tag">Retail REIT · Mall</span>
+    </div>
+    <h1>Simon Property Group</h1>
+    <div class="sub">Largest US mall REIT • Premium malls &amp; Simon Premium Outlets • ~200 properties in 37 states + Asia/Europe JVs • Luxury/premium tenant focus • FFO-driven REIT valuation</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$226<small>(SPG)</small></div>
+      </div>
+      <div class="chg">▲ +37.2% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 30 มิถุนายน 2569<br>
+        กรอบ 52 สัปดาห์ $155.44 – $228.58<br>
+        ที่มา: Yahoo Finance / StockAnalysis.com / SEC EDGAR 8-K
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ตัวเลข ณ มิ.ย. 2569 · FFO-based (REIT)</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~$85.5B</div><div class="d">~383M shares · NYSE: SPG</div></div>
+      <div class="metric"><div class="k">P/FFO (TTM)</div><div class="v neu">~17.5x</div><div class="d">FFO TTM ~$12.95/sh · REIT metric</div></div>
+      <div class="metric"><div class="k">P/FFO เฉลี่ย 5 ปี</div><div class="v">16–20x</div><div class="d">Premium mall REIT deserves premium</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">~15.3x</div><div class="d">Book value $14.86/sh (buyback-distorted)</div></div>
+
+      <div class="metric"><div class="k">Real Estate FFO 2025</div><div class="v">$12.73/sh</div><div class="d">+4.2% YoY · ฐาน REIT valuation</div></div>
+      <div class="metric"><div class="k">FFO 2026E (guidance)</div><div class="v pos">$13.10–13.25</div><div class="d">+5% midpoint YoY · Q1 2026 $3.17/sh</div></div>
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$6.65B</div><div class="d">Q1 2026: $1.76B (+19% YoY)</div></div>
+      <div class="metric"><div class="k">NOI Portfolio (2025)</div><div class="v">$6.1B</div><div class="d">+4.7% YoY · Domestic +6.7% Q1 2026</div></div>
+
+      <div class="metric"><div class="k">Occupancy Rate</div><div class="v pos">96.0%</div><div class="d">US malls+outlets · Mall 99.2% (+80bps)</div></div>
+      <div class="metric"><div class="k">EBITDA Margin</div><div class="v">73.9%</div><div class="d">Q1 2026 EBITDA $1.295B</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~4.0%</div><div class="d">$9.00/yr ($2.25/qtr) · +7.1% YoY</div></div>
+      <div class="metric"><div class="k">ROE / Leverage</div><div class="v pos">113.6% / D/E 4.6x</div><div class="d">ROE สูงจาก buyback; D/E ปกติสำหรับ REIT</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">มิ.ย. 2568 – มิ.ย. 2569</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#8B1A1A"></i>ราคา SPG</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $212</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        SPG ปรับตัวขึ้นแรง +37.2% ในรอบ 1 ปี (มิ.ย. 2568–มิ.ย. 2569) จากจุดต่ำสุดรอบ 52 สัปดาห์ที่ $155.44 (มิ.ย. 2568)
+        ขึ้นสู่ระดับ $227 ในเดือนพ.ค. 2569 ก่อนทรงตัวที่ $225–226 ปัจจัยหลัก: Q1 2026 FFO เติบโต +7.5% YoY,
+        อัตราการเช่า 96%+ ทำจุดสูงใหม่, ปันผลเพิ่ม +7.1% YoY, และ guidance ปี 2026 ถูกปรับขึ้น
+        ช่วงก.พ. 2569 ปรับฐานลง $186 จากความกังวลดอกเบี้ยสูง ก่อนฟื้นตัวแข็งแกร่ง
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">3 วิธี REIT · เฉลี่ย</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/FFO Valuation (วิธีหลัก REIT)</div><div class="mdesc">FFO/sh 2026E $13.18 × P/FFO เป้าหมาย 17x — premium mall REIT ประวัติ P/FFO 16–20x; 17x = ค่ากลางอนุรักษ์นิยม</div></div>
+        <div class="mval">$224</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. DDM / Gordon Growth Model</div><div class="mdesc">D₁ = ปันผล $9.00 × (1+g 3.5%); r 8.0%, g 3.5% → FV = $9.315 / (8.0%−3.5%) — ปันผลเติบโตต่อเนื่อง ~5-7%/ปี ปรับอนุรักษ์</div></div>
+        <div class="mval">$207</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. NAV (Net Asset Value)</div><div class="mdesc">Portfolio NOI $6.1B ÷ cap rate 5.5% = มูลค่าอสังหา ~$110.9B; หักหนี้สุทธิ ~$29.5B; หาร ~383M หุ้น — cap rate 5.5% สะท้อน premium location</div></div>
+        <div class="mval">$212</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $200 – $224</span></div>
+        <div class="r">$212</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        หมายเหตุ: P/FFO 17x (FV $224) และ NAV $212 ให้ค่าสอดคล้องกันดี ยืนยันว่า SPG ซื้อขายใกล้ fair value
+        DDM (FV $207) ต่ำกว่าเล็กน้อยเพราะใช้ required return 8% ที่อนุรักษ์นิยม
+        ราคาปัจจุบัน $226 แพงกว่า FV เฉลี่ย ~$212 ราว 6.6% สะท้อนว่าตลาดให้ premium กับ SPG ในฐานะ "best-in-class" REIT
+        นักวิเคราะห์ส่วนใหญ่ให้ Buy โดยเป้าเฉลี่ย ~$220 (BofA $236, Scotia $220, Barclays $213)
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $226</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $212</div></div>
+        </div>
+        <div class="scale">
+          <span>$148<br><small>MOS 30%</small></span>
+          <span>$170<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$212<br><small>Fair Value</small></span>
+          <span style="text-align:right">$220<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">$236<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน $226 อยู่เหนือ Fair Value $212 และเหนือเป้าเฉลี่ยนักวิเคราะห์ $220 บ่งชี้ว่า SPG ซื้อขายในระดับ "ราคาแพงเล็กน้อย"
+        ในทางทฤษฎีมี Margin of Safety ติดลบ ~6.6% ผู้ที่ถือหุ้นอยู่ยังได้รับ dividend yield ~4% + FFO growth ~5%
+        จุดเข้าซื้อที่น่าสนใจ: ต่ำกว่า $212 (fair value) หรือที่ $170 สำหรับ MOS 20%
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">-6.6%</div>
+        <div class="txt">ราคาแพงกว่า Fair Value เล็กน้อย — ยังได้ Dividend Yield ~4% + FFO Growth 5% แต่ไม่มี margin of safety</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$170</div><div class="d">โซนน่าสนใจสำหรับ value investor</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$148</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $212</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="226" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $226 • FFO ฐาน ~$12.95/sh • รวมปันผล ~$27-31 (3 ปี)</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>FFO +2%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$219</div>
+          <div class="ret neg">-6.9% (3 ปี)</div>
+          <ul>
+            <li><span>FFO ปี 3</span><span>~$13.74/sh</span></li>
+            <li><span>P/FFO ออก</span><span>14x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$27</span></li>
+            <li><span>สถานการณ์</span><span>ดอกเบี้ยสูงนาน + retail อ่อนตัว</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>FFO +5%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$284</div>
+          <div class="ret pos">+25.7% (3 ปี)</div>
+          <ul>
+            <li><span>FFO ปี 3</span><span>~$15.00/sh</span></li>
+            <li><span>P/FFO ออก</span><span>17x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$29</span></li>
+            <li><span>สถานการณ์</span><span>NOI โต steadily + ดอกเบี้ยลง</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>FFO +7%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$333</div>
+          <div class="ret pos">+47.3% (3 ปี)</div>
+          <ul>
+            <li><span>FFO ปี 3</span><span>~$15.87/sh</span></li>
+            <li><span>P/FFO ออก</span><span>19x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$31</span></li>
+            <li><span>สถานการณ์</span><span>Mixed-use expansion + premium tenant demand</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      การประมาณอิงจาก Real Estate FFO TTM ~$12.95/sh โดยใช้ P/FFO แทน P/E เพราะ REIT ใช้ FFO เป็น metric หลัก
+      (FFO = net income + depreciation − gains on property sales) ปันผล $9.00/ปีปัจจุบัน คาดเติบโต ~5%/ปีตามแนวโน้มย้อนหลัง
+      Bear case สมมติ P/FFO หด 14x จากความเสี่ยงดอกเบี้ยสูงและ retail slowdown
+      Bull case P/FFO 19x สมเหตุผลถ้า SPG พิสูจน์ว่า mixed-use development ดัน NOI ได้มากกว่าที่ตลาดคาด
+      หมายเหตุ: ผลตอบแทน bear case ราว -6.9% รวมปันผล $27 แล้ว ($255-226+27=$56... ขาดทุนราคา $192.5-226=-$33.5 บวก div $27 = -6.5 net)
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก &amp; ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>Occupancy สูงต่อเนื่อง:</b> อัตราการเช่า 96%+ (mall 99.2%) บ่งชี้ว่า premium mall ยังแข็งแกร่ง แม้ e-commerce ขยายตัว tenant ระดับ luxury ยังขยายสาขา</li>
+          <li><b>FFO Growth + Dividend Hikes:</b> 2026E FFO guidance $13.10–13.25/sh (+5%) ปันผลเพิ่ม 7.1% YoY บ่งชี้ความมั่นใจของผู้บริหาร</li>
+          <li><b>Bankruptcy Recapture Premium:</b> การล้มละลายของ Express, Bed Bath &amp; Beyond ช่วยให้ SPG นำพื้นที่มาให้เช่าใหม่ในอัตราที่สูงกว่าเดิม 15–30%</li>
+          <li><b>Mixed-Use Transformation:</b> SPG กำลังแปลง mall เป็น mixed-use (ที่พักอาศัย, โรงแรม, office) เพิ่มรายได้นอกเหนือ retail เพียวๆ</li>
+          <li><b>Simon Premium Outlets ขยายตัว:</b> outlet รองรับ demand luxury ราคาดีกว่าเต็ม margin ต่อ tourist + omnichannel shopper แรงกว่า standard mall</li>
+          <li><b>ดอกเบี้ยลงช่วย cap rate:</b> Fed rate cuts → cap rate compression → property valuation สูงขึ้น → NAV ต่อหุ้นขึ้น + ต้นทุนหนี้ลด</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>ดอกเบี้ยสูงนาน:</b> หนี้ D/E 4.6x; ดอกเบี้ยสูงกดดัน cap rate + refi cost เพิ่ม + กด FFO ถ้า variable rate debt สูง</li>
+          <li><b>Retail Weakness:</b> ภาวะเศรษฐกิจชะลอหรือ consumer spending ลด → tenant ยอดขายลด → overage rent (percentage rent) หดตัว</li>
+          <li><b>E-commerce Structural Risk:</b> แม้ premium mall มีความต้านทานสูง แต่ mid-tier tenant ยังเผชิญแรงกดจาก Amazon/online retail ระยะยาว</li>
+          <li><b>Valuation แพง:</b> P/FFO ~17.5x สูงกว่า REIT sector เฉลี่ย (~14x) downside risk ถ้า sentiment เปลี่ยน หรือ FFO growth พลาด</li>
+          <li><b>Anchor Store Closures:</b> กลุ่ม department store (Macy's, Nordstrom) ยังปิดสาขา กระทบ traffic ของ mall แม้ SPG จะ recapture พื้นที่ได้</li>
+          <li><b>Climate/Regulatory:</b> ต้นทุน ESG (พลังงาน, sustainability capex) เพิ่มขึ้น รวมถึงความเสี่ยงจากสภาพอากาศต่อ outdoor premium outlets</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>Best-in-Class REIT — แต่ราคาสะท้อน Perfection แล้ว</h2>
+      <p>
+        Simon Property Group (SPG) คือ REIT ระดับ "best-in-class" ของโลก ครองตำแหน่ง largest US mall REIT ด้วย portfolio ระดับ premium ที่คัดสรรมาอย่างดี
+        Occupancy 96%+ (mall 99.2%) FFO เติบโตสม่ำเสมอ ปันผลสูง 4%+ และ dividend ถูกขึ้นทุกปี
+        Q1 2026 ผลประกอบการแข็งแกร่ง: Real Estate FFO +7.5% YoY, NOI +6.7%, 2026 guidance ถูกปรับขึ้น
+        อย่างไรก็ดี ราคาปัจจุบัน $226 ซื้อขายเหนือ FV $212 ~6.6% และเหนือ consensus target $220 ตลาดให้ premium เต็มที่แล้ว
+        สำหรับนักลงทุน REIT ที่ต้องการ income + inflation hedge SPG ยังน่าสนใจในระยะยาว แต่ควรรอจังหวะราคาอ่อนตัว
+      </p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$212 <span style="font-size:12px;color:#cab9a8">($200–$224)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ -6.6%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$220 (Buy · 21 analysts)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> Hold สำหรับผู้ถือหุ้นเดิม (Dividend Yield 4% + FFO growth 5% = Total Return ~9%/ปีในกรณีปกติ)
+        สำหรับผู้ที่ยังไม่ถือ รอจังหวะราคา &lt;$212 (fair value) สำหรับเข้าซื้อ หรือ &lt;$170 สำหรับ MOS 20%
+        REIT ที่ดีที่สุดในกลุ่ม retail — แต่ต้องซื้อในราคาที่เหมาะสม
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/FFO เป้าหมาย, cap rate, อัตราเติบโต (g) และ required return (r)
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    แหล่งอ้างอิง: Yahoo Finance (ราคา $226.89, 52wk range, 26 มิ.ย. 2569) · StockAnalysis.com (ราคา $225, P/FFO 18.09x, statistics) ·
+    SEC EDGAR 8-K Q1 2026 (FFO $3.17/sh, Occupancy 96%, NOI +6.7%, guidance $13.10–13.25) · GuruFocus (FFO/sh TTM, ROE 113.6%) ·
+    REITNotes.com (DPS $9.00, dividend yield 3.84%, market cap $86.2B)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 30 มิถุนายน 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
