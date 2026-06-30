@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น Humana (HUM) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"HUM","currency":"USD","price":396.63,"fairValue":270,"mos":-46.9,"upside":-31.9,"pe":42.3,"dividendYield":0.89,"roe":6.28}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#007B5F",
+    "accentDark": "#005540",
+    "darkGrad": "linear-gradient(135deg,#003D2E 0%,#00261D 100%)",
+    "glow": "rgba(0,123,95,0.35)",
+    "subColor": "#00C896",
+    "headerMuted": "rgba(0,200,150,0.65)",
+    "verdictText": "#00F5BC",
+    "vcellLabel": "rgba(0,200,150,0.8)",
+    "badge": "#007B5F",
+    "chgBg": "#1e8e3e",
+    "chgColor": "#ffffff"
+  },
+  "chart": {
+    "data": [
+      ["Jul 2025", 246.32],
+      ["Aug 2025", 299.34],
+      ["Sep 2025", 256.47],
+      ["Oct 2025", 275.19],
+      ["Nov 2025", 243.12],
+      ["Dec 2025", 253.37],
+      ["Jan 2026", 193.76],
+      ["Feb 2026", 189.13],
+      ["Mar 2026", 172.11],
+      ["Apr 2026", 235.88],
+      ["May 2026", 304.70],
+      ["Jun 2026", 387.98],
+      ["Jun 30", 396.63]
+    ],
+    "min": 150,
+    "max": 430,
+    "grid": [180, 240, 300, 360, 420],
+    "fairLine": 270,
+    "currency": "$",
+    "highlight": [8, 12]
+  },
+  "gauge": {
+    "min": 150,
+    "max": 500,
+    "cur": 396.63,
+    "fair": 270
+  },
+  "fv": 270
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">■ ■ ■</div>
+    <div>
+      <span class="tag">NYSE: HUM</span>
+      <span class="tag">Healthcare / Managed Care</span>
+      <span class="tag">Medicare Advantage</span>
+    </div>
+    <h1>Humana Inc.</h1>
+    <div class="sub">Largest pure-play Medicare Advantage insurer (~90% MA membership) • MA utilization crisis 2024–2025 → MLR spike, EPS collapse • 2026 CMS rate +5.06% + 2027 rate +5% (effective) → recovery path • Benefit redesign underway • Stars ratings recovery critical • Value-based care via CenterWell</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$396.63<small>(HUM)</small></div>
+      </div>
+      <div class="chg">▲ +61.0% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 30 มิ.ย. 2569<br>
+        กรอบ 52 สัปดาห์ $163.11 – $397.99<br>
+        ที่มา: Yahoo Finance, StockAnalysis.com, MarketBeat
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ มิ.ย. 2569 — ปี EPS สำคัญ: 2026 adj. ≥$9.00 (Stars headwind), 2027E $15.73 (recovery)</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~$47.7B</div><div class="d">120.1M shares outstanding</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~42.3x</div><div class="d">GAAP EPS TTM $9.37 (distorted)</div></div>
+      <div class="metric"><div class="k">Forward P/E 2027E</div><div class="v">~25.2x</div><div class="d">ราคาเดินหน้า EPS recovery $15.73</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">2.56x</div><div class="d">BVPS $154.75 | P/S 0.34x</div></div>
+
+      <div class="metric"><div class="k">รายได้ FY2025</div><div class="v">$129.7B</div><div class="d">+10.1% YoY | TTM $137.2B (+23% Q1)</div></div>
+      <div class="metric"><div class="k">Adj. EPS 2025 (actual)</div><div class="v pos">$17.14</div><div class="d">ลดจากพีค $25 ปี 2022 (MLR spike)</div></div>
+      <div class="metric"><div class="k">Adj. EPS 2026 (guidance)</div><div class="v neg">≥$9.00</div><div class="d">Stars headwind $3.5B กดกำไรครึ่ง</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v">~6.3% / ~2.7%</div><div class="d">กดต่ำจากกำไรวิกฤต | ปกติ 15-20%+</div></div>
+
+      <div class="metric"><div class="k">Medical Benefit Ratio</div><div class="v neg">~90.4%</div><div class="d">2025 actual | Q1 2026: ~89.4% ยังสูง</div></div>
+      <div class="metric"><div class="k">MA Membership</div><div class="v pos">7.1M คน</div><div class="d">+22% YoY (Q1 2026) — เติบโตแรง</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~0.89%</div><div class="d">$3.54/ปี | Ex-div 26 มิ.ย. 2569</div></div>
+      <div class="metric"><div class="k">EV/Revenue</div><div class="v">0.41x</div><div class="d">Managed care ปกติ 0.3-0.5x</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART (ราคาย้อนหลัง ~1 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ · Jul 2025 – Jun 2026</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#007B5F"></i>ราคา HUM</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $270</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        HUM ปรับตัวลงอย่างรุนแรงจาก $246 (ก.ค. 2568) สู่จุดต่ำสุด $172 (มี.ค. 2569) สะท้อนการประกาศ Guidance 2026 ที่ผิดหวัง — Stars headwind $3.5B ทำให้ Adjusted EPS ปี 2569 ร่วงเหลือ ≥$9 จากพีค $17+ ปี 2568 และตลาดตื่นตกใจกับ MLR ที่ยังสูงกว่าคาด หลังจากนั้นหุ้นฟื้นตัวแรง +130% จากจุดต่ำ หลัง CMS ประกาศ rate 2027 ดีกว่าคาด (+5% effective) + Q1 2569 revenue +23% YoY + MA membership ทะลุ 7.1M คน (+22%) แสดงว่า growth engine ยังแข็งแกร่ง แม้กำไรยังกดดันจาก Stars
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION (เฉลี่ย 3 วิธี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี — ทุกวิธีชี้ราคาปัจจุบันแพงกว่า Fundamental</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. Forward P/E (Recovery 2027E)</div><div class="mdesc">EPS adj. $15.73 (2027E consensus recovery) × P/E 12x — discount to UNH (15-18x) เนื่องจาก execution risk + Stars uncertainty ยังสูง</div></div>
+        <div class="mval">$189</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. EV/Revenue</div><div class="mdesc">EV/Revenue 0.35x × Revenue 2026E $155.6B = EV $54.5B − Net Debt $8.6B = Equity $45.9B ÷ 120.1M shares — managed care ปกติ 0.3-0.5x (UNH ~0.45x; HUM at discount)</div></div>
+        <div class="mval">$382</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Normalized P/E (2028E ฟื้นตัวเต็ม)</div><div class="mdesc">EPS ปกติ $20 (ฟื้นจาก $17 ปี 2568 + เติบโต 2-3 ปี) × P/E 12x — คาดการณ์ EPS normalize เมื่อ Stars recovery + MLR normalization สำเร็จ</div></div>
+        <div class="mval">$240</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $188 – $382</span></div>
+        <div class="r">$270</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        <b>การตีความ:</b> วิธี EV/Revenue ($382) ให้ค่าสูงสุด เพราะ revenue เติบโต +23% YoY จาก membership expansion — แต่ Revenue ของ managed care เป็น "pass-through" เป็นส่วนใหญ่ (premium → ค่ารักษาพยาบาล) กำไรจริงขึ้นอยู่กับ MLR การ trade ที่ 0.35x revenue จึงอาจ generous ในช่วงที่ MLR ยังสูง · วิธี Forward P/E ($189) อิง EPS 2027E $15.73 × 12x เป็น conservative มาก — ถ้า Stars recovery สำเร็จและ HUM rerating ขึ้น 14-15x อาจให้ค่าสูงกว่า · <b>ความเสี่ยงหลัก:</b> ราคาปัจจุบัน $397 สูงกว่า FV เฉลี่ย $270 มาก (-31.9%) สะท้อนการ "price in" recovery ไปแล้วล่วงหน้า 2-3 ปี · แม้ Analyst consensus ที่ $304 (Hold) ก็ยังต่ำกว่าราคาปัจจุบัน ชี้ว่า upside risk/reward ไม่น่าดึงดูด
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $396.63</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $270</div></div>
+        </div>
+        <div class="scale">
+          <span>$189<br><small>MOS 30%</small></span>
+          <span>$216<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$270<br><small>Fair Value</small></span>
+          <span style="text-align:right">$304<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">$382<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน $396.63 อยู่ <b>เหนือ Fair Value เฉลี่ย $270 ถึง ~+47%</b> และยังสูงกว่าเป้าเฉลี่ยนักวิเคราะห์ $304 (+31%) · หุ้นได้ราคาใน recovery scenario ล่วงหน้าไปแล้ว — ผู้ซื้อวันนี้กำลัง "จ่ายล่วงหน้า" สำหรับ EPS ปี 2027-2028 · โซนน่าสนใจเริ่มต้นที่ต่ำกว่า Fair Value ($270) และ deep value zone ที่ MOS 20% ($216) ซึ่งห่างจากราคาปัจจุบัน ~$180 (-45%)
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">−46.9%</div>
+        <div class="txt">ราคาแพงเกิน Fair Value — ไม่มี Margin of Safety (Overvalued)</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$216</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$189</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">< $270</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="396.63" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $396.63 • EPS ฐาน ~$9.00 (2026 adj. guidance) • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS flat 0%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$81</div>
+          <div class="ret neg">−79.6%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$9.00</span></li>
+            <li><span>P/E ออก</span><span>9x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$10.62</span></li>
+            <li><span>สถานการณ์</span><span>Stars ไม่ฟื้น MLR ยังสูง</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS recovery 24%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$192</div>
+          <div class="ret neg">−51.6%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$16.00</span></li>
+            <li><span>P/E ออก</span><span>12x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$10.62</span></li>
+            <li><span>สถานการณ์</span><span>Stars ฟื้น MA margins normalize</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +35%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$308</div>
+          <div class="ret neg">−22.3%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$22.00</span></li>
+            <li><span>P/E ออก</span><span>14x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$10.62</span></li>
+            <li><span>สถานการณ์</span><span>Stars 4+ เต็มฐาน MA margin >3%</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      <b>ข้อสังเกตสำคัญ:</b> แม้ใน Bull case ที่ EPS ฟื้นตัวแรงถึง $22 และได้ P/E rerating เป็น 14x ราคาเป้าหมายก็ยังอยู่ที่ $319 — ต่ำกว่าราคาปัจจุบัน $397 (~−20%) ซึ่งชี้ว่า <b>ตลาดได้ price in recovery สมบูรณ์แบบไปแล้ว</b> · การลงทุนจากราคานี้มีความเสี่ยง asymmetric สูงมาก — downside กว้าง (bear: −77%), upside จำกัด แม้ recovery สำเร็จ · <b>จุดเข้าซื้อที่น่าสนใจ:</b> หากราคาย่อลงสู่โซน $216–$270 จะให้ risk/reward ที่ดีกว่ามาก · คาดการณ์อิง Adj. EPS 2026 guidance ≥$9.00 · 2027E consensus $15.73 · 2028E normalized ~$20 · Dividend ~$3.54/ปี · แหล่ง: StockAnalysis.com, BusinessWire Q1 2026 earnings release, Yahoo Finance (มิ.ย. 2569)
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>CMS Rate ดีกว่าคาด:</b> Rate 2026 +5.06% และ 2027 effective ~+5% (ดีกว่า proposal ที่ flat) ช่วย revenue per member ขึ้นและรองรับ cost inflation</li>
+          <li><b>MA Membership ทะลุ 7.1M (+22%):</b> Q1 2569 — scale ที่เพิ่มขึ้นช่วยกระจาย fixed cost และเพิ่ม negotiating power กับ providers</li>
+          <li><b>Stars Ratings Recovery:</b> HUM กำลัง close HEDIS gaps +5% ahead of pace → หากได้ Stars 4+ กลับมา bonus revenue หลายพันล้านดอลลาร์จะกลับมา (2027-2028)</li>
+          <li><b>Benefit Redesign &amp; Cost Control:</b> ลด richness ของ MA benefits เพื่อควบคุม MLR — จะเห็นผลใน 2027 bid cycle ที่ submitted mid-2026</li>
+          <li><b>CenterWell Value-Based Care:</b> Healthcare services segment (pharmacy, primary care, home health) ช่วยควบคุม cost utilization และสร้าง moat ใน value-based care model</li>
+          <li><b>Illinois Medicaid HealthChoice:</b> Win ใหม่ operations เริ่ม 2027 — เป็น diversification นอก Medicare ลด concentration risk</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>Stars Ratings Headwind $3.5B:</b> BY 2026 ขาด bonus $3.5B net — ทำให้ Adj. EPS ปี 2569 ร่วงจาก $17 เหลือ ≥$9 เป็นความเสี่ยงที่ยังดำเนินอยู่ถ้า Stars ไม่ฟื้น</li>
+          <li><b>MLR ยังสูงกว่าปกติ:</b> Q1 2569 benefit ratio ~89.4% ยังห่างจาก target <87% — cost trend gap "wider heading into 2027 bid cycle" ตามที่ management ยอมรับ</li>
+          <li><b>Valuation แพงมาก:</b> ราคา $397 ที่ 25x 2027E EPS หรือ 44x 2026 EPS สะท้อนความคาดหวังสูง — execution miss ใดๆ จะทำราคาร่วงแรง</li>
+          <li><b>Regulatory &amp; Policy Risk:</b> Trump administration อาจปรับ MA payment rules / Medicare policy ไม่แน่นอน + ความเสี่ยงจาก CMS coding/risk adjustment changes</li>
+          <li><b>Utilization Trend ไม่แน่นอน:</b> Post-pandemic surgical surge อาจยังไม่จบ + aging MA population ทำ medical costs สูงขึ้นเรื่อยๆ ส่งผลต่อ MLR</li>
+          <li><b>Competition ใน MA:</b> CVS/Aetna มี 81% members ใน 4-Star plans vs HUM ที่ ~45% — ความเสียเปรียบเรื่อง Stars กระทบทั้ง revenue และ member attractiveness</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>Recovery Story น่าสนใจ แต่ราคาปัจจุบัน Price-In ไปมากเกินไปแล้ว — รอจังหวะ</h2>
+      <p>Humana เป็น pure-play Medicare Advantage ที่ใหญ่ที่สุดในสหรัฐ — growth engine แข็งแกร่ง (MA members +22%, revenue +23% Q1 2569) แต่กำลังเผชิญ "perfect storm" ของ MLR สูง + Stars headwind $3.5B ทำให้ Adjusted EPS ปี 2569 ร่วงเหลือ ≥$9 จากพีค $17+ ·
+      ราคาหุ้นได้ run up +61% ในรอบปี และ +130% จากจุดต่ำ $172 มาแล้ว สะท้อนว่าตลาด price in recovery สมบูรณ์แบบล่วงหน้า 2-3 ปีไปแล้ว ·
+      Analyst consensus Hold ที่ $304 ชี้ downside จากราคาปัจจุบัน · ทุก valuation scenario แม้แต่ bull case ยังให้ราคาเป้า ($319) ต่ำกว่าราคาวันนี้ ($397) ·
+      ธุรกิจ MA ยังมีอนาคตที่ดีในระยะยาว (aging US population, MA penetration rate ยังเพิ่มได้) แต่ <b>ราคาที่น่าสนใจสำหรับ value investor คือ $216–$270</b> ไม่ใช่ $397 ·
+      สำหรับนักลงทุนที่ต้องการ exposure ใน Medicare Advantage ควรรอ pullback จากปัจจัยลบใดๆ (execution miss, Stars revision, policy ไม่แน่นอน) ก่อนเข้าซื้อ</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$270 <span style="font-size:12px;color:#cab9a8">($188–$382)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −46.9% (แพง)</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$304 (Hold)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ที่ราคาปัจจุบัน $397 ไม่แนะนำให้ซื้อเพิ่ม — ตลาด price in recovery ไปแล้ว · หากถือไว้แล้ว พิจารณา <b>trim position</b> บางส่วน · รอ pullback สู่โซน <b>$216–$270</b> (MOS 20%–FV) ก่อนเข้าสะสม · จุด catalyst ต้องติดตาม: Stars ratings announcement (ก.ย. 2569) และ 2027 benefit design / MLR trend Q2-Q3 2569
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ EPS recovery ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    แหล่งอ้างอิง: Yahoo Finance (ราคา ณ 30 มิ.ย. 2569), StockAnalysis.com (Financials, Statistics, Forecast), BusinessWire / Humana Q1 2026 Earnings Release (29 เม.ย. 2569), StockTitan / SEC 8-K FY2026, MarketBeat Analyst Consensus, TIKR.com Q1 2026 Analysis
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 30 มิ.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
