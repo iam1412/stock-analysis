@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น MetLife (MET) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"MET","currency":"USD","price":85.99,"fairValue":92.5,"mos":7.0,"upside":7.6,"pe":9.2,"dividendYield":2.76,"roe":17.0}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#0070C0",
+    "accentDark": "#004F8B",
+    "darkGrad": "linear-gradient(135deg,#003366 0%,#005A9E 60%,#0070C0 100%)",
+    "glow": "rgba(0,112,192,0.35)",
+    "subColor": "#cce4f7",
+    "headerMuted": "rgba(204,228,247,0.7)",
+    "verdictText": "#e0f0ff",
+    "vcellLabel": "#90c8f0",
+    "badge": "#0070C0",
+    "chgBg": "#1e8e3e",
+    "chgColor": "#ffffff"
+  },
+  "chart": {
+    "data": [
+      ["ก.ค. 25", 75.95],
+      ["ส.ค. 25", 81.36],
+      ["ก.ย. 25", 82.37],
+      ["ต.ค. 25", 79.82],
+      ["พ.ย. 25", 76.56],
+      ["ธ.ค. 25", 78.94],
+      ["ม.ค. 26", 78.88],
+      ["ก.พ. 26", 72.07],
+      ["มี.ค. 26", 70.72],
+      ["เม.ย. 26", 80.10],
+      ["พ.ค. 26", 82.69],
+      ["มิ.ย. 26", 85.99]
+    ],
+    "min": 65,
+    "max": 105,
+    "grid": [68, 74, 80, 86, 92, 98],
+    "fairLine": 92.5,
+    "currency": "$",
+    "highlight": [2, 8],
+    "gridFmt": "v.toFixed(0)",
+    "dataFmt": "d[1].toFixed(2)"
+  },
+  "gauge": {
+    "min": 55,
+    "max": 105,
+    "cur": 85.99,
+    "fair": 92.5,
+    "fairLabelTop": false
+  },
+  "fv": 92.5
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">&#9679;&#9679;&#9679;</div>
+    <div>
+      <span class="tag">NYSE: MET</span>
+      <span class="tag">Insurance — Life &amp; Health</span>
+      <span class="tag">Global Diversified</span>
+    </div>
+    <h1>MetLife, Inc.</h1>
+    <div class="sub">Global life &amp; health insurance • Group Benefits (US employer-sponsored life/disability) • Pension risk transfer — RIS • Asia operations • Latin America &amp; EMEA • Run-off MetLife Holdings (post-BHF spinoff 2017)</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$85.99<small>(MET)</small></div>
+      </div>
+      <div class="chg">▲ +13.2% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 30 มิถุนายน 2569<br>
+        กรอบ 52 สัปดาห์ $67.33 – $89.62<br>
+        ที่มา: Yahoo Finance, StockAnalysis.com, MetLife IR
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ มิ.ย. 2569 · EPS ใช้ Adjusted Operating EPS (non-GAAP)</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~$55.3B</div><div class="d">~669M shares out.</div></div>
+      <div class="metric"><div class="k">P/E (adj. TTM)</div><div class="v neu">~9.2x</div><div class="d">adj. operating EPS $9.36 TTM</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">9–12x</div><div class="d">ช่วง insurance sector ปกติ</div></div>
+      <div class="metric"><div class="k">P/BV (adj. BVPS)</div><div class="v neu">1.50x</div><div class="d">adj. BVPS $57.41 (Q1 2569)</div></div>
+
+      <div class="metric"><div class="k">Adj. EPS FY2568</div><div class="v">$8.89/sh</div><div class="d">+10% YoY · FY2567 = $8.08</div></div>
+      <div class="metric"><div class="k">EPS adj. TTM</div><div class="v">~$9.36</div><div class="d">Q2'68–Q1'69 · Q1'69 = $2.42 (+23%)</div></div>
+      <div class="metric"><div class="k">Adj. BVPS</div><div class="v">~$57.41</div><div class="d">+4% YoY · GAAP BVPS $37.92</div></div>
+      <div class="metric"><div class="k">Adj. ROE / ROA</div><div class="v pos">~17% / ~0.5%</div><div class="d">Q1'69: 17%, FY'68: 16% (mid target)</div></div>
+
+      <div class="metric"><div class="k">รายได้รวม FY2568</div><div class="v neu">$77.1B</div><div class="d">+8.6% YoY · PFOs $57.6B</div></div>
+      <div class="metric"><div class="k">PRT &amp; RIS FY2568</div><div class="v">$14.2B PRT</div><div class="d">บวก UK longevity reins. $11.1B</div></div>
+      <div class="metric"><div class="k">เงินปันผล (fwd.)</div><div class="v">~2.76%</div><div class="d">$2.37/sh ประจำปี · จ่าย 4 ครั้ง/ปี</div></div>
+      <div class="metric"><div class="k">Beta (5Y)</div><div class="v">0.78</div><div class="d">ผันผวนน้อยกว่าตลาด</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART (ราคาย้อนหลัง ~1 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#0070C0"></i>ราคา MET</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $92.5</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคา MET เริ่มรอบปีที่ ~$75.95 (ก.ค. 68) พุ่งขึ้นสู่ ~$82.37 (ก.ย. 68) ก่อนดิ่งต่ำสุดที่ $70.72 (มี.ค. 69)
+        รับแรงกดดันจากความกังวลอัตราดอกเบี้ยและผลขาดทุน GAAP จากการ mark-to-market
+        หลังจากนั้นฟื้นตัวแข็งแกร่ง +21% สู่ ~$85.99 ณ สิ้นมิ.ย. 69
+        รับแรงหนุนจาก Q1 2569 adjusted EPS +23% YoY + ดีล pension risk transfer สูงสุดเป็นประวัติการณ์ · ผลตอบแทนรอบปี +13.2%
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION (เฉลี่ย 3 วิธี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ยถ่วงน้ำหนัก 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS adj. $9.36 × P/E 10.5x = $98.28 — ระดับ mid-range สำหรับ global insurer ที่มี ROE 17%; ปัจจุบัน MET ซื้อขายที่เพียง 9.2x ถือว่าต่ำกว่าค่าเหมาะสม</div></div>
+        <div class="mval">$98.28</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 17% − g 5%)/(r 9% − g 5%) = 3.0x แต่ market discount insurance → ใช้ 1.6x × adj. BVPS $57.41</div></div>
+        <div class="mval">$91.86</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. DDM / Gordon Growth</div><div class="mdesc">D₁ = $2.37 × (1+6%); g 6%, r 9% → DDM = $2.51 / (9% − 6%) = $83.74 · สะท้อน dividend yield ที่ยั่งยืน payout ratio ~25%</div></div>
+        <div class="mval">$83.74</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $84 – $98</span></div>
+        <div class="r">$92.5</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        P/E ให้ค่าสูงสุด ($98) เพราะ adjusted EPS TTM $9.36 แข็งแกร่ง · Justified P/BV ($92) สอดคล้องกับ ROE สูงแต่ discount
+        จากความผันผวน GAAP · DDM ให้ค่าต่ำสุด ($84) เพราะ payout ratio เพียง ~25% (MET เน้น buyback)
+        ถ่วงน้ำหนัก 40/35/25 → FV $92.5 ใกล้เคียง consensus นักวิเคราะห์ $92.25 (18 คน · Buy)
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $85.99</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $92.5</div></div>
+        </div>
+        <div class="scale">
+          <span>$64.75<br><small>MOS 30%</small></span>
+          <span>$74.00<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$92.5<br><small>Fair Value</small></span>
+          <span style="text-align:right">$98<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">$106<br><small>เป้าสูงสุด Analyst</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        MET ซื้อขายที่ $85.99 ต่ำกว่า Fair Value $92.5 อยู่ ~7% · MOS ปานกลาง (7%) แสดงว่าหุ้นยัง "ถูกพอประมาณ" แต่ไม่ได้ถูกพิเศษ ·
+        โซนทยอยสะสมที่น่าสนใจคือ &lt;$92.5 (ต่ำกว่า FV) · โซน deep value ที่ MOS 20% คือ $74.00 และ MOS 30% คือ $64.75 ·
+        นักวิเคราะห์ 18 คน consensus Buy เป้าเฉลี่ย $92.25 (สูงสุด $106 ต่ำสุด $75)
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict ok">
+        <div class="big">+7.0%</div>
+        <div class="txt">MOS ปานกลาง — ราคาต่ำกว่า FV เล็กน้อย · ยังอยู่ในโซนน่าสนใจ</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$74.00</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$64.75</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $92.5</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>&#129518; ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="85.99" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $85.99 • EPS ฐาน ~$9.36 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>&#128059; Bear</span><span>EPS +2%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$87.03</div>
+          <div class="ret pos">+1.2%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$9.93</span></li>
+            <li><span>P/E ออก</span><span>8.0x</span></li>
+            <li><span>ราคาจาก P/E</span><span>~$79.44</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$7.54</span></li>
+            <li><span>สถานการณ์</span><span>อัตราดอกเบี้ยกด, claims สูง</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>&#9878;&#65039; Base</span><span>EPS +8%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$131.33</div>
+          <div class="ret pos">+52.7%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$11.79</span></li>
+            <li><span>P/E ออก</span><span>10.5x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$7.54</span></li>
+            <li><span>สถานการณ์</span><span>PRT เติบโต, Asia ขยาย</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>&#128640; Bull</span><span>EPS +14%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$180.92</div>
+          <div class="ret pos">+110.4%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$13.87</span></li>
+            <li><span>P/E ออก</span><span>12.5x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$7.54</span></li>
+            <li><span>สถานการณ์</span><span>PRT+Asia breakthrough</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      การคาดการณ์อิง adjusted operating EPS ฐาน $9.36 (TTM Q2'68–Q1'69) · Base สมมติ EPS โต 8%/ปี ใกล้เคียง consensus FY69E $9.92 (+10.9%) ·
+      P/E ออก 10.5x สมเหตุสมผลสำหรับ global insurer ที่มี ROE 16-17% · Bear สมมติ slowdown เศรษฐกิจ + mortality/morbidity claims แย่ลง + P/E compression ·
+      Bull สมมติ pension risk transfer ยังเติบโตแรง (บริษัทต่างๆ ยังต้องการ offload pension liability) + Asia operations ขยายตัว ·
+      ปันผลรวม 3 ปีประมาณ $7.54 (อิง ~$2.37/ปี เติบโต ~6%/ปี)
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก &amp; ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">&#9650;</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>Pension Risk Transfer (PRT) บูม:</b> บริษัทขนาดใหญ่ต้องการ offload pension obligations ให้ insurers — MetLife เป็น leader ใน US+UK; FY68 ปิดดีล PRT $14.2B + UK longevity reins $11.1B (สูงสุดเป็นประวัติการณ์)</li>
+          <li><b>Asia Growth Engine:</b> ธุรกิจประกันชีวิตใน Asia ยังเติบโตสูง โดยเฉพาะ Japan, Korea; MetLife มีฐานลูกค้าแข็งแกร่งและ brand recognition ที่ดี ช่วยหนุน EPS ในระยะยาว</li>
+          <li><b>Investment Income สูงขึ้น:</b> อัตราดอกเบี้ยสูงช่วยหนุน Net Investment Income — Q1'69 NII +10% YoY ถึง $5.4B; พอร์ตตราสารหนี้ที่ reinvest ได้ยีลด์สูงขึ้น</li>
+          <li><b>Share Buyback + Dividend Growth:</b> ส่งคืนผู้ถือหุ้น $4.4B ใน FY68 (buyback+dividend); payout ratio ต่ำ (~25%) มีช่องว่างเพิ่มได้อีก; dividend โต ~5-6%/ปีในช่วง 5 ปีที่ผ่านมา</li>
+          <li><b>Group Benefits — US แข็งแกร่ง:</b> นายจ้างในสหรัฐฯ ยังต้องการ group life/disability; ราคาพรีเมียมปรับขึ้นได้ตาม claims experience; segment สร้างกระแสเงินสดสม่ำเสมอ</li>
+          <li><b>Valuation ถูกกว่า peers:</b> P/E adj. 9.2x ต่ำกว่า Prudential (PRU) ~10x และ Principal Financial ~12x; P/BV 1.5x (adj.) อาจ re-rate ขึ้นได้เมื่อ GAAP earnings stable</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">&#9660;</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>GAAP EPS ผันผวนสูง:</b> GAAP EPS ต่างจาก adjusted EPS มากเพราะ mark-to-market derivatives — FY68 GAAP EPS $4.71 vs adjusted $8.89; ทำให้นักลงทุน retail สับสน</li>
+          <li><b>ความเสี่ยงอัตราดอกเบี้ย:</b> หากอัตราดอกเบี้ยลดลงเร็ว spread การลงทุนจะแคบลง กระทบ NII; อัตราสูงเกินไปก็กระทบ bond portfolio GAAP mark</li>
+          <li><b>Pandemic / Catastrophe Risk:</b> การระบาดใหญ่หรือภัยธรรมชาติรุนแรงกระทบ mortality/morbidity claims อย่างมีนัยสำคัญ; COVID-19 เป็นตัวอย่างที่กระทบ EPS รายไตรมาส</li>
+          <li><b>Regulatory &amp; Capital Requirements:</b> ข้อกำหนด solvency capital ที่เข้มงวดขึ้น (Bermuda BSCR, EU Solvency II) กระทบ capital allocation; ใน US อาจถูก designate เป็น SIFI อีกครั้ง</li>
+          <li><b>Currency Risk:</b> รายได้จาก Asia+LatAm+EMEA คิดเป็นสัดส่วนสูง; เงินดอลลาร์แข็งค่ากระทบ translation เป็น USD (เช่น เยน/วอน อ่อนค่า)</li>
+          <li><b>MetLife Holdings Run-off:</b> พอร์ต legacy retail insurance ที่กำลัง run-off อาจมีค่าใช้จ่ายไม่คาดคิดจากการปรับสมมติฐาน actuarial</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>MET — Global Insurer คุณภาพสูง · ราคาต่ำกว่า FV ~7% · ทยอยสะสม</h2>
+      <p>MetLife เป็นบริษัทประกันชีวิตระดับโลกที่มีธุรกิจกระจายตัวดีใน 5 ภูมิภาค โดดเด่นด้าน Pension Risk Transfer (PRT) ที่เติบโตจากกระแส de-risking ของกองทุนบำนาญบริษัทยักษ์ใหญ่ · Adjusted ROE 17% สูงกว่า target range 15-17% · EPS TTM $9.36 ที่ราคา $85.99 ทำให้ P/E adj. เพียง 9.2x ซึ่งถูกกว่า peers · ความเสี่ยงหลักคือ GAAP EPS ผันผวนจาก mark-to-market แต่ adjusted EPS เติบโตสม่ำเสมอ · ราคายืนยันจาก 2 แหล่ง: Yahoo Finance $85.99 และ StockAnalysis $85.95 (ต่างกัน &lt;0.05%) · Consensus 18 นักวิเคราะห์ Buy เป้าเฉลี่ย $92.25</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$92.5 <span style="font-size:12px;color:#cab9a8">($84–$98)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +7.0%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$92.25 (Buy)</div></div>
+      </div>
+      <div class="zone">
+        &#128161; <b>กลยุทธ์:</b> ทยอยสะสมที่ราคาปัจจุบัน $85.99 (MOS 7%) · เพิ่มน้ำหนักถ้าราคาต่ำกว่า $80 (MOS &gt;13%) · จุดน่าสนใจมากที่ MOS 20% = $74.00 · Stop-loss พิจารณาที่ adj. ROE หลุดต่ำกว่า 14% หรือ PRT pipeline ชะลอตัวอย่างมีนัยสำคัญ
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>&#9888;&#65039; คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    ราคา: Yahoo Finance + StockAnalysis.com (30 มิ.ย. 2569) · EPS adj. TTM: MetLife Q1 2569 Earnings Release + FY2568 Results ·
+    พื้นฐาน: MetLife Investor Relations, SEC Form 8-K, StockAnalysis.com
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 30 มิถุนายน 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
