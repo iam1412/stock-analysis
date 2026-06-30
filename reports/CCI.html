@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น Crown Castle (CCI) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"CCI","currency":"USD","price":76.92,"fairValue":88.00,"mos":12.6,"upside":14.4,"pe":null,"dividendYield":5.53,"roe":null}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent":       "#3D1C6E",
+    "accentDark":   "#280F50",
+    "darkGrad":     "linear-gradient(135deg,#1A0A35 0%,#2E1060 50%,#3D1C6E 100%)",
+    "glow":         "rgba(61,28,110,0.35)",
+    "subColor":     "#C9B8E8",
+    "headerMuted":  "rgba(201,184,232,0.65)",
+    "verdictText":  "#E8DEFF",
+    "vcellLabel":   "rgba(201,184,232,0.75)",
+    "badge":        "#5E35B1",
+    "chgBg":        "#c5221f",
+    "chgColor":     "#fff"
+  },
+  "chart": {
+    "data": [
+      ["ม.ค. 68", 105.09],
+      ["ก.พ. 68", 99.14],
+      ["มี.ค. 68", 96.49],
+      ["เม.ย. 68", 90.22],
+      ["พ.ค. 68", 91.28],
+      ["มิ.ย. 68", 88.87],
+      ["ก.ค. 68", 86.81],
+      ["ส.ค. 68", 89.54],
+      ["ก.ย. 68", 81.31],
+      ["ต.ค. 68", 88.78],
+      ["พ.ย. 68", 91.50],
+      ["ธ.ค. 68", 78.63],
+      ["มิ.ย. 69", 76.92]
+    ],
+    "min": 55,
+    "max": 120,
+    "grid": [60, 75, 88, 100, 115],
+    "fairLine": 88.00,
+    "currency": "$",
+    "highlight": [0, 3, 8, 12]
+  },
+  "gauge": {
+    "min": 55,
+    "max": 115,
+    "cur": 76.92,
+    "fair": 88.00,
+    "fairLabelTop": true,
+    "spans": [
+      {"lo":55, "hi":65, "color":"#c5221f", "label":"อันตราย"},
+      {"lo":65, "hi":76, "color":"#f97316", "label":"ถูกมาก"},
+      {"lo":76, "hi":88, "color":"#eab308", "label":"ต่ำกว่า FV"},
+      {"lo":88, "hi":99, "color":"#22c55e", "label":"เหนือ FV"},
+      {"lo":99, "hi":115, "color":"#3b82f6", "label":"Premium"}
+    ]
+  },
+  "fv": 88.00
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">●●●●●●●●●●●●●●●●●●●●</div>
+    <div>
+      <span class="tag">NYSE: CCI</span>
+      <span class="tag">Real Estate / Cell Tower REIT</span>
+      <span class="tag">Pure-Play Tower</span>
+    </div>
+    <h1>Crown Castle Inc.</h1>
+    <div class="sub">Largest US cell tower REIT • ~40,000 towers (pure-play post-fiber sale) • 5G densification tailwind • Verizon/AT&amp;T/T-Mobile tenants • ~5.5% dividend yield • Restructuring to reduce leverage</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$76.92<small>(CCI)</small></div>
+      </div>
+      <div class="chg">▼ −26.8% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 30 มิ.ย. 2569<br>
+        กรอบ 52 สัปดาห์ $75.96 – $115.76<br>
+        ที่มา: Yahoo Finance, StockAnalysis.com, Globe Newswire
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">Tower REIT — ใช้ AFFO/sh แทน EPS เป็น Earnings Metric หลัก</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">$33.6B</div><div class="d">436M หุ้น (post-buyback ~423M)</div></div>
+      <div class="metric"><div class="k">P/AFFO (2026F)</div><div class="v neu">~16.8x</div><div class="d">AFFO/sh $4.59F (midpoint) — ต่ำกว่า AMT ~22x</div></div>
+      <div class="metric"><div class="k">AFFO/sh 2026F</div><div class="v pos">$4.53–$4.65</div><div class="d">Updated หลังปิดขาย fiber/small cell พ.ค. 69</div></div>
+      <div class="metric"><div class="k">AFFO/sh 2025</div><div class="v">$4.36</div><div class="d">ปีก่อน (รวม fiber ทั้งปี)</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$4.21B</div><div class="d">ลดลง 4.4% YoY (ตัด fiber ออก)</div></div>
+      <div class="metric"><div class="k">Site Rental Rev. 2026F</div><div class="v">$3.85B</div><div class="d">Tower-only หลังขาย fiber — ลด DISH/Sprint</div></div>
+      <div class="metric"><div class="k">Adj. EBITDA 2026F</div><div class="v">$2.69B</div><div class="d">margin ~70% (tower business สูง)</div></div>
+      <div class="metric"><div class="k">Net Debt (post-repay)</div><div class="v neg">~$17.0B</div><div class="d">ลดจาก $24.6B หลังจ่ายหนี้ $7B จาก fiber sale</div></div>
+
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v pos">~5.53%</div><div class="d">$4.25/sh/ปี ($1.0625/ไตรมาส) · ลด 32% YoY</div></div>
+      <div class="metric"><div class="k">Dividend/sh (รายปี)</div><div class="v pos">$4.25</div><div class="d">Yield ~5.53% · ปรับโครงสร้างใหม่ Q1 2026</div></div>
+      <div class="metric"><div class="k">จำนวน Tower</div><div class="v">~40,000</div><div class="d">ครอบคลุมสหรัฐทั้งหมด (pure-play)</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">0.95</div><div class="d">ใกล้เคียง market · REIT defensive</div></div>
+    </div>
+    <p style="font-size:12px;color:var(--muted);margin-top:10px;line-height:1.6">
+      <b>หมายเหตุ P/E:</b> CCI เป็น REIT — P/E (TTM ~33x อิง Net Income GAAP) <b>ไม่ใช่ metric หลัก</b> เพราะ net income บิดเบือนด้วยค่าเสื่อมราคา (depreciation) ขนาดใหญ่จากโครงสร้างพื้นฐานทาวเวอร์
+      metric ที่นักวิเคราะห์ใช้ประเมิน Tower REIT คือ <b>AFFO (Adjusted Funds From Operations)</b> ซึ่งบวกกลับ depreciation/amortization และปรับปัจจัยที่ไม่เป็นเงินสด
+      หุ้นคู่แข่ง American Tower (AMT) ซื้อขายที่ P/AFFO ~22x ขณะที่ CCI ที่ ~16.8x สะท้อนส่วนลด restructuring ที่ตลาดยังตั้ง
+      อ้างอิงงบ Q1 2026 (มี.ค. 2569) และ Guidance ปี 2026F อัปเดตหลังปิดขาย fiber 1 พ.ค. 69
+    </p>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ม.ค. 2568 – มิ.ย. 2569</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#3D1C6E"></i>ราคา CCI</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $88.00</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        CCI ร่วงจาก <b>$105 (ม.ค. 68)</b> สู่ระดับ <b>$77 (มิ.ย. 69)</b> — ลดลงราว <b>26.8% ในรอบปี</b>
+        แรงกดดันหลักมาจาก: (1) ความไม่แน่นอนการขายธุรกิจ fiber/small cell ให้ Zayo + EQT มูลค่า $8.5B
+        (2) DISH ยกเลิกสัญญาเช่าทาวเวอร์ทำให้รายได้หาย ~$220M ใน 2026
+        (3) อัตราดอกเบี้ยสูงกดมูลค่า REIT ที่มีหนี้สูง — Net Debt เคยสูงถึง $24.6B
+        หลังปิดการขาย fiber บน <b>1 พ.ค. 69</b> บริษัทใช้เงินจ่ายหนี้ $7B ลดภาระดอกเบี้ยลงอย่างมีนัยสำคัญ
+        ราคา stabilize ใกล้ 52-week low ที่ $75.96 สะท้อนความกังวลตลาดในช่วง transition สู่ pure-play tower
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">3 วิธี Tower REIT: P/AFFO · DDM · EV/EBITDA</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/AFFO Valuation</div><div class="mdesc">AFFO/sh 2026F adj. $4.59 × P/AFFO เป้าหมาย 20x — American Tower (AMT) trade ที่ ~22x ให้ส่วนลด 10% เนื่องจาก CCI กำลัง transition + DISH headwind</div></div>
+        <div class="mval">$91.80</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. DDM / Gordon Growth Model</div><div class="mdesc">D₁ = ปันผล $4.25 × 1.025; g = 2.5% (tower escalator ~3%, offset DISH); r = 8.5% (required return สำหรับ leveraged REIT) → $4.356 / 0.06</div></div>
+        <div class="mval">$72.60</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. EV/EBITDA Sum-of-Parts</div><div class="mdesc">Tower EBITDA 2026F $2.69B × 22x EV multiple = EV $59.2B − Net Debt post-repay ~$17.0B = Equity $42.2B ÷ ~423M shares (post buyback)</div></div>
+        <div class="mval">$99.76</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $72.60 – $99.76</span></div>
+        <div class="r">$88.00</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        <b>P/AFFO ($91.80):</b> วิธีนี้เหมาะกับ tower REIT มากที่สุด — ใช้ P/AFFO 20x (discount 10% จาก AMT) สะท้อน DISH headwind + leveraged balance sheet
+        <b>DDM ($72.60):</b> ผลลัพธ์ต่ำสุดเพราะ required return สูง (8.5%) บวกกับเงินปันผลที่ลดลง 32% YoY ในปีนี้ — ถ้า dividend กลับมาเติบโต 4-5% FV จะสูงกว่านี้
+        <b>EV/EBITDA ($99.76):</b> แบบ sum-of-parts มองว่าหลังลดหนี้ equity value สูงกว่าราคาตลาดชัดเจน
+        <b>หมายเหตุ cross-source:</b> ราคา $76.92 ยืนยันจาก Yahoo Finance (5.41% yield) และ StockAnalysis.com ($76.94) ต่างกัน &lt;0.1% ✓
+        AFFO 2026F $4.53–$4.65 ยืนยันจาก Globe Newswire (May 2026 press release) และ StockTitan Q1 2026 earnings ✓
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $76.92</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $88.00</div></div>
+        </div>
+        <div class="scale">
+          <span>$61.60<br><small>MOS 30%</small></span>
+          <span>$70.40<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$88.00<br><small>Fair Value</small></span>
+          <span style="text-align:right">$99.07<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">$99.76<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน <b>$76.92</b> อยู่ใต้ Fair Value <b>$88</b> ประมาณ <b>12.6%</b> — ยังไม่ถึงโซน MOS 20% ($70.40) แต่ต่ำกว่า FV มาก
+        เป้าเฉลี่ยนักวิเคราะห์ 21 คน อยู่ที่ <b>$99.07</b> (Buy consensus) ซึ่งใกล้เคียงกับกรอบบน FV จากวิธี EV/EBITDA
+        Upside จากราคาปัจจุบันสู่เป้าเฉลี่ย analyst = <b>+28.8%</b> (ยังไม่รวมปันผล ~5.5%)
+        หากตลาดปรับ multiple กลับใกล้ AMT เมื่อ transition สำเร็จ ราคาเป้าหมายก็สูงขึ้นได้ถึง $100+
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict ok">
+        <div class="big">+12.6%</div>
+        <div class="txt">โซนต่ำกว่า Fair Value — น่าสนใจแต่ยังมีความเสี่ยง Transition</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$70.40</div><div class="d">โซนน่าสนใจสำหรับ value — ใกล้ 52W Low</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$61.60</div><div class="d">โซนถูกมาก (deep value) — ต้องมีเหตุการณ์เลวร้าย</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $88.00</div><div class="d">ราคาปัจจุบันอยู่ใต้ FV แล้ว</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="76.92" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $76.92 • AFFO ฐาน ~$4.59 • รวมปันผล ~$4.25/ปี</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>AFFO +1%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$80.41</div>
+          <div class="ret neg">+20.7%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$4.73</span></li>
+            <li><span>P/E ออก</span><span>17x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$12.75</span></li>
+            <li><span>สถานการณ์</span><span>DISH ลาก / 5G หดตัว</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>AFFO +3%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$100.40</div>
+          <div class="ret pos">+48.1%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$5.02</span></li>
+            <li><span>P/E ออก</span><span>20x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$13.50</span></li>
+            <li><span>สถานการณ์</span><span>Pure-play re-rate / 5G เต็มสูบ</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>AFFO +5%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$116.82</div>
+          <div class="ret pos">+69.0%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$5.31</span></li>
+            <li><span>P/E ออก</span><span>22x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$14.25</span></li>
+            <li><span>สถานการณ์</span><span>Multiple re-rate = AMT / dividend ขึ้น</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      การประมาณนี้ใช้ <b>AFFO/sh แทน EPS</b> เพราะ CCI เป็น REIT — Bear scenario ยังคงผลตอบแทนบวก (~18%) เพราะปันผล 5.5% ช่วยรองรับ
+      Base case คาด AFFO โต 3%/ปี (สอดคล้อง tower escalator clause ~3%) และ P/AFFO re-rate จาก 16.8x → 20x เมื่อ transition สำเร็จ
+      Bull case มองว่า multiple กลับมาเทียบ AMT (~22x) + AFFO โต 5% จากการเพิ่ม tenancy บนทาวเวอร์เดิม (colocation)
+      ความเสี่ยงหลักคือ DISH headwind ลาก + อัตราดอกเบี้ยสูง + หนี้ที่ยังคงสูงแม้ลดแล้ว
+      <b>ปันผล 3 ปี:</b> อ้างอิง $4.25/sh/ปี (maintain dividend โดยไม่ตัด) — ยังไม่รวมกรณีขึ้นปันผลที่อาจเกิดหลัง 2026
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก &amp; ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>Pure-Play Tower Re-Rating:</b> หลังขาย fiber/small cell สำเร็จ CCI กลายเป็น pure-play tower ที่ตลาดให้ premium multiple — AMT trade ที่ P/AFFO ~22x เทียบ CCI ที่ ~16.8x ช่องว่าง valuation ยังกว้าง</li>
+          <li><b>5G Densification Cycle:</b> Verizon, AT&amp;T, T-Mobile ยังลงทุน capex 5G อย่างต่อเนื่อง — การ deploy มากขึ้นต้องการ tower colocation ที่ margin สูงมาก (incremental tenant ต้นทุนต่ำ)</li>
+          <li><b>ลดหนี้ $7B:</b> ใช้เงินจาก fiber sale ลดดอกเบี้ยจ่ายลงประมาณ $350-400M/ปี — เพิ่ม AFFO/sh อย่างมีนัยสำคัญและลดความเสี่ยง balance sheet</li>
+          <li><b>Contract Escalators:</b> สัญญา 90-95% ของรายได้ tower มี built-in escalator ~3%/ปี — รายได้มีความแน่นอนสูง predictable ไม่ขึ้นกับ capex ผู้เช่า</li>
+          <li><b>Buyback $1B:</b> บริษัทอนุมัติซื้อหุ้นคืน $1B ที่ราคาปัจจุบัน ~$77 เป็น accretive AFFO/sh อย่างมาก</li>
+          <li><b>Dividend Yield 5.5%:</b> Yield ที่น่าสนใจสำหรับ income investor — แม้ลดปันผล 32% YoY แต่ยังสูงกว่า 10Y Treasury มากพอ</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>DISH/Sprint Headwinds:</b> รายได้ลด $240M ใน 2026 จาก DISH ยกเลิกสัญญา — ยังกด topline และ AFFO แม้จะถูก bake in แล้วในราคา แต่ recovery ไม่แน่นอน</li>
+          <li><b>Leverage ยังสูง:</b> แม้ลดหนี้ $7B แล้ว Net Debt ยังอยู่ที่ ~$17B — Net Debt/EBITDA ~6.3x สูงกว่า AMT ~5x ความเสี่ยง refinancing ถ้า rate ยังสูง</li>
+          <li><b>อัตราดอกเบี้ย:</b> REIT ที่มีหนี้สูงอ่อนไหวต่อ rate สูง — ถ้า Fed ไม่ลด rate ตามคาด cost of debt สูงกดมูลค่า DDM และกดราคา REIT ทั้งเซกเตอร์</li>
+          <li><b>Carrier Consolidation:</b> การควบรวมหรือ spectrum sharing ของ Verizon/AT&amp;T/T-Mobile อาจลดความต้องการ tower ในบางพื้นที่ — concentration risk จาก 3 ลูกค้าหลัก</li>
+          <li><b>Post-Transition ยังไม่ชัด:</b> CCI ยังอยู่ใน transition — นักลงทุนบางส่วนรอดูผลการดำเนินงาน tower-only 2-3 ไตรมาสก่อนเชื่อมั่น อาจกดราคาระยะสั้น</li>
+          <li><b>Dividend Cut Risk:</b> ปันผลลด 32% YoY แล้ว — ถ้า AFFO แย่กว่า guidance อาจลดปันผลอีก ทำให้ income investor ขาย</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>CCI: Pure-Play Tower ที่กำลัง Re-Rate — ซื้อทยอยสะสม ใต้ $88</h2>
+      <p>
+        Crown Castle กำลังผ่าน <b>transformation ที่เจ็บปวดแต่จำเป็น</b> — ขาย fiber/small cell ที่ดูดเงินลงทุนออก ($8.5B) กลับมาโฟกัส tower business ที่มี
+        margin สูง predictable และ asset-light การลดหนี้ $7B ลด risk profile อย่างชัดเจน ขณะที่ 5G densification cycle ยังเป็น secular tailwind ระยะยาว
+        ราคาปัจจุบัน $76.92 สะท้อน <b>ส่วนลด transition risk</b> ที่มากเกินควรเทียบกับ peer อย่าง AMT — P/AFFO 16.8x vs AMT 22x
+        ถ้า CCI แสดงให้เห็นว่าธุรกิจ tower-only ทำได้ดีใน 2-3 ไตรมาสหน้า multiple re-rate กลับ 20x จะให้ upside ชัดเจน
+        ความเสี่ยงหลักคือ DISH headwind ยาวนานกว่าคาด + อัตราดอกเบี้ยที่ยังสูง
+      </p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$88.00 <span style="font-size:12px;color:#cab9a8">($72.60–$99.76)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +12.6%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$99.07 (Buy · 21 คน)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> <b>ทยอยสะสมใต้ $88</b> (Fair Value) — เริ่ม position ได้เลย ราคาปัจจุบัน $76.92 ให้ MOS 12.6%
+        ถ้าราคาลงทดสอบ $70-71 (MOS 20%) เพิ่มสัดส่วน · หยุดซื้อถ้าราคาเกิน $88 รอ pullback
+        target ออก 3 ปี $100-110 (AFFO re-rate + dividend) · ถือรับปันผล 5.5% ระหว่างรอ
+        <b>ไม่แนะนำสำหรับ</b>: ผู้ที่ต้องการ growth สูง หรือไม่รับความเสี่ยง leverage/transition
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/AFFO เป้าหมาย, อัตราเติบโต AFFO (g), ผลตอบแทนที่ต้องการ (r) และ EBITDA ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    แหล่งข้อมูล: Yahoo Finance, StockAnalysis.com, Globe Newswire (Crown Castle Press Release 1 พ.ค. 69), StockTitan (Q1 2026 Earnings)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 30 มิ.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>

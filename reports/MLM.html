@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น Martin Marietta Materials (MLM) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"MLM","currency":"USD","price":581,"fairValue":602,"mos":3.5,"upside":3.6,"pe":32,"dividendYield":0.57,"roe":9.9}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#4A6FA5",
+    "accentDark": "#2E4E7E",
+    "darkGrad": "linear-gradient(135deg,#1a2a45 0%,#243a5e 60%,#2E4E7E 100%)",
+    "glow": "rgba(74,111,165,0.35)",
+    "subColor": "#7a9cc7",
+    "headerMuted": "rgba(255,255,255,0.55)",
+    "verdictText": "#d0e4ff",
+    "vcellLabel": "rgba(255,255,255,0.6)",
+    "badge": "#4A6FA5",
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#1e8e3e"
+  },
+  "chart": {
+    "data": [
+      ["ก.ค. 68", 572],
+      ["ส.ค. 68", 613],
+      ["ก.ย. 68", 627],
+      ["ต.ค. 68", 611],
+      ["พ.ย. 68", 621],
+      ["ธ.ค. 68", 620],
+      ["ม.ค. 69", 650],
+      ["ก.พ. 69", 675],
+      ["มี.ค. 69", 587],
+      ["เม.ย. 69", 618],
+      ["พ.ค. 69", 581],
+      ["มิ.ย. 69", 581]
+    ],
+    "min": 500,
+    "max": 730,
+    "grid": [520, 570, 620, 670, 720],
+    "fairLine": 602,
+    "currency": "$",
+    "highlight": [7, 8]
+  },
+  "gauge": {
+    "min": 390,
+    "max": 730,
+    "cur": 581,
+    "fair": 602,
+    "fairLabelTop": false
+  },
+  "fv": 602
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">◆ ◆ ◆</div>
+    <div>
+      <span class="tag">NYSE: MLM</span>
+      <span class="tag">Basic Materials</span>
+      <span class="tag">Aggregates &amp; Construction</span>
+    </div>
+    <h1>Martin Marietta Materials, Inc.</h1>
+    <div class="sub">Top-2 US aggregates producer (crushed stone / sand / gravel) • IIJA federal infrastructure multi-year tailwind • Local pricing power (quarry monopoly, permits) • Ready-mix concrete &amp; asphalt downstream • Secular infrastructure spending beneficiary</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$581<small>(MLM)</small></div>
+      </div>
+      <div class="chg">▲ +1.6% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 30 มิ.ย. 2569<br>
+        กรอบ 52 สัปดาห์ $525.38 – $710.97<br>
+        ที่มา: StockAnalysis ($581.46), Yahoo Finance ($584.63), Martin Marietta IR
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ 30 มิ.ย. 2569 / FY2025 = ปีงบ 31 ธ.ค. 2568</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~$35.2B</div><div class="d">~60.5 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~32x</div><div class="d">EPS TTM continuing ops $18.21</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~28–34x</div><div class="d">ช่วง normalized; FY2024 สูงเพราะ divestiture gain</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">3.51x</div><div class="d">BVPS $165.54 (FY2025)</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">$990M</div><div class="d">−45.4% YoY (FY2024 บวม divestiture gain $1.3B)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$18.21</div><div class="d">Continuing ops Q2–Q4 2025 + Q1 2026</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~$165.54</div><div class="d">Total equity $10.03B / 60.5M shares</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~9.9% / 5.7%</div><div class="d">อิง FY2025; equity base ใหญ่จาก M&amp;A</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">~$6.78B</div><div class="d">FY2025 $6.15B (+8.6% YoY)</div></div>
+      <div class="metric"><div class="k">Adj EBITDA Margin</div><div class="v">~37.5%</div><div class="d">FY2025 adj EBITDA $2.30B / รายได้ $6.15B</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~0.57%</div><div class="d">$3.32/หุ้น/ปี · Ex-div 1 มิ.ย. 2569</div></div>
+      <div class="metric"><div class="k">FCF / หุ้น</div><div class="v">~$16.17</div><div class="d">FY2025 FCF $978M (OCF $1.79B − Capex $807M)</div></div>
+
+      <div class="metric"><div class="k">Aggregates ส่งมอบ</div><div class="v pos">198.5M ตัน</div><div class="d">FY2025 +4% YoY · ชิ้นส่วนหลักธุรกิจ</div></div>
+      <div class="metric"><div class="k">ASP Aggregates</div><div class="v pos">$23.30/ตัน</div><div class="d">+7% YoY vs $21.80/ตัน ปี 2024</div></div>
+      <div class="metric"><div class="k">หนี้สุทธิ</div><div class="v">~$5.2B</div><div class="d">Debt $5.69B − Cash ~$0.5B</div></div>
+      <div class="metric"><div class="k">ประมาณการ FY2026E</div><div class="v pos">EPS ~$19.49</div><div class="d">Consensus 23 นักวิเคราะห์ · ราย adj EBITDA $2.485B</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ก.ค. 2568 – มิ.ย. 2569 · รายเดือน</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#4A6FA5"></i>ราคา MLM</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $602</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        MLM เริ่มต้นปีสิงหาคม 2568 ที่ระดับ $572 แล้วไต่ขึ้นสู่จุดสูงสุด 52 สัปดาห์ที่ $710.97 ในเดือนสิงหาคม 2568 หนุนจากแรงซื้อก่อนฤดูกาลก่อสร้าง + IIJA spending ขาขึ้น
+        จากนั้นปรับตัวลงในกันยายน–พฤศจิกายน 2568 ก่อนฟื้นตัวเล็กน้อยในช่วงต้นปี 2569 และกลับมาทดสอบระดับ $675 ในกุมภาพันธ์ 2569
+        ก่อนดิ่งแรงในมีนาคม 2569 หลังประกาศซื้อกิจการ Lhoist North America ($13.5B) ซึ่งตลาดกังวลเรื่อง leverage และการเจือจางผู้ถือหุ้น
+        ราคาปัจจุบัน $581 ต่ำกว่าจุดสูงสุด ~18% สะท้อน overhang จากการเพิ่มทุน ณ มิ.ย. 2569 · ผลตอบแทนรอบปี +1.6%
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS adj. $19.49 × P/E 30x = $585 — FY2026E consensus EPS × multiple สะท้อน pricing power + IIJA tailwind ระดับ premium</div></div>
+        <div class="mval">$585</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. EV/EBITDA</div><div class="mdesc">FY2026E adj EBITDA $2,485M × 18x = EV $44,730M − หนี้สุทธิ $5,188M = equity $39,542M ÷ 60.5M หุ้น — sector multiple VMC เทียบเคียง ~17–19x</div></div>
+        <div class="mval">$654</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. FCF Yield / P/FCF</div><div class="mdesc">FY2026E FCF ~$17.14/หุ้น ($1,037M ÷ 60.5M) × P/FCF 33x — อิง asset-heavy ธุรกิจ capex สูงเฉลี่ย $700M+ ต่อปี</div></div>
+        <div class="mval">$566</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $566 – $654</span></div>
+        <div class="r">$602</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        EV/EBITDA ให้ค่าสูงสุด ($654) เพราะ aggregates มี EBITDA margin สูง (~37%) และ peer VMC ซื้อขายที่ ~18–19x
+        P/E ให้กลาง ($585) อิง FY2026E $19.49 × 30x ซึ่งสมเหตุสมผลสำหรับ sector ที่มี pricing power และ IIJA tailwind
+        FCF Yield ให้ต่ำสุด ($566) เพราะ capex สูง ($575–807M/ปี) กดให้ FCF conversion ต่ำกว่า net income
+        FV $602 เฉลี่ยทั้ง 3 วิธีสะท้อนว่า MLM ราคาปัจจุบันอยู่ใกล้ fair value มีส่วนต่างเล็กน้อย
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $581</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $602</div></div>
+        </div>
+        <div class="scale">
+          <span>$421<br><small>MOS 30%</small></span>
+          <span>$482<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$602<br><small>Fair Value</small></span>
+          <span style="text-align:right">$654<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">$683<br><small>เป้าเฉลี่ย Analyst</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน $581 อยู่ต่ำกว่า Fair Value $602 เพียงเล็กน้อย (MOS ~3.5%) จัดว่า "ใกล้มูลค่าเหมาะสม"
+        Analyst consensus เฉลี่ย $683 (23 นักวิเคราะห์ ส่วนใหญ่ Buy) สูงกว่า FV ของเราซึ่งอาจสะท้อนว่านักวิเคราะห์ optimistic มากกว่า
+        โดยเฉพาะหลัง Lhoist synergies $85M/ปี และ IIJA ramp up ที่คาดเร่งตัวจาก FY2026
+        โซน MOS 20% ที่ $482 และ MOS 30% ที่ $421 จะเป็นโอกาสเข้าซื้อที่น่าสนใจหากตลาดปรับฐานจากความกังวล leverage Lhoist
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">+3.5%</div>
+        <div class="txt">ราคาใกล้มูลค่าเหมาะสม — MOS น้อย รอโซนที่ดีกว่า</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$482</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$421</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $602</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="581" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $581 • EPS ฐาน ~$18.21 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS 0%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$446</div>
+          <div class="ret neg">−22.3% (−8.4%/ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$18.21</span></li>
+            <li><span>P/E ออก</span><span>24x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$9.96</span></li>
+            <li><span>สถานการณ์</span><span>ก่อสร้างหยุดชะงัก + ดอกเบี้ยสูง + Lhoist dilution</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +10%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$689</div>
+          <div class="ret pos">+18.6% (+5.8%/ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$24.24</span></li>
+            <li><span>P/E ออก</span><span>28x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$9.96</span></li>
+            <li><span>สถานการณ์</span><span>IIJA ramp + pricing +5–6%/ปี + Lhoist synergies</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +13%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$851</div>
+          <div class="ret pos">+46.5% (+13.5%/ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$26.27</span></li>
+            <li><span>P/E ออก</span><span>32x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$9.96</span></li>
+            <li><span>สถานการณ์</span><span>IIJA full ramp + residential recovery + specialty limestone demand</span></div>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      Base case อิง IIJA spending ที่เริ่มเร่งตัวจาก FY2026 (รัฐสภาอนุมัติแล้ว ใช้เงิน 5 ปี ถึง ~ปี 2026–27) + aggregates pricing เพิ่ม 4–6%/ปี (guidance) + volume 1–3%/ปี
+      Lhoist North America ($13.5B) จะเพิ่ม adj EBITDA $85M/ปี synergies แต่กด leverage เป็น 3.7x net debt/EBITDA ชั่วคราว
+      EPS ฐาน $18.21 (TTM continuing ops) → FY2026E consensus $19.49 → FY2027E $22.91 สะท้อน EPS CAGR ~12% ต่อปีในปีหน้า
+      ปันผล $3.32/หุ้น/ปี (yield 0.57%) ต่ำเพราะบริษัทเลือก reinvest FCF ใน quarry expansion และ M&amp;A มากกว่าจ่ายปันผล
+      ความเสี่ยงหลัก: ดอกเบี้ยสูงกด residential construction + ผู้ถือหุ้น Lhoist รับหุ้น MLM ในราคา เจือจาง ~10%
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก &amp; ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>IIJA Infrastructure Spending:</b> Infrastructure Investment and Jobs Act ($550B, อนุมัติ 2021) กำลัง ramp up ปี 2025–2027 — ถนน, สะพาน, ท่อน้ำ ล้วนต้องการ aggregates ปริมาณมาก; เป็น demand tailwind ที่มั่นคง multi-year ไม่ขึ้นกับ economic cycle</li>
+          <li><b>Aggregates Pricing Power:</b> Aggregates เป็น local monopoly — ต้นทุนขนส่งสูงทำให้ quarry ที่ใกล้ตลาดแข่งกันไม่ได้; MLM เพิ่ม ASP +7% ปี 2025 (เทียบ CPI ~3%) สะท้อนว่าราคาขึ้นได้เหนืออัตราเงินเฟ้อ</li>
+          <li><b>High Incremental Margins:</b> Aggregates gross profit/ton +12% YoY ในปี 2025; ต้นทุนแปรผัน (diesel, explosives) เพิ่มช้ากว่าราคาขาย — operating leverage สูงมากในช่วงขาขึ้นของ volume</li>
+          <li><b>Lhoist North America Acquisition:</b> เพิ่ม specialty limestone/lime ซึ่งใช้ใน environmental remediation, steel production, water treatment — diversifies revenue base ออกจาก construction cycle; synergies $85M/ปี accretive ภายใน 12 เดือนหลัง close</li>
+          <li><b>Data Center &amp; Energy Infrastructure:</b> Hyperscaler data center boom + grid modernization สร้าง demand aggregates ใหม่ที่ไม่เคยมีในรอบก่อน — MLM ได้ประโยชน์จากทั้ง site grading, concrete, และ road access</li>
+          <li><b>Irreplaceable Asset Base:</b> Quarry permits หายาก กว่าจะได้ใบอนุญาตใหม่ใช้เวลา 10–20 ปี; MLM มี reserve >50 ปีในหลายแหล่ง สร้างคูเมืองถาวรไม่มีคู่แข่งรายใหม่</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>Lhoist Leverage &amp; Dilution:</b> $13.5B deal (cash $7B + หุ้น $6.5B) ผลักให้ net leverage เป็น ~3.7x EBITDA; เจือจางผู้ถือหุ้น ~10% จากการออกหุ้นใหม่; กำลังสร้างแรงกดดันต่อราคาหุ้นระยะสั้น</li>
+          <li><b>Residential Construction Slowdown:</b> ดอกเบี้ยสูงยังกด housing starts; residential คิดเป็น ~20–25% demand aggregates; ถ้า Fed ไม่ลด rate ตามคาด volume growth อาจต่ำกว่า guidance</li>
+          <li><b>Input Cost Inflation:</b> ดีเซล, ดินระเบิด, ค่าแรง ล้วนผันผวน; แม้ MLM มี pricing power แต่ gross margin อาจถูกกดได้ถ้าต้นทุนพุ่งเร็วกว่าการขึ้นราคา</li>
+          <li><b>Government Budget Risk:</b> IIJA funding ขึ้นกับรัฐสภาจัดสรรรายปี; ถ้าเกิด government shutdown หรือ delay ของโครงการ demand aggregates จากภาครัฐอาจชะลอ</li>
+          <li><b>Weather &amp; Cyclicality:</b> ฤดูหนาวยาวนาน/ฝนผิดปกติ กระทบ shipment volume ได้ 5–10% (Q1 เป็นไตรมาสอ่อนแออยู่แล้ว); ธุรกิจก่อสร้างมี cyclicality ตาม GDP</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>MLM — คุณภาพสูง ราคาใกล้ Fair Value · รอ Lhoist Overhang ผ่านพ้น</h2>
+      <p>Martin Marietta Materials เป็นธุรกิจ "คูเมืองถาวร" ชั้นยอด — ควบคุม quarry ที่ทดแทนไม่ได้ มี pricing power เหนืออัตราเงินเฟ้อ และได้รับประโยชน์ตรงจาก IIJA infrastructure spending wave ที่กำลัง ramp up ปี 2026–2027
+      อย่างไรก็ตาม ราคาปัจจุบัน $581 ใกล้ Fair Value $602 มาก (MOS เพียง 3.5%) ขณะที่ตลาดกำลังย่อยการซื้อ Lhoist $13.5B ซึ่งเพิ่ม leverage + dilute ผู้ถือหุ้น ~10%
+      โอกาสซื้อที่ดีกว่าคือรอให้ราคาย่อลงสู่แนว $480–$500 (MOS 20%) ซึ่งอาจเกิดได้ถ้าตลาดยัง de-rate Lhoist deal หรือ construction slowdown ชัดเจนขึ้น
+      Base case 3 ปีให้ผลตอบแทน ~5.8%/ปี (รวมปันผล) ไม่โดดเด่น แต่ bull case ที่ IIJA fully ramped + Lhoist synergies อาจให้ ~13.5%/ปี</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$602 <span style="font-size:12px;color:#cab9a8">($566–$654)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +3.5%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$683 (Buy — 23 นักวิเคราะห์)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ราคาปัจจุบัน $581 ใกล้ fair value มาก (MOS 3.5%) — ยังไม่ใช่โซนที่น่าสะสมหนัก
+        รอโอกาสที่ราคาย่อลงสู่ $482–$500 (MOS 20%+) ซึ่งอาจเกิดจาก Lhoist deal overhang หรือ construction slowdown
+        ผู้ที่ถือหุ้นแล้ว: คุณภาพดีเยี่ยม ถือ long-term ได้โดยเฉพาะถ้าเชื่อ IIJA tailwind + Lhoist synergies
+        เปรียบเทียบ peer: VMC (Vulcan Materials) ในฐานะ proxy aggregates อีกตัวเพื่อหา relative value
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    แหล่งข้อมูล: StockAnalysis.com (ราคา $581.46, P/E, analyst consensus), Yahoo Finance (ราคา $584.63, chart data), GlobeNewswire/Martin Marietta IR (FY2025 results, Q1 2026, FY2026 guidance), AlphaStreet (aggregates ASP/volume)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 30 มิ.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
