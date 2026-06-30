@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น Newmont Corporation (NEM) — Stock Analysis Dashboard</title>
+<!-- ★ ใส่รุ่นโมเดล AI ที่ใช้วิเคราะห์จริง -->
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
+<script type="application/json" id="stock-meta">
+{"symbol":"NEM","currency":"USD","price":94.51,"fairValue":145,"mos":34.8,"upside":53.4,"pe":12.26,"dividendYield":1.10,"roe":25.83}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#D4AC0D",
+    "accentDark": "#9A7D0A",
+    "darkGrad": "linear-gradient(135deg,#1a1400 0%,#2d2200 50%,#1a1400 100%)",
+    "glow": "rgba(212,172,13,0.18)",
+    "subColor": "#f5e58a",
+    "headerMuted": "rgba(212,172,13,0.55)",
+    "verdictText": "#1a1400",
+    "vcellLabel": "#7a6800",
+    "badge": "#D4AC0D",
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#1e8e3e"
+  },
+  "chart": {
+    "data": [
+      ["ก.ค. 2568", 62.10],
+      ["ส.ค. 2568", 74.40],
+      ["ก.ย. 2568", 84.31],
+      ["ต.ค. 2568", 80.97],
+      ["พ.ย. 2568", 90.73],
+      ["ธ.ค. 2568", 99.85],
+      ["ม.ค. 2569", 112.35],
+      ["ก.พ. 2569", 130.00],
+      ["มี.ค. 2569", 108.25],
+      ["เม.ย. 2569", 111.09],
+      ["พ.ค. 2569", 109.81],
+      ["มิ.ย. 2569", 94.51]
+    ],
+    "min": 55,
+    "max": 140,
+    "grid": [55, 75, 95, 115, 135],
+    "fairLine": 145,
+    "currency": "$",
+    "highlight": [7, 11]
+  },
+  "gauge": {
+    "min": 60,
+    "max": 185,
+    "cur": 94.51,
+    "fair": 145
+  },
+  "fv": 145
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">⬤ ⬤ ⬤</div>
+    <div>
+      <span class="tag">NYSE: NEM</span>
+      <span class="tag">Materials — Gold Mining</span>
+      <span class="tag">World's Largest Gold Miner</span>
+    </div>
+    <!-- ★ คำโปรยธุรกิจ (gate E32) -->
+    <h1>Newmont Corporation</h1>
+    <div class="sub">World's largest gold miner (~6M oz gold-equiv/yr) • Newcrest acquisition 2023 ($19.2B) • Boddington, Lihir, Tanami, Penasquito, Ahafo • AISC leverage to gold price • Divestiture program $6B+ post-merger</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$94.51<small>(NEM)</small></div>
+      </div>
+      <!-- ★ ป้าย % รอบปี: Jul 2025 $62.10 → Jun 2026 $94.51 = +52.2% (E35/E36) -->
+      <div class="chg">▲ +52.2% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 30 มิ.ย. 2569<br>
+        กรอบ 52 สัปดาห์ $55.37 – $134.88<br>
+        ที่มา: Yahoo Finance, StockAnalysis.com
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ มิ.ย. 2569 · ยืนยันจาก Yahoo Finance + StockAnalysis.com</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~$100.5B</div><div class="d">1.06B หุ้น · NYSE:NEM</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~12.26x</div><div class="d">EPS GAAP TTM $7.71 · adj ~$8.07</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~18–22x</div><div class="d">ปัจจุบันต่ำกว่าค่าเฉลี่ยมาก</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">2.90x</div><div class="d">BVPS $32.55 · มีค่าความนิยมสูง</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">$6.75B</div><div class="d">Adj ANI $7.6B · +108% YoY</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$7.71</div><div class="d">GAAP · Adj FY2025 $6.89 · Q1 2026 adj $2.90</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~$32.55</div><div class="d">ทุน/หุ้น ณ ธ.ค. 2568</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~25.8% / ~6.8%</div><div class="d">สูงสำหรับอุตสาหกรรมเหมืองทอง</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$24.97B</div><div class="d">+34% YoY · Q1 2026: $7.3B (record)</div></div>
+      <div class="metric"><div class="k">EBITDA Margin (TTM)</div><div class="v">~66.8%</div><div class="d">EBITDA TTM $16.7B · ระดับสูงสุดในประวัติ</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~1.10%</div><div class="d">$1.04/yr ($0.26/Q) · Payout แบบ flexible</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">0.46</div><div class="d">ความผันผวนต่ำ ↔ ราคาทองเป็นตัวขับ</div></div>
+
+      <div class="metric"><div class="k">การผลิตทอง FY2025</div><div class="v">~5.9M oz</div><div class="d">Core portfolio 5.7M oz · เป้า 2026: 5.26M oz</div></div>
+      <div class="metric"><div class="k">AISC FY2025</div><div class="v neu">$1,358/oz</div><div class="d">By-product basis · Q1 2026: $1,029/oz</div></div>
+      <div class="metric"><div class="k">AISC 2026 Guidance</div><div class="v">$1,055/oz CAS</div><div class="d">By-product CAS · Co-product: $1,680/oz</div></div>
+      <div class="metric"><div class="k">Net Cash Position</div><div class="v pos">+$3.2B</div><div class="d">Cash $8.8B · D/E 0.16x (หลังลดหนี้)</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ · Yahoo Finance monthly close</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#D4AC0D"></i>ราคา NEM</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $145</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        NEM ขึ้น +52.2% ในรอบปีที่ผ่านมา (ก.ค. 2568 – มิ.ย. 2569) สอดคล้องกับการพุ่งของราคาทอง
+        จาก $62 ในเดือน ก.ค. 2568 ขึ้นทะลุ $130 ในเดือน ก.พ. 2569 (สูงสุด 52 สัปดาห์ $134.88)
+        ก่อนปรับตัวลดลงมาที่ $94.51 ในเดือน มิ.ย. 2569 สาเหตุหลักจากราคาทองโลกที่ปรับตัวลง 11%+ ในช่วงปลาย Q2 2569
+        จากระดับสูงสุด $4,900/oz ในไตรมาส Q1 มาอยู่ที่ ~$3,985/oz ณ ปลายเดือน มิ.ย. 2569
+        ทำให้หุ้นถูกกดดันระยะสั้น แม้ปัจจัยพื้นฐานยังแข็งแกร่ง
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี · อ้างอิงราคาทองปกติ $3,500–3,800/oz</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div>
+          <div class="mname">1. EV/EBITDA (Normalized Gold ~$3,700/oz)</div>
+          <div class="mdesc">EBITDA ปกติ ~$13B × 9x EV multiple + Net Cash $3.2B ÷ 1.06B หุ้น — ตลาดทองขนาดใหญ่ซื้อขายที่ 7–11x; NEM ได้ premium จาก scale และ diversification หลังควบรวม Newcrest</div>
+        </div>
+        <div class="mval">$113</div>
+      </div>
+      <div class="vmethod">
+        <div>
+          <div class="mname">2. P/E Valuation (Adjusted EPS Consensus 2026)</div>
+          <div class="mdesc">EPS adj. $10.22 × P/E 14x = $143 — consensus Wall Street EPS 2026 (22 analysts) สะท้อน gold price ~$3,800-4,000/oz; P/E 14x เหมาะสมกับ major gold miner ที่มี balance sheet แข็งแกร่งและการผลิต 5.26M oz/ปี (NEM ต่ำกว่า historical 18–22x ซึ่ง supportive)</div>
+        </div>
+        <div class="mval">$143</div>
+      </div>
+      <div class="vmethod">
+        <div>
+          <div class="mname">3. FCF Yield (Normalized Free Cash Flow)</div>
+          <div class="mdesc">FCF ปกติ ~$9B/yr ÷ 5% FCF yield ÷ 1.06B หุ้น = $170 — Q1 2026 FCF record $3.1B (run-rate $12.4B ซึ่งสูงเกินปกติจาก gold $4,900/oz); ใช้ normalized FCF ที่ gold $3,700/oz; 5% FCF yield เหมาะสมสำหรับ large-cap quality compounder</div>
+        </div>
+        <div class="mval">$170</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $113 – $170</span></div>
+        <div class="r">$145</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        <b>หมายเหตุสำคัญ:</b> ราคาทองโลก ณ ปลาย มิ.ย. 2569 อยู่ที่ ~$3,985/oz (ลงจาก $4,900/oz ใน Q1 2569) —
+        การประเมินนี้ใช้ <b>gold price normalized ที่ $3,500–3,800/oz</b> ซึ่งอนุรักษ์นิยมกว่าราคา spot ปัจจุบัน
+        วิธี FCF Yield ($170) ให้ค่าสูงสุดสะท้อนความสามารถสร้าง cash flow ที่แท้จริง
+        วิธี EV/EBITDA ($113) อนุรักษ์นิยมสุดสมมติ gold กลับสู่ระดับต่ำ
+        Analyst consensus 22 สำนัก เป้าเฉลี่ย $140.17 สอดคล้องกับ FV $145 ที่ได้
+        ความเสี่ยงหลัก: ทุกๆ $100/oz ที่ gold เปลี่ยน = กระทบ EBITDA ~$500M+ และ FV ~$5–7/share
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $94.51</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $145</div></div>
+        </div>
+        <div class="scale">
+          <span>$101.5<br><small>MOS 30%</small></span>
+          <span>$116.0<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$140<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">$145<br><small>Fair Value</small></span>
+          <span style="text-align:right">$170<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน $94.51 <b>ต่ำกว่า Fair Value $145 ถึง 34.8%</b> และต่ำกว่า MOS 30% zone ($101.5) ด้วย
+        นับเป็น <b>deep value zone</b> สำหรับ world's largest gold miner
+        โซน MOS 30% ($101.5) เป็นจุดที่นักลงทุนแบบ value ควรพิจารณาสะสม
+        โซน MOS 20% ($116.0) เป็นจุดที่ยังน่าสนใจสำหรับนักลงทุนทั่วไป
+        Analyst consensus 22 สำนัก (17 Buy, 3 Hold, 1 Sell) มีเป้าเฉลี่ย $140.17 (+48% จากปัจจุบัน)
+        ความเสี่ยงระยะสั้น: gold price ที่ยังผันผวนและ seismic event ที่ Cadia operations ออสเตรเลีย
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict good">
+        <div class="big">+34.8%</div>
+        <div class="txt">MOS ดี — ราคาต่ำกว่ามูลค่าเหมาะสมมากกว่า 30% | ราคาปัจจุบัน $94.51 vs FV $145</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$116.0</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$101.5</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $145</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="94.51" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $94.51 • EPS ฐาน ~$7.50 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS −8%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$60.4</div>
+          <div class="ret neg">−36.1%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$5.84</span></li>
+            <li><span>P/E ออก</span><span>10x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$2.00</span></li>
+            <li><span>สถานการณ์</span><span>ทองร่วง &lt;$2,800/oz + production disruption</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +10%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$142.8</div>
+          <div class="ret pos">+51.1%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$9.98</span></li>
+            <li><span>P/E ออก</span><span>14x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$3.12</span></li>
+            <li><span>สถานการณ์</span><span>ทอง $3,500–3,800/oz + buyback ช่วยเพิ่ม EPS</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +20%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$211.0</div>
+          <div class="ret pos">+123.3%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$12.96</span></li>
+            <li><span>P/E ออก</span><span>16x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$3.60</span></li>
+            <li><span>สถานการณ์</span><span>ทอง $4,000+/oz ยั่งยืน + Red Chris + buyback เต็มสูบ</span></div>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      <b>สมมติฐาน:</b> EPS ฐาน $7.50 (อนุรักษ์นิยม ระหว่าง GAAP TTM $7.71 และ adj FY2025 $6.89)
+      ทุกสถานการณ์รวมปันผล ($0.26/Q สำหรับ Base/Bull, ลดเหลือ $0.17/Q ใน Bear หากทองร่วงหนัก)
+      ความไม่แน่นอนหลักคือราคาทองโลก — ทุก $100/oz เปลี่ยนแปลง = กระทบ EPS ~$0.50–0.70
+      Buyback $6B ที่ได้รับ authorization ใหม่ใน Q1 2569 จะช่วยเพิ่ม EPS อีก ~5–8% ใน 2–3 ปีข้างหน้า
+      ผลตอบแทนจริงขึ้นอยู่กับราคาทอง, AISC, และ production delivery เป็นหลัก
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก &amp; ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>Gold Price Leverage:</b> NEM มี operating leverage สูง — ทุก $100/oz ที่ทองเพิ่ม = ~$500M+ incremental EBITDA; ในสภาวะดอลลาร์อ่อน/เฟดลดดอกเบี้ย/ความตึงเครียดภูมิรัฐศาสตร์ ทองมี tailwind</li>
+          <li><b>Scale &amp; Portfolio Quality หลัง Newcrest:</b> Newcrest เพิ่ม Lihir (Papua NG), Cadia (ออสเตรเลีย), Red Chris (แคนาดา) ทำให้มีเหมืองคุณภาพสูง low-AISC กระจายใน 9 ประเทศ; long mine life average 20+ ปี</li>
+          <li><b>Debt Reduction &amp; Net Cash Position:</b> หลังขายเหมือง non-core (Telfer, Havieron, CC&amp;V ฯลฯ) รวม $6B+ NEM กลับมามี net cash $3.2B — balance sheet แข็งแกร่งที่สุดในรอบ 10 ปี</li>
+          <li><b>Record Cash Flow &amp; $6B Buyback:</b> Q1 2569 FCF record $3.1B; $6B share repurchase authorization ใหม่ = buyback yield ~6% ที่ราคาปัจจุบัน ช่วยเพิ่ม EPS และ NAV/share</li>
+          <li><b>AISC Discipline:</b> Q1 2569 AISC เพียง $1,029/oz ต่ำกว่า full-year guidance; ต้นทุนควบคุมได้ดีขึ้นหลัง portfolio rationalization — margin expansion เมื่อทองสูง</li>
+          <li><b>Red Chris &amp; Growth Pipeline:</b> Red Chris (บล็อกเคฟ) ในแคนาดาที่เพิ่งได้ environmental approval — เพิ่ม production ~100K oz/yr ใน 2028+; Ahafo North (กาน่า) เพิ่มอีก ~100K oz/yr</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>Gold Price Volatility:</b> Q2 2569 gold ร่วง 11%+ จากระดับ $4,900 — NEM ลง 27%+ จากจุดสูง $134.88; หาก gold กลับสู่ $3,000 หรือต่ำกว่า earnings จะหดตัวรุนแรง (ไม่มี hedge program)</li>
+          <li><b>Operational &amp; Geopolitical Risk:</b> เหมืองกระจาย 9 ประเทศรวม Papua NG, Ghana, Peru, Argentina — ความเสี่ยงด้านการเมือง/ใบอนุญาต/แรงงาน สูงกว่า single-jurisdiction miner; seismic event ที่ Cadia (มิ.ย. 2569) เป็นตัวอย่าง</li>
+          <li><b>Newcrest Integration Cost &amp; Impairment:</b> ค่าความนิยม (goodwill) หลังควบรวม ~$18B+ — หาก gold ต่ำยาวนานอาจต้องตัดด้อยค่า (impairment) กระทบ GAAP EPS อย่างมีนัยสำคัญ</li>
+          <li><b>Cost Inflation &amp; AISC Creep:</b> energy, labour, reagent ยังเป็นต้นทุนที่กดดัน — AISC guidance 2026 ที่ $1,680/oz (co-product) สูงกว่า 2025 ที่ $1,358; หาก cost overrun อาจกดดัน margin</li>
+          <li><b>Execution Risk ใน Divestiture:</b> การขายเหมือง non-core บางส่วนยังอยู่ในกระบวนการ — delay หรือ valuation ต่ำกว่าคาดอาจกระทบ balance sheet target</li>
+          <li><b>Dividend Sustainability:</b> ปันผล $0.26/Q ($1.04/yr) ขึ้นอยู่กับ gold price — ใน bear case ที่ gold ต่ำ บอร์ดอาจลดปันผลเพื่อรักษา balance sheet (เคยลดปันผลในปี 2020)</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>Gold Compounder ราคา Deep Value — ซื้อขายต่ำกว่า Fair Value 34.8%</h2>
+      <p>
+        Newmont Corporation คือ <b>largest gold miner ในโลก</b> ที่กำลังเก็บเกี่ยวผลการรวม Newcrest ($19.2B)
+        Q1 2569 สร้าง <b>record FCF $3.1B</b> และ adjusted EPS $2.90/Q ที่ gold $4,900/oz
+        แม้ gold ปรับลงสู่ $3,985/oz ณ ปลาย มิ.ย. 2569 NEM ยังซื้อขายที่ <b>P/E ~12x เพียง 0.65x ของ historical mean 18–22x</b>
+        พร้อม net cash $3.2B และ $6B buyback program ที่เพิ่งประกาศ
+        ณ ราคา $94.51 ซื้อขายต่ำกว่า <b>consensus analyst target $140.17 ถึง 48%</b>
+        และต่ำกว่า FV $145 ที่ได้จากการประเมิน 3 วิธี (EV/EBITDA / P/E / FCF Yield) ถึง <b>34.8% MOS</b>
+        ถือเป็นโอกาสสำหรับนักลงทุนที่เชื่อว่า gold จะกลับมา หรือต้องการ portfolio hedge ต่อดอลลาร์อ่อน/เงินเฟ้อ
+      </p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$145 <span style="font-size:12px;color:#cab9a8">($113–$170)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +34.8%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$140 (Buy 77%)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ราคาปัจจุบัน $94.51 อยู่ใน <b>deep value zone ต่ำกว่า MOS 30%</b> ($101.5) —
+        เหมาะสำหรับทยอยสะสม โดยเฉพาะถ้า gold มีแนวโน้มฟื้น
+        จุดซื้อเพิ่ม MOS 30%: &lt;$101.5 · MOS 20%: &lt;$116.0
+        <b>ความเสี่ยงหลักคือราคาทองโลก</b> — แนะนำจัดพอร์ตให้ NEM เป็นส่วน gold hedge ไม่เกิน 5–10% ของพอร์ต
+        ติดตาม: ราคาทอง spot, Q2 2026 earnings (ก.ค. 2569), และ Cadia operations update
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะราคาทองโลก, AISC, อัตราการผลิต และ P/E เป้าหมาย
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    ที่มาข้อมูล: Yahoo Finance (ราคา/EPS TTM), StockAnalysis.com (สถิติ/analyst targets), Newmont Investor Relations Q1 2026 earnings release (AISC/production/guidance), TIKR.com (valuation analysis) • ราคา ณ 30 มิ.ย. 2569
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 30 มิ.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
