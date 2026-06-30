@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น Corteva (CTVA) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"CTVA","currency":"USD","price":83.37,"fairValue":82,"mos":-1.67,"upside":-1.64,"pe":23.3,"dividendYield":0.87,"roe":5.14}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#4CAF50",
+    "accentDark": "#388E3C",
+    "darkGrad": "linear-gradient(135deg,#1B5E20 0%,#2E7D32 60%,#388E3C 100%)",
+    "glow": "rgba(76,175,80,0.35)",
+    "subColor": "#C8E6C9",
+    "headerMuted": "rgba(200,230,201,0.7)",
+    "verdictText": "#E8F5E9",
+    "vcellLabel": "#A5D6A7",
+    "badge": "#2E7D32",
+    "chgBg": "#1e8e3e",
+    "chgColor": "#ffffff"
+  },
+  "chart": {
+    "data": [
+      ["ก.ค. 68", 71.60],
+      ["ส.ค. 68", 73.65],
+      ["ก.ย. 68", 67.30],
+      ["ต.ค. 68", 61.14],
+      ["พ.ย. 68", 67.14],
+      ["ธ.ค. 68", 66.88],
+      ["ม.ค. 69", 72.64],
+      ["ก.พ. 69", 79.94],
+      ["มี.ค. 69", 83.71],
+      ["เม.ย. 69", 81.01],
+      ["พ.ค. 69", 78.29],
+      ["มิ.ย. 69", 83.37]
+    ],
+    "min": 58,
+    "max": 92,
+    "grid": [62, 68, 74, 80, 86],
+    "fairLine": 82,
+    "currency": "$",
+    "highlight": [2, 3]
+  },
+  "gauge": {
+    "min": 55,
+    "max": 100,
+    "cur": 83.37,
+    "fair": 82,
+    "fairLabelTop": true
+  },
+  "fv": 82
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">🌱🌿🌾🌻</div>
+    <div>
+      <span class="tag">NYSE: CTVA</span>
+      <span class="tag">Agricultural Sciences</span>
+      <span class="tag">Seeds &amp; Crop Protection</span>
+    </div>
+    <h1>Corteva, Inc.</h1>
+    <div class="sub">Agricultural seeds &amp; crop protection (DowDuPont spinoff 2019) • Pioneer &amp; Brevant seeds • Herbicides, fungicides, insecticides • Biologicals pipeline • 140+ countries • Innovation-led R&amp;D (~$1.2B/yr)</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$83.37<small>(CTVA)</small></div>
+      </div>
+      <div class="chg">▲ +16.4% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 29 มิ.ย. 2569<br>
+        กรอบ 52 สัปดาห์ $60.54 – $85.63<br>
+        ที่มา: StockAnalysis, Yahoo Finance, Corteva IR
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">FY2025 ปีงบประมาณสิ้นสุด ธ.ค.</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">$55.8B</div><div class="d">~668.8M shares outstanding</div></div>
+      <div class="metric"><div class="k">P/E (TTM adj.)</div><div class="v neu">~23.3x</div><div class="d">Adj. op. EPS FY2025 $3.34; Forward P/E ~22.9x</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">25–30x</div><div class="d">ช่วงปกติก่อนปรับ destocking 2023-24</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">2.29x</div><div class="d">BVPS $36.36 — ROE ต่ำเพราะ goodwill/intangibles สูง</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">$1.20B</div><div class="d">GAAP EPS $1.60 (+23% YoY) · Op. EPS $3.34 (+30%)</div></div>
+      <div class="metric"><div class="k">EPS (TTM adj.)</div><div class="v">~$3.34</div><div class="d">Adj. op. EPS FY2025 (non-GAAP) — ไม่รวมค่าตัดจำหน่าย/ปรับโครงสร้าง</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~$36.36</div><div class="d">Goodwill &amp; intangibles หนักจากการ spinoff ปี 2562</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~5.1% / 4.3%</div><div class="d">ROE ต่ำเพราะฐาน equity สูงจาก DowDuPont; ปรับขึ้นต่อเนื่อง</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$17.89B</div><div class="d">FY2025 $17.40B (+2.9%) · Seed $9.90B · Crop Pro $7.50B</div></div>
+      <div class="metric"><div class="k">Op. EBITDA Margin</div><div class="v">22.1%</div><div class="d">EBITDA $3.85B FY2025 (+14% YoY) · EV/EBITDA 13.8x</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~0.87%</div><div class="d">$0.72/ปี (รายไตรมาส $0.18) · Ex-div 1 มิ.ย. 2569</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">0.57</div><div class="d">ผันผวนต่ำกว่าตลาด — ธุรกิจเกษตรเชิง defensive</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ก.ค. 2568 – มิ.ย. 2569</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#4CAF50"></i>ราคา CTVA</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $82</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        CTVA ดิ่งลงสู่ต่ำสุด ~$61 ในช่วง ต.ค.–พ.ย. 2568 จากแรงกดดัน destocking ในตลาดสารป้องกันพืช และความกังวลเรื่อง channel inventory glut ที่ยังไม่หาย
+        จากนั้นฟื้นตัวแข็งแกร่งตั้งแต่ ธ.ค. 2568 หลัง Q4 2025 ผลงานเกิน expectations และบริษัทประกาศแผน spin-off Vylor (ธุรกิจ seed) ออกจากธุรกิจ crop protection
+        ไตรมาส 1/2569 ยอดขายพุ่ง +11% YoY และ Op. EBITDA +21% ทำให้ราคาแตะสูงสุดที่ ~$85 ก่อนปรับลงเล็กน้อยแล้วกลับมาที่ $83 ปลาย มิ.ย. 2569
+        ผลตอบแทนรอบปี +16.4% จาก $71.60 (ก.ค. 2568) สู่ $83.37
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation (Adjusted Operating EPS)</div><div class="mdesc">EPS adj. $3.58 (FY2026E midpoint guidance) × P/E 24x = $85.80 — ใช้ target P/E 24x สำหรับ ag science company ที่มี innovation pipeline สูง (ต่ำกว่า historical avg 27x เพราะ destocking cycle ยังมีผล)</div></div>
+        <div class="mval">$85.80</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. EV/EBITDA (Sum-of-Parts)</div><div class="mdesc">EBITDA FY2026E $4.10B (guidance midpoint) × 13.5x EV/EBITDA − หนี้สุทธิ $1.37B ÷ 668.8M shares — Seed segment ควรได้ 16x+ หลัง Vylor แยกตัว แต่ยังรวม discount ไว้</div></div>
+        <div class="mval">$81.00</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. EV/Sales Valuation</div><div class="mdesc">Revenue TTM $17.89B × EV/Sales 3.0x = $53.67B − net debt $1.37B ÷ 668.8M shares — comps: FMC ~2.5x, Bayer Ag ~2.8x, Corteva premium justified by R&amp;D pipeline</div></div>
+        <div class="mval">$78.00</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $78 – $90</span></div>
+        <div class="r">$82</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        วิธี P/E ให้ค่าสูงสุดเพราะ FY2026E operating EPS เติบโต +7% จากการปรับปรุง margin ในทั้งสองธุรกิจ
+        วิธี EV/EBITDA ให้ค่ากลาง อิงกับ consolidated multiple ที่ยังมี "conglomerate discount" ก่อน Vylor แยกตัว
+        วิธี EV/Sales ให้ค่าต่ำสุด สะท้อน margin ที่ยังอยู่ระหว่างฟื้นตัวหลัง destocking cycle
+        FV เฉลี่ย $82 ใกล้เคียงราคาปัจจุบัน $83.37 บ่งชี้ว่าหุ้นสะท้อน recovery scenario ไปแล้วเป็นส่วนใหญ่
+        Upside จากตรงนี้อยู่ที่ value unlock จาก Vylor spin-off และ multiple re-rating หลังแยกตัว
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $83.37</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $82</div></div>
+        </div>
+        <div class="scale">
+          <span>$57.40<br><small>MOS 30%</small></span>
+          <span>$65.60<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$82<br><small>Fair Value</small></span>
+          <span style="text-align:right">$89<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">$90<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน $83.37 อยู่เหนือ Fair Value $82 เล็กน้อย (~+1.7%) บ่งชี้ว่าตลาดสะท้อน earnings recovery ไปแล้ว
+        โซน MOS 20% ที่ $65.60 และ MOS 30% ที่ $57.40 คือจุดเข้าที่น่าสนใจสำหรับ value investor ซึ่งต้องรอการย่อตัว
+        Analyst consensus $89 สูงกว่า FV ของเราเล็กน้อย สะท้อน bull case จาก Vylor spin-off value unlock และ EBITDA expansion ที่อาจแรงกว่าคาด
+        ในระยะสั้น หุ้นอาจผันผวนก่อน Q2 2569 earnings (30 ก.ค. 2569) และ Vylor separation timeline update
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">-1.7%</div>
+        <div class="txt">ราคาปัจจุบันสูงกว่า Fair Value เล็กน้อย — ยังไม่มี MOS · รอโอกาสซื้อที่ดีกว่า</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$65.60</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$57.40</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $82</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="83.37" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $83.37 • EPS ฐาน ~$3.58 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS +2%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$70.70</div>
+          <div class="ret neg">-15.2%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$3.80</span></li>
+            <li><span>P/E ออก</span><span>18x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$2.30</span></li>
+            <li><span>สถานการณ์</span><span>Destocking กลับมา, Spin-off ล่าช้า, ราคาข้าวโพด/ถั่วเหลืองดิ่ง</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +8%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$101.60</div>
+          <div class="ret pos">+21.9%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$4.51</span></li>
+            <li><span>P/E ออก</span><span>22x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$2.40</span></li>
+            <li><span>สถานการณ์</span><span>Vylor spin-off สำเร็จ, margin expansion ต่อเนื่อง, biologicals แตะ $1B</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +13%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$126.10</div>
+          <div class="ret pos">+51.3%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$5.15</span></li>
+            <li><span>P/E ออก</span><span>24x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$2.50</span></li>
+            <li><span>สถานการณ์</span><span>Vylor ได้ multiple premium 18-20x, New Corteva re-rate, ลิขสิทธิ์ seed genetics พุ่ง</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      Projection ใช้ Adj. Operating EPS FY2026E $3.58 (guidance midpoint $3.45–$3.70) เป็นฐาน ไม่ใช่ GAAP EPS $1.71 ที่บิดเบือนจากค่าตัดจำหน่าย goodwill
+      เหตุการณ์สำคัญที่ต้องติดตาม: Vylor Form 10 SEC registration, Q2-Q3 2569 earnings, ราคาสินค้าเกษตรโลก (corn/soy), PFAS litigation settlement ของ New Corteva
+      Catalyst หลักของ bull case คือ sum-of-parts value unlock เมื่อ Vylor แยกออกมา — seed business ที่มี EBITDA margin 25%+ ควรได้ multiple 16-18x EBITDA แยกต่างหาก
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก &amp; ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>Vylor Spin-off (Q4 2569):</b> การแยก seed business (Vylor) ออกจาก crop protection (New Corteva) คาดว่าจะ unlock sum-of-parts value สูงกว่า current combined multiple — seed ควรได้ 16-20x EBITDA vs. combined 13.5x ปัจจุบัน</li>
+          <li><b>Margin Expansion ต่อเนื่อง:</b> Op. EBITDA margin จาก 22.1% (FY2025) เป้าหมาย 22–23% (FY2026) ขับเคลื่อนด้วยผลิตภัณฑ์ใหม่และ mix shift สู่ชีววิทยา</li>
+          <li><b>Biologicals Pipeline พุ่ง:</b> เป้าหมาย $1B revenue จาก biologicals ภายในปี 2572 — Fungicide organic +40% และ Insecticide +7% ใน FY2025</li>
+          <li><b>Pioneer Seeds Innovation:</b> ลิขสิทธิ์ seed genetics และ biotechnology patents 4,000+ ชิ้น ของ Vylor มีศักยภาพสร้าง royalty income near-zero cost</li>
+          <li><b>Q1 2569 แข็งแกร่ง:</b> Net sales +11% YoY, Op. EPS +33% — ยืนยัน recovery จาก destocking cycle และ guidance FY2026 ยังคงเดิม</li>
+          <li><b>Supreme Court Pesticide Ruling (มิ.ย. 2569):</b> คำตัดสินล่าสุดเป็นผลดีต่อ Corteva ลดความเสี่ยงด้านกฎระเบียบสารป้องกันพืช</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>PFAS Litigation (New Corteva):</b> ธุรกิจ crop protection มี legacy PFAS liability จาก DowDuPont era — settlement costs อาจส่งผลต่อ balance sheet ของ New Corteva หลังแยกตัว</li>
+          <li><b>Commodity Price Risk:</b> ราคาข้าวโพดและถั่วเหลืองต่ำ → เกษตรกรลด input spending → กดดัน seed/chemical demand เช่นที่เกิดใน 2023-2024</li>
+          <li><b>Channel Inventory Glut:</b> ตลาดสารป้องกันพืชยังมีความเสี่ยง inventory overhang โดยเฉพาะในบราซิลและ EM — New Corteva มีความเสี่ยงนี้มากกว่า Vylor</li>
+          <li><b>Spin-off Execution Risk:</b> ความล่าช้าหรือปัญหาใน SEC registration, tax-free qualification, หรือ debt allocation อาจทำให้ multiple discount ไม่ถูก unlock ทันที</li>
+          <li><b>Competition ผู้นำตลาด:</b> Bayer CropScience (Roundup/traits), Syngenta (ChemChina), BASF Ag — competition ด้าน seed traits และ pesticides รุนแรงต่อเนื่อง</li>
+          <li><b>Valuation Premium Risk:</b> ราคา $83 สะท้อน recovery ไปมากแล้ว — ถ้า FY2026 guidance ไม่เป็นตามที่คาด หรือ Vylor spin-off ล่าช้า อาจเห็น multiple compression</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>ยุติธรรม–เหมาะสม: รอ Spin-off Catalyst หรือจุดซื้อที่ดีกว่า</h2>
+      <p>Corteva เป็นผู้นำระดับโลกด้าน seed genetics (Pioneer, Brevant) และ crop protection ที่กำลังผ่านพ้นวัฏจักร destocking และเดินหน้าสู่ margin expansion
+         การแยก Vylor (seed) ออกจาก New Corteva (crop protection) ใน Q4 2569 คือ catalyst ที่แท้จริงที่อาจ unlock sum-of-parts value ได้สูงสุดถึง $90-100+
+         อย่างไรก็ตาม ราคาปัจจุบัน $83.37 อยู่เหนือ Fair Value โดยรวม $82 เล็กน้อย — ตลาดสะท้อน recovery scenario ไปแล้วเกือบครบ
+         Analyst consensus $89 (22 คน, Buy) สูงกว่า FV เรา สะท้อน optimism ต่อ spin-off value unlock
+         แนวทางที่เหมาะสมคือ "ถือถ้ามีอยู่ — รอซื้อเพิ่มเมื่อราคาต่ำกว่า $82" หรือ "เริ่มสะสมน้อยๆ และเพิ่มเมื่อราคาปรับลงใกล้ $75-78"</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$82 <span style="font-size:12px;color:#cab9a8">($78–$90)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ -1.7%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$89 (Buy)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ราคาปัจจุบันใกล้เคียง Fair Value — เริ่มทยอยสะสมได้เมื่อราคาต่ำกว่า $80 และพิจารณาเพิ่มเติมใกล้ $72-75 (MOS 10-12%) รอ Vylor Spin-off เป็น trigger หลัก สำหรับ long-term investor ที่เชื่อใน agricultural innovation thesis สามารถถือผ่าน volatility ได้ เนื้อธุรกิจแข็งแกร่ง ปันผลสม่ำเสมอ Beta ต่ำ 0.57
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    แหล่งข้อมูล: StockAnalysis.com (ราคา $83.37, P/E, EPS, dividend), Yahoo Finance (กราฟรายเดือน), Corteva IR / SEC 8-K FY2025 Q4 Earnings (Op. EPS $3.34, EBITDA $3.85B), StockTitan/Global-Agriculture (FY2025 results, 2026 guidance), TIKR.com (separation analysis), Upstream.ag (sum-of-parts valuation)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 29 มิ.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>

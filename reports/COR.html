@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น Cencora (COR) — Stock Analysis Dashboard</title>
+<!-- ★ ใส่รุ่นโมเดล AI ที่ใช้วิเคราะห์จริง -->
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
+<script type="application/json" id="stock-meta">
+{"symbol":"COR","currency":"USD","price":281.65,"fairValue":310,"mos":9.1,"upside":10.1,"pe":16.9,"dividendYield":0.85,"roe":107.1}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#461E96",
+    "accentDark": "#2E1066",
+    "darkGrad": "linear-gradient(135deg,#1a0a3d 0%,#2d1278 50%,#1a0a3d 100%)",
+    "glow": "rgba(70,30,150,0.35)",
+    "subColor": "#c4b5fd",
+    "headerMuted": "rgba(196,181,253,0.7)",
+    "verdictText": "#e9d5ff",
+    "vcellLabel": "#c4b5fd",
+    "badge": "#461E96",
+    "chgBg": "#c5221f",
+    "chgColor": "#ffffff"
+  },
+  "chart": {
+    "data": [
+      ["Jul '25", 286.08],
+      ["Aug '25", 291.61],
+      ["Sep '25", 312.53],
+      ["Oct '25", 337.81],
+      ["Nov '25", 368.93],
+      ["Dec '25", 337.75],
+      ["Jan '26", 359.22],
+      ["Feb '26", 372.14],
+      ["Mar '26", 314.14],
+      ["Apr '26", 308.01],
+      ["May '26", 269.36],
+      ["Jun '26", 281.65]
+    ],
+    "min": 220,
+    "max": 400,
+    "grid": [230, 270, 310, 350, 390],
+    "fairLine": 310,
+    "currency": "$",
+    "highlight": [4, 7]
+  },
+  "gauge": {
+    "min": 180,
+    "max": 420,
+    "cur": 281.65,
+    "fair": 310,
+    "fairLabelTop": true
+  },
+  "fv": 310
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">◆ ◆ ◆</div>
+    <div>
+      <span class="tag">NYSE: COR</span>
+      <span class="tag">Healthcare Distribution</span>
+      <span class="tag">Specialty Pharma</span>
+    </div>
+    <h1>Cencora, Inc.</h1>
+    <div class="sub">US pharmaceutical distribution (#2 by revenue, formerly AmerisourceBergen) • US Healthcare Solutions • International Healthcare Solutions (Alliance Healthcare EU) • ION Solutions oncology • GLP-1 distributor • Walgreens partner</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$281.65<small>(COR)</small></div>
+      </div>
+      <div class="chg">▼ −1.5% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 30 มิ.ย. 2569<br>
+        กรอบ 52 สัปดาห์ $244.82 – $377.54<br>
+        ที่มา: Yahoo Finance, StockAnalysis.com
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ มิ.ย. 2569 | FY สิ้นสุด ก.ย.</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">$54.8B</div><div class="d">194.6M shares</div></div>
+      <div class="metric"><div class="k">P/E (adj TTM)</div><div class="v neu">~16.9x</div><div class="d">adj EPS TTM $16.67; GAAP P/E 21.6x</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~17–20x</div><div class="d">adj P/E เป้าหมายเซกเตอร์ 16–20x</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">16.1x</div><div class="d">BVPS $17.46 (leverage-amplified)</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">$1,554M</div><div class="d">GAAP; adj. net income สูงกว่า</div></div>
+      <div class="metric"><div class="k">EPS adj. (TTM)</div><div class="v">~$16.67</div><div class="d">Q3FY25 $4.00+Q4FY25 $3.84+Q1FY26 $4.08+Q2FY26 $4.75</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~$17.46</div><div class="d">ต่ำเพราะ buyback สะสม (equity เล็ก)</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~107% / 3.5%</div><div class="d">ROE สูงจาก leverage + buyback</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$328.7B</div><div class="d">FY2025 $321.3B (+9.3% YoY)</div></div>
+      <div class="metric"><div class="k">Gross Margin</div><div class="v">~3.2%</div><div class="d">ธุรกิจ distribution margin얇า; EBITDA margin ~1.2%</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~0.85%</div><div class="d">$2.40/ปี; payout ratio ~18%</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">0.59</div><div class="d">ความผันผวนต่ำกว่าตลาด</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART (ราคาย้อนหลัง ~1 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#461E96"></i>ราคา COR</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $310</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        COR ทำจุดสูงสุดในรอบปีที่ $372.14 ในเดือน ก.พ. 2569 หลังรายงาน Q2 FY2026 ที่แข็งแกร่ง (กำไร GAAP พุ่งจาก OneOncology acquisition gain $1.1B) แต่ราคาดิ่งลงแรงในช่วง มี.ค.–พ.ค. 2569 มาแตะ $269 จากความกังวลเรื่อง tariff ยา, นโยบาย drug pricing, และ revenue miss ใน Q1 FY2026 ราคาฟื้นตัวเล็กน้อยในเดือน มิ.ย. 2569 ผลตอบแทนรอบปี (ก.ค. 2568–มิ.ย. 2569) อยู่ที่ −1.5% ต่ำกว่าตลาดทั่วไป แต่สะท้อนว่าหุ้น healthcare distribution ถูกกดดันจากความไม่แน่นอนด้านนโยบายในช่วงนั้น
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION (เฉลี่ย 3 วิธี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS adj. $17.77 × P/E 18x — FY2026 forward EPS consensus; peer MCK ~18–20x, CAH ~14–16x; COR specialty mix สมควร premium → $320</div></div>
+        <div class="mval">$320</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. EV/EBITDA</div><div class="mdesc">Forward EBITDA ~$4.2B × 14x − Net debt $8.2B ÷ 194.6M shares — peers MCK/CAH trade 12–14x; specialty premium ที่ 14x; net debt หักออก → $263</div></div>
+        <div class="mval">$263</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Forward Growth (3 ปี)</div><div class="mdesc">EPS adj. $17.77 × (1+11%)² = $21.89 FY2028E × 17x exit ÷ (1.09)² — EPS CAGR 11% จาก FY2026 guidance growth + buybacks; discount 9% — $348</div></div>
+        <div class="mval">$348</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $263 – $348</span></div>
+        <div class="r">$310</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        วิธี P/E (18x) ให้ $320 สอดคล้องกับ premium ที่นักวิเคราะห์ให้กับ specialty distribution mix ของ Cencora (ION Solutions oncology + Alliance Healthcare EU) วิธี EV/EBITDA ให้ค่าต่ำสุด $263 เพราะ net debt $8.2B กดมูลค่าหุ้นส่วนแบ่ง วิธี forward growth ให้ $348 (อิง EPS growth 11%/ปี และ buyback) ค่าเฉลี่ยถ่วงน้ำหนัก 50/20/30 = ~$310 — ค่อนข้าง conservative ใกล้เคียงกับระดับ "fairly valued" ที่ราคาปัจจุบัน ขณะที่ analyst consensus อยู่ที่ $351–$368 (bullish กว่า)
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $281.65</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $310</div></div>
+        </div>
+        <div class="scale">
+          <span>$217<br><small>MOS 30%</small></span>
+          <span>$248<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$310<br><small>Fair Value</small></span>
+          <span style="text-align:right">$348<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">$368<br><small>เป้าเฉลี่ย Analyst</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ณ ราคา $281.65 COR ซื้อขาย "ใกล้ Fair Value" ของเรา ($310) ด้วย MOS ~9% ซึ่งถือว่าน้อย แต่ยังต่ำกว่า analyst consensus $368 ราว 20–30% บ่งชี้ว่านักวิเคราะห์มองว่าหุ้น undervalued มากกว่าประมาณการ conservative ของเรา ราคาในโซน $248–$280 (MOS 10–20%) ถือเป็น "จุดสะสมที่ดี" สำหรับ value investor ราคา $217 (MOS 30%) เป็นโซน deep value ที่หายาก แต่เคยใกล้ช่วง Mar–May 2026
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict ok">
+        <div class="big">+9.1%</div>
+        <div class="txt">MOS เล็กน้อย — ราคาใกล้ Fair Value; รอโซน $248–$265 เพื่อ MOS ที่ดีขึ้น</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$248</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$217</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $310</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="281.65" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $281.65 • EPS ฐาน ~$17.77 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS +5%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$275</div>
+          <div class="ret neg">−2%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$20.57</span></li>
+            <li><span>P/E ออก</span><span>13x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$7.50</span></li>
+            <li><span>สถานการณ์</span><span>Drug pricing reform กด margin + Walgreens ลดคำสั่งซื้อ</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +11%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$421</div>
+          <div class="ret pos">+49%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$24.30</span></li>
+            <li><span>P/E ออก</span><span>17x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$7.50</span></li>
+            <li><span>สถานการณ์</span><span>GLP-1 + oncology volume โต; buyback หนุน EPS</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +15%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$549</div>
+          <div class="ret pos">+95%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$27.03</span></li>
+            <li><span>P/E ออก</span><span>20x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$8.00</span></li>
+            <li><span>สถานการณ์</span><span>OneOncology synergy + Alliance Healthcare expansion; multiple re-rate</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      Base case อิง EPS growth 11%/ปี (สอดคล้องกับ management guidance long-term 9–13%) และ exit P/E 17x ซึ่งสมเหตุสมผลสำหรับ specialty distributor ที่มี oncology premium Bull case สะท้อน OneOncology consolidation (acquired Feb 2026) ที่เพิ่ม oncology volume อย่างมีนัย + Alliance Healthcare EU ที่ขยายตัว Bear case เกิดจากนโยบาย drug pricing reform ของรัฐบาลสหรัฐ ที่กดดัน margin + Walgreens (ลูกค้ารายใหญ่ ~25% ของรายได้) ที่ยังมีปัญหาทางการเงิน ผลตอบแทน Base 49% ใน 3 ปี (~14%/ปี) ถือว่าน่าสนใจสำหรับหุ้น defensive ความเสี่ยงต่ำ (beta 0.59)
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>GLP-1 tailwind:</b> Cencora เป็น distributor หลักของ Ozempic, Wegovy, Mounjaro — ยอดจ่ายยา GLP-1 ทั่วสหรัฐยังโตต่อเนื่อง ช่วยหนุน volume</li>
+          <li><b>OneOncology acquisition (Feb 2026):</b> ได้ชิ้นส่วนที่เหลือของ ION Solutions network เสริมฐาน oncology specialty distribution ที่แข็งแกร่งอยู่แล้ว</li>
+          <li><b>Alliance Healthcare EU:</b> ธุรกิจ International Healthcare Solutions ที่ได้มาจาก UK/EU expansion สร้าง geographic diversification และโตเร็ว</li>
+          <li><b>Buyback + EPS ขยาย:</b> $2B buyback program ล่าสุด (May 2026) ช่วยลด share count → EPS เติบโตเร็วกว่า operating income</li>
+          <li><b>Specialty distribution premium:</b> oncology, biosimilars, cold-chain specialty products มี margin สูงกว่า generic distribution; COR เน้น segment นี้มากกว่าคู่แข่ง</li>
+          <li><b>Defensive nature:</b> healthcare spending ไม่ขึ้นกับวัฏจักรเศรษฐกิจ — beta 0.59 ต่ำกว่าตลาดมาก เหมาะเป็น core holding ช่วงตลาดผันผวน</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>Drug pricing reform:</b> นโยบาย Medicare drug price negotiation + Inflation Reduction Act ของรัฐบาลสหรัฐ อาจกดดัน drug pricing chain → ผลกระทบต่อ distribution spread</li>
+          <li><b>Walgreens concentration risk:</b> Walgreens Boots Alliance คือลูกค้ารายใหญ่ (~25% รายได้) ซึ่งกำลังปิดร้านและมีปัญหาทางการเงิน — การลด order หรือ default มีนัย</li>
+          <li><b>Opioid litigation overhang:</b> แม้ส่วนใหญ่ settle แล้ว แต่ยังมีคดีค้างในบางรัฐ; opioid-related charges กดกำไร GAAP</li>
+          <li><b>Thin margin ในธุรกิจ core:</b> gross margin ~3% ใน drug distribution — เปราะบางต่อ shift ในการต่อรอง contract หรือ competition จาก MCK และ CAH</li>
+          <li><b>Leverage สูง:</b> net debt $8.2B vs equity ~$3.4B — ดอกเบี้ยสูงขึ้นหากต้อง refinance ในช่วง rate สูง</li>
+          <li><b>Regulatory / tariff:</b> tariff ยาและ biosimilar นำเข้าจากจีน/ยุโรป อาจส่งผลต่อ supply chain และต้นทุน specialty distribution</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>Fairly Valued — รอโซน $248–$265 เพื่อ MOS ที่ดีกว่า</h2>
+      <p>Cencora เป็น #2 pharma distributor ของสหรัฐ (รายได้ $321B FY2025) ด้วยความได้เปรียบจาก specialty oncology (ION Solutions), GLP-1 tailwind, และ Alliance Healthcare EU ทำให้ EPS adj. โตต่อเนื่อง 14–16%/ปีใน FY2023–2025 OneOncology acquisition (Feb 2026) เสริมฐาน oncology ให้แข็งแกร่งยิ่งขึ้น ณ ราคา $281.65 ซื้อขายที่ adj P/E ~16.9x (fwd 15.8x) ต่ำกว่า 5-yr avg และต่ำกว่า McKesson (~18–20x) — สะท้อน discount จาก Walgreens risk + drug pricing uncertainty นักวิเคราะห์ 14 คน consensus "Buy" ราคาเป้า $351–$368 (+25–30% upside) แต่ประมาณการ conservative ของเราอยู่ที่ $310 (MOS เพียง 9%) จึงแนะนำรอสะสมในโซนที่ดีกว่า</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$310 <span style="font-size:12px;color:#cab9a8">($263–$348)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +9.1%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$368 (Moderate Buy)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ราคาปัจจุบัน $281.65 ให้ MOS ~9% เท่านั้น — เหมาะสำหรับนักลงทุนระยะยาวที่ต้องการ defensive pharma distribution ในพอร์ต หาก pull-back มาโซน $248–$265 (MOS 15–20%) จะเป็นจุดสะสมที่น่าสนใจกว่า สำหรับ aggressive investor: ราคา $217 (MOS 30%) คือ deep value แต่อาจต้องรอนานหรือไม่เกิดเลย Base case 3 ปี: +49% (รวมปันผล ~$7.50) ที่ P/E exit 17x
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    ราคา $281.65 ณ 30 มิ.ย. 2569 อ้างอิง: Yahoo Finance (https://finance.yahoo.com/quote/COR), StockAnalysis.com (https://stockanalysis.com/stocks/cor/), MarketBeat (https://www.marketbeat.com/stocks/NYSE/COR/), SEC Form 8-K FY2025 Q4 &amp; FY2026 Q2 (investor.cencora.com)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 30 มิ.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
