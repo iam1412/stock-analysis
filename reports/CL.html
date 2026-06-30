@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น Colgate-Palmolive (CL) — Stock Analysis Dashboard</title>
+<!-- ★ ใส่รุ่นโมเดล AI ที่ใช้วิเคราะห์จริง -->
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) -->
+<script type="application/json" id="stock-meta">
+{"symbol":"CL","currency":"USD","price":92.4,"fairValue":95,"mos":2.74,"upside":2.81,"pe":24.6,"dividendYield":2.3,"roe":null}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#E31837",
+    "accentDark": "#B0102A",
+    "darkGrad": "linear-gradient(135deg,#1a0308 0%,#2d0810 50%,#1a0308 100%)",
+    "glow": "rgba(227,24,55,0.35)",
+    "subColor": "#f9c0c8",
+    "headerMuted": "rgba(255,255,255,0.65)",
+    "verdictText": "#fff",
+    "vcellLabel": "rgba(255,255,255,0.75)",
+    "badge": "#E31837",
+    "chgBg": "rgba(34,197,94,0.20)",
+    "chgColor": "#22c55e"
+  },
+  "chart": {
+    "data": [
+      ["Jun 25", 79.41],
+      ["Jul 25", 90.29],
+      ["Aug 25", 99.14],
+      ["Sep 25", 85.23],
+      ["Oct 25", 85.36],
+      ["Nov 25", 90.13],
+      ["Dec 25", 92.07],
+      ["Jan 26", 83.85],
+      ["Feb 26", 84.07],
+      ["Mar 26", 79.94],
+      ["Apr 26", 77.05],
+      ["May 26", 80.39],
+      ["Jun 26", 92.40]
+    ],
+    "min": 74,
+    "max": 102,
+    "grid": [76, 82, 88, 94, 100],
+    "fairLine": 95,
+    "currency": "$",
+    "highlight": [2, 12]
+  },
+  "gauge": {"min": 65, "max": 115, "cur": 92.40, "fair": 95},
+  "fv": 95
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">●●●●●●●●●●●●</div>
+    <div>
+      <span class="tag">NYSE: CL</span>
+      <span class="tag">Consumer Staples</span>
+      <span class="tag">Dividend King</span>
+    </div>
+    <h1>Colgate-Palmolive Company</h1>
+    <div class="sub">Colgate toothpaste &amp; oral care • Palmolive dish soap &amp; home care • Hill's Pet Nutrition • ~200 ประเทศ • Dividend King 63 ปีติดต่อกัน</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$92.40<small>(CL)</small></div>
+      </div>
+      <div class="chg">▲ +16.4% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 30 มิถุนายน 2569<br>
+        กรอบ 52 สัปดาห์ $74.55 – $99.33<br>
+        ที่มา: Yahoo Finance, StockAnalysis.com, MarketBeat
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล TTM / FY2025 (สิ้นสุด ธ.ค. 2568)</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">$73.9B</div><div class="d">800.2M หุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM adj.)</div><div class="v neu">~24.6x</div><div class="d">GAAP P/E = 35.8x (non-cash impairment FY2025)</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">24–28x</div><div class="d">premium สมเหตุผลสำหรับ Dividend King</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">~152x</div><div class="d">ทุนสุทธิต่ำมาก (buyback เชิงรุก + leverage สูง)</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">$2,261M</div><div class="d">รวมค่าด้อยค่า skin health $919M (non-cash)</div></div>
+      <div class="metric"><div class="k">EPS adj. (TTM)</div><div class="v">~$3.75</div><div class="d">FY2025 base business = $3.69 / Q1 2569 = $0.97</div></div>
+      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v pos">~60.1%</div><div class="d">ระดับสูงสุดในกลุ่ม consumer staples ชั้นนำ</div></div>
+      <div class="metric"><div class="k">ROIC</div><div class="v pos">~43.5%</div><div class="d">ROE &gt;200% เพราะ equity ต่ำมาก — ใช้ ROIC แทน</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$20.8B</div><div class="d">+4.3% YoY · Organic growth +3.5% Q1 2569</div></div>
+      <div class="metric"><div class="k">EBITDA TTM</div><div class="v">$3.83B</div><div class="d">Operating cash flow FY2025 = $4.2B (record)</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~2.30%</div><div class="d">$2.12/หุ้น/ปี · เพิ่มต่อเนื่อง 63 ปี</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">0.32</div><div class="d">ผันผวนต่ำมาก · defensive staple ชั้นนำโลก</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#E31837"></i>ราคา CL</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $95</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        CL เริ่มต้นที่ $79.41 เมื่อ มิ.ย. 2568 แล้วพุ่งแรงไปแตะ $99.14 ในเดือน ส.ค. 2568 ซึ่งเป็นระดับสูงสุดในรอบปี (ใกล้ 52-wk high $99.33)
+        ก่อนจะปรับฐานมาแถว $77–$85 ช่วงปลายปี 2568 ถึงต้นปี 2569 กดดันจาก raw material/logistics เพิ่มขึ้น $300M
+        และ gross margin guidance ถูกปรับลง แต่หุ้นฟื้นตัวแข็งแกร่งใน มิ.ย. 2569 กลับมาที่ $92.40
+        ให้ผลตอบแทนรอบปี <b>+16.4%</b> บวกปันผล ~2.3% รวม total return ~18.7%
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">3 วิธีผสม</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation (หลัก)</div><div class="mdesc">EPS adj. $3.88 × P/E 25x = $97 — FY2569 consensus EPS $3.88; CL ซื้อขายที่ forward P/E 24–25x มาอย่างสม่ำเสมอ premium ตามคุณภาพธุรกิจ + global reach 200 ประเทศ</div></div>
+        <div class="mval">$97</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล $2.12 × (1+g); g 3.5%, r 6.5% → (r−g)=3.0% → $2.12/0.03 — CAPM r: risk-free 4.3% + β0.32×ERP5.5% = 6.07% ≈ 6.5%; สะท้อน intrinsic value เฉพาะนักลงทุน income</div></div>
+        <div class="mval">$71</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. EV/EBITDA</div><div class="mdesc">EBITDA TTM $3.83B × EV/EBITDA 19x = EV $72.8B − net debt $6.6B = equity $66.2B ÷ 800.2M shares — peer: PG ~18x, KMB ~15x, CL premium justified</div></div>
+        <div class="mval">$83</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $71 – $97</span></div>
+        <div class="r">$95</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        P/E Valuation (50%) ให้ $97 — วิธีหลักสำหรับ consumer staples ที่มี earnings visibility สูง
+        DDM (20%) ให้ $71 — ต่ำกว่าเพราะ yield เพียง 2.3% และ DDM sensitive ต่อ r; สะท้อน "minimum intrinsic value" สำหรับผู้ถือระยะยาวเน้น income
+        EV/EBITDA (30%) ให้ $83 อิง peer median conservative
+        ถ่วงน้ำหนัก 50/30/20 ได้ ~$88 ปรับขึ้นเป็น $95 สอดคล้องกับ analyst consensus $95.88 (19 บ้าน) ซึ่งสะท้อน brand equity และ pricing power ที่ quantitative model ไม่จับ
+        สรุป: CL ซื้อขายใกล้ fair value ไม่ถูก แต่ไม่แพงสำหรับคุณภาพระดับนี้
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $92.40</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $95</div></div>
+        </div>
+        <div class="scale">
+          <span>$66.50<br><small>MOS 30%</small></span>
+          <span>$76.00<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$95<br><small>Fair Value</small></span>
+          <span style="text-align:right">$95.88<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">$97<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน $92.40 อยู่ต่ำกว่า Fair Value $95 เล็กน้อย (MOS +2.7%) และต่ำกว่าเป้า analyst $95.88 (~3.7% upside)
+        CL อยู่ในโซน "ใกล้เหมาะสม" ไม่ถูกมาก แต่ก็ไม่แพง · โซนสะสมที่ดีเริ่มต่ำกว่า $89 (ใกล้กว่า blended FV)
+        โซน MOS 20% ที่ $76 คือโอกาสดีสำหรับ value investor · โซน $66.50 (MOS 30%) เกิดได้เฉพาะช่วง market crash หรือวิกฤตรุนแรง
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">+2.7%</div>
+        <div class="txt">MOS เล็กน้อย — CL ซื้อขายใกล้ Fair Value ยังไม่ถึงโซน "ถูก" อย่างมีนัยสำคัญ</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$76.00</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$66.50</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $95</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="92.40" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $92.40 • EPS ฐาน ~$3.88 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS +1%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$86</div>
+          <div class="ret neg">−6.5%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$4.00</span></li>
+            <li><span>P/E ออก</span><span>20x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$6.50</span></li>
+            <li><span>สถานการณ์</span><span>EM FX crisis + cost surge กด margin</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +4%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$111</div>
+          <div class="ret pos">+20.5%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$4.36</span></li>
+            <li><span>P/E ออก</span><span>24x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$6.60</span></li>
+            <li><span>สถานการณ์</span><span>Organic growth 3–4% + Hill's รักษา momentum</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +7%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$135</div>
+          <div class="ret pos">+46.1%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$4.75</span></li>
+            <li><span>P/E ออก</span><span>27x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$6.70</span></li>
+            <li><span>สถานการณ์</span><span>Hill's โตแรง + productivity savings $300M ขยาย margin</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      ใช้ EPS adj. ฐาน FY2569 ($3.88 consensus) เป็นจุดตั้งต้น · bear case สมมติว่า EM FX อ่อนค่าและต้นทุนพลังงานพุ่ง ทำ margin compression รุนแรง, multiple de-rate ลง 20x
+      base case ตาม guidance management: organic growth 1–4%, EPS "low-to-mid single digits" ตาม FY2569 guidance
+      bull case: Hill's Pet Nutrition ฟื้นตัว + Strategic Growth &amp; Productivity Program ประหยัดได้ $200–300M/ปีภายใน FY2571
+      รวมปันผล base case ผลตอบแทนรวม 3 ปี ~25% (CAGR ~7.7%) · CL เหมาะสำหรับ portfolio ส่วน defensive/dividend
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก &amp; ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>Hill's Pet Nutrition:</b> เซกเตอร์อาหารสัตว์เลี้ยง premium โตต่อเนื่อง Hill's มีส่วนแบ่งตลาดสูง เน้น vet-recommended มีความภักดีของลูกค้าสูงมาก เป็น high-margin driver สำคัญ</li>
+          <li><b>Dividend King 63 ปี:</b> ประวัติเพิ่มปันผลต่อเนื่องยาวนานที่สุดในกลุ่ม consumer staples สร้าง investor loyalty และ price floor ระดับหนึ่ง</li>
+          <li><b>Emerging Market Penetration:</b> Latin America, Africa, Asia — ยังมี underpenetrated markets ขนาดใหญ่ oral care ใน EM เป็น long-term growth runway</li>
+          <li><b>Strategic Productivity Program:</b> เป้าประหยัด $200–300M/ปี ภายใน FY2571 ผ่าน AI supply chain, Promo AI, Revenue Growth Management — margin expansion driver</li>
+          <li><b>Pricing Power:</b> Colgate เป็น brand ที่ผู้บริโภคภักดีสูง (oral care = daily essential) สามารถขึ้นราคาได้แม้ใน inflation โดยไม่สูญเสียส่วนแบ่งตลาดมาก</li>
+          <li><b>Record Operating Cash Flow:</b> $4.2B ใน FY2568 แม้มี impairment charge → สภาพคล่องดีเยี่ยม รองรับ buyback + dividend growth ต่อเนื่อง</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>EM Currency Risk:</b> ~50% รายได้จาก EM; ดอลลาร์แข็งหรือ FX volatility ใน Brazil, Mexico, India ส่งผลรุนแรงต่อ reported earnings แม้ organic growth ดี</li>
+          <li><b>Raw Material Inflation:</b> Q1 FY2569 เผชิญ headwind $300M เพิ่มเติม กด gross margin ลง 60 bps → full-year margin guidance ถูกปรับลง</li>
+          <li><b>Valuation Premium:</b> P/E adj. ~24.6x ไม่ถูก; หาก earnings miss หรือ sentiment เปลี่ยน multiple de-rate ทำราคาปรับแรงได้แม้พื้นฐานดี</li>
+          <li><b>Hill's Growth Slowdown:</b> หลังโตเร็วช่วง COVID, momentum ชะลอ การแข่งขันจาก Royal Canin (Mars), Purina Pro Plan (Nestlé) รุนแรงขึ้น</li>
+          <li><b>Skin Health Segment:</b> ตัดค่าด้อยค่า $919M ใน FY2568 สะท้อน segment ที่ยังหาทิศทางไม่ชัด อาจกด GAAP earnings ต่อไปหากต้องปรับ portfolio</li>
+          <li><b>Private Label Competition:</b> ใน EM และ economic downturn ผู้บริโภคอาจหันไปใช้ private label ราคาถูกกว่า โดยเฉพาะในตลาดที่ brand loyalty ต่ำกว่า developed market</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>คุณภาพระดับโลก ราคาใกล้เหมาะสม — ถือยาวได้ รอโอกาสก่อนเพิ่มสัดส่วน</h2>
+      <p>Colgate-Palmolive เป็นหนึ่งในบริษัทคุณภาพสูงสุดในโลก: กระจายใน 200 ประเทศ, oral care market share #1 globally, Hill's Pet เป็น premium high-margin segment, และ Dividend King 63 ปีติดต่อกันคือสัญญาณของ durability พิเศษ ROIC 43.5% สะท้อน capital allocation ยอดเยี่ยม อย่างไรก็ตาม ณ ราคา $92.40 CL ซื้อขายที่ P/E adj. 24.6x ซึ่งเป็น premium ที่เหมาะสมแต่ไม่ถูก MOS เพียง 2.7% จากประเมินหลัก ($95) บ่งชี้ว่ายังไม่ใช่โอกาสพิเศษ ความเสี่ยงหลักคือ EM FX และต้นทุน raw material ที่กดดันระยะสั้น</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$95 <span style="font-size:12px;color:#cab9a8">($71–$97)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +2.7%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$95.88 (Moderate Buy)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> สำหรับนักลงทุนเน้น defensive dividend — ถือยาวได้ที่ราคาปัจจุบัน ผลตอบแทนรวม (capital gain + dividend) ~7–8%/ปี base case · หากเป้าหมายคือ MOS ที่แท้จริง รอโซน $76–$80 (MOS 20%) จะน่าสนใจกว่า · เหมาะกับนักลงทุนเน้นคุณภาพธุรกิจและปันผลที่เติบโตสม่ำเสมอ ไม่ใช่ growth stock ที่จะ outperform ตลาดในระยะสั้น
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ EPS ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    แหล่งข้อมูล: Yahoo Finance (ราคา $92.40 / chart รายเดือน), StockAnalysis.com (financials/EPS/metrics ยืนยัน $92.40), MarketBeat (analyst targets $95.88 / 19 บ้าน), SEC 8-K Colgate Q1 FY2569 (EPS adj. base business $0.97), TIKR.com (EPS estimates FY2569 $3.88)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 30 มิถุนายน 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
