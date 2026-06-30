@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น The Cigna Group (CI) — Stock Analysis Dashboard</title>
+<!-- ★ ใส่รุ่นโมเดล AI ที่ใช้วิเคราะห์จริง -->
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
+<script type="application/json" id="stock-meta">
+{"symbol":"CI","currency":"USD","price":277.71,"fairValue":336,"mos":17.3,"upside":21.0,"pe":11.8,"dividendYield":2.25,"roe":16.27}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#00A8AA",
+    "accentDark": "#007B7D",
+    "darkGrad": "linear-gradient(135deg,#003D3E 0%,#005C5E 100%)",
+    "glow": "rgba(0,168,170,0.35)",
+    "subColor": "#80D4D5",
+    "headerMuted": "rgba(0,168,170,0.55)",
+    "verdictText": "#00C8CA",
+    "vcellLabel": "rgba(0,168,170,0.7)",
+    "badge": "#00A8AA",
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#1e8e3e"
+  },
+  "chart": {
+    "data": [
+      ["มิ.ย. 25", 270.62],
+      ["ก.ค. 25", 271.04],
+      ["ส.ค. 25", 286.57],
+      ["ก.ย. 25", 263.76],
+      ["ต.ค. 25", 288.91],
+      ["พ.ย. 25", 275.80],
+      ["ธ.ค. 25", 277.13],
+      ["ม.ค. 26", 275.00],
+      ["ก.พ. 26", 283.00],
+      ["มี.ค. 26", 290.85],
+      ["เม.ย. 26", 279.92],
+      ["พ.ค. 26", 286.24],
+      ["มิ.ย. 26", 277.71]
+    ],
+    "min": 240,
+    "max": 320,
+    "grid": [250, 265, 280, 295, 310],
+    "fairLine": 336,
+    "currency": "$",
+    "highlight": [4, 9]
+  },
+  "gauge": {
+    "min": 210,
+    "max": 370,
+    "cur": 277.71,
+    "fair": 336,
+    "fairLabelTop": false
+  },
+  "fv": 336
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">●●●</div>
+    <div>
+      <span class="tag">NYSE: CI</span>
+      <span class="tag">Healthcare / Managed Care</span>
+      <span class="tag">PBM &amp; Health Services</span>
+    </div>
+    <h1>The Cigna Group</h1>
+    <div class="sub">Evernorth Health Services (Express Scripts PBM + specialty pharmacy + behavioral health + infusion therapy) • Cigna Healthcare (commercial insurance + international health) • PBM leader ประมวลผลใบสั่งยากว่า 1 พันล้านใบ/ปี • Express Scripts (เข้าซื้อ 2018 ~$54B) • ขาย Medicare Advantage ให้ HCSC เสร็จ มี.ค. 2025 ($3.3B) • ปรับตัวเป็น health-services platform • PBM regulatory headwinds (drug pricing reform)</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$277.71<small>(CI)</small></div>
+      </div>
+      <div class="chg">▲ +2.6% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 29 มิ.ย. 2569<br>
+        กรอบ 52 สัปดาห์ $239.51 – $338.89<br>
+        ที่มา: Yahoo Finance, StockAnalysis.com, SEC EDGAR
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ มิ.ย. 2569 — ใช้ Adjusted EPS (Non-GAAP) สำหรับ P/E เพราะ GAAP มีค่าตัดจำหน่าย goodwill Express Scripts สูง</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~$73.4B</div><div class="d">264.5M หุ้น · NYSE: CI</div></div>
+      <div class="metric"><div class="k">P/E (TTM, GAAP)</div><div class="v neu">~11.8x</div><div class="d">Forward P/E (adj) ~9.1x · EPS GAAP TTM $23.60</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~13–17x</div><div class="d">ปัจจุบันต่ำกว่าเฉลี่ย · PBM regulatory discount</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">1.75x</div><div class="d">BVPS $159.52 · equity $42.4B (รวม goodwill สูง)</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">$6.0B GAAP</div><div class="d">Adj income from ops $8.0B · adj EPS $29.84 (+9% yoy)</div></div>
+      <div class="metric"><div class="k">EPS (TTM, GAAP)</div><div class="v">~$23.60</div><div class="d">Adj EPS FY2025 $29.84 · FY2026 guidance ≥$30.35</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~$159.52</div><div class="d">equity $42.4B / 264.5M shares · goodwill สูงจาก Express Scripts</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~16.3% / 4.8%</div><div class="d">ROIC 14.3% · แข็งแกร่งสำหรับเซกเตอร์</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">~$277.9B</div><div class="d">+8.8% yoy · Evernorth ~80% / Cigna Healthcare ~20%</div></div>
+      <div class="metric"><div class="k">FCF / FCF Yield</div><div class="v">$7.66B / 10.4%</div><div class="d">FCF/share ~$28.96 · FCF yield สูงเด่น</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~2.25%</div><div class="d">$6.24/share/yr · จ่ายปันผลสม่ำเสมอ + buyback</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">0.30</div><div class="d">ผันผวนต่ำมาก · healthcare defensive</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">มิ.ย. 2568 – มิ.ย. 2569</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#00A8AA"></i>ราคา CI</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $336</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคา CI ในรอบ 1 ปีเคลื่อนไหวในกรอบ $263–$291 มีจุดต่ำสุดที่ $263.76 (ก.ย. 2568) หลังความกังวลการ reform PBM และ utilization สูงในฝั่ง Cigna Healthcare ราคาฟื้นตัวแข็งแกร่งสู่ $290.85 (มี.ค. 2569) หลัง Q1 2026 adj EPS $7.79 (+16% yoy) เกิน consensus และ raise guidance — ก่อนย่อกลับมาที่ ~$278 ปัจจุบัน ราคายังอยู่ต่ำกว่า FV $336 อย่างมีนัยสำคัญ (MOS ~17%) เป็น entry point ที่น่าสนใจสำหรับ value investor ที่ยอมรับ regulatory overhang ระยะกลาง
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี — ใช้ Adjusted EPS &amp; FCF เป็นหลัก (GAAP EPS บิดเบือนจาก goodwill amortization)</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation (Adjusted EPS)</div><div class="mdesc">EPS adj. $29.84 × P/E 11x = $328 — ใช้ adj EPS FY2025 ($29.84) และ P/E เป้าหมาย 11x (compressed จาก PBM regulatory risk; MCO peer ELV/UNH ซื้อขายที่ 12–15x ก่อนวิกฤต · CI ได้ discount เพราะพึ่ง PBM มากกว่า)</div></div>
+        <div class="mval">$328</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. FCF Yield Valuation</div><div class="mdesc">FCF/share $28.96 ÷ FCF yield 8.5% = $341 — FCF yield 8.5% เหมาะสมกับธุรกิจ PBM/health services ที่มี regulatory risk ปานกลาง (low-beta, FCF ต่อเนื่อง, buyback support)</div></div>
+        <div class="mval">$341</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. EV/EBITDA</div><div class="mdesc">Adj EBITDA ~$12.5B × 9x = EV $112.5B; หัก net debt $23.1B = equity value $89.4B ÷ 264.5M หุ้น = $338 — multiple 9x สำหรับ PBM/MCO ที่มี scale ระดับ top-3 แต่ถูก discount จากความเสี่ยงนโยบาย</div></div>
+        <div class="mval">$338</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $318 – $358</span></div>
+        <div class="r">$336</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ทั้ง 3 วิธีให้ค่าใกล้เคียงกัน ($328–$341) สะท้อนธุรกิจที่มี FCF แข็งแกร่งแต่ถูกกด multiple จาก PBM regulatory overhang — หากรัฐสภาสหรัฐฯ ผ่านกฎหมาย PBM reform ที่กระทบ spread pricing หรือ rebate model อย่างรุนแรง FV อาจลงสู่ $270–$290 ในทางกลับกัน หาก regulatory risk ผ่อนคลาย P/E อาจกลับสู่ 13–14x → FV สูงถึง $400+ | หมายเหตุ: GAAP EPS ($23.60) ต่ำกว่า adj EPS ($29.84) อย่างมีนัยสำคัญเพราะค่าตัดจำหน่าย goodwill Express Scripts ~$4–5B/ปี — ใช้ adj EPS ตามมาตรฐานอุตสาหกรรม MCO/PBM
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $277.71</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $336</div></div>
+        </div>
+        <div class="scale">
+          <span>$235.20<br><small>MOS 30%</small></span>
+          <span>$268.80<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$336<br><small>Fair Value</small></span>
+          <span style="text-align:right">$340.50<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">$358<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน $277.71 อยู่ต่ำกว่า FV $336 ราว 17% และต่ำกว่าเป้านักวิเคราะห์เฉลี่ย $340.50 ราว 23% ซึ่งสอดคล้องกับ consensus "Buy" จาก 24 นักวิเคราะห์ (Strong Buy 15, Buy 5, Hold 4) ราคาปัจจุบันอยู่ระหว่างโซน MOS 20% ($268.80) และ FV ($336) — จุดเข้าสะสมที่ดีสำหรับ value investor ที่ยอมรับ regulatory overhang ระยะกลาง
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict ok">
+        <div class="big">+17.3%</div>
+        <div class="txt">MOS ปานกลาง — ราคาต่ำกว่า FV ~$58 · ยังมีส่วนเผื่อพอควรสำหรับ regulatory risk</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$268.80</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$235.20</div><div class="d">โซนถูกมาก (deep value) ใกล้ 52w low</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $336</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="277.71" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $277.71 • EPS ฐาน ~$30.35 (adj FY2026 guidance) • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS +2%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$309</div>
+          <div class="ret neg">+11.3% / 3 ปี</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$32.23</span></li>
+            <li><span>P/E ออก</span><span>9x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$19.3</span></li>
+            <li><span>สถานการณ์</span><span>PBM reform รุนแรง กด margin Evernorth</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +5%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$407</div>
+          <div class="ret pos">+46.7% / 3 ปี</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$35.16</span></li>
+            <li><span>P/E ออก</span><span>11x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$20.6</span></li>
+            <li><span>สถานการณ์</span><span>Evernorth เติบโตต่อ + regulatory สงบ</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +8%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$519</div>
+          <div class="ret pos">+87.0% / 3 ปี</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$38.22</span></li>
+            <li><span>P/E ออก</span><span>13x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$22.0</span></li>
+            <li><span>สถานการณ์</span><span>re-rating หลัง regulatory clarity + buyback เร่ง</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      Scenario อิง adj EPS FY2026 guidance ≥$30.35 เป็นฐาน · Bear case สมมติ PBM reform รุนแรงกด multiple ลงสู่ 9x (FCF yield play) แต่ยังได้ปันผล — downside จาก $277.71 ค่อนข้างจำกัด · Base และ Bull case อิงการเติบโต adj EPS ที่ CI มีประวัติทำได้จริง (FY2024→FY2025 +9%, Q1 2026 yoy +16%) · ไม่รวม buyback yield ซึ่งบริษัทใช้เงินจากขาย MA ($3.3B) ซื้อหุ้นคืนเพิ่ม — buyback จะช่วยเพิ่ม EPS/share อีกทาง · ความเสี่ยงหลัก = รัฐสภาสหรัฐฯ ผ่านกฎหมาย PBM reform กระทบ spread pricing / rebate model
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก &amp; ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>Evernorth / Express Scripts ครองตลาด PBM:</b> 1 ใน 3 PBM ใหญ่สหรัฐฯ ประมวลผลใบสั่งยา &gt;1 พันล้านใบ/ปี ลูกค้า long-term contracts ให้ revenue visibility สูง</li>
+          <li><b>FCF แข็งแกร่ง &amp; Buyback:</b> FCF $7.66B/ปี, FCF yield &gt;10% ที่ราคาปัจจุบัน — ใช้เงินจากขาย MA ($3.3B) + FCF ซื้อหุ้นคืนเร่ง เพิ่ม EPS/share</li>
+          <li><b>ขาย MA ให้ HCSC เสร็จ (มี.ค. 2568):</b> ลด medical loss ratio risk, focus กลับ Evernorth/health services ที่มี margin สูงกว่า — portfolio simplification ที่ตลาดชื่นชอบ</li>
+          <li><b>FY2026 guidance ≥$30.35 adj EPS:</b> Q1 2026 adj EPS $7.79 (+16% yoy) เกิน consensus — momentum ดี บริษัท raise guidance อีกครั้ง</li>
+          <li><b>Valuation compressed ต่ำกว่า peer:</b> Forward P/E ~9x เทียบ UNH/ELV ที่ &gt;12x ก่อน sector selloff — re-rating potential หาก regulatory สงบ</li>
+          <li><b>International &amp; specialty pharma growth:</b> Cigna Healthcare international + Evernorth specialty infusion therapy เป็นกลุ่มเติบโตสูงที่มักไม่ถูก PBM reform target โดยตรง</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>PBM Regulatory Reform (ความเสี่ยงสูงสุด):</b> รัฐสภาสหรัฐฯ &amp; FTC กำลัง scrutinize spread pricing, rebate model, pharmacy network practices — กฎหมาย PBM reform อาจกด Evernorth margin อย่างรุนแรง</li>
+          <li><b>Goodwill สูงจาก Express Scripts:</b> goodwill &gt;$40B จากการเข้าซื้อปี 2018 ($54B) — impairment risk หาก PBM business deteriorates; ทำให้ GAAP EPS ต่ำกว่า adj EPS มาก</li>
+          <li><b>Medical Care Ratio (MCR) ผันผวน:</b> Cigna Healthcare MCR Q1 2026 อยู่ที่ 79.8% — หาก utilization สูงกว่าคาด (post-COVID catch-up) จะกดกำไร Cigna Healthcare</li>
+          <li><b>ลูกค้า PBM ต่อรองมากขึ้น:</b> large employer / health plan ต่อรอง contract terms มากขึ้น — pricing pressure อาจกด margin Evernorth ระยะยาว</li>
+          <li><b>Net debt $23B:</b> leverage สูง (D/E 0.73x) — ดอกเบี้ยสูงจาก Express Scripts acquisition debt ยังเป็นภาระต่อ GAAP EPS</li>
+          <li><b>Competition จาก Amazon/Walmart ใน PBM:</b> Amazon Pharmacy &amp; Walmart Health ขยาย — disruption risk ระยะยาวแม้ยังไม่กระทบ near-term อย่างมีนัย</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>CI ราคาถูกกว่า FV ~17% · FCF yield 10%+ · PBM regulatory risk เป็นตัวกด multiple</h2>
+      <p>The Cigna Group กำลังเปลี่ยนผ่านจาก managed care insurer สู่ health-services &amp; PBM platform หลังขาย Medicare Advantage ให้ HCSC เสร็จในมี.ค. 2568 — Evernorth (Express Scripts) คือเครื่องยนต์หลักที่สร้าง FCF $7.66B/ปี และ adj EPS growth ต่อเนื่อง 9%+ Valuation ถูก compress ลงสู่ Forward P/E ~9x จาก PBM regulatory overhang แต่ตัวเลข fundamental แข็งแกร่ง: FCF yield &gt;10%, adj EPS guidance ≥$30.35 FY2026 (Q1 2026 +16% yoy), ROE 16.3%, buyback เร่งจากเงิน HCSC เป็น "กันชน" ป้องกัน downside ที่ดี ราคา ~$278 ยังอยู่ต่ำกว่า FV $336 และเป้าเฉลี่ย 24 นักวิเคราะห์ที่ $340.50</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$336 <span style="font-size:12px;color:#cab9a8">($318–$358)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +17.3%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$340.50 (Buy — 24 นักวิเคราะห์)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ทยอยสะสมที่ราคา $268–$278 (ใกล้โซน MOS 20%) สำหรับ value investor ที่ยอมรับ PBM regulatory risk ระยะกลาง 1–2 ปี — FCF yield 10%+ และ buyback เป็นกันชนดาวน์ไซด์ · เป้าระยะกลาง (Base case) $407 ใน 3 ปี (+47% + ปันผล) · สังเกตระดับ $235 (MOS 30%) หาก regulatory environment เสื่อมลง
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • แหล่งข้อมูล: (1) Yahoo Finance — ราคา $277.71 ณ 29 มิ.ย. 2569, chart data รายเดือน มิ.ย. 2568–มิ.ย. 2569 (2) StockAnalysis.com — fundamentals: ROE 16.3%, BVPS $159.52, FCF $7.66B, analyst targets $340.50 avg (24 analysts) (3) SEC EDGAR / Cigna newsroom / Investing.com — adj EPS $29.84 FY2025, guidance ≥$30.35 FY2026, Q1 2026 adj EPS $7.79 (+16% yoy), HCSC deal $3.3B completed Mar 2025
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ มิถุนายน 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>

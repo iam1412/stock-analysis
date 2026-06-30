@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น EOG Resources (EOG) — Stock Analysis Dashboard</title>
+<!-- ★ ใส่รุ่นโมเดล AI ที่ใช้วิเคราะห์จริง (Opus→"Claude Opus 4.8", Sonnet→"Claude Sonnet 4.6") — gate E28 บังคับ -->
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
+<script type="application/json" id="stock-meta">
+{"symbol":"EOG","currency":"USD","price":131.83,"fairValue":155.0,"mos":14.9,"upside":17.6,"pe":13.0,"dividendYield":3.1,"roe":18.2}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#E05A00",
+    "accentDark": "#B84500",
+    "darkGrad": "linear-gradient(135deg,#1a0a00 0%,#2d1200 40%,#3d1a00 100%)",
+    "glow": "rgba(224,90,0,0.35)",
+    "subColor": "#ffb07a",
+    "headerMuted": "rgba(255,176,122,0.7)",
+    "verdictText": "#ffe0cc",
+    "vcellLabel": "rgba(255,176,122,0.55)",
+    "badge": "#E05A00",
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#1e8e3e"
+  },
+  "chart": {
+    "data": [
+      ["ก.ค. 25", 120.02],
+      ["ส.ค. 25", 124.82],
+      ["ก.ย. 25", 112.12],
+      ["ต.ค. 25", 105.84],
+      ["พ.ย. 25", 107.85],
+      ["ธ.ค. 25", 105.01],
+      ["ม.ค. 26", 112.13],
+      ["ก.พ. 26", 124.08],
+      ["มี.ค. 26", 144.57],
+      ["เม.ย. 26", 140.57],
+      ["พ.ค. 26", 133.38],
+      ["มิ.ย. 26", 131.93],
+      ["30 มิ.ย. 26", 131.83]
+    ],
+    "min": 95,
+    "max": 160,
+    "grid": [100, 115, 130, 145, 160],
+    "fairLine": 155,
+    "currency": "$",
+    "highlight": [2, 5, 8]
+  },
+  "gauge": {
+    "min": 85,
+    "max": 185,
+    "cur": 131.83,
+    "fair": 155,
+    "fairLabelTop": false
+  },
+  "fv": 155
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">&#x25CF;&#x25CF;&#x25CF;</div>
+    <div>
+      <span class="tag">NYSE: EOG</span>
+      <span class="tag">Energy &mdash; E&amp;P</span>
+      <span class="tag">Oil &amp; Natural Gas</span>
+    </div>
+    <h1>EOG Resources, Inc.</h1>
+    <div class="sub">Best-in-class US independent E&amp;P: Permian (Delaware/Midland) + Eagle Ford + Dorado (nat gas) + international (Trinidad, Oman) &bull; Proprietary drilling technology &bull; Low-cost structure (breakeven ~$40&ndash;55/bbl WTI) &bull; 60&ndash;70%+ FCF returned to shareholders via base + special dividends + buybacks &bull; Peer-leading ROCE 19% (2025)</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$131.83<small>(EOG)</small></div>
+      </div>
+      <div class="chg">▲ +9.8% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 30 มิถุนายน 2569<br>
+        กรอบ 52 สัปดาห์ $101.59 &ndash; $151.87<br>
+        ที่มา: Yahoo Finance, StockAnalysis.com, EOG Investor Relations
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ มิถุนายน 2569 &middot; TTM = 12 เดือนล่าสุด</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~$70.3B</div><div class="d">~533 ล้านหุ้น &middot; NYSE: EOG</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~13.0x</div><div class="d">EPS TTM $10.15 (GAAP) &middot; adj. $10.16 (2025)</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~15&ndash;18x</div><div class="d">ปัจจุบันต่ำกว่าค่าเฉลี่ย — valuation น่าสนใจ</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">2.27x</div><div class="d">BVPS ~$58 &middot; total equity $30.9B (TTM)</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">$4.98B</div><div class="d">adj. net income $5.5B &middot; &minus;22% YoY (ราคาน้ำมันลด)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$10.15</div><div class="d">adj. EPS 2025: $10.16 &middot; Q1'26 adj.: $3.41/Q</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~$58.00</div><div class="d">equity $30.9B &divide; ~533M shares</div></div>
+      <div class="metric"><div class="k">ROE / ROCE</div><div class="v pos">~18.2% / 19%</div><div class="d">ROCE peer-leading &middot; ROA ~8.97% &middot; สม่ำเสมอ</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$23.57B</div><div class="d">2025: $22.6B &middot; 2024: $23.7B &middot; oil/gas/NGL</div></div>
+      <div class="metric"><div class="k">FCF ปี 2025</div><div class="v pos">$4.7B</div><div class="d">คืนผู้ถือหุ้น 100% ($2.2B div + $2.5B buyback)</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~3.1%</div><div class="d">$1.02/Q &times; 4 = $4.08/ปี &middot; base div เติบโตทุกปี</div></div>
+      <div class="metric"><div class="k">Beta (5Y)</div><div class="v">0.26</div><div class="d">ผันผวนต่ำมากเทียบตลาด &middot; Debt/Equity 0.27</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART (ราคาย้อนหลัง ~1 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">รายเดือน &middot; Yahoo Finance</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#E05A00"></i>ราคา EOG</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $155</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        EOG เริ่มปีที่ ~$120 ในกรกฎาคม 2568 ก่อนปรับฐานแตะจุดต่ำสุด ~$105 ช่วงตุลาคม&ndash;ธันวาคม 2568 ตามแรงกดดันจากราคาน้ำมัน WTI ที่อ่อนตัวใกล้ $65/bbl หลัง OPEC+ เพิ่มกำลังผลิต จากนั้นฟื้นตัวแข็งแกร่งแตะ ~$144 ในมีนาคม 2569 หลังผลประกอบการ Q1 2569 เอาชนะคาดการณ์ (adj. EPS $3.41 vs คาด $3.21) และ guidance การผลิต +13% YoY ที่ดีเกินคาด ปัจจุบันราคาอยู่ที่ ~$132 ให้ผลตอบแทนรอบปี +9.8% รวมปันผลทั้งปี total return ประมาณ +13%
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION (3 วิธี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี &middot; ฐาน WTI ~$65/bbl</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation (Normalized Mid-Cycle)</div><div class="mdesc">EPS adj. $10.16 &times; P/E 15x = $152 &mdash; normalize ที่ WTI ~$65/bbl mid-cycle; mid-cycle premium multiple สำหรับ best-in-class E&amp;P; EOG เคยซื้อขาย 15&ndash;20x ใน oil up-cycle; adj. EPS excludes MTM hedge losses</div></div>
+        <div class="mval">$152</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. EV/EBITDAX Valuation</div><div class="mdesc">EBITDA TTM ~$12.5B &times; target multiple 6.5x = EV $81.3B &minus; net debt $4.1B = equity $77.2B &divide; 533M shares &mdash; 6.5x premium vs E&amp;P peer avg 5&ndash;6x สะท้อนคุณภาพสินทรัพย์และ balance sheet</div></div>
+        <div class="mval">$145</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. FCF Yield Valuation</div><div class="mdesc">FCF 2025 $4.7B &divide; 533M shares = $8.82/share FCF &divide; target yield 5.5% = $160 &mdash; institutional E&amp;P FCF yield benchmark 5&ndash;6%; EOG deserves premium end เพราะ 100% FCF return discipline</div></div>
+        <div class="mval">$160</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $145 &ndash; $160</span></div>
+        <div class="r">$155</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        วิธี FCF Yield ($160) ให้มูลค่าสูงสุดเพราะ EOG คืน FCF ครบ 100% ให้ผู้ถือหุ้นและ 2569 FCF คาด expand แรง (Q1 FCF $1.5B/ไตรมาส) &middot; วิธี EV/EBITDAX ($145) ให้ค่าต่ำสุดเพราะอิง EBITDA 2025 ที่กดดันด้วยราคาน้ำมัน &middot; วิธี P/E ($152) ฐานกลาง ใช้ adj. EPS ที่ normalize ที่ WTI ~$65/bbl (ไม่ใช้ GAAP ที่รวม MTM hedge) &middot; ทั้ง 3 วิธีชี้ว่าราคาปัจจุบัน ~$132 ต่ำกว่า FV ประมาณ 15% สะท้อน E&amp;P discount จาก oil price uncertainty มากกว่าคุณภาพบริษัท
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $131.83</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $155</div></div>
+        </div>
+        <div class="scale">
+          <span>$108<br><small>MOS 30%</small></span>
+          <span>$124<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$155<br><small>Fair Value</small></span>
+          <span style="text-align:right">$160<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">$160<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน $131.83 อยู่ระหว่างโซน MOS 20% ($124) และ Fair Value ($155) &mdash; "เริ่มน่าสนใจ" สำหรับนักลงทุนระยะกลาง-ยาว ส่วนต่างจากมูลค่าเหมาะสม ~15% (MOS 14.9%) &middot; นักวิเคราะห์ 30 ราย consensus "Buy" เป้าเฉลี่ย $160 (Strong Buy 12, Buy 1, Hold 17) upside ~21% จากราคาปัจจุบัน &middot; โซนเข้าสะสมที่ดีที่สุดคือต่ำกว่า $124 (MOS &gt;20%) ซึ่งให้ผลตอบแทน total return น่าดึงดูดมาก
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict ok">
+        <div class="big">+14.9%</div>
+        <div class="txt">MOS ระดับกลาง &mdash; ราคาต่ำกว่า Fair Value แต่ยังไม่เข้า Deep Value Zone</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$124</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$108</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $155</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>&#x1F9EE; ลองคำนวณ MOS เอง &mdash; ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="131.83" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $131.83 &bull; EPS ฐาน ~$10.16 &bull; รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>&#x1F43B; Bear</span><span>EPS &minus;5%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$109</div>
+          <div class="ret neg">&minus;17%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$8.71</span></li>
+            <li><span>P/E ออก</span><span>11x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$13.5</span></li>
+            <li><span>สถานการณ์</span><span>WTI ร่วง &lt;$55, OPEC ล้น</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>&#x2696;&#xFE0F; Base</span><span>EPS +8%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$193</div>
+          <div class="ret pos">+46%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$12.80</span></li>
+            <li><span>P/E ออก</span><span>14x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$13.5</span></li>
+            <li><span>สถานการณ์</span><span>WTI $65&ndash;70 + Dorado growth</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>&#x1F680; Bull</span><span>EPS +15%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$276</div>
+          <div class="ret pos">+110%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$15.45</span></li>
+            <li><span>P/E ออก</span><span>17x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$13.5</span></li>
+            <li><span>สถานการณ์</span><span>WTI $75&ndash;80 + volume growth 10%+</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      การประมาณอิงจาก adj. EPS 2025 $10.16 เป็นฐาน (WTI ~$65/bbl) &middot; ปันผล ~$4.50/ปี (base div เติบโตต่อเนื่อง + โอกาส special div) &middot; Base: growth จาก Dorado (ก๊าซ), Permian Delaware, และ international (Oman/Trinidad) + volume growth guidance 2569 ที่ +13% YoY &middot; Bear: oil slump &lt;$55 คล้าย 2020 ซึ่ง EOG ยังรักษา dividend ได้เพราะ breakeven ต่ำ &middot; นักวิเคราะห์คาด EPS 2569E $17.11 (consensus) หากถูกต้องจะ support scenario ที่ดีกว่า base
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก &amp; ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">&#x25B2;</span>Catalysts &mdash; ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>Dorado Dry Gas Play:</b> แหล่งก๊าซแห้งใน South Texas ที่มี breakeven ต่ำมาก (&lt;$1.50/MMBtu) เปิด runway การเติบโตใหม่นอก oil &mdash; hedge ตามธรรมชาติต่อราคาน้ำมันและรับ benefit จาก LNG export demand ระยะยาว</li>
+          <li><b>Proprietary Technology Edge:</b> EOG พัฒนา drilling &amp; completion technology เองทำให้ต้นทุนต่อ boe ลดลงต่อเนื่อง โดยเฉพาะ "super-charged" completions ใน Delaware Basin ที่เพิ่ม EUR/well &gt;30% เหนือคู่แข่ง</li>
+          <li><b>Volume Growth 2026:</b> บริษัท guide การผลิต +13% YoY ในปี 2569 &mdash; FCF/share ขยายตัวแม้ราคาน้ำมันทรงตัว; Q1 2569 FCF $1.5B/ไตรมาส annualize ~$6B ดีกว่าทั้งปี 2568</li>
+          <li><b>Capital Return Discipline:</b> 100% FCF คืนผู้ถือหุ้นในปี 2568 ($2.2B base div + $2.5B buyback) &mdash; base dividend เติบโตทุกปีรวด 10+ ปี; special dividend เป็น upside option ยามน้ำมันดี</li>
+          <li><b>International Expansion:</b> Oman Block 36 &amp; 49 + Trinidad LNG เปิด diversification ทั้ง geography และ fiscal terms &mdash; ต้นทุนผลิตบางแหล่งต่ำกว่า US shale และเปิดรายได้จาก LNG premium</li>
+          <li><b>Valuation Re-rating:</b> ราคา $132 trading ที่ ~13x P/E ต่ำกว่าค่าเฉลี่ย 5 ปีที่ 15&ndash;18x &mdash; reversion ไป mid-cycle multiple เพียงพอให้ผลตอบแทนดีโดยไม่ต้องรอราคาน้ำมันขึ้น</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">&#x25BC;</span>Risks &mdash; ความเสี่ยง</h3>
+        <ul>
+          <li><b>Oil Price Cyclicality:</b> ความเสี่ยงหลักของ E&amp;P &mdash; WTI ลด $10/bbl = EPS ลด ~$1&ndash;1.5 ประมาณ ถ้า WTI ร่วงต่ำกว่า $50 กำไรลดแรง แม้ EOG มี breakeven ต่ำที่สุดในกลุ่ม peer</li>
+          <li><b>OPEC+ Policy Risk:</b> OPEC+ เพิ่มกำลังผลิตในปี 2568&ndash;2569 กดราคาน้ำมัน supply-demand แนวโน้มอ่อนในระยะสั้น &mdash; กรณี OPEC ทะเลาะภายในและ flood market เป็น tail risk</li>
+          <li><b>Rising Net Debt:</b> ณ Q1 2569 net debt เพิ่มเป็น ~$4.1B (จากเกือบ net cash ในปี 2566) หลังลงทุน Dorado/Permian assets &mdash; ยังอยู่ระดับ comfortable (debt/EBITDA &lt;0.5x) แต่ลดความยืดหยุ่น</li>
+          <li><b>Natural Gas Price Weakness:</b> Henry Hub ยังอ่อน (~$2.50/MMBtu) กดรายได้ Dorado และ Trinidad LNG ในระยะสั้น &mdash; benefit จาก LNG export demand มาช้า</li>
+          <li><b>ESG / Energy Transition:</b> แรงกดดันจากนักลงทุน ESG และ long-term demand destruction จาก EV/renewables อาจกด P/E multiple ของ E&amp;P sector โดยรวมในระยะยาว</li>
+          <li><b>Permian Basin Competition:</b> Delaware Basin เป็น prime acreage ที่ราคาสูง &mdash; competition จาก majors (XOM, COP) และ private E&amp;P กด IRR ของ acquisition ใหม่และ tier-1 inventory อาจเหลือน้อยลงใน 10&ndash;15 ปี</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>EOG: Best-in-Class E&amp;P ราคายังต่ำกว่า FV ~15% &mdash; ทยอยสะสมได้</h2>
+      <p>EOG Resources คือ "แชมป์" ของอุตสาหกรรม E&amp;P อเมริกา ด้วยเทคโนโลยีการขุดเจาะที่พัฒนาเอง, สินทรัพย์คุณภาพ premier ใน Permian/Eagle Ford/Dorado, balance sheet แข็งแกร่ง (net debt/EBITDA &lt;0.5x), ROCE peer-leading ที่ 19% และวัฒนธรรม capital discipline ที่คืน FCF 100% ให้ผู้ถือหุ้น ราคาปัจจุบัน ~$132 ที่ P/E ~13x ต่ำกว่า mid-cycle fair value $155 ประมาณ 15% &mdash; เป็น "discount ราคาน้ำมัน" มากกว่า "discount คุณภาพบริษัท" สำหรับนักลงทุนที่เชื่อว่า WTI จะทรงตัว &gt;$65 ใน 2&ndash;3 ปีข้างหน้า EOG เสนอ: (1) upside ~18% สู่ FV, (2) dividend yield 3.1% + โอกาส special dividend, (3) volume growth +13% ใน 2569, (4) FCF/share ที่คาด expand แรงในปีหน้า &middot; ความเสี่ยงหลักเดียวคือราคาน้ำมัน แต่ด้วย breakeven $40&ndash;55 EOG ป้องกันได้ดีกว่าคู่แข่งทุกราย</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$155 <span style="font-size:12px;color:#cab9a8">($145&ndash;$160)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +14.9%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$160 (Buy &middot; 30 ราย)</div></div>
+      </div>
+      <div class="zone">
+        &#x1F4A1; <b>กลยุทธ์:</b> ทยอยสะสมที่ราคาต่ำกว่า $145 (MOS &gt;6%) &middot; เพิ่มน้ำหนักที่ $124 (MOS 20%) และ $108 (MOS 30%) &middot; กำหนด stop หากปัจจัยพื้นฐานเปลี่ยน (breakeven สูงขึ้นหรือ balance sheet เสื่อมถอย) &middot; ถือรับ dividend ระหว่างรอ oil cycle ฟื้น
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>&#x26A0;&#xFE0F; คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะราคาน้ำมัน WTI ที่ normalize, P/E เป้าหมาย, FCF yield target และอัตราเติบโตในอนาคต
+    ราคาหุ้น E&amp;P มีความผันผวนสูงตามราคาสินค้าโภคภัณฑ์ ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ &bull; ที่มา: Yahoo Finance (ราคา/กราฟรายเดือน), StockAnalysis.com (งบการเงิน TTM/annual, statistics), EOG Investor Relations (Q1 2569 earnings release, FY2568 full-year results), S&amp;P Global/MarketBeat (analyst consensus 30 ราย เป้า $160), Investing.com (earnings call transcript Q1 2569)
+  </div>
+  <footer>Stock Analysis Dashboard &bull; ข้อมูล ณ 30 มิถุนายน 2569 &bull; สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
