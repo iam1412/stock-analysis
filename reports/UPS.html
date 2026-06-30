@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น United Parcel Service (UPS) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"UPS","currency":"USD","price":108.01,"fairValue":121,"mos":10.7,"upside":12.0,"pe":15.1,"dividendYield":6.07,"roe":33.35}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#6B4226",
+    "accentDark": "#4B2E18",
+    "darkGrad": "linear-gradient(135deg,#2a1a0e 0%,#3d2510 50%,#1a0f07 100%)",
+    "glow": "rgba(107,66,38,0.35)",
+    "subColor": "#c49a6c",
+    "headerMuted": "rgba(196,154,108,0.7)",
+    "verdictText": "#ffe0c0",
+    "vcellLabel": "rgba(196,154,108,0.85)",
+    "badge": "#8B5E3C",
+    "chgBg": "rgba(30,142,62,0.18)",
+    "chgColor": "#4caf50"
+  },
+  "chart": {
+    "data": [
+      ["ก.ค. 25", 86.16],
+      ["ส.ค. 25", 87.44],
+      ["ก.ย. 25", 83.53],
+      ["ต.ค. 25", 96.42],
+      ["พ.ย. 25", 95.79],
+      ["ธ.ค. 25", 99.19],
+      ["ม.ค. 26", 106.22],
+      ["ก.พ. 26", 115.96],
+      ["มี.ค. 26", 98.38],
+      ["เม.ย. 26", 108.80],
+      ["พ.ค. 26", 106.69],
+      ["มิ.ย. 26", 108.14],
+      ["มิ.ย. 26*", 108.01]
+    ],
+    "min": 78,
+    "max": 128,
+    "grid": [80, 90, 100, 110, 120],
+    "fairLine": 121,
+    "currency": "$",
+    "highlight": [7, 2]
+  },
+  "gauge": {
+    "min": 75,
+    "max": 145,
+    "cur": 108.01,
+    "fair": 121
+  },
+  "fv": 121
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">●●●●●●●●●●●●●●●●</div>
+    <div>
+      <span class="tag">NYSE: UPS</span>
+      <span class="tag">Logistics &amp; Delivery</span>
+      <span class="tag">Dividend Aristocrat</span>
+    </div>
+    <h1>United Parcel Service (UPS)</h1>
+    <div class="sub">US Domestic Package delivery • International Package • Supply Chain Solutions • "What can Brown do for you?" • Fit to Serve cost transformation program</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$108.01<small>(UPS)</small></div>
+      </div>
+      <div class="chg">▲ +25.4% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 29 มิ.ย. 2569<br>
+        กรอบ 52 สัปดาห์ $82.00 – $122.41<br>
+        ที่มา: Yahoo Finance, StockAnalysis.com, investors.ups.com
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ มิ.ย. 2569</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">$91.8B</div><div class="d">850M shares outstanding</div></div>
+      <div class="metric"><div class="k">P/E (adj FY2025)</div><div class="v neu">~15.1x</div><div class="d">GAAP TTM: 17.5x</div></div>
+      <div class="metric"><div class="k">Forward P/E (FY2026E)</div><div class="v">14.4x</div><div class="d">EPS คาดการณ์ FY2026: $7.13</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">5.83x</div><div class="d">BVPS $18.54 (leverage สูง)</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">$5.57B</div><div class="d">EPS adj. $7.16 (+6.1% vs FY2024)</div></div>
+      <div class="metric"><div class="k">EPS adj. TTM</div><div class="v">~$7.16</div><div class="d">GAAP EPS TTM: $6.18 (Q1-26: $1.07 adj)</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~$18.54</div><div class="d">D/E 182% (buyback ดัน ROE)</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~33.4% / 7.2%</div><div class="d">ROE สูงจาก leverage + buyback</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$88.3B</div><div class="d">FY2025: $88.7B (ลด 2.6% YoY)</div></div>
+      <div class="metric"><div class="k">EBITDA margin</div><div class="v">12.8%</div><div class="d">EBITDA TTM: $11.3B</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~6.07%</div><div class="d">$6.56/ปี ($1.64/ไตรมาส)</div></div>
+      <div class="metric"><div class="k">FCF TTM</div><div class="v">$4.5B</div><div class="d">FCF yield ~4.9% (หนุนปันผล)</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#6B4226"></i>ราคา UPS</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $121</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        UPS เริ่มต้นปีที่ ~$86 (ก.ค. 2568) หลังจากถูกกดดันจากการลดปริมาณของ Amazon และปัญหาสัญญา USPS
+        หุ้นดีดตัวสูงสุดที่ $115.96 ในเดือน ก.พ. 2569 หลังรายงาน Q4-2568 ที่ดีและประกาศคาดการณ์ปี 2569 ที่แข็งแกร่ง
+        ก่อนปรับตัวลงสู่ $98 ในเดือน มี.ค. 2569 จากความกังวลเรื่องภาษีนำเข้า (Tariff) และการชะลอตัวของปริมาณขนส่ง
+        ปัจจุบันราคาฟื้นกลับมาที่ $108 ผลตอบแทน 1 ปี +25.4% รวมสูงกว่า S&amp;P 500 อย่างมีนัยสำคัญ
+        การตัดสินใจเชิงกลยุทธ์ที่ลด Amazon ลง 50% และเน้นกลุ่มลูกค้า SMB + Healthcare กำลังเริ่มเห็นผล
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation (Adjusted EPS)</div><div class="mdesc">EPS adj. $7.16 × P/E เป้าหมาย ~17x — สอดคล้องกับ logistics franchise คุณภาพสูง; ค่าเฉลี่ยประวัติศาสตร์ 18-22x ในช่วงปกติ ใช้ discount สำหรับ volume headwind ระยะเฉพาะกาล</div></div>
+        <div class="mval">$121.72</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. EV/EBITDA Valuation</div><div class="mdesc">EBITDA TTM $11.3B × EV/EBITDA 11x (ค่าเฉลี่ย 5 ปีของ UPS ≈ 10.8x; FDX 10.1x) → EV =$124.2B; หักหนี้สุทธิ $22.9B → Market Cap $101.3B ÷ 850M หุ้น</div></div>
+        <div class="mval">$119.17</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Forward P/E (FY2026E)</div><div class="mdesc">EPS adj. $7.13 (consensus FY2026) × P/E 18x — ให้ premium เล็กน้อยสำหรับ visibility ของ $3B cost savings program และฐาน dividend yield 6%+ ที่ดึงดูดนักลงทุน income</div></div>
+        <div class="mval">$128.34</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $115 – $130</span></div>
+        <div class="r">$121</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ทั้ง 3 วิธีให้ค่าใกล้เคียงกันที่ $119–$128 สะท้อนว่า UPS trade ต่ำกว่ามูลค่าจริงพอสมควร
+        วิธี Forward P/E ให้ค่าสูงสุดเพราะมองถึง FY2026 ที่คาดว่า cost savings จะเต็มที่
+        วิธี EV/EBITDA ให้ค่าต่ำสุดเพราะหนี้สุทธิสูง ($22.9B) กดมูลค่าส่วนของผู้ถือหุ้น
+        เลือก FV $121 เป็นค่ากลางอนุรักษ์นิยม ยังต่ำกว่าเป้า consensus analyst ที่ $113.60
+        ที่ราคา $108 UPS ให้ total yield (dividend 6.1% + upside 12%) ≈ 18% ซึ่งน่าสนใจสำหรับ value investor
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $108.01</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $121</div></div>
+        </div>
+        <div class="scale">
+          <span>$84.70<br><small>MOS 30%</small></span>
+          <span>$96.80<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$113.60<br><small>เป้า Analyst</small></span>
+          <span style="text-align:right">$121<br><small>Fair Value</small></span>
+          <span style="text-align:right">$130<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคา $108.01 อยู่ต่ำกว่ามูลค่าเหมาะสม $121 ประมาณ 10.7% — อยู่ในโซน "พอมี MOS" แต่ยังไม่ถึง deep value
+        จุดเข้าซื้อที่ดีที่สุดคือ MOS 20% ที่ $96.80 (ยังห่างจากราคาปัจจุบัน ~10%)
+        อย่างไรก็ตาม dividend yield 6.1% ที่ระดับนี้ถือว่าสูงมากสำหรับ blue-chip logistics
+        นักวิเคราะห์ 27 คนตั้งเป้าเฉลี่ย $113.60 (13 Strong Buy, 11 Hold, 3 Sell) — ต่ำกว่า FV ของเราเล็กน้อย
+        ช่วง 52 สัปดาห์ $82–$122 บอกว่าตลาดเคยให้ราคาถึง Fair Value ของเราในช่วงปลายปี 2568
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict ok">
+        <div class="big">+10.7%</div>
+        <div class="txt">MOS พอประมาณ — ราคาต่ำกว่ามูลค่า ~11% มีส่วนเผื่อ แต่ยังไม่มาก<br>เหมาะสำหรับ income investor ที่ชอบ dividend yield สูง 6%+</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$96.80</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$84.70</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $121</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="108.01" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $108.01 • EPS ฐาน ~$7.16 (adj) • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS −2%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$94</div>
+          <div class="ret neg">+6% (3 ปี รวมปันผล)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$6.74</span></li>
+            <li><span>P/E ออก</span><span>14x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$19.68</span></li>
+            <li><span>สถานการณ์</span><span>Volume ลดต่อ, USPS หดตัว</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +5%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$141</div>
+          <div class="ret pos">+49% (3 ปี รวมปันผล)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$8.29</span></li>
+            <li><span>P/E ออก</span><span>17x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$19.68</span></li>
+            <li><span>สถานการณ์</span><span>Cost saves เต็มที่, SMB เติบโต</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +10%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$191</div>
+          <div class="ret pos">+95% (3 ปี รวมปันผล)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$9.53</span></li>
+            <li><span>P/E ออก</span><span>20x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$19.68</span></li>
+            <li><span>สถานการณ์</span><span>Healthcare + B2B boom, margin ฟื้น</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      Base case อิง EPS adj. $7.16 ปี 2568 เติบโต +5%/ปี จาก cost savings $3B ในปี 2569 + การฟื้นของ SMB volume
+      ปันผลรวม 3 ปี $19.68 คิดเป็น ~18% ของราคาปัจจุบัน — เพิ่ม total return อย่างมีนัยสำคัญ
+      Bear case ยังให้ผลตอบแทนบวก (6%) เพราะ dividend buffer สูง — UPS แทบไม่ขาดทุนสำหรับ buy-and-hold
+      ความเสี่ยงหลักคือ recession ที่กดดัน volume หนัก หรือ tariff ที่ทำให้ e-commerce อ่อนแอ
+      หมายเหตุ: ปันผลคำนวณอิง $6.56/ปีคงที่ — UPS มีประวัติขึ้นปันผลต่อเนื่อง Dividend Aristocrat
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก &amp; ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>Cost Transformation $3B:</b> โปรแกรม Fit to Serve 2.0 ตัด 30,000+ jobs ในปี 2569 คาดประหยัด $3B/ปี ช่วยขยาย operating margin กลับสู่ 9.6%+</li>
+          <li><b>Healthcare Logistics Boom:</b> ลงทุน cold-chain สำหรับยา GLP-1 (Ozempic ฯลฯ) และ temperature-controlled pharma — กลุ่มนี้ margin สูงกว่า e-commerce มาก</li>
+          <li><b>SMB &amp; B2B Mix Shift:</b> ลด Amazon 50% แล้วหันมาโฟกัส SME และ B2B ที่ revenue per piece สูงกว่า — Q1-26 revenue/piece US Domestic +6.5% YoY</li>
+          <li><b>International Resilience:</b> International segment margin 12.1% Q1-26 เติบโต 3.8% YoY ทนต่อภาวะเศรษฐกิจโลกได้ดีกว่าคาด</li>
+          <li><b>Dividend Aristocrat 6%+:</b> ปันผล $6.56/ปี (yield 6.1%) ที่ระดับนี้ดึงดูด income investor และ pension fund — ขาย downside ได้มาก</li>
+          <li><b>UPS-USPS Contract:</b> สัญญา Air Cargo กับ USPS ช่วย utilize network โดยไม่ต้องลงทุนเพิ่ม — เพิ่ม revenue per fixed cost</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>Volume Structural Decline:</b> การตัด Amazon 50% ทำให้ domestic volume ลดไม่ใช่แค่ชั่วคราว — Q1-26 domestic volume ลด YoY แม้ revenue/piece ขึ้น ยัง net revenue ลด</li>
+          <li><b>Tariff &amp; Trade War:</b> ภาษีนำเข้าสินค้าจีน 145% กดดัน cross-border e-commerce โดยตรง — ผลกระทบต่อ International segment และ Supply Chain Solutions</li>
+          <li><b>Recession Risk:</b> UPS เป็น economic barometer — ภาวะถดถอยกดปริมาณทุก segment พร้อมกัน FCF อาจลดจนกดดัน dividend</li>
+          <li><b>FedEx Competition &amp; USPS Self-delivery:</b> FedEx ก็ pursuit SMB และ healthcare เช่นกัน ขณะที่ USPS พยายาม in-house delivery มากขึ้น</li>
+          <li><b>Labor &amp; Union Risk:</b> UPS Teamsters contract (IBT) — รอบถัดไปอาจมีการเจรจาที่ยาก ค่าแรงสูงขึ้นกระทบ margin</li>
+          <li><b>Capital Allocation:</b> ปันผล $5.4B/ปี + CapEx $3B = ใกล้เคียง FCF ($4.5B TTM) หากธุรกิจแย่ลง อาจต้องลดปันผลหรือเพิ่มหนี้</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>UPS: Transformation Play + High Dividend — MOS พอประมาณ</h2>
+      <p>United Parcel Service (NYSE: UPS) เป็น logistics giant ที่กำลังผ่านช่วงเปลี่ยนผ่านครั้งใหญ่: ตัดการพึ่งพา Amazon ลง 50% + ตัดค่าใช้จ่าย $3B ในปี 2569 + หันมาเน้น SMB และ Healthcare ที่ margin สูงกว่า ที่ราคา $108 หุ้นต่ำกว่า Fair Value $121 ราว 10.7% และให้ dividend yield สูง 6.1% เหมาะสำหรับนักลงทุนที่ต้องการ income สม่ำเสมอขณะรอ business turnaround</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$121 <span style="font-size:12px;color:#cab9a8">($115–$130)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +10.7%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$113.60 (Buy)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ทยอยสะสมที่ $96–$108 (MOS 10–20%) เน้น dividend reinvestment — dividend 6%+ ช่วย buffer downside
+        จุดเข้าที่ดีที่สุดคือ $96.80 (MOS 20%) ถ้าราคาย่อลงมา
+        ติดตาม: (1) domestic volume trend Q2-26 (2) operating margin Q2-26 vs. guidance 9.6%
+        (3) ความก้าวหน้า cost savings program (4) ผลกระทบ tariff ต่อ international
+        UPS เป็นหุ้น "slow but steady" — ไม่เหมาะสำหรับ growth investor แต่ดีสำหรับ income + value investor ที่มี horizon 3-5 ปี
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    แหล่งข้อมูล: Yahoo Finance (ราคา $108.01 ณ 29 มิ.ย. 2569), StockAnalysis.com (EPS adj. $7.16 FY2025, FCF $4.5B), UPS Q1 2026 Earnings Release (รายได้ Segment, guidance), SEC 8-K FY2025 (full year results), GuruFocus (ROE 33.35%), Investing.com (P/E 17.5x TTM)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 29 มิ.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
