@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น W.R. Berkley Corporation (WRB) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"WRB","currency":"USD","price":71.27,"fairValue":72,"mos":1.0,"upside":1.02,"pe":15.1,"dividendYield":0.56,"roe":19.35}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#1C3D6B",
+    "accentDark": "#0f2645",
+    "darkGrad": "linear-gradient(135deg,#0a1a30 0%,#1c3d6b 60%,#0f2645 100%)",
+    "glow": "rgba(28,61,107,0.40)",
+    "subColor": "#8fb3e0",
+    "headerMuted": "rgba(143,179,224,0.60)",
+    "verdictText": "#cce0f5",
+    "vcellLabel": "rgba(143,179,224,0.80)",
+    "badge": "#1C3D6B",
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#1e8e3e"
+  },
+  "chart": {
+    "data": [
+      ["ก.ค. 68", 68.81],
+      ["ส.ค. 68", 71.69],
+      ["ก.ย. 68", 76.62],
+      ["ต.ค. 68", 71.34],
+      ["พ.ย. 68", 77.69],
+      ["ธ.ค. 68", 70.12],
+      ["ม.ค. 69", 68.58],
+      ["ก.พ. 69", 71.70],
+      ["มี.ค. 69", 66.28],
+      ["เม.ย. 69", 66.83],
+      ["พ.ค. 69", 63.54],
+      ["มิ.ย. 69", 71.01],
+      ["ก.ค. 69", 70.53]
+    ],
+    "min": 55,
+    "max": 88,
+    "grid": [55, 63, 71, 79, 88],
+    "fairLine": 72,
+    "currency": "$",
+    "highlight": [4, 10],
+    "gridFmt": "v.toFixed(0)",
+    "dataFmt": "d[1].toFixed(2)"
+  },
+  "gauge": {
+    "min": 42,
+    "max": 95,
+    "cur": 71.27,
+    "fair": 72,
+    "fairLabelTop": true
+  },
+  "fv": 72
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots"><span></span><span></span><span></span></div>
+    <div>
+      <span class="tag">NYSE: WRB</span>
+      <span class="tag">ประกันภัย E&amp;S / Specialty P&amp;C</span>
+      <span class="tag">High-ROE Compounder</span>
+    </div>
+    <h1>W.R. Berkley Corporation (WRB)</h1>
+    <div class="sub">Specialty &amp; Excess/Surplus Lines P&amp;C Insurer • ~60 หน่วยธุรกิจ (Operating Units) ครอบคลุมทุกกลุ่มธุรกิจ • Insurance + Reinsurance (Admitted &amp; Non-Admitted) • ROE ~20% ต่อเนื่อง 20+ ปี — high-ROE compounder ชั้นนำในวงการ P&amp;C Insurance สหรัฐ</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$71.27<small>(WRB)</small></div>
+      </div>
+      <div class="chg">▲ +2.5% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 1 ก.ค. 2569<br>
+        กรอบ 52 สัปดาห์ $62.87 – $78.96<br>
+        ที่มา: Yahoo Finance, StockAnalysis.com, Digrin.com
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ตัวเลขประกันภัย Specialty P&amp;C — เน้น Combined Ratio + ROE</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~$26.5B</div><div class="d">~396M หุ้น (diluted)</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~15.1x</div><div class="d">EPS TTM $4.72 · ค่าเฉลี่ย 5 ปี ~15–16x</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~15–16x</div><div class="d">ช่วง 12x–20x (cyclical กับ cat losses)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">2.89x</div><div class="d">BVPS $24.67 (Q1 2569) — premium to book สะท้อน ROE สูง</div></div>
+
+      <div class="metric"><div class="k">Combined Ratio</div><div class="v pos">90.7%</div><div class="d">Q1 2569 · FY2025 ~90.3% — ต่ำกว่า 100% = กำไรรับประกันภัย</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$4.72</div><div class="d">Q1 2569 EPS $1.31 (+30% YoY) · TTM $4.72</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~$24.67</div><div class="d">Q1 2569 · BV/share เติบโต +26.7% ก่อนปันผล (FY2025)</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~20% / 4.5%</div><div class="d">ROE 21.2% (Q1 2569) · TTM 19.35% · top-tier ในกลุ่ม P&amp;C</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$14.85B</div><div class="d">Net Premiums Earned TTM ~$12.6B + รายได้การลงทุน</div></div>
+      <div class="metric"><div class="k">กำไรสุทธิ TTM</div><div class="v pos">$1.88B</div><div class="d">Net Profit Margin ~12.7% · Q1 2569 $516M (+30% YoY)</div></div>
+      <div class="metric"><div class="k">เงินปันผล (ปกติ)</div><div class="v">~0.56%</div><div class="d">$0.40/yr ($0.10/ไตรมาส) · + special dividend ผันแปร → yield TTM จริง ~2.64%</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">0.31</div><div class="d">ต่ำมาก — ป้องกันความเสี่ยงตลาดดี</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART (ราคาย้อนหลัง ~1 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#1C3D6B"></i>ราคา WRB</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $72</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคา WRB เปิดต้นรอบปี (ก.ค. 2568) ที่ ~$68.81 แล้วทยอยปรับขึ้นจนแตะจุดสูงสุด ~$77.69 ในเดือน พ.ย. 2568 ก่อนจะย่อตัวต่อเนื่องในช่วงต้นปี 2569 ท่ามกลางความกังวลเรื่อง cat losses ต้นปีและ premium rate ที่เริ่มชะลอ จนแตะจุดต่ำสุด ~$63.54 (พ.ค. 2569) ก่อนฟื้นตัวกลับมา ~$70–71 ณ ปัจจุบัน ภาพรวมรอบปีให้ผลตอบแทน +2.5%
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION (เฉลี่ย 3 วิธี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS adj. $4.72 × P/E เป้าหมาย ~16x — WRB ได้ premium P/E เหนือคู่แข่ง P&amp;C เพราะ ROE ~20% + combined ratio &lt;91% ต่อเนื่อง; ค่าเฉลี่ย 5 ปีตลาดอยู่ ~15–16x</div></div>
+        <div class="mval">$75.52</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 20% − g 7%)/(r 11.5% − g 7%) ≈ 2.89 × BVPS $24.67 — สะท้อนมูลค่าที่แท้จริงของหุ้น "High-ROE Compounder" ที่สร้าง Book Value ต่อเนื่อง</div></div>
+        <div class="mval">$71.26</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. EPS Growth (DCF-lite)</div><div class="mdesc">EPS ฐาน $4.72 เติบโต +9%/ปี 3 ปี → EPS ปี 3 ~$6.11; Exit P/E 15x = $91.65; คิด Discount Rate 10% ย้อน 3 ปี → มูลค่าปัจจุบัน $68.86</div></div>
+        <div class="mval">$68.86</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $68.86 – $75.52</span></div>
+        <div class="r">$72</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        P/E Valuation ให้ค่าสูงสุด ($75.52) โดยอิง P/E เป้าหมาย 16x ซึ่งเหมาะสมกับ ROE ~20% ของ WRB · Justified P/BV ($71.26) ให้ค่าใกล้เคียงราคาตลาด สะท้อนว่าราคาปัจจุบัน "fairly priced" ตามสูตรนี้ · DCF-lite ($68.86) สะท้อนสมมติฐาน conservative · ค่าเฉลี่ยสามวิธี $72 ชี้ว่า WRB ซื้อขายใกล้มูลค่าเหมาะสม ไม่มี Margin of Safety นัยสำคัญ
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $71.27</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $72</div></div>
+        </div>
+        <div class="scale">
+          <span>$50.40<br><small>MOS 30%</small></span>
+          <span>$57.60<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$67<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">$72<br><small>Fair Value</small></span>
+          <span style="text-align:right">$75.52<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน $71.27 อยู่ใกล้มูลค่าเหมาะสมมาก (ต่างกันเพียง $0.73 หรือ ~1%) บ่งชี้ว่า WRB ซื้อขายที่ระดับ Fair Value โดยพื้นฐาน ไม่มี Margin of Safety สำหรับ Value Investor น่าสังเกตว่าเป้าเฉลี่ย Analyst ที่ $67 ต่ำกว่าราคาตลาด สะท้อน consensus "Hold" ของ 18 นักวิเคราะห์ โซนน่าสะสมคือ &lt;$65 และ Deep Value &lt;$57.60 (MOS 20%)
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">+1.0%</div>
+        <div class="txt">MOS ต่ำมาก — WRB ซื้อขายใกล้มูลค่าเหมาะสมในปัจจุบัน รอโอกาสย่อตัว</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$57.60</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$50.40</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $72</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="71.27" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $71.27 • EPS ฐาน ~$4.72 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS -2%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$59</div>
+          <div class="ret neg">-17.2%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$4.44</span></li>
+            <li><span>P/E ออก</span><span>13x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$1.20</span></li>
+            <li><span>สถานการณ์</span><span>Cat losses พุ่ง + Rate Softening รุนแรง</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +9%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$93</div>
+          <div class="ret pos">+30.5%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$6.11</span></li>
+            <li><span>P/E ออก</span><span>15x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$1.50</span></li>
+            <li><span>สถานการณ์</span><span>ขยาย Exposure + ROE ~20% คงระดับ</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +13%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$117</div>
+          <div class="ret pos">+64.2%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$6.81</span></li>
+            <li><span>P/E ออก</span><span>17x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$1.80</span></li>
+            <li><span>สถานการณ์</span><span>E&amp;S lines เติบโตเร็ว + Investment yield สูง</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      Projection อิง EPS TTM $4.72 บวกการเติบโตต่างกันในแต่ละ scenario · ปันผลรวม 3 ปีคิดเฉพาะ regular dividend ($0.40/yr) ไม่รวม special dividend ซึ่งขึ้นกับกำไรและ capital allocation · ผลตอบแทนจริงอาจแตกต่างตาม cat losses, premium rate cycle, portfolio yield และนโยบาย buyback ของ WRB
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก &amp; ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>E&amp;S / Specialty Market Leader:</b> WRB เป็นผู้นำในตลาด Excess &amp; Surplus Lines ที่เติบโตเร็ว — ธุรกิจ E&amp;S ยืดหยุ่นด้านราคาและเงื่อนไขกรมธรรม์ได้มากกว่า Admitted market ช่วยรักษา combined ratio ต่ำกว่า 91% ต่อเนื่อง</li>
+          <li><b>ROE ~20% ยั่งยืน 20+ ปี:</b> WRB มีประวัติ ROE เฉลี่ย 20%+ ต่อเนื่องมากกว่า 20 ปี ด้วย underwriting discipline เข้มแข็งและ ~60 operating units ที่เชี่ยวชาญเฉพาะทาง เป็น "compounder" ชั้นนำวงการ P&amp;C Insurance</li>
+          <li><b>Insider Ownership &amp; Alignment สูง:</b> ผู้บริหารตระกูล Berkley ถือหุ้น ~21% (~$3.8B) แสดงความเชื่อมั่นระยะยาวและ alignment กับผู้ถือหุ้นสูงมาก</li>
+          <li><b>Investment Income หนุนกำไร:</b> อัตราดอกเบี้ยสูงยังคงหนุน Investment Portfolio yield — WRB บริหาร fixed-income portfolio คุณภาพสูง ช่วย total return แม้ในปีที่ underwriting แผ่ว</li>
+          <li><b>Special Dividend Track Record:</b> WRB จ่าย special dividend ในปีที่กำไรดี ทำให้ yield จริง TTM ~2.64% (รวม special) สูงกว่า regular 0.56% มาก — reward ผู้ถือหุ้นระยะยาว</li>
+          <li><b>Geographic &amp; Line Diversification:</b> ~60 units ครอบคลุมหลาย lines of business ลดความเสี่ยง concentration ใน cat-prone lines เดียว</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>Premium Rate Softening:</b> หลังช่วง hard market 2020–2024, premium rate เริ่มชะลอ Rob Berkley เอง signal "pivot from rate to exposure growth" — อาจกดดัน combined ratio หากคู่แข่งตัดราคา</li>
+          <li><b>Catastrophe (Cat) Loss Risk:</b> เหตุการณ์ธรรมชาติขนาดใหญ่ (hurricanes, wildfires, floods) กดดัน EPS รุนแรงได้ทันที — ความถี่ cat events เพิ่มขึ้นตามภาวะ climate change</li>
+          <li><b>Valuation แพงกว่า Peers:</b> P/BV ~2.89x vs คู่แข่ง P&amp;C ทั่วไป ~1.5–2.5x และ P/E ~15x ทำให้ Margin of Safety น้อย — analyst consensus Hold พร้อมเป้า $67 ต่ำกว่าราคาปัจจุบัน</li>
+          <li><b>Interest Rate Risk:</b> พอร์ต fixed-income ขนาดใหญ่ — หาก rate ลงเร็ว investment income ลด ส่งผลต่อกำไรรวม</li>
+          <li><b>Social Inflation / Tort:</b> E&amp;S insurer ยังเผชิญ social inflation และ tort inflation ในสหรัฐ ที่กดดัน loss ratio ระยะยาว</li>
+          <li><b>Key Person Risk:</b> William R. Berkley (Chairman) และทีมผู้บริหารตระกูล Berkley เป็น core ของ culture และ underwriting discipline — succession planning เป็นคำถามระยะยาว</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>WRB — คุณภาพสูงสุดในกลุ่ม P&amp;C Insurance แต่ราคาสะท้อน Fair Value แล้ว</h2>
+      <p>W.R. Berkley เป็นหนึ่งใน best-in-class P&amp;C insurer ระดับโลก ด้วย combined ratio ต่ำกว่า 91% ต่อเนื่อง, ROE ~20%+ ยั่งยืน 20 ปี, และ ~60 operating units ที่เชี่ยวชาญ Specialty/E&amp;S lines อย่างลึกซึ้ง คุณภาพธุรกิจระดับ A+ แต่ราคาปัจจุบัน $71.27 อยู่ใกล้มูลค่าเหมาะสม $72 มาก (MOS เพียง ~1%) ไม่มีส่วนเผื่อความปลอดภัยที่ Value Investor มักต้องการ ≥20% สำหรับนักลงทุนระยะยาวที่เน้นถือ "compounder" คุณภาพ การรอย่อตัวมาที่ $57–65 จะให้ risk/reward ดีกว่า ปันผล regular yield เพียง 0.56% แต่มีประวัติ special dividend ที่ทำให้ yield จริงใกล้ 2–3% ในปีที่กำไรดี</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$72 <span style="font-size:12px;color:#cab9a8">($68.86–$75.52)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +1.0%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$67 (Hold)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> WRB เหมาะกับ "Long-term Compounder Portfolio" — หากราคาปรับลงมาที่ &lt;$65 (MOS ~10%) เริ่มพิจารณาสะสม และ &lt;$57.60 (MOS 20%) เพิ่มน้ำหนัก · ณ ราคา ~$71 เหมาะกับการถือต่อมากกว่าซื้อใหม่ · ติดตาม combined ratio ทุกไตรมาส, premium rate trends ในตลาด E&amp;S, และ cat loss budget
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    แหล่งข้อมูล: Yahoo Finance (finance.yahoo.com/quote/WRB) · StockAnalysis.com (stockanalysis.com/stocks/wrb) · Digrin.com (digrin.com/stocks/detail/WRB) · BigGo Finance Q1 2026 Earnings (finance.biggo.com/news/US_WRB_2026-04-21) · GuruFocus (gurufocus.com/term/combined-ratio_pct/WRB) · Insurance Journal (insurancejournal.com/news/national/2026/04/22/866801.htm)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 1 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
