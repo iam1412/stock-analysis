@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น Walmart (WMT) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"WMT","currency":"USD","price":113.44,"fairValue":122,"mos":7.0,"upside":7.5,"pe":39.8,"dividendYield":0.87,"roe":22.5}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#1d8fed",
+    "accentDark": "#0f69b3",
+    "darkGrad": "linear-gradient(135deg,#04243e 0%,#074273 58%,#0c69b6 140%)",
+    "glow": "rgba(19,138,236,.35)",
+    "subColor": "#c2d8eb",
+    "headerMuted": "#a5bfd4",
+    "verdictText": "#d0e2f1",
+    "vcellLabel": "#a6c4dd",
+    "badge": "var(--blue)",
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#1e8e3e"
+  },
+  "chart": {
+    "data": [
+      ["ก.ค. 2568", 97.98],
+      ["ส.ค. 2568", 96.98],
+      ["ก.ย. 2568", 103.06],
+      ["ต.ค. 2568", 101.18],
+      ["พ.ย. 2568", 110.51],
+      ["ธ.ค. 2568", 111.41],
+      ["ม.ค. 2569", 119.14],
+      ["ก.พ. 2569", 127.95],
+      ["มี.ค. 2569", 124.28],
+      ["เม.ย. 2569", 131.93],
+      ["พ.ค. 2569", 115.75],
+      ["มิ.ย. 2569", 113.44]
+    ],
+    "min": 88,
+    "max": 142,
+    "grid": [90, 100, 110, 120, 130, 140],
+    "fairLine": 122,
+    "currency": "$",
+    "highlight": [9]
+  },
+  "gauge": {
+    "min": 80,
+    "max": 155,
+    "cur": 113.44,
+    "fair": 122,
+    "fairLabelTop": false
+  },
+  "fv": 122
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">●●●</div>
+    <div>
+      <span class="tag">NYSE: WMT</span>
+      <span class="tag">Consumer Staples</span>
+      <span class="tag">Discount Retail</span>
+    </div>
+    <h1>Walmart Inc.</h1>
+    <div class="sub">World's largest retailer (~$725B revenue) • 3-for-1 split ก.พ. 2567 • US stores + Sam's Club + Walmart International • E-commerce +22%+ YoY • Walmart+ membership • Flipkart/PhonePe (India) • Advertising (Walmart Connect) high-margin growth • Higher-income shopper capture</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$113.44<small>(WMT)</small></div>
+      </div>
+      <div class="chg">▲ +15.8% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 30 มิ.ย. 2569<br>
+        กรอบ 52 สัปดาห์ $94.23 – $135.16<br>
+        ที่มา: Yahoo Finance, StockAnalysis.com, Barchart.com
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ มิ.ย. 2569 — FY2026 สิ้นสุด ม.ค. 2569</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~$903B</div><div class="d">~7.96B shares outstanding</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~39.8x</div><div class="d">GAAP EPS TTM $2.85 • พรีเมียมสูง</div></div>
+      <div class="metric"><div class="k">Forward P/E</div><div class="v">~39.0x</div><div class="d">FY2027E EPS $2.91 (consensus)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">9.1x</div><div class="d">BVPS $12.42 (FY2026)</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2026</div><div class="v">$21.9B</div><div class="d">+8.6% YoY • EPS FY2026 $2.73</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$2.85</div><div class="d">FY2026 $2.73 · FY2025 $2.41 · FY2024 $1.91</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~$12.42</div><div class="d">FY2026 · ส่วนผู้ถือหุ้น $106B</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~22.5% / 7.9%</div><div class="d">TTM · สูงสำหรับ low-margin retail</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$725.3B</div><div class="d">+5.9% YoY · FY2026 $713.2B</div></div>
+      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">25.0%</div><div class="d">TTM · เพิ่มขึ้นจากสินค้า high-margin + Ads</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~0.87%</div><div class="d">$0.99/share · Dividend Aristocrat 51+ ปี</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">0.60</div><div class="d">ป้องกัน downside · ผันผวนต่ำกว่า S&amp;P 500</div></div>
+
+      <div class="metric"><div class="k">E-Commerce Growth</div><div class="v pos">+22%+ YoY</div><div class="d">Walmart US e-com เติบโตต่อเนื่อง</div></div>
+      <div class="metric"><div class="k">FCF FY2026</div><div class="v">$14.9B</div><div class="d">FCF/share $1.87 · OpCF $41.6B</div></div>
+      <div class="metric"><div class="k">EV/EBITDA</div><div class="v neu">~21.8x</div><div class="d">EBITDA TTM $44.4B · EV ~$967B</div></div>
+      <div class="metric"><div class="k">Walmart Connect (Ads)</div><div class="v pos">+~30%/ปี</div><div class="d">High-margin advertising business</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#1d8fed"></i>ราคา WMT</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $122</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        WMT เริ่มปีที่ ~$98 (ก.ค. 2568) แล้วไต่ขึ้นเรื่อย ๆ ตลอดช่วงปลายปี 2568 ที่ตลาดยัง sentiment ดี แตะจุดสูงสุด ~$131.93 (เม.ย. 2569) ก่อนปรับลงมาที่ ~$113.44 ในมิ.ย. 2569 โดยรวมหุ้นให้ผลตอบแทนรอบปี +15.8% — ดีกว่า S&amp;P 500 ช่วงเดียวกัน สาเหตุหลักที่หุ้นปรับขึ้น: share gain จากผู้บริโภคระดับบนหันมา Walmart มากขึ้น, e-commerce โต +22%+ YoY, กำไรโตสม่ำเสมอ 3 ปีติด การปรับลงจาก $131 ช่วง มิ.ย. 2569 สะท้อนผลกำไร taking หลัง tariff uncertainty + valuation กลับมาแพง (40x P/E)
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation (Forward)</div><div class="mdesc">EPS adj. $2.91 (FY2027E consensus) × P/E เป้าหมาย ~38x — ต่ำกว่า P/E ปัจจุบัน (40x) เล็กน้อย; WMT ได้ค่าพรีเมียมเหนือ retailer ทั่วไปจาก quality moat, ad revenue, India upside (Flipkart/PhonePe)</div></div>
+        <div class="mval">$111</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. EV/EBITDA</div><div class="mdesc">EBITDA TTM $44.4B × 23x EV/EBITDA (ค่า normalized WMT ระยะยาว; ปัจจุบัน 21.8x ถือว่าสมเหตุสมผลเทียบคุณภาพธุรกิจ) + cash $10B − debt $67.1B ÷ หุ้น 7.96B</div></div>
+        <div class="mval">$121</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Analyst Consensus (12M)</div><div class="mdesc">เป้าหมายเฉลี่ยจากนักวิเคราะห์ 42 คน (Buy consensus) = $138.95 → ใช้ conservative 50% weight รวมกับ fundamental เพื่อสะท้อนความไม่แน่นอน ได้ ~$134 — แต่นักวิเคราะห์มองว่า WMT จะ re-rate ต่อ</div></div>
+        <div class="mval">$134</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $108 – $139</span></div>
+        <div class="r">$122</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        WMT เป็นหุ้นที่ตลาด re-rate เป็น quality compounder จาก low-P/E retailer (~25x) มาเป็น 38-42x ในช่วง 2022-2026 เนื่องจาก: (1) e-commerce เติบโต margin dilution ลดลง, (2) Walmart Connect (advertising) margin สูง +30%/ปี, (3) India optionality (Flipkart/PhonePe ประเมินรวม $40B+) วิธี P/E ให้ค่าต่ำสุด (111) สะท้อน fundamental earnings; EV/EBITDA กลาง (121) ใกล้เคียงราคาปัจจุบัน; Analyst target สูง (139) อิงการ re-rate ต่อ เฉลี่ย 3 วิธีได้ FV ~$122 ที่สะท้อนทั้ง 3 มุมมอง · ณ $113.44 WMT ซื้อขายที่ discount ~7% จาก FV = MOS ต่ำ แต่เป็น quality business ที่ไม่ค่อย "ถูก"
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $113.44</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $122</div></div>
+        </div>
+        <div class="scale">
+          <span>$85.40<br><small>MOS 30%</small></span>
+          <span>$97.60<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$122<br><small>Fair Value</small></span>
+          <span style="text-align:right">$138.95<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">$139<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        WMT ณ $113.44 อยู่ต่ำกว่า Fair Value ~$122 ประมาณ 7% — MOS ต่ำ ยังไม่ถึง "deep value" จุดเข้าซื้อที่ดีสุดคือใกล้ MOS 20% ($97.60) หรือต่ำกว่า ซึ่งมักเกิดเฉพาะตอน market sell-off หรือ earnings miss ชั่วคราว นักวิเคราะห์ 42 คน (Buy consensus) เห็นราคาเป้า $138.95 สูงกว่า FV ของเรา สะท้อนความเชื่อว่า WMT จะ re-rate ต่อจากการเติบโต ad revenue + India อย่างไรก็ตาม ณ 40x P/E ความ upside จำกัดหาก P/E compression มา
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict ok">
+        <div class="big">+7.0%</div>
+        <div class="txt">MOS ต่ำ — ซื้อขายต่ำกว่า Fair Value เล็กน้อย ยังไม่มี Margin of Safety เพียงพอสำหรับ value investor แต่เหมาะสำหรับ long-term compounder investor ที่เน้นคุณภาพธุรกิจ</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$97.60</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$85.40</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $122</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="113.44" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $113.44 • EPS ฐาน ~$2.85 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS +3%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$87</div>
+          <div class="ret neg">−20.7%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$3.11</span></li>
+            <li><span>P/E ออก</span><span>28x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$2.97</span></li>
+            <li><span>สถานการณ์</span><span>ถดถอย + P/E compression</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +9%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$133</div>
+          <div class="ret pos">+19.9%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$3.69</span></li>
+            <li><span>P/E ออก</span><span>36x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$2.97</span></li>
+            <li><span>สถานการณ์</span><span>เติบโตสม่ำเสมอ ad+ecom</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +15%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$182</div>
+          <div class="ret pos">+63.1%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$4.33</span></li>
+            <li><span>P/E ออก</span><span>42x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$2.97</span></li>
+            <li><span>สถานการณ์</span><span>India IPO + Ads ฉลุย + re-rate</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      Base case (EPS +9%, P/E 36x) ให้ผลตอบแทน +19.9% รวมปันผล 3 ปี (~+6.3%/ปี) — ไม่สูงมาก แต่สอดคล้องกับหุ้นคุณภาพสูงที่ไม่ค่อยถูก Bull case ขึ้นกับ India optionality (Flipkart/PhonePe อาจ IPO ได้ valuation สูง) และ Walmart Connect โตเร็วกว่าคาด Bear case เกิดจาก tariff/ภาษีกดดันซัพพลายเชน + ผู้บริโภคลดจ่าย + P/E กลับไป 28x ค่าเฉลี่ยประวัติศาสตร์ก่อน re-rate · EPS growth FY2024-2026 CAGR ~19% (ส่วนหนึ่งจากฐานต่ำ FY2024 ที่ Flipkart write-down); normalized 3Y forward คาด 8-10%
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>Share gain จากผู้บริโภคระดับบน:</b> กลุ่ม household income $100k+ เข้า Walmart มากขึ้น — brand perception เปลี่ยน, quality ดีขึ้น ยกระดับ basket size ต่อครั้ง</li>
+          <li><b>E-Commerce acceleration:</b> Online sales โต +22%+ YoY; Walmart.com + Delivery ลดช่องว่างกับ Amazon; Walmart+ มีสมาชิกเพิ่มต่อเนื่อง</li>
+          <li><b>Walmart Connect (Advertising):</b> Ad revenue เติบโต ~30%/ปี — high-margin stream จาก first-party retail data ประมาณ $4-5B/ปี ช่วยขยาย operating margin โดยรวม</li>
+          <li><b>India optionality (Flipkart + PhonePe):</b> Flipkart valued ~$36B (post Tata deal); PhonePe (87% stake) valued $12B+ — India digital market growth ยังสูง; IPO อาจ unlock มูลค่ามหาศาล</li>
+          <li><b>Sam's Club momentum:</b> comparable sales เติบโตแข็งแกร่ง; กดดัน Costco ด้วย Scan &amp; Go + e-commerce; membership revenue recurring</li>
+          <li><b>Defensive ใน recession:</b> Consumer staples-like; beta 0.60 ป้องกัน downside; ยอดขายไม่ตกในช่วง downturn (ผู้บริโภค trade down มา Walmart)</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>Tariff &amp; Supply chain disruption:</b> สินค้าจำนวนมากผลิตในจีน; ภาษีนำเข้าสูงอาจกดดัน margin หรือบังคับขึ้นราคา กระทบความสามารถแข่งขันด้านราคา</li>
+          <li><b>Valuation premium ที่ต้อง justify:</b> 40x P/E สำหรับ grocery/retail ที่ net margin ~3% ต้องการการเติบโต high-margin segment ต่อเนื่อง — P/E compression risk ถ้าการเติบโตชะลอ</li>
+          <li><b>Competition จาก Amazon ใน e-commerce:</b> Amazon Grocery, Whole Foods, Prime delivery ยังแข็งแกร่ง; WMT ต้องลงทุน last-mile delivery ต่อเนื่อง กดดัน capex (แพง $26B+/ปี)</li>
+          <li><b>Geopolitical risk — India:</b> Flipkart ต้องเผชิญ regulatory uncertainty ใน India; ความสัมพันธ์ US-India และกฎหมาย FDI อาจกระทบ exit options</li>
+          <li><b>Labour cost และ min wage:</b> Walmart จ้างงาน ~2.1M คนใน US; การขึ้นค่าแรงขั้นต่ำหรือ labour market ตึงตัวกระทบต้นทุนหลัก SG&amp;A</li>
+          <li><b>Grocery deflation:</b> ถ้าราคาสินค้า grocery ปรับลง (deflation) อาจกดดัน revenue growth ทั้งที่ volume ยัง ok — same-store sales อาจชะลอกระทบ EPS growth</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>Quality Compounder ราคาพรีเมียม — MOS ต่ำ แต่ธุรกิจแข็งแกร่ง</h2>
+      <p>Walmart เป็น world-class retailer ที่กำลัง transform ตัวเองจาก "discount grocery chain" สู่ "omnichannel ecosystem" ที่มี e-commerce, advertising, fintech (India), และ membership revenue คุณภาพธุรกิจดีขึ้นอย่างมีนัยสำคัญในช่วง 3-5 ปีที่ผ่านมา — ทั้ง margin expansion, e-commerce share gain, และ premium shopper acquisition อย่างไรก็ตาม ราคาปัจจุบัน $113.44 ที่ 40x P/E สะท้อน optimism ส่วนใหญ่ไปแล้ว MOS เพียง +7% (FV $122) ไม่เพียงพอสำหรับ value investor ที่ต้องการ margin of safety ≥20% แต่สำหรับ long-term quality investor ที่ยอมจ่ายพรีเมียมเพื่อ compounding ที่น่าเชื่อถือ WMT เป็นตัวเลือกที่ดีในพอร์ต defensive</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$122 <span style="font-size:12px;color:#cab9a8">($108–$139)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +7.0%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$138.95 (Buy · 42 คน)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ณ ราคา $113.44 WMT ยังน่าสนใจสำหรับ long-term compounder investor (ถือ 5+ ปี) ที่เน้นคุณภาพธุรกิจ จุดเข้าซื้อที่ดีกว่าคือใกล้ $97-100 (MOS 20%) หรือต่ำกว่า หากเกิด market pullback การถือยาวจะได้รับประโยชน์จากปันผลที่โตสม่ำเสมอ + EPS growth + India optionality upside ที่ตลาดยังไม่ได้ราคาเต็ม · ไม่เหมาะสำหรับ short-term trade เพราะ MOS ต่ำ
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ราคา ณ 30 มิ.ย. 2569 จาก Yahoo Finance ($113.47 ±0.03%) · ยืนยัน StockAnalysis.com ($113.48) + Barchart.com ($113.49) · EPS GAAP TTM $2.85 จาก StockAnalysis.com · ข้อมูลงบการเงิน FY2026 จาก StockAnalysis.com · นักวิเคราะห์ 42 คน (consensus Buy, เป้า $138.95) จาก StockAnalysis.com · P/BV 9.14x จาก Barchart.com
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 30 มิ.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
