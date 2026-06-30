@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น Morgan Stanley (MS) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"MS","currency":"USD","price":211.72,"fairValue":188,"mos":-12.6,"upside":-11.2,"pe":19.19,"dividendYield":1.89,"roe":21.0}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#002B5B",
+    "accentDark": "#001A3A",
+    "darkGrad": "linear-gradient(135deg,#001A3A 0%,#002B5B 60%,#004080 100%)",
+    "glow": "rgba(0,43,91,0.45)",
+    "subColor": "#6b9fd4",
+    "headerMuted": "rgba(255,255,255,0.55)",
+    "verdictText": "#e8f0fe",
+    "vcellLabel": "#a8c4e8",
+    "badge": "#003f7f",
+    "chgBg": "#1e8e3e",
+    "chgColor": "#ffffff"
+  },
+  "chart": {
+    "data": [
+      ["มิ.ย. 68", 139.10],
+      ["ก.ค. 68", 147.95],
+      ["ส.ค. 68", 156.29],
+      ["ก.ย. 68", 161.25],
+      ["ต.ค. 68", 167.83],
+      ["พ.ย. 68", 175.61],
+      ["ธ.ค. 68", 180.83],
+      ["ม.ค. 69", 165.62],
+      ["ก.พ. 69", 163.69],
+      ["มี.ค. 69", 189.57],
+      ["เม.ย. 69", 208.00],
+      ["พ.ค. 69", 212.03],
+      ["มิ.ย. 69", 211.72]
+    ],
+    "min": 110,
+    "max": 240,
+    "grid": [120, 150, 180, 210, 240],
+    "fairLine": 188,
+    "currency": "$",
+    "highlight": [9, 11]
+  },
+  "gauge": {
+    "min": 100,
+    "max": 250,
+    "cur": 211.72,
+    "fair": 188,
+    "fairLabelTop": true
+  },
+  "fv": 188
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">◆ ◆ ◆</div>
+    <div>
+      <span class="tag">NYSE: MS</span>
+      <span class="tag">Financial Services</span>
+      <span class="tag">Investment Bank &amp; Wealth Mgmt</span>
+    </div>
+    <h1>Morgan Stanley</h1>
+    <div class="sub">Institutional Securities (IB, trading) • Wealth Management (E*TRADE, ~$7.3T client assets) • Investment Management • Global financial services</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$211.72<small>(MS)</small></div>
+      </div>
+      <div class="chg">▲ +52.2% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 29 มิ.ย. 2569<br>
+        กรอบ 52 สัปดาห์ $135.27 – $230.47<br>
+        ที่มา: Yahoo Finance, StockAnalysis.com, Morgan Stanley SEC 8-K (Q1/2569)
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ มิ.ย. 2569 · TTM = 12 เดือนย้อนหลัง</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">$333.9B</div><div class="d">~1,577M หุ้น (diluted)</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~19.19x</div><div class="d">EPS TTM $11.03 · premium vs ค่าเฉลี่ยประวัติ</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~13–15x</div><div class="d">ปัจจุบัน premium สะท้อน Wealth Mgmt shift</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">~3.2x</div><div class="d">BVPS $66.18 · TBV/S $51.58 (Q1/69 SEC)</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">$18.3B</div><div class="d">+56% YoY · record EPS $10.21</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$11.03</div><div class="d">FY25 $10.21 · Q1/69 $3.43 (record +32% YoY)</div></div>
+      <div class="metric"><div class="k">BVPS / Tangible BVPS</div><div class="v">~$66.18 / $51.58</div><div class="d">Q1/2569 official SEC filing · P/TBV ~4.1x</div></div>
+      <div class="metric"><div class="k">ROE / ROTCE</div><div class="v pos">~21.0% / 27.1%</div><div class="d">ROE Q1/69 · ROTCE Q1/69 · FY2025 ROTCE 21.6%</div></div>
+
+      <div class="metric"><div class="k">รายได้รวม TTM</div><div class="v neu">$73.5B</div><div class="d">FY2025 $70.6B record · Q1/69 $20.6B (record)</div></div>
+      <div class="metric"><div class="k">Wealth Mgmt AUM</div><div class="v">$1.87T</div><div class="d">Total client assets $7.3T (Q1/2569)</div></div>
+      <div class="metric"><div class="k">เงินปันผล (Yield)</div><div class="v">~1.89%</div><div class="d">$4.00/หุ้น/ปี · $1.00 ต่อไตรมาส · ขึ้นสม่ำเสมอ</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">1.22</div><div class="d">ผันผวนสูงกว่าตลาด · ตอบสนอง market cycle</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">มิ.ย. 2568 – มิ.ย. 2569 · รายเดือน</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#002B5B"></i>ราคา MS</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $188</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคา MS ปรับตัวขึ้นแรง +52.2% ในรอบปี (มิ.ย. 2568 $139 → มิ.ย. 2569 $212) ขับเคลื่อนด้วย 3 ปัจจัยหลัก: (1) กำไร Q1/2569 record $3.43/หุ้น (+32% YoY) พร้อม ROTCE 27.1%; (2) Wealth Management ขยาย client assets ทะลุ $7.3T; (3) IB backlog ฟื้นตัวจาก deal market ที่กลับมาคึกคัก ช่วงมกราคม–กุมภาพันธ์ 2569 ราคาย่อตัวลงมาที่ $163–165 ตามความกังวล macro แต่ฟื้นกลับแรงหลัง Q1/69 earnings สูงเกินคาด ราคาปัจจุบัน $211.72 อยู่เหนือ Fair Value $188
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation (TTM)</div><div class="mdesc">EPS adj. $11.03 × P/E 16x = $176 — P/E 16x สะท้อนค่าเฉลี่ยประวัติศาสตร์สูงสุดของ MS (13–16x) ซึ่งเหมาะสมสำหรับ universal bank ที่มี Wealth Management ขนาดใหญ่และ ROTCE ทรง 20%+</div></div>
+        <div class="mval">$176</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. P/E Forward (FY2026 Consensus)</div><div class="mdesc">EPS adj. $11.92 (consensus FY2026) × P/E 17x = $203 — EPS forward consensus ของนักวิเคราะห์ 25 คน × multiple 17x สะท้อน premium เล็กน้อยจากการเติบโต Wealth Management AUM และ operating leverage ที่ชัดเจนขึ้น</div></div>
+        <div class="mval">$203</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 20% − g 6%)/(r 11% − g 6%) ≈ 2.80x × BVPS $66.18 = $185 — ROE ใช้ค่า conservative 20% (ต่ำกว่า ROTCE 27% Q1/69) · g=6% (Wealth AUM growth + earnings recovery), r=11% (risk premium financial sector)</div></div>
+        <div class="mval">$185</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $176 – $203</span></div>
+        <div class="r">$188</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        วิธี P/E Forward ให้ค่าสูงสุด ($203) สอดคล้องกับ analyst consensus target $207 ที่สะท้อน earnings growth momentum ปี 2569; วิธี P/E TTM ให้ค่าต่ำสุด ($176) เพราะอิง EPS ย้อนหลัง; Justified P/BV ($185) บ่งชี้ว่าราคาปัจจุบัน $211.72 แพงกว่า tangible fundamental ราว 14% · FV เฉลี่ย $188 หมายความว่าราคาปัจจุบันมี premium ราว 12.6% ตลาดกำลัง price-in การเติบโต Wealth Management AUM และ ROTCE ต่อเนื่อง ซึ่งต้องพิสูจน์ด้วยผลประกอบการในอนาคต
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $211.72</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $188</div></div>
+        </div>
+        <div class="scale">
+          <span>$131.60<br><small>MOS 30%</small></span>
+          <span>$150.40<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$188<br><small>Fair Value</small></span>
+          <span style="text-align:right">$203<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">$207<br><small>เป้าเฉลี่ย Analyst</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน $211.72 อยู่เหนือ Fair Value $188 ราว 12.6% และเหนือ analyst consensus target $207 เล็กน้อย บ่งชี้ว่าตลาดให้ premium สำหรับ franchise Wealth Management ($7.3T client assets) และ ROTCE ระดับ 21–27% ที่สูงกว่าคู่แข่ง สำหรับ value investor จุดเข้าที่เหมาะสมคือ $150 (MOS 20%) หรือ $132 (MOS 30%) ซึ่งต้องรอให้ตลาดปรับตัวลงก่อน
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">-12.6%</div>
+        <div class="txt">ราคาเหนือ Fair Value — ตลาดให้ premium กับ Wealth Management franchise คุณภาพสูง</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$150.40</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$131.60</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $188</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="211.72" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $211.72 • EPS ฐาน ~$11.03 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS +3%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$133</div>
+          <div class="ret neg">-37.1%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$12.05</span></li>
+            <li><span>P/E ออก</span><span>11x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$12.90</span></li>
+            <li><span>สถานการณ์</span><span>Recession · IB ซบเซา · Wealth outflow</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +10%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$234</div>
+          <div class="ret pos">+10.5%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$14.67</span></li>
+            <li><span>P/E ออก</span><span>15x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$13.50</span></li>
+            <li><span>สถานการณ์</span><span>IB ฟื้นตัว · AUM เติบโต · ROTCE ทรง 20%+</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +18%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$323</div>
+          <div class="ret pos">+52.5%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$18.12</span></li>
+            <li><span>P/E ออก</span><span>17x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$15.00</span></li>
+            <li><span>สถานการณ์</span><span>AUM ทะลุ $10T · IB boom · ROTCE 25%+</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      Base case: EPS เติบโต 10%/ปี (consensus FY2026 $11.92, FY2027 $12.78) และ P/E ออก 15x ตามค่าเฉลี่ยประวัติศาสตร์ รวมปันผล $13.50 ใน 3 ปี ให้ผลตอบแทนรวม ~10.5% หรือ ~3.4%/ปี — ต่ำกว่าที่หวังเพราะ valuation เริ่มต้นสูง · Bear case อิงภาวะ recession ที่กดดัน IB fee และ market-linked Wealth AUM ย่อลง กด P/E ลงมา 11x · Bull case สะท้อน AUM growth + deal market boom และ P/E ขยาย 17x ตาม franchise premium · ผลตอบแทน +52.2% รอบปีที่ผ่านมาเป็น outperformance ที่ผิดปกติและยากจะ repeat ระยะสั้น
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก &amp; ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>Wealth Management Flywheel:</b> client assets $7.3T (Q1/69) + Wealth AUM $1.87T ขับเคลื่อน recurring fee income สูง margin ดีกว่า IB — ทำให้กำไรเสถียรขึ้นตาม cycle</li>
+          <li><b>IB Deal Market ฟื้นตัว:</b> Institutional Securities record $10.7B ใน Q1/69 ยืนยัน M&amp;A, ECM, DCM cycle ขาขึ้น backlog ยังแข็งแกร่ง</li>
+          <li><b>ROTCE ทะลุเป้า 20%+:</b> Q1/69 ROTCE 27.1% และ FY2025 21.6% สูงกว่า long-term target — สะท้อน operating leverage จาก fixed cost ขณะรายได้โต</li>
+          <li><b>Buyback &amp; Capital Return:</b> ซื้อคืน $1.75B ใน Q1/69 + CET1 ratio 15.1% ให้ flexibility ลด share count ช่วย EPS growth · ปันผลเพิ่มต่อเนื่อง</li>
+          <li><b>E*TRADE Digital Integration:</b> platform ดึง younger HNW clients และ self-directed investors เสริม AUM ระยะยาว + cross-sell opportunity</li>
+          <li><b>AI Efficiency Gains:</b> ลงทุน AI เพื่อ advisor productivity — expense ratio ดีขึ้นจาก 68.4% (FY25) → 65% (Q1/69) เป็น structural improvement</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>Valuation Premium สูงเกินไป:</b> P/E 19.2x เทียบค่าเฉลี่ย 13–15x — หาก multiple compress หรือ EPS miss ราคาอาจย่อลงแรงเกิน 20%</li>
+          <li><b>Market-Linked Revenue:</b> Wealth Management fee ขึ้นลงตาม AUM ซึ่งผูกกับตลาดหุ้น — ปีที่ตลาดร่วง fee income ลดทันที</li>
+          <li><b>Capital Markets Cyclicality:</b> IB fees (M&amp;A, ECM, DCM) ผันผวนตาม deal cycle — ปี bear market กำไรลดลงมาก เหมือนปี 2022</li>
+          <li><b>Credit &amp; Counterparty Risk:</b> ฐานะ total assets $1.58T เปิดรับ credit/market risk ใน stress scenario รวม structured products และ leveraged lending</li>
+          <li><b>Regulatory Capital:</b> Basel III endgame / GSIB surcharge อาจกำหนดทุนสำรองเพิ่ม กด ROE และ buyback capacity ในระยะกลาง</li>
+          <li><b>Competition for HNW Clients:</b> แข่งขันกับ Merrill Lynch, Goldman Sachs, UBS ใน Wealth Management — net new asset inflow อาจชะลอหาก fee ไม่แข่งขัน</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>Wealth Management Powerhouse — คุณภาพสูง แต่ Premium เกิน Fair Value ที่ $212</h2>
+      <p>Morgan Stanley เป็นสถาบันการเงินชั้นนำที่สำเร็จในการเปลี่ยนผ่านจาก pure Investment Bank สู่ Wealth Management-led model ด้วย client assets $7.3T และ Wealth AUM $1.87T ส่งผล recurring fee income เสถียรกว่าคู่แข่ง กำไร Q1/2569 record $3.43/หุ้น (+32% YoY) และ ROTCE 27.1% สะท้อน operating leverage และ franchise value ที่แข็งแกร่ง อย่างไรก็ตาม ราคาปัจจุบัน $211.72 อยู่เหนือ Fair Value $188 ราว 12.6% — ตลาดได้ price-in growth ล่วงหน้าไปแล้ว สำหรับ value investor จุดเข้าที่มี MOS เพียงพอควรรอที่ $150–188</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$188 <span style="font-size:12px;color:#cab9a8">($176–$203)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ -12.6%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$207 (Buy · 25 analysts)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> MS เป็นหุ้นคุณภาพสูงในกลุ่ม Financials — แต่ราคา $212 premium เกินสมมติฐาน conservative สำหรับ value investor ที่ต้องการ MOS ที่ดี: (1) ถือรอ correction ที่ $175–188 เพื่อ entry ที่ดีกว่า; (2) นักลงทุนที่ถืออยู่แล้วสามารถถือต่อได้ เนื่องจาก franchise Wealth Management ยังแข็งแกร่ง ปันผล $4/ปี + buyback หนุน total return; (3) กำหนด stop-loss หรือ partial trim ที่ $230+ หาก P/E ขยายเกิน 21x
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    แหล่งข้อมูล: Yahoo Finance (ราคา $211.72 · EPS TTM $11.03 · yield 1.89% · 52w range), StockAnalysis.com (EPS $11.04 · revenue $73.5B · analyst target $206.67 · consensus EPS 2026 $11.92), Morgan Stanley Q1 2026 SEC 8-K (EPS $3.43 · ROTCE 27.1% · BVPS $66.18 · client assets $7.3T), Investing.com (analyst consensus) · ราคา ณ 29 มิ.ย. 2569
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 29 มิ.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
