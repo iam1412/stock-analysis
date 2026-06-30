@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น State Street (STT) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"STT","currency":"USD","price":169.64,"fairValue":162.0,"mos":-4.7,"upside":-4.5,"pe":17.27,"dividendYield":1.97,"roe":11.3}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#003087",
+    "accentDark": "#001a52",
+    "darkGrad": "linear-gradient(135deg,#001a52 0%,#003087 60%,#004db3 100%)",
+    "glow": "rgba(0,48,135,0.35)",
+    "subColor": "#4a90d9",
+    "headerMuted": "rgba(255,255,255,0.55)",
+    "verdictText": "#cfd8f0",
+    "vcellLabel": "#a0b4d8",
+    "badge": "#003087",
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#1e8e3e"
+  },
+  "chart": {
+    "data": [
+      ["มิ.ย. 25", 111.75],
+      ["ก.ค. 25", 114.97],
+      ["ส.ค. 25", 116.01],
+      ["ก.ย. 25", 115.66],
+      ["ต.ค. 25", 119.02],
+      ["พ.ย. 25", 129.01],
+      ["ธ.ค. 25", 130.86],
+      ["ม.ค. 26", 128.62],
+      ["ก.พ. 26", 126.56],
+      ["มี.ค. 26", 152.84],
+      ["เม.ย. 26", 155.64],
+      ["พ.ค. 26", 170.18],
+      ["มิ.ย. 26", 169.64]
+    ],
+    "min": 100,
+    "max": 185,
+    "grid": [100, 120, 140, 160, 180],
+    "fairLine": 162,
+    "currency": "$",
+    "highlight": [9, 11]
+  },
+  "gauge": {
+    "min": 100,
+    "max": 185,
+    "cur": 169.64,
+    "fair": 162
+  },
+  "fv": 162
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">◉ ◎ ◉</div>
+    <div>
+      <span class="tag">NYSE: STT</span>
+      <span class="tag">Financial Services</span>
+      <span class="tag">Asset Custody &amp; Management</span>
+    </div>
+    <h1>State Street Corporation</h1>
+    <div class="sub">อันดับ 2 ผู้ดูแลสินทรัพย์โลก (~$46T AUC/A) • SSGA: $4.7T AUM, SPDR ETFs (SPY ใหญ่สุดในโลก, GLD) • Securities lending + FX trading + alt-asset servicing • ~2% dividend yield + buybacks • NII sensitive to Fed rate path</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$169.64<small>(STT)</small></div>
+      </div>
+      <div class="chg">▲ +51.8% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 30 มิถุนายน 2569<br>
+        กรอบ 52 สัปดาห์ $101.98 – $175.46<br>
+        ที่มา: StockAnalysis.com, Yahoo Finance, S&amp;P Global
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ มิ.ย. 2569 · GAAP TTM</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">$46.95B</div><div class="d">276.8M shares outstanding</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~17.3x</div><div class="d">Forward P/E FY2026E ~13.4x</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~12–15x</div><div class="d">ช่วง 10–18x ตามวัฏจักร</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">1.95x</div><div class="d">BVPS $95.04 · P/TBVPS ~2.7x</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">$2,945M</div><div class="d">+28.9% YoY vs FY2024</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$9.85</div><div class="d">FY2026E $12.71 (consensus)</div></div>
+      <div class="metric"><div class="k">BVPS / TBVPS</div><div class="v">$95.04 / $63.66</div><div class="d">TTM Mar 2026 · ทุนต่อหุ้น</div></div>
+      <div class="metric"><div class="k">ROE / ROTCE</div><div class="v pos">~11.3% / ~17.4%</div><div class="d">ROA ~0.78% · leverage สูงตามธรรมชาติ</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$14.46B</div><div class="d">Fee rev $11.5B · NII $3.1B</div></div>
+      <div class="metric"><div class="k">Net Profit Margin</div><div class="v">~21.2%</div><div class="d">FY2025: 21.1% · ดีขึ้นต่อเนื่อง</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~1.97%</div><div class="d">$3.28/หุ้น TTM · จ่ายต่อเนื่องยาวนาน</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">1.45</div><div class="d">สูงกว่าตลาด · sensitive ต่อ rate</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">มิ.ย. 2025 – มิ.ย. 2026</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#003087"></i>ราคา STT</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $162</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        STT ปรับตัวขึ้นแรง +51.8% ในรอบปี นำโดย (1) ผลประกอบการ Q1/Q3 2025 แข็งแกร่ง ทั้ง fee revenue และ NII
+        (2) ตลาดหุ้นโลกปรับฐาน → ฟื้น ดัน AUC/A และ SSGA AUM สูงขึ้น (3) ความคาดหวัง EPS FY2026 ที่จะพุ่ง
+        ~$12.71 (+29% vs TTM) จากรายได้ค่าธรรมเนียมที่โตสม่ำเสมอ ราคาทะลุ $170 ในเดือน พ.ค.–มิ.ย. 2026
+        และปรับตัวลงเล็กน้อยจาก high $175.46 สู่ระดับปัจจุบัน
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">3 วิธี เฉลี่ย</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation (Forward)</div><div class="mdesc">EPS adj. $12.71 × P/E 14x — FY2026 consensus EPS estimate × target P/E สำหรับ custodian bank ระดับกลางวัฏจักร</div></div>
+        <div class="mval">$178</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 11.3% − g 4%)/(r 9% − g 4%) ≈ 1.46x × BVPS $95.04 — สะท้อน ROE ที่ต่ำกว่าค่า r ทำให้ P/BV ที่เหมาะสมต่ำกว่า 2x</div></div>
+        <div class="mval">$139</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Justified P/TBVPS (ROTCE)</div><div class="mdesc">P/TBVPS เหมาะสม = (ROTCE 17.4% − g 4%)/(r 9% − g 4%) ≈ 2.68x × TBVPS $63.66 — ใช้ ROTCE สะท้อน profitability จริงหลังหักสินทรัพย์ไม่มีตัวตน</div></div>
+        <div class="mval">$171</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $139 – $178</span></div>
+        <div class="r">$162</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        วิธี P/E forward ให้ค่าสูงสุด ($178) สะท้อนการเติบโต EPS ที่แข็งแกร่งในปี 2026 · วิธี Justified P/BV ให้ค่าต่ำสุด ($139)
+        เพราะ ROE 11.3% อยู่เหนือ cost of equity (9%) ไม่มากนัก ทำให้ multiple ที่ควรได้ต่ำ ·
+        Justified P/TBVPS ($171) สอดคล้องกับราคาปัจจุบันและเป้านักวิเคราะห์ · FV เฉลี่ย $162 ชี้ว่า
+        ราคาปัจจุบัน ~$170 อยู่เหนือ Fair Value เล็กน้อย (premium ~5%) — ใกล้ full value ไม่มี MOS มากนัก
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $169.64</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $162</div></div>
+        </div>
+        <div class="scale">
+          <span>$113<br><small>MOS 30%</small></span>
+          <span>$130<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$162<br><small>Fair Value</small></span>
+          <span style="text-align:right">$171<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">$178<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน $169.64 อยู่เหนือ Fair Value $162 ประมาณ 5% และอยู่ต่ำกว่าเป้าเฉลี่ยนักวิเคราะห์ $171 เพียงเล็กน้อย
+        แสดงว่า STT กำลังซื้อขายในโซน "fair to slightly premium" · ยังไม่มี MOS ในแง่ value investing ·
+        โซนน่าสนใจสำหรับสะสม คือ MOS 20% ที่ $130 ลงไป ซึ่งใกล้เคียงกับ Justified P/BV ($139)
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">−4.7%</div>
+        <div class="txt">ราคาปัจจุบันสูงกว่า Fair Value เล็กน้อย — ยังไม่มี Margin of Safety · รอโซน $130–$139 จะน่าสนใจกว่า</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$130</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$113</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $162</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="169.64" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $169.64 • EPS ฐาน ~$9.85 (TTM) • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS −2%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$93</div>
+          <div class="ret neg">−39.2%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$9.27</span></li>
+            <li><span>P/E ออก</span><span>10x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$10.2</span></li>
+            <li><span>สถานการณ์</span><span>NII ร่วง + fee ซบ</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +8%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$178</div>
+          <div class="ret pos">+5.1%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$12.41</span></li>
+            <li><span>P/E ออก</span><span>13.5x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$10.8</span></li>
+            <li><span>สถานการณ์</span><span>AUC/A โต + fee rev แข็ง</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +14%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$230</div>
+          <div class="ret pos">+35.7%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$14.59</span></li>
+            <li><span>P/E ออก</span><span>15x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$11.4</span></li>
+            <li><span>สถานการณ์</span><span>Alt asset + SSGA AUM พุ่ง</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      การคาดการณ์ใช้ EPS TTM $9.85 เป็นฐาน · Base case สอดคล้องกับ consensus FY2026E $12.71 และ FY2027E $14.15 ·
+      ผลตอบแทน Base ~5% total return ใน 3 ปี (รวมปันผล) บ่งชี้ว่าผู้ซื้อที่ระดับนี้จะได้ผลตอบแทนต่ำกว่าตลาด
+      หากไม่มี re-rating · Bull case เกิดขึ้นเมื่อ STT ชนะ mandate ใหม่ของกองทุน Alternative + SSGA โต + buyback
+      ยกระดับ EPS ได้เร็วกว่าคาด · Bear case หาก Fed ลดดอกเบี้ยแรงกว่าคาด NII จะกดดัน profitability
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก &amp; ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>AUC/A Growth:</b> สินทรัพย์ภายใต้การดูแล ~$46T — ตลาดหุ้นโลกปรับขึ้น → fee revenue เพิ่มอัตโนมัติ ไม่ต้องหา client ใหม่</li>
+          <li><b>Alternative Asset Servicing:</b> กองทุน PE/Hedge fund/Private credit ใช้ custodian มากขึ้น → mandate ใหม่มูลค่าสูง</li>
+          <li><b>SSGA &amp; SPDR ETF:</b> ETF industry โตต่อเนื่อง SPY มีส่วนแบ่งตลาดสูง ดึง management fee และ securities lending income</li>
+          <li><b>Buyback Programme:</b> buyback ลด shares อย่างสม่ำเสมอ หนุน EPS growth แม้ net income โตปานกลาง</li>
+          <li><b>EPS Re-rating:</b> FY2026 EPS ที่คาดไว้ $12.71 จะลด forward P/E ลงสู่ ~13x ทำให้หุ้นดูถูกลงในเชิง forward</li>
+          <li><b>ค่าธรรมเนียม FX &amp; Securities Lending:</b> ความผันผวนตลาดสูง → volume FX trading + securities lending เพิ่ม</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>NII Compression:</b> Fed ลดดอกเบี้ย → Net Interest Income (สัดส่วน ~21% ของรายได้) จะลดลง กระทบ margin</li>
+          <li><b>Fee Compression:</b> แรงกดดันค่าธรรมเนียม custody จากการแข่งขัน (BNY, JPMorgan) + passive fee ต่ำลง</li>
+          <li><b>Beta สูง 1.45:</b> หุ้นขึ้น/ลงเร็วกว่าตลาด ตลาดหุ้นโลกปรับลง → AUC/A และ fee revenue ลดทันที</li>
+          <li><b>Regulatory Risk:</b> Basel IV / liquidity requirements → ต้องถือทุนสูงขึ้น กระทบ ROTCE และ buyback capacity</li>
+          <li><b>Concentration Risk:</b> revenue ผูกกับ equity/bond market performance — วิกฤตตลาดการเงินกระทบรุนแรง</li>
+          <li><b>Valuation ไม่มี MOS:</b> ราคาปัจจุบัน > FV เล็กน้อย — หาก EPS FY2026 ต่ำกว่า consensus โอกาสปรับฐานสูง</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>STT — Fairly Valued · รอโอกาส Pullback</h2>
+      <p>State Street เป็น custodian bank ระดับโลก (AUC/A ~$46T) ที่มีธุรกิจ fee-based มั่นคงและ SSGA/SPDR
+        เป็นแพลตฟอร์ม ETF ขนาดใหญ่ ผลประกอบการ FY2025–2026 แข็งแกร่งหนุนจากตลาดหุ้นโลกที่ฟื้นตัว
+        แต่ราคาปัจจุบัน ~$170 อยู่เหนือ FV เฉลี่ย $162 ประมาณ 5% และใกล้เคียงกับเป้านักวิเคราะห์ $171
+        ทำให้ upside จาก ณ จุดนี้มีจำกัด สำหรับ long-term investor ที่ต้องการหุ้น custodian bank คุณภาพสูง
+        รอ pullback สู่โซน $139–$150 จะให้ MOS 10–15% และผลตอบแทนที่คุ้มค่ากว่า</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$162 <span style="font-size:12px;color:#cab9a8">($139–$178)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −4.7% (premium)</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$171 (Buy · 16 analysts)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ราคาปัจจุบัน ~$170 ยังไม่มี MOS — <b>รอ pullback สู่ $130–$150</b> เพื่อ MOS 10–20%
+        หรือถ้ามีอยู่แล้วใน port ถือต่อได้ (dividend + buyback หนุน EPS growth) · ไม่แนะนำซื้อเพิ่มที่ราคานี้ ·
+        หากตลาดโลก correction STT มักปรับลงแรง (Beta 1.45) เป็นโอกาสซื้อ
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    แหล่งที่มา: StockAnalysis.com (ราคา ณ 30 มิ.ย. 2569, EPS TTM $9.85, Revenue $14.46B, BVPS $95.04, TBVPS $63.66), Yahoo Finance (ราคา $170.05 ยืนยัน ±0.2%, P/B 1.95x, Beta 1.45, Dividend yield 1.97%, 52W $101.98–$175.46), S&amp;P Global / Stockanalysis Forecast (EPS FY2026E $12.71, FY2027E $14.15, Analyst target mean $171.32, Buy consensus 16 analysts · 7 Strong Buy · 2 Buy · 6 Hold)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 30 มิถุนายน 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
