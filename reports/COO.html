@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น The Cooper Companies (COO) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"COO","currency":"USD","price":71.71,"fairValue":85.00,"mos":15.6,"upside":18.5,"pe":15.7,"dividendYield":0,"roe":null}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#005DA8",
+    "accentDark": "#003F7A",
+    "darkGrad": "linear-gradient(135deg, #001A3A 0%, #003066 100%)",
+    "glow": "rgba(0,93,168,0.35)",
+    "subColor": "#7DB3E0",
+    "headerMuted": "rgba(255,255,255,0.6)",
+    "verdictText": "#E3F0FF",
+    "vcellLabel": "#A0C4E8",
+    "badge": "#005DA8",
+    "chgBg": "#555555",
+    "chgColor": "#FFFFFF"
+  },
+  "chart": {
+    "data": [
+      ["ก.ย. 67", 70.69],
+      ["ต.ค. 67", 67.40],
+      ["พ.ย. 67", 68.56],
+      ["ธ.ค. 67", 69.91],
+      ["ม.ค. 68", 77.93],
+      ["ก.พ. 68", 81.96],
+      ["มี.ค. 68", 81.38],
+      ["เม.ย. 68", 83.67],
+      ["พ.ค. 68", 71.50],
+      ["มิ.ย. 68", 62.90],
+      ["ก.ค. 68", 61.21],
+      ["ส.ค. 68", 71.71],
+      ["ก.ย. 68", 71.71]
+    ],
+    "min": 55,
+    "max": 100,
+    "grid": [60, 70, 80, 90],
+    "fairLine": 85.00,
+    "currency": "$",
+    "highlight": [7, 10]
+  },
+  "gauge": {
+    "min": 50,
+    "max": 105,
+    "cur": 71.71,
+    "fair": 85.00,
+    "fairLabelTop": false
+  },
+  "fv": 85.00
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">⬤ ⬤ ⬤</div>
+    <div>
+      <span class="tag">NASDAQ: COO</span>
+      <span class="tag">Healthcare · Medical Devices</span>
+      <span class="tag">Contact Lenses · Women's Health</span>
+    </div>
+    <h1>The Cooper Companies</h1>
+    <div class="sub">#2 global soft contact lenses (CooperVision) · fertility/IVF &amp; women's health (CooperSurgical) · PARAGARD IUD · revenue ~$4.2B · San Ramon CA / Nasdaq</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$71.71<small>(COO)</small></div>
+      </div>
+      <div class="chg">≈ ทรงตัว (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 1 ก.ค. 2569<br>
+        กรอบ 52 สัปดาห์ $58.89 – $89.83<br>
+        ที่มา: Yahoo Finance, StockAnalysis.com, MarketBeat
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ก.ค. 2569 · ตัวเลข Non-GAAP Adj.</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~$14.0B</div><div class="d">~195 ล้านหุ้น · Nasdaq</div></div>
+      <div class="metric"><div class="k">P/E (TTM) Adj.</div><div class="v neu">~15.7x</div><div class="d">Adj. EPS TTM $4.56 · GAAP P/E ~60x</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~20–25x</div><div class="d">ช่วง adj. P/E ประวัติ 18–28x</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">1.72x</div><div class="d">BVPS $41.73 · goodwill สูง $3.9B</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">$374.9M</div><div class="d">GAAP · FY สิ้นสุด ต.ค. 2025</div></div>
+      <div class="metric"><div class="k">Adj. EPS (TTM)</div><div class="v">~$4.56</div><div class="d">Non-GAAP excl. amortization · GAAP EPS $1.18</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~$41.73</div><div class="d">TTM · equity ใหญ่จาก M&amp;A goodwill</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v neu">~2.8% / ~1.9%</div><div class="d">GAAP ต่ำ เพราะฐาน equity สูงจาก acquisition</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$4.23B</div><div class="d">+8.5% YoY · CV ~74% / CS ~26%</div></div>
+      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">~66%</div><div class="d">TTM 65.6% · FY2025 65.5% · สม่ำเสมอ</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">—</div><div class="d">ไม่จ่ายปันผล · FCF ใช้ชำระหนี้+buyback</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">0.87</div><div class="d">ความผันผวนต่ำกว่าตลาด · defensive</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART (ราคาย้อนหลัง ~1 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#005DA8"></i>ราคา COO</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $85.00</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคา COO ใน 1 ปีที่ผ่านมาแกว่งตัว $61–$84 เริ่มต้นปลาย ก.ย. 2567 ที่ $70.69 ก่อนปรับขึ้นแรงช่วง ม.ค.–เม.ย. 2568 จากผลประกอบการ Q1–Q2 FY2026 ที่ดีกว่าคาด (Adj. EPS beat consensus ทุกไตรมาส) แตะจุดสูง $83.67 ในเดือน เม.ย. 68 ก่อนร่วงแรงช่วง พ.ค.–ก.ค. 68 หลังรายงาน Q2 FY2026 มีค่าใช้จ่ายพิเศษคดีความที่กด GAAP EPS ติดลบ ราคาสะดุดลงสู่ $61.21 ก่อนฟื้นตัวกลับสู่ระดับ $71.71 ผลตอบแทนรอบปีจึงแทบทรงตัว (+1.4%) ยังต่ำกว่า Fair Value $85 ประมาณ 16%
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION (3 วิธี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation (Non-GAAP Adj.)</div><div class="mdesc">EPS adj. $4.56 × P/E 20x — medtech recurring revenue peer P/E ที่เหมาะสม 18–22x เลือก 20x เพราะ #2 global contact lens market share + recurring demand model</div></div>
+        <div class="mval">$91.20</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. EV/EBITDA Valuation</div><div class="mdesc">EBITDA FY2025 $1,060M × 18x (peer medtech range 16–20x) = EV $19,080M − Net Debt $2,321M = Equity $16,759M ÷ 195M หุ้น</div></div>
+        <div class="mval">$85.94</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. DCF / EPS Growth (3 ปี)</div><div class="mdesc">EPS adj. $4.56 เติบโต 8%/ปี 3 ปี → EPS ปี 3 ~$5.74 × P/E ออก 18x = $103.3 คิด PV ที่ r=10% เป็น 3 ปี</div></div>
+        <div class="mval">$77.60</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $78.00 – $92.00</span></div>
+        <div class="r">$85.00</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        วิธี P/E ให้ค่าสูงสุด ($91.20) สะท้อนมูลค่าจาก earnings power ที่แท้จริงบน non-GAAP EPS วิธี EV/EBITDA ($85.94) สอดคล้องกับ peer medtech ค่ากลาง วิธี DCF ($77.60) ต่ำสุดเพราะรวม discount ระยะเวลา 3 ปี ค่ากลาง $85 ใกล้เคียง consensus นักวิเคราะห์ $80–$81 และสอดคล้องกับ EV/EBITDA หมายเหตุ: GAAP EPS ต่ำกว่า Non-GAAP มากเพราะค่าตัดจำหน่าย intangibles/goodwill จากการซื้อกิจการ การใช้ adj. EPS จึงเหมาะสมกว่าสำหรับ valuation บริษัทที่เติบโตผ่าน M&amp;A
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $71.71</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $85.00</div></div>
+        </div>
+        <div class="scale">
+          <span>$59.50<br><small>MOS 30%</small></span>
+          <span>$68.00<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$81.00<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">$85.00<br><small>Fair Value</small></span>
+          <span style="text-align:right">$92.00<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน $71.71 ต่ำกว่า Fair Value $85 ประมาณ 15.6% อยู่ระหว่าง MOS 20% ($68) และ Fair Value ซึ่งเป็นโซน "สะสมทยอย" เหมาะสำหรับนักลงทุน value ระยะยาว นักวิเคราะห์ 16 ราย (consensus Buy/Hold) ให้เป้าเฉลี่ย ~$81 ซึ่งยังมี upside ~13% จากระดับปัจจุบัน ต่ำกว่า Fair Value ของเราเล็กน้อย สะท้อนความระมัดระวังในระยะสั้นจากความไม่แน่นอนด้านคดีความ
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict ok">
+        <div class="big">+15.6%</div>
+        <div class="txt">MOS พอสมควร — ราคาต่ำกว่า FV ~16% · โซนสะสมทยอย</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$68.00</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$59.50</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $85.00</div><div class="d">ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="71.71" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $71.71 • EPS ฐาน ~$4.56 • ไม่มีปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS 0%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$63.84</div>
+          <div class="ret neg">−10.9%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$4.56</span></li>
+            <li><span>P/E ออก</span><span>14x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$0</span></li>
+            <li><span>สถานการณ์</span><span>แข่งขันกดราคา/คดีความหนัก</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +8%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$103.32</div>
+          <div class="ret pos">+44.1%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$5.74</span></li>
+            <li><span>P/E ออก</span><span>18x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$0</span></li>
+            <li><span>สถานการณ์</span><span>CV+CS เติบโตต่อเนื่อง + หนี้ลด</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +12%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$128.20</div>
+          <div class="ret pos">+78.8%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$6.41</span></li>
+            <li><span>P/E ออก</span><span>20x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$0</span></li>
+            <li><span>สถานการณ์</span><span>IVF boom + market share gain + FCF ramp</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      การประมาณการบน Adj. EPS TTM $4.56 ซึ่งสะท้อน earnings power ที่แท้จริงดีกว่า GAAP EPS ($1.18) ที่ถูกกดจากค่าตัดจำหน่าย intangibles/goodwill จากการซื้อกิจการ COO ไม่จ่ายปันผล แต่ใช้ FCF ($569M TTM, +31% YoY) ชำระหนี้อย่างต่อเนื่อง (net debt ลดจาก ~$4B ปี 2021 สู่ $2.3B ปัจจุบัน) ซึ่งช่วยเพิ่ม EPS ในระยะยาวผ่านการลดดอกเบี้ย ความเสี่ยงหลักในระยะสั้นคือคดีความและ FX headwind ส่วนระยะยาวเป็นเรื่องการแข่งขันจาก J&amp;J Vision และ Alcon ที่มีทรัพยากรใหญ่กว่า
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก &amp; ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>Recurring revenue model:</b> ผู้สวมคอนแทคเลนส์ต้องสั่งซื้อซ้ำทุก 1–3 เดือน ทำให้รายได้ CooperVision (~74%) มีความสม่ำเสมอและคาดการณ์ได้ต่างจากหุ้น medtech ทั่วไป</li>
+          <li><b>IVF / fertility megatrend:</b> CooperSurgical ได้ประโยชน์จากตลาด IVF โลกที่เติบโต 7–10%/ปี ความต้องการบุตรผ่านเทคโนโลยีช่วยการเจริญพันธุ์เพิ่มสูงขึ้นทั่วโลกโดยเฉพาะเอเชียและยุโรป</li>
+          <li><b>Premium silicone hydrogel lenses:</b> ตลาดเปลี่ยนจาก conventional สู่ premium daily silicone hydrogel ที่มาร์จิ้นสูง CooperVision มีส่วนแบ่งตลาดและเติบโตใน segment นี้ต่อเนื่อง</li>
+          <li><b>FCF improvement:</b> FCF TTM $569M (+31% YoY) ช่วยลด net debt จาก $4.0B (FY2021) สู่ $2.3B ปัจจุบัน เปิดทางสำหรับ M&amp;A เพิ่มหรือ buyback ในอนาคต</li>
+          <li><b>Gross margin expansion:</b> Gross margin Q2 FY2026 ปรับขึ้น 68% สะท้อน product mix shift สู่ premium lens + economies of scale ที่ดีขึ้น</li>
+          <li><b>Valuation re-rating:</b> adj. P/E ปัจจุบัน ~15.7x ต่ำกว่า historical average 20–25x และต่ำกว่า peer medtech เช่น Alcon (~25x) หาก sentiment ฟื้น re-rating เพียงสู่ 18x ก็ให้ราคา $82+</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>คดีความและค่าใช้จ่ายพิเศษ:</b> Q2 FY2026 มีค่าใช้จ่ายพิเศษจากคดีความที่กด GAAP EPS ติดลบ ทำให้ราคาหุ้นร่วงแรง ความเสี่ยงด้าน litigation ยังเป็นปัจจัยกดดันใน medical device industry</li>
+          <li><b>การแข่งขันสูง:</b> ตลาด contact lens ถูกครองโดย J&amp;J Vision (#1) และ Alcon (#3) ที่มีทรัพยากร R&amp;D ใหญ่กว่า การแข่งขันด้านนวัตกรรมและราคาในตลาด daily lens สูงต่อเนื่อง</li>
+          <li><b>Goodwill / M&amp;A risk:</b> Goodwill $3.9B (31% ของสินทรัพย์) หากธุรกิจที่ซื้อมา (เช่น PARAGARD) ไม่เป็นไปตามคาด อาจต้องตั้ง impairment charge กด GAAP EPS และ sentiment</li>
+          <li><b>FX exposure:</b> รายได้ต่างประเทศสูง USD ที่แข็งค่ากดรายได้และกำไรที่รายงาน ความผันผวน FX เป็น headwind ที่ควบคุมไม่ได้</li>
+          <li><b>Debt load:</b> Net debt $2.3B แม้ลดลงต่อเนื่อง แต่ยังกดความยืดหยุ่นทางการเงินและเพิ่ม interest expense ในสภาวะดอกเบี้ยสูง</li>
+          <li><b>ต้นทุนวัตถุดิบ / supply chain:</b> การผลิต contact lens ต้องอาศัย specialty polymers ความผันผวนต้นทุนวัตถุดิบและ logistics อาจกดมาร์จิ้น gross ที่ปัจจุบัน ~66%</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>น่าสะสมระยะยาว — Recurring Revenue + IVF Growth ที่ Adj. P/E ต่ำกว่า Historical</h2>
+      <p>COO เป็นหุ้น medical device ที่มีพื้นฐานแข็งแกร่งและ moat ชัดเจน: CooperVision เป็น #2 ตลาดโลก contact lens ด้วยรายได้ recurring สูง และ CooperSurgical ที่เติบโตกับตลาด IVF/fertility แบบ secular trend ราคาปัจจุบัน $71.71 ซื้อขายที่ adj. P/E ~15.7x ต่ำกว่า historical average ~20–25x สะท้อน MOS ~15.6% จาก Fair Value $85 ยังไม่ถึงระดับ deep value ($68 = MOS 20%) แต่เป็นโซนที่น่าสะสมทยอย FCF แข็งแกร่งขึ้นต่อเนื่อง ($569M TTM, +31% YoY) และหนี้ลดลงชัดเจน นักวิเคราะห์ 16 ราย consensus Buy/Hold เป้า ~$81</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$85.00 <span style="font-size:12px;color:#cab9a8">($78–$92)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +15.6%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$81.00 (Buy/Hold)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ทยอยสะสมที่ $68–$72 (MOS 15–20%) · เพิ่มน้ำหนักถ้าราคาหลุด $65 (MOS 24%) · รอ re-rating สู่ adj. P/E 18–20x · ระยะยาว 3–5 ปีรับ upside จาก IVF growth + FCF improvement
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ Adj. EPS ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ
+    ที่มา: Yahoo Finance (yahoo.com/quote/COO), StockAnalysis.com (stockanalysis.com/stocks/coo), MarketBeat (marketbeat.com/stocks/NASDAQ/COO), Cooper Companies IR (coopercos.com/investors) ราคา ณ 1 ก.ค. 2569
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 1 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
