@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น GATX Corporation (GATX) — Stock Analysis Dashboard</title>
+<!-- ★ โมเดล AI ที่ใช้วิเคราะห์จริง — gate E28 บังคับ -->
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — gate E29–31 -->
+<script type="application/json" id="stock-meta">
+{"symbol":"GATX","currency":"USD","price":177.13,"fairValue":181,"mos":2.1,"upside":2.2,"pe":19.0,"dividendYield":1.49,"roe":12.56}
+</script>
+<!--
+  report-data: ธีมสี railroad dark red/maroon (GATX heritage) + ข้อมูลกราฟ/gauge
+  chart.data = ราคารายเดือน ก.ค. 2568 – ก.ค. 2569 (13 จุด E37)
+  annual return = (176.90 - 152.69) / 152.69 = +15.9%  badge ▲ +15.9% (รอบปี)
+  chgBg/chgColor = เขียว (ขึ้น E34)
+  gauge 5 ค่า ascending: 126.70 < 144.80 < 181.00 < 218.00 < 220.00
+-->
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#8B1A1A",
+    "accentDark": "#5A0F0F",
+    "darkGrad": "linear-gradient(135deg,#1a0505 0%,#2d0a0a 60%,#1a0505 100%)",
+    "glow": "rgba(139,26,26,0.35)",
+    "subColor": "#f5c5c5",
+    "headerMuted": "rgba(245,197,197,0.55)",
+    "verdictText": "#fff0f0",
+    "vcellLabel": "rgba(245,197,197,0.7)",
+    "badge": "#8B1A1A",
+    "chgBg": "#1e8e3e",
+    "chgColor": "#ffffff"
+  },
+  "chart": {
+    "data": [
+      ["ก.ค. 68", 152.69],
+      ["ส.ค. 68", 168.31],
+      ["ก.ย. 68", 174.80],
+      ["ต.ค. 68", 156.85],
+      ["พ.ย. 68", 159.93],
+      ["ธ.ค. 68", 169.60],
+      ["ม.ค. 69", 181.91],
+      ["ก.พ. 69", 184.17],
+      ["มี.ค. 69", 170.74],
+      ["เม.ย. 69", 195.92],
+      ["พ.ค. 69", 169.08],
+      ["มิ.ย. 69", 177.19],
+      ["ก.ค. 69", 176.90]
+    ],
+    "min": 140,
+    "max": 210,
+    "grid": [140, 155, 170, 185, 200, 210],
+    "fairLine": 181,
+    "currency": "$",
+    "highlight": [9]
+  },
+  "gauge": {
+    "min": 120,
+    "max": 230,
+    "cur": 177.13,
+    "fair": 181
+  },
+  "fv": 181
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">NYSE · GATX</div>
+    <div>
+      <span class="tag">NYSE: GATX</span>
+      <span class="tag">Industrials</span>
+      <span class="tag">Railcar Leasing</span>
+    </div>
+    <h1>GATX Corporation</h1>
+    <div class="sub">North America's #1 railcar lessor · 130,000+ fleet (tank/hopper/gondola/box) · Long-term lease contracts · Europe via AAE JV · 50+ yr Dividend Aristocrat · Chicago IL</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$177.13<small>(GATX)</small></div>
+      </div>
+      <div class="chg">▲ +15.9% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 1 กรกฎาคม 2569<br>
+        กรอบ 52 สัปดาห์ $148.20 – $205.56<br>
+        ที่มา: StockAnalysis.com, Finviz.com, Yahoo Finance
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล TTM ณ Q1 2026 · ยืนยัน ≥2 แหล่ง</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">$6.29B</div><div class="d">หุ้น ~35.5M ใบ</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~19.0x</div><div class="d">EPS $9.32 · ต่ำกว่า 5 ปีก่อน (21-23x)</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~21x</div><div class="d">ช่วง 18–24x ขึ้นกับวัฏจักร</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">2.26x</div><div class="d">BVPS $78.00 · asset-heavy lessor</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">$216.0M</div><div class="d">+7.2% YoY (FY2024: $201.4M)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$9.32</div><div class="d">Q1'26+Q4'25+Q3'25+Q2'25 ยืนยัน 2 แหล่ง</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~$78.00</div><div class="d">ทรัพย์สินกองเรือรถไฟ</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~12.6% / 2.2%</div><div class="d">ROE สม่ำเสมอ สะท้อน leverage สูง</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$1,903M</div><div class="d">FY2025: $1,740M (+9.7% YoY)</div></div>
+      <div class="metric"><div class="k">Fleet Utilization</div><div class="v pos">&gt;99%</div><div class="d">North America utilization ระดับสูงสุด</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~1.49%</div><div class="d">$2.64/ปี · เพิ่มติดต่อกัน 50+ ปี</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">1.19</div><div class="d">ผันผวนพอๆ กับตลาด</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ก.ค. 2568 – ก.ค. 2569</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#8B1A1A"></i>ราคา GATX</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $181</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ (เม.ย. 69 สูงสุด)</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคา GATX ปรับตัวจาก $152.69 (ก.ค. 2568) ขึ้นมา +15.9% มาอยู่ที่ $176.90 ณ ปัจจุบัน
+        จุดสูงสุดรอบปีอยู่ที่ $195.92 (เม.ย. 2569) ก่อนปรับลงมาในช่วง พ.ค.–มิ.ย. 2569
+        ราคาซื้อขายใกล้เคียงกับมูลค่าเหมาะสม $181 สะท้อนว่าตลาดมอง Fairly Valued
+        แรงหนุนมาจากการขึ้นค่าเช่ารถไฟ (renewal lease rates) ที่ทำสถิติสูงสุดและ utilization เกิน 99%
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS adj. $9.32 × P/E เป้าหมาย ~20x — ค่า P/E เฉลี่ย 5 ปี ~21x; ใช้ 20x เพราะ EPS เติบโตเร็ว ถ่วงด้วยความเสี่ยงดอกเบี้ยสูง</div></div>
+        <div class="mval">$186.40</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล $2.64 × 1.07 = $2.83; g = 7%, r = 9% → $2.83 / (9%−7%) — DDM ให้ค่าต่ำเพราะ payout ratio ต่ำ (28%) GATX เน้นลงทุนขยายกองเรือ</div></div>
+        <div class="mval">$141.24</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 12.56% − g 7%) / (r 9% − g 7%) ≈ 2.78 × BVPS $78.00 — เหมาะกับบริษัท asset-heavy ที่ราคาขึ้นอยู่กับ ROE vs cost of capital</div></div>
+        <div class="mval">$216.84</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $141 – $220</span></div>
+        <div class="r">$181</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        วิธี Justified P/BV ให้ค่าสูงสุด ($216.84) สะท้อน ROE ที่แข็งแกร่งเทียบ cost of capital
+        ส่วน DDM ให้ค่าต่ำสุด ($141.24) เพราะ GATX จ่ายปันผลน้อย (payout ~28%) เน้นลงทุนขยายกองเรือ
+        FV เฉลี่ย $181 สอดคล้องกับราคาตลาด $177.13 บ่งชี้ว่าหุ้น Fairly Valued
+        แหล่งอ้างอิง: StockAnalysis.com, Finviz.com (ราคา/EPS/ROE) · Yahoo Finance API (กราฟ)
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $177.13</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $181</div></div>
+        </div>
+        <div class="scale">
+          <span>$126.70<br><small>MOS 30%</small></span>
+          <span>$144.80<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$181.00<br><small>Fair Value</small></span>
+          <span style="text-align:right">$218.00<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">$220.00<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคา $177.13 อยู่ใต้ Fair Value $181 เล็กน้อย (MOS เพียง 2.1%) บ่งชี้ว่าหุ้นซื้อขาย Fairly Valued
+        นักวิเคราะห์ 4 ราย (Strong Buy ทั้งหมด) มีเป้าเฉลี่ย $218 (+23% upside)
+        โซนสะสมน่าสนใจ: ต่ำกว่า $181 (FV) / โซน Deep Value: ต่ำกว่า $144.80 (MOS 20%)
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">+2.1%</div>
+        <div class="txt">หุ้นซื้อขายใกล้ Fair Value — ยังไม่มี Margin of Safety เพียงพอ รอโซนต่ำกว่า $145</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$144.80</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$126.70</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $181</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="177.13" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $177.13 • EPS ฐาน ~$9.32 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS +3%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$171.00</div>
+          <div class="ret neg">−3.5%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$10.18</span></li>
+            <li><span>P/E ออก</span><span>16x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$8.08</span></li>
+            <li><span>สถานการณ์</span><span>ดอกเบี้ยสูงนาน + recession</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +8%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$231.50</div>
+          <div class="ret pos">+30.7%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$11.74</span></li>
+            <li><span>P/E ออก</span><span>19x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$8.40</span></li>
+            <li><span>สถานการณ์</span><span>เช่าต่อราคาสูง + ขยายกองเรือ</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +12%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$283.60</div>
+          <div class="ret pos">+60.1%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$13.09</span></li>
+            <li><span>P/E ออก</span><span>21x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$8.71</span></li>
+            <li><span>สถานการณ์</span><span>AAE JV เติบโต + rerating สูงขึ้น</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      สมมติฐาน: EPS ฐาน $9.32 (TTM) · ปันผลเพิ่ม ~4%/ปี (เทรนด์ประวัติศาสตร์)
+      Base scenario อิง EPS growth 8% สอดคล้อง consensus FY2026E $10.04 (+7.7% YoY)
+      นักวิเคราะห์ประเมิน FY2026E EPS $10.04 และ FY2027E $11.17 (กลาง Bear–Base)
+      หมายเหตุ: ผลตอบแทน = (EPS ปี 3 × P/E ออก + ปันผลรวม − ราคาซื้อ) / ราคาซื้อ
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก &amp; ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>Fleet Utilization สูงระดับสถิติ:</b> North America utilization เกิน 99% แทบตลอดปี 2025–2026 ทำให้ bargaining power สูง และ renewal lease rate เพิ่มขึ้นต่อเนื่อง</li>
+          <li><b>Pricing Power แข็งแกร่ง:</b> สัญญาเช่าระยะ 3–5 ปีทยอย renew ในอัตราสูงกว่าสัญญาเดิม สะท้อนใน EPS CAGR 28% ช่วง FY2022–2025</li>
+          <li><b>Dividend Aristocrat 50+ ปี:</b> เพิ่มปันผลติดต่อกันมากกว่า 50 ปี สร้างความมั่นใจให้ผู้ถือหุ้นระยะยาว ปันผลอยู่ที่ $2.64/ปี</li>
+          <li><b>AAE JV ขยายตลาดยุโรป:</b> เพิ่ม diversification ลดความเสี่ยงจากตลาดเดียว และเปิดโอกาสจากการ decarbonize transportation ในยุโรป</li>
+          <li><b>กองเรือเป็น Essential Asset:</b> ถังรถไฟสำหรับสารเคมี พลังงาน อาหาร วัตถุดิบ ไม่มีทดแทนในระยะสั้น ต้านทานวัฏจักรได้ดี</li>
+          <li><b>Forward P/E เพียง 15.86x:</b> อิง FY2026E EPS $10.04 บ่งชี้ว่าราคาปัจจุบันยังสมเหตุสมผลเทียบการเติบโต</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>Leverage สูง:</b> หนี้สิน $12.6B เทียบ equity $3.7B (D/E ~3.4x) ทำให้ sensitive ต่อดอกเบี้ยสูง ต้นทุนการเงินเพิ่มขึ้นกดดัน margin</li>
+          <li><b>ความเสี่ยงวัฏจักรเศรษฐกิจ:</b> แม้รถไฟจะ low-cyclicality แต่ recession รุนแรงอาจทำให้ลูกค้าคืนรถก่อนครบสัญญา</li>
+          <li><b>ดอกเบี้ยสูงกดมูลค่า DDM:</b> DCF-based valuation ไม่เอื้อในสภาพแวดล้อมอัตราดอกเบี้ยสูง ราคาหุ้นอาจถูกกดทั้งที่พื้นฐานดี</li>
+          <li><b>Concentration ในอุตสาหกรรมเฉพาะ:</b> พึ่งพาความต้องการสารเคมี พลังงาน agriculture; shock ในเซกเตอร์ใดกระทบตรง</li>
+          <li><b>การแข่งขันจาก TTXCO / TrinityRail:</b> ตลาดรถไฟเช่ามีผู้เล่นรายใหญ่ไม่กี่ราย price competition อาจเพิ่มขึ้นหาก utilization ลดลง</li>
+          <li><b>Valuation ใกล้ Fair Value:</b> MOS เพียง 2.1% ไม่มี buffer เพียงพอ ราคาต้องลดลง ~20% เพื่อให้ได้ MOS 20% ($144.80)</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>Fairly Valued — ธุรกิจเยี่ยม รอจังหวะราคาลง</h2>
+      <p>GATX เป็นบริษัทคุณภาพสูง ผู้ให้เช่ารถไฟอันดับ 1 ในอเมริกาเหนือ กองเรือ 130,000+ คัน utilization เกิน 99% pricing power แข็งแกร่ง EPS เติบโต CAGR 28% ช่วง 3 ปี และเพิ่มปันผลมากกว่า 50 ปีติดต่อกัน
+      อย่างไรก็ตาม ราคาปัจจุบัน $177.13 ซื้อขายใกล้ Fair Value $181 (MOS เพียง 2.1%) แทบไม่มี margin of safety
+      นักวิเคราะห์ 4 รายให้ Strong Buy เป้าเฉลี่ย $218 (+23%) แต่ด้วย leverage สูง (D/E ~3.4x) และดอกเบี้ยสูง กลยุทธ์ที่ดีที่สุดคือรอสะสมใกล้โซน $144–$165 (MOS 20–30%)</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$181 <span style="font-size:12px;color:#cab9a8">($141–$220)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +2.1%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$218 (Strong Buy)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ถือหุ้นที่มีอยู่ได้ / รอซื้อในโซน $144–$165 (MOS 20–30%) เพื่อ upside 10–25% · ปันผล $2.64/ปี เพิ่มขึ้นทุกปี ตอบโจทย์ passive income · รอ Q2 2026 earnings ยืนยัน momentum
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • แหล่งข้อมูล: StockAnalysis.com, Finviz.com, Yahoo Finance API (ราคา/EPS ยืนยัน ≥2 แหล่ง · ณ 1 กรกฎาคม 2569)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 1 กรกฎาคม 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
