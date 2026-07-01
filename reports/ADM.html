@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น Archer-Daniels-Midland (ADM) — Stock Analysis Dashboard</title>
+<!-- ★ ใส่รุ่นโมเดล AI ที่ใช้วิเคราะห์จริง -->
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
+<script type="application/json" id="stock-meta">
+{"symbol":"ADM","currency":"USD","price":76.40,"fairValue":54.00,"mos":-41.5,"upside":-29.3,"pe":17.0,"dividendYield":2.72,"roe":4.77}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#D4A017",
+    "accentDark": "#A07810",
+    "darkGrad": "linear-gradient(135deg,#1a1200 0%,#2a1e00 60%,#1a1200 100%)",
+    "glow": "rgba(212,160,23,0.25)",
+    "subColor": "#e8c96a",
+    "headerMuted": "rgba(212,160,23,0.55)",
+    "verdictText": "#fff8e8",
+    "vcellLabel": "rgba(255,248,232,0.65)",
+    "badge": "#D4A017",
+    "chgBg": "#1e8e3e",
+    "chgColor": "#ffffff"
+  },
+  "chart": {
+    "data": [
+      ["ก.ค. 68", 52.53],
+      ["ส.ค. 68", 61.25],
+      ["ก.ย. 68", 58.41],
+      ["ต.ค. 68", 59.18],
+      ["พ.ย. 68", 59.89],
+      ["ธ.ค. 68", 56.69],
+      ["ม.ค. 69", 66.37],
+      ["ก.พ. 69", 68.59],
+      ["มี.ค. 69", 72.21],
+      ["เม.ย. 69", 74.05],
+      ["พ.ค. 69", 79.78],
+      ["มิ.ย. 69", 76.87],
+      ["ก.ค. 69", 76.40]
+    ],
+    "min": 45,
+    "max": 92,
+    "grid": [50, 60, 70, 80, 90],
+    "fairLine": 54.00,
+    "currency": "$",
+    "highlight": [1, 10],
+    "gridFmt": "v.toFixed(0)",
+    "dataFmt": "d[1].toFixed(2)"
+  },
+  "gauge": {
+    "min": 35,
+    "max": 95,
+    "cur": 76.40,
+    "fair": 54.00,
+    "fairLabelTop": false
+  },
+  "fv": 54.00
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">★ ★ ★</div>
+    <div>
+      <span class="tag">NYSE: ADM</span>
+      <span class="tag">Agricultural Processing</span>
+      <span class="tag">Dividend King</span>
+    </div>
+    <h1>Archer-Daniels-Midland</h1>
+    <div class="sub">แปรรูปธัญพืชและน้ำมันพืชระดับโลก • Ag Services &amp; Oilseeds (สกัดถั่วเหลือง/คาโนลา) • Carbohydrate Solutions (เอทานอล/ข้าวโพดเปียก) • Nutrition (โปรตีน/แต่งกลิ่น/สุขภาพ) • เครือข่ายท่าเรือ/ไซโลทั่วโลก</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$76.40<small>(ADM)</small></div>
+      </div>
+      <div class="chg">▲ +45.5% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 30 มิถุนายน 2569<br>
+        กรอบ 52 สัปดาห์ $52.23 – $85.37<br>
+        ที่มา: Yahoo Finance, StockAnalysis.com, MarketBeat
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ มิถุนายน 2569 — ตัวเลข restated หลังปรับปรุงบัญชี Nutrition segment</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~$36.8 B</div><div class="d">~484 ล้านหุ้น (diluted)</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neg">34.4x</div><div class="d">EPS TTM $2.23 — ปีกำไรต่ำผิดปกติ</div></div>
+      <div class="metric"><div class="k">P/E (Forward FY2026E)</div><div class="v neu">~17x</div><div class="d">Adj. EPS guidance $4.15–$4.70</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">1.62x</div><div class="d">BVPS ~$47.31</div></div>
+
+      <div class="metric"><div class="k">EPS TTM (restated)</div><div class="v neg">~$2.23</div><div class="d">ต่ำสุดรอบทศวรรษ อยู่ในโซนฟื้นตัว</div></div>
+      <div class="metric"><div class="k">EPS Adj. FY2026E</div><div class="v pos">~$4.43</div><div class="d">Guidance midpoint; Q1 26 adj. $0.71</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~$47.31</div><div class="d">Equity $23.1 B / 484 M หุ้น</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v neu">4.77% / 1.67%</div><div class="d">ลดลงจาก ~12% ในปี 2565–66</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">~$80.6 B</div><div class="d">ลดจากจุดสูงสุด $101.6 B (FY2565)</div></div>
+      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v neu">6.3%</div><div class="d">margin บางตามลักษณะ commodity</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v pos">~2.72%</div><div class="d">$2.05/หุ้น — 53 ปีต่อเนื่อง (Dividend King)</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v pos">0.60</div><div class="d">ความผันผวนต่ำกว่าตลาดมาก</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ราคาปิดรายเดือน Yahoo Finance</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#D4A017"></i>ราคา ADM</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $54.00</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ADM ฟื้นตัวแรงในรอบปี จากจุดต่ำสุด ~$52.23 (ก.ค. 2568) ขึ้นมาที่ $76.40 (มิ.ย. 2569) ผลตอบแทนรอบปี +45.5% หลัง SEC ปรับ $40 ล้าน (ม.ค. 2569) และ DOJ ยุติคดีอาญา ทำให้ความไม่แน่นอนด้านกฎหมายลดลงอย่างมีนัยสำคัญ ราคาวิ่งขึ้นแรงช่วง ม.ค.–พ.ค. 2569 หลัง Q1 2569 adj. EPS $0.71 เกิน consensus และบริษัทปรับ guidance สูงขึ้นเป็น $4.15–$4.70 ราคาปัจจุบันอยู่เหนือ Fair Value $54 ชัดเจน
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">3 วิธี — ใช้ Normalized Mid-Cycle EPS + ส่วนลดความเสี่ยงกฎหมาย</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation (Normalized Mid-Cycle)</div><div class="mdesc">EPS adj. $4.50 × P/E 14x (norm. mid-cycle) — EPS ปกติกลางวัฏจักร ~$4.50 อิง guidance 2569 midpoint $4.43 + 2570E ~$4.99; ไม่ใช้ EPS TTM $2.23 ซึ่งเป็นปีต่ำผิดปกติ; P/E 14x (หักส่วนลด 1x จากปกติ 15x เพื่อสะท้อนความเสี่ยง governance + investor lawsuit)</div></div>
+        <div class="mval">$63.00</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. EV/EBITDA Valuation</div><div class="mdesc">Forward EBITDA ~$3.80 B × EV/EBITDA เป้า 10x (ค่าเฉลี่ยประวัติศาสตร์ ag processor; ปัจจุบัน ~18x = แพง) EV $38.0 B − Net Debt $10.7 B = Equity $27.3 B ÷ 484 M หุ้น</div></div>
+        <div class="mval">$56.40</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. DDM / Gordon Growth</div><div class="mdesc">D₁ = $2.10 (ปันผล TTM $2.05 × 1+g 2.5%); r 8%, g 3% → $2.10 / (8%−3%) — g 3% อนุรักษนิยม (10-yr CAGR จริง ~6.9% แต่ payout สูงช่วงนี้ จึงเติบโตช้า)</div></div>
+        <div class="mval">$42.00</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $42.00 – $63.00</span></div>
+        <div class="r">$54.00</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        วิธี P/E ให้ค่าสูงสุด ($63) สะท้อนการฟื้นตัวของกำไร FY2569 วิธี EV/EBITDA ให้ค่ากลาง ($56.40) อิง multiple ประวัติศาสตร์ ส่วน DDM ให้ค่าต่ำสุด ($42) เพราะ ADM เป็น commodity processor margin บาง ปันผลปัจจุบันเทียบกับ required return 8% ไม่สูงพอ ค่าเฉลี่ย 3 วิธี = $54 สะท้อนความไม่แน่นอนจาก investor lawsuit ที่ยังค้าง + governance ที่ต้องพิสูจน์ — ราคาปัจจุบัน $76.40 อยู่เหนือ FV ทุกวิธีประเมิน ที่มา: Yahoo Finance (ราคา), StockAnalysis.com (EPS/BS), MarketBeat (guidance), SEC.gov (fine)
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $76.40</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $54.00</div></div>
+        </div>
+        <div class="scale">
+          <span>$37.80<br><small>MOS 30%</small></span>
+          <span>$43.20<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$54.00<br><small>Fair Value</small></span>
+          <span style="text-align:right">$63.00<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">$74.60<br><small>เป้าเฉลี่ย Analyst</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคา $76.40 อยู่เหนือ Fair Value $54 ประมาณ 41% — หุ้นซื้อขายในโซน Premium สะท้อน "recovery trade" ที่นักลงทุนคาดหวังสูงว่า EPS จะฟื้นสู่ระดับ $4.50+ ต่อปี เป้าเฉลี่ย Analyst $74.60 ใกล้เคียงราคาปัจจุบัน (consensus Hold 11 นักวิเคราะห์) โซน MOS 20% อยู่ที่ $43.20 และ MOS 30% อยู่ที่ $37.80 ห่างจากราคาปัจจุบันมาก ต้องรอการย่อตัวหรือกำไรฟื้นเกินคาดจึงจะมี MOS จริง
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">−41.5%</div>
+        <div class="txt">ราคาปัจจุบัน $76.40 สูงกว่า Fair Value $54.00 อยู่ 41.5% — ไม่มี Margin of Safety ณ ราคานี้</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$43.20</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$37.80</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มพิจารณา</div><div class="v neu">&lt; $54.00</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="76.40" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $76.40 • EPS ฐาน ~$4.50 (norm. mid-cycle) • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS −5%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$38.80</div>
+          <div class="ret neg">−39.8%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$3.86</span></li>
+            <li><span>P/E ออก</span><span>10x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$6.30</span></li>
+            <li><span>สถานการณ์</span><span>commodity ซบเซา+lawsuit รุนแรง</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +5%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$72.53</div>
+          <div class="ret neg">−5.1%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$5.21</span></li>
+            <li><span>P/E ออก</span><span>14x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$6.45</span></li>
+            <li><span>สถานการณ์</span><span>Nutrition ฟื้น+margin ดีขึ้นทีละน้อย</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +10%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$99.40</div>
+          <div class="ret pos">+30.1%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$5.99</span></li>
+            <li><span>P/E ออก</span><span>16.6x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$6.60</span></li>
+            <li><span>สถานการณ์</span><span>biofuel policy + Nutrition turnaround เต็มที่</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      หมายเหตุ: EPS Bear = $4.50 × (0.95)³ ≈ $3.86; Base = $4.50 × (1.05)³ ≈ $5.21; Bull = $4.50 × (1.10)³ ≈ $5.99 — ราคาเป้า = EPS × P/E ออก + ปันผลรวม 3 ปี จากราคา $76.40 แม้ใน Base Case ผลตอบแทน 3 ปีติดลบเล็กน้อย (−5.1% รวมปันผล) สะท้อนว่าตลาด Discount กำไรอนาคตไปมากแล้วที่ราคานี้ ต้องเป็น Bull Scenario ถึงจะได้ผลตอบแทน +30%
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>การยุติคดีหลักเสร็จสิ้น:</b> DOJ ยุติคดีอาญา (ม.ค. 2569) + SEC ปรับ $40 M โดยไม่รับผิด ความไม่แน่นอนด้านกฎหมายลดลงมาก เปิดทางให้ราคาหุ้น re-rate ต่อ</li>
+          <li><b>กำไรฟื้นตัวแรง FY2569:</b> Guidance adj. EPS $4.15–$4.70 (เพิ่มขึ้น ~99% YoY จาก $2.23) Q1 26 adj. EPS $0.71 เกิน consensus $0.66 — Carbohydrate Solutions กำไรสูงขึ้นจาก ethanol margin ที่ดีขึ้น</li>
+          <li><b>Nutrition Turnaround:</b> Nutrition segment ที่เคยเป็นต้นเหตุ scandal กำลังฟื้นตัว ผู้บริหารใหม่ restructure ธุรกิจ margin เริ่มปรับตัวดีขึ้น</li>
+          <li><b>นโยบาย Biofuel ชัดเจน:</b> US biofuel policy (RFS, SAF) ที่ชัดเจนขึ้นหนุน demand ethanol + sustainable aviation fuel — ADM เป็นผู้ผลิต corn ethanol รายใหญ่</li>
+          <li><b>Dividend King 53 ปี:</b> ปันผลเพิ่มต่อเนื่อง 53 ปี yield 2.72% — Income investors สนับสนุนราคา เป็น แรงดึงดูดสำคัญในตลาดที่อัตราดอกเบี้ยลดลง</li>
+          <li><b>Oligopoly Moat:</b> เครือข่ายท่าเรือ ไซโล logistics ทั่วโลก ที่สร้างใหม่ยากมาก ผู้เล่นหลักในตลาดแค่ 4 ราย (ABCD: ADM, Bunge, Cargill, Louis Dreyfus)</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>Investor Lawsuit ยังค้าง:</b> คดี class action ผู้ถือหุ้นยังไม่ยุติ CFO Luthar ปฏิเสธข้อกล่าวหาและจะสู้คดี อาจมีค่าใช้จ่ายและความเสียหายต่อชื่อเสียง</li>
+          <li><b>Governance ต้องพิสูจน์:</b> CEO และ CFO เดิมออกไปแล้ว ผู้บริหารชุดใหม่ต้องพิสูจน์ความน่าเชื่อถือ consensus analyst เป็น "Hold" ไม่ใช่ "Buy"</li>
+          <li><b>Commodity Spread ผันผวน:</b> กำไร ADM ขึ้นตรงกับ soybean/corn crush spread — ถ้า commodity ราคาตก หรือ processing margin แคบลง EPS จะต่ำกว่าคาดได้มาก</li>
+          <li><b>Payout Ratio สูง:</b> ปันผล $2.05/หุ้น vs EPS TTM $2.23 = payout ~92% หาก EPS ไม่ฟื้นตาม guidance มีความกดดันต่อปันผล แม้ ADM จะพยายามรักษา streak</li>
+          <li><b>Bunge-Viterra ควบรวม:</b> คู่แข่ง Bunge ควบรวมกับ Viterra (2568) ทำให้แข็งแกร่งขึ้น อาจแข่งขันใน Ag Services รุนแรงขึ้น โดยเฉพาะ South America origination</li>
+          <li><b>Valuation Premium ยังสูง:</b> ราคา $76.40 เหนือ FV ทุกวิธี; Forward P/E ~17x สูงกว่าค่าเฉลี่ย ag processor ทั่วไป; ถ้า EPS ต่ำกว่า guidance การ de-rate จะแรง</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>ADM: Turnaround Story ที่ราคาวิ่งนำกำไรไปแล้ว — รอโอกาส</h2>
+      <p>Archer-Daniels-Midland ผ่านพ้นวิกฤติ Nutrition accounting scandal — SEC ปรับ $40 M (ม.ค. 2569) DOJ ยุติอาญา และกำไรกำลังฟื้นตัวชัดเจน Adj. EPS guidance FY2569 ที่ $4.15–$4.70 เป็นสัญญาณบวก อย่างไรก็ดี ราคา $76.40 วิ่งขึ้น +45.5% ในรอบปีจนเกิน Fair Value $54 ทุกวิธีประเมิน (MOS = −41.5%) นักลงทุน value ควรรอ consolidation หรือ guidance miss ก่อน Investor lawsuit ยังค้างและ governance ต้องพิสูจน์ต่อ สำหรับ Income investor ปันผล 53 ปีต่อเนื่อง yield 2.72% ยังคงน่าสนใจ</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$54.00 <span style="font-size:12px;color:#cab9a8">($42–$63)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −41.5% (ราคาแพงกว่า FV)</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$74.60 (Hold — 11 นักวิเคราะห์)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ราคาปัจจุบัน $76.40 อยู่เหนือ Fair Value และเกินเป้า Analyst consensus — ไม่เหมาะสำหรับสะสมใหม่ที่ราคานี้ โซนน่าสนใจสำหรับ value investor คือ ต่ำกว่า $54 (พอดี FV) ถึง $43 (MOS 20%) รอ Q2–Q3 2569 ยืนยันกำไรตาม guidance + investor lawsuit ยุติก่อนพิจารณาสะสม หาก EPS FY2569 ออกมาที่ $4.70 ขึ้นไป FV ใหม่จาก P/E วิธีอาจขยับสูงขึ้นใกล้ราคาตลาดได้
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ Normalized EPS ($4.50) ซึ่งยังไม่มีผลจริงครบปี, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต ADM มีประวัติการตกแต่งบัญชีและอยู่ในกระบวนการฟื้นฟู Governance — ความเสี่ยงเฉพาะตัวสูงกว่า ag processor ทั่วไป ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ที่มา: Yahoo Finance (ราคา/chart จริง), StockAnalysis.com (financials/EPS restated — ยืนยัน 2 แหล่ง ราคา $76.40 ต่าง &lt;1%), InvestigateMidwest.org + SEC.gov (restatement/fine $40M), MarketBeat (guidance FY2026), digrin.com + SimplyWallSt (dividend streak 53 ปี)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 30 มิถุนายน 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
