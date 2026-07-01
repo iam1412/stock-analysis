@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น Teleflex (TFX) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"TFX","currency":"USD","price":127.49,"fairValue":134,"mos":4.9,"upside":5.1,"pe":22.4,"dividendYield":1.07,"roe":null}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#B31B2A",
+    "accentDark": "#7A1018",
+    "darkGrad": "linear-gradient(135deg,#1a0406 0%,#2d0810 50%,#1a0406 100%)",
+    "glow": "rgba(179,27,42,0.35)",
+    "subColor": "#e8b4b8",
+    "headerMuted": "rgba(232,180,184,0.6)",
+    "verdictText": "#f5c6cb",
+    "vcellLabel": "rgba(232,180,184,0.7)",
+    "badge": "#B31B2A",
+    "chgBg": "rgba(30,142,62,0.18)",
+    "chgColor": "#1e8e3e"
+  },
+  "chart": {
+    "data": [
+      ["ก.ค. 68", 119.50],
+      ["ส.ค. 68", 126.41],
+      ["ก.ย. 68", 122.36],
+      ["ต.ค. 68", 124.47],
+      ["พ.ย. 68", 114.42],
+      ["ธ.ค. 68", 122.04],
+      ["ม.ค. 69", 104.37],
+      ["ก.พ. 69", 122.06],
+      ["มี.ค. 69", 119.61],
+      ["เม.ย. 69", 123.91],
+      ["พ.ค. 69", 128.64],
+      ["มิ.ย. 69", 126.76],
+      ["ปัจ.", 127.49]
+    ],
+    "min": 95,
+    "max": 155,
+    "grid": [100, 110, 120, 130, 140, 150],
+    "fairLine": 134,
+    "currency": "$",
+    "highlight": [6, 11],
+    "gridFmt": "v.toFixed(0)",
+    "dataFmt": "d[1].toFixed(2)"
+  },
+  "gauge": {
+    "min": 85,
+    "max": 170,
+    "cur": 127.49,
+    "fair": 134
+  },
+  "fv": 134
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">&#9679;&#9679;&#9679;</div>
+    <div>
+      <span class="tag">NYSE: TFX</span>
+      <span class="tag">Medical Devices</span>
+      <span class="tag">Vascular Access · Anesthesia · Interventional</span>
+    </div>
+    <h1>Teleflex Incorporated</h1>
+    <div class="sub">Specialty medtech · Vascular access (ARROW catheters, #1) · Anesthesia (LMA airways, #1) · Interventional urology (UroLift BPH) · Surgical/cardiac · High-barrier niches · Adj margin ~26% · Wayne PA</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$127.49<small>(TFX)</small></div>
+      </div>
+      <div class="chg">▲ +6.7% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 1 ก.ค. 2569<br>
+        กรอบ 52 สัปดาห์ $100.18 – $139.67<br>
+        ที่มา: Yahoo Finance, StockAnalysis.com, Teleflex IR (Q1 2569 Earnings Release)
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ กลางปี 2569 · อิงตัวเลขจากการดำเนินงานต่อเนื่อง (Continuing Ops)</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~$5.6B</div><div class="d">~44.3M shares diluted</div></div>
+      <div class="metric"><div class="k">P/E adj (TTM)</div><div class="v neu">~22.4x</div><div class="d">Adj EPS TTM ~$5.70 · GAAP บิดเบือนจาก divestiture</div></div>
+      <div class="metric"><div class="k">Forward P/E (FY2026E)</div><div class="v">~20x</div><div class="d">Adj EPS guide $6.25–6.55 · คาดกลาง $6.40</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">~1.82x</div><div class="d">BVPS $69.87 · Goodwill+Intang. ~$3.8B สูง</div></div>
+
+      <div class="metric"><div class="k">รายได้ FY2025</div><div class="v">$1.99B</div><div class="d">Continuing ops · FY2026E ~$2.29B (+15%)</div></div>
+      <div class="metric"><div class="k">Adj EPS FY2026 (guidance)</div><div class="v pos">$6.25–6.55</div><div class="d">Q1 2569 actual $1.39 (beat est. $1.22)</div></div>
+      <div class="metric"><div class="k">EBITDA FY2025</div><div class="v">~$296M</div><div class="d">Continuing GAAP · Adj EBITDA ~$370–400M</div></div>
+      <div class="metric"><div class="k">Net Debt</div><div class="v neg">~$2.16B</div><div class="d">Debt $2.54B − Cash $0.38B · Leveraged</div></div>
+
+      <div class="metric"><div class="k">Gross Margin adj</div><div class="v pos">~59–60%</div><div class="d">GAAP 56% FY2025 · ปรับ amort. ~59%+</div></div>
+      <div class="metric"><div class="k">Adj Operating Margin</div><div class="v pos">~26%</div><div class="d">สูงสำหรับ specialty medtech · niche moat</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~1.07%</div><div class="d">$1.36/ปี · Ex-div พ.ค. 2569 · เน้น deleveraging ก่อน</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">0.82</div><div class="d">ความผันผวนต่ำกว่าตลาด · Defensive medtech</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ · ราคารายเดือน</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#B31B2A"></i>ราคา TFX</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $134</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        TFX เคลื่อนไหวในกรอบกว้าง $104–129 ตลอดปีที่ผ่านมา แตะระดับต่ำสุด ~$104 ในช่วง ม.ค. 2569
+        ท่ามกลางความกังวลเรื่องการ divestiture ธุรกิจ Surgical และแรงกดดันจาก UroLift ที่เติบโตช้ากว่าคาด
+        หลังจากนั้นราคาฟื้นตัวแข็งแกร่งกลับมาสู่ระดับ $122–128 สอดคล้องกับผลประกอบการ Q1 2569
+        ที่ adj EPS $1.39 ออกมาดีกว่าคาด กรอบราคา 52 สัปดาห์ $100.18–$139.67 สะท้อน turnaround story
+        ที่ยังมีความไม่แน่นอน ราคายังอยู่ต่ำกว่า FV $134 เพียงเล็กน้อย (+6.7% รอบปี)
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี · Adj EPS + EV/EBITDA + P/FCF</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation (Adjusted EPS)</div><div class="mdesc">EPS adj. $6.40 (FY2026E guidance midpoint) × P/E 21x — เทียบ medtech peers (BD ~20x, Haemonetics ~19x) · ประวัติ TFX เคยซื้อขาย 22–28x; ใช้ 21x สะท้อน transition risk</div></div>
+        <div class="mval">$134</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. EV/EBITDA (Medtech Comparable)</div><div class="mdesc">FY2026E Adj EBITDA ~$580M (Revenue $2.29B × adj EBITDA margin ~25.3%) × 14x — มาตรฐาน specialty medtech niche; EV $8.12B − Net Debt $2.16B = Equity $5.96B ÷ 44.3M shares ≈ $135</div></div>
+        <div class="mval">$135</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. P/FCF (Normalized Free Cash Flow)</div><div class="mdesc">FCF FY2026E ~$250M ÷ 44.3M shares = ~$5.64/share · P/FCF 23x — FCF conversion ~90% จาก adj net income; FCF FY2025 ถูกกดด้วยต้นทุน transition ชั่วคราว</div></div>
+        <div class="mval">$130</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $130 – $139</span></div>
+        <div class="r">$134</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ทั้ง 3 วิธีให้ค่า FV ใกล้เคียงกันในช่วง $130–$135 สะท้อนว่า TFX ซื้อขายใกล้มูลค่าพื้นฐาน
+        วิธี P/E ใช้ adj EPS ที่บวกกลับค่าเสื่อมราคาจากการซื้อกิจการ (~$4/share after-tax) ซึ่งเป็นที่ยอมรับในอุตสาหกรรม medtech
+        GAAP EPS บิดเบือนอย่างมากจากการ divestiture Surgical segment ในปี 2568 ซึ่งส่งผล discontinued ops loss ~$964M
+        Analyst consensus target $145.89 อิง recovery scenario ที่ UroLift และ deleveraging เร็วกว่าคาด
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $127.49</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $134</div></div>
+        </div>
+        <div class="scale">
+          <span>$93.80<br><small>MOS 30%</small></span>
+          <span>$107.20<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$134<br><small>Fair Value</small></span>
+          <span style="text-align:right">$146<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">$160<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคา $127.49 อยู่ใกล้มูลค่าเหมาะสม $134 โดยมี MOS เพียง ~4.9%
+        โซนน่าสนใจสำหรับทยอยสะสมอยู่ที่ต่ำกว่า $134 (ใกล้ FV) และจุดซื้อที่ดีขึ้นที่ MOS 20% = $107
+        ราคา $100–107 คือโซน deep value ที่เคยทดสอบในช่วงตลาดปรับฐานต้นปี 2569
+        Analyst consensus target $146 บ่งชี้ upside ~15% จากราคาปัจจุบัน หากการฟื้นตัวหลัง divestiture เป็นไปตามแผน
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">+4.9%</div>
+        <div class="txt">ราคาใกล้มูลค่าเหมาะสม — MOS ต่ำ รอจังหวะ dip ที่ดีกว่า</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$107.20</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$93.80</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $134</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="127.49" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $127.49 • EPS ฐาน ~$6.40 (FY2026E adj) • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS +3%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$122.9</div>
+          <div class="ret neg">−3.6%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$6.99</span></li>
+            <li><span>P/E ออก</span><span>17x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$4.08</span></li>
+            <li><span>สถานการณ์</span><span>UroLift ฟื้นช้า leverage กดกำไร</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +8%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$165.5</div>
+          <div class="ret pos">+29.8%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$8.07</span></li>
+            <li><span>P/E ออก</span><span>20x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$4.08</span></li>
+            <li><span>สถานการณ์</span><span>Vascular+Anesthesia โต deleveraging เร็ว</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +13%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$215.9</div>
+          <div class="ret pos">+69.3%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$9.21</span></li>
+            <li><span>P/E ออก</span><span>23x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$4.08</span></li>
+            <li><span>สถานการณ์</span><span>UroLift ฟื้น margin expansion M&amp;A value</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      Scenario ทั้ง 3 อิง adj EPS FY2026E ที่ $6.40 เป็นฐาน ไม่ใช่ GAAP EPS ที่บิดเบือนจาก goodwill amortization
+      Risk หลักคือ leverage ($2.16B net debt) ที่กดดันความยืดหยุ่นทางการเงิน และ UroLift ที่ยังไม่กลับมาเติบโตแข็งแกร่ง
+      Bull scenario ต้องการ multiple re-rating กลับสู่ประวัติศาสตร์ที่ 22–26x ซึ่งต้องใช้เวลาสร้างความเชื่อมั่น
+      ปันผล $1.36/ปี ให้ผลตอบแทน 1.07% ต่ำ แต่สัญญาณว่าบริษัทเน้น balance sheet ก่อน
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก &amp; ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>ผู้นำตลาดในนิชที่มีกำแพงสูง:</b> ARROW catheters (vascular access #1 globally) และ LMA airways (anesthesia #1) มีส่วนแบ่งตลาดสูงและเปลี่ยนแบรนด์ยาก เนื่องจากการฝึกอบรมทางคลินิกและ hospital protocol ที่ฝังอยู่ลึก</li>
+          <li><b>Simplified business หลัง Surgical divestiture:</b> TFX มุ่งเน้น higher-margin, faster-growing segments — vascular, anesthesia, interventional — ลดความซับซ้อนและเพิ่ม margin profile; adj operating margin ~26% สูงกว่า medtech ทั่วไป</li>
+          <li><b>UroLift turnaround potential:</b> UroLift (BPH minimally invasive treatment) มีศักยภาพสูงในตลาดผู้สูงอายุชาย; ถ้า reimbursement ดีขึ้นและ physician awareness เพิ่ม จะเป็น catalyst สำคัญในระยะถัดไป</li>
+          <li><b>De-leveraging pathway:</b> Net debt $2.16B กำลังลดลง; FCF ที่ normalize ควรช่วย pay down debt ~$200–250M/ปี ลด interest burden และเปิดโอกาส capital allocation ที่ดีขึ้น</li>
+          <li><b>Valuation re-rating:</b> หุ้น de-rated จาก $400+ สู่ ~$127 ปัจจุบัน forward P/E ~20x ต่ำกว่า peer premium medtech; หาก execution ดี multiple re-rating กลับสู่ 24–26x เป็นไปได้ในระยะ 2–3 ปี</li>
+          <li><b>Q1 2569 beat &amp; guidance maintained:</b> adj EPS $1.39 (beat $1.22 est.) บ่งชี้ momentum บวก; FY2026 guidance $6.25–6.55 ยังคงไว้แม้ environment ท้าทาย สะท้อน management confidence</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>UroLift growth disappoints persistently:</b> UroLift ยังเป็นความเสี่ยงหลัก; การเติบโตที่ช้ากว่าคาดมาต่อเนื่องเป็นสาเหตุหลักของ de-rating; competition จาก Rezum (Boston Scientific) และ GreenLight Laser ทำให้ตลาดแข่งขันสูง</li>
+          <li><b>High financial leverage:</b> Net debt $2.16B เทียบ Market cap $5.6B สูง; อัตราดอกเบี้ยที่สูงกดดัน interest expense ~$127M/ปี ลด bottom line; ถ้า FCF ต่ำกว่าคาด deleveraging ช้าลงกดดันหุ้น</li>
+          <li><b>GAAP EPS ไม่สื่อความสามารถในการทำกำไรจริง:</b> การพึ่งพา adj EPS เต็มที่เสี่ยงถ้า amortization ยืดนาน; goodwill $2.3B + intangibles $1.5B รวม ~$3.8B ยังต้องตัดจำหน่ายอีกหลายปี อาจมี impairment ได้</li>
+          <li><b>Reimbursement / regulatory risk:</b> UroLift และ vascular devices ขึ้นกับ CMS reimbursement; การลดอัตราจ่ายหรือเปลี่ยน coverage policy กระทบรายได้ได้ทันที เป็นความเสี่ยงนโยบายที่ควบคุมไม่ได้</li>
+          <li><b>Transition costs &amp; stranded costs:</b> การ divestiture Surgical segment มีต้นทุน TSA (transition service agreements) และ stranded costs ที่กดดัน margin ในระยะสั้น; FCF FY2025 ต่ำมาก ($1.45M) เพราะเหตุนี้</li>
+          <li><b>Macro / hospital capex cycle:</b> สินค้าบางส่วนขึ้นกับ hospital capital expenditure ที่อาจถูก defer ในภาวะเศรษฐกิจกดดัน; แม้ vascular/anesthesia มีลักษณะ recurring แต่ interventional/cardiac มีความผันผวนมากกว่า</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>Medtech นิชที่มีกำแพงสูง — ใกล้มูลค่าเหมาะสม รอ dip หรือสัญญาณฟื้นตัวชัดก่อน</h2>
+      <p>Teleflex เป็นบริษัท specialty medical devices ที่มีตำแหน่งผู้นำตลาดในสองกลุ่มหลัก: ARROW vascular access catheters (global #1) และ LMA anesthesia airways (global #1) ซึ่งมีกำแพงการเปลี่ยนแบรนด์สูงจาก clinical training และ hospital protocol ที่ฝังอยู่ลึก หลังการ divest ธุรกิจ Surgical ออกไปในปี 2568 TFX กลายเป็น leaner, higher-margin business ที่ focused มากขึ้น โดย adj operating margin อยู่ที่ ~26% adj EPS FY2026 guidance $6.25–6.55 สะท้อนการฟื้นตัวหลัง transition ความท้าทายหลักคือ UroLift ที่ยังฟื้นตัวช้า leverage สูง ($2.16B net debt) และ GAAP EPS ที่บิดเบือนจาก amortization ราคา $127.49 ใกล้กับ Fair Value $134 ทำให้ MOS เพียง ~4.9% ซึ่งต่ำสำหรับการลงทุนแบบ value; นักลงทุนที่รอ dip ควรมองหาจุดเข้า $107–115 (MOS 15–20%) เพื่อ margin of safety ที่เหมาะสม</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$134 <span style="font-size:12px;color:#cab9a8">($130–$139)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +4.9%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$146 (Hold)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> Watch &amp; Wait — ราคาปัจจุบัน ~$127 ใกล้ FV มาก ไม่มี margin of safety เพียงพอ ควรรอโอกาสที่ราคาปรับลงมาสู่โซน $107–115 (MOS 15–20%) ก่อน หากเป็น long-term investor ที่เชื่อมั่นใน ARROW+LMA moat และ deleveraging story ซื้อทยอยได้ต่ำกว่า $120 พร้อมรับ volatility จาก UroLift newsflow ต้องติดตาม Q2 2569 earnings (30 ก.ค.) เพื่อดูความคืบหน้า
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ adj EPS ที่บวกกลับ amortization อัตราเติบโต (g) และ P/E เป้าหมาย
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    ที่มา: Yahoo Finance (ราคา $127.49 ณ 1 ก.ค. 2569 · 52W $100.18–$139.67 · Beta 0.82), StockAnalysis.com (งบการเงิน · BVPS $69.87 · Net Debt $2.16B), Teleflex Q1 2569 Earnings (adj EPS $1.39 · guidance $6.25–6.55)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 1 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>

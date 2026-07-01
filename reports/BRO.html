@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น Brown &amp; Brown (BRO) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"BRO","currency":"USD","price":65.97,"fairValue":90,"mos":26.7,"upside":36.4,"pe":15.7,"dividendYield":1.00,"roe":12.2}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#8B5E3C",
+    "accentDark": "#5C3D20",
+    "darkGrad": "linear-gradient(135deg,#2a1a0e 0%,#3d2510 60%,#1a0e06 100%)",
+    "glow": "rgba(139,94,60,0.35)",
+    "subColor": "#c9a87a",
+    "headerMuted": "rgba(201,168,122,0.7)",
+    "verdictText": "#f5e6d3",
+    "vcellLabel": "#c9a87a",
+    "badge": "#8B5E3C",
+    "chgBg": "#c5221f",
+    "chgColor": "#ffffff"
+  },
+  "chart": {
+    "data": [
+      ["ก.ค. 68", 72.10],
+      ["ส.ค. 68", 71.82],
+      ["ก.ย. 68", 65.21],
+      ["ต.ค. 68", 60.15],
+      ["พ.ย. 68", 56.25],
+      ["ธ.ค. 68", 64.15],
+      ["ม.ค. 69", 66.06],
+      ["ก.ค. 69", 65.97]
+    ],
+    "min": 50,
+    "max": 110,
+    "grid": [50, 60, 70, 80, 90, 100, 110],
+    "fairLine": 90,
+    "currency": "$",
+    "highlight": [4, 7]
+  },
+  "gauge": {
+    "min": 50,
+    "max": 110,
+    "cur": 65.97,
+    "fair": 90,
+    "fairLabelTop": true
+  },
+  "fv": 90
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots"><span></span><span></span><span></span></div>
+    <div>
+      <span class="tag">NYSE: BRO</span>
+      <span class="tag">Financial Services</span>
+      <span class="tag">Insurance Brokerage</span>
+    </div>
+    <h1>Brown &amp; Brown, Inc.</h1>
+    <div class="sub">Top-5 US independent insurance brokerage • P&amp;C / Life / Health / Employee Benefits • 30+ yr Dividend Aristocrat • Acquisition-driven compounder • 25%+ revenue CAGR (20 yr) • Daytona Beach, FL</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$65.97<small>(BRO)</small></div>
+      </div>
+      <div class="chg">▼ −8.5% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 1 ก.ค. 2569<br>
+        กรอบ 52 สัปดาห์ $53.81 – $108.79<br>
+        ที่มา: Yahoo Finance, StockAnalysis.com, Digrin.com
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล TTM ณ ก.ค. 2569</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~$22.4B</div><div class="d">~325M shares diluted</div></div>
+      <div class="metric"><div class="k">P/E (TTM) adj.</div><div class="v neu">~15.7x</div><div class="d">GAAP EPS $3.11 → P/E 21.2x · adj EPS ~$4.21</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~25–30x (adj)</div><div class="d">ระยะ 2019–2023 traded 22–32x adj EPS</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">1.7x</div><div class="d">BVPS ~$38.69 · equity พุ่งจากซื้อกิจการ 2568</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ TTM</div><div class="v">$1.16B</div><div class="div">+11.4% YoY · Net margin 18.5%</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$3.11 GAAP</div><div class="d">adj ~$4.21 · amortization สูงจาก M&amp;A</div></div>
+      <div class="metric"><div class="k">EV/EBITDA</div><div class="v">~14.6x</div><div class="d">EBITDA TTM $2.04B · EV ~$29.7B</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~12.2% / ~3.9%</div><div class="d">equity สูงขึ้นจาก acquisition FY2568</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$6.26B</div><div class="d">+29% YoY · organic growth + M&amp;A</div></div>
+      <div class="metric"><div class="k">EBITDA Margin</div><div class="v">32.6%</div><div class="d">Operating margin 25.6% · recurring revenue</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~1.0%</div><div class="d">$0.66/share · Aristocrat 41 ปี · payout 15%</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">0.60</div><div class="d">ความผันผวนต่ำกว่าตลาด · defensive compounder</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART (ราคาย้อนหลัง ~1 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#8B5E3C"></i>ราคา BRO</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $90</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        BRO ซื้อขายที่ ~$72 ช่วงกลางปี 2568 แล้วร่วงลงแตะ $56 ใน พ.ย. 2568 เนื่องจากความกังวลเรื่องการเติบโต organic ที่ชะลอตัวและแรงขายกองทุนปลายปี จากนั้นฟื้นกลับมาอยู่แถว $64–66 ต้นปี 2569 บริษัทรายงาน Q1 2569 ที่แข็งแกร่ง (revenue +50% YoY จาก acquisition ขนาดใหญ่) แต่ราคายังต่ำกว่า FV $90 ประมาณ 27% สะท้อน re-rating ลงจากระดับ premium ก่อนหน้า
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION (3 วิธี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation (Adjusted EPS)</div><div class="mdesc">EPS adj. $4.21 × P/E เป้าหมาย ~25x — ต่ำกว่า historical avg 28x · สอดคล้องกับ compounder premium + organic growth normalization</div></div>
+        <div class="mval">$105</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. EV/EBITDA Valuation</div><div class="mdesc">EBITDA TTM $2,038M × target 16x = EV $32.6B → FV/share ≈ $78 · insurance brokers peer avg 14–18x</div></div>
+        <div class="mval">$78</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. P/S Valuation</div><div class="mdesc">Revenue TTM $6,259M × P/S 4.5x = market cap $28.2B → FV/share ≈ $87 · BRO historical P/S 4–6x · ใช้ conservative 4.5x</div></div>
+        <div class="mval">$87</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $78 – $105</span></div>
+        <div class="r">$90</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        วิธี P/E ให้ค่าสูงสุด ($105) เพราะ adj EPS สะท้อนกำไรจากการดำเนินงานจริงก่อนหักค่าตัดจำหน่ายสินทรัพย์ไม่มีตัวตนจาก M&amp;A วิธี EV/EBITDA ($78) conservative ที่สุด เนื่องจาก debt สูงหลังซื้อกิจการขนาดใหญ่ปี 2568 วิธี P/S ($87) อยู่กลาง ค่าเฉลี่ย $90 สะท้อน compounder ที่กำลังย่อย acquisition และรอ organic growth กลับมา ที่มา: Yahoo Finance · StockAnalysis.com · Digrin.com
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $65.97</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $90</div></div>
+        </div>
+        <div class="scale">
+          <span>$63<br><small>MOS 30%</small></span>
+          <span>$72<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$90<br><small>Fair Value</small></span>
+          <span style="text-align:right">$100<br><small>เป้า Bull case</small></span>
+          <span style="text-align:right">$105<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน $65.97 อยู่ต่ำกว่า FV $90 ประมาณ 27% และต่ำกว่าโซน MOS 20% ($72) สะท้อนว่าตลาดกำลัง discount BRO หนักกว่าปกติหลังการซื้อกิจการขนาดใหญ่ ราคาอยู่ระหว่าง MOS 30% ($63) และ MOS 20% ($72) ซึ่งถือเป็นโซน deep value สำหรับหุ้น compounder คุณภาพสูงระดับนี้ analyst consensus target $72.31 ยังต่ำกว่า FV ของเรา แสดงว่า Street ยังระวังตัวในช่วงนี้
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict good">
+        <div class="big">+26.7%</div>
+        <div class="txt">ราคาต่ำกว่า Fair Value มีนัยสำคัญ — โซนสะสมที่น่าสนใจสำหรับนักลงทุนระยะยาว</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$72.00</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$63.00</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $90</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="65.97" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $65.97 • EPS ฐาน ~$4.21 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS +3%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$85</div>
+          <div class="ret pos">+29%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$4.60</span></li>
+            <li><span>P/E ออก</span><span>18x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$2.10</span></li>
+            <li><span>สถานการณ์</span><span>organic growth ชะลอ + M&amp;A integration ยาก</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +10%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$125</div>
+          <div class="ret pos">+89%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$5.60</span></li>
+            <li><span>P/E ออก</span><span>22x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$2.30</span></li>
+            <li><span>สถานการณ์</span><span>organic growth กลับมา + M&amp;A synergy เริ่มเห็นผล</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +15%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$168</div>
+          <div class="ret pos">+155%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$6.40</span></li>
+            <li><span>P/E ออก</span><span>26x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$2.60</span></li>
+            <li><span>สถานการณ์</span><span>premium hardening + M&amp;A ขนาดใหญ่เพิ่มทั้ง organic และ EPS</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      EPS ฐาน ~$4.21 (adjusted, ex-amortization) · BRO มีประวัติ EPS compound ~13–15%/ปีในระยะยาว แม้ Bear case ยังให้ผลตอบแทนบวกเนื่องจาก valuation เริ่มต้นต่ำมาก · ปันผลน้อย (yield 1%) แต่ปรับขึ้นทุกปี 30+ ปีต่อเนื่อง · EPS adj คำนวณจาก GAAP EPS $3.11 + amortization addback ~$1.10/share (post-tax) อ้างอิง analyst consensus FY2569 adj EPS ~$4.50
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก &amp; ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>Insurance premium hardening:</b> P&amp;C premiums ยังคงอยู่ในวัฏจักรขาขึ้น (hard market) หลังพายุและ catastrophe events — commission-based revenue ของ BRO โตตาม premium โดยอัตโนมัติ</li>
+          <li><b>Acquisition engine:</b> BRO มี M&amp;A pipeline แข็งแกร่งและวัฒนธรรมการซื้อกิจการที่พิสูจน์มากว่า 20 ปี — acquisition FY2568 ขนาดใหญ่จะเห็น synergy เต็มที่ปี 2569–70</li>
+          <li><b>Dividend Aristocrat momentum:</b> ปรับขึ้นปันผล 30+ ปีต่อเนื่อง ล่าสุด +10% พ.ย. 2568 · payout ratio 15% ต่ำมาก ยังมีพื้นที่เพิ่มได้อีกมาก</li>
+          <li><b>Recurring revenue model:</b> ~95% ของ revenue เป็น renewal เก่า — retention สูง, predictable, ทนต่อ economic cycle</li>
+          <li><b>Decentralized model:</b> โครงสร้างกระจายศูนย์ช่วยรักษา talent หลัง acquisition และสร้าง culture ที่ BRO เป็นที่รู้จักในวงการ brokerage</li>
+          <li><b>Employee benefits tailwind:</b> กลุ่ม National Programs &amp; Benefits โตเร็วกว่าเฉลี่ย รับอานิสงส์จากการที่บริษัทต่าง ๆ เพิ่มความครอบคลุมสวัสดิการพนักงาน</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>Organic growth slowdown:</b> ตลาดกังวล organic growth ชะลอจากระดับสูงช่วง 2564–2567 — หากต่ำกว่า 5% นานขึ้นจะกดดัน valuation ต่อ</li>
+          <li><b>High debt post-acquisition:</b> debt $7.9B หลัง M&amp;A ขนาดใหญ่ปี 2568 เพิ่ม financial leverage · ดอกเบี้ยสูงกดดัน EPS GAAP</li>
+          <li><b>Goodwill &amp; amortization:</b> goodwill/intangibles สูงมาก (>$17B จาก total assets $30B) — หาก acquisition ไม่ได้ผลต้องตัดค่า goodwill impairment</li>
+          <li><b>Insurance market softening:</b> วัฏจักรประกัน soft market จะกดดัน premium และ commission revenue — risk ในระยะ 2–3 ปี</li>
+          <li><b>Key talent retention:</b> โมเดล decentralized พึ่งพา local leader สูง — การลาออกของ producer เก่งคนสำคัญอาจดึง client ออกไปด้วย</li>
+          <li><b>Valuation re-rating risk:</b> หาก interest rate สูงต่อเนื่อง investors อาจต้องการ earnings yield สูงขึ้น ทำให้ P/E target ลดลงจาก 25x เป็น 20x ได้</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>Compounder คุณภาพสูงในโซน Deep Value — MOS +26.7%</h2>
+      <p>Brown &amp; Brown เป็นหนึ่งในบริษัท insurance brokerage ที่ดีที่สุดในสหรัฐฯ ด้วย track record การเติบโต 25% CAGR ใน 20 ปี รูปแบบธุรกิจ recurring revenue ที่ sticky สูง และวัฒนธรรม M&amp;A ที่พิสูจน์แล้ว ราคาปัจจุบัน $65.97 ซื้อขายที่ adj P/E เพียง ~15.7x ต่ำกว่า historical avg 25–28x อย่างมีนัยสำคัญ ส่วนหนึ่งจาก de-rating หลัง acquisition ขนาดใหญ่ปี 2568 และ organic growth ที่ชะลอ แต่พื้นฐานระยะยาวยังแข็งแกร่ง · analyst consensus 19 คน ให้ target เฉลี่ย $72.31 ซึ่งต่ำกว่า FV เราที่ $90 สะท้อน Street ระวังตัวระยะสั้น แต่ยืนยันว่าราคาปัจจุบันต่ำเกินไป</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$90 <span style="font-size:12px;color:#cab9a8">($78–$105)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +26.7%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$72.31 (Hold)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ราคาปัจจุบัน $65.97 อยู่ในโซน deep value ต่ำกว่า MOS 20% ($72) ของ FV $90 — เหมาะสมสำหรับทยอยสะสมในมุมมอง 3–5 ปี โดยเฉพาะหากมองว่า organic growth จะกลับมาหลัง acquisition integration เสร็จ และ insurance hard market ยังเอื้ออยู่ ควรติดตาม Q2 2569 (รายงาน 27 ก.ค. 2569) เพื่อดูสัญญาณ organic growth recovery
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ที่มา: Yahoo Finance (finance.yahoo.com/quote/BRO), StockAnalysis.com (stockanalysis.com/stocks/bro), Digrin.com (digrin.com/stocks/detail/BRO) · งบการเงินอ้างอิง Q1/2026 (TTM มี.ค. 2026) · ราคา ณ 1 ก.ค. 2026
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 1 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
