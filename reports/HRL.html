@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น Hormel Foods (HRL) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"HRL","currency":"USD","price":24.82,"fairValue":27,"mos":8.1,"upside":8.8,"pe":17.1,"dividendYield":4.71,"roe":5.9}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#8B1A1A",
+    "accentDark": "#5C0000",
+    "darkGrad": "linear-gradient(135deg,#3B0000 0%,#1a0000 100%)",
+    "glow": "rgba(139,26,26,0.35)",
+    "subColor": "#c47c7c",
+    "headerMuted": "rgba(255,255,255,0.55)",
+    "verdictText": "#f5c6c6",
+    "vcellLabel": "#d4a0a0",
+    "badge": "#8B1A1A",
+    "chgBg": "#c5221f",
+    "chgColor": "#fff"
+  },
+  "chart": {
+    "data": [
+      ["ก.ค. '25", 27.01],
+      ["ส.ค. '25", 24.46],
+      ["ก.ย. '25", 23.79],
+      ["ต.ค. '25", 21.02],
+      ["พ.ย. '25", 22.60],
+      ["ธ.ค. '25", 23.07],
+      ["ม.ค. '26", 24.26],
+      ["ก.พ. '26", 25.24],
+      ["มี.ค. '26", 22.33],
+      ["เม.ย. '26", 21.47],
+      ["พ.ค. '26", 23.23],
+      ["มิ.ย. '26", 26.31],
+      ["ก.ค. '26", 24.82]
+    ],
+    "min": 19,
+    "max": 32,
+    "grid": [20, 22, 24, 26, 28, 30],
+    "fairLine": 27,
+    "currency": "$",
+    "highlight": [3, 9]
+  },
+  "gauge": {
+    "min": 15,
+    "max": 35,
+    "cur": 24.82,
+    "fair": 27,
+    "fairLabelTop": true
+  },
+  "fv": 27
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">&#127828;&#129951;&#129362;&#127866;</div>
+    <div>
+      <span class="tag">NYSE: HRL</span>
+      <span class="tag">Consumer Staples</span>
+      <span class="tag">Packaged Foods</span>
+    </div>
+    <h1>Hormel Foods Corporation</h1>
+    <div class="sub">Spam · Skippy peanut butter · Jennie-O turkey · Planters nuts · Applegate · Justin's · Wholly · 40+ brands · Dividend King 59+ ปี · Austin MN</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$24.82<small>(HRL)</small></div>
+      </div>
+      <div class="chg">▼ −8.1% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 1 ก.ค. 2569<br>
+        กรอบ 52 สัปดาห์ $19.70 – $31.86<br>
+        ที่มา: Yahoo Finance, StockAnalysis.com, Digrin.com
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ มิ.ย.–ก.ค. 2569 · แหล่ง: Yahoo Finance, StockAnalysis.com</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~$13.7B</div><div class="d">~552 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM adj.)</div><div class="v neu">~17.1x</div><div class="d">EPS adj. ~$1.45 (normalized)</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~20–22x</div><div class="d">de-rated จาก ~25x ปี 2564</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">1.72x</div><div class="d">BVPS ~$14.43</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">$478M</div><div class="d">กดดันจากรายการพิเศษ Ceratti + impairment</div></div>
+      <div class="metric"><div class="k">EPS adj. (นอร์ม.)</div><div class="v">~$1.45</div><div class="d">TTM reported $0.85 (มีรายการพิเศษ)</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~$14.43</div><div class="d">ส่วนทุนผู้ถือหุ้น $7,964M</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v neu">~5.9% / 3.5%</div><div class="d">ลดลงจาก ~13% ก่อนซื้อ Planters 2564</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$12.2B</div><div class="d">เติบโตช้า ~0–2%/ปี</div></div>
+      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">~15.7%</div><div class="d">ฟื้นตัวจากจุดต่ำสุด ~14% ปี 2566</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~4.71%</div><div class="d">$1.17/ปี · 59+ ปีต่อเนื่อง · Dividend King</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">0.31</div><div class="d">ผันผวนต่ำมาก · หุ้น defensive</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART (ราคาย้อนหลัง ~1 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#8B1A1A"></i>ราคา HRL</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $27</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        HRL เปิดรอบปีที่ $27.01 (ก.ค. 2568) ก่อนร่วงลงสู่จุดต่ำสุด $21.02 ใน ต.ค. 2568 กดดันจากผล Q4 FY25 ที่มีค่าใช้จ่ายพิเศษจากการขายกิจการ Ceratti (บราซิล) และความท้าทายของ Jennie-O Turkey · พ.ย. 2568–ก.พ. 2569 ฟื้นตัวสู่ $23–$25 ก่อนอ่อนตัวลงอีกครั้งเป็น $21.47 ใน เม.ย. 2569 · มิ.ย. 2569 ดีดขึ้นแตะ $26.31 ก่อนย่อปิดที่ $24.82 · รวมรอบปีปรับลง −8.1% สะท้อนความกังวลระยะสั้น ในขณะที่ dividend yield ยังอยู่ที่ระดับสูง ~4.7%
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION (เฉลี่ย 3 วิธี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS adj. $1.45 × P/E 18x — P/E เป้า 18x (ต่ำกว่าค่าเฉลี่ย 5 ปี ~22x เพื่อสะท้อนภาระหนี้ Planters + ROE ลดลง) · FY2026 consensus $1.49</div></div>
+        <div class="mval">$26.10</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล $1.21 × (1+g); g 3.0%, r 7.0% — Dividend King 59 ปีต่อเนื่อง · g ต่ำสะท้อน payout ratio ~80%</div></div>
+        <div class="mval">$30.13</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 9.8% − g 3.0%)/(r 7.0% − g 3.0%) ≈ 1.70 × BVPS $14.43 — ใช้ normalized ROE ~9.8% (FY2024 net income $804M / equity $8,200M)</div></div>
+        <div class="mval">$24.53</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $25 – $30</span></div>
+        <div class="r">$27</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        DDM ให้ค่าสูงสุด $30.13 สะท้อนมูลค่าของ Dividend King 59 ปีที่จ่ายสม่ำเสมอ · P/E ให้ $26.10 โดยใช้ EPS adj. ที่ normalized จาก impairment ชั่วคราว · Justified P/BV ให้ $24.53 เนื่องจาก ROE ยังฟื้นตัวไม่เต็มที่หลังซื้อ Planters · เฉลี่ย 3 วิธี = $26.92 ≈ $27 · ราคาปัจจุบัน $24.82 ให้ MOS ~8%
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $24.82</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $27</div></div>
+        </div>
+        <div class="scale">
+          <span>$18.90<br><small>MOS 30%</small></span>
+          <span>$21.60<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$26.75<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">$27<br><small>Fair Value</small></span>
+          <span style="text-align:right">$30<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคา $24.82 อยู่ต่ำกว่า Fair Value $27 ประมาณ 8% — อยู่ในโซน "ใกล้เหมาะสม" แต่ยังไม่ถึงจุดซื้อ MOS 20% ที่ $21.60 · เป้านักวิเคราะห์เฉลี่ย $26.75 (Hold consensus, 10 analysts) ใกล้เคียงกับ Fair Value · โซน deep value MOS 30% ที่ $18.90 เคยเข้าใกล้ในช่วง ต.ค. 2568 ($21.02) · สำหรับ income investor ที่เน้น yield 4.71% ราคาปัจจุบันยังน่าสะสม
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">+8.1%</div>
+        <div class="txt">MOS ต่ำ — ราคาใกล้ Fair Value · เหมาะสะสมสำหรับ income/dividend investor · รอซื้อหนักที่ต่ำกว่า $21.60</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$21.60</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$18.90</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $27</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>&#129518; ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="24.82" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $24.82 • EPS ฐาน ~$1.45 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>&#128059; Bear</span><span>EPS -2%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$23.91</div>
+          <div class="ret neg">-3.7%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$1.36</span></li>
+            <li><span>P/E ออก</span><span>15x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$3.51</span></li>
+            <li><span>สถานการณ์</span><span>Jennie-O ซบเซา + ต้นทุนสูง</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>&#9878;&#65039; Base</span><span>EPS +5%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$33.75</div>
+          <div class="ret pos">+36.0%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$1.68</span></li>
+            <li><span>P/E ออก</span><span>18x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$3.51</span></li>
+            <li><span>สถานการณ์</span><span>Planters ฟื้น + margin ปกติ</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>&#128640; Bull</span><span>EPS +10%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$42.11</div>
+          <div class="ret pos">+69.7%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$1.93</span></li>
+            <li><span>P/E ออก</span><span>20x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$3.51</span></li>
+            <li><span>สถานการณ์</span><span>brand re-rating + pricing power</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      Base case สมมติ EPS ฟื้นตัวจาก normalized $1.45 ไปยัง $1.68 ในปีที่ 3 (+5%/ปี) สอดคล้องกับ consensus FY2027 estimate $1.56 · ปันผลรวม 3 ปี $3.51 (yield ~4.7%/ปี) คือ "เบาะรองรับ" ในทุก scenario — Bear case ยังได้รับปันผลมากกว่าขาดทุนราคา ทำให้ total return -3.7% เท่านั้น · Bull case ต้องอาศัย P/E re-rating กลับสู่ 20x พร้อมกับ EPS ฟื้นตัวแข็งแกร่ง · สมมติฐาน: EPS adj. FY2026 $1.49, FY2027 $1.56 (consensus StockAnalysis.com)
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก &amp; ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">&#9650;</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>Dividend King 59 ปี:</b> เพิ่มปันผลต่อเนื่อง 59 ปีติดต่อกัน — ไม่มีสัญญาณลด ให้ yield ~4.71% ณ ราคาปัจจุบัน เป็น income ที่มั่นคง</li>
+          <li><b>Planters Integration สมบูรณ์:</b> ซื้อ Planters จาก Kraft Heinz ปี 2564 ตอนนี้ integrate เกือบครบ — EPS น่าจะฟื้นตัวต่อเนื่องจาก FY2026</li>
+          <li><b>Gross Margin ฟื้นตัวชัดเจน:</b> gross margin ปรับขึ้นจาก ~14% (FY2566) มาสู่ ~17.4% ใน Q2 FY26 — ต้นทุนอาหารสัตว์ผ่อนคลาย</li>
+          <li><b>Portfolio Cleanup:</b> ขาย Ceratti Brazil ออก — focus เฉพาะแบรนด์แข็งแกร่งใน US ลด overhead + ใช้เงินลดหนี้ net debt $1,996M</li>
+          <li><b>Beta ต่ำ 0.31:</b> ในสภาวะตลาดผันผวน หุ้น defensive จ่ายปันผลสูงเป็นที่ต้องการ — downside protection ดี</li>
+          <li><b>Forward P/E ถูก ~16.7x:</b> บน FY2026 estimate $1.49 ต่ำกว่าค่าเฉลี่ยประวัติศาสตร์ ~22x สะท้อน pessimism มากเกินจริง</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">&#9660;</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>Payout Ratio สูง ~80%:</b> ปันผลกิน EPS เกือบทั้งหมด — ถ้า EPS ไม่ฟื้น อาจต้องชะลอการเพิ่มปันผล กระทบ Dividend King status</li>
+          <li><b>Jennie-O Turkey ซบเซา:</b> HPAI (avian flu) และพฤติกรรมผู้บริโภคเปลี่ยน ยังกดดัน segment นี้ — คิดเป็นสัดส่วนสำคัญของ Foodservice</li>
+          <li><b>Net Debt $2B:</b> ภาระหนี้จากการซื้อ Planters ยังหนัก — ดอกเบี้ยกดกำไร interest coverage ratio อ่อน</li>
+          <li><b>การเติบโตช้า:</b> revenue เติบโต 0–2%/ปี ผู้บริโภค trade down หันหา private label รุนแรง</li>
+          <li><b>ROE ต่ำ ~5.9%:</b> ต่ำกว่า cost of equity — ต้องฟื้น ROE ให้ได้ ~10% เพื่อให้ Justified P/BV เหมาะสม</li>
+          <li><b>Consumer Trends:</b> plant-based / health consciousness กดดัน processed meat brand อย่าง Spam ในระยะยาว</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>Dividend King ราคาสมเหตุสมผล — เหมาะ Income Investor ที่รับความเสี่ยงต่ำ</h2>
+      <p>Hormel Foods เป็น Dividend King 59 ปีที่ปัจจุบันซื้อขายที่ $24.82 — ต่ำกว่า Fair Value $27 ประมาณ 8% ให้ dividend yield ~4.71% เป็นแรงจูงใจหลัก ราคาหุ้นถูกกดดันจาก 3 ปัจจัยชั่วคราว: (1) impairment/restructuring จากการขาย Ceratti (2) Jennie-O turkey segment อ่อนแอ และ (3) ภาระหนี้ Planters $2B อย่างไรก็ตาม gross margin เริ่มฟื้นตัวสู่ 17%+ และ forward P/E ~16.7x บน FY26 estimate ถือว่า de-rated มากเกินจริงสำหรับบริษัท consumer staples ที่มีแบรนด์แข็งแกร่ง สำหรับนักลงทุนที่เน้นปันผล ราคาปัจจุบันน่าสนใจ แต่ผู้ที่ต้องการ MOS ชัดเจนควรรอราคาต่ำกว่า $21.60 (MOS 20%)</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$27 <span style="font-size:12px;color:#cab9a8">($25–$30)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +8.1%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$26.75 (Hold, 10 คน)</div></div>
+      </div>
+      <div class="zone">
+        &#128161; <b>กลยุทธ์:</b> income investor — ทยอยสะสมได้ที่ราคาปัจจุบัน (yield 4.71%) · เพิ่มน้ำหนักชัดเจนที่ต่ำกว่า $21.60 (MOS 20%) · deep value ที่ต่ำกว่า $18.90 (MOS 30%) · ตั้ง stop-loss ถ้า HRL ลด/หยุดปันผล (Dividend King status หาย) · ไม่เหมาะนักลงทุนที่ต้องการ capital gain เร็ว เพราะ catalyst ฟื้นตัวใช้เวลา 2–3 ปี
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>&#9888;&#65039; คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ที่มา: Yahoo Finance (ราคา ณ 1 ก.ค. 2569 $24.82), StockAnalysis.com (งบการเงิน, analyst forecast), Digrin.com (ปันผล $24.80) · ราคาตรวจสอบข้ามแหล่ง ≥2 แหล่ง ต่างกัน &lt;1% ✓
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 1 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
