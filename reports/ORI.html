@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น Old Republic International (ORI) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"ORI","currency":"USD","price":41.40,"fairValue":45.00,"mos":8.0,"upside":8.7,"pe":10.2,"dividendYield":3.04,"roe":17.3}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#2E7D32",
+    "accentDark": "#1B5E20",
+    "darkGrad": "linear-gradient(135deg,#1B5E20 0%,#2E7D32 60%,#388E3C 100%)",
+    "glow": "rgba(46,125,50,0.35)",
+    "subColor": "#A5D6A7",
+    "headerMuted": "rgba(165,214,167,0.75)",
+    "verdictText": "#C8E6C9",
+    "vcellLabel": "#A5D6A7",
+    "badge": "#388E3C",
+    "chgBg": "#1e8e3e",
+    "chgColor": "#ffffff"
+  },
+  "chart": {
+    "data": [
+      ["ม.ค. 68", 36.17],
+      ["ก.พ. 68", 39.97],
+      ["มี.ค. 68", 42.47],
+      ["เม.ย. 68", 39.46],
+      ["พ.ค. 68", 46.10],
+      ["มิ.ย. 68", 45.64],
+      ["ก.ค. 68", 39.17],
+      ["ส.ค. 68", 42.87],
+      ["ก.ย. 68", 39.90],
+      ["ต.ค. 68", 39.95],
+      ["พ.ย. 68", 37.23],
+      ["ธ.ค. 68", 40.92],
+      ["ม.ค. 69", 41.40]
+    ],
+    "min": 33.0,
+    "max": 50.0,
+    "grid": [34, 38, 42, 46, 50],
+    "fairLine": 45.00,
+    "currency": "$",
+    "highlight": [4, 6]
+  },
+  "gauge": {
+    "min": 30.0,
+    "max": 52.0,
+    "cur": 41.40,
+    "fair": 45.00,
+    "fairLabelTop": false
+  },
+  "fv": 45.00
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;</div>
+    <div>
+      <span class="tag">NYSE: ORI</span>
+      <span class="tag">Insurance</span>
+      <span class="tag">Multi-line / Title</span>
+    </div>
+    <h1>Old Republic International</h1>
+    <div class="sub">Diversified multi-line insurer • General (workers comp/liability/auto) • Title insurance (real estate) • 80+ yr consecutive dividends • Regular + special dividends • Chicago IL</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$41.40<small>(ORI)</small></div>
+      </div>
+      <div class="chg">▲ +14.5% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 30 มิ.ย. 2569<br>
+        กรอบ 52 สัปดาห์ $35.60 – $46.76<br>
+        ที่มา: Yahoo Finance, StockAnalysis.com, ORI Investor Relations
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ มิ.ย. 2569</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~$10.1B</div><div class="d">239M หุ้น (diluted ~251M)</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~10.2x</div><div class="d">EPS TTM $4.06 (GAAP diluted)</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~11–13x</div><div class="d">กรอบปกติ 9–14x (insurance)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">1.76x</div><div class="d">BVPS $23.53 (FY2025)</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">$941.9M</div><div class="d">+10.5% YoY vs $852.7M ปีก่อน</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$4.06</div><div class="d">GAAP diluted • FY2025 $3.72</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~$23.53</div><div class="d">FY2025 • เพิ่มจาก $21.37 ปีก่อน</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~17.3% / ~3.5%</div><div class="d">NI TTM $1.03B / avg equity $5.77B</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$9.42B</div><div class="d">+13.1% YoY (insurance premiums)</div></div>
+      <div class="metric"><div class="k">Combined Ratio</div><div class="v pos">~95%</div><div class="d">General Insurance efficient ops</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v pos">~3.04%</div><div class="d">$1.26/ปี (regular) • พิเศษ $2.50 ม.ค. 69</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">0.65</div><div class="d">ผันผวนต่ำกว่าตลาด • defensive</div></div>
+    </div>
+    <div style="background:rgba(46,125,50,0.08);border:1px solid rgba(46,125,50,0.25);border-radius:8px;padding:12px 14px;margin-top:12px;font-size:12.5px;line-height:1.6;color:var(--muted)">
+      <b>หมายเหตุปันผล:</b> ORI มีประวัติจ่ายปันผลต่อเนื่อง 80+ ปี โดยมี 2 ส่วน: <b>(1) ปันผลปกติ</b> $0.315/ไตรมาส ($1.26/ปี • yield ~3.04%) ซึ่งเติบโตสม่ำเสมอทุกปี และ <b>(2) ปันผลพิเศษ</b> เมื่อ Title Insurance มีกำไรส่วนเกิน — ล่าสุด $2.50/หุ้น (ม.ค. 2569) และ $2.00/หุ้น (ม.ค. 2568) รวม TTM yield (ปกติ+พิเศษ) สูงกว่า 9% ในปีที่มีพิเศษ
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART (~1 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ม.ค. 2568 – ม.ค. 2569</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#2E7D32"></i>ราคา ORI</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $45.00</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคา ORI เคลื่อนไหวในกรอบ $35.60–$46.76 ตลอดช่วง 1 ปี โดยเริ่มต้นปีที่ $36.17 ก่อนพุ่งขึ้นแตะสูงสุด $46.76 ในเดือน พ.ค.–มิ.ย. 2568 หนุนโดยผลประกอบการ Title Insurance ที่ฟื้นตัวตามตลาดอสังหาริมทรัพย์ หลังจากนั้นย่อตัวสู่ ~$37–42 ช่วง ก.ค.–ธ.ค. 2568 ก่อนกลับมาที่ $41.40 สิ้นปี คิดเป็นผลตอบแทนรอบปี +14.5% ยังต่ำกว่ามูลค่าเหมาะสม $45.00
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS adj. $4.06 × P/E เป้าหมาย ~12x — อิงค่าเฉลี่ย sector insurance 11–13x; ORI มี combined ratio ดี + ROE สูง</div></div>
+        <div class="mval">$48.72</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผลปกติ $1.26 × (1+6%); g 6%, r 9% → $1.336 / 3% = ประเมินจากกระแสปันผลปกติระยะยาว</div></div>
+        <div class="mval">$44.53</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 13% − g 4%)/(r 9% − g 4%) ≈ 1.80 × BVPS $23.53 — ใช้ normalized ROE 13% (cyclical title)</div></div>
+        <div class="mval">$42.35</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $42.35 – $48.72</span></div>
+        <div class="r">$45.00</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        P/E valuation ให้ค่าสูงสุด ($48.72) สะท้อน EPS TTM $4.06 ที่แข็งแกร่งกับ P/E target 12x ใกล้ค่าเฉลี่ย sector DDM ($44.53) ประเมินจากปันผลปกติอย่างเดียว (ไม่รวมพิเศษ) ซึ่ง conservative ที่สุด Justified P/BV ($42.35) ใช้ normalized ROE 13% สะท้อนว่า ROE ปัจจุบัน 17% อาจสูงกว่าค่าปกติเพราะ Title Insurance cycle อยู่ในช่วงฟื้น มูลค่าเฉลี่ย $45.00 สมเหตุสมผลสำหรับธุรกิจ defensive dividend-compounder ที่มี track record 80+ ปี
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $41.40</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $45.00</div></div>
+        </div>
+        <div class="scale">
+          <span>$31.50<br><small>MOS 30%</small></span>
+          <span>$36.00<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$42.00<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">$45.00<br><small>Fair Value</small></span>
+          <span style="text-align:right">$48.72<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคา $41.40 ต่ำกว่า Fair Value $45.00 อยู่ ~8% MOS ยังไม่ถึงโซน "น่าสนใจมาก" (MOS 20% = $36.00) แต่ราคาต่ำกว่า FV และนักวิเคราะห์ 3 ราย consensus Buy กับเป้า $42.00 สะท้อนว่าราคาปัจจุบันยุติธรรม ผู้ที่เน้นปันผลอาจเริ่มสะสมได้ในโซนนี้ ขณะที่ deep value investor รอจุด $36–38 (MOS 20–25%)
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict ok">
+        <div class="big">+8.0%</div>
+        <div class="txt">MOS ระดับกลาง — ราคาต่ำกว่า FV แต่ยังไม่ถึงโซน deep value • เหมาะทยอยสะสมสำหรับ income investor</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$36.00</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$31.50</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $45.00</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="41.40" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $41.40 • EPS ฐาน ~$4.06 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS -5%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$35.58</div>
+          <div class="ret neg">-4.4%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$3.48</span></li>
+            <li><span>P/E ออก</span><span>10x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$3.78</span></li>
+            <li><span>สถานการณ์</span><span>Title recession + ดอกเบี้ยพุ่ง</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +7%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$59.77</div>
+          <div class="ret pos">+49.4%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$4.97</span></li>
+            <li><span>P/E ออก</span><span>12x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$4.10</span></li>
+            <li><span>สถานการณ์</span><span>Title ฟื้น + General stable</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +12%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$74.27</div>
+          <div class="ret pos">+86.0%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$5.71</span></li>
+            <li><span>P/E ออก</span><span>13x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$4.50</span></li>
+            <li><span>สถานการณ์</span><span>Housing boom + M&amp;A + special div</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      ผลตอบแทนรวม 3 ปี = capital gain + ปันผลปกติ (ไม่รวมปันผลพิเศษซึ่งไม่แน่นอน) Bear case: Title insurance ถดถอยหนักจากดอกเบี้ยสูง/ตลาดอสังหาริมทรัพย์ชะลอ + premium ลด EPS ลงราว 5%/ปี Base: Title ค่อยๆ ฟื้น housing market ทยอยกลับมา EPS เติบโต ~7%/ปี Bull: ดอกเบี้ยลดเร็ว housing boom กลับมา + ขยาย General Insurance + อาจมีปันผลพิเศษเพิ่ม EPS สูงกว่าที่คาด สำหรับ income investor ผลตอบแทนรวม 3 ปีในระดับ +45–85% (base–bull) ถือว่าดีสำหรับหุ้น defensive yield สูง
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก &amp; ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>ดอกเบี้ยลด — Title Insurance ฟื้น:</b> Fed ลดดอกเบี้ยกระตุ้น refinancing + home sales โดยตรงหนุน Title segment (~45% รายได้) ที่อ่อนตัวปี 66–67</li>
+          <li><b>ประวัติปันผล 80+ ปี ไม่เคยลด:</b> income investor มั่นใจสูง ปันผลปกติเพิ่มปีละ ~6–8% ต่อเนื่อง + พิเศษหลายปี ทำ total yield สูงพิเศษ</li>
+          <li><b>General Insurance มั่นคง:</b> workers comp + commercial auto + liability มี combined ratio ~95% ให้ผลกำไรสม่ำเสมอ ไม่ขึ้นกับ housing cycle</li>
+          <li><b>ROE สูง &amp; Balance sheet แกร่ง:</b> ROE 17%+ สูงกว่า insurer ทั่วไป debt/equity ต่ำ ทุนแข็งแกร่งรองรับ underwriting cycle</li>
+          <li><b>Buyback + Dividend:</b> บริษัทซื้อหุ้นคืนลดหุ้นวน + ปันผลพิเศษเมื่อทุนเกิน สะท้อนผู้บริหาร shareholder-friendly สูง</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>Title Insurance Cyclicality:</b> Title segment สัมพันธ์ตรงกับ housing market ดอกเบี้ยสูงนาน/ตลาดอสังหาริมทรัพย์แช่แข็ง → EPS ผันผวนมาก</li>
+          <li><b>ดอกเบี้ยขาขึ้น:</b> ดอกเบี้ยสูงกดทั้ง Title volume และ bond portfolio มูลค่า (unrealized loss) ขณะที่ cost of claims เพิ่ม</li>
+          <li><b>Catastrophic Insurance Losses:</b> General Insurance เสี่ยงภัยธรรมชาติ/catastrophe ขนาดใหญ่ที่กดัน combined ratio ในปีที่เกิดเหตุ</li>
+          <li><b>การแข่งขันสูงในตลาด Title:</b> Fidelity National, First American เป็นคู่แข่งหลัก การรักษาส่วนแบ่งตลาดทำได้ยากในช่วง volume ต่ำ</li>
+          <li><b>Analyst coverage ต่ำ:</b> มีเพียง 3 นักวิเคราะห์ติดตาม สภาพคล่องค่อนข้างจำกัด อาจทำให้ราคาเบี่ยงจาก FV ได้นาน</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>ORI — Dividend Compounder ราคาต่ำกว่า FV ผลตอบแทนรวม (ปกติ+พิเศษ) โดดเด่น</h2>
+      <p>Old Republic International เป็น multi-line insurer ที่มีประวัติจ่ายปันผลต่อเนื่องยาวนาน 80+ ปี ไม่เคยตัดปันผล ด้วย EPS TTM $4.06 และราคาปัจจุบัน $41.40 ซื้อขายที่ P/E เพียง ~10.2x ต่ำกว่าค่าเฉลี่ย sector ปันผลปกติ 3.04% + ปันผลพิเศษเป็นครั้งคราว (ล่าสุด $2.50 ม.ค. 69) ทำให้ total yield สูงมากในปีที่มีพิเศษ General Insurance ให้รายได้มั่นคง ขณะที่ Title Insurance มี upside ตาม housing cycle ราคาต่ำกว่า FV $45.00 อยู่ ~8% เหมาะสำหรับ income investor ที่ต้องการ defensive yield + dividend growth</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$45.00 <span style="font-size:12px;color:#cab9a8">($42.35–$48.72)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +8.0%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$42.00 (Buy)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> เหมาะ <b>Income Investor / Dividend Growth</b> — ทยอยสะสมได้ในราคาปัจจุบัน $41–42 (ต่ำกว่า FV $45) สำหรับ value investor เข้มข้นรอโซน MOS 20% ที่ $36.00 จุดเด่นคือ <b>ปันผลปกติ 3%+ ที่เติบโตสม่ำเสมอ</b> + โอกาสรับ <b>ปันผลพิเศษ $2–3/หุ้น</b> ทุก 1–2 ปีเมื่อ Title Insurance มีกำไรส่วนเกิน กลยุทธ์ถือระยะยาว 3–5 ปี ได้ประโยชน์จาก dividend compounding + housing cycle upside
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ที่มาข้อมูล: Yahoo Finance (finance.yahoo.com/quote/ORI), StockAnalysis.com (stockanalysis.com/stocks/ori), Old Republic IR / StockAnalysis Balance Sheet (stockanalysis.com/stocks/ori/financials/balance-sheet) ราคา ณ 30 มิ.ย. 2569
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 30 มิ.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>

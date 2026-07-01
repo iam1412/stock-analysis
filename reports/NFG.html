@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น National Fuel Gas (NFG) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"NFG","currency":"USD","price":78.00,"fairValue":91.00,"mos":14.3,"upside":16.7,"pe":10.5,"dividendYield":2.85,"roe":17.0}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#E8820C",
+    "accentDark": "#B85F00",
+    "darkGrad": "linear-gradient(135deg,#1a0f00 0%,#2d1800 50%,#1a0f00 100%)",
+    "glow": "rgba(232,130,12,0.25)",
+    "subColor": "#f5a84a",
+    "headerMuted": "rgba(232,130,12,0.55)",
+    "verdictText": "#fff3e0",
+    "vcellLabel": "#d4a276",
+    "badge": "#E8820C",
+    "chgBg": "#c5221f",
+    "chgColor": "#ffffff"
+  },
+  "chart": {
+    "data": [
+      ["ม.ค. 68", 86.79],
+      ["ก.พ. 68", 86.74],
+      ["มี.ค. 68", 92.37],
+      ["เม.ย. 68", 78.91],
+      ["พ.ค. 68", 82.45],
+      ["มิ.ย. 68", 80.06],
+      ["ก.ค. 68", 83.75],
+      ["ส.ค. 68", 91.03],
+      ["ก.ย. 68", 93.96],
+      ["ต.ค. 68", 84.38],
+      ["พ.ย. 68", 77.25],
+      ["ธ.ค. 68", 77.21],
+      ["ม.ค. 69", 77.70]
+    ],
+    "min": 60,
+    "max": 110,
+    "grid": [65, 75, 85, 95, 105],
+    "fairLine": 91.00,
+    "currency": "$",
+    "highlight": [2, 8]
+  },
+  "gauge": {
+    "min": 60,
+    "max": 110,
+    "cur": 78.00,
+    "fair": 91.00,
+    "fairLabelTop": false
+  },
+  "fv": 91.00
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">◆ ◆ ◆</div>
+    <div>
+      <span class="tag">NYSE: NFG</span>
+      <span class="tag">Utilities / Energy</span>
+      <span class="tag">Integrated Nat. Gas</span>
+    </div>
+    <h1>National Fuel Gas Company</h1>
+    <div class="sub">Integrated nat-gas company · Regulated utility NY/PA · Pipeline &amp; storage · Seneca E&amp;P (Marcellus/Utica) · 56 ปีติดต่อกันเพิ่มปันผล · Williamsville, NY</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$78.00<small>(NFG)</small></div>
+      </div>
+      <div class="chg">▼ −10.5% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 1 ก.ค. 2569<br>
+        กรอบ 52 สัปดาห์ $75.17 – $97.06<br>
+        ที่มา: Yahoo Finance / StockAnalysis.com / NFG IR
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">FY สิ้นสุด 30 ก.ย. · NFG เป็น Dividend Aristocrat 56 ปี</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~$7.4B</div><div class="d">~92 ล้านหุ้น (diluted)</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~10.5x</div><div class="d">EPS TTM $7.42 · ต่ำกว่า peer</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~14–16x</div><div class="d">ปรับ FY2024 anomaly ออก</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">2.3x</div><div class="d">BVPS $33.92 (FY2025)</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">$533.5M</div><div class="d">+588% YoY (FY2024 มี impairment)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$7.42</div><div class="d">FY2025: $5.68 · FY2023: $5.17</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~$33.92</div><div class="d">FY2025 · TTM ~$41.35</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~17% / ~3.6%</div><div class="d">FY2025 · ROE สูงจาก E&amp;P recovery</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$1,856M</div><div class="d">FY2025: $2,278M (+17% YoY)</div></div>
+      <div class="metric"><div class="k">Net Profit Margin</div><div class="v">~23%</div><div class="d">FY2025: 23.4% · ปกติ 20–27%</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~2.85%</div><div class="d">$2.22/share · 56 ปีต่อเนื่อง</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">0.39</div><div class="d">ความผันผวนต่ำ · defensive utility</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#E8820C"></i>ราคา NFG</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $91.00</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคา NFG เปิดต้นปี 2568 ที่ ~$86.79 ดีดขึ้นสูงสุดที่ ~$93.96 ใน ก.ย. 2568 จากรายงาน FY2025 (EPS $5.68) ที่แข็งแกร่ง
+        ก่อนร่วงลงช่วงปลายปีตามราคาก๊าซธรรมชาติที่อ่อนตัวและแรงกดดันจากอัตราดอกเบี้ย
+        ราคาปิด ม.ค. 2569 ที่ ~$77.70 ให้ผลตอบแทนรอบปี −10.5%
+        ส่วนต่างจาก Fair Value $91.00 ยังเป็นบวกชัดเจน ทำให้ valuation อยู่ในโซนน่าสะสม
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS adj. $7.42 × P/E เป้าหมาย ~14x — ค่าเฉลี่ยภาคส่วน integrated gas utility; ต่ำกว่า pure-play utility (~16–18x) เพราะ E&amp;P segment มีความผันผวนสูงกว่า</div></div>
+        <div class="mval">$103.88</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล $2.22 × (1+g); g 4.0%, r 6.5% — NFG Dividend Aristocrat 56 ปี, ปันผลเติบโต ~4–5%/ปี; r อิง CAPM (rf 4.3% + beta 0.39 × ERP 5.6%)</div></div>
+        <div class="mval">$88.80</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 10% − g 4.0%)/(r 6.5% − g 4.0%) ≈ 2.4x × BVPS $33.92 — ใช้ ROE 10% สำหรับ regulated utility portion (conservative); FY2025 actual ROE ~17% จาก E&amp;P surge</div></div>
+        <div class="mval">$81.41</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $81 – $104</span></div>
+        <div class="r">$91.00</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        P/E Valuation ให้ค่าสูงสุด ($103.88) สะท้อน earning power ปัจจุบันที่แข็งแกร่ง;
+        DDM ($88.80) เหมาะสำหรับ utility dividend-grower;
+        Justified P/BV ($81.41) ใช้ ROE conservative ซึ่งอนุรักษ์นิยมที่สุด
+        FV เฉลี่ย $91.00 สมเหตุสมผลสำหรับบริษัทที่มีทั้งกระแสเงินสดแน่นอนจาก utility/pipeline และ upside จาก E&amp;P
+        ราคาปัจจุบัน $78.00 ต่ำกว่า FV ประมาณ 14.3% นับว่าน่าสนใจสำหรับนักลงทุนระยะยาว
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $78.00</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $91.00</div></div>
+        </div>
+        <div class="scale">
+          <span>$63.70<br><small>MOS 30%</small></span>
+          <span>$72.80<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$91.00<br><small>Fair Value</small></span>
+          <span style="text-align:right">$101.50<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">$104.00<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคา $78.00 อยู่ระหว่าง MOS 20% ($72.80) และ Fair Value ($91.00) — อยู่ในโซน "น่าสนใจ ทยอยสะสม"
+        เป้าเฉลี่ยนักวิเคราะห์ $101.50 สูงกว่า FV ของเราเล็กน้อย สะท้อน upside ~30% จากราคาปัจจุบัน
+        หาก NFG ร่วงมาโซน MOS 20% (~$72.80) จะเป็นโอกาสซื้อที่น่าสนใจมาก
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict ok">
+        <div class="big">+14.3%</div>
+        <div class="txt">MOS ปานกลาง — น่าสนใจ ทยอยสะสม</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$72.80</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$63.70</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $91.00</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="78.00" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $78.00 • EPS ฐาน ~$6.50 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS −2%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$61.17</div>
+          <div class="ret neg">−13.0%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$6.12</span></li>
+            <li><span>P/E ออก</span><span>10x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$6.66</span></li>
+            <li><span>สถานการณ์</span><span>ราคาก๊าซดิ่ง + ดอกเบี้ยสูง</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +5%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$105.25</div>
+          <div class="ret pos">+43.9%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$7.52</span></li>
+            <li><span>P/E ออก</span><span>14x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$6.93</span></li>
+            <li><span>สถานการณ์</span><span>utility ฟื้น + E&amp;P ทรงตัว</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +8%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$131.04</div>
+          <div class="ret pos">+77.0%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$8.19</span></li>
+            <li><span>P/E ออก</span><span>16x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$7.20</span></li>
+            <li><span>สถานการณ์</span><span>ก๊าซพุ่ง + LNG demand + re-rate</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      Base EPS ฐาน $6.50 (เฉลี่ย FY2025 $5.68 และ TTM $7.42 เพื่อ normalize ความผันผวนจาก E&amp;P segment)
+      Bear case เกิดจากราคาก๊าซฟิวเจอร์ตกต่ำต่อเนื่องกดดัน Seneca Resources + ดอกเบี้ยคงสูง
+      Base case สมมติ E&amp;P ทรงตัวและ rate-case ผ่านในรัฐ NY/PA
+      Bull case อิง LNG demand เพิ่ม + re-rating กลับสู่ P/E ปกติ 16x
+      การประมาณการนี้ไม่ใช่การรับประกันผลตอบแทน
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก &amp; ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>Dividend Aristocrat 56 ปี:</b> สายปันผลต่อเนื่องยาวนานที่สุดในกลุ่ม utility สร้างความเชื่อมั่นระยะยาวสำหรับนักลงทุนรายได้</li>
+          <li><b>Integrated business model:</b> รายได้จาก 4 segments (Utility, Pipeline, E&amp;P, Gathering) ลดความเสี่ยงด้านรายได้; regulated utility และ pipeline ให้กระแสเงินสดมั่นคง</li>
+          <li><b>Marcellus/Utica upside:</b> Seneca Resources มีพื้นที่ Appalachian แนวดีในรัฐ PA ที่ยังไม่ได้พัฒนาเต็มที่ หากราคาก๊าซฟื้น E&amp;P segment จะขยาย EPS อย่างมีนัยสำคัญ</li>
+          <li><b>Rate case ใน NY/PA:</b> NFG อยู่ระหว่างยื่นขออนุมัติค่าบริการใหม่ใน NY ผลบวกจะช่วยเพิ่ม regulated revenue ระยะยาว</li>
+          <li><b>LNG demand growth:</b> การลงทุนโครงสร้างพื้นฐาน LNG Export ของสหรัฐฯ เพิ่มความต้องการก๊าซ Marcellus ที่ NFG ขนส่งผ่าน pipeline</li>
+          <li><b>Valuation discount:</b> P/E 10.5x ต่ำกว่า peer utility ที่ 15–18x และต่ำกว่าค่าเฉลี่ย 5 ปีของตัวเอง สร้าง upside หาก sentiment กลับ</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>ราคาก๊าซธรรมชาติ:</b> E&amp;P segment รายได้ผันผวนตามราคาก๊าซ FY2024 EPS ดิ่งเหลือ $0.84 เมื่อก๊าซถูก; ความเสี่ยงนี้ทำ P/E ของตลาดกด discount</li>
+          <li><b>ดอกเบี้ยสูง:</b> Utility มี leverage สูง อัตราดอกเบี้ยที่ยังสูงเพิ่มต้นทุนทางการเงินและลด relative attractiveness ต่อ bond</li>
+          <li><b>กฎระเบียบ NY:</b> นิวยอร์กมีนโยบายพลังงานสะอาดที่เข้มงวด (CLCPA) อาจกดดันการขยายโครงสร้าง utility gas ระยะยาว</li>
+          <li><b>Weather dependency:</b> Utility และ E&amp;P รายได้ขึ้นกับอากาศหนาว ฤดูหนาวอบอุ่นผิดปกติกระทบ demand และ earnings</li>
+          <li><b>Capital intensity:</b> pipeline และ gathering ต้องลงทุน capex สูงต่อเนื่อง กระทบ free cash flow และ dividend payout flexibility</li>
+          <li><b>EPS volatility:</b> FY2024 anomaly (EPS $0.84 จาก impairment) แสดงว่า GAAP EPS สามารถผันผวนรุนแรง นักลงทุนต้องใช้ normalized EPS ประเมิน</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>สะสมได้ · Dividend Aristocrat ราคา Discount</h2>
+      <p>National Fuel Gas (NFG) เป็นหนึ่งในไม่กี่บริษัทที่รวม regulated utility + pipeline + E&amp;P ในองค์กรเดียว
+      ให้กระแสเงินสดมั่นคงจาก utility/pipeline พร้อม upside จาก Marcellus/Utica E&amp;P
+      56 ปีของการเพิ่มปันผลต่อเนื่องสะท้อนความแข็งแกร่งของ business model ที่หลากหลาย
+      ราคาปัจจุบัน $78.00 ต่ำกว่า Fair Value $91.00 ประมาณ 14.3% และต่ำกว่าเป้าเฉลี่ยนักวิเคราะห์ $101.50 ถึง 30%
+      P/E 10.5x ถือว่า cheap สำหรับ Dividend Aristocrat ที่มีรายได้หลากหลาย
+      ความเสี่ยงหลักคือราคาก๊าซผันผวนและ regulatory ใน NY แต่ regulated segment ช่วย buffer ได้ดี</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$91.00 <span style="font-size:12px;color:#cab9a8">($81–$104)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +14.3%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$101.50 (Buy)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ทยอยสะสมที่ราคาต่ำกว่า $82 (MOS ~10%+) · เพิ่มน้ำหนักหากร่วงมาโซน $72–$73 (MOS 20%) · ระวังถ้าราคาก๊าซ Henry Hub ต่ำกว่า $2.50/MMBtu ต่อเนื่อง · เหมาะสำหรับนักลงทุนที่ต้องการ dividend income + moderate growth
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    ที่มาข้อมูล: Yahoo Finance (quote/chart), StockAnalysis.com (financials/balance sheet), National Fuel Gas Company IR — nfg.com (annual reports/dividend history)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 1 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
