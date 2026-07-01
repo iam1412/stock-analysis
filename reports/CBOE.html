@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น Cboe Global Markets (CBOE) — Stock Analysis Dashboard</title>
+<!-- ★ ใส่รุ่นโมเดล AI ที่ใช้วิเคราะห์จริง -->
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
+<script type="application/json" id="stock-meta">
+{"symbol":"CBOE","currency":"USD","price":242.67,"fairValue":284.0,"mos":14.6,"upside":17.0,"pe":20.72,"dividendYield":1.24,"roe":23.0}
+</script>
+<!--
+  report-data: ธีมสี CBOE Red + ข้อมูลกราฟ/gauge
+  สี: CBOE ใช้สีแดงเข้ม (crimson red) เป็นแบรนด์หลัก — #BE1E2D
+  chart.data: 13 จุดรายเดือน ก.ค. 2568 – ก.ค. 2569 (range=1y จาก Yahoo Finance API)
+  Annual return: $241.04 → $242.67 = +0.7% ≈ "ทรงตัว (รอบปี)"
+-->
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#BE1E2D",
+    "accentDark": "#8B0000",
+    "darkGrad": "linear-gradient(135deg,#1a0505 0%,#2d0a0a 50%,#1a0505 100%)",
+    "glow": "rgba(190,30,45,0.35)",
+    "subColor": "#e8a0a8",
+    "headerMuted": "rgba(232,160,168,0.55)",
+    "verdictText": "#f5c2c7",
+    "vcellLabel": "rgba(232,160,168,0.7)",
+    "badge": "#BE1E2D",
+    "chgBg": "rgba(30,80,30,0.20)",
+    "chgColor": "#4caf78"
+  },
+  "chart": {
+    "data": [
+      ["ก.ค. 68", 241.04],
+      ["ส.ค. 68", 235.95],
+      ["ก.ย. 68", 245.25],
+      ["ต.ค. 68", 245.64],
+      ["พ.ย. 68", 258.17],
+      ["ธ.ค. 68", 251.00],
+      ["ม.ค. 69", 265.06],
+      ["ก.พ. 69", 299.72],
+      ["มี.ค. 69", 281.07],
+      ["เม.ย. 69", 300.09],
+      ["พ.ค. 69", 333.56],
+      ["มิ.ย. 69", 231.51],
+      ["ก.ค. 69", 242.67]
+    ],
+    "min": 210,
+    "max": 360,
+    "grid": [210, 240, 270, 284, 300, 330, 360],
+    "fairLine": 284.0,
+    "currency": "$",
+    "highlight": [4, 10],
+    "gridFmt": "v.toFixed(0)",
+    "dataFmt": "d[1].toFixed(2)"
+  },
+  "gauge": {
+    "min": 180,
+    "max": 390,
+    "cur": 242.67,
+    "fair": 284.0,
+    "fairLabelTop": false
+  },
+  "fv": 284.0
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">● ● ●</div>
+    <div>
+      <span class="tag">NYSE: CBOE</span>
+      <span class="tag">Financial Exchanges</span>
+      <span class="tag">Market Infrastructure</span>
+    </div>
+    <!-- ★ คำโปรยธุรกิจ (gate E32) — .sub ต้องอยู่ติดใต้ </h1> -->
+    <h1>Cboe Global Markets</h1>
+    <div class="sub">S&amp;P 500 Index options (SPX) · VIX Index/futures · equity/ETF options · Cboe Europe · market data/analytics · Chicago IL</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$242.67<small>(CBOE)</small></div>
+      </div>
+      <!-- ★ ป้าย % รอบปี (E35/E36): Jul 2025 $241.04 → Jul 2026 $242.67 = +0.7% ≈ ทรงตัว
+           theme.chgBg/chgColor ตั้งเขียว (ขึ้นนิดหน่อย แต่ใช้ "ทรงตัว" ไม่มีลูกศร gate E34 ข้าม) -->
+      <div class="chg">≈ ทรงตัว (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 1 ก.ค. 2569<br>
+        กรอบ 52 สัปดาห์ $227.15 – $371.18<br>
+        ที่มา: Yahoo Finance, StockAnalysis.com, Digrin.com
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล TTM ณ Q1 2569 (มี.ค. 2026)</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">$25.4B</div><div class="d">~105M shares outstanding</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~20.72x</div><div class="d">EPS TTM $11.71 (GAAP diluted)</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~24–27x</div><div class="d">ช่วง 20–35x (สูงสุด FY2021)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">4.74x</div><div class="d">BVPS ~$51.19 · D/E 0.29x</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ TTM</div><div class="v">$1,235M</div><div class="d">+43.9% YoY — Q1 2026 แข็งแกร่ง</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$11.71</div><div class="d">FY2024: $7.21 · FY2023: $7.13</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~$51.19</div><div class="d">Equity $5,374M / 105M shares</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~23.0% / 11.2%</div><div class="d">High-return asset-light model</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$4,793M</div><div class="d">+10.6% YoY — Data/Access mix ขยาย</div></div>
+      <div class="metric"><div class="k">Operating Margin</div><div class="v">33.8%</div><div class="d">Gross margin 54.1% — scale leverage</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~1.24%</div><div class="d">$2.88/ปี · Payout ~35% · CAGR +9.6% 3 ปี</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">0.40</div><div class="d">ความผันผวนต่ำมาก (defensive)</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART (ราคาย้อนหลัง ~1 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ก.ค. 2568 – ก.ค. 2569</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#BE1E2D"></i>ราคา CBOE</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $284</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคา CBOE ทรงตัวในกรอบ $235–$265 ตลอด H2/2568 ก่อนพุ่งขึ้นแตะ $333 เดือนพ.ค. 2569 หนุนโดยปริมาณซื้อขาย SPX/VIX options ที่สูงจากความผันผวนตลาดสหรัฐฯ จากความไม่แน่นอนนโยบายภาษีนำเข้า ต่อมาร่วงแรงสู่ $231 เดือนมิ.ย. 2569 หลัง VIX ดิ่งลงตามความกลัวที่คลี่คลาย ราคาปัจจุบัน $242.67 ยังต่ำกว่า FV $284 สร้าง MOS ประมาณ 14.6%
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION (เฉลี่ย 3 วิธี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <!-- gate E21 checks P/E math: EPS × P/E = result. Value must start with $ not year. -->
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS adj. $11.71 × P/E 24x — ต่ำกว่าค่าเฉลี่ย 5 ปี (24–27x) สะท้อน premium ที่ตลาดยอมจ่ายสำหรับ monopoly-like VIX/SPX franchise</div></div>
+        <div class="mval">$281.04</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. EV/EBITDA Peer Comparison</div><div class="mdesc">EBITDA TTM ~$1,819M / 105M shares = $17.32/sh × 16x (peer median CME/ICE/NDAQ ~15–18x) หักสุทธิหนี้ $10.08/sh — equity value ต่อหุ้น</div></div>
+        <div class="mval">$267.10</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Forward P/E (FY2026E)</div><div class="mdesc">EPS FY2026 consensus $13.75 (analyst 17 คน, StockAnalysis.com) × P/E 22x — discount จาก historical P/E เนื่องจากดอกเบี้ยยังสูง + ความไม่แน่นอน macro</div></div>
+        <div class="mval">$302.50</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $267 – $303</span></div>
+        <div class="r">$284</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        วิธี Forward P/E ให้ค่าสูงสุด ($302.50) สะท้อน EPS growth outlook แข็งแกร่ง (+43.9% YoY TTM) ขณะที่ EV/EBITDA peer comparison ให้ค่าอนุรักษ์นิยมที่สุด ($267.10) เพราะนำ net debt มาหักก่อน FV เฉลี่ย $284 ใกล้เคียง P/E ~24x ซึ่งสมเหตุสมผลสำหรับธุรกิจ exchange ที่มี network effect สูงและ recurring revenue ที่แข็งแกร่ง
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $242.67</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $284</div></div>
+        </div>
+        <div class="scale">
+          <span>$198.80<br><small>MOS 30%</small></span>
+          <span>$227.20<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$284<br><small>Fair Value</small></span>
+          <span style="text-align:right">$302.50<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">$319.64<br><small>เป้าเฉลี่ย Analyst</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน $242.67 ต่ำกว่า Fair Value $284 ประมาณ 14.6% — อยู่ในโซนน่าสนใจระหว่าง MOS 20% ($227.20) และ Fair Value ระดับ MOS นี้ถือว่า "พอใช้" (10–20%) สำหรับ quality exchange business ที่ไม่ค่อยลดราคาลึก นักวิเคราะห์ 17 คนให้เป้าเฉลี่ย $319.64 (+32%) consensus "Hold"
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <!-- MOS 14.6% → class "ok" (10–20%) -->
+      <div class="mos-verdict ok">
+        <div class="big">+14.6%</div>
+        <div class="txt">MOS พอใช้ — ราคาต่ำกว่า Fair Value ~$41 · เหมาะสะสมทยอยซื้อ · ยังไม่ถึงโซน Deep Value</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$227.20</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$198.80</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $284</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="242.67" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $242.67 • EPS ฐาน ~$11.71 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS +3%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$265.09</div>
+          <div class="ret neg">+9.2%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$12.80</span></li>
+            <li><span>P/E ออก</span><span>20x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$9.17</span></li>
+            <li><span>สถานการณ์</span><span>VIX ต่ำยาวนาน + competition กด volume</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +10%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$353.38</div>
+          <div class="ret pos">+45.6%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$15.59</span></li>
+            <li><span>P/E ออก</span><span>22x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$10.49</span></li>
+            <li><span>สถานการณ์</span><span>SPX/VIX options growth + data expansion ต่อเนื่อง</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +15%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$456.74</div>
+          <div class="ret pos">+88.2%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$17.81</span></li>
+            <li><span>P/E ออก</span><span>25x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$11.50</span></li>
+            <li><span>สถานการณ์</span><span>Cboe Digital + prediction markets ดัน revenue leap + re-rating</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      Base case อิง EPS CAGR +10% ซึ่งอนุรักษ์นิยมกว่า analyst consensus FY2025–2026 (+29%) แต่ adjust สำหรับ mean-reversion หลัง spike TTM (+43.9%) · CBOE มี recurring revenue mix ~35% (data/access) ที่ให้ floor earnings แม้ VIX ต่ำ · ปันผลโต ~9.6% CAGR ช่วยหนุน total return · ผลตอบแทน 3 ปี base case ~45.6% หรือ CAGR ~13.3%/ปี
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก &amp; ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>Monopoly SPX/VIX franchise:</b> CBOE ผูกขาดตลาด S&amp;P 500 Index options และ VIX options/futures ทั่วโลก — ไม่มี substitute ทางกฎหมาย (licensed product) ทำให้ pricing power สูงมาก</li>
+          <li><b>ปริมาณ options พุ่งระยะยาว:</b> Retail participation + 0DTE options (zero-days-to-expiry) เป็น secular trend ดัน ADV ของ SPX options สูงขึ้นทุกปี โดยไม่ต้องลงทุน capex มาก</li>
+          <li><b>Data &amp; Analytics expansion:</b> CBOE Data &amp; Access Solutions (~35% net revenue) เป็น recurring subscription — margin สูง ไม่ขึ้นกับ trading volume โดยตรง ขยายต่อเนื่อง</li>
+          <li><b>Extended trading hours (ETH):</b> CBOE เปิดตัว ETH สำหรับ equity options 24x5 — ดึงลูกค้าสถาบันระหว่างประเทศและ global traders สร้างโอกาส volume ใหม่</li>
+          <li><b>Cboe Global expansion:</b> Cboe Europe และ Cboe Australia กระจาย revenue ออกจาก US — capture global derivatives growth โดยเฉพาะ APAC ที่ options ยังโต</li>
+          <li><b>Prediction markets:</b> CBOE ได้รับ regulatory approval ขาย prediction market contracts บน economic events — blue-ocean revenue stream ใหม่ (2025–2026)</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>VIX cyclicality:</b> รายได้ options trading ผันผวนสูงตาม VIX — เมื่อตลาดสงบ (VIX &lt;15) volume ร่วงแรง EPS TTM $11.71 spike บางส่วนมาจาก high-vol environment ในปี 2025</li>
+          <li><b>Regulatory risk:</b> SEC/CFTC อาจเข้มงวดกฎ 0DTE options หรือ prediction markets — CBOE เป็น regulated exchange ที่ขึ้นกับ regulatory approval ทุกผลิตภัณฑ์ใหม่</li>
+          <li><b>Competition จาก CME/Nasdaq:</b> CME ขยาย equity derivatives, Nasdaq แข่งขันตลาด equity options — fee compression อาจกดดัน transaction revenue margin</li>
+          <li><b>Technology disruption:</b> DeFi/on-chain derivatives เริ่มแย่ง market share derivatives — อาจลาม options ดั้งเดิมในระยะ 5–10 ปีข้างหน้า</li>
+          <li><b>Valuation re-rating risk:</b> ดอกเบี้ยสูงยาวนานอาจ de-rate P/E multiple exchange stocks จาก ~24x สู่ ~20x ทำให้ราคา sideways แม้ EPS โต</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>คุณภาพสูง — สะสมได้ที่ MOS 15%+ ใต้ Fair Value</h2>
+      <p>CBOE เป็น "infrastructure monopoly" ของ global derivatives market ด้วย SPX options และ VIX franchise ที่ไม่มีคู่แข่งทดแทนได้ในระดับกฎหมาย ธุรกิจมีทั้ง recurring revenue (data/access ~35%) ที่ไม่ขึ้นกับ volume โดยตรง และ transaction revenue ที่ได้ประโยชน์จาก structural growth ของ options market ระยะยาว ROE 23% + operating margin 34% + Beta 0.40 ชี้ถึงธุรกิจ defensive คุณภาพสูง ณ ราคา $242.67 ต่ำกว่า FV $284 ประมาณ 14.6% ถือว่า "reasonable entry" แม้ไม่ใช่ deep value</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$284 <span style="font-size:12px;color:#cab9a8">($267–$303)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +14.6%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$319.64 (Hold)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ทยอยสะสมใต้ $284 (Fair Value) โดยเฉพาะช่วง $227–$242 (MOS 20%+) · ถือระยะยาว 3–5 ปี รับปันผลโต ~10%/ปี + EPS growth · Stop/Re-evaluate หาก VIX กลับสู่ regime ต่ำยาวนาน (&lt;12 ต่อเนื่อง 1 ปี+) หรือ regulatory framework เปลี่ยนกระทบ SPX/VIX licensing
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ที่มา: Yahoo Finance (finance.yahoo.com), StockAnalysis.com, Digrin.com — ราคา ณ 1 ก.ค. 2569
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 1 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
