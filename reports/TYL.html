@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น Tyler Technologies (TYL) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"TYL","currency":"USD","price":295,"fairValue":380,"mos":22.4,"upside":28.8,"pe":25.4,"dividendYield":null,"roe":8.5}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#0061AF",
+    "accentDark": "#004d8c",
+    "darkGrad": "linear-gradient(135deg,#003d70 0%,#0061AF 60%,#0080d6 100%)",
+    "glow": "rgba(0,97,175,0.35)",
+    "subColor": "#cce3f7",
+    "headerMuted": "rgba(204,227,247,0.7)",
+    "verdictText": "#e8f4fd",
+    "vcellLabel": "#a8d4f0",
+    "badge": "#0061AF",
+    "chgBg": "#c5221f",
+    "chgColor": "#fff"
+  },
+  "chart": {
+    "data": [
+      ["มิ.ย. 68", 592.84],
+      ["ก.ค. 68", 584.56],
+      ["ส.ค. 68", 562.88],
+      ["ก.ย. 68", 523.16],
+      ["ต.ค. 68", 476.26],
+      ["พ.ย. 68", 469.62],
+      ["ธ.ค. 68", 453.95],
+      ["ม.ค. 69", 369.40],
+      ["ก.พ. 69", 354.69],
+      ["มี.ค. 69", 342.38],
+      ["เม.ย. 69", 341.14],
+      ["พ.ค. 69", 313.15],
+      ["มิ.ย. 69", 292.46]
+    ],
+    "min": 250,
+    "max": 650,
+    "grid": [250, 300, 350, 400, 450, 500, 550, 600, 650],
+    "fairLine": 380,
+    "currency": "$",
+    "highlight": [0, 12],
+    "gridFmt": "v.toFixed(0)",
+    "dataFmt": "d[1].toFixed(2)"
+  },
+  "gauge": {
+    "min": 220,
+    "max": 520,
+    "cur": 295,
+    "fair": 380,
+    "fairLabelTop": true
+  },
+  "fv": 380
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">NYSE: TYL · Government Technology · SaaS</div>
+    <div>
+      <span class="tag">NYSE: TYL</span>
+      <span class="tag">Government Software</span>
+      <span class="tag">SaaS · Public Sector</span>
+    </div>
+    <h1>Tyler Technologies</h1>
+    <div class="sub">อันดับ 1 ซอฟต์แวร์ ERP รัฐบาลท้องถิ่น US • ระบบศาล/เรือนจำ • NIC Payments • ความปลอดภัยสาธารณะ • ประเมินภาษีอสังหา/GIS • SaaS ซ้ำ 80%+ • NRR 108-110% • Plano TX</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$295<small>(TYL)</small></div>
+      </div>
+      <div class="chg">▼ −50.7% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 1 ก.ค. 2569<br>
+        กรอบ 52 สัปดาห์ $270.71 – $621.34<br>
+        ที่มา: Yahoo Finance, StockAnalysis.com, MarketBeat
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">อิง adj EPS (non-GAAP) · ข้อมูล ณ มิ.ย. 2569</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~$12.4B</div><div class="d">~42.2M หุ้น (NYSE)</div></div>
+      <div class="metric"><div class="k">P/E (adj, TTM)</div><div class="v neu">~25.4x</div><div class="d">GAAP P/E ~40.7x (NIC amort กด GAAP)</div></div>
+      <div class="metric"><div class="k">Forward P/E (FY2026)</div><div class="v">~23.4x</div><div class="d">ต่ำสุดรอบ 5 ปี · guided adj EPS $12.50–$12.75</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">3.5x</div><div class="d">BVPS $84.52 · equity $3.7B (FY2025)</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">$315.6M</div><div class="d">+19.9% YoY · GAAP net margin 13.5%</div></div>
+      <div class="metric"><div class="k">Adj EPS (TTM)</div><div class="v pos">~$11.61</div><div class="d">GAAP EPS TTM $7.24 (ต่างจาก NIC amort ~$4.37/หุ้น)</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~$84.52</div><div class="d">equity $3.7B · goodwill $3.4B จาก M&amp;A</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~8.5% / 5.6%</div><div class="d">ต่ำเพราะ goodwill $3.4B จาก NIC acquisition</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$2.38B</div><div class="d">+11.4% vs FY2024 · โต 5 ปีต่อเนื่อง</div></div>
+      <div class="metric"><div class="k">Gross Margin</div><div class="v">46.75%</div><div class="d">ปรับดีขึ้นจาก 43.8% ปี FY2024</div></div>
+      <div class="metric"><div class="k">NRR (Net Revenue Retention)</div><div class="v pos">~108-110%</div><div class="d">SaaS/subscription ซ้ำ 80%+ ของรายได้</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">0.81</div><div class="d">ผันผวนน้อยกว่าตลาด · ลูกค้ารัฐบาล stable</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART (ราคาย้อนหลัง ~1 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">มิ.ย. 2568 – มิ.ย. 2569 (ราคาปิดรายเดือน)</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#0061AF"></i>ราคา TYL</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $380</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        TYL ร่วงหนักจาก $592.84 (มิ.ย. 2568) มาสู่ $292.46 (มิ.ย. 2569) ลด −50.7% ในรอบปี
+        แรงกดดันหลักมาจากการที่ตลาดหมุนออกจากหุ้น SaaS/เทคที่ P/E สูง ประกอบกับ
+        ความไม่แน่นอนของงบประมาณรัฐบาลกลาง (DOGE impact) และภาพรวม macro
+        อย่างไรก็ตาม พื้นฐานธุรกิจยังแข็งแกร่ง: รายได้ Q1 2569 +8.6% YoY, adj EPS $3.09 เกินคาด
+        จุดต่ำสุด 52 สัปดาห์อยู่ที่ $270.71 (ก.พ. 2569) ก่อนฟื้นตัวบางส่วน
+        ราคาปัจจุบัน ~$295 ต่ำกว่ามูลค่าเหมาะสม $380 ประมาณ 22% — Forward P/E เพียง 23x
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION (3 วิธี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี · อิง adj EPS (non-GAAP)</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation (adj EPS TTM)</div><div class="mdesc">EPS adj. $11.61 × P/E 32x — P/E เป้า 32x สอดคล้องกับ gov SaaS compounder NRR 108%+ switching cost สูง (ประวัติศาสตร์ TYL non-GAAP P/E 35-50x) · ปัจจุบัน forward P/E เพียง 23x ต่ำสุดรอบ 5 ปี</div></div>
+        <div class="mval">$372</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. Forward P/E Valuation (FY2026 guided adj EPS)</div><div class="mdesc">EPS adj. $12.63 (midpoint guidance $12.50–$12.75) × P/E 28x — Forward P/E 28x เป็นค่า conservative สำหรับ SaaS รัฐบาลที่โตปีละ 10-12% · upside จากการฟื้น sentiment tech/SaaS</div></div>
+        <div class="mval">$354</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. EV/Revenue Valuation</div><div class="mdesc">EV/Revenue 7.0x × Rev TTM $2.38B → EV $16.67B + net cash $455M − debt $643M ÷ 42.2M หุ้น — SaaS รัฐบาลคุณภาพสูง NRR 108%+ สมควรได้ premium multiple 7x (Salesforce/ServiceNow ซื้อขายที่ 7-10x)</div></div>
+        <div class="mval">$391</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $354 – $430</span></div>
+        <div class="r">$380</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ทั้ง 3 วิธีให้ค่า $354–$391 อยู่ในกรอบใกล้เคียงกัน สะท้อนความสอดคล้องของการประเมิน
+        P/E adj TTM ($372) และ EV/Rev ($391) ให้ค่าสูงสุด เพราะสะท้อน NRR และ margin ที่ดี
+        Forward P/E ($354) ให้ค่าต่ำสุดแต่เป็น conservative floor ที่ดี · FV เฉลี่ย $372 ปัดขึ้น $380
+        หมายเหตุ: GAAP EPS TTM ($7.24) ถูกกดด้วยการตัดจำหน่าย NIC acquisition intangibles ~$4–5/หุ้นต่อปี
+        ซึ่งเป็น non-cash และจะลดลงเมื่อเวลาผ่านไป — adj EPS คือตัวชี้วัดที่แท้จริงของกำลังหาเงิน
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $295</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $380</div></div>
+        </div>
+        <div class="scale">
+          <span>$266<br><small>MOS 30%</small></span>
+          <span>$304<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$380<br><small>Fair Value</small></span>
+          <span style="text-align:right">$430<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">$472<br><small>เป้าเฉลี่ย Analyst</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคา $295 อยู่ต่ำกว่า MOS 20% ($304) แล้ว — อยู่ในโซนที่น่าสนใจสำหรับ value investor
+        Analyst consensus เฉลี่ย $472.38 (จาก 16 นักวิเคราะห์, 13 Buy / 2 Hold / 1 Sell)
+        แสดง implied upside ~60% จากราคาปัจจุบัน · สูงกว่า FV ของเราอยู่มาก
+        ราคาปัจจุบันถือว่า "ลงมาตาม sentiment" ไม่ใช่ fundamental เสื่อม
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict good">
+        <div class="big">+22.4%</div>
+        <div class="txt">MOS ≥ 20% — โซนน่าสนใจสำหรับนักลงทุนระยะกลาง-ยาว</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$304</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$266</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $380</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="295" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $295 • EPS ฐาน ~$11.61 (adj TTM) • ไม่มีปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS +6%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$304</div>
+          <div class="ret neg">+3%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$13.83</span></li>
+            <li><span>P/E ออก</span><span>22x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$0</span></li>
+            <li><span>สถานการณ์</span><span>งบฯ รัฐ tight · growth ชะลอ</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +12%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$489</div>
+          <div class="ret pos">+66%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$16.31</span></li>
+            <li><span>P/E ออก</span><span>30x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$0</span></li>
+            <li><span>สถานการณ์</span><span>SaaS ฟื้น · NRR คง 108%+</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +15%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$618</div>
+          <div class="ret pos">+109%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$17.66</span></li>
+            <li><span>P/E ออก</span><span>35x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$0</span></li>
+            <li><span>สถานการณ์</span><span>AI upsell + market share gains</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      สถานการณ์ Base อิงการเติบโต adj EPS 12%/ปี ใกล้เคียงอัตราที่ผ่านมา (FY2025 adj EPS +19.9%)
+      P/E exit 30x conservative กว่าค่าเฉลี่ยประวัติศาสตร์ที่ 35-50x สะท้อน margin of error สูง
+      ความเสี่ยงหลักของ Bear คือการชะลอตัวของงบฯ รัฐบาลท้องถิ่น + ดอกเบี้ยยังสูง กด multiple
+      ไม่มีปันผล — TYL reinvest ทั้งหมดผ่าน M&amp;A และ organic growth (buyback เล็กน้อย)
+      ผลตอบแทนคาดการณ์นี้ขึ้นอยู่กับการฟื้นตัวของ P/E multiple ซึ่งขึ้นกับ macro/sentiment เป็นหลัก
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก &amp; ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>Switching Cost สูงมาก:</b> ระบบ ERP รัฐบาลท้องถิ่นเปลี่ยนยาก ใช้เวลา 2-5 ปีต่อการ migrate — ลูกค้า sticky สุด ๆ อัตรา churn ต่ำมาก</li>
+          <li><b>NRR 108-110%:</b> รายได้จากลูกค้าเดิมเติบโตทุกปีโดยอัตโนมัติ ผ่าน upsell modules + price escalation ตามสัญญา</li>
+          <li><b>AI/GovTech Tailwind:</b> Tyler กำลัง embed AI ใน Munis ERP, courts, payments — ช่วยเพิ่ม ARR และ premium pricing tier ในระยะ 2-3 ปีข้างหน้า</li>
+          <li><b>NIC Payments Synergy:</b> NIC (acquired 2021) เป็น payment gateway รัฐบาล 40+ รัฐ — cross-sell กับ Tyler base ยังไม่เต็มที่ มี long runway</li>
+          <li><b>Digital Transformation:</b> รัฐบาลท้องถิ่น 19,000+ หน่วยงานใน US ยังอยู่ในช่วงเริ่ม digitize — addressable market ขยายตัวต่อเนื่อง</li>
+          <li><b>Valuation ต่ำสุดในรอบ 5 ปี:</b> Forward P/E 23x เทียบประวัติศาสตร์ 35-50x — significant room for multiple expansion เมื่อ sentiment ฟื้น</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>งบประมาณรัฐถูกตัด:</b> DOGE/รัฐบาลกลางอาจกดดันงบฯ รัฐท้องถิ่น → ชะลอ contract signing และ new logo acquisition</li>
+          <li><b>NIC Amortization กดกำไร GAAP:</b> นักลงทุนส่วนหนึ่งดู GAAP P/E ~41x ว่าแพง แม้ adj P/E 25x สมเหตุสมผล — อาจยังมี sentiment กดดัน</li>
+          <li><b>Macro/Rate Risk:</b> ดอกเบี้ยสูงกด DCF valuation และ P/E multiple ของ SaaS — TYL หาย 50%+ จากจุดสูง บางส่วนมาจากเหตุนี้</li>
+          <li><b>การแข่งขัน:</b> Oracle (Financials Cloud), SAP, Salesforce เริ่มโฟกัส gov sector — แม้ switching cost ปกป้อง installed base แต่กด new logo</li>
+          <li><b>Growth ชะลอหลัง NIC:</b> รายได้โต ~9-11%/ปี เทียบ 40%+ ในปี FY2022 — ตลาดต้องปรับความคาดหวังลงมาแล้ว</li>
+          <li><b>Concentration Risk:</b> รายได้ 100% จากรัฐบาล US — ไม่มี international revenue เป็น diversification</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>ราคาลงมาต่ำกว่า MOS 20% — โอกาสสะสมสำหรับ Long-term Investor</h2>
+      <p>Tyler Technologies เป็น "ราชาซอฟต์แวร์รัฐบาลท้องถิ่น US" ที่ไม่มีคู่แข่งระดับเดียวกัน Switching cost สูงมาก NRR 108-110% สะท้อนว่าลูกค้าไม่เพียงอยู่แต่ยัง expand — เป็น Business Model ที่ดีที่สุดประเภทหนึ่ง การที่ราคาหาย 50% ในรอบปีมาจาก sentiment เปลี่ยน (SaaS derating) และ macro pressure ไม่ใช่ fundamental เสื่อม รายได้ยังโต Q1 2569 adj EPS $3.09 เกินคาด ราคา ~$295 อยู่ต่ำกว่า MOS 20% ($304) Forward P/E 23x ต่ำสุดในรอบ 5 ปี คือโอกาสสะสม สำหรับนักลงทุนระยะ 3-5 ปีที่เชื่อใน govtech megatrend</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$380 <span style="font-size:12px;color:#a8d4f0">($354–$430)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +22.4%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$472 (Moderate Buy)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ราคา $295 ต่ำกว่า MOS 20% แล้ว เหมาะสำหรับ <b>ทยอยสะสม</b> สำหรับ long-term investor ระยะ 3-5 ปี โซน deep value อยู่ที่ &lt;$266 (MOS 30%) หากตลาดยังขายต่อ คาดการณ์ผลตอบแทน Base ~+66% ใน 3 ปี (adj EPS โต 12%/ปี + P/E re-rating กลับ 30x) TYL เหมาะกับ Portfolio สายคุณภาพที่ต้องการ Recurring Revenue + Moat แน่นในราคาที่ถูกลงมาก
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ adj EPS ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    แหล่งข้อมูล: Yahoo Finance (ราคาหุ้น + กราฟรายเดือน 13 จุด), StockAnalysis.com (งบการเงิน + metrics), MarketBeat (adj EPS quarterly + analyst targets 16 นักวิเคราะห์) · ราคา ณ 1 ก.ค. 2569
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 1 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
