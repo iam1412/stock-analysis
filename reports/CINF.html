@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น Cincinnati Financial (CINF) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"CINF","currency":"USD","price":185.14,"fairValue":184,"mos":-1,"upside":-1,"pe":10.6,"dividendYield":2.03,"roe":null}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#006B8E",
+    "accentDark": "#004F6A",
+    "darkGrad": "linear-gradient(135deg,#00364D 0%,#004F6A 60%,#006B8E 100%)",
+    "glow": "rgba(0,107,142,0.35)",
+    "subColor": "#80C5D9",
+    "headerMuted": "rgba(128,197,217,0.65)",
+    "verdictText": "#B0DDE8",
+    "vcellLabel": "#80C5D9",
+    "badge": "#006B8E",
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#1e8e3e"
+  },
+  "chart": {
+    "data": [
+      ["ก.ค. 68", 144.28],
+      ["ส.ค. 68", 150.23],
+      ["ก.ย. 68", 155.50],
+      ["ต.ค. 68", 152.05],
+      ["พ.ย. 68", 164.84],
+      ["ธ.ค. 68", 161.48],
+      ["ม.ค. 69", 159.07],
+      ["ก.พ. 69", 162.13],
+      ["มี.ค. 69", 156.49],
+      ["เม.ย. 69", 162.71],
+      ["พ.ค. 69", 156.56],
+      ["มิ.ย. 69", 186.16],
+      ["ก.ค. 69", 185.14]
+    ],
+    "min": 130,
+    "max": 210,
+    "grid": [130, 145, 160, 175, 190, 210],
+    "fairLine": 184,
+    "currency": "$",
+    "highlight": [11, 12]
+  },
+  "gauge": {
+    "min": 100,
+    "max": 230,
+    "cur": 185.14,
+    "fair": 184,
+    "fairLabelTop": true
+  },
+  "fv": 184
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">&#9679;&#9679;&#9679;</div>
+    <div>
+      <span class="tag">NYSE: CINF</span>
+      <span class="tag">Insurance P&amp;C</span>
+      <span class="tag">Dividend King</span>
+    </div>
+    <h1>Cincinnati Financial</h1>
+    <div class="sub">P&amp;C Insurance (Commercial · Personal · E&amp;S) • Life Insurance • Equity Investment Portfolio ~$27B • Dividend King 64+ ปีติดต่อ • Cincinnati, Ohio</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$185.14<small>(CINF)</small></div>
+      </div>
+      <div class="chg">▲ +28.3% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 1 ก.ค. 2569<br>
+        กรอบ 52 สัปดาห์ $143.87 – $187.40<br>
+        ที่มา: Yahoo Finance, StockAnalysis.com, Digrin.com (งบ FY2025/Q1 2026)
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ณ ก.ค. 2569 · ปรับสำหรับธุรกิจประกันภัย P&amp;C</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~$28.6B</div><div class="d">154.7M shares · Beta 0.54 (Defensive)</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~10.6x</div><div class="d">EPS GAAP $17.50 (รวม MTM equity portfolio ผันผวน)</div></div>
+      <div class="metric"><div class="k">Forward P/E (Operating)</div><div class="v neu">~21.1x</div><div class="d">EPS operating 2026E $8.77 · consensus 8 นักวิเคราะห์</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">1.82x</div><div class="d">BVPS $101.60 (Q1 2569) · ประวัติ 1.3–1.8x</div></div>
+
+      <div class="metric"><div class="k">EPS GAAP (TTM)</div><div class="v">~$17.50</div><div class="d">รวมกำไร MTM หุ้น equity portfolio (ผันผวน)</div></div>
+      <div class="metric"><div class="k">EPS Operating 2026E</div><div class="v pos">~$8.77</div><div class="d">Normalized EPS ตัด MTM gains ออก</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~$101.60</div><div class="d">Book Value Per Share Q1 2569 · เพิ่มจาก $76.52 ปี 2566</div></div>
+      <div class="metric"><div class="k">ROE (GAAP TTM)</div><div class="v pos">~17.4%</div><div class="d">สูงจาก MTM gains · Operating ROE ~10–12%</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">~$12.9B</div><div class="d">Net premiums + investment income + realized gains</div></div>
+      <div class="metric"><div class="k">Combined Ratio (FY2568)</div><div class="v">~97%</div><div class="d">ต่ำกว่า 100% = Underwriting กำไร · ดีขึ้นจาก ~101% FY2567</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~2.03%</div><div class="d">$3.76/share · เพิ่มติดต่อ 64+ ปี · 5Y DGR 8.7%</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">0.54</div><div class="d">ความผันผวนต่ำ · เหมาะ Conservative investor</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART (ราคาย้อนหลัง ~1 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ก.ค. 2568 – ก.ค. 2569</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#006B8E"></i>ราคา CINF</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $184</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        CINF เริ่มรอบปีที่ ~$144 (ก.ค. 2568) ก่อนทยอยขึ้นสู่กรอบ $150–$165 ในช่วง ส.ค.–ต.ค. 2568
+        พ.ย.–ก.พ. ผันผวนในกรอบ $157–$165 สะท้อนความกังวลเรื่อง catastrophe losses
+        มี.ค.–พ.ค. 2569 ราคาปรับลงเล็กน้อยสู่ ~$156 ก่อนพุ่งแรงแตะ $186 ในมิ.ย. 2569
+        หลังผลประกอบการ Q1 2569 และการประกาศขึ้นปันผลครั้งที่ 64 ติดต่อกัน
+        ปัจจุบัน $185.14 ใกล้มูลค่าเหมาะสม $184 สะท้อน Premium ที่ตลาดให้ Dividend King
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION (3 วิธี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี · ใช้ตัวเลข Operating สำหรับ P&amp;C insurer</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation (Operating EPS)</div><div class="mdesc">EPS adj. $8.77 × P/E 17x — ใช้ Operating EPS 2026E ตัด MTM equity ออก · P/E เป้าหมาย 17x สะท้อน Dividend King premium เทียบ TRV ~14x, HIG ~12x</div></div>
+        <div class="mval">$149</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. DDM / Gordon Growth Model</div><div class="mdesc">D₁ = $3.76 × (1+7%) = $4.02; g = 7% (ใกล้ 5Y DGR 8.7% · sustainable); r = 9% (cost of equity, beta 0.54) → FV = $4.02 / (9%−7%) = $4.02 / 2%</div></div>
+        <div class="mval">$201</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV = (ROE 11% − g 7%) / (r 9% − g 7%) = 4%/2% ≈ 2.0x × BVPS $101.60 — ใช้ Operating ROE ~11% (ตัด MTM gains) · BVPS Q1 2569 $101.60</div></div>
+        <div class="mval">$203</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $149 – $203</span></div>
+        <div class="r">$184</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        DDM และ Justified P/BV ให้ FV สูง ($201–$203) สะท้อน Dividend King ที่เพิ่มปันผลสม่ำเสมอ 64+ ปี
+        P/E ให้ค่าต่ำกว่า ($149) เพราะ Operating EPS ต่ำกว่า GAAP EPS มากจากการตัด MTM equity portfolio ออก
+        เฉลี่ย 3 วิธีที่ $184 ใกล้เคียงราคาปัจจุบัน บ่งชี้ว่า CINF ซื้อขายในระดับ Fairly Valued ณ ปัจจุบัน
+        แหล่งข้อมูล: Yahoo Finance (ราคา/EPS) · StockAnalysis.com (BVPS/ROE/ratios) · Digrin.com (DGR) · consensus 8 analysts (Operating EPS 2026E)
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $185.14</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $184</div></div>
+        </div>
+        <div class="scale">
+          <span>$128.80<br><small>MOS 30%</small></span>
+          <span>$147.20<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$181.50<br><small>เป้า Analyst</small></span>
+          <span style="text-align:right">$184<br><small>Fair Value</small></span>
+          <span style="text-align:right">$203<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคา $185.14 อยู่เหนือมูลค่าเหมาะสม $184 เพียง ~0.6% สะท้อนว่า CINF ซื้อขายในระดับ Fairly Valued
+        เป้าเฉลี่ย Analyst 8 คนที่ $181.50 (consensus Buy) ต่ำกว่าราคาปัจจุบัน บ่งชี้ว่าตลาด Price-in แล้ว
+        โซนน่าสนใจสำหรับ Value Investor อยู่ที่ต่ำกว่า $147–$165 (MOS 10–20%)
+        โซน Deep Value ที่ต่ำกว่า $128.80 จะเป็นโอกาสสะสมดีมาก แต่อาจรอนานหรือต้องมีเหตุการณ์ Cat loss รุนแรง
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">-1%</div>
+        <div class="txt">ราคาใกล้/เหนือมูลค่าเหมาะสม — ยังไม่มี Margin of Safety</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$147.20</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$128.80</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $184</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="185.14" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $185.14 • EPS ฐาน ~$8.77 (Operating 2026E) • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS +2%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$121</div>
+          <div class="ret neg">-28%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$9.31</span></li>
+            <li><span>P/E ออก</span><span>13x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$11.90</span></li>
+            <li><span>สถานการณ์</span><span>Cat losses สูง + equity ร่วง</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +7%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$195</div>
+          <div class="ret pos">+5%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$10.74</span></li>
+            <li><span>P/E ออก</span><span>17x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$12.40</span></li>
+            <li><span>สถานการณ์</span><span>Combined ratio ดี + premium growth</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +12%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$247</div>
+          <div class="ret pos">+33%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$12.32</span></li>
+            <li><span>P/E ออก</span><span>19x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$13.00</span></li>
+            <li><span>สถานการณ์</span><span>Hard market + equity surge</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      ใช้ Operating EPS 2026E $8.77 เป็นฐาน (ตัด MTM equity portfolio ออกเพื่อภาพ stable กว่า GAAP EPS $17.50)
+      Base scenario: Capital gain เล็กน้อย (~$10) + ปันผล ~$12.40 ใน 3 ปี = ผลตอบแทนรวม ~5% หรือ ~1.6%/ปี
+      ถ้านับปันผล reinvest และ equity portfolio compounding ระยะยาว CINF มักให้ผลตอบแทนทับตลาดในระยะ 10+ ปี
+      Bear scenario เกิดเมื่อ catastrophe losses รุนแรง (ไฟป่า/พายุ) + equity portfolio ปรับลดรุนแรงพร้อมกัน
+      Bull scenario เกิดเมื่อ insurance hard market ต่อเนื่อง + equity portfolio ฟื้นตัวแรง + combined ratio ต่ำกว่า 95%
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก &amp; ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>Dividend King 64+ ปี:</b> เพิ่มปันผลติดต่อกัน 64+ ปีไม่เคยหยุด ดึงดูด Income investor และ Index fund ที่ติดตาม Dividend Aristocrat/King ทำให้มีฐาน Buyer ขนาดใหญ่</li>
+          <li><b>Large Equity Portfolio Compounder:</b> CINF ถือ equity portfolio ~$27B ใหญ่ผิดปกติสำหรับ P&amp;C insurer ตลาดหุ้นขาขึ้นระยะยาว = investment income + unrealized gains เพิ่ม = BVPS และ dividend capacity เติบโต</li>
+          <li><b>Premium Rate Hardening:</b> อุตสาหกรรม P&amp;C insurance ยังอยู่ใน hard market หลัง catastrophe losses สูงหลายปี CINF ปรับ premium ขึ้นต่อเนื่อง net written premium growth ~7–9% ต่อปี</li>
+          <li><b>Combined Ratio ปรับดีขึ้น:</b> FY2568 combined ratio ~97% ดีขึ้นจาก FY2567 ~101% Underwriting กำไรกลับมา + investment income เติบโต = earnings quality ดีขึ้น</li>
+          <li><b>Agency Model Moat:</b> CINF ขายผ่าน Independent agents ที่มีความภักดีสูง ได้ renewal rate ดีและ combined ratio ต่ำกว่าคู่แข่ง ยากที่จะ disrupt จาก InsurTech</li>
+          <li><b>Low Beta / Defensive:</b> Beta 0.54 ต่ำมาก ในช่วงตลาดผันผวน/recession CINF มักทนทานกว่าตลาดรวม เหมาะสำหรับ Conservative portfolio ที่ต้องการ Dividend + Capital preservation</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>Equity Portfolio Volatility:</b> CINF ถือ equity ~$27B แทน bond แบบ insurer ทั่วไป ตลาดหุ้นลงหนัก = GAAP EPS ติดลบ (FY2565 EPS -$3.06) สร้างความผันผวน EPS และอาจทำให้นักลงทุนกังวล</li>
+          <li><b>Catastrophe Exposure:</b> ไฟป่า น้ำท่วม พายุ tornado ใน Midwest CINF เน้น Commercial lines ในพื้นที่มีความเสี่ยง Cat loss สูง ปี cat loss รุนแรง = combined ratio เกิน 100% + EPS ลด</li>
+          <li><b>Valuation Premium:</b> ราคาปัจจุบันใกล้/เหนือ FV MOS เป็นลบ Forward P/E 21x บน Operating EPS สูงกว่าค่าเฉลี่ยกลุ่มประกัน จุดเข้าที่ดีกว่าคือ $147–$165</li>
+          <li><b>Climate Change Risk:</b> ความถี่และความรุนแรงของ catastrophe events เพิ่มขึ้นในระยะยาว อาจกดดัน underwriting profitability และต้นทุน reinsurance ในอีก 5–10 ปีข้างหน้า</li>
+          <li><b>Interest Rate Sensitivity:</b> BVPS ของ CINF ผันผวนตามตลาดหุ้น (equity portfolio) มากกว่า interest rate ถ้าตลาดหุ้นปรับฐาน BVPS ลด = Justified P/BV ให้ FV ต่ำลงมาก</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>Fairly Valued — Dividend King ที่ตลาดให้ราคาสมเหตุสมผลแล้ว</h2>
+      <p>Cincinnati Financial (CINF) คือ Quiet Compounder แบบ Classic ที่หาได้ยาก — P&amp;C insurer ที่มั่นคง เพิ่มปันผล 64+ ปีติดต่อกัน และมี equity portfolio ~$27B ที่ให้ผลตอบแทนระยะยาวสูงกว่า bond-heavy insurer ทั่วไป ณ ราคา $185.14 CINF ซื้อขายใกล้ FV เฉลี่ย $184 (DDM $201 + Justified P/BV $203 ดึงขึ้น แต่ P/E Operating ดึงลงที่ $149) Forward P/E 21x บน Operating EPS สูง แต่ Premium นี้สมเหตุสมผลสำหรับ Dividend King ที่มีประวัติ 64+ ปี สำหรับ Long-term Income Investor ที่ต้องการ Hold ยาว ราคาปัจจุบันยังน่าถือ แต่ผู้ต้องการ MOS ที่มีนัยสำคัญควรรอโอกาสที่ราคาปรับลงสู่ $147–$165</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$184 <span style="font-size:12px;color:#cab9a8">($149–$203)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ -1%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$181.50 (Buy · 8 นักวิเคราะห์)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> Hold สำหรับผู้ถืออยู่แล้ว · ผู้ต้องการเข้าใหม่รอจุดเข้าที่ดีกว่า $147–$165 (MOS 10–20%) · ระยะยาวให้ weight Dividend King premium + equity portfolio compounding
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    CINF มี equity portfolio ขนาดใหญ่ที่ทำให้ GAAP EPS ผันผวนมาก ควรใช้ Operating EPS ในการ Valuation
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    ที่มา: Yahoo Finance (finance.yahoo.com/quote/CINF) · StockAnalysis.com (stockanalysis.com/stocks/cinf) · Digrin.com (digrin.com/stocks/detail/CINF) · ราคา ณ 1 ก.ค. 2569
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 1 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
