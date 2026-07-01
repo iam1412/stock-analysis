@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น Baxter International (BAX) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"BAX","currency":"USD","price":21.32,"fairValue":23,"mos":7.3,"upside":7.9,"pe":9.4,"dividendYield":0.19,"roe":null}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#C8102E",
+    "accentDark": "#8B0B1F",
+    "darkGrad": "linear-gradient(135deg,#2a0610 0%,#1a0408 100%)",
+    "glow": "rgba(200,16,46,0.35)",
+    "subColor": "#F5A3B0",
+    "headerMuted": "rgba(245,163,176,0.7)",
+    "verdictText": "#fff0f2",
+    "vcellLabel": "#e8bbc2",
+    "badge": "#C8102E",
+    "chgBg": "#c5221f",
+    "chgColor": "#fff"
+  },
+  "chart": {
+    "data": [
+      ["ก.ค. 25", 21.76],
+      ["ส.ค. 25", 24.69],
+      ["ก.ย. 25", 22.77],
+      ["ต.ค. 25", 18.47],
+      ["พ.ย. 25", 18.74],
+      ["ธ.ค. 25", 19.11],
+      ["ม.ค. 26", 20.07],
+      ["ก.พ. 26", 20.37],
+      ["มี.ค. 26", 16.80],
+      ["เม.ย. 26", 17.58],
+      ["พ.ค. 26", 18.78],
+      ["มิ.ย. 26", 22.02],
+      ["30 มิ.ย. 26", 21.32]
+    ],
+    "min": 14,
+    "max": 27,
+    "grid": [14, 17, 20, 23, 26],
+    "fairLine": 23,
+    "currency": "$",
+    "highlight": [1, 8]
+  },
+  "gauge": {
+    "min": 12,
+    "max": 32,
+    "cur": 21.32,
+    "fair": 23,
+    "fairLabelTop": true
+  },
+  "fv": 23
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">#C8102E</div>
+    <div>
+      <span class="tag">NYSE: BAX</span>
+      <span class="tag">Healthcare</span>
+      <span class="tag">Medical Products</span>
+    </div>
+    <h1>Baxter International</h1>
+    <div class="sub">IV therapy &amp; infusion systems • Hospital consumables &amp; nutrition therapy • Surgical products • Hillrom patient monitoring &amp; care communications</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$21.32<small>(BAX)</small></div>
+      </div>
+      <div class="chg">▼ −2.0% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 30 มิ.ย. 2569<br>
+        กรอบ 52 สัปดาห์ $15.73 – $31.76<br>
+        ที่มา: Yahoo Finance, StockAnalysis.com, Digrin.com
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ มิ.ย. 2569 — ใช้ Adjusted EPS (ตัดรายการพิเศษ)</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~$11.0B</div><div class="d">~516M shares outstanding</div></div>
+      <div class="metric"><div class="k">P/E (Adj TTM)</div><div class="v neu">~9.4x</div><div class="d">adj EPS FY2025 $2.27; GAAP EPS ติดลบ (goodwill impairment)</div></div>
+      <div class="metric"><div class="k">Forward P/E (FY2026E)</div><div class="v">~11.1x</div><div class="d">consensus adj EPS FY2026E $1.92 (ลดลงจาก $2.27)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">~1.8x</div><div class="d">BVPS ~$11.75 (TTM); tangible BV ติดลบเพราะ goodwill สูง</div></div>
+
+      <div class="metric"><div class="k">รายได้ FY2025</div><div class="v">$11.24B</div><div class="d">หลัง spinoff Vantive (kidney care) ออกไปปี 2567</div></div>
+      <div class="metric"><div class="k">Gross Margin</div><div class="v">~30%</div><div class="d">FY2025 30.1%; ลดจาก 37.5% ก่อน spinoff (product mix shift)</div></div>
+      <div class="metric"><div class="k">FCF (TTM)</div><div class="v pos">$723M</div><div class="d">OCF $1.25B − CapEx $528M; ดีกว่า GAAP net income ติดลบ</div></div>
+      <div class="metric"><div class="k">Long-term Debt</div><div class="v neg">$8.6B</div><div class="d">จากซื้อ Hillrom $12B ปี 2564; ลดลงต่อเนื่อง</div></div>
+
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~0.19%</div><div class="d">$0.04/ปี ($0.01/ไตรมาส); ตัดลง 94% พ.ย. 2568</div></div>
+      <div class="metric"><div class="k">Beta (5Y)</div><div class="v">0.64</div><div class="d">ความผันผวนต่ำกว่าตลาด</div></div>
+      <div class="metric"><div class="k">EV/EBITDA (norm.)</div><div class="v neu">~15x</div><div class="d">EV ~$18.5B / EBITDA norm. ~$1.2B (Q1 2569 annualized)</div></div>
+      <div class="metric"><div class="k">52-Week Range</div><div class="v">$15.73 – $31.76</div><div class="d">ราคาปัจจุบัน $21.32 อยู่กลางช่วง</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ก.ค. 2568 – มิ.ย. 2569 (Yahoo Finance)</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#C8102E"></i>ราคา BAX</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $23</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        BAX เปิดรอบปี (ก.ค. 2568) ที่ $21.76 ด้วย momentum หลัง Vantive spinoff แล้วพุ่งขึ้นแตะ $24.69 ในเดือน ส.ค. ก่อนร่วงหนักช่วง ต.ค.–พ.ย. 2568 ลงไปที่ ~$18.47 จากแรงกดดันเรื่องอัตรากำไรสุทธิ Q3–Q4 และการตัดลดเงินปันผล 94% ในเดือน พ.ย. 2568 ราคาฟื้นตัวเล็กน้อยช่วง ม.ค.–ก.พ. 2569 ก่อน Q4 2568 ที่มี goodwill impairment ขนาดใหญ่กดดันอีกครั้ง จากนั้นราคาตีกลับขึ้น $22 ในเดือน มิ.ย. 2569 ก่อนปิดที่ $21.32 — รอบปีรวม −2.0%
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี — Adjusted EPS + EV/EBITDA + FCF Yield</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation (Adjusted EPS)</div><div class="mdesc">EPS adj. $2.27 × P/E 14x — เทียบกับค่าเฉลี่ย med-tech ~18x แต่ใช้ 14x discount สำหรับภาระหนี้สูง (Hillrom acquisition) + margin compression หลัง spinoff</div></div>
+        <div class="mval">$31.78</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. EV/EBITDA (Normalized)</div><div class="mdesc">EBITDA normalized ~$1.25B (Q1 2569 annualized, ตัด goodwill impairment) × 12x EV multiple = $15.0B EV; ลบด้วย net debt $7.8B = equity $7.2B / 516M shares — สะท้อนภาระหนี้จากการซื้อ Hillrom</div></div>
+        <div class="mval">$13.95</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. FCF Yield Valuation</div><div class="mdesc">FCF TTM $723M / required yield 6.5% = equity value $11.1B / 516M shares — FCF ดีกว่า GAAP earnings เพราะ non-cash impairment; ใช้ yield 6.5% สำหรับ healthcare defensive</div></div>
+        <div class="mval">$21.51</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $14 – $32</span></div>
+        <div class="r">$23</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        การประเมินมูลค่า BAX มีความกระจัดกระจายสูงเนื่องจากงบการเงินอยู่ในช่วง "เปลี่ยนผ่าน" — วิธี P/E ให้ $31.78 เพราะอิง adj EPS ที่ตัดรายการพิเศษออก; วิธี EV/EBITDA ให้ต่ำสุด $13.95 เพราะน้ำหนักภาระหนี้ $8.6B; วิธี FCF $21.51 ให้ภาพกลางสุดและตรงความเป็นจริงมากที่สุด — เฉลี่ย 3 วิธี = $22.41 ปัดเป็น $23 (conservative) ราคาปัจจุบัน $21.32 ซื้อขายใกล้ FV จึง MOS ต่ำ
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $21.32</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $23</div></div>
+        </div>
+        <div class="scale">
+          <span>$16.10<br><small>MOS 30%</small></span>
+          <span>$18.40<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$23<br><small>Fair Value</small></span>
+          <span style="text-align:right">$27<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">$32<br><small>P/E High</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน $21.32 ต่ำกว่า Fair Value $23 อยู่ประมาณ 7% — MOS ต่ำสำหรับหุ้นที่มีความไม่แน่นอนสูงจากภาระหนี้และ margin ที่ยังถูกกดดัน โซนน่าสนใจสำหรับ value investor คือต่ำกว่า $18.40 (MOS 20%) และ deep value ที่ต่ำกว่า $16.10 (MOS 30%) เป้าเฉลี่ยนักวิเคราะห์ $21.54 ใกล้เคียงราคาตลาดปัจจุบัน สอดคล้องกับ consensus "Hold" จาก 14 สำนัก
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">+7.3%</div>
+        <div class="txt">MOS ต่ำ — ราคาใกล้มูลค่าเหมาะสม ยังไม่มีส่วนลดเพียงพอสำหรับความไม่แน่นอนของภาระหนี้สูง</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$18.40</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$16.10</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $23</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="21.32" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $21.32 • EPS ฐาน adj. ~$2.27 FY2025 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS −5%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$15.64</div>
+          <div class="ret neg">−26.6%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$1.94</span></li>
+            <li><span>P/E ออก</span><span>8x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$0.12</span></li>
+            <li><span>สถานการณ์</span><span>หนี้ท่วม กำไรยังถูกกด refi risk สูง</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +5%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$31.10</div>
+          <div class="ret pos">+46.7%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$2.63</span></li>
+            <li><span>P/E ออก</span><span>12x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$0.12</span></li>
+            <li><span>สถานการณ์</span><span>ลดหนี้ต่อเนื่อง margin ฟื้น Hillrom synergy</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +10%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$45.33</div>
+          <div class="ret pos">+112.6%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$3.02</span></li>
+            <li><span>P/E ออก</span><span>15x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$0.12</span></li>
+            <li><span>สถานการณ์</span><span>ปรับโครงสร้างสำเร็จ gross margin กลับ &gt;35% ลดหนี้เร็ว</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      การคาดการณ์อิง adj EPS FY2025 $2.27 เป็นฐาน โดย Base case ใช้ P/E 12x (discount จากค่าเฉลี่ย med-tech ~18x เพราะภาระหนี้) สะท้อนสถานการณ์ที่ BAX สามารถลดหนี้ได้ต่อเนื่องจาก FCF $723M/ปี และ gross margin ค่อยๆ ฟื้นตัวหลัง mix shift จาก Vantive spinoff โปรดทราบว่า adj EPS FY2026 analyst consensus อยู่ที่ $1.92 (ลดลง) ก่อนจะฟื้นขึ้น — ปันผลรวม 3 ปี ใช้ $0.04/ปี × 3 = $0.12 (ตัดลงแล้ว 94%)
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก &amp; ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>Hillrom Synergy ยังไม่ unlock เต็มที่:</b> การรวม Hillrom ($12B ปี 2564) ยังมี synergy ด้านประสิทธิภาพการดำเนินงานและ cross-selling ระหว่าง patient monitoring กับ IV/infusion systems มีโอกาส re-rating เมื่อประสิทธิภาพดีขึ้น</li>
+          <li><b>ลดหนี้อย่างรวดเร็ว:</b> FCF TTM $723M หากนำไปชำระหนี้อย่างต่อเนื่อง Net Debt/EBITDA จะลดลงสู่ระดับปกติภายใน 3–4 ปี ซึ่งจะ unlock P/E re-rating</li>
+          <li><b>Gross Margin Normalization:</b> FY2024 gross margin 37.5% ลดเหลือ 30.1% ใน FY2025 หลัง spinoff mix shift — มีโอกาสฟื้นตัวเมื่อ overhead ถูก rationalize และ product mix ปรับตัว</li>
+          <li><b>โครงสร้างธุรกิจ Defensive:</b> IV therapy และ infusion systems เป็นสินค้าจำเป็นในโรงพยาบาล ความต้องการ inelastic ป้องกัน downside ในสภาวะเศรษฐกิจขาลง</li>
+          <li><b>Hurricane Milton Insurance Recovery:</b> BAX ได้รับผลกระทบจากโรงงาน North Cove ถูกพายุ Milton ปี 2567 และกำลังอยู่ระหว่างเรียกร้องประกันภัย — recovery จะเป็น one-time upside ต่อ earnings</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>ภาระหนี้สูงมาก:</b> Long-term debt $8.6B เทียบ market cap $11B = leverage ratio สูงมาก ดอกเบี้ยกินกำไร adj operating income — หาก refi rates สูงหรือ earnings ต่ำกว่าคาด credit downgrade หรือ liquidity pressure อาจเกิดขึ้น</li>
+          <li><b>Gross Margin ยังกดดัน:</b> หลัง Vantive spinoff ทำให้ product mix เปลี่ยน — ธุรกิจที่เหลือ (IV/infusion) มี margin ต่ำกว่า kidney care ทำให้ gross margin ลดจาก 37.5% → 30% และการฟื้นตัวใช้เวลา</li>
+          <li><b>Adj EPS ลดลง FY2026:</b> Analyst consensus คาด adj EPS $1.92 ใน FY2026 (ลดจาก $2.27 ใน FY2025 = −15%) สะท้อนว่าการฟื้นตัวยังไม่ชัดเจน</li>
+          <li><b>ปันผลตัดแล้ว — การคืนทุนจำกัด:</b> ตัดเงินปันผล 94% ใน พ.ย. 2568 ทำให้ income investors ถอนตัว buyback ก็มีน้อยเพราะต้องรักษา cash สำหรับชำระหนี้ — yield เพียง 0.19% ไม่ดึงดูดนักลงทุน</li>
+          <li><b>Integration Risk:</b> การบูรณาการ Hillrom ยังไม่เสร็จสมบูรณ์ มีความเสี่ยงด้าน IT system, culture และ customer retention — goodwill impairment ขนาดใหญ่ใน Q4 2568 สะท้อนว่า synergy ต่ำกว่าคาด</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>Turnaround Story — ต้องการความอดทนและ Margin of Safety สูงกว่านี้</h2>
+      <p>Baxter International มีฐานธุรกิจ defensive (IV therapy, infusion systems, hospital consumables) แต่กำลังแบกรับภาระหนี้ $8.6B จากการซื้อ Hillrom ปี 2564 และยังอยู่ในช่วงเปลี่ยนผ่านหลัง spinoff Vantive (kidney care) ออกไปปี 2567 ตัวเลข GAAP ยังติดลบจาก goodwill impairment แต่ adj EPS FY2025 อยู่ที่ $2.27 และ FCF TTM $723M ซึ่งเป็นบวก บ่งชี้ว่าธุรกิจหลักยังทำเงินได้ ณ ราคา $21.32 ซื้อขายใกล้ Fair Value $23 (MOS เพียง 7.3%) จึงเหมาะสำหรับนักลงทุนที่เชื่อใน turnaround story ระยะยาวและรับความเสี่ยงได้สูง ควรรอโซน $18–$19 เพื่อ MOS ที่ดีกว่า</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$23 <span style="font-size:12px;color:#cab9a8">($14–$32)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +7.3%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$21.54 (Hold, 14 สำนัก)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> BAX เป็น high-risk turnaround play ที่ภาระหนี้สูงทำให้ margin of safety ปัจจุบัน (7.3%) ไม่เพียงพอ แนะนำ <b>Watch &amp; Wait</b> — รอราคาหลุด $18.40 (MOS 20%) เพื่อเริ่มสะสมทยอย หรือ $16.10 (MOS 30%) สำหรับ deep value entry นักลงทุนระยะยาวที่เชื่อว่า FCF จะถูกนำไปลดหนี้อย่างมีวินัยอาจได้ผลตอบแทนดีใน 3–5 ปี แต่ต้องทนต่อความผันผวนระยะสั้น
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ FCF ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ที่มา: Yahoo Finance (ราคา ณ 30 มิ.ย. 2569), StockAnalysis.com (งบการเงิน), Digrin.com (เงินปันผล)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 30 มิ.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
