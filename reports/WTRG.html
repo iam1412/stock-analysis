@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น Essential Utilities (WTRG) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"WTRG","currency":"USD","price":38.23,"fairValue":39.21,"mos":2.5,"upside":2.56,"pe":19.41,"dividendYield":3.54,"roe":8.52}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#1B8CA6",
+    "accentDark": "#136980",
+    "darkGrad": "linear-gradient(135deg,#0d3d4d 0%,#1B4F5E 60%,#0f2d38 100%)",
+    "glow": "rgba(27,140,166,0.35)",
+    "subColor": "#7dd4e8",
+    "headerMuted": "rgba(125,212,232,0.75)",
+    "verdictText": "#1B8CA6",
+    "vcellLabel": "#9ecfda",
+    "badge": "#1B8CA6",
+    "chgBg": "#1e8e3e",
+    "chgColor": "#ffffff"
+  },
+  "chart": {
+    "data": [
+      ["ม.ค. 68", 36.80],
+      ["ก.พ. 68", 39.51],
+      ["มี.ค. 68", 39.90],
+      ["เม.ย. 68", 39.03],
+      ["พ.ค. 68", 39.59],
+      ["มิ.ย. 68", 38.36],
+      ["ก.ค. 68", 38.79],
+      ["ส.ค. 68", 39.97],
+      ["ก.ย. 68", 40.27],
+      ["ต.ค. 68", 38.20],
+      ["พ.ย. 68", 36.89],
+      ["ธ.ค. 68", 38.31],
+      ["ก.ค. 69", 38.23]
+    ],
+    "min": 34,
+    "max": 44,
+    "grid": [34, 36, 38, 40, 42, 44],
+    "fairLine": 39.21,
+    "currency": "$",
+    "highlight": [8, 10],
+    "gridFmt": "v.toFixed(0)",
+    "dataFmt": "d[1].toFixed(2)"
+  },
+  "gauge": {
+    "min": 25,
+    "max": 50,
+    "cur": 38.23,
+    "fair": 39.21,
+    "fairLabelTop": true
+  },
+  "fv": 39.21
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">◆ ◆ ◆</div>
+    <div>
+      <span class="tag">NYSE: WTRG</span>
+      <span class="tag">Utilities</span>
+      <span class="tag">Water &amp; Gas Regulated</span>
+    </div>
+    <h1>Essential Utilities, Inc.</h1>
+    <div class="sub">น้ำประปา + ก๊าซธรรมชาติแบบ regulated · ~5.5 ล้านลูกค้า · 10 รัฐ · Peoples Natural Gas (ซื้อกิจการ 2020) · ปันผลต่อเนื่อง 30+ ปี · rate base โต ~8-10%/ปี · สำนักงานใหญ่ Bryn Mawr PA</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$38.23<small>(WTRG)</small></div>
+      </div>
+      <div class="chg">▲ +3.9% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 1 ก.ค. 2569<br>
+        กรอบ 52 สัปดาห์ $36.11 – $42.37<br>
+        ที่มา: Yahoo Finance, StockAnalysis.com, Macrotrends
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ไตรมาสล่าสุด (TTM)</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">$10.84B</div><div class="d">~283.6 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~19.4x</div><div class="d">ต่ำกว่าค่าเฉลี่ยประวัติ ~22-25x</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~22–25x</div><div class="d">ช่วง 20–29x (ตาม sector)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">1.57x</div><div class="d">BVPS ~$24.40 (TTM)</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">$616M</div><div class="d">EPS $2.20 (+YoY from $2.17)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$1.97</div><div class="d">GAAP diluted · FY2025 $2.20</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~$24.40</div><div class="d">Equity $6.89B / 283M หุ้น</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~8.5% / ~3.8%</div><div class="d">Net Income TTM $587M</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$2.55B</div><div class="d">น้ำ ~55% + ก๊าซ ~45%</div></div>
+      <div class="metric"><div class="k">Debt/Equity</div><div class="v">1.23x</div><div class="d">หนี้ $8.46B — typical สาธารณูปโภค</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~3.54%</div><div class="d">$1.353/หุ้น TTM · 30+ ปีต่อเนื่อง</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">0.65</div><div class="d">ผันผวนต่ำกว่าตลาด ~35%</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#1B8CA6"></i>ราคา WTRG</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $39.21</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคา WTRG ในช่วง 1 ปีที่ผ่านมาเคลื่อนไหวในกรอบแคบ $36–$40 สะท้อนธรรมชาติของสาธารณูปโภคที่มีรายได้สม่ำเสมอ จากราคาต้นปี ~$36.80 ปรับขึ้นไปแตะ $40.27 ในเดือน ก.ย. 2568 จากความต้องการหุ้น defensive เมื่อตลาดกังวลเศรษฐกิจ ก่อนย่อตัวกลับในช่วงปลายปี เมื่อ Fed ส่งสัญญาณคงดอกเบี้ยนานขึ้น โดยรวมราคาปรับขึ้น +3.9% รอบปี (รวมปันผลผลตอบแทนรวม ~7.4%) ราคาปัจจุบันใกล้เคียงมูลค่าเหมาะสม
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS adj. $1.97 × P/E เป้าหมาย ~22x — คู่แข่งกลุ่มน้ำ AWK ~24x, AWR ~28x; WTRG สมเหตุสมผลที่ 22x จาก 30+ ปีปันผลต่อเนื่อง + rate base เติบโต</div></div>
+        <div class="mval">$43.34</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล $1.37 × (1+g); g 5.0%, r 8.0% — อัตราโต 5% สอดคล้อง rate base growth + regulatory lag; r = 4.4% + 0.65×5.5% = 8%</div></div>
+        <div class="mval">$45.67</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 8.52% − g 5.0%)/(r 8.0% − g 5.0%) ≈ 1.17 × BVPS $24.40 — วิธีนี้ให้ค่าต่ำกว่าเนื่องจาก ROE ใกล้เคียง cost of equity; ใช้เป็น lower bound</div></div>
+        <div class="mval">$28.63</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $28.63 – $45.67</span></div>
+        <div class="r">$39.21</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        P/E (22x) และ DDM ให้ค่า $43-46 สะท้อนพรีเมียมที่ผู้ลงทุนยอมจ่ายสำหรับหุ้นสาธารณูปโภคคุณภาพสูง ส่วน Justified P/BV ($28.63) ต่ำกว่าเพราะ ROE ~8.5% ใกล้เคียง cost of equity ทำให้ economic spread แคบ มูลค่าเฉลี่ย $39.21 ใกล้เคียงราคาตลาดปัจจุบัน บ่งชี้ว่าหุ้นซื้อขายใกล้ fair value ไม่ถูกมาก แต่ก็ไม่แพงเกินไป
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $38.23</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $39.21</div></div>
+        </div>
+        <div class="scale">
+          <span>$27.45<br><small>MOS 30%</small></span>
+          <span>$31.37<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$39.21<br><small>Fair Value</small></span>
+          <span style="text-align:right">$39.80<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">$45.67<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคา $38.23 อยู่ต่ำกว่ามูลค่าเหมาะสม $39.21 เล็กน้อย (MOS ~2.5%) และต่ำกว่าเป้า Analyst เฉลี่ย $39.80 สะท้อนว่าหุ้นซื้อขายใกล้ fair value ผู้ลงทุนระยะยาวที่ต้องการกระแสปันผลสม่ำเสมออาจพิจารณาสะสมในโซน $36-38 (MOS 5-8%) ซึ่งให้ yield ที่น่าสนใจกว่า
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">+2.5%</div>
+        <div class="txt">ราคาใกล้ Fair Value — MOS จำกัด แต่ยังให้ Yield ~3.5%</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$31.37</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$27.45</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $39.21</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="38.23" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $38.23 • EPS ฐาน ~$1.97 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS +3%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$40.85</div>
+          <div class="ret pos">+17.9%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$2.15</span></li>
+            <li><span>P/E ออก</span><span>19x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$4.23</span></li>
+            <li><span>สถานการณ์</span><span>อัตราดอกเบี้ยสูงนาน กด P/E</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +6%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$49.35</div>
+          <div class="ret pos">+40.5%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$2.35</span></li>
+            <li><span>P/E ออก</span><span>21x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$4.36</span></li>
+            <li><span>สถานการณ์</span><span>rate base โต 8-10% ตามแผน</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +8%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$57.04</div>
+          <div class="ret pos">+60.8%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$2.48</span></li>
+            <li><span>P/E ออก</span><span>23x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$4.45</span></li>
+            <li><span>สถานการณ์</span><span>Fed ลดดอกเบี้ย + M&amp;A acquisition</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      แม้ในสถานการณ์ Bear ราคาหุ้นยังให้ผลตอบแทนบวก ~18% ใน 3 ปี เนื่องจากสาธารณูปโภคที่ regulated 100% มีความสามารถในการปรับขึ้นอัตราค่าบริการ (rate case) ตามต้นทุน ทำให้กำไรเติบโตได้แม้ในสภาวะเศรษฐกิจชะลอ ปันผลสม่ำเสมอ ~3.5%/ปีเป็นรายได้ฐานที่ป้องกันการขาดทุน ทั้งนี้ความเสี่ยงหลักคืออัตราดอกเบี้ยที่สูงนาน ซึ่งกด P/E multiples ของ sector
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก &amp; ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>Rate Base Growth ~8-10%/ปี:</b> แผนลงทุน infrastructure มูลค่า ~$3.5B ใน 5 ปี (2024-2028) ขยาย rate base → รายได้เพิ่มสม่ำเสมอผ่านกระบวนการ regulatory approval</li>
+          <li><b>ปันผล Aristocrat 30+ ปี:</b> WTRG ขึ้นปันผลต่อเนื่องกว่า 30 ปี อัตราเติบโตปันผล ~7%/ปีช่วง 5 ปีที่ผ่านมา เป็น dividend growth stock ที่เหมาะสำหรับ income investor</li>
+          <li><b>การลดดอกเบี้ยของ Fed:</b> เมื่ออัตราดอกเบี้ยลด sector utilities ได้รับประโยชน์โดยตรง ทั้งลดต้นทุนการกู้ยืมใหม่ + ผู้ลงทุนหันมาซื้อหุ้น defensive yield สูงกว่า bond</li>
+          <li><b>Peoples Natural Gas Synergy:</b> การรวมกิจการก๊าซ (2020) ยังคง unlocking synergies อย่างต่อเนื่อง ลดต้นทุนต่อลูกค้า + cross-selling water-gas ในพื้นที่ทับซ้อน</li>
+          <li><b>Water Scarcity Tailwind:</b> โครงสร้างพื้นฐานน้ำในสหรัฐฯ เก่าเกิน 50-100 ปี ต้องการเงินลงทุนซ่อมแซมมหาศาล รัฐบาลสนับสนุน infrastructure spending อย่างต่อเนื่อง</li>
+          <li><b>M&amp;A โอกาสซื้อกิจการ:</b> บริษัทสาธารณูปโภคขนาดเล็กที่เทศบาลต้องการขายออก เป็นโอกาสขยาย rate base ในราคาที่เพิ่ม EPS accretive</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>Regulatory Risk:</b> รายได้ขึ้นอยู่กับการอนุมัติขึ้นราคาจาก Public Utility Commissions (PUC) ใน 10 รัฐ ความล่าช้าหรือการปฏิเสธคำขอ rate case อาจกระทบ margin</li>
+          <li><b>ดอกเบี้ยสูง — Cost of Capital:</b> D/E ~1.23x หมายความว่าต้นทุนหนี้สูงกระทบ EPS โดยตรง; ถ้า Fed ไม่ลดดอกเบี้ยเร็ว การ refinance ใน 2-3 ปีข้างหน้าต้นทุนสูงขึ้น</li>
+          <li><b>Weather &amp; Drought Risk:</b> ภัยแล้งลด volume การใช้น้ำ แต่ Decoupling mechanism ในบางรัฐช่วยลดผลกระทบ — ยังมีความเสี่ยง basis อยู่ใน state ที่ไม่มี decoupling</li>
+          <li><b>ภาระหนี้สูง:</b> Total Debt $8.46B vs Equity $6.89B — leverage สูงตามธรรมชาติ utility แต่ถ้าสภาพคล่องตลาดตึงตัว อาจต้อง equity dilution ซึ่งกด EPS per share</li>
+          <li><b>Municipalization Risk:</b> บางเทศบาลพิจารณา "municipalization" (ซื้อระบบน้ำคืน) เป็นความเสี่ยงระยะยาวที่อาจลดจำนวนลูกค้าและ rate base ในพื้นที่นั้น</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>Fairly Valued — สาธารณูปโภค Defensive คุณภาพสูง เหมาะ Income Investor</h2>
+      <p>Essential Utilities (WTRG) เป็นหนึ่งในสาธารณูปโภคน้ำ+ก๊าซที่ดีที่สุดในสหรัฐฯ ด้วย 100% regulated business, 30+ ปีปันผลต่อเนื่อง, rate base เติบโต 8-10%/ปี และ beta ต่ำ 0.65 บ่งชี้ความผันผวนน้อย อย่างไรก็ตามราคาปัจจุบัน $38.23 ใกล้เคียงมูลค่าเหมาะสม $39.21 ทำให้ Margin of Safety จำกัดที่ ~2.5% ผู้ลงทุนที่เน้น capital gain ควรรอโซน $34-36 (MOS 8-13%) ก่อนสะสม ส่วน income investor ที่ต้องการ yield ~3.5%+ พร้อม dividend growth ~7%/ปี สามารถถือได้ในระยะยาว Analyst consensus = Hold กับเป้า $39.80</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$39.21 <span style="font-size:12px;color:#cab9a8">($28.63–$45.67)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +2.5%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$39.80 (Hold)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> สะสมที่ราคาต่ำกว่า $37 เพื่อให้ได้ MOS 5%+ และ Yield ~3.7% — ถ้าราคาปัจจุบัน ให้ถือเพื่อปันผลสม่ำเสมอ รอโอกาสซื้อเพิ่มเมื่อตลาดปรับฐาน หรือเมื่อ Fed ส่งสัญญาณลดดอกเบี้ยชัดเจน (catalyst หลักของ sector)
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • แหล่งข้อมูล: Yahoo Finance (ราคา/52W/ปันผล/beta/เป้า analyst), StockAnalysis.com (EPS/Revenue/BVPS/Equity), Macrotrends (EPS รายปี/ประวัติรายได้), การคำนวณ valuation โดย Claude Sonnet 4.6
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 1 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
