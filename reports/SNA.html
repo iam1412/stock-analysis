@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น Snap-on (SNA) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"SNA","currency":"USD","price":402.40,"fairValue":352,"mos":-14.3,"upside":-12.5,"pe":20.8,"dividendYield":2.43,"roe":17.6}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#CC0000",
+    "accentDark": "#990000",
+    "darkGrad": "linear-gradient(135deg,#1a0000 0%,#2d0a0a 50%,#1a0000 100%)",
+    "glow": "rgba(204,0,0,0.25)",
+    "subColor": "#ff6666",
+    "headerMuted": "rgba(255,180,180,0.55)",
+    "verdictText": "#ffcccc",
+    "vcellLabel": "rgba(255,200,200,0.7)",
+    "badge": "#CC0000",
+    "chgBg": "#1e8e3e",
+    "chgColor": "#ffffff"
+  },
+  "chart": {
+    "data": [
+      ["พ.ย. 67", 311.18],
+      ["ธ.ค. 67", 321.19],
+      ["ม.ค. 68", 325.24],
+      ["ก.พ. 68", 346.53],
+      ["มี.ค. 68", 335.55],
+      ["เม.ย. 68", 340.05],
+      ["พ.ค. 68", 344.60],
+      ["มิ.ย. 68", 366.11],
+      ["ก.ค. 68", 385.22],
+      ["ส.ค. 68", 363.22],
+      ["ก.ย. 68", 383.40],
+      ["ต.ค. 68", 371.21],
+      ["พ.ย. 68", 402.40]
+    ],
+    "min": 280,
+    "max": 430,
+    "grid": [300, 340, 380, 420],
+    "fairLine": 352,
+    "currency": "$",
+    "highlight": [3, 12]
+  },
+  "gauge": {
+    "min": 200,
+    "max": 500,
+    "cur": 402.40,
+    "fair": 352,
+    "fairLabelTop": true
+  },
+  "fv": 352
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">● ● ●</div>
+    <div>
+      <span class="tag">NYSE: SNA</span>
+      <span class="tag">Industrials</span>
+      <span class="tag">Professional Tools</span>
+    </div>
+    <h1>Snap-on Incorporated</h1>
+    <div class="sub">เครื่องมือช่างมืออาชีพระดับ Premium #1 ของโลก • Blue-Point • Williams • Bahco • เครื่องมือซ่อมรถ &amp; ระบบข้อมูลยานยนต์ • Snap-on Financial Services • van sales model • Kenosha, WI</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$402.40<small>(SNA)</small></div>
+      </div>
+      <div class="chg">▲ +29.3% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 27 มิถุนายน 2568<br>
+        กรอบ 52 สัปดาห์ $307.47 – $404.46<br>
+        ที่มา: Yahoo Finance, StockAnalysis.com, Snap-on Investor Relations
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล TTM / FY2025 ณ มิ.ย. 2568</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">$20.85B</div><div class="d">หุ้น ~52 ล้านหุ้น (Diluted)</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~20.8x</div><div class="d">EPS TTM $19.37 • ระดับบน vs ประวัติ 15–20x</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~17–18x</div><div class="d">ช่วง 14x (2023) – 22x (2025)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">3.50x</div><div class="d">BVPS $115.03 • สะท้อนผลตอบแทนสูง</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ TTM</div><div class="v">$1,049M</div><div class="d">Net margin ~21.8% • YoY ทรงตัว</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$19.37</div><div class="d">FY25: $19.61 • FY24: $19.84 • FY23: $19.11</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~$115.03</div><div class="d">Equity TTM $5,983M • หนี้สุทธิต่ำ</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~17.6% / 12.3%</div><div class="d">ROE ดีสม่ำเสมอ • สะท้อนธุรกิจ asset-light</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$4,809M</div><div class="d">4 segment: C&amp;I / Tools / RS&amp;I / Financial Svcs</div></div>
+      <div class="metric"><div class="k">Gross / Operating Margin</div><div class="v">50% / 28%</div><div class="d">Gross ~50% • Operating ~28% — สูงกว่า peer</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~2.43%</div><div class="d">$9.76/หุ้น/ปี (Forward) • เติบโตต่อเนื่อง 14+ ปี</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">0.74</div><div class="d">ความผันผวนต่ำกว่าตลาด • ป้องกันได้ในช่วง recession</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#CC0000"></i>ราคา SNA</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $352</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        SNA ปรับตัวขึ้นอย่างต่อเนื่องจาก $311 (พ.ย. 2567) สู่ $402 (พ.ย. 2568) ให้ผลตอบแทนรอบปี +29.3%
+        ขับเคลื่อนโดยผลประกอบการ FY2025 ที่แข็งแกร่ง กำไรขั้นต้นเกิน 50% และการปรับขึ้นเงินปันผลต่อเนื่อง
+        จุดเด่นคือเดือน ก.พ. 68 ที่ราคาพุ่งขึ้นแรง ก่อนปรับฐานช่วง มี.ค.-เม.ย. จาก macro uncertainty
+        แล้วฟื้นตัวสม่ำเสมอ ราคาปัจจุบันทรงอยู่เหนือ Fair Value $352 บ่งชี้ว่าตลาดให้พรีเมียมกับคุณภาพธุรกิจ
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS TTM $19.37 × P/E เป้าหมาย ~18x — ค่าเฉลี่ยประวัติศาสตร์ 5 ปีของ SNA อยู่ที่ 17–18x สะท้อนการเติบโต EPS ระดับ 3–5%/ปี</div></div>
+        <div class="mval">$349</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล $9.76 × (1+g); g 6%, r 9% → ปันผลเติบโตสม่ำเสมอ 14+ ปี อัตราอนาคตอนุรักษ์นิยมที่ 6%</div></div>
+        <div class="mval">$345</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 17.6% − g 5%)/(r 9% − g 5%) ≈ 3.15x × BVPS $115.03</div></div>
+        <div class="mval">$362</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $345 – $362</span></div>
+        <div class="r">$352</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ทั้ง 3 วิธีให้ค่าใกล้เคียงกันในช่วง $345–$362 แสดงความสอดคล้องของ model
+        P/BV วิธีที่ 3 ให้ค่าสูงสุด เพราะ ROE 17.6% รองรับพรีเมียมระดับ 3x BVPS
+        DDM ให้ค่าต่ำสุดเล็กน้อยเพราะใช้ g=6% อนุรักษ์นิยม ราคาปัจจุบัน $402.40 เหนือ FV ~14%
+        บ่งชี้ตลาดให้ premium กับคุณภาพธุรกิจและ Dividend Aristocrat-trajectory ของ SNA
+        แหล่งอ้างอิง: Yahoo Finance (finance.yahoo.com) และ StockAnalysis.com (stockanalysis.com/stocks/sna)
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $402.40</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $352</div></div>
+        </div>
+        <div class="scale">
+          <span>$246<br><small>MOS 30%</small></span>
+          <span>$282<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$352<br><small>Fair Value</small></span>
+          <span style="text-align:right">$362<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">$393<br><small>เป้าเฉลี่ย Analyst</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน $402.40 ทรงอยู่เหนือ Fair Value $352 ประมาณ 14% และสูงกว่า Analyst Consensus $393 เล็กน้อย
+        นักวิเคราะห์ 11 ราย (2 Strong Buy, 3 Buy, 4 Hold, 2 Sell) ให้เป้า $330–$445 consensus "Hold"
+        โซนซื้อที่น่าสนใจอยู่ที่ใต้ FV ($352) หรือดีกว่าคือ MOS 20% ที่ $282
+        หุ้น SNA มักซื้อขายบนพรีเมียม quality เพราะ franchise value ของ van-sales model ที่ยากเลียนแบบ
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">-14.3%</div>
+        <div class="txt">ราคาสูงกว่า Fair Value — ยังไม่มี Margin of Safety</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$282</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$246</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $352</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="402.40" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $402.40 • EPS ฐาน ~$19.37 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS −2%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$292</div>
+          <div class="ret neg">−20.1%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$18.23</span></li>
+            <li><span>P/E ออก</span><span>16x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$30</span></li>
+            <li><span>สถานการณ์</span><span>ยอดขายช่างหด, margin กดดัน</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +4%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$392</div>
+          <div class="ret pos">+5.2%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$21.79</span></li>
+            <li><span>P/E ออก</span><span>18x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$31</span></li>
+            <li><span>สถานการณ์</span><span>ฟื้นตัวค่อยเป็นค่อยไป van-sales</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +7%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$475</div>
+          <div class="ret pos">+25.9%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$23.73</span></li>
+            <li><span>P/E ออก</span><span>20x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$32</span></li>
+            <li><span>สถานการณ์</span><span>RS&amp;I เร่งตัว EV diagnostics + expansion</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      Base case ให้ผลตอบแทน 3 ปีรวมปันผลประมาณ +5% จากระดับราคาปัจจุบัน ซึ่งน้อยมากเมื่อเทียบกับ risk-free rate
+      ผลตอบแทนที่น่าพอใจ (10%+/ปี รวมปันผล) ต้องรอ Bull case หรือซื้อที่ราคาต่ำกว่า $352 (FV)
+      ปันผลปัจจุบัน $9.76/ปี คิดเป็น Yield 2.43% ที่ราคา $402 เป็น "เสาหลัก" ที่มั่นคงระหว่างรอจังหวะ
+      Bear case เป็นไปได้หากภาวะเศรษฐกิจกดดันรายได้ช่างอิสระ ทำให้ยอดขาย Tools Group ยังอ่อนแอต่อ
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก &amp; ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>Van Sales Moat:</b> โมเดลขายตรงผ่านรถตู้แฟรนไชส์ให้ความสัมพันธ์ผูกพันกับช่างมืออาชีพ ลด churn สร้าง recurring revenue จากแฟรนไชซี ~4,600 คันในสหรัฐ</li>
+          <li><b>EV Diagnostics &amp; RS&amp;I Growth:</b> ส่วน Repair Systems &amp; Information (37% รายได้) เติบโตจากรถ EV ที่ต้องการอุปกรณ์วินิจฉัยใหม่และระบบข้อมูล OEM Workshop</li>
+          <li><b>Dividend Aristocrat Trajectory:</b> ปันผลเติบโตต่อเนื่อง 14+ ปี มีแนวโน้มถึง Dividend Aristocrat (25 ปี) ภายใน ~11 ปี ดึงดูดนักลงทุนเน้นรายได้</li>
+          <li><b>Financial Services Synergy:</b> Snap-on Financial Services ปล่อยสินเชื่อให้แฟรนไชซีซื้อเครื่องมือ ช่วยขยายยอดขายและสร้างรายได้ดอกเบี้ยเสริม (~8% รายได้รวม)</li>
+          <li><b>Pricing Power:</b> Gross margin ~50% สะท้อน brand premium ที่ช่างอาชีพยอมจ่ายเพิ่มเพราะ "เครื่องมือดี = ทำงานเร็ว = ต้นทุนต่ำ"</li>
+          <li><b>Buyback สม่ำเสมอ:</b> หุ้นลดลงจาก ~60M เป็น ~52M ใน 5 ปี หนุน EPS per share โดยไม่ต้องพึ่งแค่การเติบโตรายได้</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>Valuation Premium:</b> ราคาปัจจุบันเหนือ FV ~14% และสูงกว่า Analyst Target $393 — หากตลาดเลิก re-rate stock อาจย่อตัวแรง</li>
+          <li><b>Tools Group Soft Demand:</b> ส่วน Snap-on Tools Group (~34% รายได้) อ่อนแอในช่วง 2023–2025 เพราะช่างเงินตึง ลดการซื้อเครื่องมือใหม่ ส่งผล EPS Growth ชะลอ</li>
+          <li><b>Credit Quality ของ Financial Services:</b> หาก recession กระทบช่างอิสระ NPL ของ Snap-on Financial Services อาจสูงขึ้น กดดัน segment นี้</li>
+          <li><b>Macro Sensitivity:</b> แม้ Beta 0.74 แต่ความต้องการเครื่องมือช่างผูกกับอุตสาหกรรมยานยนต์และการซ่อมบำรุง ซึ่งอาจชะลอใน recession</li>
+          <li><b>Competition ใน Industrial:</b> Williams และ Bahco (segment C&amp;I) เผชิญการแข่งขันในตลาดอุตสาหกรรมทั่วไปที่ผู้ซื้อ price-sensitive มากกว่าช่างมือ</li>
+          <li><b>Tariff &amp; Input Cost:</b> ผลิตส่วนใหญ่ในสหรัฐ แต่วัตถุดิบ (steel, materials) อ่อนไหวต่อภาษีนำเข้าและต้นทุนโลจิสติกส์ที่ผันผวน</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>คุณภาพระดับ Premium — แต่ราคาตลาดแพงกว่า Fair Value ~14%</h2>
+      <p>Snap-on (SNA) คือธุรกิจ "คุณภาพยอดเยี่ยม" ที่มี moat ชัดเจน: van-sales model ที่ช่างมืออาชีพภักดี กำไรขั้นต้น ~50% ROE ~17.6% ที่สม่ำเสมอ และปันผลเติบโตต่อเนื่อง 14+ ปี อย่างไรก็ตาม ณ ราคา $402.40 ตลาดกำหนดราคาความดีนี้ไว้ล่วงหน้าแล้ว P/E 20.8x สูงกว่า historical average 17–18x ทำให้ upside จำกัดในกรณีฐาน นักลงทุนเน้น margin of safety ควรรอโอกาสที่ราคาลงสู่โซน $280–$352</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$352 <span style="font-size:12px;color:#cab9a8">($345–$362)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −14.3%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$393 (Hold)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ถือหากมีอยู่แล้ว — คุณภาพธุรกิจรองรับระยะยาว สำหรับซื้อใหม่รอโซน $340–$352 (ใกล้ FV) หรือ $282 (MOS 20%) เพื่อ margin of safety ที่เพียงพอ ปันผล $9.76/ปี เป็นผลตอบแทนพื้นฐานที่มั่นคงระหว่างรอ
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    แหล่งข้อมูล: Yahoo Finance (finance.yahoo.com/quote/SNA), StockAnalysis.com (stockanalysis.com/stocks/sna/financials), Snap-on Investor Relations / SEC Filings (investors.snapon.com) — ราคา ณ 27 มิถุนายน 2568 ตรวจสอบ ≥2 แหล่ง ราคาต่างกัน 0.0% (Yahoo $402.40 = StockAnalysis $402.40)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 27 มิถุนายน 2568 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>

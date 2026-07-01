@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น Monster Beverage (MNST) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"MNST","currency":"USD","price":96.12,"fairValue":74.60,"mos":-28.8,"upside":-22.4,"pe":46.4,"dividendYield":0,"roe":23.2}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#3cb30a",
+    "accentDark": "#2a8a07",
+    "darkGrad": "linear-gradient(135deg,#0d1a0d 0%,#1a2e10 50%,#0d1a0d 100%)",
+    "glow": "rgba(60,179,10,0.35)",
+    "subColor": "#a8d878",
+    "headerMuted": "rgba(168,216,120,0.7)",
+    "verdictText": "#3cb30a",
+    "vcellLabel": "#a8d878",
+    "badge": "#3cb30a",
+    "chgBg": "#1e4d0f",
+    "chgColor": "#6fdc3a"
+  },
+  "chart": {
+    "data": [
+      ["ก.ค. 68", 58.75],
+      ["ส.ค. 68", 62.41],
+      ["ก.ย. 68", 67.31],
+      ["ต.ค. 68", 66.83],
+      ["พ.ย. 68", 74.99],
+      ["ธ.ค. 68", 76.67],
+      ["ม.ค. 69", 80.76],
+      ["ก.พ. 69", 85.30],
+      ["มี.ค. 69", 72.46],
+      ["เม.ย. 69", 77.07],
+      ["พ.ค. 69", 88.08],
+      ["มิ.ย. 69", 96.12]
+    ],
+    "min": 56,
+    "max": 99,
+    "grid": [60, 65, 70, 75, 80, 85, 90, 95],
+    "fairLine": 74.60,
+    "currency": "$",
+    "highlight": [4, 11]
+  },
+  "gauge": {
+    "min": 45,
+    "max": 110,
+    "cur": 96.12,
+    "fair": 74.60,
+    "fairLabelTop": true
+  },
+  "fv": 74.60
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">◆ ◆ ◆</div>
+    <div>
+      <span class="tag">NASDAQ: MNST</span>
+      <span class="tag">Consumer Staples</span>
+      <span class="tag">Energy Beverages</span>
+    </div>
+    <h1>Monster Beverage Corporation</h1>
+    <div class="sub">Monster Energy drinks · Reign Total Body Fuel · NOS · Full Throttle · Burn · Predator · Coca-Cola distribution partnership · 55%+ gross margin · asset-light model · Corona CA / Nasdaq</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$96.12<small>(MNST)</small></div>
+      </div>
+      <div class="chg">▲ +63.6% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 30 มิ.ย. 2569<br>
+        กรอบ 52 สัปดาห์ $58.09 – $97.87<br>
+        ที่มา: Yahoo Finance, StockAnalysis.com, Monster Beverage Q1 FY2026 Earnings Release
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ มิ.ย. 2569</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~$94B</div><div class="d">978M shares</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~46x</div><div class="d">สูงกว่า avg ~38x ประวัติศาสตร์</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~35–40x</div><div class="d">ช่วง 30–55x ตาม cycle</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">~10.9x</div><div class="d">BVPS $8.85 · buyback ลด equity</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2568</div><div class="v">$1.90B</div><div class="d">net margin 22.97%</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$2.07</div><div class="d">GAAP diluted · Q2'68–Q1'69</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~$8.85</div><div class="d">Equity $8.7B (TTM มี.ค. 69)</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~23% / ~19%</div><div class="d">Capital-light model แข็งแกร่ง</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$8.8B</div><div class="d">+17% YoY · Q1'69 +27% YoY</div></div>
+      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">~55%</div><div class="d">ฟื้นจากจุดต่ำ 50% ปี 2565</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">ไม่จ่าย</div><div class="d">คืนทุน buyback $3.8B ปี 67</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">0.54</div><div class="d">ผันผวนต่ำกว่าตลาด (5Y monthly)</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#3cb30a"></i>ราคา MNST</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $74.60</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคา MNST ปรับตัวขึ้นแรงตลอดรอบปีที่ผ่านมา จาก $58.75 ใน ก.ค. 2568 สู่ $96.12 ใน มิ.ย. 2569 คิดเป็น +63.6% โดยมีแรงหนุนหลักจากผลประกอบการ Q4'68 และ Q1'69 ที่แข็งแกร่งกว่าคาด รวมถึงการปรับขึ้นราคาของคู่แข่ง Celsius ที่ทำให้ Monster ดูน่าสนใจยิ่งขึ้น ราคาพักตัวสั้นในเดือน มี.ค. 69 ($72.46) ก่อนฟื้นตัวแรงและทำ 52-week high ใกล้ $97.87 ราคาปัจจุบันสูงกว่ามูลค่าเหมาะสมที่ประมาณไว้ที่ $74.60 อย่างมีนัยสำคัญ
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS adj. $2.07 × P/E เป้าหมาย ~38x — ค่าเฉลี่ยประวัติศาสตร์ 5 ปีที่เหมาะสมกับ consumer staples premium growth</div></div>
+        <div class="mval">$78.66</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. EV/EBITDA Valuation</div><div class="mdesc">EBITDA TTM $2,698M × EV/EBITDA เป้า 28x + net cash ~$3B ÷ 978M หุ้น — ระดับ fair premium สำหรับ brand ระดับโลก</div></div>
+        <div class="mval">$80.31</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. DCF (FCF-based)</div><div class="mdesc">FCF/share $2.12 · เติบโต 15%/ปี 3 ปีแรก, 10%/ปีต่อมา, Terminal 4% · WACC 9% — สะท้อนคุณภาพ asset-light</div></div>
+        <div class="mval">$64.83</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $65 – $80</span></div>
+        <div class="r">$74.60</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        วิธี P/E และ EV/EBITDA ให้ค่าใกล้เคียงกันที่ ~$78–80 สะท้อน premium ของ brand strength ขณะที่ DCF ให้ค่าอนุรักษ์นิยมกว่าที่ ~$65 เพราะ Terminal Growth 4% และ WACC 9% ค่าเฉลี่ย 3 วิธีที่ $74.60 บ่งชี้ว่าราคาปัจจุบัน $96.12 ซื้อขายเหนือมูลค่าเหมาะสมประมาณ 29% ซึ่งสะท้อนการที่ตลาดให้ราคา premium จากการเร่งตัวของรายได้ใน Q1'69 (+27% YoY)
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $96.12</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $74.60</div></div>
+        </div>
+        <div class="scale">
+          <span>$52.22<br><small>MOS 30%</small></span>
+          <span>$59.68<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$74.60<br><small>Fair Value</small></span>
+          <span style="text-align:right">$80<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">$89.69<br><small>เป้าเฉลี่ย Analyst</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคา $96.12 อยู่สูงกว่า Fair Value $74.60 ถึง ~29% สะท้อน premium valuation ที่ตลาดให้กับ MNST ในปัจจุบัน นักวิเคราะห์ 27 คน consensus "Buy" แต่ราคาเป้าเฉลี่ยอยู่ที่ $89.69 ซึ่งยังต่ำกว่าราคาปัจจุบัน ผู้ลงทุนเชิง Value ควรรอจนราคาเข้าสู่โซน $60–75 จึงจะได้ Margin of Safety ที่เหมาะสม
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">−28.8%</div>
+        <div class="txt">ราคาสูงกว่ามูลค่าเหมาะสม — รอจังหวะ pullback สู่โซน $60–75</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$59.68</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$52.22</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $74.60</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="96.12" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $96.12 • EPS ฐาน ~$2.07 • ไม่มีปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS +5%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$67</div>
+          <div class="ret neg">−30%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$2.40</span></li>
+            <li><span>P/E ออก</span><span>28x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>$0</span></li>
+            <li><span>สถานการณ์</span><span>Celsius ฟื้น, ตลาดชะลอ</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +12%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$102</div>
+          <div class="ret pos">+6%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$2.91</span></li>
+            <li><span>P/E ออก</span><span>35x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>$0</span></li>
+            <li><span>สถานการณ์</span><span>เติบโตเชิงภูมิภาคต่อเนื่อง</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +18%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$143</div>
+          <div class="ret pos">+49%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$3.40</span></li>
+            <li><span>P/E ออก</span><span>42x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>$0</span></li>
+            <li><span>สถานการณ์</span><span>ครองตลาดเกิดใหม่ Predator ระเบิด</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      ณ ราคาปัจจุบัน $96.12 ผลตอบแทนระยะ 3 ปีขึ้นอยู่กับ P/E compression อย่างมาก — ใน Base case แม้ EPS โต 12%/ปี แต่ถ้า P/E ลดลงจาก 46x สู่ 35x ผลตอบแทนรวมเพียง ~6% รวม 3 ปี ซึ่งต่ำกว่าพันธบัตรรัฐบาลสหรัฐ ความน่าสนใจของ MNST จะสูงขึ้นมากหากราคาปรับลงมาในโซน $65–75 ซึ่ง upside ในทุก scenario จะดีขึ้นอย่างมีนัยสำคัญ
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก &amp; ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>ตลาดเกิดใหม่ (Emerging Markets):</b> แบรนด์ Predator เจาะตลาดราคาต่ำในเอเชีย อัฟริกา ลาตินอเมริกา ยังมี runway เติบโตยาว</li>
+          <li><b>Coca-Cola Distribution Network:</b> เข้าถึง 200+ ประเทศผ่าน Coke bottlers ลด CAPEX และ SG&amp;A — ข้อได้เปรียบเชิงโครงสร้างที่ยากเลียนแบบ</li>
+          <li><b>Revenue Momentum Q1'69:</b> รายได้ +27% YoY สูงกว่าคาดมาก ขับเคลื่อนด้วยทั้งปริมาณ + mix ราคาที่ดีขึ้น</li>
+          <li><b>Pricing Power:</b> คู่แข่ง Celsius ปรับขึ้นราคา ทำให้ Monster ดูมี value กว่าในสายตาผู้บริโภค ปกป้อง market share</li>
+          <li><b>Gross Margin ฟื้น:</b> อัตรากำไรขั้นต้นกลับสู่ระดับ 55%+ หลังต้นทุน aluminum/freight ลดลง operating leverage สูง</li>
+          <li><b>Share Buyback:</b> buyback $3.8B ในปี 67 ลด share count ช่วยเพิ่ม EPS per share และ ROE อย่างมีนัยสำคัญ</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>Valuation Stretched:</b> P/E 46x สูงกว่าค่าเฉลี่ยประวัติศาสตร์ ~38x ใด ๆ ที่ทำให้ multiple compress จะกดราคาแม้ EPS ยังโตดี</li>
+          <li><b>การแข่งขันเพิ่มขึ้น:</b> Red Bull แข็งแกร่งในตลาด premium Celsius กลับมา Ghost/Prime Energy ดึงกลุ่ม Gen Z</li>
+          <li><b>Growth Sustainability:</b> ตลาดอเมริกาเหนือ mature Q1'69 growth ส่วนหนึ่งมาจาก one-time effects การคาดหวัง growth สูงต่อเนื่องมีความเสี่ยง</li>
+          <li><b>Coca-Cola Dependency:</b> หาก COKE ลดความสำคัญ Monster หรือขายหุ้น 19% จะกระทบความเชื่อมั่น แม้สัญญาระยะยาวคุ้มครองอยู่</li>
+          <li><b>ต้นทุนสินค้าโภคภัณฑ์:</b> สูตรเครื่องดื่มใช้ aluminum, sugar เสี่ยงกดดันกำไรขั้นต้นในช่วงราคาสูง (เกิดแล้วปี 65–66)</li>
+          <li><b>Regulatory / Health Trend:</b> กระแสสุขภาพและข้อบังคับโฆษณาเครื่องดื่มพลังงานแก่เยาวชนในยุโรปอาจจำกัดการขยายตลาด</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>MNST — ธุรกิจชั้นเยี่ยม แต่ราคาเกินมูลค่า ~29%</h2>
+      <p>Monster Beverage เป็นหนึ่งในธุรกิจ consumer goods ที่มีคุณภาพสูงที่สุดในโลก: กำไรขั้นต้น 55%+, capital-light ไม่มีโรงงานเป็นของตัวเอง, network Coca-Cola ที่ยากแทนที่ และ brand แข็งแกร่งระดับโลก อย่างไรก็ตาม ณ ราคา $96.12 ตลาดกำหนดราคา MNST ที่ P/E 46x ซึ่งสูงกว่ามูลค่าที่เหมาะสมตามโมเดลทุกวิธีอย่างมีนัยสำคัญ Fair Value ประมาณไว้ $74.60 (กรอบ $65–$80) ผลตอบแทน Base case 3 ปีเพียง ~6% ไม่คุ้มค่าความเสี่ยง เหมาะสำหรับนักลงทุน Value ที่รอโอกาส pullback สู่โซน $60–75</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$74.60 <span style="font-size:12px;color:#cab9a8">($65–$80)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ff8a65">MOS ~ −28.8%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$89.69 (Buy — 27 คน)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ธุรกิจดีเยี่ยม แต่ Valuation ปัจจุบันไม่มี Margin of Safety — รอราคา pullback สู่โซน <b>$60–$75</b> (MOS 20–30%) ก่อนเข้าสะสม โดยเฉพาะหาก P/E compress หลังตลาดปรับความคาดหวัง growth ลง ใน Base case ผลตอบแทน 3 ปีต่ำกว่า 10% รวม และไม่ได้รับ dividend เพิ่ม
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • แหล่งข้อมูล: Yahoo Finance (ราคา $96.12 ณ 30 มิ.ย. 2569, ราคารายเดือนย้อนหลัง 1 ปี), StockAnalysis.com (EPS TTM $2.07, Gross Margin 55.47%, BVPS $8.85, Analyst target $89.69, consensus Buy 27 คน), Monster Beverage Q1 FY2026 Earnings Release (รายได้ $2,353M, EPS $0.58, งวด มี.ค. 2569)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 30 มิ.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
