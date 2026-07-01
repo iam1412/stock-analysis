@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น Clean Harbors (CLH) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"CLH","currency":"USD","price":295,"fairValue":258,"mos":-14.3,"upside":-12.5,"pe":34.7,"dividendYield":null,"roe":14.79}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#CC5500",
+    "accentDark": "#993F00",
+    "darkGrad": "linear-gradient(135deg,#1a0d00 0%,#2d1a00 50%,#1a0d00 100%)",
+    "glow": "rgba(204,85,0,0.35)",
+    "subColor": "#ff9955",
+    "headerMuted": "rgba(255,153,85,0.7)",
+    "verdictText": "#ff9955",
+    "vcellLabel": "#ffb380",
+    "badge": "#CC5500",
+    "chgBg": "#1e5e2a",
+    "chgColor": "#4ade80"
+  },
+  "chart": {
+    "data": [
+      ["ก.ค. 68", 235.81],
+      ["ส.ค. 68", 242.21],
+      ["ก.ย. 68", 232.22],
+      ["ต.ค. 68", 210.51],
+      ["พ.ย. 68", 227.56],
+      ["ธ.ค. 68", 234.48],
+      ["ม.ค. 69", 259.91],
+      ["ก.พ. 69", 293.20],
+      ["มี.ค. 69", 286.73],
+      ["เม.ย. 69", 312.68],
+      ["พ.ค. 69", 281.03],
+      ["มิ.ย. 69", 298.75],
+      ["ก.ค. 69", 295.02]
+    ],
+    "min": 180,
+    "max": 360,
+    "grid": [180, 220, 258, 300, 340],
+    "fairLine": 258,
+    "currency": "$",
+    "highlight": [3, 9]
+  },
+  "gauge": {
+    "min": 150,
+    "max": 380,
+    "cur": 295,
+    "fair": 258,
+    "fairLabelTop": false
+  },
+  "fv": 258
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">●●●</div>
+    <div>
+      <span class="tag">NYSE: CLH</span>
+      <span class="tag">Environmental Services</span>
+      <span class="tag">Hazardous Waste</span>
+    </div>
+    <h1>Clean Harbors, Inc.</h1>
+    <div class="sub">#1 North American hazardous waste management • Environmental Services &amp; industrial cleaning • Safety-Kleen used oil recycling • Largest NA hazardous waste incinerator network • Heritage Crystal Clean (2023) • Norwell, MA</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$295.00<small>(CLH)</small></div>
+      </div>
+      <div class="chg">▲ +25.1% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 1 ก.ค. 2569<br>
+        กรอบ 52 สัปดาห์ $201.34 – $316.98<br>
+        ที่มา: Yahoo Finance, StockAnalysis.com, Barchart.com
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ก.ค. 2569 · ที่มา: Yahoo Finance, StockAnalysis</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">$15.6B</div><div class="d">53.1M shares</div></div>
+      <div class="metric"><div class="k">P/E adj (TTM)</div><div class="v neu">~34.7x</div><div class="d">adj EPS TTM ~$8.50</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~28–35x</div><div class="d">premium for moat</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">5.69x</div><div class="d">BVPS ~$51.84</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">$388M</div><div class="d">Net margin ~6.4%</div></div>
+      <div class="metric"><div class="k">EPS adj (TTM)</div><div class="v">~$8.50</div><div class="d">GAAP EPS TTM $7.38</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~$51.84</div><div class="d">Equity ~$2.75B</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~14.8% / ~5.7%</div><div class="d">ผลตอบแทนผู้ถือหุ้นมั่นคง</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$6.06B</div><div class="d">+1.9% YoY</div></div>
+      <div class="metric"><div class="k">EBITDA margin</div><div class="v">18.7%</div><div class="d">EBITDA TTM $1,131M</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">ไม่จ่าย</div><div class="d">reinvest growth &amp; M&amp;A</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">~0.85</div><div class="d">Defensive industrial</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART (ราคาย้อนหลัง ~1 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#CC5500"></i>ราคา CLH</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $258</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคา CLH ในช่วง 1 ปีที่ผ่านมา (ก.ค. 2568 – ก.ค. 2569) ปรับตัวขึ้น +25.1% จาก $235.81 มาที่ $295.02
+        ช่วง ต.ค. 2568 ราคาแตะจุดต่ำสุดที่ $210.51 ก่อนฟื้นตัวแข็งแกร่ง ส่วน เม.ย. 2569 แตะจุดสูงสุดรอบปีที่ $312.68
+        หนุนด้วยผลประกอบการที่ดีและความต้องการบริการกำจัดของเสียอันตรายที่เพิ่มขึ้นต่อเนื่อง ราคาปัจจุบันเคลื่อนไหวเหนือมูลค่าเหมาะสม $258 สะท้อน premium สำหรับผู้นำตลาดอันดับ 1
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION (เฉลี่ย 3 วิธี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS adj. $8.50 × P/E 30x — สะท้อนการเติบโต 10%/ปีของธุรกิจกำจัดกากอันตรายที่มี regulatory moat สูง</div></div>
+        <div class="mval">$255</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. EV/EBITDA Valuation</div><div class="mdesc">EBITDA TTM $1,131M × EV/EBITDA 15x = EV $16,965M; หักหนี้สุทธิ $2,569M; หารด้วย 53.1M หุ้น — peer industrial services 14–18x</div></div>
+        <div class="mval">$271</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. FCF Yield Valuation</div><div class="mdesc">FCF/share $8.73 ÷ target FCF yield 3.5% — สำหรับธุรกิจโครงสร้างพื้นฐานสิ่งแวดล้อมที่สม่ำเสมอ</div></div>
+        <div class="mval">$249</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $249 – $271</span></div>
+        <div class="r">$258</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        วิธี EV/EBITDA ให้ค่าสูงสุด ($271) สะท้อน asset value ของเครือข่ายเตาเผาและโรงบำบัด วิธี P/E ($255) และ FCF yield ($249) ให้ค่าใกล้เคียงกัน
+        ราคาปัจจุบัน $295 สูงกว่า FV เฉลี่ย $258 ประมาณ 14.3% สะท้อน premium ที่นักลงทุนยอมจ่ายสำหรับผู้นำตลาดที่มี regulatory moat และรายได้ประจำจากสัญญาระยะยาว
+        เป้าเฉลี่ยนักวิเคราะห์ $325.86 (Buy) บ่งชี้ว่า consensus มองโมเมนตัมเติบโตต่อเนื่อง
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $295</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $258</div></div>
+        </div>
+        <div class="scale">
+          <span>$181<br><small>MOS 30%</small></span>
+          <span>$206<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$258<br><small>Fair Value</small></span>
+          <span style="text-align:right">$326<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">$350<br><small>เป้าสูงสุด Analyst</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน $295 เคลื่อนไหวสูงกว่ามูลค่าเหมาะสม $258 ประมาณ 14% จึงยังไม่มี Margin of Safety ในเชิง value investing
+        อย่างไรก็ตาม เป้าหมาย consensus นักวิเคราะห์ที่ $325.86 บ่งชี้ว่ายังมี upside ~10% ในมุมมอง growth investing
+        จุดซื้อน่าสนใจตาม MOS 20% คือ $206 และ MOS 30% คือ $181 ซึ่งอาจเกิดในช่วง market correction
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">-14.3%</div>
+        <div class="txt">ราคาสูงกว่ามูลค่าเหมาะสม — ยังไม่มี MOS ในเชิง value investing</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$206</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$181</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $258</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="295" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $295 • EPS ฐาน ~$8.50 • ไม่มีปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS +5%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$236</div>
+          <div class="ret neg">-20.0% (3ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$9.84</span></li>
+            <li><span>P/E ออก</span><span>24x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$0.00</span></li>
+            <li><span>สถานการณ์</span><span>เศรษฐกิจชะลอ อุตสาหกรรมหดตัว</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +10%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$317</div>
+          <div class="ret pos">+7.5% (3ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$11.31</span></li>
+            <li><span>P/E ออก</span><span>28x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$0.00</span></li>
+            <li><span>สถานการณ์</span><span>การเติบโตต่อเนื่อง M&amp;A สร้างมูลค่า</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +15%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$414</div>
+          <div class="ret pos">+40.3% (3ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$12.93</span></li>
+            <li><span>P/E ออก</span><span>32x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$0.00</span></li>
+            <li><span>สถานการณ์</span><span>EPA กฎใหม่ + Superfund โตแรง + Safety-Kleen ขยาย</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      คาดการณ์อิง adj EPS TTM ~$8.50 ไม่มีปันผล (บริษัทไม่จ่ายปันผล ลงทุนใน M&amp;A และ capex แทน) ใน Base case ผลตอบแทน 3 ปีเพียง +7.5% สะท้อนว่า valuation ปัจจุบันค่อนข้างแพง upside จำกัดถ้าไม่มีการเร่งเติบโต Bull case เป็นไปได้ถ้า Heritage Crystal Clean synergy + Safety-Kleen margin expansion เต็มที่ + กฎระเบียบ EPA ที่เข้มงวดขึ้นหนุนความต้องการ
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก &amp; ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>Regulatory Moat สูงสุด:</b> กฎระเบียบสิ่งแวดล้อมของ EPA เข้มงวดขึ้นต่อเนื่อง บังคับให้อุตสาหกรรมใช้บริการกำจัดของเสียอันตรายอย่างถูกต้อง ผลักดันความต้องการระยะยาว</li>
+          <li><b>ผู้นำตลาดเบอร์ 1 NA:</b> เครือข่ายเตาเผาและโรงบำบัดขนาดใหญ่ที่สุดในอเมริกาเหนือ สร้าง barrier to entry ที่แทบเป็นไปไม่ได้สำหรับคู่แข่งรายใหม่</li>
+          <li><b>Heritage Crystal Clean Synergy:</b> การเข้าซื้อ $628M ในปี 2023 เสริมธุรกิจ parts cleaning และขยาย Safety-Kleen ให้ครบวงจรยิ่งขึ้น Synergy ยังเพิ่งเริ่มปล่อยออก</li>
+          <li><b>Safety-Kleen Circular Economy:</b> ธุรกิจรีไซเคิลน้ำมันใช้แล้ว (re-refining) ได้รับประโยชน์จากแนวโน้ม circular economy และราคาน้ำมันที่ค่อนข้างสูง margin ดีขึ้นต่อเนื่อง</li>
+          <li><b>Superfund &amp; Emergency Response:</b> สัญญาภาครัฐสำหรับ Superfund site cleanup และ emergency response เป็นแหล่งรายได้ที่สม่ำเสมอและมีมูลค่าสูง</li>
+          <li><b>Free Cash Flow แข็งแกร่ง:</b> FCF TTM $466M ($8.73/share) สูงกว่า net income สะท้อน asset-light efficiency ที่เพิ่มขึ้นหลังการปรับโครงสร้าง</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>Valuation Premium สูง:</b> P/E adj ~35x สูงกว่า peer industrials ที่ 20-25x ถ้าการเติบโตชะลอหรือ margin ไม่ขยายตามคาด อาจเกิด multiple compression รุนแรง</li>
+          <li><b>Environmental Liability:</b> ธุรกิจ hazardous waste มีความเสี่ยงด้าน environmental liability สะสม การเข้าซื้อกิจการเก่า (Heritage Crystal Clean) อาจนำ legacy liability มาด้วย</li>
+          <li><b>ความอ่อนไหวต่อวัฏจักรเศรษฐกิจ:</b> ~35% รายได้จาก Safety-Kleen ขึ้นกับกิจกรรมอุตสาหกรรมและราคาน้ำมัน ถ้าเศรษฐกิจชะลอตัวหรือ oil price ลด margin อาจกดดัน</li>
+          <li><b>การแข่งขันด้านแรงงาน:</b> technician และ driver สำหรับ hazardous waste มีจำกัด ต้นทุนแรงงานสูงขึ้น บีบ margin ในช่วงตลาดแรงงานตึงตัว</li>
+          <li><b>กฎระเบียบด้านสิ่งแวดล้อมเพิ่มต้นทุน:</b> แม้โดยรวมเป็นบวก แต่กฎใหม่อาจเพิ่มต้นทุนการดำเนินงานและ capex ของ Clean Harbors เองด้วย เช่น ข้อกำหนดการอัปเกรดเตาเผา</li>
+          <li><b>ความเสี่ยงจากการกระจุกตัว NA:</b> รายได้ส่วนใหญ่อยู่ในอเมริกาเหนือ การขยายธุรกิจระหว่างประเทศจำกัด ทำให้ขึ้นกับสภาพเศรษฐกิจ NA เป็นหลัก</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>ธุรกิจดีเยี่ยม — แต่ราคาปัจจุบันสะท้อน Premium เต็มที่แล้ว</h2>
+      <p>Clean Harbors คือผู้ผูกขาดโดย regulatory moat ในธุรกิจกำจัดของเสียอันตรายอเมริกาเหนือ มีความได้เปรียบด้านเครือข่ายที่สร้างได้ยากมากและรายได้ประจำจากสัญญาระยะยาว อย่างไรก็ตาม ราคาปัจจุบัน $295 สูงกว่ามูลค่าเหมาะสม $258 ราว 14% P/E adj ~35x ตั้งอยู่บน premium ที่สมเหตุสมผลสำหรับคุณภาพธุรกิจ แต่ upside จากจุดนี้ขึ้นอยู่กับการเติบโตที่เร็วกว่าคาด เป็นหุ้นที่ควร "ถือถ้ามีอยู่แล้ว" และรอโอกาสสะสมเพิ่มเมื่อราคาปรับลดลง</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$258 <span style="font-size:12px;color:#cab9a8">($249–$271)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ -14.3%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$326 (Buy)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ธุรกิจคุณภาพสูงมาก แต่ราคา $295 สูงกว่า FV ~14% จึงยังไม่มี MOS ควรรอสะสมเมื่อราคาใกล้ $258 หรือต่ำกว่า (MOS 20% = $206) ถ้ามีหุ้นอยู่แล้วและ FV $258 ยังสมเหตุสมผลที่จะถือต่อสำหรับ growth play — Buy Zone: $240–$260
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ที่มา: Yahoo Finance (ราคา ณ 1 ก.ค. 2569), StockAnalysis.com (งบการเงิน + เป้าหมายนักวิเคราะห์), Barchart.com (consensus rating)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 1 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
