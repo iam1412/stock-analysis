@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น Verisk Analytics (VRSK) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"VRSK","currency":"USD","price":184.75,"fairValue":280.0,"mos":34.0,"upside":51.6,"pe":25.5,"dividendYield":1.08,"roe":null}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#006272",
+    "accentDark": "#004a56",
+    "darkGrad": "linear-gradient(135deg,#004a56 0%,#00333d 100%)",
+    "glow": "rgba(0,98,114,0.35)",
+    "subColor": "#b2dde3",
+    "headerMuted": "rgba(178,221,227,0.7)",
+    "verdictText": "#e0f4f7",
+    "vcellLabel": "#90cdd4",
+    "badge": "#006272",
+    "chgBg": "#c5221f",
+    "chgColor": "#ffffff"
+  },
+  "chart": {
+    "data": [
+      ["ก.ย. 67", 278.71],
+      ["ต.ค. 67", 268.12],
+      ["พ.ย. 67", 251.51],
+      ["ธ.ค. 67", 218.76],
+      ["ม.ค. 68", 225.07],
+      ["ก.พ. 68", 223.69],
+      ["มี.ค. 68", 217.46],
+      ["เม.ย. 68", 207.57],
+      ["พ.ค. 68", 189.75],
+      ["มิ.ย. 68", 184.49],
+      ["ก.ค. 68", 174.99],
+      ["ส.ค. 68", 179.53],
+      ["ก.ย. 68", 184.75]
+    ],
+    "min": 160,
+    "max": 300,
+    "grid": [160, 190, 220, 250, 280, 300],
+    "fairLine": 280.0,
+    "currency": "$",
+    "highlight": [0, 6]
+  },
+  "gauge": {
+    "min": 160,
+    "max": 320,
+    "cur": 184.75,
+    "fair": 280.0,
+    "fairLabelTop": true
+  },
+  "fv": 280.0
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots" style="background:linear-gradient(135deg,#004a56 0%,#00333d 100%)"></div>
+    <div>
+      <span class="tag">NASDAQ: VRSK</span>
+      <span class="tag">Data &amp; Analytics</span>
+      <span class="tag">Insurance Tech</span>
+    </div>
+    <h1>Verisk Analytics</h1>
+    <div class="sub">Insurance data analytics near-monopoly &bull; ISO policy forms &amp; actuarial data &bull; Catastrophe modeling (AIR) &bull; 80%+ gross margin &bull; ~90% recurring revenue &bull; Pure-play post-divestitures &bull; Jersey City NJ</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$184.75<small>(VRSK)</small></div>
+      </div>
+      <div class="chg">▼ −33.7% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 1 ก.ค. 2569<br>
+        กรอบ 52 สัปดาห์ $155.94 – $310.20<br>
+        ที่มา: Yahoo Finance, StockAnalysis.com, MarketBeat
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">Pure-play Insurance Analytics หลังขาย Wood Mackenzie &amp; Financial Services</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~$24.2B</div><div class="d">131M shares (~$185/หุ้น)</div></div>
+      <div class="metric"><div class="k">P/E adj. (TTM)</div><div class="v neu">~25.5x</div><div class="d">ต่ำกว่า 5 ปีเฉลี่ย 40–45x มาก</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย 5 ปี</div><div class="v">~42x</div><div class="d">กรอบ 35–52x</div></div>
+      <div class="metric"><div class="k">Forward P/E (FY26)</div><div class="v neu">~24.3x</div><div class="d">FY26 adj EPS guidance $7.45–$7.75</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ GAAP TTM</div><div class="v">~$357M</div><div class="d">กดด้วย amortization สูง</div></div>
+      <div class="metric"><div class="k">EPS adj. (TTM)</div><div class="v">~$7.24</div><div class="d">GAAP $6.57 (ต่างจาก amortization)</div></div>
+      <div class="metric"><div class="k">EV / EBITDA</div><div class="v neu">~16.7x</div><div class="d">EBITDA TTM ~$1,694M · EV ~$28.3B</div></div>
+      <div class="metric"><div class="k">Adj. ROIC</div><div class="v pos">~20–25%</div><div class="d">ROE negative (buybacks เกิน equity)</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">~$3.10B</div><div class="d">+5.9% YoY · 90%+ recurring</div></div>
+      <div class="metric"><div class="k">Gross Margin</div><div class="v pos">~78%</div><div class="d">Operating margin ~44%</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~1.1%</div><div class="d">$2.00/หุ้น/ปี · เติบโตต่อเนื่อง</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">0.69</div><div class="d">ความผันผวนต่ำกว่าตลาด</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ก.ย. 2567 – ก.ย. 2568</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#006272"></i>ราคา VRSK</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $280</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        VRSK ลดลงต่อเนื่องตลอดปี จากจุดสูงสุดช่วง $278 ใน ก.ย. 2567 ร่วงมาจุดต่ำสุด ~$175 ใน ก.ค. 2568 ก่อนจะฟื้นเล็กน้อยมาที่ $184.75 ปัจจุบัน (-33.7% รอบปี) แรงกดดันมาจากการเติบโตของรายได้ที่ชะลอตัว (+3.9% YoY ใน Q1 2026) ความกังวลด้าน AI disruption ต่ออุตสาหกรรมประกัน และ P/E de-rating ภาพรวม อย่างไรก็ตาม ราคาปัจจุบันสะท้อน pessimism เกินจริงเมื่อเทียบกับคุณภาพธุรกิจ
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี — ใช้ adj EPS กันผล amortization</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation (adj EPS TTM)</div><div class="mdesc">EPS adj. $7.24 × P/E 38x — ประวัติศาสตร์เฉลี่ย 42x; ใช้ 38x conservative สำหรับ near-monopoly data analytics ที่มี 90% recurring revenue</div></div>
+        <div class="mval">$275</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. EV/EBITDA Valuation</div><div class="mdesc">EBITDA TTM $1,694M × 25x (peer: MSCI ~30x, FactSet ~25x) = EV $42,345M − debt $4,625M + cash $350M = equity $38,070M ÷ 131M shares</div></div>
+        <div class="mval">$291</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Forward P/E (FY2026 guidance)</div><div class="mdesc">EPS adj. $7.60 (midpoint guidance $7.45–$7.75) × P/E 36x — discount เล็กน้อยเพื่อรอยืนยัน growth acceleration</div></div>
+        <div class="mval">$274</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $274 – $291</span></div>
+        <div class="r">$280</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ทั้ง 3 วิธีให้ผลใกล้เคียงกัน ($274–$291) ยืนยันว่า VRSK ที่ $184.75 มี discount ต่อ Fair Value ราว 34% EV/EBITDA วิธีที่ 2 ให้ค่าสูงสุดเพราะ EBITDA margin ~55% สูงมากเมื่อเทียบกับ peers Forward P/E วิธีที่ 3 ให้ค่าต่ำสุดเพราะใช้ P/E 36x ซึ่งยังต่ำกว่าค่าเฉลี่ยประวัติศาสตร์ 42x มาก นักวิเคราะห์ 19 คน ตั้งเป้าเฉลี่ย $220.47 ซึ่ง upside เพียง 19% จากราคาปัจจุบัน — ต่ำกว่า Fair Value $280 ที่คำนวณจาก fundamentals
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $184.75</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $280</div></div>
+        </div>
+        <div class="scale">
+          <span>$196<br><small>MOS 30%</small></span>
+          <span>$220<br><small>เป้า Analyst</small></span>
+          <span style="text-align:center">$224<br><small>MOS 20%</small></span>
+          <span style="text-align:right">$280<br><small>Fair Value</small></span>
+          <span style="text-align:right">$291<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน $184.75 อยู่ต่ำกว่าโซน MOS 30% ($196) เข้าสู่โซน deep value ห่างจาก Fair Value $280 ถึง 34% นักวิเคราะห์ 19 คนมีเป้าเฉลี่ย $220.47 ซึ่งยังต่ำกว่า Fair Value คำนวณ สะท้อนว่าตลาดยังไม่ได้ราคาเต็มมูลค่าของธุรกิจ
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict good">
+        <div class="big">+34.0%</div>
+        <div class="txt">Deep Value — ราคาต่ำกว่า Fair Value มากกว่า 30% — โซน MOS สูงมากสำหรับคุณภาพระดับนี้</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$224.00</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$196.00</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $280</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="184.75" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $184.75 • EPS ฐาน ~$7.24 adj • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS −2%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$210</div>
+          <div class="ret neg">+13.7%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$6.81</span></li>
+            <li><span>P/E ออก</span><span>30x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$6.00</span></li>
+            <li><span>สถานการณ์</span><span>ลูกค้าประกันลดใช้งาน AI disrupt บางส่วน</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +8%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$326</div>
+          <div class="ret pos">+76.5%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$9.12</span></li>
+            <li><span>P/E ออก</span><span>35x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$6.30</span></li>
+            <li><span>สถานการณ์</span><span>AI เสริม data business, moat คงอยู่ P/E re-rate</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +12%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$413</div>
+          <div class="ret pos">+123.5%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$10.17</span></li>
+            <li><span>P/E ออก</span><span>40x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$6.60</span></li>
+            <li><span>สถานการณ์</span><span>AI upsell พรีเมียม ขยายตลาด global insurance</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      แม้ใน Bear case EPS หดตัว -2%/ปี ผลตอบแทนยังเป็นบวก ~14% จากจุดเข้า $184.75 เพราะ P/E ปัจจุบัน 25.5x ต่ำมากสำหรับธุรกิจ moat สูง — สะท้อน asymmetric risk/reward ที่ดี Base case (+76.5%) อิง EPS เติบโต 8%/ปีตามประวัติศาสตร์บวก P/E re-rate กลับมาที่ 35x ยังต่ำกว่าค่าเฉลี่ย 5 ปีที่ 42x Bull case เกิดได้หาก AI เสริมธุรกิจและ Verisk ขยายสู่ตลาดประกันใหม่ในยุโรป/เอเชีย
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก &amp; ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>Near-monopoly data moat:</b> บริษัทประกัน P&amp;C ในสหรัฐต้องใช้ ISO policy forms และ actuarial data ของ Verisk ในการกำหนดเบี้ยประกัน — switching cost สูงมาก</li>
+          <li><b>AI เสริมธุรกิจ:</b> Verisk นำ AI มาใช้ใน catastrophe modeling (AIR Worldwide), underwriting analytics, claims automation — เพิ่ม value โดยไม่เพิ่มต้นทุนมาก</li>
+          <li><b>~90% recurring revenue:</b> subscription model กับลูกค้าประกันที่มี switching cost สูง — revenue คาดการณ์ได้สูง FCF แข็งแกร่ง</li>
+          <li><b>Pure-play premium post-divestiture:</b> หลังขาย Wood Mackenzie (energy) และ Financial Services ออก Verisk เป็น pure-play insurance analytics — ควรได้รับ valuation premium</li>
+          <li><b>Climate risk tailwind:</b> ภัยพิบัติสภาพอากาศเพิ่มขึ้น ทำให้ประกันต้องการ catastrophe modeling (AIR) มากขึ้น หนุน pricing power ระยะยาว</li>
+          <li><b>Capital return:</b> บริษัทซื้อหุ้นคืนต่อเนื่อง ลด share count เพิ่ม EPS/share — ปันผลเติบโตทุกปี ยืนยัน cash flow คุณภาพสูง</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>AI disruption risk:</b> InsurTech + LLM อาจช่วยบริษัทประกันสร้าง internal data capability ลดพึ่งพา Verisk — ความเสี่ยงระยะยาว แต่ยังไม่เห็นใน near-term</li>
+          <li><b>Revenue growth ชะลอ:</b> หลัง divestiture growth เหลือ ~5-6% YoY เท่านั้น ต่ำกว่าที่ market คาดหวัง ทำให้ P/E de-rate จาก 45x มาที่ 25x</li>
+          <li><b>Leverage สูง:</b> หนี้ $4.6B เทียบกับ equity ติดลบจากการ buyback — ดอกเบี้ยกดกำไร GAAP เสี่ยงในสภาพแวดล้อม rate สูง</li>
+          <li><b>Concentration risk:</b> รายได้ส่วนใหญ่จากลูกค้าประกัน P&amp;C ในสหรัฐ — recession หรือการควบรวมในอุตสาหกรรมประกันกระทบโดยตรง</li>
+          <li><b>Regulatory risk:</b> ข้อมูลประกันถูกกำกับดูแลอย่างเข้มงวด — การเปลี่ยน regulation ด้านข้อมูล privacy/data ownership อาจกระทบโมเดลธุรกิจ</li>
+          <li><b>P/E re-rating ไม่เกิด:</b> แม้ discount มาก แต่ถ้าตลาดยังให้ P/E 25x ต่อไป upside จาก earnings growth เพียงอย่างเดียวอาจไม่คุ้มค่าเวลา</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>Deep Value ใน Near-Monopoly Data Business — ราคาต่ำกว่า Fair Value 34%</h2>
+      <p>Verisk Analytics เป็นหนึ่งในธุรกิจ data analytics ที่มี moat สูงสุดในตลาด — บริษัทประกัน P&amp;C ในสหรัฐไม่สามารถกำหนดเบี้ยประกันโดยไม่ใช้ ISO policy forms และ actuarial data ของ Verisk ธุรกิจสร้าง ~90% recurring revenue, gross margin ~78%, EBITDA margin ~55% หลัง divestiture กลายเป็น pure-play insurance analytics ราคาปัจจุบัน $184.75 ซื้อขายที่ adj P/E เพียง 25.5x — ต่ำกว่าค่าเฉลี่ย 5 ปีที่ 42x อย่างมาก MOS +34% จาก Fair Value $280 ถือเป็น deep value สำหรับคุณภาพระดับนี้ แม้ Bear case EPS หดตัว ผลตอบแทนยังเป็นบวก สะท้อน asymmetric risk/reward ที่ดีมาก</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$280 <span style="font-size:12px;color:#cab9a8">($274–$291)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +34.0%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$220.47 (Buy — 19 analysts)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ราคาปัจจุบัน $184.75 อยู่ในโซน deep value ต่ำกว่า MOS 30% ($196) — เหมาะทยอยสะสมสำหรับนักลงทุนระยะยาวที่เชื่อใน data moat ของบริษัท ตั้ง position ขนาดปกติในโซน &lt;$196 และเพิ่มถ้าลงไปใกล้ $155–$165 หากกลัว AI disruption risk ให้รอดู Q2–Q3 2026 earnings ก่อนเพื่อยืนยัน revenue growth trajectory
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต และ adj EPS ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    แหล่งข้อมูล: Yahoo Finance (chart API/quote ณ 1 ก.ค. 2569) · StockAnalysis.com (financials/forecast) · MarketBeat (adj EPS quarterly beats)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 1 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
