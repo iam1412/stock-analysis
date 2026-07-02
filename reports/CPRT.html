@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น Copart (CPRT) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"CPRT","currency":"USD","price":30.01,"fairValue":44.00,"mos":31.8,"upside":46.6,"pe":17.88,"dividendYield":null,"roe":17.61}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#E8491D",
+    "accentDark": "#C03A12",
+    "darkGrad": "linear-gradient(135deg,#1a0a06 0%,#2d1208 50%,#1a0a06 100%)",
+    "glow": "rgba(232,73,29,0.35)",
+    "subColor": "#ffb08a",
+    "headerMuted": "#d4876a",
+    "verdictText": "#fff0ea",
+    "vcellLabel": "#e8c4b0",
+    "badge": "#E8491D",
+    "chgBg": "#c5221f",
+    "chgColor": "#fff"
+  },
+  "chart": {
+    "data": [
+      ["ก.ค. 25", 48.81],
+      ["ส.ค. 25", 44.97],
+      ["ก.ย. 25", 43.01],
+      ["ต.ค. 25", 38.98],
+      ["พ.ย. 25", 39.15],
+      ["ธ.ค. 25", 40.58],
+      ["ม.ค. 26", 38.09],
+      ["ก.พ. 26", 33.20],
+      ["มี.ค. 26", 33.11],
+      ["เม.ย. 26", 32.77],
+      ["พ.ค. 26", 28.19],
+      ["มิ.ย. 26", 28.79],
+      ["ก.ค. 26", 30.01]
+    ],
+    "min": 24,
+    "max": 55,
+    "grid": [25, 30, 35, 40, 45, 50],
+    "fairLine": 44.00,
+    "currency": "$",
+    "highlight": [0, 4, 11]
+  },
+  "gauge": {
+    "min": 20,
+    "max": 60,
+    "cur": 30.01,
+    "fair": 44.00,
+    "fairLabelTop": true
+  },
+  "fv": 44.00
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">●●●●●●●●●</div>
+    <div>
+      <span class="tag">NASDAQ: CPRT</span>
+      <span class="tag">Commercial Services</span>
+      <span class="tag">Vehicle Auctions</span>
+    </div>
+    <h1>Copart Inc.</h1>
+    <div class="sub">Online vehicle auctions • Salvage &amp; total-loss • ~250 locations globally • Insurance/dealer sourced • Network effects</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$30.01<small>(CPRT)</small></div>
+      </div>
+      <div class="chg">▼ −38.5% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 3 ก.ค. 2569<br>
+        กรอบ 52 สัปดาห์ $27.85 – $50.11<br>
+        ที่มา: Yahoo Finance, StockAnalysis.com, BusinessWire
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ก.ค. 2569 · FY สิ้นสุด 31 ก.ค.</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">$27.78B</div><div class="d">926M shares</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~17.88x</div><div class="d">ต่ำสุดในรอบ 5 ปี</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~30–38x</div><div class="d">ช่วง 30–45x ตลอด</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">3.04x</div><div class="d">BVPS ~$9.48</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ TTM</div><div class="v">$1.549B</div><div class="d">+13.8% YoY</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$1.61</div><div class="d">FY2025: $1.59 (+13.6%)</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~$9.48</div><div class="d">เงินสุทธิ $4.11B</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~17.6% / 11.3%</div><div class="d">คุณภาพสูง D/E &lt;0.01</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$4.64B</div><div class="d">+1.0% YoY</div></div>
+      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">45.5%</div><div class="d">Op.margin 36.6% · Net 33.4%</div></div>
+      <div class="metric"><div class="k">FCF (TTM)</div><div class="v pos">$1.34B</div><div class="d">FCF/share ~$1.45</div></div>
+      <div class="metric"><div class="k">EV/EBITDA</div><div class="v">11.96x</div><div class="d">EV $23.45B · EV/FCF 17.5x</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#E8491D"></i>ราคา CPRT</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $44.00</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        CPRT ปรับลดลงจาก $48.81 ในเดือน ก.ค. 2568 มาแตะระดับต่ำสุด $28.19 ในเดือน พ.ค. 2569 รวมลดลงประมาณ 42% จากจุดสูงสุดในรอบปี ก่อนฟื้นตัวเล็กน้อยมาที่ $30.01 ปัจจัยกดดันหลัก ได้แก่ การเปลี่ยน CEO (Jeff Liaw ออก → Jay Adair กลับมา มีผลตั้งแต่ 31 ก.ค. 2569) การถูกย้ายออกจากดัชนี Russell 1000 ไปสู่ Russell Midcap และความกังวลเรื่องการเติบโตของรายได้ที่ชะลอตัวเหลือ +1% YoY ราคาปัจจุบันซื้อขายที่ P/E ~18x ต่ำกว่าค่าเฉลี่ย 5 ปีที่ 30–38x อย่างมีนัยสำคัญ สะท้อนโอกาสสำหรับนักลงทุนระยะกลาง
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS adj. $1.61 × P/E เป้าหมาย ~28x — ต่ำกว่าค่าเฉลี่ย 5 ปี (30–38x) เพื่อ conservative รับ CEO risk &amp; slower growth; ปัจจุบัน 17.88x ต่ำผิดปกติ</div></div>
+        <div class="mval">$45.08</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. EV/FCF Valuation</div><div class="mdesc">FCF/share $1.45 × multiple 28x — ตลาด asset-light คุณภาพสูง FCF conversion ดีเยี่ยม ปัจจุบัน EV/FCF 17.5x ต่ำกว่ามาตรฐาน marketplace ดี 25–35x</div></div>
+        <div class="mval">$40.60</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 17.61% − g 8%)/(r 10% − g 8%) ≈ 4.8x × BVPS $9.48 — เหมาะสำหรับธุรกิจ asset-light ROE สม่ำเสมอ</div></div>
+        <div class="mval">$45.50</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $40 – $46</span></div>
+        <div class="r">$44.00</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        วิธี P/E ($45.08) และ Justified P/BV ($45.50) ให้ค่าสูงกว่า EV/FCF ($40.60) เล็กน้อย เนื่องจาก CAPEX ยังสูงในช่วงขยายพื้นที่ (FY2023–24 ~$510–517M) แต่ TTM CAPEX ลดลงเหลือ $346M สะท้อนการขยายตัวที่ชะลอ ค่า FV $44.00 เหมาะสม สอดคล้องกับเป้านักวิเคราะห์เฉลี่ย $41.44 (range $32–$55) จากนักวิเคราะห์ 12 ราย (3 Strong Buy, 3 Buy, 5 Hold, 1 Sell)
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $30.01</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $44.00</div></div>
+        </div>
+        <div class="scale">
+          <span>$30.80<br><small>MOS 30%</small></span>
+          <span>$35.20<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$41.44<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">$44.00<br><small>Fair Value</small></span>
+          <span style="text-align:right">$46.00<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน $30.01 อยู่ต่ำกว่าโซน MOS 30% ($30.80) เพียงเล็กน้อย — นับว่าอยู่ในโซน "deep value" ตามกรอบ P/E ประวัติศาสตร์ของ CPRT ที่ 30–38x การปรับตัวลงรุนแรง ~42% จากจุดสูงสุดรอบปีสร้าง asymmetric risk-reward สำหรับนักลงทุนระยะกลาง 2–3 ปี โดยมีเป้านักวิเคราะห์เฉลี่ย $41.44 (+38%) และ FV $44 (+47%)
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict good">
+        <div class="big">+31.8%</div>
+        <div class="txt">MOS สูง — ราคาปัจจุบันต่ำกว่ามูลค่าเหมาะสมมาก (โซน Deep Value)</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$35.20</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$30.80</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $44.00</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="30.01" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $30.01 • EPS ฐาน ~$1.61 • ไม่มีเงินปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS +2%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$30.78</div>
+          <div class="ret neg">+2.6%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$1.71</span></li>
+            <li><span>P/E ออก</span><span>18x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$0</span></li>
+            <li><span>สถานการณ์</span><span>เติบโตหยุดนิ่ง CEO ใหม่ผิดหวัง</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +8%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$48.72</div>
+          <div class="ret pos">+62.3%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$2.03</span></li>
+            <li><span>P/E ออก</span><span>24x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$0</span></li>
+            <li><span>สถานการณ์</span><span>Jay Adair ฟื้น growth + re-rating P/E</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +12%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$63.28</div>
+          <div class="ret pos">+110.9%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$2.26</span></li>
+            <li><span>P/E ออก</span><span>28x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$0</span></li>
+            <li><span>สถานการณ์</span><span>ขยายตลาดใหม่ + buyback หนุน EPS</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      CPRT ไม่จ่ายเงินปันผล แต่มีโปรแกรม buyback ขนาดใหญ่ (ซื้อคืนหุ้น $1.63B ในช่วง TTM) ซึ่งเพิ่ม EPS/share อย่างมีนัยสำคัญ Base case คาดว่า Jay Adair จะนำกลับมาซึ่งวิสัยทัศน์เชิงรุก (เช่นเดิมในยุค 2013–2021 ที่ CPRT ขยาย international และ digital platform อย่างก้าวกระโดด) ความเสี่ยงหลักคือ P/E ยังไม่ re-rate กลับขึ้นไปในระดับ premium ถ้าตลาดยังกังวล CEO transition และ index reclassification
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>Jay Adair กลับมาเป็น CEO:</b> ผู้ก่อตั้งที่มีวิสัยทัศน์ซึ่งนำ CPRT ขึ้นแท่น global leader ในยุค 2000–2021 กลับมารับตำแหน่ง 31 ก.ค. 2569 ตลาดคาด growth acceleration</li>
+          <li><b>Structural tailwinds — รถยนต์มูลค่าสูงขึ้น:</b> ราคารถยนต์ใหม่/ใช้แล้วที่พุ่งสูงหลัง COVID ทำให้มูลค่าซากรถ (salvage value) สูงขึ้น → ASP &amp; revenue/unit เพิ่ม</li>
+          <li><b>Network effects แข็งแกร่ง:</b> สินค้าคงคลัง ~250 locations ดึงผู้ซื้อ &gt;150 ประเทศ → ผู้ซื้อมากดึงผู้ขาย (insurers) → moat ขยายตัว วงจรเชิงบวก</li>
+          <li><b>FCF สูงเอื้อ buyback:</b> FCF TTM $1.34B + net cash $4.11B เปิดทางซื้อคืนหุ้นต่อเนื่อง EPS/share เติบโตแม้ top-line growth ช้า</li>
+          <li><b>EV/climate tailwind:</b> รถ EV มีชิ้นส่วนซับซ้อนและแบตเตอรี่ราคาแพง → ประกันมักตัดสินรถเป็น total-loss เร็วกว่า CPRT รับปริมาณ salvage เพิ่ม</li>
+          <li><b>Valuation depressed ผิดปกติ:</b> P/E 17.88x ต่ำที่สุดในรอบหลายปี สร้าง asymmetric upside ถ้า re-rate กลับสู่ 24–28x ซึ่งยังต่ำกว่า historical mean 30–38x</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>CEO Transition ไม่ราบรื่น:</b> Jeff Liaw ออก มีผล 31 ก.ค. 2569 อาจสร้าง execution risk ในช่วงเปลี่ยนผ่าน แม้ Jay Adair เป็น founder ที่มีประสบการณ์ นักลงทุน sentiment ยังระมัดระวัง</li>
+          <li><b>Index reclassification กดดัน flow:</b> ถูกย้ายจาก Russell 1000 → Russell Midcap กองทุน passive ที่ track large-cap อาจขายออก กดดันราคาระยะสั้น</li>
+          <li><b>Revenue growth ชะลอตัว:</b> TTM growth เพียง +1.0% YoY หลังจากเติบโต 10–15% ในอดีต อาจสะท้อน market saturation หรือการแข่งขันที่เพิ่มขึ้น (OPENLANE, IAA)</li>
+          <li><b>CAPEX สูงต่อเนื่อง:</b> ขยายพื้นที่ใหม่ต้องใช้ที่ดินจำนวนมาก (FY2023–24 capex ~$510M/yr) กระทบ FCF yield ในช่วงขยายตัว</li>
+          <li><b>ความเสี่ยงด้านกฎระเบียบ:</b> นโยบายรถยนต์ EV, กฎหมาย salvage title ในรัฐต่าง ๆ หรือข้อกำหนดสิ่งแวดล้อมอาจกระทบการดำเนินงาน</li>
+          <li><b>การประมูลออนไลน์มีคู่แข่ง:</b> OPENLANE (OPEN) ที่มุ่งตลาด dealer-to-dealer อาจแย่งชิงส่วนแบ่งตลาดในบางเซกเมนต์</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>CPRT — โอกาสสะสมระยะกลาง ราคา Depressed ผิดปกติ</h2>
+      <p>Copart เป็น marketplace แบบ asset-light ที่มี moat แข็งแกร่งผ่าน network effects, scale ~250 locations และฐานผู้ซื้อกว่า 150 ประเทศ พื้นฐานธุรกิจยังแข็งแกร่ง: gross margin ~45.5%, net margin ~33.4%, FCF TTM $1.34B และเกือบไม่มีหนี้ (D/E &lt;0.01) ราคาปัจจุบัน $30.01 ซื้อขายที่ P/E เพียง 17.88x ต่ำกว่าค่าเฉลี่ย 5 ปีที่ 30–38x อย่างมีนัยสำคัญ เนื่องจากแรงขายสั้นๆ จากการเปลี่ยน CEO, index reclassification และ growth ที่ชะลอ การกลับมาของ Jay Adair (founder) อาจเป็น catalyst ที่ดึง sentiment และ re-rate P/E กลับขึ้น</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$44.00 <span style="font-size:12px;color:#cab9a8">($40–$46)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +31.8%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$41.44 (Buy)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ราคาปัจจุบัน $30.01 อยู่ใกล้โซน MOS 30% ($30.80) — เหมาะสำหรับทยอยสะสม ราคาเป้าหมายระยะกลาง 2–3 ปี $44–48 (base case +62%) ระวัง downside ถ้า CEO transition สร้าง disruption หรือ growth ยังชะลอต่อเนื่อง
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • แหล่งอ้างอิง: Yahoo Finance (ราคาหุ้น, ข้อมูลรายเดือน), StockAnalysis.com (งบการเงิน, เป้านักวิเคราะห์), BusinessWire (CEO transition announcement 29 มิ.ย. 2569)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 3 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>

@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น Las Vegas Sands (LVS) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"LVS","currency":"USD","price":46.99,"fairValue":60,"mos":21.7,"upside":27.7,"pe":17.3,"dividendYield":2.55,"roe":94.5}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#C9A84C",
+    "accentDark": "#8B6914",
+    "darkGrad": "linear-gradient(135deg,#1a1200 0%,#2d1f00 60%,#1a0e00 100%)",
+    "glow": "rgba(201,168,76,0.28)",
+    "subColor": "#e8c96a",
+    "headerMuted": "rgba(201,168,76,0.55)",
+    "verdictText": "#fff8e8",
+    "vcellLabel": "#c9a84c",
+    "badge": "#C9A84C",
+    "chgBg": "#c5221f",
+    "chgColor": "#fff"
+  },
+  "chart": {
+    "data": [
+      ["ก.ค. 68", 57.63],
+      ["ส.ค. 68", 53.79],
+      ["ก.ย. 68", 59.35],
+      ["ต.ค. 68", 68.16],
+      ["พ.ย. 68", 65.09],
+      ["ธ.ค. 68", 52.73],
+      ["ม.ค. 69", 56.72],
+      ["ก.พ. 69", 53.88],
+      ["มี.ค. 69", 54.61],
+      ["เม.ย. 69", 50.57],
+      ["พ.ค. 69", 46.19],
+      ["มิ.ย. 69", 46.25],
+      ["ก.ค. 69", 46.99]
+    ],
+    "min": 40,
+    "max": 75,
+    "grid": [40, 50, 60, 70],
+    "fairLine": 60,
+    "currency": "$",
+    "highlight": [3, 5]
+  },
+  "gauge": {
+    "min": 30,
+    "max": 80,
+    "cur": 46.99,
+    "fair": 60,
+    "fairLabelTop": true
+  },
+  "fv": 60
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">◆ ◆ ◆</div>
+    <div>
+      <span class="tag">NYSE: LVS</span>
+      <span class="tag">Consumer Discretionary</span>
+      <span class="tag">Integrated Resorts / Casino</span>
+    </div>
+    <h1>Las Vegas Sands Corp.</h1>
+    <div class="sub">Integrated resort operator • Marina Bay Sands (Singapore) • 5 Macao properties (Venetian, Londoner, Four Seasons, Parisian, Sands) • Asia-focused gaming & hospitality • Post-COVID recovery play</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$46.99<small>(LVS)</small></div>
+      </div>
+      <div class="chg">▼ −18.5% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 2 ก.ค. 2569<br>
+        กรอบ 52 สัปดาห์ $45.62 – $70.45<br>
+        ที่มา: Yahoo Finance, StockAnalysis, Finviz
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล TTM ณ ก.ค. 2569 · ที่มา: Yahoo Finance, StockAnalysis, Finviz</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">$31.1B</div><div class="d">~662M หุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~17.3x</div><div class="d">Forward P/E ~13.1x (FY26E)</div></div>
+      <div class="metric"><div class="k">EV/EBITDA</div><div class="v">~9.5x</div><div class="d">EBITDA TTM ~$4,614M · EV ~$43.8B</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">~26x</div><div class="d">BVPS $1.76 (ทุนต่ำจากหนี้สูง)</div></div>
+
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$2.70</div><div class="d">FY26E $3.36 · FY27E $3.67</div></div>
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$13.74B</div><div class="d">+22.7% YoY · Q1 2026 แข็งแกร่ง</div></div>
+      <div class="metric"><div class="k">EBITDA TTM</div><div class="v">$4,614M</div><div class="d">margin ~33.6% · Q1 2026 $1,297M</div></div>
+      <div class="metric"><div class="k">FCF TTM</div><div class="v">$1,041M</div><div class="d">หลังดอกเบี้ย ~$800M+ จาก MBS</div></div>
+
+      <div class="metric"><div class="k">หนี้สุทธิ</div><div class="v neg">$12.4B</div><div class="d">หนี้รวม $15.7B · เงินสด $3.3B</div></div>
+      <div class="metric"><div class="k">ROE</div><div class="v pos">~94.5%</div><div class="d">ทุนต่ำ — ดูควบคู่ ROIC ~12%</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~2.55%</div><div class="d">$1.20/ปี ($0.30/ไตรมาส) · ฟื้นฟูแล้ว</div></div>
+      <div class="metric"><div class="k">52W High / Low</div><div class="v">$70.45 / $45.62</div><div class="d">ห่าง High −33% · ใกล้ Low +3%</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ก.ค. 2568 – ก.ค. 2569</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#C9A84C"></i>ราคา LVS</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $60</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        LVS เปิดปีที่ $57.63 (ก.ค. 2568) พุ่งขึ้นแตะจุดสูงสุด $68.16 ในต.ค. 2568 หลังผลประกอบการ Macau ฟื้นตัว และ Marina Bay Sands (สิงคโปร์) ทำกำไรสูง
+        จากนั้นร่วงต่อเนื่องตลอดช่วงปลายปี 2568 ถึง ก.ค. 2569 สาเหตุหลัก: นักวิเคราะห์กังวล margin Macau ถูกกดดันจากการแข่งขันสูง,
+        ผู้บริโภคชาวจีนยังระมัดระวังการใช้จ่าย และดอกเบี้ยที่สูงกดน้ำหนักหุ้นหนี้สูง ราคาปัจจุบัน $46.99 ต่ำกว่า Fair Value $60 ประมาณ 21.7%
+        และนักวิเคราะห์ส่วนใหญ่ยังคง Buy/Strong Buy พร้อมเป้าเฉลี่ย $69.09
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. EV/EBITDA Valuation</div><div class="mdesc">EBITDA TTM $4,614M × 12x EV/EBITDA = EV $55,368M − หนี้สุทธิ $12,394M = equity $42,974M ÷ 662M หุ้น</div></div>
+        <div class="mval">$64.92</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. P/E Valuation</div><div class="mdesc">adj. EPS $2.70 × P/E 18x = $48.60 · อิง peer range WYNN/MGM: 16-20x · ใช้ TTM EPS เป็นฐาน (forward EPS $3.36 ยังสูงกว่า)</div></div>
+        <div class="mval">$48.60</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. DDM / Gordon Growth</div><div class="mdesc">D₁ = $1.20 × (1+8%); g 8%, r 10% → DDM = $1.296 / (10%−8%) = $64.80 · ปันผลฟื้นฟู + เติบโตต่อเนื่อง</div></div>
+        <div class="mval">$64.80</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $52 – $70</span></div>
+        <div class="r">$60</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        EV/EBITDA และ DDM ให้ค่าใกล้เคียงกัน (~$65) สะท้อนความสามารถสร้างกระแสเงินสดที่แข็งแกร่งจาก Marina Bay Sands และ Macau
+        P/E ให้ค่าต่ำกว่าเพราะ EPS ปัจจุบันยังฟื้นตัว post-COVID ไม่เต็มศักยภาพ · ใช้ EV/EBITDA เป็นหลัก (เหมาะสุดสำหรับ casino/resort ที่มีหนี้สูง)
+        weighted FV = ($64.92×40% + $48.60×25% + $64.80×35%) = $60.83 → $60 · peer comps: WYNN ~10x EV/EBITDA, MGM ~11x, LVS ควรได้ premium ด้าน Singapore/quality
+        ที่มา: StockAnalysis, Yahoo Finance, Finviz · ข้อมูล ณ ก.ค. 2569
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $46.99</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $60</div></div>
+        </div>
+        <div class="scale">
+          <span>$42.00<br><small>MOS 30%</small></span>
+          <span>$48.00<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$60<br><small>Fair Value</small></span>
+          <span style="text-align:right">$69.09<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">$70<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคา $46.99 ต่ำกว่า Fair Value $60 ราว 21.7% และต่ำกว่าเป้าเฉลี่ยนักวิเคราะห์ $69.09 ราว 47%
+        อยู่ในโซน MOS 20% ($49.60) แล้ว สะท้อน deep discount ที่น่าสนใจ
+        จาก 20 นักวิเคราะห์: 15 Strong Buy, 0 Sell — consensus แข็งแกร่ง
+        ความเสี่ยงหลักคือ margin Macau และ China macro ที่อาจกดดันระยะสั้น
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict good">
+        <div class="big">+21.7%</div>
+        <div class="txt">MOS สูง — ราคามี discount จาก Fair Value มากกว่า 20% เหมาะสำหรับ value investor ที่รับความเสี่ยง China/Macau ได้</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$48.00</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$42.00</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $60</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="46.99" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $46.99 • EPS ฐาน ~$2.70 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS −2%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$35.56</div>
+          <div class="ret neg">−16.7%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$2.54</span></li>
+            <li><span>P/E ออก</span><span>14x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$3.60</span></li>
+            <li><span>สถานการณ์</span><span>Macau ซบเซา ฝ่ายจีนคุม</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +10%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$68.58</div>
+          <div class="ret pos">+46.0%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$3.59</span></li>
+            <li><span>P/E ออก</span><span>18x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$4.00</span></li>
+            <li><span>สถานการณ์</span><span>Macau & MBS ฟื้นตัวต่อ</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +15%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$86.70</div>
+          <div class="ret pos">+84.5%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$4.11</span></li>
+            <li><span>P/E ออก</span><span>20x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$4.50</span></li>
+            <li><span>สถานการณ์</span><span>IR ใหม่ + นักท่องเที่ยวจีนฟื้น</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      Base case อิง EPS FY27E $3.67 (consensus) และ P/E target 18x สอดคล้องกับ historical range 16-22x ช่วงปกติ
+      Bear case สมมติ Macau macro ซบเซา margin ถูกกด ฝ่ายจีนคุมนักท่องเที่ยว กำไรหดตัว
+      Bull case สมมติ MBS expansion เสร็จ (ลงทุน $750M ขยายโรงแรม), Macau license ต่อเนื่อง, จีนเปิด outbound
+      ผลตอบแทนไม่รับประกัน — ดอกเบี้ยสูง + หนี้มาก = amplified risk/reward · ควรทยอยสะสมในโซน MOS ≥20%
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>Marina Bay Sands (MBS) — เครื่องจักรกำไร:</b> สิงคโปร์ให้ EBITDA margin สูงสุดในอุตสาหกรรม (~50%) ด้วยตลาด duopoly ที่กำหนดให้มีเพียง 2 คาสิโน — ผู้เล่นพรีเมียมจากทั่วเอเชียเลือก MBS ก่อน</li>
+          <li><b>Macau License ต่ออายุแล้ว:</b> ได้รับใบอนุญาตใหม่ 10 ปี (2023-2033) เอา uncertainty หลักออก — ลงทุน non-gaming เพิ่มตาม requirement รัฐบาล</li>
+          <li><b>การฟื้นตัวของนักท่องเที่ยวจีน:</b> จำนวน visitor Macau กลับแตะระดับ 70-80% ของ 2019 แล้ว — ศักยภาพยังมีอีก 20-30% หากจีน outbound ฟื้นเต็มที่</li>
+          <li><b>EPS Growth Momentum:</b> FY26E $3.36 (+24% จาก TTM $2.70) และ FY27E $3.67 — forward P/E 13.1x ถูกกว่า historical สูงมาก</li>
+          <li><b>MBS Expansion ($750M):</b> โรงแรม Tower 3 ใหม่ + meeting facilities ช่วยเพิ่ม capacity MBS ที่ demand ล้นอยู่แล้ว — คาดเพิ่ม EBITDA ได้ ~$200-300M/ปีเมื่อเสร็จ</li>
+          <li><b>Dividend Reinstatement + Growth:</b> ฟื้นปันผลกลับมา $0.20/ไตรมาส และขึ้นเป็น $0.30 แล้ว — yield 2.55% ที่ราคานี้ + โอกาสขึ้นปันผลต่อเมื่อหนี้ลด</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>หนี้สูงมาก ($15.7B):</b> ดอกเบี้ยปีละ ~$700-800M กินกำไร — หาก EBITDA ลด 20% หนี้จะกลายเป็นปัญหาเร็ว และดอกเบี้ยสูงเพิ่ม cost of carry</li>
+          <li><b>China Macro & Policy Risk:</b> Macau คิดเป็น ~60% รายได้ — จีนคุมนักท่องเที่ยว, ลดวีซ่า IVS, หรือเศรษฐกิจจีนซบ = กระทบโดยตรงและรวดเร็ว</li>
+          <li><b>Macau Margin Pressure:</b> การแข่งขันเพิ่มจาก 6 concessionaires ส่งผล mass market margin ลดลง — Q4 2025 EBITDA margin ต่ำกว่าคาด ทำหุ้นร่วง 9%</li>
+          <li><b>ไม่มีการกระจาย geographic:</b> ขายทรัพย์สินลาสเวกัส 2021 ทำให้ depend 100% เอเชีย — New York/Texas IR bid ยังไม่แน่นอน</li>
+          <li><b>Regulatory &amp; Geopolitical Risk:</b> สิงคโปร์อาจเพิ่มภาษีคาสิโน, จีน-สหรัฐ tension กระทบ sentiment, currency HKD/SGD/USD fluctuation</li>
+          <li><b>Capital Allocation vs Debt Reduction:</b> ผู้ถือหุ้นต้องการปันผล/buyback แต่หนี้สูงจำกัดความยืดหยุ่น — trade-off ระหว่าง shareholder return กับ balance sheet repair</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>LVS: Deep Value ในธุรกิจ IR ระดับโลก — ราคาสะท้อนความกังวล Macau มากเกินไป</h2>
+      <p>Las Vegas Sands เป็น integrated resort operator ชั้นนำของโลกด้วยทรัพย์สินระดับ premier ทั้ง Marina Bay Sands (สิงคโปร์) และ 5 properties ใน Macau
+        ธุรกิจฟื้นตัวอย่างแข็งแกร่งหลัง COVID — รายได้ TTM $13.74B (+22.7% YoY) EBITDA $4.6B และ EPS TTM $2.70
+        ราคาหุ้น $46.99 สะท้อน forward P/E เพียง 13.1x และ EV/EBITDA ~9.5x ซึ่ง discount ค่อนข้างมากเทียบ history และ peers
+        ความกังวลหลักคือ margin Macau ที่ถูกกดดันจากการแข่งขันและผู้บริโภคจีนที่ยังระมัดระวัง บวกกับหนี้สุทธิสูง $12.4B
+        อย่างไรก็ตาม Marina Bay Sands ยังเป็น "cash machine" ที่ยากจะหาคู่แข่ง — สิงคโปร์มีใบอนุญาตเพียง 2 แห่ง และ MBS กำลังขยาย capacity
+        นักวิเคราะห์ 15/20 แนะนำ Strong Buy เป้าเฉลี่ย $69.09 (+47%) ที่ราคา $46.99 มี MOS 21.7% จาก Fair Value $60
+      </p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$60 <span style="font-size:12px;color:#cab9a8">($52–$70)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +21.7%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$69.09 (Strong Buy)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ทยอยสะสมในโซนต่ำกว่า $50 (MOS ≥20%) โดยเฉพาะใกล้ $43-46 (MOS 25-30%) สำหรับ value investor ที่รับ China/Macau risk ได้
+        ตัด loss หาก Macau EBITDA margin ต่ำกว่า 28% ต่อเนื่อง หรือหนี้เพิ่มขึ้นมีนัย · เป้าหมาย exit ที่ $60-69 (FV-analyst target range) ใน 2-3 ปี
+        รับปันผล 2.55% ระหว่างรอ — total return basis 46-85% ใน base/bull case (3 ปี)
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ EV/EBITDA multiple เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ EBITDA margin ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง โดยเฉพาะจากปัจจัย China macro/policy ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    ที่มา: Yahoo Finance (ราคา/chart), StockAnalysis.com (งบการเงิน), Finviz (P/BV/ROE/D/E), StockAnalysis Forecast (เป้านักวิเคราะห์) · ราคา ณ 2 ก.ค. 2569
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 2 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
