@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น Booz Allen Hamilton (BAH) — Stock Analysis Dashboard</title>
+<!-- ★ ใส่รุ่นโมเดล AI ที่ใช้วิเคราะห์จริง -->
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) -->
+<script type="application/json" id="stock-meta">
+{"symbol":"BAH","currency":"USD","price":62.22,"fairValue":98,"mos":36.5,"upside":57.5,"pe":9.0,"dividendYield":3.6,"roe":80.74}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#00205B",
+    "accentDark": "#001540",
+    "darkGrad": "linear-gradient(135deg,#001030 0%,#00205B 60%,#003080 100%)",
+    "glow": "rgba(0,32,91,0.45)",
+    "subColor": "#7aa3e0",
+    "headerMuted": "rgba(255,255,255,0.55)",
+    "verdictText": "#e8f0fe",
+    "vcellLabel": "#9ab3d8",
+    "badge": "#003399",
+    "chgBg": "#c5221f",
+    "chgColor": "#ffffff"
+  },
+  "chart": {
+    "data": [
+      ["ส.ค. 25", 106.39],
+      ["ก.ย. 25", 97.81],
+      ["ต.ค. 25", 85.29],
+      ["พ.ย. 25", 82.21],
+      ["ธ.ค. 25", 83.10],
+      ["ม.ค. 26", 87.09],
+      ["ก.พ. 26", 78.24],
+      ["มี.ค. 26", 77.45],
+      ["เม.ย. 26", 77.19],
+      ["พ.ค. 26", 78.59],
+      ["มิ.ย. 26", 60.67],
+      ["ก.ค. 26", 60.01],
+      ["ก.ค. 26*", 62.22]
+    ],
+    "min": 55,
+    "max": 120,
+    "grid": [60, 75, 90, 98, 110],
+    "fairLine": 98,
+    "currency": "$",
+    "highlight": [0, 12]
+  },
+  "gauge": {
+    "min": 50,
+    "max": 130,
+    "cur": 62.22,
+    "fair": 98,
+    "fairLabelTop": true
+  },
+  "fv": 98
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">
+      <span style="background:#00205B"></span>
+      <span style="background:#1a3a7a"></span>
+      <span style="background:#003399"></span>
+      <span style="background:#7aa3e0"></span>
+    </div>
+    <div>
+      <span class="tag">NYSE: BAH</span>
+      <span class="tag">Government IT &amp; Consulting</span>
+      <span class="tag">Defense &amp; Intelligence</span>
+    </div>
+    <h1>Booz Allen Hamilton</h1>
+    <div class="sub">US government management consulting &amp; IT services • Defense, intelligence, civil agencies • Analytics, AI/ML, cyber, digital transformation • ~97% government revenue • ~33K cleared employees</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$62.22<small>(BAH)</small></div>
+      </div>
+      <div class="chg">▼ −41.5% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 3 ก.ค. 2569<br>
+        กรอบ 52 สัปดาห์ $59.50 – $120.05<br>
+        ที่มา: Yahoo Finance, StockAnalysis.com, MarketBeat, SEC EDGAR
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล FY2026 (สิ้นปี มี.ค. 2569)</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~$7.6B</div><div class="d">~122M หุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~9.0x</div><div class="d">EPS TTM $6.90 • ต่ำสุดในรอบ 5 ปี</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~18–22x</div><div class="d">ปัจจุบัน Discount ลึก ~50%</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">~6.9x</div><div class="d">BVPS ~$9.03 • equity $1.1B</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2026</div><div class="v">$851M</div><div class="d">-9% yoy (FY25: $935M)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$6.90</div><div class="d">FY2026 diluted • FY25: $7.25</div></div>
+      <div class="metric"><div class="k">FCF ต่อหุ้น</div><div class="v pos">~$7.79</div><div class="d">FCF FY26: $951M (สูงสุดเป็นประวัติการณ์)</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~80.7% / ~9.5%</div><div class="d">ROE สูงจาก leverage + buybacks</div></div>
+
+      <div class="metric"><div class="k">รายได้ FY2026</div><div class="v neu">$11.2B</div><div class="d">-6.4% yoy (FY25: $12.0B)</div></div>
+      <div class="metric"><div class="k">EBITDA Margin</div><div class="v">~10.7%</div><div class="d">EBITDA $1,196M</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~3.6%</div><div class="d">$2.24/หุ้น/ปี • เติบโตต่อเนื่อง</div></div>
+      <div class="metric"><div class="k">Backlog (สัญญา)</div><div class="v pos">$38.2B</div><div class="d">Record! Book-to-bill 1.1x</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ส.ค. 2568 – ก.ค. 2569</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#00205B"></i>ราคา BAH</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $98</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        BAH ปรับตัวลงแรงตลอดช่วง 1 ปีที่ผ่านมา จากจุดสูง ~$106 ในเดือน ส.ค. 2568 ลดลงมาใกล้ $60 ในช่วง มิ.ย.–ก.ค. 2569 คิดเป็นการปรับฐาน ~42% สาเหตุหลักมาจากความกังวลงบประมาณรัฐบาล (DOGE initiative) ที่ส่งผลให้สัญญาบางส่วนถูกเลื่อน/ยกเลิก รวมถึงการลดลงของรายได้ FY2026 (-6.4%) อย่างไรก็ดี Backlog สัญญาแตะระดับ record $38.2B บ่งชี้ความต้องการใช้บริการ BAH ยังแข็งแกร่งในระยะยาว
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS adj. $6.90 × P/E 14x — Peer government IT median ~14–16x; ใช้ discount ความเสี่ยง DOGE/budget</div></div>
+        <div class="mval">$96.60</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. EV/EBITDA</div><div class="mdesc">EBITDA FY26 $1,196M × 13x EV/EBITDA − Net Debt $3.4B ÷ 122M หุ้น — Sector range 12–16x; BAH ปัจจุบัน ~9x (Discount ลึก)</div></div>
+        <div class="mval">$99.62</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. FCF Yield</div><div class="mdesc">FCF/share $7.79 ÷ FCF yield 8% — ใช้ 8% discount rate สำหรับ stable government contractor (FCF record $951M FY26)</div></div>
+        <div class="mval">$97.38</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $90 – $108</span></div>
+        <div class="r">$98</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ทั้ง 3 วิธีให้ค่าใกล้เคียงกันมากในช่วง $96–$100 สะท้อนว่า BAH ซื้อขายที่ Discount ลึกเทียบมูลค่าพื้นฐาน วิธี EV/EBITDA ให้ค่าสูงสุดเพราะ EBITDA ยืดหยุ่นกว่า Net Income ที่ผันผวนจาก tax rate; FCF yield approach ให้ค่าต่ำสุดเพราะใช้ discount rate ค่อนข้างสูงเพื่อ buffer ความไม่แน่นอนงบประมาณ รัฐบาล มูลค่ากลาง $98 สอดคล้องกับช่วงที่ Analyst consensus ให้ไว้ที่ ~$86–$92 (ใช้สมมติฐานอนุรักษ์นิยมกว่า)
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $62.22</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $98</div></div>
+        </div>
+        <div class="scale">
+          <span>$68.60<br><small>MOS 30%</small></span>
+          <span>$78.40<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$89<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">$98<br><small>Fair Value</small></span>
+          <span style="text-align:right">$108<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน $62.22 อยู่ต่ำกว่าโซน MOS 30% ($68.60) ถือเป็นโซน Deep Value ที่หายากในหุ้นคุณภาพระดับ BAH Margin of Safety เทียบ Fair Value อยู่ที่ +36.5% — ให้เบาะรองรับกรณีสมมติฐานคลาดเคลื่อน Analyst consensus เฉลี่ย ~$89 สะท้อนว่าตลาดมองว่ายังมี upside แต่ระมัดระวังความไม่แน่นอนด้านงบประมาณภาครัฐในระยะสั้น
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict good">
+        <div class="big">+36.5%</div>
+        <div class="txt">Deep Value — ราคาต่ำกว่า Fair Value มาก (ต่ำกว่าโซน MOS 30%)</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$78.40</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$68.60</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $98</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="62.22" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $62.22 • EPS ฐาน ~$6.90 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS -3%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$62.90</div>
+          <div class="ret neg">+11.6%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$6.29</span></li>
+            <li><span>P/E ออก</span><span>10x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$6.72</span></li>
+            <li><span>สถานการณ์</span><span>DOGE cuts ลึก, revenue ลด</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +5%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$118.58</div>
+          <div class="ret pos">+90.6%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$7.99</span></li>
+            <li><span>P/E ออก</span><span>14x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$6.72</span></li>
+            <li><span>สถานการณ์</span><span>Backlog $38B convert ปกติ</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +10%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$153.60</div>
+          <div class="ret pos">+146.8%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$9.18</span></li>
+            <li><span>P/E ออก</span><span>16x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$6.72</span></li>
+            <li><span>สถานการณ์</span><span>AI/cyber mandate สูง, re-rating</span></div>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      สถานการณ์ Base สมมติ EPS โต 5%/ปีซึ่งอนุรักษ์นิยมกว่าอัตราเฉลี่ย 5 ปีที่ผ่านมา (~10%) เนื่องจาก environment งบประมาณ FY2027 ยังไม่แน่นอน แม้แต่สถานการณ์ Bear ที่ EPS หดตัวก็ยังให้ผลตอบแทนเป็นบวก เพราะ P/E เริ่มต้นที่ 9x ต่ำมากเป็นฐานช่วยดูดซับ downside — FCF record $951M รองรับปันผลและ buyback ต่อเนื่อง
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก &amp; ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>Backlog สัญญา Record $38.2B:</b> ให้ visibility รายได้ ~3.4 ปีข้างหน้า; book-to-bill 1.1x บ่งชี้ความต้องการใหม่ยังสูงกว่ารายได้ที่รับรู้</li>
+          <li><b>AI/ML &amp; Cyber ภาครัฐ:</b> BAH เป็นพันธมิตรหลักของ DoD/IC ด้าน AI; ความร่วมมือกับ OpenAI เพื่อ National Security AI — นโยบายรัฐบาลกลางเร่ง AI adoption</li>
+          <li><b>Clearance Moat ที่ไม่ทดแทนได้:</b> ~33,000 พนักงานมีระดับ Security Clearance สูงสุด ใช้เวลา 12-18 เดือนในการ onboard พนักงานใหม่ — กำแพงเข้า (moat) แทบไม่มีคู่แข่งทำได้เทียบเท่า</li>
+          <li><b>FCF แข็งแกร่ง $951M:</b> FCF สูงสุดในประวัติการณ์ FY2026 รองรับ buyback ลดหุ้น + เพิ่มปันผลต่อเนื่อง (Dividend growth streak)</li>
+          <li><b>Valuation Discount ลึกมาก:</b> P/E 9x เทียบ historical 18-22x — ส่วนใหญ่ของ downside priced in แล้ว; หาก DOGE impact น้อยกว่าที่กลัว re-rating จะรวดเร็ว</li>
+          <li><b>ความต้องการ DoD Digital Transformation:</b> งบกลาโหมสหรัฐยังเป็น priority; BAH บริการ F-35, cloud migration, อาวุธอัตโนมัติ — สัญญาระยะยาว IDIQ</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>DOGE / Continuing Resolution Risk:</b> รัฐบาลกลางตัดงบ/เลื่อนสัญญาส่งผลรายได้หดตัว; FY2026 revenue ลด 6.4% แล้ว — FY2027 อาจยังได้รับผลกระทบ</li>
+          <li><b>Concentration สูง (97% US Gov):</b> ถ้ารัฐบาลเปลี่ยนนโยบาย/ลดงบ IT, BAH ไม่มี commercial buffer รองรับ — เสี่ยงสูงกว่า peer ที่มี private sector mix</li>
+          <li><b>Competition ด้าน Talent/Clearances:</b> CACI International, Leidos, SAIC แข่งขันช่วง talent clearance สูง; ค่าแรงพนักงาน Clearance แพง margin ถูกกดดัน</li>
+          <li><b>Leverage สูง:</b> Net debt $3.4B เทียบ EBITDA $1.2B = Net Debt/EBITDA ~2.8x; ดอกเบี้ยสูงกดดันกำไรถ้า rate ไม่ลด; buyback-induced equity depletion</li>
+          <li><b>Revenue Decline ต่อเนื่อง:</b> ต้องติดตามว่า Backlog convert เป็นรายได้ได้ไหม — ถ้า win rate ของสัญญาใหม่ลดลงหรือถูกประท้วง (protest) รายได้จะหด</li>
+          <li><b>Key-Man &amp; Policy Risk:</b> ธุรกิจ consulting ขึ้นกับความสัมพันธ์กับ agency; การเปลี่ยน leadership ใน DoD/IC อาจกระทบ relationship ที่สร้างมานาน</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>BAH: Deep Value ในหุ้น Government IT Quality — MOS 36.5% ต่ำกว่า FV $98</h2>
+      <p>Booz Allen Hamilton เป็นหนึ่งใน "crown jewel" ของ government IT/consulting สหรัฐ — มีคูเมือง (moat) ที่แข็งแกร่งจาก Security Clearance ~33,000 คน, ความสัมพันธ์กับ DoD &amp; IC หลายทศวรรษ และ Backlog สัญญา record $38.2B ที่ให้ visibility รายได้ยาว ราคาปัจจุบัน $62.22 ปรับลงแล้ว ~42% ใน 1 ปี ส่วนใหญ่จากความกังวล DOGE เป็นการ price-in worst case ไปมาก P/E 9x ต่ำสุดในรอบ 5 ปีในขณะที่ FCF แข็งแกร่ง record $951M FY2026 — ให้ Margin of Safety ที่ดีมาก</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$98 <span style="font-size:12px;color:#cab9a8">($90–$108)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +36.5%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$89 (Hold/Reduce)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ราคาปัจจุบัน $62.22 อยู่ต่ำกว่า Deep Value zone (MOS &gt;30%) เหมาะสำหรับนักลงทุน Value ที่มองข้าม noise ระยะสั้นได้ ทยอยสะสมที่ &lt;$70 (MOS &gt;28%) ได้เลย; ปันผล 3.6% ระหว่างรอ re-rating — กรณี Base ให้ผลตอบแทน 3 ปี ~91% รวมปันผล ถ้า DOGE dust settles และ Backlog convert ตามแผน
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ EBITDA ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ข้อมูลอ้างอิง: (1) Yahoo Finance — ราคา/chart/52w ณ 3 ก.ค. 2569 (2) StockAnalysis.com — งบการเงิน FY2026, EBITDA, FCF (3) MarketBeat — analyst targets &amp; ratings (4) SEC EDGAR Form 8-K Q4 FY2026 — backlog $38.2B
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 3 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>

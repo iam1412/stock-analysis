@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น Molina Healthcare (MOH) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"MOH","currency":"USD","price":227.20,"fairValue":207,"mos":-9.8,"upside":-8.9,"pe":63.1,"dividendYield":null,"roe":4.48}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#00704A",
+    "accentDark": "#004d33",
+    "darkGrad": "linear-gradient(135deg,#003d28 0%,#00291a 100%)",
+    "glow": "rgba(0,112,74,0.35)",
+    "subColor": "#b2dfdb",
+    "headerMuted": "rgba(178,223,219,0.70)",
+    "verdictText": "#e0f2ef",
+    "vcellLabel": "#b2dfdb",
+    "badge": "#00704A",
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#1e8e3e"
+  },
+  "chart": {
+    "data": [
+      ["ส.ค. 68", 180.83],
+      ["ก.ย. 68", 191.36],
+      ["ต.ค. 68", 153.06],
+      ["พ.ย. 68", 148.26],
+      ["ธ.ค. 68", 173.54],
+      ["ม.ค. 69", 179.59],
+      ["ก.พ. 69", 154.05],
+      ["มี.ค. 69", 133.30],
+      ["เม.ย. 69", 194.62],
+      ["พ.ค. 69", 173.60],
+      ["มิ.ย. 69", 228.70],
+      ["ก.ค. 69", 227.20]
+    ],
+    "min": 110,
+    "max": 260,
+    "grid": [120, 150, 180, 207, 240],
+    "fairLine": 207,
+    "currency": "$",
+    "highlight": [10, 11]
+  },
+  "gauge": {
+    "min": 100,
+    "max": 280,
+    "cur": 227.20,
+    "fair": 207,
+    "fairLabelTop": true
+  },
+  "fv": 207
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">◆ ◆ ◆ ◆ ◆</div>
+    <div>
+      <span class="tag">NYSE: MOH</span>
+      <span class="tag">Healthcare</span>
+      <span class="tag">Managed Care</span>
+    </div>
+    <h1>Molina Healthcare</h1>
+    <div class="sub">Pure-play government healthcare MCO • Medicaid &amp; Medicare (D-SNPs) managed care • 19 states, ~5.0M members • Marketplace plans • ไม่มี commercial insurance exposure</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$227.20<small>(MOH)</small></div>
+      </div>
+      <div class="chg">▲ +25.6% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 3 กรกฎาคม 2569<br>
+        กรอบ 52 สัปดาห์ $121.06 – $242.56<br>
+        ที่มา: Yahoo Finance, StockAnalysis.com, MarketBeat, Molina IR
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล TTM / FY2025 / Q1 2026</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">$11.83B</div><div class="d">~52.1M shares outstanding</div></div>
+      <div class="metric"><div class="k">P/E (TTM GAAP)</div><div class="v neu">~63.1x</div><div class="d">ผลกระทบจาก Q4'25 impairment</div></div>
+      <div class="metric"><div class="k">Forward Adj P/E (2026)</div><div class="v neu">~45.4x</div><div class="d">อิง adj EPS guide ≥$5.00</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">2.97x</div><div class="d">BVPS $78.46 / share</div></div>
+
+      <div class="metric"><div class="k">EPS (TTM GAAP)</div><div class="v">~$3.60</div><div class="d">Q1'26 adj EPS $2.35; FY25 adj $11.03</div></div>
+      <div class="metric"><div class="k">Medical Care Ratio</div><div class="v neg">91.1%</div><div class="d">Q1 2026 consolidated MCR (ยกสูง)</div></div>
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$43.1B</div><div class="d">+7.0% YoY; FY2025 $45.4B</div></div>
+      <div class="metric"><div class="k">ROE</div><div class="v">~4.48%</div><div class="d">ลดจากค่าเฉลี่ย 10 ปี ~28% (MCR กด)</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v neg">$472M</div><div class="d">ลดลง 60% vs FY2024 ($1.18B)</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~$78.46</div><div class="d">Total equity ~$4.08B</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">ไม่มี</div><div class="d">MOH ไม่จ่ายปันผล — ลงทุนต่อยอดธุรกิจ</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">0.80</div><div class="d">ความผันผวนต่ำกว่าตลาด S&amp;P 500</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">รายเดือน ส.ค. 2568 – ก.ค. 2569</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#00704A"></i>ราคา MOH</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $207</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        MOH เริ่มปี (ส.ค. 2568) ที่ราว $181 ก่อนดีดขึ้นสู่ $191 ในเดือนกันยายน จากนั้นถูกขายทำกำไรลงมา $133 ในมีนาคม 2569 ซึ่งเป็นจุดต่ำสุด 52 สัปดาห์ (แยกกลุ่ม 52wk low ที่ $121 เกิดก่อนช่วงนี้) เนื่องจาก MCR ที่สูงกว่าคาดและผลขาดทุน Medicare ราว $1.25B ในปี 2025 หุ้นฟื้นตัวแรงในไตรมาส 2/2569 หลัง Q1 adj EPS $2.35 เอาชนะประมาณการ บริษัทยืนยัน guidance 2026 adj EPS ≥$5.00 และ revenue ~$42B ราคาปิดปัจจุบัน $227.20 ให้ผลตอบแทนรอบปี +25.6% จากจุดเริ่มต้นที่ $180.83
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">3 วิธี — อิงกำไรปกติ mid-cycle</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation (Normalized Mid-Cycle)</div><div class="mdesc">EPS adj. mid-cycle ~$11.0 (เฉลี่ย FY2025 $11.03 adj กับ FY2027 recovery estimate) × P/E เป้าหมาย ~18x (ค่ากลาง MCO sector)</div></div>
+        <div class="mval">$198</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 14% normalized − g 5%) / (r 8% − g 5%) ≈ 3.0x × BVPS $78.46 — ROE ปัจจุบัน 4.5% แต่ normalized mid-cycle ~14% (ต่ำกว่าค่าเฉลี่ย 10 ปี 28% สะท้อน MCR ที่ยังไม่ฟื้นเต็มที่)</div></div>
+        <div class="mval">$235</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Analyst Consensus Target</div><div class="mdesc">เป้าเฉลี่ยจาก 19 นักวิเคราะห์ (3 Strong Buy, 1 Buy, 14 Hold, 1 Sell) — consensus ~$188 สะท้อน MCR uncertainty; กรอบ $124–$262</div></div>
+        <div class="mval">$188</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $160 – $245</span></div>
+        <div class="r">$207</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        วิธี Justified P/BV ให้ค่าสูงสุด ($235) เนื่องจาก BVPS แข็งแกร่งและ ROE ปกติของ MCO อยู่ที่ 15%+ ขณะที่ analyst consensus ($188) ระวังตัวกว่าเพราะความไม่แน่นอนของ MCR และ Medicaid redetermination P/E normalized ($198) อิงสมมติฐานว่า adj EPS ฟื้นตัวสู่ระดับ FY2025 ภายใน 2-3 ปี ราคาปัจจุบัน $227.20 อยู่เหนือ FV เฉลี่ย $207 สะท้อนว่าตลาดกำลัง price in การฟื้นตัวที่มากกว่า base case
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $227.20</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $207</div></div>
+        </div>
+        <div class="scale">
+          <span>$145<br><small>MOS 30%</small></span>
+          <span>$166<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$188<br><small>Analyst Avg</small></span>
+          <span style="text-align:right">$207<br><small>Fair Value</small></span>
+          <span style="text-align:right">$245<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคา $227.20 อยู่เหนือ Fair Value $207 และ Analyst consensus $188 ทั้งคู่ หมายความว่าตลาดกำลัง price in การฟื้นตัวของกำไรอย่างเต็มที่ โซน MOS 20% ($166) และ MOS 30% ($145) อยู่ต่ำกว่าราคาปัจจุบันค่อนข้างมาก ผู้ที่ต้องการ margin of safety ควรรอจังหวะราคาปรับฐาน
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">−9.8%</div>
+        <div class="txt">ราคาปัจจุบันอยู่เหนือ Fair Value — ยังไม่มี MOS</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$166</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$145</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $207</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="227.20" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $227.20 • EPS ฐาน adj ~$5.00 • ไม่มีปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS 0%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$60</div>
+          <div class="ret neg">−73.6%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$5.00</span></li>
+            <li><span>P/E ออก</span><span>12x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$0</span></li>
+            <li><span>สถานการณ์</span><span>MCR ยังยกสูง ไม่ฟื้น</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +20%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$138</div>
+          <div class="ret neg">−39.3%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$8.64</span></li>
+            <li><span>P/E ออก</span><span>16x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$0</span></li>
+            <li><span>สถานการณ์</span><span>MCR ค่อยๆ ดีขึ้นสู่ ~88%</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +30%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$242</div>
+          <div class="ret pos">+6.5%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$10.98</span></li>
+            <li><span>P/E ออก</span><span>22x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$0</span></li>
+            <li><span>สถานการณ์</span><span>ฟื้นตัวเต็มที่ + สัญญาใหม่</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      การฉายภาพนี้แสดงให้เห็นชัดว่า ณ ราคา $227.20 หุ้น MOH มีความเสี่ยงสูงในทุก scenario ยกเว้น Bull case ที่ดีที่สุด แม้แต่ base case ที่ EPS ฟื้นตัว +20%/ปี ก็ยังให้ผลตอบแทน −39% ในช่วง 3 ปี สะท้อนว่าตลาดกำลัง price in การฟื้นตัวที่มากกว่าความเป็นจริงแล้ว อิงอัตราการเติบโตของกำไรที่ต้องเป็น +30%+/ปีขึ้นไปจึงจะให้ผลตอบแทนบวก หมายเหตุ: MOH ไม่จ่ายปันผล การคืนเงินผู้ถือหุ้นทำผ่าน share buyback
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก &amp; ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>Pure-play government MCO Moat:</b> MOH เชี่ยวชาญ Medicaid/Medicare เท่านั้น ต่างจาก UNH/ELV ที่มี commercial สิ่งนี้ทำให้บริหารจัดการต้นทุน MCR ได้เฉพาะเจาะจงกว่า</li>
+          <li><b>Medicaid Expansion &amp; Long-Term Growth:</b> กลุ่ม Dual Eligible (D-SNP) มีแนวโน้มเติบโตตาม aging population และ Medicaid expansion บางรัฐที่ยังไม่ขยาย</li>
+          <li><b>MCR ฟื้นตัวใน 2026-2027:</b> Q1 2026 MCR 91.1% ดีขึ้นกว่า FY2025 ที่ 91.3%; management ยืนยัน guidance adj EPS ≥$5 และราคาสัญญาปรับขึ้นรับ MCR inflation ปี 2027</li>
+          <li><b>State Contract Wins:</b> MOH ชนะสัญญาใหม่หลายรัฐ — สร้างรายได้ recurring ยาวนาน 3-5 ปีต่อสัญญา ลด churn ต่ำ</li>
+          <li><b>Marketplace Growth:</b> Marketplace membership 305K (Q1 2026), MCR ดีที่ 84% — segment นี้กำไรดีกว่า Medicaid</li>
+          <li><b>Low Beta 0.80:</b> ความผันผวนต่ำกว่าตลาด เหมาะกับนักลงทุนที่ต้องการ defensive healthcare exposure</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>MCR ยังสูงเกิน 91%:</b> อัตราค่าใช้จ่ายทางการแพทย์ยังสูงกว่าระดับเป้าหมาย ~88-89% กดกำไรอย่างมีนัยสำคัญ — เป็นความเสี่ยงหลักสำหรับ 2026-2027</li>
+          <li><b>Medicaid Redetermination:</b> สมาชิก Medicaid ลด 6% ในปี 2026 หลัง COVID-era continuous enrollment สิ้นสุด กระทบ California, Illinois, New York, Texas</li>
+          <li><b>Medicare/D-SNP Losses:</b> Medicare segment ขาดทุน ~$1.25B ในปี 2025 บริษัทถอนตัวจากบางตลาด ความไม่แน่นอนสูง</li>
+          <li><b>ราคา Overvalued ที่ $227:</b> Forward adj P/E ~45x สูงมากสำหรับ MCO — ถ้ากำไรไม่ฟื้นตามคาด downside risk ชัดเจน</li>
+          <li><b>Regulatory Risk:</b> การเปลี่ยนแปลงนโยบาย Medicaid reimbursement โดยรัฐหรือรัฐบาลกลางกระทบโดยตรงต่อ revenue และ margin</li>
+          <li><b>Analyst Consensus ต่ำกว่าราคา:</b> เป้าเฉลี่ย $188-192 ต่ำกว่าราคาปัจจุบัน ~15-17%; 14/19 analysts ให้ Hold — ความเห็นเป็นกลางหรือระมัดระวัง</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>MOH — Pure-Play Government MCO กำลังฟื้นตัว แต่ราคาปัจจุบันตั้งความคาดหวังสูง</h2>
+      <p>Molina Healthcare เป็น MCO ที่โดดเด่นในฐานะผู้เชี่ยวชาญ Medicaid/Medicare เฉพาะทาง ครอบคลุม 19 รัฐ มีรายได้กว่า $45B ในปี 2025 โมเดลธุรกิจ pure-play government healthcare มีความมั่นคงในระยะยาวเนื่องจาก Medicaid ไม่ใช่สินค้าวัฏจักร แต่ปี 2025-2026 บริษัทเผชิญ MCR สูงผิดปกติ (>91%) จากการขาดทุน Medicare และ Medicaid cost creep ส่งผลให้ GAAP EPS ลดลงอย่างรวดเร็ว ราคา $227.20 สะท้อน premium สำหรับการฟื้นตัวที่คาดหวังสูงมาก ทำให้ผลตอบแทน 3 ปีเป็นลบในทุก scenario ยกเว้น bull case เต็มรูปแบบ ยังคงเป็นธุรกิจที่ดีแต่ราคาปัจจุบันไม่ให้ margin of safety</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$207 <span style="font-size:12px;color:#cab9a8">($160–$245)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −9.8%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$188–192 (Hold)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ราคาปัจจุบัน $227 เหนือ Fair Value $207 และ analyst consensus $188-192 — ยังไม่มี margin of safety สำหรับนักลงทุนแนว value โซนน่าสนใจเริ่มต้นที่ต่ำกว่า $207 (ใกล้ FV) และ deep value ที่ $166-145 (MOS 20-30%) หากยังถือหุ้นอยู่อาจติดตามสัญญาณการฟื้นตัวของ MCR ให้ต่ำกว่า 89% อย่างยั่งยืนก่อน add เพิ่ม
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ที่มาข้อมูล: (1) Yahoo Finance — ราคา $227.20 ณ 3 ก.ค. 2569, 52-week range, P/E TTM; (2) StockAnalysis.com — งบการเงิน FY2023-2025, EPS quarterly, P/BV, ROE, analyst consensus; (3) MarketBeat — analyst ratings และ price target consensus $184.81; (4) Molina Healthcare Investor Relations Q1 2026 Earnings Release — MCR 91.1%, adj EPS $2.35, 2026 guidance ≥$5.00; (5) GuruFocus — ROE 4.48%, valuation metrics
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 3 กรกฎาคม 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
