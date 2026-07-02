@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น Leidos Holdings (LDOS) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"LDOS","currency":"USD","price":107.56,"fairValue":168.0,"mos":36.0,"upside":56.2,"pe":9.84,"dividendYield":1.60,"roe":28.4}
+</script>
+<script type="application/json" id="report-data">
+{"theme":{"accent":"#CC2529","accentDark":"#8B0000","darkGrad":"linear-gradient(135deg,#1a0003 0%,#2d0006 50%,#1a0003 100%)","glow":"rgba(204,37,41,0.35)","subColor":"#f0a0a2","headerMuted":"rgba(204,37,41,0.55)","verdictText":"#ffcdd2","vcellLabel":"#ef9a9a","badge":"#CC2529","chgBg":"#c5221f","chgColor":"#fff"},"chart":{"data":[["ก.ค. 68",157.99],["ส.ค. 68",179.04],["ก.ย. 68",187.40],["ต.ค. 68",188.90],["พ.ย. 68",189.53],["ธ.ค. 68",179.32],["ม.ค. 69",187.15],["ก.พ. 69",174.05],["มี.ค. 69",154.97],["เม.ย. 69",148.69],["พ.ค. 69",127.35],["มิ.ย. 69",102.97],["ก.ค. 69",107.56]],"min":85,"max":210,"grid":[100,130,160,190],"fairLine":168.0,"currency":"$","highlight":[4,11]},"gauge":{"min":80,"max":220,"cur":107.56,"fair":168.0,"fairLabelTop":true},"fv":168.0}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">&#9679;&#9679;&#9679;</div>
+    <div>
+      <span class="tag">NYSE: LDOS</span>
+      <span class="tag">Defense &amp; Government IT</span>
+      <span class="tag">S&amp;P 500</span>
+    </div>
+    <h1>Leidos Holdings</h1>
+    <div class="sub">Defense, intelligence &amp; health technology • DoD, intelligence community, VA, FAA • F-35 sustainment, air traffic management, VA EHR • ~$16.7B revenue, strong backlog</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$107.56<small>(LDOS)</small></div>
+      </div>
+      <div class="chg">▼ −31.9% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 2 ก.ค. 2569<br>
+        กรอบ 52 สัปดาห์ $98.86 – $205.77<br>
+        ที่มา: StockAnalysis.com, Yahoo Finance, Macrotrends
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ก.ค. 2569</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">$13.53B</div><div class="d">~125.8M หุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~9.84x</div><div class="d">EPS TTM $10.93 GAAP</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~18x</div><div class="d">ช่วง 13–25x ในอดีต</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">2.77x</div><div class="d">BVPS ~$38.79 (บวก)</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2024</div><div class="v">$1,251M</div><div class="d">+501% YoY (จาก $208M)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$10.93</div><div class="d">Forward FY25: ~$11.99</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~$38.79</div><div class="d">Equity $5.0B (TTM)</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~28.4% / 8.1%</div><div class="d">FY2024 — แข็งแกร่ง</div></div>
+
+      <div class="metric"><div class="k">รายได้ FY2024</div><div class="v neu">$16.66B</div><div class="d">+7.9% YoY (จาก $15.44B)</div></div>
+      <div class="metric"><div class="k">Op. Margin FY2024</div><div class="v">11.0%</div><div class="d">EBITDA $2.12B</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~1.60%</div><div class="d">$1.72/หุ้น/ปี · ขึ้นมาต่อเนื่อง</div></div>
+      <div class="metric"><div class="k">Free Cash Flow</div><div class="v pos">$1.86B (TTM)</div><div class="d">FCF yield ~13.7%</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ รายเดือน</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#CC2529"></i>ราคา LDOS</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $168</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        LDOS แตะจุดสูงสุด ~$189.53 เดือน พ.ย. 2568 ก่อนปรับลงแรงในช่วงต้นปี 2569 หลังกังวลแผนปรับลดงบประมาณรัฐบาล (DOGE) กระทบรายได้กลุ่ม Health &amp; Civil โดยเฉพาะสัญญา VA EHR ที่เผชิญแรงกดดัน หุ้นหล่นลงไปแตะ $98.86 (จุดต่ำสุด 52 สัปดาห์) ก่อนเด้งกลับเล็กน้อย กลับมาที่ ~$107.56 รอบปีขาดทุน −31.9% เทียบกับ S&amp;P 500 ที่แข็งแกร่งกว่า
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี (เหมาะ Defense IT)</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS adj. $11.99 × P/E 16x — Forward EPS FY2025 consensus; Defense IT peers ซื้อขาย 14–22x ในสภาวะปกติ ใช้ 16x (conservative ปัจจัย DOGE)</div></div>
+        <div class="mval">$191.84</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. EV/EBITDA</div><div class="mdesc">EBITDA TTM $2,117M × 11x = EV $23,287M − หนี้สุทธิ $6,764M = Equity $16,523M ÷ 125.8M หุ้น — defense IT peers (SAIC, LMT, GD) ซื้อขาย 10–14x EV/EBITDA</div></div>
+        <div class="mval">$131.35</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. FCF Yield</div><div class="mdesc">FCF TTM $1,859M ÷ อัตราผลตอบแทนที่ต้องการ 7.5% = Mkt Cap ยุติธรรม $24,787M ÷ 125.8M หุ้น — FCF แข็งแกร่ง ปรับ yield สูงขึ้นเพราะ Net Debt $6.8B</div></div>
+        <div class="mval">$197.05</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $131 – $197</span></div>
+        <div class="r">$168.00</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        วิธี P/E และ FCF Yield ให้มูลค่า ~$192–197 สะท้อนพื้นฐานรายได้และกระแสเงินสดที่แข็งแกร่ง ส่วน EV/EBITDA ($131) อนุรักษ์นิยมกว่าเพราะหักหนี้สุทธิ ~$6.8B ออกจาก Enterprise Value มูลค่าเฉลี่ย (น้ำหนัก 40/40/20) คือ ~$168 ซึ่งตรงกับเป้า consensus นักวิเคราะห์ $168.27 จาก 17 คน — ยืนยันความสมเหตุสมผลของการประเมิน
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $107.56</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $168</div></div>
+        </div>
+        <div class="scale">
+          <span>$117.60<br><small>MOS 30%</small></span>
+          <span>$134.40<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$168.00<br><small>Fair Value</small></span>
+          <span style="text-align:right">$168.27<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">$197.05<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน $107.56 ต่ำกว่า Fair Value $168 ถึง 36% (MOS) และยังต่ำกว่าจุดซื้อ MOS 30% ($117.60) สะท้อนว่าตลาด Discount ราคาไปมาก แม้แต่ analyst เป้าต่ำสุดอยู่ที่ $110 นักลงทุนที่รับความเสี่ยงจาก DOGE/งบประมาณได้อาจพบ deep value ที่ระดับนี้
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict good">
+        <div class="big">+36.0%</div>
+        <div class="txt">ส่วนต่างความปลอดภัยสูง — ราคาต่ำกว่า Fair Value $168 มากกว่า 1 ใน 3</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$134.40</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$117.60</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $168</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>&#129522; ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="107.56" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $107.56 • EPS ฐาน ~$11.99 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>&#128059; Bear</span><span>EPS &#8722;3%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$136.48</div>
+          <div class="ret pos">+26.9%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$10.94</span></li>
+            <li><span>P/E ออก</span><span>12x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$5.16</span></li>
+            <li><span>สถานการณ์</span><span>DOGE ตัดสัญญาหนัก</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>&#9878;&#65039; Base</span><span>EPS +5%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$213.36</div>
+          <div class="ret pos">+98.4%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$13.88</span></li>
+            <li><span>P/E ออก</span><span>15x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$5.16</span></li>
+            <li><span>สถานการณ์</span><span>Defense/IT เติบโตต่อ</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>&#128640; Bull</span><span>EPS +9%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$284.65</div>
+          <div class="ret pos">+164.6%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$15.53</span></li>
+            <li><span>P/E ออก</span><span>18x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$5.16</span></li>
+            <li><span>สถานการณ์</span><span>AI/defense rerating</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      แม้ในกรณี Bear (EPS ลด 3%/ปี, P/E ออก 12x) ราคายังให้ผลตอบแทน +27% จากจุดเข้า $107.56 เพราะ starting valuation ต่ำมาก Base case คาด EPS +5%/ปี (ตามคาดการณ์ consensus FY26: $12.33) P/E กลับ 15x ผลตอบแทนรวม ~98% หรือ ~26%/ปี Bull case หาก LDOS ชนะสัญญาใหม่ขนาดใหญ่ + AI enablement ดัน margin ขึ้น P/E อาจกลับไป 18x ให้ผลตอบแทน +165% ใน 3 ปี ทั้งนี้ความเสี่ยงหลักคือ DOGE/การตัดงบที่กระทบรายได้ภาคสุขภาพและพลเรือน
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYSTS / RISKS ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก &amp; ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">&#9650;</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>Defense spending แข็งแกร่ง:</b> งบ DoD ยังคงเพิ่ม โดยเฉพาะ intelligence &amp; cyber — LDOS เป็น prime contractor รายใหญ่ที่สุดของ IC ที่มีงบปลอดภัยกว่าฝั่งพลเรือน</li>
+          <li><b>Backlog มหาศาล:</b> Backlog รวม ~$38B+ (หลายเท่าของรายได้รายปี) ให้ทัศนวิสัยรายได้ที่ชัดเจนหลายปีข้างหน้า — กันความเสี่ยงลดรายได้กะทันหัน</li>
+          <li><b>AI &amp; Digital Transformation:</b> LDOS ลงทุน AI/ML สำหรับลูกค้าภาครัฐ — โอกาสชนะสัญญาใหม่ใน CJADC2, cloud migration, autonomous systems</li>
+          <li><b>Valuation ถูกมาก:</b> P/E ~9.8x ต่ำกว่าค่าเฉลี่ย 5 ปี ~18x — หากกังวล DOGE คลายตัว valuation rerating ทำได้มาก ตลาดยังสะท้อน worst case อยู่</li>
+          <li><b>FCF แข็งแกร่ง + Buyback:</b> FCF TTM $1.86B, buyback FY2025 $944M — ผู้บริหารส่งสัญญาณมั่นใจ ลด share count ต่อเนื่อง หนุน EPS/หุ้น</li>
+          <li><b>Dividend Growth:</b> ปันผลเพิ่มขึ้นต่อเนื่อง yield ~1.6% — แหล่งรายได้ระหว่างรอ rerating และสะท้อน commitment ของบริษัท</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">&#9660;</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>DOGE / งบประมาณรัฐบาลถูกตัด:</b> ความเสี่ยงหลัก — DOGE และแรงกดดันการลดงบพลเรือนกระทบ Health &amp; Civil segment โดยตรง โดยเฉพาะสัญญา VA EHR และ DHS</li>
+          <li><b>VA EHR Transition Risk:</b> โครงการ Electronic Health Record ของ VA เผชิญความล่าช้าและการตรวจสอบ — หากถูกยกเลิก/ลดขนาดกระทบรายได้ระยะกลาง</li>
+          <li><b>Concentration Risk:</b> ~87% ของรายได้มาจากรัฐบาลสหรัฐ — vulnerable to budget uncertainty, continuing resolutions และการเปลี่ยนแปลงนโยบาย</li>
+          <li><b>Net Debt $6.8B:</b> หนี้สูงเทียบ equity — อัตราดอกเบี้ยสูงเพิ่มต้นทุนทางการเงิน จำกัด flexibility ในการ M&amp;A</li>
+          <li><b>การแข่งขัน IDIQ/GWAC:</b> SAIC, Booz Allen แย่งงานใน OASIS+, Alliant 3 — margin อาจถูกกดจากการแข่งราคา และ recompete risk ในสัญญาใหญ่</li>
+          <li><b>Goodwill $8.1B:</b> มาจากการซื้อกิจการ (IS&amp;GS ของ Lockheed) — หาก impairment เกิดขึ้น EPS จะถูกกระทบหนัก</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>Deep Value ในหุ้น Defense IT ชั้นนำ — DOGE Shadow Discount</h2>
+      <p>
+        Leidos เป็นบริษัท defense, intelligence &amp; health technology ใน FORTUNE 500 มีพื้นฐานแข็งแกร่ง: รายได้ $16.7B, FCF $1.86B/ปี, backlog ผูกมัดรายได้ไว้หลายปี และเป็นผู้รับเหมาหลักของ Intelligence Community (IC) ซึ่งงบมีความมั่นคงสูงกว่าฝั่งพลเรือน ราคาหุ้นร่วงแรง −32% รอบปี จากความกังวล DOGE ตัดงบและแรงกดดันต่อสัญญา VA EHR ทำให้ P/E เหลือเพียง ~9.8x — ต่ำกว่าค่าเฉลี่ย 5 ปี ~18x อย่างมาก หาก LDOS รักษา EPS ได้ใกล้ consensus $12/หุ้น และ P/E ค่อยๆ rerating กลับ 14–15x ใน 2–3 ปี ผลตอบแทนจะสูงมาก — แต่ต้องยอมรับความไม่แน่นอนจากนโยบายงบประมาณระยะสั้น
+      </p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$168.00 <span style="font-size:12px;color:#cab9a8">($131–$197)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +36.0%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$168.27 (Buy · 17 คน)</div></div>
+      </div>
+      <div class="zone">
+        &#128161; <b>กลยุทธ์:</b> ราคาปัจจุบัน ~$107 อยู่ต่ำกว่า MOS 30% ($117.60) — อยู่ในโซน deep value สำหรับนักลงทุนที่รับความเสี่ยง DOGE/งบประมาณได้ พิจารณาทยอยสะสม $100–115 พร้อม stop-loss หากรายได้ H&amp;C ลดลงมากกว่าคาด · เป้าระยะกลาง (2–3 ปี) $160–200 หาก DOGE risk คลาย
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>&#9888;&#65039; คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    ข้อมูลอ้างอิง: StockAnalysis.com (ราคา $107.56 ณ 2 ก.ค. 2569), Yahoo Finance (chart รายเดือน 13 จุด ก.ค. 68–ก.ค. 69), StockAnalysis Forecast (EPS consensus FY25 $11.99, เป้า analyst เฉลี่ย $168.27 จาก 17 คน)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 2 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
