@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น DaVita Inc (DVA) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"DVA","currency":"USD","price":233.96,"fairValue":222.0,"mos":-5.4,"upside":-5.1,"pe":21.8,"dividendYield":null,"roe":null}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#E31837",
+    "accentDark": "#a01025",
+    "darkGrad": "linear-gradient(135deg,#1a0508 0%,#2d0a10 50%,#1a0508 100%)",
+    "glow": "rgba(227,24,55,0.18)",
+    "subColor": "#f8c8cf",
+    "headerMuted": "rgba(255,255,255,0.55)",
+    "verdictText": "#fff0f2",
+    "vcellLabel": "#f8c8cf",
+    "badge": "#E31837",
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#1e8e3e"
+  },
+  "chart": {
+    "data": [
+      ["ก.ค. 2567", 137.76],
+      ["ส.ค. 2567", 132.87],
+      ["ก.ย. 2567", 119.02],
+      ["ต.ค. 2567", 119.68],
+      ["พ.ย. 2567", 113.61],
+      ["ธ.ค. 2567", 109.34],
+      ["ม.ค. 2568", 156.30],
+      ["ก.พ. 2568", 153.69],
+      ["มี.ค. 2568", 155.14],
+      ["เม.ย. 2568", 194.36],
+      ["พ.ค. 2568", 222.48],
+      ["มิ.ย. 2568", 228.03],
+      ["ก.ค. 2568", 233.96]
+    ],
+    "min": 95,
+    "max": 255,
+    "grid": [110, 140, 170, 200, 230],
+    "fairLine": 222.0,
+    "currency": "$",
+    "highlight": [6, 9]
+  },
+  "gauge": {
+    "min": 100,
+    "max": 270,
+    "cur": 233.96,
+    "fair": 222.0,
+    "fairLabelTop": true
+  },
+  "fv": 222.0
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">●●●</div>
+    <div>
+      <span class="tag">NYSE: DVA</span>
+      <span class="tag">Healthcare Services</span>
+      <span class="tag">Kidney Dialysis</span>
+    </div>
+    <h1>DaVita Inc.</h1>
+    <div class="sub">Largest US kidney dialysis operator • ~2,800 outpatient centers • ~200K ESRD patients • Medicare/Medicaid ~80% revenue • Berkshire Hathaway ~38% stake</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$233.96<small>(DVA)</small></div>
+      </div>
+      <div class="chg">▲ +69.8% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 3 ก.ค. 2569<br>
+        กรอบ 52 สัปดาห์ $101.00 – $236.51<br>
+        ที่มา: Yahoo Finance, StockAnalysis, Macrotrends
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ก.ค. 2569</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~$15.0B</div><div class="d">~64M หุ้น (ซื้อคืนลดลงต่อเนื่อง)</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~21.8x</div><div class="d">EPS TTM ~$10.74 (StockAnalysis)</div></div>
+      <div class="metric"><div class="k">EV/EBITDA</div><div class="v">~8.8x</div><div class="d">EV ~$24.4B / EBITDA ~$2.76B (FY2025)</div></div>
+      <div class="metric"><div class="k">Net Debt</div><div class="v neg">~$9.4B</div><div class="d">LT Debt $10.16B − Cash $0.78B</div></div>
+
+      <div class="metric"><div class="k">Revenue TTM</div><div class="v neu">~$13.8B</div><div class="d">FY2025 $13.64B (+6.1% YoY)</div></div>
+      <div class="metric"><div class="k">Operating Income</div><div class="v">~$2.04B</div><div class="d">FY2025; EBITDA margin ~20.2%</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$10.74</div><div class="d">GAAP FY2025: $9.84 | TTM: $10.74</div></div>
+      <div class="metric"><div class="k">Free Cash Flow</div><div class="v pos">~$1.34B</div><div class="d">FY2025; FCF yield ~8.9% (ก่อนหนี้)</div></div>
+
+      <div class="metric"><div class="k">ROIC</div><div class="v pos">~12-14%</div><div class="d">สูงกว่า WACC; สะท้อนคูเมืองที่แข็งแกร่ง</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">ไม่จ่าย</div><div class="d">Buyback-driven; BRK ถือ ~38%</div></div>
+      <div class="metric"><div class="k">Berkshire Stake</div><div class="v pos">~38%</div><div class="d">Buffett/Berkshire เชื่อมั่นระยะยาว</div></div>
+      <div class="metric"><div class="k">52W Range</div><div class="v">$101–$237</div><div class="d">ราคาพุ่ง 134% จากจุดต่ำสุด ธ.ค. 2567</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ก.ค. 2568 – ก.ค. 2569</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#E31837"></i>ราคา DVA</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $222</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        DVA ร่วงจาก ~$140 (ก.ค. 2567) ลงสู่จุดต่ำสุด ~$109 (ธ.ค. 2567) ท่ามกลางความกังวลเรื่องผลกระทบ GLP-1 ต่ออุบัติการณ์โรคไตวาย
+        จากนั้นพุ่งขึ้นอย่างแข็งแกร่งในม.ค. 2568 (+43% เดือนเดียว) หลังผลประกอบการ Q4/2567 แข็งแกร่งและความกลัว GLP-1 เริ่มคลาย
+        ราคาทะยานต่อเนื่องแตะระดับสูงสุดตลอดกาล ~$237 ใน ก.ค. 2569 ผลตอบแทนรอบปี +69.8%
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 2 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS adj. $10.74 × P/E เป้าหมาย ~19x — Healthcare Services มักซื้อขาย 15–22x; ให้ 19x สะท้อนคุณภาพธุรกิจและความเสี่ยงหนี้</div></div>
+        <div class="mval">$204</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. EV/EBITDA Valuation</div><div class="mdesc">EBITDA FY2025 $2,759M × 9.0x − Net Debt $9,382M ÷ 64.2M หุ้น — Peer dialysis ซื้อขาย 8–10x; DVA premium เล็กน้อยจาก scale/moat</div></div>
+        <div class="mval">$241</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $204 – $241</span></div>
+        <div class="r">$222</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        P/E Valuation ($204) ให้ค่าต่ำกว่าเพราะ DVA มีหนี้สูงมาก (Net Debt ~$9.4B) ซึ่งกดดัน EPS Growth และเพิ่ม Financial Risk
+        EV/EBITDA ($241) เหมาะกับธุรกิจ Capital-Intensive ที่ EBITDA สะท้อนกระแสเงินสดจริงได้ดีกว่า
+        ราคาปัจจุบัน $233.96 เหนือ Fair Value เล็กน้อย สะท้อนว่าตลาดกำลังให้ Premium สำหรับ Berkshire สนับสนุนและความมั่นคงของ Medicare
+        นักวิเคราะห์ consensus เฉลี่ย $193.71 (Hold) ต่ำกว่าราคาปัจจุบัน 17%
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $233.96</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $222</div></div>
+        </div>
+        <div class="scale">
+          <span>$155<br><small>MOS 30%</small></span>
+          <span>$178<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$222<br><small>Fair Value</small></span>
+          <span style="text-align:right">$234<br><small>ราคาปัจจุบัน</small></span>
+          <span style="text-align:right">$241<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน $233.96 อยู่เหนือ Fair Value $222 ประมาณ 5.4% — ยังไม่มี Margin of Safety
+        โซนน่าสะสมแท้จริงคือ ต่ำกว่า $222 (Fair Value) หรือดีกว่าคือ $178 (MOS 20%) ซึ่งเป็น Support เดิม
+        Analyst consensus เฉลี่ยที่ $193.71 บ่งชี้ว่าตลาดกำลัง Priced-In Growth ไปล่วงหน้ามากแล้ว
+        หากราคาย่อตัวลง $190–210 จะน่าสนใจขึ้นอย่างมีนัยสำคัญ
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">-5.4%</div>
+        <div class="txt">ราคาแพงกว่ามูลค่าเหมาะสม — ยังไม่มี Margin of Safety ที่เพียงพอ</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$178</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$155</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $222</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="233.96" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $233.96 • EPS ฐาน ~$10.74 • ไม่มีปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS -3%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$145</div>
+          <div class="ret neg">-38%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$9.83</span></li>
+            <li><span>P/E ออก</span><span>15x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$0</span></li>
+            <li><span>สถานการณ์</span><span>Medicare ตัดอัตราชำระคืนแรง + GLP-1 กดผู้ป่วยใหม่</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +6%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$257</div>
+          <div class="ret pos">+10%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$12.78</span></li>
+            <li><span>P/E ออก</span><span>20x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$0</span></li>
+            <li><span>สถานการณ์</span><span>Medicare คงอัตรา + Buyback ต่อเนื่อง + Volume เติบโตปกติ</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +10%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$378</div>
+          <div class="ret pos">+62%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$14.28</span></li>
+            <li><span>P/E ออก</span><span>26x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$0</span></li>
+            <li><span>สถานการณ์</span><span>Medicare reimbursement ปรับขึ้น + International ขยาย + GLP-1 impact น้อยกว่าคาด</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      การคาดการณ์อิง EPS ฐาน $10.74 เติบโต 3 ปี × P/E ขาออก (Bear 15x/Base 20x/Bull 26x) ไม่รวมปันผล (DVA ไม่จ่ายปันผล)
+      Base case ให้ผลตอบแทนเพียง +10% ใน 3 ปี (~3.2%/ปี) ต่ำกว่า S&P 500 เฉลี่ย — สะท้อนว่าราคาปัจจุบันได้ Priced-In ส่วนใหญ่แล้ว
+      ผลตอบแทนที่ดีจะเกิดขึ้นหากซื้อที่ $178–200 (MOS 10–20%)
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>Berkshire Hathaway (~38%):</b> Warren Buffett ถือมา 20+ ปี สะท้อนความเชื่อมั่นใน Business Model ที่แข็งแกร่งและสร้างกระแสเงินสดสูง</li>
+          <li><b>Medicare Reimbursement Stability:</b> โปรแกรม Bundled Payment ปรับเพิ่มทุกปีตาม CPI — ให้รายได้ที่คาดการณ์ได้และมั่นคงสูง</li>
+          <li><b>Aging Demographics:</b> ประชากรสูงอายุ + เบาหวาน/ความดันที่เพิ่มขึ้น → ผู้ป่วย ESRD เพิ่มต่อเนื่อง 3–4%/ปี</li>
+          <li><b>Aggressive Share Buybacks:</b> ลดหุ้นจาก 93M (2566) เหลือ 64M (2568) = +45% EPS per share boost ใน 2 ปี</li>
+          <li><b>GLP-1 Fear Overstated:</b> นักวิจัยพบว่า GLP-1 ลด Diabetes แต่ไม่ได้ลด ESRD ในระยะสั้น 5–10 ปี เพราะโรคไตใช้เวลานานมาก</li>
+          <li><b>Scale &amp; Network Moat:</b> 2,800 ศูนย์ทั่ว US = ไม่มีคู่แข่งรายใหม่สร้างได้ง่าย; Fresenius เป็นคู่แข่งเดียวที่ใกล้เคียง</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>Medicare Reimbursement Cuts:</b> รัฐบาล Medicaid/Medicare ควบคุม ~80% รายได้ — การตัดงบฯ หรือเปลี่ยนนโยบายอาจกระทบกำไรรุนแรง</li>
+          <li><b>GLP-1 Long-term Risk:</b> หาก GLP-1 (Ozempic/Wegovy) ลด ESRD Incidence จริงในระยะ 10–15 ปี จะกดปริมาณผู้ป่วยใหม่ลงอย่างมีนัยสำคัญ</li>
+          <li><b>High Leverage:</b> Net Debt ~$9.4B = 6.8x EBITDA — ดอกเบี้ยสูง (~$500M+/ปี) กดกำไรสุทธิ; ดอกเบี้ยขึ้นกระทบต้นทุนทางการเงิน</li>
+          <li><b>Negative Book Value:</b> Buyback ทำ Equity ติดลบ → ROE คำนวณไม่ได้ + ธุรกิจขึ้นอยู่กับ Debt Refinancing อย่างต่อเนื่อง</li>
+          <li><b>Labor Cost Pressure:</b> Dialysis Technician และ Nurse ขาดแคลน ค่าแรงเพิ่มต่อเนื่อง กดดัน EBITDA Margin</li>
+          <li><b>Valuation Premium:</b> P/E 21.8x สูงกว่า Historical Average (~15-17x) และ Analyst Consensus Target ต่ำกว่าราคาปัจจุบัน 17% — Downside risk หากตลาด Re-rate</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>DVA: ธุรกิจแข็งแกร่ง แต่ราคาแพงกว่า Fair Value — รอโอกาสย่อตัว</h2>
+      <p>DaVita เป็นธุรกิจ Dialysis ที่มี Moat แข็งแกร่ง — Scale 2,800 ศูนย์, รายได้ Medicare มั่นคง, FCF สูง และ Berkshire ถือ 38%
+      อย่างไรก็ตาม ราคาปัจจุบัน $233.96 เกิน Fair Value ที่ประเมินไว้ $222 ประมาณ 5% และเกินกว่า Analyst Consensus $193.71 ถึง 21%
+      การที่หุ้นพุ่ง 70% ใน 1 ปีทำให้ Valuation แพงขึ้นมาก ผลตอบแทน Base Case 3 ปีข้างหน้าจึงต่ำ ระดับ 10% เท่านั้น
+      นักลงทุน Value ควรรอย่อตัวสู่ $190–210 ก่อนสะสม</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$222 <span style="font-size:12px;color:#cab9a8">($204–$241)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ -5.4%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$194 (Hold)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> <b>รอย่อตัว</b> — DVA เป็น High-Quality Business แต่ราคาปัจจุบันไม่มี MOS ที่น่าพอใจ
+        โซนสะสมที่ดี: <b>$190–210</b> (ใกล้ Fair Value); โซน Deep Value: <b>$155–178</b> (MOS 20–30%)
+        ผู้ถือหุ้นระยะยาวสามารถถือต่อได้ เพราะ Berkshire Backing + Medicare Moat แข็งแกร่ง
+        แต่ไม่แนะนำซื้อเพิ่มที่ระดับ All-Time High
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, EV/EBITDA Multiple, และ EPS Growth ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    แหล่งที่มา: Yahoo Finance (ราคา/กราฟ ณ 3 ก.ค. 2569), StockAnalysis.com (EPS TTM $10.74, Market Cap $15.0B), Macrotrends (Revenue/EBITDA/Net Income FY2025), StockAnalysis Forecast (Analyst consensus $193.71, Hold)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 3 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
