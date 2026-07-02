@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น Applied Industrial Technologies (AIT) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"AIT","currency":"USD","price":329.51,"fairValue":250,"mos":-31.8,"upside":-24.1,"pe":31.1,"dividendYield":0.62,"roe":22.24}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#C41230",
+    "accentDark": "#8B0D20",
+    "darkGrad": "linear-gradient(135deg,#1a0508 0%,#2d0a10 50%,#1a0508 100%)",
+    "glow": "rgba(196,18,48,0.35)",
+    "subColor": "#f9c0c8",
+    "headerMuted": "rgba(249,192,200,0.7)",
+    "verdictText": "#fff3f5",
+    "vcellLabel": "rgba(249,192,200,0.75)",
+    "badge": "#C41230",
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#1e8e3e"
+  },
+  "chart": {
+    "data": [
+      ["ก.ค. 68", 269.61],
+      ["ส.ค. 68", 262.19],
+      ["ก.ย. 68", 259.67],
+      ["ต.ค. 68", 255.74],
+      ["พ.ย. 68", 257.93],
+      ["ธ.ค. 68", 255.89],
+      ["ม.ค. 69", 259.51],
+      ["ก.พ. 69", 282.12],
+      ["มี.ค. 69", 264.89],
+      ["เม.ย. 69", 305.26],
+      ["พ.ค. 69", 303.81],
+      ["มิ.ย. 69", 338.15],
+      ["ก.ค. 69", 329.51]
+    ],
+    "min": 230,
+    "max": 370,
+    "grid": [230, 260, 290, 320, 350],
+    "fairLine": 250,
+    "currency": "$",
+    "highlight": [9, 11]
+  },
+  "gauge": {
+    "min": 160,
+    "max": 380,
+    "cur": 329.51,
+    "fair": 250,
+    "fairLabelTop": true
+  },
+  "fv": 250
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">●●●●●●●●●●●●●●●●●●</div>
+    <div>
+      <span class="tag">NYSE: AIT</span>
+      <span class="tag">Industrial Distribution</span>
+      <span class="tag">MRO &amp; OEM Supply</span>
+    </div>
+    <h1>Applied Industrial Technologies</h1>
+    <div class="sub">Industrial distribution — bearings, power transmission, fluid power • MRO &amp; OEM markets • ~$4.8B revenue, ~4,500 customers/day • Same-day fulfillment, 500+ service centers • Dividend grower, consistent buybacks</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$329.51<small>(AIT)</small></div>
+      </div>
+      <div class="chg">▲ +22.2% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 2 ก.ค. 2569<br>
+        กรอบ 52 สัปดาห์ $231.61 – $345.48<br>
+        ที่มา: StockAnalysis.com, Yahoo Finance, Macrotrends.net
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ก.ค. 2569 • ปีบัญชีสิ้นสุด 30 มิ.ย.</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">$12.18B</div><div class="d">~37M หุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~31.1x</div><div class="d">พรีเมียมเทียบกลุ่ม</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~18–23x</div><div class="d">ปัจจุบัน re-rate สูงกว่าเฉลี่ย</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">~6.93x</div><div class="d">BVPS $47.52 (FY2025)</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">$393M</div><div class="d">+1.9% YoY (FY2024: $386M)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$10.59</div><div class="d">ผลรวม 4 ไตรมาสล่าสุด</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~$47.52</div><div class="d">FY2025 • ทุนเพิ่มสม่ำเสมอ</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~22.24% / 12.76%</div><div class="d">FY2025 • สม่ำเสมอ 22–27%</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">~$4.84B</div><div class="d">FY2025: $4.56B +1.9% YoY</div></div>
+      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">~30.3%</div><div class="d">FY2025 • ดีขึ้นต่อเนื่อง</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~0.62%</div><div class="d">$2.04/ปี • เพิ่มขึ้นทุกปี</div></div>
+      <div class="metric"><div class="k">Debt/Equity</div><div class="v">~0.31x</div><div class="d">หนี้ลดลงต่อเนื่อง</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ก.ค. 2568 – ก.ค. 2569</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#C41230"></i>ราคา AIT</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $250</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        AIT เริ่มต้นปีที่ ~$270 ในเดือน ก.ค. 2568 แล้วเคลื่อนตัวลงมาทดสอบแนวรับที่ ~$256 ในช่วง ต.ค.–ธ.ค. 2568
+        ก่อนจะฟื้นตัวและพุ่งขึ้นแรงในไตรมาสที่ 2 ของปี 2569 หลังผลประกอบการดีกว่าคาดและแนวโน้มอุตสาหกรรมปรับตัวดีขึ้น
+        ราคาแตะระดับสูงสุดที่ ~$338 ในเดือน มิ.ย. 2569 และปัจจุบันอยู่ที่ $329.51 ให้ผลตอบแทนรอบปี +22.2%
+        หุ้นปัจจุบันเทรดเหนือมูลค่าเหมาะสม $250 อย่างมีนัยสำคัญ สะท้อน sentiment บวกต่อกลุ่ม industrial distribution
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation (Forward)</div><div class="mdesc">EPS adj. $10.71 × P/E เป้าหมาย ~28x — ค่าเฉลี่ยกลุ่ม industrial distributor คุณภาพสูง (Grainger ~25x, Fastenal ~33x) ปรับด้วย growth premium AIT ที่เหมาะสมกว่า Fastenal เล็กน้อย ใช้ FY2026E EPS</div></div>
+        <div class="mval">$299.88</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. EV/EBITDA</div><div class="mdesc">EBITDA TTM ~$558M (OpInc $499M + D&amp;A ~$59M) × 17x EV/EBITDA — อิงกลุ่ม distribution premium, หัก Net Debt ~$472M หาร shares ~37M ให้ equity value ต่อหุ้น</div></div>
+        <div class="mval">$243.62</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 22.24% − g 5%)/(r 9% − g 5%) ≈ 4.31 × BVPS $47.52 — สะท้อนความสามารถสร้าง ROE เกิน cost of capital อย่างยั่งยืน</div></div>
+        <div class="mval">$204.72</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $205 – $300</span></div>
+        <div class="r">$250</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        วิธี P/E Forward ให้ค่าสูงสุดที่ ~$300 เพราะตลาดให้ multiple สูงกับ compounder กลุ่มนี้
+        EV/EBITDA ให้ค่ากลางที่ ~$244 อิงมาตรฐาน distribution premium
+        Justified P/BV ให้ค่าต่ำสุด ~$205 เพราะ BVPS ของ asset-light distributor ต่ำเมื่อเทียบกับราคาตลาด
+        ค่าเฉลี่ย $250 สะท้อนว่าราคาปัจจุบัน $329.51 อยู่สูงกว่า Fair Value ประมาณ 32% — หุ้นมีคุณภาพสูงแต่ตลาดกำลัง price in growth ล่วงหน้า
+        ราคาเป้าหมาย consensus นักวิเคราะห์ 8 คนอยู่ที่ $351 (Buy consensus) ต่างกันเพราะใช้ multiple สูงกว่า
+        ที่มาราคา: StockAnalysis.com ($329.51 ณ 2 ก.ค. 2569) · Yahoo Finance ($331.17 ณ วันเดียวกัน ต่าง ~0.5%)
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $329.51</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $250</div></div>
+        </div>
+        <div class="scale">
+          <span>$175<br><small>MOS 30%</small></span>
+          <span>$200<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$250<br><small>Fair Value</small></span>
+          <span style="text-align:right">$300<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">$351<br><small>เป้าเฉลี่ย Analyst</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน $329.51 อยู่สูงกว่า Fair Value $250 ประมาณ 32% สะท้อนว่าตลาดให้ premium สำหรับคุณภาพธุรกิจ
+        และการเติบโตที่คาดหวัง โซนน่าสนใจสำหรับ value investor คือต่ำกว่า $250 (ใกล้ Fair Value)
+        และโซน deep value ต่ำกว่า $200 (MOS 20%) และ $175 (MOS 30%)
+        นักวิเคราะห์ consensus ที่ $351 มองว่ายังมี upside เล็กน้อยจากระดับปัจจุบัน เพราะใช้ multiple สูงกว่าในการประเมิน
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">−31.8%</div>
+        <div class="txt">ราคาปัจจุบันสูงกว่ามูลค่าเหมาะสม ~32% — ไม่มี Margin of Safety ณ ราคานี้ • ควรรอโซนที่ดีกว่า</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$200</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$175</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $250</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="329.51" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $329.51 • EPS ฐาน ~$10.59 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS −2%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$206</div>
+          <div class="ret neg">−37.5%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$9.97</span></li>
+            <li><span>P/E ออก</span><span>20x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$6.50</span></li>
+            <li><span>สถานการณ์</span><span>ถดถอยอุตสาหกรรม + de-rate</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +8%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$367</div>
+          <div class="ret pos">+11.4%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$13.34</span></li>
+            <li><span>P/E ออก</span><span>27x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$7.00</span></li>
+            <li><span>สถานการณ์</span><span>การฟื้นตัวอุตสาหกรรมสม่ำเสมอ + margin expansion ต่อเนื่อง</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +12%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$454</div>
+          <div class="ret pos">+37.8%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$14.88</span></li>
+            <li><span>P/E ออก</span><span>30x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$7.50</span></li>
+            <li><span>สถานการณ์</span><span>M&amp;A ขยาย + reshoring demand + re-rate ต่อเนื่อง</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      จากจุดเข้า $329.51 ผลตอบแทน 3 ปีต้องพึ่ง EPS growth ต่อเนื่อง + P/E ที่ยังสูงอยู่ — Base case ให้ผลตอบแทนรวมเพียง +11%
+      สะท้อน risk/reward ที่ไม่น่าดึงดูดนักในราคาปัจจุบัน หาก P/E compress กลับไปที่ 22–24x (median ประวัติศาสตร์)
+      แม้ EPS โตก็อาจได้ผลตอบแทนต่ำ Bear case ที่ recession + de-rate ให้ downside −37.5% ซึ่งมีนัยสำคัญ
+      ปันผลรวม 3 ปี ~$6.50–7.50 ช่วยลด downside ได้บ้างแต่ไม่มาก เงินปันผล $2.04/ปี คิดเป็นเพียง 0.62% yield
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก &amp; ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>Reshoring &amp; Industrial Revival:</b> การย้ายฐานการผลิตกลับอเมริกาเหนือผลักดัน MRO demand ระยะยาว AIT เป็นผู้รับประโยชน์โดยตรงจากกิจกรรมโรงงานใหม่</li>
+          <li><b>Distribution Network ที่ฝังลึก:</b> 500+ service center, same-day fulfillment, technical expertise ในสินค้าซับซ้อน สร้าง switching cost สูงสำหรับลูกค้า OEM</li>
+          <li><b>Margin Expansion ต่อเนื่อง:</b> Gross margin ขึ้นจาก 29.1% (FY2022) สู่ 30.3% (FY2025) จาก product mix shift สู่สินค้า value-added และ private label</li>
+          <li><b>Capital Allocation ที่แข็งแกร่ง:</b> Buybacks ลด share count ต่อเนื่อง + dividend growth + D/E ลดลงจาก 0.56x (FY2022) เหลือ 0.31x (FY2025) สร้าง EPS growth จากทั้ง earnings และ share reduction</li>
+          <li><b>M&amp;A Opportunity:</b> ตลาด industrial distribution ยังแตกกระจาย AIT มีงบดุลแข็งแกร่งพร้อมเข้าซื้อ distributor ท้องถิ่นในราคาดี</li>
+          <li><b>Analyst Consensus Buy:</b> 8 นักวิเคราะห์ให้ Buy consensus ที่ $351 เป้า สะท้อนมุมมองบวกต่อโมเมนตัมธุรกิจ</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>Valuation Premium สูง:</b> P/E TTM 31x เทียบกับเฉลี่ยประวัติศาสตร์ 16–23x — หาก earnings disappoints หรือ sentiment เปลี่ยน de-rating สามารถกดราคาได้รุนแรง</li>
+          <li><b>วงจรอุตสาหกรรม (Industrial Cycle):</b> MRO demand ผูกพันกับ PMI manufacturing — ช่วง recession โรงงานตัด capex และ deferred maintenance กดรายได้ AIT</li>
+          <li><b>E-Commerce Disruption:</b> Amazon Business, Grainger.com ทุ่มงบ digital — ลูกค้าขนาดเล็กอาจ switch online แม้ AIT ลงทุน digital channel เช่นกัน</li>
+          <li><b>การเติบโต Revenue ชะลอ:</b> Revenue growth FY2023→2025 เหลือเพียง 3.4% ต่อปี หากไม่มี M&amp;A organic growth อาจไม่รองรับ P/E 31x ได้</li>
+          <li><b>Automation ระยะยาว:</b> หากโรงงานลูกค้า automate และลดพนักงาน demand สำหรับ MRO consumables อาจลดลงระยะยาว</li>
+          <li><b>Input Cost และ Supply Chain:</b> ปัญหา supply chain ทำให้ inventory cost สูงขึ้น กดดัน working capital และ cash conversion cycle</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>ธุรกิจดีเยี่ยม — แต่ราคาปัจจุบันเกิน Fair Value ประมาณ 32%</h2>
+      <p>Applied Industrial Technologies เป็น industrial distributor คุณภาพสูง มีเครือข่าย 500+ service center ที่ฝังลึกใน supply chain อุตสาหกรรมอเมริกา ROE สม่ำเสมอ 22–27% gross margin ขยายตัวต่อเนื่อง และงบดุลที่แข็งแกร่งกว่าในอดีตมาก ธุรกิจ MRO เป็น essential service ที่มี switching cost สูงและ recession-resistant ระดับปานกลาง อย่างไรก็ตาม ราคาหุ้นปัจจุบัน $329.51 สะท้อน multiple ที่สูงกว่าค่าเฉลี่ยประวัติศาสตร์และ peer ส่วนใหญ่อย่างมีนัยสำคัญ Fair Value เฉลี่ย 3 วิธีที่ ~$250 แสดงว่าตลาดกำลัง price in growth ล่วงหน้าอยู่แล้ว นักลงทุน value ควรรอโซนที่ดีกว่า ขณะที่ growth investor ที่เชื่อใน reshoring supercycle และการขยาย margin อาจยังถือได้ในระยะยาว</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$250 <span style="font-size:12px;color:#cab9a8">($205–$300)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −31.8% (เกินมูลค่า)</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$351 (Buy • 8 analysts)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ราคา $329.51 ไม่มี Margin of Safety — ผู้ที่ถือหุ้นอยู่สามารถถือต่อได้หากเชื่อใน reshoring และ margin story แต่ไม่แนะนำเปิด position ใหม่ในราคานี้ โซนน่าสนใจสำหรับ value investor คือต่ำกว่า $250 (ใกล้ Fair Value) หรือดีกว่าถ้าต่ำกว่า $200 (MOS 20%) ซึ่งมักเกิดเมื่อ PMI ผ่านช่วง contraction
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    ที่มาราคา: StockAnalysis.com ($329.51 ณ 2 ก.ค. 2569) · Yahoo Finance ($331.17 ณ วันเดียวกัน ต่าง ~0.5% ✓) •
+    ข้อมูลการเงิน: StockAnalysis.com Income Statement + Balance Sheet + Ratios · Yahoo Finance Chart &amp; Price History · Macrotrends.net (P/E History &amp; Ratios Validation)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 3 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>

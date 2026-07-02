@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น Casella Waste Systems (CWST) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"CWST","currency":"USD","price":97.09,"fairValue":111.00,"mos":12.5,"upside":14.3,"pe":75.9,"dividendYield":null,"roe":null}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#2E7D32",
+    "accentDark": "#1B5E20",
+    "darkGrad": "linear-gradient(135deg,#1B5E20 0%,#2E7D32 60%,#388E3C 100%)",
+    "glow": "rgba(46,125,50,0.35)",
+    "subColor": "#A5D6A7",
+    "headerMuted": "rgba(165,214,167,0.7)",
+    "verdictText": "#E8F5E9",
+    "vcellLabel": "#A5D6A7",
+    "badge": "#388E3C",
+    "chgBg": "var(--red-soft)",
+    "chgColor": "#c5221f"
+  },
+  "chart": {
+    "data": [
+      ["ส.ค. 25", 98.56],
+      ["ก.ย. 25", 94.88],
+      ["ต.ค. 25", 88.57],
+      ["พ.ย. 25", 96.39],
+      ["ธ.ค. 25", 97.94],
+      ["ม.ค. 26", 100.88],
+      ["ก.พ. 26", 93.16],
+      ["มี.ค. 26", 79.34],
+      ["เม.ย. 26", 79.25],
+      ["พ.ค. 26", 82.17],
+      ["มิ.ย. 26", 96.97],
+      ["ก.ค. 26", 97.09]
+    ],
+    "min": 70,
+    "max": 125,
+    "grid": [75, 85, 95, 105, 115],
+    "fairLine": 111.00,
+    "currency": "$",
+    "highlight": [5, 7]
+  },
+  "gauge": {
+    "min": 70,
+    "max": 130,
+    "cur": 97.09,
+    "fair": 111.00,
+    "fairLabelTop": false
+  },
+  "fv": 111.00
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">◆◆◆</div>
+    <div>
+      <span class="tag">NASDAQ: CWST</span>
+      <span class="tag">Environmental Services</span>
+      <span class="tag">Solid Waste</span>
+    </div>
+    <h1>Casella Waste Systems</h1>
+    <div class="sub">Northeast US solid waste services • Collection, transfer, disposal (landfills), organics, recycling • Vermont, NH, ME, MA, NY, PA • ~$1.9B revenue TTM, high-barrier landfill infrastructure • Regional consolidator</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$97.09<small>(CWST)</small></div>
+      </div>
+      <div class="chg">▼ −1.5% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 3 กรกฎาคม 2569<br>
+        กรอบ 52 สัปดาห์ $74.05 – $114.12<br>
+        ที่มา: Yahoo Finance API, Barchart.com, StockAnalysis.com
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ก.ค. 2569 | Adj. EPS</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~$6.1B</div><div class="d">63.6M shares diluted</div></div>
+      <div class="metric"><div class="k">EV / EBITDA (TTM)</div><div class="v neu">~19.1x</div><div class="d">EV $7.25B | EBITDA $378.7M</div></div>
+      <div class="metric"><div class="k">EV / EBITDA เพื่อน (WM/RSG)</div><div class="v">18–22x</div><div class="d">CWST trade ใกล้ค่าเฉลี่ยกลุ่ม</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">3.93x</div><div class="d">BVPS $24.68 | ทรัพย์สินเพิ่มจาก M&amp;A</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v">$1,877M</div><div class="d">FY2024: $1,557M (+23.0% YoY) | Q1/2569</div></div>
+      <div class="metric"><div class="k">EBITDA TTM</div><div class="v pos">$378.7M</div><div class="d">Margin 20.2% | FY22: $221.8M</div></div>
+      <div class="metric"><div class="k">FCF TTM</div><div class="v neu">$102.3M</div><div class="d">FCF/share ~$1.61 | Capex $239.6M</div></div>
+      <div class="metric"><div class="k">EPS (Adj. TTM)</div><div class="v">~$1.28</div><div class="d">FY26E: $1.16 | FY27E: $1.51 (Barchart)</div></div>
+
+      <div class="metric"><div class="k">หนี้สุทธิ (Net Debt)</div><div class="v neg">$1,110M</div><div class="d">Debt $1,237M – Cash $127M</div></div>
+      <div class="metric"><div class="k">Net Debt / EBITDA</div><div class="v neg">2.9x</div><div class="d">จัดการได้ · ลดลงเมื่อ EBITDA เพิ่ม</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">ไม่มี</div><div class="d">โฟกัสการเติบโตผ่าน M&amp;A</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">0.78</div><div class="d">ความผันผวนต่ำกว่าตลาด</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ส.ค. 2568 – ก.ค. 2569</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#2E7D32"></i>ราคา CWST</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $111.00</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        CWST ทดสอบระดับสูงที่ ~$100.88 ในเดือน ม.ค. 2569 ก่อนร่วงลงมาถึง $79.25 ในช่วง มี.ค.–เม.ย. 2569 ซึ่งเป็นช่วงตลาดปรับฐานจากความกังวลภาษีศุลกากร (tariff) ทั่วโลก ราคาฟื้นตัวสู่ ~$97 ในช่วง มิ.ย.–ก.ค. 2569 รวมผลตอบแทนรอบปี −1.5% แม้พื้นฐานธุรกิจแข็งแกร่งขึ้นต่อเนื่อง สะท้อนความผิดปกติระยะสั้นจากปัจจัยมหภาค · ราคา ณ วันนี้ยังต่ำกว่า FV $111.00 ประมาณ 12.5%
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี | EV/EBITDA เป็นหลัก</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div>
+          <div class="mname">1. EV/EBITDA — Conservative (20x TTM)</div>
+          <div class="mdesc">EBITDA TTM $378.7M × 20x = EV $7,574M − Net Debt $1,110M = Equity $6,464M ÷ 63.6M shares — เทียบเท่ากับ multiple ของ WM/RSG ที่ได้รับ scale premium</div>
+        </div>
+        <div class="mval">$101.62</div>
+      </div>
+      <div class="vmethod">
+        <div>
+          <div class="mname">2. EV/EBITDA — Growth Premium (22x TTM)</div>
+          <div class="mdesc">EBITDA TTM $378.7M × 22x = EV $8,331M − Net Debt $1,110M = Equity $7,221M ÷ 63.6M shares — สะท้อน M&amp;A pipeline ที่หนา + organic growth &gt;5%/ปีใน Northeast</div>
+        </div>
+        <div class="mval">$113.53</div>
+      </div>
+      <div class="vmethod">
+        <div>
+          <div class="mname">3. Forward EV/EBITDA (19x on NTM ~$430M)</div>
+          <div class="mdesc">NTM EBITDA ~$430M (คาดการณ์ +15% YoY จาก $379M TTM) × 19x = EV $8,170M − Net Debt $1,110M ÷ 63.6M shares — conservative บน forward estimate</div>
+        </div>
+        <div class="mval">$110.99</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $101 – $117</span></div>
+        <div class="r">$111.00</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        หมายเหตุ: CWST วัดมูลค่าด้วย EV/EBITDA เป็นหลักเพราะ GAAP net income ถูกกดโดย D&amp;A $313M TTM จาก M&amp;A (GAAP EPS แค่ $0.11 ไม่สะท้อนความสามารถแท้จริง) · มูลค่าเฉลี่ย $111.00 สอดคล้องกับ consensus ของนักวิเคราะห์ 11 คนที่ $111.20 (Buy) · แหล่งข้อมูล: StockAnalysis.com (งบการเงิน GAAP), Barchart.com (Adj. EPS, analyst targets)
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $97.09</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $111.00</div></div>
+        </div>
+        <div class="scale">
+          <span>$77.70<br><small>MOS 30%</small></span>
+          <span>$88.80<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$111.00<br><small>Fair Value</small></span>
+          <span style="text-align:right">$111.20<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">$117.00<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน $97.09 ต่ำกว่า Fair Value ~12.5% — MOS ปานกลางในระดับที่สะสมได้ · เหนือโซน MOS20 ($88.80) เล็กน้อย · Consensus 11 นักวิเคราะห์ (7 Strong Buy, 1 Buy, 2 Hold, 1 Sell) เป้าเฉลี่ย $111.20 ตรงกับ FV ที่คำนวณ · upside 14.3% จากราคาปัจจุบัน
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict ok">
+        <div class="big">+12.5%</div>
+        <div class="txt">MOS ปานกลาง — ต่ำกว่า FV แต่ยังไม่ถึง "ถูกมาก" · เหมาะสำหรับทยอยสะสมในหุ้นคุณภาพสูง · รอโซน $88–$89 สำหรับเพิ่มน้ำหนักก้าวใหญ่ขึ้น</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$88.80</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$77.70</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $111.00</div><div class="d">ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="97.09" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $97.09 • EBITDA ฐาน ~$378.7M TTM • ไม่มีปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EBITDA +10%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$117</div>
+          <div class="ret pos">+21% (3ปี)</div>
+          <ul>
+            <li><span>EBITDA ปี 3</span><span>~$504M</span></li>
+            <li><span>Exit EV/EBITDA</span><span>17x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>$0 (ไม่มี)</span></li>
+            <li><span>สถานการณ์</span><span>M&amp;A ชะลอ ดอกเบี้ยสูงนาน</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EBITDA +15%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$146</div>
+          <div class="ret pos">+50% (3ปี)</div>
+          <ul>
+            <li><span>EBITDA ปี 3</span><span>~$575M</span></li>
+            <li><span>Exit EV/EBITDA</span><span>18x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>$0 (ไม่มี)</span></li>
+            <li><span>สถานการณ์</span><span>roll-up ต่อเนื่อง pricing power ดี</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EBITDA +22%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$199</div>
+          <div class="ret pos">+105% (3ปี)</div>
+          <ul>
+            <li><span>EBITDA ปี 3</span><span>~$688M</span></li>
+            <li><span>Exit EV/EBITDA</span><span>20x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>$0 (ไม่มี)</span></li>
+            <li><span>สถานการณ์</span><span>M&amp;A เร่ง + organics/recycling บูม</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      คาดการณ์อิง EV/EBITDA model เนื่องจาก GAAP EPS ถูกกดโดยค่าตัดจำหน่าย (D&amp;A) จาก M&amp;A · CWST มีประวัติ EBITDA เติบโต CAGR ~20%+ จาก $222M (FY22) → $379M (TTM) · Bear scenario ยังคาดผลตอบแทนบวกเพราะโมเดลธุรกิจมีความมั่นคงสูง (essential service) · ความเสี่ยงหลักคือต้นทุน M&amp;A แพงและ multiple compression หาก rate สูงนาน · ผลจริงขึ้นอยู่กับ exit multiple ของตลาด ณ เวลานั้น
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก &amp; ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>Landfill Scarcity Moat:</b> ขยะต้องถูกกำจัดทุกวัน — landfill คือโครงสร้างพื้นฐานที่ขาดไม่ได้ กฎหมายสิ่งแวดล้อม Northeast ทำให้การออกใบอนุญาตใหม่แทบเป็นไปไม่ได้ CWST คือ gatekeeper ของภูมิภาค</li>
+          <li><b>M&amp;A Roll-up Runway:</b> ตลาด solid waste Northeast ยังกระจัดกระจาย CWST เติบโตจาก $1.09B (FY22) → $1.88B (TTM) ในสามปี — pipeline ยังมีเป้าหมายการซื้อกิจการอีกมาก</li>
+          <li><b>Pricing Power:</b> ขึ้นราคาได้สม่ำเสมอ 3–5%/ปี เหนืออัตราเงินเฟ้อ เพราะลูกค้าไม่มีทางเลือก สัญญามักผูกกับ CPI หรือ municipal contract ระยะยาว</li>
+          <li><b>Organics &amp; Recycling Growth:</b> กฎระเบียบ ESG/composting ใน Northeast บังคับแยกขยะอินทรีย์เพิ่ม — เปิด revenue streams ใหม่ที่ margin สูงกว่า MSW ทั่วไป</li>
+          <li><b>FCF Inflection Point:</b> D&amp;A จาก M&amp;A ($313M TTM) จะคงที่หรือลดลงในอนาคต ขณะที่ EBITDA ยังเติบโต → FCF จะพุ่งขึ้นอย่างมีนัยสำคัญใน 2–3 ปี ลด leverage เร็ว</li>
+          <li><b>Defensive Character:</b> Beta 0.78, recession-resistant — ขยะยังถูกเก็บแม้เศรษฐกิจชะลอ เหมาะกับพอร์ตที่ต้องการ downside protection พร้อม growth upside</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>Net Debt สูง (2.9x EBITDA):</b> ภาระหนี้ $1.24B จากการซื้อกิจการต่อเนื่อง — หากอัตราดอกเบี้ยสูงนานหรือต้องรีไฟแนนซ์ราคาแพง จะกดดัน FCF และทำให้ leverage เพิ่มขึ้นได้</li>
+          <li><b>Permitting Risk:</b> การขยาย landfill หรือเปิดไซต์ใหม่ต้องผ่านกระบวนการอนุมัติที่ซับซ้อน อาจล่าช้า หรือถูกคัดค้านจากชุมชนและกลุ่มสิ่งแวดล้อม</li>
+          <li><b>Recycling Commodity Risk:</b> ราคา recyclables (paper, cardboard, metals) ผันผวนตาม commodity cycle — ราคาตกต่ำกดดัน recycling margin อย่างมีนัยสำคัญ</li>
+          <li><b>Geographic Concentration:</b> ดำเนินการเฉพาะ Northeast US — ภัยพิบัติ ภาวะเศรษฐกิจถดถอย หรือกฎระเบียบท้องถิ่นในภูมิภาคนี้กระทบหนักกว่าคู่แข่งระดับชาติ</li>
+          <li><b>Integration Risk:</b> การซื้อกิจการหลายรายพร้อมกัน — ความเสี่ยงด้านการบูรณาการ วัฒนธรรมองค์กร และ synergy ที่คาดหวังอาจล่าช้าหรือน้อยกว่าเป้า</li>
+          <li><b>Multiple Compression Risk:</b> EV/EBITDA ~19x สูงกว่าค่าเฉลี่ยประวัติศาสตร์ — หาก growth ชะลอหรือ rate สูง ตลาดอาจ derate multiple ลงอย่างรวดเร็ว</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>CWST — Regional Waste Monopolist ที่ราคาเหมาะสมสำหรับทยอยสะสม</h2>
+      <p>Casella Waste Systems คือหนึ่งในธุรกิจ "essential infrastructure" ที่น่าสนใจที่สุดใน Northeastern US — landfill ที่มีอยู่คือ moat ที่แทบถาวร เพราะกฎหมายสิ่งแวดล้อม Northeast ทำให้การเปิด landfill ใหม่แทบเป็นไปไม่ได้ CWST ใช้ประโยชน์นี้ผ่าน roll-up strategy ที่ขับเคลื่อน EBITDA จาก $222M (FY22) → $379M (TTM) ในสามปี รายได้เติบโต CAGR ~20% ด้วยความมั่นคง ราคาปัจจุบัน $97.09 ต่ำกว่า Fair Value $111.00 ประมาณ 12.5% — MOS ปานกลางแต่เป็น "หุ้นคุณภาพ" ที่ไม่ค่อยถูกบ่อย นักวิเคราะห์ 11 คน consensus Buy กับเป้าเฉลี่ย $111.20 ยืนยันการประเมินของเรา · จับตา Q2 2569 earnings วันที่ 30 กรกฎาคม 2569 เป็น catalyst ถัดไป</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$111.00 <span style="font-size:12px;color:#cab9a8">($101–$117)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +12.5%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$111.20 (Buy)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ราคาปัจจุบัน $97 เป็นโซนสะสมที่สมเหตุสมผลสำหรับนักลงทุนระยะยาวที่ต้องการ defensive growth หากราคาลงถึง $88.80 (MOS 20%) = เพิ่มน้ำหนักได้อย่างมั่นใจ · หากลงถึง $77.70 (MOS 30%) = โอกาสพิเศษ deep value · ไม่มีปันผล — ผลตอบแทนมาจาก capital gain ล้วน
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ EV/EBITDA เป้าหมาย, อัตราเติบโต EBITDA, อัตราดอกเบี้ย และ leverage ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    แหล่งข้อมูล: Yahoo Finance API (ราคา $97.09 ณ 3 ก.ค. 2569), Barchart.com (ยืนยัน $97.08, Adj. EPS $1.28, analyst targets), StockAnalysis.com (งบการเงิน GAAP FY2022–FY2024 TTM Q1/2569, revenue/EBITDA/FCF)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 3 กรกฎาคม 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>

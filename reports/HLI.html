@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น Houlihan Lokey (HLI) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"HLI","currency":"USD","price":139.54,"fairValue":164,"mos":14.9,"upside":17.5,"pe":22.2,"dividendYield":2.01,"roe":18.2}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#E8601C",
+    "accentDark": "#B84A14",
+    "darkGrad": "linear-gradient(135deg,#1a0f08 0%,#2d1a0e 50%,#1a0f08 100%)",
+    "glow": "rgba(232,96,28,0.35)",
+    "subColor": "#f5c9a8",
+    "headerMuted": "rgba(245,201,168,0.7)",
+    "verdictText": "#fff3ec",
+    "vcellLabel": "rgba(245,201,168,0.8)",
+    "badge": "#E8601C",
+    "chgBg": "#c5221f",
+    "chgColor": "#fff"
+  },
+  "chart": {
+    "data": [
+      ["ส.ค. 25", 199.25],
+      ["ก.ย. 25", 205.32],
+      ["ต.ค. 25", 179.08],
+      ["พ.ย. 25", 175.40],
+      ["ธ.ค. 25", 174.19],
+      ["ม.ค. 26", 168.32],
+      ["ก.พ. 26", 163.77],
+      ["มี.ค. 26", 143.62],
+      ["เม.ย. 26", 154.75],
+      ["พ.ค. 26", 141.66],
+      ["มิ.ย. 26", 134.13],
+      ["ก.ค. 26", 139.54]
+    ],
+    "min": 110,
+    "max": 230,
+    "grid": [120, 140, 160, 180, 200, 220],
+    "fairLine": 164,
+    "currency": "$",
+    "highlight": [1, 10]
+  },
+  "gauge": {
+    "min": 100,
+    "max": 210,
+    "cur": 139.54,
+    "fair": 164,
+    "fairLabelTop": true
+  },
+  "fv": 164
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">◆ ◆ ◆</div>
+    <div>
+      <span class="tag">NYSE: HLI</span>
+      <span class="tag">Investment Banking</span>
+      <span class="tag">Middle Market M&amp;A</span>
+    </div>
+    <h1>Houlihan Lokey</h1>
+    <div class="sub">Global independent investment bank • #1 restructuring advisor (25+ yrs) • M&amp;A advisory &amp; financial valuation (middle market $100M–$3B) • ~$2.6B revenue, growing dividend • Employee ownership culture</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$139.54<small>(HLI)</small></div>
+      </div>
+      <div class="chg">▼ −30.0% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 3 ก.ค. 2569<br>
+        กรอบ 52 สัปดาห์ $131.31 – $211.78<br>
+        ที่มา: Yahoo Finance, StockAnalysis.com, Macrotrends
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ก.ค. 2569 · FY2026 สิ้นสุด มี.ค. 2569</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~$9.6B</div><div class="d">69.1M shares outstanding</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~22.2x</div><div class="d">EPS TTM $6.22 (GAAP diluted)</div></div>
+      <div class="metric"><div class="k">Forward P/E</div><div class="v">~16.8x</div><div class="d">ตลาดคาด EPS ฟื้นแข็ง FY2027</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">4.08x</div><div class="d">BVPS $34.23 (มี.ค. 2569)</div></div>
+
+      <div class="metric"><div class="k">รายได้ FY2026</div><div class="v">$2,618M</div><div class="d">+9.6% YoY (FY2025: $2,389M)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$6.22</div><div class="d">GAAP diluted · FY2025: $5.82</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~$34.23</div><div class="d">เพิ่มจาก $31.68 FY2025</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~18.2% / ~9.9%</div><div class="d">Equity $2,342M · Assets $4,309M</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2026</div><div class="v">$425.7M</div><div class="d">+6.5% YoY · Margin 16.2%</div></div>
+      <div class="metric"><div class="k">Operating Margin</div><div class="v">20.1%</div><div class="d">FY2025: 19.8% · ขยับขึ้นต่อเนื่อง</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~2.01%</div><div class="d">$2.80/share ปี · จ่ายต่อเนื่อง</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">0.95</div><div class="d">ผันผวนใกล้เคียงตลาด</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ส.ค. 2568 – ก.ค. 2569 · ราคารายเดือน</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#E8601C"></i>ราคา HLI</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $164</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        HLI แตะจุดสูงสุดรอบปีที่ ~$205 ในเดือน ก.ย. 2568 ก่อนปรับฐานลงต่อเนื่องตาม sentiment ตลาด M&amp;A ที่ชะลอตัวและความกังวล tariff/ภาวะเศรษฐกิจ ราคาดิ่งต่ำสุด ~$131 ในเดือน มิ.ย. 2569 แล้วฟื้นเล็กน้อยมาที่ $139.54 ปัจจุบัน ต่ำกว่า Fair Value $164 ประมาณ 15% — สร้าง MOS น่าสนใจสำหรับนักลงทุนระยะยาวที่เชื่อมั่นใน restructuring cycle และ M&amp;A rebound
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS adj. $6.80 × P/E เป้าหมาย ~22x — EPS normalized FY2026-FY2027 blended ~$6.80 (FY2026 $6.22 เติบโต ~9-10%) · P/E 22x สอดคล้องกับค่าเฉลี่ยอิสระ advisory firm ระดับ HLI (Lazard ~20x, Evercore ~22x) · Premium สมเหตุสมผลจาก #1 restructuring + FCF แข็ง</div></div>
+        <div class="mval">$149.60</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล $3.02 (= $2.80×1.08); g 7%, r 9% → $151.00 · HLI มีประวัติเพิ่มปันผลสม่ำเสมอ · Beta 0.95 สนับสนุน r ต่ำกว่าตลาดโดยรวม</div></div>
+        <div class="mval">$151.00</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 18.2% − g 7%)/(r 9% − g 7%) ≈ 5.6x × BVPS $34.23 — advisory firm มีหนี้น้อย · ROE 18%+ ยั่งยืนจากโครงสร้าง employee-owned + fee recurring</div></div>
+        <div class="mval">$191.69</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $149 – $192</span></div>
+        <div class="r">$164</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        P/E และ DDM ให้ค่าใกล้เคียงกัน (~$150) สะท้อนการคาดการณ์ EPS/ปันผลที่อนุรักษ์นิยม ส่วน Justified P/BV ให้ค่าสูงกว่า ($192) เพราะ ROE 18%+ ของ HLI สูงมากสำหรับ advisory firm ค่าเฉลี่ยสามวิธีที่ $164 จึงสมเหตุสมผลในฐานะ base case ราคาปัจจุบัน $139.54 ต่ำกว่า FV ประมาณ 15%
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $139.54</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $164</div></div>
+        </div>
+        <div class="scale">
+          <span>$114.80<br><small>MOS 30%</small></span>
+          <span>$131.20<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$164<br><small>Fair Value</small></span>
+          <span style="text-align:right">$172.50<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">$192<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน $139.54 อยู่ระหว่างโซน MOS 20% ($131.20) และ Fair Value ($164) สะท้อนโอกาสน่าสนใจสำหรับนักลงทุนระยะยาว นักวิเคราะห์มีเป้าเฉลี่ย $172.50 (consensus "Hold") สูงกว่าราคาปัจจุบัน ~24% สอดคล้องกับ FV เฉลี่ยของเรา ราคายังไม่เข้าโซน deep value (MOS 30% = $114.80) แต่ MOS ~15% บวก dividend yield 2% เป็นจุดเข้าที่น่าพิจารณาสำหรับ quality advisory franchise
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict ok">
+        <div class="big">+14.9%</div>
+        <div class="txt">MOS พอสมควร — ราคาต่ำกว่ามูลค่าเหมาะสม เหมาะสะสมทยอย</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$131.20</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$114.80</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $164</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="139.54" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $139.54 • EPS ฐาน ~$6.22 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS −5%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$85</div>
+          <div class="ret neg">−33%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$5.33</span></li>
+            <li><span>P/E ออก</span><span>16x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$8.70</span></li>
+            <li><span>สถานการณ์</span><span>M&amp;A แห้งนาน · Restructuring ไม่ฟื้น</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +10%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$166</div>
+          <div class="ret pos">+26%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$8.28</span></li>
+            <li><span>P/E ออก</span><span>20x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$9.30</span></li>
+            <li><span>สถานการณ์</span><span>M&amp;A ฟื้น + Restructuring แข็งแกร่ง</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +15%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$228</div>
+          <div class="ret pos">+71%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$9.48</span></li>
+            <li><span>P/E ออก</span><span>24x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$10.50</span></li>
+            <li><span>สถานการณ์</span><span>Super cycle M&amp;A + Restructuring ใหญ่</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      Base case คาด EPS เติบโต ~10%/ปี จาก $6.22 → $8.28 ใน 3 ปี สอดคล้องกับ forward P/E ของตลาดที่ ~16.8x และ rebound ของตลาด M&amp;A ที่คาดว่าจะฟื้นใน FY2027-2028 Bull case อิงการฟื้นตัว M&amp;A แบบ super cycle หลังดอกเบี้ยลด + ดีล Restructuring จาก Corporate distress Bear case สะท้อนภาวะ recession ยาวและ M&amp;A แห้งแล้ง ผลตอบแทนรวมปันผล ~$9 ใน 3 ปี (yield ~2%/ปี) เสริม total return ทุกสถานการณ์
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก &amp; ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>#1 Restructuring Advisor (25+ ปีติดต่อกัน):</b> สถานะ counter-cyclical ที่แข็งแกร่ง — ยิ่งเศรษฐกิจแย่ ยิ่งดีล Restructuring มาก ลดความเสี่ยงของ pure-cycle M&amp;A advisory</li>
+          <li><b>M&amp;A Rebound Cycle:</b> ดอกเบี้ยที่คาดว่าจะลดลงใน FY2027 + Private Equity dry powder ~$2-3T ที่ยังรอ deploy จะหนุน M&amp;A deal flow โดยเฉพาะกลุ่ม middle market ซึ่ง HLI เป็นผู้นำ</li>
+          <li><b>Middle Market Moat:</b> HLI เป็น go-to advisor สำหรับดีล $100M-$3B ที่ธนาคารขนาดใหญ่ไม่ give priority ลดการแข่งขันกับ Goldman/Morgan Stanley และสร้าง repeat business จาก PE firms</li>
+          <li><b>Employee Ownership &amp; Retention:</b> โครงสร้าง employee-owned ทำให้ banker retention สูง ลดความเสี่ยงการสูญ rainmaker และสร้าง culture ระยะยาวที่ต่างจากธนาคารทั่วไป</li>
+          <li><b>Financial &amp; Valuation Advisory (FVA):</b> แขนงนี้ให้ fee ต่อเนื่องไม่ขึ้นกับ deal cycle — งาน fairness opinion, portfolio valuation สำหรับ PE/Hedge Fund เป็น recurring revenue stabilizer</li>
+          <li><b>FCF แข็งและปันผลเติบโต:</b> Free cash flow $682M ใน FY2026 (FCF margin ~26%) สนับสนุนปันผล $2.80/share และ buyback — track record เพิ่มปันผลสม่ำเสมอ</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>M&amp;A Cycle Risk:</b> รายได้ Corporate Finance ขึ้นกับ deal flow ซึ่งผันผวนตามดอกเบี้ย/ความเชื่อมั่น CEO — ภาวะดอกเบี้ยสูงและ uncertainty macro อาจกด deal ต่อเนื่อง</li>
+          <li><b>Talent / Key Man Risk:</b> advisory firm พึ่งพา senior banker ที่มีความสัมพันธ์กับลูกค้า การลาออกของ managing director คนสำคัญอาจส่งผลต่อ revenue ในช่วงสั้น</li>
+          <li><b>Valuation Premium Compression:</b> ราคาที่ P/E 22x สูงกว่าค่าเฉลี่ยประวัติศาสตร์ ~18-20x หาก deal flow ไม่ฟื้น multiple อาจถูก re-rate ลงอีก กดดันราคาหุ้น</li>
+          <li><b>Competition จาก Evercore/Lazard/PJT:</b> boutique advisory เติบโตมาก HLI เผชิญ fee compression ในบาง segment แม้ restructuring จะยังมี moat แข็ง</li>
+          <li><b>Regulatory &amp; Geopolitical:</b> ดีล cross-border อาจถูกสกัดจากกฎ antitrust หรือ geopolitics โดยเฉพาะ US-China M&amp;A</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>HLI: Quality Advisory Franchise ในราคาน่าสนใจหลังปรับฐาน 30%</h2>
+      <p>Houlihan Lokey คือธนาคารเพื่อการลงทุนอิสระระดับโลกที่มี moat ชัดเจน 2 ด้าน: (1) <b>#1 Restructuring Advisor</b> ที่ครองตำแหน่งนาน 25+ ปีต่อเนื่อง ทำให้ได้ fee แม้ตลาดซบเซา และ (2) <b>ความเชี่ยวชาญ middle market M&amp;A</b> ที่ธนาคารขนาดใหญ่ไม่ให้ priority หลังปรับฐาน ~30% จาก 52-สัปดาห์สูงสุด ราคาปัจจุบัน $139.54 ต่ำกว่า Fair Value $164 ประมาณ 15% และต่ำกว่าเป้านักวิเคราะห์ $172.50 กว่า 23% โดย fundamentals ยังแข็ง (ROE 18.2%, FCF margin 26%, ปันผลเติบโต) สถานการณ์นี้สร้าง entry point ที่น่าสนใจสำหรับนักลงทุนที่เชื่อว่า M&amp;A จะฟื้นและ restructuring cycle ยังอยู่</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$164 <span style="font-size:12px;color:#cab9a8">($149–$192)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +14.9%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$172.50 (Hold)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ราคาปัจจุบัน $139.54 อยู่ระหว่าง MOS 20% ($131.20) และ FV ($164) — เหมาะสำหรับ <b>ทยอยสะสม</b> ที่ระดับนี้และเพิ่มหากราคาลงต่อโซน MOS 20-30% ($115-$131) · ถือยาว 3-5 ปี รอ M&amp;A rebound + restructuring cycle · ผลตอบแทน Base case รวมปันผลคาดประมาณ +37% ใน 3 ปี · <b>ความเสี่ยงหลักคือ deal flow ที่ยังไม่แน่นอน</b> ควรจัดสัดส่วนตามความเสี่ยงที่รับได้
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ข้อมูลอ้างอิง: Yahoo Finance (ราคา/กราฟ/52w range), StockAnalysis.com (งบการเงิน/EPS/BVPS/market cap), Macrotrends (ROE/ประวัติงบ) · ราคาจาก 2 แหล่งต่างกัน &lt;0.05% (Yahoo $139.545 vs StockAnalysis $139.49) · ข้อมูล ณ 3 ก.ค. 2569
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 3 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
