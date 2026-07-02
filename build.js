@@ -602,7 +602,14 @@ const searchScript = reports.length ? `
       function drawPager(tp) {
         if (tp <= 1) { pager.innerHTML = ''; return; }
         var h = '<button class="pg" data-go="prev"' + (page <= 1 ? ' disabled' : '') + '>\\u2039</button>';
-        for (var i = 1; i <= tp; i++) h += '<button class="pg' + (i === page ? ' on' : '') + '" data-go="' + i + '">' + i + '</button>';
+        var win = 1, nums = [];                              // แสดงเฉพาะหน้า 1, หน้าสุดท้าย, หน้าปัจจุบัน±win — ที่เหลือย่อเป็น \\u2026
+        for (var i = 1; i <= tp; i++) if (i === 1 || i === tp || (i >= page - win && i <= page + win)) nums.push(i);
+        for (var j = 0, prev = 0; j < nums.length; j++) {
+          var n = nums[j];
+          if (n - prev > 1) h += '<span class="pg-gap">\\u2026</span>';
+          h += '<button class="pg' + (n === page ? ' on' : '') + '" data-go="' + n + '">' + n + '</button>';
+          prev = n;
+        }
         h += '<button class="pg" data-go="next"' + (page >= tp ? ' disabled' : '') + '>\\u203a</button>';
         pager.innerHTML = h;
       }
@@ -761,6 +768,7 @@ const indexHtml = `<!DOCTYPE html>
   .pg.on{background:var(--blue);border-color:var(--blue);color:#fff;font-weight:600}
   .pg:disabled{opacity:.4;cursor:default}
   .pg:hover:not(:disabled):not(.on){border-color:var(--blue);color:var(--blue)}
+  .pg-gap{display:flex;align-items:flex-end;min-width:20px;height:34px;color:var(--muted);font-size:13px;justify-content:center}
   footer{margin-top:32px;text-align:center;color:var(--muted);font-size:12.5px}
   footer a{color:var(--blue);text-decoration:none}
 </style>
