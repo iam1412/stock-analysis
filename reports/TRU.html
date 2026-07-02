@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น TransUnion (TRU) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"TRU","currency":"USD","price":78.31,"fairValue":83.00,"mos":5.6,"upside":6.0,"pe":21.7,"dividendYield":0.65,"roe":15.4}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#1565C0",
+    "accentDark": "#0D47A1",
+    "darkGrad": "linear-gradient(135deg,#0D47A1 0%,#1976D2 100%)",
+    "glow": "rgba(21,101,192,0.35)",
+    "subColor": "#90CAF9",
+    "headerMuted": "rgba(144,202,249,0.7)",
+    "verdictText": "#E3F2FD",
+    "vcellLabel": "#90CAF9",
+    "badge": "#1565C0",
+    "chgBg": "#c5221f",
+    "chgColor": "#fff"
+  },
+  "chart": {
+    "data": [
+      ["ก.พ. 25", 87.97],
+      ["มี.ค. 25", 83.37],
+      ["เม.ย. 25", 80.78],
+      ["พ.ค. 25", 84.76],
+      ["มิ.ย. 25", 85.45],
+      ["ก.ค. 25", 78.75],
+      ["ส.ค. 25", 78.41],
+      ["ก.ย. 25", 69.07],
+      ["ต.ค. 25", 70.87],
+      ["พ.ย. 25", 71.56],
+      ["ธ.ค. 25", 72.14],
+      ["ม.ค. 69", 74.47],
+      ["ก.พ. 69", 78.31]
+    ],
+    "min": 60,
+    "max": 105,
+    "grid": [65, 75, 85, 95],
+    "fairLine": 83.00,
+    "currency": "$",
+    "highlight": [4, 7]
+  },
+  "gauge": {
+    "min": 50,
+    "max": 110,
+    "cur": 78.31,
+    "fair": 83.00,
+    "fairLabelTop": true
+  },
+  "fv": 83.00
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">●●●</div>
+    <div>
+      <span class="tag">NYSE: TRU</span>
+      <span class="tag">Financial Data &amp; Analytics</span>
+      <span class="tag">Credit Bureau</span>
+    </div>
+    <h1>TransUnion (TRU)</h1>
+    <div class="sub">Credit bureau &amp; data analytics • US Markets + International (India, UK, Africa) • Lending, insurance, tenant screening • Deleveraging post-PE</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$78.31<small>(TRU)</small></div>
+      </div>
+      <div class="chg">▼ −11.0% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ กุมภาพันธ์ 2569<br>
+        กรอบ 52 สัปดาห์ $63.37 – $99.39<br>
+        ที่มา: Yahoo Finance, StockAnalysis, Finviz
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล TTM / FY2025 · ณ ก.พ. 2569</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">$15.1B</div><div class="d">193M shares</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~21.7x</div><div class="d">GAAP EPS $3.61 TTM</div></div>
+      <div class="metric"><div class="k">Forward P/E (FY26)</div><div class="v">~16.4x</div><div class="d">Adj. EPS est. $4.78</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">3.2x</div><div class="d">BVPS $24.26 (มีหนี้สูง)</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">$469.9M</div><div class="d">Net margin 10.3%</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$3.61</div><div class="d">Adj. EPS FY25 ~$4.30</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~$24.26</div><div class="d">Book value / share (TTM)</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~15.4% / 6.1%</div><div class="d">ROIC ~6.9% (heavy debt)</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$4.73B</div><div class="d">+11.0% YoY growth</div></div>
+      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">58.8%</div><div class="d">Op. margin 18.0% · EBITDA margin 30.3%</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~0.65%</div><div class="d">$0.51/yr · Payout ~20%</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">1.53</div><div class="d">ความผันผวนสูงกว่าตลาด</div></div>
+
+      <div class="metric"><div class="k">Net Debt</div><div class="v neg">$4.45B</div><div class="d">D/E ~1.2x — ลดลงจากยุค PE</div></div>
+      <div class="metric"><div class="k">FCF TTM</div><div class="v pos">$697M</div><div class="d">FCF yield ~4.6% ที่ราคาปัจจุบัน</div></div>
+      <div class="metric"><div class="k">EV/EBITDA</div><div class="v">~16.1x</div><div class="d">เทียบ peers EFX/EXPGY 15–20x</div></div>
+      <div class="metric"><div class="k">เป้าเฉลี่ย Analyst</div><div class="v pos">$89.71</div><div class="d">Buy consensus · 22 analysts</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ก.พ. 2568 – ก.พ. 2569 · รายเดือน</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#1565C0"></i>ราคา TRU</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $83.00</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        TRU ปรับตัวลงราว −11% ในรอบปี จากระดับ ~$88 ช่วง ก.พ. 68 สู่ ~$78 ใน ก.พ. 69
+        จุดสูงสุด 52 สัปดาห์ที่ $99.39 และหล่นลงแตะจุดต่ำสุดที่ $63.37 ใน ก.ย.–พ.ย. 68
+        จากความกังวลเรื่องอัตราดอกเบี้ยสูงกดดันตลาดสินเชื่อและผลกระทบต่อ revenue ของ credit bureau
+        หลังจากนั้นฟื้นตัวกลับมาบริเวณ $70–78 ก่อนปิดที่ $78.31 ที่มา: Yahoo Finance (รายเดือน)
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. Adj. P/E Valuation</div><div class="mdesc">adj. EPS $4.30 × P/E 22x = $94.60 — peers EFX/EXPGY ซื้อขาย 20–28x adj EPS; ให้ TRU discount เล็กน้อยจากหนี้สูง</div></div>
+        <div class="mval">$94.60</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. EV/EBITDA</div><div class="mdesc">Adj. EBITDA $1,433M × 14x = EV $20,062M − Net Debt $4,447M = Equity $15,615M ÷ 193M shares = $80.91 — ใช้ 14x (discount จาก peers ที่ 15–18x เพราะหนี้)</div></div>
+        <div class="mval">$80.91</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. EV/FCF (Adj. FCF)</div><div class="mdesc">Adj. FCF $962M (FCF $662M + amort. $300M) × 18x = EV $17,316M − Net Debt $4,447M = $12,869M ÷ 193M = $66.68 — FCF หลัง amort. สะท้อนมูลค่าธุรกิจที่แท้จริง</div></div>
+        <div class="mval">$66.68</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $67 – $95</span></div>
+        <div class="r">$83.00</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        วิธี Adj. P/E ให้ค่าสูงสุด ($94.60) เพราะ TRU ใช้ non-GAAP EPS ที่ตัดรายจ่าย amortization จาก acquisition ออก
+        ซึ่งเป็นแนวปฏิบัติมาตรฐานของ credit bureau · วิธี EV/EBITDA ($80.91) สมดุลที่สุด · วิธี EV/FCF ($66.68) อนุรักษ์นิยมที่สุด
+        ให้น้ำหนัก 40/35/25 ตามลำดับ → FV เฉลี่ยถ่วงน้ำหนัก ≈ $83 ซึ่งยังต่ำกว่าเป้าเฉลี่ย analyst ที่ $89.71
+        การลดหนี้ต่อเนื่องและ international growth จะเป็นตัวกำหนดว่าจะขยับขึ้นสู่กรอบบนหรือไม่
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $78.31</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $83.00</div></div>
+        </div>
+        <div class="scale">
+          <span>$58.10<br><small>MOS 30%</small></span>
+          <span>$66.40<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$83.00<br><small>Fair Value</small></span>
+          <span style="text-align:right">$89.71<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">$95.00<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        TRU ซื้อขายที่ $78.31 ต่ำกว่า Fair Value $83 ราว 5.6% ราคายังอยู่ในโซน "ใกล้มูลค่าเหมาะสม"
+        แต่ยังไม่ถึงโซน MOS 20% ($66.40) ที่ถือว่าน่าสนใจสำหรับนักลงทุนเน้นคุณค่า
+        Analyst consensus ที่ $89.71 (Buy) สะท้อน upside ~15% จากราคาปัจจุบัน
+        แรงกดดันจากดอกเบี้ยสูงยังเป็นปัจจัยหลักที่กดราคา credit bureau ในช่วงนี้
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict ok">
+        <div class="big">+5.6%</div>
+        <div class="txt">MOS ต่ำ — ราคาใกล้ Fair Value · รอโซน MOS 20% ($66.40) เพื่อ margin ที่ดีขึ้น</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$66.40</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$58.10</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $83.00</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="78.31" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $78.31 • EPS ฐาน ~$4.30 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS +5%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$61.50</div>
+          <div class="ret neg">−19.8%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$4.98</span></li>
+            <li><span>P/E ออก</span><span>12x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$1.53</span></li>
+            <li><span>สถานการณ์</span><span>อัตราดอกเบี้ยสูงนาน กดตลาดสินเชื่อ</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +11%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$99.80</div>
+          <div class="ret pos">+29.0%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$5.82</span></li>
+            <li><span>P/E ออก</span><span>17x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$1.53</span></li>
+            <li><span>สถานการณ์</span><span>สินเชื่อฟื้น + international ขยายตัว</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +16%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$141.30</div>
+          <div class="ret pos">+82.8%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$6.71</span></li>
+            <li><span>P/E ออก</span><span>21x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$1.53</span></li>
+            <li><span>สถานการณ์</span><span>ดอกเบี้ยลด + India/EM โตเร็ว + ลดหนี้เร็ว</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      Base case ใช้ EPS growth ~11%/ปี ตาม analyst consensus (FY26: $4.78, FY27: คาดสูงขึ้น) × P/E 17x (ต่ำกว่า peers เพราะหนี้)
+      Bull case เป็นไปได้ถ้า Fed ลดดอกเบี้ยหนุนตลาดสินเชื่อ + India/EM growth accelerate + leverage ลดเร็วกว่าคาด
+      Bear case เกิดถ้าอัตราดอกเบี้ยสูงต่อเนื่องกดความต้องการสินเชื่อ P/E ยังถูก re-rate ลง
+      ผลตอบแทนปันผล ~0.65%/ปี (ค่อนข้างต่ำ เน้น growth มากกว่า income) · คำนวณ ณ ก.พ. 2569
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก &amp; ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>International expansion:</b> ตลาดอินเดีย แอฟริกา ละตินอเมริกา และ UK เติบโตเร็วกว่า US หนุน revenue diversification</li>
+          <li><b>Credit cycle recovery:</b> เมื่อ Fed ลดดอกเบี้ย ตลาดสินเชื่อรายย่อยและ mortgage จะฟื้น หนุน core US Markets revenue</li>
+          <li><b>Deleveraging story:</b> TRU ลดหนี้จากยุค GS Capital PE ต่อเนื่อง — ถ้า net debt ลด → interest expense ลด → EPS เพิ่มขึ้น</li>
+          <li><b>AI &amp; analytics upsell:</b> TruIQ และโซลูชัน data analytics ช่วยเพิ่ม ARPU จากลูกค้าเดิม ไม่ต้องหาลูกค้าใหม่</li>
+          <li><b>Insurance vertical growth:</b> ธุรกิจ insurance data (ประกันรถ ประกันบ้าน) เติบโตสูงจากความต้องการ risk-based pricing</li>
+          <li><b>Consensus re-rating:</b> 22 analysts ให้ Buy · เป้าเฉลี่ย $89.71 · ถ้าผลประกอบการดีกว่าคาดราคาอาจ re-rate ขึ้นไปโซน $90+</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>High leverage:</b> Net Debt $4.45B สูงมากเมื่อเทียบกับ equity — ดอกเบี้ยสูงต่อเนื่องกินกำไรและจำกัด buyback/growth investment</li>
+          <li><b>Credit market sensitivity:</b> รายได้ขึ้นกับ volume สินเชื่อ (mortgage, auto, card) ซึ่งผันผวนตาม rate cycle</li>
+          <li><b>Regulatory risk:</b> CFPB และ data privacy regulation เพิ่มขึ้นทั่วโลก กระทบโมเดลธุรกิจที่ใช้ข้อมูลผู้บริโภค</li>
+          <li><b>Competition:</b> Equifax (EFX) และ Experian แข็งแกร่งกว่าในบางตลาด FICO ครองตลาด scoring standard ในสหรัฐ</li>
+          <li><b>Cyber/data breach:</b> บริษัท credit bureau คือเป้าหมายหลักของ hacker — data breach อาจกระทบ brand และนำสู่ค่าปรับใหญ่</li>
+          <li><b>Beta สูง (1.53):</b> หุ้นผันผวนกว่าตลาด ช่วง risk-off หรือ rate spike ราคาอาจร่วงแรงกว่า index</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>TRU — Credit Bureau คุณภาพดี ราคาใกล้ Fair Value · รอโซนถูกจะน่าสนใจขึ้น</h2>
+      <p>TransUnion เป็นหนึ่งใน 3 credit bureau ยักษ์ใหญ่ของสหรัฐ มีคูเมืองแข็งแกร่งจากข้อมูลสินเชื่อที่สะสมมาหลายทศวรรษ
+        Revenue เติบโต +11% YoY ด้วยแรงหนุนจาก international markets (India, UK, Africa) และ insurance vertical
+        Adj. EPS FY25 อยู่ที่ $4.30 คาด FY26 ที่ $4.78 (+11%) — fundamentals แข็งแกร่ง
+        ความท้าทายหลักคือหนี้สินสูงจากยุค PE buyout (Net Debt $4.45B, D/E 1.2x) และ sensitivity ต่อ credit cycle
+        ราคาปัจจุบัน $78.31 อยู่ต่ำกว่า Fair Value $83 ราว 5.6% (MOS ต่ำ) เหมาะกับนักลงทุนระยะกลาง-ยาวที่รอสะสมในโซน MOS 20%</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$83.00 <span style="font-size:12px;color:#cab9a8">($67–$95)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +5.6%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$89.71 (Buy)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ราคาปัจจุบัน $78.31 ใกล้ Fair Value แต่ MOS ยังต่ำ (5.6%) — เหมาะสะสมแบบ DCA ในโซน $70–78
+        โซนน่าสนใจมากขึ้นที่ $66.40 (MOS 20%) · Target ระยะ 12 ด. ตาม analyst consensus ที่ $89.71
+        หุ้นมี beta 1.53 ผันผวนสูง — จัดพอร์ตตามความเสี่ยงที่รับได้ · ไม่ใช่คำแนะนำซื้อ-ขาย
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r)
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    แหล่งข้อมูล: Yahoo Finance (ราคา/กราฟ ก.พ. 2568–ก.พ. 2569), StockAnalysis.com (financials, forecast, analyst targets), Finviz (ratios, beta, ROE) · ราคาครอสเช็ค 3 แหล่ง ตรงกัน $78.31
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ กุมภาพันธ์ 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
