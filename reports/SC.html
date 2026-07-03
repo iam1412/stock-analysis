@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น เอสซี แอสเสท (SC) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"SC","currency":"THB","price":1.93,"fairValue":2.88,"mos":33.0,"upside":49.2,"pe":5.36,"dividendYield":8.3,"roe":6.3}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#1565c0",
+    "accentDark": "#0d47a1",
+    "darkGrad": "linear-gradient(135deg,#0d47a1 0%,#1565c0 60%,#1976d2 100%)",
+    "glow": "rgba(21,101,192,0.3)",
+    "subColor": "#90caf9",
+    "headerMuted": "rgba(144,202,249,0.75)",
+    "verdictText": "#e3f2fd",
+    "vcellLabel": "#90caf9",
+    "badge": "#1565c0",
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#1e8e3e"
+  },
+  "chart": {
+    "data": [
+      ["ม.ค. 68", 1.82],
+      ["ก.พ. 68", 1.95],
+      ["มี.ค. 68", 1.70],
+      ["เม.ย. 68", 1.57],
+      ["พ.ค. 68", 1.69],
+      ["มิ.ย. 68", 1.71],
+      ["ก.ค. 68", 2.04],
+      ["ส.ค. 68", 1.95],
+      ["ก.ย. 68", 2.00],
+      ["ต.ค. 68", 1.83],
+      ["พ.ย. 68", 1.83],
+      ["ธ.ค. 68", 1.88],
+      ["ก.ค. 69", 1.93]
+    ],
+    "min": 1.40,
+    "max": 3.10,
+    "grid": [1.50, 1.75, 2.00, 2.25, 2.50, 2.75, 3.00],
+    "fairLine": 2.88,
+    "currency": "฿",
+    "highlight": [6]
+  },
+  "gauge": {
+    "min": 1.40,
+    "max": 3.20,
+    "cur": 1.93,
+    "fair": 2.88,
+    "fairLabelTop": false
+  },
+  "fv": 2.88
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">●●●</div>
+    <div>
+      <span class="tag">SET: SC</span>
+      <span class="tag">อสังหาริมทรัพย์</span>
+      <span class="tag">ปันผลสูง</span>
+    </div>
+    <h1>บมจ. เอสซี แอสเสท คอร์ปอเรชั่น</h1>
+    <div class="sub">บ้านเดี่ยว • ทาวน์เฮ้าส์ • คอนโดมิเนียม ระดับกลาง-บน • โครงการร่วมทุน (JV) • อสังหาฯ เชิงพาณิชย์ • โรงแรม The Standard Pattaya</div>
+    <div class="price-row">
+      <div>
+        <div class="px">฿1.93<small>(SC)</small></div>
+      </div>
+      <div class="chg">▲ +6.0% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 3 ก.ค. 2569<br>
+        กรอบ 52 สัปดาห์ ฿1.51 – ฿2.16<br>
+        ที่มา: Yahoo Finance, Investing.com, SET
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ก.ค. 2569</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~฿8,255 ล้าน</div><div class="d">4,277 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~5.36x</div><div class="d">ต่ำกว่าค่าเฉลี่ย 5 ปี ~7.5x</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~7–8x</div><div class="d">อุตสาหกรรม property ไทย 6–9x</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">0.33x</div><div class="d">BVPS ~฿5.82/หุ้น · ต่ำกว่าพาร์</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2568</div><div class="v">~฿1,540 ล้าน</div><div class="d">ลดลงจาก ฿1,705M ปี 2567 (−10%)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿0.36</div><div class="d">Q4+Q3+Q2+Q1 2568 = 0.14+0.09+0.10+0.03</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~฿5.82</div><div class="d">Equity ฿24,780M ÷ 4,277M หุ้น</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~6.3% / ~2.4%</div><div class="d">ลดลงจาก ROE สูงสุด ~12% ปี 2565</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">~฿20,240 ล้าน</div><div class="d">FY2568 รวม 4 ไตรมาส</div></div>
+      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">~30.6%</div><div class="d">กดดันจาก promotion pricing</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~8.3%</div><div class="d">฿0.16/หุ้น อนุมัติ AGM 2568 · payout ≥40%</div></div>
+      <div class="metric"><div class="k">D/E Ratio</div><div class="v">~1.11x</div><div class="d">หนี้ ฿27,447M / Equity ฿24,780M</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ม.ค. 2568 – ก.ค. 2569</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#1565c0"></i>ราคา SC</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿2.88</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        SC ปรับตัวลงจาก ฿1.95 ในเดือน ก.พ. 2568 สู่จุดต่ำสุด ฿1.57 ในเดือน เม.ย. 2568 ท่ามกลางแรงกดดันภาคอสังหาฯ จากอัตราดอกเบี้ยสูงและกำลังซื้อที่ชะลอตัว ก่อนฟื้นตัวแรงสู่ ฿2.04 ในเดือน ก.ค. 2568 จาก Sentiment เชิงบวกหลังคาด Q4 แข็งแกร่ง (+97% YoY) จากนั้นราคาทรงตัวในกรอบ ฿1.83–2.00 ช่วง ส.ค.–พ.ย. ก่อนจะยืนเหนือ ฿1.88–1.93 ณ ปัจจุบัน ให้ผลตอบแทนรอบปี +6.0% จาก ฿1.82 ต้นปี 2568 · ที่มา: Yahoo Finance (SC.BK 1y monthly)
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS (TTM) ฿0.36 × P/E เป้าหมาย ~7.5x — ค่าเฉลี่ยอุตสาหกรรม property SET ระยะ 5 ปี (ปัจจุบัน 5.36x กดดันจากดอกเบี้ยสูง · คาดกลับสู่ค่าปกติเมื่อดอกเบี้ยลง)</div></div>
+        <div class="mval">฿2.70</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล ฿0.16 × (1+g); g 3%, r 9% → ฿0.165 / (9%−3%) = ฿2.75 · SC มีนโยบายปันผลขั้นต่ำ 40% ของกำไรสุทธิ อัตราส่วนปันผล 8.3% สนับสนุนวิธีนี้</div></div>
+        <div class="mval">฿2.75</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 6.3% − g 3%)/(r 9% − g 3%) ≈ 0.55 × BVPS ฿5.82 — สะท้อน ROE ที่ลดลงชั่วคราวจาก 10%+ เหลือ 6.3%; เมื่อ ROE ฟื้นตัว มูลค่าจาก P/BV จะสูงขึ้นอีก</div></div>
+        <div class="mval">฿3.20</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿2.70 – ฿3.20</span></div>
+        <div class="r">฿2.88</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ทั้ง 3 วิธีให้ค่า ฿2.70–3.20 สะท้อนว่า SC ซื้อขายต่ำกว่ามูลค่าอย่างมีนัยสำคัญ ณ ราคาปัจจุบัน · วิธี Justified P/BV ให้ค่าสูงสุด ฿3.20 เพราะ BVPS สูง ฿5.82 แม้ ROE ลดเหลือ 6.3% · DDM ฿2.75 สนับสนุนจาก yield 8.3% · P/E ต่ำมากปัจจุบัน 5.36x เพราะตลาดยัง discount ภาคอสังหาฯ จาก macro headwind · นักวิเคราะห์ 8 คนคาด ฿2.10–2.80 เฉลี่ย ฿2.26–2.29 อยู่ในกรอบ conservative ต่ำกว่า FV ฿2.88 ของเรา
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿1.93</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿2.88</div></div>
+        </div>
+        <div class="scale">
+          <span>฿2.02<br><small>MOS 30%</small></span>
+          <span>฿2.26<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:center">฿2.30<br><small>MOS 20%</small></span>
+          <span style="text-align:right">฿2.88<br><small>Fair Value</small></span>
+          <span style="text-align:right">฿3.20<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคา ฿1.93 อยู่ในโซน <b>MOS 33.0%</b> — ต่ำกว่าจุดซื้อ MOS 30% (฿2.02) และ MOS 20% (฿2.30) เป็น Deep Value Zone สำหรับนักลงทุนสาย VI · นักวิเคราะห์ consensus "Strong Buy" 8/8 คน เป้าเฉลี่ย ฿2.26 (upside 17% จากราคาปัจจุบัน) ยังต่ำกว่า FV ฿2.88 ของเรา เพราะนักวิเคราะห์ conservative กับ ROE ระยะสั้น
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict good">
+        <div class="big">+33.0%</div>
+        <div class="txt">โซน Deep Value · MOS สูงกว่า 30% · เหมาะสะสม</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿2.30</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿2.02</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿2.88</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="1.93" step="0.05">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿1.93 • EPS ฐาน ~฿0.36 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS −5%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿1.40</div>
+          <div class="ret neg">−8% รวม / ~−2.8%/ปี</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.31</span></li>
+            <li><span>P/E ออก</span><span>4.5x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.42</span></li>
+            <li><span>สถานการณ์</span><span>ภาคอสังหาฯ ซบเซา กำไรลดต่อเนื่อง</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +10%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿3.12</div>
+          <div class="ret pos">+87% รวม / ~+23%/ปี</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.48</span></li>
+            <li><span>P/E ออก</span><span>6.5x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.48</span></li>
+            <li><span>สถานการณ์</span><span>กำไร 2569 ฟื้น +30% จาก condo โอน</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +20%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿4.65</div>
+          <div class="ret pos">+169% รวม / ~+38%/ปี</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.62</span></li>
+            <li><span>P/E ออก</span><span>7.5x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.55</span></li>
+            <li><span>สถานการณ์</span><span>อสังหาฯ บูม ดอกเบี้ยลด ROE กลับ 10%+</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      คำนวณจากราคาเข้า ฿1.93 · Base case: กำไรสุทธิ 2569E ~฿1,700M (+30% YoY) จากโอน 2 condo ใหม่ที่สร้างเสร็จ → EPS ~฿0.40 → ขยายต่อเนื่อง 10%/ปี · ปันผลประมาณ ฿0.16/ปี คงที่ · ผลตอบแทนรวมสูงมากเพราะ P/E เริ่มต้นต่ำเพียง 5.36x — ความเสี่ยง Bear: หนี้สิน D/E สูง 1.11x + กำลังซื้อชะลอ + ดอกเบี้ยสูง
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>การโอน Condo 2 โครงการใหม่ปี 2569:</b> นักวิเคราะห์คาดกำไร core +30% YoY สู่ ฿1.7B จากการโอนคอนโดที่สร้างเสร็จ ดัน EPS และ ROE กลับสูงขึ้น</li>
+          <li><b>Dividend Yield สูง 8.3%:</b> ปันผล ฿0.16/หุ้น (อนุมัติ AGM 2568) นโยบาย payout ขั้นต่ำ 40% ของกำไร ดึงดูดนักลงทุนสาย income ในสภาวะดอกเบี้ยที่คาดว่าจะลดลง</li>
+          <li><b>Valuation ต่ำผิดปกติ P/BV 0.33x:</b> ต่ำกว่า Book Value 67% สะท้อน "over-discounted" — ประวัติศาสตร์ SC เคยซื้อขายที่ P/BV 0.5–0.8x ในรอบปกติ</li>
+          <li><b>แผนเปิด 15 โครงการใหม่ปี 2568:</b> ยอดขายเป้าหมาย ฿26,000M (+11% YoY) เน้นบ้านเดี่ยว-ทาวน์เฮ้าส์ระดับกลาง-บน ที่ margin สูงกว่า segment ล่าง</li>
+          <li><b>The Standard Pattaya เปิดให้บริการ ต.ค. 2568:</b> ธุรกิจโรงแรมระดับบน ช่วยกระจายรายได้นอกอสังหาฯ เพื่อขาย แม้ขาดทุนระยะแรกจาก ramp-up cost</li>
+          <li><b>Analyst Consensus "Strong Buy":</b> 8 จาก 8 นักวิเคราะห์แนะนำซื้อ เป้าเฉลี่ย ฿2.26–2.29 (upside ~17%) สะท้อน downside จำกัดที่ราคาปัจจุบัน</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>ภาระหนี้สูง D/E 1.11x:</b> หนี้สิน ฿27,447M เทียบ Equity ฿24,780M — ต้นทุนดอกเบี้ยสูงกดดัน Net Margin โดยเฉพาะหากอัตราดอกเบี้ยยังสูงนาน</li>
+          <li><b>ROE ลดลงชัดเจน 6.3% vs ค่าเฉลี่ย 10% :</b> ROE ลดจาก 10.7% (2566) เหลือ 7.1% (2567) และ 6.3% (TTM) — อาจสะท้อนปัญหาเชิงโครงสร้างมากกว่าชั่วคราว</li>
+          <li><b>กำลังซื้อภาคอสังหาฯ ชะลอตัว:</b> ตลาดบ้านระดับกลาง-บนในกรุงเทพฯ เผชิญ oversupply และกำลังซื้อที่อ่อนแอจากหนี้ครัวเรือนสูงและความเชื่อมั่นผู้บริโภคต่ำ</li>
+          <li><b>Gross Margin อยู่ต่ำที่ 30.6%:</b> บริษัทใช้กลยุทธ์ promotional pricing กดดัน margin — หากต้องจัดโปรต่อเนื่องเพื่อระบาย inventory อาจทำให้ margin ไม่ฟื้น</li>
+          <li><b>ความเสี่ยง JV Losses:</b> ขาดทุนจากบริษัทร่วมทุน ฿71M ใน Q4 2568 (vs กำไร ฿77M Q4 2567) จาก The Standard Pattaya รายได้ยังไม่ครอบคลุม OPEX ช่วงเปิดใหม่</li>
+          <li><b>ความเสี่ยงดอกเบี้ยและเศรษฐกิจมหภาค:</b> หากดอกเบี้ยไม่ลดตามคาด หรือเศรษฐกิจชะลอแรง ผู้กู้สินเชื่อที่อยู่อาศัยขอยกเลิก/โอนไม่ผ่านสูงขึ้น กระทบรายได้โอน</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>SC ซื้อขายต่ำกว่ามูลค่า 33% · Dividend Yield สูง 8.3% · รอ Catalyst ปี 2569</h2>
+      <p>SC Asset Corporation เป็นผู้พัฒนาอสังหาริมทรัพย์ที่หลากหลายครอบคลุมบ้านเดี่ยว ทาวน์เฮ้าส์ และคอนโดมิเนียมระดับกลาง-บน ณ ราคา ฿1.93 หุ้น SC ซื้อขายที่ P/E เพียง 5.36x และ P/BV 0.33x ต่ำกว่า Book Value อย่างมาก ปี 2568 กำไรลดลง ~10% จากแรงกดดัน macro และ margin แต่ปี 2569 นักวิเคราะห์คาดฟื้นตัวแรง +30% จากการโอน 2 condo ใหม่ · SC ยังจ่ายปันผล ฿0.16/หุ้น (yield 8.3%) ขณะรอ re-rating ราคา</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿2.88 <span style="font-size:12px;color:#cab9a8">(฿2.70–฿3.20)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +33.0%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿2.26 (Strong Buy 8/8)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> SC เหมาะสะสมระยะยาวสำหรับนักลงทุนสาย Value+Dividend — MOS 33.0% เข้า "โซน Deep Value" อย่างชัดเจน · รับ Dividend Yield 8.3%/ปีระหว่างรอ Re-rating · จุดสังเกตหลัก: ยอดโอน condo Q1-Q2 2569 และ ROE ที่คาดกลับสู่ 8-9% · Stop loss conceptual หาก P/BV หลุดต่ำกว่า 0.25x (ราคา ~฿1.46) โดยไม่มีเหตุผล fundamental
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    แหล่งข้อมูล: Yahoo Finance (SC.BK, ราคา/กราฟ 1y), Investing.com (P/E 5.36x, P/BV 0.33x, EPS 0.36, analyst targets), SET Factsheet (Market Cap, P/E, P/BV, 3 ก.ค. 2569), Wisesheets (ROE historical), EBC/Krungsri Securities (profit forecast 2568-2569), Investing.com Earnings (quarterly EPS)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 3 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
