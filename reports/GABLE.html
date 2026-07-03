@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น จีเอเบิล (GABLE) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"GABLE","currency":"THB","price":4.02,"fairValue":7.45,"mos":46.0,"upside":85.3,"pe":7.0,"dividendYield":7.96,"roe":13.7}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#1976d2",
+    "accentDark": "#0d47a1",
+    "darkGrad": "linear-gradient(135deg,#0d47a1 0%,#1565c0 60%,#1976d2 100%)",
+    "glow": "rgba(25,118,210,0.3)",
+    "subColor": "#90caf9",
+    "headerMuted": "rgba(255,255,255,0.65)",
+    "verdictText": "#e3f2fd",
+    "vcellLabel": "#90caf9",
+    "badge": "#1976d2",
+    "chgBg": "var(--red-soft)",
+    "chgColor": "#c5221f"
+  },
+  "chart": {
+    "data": [
+      ["ก.ค. 68", 4.10],
+      ["ส.ค. 68", 3.88],
+      ["ก.ย. 68", 3.70],
+      ["ต.ค. 68", 4.24],
+      ["พ.ย. 68", 3.92],
+      ["ธ.ค. 68", 4.06],
+      ["ม.ค. 69", 3.00],
+      ["ก.พ. 69", 3.00],
+      ["มี.ค. 69", 2.88],
+      ["เม.ย. 69", 3.18],
+      ["พ.ค. 69", 3.42],
+      ["มิ.ย. 69", 3.52],
+      ["ก.ค. 69", 4.02]
+    ],
+    "min": 2.60,
+    "max": 4.60,
+    "grid": [3.00, 3.50, 4.00, 4.50],
+    "fairLine": 7.45,
+    "currency": "฿",
+    "highlight": [3, 8],
+    "gridFmt": "v.toFixed(2)",
+    "dataFmt": "d[1].toFixed(2)"
+  },
+  "gauge": {
+    "min": 2.00,
+    "max": 9.00,
+    "cur": 4.02,
+    "fair": 7.45,
+    "fairLabelTop": false
+  },
+  "fv": 7.45
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">●●●</div>
+    <div>
+      <span class="tag">SET: GABLE</span>
+      <span class="tag">เทคโนโลยีสารสนเทศ</span>
+      <span class="tag">IT Services</span>
+    </div>
+    <h1>บมจ.จีเอเบิล (G-Able PCL)</h1>
+    <div class="sub">IT Services ครบวงจร · SAP &amp; Oracle Implementation · Cybersecurity · Cloud &amp; Data Platform · AI/Digital Transformation สำหรับองค์กรขนาดใหญ่</div>
+    <div class="price-row">
+      <div>
+        <div class="px">฿4.02<small>(GABLE)</small></div>
+      </div>
+      <div class="chg">▼ −2.0% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 4 ก.ค. 2569<br>
+        กรอบ 52 สัปดาห์ ฿2.70 – ฿4.36<br>
+        ที่มา: SET Factsheet, StockAnalysis.com, Investing.com
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ก.ค. 2569 / FY2568</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">฿2,814 ล้าน</div><div class="d">700.0 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~7.0x</div><div class="d">ต่ำกว่าค่าเฉลี่ย IT sector ~12–15x</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~12x</div><div class="d">ช่วง 7x–16x (ผันผวนตาม EPS)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">1.2x</div><div class="d">BVPS ฿3.27 (FY2568)</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2568</div><div class="v">฿307.5 ล้าน</div><div class="d">+30% YoY จาก ฿236.5 ล้าน</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿0.57</div><div class="d">TTM ล่าสุด (รวม Q1 2569)</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~฿3.27</div><div class="d">Equity ฿2,321 ล้าน (FY2568)</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~13.7% / 6.2%</div><div class="d">Net margin 4.9% — improving</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">฿6,360 ล้าน</div><div class="d">FY2568: ฿6,237 ล้าน (+1%)</div></div>
+      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">20.6%</div><div class="d">FY2568: Gross Profit ฿1,287 ล้าน</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~7.96%</div><div class="d">฿0.32/หุ้น (FY2568) — yield สูงสุดใน sector</div></div>
+      <div class="metric"><div class="k">Backlog</div><div class="v">฿6,000+ ล้าน</div><div class="d">สูงสุดเป็นประวัติการณ์ — รองรับรายได้ 12+ เดือน</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ก.ค. 2568 – ก.ค. 2569</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#1976d2"></i>ราคา GABLE</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿7.45</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคา GABLE ช่วง 1 ปีที่ผ่านมาเคลื่อนไหวในกรอบ ฿2.88–฿4.24 เผชิญแรงขายช่วง ม.ค.–มี.ค. 2569 ที่กดราคาลงสู่ ฿2.88 ก่อนฟื้นตัวกลับขึ้นสู่ระดับ ฿3.52 ในมิ.ย. และปิดที่ ฿4.02 ต้น ก.ค. 2569 ราคาปัจจุบันอยู่ต่ำกว่า IPO (฿6.39) และต่ำกว่า Fair Value (฿7.45) อย่างมีนัยสำคัญ สะท้อน discount ที่น่าสนใจ
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS adj. ฿0.57 × P/E เป้าหมาย ~12x — ใช้ค่าเฉลี่ย P/E 5 ปี (IT services ไทย ~12–15x; GABLE มี backlog แน่น + recurring income ขยายตัว)</div></div>
+        <div class="mval">฿6.84</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล ฿0.32 × (1+5%); g 5%, r 9% → FV = 0.336 / (0.09−0.05) — GABLE จ่ายปันผลสม่ำเสมอ yield ~8%; g อิง backlog + recurring income ที่ขยายตัว</div></div>
+        <div class="mval">฿8.40</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 13.7% − g 5%)/(r 9% − g 5%) ≈ 2.18x × BVPS ฿3.27 — ROE อยู่เหนือ cost of equity สร้าง value ให้ผู้ถือหุ้น</div></div>
+        <div class="mval">฿7.11</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿6.84 – ฿8.40</span></div>
+        <div class="r">฿7.45</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        วิธี DDM ให้ค่าสูงสุด (฿8.40) สะท้อน dividend yield สูงและการเติบโตมั่นคง วิธี P/E อนุรักษ์นิยมที่สุด (฿6.84) อิง EPS TTM ปัจจุบัน Justified P/BV (฿7.11) สอดคล้องกับ ROE และ book value จริง ทั้ง 3 วิธีชี้ว่าราคา ฿4.02 ต่ำกว่ามูลค่าเหมาะสมมาก ความเสี่ยงหลักคือ EPS ยังผันผวนตามวงจร project IT ขนาดใหญ่
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿4.02</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿7.45</div></div>
+        </div>
+        <div class="scale">
+          <span>฿4.20<br><small>เป้า Analyst</small></span>
+          <span>฿5.22<br><small>MOS 30%</small></span>
+          <span style="text-align:center">฿5.96<br><small>MOS 20%</small></span>
+          <span style="text-align:right">฿7.45<br><small>Fair Value</small></span>
+          <span style="text-align:right">฿8.40<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคา ฿4.02 อยู่ต่ำกว่าจุดซื้อ MOS 30% (฿5.22) ถือว่าอยู่ใน "deep value zone" ตามเกณฑ์ VI เป้าหมายนักวิเคราะห์ที่ ฿4.20 อนุรักษ์นิยมกว่า Fair Value เฉลี่ย ฿7.45 อย่างมีนัย สะท้อนข้อกังวลระยะสั้นด้านการฟื้นตัว EPS อย่างไรก็ตาม momentum กำไร TTM +82% YoY เป็นสัญญาณ re-rating ที่ดี
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict good">
+        <div class="big">+46.0%</div>
+        <div class="txt">ถูกมาก — Deep Value Zone · ราคาต่ำกว่ามูลค่าเหมาะสมกว่า 46%</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿5.96</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿5.22</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿7.45</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="4.02" step="0.05">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿4.02 • EPS ฐาน ~฿0.57 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS −5%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿3.43</div>
+          <div class="ret neg">+1.7%/ปี</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.49</span></li>
+            <li><span>P/E ออก</span><span>7x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.80</span></li>
+            <li><span>สถานการณ์</span><span>project ล่าช้า งบ IT ลด</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +8%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿7.20</div>
+          <div class="ret pos">+27%/ปี</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.72</span></li>
+            <li><span>P/E ออก</span><span>10x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.96</span></li>
+            <li><span>สถานการณ์</span><span>backlog แน่น + recurring income โต</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +15%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿12.18</div>
+          <div class="ret pos">+48%/ปี</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.87</span></li>
+            <li><span>P/E ออก</span><span>14x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.96</span></li>
+            <li><span>สถานการณ์</span><span>AI/cloud สร้าง new S-Curve ชัดเจน</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      Base case อิง EPS โต 8%/ปี จาก backlog สูงสุดเป็นประวัติการณ์ (฿6,000+ ล้าน) + สัดส่วน recurring income ที่เพิ่มขึ้นเป็น 40–50% (margin ดีกว่า project one-time) + EPS TTM ฟื้นตัวชัดใน Q1/Q2 2569 ความเสี่ยง Bear เกิดขึ้นถ้า mega-project ภาครัฐ/รัฐวิสาหกิจล่าช้า หรือ sector IT ไทยถูก global IT spending cut กระทบ Bear case ยังได้ผลตอบแทนบวก (1.7%/ปี) เพราะ dividend yield ~8%
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก &amp; ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>Backlog สูงสุดเป็นประวัติการณ์:</b> ฿6,000+ ล้าน (เทียบรายได้ประจำปี ~1 ปี) รองรับการเติบโตรายได้อย่างชัดเจน ลด visibility risk</li>
+          <li><b>Recurring Income ขยายตัว:</b> ตั้งเป้า 40–50% ของรายได้รวม จาก managed services, cloud subscription, SAP support — margin ดีกว่า project หนุน EPS stability</li>
+          <li><b>AI &amp; Digital Transformation Demand:</b> ภาคองค์กรไทยเร่งลงทุน AI/data/cloud — GABLE เป็น SAP gold partner + Oracle partner มี certification หายาก กีดกัน new entrant</li>
+          <li><b>Dividend Yield ~8%:</b> จ่ายปันผลสม่ำเสมอ ฿0.32/หุ้น — หนุน downside support และดึงดูดนักลงทุนเน้น income</li>
+          <li><b>กำไร TTM ฟื้น +82% YoY:</b> Net income TTM ฿399M (EPS ฿0.57) — momentum กำไรกลับมาชัดเจน ถ้าต่อเนื่องจะ re-rate P/E</li>
+          <li><b>โครงสร้างหนี้แข็งแกร่ง:</b> Total debt เหลือ ฿99M จาก ฿799M ในปี 2565 — leverage ต่ำมาก งบดุล pristine รองรับการลงทุนใหม่หรือจ่ายปันผลพิเศษ</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>EPS ผันผวน / Project-based Revenue:</b> กำไรสุทธิลดลงจาก ฿266M (2565) → ฿237M (2567) ก่อนฟื้น — nature ของ IT project ทำให้ revenue ไม่สม่ำเสมอ</li>
+          <li><b>Market Cap เล็ก / Liquidity ต่ำ:</b> Free float ~57%; volume เฉลี่ยต่ำ — กระทบ bid-ask spread และ institutional coverage น้อย (มีเพียง 1 analyst)</li>
+          <li><b>ความเสี่ยงงบประมาณภาครัฐ:</b> ลูกค้าหลักเป็นองค์กรรัฐ/SOE — ล่าช้าในการอนุมัติ project หรือการตัดงบ IT ของภาครัฐกระทบโดยตรง</li>
+          <li><b>การแข่งขันจาก Global IT Giants:</b> Accenture, IBM, TCS เข้ามาแข่งใน enterprise segment ไทย อาจกดดัน margin ระยะยาว</li>
+          <li><b>Talent Retention:</b> IT talent war ในไทยรุนแรง — ต้นทุนบุคลากรสูงขึ้น และ attrition ของ specialist (SAP/Oracle) กระทบ project delivery</li>
+          <li><b>IPO Price Overhang:</b> IPO ที่ ฿6.39 ยังสูงกว่าราคาปัจจุบัน ฿4.02 — นักลงทุน IPO ที่ยังถือหุ้นอาจขายเมื่อราคาฟื้น กดดัน upside ระยะกลาง</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>Deep Value พร้อม Dividend Yield ~8% — MOS 46% น่าสนใจสำหรับ VI ที่รับ EPS volatility ได้</h2>
+      <p>GABLE เป็น IT services ชั้นนำของไทยที่มี backlog สูงสุดเป็นประวัติการณ์ ฿6,000+ ล้าน, กำไร TTM ฟื้นตัวชัด (+82% YoY) และ dividend yield ~8% ที่ยั่งยืน ราคา ฿4.02 ยังต่ำกว่า IPO price ฿6.39 และต่ำกว่า Fair Value เฉลี่ย ฿7.45 กว่า 46% สะท้อน discount ที่ไม่สมเหตุสมผลสำหรับบริษัทที่มีพื้นฐานแข็งแกร่ง ความเสี่ยงหลักคือ EPS ยังผันผวนตาม project cycle และ liquidity ตลาดต่ำ</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿7.45 <span style="font-size:12px;color:#cab9a8">(฿6.84–฿8.40)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +46.0%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿4.20 (Buy)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> GABLE เหมาะกับนักลงทุนแนว VI ที่รับความผันผวน EPS ได้ — ทยอยสะสมในโซนต่ำกว่า ฿5.22 (MOS 30%) โดยปล่อยให้ dividend yield ~8% ช่วย "จ่ายค่าอดทน" ระหว่างรอ re-rating เป้าหมายระยะ 2–3 ปี ฿7.00–฿8.00 (base case) ถ้ากำไรฟื้นตามแผน ไม่เหมาะกับนักลงทุน momentum หรือผู้ที่ต้องการ liquidity สูง
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    ที่มาข้อมูล: SET Factsheet (4 ก.ค. 2569) · StockAnalysis.com (3 ก.ค. 2569) · Investing.com · Yahoo Finance · G-Able Investor Relations (investor.g-able.com) · งบการเงิน FY2568 (สิ้นสุด 31 ธ.ค. 2568) · งบ Q1/2569
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 4 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
