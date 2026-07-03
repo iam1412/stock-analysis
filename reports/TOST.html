@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น Toast Inc. (TOST) — Stock Analysis Dashboard</title>
+<!-- ★ ใส่รุ่นโมเดล AI ที่ใช้วิเคราะห์จริง -->
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) -->
+<script type="application/json" id="stock-meta">
+{"symbol":"TOST","currency":"USD","price":28.82,"fairValue":33,"mos":12.7,"upside":14.5,"pe":44.03,"dividendYield":null,"roe":22.5}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#E74C1B",
+    "accentDark": "#B33D14",
+    "darkGrad": "linear-gradient(135deg,#1a0a06 0%,#2d1208 50%,#1a0a06 100%)",
+    "glow": "#E74C1B44",
+    "subColor": "#f97c54",
+    "headerMuted": "#c97a60",
+    "verdictText": "#fff3ef",
+    "vcellLabel": "#d4907a",
+    "badge": "#E74C1B",
+    "chgBg": "#1e4620",
+    "chgColor": "#4caf50"
+  },
+  "chart": {
+    "data": [
+      ["ก.ค. 67", 45.10],
+      ["ส.ค. 67", 36.51],
+      ["ก.ย. 67", 36.14],
+      ["ต.ค. 67", 34.19],
+      ["พ.ย. 67", 35.51],
+      ["ธ.ค. 67", 31.11],
+      ["ม.ค. 68", 27.31],
+      ["ก.พ. 68", 26.51],
+      ["มี.ค. 68", 28.52],
+      ["เม.ย. 68", 26.03],
+      ["พ.ค. 68", 27.82],
+      ["มิ.ย. 68", 28.82],
+      ["ก.ค. 68", 28.82]
+    ],
+    "min": 22,
+    "max": 52,
+    "grid": [25, 30, 35, 40, 45, 50],
+    "fairLine": 33,
+    "currency": "$",
+    "highlight": [0, 6]
+  },
+  "gauge": {
+    "min": 18,
+    "max": 48,
+    "cur": 28.82,
+    "fair": 33,
+    "fairLabelTop": true
+  },
+  "fv": 33
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">🍞🍕🍔</div>
+    <div>
+      <span class="tag">NYSE: TOST</span>
+      <span class="tag">Restaurant Technology</span>
+      <span class="tag">SaaS + FinTech</span>
+    </div>
+    <h1>Toast Inc.</h1>
+    <div class="sub">Restaurant tech platform • POS &amp; payments • SaaS subscriptions • 171K+ restaurant locations • GTV-based payments processing</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$28.82<small>(TOST)</small></div>
+      </div>
+      <div class="chg" style="background:var(--chgBg,#1e4620);color:var(--chgColor,#4caf50)">▼ −36.1% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ กรกฎาคม 2569<br>
+        กรอบ 52 สัปดาห์ $22.26 – $49.66<br>
+        ที่มา: Yahoo Finance, StockAnalysis.com, Finviz
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ก.ค. 2569 · TTM = 12 เดือนย้อนหลัง</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">$16.7B</div><div class="d">~580M shares diluted</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~44x</div><div class="d">GAAP EPS $0.65 · Fwd P/E ~17x</div></div>
+      <div class="metric"><div class="k">EV/Adj EBITDA</div><div class="v">~22x</div><div class="d">Adj EBITDA TTM ~$700M (34% margin)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">8.4x</div><div class="d">BVPS ~$3.43 · net cash $1.1B</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v pos">$342M</div><div class="d">vs $19M FY2024 · +1,700% YoY</div></div>
+      <div class="metric"><div class="k">EPS (TTM GAAP)</div><div class="v">~$0.65</div><div class="d">Fwd EPS FY2026E ~$1.35</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~$3.43</div><div class="d">Equity $1.99B · D/E 0.01x</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~22.5% / 14.6%</div><div class="d">ฟื้นตัวจาก ติดลบ FY2023</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$6.45B</div><div class="d">+23.4% YoY · Subscription $936M (FY25)</div></div>
+      <div class="metric"><div class="k">Gross Margin TTM</div><div class="v">26.3%</div><div class="d">Subscription margin ~70% · FinTech ~5%</div></div>
+      <div class="metric"><div class="k">ARR Q1/2026</div><div class="v pos">$2.2B</div><div class="d">+26% YoY · GTV $204B TTM</div></div>
+      <div class="metric"><div class="k">Locations</div><div class="v">171,000+</div><div class="d">+22% YoY · ~15% of US restaurants</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ · รายเดือน</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#E74C1B"></i>ราคา TOST</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $33</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        หุ้น TOST ปรับตัวลงราว <b>−36%</b> ในรอบปีที่ผ่านมา จากระดับ $45.10 (ก.ค. 2567) สู่ $28.82 (ก.ค. 2568)
+        โดยราคาสูงสุด 52 สัปดาห์อยู่ที่ $49.66 ในช่วงกลางปี 2567 ก่อนปรับฐานจากความกังวลด้าน valuation ที่ตึงตัว
+        และภาวะ risk-off ในหุ้นเติบโต ราคาแตะต่ำสุด 52 สัปดาห์ที่ $22.26 ในช่วงต้นปี 2568
+        ก่อนฟื้นตัวกลับมาทรงตัวแถว $27–29 ในช่วงปลายปี · ราคาปัจจุบัน <b>ต่ำกว่า FV $33</b> ประมาณ 13%
+        สะท้อนโอกาสสะสมสำหรับผู้ที่เชื่อมั่นในการเติบโตของ Toast ระยะยาว
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. EV/Gross Profit</div><div class="mdesc">Gross Profit TTM $1.694B × 10x EV/GP (SaaS/payments hybrid) = EV $16.94B + net cash $1.08B ÷ 580M shares</div></div>
+        <div class="mval">$31</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. Fwd P/E Valuation</div><div class="mdesc">adj. EPS fwd $1.35 × P/E 24x = $32.40 — เหมาะสมสำหรับบริษัทกำไรเติบโต 25–30%/ปี ยังขยาย location อย่างรวดเร็ว</div></div>
+        <div class="mval">$32</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. EV/Adj EBITDA</div><div class="mdesc">Adj EBITDA FY2025 $633M × 30x (high-growth FinTech/SaaS) = EV $18.99B + net cash $1.08B ÷ 580M shares</div></div>
+        <div class="mval">$35</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $29 – $40</span></div>
+        <div class="r">$33</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        วิธี EV/Gross Profit ให้ค่าต่ำสุด $31 เนื่องจาก gross margin รวมอยู่ที่เพียง 26% (ถูกกดโดย financial tech / payments segment ที่คิดเป็น ~78% ของรายได้แต่ margin ต่ำ)
+        ขณะที่ subscription segment มี margin ~70%+ และกำลังเติบโตเร็ว · วิธี Fwd P/E ให้ $32.40 สมเหตุสมผลสำหรับการเติบโต EPS 25–30%/ปี ·
+        วิธี EV/Adj EBITDA ให้ $35 สะท้อน profitability ที่เพิ่มขึ้นจาก operating leverage ·
+        FV เฉลี่ย <b>$33</b> มีช่วง $29–40 สอดคล้องกับ consensus analyst target $33.88
+        ราคาปัจจุบัน $28.82 ยังต่ำกว่า FV ประมาณ 13% ให้ MOS พอควร
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $28.82</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $33</div></div>
+        </div>
+        <div class="scale">
+          <span>$23.10<br><small>MOS 30%</small></span>
+          <span>$26.40<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$33<br><small>Fair Value</small></span>
+          <span style="text-align:right">$33.88<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">$40<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน $28.82 อยู่ในโซน <b>ระหว่าง MOS 20% ($26.40) กับ Fair Value ($33)</b> เป็นโซนน่าสนใจสำหรับการสะสม
+        ต่ำกว่าเป้าเฉลี่ยนักวิเคราะห์ 29 คน ที่ $33.88 (~17.6% upside) และต่ำกว่า FV ~13%
+        โซน MOS 30% ($23.10) ยังไม่ถึง แต่เคยแตะใกล้ระหว่างปี (ต่ำสุด 52W = $22.26) แสดงว่ามีโอกาสสะสมได้อีก
+        นักวิเคราะห์ 19/29 ราย แนะนำ Strong Buy/Buy ส่วนที่เหลือ 10 ราย แนะนำ Hold ไม่มีใแนะนำ Sell
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict ok">
+        <div class="big">+12.7%</div>
+        <div class="txt">MOS พอควร — ต่ำกว่า Fair Value ~13% · อยู่ระหว่าง MOS 20%–FV</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$26.40</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$23.10</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $33</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="28.82" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $28.82 • EPS ฐาน TTM ~$0.65 • ไม่มีปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS +12%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$16.40</div>
+          <div class="ret neg">−43.1%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$0.91</span></li>
+            <li><span>P/E ออก</span><span>18x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$0</span></li>
+            <li><span>สถานการณ์</span><span>การเติบโต location ชะลอ · competition เพิ่ม · margin ไม่ขยาย</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +25%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$30.50</div>
+          <div class="ret pos">+5.8%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$1.27</span></li>
+            <li><span>P/E ออก</span><span>24x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$0</span></li>
+            <li><span>สถานการณ์</span><span>ขยาย location ต่อเนื่อง · ARPU เพิ่ม · FCF แข็งแกร่ง</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +35%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$44.80</div>
+          <div class="ret pos">+55.4%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$1.60</span></li>
+            <li><span>P/E ออก</span><span>28x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$0</span></li>
+            <li><span>สถานการณ์</span><span>ขยายต่างประเทศเร็ว · subscription ARR โตก้าวกระโดด · premium module uptake</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      Base case: Toast ยังคงขยาย location ได้ 20%+/ปี ควบคู่กับการเพิ่ม ARPU จาก module ใหม่ (payroll, marketing, supplier) และ financial tech take-rate
+      EPS consensus FY2026E = $1.35 (+107% YoY) และ FY2027E = $1.70 (+26%) สนับสนุน base case ·
+      Bear case เกิดจากการแข่งขันจาก Square/Block ที่รุกร้านอาหารมากขึ้น หรือเศรษฐกิจทำให้ร้านอาหารปิดตัว ·
+      Bull case ต้องอาศัยการขยายตลาดต่างประเทศ (UK/Ireland/Canada/Japan) อย่างมีนัยสำคัญ
+      <b>ไม่มีปันผล</b> — Toast reinvest กำไรทั้งหมดเพื่อการเติบโต FCF TTM $654M เป็นสัญญาณ quality ดี
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก &amp; ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>Location expansion:</b> ยังเจาะตลาดได้เพียง ~15% ของร้านอาหารในสหรัฐ เพดานการเติบโตสูงมาก ·  Q1/2026 เพิ่ม 7,000 net locations</li>
+          <li><b>ARR &amp; subscription growth:</b> ARR พุ่งขึ้น 26% YoY สู่ $2.2B · subscription margin ~70% ช่วยดัน gross margin รวมขึ้น</li>
+          <li><b>Operating leverage:</b> Adj EBITDA margin อยู่ที่ 34% ใน Q1/2026 (+35% YoY) · FCF TTM $654M แสดงให้เห็นว่า unit economics สุกงอม</li>
+          <li><b>International expansion:</b> ขยายสู่ UK, Ireland, Canada, Japan — ตลาดใหม่ที่ยังมี penetration ต่ำมาก</li>
+          <li><b>Premium modules:</b> Payroll, scheduling, marketing, supplier management เพิ่ม ARPU ต่อ location · cross-sell opportunity สูง</li>
+          <li><b>GTV growth:</b> GPV TTM $204B (+23% YoY) สร้างรายได้ payments แบบ recurring · effective take-rate ~2.5 cents/$</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>Valuation ยังสูง:</b> P/E TTM 44x และแม้ fwd P/E ~17x ก็ยังต้องอาศัยการเติบโต EPS ตามคาด หากพลาดนัดเดียวอาจปรับฐานแรง</li>
+          <li><b>Competition:</b> Square/Block, Lightspeed, Olo, legacy NCR/PAR ต่างรุกตลาดร้านอาหาร อาจกดดัน take rate และ churn</li>
+          <li><b>Restaurant industry cyclicality:</b> ร้านอาหารเป็นธุรกิจที่ได้รับผลกระทบจากเศรษฐกิจตกต่ำ — location loss = รายได้หาย double</li>
+          <li><b>Gross margin ต่ำ:</b> 26% (กดโดย payments) ต่ำกว่า pure SaaS มาก ทำให้ valuation multiple ควรต่ำกว่า software pure-play</li>
+          <li><b>Share dilution:</b> Stock-based compensation ยังสูง → shares diluted เพิ่มจาก $516M float ทำให้ EPS per share โตช้ากว่า net income</li>
+          <li><b>International execution risk:</b> การขยายต่างประเทศต้องใช้เงินลงทุนสูงและอาจใช้เวลานานกว่าที่คาด</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>TOST: ผู้นำ Restaurant Tech ที่กำลังพิสูจน์ตัวเอง — MOS พอควรที่ $28.82</h2>
+      <p>
+        Toast Inc. สร้างระบบ all-in-one สำหรับร้านอาหารที่ครอบคลุมตั้งแต่ POS, payments, payroll, marketing ไปจนถึง supplier management
+        ทำให้มีความได้เปรียบในการแข่งขันด้าน switching cost สูงและ data network effect ·
+        FY2025 เป็นปีแห่งการพิสูจน์ตัวเอง: กำไรสุทธิ GAAP พุ่งจาก $19M สู่ $342M, Adj EBITDA $633M, FCF $608M
+        ขณะที่ ARR ทะลุ $2B+ และ location count แตะ 164K → 171K ในไตรมาสเดียว ·
+        ราคาปัจจุบัน $28.82 ต่ำกว่า FV $33 ประมาณ 13% และใกล้เคียงกับ analyst consensus target $33.88
+        เหมาะสำหรับการสะสมระยะยาวในนักลงทุนที่ยอมรับความผันผวนของหุ้นเติบโตได้
+      </p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$33 <span style="font-size:12px;color:#cab9a8">($29–$40)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +12.7%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$33.88 (Buy · 29 analysts)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ราคาปัจจุบัน $28.82 อยู่ในโซนสะสมได้ — MOS ~13% ไม่มากแต่พอรับได้สำหรับหุ้นเติบโตที่มีพื้นฐานดี
+        จุดเพิ่มน้ำหนักแรกที่ <b>MOS 20% = $26.40</b> และเพิ่มหนักที่ <b>MOS 30% = $23.10</b>
+        ติดตามผล Q2/2026 (ส.ค. 2569) โดยเฉพาะ location adds, ARR growth, adj EBITDA margin
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ ·
+    แหล่งข้อมูล: Yahoo Finance (ราคา ณ ก.ค. 2569), StockAnalysis.com (งบการเงิน TTM/FY2025), Finviz (ratios/ROE/P/B), Toast Q1 2026 Earnings Release (ARR/GTV/locations), StockAnalysis Forecast (analyst targets)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ กรกฎาคม 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
