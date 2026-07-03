@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น SYNEX (SYNEX) — Stock Analysis Dashboard</title>
+<!-- ★ โมเดล AI ที่ใช้วิเคราะห์จริง -->
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) -->
+<script type="application/json" id="stock-meta">
+{"symbol":"SYNEX","currency":"THB","price":9.05,"fairValue":11.70,"mos":22.6,"upside":29.3,"pe":9.52,"dividendYield":5.42,"roe":16.62}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#e53935",
+    "accentDark": "#b71c1c",
+    "darkGrad": "linear-gradient(135deg,#b71c1c 0%,#e53935 60%,#ef5350 100%)",
+    "glow": "rgba(229,57,53,0.3)",
+    "subColor": "#ffcdd2",
+    "headerMuted": "rgba(255,255,255,0.6)",
+    "verdictText": "#ffebee",
+    "vcellLabel": "rgba(255,235,238,0.7)",
+    "badge": "#e53935",
+    "chgBg": "#fce8e6",
+    "chgColor": "#c5221f"
+  },
+  "chart": {
+    "data": [
+      ["ก.ค. 68", 10.10],
+      ["ส.ค. 68", 9.40],
+      ["ก.ย. 68", 9.25],
+      ["ต.ค. 68", 9.05],
+      ["พ.ย. 68", 8.75],
+      ["ธ.ค. 68", 8.85],
+      ["ม.ค. 69", 9.05],
+      ["ก.พ. 69", 9.00],
+      ["มี.ค. 69", 8.90],
+      ["เม.ย. 69", 8.85],
+      ["พ.ค. 69", 8.90],
+      ["มิ.ย. 69", 8.95],
+      ["ก.ค. 69", 9.05]
+    ],
+    "min": 8.50,
+    "max": 10.60,
+    "grid": [8.50, 9.00, 9.50, 10.00, 10.50],
+    "fairLine": 11.70,
+    "currency": "฿",
+    "highlight": [0, 4],
+    "gridFmt": "v.toFixed(2)",
+    "dataFmt": "d[1].toFixed(2)"
+  },
+  "gauge": {
+    "min": 7.50,
+    "max": 13.00,
+    "cur": 9.05,
+    "fair": 11.70,
+    "fairLabelTop": true
+  },
+  "fv": 11.70
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">● ● ●</div>
+    <div>
+      <span class="tag">SET: SYNEX</span>
+      <span class="tag">เทคโนโลยี / IT</span>
+      <span class="tag">จัดจำหน่ายไอที</span>
+    </div>
+    <h1>บมจ.ซินเน็ค (ประเทศไทย) — SYNEX</h1>
+    <div class="sub">จัดจำหน่ายไอทีรายใหญ่ (Synnex) • HP, Apple, Samsung, Sony, Lenovo • B2B + Retail • CLMV • 50+ แบรนด์ระดับโลก</div>
+    <div class="price-row">
+      <div>
+        <div class="px">฿9.05<small>(SYNEX)</small></div>
+      </div>
+      <div class="chg">▼ −10.4% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 3 ก.ค. 2569<br>
+        กรอบ 52 สัปดาห์ ฿8.55 – ฿12.80<br>
+        ที่มา: Yahoo Finance, StockAnalysis.com, Investing.com
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ก.ค. 2569 · TTM = 12 เดือนย้อนหลัง</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~฿7,670 ล้าน</div><div class="d">847.36 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~9.52x</div><div class="d">ต่ำกว่าค่าเฉลี่ย 5 ปี</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~13x</div><div class="d">ช่วง 10–16x (ประมาณการ)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">1.52x</div><div class="d">BVPS ฿5.95 · ต่ำกว่าค่าเฉลี่ย</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2568</div><div class="v">฿769.8 ล้าน</div><div class="d">+22.6% YoY (FY67: ฿627.7 ล้าน)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿0.95</div><div class="d">FY2567: ฿0.74 · FY2566: ฿0.61</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~฿5.95</div><div class="d">ส่วนผู้ถือหุ้น ฿4,823 ล้าน</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~16.62% / 2.91%</div><div class="d">margin ต่ำแต่ asset turnover สูง</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">฿47,545 ล้าน</div><div class="d">+13.4% YoY · เติบโตต่อเนื่อง</div></div>
+      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">~3.77%</div><div class="d">Net margin 1.69% · ธุรกิจ Distributor</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~5.42%</div><div class="d">TTM ฿0.48/หุ้น · จ่ายปีละ 2 ครั้ง</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">0.55</div><div class="d">ความผันผวนต่ำกว่าตลาด</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ก.ค. 2568 – ก.ค. 2569 · รายเดือน</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#e53935"></i>ราคา SYNEX</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿11.70</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคา SYNEX ย่อตัวลงจาก ฿10.10 ในเดือน ก.ค. 2568 มาแตะจุดต่ำสุดที่ ฿8.75 ช่วง พ.ย. 2568 (−13.4%) ก่อนฟื้นตัวกลับมาที่ ฿9.05 ในเดือน ก.ค. 2569
+        แรงกดดันหลักมาจากภาวะเศรษฐกิจไทยชะลอตัวและต้นทุนดอกเบี้ยที่ยังอยู่ในระดับสูง อย่างไรก็ตาม
+        บริษัทยังคงรายได้เติบโตแข็งแกร่ง +13% YoY สะท้อนส่วนแบ่งตลาด IT Distribution ที่ขยายตัวได้ดี
+        ราคาปัจจุบันยังคงอยู่ต่ำกว่ามูลค่าเหมาะสม ฿11.70 อยู่ราว 22.6%
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS adj. ฿0.95 × P/E เป้าหมาย ~13x — ค่าเฉลี่ยอุตสาหกรรม IT Distributor ไทย; SYNEX เคยซื้อขาย 10–16x ในช่วง 5 ปีที่ผ่านมา</div></div>
+        <div class="mval">฿12.35</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล ฿0.48 × (1+g); g 4%, r 9.5% → บริษัทจ่ายปันผลสม่ำเสมอ Payout ~46% เหมาะกับ DDM</div></div>
+        <div class="mval">฿9.07</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 16.62% − g 4%)/(r 9.5% − g 4%) ≈ 2.29 × BVPS ฿5.95</div></div>
+        <div class="mval">฿13.63</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿9.07 – ฿13.63</span></div>
+        <div class="r">฿11.70</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        วิธี DDM ให้ค่าต่ำสุด (฿9.07) เพราะสะท้อนเฉพาะมูลค่าปันผล ณ อัตราปัจจุบัน ในขณะที่วิธี Justified P/BV ให้ค่าสูงสุด (฿13.63) เนื่องจาก ROE ของบริษัทที่ 16.62% สูงกว่าต้นทุนทุน (r=9.5%)
+        วิธี P/E ให้ค่ากลาง (฿12.35) อิง P/E target 13x ซึ่งอยู่ในระดับกลางของช่วงประวัติศาสตร์ มูลค่าเฉลี่ย ฿11.70 สะท้อนธุรกิจ Distributor ที่ margin บาง แต่มีความสามารถในการ
+        สร้างผลตอบแทนต่อผู้ถือหุ้น (ROE >16%) ได้ต่อเนื่องจากการหมุนสินทรัพย์สูง
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿9.05</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿11.70</div></div>
+        </div>
+        <div class="scale">
+          <span>฿8.19<br><small>MOS 30%</small></span>
+          <span>฿9.36<br><small>MOS 20%</small></span>
+          <span style="text-align:center">฿11.70<br><small>Fair Value</small></span>
+          <span style="text-align:right">฿11.73<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">฿13.63<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคา ฿9.05 อยู่ต่ำกว่า MOS 20% (฿9.36) เล็กน้อย — ถือว่าอยู่ใน<b>โซน Value</b> เหมาะสำหรับการทยอยสะสม
+        เป้านักวิเคราะห์เฉลี่ย ฿11.73 (Strong Buy, 4 คน) ใกล้เคียงกับ Fair Value ฿11.70 ของเรา ยืนยันว่าหุ้นถูก Under-priced
+        จากราคาปัจจุบัน upside ถึง Fair Value อยู่ที่ +29.3% ยังไม่รวมผลตอบแทนจากปันผล ~5.4%/ปี
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict good">
+        <div class="big">+22.6%</div>
+        <div class="txt">โซน Value — น่าทยอยสะสม (MOS &gt; 20%)</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿9.36</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿8.19</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿11.70</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="9.05" step="0.05">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿9.05 • EPS ฐาน ~฿0.95 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS +1%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿8.81</div>
+          <div class="ret neg">+13.2% (3 ปี) ≈ +4.2%/ปี</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.98</span></li>
+            <li><span>P/E ออก</span><span>9x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿1.44</span></li>
+            <li><span>สถานการณ์</span><span>ตลาด IT ซบเซา กำไรทรงตัว</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +7%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿13.96</div>
+          <div class="ret pos">+70.2% (3 ปี) ≈ +19.5%/ปี</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿1.16</span></li>
+            <li><span>P/E ออก</span><span>12x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿1.44</span></li>
+            <li><span>สถานการณ์</span><span>ตลาด IT ฟื้น ยอด PC/Server โต</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +12%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿20.03</div>
+          <div class="ret pos">+139.9% (3 ปี) ≈ +34.0%/ปี</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿1.34</span></li>
+            <li><span>P/E ออก</span><span>15x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿1.68</span></li>
+            <li><span>สถานการณ์</span><span>AI/Cloud หนุน Server + PC refresh</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      การคาดการณ์อิงสมมติฐาน EPS ฐาน ฿0.95 (TTM) ปรับด้วยอัตราเติบโตต่างกัน 3 กรณี · Base case (EPS +7%, P/E 12x) สะท้อนการฟื้นตัวปกติ
+      ของตลาด IT ไทยหลังจากที่ปี 2566 กำไรหดตัวแรง (+0% ฐาน 2566 ต่ำ) ประกอบกับกระแส PC Refresh รอบ AI
+      และยอดขาย Server สำหรับ Data Center ที่คาดว่าจะขยายตัวในปี 2568–2569 · ปันผลคำนวณที่ ฿0.48/ปี (เพิ่มเล็กน้อยใน Bull case)
+      ผลตอบแทนรวมที่แสดงเป็น Capital Gain + ปันผล ยังไม่หักภาษีและค่าธรรมเนียม
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>AI PC / PC Refresh Cycle:</b> อุปสงค์ PC รุ่น AI ที่ใช้ NPU เริ่มมาแรงช่วงปลายปี 2568–2569 เป็นตัวเร่งให้ยอดขายเครื่องรุ่นใหม่เพิ่มขึ้น โดย SYNEX เป็นตัวแทนจำหน่ายรายใหญ่ของทั้ง HP และ Lenovo</li>
+          <li><b>Data Center / Server Growth:</b> กระแสการลงทุน AI และ Cloud ในไทยและ CLMV หนุนยอดขาย Server + Storage ซึ่งมี margin สูงกว่า Consumer PC เฉลี่ย</li>
+          <li><b>ขยายตลาด CLMV:</b> SYNEX รุกตลาด CLMV (กัมพูชา ลาว เมียนมา เวียดนาม) อย่างต่อเนื่อง ลดการพึ่งพารายได้ในประเทศ</li>
+          <li><b>ปันผลสม่ำเสมอ:</b> Dividend Yield ~5.4% ณ ราคาปัจจุบัน เป็น "ความปลอดภัยด้านรายได้" ในขณะที่รอ Capital Gain จาก Valuation Re-rating</li>
+          <li><b>P/E ต่ำกว่าค่าเฉลี่ย:</b> ปัจจุบัน P/E 9.5x ต่ำกว่าค่าเฉลี่ย 5 ปีที่ ~13x อย่างมีนัยสำคัญ หากกำไรฟื้น Valuation Re-rating จะขยาย upside</li>
+          <li><b>ส่วนแบ่งตลาดที่แข็งแกร่ง:</b> ครองอันดับ 1–2 ด้าน IT Distribution ในไทย กับ Brand Portfolio ที่แข็งแกร่ง ครอบคลุม 50+ แบรนด์ระดับโลก</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>Net Margin บางเป็นพิเศษ:</b> Net margin เพียง 1.7% หมายความว่า ต้นทุนที่เพิ่มขึ้นเล็กน้อยหรือราคาสินค้าลดลงสามารถกระทบกำไรได้ รุนแรง ดังที่เห็นใน FY66 กำไรหดลง 37%</li>
+          <li><b>การแข่งขันสูงและ Margin Compression:</b> ตลาด IT Distribution มีการแข่งขันจากคู่แข่งรายใหม่และการขายตรงออนไลน์ ทำให้ Gross Margin ถูกกดดันอย่างต่อเนื่อง</li>
+          <li><b>ความเสี่ยงจากค่าเงินบาท:</b> ซื้อสินค้าเป็นสกุลเงินต่างประเทศ (USD) หากบาทอ่อนค่า ต้นทุนสินค้าเพิ่มขึ้น แต่ขายในราคา THB อาจปรับขึ้นได้ช้า</li>
+          <li><b>วงจร Product Life Cycle:</b> หากรอบ PC Refresh ล่าช้าหรือ AI PC ไม่ได้รับการยอมรับเร็วพอ ยอดขายอาจชะลอตัว</li>
+          <li><b>หนี้สินต่อส่วนทุนสูง:</b> D/E ~1.34x ส่วนใหญ่เป็น Working Capital สำหรับ Inventory และ Trade Credit — ดอกเบี้ยที่สูงกัดกินกำไรขั้นต้นที่บางอยู่แล้ว</li>
+          <li><b>ความเสี่ยงจาก Key Supplier:</b> รายได้พึ่งพา HP, Apple และ Samsung เป็นหลัก หากซัพพลายเออร์รายใดเปลี่ยนนโยบายช่องทางจำหน่ายหรือตัด Margin กระทบผลประกอบการโดยตรง</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>Value Zone — ผลตอบแทนสูงจากปันผล + Upside ที่ยังเหลือ</h2>
+      <p>SYNEX เป็นผู้นำด้าน IT Distribution ในไทยที่มีฐานธุรกิจมั่นคง ด้วยรายได้ ฿47,500 ล้าน (TTM) และปันผลสม่ำเสมอ ~5.4%/ปี
+        ราคาปัจจุบัน ฿9.05 ถูก Discount จาก Fair Value ฿11.70 ถึง 22.6% เกิดจากความกังวลเรื่อง margin บาง + ดอกเบี้ยสูง
+        อย่างไรก็ตาม กระแส AI PC Refresh + Data Center Growth และ ROE ที่ยั่งยืน ~16.6% ทำให้บริษัทมีศักยภาพ Re-rating กลับสู่ P/E ~12–13x
+        เหมาะสำหรับนักลงทุนที่ต้องการรายได้จากปันผลระหว่างรอ Valuation Re-rating ในระยะ 2–3 ปี</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿11.70 <span style="font-size:12px;color:#cab9a8">(฿9.07–฿13.63)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +22.6%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿11.73 (Strong Buy)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ทยอยสะสมที่ราคา ฿9.05 หรือต่ำกว่า (ต่ำกว่า MOS 20% = ฿9.36) · เป้าหลัก ฿11.70 (Fair Value) ระยะ 12–18 เดือน
+        · Stop loss หาก Fundamental เปลี่ยน (กำไรหดต่อ 2 ไตรมาส, ปันผลลด, Supplier เปลี่ยนนโยบาย)
+        · ปันผล ~5.4%/ปี ช่วยบรรเทาความเสี่ยงระหว่างถือ
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    แหล่งข้อมูล: Yahoo Finance (SYNEX.BK · ราคา/กราฟ ณ 3 ก.ค. 2569), StockAnalysis.com (EPS TTM ฿0.95 · P/E · BVPS ฿5.95 · ROE · Market Cap), Investing.com (งบการเงิน FY2565–2568 · ประวัติปันผล), SET (factsheet วันที่ 2 ก.ค. 2569)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 3 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
