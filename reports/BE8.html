@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น เบริล 8 พลัส (BE8) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"BE8","currency":"THB","price":5.60,"fairValue":6.50,"mos":13.8,"upside":16.1,"pe":null,"dividendYield":0.71,"roe":1.96}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme":{
+    "accent":"#7b1fa2",
+    "accentDark":"#4a148c",
+    "darkGrad":"linear-gradient(135deg,#4a148c 0%,#7b1fa2 60%,#9c27b0 100%)",
+    "glow":"rgba(123,31,162,0.3)",
+    "subColor":"#e1bee7",
+    "headerMuted":"rgba(255,255,255,0.6)",
+    "verdictText":"#f3e5f5",
+    "vcellLabel":"rgba(243,229,245,0.7)",
+    "badge":"#9c27b0",
+    "chgBg":"#c5221f",
+    "chgColor":"#ffffff"
+  },
+  "chart":{
+    "data":[
+      ["ก.ค. 68",6.20],
+      ["ส.ค. 68",5.55],
+      ["ก.ย. 68",5.25],
+      ["ต.ค. 68",5.20],
+      ["พ.ย. 68",4.78],
+      ["ธ.ค. 68",4.20],
+      ["ม.ค. 69",5.60],
+      ["ก.พ. 69",6.15],
+      ["มี.ค. 69",5.20],
+      ["เม.ย. 69",4.26],
+      ["พ.ค. 69",5.20],
+      ["มิ.ย. 69",6.30],
+      ["3 ก.ค. 69",5.60]
+    ],
+    "min":3.80,
+    "max":7.00,
+    "grid":[4.00,4.50,5.00,5.50,6.00,6.50,7.00],
+    "fairLine":6.50,
+    "currency":"฿",
+    "highlight":[5,11],
+    "gridFmt":"v.toFixed(2)"
+  },
+  "gauge":{"min":3.00,"max":10.00,"cur":5.60,"fair":6.50},
+  "fv":6.50
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">◉ ◉ ◉</div>
+    <div>
+      <span class="tag">MAI: BE8</span>
+      <span class="tag">Technology</span>
+      <span class="tag">Digital Consulting</span>
+    </div>
+    <h1>เบริล 8 พลัส (Beryl 8 Plus PCL)</h1>
+    <div class="sub">ที่ปรึกษา Digital Transformation ครบวงจร • CRM (Salesforce Summit Partner) • Data Analytics (Google Cloud, Tableau) • AI Platform "PRISM" • MuleSoft Integration • ASEAN Expansion</div>
+    <div class="price-row">
+      <div>
+        <div class="px">฿5.60<small>(BE8)</small></div>
+      </div>
+      <div class="chg">▼ −9.7% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 3 กรกฎาคม 2569<br>
+        กรอบ 52 สัปดาห์ ฿4.10 – ฿8.00<br>
+        ที่มา: SET.or.th · beryl8.com/investor-relations · Settrade PDF (Q1/69) · Liberator.co.th
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ไตรมาส 1/2569 และปีงบการเงิน 2568</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~฿1,508 ล้าน</div><div class="d">264.7 ล้านหุ้น · MAI</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">0.54x</div><div class="d">BVPS ~฿10.37 · ต่ำกว่า Book</div></div>
+      <div class="metric"><div class="k">Revenue FY2568</div><div class="v neu">฿2,391 ล้าน</div><div class="d">ลดลง −5.8% YoY</div></div>
+      <div class="metric"><div class="k">EPS FY2568</div><div class="v neg">฿0.21</div><div class="d">ลดลงจาก ฿0.58 (FY2567)</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2568</div><div class="v">฿56.19 ล้าน</div><div class="d">−63.6% YoY · margin 2.35%</div></div>
+      <div class="metric"><div class="k">กำไรขั้นต้น</div><div class="v neg">23.15% (FY68)</div><div class="d">Q1/69 ร่วงเหลือ 11.71%</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v neg">1.96% / 1.49%</div><div class="d">FY2568 · ลดต่อเนื่อง 3 ปี</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~฿10.37</div><div class="d">Equity ~฿2,744 ล้าน</div></div>
+
+      <div class="metric"><div class="k">รายได้ Q1/2569</div><div class="v neu">฿609 ล้าน</div><div class="d">ขาดทุนสุทธิ ฿68.91 ล้าน</div></div>
+      <div class="metric"><div class="k">EPS Q1/2569</div><div class="v neg">−฿0.26</div><div class="d">กลับขาดทุน vs +฿0.075 ปีก่อน</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~0.71%</div><div class="d">฿0.04/หุ้น · XD 5 พ.ค. 69</div></div>
+      <div class="metric"><div class="k">52 สัปดาห์</div><div class="v neu">฿4.10 – ฿8.00</div><div class="d">All-time low ฿4.10 ธ.ค. 68</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ก.ค. 2568 – ก.ค. 2569</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#7b1fa2"></i>ราคา BE8</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿6.50</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคา BE8 ปรับตัวลงจาก ~฿6.20 (ก.ค. 68) สู่จุดต่ำสุดตลอดกาล ฿4.20 ในเดือน ธ.ค. 68 จากความกังวลผลประกอบการที่อ่อนแอต่อเนื่อง 3 ปี และกำไรขั้นต้น Q1/69 ร่วงแรงสู่ 11.7% หลังจากนั้นราคาฟื้นตัวสู่ ฿6.30 ในเดือน มิ.ย. 69 จากการเปิดตัว PRISM AI Platform และการได้รับอนุมัติออกหุ้นใหม่ ก่อนปรับลงมาปิดที่ ฿5.60 ให้ผลตอบแทนรอบปี −9.7% สะท้อน sentiment เชิงลบจากการเปลี่ยนผ่านโมเดลธุรกิจ
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">3 วิธี — ไม่ใช้ P/E เพราะ EPS TTM ต่ำมาก</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/Sales (Price-to-Revenue)</div><div class="mdesc">Revenue/หุ้น ฿9.03 × P/Sales 0.65x — ค่า median หุ้น IT consulting ไทย-ASEAN ที่ยังมี gross margin &gt;20% · ปรับลดจาก 0.8x สะท้อน margin ที่หดตัว</div></div>
+        <div class="mval">฿5.87</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 5.57% − g 2%)/(r 10% − g 2%) ≈ 0.446 × BVPS ฿10.37 — ใช้ ROE เฉลี่ย 3 ปี (FY66-68) แทน TTM เพื่อสะท้อนสภาวะปกติ · ให้ค่าอนุรักษ์นิยม</div></div>
+        <div class="mval">฿4.63</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Recovery Scenario P/E</div><div class="mdesc">EPS adj. ฿0.50 (H2/69–FY70 ฟื้น จาก backlog ฿1,800 ล้าน + margin กลับ ~17%) × P/E 18x — ค่า P/E sector IT MAI ปกติ · EPS adj. ฿0.50 × P/E 18x</div></div>
+        <div class="mval">฿9.00</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿4.63 – ฿9.00</span></div>
+        <div class="r">฿6.50</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        วิธี P/Sales (฿5.87) สะท้อนปัจจุบัน — วิธี Justified P/BV (฿4.63) อนุรักษ์นิยม เน้นว่า ROE ต้องฟื้น — วิธี Recovery P/E (฿9.00) สะท้อน upside หาก backlog ฿1,800 ล้านแปลงรายได้สำเร็จ มูลค่าเฉลี่ย (5.87+4.63+9.00)/3 = ฿6.50 สอดคล้องกับ Liberator HOLD ฿5.80 และกรอบล่าง broker ฿7.70
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿5.60</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿6.50</div></div>
+        </div>
+        <div class="scale">
+          <span>฿4.55<br><small>MOS 30%</small></span>
+          <span>฿5.20<br><small>MOS 20%</small></span>
+          <span style="text-align:center">฿5.80<br><small>Liberator HOLD</small></span>
+          <span style="text-align:right">฿6.50<br><small>Fair Value</small></span>
+          <span style="text-align:right">฿9.00<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคา ฿5.60 ซื้อขายต่ำกว่ามูลค่าเหมาะสม ฿6.50 ประมาณ 13.8% แต่ยังอยู่เหนือโซน MOS 20% ที่ ฿5.20 หมายความว่ายังไม่อยู่ในโซน "น่าซื้อสำหรับ Value Investor" อย่างเต็มที่ บล.Liberator ให้ HOLD ที่เป้า ฿5.80 สะท้อนความไม่แน่นอนของการฟื้นตัวกำไรในระยะสั้น
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict ok">
+        <div class="big">+13.8%</div>
+        <div class="txt">ราคาพอใช้ — ทยอยสะสมได้บางส่วน แต่ยังรอโซน MOS 20% (฿5.20)</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿5.20</div><div class="d">โซนน่าสนใจสำหรับ value investor</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿4.55</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿6.50</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="5.60" step="0.05">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿5.60 • EPS ฐาน ~฿0.21 (FY68) • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS ทรงตัว/ลด</span></div>
+        <div class="body">
+          <div class="tgt">฿2.10</div>
+          <div class="ret neg">−61% / −28%ต่อปี</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.15</span></li>
+            <li><span>P/E ออก</span><span>14x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.12</span></li>
+            <li><span>สถานการณ์</span><span>margin ลง/ลูกค้าเลิกสัญญา</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +30%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿8.20</div>
+          <div class="ret pos">+50% / +14%ต่อปี</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.46</span></li>
+            <li><span>P/E ออก</span><span>18x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.20</span></li>
+            <li><span>สถานการณ์</span><span>backlog แปลงรายได้ · margin ฟื้น</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +45%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿13.20</div>
+          <div class="ret pos">+137% / +33%ต่อปี</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.65</span></li>
+            <li><span>P/E ออก</span><span>20x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.30</span></li>
+            <li><span>สถานการณ์</span><span>AI/ASEAN ขยาย · PRISM ติดตลาด</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      การคาดการณ์อิงสมมติฐาน EPS ฐาน FY2568 ที่ ฿0.21/หุ้น · Bear case สะท้อนความเสี่ยงว่า margin collapse Q1/69 เป็นโครงสร้างถาวร ไม่ใช่ชั่วคราว · Base case อิง backlog ฿1,800 ล้าน (ประกาศ ก.พ. 69) และ margin กลับสู่ ~17% ภายใน FY2570 · Bull case ขึ้นกับการขยาย PRISM Platform สู่ ASEAN และการโตของ AI-consulting มากกว่าคาด · ปันผลอิงอัตรา ฿0.04/ปี ปรับตามกำไร
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก &amp; ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>Backlog ฿1,800 ล้าน:</b> ณ ต้น FY2569 มี order รอรับรู้รายได้กว่า ฿1,800 ล้าน — ให้ visibility รายได้ H2/69 ชัดเจน ลดความเสี่ยงรายได้ร่วง</li>
+          <li><b>PRISM AI Platform:</b> เปิดตัว enterprise AI platform ใหม่ ตั้งเป้า recurring SaaS revenue — หากติดตลาดจะช่วย gross margin ฟื้นตัวอย่างมีนัย</li>
+          <li><b>Sole Salesforce Summit Partner ไทย:</b> สถานะ partner ระดับสูงสุด ทำให้คู่แข่งเข้ามาตัดราคาใน enterprise CRM ยาก สร้าง moat ระยะกลาง</li>
+          <li><b>ขยาย ASEAN (สิงคโปร์ + เวียดนาม):</b> มีบริษัทลูกใน 2 ประเทศ + JV "Hummix" กับ BRIX Software เปิดตลาดใหม่นอกไทย</li>
+          <li><b>P/BV ต่ำกว่า 1 เท่า:</b> ซื้อขายที่ 0.54x BVPS สะท้อน pessimism สูง — หากฟื้นตัวเพียง ROE ไปที่ 5% ราคาเหมาะสมจะขยับขึ้นมีนัย</li>
+          <li><b>AI Talent + ความร่วมมือ Mahidol:</b> MOU พัฒนาบุคลากร AI ช่วยลดต้นทุนจ้างผู้เชี่ยวชาญในระยะกลาง ซึ่งเป็น cost ก้อนใหญ่</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>Margin ร่วงเร็ว:</b> gross margin ลดจาก 27% (FY66) เหลือ 11.7% (Q1/69) ใน 2 ปี — หาก structural ไม่ใช่ seasonal กำไรจะฟื้นยาก</li>
+          <li><b>พึ่งพา partner ต่างประเทศ:</b> รายได้หลักจากการขาย license Salesforce/Google — ถ้า partner เปลี่ยน tier/commission หรือเข้ามาขายตรง จะกระทบฐานรายได้ทันที</li>
+          <li><b>ลูกค้าองค์กรใหญ่กระจุกตัว:</b> ฐานลูกค้า enterprise มีความเสี่ยง concentration — สูญลูกค้าหลัก 1-2 รายมีผลต่อรายได้มาก</li>
+          <li><b>การแข่งขัน AI Consulting:</b> บริษัท IT ระดับโลก (Accenture, IBM, Wipro) ขยายตัวในไทย ทำให้การได้โปรเจกต์ AI ใหญ่มีการแข่งขันสูงขึ้น</li>
+          <li><b>ขาดทุน Q1/69 อาจลาก:</b> ถ้า Q2/69 ยังขาดทุน จะกดดัน sentiment และทำให้ capital allocation / dividend ถูกทบทวน</li>
+          <li><b>Warrant dilution:</b> การออกหุ้นใหม่ (KASET-BE8-HYDRO อนุมัติ มิ.ย. 69) อาจ dilute EPS เพิ่มเติมในอนาคต</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>BE8 — ราคา "พอใช้" แต่ยังรอสัญญาณ margin ฟื้น</h2>
+      <p>เบริล 8 พลัส เป็นผู้นำ Digital Consulting ในไทยด้วย Salesforce Summit Partnership ที่ตัวเดียว และ backlog ฿1,800 ล้านที่แข็งแกร่ง แต่กำลังเผชิญแรงกดดันด้าน margin รุนแรงจากต้นทุนที่พุ่งในช่วงเปลี่ยนผ่านโมเดลธุรกิจ ราคาปัจจุบัน ฿5.60 ให้ MOS ~14% ต่อ FV ฿6.50 ซึ่งถือว่า "พอใช้ ทยอยสะสมได้" แต่ยังไม่ถึงโซน deep value ที่ ฿5.20 (MOS 20%) หรือ ฿4.55 (MOS 30%) กรอบ FV อยู่ที่ ฿4.63–฿9.00 ผลประกอบการ H2/2569 จะเป็นตัวชี้ขาดว่า margin ฟื้นตัวจริงหรือเป็น structural problem</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿6.50 <span style="font-size:12px;color:#cab9a8">(฿4.63–฿9.00)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +13.8%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿5.80 (Liberator: HOLD)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> <b>ทยอยสะสมบางส่วนที่ราคาปัจจุบัน</b> และรอเพิ่มน้ำหนักที่ ฿5.20 (MOS 20%) หรือ ฿4.55 (MOS 30%) — ติดตาม <b>gross margin Q2/69</b> เป็น key trigger: ฟื้น &gt;18% = สัญญาณ buy เพิ่ม; ต่ำกว่า 15% ต่อเนื่อง = ทบทวน thesis
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/Sales เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ margin ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    แหล่งข้อมูล: SET.or.th (ราคา ณ 3 ก.ค. 69, Factsheet) · beryl8.com/en/investor-relations (งบการเงิน FY66-Q1/69, Backlog ฿1,800M) · Settrade PDF 27 พ.ค. 69 (Q1/69 Analyst Report) · Liberator.co.th (target ฿5.80 HOLD) · Yahoo Finance · AiO.panphol.com (cross-verify P/BV, yield)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 3 กรกฎาคม 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>

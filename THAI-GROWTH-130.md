@@ -73,9 +73,9 @@
 |---|---|---|---|---|---|
 | 29 | W10 | FORTH | อิเล็กทรอนิกส์ | EV charger/ตู้เต่าบิน/ระบบสื่อสาร โตแรง | ✅ 2026-07-03 |
 | 30 | W10 | SICT | ชิป | ออกแบบชิป RFID/security IC | ✅ 2026-07-03 |
-| 31 | W11 | BBIK | ดิจิทัล | ที่ปรึกษา digital transformation โตสูง | ☐ |
-| 32 | W11 | BE8 | ดิจิทัล | ที่ปรึกษาดิจิทัล/data | ☐ |
-| 33 | W11 | DITTO | ดิจิทัล | งานเอกสาร + AI + ESG/carbon | ☐ |
+| 31 | W11 | BBIK | ดิจิทัล | ที่ปรึกษา digital transformation โตสูง | ✅ 2026-07-03 |
+| 32 | W11 | BE8 | ดิจิทัล | ที่ปรึกษาดิจิทัล/data | ✅ 2026-07-03 |
+| 33 | W11 | DITTO | ดิจิทัล | งานเอกสาร + AI + ESG/carbon | ✅ 2026-07-03 |
 | 34 | W12 | IIG | ไอที | enterprise IT/CRM/commerce | ☐ |
 | 35 | W12 | SKY | ไอที | โซลูชัน IT สนามบิน/AI security | ☐ |
 | 36 | W12 | INSET | ไอที | วางระบบ IT/data center | ☐ |
