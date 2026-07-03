@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น ลีโอ โกลบอล โลจิสติกส์ (LEO) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"LEO","currency":"THB","price":1.86,"fairValue":1.46,"mos":-27.4,"upside":-21.5,"pe":76.6,"dividendYield":3.24,"roe":0.99}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#0288d1",
+    "accentDark": "#01579b",
+    "darkGrad": "linear-gradient(135deg,#01579b 0%,#0277bd 60%,#0288d1 100%)",
+    "glow": "rgba(2,136,209,0.3)",
+    "subColor": "#b3e5fc",
+    "headerMuted": "rgba(179,229,252,0.7)",
+    "verdictText": "#e1f5fe",
+    "vcellLabel": "rgba(179,229,252,0.6)",
+    "badge": "#0288d1",
+    "chgBg": "rgba(197,34,31,0.18)",
+    "chgColor": "#ef5350"
+  },
+  "chart": {
+    "data": [
+      ["ก.ค. 67", 2.02],
+      ["ส.ค. 67", 2.16],
+      ["ก.ย. 67", 1.96],
+      ["ต.ค. 67", 1.97],
+      ["พ.ย. 67", 1.96],
+      ["ธ.ค. 67", 1.95],
+      ["ม.ค. 68", 1.95],
+      ["ก.พ. 68", 1.77],
+      ["มี.ค. 68", 1.73],
+      ["เม.ย. 68", 1.77],
+      ["พ.ค. 68", 1.86],
+      ["มิ.ย. 68", 1.85],
+      ["ก.ค. 68", 1.86]
+    ],
+    "min": 1.55,
+    "max": 2.40,
+    "grid": [1.60, 1.80, 2.00, 2.20],
+    "fairLine": 1.46,
+    "currency": "฿",
+    "highlight": [1, 7],
+    "gridFmt": "v.toFixed(2)",
+    "dataFmt": "d[1].toFixed(2)"
+  },
+  "gauge": {
+    "min": 0.80,
+    "max": 2.80,
+    "cur": 1.86,
+    "fair": 1.46,
+    "fairLabelTop": true
+  },
+  "fv": 1.46
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">●●●●●</div>
+    <div>
+      <span class="tag">SET: LEO</span>
+      <span class="tag">โลจิสติกส์</span>
+      <span class="tag">Cold Chain</span>
+    </div>
+    <h1>ลีโอ โกลบอล โลจิสติกส์ (LEO)</h1>
+    <div class="sub">คลังสินค้าห้องเย็น • ขนส่งสินค้าเย็น (Cold Chain Logistics) • Freight Forwarding ทางอากาศ/ทะเล • Integrated Logistics</div>
+    <div class="price-row">
+      <div>
+        <div class="px">฿1.86<small>(LEO)</small></div>
+      </div>
+      <div class="chg">▼ −7.9% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 3 ก.ค. 2569<br>
+        กรอบ 52 สัปดาห์ ฿1.65 – ฿2.48<br>
+        ที่มา: Yahoo Finance / SET Factsheet / StockAnalysis.com / Investor Relations LEO
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ก.ค. 2569</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~฿586 ล้าน</div><div class="d">315.06 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~76.6x</div><div class="d">กำไรปี 2568 ลดแรง</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~15–20x</div><div class="d">ช่วงปกติ 12–25x</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">0.67x</div><div class="d">BVPS ฿2.74 (FY2568)</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2025 (FY2568)</div><div class="v neg">฿8.78 ล้าน</div><div class="d">−81.5% YoY จาก ฿47.56 ล้าน (FY2024)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿0.03</div><div class="d">FY2024: ฿0.15 · ไตรมาส 1/2569: ฿0.02</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~฿2.74</div><div class="d">ส่วนผู้ถือหุ้น ฿850.6 ล้าน</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v neg">~1.0% / ~0.5%</div><div class="d">ลดจาก 9.3% (FY2566)</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">~฿1.33 พันล้าน</div><div class="d">−18.6% YoY จากปี 2567</div></div>
+      <div class="metric"><div class="k">EBITDA</div><div class="v">~฿33.5 ล้าน</div><div class="d">EV/EBITDA ~13.5x</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~3.24%</div><div class="d">฿0.06/หุ้น (FY2568)</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">~0.85</div><div class="d">ความผันผวนต่ำกว่าตลาด</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#0288d1"></i>ราคา LEO</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿1.46</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคา LEO ในรอบ 1 ปีที่ผ่านมา (ก.ค. 2567 – ก.ค. 2568) แกว่งตัวในกรอบ ฿1.65–฿2.48 มีจุดสูงสุดที่ ฿2.48 ในเดือน ก.พ. 2568
+        ก่อนจะย่อลงต่อเนื่องตามผลประกอบการที่อ่อนตัว โดยเฉพาะหลังประกาศกำไร FY2568 ที่ลดแรงถึง 81.5%
+        ราคาปัจจุบัน ฿1.86 ต่ำกว่าจุดสูงสุดรอบปีราว 25% และยังต่ำกว่า BVPS ที่ ฿2.74
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation (Normalized EPS)</div><div class="mdesc">EPS normalized ฿0.15 (FY2567 — ปีที่กำไรสะท้อนธุรกิจปกติ) × P/E เป้าหมาย ~15x — ค่าเฉลี่ยอุตสาหกรรมโลจิสติกส์ไทย</div></div>
+        <div class="mval">฿2.25</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล ฿0.06 × (1+g); g 2%, r 9% → ฿0.0612 / (9%−2%) — สะท้อนระดับปันผลที่ยั่งยืน</div></div>
+        <div class="mval">฿0.87</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE เฉลี่ย 3Y 5.2% − g 2%)/(r 9% − g 2%) ≈ 0.457x × BVPS ฿2.74</div></div>
+        <div class="mval">฿1.25</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿0.87 – ฿2.25</span></div>
+        <div class="r">฿1.46</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        วิธี P/E ให้ค่าสูงสุด (฿2.25) เพราะอิง EPS ปกติปี 2567 ก่อนธุรกิจชะลอ ·
+        วิธี DDM ให้ค่าต่ำสุด (฿0.87) เนื่องจากปันผลปัจจุบันต่ำมากเพียง ฿0.06 ·
+        วิธี Justified P/BV ใช้ ROE เฉลี่ย 3 ปี (5.2%) แทน ROE ปัจจุบัน (1%) ที่บิดเบือนจากกำไรต่ำผิดปกติ ·
+        Fair Value เฉลี่ย ฿1.46 บ่งชี้ว่าราคาปัจจุบัน ฿1.86 <b>แพงกว่ามูลค่าพื้นฐาน</b> แม้ P/BV จะต่ำกว่า 1x
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿1.86</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿1.46</div></div>
+        </div>
+        <div class="scale">
+          <span>฿1.02<br><small>MOS 30%</small></span>
+          <span>฿1.17<br><small>MOS 20%</small></span>
+          <span style="text-align:center">฿1.46<br><small>Fair Value</small></span>
+          <span style="text-align:right">฿1.86<br><small>ราคาปัจจุบัน</small></span>
+          <span style="text-align:right">฿2.25<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน ฿1.86 อยู่เหนือ Fair Value ฿1.46 ราว 27% สะท้อนว่าตลาดยังให้ premium จาก P/BV &lt; 1x
+        (ราคาต่ำกว่า Book Value ฿2.74) แต่ด้านกำไรยังฟื้นช้า ราคาที่น่าสนใจสำหรับนักลงทุน VI
+        คือ ฿1.17 (MOS 20%) หรือต่ำกว่า ซึ่งยังห่างจากราคาปัจจุบันพอสมควร
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">−27.4%</div>
+        <div class="txt">ราคาตลาดสูงกว่า Fair Value — ยังไม่มี Margin of Safety</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿1.17</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿1.02</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿1.46</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="1.86" step="0.05">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿1.86 • EPS ฐาน ~฿0.15 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS 0%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿1.35</div>
+          <div class="ret neg">−16.4% (−5.8%/ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.15</span></li>
+            <li><span>P/E ออก</span><span>9x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.18</span></li>
+            <li><span>สถานการณ์</span><span>ตลาด logistics ซบเซา ต้นทุนสูง</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +30%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿2.64</div>
+          <div class="ret pos">+55.9% (+16.0%/ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.33</span></li>
+            <li><span>P/E ออก</span><span>8x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.24</span></li>
+            <li><span>สถานการณ์</span><span>กำไรฟื้น cold chain เติบโต</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +50%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿4.08</div>
+          <div class="ret pos">+139.8% (+34.8%/ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.51</span></li>
+            <li><span>P/E ออก</span><span>8x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.36</span></li>
+            <li><span>สถานการณ์</span><span>Cold chain boom + ขยายบริการ</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      EPS ฐานอ้างอิง ฿0.15 (FY2567) — ปีที่กำไรสะท้อนธุรกิจปกติก่อนชะลอ ·
+      Bear case: EPS ทรงตัวที่ ฿0.15 ตลาดให้ P/E ต่ำ 9x → ราคาลง ·
+      Base case: กำไรค่อยฟื้น 30%/ปี จากฐานต่ำ ฟื้นสู่ P/E ปกติ 15x ภายใน 3 ปี → upside ดี ·
+      Bull case: cold chain demand บูม ขยายคลัง+บริการ freight → กำไรโต 50%/ปี ได้ P/E premium 20x ·
+      หมายเหตุ: ผลตอบแทนนี้เป็นการคาดการณ์ ไม่ใช่การรับประกัน ขึ้นอยู่กับการฟื้นตัวของกำไรที่ยังไม่แน่นอน
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>Cold Chain Growth:</b> ความต้องการห้องเย็นและโลจิสติกส์อาหารแช่แข็งในไทยเติบโตต่อเนื่องตามพฤติกรรมผู้บริโภคและการส่งออกอาหาร</li>
+          <li><b>P/BV ต่ำกว่า 1x:</b> ราคาหุ้น ฿1.86 ต่ำกว่า Book Value ฿2.74 อาจดึงดูดนักลงทุนแนว Deep Value ที่มองมูลค่าสินทรัพย์</li>
+          <li><b>การฟื้นตัวของ Freight:</b> ตลาด air freight และ sea freight ทั่วโลกฟื้นหลังปรับตัวจากช่วงหลัง COVID ช่วยเพิ่ม margin บริการขนส่ง</li>
+          <li><b>ขยายบริการ Integrated Logistics:</b> LEO มีแผนพัฒนาบริการครบวงจรเชื่อมระหว่างคลังเย็นกับ freight forwarding ลดการพึ่งพาแต่ละ segment</li>
+          <li><b>กำไร Q1/2569 ฟื้นตัว:</b> กำไร Q1/2569 = ฿7.51 ล้าน สูงกว่าทั้งปี 2568 = ฿8.78 ล้าน สัญญาณบวกของการฟื้นตัว</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>กำไรยังอ่อนแอ:</b> EPS FY2568 = ฿0.03 เท่านั้น ทำให้ P/E สูงผิดปกติ (~77x) หากกำไรไม่ฟื้น valuation ถือว่าแพงมาก</li>
+          <li><b>หนี้เพิ่มขึ้น:</b> Total Debt เพิ่มจาก ฿462.7 ล้าน (FY2566) เป็น ฿894.4 ล้าน (FY2568) สัดส่วนหนี้/ทุนสูงขึ้น เสี่ยงภาระดอกเบี้ย</li>
+          <li><b>ผลประกอบการผันผวน:</b> รายได้ลดจาก ฿4.5 พันล้าน (FY2565) เหลือ ฿1.33 พันล้าน (FY2568) สะท้อนความผันผวนสูงตามตลาด freight</li>
+          <li><b>การแข่งขันสูง:</b> ตลาดโลจิสติกส์ไทยมีผู้เล่นหลายราย ทั้งบริษัทไทยและต่างชาติ กดดัน margin โดยเฉพาะ freight forwarding</li>
+          <li><b>Market Cap เล็ก:</b> ฿586 ล้าน สภาพคล่องต่ำ spread กว้าง ราคาอาจผันผวนรุนแรงจากการซื้อขายปริมาณน้อย</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>LEO — ราคาแพงกว่า Fair Value · รอกำไรฟื้นก่อนพิจารณา</h2>
+      <p>LEO เป็นผู้ให้บริการโลจิสติกส์ครบวงจรที่เน้น cold chain และ freight forwarding ซึ่งเป็นธุรกิจที่มีศักยภาพเติบโตในระยะยาวตามการขยายตัวของอุตสาหกรรมอาหาร แต่ผลประกอบการ FY2568 ได้รับผลกระทบหนักจากการชะลอตัวของตลาด freight ทำให้กำไรลดลง 81.5% สู่เพียง ฿8.78 ล้าน แม้ Q1/2569 จะแสดงสัญญาณฟื้น แต่ด้วยราคา ฿1.86 ยังสูงกว่า Fair Value ฿1.46 ราว 27% ประกอบกับหนี้ที่เพิ่มขึ้นเป็น ฿894 ล้าน จึงยังไม่ถึงจุดที่น่าสนใจสำหรับ Value Investor ที่ต้องการ Margin of Safety</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿1.46 <span style="font-size:12px;color:#cab9a8">(฿0.87–฿2.25)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ef5350">MOS ~ −27.4% (แพงกว่า FV)</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿2.00 (ข้อมูลจำกัด)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ติดตามการฟื้นตัวของกำไร — หาก EPS ฟื้นสู่ ฿0.10–0.15 และราคาย่อลงมาที่ ฿1.20–1.40 จะน่าสนใจมากขึ้น · ราคา &lt;฿1.17 คือโซน MOS 20% ที่แนะนำเริ่มสะสม · ไม่แนะนำเข้าในราคาปัจจุบัน ฿1.86 เนื่องจากยังไม่มี Margin of Safety
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    แหล่งข้อมูล: (1) Yahoo Finance — LEO.BK ราคา ณ 3 ก.ค. 2569 · (2) SET Factsheet (set.or.th) — P/E 76.96x, P/BV 0.67x, Market Cap ฿586 ล้าน · (3) Investor Relations LEO (investor.leogloballogistics.com) — งบการเงิน FY2568, 1Q2569 (งวดมี.ค. 2569), EPS, ROE · (4) StockAnalysis.com (BKK:LEO) — รายได้ TTM ฿1.33 พันล้าน, Net Income FY2568 ฿8.78 ล้าน, Balance Sheet FY2568
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 3 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
