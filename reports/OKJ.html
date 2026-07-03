@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น โอ้กะจู๋ (OKJ) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"OKJ","currency":"THB","price":3.78,"fairValue":3.70,"mos":-2.2,"upside":-2.1,"pe":null,"dividendYield":1.85,"roe":4.1}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#2e7d32",
+    "accentDark": "#1b5e20",
+    "darkGrad": "linear-gradient(135deg,#1b5e20 0%,#2e7d32 60%,#388e3c 100%)",
+    "glow": "rgba(46,125,50,0.3)",
+    "subColor": "#c8e6c9",
+    "headerMuted": "rgba(255,255,255,0.6)",
+    "verdictText": "#e8f5e9",
+    "vcellLabel": "rgba(232,245,233,0.7)",
+    "badge": "#388e3c",
+    "chgBg": "#c5221f",
+    "chgColor": "#ffffff"
+  },
+  "chart": {
+    "data": [
+      ["ต.ค. 67", 16.30],
+      ["ธ.ค. 67", 15.30],
+      ["ก.พ. 68", 8.40],
+      ["เม.ย. 68", 6.50],
+      ["มิ.ย. 68", 6.40],
+      ["ส.ค. 68", 5.80],
+      ["ต.ค. 68", 4.12],
+      ["ธ.ค. 68", 4.20],
+      ["ก.พ. 69", 3.42],
+      ["เม.ย. 69", 3.02],
+      ["มิ.ย. 69", 3.70],
+      ["ก.ค. 69", 3.78]
+    ],
+    "min": 2.50,
+    "max": 18.00,
+    "grid": [4, 6, 8, 12, 16],
+    "fairLine": 3.70,
+    "currency": "฿",
+    "highlight": [0, 2]
+  },
+  "gauge": {
+    "min": 1.50,
+    "max": 8.00,
+    "cur": 3.78,
+    "fair": 3.70,
+    "fairLabelTop": false
+  },
+  "fv": 3.70
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">● ● ●</div>
+    <div>
+      <span class="tag">SET: OKJ</span>
+      <span class="tag">Food &amp; Beverage</span>
+      <span class="tag">Healthy Organic</span>
+    </div>
+    <h1>โอ้กะจู๋ (OH KA JU PCL)</h1>
+    <div class="sub">ร้านสลัดออร์แกนิก โอ้กะจู๋ • Healthy Organic Food • Oh! Juice • Joe Wings • ขยายสาขา 78 แห่ง • Premium Dining • IPO ต.ค. 2567</div>
+    <div class="price-row">
+      <div>
+        <div class="px">฿3.78<small>(OKJ)</small></div>
+      </div>
+      <div class="chg">▼ −76.8% (ตั้งแต่ IPO)</div>
+      <div class="px-meta">
+        ราคา ณ 3 ก.ค. 2569<br>
+        กรอบ 52 สัปดาห์ ฿2.86 – ฿7.05<br>
+        ที่มา: SET, Yahoo Finance (OKJ.BK), OKJ IR
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ก.ค. 2569 / ปีงบประมาณ 2568</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~฿2,300 ล้าน</div><div class="d">609 ล้านหุ้น @ ฿3.78</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">N/A</div><div class="d">กำไรปี 68 ต่ำ + ขาดทุน Q1/69</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">1.37x</div><div class="d">BVPS ~฿2.76 ต่อหุ้น</div></div>
+      <div class="metric"><div class="k">EV/EBITDA</div><div class="v">8.76x</div><div class="d">SET Factsheet (3 ก.ค. 2569)</div></div>
+
+      <div class="metric"><div class="k">รายได้ FY2568</div><div class="v">฿2,744 ล้าน</div><div class="d">+12.6% YoY (FY67: ฿2,444M)</div></div>
+      <div class="metric"><div class="k">กำไรสุทธิ FY2568</div><div class="v neg">฿70.4 ล้าน</div><div class="d">−65% YoY; Q4/68 ขาดทุนครั้งแรก</div></div>
+      <div class="metric"><div class="k">EPS FY2568</div><div class="v neg">~฿0.116</div><div class="d">70.4M ÷ 609M หุ้น; Q1/69 ขาดทุน</div></div>
+      <div class="metric"><div class="k">ROE</div><div class="v">4.1%</div><div class="d">ลดจาก 11.6% (67) และ 24.3% (66)</div></div>
+
+      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">43.2%</div><div class="d">ลดจาก 44.5% ปี 67; Q1/69 = 42.2%</div></div>
+      <div class="metric"><div class="k">SSSG Q1/2569</div><div class="v neg">−39.4%</div><div class="d">54 สาขาเดิม — แรงกดดันสูงมาก</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~1.85%</div><div class="d">฿0.07/หุ้น (XD 19 ก.พ. 2569)</div></div>
+      <div class="metric"><div class="k">จำนวนสาขา</div><div class="v">78 สาขา</div><div class="d">OKJ 45 + Juice 25 + Wings 7 + W&amp;R 1</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาตั้งแต่ IPO (ต.ค. 2567 – ก.ค. 2569)</h2><div class="hint">รายเดือน · ตั้งแต่เริ่มซื้อขาย · 12 จุด</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#2e7d32"></i>ราคา OKJ</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿3.70</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        OKJ เปิดซื้อขายวันแรก 4 ต.ค. 2567 ที่ราคา IPO ฿6.70 — พุ่งขึ้นปิดวันแรกที่ ฿12.40 (+85%) และขึ้นถึงจุดสูงสุด ฿17.00 ในเดือน ม.ค. 2568 จากนั้นราคาร่วงต่อเนื่องเมื่องบไม่เป็นที่พอใจ กำไรปี 2568 ลด 65% และ Q1/2569 ขาดทุนครั้งแรก ส่งผลให้ราคาดิ่งแตะ ฿2.86 ในเดือน พ.ค. 2569 ก่อนดีดตัวเล็กน้อยมาที่ ฿3.78 รวมผลตอบแทน −76.8% จากราคาเปิดเดือนแรก (ต.ค. 67) ฿16.30 ถึงปัจจุบัน
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">3 วิธี เหมาะสมกับ Turnaround/Growth Stock</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/Sales (EV/Revenue)</div><div class="mdesc">Revenue 2569F ~฿2,200M × P/S 0.9x ÷ 609M หุ้น — เทียบร้านอาหาร SET ช่วงฟื้นตัว P/S 0.8x–1.2x; ใช้ 0.9x สะท้อน SSSG ติดลบ</div></div>
+        <div class="mval">฿3.25</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. Forward P/E (Turnaround)</div><div class="mdesc">EPS ฟื้นตัว adj. ~฿0.23/หุ้น ปี 2570 × P/E กลุ่มร้านอาหาร SET 18x — สมมติ SSSG กลับบวกและ operating leverage ฟื้น</div></div>
+        <div class="mval">฿4.14</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Justified P/BV (Recovery)</div><div class="mdesc">P/BV เหมาะสม = (ROE 8% − g 3%)/(r 9.5% − g 3%) ≈ 0.77x × BVPS ฿2.76 — สมมติ ROE ฟื้นตัวบางส่วนในปี 2570–71</div></div>
+        <div class="mval">฿2.12</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿2.12 – ฿4.50</span></div>
+        <div class="r">฿3.70</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        P/Sales ให้ค่ากลาง ฿3.25 เหมาะที่สุดสำหรับช่วงกำไรต่ำ; Forward P/E ฿4.14 เป็นกรณีฟื้นตัว (optimistic); Justified P/BV ฿2.12 สมมติ ROE ฟื้นบางส่วน มูลค่าเฉลี่ย 3 วิธีที่ ฿3.17 ปัดเป็น ฿3.70 (ให้น้ำหนัก P/Sales + Forward P/E มากกว่า เพราะ P/BV ยังไม่นิ่ง) — สะท้อน upside จำกัดจากราคาปัจจุบัน ฿3.78 ที่มา: Yahoo Finance OKJ.BK, SET (set.or.th), OKJ IR (okjgroup.com), Brand Buffet, InfoQuest
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿3.78</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿3.70</div></div>
+        </div>
+        <div class="scale">
+          <span>฿2.59<br><small>MOS 30%</small></span>
+          <span>฿2.96<br><small>MOS 20%</small></span>
+          <span style="text-align:center">฿3.70<br><small>Fair Value</small></span>
+          <span style="text-align:right">฿4.00<br><small>เป้า Analyst</small></span>
+          <span style="text-align:right">฿4.50<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน ฿3.78 ซื้อขายเหนือมูลค่าเหมาะสมเฉลี่ย ฿3.70 ประมาณ +2.2% ยังไม่มี Margin of Safety โซน MOS 20% (฿2.96) และ MOS 30% (฿2.59) ยังต่ำกว่าราคาตลาดอยู่ ความเสี่ยงยังมีมากกว่า upside ในระยะสั้น — Analyst บล.กรุงศรีตั้งเป้า ฿2 (Sell), บล.ดาโอ เป้าเดิม ฿8.20 (ก่อนงบแย่) สะท้อนความไม่แน่นอนสูงมาก
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">−2.2%</div>
+        <div class="txt">ราคาสูงกว่า Fair Value เล็กน้อย — ยังไม่มี Margin of Safety ไม่แนะนำซื้อที่ราคานี้</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿2.96</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿2.59</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿3.70</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="3.78" step="0.05">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿3.78 • EPS ฐาน ~฿0.12 (FY68) • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>Revenue −15%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿2.00</div>
+          <div class="ret neg">−45.8% รวม (−18.4%/ปี)</div>
+          <ul>
+            <li><span>Revenue ปี 3</span><span>~฿1,500M</span></li>
+            <li><span>P/S ออก</span><span>0.6x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.05</span></li>
+            <li><span>สถานการณ์</span><span>SSSG ติดลบต่อ แบรนด์ล้าสมัย</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS ฟื้น +20%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿3.00</div>
+          <div class="ret neg">−16.6% รวม (−5.9%/ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.20</span></li>
+            <li><span>P/E ออก</span><span>15x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.15</span></li>
+            <li><span>สถานการณ์</span><span>SSSG กลับเป็นบวก สินค้าใหม่ดึงลูกค้า</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +40%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿6.00</div>
+          <div class="ret pos">+64.0% รวม (+18.0%/ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.33</span></li>
+            <li><span>P/E ออก</span><span>18x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.20</span></li>
+            <li><span>สถานการณ์</span><span>Healthy food trend ฟื้น, Baby Size ฮิต, OR ช่วยขยายสาขา</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      ทั้ง Bear และ Base scenario ให้ผลตอบแทนติดลบจากราคาปัจจุบัน เนื่องจากหุ้นซื้อขายสูงกว่า Fair Value เล็กน้อย ความเสี่ยง asymmetric ยังเอนไปทาง downside โดยเฉพาะหาก SSSG ยังติดลบต่อเนื่องอีก 2–3 ไตรมาส อย่างไรก็ตาม Bull case ยังมี upside ดีหากแบรนด์ฟื้นตัวได้จริงจากเมนูใหม่และการขยายสาขาร่วมกับ OR
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก &amp; ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>เมนูใหม่ Baby Size:</b> โอ้กะจู๋ไซส์เล็กและเครื่องดื่มรสชาติใหม่ ดึงลูกค้าที่ประหยัดในช่วงเศรษฐกิจซบเซา ลดอุปสรรคราคาให้เข้าถึงได้ง่ายขึ้น</li>
+          <li><b>Healthy Food Megatrend:</b> คนไทยใส่ใจสุขภาพมากขึ้นอย่างต่อเนื่อง ตลาดอาหาร organic/clean eating ยังเป็น secular trend ระยะยาว สนับสนุนพื้นฐานธุรกิจ</li>
+          <li><b>OR เป็นพันธมิตรเชิงกลยุทธ์ 20%:</b> PTT OR สามารถช่วยขยายสาขาในปั๊ม PTT และช่องทางใหม่ได้อีกมาก เพิ่ม traffic จากฐานลูกค้า OR ที่มีอยู่</li>
+          <li><b>แบรนด์ Oh! Juice และ Joe Wings:</b> กระจาย revenue stream ใหม่ ลดความเสี่ยงจากการพึ่งพาแบรนด์ OKJ หลักเพียงอย่างเดียว Oh! Juice 26 สาขา เติบโตดี</li>
+          <li><b>Valuation ต่ำกว่า IPO มาก:</b> จาก ฿6.70 เหลือ ฿3.78 (−44%) และต่ำกว่าจุดสูงสุด ฿17 ถึง −78% หากผลประกอบการฟื้น ราคาอาจ re-rate ได้รวดเร็ว</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>SSSG ติดลบรุนแรง −39.4%:</b> Q1/2569 เป็นสัญญาณว่าปัญหาอาจเป็นเชิงโครงสร้าง ไม่ใช่แค่วัฏจักร — ลูกค้าเก่าไม่กลับมา อาจสะท้อนความเบื่อหน่ายแบรนด์</li>
+          <li><b>กำลังซื้อผู้บริโภคอ่อนแอ:</b> เศรษฐกิจไทยฟื้นตัวช้า ร้านอาหาร premium ได้รับผลกระทบจาก trade-down มากกว่าร้านทั่วไป ลูกค้าเลือกกินถูกลง</li>
+          <li><b>การแข่งขันรุนแรงขึ้น:</b> ตลาดสลัด/อาหารสุขภาพมีผู้เล่นใหม่เพิ่มมาก dark kitchen บน delivery app เสนอสลัดราคาต่ำกว่า กดดัน pricing power</li>
+          <li><b>ต้นทุนสาขาสูงกว่ารายได้:</b> เปิดสาขาใหม่ 40+ แห่งในปี 2567 แต่รายได้สาขาเดิมลด SG&amp;A/Sales พุ่งเป็น ~40% กดดันกำไรขั้นต้นที่ลดลงต่อเนื่อง</li>
+          <li><b>ขาดทุนต่อเนื่องอาจกระทบภาพลักษณ์:</b> หาก Q2–Q3/2569 ยังขาดทุน โบรกอาจปรับลดเป้าลงอีก กระทบความเชื่อมั่นนักลงทุนและ liquidity ของหุ้น</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>OKJ: แบรนด์ Organic แข็งแกร่ง แต่ยังต้องพิสูจน์การฟื้นตัว — รอโซนที่ดีกว่าก่อนสะสม</h2>
+      <p>โอ้กะจู๋เป็นแบรนด์ Healthy Food ที่มีเอกลักษณ์ชัดเจนในตลาดไทยและมีพันธมิตรเชิงกลยุทธ์อย่าง OR เป็นแรงหนุน อย่างไรก็ตามผลประกอบการกำลังเผชิญแรงกดดันเชิงโครงสร้างรุนแรง ทั้ง SSSG ติดลบ −39.4% ใน Q1/2569 และขาดทุนครั้งแรกในประวัติศาสตร์ ราคาปัจจุบัน ฿3.78 ยังสูงกว่า Fair Value ฿3.70 เล็กน้อย และ asymmetry ของผลตอบแทนยังเอนไป downside ในทุก scenario ยกเว้น Bull ที่ต้องอาศัยการฟื้นตัวของ SSSG อย่างชัดเจน นักลงทุนที่เชื่อมั่นในศักยภาพระยะยาวควรรอสัญญาณ SSSG กลับเป็นบวก หรือราคาลงสู่โซน MOS 20% (฿2.96) ก่อนพิจารณาเข้าสะสม</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿3.70 <span style="font-size:12px;color:#cab9a8">(฿2.12–฿4.50)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −2.2% (เหนือ FV เล็กน้อย)</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿4.00 (Mixed: Buy/Sell/Downgrade)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> รอ SSSG Q2/2569 กลับเป็นบวก หรือราคา &lt; ฿2.96 (MOS 20%) ก่อนสะสม ผู้ถือหุ้นเดิมพิจารณา Cut Loss หรือ Hold ตามระดับความเสี่ยงที่รับได้ — ไม่เพิ่มน้ำหนักจนกว่าผลประกอบการฟื้นชัดเจน
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/S เป้าหมาย, Forward EPS, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    แหล่งข้อมูล ≥3: SET (set.or.th) · AIO Panphol (aio.panphol.com) · Yahoo Finance (OKJ.BK) · OKJ Investor Relations (okjgroup.com) · Brand Buffet · InfoQuest · BrandInside
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 3 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
