@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น ไทยรีประกันชีวิต (THREL) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"THREL","currency":"THB","price":1.02,"fairValue":1.10,"mos":7.27,"upside":7.84,"pe":null,"dividendYield":8.43,"roe":null}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#1565C0",
+    "accentDark": "#0D47A1",
+    "darkGrad": "linear-gradient(135deg,#0D47A1 0%,#1A237E 100%)",
+    "glow": "rgba(21,101,192,0.35)",
+    "subColor": "#90CAF9",
+    "headerMuted": "rgba(144,202,249,0.7)",
+    "verdictText": "#E3F2FD",
+    "vcellLabel": "#90CAF9",
+    "badge": "#1565C0",
+    "chgBg": "#B71C1C",
+    "chgColor": "#FFCDD2"
+  },
+  "chart": {
+    "data": [
+      ["ก.ค. 68", 1.16],
+      ["ส.ค. 68", 1.08],
+      ["ก.ย. 68", 1.03],
+      ["ต.ค. 68", 1.02],
+      ["พ.ย. 68", 1.01],
+      ["ธ.ค. 68", 1.02],
+      ["ม.ค. 69", 1.03],
+      ["ก.พ. 69", 1.01],
+      ["มี.ค. 69", 0.99],
+      ["เม.ย. 69", 0.99],
+      ["พ.ค. 69", 1.00],
+      ["มิ.ย. 69", 1.00],
+      ["ก.ค. 69", 1.02]
+    ],
+    "min": 0.85,
+    "max": 1.35,
+    "grid": [0.90, 1.00, 1.10, 1.20],
+    "fairLine": 1.10,
+    "currency": "฿",
+    "highlight": [0, 12],
+    "gridFmt": "v.toFixed(2)",
+    "dataFmt": "d[1].toFixed(2)"
+  },
+  "gauge": {
+    "min": 0.70,
+    "max": 1.40,
+    "cur": 1.02,
+    "fair": 1.10,
+    "fairLabelTop": true
+  },
+  "fv": 1.10
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">● ● ●</div>
+    <div>
+      <span class="tag">SET: THREL</span>
+      <span class="tag">ประกันชีวิตต่อ</span>
+      <span class="tag">Financial Services</span>
+    </div>
+    <h1>ไทยรีประกันชีวิต (THREL)</h1>
+    <div class="sub">รับประกันภัยต่อด้านชีวิต (Life Reinsurance) • บริหารพอร์ตลงทุน • บริษัทย่อยของ ไทยรีประกันภัย (THRE) • ตลาด SET ไทยและ CLMV</div>
+    <div class="price-row">
+      <div>
+        <div class="px">฿1.02<small>(THREL)</small></div>
+      </div>
+      <div class="chg">▼ −12.1% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 3 ก.ค. 2569<br>
+        กรอบ 52 สัปดาห์ ฿0.93 – ฿1.33<br>
+        ที่มา: SET Factsheet, Yahoo Finance, TradingView
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ก.ค. 2569 · รายได้จากเบี้ยประกันภัยต่อเป็นหลัก</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">฿632 ล้าน</div><div class="d">620 ล้านหุ้น · ราคา ฿1.02</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">N/A</div><div class="d">ขาดทุน EPS −฿0.10 (TTM)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">1.40x</div><div class="d">BVPS ~฿0.73/หุ้น</div></div>
+      <div class="metric"><div class="k">Beta (1 ปี)</div><div class="v">0.75</div><div class="d">ผันผวนต่ำกว่าตลาด SET</div></div>
+
+      <div class="metric"><div class="k">ขาดทุนสุทธิ FY2568</div><div class="v neg">−฿76.6 ล้าน</div><div class="d">รายได้รวม ~฿2.60 พันล้าน</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v neg">−฿0.10</div><div class="d">ปรับตัวดีขึ้น Q1/69 พลิกกำไร</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~฿0.73</div><div class="d">ส่วนผู้ถือหุ้น ~฿452 ล้าน</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v neu">N/A / N/A</div><div class="d">ขาดทุน — รอฟื้นตัว</div></div>
+
+      <div class="metric"><div class="k">รายได้รวม TTM</div><div class="v neu">~฿2.60 พันล้าน</div><div class="d">เบี้ยรับสุทธิ + รายได้ลงทุน</div></div>
+      <div class="metric"><div class="k">สินทรัพย์รวม (Q1/69)</div><div class="v">฿2.40 พันล้าน</div><div class="d">หนี้สิน ฿1.95 พันล้าน</div></div>
+      <div class="metric"><div class="k">เงินปันผล (2567)</div><div class="v pos">~8.43% Yield</div><div class="d">฿0.086/หุ้น · จ่ายจากกำไรสะสม</div></div>
+      <div class="metric"><div class="k">ทุนชำระแล้ว</div><div class="v">฿620 ล้าน</div><div class="d">ราคาพาร์ ฿1.00/หุ้น · IPO ฿9.50</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ก.ค. 2568 – ก.ค. 2569</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#1565C0"></i>ราคา THREL</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿1.10</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        หุ้น THREL เริ่มต้นปีที่ ~฿1.16 (ก.ค. 68) ก่อนปรับตัวลงแตะโซน ฿0.99 ในช่วง มี.ค.–เม.ย. 69 (52-week low: ฿0.93)
+        สาเหตุหลักจากผลประกอบการขาดทุน EPS −฿0.10 (TTM) ที่กดดันความเชื่อมั่น อย่างไรก็ตาม Q1/2569 บริษัทพลิกกลับมากำไรตามเป้าหลังเคลียร์พอร์ตคุณภาพต่ำ
+        ราคาปรับตัวขึ้นกลับมา ฿1.02 ในเดือน ก.ค. 69 · ผลตอบแทนรอบปี −12.1%
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี · P/BV · DDM · Normalized EPS</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/BV Relative Valuation</div><div class="mdesc">P/BV เป้า 1.50x (บริษัทประกันชีวิตต่อ SET ซื้อขายเฉลี่ย 1.3–2.0x เมื่อ ROE ปกติ) × BVPS ฿0.73 ≈ ฿1.10 — เหมาะกับบริษัทที่กำลังฟื้นตัว ให้น้ำหนัก 40%</div></div>
+        <div class="mval">฿1.10</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. DDM (Gordon Growth)</div><div class="mdesc">D₁ = ปันผล ฿0.086 × (1+g 2%) ≈ ฿0.088; g 2.0%, r 9.0% → ฿0.088/(0.09−0.02) ≈ ฿1.26 · อิงปันผลต่อเนื่องจากกำไรสะสม · ให้น้ำหนัก 35%</div></div>
+        <div class="mval">฿1.26</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Normalized EPS Valuation</div><div class="mdesc">EPS adj. ฿0.056 (ปกติเมื่อฟื้นตัว) × P/E 15x — อนุรักษ์นิยมสุด สะท้อนความเสี่ยงการฟื้นตัว · ให้น้ำหนัก 25%</div></div>
+        <div class="mval">฿0.84</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿0.84 – ฿1.26</span></div>
+        <div class="r">฿1.10</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        วิธี DDM ให้ค่าสูงสุด (฿1.26) เพราะอิงจากปันผลที่ยังจ่ายต่อเนื่อง Justified P/BV ให้ค่ากลาง (฿1.10) เหมาะกับบริษัทประกันชีวิตที่ประเมินจากมูลค่าสินทรัพย์สุทธิ
+        Normalized EPS ให้ค่าต่ำสุด (฿0.84) สะท้อนความเสี่ยงฟื้นตัวช้า · ค่าเฉลี่ยถ่วงน้ำหนัก = 1.10×0.4 + 1.26×0.35 + 0.84×0.25 ≈ ฿1.10
+        <br><b>หมายเหตุ:</b> P/BV = 1.50x ประกอบด้วย justified ratio 0.86x + franchise premium 0.64x จากเครือข่ายและแบรนด์ · ราคาปัจจุบัน ฿1.02 ต่ำกว่า FV ฿1.10 เล็กน้อย (MOS +7.3%)
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿1.02</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿1.10</div></div>
+        </div>
+        <div class="scale">
+          <span>฿0.77<br><small>MOS 30%</small></span>
+          <span>฿0.88<br><small>MOS 20%</small></span>
+          <span style="text-align:center">฿1.10<br><small>Fair Value</small></span>
+          <span style="text-align:right">฿1.15<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">฿1.26<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน ฿1.02 อยู่ต่ำกว่า Fair Value ฿1.10 เพียงเล็กน้อย (+7.3% MOS) สะท้อนว่าหุ้นซื้อขายใกล้มูลค่าเหมาะสม
+        ยังไม่ถึงโซนน่าสนใจสำหรับ Value Investor ที่ต้องการ MOS ≥ 20% (ราคาเข้าซื้อ ≤ ฿0.88)
+        อย่างไรก็ตาม Yield ปันผล ~8.4% ดึงดูดนักลงทุนที่มองกระแสเงินสดระยะสั้น · 52-week low ฿0.93 ยังอยู่ในกรอบโซนน่าสะสม
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict ok">
+        <div class="big">+7.3%</div>
+        <div class="txt">MOS น้อย — ราคาใกล้มูลค่าเหมาะสม รอโซน ฿0.88 หรือต่ำกว่าเพื่อ MOS ≥ 20%</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿0.88</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿0.77</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿1.10</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="1.02" step="0.01">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿1.02 • EPS ปกติ (normalized) ~฿0.056 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>ขาดทุนต่อเนื่อง</span></div>
+        <div class="body">
+          <div class="tgt">฿0.70</div>
+          <div class="ret neg">−31.4% (3 ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~−฿0.05</span></li>
+            <li><span>P/BV ออก</span><span>1.0x → ฿0.55</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.15</span></li>
+            <li><span>สถานการณ์</span><span>ขาดทุนซ้ำ ลด/งดปันผล</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>ฟื้นตัวช้า +5%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿0.98</div>
+          <div class="ret pos">+22.5% (3 ปี รวมปันผล ฿0.27)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.065</span></li>
+            <li><span>P/E ออก</span><span>15x → ฿0.98</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.27</span></li>
+            <li><span>สถานการณ์</span><span>พอร์ตดีขึ้น กำไรกลับมา</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>ฟื้นแรง +15%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿1.53</div>
+          <div class="ret pos">+79.4% (3 ปี รวมปันผล ฿0.30)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.085</span></li>
+            <li><span>P/E ออก</span><span>18x → ฿1.53</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.30</span></li>
+            <li><span>สถานการณ์</span><span>เบี้ยโต pricing ดีขึ้น</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      การประมาณการอิงสมมติฐาน EPS normalized ที่ ฿0.056 (ฟื้นตัวจากขาดทุน) EPS ปี 3 Base = ฿0.056 × (1.05)³ ≈ ฿0.065 × P/E 15x = ฿0.98 (ราคาเป้าทุน) + ปันผล ฿0.27 · EPS ปี 3 Bull = ฿0.056 × (1.15)³ ≈ ฿0.085 × P/E 18x = ฿1.53 + ปันผล ฿0.30
+      ความเสี่ยงหลักคือระยะเวลาฟื้นตัว Yield ปันผล ~8.4% เป็นแรงดึงดูด แต่ต้องติดตามว่าบริษัทจะยังจ่ายปันผลต่อเนื่องได้หรือไม่เมื่อยังขาดทุน
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>พลิกกำไร Q1/2569:</b> หลังเคลียร์พอร์ตคุณภาพต่ำและปรับ pricing strategy บริษัทพลิกกลับมากำไรใน Q1/69 ตามเป้า สัญญาณบวกของการฟื้นตัว</li>
+          <li><b>Yield ปันผลสูง ~8.4%:</b> ยังจ่ายปันผล ฿0.086/หุ้นในปี 2567 แม้ขาดทุน — หากกำไรกลับมา yield จะยิ่งน่าสนใจและยั่งยืน</li>
+          <li><b>ตลาดประกันชีวิตไทยขยายตัว:</b> อัตราส่วนเบี้ยประกันชีวิตต่อ GDP ของไทยยังต่ำกว่าค่าเฉลี่ยภูมิภาค — โอกาสเติบโตระยะยาว</li>
+          <li><b>สนับสนุนจากกลุ่ม THRE (A− Fitch · CAR 300%):</b> บริษัทแม่มีฐานะมั่นคง ช่วยสนับสนุนสภาพคล่องและ credit standing ของ THREL</li>
+          <li><b>Pricing power หลังปรับพอร์ต:</b> การ reprice สัญญาและ exit พอร์ตคุณภาพต่ำ จะปรับปรุง loss ratio และ profitability ระยะยาว</li>
+          <li><b>การเติบโต CLMV:</b> ขยายธุรกิจประกันชีวิตต่อในตลาดอาเซียน (กัมพูชา ลาว เมียนมา เวียดนาม) ซึ่งมีอัตราส่วนเบี้ยต่อ GDP ต่ำมาก</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>ขาดทุนต่อเนื่อง:</b> EPS (TTM) ยังติดลบ −฿0.10 · Q1/2569 ขาดทุน −฿89M — ความยั่งยืนของการพลิกกลับมากำไรยังไม่ชัดเจน</li>
+          <li><b>ความเสี่ยงค่าสินไหมมหาภัย:</b> ภัยธรรมชาติ/โรคระบาดขนาดใหญ่ส่งผลต่อภาระสินไหมประกันชีวิตต่อในคราวเดียวกันจำนวนมาก</li>
+          <li><b>ความเสี่ยงด้านอัตราดอกเบี้ย:</b> พอร์ตลงทุนระยะยาวของบริษัทประกันชีวิตต่อ — อัตราดอกเบี้ยลดลงกดดัน investment yield</li>
+          <li><b>สภาพคล่องต่ำ:</b> Market cap ฿632M · Volume ฿252K/วัน — bid-ask spread กว้าง ซื้อ/ขายออกยาก เหมาะสำหรับนักลงทุนระยะยาว</li>
+          <li><b>ความเสี่ยง IFRS 17:</b> มาตรฐานบัญชีใหม่ปรับวิธีรับรู้รายได้ประกันชีวิต — ผลกระทบต่อเบี้ยที่รับรู้และสำรองอาจผันผวน</li>
+          <li><b>ราคาลดลง 89% จาก IPO ฿9.50:</b> สะท้อนผลงานระยะยาวที่อ่อนแอ — ความเสี่ยง value trap หากฟื้นตัวช้ากว่าที่คาด</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>Turnaround Play — Yield สูง แต่ MOS น้อย รอจังหวะดีกว่า</h2>
+      <p>THREL ซื้อขายที่ P/BV 1.40x ใกล้มูลค่าเหมาะสม ฿1.10 โดยมี MOS เพียง +7.3% บริษัทยังขาดทุน (EPS −฿0.10 TTM) แต่มีสัญญาณฟื้นตัวจาก Q1/2569 ที่พลิกมากำไรหลังเคลียร์พอร์ตคุณภาพต่ำ
+      ปันผล ฿0.086/หุ้น (Yield ~8.4%) น่าสนใจสำหรับผู้ลงทุนที่ต้องการ income แต่ต้องติดตามความยั่งยืนของปันผลเมื่อยังขาดทุน
+      สำหรับ Value Investor ควรรอโซน ≤฿0.88 (MOS 20%) หรือรอยืนยัน 2–3 ไตรมาสว่ากำไรกลับมาแล้วจริงก่อนสะสม
+      ที่ราคา ฿1.02 ถือเป็นราคา fair — ไม่แพง แต่ก็ไม่มี margin of safety มากพอสำหรับหุ้นที่ยังมีความไม่แน่นอนด้านกำไร</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿1.10 <span style="font-size:12px;color:#cab9a8">(฿0.84–฿1.26)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +7.3%</div></div>
+        <div class="vcell"><div class="k">เป้าเฉลี่ย Analyst 12 ด.</div><div class="v" style="color:#a5d6a7">~฿1.15 (Speculative)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ถือหากมีและเก็บปันผล / สะสมเพิ่มเมื่อราคาลงถึง ฿0.88–฿0.93 (MOS 15–20%) หลังยืนยันการฟื้นตัวกำไร 2+ ไตรมาส · ตัดขาดทุนหากขาดทุนต่อเนื่องเกิน 4 ไตรมาสและงดปันผล
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/BV เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ EPS ปกติในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    แหล่งข้อมูล: SET Factsheet ก.ค. 2569 · Yahoo Finance (THREL.BK) · TradingView (SET:THREL) · Finnomena · Bangkok Business News
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 3 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
