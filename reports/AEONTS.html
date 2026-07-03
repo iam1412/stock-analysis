@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น อิออน ธนสินส์ (AEONTS) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"AEONTS","currency":"THB","price":104.5,"fairValue":129,"mos":19.0,"upside":23.4,"pe":8.4,"dividendYield":5.42,"roe":11.34}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#e53935",
+    "accentDark": "#c62828",
+    "darkGrad": "linear-gradient(135deg,#b71c1c 0%,#c62828 60%,#e53935 100%)",
+    "glow": "rgba(229,57,53,0.3)",
+    "subColor": "#ffcdd2",
+    "headerMuted": "rgba(255,255,255,0.6)",
+    "verdictText": "#ffebee",
+    "vcellLabel": "rgba(255,235,238,0.7)",
+    "badge": "#e53935",
+    "chgBg": "#e6f4ea",
+    "chgColor": "#1e8e3e"
+  },
+  "chart": {
+    "data": [
+      ["ก.ค. 2568", 98.0],
+      ["ส.ค. 2568", 90.0],
+      ["ก.ย. 2568", 94.75],
+      ["ต.ค. 2568", 94.75],
+      ["พ.ย. 2568", 98.0],
+      ["ธ.ค. 2568", 101.5],
+      ["ม.ค. 2569", 104.5],
+      ["ก.พ. 2569", 99.0],
+      ["มี.ค. 2569", 96.0],
+      ["เม.ย. 2569", 93.5],
+      ["พ.ค. 2569", 93.0],
+      ["มิ.ย. 2569", 98.0],
+      ["ก.ค. 2569", 104.5]
+    ],
+    "min": 80,
+    "max": 145,
+    "grid": [80, 95, 110, 125, 145],
+    "fairLine": 129,
+    "currency": "฿",
+    "highlight": [1, 9]
+  },
+  "gauge": {"min": 0, "max": 180, "cur": 104.5, "fair": 129, "fairLabelTop": true},
+  "fv": 129
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">●●●●●●●●●●●●●</div>
+    <div>
+      <span class="tag">SET: AEONTS</span>
+      <span class="tag">การเงินที่ไม่ใช่ธนาคาร</span>
+      <span class="tag">สินเชื่อผู้บริโภค</span>
+    </div>
+    <h1>อิออน ธนสินส์ (ไทยแลนด์) PCL</h1>
+    <div class="sub">บัตรเครดิต AEON • สินเชื่อส่วนบุคคล • เช่าซื้อ • ฐานลูกค้ากว่า 2 ล้านราย • เครือ AEON Financial Service Japan</div>
+    <div class="price-row">
+      <div>
+        <div class="px">฿104.5<small>(AEONTS)</small></div>
+      </div>
+      <div class="chg">▲ +6.6% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 2 ก.ค. 2569<br>
+        กรอบ 52 สัปดาห์ ฿86.5 – ฿122.5<br>
+        ที่มา: Yahoo Finance, Investing.com, AEON IR
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ม.ค. 2569 | แหล่ง: StockAnalysis, Yahoo Finance</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~฿25,860 ลบ.</div><div class="d">247.5 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~8.4x</div><div class="d">ต่ำกว่าค่าเฉลี่ย 5 ปี</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~11.2x</div><div class="d">กรอบ 7.8–13.9x</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">0.95x</div><div class="d">ซื้อขายต่ำกว่า Book Value</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2569</div><div class="v">~฿3,094 ลบ.</div><div class="d">+8.2% YoY vs FY2568</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿12.44</div><div class="d">FY2569 (annualized)</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~฿109.88</div><div class="d">เติบโต 5 ปีต่อเนื่อง</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~11.3% / 3.5%</div><div class="d">ROE ลดลงจากจุดสูง 19%</div></div>
+
+      <div class="metric"><div class="k">Yield on Loan (NIM)</div><div class="v neu">~17.6%</div><div class="d">สินเชื่อบุคคล/บัตรเครดิต</div></div>
+      <div class="metric"><div class="k">NPL Ratio</div><div class="v neg">~5.5%</div><div class="d">3QFY26; credit cost 880bps</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~5.42%</div><div class="d">฿5.50/หุ้น/ปี (2 งวด)</div></div>
+      <div class="metric"><div class="k">Debt/Equity</div><div class="v neu">2.04x</div><div class="d">ลดลงจาก 3.3x ใน FY2565</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART (ราคาย้อนหลัง ~1 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#e53935"></i>ราคา AEONTS</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿129</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคา AEONTS เคลื่อนตัวในช่วง ฿86.5–฿122.5 ตลอด 12 เดือนที่ผ่านมา ต่ำสุดที่ ฿86.5 เดือน ส.ค. 2568
+        จากความกังวลคุณภาพสินทรัพย์ NPL สูงขึ้นและ credit cost เพิ่ม ก่อนฟื้นตัวกลับมาที่ ฿104.5 ณ ก.ค. 2569
+        หุ้นปรับตัวลงอีกครั้งช่วง เม.ย.–พ.ค. 2569 ที่ ฿93–93.5 ก่อนฟื้นแรงในมิ.ย.–ก.ค. 2569
+        ผลตอบแทนรอบปี (ก.ค. 2568 → ก.ค. 2569) อยู่ที่ +6.6% ราคายังต่ำกว่ามูลค่าเหมาะสม ฿129 ประมาณ 19%
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS adj. ฿12.44 × P/E เป้าหมาย ~11.2x (ค่าเฉลี่ย 5 ปี FY2565–FY2569) — สะท้อน Re-rating กลับสู่ระดับปกติเมื่อ NPL คงที่</div></div>
+        <div class="mval">฿139</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล ฿5.50 × (1+3%) = ฿5.67; g 3%, r 9% → D₁/(r−g) — อนุรักษ์นิยม เพราะ payout ratio เพียง ~44% ของ EPS</div></div>
+        <div class="mval">฿94</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 11.34% − g 3%)/(r 9% − g 3%) ≈ 1.39 × BVPS ฿109.88 — ให้น้ำหนักฐานะสินทรัพย์ที่แข็งแกร่ง</div></div>
+        <div class="mval">฿153</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿94 – ฿153</span></div>
+        <div class="r">฿129</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        P/E Valuation ให้ ฿139 สะท้อน Re-rating กลับสู่ระดับเฉลี่ยประวัติศาสตร์หาก NPL คงที่
+        DDM ให้ค่าต่ำสุด ฿94 เพราะ payout ratio เพียง ~44% ของ EPS — สะท้อนความอนุรักษ์นิยม
+        Justified P/BV ให้ ฿153 สูงสุด สะท้อน Book Value ที่แข็งแกร่งและเติบโตต่อเนื่อง 5 ปี
+        มูลค่ากลาง ฿129 เหมาะสมสำหรับสินเชื่อบุคคลที่ ROE อยู่ช่วงฟื้นตัว ขณะที่ต้นทุนสินเชื่อยังอยู่ในระดับสูง
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿104.5</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿129</div></div>
+        </div>
+        <div class="scale">
+          <span>฿90<br><small>MOS 30%</small></span>
+          <span>฿103<br><small>MOS 20%</small></span>
+          <span style="text-align:center">฿129<br><small>Fair Value</small></span>
+          <span style="text-align:right">฿133.5<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">฿153<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน ฿104.5 อยู่ในโซน MOS ~19% ใกล้เกณฑ์ 20% สำหรับนักลงทุนเน้นคุณค่า
+        นักวิเคราะห์ 8 ราย ให้ Buy ราคาเป้าเฉลี่ย ฿133.5 สูงกว่าราคาปัจจุบัน ~28%
+        โซน MOS 20% ที่ ฿103 — หุ้นเพิ่งฟื้นขึ้นมาจากแถวนั้น (ต่ำสุด ฿86.5 ในเดือน ส.ค. 2568)
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict ok">
+        <div class="big">+19%</div>
+        <div class="txt">ราคาพอใช้ — ทยอยสะสมได้ใกล้โซน MOS 20%</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿103</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿90</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿129</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="104.5" step="0.05">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿104.5 • EPS ฐาน ~฿12.44 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS 0%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿93</div>
+          <div class="ret neg">−4.5% รวม / ~−1.5%/ปี</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿12.44</span></li>
+            <li><span>P/E ออก</span><span>7.5x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿16.5</span></li>
+            <li><span>สถานการณ์</span><span>NPL พุ่ง กำไรทรงตัว</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +4%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿126</div>
+          <div class="ret pos">+36.8% รวม / ~+11%/ปี</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿13.99</span></li>
+            <li><span>P/E ออก</span><span>9x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿17.5</span></li>
+            <li><span>สถานการณ์</span><span>NPL คงที่ กำไรฟื้นตัว</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +8%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿172</div>
+          <div class="ret pos">+82.3% รวม / ~+22%/ปี</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿15.67</span></li>
+            <li><span>P/E ออก</span><span>11x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿18.5</span></li>
+            <li><span>สถานการณ์</span><span>เศรษฐกิจฟื้น NPL ลด Re-rate</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      ผลตอบแทน Base case ~11%/ปี (รวมปันผล ~5.4%) มาจาก EPS เติบโต 4%/ปี และ P/E Re-rate กลับสู่ 9x
+      ปัจจัยสำคัญที่สุดคือทิศทาง NPL และ credit cost ใน FY2569–70 — หาก NPL คงที่ที่ 5.5% และ credit cost ลดจาก 880bps จะส่งผลให้กำไรขยายตัว
+      Bear case เกิดจาก NPL พุ่งเกิน 6% จนต้องตั้งสำรองเพิ่ม กดกำไรและ P/E ลดเหลือ 7.5x
+      ปันผลคาดว่าคงที่ ฿5.50/หุ้น/ปีตลอดทุก scenario เป็นการสร้าง yield buffer ขณะรอ Re-rate
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>Yield on Loan สูง ~17.6%:</b> ธุรกิจสินเชื่อบุคคลและบัตรเครดิตมี Spread สูง รองรับต้นทุนสินเชื่อได้ดีกว่าธนาคาร</li>
+          <li><b>NPL Stabilization:</b> หาก NPL คงที่หรือลดลงจาก 5.5% credit cost จะลด กำไรจะ Re-rate แรงพร้อมขยาย P/E</li>
+          <li><b>เงินปันผลสม่ำเสมอ ฿5.50/ปี:</b> จ่ายต่อเนื่อง 5+ ปี Yield ~5.4% ที่ราคาปัจจุบัน ดึงดูดนักลงทุนเน้นรายได้</li>
+          <li><b>Book Value เติบโตต่อเนื่อง:</b> BVPS เพิ่มจาก ฿79.6 (FY2565) ถึง ฿109.9 (FY2569) เพิ่มขึ้น +38% ใน 4 ปี</li>
+          <li><b>Leverage ลดลงชัดเจน:</b> D/E จาก 3.3x ลดสู่ 2.0x สะท้อนฐานะการเงินแข็งแกร่งและลดความเสี่ยงการรีไฟแนนซ์</li>
+          <li><b>Consensus Buy 8 ราย เป้า ฿133.5:</b> Upside ~28% จากราคาปัจจุบัน สะท้อนความเชื่อมั่นนักวิเคราะห์สถาบัน</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>NPL สูงและอาจเพิ่มต่อ:</b> NPL ratio 5.5% (3QFY26) และ credit cost 880bps บั่นทอนกำไรสุทธิอย่างมีนัยสำคัญ</li>
+          <li><b>ลูกค้าเปราะบาง 7%:</b> บริษัทเปิดเผยว่า 7% ของพอร์ตเป็นลูกหนี้รายได้ไม่แน่นอน เสี่ยง credit cost เพิ่มใน FY2570</li>
+          <li><b>การชะลอปล่อยสินเชื่อ:</b> บริษัทเลือก slow lending เพื่อรักษาคุณภาพสินทรัพย์ กดดันการเติบโตรายได้ระยะสั้น</li>
+          <li><b>หนี้ครัวเรือนไทยสูง:</b> ภาวะหนี้ครัวเรือนสูงประกอบกับเศรษฐกิจฟื้นตัวช้า กดดันคุณภาพสินทรัพย์ระยะยาว</li>
+          <li><b>การแข่งขันจาก Fintech:</b> ผู้ให้บริการสินเชื่อดิจิทัลและธนาคารขยายตัวในกลุ่มลูกค้าเดียวกัน กดดันส่วนแบ่งตลาด</li>
+          <li><b>ความเสี่ยงอัตราดอกเบี้ย:</b> ต้นทุนเงินทุนอาจสูงขึ้นหาก BOT ขึ้นดอกเบี้ย ขณะที่ Yield on Loan มีเพดานจากกฎหมาย</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>มูลค่าน่าสนใจ — รอสัญญาณ NPL Stabilize ก่อนสะสม</h2>
+      <p>AEONTS เป็นผู้นำสินเชื่อผู้บริโภคในไทย ด้วย Yield on Loan ~17.6% และฐานลูกค้ากว่า 2 ล้านราย มีความสามารถสร้างรายได้สูง
+      อย่างไรก็ตาม NPL ratio ที่ 5.5% และ credit cost 880bps กดดันกำไรในระยะสั้น ทำให้ ROE ลดจาก 19% เหลือ ~11%
+      ราคา ฿104.5 ซื้อขายที่ P/E 8.4x และ P/BV 0.95x — ต่ำกว่าค่าเฉลี่ย 5 ปีอย่างมีนัย
+      หาก NPL คงที่และ credit cost กลับลง AEONTS มีศักยภาพ Re-rate กลับสู่ P/E 10–11x
+      เงินปันผล ฿5.50/ปี Yield ~5.4% เป็น "ค่าอดทนรอ" ที่น่าดึงดูดขณะรอการฟื้นตัวของคุณภาพสินทรัพย์</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿129 <span style="font-size:12px;color:#cab9a8">(฿94–฿153)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +19%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿133.5 (Buy ×8)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> MOS ปัจจุบัน ~19% ใกล้โซน 20% — ทยอยสะสมได้ที่ ฿103 หรือต่ำกว่า โดยรอสัญญาณ NPL คงที่หรือลดลงในผลประกอบการ FY2569
+        หากได้ราคาที่ ฿90 (MOS 30%) ถือเป็น Deep Value สำหรับสินเชื่อบุคคล Yield สูงสุดในไทย ควรพิจารณา position sizing รอบคอบเนื่องจากความเสี่ยงคุณภาพหนี้
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    แหล่งข้อมูล: Yahoo Finance (ราคา + กราฟย้อนหลัง ก.ค.2568–ก.ค.2569), Investing.com (ปันผลย้อนหลัง 5 ปี + ราคาเครื่อง), AEON Investor Relations / investor.aeon.co.th (ราคา 2 ก.ค. 2569), StockAnalysis.com (งบการเงิน EPS/BVPS/ROE อัตราส่วน FY2022–FY2026), รายงานนักวิเคราะห์ MBKET, FNSYRUS, TISCO (2025–2026)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 2 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
