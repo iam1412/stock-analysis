@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น กันกุลเอ็นจิเนียริ่ง (GUNKUL) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"GUNKUL","currency":"THB","price":4.32,"fairValue":3.60,"mos":-20.0,"upside":-16.67,"pe":20.0,"dividendYield":3.27,"roe":12.64}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#f9a825",
+    "accentDark": "#e65100",
+    "darkGrad": "linear-gradient(135deg,#e65100 0%,#f57f17 60%,#f9a825 100%)",
+    "glow": "rgba(249,168,37,0.3)",
+    "subColor": "#ffcc02",
+    "headerMuted": "rgba(255,255,255,0.55)",
+    "verdictText": "#fff8e1",
+    "vcellLabel": "#ffcc80",
+    "badge": "#f9a825",
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#1e8e3e"
+  },
+  "chart": {
+    "data": [
+      ["ก.ค. 68", 2.48],
+      ["ส.ค. 68", 2.46],
+      ["ก.ย. 68", 2.92],
+      ["ต.ค. 68", 3.98],
+      ["พ.ย. 68", 4.24],
+      ["ธ.ค. 68", 4.28],
+      ["ม.ค. 69", 4.30],
+      ["ก.พ. 69", 4.10],
+      ["มี.ค. 69", 3.80],
+      ["เม.ย. 69", 3.60],
+      ["พ.ค. 69", 3.56],
+      ["มิ.ย. 69", 3.92],
+      ["ก.ค. 69", 4.32]
+    ],
+    "min": 2.20,
+    "max": 4.70,
+    "grid": [2.50, 3.00, 3.50, 4.00, 4.50],
+    "fairLine": 3.60,
+    "currency": "฿",
+    "highlight": [3, 10],
+    "gridFmt": "v.toFixed(2)",
+    "dataFmt": "d[1].toFixed(2)"
+  },
+  "gauge": {
+    "min": 2.00,
+    "max": 5.70,
+    "cur": 4.32,
+    "fair": 3.60,
+    "fairLabelTop": false
+  },
+  "fv": 3.60
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">●●●●●●●●●●●●</div>
+    <div>
+      <span class="tag">SET: GUNKUL</span>
+      <span class="tag">พลังงานหมุนเวียน</span>
+      <span class="tag">Solar &amp; Wind IPP</span>
+    </div>
+    <h1>กันกุลเอ็นจิเนียริ่ง (GUNKUL)</h1>
+    <div class="sub">โซลาร์ฟาร์ม + กังหันลม (IPP ขาย กฟผ.) • EPC รับเหมาติดตั้งระบบพลังงาน • จำหน่ายอุปกรณ์ไฟฟ้า • พลังน้ำ</div>
+    <div class="price-row">
+      <div>
+        <div class="px">฿4.32<small>(GUNKUL)</small></div>
+      </div>
+      <div class="chg">▲ +74.2% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 4 กรกฎาคม 2569<br>
+        กรอบ 52 สัปดาห์ ฿1.51 – ฿4.40<br>
+        ที่มา: StockAnalysis.com, Yahoo Finance, Settrade.com
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ กรกฎาคม 2569</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~฿37.2 พันล้าน</div><div class="d">8,611 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~20.0x</div><div class="d">EPS TTM ฿0.22</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~18x</div><div class="d">ช่วง 10–28x (ประวัติ)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">~2.63x</div><div class="d">BVPS ~฿1.64 (มี.ค. 68)</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2568</div><div class="v">฿1,769 ล้าน</div><div class="d">+6.5% YoY (FY67: ฿1,661M)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿0.22</div><div class="d">FY68 (ณ Q1/69): ~฿0.21 annualized</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~฿1.64</div><div class="d">เติบโต ~1.7%/ปี (ประวัติ)</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~12.6% / ~5.5%</div><div class="d">ROE ดีขึ้นต่อเนื่อง (10.5%→12.6%)</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">~฿8,500 ล้าน</div><div class="d">FY68: ฿8,468M; Q1/69: ฿2,586M</div></div>
+      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">~34.3%</div><div class="d">ขยับขึ้นจาก 30.9% (FY67)</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~3.27%</div><div class="d">฿0.14/หุ้น/ปี (+8%/ปี ย้อนหลัง 10 ปี)</div></div>
+      <div class="metric"><div class="k">เป้าหมายปี 2569</div><div class="v pos">฿10,000 ล้าน</div><div class="d">รายได้เป้า; กำไรดำเนินงาน +10-15%</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#f9a825"></i>ราคา GUNKUL</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿3.60</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคา GUNKUL พุ่งขึ้นอย่างแข็งแกร่ง +74% รอบปี (ก.ค. 68 – ก.ค. 69) จาก ฿2.48 สู่ ฿4.32 โดยมีแรงซื้อที่เด่นชัดในไตรมาส Q3–Q4/68 (ก.ค.–พ.ย. 68) เมื่อราคาวิ่งจาก ฿2.48 ถึง ฿4.28 (+73%) ได้รับแรงหนุนจากกระแสพลังงานหมุนเวียนและนโยบาย ERC สัญญาซื้อขายไฟฟ้าฉบับใหม่ ก่อนจะย่อตัวช่วง Q1/69 (ม.ค.–พ.ค. 69) มาต่ำสุดที่ ~฿3.56 แล้วฟื้นตัวกลับมาทดสอบระดับสูงอีกครั้ง ราคาปัจจุบัน ฿4.32 อยู่เหนือมูลค่าเหมาะสม ฿3.60 ราว +20% บ่งชี้ว่าตลาด priced-in ความคาดหวังการเติบโตแล้ว
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS (TTM) ฿0.22 × P/E เป้าหมาย ~18x — P/E เฉลี่ย 5 ปีย้อนหลัง; ปัจจุบันซื้อขายที่ P/E ~20x เหนือค่าเฉลี่ย</div></div>
+        <div class="mval">฿3.96</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล ฿0.14 × (1+g); g 5%, r 9% → ปันผลเติบโตมั่นคง +8%/ปี ย้อนหลัง 10 ปี; ใช้ g อนุรักษ์นิยม</div></div>
+        <div class="mval">฿3.68</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 12.64% − g 5%)/(r 9% − g 5%) ≈ 1.91 × BVPS ฿1.64</div></div>
+        <div class="mval">฿3.13</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿3.13 – ฿3.96</span></div>
+        <div class="r">฿3.60</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        วิธี P/E ให้ค่าสูงสุด (฿3.96) เนื่องจากตลาด SET ให้ multiple กับหุ้นพลังงานหมุนเวียนค่อนข้างสูง • DDM (฿3.68) อิงกระแสปันผลที่เติบโตสม่ำเสมอ • Justified P/BV ให้ค่าต่ำสุด (฿3.13) เพราะ ROE ยังไม่สูงพอจะ justify P/BV สูงกว่า 2x • ราคาปัจจุบัน ฿4.32 อยู่เหนือ FV เฉลี่ย ~20% สะท้อนความคาดหวังการเติบโตรายได้ไปสู่ ฿10,000 ล้านและโอกาสธุรกิจ Data Center
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿4.32</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿3.60</div></div>
+        </div>
+        <div class="scale">
+          <span>฿2.52<br><small>MOS 30%</small></span>
+          <span>฿2.88<br><small>MOS 20%</small></span>
+          <span style="text-align:center">฿3.60<br><small>Fair Value</small></span>
+          <span style="text-align:right">฿3.96<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">฿4.44<br><small>เป้าเฉลี่ย Analyst</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคา ฿4.32 อยู่สูงกว่า Fair Value เฉลี่ย ฿3.60 ประมาณ 20% บ่งชี้ว่า GUNKUL ซื้อขายในโซน "Premium" ต่อพื้นฐาน อย่างไรก็ตาม นักวิเคราะห์ Settrade 7 ราย (Buy 6, Hold 1) มีเป้าเฉลี่ย ฿4.44 สูงกว่า FV ของเรา เนื่องจากรวมมูลค่าเพิ่มจากโครงการ EPC และ Data Center ที่อยู่ระหว่างดำเนินการ • จุดซื้อในกรณี Market ย่อลงสู่โซน MOS 20% (฿2.88) ถึง Fair Value (฿3.60) จะน่าสนใจกว่า
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">−20.0%</div>
+        <div class="txt">ราคาปัจจุบันสูงกว่ามูลค่าเหมาะสม ~20% — ยังไม่มี Margin of Safety • รอโซนย่อตัว</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿2.88</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿2.52</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿3.60</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="4.32" step="0.05">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿4.32 • EPS ฐาน ~฿0.22 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS 0%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿3.30</div>
+          <div class="ret neg">−17.1% (3 ปีรวม) / −6.1%/ปี</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.22</span></li>
+            <li><span>P/E ออก</span><span>15x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.39</span></li>
+            <li><span>สถานการณ์</span><span>โครงการ EPC ล่าช้า, อัตราดอกเบี้ยสูง</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +8%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿4.99</div>
+          <div class="ret pos">+26.6% (3 ปีรวม) / +8.2%/ปี</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.28</span></li>
+            <li><span>P/E ออก</span><span>18x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.45</span></li>
+            <li><span>สถานการณ์</span><span>รายได้แตะ ฿10B, โครงการใหม่ทยอย COD</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +15%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿7.35</div>
+          <div class="ret pos">+82.6% (3 ปีรวม) / +22.2%/ปี</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.33</span></li>
+            <li><span>P/E ออก</span><span>22x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.51</span></li>
+            <li><span>สถานการณ์</span><span>Data Center + RE100 บูม, ส่งออกไฟต่างประเทศ</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      กรณี Base อิงการเติบโต EPS +8%/ปี สอดคล้องกับเป้าบริษัทขยายรายได้สู่ ฿10,000 ล้านใน ปี 2569 และเพิ่ม Backlog EPC • กรณี Bull รวมโอกาสธุรกิจใหม่ Data Center (จ่ายไฟ DC ด้วยพลังงานสะอาด) และนโยบาย RE100 ที่ภาคเอกชนต้องใช้ไฟฟ้าหมุนเวียน 100% • กรณี Bear คือความเสี่ยงโครงการล่าช้า + ต้นทุนดอกเบี้ยเพิ่มกดดัน margin • ปันผลที่เติบโต +8%/ปีใน 10 ปีที่ผ่านมา เป็น Buffer บางส่วนของผลตอบแทน
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก &amp; ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>เป้ารายได้ ฿10,000 ล้าน ปี 2569:</b> บริษัทตั้งเป้าโตจาก ฿8,468M สู่ ฿10B พร้อม กำไรดำเนินงาน +10–15% หนุนด้วย Backlog EPC ที่แข็งแกร่ง</li>
+          <li><b>โอกาส Data Center + RE100:</b> ภาคเอกชนไทยต้องการไฟฟ้าหมุนเวียนสะอาด 100% สำหรับ Data Center; GUNKUL อยู่ในจุดที่ดีในการเป็น Renewable Energy Provider</li>
+          <li><b>สัญญาซื้อขายไฟฟ้า (PPA) ระยะยาว:</b> ไฟฟ้าจาก IPP ขาย กฟผ./กฟน. ด้วยสัญญา 20–25 ปี สร้างรายได้มั่นคง Cash Flow แน่นอน</li>
+          <li><b>กำลังการผลิตติดตั้งขยายตัว:</b> โครงการโซลาร์และลมใหม่ทยอย COD (Commercial Operation Date) หนุนรายได้ IPP ต่อเนื่อง</li>
+          <li><b>ปันผลสม่ำเสมอ +8%/ปี (10 ปี):</b> ประวัติปันผลเติบโตต่อเนื่อง สร้างความมั่นใจนักลงทุนระยะยาว</li>
+          <li><b>นโยบายรัฐบาลไทย Carbon Neutrality 2050:</b> เป้าหมายพลังงานสะอาด 30% ของกำลังผลิตรวมภายในปี 2580 หนุนอุตสาหกรรมระยะยาว</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>Valuation แพงกว่าพื้นฐาน ~20%:</b> ราคา ฿4.32 อยู่สูงกว่า Fair Value เฉลี่ย ฿3.60 — ต้องการ Execution ที่ดีเยี่ยมเพื่อ Justify ราคา</li>
+          <li><b>ความเสี่ยงอัตราดอกเบี้ย:</b> ธุรกิจ IPP ใช้ Leverage สูง ต้นทุนกู้ยืมที่เพิ่มขึ้นกดดัน Net Margin และ Equity Valuation (Justified P/BV)</li>
+          <li><b>ความล่าช้าโครงการ EPC:</b> ธุรกิจ EPC มีความเสี่ยงด้านวัสดุ/แรงงาน การ Delay กระทบรายได้และ Working Capital</li>
+          <li><b>ความเสี่ยงสภาพอากาศ:</b> โซลาร์/ลม ขึ้นอยู่กับสภาพอากาศ — ปีที่มีเมฆมากหรือลมน้อยกระทบ Availability Factor ของโรงไฟฟ้า</li>
+          <li><b>นโยบายราคาค่าไฟ:</b> หากรัฐบาลปรับเงื่อนไข Feed-in Tariff หรือ PPA ฉบับใหม่ในอัตราที่ต่ำกว่า อาจกระทบ FV ของสินทรัพย์ IPP</li>
+          <li><b>การแข่งขันสูงในตลาด EPC:</b> ผู้เล่นรายใหม่ทั้งจีนและในประเทศเพิ่มขึ้น กดดัน Margin ธุรกิจ EPC ระยะกลาง</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>GUNKUL — พลังงานสะอาดแข็งแกร่ง แต่ราคาแพงกว่าพื้นฐาน ~20% รอโซนเข้าซื้อที่ดีกว่า</h2>
+      <p>GUNKUL เป็นผู้นำพลังงานหมุนเวียนของไทยที่มีโมเดลธุรกิจครบวงจร (IPP + EPC + อุปกรณ์) พื้นฐานดีขึ้นต่อเนื่อง — ROE เพิ่มจาก 10.5% → 12.6% ใน 2 ปี กำไรสุทธิโต +6.5% YoY และมีเป้ารายได้ ฿10,000 ล้านใน ปี 2569 อย่างไรก็ตาม ราคาปัจจุบัน ฿4.32 (P/E ~20x) สูงกว่า Fair Value เฉลี่ย ฿3.60 ราว 20% บ่งชี้ว่าตลาด priced-in ความคาดหวังการเติบโตและโอกาส Data Center ไปแล้วพอสมควร นักลงทุนสายคุณค่า (Value) ควรรอโซน ฿3.40–3.60 (ใกล้ Fair Value) เพื่อ Margin of Safety ที่ดีขึ้น ขณะที่ผู้ถือหุ้นอยู่แล้วพิจารณา Hold ต่อ หากเชื่อมั่น Base Case เติบโต +8%/ปี</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿3.60 <span style="font-size:12px;color:#cab9a8">(฿3.13–฿3.96)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −20% (แพงกว่า FV)</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿4.44 (Buy 6/7 ราย)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ผู้ถือหุ้นอยู่แล้ว → Hold และติดตามผลประกอบการ Q2/69 (รายได้เข้าเป้า ฿10B?) • ผู้ที่ยังไม่มี → รอโซนย่อตัว ฿3.40–3.60 (near Fair Value) หรือ ฿2.88 (MOS 20%) เพื่อความคุ้มค่ากว่า • ตั้ง Stop Loss ที่ ฿3.00 หากซื้อที่ระดับปัจจุบัน
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    แหล่งข้อมูล: (1) StockAnalysis.com — ราคา ฿4.32, P/E 20x, EPS TTM ฿0.22, Dividend Yield 3.27% · (2) Yahoo Finance (GUNKUL.BK) — กราฟราคารายเดือน 1 ปี, 52W High ฿4.40 / Low ฿1.51 · (3) Settrade.com — Analyst Consensus เป้าเฉลี่ย ฿4.44, Buy 6/7 ราย · (4) Gunkul.com/investor-relations — ROE 12.64%, รายได้ ฿8,468M FY2568, Net Profit ฿1,769M
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 4 กรกฎาคม 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
