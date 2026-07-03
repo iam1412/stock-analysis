@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น เอกชัย เมดิคอล แคร์ (EKH) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"EKH","currency":"THB","price":5.05,"fairValue":5.20,"mos":2.9,"upside":3.0,"pe":15.51,"dividendYield":3.5,"roe":10.6}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#1976d2",
+    "accentDark": "#1565c0",
+    "darkGrad": "linear-gradient(135deg,#0d47a1 0%,#1565c0 60%,#1976d2 100%)",
+    "glow": "rgba(25,118,210,0.3)",
+    "subColor": "#bbdefb",
+    "headerMuted": "rgba(255,255,255,0.6)",
+    "verdictText": "#e3f2fd",
+    "vcellLabel": "rgba(227,242,253,0.7)",
+    "badge": "#1976d2",
+    "chgBg": "#c5221f",
+    "chgColor": "#ffffff"
+  },
+  "chart": {
+    "data": [
+      ["ม.ค. 68", 5.55],
+      ["ก.พ. 68", 5.45],
+      ["มี.ค. 68", 5.20],
+      ["เม.ย. 68", 5.00],
+      ["พ.ค. 68", 4.96],
+      ["มิ.ย. 68", 4.98],
+      ["ก.ค. 68", 5.15],
+      ["ส.ค. 68", 5.00],
+      ["ก.ย. 68", 5.15],
+      ["ต.ค. 68", 5.00],
+      ["พ.ย. 68", 4.98],
+      ["ธ.ค. 68", 5.00],
+      ["ม.ค. 69", 5.05]
+    ],
+    "min": 4.40,
+    "max": 6.20,
+    "grid": [4.40, 4.80, 5.20, 5.60, 6.00],
+    "fairLine": 5.20,
+    "currency": "฿",
+    "highlight": [0, 6],
+    "gridFmt": "v.toFixed(2)",
+    "dataFmt": "d[1].toFixed(2)"
+  },
+  "gauge": {
+    "min": 0,
+    "max": 100,
+    "cur": 5.05,
+    "fair": 5.20,
+    "fairLabelTop": true
+  },
+  "fv": 5.20
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">⬤ ⬤ ⬤</div>
+    <div>
+      <span class="tag">SET: EKH</span>
+      <span class="tag">Healthcare</span>
+      <span class="tag">โรงพยาบาลเอกชน</span>
+    </div>
+    <h1>เอกชัย เมดิคอล แคร์ (EKH)</h1>
+    <div class="sub">เครือรพ.เอกชัย • สมุทรสาคร / สมุทรปราการ • Mid-tier Affordable • ขยายต่างจังหวัด</div>
+    <div class="price-row">
+      <div>
+        <div class="px">฿5.05<small>(EKH)</small></div>
+      </div>
+      <div class="chg">▼ −9.0% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 3 ก.ค. 2569 (งบ Q1/2026)<br>
+        กรอบ 52 สัปดาห์ ฿4.90 – ฿6.00<br>
+        ที่มา: SET Factsheet / Yahoo Finance / Finnomena
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">อิงราคา ณ 3 ก.ค. 2569</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">฿4,278 ล้าน</div><div class="d">855.6 ล้านหุ้น · มูลค่าตลาดขนาดกลาง</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~15.5x</div><div class="d">ต่ำกว่ากลุ่ม รพ.เอกชนใหญ่ที่ ~25–35x</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~17–20x</div><div class="d">ปัจจุบันซื้อขายต่ำกว่าค่าเฉลี่ยประวัติศาสตร์</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">1.65x</div><div class="d">BVPS ~฿3.06 · ทุนผู้ถือหุ้น ฿2,592 ล้าน</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ TTM</div><div class="v">~฿278 ล้าน</div><div class="d">EPS TTM ~฿0.325 ต่อหุ้น</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿0.325</div><div class="d">คำนวณจาก P/E 15.51x · ราคา ฿5.05</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~฿3.06</div><div class="d">คำนวณจาก P/BV 1.65x · ราคา ฿5.05</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~10.6% / ~8%</div><div class="d">ROE ระดับกลาง สำหรับ รพ.mid-tier</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM (ประมาณ)</div><div class="v neu">~฿1,700 ล้าน</div><div class="d">ประมาณจาก EBITDA ÷ margin ~25%</div></div>
+      <div class="metric"><div class="k">EBITDA Margin</div><div class="v">~25%</div><div class="d">EBITDA TTM ~฿426 ล้าน (EV/EBITDA 9.16x)</div></div>
+      <div class="metric"><div class="k">เงินปันผล (ประมาณ)</div><div class="v">~3.5%</div><div class="d">DPS ~฿0.18 · payout ratio ~55%</div></div>
+      <div class="metric"><div class="k">สถานะหนี้สิน</div><div class="v pos">Net Cash</div><div class="d">เงินสดสุทธิ ~฿374 ล้าน · งบดุลแข็งแกร่ง</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART (ราคาย้อนหลัง ~1 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ม.ค. 2568 – ม.ค. 2569</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#1976d2"></i>ราคา EKH</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿5.20</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคา EKH เริ่มต้นปี 2568 ที่ ฿5.55 ก่อนปรับตัวลงต่อเนื่องตลอดช่วงต้นปีท่ามกลางบรรยากาศตลาดที่ซบเซา
+        แตะระดับต่ำสุดบริเวณ ฿4.96 ในเดือน พ.ค. 68 จากนั้นฟื้นตัวกลับมาซื้อขายทรงตัวแถว ฿5.00–5.15
+        ตลอดครึ่งหลังของปี ราคาปัจจุบัน ฿5.05 ปรับลง ~9% จากจุดเริ่มต้น สะท้อนความกดดันจากต้นทุนที่สูงขึ้น
+        และการแข่งขันในกลุ่ม รพ.ขนาดกลาง ราคายังซื้อขายใกล้เคียงมูลค่าเหมาะสม ฿5.20
+        ที่มา: Yahoo Finance (EKH.BK) ราคารายเดือน ม.ค. 2568 – ม.ค. 2569
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION (3 วิธี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS adj. ฿0.325 × P/E เป้าหมาย ~17x — อิง P/E กลุ่ม รพ.mid-tier ไทย + ประวัติ EKH ย้อนหลัง 5 ปี; ต่ำกว่า รพ.ใหญ่ (BDMS/BH 25–35x) สะท้อนขนาดและ brand ที่เล็กกว่า</div></div>
+        <div class="mval">฿5.53</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. EV/EBITDA Valuation</div><div class="mdesc">EBITDA TTM ~฿426 ล้าน × Multiple เป้า 10x = EV ฿4,260 ล้าน + เงินสดสุทธิ ฿374 ล้าน = Equity Value ฿4,634 ล้าน ÷ 855.6 ล้านหุ้น — อิง EV/EBITDA กลุ่ม รพ.เอกชน SET; ปัจจุบัน 9.16x ต่ำกว่า multiple เป้า 10x</div></div>
+        <div class="mval">฿5.42</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. DDM (Gordon Growth)</div><div class="mdesc">D₁ = DPS ~฿0.179 × (1+7%) = ฿0.191; g = 7% (สอดคล้องการเติบโต รพ.ต่างจังหวัด), Ke = 11% (risk premium รพ.mid-tier ไทย); payout ratio ~55% — ให้มูลค่าอนุรักษ์นิยม สะท้อนความเสี่ยงการขยายสาขา</div></div>
+        <div class="mval">฿4.78</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿4.78 – ฿5.53</span></div>
+        <div class="r">฿5.20</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        P/E Valuation ให้ค่าสูงสุด (฿5.53) สะท้อนศักยภาพหาก sentiment กลับมา · EV/EBITDA (฿5.42) ยืนยันทิศทางเดียวกัน ชี้ว่าธุรกิจหลัก (hospital operations) ยังมีมูลค่าสมเหตุสมผล ·
+        DDM (฿4.78) ต่ำสุด สะท้อน cost of equity สูงและอัตราเติบโตระยะยาวที่พอประมาณ
+        Fair Value เฉลี่ย ฿5.20 หมายความว่าราคาปัจจุบัน ฿5.05 ซื้อขายใกล้มูลค่าเหมาะสม MOS เพียง ~3%
+        ที่มา Cross-verify: SET Factsheet P/E 15.51x P/BV 1.65x EV/EBITDA 9.16x · Yahoo Finance (EKH.BK) ราคา ฿5.05
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿5.05</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿5.20</div></div>
+        </div>
+        <div class="scale">
+          <span>฿3.64<br><small>MOS 30%</small></span>
+          <span>฿4.16<br><small>MOS 20%</small></span>
+          <span style="text-align:center">฿5.20<br><small>Fair Value</small></span>
+          <span style="text-align:right">฿5.40<br><small>เป้า Analyst</small></span>
+          <span style="text-align:right">฿5.53<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน ฿5.05 ซื้อขายต่ำกว่า Fair Value ฿5.20 เพียง 3% — ยังไม่มี Margin of Safety ที่น่าสนใจ
+        จุดซื้อ MOS 20% (฿4.16) และ MOS 30% (฿3.64) ห่างจากราคาปัจจุบันพอสมควร
+        ผู้ลงทุนแบบ value ควรรอ pullback มาโซน ฿4.16–4.50 ก่อนพิจารณาเพิ่มสถานะ
+        งบดุล Net Cash ฿374 ล้าน และ EV/EBITDA 9.16x ต่ำกว่า sector ยังเป็นแรงหนุนด้านล่าง
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">+2.9%</div>
+        <div class="txt">MOS ต่ำมาก — ราคาใกล้มูลค่าเหมาะสม เหมาะสะสมระยะยาวมากกว่าซื้อรวดเดียว</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿4.16</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿3.64</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿5.20</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="5.05" step="0.05">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿5.05 • EPS ฐาน ~฿0.325 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS −3%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿3.90</div>
+          <div class="ret neg">−14% / 3 ปี (−5%/ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.298</span></li>
+            <li><span>P/E ออก</span><span>13x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.49</span></li>
+            <li><span>สถานการณ์</span><span>ต้นทุนพุ่ง+คู่แข่งเพิ่ม</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +8%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿6.50</div>
+          <div class="ret pos">+38% / 3 ปี (+11%/ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.410</span></li>
+            <li><span>P/E ออก</span><span>15x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.54</span></li>
+            <li><span>สถานการณ์</span><span>ขยายสาขาต่างจังหวัด</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +15%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿9.00</div>
+          <div class="ret pos">+82% / 3 ปี (+22%/ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.499</span></li>
+            <li><span>P/E ออก</span><span>18x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.62</span></li>
+            <li><span>สถานการณ์</span><span>เปิดสาขาใหม่+เพิ่ม IPD</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      การประมาณการอิงสมมติฐาน EPS ฐาน ฿0.325 (TTM คำนวณจาก P/E 15.51x · SET Factsheet) · Bear case: การแข่งขันรุนแรงขึ้นจาก รพ.รัฐ + ต้นทุนบุคลากรสูง กด margin ลง P/E ปรับลงเหลือ 13x ·
+      Base case: ขยายสาขาต่างจังหวัด 1–2 แห่ง รายได้เติบโต 8%/ปี P/E คง 15x · Bull case: สาขาใหม่ประสบความสำเร็จ OPD/IPD ดีเด่น กลับมาซื้อขายที่ P/E 18x ·
+      ปันผลประมาณ payout ratio ~55% (DPS ปีละ ~฿0.179) · รวมปันผล 3 ปี ~฿0.54 (base)
+      ที่มา: SET Factsheet, Yahoo Finance (EKH.BK) · ไม่ใช่คำแนะนำการลงทุน
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>ขยายสาขาต่างจังหวัด:</b> กลยุทธ์เจาะตลาดชานเมืองและต่างจังหวัดที่ยังขาดแคลน รพ.เอกชนคุณภาพ เพิ่ม addressable market อย่างมีนัยสำคัญ</li>
+          <li><b>Aging Society ไทย:</b> ประชากรผู้สูงอายุเพิ่มขึ้นต่อเนื่อง ความต้องการบริการทางการแพทย์ระยะยาวเติบโต รพ.เอกชนได้รับประโยชน์โดยตรง</li>
+          <li><b>งบดุลแข็งแกร่ง (Net Cash ~฿374 ล้าน):</b> มีกระแสเงินสดพร้อมลงทุนขยายโดยไม่ต้องระดมทุนเพิ่ม ลดความเสี่ยงทางการเงินอย่างมีนัยสำคัญ</li>
+          <li><b>Valuation ต่ำกว่ากลุ่ม:</b> EV/EBITDA 9.16x และ P/E 15.5x ต่ำกว่า รพ.ใหญ่ (BDMS/BH 25–35x) มีช่องว่าง re-rating หาก growth เร่งตัว</li>
+          <li><b>ฐานผู้ป่วยมั่นคง:</b> ลูกค้าหลักเป็นชนชั้นกลาง-ล่างในจังหวัดอุตสาหกรรม (สมุทรสาคร/สมุทรปราการ) มีความต้องการสม่ำเสมอ</li>
+          <li><b>เงินปันผลสม่ำเสมอ:</b> Dividend yield ~3.5% สูงกว่าพันธบัตรรัฐบาล 10 ปี ดึงดูดนักลงทุนระยะยาว</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>ต้นทุนบุคลากรแพทย์สูง:</b> ค่าแรงแพทย์และพยาบาลเพิ่มต่อเนื่อง กดดัน EBITDA margin โดยเฉพาะใน รพ.ขนาดกลางที่ Scale น้อยกว่า</li>
+          <li><b>การแข่งขันจาก รพ.รัฐ:</b> การลงทุนโรงพยาบาลรัฐในจังหวัดอุตสาหกรรมอาจดึงผู้ป่วยบางส่วนกลับโดยเฉพาะกลุ่มประกันสังคม</li>
+          <li><b>ขนาดตลาดและ Brand จำกัด:</b> EKH เป็น รพ.ระดับ mid-tier ในจังหวัดสมุทร ขาด premium pricing power และ brand recognition ระดับประเทศ</li>
+          <li><b>ความเสี่ยงการขยายสาขา:</b> รพ.ใหม่ต้องใช้เวลา 3–5 ปีกว่าจะ breakeven ต้นทุนการลงทุนสูงและอาจกดดัน ROE ระยะสั้น</li>
+          <li><b>Liquidity ต่ำ:</b> Trading volume เฉลี่ยต่ำ สภาพคล่องในตลาดน้อยกว่า รพ.ใหญ่ ราคาเคลื่อนไหวแรงกว่าในช่วงที่ตลาดปั่นป่วน</li>
+          <li><b>ระเบียบ/นโยบายสุขภาพ:</b> การเปลี่ยนแปลงอัตราชดเชยประกันสังคม-บัตรทอง อาจกระทบรายได้ส่วนนี้โดยตรงและรวดเร็ว</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>Fair Value — ราคาสะท้อนมูลค่าพอดี รอจังหวะดีกว่า</h2>
+      <p>
+        EKH เป็นโรงพยาบาลเอกชน mid-tier ที่ดำเนินธุรกิจในพื้นที่อุตสาหกรรม สมุทรสาคร–สมุทรปราการ
+        มีฐานผู้ป่วยมั่นคงจากแรงงานโรงงานและชนชั้นกลาง-ล่าง กลยุทธ์ขยายต่างจังหวัดเป็นแรงขับเคลื่อนระยะกลาง
+        ด้านการเงิน งบดุลแข็งแกร่ง Net Cash ฿374 ล้าน EV/EBITDA 9.16x ต่ำกว่า sector และ P/E 15.5x
+        ถูกกว่ากลุ่มโรงพยาบาลใหญ่อย่างมีนัยสำคัญ อย่างไรก็ตาม ROE เพียง ~10.6% และ MOS จาก Fair Value ฿5.20
+        แค่ ~3% ทำให้ margin of safety ไม่เพียงพอสำหรับนักลงทุน value ที่ต้องการ MOS ≥20%
+        แนะนำรอ pullback มาโซน ฿4.16–4.50 จึงน่าสนใจกว่า ณ ราคาปัจจุบัน ฿5.05
+      </p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿5.20 <span style="font-size:12px;color:#cab9a8">(฿4.78–฿5.53)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +2.9%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿5.40 (Neutral/Hold)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ณ ราคา ฿5.05 ซื้อขายใกล้ FV แทบไม่มี MOS — <b>หลีกเลี่ยงซื้อระยะสั้น</b>
+        รอ pullback มาโซน <b>฿4.16–4.50 (MOS 15–20%)</b> จึงเหมาะสำหรับนักลงทุนระยะยาวที่เชื่อในธีม
+        ขยายต่างจังหวัด + Aging Society ไทย · ถือสำหรับ dividend ~3.5% + capital gain ระยะยาว
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    ที่มา: (1) SET Factsheet (set.or.th) ราคา ฿5.00 P/E 15.51x P/BV 1.65x EV/EBITDA 9.16x Market Cap ฿4,278 ล้าน (ข้อมูล ณ 2 ก.ค. 2569) · (2) Yahoo Finance (EKH.BK) ราคา ฿5.05 กราฟรายเดือน ม.ค.2568–ม.ค.2569 · (3) Finnomena.com ผลตอบแทน 1 ปี −15.59% (ณ 3 ก.ค. 2569) · งบการเงินล่าสุด: Q1/2569 · ตรวจสอบข้ามแหล่ง 3 แหล่ง ราคาต่างกัน ฿0.05 (~1%) ≤2% tolerance ผ่าน · ข้อมูล ณ 3 ก.ค. 2569
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 3 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>

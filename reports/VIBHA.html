@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น วิภาวดี เมดิคอล เซ็นเตอร์ (VIBHA) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"VIBHA","currency":"THB","price":1.39,"fairValue":1.62,"mos":14.2,"upside":16.5,"pe":10.69,"dividendYield":4.32,"roe":14.1}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#00897b",
+    "accentDark": "#00695c",
+    "darkGrad": "linear-gradient(135deg,#00695c 0%,#00897b 60%,#26a69a 100%)",
+    "glow": "rgba(0,137,123,0.3)",
+    "subColor": "#b2dfdb",
+    "headerMuted": "rgba(255,255,255,0.6)",
+    "verdictText": "#e0f2f1",
+    "vcellLabel": "rgba(224,242,241,0.7)",
+    "badge": "#26a69a",
+    "chgBg": "#c5221f",
+    "chgColor": "#ffffff"
+  },
+  "chart": {
+    "data": [
+      ["ส.ค. 68", 1.45],
+      ["ก.ย. 68", 1.50],
+      ["ต.ค. 68", 1.44],
+      ["พ.ย. 68", 1.37],
+      ["ธ.ค. 68", 1.40],
+      ["ม.ค. 69", 1.37],
+      ["ก.พ. 69", 1.39],
+      ["มี.ค. 69", 1.40],
+      ["เม.ย. 69", 1.41],
+      ["พ.ค. 69", 1.37],
+      ["มิ.ย. 69", 1.37],
+      ["ก.ค. 69", 1.38],
+      ["ปัจจุบัน", 1.39]
+    ],
+    "min": 1.25,
+    "max": 1.65,
+    "grid": [1.30, 1.40, 1.50, 1.60],
+    "fairLine": 1.62,
+    "currency": "฿",
+    "highlight": [1, 3],
+    "gridFmt": "v.toFixed(2)",
+    "dataFmt": "d[1].toFixed(2)"
+  },
+  "gauge": {
+    "min": 1.00,
+    "max": 2.00,
+    "cur": 1.39,
+    "fair": 1.62,
+    "fairLabelTop": false
+  },
+  "fv": 1.62
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">▪▪▪</div>
+    <div>
+      <span class="tag">SET: VIBHA</span>
+      <span class="tag">Healthcare</span>
+      <span class="tag">โรงพยาบาลเอกชน</span>
+    </div>
+    <h1>วิภาวดี เมดิคอล เซ็นเตอร์ (VIBHA)</h1>
+    <div class="sub">โรงพยาบาลวิภาวดี • พอร์ตโรงพยาบาลเครือในเครือข่ายสุขภาพเอกชน • บริการผู้ป่วยในและผู้ป่วยนอก • ศูนย์ความเป็นเลิศทางการแพทย์เฉพาะทาง</div>
+    <div class="price-row">
+      <div>
+        <div class="px">฿1.39<small>(VIBHA)</small></div>
+      </div>
+      <div class="chg">▼ −4.1% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 3 ก.ค. 2569<br>
+        กรอบ 52 สัปดาห์ ฿1.32 – ฿1.66<br>
+        ที่มา: Yahoo Finance, SET, StockAnalysis.com
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ก.ค. 2569 (TTM)</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~฿18,700 ล้าน</div><div class="d">13,485 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~10.7x</div><div class="d">EPS TTM ฿0.13/หุ้น</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~12–14x</div><div class="d">ช่วงกลุ่ม Healthcare SET</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">~1.60x</div><div class="d">BVPS ฿0.87/หุ้น</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2568</div><div class="v">฿1,695 ล้าน</div><div class="d">+143% YoY (FY2567: ฿699 ล.)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿0.13</div><div class="d">FY2568: ฿0.13/หุ้น</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~฿0.87</div><div class="d">Equity TTM ฿12,591 ล้าน</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~14.1% / ~8.3%</div><div class="d">TTM Net Income / Avg Equity</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">~฿5,657 ล้าน</div><div class="d">+9.5% YoY (TTM มี.ค. 69)</div></div>
+      <div class="metric"><div class="k">EBITDA Margin</div><div class="v">~21.8%</div><div class="d">EBITDA TTM ฿1,231 ล้าน</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~4.32%</div><div class="d">DPS ฿0.06 (FY2568)</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">−0.04</div><div class="d">Defensive / Non-correlated</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ส.ค. 2568 – ก.ค. 2569</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#00897b"></i>ราคา VIBHA</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿1.62</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคา VIBHA ปรับตัวลดลง −4.1% ในรอบปี (ส.ค. 2568 ฿1.45 → ก.ค. 2569 ฿1.39)
+        ขึ้นแตะระดับสูง ฿1.50 ในเดือน ก.ย. 2568 ก่อนปรับลงแตะจุดต่ำสุด ฿1.37 ในช่วง พ.ย. 2568–ม.ค. 2569
+        ราคาปัจจุบันยังซื้อขายต่ำกว่ามูลค่าเหมาะสม ฿1.62 ประมาณ 14% สะท้อน Margin of Safety ที่น่าสนใจ
+        ในบริบทที่กำไรปรับตัวดีขึ้นอย่างมีนัยสำคัญ (FY2568 กำไร +143% YoY) ตลาดยังไม่ได้ให้ราคาเต็ม
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS adj. ฿0.13 × P/E เป้าหมาย ~13x — อิงค่ากลางกลุ่ม Healthcare SET (ปัจจุบัน 10.7x ต่ำกว่าเพื่อน)</div></div>
+        <div class="mval">฿1.69</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล ฿0.06 × (1+3%); g 3%, r 8% → DPS เติบโต 3%/ปี สอดคล้อง Payout Ratio ~46%</div></div>
+        <div class="mval">฿1.24</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 14.1% − g 3%)/(r 8% − g 3%) ≈ 2.22 × BVPS ฿0.87</div></div>
+        <div class="mval">฿1.93</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿1.24 – ฿1.93</span></div>
+        <div class="r">฿1.62</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        <b>P/E Valuation (฿1.69)</b> สะท้อน re-rating จาก 10.7x ปัจจุบันสู่ค่ากลางกลุ่ม 13x เมื่อกำไรฟื้นตัวชัดเจน ·
+        <b>DDM (฿1.24)</b> ให้ค่าต่ำสุดเนื่องจาก Payout Ratio ค่อนข้างต่ำ (~46%) และ r ที่สูงตามสภาวะตลาด ·
+        <b>Justified P/BV (฿1.93)</b> ให้ค่าสูงสุดเพราะ ROE 14.1% แข็งแกร่งกว่าค่าเฉลี่ยอุตสาหกรรม ·
+        FV ฿1.62 เป็นค่ากลางที่สมดุล อนุรักษ์นิยมกว่า Justified P/BV ซึ่งเหมาะสมสำหรับ Defensive Healthcare stock
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿1.39</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿1.62</div></div>
+        </div>
+        <div class="scale">
+          <span>฿1.13<br><small>MOS 30%</small></span>
+          <span>฿1.30<br><small>MOS 20%</small></span>
+          <span style="text-align:center">฿1.62<br><small>Fair Value</small></span>
+          <span style="text-align:right">฿1.66<br><small>52W High</small></span>
+          <span style="text-align:right">฿1.93<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน ฿1.39 อยู่ในโซน MOS ~14% ต่ำกว่า Fair Value ฿1.62 — อยู่ระหว่างโซน MOS 20% (฿1.30) และ Fair Value
+        ถือเป็นโซน "น่าสนใจ" สำหรับนักลงทุนแบบ Value ที่ต้องการ Margin of Safety ปานกลาง
+        ยังอยู่ห่างไกลจากโซน Deep Value (MOS 30% = ฿1.13) ซึ่งสะท้อนว่าหุ้นมีราคาสมเหตุสมผลแต่ไม่ได้ถูกสุดโต่ง
+        จุดสูงสุด 52 สัปดาห์ที่ ฿1.66 ใกล้เคียง Fair Value ฿1.62 ยืนยันว่าตลาดเคยให้ราคาที่เหมาะสมในอดีต
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict ok">
+        <div class="big">+14.2%</div>
+        <div class="txt">MOS พอใช้ — ราคาต่ำกว่า Fair Value แต่ยังไม่ถึงโซน Deep Value (MOS 20%+)</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿1.30</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿1.13</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿1.62</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="1.39" step="0.05">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿1.39 • EPS ฐาน ~฿0.13 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS 0%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿1.48</div>
+          <div class="ret neg">+6.5% (3 ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.130</span></li>
+            <li><span>P/E ออก</span><span>10x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.18</span></li>
+            <li><span>สถานการณ์</span><span>กำไรทรง รายได้ฟื้นช้า</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +5%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿1.99</div>
+          <div class="ret pos">+43.2% (3 ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.150</span></li>
+            <li><span>P/E ออก</span><span>12x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.189</span></li>
+            <li><span>สถานการณ์</span><span>กำไรฟื้น ตลาด re-rate</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +10%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿2.62</div>
+          <div class="ret pos">+88.5% (3 ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.173</span></li>
+            <li><span>P/E ออก</span><span>14x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.198</span></li>
+            <li><span>สถานการณ์</span><span>ขยายโรงพยาบาล นักท่องเที่ยวเพิ่ม</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      การคาดการณ์อิง EPS ฐาน ฿0.13 (TTM) ซึ่งได้รับประโยชน์จากการฟื้นตัวของกำไรในปี 2568 (+143% YoY)
+      แม้แต่ใน Bear case (+6.5%) ปันผล ~4.3%/ปี ช่วยรองรับ downside ทำให้ VIBHA เป็น Defensive Investment ที่มีคุณภาพ
+      Base case ให้ผลตอบแทน ~43% ใน 3 ปี (~12.6%/ปี) น่าสนใจสำหรับหุ้น Healthcare ที่มี Beta ต่ำมาก (−0.04)
+      การ re-rating P/E จาก 10.7x → 12x ใน Base case เป็นสมมติฐานอนุรักษ์นิยม เนื่องจากเพื่อนกลุ่มซื้อขายที่ 12–18x
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>กำไรฟื้นตัวแข็งแกร่ง:</b> FY2568 กำไรสุทธิ ฿1,695 ล้าน +143% YoY หลังผ่านช่วงกดดัน FY2567 ยืนยันกำลังฟื้นตัวของธุรกิจ</li>
+          <li><b>Aging Society ไทย:</b> ประชากรสูงวัยเพิ่มขึ้น ความต้องการบริการสุขภาพเติบโตเชิงโครงสร้าง สนับสนุนอุปสงค์ระยะยาว</li>
+          <li><b>Medical Tourism:</b> ไทยเป็นศูนย์กลาง Medical Hub ASEAN นักท่องเที่ยวเชิงสุขภาพเติบโต หนุนรายได้ผู้ป่วยต่างชาติ</li>
+          <li><b>Beta ต่ำมาก (−0.04):</b> VIBHA เป็น safe haven ในช่วงตลาดผันผวน เหมาะกับพอร์ต Defensive และ Income</li>
+          <li><b>เงินปันผลสม่ำเสมอ:</b> DPS ฿0.05–0.06 ต่อปี Yield ~4.3% ในภาวะดอกเบี้ยขาลง เพิ่มความน่าดึงดูดเทียบพันธบัตร</li>
+          <li><b>P/E re-rating:</b> P/E ปัจจุบัน 10.7x ต่ำกว่าเพื่อนกลุ่ม Healthcare (12–18x) มีโอกาส re-rate เมื่อกำไรฟื้นต่อเนื่อง</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>รายได้ลดลงต่อเนื่อง:</b> Revenue FY2568 ฿5,726 ล้าน ลดจาก FY2566 ฿8,318 ล้าน (−31%) สะท้อนการลดขนาดหรือขายสินทรัพย์</li>
+          <li><b>Equity ลดลงต่อเนื่อง:</b> Total Equity ลดจาก ฿18,276 ล้าน (FY2565) → ฿12,476 ล้าน (FY2568) อาจสะท้อนการจ่ายปันผลพิเศษหรือขายทรัพย์สิน</li>
+          <li><b>ความผันผวนของกำไร:</b> กำไร FY2567 ตกลงเหลือ ฿699 ล้าน ก่อนจะฟื้นตัวใน FY2568 บ่งชี้ความไม่เสถียรของรายได้</li>
+          <li><b>การแข่งขันสูง:</b> กลุ่มโรงพยาบาลเอกชนขนาดใหญ่ (BDMS, BH, BCH) มีทรัพยากรและ Brand ที่แข็งแกร่งกว่า</li>
+          <li><b>ความเสี่ยงด้านนโยบาย:</b> การเปลี่ยนแปลงนโยบายสาธารณสุข บัตรทอง หรือสิทธิประกันสังคมอาจกระทบรายได้</li>
+          <li><b>ภาระหนี้:</b> Total Debt ฿7,026 ล้าน (Debt/Assets ~33%) ความเสี่ยงจากดอกเบี้ยที่ยังสูงกระทบต้นทุนทางการเงิน</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>Defensive Healthcare ที่มีส่วนลดน่าสนใจ — ทยอยสะสมได้</h2>
+      <p>VIBHA เป็นหุ้น Healthcare defensive ที่ซื้อขายที่ P/E ~10.7x ต่ำกว่ากลุ่มเพื่อน (12–18x) โดยมีกำไร FY2568 ฟื้นตัวแข็งแกร่ง +143% YoY
+         ปันผล ~4.3%/ปี และ Beta ต่ำมาก (−0.04) ทำให้เป็น safe haven ที่เหมาะสำหรับนักลงทุนอนุรักษ์นิยม
+         มูลค่าเหมาะสม ฿1.62 (MOS ~14%) อยู่ในระดับที่น่าทยอยสะสม แม้ยังไม่ถึงโซน Deep Value
+         ประเด็นที่ต้องติดตาม: ความต่อเนื่องของ Revenue recovery และทิศทาง Equity ที่ลดลงในช่วงที่ผ่านมา
+      </p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿1.62 <span style="font-size:12px;color:#cab9a8">(฿1.24–฿1.93)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +14.2%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿1.62–1.70 (Neutral)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ทยอยสะสมที่ราคาปัจจุบัน ฿1.35–1.45 (MOS ~10–17%) สำหรับพอร์ต Defensive / Income
+        เพิ่มน้ำหนักหากราคาลงสู่ ฿1.30 (MOS 20%) เพื่อรับ Dividend Yield ~4.6% และ upside สู่ FV ฿1.62
+        หลีกเลี่ยงการซื้อเกิน ฿1.55 (MOS &lt;5%) จนกว่า Revenue จะฟื้นตัวชัดเจน
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    แหล่งข้อมูล: Yahoo Finance (VIBHA.BK ก.ค. 2569), ตลาดหลักทรัพย์แห่งประเทศไทย (SET ก.ค. 2569), StockAnalysis.com (ก.ค. 2569) — งบการเงิน FY2025 / Q1/2026 (TTM มี.ค. 2569)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 3 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
