@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น New York Times (NYT) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"NYT","currency":"USD","price":73.85,"fairValue":70,"mos":-5.5,"upside":-5.2,"pe":31.7,"dividendYield":1.25,"roe":19.68}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#CC0000",
+    "accentDark": "#990000",
+    "darkGrad": "linear-gradient(135deg,#1a0000 0%,#2d0000 50%,#1a1a1a 100%)",
+    "glow": "rgba(204,0,0,0.18)",
+    "subColor": "#f5e6e6",
+    "headerMuted": "rgba(255,255,255,0.55)",
+    "verdictText": "#fff8f8",
+    "vcellLabel": "rgba(255,255,255,0.6)",
+    "badge": "#CC0000",
+    "chgBg": "#1e8e3e",
+    "chgColor": "#ffffff"
+  },
+  "chart": {
+    "data": [
+      ["ส.ค. 68", 59.84],
+      ["ก.ย. 68", 57.40],
+      ["ต.ค. 68", 56.99],
+      ["พ.ย. 68", 64.50],
+      ["ธ.ค. 68", 69.42],
+      ["ม.ค. 69", 73.31],
+      ["ก.พ. 69", 79.79],
+      ["มี.ค. 69", 83.73],
+      ["เม.ย. 69", 79.03],
+      ["พ.ค. 69", 75.21],
+      ["มิ.ย. 69", 69.98],
+      ["ก.ค. 69", 71.79],
+      ["ก.ค. 69", 73.85]
+    ],
+    "min": 50,
+    "max": 95,
+    "grid": [55, 65, 70, 75, 85],
+    "fairLine": 70,
+    "currency": "$",
+    "highlight": [7, 9]
+  },
+  "gauge": {
+    "min": 40,
+    "max": 100,
+    "cur": 73.85,
+    "fair": 70,
+    "fairLabelTop": false
+  },
+  "fv": 70
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">●●●●●●●</div>
+    <div>
+      <span class="tag">NYSE: NYT</span>
+      <span class="tag">Media &amp; Publishing</span>
+      <span class="tag">Subscription Tech</span>
+    </div>
+    <h1>The New York Times Company</h1>
+    <div class="sub">Digital news subscription • NYT Cooking • Games (Wordle, Connections, Spelling Bee) • The Athletic • Wirecutter • 13M+ subscribers</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$73.85<small>(NYT)</small></div>
+      </div>
+      <div class="chg">▲ +23.4% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 2 ก.ค. 2569<br>
+        กรอบ 52 สัปดาห์ $51.03 – $87.10<br>
+        ที่มา: Yahoo Finance, StockAnalysis, Finviz
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ Q1/2026 · ที่มา Yahoo Finance + StockAnalysis</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">$11.95B</div><div class="d">~163M หุ้นสามัญ</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~31.7x</div><div class="d">EPS TTM $2.33 · Forward P/E 25.4x</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~25–30x</div><div class="d">ราคา Premium สำหรับ quality media</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">5.97x</div><div class="d">BVPS $12.19 · สูงตามลักษณะ asset-light</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">$344M</div><div class="d">+17.3% YoY · Net margin 12.2%</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$2.33</div><div class="d">FY2025 $2.09 · Forward 2026E $2.87</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~$12.19</div><div class="d">Net Cash $595M · D/E ≈ 0</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~19.7% / 13.7%</div><div class="d">FCF TTM $542M · แข็งแกร่ง</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$2.90B</div><div class="d">+10.5% YoY · Subscription 79% / Ads 20%</div></div>
+      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">51.1%</div><div class="d">Gross Profit $1.48B TTM</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~1.25%</div><div class="d">$0.92/ปี · Ex-div 8 ก.ค. 2569</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">0.95</div><div class="d">ความผันผวนใกล้เคียงตลาด</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#CC0000"></i>ราคา NYT</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $70</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        หุ้น NYT ทำจุดต่ำสุดในรอบ 1 ปีที่ ~$57 ช่วง ก.ย.–ต.ค. 2568 ก่อนพุ่งขึ้นแรงในช่วง ม.ค.–มี.ค. 2569 ตามผลประกอบการ Q4/2568 และ Q1/2569 ที่แข็งแกร่ง — subscriber เพิ่ม 450K ใน Q4 และอีก 310K ใน Q1/2569 พาจำนวนรวมทะลุ 13M · ราคาทำจุดสูงสุดที่ ~$83.73 ในเดือน มี.ค. 2569 ก่อนปรับตัวลงมา 12% สู่ระดับปัจจุบัน $73.85 · ผลตอบแทนรอบปี +23.4%
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">adj. EPS TTM ~$2.60 × P/E เป้าหมาย ~26x — Premium subscription media ที่มี brand moat แข็งแกร่ง (เทียบ 5yr avg ~25-30x) · Forward EPS 2026E $2.87</div></div>
+        <div class="mval">$67.60</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. EV/Revenue</div><div class="mdesc">Revenue TTM $2.90B × 3.8x (quality subscription media with 79% recurring revenue) = EV $11.02B; บวก Net Cash $595M = Equity Value $11.61B ÷ 163M หุ้น</div></div>
+        <div class="mval">$71.25</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. EV/EBITDA</div><div class="mdesc">EBITDA TTM $558M × 20x (subscription media premium · FCF Yield สูง 4.5%) = EV $11.16B; บวก Net Cash $595M = Equity Value $11.76B ÷ 163M หุ้น</div></div>
+        <div class="mval">$72.15</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $65 – $80</span></div>
+        <div class="r">$70</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        วิธี EV/Revenue และ EV/EBITDA ให้ค่าใกล้เคียงกันที่ $71–72 สะท้อน recurring revenue ที่ดีและ FCF margin แข็งแกร่ง · วิธี P/E ให้ค่าต่ำกว่าเล็กน้อยเนื่องจากใช้ EPS GAAP TTM · Fair Value กลางที่ $70 เทียบกับราคาตลาด $73.85 บ่งชี้ว่าหุ้น NYT ซื้อขายอยู่เหนือมูลค่าเหมาะสมเล็กน้อย ~5% · อย่างไรก็ดี ถ้าใช้ forward EPS 2026E $2.87 × 26x จะได้ $74.62 ใกล้เคียงราคาปัจจุบัน
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $73.85</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $70</div></div>
+        </div>
+        <div class="scale">
+          <span>$49<br><small>MOS 30%</small></span>
+          <span>$56<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$70<br><small>Fair Value</small></span>
+          <span style="text-align:right">$80<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">$84.11<br><small>เป้าเฉลี่ย Analyst</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน $73.85 อยู่เหนือ Fair Value $70 ประมาณ 5.5% — ไม่มี Margin of Safety ณ ราคานี้ · เป้าหมาย 10 นักวิเคราะห์เฉลี่ย $84.11 (consensus Buy: 6 Buy, 4 Hold, 0 Sell) บ่งชี้ upside 13.9% จากราคาปัจจุบัน · โซน MOS 20% อยู่ที่ $56 ซึ่งต่ำกว่าราคาตลาดมากพอสมควร · ผู้ลงทุนระยะยาวที่เชื่อในกลยุทธ์ subscription อาจรอจังหวะปรับตัว
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">−5.5%</div>
+        <div class="txt">ราคาเหนือมูลค่าเหมาะสม — ไม่มี MOS ณ ราคาปัจจุบัน</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$56.00</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$49.00</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $70</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="73.85" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $73.85 • EPS ฐาน ~$2.87 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS +5%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$64</div>
+          <div class="ret neg">−9.6%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$3.32</span></li>
+            <li><span>P/E ออก</span><span>18x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$2.97</span></li>
+            <li><span>สถานการณ์</span><span>subscriber growth ชะลอ, Digital ads อ่อน</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +12%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$90</div>
+          <div class="ret pos">+24.8%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$4.04</span></li>
+            <li><span>P/E ออก</span><span>21x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$3.10</span></li>
+            <li><span>สถานการณ์</span><span>ถึง 15M subscriber ตามเป้า 2027</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +18%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$120</div>
+          <div class="ret pos">+62.6%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$4.74</span></li>
+            <li><span>P/E ออก</span><span>24x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$3.30</span></li>
+            <li><span>สถานการณ์</span><span>AI-powered content, 18M+ subscriber, international expansion</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      การคาดการณ์อิงสมมติฐาน EPS growth ตาม consensus analyst ที่ +13%/ปี (base case) · กรณี bear ใช้ชะลอตัวที่ 5%/ปีพร้อม P/E multiple compression · กรณี bull อิงสมมติฐาน subscriber 18M+ ภายในปี 2028 ซึ่ง NYT ได้ประกาศเป้า 15M ภายใน 2027 ไว้แล้ว · ปันผลคำนวณจาก $0.92/หุ้น/ปี (เพิ่มขึ้นเล็กน้อยตามกำไร) · ผลตอบแทนไม่รับประกัน
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก &amp; ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>Subscriber growth momentum:</b> Q1/2569 เพิ่ม 310K รวม 13.08M (เป้า 15M ภายใน 2027) · ARPU กำลังเพิ่มขึ้นต่อเนื่อง</li>
+          <li><b>Bundle strategy:</b> All Access bundle (News + Cooking + Games + Athletic) ช่วยลด churn และเพิ่ม revenue per user อย่างมีนัย</li>
+          <li><b>Digital advertising recovery:</b> Digital ads Q1/2569 +26% YoY · สัดส่วน digital ads เพิ่มขึ้น offset การลดของ print</li>
+          <li><b>Games &amp; lifestyle products:</b> Wordle, Connections, Spelling Bee ดึงผู้ใช้ใหม่หลายสิบล้านคน → funnel เข้าสู่ subscription</li>
+          <li><b>FCF แข็งแกร่ง:</b> FCF TTM $542M (FCF yield ~4.5%) · Net Cash $595M รองรับ M&A / buyback / dividend growth</li>
+          <li><b>AI content strategy:</b> ลงทุนในวิดีโอและ AI-assisted journalism · การขายสิทธิ์ข้อมูลให้ AI platforms อาจเป็นรายได้ใหม่</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>Valuation premium สูง:</b> P/E 31.7x สูงกว่า media peers ส่วนใหญ่ · ผิดหวังแม้แต่ 1 quarter อาจทำให้ multiple compress</li>
+          <li><b>AI disruption ต่อข่าวสาร:</b> ChatGPT/Perplexity ให้ข้อมูลข่าวฟรี → อาจกดดัน subscriber growth ระยะยาว · คดีฟ้อง OpenAI ยังไม่ยุติ</li>
+          <li><b>Print decline เร่งตัว:</b> Print subscription −2.0% และ print ads −5.8% ใน Q4/2568 · ยังคงเป็น drag ต่อ margin</li>
+          <li><b>Subscriber churn risk:</b> เมื่อ subscriber base ขยายใหญ่ขึ้น การรักษา churn ต่ำจะยากขึ้น โดยเฉพาะในกลุ่ม standalone Games/Cooking</li>
+          <li><b>Platform dependency:</b> Apple App Store / Google Play fee ที่ 15-30% กระทบ margin digital subscription · นโยบาย platform อาจเปลี่ยน</li>
+          <li><b>Macro &amp; ad spending:</b> ภาวะเศรษฐกิจถดถอยกระทบ digital advertising อย่างรวดเร็ว · B2B advertising ยังอ่อนแอ</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>Quality Brand, Fair Price — รอจังหวะ</h2>
+      <p>NYT เป็นหนึ่งในธุรกิจสื่อ subscription ที่น่าประทับใจที่สุดในโลก ด้วย brand trust สูง, portfolio product หลากหลาย (Games, Cooking, Athletic), และ FCF แข็งแกร่ง $542M TTM · การเติบโตของ subscriber สู่ 13M+ ยืนยัน thesis ว่าคนยินดีจ่ายเพื่อ quality journalism · อย่างไรก็ดี ราคาปัจจุบัน $73.85 ซื้อขายอยู่เหนือ Fair Value $70 ประมาณ 5.5% และ P/E TTM 31.7x สะท้อน expectation ที่สูงไว้แล้ว · นักลงทุน value ควรรอโอกาสที่ราคาปรับตัวลงสู่โซน $65–70 เพื่อ entry ที่มี MOS เป็นบวก</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$70 <span style="font-size:12px;color:#cab9a8">($65–$80)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −5.5%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$84.11 (Buy)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> NYT เป็นธุรกิจ subscription media คุณภาพสูงที่มี moat แข็งแกร่ง แต่ราคาปัจจุบัน $73.85 ไม่มี Margin of Safety เทียบกับ Fair Value $70 · แนะนำ <b>รอสะสมใน โซน $65–70</b> (ใกล้ Fair Value) หรือ $56 (MOS 20%) หากมีการปรับตัวแรง · นักลงทุนระยะยาวที่เชื่อใน subscriber growth ถึง 15M+ ภายใน 2027 อาจพิจารณาทยอยสะสมได้ · เป้า Analyst เฉลี่ย $84.11 บ่งชี้ upside ~14% หากผลดำเนินงานยังแข็งแกร่ง
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ที่มาข้อมูล: Yahoo Finance (ราคา ณ 2 ก.ค. 2569), StockAnalysis.com (งบการเงิน), SEC 8-K Q1/2569, Finviz (ratios), StockAnalysis Forecast (analyst targets)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 2 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
