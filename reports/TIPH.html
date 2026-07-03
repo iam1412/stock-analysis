@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น ทิพย กรุ๊ป โฮลดิ้งส์ (TIPH) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"TIPH","currency":"THB","price":23.30,"fairValue":27.80,"mos":16.2,"upside":19.3,"pe":13.04,"dividendYield":6.44,"roe":12.17}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme":{
+    "accent":"#0d47a1",
+    "accentDark":"#002171",
+    "darkGrad":"linear-gradient(135deg,#002171 0%,#0d47a1 60%,#1565c0 100%)",
+    "glow":"rgba(13,71,161,0.3)",
+    "subColor":"#bbdefb",
+    "headerMuted":"rgba(255,255,255,0.6)",
+    "verdictText":"#e3f2fd",
+    "vcellLabel":"rgba(227,242,253,0.7)",
+    "badge":"#1565c0",
+    "chgBg":"#137333",
+    "chgColor":"#ffffff"
+  },
+  "chart":{
+    "data":[
+      ["ม.ค. 68",20.20],
+      ["ก.พ. 68",21.70],
+      ["มี.ค. 68",21.80],
+      ["เม.ย. 68",19.40],
+      ["พ.ค. 68",20.70],
+      ["มิ.ย. 68",20.20],
+      ["ก.ค. 68",20.70],
+      ["ส.ค. 68",20.90],
+      ["ก.ย. 68",20.80],
+      ["ต.ค. 68",21.40],
+      ["พ.ย. 68",22.00],
+      ["ธ.ค. 68",23.50],
+      ["ม.ค. 69",23.30]
+    ],
+    "min":17.0,
+    "max":30.0,
+    "grid":[18,20,22,24,26,28,30],
+    "fairLine":27.80,
+    "currency":"฿",
+    "highlight":[3,11],
+    "gridFmt":"v.toFixed(0)",
+    "dataFmt":"d[1].toFixed(2)"
+  },
+  "gauge":{"min":0,"max":100,"cur":23.30,"fair":27.80},
+  "fv":27.80
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">◆ ◆ ◆</div>
+    <div>
+      <span class="tag">SET: TIPH</span>
+      <span class="tag">ประกันวินาศภัย</span>
+      <span class="tag">Holding Company</span>
+    </div>
+    <h1>ทิพย กรุ๊ป โฮลดิ้งส์ (TIPH)</h1>
+    <div class="sub">โฮลดิ้งประกันวินาศภัย • ทิพยประกันภัย (Top 5 non-life) ถือหุ้น ~75% • เบี้ยประกันรวม ฿15,000+ ล้าน/ปี • ปันผลสม่ำเสมอทุกปี</div>
+    <div class="price-row">
+      <div>
+        <div class="px">฿23.30<small>(TIPH)</small></div>
+      </div>
+      <div class="chg">▲ +15.3% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 3 ก.ค. 2569<br>
+        กรอบ 52 สัปดาห์ ฿17.80 – ฿23.80<br>
+        ที่มา: Yahoo Finance, SET.or.th, Google Finance
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ก.ค. 2569</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">฿13,970 ล้าน</div><div class="d">594.29 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~13.04x</div><div class="d">EPS TTM ฿1.80 (ต่ำกว่าค่าเฉลี่ยกลุ่ม)</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~14x</div><div class="d">ช่วง 11–18x ขึ้นกับปีภัยพิบัติ</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">1.41x</div><div class="d">BVPS ฿16.53 (equity ฿9.83B)</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">฿1,003 ล้าน</div><div class="d">ลดลง −32.9% YoY (มาตรฐาน IFRS17)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿1.80</div><div class="d">FY2567 = ฿2.52 | FY2566 = ฿2.96</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~฿16.53</div><div class="d">Equity ฿9,825 ล้าน (Q1/2569)</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~12.2% / 2.0%</div><div class="d">ROE Q1/2569 = 12.07% (annualized)</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">฿33,270 ล้าน</div><div class="d">รวมเบี้ยประกัน + รายได้การลงทุน</div></div>
+      <div class="metric"><div class="k">Combined Ratio</div><div class="v neu">~97–100%</div><div class="d">ต่ำ = รับประกันมีกำไร (อุตสาหกรรมไทย ~95–100%)</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~6.44%</div><div class="d">฿1.50/หุ้น TTM (XD มี.ค. 69)</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">~0.55</div><div class="d">ผันผวนต่ำกว่าตลาด — defensive stock</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ม.ค. 2568 – ม.ค. 2569</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#0d47a1"></i>ราคา TIPH</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿27.80</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        หุ้น TIPH เคลื่อนไหวใน sideways-uptrend ตลอดปี 2568 เริ่มจาก ฿20.20 ใน ม.ค. 68 ดิ่งลงต่ำสุด ฿19.40 ใน เม.ย. 68 ตามความกังวลเรื่องภัยพิบัติและแรงขายตลาด SET โดยรวม ก่อนจะฟื้นตัวต่อเนื่องในช่วง Q3–Q4 68 จาก เบี้ยประกันภัยรถยนต์ที่แข็งแกร่ง และผลกำไร Q3 ที่ดีกว่าคาด ราคาทะยานสู่จุดสูงสุดรอบปี ฿23.80 ใน ธ.ค. 68 ก่อนปรับตัวเล็กน้อยสู่ระดับ ฿23.30 ณ ต้น ม.ค. 69 ผลตอบแทนรอบปี +15.3% สูงกว่า SET Index ช่วงเดียวกัน
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS adj. ฿1.80 × P/E เป้าหมาย ~14x — P/E เฉลี่ย 5 ปีของ TIPH ช่วง 11–18x (ปีปกติ 13–15x) ใช้ 14x เป็นกลาง</div></div>
+        <div class="mval">฿25.20</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล ฿1.50 × (1+4%) = ฿1.56; g 4%, r 9% → ฿1.56/(9%−4%) — สะท้อนปันผลสม่ำเสมอของ TIPH; r=9% รับความเสี่ยงประกันวินาศภัย</div></div>
+        <div class="mval">฿31.20</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 12.17% − g 4%)/(r 9% − g 4%) ≈ 1.634 × BVPS ฿16.53 — สะท้อน ROE เหนือ cost of equity เล็กน้อย</div></div>
+        <div class="mval">฿27.01</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿25.20 – ฿31.20</span></div>
+        <div class="r">฿27.80</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        วิธี DDM ให้ค่าสูงสุด (฿31.20) เนื่องจาก TIPH มีประวัติจ่ายปันผลสม่ำเสมอและ yield สูง สะท้อนว่าตลาดมองเป็น income stock มากกว่า growth วิธี P/E ให้ค่าต่ำสุด (฿25.20) เพราะ EPS TTM ฿1.80 ยังได้รับผลกระทบจากการเปลี่ยนมาตรฐาน IFRS17 ใน FY2568 วิธี Justified P/BV (฿27.01) สะท้อนความสามารถในการสร้าง ROE เหนือ cost of equity อยู่ในระดับปานกลาง ค่าเฉลี่ย ฿27.80 เหมาะสม — ราคาปัจจุบัน ฿23.30 ต่ำกว่า FV ราว 16%
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿23.30</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿27.80</div></div>
+        </div>
+        <div class="scale">
+          <span>฿19.46<br><small>MOS 30%</small></span>
+          <span>฿22.24<br><small>MOS 20%</small></span>
+          <span style="text-align:center">฿27.80<br><small>Fair Value</small></span>
+          <span style="text-align:right">฿28.50<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">฿31.20<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคา ฿23.30 อยู่ต่ำกว่า Fair Value ฿27.80 ประมาณ 16.2% — อยู่ในโซน MOS 10–20% เหมาะสำหรับทยอยสะสม หาก SET ปรับฐานหนักและ TIPH ลงมาแตะ MOS 20–30% (฿19.46–฿22.24) จะเป็นโซนที่น่าสนใจมากขึ้น เนื่องจาก yield ที่ราคา ฿19.46 จะอยู่ที่ ~7.7% ซึ่งน่าดึงดูดสำหรับ income investor
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict ok">
+        <div class="big">+16.2%</div>
+        <div class="txt">ราคาต่ำกว่า Fair Value — โซนทยอยสะสม (MOS 10–20%)</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿22.24</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿19.46</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿27.80</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="23.30" step="0.05">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿23.30 • EPS ฐาน ~฿1.80 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS 0%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿19.80</div>
+          <div class="ret neg">−11.2% total / −3.9%/ปี</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿1.80</span></li>
+            <li><span>P/E ออก</span><span>11x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿4.50</span></li>
+            <li><span>สถานการณ์</span><span>ภัยพิบัติหนัก กำไรทรง</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +5%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿29.40</div>
+          <div class="ret pos">+34.3% total / +10.3%/ปี</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿2.08</span></li>
+            <li><span>P/E ออก</span><span>14x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿4.80</span></li>
+            <li><span>สถานการณ์</span><span>ฟื้นปกติ IFRS17 ปรับตัว</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +10%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿38.30</div>
+          <div class="ret pos">+85.8% total / +23.0%/ปี</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿2.40</span></li>
+            <li><span>P/E ออก</span><span>16x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿5.40</span></li>
+            <li><span>สถานการณ์</span><span>พรีเมียมสูง ไม่มีภัยพิบัติ</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      <b>หมายเหตุ:</b> EPS ฐาน ฿1.80 (TTM) ได้รับผลกระทบจากการปรับมาตรฐาน IFRS17 ใน FY2568 ซึ่งเปลี่ยนวิธีบันทึกรายได้ประกันชีวิต (ทิพยประกันภัยมีส่วนประกันชีวิตเล็กน้อย) EPS ปี 2566–2567 อยู่ที่ ฿2.52–฿2.96 ซึ่งสูงกว่า — หาก TIPH กลับมา EPS ปกติ ฿2.50+ ใน FY2569 ทุก scenario จะ upside มากกว่าที่คาด ปันผลรวม 3 ปีคำนวณจาก ฿1.50/ปี โดยประมาณ (ปรับ 5% ต่อปีใน Base/Bull)
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>EPS ฟื้นตัวหลัง IFRS17:</b> การปรับตัวกับมาตรฐานบัญชีใหม่ใน FY2568 ทำให้ EPS ดูต่ำผิดปกติ คาดว่า FY2569 จะกลับสู่ระดับ ฿2.00–฿2.50 เมื่อ IFRS17 ถูก normalize เต็มรูปแบบ</li>
+          <li><b>เบี้ยประกันรถยนต์ฟื้นตัว:</b> ยอดขายรถใหม่ไทยที่คาดเพิ่มขึ้นในปี 2569 จะหนุนเบี้ยประกันภัยรถยนต์ ซึ่งเป็น segment ใหญ่สุดของทิพยประกันภัย</li>
+          <li><b>ดอกเบี้ยนโยบายยังสูง:</b> พอร์ตลงทุนส่วนใหญ่เป็นตราสารหนี้ — สภาพแวดล้อมดอกเบี้ยสูงหนุนรายได้ดอกเบี้ยและการลงทุนของบริษัทประกัน</li>
+          <li><b>ปันผล yield สูง 6%+:</b> TIPH จ่ายปันผลสม่ำเสมอ ฿1.00–฿1.50/หุ้น/ปี ที่ราคาปัจจุบัน yield ~6.4% ดึงดูด income investor ในสภาพแวดล้อมดอกเบี้ยขาลง</li>
+          <li><b>ประกันสุขภาพเติบโต:</b> สังคมสูงวัยของไทยหนุนการเติบโตของประกันสุขภาพซึ่งทิพยประกันภัยมีส่วนแบ่งตลาดเพิ่มขึ้นต่อเนื่อง</li>
+          <li><b>ฐานะการเงินแข็งแกร่ง:</b> Net cash position +฿569 ล้าน | Total equity ฿9,825 ล้าน ไม่มีหนี้สินทางการเงินที่น่ากังวล สามารถรักษาระดับปันผลได้ต่อเนื่อง</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>ภัยพิบัติสร้างความเสียหายสูง:</b> น้ำท่วมหนัก แผ่นดินไหว หรือมหันตภัยทางธรรมชาติสามารถทำให้ค่าสินไหมพุ่งขึ้นฉับพลัน กดกำไรรุนแรง (เช่นน้ำท่วม 2554 ที่กระทบทั้งอุตสาหกรรม)</li>
+          <li><b>ผลกระทบ IFRS17 ยังไม่แน่นอน:</b> มาตรฐานการรายงานใหม่ทำให้ตัวเลข EPS/revenue เปลี่ยนแปลง นักวิเคราะห์อาจยังปรับประมาณการไม่ตรง ทำให้ความผันผวนสูงในช่วงรายงานผล</li>
+          <li><b>การแข่งขันด้านเบี้ยประกัน:</b> ตลาดประกันวินาศภัยไทยมีผู้เล่น 50+ ราย การตัดราคาเบี้ยประกันรถยนต์อาจกดมาร์จิ้น combined ratio อาจสูงเกิน 100% ในปีที่แข่งขันรุนแรง</li>
+          <li><b>ความเสี่ยงตลาดพอร์ตลงทุน:</b> สินทรัพย์ลงทุนขนาดใหญ่ (~฿38B) ของกลุ่ม — หาก equity market ปรับฐานหนักหรือดอกเบี้ยพันธบัตรผันผวน จะกระทบ mark-to-market</li>
+          <li><b>ความเสี่ยงกระจุกตัว:</b> TIPH ถือหุ้น ~75% ในทิพยประกันภัย — ผลประกอบการแทบทั้งหมดขึ้นกับบริษัทเดียว โครงสร้าง holding company อาจมี discount เพิ่มเติม</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>TIPH — Income Stock ราคา Discount กับ Fair Value ~16% | Yield 6.4%</h2>
+      <p>ทิพย กรุ๊ป โฮลดิ้งส์ (TIPH) คือ holding company ที่ถือหุ้นหลักในทิพยประกันภัย ซึ่งเป็นบริษัทประกันวินาศภัย Top 5 ของไทย ด้วยเบี้ยประกันรับรวม ฿15,000+ ล้าน/ปี ธุรกิจประกันวินาศภัยมีลักษณะ defensive — รายได้สม่ำเสมอจากเบี้ยต่ออายุ และ EPS ขึ้นลงตามเหตุการณ์ภัยพิบัติ ปัจจุบันราคา ฿23.30 ต่ำกว่า Fair Value ฿27.80 ราว 16.2% อยู่ในโซนทยอยสะสม — ไม่ได้ถูกมากแบบ deep value แต่ไม่แพง พร้อม yield 6.4% เป็น cushion ระหว่างรอ re-rating EPS ฐาน TTM ฿1.80 ยังถูกกดด้วยการเปลี่ยนมาตรฐาน IFRS17 ใน FY2568 ซึ่งคาดว่า normalize ใน FY2569 และ EPS จะกลับขึ้นสู่ ฿2.00–฿2.50</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿27.80 <span style="font-size:12px;color:#cab9a8">(฿25.20–฿31.20)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +16.2%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿28.50 (ทยอยสะสม)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> เหมาะสำหรับ income investor ที่ต้องการ yield สูง 6%+ จาก defensive stock ราคาไม่แพง ทยอยสะสมที่ระดับปัจจุบัน (MOS ~16%) และเพิ่มน้ำหนักหาก TIPH ปรับลงสู่ ฿19–฿22 (MOS 20–30%) หากซื้อเพื่อ capital gain ควรรอ EPS ฟื้น FY2569 เป็นสัญญาณยืนยัน — เป้า 12 เดือน ฿27–฿28 (upside ~19%) ผลตอบแทนรวมรอบปี (yield + capital gain) คาด 22–25% ใน Base case
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    แหล่งข้อมูล: Yahoo Finance (TIPH.BK), SET.or.th Factsheet (2 ก.ค. 2569), Google Finance (TIPH:BKK), Dhipaya Group IR — Financial Highlights FY2567/Q1/2569 (dhipayagroup.co.th), StockAnalysis.com (BKK:TIPH)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 3 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
