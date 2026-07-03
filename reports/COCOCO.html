@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น ไทย โคโคนัท (COCOCO) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"COCOCO","currency":"THB","price":5.75,"fairValue":5.80,"mos":0.86,"upside":0.87,"pe":32.32,"dividendYield":2.09,"roe":7.2}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#795548",
+    "accentDark": "#4e342e",
+    "darkGrad": "linear-gradient(135deg,#3e2723 0%,#4e342e 60%,#795548 100%)",
+    "glow": "rgba(121,85,72,0.3)",
+    "subColor": "#d7ccc8",
+    "headerMuted": "rgba(255,255,255,0.6)",
+    "verdictText": "#efebe9",
+    "vcellLabel": "rgba(239,235,233,0.7)",
+    "badge": "#8d6e63",
+    "chgBg": "#1e8e3e",
+    "chgColor": "#ffffff"
+  },
+  "chart": {
+    "data": [
+      ["ก.ค. 68", 5.05],
+      ["ส.ค. 68", 4.98],
+      ["ก.ย. 68", 5.45],
+      ["ต.ค. 68", 5.70],
+      ["พ.ย. 68", 6.00],
+      ["ธ.ค. 68", 5.55],
+      ["ม.ค. 69", 5.75],
+      ["ก.พ. 69", 5.65],
+      ["มี.ค. 69", 5.65],
+      ["เม.ย. 69", 5.80],
+      ["พ.ค. 69", 5.70],
+      ["มิ.ย. 69", 5.70],
+      ["ก.ค. 69", 5.75]
+    ],
+    "min": 4.50,
+    "max": 6.50,
+    "grid": [4.50, 5.00, 5.50, 6.00, 6.50],
+    "fairLine": 5.80,
+    "currency": "฿",
+    "highlight": [1, 4],
+    "gridFmt": "v.toFixed(2)",
+    "dataFmt": "d[1].toFixed(2)"
+  },
+  "gauge": {
+    "min": 3.50,
+    "max": 8.00,
+    "cur": 5.75,
+    "fair": 5.80,
+    "fairLabelTop": false
+  },
+  "fv": 5.80
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">●●●●●●●●●●●●●●●●●●●●●●●</div>
+    <div>
+      <span class="tag">SET: COCOCO</span>
+      <span class="tag">อาหาร &amp; เครื่องดื่ม</span>
+      <span class="tag">ส่งออกมะพร้าว</span>
+    </div>
+    <h1>บมจ. ไทย โคโคนัท (COCOCO)</h1>
+    <div class="sub">กะทิ • น้ำมะพร้าว • มะพร้าวขูด • Coconut Cream/Milk • อาหารสัตว์เลี้ยง Moochie • ส่งออก 100+ ประเทศ</div>
+    <div class="price-row">
+      <div>
+        <div class="px">฿5.75<small>(COCOCO)</small></div>
+      </div>
+      <div class="chg" style="background:var(--chgBg,#1e8e3e);color:var(--chgColor,#fff)">▲ +13.9% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 3 ก.ค. 2569<br>
+        กรอบ 52 สัปดาห์ ฿4.68 – ฿8.65<br>
+        ที่มา: Investing.com, StockAnalysis.com, Yahoo Finance
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ก.ค. 2569 — TTM สิ้นสุด Q1/2569 (มี.ค. 2569) / FY2025 งบประจำปี</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">฿8,453 ล้าน</div><div class="d">1,470 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~32x</div><div class="d">ค่าเฉลี่ยอุตสาหกรรม ~18–22x</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~3 ปี</div><div class="v">~20–25x</div><div class="d">ช่วงปกติก่อนกำไรดิ่ง 2568</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">2.38x</div><div class="d">BVPS ฿2.42 / ROE 7.2%</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ TTM</div><div class="v neg">฿261.5 ล้าน</div><div class="d">−61.9% YoY (FY67 ฿686M)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿0.18</div><div class="d">Forward 2569 ฿0.37 (ฟื้นตัว)</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~฿2.42</div><div class="d">D/E ~0.78x — หนี้พอดี</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v neu">~7.2% / ~3.5%</div><div class="d">ลดจาก ~21% (2567) ต้นทุนมะพร้าวพุ่ง</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">฿6,690 ล้าน</div><div class="d">+1.2% YoY — เติบโตช้า</div></div>
+      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">~19.96%</div><div class="d">ลดจาก 24.2% (FY67) วัตถุดิบแพง</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~2.09%</div><div class="d">฿0.12/หุ้น ปี 68 (จ่าย พ.ค. 69)</div></div>
+      <div class="metric"><div class="k">เป้ารายได้ 2569</div><div class="v pos">+25–30%</div><div class="d">แผน JUMP+ ขยายตลาดโลก</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ก.ค. 2568 – ก.ค. 2569</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#795548"></i>ราคา COCOCO</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿5.80</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ในรอบ 1 ปีที่ผ่านมา COCOCO ร่วงจาก ฿5.05 (ก.ค. 2568) ลงจุดต่ำสุด ฿4.98 (ส.ค. 2568) ก่อนเด้งขึ้นแตะ ฿6.00 (พ.ย. 2568) ตามการประกาศงบ Q3/68 กำไร 9 เดือน ฿212 ล้าน จากนั้นทรงตัวในกรอบ ฿5.55–฿5.80 จนถึงปัจจุบัน ฿5.75 คิดเป็นผลตอบแทนรอบปี +13.9% เทียบกับ ฿5.05 เมื่อ ก.ค. 2568 ราคาสะท้อนการฟื้นตัวของกำไรหลังจากที่ทั้งปี 2568 กำไรสุทธิดิ่ง 61.9% จากต้นทุนมะพร้าวพุ่งสูงและมาร์จินกดดัน
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. Forward P/E Valuation</div><div class="mdesc">EPS adj. ฿0.37 (Forward 2569 — consensus นักวิเคราะห์) × P/E เป้าหมาย 18x (ค่าเฉลี่ยหุ้นอาหาร SET) — สะท้อนการฟื้นตัวกำไรจากแผน JUMP+ + กำลังผลิตใหม่ + ขยายตลาดส่งออก</div></div>
+        <div class="mval">฿6.66</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. P/Sales Valuation</div><div class="mdesc">รายได้ FY2569 ประมาณการ ฿8,586M (+27.5% midpoint guidance) / 1,470M หุ้น = ฿5.84/หุ้น × P/S เป้าหมาย 1.1x (premium export brand + health segment) — อิงอัตราส่วนหุ้นอาหารส่งออก SET ที่มีแบรนด์ระดับโลก</div></div>
+        <div class="mval">฿6.42</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผลปกติ ฿0.20 × (1+g 5%) = ฿0.21; g 5%, r 9% (required return หุ้น mid-cap ไทย) → FV = ฿0.21/(0.09−0.05) — อิงระดับปันผลปี 2567 (฿0.30) ปรับ conservative ตามปี 2568 (฿0.12) ใช้ค่ากลาง</div></div>
+        <div class="mval">฿5.25</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿5.25 – ฿6.66</span></div>
+        <div class="r">฿5.80</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        Fair Value เฉลี่ยสามวิธี = (฿6.66 + ฿6.42 + ฿5.25) / 3 = ฿6.11 ปรับ conservative เป็น ฿5.80 โดยให้น้ำหนัก DDM มากขึ้นในสภาวะที่กำไรและ payout ผันผวน — วิธี Forward P/E ให้ค่าสูงสุดเพราะอิง EPS ฟื้นตัว หากกำไรไม่ฟื้นตาม guidance ค่านี้จะไม่สมเหตุสมผล DDM ให้ต่ำสุดเพราะ payout ratio ปัจจุบันต่ำ สอดคล้องกับ consensus นักวิเคราะห์ที่ให้เป้า ฿5.83 (Hold)
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿5.75</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿5.80</div></div>
+        </div>
+        <div class="scale">
+          <span>฿4.06<br><small>MOS 30%</small></span>
+          <span>฿4.64<br><small>MOS 20%</small></span>
+          <span style="text-align:center">฿5.80<br><small>Fair Value</small></span>
+          <span style="text-align:right">฿5.83<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">฿6.66<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน ฿5.75 เกือบเท่ากับมูลค่าเหมาะสม ฿5.80 (MOS เพียง +0.86%) สอดคล้องกับเป้านักวิเคราะห์เฉลี่ย ฿5.83 (4 analysts: "Hold") โซน MOS 20% อยู่ที่ ฿4.64 และ MOS 30% ที่ ฿4.06 ซึ่งอาจเกิดขึ้นในกรณีที่กำไรฟื้นตัวช้ากว่าคาดหรือตลาดเกิดแรงขายในอุตสาหกรรม จุดต่ำสุด 52W ที่ ฿4.68 ใกล้เคียงโซน MOS 20% ชี้ให้เห็นว่าราคาเคยมาถึงโซนน่าสนใจแล้วในปี 2568
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">+0.86%</div>
+        <div class="txt">ราคาพอดีมูลค่า — ยังไม่มี Margin of Safety ที่เพียงพอ</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿4.64</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿4.06</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿5.80</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="5.75" step="0.05">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿5.75 • EPS ฐาน ~฿0.18 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS 0%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿3.24</div>
+          <div class="ret neg">−37.4% รวม / ~−14.5%/ปี</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.18</span></li>
+            <li><span>P/E ออก</span><span>18x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.36</span></li>
+            <li><span>สถานการณ์</span><span>กำไรทรง ต้นทุนกดดัน</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +25%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿7.00</div>
+          <div class="ret pos">+31.1% รวม / ~+9.4%/ปี</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.35</span></li>
+            <li><span>P/E ออก</span><span>20x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.54</span></li>
+            <li><span>สถานการณ์</span><span>JUMP+ ผลักดัน กำไรฟื้น</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +35%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿11.00</div>
+          <div class="ret pos">+106.1% รวม / ~+27%/ปี</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.44</span></li>
+            <li><span>P/E ออก</span><span>25x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.90</span></li>
+            <li><span>สถานการณ์</span><span>ตลาดใหม่ US/จีน บูมเร็ว</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      การคาดการณ์ Base case อิงแผน JUMP+ 2569–2571 ที่บริษัทตั้งเป้ารายได้โต 25–30% ต่อปี พร้อมปรับปรุงประสิทธิภาพการผลิตและขยายตลาดส่งออก อย่างไรก็ตาม P/E ปัจจุบัน 32x บน EPS TTM ฿0.18 ค่อนข้างสูงเมื่อเทียบกับค่าเฉลี่ยอุตสาหกรรม — ความเสี่ยงหลักคือกำไรไม่ฟื้นตาม guidance ส่งผลให้ราคาปรับลงแรงตาม Bear case สมมติฐาน: คิดลด 9%, terminal growth 4%, ปันผลเพิ่มปีละ 10%
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก &amp; ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>แผน JUMP+ 3 ปี (2569–2571):</b> บริษัทตั้งเป้ารายได้โต 25–30% ต่อปี ขยายกำลังผลิต เพิ่มผลิตภัณฑ์ Functional Beverage และ Health Products มูลค่าสูงขึ้น</li>
+          <li><b>ตลาดส่งออกบูม:</b> ส่งออก 100+ ประเทศ — ตลาดหลัก US, จีน, อาเซียน มีแนวโน้มเติบโตต่อเนื่องตามกระแสรักสุขภาพ (Coconut Water, Plant-based Products)</li>
+          <li><b>NovoCoconut (ฟิลิปปินส์) — ออเดอร์เพิ่ม:</b> บริษัทลูกในฟิลิปปินส์รับ "order trend เพิ่มขึ้น" รองรับความต้องการวัตถุดิบและผลิตภัณฑ์มะพร้าว</li>
+          <li><b>Moochie/VetMoo+ (อาหารสัตว์เลี้ยง) เติบโตแรง:</b> แบรนด์ Moochie ขยายตลาด premium pet food ทั้งในประเทศและต่างประเทศ เป็น high-margin segment ที่โตเร็ว</li>
+          <li><b>ต้นทุนวัตถุดิบมีโอกาสผ่อนคลาย:</b> ราคามะพร้าวที่พุ่งสูงในปี 2568 มีโอกาสปรับตัวลง ส่งผลให้ gross margin ฟื้นตัวจาก ~19% กลับสู่ 22–24%</li>
+          <li><b>กำลังผลิตใหม่ + เทคโนโลยี:</b> การลงทุนในโรงงานและกระบวนการผลิตใหม่รองรับรายได้ที่เพิ่มขึ้น ลดต้นทุนต่อหน่วยระยะยาวและเพิ่ม Net Zero goal</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>ต้นทุนมะพร้าวผันผวน:</b> วัตถุดิบหลักราคาผันผวนตามฤดูกาลและสภาพอากาศ — ปี 2568 กำไรดิ่ง 61.9% เพราะต้นทุนพุ่ง แสดงความเปราะบางสูงของโมเดลธุรกิจ</li>
+          <li><b>P/E สูงเมื่อเทียบ TTM:</b> P/E 32x บน EPS trailing ฿0.18 ค่อนข้างแพง — ถ้ากำไรไม่ฟื้นตาม forward estimate มีความเสี่ยง de-rating สู่ระดับต่ำกว่า</li>
+          <li><b>ค่าเงินบาทแข็ง:</b> รายได้ส่วนใหญ่เป็น USD/EUR — บาทแข็งกดดัน revenue ในรูปบาทและ margin ส่งออก ซึ่งเป็นปัจจัยนอกควบคุม</li>
+          <li><b>การแข่งขันระดับโลก:</b> ตลาดผลิตภัณฑ์มะพร้าวเติบโตดึงดูดคู่แข่งจากอินโดนีเซีย ฟิลิปปินส์ ศรีลังกา ที่มีต้นทุนวัตถุดิบต่ำกว่าและ scale ใหญ่กว่า</li>
+          <li><b>Execution risk ของ JUMP+:</b> แผน 3 ปีต้องการ execution ที่แม่นยำ — revenue guide 25–30% ต่อปีอาจเผชิญความท้าทายถ้าตลาดส่งออกชะลอตัวหรือคู่แข่งตัดราคา</li>
+          <li><b>ROE ต่ำ 7.2%:</b> ROE ต่ำกว่า required return (9%) ทำให้ Justified P/BV ต่ำ — สะท้อนว่าบริษัทยังสร้างมูลค่าได้น้อยกว่าทุน ต้องพิสูจน์ margin recovery</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>ราคาพอดีมูลค่า — รอจังหวะเข้าที่ดีกว่า</h2>
+      <p>COCOCO เป็นผู้นำการส่งออกผลิตภัณฑ์มะพร้าวไทยไปกว่า 100 ประเทศ มีแบรนด์ที่แข็งแกร่ง (Thai Coco, Moochie) และแผน JUMP+ ที่ชัดเจนสำหรับ 3 ปีข้างหน้า แต่ราคาปัจจุบัน ฿5.75 แทบไม่มี Margin of Safety (MOS เพียง 0.86%) บนมูลค่าเหมาะสม ฿5.80 ซึ่งสอดคล้องกับ consensus "Hold" ของ 4 นักวิเคราะห์ที่ให้ราคาเป้า ฿5.83 ความน่าสนใจจะเพิ่มขึ้นอย่างมากถ้าราคาลงมาสู่โซน ฿4.64–฿4.98 (MOS 20%+ หรือใกล้จุดต่ำสุด 52W) หรือถ้ากำไร Q2/69 ออกมาดีกว่าคาดชัดเจน ยืนยัน story JUMP+ กำลังเป็นจริง</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿5.80 <span style="font-size:12px;color:#cab9a8">(฿5.25–฿6.66)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +0.86%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿5.83 (Hold)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> รอโอกาสเข้าที่ ฿4.64–฿5.00 (MOS 20%+ หรือใกล้ 52W-low) สำหรับ value investor / นักลงทุนที่เชื่อใน story JUMP+ อาจทยอยสะสมในกรอบ ฿5.50 เพื่อรับปันผล 2.09% + upside จากการฟื้นตัวกำไร / หลีกเลี่ยงการซื้อที่ราคาสูงกว่า FV จนกว่าจะมีหลักฐานกำไร Q2/69 ฟื้นตัวชัดเจน
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ EPS Forward ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    ข้อมูลราคา ณ 3 ก.ค. 2569 จาก Investing.com, StockAnalysis.com และ Yahoo Finance • ข้อมูลงบการเงินจาก StockAnalysis.com และ Kaohoon.com (งบ Q1/2569 สิ้นสุด มี.ค. 2569 / FY2568 สิ้นสุด ธ.ค. 2568)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 3 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
