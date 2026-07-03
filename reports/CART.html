@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น Maplebear / Instacart (CART) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"CART","currency":"USD","price":45.78,"fairValue":52,"mos":12.0,"upside":13.6,"pe":25.68,"dividendYield":null,"roe":16.28}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#43B02A",
+    "accentDark": "#2d8a1a",
+    "darkGrad": "linear-gradient(135deg,#1a3d0f 0%,#0d2207 100%)",
+    "glow": "rgba(67,176,42,0.45)",
+    "subColor": "#a8d5a2",
+    "headerMuted": "rgba(255,255,255,0.55)",
+    "verdictText": "#e8f5e9",
+    "vcellLabel": "#a8d5a2",
+    "badge": "#43B02A",
+    "chgBg": "#c5221f",
+    "chgColor": "#ffffff"
+  },
+  "chart": {
+    "data": [
+      ["ก.ค. 68", 47.97],
+      ["ส.ค. 68", 43.37],
+      ["ก.ย. 68", 36.76],
+      ["ต.ค. 68", 36.86],
+      ["พ.ย. 68", 42.01],
+      ["ธ.ค. 68", 44.98],
+      ["ม.ค. 69", 37.16],
+      ["ก.พ. 69", 37.51],
+      ["มี.ค. 69", 37.46],
+      ["เม.ย. 69", 42.35],
+      ["พ.ค. 69", 39.80],
+      ["มิ.ย. 69", 47.35],
+      ["ก.ค. 69", 45.78]
+    ],
+    "min": 30,
+    "max": 60,
+    "grid": [30, 35, 40, 45, 50, 55, 60],
+    "fairLine": 52,
+    "currency": "$",
+    "highlight": [0, 2, 11]
+  },
+  "gauge": {
+    "min": 30,
+    "max": 65,
+    "cur": 45.78,
+    "fair": 52,
+    "fairLabelTop": true
+  },
+  "fv": 52
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">🛒🥦🚚📦🛍️</div>
+    <div>
+      <span class="tag">NASDAQ: CART</span>
+      <span class="tag">Grocery Tech / Marketplace</span>
+      <span class="tag">Instacart Ads Platform</span>
+    </div>
+    <h1>Maplebear Inc. (Instacart)</h1>
+    <div class="sub">Grocery delivery marketplace • 1,500+ retail partners (Kroger, Costco, Albertsons, Aldi) • Instacart Ads (high-margin) • GTV $40B+ annualized • IPO NASDAQ ก.ย. 2566</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$45.78<small>(CART)</small></div>
+      </div>
+      <div class="chg">▼ −4.6% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 2 ก.ค. 2569<br>
+        กรอบ 52 สัปดาห์ $32.73 – $53.50<br>
+        ที่มา: StockAnalysis.com, Finviz.com, Yahoo Finance
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ก.ค. 2569 — ยืนยัน ≥2 แหล่ง (StockAnalysis + Finviz)</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">$10.76B</div><div class="d">235M shares · EV $10.04B</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~25.7x</div><div class="d">EPS TTM $1.78 · Forward P/E 15.3x (FY2026E)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">4.52x</div><div class="d">BVPS $10.12 · Total Equity $2.59B</div></div>
+      <div class="metric"><div class="k">EV/EBITDA</div><div class="v neu">16.6x</div><div class="d">EBITDA TTM $677M · EV/FCF 11.4x</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$3.86B</div><div class="d">+14% YoY · Q1 2569 ทะลุ $1B ครั้งแรก</div></div>
+      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v pos">72.5%</div><div class="d">Gross Profit TTM $2.83B · Ads margin สูงมาก</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$1.78</div><div class="d">GAAP profitable · FY2026E $4.03 (+127%)</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~16.3% / 9.2%</div><div class="d">Asset-light model · ไม่มีเงินปันผล</div></div>
+
+      <div class="metric"><div class="k">GTV Q1 2569</div><div class="v pos">$10.3B</div><div class="d">+13% YoY · Orders 91M (+10%) · AOV $113</div></div>
+      <div class="metric"><div class="k">FCF TTM</div><div class="v pos">$883M</div><div class="d">FCF margin 22.8% · แข็งแกร่งมาก</div></div>
+      <div class="metric"><div class="k">Net Cash</div><div class="v pos">$719M</div><div class="d">Cash $690M · Debt เพียง $34M · D/E 0.01</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">0.78</div><div class="d">ความผันผวนต่ำกว่าตลาด · Short Float 10.3%</div></div>
+
+      <div class="metric"><div class="k">Adj EBITDA Q1'69</div><div class="v pos">$300M</div><div class="d">+23% YoY · margin ~29% · ดีกว่าคาด</div></div>
+      <div class="metric"><div class="k">Ads Revenue YoY</div><div class="v pos">+16%</div><div class="d">fastest growth since Q3 · Off-platform expand</div></div>
+      <div class="metric"><div class="k">Analyst Rating</div><div class="v pos">Buy</div><div class="d">30 นักวิเคราะห์ · เป้าเฉลี่ย $50.38 (+10%)</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~$10.12</div><div class="d">Cash per share $3.06 · Net cash $719M</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ก.ค. 2568 – ก.ค. 2569 · Yahoo Finance API</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#43B02A"></i>ราคา CART</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $52</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคา CART เปิด ก.ค. 2568 ที่ $47.97 แล้วดิ่งลงสู่จุดต่ำสุด ~$36.76 ช่วง ก.ย. 2568 จากแรงขายหลังปิดล็อกอัพหุ้น IPO และกังวลการแข่งขัน DoorDash/Uber Eats ที่ขยายส่งของชำเพิ่มขึ้น
+        ต่อมาฟื้นตัวสู่ $44.98 (ธ.ค. 2568) ก่อนอ่อนตัวรอบสองต้น 2569 ($37–38) จาก sentiment ตลาดโดยรวม
+        จากนั้นพุ่งแข็งค่าขึ้นสู่ $47.35 (มิ.ย. 2569) หลัง Q1 2569 รายงานผลดีเกินคาด GTV แตะ $10.3B และรายได้ทะลุ $1B/ไตรมาสครั้งแรก
+        ก่อนปิด ก.ค. 2569 ที่ $45.78 ผลตอบแทนรอบปี −4.6%
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation (TTM)</div><div class="mdesc">EPS adj. $1.78 × P/E 28x = $49.84 — 28x เหมาะสมสำหรับ marketplace GAAP profitable + EPS growth สูง; peers DoorDash ~40x, Uber ~25x</div></div>
+        <div class="mval">$50</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. EV/Revenue</div><div class="mdesc">Revenue TTM $3.86B × 3.0x = EV $11.59B + Net Cash $0.72B = $12.31B ÷ 235M shares = $52.38 — peers: DoorDash ~4x, grocery marketplace discount สมเหตุสมผล</div></div>
+        <div class="mval">$52</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. EV/EBITDA</div><div class="mdesc">EBITDA TTM $677M × 18x = EV $12.19B + Net Cash $0.72B = $12.91B ÷ 235M shares = $54.93 — 18x เหมาะกับ profitable platform ที่มี Ads business margin สูง</div></div>
+        <div class="mval">$55</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $49 – $56</span></div>
+        <div class="r">$52</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        วิธี EV/Revenue ($52) และ EV/EBITDA ($55) ให้ค่าสอดคล้องกัน สะท้อนธุรกิจ marketplace + Ads ที่มี gross margin 72.5% และ FCF แข็งแกร่ง
+        วิธี P/E (TTM) ให้ค่า $50 ต่ำกว่าเล็กน้อยเนื่องจาก EPS TTM $1.78 ยังต่ำ (stock-based comp สูง + IPO costs) แต่ forward EPS FY2026E $4.03 บ่งชี้ศักยภาพกำไรที่แท้จริงสูงกว่า
+        ราคาปัจจุบัน $45.78 ต่ำกว่า FV เฉลี่ย $52 ที่ MOS ~12% — แหล่งข้อมูล: StockAnalysis.com, Finviz.com, Yahoo Finance API (2 ก.ค. 2569)
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $45.78</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $52</div></div>
+        </div>
+        <div class="scale">
+          <span>$36.40<br><small>MOS 30%</small></span>
+          <span>$41.60<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$50.38<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">$52<br><small>Fair Value</small></span>
+          <span style="text-align:right">$56<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน $45.78 อยู่ในโซน MOS 10–20% ต่ำกว่า Fair Value $52 ประมาณ 12% ใกล้เคียงกับเป้านักวิเคราะห์ $50.38 (Buy consensus, 30 คน)
+        โซนน่าสนใจ MOS 20% อยู่ที่ $41.60 ซึ่งเคยทดสอบในช่วง ก.ย.–ต.ค. 2568 และ ก.พ.–มี.ค. 2569
+        ผู้ที่ชอบ deep value อาจรอโซน $36–37 (MOS 30%) ซึ่งเป็นจุดต่ำสุดรอบปีที่ผ่านมา (ก.ย. 2568)
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict ok">
+        <div class="big">+12.0%</div>
+        <div class="txt">MOS ระดับปานกลาง — ราคาต่ำกว่า Fair Value เล็กน้อย เหมาะทยอยสะสมแบบ DCA</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$41.60</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$36.40</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $52</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="45.78" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $45.78 • EPS ฐาน ~$1.78 TTM • ไม่มีปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS +5%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$45</div>
+          <div class="ret neg">−1.7%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$2.06</span></li>
+            <li><span>P/E ออก</span><span>22x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$0</span></li>
+            <li><span>สถานการณ์</span><span>GTV ชะลอ DoorDash/Uber กินส่วนแบ่ง Ads โตช้า</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +15%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$68</div>
+          <div class="ret pos">+48.5%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$2.71</span></li>
+            <li><span>P/E ออก</span><span>25x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$0</span></li>
+            <li><span>สถานการณ์</span><span>GTV +10%/ปี Ads ขยายต่อเนื่อง กำไรเติบโตสม่ำเสมอ</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +25%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$97</div>
+          <div class="ret pos">+111.9%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$3.47</span></li>
+            <li><span>P/E ออก</span><span>28x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$0</span></li>
+            <li><span>สถานการณ์</span><span>Ads platform ระเบิด AI Cart Assistant ดัน AOV GTV +15%/ปี พันธมิตรเพิ่ม</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      EPS TTM $1.78 ใช้เป็นฐาน conservative — Instacart มีศักยภาพขยาย EPS เร็วจาก Advertising (margin ~80%+) ที่เติบโต 16%/ปี และ operating leverage ของ platform
+      นักวิเคราะห์คาด EPS FY2026E $4.03 (+127% จาก TTM) ซึ่งถ้าเป็นจริงจะทำให้ Forward P/E ต่ำเพียง 11.4x ที่ราคาปัจจุบัน
+      Projection นี้ไม่รวมปันผล (บริษัทไม่จ่าย) เน้น capital gain ล้วน — ความเสี่ยงหลักคือถ้า EPS FY2026E ต่ำกว่าคาดจะกด P/E re-rating
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>Instacart Ads platform ขยายตัว:</b> Ads revenue +16% YoY ใน Q1 2569 เร็วสุดนับตั้งแต่ Q3; margin ~80% เป็นเครื่องยนต์กำไรหลัก; พันธมิตรใหม่ Meta, TikTok, The Trade Desk ขยาย off-platform monetization</li>
+          <li><b>GTV milestone ใหม่:</b> Q1 2569 GTV $10.3B (+13%) สร้าง record; revenue ทะลุ $1B/ไตรมาสครั้งแรก; AOV $113 (+3%) จาก Instacart+ basket minimum $10</li>
+          <li><b>AI Cart Assistant:</b> rollout 25% ลูกค้าสหรัฐฯ; ช่วยวางแผนมื้ออาหาร + สั่งสินค้าอัตโนมัติ → เพิ่ม AOV และ session frequency; ข้อมูลเพิ่ม monetization ผ่าน Ads</li>
+          <li><b>งบดุลแข็งแกร่ง Net Cash $719M:</b> ไม่มีภาระหนี้สำคัญ (D/E 0.01); FCF $883M/ปี; รองรับ share buyback / M&amp;A / R&amp;D ไม่จำกัด</li>
+          <li><b>กำไร GAAP ยั่งยืน + forward EPS:</b> Net income TTM $485M; Forward EPS FY2026E $4.03 (+127%) ถ้าสำเร็จ forward P/E จะเหลือเพียง 11.4x — undervalued ชัดเจน</li>
+          <li><b>Network effect ล็อกคู่แข่ง:</b> พันธมิตรค้าปลีก 1,500+ banner ทั่วสหรัฐฯ; shopper network ใหญ่ที่สุด; tech integration ลึกกับ ERP ค้าปลีก → switching cost สูง</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>การแข่งขันสูงขึ้นต่อเนื่อง:</b> DoorDash (DASH) ขยายส่งของชำเต็มตัว; Uber Eats เพิ่มพันธมิตรค้าปลีก; Amazon Fresh ครองตลาด Prime; UberEats + Instacart บางตลาดซ้อนทับกัน</li>
+          <li><b>การรวมตัวค้าปลีก:</b> Kroger ซื้อ Giant Eagle $1.65B (ก.ค. 2569) สร้างแรงกดดัน; mega-retailers อาจสร้าง delivery platform เอง หรือทำ exclusive agreement กับคู่แข่ง Instacart</li>
+          <li><b>Thin transaction margin:</b> Transaction revenue เพียง 7.1% ของ GTV; ต้องการ Ads โตแรงชดเชย; ถ้า Ads ชะลอ — margin รวมหดได้เร็ว</li>
+          <li><b>Gig economy regulation:</b> shopper เป็น independent contractor; กฎหมายอาจบังคับให้จ้างเป็นพนักงาน (AB5 / prop analogues) — ต้นทุนสูงขึ้นมากถ้าเกิดขึ้น</li>
+          <li><b>ความเสี่ยง EPS FY2026E:</b> EPS TTM $1.78 vs FY2026E $4.03 (ต่าง 127%) — อาจมี one-time items / stock comp normalization / tax; ถ้า FY2026E ต่ำกว่าคาดมาก ราคาอาจ de-rate</li>
+          <li><b>Short Float 10%:</b> ความสนใจ short ปานกลาง — ข่าวลบ (เช่น GTV miss หรือ Kroger ยกเลิกสัญญา) อาจกดราคาแรงกว่าปกติ</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>น่าสนใจในระดับ MOS 12% — Ads platform คือเครื่องยนต์ที่แท้จริง</h2>
+      <p>Instacart (CART) เป็น marketplace ส่งของชำอันดับ 1 ในสหรัฐฯ ที่ผ่านพ้น "startup phase" มาแล้ว — มีกำไร GAAP จริง, FCF แข็งแกร่ง $883M/ปี, net cash $719M และ Ads platform margin สูงที่เติบโต 16%/ปี ราคาปัจจุบัน $45.78 ต่ำกว่า Fair Value $52 ประมาณ 12% (MOS ปานกลาง) P/E TTM 25.7x สมเหตุสมผลสำหรับ profitable growth marketplace และถ้า FY2026E EPS $4.03 เป็นจริง forward P/E จะเหลือเพียง 11.4x — ถือว่าน่าสนใจมากในระยะยาว ความเสี่ยงหลักคือการแข่งขันจาก DoorDash/Uber และการรวมตัวของค้าปลีกขนาดใหญ่ ผู้ลงทุนระยะกลาง–ยาวที่เชื่อใน grocery e-commerce + retail media trend อาจทยอยสะสมได้ที่ราคาปัจจุบัน</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$52 <span style="font-size:12px;color:#cab9a8">($49–$56)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +12.0%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$50.38 (Buy)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ทยอยสะสมที่ราคาปัจจุบัน $45–46 (MOS ~12%) เพิ่มน้ำหนักที่ $41–42 (MOS 20%) และ $36–37 (MOS 30%) ถ้ามีโอกาส — ติดตาม GTV growth trend, Ads revenue margin และ Q2 2569 EPS report (ทดสอบว่า FY2026E $4.03 สมเหตุสมผลหรือไม่) ก่อนประเมินน้ำหนักการลงทุนขนาดใหญ่
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ EBITDA ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    แหล่งข้อมูล: StockAnalysis.com (stockanalysis.com/stocks/cart/ + /financials/ + /forecast/ + /statistics/), Finviz.com (finviz.com/quote.ashx?t=CART), Yahoo Finance API (CART 2y monthly), Grafa.com + Progressive Grocer (Q1 2569 earnings)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 2 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
