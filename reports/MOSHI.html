@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น โมชิ โมชิ รีเทล (MOSHI) — Stock Analysis Dashboard</title>
+<!-- ★ โมเดล AI ที่ใช้วิเคราะห์จริง — gate E28 บังคับ -->
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — gate E29–31 -->
+<script type="application/json" id="stock-meta">
+{"symbol":"MOSHI","currency":"THB","price":38.50,"fairValue":44.50,"mos":13.5,"upside":15.6,"pe":17.9,"dividendYield":3.17,"roe":26.53}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent":       "#e91e63",
+    "accentDark":   "#ad1457",
+    "darkGrad":     "linear-gradient(135deg,#880e4f 0%,#ad1457 60%,#e91e63 100%)",
+    "glow":         "rgba(233,30,99,0.3)",
+    "subColor":     "#f8bbd0",
+    "headerMuted":  "rgba(255,255,255,0.7)",
+    "verdictText":  "#fce4ec",
+    "vcellLabel":   "#f48fb1",
+    "badge":        "#e91e63",
+    "chgBg":        "rgba(30,142,62,0.18)",
+    "chgColor":     "#1e8e3e"
+  },
+  "chart": {
+    "data": [
+      ["ก.ค. 68", 37.75],
+      ["ส.ค. 68", 34.50],
+      ["ก.ย. 68", 35.75],
+      ["ต.ค. 68", 36.75],
+      ["พ.ย. 68", 37.75],
+      ["ธ.ค. 68", 37.75],
+      ["ม.ค. 69", 40.00],
+      ["ก.พ. 69", 40.75],
+      ["มี.ค. 69", 34.25],
+      ["เม.ย. 69", 33.75],
+      ["พ.ค. 69", 34.50],
+      ["มิ.ย. 69", 34.75],
+      ["ก.ค. 69", 38.50]
+    ],
+    "min": 30,
+    "max": 48,
+    "grid": [30, 34, 38, 42, 46],
+    "fairLine": 44.50,
+    "currency": "฿",
+    "highlight": [1, 7]
+  },
+  "gauge": {
+    "min": 28,
+    "max": 56,
+    "cur": 38.50,
+    "fair": 44.50,
+    "fairLabelTop": true
+  },
+  "fv": 44.50
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">★ ★ ★ ★ ☆</div>
+    <div>
+      <span class="tag">SET: MOSHI</span>
+      <span class="tag">Commerce</span>
+      <span class="tag">Lifestyle Retail</span>
+    </div>
+    <h1>โมชิ โมชิ รีเทล (Moshi Moshi Retail)</h1>
+    <div class="sub">ค้าปลีกไลฟ์สไตล์ เครื่องเขียน อุปกรณ์สำนักงาน ของใช้ในบ้าน สินค้าแฟชั่น • แบรนด์โมชิ โมชิ + ดาวิดช็อป • ขยายสาขาทั่วไทยกว่า 600 สาขา</div>
+    <div class="price-row">
+      <div>
+        <div class="px">฿38.50<small>(MOSHI)</small></div>
+      </div>
+      <div class="chg">▲ +2.0% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 3 ก.ค. 2569<br>
+        กรอบ 52 สัปดาห์ ฿30.25 – ฿43.00<br>
+        ที่มา: SET.or.th, StockAnalysis.com, Investing.com
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ก.ค. 2569 | FY2025 (ปีงบประมาณสิ้น ธ.ค. 2568)</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">฿12,465 ล้าน</div><div class="d">หุ้น 330 ล้านหุ้น · Par ฿1</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~17.9x</div><div class="d">EPS TTM ฿2.14 · ราคา ฿38.50</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~18–22x</div><div class="d">หุ้นเติบโตสูง premium สูงกว่า SET avg</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">4.65x</div><div class="d">BVPS ฿8.28 · สะท้อน ROE สูง 26%</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">฿670 ล้าน</div><div class="d">+28.7% YoY (FY2024: ฿521 ล้าน)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿2.14</div><div class="d">FY2025 ฿2.03 + Q1/69 ฿0.58 (ล้าง Q1/68)</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~฿8.28</div><div class="d">Equity ฿2,730 ล้าน / 330 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~26.5% / 14.2%</div><div class="d">FY2025 — สูงกว่าค่าเฉลี่ย SET มาก</div></div>
+
+      <div class="metric"><div class="k">รายได้ FY2025</div><div class="v neu">฿3,683 ล้าน</div><div class="d">+17.8% YoY · Q1/69 ฿988 ล้าน</div></div>
+      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">~55.7%</div><div class="d">Gross Profit FY2025 ฿2,043 ล้าน</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~3.17%</div><div class="d">฿1.22/หุ้น (ประกาศ 2569 · XD เม.ย. 69)</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">0.42</div><div class="d">ความผันผวนต่ำกว่าตลาด SET</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ก.ค. 2568 – ก.ค. 2569 · ปิดรายเดือน</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#e91e63"></i>ราคา MOSHI</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿44.50</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคา MOSHI ช่วง 12 เดือนที่ผ่านมาอยู่ในกรอบ ฿30.25–฿43.00 ต้นปี 2569 (ม.ค.–ก.พ.) ราคาพุ่งขึ้นสู่ระดับสูงสุดที่ ฿40–41 บาท ก่อนปรับตัวลงแรงในเดือน มี.ค.–เม.ย. 69 สู่ระดับ ฿33–34 บาท ซึ่งเป็นช่วงที่ตลาดโดยรวมอ่อนแอและนักลงทุนกังวลเรื่องภาวะเศรษฐกิจ ปัจจุบันราคาฟื้นตัวกลับมาที่ ฿38.50 ยังต่ำกว่า Fair Value ประมาณ 13% สะท้อนโอกาสสำหรับนักลงทุนระยะกลาง-ยาว
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS adj. ฿2.14 × P/E เป้าหมาย ~20x — อิง P/E เฉลี่ย 5 ปีของหุ้นค้าปลีกไลฟ์สไตล์ที่เติบโตสูงใน SET (18–22x) สมเหตุสมผลเมื่อกำไรโต 25%+/ปี</div></div>
+        <div class="mval">฿42.80</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล ฿1.22 × (1+g); g 10%, r 13% → ฿1.342/(0.13−0.10) — ใช้ Required Return 13% เพื่อสะท้อนความเสี่ยงหุ้นขนาดกลางค้าปลีก และ g=10% อิงแนวโน้มเติบโตปันผลระยะยาว</div></div>
+        <div class="mval">฿44.73</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 26.53% − g 10%)/(r 13% − g 10%) ≈ 5.51 × BVPS ฿8.28 — ROE สูงสม่ำเสมอ 22–27% รับประกัน premium ต่อ Book Value</div></div>
+        <div class="mval">฿45.62</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿42.80 – ฿45.62</span></div>
+        <div class="r">฿44.50</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ทั้ง 3 วิธีให้ค่าใกล้เคียงกันในกรอบ ฿42.80–฿45.62 สะท้อนความสอดคล้องของ Valuation วิธี DDM และ Justified P/BV ให้ค่าสูงกว่า P/E เล็กน้อยเนื่องจาก ROE สูง 26% และแนวโน้มปันผลเติบโต มูลค่ากลาง ฿44.50 ถือว่าอนุรักษ์นิยมเหมาะสม เทียบกับเป้าเฉลี่ย 12 นักวิเคราะห์ที่ ฿48.89
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿38.50</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿44.50</div></div>
+        </div>
+        <div class="scale">
+          <span>฿31.15<br><small>MOS 30%</small></span>
+          <span>฿35.60<br><small>MOS 20%</small></span>
+          <span style="text-align:center">฿44.50<br><small>Fair Value</small></span>
+          <span style="text-align:right">฿45.62<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">฿48.89<br><small>เป้าเฉลี่ย Analyst</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน ฿38.50 อยู่ต่ำกว่า Fair Value ฿44.50 ประมาณ 13.5% อยู่ในโซน "ราคาพอใช้ — ทยอยสะสมได้" (MOS 10–20%) โซนน่าสนใจสำหรับ Value Investor อยู่ที่ต่ำกว่า ฿35.60 (MOS 20%) และโซน Deep Value ที่ต่ำกว่า ฿31.15 (MOS 30%) เป้าเฉลี่ยนักวิเคราะห์ ฿48.89 สูงกว่า FV ของเรา สะท้อน Upside ทั้งจาก Re-rating และการเติบโตของกำไร
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict ok">
+        <div class="big">+13.5%</div>
+        <div class="txt">ราคาพอใช้ — ทยอยสะสมได้ (MOS 10–20%)</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿35.60</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿31.15</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿44.50</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="38.50" step="0.05">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿38.50 • EPS ฐาน ~฿2.14 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS +3%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿34.88</div>
+          <div class="ret neg">-0.2%/ปี</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿2.34</span></li>
+            <li><span>P/E ออก</span><span>14.9x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿3.80</span></li>
+            <li><span>สถานการณ์</span><span>เศรษฐกิจซบเซา กำลังซื้อหด ขยายสาขาชะลอ</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +12%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿54.18</div>
+          <div class="ret pos">+14.8%/ปี</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿3.01</span></li>
+            <li><span>P/E ออก</span><span>18.0x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿4.20</span></li>
+            <li><span>สถานการณ์</span><span>ขยายสาขาต่อ กำไรโตตามแผน เศรษฐกิจทรงตัว</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +18%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿77.22</div>
+          <div class="ret pos">+29.5%/ปี</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿3.51</span></li>
+            <li><span>P/E ออก</span><span>22.0x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿5.00</span></li>
+            <li><span>สถานการณ์</span><span>ขยายสาขาเร็ว ออนไลน์พุ่ง นักท่องเที่ยวต่างชาติฟื้น</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      Base Case กำไรโต 12%/ปี อิงประวัติการเติบโต 3 ปีล่าสุดที่ 25–28%/ปี แต่ใช้ตัวเลขอนุรักษ์นิยมเนื่องจากฐานกำไรใหญ่ขึ้นและการแข่งขันสูง ปันผลรวม 3 ปีคำนวณจากอัตราจ่าย ~55–60% ของกำไร · ผลตอบแทนรวมที่ 14–15%/ปีใน Base Case ถือว่าน่าสนใจสำหรับหุ้นค้าปลีกที่มีคุณภาพสูงใน SET · Bear Case ยังได้รับปันผลชดเชยส่วนหนึ่ง
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>ขยายสาขาต่อเนื่อง:</b> โมชิ โมชิ มีสาขากว่า 600 แห่งทั่วไทย และยังคงเปิดสาขาใหม่ในห้างสรรพสินค้าและ community mall อย่างต่อเนื่อง เพิ่ม Same-Store-Sales Growth และ New Store Contribution</li>
+          <li><b>กำไรโตสม่ำเสมอ:</b> กำไรสุทธิโต 27–29%/ปีต่อเนื่อง 3 ปีล่าสุด ROE สูง 26% สะท้อน moat จากแบรนด์และ operational efficiency</li>
+          <li><b>อัตรากำไรขั้นต้นสูง 55%+:</b> สินค้าไลฟ์สไตล์ที่ผลิตเองและ private label ให้ margin สูงกว่าค้าปลีกทั่วไป ลดการพึ่งพา supplier รายเดียว</li>
+          <li><b>ท่องเที่ยวฟื้นตัว:</b> นักท่องเที่ยวต่างชาตินิยมซื้อสินค้าไลฟ์สไตล์/เครื่องเขียน "ไทย-ญี่ปุ่น" เป็นของฝาก เพิ่ม traffic ในห้างที่ตั้งใน tourist zone</li>
+          <li><b>ช่องทางออนไลน์:</b> ขยาย D2C ผ่าน Shopee/Lazada/LINE Shopping ลด dependency ต่อ mall เพิ่มฐานลูกค้าใหม่</li>
+          <li><b>KGI + 12 นักวิเคราะห์ Strong Buy:</b> เป้าเฉลี่ย ฿48.89 Upside 27% ยืนยันมุมมองบวกจากนักวิเคราะห์ institutional</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>การแข่งขันสูงขึ้น:</b> ร้านค้าปลีกไลฟ์สไตล์จากจีน (Miniso, Daiso Japan-style) ขยายตัวในไทย กดดัน market share และ pricing power ของโมชิ โมชิ</li>
+          <li><b>ความเสี่ยงค่าเช่าและทำเล:</b> พึ่งพาการขยายสาขาในห้างสรรพสินค้า หากห้างลดพื้นที่หรือค่าเช่าปรับขึ้น จะกระทบต้นทุน operating และ margin</li>
+          <li><b>กำลังซื้อผู้บริโภค:</b> สินค้าไลฟ์สไตล์เป็น discretionary spending — ถ้าเศรษฐกิจไทยชะลอหรือหนี้ครัวเรือนสูง ผู้บริโภคลด basket size ได้</li>
+          <li><b>ความเสี่ยงห่วงโซ่อุปทาน:</b> สินค้าบางส่วน import จากจีน/ญี่ปุ่น — ค่าบาทอ่อนหรือ supply disruption อาจกระทบต้นทุนสินค้า</li>
+          <li><b>Valuation ไม่ถูกมาก:</b> P/E ~18x และ P/BV ~4.65x ไม่ใช่ราคาถูกในแง่ absolute — ถ้ากำไรพลาดเป้าจะ de-rate รุนแรง</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>หุ้นเติบโตคุณภาพสูง — ทยอยสะสมในโซนปัจจุบัน</h2>
+      <p>โมชิ โมชิ รีเทล (MOSHI) เป็นหนึ่งในผู้นำค้าปลีกไลฟ์สไตล์ที่เติบโตเร็วที่สุดในตลาด SET ด้วย ROE สูงสม่ำเสมอ 22–27% กำไรโต 25–29%/ปี 3 ปีล่าสุด และอัตรากำไรขั้นต้นสูง 55%+ ราคาปัจจุบัน ฿38.50 ยังต่ำกว่า Fair Value ฿44.50 ประมาณ 13.5% (MOS "พอใช้") นักวิเคราะห์ 12 ราย Consensus Strong Buy เป้า ฿48.89 Upside 27% Base Case 3 ปีให้ผลตอบแทนรวม ~14.8%/ปี รวมปันผล 3.17%</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿44.50 <span style="font-size:12px;color:#cab9a8">(฿42.80–฿45.62)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +13.5%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿48.89 (Strong Buy · 12 ราย)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ทยอยสะสมที่ ฿35–39 (MOS 10–20%) เพิ่มน้ำหนักถ้าราคาลงสู่ ฿31–35 (MOS 20–30%) ตั้ง Stop Loss ที่ ฿30 ใต้ 52-Week Low · ระยะยาว 3 ปี รอ Re-rating เมื่อกำไรยืนยันโต 10–15%/ปีต่อเนื่อง
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    แหล่งข้อมูล: SET.or.th (ราคา ณ 3 ก.ค. 2569), StockAnalysis.com (EPS/Valuation), Moshi Moshi IR (Financial Highlights), Investing.com (Financial Summary), Yahoo Finance (Chart 1Y), KGI Securities (Analyst Rating)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 3 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
