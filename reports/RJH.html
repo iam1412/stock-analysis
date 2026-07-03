@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น โรงพยาบาลราชธานี (RJH) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"RJH","currency":"THB","price":14.10,"fairValue":15.00,"mos":6.0,"upside":6.4,"pe":12.6,"dividendYield":4.38,"roe":14.0}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#c62828",
+    "accentDark": "#b71c1c",
+    "darkGrad": "linear-gradient(135deg,#7f0000 0%,#b71c1c 60%,#c62828 100%)",
+    "glow": "rgba(198,40,40,0.3)",
+    "subColor": "#ffcdd2",
+    "headerMuted": "rgba(255,255,255,0.6)",
+    "verdictText": "#ffebee",
+    "vcellLabel": "rgba(255,235,238,0.7)",
+    "badge": "#c62828",
+    "chgBg": "#1e8e3e",
+    "chgColor": "#ffffff"
+  },
+  "chart": {
+    "data": [
+      ["ก.ค. 68", 13.40],
+      ["ส.ค. 68", 13.40],
+      ["ก.ย. 68", 12.90],
+      ["ต.ค. 68", 11.90],
+      ["พ.ย. 68", 12.40],
+      ["ธ.ค. 68", 12.80],
+      ["ม.ค. 69", 14.10],
+      ["ก.พ. 69", 12.50],
+      ["มี.ค. 69", 12.70],
+      ["เม.ย. 69", 13.00],
+      ["พ.ค. 69", 13.70],
+      ["มิ.ย. 69", 13.80],
+      ["ก.ค. 69", 14.10]
+    ],
+    "min": 11.00,
+    "max": 16.00,
+    "grid": [11.00, 12.00, 13.00, 14.00, 15.00, 16.00],
+    "fairLine": 15.00,
+    "currency": "฿",
+    "highlight": [3, 6],
+    "gridFmt": "v.toFixed(0)",
+    "dataFmt": "d[1].toFixed(2)"
+  },
+  "gauge": {
+    "min": 9.50,
+    "max": 18.00,
+    "cur": 14.10,
+    "fair": 15.00,
+    "fairLabelTop": false
+  },
+  "fv": 15.00
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">●●●●●</div>
+    <div>
+      <span class="tag">SET: RJH</span>
+      <span class="tag">การแพทย์</span>
+      <span class="tag">โรงพยาบาลต่างจังหวัด</span>
+    </div>
+    <h1>บมจ. โรงพยาบาลราชธานี (RJH)</h1>
+    <div class="sub">เครือโรงพยาบาลราชธานี • ต่างจังหวัด (อุบล/สุราษฎร์/อยุธยา/สระบุรี) • ขยายสาขา • Affordable Mid-tier</div>
+    <div class="price-row">
+      <div>
+        <div class="px">฿14.10<small>(RJH)</small></div>
+      </div>
+      <div class="chg">▲ +5.2% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 3 ก.ค. 2569<br>
+        กรอบ 52 สัปดาห์ ฿11.10 – ฿14.40<br>
+        ที่มา: Yahoo Finance, Investing.com, StockAnalysis.com
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ก.ค. 2569 · TTM = ย้อนหลัง 12 เดือน</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~฿4,100 ลบ.</div><div class="d">293.5 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~12.6x</div><div class="d">ต่ำกว่า P/E เฉลี่ย 5 ปี ~14x</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~14x</div><div class="d">ช่วง 10–18x ประวัติ</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">1.79x</div><div class="d">BVPS ฿7.70 · equity ฿2,453 ลบ.</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ TTM</div><div class="v">฿322 ลบ.</div><div class="d">กดดันจากรพ.ใหม่ Nongkhae −฿100-120 ลบ.</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿1.10</div><div class="d">FY2024: ฿1.65 · FY2023: ฿1.40</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~฿7.70</div><div class="d">Total equity ฿2,453 ลบ.</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~14% / 6.5%</div><div class="d">ก่อนรพ.ใหม่กดดัน ROE สูงถึง 20%+</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">฿2,840 ลบ.</div><div class="d">+2.9% YoY · ทั่วไป 52% · ประกันสังคม 48%</div></div>
+      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">25.6%</div><div class="d">ลดจาก 31.4% (FY2024) เหตุ ramp-up รพ.ใหม่</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~4.38%</div><div class="d">DPS ฿0.60 · payout ~55% · จ่ายสม่ำเสมอ</div></div>
+      <div class="metric"><div class="k">FCF FY2025</div><div class="v pos">฿409 ลบ.</div><div class="d">Capex ลดลงหลัง Nongkhae เปิดแล้ว</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ก.ค. 2568 – ก.ค. 2569 · รายเดือน</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#c62828"></i>ราคา RJH</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿15.00</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคาย้อนหลัง 1 ปี เริ่มต้น ฿13.40 (ก.ค. 68) ปรับลงแตะจุดต่ำสุด ฿11.90 ใน ต.ค. 68 หลังผลประกอบการอ่อนแอจากการรับรู้ขาดทุนของ รพ.ราชธานีนนทแขม สระบุรี ที่เปิดตัว ต.ค. 67 และรายได้ SSO ลดลงจากการไม่มีเคส gastric sleeve ใน 1H68 ราคาฟื้นตัวเป็น ฿14.10 ใน ม.ค. 69 ก่อนย่อลง ฿12.50 หลัง Q1/69 กำไรต่ำกว่าคาด จากนั้นทยอยฟื้น ฿13.80–14.10 เมื่อตลาดมองว่ารพ.ใหม่เริ่ม ramp-up · ผลตอบแทนรอบปี +5.2%
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">3 วิธี · ใช้ Normalized EPS เพราะอยู่ในช่วง ramp-up</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS adj. ฿1.40 (normalized; ปรับขาดทุนรพ.ใหม่ออก) × P/E เป้าหมาย ~13x — P/E เฉลี่ย 5 ปี กลาง 10–18x ช่วงปกติ</div></div>
+        <div class="mval">฿18.20</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ฿0.62 (DPS ฿0.60 × 1.03); g 3%, r 9% → ฿0.62/(0.09−0.03) — ฐานปันผลสม่ำเสมอ yield 4%+</div></div>
+        <div class="mval">฿10.33</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 14% − g 3%)/(r 9% − g 3%) ≈ 1.833x × BVPS ฿7.70 — ROE ระยะยาวก่อนรพ.ใหม่กดดัน</div></div>
+        <div class="mval">฿14.11</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿10.33 – ฿18.20</span></div>
+        <div class="r">฿15.00</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        วิธี P/E ให้ ฿18.20 โดยใช้ EPS normalized ฿1.40 (ปรับขาดทุนรพ.ใหม่ออก) แทน TTM ฿1.10 ที่ถูกกดชั่วคราว — วิธี DDM ให้ราคาต่ำสุด ฿10.33 เพราะ required return 9% สูงสำหรับหุ้นต่างจังหวัด — วิธี Justified P/BV ที่ ฿14.11 ใกล้ราคาตลาดมากที่สุด สะท้อน ROE ที่ยังถูกกดดัน · ถ่วงน้ำหนัก P/E 35%: DDM 25%: P/BV 40% ได้ ฿15.00 สอดคล้องกับ IAA consensus ฿14.63 และ DBS target ฿15.50
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿14.10</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿15.00</div></div>
+        </div>
+        <div class="scale">
+          <span>฿10.50<br><small>MOS 30%</small></span>
+          <span>฿12.00<br><small>MOS 20%</small></span>
+          <span style="text-align:center">฿15.00<br><small>Fair Value</small></span>
+          <span style="text-align:right">฿15.50<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">฿18.20<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน ฿14.10 อยู่ต่ำกว่า Fair Value ฿15.00 ประมาณ 6% ให้ MOS เล็กน้อย ไม่ถึงโซน value ลึก (MOS 20% คือ ฿12.00) แต่ยังต่ำกว่า fair value · เป้า IAA consensus ฿14.63 และ DBS ฿15.50 มองว่ายังมี upside จากจุดนี้ · ถ้า Nongkhae breakeven เร็วกว่าคาด ราคาอาจวิ่งสู่โซน ฿15–16
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict ok">
+        <div class="big">+6.0%</div>
+        <div class="txt">MOS พอใช้ — ราคาใกล้มูลค่าเหมาะสม ทยอยสะสมได้ รอโซน MOS 20% (฿12.00) ถ้าอยากได้ส่วนลดมากขึ้น</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿12.00</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿10.50</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿15.00</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="14.10" step="0.05">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿14.10 • EPS ฐาน ~฿1.40 (normalized) • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS +2%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿13.00</div>
+          <div class="ret neg">−2.6%/ปี</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿1.48</span></li>
+            <li><span>P/E ออก</span><span>9x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿1.80</span></li>
+            <li><span>สถานการณ์</span><span>Nongkhae ขาดทุนนาน SSO แย่ลง</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +8%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿17.60</div>
+          <div class="ret pos">+8.4%/ปี</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿1.76</span></li>
+            <li><span>P/E ออก</span><span>10x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿2.10</span></li>
+            <li><span>สถานการณ์</span><span>Nongkhae breakeven ปี 2570 + Cancer Anywhere</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +12%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿23.50</div>
+          <div class="ret pos">+18.5%/ปี</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿1.96</span></li>
+            <li><span>P/E ออก</span><span>12x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿2.40</span></li>
+            <li><span>สถานการณ์</span><span>Nongkhae กำไรดี รพ.ใหม่เพิ่ม SSO ฟื้นตัว</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      การคำนวณอิง EPS normalized ฿1.40 (ปรับขาดทุนรพ.ใหม่ออก) · P/E ออกใน bear 9x สะท้อนกังวลต่อเนื่อง · base 10x อนุรักษ์นิยม · bull 12x ใกล้ค่าเฉลี่ย · ปันผลคิด DPS ฿0.60 ต่อปี รวม 3 ปี ≈ ฿1.80–2.40 · ผลตอบแทนรวม base +8.4%/ปี ดีกว่าตลาดไทยถ้า ramp-up สำเร็จตามแผน · bear case −2.6%/ปี ยังรับได้ถ้ากำไรจาก dividend 4.4%
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>Nongkhae Turnaround:</b> รพ.ราชธานีนนทแขม สระบุรี (เปิด ต.ค. 67) คาด breakeven ปี 2569–70 เมื่อขาดทุนหายไป กำไรรวมจะฟื้นอย่างชัดเจนตาม leverage operating</li>
+          <li><b>Cancer Anywhere Program:</b> เซ็นสัญญา สปสช. รับผู้ป่วยมะเร็ง "จากทั่วประเทศ" ใน network (พ.ย. 67) เริ่ม ม.ค. 68 → รายได้ใหม่จากผู้ป่วยนอกเขตที่เดินทางมาใกล้รพ.ในเครือ</li>
+          <li><b>Rangsi Ratchathani กำไรแล้ว:</b> รพ.รังสิต ราชธานี มีกำไรสุทธิ ฿2 ลบ. สะท้อนว่าโมเดล ramp-up ทำได้จริง สร้างความเชื่อมั่นว่า Nongkhae จะตามรอยได้</li>
+          <li><b>Affordable Mid-tier ต่างจังหวัด:</b> RJH เน้นลูกค้าระดับกลาง+ประกันสังคมในพื้นที่ที่ยังขาดรพ.เอกชนคุณภาพ ฐานลูกค้า SSO 48% มั่นคงระยะยาว</li>
+          <li><b>FCF ดีขึ้นชัดเจน:</b> Capex ลดจาก ฿672 ลบ. (FY2024) เหลือ ฿155 ลบ. (FY2025) หลัง Nongkhae สร้างเสร็จแล้ว → FCF กลับมา ฿409 ลบ. รองรับปันผลและลดหนี้ได้</li>
+          <li><b>Dividend Cushion 4.4%:</b> DPS ฿0.60/หุ้น yield 4.4% ทุกปี ให้ผลตอบแทนระหว่างรอ ramp-up สูงกว่าพันธบัตรรัฐบาลไทยอายุ 10 ปี (~2.7%)</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>Nongkhae ขาดทุนนานกว่าคาด:</b> DBS ประเมินขาดทุน ฿100–120 ลบ. ใน FY2025 ถ้า ramp-up ช้ากว่ากำหนด กำไรรวมจะถูกกดต่อเนื่องถึง FY2570 ราคาหุ้นยากฟื้น</li>
+          <li><b>SSO รายได้ผันผวน:</b> 48% รายได้จาก SSO ขึ้นกับนโยบาย สปสช. — การตัด/เพิ่มเคส (เช่น gastric sleeve) ทำกำไรผันผวนรายไตรมาสสูง Q1/68 กำไรดิ่ง −46% YoY</li>
+          <li><b>Gross Margin ถูกกด:</b> margin ลดจาก 31.4% → 25.6% เหตุ SG&A ramp-up ถ้าขยายรพ.เร็วเกินไปก่อนตัวเก่าโตพอ margin ฟื้นช้าและราคาไม่ up-rate</li>
+          <li><b>หนี้เพิ่มขึ้น:</b> Total Debt ฿1,412 ลบ. (FY2025) เพิ่มจาก ฿750 ลบ. (FY2021) D/E ~0.57x ยังจัดการได้แต่ถ้าอัตราดอกเบี้ยขึ้นหรือขยายสาขาอีก ภาระดอกเบี้ยสูงขึ้น</li>
+          <li><b>การแข่งขันระดับภูมิภาค:</b> รพ.รัฐขยายศักยภาพในพื้นที่ + เชนใหญ่ BDMS, BCH อาจขยายสู่ต่างจังหวัดมากขึ้น กระทบส่วนแบ่งตลาดและ pricing power</li>
+          <li><b>EPS Recovery ช้ากว่าคาด:</b> กำไร FY2025 ฿295 ลบ. ต่ำกว่า FY2024 ฿493 ลบ. ถ้าไม่ฟื้นเร็วหลังปี FY2026 นักลงทุนอาจสูญเสียความสนใจกด P/E ลงต่อกว่า 10x</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>ทยอยสะสมได้ — รอ Nongkhae Turnaround เป็น Catalyst หลัก</h2>
+      <p>RJH คือเชนโรงพยาบาลต่างจังหวัดที่มีฐานลูกค้าประกันสังคมมั่นคง 48% และ positioning "Affordable Mid-tier" ชัดเจนในตลาดที่ยังขาดแคลนรพ.เอกชนคุณภาพในพื้นที่ต่างจังหวัด · กำไรปีนี้ถูกกดชั่วคราวจากขาดทุน รพ.ราชธานีนนทแขม สระบุรี (คาด −฿100–120 ลบ./ปี) และ SSO ไม่มีเคส gastric sleeve ใน 1H68 — แต่นี่คือ "ต้นทุนการเติบโต" ไม่ใช่ปัญหาเชิงโครงสร้าง · เมื่อ Nongkhae breakeven และ Cancer Anywhere program เริ่มส่งผล กำไรจะฟื้นอย่างชัดเจน · AlphaSpread ประเมิน intrinsic value ฿18.13 (undervalue 22%) สะท้อนศักยภาพระยะยาวถ้ารพ.ใหม่ทำได้ตามแผน · ราคา ฿14.10 มี dividend yield 4.4% เป็น cushion ระหว่างรอ</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿15.00 <span style="font-size:12px;color:#cab9a8">(฿10.33–฿18.20)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +6.0%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿14.63–15.50 (HOLD/BUY)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ทยอยสะสมที่ราคา &lt;฿14.50 ด้วยน้ำหนักเล็กน้อย · เป้าหมายหลักโซน MOS 20% (฿12.00) ถ้าตลาดขาย over-reaction จากข่าว SSO หรือรพ.ใหม่ขาดทุนมากกว่าคาด · รับ dividend ฿0.60/ปี yield 4.4% ระหว่างรอ · เหมาะนักลงทุนระยะ 3–5 ปี ที่เชื่อโมเดลโรงพยาบาลต่างจังหวัดราคาเข้าถึงได้
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • แหล่งข้อมูล: Yahoo Finance (ราคา/กราฟ 1 ปี), Investing.com (EPS ฿1.10/ROE 14.9%/DPS ฿0.60), StockAnalysis.com (งบการเงิน FY2021-2025), DBS Vickers Research (เป้า ฿15.50/HOLD), aio.panphol.com (IAA consensus ฿14.63), AlphaSpread (intrinsic ฿18.13)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 3 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>

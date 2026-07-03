@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น ธนบุรี เฮลท์แคร์ กรุ๊ป (THG) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"THG","currency":"THB","price":7.70,"fairValue":6.70,"mos":-14.93,"upside":-12.99,"pe":99.25,"dividendYield":1.82,"roe":0.93}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#00838f",
+    "accentDark": "#006064",
+    "darkGrad": "linear-gradient(135deg,#006064 0%,#00838f 60%,#00acc1 100%)",
+    "glow": "rgba(0,131,143,0.3)",
+    "subColor": "#b2ebf2",
+    "headerMuted": "rgba(255,255,255,0.6)",
+    "verdictText": "#e0f7fa",
+    "vcellLabel": "rgba(224,247,250,0.7)",
+    "badge": "#00acc1",
+    "chgBg": "#1e8e3e",
+    "chgColor": "#ffffff"
+  },
+  "chart": {
+    "data": [
+      ["ม.ค. 68", 7.20],
+      ["ก.พ. 68", 7.70],
+      ["มี.ค. 68", 8.05],
+      ["เม.ย. 68", 8.50],
+      ["พ.ค. 68", 8.55],
+      ["มิ.ย. 68", 8.60],
+      ["ก.ค. 68", 9.30],
+      ["ส.ค. 68", 9.10],
+      ["ก.ย. 68", 8.35],
+      ["ต.ค. 68", 7.75],
+      ["พ.ย. 68", 7.30],
+      ["ธ.ค. 68", 7.80],
+      ["ม.ค. 69", 7.70]
+    ],
+    "min": 6.00,
+    "max": 10.50,
+    "grid": [6.50, 7.50, 8.50, 9.50],
+    "fairLine": 6.70,
+    "currency": "฿",
+    "highlight": [6, 8],
+    "gridFmt": "v.toFixed(2)",
+    "dataFmt": "d[1].toFixed(2)"
+  },
+  "gauge": {
+    "min": 4.00,
+    "max": 11.00,
+    "cur": 7.70,
+    "fair": 6.70,
+    "fairLabelTop": false
+  },
+  "fv": 6.70
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">●●●</div>
+    <div>
+      <span class="tag">SET: THG</span>
+      <span class="tag">Healthcare</span>
+      <span class="tag">Private Hospital</span>
+    </div>
+    <h1>ธนบุรี เฮลท์แคร์ กรุ๊ป (THG)</h1>
+    <div class="sub">เครือโรงพยาบาลธนบุรี • ขยายต่างจังหวัด + CLMV (เมียนมา/เวียดนาม) • Affordable Healthcare • 20+ โรงพยาบาล</div>
+    <div class="price-row">
+      <div>
+        <div class="px">฿7.70<small>(THG)</small></div>
+      </div>
+      <div class="chg" style="background:var(--chgBg,#1e8e3e);color:var(--chgColor,#fff)">▲ +6.9% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 3 ก.ค. 2569<br>
+        กรอบ 52 สัปดาห์ ฿6.15 – ฿9.90<br>
+        ที่มา: Yahoo Finance, Investing.com, AiO
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ปี 2568 / Q1/2569</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~฿13,800 ล้าน</div><div class="d">1,790 ล้านหุ้น (SET)</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~99x</div><div class="d">กำไร FY2568 เพิ่งฟื้น; Forward P/E FY69F ~32x</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~25–35x</div><div class="d">ช่วงปกติ (ก่อน FY66-67 ขาดทุน)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">~1.02x</div><div class="d">BVPS ฿7.54 · ใกล้เคียง Book Value</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2568</div><div class="v pos">฿96 ล้าน</div><div class="d">ฟื้นจากขาดทุน ฿1,765 ล้าน ปี 67</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿0.054</div><div class="d">FY68 EPS F ฿0.24 (consensus 2 นักวิเคราะห์)</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~฿7.54</div><div class="d">Q1/2569 · AiO + StockAnalysis</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v neu">~0.93% / 0.87%</div><div class="d">FY2568 ยังต่ำ — กำลังฟื้นตัว</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">฿9,097 ล้าน</div><div class="d">ลดลง 4% YoY จาก FY67</div></div>
+      <div class="metric"><div class="k">EBITDA FY2568</div><div class="v pos">฿1,240 ล้าน</div><div class="d">ฟื้นตัวแข็งแกร่งจาก −฿425 ล้าน FY67</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~1.82%</div><div class="d">฿0.14/หุ้น (XD มี.ค. 69) · จ่ายปกติ</div></div>
+      <div class="metric"><div class="k">หนี้สุทธิ</div><div class="v neg">~฿9,380 ล้าน</div><div class="d">เงินสด ฿654 ล้าน / หนี้ ฿10,030 ล้าน</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ม.ค. 2568 – ม.ค. 2569</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#00838f"></i>ราคา THG</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿6.70</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคา THG เปิดปี 2568 ที่ ฿7.20 แล้วปรับตัวขึ้นต่อเนื่องถึงจุดสูงสุด 52 สัปดาห์ที่ ฿9.90 ในเดือน ก.ค. 68
+        หลังตลาดเริ่มมองเห็นสัญญาณการฟื้นตัวของกำไร ก่อนย่อลงมาในไตรมาสสุดท้ายของปี
+        สิ้นปี 68 ปิดที่ ฿7.80 และปรับลงสู่ ฿7.70 ณ ต้นปี 69
+        ผลตอบแทนรอบปี (ม.ค. 68 – ม.ค. 69) อยู่ที่ +6.9% เทียบกับจุดเริ่มต้น ฿7.20
+        ราคาซื้อขายเหนือ Fair Value ฿6.70 สะท้อนว่าตลาดให้ premium การฟื้นตัวล่วงหน้า
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation (Forward FY2569F)</div><div class="mdesc">EPS adj. ฿0.24 (FY2569F consensus) × P/E เป้าหมาย ~35x — ภาคโรงพยาบาลไทย (BDMS/BH/BCH) trade ที่ 30–40x ในช่วงฟื้นตัว</div></div>
+        <div class="mval">฿8.40</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. EV/EBITDA (Forward FY2569F)</div><div class="mdesc">EBITDA FY2569F ~฿1,488 ล้าน × EV/EBITDA เฉลี่ยภาค 13x = EV ฿19,344 ล้าน − หนี้สุทธิ ฿9,380 ล้าน ÷ 1,790 ล้านหุ้น</div></div>
+        <div class="mval">฿5.57</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 8% − g 4%)/(r 9% − g 4%) ≈ 0.80x × BVPS ฿7.54 — ROE 8% คือเป้าหมายระยะกลาง (ปัจจุบัน 0.93%)</div></div>
+        <div class="mval">฿6.03</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿5.57 – ฿8.40</span></div>
+        <div class="r">฿6.70</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        วิธี P/E Forward (฿8.40) ให้ค่าสูงสุด สะท้อนความคาดหวังว่ากำไรจะฟื้นสู่ระดับปกติในปี 69 แต่มีความเสี่ยงหากกำไรไม่เป็นไปตามเป้า
+        วิธี EV/EBITDA (฿5.57) ให้ค่าต่ำสุดเนื่องจากภาระหนี้สุทธิ ~฿9,380 ล้านที่สูง กดมูลค่าต่อหุ้นลงมาก
+        วิธี Justified P/BV (฿6.03) อิง ROE เป้าหมายระยะกลาง 8% ซึ่งยังไม่แน่นอน
+        ค่าเฉลี่ย ฿6.70 สะท้อนภาพ "ฟื้นตัวได้บางส่วน" — ราคาปัจจุบัน ฿7.70 แพงกว่า FV ~15%
+        นักวิเคราะห์ IAA ตั้งเป้า ฿10.30 ซึ่งอิงสมมติฐานการฟื้นตัวสมบูรณ์แบบ; เป้าเฉลี่ย 2 คน = ฿8.75
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿7.70</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿6.70</div></div>
+        </div>
+        <div class="scale">
+          <span>฿4.69<br><small>MOS 30%</small></span>
+          <span>฿5.36<br><small>MOS 20%</small></span>
+          <span style="text-align:center">฿6.70<br><small>Fair Value</small></span>
+          <span style="text-align:right">฿8.40<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">฿8.75<br><small>เป้าเฉลี่ย Analyst</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน ฿7.70 อยู่เหนือ Fair Value ฿6.70 ราว 15% — ตลาดให้ premium การฟื้นตัวล่วงหน้า
+        โซน MOS 20% (฿5.36) และ MOS 30% (฿4.69) อยู่ต่ำกว่ามากและใกล้จุดต่ำสุด 52 สัปดาห์ (฿6.15)
+        เป้านักวิเคราะห์เฉลี่ย ฿8.75 สูงกว่าราคาปัจจุบัน ~14% สะท้อนมุมมองบวกต่อการฟื้นตัวในปี 69-70
+        จุดเสี่ยง: ราคาแพงกว่า FV อนุรักษ์นิยม แต่ถูกกว่าเป้านักวิเคราะห์ — เป็นหุ้น "recovery play"
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">−14.9%</div>
+        <div class="txt">ราคาแพงกว่ามูลค่าเหมาะสม ~15% — ยังไม่มี Margin of Safety เพียงพอสำหรับ Value Investor</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿5.36</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿4.69</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿6.70</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="7.70" step="0.05">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿7.70 • EPS ฐาน ~฿0.24 (FY2569F) • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS +0%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿5.76</div>
+          <div class="ret neg">−16.4% (3 ปี) / −5.8%/ปี</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.24</span></li>
+            <li><span>P/E ออก</span><span>24x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.42</span></li>
+            <li><span>สถานการณ์</span><span>กำไรทรง / P/E compress</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +25%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿11.25</div>
+          <div class="ret pos">+51.3% (3 ปี) / +14.8%/ปี</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.47</span></li>
+            <li><span>P/E ออก</span><span>24x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.54</span></li>
+            <li><span>สถานการณ์</span><span>กำไรฟื้นสู่ระดับ FY65-66</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +40%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿18.50</div>
+          <div class="ret pos">+147% (3 ปี) / +34%/ปี</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.66</span></li>
+            <li><span>P/E ออก</span><span>28x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.63</span></li>
+            <li><span>สถานการณ์</span><span>ฟื้นเต็ม + CLMV เติบโต</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      Base case อิง EPS FY2569F ฿0.24 เติบโต 25%/ปีในปีต่อๆ ไป สู่ ฿0.47 ปีที่ 3 ที่ P/E ออก 24x
+      รวมปันผลสะสม ~฿0.54 ใน 3 ปี ผลตอบแทนรวม ~51% หรือ ~15%/ปี ถ้าการฟื้นตัวเป็นไปตามคาด
+      Bear case: กำไรทรงตัวที่ ฿0.24 ตลาด de-rate P/E ลง 24x → ราคาเป้า ฿5.76 ขาดทุน ~16%
+      Bull case: กำไรฟื้นเต็มที่ + CLMV สร้างรายได้ใหม่ — ผลตอบแทนสูงมากแต่ความไม่แน่นอนสูง
+      ทั้ง 3 scenarios อิงสมมติฐานที่สำคัญว่าภาระหนี้ ฿10,030 ล้านสามารถบริหารได้ต่อเนื่อง
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>กำไรฟื้นตัวหลังบันทึกด้อยค่าครั้งใหญ่:</b> FY67 บันทึกด้อยค่า 6 รายการใหญ่ ทำให้ขาดทุน ฿1,765 ล้าน แต่ FY68 กลับมามีกำไรแล้ว — one-off จบแล้ว กำไรปกติควรสูงกว่านี้</li>
+          <li><b>ขยายศูนย์มะเร็ง 3 แห่ง (ลงทุน ฿1,000–1,500 ล้าน):</b> จันทบุรี + ตรัง + อุบลราชธานี — โรคมะเร็งเป็น high-margin service เพิ่มรายได้ต่างจังหวัดระยะกลาง</li>
+          <li><b>CLMV Medical Tourism &amp; Expansion:</b> ขยายโรงพยาบาลเมียนมา (มัณฑะเลย์) + Wellness Clinic Ho Chi Minh City ฿170 ล้าน — ผู้ป่วย CLMV มาไทยเพิ่ม + รายได้ต่างประเทศ</li>
+          <li><b>Affordable Healthcare positioning:</b> THG เป็นเครือโรงพยาบาล "ราคาเข้าถึงได้" ในต่างจังหวัด แตกต่างจากคู่แข่ง premium (BDMS/BH) — ฐานตลาดกว้าง + ลูกค้าประกันสังคม</li>
+          <li><b>ดอกเบี้ยลดลงหลังทยอยชำระหนี้:</b> หลังเพิ่มทุนปี 68 ทยอยชำระหนี้ → ดอกเบี้ยจ่ายลด → กำไรสุทธิเพิ่มโดยไม่ต้องเพิ่มรายได้</li>
+          <li><b>Revenue growth 7%/ปี (consensus):</b> นักวิเคราะห์คาด FY69F รายได้ ฿9,440 ล้าน (+3.8%) — aging society + ขยาย capacity หนุนระยะยาว</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>ภาระหนี้สูงมาก (฿10,030 ล้าน):</b> หนี้สุทธิ ฿9,380 ล้าน สูงกว่า Market Cap — กดดัน EPS และ FCF; ถ้าดอกเบี้ยสูงต่อ กำไรจะยังต่ำ</li>
+          <li><b>ROE ต่ำมาก (0.93%):</b> ยังไม่ถึง Cost of Equity (~9%) — ทำลาย value แทนที่จะสร้าง; ต้องฟื้นสู่ ROE 8%+ จึงจะ Justified P/BV > 1x</li>
+          <li><b>รายได้ลดลงต่อเนื่อง 3 ปี:</b> Revenue ลดจาก ฿11,582 ล้าน (FY65) → ฿9,097 ล้าน (FY68) รวม −21% — ต้องเพิ่มรายได้จริงไม่ใช่แค่ลดค่าใช้จ่าย</li>
+          <li><b>ความเสี่ยงเมียนมา:</b> สถานการณ์การเมือง/ความปลอดภัยในเมียนมาไม่แน่นอน กระทบการขยายโรงพยาบาลมัณฑะเลย์และรายได้ผู้ป่วย CLMV</li>
+          <li><b>P/E TTM สูง 99x:</b> ราคาแพงมากบน EPS TTM ฿0.054 — ถ้ากำไร FY69 ไม่เป็นไปตามคาด ราคาปรับลงแรง</li>
+          <li><b>การแข่งขันในต่างจังหวัด:</b> โรงพยาบาลรัฐขยาย + เครือโรงพยาบาลอื่น (Vibhavadi/Rutnin) รุกตลาด affordable — กดดัน occupancy rate</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>Recovery Play ที่ราคาแพง — รอจุดเข้าที่ดีกว่า</h2>
+      <p>THG คือเครือโรงพยาบาล "affordable" ที่มีเครือข่าย 20+ แห่งทั่วประเทศ + กำลังขยายสู่ CLMV
+        กำไรเริ่มฟื้นตัวในปี 68 หลังผ่านจุดต่ำสุดจากการบันทึกด้อยค่าครั้งใหญ่ในปี 67
+        แต่ภาระหนี้ ~฿10,030 ล้าน และ ROE เพียง 0.93% ยังกดดันมูลค่าที่แท้จริงอย่างมีนัยสำคัญ
+        ณ ราคา ฿7.70 ตลาดซื้อ "future earnings" ล่วงหน้าไปมาก — เหมาะสำหรับนักลงทุนที่เชื่อในการฟื้นตัวสมบูรณ์ภายใน 2-3 ปี
+        ส่วน Value Investor ควรรอราคาต่ำกว่า ฿6.70 (FV) หรือดีกว่าคือโซน MOS 20% ที่ ฿5.36</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿6.70 <span style="font-size:12px;color:#cab9a8">(฿5.57–฿8.40)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −14.9% (แพงกว่า FV)</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿8.75 (Sell consensus · 2 คน)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> รอจุดเข้าที่ดีกว่า — ถ้าราคาปรับลงสู่ ฿6.50–฿6.70 (ใกล้ FV) น่าสนใจทยอยสะสม; ถ้าลงถึง ฿5.36 (MOS 20%) น่าซื้อแบบ value; ถือปัจจุบันที่ ฿7.70 มีความเสี่ยงขาลงหากกำไรไม่เป็นไปตามคาด · ติดตาม: กำไร Q2/69, อัตราดอกเบี้ย, ความคืบหน้าศูนย์มะเร็ง
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    แหล่งข้อมูล: Yahoo Finance (THG.BK), Investing.com, StockAnalysis.com (BKK:THG), AiO Panphol, ir.thg.co.th — ราคา ณ 3 ก.ค. 2569
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 3 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
