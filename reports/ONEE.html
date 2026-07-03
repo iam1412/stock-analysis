@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น เดอะ วัน เอ็นเตอร์ไพรส์ (ONEE) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"ONEE","currency":"THB","price":3.10,"fairValue":3.00,"mos":-3.3,"upside":-3.2,"pe":13.7,"dividendYield":5.81,"roe":7.3}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#7b1fa2",
+    "accentDark": "#4a148c",
+    "darkGrad": "linear-gradient(135deg,#4a148c 0%,#6a1b9a 60%,#7b1fa2 100%)",
+    "glow": "rgba(123,31,162,0.3)",
+    "subColor": "#ce93d8",
+    "headerMuted": "rgba(206,147,216,0.7)",
+    "verdictText": "#f3e5f5",
+    "vcellLabel": "rgba(206,147,216,0.8)",
+    "badge": "#7b1fa2",
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#1e8e3e"
+  },
+  "chart": {
+    "data": [
+      ["ก.พ. 2567", 2.22],
+      ["มี.ค. 2567", 2.30],
+      ["เม.ย. 2567", 1.97],
+      ["พ.ค. 2567", 2.18],
+      ["มิ.ย. 2567", 2.14],
+      ["ก.ค. 2567", 2.34],
+      ["ส.ค. 2567", 2.92],
+      ["ก.ย. 2567", 2.70],
+      ["ต.ค. 2567", 2.66],
+      ["พ.ย. 2567", 2.78],
+      ["ธ.ค. 2567", 3.04],
+      ["ม.ค. 2568", 3.04],
+      ["ม.ค. 2568 (ปัจจุบัน)", 3.10]
+    ],
+    "min": 1.80,
+    "max": 3.40,
+    "grid": [2.00, 2.50, 3.00, 3.40],
+    "fairLine": 3.00,
+    "currency": "฿",
+    "highlight": [6, 11],
+    "gridFmt": "v.toFixed(2)",
+    "dataFmt": "d[1].toFixed(2)"
+  },
+  "gauge": {
+    "min": 1.80,
+    "max": 3.80,
+    "cur": 3.10,
+    "fair": 3.00,
+    "fairLabelTop": true
+  },
+  "fv": 3.00
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">◉ ◉ ◉</div>
+    <div>
+      <span class="tag">SET: ONEE</span>
+      <span class="tag">สื่อ &amp; บันเทิง</span>
+      <span class="tag">คอนเทนต์ / ดิจิทัล</span>
+    </div>
+    <h1>เดอะ วัน เอ็นเตอร์ไพรส์ (ONEE)</h1>
+    <div class="sub">ผลิตคอนเทนต์ละคร-ซีรีส์ ONE31 • Idol Marketing &amp; Artist Management • oneD Streaming • คอนเสิร์ต &amp; Events • ลิขสิทธิ์ต่างประเทศ</div>
+    <div class="price-row">
+      <div>
+        <div class="px">฿3.10<small>(ONEE)</small></div>
+      </div>
+      <div class="chg">▲ +39.6% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ มกราคม 2568<br>
+        กรอบ 52 สัปดาห์ ฿1.94 – ฿3.10<br>
+        ที่มา: Yahoo Finance, StockAnalysis.com
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">FY2568 (ปีบัญชีสิ้นสุด ธ.ค. 2568)</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">฿7.24 พันล้าน</div><div class="d">2,381 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~13.7x</div><div class="d">EPS TTM ฿0.22 (StockAnalysis)</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~22x</div><div class="d">ช่วง 11x–31x (2564–2568)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">1.02x</div><div class="d">BVPS ฿3.03 (StockAnalysis)</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2568</div><div class="v">฿450.5 ล้าน</div><div class="d">+5.3% YoY (FY2567: ฿421 ล้าน)</div></div>
+      <div class="metric"><div class="k">EPS (FY2568)</div><div class="v">~฿0.19</div><div class="d">450.5M ÷ 2,381M หุ้น</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~฿3.03</div><div class="d">D/E เพียง 0.03x — แทบไม่มีหนี้</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~7.3% / 3.6%</div><div class="d">ROIC ~10.9% (StockAnalysis)</div></div>
+
+      <div class="metric"><div class="k">รายได้ FY2568</div><div class="v neu">฿7,317 ล้าน</div><div class="d">+9.7% YoY (FY2567: ฿6,669 ล้าน)</div></div>
+      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">35.5%</div><div class="d">GP ฿2,599M ÷ Rev ฿7,317M</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~5.81%</div><div class="d">฿0.18/หุ้น (0.13+0.05) ปี 2568</div></div>
+      <div class="metric"><div class="k">FCF/หุ้น</div><div class="v">฿0.51</div><div class="d">FCF รวม ฿1,215M (แข็งแกร่ง)</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#7b1fa2"></i>ราคา ONEE</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿3.00</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคา ONEE ปรับตัวขึ้นแรงกว่า +39.6% ในรอบปีที่ผ่านมา จากฐาน ฿2.22 ต้นปี 2567 มาแตะ ฿3.10 ปัจจุบัน โดยสูงสุด 52 สัปดาห์อยู่ที่ ฿3.10 และต่ำสุด ฿1.94 (เม.ย. 2567 ช่วงที่ตลาดกังวลโฆษณาชะลอ) ราคาฟื้นตัวชัดเจนตั้งแต่กลางปี 2567 หลังผลประกอบการ Idol Marketing โตแรง +59.7% และ oneD มีสมาชิกเพิ่ม 93% ราคาปัจจุบันสูงกว่ามูลค่าเหมาะสมเล็กน้อย
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS adj. ฿0.19 (FY2568) × P/E เป้าหมาย ~16x — อิง InnovestX ใช้ 14.8x; เฉลี่ยอุตสาหกรรมสื่อ SET ~16–18x; ลด discount จากอัตรากำไรขั้นต้นที่กำลังกดดัน</div></div>
+        <div class="mval">฿3.04</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล ฿0.18 × (1+g); g 4%, r 9% → ฿0.1872 ÷ 0.05 — สะท้อน FCF แข็งแกร่ง ฿0.51/หุ้น + ประวัติปันผลสม่ำเสมอ 5 ปี</div></div>
+        <div class="mval">฿3.74</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 7.3% − g 4%)/(r 9% − g 4%) ≈ 0.66 × BVPS ฿3.03 — สะท้อน ROE ต่ำกว่า required return (9%); มูลค่าสินทรัพย์สุทธิรองรับ</div></div>
+        <div class="mval">฿2.00</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿2.00 – ฿3.74</span></div>
+        <div class="r">฿3.00</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        วิธี DDM ให้ค่าสูงสุด (฿3.74) เพราะ FCF แข็งและปันผลสม่ำเสมอ ขณะวิธี Justified P/BV ให้ค่าต่ำสุด (฿2.00) สะท้อน ROE 7.3% ยังต่ำกว่า required return 9% ซึ่งหมายความว่าบริษัทยังสร้างมูลค่าต่ำกว่าต้นทุนทุน มูลค่าเฉลี่ย 3 วิธี = (3.04+3.74+2.00)/3 = ฿2.93 → ปัดเป็น ฿3.00 สอดคล้องกับเป้านักวิเคราะห์เฉลี่ย ฿2.65–2.80 และราคาปัจจุบัน ฿3.10 อยู่เหนือมูลค่าเล็กน้อย
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿3.10</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿3.00</div></div>
+        </div>
+        <div class="scale">
+          <span>฿2.10<br><small>MOS 30%</small></span>
+          <span>฿2.40<br><small>MOS 20%</small></span>
+          <span style="text-align:center">฿2.65<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">฿3.00<br><small>Fair Value</small></span>
+          <span style="text-align:right">฿3.74<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน ฿3.10 อยู่เหนือมูลค่าเหมาะสม ฿3.00 เล็กน้อย (สูงกว่า ~3.3%) บ่งชี้ว่าตลาดได้ Priced-in ข่าวดี Idol Marketing และการเติบโตของ oneD แล้วบางส่วน เป้าเฉลี่ยนักวิเคราะห์ ฿2.65 (InnovestX NEUTRAL ฿2.80) ชี้ว่า Upside จากระดับนี้จำกัด จุดซื้อที่น่าสนใจกว่าอยู่ที่ ฿2.40 (MOS 20%) สำหรับ Value investor หรือ ฿2.10 (MOS 30%) สำหรับ Deep value
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">−3.3%</div>
+        <div class="txt">ราคาสูงกว่ามูลค่าเล็กน้อย — รอจังหวะดีกว่า</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿2.40</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿2.10</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿3.00</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="3.10" step="0.05">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿3.10 • EPS ฐาน ~฿0.19 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS 0%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿2.47</div>
+          <div class="ret neg">−12.5% รวม / −4.4%/ปี</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.19</span></li>
+            <li><span>P/E ออก</span><span>13x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.54</span></li>
+            <li><span>สถานการณ์</span><span>โฆษณาชะลอ OTT แข่งรุนแรง</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +5%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿3.53</div>
+          <div class="ret pos">+20.3% รวม / +6.4%/ปี</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.22</span></li>
+            <li><span>P/E ออก</span><span>16x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.57</span></li>
+            <li><span>สถานการณ์</span><span>Idol Marketing โต oneD ขยาย</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +10%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿4.50</div>
+          <div class="ret pos">+63.2% รวม / +18.0%/ปี</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.25</span></li>
+            <li><span>P/E ออก</span><span>18x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.62</span></li>
+            <li><span>สถานการณ์</span><span>oneD พุ่ง Global content IP สำเร็จ</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      Base case ให้ผลตอบแทนรวมปันผล ~20.3% (6.4%/ปี) ซึ่งน่าพอใจแต่ไม่โดดเด่น เมื่อซื้อที่ ฿3.10 ซึ่งใกล้มูลค่าเหมาะสม หากซื้อที่ MOS 20% (฿2.40) ผลตอบแทน Base case จะดีขึ้นเป็น ~47% (13.7%/ปี) ซึ่งน่าสนใจกว่ามาก อัตราปันผลตอบแทน ~5.8% ถือเป็น "ตาข่ายนิรภัย" ที่ดีสำหรับนักลงทุนที่เน้นรายได้ โดยเฉพาะถ้า FCF ยังแข็งแกร่ง (฿1.2 พันล้าน/ปี — สูงกว่ากำไรสุทธิ ฿450M เพราะ D&A สูง)
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก &amp; ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>Idol Marketing เติบโตสูง:</b> ธุรกิจ Artist Management + คอนเสิร์ต + Merchandise โต +59.7% YoY ในปี 2568 เป็นเครื่องยนต์ใหม่ทดแทนโฆษณาทีวีที่ชะลอ</li>
+          <li><b>oneD Streaming ขยายตัว:</b> ผู้ใช้เพิ่ม 83% สมาชิก Premium เพิ่ม 93% กำลังลอนช์ 5 Original Series ปี 2569 พร้อม Shorts feature — ลด dependency จาก Linear TV</li>
+          <li><b>Partnerships ระดับภูมิภาค:</b> ร่วมกับ BJC และ Mediacorp Singapore ขยายคอนเทนต์ไทยสู่ตลาดอาเซียน เปิดแหล่งรายได้ใหม่จากลิขสิทธิ์ต่างประเทศ</li>
+          <li><b>FCF แข็งแกร่ง:</b> FCF ฿1.2 พันล้าน สูงกว่ากำไรสุทธิ ฿450M ถึง 2.7x บ่งชี้คุณภาพกำไรดี รองรับปันผลและการลงทุนขยายธุรกิจ</li>
+          <li><b>ปันผลสม่ำเสมอ + Yield 5.8%:</b> จ่ายปันผลต่อเนื่องทุกปี Yield ~5.8% ในระดับดอกเบี้ยปัจจุบัน ดึงดูดนักลงทุนเน้นรายได้ให้ถือหุ้นระยะยาว</li>
+          <li><b>Merchandise &amp; IP:</b> ยอดขาย Merchandise พุ่ง +108% ปี 2568 — บ่งชี้ Fan Economy ที่แข็งแกร่ง + Character IP ใหม่ (Mascot Artist) เพิ่มรายได้นอก Content</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>อัตรากำไรขั้นต้นกดดัน:</b> InnovestX คาดอัตรากำไรขั้นต้นลดลงปี 2569 จากรายได้ Content Marketing ที่ถดถอยและกลยุทธ์ลดการขายสิทธิ์ OTT แก่รายอื่น (เน้น oneD ซึ่งยังขนาดเล็ก)</li>
+          <li><b>กำไรสุทธิแท้จริงต่ำกว่าที่รายงาน:</b> InnovestX ระบุว่ากำไรที่ปรับ (ไม่รวมสิทธิประโยชน์ภาษี) อยู่ที่ ~฿60M (-8.9% YoY) ชี้ว่ากำไรปกติยังอ่อนแอ</li>
+          <li><b>Viewership แข่งกับ OTT ระดับโลก:</b> Netflix/Disney+/YouTube ดึงผู้ชมจาก Linear TV อย่างต่อเนื่อง โฆษณาทีวีอาจหดตัวเร็วกว่าที่ Digital ทดแทนได้</li>
+          <li><b>ROE ต่ำกว่า Cost of Capital:</b> ROE 7.3% ต่ำกว่า Required Return 9% บ่งชี้ว่าบริษัทยัง Value Destructive ในมุมของ Economic Profit หากไม่ปรับปรุงได้</li>
+          <li><b>Idol Marketing ขึ้นกับ Trend:</b> ความนิยม K-POP/T-POP และ Fan Economy ผันผวนตาม Trend วัฒนธรรม หาก Artist สำคัญหมดสัญญาหรือเสียความนิยม กระทบรายได้</li>
+          <li><b>ESG Rating ยังไม่มี:</b> ONEE ยังไม่ติด SET ESG Ratings (ต่างจากคู่แข่ง) อาจทำให้กองทุน ESG-mandate ไม่ลงทุน และถูกตัดออกจาก SET ESG Index ในอนาคต</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>ONEE: มูลค่าสมเหตุผล แต่ซื้อได้ดีกว่าถ้ารอจังหวะ</h2>
+      <p>ONEE เป็นบริษัทสื่อ-บันเทิงชั้นนำของไทยที่กำลังเปลี่ยนผ่านจาก Linear TV Producer สู่ Integrated Entertainment Ecosystem ครอบคลุม Idol Marketing, Streaming (oneD) และ IP Licensing ธุรกิจ Idol Marketing และ Merchandise เป็น Growth Driver ใหม่ที่น่าตื่นเต้น อย่างไรก็ดี กำไรแท้จริง (ไม่รวมสิทธิประโยชน์ภาษี) ยังอ่อนแอ อัตรากำไรขั้นต้นกำลังถูกกดดัน และ ROE ยังต่ำกว่า Cost of Capital ราคาปัจจุบัน ฿3.10 เพิ่งแตะสูงสุด 52 สัปดาห์ ทำให้ MOS ติดลบเล็กน้อย นักลงทุน Value ควรรอซื้อที่ ฿2.40–2.60 เพื่อ Margin of Safety ที่ดีขึ้น ขณะที่นักลงทุนระยะยาวที่ชอบปันผล อาจ DCA ได้เพราะ Yield ~5.8% ค่อนข้างดีและ FCF แข็งแกร่ง</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿3.00 <span style="font-size:12px;color:#cab9a8">(฿2.00–฿3.74)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −3.3%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿2.65 (BUY 3/4)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ราคาปัจจุบัน ฿3.10 อยู่เหนือมูลค่าเหมาะสม ฿3.00 เล็กน้อย ไม่ใช่จังหวะซื้อที่ดีที่สุด — รอ Pullback มา ฿2.40–2.60 (MOS 13–20%) จึงจะน่าสนใจ ถ้ายืนเหนือ ฿3.10 ต่อเนื่องพร้อม Catalyst ชัดเจน (oneD Subscriber พุ่ง / ผลประกอบการ Q1 ดีเกินคาด) อาจเป้าหมายใหม่ได้ที่ ฿3.50–3.74
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    แหล่งข้อมูล: Yahoo Finance (ราคา/กราฟรายเดือน ม.ค. 2568), StockAnalysis.com (งบการเงิน FY2568 Q4 สิ้นสุด ธ.ค. 2568 / ratios), The One Enterprise Oppday มี.ค. 2569 (ผลประกอบการ FY2568 รายได้ ฿7,317M กำไร ฿450M), InnovestX Research Note มี.ค. 2569 (Analyst target ฿2.80 NEUTRAL), Investing.com (ประวัติปันผล 2565–2569)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ มกราคม 2568 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
