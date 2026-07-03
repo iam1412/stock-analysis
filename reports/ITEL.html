@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น อินเตอร์ลิ้งค์ เทเลคอม (ITEL) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"ITEL","currency":"THB","price":1.54,"fairValue":2.00,"mos":23.0,"upside":29.9,"pe":null,"dividendYield":null,"roe":-4.15}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#e65100",
+    "accentDark": "#bf360c",
+    "darkGrad": "linear-gradient(135deg,#bf360c 0%,#e65100 60%,#f4511e 100%)",
+    "glow": "rgba(230,81,0,0.3)",
+    "subColor": "#ffccbc",
+    "headerMuted": "rgba(255,255,255,0.6)",
+    "verdictText": "#fbe9e7",
+    "vcellLabel": "rgba(251,233,231,0.7)",
+    "badge": "#f4511e",
+    "chgBg": "#c5221f",
+    "chgColor": "#fff"
+  },
+  "chart": {
+    "data": [
+      ["ม.ค. 68", 1.60],
+      ["ก.พ. 68", 1.38],
+      ["มี.ค. 68", 1.18],
+      ["เม.ย. 68", 1.21],
+      ["พ.ค. 68", 1.38],
+      ["มิ.ย. 68", 1.29],
+      ["ก.ค. 68", 1.35],
+      ["ส.ค. 68", 1.16],
+      ["ก.ย. 68", 1.18],
+      ["ต.ค. 68", 1.37],
+      ["พ.ย. 68", 1.45],
+      ["ธ.ค. 68", 1.50],
+      ["ก.ค. 69", 1.54]
+    ],
+    "min": 1.00,
+    "max": 2.20,
+    "grid": [1.00, 1.25, 1.50, 1.75, 2.00, 2.25],
+    "fairLine": 2.00,
+    "currency": "฿",
+    "highlight": [0, 2, 12],
+    "gridFmt": "v.toFixed(2)",
+    "dataFmt": "d[1].toFixed(2)"
+  },
+  "gauge": {
+    "min": 0.80,
+    "max": 2.80,
+    "cur": 1.54,
+    "fair": 2.00,
+    "fairLabelTop": false
+  },
+  "fv": 2.00
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">●●●●●</div>
+    <div>
+      <span class="tag">SET: ITEL</span>
+      <span class="tag">Technology &amp; Telecom</span>
+      <span class="tag">Fiber Optic / Data Center</span>
+    </div>
+    <h1>อินเตอร์ลิ้งค์ เทเลคอม</h1>
+    <div class="sub">โครงข่ายไฟเบอร์ออปติกทั่วประเทศ 75 จังหวัด • Dark Fiber · Wavelength · MPLS • Data Center (Co-location, Cloud, DR) • B2B Telecom Infrastructure</div>
+    <div class="price-row">
+      <div>
+        <div class="px">฿1.54<small>(ITEL)</small></div>
+      </div>
+      <div class="chg">▼ −3.8% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 3 ก.ค. 2569<br>
+        กรอบ 52 สัปดาห์ ฿1.08 – ฿1.72<br>
+        ที่มา: Yahoo Finance, StockAnalysis.com, Settrade.com
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ มิ.ย.–ก.ค. 2569</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">฿3.03 พันล้าน</div><div class="d">หุ้น 2,020 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">0.60x</div><div class="d">BVPS ฿2.43 / ราคาต่ำ BV มาก</div></div>
+      <div class="metric"><div class="k">EV/EBITDA (FY25)</div><div class="v neu">~20.8x</div><div class="d">EBITDA ฿304M (ปีขาดทุน)</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">0.10</div><div class="d">ความผันผวนต่ำมาก vs SET</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2568</div><div class="v neg">−฿176 ล้าน</div><div class="d">EPS −฿0.13 (ปีขาดทุน)</div></div>
+      <div class="metric"><div class="k">กำไรสุทธิ FY2567</div><div class="v pos">+฿304 ล้าน</div><div class="d">EPS ฿0.22 (ปีปกติ)</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~฿2.43</div><div class="d">Equity ฿5,056 ล้าน (TTM)</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v neg">−4.2% / −0.6%</div><div class="d">ติดลบเพราะ FY68 ขาดทุน</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">฿2,730 ล้าน</div><div class="d">−0.1% YoY</div></div>
+      <div class="metric"><div class="k">Gross Margin FY25</div><div class="v neg">7.3%</div><div class="d">ลดลงจาก 25.6% ใน FY24</div></div>
+      <div class="metric"><div class="k">EBITDA Margin FY25</div><div class="v neu">10.0%</div><div class="d">EBITDA ฿304M (vs ฿867M FY24)</div></div>
+      <div class="metric"><div class="k">Net Debt / Equity</div><div class="v neu">0.79x</div><div class="d">Net Debt ฿3,322M (leveraged)</div></div>
+    </div>
+    <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6;padding:0 4px">
+      <b>หมายเหตุ FY2568 ขาดทุน:</b> ผลขาดทุน −฿176M ใน FY2568 เกิดจากการรับรู้ค่าใช้จ่ายก้อนใหญ่ (ต้นทุนโครงการ USO ล่าช้า + ค่าเสื่อมราคาเพิ่ม ฿362M) ขณะที่ Gross Margin ร่วงจาก 25.6% → 7.3% จากต้นทุนติดตั้งเครือข่ายพุ่ง บริษัทมี Backlog ฿1.8 พันล้าน และโครงการ USO (Phase 1) เริ่มรับรู้รายได้จาก Q3/2568 บ่งชี้ว่า FY2568 น่าจะเป็นจุดต่ำสุด
+    </p>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ม.ค. 2568 – ก.ค. 2569 (รายเดือน)</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#e65100"></i>ราคา ITEL</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿2.00</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคา ITEL ปรับตัวลงจาก ฿1.60 ใน ม.ค. 2568 มาสู่จุดต่ำสุดที่ ฿1.08 ใน เม.ย. 2568 (−32.5%) หลังบริษัทประกาศผลขาดทุน FY2568 จากต้นทุนโครงการ USO ที่ล่าช้า ก่อนฟื้นตัวขึ้นมาที่ ฿1.54 ใน ก.ค. 2569 (+42.6% จากจุดต่ำสุด) โดยมีปัจจัยหนุนจากการเริ่มรับรู้รายได้โครงการ USO Phase 1 และ Backlog ที่แข็งแกร่ง ฿1.8 พันล้าน ผลตอบแทนรอบปี (ม.ค. 68 – ก.ค. 69) = −3.8%
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">3 วิธี · ตัด P/E/DDM (EPS ติดลบ TTM)</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. EV/EBITDA (Normalized)</div><div class="mdesc">EBITDA เฉลี่ย FY66–68 = ฿681M × 12x (sector peer median) → EV ฿8,172M − หนี้สุทธิ ฿3,322M + เงินสด ฿860M → Equity ฿5,710M ÷ หุ้น 2,020M</div></div>
+        <div class="mval">฿2.83</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE เฉลี่ย 6.9% − g 3.0%) ÷ (r 10.0% − g 3.0%) = 0.557x × BVPS ฿2.43 — ROE อิงค่าเฉลี่ย FY65–67 ช่วงปกติ</div></div>
+        <div class="mval">฿1.35</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. DCF (Normalized FCF)</div><div class="mdesc">FCF/หุ้น เฉลี่ย FY64–67 = ฿0.157 × (1+g 3%) ÷ (r 10% − g 3%) — อิง FCF ปกติ ไม่รวมปีขาดทุน FY68</div></div>
+        <div class="mval">฿2.31</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿1.35 – ฿2.83</span></div>
+        <div class="r">฿2.00</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ไม่ใช้ P/E และ DDM เนื่องจาก EPS TTM ติดลบใน FY2568 · วิธี EV/EBITDA ให้ค่าสูงสุด (฿2.83) เพราะ EBITDA ยังเป็นบวกแม้ในปีขาดทุน · Justified P/BV ให้ค่าต่ำสุด (฿1.35) สะท้อน ROE ต่ำในช่วงฟื้นตัว · DCF อิง FCF เฉลี่ยปีปกติ ให้ค่า ฿2.31 · เฉลี่ยสามวิธี ≈ ฿2.16 → ปัดลงอนุรักษ์นิยมที่ ฿2.00 สะท้อน execution risk ของการฟื้นตัว · ราคาตลาด ฿1.54 ซื้อขายที่ P/BV เพียง 0.63x ซึ่งถูกกว่า BV จริง
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿1.54</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿2.00</div></div>
+        </div>
+        <div class="scale">
+          <span>฿1.39<br><small>เป้า Analyst</small></span>
+          <span>฿1.40<br><small>MOS 30%</small></span>
+          <span style="text-align:center">฿1.60<br><small>MOS 20%</small></span>
+          <span style="text-align:right">฿2.00<br><small>Fair Value</small></span>
+          <span style="text-align:right">฿2.83<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน ฿1.54 อยู่ในโซน MOS ~23% ต่ำกว่า Fair Value ฿2.00 น่าสนใจในแง่ Value แต่ต่ำกว่าโซน MOS 20% (฿1.60) เพียงเล็กน้อย · นักวิเคราะห์ 2 รายให้เป้าเฉลี่ยต่ำกว่าราคาตลาดที่ ฿1.39 (Hold) สะท้อนความไม่แน่นอนของการฟื้นตัว · ความเสี่ยงด้าน Altman Z-Score 0.83 (ต่ำกว่า 1.8 = ระมัดระวัง) ควรติดตาม Cash Flow และ Backlog อย่างใกล้ชิด
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict good">
+        <div class="big">+23%</div>
+        <div class="txt">ต่ำกว่า Fair Value ฿2.00 อยู่ ~23% — โซนน่าสนใจสำหรับนักลงทุนระยะกลาง-ยาว ที่เชื่อในการฟื้นตัว แต่ยังมีความเสี่ยง execution สูง</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿1.60</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿1.40</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿2.00</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="1.54" step="0.05">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿1.54 • EPS ฐาน (normalized) ~฿0.20 • ไม่รวมปันผล (งด FY68–69)</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS +0%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿1.08</div>
+          <div class="ret neg">−30% (−11%/ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.12</span></li>
+            <li><span>P/E ออก</span><span>9x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.00</span></li>
+            <li><span>สถานการณ์</span><span>ฟื้นตัวช้า ขาดทุนต่อ</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS Recovery</span></div>
+        <div class="body">
+          <div class="tgt">฿2.42</div>
+          <div class="ret pos">+57% (+16%/ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.22</span></li>
+            <li><span>P/E ออก</span><span>11x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.10</span></li>
+            <li><span>สถานการณ์</span><span>ฟื้น EPS สู่ระดับ FY67</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +15%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿3.64</div>
+          <div class="ret pos">+136% (+32%/ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.28</span></li>
+            <li><span>P/E ออก</span><span>13x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.18</span></li>
+            <li><span>สถานการณ์</span><span>Data Center + USO เติบโตแรง</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      <b>สมมติฐาน Base Case:</b> บริษัทฟื้นกลับสู่ EPS ระดับ FY2567 (฿0.22) ภายใน 3 ปี จาก (1) รายได้โครงการ USO Phase 1 เริ่มรับรู้เต็มปี (2) Backlog ฿1.8 พันล้านทยอยรับรู้ (3) Gross Margin ฟื้นกลับสู่ ~20-25% · P/E เป้าหมาย 11x อิงค่าเฉลี่ยอุตสาหกรรม Telecom ไทย · <b>ความเสี่ยงหลัก:</b> Bear Case เกิดขึ้นหากการฟื้นตัวล่าช้าและ Altman Z-Score ต่ำชี้ว่ายังต้องติดตามสภาพคล่องอย่างใกล้ชิด
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก &amp; ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>โครงการ USO Phase 1:</b> สัญญา ¿USO (Universal Service Obligation) ที่ลงนาม พ.ค. 2568 เริ่มรับรู้รายได้เต็มปีใน Q3/2568 — เพิ่มรายได้ประจำและช่วยดันกำไรกลับสู่บวก</li>
+          <li><b>Backlog แข็งแกร่ง ฿1.8 พันล้าน:</b> งานค้างรับรู้รายได้รับประกันรายได้อย่างน้อย 2–3 ไตรมาสข้างหน้า ลด revenue visibility risk</li>
+          <li><b>Data Center &amp; Cloud:</b> ธุรกิจ Data Center เติบโต (รายได้ ฿102M FY24) ตามความต้องการ AI/Cloud ในไทย — margin สูงกว่า Network Installation</li>
+          <li><b>โครงข่ายไฟเบอร์ 75 จังหวัด:</b> Infrastructure ที่สร้างแล้วเป็น competitive moat ที่แข่งเข้ามาได้ยาก รองรับ demand connectivity B2B ระยะยาว</li>
+          <li><b>P/BV 0.60x — ซื้อขายต่ำกว่า Book Value:</b> ราคาตลาดต่ำกว่ามูลค่าทรัพย์สินสุทธิ ให้ Safety margin ด้าน Asset value</li>
+          <li><b>Digital Transformation ไทย:</b> นโยบายรัฐเร่ง Digital Infrastructure ขยาย broadband ทั่วประเทศเป็น tailwind ระยะยาวของธุรกิจไฟเบอร์</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>Altman Z-Score 0.83 (ต่ำกว่า 1.8):</b> ชี้ว่าบริษัทอยู่ใน "Distress Zone" ตามโมเดล — หากกำไรฟื้นตัวช้า สภาพคล่องอาจตึงตัว ต้องติดตาม D/E และ Cash Flow ทุกไตรมาส</li>
+          <li><b>Net Debt สูง ฿3.3 พันล้าน:</b> D/E 0.79x และ Net Debt/EBITDA ~11x (อิง EBITDA FY68) ภาระดอกเบี้ยกดดันกำไรในช่วงอัตราดอกเบี้ยสูง</li>
+          <li><b>Gross Margin ผันผวนรุนแรง:</b> ร่วงจาก 25.6% (FY67) → 7.3% (FY68) เพียงปีเดียว — ชี้ถึงความไม่แน่นอนสูงของโครงสร้างต้นทุน Network Installation</li>
+          <li><b>Execution Risk — USO และ Backlog:</b> การฟื้นตัวทั้งหมดขึ้นกับการ deliver โครงการ USO ตามแผน — ล่าช้าอีกจะกดดัน Cash Flow และความเชื่อมั่นนักลงทุน</li>
+          <li><b>การแข่งขันจาก AIS / TRUE / DTAC:</b> ผู้ให้บริการ Telecom รายใหญ่มีทรัพยากรขยาย Enterprise Fiber ได้เองซึ่งอาจแย่ง market share ระยะยาว</li>
+          <li><b>ราคาเป้านักวิเคราะห์ต่ำกว่าตลาด:</b> Consensus 2 ราย ให้เป้าเฉลี่ยเพียง ฿1.39 (ต่ำกว่าราคา ฿1.54) สะท้อนความระมัดระวังในการ price-in การฟื้นตัว</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>โครงข่ายไฟเบอร์ที่ราคาต่ำ BV — คุ้มค่าถ้าฟื้นตัวตามแผน</h2>
+      <p>ITEL เป็นผู้นำโครงข่ายไฟเบอร์ออปติก B2B ของไทยที่ครอบคลุม 75 จังหวัด มี Infrastructure moat ที่แข็งแกร่ง แต่กำลังผ่านช่วงขาดทุนชั่วคราวใน FY2568 จากต้นทุนโครงการ USO ที่ล่าช้าและค่าเสื่อมราคาที่พุ่งสูง ราคาปัจจุบัน ฿1.54 ซื้อขายที่ P/BV เพียง 0.60x ต่ำกว่า Fair Value ฿2.00 อยู่ ~23% หากบริษัทฟื้นกลับสู่กำไรระดับ FY2567 (EPS ฿0.22) ภายใน 2–3 ปี จะให้ผลตอบแทน Total Return +57% หรือ +16%/ปี (Base Case) โดยมี Backlog ฿1.8B และ USO Phase 1 เป็นตัวเร่ง ความเสี่ยงหลักคือ Altman Z-Score 0.83 ชี้ถึงความเปราะบางทางการเงิน — นักลงทุนควรติดตาม Q3/2568 อย่างใกล้ชิด</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿2.00 <span style="font-size:12px;color:#cab9a8">(฿1.35–฿2.83)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +23%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿1.39 (Hold × 2)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> <b>ระวังสูง — ทยอยสะสมได้อย่างระมัดระวัง</b> ที่ ฿1.40–1.54 สำหรับนักลงทุนระยะกลาง-ยาวที่รับความเสี่ยงได้ ควรรอดูผลประกอบการ Q3/2568 (ส.ค. 2569) ก่อนตัดสินใจ หากกำไรพลิกกลับมาบวกตามแผน USO — เป้า Base Case ฿2.42 ภายใน 3 ปี คิดเป็น Upside ~57% + ปันผลที่อาจกลับมาจ่ายในปี 2570–71
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ Normalized EBITDA/FCF, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    แหล่งข้อมูล: (1) Yahoo Finance ITEL.BK — ราคา ฿1.54 ณ 3 ก.ค. 2569, กราฟรายเดือน 1 ปี (2) StockAnalysis.com BKK:ITEL — งบการเงิน, Balance Sheet, FCF, Statistics (3) Settrade.com/IAA — Analyst Consensus (Hold×2, เป้า ฿1.39) + ir.interlinktelecom.co.th — Revenue Breakdown, Business Overview
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 3 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
