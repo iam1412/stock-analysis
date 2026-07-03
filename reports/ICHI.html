@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น อิชิตัน กรุ๊ป (ICHI) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"ICHI","currency":"THB","price":14.30,"fairValue":20.50,"mos":30.2,"upside":43.4,"pe":13.6,"dividendYield":8.0,"roe":23.5}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#2e7d32",
+    "accentDark": "#1b5e20",
+    "darkGrad": "linear-gradient(135deg,#1b5e20 0%,#2e7d32 60%,#388e3c 100%)",
+    "glow": "rgba(46,125,50,0.3)",
+    "subColor": "#c8e6c9",
+    "headerMuted": "rgba(255,255,255,0.6)",
+    "verdictText": "#e8f5e9",
+    "vcellLabel": "rgba(232,245,233,0.7)",
+    "badge": "#388e3c",
+    "chgBg": "#1e8e3e",
+    "chgColor": "#ffffff"
+  },
+  "chart": {
+    "data": [
+      ["ม.ค. 68", 11.40],
+      ["ก.พ. 68", 13.20],
+      ["มี.ค. 68", 12.30],
+      ["เม.ย. 68", 12.19],
+      ["พ.ค. 68", 13.40],
+      ["มิ.ย. 68", 13.90],
+      ["ก.ค. 68", 14.80],
+      ["ส.ค. 68", 12.30],
+      ["ก.ย. 68", 12.50],
+      ["ต.ค. 68", 12.90],
+      ["พ.ย. 68", 14.00],
+      ["ธ.ค. 68", 14.00],
+      ["ม.ค. 69", 14.30]
+    ],
+    "min": 10.50,
+    "max": 22.00,
+    "grid": [11, 13, 15, 17, 19, 21],
+    "fairLine": 20.50,
+    "currency": "฿",
+    "highlight": [6, 12]
+  },
+  "gauge": {
+    "min": 10.0,
+    "max": 25.0,
+    "cur": 14.30,
+    "fair": 20.50,
+    "fairLabelTop": true
+  },
+  "fv": 20.50
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">●●●●●●●</div>
+    <div>
+      <span class="tag">SET: ICHI</span>
+      <span class="tag">Consumer Staples</span>
+      <span class="tag">RTD Beverages</span>
+    </div>
+    <h1>อิชิตัน กรุ๊ป (Ichitan Group)</h1>
+    <div class="sub">ชาเขียวพร้อมดื่ม No.1 ไทย (Ichitan) · RTD tea · น้ำดื่ม PH+ Alkaline · ส่งออก CLMV · Gross Margin ~29% · founder-led</div>
+    <div class="price-row">
+      <div>
+        <div class="px">฿14.30<small>(ICHI)</small></div>
+      </div>
+      <div class="chg">▲ +25.4% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 3 ก.ค. 2569<br>
+        กรอบ 52 สัปดาห์ ฿10.20 – ฿15.20<br>
+        ที่มา: Yahoo Finance, StockAnalysis.com, Investing.com
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ก.ค. 2569 · TTM = 12 เดือนล่าสุด</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">฿18,200 ล้าน</div><div class="d">หุ้น 1,300 ล้านหุ้น · SET mid-cap</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~13.6x</div><div class="d">EPS TTM ฿1.05 · ต่ำกว่า FMCG เฉลี่ย 18–22x</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~18x</div><div class="d">ช่วง 12–26x (ต่ำสุดช่วงกำไรฟื้น)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">~3.1x</div><div class="d">BVPS ฿4.35 · ROE สูงหนุน premium</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2568</div><div class="v">฿1,328 ล้าน</div><div class="d">+1.7% YoY (ฟื้นต่อเนื่อง 3 ปีติด)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿1.05</div><div class="d">FY2567=฿1.00 · FY2566=฿0.85 · ขาขึ้น</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~฿4.35</div><div class="d">FY2568 (equity ฿5,653 ล้าน)</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~23.5% / 19.5%</div><div class="d">ROE ดีสุดในกลุ่ม RTD Beverage ไทย</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">฿7,256 ล้าน</div><div class="d">FY2568 (−4.7% YoY · สงครามราคาชาเขียว)</div></div>
+      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">~29%</div><div class="d">Gross margin ขยายตัวจาก 22% ใน FY2565</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~8.0%</div><div class="d">฿1.15/หุ้น (FY2568) · จ่ายปีละ 2 ครั้ง</div></div>
+      <div class="metric"><div class="k">หนี้สิน</div><div class="v">฿88 ล้าน</div><div class="d">D/E เกือบ 0 · Net cash position แข็งแกร่ง</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ม.ค. 2568 – ม.ค. 2569 · รายเดือน</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#2e7d32"></i>ราคา ICHI</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿20.50</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคา ICHI เริ่มต้นปีงบ 2568 ที่ ฿11.40 ก่อนพุ่งขึ้นแตะ ฿14.80 ในเดือน ก.ค. 68 (+29.8% จากต้นปี) หนุนด้วยผลประกอบการไตรมาส 2 ที่ดีกว่าคาด และยอดขาย PH+ Alkaline Water ที่โตแข็งแกร่ง ก่อนปรับฐานลงมา ฿12.30 ช่วง ส.ค.–ก.ย. 68 จากแรงขายทำกำไรและความกังวลเรื่องสงครามราคาในตลาดชาเขียว ปลายปีฟื้นกลับมาที่ ฿14.00 และทรงตัวต้นปี 69 ที่ ฿14.30 ผลตอบแทนรอบปี +25.4% ดีกว่า SET Index ซึ่งยังย่ำอยู่ในแดน
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS adj. ฿1.05 × P/E เป้าหมาย ~20x — FMCG ไทยคุณภาพสูง + ROE 23% สมควรได้ premium เทียบ sector เฉลี่ย 18–22x</div></div>
+        <div class="mval">฿21.00</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล ฿1.15 × (1+g); g 4%, r 9% → ฿1.196/(9%−4%) = ฿23.92 · อิชิตันจ่ายปันผลสม่ำเสมอ payout ratio ~110% (จากกำไรสะสม) รองรับ DDM</div></div>
+        <div class="mval">฿23.92</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 23.5% − g 4%)/(r 9% − g 4%) ≈ 3.9 × BVPS ฿4.35 · ROE สูงกว่า cost of equity มาก → P/BV premium สมเหตุสมผล</div></div>
+        <div class="mval">฿16.97</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿17.00 – ฿23.92</span></div>
+        <div class="r">฿20.50</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        วิธี DDM ให้ค่าสูงสุด (฿23.92) สะท้อนนโยบายปันผลสูงและการเติบโตที่มั่นคง ขณะที่ Justified P/BV (฿16.97) ให้ค่าต่ำสุดเนื่องจาก BVPS ต่ำ (บริษัทจ่ายปันผลออกมากทำให้ equity สะสมน้อย) FV เฉลี่ย ฿20.50 สมเหตุสมผลในฐานะ FMCG ชั้นนำที่มีกำไรฟื้น, dividend yield สูง และฐานะทางการเงินแข็งแกร่ง แหล่งที่มา: StockAnalysis.com, Investing.com, Yahoo Finance
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿14.30</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿20.50</div></div>
+        </div>
+        <div class="scale">
+          <span>฿14.35<br><small>MOS 30%</small></span>
+          <span>฿16.40<br><small>MOS 20%</small></span>
+          <span style="text-align:center">฿20.50<br><small>Fair Value</small></span>
+          <span style="text-align:right">฿21.00<br><small>กรอบกลาง FV</small></span>
+          <span style="text-align:right">฿23.92<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคา ฿14.30 อยู่ในโซน Deep Value (MOS ~30%) เกือบตรงกับจุดซื้อ MOS 30% ที่ ฿14.35 ซึ่งถือว่าถูกมากสำหรับหุ้น FMCG คุณภาพสูงที่มี ROE 23.5% และ dividend yield 8% นักวิเคราะห์ 6 ราย consensus เป็น BUY ที่เป้าเฉลี่ย ฿14.47–฿15.10 (Pi Securities ฿15.10 BUY) บ่งชี้ว่าตลาดยังไม่ให้ premium เต็มที่กับการเติบโตในระยะกลาง
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict good">
+        <div class="big">+30.2%</div>
+        <div class="txt">โซน Deep Value — ราคาต่ำกว่า FV มาก เหมาะสะสมระยะกลาง–ยาว</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿16.40</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿14.35</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿20.50</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="14.30" step="0.05">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿14.30 • EPS ฐาน ~฿1.05 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS 0%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿11.55</div>
+          <div class="ret neg">+3.5% รวม 3 ปี (~+1.2%/ปี รวมปันผล)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿1.05</span></li>
+            <li><span>P/E ออก</span><span>11x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿3.45</span></li>
+            <li><span>สถานการณ์</span><span>สงครามราคาชาเขียวรุนแรง กำไรทรง</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +8%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿23.81</div>
+          <div class="ret pos">+92.4% รวม 3 ปี (~+24.4%/ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿1.32</span></li>
+            <li><span>P/E ออก</span><span>18x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿3.73</span></li>
+            <li><span>สถานการณ์</span><span>PH+ โต + ชาเขียวฟื้น + CLMV ขยาย</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +12%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿32.47</div>
+          <div class="ret pos">+154.3% รวม 3 ปี (~+37.0%/ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿1.48</span></li>
+            <li><span>P/E ออก</span><span>22x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿4.05</span></li>
+            <li><span>สถานการณ์</span><span>สร้าง category ใหม่ + ส่งออกระเบิด</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      Base case อิง EPS เติบโต 8%/ปี (ต่ำกว่าอัตราเฉลี่ย 3 ปีที่ผ่านมาซึ่งอยู่ที่ ~35%/ปี ช่วง FY2565–68) และ P/E re-rating กลับมาที่ 18x จาก 13.6x ปัจจุบัน ซึ่งสมเหตุสมผลหากกำไรฟื้นต่อเนื่องและ PH+ Alkaline สร้าง segment ใหม่ได้ ปันผล ~8% ต่อปีเป็น "ค่าตั้งต้น" ช่วยลด downside ใน Bear case อย่างมีนัยสำคัญ
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>PH+ Alkaline Water — segment ใหม่:</b> น้ำดื่มด่างที่เป็นกระแส health-conscious โตแข็งแกร่ง คาดเป็น revenue driver หลักปี 2569–70 ช่วยลดการพึ่งพาชาเขียวเพียงอย่างเดียว</li>
+          <li><b>กำไรฟื้นต่อเนื่อง 3 ปีติด:</b> FY2565 ฿641M → FY2568 ฿1,328M โต 2.1x ใน 3 ปี broker คาด FY2569 กำไรฟื้น +9% YoY จากยอดขายชาเขียวที่เริ่ม stabilize + PH+</li>
+          <li><b>Gross Margin ขยาย:</b> จาก 21.8% ปี 2565 มาที่ 29% ปัจจุบัน สะท้อนการผสมผลิตภัณฑ์ที่ดีขึ้นและ cost efficiency หลังโควิด</li>
+          <li><b>Dividend yield ~8% เป็น floor:</b> นโยบายปันผลสม่ำเสมอ ฿1.15/หุ้น สร้าง downside protection และดึงดูด income investor</li>
+          <li><b>ขยาย CLMV + OEM:</b> ส่งออกไปเมียนมา กัมพูชา ลาว เวียดนาม + รับจ้างผลิต OEM ให้ IF Coconut เพิ่มการใช้กำลังการผลิต</li>
+          <li><b>งบการเงินแข็งแกร่ง:</b> หนี้สินแทบเป็น 0 (D/E ≈ 0) · cash-generative · founder (คุณตัน ภาสกรนที) ยังมีส่วนร่วมเชิงกลยุทธ์</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>สงครามราคาชาเขียวรุนแรง:</b> คู่แข่งอย่าง Oishi (ThaiBev) และแบรนด์ private label ยังตัดราคา อาจกดดัน volume และ margin ในระยะสั้น</li>
+          <li><b>ความเสี่ยงจาก Founder Concentration:</b> ICHI ผูกกับแบรนด์ภาพลักษณ์ตัน ภาสกรนที การเปลี่ยนแปลงผู้นำหรือภาพลักษณ์อาจกระทบ brand equity</li>
+          <li><b>ตลาด RTD Tea ไทยอิ่มตัว:</b> รายได้ FY2568 ลดลง -4.7% YoY สะท้อนตลาดชาเขียวขวดที่ growth ชะลอตัว อาจต้องพึ่ง PH+ และ export เป็นหลัก</li>
+          <li><b>ต้นทุนวัตถุดิบผันผวน:</b> น้ำตาล, ขวด PET, ใบชา — ต้นทุนพลังงานและบรรจุภัณฑ์ที่ปรับขึ้นอาจกดดัน gross margin</li>
+          <li><b>Payout ratio สูงกว่า 100%:</b> จ่ายปันผลเกิน EPS (อิงกำไรสะสม) ระยะยาวอาจต้องลดปันผลหาก EPS ไม่เติบโตพอ</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>ICHI — Deep Value + High Yield: ชาเขียว No.1 ในราคา Undervalued</h2>
+      <p>อิชิตัน กรุ๊ป คือผู้นำตลาดชาเขียวพร้อมดื่มในไทยที่มีคูเมืองแข็งแกร่ง (แบรนด์ + distribution) กำไรฟื้นตัวต่อเนื่อง 3 ปี Gross Margin ขยายจาก 22% มาที่ 29% และ ROE ทะลุ 23.5% — สูงกว่า cost of equity อย่างชัดเจน ที่ราคาปัจจุบัน ฿14.30 หุ้นมี MOS ~30% จาก Fair Value ฿20.50 พร้อม dividend yield ~8% เป็น downside buffer Base case 3 ปีให้ผลตอบแทน ~24%/ปี จากทั้ง EPS growth + P/E re-rating + ปันผล ความเสี่ยงหลักคือสงครามราคาในตลาดชาเขียวที่อาจชะลอ revenue growth แต่ margin expansion และ new segment (PH+ Alkaline) ช่วยรับมือได้</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿20.50 <span style="font-size:12px;color:#cab9a8">(฿17.00–฿23.92)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +30.2%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿14.47 (BUY · 6 ราย)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ราคาปัจจุบัน ฿14.30 อยู่ในโซน Deep Value (MOS 30%) เหมาะ <b>ทยอยสะสม</b> สำหรับนักลงทุนระยะกลาง–ยาวที่รับ dividend yield 8% ได้ระหว่างรอ re-rating · จุดซื้อเพิ่ม MOS 20% = ฿16.40 หากราคาฟื้น · ทบทวนถ้า gross margin ลดต่ำกว่า 25% หรือ EPS FY2569 ต่ำกว่า ฿0.90
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    แหล่งที่มา: Yahoo Finance (ICHI.BK) · StockAnalysis.com/quote/bkk/ICHI · Investing.com/equities/ichitan-group · SET Factsheet (set.or.th) ณ 2–3 ก.ค. 2569
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 3 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
