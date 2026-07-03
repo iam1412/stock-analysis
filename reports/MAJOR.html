@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น เมเจอร์ ซีนีเพล็กซ์ (MAJOR) — Stock Analysis Dashboard</title>
+<!-- ★ ใส่รุ่นโมเดล AI ที่ใช้วิเคราะห์จริง -->
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) -->
+<script type="application/json" id="stock-meta">
+{"symbol":"MAJOR","currency":"THB","price":6.95,"fairValue":9.60,"mos":27.6,"upside":38.1,"pe":7.56,"dividendYield":3.60,"roe":12.3}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#c62828",
+    "accentDark": "#b71c1c",
+    "darkGrad": "linear-gradient(135deg,#b71c1c 0%,#c62828 60%,#e53935 100%)",
+    "glow": "rgba(198,40,40,0.3)",
+    "subColor": "#ffcdd2",
+    "headerMuted": "rgba(255,205,210,0.75)",
+    "verdictText": "#fff9f9",
+    "vcellLabel": "#ffcdd2",
+    "badge": "#c62828",
+    "chgBg": "rgba(198,40,40,0.18)",
+    "chgColor": "#ef9a9a"
+  },
+  "chart": {
+    "data": [
+      ["ก.ค. 68", 8.00],
+      ["ส.ค. 68", 7.25],
+      ["ก.ย. 68", 6.70],
+      ["ต.ค. 68", 6.75],
+      ["พ.ย. 68", 6.90],
+      ["ธ.ค. 68", 6.95],
+      ["ม.ค. 69", 6.90],
+      ["ก.พ. 69", 6.95],
+      ["มี.ค. 69", 6.85],
+      ["เม.ย. 69", 6.80],
+      ["พ.ค. 69", 6.75],
+      ["มิ.ย. 69", 6.70],
+      ["ก.ค. 69", 6.95]
+    ],
+    "min": 5.80,
+    "max": 9.20,
+    "grid": [6.00, 7.00, 8.00, 9.00],
+    "fairLine": 9.60,
+    "currency": "฿",
+    "highlight": [0, 5]
+  },
+  "gauge": {
+    "min": 5.50,
+    "max": 13.00,
+    "cur": 6.95,
+    "fair": 9.60,
+    "fairLabelTop": true
+  },
+  "fv": 9.60
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">◉ ◉ ◉</div>
+    <div>
+      <span class="tag">SET: MAJOR</span>
+      <span class="tag">บันเทิง &amp; สื่อ</span>
+      <span class="tag">โรงภาพยนตร์</span>
+    </div>
+    <h1>เมเจอร์ ซีนีเพล็กซ์ กรุ้ป</h1>
+    <div class="sub">โรงภาพยนตร์อันดับ 1 ในไทย • โบว์ลิ่ง / คาราโอเกะ / สกี / กีฬา • สื่อโฆษณาในโรง • F&amp;B • ปันผลสม่ำเสมอ</div>
+    <div class="price-row">
+      <div>
+        <div class="px">฿6.95<small>(MAJOR)</small></div>
+      </div>
+      <div class="chg">▼ −13.1% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 3 ก.ค. 2569<br>
+        กรอบ 52 สัปดาห์ ฿6.25 – ฿9.45<br>
+        ที่มา: Yahoo Finance, StockAnalysis.com, Investing.com
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล FY2025 / Q4/2025 (ปีสิ้นสุด 31 ธ.ค. 2568)</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~฿4,740 ล้าน</div><div class="d">682.25 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~7.56x</div><div class="d">EPS TTM ฿0.92 (FY67)</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~12x</div><div class="d">ก่อน COVID ~15–18x</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">1.05x</div><div class="d">BVPS ฿6.63 (FY68)</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2568</div><div class="v">฿631 ล้าน</div><div class="d">−15.2% YoY (FY67: ฿744 ล.</div></div>
+      <div class="metric"><div class="k">EPS (FY2568)</div><div class="v">~฿0.84</div><div class="d">ลดลงจาก ฿0.92 (FY67)</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~฿6.63</div><div class="d">ทุนผู้ถือหุ้น ฿4,926 ล้าน</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~12.3% / 4.7%</div><div class="d">เฉลี่ยทุน / สินทรัพย์</div></div>
+
+      <div class="metric"><div class="k">รายได้ FY2568</div><div class="v neu">฿7,631 ล้าน</div><div class="d">−1.7% YoY; ยังต่ำกว่า pre-COVID</div></div>
+      <div class="metric"><div class="k">FCF/หุ้น FY2568</div><div class="v">฿1.17</div><div class="d">FCF ฿795 ล้าน (+96% YoY)</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~3.60%</div><div class="d">฿0.25/หุ้น (FY68) · จ่ายปีละ 2 ครั้ง</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">0.32</div><div class="d">ความผันผวนต่ำกว่าตลาด</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ม.ค. – ธ.ค. 2568 (รายเดือน)</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#c62828"></i>ราคา MAJOR</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿9.60</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ในรอบ 12 เดือน (ก.ค. 2568 – ก.ค. 2569) ราคา MAJOR เริ่มต้นที่ ฿8.00 แล้วปรับลงต่อเนื่อง
+        จุดต่ำสุดที่ ฿6.70 (ก.ย. 68 และ มิ.ย. 69) สะท้อนความกังวลรายได้รวมยังต่ำกว่า pre-COVID
+        ปลายปี 68 ราคาทรงตัวในกรอบ ฿6.70–฿6.95 ก่อนฟื้นเล็กน้อยสู่ ฿6.95 ใน ก.ค. 69
+        ผลตอบแทนรอบปี −13.1% (฿8.00 → ฿6.95) ต่ำกว่า Fair Value ฿9.60 อย่างมีนัยสำคัญ
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS adj. ฿0.84 × P/E เป้าหมาย ~12x — ค่าเฉลี่ย 5 ปี หลัง COVID ฟื้นตัว (ก่อน COVID ~15–18x)</div></div>
+        <div class="mval">฿10.10</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล ฿0.25 × (1+g); g 5%, r 9% → ฿0.2625 / (9%−5%) — อิง dividend ที่ฟื้นตัว + เติบโตตามกำไร</div></div>
+        <div class="mval">฿6.56</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 12.3% − g 5%)/(r 9% − g 5%) ≈ 1.83x × BVPS ฿6.63</div></div>
+        <div class="mval">฿12.13</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿6.56 – ฿12.13</span></div>
+        <div class="r">฿9.60</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        วิธี P/E (฿10.10) ให้ค่ากลางสมเหตุสมผล อิง EPS ปี 68 ที่ฟื้นจาก COVID และ P/E เป้าหมายอนุรักษ์นิยม 12x
+        วิธี DDM (฿6.56) ให้ค่าต่ำสุดเพราะ MAJOR ยังปันผลในระดับต่ำ (฿0.25/หุ้น ปี 68 vs ฿0.65 ปี 66)
+        วิธี Justified P/BV (฿12.13) ให้ค่าสูงสุด สะท้อน ROE ที่ดี + margin ของ entertainment business
+        Fair Value เฉลี่ย ฿9.60 ใกล้เคียงเป้า analyst เฉลี่ย ฿9.85 — ยืนยันว่าหุ้นยัง Undervalued ที่ราคาปัจจุบัน
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿6.95</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿9.60</div></div>
+        </div>
+        <div class="scale">
+          <span>฿6.72<br><small>MOS 30%</small></span>
+          <span>฿7.68<br><small>MOS 20%</small></span>
+          <span style="text-align:center">฿9.60<br><small>Fair Value</small></span>
+          <span style="text-align:right">฿9.85<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">฿12.13<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคา ฿6.95 อยู่ต่ำกว่า Fair Value ฿9.60 ประมาณ 27.6% — ใกล้ MOS 30% zone (฿6.72) มาก
+        ราคาปัจจุบันต่ำกว่าแม้แต่จุด 52 สัปดาห์ต่ำสุดในครึ่งปีแรก (฿6.25 พ.ค. 68)
+        Analyst consensus "Buy" 5 คน เป้าเฉลี่ย ฿9.85 upside +41.7% จากราคาปัจจุบัน
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict good">
+        <div class="big">+27.6%</div>
+        <div class="txt">โซน Value Investor — ราคาต่ำกว่า Fair Value อย่างชัดเจน ใกล้ Deep Value Zone</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿7.68</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿6.72</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿9.60</div><div class="d">ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="6.95" step="0.05">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿6.95 • EPS ฐาน ~฿0.84 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS 0%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿6.72</div>
+          <div class="ret neg">+2.4%/ปี</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.84</span></li>
+            <li><span>P/E ออก</span><span>8x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.75</span></li>
+            <li><span>สถานการณ์</span><span>ผู้ชมชะลอ ฮอลลีวูดซบเซา</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +7%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿12.36</div>
+          <div class="ret pos">+24.1%/ปี</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿1.03</span></li>
+            <li><span>P/E ออก</span><span>12x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.90</span></li>
+            <li><span>สถานการณ์</span><span>ผู้ชมฟื้นตัว หนังดีต่อเนื่อง</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +12%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿17.70</div>
+          <div class="ret pos">+38.0%/ปี</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿1.18</span></li>
+            <li><span>P/E ออก</span><span>15x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿1.05</span></li>
+            <li><span>สถานการณ์</span><span>หนังดัง + ธุรกิจบันเทิงฟูลรีคัฟเวอรี่</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      Base case อิง EPS growth 7%/ปี จาก: (1) ผู้ชมโรงหนังฟื้นตัวช้า ๆ หลัง COVID + streaming ยังไม่ฆ่าโรงหนัง
+      (2) คอนเทนต์จากสตูดิโอใหญ่ (Marvel, Disney, Universal) ทยอยกลับมา (3) ธุรกิจ non-cinema (โบว์ลิ่ง/คาราโอเกะ/กีฬา)
+      เสริมรายได้ โดย P/E exit 12x อนุรักษ์นิยมกว่าระดับก่อน COVID ที่ 15–18x
+      ควรระวัง Bear case หาก streaming ดึงผู้ชมแรง หรือรายได้ฮอลลีวูดไม่ฟื้น
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก &amp; ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>คอนเทนต์ฮอลลีวูดกลับมา:</b> Marvel, DC, Disney กลับมาผลิตเต็มสูบหลัง writers strike จบ — โปรแกรมหนังปี 2569 แน่นกว่าปีก่อน คาดผู้ชมฟื้นตัว</li>
+          <li><b>ธุรกิจ non-cinema ขยายตัว:</b> โบว์ลิ่ง/คาราโอเกะ/สกี/กีฬา ขยายสาขาในศูนย์การค้า เป็น recurring revenue หนุนเมื่อโรงหนังซบ</li>
+          <li><b>สื่อโฆษณาในโรง (Cinema Advertising):</b> รายได้โฆษณาเพิ่มตามผู้ชม — margin สูงกว่าปกติ Leverage สูงขณะ occupancy ฟื้น</li>
+          <li><b>FCF ดีขึ้นมาก:</b> FCF FY68 = ฿795 ล้าน (+96% YoY) — เงินสดแข็งแกร่ง หนุน Capex + ปันผลที่จะเพิ่มขึ้นได้</li>
+          <li><b>P/E ต่ำสุดในรอบหลายปี:</b> ซื้อขายที่ P/E 7–8x ต่ำกว่าค่าเฉลี่ย ~12x ก่อนหน้า — ฐานราคาต่ำ upside จาก re-rating</li>
+          <li><b>ปันผลกลับมา + ฐานต้นทุนต่ำ:</b> ปันผล ฿0.25 (FY68) เพิ่มจาก ฿0.20 (FY67) — คาดเพิ่มต่อเนื่องตามกำไร ณ ราคาต่ำปัจจุบัน yield ดี</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>Streaming ดึงผู้ชม:</b> Netflix, Disney+, YouTube ดึงคนออกจากโรงหนัง โดยเฉพาะหนัง mid-budget — structural headwind ระยะยาว</li>
+          <li><b>รายได้รวมยังต่ำกว่า pre-COVID:</b> FY68 ฿7,631 ล้าน ยังต่ำกว่า FY62 (~฿10,000 ล้าน) — ฟื้นตัวช้ากว่าคาด</li>
+          <li><b>หนี้สูง:</b> Total Debt ฿5,307 ล้าน (D/E ~1.08x) — ดอกเบี้ยกดกำไร ถ้าอัตราดอกเบี้ยสูงต่อเนื่อง</li>
+          <li><b>ความผันผวนของคอนเทนต์:</b> รายได้ขึ้นอยู่กับโปรแกรมหนัง — ปีที่ไม่มีบล็อกบัสเตอร์ รายได้ตก (FY68 −1.7%)</li>
+          <li><b>ต้นทุนค่าเช่าสูง:</b> MAJOR เช่าพื้นที่ในศูนย์การค้าหลายแห่ง — ค่าเช่าเป็นต้นทุนคงที่ขึ้นตามเงินเฟ้อ</li>
+          <li><b>Competition ใหม่:</b> SF Cinema, Cinemark ขยายสาขา + cinema boutique ดึงกลุ่มพรีเมียม — ตลาดแข่งขันขึ้น</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>Undervalued — โรงหนังอันดับ 1 ไทย ราคาต่ำกว่ามูลค่า ~28%</h2>
+      <p>MAJOR ซื้อขายที่ P/E เพียง 7.56x และ P/BV 1.05x ต่ำกว่า Fair Value ฿9.60 ราว 28% (MOS 27.6%)
+      ในภาวะที่ตลาดยัง discount ผลกระทบ COVID และ streaming อยู่ แต่พื้นฐานธุรกิจแข็งแกร่ง — ครองตลาดโรงหนัง #1 ไทย
+      FCF แข็งแกร่ง ฿795 ล้าน Beta ต่ำ 0.32 ปันผลกลับมา และ Analyst consensus "Buy" 5/6 คน เป้า ฿9.85
+      ความเสี่ยงหลักคือ streaming disruption และหนี้สูง แต่ในราคาปัจจุบันมี margin of safety คุ้มครองอยู่ดี</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿9.60 <span style="font-size:12px;color:#cab9a8">(฿6.56–฿12.13)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +27.6%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿9.85 (Buy · 5/6)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ทยอยสะสมที่ &lt;฿7.68 (MOS &gt;20%) โดยเฉพาะเมื่อราคาใกล้ ฿6.72–฿7.00 (MOS 27–30%) รอ re-rating เมื่อ EPS ฟื้นตัวชัดเจนหรือปันผลขึ้น — เหมาะกับผู้ลงทุนระยะ 2–3 ปีที่รับ Beta ต่ำ + ปันผล
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    แหล่งข้อมูล: Yahoo Finance (MAJOR.BK), StockAnalysis.com/quote/bkk/MAJOR/, Investing.com/equities/major-cineplex · ราคา ณ 3 ก.ค. 2569 · งบการเงิน FY2568 (ปีสิ้นสุด 31 ธ.ค. 2568)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 3 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
