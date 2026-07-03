@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น ศักดิ์สยาม ลีสซิ่ง (SAK) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"SAK","currency":"THB","price":3.24,"fairValue":3.70,"mos":12.4,"upside":14.2,"pe":7.5,"dividendYield":6.17,"roe":12.87}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#f57f17",
+    "accentDark": "#e65100",
+    "darkGrad": "linear-gradient(135deg,#e65100 0%,#f57f17 60%,#ffa000 100%)",
+    "glow": "rgba(245,127,23,0.3)",
+    "subColor": "#fff9c4",
+    "headerMuted": "rgba(255,255,255,0.6)",
+    "verdictText": "#fffde7",
+    "vcellLabel": "rgba(255,253,231,0.7)",
+    "badge": "#f9a825",
+    "chgBg": "#fce4ec",
+    "chgColor": "#c5221f"
+  },
+  "chart": {
+    "data": [
+      ["ก.ค. 68", 3.60],
+      ["ส.ค. 68", 3.28],
+      ["ก.ย. 68", 3.16],
+      ["ต.ค. 68", 3.18],
+      ["พ.ย. 68", 3.14],
+      ["ธ.ค. 68", 3.14],
+      ["ม.ค. 69", 3.24],
+      ["ก.พ. 69", 3.28],
+      ["มี.ค. 69", 3.22],
+      ["เม.ย. 69", 3.32],
+      ["พ.ค. 69", 3.18],
+      ["มิ.ย. 69", 3.06],
+      ["ก.ค. 69", 3.24]
+    ],
+    "min": 2.80,
+    "max": 4.00,
+    "grid": [3.00, 3.25, 3.50, 3.75],
+    "fairLine": 3.70,
+    "currency": "฿",
+    "highlight": [0, 9]
+  },
+  "gauge": {
+    "min": 2.40,
+    "max": 4.20,
+    "cur": 3.24,
+    "fair": 3.70,
+    "fairLabelTop": true
+  },
+  "fv": 3.70
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">●●●</div>
+    <div>
+      <span class="tag">SET: SAK</span>
+      <span class="tag">Non-Bank Lending</span>
+      <span class="tag">สินเชื่อทะเบียนรถ</span>
+    </div>
+    <h1>ศักดิ์สยาม ลีสซิ่ง (Saksiam Leasing PCL)</h1>
+    <div class="sub">สินเชื่อทะเบียนรถ (Auto Title Loan) • สินเชื่อส่วนบุคคล • นาโนไฟแนนซ์ • ประกันภัยนายหน้า • โดรนการเกษตร | >900 สาขา ภาคเหนือ-กลาง-อีสาน</div>
+    <div class="price-row">
+      <div>
+        <div class="px">฿3.24<small>(SAK)</small></div>
+      </div>
+      <div class="chg">▼ −10.0% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 3 ก.ค. 2569<br>
+        กรอบ 52 สัปดาห์ ฿2.98 – ฿4.12<br>
+        ที่มา: Google Finance, SET Thailand, StockAnalysis.com
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">Non-bank lending · ข้อมูล ณ Q1/2569 (ล่าสุด)</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">฿6,584 ล้าน</div><div class="d">2,096 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~7.5x</div><div class="d">ต่ำกว่าค่าเฉลี่ยกลุ่ม non-bank ~11x</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~9–11x</div><div class="d">ช่วง 7–13x ตามวัฏจักรตลาด</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">0.93x</div><div class="d">ต่ำกว่า 1x = ราคาต่ำกว่าบัญชี</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2568</div><div class="v">฿881 ล้าน</div><div class="d">+4.8% YoY (จาก ฿841 ล้าน FY2567)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿0.42</div><div class="d">FY2568: ฿0.42 · FY2567: ฿0.40</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~฿3.27</div><div class="d">FY2568 · เติบโต ~8%/ปี</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~12.9% / 5.6%</div><div class="d">Stable — ไม่ขึ้นลงตามดอกเบี้ยตลาด</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">฿2,735 ล้าน</div><div class="d">+7.7% YoY · เติบโตต่อเนื่อง 4 ปี</div></div>
+      <div class="metric"><div class="k">NPL Ratio (Q1/69)</div><div class="v">2.74%</div><div class="d">Coverage ratio ~105.7% · ต่ำกว่า covenant &lt;3%</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~6.2%</div><div class="d">฿0.20/หุ้น (2569) · เพิ่มต่อเนื่องทุกปีตั้งแต่ 2564</div></div>
+      <div class="metric"><div class="k">Debt/Equity</div><div class="v">1.18x</div><div class="d">ควบคุมได้สำหรับ non-bank lending</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ก.ค. 2568 – ก.ค. 2569</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#f57f17"></i>ราคา SAK</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿3.70</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคา SAK อยู่ในแนวโน้มขาลงตลอด 1 ปีที่ผ่านมา จาก ฿3.60 (ก.ค. 2568) มาอยู่ที่ ฿3.24 (ก.ค. 2569)
+        คิดเป็นผลตอบแทนรอบปี <b>−10.0%</b> แรงกดดันหลักมาจากความกังวลคุณภาพสินเชื่อในกลุ่ม non-bank
+        และข้อจำกัดด้านเพดานดอกเบี้ยจาก BOT ราคาแตะจุดต่ำสุด 52 สัปดาห์ที่ ฿2.98 ในเดือน มิ.ย. 2569
+        ก่อนฟื้นตัวกลับมาที่ ฿3.24 ซึ่งยังต่ำกว่ามูลค่าเหมาะสม ~12%
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">฿EPS adj. ฿0.42 × P/E เป้าหมาย ~10x — ค่า P/E เฉลี่ยกลุ่ม non-bank lending ระดับกลาง (MTC/SAWAD ~12x, SAK ควรซื้อขายที่ discount ~10x ตาม scale ที่เล็กกว่า)</div></div>
+        <div class="mval">฿4.20</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล ฿0.20 × (1+7%); g 7%, r 13% — อัตราปันผลเติบโตเฉลี่ย ~10%/ปี ช่วง 5 ปี; ใช้ r=13% สำหรับ non-bank ขนาดกลาง</div></div>
+        <div class="mval">฿3.57</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 13% − g 5%)/(r 12.9% − g 5%) ≈ 1.01 × BVPS ฿3.27</div></div>
+        <div class="mval">฿3.30</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿3.30 – ฿4.20</span></div>
+        <div class="r">฿3.70</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        วิธี P/E ให้ค่าสูงสุด (฿4.20) สะท้อนศักยภาพกำไรเติบโตต่อเนื่อง — วิธี Justified P/BV ให้ค่าต่ำสุด (฿3.30)
+        เพราะ ROE ของ SAK ที่ ~13% แทบเท่ากับ cost of equity ทำให้ premium เหนือ book ต่ำ
+        วิธี DDM ให้ค่ากลาง (฿3.57) — เหมาะสมสำหรับหุ้นที่จ่ายปันผลสม่ำเสมอ
+        Fair Value เฉลี่ย ฿3.70 สอดคล้องกับเป้าเฉลี่ยนักวิเคราะห์ ฿3.72 (consensus Buy; FSSIA ให้ ฿3.53 Hold)
+        ทั้ง 3 วิธีชี้ว่าราคาปัจจุบัน ฿3.24 อยู่ในโซน undervalue เล็กน้อย
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿3.24</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿3.70</div></div>
+        </div>
+        <div class="scale">
+          <span>฿2.59<br><small>MOS 30%</small></span>
+          <span>฿2.96<br><small>MOS 20%</small></span>
+          <span style="text-align:center">฿3.70<br><small>Fair Value</small></span>
+          <span style="text-align:right">฿3.72<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">฿4.20<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคา ฿3.24 อยู่ต่ำกว่า Fair Value ฿3.70 ประมาณ 12% (MOS ~12%) — อยู่ในโซน "ราคาพอใช้ ทยอยสะสมได้"
+        ยังไม่ถึงโซน MOS 20% ที่ ฿2.96 ซึ่งเป็นจุดซื้อที่น่าสนใจมากขึ้น
+        จุดต่ำสุด 52 สัปดาห์ที่ ฿2.98 เกือบแตะโซน MOS 20% แล้วในเดือน มิ.ย. 2569 สะท้อน downside ที่จำกัด
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict ok">
+        <div class="big">+12.4%</div>
+        <div class="txt">ราคาพอใช้ — ทยอยสะสมได้ในโซนนี้ รอ MOS &gt;20% เพื่อเพิ่มขนาดกอง</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿2.96</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿2.59</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿3.70</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="3.24" step="0.05">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿3.24 • EPS ฐาน ~฿0.42 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS 0%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿2.94</div>
+          <div class="ret neg">−3.5% ต่อปี</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.42</span></li>
+            <li><span>P/E ออก</span><span>7x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.60</span></li>
+            <li><span>สถานการณ์</span><span>NPL พุ่ง กำไรทรงตัว P/E หด</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +7%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿5.14</div>
+          <div class="ret pos">+21.2% ต่อปี</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.51</span></li>
+            <li><span>P/E ออก</span><span>10x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.66</span></li>
+            <li><span>สถานการณ์</span><span>กำไรโตตาม loan growth 10% NPL คงที่</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +10%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿6.60</div>
+          <div class="ret pos">+30.1% ต่อปี</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.56</span></li>
+            <li><span>P/E ออก</span><span>12x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.72</span></li>
+            <li><span>สถานการณ์</span><span>ขยายสาขาเต็มกำลัง กำไรโตแรง re-rate P/E</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      การคาดการณ์นี้อิงสมมติฐาน EPS โต 7%/ปี (Base) ตาม CAGR กำไรสุทธิ 4 ปีที่ผ่านมา (~7.3%)
+      กรณี Base ให้ผลตอบแทนสูงสอดคล้องกับ P/E re-rating จาก 7.5x กลับสู่ 10x ซึ่งเป็นระดับปกติ
+      ในกรณี Bear กำไรทรงตัวและ P/E หดเหลือ 7x อาจให้ผลตอบแทนรวมติดลบเล็กน้อย
+      ปันผล ฿0.20/ปี คิดเป็น yield ~6.2% เป็นตาข่ายนิรภัยที่ดีในทุก scenario
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>Loan growth เชิงรุก:</b> ตั้งเป้าขยายพอร์ตสินเชื่อ &gt;10% ในปี 2569 โดยเน้น Auto Title Loan (43% ของพอร์ต) และ Land Title Loan (12%) ซึ่ง collateral มัดขึ้นหลักทรัพย์จริง</li>
+          <li><b>เครือข่ายสาขา &gt;900 แห่ง:</b> ครอบคลุมภาคเหนือ-กลาง-อีสาน สร้างฐานลูกค้า grassroot ที่ SAWAD/MTC เข้าถึงยาก — moat ด้านภูมิศาสตร์ระดับ hyperlocal</li>
+          <li><b>Dividend yield สูง ~6.2%:</b> จ่ายปันผลเพิ่มทุกปีตั้งแต่ 2564 (฿0.11 → ฿0.20) สะท้อนวินัยทางการเงินและ cash flow แข็งแกร่ง</li>
+          <li><b>NPL อยู่ในระดับควบคุม:</b> NPL Q1/2569 ที่ 2.74% + coverage ratio 105.7% แสดงว่าบริษัทตั้งสำรองเพียงพอ ไม่ต้องบัมป์ provisioning รุนแรง</li>
+          <li><b>P/BV ต่ำกว่า 1x:</b> หายากในกลุ่ม non-bank ที่ ROE ยังเป็นบวก — หากตลาด re-rate กลับไปที่ P/BV 1.2x ราคาจะขึ้นไปที่ ~฿3.92</li>
+          <li><b>ธุรกิจโดรนเกษตร + Solar:</b> segment ใหม่ที่ยังเล็ก แต่สร้าง differentiation และ upside optionality ในยุคเกษตรดิจิทัลและพลังงานสะอาด</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>NPL เพิ่มเกิน covenant 3%:</b> เศรษฐกิจชะลอ ราคารถมือสองตก — มูลค่า collateral ลดลงอาจทำ NPL พุ่งเกิน 3% ซึ่งเป็นเพดานตามสัญญา loan covenant</li>
+          <li><b>เพดานดอกเบี้ย BOT:</b> สินเชื่อทะเบียนรถมีเพดานดอกเบี้ย ทำให้ spread อ่อนตัวหากต้นทุนเงินกู้เพิ่ม — เพิ่ม credit cost ได้ยาก</li>
+          <li><b>การแข่งขันสูงจากรายใหญ่:</b> SAWAD, MTC, TIDLOR มีขนาด market cap และ brand ใหญ่กว่า — ลูกค้าเลือกได้หลายเจ้าในพื้นที่ทับซ้อน</li>
+          <li><b>ความเสี่ยงเศรษฐกิจภูมิภาค:</b> พื้นที่ฐานลูกค้าหลักพึ่งพาเกษตร/ท่องเที่ยว — ภัยแล้ง น้ำท่วม กระทบรายได้ผู้กู้และกระเทือน NPL</li>
+          <li><b>สภาพคล่องหุ้นต่ำ:</b> Market cap ฿6.5B และ free float ต่ำกว่ากลุ่มเดียวกัน — spread กว้าง ขายได้ยากในช่วงตลาดผันผวน</li>
+          <li><b>Loan growth เชิงรุกอาจกดดัน credit quality:</b> เป้าขยายพอร์ต &gt;10% ในสภาวะ NPL ยังสูง อาจนำไปสู่ underwriting standards ที่หย่อนลง</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>Non-bank สายจำนำทะเบียนรถ · ราคาต่ำกว่า book · yield 6.2% · ทยอยสะสมรอ re-rate</h2>
+      <p>SAK คือ non-bank ขนาดกลางที่มีฐานสาขา &gt;900 แห่งครอบคลุมภาคเหนือ-กลาง-อีสาน ธุรกิจหลักสินเชื่อทะเบียนรถมี collateral มัดแน่น NPL ยังอยู่ในกรอบ 2.74% ต่ำกว่า covenant 3%
+      ปัจจุบันซื้อขายที่ P/BV 0.93x (ต่ำกว่า book) และ P/E 7.5x ซึ่งถูกกว่าค่าเฉลี่ยกลุ่มที่ ~11x
+      Fair Value เฉลี่ย 3 วิธีอยู่ที่ ฿3.70 ให้ MOS ~12% และ Upside ~14% จากราคาปัจจุบัน ฿3.24
+      เหมาะสำหรับนักลงทุนที่ต้องการ dividend yield สูง (~6.2%) รอ re-rating เมื่อตลาดมั่นใจ NPL ไม่ทะลุ 3%
+      ความเสี่ยงหลักคือ NPL เพิ่ม + เพดานดอกเบี้ย BOT กดดัน NIM — เหมาะซื้อทยอยสะสม ไม่ควร all-in รอดู Q2/2569</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿3.70 <span style="font-size:12px;color:#cab9a8">(฿3.30–฿4.20)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +12.4%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿3.72 (Buy/Hold mix)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ทยอยสะสมได้ที่ราคา ฿3.00–3.30 (MOS 10–19%) · เพิ่มน้ำหนักเมื่อราคาหลุด ฿2.96 (MOS 20%) · ตั้ง target ระยะ 12 เดือนที่ ฿3.70 · รับปันผล yield ~6.2% ระหว่างรอ · cut loss หาก NPL ทะลุ 3% ติดต่อกัน 2 ไตรมาส
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    แหล่งข้อมูล: (1) Google Finance – ราคา ณ 3 ก.ค. 2569 · (2) SET Thailand (set.or.th) – ราคา + งบการเงิน · (3) StockAnalysis.com (stockanalysis.com/quote/bkk/SAK) – balance sheet, income statement, statistics · (4) StockEvents.app – ประวัติเงินปันผล 2564–2569 · (5) FSSIA Spotlight Research – analyst target ฿3.53 + NPL data Q1/2569
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 3 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
