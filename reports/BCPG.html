@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น BCPG PCL (BCPG) — Stock Analysis Dashboard</title>
+<!-- ★ โมเดล AI ที่ใช้วิเคราะห์จริง -->
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — gate E29–31 -->
+<script type="application/json" id="stock-meta">
+{"symbol":"BCPG","currency":"THB","price":7.15,"fairValue":7.46,"mos":4.2,"upside":4.3,"pe":15.03,"dividendYield":4.89,"roe":4.74}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#388e3c",
+    "accentDark": "#2e7d32",
+    "darkGrad": "linear-gradient(135deg,#1b5e20 0%,#2e7d32 60%,#388e3c 100%)",
+    "glow": "rgba(56,142,60,0.3)",
+    "subColor": "#a5d6a7",
+    "headerMuted": "rgba(165,214,167,0.7)",
+    "verdictText": "#e8f5e9",
+    "vcellLabel": "#a5d6a7",
+    "badge": "#388e3c",
+    "chgBg": "var(--red-soft)",
+    "chgColor": "#c5221f"
+  },
+  "chart": {
+    "data": [
+      ["ก.ค. 68", 8.10],
+      ["ส.ค. 68", 6.70],
+      ["ก.ย. 68", 7.05],
+      ["ต.ค. 68", 6.75],
+      ["พ.ย. 68", 7.05],
+      ["ธ.ค. 68", 7.10],
+      ["ม.ค. 69", 7.20],
+      ["ก.พ. 69", 7.35],
+      ["มี.ค. 69", 7.10],
+      ["เม.ย. 69", 7.00],
+      ["พ.ค. 69", 6.90],
+      ["มิ.ย. 69", 7.05],
+      ["ก.ค. 69", 7.15]
+    ],
+    "min": 6.0,
+    "max": 9.0,
+    "grid": [6.0, 6.5, 7.0, 7.5, 8.0, 8.5, 9.0],
+    "fairLine": 7.46,
+    "currency": "฿",
+    "highlight": [0, 1],
+    "gridFmt": "v.toFixed(2)",
+    "dataFmt": "d[1].toFixed(2)"
+  },
+  "gauge": {
+    "min": 4.5,
+    "max": 12.0,
+    "cur": 7.15,
+    "fair": 7.46,
+    "fairLabelTop": true
+  },
+  "fv": 7.46
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">●●●</div>
+    <div>
+      <span class="tag">SET: BCPG</span>
+      <span class="tag">พลังงาน</span>
+      <span class="tag">Renewable Energy</span>
+    </div>
+    <h1>BCPG PCL (บีซีพีจี)</h1>
+    <div class="sub">พลังงานหมุนเวียน: โซลาร์ • ลม • น้ำ • ก๊าซธรรมชาติ • ไทย / ญี่ปุ่น / ลาว / เวียดนาม / สหรัฐฯ (spin-off Bangchak)</div>
+    <div class="price-row">
+      <div>
+        <div class="px">฿7.15<small>(BCPG)</small></div>
+      </div>
+      <div class="chg">▼ −11.7% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 4 ก.ค. 2569<br>
+        กรอบ 52 สัปดาห์ ฿5.30 – ฿9.60<br>
+        ที่มา: SET.or.th, Yahoo Finance, StockAnalysis.com
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล TTM / ณ ก.ค. 2569</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">฿21.4 พันล้าน</div><div class="d">3,000 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~15.0x</div><div class="d">EPS TTM ฿0.48</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~14x</div><div class="d">ช่วง 11–18x (5 ปี)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">0.69x</div><div class="d">BVPS ~฿9.47 (ต่ำกว่าบุ๊ก)</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2568</div><div class="v">฿855 ล้าน</div><div class="d">↓ −53% YoY (ขาย solar ญี่ปุ่น)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿0.48</div><div class="d">Q4/68 +346% YoY (ฟื้นแรง)</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~฿9.47</div><div class="d">ทุน ฿28,424 ล้าน / 3,000 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v neu">~4.7% / 1.5%</div><div class="d">อยู่ระหว่างฟื้นตัว (EBITDA แข็งแกร่ง)</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">฿3.92 พันล้าน</div><div class="d">+2.2% YoY</div></div>
+      <div class="metric"><div class="k">EBITDA Margin</div><div class="v">~63%</div><div class="d">EBITDA ฿2.49 พันล้าน TTM</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~4.89%</div><div class="d">฿0.35/หุ้น/ปี (ปี 68) · จ่ายกึ่งปี</div></div>
+      <div class="metric"><div class="k">Debt/Equity</div><div class="v neg">82%</div><div class="d">ปกติสำหรับโครงสร้าง infra energy</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ก.ค. 2568 – ก.ค. 2569</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#388e3c"></i>ราคา BCPG</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿7.46</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        BCPG ปรับตัวลงจากระดับสูง ฿8.10 ในเดือน ก.ค. 2568 มาแตะจุดต่ำสุดรอบปีที่ ฿6.70 ในเดือน ส.ค. 2568
+        ตามแรงกดดันจากผลการดำเนินงาน FY2568 ที่ลดลง (กำไรลด 53% จากการไม่มีรายได้ solar ญี่ปุ่น)
+        จากนั้นฟื้นตัวอยู่ในกรอบ ฿6.75–฿7.35 ในครึ่งหลังของปี สะท้อนความคาดหวัง Q4/68 ที่แข็งแกร่ง (+346% YoY)
+        และโปรเจกต์ลมมรสุม (Monsoon) ลาวที่เปิดดำเนินการเต็มปี 2569 ราคาปัจจุบัน ฿7.15 ลดลง −11.7% จากรอบปี
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS (TTM) ฿0.48 × P/E เป้าหมาย ~14x — อ้างอิง P/E เฉลี่ยกลุ่ม renewable energy SET ช่วง 11–18x; ใช้ค่ากลางอนุรักษ์นิยม (EPS ผันผวนสูง)</div></div>
+        <div class="mval">฿6.72</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล ฿0.35 × (1+g); g 4.0%, r 8.5% → FV = D₁/(r−g) — บริษัทจ่ายปันผลสม่ำเสมอกึ่งปี; g สอดคล้องกับ EBITDA เติบโต 10%/ปี</div></div>
+        <div class="mval">฿8.09</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 7.0% − g 3.0%)/(r 8.0% − g 3.0%) ≈ 0.80 × BVPS ฿9.47 — ใช้ ROE คาดการณ์ฟื้นตัว 7% (จาก 4.7% TTM เมื่อ EBITDA เติบโต + US capacity payment เพิ่ม)</div></div>
+        <div class="mval">฿7.58</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿6.72 – ฿8.09</span></div>
+        <div class="r">฿7.46</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        วิธี DDM ให้ค่าสูงสุด (฿8.09) สะท้อนความสม่ำเสมอของกระแสเงินสดปันผลจากสัมปทานระยะยาว
+        วิธี P/E ให้ค่าต่ำสุด (฿6.72) เนื่องจาก EPS TTM ยังถูกกดด้วยค่าเสื่อมราคาโครงการใหม่และค่าใช้จ่ายดอกเบี้ย
+        Justified P/BV กลางที่ ฿7.58 สะท้อนการฟื้นตัวของ ROE เมื่อโปรเจกต์เต็มกำลัง
+        Fair Value เฉลี่ย ฿7.46 ต่ำกว่าราคาเป้าเฉลี่ยนักวิเคราะห์ ฿8.51–฿11 แต่อยู่ในระดับใกล้เคียงราคาตลาดปัจจุบัน
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿7.15</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿7.46</div></div>
+        </div>
+        <div class="scale">
+          <span>฿5.22<br><small>MOS 30%</small></span>
+          <span>฿5.97<br><small>MOS 20%</small></span>
+          <span style="text-align:center">฿7.46<br><small>Fair Value</small></span>
+          <span style="text-align:right">฿8.09<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">฿8.51<br><small>เป้าเฉลี่ย Analyst</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน ฿7.15 ต่ำกว่า Fair Value เฉลี่ย ฿7.46 เล็กน้อย (MOS ~4.2%) และต่ำกว่าเป้าเฉลี่ยนักวิเคราะห์ ฿8.51 (Upside ~19%)
+        โซนน่าสนใจสำหรับนักลงทุน VI จะอยู่ที่ ฿5.97 (MOS 20%) ถึง ฿5.22 (MOS 30%) ซึ่งมักเกิดเมื่อมีข่าวลบชั่วคราว
+        นักลงทุนที่เน้นปันผลอาจพิจารณาสะสมในระดับราคาปัจจุบันเพื่อรับ yield ~4.9%
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">+4.2%</div>
+        <div class="txt">MOS ต่ำ — ราคาใกล้มูลค่าเหมาะสม ยังไม่มี buffer เพียงพอสำหรับ VI เต็มตัว</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿5.97</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿5.22</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿7.46</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="7.15" step="0.05">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿7.15 • EPS ฐาน ~฿0.48 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS 0%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿5.28</div>
+          <div class="ret neg">−11.5%/ปี</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.48</span></li>
+            <li><span>P/E ออก</span><span>11x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿1.05</span></li>
+            <li><span>สถานการณ์</span><span>US capacity payment ลด + Monsoon yield ต่ำ</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +15%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿10.22</div>
+          <div class="ret pos">+16.5%/ปี</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.73</span></li>
+            <li><span>P/E ออก</span><span>14x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿1.10</span></li>
+            <li><span>สถานการณ์</span><span>US capacity payment เพิ่ม + Monsoon เต็มกำลัง + โซลาร์ไทยขยาย</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +20%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿13.28</div>
+          <div class="ret pos">+26.3%/ปี</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.83</span></li>
+            <li><span>P/E ออก</span><span>16x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿1.13</span></li>
+            <li><span>สถานการณ์</span><span>Data center demand ดัน US capacity สูง + ประกวดราคา RE ชนะ + เวียดนามโต</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      ผลตอบแทน Base case +16.5%/ปี (3 ปี) อิงกับ EPS เติบโต 15%/ปี ตามแนวโน้มความต้องการ capacity payment ในสหรัฐฯ
+      (CAGR ไฟฟ้า 5.3% ปี 2568–78 จากการขยายตัวของ data center) และ Monsoon wind ลาวเต็มปีงบการเงิน
+      สมมติฐาน EPS ฐาน ฿0.48/TTM อาจต่ำกว่าความเป็นจริง เนื่องจาก US plant มีสัดส่วน ~70% ของกำลังผลิต
+      และ capacity payment ปี 2569/70 อยู่ที่ USD 329–333/MW-day (เพิ่มจากปีก่อน) — InnovestX ปรับเป้า ฿11 (Outperform)
+      ความเสี่ยงหลัก: ค่า THB/USD, นโยบาย PJM capacity market, อัตราดอกเบี้ย (หนี้สูง D/E 82%)
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>US Capacity Payment พุ่ง:</b> PJM zone capacity payment ปี 2569/70 ที่ USD 329/MW-day (+27% YoY) และปี 2570/71 USD 333/MW-day หนุนกำไรส่วนแบ่งจากโรงไฟฟ้าในสหรัฐฯ (857MWe, ~70% ของพอร์ต)</li>
+          <li><b>Monsoon Wind ลาว เต็มปี:</b> โครงการลม Monsoon ลาว (600MW) เริ่ม COD เต็มกำลังปี 2569 เพิ่ม EBITDA และแหล่งรายได้สกุล USD ต่อเนื่อง 25 ปี</li>
+          <li><b>Data Center Demand:</b> ความต้องการไฟฟ้าใน PJM zone จาก data center สหรัฐฯ คาด CAGR 5.3% (2568–78) หนุนราคา capacity และ energy อย่างต่อเนื่อง</li>
+          <li><b>EBITDA Target +10%:</b> บริษัทตั้งเป้า EBITDA เติบโต 10%/ปี 2569 รองรับด้วยแหล่งรายได้หลากหลาย (4 ประเทศ + สหรัฐฯ) ลดความเสี่ยง single-point</li>
+          <li><b>Dividend Yield สูง:</b> ปันผล ~4.89% จ่ายกึ่งปีสม่ำเสมอ มี Payout สูง สะท้อนกระแสเงินสดจากสัมปทานระยะยาว</li>
+          <li><b>Green Energy Policy:</b> นโยบายพลังงานสะอาดทั้งไทย/ลาว/เวียดนาม หนุนโอกาสชนะประกวดราคาโครงการใหม่ (โซลาร์ + ลม)</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>ความเสี่ยง FX (THB/USD):</b> รายได้หลักเป็น USD (US capacity) และ Lao Kip แต่รายงานเป็น THB — ค่าบาทแข็งกดดันกำไรสุทธิโดยตรง</li>
+          <li><b>PJM Capacity Market:</b> การเปลี่ยนนโยบาย PJM (cap on capacity payment, derating plant) หรือปัญหาเชิงระบบในสหรัฐฯ กระทบรายได้ ~70% ของกำลังผลิต</li>
+          <li><b>อัตราดอกเบี้ยสูง:</b> D/E 82% — ต้นทุนทางการเงินสูง ดอกเบี้ยกดกำไรสุทธิ แม้ EBITDA แข็งแกร่ง; อัตราดอกเบี้ยขาขึ้นกระทบการ refinance</li>
+          <li><b>ค่าเสื่อมสูง / Asset Heavy:</b> โครงการ infra ระยะยาวมีค่าเสื่อมราคาสูง ทำให้ EPS ต่ำกว่า EBITDA มาก และ ROE ต่ำในช่วงก่อสร้าง</li>
+          <li><b>ปริมาณน้ำ/ลม/แสงแดด:</b> พลังงานน้ำในลาวและโซลาร์ไทยขึ้นกับสภาพอากาศ — ปีแล้งหรือเมฆมากกระทบผลผลิตพลังงาน</li>
+          <li><b>ความเสี่ยงประเทศ (Country Risk):</b> กฎระเบียบ/สัมปทานในลาว เวียดนาม และโรงไฟฟ้าก๊าซ US ที่อาจถูก phase-out จาก ESG pressure</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>ราคาใกล้มูลค่าเหมาะสม — รอโอกาสซื้อเพิ่มเมื่อ MOS กว้างขึ้น</h2>
+      <p>BCPG เป็นบริษัทพลังงานหมุนเวียนที่มีพอร์ตกระจายตัวระหว่างประเทศ (ไทย ลาว เวียดนาม สหรัฐฯ) โดยมีจุดแข็งที่กระแสเงินสดสม่ำเสมอจากสัญญา PPA ระยะยาวและ US capacity payment ที่กำลังพุ่งสูง
+      อย่างไรก็ตาม ราคาปัจจุบัน ฿7.15 ให้ MOS เพียง ~4.2% เทียบกับ Fair Value ฿7.46 (เฉลี่ย 3 วิธี) ซึ่งยังไม่น่าสนใจพอสำหรับ VI เต็มตัว
+      นักลงทุนที่เน้นปันผลอาจยอมรับ yield ~4.9% ที่ระดับนี้ได้ แต่ผู้ที่ต้องการ MOS เพียงพอควรรอซื้อในโซน ฿5.97–฿6.50</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿7.46 <span style="font-size:12px;color:#cab9a8">(฿6.72–฿8.09)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +4.2%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿8.51 (Strong Buy · 8 คน)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ถือหรือสะสมน้อยๆ ที่ระดับ ฿7.15 เพื่อ dividend yield ~4.9% รอเพิ่มน้ำหนักที่โซน ฿5.97 (MOS 20%) หากราคาย่อตัวลงมา — catalyst หลักคือ US capacity payment ปี 2569/70 และ Monsoon wind เต็มปีจะชัดเจนใน Q2/69
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    แหล่งข้อมูล: SET.or.th (ราคา ฿7.15 ณ 4 ก.ค. 2569) · Yahoo Finance BCPG.BK (กราฟรายเดือน ก.ค. 2568–ก.ค. 2569) · StockAnalysis.com (EPS TTM ฿0.48 งวด Q1/2026, P/E 15.03x, Market Cap ฿21.4B) · Investing.com (P/BV 0.69, ROE 4.74%) · BCPG Investor Relations — Financial Highlights FY2022–FY2025 (งบการเงินรายปี) · InnovestX Research Q4/2025 (เป้า ฿11, Outperform, 18 ก.พ. 2569) · Gurufocus.com (DPS ฿0.28–฿0.35)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 4 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
