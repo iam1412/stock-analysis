@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น ทีทีดับบลิว (TTW) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"TTW","currency":"THB","price":9.80,"fairValue":11.30,"mos":13.3,"upside":15.3,"pe":11.96,"dividendYield":6.12,"roe":19.46}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#0277bd",
+    "accentDark": "#01579b",
+    "darkGrad": "linear-gradient(135deg,#01579b 0%,#0277bd 60%,#0288d1 100%)",
+    "glow": "rgba(2,119,189,0.3)",
+    "subColor": "#b3e5fc",
+    "headerMuted": "rgba(255,255,255,0.6)",
+    "verdictText": "#e1f5fe",
+    "vcellLabel": "rgba(225,245,254,0.7)",
+    "badge": "#0288d1",
+    "chgBg": "rgba(30,142,62,0.18)",
+    "chgColor": "#1e8e3e"
+  },
+  "chart": {
+    "data": [
+      ["ม.ค. 68", 9.10],
+      ["ก.พ. 68", 9.10],
+      ["มี.ค. 68", 9.05],
+      ["เม.ย. 68", 9.00],
+      ["พ.ค. 68", 9.05],
+      ["มิ.ย. 68", 9.20],
+      ["ก.ค. 68", 9.40],
+      ["ส.ค. 68", 9.15],
+      ["ก.ย. 68", 9.25],
+      ["ต.ค. 68", 9.30],
+      ["พ.ย. 68", 9.85],
+      ["ธ.ค. 68", 9.85],
+      ["ม.ค. 69", 9.80]
+    ],
+    "min": 8.60,
+    "max": 10.20,
+    "grid": [8.60, 9.00, 9.40, 9.80, 10.20],
+    "fairLine": 11.30,
+    "currency": "฿",
+    "highlight": [6, 10]
+  },
+  "gauge": {
+    "min": 7.00,
+    "max": 13.00,
+    "cur": 9.80,
+    "fair": 11.30,
+    "fairLabelTop": false
+  },
+  "fv": 11.30
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">●●●●●●●</div>
+    <div>
+      <span class="tag">SET: TTW</span>
+      <span class="tag">สาธารณูปโภค</span>
+      <span class="tag">สัมปทานน้ำประปา</span>
+    </div>
+    <h1>บมจ. ทีทีดับบลิว (TTW PCL)</h1>
+    <div class="sub">ผลิตน้ำประปาสัมปทาน 30 ปี • ขายให้ PWA นครปฐม–สมุทรสาคร • รายได้แน่นอนตามสัญญา • ปันผลสม่ำเสมอ ≥6% ทุกปี</div>
+    <div class="price-row">
+      <div>
+        <div class="px">฿9.80<small>(TTW)</small></div>
+      </div>
+      <div class="chg">▲ +7.7% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 3 ก.ค. 2569<br>
+        กรอบ 52 สัปดาห์ ฿8.60 – ฿9.95<br>
+        ที่มา: Investing.com, Yahoo Finance, th.Investing.com Financial Summary (FY2568)
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ กรกฎาคม 2569</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">฿39,100 ล้าน</div><div class="d">~3,990 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~11.96x</div><div class="d">ต่ำกว่าค่าเฉลี่ยอุตสาหกรรม ~14x</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~12–14x</div><div class="d">ช่วงปี 2563–2568</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">2.26x</div><div class="d">BVPS ฿4.33</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2568</div><div class="v">฿3,266 ล้าน</div><div class="d">+17.0% YoY (ฟื้นตัวแข็งแกร่ง)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿0.82</div><div class="d">ฟื้นตัวจาก ฿0.70 ปี 2567</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~฿4.33</div><div class="d">สินทรัพย์รวม ฿23,493 ล้าน</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~19.5% / 14.6%</div><div class="d">สูงสำหรับธุรกิจสัมปทาน</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">฿5,255 ล้าน</div><div class="d">รายได้แน่นอน ตามปริมาณน้ำ+สัญญา</div></div>
+      <div class="metric"><div class="k">Net Profit Margin</div><div class="v">62.0%</div><div class="d">Gross margin 68.6%</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v pos">~6.12%</div><div class="d">DPS ฿0.60 • Payout ~73%</div></div>
+      <div class="metric"><div class="k">Payout Ratio</div><div class="v">~73%</div><div class="d">สม่ำเสมอ — นโยบายปันผล ≥50%</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ม.ค. 2568 – ม.ค. 2569</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#0277bd"></i>ราคา TTW</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿11.30</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        TTW เคลื่อนไหวในกรอบแคบ ฿9.00–฿9.85 ตลอดปี 2568 สะท้อนลักษณะหุ้นสาธารณูปโภคที่ราคาเสถียร
+        ราคาแตะจุดต่ำสุด ฿9.00 ในเดือนเมษายน ก่อนฟื้นตัวต่อเนื่องแตะ ฿9.85 ในพฤศจิกายน–ธันวาคม
+        และทรงตัวที่ ฿9.80 ต้นปี 2569 คิดเป็นผลตอบแทนราคา +7.7% รอบปี ยังไม่รวมเงินปันผล ฿0.60
+        (ทำให้ผลตอบแทนรวม ~14% รอบปี) — เหนือตลาดในช่วงที่ SET อยู่ในโซนไซด์เวย์
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS adj. ฿0.8196 × P/E เป้าหมาย 14x — ค่ากลางอุตสาหกรรมสาธารณูปโภคไทย (SET Utilities ~13–16x)</div></div>
+        <div class="mval">฿11.47</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล ฿0.615 (฿0.60×1.025); g 2.5%, r 8.5% → FV = D₁/(r−g) = 0.615/0.06 — เหมาะสำหรับ utility ปันผลสม่ำเสมอ</div></div>
+        <div class="mval">฿10.25</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 19.5% − g 2.5%)/(r 8.5% − g 2.5%) ≈ 2.83 × BVPS ฿4.33 — สะท้อน ROE สูงกว่าต้นทุนทุนอย่างชัดเจน</div></div>
+        <div class="mval">฿12.24</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿10.25 – ฿12.24</span></div>
+        <div class="r">฿11.30</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        DDM ให้ค่าต่ำสุด (฿10.25) เพราะใช้ r=8.5% และ g=2.5% อนุรักษนิยม เหมาะสำหรับสัมปทานน้ำที่รายได้เติบโตจำกัดตามสัญญา
+        Justified P/BV สูงสุด (฿12.24) สะท้อน ROE 19.5% ที่สูงผิดปกติสำหรับธุรกิจสาธารณูปโภค แสดงถึงประสิทธิภาพการใช้ทุน
+        P/E 14x (฿11.47) เป็นค่ากลางที่สมเหตุสมผล — เฉลี่ย 3 วิธีได้ ฿11.32 ปัดเป็น ฿11.30
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿9.80</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿11.30</div></div>
+        </div>
+        <div class="scale">
+          <span>฿7.91<br><small>MOS 30%</small></span>
+          <span>฿9.04<br><small>MOS 20%</small></span>
+          <span style="text-align:center">฿10.28<br><small>เป้า Analyst</small></span>
+          <span style="text-align:right">฿11.30<br><small>Fair Value</small></span>
+          <span style="text-align:right">฿12.24<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคา ฿9.80 ยังต่ำกว่า Fair Value ฿11.30 ประมาณ 13.3% — MOS ระดับ "น่าสนใจ" สำหรับหุ้นสาธารณูปโภครักษาความเสถียร
+        Analyst consensus (4 ราย: 3 ซื้อ 1 ขาย) ให้เป้า ฿10.28 ซึ่งยังต่ำกว่า FV ที่คำนวณ
+        สะท้อนว่าตลาดอาจมองโมเดลธุรกิจสัมปทานที่ใกล้หมดอายุเป็นความเสี่ยงหลัก
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict ok">
+        <div class="big">+13.3%</div>
+        <div class="txt">MOS ระดับ "น่าสนใจ" — ราคาต่ำกว่า FV ~13% เหมาะทยอยสะสม</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿9.04</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿7.91</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿11.30</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="9.80" step="0.05">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿9.80 • EPS ฐาน ~฿0.82 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS −2%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿7.70</div>
+          <div class="ret neg">−3.1%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.77</span></li>
+            <li><span>P/E ออก</span><span>10x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿1.80</span></li>
+            <li><span>สถานการณ์</span><span>ปริมาณน้ำลด + ต้นทุนพุ่ง</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +3%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿11.70</div>
+          <div class="ret pos">+37.8%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.90</span></li>
+            <li><span>P/E ออก</span><span>13x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿1.80</span></li>
+            <li><span>สถานการณ์</span><span>ปริมาณน้ำขยาย ต่ออายุสัมปทาน</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +5%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿14.25</div>
+          <div class="ret pos">+63.8%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.95</span></li>
+            <li><span>P/E ออก</span><span>15x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿1.80</span></li>
+            <li><span>สถานการณ์</span><span>ขยายสัมปทาน + ต่ออายุเงื่อนไขดี</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      EPS TTW ปัจจุบันฟื้นตัวแข็งแกร่งเป็น ฿0.82 (FY2568 +17% YoY) หลังจากซบเซาช่วง 2564–2567
+      ราคาเป้าหมาย 3 ปีในตารางคือ EPS×PE เท่านั้น — ผลตอบแทนรวมนับรวมปันผลสะสม ~฿1.80 ด้วย
+      Base case สมมติ EPS เติบโต 3%/ปี ตามปริมาณน้ำที่เพิ่มและต้นทุนคงที่สัมพันธ์กัน
+      ความเสี่ยงหลัก Bear case คือสัมปทานหมดอายุโดยไม่ได้ต่ออายุ หรือปริมาณน้ำลดลงจากภัยแล้ง
+      ปันผลสะสม 3 ปี ~฿1.80 เป็น "รายได้ขั้นต้น" ที่มั่นคงในทุกสถานการณ์ (yield 6%/ปี)
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>สัมปทานระยะยาว 30 ปี:</b> สัญญากับ PWA ครอบคลุมพื้นที่นครปฐม–สมุทรสาคร รับประกันรายได้แน่นอนโดยไม่ขึ้นกับวัฏจักรเศรษฐกิจ</li>
+          <li><b>ปันผลสูงและสม่ำเสมอ:</b> DPS ฿0.60 (yield ~6.1%) นโยบาย payout ≥50% ดึงดูดนักลงทุนระยะยาวและกองทุน</li>
+          <li><b>Margin สูงผิดปกติ:</b> Net margin 62% สะท้อนโครงสร้างต้นทุนคงที่ต่ำ เมื่อรายได้เพิ่มกำไรขยายเร็ว</li>
+          <li><b>ความต้องการน้ำเพิ่ม:</b> การขยายตัวของภาคอุตสาหกรรมในพื้นที่สัมปทาน (นิคม+ที่อยู่อาศัย) หนุนปริมาณน้ำระยะยาว</li>
+          <li><b>ROE สูง:</b> ROE 19.5% เหนือกว่าต้นทุนทุน ธุรกิจสร้างมูลค่าได้อย่างต่อเนื่อง</li>
+          <li><b>ราคาหุ้นเสถียร:</b> Beta ต่ำ เหมาะเป็น defensive ในพอร์ตรับมือตลาดผันผวน</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>สัมปทานหมดอายุ:</b> ความไม่แน่นอนเรื่องต่ออายุสัมปทาน และเงื่อนไขที่อาจเปลี่ยนแปลงหลังหมดสัญญาเป็นความเสี่ยงระยะยาวสำคัญ</li>
+          <li><b>ภัยแล้ง/ปริมาณน้ำดิบ:</b> รายได้ขึ้นกับปริมาณน้ำดิบ ภัยแล้งรุนแรงอาจกระทบกำลังการผลิตและรายได้</li>
+          <li><b>การกำหนดราคาจาก PWA:</b> ราคาขายน้ำผูกกับสัญญา PWA อาจปรับขึ้นได้จำกัด ขณะที่ต้นทุนพลังงาน/เคมีภัณฑ์อาจเพิ่ม</li>
+          <li><b>เติบโตจำกัด:</b> โมเดลธุรกิจสัมปทานไม่มีแรงขับเติบโตก้าวกระโดด รายได้ค่อนข้างคงที่ตามสัญญา</li>
+          <li><b>ดอกเบี้ยขาขึ้น:</b> หุ้น yield สูงแข่งกับพันธบัตร หากอัตราดอกเบี้ยปรับขึ้น อาจกดดัน valuation</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>Defensive High-Yield — ทยอยสะสมในโซน MOS &gt;10%</h2>
+      <p>TTW เป็นหุ้นสาธารณูปโภคสัมปทานคุณภาพสูง ธุรกิจผลิตน้ำประปาขายให้ PWA ภายใต้สัมปทาน 30 ปีนครปฐม–สมุทรสาคร
+      รายได้แน่นอน net margin 62% ROE 19.5% และ payout ratio ~73% สร้างผลตอบแทนเงินปันผล ≥6% ทุกปีอย่างสม่ำเสมอ
+      ราคาปัจจุบัน ฿9.80 ต่ำกว่า Fair Value ฿11.30 ประมาณ 13% — MOS "น่าสนใจ" เหมาะสะสมระยะยาว
+      ผู้ลงทุนที่ต้องการ income สม่ำเสมอ + ความเสถียรต่ำ beta สามารถพิจารณาเข้าสะสมได้ที่ราคาปัจจุบัน
+      โดยมีจุดซื้อเพิ่มที่ MOS 20% (฿9.04) และ MOS 30% (฿7.91) หากตลาดปรับฐาน</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿11.30 <span style="font-size:12px;color:#cab9a8">(฿10.25–฿12.24)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +13.3%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿10.28 (Buy 3/4)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> เหมาะสำหรับ <b>Defensive Income Portfolio</b> — ทยอยสะสมที่ราคาปัจจุบัน ฿9.80 (MOS 13.3%)
+        เพิ่มน้ำหนักที่ ฿9.04 (MOS 20%) • ถือยาว 3–5 ปีรับปันผล ~6%/ปี + Upside ราคา 15%
+        ควรติดตามความคืบหน้าต่ออายุสัมปทานเป็นสัญญาณสำคัญ
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวน ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    แหล่งข้อมูล: (1) Investing.com — ราคา ฿9.80, P/E 11.96x, EPS TTM ฿0.82, ROE 19.5%, DY 6.12%, Analyst target ฿10.28, BVPS ฿4.33 (ณ 3 ก.ค. 2569) •
+    (2) Yahoo Finance — กราฟราคารายเดือน 13 จุด ม.ค. 2568–ม.ค. 2569, 52w ฿8.60–฿9.95 •
+    (3) th.Investing.com Financial Summary — รายได้ + กำไรสุทธิ FY2564–FY2568 (Q4/2568 ล่าสุด) งบการเงินประจำปีสิ้นสุด 31 ธ.ค. 2568
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 3 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
