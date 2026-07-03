@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น ฮิวแมนิก้า (HUMAN) — Stock Analysis Dashboard</title>
+<!-- ★ โมเดล AI ที่ใช้วิเคราะห์จริง -->
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) -->
+<script type="application/json" id="stock-meta">
+{"symbol":"HUMAN","currency":"THB","price":4.80,"fairValue":7.30,"mos":34.2,"upside":52.1,"pe":11.7,"dividendYield":6.25,"roe":10.3}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#5c35cc",
+    "accentDark": "#4527a0",
+    "darkGrad": "linear-gradient(135deg,#311b92 0%,#4527a0 60%,#5c35cc 100%)",
+    "glow": "rgba(92,53,204,0.3)",
+    "subColor": "#d1c4e9",
+    "headerMuted": "rgba(255,255,255,0.6)",
+    "verdictText": "#ede7f6",
+    "vcellLabel": "rgba(237,231,246,0.7)",
+    "badge": "#5c35cc",
+    "chgBg": "#fce8e6",
+    "chgColor": "#c5221f"
+  },
+  "chart": {
+    "data": [
+      ["ก.ค. 68", 5.50],
+      ["ส.ค. 68", 4.12],
+      ["ก.ย. 68", 4.38],
+      ["ต.ค. 68", 4.60],
+      ["พ.ย. 68", 4.56],
+      ["ธ.ค. 68", 4.72],
+      ["ม.ค. 69", 4.80],
+      ["ก.พ. 69", 4.76],
+      ["มี.ค. 69", 4.68],
+      ["เม.ย. 69", 4.62],
+      ["พ.ค. 69", 4.70],
+      ["มิ.ย. 69", 4.72],
+      ["ก.ค. 69", 4.80]
+    ],
+    "min": 3.80,
+    "max": 6.00,
+    "grid": [4.00, 4.50, 5.00, 5.50],
+    "fairLine": 7.30,
+    "currency": "฿",
+    "highlight": [0, 1],
+    "gridFmt": "v.toFixed(2)",
+    "dataFmt": "d[1].toFixed(2)"
+  },
+  "gauge": {
+    "min": 3.50,
+    "max": 10.00,
+    "cur": 4.80,
+    "fair": 7.30,
+    "fairLabelTop": false
+  },
+  "fv": 7.30
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">●●●</div>
+    <div>
+      <span class="tag">SET: HUMAN</span>
+      <span class="tag">เทคโนโลยี / IT Services</span>
+      <span class="tag">HR SaaS</span>
+    </div>
+    <h1>บมจ. ฮิวแมนิก้า (Humanica PCL)</h1>
+    <div class="sub">HR/Payroll/ERP SaaS ไทย-อาเซียน · B2B Enterprise · Recurring Revenue · 1,500+ ลูกค้าองค์กร · ขยายอินโดนีเซีย</div>
+    <div class="price-row">
+      <div>
+        <div class="px">฿4.80<small>(HUMAN)</small></div>
+      </div>
+      <div class="chg">▼ −12.7% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 2 ก.ค. 2569<br>
+        กรอบ 52 สัปดาห์ ฿3.84 – ฿7.95<br>
+        ที่มา: Yahoo Finance • Investing.com • StockAnalysis.com • SET Factsheet
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ Q1/2569 · FY2568</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~฿4,014 ล้าน</div><div class="d">836 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~11.7x</div><div class="d">EPS TTM ฿0.41</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~18–22x</div><div class="d">ปัจจุบันต่ำกว่าเฉลี่ย</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">1.13x</div><div class="d">BVPS ฿4.16</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2568</div><div class="v">฿345.5 ล้าน</div><div class="d">+0.5% YoY</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿0.41</div><div class="d">FY2568 (ม.ค.–ธ.ค. 68)</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~฿4.16</div><div class="d">TTM มี.ค. 2569</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~10.3% / 8.5%</div><div class="d">ผลตอบแทนดีต่อเนื่อง</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">฿1,555–1,610 ล้าน</div><div class="d">+6–10% YoY</div></div>
+      <div class="metric"><div class="k">Gross Margin</div><div class="v">~51.6%</div><div class="d">SaaS margin แข็งแกร่ง</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~6.25%</div><div class="d">DPS ฿0.30/ปี (FY2568)</div></div>
+      <div class="metric"><div class="k">EV/EBITDA</div><div class="v">6.3x</div><div class="d">ถูกเทียบ SaaS ภูมิภาค</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ก.ค. 2568 – ก.ค. 2569</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#5c35cc"></i>ราคา HUMAN</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿7.30</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคาหุ้น HUMAN ปรับตัวลดลงราว −12.7% ในรอบ 1 ปี (ก.ค. 68 – ก.ค. 69) จากจุดสูงสุด ฿5.50 ในเดือน ก.ค. 68
+        มาแตะจุดต่ำสุดที่ ฿3.84 ช่วง ส.ค. 68 เนื่องจากแรงเทขายภาพรวมตลาด SET ที่อ่อนแอและนักลงทุนต่างชาติไหลออก
+        จากนั้นฟื้นตัวและเคลื่อนไหวในกรอบ ฿4.60–฿4.80 ตั้งแต่ปลายปี 68 ถึงปัจจุบัน
+        ราคาปัจจุบัน ฿4.80 ยังต่ำกว่ามูลค่าเหมาะสม ฿7.30 อย่างมีนัยสำคัญ (MOS 34%)
+        สะท้อนโอกาสสะสมในช่วงที่ sentiment ตลาดซบเซา
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS adj. ฿0.41 × P/E เป้าหมาย ~19x — P/E เฉลี่ย sector IT-services ไทย/SaaS B2B ระดับ 18–22x; ใช้ 19x ค่าอนุรักษ์นิยม</div></div>
+        <div class="mval">฿7.79</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล ฿0.30 × (1+g); g 6%, r 10% → DPS ปีหน้า ≈ ฿0.318; Fair Value = 0.318/(0.10−0.06)</div></div>
+        <div class="mval">฿7.95</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV growth premium SaaS B2B ≈ 1.50x × BVPS ฿4.16 — P/BV 1.5x เหมาะกับ HR SaaS ที่มี Recurring Revenue + Gross Margin 51%</div></div>
+        <div class="mval">฿6.24</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿6.24 – ฿7.95</span></div>
+        <div class="r">฿7.30</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        วิธี DDM ให้ค่าสูงสุด (฿7.95) สะท้อน yield ปัจจุบันที่น่าสนใจและ dividend growth track record +8.45%/ปีใน 5 ปี
+        วิธี P/E (฿7.79) อิง sector multiple ที่อนุรักษ์นิยม เนื่องจาก HUMAN เป็น SaaS B2B ที่มี Recurring Revenue สูง
+        วิธี Justified P/BV อนุรักษ์นิยมที่สุด (฿6.24) เพราะ ROE ~10% ยังไม่โดดเด่นมากในเชิงสูตร Gordon–Shapiro
+        แต่บริษัทมี asset-light model + gross margin 51.6% จึงให้น้ำหนัก P/BV 1.5x สำหรับ SaaS ที่ยังเติบโต
+        FV เฉลี่ย ฿7.30 อิงค่ากลาง — เป้านักวิเคราะห์ ฿8.30–9.80 ยืนยันแนวทางเดียวกัน
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿4.80</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿7.30</div></div>
+        </div>
+        <div class="scale">
+          <span>฿5.11<br><small>MOS 30%</small></span>
+          <span>฿5.84<br><small>MOS 20%</small></span>
+          <span style="text-align:center">฿7.30<br><small>Fair Value</small></span>
+          <span style="text-align:right">฿7.95<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">฿8.30<br><small>เป้าเฉลี่ย Analyst</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคา ฿4.80 อยู่ต่ำกว่าจุดซื้อ MOS 30% (฿5.11) — เข้าสู่โซน Deep Value แล้ว
+        ต่ำกว่า Fair Value ถึง 34.2% และต่ำกว่าเป้าเฉลี่ยนักวิเคราะห์ (฿8.30) ถึง 72.9%
+        หุ้นอยู่ใกล้จุดต่ำสุด 52 สัปดาห์ (฿3.84) แต่ sentiment ฟื้นตัวแล้วจาก ส.ค. 68
+        ปัจจัยกดดันหลักคือ SET index อ่อนแอและนักลงทุนต่างชาติขาย — ไม่ใช่ปัญหา fundamental
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict good">
+        <div class="big">+34.2%</div>
+        <div class="txt">โซนถูกมาก (Deep Value) — ราคาต่ำกว่ามูลค่าเหมาะสมอย่างมีนัยสำคัญ</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿5.84</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿5.11</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿7.30</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="4.80" step="0.05">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿4.80 • EPS ฐาน ~฿0.41 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS +2%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿4.30</div>
+          <div class="ret pos">+8.4% (รวม) / +2.7%/ปี</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.43</span></li>
+            <li><span>P/E ออก</span><span>10x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.90</span></li>
+            <li><span>สถานการณ์</span><span>ตลาดซบ กำไรทรงตัว</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +8%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿8.30</div>
+          <div class="ret pos">+93.1% (รวม) / +24.6%/ปี</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.52</span></li>
+            <li><span>P/E ออก</span><span>16x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.97</span></li>
+            <li><span>สถานการณ์</span><span>SaaS growth + ASEAN expand</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +12%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿11.60</div>
+          <div class="ret pos">+162.9% (รวม) / +37.7%/ปี</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.58</span></li>
+            <li><span>P/E ออก</span><span>20x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿1.02</span></li>
+            <li><span>สถานการณ์</span><span>AI+HR สเกลอาเซียน re-rate</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      กรณี Base อิงการเติบโต EPS 8%/ปี ตาม revenue CAGR ที่ผ่านมา (FY2022–2025: +27%/ปี สำหรับกำไร; +12.6%/ปี สำหรับรายได้)
+      และ P/E กลับสู่ระดับ 16x ซึ่งยังต่ำกว่าค่าเฉลี่ยอุตสาหกรรม SaaS ภูมิภาค
+      กรณี Bull หาก AI-HR product line ของ Workplaze และการขยายตลาดอินโดนีเซีย-อาเซียน เพิ่ม multiple ได้
+      กรณี Bear แม้ราคาหุ้นลง แต่ yield ปันผล 6%+ ยังช่วยบรรเทาผลตอบแทนรวม
+      ทั้ง 3 scenarios อิงการลงทุนที่ราคาปัจจุบัน ฿4.80 — ข้อมูล ณ ก.ค. 2569
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>Recurring Revenue ฐานแข็ง:</b> โมเดล SaaS/Subscription ทำให้รายได้มั่นคงและคาดการณ์ได้สูง — churn rate ต่ำในกลุ่ม Enterprise HR</li>
+          <li><b>ขยายอาเซียน (อินโดนีเซีย):</b> บริษัทเข้าซื้อกิจการ Cadena เพิ่มฐานลูกค้าและการดำเนินงานในอินโดนีเซีย — TAM ใหญ่กว่าไทย 5–7 เท่า</li>
+          <li><b>AI-HR Integration:</b> Workplaze platform ผนวก AI ช่วย automate งาน HR/Payroll — เพิ่ม value proposition และ stickiness ให้ลูกค้า</li>
+          <li><b>ตลาด HR SaaS เอเชียตะวันออกเฉียงใต้โต 15%/ปี:</b> Grand View Research ประมาณ SEA HR Software CAGR 15% ถึงปี 2573 — HUMAN ได้ประโยชน์ direct</li>
+          <li><b>Valuation Discount:</b> P/E 11.7x ต่ำกว่าค่าเฉลี่ย SaaS ในภูมิภาคมาก — โอกาส re-rate เมื่อ sentiment ตลาด SET ฟื้น</li>
+          <li><b>Dividend Yield 6.25%:</b> ให้ผลตอบแทนสม่ำเสมอระหว่างรอราคาหุ้นฟื้น — DPS เติบโต +8.45%/ปีใน 5 ปี</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>SET Market Sentiment อ่อนแอ:</b> นักลงทุนต่างชาติยังขายสุทธิ กดดัน valuation ตลาดโดยรวม — อาจใช้เวลานานกว่า re-rate จะเกิด</li>
+          <li><b>Competition จากผู้เล่นระดับ Global:</b> SAP SuccessFactors, Workday, Oracle HCM บุกตลาดไทยเพิ่มขึ้น — กดดัน margin ในกลุ่ม large enterprise</li>
+          <li><b>Q1/2569 Margin ลดลง:</b> Gross margin ลดจาก 50.8% เป็น 46.7% YoY — ต้องติดตามว่าเป็นแค่ seasonal หรือ structural cost pressure</li>
+          <li><b>ขนาดบริษัทเล็ก Market Cap ~4 พันล้านบาท:</b> Liquidity ต่ำ, ขายยากเมื่อต้องการ — risk ของ small-cap ใน SET</li>
+          <li><b>ความเสี่ยงการขยายอาเซียน:</b> การรวมกิจการ Cadena ในอินโดนีเซียมีความไม่แน่นอนด้านกฎหมาย/วัฒนธรรม/execution</li>
+          <li><b>EPS Growth ชะลอ FY2568:</b> กำไรสุทธิ +0.5% YoY เท่านั้น — ทั้งที่รายได้โต 6.2% สะท้อนต้นทุนที่เพิ่มขึ้น</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>ราคาถูกกว่ามูลค่าจริง 34% — Deep Value Zone พร้อม Dividend 6.25%</h2>
+      <p>
+        Humanica (HUMAN) คือผู้นำด้าน HR/Payroll SaaS B2B ในไทย-อาเซียน มีรายได้ recurring สูง gross margin ดีราว 51%
+        และ dividend yield 6.25% ที่เติบโตสม่ำเสมอ ราคาหุ้นปัจจุบัน ฿4.80 ต่ำกว่า Fair Value ฿7.30 ถึง 34.2%
+        เป็นผลจาก sentiment ตลาด SET ที่อ่อนแอ ไม่ใช่ปัญหา fundamental ของบริษัท
+        รายได้โตต่อเนื่อง +6–10% YoY และการขยาย ecosystem ใน ASEAN ผ่าน Cadena (อินโดนีเซีย) เป็น catalyst ระยะกลาง
+        แนะนำพิจารณาทยอยสะสมในโซน ฿4.50–฿5.10 สำหรับนักลงทุนที่รับความผันผวนตลาด SET ได้
+      </p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿7.30 <span style="font-size:12px;color:#cab9a8">(฿6.24–฿7.95)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +34.2%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿8.30–9.80 (Strong Buy)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ทยอยสะสมในโซน ฿4.50–฿5.11 (MOS ≥30%) รับ dividend 6%+ ระหว่างรอ re-rate
+        ตั้ง take-profit แรกที่ ฿7.30 (Fair Value) และ ฿8.30 (เป้านักวิเคราะห์) —
+        ระวัง margin ที่ลดลง Q1/69 และ execution risk ของการขยาย ASEAN
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    แหล่งข้อมูล: Yahoo Finance · StockAnalysis.com · Investing.com · SET Factsheet · AIO.panphol.com · ราคา ณ 2 ก.ค. 2569
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 2 กรกฎาคม 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
