@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น ไดนาสตี้เซรามิค (DCC) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"DCC","currency":"THB","price":1.33,"fairValue":1.37,"mos":2.92,"upside":3.01,"pe":14.0,"dividendYield":6.77,"roe":12.8}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#795548",
+    "accentDark": "#4e342e",
+    "darkGrad": "linear-gradient(135deg,#3e2723 0%,#4e342e 60%,#795548 100%)",
+    "glow": "rgba(121,85,72,0.3)",
+    "subColor": "#bcaaa4",
+    "headerMuted": "rgba(188,170,164,0.75)",
+    "verdictText": "#efebe9",
+    "vcellLabel": "#bcaaa4",
+    "badge": "#795548",
+    "chgBg": "#c62828",
+    "chgColor": "#ffcdd2"
+  },
+  "chart": {
+    "data": [
+      ["ม.ค. 25", 1.40],
+      ["ก.พ. 25", 1.38],
+      ["มี.ค. 25", 1.32],
+      ["เม.ย. 25", 1.27],
+      ["พ.ค. 25", 1.21],
+      ["มิ.ย. 25", 1.22],
+      ["ก.ค. 25", 1.25],
+      ["ส.ค. 25", 1.26],
+      ["ก.ย. 25", 1.24],
+      ["ต.ค. 25", 1.33],
+      ["พ.ย. 25", 1.45],
+      ["ธ.ค. 25", 1.45],
+      ["มิ.ย. 26", 1.33]
+    ],
+    "min": 1.10,
+    "max": 1.60,
+    "grid": [1.10, 1.20, 1.30, 1.40, 1.50, 1.60],
+    "fairLine": 1.37,
+    "currency": "฿",
+    "highlight": [10, 11],
+    "gridFmt": "v.toFixed(2)",
+    "dataFmt": "d[1].toFixed(2)"
+  },
+  "gauge": {
+    "min": 0.90,
+    "max": 1.70,
+    "cur": 1.33,
+    "fair": 1.37,
+    "fairLabelTop": true
+  },
+  "fv": 1.37
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">◆◇◆◇◆</div>
+    <div>
+      <span class="tag">SET: DCC</span>
+      <span class="tag">วัสดุก่อสร้าง</span>
+      <span class="tag">กระเบื้องเซรามิค</span>
+    </div>
+    <h1>บมจ. ไดนาสตี้เซรามิค (DCC)</h1>
+    <div class="sub">กระเบื้องปูพื้น-บุผนังแบรนด์ Dynasty • ผู้นำตลาดไทย • เครือ SCG • ปันผลสม่ำเสมอ</div>
+    <div class="price-row">
+      <div>
+        <div class="px">฿1.33<small>(DCC)</small></div>
+      </div>
+      <div class="chg">▼ −5.0% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 5 มิ.ย. 2569<br>
+        กรอบ 52 สัปดาห์ ฿1.13 – ฿1.54<br>
+        ที่มา: Investing.com · Yahoo Finance (DCC.BK)
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ มิ.ย. 2569 / FY2568</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~฿12.1พัน ล.</div><div class="d">~9,110 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~14.0x</div><div class="d">EPS TTM ฿0.095</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~16–18x</div><div class="d">ปัจจุบันต่ำกว่าเฉลี่ย</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">1.70x</div><div class="d">BVPS ~฿0.782</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2568</div><div class="v">฿904 ล.</div><div class="d">−18.1% YoY</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿0.095</div><div class="d">FY2568 EPS ฿0.100</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~฿0.782</div><div class="d">ส่วนผู้ถือหุ้น ฿7,127 ล.</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~12.8% / 9.5%</div><div class="d">ลดลงจากจุดสูง 30%+ ปี'63</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">~฿6,311 ล.</div><div class="d">−10.2% YoY (FY2568)</div></div>
+      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">~40.6%</div><div class="d">กำไรสุทธิ ~14.3%</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~6.8%</div><div class="d">~฿0.09/หุ้น/ปี · ปันผล 4 ครั้ง/ปี</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">~0.6–0.7</div><div class="d">ผันผวนต่ำกว่า SET</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ (ม.ค. 2568 – มิ.ย. 2569)</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#795548"></i>ราคา DCC</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿1.37</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคา DCC ปรับตัวลงต่อเนื่องจาก ฿1.40 ต้นปี 2568 สู่จุดต่ำสุด ฿1.21 ช่วง พ.ค.–มิ.ย. 2568 ก่อนฟื้นตัวแรงในช่วง ต.ค.–พ.ย. 2568 ขึ้นแตะ ฿1.45 จากแรงซื้อ Dividend Play และ Q3 ที่ดีขึ้น อย่างไรก็ตามราคาย่อตัวกลับมา ฿1.33 ในปี 2569 ผลตอบแทนรอบปี −5.0% (ม.ค. 2568 → มิ.ย. 2569)
+        ราคายังซื้อขายต่ำกว่ามูลค่าเหมาะสม ฿1.37 เล็กน้อย แต่ส่วนต่างน้อย — นักลงทุนที่เน้นปันผลอาจรับที่ระดับนี้ได้ถ้าต้องการ yield ~6.8%
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS adj. ฿0.095 × P/E เป้าหมาย ~16x — P/E เฉลี่ย 5 ปีย้อนหลัง เมื่อ ROE ~16–20% (ปัจจุบัน 12.8% กดลง)</div></div>
+        <div class="mval">฿1.52</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล ฿0.09 × (1+g); g 2%, r 9% → ฿0.0918 / 7% — สะท้อนกระแสปันผลที่มั่นคงแต่เติบโตช้า</div></div>
+        <div class="mval">฿1.31</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 12.8% − g 3%)/(r 9% − g 3%) ≈ 1.63x × BVPS ฿0.782</div></div>
+        <div class="mval">฿1.28</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿1.28 – ฿1.52</span></div>
+        <div class="r">฿1.37</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        วิธี P/E ให้ค่าสูงสุด (฿1.52) เพราะอิง P/E 16x ซึ่งเป็นค่าเฉลี่ยยุค ROE สูง ปัจจุบัน ROE ลดเหลือ 12.8% จึงอาจ re-rate ต่ำกว่า
+        วิธี DDM ให้ ฿1.31 สะท้อนปันผล ฿0.09/ปี ที่มั่นคง แต่ไม่เติบโต · วิธี Justified P/BV ให้ ฿1.28 สมเหตุสมผลที่สุด เพราะ ROE 12.8% ≈ Cost of equity 9% ทำให้ premium เหนือ book value ไม่มาก
+        Fair Value กลาง ฿1.37 สะท้อนว่า DCC เป็นหุ้นที่ราคาสมเหตุสมผล ไม่ถูกมาก แต่ปันผล ~6.8% ชดเชยได้
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿1.33</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿1.37</div></div>
+        </div>
+        <div class="scale">
+          <span>฿0.96<br><small>MOS 30%</small></span>
+          <span>฿1.10<br><small>MOS 20%</small></span>
+          <span style="text-align:center">฿1.37<br><small>Fair Value</small></span>
+          <span style="text-align:right">฿1.52<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">฿1.56<br><small>เป้าเฉลี่ย Analyst</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคา ฿1.33 อยู่ต่ำกว่า Fair Value ฿1.37 เล็กน้อย (~2.9%) แต่ยังสูงกว่าโซน MOS 20% (฿1.10)
+        นักลงทุนระยะยาวที่เน้น "ปันผลสม่ำเสมอ" อาจรับที่ระดับนี้ได้ — ได้ dividend yield ~6.8% ต่อปี
+        สำหรับผู้ที่ต้องการ Margin of Safety ที่ชัดเจน ควรรอโซน MOS 20% คือต่ำกว่า ฿1.10
+        นักวิเคราะห์ 1 ราย (Strong Buy) ตั้งเป้า ฿1.56 (+17.3% จากปัจจุบัน)
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict ok">
+        <div class="big">+2.9%</div>
+        <div class="txt">MOS ต่ำ — ราคาใกล้ Fair Value · ปันผล ~6.8% เป็น Yield play</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿1.10</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿0.96</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿1.37</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="1.33" step="0.05">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿1.33 • EPS ฐาน ~฿0.095 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS 0%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿1.05</div>
+          <div class="ret neg">−2.5%/ปี</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.095</span></li>
+            <li><span>P/E ออก</span><span>11x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.24</span></li>
+            <li><span>สถานการณ์</span><span>ตลาดอสังหาฯ ซบเซา ยอดขายหด</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +5%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿1.65</div>
+          <div class="ret pos">+10.1%/ปี</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.110</span></li>
+            <li><span>P/E ออก</span><span>15x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.27</span></li>
+            <li><span>สถานการณ์</span><span>ตลาดบ้านฟื้น ส่งออก ASEAN โต</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +10%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿2.14</div>
+          <div class="ret pos">+20.7%/ปี</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.126</span></li>
+            <li><span>P/E ออก</span><span>17x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.30</span></li>
+            <li><span>สถานการณ์</span><span>ดีมานด์บ้านฟื้นแรง ส่วนแบ่งตลาดเพิ่ม</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      Base case คาดผลตอบแทนรวม ~10%/ปี (Capital gain + ปันผล) ซึ่งน่าพอใจสำหรับหุ้น Low-Beta
+      Bear case ยังได้ปันผลชดเชยบางส่วน (-2.5%/ปี รวมปันผลแล้ว) · Bull case ต้องอาศัยการฟื้นของตลาดอสังหาฯ ไทย + การส่งออก ASEAN ที่โต
+      <br><b>ความเสี่ยงหลัก:</b> ROE ที่ลดต่อเนื่องจาก 30%+ → 12.8% ทำให้ P/E re-rating ขาขึ้นยาก — หุ้นนี้เหมาะกับผู้เน้น Dividend Yield มากกว่า Capital Gain
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>ปันผลสม่ำเสมอ:</b> จ่ายปันผล 4 ครั้ง/ปี ต่อเนื่องหลายปี yield ~6.8% สูงกว่าเงินฝาก ดึงดูดนักลงทุนเน้นรายได้</li>
+          <li><b>แบรนด์แข็งแกร่ง:</b> Dynasty เป็น Brand แบรนด์ #1-2 ในไทย สร้างความภักดีของลูกค้า และ pricing power ในระยะยาว</li>
+          <li><b>กำไรขั้นต้นสูง:</b> Gross margin ~40.6% สะท้อนความได้เปรียบด้านต้นทุนการผลิต + ความสามารถในการตั้งราคา</li>
+          <li><b>ตลาดส่งออก ASEAN:</b> การขยายตลาดในประเทศเพื่อนบ้านอาจชดเชยตลาดในประเทศที่ชะลอตัว</li>
+          <li><b>ฟื้นตัวอสังหาฯ:</b> มาตรการรัฐกระตุ้นภาคอสังหาฯ ไทยปี 2569 อาจหนุนยอดขายกระเบื้องกลับมา</li>
+          <li><b>เครือ SCG:</b> ได้รับประโยชน์จากเครือข่ายการกระจายสินค้าและการสนับสนุนจากกลุ่ม SCG (ผู้ถือหุ้นใหญ่)</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>ตลาดอสังหาฯ ซบเซา:</b> ยอดขาย FY2568 ลดลง 10.2% YoY สะท้อนดีมานด์อ่อนแอ — หากตลาดบ้านยังชะลอต่อ กำไรจะกดดันต่อ</li>
+          <li><b>ROE ลดต่อเนื่อง:</b> ROE ลดจาก 30%+ (ปี 2563) → 12.8% (ปี 2568) ชี้ว่า "ยุคทอง" อาจผ่านไปแล้ว ยากจะ re-rate</li>
+          <li><b>การแข่งขันกระเบื้องนำเข้า:</b> กระเบื้องจีนราคาถูกท่วมตลาด ASEAN เพิ่มแรงกดดันด้านราคาขาย</li>
+          <li><b>ต้นทุนพลังงาน:</b> การผลิตกระเบื้องใช้พลังงานสูง ราคาก๊าซ/ไฟฟ้าที่เพิ่มขึ้นกระทบ margin</li>
+          <li><b>ปันผลอาจลด:</b> payout ratio สูง (>80%) หากกำไรลดต่อเนื่อง อาจบังคับลดปันผล กระทบนักลงทุนที่เน้น yield</li>
+          <li><b>Cyclical ตามอสังหาฯ:</b> ธุรกิจผูกติดวัฏจักรการก่อสร้าง/อสังหาฯ ที่มีความผันผวนสูง</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>Yield Play ที่ราคาสมเหตุสมผล — รอโซน MOS 20% ก่อนสะสม</h2>
+      <p>DCC เป็นผู้ผลิตกระเบื้องเซรามิคแบรนด์ Dynasty ชั้นนำของไทย ในเครือ SCG มีจุดแข็งด้านแบรนด์และ gross margin สูง ~40.6% แต่กำลังเผชิญความท้าทายจากตลาดอสังหาฯ ชะลอตัว ส่งผลให้รายได้ลดลง 10.2% และกำไรลด 18.1% ใน FY2568 ROE ลดต่อเนื่องจาก 30%+ มาสู่ 12.8% ชี้ว่า competitive moat แคบลง ราคา ฿1.33 ปัจจุบันอยู่ต่ำกว่า Fair Value ฿1.37 เพียง ~3% (MOS ต่ำ) แต่ Dividend Yield ~6.8% สูงน่าสนใจสำหรับนักลงทุนที่เน้นรายได้</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿1.37 <span style="font-size:12px;color:#cab9a8">(฿1.28–฿1.52)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +2.9%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿1.56 (Strong Buy · 1 ราย)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> สำหรับนักลงทุน Dividend — ที่ ฿1.33 ได้ yield ~6.8% คุ้มค่าสำหรับการถือยาว แต่ควรระวัง downside หาก ROE ลดต่อ สำหรับนักลงทุน Value — รอโซน MOS 20% ที่ต่ำกว่า ฿1.10 จะได้ส่วนต่างความปลอดภัยที่ดีขึ้น ไม่แนะนำ "All-in" ที่ราคาปัจจุบัน เหมาะกับ "ทยอยสะสม" ในสัดส่วนน้อย
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    แหล่งข้อมูล: (1) Investing.com — ราคา ฿1.33 ณ 5 มิ.ย. 2569 · EPS TTM ฿0.095 · ปันผล · P/E · P/BV · งบการเงิน FY2568 (2) Yahoo Finance DCC.BK — กราฟราคารายเดือน ม.ค. 2568–มิ.ย. 2569 (3) Wisesheets.io — ROE ย้อนหลัง 10 ปี (4) Kaohoon.com / SEC — งบการเงิน FY2568 (กำไรสุทธิ ฿904 ล. · รายได้ ฿6,311 ล.) และงบ Q1/2569 (กำไร ฿284 ล. · EPS ฿0.031)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ มิ.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
