@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น ชโย กรุ๊ป (CHAYO) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"CHAYO","currency":"THB","price":1.21,"fairValue":2.85,"mos":57.5,"upside":135.5,"pe":null,"dividendYield":null,"roe":null}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#7b1fa2",
+    "accentDark": "#4a148c",
+    "darkGrad": "linear-gradient(135deg,#4a148c 0%,#6a1b9a 60%,#7b1fa2 100%)",
+    "glow": "rgba(106,27,154,0.3)",
+    "subColor": "#ce93d8",
+    "headerMuted": "rgba(206,147,216,0.7)",
+    "verdictText": "#f3e5f5",
+    "vcellLabel": "#ce93d8",
+    "badge": "#7b1fa2",
+    "chgBg": "#b71c1c",
+    "chgColor": "#ffcdd2"
+  },
+  "chart": {
+    "data": [
+      ["ก.ค. 68", 2.02],
+      ["ส.ค. 68", 1.85],
+      ["ก.ย. 68", 1.52],
+      ["ต.ค. 68", 1.35],
+      ["พ.ย. 68", 1.32],
+      ["ธ.ค. 68", 1.20],
+      ["ม.ค. 69", 1.20],
+      ["ก.พ. 69", 1.04],
+      ["มี.ค. 69", 1.01],
+      ["เม.ย. 69", 1.24],
+      ["พ.ค. 69", 1.21],
+      ["มิ.ย. 69", 1.16],
+      ["ก.ค. 69", 1.21]
+    ],
+    "min": 0.7,
+    "max": 2.6,
+    "grid": [1.0, 1.5, 2.0, 2.5],
+    "fairLine": 2.85,
+    "currency": "฿",
+    "highlight": [0, 8],
+    "gridFmt": "v.toFixed(2)",
+    "dataFmt": "d[1].toFixed(2)"
+  },
+  "gauge": {
+    "min": 0.5,
+    "max": 5.0,
+    "cur": 1.21,
+    "fair": 2.85,
+    "fairLabelTop": true
+  },
+  "fv": 2.85
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">●●●●●</div>
+    <div>
+      <span class="tag">SET: CHAYO</span>
+      <span class="tag">Financial Services</span>
+      <span class="tag">Debt Management / NPL</span>
+    </div>
+    <h1>บมจ. ชโย กรุ๊ป (Chayo Group PCL)</h1>
+    <div class="sub">บริหารและเร่งรัดหนี้ด้อยคุณภาพ (NPL) • ซื้อหนี้เสียจากสถาบันการเงิน • ตลาดสินเชื่อดิจิทัล • ธุรกิจจัดหาบุคลากร</div>
+    <div class="price-row">
+      <div>
+        <div class="px">฿1.21<small>(CHAYO)</small></div>
+      </div>
+      <div class="chg">▼ −40.1% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 4 ก.ค. 2569<br>
+        กรอบ 52 สัปดาห์ ฿0.97 – ฿2.22<br>
+        ที่มา: Yahoo Finance, Investing.com, SET Factsheet, Chayo IR · งบ Q1/2026
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ก.ค. 2569</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~฿1,410 ล้าน</div><div class="d">หุ้น ~1,165 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">N/A</div><div class="d">ขาดทุน FY2568 (−฿543 ล้าน)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v pos">0.45x</div><div class="d">BVPS ฿2.66 — ถูกกว่ามูลค่าทางบัญชี</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~฿2.66</div><div class="d">ส่วนผู้ถือหุ้น ฿3,106 ล้าน (Q1/69)</div></div>
+
+      <div class="metric"><div class="k">รายได้ FY2568</div><div class="v neu">฿2,197 ล้าน</div><div class="d">+4.9% YoY (FY2567: ฿2,093 ล้าน)</div></div>
+      <div class="metric"><div class="k">กำไร / ขาดทุน FY2568</div><div class="v neg">−฿543 ล้าน</div><div class="d">ตั้งสำรองก้อนใหญ่ — กดกำไร</div></div>
+      <div class="metric"><div class="k">กำไร Q1/2569</div><div class="v pos">฿103 ล้าน</div><div class="d">+154.7% YoY — ฟื้นตัวแล้ว</div></div>
+      <div class="metric"><div class="k">EPS Q1/2569</div><div class="v pos">~฿0.09</div><div class="d">ไม่มีสำรองก้อนใหญ่แล้ว</div></div>
+
+      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">~89%</div><div class="d">Gross margin สูง — ธุรกิจ asset-light</div></div>
+      <div class="metric"><div class="k">ROE / ROA (Q1/69 ann.)</div><div class="v neu">~−15% / −2%</div><div class="d">ยังติดลบ TTM จาก FY2568 ขาดทุน</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v neu">ไม่จ่าย</div><div class="d">ฟื้นกำไรก่อน — ครั้งล่าสุด ฿0.04 (พ.ค. 67)</div></div>
+      <div class="metric"><div class="k">พอร์ตหนี้บริหาร</div><div class="v">~฿104,350 ล้าน</div><div class="d">NPL ที่ดูแล — รายได้ดอกเบี้ย/จัดเก็บ</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ก.ค. 2568 – ก.ค. 2569 • รายเดือน</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#7b1fa2"></i>ราคา CHAYO</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿2.85</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        หุ้น CHAYO ร่วงจาก ฿2.02 (ก.ค. 2568) สู่จุดต่ำสุด ฿1.01 (มี.ค. 2569) ลดลงกว่า 50% ในรอบปี
+        แรงกดดันหลักมาจากการตั้งสำรองก้อนใหญ่ใน FY2568 ทำให้บริษัทขาดทุนสุทธิ −฿543 ล้าน
+        อย่างไรก็ตาม Q1/2569 (ม.ค.–มี.ค. 2569) กำไรฟื้นกลับ +154.7% YoY เป็น ฿103 ล้าน
+        หลังไม่มีภาระสำรองขนาดใหญ่อีก ราคาดีดตัวกลับมาที่ ฿1.21 (รอบปี −40.1% จาก ฿2.02)
+        ราคายังต่ำกว่ามูลค่าทางบัญชี (BVPS ฿2.66) อย่างมาก สะท้อน sentiment เชิงลบจากปีขาดทุน
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">3 วิธี — P/BV · Normalized P/E · Justified P/BV</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/BV Valuation (1.0x Book)</div><div class="mdesc">BVPS ฿2.66 × P/BV เป้าหมาย 1.0x — ระดับต่ำสุดที่สมเหตุสมผลสำหรับธุรกิจบริหารหนี้ที่กำลังฟื้นตัว (ปัจจุบัน 0.45x ถูกมาก)</div></div>
+        <div class="mval">฿2.66</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. Normalized P/E</div><div class="mdesc">EPS ปรับปกติ ฿0.28 × P/E เป้าหมาย 10x — อิงกำไรเฉลี่ย FY2566 (฿0.34) และ FY2567 (฿0.21) ก่อนตั้งสำรองพิเศษ; P/E 10x = ระดับอนุรักษ์นิยมสำหรับหุ้นบริหารหนี้</div></div>
+        <div class="mval">฿2.80</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 12% − g 5%)/(r 11% − g 5%) ≈ 1.17 × BVPS ฿2.66 — ROE 12% อิงค่าเฉลี่ยปี 2566 (12.4%) เมื่อกำไรเป็นปกติ; r 11% สะท้อนความเสี่ยงสูงกว่า blue chip</div></div>
+        <div class="mval">฿3.10</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿2.66 – ฿3.10</span></div>
+        <div class="r">฿2.85</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ทั้ง 3 วิธีให้ค่า FV ในกรอบ ฿2.66–3.10 ค่อนข้างสอดคล้องกัน
+        การงด DDM เพราะ CHAYO ยังไม่จ่ายปันผลระหว่างฟื้นตัว
+        ข้อสังเกต: FV ที่คำนวณได้สมมติว่า CHAYO ฟื้นกำไรได้ในช่วง 2–3 ปีข้างหน้า
+        หาก NPL ในพอร์ตยังต้องตั้งสำรองเพิ่ม FV อาจต่ำกว่านี้ได้
+        เป้านักวิเคราะห์ KSS (Neutral) ที่ ฿1.10 สะท้อนมุมมองระมัดระวังสูงสุด
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿1.21</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿2.85</div></div>
+        </div>
+        <div class="scale">
+          <span>฿1.10<br><small>เป้า Analyst (KSS)</small></span>
+          <span>฿1.99<br><small>MOS 30%</small></span>
+          <span style="text-align:center">฿2.28<br><small>MOS 20%</small></span>
+          <span style="text-align:right">฿2.85<br><small>Fair Value</small></span>
+          <span style="text-align:right">฿3.10<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคา ฿1.21 อยู่ต่ำกว่า MOS 30% (฿1.99) มาก สะท้อนว่าตลาด "ลงโทษ" หุ้นจากปีขาดทุน FY2568 เกินกว่าพื้นฐานจริง
+        หาก Q2–Q4/2569 ยังรักษากำไรได้ (ไม่มีสำรองพิเศษ) ราคาน่าจะฟื้นตัวสู่ระดับ ฿1.80–2.00 ในระยะ 6–12 เดือน
+        ความเสี่ยงหลัก: NPL ยังมีคุณภาพไม่แน่นอน อาจต้องตั้งสำรองเพิ่มได้อีก
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict good">
+        <div class="big">+57.5%</div>
+        <div class="txt">Deep Value Zone — ราคาต่ำกว่า FV มาก แต่ต้องยืนยันการฟื้นตัวของกำไร</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿2.28</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿1.99</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿2.85</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="1.21" step="0.05">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿1.21 • EPS ฐาน ~฿0.20 • ยังไม่จ่ายปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS 0%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿1.60</div>
+          <div class="ret neg">+32.2% / +9.8%ต่อปี</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.20</span></li>
+            <li><span>P/E ออก</span><span>8x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.00</span></li>
+            <li><span>สถานการณ์</span><span>NPL ยังตั้งสำรองเพิ่ม กำไรไม่ฟื้นเต็มที่</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +10%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿2.66</div>
+          <div class="ret pos">+120.0% / +30.1%ต่อปี</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.27</span></li>
+            <li><span>P/E ออก</span><span>10x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.00</span></li>
+            <li><span>สถานการณ์</span><span>ฟื้นตัวปกติ รายได้โต 10–15%/ปี NPL ไม่มีปัญหาใหม่</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +20%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿4.15</div>
+          <div class="ret pos">+252.7% / +52.2%ต่อปี</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.35</span></li>
+            <li><span>P/E ออก</span><span>12x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.12</span></li>
+            <li><span>สถานการณ์</span><span>ซื้อหนี้เพิ่ม 10,000 ล้านสำเร็จ รายได้พุ่ง กลับจ่ายปันผล</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      การคาดการณ์อิง EPS ปรับปกติหลังหักสำรองพิเศษ FY2568 ออก
+      ตัวขับหลักคือ: (1) คุณภาพพอร์ต NPL ที่ซื้อมา — จัดเก็บได้ตามเป้าหรือไม่
+      (2) การขยายพอร์ตใหม่ 10,000 ล้านบาทในปี 2568 (3) NPA (Non-Performing Assets) ขายสำเร็จ
+      Q1/2569 ที่กำไร +154.7% YoY เป็นสัญญาณบวกว่าธุรกิจกลับสู่ปกติ
+      ความเสี่ยงหลักคือ NPL คุณภาพต่ำในพอร์ตอาจบังคับให้ตั้งสำรองเพิ่มได้อีก
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>กำไรฟื้นตัวแล้ว Q1/2569:</b> +154.7% YoY ฿103 ล้าน หลังหมดภาระสำรองก้อนใหญ่ — เป็นสัญญาณว่าธุรกิจพื้นฐานยังแข็งแกร่ง</li>
+          <li><b>ซื้อหนี้เพิ่มพอร์ต 10,000 ล้าน:</b> บริษัทวางแผนซื้อ NPL มูลค่าราคาหน้า 10,000 ล้านบาทใน FY2568 ด้วยเงินทุน 500–1,000 ล้าน ซึ่งจะหนุนรายได้ระยะ 2–4 ปี</li>
+          <li><b>รายได้โตต่อเนื่อง:</b> เป้าหมายรายได้ปี 2568 โตไม่ต่ำกว่า 20% จาก ฿2,197 ล้าน รายได้ดอกเบี้ยจาก NPL คิดเป็น 87% ของรายได้รวม</li>
+          <li><b>NPA ขายทำกำไรได้:</b> บริษัทแปลง NPA ที่ดินพังงาเป็น NPL สำเร็จ ลดภาระสำรองในอนาคต + โอกาสรับเงินสดก้อนใหญ่จากการขาย</li>
+          <li><b>ราคาต่ำกว่า BVPS มาก:</b> P/BV เพียง 0.45x เทียบกับ BVPS ฿2.66 — ถือว่า Margin of Safety สูงมาก หากกำไรฟื้นจะดึงดูด value investor</li>
+          <li><b>Gross Margin สูง ~89%:</b> ธุรกิจ asset-light ไม่มีต้นทุนสินค้าสูง ทำให้รายได้โตตรงสู่กำไรได้เร็ว</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>NPL คุณภาพไม่แน่นอน:</b> การประเมินมูลค่า NPL ที่ซื้อมาอาจเกินจริง หากจัดเก็บได้ต่ำกว่าคาด บริษัทต้องตั้งสำรองเพิ่ม เหมือนที่เกิดขึ้นใน FY2568</li>
+          <li><b>Leverage สูง:</b> หนี้สิน ฿4,701 ล้าน ต่อทุน ฿3,003 ล้าน (D/E ~1.57x) — ต้นทุนดอกเบี้ยเป็นภาระสูงเมื่อกำไรจาก NPL ต่ำกว่าคาด</li>
+          <li><b>ขาดทุน FY2568:</b> −฿543 ล้าน กัด equity ลงจาก ฿3,548 ล้าน → ฿3,003 ล้าน ทำให้ BVPS ลดลง ยิ่งถ้าขาดทุนต่อ equity อาจหดลงอีก</li>
+          <li><b>ตลาด NPL แข่งขันสูงขึ้น:</b> ผู้เล่นรายใหม่ทั้งธนาคาร AMC และ fintech เข้าตลาดบริหารหนี้มากขึ้น อาจกดราคาซื้อ NPL และ margin</li>
+          <li><b>นักวิเคราะห์ระมัดระวัง:</b> KSS ให้ Neutral เป้า ฿1.10 ต่ำกว่าราคาปัจจุบัน สะท้อนความไม่แน่ใจว่ากำไรจะฟื้นตัวอย่างยั่งยืน</li>
+          <li><b>ไม่จ่ายปันผล:</b> ผู้ลงทุนที่ต้องการ income return จะไม่ได้รับผลตอบแทนระหว่างรอ ต้องอาศัย capital gain ล้วน</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>Deep Value Play — สำหรับนักลงทุนที่รับความเสี่ยงได้สูง</h2>
+      <p>CHAYO กำลังผ่านช่วงเปลี่ยนผ่าน หลังตั้งสำรองก้อนใหญ่ใน FY2568 ทำให้ขาดทุน −฿543 ล้าน และราคาหุ้นร่วงหนัก −40% ในรอบปี
+      แต่ Q1/2569 กำไรฟื้นกลับ +154.7% YoY เป็น ฿103 ล้าน บ่งชี้ว่าธุรกิจพื้นฐาน (ดอกเบี้ย NPL ~87% ของรายได้) ยังสร้างกระแสเงินสดได้
+      ราคาปัจจุบัน ฿1.21 อยู่ที่ P/BV เพียง 0.45x — ถูกมากเมื่อเทียบกับมูลค่าทางบัญชี ฿2.66
+      ศักยภาพ upside ใน Base Case อยู่ที่ +131% ใน 3 ปี แต่ต้องยืนยันว่ากำไรฟื้นตัวได้ต่อเนื่อง Q2–Q4/2569</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿2.85 <span style="font-size:12px;color:#cab9a8">(฿2.66–฿3.10)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +57.5%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿1.10 (Neutral / KSS)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ทยอยสะสมที่ระดับ ฿1.10–1.30 หาก Q2/2569 ยืนยันกำไรต่อเนื่อง ตั้ง Stop-loss ที่ ฿0.90 (ต่ำกว่า 52W low)
+        เป้าระยะ 12 เดือน ฿1.80–2.00 (Base กลาง) — ไม่เหมาะสำหรับนักลงทุนที่ต้องการปันผลหรือรับความเสี่ยงต่ำ
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ EPS ปรับปกติ, P/BV เป้าหมาย, ROE ในอนาคต และสมมติฐานว่าไม่มีสำรองพิเศษเพิ่ม
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    แหล่งข้อมูล: Yahoo Finance (CHAYO.BK), Investing.com, SET Thailand Factsheet, Chayo Group IR (chayo555.com), Share2Trade, InfoQuest
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 4 กรกฎาคม 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
