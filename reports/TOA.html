@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น TOA Paint (TOA) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"TOA","currency":"THB","price":14.9,"fairValue":20.5,"mos":27.3,"upside":37.6,"pe":9.2,"dividendYield":5.03,"roe":20.74}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#d84315",
+    "accentDark": "#bf360c",
+    "darkGrad": "linear-gradient(135deg,#bf360c 0%,#d84315 60%,#e64a19 100%)",
+    "glow": "rgba(216,67,21,0.3)",
+    "subColor": "#ffccbc",
+    "headerMuted": "rgba(255,255,255,0.6)",
+    "verdictText": "#fbe9e7",
+    "vcellLabel": "rgba(251,233,231,0.7)",
+    "badge": "#e64a19",
+    "chgBg": "rgba(30,142,62,0.18)",
+    "chgColor": "#1e8e3e"
+  },
+  "chart": {
+    "data": [
+      ["ก.ค. 68", 13.8],
+      ["ส.ค. 68", 13.6],
+      ["ก.ย. 68", 12.9],
+      ["ต.ค. 68", 13.0],
+      ["พ.ย. 68", 13.6],
+      ["ธ.ค. 68", 14.5],
+      ["ม.ค. 69", 15.8],
+      ["ก.พ. 69", 13.0],
+      ["มี.ค. 69", 13.0],
+      ["เม.ย. 69", 12.2],
+      ["พ.ค. 69", 14.7],
+      ["มิ.ย. 69", 14.8],
+      ["ก.ค. 69", 14.9]
+    ],
+    "min": 11.5,
+    "max": 17.0,
+    "grid": [12, 13, 14, 15, 16],
+    "fairLine": 20.5,
+    "currency": "฿",
+    "highlight": [6, 9],
+    "gridFmt": "v.toFixed(0)",
+    "dataFmt": "d[1].toFixed(2)"
+  },
+  "gauge": {
+    "min": 10.0,
+    "max": 24.0,
+    "cur": 14.9,
+    "fair": 20.5,
+    "fairLabelTop": false
+  },
+  "fv": 20.5
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">●●●●●</div>
+    <div>
+      <span class="tag">SET: TOA</span>
+      <span class="tag">วัสดุก่อสร้าง</span>
+      <span class="tag">สีทาอาคาร</span>
+    </div>
+    <h1>TOA Paint (Thailand) PCL</h1>
+    <div class="sub">สีทาอาคาร-ตกแต่ง No.1 ไทย • Gross Margin ~39% • เครือข่าย 15,000+ ร้านตัวแทน • อาเซียน (เวียดนาม กัมพูชา เมียนมา) • ปันผลสม่ำเสมอ</div>
+    <div class="price-row">
+      <div>
+        <div class="px">฿14.90<small>(TOA)</small></div>
+      </div>
+      <div class="chg">▲ +8.0% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 3 ก.ค. 2569<br>
+        กรอบ 52 สัปดาห์ ฿10.90–฿16.40<br>
+        ที่มา: StockAnalysis.com, Investing.com, investor.toagroup.com
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ก.ค. 2569 — ยืนยัน ≥2 แหล่ง</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">฿28,690 ล้าน</div><div class="d">หุ้น ~1,924 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~9.2x</div><div class="d">ต่ำกว่าค่าเฉลี่ยอุตสาหกรรม</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~13x</div><div class="d">ช่วง 9x–17x (2020–2025)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">1.86x</div><div class="d">BVPS ฿8.00 (Q1 2569)</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">฿2,917 ล้าน</div><div class="d">+51.96% YoY (ฟื้นตัวแรง)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿1.62</div><div class="d">FY2025: ฿1.50 · FY2024: ฿0.96</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~฿8.00</div><div class="d">เติบโต +13.3%/ปี (5ปี)</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~20.7% / 15.9%</div><div class="d">แข็งแกร่ง — คุณภาพสินทรัพย์สูง</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">฿21,789 ล้าน</div><div class="d">เติบโตจาก ฿17,570 ล. (2564)</div></div>
+      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">39.2%</div><div class="d">Net margin 14.4% · Op. margin 18.2%</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~5.03%</div><div class="d">฿0.75/หุ้น (2568) · จ่ายสม่ำเสมอ</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">0.29</div><div class="d">ความผันผวนต่ำมาก (defensive)</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ก.ค. 2568 – ก.ค. 2569</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#d84315"></i>ราคา TOA</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿20.50</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        TOA เริ่มต้นปีที่ ฿13.80 (ก.ค. 2568) ก่อนปรับตัวลงแตะต่ำสุดที่ ฿12.20 (เม.ย. 2569) จากแรงขายเชิงตลาดและความกังวลต้นทุนวัตถุดิบ จากนั้นฟื้นตัวแข็งแกร่งหลังประกาศผล Q4/2568 และ Q1/2569 ที่ดีเกินคาด พร้อมปันผลสูง สิ้นปีที่ ฿14.90 ให้ผลตอบแทนรอบปี +8.0% ราคายังซื้อขายต่ำกว่า Fair Value ฿20.50 อย่างมีนัยสำคัญ
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS adj. ฿1.62 × P/E เป้าหมาย ~13x (ค่าเฉลี่ย 5 ปี) — สะท้อน brand power + margin สูง</div></div>
+        <div class="mval">฿21.06</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล ฿0.75 × (1+g); g 5%, r 9% → ฿0.7875 / (0.09−0.05) — ธุรกิจ defensive ปันผลสม่ำเสมอ</div></div>
+        <div class="mval">฿19.69</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 20.74% − g 5%)/(r 11% − g 5%) ≈ 2.62 × BVPS ฿8.00 — ROE สูงสม่ำเสมอ</div></div>
+        <div class="mval">฿20.98</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿19.69 – ฿21.06</span></div>
+        <div class="r">฿20.50</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ทั้ง 3 วิธีให้ผลใกล้เคียงกันในช่วง ฿19.69–฿21.06 สะท้อนความสอดคล้อง DDM ให้ค่าต่ำสุด (อนุรักษ์นิยม) เพราะ g=5% ถ้าปันผลเติบโตได้ 7% ค่า DDM จะขึ้นไป ฿22+ Justified P/BV ยืนยันว่า ROE สูง 20%+ สมควรซื้อขายที่ P/BV >2.5x P/E Valuation อิง 5yr avg P/E ที่ ~13x ซึ่งสมเหตุสมผลสำหรับผู้นำตลาดสีที่มี margin แข็งแกร่ง
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿14.90</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿20.50</div></div>
+        </div>
+        <div class="scale">
+          <span>฿14.35<br><small>MOS 30%</small></span>
+          <span>฿15.50<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span>฿16.40<br><small>MOS 20%</small></span>
+          <span style="text-align:center">฿20.50<br><small>Fair Value</small></span>
+          <span style="text-align:right">฿21.06<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน ฿14.90 ต่ำกว่า Fair Value ฿20.50 ถึง 27.3% (MOS) หรือ Upside ~37.6% นักวิเคราะห์ 3 ราย เฉลี่ย ฿15.50 (Buy 2, Sell 1) ซึ่ง conservative กว่า Intrinsic Value ที่คำนวณได้ ราคาตลาดสะท้อนภาพ P/E เพียง 9.2x ซึ่งต่ำกว่าค่าเฉลี่ย 5 ปี ~13x อย่างมาก — ส่วนหนึ่งจากความกังวลต้นทุนและเศรษฐกิจชะลอตัว แต่ผลประกอบการ FY2568 ฟื้นตัวแล้ว
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict good">
+        <div class="big">+27.3%</div>
+        <div class="txt">โซน Value Investor — ราคาต่ำกว่ามูลค่าเหมาะสมชัดเจน ควรพิจารณาทยอยสะสม</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿16.40</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿14.35</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿20.50</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="14.90" step="0.05">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿14.90 • EPS ฐาน ~฿1.62 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS +2%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿15.50</div>
+          <div class="ret neg">รวมปันผล ~18% / ~5.7%/ปี</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿1.72</span></li>
+            <li><span>P/E ออก</span><span>9x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿2.25</span></li>
+            <li><span>สถานการณ์</span><span>เศรษฐกิจชะลอ อสังหาฯ ซบเซา</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +7%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿23.75</div>
+          <div class="ret pos">รวมปันผล ~76% / ~20.7%/ปี</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿1.98</span></li>
+            <li><span>P/E ออก</span><span>12x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿2.40</span></li>
+            <li><span>สถานการณ์</span><span>อสังหาฯ ฟื้น เวียดนามขยาย</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +12%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿31.80</div>
+          <div class="ret pos">รวมปันผล ~131% / ~32%/ปี</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿2.27</span></li>
+            <li><span>P/E ออก</span><span>14x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿2.60</span></li>
+            <li><span>สถานการณ์</span><span>อสังหาฯ บูม ขยายอาเซียนเร็ว</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      แม้ใน Bear case ผลตอบแทนรวมยังเป็นบวก (~18%) เพราะปันผล yield ~5% เป็นตาข่ายนิรภัย Base case ที่ EPS โต 7%/ปี + P/E กลับสู่ค่าเฉลี่ย 12x ให้ผลตอบแทน ~20.7%/ปี ซึ่งน่าสนใจมาก Bull case เป็นไปได้หากตลาดอสังหาฯ ไทยฟื้นตัวเต็มที่ + การขยายตัวอาเซียน (เวียดนาม กัมพูชา) สร้างรายได้ใหม่ ตัวเลขไม่รวมภาษีและค่าธรรมเนียมซื้อขาย
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>ผู้นำตลาดสีอันดับ 1 ของไทย:</b> ส่วนแบ่งตลาดสูง >35% ในสีทาอาคาร แบรนด์ "TOA" เป็นที่รู้จักทั่วประเทศ มีเครือข่ายตัวแทนจำหน่าย 15,000+ แห่ง ความได้เปรียบเชิงการแข่งขันสูง</li>
+          <li><b>Gross Margin ขยายตัวต่อเนื่อง:</b> Gross margin ปรับขึ้นจาก 33% (2564) → 39.2% (TTM) จากการควบคุมต้นทุนวัตถุดิบ (TiO₂) ดีขึ้น และ Product mix เน้น premium</li>
+          <li><b>การฟื้นตัวของภาคอสังหาริมทรัพย์ไทย:</b> โครงการก่อสร้างและซ่อมแซมที่อยู่อาศัยฟื้นตัว รัฐบาลลงทุนโครงสร้างพื้นฐาน เพิ่มดีมานด์สีทาอาคาร</li>
+          <li><b>การขยายตัวในอาเซียน:</b> ธุรกิจในเวียดนาม กัมพูชา และเมียนมาเติบโต เวียดนามเป็น bright spot มีประชากรหนุ่มสาว + ตลาดอสังหาฯ ขยายตัวเร็ว</li>
+          <li><b>ปันผลสม่ำเสมอ + เพิ่มขึ้น:</b> จ่ายปันผลสม่ำเสมอ 2 ครั้ง/ปีตั้งแต่ปี 2560 ปันผล FY2568 ฿0.75/หุ้น ให้ yield ~5% ที่ราคาปัจจุบัน</li>
+          <li><b>Beta ต่ำ 0.29:</b> หุ้น defensive ราคาผันผวนต่ำ เหมาะพอร์ตระยะยาว ไม่โดนแรงเทขายมากในช่วงตลาดผันผวน</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>ราคาวัตถุดิบ (TiO₂):</b> ไทเทเนียมไดออกไซด์เป็นต้นทุนหลัก ราคาผันผวนตามวัฏจักรสินค้าโภคภัณฑ์โลก หาก TiO₂ ปรับขึ้น margin จะกดดัน</li>
+          <li><b>ภาคอสังหาริมทรัพย์ไทยชะลอตัว:</b> หากการก่อสร้างและที่อยู่อาศัยใหม่ยังซบเซา ดีมานด์สีใหม่จะลดลง แม้ส่วน Repaint (ซ่อมแซม) ช่วยพยุง</li>
+          <li><b>การแข่งขันจากแบรนด์ต่างประเทศ:</b> Nippon Paint, Dulux (AkzoNobel), Jotun ต่างขยายฐานในไทยและอาเซียน อาจกดดัน margin และส่วนแบ่งตลาด</li>
+          <li><b>ความเสี่ยงค่าเงิน (อาเซียน):</b> ธุรกิจในเวียดนาม กัมพูชา เมียนมา มีความเสี่ยงจากอัตราแลกเปลี่ยน โดยเฉพาะ Kyat เมียนมา ที่อ่อนค่า</li>
+          <li><b>Liquidity ต่ำ:</b> หุ้น TOA มี Volume ซื้อขายค่อนข้างต่ำ อาจมีปัญหา Bid-Ask Spread กว้างและยากต่อการซื้อ/ขายในปริมาณมาก</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>TOA — ผู้นำสีทาอาคารไทย ราคายังถูก MOS 27% มีปันผล 5%</h2>
+      <p>TOA Paint คือผู้นำตลาดสีทาอาคารอันดับ 1 ของไทย มีความได้เปรียบเชิงการแข่งขันแข็งแกร่งจาก Brand Power + เครือข่ายตัวแทน 15,000+ แห่ง Gross Margin ปรับขึ้นต่อเนื่องสู่ ~39% ROE 20.7% แสดงถึงประสิทธิภาพการใช้เงินทุนสูง ณ ราคา ฿14.90 ซื้อขายที่ P/E เพียง 9.2x ต่ำกว่าค่าเฉลี่ยประวัติศาสตร์ ~13x อย่างมีนัยสำคัญ Fair Value 3 วิธีเฉลี่ยที่ ฿20.50 ให้ MOS ~27% และ Upside ~37.6% ผลประกอบการ FY2568 ฟื้นตัวแข็งแกร่ง กำไร +52% YoY เป็นสัญญาณว่าวัฏจักร bottom ผ่านไปแล้ว ปันผล ~5% เป็น floor ผลตอบแทน เหมาะสำหรับนักลงทุนระยะยาวที่ต้องการ defensive + income</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿20.50 <span style="font-size:12px;color:#cab9a8">(฿19.69–฿21.06)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +27.3%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿15.50 (Buy 2/3)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ราคาปัจจุบัน ฿14.90 อยู่ใน Value Zone (MOS 27%) เหนือจุด MOS 30% เล็กน้อย (฿14.35) ทยอยสะสมได้ที่ราคาปัจจุบัน–฿14.35 โดยเฉพาะหากมีการปรับตัวลง Set stop ที่ ฿12.50 (ใต้ 52W low ฿10.90) เป้าหมาย 12–18 เดือน ฿18–฿20 (P/E กลับค่าเฉลี่ย) รับปันผล ~5%/ปีระหว่างถือ
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    แหล่งข้อมูล: StockAnalysis.com (ราคา/EPS/Market Cap), Investing.com (งบการเงิน/อัตราส่วน), investor.toagroup.com (ปันผล), SET.or.th (Factsheet), Yahoo Finance (ราคาย้อนหลัง) — ราคายืนยัน ≥2 แหล่ง ต่างกัน &lt;2%
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 3 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
