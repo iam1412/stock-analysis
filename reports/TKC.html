@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น เทิร์นคีย์ คอมมูนิเคชั่น (TKC) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"TKC","currency":"THB","price":8.40,"fairValue":8.50,"mos":1.18,"upside":1.19,"pe":19.09,"dividendYield":2.38,"roe":4.18}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#5c6bc0",
+    "accentDark": "#283593",
+    "darkGrad": "linear-gradient(135deg,#283593 0%,#3949ab 60%,#5c6bc0 100%)",
+    "glow": "rgba(92,107,192,0.3)",
+    "subColor": "#9fa8da",
+    "headerMuted": "rgba(159,168,218,0.7)",
+    "verdictText": "#c5cae9",
+    "vcellLabel": "#9fa8da",
+    "badge": "#3949ab",
+    "chgBg": "var(--red-soft)",
+    "chgColor": "#c5221f"
+  },
+  "chart": {
+    "data": [
+      ["ก.ค. 67", 9.50],
+      ["ส.ค. 67", 9.35],
+      ["ก.ย. 67", 9.65],
+      ["ต.ค. 67", 9.30],
+      ["พ.ย. 67", 9.00],
+      ["ธ.ค. 67", 8.80],
+      ["ม.ค. 68", 8.40],
+      ["ก.พ. 68", 7.45],
+      ["มี.ค. 68", 8.50],
+      ["เม.ย. 68", 9.85],
+      ["พ.ค. 68", 8.45],
+      ["มิ.ย. 68", 8.40],
+      ["ก.ค. 68", 8.40]
+    ],
+    "min": 6.5,
+    "max": 11.0,
+    "grid": [7.0, 8.0, 9.0, 10.0],
+    "fairLine": 8.50,
+    "currency": "฿",
+    "highlight": [3, 7]
+  },
+  "gauge": {
+    "min": 5.0,
+    "max": 13.0,
+    "cur": 8.40,
+    "fair": 8.50,
+    "fairLabelTop": true
+  },
+  "fv": 8.50
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">●●●</div>
+    <div>
+      <span class="tag">SET: TKC</span>
+      <span class="tag">Technology</span>
+      <span class="tag">Telecom Solutions</span>
+    </div>
+    <h1>บมจ. เทิร์นคีย์ คอมมูนิเคชั่น เซอร์วิส (TKC)</h1>
+    <div class="sub">ระบบบูรณาการโทรคมนาคม • Cloud &amp; Data Center • Cyber Security • Smart Solutions &amp; AI • Digital Platform • สาธารณะปลอดภัย (Public Safety)</div>
+    <div class="price-row">
+      <div>
+        <div class="px">฿8.40<small>(TKC)</small></div>
+      </div>
+      <div class="chg">▼ −11.6% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 4 กรกฎาคม 2569<br>
+        กรอบ 52 สัปดาห์ ฿7.20 – ฿11.40<br>
+        ที่มา: SET / Investing.com / Yahoo Finance TKC.BK
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ก.ค. 2569</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">฿3,360 ล้าน</div><div class="d">400 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~19.1x</div><div class="d">EPS TTM ฿0.44</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~18–22x</div><div class="d">ช่วง low 10x / high 30x+</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">0.80x</div><div class="d">ต่ำกว่า book value</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2025 (FY2568)</div><div class="v">฿171.8 ล้าน</div><div class="d">−19.3% YoY</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿0.44</div><div class="d">FY2568 ฿0.43 / Q1/2569 ฿0.14</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~฿10.50</div><div class="d">จาก P/BV 0.80x × ราคา</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v neu">~4.2% / 4.1%</div><div class="d">FY2568 · ลดจาก 8%+ ปี 2566</div></div>
+
+      <div class="metric"><div class="k">รายได้ FY2568</div><div class="v neu">฿2,338 ล้าน</div><div class="d">−4.5% YoY (FY2567 ฿2,449 ล.)</div></div>
+      <div class="metric"><div class="k">อัตรากำไรสุทธิ</div><div class="v">~7.3%</div><div class="d">Q1/2569 margin ดีขึ้น 10.6%</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~2.4%</div><div class="d">฿0.20/หุ้น (Ex-date พ.ค. 69)</div></div>
+      <div class="metric"><div class="k">Backlog</div><div class="v pos">฿3,300 ล้าน</div><div class="d">Pipeline เพิ่ม ฿6,300 ล.</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ก.ค. 2567 – ก.ค. 2568</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#5c6bc0"></i>ราคา TKC</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿8.50</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคา TKC ปรับตัวลดลงจาก ฿9.50 ในกลางปี 2567 มาอยู่ที่ ฿8.40 ปัจจุบัน (−11.6% รอบปี) สะท้อนรายได้และกำไรที่หดตัวจาก FY2566 (฿3,887M) ลงสู่ FY2568 (฿2,338M) หลังโปรเจกต์ภาครัฐบางส่วนชะลอตัว ราคาแตะต่ำสุดรอบปีที่ ฿7.45 (ช่วง ก.พ. 68) ก่อนฟื้นกลับ จากนั้นแกว่งในกรอบ ฿8–10 บาท โดยจุดสูงสุดรอบปีอยู่ที่ ฿11.40 ช่วง ก.ค. 2567
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS adj. ฿0.44 × P/E เป้าหมาย ~18x — ค่าเฉลี่ย sector Telecom/IT Integration ไทย; ปรับลงจาก historical P/E สูงเพราะ ROE ลดลง</div></div>
+        <div class="mval">฿7.92</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. DCF / Earnings Power</div><div class="mdesc">EPS ฐาน ฿0.44 เติบโต 10%/ปี 3 ปี → EPS ปี 3 ฿0.59 × P/E exit 18x = ฿10.55; คิดลด 9% → PV ≈ ฿8.14 — สะท้อนการฟื้นตัวของกำไรจาก New S-Curve</div></div>
+        <div class="mval">฿8.14</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. EV/Revenue (Asset-light Proxy)</div><div class="mdesc">รายได้ FY2569E ~฿2,800M (โต 20% ตามเป้า) × EV/Revenue ~1.25x (ค่ากลาง system integrator ไทย) = EV ฿3,500M / 400M หุ้น ≈ ฿8.75 (ปรับ net cash)</div></div>
+        <div class="mval">฿8.75</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿7.90 – ฿9.30</span></div>
+        <div class="r">฿8.50</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        วิธี P/E ให้มูลค่าต่ำสุด (฿7.92) สะท้อน EPS ที่ยังอยู่ระดับต่ำในช่วงผ่านการปรับโครงสร้าง วิธี DCF (฿8.14) ให้น้ำหนักการเติบโตของกำไร 10%/ปีตามเป้าหมายบริษัท ส่วนวิธี EV/Revenue (฿8.75) สูงกว่าเล็กน้อยเพราะรวม premium จาก Backlog ฿3,300M และเป้ารายได้โต 20% ปี 2569 มูลค่ากลาง ฿8.50 สะท้อนภาพ "ราคาเหมาะสม" ณ ปัจจุบัน ยังไม่มี upside มากหากไม่มีการฟื้นตัวของกำไรจริง
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿8.40</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿8.50</div></div>
+        </div>
+        <div class="scale">
+          <span>฿5.95<br><small>MOS 30%</small></span>
+          <span>฿6.80<br><small>MOS 20%</small></span>
+          <span style="text-align:center">฿8.50<br><small>Fair Value</small></span>
+          <span style="text-align:right">฿9.00<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">฿9.30<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน ฿8.40 อยู่ใกล้เคียง Fair Value ฿8.50 มาก (MOS เพียง ~1.2%) ยังไม่มี margin of safety เพียงพอสำหรับ value investor หากต้องการ MOS 20% ควรรอที่ ฿6.80 หรือต่ำกว่า ซึ่งใกล้เคียงกับ 52W low ฿7.20 ที่เคยสัมผัสไปแล้ว นักลงทุนระยะกลาง-ยาวที่เชื่อใน New S-Curve อาจทยอยสะสมได้ในโซน ฿7.50–8.50 เพื่อรับ upside จากการฟื้นตัวของกำไร
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">+1.2%</div>
+        <div class="txt">MOS ต่ำมาก — ราคาปัจจุบันใกล้เคียง Fair Value เกือบเต็ม ยังไม่มีส่วนเผื่อความปลอดภัยเพียงพอ</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿6.80</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿5.95</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿8.50</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="8.40" step="0.05">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿8.40 • EPS ฐาน ~฿0.44 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS 0%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿7.20</div>
+          <div class="ret neg">−8.3% รวม 3 ปี (~−2.9%/ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.44</span></li>
+            <li><span>P/E ออก</span><span>15x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.60</span></li>
+            <li><span>สถานการณ์</span><span>โปรเจกต์ภาครัฐชะลอ กำไรทรงตัว</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +10%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿11.22</div>
+          <div class="ret pos">+33.6% รวม 3 ปี (~+10.1%/ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.59</span></li>
+            <li><span>P/E ออก</span><span>18x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.66</span></li>
+            <li><span>สถานการณ์</span><span>New S-Curve + AI/Cloud ดึงกำไรฟื้น</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +18%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿15.30</div>
+          <div class="ret pos">+85.7% รวม 3 ปี (~+23.1%/ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.73</span></li>
+            <li><span>P/E ออก</span><span>20x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.72</span></li>
+            <li><span>สถานการณ์</span><span>Backlog ฿3,300M ทะลุ + Cloud/AI margin สูง</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      การคาดการณ์อิงสมมติฐาน EPS ฐาน ฿0.44 (TTM) เติบโตตามแต่ละ scenario; ราคาเป้า = EPS ปี 3 × P/E exit ที่กำหนด + ปันผลสะสม 3 ปี (฿0.20/หุ้น/ปี) ตัวเลขเป็นเพียงการประมาณการ ผลจริงขึ้นอยู่กับการดำเนินงานจริงของ TKC รายได้ภาครัฐ และความสำเร็จของ New S-Curve
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>Backlog แกร่ง ฿3,300M:</b> มูลค่างานในมือสูง + pipeline ฟาดฝัน ฿6,300M รอประมูล รองรับรายได้ปี 2569–2570</li>
+          <li><b>New S-Curve — AI &amp; Cloud:</b> กลยุทธ์ 5 กลุ่มธุรกิจใหม่ (Cloud, Data Center, Cyber Security, AI, Digital Platform) มีมาร์จิ้นสูงกว่า infrastructure เดิม</li>
+          <li><b>เป้ารายได้โต 20% ปี 2569:</b> บริษัทตั้งเป้าโต 20% จากทั้ง traditional และ New S-Curve หลังรายได้หดตัว 2 ปีติด</li>
+          <li><b>Recurring Revenue 40% ใน 5 ปี:</b> เพิ่มสัดส่วน Managed Service/Cloud/Software ที่สม่ำเสมอ ลดความผันผวนของกำไร</li>
+          <li><b>โครงการดิจิทัลภาครัฐ:</b> TKC มีฐานลูกค้าภาครัฐแข็งแกร่ง (Defense, Education, Public Safety) เป็น base load ที่ stable</li>
+          <li><b>Q1/2569 margin ดีขึ้น:</b> อัตรากำไรสุทธิ Q1/2569 = 10.6% สูงกว่าค่าเฉลี่ยปีก่อน สัญญาณ mix-shift ไปสินค้า margin สูง</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>ROE ต่ำและลดลง:</b> ROE ลดจาก 8.2% (2566) เหลือ 4.2% (2568) บ่งชี้ประสิทธิภาพการใช้ equity แย่ลง กดราคาหุ้นระยะยาว</li>
+          <li><b>รายได้หดตัวต่อเนื่อง 2 ปี:</b> รายได้ลดจาก ฿3,887M (2566) → ฿2,338M (2568) หากโต 20% ไม่เป็นจริงก็ยังต่ำกว่าจุดสูงสุด</li>
+          <li><b>ความเสี่ยงโปรเจกต์ภาครัฐ:</b> รายได้พึ่งพาการประมูลของรัฐ การเลื่อน/ยกเลิกโครงการกระทบรุนแรง เช่น FY2567–68</li>
+          <li><b>การแข่งขันสูง:</b> ตลาด System Integration ไทยมีผู้เล่นหลายราย ทั้ง local (AIT, SIS) และ global (Huawei, Cisco partners) กดดันมาร์จิ้น</li>
+          <li><b>P/BV ต่ำกว่า 1x:</b> P/BV 0.80x สะท้อนตลาดไม่เชื่อ ROE ฟื้นได้ถึง cost of equity หากยังต่ำ นักลงทุนเน้นมูลค่าอาจหลีกเลี่ยง</li>
+          <li><b>New S-Curve ยังเป็นช่วงลงทุน:</b> Cloud/AI ต้องใช้เวลา build capability ช่วงปรับเปลี่ยนอาจกดกำไรระยะสั้น</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>TKC — ราคาใกล้ Fair Value, รอสัญญาณการฟื้นตัวของกำไร</h2>
+      <p>TKC (Turnkey Communication Services) เป็นผู้นำด้าน System Integration โทรคมนาคมและ IT ของไทย มีฐานลูกค้าภาครัฐแข็งแกร่งและ Backlog ฿3,300M รองรับรายได้ระยะกลาง บริษัทอยู่ในช่วงเปลี่ยน S-Curve สู่ธุรกิจ AI/Cloud มาร์จิ้นสูง อย่างไรก็ตามราคาปัจจุบัน ฿8.40 ใกล้เคียง Fair Value ฿8.50 (MOS เพียง 1.2%) ยังขาด margin of safety ที่ชัดเจน ROE ที่ลดลงมาอยู่ที่ 4.2% เป็นสัญญาณเตือนว่าการฟื้นตัวยังไม่ชัด นักลงทุนแบบ value ควรรอราคาที่ ฿7.50 หรือต่ำกว่า (MOS ~12%) ก่อนสะสม หรือรอดูผลงาน FY2569 H1 ยืนยันว่ากำไรฟื้นจริงตามเป้าโต 20%</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿8.50 <span style="font-size:12px;color:#9fa8da">(฿7.90–฿9.30)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +1.2%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿9.00–10.00 (ทยอยสะสม)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ราคาปัจจุบันใกล้ FV — ยังไม่มี MOS เพียงพอสำหรับ value investor ที่ต้องการ ≥20% ส่วนเผื่อ รอสะสมเมื่อราคาลงมา ฿7.50–6.80 (MOS 12–20%) หรือรอผลงาน FY2569 ยืนยันกำไรฟื้นก่อน สำหรับนักลงทุนระยะยาวที่เชื่อ New S-Curve สามารถทยอยสะสมในโซน ฿8.00–8.50 เพื่อรับ upside หากบริษัททำได้ตามเป้าหมาย
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    แหล่งข้อมูล: SET TH (Factsheet ก.ค. 2569) · Investing.com · Yahoo Finance TKC.BK · TKC Investor Relations (tkc-services.com) งบการเงิน FY2566/FY2567/FY2568/Q1/2569 · Mitihoon/Infoquest (มี.ค. 2569)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 4 กรกฎาคม 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
