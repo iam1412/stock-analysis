@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น ASK Auto Sales (ASK) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"ASK","currency":"THB","price":10.60,"fairValue":9.40,"mos":-12.77,"upside":-11.32,"pe":12.29,"dividendYield":3.92,"roe":5.22}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme":{
+    "accent":"#00695c",
+    "accentDark":"#004d40",
+    "darkGrad":"linear-gradient(135deg,#004d40 0%,#00695c 60%,#00897b 100%)",
+    "glow":"rgba(0,105,92,0.3)",
+    "subColor":"#b2dfdb",
+    "headerMuted":"rgba(255,255,255,0.6)",
+    "verdictText":"#e0f2f1",
+    "vcellLabel":"rgba(224,242,241,0.7)",
+    "badge":"#00897b",
+    "chgBg":"#2d6a4f",
+    "chgColor":"#d8f3dc"
+  },
+  "chart":{
+    "data":[
+      ["ม.ค. 68",7.30],
+      ["ก.พ. 68",8.80],
+      ["มี.ค. 68",7.75],
+      ["เม.ย. 68",7.10],
+      ["พ.ค. 68",7.30],
+      ["มิ.ย. 68",7.70],
+      ["ก.ค. 68",9.50],
+      ["ส.ค. 68",8.20],
+      ["ก.ย. 68",9.05],
+      ["ต.ค. 68",9.10],
+      ["พ.ย. 68",10.10],
+      ["ธ.ค. 68",10.20],
+      ["ก.ค. 69",10.60]
+    ],
+    "min":6.50,
+    "max":11.50,
+    "grid":[7.00,8.00,9.00,10.00,11.00],
+    "fairLine":9.40,
+    "currency":"฿",
+    "highlight":[6,10],
+    "gridFmt":"v.toFixed(2)"
+  },
+  "gauge":{"min":6.50,"max":13.00,"cur":10.60,"fair":9.40,"fairLabelTop":true},
+  "fv":9.40
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">●●●</div>
+    <div>
+      <span class="tag">SET: ASK</span>
+      <span class="tag">สินเชื่อเช่าซื้อ</span>
+      <span class="tag">กลุ่มกรุงเทพประกันภัย</span>
+    </div>
+    <h1>ASK Auto Sales and Service PCL</h1>
+    <div class="sub">เช่าซื้อรถยนต์ทุกประเภท (รถบรรทุก/รถพาณิชย์/รถยนต์) • สินเชื่อส่วนบุคคล • Floor Plan • BGPL (เช่าซื้อเครื่องจักร) • SKIB (นายหน้าประกัน)</div>
+    <div class="price-row">
+      <div>
+        <div class="px">฿10.60<small>(ASK)</small></div>
+      </div>
+      <div class="chg">▲ +45.2% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 3 ก.ค. 2569<br>
+        กรอบ 52 สัปดาห์ ฿6.80 – ฿10.70<br>
+        ที่มา: Yahoo Finance API, StockAnalysis.com, Investing.com
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ก.ค. 2569 / ปีงบ 2568</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">฿7,460 ล้าน</div><div class="d">703.79 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~12.3x</div><div class="d">เทียบเกณฑ์เช่าซื้อ 10–14x</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~8–13x</div><div class="d">ช่วงวัฏจักร (ขาดทุนสินเชื่อ)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">0.62x</div><div class="d">BVPS ~฿17.15</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2568</div><div class="v">฿531.6 ล้าน</div><div class="d">+60.2% จาก FY2567 (฿331.8 ล้าน)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿0.86</div><div class="d">FY2568: ฿0.83 / FY2567: ฿0.63</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~฿17.15</div><div class="d">Equity ฿11,854 ล้าน</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v neu">~5.2% / 0.9%</div><div class="d">กดดันจากต้นทุนหนี้สูง</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">฿2,845 ล้าน</div><div class="d">+4.9% YoY (ฟื้นตัว)</div></div>
+      <div class="metric"><div class="k">อัตรากำไรสุทธิ</div><div class="v">~20.7%</div><div class="d">ปรับตัวดีขึ้นจาก 7.9% ปี 67</div></div>
+      <div class="metric"><div class="k">เงินปันผล (ล่าสุด)</div><div class="v">~3.92%</div><div class="d">DPS ฿0.40 (Ex-Div ก.พ. 69)</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">0.64</div><div class="d">ความผันผวนต่ำกว่าตลาด</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ม.ค. 2568 – ก.ค. 2569</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#00695c"></i>ราคา ASK</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿9.40</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคา ASK ต้นปี 2568 อยู่ที่ ฿7.30 ก่อนพุ่งแรงแตะ ฿8.80 ในเดือน ก.พ. (ตามข่าวงบปี 67 ฟื้นตัว) แล้วย่อตัวลงในช่วง มี.ค.–พ.ค. ที่ระดับ ฿7.10–7.75 สอดคล้องกับแรงขายทำกำไร จากนั้นกลับมาพุ่งแรงในเดือน ก.ค. 68 แตะ ฿9.50 (+30% ในเดือนเดียว) หลังผลประกอบการ Q2/2568 ดีกว่าคาด และแนวโน้ม NPL ดีขึ้น ราคาทรงตัวสูงช่วง ก.ย.–ธ.ค. ที่ ฿9.05–10.20 ก่อนไต่ขึ้นต่อมาที่ ฿10.60 ในช่วง ก.ค. 2569 รวมผลตอบแทนรอบปีสูงถึง +45.2% สะท้อนการปรับ re-rating จากกำไรที่ฟื้นตัวแรง
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS adj. ฿0.86 × P/E เป้าหมาย ~14x — เทียบ P/E ประวัติ 5 ปี เฉลี่ยสูงสุด ~13–14x ช่วงกำไรปกติ</div></div>
+        <div class="mval">฿12.04</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล ฿0.40 × (1+4%); g 4%, r 9% → ฿0.416 / (9%−4%) = ฿8.32 — สะท้อน payout ต่ำ + ROE ต่ำ</div></div>
+        <div class="mval">฿8.32</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 5.22% − g 3%)/(r 9% − g 3%) ≈ 0.37 × BVPS ฿17.15 → ค่าต่ำสะท้อน ROE ที่ยังต่ำกว่า cost of equity</div></div>
+        <div class="mval">฿6.35</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿6.35 – ฿12.04</span></div>
+        <div class="r">฿9.40</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        วิธี P/E ให้ค่าสูงสุด (฿12.04) สะท้อนมุมมองว่ากำไรกำลังฟื้นตัวและตลาดให้ P/E ที่สมเหตุสมผล วิธี DDM ให้ค่ากลาง (฿8.32) เนื่องจากอัตราปันผลยังต่ำในช่วงฟื้นตัว วิธี Justified P/BV ให้ค่าต่ำสุด (฿6.35) เพราะ ROE 5.22% ยังต่ำกว่า cost of equity สมมุติที่ 9% ซึ่งหมายความว่าบริษัทยังสร้างมูลค่าได้ไม่เต็มที่ มูลค่ากลางเฉลี่ย ฿9.40 เป็นจุดอ้างอิง ณ ระดับกำไรและ ROE ปัจจุบัน หาก ROE ปรับตัวขึ้นสู่ 8–10% ในอนาคต FV ที่แท้จริงจะสูงกว่านี้อย่างมีนัย
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿10.60</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿9.40</div></div>
+        </div>
+        <div class="scale">
+          <span>฿6.58<br><small>MOS 30%</small></span>
+          <span>฿7.52<br><small>MOS 20%</small></span>
+          <span style="text-align:center">฿9.40<br><small>Fair Value</small></span>
+          <span style="text-align:right">฿11.50<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">฿12.04<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคา ฿10.60 อยู่สูงกว่า Fair Value ฿9.40 ประมาณ 12.8% หมายความว่าตลาดให้ราคาที่แพงกว่ามูลค่าพื้นฐานปัจจุบัน โดยมีส่วนของ "กำไรในการฟื้นตัวที่คาดหวัง" แฝงอยู่แล้ว เป้าหมายนักวิเคราะห์เฉลี่ย ฿11.50 สูงกว่าราคาปัจจุบัน ~8.5% สะท้อนว่ายังมี upside เล็กน้อยจากมุมมองนักวิเคราะห์ที่มองโลกแง่ดีกว่า conservative FV ที่ใช้ที่นี่ สำหรับนักลงทุน VI ที่ต้องการ MOS ≥20% จุดเข้าที่น่าสนใจคือต่ำกว่า ฿7.52
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">−12.8%</div>
+        <div class="txt">ราคาปัจจุบันสูงกว่ามูลค่าเหมาะสม — ไม่มี Margin of Safety ณ ระดับนี้</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿7.52</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿6.58</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿9.40</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="10.60" step="0.05">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿10.60 • EPS ฐาน ~฿0.86 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS 0%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿8.60</div>
+          <div class="ret neg">−10.9% / ปี</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.86</span></li>
+            <li><span>P/E ออก</span><span>10x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿1.20</span></li>
+            <li><span>สถานการณ์</span><span>NPL กลับพุ่ง กำไรทรง</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +10%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿13.28</div>
+          <div class="ret pos">+9.5% / ปี</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿1.14</span></li>
+            <li><span>P/E ออก</span><span>11.6x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿1.50</span></li>
+            <li><span>สถานการณ์</span><span>สินเชื่อโต NPL ลด ROE ฟื้น</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +18%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿18.94</div>
+          <div class="ret pos">+22.0% / ปี</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿1.42</span></li>
+            <li><span>P/E ออก</span><span>13.3x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿2.10</span></li>
+            <li><span>สถานการณ์</span><span>ตลาดรถบรรทุกฟื้น โตแรง</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      การคาดการณ์อ้างอิง EPS TTM ฿0.86 เป็นฐาน • Bear: กำไรทรงตัวไม่โต ตลาดกดดัน P/E ลงเหลือ 10x (ราคาลดลง) • Base: EPS โต 10%/ปีจากการฟื้นตัวของสินเชื่อและ NPL ลดลง ให้ผลตอบแทนรวม +9.5%/ปี สอดคล้องกับเป้านักวิเคราะห์ • Bull: กำไรโตแรง 18%/ปี หากตลาดรถบรรทุก-พาณิชย์ฟื้นตัวเต็มที่และ ROE ปรับขึ้นสู่ 8–9% ปันผลคำนวณที่ payout ~40% ของ EPS แต่ละปี
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>กำไรฟื้นตัวแข็งแกร่ง:</b> กำไร FY2568 โตถึง 60% YoY สู่ ฿531.6 ล้าน และ Q1/2569 โต 39% YoY แสดงแนวโน้มขาขึ้นชัดเจน</li>
+          <li><b>ตลาดรถบรรทุก-พาณิชย์ฟื้นตัว:</b> ยอดขายรถบรรทุกในไทยเริ่มฟื้นหลังผ่านจุดต่ำสุด ช่วยหนุนสินเชื่อใหม่ของ ASK โดยตรง</li>
+          <li><b>NPL คุมได้ดีขึ้น:</b> มาร์จิ้นสุทธิ FY2568 ฟื้นกลับมา 20.7% (เทียบ 7.9% ใน FY2567) สะท้อนคุณภาพสินเชื่อดีขึ้น</li>
+          <li><b>พอร์ตสินเชื่อเช่าซื้อ vs Leasing:</b> ธุรกิจเช่าซื้อเครื่องจักร (BGPL) + ประกัน (SKIB) กระจายความเสี่ยง — รายได้หลากแหล่ง</li>
+          <li><b>Valuation ต่ำกว่า Book (P/BV 0.62x):</b> แม้ราคาวิ่งมาแล้ว แต่ยัง trade ต่ำกว่า book value มาก — หากคุณภาพสินทรัพย์ดีขึ้น โอกาส re-rating ยังมี</li>
+          <li><b>กลุ่มกรุงเทพประกันภัย (BKI) หนุน:</b> ความแข็งแกร่งของผู้ถือหุ้นใหญ่ (BBL/BKI) ช่วยเสริมความน่าเชื่อถือในการระดมทุน + ต้นทุนเงินกู้ต่ำ</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>ROE ต่ำกว่า cost of equity:</b> ROE 5.22% ต่ำกว่า required return ~9% หมายความว่าบริษัทยังไม่สร้างมูลค่าสุทธิ กดดัน P/BV ที่เหมาะสมให้ต่ำกว่า 1x</li>
+          <li><b>Leverage สูง (D/E ~3.8x):</b> ธุรกิจเช่าซื้อใช้เงินกู้สูง — หากดอกเบี้ยสูงหรือ funding cost ขึ้น กำไรหดได้รวดเร็ว</li>
+          <li><b>NPL วัฏจักร:</b> ลูกหนี้เช่าซื้อรถบรรทุก/พาณิชย์ไวต่อเศรษฐกิจ กลับขาลงมา NPL พุ่งได้เร็ว (เคยเห็น FY2567 กำไรลดถึง 73%)</li>
+          <li><b>ราคาวิ่งนำ Fundamentals:</b> ราคา +52% ใน 1 ปี แต่ FV ฐาน FV = ฿9.40 ต่ำกว่าราคาปัจจุบัน — ความเสี่ยง P/E compression หาก earnings ไม่โตตามคาด</li>
+          <li><b>ตลาดรถยนต์ไทยชะลอ:</b> สถาบันการเงินรถยนต์ไทยทั้งกลุ่มเผชิญปัญหา Tier 2–3 ลูกหนี้ผิดนัดชำระ โดยเฉพาะรถใช้แล้ว</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>กำไรฟื้น แต่ราคาวิ่งนำไปแล้ว — รอจังหวะย่อ</h2>
+      <p>ASK เป็นหนึ่งในผู้นำสินเชื่อเช่าซื้อรถพาณิชย์ของไทย มีฐานลูกค้าแข็งแกร่งจากกลุ่มรถบรรทุก/รถไถ/เครื่องจักรกล ภายใต้ร่มของกลุ่มกรุงเทพประกันภัย-BBL กำไร FY2568 ฟื้นตัวชัดเจน +60% และ Q1/2569 ต่อเนื่องอีก +39% YoY อย่างไรก็ตาม ราคาหุ้นขึ้นมา 52% ใน 1 ปีแล้ว และปัจจุบัน trade เกินกว่า conservative Fair Value ฿9.40 ประมาณ 13% ROE ยังต่ำ (5.2%) สะท้อนว่าธุรกิจยังไม่ได้สร้างมูลค่าเต็มศักยภาพ — upside ระยะสั้นจำกัด แต่ถ้า ROE ฟื้นสู่ 8–10% FV จะปรับสูงกว่านี้มาก</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿9.40 <span style="font-size:12px;color:#cab9a8">(฿6.35–฿12.04)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ef9a9a">MOS ~ −12.8% (แพงกว่า FV)</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿11.50 (Hold)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> หากถือแล้ว Hold ได้ถ้าเชื่อ thesis การฟื้นตัว ROE สู่ 8%+ ซึ่งจะทำให้ FV ขึ้นไปแตะ ฿12–14 สำหรับนักลงทุนใหม่ที่ต้องการ MOS ≥20% ควรรอราคาย่อลงสู่แถว ฿7.50 ก่อน (MOS 20%) หรือ ฿6.60 (MOS 30%) จุดเข้าที่ปลอดภัยกว่า ณ ระดับราคาปัจจุบัน upside จำกัดเทียบความเสี่ยง
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    แหล่งข้อมูล: (1) Yahoo Finance API — ASK.BK ราคารายเดือน 1 ปี ก.ค. 2568–ก.ค. 2569 (2) StockAnalysis.com — EPS TTM ฿0.86, P/BV 0.62x, BVPS ฿17.15, ROE 5.22% (FY2025/2568) (3) Investing.com — ประวัติเงินปันผล FY2022–2025, งบการเงินรายปี (4) investor.ask.co.th — โปรไฟล์บริษัท, Q1/2026 net profit ฿201.6 ล้าน (+39% YoY)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 3 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>

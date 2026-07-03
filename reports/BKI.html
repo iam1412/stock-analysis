@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น กรุงเทพประกันภัย (BKI) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"BKI","currency":"THB","price":373,"fairValue":387,"mos":3.6,"upside":3.75,"pe":12.7,"dividendYield":4.7,"roe":12.33}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#0d47a1",
+    "accentDark": "#1a237e",
+    "darkGrad": "linear-gradient(135deg,#1a237e 0%,#0d47a1 60%,#1565c0 100%)",
+    "glow": "rgba(13,71,161,0.3)",
+    "subColor": "#bbdefb",
+    "headerMuted": "rgba(255,255,255,0.6)",
+    "verdictText": "#e3f2fd",
+    "vcellLabel": "rgba(227,242,253,0.7)",
+    "badge": "#1565c0",
+    "chgBg": "rgba(30,142,62,0.18)",
+    "chgColor": "#1e8e3e"
+  },
+  "chart": {
+    "data": [
+      ["ม.ค. 68", 286],
+      ["ก.พ. 68", 305],
+      ["มี.ค. 68", 306],
+      ["เม.ย. 68", 299],
+      ["พ.ค. 68", 301],
+      ["มิ.ย. 68", 301],
+      ["ก.ค. 68", 314],
+      ["ส.ค. 68", 321],
+      ["ก.ย. 68", 325],
+      ["ต.ค. 68", 351],
+      ["พ.ย. 68", 371],
+      ["ธ.ค. 68", 372],
+      ["ก.ค. 69", 373]
+    ],
+    "min": 260,
+    "max": 420,
+    "grid": [260, 300, 340, 380, 420],
+    "fairLine": 387,
+    "currency": "฿",
+    "highlight": [9, 11]
+  },
+  "gauge": {
+    "min": 240,
+    "max": 430,
+    "cur": 373,
+    "fair": 387,
+    "fairLabelTop": true
+  },
+  "fv": 387
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">⚫⚫⚫</div>
+    <div>
+      <span class="tag">SET: BKI</span>
+      <span class="tag">ประกันวินาศภัย</span>
+      <span class="tag">เครือกรุงเทพ</span>
+    </div>
+    <h1>บมจ.กรุงเทพประกันภัย (BKI)</h1>
+    <div class="sub">ประกันวินาศภัยชั้นนำ • เครือกรุงเทพ • พอร์ตลงทุนแข็งแกร่ง • Combined Ratio ดี ~90% • ปันผล Yield สูง • A- (S&amp;P)</div>
+    <div class="price-row">
+      <div>
+        <div class="px">฿373<small>(BKI)</small></div>
+      </div>
+      <div class="chg">▲ +30.4% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 3 ก.ค. 2569<br>
+        กรอบ 52 สัปดาห์ ฿281 – ฿378<br>
+        ที่มา: StockAnalysis.com / Investing.com / Yahoo Finance
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ณ วันที่ 3 ก.ค. 2569 | FY2568 (2025)</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~฿38,800 ล้าน</div><div class="d">104 ล้านหุ้น @ ฿373</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~12.7x</div><div class="d">EPS FY2568 ฿29.45</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~13x</div><div class="d">ช่วง non-life ไทย 11–15x</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">~1.26x</div><div class="d">BVPS ฿295.61 (ปัจจุบัน)</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2568</div><div class="v">฿3,135 ล้าน</div><div class="d">+2.2% YoY (สถิติสูงสุด BKI)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿29.45</div><div class="d">FY2568 | FY2567: ฿28.84</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~฿295.61</div><div class="d">ทุนผู้ถือหุ้น ฿29,469 ล้าน</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~12.3% / 4.3%</div><div class="d">เสถียรในกลุ่มประกัน</div></div>
+
+      <div class="metric"><div class="k">เบี้ยประกันภัยรวม FY2568</div><div class="v neu">~฿31,351 ล้าน</div><div class="d">ทรงตัว YoY +0.03%</div></div>
+      <div class="metric"><div class="k">Combined Ratio</div><div class="v pos">~90.1%</div><div class="d">ต่ำกว่า 100% = กำไรรับประกัน</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~4.7%</div><div class="d">DPS ฿17.50/หุ้น FY2568</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">0.15</div><div class="d">ความเสี่ยงต่ำกว่าตลาดมาก</div></div>
+
+      <div class="metric"><div class="k">CAR (ความมั่นคง)</div><div class="v pos">178%</div><div class="d">เกณฑ์ OIC ≥ 120%</div></div>
+      <div class="metric"><div class="k">เครดิตเรทติ้ง</div><div class="v pos">A− (S&amp;P)</div><div class="d">Stable outlook Nov 2025</div></div>
+      <div class="metric"><div class="k">ส่วนแบ่งตลาด</div><div class="v">~10%</div><div class="d">อันดับ 3 non-life ไทย</div></div>
+      <div class="metric"><div class="k">เป้าเบี้ยปี 2569</div><div class="v neu">฿32,600 ล้าน</div><div class="d">เติบโต +4% YoY</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">มกราคม 2568 – กรกฎาคม 2569</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#0d47a1"></i>ราคา BKI (BKIH)</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿387</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        หุ้น BKI (BKIH) ปรับตัวขึ้นแข็งแกร่งตลอดปี FY2025 (2568) จากระดับ ฿286 ในต้นปีสู่ ฿373 ปัจจุบัน
+        คิดเป็นผลตอบแทนรอบปี <b>+30.4%</b> สวนทางตลาดรวมที่ซบเซา
+        แรงหนุนสำคัญคือกำไร FY2025 ทำสถิติใหม่ ฿3,135 ล้าน (+2.2% YoY), Combined Ratio ~90%,
+        และการจ่ายปันผลสม่ำเสมอ ฿17.50/หุ้น แม้ต้องเผชิญเหตุแผ่นดินไหวและน้ำท่วมใหญ่ภาคใต้
+        จุดสูงสุด 52 สัปดาห์อยู่ที่ ฿378 (พ.ค. 2569) · จุดต่ำสุด ฿281 (ม.ค. 2568)
+        ราคาปัจจุบันยังต่ำกว่า Fair Value เล็กน้อย · Q1/2026 กำไร ฿1,077 ล้าน (+91% YoY)
+        | แหล่งข้อมูล: Yahoo Finance (BKIH.BK), Investing.com, ThaiPublica (งบ FY2025)
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี เหมาะกับ non-life insurer</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 12.33% − g 4%) ÷ (r 9.5% − g 4%) ≈ 1.515 × BVPS ฿295.61</div></div>
+        <div class="mval">฿448</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = DPS ฿17.50 × (1+4%) = ฿18.20; g 4%, r 9.5% → FV = 18.20 ÷ (9.5%−4%)</div></div>
+        <div class="mval">฿331</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. P/E Valuation</div><div class="mdesc">EPS adj. ฿29.45 × P/E เป้าหมาย ~13x — P/E เฉลี่ยกลุ่ม non-life ไทยช่วงปกติ</div></div>
+        <div class="mval">฿383</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿331 – ฿448</span></div>
+        <div class="r">฿387</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        วิธี Justified P/BV ให้ค่าสูงสุด (฿448) เพราะ ROE 12.3% แข็งแกร่งในกลุ่มประกัน
+        DDM ให้ค่าต่ำสุด (฿331) เพราะ DPS ต่ำกว่า EPS มาก (payout ratio ~59%) หมายถึงบริษัทกักกำไรไว้มากกว่าปันผล
+        P/E วิธีกลาง (฿383) ใช้ P/E 13x อิงค่าเฉลี่ยกลุ่ม non-life insurance ไทย
+        ค่าเฉลี่ย ฿387 สมเหตุสมผลโดยรวม — ราคาปัจจุบัน ฿373 ซื้อขายใกล้ Fair Value
+        | r = 9.5% (ค่าคืน SET + risk premium ประกัน), g = 4% (สอดคล้องเป้าเบี้ย 2569 +4%)
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿373</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿387</div></div>
+        </div>
+        <div class="scale">
+          <span>฿271<br><small>MOS 30%</small></span>
+          <span>฿310<br><small>MOS 20%</small></span>
+          <span style="text-align:center">฿387<br><small>Fair Value</small></span>
+          <span style="text-align:right">฿387<br><small>เฉลี่ย 3 วิธี</small></span>
+          <span style="text-align:right">฿448<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน ฿373 อยู่ใกล้ Fair Value ฿387 มาก (ต่ำกว่าเพียง ~3.6%)
+        ยังไม่ถึงโซน MOS 20% (฿310) ผู้ลงทุน VI ที่ต้องการส่วนเผื่อความปลอดภัยจะรอจังหวะย่อตัว
+        อย่างไรก็ตาม ด้วย beta ต่ำ (0.15) และปันผล yield ~4.7% BKI เหมาะกับผู้ลงทุนระยะยาวที่ต้องการกระแสเงินสดสม่ำเสมอ
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict ok">
+        <div class="big">+3.6%</div>
+        <div class="txt">ราคาพอใช้ — ใกล้ Fair Value · รอโซนที่ดีกว่า</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿310</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿271</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">< ฿387</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="373" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿373 • EPS ฐาน ~฿29.45 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS +2%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿313</div>
+          <div class="ret neg">−16.1% (รวม 3 ปี) · −5.7%/ปี</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿31.25</span></li>
+            <li><span>P/E ออก</span><span>10x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿52</span></li>
+            <li><span>สถานการณ์</span><span>ภัยพิบัติใหญ่ ต้นทุน reins พุ่ง</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +5%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿444</div>
+          <div class="ret pos">+19.0% (รวม 3 ปี) · +6.0%/ปี</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿34.12</span></li>
+            <li><span>P/E ออก</span><span>13x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿54</span></li>
+            <li><span>สถานการณ์</span><span>เบี้ยฯเติบโตตาม GDP ไทย</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +8%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿557</div>
+          <div class="ret pos">+49.3% (รวม 3 ปี) · +14.2%/ปี</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿37.12</span></li>
+            <li><span>P/E ออก</span><span>15x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿57</span></li>
+            <li><span>สถานการณ์</span><span>เบี้ยฯโต + re-rating valuation</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      Base case ราคาเป้า ฿444 (EPS3 ฿34.12 × P/E 13x) + ปันผลรวม ฿54 = Total return ~+27.7% หรือ ~8.5%/ปี
+      Bear case ราคาเป้า ฿313 (EPS3 ฿31.25 × P/E 10x) แต่ปันผล ฿52 ช่วยชดเชย Total return ~−2.7% หรือ ~−0.9%/ปี
+      Bull case เกิดได้ถ้า BKI ขยายธุรกิจต่างประเทศสำเร็จ + ตลาดประกันไทยขยายตัว
+      ปันผลรวม 3 ปีประมาณ DPS ปีละ ~฿17.50–18.50 (payout ratio ~60% คงที่)
+      | ราคาเป้า = EPS3 × P/E | Total return = (ราคาเป้า−ราคาซื้อ + ปันผล)/ราคาซื้อ | สมมติฐานอาจคลาดเคลื่อนจากภัยธรรมชาติ
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก &amp; ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>พอร์ตลงทุนแข็งแกร่ง:</b> BKI ถือหุ้นในบริษัทชั้นนำหลายแห่งผ่าน Bangkok Bank เครือกรุงเทพ สร้างรายได้ลงทุนเสถียร ~฿1,300 ล้าน/ปี</li>
+          <li><b>Combined Ratio ดีเยี่ยม:</b> ~90% ต่อเนื่อง หมายถึงทุก ฿100 เบี้ยรับ สร้างกำไรรับประกัน ฿10 ก่อนรายได้ลงทุน บ่งชี้ความสามารถ underwriting</li>
+          <li><b>ตลาดประกันไทยขยายตัว:</b> ประกันสุขภาพและประกันภัยพิบัติ (น้ำท่วม/แผ่นดินไหว) มีแนวโน้มเติบโตหลังเหตุการณ์ 2568 สร้างความตระหนักในสังคม</li>
+          <li><b>ขยายต่างประเทศ:</b> BKI มีธุรกิจประกันนานาชาติ (ASEAN) ผ่าน BKI Holdings เป็นแรงขับเคลื่อนการเติบโตระยะยาว</li>
+          <li><b>ปันผลสม่ำเสมอ:</b> จ่ายปันผลต่อเนื่องมากกว่า 30 ปี payout ratio ~59% yield 4.7% ดึงดูดนักลงทุนระยะยาว</li>
+          <li><b>CAR สูง 178%:</b> ความแข็งแกร่งทางการเงินเกินมาตรฐาน OIC รองรับความเสี่ยงสูง + เป็น buffer สำหรับเติบโต</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>ภัยธรรมชาติ / Catastrophe:</b> แผ่นดินไหว/น้ำท่วมใหญ่กระทบกำไรรับประกัน ปี 2565 ขาดทุน ฿638 ล้านจากสัญญา COVID เป็นบทเรียนสำคัญ</li>
+          <li><b>ต้นทุน Reinsurance ขึ้น:</b> ตลาด global reinsurance ปรับเบี้ยสูงขึ้นหลัง catastrophe ปี 2565–2568 กดดัน underwriting margin</li>
+          <li><b>การแข่งขัน:</b> บริษัทประกันภัยไทยและต่างชาติแข่งตัดราคา โดยเฉพาะ motor insurance อาจกดดัน combined ratio</li>
+          <li><b>Portfolio Investment Risk:</b> ผลตอบแทนพอร์ตลงทุนขึ้นกับตลาดทุนและอัตราดอกเบี้ย หากตลาดตกอาจกระทบ unrealized gains</li>
+          <li><b>Regulatory:</b> OIC อาจเข้มงวดกฎเกณฑ์ CAR / product pricing กระทบความยืดหยุ่นทางธุรกิจ</li>
+          <li><b>Valuation ใกล้ Fair Value:</b> ราคา ฿373 ใกล้ประมาณการ FV ฿387 (MOS เพียง 3.6%) upside ระยะสั้นจำกัดหาก P/E ไม่ re-rate</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>หุ้นประกันคุณภาพ · ปันผลเด่น · รอโซนเข้าที่ดีกว่า</h2>
+      <p>กรุงเทพประกันภัย (BKI/BKIH) คือบริษัทประกันวินาศภัยที่แข็งแกร่งที่สุดรายหนึ่งในไทย
+      ด้วยกำไรสถิติสูงสุด ฿3,135 ล้านใน FY2568 Combined Ratio ~90% ที่ดีเยี่ยม พอร์ตลงทุนที่แข็งแกร่ง
+      เครดิตเรทติ้ง A- (S&amp;P Stable) และปันผล yield 4.7% สม่ำเสมอกว่า 3 ทศวรรษ
+      อย่างไรก็ตาม ราคาปัจจุบัน ฿373 ซื้อขายใกล้ Fair Value ฿387 มาก (MOS เพียง 3.6%)
+      โอกาสเข้าที่น่าสนใจกว่าคือบริเวณ ฿310–330 (MOS 20%+) ที่อาจเกิดจากการย่อตัว
+      Base case ผลตอบแทนรวม ~10%/ปี (5% capital gain + 4.7% yield) เหมาะสำหรับพอร์ต defensive ระยะยาว</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿387 <span style="font-size:12px;color:#cab9a8">(฿331–฿448)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +3.6%</div></div>
+        <div class="vcell"><div class="k">ผลตอบแทน Base case</div><div class="v" style="color:#a5d6a7">~10%/ปี (3 ปี)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ถือระยะยาวเน้นปันผล — หากย่อสู่ ฿310–330 (MOS 20%) น่าสะสมเพิ่ม · ราคาปัจจุบัน ฿373 ใกล้ FV ยังถือได้แต่ไม่เร่งซื้อ · ตัดขายหาก Combined Ratio ทะลุ 100% ต่อเนื่อง 2 ปีหรือ ROE ต่ำกว่า 10%
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ
+    • แหล่งข้อมูล: (1) StockAnalysis.com BKK:BKIH — ราคา ฿373 ณ 3 ก.ค. 2569, EPS FY2568 ฿29.45, BVPS ฿295.61, ROE 12.33% (2) Investing.com / Yahoo Finance BKIH.BK — ราคาย้อนหลัง 12 เดือน, 52-week range ฿281–378, DPS ฿17.50 (3) ThaiPublica (23 มี.ค. 2569) — ผลประกอบการเต็มปี FY2568: กำไรสุทธิ ฿3,135.1 ล้าน (+2.2%), EPS ฿29.45, เบี้ยรวม ฿31,350.7 ล้าน · bangkokinsurance.com IR Q1/2569 — EPS Q1 ฿10.12 · S&amp;P Credit Rating A− Stable (พ.ย. 2568)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 3 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
