@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น Tapestry (TPR) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"TPR","currency":"USD","price":144.21,"fairValue":110,"mos":-31.1,"upside":-23.7,"pe":46.4,"dividendYield":1.11,"roe":60.9}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#C5A028",
+    "accentDark": "#8B6914",
+    "darkGrad": "linear-gradient(135deg,#2C1F08 0%,#1A1205 100%)",
+    "glow": "rgba(197,160,40,0.18)",
+    "subColor": "#E8C96A",
+    "headerMuted": "rgba(232,201,106,0.55)",
+    "verdictText": "#FFF8E7",
+    "vcellLabel": "rgba(232,201,106,0.7)",
+    "badge": "#C5A028",
+    "chgBg": "#1e8e3e",
+    "chgColor": "#ffffff"
+  },
+  "chart": {
+    "data": [
+      ["ก.ค. 68", 101.82],
+      ["ส.ค. 68", 113.22],
+      ["ก.ย. 68", 109.82],
+      ["ต.ค. 68", 109.28],
+      ["พ.ย. 68", 127.77],
+      ["ธ.ค. 68", 126.91],
+      ["ม.ค. 69", 155.47],
+      ["ก.พ. 69", 141.11],
+      ["มี.ค. 69", 145.04],
+      ["เม.ย. 69", 145.46],
+      ["พ.ค. 69", 146.38],
+      ["มิ.ย. 69", 143.99],
+      ["ก.ค. 69", 144.21]
+    ],
+    "min": 88,
+    "max": 170,
+    "grid": [90, 100, 110, 120, 130, 140, 150, 160],
+    "fairLine": 110,
+    "currency": "$",
+    "highlight": [6, 0]
+  },
+  "gauge": {
+    "min": 70,
+    "max": 185,
+    "cur": 144.21,
+    "fair": 110,
+    "fairLabelTop": true
+  },
+  "fv": 110
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">●●●</div>
+    <div>
+      <span class="tag">NYSE: TPR</span>
+      <span class="tag">Consumer Discretionary</span>
+      <span class="tag">Accessible Luxury Fashion</span>
+    </div>
+    <h1>Tapestry, Inc.</h1>
+    <div class="sub">Accessible luxury fashion • Coach (~89% revenue, handbags & accessories) • Kate Spade New York • North America & Greater China growth engine</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$144.21<small>(TPR)</small></div>
+      </div>
+      <div class="chg">▲ +41.6% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 2 ก.ค. 2569<br>
+        กรอบ 52 สัปดาห์ $84.39 – $161.97<br>
+        ที่มา: Yahoo Finance, StockAnalysis
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล TTM / FY2026E ณ ก.ค. 2569</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~$29.1B</div><div class="d">202M หุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~46.4x</div><div class="d">EPS GAAP $3.11 (one-time มีผล)</div></div>
+      <div class="metric"><div class="k">Forward P/E FY2026</div><div class="v">~20.7x</div><div class="d">Adj. EPS guidance $6.95</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">42.8x</div><div class="d">BVPS ~$3.37 (buyback ลด equity)</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ TTM</div><div class="v">$662.8M</div><div class="d">Net margin 8.4%</div></div>
+      <div class="metric"><div class="k">EPS (TTM GAAP)</div><div class="v">~$3.11</div><div class="d">Adj. EPS FY2026E ~$6.95</div></div>
+      <div class="metric"><div class="k">FCF TTM</div><div class="v pos">$1,755M</div><div class="d">FCF/share ~$8.69 (รวมเงินจากขาย SW)</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~60.9% / ~10.2%</div><div class="d">ROE สูงจาก leverage + buyback</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$7.85B</div><div class="d">+14.1% YoY; FY2026E ~$7.95B</div></div>
+      <div class="metric"><div class="k">Gross Margin</div><div class="v">76.2%</div><div class="d">Op. margin 11.3% TTM; FY2026E ~23%</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~1.11%</div><div class="d">$1.60/หุ้น/ปี</div></div>
+      <div class="metric"><div class="k">หนี้สุทธิ / D/E</div><div class="v neu">$2.88B / 5.75x</div><div class="d">Long-term debt $2.38B; Cash $1.05B</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">รายเดือน ก.ค. 2568 – ก.ค. 2569</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#C5A028"></i>ราคา TPR</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $110</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคา TPR ปรับขึ้นแรง +41.6% ในรอบปี (ก.ค. 68 – ก.ค. 69) จากจุดต่ำ $101.82 สู่ปัจจุบัน $144.21
+        แรงหนุนหลักมาจากผลการดำเนินงาน Q3 FY2026 ที่ดีเกินคาด — Coach เติบโต 31% YoY, Tapestry ปรับเพิ่มเป้ารายได้ทั้งปีเป็น ~$7.95B และ adj. EPS ~$6.95 (+35% YoY)
+        แนวโน้ม Greater China แข็งแกร่ง (+30%+) และการขาย Stuart Weitzman ให้ Caleres ในราคา $120M (ส.ค. 2568) ทำให้ Tapestry โฟกัสเฉพาะ Coach + Kate Spade
+        จุดสูงสุดรอบปี $161.97 ในช่วง ม.ค. 2569 หลัง Q2 FY2026 beat ก่อนปรับลงตามตลาด
+        เส้นสีเขียว = มูลค่าเหมาะสม $110 — ราคาปัจจุบัน trading เหนือ FV ประมาณ 31%
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation (Adj. Forward EPS)</div><div class="mdesc">adj. EPS $6.95 (FY2026 guidance) × P/E 17x — Accessible luxury ช่วง 10–16x ปกติ; ให้ premium 17x สำหรับ Coach momentum + buyback program</div></div>
+        <div class="mval">$118</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. EV/EBITDA</div><div class="mdesc">EBITDA FY2026E ~$2.03B (รายได้ $7.95B × op.margin 23% + D&A ~$200M) × 12x EV/EBITDA — ลบ Net Debt $2.88B ÷ 202M หุ้น</div></div>
+        <div class="mval">$106</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. P/FCF Valuation</div><div class="mdesc">FCF FY2026E ~$1.19B ($7.95B × FCF margin ~15%) ÷ 202M หุ้น = ~$5.89/share × P/FCF 18x — premium สำหรับแบรนด์ Coach คุณภาพ + dividend</div></div>
+        <div class="mval">$106</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $95 – $125</span></div>
+        <div class="r">$110</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ทั้ง 3 วิธีให้ค่า FV ในช่วง $106–$118 สะท้อนว่าราคาปัจจุบัน $144.21 ซื้อขาย premium เหนือ FV อยู่ประมาณ 31%
+        EPS TTM GAAP เพียง $3.11 (P/E 46x) ถูกกดด้วย one-time charges; ภาพจริงคือ adj. forward EPS FY2026E $6.95 ซึ่งให้ forward P/E ~20.7x
+        Coach brand แข็งแกร่งมาก (+31% Q3) และ Greater China +30%+ ให้ upside หากตลาดให้ multiple สูงขึ้น
+        Kate Spade อ่อนแอ (-10% Q3) เป็นความเสี่ยง; อย่างไรก็ตาม Tapestry ขาย Stuart Weitzman แล้ว เหลือ 2 brands
+        นักวิเคราะห์ 21 คน ให้ราคาเป้าเฉลี่ย $166 (Buy) สะท้อน multiple ที่สูงขึ้นจากการเติบโตของ Coach
+        ที่มาราคาเป้า: StockAnalysis (21 นักวิเคราะห์, avg $166.74, Jun 2569) + Finviz (avg $172.65, Jul 2569)
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $144.21</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $110</div></div>
+        </div>
+        <div class="scale">
+          <span>$77<br><small>MOS 30%</small></span>
+          <span>$88<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$110<br><small>Fair Value</small></span>
+          <span style="text-align:right">$125<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">$166<br><small>เป้าเฉลี่ย Analyst</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน $144.21 อยู่สูงกว่ามูลค่าเหมาะสม $110 ประมาณ 31% — ไม่มี Margin of Safety
+        โซน MOS 20% ($88) และ MOS 30% ($77) ห่างไกลจากราคาปัจจุบันมาก บ่งชี้ตลาด pricing ใน Coach momentum premium
+        นักวิเคราะห์ consensus $166 สูงกว่า FV ของเรา สะท้อน narrative ว่าตลาดให้ multiple premium กับ Coach growth story
+        การลงทุนที่ราคา $144 ต้องการความเชื่อมั่นใน Coach brand execution ระยะยาวและ Kate Spade turnaround
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">−31.1%</div>
+        <div class="txt">ราคาสูงกว่า Fair Value — ไม่มี Margin of Safety; ตลาด pricing ใน Coach premium growth</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$88</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$77</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $110</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="144.21" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $144.21 • EPS ฐาน adj. ~$6.95 (FY2026E) • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS +5%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$110</div>
+          <div class="ret neg">−23.7%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$8.05</span></li>
+            <li><span>P/E ออก</span><span>13x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$4.80</span></li>
+            <li><span>สถานการณ์</span><span>Kate Spade ยังอ่อน, China ชะลอ</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +10%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$144</div>
+          <div class="ret pos">+0.1%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$9.25</span></li>
+            <li><span>P/E ออก</span><span>15x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$5.40</span></li>
+            <li><span>สถานการณ์</span><span>Coach โต moderate, Kate Spade stabilize</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +15%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$186</div>
+          <div class="ret pos">+29.0%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$10.56</span></li>
+            <li><span>P/E ออก</span><span>17x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$6.00</span></li>
+            <li><span>สถานการณ์</span><span>Coach รักษา momentum, Kate Spade rebound</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      Scenario Base (+10%/ปี) ให้ผลตอบแทน ~0% จากราคาปัจจุบัน หมายความว่าตลาดได้ discount ผลตอบแทนในอนาคตเข้าไปในราคาแล้วเกือบทั้งหมด
+      Bull case ต้องการ Coach รักษา momentum แข็งแกร่ง + Kate Spade ฟื้น + China expansion ต่อเนื่อง
+      Bear case ที่ P/E ลดเหลือ 13x จากปัจจัยลบ (tariff impact, Kate Spade deterioration) อาจเห็นราคาลงได้มาก
+      การ buyback หุ้นจำนวนมาก ($1.26B TTM) ช่วยหนุน EPS per share แต่เพิ่มความเสี่ยงจาก leverage
+      ผลตอบแทนรวมปันผล 3 ปีอยู่ในช่วง ~$4.80–$6.00 (ประมาณ 1.1% yield × 3 ปี + การเติบโต)
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>Coach Brand Momentum:</b> Coach เติบโต 31% YoY ใน Q3 FY2026 ด้วย Gen Z customer acquisition strategy; แบรนด์แข็งแกร่งสุดในรอบทศวรรษ</li>
+          <li><b>Greater China Expansion:</b> รายได้ China โต >30% YoY; ตลาดหรูราคาประหยัดในจีนมีศักยภาพสูงมาก เนื่องจากชนชั้นกลางจีนเติบโต</li>
+          <li><b>Strategic Focus:</b> ขาย Stuart Weitzman ออกไปแล้ว (ส.ค. 2568) ทำให้ management โฟกัสเฉพาะ Coach + Kate Spade; ลด complexity</li>
+          <li><b>Aggressive Buybacks:</b> buyback $1.26B TTM ลดจำนวนหุ้น → EPS per share โต faster กว่า net income; dividend $1.60/หุ้น stable</li>
+          <li><b>FY2026 EPS Guidance Raised:</b> guidance adj. EPS ~$6.95 (+35% YoY) สูงกว่าคาด; margin expansion จาก operating leverage + scale</li>
+          <li><b>Tariff Resilience:</b> brand power ทำให้ pass-through pricing ได้บางส่วน; gross margin ยังแข็งแกร่ง 76%+</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>Kate Spade Decline:</b> รายได้ Kate Spade -10% YoY ใน Q3; brand positioning ไม่ชัดเจน ต้องใช้เงิน marketing + time เพื่อ turnaround</li>
+          <li><b>High Valuation Premium:</b> Forward P/E ~20.7x สูงกว่า sector average; ถ้า Coach growth ชะลอลงจะเห็น multiple compression รุนแรง</li>
+          <li><b>Leverage สูง:</b> D/E 5.75x; หนี้สุทธิ $2.88B; ถ้าดอกเบี้ยสูงต่อเนื่องหรือ FCF อ่อนแอจะกดดัน balance sheet</li>
+          <li><b>Tariff &amp; Trade Risk:</b> สินค้าจากจีน/เวียดนามถูก tariff กดดัน gross margin; Kate Spade เจอผลกระทบ 440bps ใน Q3</li>
+          <li><b>China Geopolitical Risk:</b> รายได้ China สูง แต่ความตึงเครียด US-China อาจกระทบ consumer sentiment หรือ market access</li>
+          <li><b>Consumer Spending Cycle:</b> accessible luxury ขึ้นกับ discretionary spending; ถ้าเศรษฐกิจถดถอย ผู้บริโภคอาจ trade down ไป mass market</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>Coach แข็งแกร่งมาก แต่ราคาซื้อขาย Premium เหนือ Fair Value ~31% — รอโอกาสเข้าซื้อที่ดีกว่า</h2>
+      <p>Tapestry เป็นเรื่องราวของ Coach ที่กลับมาเป็น dominant force ใน accessible luxury — เติบโต 31% Q3 FY2026, Greater China แข็งแกร่ง +30%+, และ adj. EPS คาดโต 35% ทั้งปีสู่ ~$6.95 หลังขาย Stuart Weitzman (ส.ค. 2568) Tapestry โฟกัสเฉพาะ Coach + Kate Spade โดย Coach คิดเป็น ~89% ของรายได้ ความเสี่ยงหลักคือ Kate Spade ที่ยังอ่อนแอ (-10% Q3), leverage สูง (D/E 5.75x), และราคาหุ้นที่ค่อนข้าง fully priced สำหรับ base case scenario ที่ราคา $144 นักลงทุนต้องการ Coach รักษา momentum แข็งแกร่งระยะยาวเพื่อให้ได้ผลตอบแทนที่น่าพอใจ</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$110 <span style="font-size:12px;color:#cab9a8">($95–$125)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −31.1% (overvalued)</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$166 (Buy • 21 คน)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ราคาปัจจุบัน $144 เหนือ Fair Value ~31% — ไม่เหมาะสำหรับ value investor แบบ conservative; สำหรับ growth investor ที่เชื่อใน Coach brand momentum อาจทยอยสะสมได้แต่ต้อง monitor Kate Spade และ China trajectory อย่างใกล้ชิด โซนเป้าหมายเหมาะสมสำหรับเพิ่มน้ำหนักคือ $110 (FV) หรือ $88 (MOS 20%)
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ adj. EPS ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    แหล่งที่มา: Yahoo Finance (ราคา/กราฟ ณ 2 ก.ค. 2569), StockAnalysis.com (งบการเงิน/analyst targets), Finviz (metrics cross-verify), Tapestry IR / BusinessWire (Q3 FY2026 earnings, พ.ค. 2569), Caleres IR (Stuart Weitzman divestiture, ส.ค. 2568)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 2 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
