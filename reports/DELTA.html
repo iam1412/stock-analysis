@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น Delta Electronics Thailand (DELTA) — Stock Analysis Dashboard</title>
+<!-- ★ ใส่รุ่นโมเดล AI ที่ใช้วิเคราะห์จริง (Opus→"Claude Opus 4.8", Sonnet→"Claude Sonnet 4.6") — gate E28 บังคับ -->
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
+<script type="application/json" id="stock-meta">
+{"symbol":"DELTA","currency":"THB","price":312,"fairValue":240,"mos":-30,"upside":-23.1,"pe":136.9,"dividendYield":0.19,"roe":27.9}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#0070c0",
+    "accentDark": "#004f8a",
+    "darkGrad": "linear-gradient(135deg,#00254d 0%,#003d7a 60%,#0070c0 100%)",
+    "glow": "rgba(0,112,192,0.35)",
+    "subColor": "#5ab4f7",
+    "headerMuted": "rgba(90,180,247,0.55)",
+    "verdictText": "#e8f4ff",
+    "vcellLabel": "#90c8f0",
+    "badge": "#0070c0",
+    "chgBg": "#e6f4ea",
+    "chgColor": "#1e8e3e"
+  },
+  "chart": {
+    "data": [
+      ["ส.ค. 68", 150.0],
+      ["ก.ย. 68", 158.5],
+      ["ต.ค. 68", 217.0],
+      ["พ.ย. 68", 201.0],
+      ["ธ.ค. 68", 173.0],
+      ["ม.ค. 69", 205.0],
+      ["ก.พ. 69", 279.0],
+      ["มี.ค. 69", 259.0],
+      ["เม.ย. 69", 316.0],
+      ["พ.ค. 69", 353.0],
+      ["มิ.ย. 69", 325.0],
+      ["ก.ค. 69", 325.0],
+      ["2 ก.ค. 69", 312.0]
+    ],
+    "min": 120,
+    "max": 390,
+    "grid": [150, 200, 250, 300, 350],
+    "fairLine": 240,
+    "currency": "฿",
+    "highlight": [12]
+  },
+  "gauge": {
+    "min": 0,
+    "max": 100,
+    "cur": -30,
+    "fair": 240,
+    "fairLabelTop": true
+  },
+  "fv": 240
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">●●●</div>
+    <div>
+      <span class="tag">SET: DELTA</span>
+      <span class="tag">อิเล็กทรอนิกส์</span>
+      <span class="tag">SET50 · SET100</span>
+    </div>
+    <h1>Delta Electronics (Thailand) PCL</h1>
+    <div class="sub">ผู้ผลิตชิ้นส่วนอิเล็กทรอนิกส์กำลังไฟ • Power Supply สำหรับ AI Datacenter • EV Charger • Solar Inverter • อุตสาหกรรม • Smart Energy</div>
+    <div class="price-row">
+      <div>
+        <div class="px">฿312.00<small>(DELTA)</small></div>
+      </div>
+      <div class="chg">▲ +108.0% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 2 ก.ค. 2569<br>
+        กรอบ 52 สัปดาห์ ฿102.50 – ฿372.00<br>
+        ที่มา: Yahoo Finance, StockAnalysis, SET Market
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล TTM (มี.ค. 2569) · ราคา ณ 2 ก.ค. 2569</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~฿3.89 ล้านล้าน</div><div class="d">หุ้น 12,474 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~136.9x</div><div class="d">สูงมาก — สะท้อน AI premium</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~55–80x</div><div class="d">ก่อน AI surge ปี 2568–69</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">36.5x</div><div class="d">BVPS ฿8.54 (มี.ค. 69)</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ TTM</div><div class="v">฿28,407 ล้าน</div><div class="d">+50% YoY (vs FY2025 ฿24,814 ล้าน)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿2.28</div><div class="d">FY2025: ฿1.99 / FY2024: ฿1.52</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~฿8.54</div><div class="d">Equity TTM ฿106,515 ล้าน</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~27.9% / 16.3%</div><div class="d">ROE สูงแสดงถึงประสิทธิภาพ</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">฿217,051 ล้าน</div><div class="d">+31.7% จาก FY2025 ฿198,153 ล้าน</div></div>
+      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">~27.1%</div><div class="d">FY2025: 27.1% / FY2024: 24.6%</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~0.19%</div><div class="d">฿0.60/หุ้น Yield ต่ำมาก — reinvest</div></div>
+      <div class="metric"><div class="k">FCF TTM</div><div class="v neu">฿10,438 ล้าน</div><div class="d">Capex สูง ฿16,156 ล้าน (ลงทุนขยาย)</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART (ราคาย้อนหลัง ~1 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ส.ค. 2568 – ก.ค. 2569</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#0070c0"></i>ราคา DELTA</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿240</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคา DELTA ปรับตัวขึ้นแรงกว่า 108% ในรอบปี จากบริเวณ ฿150 ในเดือน ส.ค. 2568 สู่ระดับ ฿312 ณ ต้นเดือน ก.ค. 2569
+        โดยมีจุดเด่นสำคัญในเดือน ต.ค. 2568 ที่ราคาพุ่งทะลุ ฿217 จากแรงซื้อกลุ่ม AI Datacenter
+        ราคาทำจุดสูงสุดที่ ฿372 ในเดือน พ.ค. 2569 ก่อนจะปรับฐานลงมาที่บริเวณ ฿312
+        การเติบโตของ Datacenter, AI Infrastructure และ EV Charger เป็นตัวหนุนหลัก
+        ราคาปัจจุบันซื้อขายเหนือมูลค่าเหมาะสม ฿240 มาก สะท้อน premium ของ AI growth theme
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION (เฉลี่ย 3 วิธี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS adj. ฿2.28 × P/E เป้าหมาย ~75x — P/E เฉลี่ย 5 ปีก่อน AI surge อยู่ที่ 55–80x ใช้กลางที่ 75x สะท้อนการเติบโตแต่ไม่รวม AI premium มากเกิน</div></div>
+        <div class="mval">฿171</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. DCF (Free Cash Flow)</div><div class="mdesc">FCF/หุ้น TTM ฿0.84 — เติบโต 20%/ปี ช่วง 5 ปีแรก, 8% ระยะยาว, อัตราคิดลด 10% สะท้อนการลงทุน Capex สูง ฿16,156 ล้านต่อปี เพื่อขยายกำลังผลิต</div></div>
+        <div class="mval">฿95</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Analyst Consensus (18 นักวิเคราะห์)</div><div class="mdesc">เป้าราคา consensus จาก 18 นักวิเคราะห์ — สะท้อนการคาดการณ์กำไรเติบโต 25–35% จาก AI Datacenter, EV และ Renewable Energy ในระยะ 12 เดือน</div></div>
+        <div class="mval">฿328</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿95 – ฿328</span></div>
+        <div class="r">฿240</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        มูลค่าเหมาะสมเฉลี่ยอยู่ที่ ฿240 (น้ำหนัก: P/E 35% + DCF 15% + Analyst 50%) โดย P/E method ให้ค่า ฿171 สะท้อนพื้นฐานเดิม
+        DCF ให้ค่าต่ำเพราะ FCF ถูกกดด้วย Capex สูงจากการขยาย Datacenter supply chain
+        ส่วน Analyst target ที่ ฿328 สะท้อน AI growth premium ที่ตลาดให้ค่า
+        ราคาปัจจุบัน ฿312 เหนือ FV ฿240 โดย 30% แสดงว่า premium ถูก price in แล้ว — MOS เป็นลบ
+        ที่มา: StockAnalysis.com (TTM มี.ค. 2569), Yahoo Finance DELTA.BK (2 ก.ค. 2569), SET Market set.or.th
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿312</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿240</div></div>
+        </div>
+        <div class="scale">
+          <span>฿168<br><small>MOS 30%</small></span>
+          <span>฿192<br><small>MOS 20%</small></span>
+          <span style="text-align:center">฿240<br><small>Fair Value</small></span>
+          <span style="text-align:right">฿327.67<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">฿328<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน ฿312 ซื้อขายสูงกว่ามูลค่าเหมาะสมพื้นฐาน ฿240 ประมาณ 30% (MOS ติดลบ)
+        หมายความว่าตลาดได้ให้ราคา AI-growth premium ไว้แล้ว จุดเข้าซื้อที่น่าสนใจคือ MOS 20% ที่ ฿192 และ MOS 30% ที่ ฿168
+        อย่างไรก็ตาม Analyst consensus ที่ ฿327.67 (Hold) สะท้อนว่าตลาดยังเชื่อในศักยภาพเติบโตของ DELTA
+        จากธีม AI Datacenter Power Supply ที่กำลังเป็น supercycle
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">-30.0%</div>
+        <div class="txt">ราคาเหนือมูลค่าพื้นฐาน — AI Premium ถูก Price in แล้ว</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿192</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿168</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿240</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="312" step="0.05">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿312 • EPS ฐาน ~฿2.28 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS -10%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿100</div>
+          <div class="ret neg">-67.9%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿1.66</span></li>
+            <li><span>P/E ออก</span><span>60x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿1.80</span></li>
+            <li><span>สถานการณ์</span><span>AI bubble แตก ความต้องการ Datacenter ชะลอ</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +20%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿315</div>
+          <div class="ret pos">+1.5%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿3.94</span></li>
+            <li><span>P/E ออก</span><span>80x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿1.80</span></li>
+            <li><span>สถานการณ์</span><span>AI Datacenter เติบโตดี, EV Charger ขยายตลาด</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +35%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿561</div>
+          <div class="ret pos">+80.1%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿5.61</span></li>
+            <li><span>P/E ออก</span><span>100x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿1.80</span></li>
+            <li><span>สถานการณ์</span><span>Hyperscaler Capex เร่งตัว, Win major AI PSU contracts</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      ใน Base case EPS เติบโต 20%/ปี และ P/E exit 80x ผลตอบแทน 3 ปีเพียง ~1.5% จากระดับราคาปัจจุบัน ฿312 (risk/reward ต่ำมาก)
+      Bull case ต้องการ EPS growth 35%/ปีและ P/E 100x ซึ่งเป็นไปได้แต่ต้องการ AI supercycle ต่อเนื่อง
+      Bear case คือ AI investment cycle ชะลอ ทำให้ P/E collapse รุนแรงจากระดับ 137x
+      ที่ราคา ฿312 margin of safety เป็นลบ การซื้อหุ้นมีความเสี่ยงสูงถ้า premium หด
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก &amp; ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>AI Datacenter Power Supply Supercycle:</b> ความต้องการ Power Supply Unit (PSU) สำหรับ GPU cluster ของ Hyperscalers (AWS, Azure, Google, Meta) เพิ่มขึ้นอย่างรวดเร็ว DELTA เป็น Tier-1 supplier รายใหญ่</li>
+          <li><b>EV Charging Infrastructure:</b> การขยายตัวของยานยนต์ไฟฟ้าทั่วโลก (โดยเฉพาะยุโรปและจีน) หนุนความต้องการ EV Charger ที่ DELTA เป็นผู้ผลิตชั้นนำ</li>
+          <li><b>Solar Inverter &amp; Renewable Energy:</b> การเปลี่ยนผ่านพลังงานสะอาดทั่วโลก หนุนอุปสงค์ Solar Inverter และ Energy Storage Systems</li>
+          <li><b>Revenue Growth แข็งแกร่ง:</b> รายได้เติบโต 31.7% YoY (TTM) และกำไรสุทธิโต 50% YoY แสดงถึงแรงส่งแข็งแกร่ง</li>
+          <li><b>Gross Margin Expansion:</b> อัตรากำไรขั้นต้นปรับตัวขึ้นต่อเนื่องจาก 21% (2564) สู่ 27.1% (TTM) สะท้อน Product mix shift ไปยังผลิตภัณฑ์ margin สูง</li>
+          <li><b>ROE สูง 27.9%:</b> แสดงถึงประสิทธิภาพการใช้ทุนสูง และความสามารถสร้างผลตอบแทนที่ยั่งยืน</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>Valuation Risk (P/E 137x):</b> ราคาสะท้อน AI premium สูงมาก ถ้าการเติบโตต่ำกว่าคาดแม้แต่เล็กน้อย P/E อาจ re-rate ลงรุนแรง</li>
+          <li><b>AI Investment Cycle Risk:</b> ถ้า Hyperscalers ลดการลงทุน Datacenter หรือ AI ชะลอตัว ความต้องการ PSU จะหดตัวเร็ว</li>
+          <li><b>Competition:</b> คู่แข่งจากผู้ผลิตจีน (Huawei, BYD) ที่มีต้นทุนต่ำกว่าในตลาด EV Charger และ Solar Inverter</li>
+          <li><b>FX Risk:</b> รายได้ส่วนใหญ่เป็น USD/EUR แต่ค่าใช้จ่ายบางส่วนเป็นบาท ความผันผวนค่าเงินส่งผลต่อ Margin</li>
+          <li><b>Capex สูง:</b> FCF ถูกกดต่ำจาก Capex ฿16,156 ล้าน/ปี เพื่อขยายกำลังผลิต ถ้าการเติบโตชะลอ Capex จะกลายเป็นภาระ</li>
+          <li><b>Dividend Yield ต่ำมาก (0.19%):</b> ไม่เหมาะกับนักลงทุนที่ต้องการ income — ความน่าดึงดูดขึ้นกับ capital gain เป็นหลัก</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>DELTA — ธุรกิจดีเยี่ยม แต่ราคาแพงมาก รอจังหวะ</h2>
+      <p>Delta Electronics Thailand เป็นบริษัทที่มีคุณภาพสูงมาก — รายได้เติบโต 30%+ ต่อปี กำไรโต 50% ROE 28% และเป็น Tier-1 Supplier ของ AI Datacenter Power Supply ระดับโลก อย่างไรก็ตาม ที่ราคา ฿312 (P/E 137x) ตลาดได้ price in ทุก Growth scenario ในแง่บวกไปหมดแล้ว มูลค่าเหมาะสมพื้นฐาน ฿240 แสดงว่าราคาปัจจุบันเหนือ FV ถึง 30% — ผู้ลงทุนแบบ Value ควรรอจังหวะที่ดีกว่า</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿240 <span style="font-size:12px;color:#cab9a8">(฿95–฿328)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ -30.0%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿327.67 (Hold)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ที่ราคา ฿312 ความเสี่ยงสูงกว่าผลตอบแทนที่คาดหวัง (Base case return 3 ปีเพียง ~1.5%) — หากสนใจลงทุน แนะนำรอโซน MOS 20% ที่ ฿192 หรือต่ำกว่า / สำหรับ Growth investor ที่เชื่อมั่น AI supercycle ราคาปัจจุบันอาจยังสมเหตุสมผลแต่ต้องรับความเสี่ยง P/E compression สูง
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    ที่มา: Yahoo Finance (DELTA.BK, range=1y, 2 ก.ค. 2569), StockAnalysis.com (TTM มี.ค. 2569), SET Market / set.or.th (ราคา 2 ก.ค. 2569)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 2 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>

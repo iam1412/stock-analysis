@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น ไทยประกันชีวิต (TLI) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"TLI","currency":"THB","price":11.60,"fairValue":12.70,"mos":8.7,"upside":9.5,"pe":10.4,"dividendYield":5.2,"roe":9.6}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#1a237e",
+    "accentDark": "#0d1b6e",
+    "darkGrad": "linear-gradient(135deg,#0d1b6e 0%,#1a237e 60%,#283593 100%)",
+    "glow": "rgba(26,35,126,0.3)",
+    "subColor": "#c5cae9",
+    "headerMuted": "rgba(255,255,255,0.6)",
+    "verdictText": "#e8eaf6",
+    "vcellLabel": "rgba(232,234,246,0.7)",
+    "badge": "#283593",
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#1e8e3e"
+  },
+  "chart": {
+    "data": [
+      ["ก.ค.68", 10.10],
+      ["ส.ค.68", 9.55],
+      ["ก.ย.68", 10.60],
+      ["ต.ค.68", 10.30],
+      ["พ.ย.68", 9.75],
+      ["ธ.ค.68", 9.95],
+      ["ม.ค.69", 11.90],
+      ["ก.พ.69", 11.00],
+      ["มี.ค.69", 10.40],
+      ["เม.ย.69", 10.50],
+      ["พ.ค.69", 11.10],
+      ["มิ.ย.69", 11.50],
+      ["ก.ค.69", 11.60]
+    ],
+    "min": 9.0,
+    "max": 13.5,
+    "grid": [9.0, 10.0, 11.0, 12.0, 13.0],
+    "fairLine": 12.70,
+    "currency": "฿",
+    "highlight": [6, 12],
+    "gridFmt": "v.toFixed(2)",
+    "dataFmt": "d[1].toFixed(2)"
+  },
+  "gauge": {
+    "min": 7.0,
+    "max": 17.0,
+    "cur": 11.60,
+    "fair": 12.70,
+    "fairLabelTop": true
+  },
+  "fv": 12.70
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">🛡️</div>
+    <div>
+      <span class="tag">SET: TLI</span>
+      <span class="tag">ประกันชีวิต</span>
+      <span class="tag">SET50</span>
+    </div>
+    <h1>บมจ.ไทยประกันชีวิต (TLI)</h1>
+    <div class="sub">ประกันชีวิตรายใหญ่อันดับ 2 ของไทย • เบี้ยประกันรับโต • ปันผลสม่ำเสมอ ≥5% • สินทรัพย์รวม 6.5 แสนล้านบาท • SET50</div>
+    <div class="price-row">
+      <div>
+        <div class="px">฿11.60<small>(TLI)</small></div>
+      </div>
+      <div class="chg">▲ +14.9% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 3 ก.ค. 2569<br>
+        กรอบ 52 สัปดาห์ ฿9.00 – ฿12.20<br>
+        ที่มา: SET Factsheet • Investing.com • Yahoo Finance
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">TTM / FY2567 • ก.ค. 2569 • แหล่ง: SET / Investing.com</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">฿132,820 ล้าน</div><div class="d">11,450 ล้านหุ้น • SET50</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~10.4x</div><div class="d">ต่ำกว่าค่าเฉลี่ยประกันภูมิภาค 13–15x</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~3 ปี</div><div class="v">~11.5x</div><div class="d">ช่วง 9x–14x (IPO 2565 ที่ ฿16)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">1.01x</div><div class="d">ใกล้ Book Value • BVPS ฿11.12</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2567</div><div class="v">฿11,882 ล้าน</div><div class="d">Net Profit Margin 30.6%</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿1.09</div><div class="d">กำไรสุทธิต่อหุ้น ย้อนหลัง 4 ไตรมาส</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~฿11.12</div><div class="d">Book Value per Share • ส่วนผู้ถือหุ้น ฿127,487 ล้าน</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~9.6% / 2.1%</div><div class="d">ROE ปรับตัวดีขึ้นจากช่วง COVID</div></div>
+
+      <div class="metric"><div class="k">รายได้รวม TTM</div><div class="v neu">฿38,883 ล้าน</div><div class="d">เบี้ยประกันรับ + รายได้จากการลงทุน</div></div>
+      <div class="metric"><div class="k">Net Profit Margin</div><div class="v">30.6%</div><div class="d">สูงกว่าค่าเฉลี่ยอุตสาหกรรม ~22–25%</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~5.2%</div><div class="d">DPS ฿0.60 • จ่ายสม่ำเสมอ • Payout ~55%</div></div>
+      <div class="metric"><div class="k">สถานะ IPO</div><div class="v">ก.ค. 2565</div><div class="d">IPO ฿16.00 • ราคาปัจจุบันต่ำกว่า IPO ~27.5%</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ราคาปิดรายเดือนจริง (Yahoo Finance)</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#1a237e"></i>ราคา TLI</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿12.70</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        TLI เริ่มรอบปีที่ ฿10.10 (ก.ค. 2568) ปรับลงแตะจุดต่ำสุดที่ ฿9.55 ในเดือน ส.ค. 2568 เนื่องจากแรงกดดันด้านอัตราดอกเบี้ยและภาวะตลาดหุ้นไทยซบเซา จากนั้นฟื้นตัวอย่างแข็งแกร่งเข้าสู่ต้นปี 2569 โดยพุ่งสูงถึง ฿11.90 ในเดือน ม.ค. 2569 ตามการรายงานผลประกอบการที่ดีและแรงซื้อสถาบัน ก่อนปรับฐานและกลับมาที่ ฿11.60 ณ ปัจจุบัน คิดเป็นผลตอบแทนรอบปี +14.9% ราคายังต่ำกว่า Fair Value ฿12.70 และต่ำกว่า IPO ฿16 ราว 27.5%
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS (TTM) ฿1.09 × P/E เป้าหมาย ~12x — ค่าเหมาะสมสำหรับประกันชีวิตขนาดใหญ่ที่มี ROE ดี เทียบกับค่าเฉลี่ย ASEAN insurance 13–15x</div></div>
+        <div class="mval">฿13.10</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล ฿0.60 × (1+g); g 4%, r 9% → V = ฿0.624 / (9%−4%) = ฿12.48 — เหมาะกับธุรกิจประกันที่จ่ายปันผลสม่ำเสมอ</div></div>
+        <div class="mval">฿12.48</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 9.6% − g 4%)/(r 9% − g 4%) ≈ 1.12 × BVPS ฿11.12 — สะท้อนมูลค่าสุทธิตามส่วนทุนและการเติบโตในระยะยาว</div></div>
+        <div class="mval">฿12.45</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿12.45 – ฿13.10</span></div>
+        <div class="r">฿12.70</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        วิธี P/E ให้ค่าสูงสุดที่ ฿13.10 สะท้อนศักยภาพกำไรในระยะยาวหากตลาดกลับมาให้ P/E เทียบเท่าคู่แข่งภูมิภาค • DDM และ Justified P/BV ให้ค่าใกล้เคียงกันที่ ฿12.45–12.48 สะท้อนมูลค่าเป็นธรรมตามปัจจัยพื้นฐานปัจจุบัน • เป้าเฉลี่ยนักวิเคราะห์ 5 สถาบัน (Strong Buy) ที่ ฿15.90 บ่งชี้ตลาดมองการเติบโตของ EPS ระยะ 12 เดือนข้างหน้าในเชิงบวกมาก • สมมติฐาน: r=9%, g=4%
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿11.60</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿12.70</div></div>
+        </div>
+        <div class="scale">
+          <span>฿8.89<br><small>MOS 30%</small></span>
+          <span>฿10.16<br><small>MOS 20%</small></span>
+          <span style="text-align:center">฿12.70<br><small>Fair Value</small></span>
+          <span style="text-align:right">฿13.10<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">฿15.90<br><small>เป้าเฉลี่ย Analyst</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน ฿11.60 ต่ำกว่า Fair Value ฿12.70 ราว 8.7% สะท้อน MOS เล็กน้อย เป้าราคาเฉลี่ยนักวิเคราะห์ ฿15.90 (+37% upside) สูงกว่า Fair Value ที่ประเมินไว้ บ่งชี้ว่า Street มองการเติบโตของเบี้ยประกันและ Investment Income ระยะ 12 เดือนข้างหน้าในเชิงบวกมาก โซน MOS 20% (฿10.16) และ MOS 30% (฿8.89) เป็นจุดสะสมที่น่าสนใจสำหรับนักลงทุนสาย Value
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict ok">
+        <div class="big">+8.7%</div>
+        <div class="txt">MOS พอใช้ — ราคาต่ำกว่า Fair Value เล็กน้อย ยังไม่ถึงโซนถูกชัด แต่มีปันผลสม่ำเสมอ ~5.2% เป็นตัวพยุงผลตอบแทน</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿10.16</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿8.89</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿12.70</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="11.60" step="0.05">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿11.60 • EPS ฐาน ~฿1.09 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS +2%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿11.60</div>
+          <div class="ret neg">+13.8% / 3 ปี</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿1.16</span></li>
+            <li><span>P/E ออก</span><span>10x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿1.80</span></li>
+            <li><span>สถานการณ์</span><span>เบี้ยโตช้า กดดันดอกเบี้ย</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +5%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿15.12</div>
+          <div class="ret pos">+44.5% / 3 ปี</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿1.26</span></li>
+            <li><span>P/E ออก</span><span>12x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿1.87</span></li>
+            <li><span>สถานการณ์</span><span>เบี้ยโตปกติ ดอกเบี้ยทรงตัว</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +8%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿19.18</div>
+          <div class="ret pos">+72.3% / 3 ปี</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿1.37</span></li>
+            <li><span>P/E ออก</span><span>14x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿1.95</span></li>
+            <li><span>สถานการณ์</span><span>เบี้ยโตเร็ว ดอกเบี้ยขาขึ้น EV ขยายตัว</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      การฉายภาพ 3 ปีข้างต้นอิง EPS ฐาน ฿1.09 (TTM) บวกปันผลสะสม • สถานการณ์ Base (+46.6%) อิง P/E ออก 12x สอดคล้องกับค่าเฉลี่ยประกันชีวิตภูมิภาคระยะยาว • ปันผลต่อปีประมาณ ฿0.62–0.65 (Payout ~55–60%) เป็นตัวพยุงผลตอบแทนในทุกสถานการณ์ • ปัจจัยเสี่ยงหลักคืออัตราดอกเบี้ยขาลงกดดันรายได้จากการลงทุน
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>เบี้ยประกันโตต่อเนื่อง:</b> ความตื่นตัวด้านสุขภาพและอายุขัยที่เพิ่มขึ้นหนุนตลาดประกันชีวิตไทยโตเฉลี่ย 5–8% ต่อปี TLI เป็นผู้เล่นอันดับ 2 มีเครือข่ายตัวแทน 1.2 แสนราย</li>
+          <li><b>รายได้ลงทุนมั่นคง:</b> พอร์ตลงทุน &gt;฿500,000 ล้าน ส่วนใหญ่เป็นพันธบัตรรัฐบาลและหุ้นกู้เกรด A ให้ผลตอบแทน ~3–4% ต่อปีอย่างสม่ำเสมอ</li>
+          <li><b>ปันผลสม่ำเสมอ Yield &gt;5%:</b> TLI จ่ายปันผลทุกปีตั้งแต่ IPO Payout ratio ~55% Yield ปัจจุบัน ~5.2% ดึงดูดนักลงทุนเน้นรายได้</li>
+          <li><b>ฐานทุนแข็งแกร่ง IFRS 17:</b> สินทรัพย์รวม ฿649,567 ล้าน ส่วนผู้ถือหุ้น ฿127,487 ล้าน ผ่านมาตรฐาน IFRS 17 ใหม่ได้ดี เสริมความเชื่อมั่นสถาบัน</li>
+          <li><b>Consensus Strong Buy:</b> 5 สถาบันประเมิน Buy ทั้งหมด เป้าเฉลี่ย ฿15.90 (+37% upside) บ่งชี้ศักยภาพที่ยังไม่สะท้อนในราคา</li>
+          <li><b>ประกันสุขภาพ-บำนาญเติบโต:</b> ผลิตภัณฑ์ Health &amp; Annuity เติบโตเร็วกว่าค่าเฉลี่ยอุตสาหกรรม ตอบสนองสังคมผู้สูงอายุ (Aging Society) ของไทย</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>ดอกเบี้ยขาลงกดดัน Investment Yield:</b> หากอัตราดอกเบี้ยปรับลดลง รายได้จากพอร์ตพันธบัตรและเงินฝากจะลดลง กระทบ Net Investment Income ซึ่งเป็นส่วนสำคัญของรายได้</li>
+          <li><b>ราคายังต่ำกว่า IPO ~27%:</b> นักลงทุน IPO ยังขาดทุน อาจมีแรงขายเมื่อราคาฟื้น สร้าง Overhang ระยะสั้น</li>
+          <li><b>การแข่งขันจาก Insurtech:</b> ประกันดิจิทัลและ Bancassurance แย่งส่วนแบ่งตลาด โดยเฉพาะกลุ่มลูกค้าอายุน้อย</li>
+          <li><b>ความเสี่ยงโรคระบาด/ภัยพิบัติ:</b> เคลมประกันสุขภาพที่สูงกว่าคาดกระทบอัตรา Mortality/Morbidity และความสามารถทำกำไร</li>
+          <li><b>Liquidity ต่ำ Free Float 20%:</b> Free float เพียง 20.44% ทำให้ราคาแกว่งแรงตามปริมาณซื้อขาย Spread กว้างในช่วงตลาดซบเซา</li>
+          <li><b>IFRS 17 ผันผวนมากขึ้น:</b> มาตรฐาน IFRS 17 อาจทำให้กำไรรายงานมีความผันผวนมากขึ้น นักลงทุนทั่วไปเข้าใจยากขึ้น</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>Yield Play + อัพไซด์ระยะยาว — รอจังหวะสะสมใต้ ฿12</h2>
+      <p>TLI คือผู้นำประกันชีวิตอันดับ 2 ของไทย มีฐานทุนแข็งแกร่ง สินทรัพย์รวม ฿649,567 ล้าน ปันผลสม่ำเสมอ Yield ~5.2% น่าดึงดูดในภาวะดอกเบี้ยขาลง ราคาปัจจุบัน ฿11.60 ต่ำกว่า Fair Value ฿12.70 ราว 8.7% และต่ำกว่าเป้าเฉลี่ยนักวิเคราะห์ ฿15.90 มาก บ่งชี้ว่าตลาดยังไม่ Fully Price ศักยภาพการเติบโตระยะ 1–3 ปีข้างหน้า P/E เพียง 10.4x ต่ำกว่าค่าเฉลี่ยภูมิภาค 13–15x สะท้อนส่วนลด (Discount) ที่ยังมีอยู่ ผู้ที่เน้น Dividend Income อาจพิจารณาสะสมในโซนใต้ ฿12 เพื่อรับ Yield &gt;5% ขณะรอ Re-rating</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿12.70 <span style="font-size:12px;color:#cab9a8">(฿12.45–฿13.10)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +8.7%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿15.90 (5 Buy)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> สะสมเมื่อราคา &lt;฿12.00 (MOS ~6%) รับปันผล Yield ~5.2% ระหว่างรอ Re-rating สู่ P/E 12–13x เป้า 3 ปี ฿14–17 ตาม Base/Bull scenario
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ที่มาข้อมูล: SET Factsheet (TLI ก.ค. 2569), Investing.com (ตัวเลขพื้นฐาน), Yahoo Finance (กราฟราคา ก.ค. 2568–ก.ค. 2569)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 3 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
