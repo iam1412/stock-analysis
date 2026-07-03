@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น เถ้าแก่น้อย (TKN) — Stock Analysis Dashboard</title>
+<!-- ★ โมเดล AI ที่ใช้วิเคราะห์จริง -->
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) -->
+<script type="application/json" id="stock-meta">
+{"symbol":"TKN","currency":"THB","price":4.12,"fairValue":5.10,"mos":19.2,"upside":23.8,"pe":13.65,"dividendYield":6.07,"roe":19.06}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#00838f",
+    "accentDark": "#006064",
+    "darkGrad": "linear-gradient(135deg,#006064 0%,#00838f 60%,#00acc1 100%)",
+    "glow": "rgba(0,131,143,0.3)",
+    "subColor": "#b2ebf2",
+    "headerMuted": "rgba(255,255,255,0.6)",
+    "verdictText": "#e0f7fa",
+    "vcellLabel": "rgba(224,247,250,0.7)",
+    "badge": "#00acc1",
+    "chgBg": "#c5221f",
+    "chgColor": "#ffffff"
+  },
+  "chart": {
+    "data": [
+      ["ม.ค. 68", 5.60],
+      ["ก.พ. 68", 5.70],
+      ["มี.ค. 68", 4.88],
+      ["เม.ย. 68", 4.06],
+      ["พ.ค. 68", 4.00],
+      ["มิ.ย. 68", 4.06],
+      ["ก.ค. 68", 4.42],
+      ["ส.ค. 68", 3.80],
+      ["ก.ย. 68", 4.02],
+      ["ต.ค. 68", 4.12],
+      ["พ.ย. 68", 4.18],
+      ["ธ.ค. 68", 4.12]
+    ],
+    "min": 3.4,
+    "max": 6.4,
+    "grid": [3.5, 4.0, 4.5, 5.0, 5.5, 6.0],
+    "fairLine": 5.10,
+    "currency": "฿",
+    "highlight": [0, 1],
+    "gridFmt": "v.toFixed(2)",
+    "dataFmt": "d[1].toFixed(2)"
+  },
+  "gauge": {
+    "min": 3.0,
+    "max": 7.5,
+    "cur": 4.12,
+    "fair": 5.10,
+    "fairLabelTop": false
+  },
+  "fv": 5.10
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">●●●</div>
+    <div>
+      <span class="tag">SET: TKN</span>
+      <span class="tag">Agro &amp; Food Industry</span>
+      <span class="tag">สาหร่ายกรอบ / Snack Export</span>
+    </div>
+    <h1>เถ้าแก่น้อย ฟู้ด แอนด์ มาร์เก็ตติ้ง (TKN)</h1>
+    <div class="sub">สาหร่ายกรอบเถ้าแก่น้อย • ส่งออก ASEAN/จีน/โลก • ฟื้นตัวหลัง COVID • กำไรขั้นต้นฟื้นตัว ~29–33%</div>
+    <div class="price-row">
+      <div>
+        <div class="px">฿4.12<small>(TKN)</small></div>
+      </div>
+      <div class="chg">▼ −26.4% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ ธ.ค. 2568<br>
+        กรอบ 52 สัปดาห์ ฿3.66 – ฿6.45<br>
+        ที่มา: Yahoo Finance, Investing.com, StockAnalysis.com
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ธ.ค. 2568 | StockAnalysis, Yahoo Finance, Wisesheets</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~฿5,620 ล้าน</div><div class="d">~1,365 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~13.65x</div><div class="d">ถูกกว่า 5 ปีเฉลี่ย ~18–20x</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~18–20x</div><div class="d">ช่วง 12–28x (2021–2024)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">2.51x</div><div class="d">BVPS ฿1.57 (FY2025)</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2568</div><div class="v">฿409 ล้าน</div><div class="d">↓ −51% YoY (FY2567: ฿836M)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿0.30</div><div class="d">FY2567: ฿0.61 | FY2566: ฿0.54</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~฿1.57</div><div class="d">FY2568; FY2567: ฿1.71</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v neu">~19% / ~10.5%</div><div class="d">FY2568; FY2567 ROE ~35%</div></div>
+
+      <div class="metric"><div class="k">รายได้ FY2568</div><div class="v neu">~฿5,342 ล้าน</div><div class="d">↓ −6.8% YoY (FY2567: ฿5,730M)</div></div>
+      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">~29.2%</div><div class="d">FY2568; FY2567: 33.5%, Q1/69: 32.4%</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~6.07%</div><div class="d">฿0.25/หุ้น (XD มี.ค. 69)</div></div>
+      <div class="metric"><div class="k">52W High / Low</div><div class="v">฿6.45 / ฿3.66</div><div class="d">ราคาปัจจุบันใกล้ฐาน 52W</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART (ราคาย้อนหลัง ~1 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ม.ค. 68 – ธ.ค. 68 (รายเดือน)</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#00838f"></i>ราคา TKN</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿5.10</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคา TKN เริ่มต้นปี 2568 ที่ ฿5.60 แล้วปรับฐานต่อเนื่องตลอดปี โดยมีจุดต่ำสุดที่ ฿3.80 ในเดือนสิงหาคม 2568 จากกังวลรายได้จีน (−11.9% YoY ปี 2567) และต้นทุนวัตถุดิบสาหร่ายสูงขึ้น
+        ก่อนฟื้นตัวกลับมาแถว ฿4.10–4.20 ในช่วงปลายปี ผลตอบแทนรอบปี −26.4% ต่ำกว่ามูลค่าเหมาะสม ฿5.10 อย่างมีนัยสำคัญ สะท้อนโอกาสสะสมสำหรับนักลงทุนระยะกลาง-ยาว
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION (3 วิธี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS adj. ฿0.30 × P/E เป้าหมาย ~18x — P/E 5 ปีเฉลี่ย TKN อยู่ที่ ~18–20x ก่อนปรับฐาน ใช้ 18x conservative base</div></div>
+        <div class="mval">฿5.40</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล ฿0.25 × (1+g); g 4%, r 9% → ฿0.26 / (0.09−0.04) = ฿5.20 — ปันผลสม่ำเสมอ 5 ปี growth เฉลี่ย ~4.7%</div></div>
+        <div class="mval">฿5.20</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 19% − g 4%)/(r 9% − g 4%) ≈ 3.0x × BVPS ฿1.57 — สะท้อน ROE ที่ฟื้นตัวหลังปี 2568</div></div>
+        <div class="mval">฿4.71</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿4.71 – ฿5.40</span></div>
+        <div class="r">฿5.10</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        วิธี P/E ให้ค่าสูงสุด (฿5.40) โดยใช้ P/E เป้า 18x ซึ่ง conservative สำหรับ TKN ที่เคยซื้อขายที่ 22–25x ในช่วงกำไรสูงสุด
+        วิธี DDM (฿5.20) สะท้อนมูลค่าจากกระแสปันผล ซึ่ง TKN จ่ายสม่ำเสมอมา 5+ ปี
+        วิธี Justified P/BV (฿4.71) ให้ค่าต่ำสุด สอดคล้องกับ ROE ที่ลดลงในปี 2568 จาก 35% → 19%
+        Fair Value เฉลี่ย ฿5.10 เป็นกรณีฐานที่ EPS ค่อยๆ ฟื้น ปันผลต่อเนื่อง และ ROE กลับสู่ระดับ 25%+ ภายใน 2–3 ปี
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿4.12</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿5.10</div></div>
+        </div>
+        <div class="scale">
+          <span>฿3.57<br><small>MOS 30%</small></span>
+          <span>฿4.08<br><small>MOS 20%</small></span>
+          <span style="text-align:center">฿5.10<br><small>Fair Value</small></span>
+          <span style="text-align:right">฿5.40<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">฿7.33<br><small>เป้าเฉลี่ย Analyst</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน ฿4.12 อยู่ต่ำกว่ามูลค่าเหมาะสม ฿5.10 มีส่วนเผื่อ ~19% และต่ำกว่าเป้าเฉลี่ยนักวิเคราะห์ ฿7.33 ถึง ~78%
+        อยู่เหนือโซน MOS 30% (฿3.57) เล็กน้อย และใกล้ MOS 20% ที่ ฿4.08 มาก — โซนปัจจุบันน่าสนใจสำหรับนักลงทุนเน้นคุณค่าและรับปันผล
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict ok">
+        <div class="big">+19.2%</div>
+        <div class="txt">MOS ระดับน่าสนใจ — ราคาต่ำกว่ามูลค่าเหมาะสม ~19% เหมาะสำหรับทยอยสะสม</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿4.08</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿3.57</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿5.10</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="4.12" step="0.05">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿4.12 • EPS ฐาน ~฿0.30 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS 0%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿3.60</div>
+          <div class="ret neg">−13% (รวมปันผล 3 ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.30</span></li>
+            <li><span>P/E ออก</span><span>12x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.60</span></li>
+            <li><span>สถานการณ์</span><span>รายได้จีนหด, ต้นทุนสูง</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +20%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿9.36</div>
+          <div class="ret pos">+147% (+36%/ปี รวมปันผล)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.52</span></li>
+            <li><span>P/E ออก</span><span>18x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.78</span></li>
+            <li><span>สถานการณ์</span><span>จีนฟื้น, ASEAN โต, margin ดีขึ้น</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +35%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿14.80</div>
+          <div class="ret pos">+268% (+55%/ปี รวมปันผล)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.74</span></li>
+            <li><span>P/E ออก</span><span>20x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.90</span></li>
+            <li><span>สถานการณ์</span><span>จีนฟื้นแรง, สินค้าใหม่ปัง, margin 35%+</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      กรณีฐาน (Base) ถือว่า EPS ฟื้นกลับสู่ ~฿0.52 ภายใน 3 ปี (ใกล้เคียง FY2567 ที่ ฿0.61) พร้อม P/E 18x ให้ราคาเป้า ~฿9.36 รวมปันผล ~฿0.78 ผลตอบแทนรวม ~147% หรือ ~36%/ปี
+      กรณี Bear: EPS ทรงตัว + P/E หด เพราะรายได้จีนยังไม่ฟื้น ผลตอบแทนรวมติดลบแม้รวมปันผล
+      กรณี Bull: บริษัทกลับสู่ growth trajectory เต็มตัว EPS ฟื้นเร็วกว่าคาด สอดคล้องเป้า Analyst สูงสุด ฿13.5
+      ปันผล ~฿0.25/ปี (yield 6%) ให้ downside cushion ระหว่างรอการฟื้นตัว
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก &amp; ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>ตลาดจีนฟื้นตัวชัดเจน:</b> Q1/2569 รายได้จีน +21% YoY มาที่ ฿316 ล้าน หลังหดตัว −11.9% ในปี 2567 จีนยังเป็นตลาดส่งออกอันดับ 1 (~33% ของส่งออก)</li>
+          <li><b>Gross Margin ฟื้นตัว:</b> Q1/2569 Gross Margin กลับสู่ 32.4% จาก 29.2% ในปี 2568 จากต้นทุนสาหร่ายลดลงและบริหารต้นทุนแพ็กเกจจิ้งมีประสิทธิภาพขึ้น</li>
+          <li><b>Asian Snack Platform Strategy:</b> กลยุทธ์ปี 2569 เน้น 3 แกน (สินค้าใหม่ + จีน + ASEAN) ตั้งเป้าโตรวม 10% — EPS Analyst consensus ปี 2569 คาด ฿0.57 (+90% YoY)</li>
+          <li><b>ปันผลสม่ำเสมอ Yield 6%:</b> ฿0.25/หุ้น (XD มี.ค. 69) จ่ายต่อเนื่อง 5+ ปี Payout ~80% สร้าง downside cushion ระหว่างรอฟื้นตัว</li>
+          <li><b>ASEAN Expansion:</b> รายได้นอกจีน +18% YoY ในปี 2567 (฿2,400 ล้าน) ตลาดอาเซียนยังเป็น growth driver ที่แข็งแกร่ง</li>
+          <li><b>Forward P/E ต่ำมาก:</b> หากกำไรฟื้นตาม Analyst consensus (EPS ปี 2569 ฿0.57) Forward P/E ปัจจุบันเพียง 7.18x — ถือว่าถูกมากสำหรับแบรนด์ระดับโลก</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>ตลาดจีนยังเปราะบาง:</b> การฟื้นของ Q1/2569 ต้องพิสูจน์ความต่อเนื่อง ภาวะเศรษฐกิจจีนอ่อนแอและ consumer sentiment ที่ยังไม่แน่นอนเป็นความเสี่ยงหลัก</li>
+          <li><b>ต้นทุนสาหร่ายผันผวน:</b> วัตถุดิบหลักราคาผันผวนตาม supply/demand ตลาดโลก — FY2568 Gross Margin ร่วงจาก 33.5% → 29.2% กระทบกำไรอย่างมาก</li>
+          <li><b>การแข่งขันรุนแรง:</b> คู่แข่งรายใหม่ทั้งในจีนและอาเซียน ทั้งแบรนด์ท้องถิ่นและระดับภูมิภาค กดดัน pricing power และ market share</li>
+          <li><b>หนี้สินเพิ่มเร็ว:</b> Total Debt FY2568 พุ่งเป็น ฿928 ล้าน จาก ฿357 ล้านปี 2567 (เพิ่ม 2.6 เท่า) อาจกระทบความสามารถจ่ายปันผลหากกำไรยังไม่ฟื้น</li>
+          <li><b>EPS ฟื้นตัวช้ากว่าคาด:</b> FY2568 EPS ฿0.30 ลดจาก ฿0.61 (FY2567) ถึง −51% Analyst คาด ฿0.57 ปี 2569 แต่ถ้าทำไม่ได้ราคาอาจปรับลงต่อ</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>TKN: ราคาต่ำกว่ามูลค่า ~19% — ปันผล 6% รอการฟื้นตัว</h2>
+      <p>เถ้าแก่น้อยเป็นผู้นำตลาดสาหร่ายกรอบระดับโลก มีแบรนด์แข็งแกร่งและส่งออกกว่า 62% ของรายได้ ปี 2568 กำไรลดลงมากจากต้นทุนสาหร่ายสูงและตลาดจีนอ่อนตัว แต่สัญญาณฟื้นตัวเริ่มปรากฏใน Q1/2569 (จีน +21% YoY, Gross Margin กลับสู่ 32.4%) นักวิเคราะห์คาด EPS ปี 2569 ฟื้นสู่ ฿0.57 ซึ่งหากทำได้จริง Forward P/E ปัจจุบันเพียง 7.18x ถือว่าถูกมากสำหรับแบรนด์ระดับภูมิภาค ราคา ฿4.12 มี MOS ~19% จาก Fair Value ฿5.10 และรับปันผล ~6%/ปีระหว่างรอ เหมาะสำหรับนักลงทุนที่รับความเสี่ยงจากการฟื้นตัวของกำไรได้</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿5.10 <span style="font-size:12px;color:#cab9a8">(฿4.71–฿5.40)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +19.2%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿7.33 (3 คน / Sell consensus)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ทยอยสะสมใกล้โซน ฿4.00–4.12 (MOS ~19–20%) รับปันผล ~6%/ปีระหว่างรอ เพิ่มน้ำหนักหากลงสู่โซน MOS 30% ที่ ฿3.57 และยืนยันการฟื้นตัวของ Gross Margin + รายได้จีนต่อเนื่อง ≥2 ไตรมาส ตั้ง Stop-loss หากกำไรไม่ฟื้นตามคาดหลัง FY2569 Q2
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    แหล่งข้อมูล: Yahoo Finance (TKN.BK), Investing.com, StockAnalysis (BKK:TKN), Wisesheets.io, Liberator Securities, AIO Panphol, SET Thailand
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ ธันวาคม 2568 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
