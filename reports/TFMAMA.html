@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น ไทยเพรซิเดนท์ฟูดส์ (TFMAMA) — Stock Analysis Dashboard</title>
+<!-- ★ โมเดล AI ที่ใช้วิเคราะห์จริง — gate E28 บังคับ -->
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — gate E29–31 -->
+<script type="application/json" id="stock-meta">
+{"symbol":"TFMAMA","currency":"THB","price":186.5,"fairValue":160,"mos":-16.6,"upside":-14.2,"pe":16.6,"dividendYield":2.71,"roe":9.73}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#c62828",
+    "accentDark": "#b71c1c",
+    "darkGrad": "linear-gradient(135deg,#7f0000 0%,#b71c1c 60%,#c62828 100%)",
+    "glow": "rgba(198,40,40,0.3)",
+    "subColor": "#ffcdd2",
+    "headerMuted": "rgba(255,255,255,0.6)",
+    "verdictText": "#ffebee",
+    "vcellLabel": "rgba(255,235,238,0.7)",
+    "badge": "#c62828",
+    "chgBg": "#c5221f",
+    "chgColor": "#ffffff"
+  },
+  "chart": {
+    "data": [
+      ["ก.ค. 2568", 189.5],
+      ["ส.ค. 2568", 189.0],
+      ["ก.ย. 2568", 188.5],
+      ["ต.ค. 2568", 187.0],
+      ["พ.ย. 2568", 186.0],
+      ["ธ.ค. 2568", 186.5],
+      ["ม.ค. 2569", 196.0],
+      ["ก.พ. 2569", 197.5],
+      ["มี.ค. 2569", 195.0],
+      ["เม.ย. 2569", 193.0],
+      ["พ.ค. 2569", 192.5],
+      ["มิ.ย. 2569", 189.0],
+      ["ก.ค. 2569", 186.5]
+    ],
+    "min": 175,
+    "max": 215,
+    "grid": [175, 185, 195, 205, 215],
+    "fairLine": 160,
+    "currency": "฿",
+    "highlight": [6, 7],
+    "gridFmt": "v.toFixed(0)",
+    "dataFmt": "d[1].toFixed(1)"
+  },
+  "gauge": {
+    "min": 100,
+    "max": 230,
+    "cur": 186.5,
+    "fair": 160
+  },
+  "fv": 160
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">●●●●●●●●●●●●</div>
+    <div>
+      <span class="tag">SET: TFMAMA</span>
+      <span class="tag">Consumer Staples</span>
+      <span class="tag">F&amp;B / Instant Noodle</span>
+    </div>
+    <h1>ไทยเพรซิเดนท์ฟูดส์ (Thai President Foods)</h1>
+    <div class="sub">เจ้าของแบรนด์มาม่า (No.1 instant noodle ไทย) · ส่งออก 60+ ประเทศ · Defensive Consumer Staples · ปันผลสม่ำเสมอ · ไม่มีหนี้สุทธิ</div>
+    <div class="price-row">
+      <div>
+        <div class="px">฿186.5<small>(TFMAMA)</small></div>
+      </div>
+      <div class="chg">▼ −1.6% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 2 ก.ค. 2569 · งบ FY2025 (FY2568)<br>
+        กรอบ 52 สัปดาห์ ฿185.50 – ฿199.00<br>
+        ที่มา: SET Factsheet / Yahoo Finance / StockAnalysis.com / Investing.com
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ก.ค. 2569 · ที่มา: SET, StockAnalysis, Investing.com</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">฿61,489 ล้าน</div><div class="d">329.7 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~16.6x</div><div class="d">EPS FY2568 ฿11.24</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~17–20x</div><div class="d">ช่วง 13–22x ตาม cycle</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">1.65x</div><div class="d">BVPS ~฿112.83</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2568</div><div class="v">฿3,710 ล้าน</div><div class="d">ลด −17.2% YoY จากปีแข็งแกร่ง FY2567</div></div>
+      <div class="metric"><div class="k">EPS (FY2568 TTM)</div><div class="v">~฿11.24</div><div class="d">FY2567: ฿13.59 · FY2566: ฿11.46</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~฿112.83</div><div class="d">ไม่มีหนี้สุทธิ · D/E ~0.0x</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~9.73% / 5.25%</div><div class="d">Current Ratio สูงมาก 7.93x</div></div>
+
+      <div class="metric"><div class="k">รายได้ FY2568</div><div class="v neu">฿27,830 ล้าน</div><div class="d">ลด −6.5% จาก FY2567 (29,770 ล้าน)</div></div>
+      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">32.97%</div><div class="d">Gross margin ดีขึ้นจาก 29.1% ปี 2565</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~2.71%</div><div class="d">DPS TTM ฿5.06 · Payout ~45%</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">~0.35</div><div class="d">Defensive มาก · ความผันผวนต่ำ</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ก.ค. 2568 – ก.ค. 2569 · ราคาปิดรายเดือน</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#c62828"></i>ราคา TFMAMA</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿160</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ (Jan–Feb สูงสุดรอบปี)</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคา TFMAMA ช่วง 1 ปีที่ผ่านมา (ก.ค. 2568–ก.ค. 2569) เคลื่อนไหวในกรอบแคบ ฿186–฿198 สะท้อนลักษณะหุ้น Defensive ที่ราคาเสถียร
+        ช่วง ม.ค.–ก.พ. 2569 ราคาพุ่งขึ้นทดสอบแนวสูงที่ ฿197.5 ก่อนย่อตัวกลับมาที่ ฿186.5 ในเดือน ก.ค. 2569
+        ผลตอบแทนรอบปี −1.6% สะท้อนการทยอยปรับฐานจากระดับราคาที่แพงเกินพื้นฐาน · มูลค่าเหมาะสม (FV ฿160) อยู่ต่ำกว่าราคาตลาดปัจจุบัน
+        สะท้อน Premium สำหรับแบรนด์แข็งและความเป็น Defensive stock บนกระดาน SET
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS adj. ฿11.24 × P/E เป้าหมาย ~20x — FMCG Defensive Brand เฉลี่ย 18–22x บน SET · ใช้ 20x เป็นกลาง</div></div>
+        <div class="mval">฿224.8</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล ฿5.06 × (1+g); g 3%, r 8% → เหมาะสำหรับ Defensive brand ปันผลสม่ำเสมอ · ราคาตามรายได้ปันผลล้วน</div></div>
+        <div class="mval">฿104.2</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 9.73% − g 3%)/(r 8% − g 3%) ≈ 1.35x × BVPS ฿112.83 — อิง ROE จริง ไม่บวก premium</div></div>
+        <div class="mval">฿152.0</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿104 – ฿225</span></div>
+        <div class="r">฿160</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        วิธี P/E ให้ค่าสูงสุด ฿224.8 เพราะ EPS ปี 2567 (฿13.59) สูงผิดปกติ ปี 2568 EPS ลดลงเหลือ ฿11.24 ·
+        DDM ให้ค่าต่ำสุด ฿104.2 เพราะ TFMAMA มี Dividend Yield เพียง 2.71% ซึ่งต่ำกว่า Required Return 8% มาก — ไม่ใช่ Dividend Story แท้จริง ·
+        Justified P/BV อิง ROE 9.73% ที่ยังพอรับได้ แต่ต่ำกว่าช่วงก่อนหน้า ให้ ฿152 ·
+        <b>FV เฉลี่ย ฿160</b> — ราคาตลาดปัจจุบัน ฿186.5 สูงกว่า FV ประมาณ 16% สะท้อน Brand Premium ที่ตลาดยอมจ่ายสำหรับแบรนด์มาม่าซึ่งเป็นสินค้าจำเป็น ·
+        แหล่งข้อมูล: StockAnalysis.com (EPS/BVPS/ROE), SET Factsheet 2 ก.ค. 2569 (ราคา/P/BV), Yahoo Finance (ราคาปิดรายเดือน/ปันผล)
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿186.5</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿160</div></div>
+        </div>
+        <div class="scale">
+          <span>฿112<br><small>MOS 30%</small></span>
+          <span>฿128<br><small>MOS 20%</small></span>
+          <span style="text-align:center">฿160<br><small>Fair Value</small></span>
+          <span style="text-align:right">฿186.5<br><small>ราคาปัจจุบัน</small></span>
+          <span style="text-align:right">฿225<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน ฿186.5 อยู่เหนือ Fair Value เฉลี่ย ฿160 ประมาณ 16.6% — บ่งชี้ว่าตลาดกำลังจ่าย <b>Brand Premium</b> สำหรับแบรนด์มาม่า
+        ซึ่งเป็นปรากฏการณ์ปกติสำหรับ Defensive Consumer Staples ที่มีแบรนด์แข็งบนกระดาน SET ·
+        โซน MOS 20% (฿128) และ MOS 30% (฿112) ยังห่างมาก แสดงว่าการซื้อในราคาปัจจุบันแทบไม่มี Margin of Safety ·
+        อย่างไรก็ดี หากถือมาตั้งแต่ต้นและ EPS ฟื้นตัว ราคาอาจสะท้อนมูลค่าในระยะยาว
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">−16.6%</div>
+        <div class="txt">ราคาเกินมูลค่าพื้นฐาน — ตลาดจ่าย Brand Premium สำหรับแบรนด์มาม่า · ไม่มี Margin of Safety ในราคานี้</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿128</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿112</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿160</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="186.5" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿186.5 • EPS ฐาน ~฿11.24 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS 0%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿168.6</div>
+          <div class="ret neg">−9.6% รวม / −3.3%/ปี</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿11.24</span></li>
+            <li><span>P/E ออก</span><span>15x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿15.2</span></li>
+            <li><span>สถานการณ์</span><span>วัตถุดิบแพง ยอดขายส่งออกชะลอ P/E compressed</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +5%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿237.5</div>
+          <div class="ret pos">+35.5% รวม / +10.7%/ปี</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿13.01</span></li>
+            <li><span>P/E ออก</span><span>17x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿16.2</span></li>
+            <li><span>สถานการณ์</span><span>ยอดขายในประเทศ+ส่งออกฟื้น EPS กลับสูงสุด</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +8%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿300.0</div>
+          <div class="ret pos">+69.5% รวม / +19.4%/ปี</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿14.16</span></li>
+            <li><span>P/E ออก</span><span>20x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿17.0</span></li>
+            <li><span>สถานการณ์</span><span>ขยายตลาดใหม่ กำลังซื้อฟื้น พรีเมียมแบรนด์สูงขึ้น</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      Base Case (+5% EPS/ปี) สมเหตุสมผลสำหรับ Defensive FMCG ที่รายได้เติบโตเฉลี่ย ~2–4%/ปี (5 ปี avg: +2.97%/ปี) ·
+      P/E ออก 17x อิงค่าเฉลี่ยปัจจุบัน · ปันผลสม่ำเสมอช่วยหนุน Total Return แม้ Capital Gain จำกัด ·
+      Bear Case เกิดจากต้นทุนแป้งสาลี/น้ำมันพาล์มพุ่ง หรือการแข่งขัน Private Label รุนแรง ·
+      Bull Case ต้องการ EPS ฟื้นสู่ระดับ FY2567 (฿13.59) และตลาดให้ Premium ที่สูงขึ้น ·
+      <b>หมายเหตุ:</b> ผลตอบแทนคำนวณจากราคาเข้า ฿186.5 · ไม่รับประกันผลตอบแทนในอนาคต
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก &amp; ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>แบรนด์มาม่า ครองตลาด:</b> ส่วนแบ่งตลาด Instant Noodle ไทยสูงกว่า 50% ด้วยราคาและการกระจายสินค้าที่ครอบคลุมทั่วประเทศ เป็น Moat ที่ยั่งยืน</li>
+          <li><b>ส่งออกเติบโต 60+ ประเทศ:</b> รายได้ส่งออกคิดเป็น ~30–35% ของรายได้รวม ตลาด CLMV + ตะวันออกกลางยังขยายตัวต่อเนื่อง</li>
+          <li><b>ต้นทุนวัตถุดิบผ่อนคลาย:</b> ราคาแป้งสาลีและน้ำมันพาล์มลดลงจากจุดสูงสุดปี 2565 หนุน Gross Margin ดีขึ้นสู่ระดับ 33%</li>
+          <li><b>งบดุลแข็งแกร่งมาก:</b> D/E ~0.0x · Current Ratio 7.93x · เงินสดสุทธิ ไม่มีภาระหนี้ระยะยาว พร้อมขยายกิจการหรือเพิ่มปันผลได้</li>
+          <li><b>Defensive ในยามเศรษฐกิจชะลอ:</b> บะหมี่กึ่งสำเร็จรูปเป็นสินค้าจำเป็นราคาต่ำ ยอดขายมักเพิ่มในช่วง Downturn</li>
+          <li><b>นวัตกรรมผลิตภัณฑ์:</b> ขยายสู่ผลิตภัณฑ์พรีเมียม (Instant Rice, Health range) และ Private Label B2B ช่วยเพิ่ม Revenue Mix</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>Valuation แพงเกินพื้นฐาน:</b> ราคา ฿186.5 สูงกว่า FV เฉลี่ย ฿160 ถึง 16.6% — หาก EPS ไม่ฟื้น P/E ที่ 16.6x อาจ Derate ลดลง</li>
+          <li><b>EPS ลดลง YoY:</b> กำไรสุทธิ FY2568 ลดลง −17.2% จาก FY2567 สะท้อนต้นทุนที่ยังกดดัน + รายได้ชะลอ ต้องติดตามฟื้นตัว</li>
+          <li><b>ต้นทุนวัตถุดิบ:</b> แป้งสาลีนำเข้า 100% (ราคาผันผวนตาม USD/ตลาดโลก) · น้ำมันพาล์ม · บรรจุภัณฑ์พลาสติก</li>
+          <li><b>การแข่งขันเพิ่ม:</b> WAIMAI (ไวไว), Nissin, และ Private Label Retailer เพิ่มส่วนแบ่งในตลาด Economy segment</li>
+          <li><b>ความเสี่ยงสกุลเงิน:</b> ส่งออก ~30% รายได้เป็น USD/สกุลท้องถิ่น ค่าบาทแข็งกระทบรายได้จากต่างประเทศ</li>
+          <li><b>สภาพคล่องหุ้นต่ำ:</b> ปริมาณซื้อขายเฉลี่ยต่ำ · ผู้ถือหุ้นรายใหญ่ครองสัดส่วนสูง ราคาอาจผันผวนหากมีแรงขายใหญ่</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>แบรนด์มาม่าแข็งแกร่ง · แต่ราคาปัจจุบันสูงกว่า FV ~17% · รอโซนต่ำกว่า ฿160 ก่อนเพิ่มสถานะ</h2>
+      <p>TFMAMA (ไทยเพรซิเดนท์ฟูดส์) คือบริษัท Consumer Staples ชั้นนำของไทย เจ้าของแบรนด์มาม่าที่ครองตลาดบะหมี่กึ่งสำเร็จรูปเกินครึ่งตลาด ด้วยงบดุลแข็งแกร่ง ไม่มีหนี้ และการส่งออกกว่า 60 ประเทศ บริษัทมี Moat ที่แข็งแกร่ง อย่างไรก็ตาม ราคาหุ้นปัจจุบัน ฿186.5 สูงกว่า Fair Value เฉลี่ย ฿160 (จาก P/E + DDM + Justified P/BV) อยู่ ~16.6% สะท้อน Brand Premium ที่นักลงทุนยอมจ่ายสำหรับหุ้น Defensive บน SET ผู้ลงทุนเน้น Value ควรรอโซนต่ำกว่า ฿160 เพื่อ Margin of Safety ที่เหมาะสม</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿160 <span style="font-size:12px;color:#cab9a8">(฿104–฿225)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −16.6%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿195–200 (Neutral/Hold)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ถือระยะยาวได้หากมีสถานะอยู่แล้ว · สำหรับผู้ยังไม่มี — รอราคาต่ำกว่า ฿160 (MOS 0%) หรือ ฿148 (MOS 8%) ก่อนเพิ่มสถานะ
+        ปันผล 2.71% เป็นค่าตอบแทนระหว่างรอ · Base Case 3 ปีให้ผลตอบแทน ~10.7%/ปี หากถือจากราคาปัจจุบัน และ EPS ฟื้นสู่ระดับ FY2567
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวน ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ ·
+    แหล่งข้อมูล: (1) SET Factsheet TFMAMA 2 ก.ค. 2569 — ราคา ฿186.5, P/E 17.02x, P/BV 1.65x, 52W range; (2) StockAnalysis.com BKK:TFMAMA Statistics — EPS FY2568 ฿11.24, BVPS ฿112.83, ROE 9.73%, Gross Margin 32.97%, งบการเงิน FY2564–2568; (3) Yahoo Finance TFMAMA.BK — ราคาปิดรายเดือน ก.ค. 2568–ก.ค. 2569, ประวัติปันผล Q4/2568 ฿2.54 และ Q2/2568 ฿2.52; (4) Investing.com Thai President Foods Ratios — Net Margin 13.27%, Operating Margin 15.95%, ROA 5.25%
+  </div>
+  <footer>Stock Analysis Dashboard · ข้อมูล ณ 2 ก.ค. 2569 · สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
