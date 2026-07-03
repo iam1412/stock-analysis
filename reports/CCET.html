@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น แคล-คอมพ์ อีเล็คโทรนิคส์ (CCET) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"CCET","currency":"THB","price":8.80,"fairValue":4.90,"mos":-79.6,"upside":-44.3,"pe":47.41,"dividendYield":1.5,"roe":7.3}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#607d8b",
+    "accentDark": "#455a64",
+    "darkGrad": "linear-gradient(135deg,#37474f 0%,#546e7a 60%,#607d8b 100%)",
+    "glow": "rgba(96,125,139,0.3)",
+    "subColor": "#b0bec5",
+    "headerMuted": "rgba(176,190,197,0.7)",
+    "verdictText": "#eceff1",
+    "vcellLabel": "#b0bec5",
+    "badge": "#607d8b",
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#1e8e3e"
+  },
+  "chart": {
+    "data": [
+      ["ม.ค. 68", 5.80],
+      ["ก.พ. 68", 5.50],
+      ["มี.ค. 68", 6.10],
+      ["เม.ย. 68", 4.62],
+      ["พ.ค. 68", 4.52],
+      ["มิ.ย. 68", 4.78],
+      ["ก.ค. 68", 5.60],
+      ["ส.ค. 68", 4.84],
+      ["ก.ย. 68", 6.10],
+      ["ต.ค. 68", 8.80],
+      ["พ.ย. 68", 9.00],
+      ["ธ.ค. 68", 8.70],
+      ["ม.ค. 69", 8.80]
+    ],
+    "min": 4.0,
+    "max": 10.0,
+    "grid": [4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0],
+    "fairLine": 4.90,
+    "currency": "฿",
+    "highlight": [9, 10],
+    "gridFmt": "v.toFixed(2)",
+    "dataFmt": "d[1].toFixed(2)"
+  },
+  "gauge": {
+    "min": 1.50,
+    "max": 12.00,
+    "cur": 8.80,
+    "fair": 4.90,
+    "fairLabelTop": true
+  },
+  "fv": 4.90
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">◆◆◆</div>
+    <div>
+      <span class="tag">SET: CCET</span>
+      <span class="tag">Technology</span>
+      <span class="tag">EMS / อิเล็กทรอนิกส์</span>
+    </div>
+    <h1>แคล-คอมพ์ อีเล็คโทรนิคส์ (ประเทศไทย)</h1>
+    <div class="sub">EMS (Electronics Manufacturing Services) รับจ้างผลิต laptop, computer peripherals, networking equipment • ลูกค้าระดับโลก • รายได้สูง มาร์จิ้นบาง</div>
+    <div class="price-row">
+      <div>
+        <div class="px">฿8.80<small>(CCET)</small></div>
+      </div>
+      <div class="chg">▲ +51.7% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 4 ก.ค. 2569<br>
+        กรอบ 52 สัปดาห์ ฿4.14 – ฿11.20<br>
+        ที่มา: Yahoo Finance (CCET.BK), SET factsheet, Settrade.com
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล TTM ณ ก.ค. 2569</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~฿91,960M</div><div class="d">หุ้นในตลาด ~10,450M หุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~47.41x</div><div class="d">สูงกว่าค่าเฉลี่ย EMS sector</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~20–30x</div><div class="d">ราคาปัจจุบันแพงกว่าค่าเฉลี่ย</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">3.47x</div><div class="d">BVPS ~฿2.54/หุ้น</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ TTM</div><div class="v">~฿1,944M</div><div class="d">Net margin ~2–3% (EMS บาง)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿0.186</div><div class="d">คำนวณจาก P/E 47.41x × ราคา</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~฿2.54</div><div class="d">Equity ~฿26,540M</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v neu">~7.3% / ~2.0%</div><div class="d">ROE ต่ำ — EMS capital intensive</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM (ประมาณ)</div><div class="v neu">~฿80,000–100,000M</div><div class="d">EMS รายได้สูง กำไรบาง</div></div>
+      <div class="metric"><div class="k">EBITDA</div><div class="v">~฿1,292M</div><div class="d">EV/EBITDA ~20.28x (SET)</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~1.5%</div><div class="d">นโยบาย ≥30% ของกำไรสุทธิ</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">~1.2</div><div class="d">ความผันผวนสูงกว่าตลาด</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#607d8b"></i>ราคา CCET</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿4.90</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ตลอดปีที่ผ่านมา CCET ปรับตัวขึ้นแรง <b>+51.7%</b> จาก ฿5.80 (ม.ค. 68) มาที่ ฿8.80 (ม.ค. 69)
+        ในช่วงกลางปี (เม.ย.–พ.ค. 68) ราคาลงต่ำสุดที่ ~฿4.52 จากความกังวลภาวะเศรษฐกิจโลก
+        ก่อนจะพุ่งขึ้นอย่างรวดเร็วตั้งแต่ ก.ย. 68 ทะลุ ฿8–9 ในช่วงปลายปี หนุนโดยกระแส EMS/AI hardware
+        และการย้ายฐานการผลิตมายังอาเซียน ราคาสูงสุด 52 สัปดาห์อยู่ที่ ฿11.20
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS adj. ฿0.186 × P/E เป้าหมาย ~30x (EMS sector fair, ลด premium) — ประมาณค่า P/E สมเหตุสมผลในระยะยาว</div></div>
+        <div class="mval">฿5.58</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. EV/EBITDA Valuation</div><div class="mdesc">EBITDA ~฿1,292M × multiple 10x (EMS sector) ÷ หุ้น 10,450M หุ้น — ปรับด้วยหนี้สุทธิ/equity</div></div>
+        <div class="mval">฿7.43</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 7.3% − g 4%)/(r 9% − g 4%) ≈ 0.66x × BVPS ฿2.54 — สะท้อน ROE ต่ำของธุรกิจ EMS</div></div>
+        <div class="mval">฿1.68</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿1.68 – ฿7.43</span></div>
+        <div class="r">฿4.90</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        วิธี Justified P/BV ให้ค่าต่ำมาก (฿1.68) เพราะ ROE 7.3% ต่ำใกล้ cost of equity 9%
+        วิธี EV/EBITDA ให้ค่าสูงสุด (฿7.43) สะท้อน EBITDA ที่ยังดี แม้ net margin บาง
+        วิธี P/E ประเมิน ฿5.58 โดยใช้ P/E 30x ซึ่งเป็น premium เหนือ EMS peers
+        เฉลี่ย 3 วิธี = <b>฿4.90</b> [(5.58+7.43+1.68)÷3]
+        ราคาปัจจุบัน ฿8.80 สูงกว่า Fair Value ทุกวิธีอย่างมีนัยสำคัญ
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿8.80</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿4.90</div></div>
+        </div>
+        <div class="scale">
+          <span>฿3.43<br><small>MOS 30%</small></span>
+          <span>฿3.92<br><small>MOS 20%</small></span>
+          <span style="text-align:center">฿4.90<br><small>Fair Value</small></span>
+          <span style="text-align:right">฿6.50<br><small>เป้า Analyst</small></span>
+          <span style="text-align:right">฿7.43<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคา ฿8.80 สูงกว่า Fair Value ฿4.90 ถึง <b>79.6%</b> ซึ่งถือว่าแพงเกินมูลค่าพื้นฐานมาก
+        ราคาตลาดกำลังรับ sentiment บวกจากกระแส EMS/China+1/AI hardware เข้าไปอย่างเต็มที่
+        จุดน่าสนใจทาง fundamental คือ MOS 20% (฿3.92) และ MOS 30% (฿3.43)
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">−79.6%</div>
+        <div class="txt">ราคาแพงเกิน Fair Value มาก — ไม่มี Margin of Safety</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿3.92</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿3.43</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มพิจารณา</div><div class="v neu">&lt; ฿4.90</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="8.80" step="0.05">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿8.80 • EPS ฐาน ~฿0.186 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS −10%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿2.72</div>
+          <div class="ret neg">−69.1%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.136</span></li>
+            <li><span>P/E ออก</span><span>20x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.39</span></li>
+            <li><span>สถานการณ์</span><span>ลูกค้าหลักหาย/เศรษฐกิจถดถอย</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +8%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿5.15</div>
+          <div class="ret neg">−41.5%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.234</span></li>
+            <li><span>P/E ออก</span><span>22x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.47</span></li>
+            <li><span>สถานการณ์</span><span>EMS ฟื้น/China+1 หนุน</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +20%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿9.66</div>
+          <div class="ret pos">+9.8%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.322</span></li>
+            <li><span>P/E ออก</span><span>30x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.65</span></li>
+            <li><span>สถานการณ์</span><span>AI hardware boom/order surge</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      ณ ราคา ฿8.80 แม้ใน scenario Bull (EPS โต 20%/ปี) ผลตอบแทน 3 ปีจำกัดที่ +9.8% (ราคา ฿9.66 + ปันผล ฿0.65)
+      Base scenario ให้ผลตอบแทนติดลบ −41.5% สะท้อนว่าราคาปัจจุบันรับ premium สูงเกินไปแล้ว
+      EPS ฐาน ฿0.186/หุ้น คำนวณจาก Net Income TTM ÷ หุ้น 10,450M (อิง P/E 47.41x, SET factsheet FY2568)
+      ราคาเป้า = EPS ปี 3 × P/E ออก (ไม่รวมปันผล) ปันผลแสดงต่างหากใช้ payout ratio ~30% ตามนโยบายบริษัท
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>China+1 Strategy:</b> ลูกค้าระดับโลกย้ายฐานผลิตออกจากจีนมาไทย/อาเซียน CCET ได้ประโยชน์โดยตรงจากเทรนด์นี้</li>
+          <li><b>AI Hardware Boom:</b> ความต้องการ server, networking equipment, AI accelerator hardware เพิ่มขึ้นรวดเร็ว — ผลักดัน order EMS</li>
+          <li><b>Capacity Expansion:</b> CCET ลงทุนขยายกำลังการผลิตรองรับ demand ที่เพิ่มขึ้น ส่งผลให้ revenue scale ขึ้น</li>
+          <li><b>Cost Advantage:</b> ไทยมีต้นทุนแรงงานและโครงสร้างพื้นฐานที่แข่งขันได้ในภูมิภาค เอื้อต่อ margin ของ EMS</li>
+          <li><b>Diversified Customer Base:</b> ลูกค้าหลากหลายอุตสาหกรรม ลดความเสี่ยงพึ่งพาลูกค้าเดียว</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>มาร์จิ้นบางสุด:</b> Net margin ~2–3% ทำให้กำไรไวต่อ cost overrun วัตถุดิบแพง ค่าแรง หรือ FX ได้มาก</li>
+          <li><b>Valuation แพงเกิน:</b> P/E 47x สูงกว่าค่าเฉลี่ย EMS มาก — ถ้าผลงานไม่ตรงเป้าหุ้น derate แรง</li>
+          <li><b>Customer Concentration Risk:</b> EMS พึ่งพาคำสั่งลูกค้าหลัก การเสียลูกค้าหรือ order ลดกระทบรายได้ทันที</li>
+          <li><b>Supply Chain Disruption:</b> Semiconductor shortage / component shortage ส่งผลต่อการผลิตและ margin</li>
+          <li><b>FX Risk:</b> รายได้หลักเป็น USD รายจ่ายเป็น THB — บาทแข็งกดดัน margin อย่างมีนัยสำคัญ</li>
+          <li><b>Competition:</b> คู่แข่ง EMS จากเวียดนาม อินเดีย และจีน (ค่าแรงต่ำกว่า) กดดันราคาและ market share</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>CCET: ธุรกิจ EMS มีอนาคต แต่ราคาปัจจุบันแพงเกิน Fair Value มาก</h2>
+      <p>Cal-Comp Electronics (Thailand) เป็นผู้นำ EMS ในไทย ได้ประโยชน์จากเทรนด์ China+1 และ AI hardware
+      แต่ราคาหุ้นปัจจุบัน ฿8.80 สูงกว่า Fair Value ฿4.90 ถึง <b>79.6%</b>
+      P/E 47x ซึ่งสูงมากสำหรับธุรกิจ EMS ที่ ROE เพียง 7.3% และมาร์จิ้นบาง 2–3%
+      ในระยะสั้น sentiment บวกจาก AI hardware/China+1 อาจหนุนราคาต่อ
+      แต่ในระยะยาว fundamental ยังไม่รองรับ valuation ระดับนี้
+      นักลงทุน value ควรรอโซน ฿3.92 (MOS 20%) หรือต่ำกว่าจึงจะน่าสนใจ</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿4.90 <span style="font-size:12px;color:#cab9a8">(฿1.68–฿7.43)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ef9a9a">ราคาแพงกว่า FV ~ 79.6%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿6.50 (ระวัง/Hold)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> รอซื้อโซน ฿3.92 (MOS 20%) เป็น entry แรก และ ฿3.43 (MOS 30%) สำหรับ deep value
+        หลีกเลี่ยงซื้อในระดับราคาปัจจุบัน เพราะ risk/reward ไม่ดี — ถ้าถือแล้ว พิจารณา take profit บางส่วน
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    ข้อมูลราคาและกราฟรายเดือน FY2025–2026: Yahoo Finance (CCET.BK) ณ 4 ก.ค. 2569; อัตราส่วนทางการเงิน (P/E 47.41x, P/BV 3.47x, Market Cap ฿91,960M, EBITDA ฿1,292M): SET factsheet Q1/2025 (ปรับปรุง 4 ก.ค. 2026); ข้อมูลธุรกิจและนโยบายปันผล (≥30% ของกำไรสุทธิ FY2025): Settrade.com / Cal-Comp Electronics Thailand
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 4 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
