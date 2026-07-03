@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น แสนสิริ (SIRI) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"SIRI","currency":"THB","price":1.46,"fairValue":2.04,"mos":28,"upside":40,"pe":6.0,"dividendYield":8.84,"roe":7.9}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#37474f",
+    "accentDark": "#263238",
+    "darkGrad": "linear-gradient(135deg,#263238 0%,#37474f 60%,#455a64 100%)",
+    "glow": "rgba(55,71,79,0.3)",
+    "subColor": "#90a4ae",
+    "headerMuted": "rgba(144,164,174,0.75)",
+    "verdictText": "#eceff1",
+    "vcellLabel": "#b0bec5",
+    "badge": "#546e7a",
+    "chgBg": "#c5221f",
+    "chgColor": "#ffffff"
+  },
+  "chart": {
+    "data": [
+      ["ก.ค. 68", 1.56],
+      ["ส.ค. 68", 1.36],
+      ["ก.ย. 68", 1.40],
+      ["ต.ค. 68", 1.43],
+      ["พ.ย. 68", 1.45],
+      ["ธ.ค. 68", 1.47],
+      ["ม.ค. 69", 1.44],
+      ["ก.พ. 69", 1.43],
+      ["มี.ค. 69", 1.42],
+      ["เม.ย. 69", 1.41],
+      ["พ.ค. 69", 1.43],
+      ["มิ.ย. 69", 1.44],
+      ["ก.ค. 69", 1.46]
+    ],
+    "min": 1.20,
+    "max": 1.80,
+    "grid": [1.20, 1.30, 1.40, 1.50, 1.60, 1.70, 1.80],
+    "fairLine": 2.04,
+    "currency": "฿",
+    "highlight": [0, 6],
+    "gridFmt": "v.toFixed(2)",
+    "dataFmt": "d[1].toFixed(2)"
+  },
+  "gauge": {
+    "min": 1.00,
+    "max": 2.50,
+    "cur": 1.46,
+    "fair": 2.04,
+    "fairLabelTop": true
+  },
+  "fv": 2.04
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">◆ ◆ ◆</div>
+    <div>
+      <span class="tag">SET: SIRI</span>
+      <span class="tag">อสังหาริมทรัพย์</span>
+      <span class="tag">Property Developer</span>
+    </div>
+    <h1>แสนสิริ (Sansiri PCL)</h1>
+    <div class="sub">พัฒนาโครงการที่อยู่อาศัยครบทุกระดับ • คอนโดมิเนียม บ้านเดี่ยว ทาวน์โฮม • บริหารอสังหาฯ &amp; โรงแรม • ปันผลสม่ำเสมอ</div>
+    <div class="price-row">
+      <div>
+        <div class="px">฿1.46<small>(SIRI)</small></div>
+      </div>
+      <div class="chg">▼ −6.4% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 3 ก.ค. 2569<br>
+        กรอบ 52 สัปดาห์ ฿1.26 – ฿1.60<br>
+        ที่มา: Yahoo Finance, StockAnalysis.com, SET Factsheet
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ก.ค. 2569 • FY2025 = ปีสิ้นสุด ธ.ค. 2568</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">฿25,664 ล้าน</div><div class="d">~17,574 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~6.0x</div><div class="d">ค่าเฉลี่ยเซกเตอร์ ~8–9x</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~7.5x</div><div class="d">ช่วง 5–10x (ตามวัฏจักรอสังหาฯ)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">0.51x</div><div class="d">ต่ำกว่า Book Value มาก</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">฿4,513 ล้าน</div><div class="d">−9.7% จาก FY2024 (฿4,998 ล้าน)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿0.24</div><div class="d">FY2025: ลดจาก ฿0.29 (FY2024)</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~฿2.55</div><div class="d">Equity FY2025 ฿50,062 ล้าน / 17,574 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~7.9% / 3.1%</div><div class="d">ROE ลดจาก 10.3% (FY2024) ตามกำไร</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">฿34,395 ล้าน</div><div class="d">−12.3% YoY; คอนโดฯ +13.1% ชดเชยบ้านลด −30%</div></div>
+      <div class="metric"><div class="k">Gross Margin</div><div class="v">~32–35%</div><div class="d">โครงการคอนโดฯ margin ดีกว่าบ้านเดี่ยว</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~8.84%</div><div class="d">฿0.13/หุ้น (฿0.08 มี.ค.69 + ฿0.05 ส.ค.68) ปีละ 2 ครั้ง</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">0.65</div><div class="d">ความผันผวนต่ำกว่าตลาด SET</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ก.ค. 2568 – ก.ค. 2569 (รายเดือน)</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#37474f"></i>ราคา SIRI</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿2.04</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคา SIRI เปิดรอบปีที่ ฿1.56 (ก.ค. 2568) แล้วร่วงลงแรงในช่วง ส.ค.–ก.ย. 2568 ไปแตะต่ำสุด ฿1.33–1.36 กดดันจากยอดขายบ้านเดี่ยวที่ตกลง 30% YoY และความกังวลเศรษฐกิจไทย จากนั้นทยอยฟื้นในช่วงปลายปี 2568 ทรงตัวในกรอบ ฿1.40–1.47 และต่อเนื่องมาถึงปี 2569 ปัจจุบัน ฿1.46 ลดลง −6.4% ในรอบปี แต่ yield ปันผลสูง ~8.84% ช่วยลดผลขาดทุนรวม ราคายังต่ำกว่า Fair Value ฿2.04 มาก (MOS ~28%)
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS adj. ฿0.24 × P/E เป้าหมาย ~7.5x — ค่าเฉลี่ย 5 ปีของ SIRI และ sector Thai property; ปัจจุบัน 6.0x ต่ำกว่าประวัติ</div></div>
+        <div class="mval">฿1.80</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล ฿0.13 × (1+g); g 3%, r 9% → SIRI จ่ายปันผลสม่ำเสมอทุกปีตั้งแต่ 2558 เหมาะใช้ DDM</div></div>
+        <div class="mval">฿2.23</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 7.9% − g 3%)/(r 9% − g 3%) ≈ 0.82 × BVPS ฿2.55 — ROE ต่ำกว่า cost of equity ทำให้ P/BV เหมาะสมต่ำกว่า 1x</div></div>
+        <div class="mval">฿2.08</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿1.80 – ฿2.23</span></div>
+        <div class="r">฿2.04</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        วิธี DDM ให้ค่าสูงสุด (฿2.23) เพราะ SIRI มีประวัติจ่ายปันผลต่อเนื่องสม่ำเสมอ แม้อัตราปันผลลดลงในปีล่าสุด (฿0.13 vs ฿0.17 ปีก่อน) วิธี P/E (฿1.80) อนุรักษ์นิยมสุด ใช้ EPS FY2025 ที่ลดลง และ P/E target 7.5x ซึ่งต่ำกว่า sector average เล็กน้อย Justified P/BV (฿2.08) ให้ค่ากลาง สะท้อนว่า ROE 7.9% ต่ำกว่า cost of equity 9% ทำให้ P/BV ที่สมเหตุสมผลควรต่ำกว่า 1x แต่ราคาปัจจุบัน 0.51x P/BV ถือว่า discount มากเกินไป เฉลี่ย 3 วิธีได้ Fair Value ฿2.04
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿1.46</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿2.04</div></div>
+        </div>
+        <div class="scale">
+          <span>฿1.43<br><small>MOS 30%</small></span>
+          <span>฿1.63<br><small>MOS 20%</small></span>
+          <span style="text-align:center">฿1.69<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">฿2.04<br><small>Fair Value</small></span>
+          <span style="text-align:right">฿2.23<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคา ฿1.46 อยู่ใกล้โซน MOS 30% (฿1.43) มาก — เป็นระดับที่ deep value investor เริ่มสะสม เป้านักวิเคราะห์เฉลี่ย ฿1.69 (Strong Buy, 12 นักวิเคราะห์ ณ ก.ค. 2569) มี upside 15.8% จากราคาปัจจุบัน หากราคากลับสู่ Fair Value ฿2.04 จะมี upside ~40% ยังไม่รวมปันผลระหว่างทาง ระยะสั้นแนวต้านอยู่ที่ ฿1.60 (High 52 สัปดาห์) และ ฿1.69 (เป้านักวิเคราะห์) ก่อนถึง Fair Value
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict good">
+        <div class="big">+28%</div>
+        <div class="txt">โซน Value — ราคาต่ำกว่ามูลค่าเหมาะสมอย่างมีนัยสำคัญ เหมาะทยอยสะสม</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿1.63</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿1.43</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿2.04</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="1.46" step="0.05">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿1.46 • EPS ฐาน ~฿0.24 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS −1%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿1.28</div>
+          <div class="ret neg">+14.4% รวม 3 ปี (~4.6%/ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.23</span></li>
+            <li><span>P/E ออก</span><span>5.5x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.39</span></li>
+            <li><span>สถานการณ์</span><span>อสังหาฯ ชะลอ เศรษฐกิจอ่อนแอ ราคาบ้านลง</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +5%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿1.94</div>
+          <div class="ret pos">+61.7% รวม 3 ปี (~17.4%/ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.28</span></li>
+            <li><span>P/E ออก</span><span>7.0x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.42</span></li>
+            <li><span>สถานการณ์</span><span>เศรษฐกิจฟื้น คอนโดฯ และบ้านกลับมา LTV ผ่อนคลาย</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +9%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿2.64</div>
+          <div class="ret pos">+111.6% รวม 3 ปี (~28.3%/ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.31</span></li>
+            <li><span>P/E ออก</span><span>8.5x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.45</span></li>
+            <li><span>สถานการณ์</span><span>นักท่องเที่ยวต่างชาติซื้อคอนโดฯ เพิ่ม นโยบายรัฐหนุน</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      แม้กระทั่งใน Bear case ผลตอบแทนรวมยังเป็นบวก (~14.4%) เพราะ yield ปันผลสูง ~8.84% ช่วยหนุน — สะท้อน downside protection จากปันผลในราคาปัจจุบัน Base case ให้ผลตอบแทน 17.4%/ปีหาก P/E กลับสู่ 7.0x ภายใน 3 ปี ซึ่งสมเหตุสมผลหากเศรษฐกิจไทยและตลาดอสังหาฯ ฟื้นตัว ความเสี่ยงหลักคือ EPS อาจยังถูกกดดันหากยอดขายบ้านเดี่ยวไม่ฟื้น และต้นทุนดอกเบี้ยยังสูง (D/E ~1.5x) ตัวเลขเป็นประมาณการ ไม่ใช่การรับประกัน
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก &amp; ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>ยอดขายคอนโดฯ ฟื้น:</b> รายได้จากคอนโดมิเนียมเติบโต +13.1% YoY ใน FY2025 แม้ภาพรวมลดลง บ่งชี้ segment นี้ยังแข็งแกร่ง โดยเฉพาะโครงการในทำเลกรุงเทพฯ</li>
+          <li><b>นักซื้อต่างชาติ (Expat &amp; Chinese Buyer):</b> แสนสิริเป็นแบรนด์ที่นักซื้อต่างชาติรู้จักดี หากนโยบาย LTV และ Freehold คอนโดสำหรับต่างชาติผ่อนคลาย จะหนุนยอดขายคอนโดฯ ระดับบน</li>
+          <li><b>Backlog ลดความเสี่ยงรายได้:</b> SIRI มี backlog สะสมหลายพันล้านบาทที่รอโอน ให้ visibility รายได้ใน 1–2 ปีข้างหน้า ลดความผันผวนของ EPS</li>
+          <li><b>โรงแรมและธุรกิจบริการฟื้นตัว:</b> ธุรกิจโรงแรมและบริหารอสังหาฯ ซึ่งคิดเป็น ~10% ของรายได้กำลังฟื้นตัวตามการท่องเที่ยว ช่วยเสริม recurring income</li>
+          <li><b>Dividend Yield ดึงดูด Fund Flow:</b> Yield ~8.84% สูงกว่าพันธบัตรรัฐบาลไทย 10 ปี (~3%) อย่างมาก ดึงดูด income investor และกองทุนที่มองหา yield สูง</li>
+          <li><b>Valuation Discount สุดขีด:</b> P/BV เพียง 0.51x และ P/E เพียง 6.0x ต่ำกว่าประวัติศาสตร์มาก หากตลาดปรับ re-rate แม้เล็กน้อยก็ให้ upside สูง</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>ตลาดบ้านเดี่ยวยังอ่อนแอ:</b> รายได้จากบ้านเดี่ยวลดลง −30.1% YoY ใน FY2025 สะท้อนกำลังซื้อชนชั้นกลาง-ล่างที่ยังอ่อนแอ ดอกเบี้ยสูง และการ reject สินเชื่อธนาคารสูง</li>
+          <li><b>ภาระหนี้สูง:</b> Total Debt ~฿75,852 ล้าน (D/E ประมาณ 1.5x) ทำให้ดอกเบี้ยจ่ายกดดันกำไรสุทธิอย่างมีนัย โดยเฉพาะหากดอกเบี้ยยังสูงนาน</li>
+          <li><b>ยอดโอนชะลอ:</b> โครงการที่อยู่ระหว่างก่อสร้างอาจล่าช้าหากต้นทุนวัสดุก่อสร้างสูงขึ้น ส่งผลต่อจังหวะรับรู้รายได้และ EPS</li>
+          <li><b>Supply เกินใน Segment คอนโดฯ:</b> ตลาดคอนโดมิเนียมกรุงเทพฯ มี supply สะสมสูง อาจกดดัน margin หาก SIRI ต้องลดราคาเพื่อระบาย stock</li>
+          <li><b>ROE ต่ำกว่า Cost of Capital:</b> ROE 7.9% ต่ำกว่า r 9% ตามที่สมมติ ทำให้ P/BV เหมาะสมต่ำกว่า 1x ตามทฤษฎี ต้องการการเติบโต EPS ก่อนจะ justify valuation สูงขึ้น</li>
+          <li><b>เศรษฐกิจไทยและนโยบายรัฐ:</b> การเติบโต GDP ไทยชะลอตัว ความไม่แน่นอนด้านการเมือง นโยบายภาษีที่ดิน และมาตรการ LTV ของ ธปท. ล้วนส่งผลกับตลาดอสังหาฯ โดยตรง</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>Value Play ที่ Yield สูง — ราคาถูกมากแต่ต้องอดทนรอ</h2>
+      <p>SIRI ซื้อขายที่ P/E 6.0x และ P/BV 0.51x ต่ำกว่าค่าเฉลี่ยประวัติศาสตร์อย่างมาก ด้วย Dividend Yield สูงถึง ~8.84% ทำให้แม้ราคาทรงตัว ผู้ถือหุ้นก็ยังได้รับผลตอบแทนจากปันผลสม่ำเสมอ ภาพรวมปี 2569–2571 ขึ้นกับการฟื้นตัวของตลาดอสังหาฯ ไทย โดยเฉพาะบ้านเดี่ยวที่ยังซบเซา อย่างไรก็ดี segment คอนโดฯ เริ่มส่งสัญญาณฟื้น Q1/2569 EPS ขยับขึ้น YoY ราคาปัจจุบันยังอยู่ต่ำกว่า Fair Value ~28% สะท้อน deep discount ที่ให้ margin of safety ดีสำหรับ value investor ระยะยาวที่รับความผันผวนระยะสั้นได้</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿2.04 <span style="font-size:12px;color:#cab9a8">(฿1.80–฿2.23)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +28%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿1.69 (Strong Buy)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ทยอยสะสมในราคา ≤฿1.50 (MOS ~26–28%) รับ yield ปันผล ~8.84%/ปีระหว่างรอ • เพิ่มน้ำหนักหากราคาลงถึงโซน MOS 30% (~฿1.43) • ทบทวนที่ ฿1.80–2.00 หากพื้นฐาน EPS ยังไม่ฟื้น • Stop-loss พิจารณาที่ ฿1.20 หากกำไรลดต่อเนื่อง
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    แหล่งข้อมูล: Yahoo Finance (SIRI.BK ก.ค. 2569), StockAnalysis.com (BKK:SIRI ก.ค. 2569), SET Factsheet (set.or.th), Investing.com (Sansiri dividends), FNS Syrus Research (3Q25 Flash); สอบทานราคา ≥2 แหล่งอิสระ ณ 3 ก.ค. 2569
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 3 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>

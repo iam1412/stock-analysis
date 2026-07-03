@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น แอสเซทไวส์ (ASW) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"ASW","currency":"THB","price":7.30,"fairValue":10.80,"mos":32,"upside":48,"pe":5.94,"dividendYield":6.85,"roe":13.35}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#f57c00",
+    "accentDark": "#e65100",
+    "darkGrad": "linear-gradient(135deg,#e65100 0%,#f57c00 60%,#ff9800 100%)",
+    "glow": "rgba(245,124,0,0.3)",
+    "subColor": "#ffcc80",
+    "headerMuted": "rgba(255,204,128,0.7)",
+    "verdictText": "#fff8f0",
+    "vcellLabel": "#ffcc80",
+    "badge": "#ff9800",
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#1e8e3e"
+  },
+  "chart": {
+    "data": [
+      ["ก.ค. 68", 5.40],
+      ["ส.ค. 68", 5.50],
+      ["ก.ย. 68", 6.25],
+      ["ต.ค. 68", 6.00],
+      ["พ.ย. 68", 6.00],
+      ["ธ.ค. 68", 6.05],
+      ["ม.ค. 69", 7.60],
+      ["ก.พ. 69", 7.15],
+      ["มี.ค. 69", 7.15],
+      ["เม.ย. 69", 7.00],
+      ["พ.ค. 69", 7.00],
+      ["มิ.ย. 69", 7.00],
+      ["ก.ค. 69", 7.30]
+    ],
+    "min": 4.80,
+    "max": 11.50,
+    "grid": [5.00, 7.00, 9.00, 11.00],
+    "fairLine": 10.80,
+    "currency": "฿",
+    "highlight": [6, 12]
+  },
+  "gauge": {
+    "min": 4.50,
+    "max": 13.00,
+    "cur": 7.30,
+    "fair": 10.80,
+    "fairLabelTop": true
+  },
+  "fv": 10.80
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">●●●●●●●●●●●●●●●●</div>
+    <div>
+      <span class="tag">SET: ASW</span>
+      <span class="tag">อสังหาริมทรัพย์</span>
+      <span class="tag">คอนโด / บ้าน Gen Y/Z</span>
+    </div>
+    <h1>แอสเซทไวส์ (Asset Wise PCL)</h1>
+    <div class="sub">พัฒนาคอนโดมิเนียมและบ้านระดับกลาง-ล่าง • กลุ่มลูกค้า Gen Y/Z mass-market • โครงการ Kave / Modiz / Nebu • ขยายสู่ภูเก็ตและหัวเมืองหลัก</div>
+    <div class="price-row">
+      <div>
+        <div class="px">฿7.30<small>(ASW)</small></div>
+      </div>
+      <div class="chg">▲ +35.2% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 4 ก.ค. 2569<br>
+        กรอบ 52 สัปดาห์ ฿4.90 – ฿8.20<br>
+        ที่มา: Yahoo Finance, StockAnalysis.com, SET
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ก.ค. 2569 · อิงงบ FY 2568 (2025)</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~฿6,568 ล้าน</div><div class="d">900 ล้านหุ้น · Small-Mid Cap</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~5.94x</div><div class="d">ต่ำกว่าค่าเฉลี่ยเซกเตอร์มาก (~12x)</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~8.0x</div><div class="d">ช่วง 5–12x · ปัจจุบันต่ำผิดปกติ</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">~0.70x</div><div class="d">BVPS ฿10.19 · ซื้อต่ำกว่า Book Value</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY 2568</div><div class="v">฿1,078 ล้าน</div><div class="d">ลดลง −26% YoY (FY67: ฿1,457 ล้าน)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿1.23</div><div class="d">FY68: ฿1.20 · FY67: ฿1.62</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~฿10.19</div><div class="d">Book Value ต่อหุ้น (Investing.com)</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~13.4% / ~3.5%</div><div class="d">ROE สูงกว่าค่าเฉลี่ยเซกเตอร์ (~12%)</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">~฿9,776 ล้าน</div><div class="d">FY68: ฿9,419 ล้าน · เป้าปี 69: ฿12,500 ล้าน</div></div>
+      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">~35%</div><div class="d">Net Margin 11.4% (FY68) vs 14.7% (FY67)</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~6.85%</div><div class="d">฿0.50/หุ้น · XD 30 เม.ย. 2569</div></div>
+      <div class="metric"><div class="k">ยอด Presales FY 2568</div><div class="v pos">฿23,407 ล้าน</div><div class="d">เพิ่มขึ้น +21% YoY · แนวโน้มแข็งแกร่ง</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ก.ค. 2568 – ก.ค. 2569 · รายเดือน</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#f57c00"></i>ราคา ASW</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿10.80</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ASW ปรับตัวขึ้นแรงตลอดช่วงปี 2568–2569 จาก ฿5.40 (ก.ค. 2568) สู่ ฿7.30 (ก.ค. 2569) <b>ผลตอบแทนรอบปี +35.2%</b>
+        จุดต่ำสุด 52 สัปดาห์อยู่ที่ ฿4.90 · จุดสูงสุดที่ ฿8.20 (ต้น ม.ค. 2569 หลังรายงาน Presales แข็งแกร่ง)
+        ราคาพักตัวจาก ฿7.60–฿8.20 กลับมาที่ ฿7.30 ซึ่งยังต่ำกว่า Fair Value ฿10.80 อย่างมีนัยสำคัญ
+        แหล่ง: Yahoo Finance (ASW.BK) · StockAnalysis.com
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS adj. ฿1.23 × P/E เป้าหมาย ~8.0x — P/E เฉลี่ย 5 ปีก่อนบาดแผล COVID ของเซกเตอร์ (ปัจจุบัน 5.94x ต่ำผิดปกติ)</div></div>
+        <div class="mval">฿9.84</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล ฿0.50 × (1+g); g 4%, r 9% → ฿0.52 / (0.09 − 0.04) — เหมาะกับหุ้นจ่ายปันผลสม่ำเสมอ yield ~7%</div></div>
+        <div class="mval">฿10.40</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 13.35% − g 4%)/(r 9% − g 4%) ≈ 1.87x → ปรับลดเป็น 1.2x ตามเกณฑ์เซกเตอร์ × BVPS ฿10.19</div></div>
+        <div class="mval">฿12.23</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿9.84 – ฿12.23</span></div>
+        <div class="r">฿10.80</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        วิธี P/E ให้ค่าต่ำสุด (฿9.84) เนื่องจากใช้ P/E เป้าหมายอนุรักษ์นิยมที่ 8x ซึ่งต่ำกว่าค่าเฉลี่ยเซกเตอร์ (~12x) ·
+        DDM ให้ ฿10.40 โดยอิงปันผล ฿0.50/หุ้น และอัตราเติบโต 4%/ปี ซึ่งสอดคล้องกับ EPS growth ที่คาดการณ์ ·
+        Justified P/BV ให้ค่าสูงสุด ฿12.23 สะท้อน ROE 13.35% ที่สูงกว่า Cost of Equity ·
+        <b>ค่าเฉลี่ย ฿10.80 ถือว่าอนุรักษ์นิยมและเหมาะสมกับความเสี่ยงเซกเตอร์อสังหาฯ ไทย</b> ·
+        แหล่ง: StockAnalysis.com, Investing.com, SET Thailand
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿7.30</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿10.80</div></div>
+        </div>
+        <div class="scale">
+          <span>฿7.56<br><small>MOS 30%</small></span>
+          <span>฿8.27<br><small>เป้า Analyst</small></span>
+          <span>฿8.64<br><small>MOS 20%</small></span>
+          <span style="text-align:center">฿10.80<br><small>Fair Value</small></span>
+          <span style="text-align:right">฿12.23<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน ฿7.30 อยู่ต่ำกว่าทั้ง <b>MOS 30% (฿7.56)</b> และ Fair Value ฿10.80 อย่างมีนัยสำคัญ →
+        <b>MOS ~32%</b> ถือว่าอยู่ในโซน "Deep Value" ตามเกณฑ์ Value Investing ·
+        ราคาต่ำกว่าเป้านักวิเคราะห์เฉลี่ย ฿8.27 (Strong Buy จาก 3 บ้าน) ·
+        ความเสี่ยงหลักคือ margin ที่ลดลงจาก 14.7% → 11.4% และต้นทุนก่อสร้างที่ยังสูง
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict good">
+        <div class="big">+32%</div>
+        <div class="txt">Deep Value Zone — ราคาต่ำกว่ามูลค่าเหมาะสมมากกว่า 30% · เหมาะสำหรับ Value Investor ที่รับความเสี่ยงอสังหาฯ ได้</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿8.64</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿7.56</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿10.80</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="7.30" step="0.05">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿7.30 • EPS ฐาน ~฿1.23 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS 0%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿6.77</div>
+          <div class="ret neg">+13.3% / 3 ปี (~4.3%/ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿1.23</span></li>
+            <li><span>P/E ออก</span><span>5.5x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿1.50</span></li>
+            <li><span>สถานการณ์</span><span>ดอกเบี้ยสูง ตลาดซบเซา transfer ชะลอ</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +8%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿10.85</div>
+          <div class="ret pos">+71.2% / 3 ปี (~19.7%/ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿1.55</span></li>
+            <li><span>P/E ออก</span><span>7.0x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿1.65</span></li>
+            <li><span>สถานการณ์</span><span>ดอกเบี้ยลด ราคา transfer ฟื้น Phuket โต</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +15%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿16.83</div>
+          <div class="ret pos">+155.9% / 3 ปี (~37.1%/ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿1.87</span></li>
+            <li><span>P/E ออก</span><span>9.0x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿1.80</span></li>
+            <li><span>สถานการณ์</span><span>Presales ฿18.5B ตามเป้า margin ฟื้นเป็น 14%+</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      Base case อิงเป้าหมายรายได้ปี 2569 ที่ ฿12,500 ล้าน (+32% YoY) และ Presales เป้า ฿18,500 ล้าน ·
+      แม้แต่ Bear case ยังให้ผลตอบแทนบวกเพราะ <b>ปันผล yield ~7%/ปี</b> เป็น Downside Protection ที่ดี ·
+      ความเสี่ยงหลัก: ดอกเบี้ยนโยบาย, กำลังซื้อกลุ่ม Gen Y/Z, ต้นทุนวัสดุก่อสร้างและแรงงาน ·
+      การคำนวณอิง EPS ฐาน ฿1.23/หุ้น, จุดเข้า ฿7.30, ปันผล ฿0.50/ปี (คงที่ถึง Bear, เติบโตใน Base/Bull)
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>Presales แข็งแกร่ง:</b> FY 2568 ทำ Presales ฿23,407 ล้าน (+21% YoY) → backlog แน่นรองรับรายได้ปี 69–70</li>
+          <li><b>เป้ารายได้ปี 2569 ทะยาน +32%:</b> บริษัทตั้งเป้า ฿12,500 ล้าน ถ้าทำได้จะหนุน EPS ฟื้นตัวเร็ว</li>
+          <li><b>ขยายตลาดภูเก็ต:</b> ประกาศโครงการใหม่ในภูเก็ต (ตลาดท่องเที่ยว demand สูง) หนุนการกระจายรายได้</li>
+          <li><b>ปันผล yield ~7%:</b> ผลตอบแทนปันผลสูงกว่าดอกเบี้ยเงินฝาก ดึงดูดนักลงทุน income-seeking</li>
+          <li><b>ดอกเบี้ยนโยบายมีทิศชะลอ:</b> ถ้า BOT ลดดอกเบี้ย ต้นทุนสินเชื่อบ้านผู้ซื้อจะลด กำลังซื้อเพิ่ม</li>
+          <li><b>P/E 5.94x ต่ำผิดปกติ:</b> ต่ำกว่าเซกเตอร์ ~50% → มีโอกาส re-rating เมื่อ EPS ฟื้น</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>Net Margin ลดลงต่อเนื่อง:</b> จาก 20.4% (FY65) → 14.7% (FY67) → 11.4% (FY68) → ต้นทุนก่อสร้าง/แรงงานยังกดดัน</li>
+          <li><b>กำลังซื้อ Gen Y/Z ชะลอ:</b> ลูกค้าหลักเป็นคนทำงานรุ่นใหม่ที่เสี่ยงต่อตลาดแรงงาน, ราคาบ้านแพงขึ้น</li>
+          <li><b>ดอกเบี้ยสูง กู้ยากขึ้น:</b> อัตราการ rejection สินเชื่อสูง transfer ล่าช้า กระทบรายได้รับรู้</li>
+          <li><b>ตลาด over-supply:</b> Presales สูงในตลาด mass-market มีการแข่งขันสูง อาจต้องลดราคา/จูงใจผู้ซื้อ</li>
+          <li><b>EPS ลดลง FY68:</b> กำไรสุทธิลด 26% YoY บ่งชี้แรงกดดันระยะสั้น อาจกดราคาต่อถ้า FY69 ไม่ดีขึ้น</li>
+          <li><b>หุ้น Small-Mid Cap สภาพคล่องต่ำ:</b> Market Cap ~฿6,500 ล้าน อาจมีความผันผวนสูงในตลาด risk-off</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>ASW: Deep Value ปันผลสูง — รอ Margin ฟื้น</h2>
+      <p>
+        แอสเซทไวส์ (ASW) เป็นหุ้นอสังหาริมทรัพย์ไทยที่เน้นกลุ่ม Gen Y/Z mass-market ด้วย Presales แข็งแกร่ง ฿23,407 ล้าน (+21% YoY)
+        และเป้ารายได้ปี 2569 ที่ ฿12,500 ล้าน (+32%) สะท้อน growth pipeline ที่น่าสนใจ
+        ราคาปัจจุบัน ฿7.30 ต่ำกว่า Fair Value ฿10.80 ถึง 32% (Deep Value Zone)
+        P/E เพียง 5.94x และ P/BV 0.70x (ต่ำกว่า Book Value!) บ่งชี้การถูก undervalue อย่างชัดเจน
+        ปันผล yield ~7% เป็น Downside Protection ที่แข็งแกร่ง
+        <b>ความเสี่ยงหลักคือ Net Margin ที่ลดลงต่อเนื่องและความไม่แน่นอนของตลาดสินเชื่อบ้าน</b>
+        นักลงทุนที่รอ Margin ฟื้นและ EPS กลับมาโต จะได้ประโยชน์ทั้ง Capital Gain และ Dividend Yield
+      </p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿10.80 <span style="font-size:12px;color:#cab9a8">(฿9.84–฿12.23)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +32%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿8.27 (Strong Buy)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ราคา ฿7.30 อยู่ต่ำกว่า MOS 30% (฿7.56) สะท้อน Deep Value ที่น่าสนใจสำหรับ Value Investor
+        แนะนำ <b>ทยอยสะสมในโซน ฿7.00–฿7.80</b> โดยตั้งใจถือระยะ 2–3 ปี รับปันผล ~7%/ปีระหว่างรอ
+        ตัดขาดทุนหากราคาหลุด ฿5.50 (สะท้อนพื้นฐานแย่กว่าคาด) · เป้า Base Case ฿12.20 ใน 3 ปี
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    แหล่งข้อมูล: Yahoo Finance (ASW.BK · ข้อมูล ณ ก.ค. 2569), StockAnalysis.com (BKK:ASW · งบ FY2568/Q1 2569), Investing.com (ASW ratios · FY2568), SET Thailand (factsheet), AssetWise IR (Annual Results FY2025/2568)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 4 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
