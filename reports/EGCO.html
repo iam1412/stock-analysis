@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น ผลิตไฟฟ้า (EGCO) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"EGCO","currency":"THB","price":123.0,"fairValue":113,"mos":-8.8,"upside":-8.1,"pe":31.06,"dividendYield":5.28,"roe":2.0}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#2e7d32",
+    "accentDark": "#1b5e20",
+    "darkGrad": "linear-gradient(135deg,#0a3d0a 0%,#1b5e20 60%,#2e7d32 100%)",
+    "glow": "rgba(46,125,50,0.35)",
+    "subColor": "#a5d6a7",
+    "headerMuted": "rgba(255,255,255,0.6)",
+    "verdictText": "#e8f5e9",
+    "vcellLabel": "rgba(232,245,233,0.7)",
+    "badge": "#2e7d32",
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#1e8e3e"
+  },
+  "chart": {
+    "data": [
+      ["ก.ค. 68", 118.0],
+      ["ส.ค. 68", 114.5],
+      ["ก.ย. 68", 123.0],
+      ["ต.ค. 68", 113.0],
+      ["พ.ย. 68", 114.0],
+      ["ธ.ค. 68", 117.5],
+      ["ม.ค. 69", 123.5],
+      ["ก.พ. 69", 112.5],
+      ["มี.ค. 69", 112.5],
+      ["เม.ย. 69", 116.5],
+      ["พ.ค. 69", 120.0],
+      ["มิ.ย. 69", 119.5],
+      ["ก.ค. 69", 123.5]
+    ],
+    "min": 100,
+    "max": 145,
+    "grid": [100, 110, 120, 130, 140],
+    "fairLine": 113,
+    "currency": "฿",
+    "highlight": [2, 3, 6]
+  },
+  "gauge": {
+    "min": 60,
+    "max": 200,
+    "cur": 123.0,
+    "fair": 113,
+    "fairLabelTop": false
+  },
+  "fv": 113
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">◆◆◆◆◆</div>
+    <div>
+      <span class="tag">SET: EGCO</span>
+      <span class="tag">Utilities</span>
+      <span class="tag">IPP / พลังงาน</span>
+    </div>
+    <h1>บมจ. ผลิตไฟฟ้า (EGCO Group)</h1>
+    <div class="sub">ผู้ผลิตไฟฟ้าอิสระ (IPP) ชั้นนำของไทย • โรงไฟฟ้า 5,000+ MW ไทย-อาเซียน-สหรัฐฯ-ออสเตรเลีย • Thermal + พลังงานหมุนเวียน • ปันผลสม่ำเสมอ Yield 5%+</div>
+    <div class="price-row">
+      <div>
+        <div class="px">฿123.00<small>(EGCO)</small></div>
+      </div>
+      <div class="chg">▲ +4.7% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 3 ก.ค. 2569<br>
+        กรอบ 52 สัปดาห์ ฿100.50 – ฿143.00<br>
+        ที่มา: SET.or.th • Yahoo Finance • EGCO IR
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ก.ค. 2569</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~฿62.9 พันล้าน</div><div class="d">หุ้น 526.5 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~31.1x</div><div class="d">สูงเพราะกำไร FY2568 ต่ำผิดปกติ</div></div>
+      <div class="metric"><div class="k">P/E (Forward)</div><div class="v">~18.5x</div><div class="d">อิง EPS ปีละ ~฿6.65 (Q1/69 × 4)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">0.62x</div><div class="d">ต่ำกว่ามูลค่าทางบัญชี BVPS ฿192.7</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ Q1/2026</div><div class="v pos">฿875 ล้าน</div><div class="d">+349% YoY ฟื้นตัวแข็งแกร่ง</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿3.85</div><div class="d">กดโดยผลขาดทุนพิเศษ FY2568</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~฿192.7</div><div class="d">มูลค่าทางบัญชีสูงมาก vs ราคาตลาด</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v neu">~2.0% / ~1.2%</div><div class="d">ต่ำเพราะฐานทุนใหญ่ + กำไรพิเศษหาย</div></div>
+
+      <div class="metric"><div class="k">EBITDA</div><div class="v neu">฿4,018 ล้าน</div><div class="d">EV/EBITDA ~15.5x</div></div>
+      <div class="metric"><div class="k">Payout Ratio</div><div class="v">~169%</div><div class="d">DPS ฿6.50 สูงกว่า EPS TTM ชั่วคราว</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v pos">~5.28%</div><div class="d">DPS ฿6.50/หุ้น FY2568</div></div>
+      <div class="metric"><div class="k">กำลังการผลิต</div><div class="v">5,000+ MW</div><div class="d">ไทย อาเซียน สหรัฐฯ ออสเตรเลีย</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ก.ค. 2568 – ก.ค. 2569</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#2e7d32"></i>ราคา EGCO</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿113</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ในรอบ 1 ปีที่ผ่านมา (ก.ค. 2568 – ก.ค. 2569) EGCO เคลื่อนไหวในกรอบ ฿100.50–฿143.00
+        ราคาเริ่มต้นที่ ฿118.0 ร่วงลงต่ำสุดที่ ฿100.50 ก่อนฟื้นตัวกลับสู่ ฿123.5 ในปัจจุบัน
+        (+4.7% รอบปี) แรงกดดันหลักมาจากกำไรที่อ่อนแอในปีก่อนและความกังวลด้านสินทรัพย์ต่างประเทศ
+        แต่ผลประกอบการ Q1/2569 ที่ฟื้นตัว +349% YoY ช่วยหนุนราคาให้ยืนเหนือ ฿120 ได้
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. DDM / Gordon Growth Model</div><div class="mdesc">D₁ = ปันผล ฿6.50 × (1+3%); g = 3.0%, r = 9.5% → ฿6.50 / (9.5% − 3.0%)</div></div>
+        <div class="mval">฿100</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. P/E Valuation (Forward)</div><div class="mdesc">EPS adj. ฿6.65 (annualized Q1/69) × P/E เป้าหมาย ~15x — Utility sector avg SET</div></div>
+        <div class="mval">฿100</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. P/BV Target</div><div class="mdesc">BVPS ฿192.7 × P/BV เป้าหมาย 0.72x — ส่วนลดจากคุณภาพ portfolio ต่างประเทศที่ปรับปรุง</div></div>
+        <div class="mval">฿139</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿90 – ฿140</span></div>
+        <div class="r">฿113</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        DDM และ P/E Forward ชี้ไปที่ ฿100 เป็น Fair Value ขั้นต่ำ (อิงกำไรปกติ + ปันผล)
+        ขณะที่ P/BV เป้าหมาย 0.72x ให้ค่าสูงกว่าที่ ฿139 สะท้อนว่าตลาดให้ Discount สินทรัพย์มากเกินไป
+        เฉลี่ย 3 วิธีได้ ฿113 ซึ่งต่ำกว่าราคาตลาด ฿123 เล็กน้อย บ่งชี้ว่าหุ้น "ซื้อขายที่ระดับเต็มมูลค่า"
+        หากกำไรฟื้นตัวต่อเนื่องจาก Q1/2569 จะมี upside จาก Re-rating P/E ลงมาที่ระดับปกติ
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿123.0</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿113</div></div>
+        </div>
+        <div class="scale">
+          <span>฿79.1<br><small>MOS 30%</small></span>
+          <span>฿90.4<br><small>MOS 20%</small></span>
+          <span style="text-align:center">฿113<br><small>Fair Value</small></span>
+          <span style="text-align:right">฿130<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">฿140<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน ฿123.0 สูงกว่า Fair Value ฿113 ประมาณ 8.8% — อยู่ในโซน "เต็มมูลค่า" จากแบบจำลอง DDM+P/E
+        P/BV เพียง 0.62x บ่งชี้ตลาดยังให้ Discount ต่อมูลค่าสินทรัพย์จริงอย่างมาก
+        โซนน่าสนใจสำหรับ Value Investor คือ ฿90–฿100 (MOS 20–30%) และผลตอบแทนปันผล 5.28%
+        ดึงดูดสำหรับนักลงทุนเน้นรายได้แม้จะไม่มี MOS จากราคาปัจจุบัน
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">-8.8%</div>
+        <div class="txt">ราคาสูงกว่ามูลค่าเหมาะสม — ยังไม่มี Margin of Safety</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿90.4</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿79.1</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿113</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="123.0" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿123.0 • EPS ฐาน ~฿6.65 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS 0%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿79.8</div>
+          <div class="ret neg">-19.3%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿6.65</span></li>
+            <li><span>P/E ออก</span><span>12x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿19.5</span></li>
+            <li><span>สถานการณ์</span><span>กำไรทรงตัว ตลาดลด P/E</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +5%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿115.5</div>
+          <div class="ret pos">+9.8%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿7.70</span></li>
+            <li><span>P/E ออก</span><span>15x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿19.5</span></li>
+            <li><span>สถานการณ์</span><span>RE ขยาย กำไรค่อยๆ ฟื้น</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +12%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿168.1</div>
+          <div class="ret pos">+53.6%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿9.34</span></li>
+            <li><span>P/E ออก</span><span>18x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿20.8</span></li>
+            <li><span>สถานการณ์</span><span>RE ขยายเร็ว สัญญา PPA ใหม่</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      กรณี Base: EPS ฟื้นตัวพอประมาณ 5%/ปี จาก ฿6.65 → ฿7.70 ปี 2572 ราคาเป้า ฿115.5 + ปันผล ฿19.5 = ผลตอบแทนรวม ~฿12 หรือ ~9.8% รวม 3 ปี
+      กรณี Bull: EGCO เร่งโครงการ RE ใหม่ สัญญา PPA ต่อเนื่อง EPS โตแรง 12%/ปี ราคาเป้า ฿168 + ปันผล = +53.6%
+      ความเสี่ยง Bear: กำไรทรงตัวจากสัญญาเก่า ตลาดปรับ P/E ลง ราคาเป้า ฿80 + ปันผล = -19.3% รวม 3 ปี
+      สมมติฐาน: DPS ทรงตัวที่ ~฿6.50–฿7.00/ปี (payout ratio ลดลงเมื่อ EPS ฟื้นตัวกลับสู่ระดับปกติ)
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>กำไรฟื้นตัวแข็งแกร่ง:</b> Q1/2569 กำไร ฿875M +349% YoY บ่งชี้ผลลบพิเศษปีก่อนหมดลงแล้ว</li>
+          <li><b>RE Transition แผน 30% ภายใน 2573:</b> EGCO มุ่งเป้าเพิ่มสัดส่วนพลังงานหมุนเวียนเป็น 30% รับกระแสโลก Carbon Neutral</li>
+          <li><b>ปันผลสม่ำเสมอ Yield 5.28%:</b> DPS ฿6.50 ต่อเนื่อง ดึงดูดนักลงทุนเน้นรายได้ในภาวะดอกเบี้ยขาลง</li>
+          <li><b>P/BV ต่ำ 0.62x:</b> Discount ต่อ Book Value มาก หากกำไรฟื้นตัว Re-rating P/BV กลับสู่ 0.80x ได้</li>
+          <li><b>โครงสร้างธุรกิจ PPA ระยะยาว:</b> สัญญาซื้อไฟฟ้าระยะยาวกับ EGAT ลดความผันผวนรายได้และกระแสเงินสด</li>
+          <li><b>Dow Jones Best-in-Class 2026:</b> หุ้น SET ที่ถูกคัดเลือกเข้าดัชนี ESG ระดับโลก Utilities EM เพิ่มความน่าสนใจ</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>ROE ต่ำ ~2%:</b> ฐานทุนใหญ่แต่กำไรยังน้อย ลดทอนความน่าดึงดูดสำหรับ Growth Investor</li>
+          <li><b>ความเสี่ยงสินทรัพย์ต่างประเทศ:</b> ประสบการณ์ขาดทุนในออสเตรเลียและอินโดนีเซียกดดันกำไรในปีที่ผ่านมา</li>
+          <li><b>สัญญา PPA หมดอายุ:</b> โรงไฟฟ้าหลักในไทยบางส่วนสัญญาใกล้หมด ต้องต่ออายุในสภาวะแข่งขันสูงขึ้น</li>
+          <li><b>ความเสี่ยงด้านเงินตราต่างประเทศ:</b> รายได้บางส่วนเป็น USD/AUD กระทบหากบาทแข็งค่าต่อเนื่อง</li>
+          <li><b>EPS TTM บิดเบือน:</b> P/E 31x จากฐาน EPS ต่ำ อาจดูแพงในมุมผู้ลงทุนที่ใช้ Trailing P/E เป็นหลัก</li>
+          <li><b>การลงทุน RE ต้องการเงินทุนสูง:</b> การขยาย RE ต้องกู้เพิ่ม อาจเพิ่มภาระหนี้และกดดันปันผลในระยะกลาง</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>เต็มมูลค่า — น่าสนใจสำหรับนักลงทุนเน้นปันผล รอจังหวะสะสมที่ดีกว่า</h2>
+      <p>EGCO เป็น IPP ชั้นนำที่มีพอร์ตโรงไฟฟ้ากระจายตัวในหลายประเทศ สร้างกระแสเงินสดสม่ำเสมอจากสัญญา PPA ระยะยาว
+      เงินปันผล 5.28% ต่อปีดึงดูดนักลงทุนเน้นรายได้ แต่ราคาปัจจุบัน ฿123 อยู่เหนือ Fair Value ฿113 (เฉลี่ย DDM+P/E+P/BV) ประมาณ 8.8%
+      ROE เพียง 2% และ P/E TTM สูง 31x (จากกำไรพิเศษหายในปีก่อน) ทำให้มูลค่ายังตึง
+      จุดเด่นคือ P/BV เพียง 0.62x ซึ่งต่ำมากสำหรับ IPP ขนาดนี้ หากกำไรฟื้นตัวต่อเนื่อง (Q1/2569 +349%) และ RE strategy สำเร็จ
+      มี Upside จาก Re-rating P/BV กลับสู่ระดับปกติ นักลงทุนระยะยาวอาจรอสะสมที่ ฿90–฿100 เพื่อ MOS 20-30%</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿113 <span style="font-size:12px;color:#cab9a8">(฿90–฿140)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ -8.8%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿130 (ทรงตัว)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ถือเพื่อรับปันผล 5.28% ได้ในฐานะ Income Stock แต่สำหรับซื้อใหม่ รอราคาต่ำกว่า ฿110 (ใกล้ FV) หรือ ฿90 (MOS 20%)
+        เพื่อ margin of safety เพียงพอ — จับตาผลประกอบการ Q2/2569 และแผน RE 30% ปี 2573 เป็นตัวชี้วัดการฟื้นตัว
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    แหล่งข้อมูล: SET.or.th Factsheet (ก.ค. 2026) • Yahoo Finance EGCO.BK monthly chart (ก.ค. 2026) • EGCO Group IR (egco.com) งวด Q1/2026 • ราคา ณ 3 ก.ค. 2026
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 3 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
