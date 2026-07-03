@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น สกาย ไอซีที (SKY) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"SKY","currency":"THB","price":15.00,"fairValue":16.00,"mos":6.3,"upside":6.7,"pe":13.7,"dividendYield":2.0,"roe":12.4}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#0288d1",
+    "accentDark": "#01579b",
+    "darkGrad": "linear-gradient(135deg,#01579b 0%,#0288d1 60%,#29b6f6 100%)",
+    "glow": "rgba(2,136,209,0.3)",
+    "subColor": "#b3e5fc",
+    "headerMuted": "rgba(255,255,255,0.6)",
+    "verdictText": "#e1f5fe",
+    "vcellLabel": "rgba(225,245,254,0.7)",
+    "badge": "#0288d1",
+    "chgBg": "#1e4620",
+    "chgColor": "#81c784"
+  },
+  "chart": {
+    "data": [
+      ["ก.ค. 68", 12.00],
+      ["ส.ค. 68", 13.40],
+      ["ก.ย. 68", 14.90],
+      ["ต.ค. 68", 17.70],
+      ["พ.ย. 68", 15.10],
+      ["ธ.ค. 68", 14.50],
+      ["ม.ค. 69", 14.30],
+      ["ก.พ. 69", 11.90],
+      ["มี.ค. 69", 11.10],
+      ["เม.ย. 69", 10.60],
+      ["พ.ค. 69", 9.80],
+      ["มิ.ย. 69", 12.20],
+      ["ก.ค. 69", 15.00]
+    ],
+    "min": 8.5,
+    "max": 19.5,
+    "grid": [10, 12, 14, 16, 18],
+    "fairLine": 16.00,
+    "currency": "฿",
+    "highlight": [3, 10],
+    "gridFmt": "v.toFixed(0)",
+    "dataFmt": "d[1].toFixed(2)"
+  },
+  "gauge": {
+    "min": 8.0,
+    "max": 20.0,
+    "cur": 15.00,
+    "fair": 16.00,
+    "fairLabelTop": true
+  },
+  "fv": 16.00
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">●●●●●●●●●●●●</div>
+    <div>
+      <span class="tag">SET: SKY</span>
+      <span class="tag">Technology</span>
+      <span class="tag">ICT Solutions</span>
+    </div>
+    <h1>สกาย ไอซีที (SKYICT PCL)</h1>
+    <div class="sub">โซลูชัน IT สนามบิน (AOT/SAWASDEE Platform) • AI/Biometric &amp; E-KYC • CCTV &amp; Cybersecurity • Smart City &amp; Facility Management • Cloud &amp; IoT</div>
+    <div class="price-row">
+      <div>
+        <div class="px">฿15.00<small>(SKY)</small></div>
+      </div>
+      <div class="chg">▲ +25.0% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 3 ก.ค. 2569 · FY2025/FY2568<br>
+        กรอบ 52 สัปดาห์ ฿9.80 – ฿17.70<br>
+        ที่มา: StockAnalysis.com / SET Factsheet / skyict.co.th
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ก.ค. 2569 · FY2568 (2025)</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">฿10,830 ล้าน</div><div class="d">717.28 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~13.7x</div><div class="d">ต่ำกว่า sector avg ~18x</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~3 ปี</div><div class="v">~28x</div><div class="d">2023: 33x · 2024: 39x · 2025: 12x</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">1.72x</div><div class="d">BVPS ~฿8.78</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2568</div><div class="v">฿688 ล้าน</div><div class="d">+42.1% YoY</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿1.09</div><div class="d">FY2568: ฿0.96/หุ้น</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~฿8.78</div><div class="d">Equity ฿5,970 ล้าน</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~12.4% / 9.5%</div><div class="d">FY2568 (skyict.co.th)</div></div>
+
+      <div class="metric"><div class="k">รายได้ FY2568</div><div class="v neu">฿10,248 ล้าน</div><div class="d">+52.4% YoY</div></div>
+      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">16.5%</div><div class="d">ลดลงจาก 19.9% FY67 เพราะ mix</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~2.0%</div><div class="d">฿0.30/หุ้น · Ex-div 7 พ.ค. 69</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">0.25</div><div class="d">ความผันผวนต่ำมาก vs ตลาด</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ก.ค. 2568 – ก.ค. 2569</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#0288d1"></i>ราคา SKY</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿16.00</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคา SKY ปรับตัวขึ้นแรงจาก ~฿12.00 (ก.ค. 68) สู่จุดสูงสุด 52 สัปดาห์ที่ ฿17.70 ใน ต.ค. 68
+        ตามแรงซื้อจากผลประกอบการ FY67 แข็งแกร่งและกระแส Airport IT ขยายตัว
+        จากนั้นปรับฐานลงต่อเนื่องจนถึงจุดต่ำสุดที่ ฿9.80 ใน พ.ค. 69 (ช่วง ex-dividend + ตลาดรวม soft)
+        และดีดตัวกลับขึ้นมาแข็งแกร่งที่ ~฿15.00 ใน ก.ค. 69 ผลตอบแทนรอบปี +25.0% (จาก ฿12.00 → ฿15.00)
+        แนวรับสำคัญ ฿13.90 · แนวต้านถัดไป ฿15.20 และ ฿17.70 (52w high)
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">3 วิธี · weighted avg (40/20/40)</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS adj. ฿1.09 × P/E เป้าหมาย ~18x — sector avg Thai IT integrators; ต่ำกว่า P/E historical เพราะ base ขยายแล้ว</div></div>
+        <div class="mval">฿19.62</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล ฿0.30 × (1+g); g 5%, r 9% → DDM ให้ค่าต่ำเพราะ payout ratio ต่ำ (SKY reinvest เพื่อเติบโต)</div></div>
+        <div class="mval">฿7.88</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 12.4% − g 5%)/(r 9% − g 5%) ≈ 1.85 × BVPS ฿8.78</div></div>
+        <div class="mval">฿16.24</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสม (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿7.88 – ฿19.62 · weighted 40%/20%/40%</span></div>
+        <div class="r">฿16.00</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        P/E Valuation (฿19.62) เหมาะกับ growth stock ที่กำไรขยายเร็ว ให้ค่าสูงสุด
+        Justified P/BV (฿16.24) สะท้อน ROE ที่กำลังปรับขึ้น ให้ค่ากลางที่สมเหตุสมผล
+        DDM (฿7.88) ให้ค่าต่ำมากเพราะ SKY จ่ายปันผลเพียง ฿0.30/หุ้น — ไม่เหมาะกับ growth integrator ที่ reinvest สูง จึงให้น้ำหนักน้อย (20%)
+        มูลค่าเหมาะสม ฿16.00 อิง weighted average (P/E 40%, Justified P/BV 40%, DDM 20%)
+        ที่ราคา ฿15.00 หุ้นมี upside จำกัด ~6.7% ยังไม่ถึงโซน deep value
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿15.00</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿16.00</div></div>
+        </div>
+        <div class="scale">
+          <span>฿11.20<br><small>MOS 30%</small></span>
+          <span>฿12.80<br><small>MOS 20%</small></span>
+          <span style="text-align:center">฿16.00<br><small>Fair Value</small></span>
+          <span style="text-align:right">฿16.50<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">฿19.62<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคา ฿15.00 อยู่ต่ำกว่า fair value ฿16.00 ประมาณ ~6% — อยู่ในโซน "ใกล้เหมาะสม" ยังไม่ถึงโซน MOS 20% (฿12.80)
+        สำหรับ value investor ที่ต้องการ safety margin จะรอโซน ฿12.80–฿13.50 ก่อนเพิ่มสถานะ
+        สำหรับ growth investor ที่เชื่อมั่น airport IT + AI/biometric story สามารถเริ่มสะสมทยอยได้ที่ระดับนี้
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict ok">
+        <div class="big">+6.3%</div>
+        <div class="txt">ราคาพอใช้ — ยังไม่ถึงโซน Value (MOS 20%) · เหมาะสะสมทยอย</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿12.80</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿11.20</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿16.00</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="15.00" step="0.05">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿15.00 • EPS ฐาน ~฿1.09 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS 0%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿13.08</div>
+          <div class="ret neg">−7.5% รวม 3 ปี (−2.5%/ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿1.09</span></li>
+            <li><span>P/E ออก</span><span>12x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.90</span></li>
+            <li><span>สถานการณ์</span><span>งบรัฐชะลอ + macro กดดัน</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +10%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿21.75</div>
+          <div class="ret pos">+51.7% รวม 3 ปี (+14.8%/ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿1.45</span></li>
+            <li><span>P/E ออก</span><span>15x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.95</span></li>
+            <li><span>สถานการณ์</span><span>Airport IT + Smart City ขยายตัวปกติ</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +20%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿37.15</div>
+          <div class="ret pos">+154.3% รวม 3 ปี (+36.0%/ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿1.88</span></li>
+            <li><span>P/E ออก</span><span>19x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿1.20</span></li>
+            <li><span>สถานการณ์</span><span>AI/biometric breakthrough + AOT mega-contract</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      Base case สมมติ EPS เติบโต 10%/ปี (อนุรักษ์นิยมกว่า CAGR จริง 3 ปีที่ ~60%+ เพราะ base ใหญ่ขึ้นมากแล้ว: FY67 รายได้ ฿6.7K ล้าน, FY68 ฿10.2K ล้าน)
+      P/E exit 15x สะท้อนการ re-rate สู่ระดับ sector ที่เหมาะสม · Bull case อิง AI/biometric platform สำเร็จและสัญญาใหม่ AOT สนามบินใหม่ (สุวรรณภูมิเฟส 2)
+      Bear case เกิดถ้างบลงทุนรัฐชะลอ การแข่งขันรุนแรงกดมาร์จิ้น หรือ macro กดดันภาคเอกชน
+      ปันผล Bear case อิง ฿0.30/ปี × 3, Base/Bull ปรับตามการเติบโต
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก &amp; ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>AOT Airport Mega-Projects:</b> ไทยขยายสนามบินสุวรรณภูมิ เชียงใหม่ และภูเก็ต — SKY เป็น IT integrator หลักของ AOT ผ่านแพลตฟอร์ม SAWASDEE ที่ครอบคลุม passenger screening, biometric gate, และ flight info systems</li>
+          <li><b>AI/Biometric &amp; E-KYC Growth:</b> ตลาด digital identity verification เติบโตสูง ภาครัฐและธนาคารต้องการ E-KYC สำหรับ digital onboarding — SKY พัฒนาเทคโนโลยี face recognition ในบ้านที่มี moat สำหรับตลาดไทย</li>
+          <li><b>Smart City &amp; Smart Building Expansion:</b> นโยบาย Smart City ของรัฐบาล + อสังหาฯ เอกชนต้องการ intelligent facility management — SKY ขยายสู่ smart building security และ operation center ที่มีรายได้ recurring</li>
+          <li><b>Cybersecurity Demand:</b> ความต้องการ cybersecurity solution เพิ่มสูงจากภัยคุกคาม — SKY มี portfolio ครบทั้ง CCTV, access control, และ network security สำหรับองค์กรภาครัฐและเอกชน</li>
+          <li><b>Recurring Revenue Base:</b> สัดส่วน service revenue ~80%+ ของรายได้ FY67 ช่วยลดความผันผวนจากโปรเจ็กต์ one-off ทำให้กำไรมีความมั่นคงมากขึ้นและ predictable</li>
+          <li><b>Global Tech Partnerships:</b> เป็น certified partner ของ Microsoft, AWS, Cisco ช่วยให้ SKY เข้าถึงเทคโนโลยีล่าสุดและสร้างความน่าเชื่อถือกับลูกค้าองค์กรขนาดใหญ่</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>Revenue Concentration Risk:</b> พึ่งพิง AOT และโปรเจ็กต์ภาครัฐสูง — การล่าช้าหรือยกเลิกโครงการอาจกระทบรายได้และกำไรอย่างมีนัยสำคัญในระยะสั้น</li>
+          <li><b>Gross Margin Erosion:</b> Gross margin ลดลงต่อเนื่อง 25.4% → 19.9% → 16.5% เนื่องจาก revenue mix เปลี่ยน (low-margin system integration เพิ่มขึ้น) — ถ้าต่ำกว่า 15% จะกดดัน net income</li>
+          <li><b>Intense Competition:</b> ตลาด IT integrator ไทยมีคู่แข่งทั้ง local และ multinational (IBM, Accenture, Huawei) ที่มีทรัพยากรและ network มากกว่า</li>
+          <li><b>Technology Disruption:</b> AI generative ทำให้ cycle เทคโนโลยีสั้นลง — SKY ต้อง reinvest ต่อเนื่องเพื่อรักษาความสามารถแข่งขัน อาจกดดัน FCF และ dividend capacity</li>
+          <li><b>Government Budget Cycle:</b> งบประมาณรัฐมีความล่าช้าในการเบิกจ่าย — ปีที่งบล่าช้ากระทบ project revenue recognition และ working capital อย่างมีนัยสำคัญ</li>
+          <li><b>Data Privacy &amp; PDPA Risk:</b> การจัดเก็บ biometric data ของผู้โดยสารสนามบินมีความเสี่ยงด้าน data breach และ PDPA liability — อาจกระทบชื่อเสียงและค่าใช้จ่ายทางกฎหมาย</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>น่าติดตาม — Growth Story แข็งแกร่ง แต่ราคาสะท้อนส่วนหนึ่งไปแล้ว</h2>
+      <p>SKY ICT เป็น pure-play IT integrator สำหรับสนามบินและ smart city ในไทยที่มีความได้เปรียบชัดเจน: สัญญาระยะยาวกับ AOT, แพลตฟอร์ม SAWASDEE ที่ built-in, และ AI/biometric capability พัฒนาในบ้าน รายได้เติบโต 52% YoY ใน FY68 สะท้อน execution ที่แข็งแกร่ง อย่างไรก็ตาม ที่ราคา ฿15.00 หุ้นซื้อขายใกล้ fair value ฿16.00 (MOS เพียง ~6.3%) เหมาะสะสมทยอยมากกว่าซื้อพรวดเดียว จุดเข้าที่ดีกว่าคือโซน MOS 20% ที่ ~฿12.80 ซึ่งอาจเกิดขึ้นได้หากตลาดรวมปรับฐานหรือผลประกอบการต่ำกว่าคาด</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿16.00 <span style="font-size:12px;color:#cab9a8">(฿7.88–฿19.62)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +6.3%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿16.50 (ไม่มี consensus)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> สะสมทยอยที่ ฿13.50–฿15.00 · เพิ่มน้ำหนักเต็มโซน MOS 20% ที่ &lt;฿12.80 · ตัด stop ถ้าต่ำกว่า ฿9.80 (52w low) อย่างมีนัยสำคัญ · ถือระยะ 2–3 ปีรอ re-rate จาก Airport expansion + Smart City
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    แหล่งข้อมูล: (1) StockAnalysis.com BKK:SKY — ราคา ฿15.00, EPS TTM ฿1.09, P/E 13.74, FY2568 revenue ฿10,248M, net income ฿688M · (2) SET Factsheet set.or.th — ราคา ฿15.10, P/E 13.82, P/BV 1.72, mkt cap ฿10,831M, 52w ฿9.80–฿17.70 · (3) skyict.co.th/investors/financial-highlights — FY2568 revenue ฿10,264M, net profit ฿688M, EPS ฿0.96, ROE 12.39%, ROA 9.48% (FY สิ้นสุด 31 ธ.ค. 2568) · (4) aio.panphol.com/stock/SKY — BVPS ฿8.78, P/BV 1.72, div ฿0.30 ex-div 7 พ.ค. 69 · ราคา cross-verified ≤1% (StockAnalysis ฿15.00 vs SET ฿15.10)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 3 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>

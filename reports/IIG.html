@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น ไอแอนด์ไอ กรุ๊ป (IIG) — Stock Analysis Dashboard</title>
+<!-- ★ โมเดล AI ที่ใช้วิเคราะห์จริง -->
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — gate E29–31 -->
+<script type="application/json" id="stock-meta">
+{"symbol":"IIG","currency":"THB","price":1.38,"fairValue":1.45,"mos":4.83,"upside":5.07,"pe":null,"dividendYield":null,"roe":null}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#0277bd",
+    "accentDark": "#01579b",
+    "darkGrad": "linear-gradient(135deg,#01579b 0%,#0277bd 60%,#0288d1 100%)",
+    "glow": "rgba(2,119,189,0.3)",
+    "subColor": "#b3e5fc",
+    "headerMuted": "rgba(255,255,255,0.6)",
+    "verdictText": "#e1f5fe",
+    "vcellLabel": "rgba(225,245,254,0.7)",
+    "badge": "#0288d1",
+    "chgBg": "#fce8e6",
+    "chgColor": "#c5221f"
+  },
+  "chart": {
+    "data": [
+      ["ก.ค. 68", 1.60],
+      ["ส.ค. 68", 1.48],
+      ["ก.ย. 68", 1.37],
+      ["ต.ค. 68", 1.32],
+      ["พ.ย. 68", 1.48],
+      ["ธ.ค. 68", 1.36],
+      ["ม.ค. 69", 1.38],
+      ["ก.พ. 69", 1.35],
+      ["มี.ค. 69", 1.30],
+      ["เม.ย. 69", 1.32],
+      ["พ.ค. 69", 1.35],
+      ["มิ.ย. 69", 1.40],
+      ["ก.ค. 69", 1.38]
+    ],
+    "min": 0.90,
+    "max": 2.10,
+    "grid": [1.00, 1.25, 1.50, 1.75, 2.00],
+    "fairLine": 1.45,
+    "currency": "฿",
+    "highlight": [4],
+    "gridFmt": "v.toFixed(2)",
+    "dataFmt": "d[1].toFixed(2)"
+  },
+  "gauge": {
+    "min": 0.90,
+    "max": 2.10,
+    "cur": 1.38,
+    "fair": 1.45,
+    "fairLabelTop": false
+  },
+  "fv": 1.45
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">●●●</div>
+    <div>
+      <span class="tag">MAI: IIG</span>
+      <span class="tag">Technology Services</span>
+      <span class="tag">Digital Consulting</span>
+    </div>
+    <h1>บมจ. ไอแอนด์ไอ กรุ๊ป (I&amp;I Group)</h1>
+    <div class="sub">IT consulting &amp; CRM (Salesforce) • ERP (Oracle) • Digital Insurance Solutions • IT Staffing • Business Analytics • iMatch platform</div>
+    <div class="price-row">
+      <div>
+        <div class="px">฿1.38<small>(IIG)</small></div>
+      </div>
+      <div class="chg">▼ −13.8% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 3 ก.ค. 2569<br>
+        กรอบ 52 สัปดาห์ ฿1.07 – ฿2.48<br>
+        ที่มา: Yahoo Finance, SET, StockAnalysis.com
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ก.ค. 2569</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">฿170 ล้าน</div><div class="d">123.38 ล้านหุ้น · MAI</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">0.78x</div><div class="d">BVPS ฿1.76 (Q1/69) · ต่ำกว่า book</div></div>
+      <div class="metric"><div class="k">Enterprise Value</div><div class="v">฿488 ล้าน</div><div class="d">EV/Revenue ≈ 0.64x (TTM ฿699M)</div></div>
+      <div class="metric"><div class="k">D/E Ratio</div><div class="v neg">3.08x</div><div class="d">หนี้สูงผิดปกติ · กดดัน FCF</div></div>
+
+      <div class="metric"><div class="k">ขาดทุนสุทธิ FY2568</div><div class="v neg">฿388 ล้าน</div><div class="d">−686% YoY · EPS −฿3.17/หุ้น</div></div>
+      <div class="metric"><div class="k">รายได้ FY2568</div><div class="v">฿769 ล้าน</div><div class="d">−30.2% YoY vs ฿1,101M ปี 67</div></div>
+      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v neu">16.4%</div><div class="d">FY2568 · ฟื้นจาก −3.5% ปี 66</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">฿1.76</div><div class="d">Q1/69 · ลดจาก ฿5.08 (FY67)</div></div>
+
+      <div class="metric"><div class="k">กระแสเงินสด OCF</div><div class="v neg">−฿19.2 ล้าน</div><div class="d">FY2568 · ติดลบต่อเนื่อง 3 ปี</div></div>
+      <div class="metric"><div class="k">FCF / หุ้น</div><div class="v neg">−฿0.16</div><div class="d">FY2568 · สภาพคล่องตึงตัว</div></div>
+      <div class="metric"><div class="k">เงินสด</div><div class="v">฿45.7 ล้าน</div><div class="d">FY2568 · ลด 70% จาก FY64</div></div>
+      <div class="metric"><div class="k">ราคา IPO</div><div class="v">฿6.60</div><div class="d">ส.ค. 2563 · ปัจจุบันต่ำกว่า 79%</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ก.ค. 2568 – ก.ค. 2569</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#0277bd"></i>ราคา IIG</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿1.45</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคาหุ้น IIG ช่วง 1 ปีที่ผ่านมาอยู่ในแนวโน้มขาลงโดยรวม จาก ฿1.60 ในเดือน ก.ค. 2568 ลงแตะจุดต่ำสุด ฿1.30 ในเดือน มี.ค. 2569
+        ก่อนจะฟื้นตัวเล็กน้อยมาที่ ฿1.38 ณ ปัจจุบัน ผลตอบแทนรอบปี −13.8% สะท้อนความกังวลของตลาดต่อผลขาดทุนปี 2568 ที่พุ่งขึ้นถึง 388 ล้านบาท
+        และปัญหา debt restructuring ที่เกิดขึ้นกลางปี 68 ราคาปัจจุบันยังคงต่ำกว่าเส้น Fair Value ฿1.45 เพียงเล็กน้อย แต่ MOS แคบมาก
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">3 วิธี · ไม่ใช้ P/E และ DDM (ขาดทุน / ไม่ปันผล)</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/BV (Asset-based)</div><div class="mdesc">P/BV เป้าหมาย 0.80x × BVPS ฿1.76 (Q1/69) — สะท้อนมูลค่าสินทรัพย์สุทธิในบริบทที่ equity ยังลดลง · P/BV recovery จะเป็นไปได้เมื่อหยุดขาดทุน</div></div>
+        <div class="mval">฿1.41</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. P/Revenue (EV/Sales)</div><div class="mdesc">Revenue TTM ฿699M × P/S เป้าหมาย 0.30x ÷ หุ้น 123.38 ล้านหุ้น — เทียบ peer IT consulting MAI ที่ยังขาดทุนหรือเพิ่งพลิกกำไร · P/S 0.30x สะท้อน margin ต่ำและ revenue shrink</div></div>
+        <div class="mval">฿1.70</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Conservative Net Asset</div><div class="mdesc">Shareholders' equity ฿218M (Q1/69) × haircut 70% (ความเสี่ยง goodwill/intangible ถูกตัดเพิ่ม + D/E 3x) ÷ หุ้น 123.38 ล้านหุ้น — เป็นเกณฑ์ฐานต่ำสุด</div></div>
+        <div class="mval">฿1.24</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿1.24 – ฿1.70</span></div>
+        <div class="r">฿1.45</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        หมายเหตุ: ไม่สามารถใช้ P/E ได้เนื่องจาก IIG ยังขาดทุนต่อเนื่อง และตัด DDM เพราะไม่จ่ายปันผลตั้งแต่ปี 2565 ·
+        วิธี P/Revenue ให้ค่าสูงสุด (฿1.70) สะท้อน revenue base ที่ยังมีขนาด · วิธี Conservative Net Asset ให้ค่าต่ำสุด (฿1.24) สะท้อนความเสี่ยงว่า equity อาจลดต่อได้อีก ·
+        ราคาปัจจุบัน ฿1.38 อยู่ใต้ Fair Value ฿1.45 เพียงเล็กน้อย MOS 4.8% ถือว่าต่ำมากสำหรับหุ้นที่มีความเสี่ยงสูง
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿1.38</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿1.45</div></div>
+        </div>
+        <div class="scale">
+          <span>฿1.02<br><small>MOS 30%</small></span>
+          <span>฿1.16<br><small>MOS 20%</small></span>
+          <span style="text-align:center">฿1.45<br><small>Fair Value</small></span>
+          <span style="text-align:right">฿1.50<br><small>เป้าอนุรักษ์นิยม</small></span>
+          <span style="text-align:right">฿1.70<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคา ฿1.38 อยู่ต่ำกว่า Fair Value ฿1.45 เพียง 4.8% — ช่องว่างแคบมากสำหรับหุ้นที่ยังขาดทุนและมีความเสี่ยงสูง ·
+        โซนน่าสนใจกว่าคือ MOS 20% ที่ ฿1.16 หรือ MOS 30% ที่ ฿1.02 ซึ่งต้องรอให้ราคาปรับลงมาก่อน ·
+        ไม่มีข้อมูลราคาเป้านักวิเคราะห์ (IIG มี analyst coverage น้อยมาก)
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">+4.8%</div>
+        <div class="txt">MOS ต่ำมาก — ราคาปัจจุบันอยู่ใกล้ Fair Value มาก ไม่มีส่วนเผื่อความปลอดภัยที่เพียงพอสำหรับหุ้นที่ยังขาดทุน</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿1.16</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿1.02</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿1.45</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="1.38" step="0.05">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿1.38 • ฐาน P/BV Recovery • ไม่รวมปันผล (ยังไม่จ่าย)</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>ขาดทุนต่อเนื่อง</span></div>
+        <div class="body">
+          <div class="tgt">฿0.88</div>
+          <div class="ret neg">−36.2% / 3 ปี (−13.8%/ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~−฿0.50</span></li>
+            <li><span>P/BV ออก</span><span>0.50x BVPS</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>฿0</span></li>
+            <li><span>สถานการณ์</span><span>ขาดทุน · equity ลดต่อ</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>ฟื้นตัว break-even</span></div>
+        <div class="body">
+          <div class="tgt">฿1.76</div>
+          <div class="ret pos">+27.5% / 3 ปี (+8.4%/ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~+฿0.05</span></li>
+            <li><span>P/BV ออก</span><span>1.0x BVPS</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>฿0</span></li>
+            <li><span>สถานการณ์</span><span>กลับ break-even ปี 70–71</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>พลิกกำไร + M&amp;A</span></div>
+        <div class="body">
+          <div class="tgt">฿2.64</div>
+          <div class="ret pos">+91.3% / 3 ปี (+23.8%/ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~+฿0.20</span></li>
+            <li><span>P/BV ออก</span><span>1.5x BVPS</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>฿0–฿0.05</span></li>
+            <li><span>สถานการณ์</span><span>M&amp;A สำเร็จ + AI revenue</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      การคาดการณ์ใช้ฐาน P/BV Recovery เนื่องจาก IIG ยังขาดทุนและไม่มี EPS บวก ·
+      Bear: ขาดทุนต่อเนื่อง equity ลด → ราคาดิ่งสู่ ฿0.88 (P/BV 0.50x) ·
+      Base: พลิก break-even ได้ภายในปี 2570–71 → ราคาฟื้นเป็น ฿1.76 (P/BV 1.0x) ·
+      Bull: M&amp;A + AI เสริมรายได้ → ฿2.64 (P/BV 1.5x) ·
+      ความเสี่ยงสูงมาก: ขาดทุนปี 68 ผิดปกติ (388 ล้าน) อาจมี one-time impairment ซ่อน · ต้องติดตาม Q2/69 เป็นต้นไปอย่างใกล้ชิด
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก &amp; ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>AI Integration:</b> IIG มุ่งพัฒนา AI solutions สอดคล้องกับกระแส Salesforce Einstein AI และ Oracle Cloud AI ที่ขยายตัวแรง ช่วยเพิ่ม value-add ให้บริการ CRM/ERP</li>
+          <li><b>M&amp;A กลยุทธ์:</b> แผนซื้อกิจการ IT/product-based ที่ดึงดูดลูกค้า อาจขยาย revenue stream ใหม่โดยไม่ถูกนับรวมในเป้า 1,200 ล้านบาท</li>
+          <li><b>Recurring Revenue Base:</b> สัดส่วนรายได้ประจำ ~70% ของ backlog ช่วยสร้างรายได้ที่คาดการณ์ได้ · Recurring income เป้าปี 69 ≥฿800 ล้าน</li>
+          <li><b>ราคาต่ำกว่า Book Value:</b> P/BV 0.78x หมายความว่าซื้อสินทรัพย์ได้ถูกกว่ามูลค่าบัญชี — upside ชัดเจนหากหยุดขาดทุนได้</li>
+          <li><b>ERP + CRM Demand:</b> ตลาด enterprise software ไทยยังเติบโต · Oracle ERP ขยาย 34% (FY67) · Salesforce CRM มีลูกค้าใหม่ต่อเนื่อง</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>ขาดทุนหนักต่อเนื่อง:</b> ขาดทุน 3 ปีซ้อน (FY66–68) รวม ~750 ล้านบาท · Accumulated loss ฿554 ล้าน · ปี 68 ขาดทุนผิดปกติ 388 ล้าน (686% YoY)</li>
+          <li><b>วิกฤตสภาพคล่อง:</b> เงินสด ฿45.7M · OCF ติดลบ · มีปัญหา debt restructuring ตั๋วสัญญา ฿25M (พ.ค.-มิ.ย. 68) ต้องขอขยายเวลา</li>
+          <li><b>D/E สูงผิดปกติ:</b> D/E ratio 3.08x สูงกว่ามาตรฐาน IT services · หนี้กดดันงบกำไรและ FCF · เสี่ยงต้องเพิ่มทุนเจือจาง</li>
+          <li><b>Revenue ร่วงแรง:</b> รายได้ FY68 ลด 30% จาก ฿1,101M เป็น ฿769M — อาจสูญเสียลูกค้ารายใหญ่หรือโครงการ Landis ที่ลดสัดส่วน</li>
+          <li><b>Convertible Bond ยกเลิก:</b> ข่าว พ.ค. 69 ยกเลิก CB อาจสะท้อนว่าต้องหาทุนรูปแบบอื่น เสี่ยงการเพิ่มทุนกดราคาหุ้น</li>
+          <li><b>Speculative Trading:</b> Volume ต่ำ · ราคาผันผวนสูงมาก (พุ่ง 60% ใน 3 วัน ส.ค. 68 จากข่าว debt extension) · เสี่ยงแรงเก็งกำไรดัน/กดราคา</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>⚠️ ความเสี่ยงสูงมาก — รอสัญญาณพลิกกำไรจริงก่อนลงทุน</h2>
+      <p>IIG เป็นบริษัท IT consulting เชี่ยวชาญ Salesforce CRM และ Oracle ERP ในตลาด MAI แต่ขณะนี้อยู่ในช่วงวิกฤต: ขาดทุนต่อเนื่อง 3 ปีรวมกว่า 750 ล้านบาท · รายได้ FY68 ร่วง 30% · สภาพคล่องตึงตัว · D/E 3.08x · Accumulated loss ฿554 ล้าน · ราคาหุ้นลดจาก IPO 79% · MOS เพียง 4.8% ไม่มีส่วนเผื่อที่เพียงพอ · ไม่เหมาะกับนักลงทุนแบบ VI หรือผู้รับความเสี่ยงต่ำ · เหมาะเฉพาะนักลงทุน turnaround ที่รับ downside ได้เต็มที่</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿1.45 <span style="font-size:12px;color:#cab9a8">(฿1.24–฿1.70)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +4.8%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿1.50 (ไม่มี coverage)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ยังไม่น่าเข้าลงทุนที่ราคา ฿1.38 — MOS ต่ำมากไม่สมดุลกับความเสี่ยง · รอดู Q2/69 เป็นต้นไปว่า revenue จะกลับมาเติบโตหรือ M&amp;A จะเป็นรูปธรรม · หากราคาลงมาถึง ฿1.16 (MOS 20%) พร้อมกับสัญญาณรายได้ฟื้นตัวและหยุดขาดทุน จึงพิจารณาสะสมอย่างระมัดระวังได้ · โซน ฿1.02 (MOS 30%) เหมาะสมที่สุดสำหรับนักลงทุน turnaround
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/BV เป้าหมาย, P/S เป้าหมาย และการคาดการณ์การฟื้นตัวของ equity
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    แหล่งข้อมูล: Yahoo Finance (ราคา · กราฟ ณ 3 ก.ค. 2569), SET / SETTRADE (ข้อมูลบริษัท · งบการเงิน FY2025 / Q1/2026), StockAnalysis.com (Income Statement · Balance Sheet FY2021–FY2025), ii.co.th (Financial Highlights · IR) · งบอ้างอิงงวด FY2025 (ปีสิ้นสุด 31 ธ.ค. 2568) และไตรมาส 1/2026
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 3 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
