@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น เดอะคลีนิกค์ (KLINIQ) — Stock Analysis Dashboard</title>
+<!-- ★ ใส่รุ่นโมเดล AI ที่ใช้วิเคราะห์จริง -->
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) -->
+<script type="application/json" id="stock-meta">
+{"symbol":"KLINIQ","currency":"THB","price":26.00,"fairValue":32.70,"mos":20.5,"upside":25.8,"pe":14.3,"dividendYield":5.6,"roe":21.6}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#e91e63",
+    "accentDark": "#880e4f",
+    "darkGrad": "linear-gradient(135deg,#880e4f 0%,#e91e63 60%,#f06292 100%)",
+    "glow": "rgba(233,30,99,0.3)",
+    "subColor": "#fce4ec",
+    "headerMuted": "rgba(255,255,255,0.6)",
+    "verdictText": "#fce4ec",
+    "vcellLabel": "rgba(252,228,236,0.7)",
+    "badge": "#e91e63",
+    "chgBg": "#1e8e3e",
+    "chgColor": "#ffffff"
+  },
+  "chart": {
+    "data": [
+      ["ก.ค. 68", 23.01],
+      ["ส.ค. 68", 25.03],
+      ["ก.ย. 68", 26.24],
+      ["ต.ค. 68", 24.79],
+      ["พ.ย. 68", 20.61],
+      ["ธ.ค. 68", 20.80],
+      ["ม.ค. 69", 22.36],
+      ["ก.พ. 69", 24.20],
+      ["มี.ค. 69", 22.84],
+      ["เม.ย. 69", 26.25],
+      ["พ.ค. 69", 26.50],
+      ["มิ.ย. 69", 26.75],
+      ["ก.ค. 69", 26.00]
+    ],
+    "min": 18,
+    "max": 34,
+    "grid": [18, 22, 26, 30, 34],
+    "fairLine": 32.70,
+    "currency": "฿",
+    "highlight": [2, 4],
+    "gridFmt": "v.toFixed(0)",
+    "dataFmt": "d[1].toFixed(2)"
+  },
+  "gauge": {
+    "min": 18,
+    "max": 40,
+    "cur": 26.00,
+    "fair": 32.70,
+    "fairLabelTop": true
+  },
+  "fv": 32.70
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">◆ ◆ ◆</div>
+    <div>
+      <span class="tag">SET: KLINIQ</span>
+      <span class="tag">Healthcare</span>
+      <span class="tag">Beauty &amp; Aesthetics</span>
+    </div>
+    <h1>เดอะคลีนิกค์ คลินิกเวชกรรม</h1>
+    <div class="sub">คลินิกผิวหนัง-ความงาม-เลเซอร์-ศัลยกรรม • แบรนด์ The Klinique · L.A.B.X · L'Clinic · KLINIQ Spa • 82+ สาขาทั่วไทย • Recurring customers · Anti-aging · Wellness</div>
+    <div class="price-row">
+      <div>
+        <div class="px">฿26.00<small>(KLINIQ)</small></div>
+      </div>
+      <div class="chg" style="background:var(--chgBg,#1e8e3e);color:var(--chgColor,#fff)">▲ +13.0% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 3 ก.ค. 2569<br>
+        กรอบ 52 สัปดาห์ ฿19.60 – ฿30.00<br>
+        ที่มา: SET / StockAnalysis / Investing.com
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ก.ค. 2569 · TTM</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">฿5,720 ล้าน</div><div class="d">220 ล้านหุ้น · Par ฿0.50</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~14.3x</div><div class="d">EPS TTM ฿1.82 · จดทะเบียน พ.ย. 2565</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย Sector</div><div class="v">~20–25x</div><div class="d">Healthcare Aesthetics ไทย</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">3.05x</div><div class="d">BVPS ~฿8.52 · สุขภาพดี</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2568</div><div class="v">฿363.7 ล้าน</div><div class="d">+12.9% YoY vs FY2567 ฿322 ล้าน</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿1.82</div><div class="d">FY2568 ฿1.65 · Q1/2569 ฿0.55</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~฿8.52</div><div class="d">Net cash ~฿940 ล้าน · หนี้ต่ำมาก</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~21.6% / 11.7%</div><div class="d">แข็งแกร่งสำหรับธุรกิจบริการ</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">฿3,830 ล้าน</div><div class="d">+23% YoY · FY2568 ฿3,556 ล้าน</div></div>
+      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">~51.6%</div><div class="d">Q1/2569 · FY2568 ~50.5%</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~5.6%</div><div class="d">฿1.45/หุ้น FY2568 · Semi-annual</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">0.61</div><div class="d">ความผันผวนต่ำกว่าตลาด</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ก.ค. 2568 – ก.ค. 2569 · รายเดือน</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#e91e63"></i>ราคา KLINIQ</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿32.70</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคา KLINIQ ปรับตัวขึ้น +13% ในรอบปี (ก.ค. 2568 ฿23.01 → ก.ค. 2569 ฿26.00)
+        หุ้นลงแตะจุดต่ำสุด ~฿19.60 ในเดือน พ.ย. 2568 เนื่องจากแรงขายทำกำไรหลังราคาวิ่งแรงจากต้นปี
+        จากนั้นฟื้นตัวต่อเนื่องในช่วงต้นปี 2569 หนุนด้วยผลประกอบการ Q1/2569 ที่แข็งแกร่ง
+        กำไรสุทธิ ฿121.1 ล้าน +43% YoY · รายได้ ฿1,086 ล้าน +34% YoY สะท้อน Momentum ธุรกิจที่ยังโดดเด่น
+        แนวต้านสำคัญ ฿28–30 บาท คือกรอบ 52 สัปดาห์ก่อนหน้า ส่วน Fair Value ที่ ฿32.70 ยังเหนือราคาตลาดอยู่ ~26%
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS adj. ฿1.82 × P/E เป้าหมาย ~18x — Sector healthcare aesthetics ไทยซื้อขายที่ 20–25x; ใช้ 18x conservative (หุ้นยังเล็ก, คุณภาพกำไรดี, มี growth premium)</div></div>
+        <div class="mval">฿32.76</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล ฿1.45 × (1+5%); g 5%, r 9.5% → FV = ฿1.5225 / (0.095−0.05) — ปันผลมั่นคง 3 ปีติด เติบโต; Payout ratio ~87% สูง สะท้อน confidence ฝ่ายบริหาร</div></div>
+        <div class="mval">฿33.83</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 21.6% − g 5%)/(r 9.5% − g 5%) ≈ 3.69 × BVPS ฿8.52 — ROE สูงกว่าต้นทุนทุนชัดเจน สร้าง value เพิ่มได้ต่อเนื่อง</div></div>
+        <div class="mval">฿31.44</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿31.44 – ฿33.83</span></div>
+        <div class="r">฿32.70</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        วิธี DDM ให้ค่าสูงที่สุด (฿33.83) เพราะ Payout ratio 87% สูงมาก สะท้อนกระแสเงินสดจริงที่ส่งคืนผู้ถือหุ้น
+        วิธี Justified P/BV ให้ค่าต่ำสุด (฿31.44) เพราะ BVPS ฿8.52 ค่อนข้างต่ำ (ธุรกิจบริการใช้ asset น้อย)
+        วิธี P/E ที่ใช้ multiple 18x conservative เป็นจุดกลางสมเหตุสมผล
+        เฉลี่ย 3 วิธีได้ ฿32.70 ซึ่ง upside ~26% จากราคาปัจจุบัน ฿26.00
+        หมายเหตุ: FY2568 EPS ฿1.65, TTM (รวม Q1/2569) ฿1.82 ใช้ตัวหลัง (ล่าสุด) เพื่อความอนุรักษนิยม
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿26.00</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿32.70</div></div>
+        </div>
+        <div class="scale">
+          <span>฿22.89<br><small>MOS 30%</small></span>
+          <span>฿26.16<br><small>MOS 20%</small></span>
+          <span style="text-align:center">฿30.50<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">฿32.70<br><small>Fair Value</small></span>
+          <span style="text-align:right">฿33.83<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน ฿26.00 อยู่ในโซน "น่าสนใจ" ใกล้กับจุด MOS 20% ที่ ฿26.16
+        หมายความว่าผู้ซื้อที่ราคานี้มีส่วนเผื่อความปลอดภัยเกือบ 20% จาก Fair Value
+        นักวิเคราะห์ 2 สำนัก Consensus "Strong Buy" เป้า ฿30.50 (InnovestX เป้า ฿33 · Kingsford อยู่ในการประเมิน)
+        โซนสะสมหลัก: ฿22–27 · ถ้าราคาลงถึง ฿22.89 (MOS 30%) ถือว่า Deep Value น่าสนใจมาก
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict good">
+        <div class="big">+20.5%</div>
+        <div class="txt">ราคาต่ำกว่ามูลค่าเหมาะสม ~20.5% — อยู่ในโซน Value Investor น่าทยอยสะสม</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿26.16</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿22.89</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿32.70</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="26.00" step="0.05">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿26.00 • EPS ฐาน ~฿1.82 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS +5%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿25.32</div>
+          <div class="ret neg">+14.5% (3ปี) / +4.6%/ปี</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿2.11</span></li>
+            <li><span>P/E ออก</span><span>12x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿4.44</span></li>
+            <li><span>สถานการณ์</span><span>การแข่งขันสูง กำไรโตช้า</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +12%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿40.96</div>
+          <div class="ret pos">+75.3% (3ปี) / +20.7%/ปี</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿2.56</span></li>
+            <li><span>P/E ออก</span><span>16x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿4.57</span></li>
+            <li><span>สถานการณ์</span><span>ขยายสาขา 10/ปี กำไรโตดี</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +18%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿59.80</div>
+          <div class="ret pos">+148.1% (3ปี) / +34.5%/ปี</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿2.99</span></li>
+            <li><span>P/E ออก</span><span>20x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿4.70</span></li>
+            <li><span>สถานการณ์</span><span>ขยายเร็ว SSSG สูง RE-rating</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      Base case กำหนด EPS โต 12%/ปี สอดคล้องกับ trajectory ปัจจุบัน (FY2567→FY2568 +12.9% · Q1/2569 +43% YoY)
+      ใน 3 ปีข้างหน้า KLINIQ วางแผนเปิดสาขาปีละ ~10 แห่ง เป้าบริษัทรายได้ ฿3,500 ล้านปี 2568 และโตต่อ
+      Bear case สมมติการแข่งขันรุนแรง + Tax benefit หมด + P/E re-rate ลง 12x
+      Bull case สมมติ SSSG ยังแข็ง 20%+ + เปิดสาขา aggressive + P/E re-rate สู่ Healthcare premium 20x
+      หมายเหตุ: ปันผลใน Bear/Base/Bull ประมาณ ~57% ของ Capital gain ทั้งหมด ซึ่งสูงผิดปกติ
+      สะท้อน Payout ratio ~87% ของบริษัทที่ "โตได้พร้อมจ่าย" ด้วย Net cash ฿940 ล้าน
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก &amp; ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>การขยายสาขาอย่างรวดเร็ว:</b> แผนเปิด 10 สาขา/ปี เป้า 83+ แห่งปี 2568 ครอบคลุมทั้ง Bangkok + ต่างจังหวัด รายได้เพิ่มชัดเจน</li>
+          <li><b>Multi-brand Strategy ครอบคลุมทุก Segment:</b> The Klinique (premium), L.A.B.X (trendy), L'Clinic (mass), KLINIQ Spa (wellness) กระจายฐานลูกค้า ลดความเสี่ยงแบรนด์เดียว</li>
+          <li><b>Recurring Revenue สูง:</b> ลูกค้ากลุ่มผิวหนัง/ความงามมี Lifetime Value สูง ต้องรักษาซ้ำ ทำให้รายได้ predictable ดีกว่าธุรกิจ transaction-based</li>
+          <li><b>เทรนด์สุขภาพและความงาม Structural Growth:</b> ตลาด Medical Aesthetics ไทยโตเฉลี่ย 15-20%/ปี ขับเคลื่อนโดย Middle class ขยายตัว + Social media awareness + Medical tourism</li>
+          <li><b>ฐานะการเงินแข็งแกร่ง:</b> Net cash ฿940 ล้าน แทบไม่มีหนี้ดอกเบี้ย รองรับการลงทุนขยายสาขาโดยไม่ต้องเพิ่มทุน + ยืดหยุ่นถ้าเศรษฐกิจแย่</li>
+          <li><b>Q1/2569 ทำ All-time High กำไร:</b> กำไร ฿121.1 ล้าน +43% YoY, SSSG +21% สะท้อน Same-store performance แข็งแกร่ง ไม่ใช่แค่การเปิดสาขาใหม่</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>การแข่งขันรุนแรง:</b> ตลาดคลินิกความงามมีผู้เล่นจำนวนมากทั้งรายใหญ่และรายเล็ก รวมถึงโรงพยาบาลเอกชนขยายบริการ aesthetic ฝั่งเดียวกัน กดดัน Pricing power</li>
+          <li><b>Tax Benefit หมดอายุ:</b> Effective tax rate ขึ้นจาก 16.6% → 20.5% ในปี 2568 เพราะสิทธิ BOI/ยกเว้นภาษีบางส่วนหมดอายุ กดดัน Net margin แม้ Revenue โต</li>
+          <li><b>Gross Margin ลดลงต่อเนื่อง:</b> จาก 56.3% (FY2565) → 50.5% (FY2568) ต้นทุนแพทย์/บุคลากร + การแข่งขัน ถ้า Margin ลดต่ออีกกระทบ Bottom-line</li>
+          <li><b>Single Majority Shareholder Risk:</b> ผู้ถือหุ้นใหญ่ถือ >50% อาจมีผลต่อการตัดสินใจ Corporate governance + Liquidity ของหุ้น</li>
+          <li><b>Technology Disruption:</b> เทคโนโลยีใหม่ในการรักษาผิวหนัง/ความงามอาจ obsolete อุปกรณ์เดิม ต้องลงทุน CAPEX อย่างต่อเนื่องเพื่ออัปเดต</li>
+          <li><b>ขนาดตลาดจำกัด + Valuation Re-rate:</b> Market Cap ฿5.7B ยังเล็ก อาจถูกกดดันถ้า Sentiment ตลาดเปลี่ยน; P/E ปัจจุบัน 14.3x ถ้า re-rate ลงสู่ 10-12x กระทบราคาสูง</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>KLINIQ — Growth Compounder ราคา Fair · น่าสะสมระยะยาว</h2>
+      <p>เดอะคลีนิกค์เป็นผู้นำตลาดคลินิกผิวหนัง-ความงาม-เลเซอร์ในไทย ด้วย Multi-brand strategy ครอบคลุมทุก Segment
+         ผลประกอบการ Q1/2569 ทำ All-time High กำไร ฿121.1 ล้าน (+43% YoY) สะท้อน SSSG +21% แข็งแกร่ง
+         ฐานะการเงินดีเยี่ยม Net cash ฿940 ล้าน ไม่มีหนี้สิน + Payout ratio 87% ให้ Yield 5.6% ทั้งที่ยังโตอยู่
+         ราคาปัจจุบัน ฿26.00 ซื้อขายที่ P/E 14.3x ต่ำกว่า Sector peer (20-25x) ชัดเจน มี MOS ~20.5%
+         ความเสี่ยงหลักคือการแข่งขันและ Gross margin ที่ค่อยๆ ลดลง ต้องติดตามใกล้ชิด</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿32.70 <span style="font-size:12px;color:#cab9a8">(฿31.44–฿33.83)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +20.5%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿30.50 (Strong Buy)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ทยอยสะสมที่ ฿24–27 / เพิ่มน้ำหนักถ้าราคาลงถึง MOS 30% ที่ ฿22.89 (Deep Value Zone) /
+        ถือยาว 2–3 ปีรับทั้ง Capital gain + Dividend yield 5.6%/ปี / ตัดขายถ้า Gross margin ลงใต้ 48% หรือ
+        สาขาใหม่ไม่ทำกำไรตามแผน / เป้า Base case ฿40.96 ใน 3 ปี (+20.7%/ปี รวมปันผล)
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    แหล่งข้อมูล: SET Factsheet · StockAnalysis.com (BKK:KLINIQ) งวด Q1/2569 · Investing.com · TradingView SET:KLINIQ · InnovestX Research (14 พ.ค. 2568) · Yahoo Finance KLINIQ.BK · naewna.com · ryt9.com
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 3 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
