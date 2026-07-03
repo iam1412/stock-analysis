@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น แอดไวซ์ ไอที อินฟินิท (ADVICE) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"ADVICE","currency":"THB","price":6.45,"fairValue":8.60,"mos":25.0,"upside":33.3,"pe":12.4,"dividendYield":5.43,"roe":26.9}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#1565c0",
+    "accentDark": "#0d47a1",
+    "darkGrad": "linear-gradient(135deg,#0d47a1 0%,#1565c0 60%,#1976d2 100%)",
+    "glow": "rgba(21,101,192,0.3)",
+    "subColor": "#bbdefb",
+    "headerMuted": "rgba(255,255,255,0.6)",
+    "verdictText": "#e3f2fd",
+    "vcellLabel": "rgba(227,242,253,0.7)",
+    "badge": "#1976d2",
+    "chgBg": "#1e8e3e",
+    "chgColor": "#ffffff"
+  },
+  "chart": {
+    "data": [
+      ["ก.พ. 68", 5.55],
+      ["มี.ค. 68", 6.00],
+      ["เม.ย. 68", 4.84],
+      ["พ.ค. 68", 5.15],
+      ["มิ.ย. 68", 5.85],
+      ["ก.ค. 68", 5.90],
+      ["ส.ค. 68", 5.75],
+      ["ก.ย. 68", 5.40],
+      ["ต.ค. 68", 5.75],
+      ["พ.ย. 68", 6.35],
+      ["ธ.ค. 68", 6.20],
+      ["ม.ค. 69", 6.35],
+      ["ก.พ. 69", 6.45]
+    ],
+    "min": 4.50,
+    "max": 10.00,
+    "grid": [5.00, 6.00, 7.00, 8.00, 9.00],
+    "fairLine": 8.60,
+    "currency": "฿",
+    "highlight": [2, 9]
+  },
+  "gauge": {
+    "min": 4.50,
+    "max": 10.00,
+    "cur": 6.45,
+    "fair": 8.60,
+    "fairLabelTop": true
+  },
+  "fv": 8.60
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">●●●●●●●●●●●●●●●●●●●●</div>
+    <div>
+      <span class="tag">SET: ADVICE</span>
+      <span class="tag">Technology</span>
+      <span class="tag">IT Retail &amp; Franchise</span>
+    </div>
+    <h1>แอดไวซ์ ไอที อินฟินิท (ADVICE)</h1>
+    <div class="sub">ค้าปลีก/แฟรนไชส์ไอที • กว่า 400 ร้านค้าทั่วไทย • ขยาย CLMV ลาว-เมียนมา-กัมพูชา • จัดจำหน่ายสินค้าไอทีและสมาร์ทโฟน • iStore Apple Premium Reseller</div>
+    <div class="price-row">
+      <div>
+        <div class="px">฿6.45<small>(ADVICE)</small></div>
+      </div>
+      <div class="chg">▲ +16.2% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 3 ก.ค. 2569<br>
+        กรอบ 52 สัปดาห์ ฿4.72–฿6.85<br>
+        ที่มา: Yahoo Finance, StockAnalysis.com, SET/SETTRADE · งบ FY2568 (31 ธ.ค. 2568)
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ก.ค. 2569 · ที่มา: StockAnalysis, SET, Yahoo Finance</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~฿3.94 พัน ล.</div><div class="d">620 ล้านหุ้น · Free float ~34.6%</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~12.4x</div><div class="d">ค่าเฉลี่ยอุตสาหกรรม IT retail ~13x</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~13x</div><div class="d">ช่วง 10–15x (ราคาปัจจุบันต่ำกว่าค่าเฉลี่ย)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">3.61x</div><div class="d">BVPS ฿1.79 · equity ฿993 ล้าน</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2568</div><div class="v">฿267 ล้าน</div><div class="d">+14.9% YoY · FY2567: ฿232 ล้าน</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿0.52</div><div class="d">EPS FY2568: ฿0.43 · normalized</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~฿1.79</div><div class="d">equity ฿993M / 620M หุ้น (Q1/2569)</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~26.9% / 8.4%</div><div class="d">ผลตอบแทนผู้ถือหุ้นสูงกว่าค่าเฉลี่ยอุตสาหกรรม</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">฿16,910 ล้าน</div><div class="d">FY2568: ฿16,590 ล้าน · +16.7% YoY</div></div>
+      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">10.9% (TTM)</div><div class="d">FY2568: 10.4% · กำลังปรับตัวดีขึ้น</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~5.43%</div><div class="d">฿0.35/หุ้น/ปี · ปันผลสม่ำเสมอ</div></div>
+      <div class="metric"><div class="k">52-Week Range</div><div class="v">฿4.72–฿6.85</div><div class="d">ราคาปัจจุบันใกล้กรอบสูงสุด</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ · ราคาปิดรายเดือน</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#1565c0"></i>ราคา ADVICE</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿8.60</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคา ADVICE ในรอบ 1 ปีที่ผ่านมา (ก.พ. 2568–ก.พ. 2569) ปรับตัวขึ้น +16.2% จากระดับ ฿5.55 สู่ ฿6.45
+        โดยมีจุดต่ำสุดที่ ฿4.84 ในเดือน เม.ย. 2568 (ผลกระทบจากมาตรการภาษีนำเข้าสหรัฐฯ และความกังวล macro)
+        และฟื้นตัวแข็งแกร่งตั้งแต่ พ.ย. 2568 หลังประกาศกำไร FY2568 เติบโต 14.9% YoY
+        ราคาปัจจุบันยังต่ำกว่ามูลค่าเหมาะสม ฿8.60 อยู่ประมาณ 25%
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS adj. ฿0.52 × P/E เป้าหมาย ~13x — ค่าเฉลี่ย IT retail SET ช่วง 10–15x ราคาเหมาะสมตามกำไรปัจจุบัน</div></div>
+        <div class="mval">฿6.76</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล ฿0.35 × (1+g); g 5%, r 9% → FV = D₁/(r−g) = 0.368/0.04 — สะท้อนกระแสปันผลที่สม่ำเสมอและคาดว่าเติบโต</div></div>
+        <div class="mval">฿9.20</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 26.9% − g 5%)/(r 9% − g 5%) ≈ 5.48x × BVPS ฿1.79 — ROE สูงกว่า required return มากหนุนให้ P/BV เหมาะสมสูง</div></div>
+        <div class="mval">฿9.80</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿6.76 – ฿9.80</span></div>
+        <div class="r">฿8.60</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        วิธี P/E ให้ค่าต่ำสุด ฿6.76 เนื่องจากอิงเฉพาะกำไรปัจจุบัน (P/E 13x) ซึ่งยังไม่สะท้อนการเติบโตจากการขยายสาขา iStore และ CLMV
+        DDM ฿9.20 สะท้อนความสม่ำเสมอของปันผล (yield สูง ~5.4%) บวกกับ terminal growth ที่อนุรักษ์นิยม 5%
+        Justified P/BV ฿9.80 สะท้อน ROE สูง 26.9% ที่บ่งชี้คุณภาพธุรกิจดีเยี่ยม
+        มูลค่าเฉลี่ย ฿8.60 เป็นค่ากลางที่สมเหตุสมผล สะท้อนทั้งกำไรปัจจุบัน, ปันผล และคุณภาพสินทรัพย์
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿6.45</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿8.60</div></div>
+        </div>
+        <div class="scale">
+          <span>฿6.02<br><small>MOS 30%</small></span>
+          <span>฿6.88<br><small>MOS 20%</small></span>
+          <span style="text-align:center">฿7.22<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">฿8.60<br><small>Fair Value</small></span>
+          <span style="text-align:right">฿9.80<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน ฿6.45 อยู่ในโซน MOS 20–30% (ระหว่าง ฿6.02–฿6.88) ถือว่าอยู่ในโซน "น่าสนใจสำหรับ Value Investor"
+        ต่ำกว่าเป้าเฉลี่ยนักวิเคราะห์ 8 บล. ที่ ฿7.22 อยู่ประมาณ 11.9% และต่ำกว่ามูลค่าเหมาะสม ฿8.60 อยู่ 25%
+        แนะนำ "ซื้อ" เป็นเอกฉันท์จาก 8 บล. (Bangkok Bank Securities, Yuanta ฯลฯ) เป้าสูงสุด ฿7.80
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict good">
+        <div class="big">+25.0%</div>
+        <div class="txt">โซนน่าซื้อ — MOS &gt; 20% เหมาะสำหรับ Value Investor ทยอยสะสม</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿6.88</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿6.02</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿8.60</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="6.45" step="0.05">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿6.45 • EPS ฐาน ~฿0.52 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS +2%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿5.70</div>
+          <div class="ret neg">−3.0% ต่อปี</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.55</span></li>
+            <li><span>P/E ออก</span><span>10x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿1.05</span></li>
+            <li><span>สถานการณ์</span><span>IT demand ชะลอ CLMV ไม่เติบโต</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +10%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿9.10</div>
+          <div class="ret pos">+15.0% ต่อปี</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.69</span></li>
+            <li><span>P/E ออก</span><span>13x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿1.15</span></li>
+            <li><span>สถานการณ์</span><span>iStore ขยาย 25 สาขา CLMV เติบโตต่อเนื่อง</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +15%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿12.50</div>
+          <div class="ret pos">+26.0% ต่อปี</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.79</span></li>
+            <li><span>P/E ออก</span><span>16x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿1.30</span></li>
+            <li><span>สถานการณ์</span><span>ขยาย CLMV + เพิ่มสัดส่วน Services และ iStore</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      Base case อิงการเติบโต EPS +10%/ปี จากการขยาย iStore 25 สาขา (ปี 2569) บวกกับการขยายตลาด CLMV
+      นักวิเคราะห์ Yuanta คาดกำไร FY2569 ที่ ฿310 ล้าน (+14% YoY) และ Bangkok Bank Securities คาดกำไร ฿311 ล้าน (+15% YoY)
+      P/E เป้า 13x สอดคล้องกับค่าเฉลี่ยอุตสาหกรรม IT retail SET · ผลตอบแทนรวมปันผล ~5.4%/ปีเพิ่มโอกาส downside protection
+      หมายเหตุ: EPS FY2568 normalized (฿0.43) ใช้เป็นฐาน ไม่ใช่ TTM ฿0.52 เพื่อความอนุรักษ์นิยม
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก &amp; ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>ขยาย iStore Apple Premium Reseller:</b> แผนเปิดสาขาใหม่ 25 สาขาในปี 2569 เพิ่ม margin จาก Services และ Apple ecosystem ที่ margin สูงกว่า IT ทั่วไป</li>
+          <li><b>ตลาด CLMV รองรับการเติบโต:</b> ขยายเข้าลาว เมียนมา กัมพูชา ที่ penetration rate ไอทีต่ำ เป็นตลาดที่มีศักยภาพสูงในระยะกลาง</li>
+          <li><b>กำไรโต 14–15%/ปี (ตามประมาณการนักวิเคราะห์):</b> นักวิเคราะห์ 8 บล. เป็นเอกฉันท์ "ซื้อ" คาดกำไร FY2569 ที่ ฿310–311 ล้าน ผลักดัน re-rating</li>
+          <li><b>Dividend yield สูง ~5.4–7%:</b> ปันผลสม่ำเสมอ ดึงดูด income investor และลดแรงขาย สนับสนุน downside</li>
+          <li><b>Gross margin ปรับตัวดีขึ้น:</b> margin Q4/2568 ที่ ~10.2% เทียบกับ ~8.6% ในปี 2565 สะท้อน product mix ดีขึ้น (iStore / Services มี margin สูง)</li>
+          <li><b>การเติบโตของ IT spending ในไทย:</b> รัฐบาลหนุน digital transformation, AI adoption ในองค์กร และการเปลี่ยน cycle อุปกรณ์ post-COVID</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>Margin บางและแข่งขันสูง:</b> net margin เพียง ~1.9% เสี่ยงถูก platform ออนไลน์ (Lazada, Shopee, JD) กด margin ค้าปลีก IT ต่อไป</li>
+          <li><b>ความเสี่ยง CLMV:</b> ตลาดเมียนมามีความไม่แน่นอนทางการเมือง อาจกระทบ expansion plan และทำให้ต้นทุนการดำเนินงานสูงขึ้น</li>
+          <li><b>การพึ่งพา Apple cycle:</b> iStore ขึ้นอยู่กับ Apple product refresh cycle — ปีที่ไม่มี super cycle อาจกดดันยอดขายและ margin</li>
+          <li><b>ความผันผวนอัตราแลกเปลี่ยน:</b> สินค้า IT ส่วนใหญ่นำเข้าเป็น USD หากบาทอ่อน ต้นทุนสินค้าสูงขึ้นกดดัน margin</li>
+          <li><b>Consumer spending ชะลอ:</b> เศรษฐกิจไทยฟื้นช้า หนี้ครัวเรือนสูง อาจทำให้ IT discretionary spending ลดลง โดยเฉพาะ segment กลาง-ล่าง</li>
+          <li><b>Dilution ความเสี่ยง:</b> หุ้นเพิ่มทุน 2 ครั้ง (2566–2567) จาก 225M → 620M หุ้น (+175%) EPS historical ถูก dilute มาก — ต้องติดตามว่าจะมีเพิ่มทุนอีกหรือไม่</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>น่าสนใจ — ปันผลสูง + โตจาก CLMV &amp; iStore แต่ Margin บาง</h2>
+      <p>ADVICE เป็นผู้นำค้าปลีก IT แฟรนไชส์ไทยที่กำลังขยายตัวในตลาด CLMV และ Apple ecosystem ผ่าน iStore
+      ราคาปัจจุบัน ฿6.45 มี MOS ~25% จาก Fair Value ฿8.60 พร้อม dividend yield ~5.4% เป็น downside protection
+      นักวิเคราะห์ 8 บล. เป็นเอกฉันท์แนะนำ "ซื้อ" เป้าเฉลี่ย ฿7.22 (upside ~11.9% จากราคาปัจจุบัน)
+      อย่างไรก็ตาม net margin บาง (~1.9%) และการแข่งขันออนไลน์เป็นความเสี่ยงเชิงโครงสร้างที่ต้องติดตาม</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿8.60 <span style="font-size:12px;color:#cab9a8">(฿6.76–฿9.80)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +25.0%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿7.22 (Strong Buy × 8 บล.)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ทยอยสะสมในโซน ฿6.00–฿6.88 (MOS 20–30%) เน้น dividend income ~5–7%/ปีเป็น buffer
+        หากราคาลงต่ำกว่า ฿6.02 (MOS 30%) ถือว่า deep value เหมาะเพิ่มน้ำหนัก
+        ตั้ง stop-loss หากพื้นฐานเปลี่ยน (margin ต่ำกว่า 9% ต่อเนื่อง หรือ CLMV expansion พลาด target)
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    แหล่งข้อมูล: Yahoo Finance (ราคา/กราฟ), StockAnalysis.com (งบการเงิน), SET/SETTRADE (ข้อมูลบริษัท), AIO (ratios), SETTRADE Analyst Consensus (เป้าราคา)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 3 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
