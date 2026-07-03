@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น โรงพยาบาลจุฬารัตน์ (CHG) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"CHG","currency":"THB","price":1.63,"fairValue":1.92,"mos":15.1,"upside":17.8,"pe":19.2,"dividendYield":4.3,"roe":11.96}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#00838f",
+    "accentDark": "#006064",
+    "darkGrad": "linear-gradient(135deg,#006064 0%,#00838f 60%,#0097a7 100%)",
+    "glow": "rgba(0,131,143,0.3)",
+    "subColor": "#b2ebf2",
+    "headerMuted": "rgba(255,255,255,0.6)",
+    "verdictText": "#e0f7fa",
+    "vcellLabel": "rgba(224,247,250,0.7)",
+    "badge": "#0097a7",
+    "chgBg": "#c5221f",
+    "chgColor": "#ffffff"
+  },
+  "chart": {
+    "data": [
+      ["ก.ค. 68", 1.65],
+      ["ส.ค. 68", 1.41],
+      ["ก.ย. 68", 1.43],
+      ["ต.ค. 68", 1.44],
+      ["พ.ย. 68", 1.56],
+      ["ธ.ค. 68", 1.60],
+      ["ม.ค. 69", 1.63],
+      ["ก.พ. 69", 1.62],
+      ["มี.ค. 69", 1.59],
+      ["เม.ย. 69", 1.57],
+      ["พ.ค. 69", 1.43],
+      ["มิ.ย. 69", 1.55],
+      ["ก.ค. 69", 1.63]
+    ],
+    "min": 1.30,
+    "max": 2.05,
+    "grid": [1.30, 1.50, 1.70, 1.90, 2.05],
+    "fairLine": 1.92,
+    "currency": "฿",
+    "highlight": [0, 7],
+    "gridFmt": "v.toFixed(2)",
+    "dataFmt": "d[1].toFixed(2)"
+  },
+  "gauge": {
+    "min": 0,
+    "max": 100,
+    "cur": 1.63,
+    "fair": 1.92,
+    "fairLabelTop": true
+  },
+  "fv": 1.92
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">⬤ ⬤ ⬤</div>
+    <div>
+      <span class="tag">SET: CHG</span>
+      <span class="tag">Healthcare</span>
+      <span class="tag">โรงพยาบาลเอกชน</span>
+    </div>
+    <h1>โรงพยาบาลจุฬารัตน์ (CHG)</h1>
+    <div class="sub">โรงพยาบาลจุฬารัตน์ 17 สาขา · ชานเมืองกรุงเทพ + ต่างจังหวัด · ต้นทุนต่ำ-ขยายเร็ว · ผู้ป่วยประกันสังคม-เอกชน · ขยาย IPD 1,700+ เตียงปี 71</div>
+    <div class="price-row">
+      <div>
+        <div class="px">฿1.63<small>(CHG)</small></div>
+      </div>
+      <div class="chg">▼ −1.2% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 3 ก.ค. 2569<br>
+        กรอบ 52 สัปดาห์ ฿1.33 – ฿1.87<br>
+        ที่มา: Yahoo Finance · SET.or.th · Investing.com
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ก.ค. 2569 · FY2568</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~฿17,930 ล้าน</div><div class="d">11,000 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~19.2x</div><div class="d">EPS TTM ฿0.085 · ราคา ฿1.63</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~25x</div><div class="d">ช่วง 9–21x (หลัง COVID normalize)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">2.23x</div><div class="d">BVPS ฿0.73 · Q1/69</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2568</div><div class="v">~฿929 ล้าน</div><div class="d">−3.7% YoY (FY67: ฿965 ล้าน)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿0.085</div><div class="d">FY68: ฿0.085 · FY67: ฿0.09</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~฿0.73</div><div class="d">Q1/69 · ROE 11.96%</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~12.0% / 9.3%</div><div class="d">Investing.com + IR จุฬารัตน์</div></div>
+
+      <div class="metric"><div class="k">รายได้รวม TTM</div><div class="v neu">~฿8,510 ล้าน</div><div class="d">FY68: ฿8,428 ล้าน (−0.7% YoY)</div></div>
+      <div class="metric"><div class="k">EBITDA Margin</div><div class="v">~20.5%</div><div class="d">FY68: 20.48% (FY67: 20.62%)</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~4.3%</div><div class="d">฿0.07/หุ้น · XD พ.ค. 69</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">0.12</div><div class="d">ความผันผวนต่ำมาก vs ตลาด</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ก.ค. 2568 – ก.ค. 2569</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#00838f"></i>ราคา CHG</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿1.92</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        หุ้น CHG ขึ้นไปแตะจุดสูง ฿1.65 ใน ก.ค. 2568 แล้วปรับตัวลงแรงในเดือน ส.ค.–ก.ย. 2568 สู่ระดับ ฿1.41–1.43 หลังผลประกอบการ FY2568 ต่ำกว่าคาด
+        ก่อนฟื้นตัวช่วง พ.ย.–ม.ค. 2569 กลับมาที่ ฿1.56–1.63 จากแนวโน้มกำไร Q1/69 ที่ดีขึ้น +5% YoY
+        ราคาปัจจุบัน ฿1.63 ยังต่ำกว่ามูลค่าเหมาะสม ฿1.92 สะท้อน upside ~18%
+        แนวรับสำคัญ ฿1.43 (52W Low area) · แนวต้าน ฿1.87 (52W High)
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ยถ่วงน้ำหนัก 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS adj. ฿0.087 × P/E เป้าหมาย ~25x — P/E เฉลี่ย sector โรงพยาบาลไทยระยะยาว (BDMS/BH ซื้อขาย 30–35x) · CHG discount 20% จากขนาดเล็กกว่า ให้ 25x</div></div>
+        <div class="mval">฿2.18</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 11.96% − g 5%)/(r 9% − g 5%) ≈ 1.74x × BVPS ฿0.73 — g=5% สอดคล้องกำไรคาด +7% ปี 69 · r=9% (risk-free 3%+ERP 6%)</div></div>
+        <div class="mval">฿1.27</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. EV/EBITDA</div><div class="mdesc">EBITDA FY68 ~฿1,727 ล้าน × 17x (peer median Thai hospital) ÷ 11,000 ล้านหุ้น — สะท้อนมาร์จิ้นคงที่ ~20% และ capacity expansion pipeline ถึง FY71</div></div>
+        <div class="mval">฿2.20</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมถ่วงน้ำหนัก (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿1.27 – ฿2.20</span></div>
+        <div class="r">฿1.92</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        วิธี P/E (40%) ให้ ฿2.18 · Justified P/BV (30%) ให้ ฿1.27 ซึ่งต่ำกว่าเพราะ ROE ~12% ยังห่างจาก required return · EV/EBITDA (30%) ให้ ฿2.20
+        ถ่วงน้ำหนักออกมา = <b>฿1.92</b> · เป้านักวิเคราะห์ 11 คน เฉลี่ย ฿1.80 (10 Buy, 1 Sell) สอดคล้อง upside ระดับ 10–18%
+        แหล่งอ้างอิง: Yahoo Finance (ราคา, 52W), SET.or.th (ราคา ณ 3 ก.ค. 69), Investing.com (P/BV, ROE, analyst consensus), StockAnalysis.com (EPS, EBITDA margin), IR จุฬารัตน์ (BVPS, กำไร Q1/69)
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿1.63</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿1.92</div></div>
+        </div>
+        <div class="scale">
+          <span>฿1.34<br><small>MOS 30%</small></span>
+          <span>฿1.54<br><small>MOS 20%</small></span>
+          <span style="text-align:center">฿1.80<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">฿1.92<br><small>Fair Value</small></span>
+          <span style="text-align:right">฿2.20<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคา ฿1.63 อยู่ระหว่างโซน MOS 20% (฿1.54) และ Fair Value (฿1.92) — MOS ปัจจุบัน ~15% เข้าข่าย "ราคาพอใช้ ทยอยสะสมได้"
+        สำหรับนักลงทุน value จริงจัง โซน Deep Value คือ ≤฿1.54 (MOS 20%) หรือ ≤฿1.34 (MOS 30%) ซึ่งใกล้เคียง 52W Low ฿1.33
+        เป้านักวิเคราะห์ฉันทามติ ฿1.80 (Strong Buy 10 คน) ยัง upside ~10% จากราคาปัจจุบัน
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict ok">
+        <div class="big">+15.1%</div>
+        <div class="txt">ราคาพอใช้ — ทยอยสะสมได้ในโซนนี้ (MOS 10–20%)</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿1.54</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿1.34</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿1.92</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="1.63" step="0.05">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿1.63 • EPS ฐาน ~฿0.085 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS 0%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿1.70</div>
+          <div class="ret neg">+17% / 3 ปี (~5.4%/ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.085</span></li>
+            <li><span>P/E ออก</span><span>20x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.21</span></li>
+            <li><span>สถานการณ์</span><span>เศรษฐกิจชะลอ SSO กดดัน</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +8%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿2.68</div>
+          <div class="ret pos">+77% / 3 ปี (~21%/ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.107</span></li>
+            <li><span>P/E ออก</span><span>25x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.21</span></li>
+            <li><span>สถานการณ์</span><span>ขยาย Rayong+Phraeksa bed เพิ่ม</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +12%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿3.34</div>
+          <div class="ret pos">+118% / 3 ปี (~29%/ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.119</span></li>
+            <li><span>P/E ออก</span><span>28x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.21</span></li>
+            <li><span>สถานการณ์</span><span>SSO reform + tourism + สังคมสูงวัย</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      Base case ถือว่าบริษัทขยาย IPD beds จาก 938 เป็น 1,700+ เตียงภายใน FY71 (CH Rayong 200+ เตียง + CH Phraeksa 200+ เตียง + existing hospitals 400+ เตียง)
+      กำไร FY69 คาด ~฿997–1,008 ล้าน (+7% YoY) จาก Mae Sot Hospital breakeven + SSO high-cost care volatility ลดลง
+      ปันผลตั้งสมมติฐาน ฿0.07/ปี คงที่ (yield ปัจจุบัน 4.3%) · ผลตอบแทนรวมรวมปันผลแล้ว
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก &amp; ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>ขยาย Capacity เชิงรุก:</b> เป้า IPD beds 1,700+ ภายใน FY71 จากปัจจุบัน 938 เตียง — CH Rayong (200+ เตียง) + CH Phraeksa (200+ เตียง) + existing expansion 400+ เตียง หนุน revenue step-change</li>
+          <li><b>Mae Sot Hospital Breakeven 2569:</b> โรงพยาบาลชายแดนซึ่งกดกำไรมาหลายปีจะ breakeven ในปี 2569 ช่วย EPS เติบโตโดยไม่ต้องเพิ่ม revenue มาก</li>
+          <li><b>SSO Reform ลดความผันผวน:</b> รัฐปรับรูปแบบ SSO สำหรับ high-cost care ลด revenue reversal ที่เคยกดกำไรใน FY67–68 ทำให้ margin มีเสถียรภาพมากขึ้น</li>
+          <li><b>สังคมสูงวัย + Medical Tourism:</b> ไทยสัดส่วนผู้สูงอายุสูงขึ้นต่อเนื่อง CHG รับผู้ป่วยต่างชาติ CLMV ผ่านสาขาชายแดน (Mae Sot) เพิ่ม case mix</li>
+          <li><b>โมเดลต้นทุนต่ำขยายได้เร็ว:</b> CHG เน้นพื้นที่ชานเมืองและต่างจังหวัดที่ค่าเช่า/ค่าแรงต่ำกว่าใจกลางเมือง ทำให้ EBITDA margin คงที่ ~20% แม้ราคาค่าบริการต่ำ</li>
+          <li><b>Analyst Consensus Strong Buy:</b> 10/11 นักวิเคราะห์แนะนำซื้อ เป้าเฉลี่ย ฿1.80 (upside 10%) สะท้อนความเชื่อมั่นเชิง fundamental</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>SSO Rate Risk:</b> กำไรพึ่งพา SSO มาก หากรัฐลดอัตราค่ารักษาหรือเปลี่ยนเงื่อนไข revenue recognition อีกครั้งจะกดกำไรเหมือน FY67–68</li>
+          <li><b>กำไรทรงตัว 3 ปีติด:</b> Net profit ลดจาก ฿1,046M (FY66) → ฿965M (FY67) → ฿929M (FY68) สะท้อน underlying growth อ่อนแอ ขยาย capacity อาจใช้เวลากว่าจะ contribute EPS จริง</li>
+          <li><b>ต้นทุนขยายกดกำไรระยะกลาง:</b> การสร้างโรงพยาบาลใหม่ 2 แห่งต้องใช้เงินลงทุนสูง + depreciation ใหม่จะกด margin ช่วง ramp-up 2–3 ปีแรก</li>
+          <li><b>ROE ลดต่อเนื่อง:</b> จาก 36.82% (FY65) → 11.96% (FY68) สะท้อนการ dilute equity หลัง COVID windfall หมด และ capacity utilization ยังไม่เต็ม</li>
+          <li><b>แข่งขันสูงในพื้นที่ชานเมือง:</b> โรงพยาบาลรัฐ + คลินิก + chain โรงพยาบาลเอกชนรายอื่น (เช่น PR9, SKR) ขยายตัวในพื้นที่เดียวกัน กดดัน pricing power</li>
+          <li><b>Market Cap ขนาดเล็ก:</b> ~฿18,000 ล้าน สภาพคล่องต่ำกว่า BDMS/BH มาก — ราคาอาจผันผวนสูงช่วง sell-off ตลาด</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>ทยอยสะสมได้ — รอโซน MOS 20% ดีกว่าเพื่อ Margin of Safety เต็มที่</h2>
+      <p>CHG เป็นโรงพยาบาลเอกชนขนาดกลางที่มีจุดแข็งชัดเจนคือ <b>โมเดลต้นทุนต่ำในพื้นที่ชานเมือง+ต่างจังหวัด</b> และ pipeline ขยาย capacity จาก 938 เป็น 1,700+ เตียงภายใน FY71
+      กำไรสุทธิ 3 ปีที่ผ่านมาทรงตัว-ลดลงจาก COVID windfall แต่ปี 2569 คาดฟื้นตัว +7% จาก Mae Sot breakeven + SSO volatility ลดลง
+      ราคาปัจจุบัน ฿1.63 ให้ MOS ~15% จาก Fair Value ฿1.92 — อยู่ในโซน "ทยอยสะสมได้" แต่ยังไม่ถึงโซน Deep Value (฿1.54)
+      Beta 0.12 สะท้อนความผันผวนต่ำมาก เหมาะกับพอร์ต defensive ที่ต้องการ yield 4.3% + upside ระยะกลาง</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿1.92 <span style="font-size:12px;color:#cab9a8">(฿1.27–฿2.20)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +15.1%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿1.80 (Strong Buy)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ราคาปัจจุบัน ฿1.63 — ทยอยสะสมได้ส่วนแรก (MOS 15%) · เพิ่มน้ำหนักเมื่อราคาลงสู่โซน ฿1.54 (MOS 20%) ซึ่งใกล้เคียง 52W Low support · Stop-loss แนวรับ ฿1.33 (52W Low) · เป้า Base Case ฿2.68 ใน 3 ปี
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    แหล่งข้อมูล: Yahoo Finance (CHG.BK ราคา/กราฟ), SET.or.th (ราคา ณ 3 ก.ค. 2569 ฿1.63), Investing.com (P/BV 2.18x, ROE 11.9%, analyst consensus ฿1.80), StockAnalysis.com (EPS ฿0.09, EBITDA margin 20.48%), IR จุฬารัตน์ investor.chularat.com (BVPS ฿0.73, กำไร Q1/69 ฿247 ล้าน), KGI/DBS Research (กำไร 2569F ฿991–1,008 ล้าน, expansion plan)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 3 กรกฎาคม 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>

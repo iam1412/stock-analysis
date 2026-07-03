@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น ดิ เอราวัณ กรุ๊ป (ERW) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"ERW","currency":"THB","price":3.10,"fairValue":3.50,"mos":11.4,"upside":12.9,"pe":18.2,"dividendYield":2.9,"roe":9.48}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#bf360c",
+    "accentDark": "#7f2408",
+    "darkGrad": "linear-gradient(135deg,#7f2408 0%,#bf360c 60%,#d84315 100%)",
+    "glow": "rgba(191,54,12,0.3)",
+    "subColor": "#ffccbc",
+    "headerMuted": "rgba(255,255,255,0.6)",
+    "verdictText": "#fbe9e7",
+    "vcellLabel": "rgba(251,233,231,0.7)",
+    "badge": "#d84315",
+    "chgBg": "#c5221f",
+    "chgColor": "#ffffff"
+  },
+  "chart": {
+    "data": [
+      ["ก.ค. 25", 3.20],
+      ["ส.ค. 25", 2.44],
+      ["ก.ย. 25", 2.36],
+      ["ต.ค. 25", 2.86],
+      ["พ.ย. 25", 3.08],
+      ["ธ.ค. 25", 3.08],
+      ["ม.ค. 26", 3.10],
+      ["ก.พ. 26", 2.80],
+      ["มี.ค. 26", 2.44],
+      ["เม.ย. 26", 2.60],
+      ["พ.ค. 26", 2.80],
+      ["มิ.ย. 26", 3.00],
+      ["ก.ค. 26", 3.10]
+    ],
+    "min": 2.20,
+    "max": 3.50,
+    "grid": [2.25, 2.50, 2.75, 3.00, 3.25, 3.50],
+    "fairLine": 3.50,
+    "currency": "฿",
+    "highlight": [0, 2, 8]
+  },
+  "gauge": {
+    "min": 2.20,
+    "max": 4.20,
+    "cur": 3.10,
+    "fair": 3.50,
+    "fairLabelTop": true
+  },
+  "fv": 3.50
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">● ● ●</div>
+    <div>
+      <span class="tag">SET: ERW</span>
+      <span class="tag">โรงแรม / Hospitality</span>
+      <span class="tag">Economy–Luxury Hotels</span>
+    </div>
+    <h1>ดิ เอราวัณ กรุ๊ป (The Erawan Group)</h1>
+    <div class="sub">โรงแรม HOP INN (economy) · ibis · Mercure · Pullman (midscale–luxury) · 80+ properties · ไทย เวียดนาม ฟิลิปปินส์ · ฟื้นตัวท่องเที่ยวหลังโควิด</div>
+    <div class="price-row">
+      <div>
+        <div class="px">฿3.10<small>(ERW)</small></div>
+      </div>
+      <div class="chg">▼ −3.1% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 3 ก.ค. 2569<br>
+        กรอบ 52 สัปดาห์ ฿2.02 – ฿3.32<br>
+        ที่มา: Yahoo Finance, SET Thailand, Investing.com, Kaohoon International
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ก.ค. 2569 · ปี 2568 (FY2025)</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~฿15,150 ล้าน</div><div class="d">4,887 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~18.2x</div><div class="d">EPS TTM ฿0.17</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~18–20x</div><div class="d">ช่วงปกติ 15–22x</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">~1.55x</div><div class="d">BVPS ~฿2.00</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">฿838 ล้าน</div><div class="d">ลด 34.6% YoY (ปี 2567 มีรายการพิเศษ)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿0.17</div><div class="d">Q1/2569: กำไร ฿375 ล้าน (+9% YoY)</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~฿2.00</div><div class="d">ส่วนผู้ถือหุ้น ฿9,787 ล้าน</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~9.5% / 6.0%</div><div class="d">ฟื้นตัวจากโควิด</div></div>
+
+      <div class="metric"><div class="k">รายได้ FY2025</div><div class="v neu">฿7,937 ล้าน</div><div class="d">ทรงตัว YoY (2567: ฿8,039 ล้าน)</div></div>
+      <div class="metric"><div class="k">Occupancy Rate</div><div class="v">~80%</div><div class="d">RevPAR +4% YoY (Q3/2568)</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~2.9%</div><div class="d">฿0.09/หุ้น (XD มี.ค. 2568)</div></div>
+      <div class="metric"><div class="k">EV/EBITDA</div><div class="v">~10.9x</div><div class="d">ต่ำกว่า peer เอเชีย ~12–14x</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#bf360c"></i>ราคา ERW</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿3.50</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ERW ปรับตัวลงจาก ฿3.20 (ก.ค. 2568) มาแตะจุดต่ำสุด ฿2.36 (ก.ย. 2568) ท่ามกลางความกังวลนักท่องเที่ยวจีนฟื้นตัวช้า และภาวะเศรษฐกิจไทยชะลอตัว จากนั้นฟื้นตัวแรงช่วง พ.ย.–ม.ค. สู่ ฿3.08–3.10 หลังตัวเลขท่องเที่ยวดีขึ้น และกำไร Q3/2568 ฟื้น +39% QoQ ก่อนย่อลงอีกครั้ง มี.ค. 2569 (฿2.44) จากความตึงเครียดภูมิรัฐศาสตร์ส่งผลต่อนักท่องเที่ยวยุโรป-ตะวันออกกลาง ก่อนดีดกลับมา ฿3.10 (ก.ค. 2569) หลัง Q1/2569 รายงานกำไรทำสถิติสูงสุด
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS adj. ฿0.17 × P/E เป้าหมาย ~20x — อิง P/E เฉลี่ย sector โรงแรมไทย ช่วงฟื้นตัวท่องเที่ยว; EPS 2569 คาดโตต่อเนื่อง</div></div>
+        <div class="mval">฿3.40</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. EV/EBITDA</div><div class="mdesc">EBITDA 2568 ~฿2,500 ล้าน × 12x (conservative peer) − หนี้สุทธิ ฿10,300 ล้าน ÷ 4,887 ล้านหุ้น — วิธีเหมาะกับ asset-heavy hotel</div></div>
+        <div class="mval">฿4.03</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 9.48% − g 4%)/(r 8.5% − g 4%) ≈ 1.22x × BVPS ฿2.00 — สะท้อน ROE ที่ยังฟื้นตัวไม่เต็มที่</div></div>
+        <div class="mval">฿2.44</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿2.44 – ฿4.03</span></div>
+        <div class="r">฿3.50</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        วิธี EV/EBITDA (฿4.03) ให้ค่าสูงสุดเพราะสะท้อนมูลค่าสินทรัพย์โรงแรมที่แข็งแกร่ง วิธี Justified P/BV (฿2.44) ให้ค่าต่ำสุดเพราะ ROE ยังอยู่ระดับปานกลาง 9.5% (ก่อนโควิดอยู่ที่ 15–18%) วิธี P/E (฿3.40) สะท้อนกำไรปัจจุบันตรงที่สุด Fair Value ฿3.50 อิง consensus analyst เฉลี่ย 16 ราย (฿3.60) ปรับลงเล็กน้อยเพื่อความอนุรักษ์นิยม โดยน้ำหนักไปที่ P/E และ EV/EBITDA มากกว่า Justified P/BV
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿3.10</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿3.50</div></div>
+        </div>
+        <div class="scale">
+          <span>฿2.45<br><small>MOS 30%</small></span>
+          <span>฿2.80<br><small>MOS 20%</small></span>
+          <span style="text-align:center">฿3.50<br><small>Fair Value</small></span>
+          <span style="text-align:right">฿3.60<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">฿4.03<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคา ฿3.10 ยืนใกล้กับ Fair Value ฿3.50 มี MOS ราว 11% จึงอยู่โซน "ราคาพอใช้ — ทยอยสะสมได้" สำหรับนักลงทุน VI ระยะยาว จุดเข้าซื้อที่เหมาะสมคือ ฿2.80 (MOS 20%) ซึ่งเคยเป็นแนวรับสำคัญในช่วง พ.ย. 2568 และ ฿2.45 (MOS 30%) ใกล้กับระดับที่เห็นช่วง มี.ค. 2569 Analyst 15/16 ราย แนะนำ "ซื้อ" เป้าเฉลี่ย ฿3.60 (+16% upside)
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict ok">
+        <div class="big">+11.4%</div>
+        <div class="txt">ราคาพอใช้ — ทยอยสะสมได้ · ใกล้ Fair Value</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿2.80</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿2.45</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿3.50</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="3.10" step="0.05">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿3.10 • EPS ฐาน ~฿0.17 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS 0%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿2.55</div>
+          <div class="ret neg">−9.0% / −3.2%/ปี</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.17</span></li>
+            <li><span>P/E ออก</span><span>15x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.27</span></li>
+            <li><span>สถานการณ์</span><span>นักท่องเที่ยวซบเซา ค่าใช้จ่ายพุ่ง</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +8%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿3.85</div>
+          <div class="ret pos">+34.2% / +10.3%/ปี</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.21</span></li>
+            <li><span>P/E ออก</span><span>18x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.30</span></li>
+            <li><span>สถานการณ์</span><span>ท่องเที่ยวฟื้น HOP INN ขยาย</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +14%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿5.57</div>
+          <div class="ret pos">+91.0% / +24.0%/ปี</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.25</span></li>
+            <li><span>P/E ออก</span><span>22x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.35</span></li>
+            <li><span>สถานการณ์</span><span>จีนบูม RevPAR ขึ้นแรง ROE ฟื้น 15%</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      Base case กำไรโต 8%/ปี สอดคล้องกับทิศทาง Q1/2569 (+12% YoY) และการขยาย HOP INN 10% YoY (จาก 7,700 ห้อง) ถ้า ROE ฟื้นสู่ระดับก่อนโควิด 15–18% จะเป็น Bull case ได้ ผลตอบแทนทั้งสาม scenario สมมติว่าเข้าซื้อที่ ฿3.10 และรวมปันผลสะสม 3 ปีไม่นำไปลงทุนต่อ (simple return)
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>HOP INN ขยายตัวแข็งแกร่ง:</b> เป้าขยาย 10% YoY สู่ 7,700+ ห้อง โมเดล economy hotel ที่ margin ดี RevPAR +11% ใน Q1/2569</li>
+          <li><b>นักท่องเที่ยวจีนฟื้นตัว:</b> จำนวนนักท่องเที่ยวจีนเพิ่ม +12% ใน Q1/2569 ถ้า VTL/ความสัมพันธ์จีน-ไทยดีขึ้นจะหนุน Luxury segment แรงขึ้น</li>
+          <li><b>Luxury RevPAR ดีดตัว:</b> Luxury segment RevPAR +11% ใน Q1/2569 โรงแรมระดับบนที่ ERW บริหาร (Pullman, Mercure) ได้ประโยชน์จาก MICE และ Bleisure travel</li>
+          <li><b>การขยายต่างประเทศ:</b> เวียดนาม ฟิลิปปินส์ กระจายความเสี่ยง ลดการพึ่งพาตลาดไทย 90%</li>
+          <li><b>ดอกเบี้ยขาลง:</b> ต้นทุนทางการเงินลดลง 12% ใน Q1/2569 Refinancing หนี้สำเร็จ ลดต้นทุน ช่วยเพิ่ม bottom line</li>
+          <li><b>Target รายได้ +9% ปี 2569:</b> Management guidance ชัดเจน อิงฐาน RevPAR ที่ฟื้นตัวต่อเนื่อง</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>ภาวะเศรษฐกิจไทยชะลอ:</b> GDP ไทยโตต่ำ กำลังซื้อในประเทศอ่อน กระทบ Domestic travel ซึ่งเป็น ~90% revenue</li>
+          <li><b>ความตึงเครียดภูมิรัฐศาสตร์:</b> Q1/2569 พิสูจน์แล้วว่านักท่องเที่ยวยุโรป-ตะวันออกกลาง reactive ต่อ geopolitics ส่งผลต่อ Luxury booking</li>
+          <li><b>Supply Oversupply กรุงเทพฯ:</b> Occupancy ในกรุงเทพฯ มีแนวโน้มลดจากห้องพักใหม่เปิดเพิ่ม ทำให้ pricing power ถูกจำกัด</li>
+          <li><b>หนี้สินสูง D/E 1.58x:</b> ถ้าอัตราดอกเบี้ยกลับสูงขึ้น ต้นทุนทางการเงินพุ่ง กดกำไรสุทธิ</li>
+          <li><b>ความผันผวน EPS:</b> กำไรปี 2567 (฿1,281 ล้าน) vs 2568 (฿838 ล้าน) สะท้อนว่า one-off item บิดเบือน EPS จริงได้มาก</li>
+          <li><b>ค่าใช้จ่าย D&A สูง:</b> สินทรัพย์โรงแรมมี D&A สูง กดกำไรสุทธิ แม้ Operating Cash Flow ดีกว่า Net Income</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>ราคาใกล้ Fair Value · ทยอยสะสมได้เมื่อย่อตัว</h2>
+      <p>ERW เป็นผู้ประกอบการโรงแรมชั้นนำของไทย มีจุดแข็งในแบรนด์ HOP INN ที่เติบโตต่อเนื่อง และ portfolio ครอบคลุม economy ถึง luxury ทำให้รับประโยชน์จากการฟื้นตัวท่องเที่ยวได้หลายมิติ Q1/2569 แสดงให้เห็นการทำกำไรสูงสุดเป็นประวัติการณ์ +12% YoY แต่ราคาปัจจุบัน ฿3.10 ซื้อขายใกล้ Fair Value ฿3.50 มี MOS เพียง 11.4% ซึ่งบาง Analyst consensus 16 ราย แนะนำ "ซื้อ" เป้า ฿3.60 สะท้อนความเชื่อมั่นในการฟื้นตัว แต่สำหรับนักลงทุนแบบ Value Investing ควรรอจุดที่ดีกว่า</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿3.50 <span style="font-size:12px;color:#cab9a8">(฿2.44–฿4.03)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +11.4%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿3.60 (Strong Buy 15/16)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ราคา ฿3.10 ใกล้ Fair Value — ทยอยสะสมได้ในสัดส่วนน้อย รอจุดเข้าซื้อที่ดีกว่าที่ ฿2.80 (MOS 20%) หรือ ฿2.45 (MOS 30%) ซึ่งเคยปรากฏในช่วง มี.ค.–เม.ย. 2569 Base case ให้ผลตอบแทน 3 ปี ~34% (+10%/ปี) รวมปันผล เหมาะกับนักลงทุนระยะกลาง-ยาวที่เชื่อในการฟื้นตัวท่องเที่ยวไทยระยะยาว
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    แหล่งข้อมูล: (1) Yahoo Finance — ERW.BK ราคา/key statistics/chart 1Y (2) SET Thailand — Factsheet + Listed Company Snapshot 3M/2569 (3) Investing.com — งบการเงิน Income Statement/Balance Sheet 2023–2025 (4) Kaohoon International — ผลประกอบการ Q1/2569 + 2024 full year (5) Maybank KimEng Research — Hotel sector analysis 2026
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 3 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>

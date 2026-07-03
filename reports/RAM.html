@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น โรงพยาบาลรามคำแหง (RAM) — Stock Analysis Dashboard</title>
+<!-- ★ โมเดล AI ที่ใช้วิเคราะห์จริง — gate E28 บังคับ -->
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — gate E29–31 -->
+<script type="application/json" id="stock-meta">
+{"symbol":"RAM","currency":"THB","price":18.10,"fairValue":33.00,"mos":45.2,"upside":82.3,"pe":8.05,"dividendYield":2.60,"roe":13.92}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#1565c0",
+    "accentDark": "#0d47a1",
+    "darkGrad": "linear-gradient(135deg,#0d47a1 0%,#1565c0 60%,#1976d2 100%)",
+    "glow": "rgba(21,101,192,0.3)",
+    "subColor": "#bbdefb",
+    "headerMuted": "rgba(255,255,255,0.6)",
+    "verdictText": "#e3f2fd",
+    "vcellLabel": "rgba(227,242,253,0.7)",
+    "badge": "#1976d2",
+    "chgBg": "rgba(30,142,62,0.18)",
+    "chgColor": "#1e8e3e"
+  },
+  "chart": {
+    "data": [
+      ["ก.ค. 2568", 17.30],
+      ["ส.ค. 2568", 17.30],
+      ["ก.ย. 2568", 19.10],
+      ["ต.ค. 2568", 18.60],
+      ["พ.ย. 2568", 18.00],
+      ["ธ.ค. 2568", 18.40],
+      ["ม.ค. 2569", 18.50],
+      ["ก.พ. 2569", 18.50],
+      ["มี.ค. 2569", 18.30],
+      ["เม.ย. 2569", 18.40],
+      ["พ.ค. 2569", 18.00],
+      ["มิ.ย. 2569", 18.10],
+      ["ก.ค. 2569", 18.10]
+    ],
+    "min": 16.0,
+    "max": 21.0,
+    "grid": [17.0, 18.0, 19.0, 20.0],
+    "fairLine": 33.00,
+    "currency": "฿",
+    "highlight": [2, 6],
+    "gridFmt": "v.toFixed(0)",
+    "dataFmt": "d[1].toFixed(2)"
+  },
+  "gauge": {
+    "min": 10,
+    "max": 50,
+    "cur": 18.10,
+    "fair": 33.00,
+    "fairLabelTop": true
+  },
+  "fv": 33.00
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">⬤ ⬤ ⬤</div>
+    <div>
+      <span class="tag">SET: RAM</span>
+      <span class="tag">Healthcare</span>
+      <span class="tag">Private Hospital</span>
+    </div>
+    <h1>โรงพยาบาลรามคำแหง (RAM)</h1>
+    <div class="sub">โรงพยาบาลเอกชนขนาดใหญ่ กรุงเทพตะวันออก • Medical Tourism + ผู้ป่วยนอก-ใน • เครือข่ายพันธมิตรโรงพยาบาล • บริการการแพทย์ครบวงจร</div>
+    <div class="price-row">
+      <div>
+        <div class="px">฿18.10<small>(RAM)</small></div>
+      </div>
+      <div class="chg">▲ +4.6% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 3 ก.ค. 2569 / งบ FY2568 / ไตรมาส Q1/2569<br>
+        กรอบ 52 สัปดาห์ ฿16.60 – ฿22.90<br>
+        ที่มา: Yahoo Finance (RAM.BK), SET Factsheet (set.or.th), investor.ram-hosp.co.th
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ก.ค. 2569 | FY = ปี 2568</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~฿21,720 ล้าน</div><div class="d">หุ้น 1,200 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~8.1x</div><div class="d">ต่ำกว่า Healthcare ไทย ~16x</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~12x</div><div class="d">ช่วง 7x–18x (ขึ้นกับงวด)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">0.98x</div><div class="d">ซื้อต่ำกว่า Book Value</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2568</div><div class="v">฿2,798 ล้าน</div><div class="d">+284% YoY (จากฐานต่ำ FY67)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿2.25</div><div class="d">FY2568 EPS = ฿2.33</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~฿18.50</div><div class="d">ราคาซื้อขายต่ำกว่า Book</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~13.9% / 7.6%</div><div class="d">FY2568 ฟื้นตัวแข็งแกร่ง</div></div>
+
+      <div class="metric"><div class="k">รายได้รวม FY2568</div><div class="v neu">฿15,160 ล้าน</div><div class="d">+48% YoY (รวมพอร์ตใหม่)</div></div>
+      <div class="metric"><div class="k">Net Profit Margin</div><div class="v">~18.5%</div><div class="d">TTM; FY68: 20.1%</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~2.6%</div><div class="d">นโยบาย ≥20% ของกำไรสุทธิ</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">~0.6</div><div class="d">ความผันผวนต่ำกว่าตลาด</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ก.ค. 2568 – ก.ค. 2569</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#1565c0"></i>ราคา RAM</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿33.00</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคา RAM เคลื่อนไหวในกรอบแคบ ฿17.30–฿19.10 ตลอดปีที่ผ่านมา จุดสูงสุด 52 สัปดาห์ที่ ฿22.90 เกิดต้นปี 2568 จากการฟื้นตัวของผลประกอบการ ก่อนย่อลงมาทรงตัวในกรอบ ฿17–฿19 ผลตอบแทนรอบปี +4.6% นับจาก ฿17.30 (ก.ค. 2568) มาสู่ ฿18.10 (ก.ค. 2569) มูลค่าเหมาะสมที่ ฿33 สูงกว่าราคาตลาดอย่างมีนัยสำคัญ สะท้อน undervaluation ที่น่าสนใจ
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS adj. ฿2.25 × P/E เป้าหมาย ~12x — ค่าเฉลี่ย 5 ปีย้อนหลัง RAM อยู่ที่ ~12x (กรอบ 7–18x) ต่ำกว่า Healthcare ไทยที่ ~16x</div></div>
+        <div class="mval">฿27.00</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. DCF (Discounted Cash Flow)</div><div class="mdesc">FCF/หุ้น ~฿1.86 (≈80% ของกำไรสุทธิ หักค่าใช้จ่ายลงทุน); WACC 9%, Terminal growth 3% — สะท้อนการขยายเครือข่ายโรงพยาบาลระยะยาว</div></div>
+        <div class="mval">฿31.07</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 13.9% − g 5%)/(r 9% − g 5%) ≈ 2.23 × BVPS ฿18.50 — ROE ที่ฟื้นแข็งแกร่งสนับสนุน P/BV ที่สูงกว่าปัจจุบัน</div></div>
+        <div class="mval">฿41.26</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿27.00 – ฿41.26</span></div>
+        <div class="r">฿33.00</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        วิธี P/E ให้ค่าอนุรักษ์นิยมที่สุด (฿27) เพราะ P/E เป้าหมาย 12x ยังต่ำกว่าค่าเฉลี่ยอุตสาหกรรม Justified P/BV ให้ค่าสูงสุด (฿41) เนื่องจาก ROE 13.9% ดีกว่า required return อย่างชัดเจน DCF (฿31) ให้ค่ากลางสมเหตุสมผล เฉลี่ย 3 วิธีได้ ฿33 ซึ่งมี Upside กว่า 82% จากราคาปัจจุบัน — สะท้อนว่า RAM ซื้อขายต่ำกว่ามูลค่าเหมาะสมอย่างมีนัย
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿18.10</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿33.00</div></div>
+        </div>
+        <div class="scale">
+          <span>฿20.45<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span>฿23.10<br><small>MOS 30%</small></span>
+          <span>฿26.40<br><small>MOS 20%</small></span>
+          <span style="text-align:center">฿33.00<br><small>Fair Value</small></span>
+          <span style="text-align:right">฿41.26<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน ฿18.10 ต่ำกว่า MOS 30% (฿23.10) สะท้อนว่าอยู่ในโซน "deep value" ตามกรอบ valuation กรอบนี้ แม้นักวิเคราะห์ตั้งเป้าหมายเฉลี่ยที่ ฿20.45 (อนุรักษ์นิยมกว่า) แต่ทั้ง DCF และ Justified P/BV ชี้ว่ามูลค่าจริงสูงกว่ามาก ราคาซื้อขายต่ำกว่า Book Value (P/BV 0.98x) เป็นสัญญาณ undervaluation ที่ชัดเจน
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict good">
+        <div class="big">+45.2%</div>
+        <div class="txt">MOS สูง — โซน Deep Value ราคาถูกกว่ามูลค่าเหมาะสมมาก</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿26.40</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿23.10</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿33.00</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="18.10" step="0.05">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿18.10 • EPS ฐาน ~฿2.25 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS 0%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿15.75</div>
+          <div class="ret neg">−5.2% (รวมปันผล) / −1.8%/ปี</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿2.25</span></li>
+            <li><span>P/E ออก</span><span>7x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿1.41</span></li>
+            <li><span>สถานการณ์</span><span>เศรษฐกิจซบเซา คู่แข่งแข็งแกร่ง</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +8%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿28.34</div>
+          <div class="ret pos">+64.8% (รวมปันผล) / +18.1%/ปี</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿2.83</span></li>
+            <li><span>P/E ออก</span><span>10x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿1.48</span></li>
+            <li><span>สถานการณ์</span><span>Medical Tourism ฟื้น ขยายเครือข่าย</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +15%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿44.49</div>
+          <div class="ret pos">+154.3% (รวมปันผล) / +36.5%/ปี</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿3.42</span></li>
+            <li><span>P/E ออก</span><span>13x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿1.55</span></li>
+            <li><span>สถานการณ์</span><span>Medical Tourism พุ่ง ขยายพอร์ตแข็งแกร่ง</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      Base case คาดผลตอบแทนรวม ~64.8% ใน 3 ปี หรือ ~18%/ปี โดยอิง EPS เติบโต 8%/ปี และ P/E กลับสู่ค่าเฉลี่ย 10x จากปัจจุบัน 8x ปัจจัยที่จะผลักดัน P/E re-rating คือการฟื้นตัวของนักท่องเที่ยวทางการแพทย์และการขยายเครือข่ายโรงพยาบาลพันธมิตร ปันผลรวมประมาณ ฿1.41–฿1.55 ต่อ 3 ปี ขึ้นอยู่กับ scenario ข้อควรระวัง: Bear case มีโอกาสเกิดหาก Q2–Q3/2569 กำไรยังอ่อนแอต่อเนื่องจาก Q1/2569
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>Medical Tourism ฟื้นตัว:</b> นักท่องเที่ยวเชิงการแพทย์จากอาเซียน+ตะวันออกกลางกลับมาแข็งแกร่ง RAM มีชื่อเสียงและราคาที่แข่งขันได้กับ BDMS/BH</li>
+          <li><b>การขยายเครือข่ายพันธมิตร:</b> รายได้รวม FY2568 กระโดด 48% YoY สะท้อนการเพิ่มพอร์ตโรงพยาบาลและศูนย์บริการเฉพาะทาง</li>
+          <li><b>ROE ฟื้นตัวแข็งแกร่ง:</b> จาก 3.9% (FY2567) กลับมา 13.9% (FY2568) แสดงถึงการปรับโครงสร้างต้นทุนที่ประสบความสำเร็จ</li>
+          <li><b>Valuation ถูกผิดปกติ:</b> P/E 8x และ P/BV 0.98x (ต่ำกว่า Book Value) — โอกาส re-rating เมื่อตลาดรับรู้ผลประกอบการที่ฟื้นตัว</li>
+          <li><b>ประชากรสูงอายุ:</b> แนวโน้มโครงสร้างประชากรไทยอายุมากขึ้นเพิ่มอุปสงค์บริการสุขภาพระยะยาว เซกเตอร์โรงพยาบาลเอกชนได้ประโยชน์ตรง</li>
+          <li><b>ฐานรายได้มั่นคง:</b> RAM รับประกันสุขภาพภาคเอกชน ประกันสังคม และ OPD ประจำ ทำให้รายได้ฐานมีความสม่ำเสมอ</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>Q1/2569 กำไรลด 29% YoY:</b> สัญญาณน่าจับตา — อาจสะท้อนความเสี่ยงระยะสั้น ต้องรอผล Q2–Q3 เพื่อยืนยันทิศทาง</li>
+          <li><b>การแข่งขันสูง:</b> BDMS, BH, BCH ต่างขยายเครือข่ายในกรุงเทพฯ กดดันส่วนแบ่งตลาดและ margin เฉพาะในพื้นที่กรุงเทพตะวันออก</li>
+          <li><b>ต้นทุนบุคลากรสูงขึ้น:</b> แพทย์เชี่ยวชาญและพยาบาลมีค่าตัวสูงและขาดแคลน กดดัน SGA และอัตรากำไรสุทธิ</li>
+          <li><b>ความผันผวนกำไร:</b> EPS FY2567 (฿0.61) เทียบกับ FY2568 (฿2.33) ต่างกัน 3.8x สะท้อนความผันผวนสูง ยากคาดเดาระยะสั้น</li>
+          <li><b>ความเสี่ยงด้านกฎระเบียบ:</b> นโยบายสาธารณสุขภาครัฐ การควบคุมค่าบริการยาและเวชภัณฑ์อาจกระทบรายได้</li>
+          <li><b>เงินทุนเพื่อขยายพอร์ต:</b> การเพิ่มโรงพยาบาลพันธมิตรต้องใช้เงินลงทุนสูง อาจกดดัน FCF และ dividend ระยะสั้น</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>Undervalued Healthcare — P/BV &lt; 1x + MOS 45%</h2>
+      <p>RAM ซื้อขายต่ำกว่ามูลค่าทางบัญชี (P/BV 0.98x) และ P/E เพียง 8x ทั้งที่ ROE ฟื้นมาที่ 13.9% ใน FY2568 มูลค่าเหมาะสมเฉลี่ย ฿33 (กรอบ ฿27–฿41) ให้ Upside กว่า 82% จากราคาปัจจุบัน สำหรับนักลงทุนระยะกลาง-ยาว ราคา ฿18 ให้ Margin of Safety 45% ซึ่งเป็นโซน deep value ที่ไม่บ่อยในหุ้น Healthcare ไทย อย่างไรก็ดี ควรติดตาม Q2–Q3/2569 เพื่อยืนยันการฟื้นตัวหลัง Q1/2569 ที่กำไรลด 29% YoY ก่อนเพิ่มน้ำหนักการลงทุน</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿33.00 <span style="font-size:12px;color:#cab9a8">(฿27.00–฿41.26)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +45.2%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿20.45 (เป้าบน ฿23)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ราคาปัจจุบัน ฿18 อยู่ในโซน deep value (MOS 45%) เหมาะสำหรับทยอยสะสม โดยเฉพาะหากราคา &lt; ฿20 · ติดตามผล Q2–Q3/2569 เพื่อยืนยันการฟื้นตัว · จุดออกแนะนำที่ ฿26–฿30 เมื่อ P/E กลับสู่ระดับปกติ 12–13x
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    แหล่งข้อมูล: Yahoo Finance (RAM.BK ราคา ณ ก.ค. 2569), SET Factsheet (set.or.th), investor.ram-hosp.co.th (Financial Highlights FY2568/Q1 2569), Panphol AIO (aio.panphol.com BVPS/P/BV), valueinvesting.io (EPS TTM) · งบการเงิน FY2568 รอบปีสิ้นสุด 31 ธ.ค. 2568
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 3 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
