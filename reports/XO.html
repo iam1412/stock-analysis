@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น Exotic Food PCL (XO) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"XO","currency":"THB","price":19.6,"fairValue":21.5,"mos":8.8,"upside":9.7,"pe":16.1,"dividendYield":3.5,"roe":27.3}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#e65100",
+    "accentDark": "#bf360c",
+    "darkGrad": "linear-gradient(135deg,#b71c1c 0%,#c62828 60%,#e65100 100%)",
+    "glow": "rgba(230,81,0,0.3)",
+    "subColor": "#ffccbc",
+    "headerMuted": "rgba(255,204,188,0.7)",
+    "verdictText": "#fff8f5",
+    "vcellLabel": "#ffab91",
+    "badge": "#e65100",
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#1e8e3e"
+  },
+  "chart": {
+    "data": [
+      ["ก.ค. 2568", 17.0],
+      ["ส.ค. 2568", 16.0],
+      ["ก.ย. 2568", 15.2],
+      ["ต.ค. 2568", 14.9],
+      ["พ.ย. 2568", 14.7],
+      ["ธ.ค. 2568", 14.1],
+      ["ม.ค. 2569", 14.7],
+      ["ก.พ. 2569", 13.6],
+      ["มี.ค. 2569", 13.6],
+      ["เม.ย. 2569", 13.0],
+      ["พ.ค. 2569", 19.0],
+      ["มิ.ย. 2569", 19.1],
+      ["ก.ค. 2569", 19.6]
+    ],
+    "min": 11,
+    "max": 24,
+    "grid": [12, 14, 16, 18, 20, 22],
+    "fairLine": 21.5,
+    "currency": "฿",
+    "highlight": [9, 10]
+  },
+  "gauge": {
+    "min": 12,
+    "max": 26,
+    "cur": 19.6,
+    "fair": 21.5,
+    "fairLabelTop": false
+  },
+  "fv": 21.5
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">●●●●●</div>
+    <div>
+      <span class="tag">SET: XO</span>
+      <span class="tag">อาหารและเครื่องดื่ม</span>
+      <span class="tag">ส่งออกซอส/เครื่องปรุง</span>
+    </div>
+    <h1>Exotic Food PCL (XO)</h1>
+    <div class="sub">ซอสปรุงรส • น้ำพริกเผา • กะทิ • อาหารพร้อมปรุง • ส่งออกเอเชีย/ยุโรป/อเมริกา</div>
+    <div class="price-row">
+      <div>
+        <div class="px">฿19.60<small>(XO)</small></div>
+      </div>
+      <div class="chg">▲ +15.3% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 3 ก.ค. 2569<br>
+        กรอบ 52 สัปดาห์ ฿12.70 – ฿20.20<br>
+        ที่มา: Yahoo Finance API (XO.BK), StockAnalysis.com (งบ FY2025), SET Factsheet
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ก.ค. 2569 · FY2568 (สิ้นสุด ธ.ค. 2568)</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~฿8,390 ล้าน</div><div class="d">428.26 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~16.1x</div><div class="d">EPS TTM ฿1.22 · ราคา ฿19.60</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~14–17x</div><div class="d">ช่วงผันผวนตามรายได้ส่งออก</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">4.52x</div><div class="d">BVPS ฿4.34 · FY2568</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2568</div><div class="v">฿506.6 ล้าน</div><div class="d">ลดลง 35.9% YoY (FY67: ฿790.8 ล้าน)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿1.22</div><div class="d">FY2568: ฿1.18 · FY2567: ฿1.85</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~฿4.34</div><div class="d">ส่วนผู้ถือหุ้น ฿1,858 ล้าน</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~27.3% / 23.3%</div><div class="d">สูงมาก สะท้อนธุรกิจ asset-light</div></div>
+
+      <div class="metric"><div class="k">รายได้ FY2568</div><div class="v neu">฿2,161 ล้าน</div><div class="d">ลดลง 13.5% จากฐานสูง FY2566–67</div></div>
+      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">44.7%</div><div class="d">Net margin 23.5% · ยอดเยี่ยมสำหรับ food</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~3.5%</div><div class="d">฿0.688/หุ้น FY2568 · Payout ~58%</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">~0.6</div><div class="d">ผันผวนน้อยกว่าตลาด (defensive)</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#e65100"></i>ราคา XO</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿21.50</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคา XO ร่วงต่อเนื่องจาก ฿17.0 (ก.ค. 2568) มาแตะต่ำสุดที่ ฿13.0 ในเดือนเมษายน 2569 (-23.5%) จากแรงกดดันรายได้ที่ลดลงและค่าเงินบาทผันผวน
+        ก่อนพุ่งขึ้นแรงในพฤษภาคม–มิถุนายน 2569 กลับสู่ระดับ ฿19–19.60 สาเหตุหลักจากการฟื้นตัวของคำสั่งซื้อส่งออกและ sentiment ตลาดที่ดีขึ้น
+        ผลตอบแทนรอบปี (ก.ค. 2568 – ก.ค. 2569) อยู่ที่ +15.3% จากฐาน ฿17.0 ซึ่งยังต่ำกว่าเส้น Fair Value ที่ ฿21.50
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ยถ่วงน้ำหนัก 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS adj. ฿1.26 × P/E 17x — EPS ประมาณการ FY2569 (consensus) × P/E เป้าหมาย 17x (premium brand exporter)</div></div>
+        <div class="mval">฿21.4</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. P/Sales Valuation</div><div class="mdesc">รายได้ต่อหุ้น ฿5.21 × P/Sales 3.9x — เหมาะสมสำหรับ branded food margin สูง 23%+</div></div>
+        <div class="mval">฿20.3</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 27.3% − g 5%)/(r 9% − g 5%) ≈ 5.58 × BVPS ฿4.34</div></div>
+        <div class="mval">฿24.2</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿20.3 – ฿24.2</span></div>
+        <div class="r">฿21.50</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        P/E Valuation (น้ำหนัก 40%) ให้ค่า ฿21.4 อิงจาก EPS คาดการณ์ FY2569 ที่ ฿1.26 × P/E เป้าหมาย 17x (premium เล็กน้อยเหนือค่าเฉลี่ยอุตสาหกรรม สะท้อนคุณภาพ brand + margin)
+        P/Sales (น้ำหนัก 30%) ให้ ฿20.3 จากรายได้ต่อหุ้น ฿5.21 × 3.9x ซึ่งสมเหตุผลสำหรับบริษัทมี net margin 23%+
+        Justified P/BV (น้ำหนัก 30%) ให้ค่าสูงสุด ฿24.2 เนื่องจาก ROE สูงมาก 27.3% สะท้อนธุรกิจ asset-light ที่ใช้เงินทุนน้อย
+        ค่าเฉลี่ยถ่วงน้ำหนัก (40/30/30) = ฿21.5 ซึ่งบ่งชี้ว่าราคาปัจจุบัน ฿19.60 ยังมี Margin of Safety ~8.8%
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿19.60</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿21.50</div></div>
+        </div>
+        <div class="scale">
+          <span>฿15.05<br><small>MOS 30%</small></span>
+          <span>฿15.35<br><small>เป้า Analyst</small></span>
+          <span style="text-align:center">฿17.20<br><small>MOS 20%</small></span>
+          <span style="text-align:right">฿21.50<br><small>Fair Value</small></span>
+          <span style="text-align:right">฿24.20<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคา ฿19.60 อยู่ต่ำกว่า Fair Value ฿21.50 ประมาณ 8.8% สะท้อน MOS ระดับ "น้อย–พอรับได้"
+        น่าสังเกตว่าเป้าหมายเฉลี่ยนักวิเคราะห์ 2 คนจาก StockAnalysis อยู่ที่ ฿15.35 (SELL) ซึ่งต่ำกว่าราคาปัจจุบันมาก
+        ความแตกต่างนี้สะท้อนมุมมองต่างกัน: นักวิเคราะห์กังวลรายได้ลดลงและฐานสูง FY2566–67
+        ในขณะที่ valuation model เน้นคุณภาพ ROE/margin ระยะยาว
+        โซนน่าสนใจสำหรับนักลงทุนระยะกลาง–ยาวอยู่ที่ &lt; ฿17.20 (MOS 20%) ขึ้นไป
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict ok">
+        <div class="big">+8.8%</div>
+        <div class="txt">MOS น้อย — ราคาต่ำกว่า FV แต่ยังไม่มาก · ควรรอโซน MOS 20%+ หรือมีหลักฐานฟื้นตัวรายได้ก่อน</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿17.20</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿15.05</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿21.50</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="19.60" step="0.05">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿19.60 • EPS ฐาน ~฿1.26 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS -2%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿15.5</div>
+          <div class="ret neg">-11% รวมปันผล</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿1.19</span></li>
+            <li><span>P/E ออก</span><span>13x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿1.86</span></li>
+            <li><span>สถานการณ์</span><span>ส่งออกซบเซา ค่าบาทแข็ง</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +7%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿24.6</div>
+          <div class="ret pos">+37% รวมปันผล</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿1.54</span></li>
+            <li><span>P/E ออก</span><span>16x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿2.30</span></li>
+            <li><span>สถานการณ์</span><span>ส่งออกฟื้น กำลังการผลิตขยาย</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +13%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿34.6</div>
+          <div class="ret pos">+89% รวมปันผล</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿1.82</span></li>
+            <li><span>P/E ออก</span><span>19x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿2.52</span></li>
+            <li><span>สถานการณ์</span><span>ตลาดใหม่ EU/US บุกแบรนด์ตัวเอง</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      Base case ให้ผลตอบแทน ~37% ใน 3 ปี (CAGR ~11%) โดยอิง EPS เติบโต 7%/ปีตาม consensus FY2569–70 และ P/E ออก 16x ซึ่งสมเหตุผลสำหรับธุรกิจ food export margin สูง
+      Bear case เกิดเมื่อรายได้ส่งออกชะลอต่อเนื่อง หรือค่าบาทแข็งกดมาร์จิ้น
+      Bull case ต้องการการขยายตลาด EU/US + สินค้าแบรนด์ตัวเองมีสัดส่วนสูงขึ้น
+      ปันผล ~฿0.73/ปีช่วยเสริม total return โดยเฉพาะในสถานการณ์ที่ราคาไม่วิ่ง
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>ส่งออกฟื้นตัว:</b> ตลาดเอเชียและยุโรปมีแนวโน้มเพิ่มความต้องการอาหารไทยสำเร็จรูป โดยเฉพาะ ready-to-cook ที่เติบโตหลัง COVID</li>
+          <li><b>Margin สูงและทนทาน:</b> Gross margin 44.7%, Net margin 23.5% สูงผิดปกติในอุตสาหกรรมอาหาร สะท้อน brand power และ pricing power ที่แข็งแกร่ง</li>
+          <li><b>แบรนด์ตัวเอง (Own Brand):</b> สัดส่วนสินค้าแบรนด์ XO เพิ่มขึ้น มีมาร์จิ้นสูงกว่า OEM ช่วยปกป้องกำไรระยะยาว</li>
+          <li><b>ROE สูงมาก 27.3%:</b> ธุรกิจใช้เงินทุนน้อย ผลิตกระแสเงินสดสม่ำเสมอ สามารถจ่ายปันผลได้ต่อเนื่องแม้กำไรผันผวน</li>
+          <li><b>ฐานรายได้ฟื้น FY2569E:</b> consensus คาด FY2569 รายได้ ฿2.23B (เพิ่มขึ้นจาก ฿2.16B) และ EPS ฟื้นสู่ ฿1.26–1.38</li>
+          <li><b>ราคาวัตถุดิบปรับลด:</b> ต้นทุนน้ำมันปาล์ม/กะทิ/พริกมีแนวโน้มทรงตัว ช่วยรักษา gross margin สูง</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>รายได้ลดลงต่อเนื่อง:</b> รายได้ลดจาก ฿2,534M (FY66) เหลือ ฿2,161M (FY68) = -14.7% ใน 2 ปี สะท้อนการแข่งขันสูงหรือคำสั่งซื้อหดตัว</li>
+          <li><b>ค่าบาทแข็ง:</b> รายได้จากส่งออกมากกว่า 50% เมื่อเงินบาทแข็งค่า รายได้บาทลดลงโดยตรง กดดัน EPS</li>
+          <li><b>Analyst Consensus SELL:</b> นักวิเคราะห์ 2 รายให้เป้า ฿15.35 ต่ำกว่าราคาปัจจุบัน 22% สะท้อนความกังวลเรื่องการเติบโตระยะสั้น</li>
+          <li><b>ฐานกำไรสูงผิดปกติ FY2566–67:</b> กำไร FY2567 ฿790M อาจเป็นผลจากปัจจัยพิเศษ ทำให้ FY2568 ดูแย่เมื่อเทียบ YoY</li>
+          <li><b>การแข่งขันจากซอสนำเข้า:</b> แบรนด์ระดับโลกและสินค้าจากจีน/เวียดนามมีราคาถูกกว่า กดดัน pricing power</li>
+          <li><b>ความเสี่ยงการกระจุกตัวลูกค้า:</b> หากลูกค้ารายใหญ่ลดคำสั่งซื้อหรือเปลี่ยน supplier รายได้อาจหดแรง</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>ธุรกิจคุณภาพสูง · ราคาใกล้ Fair Value · รอจังหวะดีกว่า</h2>
+      <p>XO เป็นหนึ่งในไม่กี่บริษัทอาหารไทยที่มี net margin 23%+ และ ROE 27%+ สะท้อนความแข็งแกร่งของ brand และ pricing power ในตลาดส่งออก
+      อย่างไรก็ตาม รายได้ลดลงต่อเนื่อง 2 ปีและ consensus นักวิเคราะห์เป็น SELL บ่งชี้ว่าความเสี่ยงระยะสั้นยังมีอยู่
+      ราคาปัจจุบัน ฿19.60 มี MOS เพียง 8.8% จาก Fair Value ฿21.50 ซึ่งยังไม่เพียงพอสำหรับ margin of safety ที่ดี
+      นักลงทุนที่เชื่อในคุณภาพธุรกิจระยะยาวควรรอโซน ฿17–17.50 (MOS 20%) เพื่อ risk/reward ที่ดีขึ้น</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿21.50 <span style="font-size:12px;color:#cab9a8">(฿20.30–฿24.20)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +8.8%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿15.35 (Sell)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ถือ (Hold) หากมีอยู่แล้ว · ทยอยสะสมเพิ่มที่ &lt; ฿17.20 (MOS 20%) · โซน Deep Value ที่ &lt; ฿15.05 (MOS 30%) เหมาะสำหรับสะสมระยะยาว · ติดตามรายได้ FY2569 Q1–Q2 เป็น trigger หลัก
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    แหล่งข้อมูล: (1) Yahoo Finance API (XO.BK, ราคา ณ 3 ก.ค. 2569, กราฟรายเดือน 12 เดือน), (2) StockAnalysis.com (งบการเงิน FY2568 สิ้นสุด ธ.ค. 2568, consensus EPS FY2569–70, analyst target), (3) SET Factsheet (P/E 15.67x, P/BV 4.46x, market cap ณ 2 ก.ค. 2569) — ราคาจาก Yahoo Finance API และ SET Factsheet ยืนยันตรงกัน ±2.6% (฿19.60 vs ฿19.10)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 3 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
