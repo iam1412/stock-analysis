@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น ซิโน-ไทย เอ็นจีเนียรริ่ง (STECON) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"STEC","currency":"THB","price":18.40,"fairValue":17.00,"mos":-8.2,"upside":-7.6,"pe":14.28,"dividendYield":2.17,"roe":9.7}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#37474f",
+    "accentDark": "#263238",
+    "darkGrad": "linear-gradient(135deg,#102027 0%,#263238 55%,#37474f 120%)",
+    "glow": "rgba(55,71,79,0.35)",
+    "subColor": "#b0bec5",
+    "headerMuted": "rgba(176,190,197,0.75)",
+    "verdictText": "#eceff1",
+    "vcellLabel": "rgba(176,190,197,0.85)",
+    "badge": "#455a64",
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#1e8e3e"
+  },
+  "chart": {
+    "data": [
+      ["ก.ค. 68", 7.65],
+      ["ส.ค. 68", 8.05],
+      ["ก.ย. 68", 8.20],
+      ["ต.ค. 68", 5.70],
+      ["พ.ย. 68", 6.35],
+      ["ธ.ค. 68", 7.95],
+      ["ม.ค. 69", 13.00],
+      ["ก.พ. 69", 11.50],
+      ["มี.ค. 69", 12.00],
+      ["เม.ย. 69", 15.70],
+      ["พ.ค. 69", 18.00],
+      ["มิ.ย. 69", 18.40]
+    ],
+    "min": 4.0,
+    "max": 22.0,
+    "grid": [4.0, 8.0, 12.0, 16.0, 20.0],
+    "fairLine": 17.0,
+    "currency": "฿",
+    "highlight": [0, 6],
+    "gridFmt": "v.toFixed(0)",
+    "dataFmt": "d[1].toFixed(2)"
+  },
+  "gauge": {
+    "min": 10.0,
+    "max": 24.0,
+    "cur": 18.40,
+    "fair": 17.0,
+    "fairLabelTop": false
+  },
+  "fv": 17.0
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">🏗 🏗 🏗</div>
+    <div>
+      <span class="tag">SET: STECON</span>
+      <span class="tag">รับเหมาก่อสร้าง / Holding</span>
+      <span class="tag">โครงสร้างพื้นฐาน • พลังงาน • โลจิสติกส์</span>
+    </div>
+    <h1>ซิโน-ไทย เอ็นจีเนียรริ่ง (STECON Group)</h1>
+    <div class="sub">Holdco ของ STEC — รับเหมาก่อสร้างขนาดใหญ่ (รถไฟฟ้า ทางด่วน สนามบิน เขื่อน) • สาธารณูปโภค &amp; พลังงาน • โลจิสติกส์ &amp; ขนส่ง • Data Center &amp; จัดเก็บเอกสาร</div>
+    <div class="price-row">
+      <div>
+        <div class="px">฿18.40<small>(STECON)</small></div>
+      </div>
+      <div class="chg">▲ +140.5% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 3 ก.ค. 2569<br>
+        กรอบ 52 สัปดาห์ ฿5.25 – ฿19.20<br>
+        ที่มา: SET Factsheet • Yahoo Finance (STECON.BK) • Finnomena | งบ FY2568 / Q1/2569
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">TTM / FY2568 (2025) | ราคา ณ 3 ก.ค. 2569</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~฿27,951 ล้าน</div><div class="d">~1,519 ล้านหุ้น (Par ฿1)</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~14.28x</div><div class="d">ใกล้ Sector เฉลี่ย ~13–16x</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~13–16x</div><div class="d">ปัจจุบัน ซื้อขายในช่วงปกติ</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">1.39x</div><div class="d">BVPS ~฿13.24/หุ้น</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2568</div><div class="v">~฿1,957 ล้าน</div><div class="d">อิง P/E 14.28x ที่ราคา ฿18.40</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿1.29</div><div class="d">Holdco + รับรู้กำไรบริษัทย่อย</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~฿13.24</div><div class="d">Book value per share ล่าสุด</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~9.7% / ~4.5%</div><div class="d">ROE ฟื้นตัว หลัง Holdco restructuring</div></div>
+
+      <div class="metric"><div class="k">EBITDA</div><div class="v neu">~฿675 ล้าน</div><div class="d">EV/EBITDA ~10.1x (Enterprise Value ฿33,627M)</div></div>
+      <div class="metric"><div class="k">Net Debt</div><div class="v">~฿5,676 ล้าน</div><div class="d">EV – Market Cap (สุทธิหนี้)</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~2.17%</div><div class="d">ประมาณ ฿0.40/หุ้น (อิงนโยบาย STEC เดิม)</div></div>
+      <div class="metric"><div class="k">Free Float</div><div class="v">~53.98%</div><div class="d">ผู้ถือหุ้นต่างชาติ 15.73% | NVDR 6.15%</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ก.ค. 2568 – มิ.ย. 2569</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#37474f"></i>ราคา STECON</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿17.00</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        STECON เริ่มซื้อขายในชื่อใหม่ตั้งแต่ 29 ต.ค. 2567 หลัง STEC ปรับโครงสร้างเป็น Holding Company • ปลาย ก.ค. 68 เปิดที่ ฿7.65 แล้วร่วงลงถึง ฿5.25 ใน ต.ค. 68 ขณะตลาดปรับฐาน • ม.ค. 69 พุ่งแรงขึ้น ฿13 หลังรัฐบาลเร่งงบฯ โครงการ Mega Project และนโยบาย Land Bridge • เม.ย.–มิ.ย. 69 ราคาทะยานต่อแตะ ฿15.70–฿18.40 รับอานิสงส์การได้รับงานก่อสร้างรัฐใหม่ ▲ +140.5% รอบปี
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">3 วิธี — น้ำหนัก P/E 40% · P/BV 40% · Justified P/BV 20%</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS (TTM) ฿1.29 × P/E เป้าหมาย ~15x — Peer Thai Construction เฉลี่ย 13–16x; STECON Holdco Premium เล็กน้อย</div></div>
+        <div class="mval">฿19.35</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. Sector P/BV</div><div class="mdesc">P/BV เป้า 1.35x × BVPS ฿13.24 — กลุ่มรับเหมาไทยซื้อขาย P/BV ระดับ 1.2–1.5x เฉลี่ย; อิง Holding company structure</div></div>
+        <div class="mval">฿17.87</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 9.7% − g 7%)/(r 10.5% − g 7%) ≈ 0.77x × BVPS ฿13.24 — Conservative; ROE ยังต่ำหลัง restructuring</div></div>
+        <div class="mval">฿10.21</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿10.21 – ฿19.35</span></div>
+        <div class="r">฿17.00</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        <b>หมายเหตุ:</b> P/E ให้มูลค่าสูงสุด ฿19.35 สะท้อน Earnings จากบริษัทย่อยที่แข็งแกร่ง • Sector P/BV ฿17.87 สอดคล้องกับ Peer กลุ่มรับเหมาขนาดใหญ่ • Justified P/BV ฿10.21 ต่ำสุดเพราะ ROE 9.7% ยังไม่ถึงระดับ "เต็ม" (ปกติรับเหมาดีอยู่ที่ 12–18%) • FV เฉลี่ยถ่วงน้ำหนัก ฿17.00 บ่งชี้ราคาปัจจุบัน ฿18.40 ซื้อขายสูงกว่า FV ~8% (Premium เล็กน้อยหลัง rally แรง)
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿18.40</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿17.00</div></div>
+        </div>
+        <div class="scale">
+          <span>฿11.90<br><small>MOS 30%</small></span>
+          <span>฿13.60<br><small>MOS 20%</small></span>
+          <span style="text-align:center">฿17.00<br><small>Fair Value</small></span>
+          <span style="text-align:right">฿19.35<br><small>P/E Target</small></span>
+          <span style="text-align:right">฿20.00<br><small>เป้า Analyst</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน ฿18.40 สูงกว่า Fair Value ฿17.00 อยู่ ~8% สะท้อนว่า <b>ตลาดได้ Priced-in</b> การฟื้นตัวจาก Restructuring และกระแส Mega Project ไปมากแล้ว • โซน MOS 20% ที่ ฿13.60 เป็นจุดสะสมน่าสนใจถ้าราคาปรับฐาน • โซน ฿16–17 เป็น "Fair Zone" เหมาะสำหรับซื้อเพิ่ม • โซน ฿19–20 ใกล้ Full Value ตาม P/E Method
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">−8.2%</div>
+        <div class="txt">ราคาปัจจุบันสูงกว่า Fair Value ~8% — ยังไม่มี Margin of Safety ชัดเจน · ควรรอโซนปรับฐาน</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿13.60</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿11.90</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿17.00</div><div class="d">ใกล้/ต่ำกว่า Fair Value</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="18.40" step="0.05">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿18.40 • EPS ฐาน ~฿1.29 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS −5%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿14.07</div>
+          <div class="ret neg">−24%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿1.10</span></li>
+            <li><span>P/E ออก</span><span>12x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.75</span></li>
+            <li><span>สถานการณ์</span><span>งานรัฐชะลอ โครงการ Mega ล่าช้า</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +10%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿26.95</div>
+          <div class="ret pos">+46%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿1.72</span></li>
+            <li><span>P/E ออก</span><span>15x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿1.20</span></li>
+            <li><span>สถานการณ์</span><span>Mega Project ดำเนินต่อ EPS เติบโตสม่ำเสมอ</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +20%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿39.40</div>
+          <div class="ret pos">+114%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿2.23</span></li>
+            <li><span>P/E ออก</span><span>17x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿1.50</span></li>
+            <li><span>สถานการณ์</span><span>Land Bridge + EEC + MRT + Power โตพร้อมกัน</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      ผลตอบแทนอ้างอิงราคาซื้อ ฿18.40 • EPS ฐาน ฿1.29 อิงจาก P/E 14.28x ที่ราคาตลาด • ปันผลประมาณการ ฿0.40/ปี อิงนโยบายเดิมของ STEC (อาจเปลี่ยนแปลงหลัง restructure) • Base case สมมติว่า Backlog ใหม่จาก Mega Projects ทำให้ EPS เติบโต 10%/ปีต่อเนื่อง • กรณี Bear: เสี่ยงงบฯ รัฐถูกตัด/โครงการล่าช้า
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก &amp; ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>Mega Infrastructure Projects:</b> Thailand พัฒนา Land Bridge (Ranong-Chumphon), EEC, สนามบิน, มอเตอร์เวย์ M81 — STECON อยู่ในฐานะที่ดีที่สุดในการรับงาน ด้วยประสบการณ์ทางวิศวกรรมมากกว่า 60 ปี</li>
+          <li><b>MRT / รถไฟฟ้า:</b> MRT สายสีส้ม สายสีม่วงใต้ สายสีเหลือง-ชมพู extension — STECON เชี่ยวชาญก่อสร้างอุโมงค์ใต้ดินและ viaduct โดยเฉพาะ</li>
+          <li><b>Holdco Structure ให้ Synergy:</b> รายได้จากหลายธุรกิจ (Construction + Utilities + Logistics + Data Center) ช่วยลดความผันผวน; Dividend flow จากบริษัทย่อยมาสนับสนุน Holdco</li>
+          <li><b>งบฯ รัฐ 3.7 ล้านล้านบาท:</b> รัฐบาลไทยเน้นงบลงทุนด้านโครงสร้างพื้นฐาน STECON ได้รับงานรัฐกว่า 3.7 หมื่นล้านบาทในรอบ 10 ปี บ่งชี้ความสัมพันธ์ที่แข็งแกร่ง</li>
+          <li><b>AI Megatrend + Data Center:</b> ความต้องการ Data Center ในไทยพุ่ง STECON ขยายธุรกิจ IT Infrastructure และบริการจัดเก็บข้อมูล</li>
+          <li><b>ราคาหุ้นที่ Repricing:</b> จากโครงสร้าง Holdco ที่ชัดเจนขึ้น ตลาดเริ่ม re-rate ด้วย P/E/P/BV ที่สูงขึ้น สะท้อนค่า Sum-of-Parts ที่ซ่อนอยู่</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>งบฯ รัฐล่าช้า / ถูกตัด:</b> โครงการ Mega Infrastructure อ้างอิงงบประมาณรัฐ — หากการเมืองไม่นิ่ง งบฯ ถูกเลื่อน ส่งผลโดยตรงต่อ Backlog และรายได้</li>
+          <li><b>Net Debt สูง:</b> STECON มี Net Debt ~5,676M THB — ต้นทุนดอกเบี้ยกดดันกำไรสุทธิ; หากดอกเบี้ยสูงนานต่อเนื่องจะบีบอัตรากำไร</li>
+          <li><b>Margin บีบ:</b> ธุรกิจรับเหมาขนาดใหญ่มี Gross Margin ต่ำ 7–9%; ต้นทุนวัสดุก่อสร้าง (เหล็ก ซีเมนต์) ผันผวนสูงตาม Commodity cycle</li>
+          <li><b>Holdco Discount:</b> ตลาดอาจ Discount มูลค่า Holdco จากความซับซ้อนของโครงสร้าง ทำให้ราคาต่ำกว่า Sum-of-Parts ได้นาน</li>
+          <li><b>การแข่งขัน Mega Project:</b> ผู้รับเหมาต่างชาติ (จีน เกาหลี) เสนอราคาต่ำ อาจกดดัน Win Rate และ Margin</li>
+          <li><b>ราคา Priced-in จาก Rally +140%:</b> หากผลประกอบการออกมาต่ำกว่าคาด ราคาที่อยู่เหนือ FV จะปรับฐานแรง; สภาพคล่องอาจลดเมื่อ Momentum หายไป</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>STECON: ผู้รับเหมาโครงสร้างพื้นฐานแกร่ง — ราคาปัจจุบันสะท้อนมูลค่าเต็มแล้ว รอโซนเหมาะสมก่อนสะสม</h2>
+      <p>STECON Group (ซิโน-ไทย เอ็นจีเนียรริ่ง) คือ Holding Company ที่ถือหุ้นในกลุ่มรับเหมาก่อสร้างขนาดใหญ่ที่สุดแห่งหนึ่งของไทย ด้วยประสบการณ์กว่า 60 ปี ในงานรถไฟฟ้า ทางด่วน สนามบิน และโรงไฟฟ้า หุ้นปรับโครงสร้างเป็น Holdco ต.ค. 2567 และราคาพุ่ง +140% ในรอบปีรับกระแส Mega Project Megatrend • P/E 14.28x และ P/BV 1.39x ยังอยู่ในช่วงสมเหตุสมผล แต่ราคา ฿18.40 สูงกว่า Fair Value ฿17 เล็กน้อย บ่งชี้ว่าตลาด Priced-in ข่าวดีไปพอสมควรแล้ว • กลยุทธ์: รอซื้อสะสมในโซน ฿13.60–฿16 (MOS 20%) มากกว่าไล่ซื้อตอนนี้</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿17.00 <span style="font-size:12px;color:#cab9a8">(฿10.21–฿19.35)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −8.2% (เหนือ FV)</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿20.00 (ซื้อสะสม)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ถือหุ้นที่มีอยู่ได้ / รอปรับฐานสู่โซน ฿13.60–฿16.00 ก่อนสะสมเพิ่ม • ตัดขาดทุน (Stop Loss) หาก EPS หดตัวหรือโครงการสำคัญถูกยกเลิก • เหมาะสำหรับนักลงทุนที่รับความเสี่ยงจาก Cyclical + Policy Risk ได้
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ที่มา: SET Factsheet (STECON) • Yahoo Finance (STECON.BK) • Finnomena • Bangkok Biznews
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 3 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
