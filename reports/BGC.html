@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น บีจี คอนเทนเนอร์ กล๊าส (BGC) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"BGC","currency":"THB","price":7.00,"fairValue":6.80,"mos":-2.9,"upside":-2.9,"pe":53.8,"dividendYield":2.71,"roe":1.1}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#00b4d8",
+    "accentDark": "#0077b6",
+    "darkGrad": "linear-gradient(135deg,#023e8a 0%,#0096c7 100%)",
+    "glow": "rgba(0,180,216,0.25)",
+    "subColor": "#90e0ef",
+    "headerMuted": "rgba(144,224,239,0.7)",
+    "verdictText": "#caf0f8",
+    "vcellLabel": "#90e0ef",
+    "badge": "#00b4d8",
+    "chgBg": "#1e8e3e",
+    "chgColor": "#ffffff"
+  },
+  "chart": {
+    "data": [
+      ["ม.ค. 68", 4.80],
+      ["ก.พ. 68", 4.70],
+      ["มี.ค. 68", 4.50],
+      ["เม.ย. 68", 3.94],
+      ["พ.ค. 68", 3.90],
+      ["มิ.ย. 68", 4.08],
+      ["ก.ค. 68", 4.32],
+      ["ส.ค. 68", 5.65],
+      ["ก.ย. 68", 5.80],
+      ["ต.ค. 68", 6.15],
+      ["พ.ย. 68", 7.05],
+      ["ธ.ค. 68", 7.00],
+      ["ม.ค. 69", 7.00]
+    ],
+    "min": 3.50,
+    "max": 8.00,
+    "grid": [4.00, 5.00, 6.00, 7.00, 8.00],
+    "fairLine": 6.80,
+    "currency": "฿",
+    "highlight": [3, 10],
+    "gridFmt": "v.toFixed(2)",
+    "dataFmt": "d[1].toFixed(2)"
+  },
+  "gauge": {
+    "min": 3.50,
+    "max": 10.00,
+    "cur": 7.00,
+    "fair": 6.80,
+    "fairLabelTop": true
+  },
+  "fv": 6.80
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">●●●</div>
+    <div>
+      <span class="tag">SET: BGC</span>
+      <span class="tag">บรรจุภัณฑ์แก้ว</span>
+      <span class="tag">Basic Materials</span>
+    </div>
+    <h1>บีจี คอนเทนเนอร์ กล๊าส (BGC)</h1>
+    <div class="sub">ผู้ผลิตบรรจุภัณฑ์แก้วรายใหญ่สุดของไทย • ขวดเบียร์ สุรา เครื่องดื่ม อาหาร • ลูกค้า Thai Beverage, Boon Rawd, ThaiBev • กำลังการผลิต ~3 ล้านตัน/ปี</div>
+    <div class="price-row">
+      <div>
+        <div class="px">฿7.00<small>(BGC)</small></div>
+      </div>
+      <div class="chg">▲ +45.8% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 3 ก.ค. 2569<br>
+        กรอบ 52 สัปดาห์ ฿3.30 – ฿7.15<br>
+        ที่มา: Yahoo Finance, Investing.com, SET Thailand
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ มิ.ย. 2569</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">฿4.75B</div><div class="d">678.96 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~53.8x</div><div class="d">EPS TTM ฿0.13 (กำไรต่ำผิดปกติ)</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~3 ปี</div><div class="v">~12–15x</div><div class="d">อิงปีปกติ FY2022–2023</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">0.89x</div><div class="d">ซื้อขายต่ำกว่ามูลค่าทางบัญชี</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">฿88.4M</div><div class="d">ลด 65.8% yoy (ต้นทุนพลังงานสูง)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿0.13</div><div class="d">FY2025 (ปกติ FY2023: ฿0.47)</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~฿7.88</div><div class="d">ทุนสุทธิ ฿5,219M / 679M หุ้น</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v neu">~1.1% / 0.3%</div><div class="d">ต่ำในปีที่กำไรกดดัน</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">฿13.5B</div><div class="d">ลด 5.3% จาก FY2024 ฿14.4B</div></div>
+      <div class="metric"><div class="k">EBITDA / EV/EBITDA</div><div class="v">฿1.76B / 7.4x</div><div class="d">ยังมีกระแสเงินสดดำเนินงาน</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~2.71%</div><div class="d">฿0.19/หุ้น (5 ปี: ลดลง -20%/ปี)</div></div>
+      <div class="metric"><div class="k">FCF (FY2024)</div><div class="v pos">฿1.54B</div><div class="d">พลิกกลับเป็นบวก หลัง capex ลด</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ม.ค. 2568 – ม.ค. 2569</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#00b4d8"></i>ราคา BGC</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿6.80</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        BGC เริ่มปี 2568 ที่ ฿4.80 ก่อนปรับฐานลงสู่จุดต่ำสุด ฿3.90 ในเดือน พ.ค. 2568 จากแรงกดดันต้นทุนพลังงานและกำไร FY2025 ที่อ่อนแอ
+        จากนั้นราคาฟื้นตัวแข็งแกร่งในช่วง ส.ค.–พ.ย. 2568 (+80% จากจุดต่ำสุด) หลังนักลงทุนคาดการณ์การฟื้นตัวของ margin และต้นทุนพลังงานที่ผ่อนคลายลง
+        ราคาปัจจุบัน ฿7.00 ใกล้เคียงระดับ 52 สัปดาห์สูงสุด ฿7.15 สะท้อนความคาดหวังการฟื้นตัวของกำไรในปี 2569
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation (Normalized)</div><div class="mdesc">EPS adj. ฿0.40 (ค่าเฉลี่ย recovery FY2024–2025) × P/E เป้าหมาย ~14x — อิง sector packaging ไทย ปีปกติ P/E 12–16x</div></div>
+        <div class="mval">฿5.60</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. EV/EBITDA</div><div class="mdesc">EBITDA ฿1,760M × 6x target EV/EBITDA − หนี้สุทธิ ฿4,200M + cash est. ÷ 679M หุ้น — อิง regional packaging 5–7x</div></div>
+        <div class="mval">฿9.37</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV = (ROE 6% − g 2%)/(r 8% − g 2%) ≈ 0.67 × BVPS ฿7.88 — ROE target = recovery scenario ปี 2–3</div></div>
+        <div class="mval">฿5.28</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿5.28 – ฿9.37</span></div>
+        <div class="r">฿6.80</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        วิธี EV/EBITDA ให้ค่าสูงสุด (฿9.37) เนื่องจาก EBITDA ยังคงทรงตัวจากการที่ค่าเสื่อมราคาสูง สะท้อนการลงทุนโรงงานในช่วงก่อนหน้า
+        วิธี P/E และ Justified P/BV ให้ค่าอนุรักษ์นิยมกว่า เพราะกำไรสุทธิอยู่ระดับต่ำมาก
+        ค่าเฉลี่ย ฿6.80 ใกล้เคียงราคาปัจจุบัน ฿7.00 สะท้อนว่าราคาปัจจุบันอยู่ใน "Fair zone" โดยมีความคาดหวังการฟื้นตัวแล้ว
+        หมายเหตุ: ราคา ฿7.00 ยืนยันจากทั้ง Yahoo Finance และ Investing.com (ต่างกัน 0%)
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿7.00</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿6.80</div></div>
+        </div>
+        <div class="scale">
+          <span>฿4.76<br><small>MOS 30%</small></span>
+          <span>฿5.44<br><small>MOS 20%</small></span>
+          <span style="text-align:center">฿6.80<br><small>Fair Value</small></span>
+          <span style="text-align:right">฿7.50<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">฿9.37<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน ฿7.00 อยู่เหนือมูลค่าเหมาะสม ฿6.80 เล็กน้อย (~+2.9%) สะท้อนว่าตลาดให้ราคาเกินพื้นฐาน Normalized ไปแล้ว
+        โซนน่าสนใจ (MOS 20%) อยู่ที่ ฿5.44 และ MOS 30% ที่ ฿4.76 — ห่างจากราคาปัจจุบันมากพอสมควร
+        ทว่าถ้ากำไรฟื้นตัวสู่ FY2023 (฿0.47 EPS) × P/E 15x = ฿7.05 ก็จะสนับสนุนระดับราคาปัจจุบันได้
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">-2.9%</div>
+        <div class="txt">ราคาปัจจุบันอยู่เหนือมูลค่าเหมาะสมเล็กน้อย — ยังไม่มี MOS (ราคาสะท้อนการฟื้นตัวไปแล้ว)</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿5.44</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿4.76</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿6.80</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="7.00" step="0.05">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿7.00 • EPS ฐาน ~฿0.20 (ประมาณการ FY2026) • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS -10%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿1.20</div>
+          <div class="ret neg">-77.7%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.15</span></li>
+            <li><span>P/E ออก</span><span>8x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.36</span></li>
+            <li><span>สถานการณ์</span><span>ต้นทุนพลังงานสูงต่อเนื่อง ยอดขายซบเซา</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +40%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿7.70</div>
+          <div class="ret pos">+19.0%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.55</span></li>
+            <li><span>P/E ออก</span><span>14x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.63</span></li>
+            <li><span>สถานการณ์</span><span>กำไรฟื้นสู่ระดับ FY2023 ต้นทุนก๊าซผ่อนคลาย</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +60%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿13.12</div>
+          <div class="ret pos">+102.4%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.82</span></li>
+            <li><span>P/E ออก</span><span>16x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿1.05</span></li>
+            <li><span>สถานการณ์</span><span>กำไรฟื้นเต็มรูปแบบ เกินระดับ FY2022 โรงงานใหม่เต็มกำลัง</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      การคาดการณ์ข้างต้นอิง EPS ฐาน ฿0.20 (ประมาณการฟื้นตัว FY2026 จาก ฿0.13 ในปี FY2025)
+      กุญแจสำคัญคือต้นทุนพลังงาน (ก๊าซธรรมชาติ/ไฟฟ้าคิดเป็น ~35–40% ของต้นทุนการผลิต) และอัตราการใช้กำลังการผลิต
+      Scenario Base ต้องการ EPS กลับสู่ระดับ ~฿0.55 ภายใน 3 ปี ใกล้เคียง FY2023 (฿0.47) ซึ่งเป็นไปได้ถ้าต้นทุนพลังงานเป็นปัจจัยชั่วคราว
+      Bear scenario ให้ผลลบรุนแรงมาก เนื่องจากราคาปัจจุบัน ฿7.00 ได้ price in การฟื้นตัวไปแล้วอย่างมีนัยสำคัญ
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>ต้นทุนพลังงานลดลง:</b> ราคาก๊าซธรรมชาติที่ผ่อนคลายจะช่วยฟื้น EBITDA margin อย่างมีนัยสำคัญ เนื่องจากพลังงานคิดเป็น ~35–40% ของต้นทุน</li>
+          <li><b>monopoly-like position:</b> BGC ครองตลาดบรรจุภัณฑ์แก้วไทย >70% ลูกค้ารายใหญ่ (ThaiBev, Boon Rawd) ยังคงความสัมพันธ์ระยะยาว</li>
+          <li><b>FCF ฟื้นตัว:</b> Free Cash Flow พลิกบวกสู่ ฿1.54B ในปี FY2024 หลัง capex ลดลงต่อเนื่อง ช่วยลดหนี้และรักษาปันผลได้</li>
+          <li><b>อุปสงค์เครื่องดื่มขยาย:</b> ตลาดเบียร์-สุรา-น้ำผลไม้ไทยเติบโตตาม urbanization และ tourism ฟื้นตัว</li>
+          <li><b>circular economy / glass recycling:</b> แก้วรีไซเคิล 100% กระแส ESG และ sustainability สนับสนุนการใช้บรรจุภัณฑ์แก้วแทน plastic</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>ต้นทุนพลังงานสูงต่อเนื่อง:</b> ก๊าซธรรมชาติเป็น input หลัก ราคาที่ผันผวนกระทบ margin โดยตรง — FY2025 พิสูจน์แล้วว่ากำไรหายได้ถึง 65%</li>
+          <li><b>ราคาสะท้อนการฟื้นตัวไปแล้ว:</b> หุ้น +45% ใน 1 ปี P/E TTM 53.8x — ถ้ากำไรไม่ฟื้นตามคาด จะมี downside ชัดเจน</li>
+          <li><b>การแข่งขันจาก plastic ราคาถูก:</b> PET bottle และ aluminium can มีต้นทุนต่อหน่วยต่ำกว่า เสี่ยงสูญเสีย market share</li>
+          <li><b>Capacity oversupply:</b> การลงทุนขยายโรงงานในปี 2022–2023 ทำให้กำลังการผลิตสูงกว่าอุปสงค์ อัตราการใช้กำลังการผลิตต่ำ</li>
+          <li><b>หนี้สินสูง:</b> Total debt ฿4.70B (FY2025) เพิ่ม 20% yoy ดอกเบี้ยกดดัน net income ในช่วงดอกเบี้ยสูง</li>
+          <li><b>ปันผลลดลงต่อเนื่อง:</b> Dividend ลด -20%/ปี เฉลี่ย 5 ปี สะท้อนกำไรที่อ่อนแอ ความน่าดึงดูด yield อาจลดลงต่อ</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>BGC: ราคาสะท้อน Turnaround Story แล้ว — รอจังหวะปรับฐาน</h2>
+      <p>BGC คือผู้ผลิตบรรจุภัณฑ์แก้วเบอร์ 1 ของไทย มีลูกค้าผูกพันระยะยาวอย่าง ThaiBev และ Boon Rawd แต่ปี FY2025 กำไรดิ่งลง 65.8% จากต้นทุนพลังงานที่พุ่งสูง ราคาหุ้นปรับขึ้น +45.8% ในรอบปีสะท้อนความคาดหวังการฟื้นตัว จนราคาปัจจุบัน ฿7.00 ถือว่าอยู่เหนือมูลค่าเหมาะสม (฿6.80) เล็กน้อย ผู้ลงทุนที่สนใจควรรอซื้อในโซน ฿5.44–฿6.00 เพื่อให้มี Margin of Safety ที่เหมาะสม</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿6.80 <span style="font-size:12px;color:#cab9a8">(฿5.28–฿9.37)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ -2.9%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿7.50 (Hold/Neutral)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> BGC เหมาะสำหรับนักลงทุนที่เชื่อใน turnaround story ของ glass packaging ไทย แต่ราคาปัจจุบันมี upside จำกัด แนะนำรอซื้อในโซน MOS 20% (~฿5.44) หรือต่ำกว่า เพื่อเผื่อความเสี่ยงที่การฟื้นตัวของกำไรอาจช้ากว่าคาด
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    แหล่งข้อมูล: Yahoo Finance (BGC.BK ราคา/กราฟ) · Investing.com (งบการเงิน) · SET Thailand (ข้อมูลบริษัท)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 3 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>

@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น หาญ เอ็นจิเนียริ่ง (HARN) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"HARN","currency":"THB","price":2.04,"fairValue":2.23,"mos":8.5,"upside":9.3,"pe":12.0,"dividendYield":5.9,"roe":6.06}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#e05c1a",
+    "accentDark": "#b04210",
+    "darkGrad": "linear-gradient(135deg,#1a0a04 0%,#2d1308 50%,#1a0a04 100%)",
+    "glow": "rgba(224,92,26,0.25)",
+    "subColor": "#f4a96a",
+    "headerMuted": "rgba(244,169,106,0.55)",
+    "verdictText": "#ffe0cc",
+    "vcellLabel": "rgba(255,220,200,0.7)",
+    "badge": "#e05c1a",
+    "chgBg": "#1e8e3e",
+    "chgColor": "#ffffff"
+  },
+  "chart": {
+    "data": [
+      ["ก.ค. 68", 2.00],
+      ["ส.ค. 68", 1.99],
+      ["ก.ย. 68", 1.96],
+      ["ต.ค. 68", 1.96],
+      ["พ.ย. 68", 1.95],
+      ["ธ.ค. 68", 1.93],
+      ["ม.ค. 69", 2.02],
+      ["ก.พ. 69", 2.02],
+      ["มี.ค. 69", 2.02],
+      ["เม.ย. 69", 2.08],
+      ["พ.ค. 69", 2.04],
+      ["มิ.ย. 69", 2.04],
+      ["ก.ค. 69", 2.04]
+    ],
+    "min": 1.80,
+    "max": 2.40,
+    "grid": [1.80, 1.90, 2.00, 2.10, 2.20, 2.30, 2.40],
+    "fairLine": 2.23,
+    "currency": "฿",
+    "highlight": [9],
+    "gridFmt": "v.toFixed(2)",
+    "dataFmt": "d[1].toFixed(2)"
+  },
+  "gauge": {
+    "min": 1.40,
+    "max": 2.60,
+    "cur": 2.04,
+    "fair": 2.23,
+    "fairLabelTop": true
+  },
+  "fv": 2.23
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="gdots">🔥🔧🌡️</div>
+    <div>
+      <span class="tag">SET: HARN</span>
+      <span class="tag">Industrial</span>
+      <span class="tag">Fire &amp; Safety Engineering</span>
+    </div>
+    <h1>หาญ เอ็นจิเนียริ่ง โซลูชั่นส์ (HARN)</h1>
+    <div class="sub">ระบบดับเพลิงและป้องกันอัคคีภัย • ระบบปรับอากาศและสุขาภิบาล • ระบบทำความเย็นอุตสาหกรรม • Digital Printing &amp; Harn 3DMed</div>
+    <div class="price-row">
+      <div>
+        <div class="px">฿2.04<small>(HARN)</small></div>
+      </div>
+      <div class="chg">▲ +2.0% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 4 ก.ค. 2569<br>
+        กรอบ 52 สัปดาห์ ฿1.90 – ฿2.22<br>
+        ที่มา: SET.or.th, Yahoo Finance, harn.co.th
+      </div>
+    </div>
+  </header>
+
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ก.ค. 2569 • อิง FY2025 + Q1/2569</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">฿1,192 ล้าน</div><div class="d">584.5 ล้านหุ้น · par ฿0.50</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~12.0x</div><div class="d">อิง EPS TTM ~฿0.17 · SET รายงาน 11.79x</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~12–15x</div><div class="d">ช่วง EPS 0.14–0.20 บาท/ปี</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">0.86x</div><div class="d">BVPS ~฿2.38 · ซื้อต่ำกว่าบัญชี</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">฿83.9 ล้าน</div><div class="d">-4.2% YoY (FY2024: ฿87.6 ล้าน)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿0.17</div><div class="d">FY2025: ฿0.14 · Q1/69: ฿0.06</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~฿2.38</div><div class="d">อิงส่วนทุน ฿1,391 ล้าน / 584.5 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~6.1% / 5.9%</div><div class="d">FY2025 · ทรงตัวหลายปี</div></div>
+
+      <div class="metric"><div class="k">รายได้ FY2025</div><div class="v neu">฿1,211 ล้าน</div><div class="d">-4.8% YoY (FY2024: ฿1,272 ล้าน)</div></div>
+      <div class="metric"><div class="k">อัตรากำไรสุทธิ</div><div class="v">~6.9%</div><div class="d">FY2025: 6.86% · ทรงตัวใกล้เคียงทุกปี</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~5.9%</div><div class="d">฿0.12/หุ้น/ปี · จ่ายสม่ำเสมอ</div></div>
+      <div class="metric"><div class="k">EV/EBITDA</div><div class="v">5.32x</div><div class="d">EV ฿828 ล้าน · ตามข้อมูล SET Factsheet</div></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ก.ค. 2568 – ก.ค. 2569</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#e05c1a"></i>ราคา HARN</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿2.23</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคา HARN เคลื่อนไหวในกรอบแคบ ฿1.90–฿2.22 ตลอดช่วง 12 เดือน สะท้อนธุรกิจที่มีรายได้มั่นคงแต่ไม่มีแรงเร่งเติบโต ช่วง ก.ค.–ธ.ค. 2568 ราคาอ่อนตัวลงแตะ ฿1.93 ก่อนกลับมาฟื้นตัวในปี 2569 เนื่องจากผลประกอบการ Q1/2569 ออกมาดีกว่าคาด (กำไร ฿33 ล้าน Net margin 9.5%) ราคาปัจจุบัน ฿2.04 ให้ผลตอบแทนรอบปี +2.0% ยังต่ำกว่ามูลค่าเหมาะสม ฿2.23
+      </p>
+    </div>
+  </section>
+
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS adj. ฿0.17 × P/E เป้าหมาย ~12x — P/E อ้างอิงค่าเฉลี่ย 5 ปีย้อนหลัง สอดคล้องธุรกิจวิศวกรรมบริการที่มั่นคง ไม่ใช่หุ้นเติบโตสูง</div></div>
+        <div class="mval">฿2.04</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. DDM (Gordon Growth Model)</div><div class="mdesc">D₁ = ปันผล ฿0.12 × (1+3%); g 3%, r 8% → ฿0.1236 / (0.08−0.03) — HARN จ่ายปันผลสม่ำเสมอ ฿0.12/ปีต่อเนื่อง 2+ ปี เหมาะสำหรับ DDM</div></div>
+        <div class="mval">฿2.47</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. DCF (5 ปี + Terminal)</div><div class="mdesc">FCF อ้างอิงกำไรสุทธิ ฿83.9 ล้าน เติบโต 3%/ปี × 5 ปี + Terminal value (g=2%, r=9%) → Equity value ÷ 584.5 ล้านหุ้น</div></div>
+        <div class="mval">฿2.18</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿2.04 – ฿2.47</span></div>
+        <div class="r">฿2.23</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        P/E Valuation ให้ค่าต่ำสุด (฿2.04) เพราะ EPS ปัจจุบันยังอยู่ระดับทรงตัว · DDM ให้ค่าสูงสุด (฿2.47) เนื่องจาก Yield จริง 5.9% สูงกว่าค่าเฉลี่ยตลาด ชี้ว่าตลาดยังไม่ให้มูลค่ากับปันผลที่สม่ำเสมอ · DCF (฿2.18) อยู่กลาง สะท้อนกระแสเงินสดที่มั่นคงแต่เติบโตช้า · FV เฉลี่ย ฿2.23 ยืนยันว่าหุ้นยังซื้อขายต่ำกว่ามูลค่าเล็กน้อย
+      </p>
+    </div>
+  </section>
+
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿2.04</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿2.23</div></div>
+        </div>
+        <div class="scale">
+          <span>฿1.56<br><small>MOS 30%</small></span>
+          <span>฿1.78<br><small>MOS 20%</small></span>
+          <span style="text-align:center">฿2.23<br><small>Fair Value</small></span>
+          <span style="text-align:right">฿2.30<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">฿2.47<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคา ฿2.04 อยู่ต่ำกว่า Fair Value ฿2.23 ประมาณ 8.5% (MOS) สะท้อนว่ายังมีส่วนต่างความปลอดภัยพอประมาณ นักลงทุนที่ต้องการ Margin of Safety สูงอาจรอราคาปรับลงถึง ฿1.78 (MOS 20%) ก่อน แต่สำหรับผู้เน้นปันผล yield 5.9% ถือว่าน่าสนใจแม้ที่ราคาปัจจุบัน
+      </p>
+    </div>
+  </section>
+
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict ok">
+        <div class="big">+8.5%</div>
+        <div class="txt">MOS พอประมาณ — ราคายังต่ำกว่ามูลค่าเหมาะสม แต่ยังไม่ถึงโซน "ถูกมาก" อาจทยอยสะสมได้</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿1.78</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿1.56</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿2.23</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="2.04" step="0.05">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿2.04 • EPS ฐาน ~฿0.17 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS -3%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿1.55</div>
+          <div class="ret neg">-6%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.155</span></li>
+            <li><span>P/E ออก</span><span>10x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.36</span></li>
+            <li><span>สถานการณ์</span><span>โปรเจกต์ชะลอ ต้นทุนพุ่ง</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +5%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿2.36</div>
+          <div class="ret pos">+33%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.197</span></li>
+            <li><span>P/E ออก</span><span>12x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.36</span></li>
+            <li><span>สถานการณ์</span><span>โปรเจกต์เติบโตสม่ำเสมอ</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +10%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿3.16</div>
+          <div class="ret pos">+73%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.226</span></li>
+            <li><span>P/E ออก</span><span>14x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.36</span></li>
+            <li><span>สถานการณ์</span><span>โปรเจกต์ Data Center / EV ขนาดใหญ่</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      สมมติฐาน: ราคาเข้า ฿2.04 · ปันผล ฿0.12/ปี รวม 3 ปี = ฿0.36 · ผลตอบแทนรวม = (ราคาออก − ราคาเข้า + ปันผล) / ราคาเข้า × 100 · กรณี Base คาดหวังผลตอบแทน ~33% ใน 3 ปี (~10% ต่อปีรวมปันผล) ถือว่าน่าสนใจสำหรับหุ้นความเสี่ยงต่ำ ตัวเลขเหล่านี้เป็นเพียงประมาณการเท่านั้น
+    </p>
+  </section>
+
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก &amp; ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>กฎหมายความปลอดภัยอาคาร:</b> ภาครัฐบังคับใช้มาตรฐาน Fire Safety อย่างเข้มข้นในอาคารสูง โรงงาน และโกดังสินค้า ส่งผลดีต่อความต้องการระบบดับเพลิงระยะยาว</li>
+          <li><b>โครงการ Data Center &amp; EV:</b> การขยายตัวของ Data Center และโรงงาน EV ในไทยต้องการระบบดับเพลิงและทำความเย็นที่ซับซ้อน — HARN มีความเชี่ยวชาญตรงจุดนี้</li>
+          <li><b>รายได้บริการซ่อมบำรุงสม่ำเสมอ:</b> ฐานลูกค้าเดิมต้องการ maintenance contract ต่อเนื่อง ให้รายได้ recurring ที่มั่นคง ลดความผันผวนของรายได้</li>
+          <li><b>Dividend Yield สูง:</b> Yield ~5.9% สูงกว่าดอกเบี้ยออมทรัพย์ ดึงดูดนักลงทุนเน้นรายได้ในยุคดอกเบี้ยขาลง</li>
+          <li><b>ฐานะการเงินแข็งแกร่ง:</b> EV (฿828 ล้าน) ต่ำกว่า Market Cap (฿1,192 ล้าน) แสดงถึงฐานะ net cash ลดความเสี่ยงด้านการเงิน รองรับโปรเจกต์ขนาดใหญ่</li>
+          <li><b>Q1/2569 กำไรฟื้นตัวดี:</b> กำไร ฿33 ล้าน Net margin 9.54% สูงกว่าค่าเฉลี่ยทั้งปีก่อนหน้า ชี้สัญญาณการฟื้นตัวของ backlog</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>รายได้ขึ้นกับโปรเจกต์ก่อสร้าง:</b> รายได้ส่วนใหญ่มาจาก Project-based ซึ่งผันผวนตามวัฏจักรอุตสาหกรรมก่อสร้าง — เห็นชัดจาก FY2025 รายได้ลด -4.8% YoY</li>
+          <li><b>ต้นทุนวัสดุและแรงงาน:</b> อุปกรณ์ดับเพลิงและท่อนำน้ำดับเพลิงส่วนใหญ่นำเข้า ได้รับผลกระทบจากอัตราแลกเปลี่ยนและต้นทุน logistics</li>
+          <li><b>การแข่งขันในตลาด M&amp;E:</b> มีผู้รับเหมา Mechanical &amp; Electrical จำนวนมากในไทย การรักษา margin ทำได้ยากในการประมูลราคาแข่งขันสูง</li>
+          <li><b>ROE ต่ำกว่าต้นทุนทุน:</b> ROE 6% ต่ำกว่าต้นทุนทุน (ประมาณ 8–10%) สะท้อนว่าบริษัทยังไม่สามารถสร้างมูลค่าเพิ่มให้ผู้ถือหุ้นได้มากนัก</li>
+          <li><b>สภาพคล่องต่ำ:</b> มูลค่าซื้อขายเฉลี่ย ~725k บาท/วัน ถือเป็น Small Cap ที่ Spread สูง ต้องระมัดระวังในการซื้อขายปริมาณมาก</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>หุ้นปันผลเด่น ราคาต่ำกว่ามูลค่า — เหมาะนักลงทุนเน้นรายได้</h2>
+      <p>HARN เป็นบริษัทวิศวกรรมเฉพาะทางด้านระบบดับเพลิงและ HVAC ที่มีฐานลูกค้าสถาบันมั่นคง ตัวเลขทางการเงินสะท้อนความสม่ำเสมอมากกว่าการเติบโต — รายได้ทรงตัว ฿1.2–1.3 พันล้านบาท/ปี กำไร ฿84–114 ล้าน/ปี และปันผล ฿0.12/หุ้น/ปีอย่างต่อเนื่อง ราคาปัจจุบัน ฿2.04 ต่ำกว่า Fair Value ฿2.23 (MOS ~8.5%) และซื้อขายที่ P/BV เพียง 0.86x ถือว่า Undervalued เล็กน้อย จุดแข็งหลักคือ Yield 5.9% และฐานะการเงินแข็งแกร่ง (Net cash) Q1/2569 กำไรฟื้นตัวชัดเจน ชี้ว่า backlog กำลังดีขึ้น</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿2.23 <span style="font-size:12px;color:#cab9a8">(฿2.04–฿2.47)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +8.5%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿2.30 (ประมาณการ)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> เหมาะสะสมระยะยาวสำหรับผู้เน้นปันผล Yield ~6% ในราคาปัจจุบัน ฿2.04 หากราคาลงมาแถว ฿1.78 (MOS 20%) ถือเป็นโอกาสเพิ่มน้ำหนัก · ควรติดตาม backlog และ margin ใน Q2/2569 เพื่อยืนยันแนวโน้มฟื้นตัว · ไม่เหมาะสำหรับนักลงทุนที่ต้องการ Capital Gain สูงในระยะสั้น
+      </div>
+    </div>
+  </section>
+
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ที่มา: SET.or.th (ราคา/อัตราส่วนตลาด), Yahoo Finance (ราคาย้อนหลัง/ปันผล), HARN Investor Relations / harn.co.th (งบการเงิน/ผลประกอบการ)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 4 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
