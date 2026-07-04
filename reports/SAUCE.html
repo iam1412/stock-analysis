@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น ไทยเทพรส (SAUCE) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"SAUCE","currency":"THB","price":41.00,"fairValue":48.00,"mos":14.6,"upside":17.1,"pe":18.71,"dividendYield":4.41,"roe":23.0}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#c8860a",
+    "accentDark": "#8b5e07",
+    "darkGrad": "linear-gradient(135deg,#3d2800 0%,#5a3a00 50%,#2a1c00 100%)",
+    "glow": "rgba(200,134,10,0.35)",
+    "subColor": "#e8c07a",
+    "headerMuted": "rgba(232,192,122,0.55)",
+    "verdictText": "#ffd180",
+    "vcellLabel": "#cab9a8",
+    "badge": "#c8860a",
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#1e8e3e"
+  },
+  "chart": {
+    "data": [
+      ["ก.ค. 68", 37.75],
+      ["ส.ค. 68", 38.00],
+      ["ก.ย. 68", 38.50],
+      ["ต.ค. 68", 39.00],
+      ["พ.ย. 68", 39.75],
+      ["ธ.ค. 68", 40.00],
+      ["ม.ค. 69", 40.25],
+      ["ก.พ. 69", 40.50],
+      ["มี.ค. 69", 40.75],
+      ["เม.ย. 69", 40.50],
+      ["พ.ค. 69", 41.00],
+      ["มิ.ย. 69", 41.00],
+      ["ก.ค. 69", 41.00]
+    ],
+    "min": 34,
+    "max": 52,
+    "grid": [36, 40, 44, 48],
+    "fairLine": 48.00,
+    "currency": "฿",
+    "highlight": [4, 12],
+    "gridFmt": "v.toFixed(0)",
+    "dataFmt": "d[1].toFixed(2)"
+  },
+  "gauge": {
+    "min": 30,
+    "max": 58,
+    "cur": 41.00,
+    "fair": 48.00,
+    "fairLabelTop": true
+  },
+  "fv": 48.00
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">●●●●●●●●●●</div>
+    <div>
+      <span class="tag">SET: SAUCE</span>
+      <span class="tag">Consumer Staples</span>
+      <span class="tag">Packaged Foods</span>
+    </div>
+    <h1>บริษัท ไทยเทพรส จำกัด (มหาชน)</h1>
+    <div class="sub">ซอสปรุงรส "ภูเขาทอง" (Golden Mountain) • ซีอิ๊ว • ซอสหอยนางรม • น้ำส้มสายชู • ซอสพริก • ซอสมะเขือเทศ • แบรนด์ Kinzan &amp; E Zeee • ส่งออก 30+ ประเทศ</div>
+    <div class="price-row">
+      <div>
+        <div class="px">฿41.00<small>(SAUCE)</small></div>
+      </div>
+      <div class="chg">▲ +8.6% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 4 ก.ค. 2569<br>
+        กรอบ 52 สัปดาห์ ฿36.75 – ฿42.00<br>
+        ที่มา: SET, Investing.com, StockAnalysis
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ก.ค. 2569 | FY 2025 (สิ้นสุด ธ.ค. 2568)</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">฿14.76B</div><div class="d">360 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~18.71x</div><div class="d">เหนือค่าเฉลี่ยกลุ่ม ~12x</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~18.0x</div><div class="d">ช่วง 16x–21x</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">4.21x</div><div class="d">BVPS ~฿9.73</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">฿788.8M</div><div class="d">+6.0% YoY</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿2.19</div><div class="d">FY2025 (360M หุ้น)</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~฿9.73</div><div class="d">ทุนต่อหุ้น</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~23.0% / 26.0%</div><div class="d">ผลตอบแทนสูงมาก</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">฿3.56B</div><div class="d">ทรงตัว YoY</div></div>
+      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">~41.7%</div><div class="d">Net Margin ~22.2%</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~4.41%</div><div class="d">฿1.81/หุ้น (XD เม.ย. 69)</div></div>
+      <div class="metric"><div class="k">Dividend Growth</div><div class="v pos">+9.3%/ปี</div><div class="d">5 ปีย้อนหลัง (2564–2569)</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ก.ค. 2568 – ก.ค. 2569</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#c8860a"></i>ราคา SAUCE</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿48.00</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคา SAUCE ปรับตัวขึ้นจาก ~฿37.75 ในเดือน ก.ค. 2568 สู่ ~฿41.00 ใน ก.ค. 2569 ให้ผลตอบแทนรอบปี +8.6%
+        แตะจุดสูงสุด 52 สัปดาห์ที่ ฿42.00 ในช่วง พ.ย.–ธ.ค. 2568 โดยได้แรงหนุนจากผลประกอบการ Q4/2568 ที่แข็งแกร่ง
+        (กำไรสุทธิ Q4 สูงสุดในปีที่ ฿220M) และการจ่ายเงินปันผล ฿1.81/หุ้น (XD เม.ย. 69)
+        ราคายังต่ำกว่า Fair Value ฿48.00 ประมาณ 14.6% สะท้อน Margin of Safety พอมีอยู่บ้าง
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS adj. ฿2.19 × P/E เป้าหมาย ~18.0x — ค่าเฉลี่ยประวัติศาสตร์ ~5 ปี (กรอบ 16–21x)</div></div>
+        <div class="mval">฿39.42</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล ฿1.81 × (1+g); g 5.0%, r 8.5% → ฿1.9005 / (8.5%−5.0%) = ฿54.30</div></div>
+        <div class="mval">฿54.30</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 23.0% − g 5.0%)/(r 8.5% − g 5.0%) ≈ 5.14x × BVPS ฿9.73</div></div>
+        <div class="mval">฿50.01</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿39.42 – ฿54.30</span></div>
+        <div class="r">฿48.00</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        วิธี P/E ให้ค่าต่ำสุด (฿39.42) เพราะ SAUCE มี P/E ใกล้ค่าเฉลี่ยอยู่แล้ว เหลือ Upside จำกัด
+        ส่วนวิธี DDM และ Justified P/BV ให้ค่าสูงกว่า สะท้อนมูลค่าของกระแสเงินปันผลที่เติบโตต่อเนื่อง 9.3%/ปีตลอด 5 ปี
+        และ ROE ที่สูงถึง 23% บ่งชี้ว่าบริษัทสร้างมูลค่าได้ดีเหนือต้นทุนทุน (r=8.5%)
+        FV เฉลี่ย ฿48.00 ถือเป็นกลางระหว่างทั้งสามวิธีและสะท้อนความเป็น "แบรนด์ที่แข็งแกร่ง" ของ SAUCE
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿41.00</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿48.00</div></div>
+        </div>
+        <div class="scale">
+          <span>฿33.60<br><small>MOS 30%</small></span>
+          <span>฿38.40<br><small>MOS 20%</small></span>
+          <span style="text-align:center">฿44.00<br><small>เป้า Analyst</small></span>
+          <span style="text-align:right">฿48.00<br><small>Fair Value</small></span>
+          <span style="text-align:right">฿54.30<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน ฿41.00 อยู่ใน "โซนทยอยสะสม" — ต่ำกว่า Fair Value ฿48.00 ประมาณ 14.6% (MOS ~14.6%)
+        ยังไม่ถึงโซน MOS 20% ที่ ฿38.40 แต่ได้รับ Margin of Safety พอสมควรจากการที่ราคายังต่ำกว่ามูลค่าเหมาะสม
+        นักวิเคราะห์ประเมินเป้าหมายเฉลี่ย ~฿44.00 (Upside ~7% จากราคาปัจจุบัน)
+        หาก SAUCE ซื้อขายที่ระดับ P/E สูงขึ้นตามคุณภาพธุรกิจ ราคาอาจเข้าสู่กรอบ ฿48–54 ได้
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict ok">
+        <div class="big">+14.6%</div>
+        <div class="txt">ราคาพอใช้ — ทยอยสะสมได้ในช่วง ฿38–41 รอโซน MOS 20%</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿38.40</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿33.60</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿48.00</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="41.00" step="0.05">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿41.00 • EPS ฐาน ~฿2.19 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS 0%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿35.04</div>
+          <div class="ret neg">−1.3% (รวมปันผล)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿2.19</span></li>
+            <li><span>P/E ออก</span><span>16x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿5.43</span></li>
+            <li><span>สถานการณ์</span><span>ต้นทุนวัตถุดิบพุ่ง/ยอดขายซบ</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +5%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿45.58</div>
+          <div class="ret pos">+25.1% (~7.7%/ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿2.53</span></li>
+            <li><span>P/E ออก</span><span>18x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿5.70</span></li>
+            <li><span>สถานการณ์</span><span>ขยายตลาด CLMV, ต้นทุนทรงตัว</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +8%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿55.20</div>
+          <div class="ret pos">+49.2% (~14.2%/ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿2.76</span></li>
+            <li><span>P/E ออก</span><span>20x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿6.00</span></li>
+            <li><span>สถานการณ์</span><span>ส่งออกโต, re-rating Premium</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      Base case EPS เติบโต 5%/ปี สอดคล้องกับอัตราการเติบโตของรายได้ในช่วง 5 ปีที่ผ่านมา (~3–5%/ปี) และ
+      การเพิ่มมาร์จิ้นอย่างต่อเนื่อง (Net Margin จาก 19.8% ปี 2564 → 22.2% ปี 2568)
+      Bull case ต้องอาศัย (1) ส่งออกเร่งตัว โดยเฉพาะ CLMV และตะวันออกกลาง (2) Re-rating P/E สูงขึ้นตามสถานะ
+      "แบรนด์พรีเมียม" ของภูเขาทอง Bear case หากวัตถุดิบ (ถั่วเหลือง น้ำตาล) ราคาพุ่ง หรือการแข่งขันเพิ่มขึ้นจากแบรนด์จีน
+      ผลตอบแทนอาจติดลบแม้รวมเงินปันผลแล้ว ตัวเลขอ้างอิง ณ 4 ก.ค. 2569 (ไม่ใช่คำแนะนำการลงทุน)
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก &amp; ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>แบรนด์ "ภูเขาทอง" ที่แข็งแกร่ง:</b> ครองส่วนแบ่งตลาดซอสปรุงรสไทยมายาวนาน มีความภักดีของลูกค้าสูง ราคาขายมีอำนาจต่อรองเหนือคู่แข่ง</li>
+          <li><b>การขยายตลาดส่งออก:</b> SAUCE ส่งออกไปกว่า 30 ประเทศ โดยเฉพาะ CLMV, ตะวันออกกลาง และชุมชนชาวไทย/เอเชียในยุโรป — กลุ่มตลาดส่งออกเติบโตต่อเนื่อง</li>
+          <li><b>Margin ขยายตัวต่อเนื่อง:</b> Net Margin เพิ่มจาก 19.8% (2564) → 22.2% (2568) สะท้อนประสิทธิภาพการผลิตที่ดีขึ้นและการควบคุมต้นทุนที่เข้มแข็ง</li>
+          <li><b>นโยบายปันผลสม่ำเสมอ:</b> จ่ายปันผลต่อเนื่องทุกปีด้วย Payout Ratio ~84% และเติบโต 9.3%/ปีในรอบ 5 ปี ดึงดูดนักลงทุนเน้นรายได้ (Income investor)</li>
+          <li><b>ROE สูงและ D/E ต่ำ:</b> ROE ~23% พร้อม D/E เพียง 0.11 แสดงถึงงบดุลแข็งแกร่ง สามารถลงทุนเพิ่มหรือเพิ่มปันผลได้โดยไม่เสี่ยงมาก</li>
+          <li><b>กระแสบริโภคอาหารเอเชีย:</b> ความนิยมอาหารไทยทั่วโลกช่วยหนุนยอดส่งออก ซอสปรุงรสไทยได้รับความสนใจจากร้านอาหารและผู้บริโภคระดับสากล</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>ความผันผวนของราคาวัตถุดิบ:</b> ถั่วเหลือง น้ำตาล และน้ำมันพืช เป็นต้นทุนหลัก หากราคาพุ่งจาก La Niña หรือปัญหาห่วงโซ่อุปทาน อาจกดดัน Margin อย่างมีนัย</li>
+          <li><b>การแข่งขันจากสินค้าจีนและ Private Label:</b> ผู้ผลิตซอสปรุงรสราคาถูกจากจีนและ Private Label ของห้างค้าปลีกขนาดใหญ่อาจกดดันส่วนแบ่งตลาดระดับล่าง</li>
+          <li><b>รายได้ทรงตัว Growth ต่ำ:</b> รายได้แทบไม่เปลี่ยนแปลง 3 ปีติด (FY2568 = ฿3.56B ≈ FY2565) สะท้อนการเติบโตของตลาดในประเทศที่อิ่มตัว</li>
+          <li><b>P/E Premium เหนือกลุ่ม:</b> P/E 18.71x เทียบกับค่าเฉลี่ยกลุ่มอุตสาหกรรม ~12x — หากความเชื่อมั่นตลาดลด หรือกำไรสะดุด อาจเกิด Re-rating ลงได้</li>
+          <li><b>ความเสี่ยงค่าเงิน:</b> รายได้ส่งออก ~30%+ ของยอดขายรวม ความผันผวนของค่าเงินบาทต่อ USD/EUR อาจกระทบรายได้สกุลต่างประเทศ</li>
+          <li><b>ผู้ถือหุ้นใหญ่ครอบครัวเดียว:</b> ตระกูลเทพหัสดิน ณ อยุธยา ถือหุ้นสัดส่วนสูง การตัดสินใจเชิงกลยุทธ์อาจไม่สะท้อนผลประโยชน์ผู้ถือหุ้นรายย่อยทั้งหมด</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>แบรนด์ "ภูเขาทอง" ที่แข็งแกร่ง — MOS พอมี แต่รอโซน ≤฿38.40 จะดีกว่า</h2>
+      <p>
+        SAUCE (ไทยเทพรส) เป็น "Moat Business" ในกลุ่ม Consumer Staples ด้วยแบรนด์ภูเขาทองที่ครองตลาดมายาวนาน
+        ROE สูงถึง 23% D/E ต่ำเพียง 0.11 และนโยบายปันผลสม่ำเสมอที่เติบโต 9.3%/ปี ทำให้เหมาะกับนักลงทุนระยะยาวที่เน้น
+        "คุณภาพ + ปันผล" อย่างไรก็ตาม ราคาปัจจุบัน ฿41.00 ซื้อขายที่ P/E ~18.7x ซึ่งสูงกว่าค่าเฉลี่ยกลุ่มอย่างมีนัยสำคัญ
+        และรายได้เติบโตช้า — MOS เพียง 14.6% ยังไม่สะดวกใจสำหรับ Value Investor เคร่งครัด
+        โซนที่น่าสนใจมากขึ้นคือ ฿38.40 (MOS 20%) หรือต่ำกว่า ซึ่งมักเกิดในช่วงก่อน XD เงินปันผล
+      </p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿48.00 <span style="font-size:12px;color:#cab9a8">(฿39.42–฿54.30)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +14.6%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿44.00 (Neutral/Hold)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ทยอยสะสมเมื่อราคาอยู่ใน ฿38–41 (MOS 10–20%) เพิ่มน้ำหนักอย่างจริงจังที่ &lt; ฿38.40 (MOS 20%) รับ Dividend Yield 4.4%+ ต่อปี ระหว่างรอ re-rating ด้าน P/E หลีกเลี่ยงซื้อสูงกว่า ฿48 (FV) เพราะ Upside จำกัด
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    แหล่งข้อมูล: SET (ตลาดหลักทรัพย์แห่งประเทศไทย), Investing.com, StockAnalysis.com, HoonStation, Yahoo Finance — ราคา ณ 4 ก.ค. 2569
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 4 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>

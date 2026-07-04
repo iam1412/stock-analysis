@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น อกริเพียว โฮลดิ้งส์ (APURE) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"APURE","currency":"THB","price":2.06,"fairValue":1.65,"mos":-24.8,"upside":-19.9,"pe":null,"dividendYield":10.7,"roe":-10.7}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#2e7d32",
+    "accentDark": "#1b5e20",
+    "darkGrad": "linear-gradient(135deg,#1b5e20 0%,#2e7d32 60%,#388e3c 100%)",
+    "glow": "rgba(46,125,50,0.35)",
+    "subColor": "#a5d6a7",
+    "headerMuted": "rgba(165,214,167,0.7)",
+    "verdictText": "#c8e6c9",
+    "vcellLabel": "#a5d6a7",
+    "badge": "#2e7d32",
+    "chgBg": "#c62828",
+    "chgColor": "#ffffff"
+  },
+  "chart": {
+    "data": [
+      ["ส.ค. 68", 3.20],
+      ["ก.ย. 68", 3.12],
+      ["ต.ค. 68", 2.82],
+      ["พ.ย. 68", 2.28],
+      ["ธ.ค. 68", 2.16],
+      ["ม.ค. 69", 2.18],
+      ["ก.พ. 69", 2.38],
+      ["มี.ค. 69", 2.20],
+      ["เม.ย. 69", 2.12],
+      ["พ.ค. 69", 2.02],
+      ["มิ.ย. 69", 2.04],
+      ["ก.ค. 69", 2.04],
+      ["ปัจจุบัน", 2.06]
+    ],
+    "min": 1.5,
+    "max": 3.6,
+    "grid": [1.5, 2.0, 2.5, 3.0, 3.5],
+    "fairLine": 1.65,
+    "currency": "฿",
+    "highlight": [0, 9]
+  },
+  "gauge": {
+    "min": 1.0,
+    "max": 3.5,
+    "cur": 2.06,
+    "fair": 1.65,
+    "fairLabelTop": true
+  },
+  "fv": 1.65
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">●●●●●</div>
+    <div>
+      <span class="tag">SET: APURE</span>
+      <span class="tag">เกษตร &amp; อาหาร</span>
+      <span class="tag">ส่งออกพืชผักแปรรูป</span>
+    </div>
+    <h1>อกริเพียว โฮลดิ้งส์ (APURE)</h1>
+    <div class="sub">ข้าวโพดฝักอ่อนกระป๋อง • ผักแช่แข็ง-แช่เย็น • เมล็ดพันธุ์ข้าวโพด • ส่งออก EU/US/ญี่ปุ่น • เกษตรอินทรีย์</div>
+    <div class="price-row">
+      <div>
+        <div class="px">฿2.06<small>(APURE)</small></div>
+      </div>
+      <div class="chg">▼ −35.6% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 3 ก.ค. 2569<br>
+        กรอบ 52 สัปดาห์ ฿1.90 – ฿3.36<br>
+        ที่มา: SET Thailand, Yahoo Finance, TradingView
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ก.ค. 2569 — บริษัทอยู่ระหว่างฟื้นฟูกำไร</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~฿1,974 ล้าน</div><div class="d">หุ้นที่ออก ~958 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">0.91x</div><div class="d">ซื้อขายต่ำกว่ามูลค่าทางบัญชี</div></div>
+      <div class="metric"><div class="k">EV/EBITDA</div><div class="v">37.0x</div><div class="d">EBITDA 53.98 ล้านบาท (ฟื้นตัว)</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~฿2.27</div><div class="d">มูลค่าทางบัญชีต่อหุ้น</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ TTM</div><div class="v neg">−฿232.7 ล้าน</div><div class="d">Q1/69 กลับมากำไร +11.9 ล้าน</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v neg">−฿0.30</div><div class="d">กำลังฟื้นตัว Q1/69 เป็นบวก</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v neg">−10.7% / N/A</div><div class="d">ผลจากการขาดทุนช่วงปรับโครงสร้าง</div></div>
+      <div class="metric"><div class="k">สินทรัพย์รวม</div><div class="v">~฿2,600 ล้าน</div><div class="d">หนี้สิน ~฿424 ล้าน (D/E ต่ำ)</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">~฿1,950 ล้าน</div><div class="d">ฐานลูกค้าส่งออกหลัก EU/US</div></div>
+      <div class="metric"><div class="k">EBITDA Margin</div><div class="v">~2.8%</div><div class="d">ปรับตัวดีขึ้นจาก Q1/69</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~10.7%</div><div class="d">ปันผล ฿0.22/หุ้น (จ่ายจากสำรอง)</div></div>
+      <div class="metric"><div class="k">Enterprise Value</div><div class="v">~฿1,998 ล้าน</div><div class="d">Net Debt ~฿24 ล้าน (แทบไม่มีหนี้)</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ส.ค. 2568 – ก.ค. 2569</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#2e7d32"></i>ราคา APURE</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿1.65</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        หุ้น APURE ปรับตัวลดลงอย่างต่อเนื่องตั้งแต่ ส.ค. 2568 ที่ ฿3.20 มาแตะจุดต่ำสุดที่ ฿2.02 (พ.ค. 2569) ลดลง 36.9% ก่อนจะฟื้นเล็กน้อยมาที่ ฿2.06 (ก.ค. 2569) การปรับฐานสะท้อนความกังวลของนักลงทุนต่อการขาดทุนในปี 2567–2568 จากต้นทุนวัตถุดิบสูงและอัตราแลกเปลี่ยน ผลตอบแทนรอบปี −35.6% สอดคล้องกับแนวโน้มเชิงลบของกลุ่มส่งออกไทยในช่วงเดียวกัน
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี — เน้น P/BV เป็นหลักเนื่องจากบริษัทอยู่ระหว่างฟื้นฟู</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/BV Valuation</div><div class="mdesc">BVPS ฿2.27 × เป้าหมาย P/BV 1.0x — สะท้อนมูลค่าทรัพย์สินสุทธิของบริษัทที่มีโครงสร้างการเงินแข็งแกร่ง (D/E ต่ำ สินทรัพย์ ฿2.6 พันล้าน)</div></div>
+        <div class="mval">฿2.27</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. P/S Valuation</div><div class="mdesc">รายได้ต่อหุ้น ฿2.03 × เป้าหมาย P/S 0.55x — สำหรับธุรกิจส่งออกอาหารแปรรูประดับกลางที่มีกำไรต่ำในช่วงฟื้นตัว P/S 0.5–0.6x เป็นระดับที่เหมาะสม</div></div>
+        <div class="mval">฿1.12</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. EV/EBITDA Valuation</div><div class="mdesc">EBITDA ฿53.98 ล้าน × เป้าหมาย 15x − Net Debt ÷ หุ้น 958 ล้านหุ้น — ใช้ EV/EBITDA 15x สำหรับธุรกิจอาหารส่งออกที่เริ่มฟื้นตัว หักหนี้สุทธิออก</div></div>
+        <div class="mval">฿0.82</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿0.80 – ฿2.27</span></div>
+        <div class="r">฿1.65</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        วิธี P/BV (฿2.27) ให้ค่าสูงสุดเพราะบริษัทมีสินทรัพย์สุทธิมั่นคง P/S (฿1.12) ปานกลาง ส่วน EV/EBITDA (฿0.82) ต่ำสุดเนื่องจาก EBITDA ยังอยู่ในระดับต่ำช่วงฟื้นตัว FV เฉลี่ยถ่วงน้ำหนัก (P/BV 50% : P/S 30% : EV/EBITDA 20%) = ฿1.65 สะท้อนราคาที่เหมาะสมสำหรับบริษัทที่กำลังพลิกกลับมามีกำไร ราคาปัจจุบัน ฿2.06 สูงกว่า FV ~25% บ่งชี้ว่าตลาดกำหนดราคาล่วงหน้าสำหรับการฟื้นตัวที่คาดหวัง
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿2.06</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿1.65</div></div>
+        </div>
+        <div class="scale">
+          <span>฿1.15<br><small>MOS 30%</small></span>
+          <span>฿1.32<br><small>MOS 20%</small></span>
+          <span style="text-align:center">฿1.65<br><small>Fair Value</small></span>
+          <span style="text-align:right">฿2.06<br><small>ราคาปัจจุบัน</small></span>
+          <span style="text-align:right">฿2.27<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน ฿2.06 อยู่สูงกว่ามูลค่าเหมาะสม ฿1.65 ประมาณ 24.8% สะท้อนว่าตลาดกำหนดราคาโดยคาดหวังการฟื้นฟูกำไรล่วงหน้า โซนน่าสนใจ (MOS 20%) เริ่มที่ ฿1.32 ลงมาจนถึง MOS 30% ที่ ฿1.15 ซึ่งเป็นโซน Deep Value นักลงทุนที่ต้องการ Margin of Safety ควรรอจุดเข้าต่ำกว่า ฿1.65 หรือรอยืนยันการฟื้นตัวของกำไรอย่างชัดเจน
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">−24.8%</div>
+        <div class="txt">ราคาสูงกว่า FV — ไม่มี Margin of Safety ที่ราคาปัจจุบัน</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿1.32</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿1.15</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿1.65</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="2.06" step="0.05">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿2.06 • EPS ฐาน ~฿0.05 (Q1/69 annualized) • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>ฟื้นตัวช้า</span></div>
+        <div class="body">
+          <div class="tgt">฿1.20</div>
+          <div class="ret neg">−27.2%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.03</span></li>
+            <li><span>P/BV ออก</span><span>0.5x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.30</span></li>
+            <li><span>สถานการณ์</span><span>ยอดส่งออกลด/USD อ่อน</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>ฟื้นตัวปานกลาง</span></div>
+        <div class="body">
+          <div class="tgt">฿1.40</div>
+          <div class="ret pos">0.0%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.07</span></li>
+            <li><span>P/E ออก</span><span>20x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.66</span></li>
+            <li><span>สถานการณ์</span><span>กำไรฟื้น ส่งออกคงที่</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>ฟื้นตัวแข็งแกร่ง</span></div>
+        <div class="body">
+          <div class="tgt">฿3.30</div>
+          <div class="ret pos">+92.2%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.15</span></li>
+            <li><span>P/E ออก</span><span>22x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.66</span></li>
+            <li><span>สถานการณ์</span><span>Organic premium + EUR แข็ง</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      สมมติฐาน Base: กำไรสุทธิปี 3 ≈ ฿67 ล้าน (EPS ฿0.07) พร้อมปันผลต่อเนื่อง ฿0.22/หุ้น/ปี — ผลตอบแทนรวมแทบเป็นศูนย์ที่ราคา ฿2.06 สะท้อนว่าราคาปัจจุบันกำหนดราคาการฟื้นตัวไว้มากแล้ว กรณี Bull ต้องอาศัย organic premium ค่า EUR แข็ง และ capacity ใหม่เต็มรูปแบบ กรณี Bear เกิดจากตลาดส่งออกชะลอหรืออัตราแลกเปลี่ยนไม่เอื้อ — ผู้ลงทุนควรรอสัญญาณกำไรฟื้นตัว 2–3 ไตรมาสก่อนตัดสินใจ
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก &amp; ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>กลับมากำไร Q1/2569:</b> กำไรสุทธิ +11.88 ล้านบาทใน Q1/69 หลังขาดทุนมาหลายไตรมาส เป็นสัญญาณการฟื้นตัวที่ชัดเจน</li>
+          <li><b>ความต้องการ Organic สูงขึ้น:</b> ตลาด EU/US เพิ่ม demand ผักอินทรีย์และ Non-GMO อย่างต่อเนื่อง APURE มีใบรับรอง EU Organic ซึ่งเป็นข้อได้เปรียบสำคัญ</li>
+          <li><b>โครงสร้างการเงินแข็งแกร่ง:</b> D/E ratio ต่ำมาก Net Debt เพียง ~24 ล้านบาท มีสินทรัพย์สุทธิ ฿2.18 พันล้าน ฐานการเงินรองรับการฟื้นตัวได้ดี</li>
+          <li><b>ผู้นำตลาดข้าวโพดฝักอ่อน:</b> APURE เป็นผู้ส่งออกข้าวโพดฝักอ่อนกระป๋องรายใหญ่ของไทย มีลูกค้าระดับ Retail chain ชั้นนำในยุโรปและญี่ปุ่น ความสัมพันธ์ระยะยาวสร้างความมั่นคงของรายได้</li>
+          <li><b>ค่าเงิน EUR/USD เอื้อ:</b> หากค่าเงินบาทอ่อนค่าต่อ EUR หรือ USD จะเพิ่มรายได้จากการส่งออกโดยตรง บริษัทรับรายได้หลักเป็น EUR ทำให้ได้ประโยชน์เมื่อ EUR แข็ง</li>
+          <li><b>Dividend yield สูง:</b> ปันผล ฿0.22/หุ้น คิดเป็น ~10.7% ที่ราคาปัจจุบัน จ่ายต่อเนื่องจากสำรองเดิม ดึงดูดนักลงทุนเน้นรายได้</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>ยังขาดทุนสะสม:</b> EPS TTM ยังเป็น −฿0.30 การขาดทุนในปี 2567–2568 มาจากต้นทุนวัตถุดิบพุ่งสูงและ write-off ความเสี่ยงกำไรไม่ฟื้นตามคาดหวังสูง</li>
+          <li><b>ความเสี่ยง FX สูง:</b> รายได้หลักเป็นสกุล EUR และ USD หากบาทแข็งค่าจะกระทบ margin โดยตรง โดยเฉพาะในช่วงที่ต้นทุนในประเทศยังสูง</li>
+          <li><b>กดดันจากคู่แข่ง:</b> ผู้ผลิตข้าวโพดฝักอ่อนจากจีน เวียดนาม และอินเดีย มีต้นทุนต่ำกว่า ทำให้ APURE ต้องแข่งขันด้วย Quality และ Organic certification เป็นหลัก</li>
+          <li><b>ราคาสูงกว่า FV:</b> ราคา ฿2.06 สูงกว่ามูลค่าเหมาะสม ฿1.65 ~25% ผู้ลงทุนที่ซื้อในราคานี้รับความเสี่ยงหากการฟื้นตัวช้ากว่าคาด</li>
+          <li><b>ความผันผวนผลผลิต:</b> ธุรกิจเกษตรมีความเสี่ยงด้านสภาพอากาศ เกษตรกรพันธมิตรอาจส่งวัตถุดิบไม่เพียงพอในปีที่ภัยแล้งหรือน้ำท่วม</li>
+          <li><b>Payout ยั่งยืนหรือไม่:</b> การจ่ายปันผล ฿0.22 ในช่วงขาดทุนหมายความว่าจ่ายจากสำรองกำไรเดิม หากการขาดทุนยืดเยื้อ อาจต้องลดหรือหยุดปันผล</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>APURE: หุ้นส่งออกเกษตรไทยกำลังฟื้นตัว — แต่ราคาปัจจุบันสูงกว่า FV</h2>
+      <p>อกริเพียว โฮลดิ้งส์ (APURE) เป็นบริษัทส่งออกข้าวโพดฝักอ่อนและผักแปรรูปที่มีตำแหน่งทางการตลาดที่ดีในยุโรปและญี่ปุ่น สัญญาณการฟื้นตัวที่ชัดเจนมาจาก Q1/2569 ที่กลับมามีกำไร ฐานการเงินแข็งแกร่ง (D/E ต่ำ สินทรัพย์สุทธิสูง) และ Organic certification เป็น moat ทางการแข่งขัน อย่างไรก็ตาม ราคาปัจจุบัน ฿2.06 สูงกว่ามูลค่าเหมาะสม ฿1.65 ประมาณ 25% บ่งชี้ว่าตลาดได้กำหนดราคาการฟื้นตัวล่วงหน้าไปมากแล้ว ผู้ลงทุนที่มี Margin of Safety Discipline ควรรอจุดเข้าที่ดีกว่านี้</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿1.65 <span style="font-size:12px;color:#cab9a8">(฿0.80–฿2.27)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −24.8%</div></div>
+        <div class="vcell"><div class="k">เป้าหมายกรณีฟื้นตัว</div><div class="v" style="color:#a5d6a7">~฿2.27 (1x P/BV)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> รอจุดเข้าที่ดีกว่าต่ำกว่า ฿1.65 (= FV) หรือ ฿1.32 (MOS 20%) ในช่วงนี้สังเกตผลประกอบการ Q2–Q3/2569 ว่ากำไรฟื้นตัวต่อเนื่องจริงหรือไม่ หากกำไรยืนยันการฟื้นตัว 2 ไตรมาสขึ้นไป อาจพิจารณาเข้าได้แม้ในราคาสูงกว่า FV เล็กน้อย Dividend yield ~10.7% เป็นส่วนชดเชยบางส่วนในระหว่างรอ
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/BV เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ EPS ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ข้อมูลราคา: SET Thailand (3 ก.ค. 2569), Yahoo Finance (APURE.BK) • ข้อมูลการเงิน: SET Factsheet, TradingView (SET-APURE), Finnomena • ตรวจสอบข้ามแหล่ง ≥2 แหล่ง (SET + Yahoo Finance): ราคา ฿2.06 ยืนยันตรงกัน
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 3 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>

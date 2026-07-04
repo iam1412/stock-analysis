@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น ที.เอ.ซี. คอนซูเมอร์ (TACC) — Stock Analysis Dashboard</title>
+<!-- ★ ใส่รุ่นโมเดล AI ที่ใช้วิเคราะห์จริง (Opus→"Claude Opus 4.8", Sonnet→"Claude Sonnet 4.6") — gate E28 บังคับ -->
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
+<script type="application/json" id="stock-meta">
+{"symbol":"TACC","currency":"THB","price":6.25,"fairValue":7.20,"mos":13.2,"upside":15.2,"pe":11.4,"dividendYield":6.7,"roe":38.8}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#e65c00",
+    "accentDark": "#b34400",
+    "darkGrad": "linear-gradient(135deg,#1a0a00 0%,#2d1200 50%,#1a0500 100%)",
+    "glow": "rgba(230,92,0,0.35)",
+    "subColor": "#ffb74d",
+    "headerMuted": "rgba(255,183,77,0.55)",
+    "verdictText": "#fff3e0",
+    "vcellLabel": "#ffb74d",
+    "badge": "#e65c00",
+    "chgBg": "#1b5e20",
+    "chgColor": "#a5d6a7"
+  },
+  "chart": {
+    "data": [
+      ["ก.ค. 68", 4.78],
+      ["ส.ค. 68", 4.80],
+      ["ก.ย. 68", 4.80],
+      ["ต.ค. 68", 4.96],
+      ["พ.ย. 68", 5.15],
+      ["ธ.ค. 68", 5.45],
+      ["ม.ค. 69", 6.05],
+      ["ก.พ. 69", 5.40],
+      ["มี.ค. 69", 5.35],
+      ["เม.ย. 69", 5.80],
+      ["พ.ค. 69", 6.20],
+      ["มิ.ย. 69", 6.15],
+      ["ก.ค. 69", 6.25]
+    ],
+    "min": 4.40,
+    "max": 7.00,
+    "grid": [4.50, 5.00, 5.50, 6.00, 6.50, 7.00],
+    "fairLine": 7.20,
+    "currency": "฿",
+    "highlight": [6, 12],
+    "gridFmt": "v.toFixed(2)"
+  },
+  "gauge": {
+    "min": 4.00,
+    "max": 8.50,
+    "cur": 6.25,
+    "fair": 7.20,
+    "fairLabelTop": true
+  },
+  "fv": 7.20
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">● ● ●</div>
+    <div>
+      <span class="tag">MAI: TACC</span>
+      <span class="tag">อาหารและเครื่องดื่ม</span>
+      <span class="tag">Consumer Staples</span>
+    </div>
+    <h1>บริษัท ที.เอ.ซี. คอนซูเมอร์ จำกัด (มหาชน)</h1>
+    <div class="sub">เครื่องดื่มพร้อมดื่ม B2B (7-Eleven) • ผงชา-กาแฟ "ณ อรุณ" • เครื่องดื่มสุขภาพ • Lifestyle &amp; Character Licensing (San-X, Bellygom)</div>
+    <div class="price-row">
+      <div>
+        <div class="px">฿6.25<small>(TACC)</small></div>
+      </div>
+      <div class="chg">▲ +30.8% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 3 ก.ค. 2569<br>
+        กรอบ 52 สัปดาห์ ฿4.38 – ฿6.30<br>
+        ที่มา: TradingView, Investing.com, Finnomena
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ก.ค. 2569 · FY2568 = ปีงบ 2025</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~฿3.74 พันล้าน</div><div class="d">~394 ล้านหุ้น (free float)</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~11.4x</div><div class="d">EPS TTM ฿0.54 · ตลาดให้ 11–12x</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~13–15x</div><div class="d">ราคาปัจจุบันต่ำกว่าค่าเฉลี่ยย้อนหลัง</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">~4.25x</div><div class="d">BVPS ฿1.47 · ROE สูงหนุน premium</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2568</div><div class="v">฿297.5 ล้าน</div><div class="d">+23.5% YoY จาก ฿240.8 ล้าน</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿0.54</div><div class="d">FY2568 EPS ฿0.496 · Q1/2569 แกร่ง</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~฿1.47</div><div class="d">ส่วนผู้ถือหุ้นต่ำ เพราะจ่ายปันผลสูงมาก</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~38.8% / ~14%</div><div class="d">ROE ระดับยอดเยี่ยม — สูงสุดในกลุ่ม</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">~฿2.52 พันล้าน</div><div class="d">โต ~14% YoY · B2B 90% / B2C 10%</div></div>
+      <div class="metric"><div class="k">อัตรากำไรสุทธิ</div><div class="v">~11.8%</div><div class="d">กำไร 297M / รายได้ 2,520M</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~6.7%</div><div class="d">฿0.42/หุ้น · Payout ~84–97% · จ่าย 2 ครั้ง/ปี</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">0.46</div><div class="d">ความผันผวนต่ำกว่าตลาดมาก</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART (ราคาย้อนหลัง ~1 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ก.ค. 2568 – ก.ค. 2569 (รายเดือน)</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#e65c00"></i>ราคา TACC</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿7.20</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคา TACC ปรับตัวขึ้นจาก ฿4.78 (ก.ค. 2568) มาสู่ระดับ ฿6.25 (ก.ค. 2569) คิดเป็นผลตอบแทนรอบปี +30.8% ในเดือน ม.ค. 2569 ราคาพุ่งแตะ ฿6.05 จากกำไร Q3 ที่แข็งแกร่งและฤดูร้อนหนุนยอดขายเครื่องดื่ม ก่อนปรับตัวลงเล็กน้อยช่วง ก.พ.–มี.ค. 2569 ตามภาวะตลาดโดยรวม และกลับมาฟื้นตัวอีกครั้งในไตรมาส 2/2569 ราคายังคงอยู่ต่ำกว่ามูลค่าเหมาะสม ฿7.20 — บ่งชี้ว่ายังมีส่วนต่างความปลอดภัยอยู่
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION (เฉลี่ย 3 วิธี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS adj. ฿0.54 × P/E เป้าหมาย ~13x — ค่าเฉลี่ยย้อนหลัง TACC อยู่ที่ 13–15x สอดคล้องกับ consumer staple ในตลาดเอเชีย</div></div>
+        <div class="mval">฿7.02</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. P/E Forward (FY2569E)</div><div class="mdesc">EPS adj. ฿0.60 (FY2569E +10% growth) × P/E เป้าหมาย ~12x — อิงแนวโน้มรายได้โต 10% นักวิเคราะห์คาดเป้าสูงสุด ฿7.40</div></div>
+        <div class="mval">฿7.20</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. DDM (Gordon Growth)</div><div class="mdesc">D₁ = ปันผล ฿0.42 × (1+4%) = ฿0.437; g 4%, r 10% — อิง Payout สูง 84%+ · rate ผลตอบแทนที่ต้องการ 10%</div></div>
+        <div class="mval">฿7.28</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿6.80 – ฿7.60</span></div>
+        <div class="r">฿7.20</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        วิธี DDM ให้ค่าสูงสุด (฿7.28) สะท้อน Payout ratio สูงถึง 84–97% ที่ให้ผลตอบแทนปันผลน่าดึงดูด ขณะที่ P/E TTM (฿7.02) อนุรักษ์นิยมกว่าเพราะใช้กำไรปีก่อน · P/E Forward (฿7.20) สมดุลที่สุดโดยอิงแนวโน้มกำไรปี 2569 ที่นักวิเคราะห์คาดว่าจะโต ~10% ตามฤดูกาลร้อนที่สนับสนุนยอดขายเครื่องดื่ม · กรอบ FV ฿6.80–7.60 สอดคล้องกับฉันทามตินักวิเคราะห์ที่มีเป้าฯ ฿6.20–7.40
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿6.25</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿7.20</div></div>
+        </div>
+        <div class="scale">
+          <span>฿5.04<br><small>MOS 30%</small></span>
+          <span>฿5.76<br><small>MOS 20%</small></span>
+          <span style="text-align:center">฿6.85<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">฿7.20<br><small>Fair Value</small></span>
+          <span style="text-align:right">฿7.60<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคา ฿6.25 อยู่เหนือโซน MOS 20% (฿5.76) แต่ยังต่ำกว่า Fair Value ฿7.20 ประมาณ 13% — บ่งชี้ว่าหุ้นยังคุ้มค่า ไม่แพงเกินไป ฉันทามตินักวิเคราะห์ 4 คนให้คำแนะนำ Strong Buy โดยมีเป้าเฉลี่ย ฿6.85 (สูงสุด ฿7.40) ผู้ที่รอ MOS 20% ที่ ฿5.76 คาดว่าต้องรอจังหวะปรับตัวจากปัจจัยภายนอก
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict ok">
+        <div class="big">+13.2%</div>
+        <div class="txt">MOS พอใช้ — ราคาต่ำกว่า Fair Value แต่ยังไม่ถึงโซน deep value · ยังน่าพิจารณาสะสมทยอย</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿5.76</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿5.04</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿7.20</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="6.25" step="0.05">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿6.25 • EPS ฐาน ~฿0.54 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS +2%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿5.13</div>
+          <div class="ret neg">−1.8% (รวมปันผล)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.57</span></li>
+            <li><span>P/E ออก</span><span>9x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿1.26</span></li>
+            <li><span>สถานการณ์</span><span>ยอดขายชะลอ / Margin ถูกกด</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +10%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿7.92</div>
+          <div class="ret pos">+40.8% (รวมปันผล)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.72</span></li>
+            <li><span>P/E ออก</span><span>11x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿1.38</span></li>
+            <li><span>สถานการณ์</span><span>รายได้โต 10% + ขยาย ASEAN</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +15%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿9.84</div>
+          <div class="ret pos">+73.1% (รวมปันผล)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.82</span></li>
+            <li><span>P/E ออก</span><span>12x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿1.53</span></li>
+            <li><span>สถานการณ์</span><span>กาแฟพรีเมียม + CLMV + Character IP ขยาย</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      การคาดการณ์อิงสมมติฐาน EPS ฐาน ฿0.54 (TTM) และอัตราการเติบโตตามแต่ละสถานการณ์ · ปันผลรวมใช้อัตราประมาณ 84% ของกำไร สอดคล้องกับประวัติการจ่ายของบริษัท · ผลตอบแทนจริงขึ้นอยู่กับ P/E ตลาดให้ ณ เวลาขาย ซึ่งอาจผันผวนได้ตามสภาวะเศรษฐกิจ ไม่ใช่คำแนะนำให้ซื้อหรือขาย
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก &amp; ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>ฤดูร้อนหนุนยอดขาย:</b> ไทยมีอากาศร้อนยาวนานขึ้นทุกปี ส่งผลดีโดยตรงต่อยอดขายเครื่องดื่มพร้อมดื่มใน 7-Eleven และช่อง B2B ทั่วประเทศ</li>
+          <li><b>ขยายตลาด ASEAN:</b> บริษัทส่งออกไปกัมพูชา ลาว เวียดนาม มาเลเซีย สิงคโปร์ — ตลาดเกิดใหม่ที่เติบโตสูงรองรับรายได้ส่งออกเพิ่ม</li>
+          <li><b>ธุรกิจ Character Licensing:</b> ลิขสิทธิ์ San-X (Rilakkuma), Bellygom, Warbie Yama, Yale — สร้างรายได้ค่าสิทธิ์ Margin สูง กระจายความเสี่ยงรายได้</li>
+          <li><b>แบรนด์ "ณ อรุณ" B2C เติบโต:</b> ผลิตภัณฑ์ผงชา-กาแฟพรีเมียมสำหรับผู้บริโภคที่รักสุขภาพ เป็นกลุ่มที่เติบโตเร็วในไทย</li>
+          <li><b>กำไร Q1/2569 แข็งแกร่ง:</b> รายได้ Q1/2569 ที่ ฿639.96 ล้าน กำไร ฿99.67 ล้าน บ่งชี้ว่าโมเมนตัมยังแข็ง ลุ้น Q2 นิวไฮ</li>
+          <li><b>ปันผล Yield สูง:</b> ~6.7% พร้อม Payout ratio สูง ดึงดูดนักลงทุนแนวปันผล ช่วยพยุงราคาหุ้นในระยะยาว</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>พึ่งพา 7-Eleven สูง:</b> รายได้ B2B ราว 90% — ความเสี่ยงหาก CP ALL เปลี่ยนนโยบายหรือเพิ่มซัพพลายเออร์ใหม่</li>
+          <li><b>ต้นทุนวัตถุดิบผันผวน:</b> ราคาน้ำตาล ชา กาแฟ นม ตามตลาดโลก กระทบ Gross Margin ถ้าขึ้นราคาขายไม่ทัน</li>
+          <li><b>คู่แข่งรายใหญ่:</b> ตลาดเครื่องดื่มแข่งขันสูงจาก Oishi, Ichitan, CP, แบรนด์ต่างชาติ — อาจกดดัน Margin B2C</li>
+          <li><b>BVPS ต่ำ:</b> BVPS เพียง ฿1.47 เพราะ Payout สูง ถ้าต้องการลงทุนใหม่หรือธุรกิจชะลออาจต้องเพิ่มทุน</li>
+          <li><b>ขนาดตลาดขนาดกลาง:</b> Market cap ~฿3.74 พันล้าน สภาพคล่องต่ำกว่า SET100 — Institutional Fund เข้า-ออกมีผลต่อราคา</li>
+          <li><b>สัญญา Licensing ไม่แน่นอน:</b> สัญญาลิขสิทธิ์ตัวการ์ตูนมีวันหมดอายุ — การต่อสัญญาหรือหาตัวละครใหม่มีความไม่แน่นอน</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>TACC — เครื่องดื่มไทย ROE โดดเด่น ปันผลฉ่ำ ราคายังต่ำกว่า Fair Value</h2>
+      <p>ที.เอ.ซี. คอนซูเมอร์ เป็นหุ้นเครื่องดื่มขนาดกลางที่มีคุณภาพสูง โดดเด่นด้วย ROE ~39% ซึ่งสูงสุดในกลุ่มเครื่องดื่มไทย บริษัทมีโมเดลธุรกิจ B2B ที่มั่นคงผ่านเครือข่าย 7-Eleven ควบคู่กับการเติบโตของแบรนด์ B2C "ณ อรุณ" และรายได้ Licensing ที่ Margin สูง กำไรปี 2568 เติบโต +23.5% YoY สะท้อนความแข็งแกร่งของธุรกิจหลัก ด้วยราคา ฿6.25 ที่ยังต่ำกว่า Fair Value ฿7.20 ประมาณ 13% พร้อมปันผล Yield สูงถึง ~6.7% หุ้นนี้เหมาะสำหรับนักลงทุนที่ต้องการ "ปันผลสูง + เติบโต" ในราคาไม่แพง</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿7.20 <span style="font-size:12px;color:#cab9a8">(฿6.80–฿7.60)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +13.2%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿6.85 (Strong Buy)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ราคาปัจจุบัน ฿6.25 ให้ MOS ~13% — เหมาะสำหรับทยอยสะสม โดยเฉพาะนักลงทุนที่ต้องการปันผลสูงสม่ำเสมอ Yield ~6.7% · โซนเข้าซื้อเพิ่มที่คุ้มค่ายิ่งขึ้นที่ MOS 20% คือ ≤฿5.76 · ควร Monitor กำไร Q2/2569 และแนวโน้มยอดขายช่วง High Season
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    แหล่งข้อมูล: TradingView (ราคา ณ 3 ก.ค. 2569, P/E 11.35x, EPS ฿0.55), Investing.com (EPS TTM ฿0.5429, P/E 11.51x, ROE 38.8%, BVPS ฿1.47, เป้า avg ฿6.85 high ฿7.40), Finnomena.com (ราคา ฿6.25 ณ 3 ก.ค. 2569, Return รอบปี +41.55%), tacconsumer.com/investor (ปันผล/กำไรปี 2566–2568)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 3 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
