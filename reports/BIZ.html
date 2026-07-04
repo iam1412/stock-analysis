@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น บีไอซี เน็ตเวิร์คส์ (BIZ) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"BIZ","currency":"THB","price":6.00,"fairValue":9.90,"mos":39,"upside":65,"pe":9.06,"dividendYield":8.33,"roe":37.9}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#00897b",
+    "accentDark": "#00695c",
+    "darkGrad": "linear-gradient(135deg,#00251a 0%,#003d33 60%,#00695c 100%)",
+    "glow": "rgba(0,137,123,0.35)",
+    "subColor": "#b2dfdb",
+    "headerMuted": "rgba(178,223,219,0.7)",
+    "verdictText": "#e0f2f1",
+    "vcellLabel": "rgba(178,223,219,0.6)",
+    "badge": "#00897b",
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#1e8e3e"
+  },
+  "chart": {
+    "data": [
+      ["ก.ค. 68", 3.44],
+      ["ส.ค. 68", 3.84],
+      ["ก.ย. 68", 3.78],
+      ["ต.ค. 68", 3.96],
+      ["พ.ย. 68", 3.98],
+      ["ธ.ค. 68", 4.24],
+      ["ม.ค. 69", 5.30],
+      ["ก.พ. 69", 4.64],
+      ["มี.ค. 69", 4.70],
+      ["เม.ย. 69", 5.25],
+      ["พ.ค. 69", 5.75],
+      ["มิ.ย. 69", 5.80],
+      ["ก.ค. 69", 6.00]
+    ],
+    "min": 3.00,
+    "max": 7.00,
+    "grid": [3.00, 4.00, 5.00, 6.00, 7.00],
+    "fairLine": 9.90,
+    "currency": "฿",
+    "highlight": [6, 12]
+  },
+  "gauge": {
+    "min": 3.00,
+    "max": 12.00,
+    "cur": 6.00,
+    "fair": 9.90,
+    "fairLabelTop": false
+  },
+  "fv": 9.90
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">BIZ</div>
+    <div>
+      <span class="tag">SET: BIZ</span>
+      <span class="tag">Healthcare</span>
+      <span class="tag">Medical Devices &amp; Cancer</span>
+    </div>
+    <h1>บีไอซี เน็ตเวิร์คส์ (Business Alignment)</h1>
+    <div class="sub">จำหน่ายและให้บริการอุปกรณ์รังสีรักษามะเร็ง (Radiotherapy) • ติดตั้ง ซ่อมบำรุง อุปกรณ์การแพทย์เฉพาะทาง • ดำเนินโรงพยาบาลมะเร็งเฉพาะทาง</div>
+    <div class="price-row">
+      <div>
+        <div class="px">฿6.00<small>(BIZ)</small></div>
+      </div>
+      <div class="chg">▲ +74.4% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 4 กรกฎาคม 2569<br>
+        กรอบ 52 สัปดาห์ ฿3.18 – ฿6.50<br>
+        ที่มา: SET.or.th, Investing.com, Finnomena
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ก.ค. 2569 · ปีงบการเงิน 2567</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~฿3,604 ล้าน</div><div class="d">~600.7 ล้านหุ้น · MAI Small-cap</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~9.06x</div><div class="d">EPS TTM ~฿0.66 · ถูกกว่า Healthcare ไทยเฉลี่ย ~20x</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~12–15x</div><div class="d">ช่วง 8–20x ตาม cycle</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">3.34x</div><div class="d">BVPS ~฿1.80 · ROE สูงหนุน premium</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2567</div><div class="v">฿307 ล้าน</div><div class="d">+36.3% YOY (FY2566: ฿225 ล้าน)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿0.66</div><div class="d">FY2567 EPS: ฿0.51 · กำลังเร่งตัว</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~฿1.80</div><div class="d">ส่วนผู้ถือหุ้น ~฿1,044 ล้าน</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~37.9% / ~15.5%</div><div class="d">ROE สูงมาก — สะท้อน asset-light model</div></div>
+
+      <div class="metric"><div class="k">รายได้ FY2567</div><div class="v neu">฿2,027 ล้าน</div><div class="d">+18% YOY · FY2566: ฿1,717 ล้าน</div></div>
+      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">~24.2%</div><div class="d">Net margin ~15.1% · EBITDA margin ~20.3%</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~8.33%</div><div class="d">฿0.50/หุ้น ปี 2567 · Payout ratio ~98%</div></div>
+      <div class="metric"><div class="k">EV/EBITDA</div><div class="v">6.30x</div><div class="d">EBITDA ~฿135 ล้าน · ถูกมากเทียบ peers</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ราคารายเดือน ก.ค. 2568 – ก.ค. 2569</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#00897b"></i>ราคา BIZ</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿9.90</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคา BIZ พุ่งแรงจาก ฿3.44 (ก.ค. 2568) มาถึง ฿6.00 (ก.ค. 2569) ผลตอบแทนรอบปี <b>+74.4%</b>
+        โดยมีการกระโดดใหญ่ในช่วง ม.ค. 2569 (฿5.30) อาจสะท้อนผลประกอบการ Q4/2568 ที่แข็งแกร่ง
+        และความสนใจของนักลงทุนต่อกลุ่ม Healthcare เฉพาะทาง แม้มีพักฐานเล็กน้อยใน ก.พ.–มี.ค. 2569
+        แต่ราคาฟื้นตัวต่อเนื่องและปิดที่ระดับสูงสุดใหม่ที่ ฿6.00 ใกล้กรอบ 52 สัปดาห์บน ฿6.50
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS (TTM) ฿0.66 × P/E เป้าหมาย ~12x — Healthcare เฉพาะทางที่มีคู่แข่งน้อย รายได้เติบโต 18%/ปี ควรได้ P/E ~12x (ต่ำกว่า sector เฉลี่ย ~20x)</div></div>
+        <div class="mval">฿7.92</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล ฿0.50 × (1+g); g 8%, r 13% → ฿0.54 / (0.13−0.08) = ฿10.80 — payout ratio สูง บริษัทแจกปันผลสม่ำเสมอ DDM ให้ผลเหมาะสม</div></div>
+        <div class="mval">฿10.80</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 37.9% − g 8%)/(r 13% − g 8%) ≈ 5.98 × BVPS ฿1.80 — ROE สูงมากสะท้อนความได้เปรียบเชิงแข่งขัน</div></div>
+        <div class="mval">฿10.76</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿7.92 – ฿10.80</span></div>
+        <div class="r">฿9.90</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        วิธี P/E ให้ค่าต่ำสุด (฿7.92) เพราะใช้ P/E conservative ที่ 12x ขณะที่ DDM (฿10.80) และ Justified P/BV (฿10.76) ให้ค่าสูงกว่าและสอดคล้องกัน สะท้อน ROE สูงและการจ่ายปันผลสม่ำเสมอ
+        FV เฉลี่ย ฿9.90 ถือเป็นค่ากลางสมเหตุสมผล หากรายได้โต 18%/ปีต่อเนื่อง upside ยังมีอีกมาก
+        <b>ข้อจำกัด:</b> DDM อ่อนไหวต่อสมมติฐาน r−g / Justified P/BV ขึ้นกับ ROE ที่ยั่งยืน
+        <br><b>แหล่งข้อมูล:</b> SET Factsheet (3 ก.ค. 2569) · Investing.com BIZ Income Statement (FY2024/Q4 2024) · Finnomena BIZ Stock Page
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿6.00</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿9.90</div></div>
+        </div>
+        <div class="scale">
+          <span>฿6.93<br><small>MOS 30%</small></span>
+          <span>฿7.92<br><small>MOS 20%</small></span>
+          <span style="text-align:center">฿9.90<br><small>Fair Value</small></span>
+          <span style="text-align:right">฿10.50<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">฿10.80<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคา BIZ ที่ ฿6.00 ยังอยู่ต่ำกว่า MOS 30% (฿6.93) อย่างมีนัยสำคัญ ซึ่งหมายความว่าซื้อที่ระดับนี้มี
+        <b>Margin of Safety ~39%</b> ต่อ Fair Value ฿9.90 ราคาปัจจุบันยังต่ำกว่าโซน MOS 20% (฿7.92) ถึง ~24%
+        และต่ำกว่าเป้าเฉลี่ย analyst ~฿10.50 ถึง ~75% นักลงทุน Value สามารถพิจารณาสะสมได้ โดยเฉพาะหากมองว่าบริษัทมีความได้เปรียบเชิงแข่งขันด้านอุปกรณ์รังสีรักษามะเร็ง
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict good">
+        <div class="big">+39%</div>
+        <div class="txt">MOS ดีมาก — ราคาปัจจุบันต่ำกว่ามูลค่าเหมาะสมมาก เหมาะสะสม</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿7.92</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿6.93</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿9.90</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="6.00" step="0.05">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿6.00 • EPS ฐาน ~฿0.66 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS +5%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿6.08</div>
+          <div class="ret neg">+1%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.76</span></li>
+            <li><span>P/E ออก</span><span>8x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿1.50</span></li>
+            <li><span>สถานการณ์</span><span>การลงทุนรพ.ชะลอ</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +15%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿9.90</div>
+          <div class="ret pos">+65%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.99</span></li>
+            <li><span>P/E ออก</span><span>10x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿1.65</span></li>
+            <li><span>สถานการณ์</span><span>โต Healthcare เฉพาะทาง</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +20%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿13.68</div>
+          <div class="ret pos">+128%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿1.14</span></li>
+            <li><span>P/E ออก</span><span>12x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿1.65</span></li>
+            <li><span>สถานการณ์</span><span>ขยายรพ.ใหม่+ส่งออก</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      ตัวเลขข้างต้นเป็นสมมติฐาน ไม่ใช่การรับประกันผลตอบแทน · กรณี Base (EPS +15%/ปี) สอดคล้องกับ trend ล่าสุดที่ EPS FY2567 โต +37.8% YOY แต่ใช้อัตราเติบโตต่ำกว่าเพื่อความระมัดระวัง
+      ผลตอบแทนรวมปันผล yield ~8.3% ต่อปีที่ราคา ฿6.00 เป็น cushion ที่ดีในทุก scenario
+      · <b>ความเสี่ยงหลัก:</b> cycle การจัดซื้ออุปกรณ์โรงพยาบาลยาว 7–10 ปี, งบสาธารณสุขไทย, ค่าเงินบาท/USD
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก &amp; ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>Niche monopoly ในตลาดรังสีรักษา:</b> BIZ เป็นผู้นำด้านอุปกรณ์รังสีรักษามะเร็ง (Radiotherapy) ในไทย คู่แข่งน้อย ลูกค้าผูกพันระยะยาวผ่านสัญญาซ่อมบำรุง</li>
+          <li><b>มะเร็งเป็นโรคที่เพิ่มขึ้นทุกปี:</b> อุปสงค์อุปกรณ์รังสีรักษาในไทยและอาเซียนยังเพิ่มต่อเนื่อง ตามสถิติมะเร็งใหม่ที่โต ~3–5%/ปี</li>
+          <li><b>Recurring revenue จากบริการ:</b> รายได้จากการซ่อมบำรุง After-sales Service สร้างกระแสเงินสดสม่ำเสมอ ลด cyclical risk</li>
+          <li><b>ขยายธุรกิจโรงพยาบาลเฉพาะทาง:</b> บริษัทมีโรงพยาบาลมะเร็งเฉพาะทาง เปิดช่องทางรายได้บริการทางการแพทย์ที่ margin สูง</li>
+          <li><b>ROE สูงมาก ~38%:</b> สะท้อนประสิทธิภาพการใช้ทุนสูง และความสามารถในการสร้างผลตอบแทนให้ผู้ถือหุ้น</li>
+          <li><b>ปันผล yield สูง ~8.3%:</b> ที่ราคา ฿6.00 นักลงทุนได้รับผลตอบแทนปันผลสูงมากเทียบกับ SET เฉลี่ย ~3%</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>ความเสี่ยงด้านสกุลเงิน:</b> อุปกรณ์นำเข้าจากยุโรป/สหรัฐฯ ราคาเป็น USD/EUR ค่าเงินบาทอ่อนกดดันต้นทุนสินค้า</li>
+          <li><b>Cycle การจัดซื้อโรงพยาบาลยาวนาน:</b> โรงพยาบาลซื้อเครื่อง Radiotherapy ทุก 7–10 ปี รายได้อาจผันผวนตาม cycle</li>
+          <li><b>งบประมาณสาธารณสุขไทย:</b> โรงพยาบาลรัฐเป็นลูกค้าหลัก ถ้างบสุขภาพถูกตัดหรือชะลอ จะกระทบยอดขายตรง</li>
+          <li><b>ตลาดขนาดเล็ก (Niche):</b> Market cap ~฿3,600 ล้าน เล็กมาก สภาพคล่องหุ้นต่ำ spread กว้าง เสี่ยงขาดทุนจากการขาย</li>
+          <li><b>Payout ratio สูง ~98%:</b> กำไรเกือบทั้งหมดถูกจ่ายเป็นปันผล งบลงทุนเพื่อขยายกิจการอาจจำกัด</li>
+          <li><b>การแข่งขันจากต่างชาติ:</b> ผู้ผลิตอุปกรณ์ทางการแพทย์รายใหญ่ (Varian/Elekta) อาจเพิ่มการขายตรง ลดบทบาทตัวแทน</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>BIZ — Niche Healthcare Leader ที่ Valuation ยังถูก</h2>
+      <p>Business Alignment (BIZ) เป็นผู้นำเฉพาะทางด้านอุปกรณ์รังสีรักษามะเร็งในไทย มีคูเมืองธุรกิจที่ชัดเจนจากความสัมพันธ์ลูกค้าระยะยาวและ know-how ทางเทคนิค ผลประกอบการ FY2567 แข็งแกร่ง รายได้โต +18% กำไรโต +36% ROE สูงถึง 38% สะท้อนประสิทธิภาพสูงมาก ที่ราคา ฿6.00 ยัง P/E เพียง 9x ซึ่งถูกกว่า Healthcare ไทยเฉลี่ยมาก และ dividend yield ~8.3% เป็น cushion ที่ดี มูลค่าเหมาะสม ฿9.90 ให้ MOS ~39% เหมาะสำหรับนักลงทุนที่ต้องการ niche quality stock พร้อม income สูง</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿9.90 <span style="font-size:12px;color:#cab9a8">(฿7.92–฿10.80)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +39%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿10.50 (เชิงบวก)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ราคาปัจจุบัน ฿6.00 ให้ MOS สูงถึง 39% เหมาะสะสมที่ระดับนี้ จุด MOS 30% อยู่ที่ ฿6.93 และ MOS 20% ที่ ฿7.92 · หากราคาขยับสูงกว่า FV ฿9.90 ควรพิจารณา Trim บางส่วน · ถือระยะกลาง 2–3 ปีรับปันผล ~฿0.50/หุ้นต่อปี ขณะรอ P/E re-rating สู่เป้า analyst ~฿10.50
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    แหล่งข้อมูล: SET.or.th Factsheet (3 ก.ค. 2569) · Investing.com BIZ Financial Summary (FY2024/Q4 2024) · Finnomena BIZ Stock Page · Yahoo Finance BIZ.BK Chart (range=1y)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 4 กรกฎาคม 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>

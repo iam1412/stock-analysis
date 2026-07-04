@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น เอส แอนด์ พี ซินดิเคท (SNP) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"SNP","currency":"THB","price":8.95,"fairValue":9.56,"mos":6.4,"upside":6.8,"pe":16.9,"dividendYield":5.59,"roe":10.18}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#c0392b",
+    "accentDark": "#8b1a1a",
+    "darkGrad": "linear-gradient(135deg,#3d0c0c 0%,#1a0505 100%)",
+    "glow": "rgba(192,57,43,0.35)",
+    "subColor": "#f5c6c0",
+    "headerMuted": "rgba(245,198,192,0.7)",
+    "verdictText": "#ffeae8",
+    "vcellLabel": "#f5c6c0",
+    "badge": "#c0392b",
+    "chgBg": "#c5221f",
+    "chgColor": "#fff"
+  },
+  "chart": {
+    "data": [
+      ["ก.ค. 25", 9.35],
+      ["ส.ค. 25", 9.10],
+      ["ก.ย. 25", 9.00],
+      ["ต.ค. 25", 9.20],
+      ["พ.ย. 25", 9.10],
+      ["ธ.ค. 25", 9.15],
+      ["ม.ค. 26", 8.95],
+      ["ก.พ. 26", 8.80],
+      ["มี.ค. 26", 8.70],
+      ["เม.ย. 26", 8.60],
+      ["พ.ค. 26", 8.80],
+      ["มิ.ย. 26", 8.90],
+      ["ก.ค. 26", 8.95]
+    ],
+    "min": 8.20,
+    "max": 10.00,
+    "grid": [8.50, 9.00, 9.56, 10.00],
+    "fairLine": 9.56,
+    "currency": "฿",
+    "highlight": [3, 9],
+    "gridFmt": "v.toFixed(2)",
+    "dataFmt": "d[1].toFixed(2)"
+  },
+  "gauge": {
+    "min": 6.00,
+    "max": 11.00,
+    "cur": 8.95,
+    "fair": 9.56,
+    "fairLabelTop": true
+  },
+  "fv": 9.56
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">●●●●●●●●●●●●●</div>
+    <div>
+      <span class="tag">SET: SNP</span>
+      <span class="tag">Consumer / Restaurants</span>
+      <span class="tag">ร้านอาหาร &amp; เบเกอรี่</span>
+    </div>
+    <h1>เอส แอนด์ พี ซินดิเคท (SNP)</h1>
+    <div class="sub">ร้านอาหาร S&amp;P ครบวงจร • เบเกอรี่และขนมปัง • อาหารพร้อมรับประทาน (Ready-to-eat) • จัดเลี้ยง (Catering) • แฟรนไชส์ทั่วประเทศ</div>
+    <div class="price-row">
+      <div>
+        <div class="px">฿8.95<small>(SNP)</small></div>
+      </div>
+      <div class="chg">▼ −4.3% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 4 ก.ค. 2569<br>
+        กรอบ 52 สัปดาห์ ฿8.10 – ฿10.20<br>
+        ที่มา: SET.or.th / StockAnalysis.com / Finnomena.com
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ก.ค. 2569 • FY2025 = ม.ค.–ธ.ค. 2568</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~฿4,570 ล้าน</div><div class="d">510.63 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~16.9x</div><div class="d">EPS TTM ฿0.53 / ราคา ฿8.95</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~12–20x</div><div class="d">แกว่งตามกำไรที่ฟื้นตัว</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">1.79x</div><div class="d">BVPS ฿4.99 (FY2025)</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">฿270.5 ล้าน</div><div class="d">ลดลง −36.6% YoY</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿0.53</div><div class="d">Q2-25+Q3-25+Q4-25+Q1-26</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~฿4.99</div><div class="d">ส่วนผู้ถือหุ้น ฿2,580 ล้าน</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~10.2% / 6.1%</div><div class="d">FY2025 · ลดจาก 16% ปีก่อน</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">~฿5,550 ล้าน</div><div class="d">ลดลง ~8% จากปีก่อน</div></div>
+      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">~55.7%</div><div class="d">FY2025 (FY2024: 56.3%)</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~5.6%</div><div class="d">ปันผลปี 2568 รวม ฿0.50/หุ้น</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">~0.4</div><div class="d">ความผันผวนต่ำ (defensive)</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ก.ค. 2568 – ก.ค. 2569</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#c0392b"></i>ราคา SNP</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿9.56</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคาหุ้น SNP ปรับตัวลดลงจาก ฿9.35 ในช่วงกลางปี 2568 มาแตะโซน ฿8.60–8.70 ในไตรมาสที่ 2 ปี 2569 ก่อนฟื้นตัวเล็กน้อยมาที่ ฿8.95
+        สาเหตุหลักจากกำไร FY2025 ลดลงแรง −36.6% YoY หลังต้นทุนแรงงานและค่าเช่าเพิ่มขึ้น ขณะที่รายได้หดตัวจากสาขาที่ปิดตัวและกำลังซื้อชะลอ
+        อย่างไรก็ตามราคาปัจจุบันต่ำกว่ามูลค่าเหมาะสม ฿9.56 ราว 6% สะท้อนความคาดหวังว่ากำไรจะฟื้นตัวในปี 2569–2570
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS adj. ฿0.53 × P/E เป้าหมาย ~18x — P/E ปกติของหุ้นร้านอาหารไทยขนาดกลาง ณ กำไรปกติ</div></div>
+        <div class="mval">฿9.54</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ฿0.515 (ปันผล ฿0.50 × (1+g)); g 3%, r 8% → แบรนด์ S&amp;P มีฐานลูกค้าประจำ dividend ค่อนข้างสม่ำเสมอ</div></div>
+        <div class="mval">฿10.30</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. EV/EBITDA</div><div class="mdesc">EBITDA FY2025 ฿524.6 ล้าน × 9x (sector peer) − หนี้สุทธิ ≈ ฿200 ล้าน ÷ 510.63 ล้านหุ้น</div></div>
+        <div class="mval">฿8.85</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿8.85 – ฿10.30</span></div>
+        <div class="r">฿9.56</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        วิธี DDM ให้ค่าสูงสุด (฿10.30) สะท้อน dividend yield น่าดึงดูด (~5.6%) แต่ payout ratio เกิน 100% ในปี 2568 ทำให้อิง DDM เพียงอย่างเดียวมีความเสี่ยง
+        EV/EBITDA ให้ค่าต่ำสุด (฿8.85) เพราะ EBITDA FY2025 ลดลงจากปีก่อน
+        P/E Valuation (฿9.54) ใช้ EPS TTM ซึ่งยังสะท้อนกำไรที่ฟื้นตัวได้บางส่วน — ค่าเฉลี่ย ฿9.56 จึงสมเหตุสมผลในฐานะ fair value กลาง
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿8.95</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿9.56</div></div>
+        </div>
+        <div class="scale">
+          <span>฿6.69<br><small>MOS 30%</small></span>
+          <span>฿7.65<br><small>MOS 20%</small></span>
+          <span style="text-align:center">฿9.50<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">฿9.56<br><small>Fair Value</small></span>
+          <span style="text-align:right">฿10.30<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน ฿8.95 อยู่ต่ำกว่ามูลค่าเหมาะสม ฿9.56 ประมาณ 6.4% (MOS ~6%) ถือว่ามี margin of safety เล็กน้อย
+        เหมาะกับนักลงทุนที่เน้น dividend income (yield ~5.6%) มากกว่านักลงทุนที่ต้องการ capital gain ขนาดใหญ่ในระยะสั้น
+        จุดซื้อน่าสนใจอยู่ที่ต่ำกว่า ฿7.65 (MOS 20%) หากกำไรยังฟื้นตัวไม่ชัดเจน
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict ok">
+        <div class="big">+6.4%</div>
+        <div class="txt">MOS พอประมาณ — น่าสะสมเมื่อราคาอ่อนตัว (เน้น dividend)</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿7.65</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿6.69</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿9.56</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="8.95" step="0.05">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿8.95 • EPS ฐาน ~฿0.53 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS −5%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿6.36</div>
+          <div class="ret neg">−28.9%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.45</span></li>
+            <li><span>P/E ออก</span><span>14x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.40</span></li>
+            <li><span>สถานการณ์</span><span>กำไรลดต่อเนื่อง ปิดสาขา</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +5%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿11.04</div>
+          <div class="ret pos">+23.4%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.61</span></li>
+            <li><span>P/E ออก</span><span>18x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿1.50</span></li>
+            <li><span>สถานการณ์</span><span>กำไรฟื้น สาขาใหม่เพิ่ม</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +10%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿14.81</div>
+          <div class="ret pos">+65.5%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.71</span></li>
+            <li><span>P/E ออก</span><span>21x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿1.80</span></li>
+            <li><span>สถานการณ์</span><span>การท่องเที่ยวบูม + แฟรนไชส์โต</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      ผลตอบแทนคาดการณ์รวมปันผล (ไม่คิดภาษี) — Base case ให้ผลตอบแทน ~40% ใน 3 ปี (~12%/ปี) ถือว่าน่าสนใจสำหรับหุ้น defensive
+      อย่างไรก็ตามความเสี่ยงหลักอยู่ที่ Bear case ซึ่งกำไรยังไม่ฟื้น ทำให้ขาดทุน −24.5% รวมปันผล
+      นักลงทุนควรติดตามตัวเลข same-store sales growth และจำนวนสาขาที่เปิดใหม่เป็นสัญญาณสำคัญ
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก &amp; ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>แบรนด์แข็งแกร่ง 50+ ปี:</b> S&amp;P เป็นแบรนด์ร้านอาหารและเบเกอรี่ที่คนไทยรู้จักกว้างขวาง มีฐานลูกค้าประจำสูง สร้างรายได้สม่ำเสมอ</li>
+          <li><b>การท่องเที่ยวฟื้นตัว:</b> นักท่องเที่ยวต่างชาติที่เพิ่มขึ้นช่วยหนุนรายได้สาขาในพื้นที่ท่องเที่ยวและศูนย์การค้า</li>
+          <li><b>Dividend yield น่าดึงดูด:</b> Yield ~5.6% สูงกว่าดอกเบี้ยเงินฝากอย่างมีนัย ดึงนักลงทุนเน้นรายได้</li>
+          <li><b>ระบบแฟรนไชส์ขยายตัว:</b> โมเดล franchise ช่วยเพิ่มสาขาโดยไม่ต้องลงทุนเองทั้งหมด ลดความเสี่ยงด้านเงินทุน</li>
+          <li><b>Gross margin คงตัวสูง ~55%:</b> แม้รายได้ลด แต่อัตรากำไรขั้นต้นยังคงแข็งแกร่ง สะท้อน pricing power ของแบรนด์</li>
+          <li><b>กลุ่มอาหารพร้อมรับประทาน:</b> ช่องทาง ready-to-eat และ delivery เติบโตรองรับพฤติกรรมผู้บริโภคยุคใหม่</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>กำไรลดแรง −36.6% YoY:</b> FY2025 กำไรสุทธิเหลือ ฿270 ล้าน จาก ฿427 ล้านในปีก่อน สัญญาณว่าต้นทุนเพิ่มเร็วกว่ารายได้</li>
+          <li><b>Payout ratio เกิน 100%:</b> จ่ายปันผลมากกว่ากำไรที่ทำได้ ไม่ยั่งยืนในระยะยาว มีความเสี่ยงลดปันผล</li>
+          <li><b>รายได้หดตัวต่อเนื่อง:</b> รายได้ FY2025 ลด −8% เป็นปีที่ 2 ติดต่อกัน สาขาที่ปิดตัวยังไม่ถูกทดแทน</li>
+          <li><b>ต้นทุนแรงงานและค่าเช่าสูง:</b> ธุรกิจร้านอาหารเผชิญต้นทุนดำเนินงานที่สูงขึ้นจากค่าแรงขั้นต่ำและต้นทุนพลังงาน</li>
+          <li><b>การแข่งขันสูง:</b> ตลาดร้านอาหารและเบเกอรี่ในไทยมีผู้เล่นหลายราย ทั้งเชนและ SME ท้องถิ่นที่ปรับตัวเร็ว</li>
+          <li><b>กำลังซื้อในประเทศชะลอ:</b> เศรษฐกิจไทยโตช้า ผู้บริโภคระมัดระวังการใช้จ่าย กระทบ same-store sales</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>Dividend Play — รอจังหวะราคาอ่อน</h2>
+      <p>SNP เป็นหุ้นแบรนด์ร้านอาหารและเบเกอรี่ที่มีประวัติยาวนานกว่า 50 ปี ฐานลูกค้าแน่น และให้ dividend yield ~5.6%
+        อย่างไรก็ตามกำไรปี 2568 ลดแรง −36.6% และรายได้หดตัวต่อเนื่องเป็นสัญญาณเตือน
+        ราคาปัจจุบัน ฿8.95 มี MOS ~6.4% ต่ำกว่ามูลค่าเหมาะสม ฿9.56 — น่าสนใจสำหรับนักลงทุนเน้นปันผล
+        แต่ควรรอดูสัญญาณฟื้นตัวของกำไรก่อนเพิ่มสัดส่วน หรือรอราคาอ่อนตัวไปโซน ฿7.65 (MOS 20%) เพื่อ margin of safety ที่ดีกว่า</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿9.56 <span style="font-size:12px;color:#cab9a8">(฿8.85–฿10.30)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +6.4%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿9.50 (Neutral/Hold)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ทยอยสะสมใกล้ ฿8.95 สำหรับ dividend income — ตั้ง stop ที่ ฿8.10 (52wk low)
+        เพิ่มสัดส่วนหากราคาลงไปโซน ฿7.65–8.00 (MOS 20%) · ขายบางส่วนหากราคาฟื้นเกิน ฿10.30 (กรอบบน FV)
+        ติดตามผลประกอบการ Q2 2569 เป็นสัญญาณยืนยันการฟื้นตัว
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ EPS ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    แหล่งข้อมูล: SET.or.th (ราคา ณ 4 ก.ค. 2569 · 52wk range ฿8.10–10.20), StockAnalysis.com (งบการเงิน EPS P/E Market Cap Dividend EBITDA Balance Sheet), Finnomena.com (ผลตอบแทน 1 ปี −4.24% · ยืนยันราคา ฿8.95)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 4 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
