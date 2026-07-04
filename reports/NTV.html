@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น โรงพยาบาลนนทเวช (NTV) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"NTV","currency":"THB","price":19.10,"fairValue":22.50,"mos":15.1,"upside":17.8,"pe":12.51,"dividendYield":null,"roe":9.0}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme":{
+    "accent":"#1a6fa8",
+    "accentDark":"#124f7a",
+    "darkGrad":"linear-gradient(135deg,#0a2a40 0%,#1a4d6e 55%,#2473a0 130%)",
+    "glow":"rgba(26,111,168,.35)",
+    "subColor":"#b8d4ea",
+    "headerMuted":"#8bbfd8",
+    "verdictText":"#d0e8f5",
+    "vcellLabel":"#8bbfd8",
+    "badge":"var(--blue)",
+    "chgBg":"#c5221f",
+    "chgColor":"#fff"
+  },
+  "chart":{
+    "data":[
+      ["ม.ค. 68",24.90],
+      ["ก.พ. 68",24.80],
+      ["มี.ค. 68",24.40],
+      ["เม.ย. 68",22.50],
+      ["พ.ค. 68",23.00],
+      ["มิ.ย. 68",22.60],
+      ["ก.ค. 68",23.70],
+      ["ส.ค. 68",21.90],
+      ["ก.ย. 68",22.10],
+      ["ต.ค. 68",19.00],
+      ["พ.ย. 68",18.90],
+      ["ธ.ค. 68",18.80],
+      ["ม.ค. 69",19.10]
+    ],
+    "min":15.00,
+    "max":27.00,
+    "grid":[16.00,18.00,20.00,22.00,24.00,26.00],
+    "fairLine":22.50,
+    "currency":"฿",
+    "highlight":[0,12]
+  },
+  "gauge":{"min":13.00,"max":28.00,"cur":19.10,"fair":22.50,"fairLabelTop":true},
+  "fv":22.50
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">SET · Healthcare · โรงพยาบาลเอกชน</div>
+    <div>
+      <span class="tag">SET: NTV</span>
+      <span class="tag">Healthcare</span>
+      <span class="tag">โรงพยาบาลเอกชน</span>
+    </div>
+    <h1>โรงพยาบาลนนทเวช (NTV)</h1>
+    <div class="sub">โรงพยาบาลเอกชนขนาดกลางในนนทบุรี • บริการ OPD/IPD ครบวงจร 24 ชม. • ศูนย์เฉพาะทางด้านหัวใจ สมอง ออร์โธปิดิกส์ มะเร็ง • รองรับผู้ป่วยในเขต Bangkok Noi และปริมณฑล</div>
+    <div class="price-row">
+      <div>
+        <div class="px">฿19.10<small>(NTV)</small></div>
+      </div>
+      <div class="chg">▼ −23.3% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 3 ก.ค. 2569<br>
+        กรอบ 52 สัปดาห์ ฿18.30 – ฿27.25<br>
+        ที่มา: SET.or.th, Finnomena.com, Yahoo Finance
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ก.ค. 2569 · คำนวณจาก Market Cap + P/E + P/BV ที่เปิดเผย</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">3,056 ล้านบาท</div><div class="d">160 ล้านหุ้น · Par ฿1.00</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~12.51x</div><div class="d">ต่ำกว่าค่าเฉลี่ยกลุ่ม ~15–18x</div></div>
+      <div class="metric"><div class="k">EV / EBITDA</div><div class="v neu">3.79x</div><div class="d">EV ~1,849 ล้านบาท · มีสถานะสุทธิเงินสด</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">1.13x</div><div class="d">BVPS ~฿16.90/หุ้น</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ TTM</div><div class="v">~244 ล้านบาท</div><div class="d">คำนวณจาก Market Cap ÷ P/E = 3,056÷12.51</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿1.53</div><div class="d">Net profit 244M ÷ 160M หุ้น</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~฿16.90</div><div class="d">ราคา ÷ P/BV = 19.10÷1.13</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~9.0% / ~6.1%</div><div class="d">Net profit ÷ Equity ~2,704M</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM (ประมาณ)</div><div class="v neu">~2,700 ล้านบาท</div><div class="d">อิง Net margin ~9% และ EBITDA margin ~18%</div></div>
+      <div class="metric"><div class="k">EBITDA (TTM)</div><div class="v">~488 ล้านบาท</div><div class="d">คำนวณจาก EV÷EV/EBITDA = 1,849÷3.79</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">N/A</div><div class="d">ไม่มีข้อมูลยืนยันปันผลปัจจุบัน</div></div>
+      <div class="metric"><div class="k">สถานะเงินสด (Net)</div><div class="v pos">~+1,207 ล้านบาท</div><div class="d">Net cash = Mkt Cap − EV (ไม่มีหนี้สุทธิ)</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#1a6fa8"></i>ราคา NTV</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿22.50</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        หุ้น NTV เริ่มต้นปี 2568 ที่ ฿24.90 ก่อนทยอยปรับตัวลง ตลอดทั้งปีภายใต้แรงกดดันจากต้นทุนบุคลากรสูงขึ้นและ
+        อัตราการใช้บริการที่ยังฟื้นตัวช้าหลังโควิด ราคาดิ่งหนักในไตรมาส 4 ปี 2568 สู่ระดับ ฿18.80–19.00 บาท
+        ก่อนทรงตัวใกล้ ฿19.10 ณ ต้นปี 2569 ซึ่งเป็นระดับ 52-week low ราคาปัจจุบัน <b>ต่ำกว่ามูลค่าเหมาะสม ~18%</b>
+        เปิดโอกาส MOS ระดับกลาง สำหรับนักลงทุนที่เชื่อในการฟื้นตัวระยะยาวของธุรกิจโรงพยาบาล
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS adj. ฿1.53 × P/E เป้าหมาย ~15x — P/E sector เฉลี่ยโรงพยาบาลไทยขนาดกลาง 14–18x; ใช้ 15x สะท้อนการเติบโตปานกลางและ brand ระดับภูมิภาค</div></div>
+        <div class="mval">฿22.95</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. EV/EBITDA Valuation</div><div class="mdesc">EBITDA ~฿488M × เป้า 5.5x = EV ฿2,684M + Net Cash ฿1,207M = Equity ฿3,891M ÷ 160M หุ้น — ใช้ EV/EBITDA เหมาะกับธุรกิจโรงพยาบาลที่มีค่าเสื่อมราคาสูง; เป้า 5.5x อนุรักษ์นิยมกว่า median กลุ่ม ~6–7x</div></div>
+        <div class="mval">฿24.32</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. DCF (กระแสเงินสดอย่างง่าย)</div><div class="mdesc">FCF/หุ้น ประมาณ ฿1.20 (Net profit 244M × 80% FCF conversion ÷ 160M หุ้น) × (1+3%)/(9%−3%) = 1.236÷0.06 — g=3% (เติบโตระยะยาวสอดคล้อง GDP ไทย), r=9% (WACC โรงพยาบาลขนาดกลาง)</div></div>
+        <div class="mval">฿20.60</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿20.60 – ฿24.32</span></div>
+        <div class="r">฿22.50</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        วิธี EV/EBITDA ให้ค่าสูงสุดเนื่องจาก NTV มี Net Cash จำนวนมาก (~1,207M) หนุนมูลค่า Equity สูงขึ้น
+        ส่วน DCF ให้ค่าต่ำสุดเพราะ FCF conversion ระดับอนุรักษ์นิยม 80% และใช้ WACC 9% สำหรับโรงพยาบาลขนาดกลาง
+        FV ฿22.50 เป็นค่ากลางสมเหตุสมผล — ต่ำกว่า P/E เล็กน้อยเพื่อสะท้อนความเสี่ยงด้านรายได้ที่ยังฟื้นตัวช้า
+        <b>แหล่งข้อมูล:</b> SET.or.th Factsheet (P/E 12.51, P/BV 1.13, Market Cap 3,056M, EV 1,849M, EV/EBITDA 3.79) ·
+        Finnomena.com (ราคา 19.10, 1-yr return −24.4%) · Yahoo Finance NTV.BK (ราคาปิดรายเดือน ม.ค. 2568–ม.ค. 2569)
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿19.10</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿22.50</div></div>
+        </div>
+        <div class="scale">
+          <span>฿15.75<br><small>MOS 30%</small></span>
+          <span>฿18.00<br><small>MOS 20%</small></span>
+          <span style="text-align:center">฿22.50<br><small>Fair Value</small></span>
+          <span style="text-align:right">฿24.32<br><small>เป้า EV/EBITDA</small></span>
+          <span style="text-align:right">฿24.32<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคา ฿19.10 อยู่ในโซน <b>ต่ำกว่า Fair Value ~15%</b> และสูงกว่าจุด MOS 20% (฿18.00) เพียงเล็กน้อย
+        สะท้อนว่าหุ้นเริ่มเข้าสู่โซนน่าสนใจสำหรับนักลงทุนระยะกลาง-ยาว
+        การปรับตัวลงมาจาก 52-week high ที่ ฿27.25 กว่า 30% เปิดโอกาส "Buy on Dip" ที่ valuation
+        ปัจจุบัน P/E 12.51x ต่ำกว่า historical average ของกลุ่มโรงพยาบาลไทยที่ ~15–18x อย่างมีนัยสำคัญ
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict ok">
+        <div class="big">+15.1%</div>
+        <div class="txt">MOS ระดับกลาง — ราคาต่ำกว่า Fair Value แต่ยังไม่ถึงโซน Deep Value (MOS 20–30%)</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿18.00</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿15.75</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿22.50</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="19.10" step="0.05">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿19.10 • EPS ฐาน ~฿1.53 • รวมปันผล (ประมาณ)</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS −3%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿15.60</div>
+          <div class="ret neg">−18.3%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿1.40</span></li>
+            <li><span>P/E ออก</span><span>10x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿1.80</span></li>
+            <li><span>สถานการณ์</span><span>รายได้หดตัว ต้นทุนสูง ผลประกอบการหดตัว</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +5%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿24.81</div>
+          <div class="ret pos">+30.0%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿1.77</span></li>
+            <li><span>P/E ออก</span><span>13x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿1.80</span></li>
+            <li><span>สถานการณ์</span><span>OPD/IPD ฟื้นตัว ขยายบริการเฉพาะทาง</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +10%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿34.44</div>
+          <div class="ret pos">+80.3%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿2.04</span></li>
+            <li><span>P/E ออก</span><span>16x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿1.80</span></li>
+            <li><span>สถานการณ์</span><span>ขยายศูนย์เฉพาะทาง รายได้ต่อผู้ป่วยเพิ่ม re-rating</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      Bear scenario: EPS หดตัว −3%/ปีจากต้นทุนบุคลากรที่เพิ่มสูงโดยไม่ชดเชยด้วยรายได้ · P/E ออกที่ 10x สะท้อนความเชื่อมั่นต่ำ
+      Base scenario: EPS เติบโต +5%/ปี จากผู้ป่วยเพิ่ม + ค่ารักษาพยาบาลสูงขึ้น · P/E ออกที่ 13x ใกล้ปัจจุบัน
+      Bull scenario: NTV ขยายศูนย์เฉพาะทางและสร้าง brand loyalty ส่งผล EPS เติบโต +10%/ปีและ multiple re-rating สู่ 16x
+      ปันผลประมาณ ฿0.60/ปี (payout ~40% × EPS 1.53) — ยังไม่ยืนยันจากแหล่งข้อมูลอย่างเป็นทางการ
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก &amp; ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>ทำเลยุทธศาสตร์นนทบุรี:</b> ตั้งอยู่ในจังหวัดที่มีประชากรหนาแน่น (3.6 ล้านคน) และมีความต้องการบริการสุขภาพเพิ่มสูงจากสังคมผู้สูงอายุ</li>
+          <li><b>Valuation ถูกกว่ากลุ่ม:</b> P/E 12.51x ต่ำกว่า sector average ~15–18x อย่างชัดเจน เปิดโอกาส re-rating เมื่อผลประกอบการฟื้นตัว</li>
+          <li><b>สถานะ Net Cash แข็งแกร่ง:</b> มีเงินสดสุทธิ ~1,207 ล้านบาท ทำให้ EV ต่ำกว่า Market Cap อย่างมีนัยสำคัญ พื้นฐานการเงินมั่นคง ไม่มีภาระหนี้</li>
+          <li><b>ขยายศูนย์เฉพาะทาง:</b> การพัฒนาศูนย์หัวใจ สมอง และมะเร็ง ที่มีอัตรากำไรสูงกว่า OPD ทั่วไป จะหนุน EBITDA margin</li>
+          <li><b>ผู้สูงอายุและ Medical Tourism:</b> กระแส Aging Society ไทยและนักท่องเที่ยวเชิงสุขภาพจากอาเซียนเป็นแรงหนุนระยะยาว</li>
+          <li><b>โซนราคาใกล้ 52-Week Low:</b> ราคาปัจจุบัน ฿19.10 ใกล้ระดับต่ำสุด 52 สัปดาห์ ฿18.30 ซึ่งมักเป็นโซน support แข็งของนักลงทุน</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>ต้นทุนบุคลากรสูง:</b> ความขาดแคลนแพทย์-พยาบาลทำให้ค่าแรงพุ่ง กัดกิน EBITDA margin โดยเฉพาะโรงพยาบาลขนาดกลางที่แข่งขันกับโรงพยาบาลขนาดใหญ่</li>
+          <li><b>การแข่งขันสูงในพื้นที่:</b> โรงพยาบาลรัฐขนาดใหญ่หลายแห่งในนนทบุรีและโรงพยาบาลเอกชนที่ขยายสาขาเข้ามาในพื้นที่กดดันอัตราการใช้บริการ</li>
+          <li><b>ข้อมูลเปิดเผยน้อย:</b> NTV ไม่ค่อยเปิดเผย operational KPI (จำนวนเตียง %, อัตราการใช้บริการ, รายได้ต่อผู้ป่วย) ทำให้การวิเคราะห์มีความไม่แน่นอนสูงกว่าคู่แข่ง</li>
+          <li><b>สภาพคล่องหุ้นต่ำ:</b> ปริมาณการซื้อขายต่อวัน ~21,700 หุ้น มูลค่า ~410,000 บาท ต่ำมาก ยากสำหรับนักลงทุนสถาบัน ความเสี่ยงด้าน Liquidity สูง</li>
+          <li><b>Free Float จำกัด 34.85%:</b> ผู้ถือหุ้นรายใหญ่ถือครองส่วนใหญ่ กระทบการกระจายหุ้นและอาจมีความเสี่ยงด้าน Corporate Governance</li>
+          <li><b>ความเสี่ยงด้านนโยบายสุขภาพ:</b> การเปลี่ยนแปลงนโยบายประกันสังคม บัตรทองที่มีผลต่อการส่งต่อผู้ป่วยและอัตราเรียกเก็บ</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>NTV — โรงพยาบาลนนทบุรีที่ราคาถูกกว่า Sector แต่ Liquidity ต่ำ</h2>
+      <p>โรงพยาบาลนนทเวชเป็นผู้ให้บริการสุขภาพในทำเลยุทธศาสตร์จังหวัดนนทบุรีที่มีพื้นฐานการเงินแข็งแกร่ง
+        (Net Cash ~1,207M ไม่มีหนี้สุทธิ) และ P/E ที่ 12.51x ต่ำกว่า sector average อย่างชัดเจน
+        อย่างไรก็ตาม ความเสี่ยงสำคัญอยู่ที่สภาพคล่องหุ้นต่ำมากและข้อมูลเปิดเผยจำกัด
+        MOS ~15% ในระดับกลาง น่าสนใจสำหรับนักลงทุนระยะยาวที่รับความเสี่ยง Liquidity ได้
+        ควรติดตามผลประกอบการ Q2/2569 เพื่อยืนยันทิศทางฟื้นตัว</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿22.50 <span style="font-size:12px;color:#cab9a8">(฿20.60–฿24.32)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +15.1%</div></div>
+        <div class="vcell"><div class="k">เป้า EV/EBITDA (12 ด.)</div><div class="v" style="color:#a5d6a7">~฿24.32 (เป้า EV/EBITDA 5.5x)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ทยอยสะสมในโซน ฿18.00–19.50 (ใกล้/ต่ำกว่า MOS 20%) เป้าหมายระยะกลาง 12–18 เดือน ฿22.50
+        หากราคาดิ่งต่ำกว่า ฿18.00 คือโซน MOS 20% ที่น่าเพิ่มน้ำหนักการลงทุน
+        ตั้ง Stop-loss ที่ ฿16.00 (ต่ำกว่า MOS 30%) เพื่อควบคุม Downside
+        หลีกเลี่ยงการซื้อในปริมาณมากเนื่องจากสภาพคล่องต่ำมาก
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    แหล่งข้อมูล: SET.or.th (Factsheet ณ 3 ก.ค. 2569 · P/E 12.51x · P/BV 1.13x · Market Cap 3,056M · EV/EBITDA 3.79x) · Finnomena.com (ราคา 19.10 THB · 1-yr return −24.4%) · Yahoo Finance NTV.BK (ราคาปิดรายเดือน ม.ค. 2568 – ม.ค. 2569)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 3 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>

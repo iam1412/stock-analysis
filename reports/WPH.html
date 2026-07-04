@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น โรงพยาบาลวัฒนแพทย์ ตรัง (WPH) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"WPH","currency":"THB","price":5.95,"fairValue":8.50,"mos":30.0,"upside":42.9,"pe":11.64,"dividendYield":1.22,"roe":18.0}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#4a47a3",
+    "accentDark": "#312e8f",
+    "darkGrad": "linear-gradient(135deg,#1a1740 0%,#241e6b 60%,#312e8f 100%)",
+    "glow": "rgba(74,71,163,0.35)",
+    "subColor": "#a5a0f0",
+    "headerMuted": "rgba(165,160,240,0.7)",
+    "verdictText": "#e8e6ff",
+    "vcellLabel": "#a5a0f0",
+    "badge": "#4a47a3",
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#1e8e3e"
+  },
+  "chart": {
+    "data": [
+      ["ก.ค. 68", 5.88],
+      ["ส.ค. 68", 6.67],
+      ["ก.ย. 68", 6.37],
+      ["ต.ค. 68", 5.64],
+      ["พ.ย. 68", 5.93],
+      ["ธ.ค. 68", 5.64],
+      ["ม.ค. 69", 7.50],
+      ["ก.พ. 69", 5.85],
+      ["มี.ค. 69", 5.65],
+      ["เม.ย. 69", 5.95],
+      ["พ.ค. 69", 5.85],
+      ["มิ.ย. 69", 5.64],
+      ["ก.ค. 69", 5.95]
+    ],
+    "min": 5.20,
+    "max": 8.00,
+    "grid": [5.50, 6.00, 6.50, 7.00, 7.50],
+    "fairLine": 8.50,
+    "currency": "฿",
+    "highlight": [6],
+    "gridFmt": "v.toFixed(2)",
+    "dataFmt": "d[1].toFixed(2)"
+  },
+  "gauge": {
+    "min": 4.50,
+    "max": 11.00,
+    "cur": 5.95,
+    "fair": 8.50,
+    "fairLabelTop": false
+  },
+  "fv": 8.50
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">●●●●●●●●</div>
+    <div>
+      <span class="tag">SET: WPH</span>
+      <span class="tag">Healthcare Services</span>
+      <span class="tag">Private Hospital</span>
+    </div>
+    <h1>โรงพยาบาลวัฒนแพทย์ ตรัง (WPH)</h1>
+    <div class="sub">โรงพยาบาลเอกชน จ.ตรัง • กระบี่ • เกาะสมุย • ขยายสู่ภูเก็ต • 20+ แผนก ออร์โธปิดิกส์ หัวใจ ประสาทวิทยา • ก่อตั้ง 2500</div>
+    <div class="price-row">
+      <div>
+        <div class="px">฿5.95<small>(WPH)</small></div>
+      </div>
+      <div class="chg">▲ +1.2% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 4 ก.ค. 2569<br>
+        กรอบ 52 สัปดาห์ ฿5.20 – ฿8.82<br>
+        ที่มา: SET, Investing.com
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ณ 4 ก.ค. 2569 • ที่มา SET / Investing.com / StockAnalysis</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~฿4.17 พันล้าน</div><div class="d">714.1 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~11.64x</div><div class="d">ต่ำกว่าเซกเตอร์โรงพยาบาล ~20–25x</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~18–22x</div><div class="d">ปัจจุบัน Discount ~35%</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">~1.95x</div><div class="d">Book Value ~฿2.87/หุ้น</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2568</div><div class="v">~฿351.8 ล้าน</div><div class="d">+26% YoY (All Time High)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿0.51</div><div class="d">กำไรเติบโตต่อเนื่อง 3 ปี</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~฿2.87</div><div class="d">ส่วนทุน ฿2,046 ล้าน</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~18.0% / 10.3%</div><div class="d">ผลตอบแทนผู้ถือหุ้นสูงกว่าค่าเฉลี่ยอุตฯ</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">~฿2.42 พันล้าน</div><div class="d">+10.6% YoY</div></div>
+      <div class="metric"><div class="k">EBITDA Margin</div><div class="v">~26.2%</div><div class="d">EBITDA ~฿615 ล้าน</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~1.22%</div><div class="d">นโยบาย ≥40% ของกำไรสุทธิ</div></div>
+      <div class="metric"><div class="k">D/E Ratio</div><div class="v">~0.54x</div><div class="d">หนี้ระดับต่ำ รองรับการขยาย</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART (ราคาย้อนหลัง ~1 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#4a47a3"></i>ราคา WPH</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿8.50</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคา WPH ในรอบ 1 ปีที่ผ่านมามีความผันผวนในกรอบ ฿5.64–฿7.50 โดยพุ่งขึ้นสูงสุดที่ ฿7.50 ในเดือน ม.ค. 2569 หลังตลาดตอบรับแผนขยายโรงพยาบาลภูเก็ต จากนั้นปรับฐานลงมาซื้อขายแถว ฿5.64–฿5.95 ตั้งแต่กลางปี 2569 ราคาปัจจุบัน ฿5.95 ให้ผลตอบแทนรอบปี +1.2% แต่ยังต่ำกว่ามูลค่าเหมาะสม ฿8.50 ประมาณ 30% บ่งชี้โอกาสสะสมในโซน Deep Value สำหรับนักลงทุนระยะยาว
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION (เฉลี่ย 3 วิธี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS adj. ฿0.51 × P/E เป้าหมาย ~18x — โรงพยาบาลเอกชนเติบโต กำไร ATH, ส่วนลดจาก sector median 20–25x</div></div>
+        <div class="mval">฿9.20</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. EV/EBITDA</div><div class="mdesc">EBITDA ~฿615M × EV/EBITDA 12x (เทียบเพื่อน) − สุทธิหนี้ ~฿1,108M ÷ 714M หุ้น → มูลค่าต่อหุ้น</div></div>
+        <div class="mval">฿8.78</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 18% − g 10%)/(r 13% − g 10%) ≈ 2.67 × BVPS ฿2.87</div></div>
+        <div class="mval">฿7.66</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿7.66 – ฿9.20</span></div>
+        <div class="r">฿8.50</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        วิธี P/E ให้ค่าสูงสุดที่ ฿9.20 สะท้อนศักยภาพกำไรเติบโตจากการขยายสาขาภูเก็ต-กระบี่ · EV/EBITDA ที่ ฿8.78 สอดคล้องกับเพื่อนในอุตสาหกรรมโรงพยาบาลเอกชนไทย · Justified P/BV ที่ ฿7.66 เป็นค่าระมัดระวัง (Conservative floor) อิงฐาน ROE สูงกว่า Cost of Capital อย่างชัดเจน · ค่าเฉลี่ย ฿8.50 เป็นเป้าหมายที่สมเหตุสมผล — นักวิเคราะห์ บล.บียอนด์ ประเมินสูงกว่าที่ ฿11.00 (DCF, PER 19x FY2568) ซึ่งสะท้อน Upside สูงกว่าการประเมินแบบอนุรักษ์นิยมของรายงานนี้
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿5.95</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿8.50</div></div>
+        </div>
+        <div class="scale">
+          <span>฿5.95<br><small>MOS 30%</small></span>
+          <span>฿6.80<br><small>MOS 20%</small></span>
+          <span style="text-align:center">฿8.50<br><small>Fair Value</small></span>
+          <span style="text-align:right">฿9.20<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">฿11.00<br><small>เป้าเฉลี่ย Analyst</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน ฿5.95 อยู่ในโซน MOS 30% (Deep Value) ต่ำกว่ามูลค่าเหมาะสม ฿8.50 ถึง 30% สะท้อนว่าตลาดยังไม่ได้ Priced in ศักยภาพการเติบโตจากการขยายสาขาในปี 2569–2570 P/E ปัจจุบัน 11.64x ต่ำกว่าค่าเฉลี่ยอุตสาหกรรมโรงพยาบาลเอกชนไทยที่ ~20–25x อย่างมีนัยสำคัญ สะท้อนโอกาส Re-rating ที่น่าสนใจเมื่อสาขาใหม่เริ่มสร้างกำไร
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict good">
+        <div class="big">+30.0%</div>
+        <div class="txt">โซน Deep Value — ราคาต่ำกว่ามูลค่าเหมาะสมมากกว่า 30% เป็น Margin of Safety ที่น่าสนใจสำหรับนักลงทุน VI ระยะยาว</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿6.80</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿5.95</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿8.50</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="5.95" step="0.05">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿5.95 • EPS ฐาน ~฿0.51 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS 5%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿6.97</div>
+          <div class="ret neg">+20.5%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.59</span></li>
+            <li><span>P/E ออก</span><span>13x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.21</span></li>
+            <li><span>สถานการณ์</span><span>ขยายช้า ต้นทุนสูง</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +15%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿10.91</div>
+          <div class="ret pos">+87.6%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.78</span></li>
+            <li><span>P/E ออก</span><span>16x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.29</span></li>
+            <li><span>สถานการณ์</span><span>ภูเก็ต+กระบี่ขยายตาม plan</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +25%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿15.88</div>
+          <div class="ret pos">+168.7%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.99</span></li>
+            <li><span>P/E ออก</span><span>20x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.38</span></li>
+            <li><span>สถานการณ์</span><span>ภูเก็ตเปิดสำเร็จ นทท.ต่างชาติฟื้น</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      การคาดการณ์อิงสมมติฐาน EPS ฐาน ฿0.51 (TTM FY2568) · Base case: โรงพยาบาลภูเก็ต 100 เตียง เปิดเต็มรูปแบบ Q4/2569 + กระบี่ขยายกำลังการผลิต + ส่วนแบ่งตลาดท่องเที่ยวเชิงสุขภาพเพิ่มขึ้น · Bear case: ต้นทุนก่อสร้างบานปลาย, การแข่งขันรุนแรง, ramp-up period ยาวนาน · Bull case: นักท่องเที่ยวต่างชาติฟื้นตัวเต็มกำลัง + รับส่วนแบ่งตลาดเกาะสมุย-ภูเก็ตสูงกว่าคาด · ผลตอบแทนรวมปันผล (yield ~1.2%/ปี) คิดเป็น ~฿0.07/หุ้น/ปี
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>ขยายสาขาภูเก็ต:</b> โรงพยาบาลคูนวัฒนแพทย์ภูเก็ต 100 เตียง (เงินลงทุน ฿1,200M) เปิด Q4/2569 รองรับนักท่องเที่ยวต่างชาติและกำลังซื้อสูงใน Medical Tourism</li>
+          <li><b>กระบี่ตลาดใหม่:</b> โรงพยาบาลคูนอ่าวนาง เปิด Q1/2569 ขยาย Footprint ในแหล่งท่องเที่ยวหลักภาคใต้ เพิ่มเตียงรวมจาก 263 → 431 ภายในปี 2569</li>
+          <li><b>กำไรทำ ATH ต่อเนื่อง:</b> รายได้ FY2568 ฿2.34B กำไร ฿351.8M (+26% YoY) แสดง Operating leverage แข็งแกร่ง EBITDA Margin 26%</li>
+          <li><b>Valuation Discount น่าสนใจ:</b> P/E 11.64x ต่ำกว่าเพื่อนในกลุ่ม (BH/BDMS/BCH) อย่างมีนัย ราคาปัจจุบันอยู่ในโซน MOS 30% มี Upside ~43% สู่ Fair Value</li>
+          <li><b>Medical Tourism ภาคใต้:</b> สัดส่วนผู้ป่วยต่างชาติ ~37% ได้ประโยชน์จากการเปิดประเทศและเส้นทางบินระหว่างประเทศที่กลับมาเต็มรูปแบบ</li>
+          <li><b>ESG Rating A + ไม่เพิ่มทุน:</b> การกำกับดูแลกิจการดี ไม่มีแผนเพิ่มทุน (No Dilution) มีนโยบายปันผล ≥40% ของกำไรสุทธิ</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>ต้นทุนการขยายสาขาสูง:</b> เงินลงทุนภูเก็ต ฿1,200M กดดัน FCF ในระยะสั้น และอาจเพิ่มภาระดอกเบี้ย D/E อาจสูงขึ้นชั่วคราว</li>
+          <li><b>ความเสี่ยงด้านการแข่งขัน:</b> ภาคใต้มีผู้เล่นหลักขยายตัวและโรงพยาบาลรัฐที่อาจแย่งส่วนแบ่งตลาดผู้ป่วยไทย</li>
+          <li><b>ความผันผวนของนักท่องเที่ยว:</b> รายได้ ~37% มาจากผู้ป่วยต่างชาติ ไวต่อเหตุการณ์ทางการเมืองระหว่างประเทศ ภัยพิบัติ หรือโรคระบาด</li>
+          <li><b>ขาดแคลนบุคลากรทางการแพทย์:</b> แพทย์เฉพาะทางและพยาบาลหายาก อาจจำกัดความสามารถในการขยายให้ครบเต็มกำลัง</li>
+          <li><b>Market Cap เล็ก Liquidity ต่ำ:</b> Market Cap ~฿4.2B ปริมาณซื้อขายต่อวันต่ำ (< ฿4M) อาจมี Slippage สูงสำหรับนักลงทุนสถาบัน</li>
+          <li><b>Ramp-up Timeline ความเสี่ยง:</b> โรงพยาบาลใหม่มักใช้เวลา 2–3 ปีกว่าจะ Breakeven ความล่าช้าจะกดดัน EPS และ P/E ในช่วงแรก</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>โอกาสสะสม Deep Value — โรงพยาบาลเติบโตภาคใต้ ราคาถูกกว่า Peers มาก</h2>
+      <p>WPH คือโรงพยาบาลเอกชนระดับภูมิภาคที่มีกำไรทำ All Time High ต่อเนื่อง แต่ P/E เพียง 11.64x ต่ำกว่า Sector ถึง 35–40% บริษัทอยู่ระหว่างขยายเชิงรุกสู่ภูเก็ตและกระบี่ ซึ่งเป็นแหล่งท่องเที่ยวระดับโลกที่มี Medical Tourism สูง หากการขยายสาขาดำเนินตามแผน EPS มีศักยภาพเติบโต 15–25%/ปี ราคาปัจจุบัน ฿5.95 อยู่ในโซน MOS 30% เป็นโอกาสสะสมที่น่าสนใจสำหรับนักลงทุน VI ระยะยาวที่พร้อมรับความผันผวนระยะสั้นจาก Ramp-up Period</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿8.50 <span style="font-size:12px;color:#cab9a8">(฿7.66–฿9.20)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +30.0%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿11.00 (Strong Buy)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ทยอยสะสมในโซน ฿5.50–฿6.50 (MOS 20–30%) · ตั้งเป้าหมายระยะกลาง 2–3 ปีที่ ฿8.50–฿9.50 · ติดตามผลดำเนินงาน Q2/2569 (ส.ค. 69) และความคืบหน้าสาขาภูเก็ต · ระวังหากราคาหลุด ฿5.00 อย่างมีนัยสำคัญเนื่องจากปัจจัยพื้นฐานเปลี่ยนแปลง
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ที่มา: SET (set.or.th), Investing.com, StockAnalysis.com, efin.finance — ราคา ณ 4 ก.ค. 2569
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 4 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
