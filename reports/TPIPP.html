@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น ทีพีไอ โพลีน เพาเวอร์ (TPIPP) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"TPIPP","currency":"THB","price":1.77,"fairValue":2.10,"mos":15.7,"upside":18.6,"pe":9.82,"dividendYield":5.65,"roe":6.22}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#2d9e6b",
+    "accentDark": "#1a6b47",
+    "darkGrad": "linear-gradient(135deg,#0d3320 0%,#1a4d30 50%,#0d2a1e 100%)",
+    "glow": "rgba(45,158,107,0.35)",
+    "subColor": "#7ecfaa",
+    "headerMuted": "rgba(126,207,170,0.7)",
+    "verdictText": "#e8f5ef",
+    "vcellLabel": "#7ecfaa",
+    "badge": "#2d9e6b",
+    "chgBg": "#c5221f",
+    "chgColor": "#ffffff"
+  },
+  "chart": {
+    "data": [
+      ["ก.ค. 68", 2.22],
+      ["ส.ค. 68", 2.24],
+      ["ก.ย. 68", 2.06],
+      ["ต.ค. 68", 1.73],
+      ["พ.ย. 68", 1.81],
+      ["ธ.ค. 68", 1.83],
+      ["ม.ค. 69", 1.96],
+      ["ก.พ. 69", 1.83],
+      ["มี.ค. 69", 1.92],
+      ["เม.ย. 69", 1.78],
+      ["พ.ค. 69", 1.76],
+      ["มิ.ย. 69", 1.77],
+      ["ก.ค. 69", 1.77]
+    ],
+    "min": 1.20,
+    "max": 3.00,
+    "grid": [1.40, 1.60, 1.80, 2.00, 2.20, 2.40, 2.60],
+    "fairLine": 2.10,
+    "currency": "฿",
+    "highlight": [1, 3, 6],
+    "gridFmt": "v.toFixed(2)",
+    "dataFmt": "d[1].toFixed(2)"
+  },
+  "gauge": {
+    "min": 1.20,
+    "max": 3.00,
+    "cur": 1.77,
+    "fair": 2.10,
+    "fairLabelTop": true
+  },
+  "fv": 2.10
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">⚡🌿♻️</div>
+    <div>
+      <span class="tag">SET: TPIPP</span>
+      <span class="tag">พลังงาน / สาธารณูปโภค</span>
+      <span class="tag">Waste-to-Energy</span>
+    </div>
+    <h1>ทีพีไอ โพลีน เพาเวอร์ (TPIPP)</h1>
+    <div class="sub">ผลิตไฟฟ้าจากเชื้อเพลิงขยะอุตสาหกรรม • พลังงานทดแทน 507.2 MW • กู้คืนความร้อนเสีย • โซลาร์เซลล์ • สถานีเชื้อเพลิง</div>
+    <div class="price-row">
+      <div>
+        <div class="px">฿1.77<small>(TPIPP)</small></div>
+      </div>
+      <div class="chg">▼ −20.3% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 3 ก.ค. 2569<br>
+        กรอบ 52 สัปดาห์ ฿1.66 – ฿2.44<br>
+        ที่มา: SET (factsheet), Finnomena, Yahoo Finance
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ก.ค. 2569 / งบ FY2567 (2024)</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~฿1.49 หมื่นล้าน</div><div class="d">8,400 ล้านหุ้น • par ฿1.00</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~9.82x</div><div class="d">EPS TTM ~฿0.18 (SET factsheet)</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย เซกเตอร์</div><div class="v">~12–15x</div><div class="d">พลังงานทดแทน SET</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">0.41x</div><div class="d">BVPS ~฿4.33 (ต่ำกว่าบุ๊คมาก)</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2567</div><div class="v">~฿2,266 ล้าน</div><div class="d">ลดลงจาก ฿3,302 ล้าน FY2566 (−31%)</div></div>
+      <div class="metric"><div class="k">EPS (FY2567)</div><div class="v">~฿0.27</div><div class="d">EPS TTM ~฿0.18 (กำไรอ่อนตัว)</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~฿4.33</div><div class="d">ส่วนของผู้ถือหุ้น ฿36,415 ล้าน</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~6.2% / 3.3%</div><div class="d">FY2567 (กำไรลดกดดัน ROE)</div></div>
+
+      <div class="metric"><div class="k">EBITDA TTM</div><div class="v neu">~฿3,359 ล้าน</div><div class="d">EV/EBITDA 12.36x (SET factsheet)</div></div>
+      <div class="metric"><div class="k">กำลังผลิตติดตั้ง</div><div class="v">507.2 MW</div><div class="d">W2E 400MW • Solar 57.3MW • ความร้อน 40MW</div></div>
+      <div class="metric"><div class="k">เงินปันผล (ประมาณ)</div><div class="v">~5.65%</div><div class="d">DPS ~฿0.10 ต่อปี (ประมาณการ)</div></div>
+      <div class="metric"><div class="k">Net D/E</div><div class="v neg">0.66x</div><div class="d">หนี้สุทธิ ~฿26,648 ล้าน (high leverage)</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ก.ค. 2568 – ก.ค. 2569</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#2d9e6b"></i>ราคา TPIPP</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿2.10</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ช่วง 1 ปีที่ผ่านมา TPIPP ปรับตัวลงจาก ฿2.22 (ก.ค. 2568) มาอยู่ที่ ฿1.77 (ก.ค. 2569)
+        คิดเป็น <b>−20.3%</b> จากกำไรสุทธิที่ลดลง −31% จาก FY2566 สู่ FY2567 เป็นแรงกดดันหลัก
+        ราคาแตะจุดต่ำสุดรอบปีที่ ฿1.66 ในช่วง ต.ค. 2568 ก่อนฟื้นขึ้นสู่ ฿1.96 ช่วง ม.ค. 2569
+        แต่ยังคงอยู่ต่ำกว่ามูลค่าเหมาะสมที่ประเมินไว้ที่ ฿2.10 และต่ำกว่าระดับต้นปีมาก
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS adj. ฿0.22 × P/E เป้าหมาย ~11x — ใช้ EPS normalized (เฉลี่ย TTM ฿0.18 และ FY2567 ฿0.27) × P/E ต่ำกว่าค่าเฉลี่ยเซกเตอร์ไทยสะท้อนความเสี่ยงการเงินสูง</div></div>
+        <div class="mval">฿2.42</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล ฿0.10 × (1+3%); g 3%, r 9% — อิง payout ~40% ของกำไร FY2567; r สูงเพราะ leverage สูง สะท้อนความเสี่ยงการเงินของบริษัท</div></div>
+        <div class="mval">฿1.72</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 6.22% − g 3%)/(r 9% − g 3%) ≈ 0.537 × BVPS ฿4.33 — สะท้อน ROE ที่ยังต่ำกว่า cost of equity ทำให้ควรซื้อต่ำกว่าบุ๊ค</div></div>
+        <div class="mval">฿2.32</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿1.75 – ฿2.45</span></div>
+        <div class="r">฿2.10</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        วิธี P/E (฿2.42) ให้ค่าสูงสุดเพราะสะท้อน earning power ระยะยาวหากกำไรฟื้นตัว
+        DDM (฿1.72) อนุรักษ์นิยมสุดเพราะ TPIPP มีหนี้สูงและปันผลจำกัด
+        Justified P/BV (฿2.32) สะท้อนว่าตลาดควรให้ราคาเหนือบุ๊คเล็กน้อยเมื่อ ROE ฟื้นกลับมาเหนือ cost of equity
+        ค่าเฉลี่ย ฿2.15 ปัดลงอนุรักษ์นิยมที่ <b>฿2.10</b> สะท้อนความไม่แน่นอนของ earnings trajectory
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿1.77</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿2.10</div></div>
+        </div>
+        <div class="scale">
+          <span>฿1.47<br><small>MOS 30%</small></span>
+          <span>฿1.68<br><small>MOS 20%</small></span>
+          <span style="text-align:center">฿2.10<br><small>Fair Value</small></span>
+          <span style="text-align:right">฿2.30<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">฿2.45<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน ฿1.77 อยู่ต่ำกว่า Fair Value ฿2.10 ประมาณ 15.7% (MOS ปานกลาง)
+        และต่ำกว่าเป้านักวิเคราะห์ ~฿2.30 ราว 30% หุ้นอยู่เหนือโซน MOS 20% (฿1.68) เล็กน้อย
+        หมายความว่ายังไม่ถึงโซน "deep value" แต่มีส่วนลดพอสมควรจากมูลค่าเหมาะสม
+        ผู้ลงทุน value อาจรอโซน ฿1.60–1.68 เพื่อ MOS ≥ 20%
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict ok">
+        <div class="big">+15.7%</div>
+        <div class="txt">MOS ปานกลาง — ราคาต่ำกว่า FV พอสมควร แต่ยังไม่ถึงโซน "deep value"</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿1.68</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿1.47</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿2.10</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="1.77" step="0.05">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿1.77 • EPS ฐาน ~฿0.22 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS −5%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿1.70</div>
+          <div class="ret neg">+10% (3 ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.189</span></li>
+            <li><span>P/E ออก</span><span>9x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.25</span></li>
+            <li><span>สถานการณ์</span><span>กำไรหดต่อ ต้นทุนสูง PPA ต่ออายุยาก</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +5%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿2.80</div>
+          <div class="ret pos">+75% (3 ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.255</span></li>
+            <li><span>P/E ออก</span><span>11x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.30</span></li>
+            <li><span>สถานการณ์</span><span>กำไรฟื้น ต้นทุนลด coal-free</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +12%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿4.02</div>
+          <div class="ret pos">+147% (3 ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.309</span></li>
+            <li><span>P/E ออก</span><span>13x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.35</span></li>
+            <li><span>สถานการณ์</span><span>ขยายกำลังผลิต ESG premium ดึงทุน</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      กรณีฐาน (Base) สมมติกำไรฟื้นตัวจากแผน Coal-Free ปลาย 2569 ลดต้นทุนเชื้อเพลิงฟอสซิล
+      และ capacity utilization ที่สูงขึ้นจาก PPA ระยะยาวกับ EGAT ผลตอบแทน 75% ใน 3 ปีจาก capital gain + ปันผล
+      กรณี Bull เกิดเมื่อ TPIPP ขยายกำลังผลิตได้สำเร็จและ ESG premium ดึงดูดนักลงทุนสถาบัน
+      กรณี Bear เกิดเมื่อต้นทุนเชื้อเพลิงสูงขึ้น หรือ PPA ต่ออายุในอัตราต่ำกว่าปัจจุบัน
+      <b>หมายเหตุ:</b> ตัวเลขเป็นการประมาณการ ไม่ใช่การรับประกันผลตอบแทน
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก &amp; ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>Coal-Free เร็วกว่าคาด:</b> แผนหยุดใช้ถ่านหินต้นปี 2570 ลดต้นทุนเชื้อเพลิงสูงที่เป็นแรงกดดันปัจจุบัน คาดหนุน EBITDA margin ระยะยาว</li>
+          <li><b>PPA ระยะยาวกับ EGAT:</b> สัญญาซื้อขายไฟฟ้าระยะ 15–25 ปีให้รายได้มั่นคงคาดเดาได้ ลดความเสี่ยงด้านรายได้</li>
+          <li><b>Feedstock ปลอดภัยจาก parent:</b> เชื้อเพลิงขยะจากกลุ่ม TPI Polene (ซีเมนต์/ปิโตรเคมี) อยู่ภายในกลุ่ม ลดความเสี่ยงด้านวัตถุดิบ</li>
+          <li><b>P/BV 0.41x — ส่วนลดสูงจากบุ๊ค:</b> ราคาต่ำกว่าสินทรัพย์สุทธิมาก หากกำไรฟื้น market อาจ re-rate ได้สูง</li>
+          <li><b>ESG/Decarbonization demand:</b> บริษัทตั้งเป้า carbon neutral 2580 เพิ่ม credibility กับนักลงทุน ESG และกองทุนที่ต้องการ green assets</li>
+          <li><b>โซลาร์ขยาย + ชุมชน:</b> Solar 57.3MW และ community waste energy 9.9MW มีศักยภาพขยายตัวตามนโยบายพลังงานสะอาดของไทย</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>หนี้สูง (Net D/E 0.66x):</b> หนี้สุทธิ ~฿26,648 ล้าน สูงมากเทียบกับ market cap ฿14,868 ล้าน ดอกเบี้ยสูงกดกำไรและ cash flow อย่างมีนัยสำคัญ</li>
+          <li><b>กำไรลดลงต่อเนื่อง:</b> Net profit หดจาก ฿3,302M (FY2566) เป็น ฿2,266M (FY2567) หดตัว 31% — ต้นทุนเชื้อเพลิงฟอสซิลและค่าบำรุงรักษาสูง</li>
+          <li><b>ราคาเชื้อเพลิงผันผวน:</b> ก่อน coal-free สมบูรณ์ ยังพึ่งพาถ่านหินบางส่วน ราคาถ่านหินโลกที่ผันผวนกระทบ margin โดยตรง</li>
+          <li><b>ความเสี่ยง PPA ต่ออายุ:</b> เมื่อสัญญา PPA หมดอายุ อาจต่ออายุในอัตราค่าไฟต่ำกว่า โดยเฉพาะในยุคที่ต้นทุนพลังงานหมุนเวียนลดลงทั่วโลก</li>
+          <li><b>การกระจุกตัวลูกค้า:</b> off-taker หลักคือ EGAT และบริษัทในกลุ่ม TPI ความเสี่ยงด้าน concentration สูง</li>
+          <li><b>Capex สูงในระยะเปลี่ยนผ่าน:</b> การลงทุนเพื่อ coal-free และขยายกำลังผลิตต้องใช้เงินทุนจำนวนมาก อาจกดดัน free cash flow และ dividend capacity</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>TPIPP — Waste-to-Energy ราคาถูก แต่ leverage สูง รอกำไรฟื้น</h2>
+      <p>TPIPP เป็นผู้ผลิตไฟฟ้าจากขยะอุตสาหกรรมรายใหญ่ของไทย กำลังผลิต 507.2 MW พร้อม PPA ระยะยาวที่ให้รายได้คาดเดาได้
+        ราคาปัจจุบัน ฿1.77 ซื้อขายที่ P/BV เพียง 0.41x — ต่ำกว่าบุ๊คมาก สะท้อนความกังวลของตลาดเกี่ยวกับกำไรที่ลดลง −31% ใน FY2567
+        และภาระหนี้สูง (Net D/E 0.66x) จากการลงทุนขยายกำลังผลิตในอดีต
+        อย่างไรก็ตาม แผน Coal-Free ปลายปี 2569–2570 และ feedstock ที่มั่นคงจากกลุ่ม TPI เป็น tailwind สำคัญระยะกลาง
+        เหมาะสำหรับนักลงทุนที่รับ leverage สูงและรอการฟื้นตัวของกำไรได้ในระยะ 2–3 ปี</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿2.10 <span style="font-size:12px;color:#cab9a8">(฿1.75–฿2.45)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +15.7%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿2.30 (ประมาณการ)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ทยอยสะสมเมื่อราคาอยู่ในโซน ฿1.68–1.77 (MOS 15–20%) หากรับความเสี่ยง leverage สูงได้
+        จุดซื้อที่ดีกว่าคือ ฿1.47–1.68 (MOS 20–30%) ที่ให้ downside protection มากขึ้น
+        ควรติดตามทิศทางกำไร Q1–Q2 FY2569 และความคืบหน้าแผน Coal-Free เพื่อยืนยัน thesis ก่อนเพิ่มสัดส่วน
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    แหล่งข้อมูล: SET factsheet (3 ก.ค. 2569), Finnomena (ราคา/ผลตอบแทน 1 ปี), Yahoo Finance (ราคารายเดือน 1 ปี TPIPP.BK), เว็บไซต์ TPIPP (งบการเงิน FY2024/Q4 2024, กำลังผลิต, กลยุทธ์)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 3 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>

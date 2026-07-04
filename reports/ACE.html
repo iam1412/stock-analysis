@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น แอ็บโซลูท คลีน เอ็นเนอร์จี้ (ACE) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"ACE","currency":"THB","price":1.28,"fairValue":1.43,"mos":10.5,"upside":11.7,"pe":14.1,"dividendYield":0.78,"roe":4.7}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#2d7d46",
+    "accentDark": "#1a5c30",
+    "darkGrad": "linear-gradient(135deg,#1a3d22 0%,#0f2516 100%)",
+    "glow": "rgba(45,125,70,0.35)",
+    "subColor": "#a8d5b5",
+    "headerMuted": "rgba(168,213,181,0.7)",
+    "verdictText": "#e8f5e9",
+    "vcellLabel": "#a8d5b5",
+    "badge": "#2d7d46",
+    "chgBg": "#c5221f",
+    "chgColor": "#ffffff"
+  },
+  "chart": {
+    "data": [
+      ["ก.ค. 68", 1.29],
+      ["ส.ค. 68", 1.30],
+      ["ก.ย. 68", 1.31],
+      ["ต.ค. 68", 1.31],
+      ["พ.ย. 68", 1.31],
+      ["ธ.ค. 68", 1.31],
+      ["ม.ค. 69", 1.29],
+      ["ก.พ. 69", 1.29],
+      ["มี.ค. 69", 1.28],
+      ["เม.ย. 69", 1.28],
+      ["พ.ค. 69", 1.30],
+      ["มิ.ย. 69", 1.29],
+      ["ก.ค. 69", 1.28]
+    ],
+    "min": 1.10,
+    "max": 1.55,
+    "grid": [1.10, 1.20, 1.30, 1.40, 1.50],
+    "fairLine": 1.43,
+    "currency": "฿",
+    "highlight": [2, 11],
+    "gridFmt": "v.toFixed(2)",
+    "dataFmt": "d[1].toFixed(2)"
+  },
+  "gauge": {
+    "min": 0.90,
+    "max": 1.80,
+    "cur": 1.28,
+    "fair": 1.43,
+    "fairLabelTop": true
+  },
+  "fv": 1.43
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">◉ ◎ ◉ ◎ ◉</div>
+    <div>
+      <span class="tag">SET: ACE</span>
+      <span class="tag">พลังงานสะอาด</span>
+      <span class="tag">ชีวมวล · โซลาร์ · ลม</span>
+    </div>
+    <h1>แอ็บโซลูท คลีน เอ็นเนอร์จี้ (ACE)</h1>
+    <div class="sub">โรงไฟฟ้าชีวมวล • พลังงานแสงอาทิตย์ • พลังงานลม • สัญญา PPA กับ EGAT/PEA • Absolute Clean Energy PCL</div>
+    <div class="price-row">
+      <div>
+        <div class="px">฿1.28<small>(ACE)</small></div>
+      </div>
+      <div class="chg">▼ −0.8% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 3 ก.ค. 2569<br>
+        กรอบ 52 สัปดาห์ ฿1.26 – ฿1.34<br>
+        ที่มา: SET Factsheet, Yahoo Finance, TradingView
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ก.ค. 2569 • ที่มา: SET, TradingView, Yahoo Finance</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">฿12,860 ล้าน</div><div class="d">~10,050 ล้านหุ้น · พาร์ ฿0.50</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~14.1x</div><div class="d">SET 14.07x · TV 14.27x (ยืนยันข้ามแหล่ง)</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~15–18x</div><div class="d">ค่าเฉลี่ยกลุ่มโรงไฟฟ้า RE ไทย</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">0.75x</div><div class="d">ต่ำกว่า Book Value · SET Factsheet</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2568</div><div class="v">฿799 ล้าน</div><div class="d">Q1/69 = ฿314M (แข็งแกร่ง)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿0.09</div><div class="d">TradingView · P/E check: 1.28÷0.09≈14.2x ✓</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~฿1.71</div><div class="d">คำนวณจาก Price ÷ P/BV = 1.28÷0.75</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~4.7% / ~3.1%</div><div class="d">สินทรัพย์ ฿25.8B · Equity ฿16.9B (Q1/69)</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">฿6.55B</div><div class="d">รายไตรมาส ~฿1.59B · TradingView</div></div>
+      <div class="metric"><div class="k">EBITDA / Margin</div><div class="v">฿2.30B / 35%</div><div class="d">EV/EBITDA 8.88x · EV ฿20,256M · SET</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~0.78%</div><div class="d">฿0.01/หุ้น · Payout ~12% · TradingView</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">~0.00</div><div class="d">ความผันผวนต่ำมาก · Defensive Stock</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#2d7d46"></i>ราคา ACE</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿1.43</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคา ACE เคลื่อนไหวในกรอบแคบ ฿1.26–฿1.34 ตลอดรอบปี ก.ค. 2568 – ก.ค. 2569 ทรงตัวในโซน ฿1.28–1.31 ส่วนใหญ่ สะท้อนรายได้มั่นคงจาก PPA แต่ขาดตัวเร่งราคาขึ้น ช่วง ก.ย.–พ.ย. 68 ราคาขึ้นไปแตะจุดสูง ฿1.31 ก่อนย่อตัวกลับสู่ระดับปัจจุบัน ฿1.28 ผลตอบแทนรอบปี −0.8% สะท้อนลักษณะ Defensive ความผันผวนต่ำ Beta ≈ 0
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS adj. ฿0.09 × P/E เป้าหมาย ~16x — อิง P/E เฉลี่ยกลุ่มโรงไฟฟ้า RE ไทย ปัจจุบัน 14.1x ยังต่ำกว่า Peer เล็กน้อย มีโอกาส Re-rating</div></div>
+        <div class="mval">฿1.44</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. EV/EBITDA Valuation</div><div class="mdesc">EBITDA ฿2,300M × เป้า EV/EBITDA 9x = EV ฿20,700M; หัก Net Debt ฿7,396M ÷ 10,050M หุ้น — อิง Peer utility ชีวมวลเอเชีย ปัจจุบัน 8.88x</div></div>
+        <div class="mval">฿1.32</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. P/BV Peer Comparison</div><div class="mdesc">P/BV เฉลี่ย Peer กลุ่ม RE ไทย ~0.9x × BVPS ฿1.71 = ฿1.54 — โรงไฟฟ้า PPA ระยะยาวควรซื้อขายเหนือ Book Value; ปัจจุบัน 0.75x ยังมี Discount</div></div>
+        <div class="mval">฿1.54</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿1.32 – ฿1.54</span></div>
+        <div class="r">฿1.43</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        วิธี EV/EBITDA ให้ค่าต่ำสุด (฿1.32) เนื่องจาก Net Debt สูง ฿7,396M กดมูลค่าต่อหุ้น ส่วนวิธี P/BV Peer ให้ค่าสูงสุด (฿1.54) สะท้อน Premium ที่ควรมีจาก PPA ระยะยาว Fair Value เฉลี่ย ฿1.43 (เฉลี่ย 3 วิธีเท่ากัน) อิงสมมติฐาน EPS เติบโตปานกลาง และ Peer Sector จากกลุ่มโรงไฟฟ้า RE ที่ซื้อขายใน SET
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿1.28</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿1.43</div></div>
+        </div>
+        <div class="scale">
+          <span>฿1.00<br><small>MOS 30%</small></span>
+          <span>฿1.14<br><small>MOS 20%</small></span>
+          <span style="text-align:center">฿1.43<br><small>Fair Value</small></span>
+          <span style="text-align:right">฿1.50<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">฿1.54<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคา ฿1.28 ต่ำกว่า Fair Value ฿1.43 อยู่ ~10.5% (MOS ปานกลาง) ยังสูงกว่าจุดซื้อ MOS 20% ที่ ฿1.14 เป้านักวิเคราะห์เฉลี่ย ฿1.50 สูงกว่าราคาปัจจุบัน ~17% สะท้อน Upside ที่มีอยู่หากกำไรเติบโตตามคาดและมีการ Re-rating P/BV กลับสู่ 0.9x
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict ok">
+        <div class="big">+10.5%</div>
+        <div class="txt">MOS ปานกลาง — ราคายังต่ำกว่า Fair Value แต่ยังไม่ถึงโซน Deep Value (MOS 20%+)</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿1.14</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿1.00</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿1.43</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="1.28" step="0.05">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿1.28 • EPS ฐาน ~฿0.09 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS −5%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿0.95</div>
+          <div class="ret neg">−25.8%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.077</span></li>
+            <li><span>P/E ออก</span><span>12x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.03</span></li>
+            <li><span>สถานการณ์</span><span>ค่าไฟฟ้าตก, PPA ไม่ต่อ</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +8%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿1.70</div>
+          <div class="ret pos">+32.8%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.113</span></li>
+            <li><span>P/E ออก</span><span>15x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.04</span></li>
+            <li><span>สถานการณ์</span><span>ขยายกำลังผลิต RE ตามแผน</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +15%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿2.24</div>
+          <div class="ret pos">+75.0%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.137</span></li>
+            <li><span>P/E ออก</span><span>16x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.05</span></li>
+            <li><span>สถานการณ์</span><span>ชนะ PPA ใหม่, RE แพงขึ้น</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      Bear: EPS ฿0.09 × (1−0.05)³ = ฿0.077 × P/E 12x = ฿0.924 + ฿0.03 ปันผล ≈ ฿0.95 · Base: EPS ฿0.09 × (1.08)³ = ฿0.113 × P/E 15x = ฿1.695 + ฿0.04 ≈ ฿1.70 · Bull: EPS ฿0.09 × (1.15)³ = ฿0.137 × P/E 16x = ฿2.192 + ฿0.05 ≈ ฿2.24 หมายเหตุ: ตัวเลขคาดการณ์อิงสมมติฐาน ไม่ใช่การรับประกัน
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>แผน PDP 2024 หนุน RE:</b> แผนพัฒนาพลังงานแห่งชาติเน้นเพิ่มสัดส่วน RE ให้ถึง 51% ในปี 2580 ACE เป็นผู้ประกอบการชีวมวล-โซลาร์ที่มีประสบการณ์พร้อมรับ PPA ใหม่</li>
+          <li><b>PPA ระยะยาวสร้างรายได้มั่นคง:</b> สัญญาซื้อขายไฟฟ้า VSPP/SPP กับ EGAT/PEA ระยะ 20–25 ปี ให้กระแสเงินสดคาดการณ์ได้สูง ลด Earnings Volatility</li>
+          <li><b>Q1/2569 กำไรแข็งแกร่ง:</b> กำไรสุทธิ ฿314M ใน Q1 สูงกว่าค่าเฉลี่ยรายไตรมาส สะท้อน Utilization Rate ที่ดีขึ้นและการควบคุมต้นทุนเชื้อเพลิงชีวมวล</li>
+          <li><b>ขยายพอร์ต Solar และ Wind:</b> ลดความพึ่งพิงชีวมวลเพียงอย่างเดียว กระจายความเสี่ยงเชื้อเพลิง หนุนรายได้ในฤดูกาลที่ชีวมวลอ่อนแอ EBITDA Margin 35% บ่งบอกประสิทธิภาพสูง</li>
+          <li><b>P/BV 0.75x = ราคาต่ำกว่า Book:</b> สินทรัพย์โรงไฟฟ้าถูกตีราคาต่ำกว่า Book Value มี Margin of Safety ด้านสินทรัพย์ หาก Peer กลับมา Re-rate สู่ 0.9x ราคาจะขึ้น 20%</li>
+          <li><b>Beta ≈ 0 หุ้น Defensive:</b> ความผันผวนต่ำมาก เหมาะเป็น Diversifier ในพอร์ตช่วงตลาดผันผวน กระแสเงินสดจาก PPA สม่ำเสมอทุกปี</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>ความเสี่ยงเชื้อเพลิงชีวมวล:</b> ราคาแกลบ/เศษไม้/ชีวมวลผันผวนตามฤดูกาลและผลผลิตเกษตร ต้นทุนเชื้อเพลิงสูงกระทบ EBITDA Margin โดยตรง</li>
+          <li><b>Net Debt สูง ฿7,396M:</b> EV − MCap = ฿7,396M สะท้อน Leverage สูง ดอกเบี้ยกัดกำไรในภาวะดอกเบี้ยขาขึ้น กดดัน FCF และ DSCR</li>
+          <li><b>ROE ต่ำ 4.7%:</b> ต่ำกว่าต้นทุนส่วนของผู้ถือหุ้น (Ke ~8%) บ่งชี้ว่ากำไรไม่สร้าง Value เพียงพอหากไม่เติบโต</li>
+          <li><b>PPA ต่ออายุและการต่ออายุสัญญา:</b> หากสัญญา PPA เดิมสิ้นสุดแล้วต่อไม่ได้หรือต่อในราคาต่ำลง รายได้และกำไรจะลดฮวบอย่างมีนัย</li>
+          <li><b>Liquidity ต่ำมาก:</b> Volume เฉลี่ย ฿885K/วัน (688K หุ้น) ผู้ลงทุนสถาบันไม่สนใจ ทำให้ Re-rating ช้า และซื้อ/ขายยากในปริมาณมาก</li>
+          <li><b>ราคาหุ้น Sideway ยาวนาน:</b> 5 ปีที่ผ่านมา −65% จากจุดสูงสุด ค่า Beta ≈ 0 แสดงว่าไม่มีตัวเร่งราคา หากกำไรไม่เติบโตชัดเจนหุ้นจะ Sideway ต่อ</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>ACE — โรงไฟฟ้า RE กระแสเงินสดมั่นคง ราคาต่ำกว่า Fair Value ~10% แต่ขาด Catalyst</h2>
+      <p>ACE เป็นผู้ผลิตไฟฟ้าจากพลังงานทดแทนที่มี PPA ระยะยาวกับ EGAT/PEA ทำให้รายได้คาดการณ์ได้ EBITDA Margin 35% บ่งบอกธุรกิจมีคุณภาพ แต่ ROE เพียง 4.7% และ Net Debt สูง ฿7,396M คือจุดอ่อนสำคัญ ราคา ฿1.28 ซื้อขายต่ำกว่า Book Value (P/BV 0.75x) และต่ำกว่า Fair Value ฿1.43 (~10.5% MOS) นักวิเคราะห์มีเป้า ฿1.50 (Upside ~17%) เหมาะกับนักลงทุนที่มองหาหุ้น Defensive กระแสเงินสดมั่นคงในพอร์ต RE ไทย แต่ไม่เหมาะสำหรับผู้ต้องการ Capital Gain เร็ว</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿1.43 <span style="font-size:12px;color:#cab9a8">(฿1.32–฿1.54)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +10.5%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿1.50 (TradingView)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ทยอยสะสมที่ระดับ ฿1.14–1.28 (MOS 10–20%) เพิ่มน้ำหนักหาก P/BV ลงต่ำกว่า 0.65x หรือราคาย่อถึง ฿1.00 (MOS 30%) ตัดขายหากพื้นฐานเปลี่ยน เช่น PPA ต่อไม่ได้ หรือ Net Debt เพิ่มขึ้นอย่างมีนัย จุดตั้ง Stop Loss แนะนำ ฿1.20 (−6.3% จากปัจจุบัน)
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ที่มาข้อมูล: SET Factsheet (3 ก.ค. 2569), Yahoo Finance ACE.BK (3 ก.ค. 2569), TradingView SET:ACE (3 ก.ค. 2569), Finnomena ACE (3 ก.ค. 2569)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 3 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>

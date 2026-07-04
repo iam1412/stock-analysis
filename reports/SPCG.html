@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น เอสพีซีจี (SPCG) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"SPCG","currency":"THB","price":8.95,"fairValue":9.34,"mos":4.17,"upside":4.36,"pe":26.6,"dividendYield":7.42,"roe":2.03}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#edc11d",
+    "accentDark": "#b3910f",
+    "darkGrad": "linear-gradient(135deg,#3e3204 0%,#735d07 58%,#b6930c 140%)",
+    "glow": "rgba(236,191,19,.35)",
+    "subColor": "#ebe2c2",
+    "headerMuted": "#d4caa5",
+    "verdictText": "#f1ead0",
+    "vcellLabel": "#ddd2a6",
+    "badge": "#edc11d",
+    "chgBg": "#c5221f",
+    "chgColor": "#ffffff"
+  },
+  "chart": {
+    "data": [
+      ["ก.ค. 68", 9.25],
+      ["ส.ค. 68", 8.95],
+      ["ก.ย. 68", 8.85],
+      ["ต.ค. 68", 8.85],
+      ["พ.ย. 68", 8.90],
+      ["ธ.ค. 68", 8.95],
+      ["ม.ค. 69", 8.95],
+      ["ก.พ. 69", 9.00],
+      ["มี.ค. 69", 9.05],
+      ["เม.ย. 69", 9.00],
+      ["พ.ค. 69", 8.95],
+      ["มิ.ย. 69", 8.90],
+      ["ก.ค. 69", 8.95]
+    ],
+    "min": 8.50,
+    "max": 9.60,
+    "grid": [8.50, 8.75, 9.00, 9.25, 9.50],
+    "fairLine": 9.34,
+    "currency": "฿",
+    "highlight": [0, 6]
+  },
+  "gauge": {
+    "min": 6.00,
+    "max": 11.00,
+    "cur": 8.95,
+    "fair": 9.34,
+    "fairLabelTop": true
+  },
+  "fv": 9.34
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">☀️ 🌞 ⚡ 🔆 ☀️</div>
+    <div>
+      <span class="tag">SET: SPCG</span>
+      <span class="tag">พลังงานทดแทน</span>
+      <span class="tag">โซลาร์ฟาร์ม / SPP</span>
+    </div>
+    <h1>เอสพีซีจี (SPCG)</h1>
+    <div class="sub">ผู้บุกเบิกโซลาร์ฟาร์มในไทย 260 MW (36 แห่ง) • โซลาร์รูฟท็อป 150 MW • RECs 370,000 ใบ/ปี • สัญญา SPP กับ EGAT</div>
+    <div class="price-row">
+      <div>
+        <div class="px">฿8.95<small>(SPCG)</small></div>
+      </div>
+      <div class="chg">▼ −3.2% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 3 กรกฎาคม 2569 (FY2025/Q1 2026)<br>
+        กรอบ 52 สัปดาห์ ฿7.70 – ฿10.30<br>
+        ที่มา: SET / StockAnalysis.com / Finnomena
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ กรกฎาคม 2569 · ที่มา SET, StockAnalysis.com</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">฿9,450 ล้าน</div><div class="d">1,055.79 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~26.6x</div><div class="d">EPS ถูกกดจากรายได้ที่ลดลง</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">12–20x</div><div class="d">ช่วง 2564–2568 (ปี EPS สูง)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">0.58x</div><div class="d">BVPS ฿15.32 · ต่ำกว่ามูลค่าทางบัญชี</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2568</div><div class="v">฿378 ล้าน</div><div class="d">−44.6% YoY จาก ฿683 ล้าน (2567)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿0.34</div><div class="d">FY2568 ฿0.36 · FY2567 ฿0.65 · FY2566 ฿1.74</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~฿15.32</div><div class="d">FY2568 · เงินสดแข็งแกร่ง หนี้ต่ำมาก</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v neu">~2.0% / 2.0%</div><div class="d">ลดลงจากการหมดสัญญา ADDER tariff</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">฿1,610 ล้าน</div><div class="d">FY2568 ฿1,726 ล้าน · −15.8% YoY</div></div>
+      <div class="metric"><div class="k">EBITDA (FY2568)</div><div class="v">฿1,078 ล้าน</div><div class="d">FCF ฿1,297 ล้าน · กระแสเงินสดแข็งแกร่ง</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v pos">~7.42%</div><div class="d">~฿0.66/หุ้น · Dividend yield สูง</div></div>
+      <div class="metric"><div class="k">หนี้สิน (FY2568)</div><div class="v pos">฿53 ล้าน</div><div class="d">แทบปลอดหนี้ จาก ฿1,557 ล้าน (FY2566)</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#edc11d"></i>ราคา SPCG</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿9.10</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคา SPCG ช่วง 1 ปีที่ผ่านมา (ก.ค. 2568–ก.ค. 2569) เคลื่อนไหวในกรอบแคบ ฿8.85–฿9.25
+        สะท้อนลักษณะหุ้น Defensive ที่มีรายได้คงที่จากสัญญา SPP ระยะยาว
+        จุดสูงสุดที่ ฿9.25 (ก.ค. 2568) และปรับตัวลงมาที่ ฿8.95 (ก.ค. 2569)
+        ให้ผลตอบแทนรอบปีที่ −3.2% แต่เมื่อรวมปันผล ~7.4% ผลตอบแทนรวม (Total Return) อยู่ที่ +4.2%
+        โดยกรอบ 52 สัปดาห์อยู่ที่ ฿7.70–฿10.30 สะท้อนความผันผวนต่ำของธุรกิจ
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี · Solar utility approach</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. EV/EBITDA</div><div class="mdesc">EBITDA FY2568 ฿1,078 ล้าน × Multiple 9x ÷ 1,055.79 ล้านหุ้น — Solar SPP utility เทียบกับกลุ่ม 8–12x; หนี้แทบ 0 บาท ใช้ EV ≈ Market Cap</div></div>
+        <div class="mval">฿9.19</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล ฿0.66/หุ้น × (1+g); g 1%, r 9% → 0.67 / (9%−1%) — สัญญา SPP ค่อนข้างคงที่ ใช้ growth ต่ำ; cost of equity สูงตามความเสี่ยงตลาดไทย</div></div>
+        <div class="mval">฿8.38</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. P/FCF (Free Cash Flow Yield)</div><div class="mdesc">FCF FY2568 ฿1,297 ล้าน ÷ 1,055.79 ล้านหุ้น = FCF/หุ้น ฿1.23 × P/FCF เป้า 8.5x — Solar utility มี FCF สูงกว่า EPS เพราะ Depreciation ฿646 ล้าน/ปี</div></div>
+        <div class="mval">฿10.46</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿8.38 – ฿10.46</span></div>
+        <div class="r">฿9.34</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        วิธี DDM ให้ค่าต่ำสุด (฿8.38) เพราะอิงเฉพาะ Dividend โดยไม่นับ Asset value
+        วิธี EV/EBITDA ให้ค่ากลาง (฿9.19) เหมาะกับ Utility ที่มี EBITDA คงที่จากสัญญาระยะยาว
+        วิธี P/FCF ให้ค่าสูงสุด (฿10.46) สะท้อน Free Cash Flow จริงที่สูงกว่า EPS มาก (Depreciation-heavy)
+        ราคาปัจจุบัน ฿8.95 ต่ำกว่า Fair Value ฿9.34 ประมาณ 4.2%
+        หมายเหตุ: EPS ปัจจุบัน ฿0.34 ต่ำผิดปกติจากการสิ้นสุดสัญญา ADDER ราคาพิเศษ 8 บาท/หน่วย ที่หมดในปี 2566–2567
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿8.95</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿9.34</div></div>
+        </div>
+        <div class="scale">
+          <span>฿6.54<br><small>MOS 30%</small></span>
+          <span>฿7.47<br><small>MOS 20%</small></span>
+          <span style="text-align:center">฿9.34<br><small>Fair Value</small></span>
+          <span style="text-align:right">฿9.50<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">฿10.46<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน ฿8.95 อยู่ต่ำกว่า Fair Value ฿9.34 ประมาณ 4.2% (MOS ต่ำ)
+        หุ้นซื้อขายใกล้ Fair Value และสูงกว่า MOS20 (฿7.47) และ MOS30 (฿6.54) อย่างมีนัยสำคัญ
+        นักลงทุนที่ต้องการ Margin of Safety สูง ควรรอราคาในโซน ฿7.47–฿8.50 ก่อนเข้าสะสม
+        แต่สำหรับนักลงทุนเน้นปันผล (Dividend Investor) Dividend Yield 7.4% ณ ราคาปัจจุบันถือว่าน่าสนใจ
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">+4.17%</div>
+        <div class="txt">MOS ต่ำ — ราคาใกล้เคียง Fair Value · เหมาะสำหรับนักลงทุนเน้นปันผลระยะยาว ไม่ใช่ Value Play ที่ถูกมาก</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿7.47</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿6.54</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿9.34</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="8.95" step="0.05">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿8.95 • EPS ฐาน ~฿0.34 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS −10%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿4.50</div>
+          <div class="ret neg">−47.5%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.25</span></li>
+            <li><span>P/E ออก</span><span>18x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿1.50</span></li>
+            <li><span>สถานการณ์</span><span>รายได้ SPP ลดต่อเนื่อง ตัดปันผล</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +0%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿7.48</div>
+          <div class="ret pos">+28.7%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.34</span></li>
+            <li><span>P/E ออก</span><span>22x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿1.98</span></li>
+            <li><span>สถานการณ์</span><span>SPP คงที่ REC เพิ่มรายได้ใหม่</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +15%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿13.00</div>
+          <div class="ret pos">+68.4%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.52</span></li>
+            <li><span>P/E ออก</span><span>25x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿2.25</span></li>
+            <li><span>สถานการณ์</span><span>โครงการ Ukujima Japan COD เพิ่มรายได้</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      กรณี Bear: EPS ปี 3 = ฿0.34 × (0.9)³ = ฿0.25 × P/E 18x = ฿4.50 + ปันผล ฿1.50 = ฿6.00 (รวมการ Hold ที่ราคาปรับลง) → ผลตอบแทน −27.4%
+      กรณี Base: ราคาหุ้นปี 3 = EPS ฿0.34 × P/E 22x = ฿7.48 + ปันผล ฿1.98 = ฿9.46 → ผลตอบแทน +5.7%
+      กรณี Bull: EPS ปี 3 = ฿0.34 × (1.15)³ = ฿0.52 × P/E 25x = ฿13.00 + ปันผล ฿2.25 = ฿15.25 → ผลตอบแทน +70.1%
+      สถานการณ์ Bull ขึ้นกับโครงการ Ukujima Solar (480 MW) ในญี่ปุ่น COD และสัญญา SPP ใหม่
+      ความเสี่ยง Bear จากสัญญา SPP ที่ทยอยหมดอายุและรายได้ที่ลดลงต่อเนื่อง
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก &amp; ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>Dividend Yield สูง 7.4%:</b> ราคาปัจจุบันให้ปันผลสูงกว่าดอกเบี้ยเงินฝากและพันธบัตรรัฐบาล เหมาะนักลงทุนระยะยาวเน้นกระแสเงินสด</li>
+          <li><b>แทบปลอดหนี้:</b> หนี้สิน FY2568 เหลือเพียง ฿53 ล้าน ลดลงจาก ฿1,557 ล้าน (FY2566) ความเสี่ยงทางการเงินต่ำมาก FCF แข็งแกร่ง ฿1,297 ล้าน/ปี</li>
+          <li><b>โครงการ Ukujima Japan (480 MW):</b> โครงการโซลาร์ขนาดใหญ่ในญี่ปุ่น หากเดินเครื่องเชิงพาณิชย์จะเพิ่มรายได้อย่างมีนัยสำคัญ</li>
+          <li><b>RECs (Renewable Energy Certificates):</b> SPCG ผลิต REC ราว 370,000 ใบ/ปี จาก 36 ฟาร์ม เป็นแหล่งรายได้ใหม่จากตลาด Carbon และ ESG</li>
+          <li><b>P/BV ต่ำ 0.58x:</b> ซื้อขายต่ำกว่ามูลค่าทางบัญชี (BVPS ฿15.32) สะท้อน Asset value ของโรงไฟฟ้าที่ยังมีอายุสัมปทาน</li>
+          <li><b>กระแสเงินสดสม่ำเสมอ:</b> สัญญา SPP กับ EGAT ระยะยาว (25 ปี) รายรับคาดการณ์ได้ เหมาะหุ้น Defensive ในช่วงตลาดผันผวน</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>รายได้ลดลงต่อเนื่อง:</b> สัญญา ADDER ราคาพิเศษ 8 บาท/หน่วย หมดอายุปี 2566–2567 รายได้ลดจาก ฿4,493 ล้าน (2564) เหลือ ฿1,726 ล้าน (2568) ยังไม่มีสัญญาใหม่ทดแทน</li>
+          <li><b>EPS ต่ำผิดปกติ:</b> กำไรสุทธิ FY2568 ฿378 ล้าน ลดลง −44.6% YoY P/E สูง 26.6x เพราะ EPS ต่ำ แสดงว่า Earnings recovery ยังไม่ชัดเจน</li>
+          <li><b>ความเสี่ยงนโยบายพลังงาน:</b> การเปลี่ยนแปลงนโยบาย SPP/VSPP ของภาครัฐ อัตราค่าไฟฟ้า หรือการชะลอโครงการพลังงานทดแทนอาจกระทบรายได้</li>
+          <li><b>ความเสี่ยงโครงการญี่ปุ่น:</b> Ukujima Mega Solar 480 MW มีขนาดใหญ่มาก ความล่าช้าหรือต้นทุนที่สูงขึ้นอาจกระทบงบการเงินกลุ่ม</li>
+          <li><b>สภาพคล่องการซื้อขาย:</b> Volume ซื้อขายเฉลี่ยค่อนข้างต่ำ นักลงทุนรายใหญ่อาจมีปัญหาในการซื้อ/ขายในปริมาณมาก</li>
+          <li><b>การแข่งขันโซลาร์รูฟท็อป:</b> ตลาด Solar Rooftop มีผู้เล่นใหม่เพิ่มขึ้น ราคาโมดูลลดลง อาจกดดันอัตรากำไรของ SPR</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>Dividend Play ราคาใกล้ Fair Value — เหมาะสำหรับนักลงทุนเน้นกระแสเงินสดระยะยาว</h2>
+      <p>SPCG เป็นผู้บุกเบิกโซลาร์ฟาร์มในไทยด้วยกำลังผลิต 260 MW จาก 36 ฟาร์ม สัญญา SPP กับ EGAT ระยะยาว
+        กระแสเงินสดแข็งแกร่ง FCF ฿1,297 ล้าน/ปี แทบปลอดหนี้ และ Dividend Yield สูง 7.4%
+        ทำให้เป็นหุ้น Defensive ที่น่าสนใจสำหรับนักลงทุนเน้นปันผล
+        อย่างไรก็ตาม การสิ้นสุดสัญญา ADDER ทำให้รายได้ลดลงอย่างมีนัย EPS ปัจจุบันต่ำ
+        ราคาปัจจุบัน ฿8.95 ต่ำกว่า Fair Value ฿9.34 ประมาณ 4.2% (MOS ต่ำ)
+        นักลงทุนที่ต้องการ Margin of Safety ควรรอโอกาสซื้อในโซน ฿7.47–฿8.50 เพื่อ MOS ที่ดีขึ้น</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿9.34 <span style="font-size:12px;color:#cab9a8">(฿8.38–฿10.46)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +4.17%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿9.50 (Hold)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ถือเพื่อปันผลระยะยาว (Dividend Hold) ณ ราคา ฿8.95 — Yield 7.4% น่าสนใจ
+        หากราคาปรับลงสู่ ฿7.47 (MOS 20%) ถือเป็นโอกาสเพิ่มน้ำหนัก
+        ติดตาม COD โครงการ Ukujima ญี่ปุ่น และสัญญา SPP ใหม่ในประเทศ
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ EV/EBITDA multiple, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ FCF ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    แหล่งข้อมูล: (1) SET Thailand factsheet ณ 3 ก.ค. 2569 — ราคา ฿8.95, P/E 26.77x, P/BV 0.58x, Market Cap ฿9,449 ล้าน, EV ฿11,899 ล้าน, EBITDA ฿302 ล้าน (Q1/2569) · (2) StockAnalysis.com — งบ FY2568 (รายได้ ฿1,726M, กำไร ฿378M, EPS ฿0.36), งบดุล FY2568 (ส่วนของผู้ถือหุ้น ฿18,683M, BVPS ฿15.32, หนี้ ฿53M), Cash Flow FY2568 (FCF ฿1,297M, D&amp;A ฿646M) · (3) SPCG.co.th — ข้อมูลธุรกิจ: 260 MW, 36 ฟาร์ม, RECs 370,000 ใบ/ปี, รายได้ Q1/2569 ฿419.9M, EBITDA ปี FY2568 ฿1,078.4M · (4) Finnomena.com — ยืนยันราคา ฿8.95 ณ 3 ก.ค. 2569, ผลตอบแทนรอบปี 39.08% (adjusted) · ราคา cross-verified ≥3 แหล่ง: SET + StockAnalysis + Finnomena (ต่างกัน 0%)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 3 กรกฎาคม 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
