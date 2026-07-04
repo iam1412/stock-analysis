@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น เคมาร์ท (KAMART) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"KAMART","currency":"THB","price":7.70,"fairValue":8.65,"mos":11.0,"upside":12.3,"pe":14.43,"dividendYield":5.75,"roe":19.94}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#e9208d", "accentDark": "#b11168",
+    "darkGrad": "linear-gradient(135deg,#3e0424 0%,#730742 58%,#b60c68 140%)",
+    "glow": "rgba(232,23,136,.35)", "subColor": "#ebc2d8", "headerMuted": "#d4a5bf",
+    "chgBg": "var(--red-soft)", "chgColor": "#c5221f", "badge": "#e9208d",
+    "verdictText": "#f1d0e2", "vcellLabel": "#dda6c4"
+  },
+  "chart": {
+    "data": [["ก.ค.25",8.20],["ส.ค.25",8.50],["ก.ย.25",8.70],["ต.ค.25",8.95],["พ.ย.25",8.60],["ธ.ค.25",8.20],["ม.ค.26",8.20],["ก.พ.26",8.00],["มี.ค.26",7.85],["เม.ย.26",7.75],["พ.ค.26",7.70],["มิ.ย.26",7.65],["ก.ค.26",7.70]],
+    "min": 7.0, "max": 9.8, "grid": [7.5,8.0,8.65,9.0], "fairLine": 8.65, "currency": "฿", "highlight": [3,12],
+    "gridFmt": "v.toFixed(1)", "dataFmt": "d[1].toFixed(2)"
+  },
+  "gauge": { "min": 5.5, "max": 11.0, "cur": 7.70, "fair": 8.65, "fairLabelTop": "-58px" },
+  "fv": 8.65
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots"><span style="background:#f7aed5"></span><span style="background:#e9208d"></span><span style="background:#b11168"></span><span style="background:#730742"></span></div>
+    <div>
+      <span class="tag">SET: KAMART</span>
+      <span class="tag">Consumer • Beauty &amp; Personal Care</span>
+      <span class="tag">จัดจำหน่ายเครื่องสำอาง/ความงาม</span>
+    </div>
+    <h1>เคมาร์ท (Karmarts PCL)</h1>
+    <div class="sub">จัดจำหน่าย Cathy Doll เครื่องสำอางเกาหลี-ไทย • ผลิตภัณฑ์ดูแลผิว/เส้นผม/ร่างกาย • ช่องทาง Modern Trade, ออนไลน์ และส่งออก</div>
+    <div class="price-row">
+      <div>
+        <div class="px">฿7.70<small>(KAMART)</small></div>
+      </div>
+      <div class="chg">▼ −6.1% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 4 ก.ค. 2569<br>
+        กรอบ 52 สัปดาห์ ฿7.15 – ฿9.95<br>
+        ที่มา: SET.or.th, StockAnalysis.com, Yahoo Finance
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ก.ค. 2569 · TTM</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">฿9,882 ล้าน</div><div class="d">1,283 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~14.43x</div><div class="d">EPS TTM ฿0.53 · ต่ำกว่าค่าเฉลี่ย 5 ปี ~20x</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~20x</div><div class="d">ช่วง 12–30x (ขึ้นจากราคาสูงปี 67)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">2.68x</div><div class="d">BVPS ฿2.73 · ตลาด SET เฉลี่ย ~1.6x</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2024</div><div class="v">฿678 ล้าน</div><div class="d">+2.6% YoY · งวด Q4/2024 ฿178 ล้าน</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿0.53</div><div class="d">FY2024 (Q4/2024): ฿0.53 · FY2023: ฿0.61</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~฿2.73</div><div class="d">ทุนผู้ถือหุ้น ฿3,498 ล้าน</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~19.9% / 15.1%</div><div class="d">ผลตอบแทนสูง · บริหารสินทรัพย์มีประสิทธิภาพ</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">฿3,470 ล้าน</div><div class="d">+31% YoY FY67 (FY66: ฿2,448 ล้าน)</div></div>
+      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">54.3%</div><div class="d">สูงมาก · โมเดลจัดจำหน่ายมาร์จิ้นดี</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~5.75%</div><div class="d">DPS ~฿0.44 · Payout ratio ~71%</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">0.12</div><div class="d">ความผันผวนต่ำมาก · ป้องกัน Downside ดี</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART (ราคาย้อนหลัง ~1 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ก.ค. 2568 – ก.ค. 2569</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#e9208d"></i>ราคา KAMART</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿8.65</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        KAMART ปรับตัวขึ้นจาก ฿8.20 (ก.ค. 2568) สู่จุดสูงสุด ฿8.95 ในเดือน ต.ค. 2568
+        จากนั้นค่อย ๆ ปรับตัวลงตามแรงขายทำกำไรและความกังวลการเติบโตหลัง 2 ปีที่ขยายตัวแรง
+        ราคาปรับมาแตะ ฿7.65 ช่วง มิ.ย. 2569 ก่อนฟื้นตัวกลับมา ฿7.70 ในเดือน ก.ค. 2569
+        ผลตอบแทนรอบปี (ก.ค. 68 → ก.ค. 69) = −6.1% · ราคาต่ำกว่า Fair Value ~11%
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION (เฉลี่ย 3 วิธี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS adj. ฿0.53 × P/E เป้าหมาย ~16x — เทียบ sector consumer staples ไทย / SET เฉลี่ย 14–18x</div></div>
+        <div class="mval">฿8.48</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล ฿0.44 × (1+5%); g 5%, r 10% → DPS ฿0.462 / (10%−5%) = ฿9.24 — เหมาะกับหุ้นปันผลสูง Payout ~71%</div></div>
+        <div class="mval">฿9.24</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 20% − g 5%)/(r 10% − g 5%) ≈ 3.0x × BVPS ฿2.73 — สะท้อน ROE สูง</div></div>
+        <div class="mval">฿8.19</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿8.19 – ฿9.24</span></div>
+        <div class="r">฿8.65</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        DDM ให้ค่าสูงสุด (฿9.24) สะท้อนการจ่ายปันผลสม่ำเสมอและ Payout ratio สูง ~71% ที่ยั่งยืน
+        P/E valuation ให้ค่ากลาง (฿8.48) โดยใช้ P/E เป้า 16x ซึ่งอยู่ระหว่างค่าเฉลี่ย SET และ premium quality
+        Justified P/BV ให้ค่าต่ำสุด (฿8.19) แต่ยังสูงกว่าราคาปัจจุบัน สะท้อน ROE ~20% ที่แข็งแกร่ง
+        ค่าเฉลี่ย 3 วิธี = ฿8.65 ซึ่งให้ MOS ~11% จากราคา ฿7.70
+        หมายเหตุ: ยืนยันราคาปัจจุบัน ฿7.70 จาก SET.or.th + StockAnalysis.com (ต่างกัน &lt;0.1%)
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿7.70</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿8.65</div></div>
+        </div>
+        <div class="scale">
+          <span>฿6.06<br><small>MOS 30%</small></span>
+          <span>฿6.92<br><small>MOS 20%</small></span>
+          <span style="text-align:center">฿8.65<br><small>Fair Value</small></span>
+          <span style="text-align:right">฿8.65<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">฿9.24<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคา ฿7.70 อยู่ต่ำกว่า Fair Value ฿8.65 ประมาณ 11% (MOS ~11%) · ยังไม่ถึงโซน deep value (MOS 20% = ฿6.92)
+        แต่เป็นโซนน่าสนใจสำหรับนักลงทุนเน้นปันผล เพราะ Yield 5.75% ที่ราคา ฿7.70 ถือว่าสูง
+        Beta 0.12 ต่ำมากสะท้อนความผันผวนน้อย เหมาะกับการลงทุนระยะยาว
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict ok">
+        <div class="big">+11.0%</div>
+        <div class="txt">MOS พอประมาณ — น่าเริ่มทยอยสะสม แต่ยังไม่ถึงโซน Deep Value</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿6.92</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿6.06</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿8.65</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="7.70" step="0.05">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿7.70 • EPS ฐาน ~฿0.53 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS −5%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿5.45</div>
+          <div class="ret neg">−28.2%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.45</span></li>
+            <li><span>P/E ออก</span><span>12x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿1.03</span></li>
+            <li><span>สถานการณ์</span><span>กำลังซื้อหด · แบรนด์สูญเสียส่วนแบ่ง</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +5%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿9.21</div>
+          <div class="ret pos">+19.6%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.61</span></li>
+            <li><span>P/E ออก</span><span>15x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿1.32</span></li>
+            <li><span>สถานการณ์</span><span>ขยายช่องทาง Modern Trade + ออนไลน์</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +12%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿13.41</div>
+          <div class="ret pos">+74.2%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.75</span></li>
+            <li><span>P/E ออก</span><span>18x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿1.50</span></li>
+            <li><span>สถานการณ์</span><span>ขยายส่งออก ASEAN · แบรนด์ใหม่ประสบความสำเร็จ</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      Base case คาดการณ์ผลตอบแทนรวม ~19.6% ใน 3 ปี (~6.2%/ปี) รวมปันผล ซึ่งต่ำกว่าที่เคยทำได้ในปี 64–67 เนื่องจากฐานรายได้สูงขึ้น
+      อย่างไรก็ตาม dividend yield 5.75% ณ ราคาปัจจุบันเป็น "ฟลอร์ผลตอบแทน" ที่น่าสนใจ
+      Bear case ถ่วงน้ำหนักต่ำเพราะ KAMART มีสินค้า FMCG และ Cathy Doll brand ที่แข็งแกร่ง · สมมติฐาน EPS ฐาน = ฿0.53 (FY2567)
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก &amp; ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>แบรนด์ Cathy Doll แข็งแกร่ง:</b> ผลิตภัณฑ์ครีมกันแดด/บิวตี้ที่ได้รับความนิยมสูงในไทยและภูมิภาค ASEAN มีฐานแฟนคลับที่ภักดี</li>
+          <li><b>กำไรขั้นต้นสูงถึง 54%:</b> โมเดลจัดจำหน่ายที่ควบคุมต้นทุนได้ดี มาร์จิ้นสูงกว่าค่าเฉลี่ยอุตสาหกรรม สะท้อน brand premium</li>
+          <li><b>ขยายช่องทางออนไลน์:</b> E-commerce เติบโตก้าวกระโดด · Shopee/Lazada/TikTok Shop ช่วยลดต้นทุนการจัดจำหน่าย</li>
+          <li><b>ส่งออกภูมิภาค ASEAN:</b> ตลาดส่งออกมาเลเซีย เมียนมา กัมพูชา เวียดนาม มีศักยภาพขยายตัว โดยเฉพาะ K-beauty trend</li>
+          <li><b>Dividend yield สูง 5.75%:</b> ดึงดูดนักลงทุนเน้นรายได้ · Payout ratio ~71% ยั่งยืนด้วยกระแสเงินสดอิสระบวก</li>
+          <li><b>Beta ต่ำ 0.12:</b> ความผันผวนต่ำมาก เหมาะกับพอร์ตที่ต้องการ Defensive position ท่ามกลางตลาดผันผวน</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>การแข่งขันเครื่องสำอางสูง:</b> ตลาด K-beauty แข่งขันรุนแรงจากแบรนด์ต่างชาติ (Innisfree, The Face Shop, Skin1004) กดดัน market share</li>
+          <li><b>การเติบโตชะลอ:</b> รายได้เพิ่งโต 31% ใน FY67 แต่ฐานสูงขึ้นมาก ยากรักษาอัตราเร่ง · EPS FY67 (฿0.53) ลดจาก FY66 (฿0.61)</li>
+          <li><b>กำลังซื้อในประเทศ:</b> เศรษฐกิจไทยฟื้นตัวช้า หนี้ครัวเรือนสูง กระทบการใช้จ่ายเครื่องสำอาง non-essential</li>
+          <li><b>ความเสี่ยงจากสินค้าสต็อก:</b> ธุรกิจเครื่องสำอางมีวงจรชีวิตสินค้าสั้น สต็อกเก่า/หมดอายุสร้างต้นทุนสูญเปล่า</li>
+          <li><b>ค่าใช้จ่าย Marketing สูง:</b> แบรนด์ต้องลงทุน Marketing/Influencer อย่างต่อเนื่อง กดดันกำไรสุทธิ</li>
+          <li><b>ความเสี่ยง Valuation Derating:</b> P/E 14x ปัจจุบันต่ำกว่าค่าเฉลี่ย 5 ปี (~20x) บ่งชี้ตลาดลดคาดการณ์การเติบโต อาจยังหดตัวต่อ</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>KAMART: หุ้นปันผลสูง-คุณภาพดี ราคายังต่ำกว่ามูลค่าเหมาะสม ~11%</h2>
+      <p>เคมาร์ท (KAMART) เป็นผู้จัดจำหน่ายเครื่องสำอางและผลิตภัณฑ์ความงามที่มีแบรนด์ Cathy Doll เป็นหัวหอก
+      โดดเด่นด้วยอัตรากำไรขั้นต้น 54% ROE ~20% และ Dividend Yield 5.75% ที่สูงกว่าค่าเฉลี่ย SET
+      ราคา ฿7.70 อยู่ต่ำกว่า Fair Value ฿8.65 ประมาณ 11% MOS พอประมาณ (ยังไม่ถึง Deep Value)
+      ความเสี่ยงหลักคือการเติบโตชะลอตัวหลังจากขยายตัวเร็วในปี 64–67 และการแข่งขัน K-beauty ที่รุนแรงขึ้น
+      เหมาะสำหรับนักลงทุนระยะกลาง-ยาวที่เน้นรายได้ปันผลและต้องการ Defensive Stock ในพอร์ต</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿8.65 <span style="font-size:12px;color:#cab9a8">(฿8.19–฿9.24)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +11.0%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿8.65 (ทยอยสะสม)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ทยอยสะสมที่ราคา ฿7.70 (MOS ~11%) · เพิ่มน้ำหนักหาก pullback ถึง ฿6.92 (MOS 20%) หรือ ฿6.06 (MOS 30%) · ถือรับปันผล Yield 5.75% ระหว่างรอ Re-rating · Stop หากปัจจัยพื้นฐาน (ROE, กำไร) เสื่อมลงชัดเจน
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    แหล่งข้อมูล: SET.or.th (ราคา, P/E 14.41x, P/BV 2.68x, ณ 3 ก.ค. 2569) · StockAnalysis.com (EPS ฿0.53, Yield 5.75%, งบการเงิน FY2567 Q4/2567) · Yahoo Finance (chart data รายเดือน 1 ปี, 52w High ฿9.95 / Low ฿7.15) · ยืนยันราคา ฿7.70 จาก ≥2 แหล่งอิสระ (SET + StockAnalysis)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 4 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
