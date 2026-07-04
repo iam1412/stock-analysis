@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น เสริมสร้าง พาวเวอร์ (SSP) — Stock Analysis Dashboard</title>
+<!-- ★ ใส่รุ่นโมเดล AI ที่ใช้วิเคราะห์จริง — gate E28 บังคับ -->
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
+<script type="application/json" id="stock-meta">
+{"symbol":"SSP","currency":"THB","price":4.06,"fairValue":5.10,"mos":20.4,"upside":25.6,"pe":8.62,"dividendYield":4.9,"roe":7.3}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#e8a000",
+    "accentDark": "#b37800",
+    "darkGrad": "linear-gradient(135deg,#1a1200 0%,#2d1f00 50%,#1a1200 100%)",
+    "glow": "rgba(232,160,0,0.35)",
+    "subColor": "#f5c842",
+    "headerMuted": "rgba(245,200,66,0.65)",
+    "verdictText": "#fff8e1",
+    "vcellLabel": "#ffd54f",
+    "badge": "#e8a000",
+    "chgBg": "var(--red-soft)",
+    "chgColor": "#c5221f"
+  },
+  "chart": {
+    "data": [
+      ["ก.ค. 68", 4.26],
+      ["ส.ค. 68", 4.36],
+      ["ก.ย. 68", 4.04],
+      ["ต.ค. 68", 3.62],
+      ["พ.ย. 68", 3.96],
+      ["ธ.ค. 68", 4.06],
+      ["ม.ค. 69", 3.98],
+      ["ก.พ. 69", 3.70],
+      ["มี.ค. 69", 3.50],
+      ["เม.ย. 69", 3.30],
+      ["พ.ค. 69", 3.00],
+      ["มิ.ย. 69", 3.50],
+      ["ก.ค. 69", 4.06]
+    ],
+    "min": 2.60,
+    "max": 5.50,
+    "grid": [3.00, 3.50, 4.00, 4.50, 5.00, 5.50],
+    "fairLine": 5.10,
+    "currency": "฿",
+    "highlight": [1, 10],
+    "gridFmt": "v.toFixed(2)"
+  },
+  "gauge": {
+    "min": 2.50,
+    "max": 6.50,
+    "cur": 4.06,
+    "fair": 5.10,
+    "fairLabelTop": false
+  },
+  "fv": 5.10
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">☀️ 🌱 ⚡</div>
+    <div>
+      <span class="tag">SET: SSP</span>
+      <span class="tag">Utilities</span>
+      <span class="tag">Renewable Energy</span>
+    </div>
+    <h1>เสริมสร้าง พาวเวอร์ คอร์ปอเรชั่น</h1>
+    <div class="sub">พลังงานแสงอาทิตย์ • พลังงานลม • ชีวมวล • ขยะเป็นพลังงาน • Solar Rooftop • ไทย ญี่ปุ่น เวียดนาม อินโดนีเซีย มองโกเลีย ฟิลิปปินส์ ไต้หวัน</div>
+    <div class="price-row">
+      <div>
+        <div class="px">฿4.06<small>(SSP)</small></div>
+      </div>
+      <div class="chg">▼ −4.7% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 3 กรกฎาคม 2569<br>
+        กรอบ 52 สัปดาห์ ฿3.00 – ฿4.36<br>
+        ที่มา: SET Factsheet, Finnomena, Yahoo Finance
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ก.ค. 2569 · ที่มา: SET Factsheet, Finnomena, Yahoo Finance</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">฿5,070 ล้าน</div><div class="d">1,248.83 ล้านหุ้น · Par ฿1.00</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~8.62x</div><div class="d">EPS TTM ≈ ฿0.47/หุ้น</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~10–14x</div><div class="d">ปัจจุบันต่ำกว่าค่าเฉลี่ย</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">0.63x</div><div class="d">BVPS ≈ ฿6.44 — ซื้อต่ำกว่าบุ๊ค</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">~฿588 ล้าน</div><div class="d">EBITDA ฿717 ล้าน</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿0.47</div><div class="d">คำนวณจาก P/E 8.62x · ราคา ฿4.06</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~฿6.44</div><div class="d">คำนวณจาก P/BV 0.63x · ราคา ฿4.06</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~7.3% / ~2.8%</div><div class="d">พลังงานหมุนเวียนทุนสูง-หนี้มาก</div></div>
+
+      <div class="metric"><div class="k">EV/EBITDA</div><div class="v neu">8.87x</div><div class="d">EV ฿20,959 ล้าน · หนี้สุทธิสูง</div></div>
+      <div class="metric"><div class="k">กำลังผลิตติดตั้ง</div><div class="v">270+ MW</div><div class="d">Solar, Wind, Biomass, W-t-E</div></div>
+      <div class="metric"><div class="k">เงินปันผล (คาด)</div><div class="v">~4.9%</div><div class="d">DPS ~฿0.20/หุ้น (ประมาณการ)</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">~0.65</div><div class="d">ความผันผวนต่ำกว่าตลาด</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ก.ค. 2568 – ก.ค. 2569 · รายเดือน</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#e8a000"></i>ราคา SSP</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿5.10</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        SSP ปรับตัวลงจาก ฿4.26 ในเดือน ก.ค. 2568 มาสู่จุดสูงสุดรอบปีที่ ฿4.36 ใน ส.ค. 2568 ก่อนจะร่วงต่อเนื่องลงมาแตะจุดต่ำสุด 52 สัปดาห์ที่ ฿3.00 ในเดือน พ.ค. 2569 แรงกดดันหลักมาจากความกังวลเรื่องหนี้สินสูงและดอกเบี้ยขาขึ้น อย่างไรก็ตาม หุ้นฟื้นตัวกลับมาที่ ฿4.06 ในเดือน ก.ค. 2569 ให้ผลตอบแทนรอบปี −4.7% ยังคงซื้อขายต่ำกว่า Fair Value ที่ ฿5.10 อย่างมีนัยสำคัญ
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS adj. ฿0.47 × P/E เป้าหมาย ~12x — เทียบ peer พลังงานหมุนเวียน SET (GPSC, GULF) ซึ่งซื้อขายที่ 12–15x</div></div>
+        <div class="mval">฿5.65</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 7.3% − g 3%)/(r 8% − g 3%) ≈ 0.86 × BVPS ฿6.44</div></div>
+        <div class="mval">฿5.55</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผลคาด ฿0.20 × (1+3%); g 3%, r 8% → FV = 0.206/0.05 — อิง payout ratio ~43% จาก net profit คาด</div></div>
+        <div class="mval">฿4.12</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿4.12 – ฿5.65</span></div>
+        <div class="r">฿5.10</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        P/E Valuation ให้ค่าสูงสุดที่ ฿5.65 สะท้อนศักยภาพกำไรหากบริษัทขยายกำลังผลิตได้ตามแผน · Justified P/BV ให้ค่า ฿5.55 อิง ROE ปัจจุบัน · DDM ให้ค่าต่ำสุด ฿4.12 เพราะปันผลยังจำกัดจากภาระหนี้ · FV เฉลี่ย ฿5.10 สมเหตุสมผลสำหรับธุรกิจพลังงานหมุนเวียนที่มีรายได้แน่นอนจาก PPA ระยะยาว
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿4.06</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿5.10</div></div>
+        </div>
+        <div class="scale">
+          <span>฿3.57<br><small>MOS 30%</small></span>
+          <span>฿4.08<br><small>MOS 20%</small></span>
+          <span style="text-align:center">฿5.10<br><small>Fair Value</small></span>
+          <span style="text-align:right">฿5.20<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">฿5.65<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน ฿4.06 อยู่ใกล้จุด MOS 20% ที่ ฿4.08 มากที่สุด แสดงว่าหุ้นซื้อขายในโซนน่าสนใจสำหรับนักลงทุนแบบ value ต่ำกว่า Fair Value ฿5.10 ราว 20% · โซน MOS 30% ที่ ฿3.57 เป็นโซน "deep value" หากราคาอ่อนตัวลงอีก
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict good">
+        <div class="big">+20.4%</div>
+        <div class="txt">MOS อยู่ในระดับน่าสนใจ — ราคาต่ำกว่า Fair Value ~20% เป็นโซนสะสม</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿4.08</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿3.57</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿5.10</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="4.06" step="0.05">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿4.06 • EPS ฐาน ~฿0.47 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS −5%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿3.20</div>
+          <div class="ret neg">−8.4%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.40</span></li>
+            <li><span>P/E ออก</span><span>8x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.54</span></li>
+            <li><span>สถานการณ์</span><span>โรงไฟฟ้าหยุด/กำไรหด</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +5%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿6.10</div>
+          <div class="ret pos">+56.4%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.54</span></li>
+            <li><span>P/E ออก</span><span>11x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.63</span></li>
+            <li><span>สถานการณ์</span><span>ขยาย MW ตามแผน</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +12%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿8.80</div>
+          <div class="ret pos">+131.8%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.66</span></li>
+            <li><span>P/E ออก</span><span>13x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.75</span></li>
+            <li><span>สถานการณ์</span><span>โปรเจกต์ใหม่ + Re-rating</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      กรณีฐาน (Base) ผลตอบแทน 3 ปี ~+56% รวมปันผล อิง EPS เติบโต 5%/ปีจากโรงไฟฟ้าใหม่ที่จะ COD ในปี 2569–2570 และ P/E re-rating จาก 8.6x สู่ 11x ตาม peer · กรณี Bull คาดการณ์ขยาย MW ใหม่อย่างก้าวกระโดดและ FIT ในต่างประเทศ · สมมติฐานปันผล ~฿0.20/หุ้น/ปี (yield ~4.9%) · ตัวเลขเป็นการประมาณการ ไม่ใช่การรับประกัน
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>พอร์ตพลังงานหมุนเวียนหลากหลาย:</b> Solar, Wind, Biomass, Waste-to-Energy ช่วยกระจายความเสี่ยงรายได้ ไม่พึ่งแหล่งเดียว</li>
+          <li><b>รายได้สม่ำเสมอจาก PPA ระยะยาว:</b> สัญญาซื้อขายไฟฟ้าระยะ 20–25 ปีการันตีรายได้ตลอดอายุโครงการ</li>
+          <li><b>ขยายตลาดต่างประเทศ 7 ประเทศ:</b> ญี่ปุ่น (FIT ดี), เวียดนาม, อินโดนีเซีย, มองโกเลีย, ฟิลิปปินส์, ไต้หวัน — กระจายความเสี่ยงนโยบายในประเทศ</li>
+          <li><b>กระแสพลังงานสะอาดทั่วโลก:</b> นโยบาย Net Zero ของรัฐบาลต่างๆ เพิ่มโอกาสลงทุนโครงการใหม่อย่างต่อเนื่อง</li>
+          <li><b>P/BV ต่ำกว่า 1x:</b> ซื้อขายต่ำกว่ามูลค่าทางบัญชี — margin of safety สูง หาก ROE ปรับตัวดีขึ้น จะดึง P/BV re-rating</li>
+          <li><b>Solar Rooftop 120+ โครงการ:</b> ธุรกิจ asset-light เติบโตผ่าน PPA B2B ต้นทุนต่ำ กระแสเงินสดสม่ำเสมอ</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>หนี้สินสูงมาก:</b> หนี้สุทธิ ~฿15,889 ล้าน vs Market Cap ฿5,070 ล้าน — Net Debt/EBITDA สูงกว่า 20x ทำให้ดอกเบี้ยกดกำไรอย่างมีนัย</li>
+          <li><b>ความเสี่ยงอัตราดอกเบี้ย:</b> โครงการ renewable energy พึ่งสินเชื่อโครงการ (Project Finance) — ดอกเบี้ยขาขึ้นกดดัน IRR และต้นทุนการเงิน</li>
+          <li><b>ความเสี่ยงนโยบายต่างประเทศ:</b> การเปลี่ยนแปลงนโยบาย FIT/FiP หรือข้อกฎหมายในหลายประเทศพร้อมกันอาจกระทบรายได้</li>
+          <li><b>ความเสี่ยงสภาพอากาศ:</b> พลังงานแสงอาทิตย์และลมขึ้นกับสภาพอากาศ — ปีที่ฝนชุก/ไม่มีลม กำลังผลิตลดลง</li>
+          <li><b>ล่าช้า COD:</b> โครงการก่อสร้างล่าช้าเพิ่มต้นทุนดอกเบี้ยระหว่างก่อสร้าง (IDC) และชะลอการรับรู้รายได้</li>
+          <li><b>ROE ต่ำกว่า Cost of Equity:</b> ROE ~7.3% ยังต่ำกว่า cost of equity ~8–10% ทำให้ P/BV ไม่ควรซื้อขายสูงกว่า 1x ในระยะสั้น</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>SSP — พลังงานสะอาดที่ซื้อต่ำกว่ามูลค่า แต่หนี้ต้องจับตา</h2>
+      <p>เสริมสร้าง พาวเวอร์ (SSP) เป็นผู้ผลิตพลังงานหมุนเวียนที่มีความหลากหลายสูงทั้ง Solar, Wind, Biomass และ Waste-to-Energy กระจายใน 7 ประเทศในเอเชีย จุดเด่นคือรายได้สม่ำเสมอจากสัญญา PPA ระยะยาวและกระแสเงินสดจากการดำเนินงานที่มั่นคง ราคาปัจจุบัน ฿4.06 ให้ MOS ~20% ต่ำกว่า Fair Value ฿5.10 ทำให้น่าสนใจสำหรับนักลงทุนระยะกลาง-ยาว ความเสี่ยงหลักคือหนี้สินสุทธิสูงมากที่กดดัน ROE และดอกเบี้ยจ่าย ควรติดตามทิศทางดอกเบี้ยและความคืบหน้าโครงการ COD ใหม่ก่อนพิจารณาเพิ่มสัดส่วน</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿5.10 <span style="font-size:12px;color:#cab9a8">(฿4.12–฿5.65)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +20.4%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿5.20 (Accumulate)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ทยอยสะสมที่ราคา ฿3.60–฿4.10 (MOS 20–30%) — กรณีฐานให้ผลตอบแทนรวม ~+56% ใน 3 ปี · ตั้ง Stop ที่ ฿3.00 (52W low) · เพิ่มน้ำหนักหากดอกเบี้ยเริ่มลดและ COD โครงการใหม่เป็นไปตามแผน
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ที่มาข้อมูล: SET Factsheet ณ 3 ก.ค. 2569 (P/E 8.62x, P/BV 0.63x, EBITDA, Market Cap, 52W range) · Finnomena (ราคาปัจจุบัน, ผลตอบแทนรอบปี −4.7%) · Yahoo Finance SSP.BK (ราคาย้อนหลังรายเดือน 1 ปี) · Sermsang Power Corporate Website sermsang.com (พอร์ตธุรกิจ, ประเทศที่ดำเนินงาน, กำลังผลิต 270+ MW) · EPS ~฿0.47 และ BVPS ~฿6.44 คำนวณจากอัตราส่วนที่ SET รายงาน งวด FY2568
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 3 กรกฎาคม 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>

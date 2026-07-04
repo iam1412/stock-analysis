@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น อาร์เอส กรุ๊ป (RS) — Stock Analysis Dashboard</title>
+<!-- ★ AI model used for analysis -->
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<!-- stock-meta: screener data (gate E29–31) -->
+<script type="application/json" id="stock-meta">
+{"symbol":"RS","currency":"THB","price":0.13,"fairValue":0.20,"mos":35.0,"upside":53.8,"pe":null,"dividendYield":0,"roe":-64.32}
+</script>
+<!--
+  report-data: theme + chart/gauge data
+  Annual return Jul 2025 (0.17) to Jul 2026 (0.13) = (0.13-0.17)/0.17 = -23.5%
+  chgBg/chgColor = red (stock went down)
+  Fair Value = 0.20
+  gauge.min=0.05 < MOS30=0.14 < MOS20=0.16 < FV=0.20 < FV_HIGH=0.25 < gauge.max=0.35 (strictly ascending)
+-->
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#e53935",
+    "accentDark": "#b71c1c",
+    "darkGrad": "linear-gradient(135deg,#1a0000 0%,#2d0a0a 50%,#1a0505 100%)",
+    "glow": "rgba(229,57,53,0.25)",
+    "subColor": "#ef9a9a",
+    "headerMuted": "rgba(239,154,154,0.7)",
+    "verdictText": "#ffcdd2",
+    "vcellLabel": "rgba(255,205,210,0.7)",
+    "badge": "#e53935",
+    "chgBg": "#c5221f",
+    "chgColor": "#ffffff"
+  },
+  "chart": {
+    "data": [
+      ["ก.ค. 68", 0.17],
+      ["ส.ค. 68", 0.15],
+      ["ก.ย. 68", 0.18],
+      ["ต.ค. 68", 0.14],
+      ["พ.ย. 68", 0.13],
+      ["ธ.ค. 68", 0.13],
+      ["ม.ค. 69", 0.14],
+      ["ก.พ. 69", 0.15],
+      ["มี.ค. 69", 0.16],
+      ["เม.ย. 69", 0.15],
+      ["พ.ค. 69", 0.14],
+      ["มิ.ย. 69", 0.15],
+      ["ก.ค. 69", 0.13]
+    ],
+    "min": 0.05,
+    "max": 0.35,
+    "grid": [0.10, 0.15, 0.20, 0.25, 0.30],
+    "fairLine": 0.20,
+    "currency": "฿",
+    "highlight": [2, 12],
+    "gridFmt": "v.toFixed(2)",
+    "dataFmt": "d[1].toFixed(2)"
+  },
+  "gauge": {
+    "min": 0.05,
+    "max": 0.35,
+    "cur": 0.13,
+    "fair": 0.20,
+    "fairLabelTop": true
+  },
+  "fv": 0.20
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">●●●●●●●●</div>
+    <div>
+      <span class="tag">SET: RS</span>
+      <span class="tag">Media &amp; Commerce</span>
+      <span class="tag">Entertainmerce</span>
+    </div>
+    <h1>อาร์เอส กรุ๊ป (RS PCL)</h1>
+    <div class="sub">RS Music (RSIAM, COOLfahrenheit, BRIQ) • Lifestar TV Shopping • ULife Health &amp; Beauty • Digital Media • ธุรกิจ Entertainmerce</div>
+    <div class="price-row">
+      <div>
+        <div class="px">฿0.13<small>(RS)</small></div>
+      </div>
+      <div class="chg">▼ −23.5% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 3 ก.ค. 2569<br>
+        กรอบ 52 สัปดาห์ ฿0.12 – ฿0.35<br>
+        ที่มา: SET / Investing.com / Finnomena
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ก.ค. 2569</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~฿284 ล้าน</div><div class="d">หุ้นที่ออก ~2,182 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">0.24x</div><div class="d">BVPS ~฿0.54 (ต่ำมาก)</div></div>
+      <div class="metric"><div class="k">EV/EBITDA</div><div class="v">~239x</div><div class="d">EBITDA ติดลบ / distressed</div></div>
+      <div class="metric"><div class="k">D/E Ratio</div><div class="v">307%</div><div class="d">หนี้สูงมากเทียบทุน</div></div>
+
+      <div class="metric"><div class="k">ขาดทุนสุทธิ FY68</div><div class="v">−฿1,223 ล้าน</div><div class="d">EPS −฿0.56 ต่อหุ้น</div></div>
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">~฿1,876 ล้าน</div><div class="d">ลดลง ~30% YoY</div></div>
+      <div class="metric"><div class="k">Gross Margin (TTM)</div><div class="v">~16%</div><div class="d">ลดจาก 49% ปี 2566</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v">−64% / −9%</div><div class="d">ขาดทุนต่อเนื่อง 2 ปี</div></div>
+
+      <div class="metric"><div class="k">OCF (FY2567)</div><div class="v">−฿222 ล้าน</div><div class="d">กระแสเงินสดจากดำเนินงาน</div></div>
+      <div class="metric"><div class="k">หนี้สินรวม</div><div class="v">~฿5,100 ล้าน</div><div class="d">สั้น+ยาว รวมลูกบริษัท</div></div>
+      <div class="metric"><div class="k">สถานะ SET</div><div class="v">CB (Caution)</div><div class="d">ติดป้าย พ.ค. 2569</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">฿0 / ไม่จ่าย</div><div class="d">งดปันผลตั้งแต่ขาดทุน</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ก.ค. 2568 – ก.ค. 2569</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#e53935"></i>ราคา RS</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿0.20</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคา RS ซื้อขายในช่วง ฿0.12–฿0.18 ตลอดปีที่ผ่านมา เริ่มต้นที่ ฿0.17 ใน ก.ค. 2568 ก่อนร่วงสู่ ฿0.13 ในช่วง พ.ย.–ธ.ค. 2568 หลังบริษัทรายงานขาดทุนหนักต่อเนื่อง ในเดือน มี.ค. 2569 ราคาพยายามฟื้นตัวเล็กน้อยที่ ฿0.15–0.16 หลังข่าวปรับโครงสร้างหนี้สำเร็จ แต่ในเดือน พ.ค. 2569 ราคาร่วงอีกครั้งเมื่อ RS ประกาศผิดนัดชำระหนี้ตั๋วสัญญาใช้เงิน 317 ล้านบาท และ SET ติดป้าย CB (Caution) ราคาปัจจุบัน ฿0.13 ต่ำกว่า Fair Value ฿0.20 อยู่ ~35% แต่สะท้อนความเสี่ยงสูงมาก
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">3 วิธี — หุ้น distressed ไม่ใช้ P/E</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/BV Valuation</div><div class="mdesc">P/BV เป้าหมาย 0.35x × BVPS ~฿0.54 — ให้ส่วนลด 65% จาก Book Value สะท้อนสินทรัพย์ intangible (ลิขสิทธิ์เพลง) ที่อาจด้อยค่า และความไม่แน่นอนด้านกำไร; P/BV 0.35x สอดคล้องกับหุ้นสื่อ distressed ที่มีทรัพย์สินพอฟื้นตัวได้</div></div>
+        <div class="mval">฿0.19</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. P/S (Price/Sales) Valuation</div><div class="mdesc">P/S เป้าหมาย 0.20x × Revenue/Share ~฿0.86 (รายได้ TTM ฿1,876M ÷ หุ้น ~2,182M) — P/S 0.20x ใช้กับธุรกิจ media/commerce ไทยที่ขาดทุนแต่ยังมีรายได้จริง มอบส่วนลดเพิ่มจากความเสี่ยงสภาพคล่อง</div></div>
+        <div class="mval">฿0.17</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Recovery Value (Asset-Based)</div><div class="mdesc">กรณีฟื้นตัวบางส่วน (50% recovery): ทรัพย์สินรวม ~฿8,031M × 50% = ~฿4,016M หักหนี้ ~฿3,600M → Equity recovery ~฿416M ÷ หุ้น ~2,182M ≈ ฿0.24 ต่อหุ้น — สะท้อน upside หากปรับโครงสร้างสำเร็จและขายสินทรัพย์บางส่วน</div></div>
+        <div class="mval">฿0.24</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿0.15 – ฿0.25</span></div>
+        <div class="r">฿0.20</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        สำหรับหุ้น distressed ไม่สามารถใช้ P/E ได้ (EPS ติดลบ) และ DDM ใช้ไม่ได้ (ไม่มีปันผล) จึงเลือก 3 วิธีที่เหมาะสมกว่า ได้แก่ P/BV (฿0.19), P/S (฿0.17), และ Recovery Value (฿0.24) เฉลี่ย Fair Value ~฿0.20 ความไม่แน่นอนสูงมาก: กรอบ ฿0.15–0.25 สะท้อนหลายสถานการณ์ที่เป็นไปได้ หมายเหตุ: เป้านักวิเคราะห์ 1 ราย อยู่ที่ ฿0.10 (Strong Sell) ต่ำกว่า Fair Value ของเราอย่างมีนัยสำคัญ
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿0.13</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿0.20</div></div>
+        </div>
+        <div class="scale">
+          <span>฿0.10<br><small>เป้า Analyst</small></span>
+          <span>฿0.14<br><small>MOS 30%</small></span>
+          <span style="text-align:center">฿0.16<br><small>MOS 20%</small></span>
+          <span style="text-align:right">฿0.20<br><small>Fair Value</small></span>
+          <span style="text-align:right">฿0.25<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคา ฿0.13 อยู่ต่ำกว่า Fair Value ฿0.20 ประมาณ 35% และต่ำกว่าจุดซื้อ MOS 30% (฿0.14) เล็กน้อย อย่างไรก็ตาม ราคานี้สะท้อนความเสี่ยงสูงมาก เป้านักวิเคราะห์ ฿0.10 ต่ำกว่าราคาตลาด สะท้อนมุมมองเชิงลบต่อการฟื้นตัว การลงทุนในโซนนี้จึงเป็น "speculative deep value" ไม่ใช่ value investing แบบปกติ
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict good">
+        <div class="big">+35%</div>
+        <div class="txt">MOS สูงทางคณิตศาสตร์ แต่สะท้อน Risk Premium ของหุ้น distressed — ความเสี่ยง Going Concern สูงมาก</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿0.16</div><div class="d">ราคาปัจจุบัน ต่ำกว่าแล้ว</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿0.14</div><div class="d">ราคาใกล้โซนนี้แล้ว (฿0.13)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿0.20</div><div class="d">ต้องมั่นใจว่าธุรกิจจะฟื้น</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="0.13" step="0.01">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿0.13 • ไม่มีปันผล • Revenue ฐาน ~฿1,876M</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>ไม่ฟื้น / ล้มละลาย</span></div>
+        <div class="body">
+          <div class="tgt">฿0.06</div>
+          <div class="ret neg">−54% / −22% ต่อปี</div>
+          <ul>
+            <li><span>ราคาเป้า 3 ปี</span><span>~฿0.06</span></li>
+            <li><span>P/BV ออก</span><span>0.10x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>฿0</span></li>
+            <li><span>สถานการณ์</span><span>ขาดทุนต่อ/เพิกถอน</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>ฟื้นตัวบางส่วน</span></div>
+        <div class="body">
+          <div class="tgt">฿0.20</div>
+          <div class="ret pos">+54% / +16% ต่อปี</div>
+          <ul>
+            <li><span>ราคาเป้า 3 ปี</span><span>~฿0.20</span></li>
+            <li><span>P/BV ออก</span><span>0.35x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>฿0</span></li>
+            <li><span>สถานการณ์</span><span>ปรับโครงสร้างสำเร็จ EBITDA +</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>พลิกฟื้นแรง</span></div>
+        <div class="body">
+          <div class="tgt">฿0.32</div>
+          <div class="ret pos">+146% / +34% ต่อปี</div>
+          <ul>
+            <li><span>ราคาเป้า 3 ปี</span><span>~฿0.32</span></li>
+            <li><span>P/BV ออก</span><span>0.60x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>฿0</span></li>
+            <li><span>สถานการณ์</span><span>Commerce+Music พลิกกำไร</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      การคาดการณ์ผลตอบแทนสำหรับ RS มีความไม่แน่นอนสูงมากกว่าหุ้นทั่วไป Bear Case (ล้มละลาย/เพิกถอน) มีน้ำหนักไม่น้อยกว่า 30–40% ในมุมมองของเรา Base Case ขึ้นอยู่กับการปรับโครงสร้างหนี้ถาวรและพลิก EBITDA เป็นบวกภายใน 2–3 ปี Bull Case ต้องอาศัยการโต Commerce Revenue อย่างแรงและ Music IP monetization ที่ชัดเจน ผู้ลงทุนควรจัดสรรไม่เกิน 1–2% ของพอร์ตหากตัดสินใจซื้อ
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก &amp; ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>ปรับโครงสร้างหนี้สำเร็จ (มี.ค. 2569):</b> RS และลูกบริษัท 3 แห่งหลุดพ้นสถานะผิดนัดชำระหนี้กับสถาบันการเงิน 2 แห่ง ลดความเสี่ยงล้มละลายระยะสั้น เปิดทางฟื้นฟูธุรกิจ</li>
+          <li><b>ทรัพย์สินดนตรี (Music IP) มูลค่าซ่อน:</b> RS Music ครองลิขสิทธิ์เพลงไทยจำนวนมากผ่าน RSIAM, COOLfahrenheit, BRIQ มี recurring royalty income และอาจ monetize ผ่าน streaming/licensing เพิ่ม</li>
+          <li><b>Entertainmerce Model ยังมีศักยภาพ:</b> แนวคิดผสาน TV Shopping (Lifestar) + Music + Health Beauty (ULife) เป็น unique positioning ในตลาดไทย หากลดต้นทุนได้อาจพลิก EBITDA บวกได้</li>
+          <li><b>ราคาหุ้นต่ำ P/BV 0.24x:</b> ซื้อขายต่ำกว่าสินทรัพย์สุทธิทางบัญชีอย่างมาก หาก Brand และ IP ยังมีมูลค่า upside จาก rerating มีนัยสำคัญ</li>
+          <li><b>ตลาด Health &amp; Beauty เติบโต:</b> ธุรกิจ ULife (อาวียองซ์, สกินแคร์) อยู่ในตลาดที่โตต่อเนื่อง โดยเฉพาะช่องทาง digital/TV commerce ที่ RS มีโครงสร้างพื้นฐานแล้ว</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>Going Concern Risk:</b> บริษัทขาดทุนต่อเนื่อง 2 ปีรวม ~฿1,527M มี OCF ติดลบ และหนี้สินสูงกว่าทุนมาก ความเสี่ยงไม่สามารถดำเนินกิจการต่อมีอยู่จริง</li>
+          <li><b>รายได้หดตัวต่อเนื่อง:</b> Revenue ลดจาก ฿3,650M (2566) → ฿1,876M (2568) หดตัว ~49% ใน 2 ปี ยังไม่มีสัญญาณพื้นตัวชัดเจน Q1/2569 รายได้ ฿333M ยังต่ำ</li>
+          <li><b>หนี้สินสูงมาก D/E 307%:</b> ภาระดอกเบี้ยกดทับกำไรในอนาคต แม้ปรับโครงสร้างแล้ว ตั๋วสัญญาใช้เงิน 317M ยังอยู่ระหว่างเจรจา (พ.ค. 2569)</li>
+          <li><b>สื่อดั้งเดิมเสื่อมถอย:</b> TV Shopping (Lifestar) และรายการโทรทัศน์เผชิญการแข่งขันจาก Streaming, TikTok, YouTube อย่างรุนแรง ยอดขายลดลงต่อเนื่อง</li>
+          <li><b>ป้าย CB (Caution Business):</b> SET ติดป้าย CB ตั้งแต่ พ.ค. 2569 นักลงทุนสถาบันหลายรายถอนตัว สภาพคล่องการซื้อขายลดลงมาก</li>
+          <li><b>ความเสี่ยงเพิกถอน:</b> หากขาดทุนต่อเนื่องและ Equity ติดลบ อาจเข้าเกณฑ์ตรวจสอบฐานะการเงินของ SET ซึ่งนำไปสู่การเพิกถอนในที่สุด</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>Speculative Deep Value — ความเสี่ยงสูงมาก เหมาะสำหรับนักลงทุนที่รับความเสี่ยงสูงเท่านั้น</h2>
+      <p>RS PCL อยู่ในช่วงวิกฤตทางการเงิน หลังรายได้หดตัวกว่า 49% ใน 2 ปี ขาดทุนสะสมหนัก และผิดนัดชำระหนี้ในช่วงต้นปี 2569 แม้ปรับโครงสร้างหนี้สำเร็จบางส่วนแล้ว แต่ความเสี่ยง Going Concern ยังสูงมาก ราคา ฿0.13 อยู่ต่ำกว่า Fair Value ~35% แต่ MOS ที่สูงนี้สะท้อน Risk Premium ของหุ้น distressed ไม่ใช่ margin of safety แบบ classic value investing การลงทุนใน RS จึงถือเป็น "turnaround speculation" — หากฟื้นตัวได้ upside สูง แต่ downside คือ ฿0 หรือใกล้เคียง</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿0.20 <span style="font-size:12px;color:#cab9a8">(฿0.15–฿0.25)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +35%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿0.10 (Strong Sell)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> <b>ไม่แนะนำสำหรับนักลงทุนทั่วไป</b> — สำหรับผู้ที่เชื่อใน turnaround story อาจพิจารณาตั้งหยุดขาดทุนที่ ฿0.10 และน้ำหนักพอร์ตไม่เกิน 1–2% เฝ้าติดตาม EBITDA และ OCF ว่าพลิกบวกได้หรือไม่ใน Q3–Q4/2569 ก่อนตัดสินใจเพิ่มน้ำหนัก
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อนสูงมากสำหรับหุ้น distressed เช่น P/BV เป้าหมาย, P/S target, และ Recovery Value
+    ราคาหุ้น RS มีความผันผวนสูงมาก และมีความเสี่ยงสูญเสียเงินต้นทั้งหมด ผู้ลงทุนควรศึกษาข้อมูลจาก SEC และ SET ก่อนตัดสินใจ •
+    แหล่งข้อมูล: ตลาดหลักทรัพย์แห่งประเทศไทย (SET factsheet) ณ 3 ก.ค. 2569 · Investing.com (RS financial summary, งบ FY2567/Q1 FY2569) · Finnomena (RS stock page) · Yahoo Finance (RS.BK 1y monthly) · ir.rs.co.th (financial highlights FY2566–FY2568) · งบการเงินไตรมาส Q1/2569 (รายได้ ฿333M)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 3 ก.ค. 2569 • 🤖 วิเคราะห์และจัดทำด้วย AI · Claude Sonnet 4.6 · Anthropic</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
