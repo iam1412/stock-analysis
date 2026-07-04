@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น ดุสิตธานี (DUSIT) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"DUSIT","currency":"THB","price":11.30,"fairValue":12.90,"mos":12.4,"upside":14.2,"pe":null,"dividendYield":null,"roe":null}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#c9a84c",
+    "accentDark": "#9a7a2e",
+    "darkGrad": "linear-gradient(135deg,#2c1f0e 0%,#1a1208 100%)",
+    "glow": "rgba(201,168,76,0.25)",
+    "subColor": "#e8d5a3",
+    "headerMuted": "rgba(201,168,76,0.55)",
+    "verdictText": "#fff8e8",
+    "vcellLabel": "rgba(255,248,232,0.65)",
+    "badge": "#c9a84c",
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#1e8e3e"
+  },
+  "chart": {
+    "data": [
+      ["ก.ค. 68", 8.20],
+      ["ส.ค. 68", 8.80],
+      ["ก.ย. 68", 9.50],
+      ["ต.ค. 68", 10.10],
+      ["พ.ย. 68", 10.10],
+      ["ธ.ค. 68", 10.90],
+      ["ม.ค. 69", 11.20],
+      ["ก.พ. 69", 11.60],
+      ["มี.ค. 69", 10.60],
+      ["เม.ย. 69", 10.20],
+      ["พ.ค. 69", 10.80],
+      ["มิ.ย. 69", 11.20],
+      ["ก.ค. 69", 11.30]
+    ],
+    "min": 7.50,
+    "max": 14.00,
+    "grid": [8.00, 9.00, 10.00, 11.00, 12.00, 13.00],
+    "fairLine": 12.90,
+    "currency": "฿",
+    "highlight": [1, 7]
+  },
+  "gauge": {
+    "min": 7.00,
+    "max": 17.00,
+    "cur": 11.30,
+    "fair": 12.90,
+    "fairLabelTop": true
+  },
+  "fv": 12.90
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots" style="background:linear-gradient(135deg,#c9a84c 0%,#9a7a2e 50%,#6b5420 100%)"></div>
+    <div>
+      <span class="tag">SET: DUSIT</span>
+      <span class="tag">Hotels &amp; Resorts</span>
+      <span class="tag">Luxury Hospitality</span>
+    </div>
+    <h1>ดุสิตธานี (Dusit International)</h1>
+    <div class="sub">โรงแรมหรู Dusit Thani, dusitD2, ASAI Hotels • บริหารโรงแรมทั่วโลก 301 แห่งใน 18 ประเทศ • ธุรกิจอาหาร การศึกษา และอสังหาริมทรัพย์ • Dusit Central Park แลนด์มาร์คใจกลางกรุงเทพฯ มูลค่า ฿46,000 ล้าน</div>
+    <div class="price-row">
+      <div>
+        <div class="px">฿11.30<small>(DUSIT)</small></div>
+      </div>
+      <div class="chg">▲ +37.8% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 4 ก.ค. 2569<br>
+        กรอบ 52 สัปดาห์ ฿8.10 – ฿16.60<br>
+        ที่มา: SET.or.th, Investing.com, Settrade.com
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ก.ค. 2569 / FY2025</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~฿9,560 ล้าน</div><div class="d">845 ล้านหุ้น (paid-up ฿850M)</div></div>
+      <div class="metric"><div class="k">EV/EBITDA</div><div class="v neu">~15.5x</div><div class="d">EV ~฿27,958 ล้าน (SET Factsheet)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">~1.39x</div><div class="d">BVPS ~฿8.00/หุ้น</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v" style="color:var(--red)">−฿0.68</div><div class="d">ยังขาดทุน — ฟื้นตัวต่อเนื่อง</div></div>
+
+      <div class="metric"><div class="k">รายได้ FY2025</div><div class="v neu">~฿8,938 ล้าน</div><div class="d">−20% YoY (ฐาน FY2024 สูงผิดปกติ)</div></div>
+      <div class="metric"><div class="k">EBITDA FY2025</div><div class="v">฿1,455 ล้าน</div><div class="d">บวก — ธุรกิจหลักยังสร้างเงินสด</div></div>
+      <div class="metric"><div class="k">ขาดทุนสุทธิ FY2025</div><div class="v" style="color:var(--red)">−฿453 ล้าน</div><div class="d">ปรับดีขึ้นจาก −฿547M (FY2022)</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~฿8.00</div><div class="d">เฉลี่ย Dusit IR ฿7.96 / Investing ฿8.17</div></div>
+
+      <div class="metric"><div class="k">ROE FY2025</div><div class="v" style="color:var(--red)">−6.5%</div><div class="d">ติดลบ (แต่ปรับดีขึ้นทุกปี)</div></div>
+      <div class="metric"><div class="k">D/E Ratio</div><div class="v" style="color:#e8a838">~4.3x</div><div class="d">หนี้สูง — ความเสี่ยงดอกเบี้ย</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v neu">ไม่จ่าย</div><div class="d">ยังไม่มีกำไรสุทธิเพียงพอ</div></div>
+      <div class="metric"><div class="k">Beta (1Y)</div><div class="v">0.58</div><div class="d">ผันผวนน้อยกว่าตลาด SET</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ก.ค. 2568 – ก.ค. 2569 (รายเดือน)</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#c9a84c"></i>ราคา DUSIT</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿12.90</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคาหุ้น DUSIT รอบปีที่ผ่านมา (ก.ค. 2568 – ก.ค. 2569) ปรับตัวขึ้น <b>+37.8%</b> จาก ฿8.20 มาที่ ฿11.30 สะท้อนความคาดหวังฟื้นตัวหลัง <b>Dusit Thani Bangkok</b> เปิดใหม่ทั้งหมด (ก.ย. 2567) และ Dusit Central Park ทยอยเปิด 2568–2569 ราคาไต่จากจุดต่ำ ฿8.10 ขึ้นแตะ ฿11.60 (ก.พ. 2569) ก่อนปรับฐานเล็กน้อยกลับ ฿10.20–฿11.30 ช่วง มี.ค.–พ.ค. 2569 จากความกังวลภาวะขาดทุนต่อเนื่อง — แนวต้านสำคัญที่ ฿13.00 (Fair Value) และ ฿16.60 (52W high)
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. EV/EBITDA (Recovery)</div><div class="mdesc">EBITDA FY2025 ฿1,455M × เป้า 20x (recovery) = EV ฿29,100M − หนี้สินสุทธิ ฿18,398M ÷ 845M หุ้น — สะท้อนการฟื้นตัวเต็มจาก Dusit Central Park + RevPAR recovery</div></div>
+        <div class="mval">฿12.67</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. P/BV Target</div><div class="mdesc">P/BV เป้าหมาย 1.6x × BVPS ฿8.00 — ระดับ 1.6x อิง ROE เป้าหมาย ~11% เมื่อฟื้นตัว (ประวัติก่อน COVID อยู่ที่ 1.8–2.5x) บวก premium แบรนด์ luxury Dusit International ระดับโลก</div></div>
+        <div class="mval">฿12.80</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Analyst Consensus</div><div class="mdesc">เป้าเฉลี่ย 2 สำนักวิเคราะห์ (Settrade, ปี 2569F) — ทั้งหมดแนะนำ "ซื้อ" (BUY 100%) กรอบ ฿12.57–฿13.50, เฉลี่ย ฿13.04</div></div>
+        <div class="mval">฿13.04</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿12.67 – ฿13.04</span></div>
+        <div class="r">฿12.90</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        เนื่องจาก DUSIT ยังขาดทุน จึงไม่ใช้วิธี P/E — ใช้ EV/EBITDA (วิธีมาตรฐานอุตสาหกรรมโรงแรม), P/BV Target (อิงมูลค่าสินทรัพย์สุทธิ) และ Analyst Consensus ทั้ง 3 วิธีให้ค่า ฿12.67–฿13.04 สอดคล้องกัน — สะท้อน FV ที่ <b>฿12.90</b>
+        <br><br><small>แหล่งข้อมูล: ราคา ฿11.30 ยืนยันจาก SET.or.th + Investing.com (4 ก.ค. 2569, ตรงกัน 100%) · BVPS เฉลี่ย ฿8.00 จาก Dusit IR (฿7.96) และ Investing.com (฿8.17) ต่างกัน 2.6% · EV/EBITDA จาก SET Factsheet · Analyst target จาก Settrade Analyst Consensus</small>
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿11.30</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿12.90</div></div>
+        </div>
+        <div class="scale">
+          <span>฿9.03<br><small>MOS 30%</small></span>
+          <span>฿10.32<br><small>MOS 20%</small></span>
+          <span style="text-align:center">฿12.90<br><small>Fair Value</small></span>
+          <span style="text-align:right">฿13.04<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">฿13.04<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน ฿11.30 อยู่ต่ำกว่า FV ฿12.90 ประมาณ <b>12.4%</b> — อยู่ระหว่างโซน MOS 20% (฿10.32) กับ Fair Value เป็นโซนที่น่าสนใจสำหรับนักลงทุนที่เชื่อมั่นในการฟื้นตัว นักวิเคราะห์ทั้ง 2 สำนักให้คำแนะนำ "ซื้อ" กรอบเป้า ฿12.57–฿13.50
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict ok">
+        <div class="big">+12.4%</div>
+        <div class="txt">MOS พอสมควร — อยู่ในโซน 10–20% สำหรับ recovery play ที่ยังมีความเสี่ยงสูง</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿10.32</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿9.03</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿12.90</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="11.30" step="0.05">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿11.30 • อิง P/BV × BVPS เป้าหมาย • (ยังไม่มีปันผล)</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>ฟื้นตัวล่าช้า</span></div>
+        <div class="body">
+          <div class="tgt">฿8.50</div>
+          <div class="ret neg">−24.8% (3 ปี)</div>
+          <ul>
+            <li><span>BVPS ปี 3</span><span>~฿8.50</span></li>
+            <li><span>P/BV ออก</span><span>1.0x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0</span></li>
+            <li><span>สถานการณ์</span><span>ขาดทุนต่อ ท่องเที่ยวชะลอ หนี้กดดัน</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>ฟื้นตัวปกติ</span></div>
+        <div class="body">
+          <div class="tgt">฿14.40</div>
+          <div class="ret pos">+27.4% (3 ปี)</div>
+          <ul>
+            <li><span>BVPS ปี 3</span><span>~฿9.00</span></li>
+            <li><span>P/BV ออก</span><span>1.6x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0</span></li>
+            <li><span>สถานการณ์</span><span>Dusit Central Park เต็มรูป RevPAR ฟื้น</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>ฟื้นตัวแข็งแกร่ง</span></div>
+        <div class="body">
+          <div class="tgt">฿20.00</div>
+          <div class="ret pos">+77.0% (3 ปี)</div>
+          <ul>
+            <li><span>BVPS ปี 3</span><span>~฿10.00</span></li>
+            <li><span>P/BV ออก</span><span>2.0x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.30</span></li>
+            <li><span>สถานการณ์</span><span>กลับมากำไร 2569 pipeline 60+ แห่ง ท่องเที่ยวบูม</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      เนื่องจาก DUSIT ยังขาดทุน การประมาณผลตอบแทนจึงอิง <b>P/BV × BVPS เป้าหมาย</b> แทน P/E × EPS — กุญแจสำคัญคือ "เมื่อใด DUSIT จะกลับมากำไร?" หาก Dusit Central Park (โรงแรม + residences + retail) สร้างรายได้เต็มที่ และ RevPAR ของ Dusit Thani Bangkok แข็งแกร่ง คาดว่า Base case ให้ผลตอบแทน ~27% ใน 3 ปี — แต่ Bear case ก็เป็นไปได้หากหนี้สูงและ recovery ล่าช้ากว่าคาด
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก &amp; ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>Dusit Central Park:</b> โครงการมิกซ์ยูส ฿46,000 ล้าน ใจกลาง Silom — Dusit Thani Bangkok (257 ห้อง ultra-luxury) + residences + office + retail ทยอยเปิดปี 2568–2569 คาดหนุน RevPAR และ EBITDA อย่างมีนัยสำคัญ</li>
+          <li><b>Global Portfolio ขยายตัว:</b> บริหาร 301 แห่งใน 18 ประเทศ + pipeline 60+ แห่ง (รวม Dusit Suites Kingsquare 2569) — โมเดล asset-light fee income สร้างรายได้โดยไม่ต้องลงทุน CAPEX เพิ่ม</li>
+          <li><b>การท่องเที่ยว luxury ฟื้นตัว:</b> segment luxury ฟื้นเร็วกว่า economy — นักท่องเที่ยวต่างชาติคุณภาพสูงในไทยยังขาขึ้น ส่งผลบวกต่อ RevPAR โดยตรง</li>
+          <li><b>นักวิเคราะห์ BUY 100%:</b> ทั้ง 2 สำนักแนะนำ "ซื้อ" เป้าเฉลี่ย ฿13.04 — upside ~15% จากราคาปัจจุบัน สะท้อนความเชื่อมั่นในการฟื้นตัว</li>
+          <li><b>แบรนด์ 75 ปี + มรดกวัฒนธรรมไทย:</b> ดุสิตธานีก่อตั้ง 2491 — แบรนด์ luxury ที่มีเอกลักษณ์ "Thai Hospitality" ระดับโลก ยากจะลอกเลียนแบบ</li>
+          <li><b>Beta ต่ำ (0.58):</b> ผันผวนน้อยกว่าตลาด — เหมาะนักลงทุนที่ต้องการ recovery play ที่ไม่ผันผวนมาก</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>ขาดทุนต่อเนื่อง 4 ปี:</b> FY2022–FY2025 ขาดทุนสุทธิทุกปี รวม ~฿1,750 ล้าน — ยังไม่มีสัญญาณยืนยันว่าจะกลับมากำไรปี 2569 เมื่อใด</li>
+          <li><b>หนี้สูง D/E ~4.3x:</b> หนี้สินสุทธิ ~฿18,400 ล้าน — อ่อนไหวต่อดอกเบี้ยขาขึ้น ภาระดอกเบี้ยกดกำไรในช่วงฟื้นตัว</li>
+          <li><b>รายได้ FY2025 ลด 20%:</b> จาก ฿11,204M (FY2024) เหลือ ฿8,938M (FY2025) — ต้องติดตามว่า Dusit Central Park จะชดเชยรายได้ที่หายไปได้หรือไม่</li>
+          <li><b>ความเสี่ยงเศรษฐกิจโลก:</b> ภาวะถดถอย ค่าเงินบาทแข็ง หรือ geopolitical events อาจกด นักท่องเที่ยว luxury ลงได้ทันที</li>
+          <li><b>การแข่งขัน luxury hotel:</b> Mandarin Oriental, Four Seasons, Capella, Rosewood Bangkok แข่งชิงตลาดเดียวกัน — RevPAR ต้องพิสูจน์ว่าคุ้มค่า premium</li>
+          <li><b>ราคาหุ้นผันผวนสูงในอดีต:</b> 52W range ฿8.10–฿16.60 กว้าง 105% — sentiment ตลาดสามารถกดราคาแรงได้หากตัวเลขไตรมาสผิดหวัง</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>Recovery Play — แบรนด์ luxury 75 ปีที่กำลังเขียนบทใหม่</h2>
+      <p>ดุสิตธานีเป็นหนึ่งในแบรนด์โรงแรม luxury ไทยที่มีมรดกยาวนานที่สุด (ก่อตั้ง 2491) บริหารกว่า 301 โรงแรมใน 18 ประเทศ ปัจจุบันอยู่ในจุดเปลี่ยนสำคัญด้วยโครงการ <b>Dusit Central Park</b> มูลค่า ฿46,000 ล้าน และการเปิด <b>Dusit Thani Bangkok</b> ที่ได้รับการพัฒนาใหม่ทั้งหมด แม้จะยังขาดทุนอยู่ แต่ EBITDA เป็นบวก และแนวโน้มการฟื้นตัวชัดเจน ราคา ฿11.30 ยังต่ำกว่า FV ~12% นักวิเคราะห์ทั้ง 2 สำนักให้คำแนะนำ "ซื้อ" — เหมาะสำหรับนักลงทุนที่มีขอบฟ้าลงทุน 2–3 ปีและยอมรับความเสี่ยงการฟื้นตัวช้ากว่าคาดได้</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿12.90 <span style="font-size:12px;color:#cab9a8">(฿12.67–฿13.04)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +12.4%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿13.04 (BUY 100%)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ทยอยสะสมใกล้ ฿10.32–฿11.00 (MOS 15–20%) — ติดตาม RevPAR และ Occupancy ของ Dusit Thani Bangkok + รายได้ Dusit Central Park เป็นตัวชี้วัดสำคัญ หากตัวเลขไตรมาสดีกว่าคาด ราคาอาจวิ่งทดสอบ ฿13+ ได้ — ตั้ง stop loss บริเวณ ฿8.50 (ใกล้ 1x BVPS)
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ EV/EBITDA เป้าหมาย, P/BV เป้าหมาย, ROE เป้าหมาย และระยะเวลาฟื้นตัวของธุรกิจ
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    แหล่งข้อมูล: SET.or.th, Investing.com, Dusit International IR, Settrade Analyst Consensus — ราคา ฿11.30 ยืนยันจาก ≥2 แหล่งอิสระ ณ 4 ก.ค. 2569
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 4 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
