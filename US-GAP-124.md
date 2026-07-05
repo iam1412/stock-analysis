@@ -38,9 +38,9 @@
 | 4 | W2 | CSGP | ข้อมูลอสังหาฯ | CoStar −66% ($30) — crash หนัก ต้องแยก structural vs overspend (ไม่ใช่ REIT — P/E ปกติ) | 🔺 | ✅ $30/$49 MOS+39% (Homes.com drag แต่ core ยังดี) |
 | 5 | W2 | ADP | payroll | −20% — dividend aristocrat 50 ปี, duopoly payroll | | ✅ $242/$273 MOS+11% |
 | 6 | W2 | PAYX | payroll | −24% — คู่ duopoly กับ ADP, มาร์จิ้นสูงกว่า | | ✅ $106/$119 MOS+11% |
-| 7 | W3 | TMUS | โทรคมนาคม | T-Mobile −30% — ผู้ชนะ 5G ที่โตเร็วสุดใน 3 เจ้า | | ⬜ |
-| 8 | W3 | T | โทรคมนาคม | AT&T −30% ($20.58) — ปันผลสูง fiber โต หนี้ลดลง | | ⬜ |
-| 9 | W3 | CMCSA | สื่อ/บรอดแบนด์ | Comcast −25% ($23.79) — ถูกมากเทียบ FCF, broadband คงทน | | ⬜ |
+| 7 | W3 | TMUS | โทรคมนาคม | T-Mobile −30% — ผู้ชนะ 5G ที่โตเร็วสุดใน 3 เจ้า | | ✅ $178/$205 MOS+13% |
+| 8 | W3 | T | โทรคมนาคม | AT&T −30% ($20.58) — ปันผลสูง fiber โต หนี้ลดลง | | ✅ $21/$23 MOS+10% yield5.4% |
+| 9 | W3 | CMCSA | สื่อ/บรอดแบนด์ | Comcast −25% ($23.79) — ถูกมากเทียบ FCF, broadband คงทน | | ✅ $24/$31 MOS+23% NBCU spinoff 2027 |
 | 10 | W4 | AZO | ค้าปลีกอะไหล่ | AutoZone −25% — buyback cannibal ระดับตำนาน (นับหุ้นลดทุกปี) | | ⬜ |
 | 11 | W4 | TSCO | ค้าปลีก rural | Tractor Supply −49% ($31.76) — ต้องหาสาเหตุ crash ให้ชัดก่อนตัดสิน | 🔺 | ⬜ |
 | 12 | W4 | DPZ | ร้านอาหาร | Domino's −32% — franchise royalty model, ปกติ premium multiple | | ⬜ |

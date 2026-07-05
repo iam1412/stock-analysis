@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น AT&amp;T (T) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"T","currency":"USD","price":20.58,"fairValue":22.76,"mos":9.6,"upside":10.6,"pe":6.9,"dividendYield":5.39,"roe":11.6}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#00A8E0",
+    "accentDark": "#006fa0",
+    "darkGrad": "linear-gradient(135deg,#003a5c 0%,#006fa0 50%,#00A8E0 100%)",
+    "glow": "rgba(0,168,224,0.35)",
+    "subColor": "#33ccff",
+    "headerMuted": "rgba(255,255,255,0.65)",
+    "verdictText": "#006fa0",
+    "vcellLabel": "#005580",
+    "badge": "#00A8E0",
+    "chgBg": "#8b1a1a",
+    "chgColor": "#ffffff"
+  },
+  "chart": {
+    "data": [
+      ["ส.ค. 68", 29.29],
+      ["ก.ย. 68", 28.24],
+      ["ต.ค. 68", 24.75],
+      ["พ.ย. 68", 26.02],
+      ["ธ.ค. 68", 24.84],
+      ["ม.ค. 69", 26.21],
+      ["ก.พ. 69", 28.01],
+      ["มี.ค. 69", 28.99],
+      ["เม.ย. 69", 26.13],
+      ["พ.ค. 69", 24.80],
+      ["มิ.ย. 69", 20.70],
+      ["ก.ค. 69", 20.58]
+    ],
+    "min": 18,
+    "max": 31,
+    "grid": [18, 21.5, 25, 28.5, 31],
+    "fairLine": 22.76,
+    "currency": "$",
+    "highlight": [7, 11]
+  },
+  "gauge": {
+    "min": 14,
+    "max": 32,
+    "cur": 20.58,
+    "fair": 22.76,
+    "fairLabelTop": true
+  },
+  "fv": 22.76
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">●●●</div>
+    <div>
+      <span class="tag">NYSE: T</span>
+      <span class="tag">Telecom</span>
+      <span class="tag">Wireless + Fiber Broadband</span>
+    </div>
+    <h1>AT&amp;T Inc.</h1>
+    <div class="sub">Wireless postpaid (Mobility) • AT&amp;T Fiber / Internet Air (fixed wireless) • Business wireline & 5G enterprise connectivity • pure-play connectivity หลังขาย WarnerMedia (WBD) และ DIRECTV ออกหมดแล้ว</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$20.58<small>(T)</small></div>
+      </div>
+      <div class="chg">▼ −29.7% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 3 ก.ค. 2569 (3 Jul 2026)<br>
+        กรอบ 52 สัปดาห์ $19.89 – $29.79<br>
+        ที่มา: Yahoo Finance, StockAnalysis.com, AT&amp;T Q1 2026 8-K (SEC)
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">Q1 2026 · TTM</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">$143.0B</div><div class="d">6.95B หุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~6.9x</div><div class="d">GAAP EPS มีกำไรพิเศษขาย DIRECTV ปน</div></div>
+      <div class="metric"><div class="k">Forward P/E</div><div class="v">~8.9x</div><div class="d">อิง adj. EPS FY69 guide $2.25–2.35</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">1.14x</div><div class="d">BVPS ~$18.07</div></div>
+
+      <div class="metric"><div class="k">Net Debt</div><div class="v">$126.4B</div><div class="d">Net Debt/EBITDA 2.71x (Q1 69)</div></div>
+      <div class="metric"><div class="k">EPS (TTM, GAAP)</div><div class="v">~$2.99</div><div class="d">รวมกำไรพิเศษขาย DIRECTV $5.5B</div></div>
+      <div class="metric"><div class="k">Adj. EPS FY68 (จริง)</div><div class="v">$2.12</div><div class="d">ใช้เป็นฐาน run-rate (ไม่รวมรายการพิเศษ)</div></div>
+      <div class="metric"><div class="k">ROE (adj.)</div><div class="v pos">~11.6%</div><div class="d">Adj. NI/equity (ตัดกำไรพิเศษออก)</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$126.5B</div><div class="d">+2.9% YoY</div></div>
+      <div class="metric"><div class="k">Fiber Locations Passed</div><div class="v">37M+</div><div class="d">รวม Lumen deal · เป้า 40M ภายในปี 69</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~5.39%</div><div class="d">$1.11/หุ้น/ปี (คงที่หลายปี)</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">0.42</div><div class="d">ผันผวนต่ำกว่าตลาดมาก</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#00A8E0"></i>ราคา T</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $22.76</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคาขึ้นไปแตะจุดสูงสุดรอบปีที่ $29.79 ช่วง มี.ค. 2569 หลังผลประกอบการ fiber แข็งแกร่ง ก่อนร่วงลงหนักในช่วง พ.ค.–ก.ค. 2569
+        (จาก $28.99 → $20.58 ใน ~4 เดือน) จากข่าว SpaceX/Starlink ประกาศแผนขายบริการมือถือตรงถึงผู้บริโภค (direct-to-cell)
+        กดดันหุ้นกลุ่มไร้สายทั้งอุตสาหกรรม (Oppenheimer ปรับลดคำแนะนำ AT&amp;T) ผนวกกับความกังวลภาระหนี้เพิ่มจากดีล EchoStar spectrum $23B
+        ที่คาดปิดดีลกลางปี 2569 — ผลตอบแทนรอบปี (จุดแรก $29.29 ส.ค. 2568 → จุดล่าสุด $20.58 ก.ค. 2569) ≈ −29.7%
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 2 วิธีหลัก + P/E cross-check</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS adj. $2.30 × P/E 9x — ค่าเฉลี่ยกลุ่ม telecom (VZ/T ซื้อขาย 7–9x historically) ใช้เป็น cross-check เท่านั้น</div></div>
+        <div class="mval">$20.70</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล $1.11 × (1+g); g 2.5%, r 7.5% (CAPM: rf 4.3% + beta 0.42 × ERP 5.5% ≈ 6.6%, ปัดขึ้นเผื่อความเสี่ยงหนี้)</div></div>
+        <div class="mval">$22.76</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. EV/EBITDA (peer multiple)</div><div class="mdesc">EBITDA FY69E $48.0B (FY68 $46.4B × guide +3–4%) × 6.5x − Net Debt $126.4B ÷ 6.95B หุ้น</div></div>
+        <div class="mval">$26.71</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสม (Fair Value — อนุรักษ์นิยม: ต่ำสุดของ 2 วิธีหลัก)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $20.70 – $26.71</span></div>
+        <div class="r">$22.76</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        DDM ให้ค่าต่ำสุดในสองวิธีหลักเพราะปันผลของ AT&amp;T แช่แข็งที่ $1.11/หุ้นมาหลายปี (g อนุรักษ์นิยมที่ 2.5%) ขณะที่ EV/EBITDA
+        สะท้อนมูลค่าธุรกิจ fiber+wireless ที่กำลังโตและ EBITDA มาร์จิ้นดีขึ้น แต่ net debt สูงกดมูลค่าส่วนของผู้ถือหุ้นลง —
+        ใช้ DDM $22.76 เป็น Fair Value อนุรักษ์นิยม (ใกล้เคียง P/E cross-check $20.70 มากกว่า EV/EBITDA ที่มองบวกกว่า)
+        เพื่อความระมัดระวังเรื่องหนี้ที่จะเพิ่มขึ้นหลังปิดดีล EchoStar
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $20.58</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $22.76</div></div>
+        </div>
+        <div class="scale">
+          <span>$15.93<br><small>MOS 30%</small></span>
+          <span>$18.21<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$22.76<br><small>Fair Value</small></span>
+          <span style="text-align:right">$26.71<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">$30.24<br><small>เป้าเฉลี่ย Analyst</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน $20.58 อยู่ต่ำกว่า Fair Value อนุรักษ์นิยม ($22.76) เล็กน้อย และต่ำกว่าเป้าเฉลี่ยนักวิเคราะห์ ($30.24, 26 สำนัก, Buy consensus)
+        ค่อนข้างมาก — ส่วนต่างนี้สะท้อนความกังวลตลาดต่อภัยคุกคาม Starlink direct-to-cell และภาระหนี้เพิ่มจากดีล EchoStar
+        มากกว่าที่ตัวเลขปันผล/EBITDA จะสะท้อน จึงเป็นจุดที่ต้องติดตามว่าราคาจะ "ถูกจริง" หรือเป็น value trap
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict ok">
+        <div class="big">+9.6%</div>
+        <div class="txt">MOS ระดับพอใช้ (10% เป็นเกณฑ์ทยอยสะสม) — อิง Fair Value อนุรักษ์นิยมจาก DDM เท่านั้น หากใช้ EV/EBITDA เป็นเกณฑ์ MOS จะสูงถึง ~23%</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$18.21</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$15.93</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $22.76</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="20.58" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $20.58 • EPS ฐาน ~$2.30 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS 0%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$16.10</div>
+          <div class="ret neg">−21.8% (capital) / −5.6% รวม</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$2.30</span></li>
+            <li><span>P/E ออก</span><span>7.0x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$3.33</span></li>
+            <li><span>สถานการณ์</span><span>Starlink แย่งลูกค้าจริง, EBITDA ทรงตัว, ตลาดให้ P/E ต่ำลง</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +4%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$23.28</div>
+          <div class="ret pos">+13.1% (capital) / +29.3% รวม</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$2.59</span></li>
+            <li><span>P/E ออก</span><span>9.0x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$3.33</span></li>
+            <li><span>สถานการณ์</span><span>Fiber+FWA โตตามแผน, หนี้ลดต่อเนื่องหลัง EchoStar, ปันผลคงที่</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +7%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$29.58</div>
+          <div class="ret pos">+43.8% (capital) / +59.9% รวม</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$2.82</span></li>
+            <li><span>P/E ออก</span><span>10.5x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$3.33</span></li>
+            <li><span>สถานการณ์</span><span>Net debt/EBITDA กลับสู่ &lt;2.5x เร็ว, เริ่มขึ้นปันผล, ตลาดให้ P/E premium กลับ</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      Total Return ต่อปี (annualized, 3 ปี): Bear ≈ −1.9%/ปี · Base ≈ +8.9%/ปี · Bull ≈ +16.9%/ปี
+      สมมติปันผลคงที่ $1.11/หุ้น/ปีตลอดช่วงคาดการณ์ (AT&amp;T ยังไม่ประกาศแผนขึ้นปันผลจนกว่า net debt/EBITDA จะลงมา &lt;2.5x)
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>Fiber ramp ต่อเนื่อง:</b> locations passed เพิ่มจาก 29.5M (Q1 68) → 37M+ (รวม Lumen) มุ่งสู่ 40M ภายในสิ้นปี 69 และ 60M ภายในปี 73 — penetration ~40% และเพิ่มขึ้นเรื่อยๆ หนุนรายได้ recurring สูงมาร์จิ้นดี</li>
+          <li><b>Debt paydown มีวินัย:</b> Net Debt/EBITDA อยู่ที่ 2.71x (Q1 69) ต่ำสุดในรอบหลายปี หลังขาย DIRECTV/WarnerMedia — เป้าหมายระยะยาวคือกลับสู่ &lt;2.5x เพื่อเปิดทางขึ้นปันผล/buyback เพิ่ม</li>
+          <li><b>FCF แข็งแกร่ง:</b> guidance FY69 ที่ $18B+ ให้พื้นที่ครอบคลุมปันผล ($1.11/หุ้น ~$7.7B/ปี) ด้วยส่วนเกินไปลดหนี้และลงทุนต่อ</li>
+          <li><b>Pure-play connectivity:</b> ตัดธุรกิจสื่อ/บันเทิงออกหมดแล้ว (WBD spinoff, DIRECTV divest) โฟกัส wireless+fiber ล้วน ลดความซับซ้อนและความเสี่ยง capital allocation</li>
+          <li><b>Enterprise 5G/fixed wireless:</b> Internet Air (FWA) เติบโตเร็วเสริม fiber ในพื้นที่ที่ยังไม่ถึง ช่วยขยาย broadband reach โดยไม่ต้องรอ fiber build</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>Starlink/SpaceX direct-to-cell:</b> ภัยคุกคามใหม่ต่อโมเดลไร้สายทั้งอุตสาหกรรม เป็นสาเหตุหลักที่กดราคาหุ้น T ร่วง ~30% ในรอบปี — ยังไม่ชัดว่าผลกระทบจริงต่อ ARPU/market share จะรุนแรงแค่ไหน</li>
+          <li><b>Net debt เพิ่มจาก EchoStar deal:</b> ดีลซื้อ spectrum $23B (คาดปิดกลางปี 69) จะดัน net debt/EBITDA ขึ้นไปแตะ ~3.2x ชั่วคราว ก่อนไล่ลดกลับ — เสี่ยงถ้า EBITDA โตช้ากว่าคาด</li>
+          <li><b>Legacy wireline เสื่อมถอยเร็ว:</b> Legacy service revenue ลดลง ~25% YoY ใน Q1 69 และคาดลดลง &gt;20% ทั้งปี 69 — กดดันรายได้รวมแม้ fiber จะโตชดเชย</li>
+          <li><b>Postpaid phone ARPU ทรงตัว:</b> ไม่โตในไตรมาสล่าสุดจากการเจาะกลุ่มลูกค้า value-tier มากขึ้น อาจกดดันรายได้ mobility ในระยะกลาง</li>
+          <li><b>ปันผลไม่โตมาหลายปี:</b> คงที่ $1.11/หุ้นตั้งแต่ตัดลดหลัง WarnerMedia spinoff (2565) — นักลงทุนที่หวังปันผลโตอาจผิดหวังจนกว่าหนี้จะลดพอ</li>
+          <li><b>แข่งขันจาก cable/fixed wireless:</b> Comcast, Charter และคู่แข่ง FWA (T-Mobile, Verizon) แย่งส่วนแบ่งตลาด broadband ในพื้นที่ที่ fiber ยังไปไม่ถึง</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>ปันผลสูง หนี้ลดมีวินัย แต่ตลาดกังวล Starlink — MOS พอใช้ ไม่ใช่ deep value</h2>
+      <p>
+        AT&amp;T ร่วงลงจากจุดสูงสุดรอบปี ~30% หลัง SpaceX ประกาศแผน direct-to-cell กดดันหุ้นกลุ่มไร้สายทั้งกระดาน
+        ผสมกับความกังวลเรื่องหนี้ที่จะเพิ่มขึ้นชั่วคราวจากดีล EchoStar spectrum $23B ทว่าพื้นฐานธุรกิจยังแข็งแรง:
+        fiber ยังโตต่อเนื่อง (37M+ locations passed, เป้า 40M ในปีนี้), net debt/EBITDA ที่ 2.71x ต่ำสุดในรอบหลายปี,
+        FCF guidance $18B+ ครอบคลุมปันผล 5.39% ได้สบาย และธุรกิจสื่อ/บันเทิงถูกตัดออกหมดแล้วทำให้โฟกัสชัดเจนขึ้น
+        Fair Value อนุรักษ์นิยม (DDM) อยู่ที่ $22.76 ให้ MOS ~9.6% เท่านั้น — ราคาปัจจุบันยังไม่ถูกมากเมื่อเทียบ downside
+        risk จาก Starlink ที่ตลาดยังตีราคาไม่แน่นอน แต่ถ้ามองผ่านมุม EV/EBITDA (โมเดลที่มองบวกกว่า) upside จะสูงถึง ~23%
+      </p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$22.76 <span style="font-size:12px;color:#cab9a8">($20.70–$26.71)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +9.6%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$30.24 (Buy)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> เหมาะกับนักลงทุนสายปันผล (yield ~5.4%) ที่รับความเสี่ยง Starlink/หนี้ได้ — ทยอยสะสมหากราคาลงไปโซน $18–19
+        (MOS ~20%+) จะให้ margin of safety ที่มั่นใจกว่า ไม่ควร all-in ที่ราคาปัจจุบันเพราะ MOS ยังไม่หนาพอเผื่อความเสี่ยงเชิงโครงสร้างจาก
+        satellite-to-phone competition ที่ยังประเมินผลกระทบระยะยาวไม่ได้ชัดเจน
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ EBITDA multiple ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ข้อมูล: Yahoo Finance, StockAnalysis.com, AT&amp;T Investor Relations (SEC 8-K Q1 2026), StockTitan
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 3 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>

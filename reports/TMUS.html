@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น T-Mobile US (TMUS) — Stock Analysis Dashboard</title>
+<!-- ★ ใส่รุ่นโมเดล AI ที่ใช้วิเคราะห์จริง (Opus→"Claude Opus 4.8", Sonnet→"Claude Sonnet 4.6") — gate E28 บังคับ -->
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
+<script type="application/json" id="stock-meta">
+{"symbol":"TMUS","currency":"USD","price":177.52,"fairValue":205,"mos":13.4,"upside":15.5,"pe":18.9,"dividendYield":2.3,"roe":18.2}
+</script>
+<script type="application/json" id="report-data">
+{"theme":{"accent":"#E20074","accentDark":"#a80055","darkGrad":"linear-gradient(135deg,#5c0030 0%,#a80055 50%,#E20074 100%)","glow":"rgba(226,0,116,0.35)","subColor":"#ff4da6","headerMuted":"rgba(255,255,255,0.65)","verdictText":"#c0005a","vcellLabel":"#a80055","badge":"#E20074","chgBg":"#8b1a1a","chgColor":"#ffffff"},"chart":{"data":[["ส.ค.68",251.99],["ก.ย.68",239.38],["ต.ค.68",210.05],["พ.ย.68",209.01],["ธ.ค.68",203.04],["ม.ค.69",197.21],["ก.พ.69",217.09],["มี.ค.69",210.03],["เม.ย.69",195.50],["พ.ค.69",187.53],["มิ.ย.69",167.73],["ก.ค.69",177.52]],"min":150,"max":260,"grid":[150,175,200,225,250],"fairLine":205,"currency":"$","highlight":[10,11]},"gauge":{"min":130,"max":230,"cur":177.52,"fair":205,"fairLabelTop":true},"fv":205}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">●●●</div>
+    <div>
+      <span class="tag">NASDAQ: TMUS</span>
+      <span class="tag">Wireless Telecom</span>
+      <span class="tag">5G / Fixed Wireless</span>
+    </div>
+    <!-- ★ คำโปรยธุรกิจ (gate E32) — .sub ต้องอยู่ติดใต้ </h1> (ห้ามมีคอมเมนต์/แท็กคั่น) : บริษัททำอะไร ใช้ • คั่นกลุ่ม -->
+    <h1>T-Mobile US (TMUS)</h1>
+    <div class="sub">Wireless postpaid/prepaid 5G network • Home Internet (fixed wireless broadband) • Enterprise B2B • Fiber joint-venture partnerships</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$177.52<small>(TMUS)</small></div>
+      </div>
+      <!-- ★ ป้าย % รอบปี (gate E35/E36) — ผลตอบแทน ~1 ปี (เทียบราคา ~1 ปีก่อน) = ผลตอบแทนปลายกราฟ section 2 (จุดแรก→ท้าย)
+           รูปแบบ: "▲ +X.X% (รอบปี)" ขึ้น · "▼ −X.X% (รอบปี)" ลง · "≈ ทรงตัว (รอบปี)" · หุ้น IPO <1 ปี ใช้ "(ตั้งแต่ IPO)"
+           ไม่ใช่ % รายวัน/YTD/52 สัปดาห์ · ตั้งสี theme.chgBg/chgColor ให้ตรงทิศ (ขึ้น=เขียว/ลง=แดง · E34) -->
+      <div class="chg">▼ −29.6% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 2 ก.ค. 2569 (2 Jul 2026)<br>
+        กรอบ 52 สัปดาห์ $165.66 – $261.56<br>
+        ที่มา: StockAnalysis.com, Google Finance, Yahoo Finance
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">Q1 2026 (สิ้นสุด 31 มี.ค. 2569) + TTM</div></div>
+    <!-- ✏️ ปรับชุด metric ให้เหมาะกับ wireless telecom: P/E, EV/EBITDA, Postpaid Phone Net Adds, ARPU, Home Internet subs, Revenue growth, FCF/share, Dividend yield -->
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">$192.1B</div><div class="d">~1.08B หุ้น (diluted)</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~18.9x</div><div class="d">EPS TTM $9.41 · ต่ำกว่าเฉลี่ย 5 ปี</div></div>
+      <div class="metric"><div class="k">EV/Core EBITDA (FY26E)</div><div class="v">~7.4x</div><div class="d">Net debt ~$81.5B, guide EBITDA $37.1–37.5B</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">~3.4x</div><div class="d">BVPS ~$51.7</div></div>
+
+      <div class="metric"><div class="k">Postpaid Phone Net Adds (Q1)</div><div class="v pos">+217K บัญชี</div><div class="d">+6% YoY · churn 1.04% (ต่ำสุดในกลุ่ม)</div></div>
+      <div class="metric"><div class="k">Postpaid ARPU</div><div class="v pos">$151.93</div><div class="d">+3.9% YoY</div></div>
+      <div class="metric"><div class="k">Home Internet (Fixed Wireless)</div><div class="v pos">~9M+ ราย</div><div class="d">+500K+ net adds ใน Q1 2569</div></div>
+      <div class="metric"><div class="k">ROE</div><div class="v pos">~18.2%</div><div class="d">Net income TTM ~$10.2B</div></div>
+
+      <div class="metric"><div class="k">รายได้รวม (Q1 2569)</div><div class="v neu">$23.11B</div><div class="d">+10.6% YoY</div></div>
+      <div class="metric"><div class="k">Core Adj. EBITDA (Q1)</div><div class="v pos">$9.2B</div><div class="d">+12% YoY · margin 49.1% ของ service rev</div></div>
+      <div class="metric"><div class="k">FCF/หุ้น (FY26 guide)</div><div class="v pos">~$17.0</div><div class="d">Adj. FCF guide $18.1–18.7B</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~2.3%</div><div class="d">$4.08/หุ้น/ปี ($1.02/ไตรมาส) เริ่มจ่าย 2566</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART (ราคาย้อนหลัง ~1 ปี) ===== -->
+  <!-- ★ กราฟต้องเป็น "ราคาย้อนหลัง ~1 ปี" (gate E37): ไม่เกิน 13 จุด (รายเดือน 12 เดือน = 13 จุด · รายสองเดือน = ~8 จุด)
+       ห้ามใส่ 18 เดือน/1.5 ปี · จุดสุดท้าย = ราคาปัจจุบัน · ผลตอบแทน จุดแรก→จุดท้าย ต้องตรงกับป้าย % รอบปีใน header (E36) -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#E20074"></i>ราคา TMUS</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $205</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคาขึ้นทำจุดสูงสุดที่ ~$252 ช่วง ส.ค. 2568 แล้วปรับฐานลงต่อเนื่องเหลือ ~$168 ในเดือน มิ.ย. 2569 (ต่ำสุดในรอบปี)
+        ก่อนฟื้นตัวเล็กน้อยมาที่ $177.52 ปัจจุบัน — รวมลดลง ~29.6% ในรอบ 1 ปี สาเหตุหลักจากตลาดกังวลการแข่งขันด้านราคา
+        ในกลุ่ม wireless, ต้นทุนรวม UScellular merger, และ valuation ที่เคย premium สูงเทียบ AT&T/Verizon เริ่ม de-rate ลง
+        แม้ operating metrics (postpaid net adds, ARPU, Home Internet) ยังเติบโตแข็งแกร่งต่อเนื่อง
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION (เฉลี่ย 3 วิธี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <!-- ✏️ Telecom valuation: EV/EBITDA (หลัก) + P/E + P/FCF — 3 วิธี เฉลี่ย = Fair Value -->
+      <div class="vmethod">
+        <div><div class="mname">1. EV/EBITDA</div><div class="mdesc">Core Adj. EBITDA guide FY26 $37.3B × 8.0x = EV $298.4B − Net debt $81.5B = Equity value ÷ 1.08B หุ้น</div></div>
+        <div class="mval">$200.83</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. P/E</div><div class="mdesc">EPS adj. $9.41 × P/E 20x — ต่ำกว่าค่าเฉลี่ย 5 ปีของ TMUS (~22–25x) สะท้อนการ de-rate ล่าสุด</div></div>
+        <div class="mval">$188.20</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. P/FCF</div><div class="mdesc">Adj. FCF/หุ้น (guide FY26) $17.04 ÷ FCF yield เป้าหมาย 7.5% (ใกล้เคียง peers VZ/T)</div></div>
+        <div class="mval">$227.16</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $188 – $227</span></div>
+        <div class="r">$205</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        P/FCF ให้ค่าสูงสุดเพราะ FCF yield ปัจจุบันของ TMUS (~9.6% ที่ราคาตลาด) สูงกว่าที่ใช้ประเมิน (7.5%) มาก — สะท้อนว่าตลาดยังไม่ให้เครดิตเต็มที่กับการเติบโตของ FCF
+        หลัง capex โครงข่าย 5G เริ่มลดลง ส่วน P/E ให้ค่าต่ำสุดเพราะใช้ multiple อนุรักษ์นิยม (20x ต่ำกว่าเฉลี่ย 5 ปี) กัน downside จากการแข่งขันราคา
+        EV/EBITDA อยู่กึ่งกลาง — ใช้ multiple 8.0x ซึ่งยัง premium กว่า AT&T/Verizon (~6.5–7x) ตามอัตราเติบโต subscriber ที่เหนือกว่า Fair Value เฉลี่ย $205
+        จึงเป็นตัวเลขที่สมเหตุสมผลระหว่างความระมัดระวังด้าน P/E และมุมมองบวกด้าน FCF
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $177.52</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $205</div></div>
+        </div>
+        <div class="scale">
+          <span>$143.50<br><small>MOS 30%</small></span>
+          <span>$164.00<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$205<br><small>Fair Value</small></span>
+          <span style="text-align:right">$227<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">$255<br><small>เป้าเฉลี่ย Analyst</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน $177.52 อยู่ต่ำกว่า Fair Value ($205) ~13.4% และต่ำกว่าเป้าเฉลี่ยของนักวิเคราะห์ (~$255, Buy consensus จาก 28 สำนัก) ถึง ~30%
+        สะท้อนว่าตลาดยัง price-in ความกังวลเรื่องการแข่งขันและภาระหนี้มากกว่าที่ปัจจัยพื้นฐาน (postpaid growth, ARPU, Home Internet) จะสมควรได้รับ
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <!-- ✏️ class ของ mos-verdict: MOS<10 → "bad", 10–20 → "ok", ≥20 → "good" -->
+      <div class="mos-verdict ok">
+        <div class="big">+13.4%</div>
+        <div class="txt">ราคาพอใช้ — ต่ำกว่ามูลค่าเหมาะสมพอสมควร ทยอยสะสมได้ ยังไม่ถึงโซน deep value</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$164.00</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$143.50</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $205</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="177.52" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $177.52 • EPS ฐาน ~$9.41 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS +2%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$159.78</div>
+          <div class="ret neg">−3.0% (3 ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$9.99</span></li>
+            <li><span>P/E ออก</span><span>16x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$12.36</span></li>
+            <li><span>สถานการณ์</span><span>แข่งขันราคารุนแรงขึ้น ARPU ทรงตัว P/E de-rate ต่อ</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +6%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$212.94</div>
+          <div class="ret pos">+27.1% (3 ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$11.21</span></li>
+            <li><span>P/E ออก</span><span>19x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$12.61</span></li>
+            <li><span>สถานการณ์</span><span>Postpaid/Home Internet โตต่อเนื่องตามแผน EBITDA guide</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +10%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$275.54</div>
+          <div class="ret pos">+62.5% (3 ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$12.52</span></li>
+            <li><span>P/E ออก</span><span>22x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$12.85</span></li>
+            <li><span>สถานการณ์</span><span>Home Internet + enterprise B2B เร่งตัว FCF โตแรง buyback หนุนราคา</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      Base case ให้ผลตอบแทนรวม ~27% ใน 3 ปี (annualized ~8.3%) จากทั้ง capital gain และปันผลสะสม ~$12.6/หุ้น
+      สมมติฐานหลักคือ P/E กลับสู่ระดับ 19–22x (ยังต่ำกว่าค่าเฉลี่ยย้อนหลัง 5 ปีที่ ~22–25x) และ EPS โตตามแผน buyback + EBITDA growth ของบริษัท
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>Home Internet TAM ยังใหญ่:</b> fixed wireless broadband แตะ ~9M+ ราย เพิ่ม 500K+ ต่อไตรมาส ยังมีช่องเติบโตเทียบ cable incumbent (Comcast/Charter เสียลูกค้าต่อเนื่อง)</li>
+          <li><b>Network lead 5G:</b> คลื่นความถี่ mid-band ที่ครอบคลุมสุดในกลุ่ม US carriers หนุน churn ต่ำสุด (1.04%) และ ARPU โตต่อเนื่อง</li>
+          <li><b>Enterprise B2B upsell:</b> ขยายฐานลูกค้าองค์กรผ่าน network slicing, private 5G, IoT — ตลาดใหม่ที่ยังเจาะไม่มาก</li>
+          <li><b>Fiber JV partnership:</b> ร่วมทุนกับ EQT/KKR ขยายโครงข่าย fiber เสริม fixed wireless ให้ครอบคลุมพื้นที่ที่ FWA ทำไม่ได้</li>
+          <li><b>Buyback + เพิ่งเริ่มจ่ายปันผล:</b> โปรแกรม buyback ต่อเนื่องช่วยหนุน EPS growth พร้อมปันผล 2.3% เป็นผลตอบแทนส่วนเพิ่ม</li>
+          <li><b>Valuation de-rate ให้จุดเข้าที่ดีขึ้น:</b> ราคาลดลง ~30% จากจุดสูงสุด ขณะที่ปัจจัยพื้นฐานยังแข็งแรง เปิดโอกาส MOS ที่กว้างขึ้น</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>การแข่งขันจาก AT&T/Verizon:</b> ทั้งคู่เร่งลงทุน fiber และ promotion ราคาดุเดือดขึ้น อาจกดดัน ARPU/net adds ของ TMUS ในระยะถัดไป</li>
+          <li><b>ภาระหนี้จากดีล Sprint/UScellular:</b> net debt ~$81.5B กดดัน free cash flow และจำกัดความยืดหยุ่นทางการเงินหากดอกเบี้ยสูงต่อเนื่อง</li>
+          <li><b>ต้นทุนคลื่นความถี่ (spectrum):</b> การประมูลคลื่นใหม่และการขยาย capacity ต้องใช้เงินลงทุนสูงต่อเนื่อง กดดัน margin ระยะสั้น</li>
+          <li><b>Home Internet capacity constraint:</b> fixed wireless ใช้คลื่นร่วมกับ mobile — หากลูกค้าล้นในบางพื้นที่ต้องจำกัดการขายเพิ่ม กระทบ growth</li>
+          <li><b>Regulatory/M&A scrutiny:</b> ดีล UScellular และการควบรวมต่อในอนาคตอาจเจอการตรวจสอบจาก FCC/DOJ นานกว่าคาด</li>
+          <li><b>Valuation premium ลดลงเรื่อยๆ:</b> หากตลาดมองว่า TMUS ไม่ต่างจาก AT&T/Verizon อีกต่อไป P/E อาจ de-rate ลงไปอีกใกล้ระดับ peers (~10–13x)</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>T-Mobile — ผู้ชนะ 5G ที่ราคาลงมาอยู่ในโซนน่าสนใจ</h2>
+      <p>
+        TMUS ยังคงเป็นผู้นำการเติบโตในกลุ่ม wireless carrier ใหญ่ 3 เจ้าของสหรัฐฯ ด้วย postpaid net adds ที่แข็งแกร่งสุด (+217K บัญชี, churn ต่ำสุด 1.04%),
+        ARPU ที่โตต่อเนื่อง (+3.9% YoY) และธุรกิจ Home Internet (fixed wireless) ที่ขยายตัวเร็ว (+500K+ ต่อไตรมาส สู่ ~9M+ ราย) ซึ่งเป็นตัวขับเคลื่อนใหม่นอกเหนือจาก wireless หลัก
+        อย่างไรก็ตาม ราคาหุ้นปรับตัวลงแรง ~30% จากจุดสูงสุดในรอบปี จากความกังวลเรื่องการแข่งขันด้านราคาที่รุนแรงขึ้นและภาระหนี้จากดีล Sprint/UScellular
+        ทำให้ P/E ปัจจุบัน (~18.9x) ต่ำกว่าค่าเฉลี่ยย้อนหลัง 5 ปีอย่างมีนัยสำคัญ Fair Value เฉลี่ย 3 วิธี (EV/EBITDA, P/E, P/FCF) อยู่ที่ ~$205 ให้ MOS ~13.4%
+        ซึ่งอยู่ในโซน "ราคาพอใช้ ทยอยสะสมได้" — เหมาะกับนักลงทุนที่มองระยะยาวและเชื่อว่า operating momentum จะช่วยให้ตลาดกลับมาให้ premium valuation อีกครั้ง
+      </p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$205 <span style="font-size:12px;color:#cab9a8">($188–$227)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +13.4%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$255 (Buy consensus, 28 สำนัก)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ทยอยสะสมในช่วงราคาปัจจุบัน–$164 (โซน MOS 20%) โดยเน้นติดตาม postpaid net adds, Home Internet growth และทิศทางการแข่งขันราคาจาก AT&T/Verizon
+        เป็นหลัก หากราคาลงไปแตะ ~$143–150 (MOS 30%) จะเป็นโซน deep value ที่น่าสนใจเพิ่มน้ำหนักมากขึ้น
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ข้อมูลจาก StockAnalysis.com, Google Finance, Yahoo Finance, T-Mobile Q1 2026 earnings release และ MarketBeat/analyst consensus
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 2 กรกฎาคม 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
