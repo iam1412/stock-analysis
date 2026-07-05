@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น โรแยล พลัส (PLUS) — Stock Analysis Dashboard</title>
+<!-- ★ ใส่รุ่นโมเดล AI ที่ใช้วิเคราะห์จริง (Opus→"Claude Opus 4.8", Sonnet→"Claude Sonnet 4.6") — gate E28 บังคับ -->
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
+<script type="application/json" id="stock-meta">
+{"symbol":"PLUS","currency":"THB","price":1.32,"fairValue":0.69,"mos":-91.3,"upside":-47.7,"pe":null,"dividendYield":4.55,"roe":-5.77}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#0d9488",
+    "accentDark": "#0f766e",
+    "darkGrad": "linear-gradient(135deg,#042f2c 0%,#0f5c53 55%,#0d9488 120%)",
+    "glow": "rgba(13,148,136,0.35)",
+    "subColor": "#99f6e4",
+    "headerMuted": "rgba(153,246,228,0.75)",
+    "verdictText": "#ecfdf9",
+    "vcellLabel": "rgba(153,246,228,0.85)",
+    "badge": "#14b8a6",
+    "chgBg": "var(--red-soft)",
+    "chgColor": "#c5221f"
+  },
+  "chart": {
+    "data": [
+      ["ก.ค. 68", 2.92],
+      ["ส.ค. 68", 2.76],
+      ["ก.ย. 68", 2.00],
+      ["ต.ค. 68", 1.20],
+      ["พ.ย. 68", 1.15],
+      ["ธ.ค. 68", 1.48],
+      ["ม.ค. 69", 1.45],
+      ["ก.พ. 69", 1.29],
+      ["มี.ค. 69", 1.28],
+      ["เม.ย. 69", 1.16],
+      ["พ.ค. 69", 1.37],
+      ["มิ.ย. 69", 1.32],
+      ["ก.ค. 69", 1.32]
+    ],
+    "min": 0.8,
+    "max": 3.1,
+    "grid": [0.8, 1.4, 2.0, 2.6, 3.1],
+    "fairLine": 0.69,
+    "currency": "฿",
+    "highlight": [2, 3],
+    "gridFmt": "v.toFixed(2)",
+    "dataFmt": "d[1].toFixed(2)"
+  },
+  "gauge": {
+    "min": 0.4,
+    "max": 3.3,
+    "cur": 1.32,
+    "fair": 0.69,
+    "fairLabelTop": true
+  },
+  "fv": 0.69
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">●●●</div>
+    <div>
+      <span class="tag">SET: PLUS</span>
+      <span class="tag">อาหารและเครื่องดื่ม (Agro &amp; Food)</span>
+      <span class="tag">เครื่องดื่มมะพร้าว/น้ำผลไม้</span>
+    </div>
+    <!-- ★ คำโปรยธุรกิจ (gate E32) — .sub ต้องอยู่ติดใต้ </h1> (ห้ามมีคอมเมนต์/แท็กคั่น) : บริษัททำอะไร ใช้ • คั่นกลุ่ม -->
+    <h1>บมจ. โรแยล พลัส (Royal Plus PCL)</h1>
+    <div class="sub">ผลิต-จำหน่ายน้ำมะพร้าว นมจากพืช น้ำผลไม้ และเครื่องดื่มชา ภายใต้แบรนด์ COCO ROYAL, Nita, MABU • ส่งออกกว่า 111 ประเทศทั่วโลก • OEM ให้แบรนด์ต่างประเทศ</div>
+    <div class="price-row">
+      <div>
+        <div class="px">฿1.32<small>(PLUS)</small></div>
+      </div>
+      <!-- ★ ป้าย % รอบปี (gate E35/E36) — ผลตอบแทน ~1 ปี (เทียบราคา ~1 ปีก่อน) = ผลตอบแทนปลายกราฟ section 2 (จุดแรก→ท้าย)
+           รูปแบบ: "▲ +X.X% (รอบปี)" ขึ้น · "▼ −X.X% (รอบปี)" ลง · "≈ ทรงตัว (รอบปี)" · หุ้น IPO <1 ปี ใช้ "(ตั้งแต่ IPO)"
+           ไม่ใช่ % รายวัน/YTD/52 สัปดาห์ · ตั้งสี theme.chgBg/chgColor ให้ตรงทิศ (ขึ้น=เขียว/ลง=แดง · E34) -->
+      <div class="chg">▼ −54.8% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 3 ก.ค. 2569<br>
+        กรอบ 52 สัปดาห์ ฿0.97 – ฿3.24<br>
+        ที่มา: StockAnalysis.com, SET Factsheet, Yahoo Finance, Royal Plus IR
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">บริษัทขาดทุนสุทธิ FY2568 — เน้น metric เชิงงบดุล/กระแสเงินสด</div></div>
+    <!-- ✏️ ปรับชุด metric ให้เหมาะกับหุ้นขาดทุน — ตัด P/E ออก (EPS ติดลบ) เน้น P/BV, Revenue growth, Gross margin, ROE -->
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">฿884 ล้าน</div><div class="d">670 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">N/A</div><div class="d">ขาดทุนสุทธิ — คำนวณ P/E ไม่ได้</div></div>
+      <div class="metric"><div class="k">รายได้เติบโต YoY</div><div class="v neg">−7.7%</div><div class="d">FY2568 vs FY2567</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">0.76x</div><div class="d">ราคา ฿1.32 ÷ BVPS ฿1.73</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2568</div><div class="v neg">−฿78.3 ล้าน</div><div class="d">พลิกขาดทุนจากกำไร ฿43 ล้าน (FY2567)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v neg">~฿−0.10</div><div class="d">Q1/2569 ขาดทุนต่อเนื่อง ฿−0.05</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~฿1.73</div><div class="d">ทุน 1,161 ล้าน ÷ 670 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v neg">~−5.8% / −3.8%</div><div class="d">ติดลบต่อเนื่อง 5 ไตรมาส</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">~฿1,300 ล้าน</div><div class="d">แนวโน้มหดตัวต่อเนื่อง 2 ปี</div></div>
+      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v neg">~11.5%</div><div class="d">ร่วงจาก ~30% (FY2565) — ต้นทุนวัตถุดิบ/แข่งขันราคา</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~4.6%</div><div class="d">Trailing (จ่ายล่าสุด ฿0.06/หุ้น พ.ค. 2568) — เสี่ยงงด เพราะขาดทุน</div></div>
+      <div class="metric"><div class="k">หนี้สินรวม/ทุน</div><div class="v neu">~0.37x</div><div class="d">หนี้ 429 ล้าน / ทุน 1,161 ล้าน — ยังไม่วิกฤต</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART (ราคาย้อนหลัง ~1 ปี) ===== -->
+  <!-- ★ กราฟต้องเป็น "ราคาย้อนหลัง ~1 ปี" (gate E37): ไม่เกิน 13 จุด (รายเดือน 12 เดือน = 13 จุด · รายสองเดือน = ~8 จุด)
+       ห้ามใส่ 18 เดือน/1.5 ปี · จุดสุดท้าย = ราคาปัจจุบัน · ผลตอบแทน จุดแรก→จุดท้าย ต้องตรงกับป้าย % รอบปีใน header (E36) -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#0d9488"></i>ราคา PLUS</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿0.69</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคาร่วงหนักจาก ฿2.92 (ก.ค. 2568) เหลือ ฿1.15 (พ.ย. 2568) หลังตลาดรับรู้อัตรากำไรขั้นต้นทรุดตัวและบริษัทพลิกขาดทุนใน FY2568
+        มีรีบาวด์สั้น ๆ ช่วง ธ.ค. 2568–ม.ค. 2569 (฿1.45–1.48) ก่อนไหลลงต่อแตะจุดต่ำรอบใหม่ ฿1.16 (เม.ย. 2569) จากผลขาดทุนต่อเนื่องใน Q1/2569
+        ล่าสุดแกว่งตัว ฿1.28–1.37 สะท้อนภาวะ "ไซด์เวย์แถบต่ำ" รอสัญญาณพลิกฟื้นผลประกอบการ รวมทั้งปี ราคาลดลง ~54.8%
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION (เฉลี่ย 3 วิธี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 2 วิธี — ปรับให้เหมาะกับหุ้นขาดทุน (ตัด P/E และ DDM ออก)</div></div>
+    <div class="card">
+      <!-- ✏️ EPS ติดลบ → ตัด P/E/DDM ออก ใช้ Justified P/BV (E22 เช็คคณิต) + EV/Sales (ไม่ผูก E21 เพราะชื่อไม่มี "P/E") -->
+      <div class="vmethod">
+        <div><div class="mname">1. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 5% − g 2%)/(r 10% − g 2%) ≈ 0.375x × BVPS ฿1.73 — สมมติ ROE ฟื้นตัวจากติดลบสู่ 5% ระยะยาว (ยังต่ำกว่าต้นทุนทุน)</div></div>
+        <div class="mval">฿0.65</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. EV/Sales (Distressed F&amp;B)</div><div class="mdesc">รายได้ TTM ~฿1,300 ล้าน × EV/Sales 0.7x = EV ~฿910 ล้าน − หนี้สุทธิ ~฿429 ล้าน ÷ 670 ล้านหุ้น — คูณต่ำกว่ากลุ่มเครื่องดื่มปกติ (~1.2–1.8x) เพราะขาดทุนต่อเนื่อง</div></div>
+        <div class="mval">฿0.72</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿0.65 – ฿0.72</span></div>
+        <div class="r">฿0.69</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ทั้งสองวิธีสะท้อนสถานะ "หุ้นขาดทุน" ของ PLUS ไม่ใช้ P/E (EPS ติดลบ) หรือ DDM (ปันผลไม่แน่นอน) —
+        Justified P/BV ให้ค่าต่ำสุด (฿0.65) เพราะ ROE ปัจจุบันติดลบ ยังห่างจากต้นทุนทุน 10% มาก แม้สมมติฟื้นตัวเป็น 5% ในระยะยาว
+        ส่วน EV/Sales ให้ค่าสูงกว่าเล็กน้อย (฿0.72) เพราะฐานรายได้ยังมีขนาดพอสมควร (~1,300 ล้าน) แม้กำลังหดตัว
+        ทั้งสองวิธีชี้ตรงกันว่า <b>มูลค่าเหมาะสมต่ำกว่าราคาตลาดปัจจุบัน (฿1.32) มาก</b> — ราคาหุ้นยังไม่ได้ปรับสะท้อนการขาดทุนเต็มที่
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿1.32</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿0.69</div></div>
+        </div>
+        <div class="scale">
+          <span>฿0.48<br><small>MOS 30%</small></span>
+          <span>฿0.55<br><small>MOS 20%</small></span>
+          <span style="text-align:center">฿0.69<br><small>Fair Value</small></span>
+          <span style="text-align:right">฿0.72<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">฿1.32<br><small>ราคาตลาดปัจจุบัน</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        PLUS ไม่มีนักวิเคราะห์ติดตามอย่างเป็นทางการ (small-cap ที่ขาดทุน) — จุดอ้างอิงขวาสุดของสเกลจึงใช้ "ราคาตลาดปัจจุบัน" แทนเป้า Analyst
+        ราคาปัจจุบัน ฿1.32 อยู่สูงกว่ากรอบบนของมูลค่าเหมาะสม (฿0.72) เกือบเท่าตัว สะท้อนว่าตลาดยังให้ premium กับความหวังพลิกฟื้น มากกว่าที่ปัจจัยพื้นฐานปัจจุบันสนับสนุน
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <!-- ✏️ class ของ mos-verdict: MOS<10 → "bad", 10–20 → "ok", ≥20 → "good" -->
+      <div class="mos-verdict bad">
+        <div class="big">−91.3%</div>
+        <div class="txt">ราคาปัจจุบัน (฿1.32) สูงกว่ามูลค่าเหมาะสม (฿0.69) มาก — ไม่มี Margin of Safety เลย ถือว่า "แพงกว่าพื้นฐาน" อย่างมีนัยสำคัญ</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿0.55</div><div class="d">โซนน่าสนใจสำหรับ value (ต่ำกว่าราคาปัจจุบันมาก)</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿0.48</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿0.69</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม — ราคาปัจจุบันยังสูงกว่าเกือบเท่าตัว</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="1.32" step="0.05">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿1.32 • BVPS ฐาน ~฿1.73 • อิง P/BV re-rate (EPS ติดลบ ใช้ book value เป็นหลัก)</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>BVPS −8.7%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿0.51</div>
+          <div class="ret neg">−61.4%</div>
+          <ul>
+            <li><span>BVPS ปี 3</span><span>~฿1.28</span></li>
+            <li><span>P/BV ออก</span><span>0.40x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.00</span></li>
+            <li><span>สถานการณ์</span><span>ขาดทุนต่อเนื่อง กัดกินทุน ต้นทุนวัตถุดิบสูง แข่งขันรุนแรง ไม่มีปันผล</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>BVPS ~ทรงตัว</span></div>
+        <div class="body">
+          <div class="tgt">฿0.91</div>
+          <div class="ret neg">−31.1%</div>
+          <ul>
+            <li><span>BVPS ปี 3</span><span>~฿1.66</span></li>
+            <li><span>P/BV ออก</span><span>0.55x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.02</span></li>
+            <li><span>สถานการณ์</span><span>ผลประกอบการใกล้จุดคุ้มทุน ปรับพอร์ตสินค้า/ลดต้นทุน ทุนเริ่มทรงตัว</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>BVPS +5.8%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿1.64</div>
+          <div class="ret pos">+24.2%</div>
+          <ul>
+            <li><span>BVPS ปี 3</span><span>~฿1.93</span></li>
+            <li><span>P/BV ออก</span><span>0.85x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.08</span></li>
+            <li><span>สถานการณ์</span><span>พลิกกลับมากำไร ส่งออกฟื้น มาร์จิ้นดีขึ้น กลับมาจ่ายปันผลได้</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      เนื่องจาก EPS ติดลบ การคาดการณ์นี้ใช้ <b>BVPS (มูลค่าทางบัญชีต่อหุ้น) และ P/BV re-rating</b> แทนสูตร EPS×P/E ปกติ —
+      แม้ Bull case ให้ผลตอบแทนบวก (+24.2%) แต่ทั้ง Bear และ Base case ยังติดลบหนัก สะท้อนว่าที่ราคาปัจจุบัน (฿1.32) ตลาดกำลังเดิมพันกับการพลิกฟื้นที่ยังไม่มีสัญญาณชัดเจน
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>ฐานส่งออกกว้าง:</b> จำหน่ายสินค้าไปแล้วกว่า 111 ประเทศ ลดการพึ่งพาตลาดในประเทศเพียงอย่างเดียว</li>
+          <li><b>เทรนด์เครื่องดื่มสุขภาพ:</b> น้ำมะพร้าวและนมจากพืชยังเป็นกลุ่มที่ผู้บริโภคทั่วโลกให้ความสนใจต่อเนื่อง</li>
+          <li><b>ราคาต่ำกว่ามูลค่าทางบัญชี:</b> เทรดที่ P/BV เพียง 0.76x — หากพลิกกลับมามีกำไรได้ มี upside จากการ re-rate</li>
+          <li><b>ยังไม่มีวิกฤตหนี้สิน:</b> อัตราหนี้สิน/ทุน ~0.37x ยังอยู่ในระดับบริหารจัดการได้ ไม่ใช่สัญญาณ going-concern ชัดเจน</li>
+          <li><b>โอกาสปรับโครงสร้างต้นทุน:</b> หากบริหารต้นทุนวัตถุดิบ/OEM ได้ดีขึ้น อัตรากำไรขั้นต้นมีโอกาสฟื้นจากจุดต่ำ ~11.5%</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>ขาดทุนสุทธิต่อเนื่อง:</b> พลิกจากกำไร ฿43 ล้าน (FY2567) เป็นขาดทุน ฿78.3 ล้าน (FY2568) และขาดทุนต่อใน Q1/2569 (฿−36 ล้าน)</li>
+          <li><b>อัตรากำไรขั้นต้นทรุดหนัก:</b> จาก ~30% (FY2565) เหลือ ~11.5% (FY2568) — ต้นทุนวัตถุดิบมะพร้าว/ผลไม้สูงขึ้น หรือแข่งขันราคารุนแรง</li>
+          <li><b>รายได้หดตัวต่อเนื่อง:</b> ลดลง 7.7% YoY ใน FY2568 และ Q1/2569 รายได้ยังลดลงเทียบช่วงเดียวกันปีก่อน</li>
+          <li><b>ปันผลไม่แน่นอน:</b> เงินปันผลลดลงต่อเนื่อง (฿0.13→0.06 ใน 3 ปี) และมีความเสี่ยงงดจ่ายเพราะขาดทุนสุทธิ</li>
+          <li><b>ไม่มีนักวิเคราะห์ติดตาม:</b> small-cap ที่ market cap เพียง ~884 ล้านบาท สภาพคล่องต่ำ ข้อมูลเปรียบเทียบจำกัด</li>
+          <li><b>ยังไม่ยืนยันสาเหตุการทรุดตัว:</b> ไม่พบข้อมูลสาธารณะระบุชัดว่าปัญหาเกิดจากต้นทุนวัตถุดิบ การแข่งขัน หรือปัจจัยเฉพาะบริษัท — นักลงทุนควรติดตามคำอธิบายจากผู้บริหารเพิ่มเติม</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>ขาดทุนต่อเนื่อง ราคายังไม่สะท้อนปัจจัยพื้นฐาน — ระมัดระวังสูง</h2>
+      <p>
+        Royal Plus (PLUS) เป็นผู้ผลิตเครื่องดื่มมะพร้าว/น้ำผลไม้ที่กำลังเผชิญปัญหาอัตรากำไรขั้นต้นทรุดตัวและพลิกขาดทุนสุทธิตั้งแต่ FY2568 ต่อเนื่องถึง Q1/2569
+        ราคาหุ้นร่วงจากจุดสูง ~฿2.92 มาแล้ว ~55% ในรอบปี แต่จากการประเมินด้วย Justified P/BV และ EV/Sales มูลค่าเหมาะสมยังอยู่ที่เพียง ~฿0.69 —
+        ต่ำกว่าราคาปัจจุบัน (฿1.32) เกือบเท่าตัว สะท้อนว่าตลาดยังให้ premium กับความหวังพลิกฟื้นที่ยังไม่มีหลักฐานชัดเจน
+        เหมาะสำหรับนักลงทุนที่รับความเสี่ยงสูงและติดตามงบการเงินใกล้ชิดเท่านั้น ไม่เหมาะกับนักลงทุนที่เน้นเสถียรภาพ/ปันผลสม่ำเสมอ
+      </p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿0.69 <span style="font-size:12px;color:#cab9a8">(฿0.65–฿0.72)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −91.3% (แพงกว่ามูลค่า)</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">ไม่มีนักวิเคราะห์ติดตาม (N/A)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ที่ราคาปัจจุบัน (฿1.32) ยังไม่มี Margin of Safety รอสัญญาณพลิกฟื้นชัดเจน (อัตรากำไรขั้นต้นฟื้น, กลับมามีกำไรสุทธิ) ก่อนพิจารณาเข้าลงทุน
+        ผู้ที่ถืออยู่แล้วควรติดตามงบไตรมาสถัดไปอย่างใกล้ชิดเพื่อประเมินว่าขาดทุนเป็นปัญหาชั่วคราวหรือโครงสร้าง
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะอัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r), ROE/มาร์จิ้นในอนาคต และการฟื้นตัวของธุรกิจซึ่งยังไม่มีความแน่นอน
+    บริษัทอยู่ในภาวะขาดทุนสุทธิต่อเนื่อง ความเสี่ยงสูงกว่าหุ้นทั่วไปมาก ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    ข้อมูลจาก StockAnalysis.com, SET Factsheet, Yahoo Finance (PLUS.BK), Royal Plus Investor Relations ณ 3 ก.ค. 2569
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 5 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
