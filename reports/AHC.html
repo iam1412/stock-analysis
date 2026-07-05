@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น เอกชล (AHC) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"AHC","currency":"THB","price":13.30,"fairValue":10.52,"mos":-26.4,"upside":-20.9,"pe":15.77,"dividendYield":3.23,"roe":5.89}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#14B8A6",
+    "accentDark": "#0D9488",
+    "darkGrad": "linear-gradient(135deg,#042f2b 0%,#0d7a6f 58%,#14b8a6 140%)",
+    "glow": "rgba(20,184,166,.35)",
+    "subColor": "#bfece5",
+    "headerMuted": "#9ad9d0",
+    "verdictText": "#cdf3ec",
+    "vcellLabel": "#9fdcd3",
+    "badge": "#0D9488",
+    "chgBg": "rgba(197,34,31,0.18)",
+    "chgColor": "#e05d59"
+  },
+  "chart": {
+    "data": [
+      ["ก.ค. 68", 13.90],
+      ["ส.ค. 68", 14.30],
+      ["ก.ย. 68", 14.00],
+      ["ต.ค. 68", 12.20],
+      ["พ.ย. 68", 12.70],
+      ["ธ.ค. 68", 13.20],
+      ["ม.ค. 69", 13.60],
+      ["ก.พ. 69", 13.30],
+      ["มี.ค. 69", 13.80],
+      ["เม.ย. 69", 12.50],
+      ["พ.ค. 69", 12.60],
+      ["มิ.ย. 69", 13.30],
+      ["ก.ค. 69", 13.30]
+    ],
+    "min": 10.0,
+    "max": 15.0,
+    "grid": [10.0, 11.5, 13.0, 14.5],
+    "fairLine": 10.52,
+    "currency": "฿",
+    "highlight": [1, 12],
+    "gridFmt": "v.toFixed(2)",
+    "dataFmt": "d[1].toFixed(2)"
+  },
+  "gauge": {
+    "min": 6.5,
+    "max": 14.5,
+    "cur": 13.30,
+    "fair": 10.52,
+    "fairLabelTop": false
+  },
+  "fv": 10.52
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">⬤ ⬤ ⬤</div>
+    <div>
+      <span class="tag">SET: AHC</span>
+      <span class="tag">Healthcare</span>
+      <span class="tag">โรงพยาบาลภูมิภาค</span>
+    </div>
+    <h1>โรงพยาบาลเอกชล (AHC)</h1>
+    <div class="sub">โรงพยาบาลเอกชนระดับภูมิภาค 2 สาขา • ชลบุรี (แหลมฉบัง/บ่อวิน) และ อ่างศิลา • ศูนย์หัวใจ ศูนย์กระดูกสันหลัง สูติ-นรีเวช กุมารเวช • รองรับฐานลูกค้าอุตสาหกรรม EEC</div>
+    <div class="price-row">
+      <div>
+        <div class="px">฿13.30<small>(AHC)</small></div>
+      </div>
+      <div class="chg">▼ −4.3% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 3 ก.ค. 2569<br>
+        กรอบ 52 สัปดาห์ ฿11.70 – ฿16.20<br>
+        ที่มา: StockAnalysis.com, SET Factsheet (set.or.th), Yahoo Finance
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ 3 ก.ค. 2569</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">฿1,993.8 ล้าน</div><div class="d">~149.9 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~15.77x</div><div class="d">แพงกว่ากรอบเฉลี่ยเมื่อกำไรอ่อนตัว</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~10–16x</div><div class="d">แกว่งตามวัฏจักรกำไร 2565–2569</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">0.92x</div><div class="d">ต่ำกว่ามูลค่าทางบัญชีเล็กน้อย</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ TTM</div><div class="v">฿126.4 ล้าน</div><div class="d">▼ −13.5% YoY (Q1/69 อ่อนแรง)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿0.84</div><div class="d">FY2568 เต็มปี ~฿1.03 (สูงกว่า TTM)</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~฿14.46</div><div class="d">Price/BVPS = 13.30/14.46</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~5.89% / 3.29%</div><div class="d">ต่ำกว่ากลุ่ม รพ.เอกชนขนาดกลาง-ใหญ่</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">฿1,790 ล้าน</div><div class="d">+2.4% YoY แต่กำไรลดจากมาร์จิ้นบีบ</div></div>
+      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">~20.2%</div><div class="d">Net margin ~7.1% • Operating margin ~7.3%</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~3.23%</div><div class="d">DPS ฿0.43 (ปี 2567) • Payout ~50.9%</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">0.09</div><div class="d">แทบไม่เคลื่อนไหวตามตลาด • สภาพคล่องต่ำ</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#14B8A6"></i>ราคา AHC</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿10.52</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคาแกว่งอยู่ในกรอบ ฿12.20–14.30 ตลอด 12 เดือนที่ผ่านมา ไม่มีเทรนด์ชัดเจน — จุดสูงสุดช่วง ส.ค. 2568 (฿14.30)
+        ก่อนย่อลงมาต่ำสุดที่ ฿12.20 ในเดือน ต.ค. 2568 ตามผลประกอบการที่อ่อนตัวลง จากนั้นแกว่งขึ้นลงในกรอบแคบและ
+        ปิดที่ ฿13.30 ในเดือน ก.ค. 2569 ผลตอบแทนรอบปี (จุดแรก→จุดท้าย) อยู่ที่ −4.3% สอดคล้องกับหุ้น Beta ต่ำ (0.09)
+        ที่มีสภาพคล่องซื้อขายน้อย (ปริมาณซื้อขายเฉลี่ย ~13,010 หุ้น/วัน) ราคาจึงไม่ค่อยผันผวนตามตลาดกว้าง แต่ตอบสนอง
+        ต่อผลประกอบการรายไตรมาสของบริษัทเองเป็นหลัก
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION (2 วิธี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 2 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS (TTM) ฿0.84 × P/E เป้าหมาย ~13x — ต่ำกว่า P/E ตลาดปัจจุบัน (15.77x) เพื่อสะท้อนความเสี่ยงกำไรที่กำลังอ่อนตัว (TTM −13.5%, Q1/2569 กำไรลดเกือบครึ่งจาก YoY)</div></div>
+        <div class="mval">฿10.92</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 5.89% − g 1.0%)/(r 8.0% − g 1.0%) ≈ 0.699x × BVPS ฿14.46</div></div>
+        <div class="mval">฿10.11</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿10.11 – ฿10.92</span></div>
+        <div class="r">฿10.52</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ใช้ 2 วิธีที่เหมาะกับ รพ.เอกชนขนาดเล็ก-กลาง มีกำไรผันผวนตามวัฏจักร: (1) P/E แบบอนุรักษ์นิยม เพราะกำไร TTM
+        กำลังหดตัวและไตรมาสล่าสุด (Q1/2569 กำไรสุทธิ ~฿19.5 ล้าน เทียบ Q1/2568 ~฿46.8 ล้าน) อ่อนแรงชัดเจน (2) Justified
+        P/BV ใช้ ROE จริง (5.89%) เทียบต้นทุนเงินทุนที่เหมาะกับหุ้น Beta ต่ำมาก (0.09) สภาพคล่องต่ำ (r=8%) และ growth
+        อนุรักษ์นิยม (g=1%) สอดคล้องกับสถานะโรงพยาบาลภูมิภาคที่โตช้า — <b>ไม่ใช้ DDM</b> เพราะเงินปันผลผันผวนมาก
+        (฿0.60→฿1.18→฿0.63→฿0.43 ใน 4 ปีล่าสุด) ทำให้สมมติฐาน growth คงที่ของ Gordon Growth ไม่น่าเชื่อถือ ทั้งสองวิธี
+        ให้ค่าใกล้เคียงกัน (฿10.11–10.92) สะท้อนว่าตลาดปัจจุบันตีราคาสูงกว่าพื้นฐานเมื่อกำไรกำลังอ่อนตัว
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿13.30</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿10.52</div></div>
+        </div>
+        <div class="scale">
+          <span>฿7.36<br><small>MOS 30%</small></span>
+          <span>฿8.42<br><small>MOS 20%</small></span>
+          <span style="text-align:center">฿10.52<br><small>Fair Value</small></span>
+          <span style="text-align:right">฿10.52<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">฿10.92<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน (฿13.30) อยู่ <b>สูงกว่า</b> กรอบมูลค่าเหมาะสมทั้งหมด (฿10.11–10.92) ไม่มีนักวิเคราะห์ติดตามอย่างเป็นทางการ
+        (หุ้นขนาดเล็ก สภาพคล่องต่ำ ไม่มี consensus target) จึงใช้ Fair Value ฿10.52 เป็นเป้าอ้างอิงแทน — ราคาต้องย่อลงมา
+        ~20–26% จึงจะเข้าเขต MOS ที่น่าสนใจ
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">−26.4%</div>
+        <div class="txt">ราคาปัจจุบันสูงกว่ามูลค่าเหมาะสม — MOS ติดลบ ยังไม่มีส่วนเผื่อความปลอดภัย</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿8.42</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿7.36</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿10.52</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="13.30" step="0.05">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿13.30 • EPS ฐาน ~฿0.84 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS −8%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿7.19</div>
+          <div class="ret neg">−38.4%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.65</span></li>
+            <li><span>P/E ออก</span><span>11x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿1.00</span></li>
+            <li><span>สถานการณ์</span><span>กำไรหดต่อเนื่อง อัตราเข้าพักลด ต้นทุนแรงงาน/เวชภัณฑ์สูงขึ้น</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +2%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿12.47</div>
+          <div class="ret pos">+2.8%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.89</span></li>
+            <li><span>P/E ออก</span><span>14x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿1.20</span></li>
+            <li><span>สถานการณ์</span><span>กำไรทรงตัว-ฟื้นตัวเล็กน้อย ธุรกิจหลักในชลบุรี/EEC เติบโตตามฐานลูกค้าอุตสาหกรรม</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +10%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿17.89</div>
+          <div class="ret pos">+45.8%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿1.12</span></li>
+            <li><span>P/E ออก</span><span>16x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿1.50</span></li>
+            <li><span>สถานการณ์</span><span>กำไรฟื้นกลับสู่ระดับปี 2565–66 (~฿270 ล้าน) จากอัตราเข้าพักและมาร์จิ้นที่ดีขึ้น</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      สถานการณ์ Base สะท้อนแนวโน้มล่าสุดที่กำไรอ่อนตัว (TTM −13.5%, Q1/2569 กำไรลดเกือบครึ่งจาก YoY) แต่ธุรกิจยังมีเสถียรภาพ
+      (Debt/Equity 0.01, current ratio 6.54) — Bear สะท้อนความเสี่ยงกำไรหดต่อเนื่องหากต้นทุนบุคลากรทางการแพทย์/เวชภัณฑ์เพิ่มเร็วกว่ารายได้
+      ส่วน Bull ต้องอาศัยการฟื้นตัวของอัตราเข้าพักกลับสู่ระดับก่อนหน้า ซึ่งยังไม่มีสัญญาณชัดเจนจากงบไตรมาสล่าสุด
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>ฐานะการเงินแข็งแกร่ง:</b> Debt/Equity เพียง 0.01 แทบไม่มีหนี้สินทางการเงิน current ratio สูงถึง 6.54 เท่า สภาพคล่องสูงมาก</li>
+          <li><b>ทำเลในเขต EEC:</b> ตั้งอยู่ในชลบุรี ใกล้นิคมอุตสาหกรรมและเขตพัฒนาพิเศษภาคตะวันออก มีฐานลูกค้าประกันสังคม/ประกันสุขภาพจากแรงงานอุตสาหกรรมต่อเนื่อง</li>
+          <li><b>ปันผลสม่ำเสมอ:</b> จ่ายปันผลต่อเนื่องทุกปี (payout ratio ~50.9%) แม้กำไรจะผันผวนตามวัฏจักร</li>
+          <li><b>P/BV ต่ำกว่า 1 เท่า:</b> ซื้อขายที่ 0.92x book value ต่ำกว่ามูลค่าทางบัญชี เป็นแนวรับด้านล่างในเชิงสถิติ</li>
+          <li><b>ธุรกิจจำเป็น (defensive):</b> บริการสุขภาพเป็นความต้องการพื้นฐานไม่ผันผวนตามเศรษฐกิจมากเท่าธุรกิจอื่น</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>กำไรกำลังอ่อนตัวชัดเจน:</b> กำไรสุทธิ TTM ลดลง 13.5% YoY และ Q1/2569 กำไรสุทธิ ~฿19.5 ล้าน ลดลงเกือบครึ่งจาก Q1/2568 (~฿46.8 ล้าน)</li>
+          <li><b>สภาพคล่องซื้อขายต่ำมาก:</b> ปริมาณซื้อขายเฉลี่ยเพียง ~13,010 หุ้น/วัน Beta 0.09 อาจซื้อ-ขายทำได้ยากในปริมาณมาก และช่วง bid-ask กว้าง</li>
+          <li><b>ขนาดเล็ก ไม่มีนักวิเคราะห์ติดตาม:</b> ไม่มี consensus target อย่างเป็นทางการ ข้อมูลเชิงลึกหายาก การประเมินมูลค่าจึงมีความไม่แน่นอนสูงกว่าหุ้นขนาดใหญ่</li>
+          <li><b>มาร์จิ้นถูกบีบ:</b> Gross margin ผันผวนจาก 27.5% (2565) เหลือ ~20.2% (TTM) จากต้นทุนบุคลากรทางการแพทย์/เวชภัณฑ์ที่สูงขึ้น</li>
+          <li><b>เพียง 2 สาขา กระจุกตัวในชลบุรี:</b> ไม่มีการกระจายความเสี่ยงเชิงภูมิศาสตร์ พึ่งพาเศรษฐกิจ/ประชากรในพื้นที่เดียว</li>
+          <li><b>ปันผลไม่แน่นอน:</b> DPS ผันผวนมาก (฿1.18→฿0.60→฿0.63→฿0.43 ในช่วง 2564–2567) ตามกำไรที่ไม่สม่ำเสมอ</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>ราคาแพงกว่าพื้นฐาน — รอจังหวะย่อตัวก่อนเข้าซื้อ</h2>
+      <p>
+        AHC เป็นโรงพยาบาลเอกชนขนาดเล็ก-กลางในชลบุรี ฐานะการเงินแข็งแกร่งมาก (แทบไม่มีหนี้ สภาพคล่องสูง) และจ่ายปันผลสม่ำเสมอ
+        แต่กำไรกำลังอยู่ในช่วงขาลงชัดเจน (TTM −13.5%, ไตรมาสล่าสุดกำไรลดเกือบครึ่ง) ขณะที่ราคาหุ้น (฿13.30) ยังคงเทรดที่ P/E
+        15.77x ซึ่งสูงกว่าที่สมควรได้รับเมื่อเทียบกับแนวโน้มกำไรที่อ่อนตัว การประเมินมูลค่าด้วย 2 วิธี (P/E อนุรักษ์นิยม +
+        Justified P/BV) ให้ Fair Value เฉลี่ยที่ ฿10.52 ต่ำกว่าราคาตลาดปัจจุบันราว 20–26% บ่งชี้ว่าราคายังไม่มีส่วนเผื่อ
+        ความปลอดภัย (MOS ติดลบ) นักลงทุนที่สนใจหุ้นปันผล defensive ควรรอราคาย่อตัวลงมาใกล้ ฿10.5 หรือต่ำกว่า ก่อนพิจารณาเข้าซื้อ
+      </p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿10.52 <span style="font-size:12px;color:#cab9a8">(฿10.11–฿10.92)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −26.4%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿10.52 (ไม่มี consensus อย่างเป็นทางการ)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ยังไม่ใช่จังหวะเข้าซื้อที่ราคาปัจจุบัน — เฝ้าติดตามผลประกอบการไตรมาสถัดไปว่ากำไรฟื้นตัวหรือหดตัวต่อ
+        หากราคาย่อลงมาแตะโซน ฿8.4–10.5 (MOS 20%+) และกำไรเริ่มทรงตัว จะเป็นจังหวะที่น่าสนใจกว่าสำหรับนักลงทุนสายปันผล/defensive
+        ที่รับความเสี่ยงสภาพคล่องต่ำได้
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ข้อมูลจาก StockAnalysis.com, SET Factsheet (set.or.th), Yahoo Finance (AHC.BK) — ราคาและงบการเงิน ณ 3 ก.ค. 2569
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 3 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
