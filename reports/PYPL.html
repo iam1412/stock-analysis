@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น PayPal Holdings Inc. (PYPL) — Stock Analysis Dashboard</title>
+<!-- ★ ใส่รุ่นโมเดล AI ที่ใช้วิเคราะห์จริง (Opus→"Claude Opus 4.8", Sonnet→"Claude Sonnet 4.6") — gate E28 บังคับ -->
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
+<script type="application/json" id="stock-meta">
+{"symbol":"PYPL","currency":"USD","price":45.47,"fairValue":75,"mos":39.4,"upside":64.9,"pe":8.53,"dividendYield":1.23,"roe":25.1}
+</script>
+<!--
+  report-data: ธีมสี + ข้อมูลกราฟ/gauge ต่อหุ้น (build เอาไปวาด)  ดู schema เต็มใน CLAUDE.md ข้อ 9
+  • theme.* = สีแบรนด์ (accent ห้ามเป็นน้ำเงิน default) • chart.fairLine = gauge.fair = fv = {{FV}}
+  • gauge.cur = ราคาปัจจุบัน = {{PRICE}} • highlight = ดัชนีจุดเด่นบนกราฟ (เช่น [2,7])
+  • chart.data = ราคาย้อนหลัง ~1 ปี (ไม่เกิน 13 จุด · E37) — จุดแรก = ราคา ~1 ปีก่อน, จุดท้าย = ราคาปัจจุบัน {{PRICE}}
+    (ผลตอบแทน จุดแรก→จุดท้าย ต้อง = ป้าย % รอบปีใน header · E36)
+  • theme.chgBg/chgColor = สีป้าย % รอบปี: ขึ้น→เขียว var(--green-soft)/#1e8e3e · ลง→แดง var(--red-soft)/#c5221f (E34)
+  • dataFmt อ้าง d[1] เท่านั้น, gridFmt อ้าง v เท่านั้น (ผิด scope = กราฟดับ)
+-->
+<script type="application/json" id="report-data">
+{"theme":{"accent":"#009CDE","accentDark":"#006fa0","darkGrad":"linear-gradient(135deg,#003050 0%,#006fa0 50%,#009CDE 100%)","glow":"rgba(0,156,222,0.35)","subColor":"#33bbff","headerMuted":"rgba(255,255,255,0.65)","verdictText":"#0080bb","vcellLabel":"#006fa0","badge":"#009CDE","chgBg":"#8b1a1a","chgColor":"#ffffff"},"chart":{"data":[["ก.ค.'25",69.59],["ส.ค.'25",66.48],["ก.ย.'25",68.68],["ต.ค.'25",62.30],["พ.ย.'25",58.01],["ธ.ค.'25",52.36],["ม.ค.'26",45.92],["ก.พ.'26",45.08],["มี.ค.'26",49.98],["เม.ย.'26",44.60],["พ.ค.'26",43.18],["ก.ค.'26",45.47]],"min":38,"max":75,"grid":[38,45,52,59,66,75],"fairLine":75,"currency":"$","highlight":[5,11]},"gauge":{"min":38,"max":90,"cur":45.47,"fair":75,"fairLabelTop":true},"fv":75}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">●●●</div>
+    <div>
+      <span class="tag">NASDAQ: PYPL</span>
+      <span class="tag">Digital Payments</span>
+      <span class="tag">Fintech / Checkout</span>
+    </div>
+    <!-- ★ คำโปรยธุรกิจ (gate E32) — .sub ต้องอยู่ติดใต้ </h1> (ห้ามมีคอมเมนต์/แท็กคั่น) : บริษัททำอะไร ใช้ • คั่นกลุ่ม -->
+    <h1>PayPal Holdings Inc. (PYPL)</h1>
+    <div class="sub">PayPal checkout (branded) • Venmo (P2P + social commerce) • Braintree (unbranded processing) • Zettle (POS) • Pay Later (BNPL) • PayPal Ads</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$45.47<small>(PYPL)</small></div>
+      </div>
+      <!-- ★ ป้าย % รอบปี (gate E35/E36) — ผลตอบแทน ~1 ปี (เทียบราคา ~1 ปีก่อน) = ผลตอบแทนปลายกราฟ section 2 (จุดแรก→ท้าย)
+           รูปแบบ: "▲ +X.X% (รอบปี)" ขึ้น · "▼ −X.X% (รอบปี)" ลง · "≈ ทรงตัว (รอบปี)" · หุ้น IPO <1 ปี ใช้ "(ตั้งแต่ IPO)"
+           ไม่ใช่ % รายวัน/YTD/52 สัปดาห์ · ตั้งสี theme.chgBg/chgColor ให้ตรงทิศ (ขึ้น=เขียว/ลง=แดง · E34) -->
+      <div class="chg">▼ −34.7% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 3 ก.ค. 2569 (Jul 3, 2026)<br>
+        กรอบ 52 สัปดาห์ $38.46 – $79.50<br>
+        ที่มา: Yahoo Finance, StockAnalysis.com
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">FCF ถูกมาก แต่คำถามคือ moat ยังอยู่ไหม</div></div>
+    <!-- ✏️ ปรับการ์ด metric ให้เหมาะกับหุ้น/เซกเตอร์ได้อิสระ — เน้น TPV/Checkout growth + FCF แทน metric มาตรฐานบางส่วน -->
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">$40.1B</div><div class="d">~882M หุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~8.5x</div><div class="d">GAAP EPS $5.33 · non-GAAP ~8.5x เช่นกัน</div></div>
+      <div class="metric"><div class="k">P/FCF (TTM)</div><div class="v pos">~7.3x</div><div class="d">FCF/หุ้น ~$6.24 — ถูกกว่า P/E</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">~2.06x</div><div class="d">BVPS ~$22.02</div></div>
+
+      <div class="metric"><div class="k">TPV Growth (Q1'26)</div><div class="v neu">+11% (spot)</div><div class="d">+8% currency-neutral, TPV $464B</div></div>
+      <div class="metric"><div class="k">Branded Checkout Growth</div><div class="v neu">+2%</div><div class="d">currency-neutral, เร่งจาก +1% ไตรมาสก่อน</div></div>
+      <div class="metric"><div class="k">Active Accounts</div><div class="v neu">439M</div><div class="d">+1% YoY — เกือบทรงตัว</div></div>
+      <div class="metric"><div class="k">EPS TTM (Non-GAAP / GAAP)</div><div class="v">$5.36 / $5.33</div><div class="d">FY25 non-GAAP $5.35–5.39, โต 15-16%</div></div>
+
+      <div class="metric"><div class="k">FCF/หุ้น (TTM)</div><div class="v pos">~$6.24</div><div class="d">FCF $5.5B ÷ ~882M หุ้น</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~25.1% / ~10%</div><div class="d">ROIC ~22.9% — ยังสูง</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~1.23%</div><div class="d">เริ่มจ่ายปันผล $0.14/ไตรมาส (ใหม่)</div></div>
+      <div class="metric"><div class="k">Buyback (TTM)</div><div class="v pos">$6.0B</div><div class="d">ลดหุ้นเฉลี่ยถ่วงน้ำหนัก 8% YoY</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART (ราคาย้อนหลัง ~1 ปี) ===== -->
+  <!-- ★ กราฟต้องเป็น "ราคาย้อนหลัง ~1 ปี" (gate E37): ไม่เกิน 13 จุด (รายเดือน 12 เดือน = 13 จุด · รายสองเดือน = ~8 จุด)
+       ห้ามใส่ 18 เดือน/1.5 ปี · จุดสุดท้าย = ราคาปัจจุบัน · ผลตอบแทน จุดแรก→จุดท้าย ต้องตรงกับป้าย % รอบปีใน header (E36) -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#009CDE"></i>ราคา PYPL</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $75</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        <!-- ✏️ บรรยายการเคลื่อนไหวราคา ~1 ปี: จุดสูง/ต่ำ, เปลี่ยนแปลง %, สาเหตุหลัก -->
+        ราคาไหลลงต่อเนื่องจาก $69.59 (ก.ค. 2568) สู่จุดต่ำสุดรอบปี $43.18 (พ.ค. 2569) ก่อนดีดกลับเล็กน้อยมาที่ $45.47 —
+        รวมลดลง −34.7% ในรอบ 1 ปี สาเหตุหลัก: เร่งลดลงหลัง Q4/25 (ก.พ. 2569) กำไร/รายได้พลาดคาด + นักวิเคราะห์ downgrade
+        เรื่อง branded checkout growth ชะลอและแรงกดดันจาก Apple Pay/Stripe/Shopify Payments ที่แย่ง market share ในฝั่ง unbranded/checkout
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION (เฉลี่ย 3 วิธี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <!-- ✏️ เลือก 3 วิธี: P/E (non-GAAP), P/FCF, และ Conservative P/E (GAAP) — เหมาะกับหุ้นที่ FCF > GAAP EPS ชัดเจนแบบ PYPL -->
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS adj. $5.36 × P/E 15x — ต่ำกว่าค่าเฉลี่ยประวัติศาสตร์ 18-22x สะท้อน growth ชะลอ แต่สูงกว่า P/E ปัจจุบัน 8.5x ที่ตลาดตีราคา "ไม่มีอนาคต"</div></div>
+        <div class="mval">$80.40</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. P/FCF Valuation</div><div class="mdesc">FCF/หุ้น $6.24 × P/FCF เป้าหมาย 12x — FCF ของ PYPL สูงกว่า GAAP EPS เสมอ (stock comp เพิ่มกลับ) จึงเป็นฐานที่สมจริงกว่าในการประเมิน cash generation</div></div>
+        <div class="mval">$74.88</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Conservative P/E (GAAP)</div><div class="mdesc">GAAP EPS $5.33 × P/E 13x — สมมติฐานระมัดระวังสุด กรณี moat เสื่อมต่อเนื่องและ take rate ถูกกดดันจาก Braintree mix shift</div></div>
+        <div class="mval">$69.29</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $69 – $80</span></div>
+        <div class="r">$75</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        <!-- ✏️ หมายเหตุ -->
+        วิธี P/E (non-GAAP) ให้ค่าสูงสุด ($80.4) เพราะสมมติ re-rate P/E กลับสู่ระดับปานกลาง (15x) ซึ่งยังต่ำกว่าค่าเฉลี่ยระยะยาวมาก —
+        วิธี P/FCF ($74.9) สะท้อนความจริงที่ว่า PYPL สร้าง FCF ได้แข็งแกร่งกว่ากำไรทางบัญชี (buyback $6B/ปี พิสูจน์ conviction ของบริษัทเอง) —
+        วิธี Conservative GAAP P/E ($69.3) เป็นฐานล่างกรณี moat เสื่อมต่อ ทั้ง 3 วิธีคอนเวิร์จอยู่ในกรอบ $69-80 จึงใช้ค่าเฉลี่ย $75 เป็น Fair Value
+        (ต่ำกว่าเป้านักวิเคราะห์ consensus บางส่วน แต่สูงกว่าเป้าเฉลี่ยตลาดปัจจุบัน ~$51 สะท้อนมุมมองว่าตลาดตีราคาลบเกินพื้นฐาน FCF จริง)
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $45.47</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $75</div></div>
+        </div>
+        <div class="scale">
+          <span>$52.5<br><small>MOS 30%</small></span>
+          <span>$60.0<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$75<br><small>Fair Value</small></span>
+          <span style="text-align:right">$80<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน $45.47 อยู่ต่ำกว่าทั้ง Fair Value ($75) และแม้แต่โซน MOS 30% ($52.5) — สะท้อนว่าตลาดตีราคาลงลึกกว่าที่ fundamentals (FCF, buyback, ROE) บ่งชี้
+        อย่างไรก็ตาม เป้าเฉลี่ยนักวิเคราะห์ Street ($51.5, Hold) ยังต่ำกว่า FV ของเราค่อนข้างมาก — เป็นสัญญาณเตือนให้ระวัง "value trap" หากปัญหา moat/growth ไม่กลับตัวจริง
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <!-- ✏️ class ของ mos-verdict: MOS<10 → "bad", 10–20 → "ok", ≥20 → "good" -->
+      <div class="mos-verdict good">
+        <div class="big">+39.4%</div>
+        <div class="txt">MOS สูงมาก — เข้าเกณฑ์ "All-in zone" ตามตัวเลข แต่ควรตรวจสอบว่าไม่ใช่ value trap จาก moat erosion ก่อนตัดสินใจ</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$60.0</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$52.5</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $75</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="45.47" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $45.47 • EPS ฐาน ~$5.36 (non-GAAP) • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS +1%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$44.18</div>
+          <div class="ret neg">+0.3%/ปี (3 ปี รวม +0.9%)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$5.52</span></li>
+            <li><span>P/E ออก</span><span>8x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$1.69</span></li>
+            <li><span>สถานการณ์</span><span>Active accounts นิ่ง, branded checkout <1%, take rate โดนกดต่อ, Apple Pay/Stripe แย่ง share ต่อเนื่อง</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +4%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$72.35</div>
+          <div class="ret pos">+17.7%/ปี (3 ปี รวม +62.9%)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$6.03</span></li>
+            <li><span>P/E ออก</span><span>12x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$1.71</span></li>
+            <li><span>สถานการณ์</span><span>TPV โต high-single-digit, Venmo + PayPal Ads หนุน margin, buyback ลดหุ้นต่อเนื่อง, P/E กลับสู่ระดับตลาดเฉลี่ย</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +7%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$98.49</div>
+          <div class="ret pos">+30.1%/ปี (3 ปี รวม +120.4%)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$6.57</span></li>
+            <li><span>P/E ออก</span><span>15x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$1.74</span></li>
+            <li><span>สถานการณ์</span><span>Simplified checkout rollout เร่ง branded growth, PayPal Ads โต mid-teens, ตลาดเชื่อมั่น moat กลับมา re-rate P/E</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      Base case ให้ผลตอบแทนต่อปี ~17.7% (ต่อเนื่อง 3 ปี) จากทั้ง capital gain และปันผลเล็กน้อย — สมมติฐานหลักคือ P/E re-rate กลับไปแถว 12x
+      (ยังต่ำกว่าค่าเฉลี่ยประวัติศาสตร์ 18-22x มาก) ซึ่งต้องพิสูจน์ด้วยการที่ branded checkout growth เร่งตัวชัดเจนกว่านี้ — risk สำคัญคือ Bear case แทบไม่ขาดทุนแต่ก็แทบไม่ได้กำไร
+      สะท้อนว่าตลาดราคาหุ้นไว้ที่ระดับที่ "ไม่ต้องการให้ธุรกิจดีขึ้นเลยก็ยังพอคุ้ม" — จุดที่ต้องระวังคือถ้า TPV/margin แย่ลงกว่านี้อีก
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>PayPal Ads (Curated Ads):</b> เปิดตัว 22 เม.ย. 2569 ใช้ purchase data จริงจาก 25 พันล้าน transaction บน 400M+ บัญชี PayPal/Venmo — สร้าง revenue margin สูงกว่า core payments มาก และ Google/Meta ทำไม่ได้เพราะไม่มี checkout data</li>
+          <li><b>Venmo กลายเป็น standalone segment:</b> reorganize เม.ย. 2569 แยก Consumer Financial Services & Venmo — Venmo TPV โต 14% YoY ต่อเนื่อง 6 ไตรมาสติด, revenue Venmo ~$1.7B (+20% YoY) สะท้อน monetization เริ่มติดเครื่อง</li>
+          <li><b>Buyback อย่างจริงจัง:</b> คืนทุน $6B/ปี (ลดหุ้นถ่วงน้ำหนัก 8% YoY) — ที่ราคานี้ (P/FCF ~7x) การซื้อหุ้นคืนเป็น capital allocation ที่ทรงพลังมาก และหนุน EPS แม้กำไรรวมไม่โตเร็ว</li>
+          <li><b>Simplified checkout button:</b> ใช้แล้ว 45% ของร้านค้าที่ไม่ใช่ enterprise — ถ้าทำให้ conversion rate ดีขึ้นจริง อาจพลิก branded checkout growth จาก +1-2% เป็นเลขตัวเดียวสูงขึ้น</li>
+          <li><b>Braintree/PSP โตเร่ง:</b> PSP volume growth เร่งเป็น 11% (จาก 7%) — แม้ margin ต่ำกว่า branded แต่ volume แข็งแรงชดเชยได้บางส่วน + cost-cutting (AI restructuring เป้า $1.5B savings) หนุน margin กลับ</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>Moat กำลังถูกท้าทายจริง:</b> Apple Pay ครองพื้นที่ iOS ธรรมชาติ, Stripe (valuation $159B ใน funding รอบล่าสุด vs PYPL market cap $40B) และ Shopify Payments แย่ง unbranded/checkout share ต่อเนื่อง — "brand premium" ของ PayPal checkout ที่เคยมี conversion สูงกว่าคู่แข่งกำลังเจือจางลง</li>
+          <li><b>Take rate compression:</b> Braintree/PSP โตเร็วกว่า branded checkout ทำให้ revenue mix เอียงไปทาง margin ต่ำ — transaction margin dollars โตช้ากว่า TPV มาโดยตลอด</li>
+          <li><b>Active account เกือบทรงตัว:</b> +1% YoY เท่านั้น, transactions per user ลดลง ~5% YoY — สัญญาณว่า engagement ต่อบัญชีถดถอย ไม่ใช่แค่ growth ชะลอ</li>
+          <li><b>Analyst sentiment ยังลบ:</b> เป้าเฉลี่ย Street เพียง ~$51.5 (Hold) — ต่ำกว่า FV เราที่ $75 มาก มีความเป็นไปได้ที่ตลาดมองเห็นความเสี่ยงเชิงโครงสร้างที่ valuation model เชิงตัวเลขจับไม่ได้ทั้งหมด</li>
+          <li><b>CEO ใหม่ (Alex Chriss) ยังพิสูจน์ผลลัพธ์ไม่ครบ:</b> reorganize เม.ย. 2569 เป็นการเดิมพันเชิงกลยุทธ์ครั้งใหญ่ — หากล้มเหลวในการเร่ง Venmo/Ads monetization อาจกระทบความเชื่อมั่นซ้ำ</li>
+          <li><b>2026 EPS guidance กว้างและเสี่ยงขาลง:</b> non-GAAP EPS guided "declined low-single digits ถึง slightly positive" — เป็นปีแรกในรอบหลายปีที่ EPS อาจหดตัว</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>ถูกจริงบน FCF — แต่ moat กำลังถูกทดสอบครั้งใหญ่ในรอบ 10 ปี</h2>
+      <p>
+        PayPal คือเครือข่ายการชำระเงินที่มีบัญชีผู้ใช้ 400M+ ราย ครอบคลุม PayPal checkout (branded), Venmo (P2P + social commerce ในสหรัฐฯ),
+        Braintree (unbranded processing สำหรับ enterprise), Zettle (POS สำหรับ SMB) และ Pay Later (BNPL) — มูลค่าของเครือข่ายนี้มาจาก
+        two-sided network effect (ผู้บริโภคเชื่อ + ร้านค้าเชื่อ) และความไว้วางใจด้าน fraud protection/buyer-seller guarantee ที่สะสมมากว่า 25 ปี
+      </p>
+      <p style="margin-top:10px">
+        <b>Moat Assessment:</b> หลักฐานชี้ไปสองทาง — ด้านบวก คือ Venmo TPV โต 14% ต่อเนื่อง 6 ไตรมาส, PayPal Ads ใช้ purchase-level data ที่คู่แข่งไม่มี,
+        และ conversion rate ของ branded checkout ในอดีตเคยสูงกว่า generic card form มาก (แม้ premium นี้จะแคบลง) ด้านลบ คือ branded checkout growth
+        เพียง +2% (currency-neutral) ช้ากว่า TPV รวมมาก, active account เกือบนิ่ง (+1%) และ transactions/user ลดลง 5% — สะท้อนว่า "ความถี่การใช้งาน"
+        ต่อบัญชีกำลังลดลง ขณะที่ Apple Pay ได้เปรียบเชิงโครงสร้างบน iOS (ระบบปฏิบัติการ + biometric ในตัวเครื่อง) และ Stripe/Shopify Payments
+        รุกตลาด SMB-to-enterprise ด้วยเทคโนโลยีที่ integrate ง่ายกว่า สรุป: <b>moat ยังไม่หายไปทั้งหมด (เครือข่าย Venmo + ข้อมูล transaction ยังมีมูลค่า)
+        แต่ premium ของ "PayPal เป็นค่าเริ่มต้นของ online checkout" กำลังเจือจางลงจริง</b> — CEO Alex Chriss เดิมพันกับ reorganization (แยก Venmo เป็น
+        segment อิสระ + PayPal Ads) เพื่อพลิกกลับ ยังต้องรอผลลัพธ์อีก 2-4 ไตรมาสจึงจะเห็นชัด
+      </p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$75 <span style="font-size:12px;color:#cab9a8">($69–$80)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +39.4%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$51.5 (Hold)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> PYPL เทรดที่ P/E ~8.5x และ P/FCF ~7.3x ซึ่งถูกมากเทียบกับ ROE ~25% และ FCF ที่ยังแข็งแกร่ง ($5.5B/ปี) — เหมาะกับนักลงทุนสาย
+        deep value ที่รับความเสี่ยง "moat เสื่อมต่อ" ได้ และไม่คาดหวัง re-rate เร็ว แนะนำทยอยสะสมเป็นขั้น (DCA) แทนการเข้าเต็มไม้ครั้งเดียว
+        โดยติดตาม branded checkout growth และ active account trend ทุกไตรมาสเป็นตัวชี้วัดว่า turnaround ของ Chriss ได้ผลจริงหรือไม่
+        ก่อนเพิ่มน้ำหนักลงทุน — หากตัวเลขทั้งสองแย่ลงต่อเนื่องอีก 2-3 ไตรมาส ควรทบทวนสมมติฐาน "moat ยังพออยู่" ใหม่
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ข้อมูลจาก Yahoo Finance, StockAnalysis.com, PayPal Investor Relations (Q1 2026 Earnings Release), และรายงานข่าว/บทวิเคราะห์นักวิเคราะห์ ณ ก.ค. 2569
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 3 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
