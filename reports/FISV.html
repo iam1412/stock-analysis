@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น Fiserv, Inc. (FISV) — Stock Analysis Dashboard</title>
+<!-- ★ ใส่รุ่นโมเดล AI ที่ใช้วิเคราะห์จริง (Opus→"Claude Opus 4.8", Sonnet→"Claude Sonnet 4.6") — gate E28 บังคับ -->
+<meta name="ai-model" content="Claude Opus 4.8">
+<!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
+<script type="application/json" id="stock-meta">
+{"symbol":"FISV","currency":"USD","price":52.33,"fairValue":67,"mos":21.9,"upside":28.0,"pe":6.2,"dividendYield":null,"roe":13}
+</script>
+<!--
+  report-data: ธีมสี + ข้อมูลกราฟ/gauge ต่อหุ้น (build เอาไปวาด)  ดู schema เต็มใน CLAUDE.md ข้อ 9
+  chart.fairLine = gauge.fair = fv = 67 (Fair Value) • gauge.cur = ราคาปัจจุบัน = 52.33
+-->
+<script type="application/json" id="report-data">
+{"theme":{"accent":"#e87722","accentDark":"#c45e00","darkGrad":"linear-gradient(135deg,#4a2600 0%,#c45e00 50%,#e87722 100%)","glow":"rgba(232,119,34,0.35)","subColor":"#ffb877","headerMuted":"rgba(255,255,255,0.65)","verdictText":"#c45e00","vcellLabel":"#c45e00","badge":"#e87722","chgBg":"#8b1a1a","chgColor":"#ffffff"},"chart":{"data":[["ส.ค.'25",138.18],["ก.ย.'25",128.93],["ต.ค.'25",66.69],["พ.ย.'25",61.47],["ธ.ค.'25",67.17],["ม.ค.'26",63.73],["ก.พ.'26",62.29],["มี.ค.'26",55.80],["เม.ย.'26",62.65],["พ.ค.'26",56.56],["มิ.ย.'26",49.05],["ก.ค.'26",52.33]],"min":40,"max":145,"grid":[40,60,80,100,120,145],"fairLine":67,"currency":"$","highlight":[2,11]},"gauge":{"min":40,"max":85,"cur":52.33,"fair":67,"fairLabelTop":true},"fv":67}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">●●●</div>
+    <div>
+      <span class="tag">NASDAQ: FISV</span>
+      <span class="tag">Payments / Fintech Infrastructure</span>
+      <span class="tag">Merchant Acquiring · Core Banking</span>
+    </div>
+    <!-- ★ คำโปรยธุรกิจ (gate E32) — .sub ต้องอยู่ติดใต้ </h1> (ห้ามมีคอมเมนต์/แท็กคั่น) : บริษัททำอะไร ใช้ • คั่นกลุ่ม -->
+    <h1>Fiserv, Inc.</h1>
+    <div class="sub">Clover POS & merchant acquiring • Core banking/processing สำหรับธนาคาร-สหกรณ์ • Card issuer processing • Digital payments & output solutions</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$52.33<small>(FISV)</small></div>
+      </div>
+      <!-- ★ ป้าย % รอบปี (gate E35/E36) — ผลตอบแทน ~1 ปี (เทียบราคา ~1 ปีก่อน) = ผลตอบแทนปลายกราฟ section 2 (จุดแรก→ท้าย)
+           รูปแบบ: "▲ +X.X% (รอบปี)" ขึ้น · "▼ −X.X% (รอบปี)" ลง · "≈ ทรงตัว (รอบปี)" · หุ้น IPO <1 ปี ใช้ "(ตั้งแต่ IPO)"
+           ไม่ใช่ % รายวัน/YTD/52 สัปดาห์ · ตั้งสี theme.chgBg/chgColor ให้ตรงทิศ (ขึ้น=เขียว/ลง=แดง · E34) -->
+      <div class="chg">▼ −62.1% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 3 ก.ค. 2569<br>
+        กรอบ 52 สัปดาห์ $47.04 – $175.92<br>
+        ที่มา: StockAnalysis.com, Yahoo Finance, Fiserv Investor Relations (Q4/FY2025 + Q1 2026 earnings release)
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ณ 3 ก.ค. 2569</div></div>
+    <!-- ✏️ ปรับการ์ด metric ให้เหมาะกับหุ้น/เซกเตอร์ได้อิสระ — gate ไม่บังคับชุด metric (เปลี่ยน label / สลับ / เพิ่ม-ลดการ์ดได้)
+         • คงป้าย "P/E (TTM)", "P/BV", "เงินปันผล", "ROE" ไว้ถ้าหุ้นมีจริง → W10 cross-check กับ stock-meta · ไม่มี (ขาดทุน/ไม่ปันผล) = ตัดการ์ดออก + ตั้ง stock-meta เป็น null
+         • ธนาคาร → NIM / NPL / CASA / Loan growth / Cost-to-income   • REIT/กองอสังหา → Occupancy / DPU / NAV / Gearing   • ประกัน → Combined ratio / EV
+         • หุ้นเติบโต-ขาดทุน → Revenue growth / Gross margin / FCF / Cash runway (ตัด P/E ออก)
+         • FISV: ใช้ P/E (TTM) บนฐาน adjusted EPS (ไม่ใช่ GAAP ที่ถูกกดจาก D&A/amortization สินทรัพย์ไม่มีตัวตนจากดีล First Data) ตัดการ์ด P/BV ออก (fintech โครงสร้างทุนไม่เทียบธนาคาร) แทนด้วย Clover GPV growth + P/FCF -->
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">$27.9B</div><div class="d">533.3M หุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~6.2x</div><div class="d">บน adjusted EPS $8.44 (GAAP P/E ~8.85x)</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~32x</div><div class="d">ช่วง 2021-2025 (ก่อนราคาดิ่ง)</div></div>
+      <div class="metric"><div class="k">P/FCF (TTM)</div><div class="v neu">~6.3x</div><div class="d">FCF/หุ้น ~$8.33 · FCF conversion ~93%</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">$3.20B</div><div class="d">GAAP EPS $6.34 (+18% YoY)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$8.44</div><div class="d">Adjusted (non-GAAP) · GAAP TTM ~$5.91</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~$48.5</div><div class="d">รวม goodwill/intangibles จากดีล First Data</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~13% / 5%</div><div class="d">GAAP basis</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$21.1B</div><div class="d">+1.9% YoY · organic 1-3% guide FY26</div></div>
+      <div class="metric"><div class="k">Clover GPV Growth</div><div class="v pos">+9-12%</div><div class="d">Q1'26 ex-gateway conversion; guide 10-15% FY26</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">ไม่จ่าย</div><div class="d">เน้น buyback + reinvest แทน</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">0.84</div><div class="d">ผันผวนน้อยกว่าตลาดในอดีต (ก่อนวิกฤต Q3'25)</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART (ราคาย้อนหลัง ~1 ปี) ===== -->
+  <!-- ★ กราฟต้องเป็น "ราคาย้อนหลัง ~1 ปี" (gate E37): ไม่เกิน 13 จุด (รายเดือน 12 เดือน = 13 จุด · รายสองเดือน = ~8 จุด)
+       ห้ามใส่ 18 เดือน/1.5 ปี · จุดสุดท้าย = ราคาปัจจุบัน · ผลตอบแทน จุดแรก→จุดท้าย ต้องตรงกับป้าย % รอบปีใน header (E36) -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#e87722"></i>ราคา FISV</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $67</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        <!-- ✏️ บรรยายการเคลื่อนไหวราคา ~1 ปี: จุดสูง/ต่ำ, เปลี่ยนแปลง %, สาเหตุหลัก -->
+        หุ้น FISV เริ่มปีที่ $138.18 (ส.ค. 2568) ก่อนจะ<b>ร่วงหนัก ~48% ในเดือนเดียว</b> (ก.ย.→ต.ค. 2568) หลังประกาศงบ Q3/2568
+        ที่ผิดหวังอย่างรุนแรง — บริษัทตัดลดเป้า adjusted EPS ปี 2568 จาก $10.15-10.30 เหลือ $8.50-8.60 พร้อมเปิดเผยการชะลอตัวรุนแรง
+        ของธุรกิจ Financial Solutions (banking core) และ Clover volume ที่โตต่ำกว่าคาด ราคาแตะจุดต่ำสุดรอบปีที่ $49.05 (มิ.ย. 2569)
+        ก่อนฟื้นตัวเล็กน้อยมาที่ $52.33 หลังการเปลี่ยนตัว CEO เป็น Takis Georgakopoulos (มิ.ย. 2569) และงบ Q1/2569 ที่ผลประกอบการ
+        Clover เริ่มมีสัญญาณบวก (GPV +9-12% ex-gateway) รวมทั้งปี ราคาลดลง <b>~62.1%</b> สะท้อนความกังวลเรื่องความน่าเชื่อถือของ
+        management guidance และคุณภาพการเติบโตระยะยาวของทั้ง Financial Solutions และ Clover
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION (เฉลี่ย 3 วิธี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <!-- ✏️ เลือก 3 วิธี: P/E (adjusted), P/FCF, Conservative P/E (GAAP) — ตัด DDM (ไม่จ่ายปันผล) และ P/BV (fintech เทียบ P/BV ธนาคารไม่เหมาะ, BVPS พองจาก goodwill First Data) -->
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS adj. $8.44 × P/E 8.5x — ต่ำกว่าค่าเฉลี่ยประวัติศาสตร์ ~32x มาก สะท้อนตลาดตีราคาว่า growth ชะลอตัวถาวร แต่สูงกว่า P/E ปัจจุบัน 6.2x ที่เป็น "ราคาตื่นตระหนก" หลัง Q3'25 miss</div></div>
+        <div class="mval">$71.74</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. P/FCF Valuation</div><div class="mdesc">FCF/หุ้น $8.33 × P/FCF เป้าหมาย 8.5x — FCF conversion ~93% ของ adjusted EPS ยังแข็งแรง แม้กำไรบัญชีถูกกดจาก D&A/amortization สินทรัพย์ไม่มีตัวตนจากดีล First Data (2019)</div></div>
+        <div class="mval">$70.81</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Conservative P/E (GAAP)</div><div class="mdesc">EPS GAAP $5.91 × P/E 10x — ฐานระมัดระวังสุด กรณี Financial Solutions attrition ลากยาวกว่าคาดและ Clover ไม่ฟื้นตามเป้า 10-15% GPV</div></div>
+        <div class="mval">$59.10</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $59 – $72</span></div>
+        <div class="r">$67</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        <!-- ✏️ หมายเหตุ: วิธีไหนให้ค่าสูง/ต่ำเพราะอะไร, ทำไม FV กลางจึงสมเหตุสมผล -->
+        วิธี P/E adjusted ($71.7) และ P/FCF ($70.8) ให้ค่าใกล้เคียงกัน สะท้อนว่า adjusted EPS ของ Fiserv สอดคล้องกับกระแสเงินสดจริง
+        (ไม่ใช่ "ตัวเลขแต่งบัญชี") — วิธี Conservative GAAP P/E ($59.1) เป็นฐานล่างกรณีปัญหา Financial Solutions/Clover ลึกกว่าที่คิด
+        ทั้ง 3 วิธีคอนเวิร์จในกรอบ $59-72 จึงใช้ค่าเฉลี่ย $67 เป็น Fair Value (ต่ำกว่าเป้าเฉลี่ย analyst consensus $70 เล็กน้อย
+        เพื่อสะท้อนความไม่แน่นอนของ execution ภายใต้ CEO ใหม่ที่เพิ่งรับตำแหน่งเดือน มิ.ย. 2569)
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $52.33</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $67</div></div>
+        </div>
+        <div class="scale">
+          <span>$46.90<br><small>MOS 30%</small></span>
+          <span>$53.60<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$67<br><small>Fair Value</small></span>
+          <span style="text-align:right">$70<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">$72<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน $52.33 อยู่<b>ต่ำกว่า MOS 20% ($53.60) เล็กน้อย</b> — เข้าใกล้โซนน่าสนใจสำหรับนักลงทุนสาย value แล้ว
+        แต่ยังไม่ถึงโซน deep value ที่ MOS 30% ($46.90) ราคาปัจจุบันยังต่ำกว่าทั้ง Fair Value และเป้าเฉลี่ย analyst ($70)
+        สะท้อนว่าตลาดยังกังวลเรื่อง execution risk ภายใต้ผู้บริหารชุดใหม่มากกว่าที่ analyst consensus สะท้อน
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <!-- ✏️ class ของ mos-verdict: MOS<10 → "bad", 10–20 → "ok", ≥20 → "good" -->
+      <div class="mos-verdict good">
+        <div class="big">+21.9%</div>
+        <div class="txt">มี Margin of Safety ระดับดี — แต่มาพร้อมความเสี่ยง execution ที่สูงกว่าหุ้น value ทั่วไป เพราะราคาสะท้อนความไม่แน่นอนของ turnaround ภายใต้ CEO ใหม่</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$53.60</div><div class="d">โซนน่าสนใจสำหรับ value (ใกล้ราคาปัจจุบันมาก)</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$46.90</div><div class="d">โซนถูกมาก (deep value) — ใกล้จุดต่ำสุดรอบปี $49.05</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $67</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="52.33" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $52.33 • EPS ฐาน ~$8.44 • ไม่มีปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS −5%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$43.44</div>
+          <div class="ret neg">−17.0%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$7.24</span></li>
+            <li><span>P/E ออก</span><span>6x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$0 (ไม่จ่ายปันผล)</span></li>
+            <li><span>สถานการณ์</span><span>Financial Solutions attrition ลากยาว, Clover ไม่ฟื้น, ตลาดคง "value trap" label</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +3%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$73.76</div>
+          <div class="ret pos">+41.0%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$9.22</span></li>
+            <li><span>P/E ออก</span><span>8x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$0 (ไม่จ่ายปันผล)</span></li>
+            <li><span>สถานการณ์</span><span>Clover เติบโต mid-single-digit, Financial Solutions ทรงตัว, ตลาดค่อยๆ คืนความเชื่อมั่นให้ CEO ใหม่</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +8%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$106.30</div>
+          <div class="ret pos">+103.1%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$10.63</span></li>
+            <li><span>P/E ออก</span><span>10x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$0 (ไม่จ่ายปันผล)</span></li>
+            <li><span>สถานการณ์</span><span>Turnaround สำเร็จ Clover GPV กลับสู่ 10-15%, Financial Solutions attrition หยุด, multiple re-rate บางส่วน</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      Fiserv ไม่จ่ายปันผล (เน้น buyback + ลงทุนซ้ำ) ผลตอบแทนทั้งหมดจึงมาจาก price return ล้วนๆ — ช่วงผลตอบแทนกว้างมาก (−17% ถึง +103%)
+      สะท้อนว่าหุ้นนี้อยู่ในจุดเปลี่ยนผ่านสำคัญ (inflection point): หาก execution ของ CEO ใหม่ประสบความสำเร็จ upside มีนัยสำคัญเพราะ
+      multiple ปัจจุบัน (6.2x adjusted P/E) กดต่ำมากเทียบค่าเฉลี่ยประวัติศาสตร์ 32x แต่หากปัญหาเชิงโครงสร้างยังคงอยู่ ก็มีโอกาสขาดทุนเพิ่ม
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <!-- ✏️ 4–6 ข้อ: เขียน <b>หัวข้อ:</b> รายละเอียด -->
+          <li><b>Clover value-added services เร่งตัว:</b> VAS revenue +18% YoY (Q1'26), เป็น 27% ของ Clover revenue — mix shift ไปสินค้า margin สูงกว่า POS ฮาร์ดแวร์ล้วน</li>
+          <li><b>FCF conversion แข็งแรง:</b> FCF $4.44B (~93% ของ adjusted net income) พิสูจน์ว่าธุรกิจยังสร้างเงินสดได้จริง แม้ GAAP EPS ถูกกดจาก amortization</li>
+          <li><b>Valuation กดต่ำมาก:</b> P/E adjusted ~6.2x เทียบค่าเฉลี่ยประวัติศาสตร์ ~32x — Even หากไม่กลับไปสูงเท่าเดิม การ re-rate บางส่วนให้ upside มาก</li>
+          <li><b>ผู้บริหารใหม่ + Commerce Hub:</b> CEO Takis Georgakopoulos (อดีต Global Head of Payments, JPMorgan) เข้ารับตำแหน่ง มิ.ย. 2569 พร้อม Commerce Hub ที่ประมวลผล volume โต >200% YoY</li>
+          <li><b>Buyback ต่อเนื่อง:</b> บริษัทลดจำนวนหุ้นผ่าน buyback สม่ำเสมอ ช่วยหนุน EPS growth แม้รายได้โตช้า</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <!-- ✏️ 4–6 ข้อ: เขียน <b>หัวข้อ:</b> รายละเอียด -->
+          <li><b>Financial Solutions (core banking) หดตัวต่อเนื่อง:</b> Organic revenue ลด 4% ใน Q4'25 จาก client attrition — เป็นปัญหาเชิงโครงสร้าง ไม่ใช่แค่ปัจจัยชั่วคราว และกระทบต่อเนื่องถึง H1/2569</li>
+          <li><b>ความน่าเชื่อถือของ guidance เสียหาย:</b> บริษัทตัดเป้า adjusted EPS ปี 2568 กลางปีจาก $10.15-10.30 เหลือ $8.50-8.60 — ตลาดยังไม่มั่นใจ management execution</li>
+          <li><b>Clover growth ยังไม่ฟื้นเต็มที่:</b> GPV โต 9-12% ต่ำกว่าเป้าระยะยาว 10-15% และมีผล one-time (fee elimination) บดบังตัวเลขที่แท้จริง</li>
+          <li><b>ความเสี่ยงช่วงเปลี่ยนผ่าน CEO:</b> Georgakopoulos เพิ่งรับตำแหน่งไม่ถึงเดือน — กลยุทธ์ turnaround ยังไม่พิสูจน์ผล อาจมีการปรับโครงสร้าง/ตัดขาดทุนเพิ่มเติม</li>
+          <li><b>การแข่งขันดุเดือด:</b> Clover เผชิญคู่แข่งจาก Square (Block), Toast, Stripe ในตลาด SMB POS ที่ margin ถูกกดดัน</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>Fiserv: หุ้น Value/Turnaround ที่มี MOS แต่ยังต้องพิสูจน์ execution</h2>
+      <p>
+        Fiserv ร่วงจากจุดสูงสุดกว่า 62% ในรอบปีที่ผ่านมา หลังงบ Q3/2568 เผยปัญหาเชิงโครงสร้าง 2 จุด: (1) Financial Solutions
+        (ธุรกิจ core banking) หดตัวจาก client attrition ต่อเนื่อง และ (2) Clover เติบโตต่ำกว่าเป้าที่ตั้งไว้สูงเกินจริง อย่างไรก็ตาม
+        FCF ยังแข็งแรง (conversion ~93%) และ Clover เริ่มมีสัญญาณฟื้นตัว (VAS +18%, GPV +9-12% ex-gateway) ภายใต้ CEO ใหม่
+        ที่มีประสบการณ์ตรงด้าน payments — ประเมินว่าปัญหา Financial Solutions มีลักษณะ<b>เชิงโครงสร้าง</b> (ต้องใช้เวลาแก้)
+        ขณะที่ Clover ผสมทั้ง<b>ปัจจัยรอบวงจร</b> (fee elimination one-time) และความท้าทายเชิงแข่งขันระยะยาว ที่ P/E adjusted ~6.2x
+        ปัจจุบัน ตลาดดูเหมือนตีราคาสถานการณ์เลวร้ายไปมากแล้ว เปิดช่องให้มี Margin of Safety ในระดับที่น่าสนใจสำหรับนักลงทุนที่รับความเสี่ยง execution ได้
+      </p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$67 <span style="font-size:12px;color:#cab9a8">($59–$72)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +21.9%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$70 (Hold, 34 นักวิเคราะห์)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> เหมาะกับนักลงทุนสาย value/contrarian ที่ยอมรับความเสี่ยง execution สูงได้ — ทยอยสะสมต่ำกว่า $54 (ใกล้โซน MOS 20%)
+        และรอติดตามงบ Q2/2569 (ก.ค. 2569) เพื่อยืนยันว่า Financial Solutions attrition เริ่มชะลอตัวจริงตามที่ผู้บริหารส่งสัญญาณ
+        ไม่แนะนำสำหรับนักลงทุนที่ต้องการความชัดเจนสูง หรือไม่สบายใจกับหุ้นที่เพิ่งเปลี่ยน CEO กลางวิกฤต
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    แหล่งข้อมูล: StockAnalysis.com, Yahoo Finance, Fiserv Investor Relations (Q4/FY2025 + Q1 2026 earnings releases), TIKR.com
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 3 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
