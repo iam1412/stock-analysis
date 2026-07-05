@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น เอสไอเอสบี (SISB) — Stock Analysis Dashboard</title>
+<!-- ★ ใส่รุ่นโมเดล AI ที่ใช้วิเคราะห์จริง (Opus→"Claude Opus 4.8", Sonnet→"Claude Sonnet 4.6") — gate E28 บังคับ -->
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
+<script type="application/json" id="stock-meta">
+{"symbol":"SISB","currency":"THB","price":10.30,"fairValue":10.96,"mos":6.0,"upside":6.4,"pe":10.3,"dividendYield":4.95,"roe":24.15}
+</script>
+<script type="application/json" id="report-data">
+{"theme":{"accent":"#315ed8","accentDark":"#1f42a3","darkGrad":"linear-gradient(135deg,#09163a 0%,#10286b 58%,#193fa9 140%)","glow":"rgba(41,87,215,.35)","subColor":"#c3cdea","headerMuted":"#a7b2d3","verdictText":"#d1d9f0","vcellLabel":"#a9b6da","badge":"#315ed8","chgBg":"var(--red-soft)","chgColor":"#c5221f"},"chart":{"data":[["ส.ค. 68",14.70],["ก.ย. 68",12.60],["ต.ค. 68",11.80],["พ.ย. 68",12.50],["ธ.ค. 68",11.20],["ม.ค. 69",10.40],["ก.พ. 69",12.70],["มี.ค. 69",10.50],["เม.ย. 69",10.10],["พ.ค. 69",9.90],["มิ.ย. 69",9.65],["ก.ค. 69",10.30]],"min":8.5,"max":17.0,"grid":[8.5,10.75,13.0,15.25,17.0],"fairLine":10.96,"currency":"฿","highlight":[0,11]},"gauge":{"min":6.5,"max":17.5,"cur":10.30,"fair":10.96,"fairLabelTop":true},"fv":10.96}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots"><span style="background:#315ed8"></span><span style="background:#c5221f"></span><span style="background:#1f42a3"></span></div>
+    <div>
+      <span class="tag">SET: SISB</span>
+      <span class="tag">การศึกษา / โรงเรียนนานาชาติ</span>
+      <span class="tag">หลักสูตรสิงคโปร์</span>
+    </div>
+    <!-- ★ คำโปรยธุรกิจ (gate E32) — .sub ต้องอยู่ติดใต้ </h1> (ห้ามมีคอมเมนต์/แท็กคั่น) : บริษัททำอะไร ใช้ • คั่นกลุ่ม -->
+    <h1>SISB — เอสไอเอสบี</h1>
+    <div class="sub">โรงเรียนนานาชาติหลักสูตรสิงคโปร์ Singapore International School of Bangkok • 6 แคมปัส (กทม./ปริมณฑล, ระยอง, เชียงใหม่) • นักเรียน ~4,594 คน • เก็บค่าเทอมล่วงหน้า • แคมปัสที่ 7 รังสิตอยู่ระหว่างก่อสร้าง เปิด ส.ค. 2570</div>
+    <div class="price-row">
+      <div>
+        <div class="px">฿10.30<small>(SISB)</small></div>
+      </div>
+      <!-- ★ ป้าย % รอบปี (gate E35/E36) — ผลตอบแทน ~1 ปี (เทียบราคา ~1 ปีก่อน) = ผลตอบแทนปลายกราฟ section 2 (จุดแรก→ท้าย)
+           รูปแบบ: "▲ +X.X% (รอบปี)" ขึ้น · "▼ −X.X% (รอบปี)" ลง · "≈ ทรงตัว (รอบปี)" · หุ้น IPO <1 ปี ใช้ "(ตั้งแต่ IPO)"
+           ไม่ใช่ % รายวัน/YTD/52 สัปดาห์ · ตั้งสี theme.chgBg/chgColor ให้ตรงทิศ (ขึ้น=เขียว/ลง=แดง · E34) -->
+      <div class="chg">▼ −29.9% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 3 ก.ค. 2569 (ปิดตลาด SET)<br>
+        กรอบ 52 สัปดาห์ ฿9.35 – ฿16.50<br>
+        ที่มา: stockanalysis.com, SET.or.th, Yahoo Finance
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ธุรกิจโรงเรียน — เก็บเงินล่วงหน้า, net cash</div></div>
+    <!-- ✏️ ปรับการ์ด metric ให้เหมาะกับหุ้น/เซกเตอร์ได้อิสระ — gate ไม่บังคับชุด metric (เปลี่ยน label / สลับ / เพิ่ม-ลดการ์ดได้)
+         • คงป้าย "P/E (TTM)", "P/BV", "เงินปันผล", "ROE" ไว้ถ้าหุ้นมีจริง → W10 cross-check กับ stock-meta · ไม่มี (ขาดทุน/ไม่ปันผล) = ตัดการ์ดออก + ตั้ง stock-meta เป็น null
+         • ธนาคาร → NIM / NPL / CASA / Loan growth / Cost-to-income   • REIT/กองอสังหา → Occupancy / DPU / NAV / Gearing   • ประกัน → Combined ratio / EV
+         • หุ้นเติบโต-ขาดทุน → Revenue growth / Gross margin / FCF / Cash runway (ตัด P/E ออก) -->
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">฿9.68 พันล้าน</div><div class="d">~940 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~10.3x</div><div class="d">ต่ำกว่าค่าเฉลี่ยเดิม 15-20x มาก หลัง de-rate</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~18x</div><div class="d">ช่วงพีคก่อนโดนดาวน์เกรด 2568-69</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">2.33x</div><div class="d">BVPS ~฿4.43</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2568</div><div class="v">฿962 ล้าน</div><div class="d">+8.7% YoY</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿1.00</div><div class="d">FY2568 เต็มปี ฿1.02 (สิ้นสุด มี.ค. 69)</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~฿4.43</div><div class="d">Net cash ~฿1.16 พันล้าน</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~24.2% / 9.3%</div><div class="d">ROE สูงมากสำหรับธุรกิจโรงเรียน</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">฿2.58 พันล้าน</div><div class="d">+5.1% YoY (ชะลอจาก +8% ปีก่อน)</div></div>
+      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">~54%</div><div class="d">margin สูง ตามโมเดลโรงเรียนเก็บเงินล่วงหน้า</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~4.95%</div><div class="d">฿0.51/หุ้น • XD มี.ค. 2569</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">~0.6</div><div class="d">ผันผวนต่ำกว่าตลาด แต่ปีนี้ลงแรงจากปัจจัยเฉพาะตัว</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART (ราคาย้อนหลัง ~1 ปี) ===== -->
+  <!-- ★ กราฟต้องเป็น "ราคาย้อนหลัง ~1 ปี" (gate E37): ไม่เกิน 13 จุด (รายเดือน 12 เดือน = 13 จุด · รายสองเดือน = ~8 จุด)
+       ห้ามใส่ 18 เดือน/1.5 ปี · จุดสุดท้าย = ราคาปัจจุบัน · ผลตอบแทน จุดแรก→จุดท้าย ต้องตรงกับป้าย % รอบปีใน header (E36) -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#315ed8"></i>ราคา SISB</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿10.96</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคาลงต่อเนื่องเกือบทั้งปี จาก ฿14.70 (ส.ค. 2568) สู่จุดต่ำสุดรอบปี ~฿9.65 (มิ.ย. 2569) ก่อนดีดกลับมา ฿10.30 — รวมลดลง 29.9% ในรอบปี
+        สาเหตุหลักคือนักเรียนใหม่ต่ำกว่าเป้าต่อเนื่อง (Q4/68 มีนักเรียน 4,594 คน ลดลง 1% YoY) ทำให้โบรกเกอร์ทยอยปรับลดประมาณการกำไรปี 2569 ลงจากที่เคยคาดการณ์ไว้สูง
+        แม้บริษัทยังตั้งเป้า 4,800-5,000 คนในปี 2569 แต่นักวิเคราะห์ประเมินว่าจะทำได้จริงราว 4,640-4,840 คนเท่านั้น
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION (เฉลี่ย 3 วิธี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <!-- ✏️ เลือก ≥2 วิธีให้เหมาะกับหุ้น — gate เช็คคณิตเฉพาะวิธีชื่อ "P/E" (E21) และ "Justified P/BV" (E22) เมื่อมีวิธีนั้น
+           ธนาคาร → เน้น P/BV / Residual income   • REIT → DDM / NAV   • หุ้นไม่ปันผล → ตัด DDM ออก ใช้ P/E + DCF/Justified P/BV -->
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS adj. ฿1.03 (ประมาณการปี 2569 หลังปรับลด) × P/E เป้าหมาย ~12x — de-rate จากค่าเฉลี่ย ~18x เดิม สะท้อนความไม่แน่นอนของ enrollment</div></div>
+        <div class="mval">฿12.36</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล ฿0.51 × (1+g); g 3%, r 9.5% → สะท้อนการเติบโตปันผลช้าลงตามกำไรที่โตต่ำ</div></div>
+        <div class="mval">฿8.08</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 24.15% − g 4.5%)/(r 11.5% − g 4.5%) ≈ 2.81x × BVPS ฿4.43</div></div>
+        <div class="mval">฿12.44</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿8.08 – ฿12.44</span></div>
+        <div class="r">฿10.96</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        DDM ให้ค่าต่ำสุด (฿8.08) เพราะยึดตามปันผลปัจจุบันที่ยังต่ำเทียบราคาหุ้น ส่วน Justified P/BV ให้ค่าสูงสุด (฿12.44) เพราะ ROE ~24% ยังสูงกว่าธุรกิจโรงเรียนทั่วไปมาก แม้ชะลอตัว
+        FV เฉลี่ย ฿10.96 ใกล้เคียงราคาตลาดปัจจุบัน สะท้อนว่าตลาดได้ปรับราคาลงมารับข่าวลบเรื่อง enrollment ไปมากแล้ว แต่ยังไม่ถึงจุดที่มี margin of safety ชัดเจน
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿10.30</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿10.96</div></div>
+        </div>
+        <div class="scale">
+          <span>฿7.67<br><small>MOS 30%</small></span>
+          <span>฿8.77<br><small>MOS 20%</small></span>
+          <span style="text-align:center">฿10.96<br><small>Fair Value</small></span>
+          <span style="text-align:right">฿12.44<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">฿13.05<br><small>เป้าเฉลี่ย Analyst</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน ฿10.30 ใกล้เคียงกับ Fair Value เฉลี่ยของเรา (฿10.96) มากกว่าเป้าเฉลี่ยนักวิเคราะห์ (฿13.05 จาก 7 โบรก) ซึ่งยังรวมมุมมองบวกเรื่อง enrollment ฟื้นตัวที่ยังไม่เกิดขึ้นจริง —
+        ความเห็นระหว่างโบรกกว้างมาก (บางเจ้ายังให้ ฿17 เทียบกับบางเจ้าที่ระมัดระวังกว่า) เพราะเพิ่งมีการทยอยดาวน์เกรดประมาณการปี 2569
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <!-- ✏️ class ของ mos-verdict: MOS<10 → "bad", 10–20 → "ok", ≥20 → "good" -->
+      <div class="mos-verdict bad">
+        <div class="big">+6.0%</div>
+        <div class="txt">MOS ต่ำกว่าเกณฑ์ value investor (ควร ≥20%) — ราคาปัจจุบันใกล้เคียงมูลค่าเหมาะสม ไม่ถูกไม่แพง แต่ยังไม่มีส่วนเผื่อความปลอดภัยเพียงพอเมื่อคำนึงถึงความไม่แน่นอนของ enrollment</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿8.77</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿7.67</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿10.96</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="10.30" step="0.05">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿10.30 • EPS ฐาน ~฿1.00 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS +0%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿9.00</div>
+          <div class="ret neg">-12.6% capital, รวมปันผล ~+2.2%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿1.00</span></li>
+            <li><span>P/E ออก</span><span>9x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿1.53</span></li>
+            <li><span>สถานการณ์</span><span>enrollment ไม่ฟื้น แข่งขันดุ ค่าเทอมขึ้นไม่ได้มาก</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +4%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿13.50</div>
+          <div class="ret pos">+31.1% capital, รวมปันผล ~+46.2% (~13.5%/ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿1.12</span></li>
+            <li><span>P/E ออก</span><span>12x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿1.56</span></li>
+            <li><span>สถานการณ์</span><span>enrollment ทรงตัว-ฟื้นช้า ๆ แคมปัสเดิม ramp-up ต่อ</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +8%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿17.64</div>
+          <div class="ret pos">+71.2% capital, รวมปันผล ~+86.7% (~23.1%/ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿1.26</span></li>
+            <li><span>P/E ออก</span><span>14x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿1.59</span></li>
+            <li><span>สถานการณ์</span><span>enrollment ฟื้นแรง + แคมปัสรังสิต ramp-up เร็ว operating leverage สูง</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      Bear case สะท้อนความเสี่ยงที่ enrollment นิ่งต่อเนื่องและ P/E ยังโดนกดจากความไม่เชื่อมั่น — แทบไม่มีกำไรจากราคา ได้แค่ปันผล
+      Base case ให้ผลตอบแทนน่าพอใจระดับ mid-teens ต่อปี หากธุรกิจกลับมาเติบโตในระดับปกติของโรงเรียนที่มี pricing power
+      Bull case ต้องพึ่ง operating leverage จากฐานต้นทุนคงที่สูง + แคมปัสใหม่เต็มอัตรา ซึ่งยังอยู่ไกล (เปิด ส.ค. 2570)
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>ยอดจองล่วงหน้ายังทรงตัว:</b> ค่าเทอมเทอม 2 เก็บล่วงหน้าเพิ่ม +1% และเงินมัดจำนักเรียนใหม่เพิ่ม +10% (สิ้นปี 2568) บ่งชี้ demand ระยะสั้นยังไม่พังตามราคาหุ้น</li>
+          <li><b>Net cash + negative working capital:</b> โมเดลเก็บค่าเทอมล่วงหน้า ทำให้กระแสเงินสดแข็งแกร่ง ไม่ต้องพึ่งหนี้ (D/E เพียง 0.14x, cash สุทธิ ~฿1.16 พันล้าน)</li>
+          <li><b>Operating leverage สูง:</b> ต้นทุนคงที่เป็นสัดส่วนใหญ่ (ครู/อาคาร) หาก enrollment กลับมาโต margin จะขยายเร็วกว่ารายได้</li>
+          <li><b>แคมปัสรังสิตใหม่ (เปิด ส.ค. 2570):</b> โมเดลค่าเทอมถูกลง ~35% เจาะกลุ่มลูกค้าใหม่ที่กว้างขึ้น เพิ่ม TAM ระยะยาว แม้ยังต้องใช้เวลา ramp-up</li>
+          <li><b>Valuation de-rate มาเยอะแล้ว:</b> P/E ลงจาก ~18-20x เหลือ ~10x TTM ราคาสะท้อนข่าวลบไปมากพอสมควร ความเสี่ยงขาลงต่อจึงจำกัดลง หากไม่มีข่าวร้ายเพิ่ม</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>Enrollment ต่ำกว่าเป้าต่อเนื่อง:</b> ปี 2568 นักเรียนหดตัว -1% YoY เหลือ 4,594 คน (เป้าเดิม 4,700+) ปี 2569 บริษัทตั้งเป้า 4,800-5,000 แต่โบรกประเมินจริงราว 4,640-4,840 คน — ต่ำกว่าเป้าต่อเนื่องเป็นปีที่ 2</li>
+          <li><b>กำลังซื้อกลุ่มลูกค้าเป้าหมายอ่อนแอ:</b> ผู้ปกครองต่างชาติ/จีนบางส่วนกำลังซื้อลดลง กระทบการรับนักเรียนใหม่โดยเฉพาะสาขาที่พึ่งพากลุ่มนี้มาก</li>
+          <li><b>Supply โรงเรียนนานาชาติเพิ่มขึ้นเร็ว:</b> คู่แข่งเปิดสาขา/โรงเรียนใหม่ในกรุงเทพฯ-ปริมณฑลต่อเนื่อง กดดันราคาค่าเทอมและส่วนแบ่งตลาด</li>
+          <li><b>Bull case ยังไม่ materialize:</b> นักวิเคราะห์บางเจ้ายังให้เป้าสูงถึง ฿17 โดยอิงการฟื้นตัวของ enrollment ที่ยังไม่เห็นสัญญาณชัดเจนในตัวเลขจริง — เสี่ยงต่อการปรับลดเป้าเพิ่มอีก</li>
+          <li><b>Valuation ไม่ถูกจริง:</b> แม้ราคาลงมาก แต่ MOS จากค่าเฉลี่ยของเราเพียง ~6% ยังไม่เข้าเกณฑ์ safety margin ของ value investor หากธุรกิจสะดุดต่อ ราคาลงต่อได้อีก</li>
+          <li><b>ความล่าช้าของแคมปัสใหม่:</b> กำหนดเปิดแคมปัสรังสิตมีความไม่แน่นอนในรายงานข่าว (บางแหล่งระบุ ส.ค. 2569 บางแหล่งล่าสุดระบุ ส.ค. 2570) หากล่าช้ากว่าคาดจะกระทบ growth story ระยะกลาง</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>ราคาสะท้อนความเสี่ยงไปมากแล้ว แต่ยังไม่ใช่ของถูกชัดเจน — รอสัญญาณ enrollment ฟื้นก่อนเพิ่มน้ำหนัก</h2>
+      <p>SISB เป็นธุรกิจโรงเรียนนานาชาติที่มีคุณภาพเชิงโครงสร้าง (ROE ~24%, net cash, เก็บเงินล่วงหน้า, pricing power) แต่ปี 2568-2569 เผชิญปัญหา enrollment ต่ำกว่าเป้าต่อเนื่อง ทำให้นักวิเคราะห์ทยอยปรับลดประมาณการและราคาหุ้นลงมาเกือบ 30% ในรอบปี
+      ราคาปัจจุบัน ฿10.30 ใกล้เคียง Fair Value ที่เราประเมิน (฿10.96) มากกว่าเป้าเฉลี่ยนักวิเคราะห์ (฿13.05) ซึ่งยังมองบวกกว่าตัวเลขจริงที่เห็น สัญญาณบวกเดียวที่ยังพอเห็นคือยอดจองล่วงหน้า/เงินมัดจำนักเรียนใหม่ที่ยังไม่ทรุดตาม แต่ยังไม่มากพอจะสรุปว่าธุรกิจกลับมาโตแล้ว</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿10.96 <span style="font-size:12px;color:#cab9a8">(฿8.08–฿12.44)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +6.0%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿13.05 (Buy, 7 โบรก)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> MOS ปัจจุบันเพียง ~6% ยังไม่เข้าเกณฑ์ safety margin — เหมาะสำหรับติดตามรอจังหวะ ไม่ใช่รีบเข้าเต็มไม้ ถ้าราคาย่อลงมาแถวโซน MOS20% (~฿8.77) หรือต่ำกว่า จะเริ่มน่าสนใจขึ้นชัดเจน โดยต้องติดตามตัวเลข enrollment ไตรมาสถัดไปและความคืบหน้าแคมปัสรังสิตเป็นสัญญาณยืนยัน
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ข้อมูลจาก stockanalysis.com, SET.or.th, Yahoo Finance, Kaohoon International (Krungsri Securities) ณ 3-4 ก.ค. 2569
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 5 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>

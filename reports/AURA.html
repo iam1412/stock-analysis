@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น ออโรร่า ดีไซน์ (AURA) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"AURA","currency":"THB","price":14.10,"fairValue":14.11,"mos":0.07,"upside":0.07,"pe":10.76,"dividendYield":3.97,"roe":21.26}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#d7af32",
+    "accentDark": "#a2831f",
+    "darkGrad": "linear-gradient(135deg,#3a2e09 0%,#6a5510 58%,#a8861a 140%)",
+    "glow": "rgba(214,172,41,.35)",
+    "subColor": "#eae0c3",
+    "headerMuted": "#d2c8a7",
+    "verdictText": "#f0e8d1",
+    "vcellLabel": "#daceaa",
+    "badge": "#a2831f",
+    "chgBg": "var(--red-soft)",
+    "chgColor": "#c5221f"
+  },
+  "chart": {
+    "data": [
+      ["ก.ค. 68", 14.70],
+      ["ส.ค. 68", 14.70],
+      ["ก.ย. 68", 14.40],
+      ["ต.ค. 68", 14.20],
+      ["พ.ย. 68", 14.50],
+      ["ธ.ค. 68", 13.00],
+      ["ม.ค. 69", 15.20],
+      ["ก.พ. 69", 13.90],
+      ["มี.ค. 69", 14.20],
+      ["เม.ย. 69", 14.60],
+      ["พ.ค. 69", 14.00],
+      ["มิ.ย. 69", 14.10],
+      ["ก.ค. 69", 14.10]
+    ],
+    "min": 11.5,
+    "max": 16.5,
+    "grid": [12.0, 13.5, 15.0, 16.5],
+    "fairLine": 14.11,
+    "currency": "฿",
+    "highlight": [5, 6],
+    "gridFmt": "v.toFixed(1)",
+    "dataFmt": "d[1].toFixed(2)"
+  },
+  "gauge": {
+    "min": 9.0,
+    "max": 20.0,
+    "cur": 14.10,
+    "fair": 14.11,
+    "fairLabelTop": false
+  },
+  "fv": 14.11
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">💛 ✨ 💰</div>
+    <div>
+      <span class="tag">SET: AURA</span>
+      <span class="tag">ค้าปลีกทองรูปพรรณ</span>
+      <span class="tag">ขายฝากทอง • สินเชื่อ</span>
+    </div>
+    <h1>ออโรร่า ดีไซน์ (Aurora Design PCL)</h1>
+    <div class="sub">ห้างเพชรทองออโรร่า 490+ สาขาทั่วประเทศ • ค้าปลีกทองรูปพรรณ/ทองแท่ง/เพชร (Modern Gold) • ธุรกิจขายฝาก-สินเชื่อทองคำ "ทองมาเงินไป"</div>
+    <div class="price-row">
+      <div>
+        <div class="px">฿14.10<small>(AURA)</small></div>
+      </div>
+      <div class="chg">▼ −4.1% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 3 ก.ค. 2569<br>
+        กรอบ 52 สัปดาห์ ฿12.10 – ฿16.10<br>
+        ที่มา: StockAnalysis.com • SET (Factsheet/Price) • Yahoo Finance (AURA.BK) | งบการเงิน FY2025 / Q1/2026 (Q1/2569)
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">TTM / Q1-2569 (2026) | ราคา ณ 3 ก.ค. 2569</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~฿18,862 ล้าน</div><div class="d">~1,338 ล้านหุ้น (Par ฿1)</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~10.76x</div><div class="d">SET Factsheet 10.70x — สอดคล้อง</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~2 ปี</div><div class="v">~10–15x</div><div class="d">ผันผวนตามราคาทอง/กำไร</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">2.08x</div><div class="d">BVPS ~฿6.77/หุ้น</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ Q1/2569</div><div class="v">~฿700.1 ล้าน</div><div class="d">+75.7% YoY, +59.7% QoQ (นิวไฮ)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿1.31</div><div class="d">FY2568 เต็มปี ฿1.09 + Q1/69 ฿0.52</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~฿6.77</div><div class="d">ส่วนผู้ถือหุ้น ~฿9,070 ล้าน (Q1/69)</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~21.3% / ~9%</div><div class="d">FY2568 21.26% • Q1/69 ann. 22.21%</div></div>
+
+      <div class="metric"><div class="k">รายได้ Q1/2569</div><div class="v neu">~฿15,768 ล้าน</div><div class="d">+77.9% YoY • Modern Gold 95% ของรายได้</div></div>
+      <div class="metric"><div class="k">พอร์ตขายฝากทอง</div><div class="v">~฿9,140 ล้าน</div><div class="d">"ทองมาเงินไป" เติบโตต่อเนื่อง</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~3.97%</div><div class="d">฿0.56/หุ้น (FY2568) Payout ~43%</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">~1.1</div><div class="d">ผันผวนตามราคาทองคำโลก</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART (ราคาย้อนหลัง ~1 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ก.ค. 2568 – ก.ค. 2569</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#d7af32"></i>ราคา AURA</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿14.11</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคาแกว่งในกรอบ ฿13.00–15.20 ตลอด 1 ปีที่ผ่านมา โดยจุดต่ำสุดอยู่ที่ ธ.ค. 2568 (฿13.00) ก่อนดีดตัวแรงช่วง ม.ค. 2569 (฿15.20)
+        รับข่าวราคาทองคำโลกพุ่งแรง จากนั้นย่อลงมาแกว่งแคบในกรอบ ฿14.00–14.60 ตามความผันผวนของราคาทองคำและการทำกำไรระยะสั้นของนักลงทุน
+        แม้ผลประกอบการ Q1/2569 จะทำนิวไฮต่อเนื่อง (กำไร +75.7% YoY) แต่ราคาหุ้นกลับทรงตัว/ย่อลงเล็กน้อยเมื่อเทียบกับ 1 ปีก่อน (−4.1%)
+        สะท้อนว่าตลาดเริ่มระมัดระวังความเสี่ยง "peak earnings" จากวัฏจักรราคาทองคำที่อยู่ในระดับสูงเป็นประวัติการณ์
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION (เฉลี่ย 3 วิธี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี — ปรับ EPS/ROE ลงจาก peak-cycle</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS ปรับฐาน (haircut) ฿1.25 × P/E เป้าหมาย ~11.5x — ต่ำกว่า EPS TTM จริง ฿1.31 เพื่อลด weight กำไรที่พีคตามราคาทอง</div></div>
+        <div class="mval">฿14.38</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล ฿0.56 × (1+g); g 6%, r 10.5% → payout ~43% ยังมีช่องโตปันผลตามกำไร แต่ปรับ g ลงจากอัตราการเติบโตจริงที่ >75%</div></div>
+        <div class="mval">฿13.19</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 19% − g 7%)/(r 12.5% − g 7%) ≈ 2.18 × BVPS ฿6.77 — ROE ปรับลงจาก 21.3% ปัจจุบันเพื่อ normalize รอบวัฏจักรทองคำ</div></div>
+        <div class="mval">฿14.77</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿13.19 – ฿14.77</span></div>
+        <div class="r">฿14.11</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ทั้ง 3 วิธีให้ค่าใกล้เคียงกัน (฿13.19–14.77) เพราะจงใจ "ปรับฐาน" EPS/ROE/g ลงจากระดับ peak-cycle ปัจจุบัน (กำไร Q1 โต +75.7% YoY
+        คือระดับที่ไม่ควร extrapolate ตรง ๆ) FV เฉลี่ย ฿14.11 ใกล้เคียงราคาตลาด ฿14.10 มาก บ่งชี้ว่าราคาปัจจุบัน "สะท้อนมูลค่าพอดี"
+        ไม่มีส่วนเผื่อความปลอดภัยเหลือ หากกำไรและราคาทองคำยังทรงตัวสูงต่อได้ อัพไซด์จะมาจาก re-rating เพิ่มเติม ไม่ใช่จาก undervaluation
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿14.10</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿14.11</div></div>
+        </div>
+        <div class="scale">
+          <span>฿9.88<br><small>MOS 30%</small></span>
+          <span>฿11.29<br><small>MOS 20%</small></span>
+          <span style="text-align:center">฿14.11<br><small>Fair Value</small></span>
+          <span style="text-align:right">฿14.77<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">฿19.37<br><small>เป้าเฉลี่ย Analyst</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน ฿14.10 อยู่ "พอดี" กับมูลค่าเหมาะสมที่ประเมินแบบ normalize แล้ว (฿14.11) แต่ต่ำกว่าเป้าเฉลี่ยนักวิเคราะห์ ฿19.37
+        มากถึง ~27% — ส่วนต่างนี้สะท้อนมุมมองที่ต่างกัน: โบรกเกอร์ส่วนใหญ่ยัง extrapolate การเติบโตของกำไรในอัตราสูงต่อเนื่อง
+        ขณะที่การประเมินนี้เลือก "ระมัดระวัง" กว่า โดย haircut กำไร/ROE ลงเพื่อสะท้อนความเสี่ยงวัฏจักรราคาทองคำ
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">+0.1%</div>
+        <div class="txt">แทบไม่มีส่วนเผื่อความปลอดภัย — ราคาตลาดเท่ากับมูลค่าเหมาะสมโดยประมาณ (Fairly Valued)</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿11.29</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿9.88</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿14.11</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="14.10" step="0.05">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿14.10 • EPS ฐาน ~฿1.31 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS −5%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿10.11</div>
+          <div class="ret neg">−19.8%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿1.12</span></li>
+            <li><span>P/E ออก</span><span>9.0x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿1.20</span></li>
+            <li><span>สถานการณ์</span><span>ราคาทองคำกลับทิศแรง กำไรหด สเปรดขายฝากบีบ</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +8%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿18.15</div>
+          <div class="ret pos">+41.5%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿1.65</span></li>
+            <li><span>P/E ออก</span><span>11.0x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿1.80</span></li>
+            <li><span>สถานการณ์</span><span>ราคาทองทรงตัวสูง ขยายสาขา+พอร์ตขายฝากต่อเนื่องปกติ</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +18%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿27.98</div>
+          <div class="ret pos">+114.4%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿2.15</span></li>
+            <li><span>P/E ออก</span><span>13.0x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿2.25</span></li>
+            <li><span>สถานการณ์</span><span>ทองคำเป็นขาขึ้นต่อเนื่อง ขยายสาขา+พอร์ตขายฝากโตแรง</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      ⚠️ กำไร Q1/2569 ที่โต +75.7% YoY เป็นอัตราที่ "ไม่ควร extrapolate ตรง ๆ" เพราะขับเคลื่อนหลักจากราคาทองคำที่พุ่งขึ้นสู่ระดับสูงสุดเป็นประวัติการณ์
+      (บาทละ 64,400–80,600 บาทในเดือน มี.ค. 2569) — สถานการณ์นี้เป็นปัจจัยชั่วคราวที่อาจไม่เกิดซ้ำทุกปี Base case จึงใช้อัตราเติบโต EPS
+      ที่ haircut ลงเหลือ +8%/ปี สะท้อนการเติบโตแบบ organic (ขยายสาขา + พอร์ตขายฝาก) มากกว่าแรงหนุนจากราคาทองที่ผันผวนสูง
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>ธุรกิจขายฝากทองคำโตแรง:</b> พอร์ตลูกหนี้ "ทองมาเงินไป" เพิ่มเป็น ~฿9,140 ล้าน สร้างรายได้ดอกเบี้ย/ค่าธรรมเนียมที่มั่นคงกว่าธุรกิจค้าปลีกล้วน</li>
+          <li><b>ขยายสาขาต่อเนื่อง:</b> เครือข่ายกว่า 490 สาขาทั่วประเทศ ครอบคลุมฐานลูกค้าต่างจังหวัดที่นิยมออมทองเป็นสินทรัพย์</li>
+          <li><b>ราคาทองคำโลกยังอยู่ในระดับสูง:</b> ความไม่แน่นอนเศรษฐกิจ/ภูมิรัฐศาสตร์หนุนดีมานด์ทองคำเป็นสินทรัพย์ปลอดภัยต่อเนื่อง</li>
+          <li><b>ปันผลสม่ำเสมอ:</b> Payout ratio ~43% ให้ yield ~4% ต่อปี เป็นรายได้เสริมระหว่างถือหุ้น</li>
+          <li><b>งบดุลแข็งแรงขึ้น:</b> ส่วนผู้ถือหุ้นเติบโตต่อเนื่อง (Q1/69 ~฿9,070 ล้าน) รองรับการขยายพอร์ตขายฝากได้อีกมาก</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>⚠️ ความเสี่ยงหลัก — วัฏจักรราคาทองคำกลับทิศ:</b> กำไรพีคตามราคาทองที่ทำนิวไฮ หากราคาทองปรับฐานแรง กำไรค้าปลีก+มูลค่าหลักประกันขายฝากจะหดตัวตาม ห้าม extrapolate อัตราโต +75.7% เป็นระดับปกติ</li>
+          <li><b>สเปรดขายฝากอาจหดตัว:</b> การแข่งขันจากผู้เล่นรายอื่น/สถาบันการเงินในธุรกิจขายฝากทองอาจกดดันอัตราดอกเบี้ย/ค่าธรรมเนียม</li>
+          <li><b>คุณภาพสินทรัพย์พอร์ตขายฝาก:</b> หากราคาทองร่วงเร็ว มูลค่าหลักประกันอาจไม่พอคุ้มเงินต้น เพิ่มความเสี่ยงหนี้เสีย/ขาดทุนจากการขายทองคืน</li>
+          <li><b>ต้นทุนวัตถุดิบผันผวนสูง:</b> ธุรกิจค้าปลีกทองรูปพรรณอ่อนไหวต่อค่าครองชีพ/กำลังซื้อผู้บริโภคเมื่อราคาทองแพงเกินไป</li>
+          <li><b>Valuation ตึงตัว:</b> ราคาปัจจุบันใกล้ Fair Value แบบ normalize แล้ว (MOS ~0%) — ไม่มีส่วนเผื่อความปลอดภัยรองรับความผิดพลาดของสมมติฐาน</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>AURA: ร้านทอง+ขายฝากที่กำไรกำลังพีค — ราคาสะท้อนมูลค่าพอดี รอส่วนเผื่อก่อนสะสมเพิ่ม</h2>
+      <p>ออโรร่า ดีไซน์ เป็นผู้นำค้าปลีกทองรูปพรรณผ่านเครือข่าย 490+ สาขา ผสมธุรกิจขายฝาก-สินเชื่อทองคำ "ทองมาเงินไป" ที่กำลังเติบโตแรง
+      Q1/2569 กำไรทำนิวไฮ ~฿700 ล้าน (+75.7% YoY) รับแรงหนุนราคาทองคำพุ่งสู่ระดับสูงสุดเป็นประวัติการณ์ อย่างไรก็ตาม อัตราการเติบโตนี้ผูกกับ
+      วัฏจักรราคาทองคำที่ผันผวนสูง ไม่ควรคาดหวังว่าจะดำเนินต่อในอัตราเดียวกันทุกปี หลังปรับฐาน EPS/ROE ให้สะท้อนวัฏจักรระยะยาวมากขึ้น
+      Fair Value เฉลี่ยอยู่ที่ ฿14.11 ใกล้เคียงราคาตลาด ฿14.10 มาก แปลว่าราคาปัจจุบัน "แฟร์" ไม่ถูกไม่แพง แม้เป้าหมายนักวิเคราะห์เฉลี่ยจะสูงกว่ามาก
+      (~฿19.37) จากมุมมองที่เชื่อการเติบโตต่อเนื่อง • กลยุทธ์: เหมาะกับการถือเพื่อรับปันผล ~4% ต่อปี มากกว่าไล่ราคา รอจังหวะราคาย่อสู่โซน MOS 20%
+      (~฿11.29) ก่อนสะสมเพิ่ม เพื่อสร้างส่วนเผื่อความปลอดภัยรองรับความเสี่ยงราคาทองคำกลับทิศ</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿14.11 <span style="font-size:12px;color:#cab9a8">(฿13.19–฿14.77)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +0.1%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿19.37 (Strong Buy)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ถือเพื่อรับปันผล / ทยอยสะสมเมื่อราคาย่อสู่โซน ฿11.29–12.70 (MOS 20%+) มากกว่าไล่ซื้อที่ราคาปัจจุบัน •
+        ติดตามราคาทองคำโลกและอัตราการเติบโตพอร์ตขายฝากอย่างใกล้ชิดเป็นตัวชี้วัดหลัก • เหมาะสำหรับนักลงทุนที่เข้าใจและรับความเสี่ยง
+        cyclical จากสินค้าโภคภัณฑ์ได้ ไม่เหมาะกับผู้ที่ต้องการหุ้นกำไรสม่ำเสมอไร้ความผันผวน
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง โดยเฉพาะตามราคาทองคำโลกที่เป็นปัจจัยขับเคลื่อนหลักของธุรกิจ ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    ที่มา: StockAnalysis.com (BKK:AURA) • SET Factsheet/Price (AURA) • Yahoo Finance Chart API (AURA.BK) • Thansettakij/Siam Outlook/ThaiPR (ข่าว Q1/2569)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 3 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>

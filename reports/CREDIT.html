@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="th">
+<!--
+  ════════════════════════════════════════════════════════════════════════════
+  SKELETON — หุ้นไทย (THB ฿ / ตลาด SET)        ★ ก๊อปไฟล์นี้เป็นจุดตั้งต้นหุ้นไทย
+  ════════════════════════════════════════════════════════════════════════════
+  วิธีใช้:  cp _template/skeleton-th.html reports/<SYMBOL>.html  แล้วแทนทุก {{...}} ด้วยข้อมูลจริง
+  • ทุกช่องที่ต้องแก้คือ {{...}}  — ห้ามเหลือค้าง (gate E13 จะ error ถ้าเจอ {{ }} ในรายงาน)
+  • ตัวเลขต้องสอดคล้องกันตามกฎใน CLAUDE.md ข้อ 7 — เช่น MOS20=23.86×0.8, MOS=(FV−price)/FV
+  • เลือกสีแบรนด์ใน theme (ห้ามปล่อย default) — ดู tools/brand-colors.md + tools/seeds.json
+  • โครง CSS/engine ถูก inject ตอน build (marker STYLE/ENGINE) — ไม่ต้องแตะ
+  ════════════════════════════════════════════════════════════════════════════
+-->
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น ธนาคารไทยเครดิต (CREDIT) — Stock Analysis Dashboard</title>
+<!-- ★ ใส่รุ่นโมเดล AI ที่ใช้วิเคราะห์จริง (Opus→"Claude Opus 4.8", Sonnet→"Claude Sonnet 4.6") — gate E28 บังคับ -->
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
+<script type="application/json" id="stock-meta">
+{"symbol":"CREDIT","currency":"THB","price":22.20,"fairValue":23.86,"mos":7.0,"upside":7.5,"pe":6.42,"dividendYield":4.41,"roe":16.64}
+</script>
+<!--
+  report-data: ธีมสี + ข้อมูลกราฟ/gauge ต่อหุ้น (build เอาไปวาด)  ดู schema เต็มใน CLAUDE.md ข้อ 9
+  • theme.* = สีแบรนด์ (accent ห้ามเป็นน้ำเงิน default) • chart.fairLine = gauge.fair = fv = 23.86
+  • gauge.cur = ราคาปัจจุบัน = 22.20 • highlight = ดัชนีจุดเด่นบนกราฟ (เช่น [2,7])
+  • chart.data = ราคาย้อนหลัง ~1 ปี (ไม่เกิน 13 จุด · E37) — จุดแรก = ราคา ~1 ปีก่อน, จุดท้าย = ราคาปัจจุบัน 22.20
+    (ผลตอบแทน จุดแรก→จุดท้าย ต้อง = ป้าย % รอบปีใน header · E36)
+  • theme.chgBg/chgColor = สีป้าย % รอบปี: ขึ้น→เขียว var(--green-soft)/#1e8e3e · ลง→แดง var(--red-soft)/#c5221f (E34)
+  • dataFmt อ้าง d[1] เท่านั้น, gridFmt อ้าง v เท่านั้น (ผิด scope = กราฟดับ)
+-->
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#ed6e1d",
+    "accentDark": "#b34f0f",
+    "darkGrad": "linear-gradient(135deg,#3e1b04 0%,#733107 58%,#b64e0c 140%)",
+    "glow": "rgba(236,104,19,.35)",
+    "subColor": "#ebd2c2",
+    "headerMuted": "#d4b8a5",
+    "verdictText": "#f1ddd0",
+    "vcellLabel": "#ddbca6",
+    "badge": "#ed6e1d",
+    "chgBg": "#1e8e3e",
+    "chgColor": "#ffffff"
+  },
+  "chart": {
+    "data": [
+      [
+        "ส.ค. 2568",
+        16.7
+      ],
+      [
+        "ก.ย. 2568",
+        16.9
+      ],
+      [
+        "ต.ค. 2568",
+        17.0
+      ],
+      [
+        "พ.ย. 2568",
+        16.5
+      ],
+      [
+        "ธ.ค. 2568",
+        15.5
+      ],
+      [
+        "ม.ค. 2569",
+        16.1
+      ],
+      [
+        "ก.พ. 2569",
+        18.9
+      ],
+      [
+        "มี.ค. 2569",
+        16.9
+      ],
+      [
+        "เม.ย. 2569",
+        18.9
+      ],
+      [
+        "พ.ค. 2569",
+        18.9
+      ],
+      [
+        "มิ.ย. 2569",
+        21.6
+      ],
+      [
+        "ก.ค. 2569",
+        22.2
+      ]
+    ],
+    "min": 14,
+    "max": 30,
+    "grid": [
+      15,
+      18,
+      21,
+      24,
+      27
+    ],
+    "fairLine": 23.86,
+    "currency": "฿",
+    "highlight": [
+      4,
+      11
+    ]
+  },
+  "gauge": {
+    "min": 12,
+    "max": 32,
+    "cur": 22.2,
+    "fair": 23.86,
+    "fairLabelTop": true
+  },
+  "fv": 23.86
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">◆ ◆ ◆</div>
+    <div>
+      <span class="tag">SET: CREDIT</span>
+      <span class="tag">ธนาคาร</span>
+      <span class="tag">Micro SME Lending</span>
+    </div>
+    <!-- ★ คำโปรยธุรกิจ (gate E32) — .sub ต้องอยู่ติดใต้ </h1> (ห้ามมีคอมเมนต์/แท็กคั่น) : บริษัททำอะไร ใช้ • คั่นกลุ่ม -->
+    <h1>ธนาคารไทยเครดิต จำกัด (มหาชน) (CREDIT)</h1>
+    <div class="sub">ธนาคารเพื่อ Micro SME • สินเชื่อบ้านแลกเงิน (Home Equity) • นาโน-ไมโครไฟแนนซ์ • NIM สูงสุดในกลุ่มแบงก์ไทย</div>
+    <div class="price-row">
+      <div>
+        <div class="px">฿22.20<small>(CREDIT)</small></div>
+      </div>
+      <!-- ★ ป้าย % รอบปี (gate E35/E36) — ผลตอบแทน ~1 ปี (เทียบราคา ~1 ปีก่อน) = ผลตอบแทนปลายกราฟ section 2 (จุดแรก→ท้าย)
+           รูปแบบ: "▲ +X.X% (รอบปี)" ขึ้น · "▼ −X.X% (รอบปี)" ลง · "≈ ทรงตัว (รอบปี)" · หุ้น IPO <1 ปี ใช้ "(ตั้งแต่ IPO)"
+           ไม่ใช่ % รายวัน/YTD/52 สัปดาห์ · ตั้งสี theme.chgBg/chgColor ให้ตรงทิศ (ขึ้น=เขียว/ลง=แดง · E34) -->
+      <div class="chg">▲ +32.9% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 3 ก.ค. 2569<br>
+        กรอบ 52 สัปดาห์ ฿14.70 – ฿23.30<br>
+        ที่มา: StockAnalysis.com, SET Factsheet, Yahoo Finance
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ Q1/2569 และ TTM (ก.ค. 2569)</div></div>
+    <!-- ✏️ ปรับการ์ด metric ให้เหมาะกับหุ้น/เซกเตอร์ได้อิสระ — gate ไม่บังคับชุด metric (เปลี่ยน label / สลับ / เพิ่ม-ลดการ์ดได้)
+         • คงป้าย "P/E (TTM)", "P/BV", "เงินปันผล", "ROE" ไว้ถ้าหุ้นมีจริง → W10 cross-check กับ stock-meta · ไม่มี (ขาดทุน/ไม่ปันผล) = ตัดการ์ดออก + ตั้ง stock-meta เป็น null
+         • ธนาคาร → NIM / NPL / CASA / Loan growth / Cost-to-income   • REIT/กองอสังหา → Occupancy / DPU / NAV / Gearing   • ประกัน → Combined ratio / EV
+         • หุ้นเติบโต-ขาดทุน → Revenue growth / Gross margin / FCF / Cash runway (ตัด P/E ออก) -->
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~฿27,413 ล้าน</div><div class="d">หุ้นชำระแล้ว ~1,234.8 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~6.42x</div><div class="d">EPS TTM ฿3.46 (ก.ค. 2569)</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~7–9x</div><div class="d">IPO ก.พ. 2567 — ประวัติซื้อขายสั้น ~2.4 ปี</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">1.00x</div><div class="d">BVPS ~฿22.20 (P/BV = 1.00 เท่า ราคาปัจจุบัน)</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2568</div><div class="v">฿4,020 ล้าน</div><div class="d">+10.8% YoY (FY2567 ~฿3,629 ล้าน)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿3.46</div><div class="d">Q1/2569 กำไรสุทธิ ฿1,164.7 ล้าน +29.0% YoY</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~฿22.20</div><div class="d">อิงจาก P/BV 1.00x ที่ราคาปัจจุบัน</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~16.64% / 2.09%</div><div class="d">TTM (ก.ค. 2569); Q1/2569 ROE 17.33% (จาก 15.38% ปีก่อน)</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">~฿11,470 ล้าน</div><div class="d">FY2568 รายได้รวม +10.6% YoY</div></div>
+      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">NIM 7.7%</div><div class="d">Q1/2569; เป้าปี 2569 = 7.5–8.0%</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~4.41%</div><div class="d">DPS FY2568 ฿0.98 (payout ~17.3%)</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">~0.7</div><div class="d">ผันผวนต่ำกว่าตลาด แต่สภาพคล่องจำกัด (free float น้อย)</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART (ราคาย้อนหลัง ~1 ปี) ===== -->
+  <!-- ★ กราฟต้องเป็น "ราคาย้อนหลัง ~1 ปี" (gate E37): ไม่เกิน 13 จุด (รายเดือน 12 เดือน = 13 จุด · รายสองเดือน = ~8 จุด)
+       ห้ามใส่ 18 เดือน/1.5 ปี · จุดสุดท้าย = ราคาปัจจุบัน · ผลตอบแทน จุดแรก→จุดท้าย ต้องตรงกับป้าย % รอบปีใน header (E36) -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#ed6e1d"></i>ราคา CREDIT</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿23.86</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        <!-- ✏️ บรรยายการเคลื่อนไหวราคา ~1 ปี: จุดสูง/ต่ำ, เปลี่ยนแปลง %, สาเหตุหลัก -->
+        ราคา CREDIT ปรับตัวขึ้น +32.9% ในรอบปีที่ผ่านมา (ส.ค. 2568 ฿16.70 → ก.ค. 2569 ฿22.20) หลังแตะจุดต่ำสุดรอบปีที่ ฿15.50 ในเดือน ธ.ค. 2568 จากความกังวลคุณภาพสินทรัพย์ช่วงดอกเบี้ยขาลง ก่อนฟื้นตัวแรงตั้งแต่ ก.พ. 2569 หนุนโดยกำไร Q1/2569 ที่โต +29.0% YoY และสินเชื่อขยายตัว +13.8% YoY ราคาทะลุ ฿21 ครั้งแรกในเดือน มิ.ย. 2569 ก่อนปิดที่ ฿22.20 ในต้นเดือน ก.ค. 2569 ใกล้เคียงมูลค่าเหมาะสมของเรา ฿23.86
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION (เฉลี่ย 3 วิธี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <!-- ✏️ เลือก ≥2 วิธีให้เหมาะกับหุ้น — gate เช็คคณิตเฉพาะวิธีชื่อ "P/E" (E21) และ "Justified P/BV" (E22) เมื่อมีวิธีนั้น
+           ธนาคาร → เน้น P/BV / Residual income   • REIT → DDM / NAV   • หุ้นไม่ปันผล → ตัด DDM ออก ใช้ P/E + DCF/Justified P/BV -->
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS (TTM) ฿3.46 × P/E เป้าหมาย ~7.5x — P/E เฉลี่ยกลุ่มแบงก์ไทย ~7–9x; ให้พรีเมียมเล็กน้อยเหนือค่าเฉลี่ยกลุ่มเพราะ ROE 16.6% สูงกว่าธนาคารพาณิชย์ขนาดใหญ่ (KTB/BBL ROE ~8–10%) แต่มีส่วนลดจากขนาดเล็ก/อายุ IPO สั้น</div></div>
+        <div class="mval">฿25.95</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล ฿0.98 × (1+g); g 7%, r 13.5% → FV = ฿1.049/(13.5%−7%) = ฿16.13 — payout ต่ำ (~17%) เพราะเน้นสะสมทุนรองรับสินเชื่อโต 11–15%/ปี ทำให้ DDM ให้ค่าต่ำสุดในสามวิธี (understate มูลค่าจริงของหุ้นที่เน้นเติบโต)</div></div>
+        <div class="mval">฿16.13</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 16.64% − g 8%)/(r 14.5% − g 8%) ≈ 1.33 × BVPS ฿22.20</div></div>
+        <div class="mval">฿29.51</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿16.13 – ฿29.51</span></div>
+        <div class="r">฿23.86</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        <!-- ✏️ หมายเหตุ: วิธีไหนให้ค่าสูง/ต่ำเพราะอะไร, ทำไม FV กลางจึงสมเหตุสมผล -->
+        วิธี Justified P/BV ให้ค่าสูงสุด (฿29.51) สะท้อน ROE 16.6% ที่สูงกว่าต้นทุนทุนมาก ขณะที่ DDM ให้ค่าต่ำสุด (฿16.13) เพราะ payout ratio ต่ำจากนโยบายรีเทนกำไรเพื่อโตเร็ว วิธี P/E อยู่กึ่งกลาง (฿25.95) ค่าเฉลี่ย ฿23.86 ใกล้เคียงราคาตลาดปัจจุบัน ฿22.20 สะท้อนว่าหุ้นเทรดใกล้มูลค่าพื้นฐานแล้วหลังราคาวิ่งขึ้นมาก ไม่ถูกไม่แพงจนเกินไป
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿22.20</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿23.86</div></div>
+        </div>
+        <div class="scale">
+          <span>฿16.70<br><small>MOS 30%</small></span>
+          <span>฿19.09<br><small>MOS 20%</small></span>
+          <span style="text-align:center">฿23.86<br><small>Fair Value</small></span>
+          <span style="text-align:right">฿27.50<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">฿29.51<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน ฿22.20 อยู่ใกล้เคียงมูลค่าเหมาะสม ฿23.86 (ต่ำกว่าเพียง ~7%) และต่ำกว่าเป้าเฉลี่ยนักวิเคราะห์ที่ ฿27.50 อยู่พอสมควร บ่งชี้ว่านักวิเคราะห์มองบวกกว่าค่าประเมินของเรา โซนน่าสนใจสำหรับ value investor อยู่ที่ต่ำกว่า ฿19.09 (MOS 20%) และต่ำกว่า ฿16.70 (MOS 30%) ซึ่งปัจจุบันราคายังไม่ลงมาถึงระดับดังกล่าว
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <!-- ✏️ class ของ mos-verdict: MOS<10 → "bad", 10–20 → "ok", ≥20 → "good" -->
+      <div class="mos-verdict bad">
+        <div class="big">+7.0%</div>
+        <div class="txt">ราคาใกล้เคียง Fair Value — Margin of Safety จำกัด (~7%) ยังไม่ใช่โซนถูกสำหรับ value investor</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿19.09</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿16.70</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿23.86</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="22.20" step="0.05">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿22.20 • EPS ฐาน ~฿3.46 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS −2%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿17.93</div>
+          <div class="ret neg">Total −9.8% (−3.4%/ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿3.26</span></li>
+            <li><span>P/E ออก</span><span>5.5x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿2.10</span></li>
+            <li><span>สถานการณ์</span><span>NPL พุ่ง ลูกหนี้รายย่อยผิดนัดสูง ศก.ชะลอ</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +9%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿31.36</div>
+          <div class="ret pos">Total +55.5% (+15.9%/ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿4.48</span></li>
+            <li><span>P/E ออก</span><span>7.0x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿3.15</span></li>
+            <li><span>สถานการณ์</span><span>สินเชื่อโตตามเป้า 11–15% NIM คงระดับ 7.5–8%</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +15%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿42.08</div>
+          <div class="ret pos">Total +107.6% (+27.5%/ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿5.26</span></li>
+            <li><span>P/E ออก</span><span>8.0x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿4.00</span></li>
+            <li><span>สถานการณ์</span><span>Micro SME ขยายเร็ว NPL ลด Re-rate ใกล้กลุ่มแบงก์ ROE สูง</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      Base case อิงเป้าบริษัทปี 2569 (สินเชื่อโต 11–15%, NIM 7.5–8%, CIR 42%, NPL <4.5%) EPS โต +9%/ปีอย่างต่อเนื่อง 3 ปี พร้อม P/E ออกที่ 7.0x (ใกล้เคียงปัจจุบัน) ให้ผลตอบแทนรวม +55.5% ใน 3 ปี Bear case เกิดหากคุณภาพสินทรัพย์ลูกหนี้ Micro SME/nano finance เสื่อมลงจาก stress ทางเศรษฐกิจ กดดัน credit cost และทำให้ตลาด de-rate P/E ลงต่ำกว่าปัจจุบัน Bull case ต้องการทั้งสินเชื่อโตเกินเป้าและ NPL ควบคุมได้ดีขึ้นจนตลาดให้พรีเมียมมากขึ้นสำหรับ ROE ที่สูงกว่าคู่แข่ง
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <!-- ✏️ 4–6 ข้อ: เขียน <b>หัวข้อ:</b> รายละเอียด -->
+          <li><b>NIM สูงสุดในกลุ่มแบงก์ไทย:</b> NIM 7.7% (Q1/2569) สูงกว่าธนาคารพาณิชย์ทั่วไปมาก (KTB/BBL/KBANK ~3–4%) เพราะพอร์ต Micro SME/nano finance ให้ผลตอบแทนสูง</li>
+          <li><b>สินเชื่อโตเร็วสุดในกลุ่ม:</b> Q1/2569 สินเชื่อรวม +13.8% YoY แตะ ฿188,751.8 ล้าน ขับเคลื่อนจาก Micro SME, Home Equity และสินเชื่อบุคคล — คาดโตต่อเนื่อง 11–15% ตลอดปี 2569</li>
+          <li><b>กำไรโตแรงต่อเนื่อง:</b> Q1/2569 กำไรสุทธิ ฿1,164.7 ล้าน +29.0% YoY และ ROE ขยับขึ้นเป็น 17.33% จาก 15.38% ปีก่อน</li>
+          <li><b>Digital platform ลดต้นทุน:</b> Micro Pay และ Alpha แพลตฟอร์มดิจิทัลช่วยลด Cost-to-Income จาก 43.6% (2568) สู่เป้า 42.0% (2569) พร้อม New Core Banking รองรับการขยายตัว</li>
+          <li><b>Coverage ratio สูง กันชนความเสี่ยงหนา:</b> NPL coverage 154.6% (Q1/2569) สูงกว่าค่าเฉลี่ยระบบธนาคาร ให้ความมั่นใจด้าน asset quality</li>
+          <li><b>นักวิเคราะห์ให้เรตติ้ง Strong Buy:</b> ราคาเป้าเฉลี่ย ฿27.50 (+23.9% จากราคาปัจจุบัน) สะท้อนมุมมองเชิงบวกต่อโมเดลธุรกิจ niche</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <!-- ✏️ 4–6 ข้อ: เขียน <b>หัวข้อ:</b> รายละเอียด -->
+          <li><b>Credit cost ลูกหนี้รายย่อย:</b> พอร์ต Micro SME/nano finance/Home Equity มีความเสี่ยงผิดนัดสูงกว่าสินเชื่อองค์กรขนาดใหญ่ หากเศรษฐกิจฐานรากอ่อนแอ credit cost จะพุ่งเร็ว</li>
+          <li><b>NPL ยังทรงตัวสูง:</b> Gross NPL 4.2% (Q1/2569) แม้คุมได้ตามเป้า <4.5% แต่สูงกว่าธนาคารขนาดใหญ่ (~2.9%) และยังต้องจับตาต่อเนื่องหากดอกเบี้ยขาลงกดดันลูกหนี้รายย่อย</li>
+          <li><b>NIM มีแรงกดดันขาลง:</b> ธปท. ลดดอกเบี้ยนโยบายต่อเนื่องในปี 2569 กดดัน NIM จากช่วงสูงสุดลงมาที่กรอบเป้า 7.5–8.0% หากลดดอกเบี้ยเพิ่มอาจกดดัน margin มากกว่าคาด</li>
+          <li><b>สภาพคล่องหุ้นจำกัด:</b> IPO ก.พ. 2567 มีประวัติซื้อขายเพียง ~2.4 ปี และ free float ค่อนข้างจำกัด ทำให้ราคาผันผวนง่ายจากแรงซื้อขายรายใหญ่</li>
+          <li><b>ปันผลต่ำเทียบกลุ่มแบงก์:</b> Payout ratio เพียง ~17.3% (yield 4.41%) ต่ำกว่าธนาคารไทยหลายแห่งที่จ่าย yield 5–8% เพราะเน้นรีเทนกำไรขยายสินเชื่อ</li>
+          <li><b>ราคาวิ่งขึ้นมาแรงแล้ว:</b> +32.9% ในรอบปี ทำให้ MOS เหลือเพียง ~7% หากผลประกอบการไม่เป็นไปตามเป้า downside risk จากจุดนี้มีนัยสำคัญ</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>CREDIT เติบโตเร็วสุดในกลุ่มแบงก์ไทย แต่ราคาใกล้ Fair Value แล้ว — MOS จำกัด</h2>
+      <p>ธนาคารไทยเครดิตเป็นแบงก์ niche ที่เน้นสินเชื่อ Micro SME, Home Equity และนาโน-ไมโครไฟแนนซ์ ให้ NIM สูงถึง 7.7% และ ROE 16.6% สูงกว่าธนาคารพาณิชย์ทั่วไปมาก สินเชื่อยังโตต่อเนื่อง +13.8% YoY ใน Q1/2569 พร้อมกำไรสุทธิ +29.0% YoY และ NPL ควบคุมได้ในกรอบเป้าหมาย อย่างไรก็ตาม ราคาหุ้นที่วิ่งขึ้นมา +32.9% ในรอบปีทำให้ปัจจุบันเทรดใกล้เคียงมูลค่าเหมาะสมของเรา ฿23.86 (MOS เหลือเพียง ~7%) นักลงทุนที่เน้น value จึงยังไม่มีส่วนเผื่อความปลอดภัยมากนัก ขณะที่นักลงทุนที่เชื่อในโมเดลเติบโตระยะยาวและยอมรับความเสี่ยง credit cost ของลูกหนี้รายย่อยอาจถือหรือทยอยสะสมได้</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿23.86 <span style="font-size:12px;color:#cab9a8">(฿16.13–฿29.51)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +7.0%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿27.50 (Strong Buy)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> CREDIT เป็นหุ้นเติบโตที่มี NIM/ROE สูงสุดในกลุ่มแบงก์ไทย เหมาะกับนักลงทุนที่รับความเสี่ยง credit cost ของสินเชื่อรายย่อยได้ แนะนำ <b>รอจังหวะย่อลงมาใกล้ ฿19–20</b> (MOS20 ฿19.09) เพื่อเพิ่มส่วนเผื่อความปลอดภัย หรือทยอยสะสมเป็นส่วนน้อยของพอร์ตหากเชื่อมั่นว่าสินเชื่อโตตามเป้า 11–15% และ NPL ควบคุมได้ต่อเนื่อง ผู้ถือเดิมที่ต้นทุนต่ำสามารถถือต่อรับการเติบโตของกำไรได้
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • แหล่งข้อมูล: (1) StockAnalysis.com — ราคา, P/E, EPS TTM, เงินปันผล, ราคาเป้านักวิเคราะห์ 3 ก.ค. 2569 (2) SET Factsheet (set.or.th) — ราคา, P/E, P/BV, Market Cap 4 ก.ค. 2569 (3) Yahoo Finance (CREDIT.BK) — กราฟราคาย้อนหลัง 1 ปี (4) Kaohoon International — ผลประกอบการ Q1/2569, เป้าหมายปี 2569, Cost-to-Income (5) Thai Credit Bank Investor Relations (investor.thaicreditbank.com) — โครงสร้างสินเชื่อ, ROE/ROA
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 3 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
