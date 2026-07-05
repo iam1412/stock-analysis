@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น โรงพยาบาลราชพฤกษ์ (RPH) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"RPH","currency":"THB","price":4.96,"fairValue":4.64,"mos":-6.9,"upside":-6.5,"pe":15.5,"dividendYield":5.65,"roe":10.3}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#0F4C81",
+    "accentDark": "#0A3A66",
+    "darkGrad": "linear-gradient(135deg,#08263f 0%,#0F4C81 55%,#1a6bb0 140%)",
+    "glow": "rgba(30,110,180,.35)",
+    "subColor": "#c3d4e3",
+    "headerMuted": "rgba(255,255,255,0.65)",
+    "verdictText": "#d6e2ee",
+    "vcellLabel": "rgba(214,226,238,0.75)",
+    "badge": "#0F4C81",
+    "chgBg": "rgba(148,163,184,0.18)",
+    "chgColor": "#94a3b8"
+  },
+  "chart": {
+    "data": [
+      ["ก.ค. 68", 4.96],
+      ["ส.ค. 68", 4.98],
+      ["ก.ย. 68", 4.94],
+      ["ต.ค. 68", 4.90],
+      ["พ.ย. 68", 4.96],
+      ["ธ.ค. 68", 4.90],
+      ["ม.ค. 69", 5.10],
+      ["ก.พ. 69", 4.92],
+      ["มี.ค. 69", 4.88],
+      ["เม.ย. 69", 4.90],
+      ["พ.ค. 69", 4.92],
+      ["มิ.ย. 69", 4.96],
+      ["ก.ค. 69", 4.96]
+    ],
+    "min": 4.60,
+    "max": 5.25,
+    "grid": [4.60, 4.80, 5.00, 5.20],
+    "fairLine": 4.64,
+    "currency": "฿",
+    "highlight": [6, 12],
+    "gridFmt": "v.toFixed(2)",
+    "dataFmt": "d[1].toFixed(2)"
+  },
+  "gauge": {
+    "min": 4.30,
+    "max": 5.60,
+    "cur": 4.96,
+    "fair": 4.64,
+    "fairLabelTop": false
+  },
+  "fv": 4.64
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">●●●●</div>
+    <div>
+      <span class="tag">SET: RPH</span>
+      <span class="tag">การแพทย์</span>
+      <span class="tag">โรงพยาบาลเอกชนภูมิภาค</span>
+    </div>
+    <h1>บมจ. โรงพยาบาลราชพฤกษ์ (RPH)</h1>
+    <div class="sub">โรงพยาบาลเอกชนขนาด ~200 เตียง จ.ขอนแก่น • บริการรักษาทั่วไป-เฉพาะทาง ผู้ป่วยเงินสด/ประกัน/Social Security • ฐานลูกค้าภาคอีสานตอนกลาง</div>
+    <div class="price-row">
+      <div>
+        <div class="px">฿4.96<small>(RPH)</small></div>
+      </div>
+      <div class="chg">≈ ทรงตัว (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 3 ก.ค. 2569<br>
+        กรอบ 52 สัปดาห์ ฿4.48 – ฿5.25<br>
+        ที่มา: StockAnalysis.com, SET.or.th, Yahoo Finance
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ก.ค. 2569 · TTM = ย้อนหลัง 12 เดือน (สิ้นสุด Q1/2569)</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~฿2,631 ลบ.</div><div class="d">530.4 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~15.5x</div><div class="d">ใกล้เคียง P/E เฉลี่ยกลุ่ม รพ.เอกชนภูมิภาค</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~14–17x</div><div class="d">ผันผวนตามกำไรที่แกว่งหลังพีค 2565</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">1.51x</div><div class="d">BVPS ฿3.29 · Equity ฿1,745 ลบ.</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2568</div><div class="v">฿182.4 ลบ.</div><div class="d">+5.7% YoY (แต่ Q1/2569 −32.6% YoY)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿0.32</div><div class="d">FY2568: ฿0.34 · FY2567: ฿0.33 (ประมาณ)</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~฿3.29</div><div class="d">Total equity ฿1,745 ลบ. TTM ถึง มี.ค. 2569</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~10.3% / 7.4%</div><div class="d">ลดจาก 16.8%/10.4% ปี 2565 (peak COVID)</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">~฿1,150 ลบ.</div><div class="d">FY2568 ฿1,162 ลบ. +3.3% YoY</div></div>
+      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">~33.6%</div><div class="d">ลดจาก 37.6% ปี 2565 (แข่งขันสูงขึ้น)</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~5.65%</div><div class="d">DPS ฿0.28 · payout ~82% · จ่าย 2 ครั้ง/ปี</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">~0.5–0.7</div><div class="d">หุ้น Defensive สภาพคล่องต่ำ</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART (ราคาย้อนหลัง ~1 ปี) ===== -->
+  <!-- ★ กราฟต้องเป็น "ราคาย้อนหลัง ~1 ปี" (gate E37): ไม่เกิน 13 จุด (รายเดือน 12 เดือน = 13 จุด · รายสองเดือน = ~8 จุด)
+       ห้ามใส่ 18 เดือน/1.5 ปี · จุดสุดท้าย = ราคาปัจจุบัน · ผลตอบแทน จุดแรก→จุดท้าย ต้องตรงกับป้าย % รอบปีใน header (E36) -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#0F4C81"></i>ราคา RPH</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿4.64</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคาแกว่งอยู่ในกรอบแคบ ฿4.88–฿5.10 ตลอด 1 ปีที่ผ่านมา (ก.ค. 2568 – ก.ค. 2569) จุดสูงสุดที่ ฿5.10 ในเดือน ม.ค. 2569 หลังประกาศกำไร FY2568 เติบโต +5.7% จากนั้นย่อลงมาที่ ฿4.88 ช่วง มี.ค. 2569 สอดคล้องกับกำไร Q1/2569 ที่ลดลง −32.6% YoY ก่อนฟื้นกลับมาที่ ฿4.96 ในปัจจุบัน — ราคาต้นปีและราคาปัจจุบันเท่ากันพอดี (ผลตอบแทนรอบปี ≈ 0%) สะท้อนหุ้น defensive สภาพคล่องต่ำที่ราคาไม่ค่อยขยับตามข่าว
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION (เฉลี่ย 3 วิธี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS (TTM) ฿0.32 × P/E เป้าหมาย ~16.0x — สอดคล้องค่าเฉลี่ยกลุ่ม รพ.เอกชนภูมิภาคขนาดเล็ก (14–17x)</div></div>
+        <div class="mval">฿5.12</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล ฿0.288 × (1+g); g 3%, r 9% → ฐานปันผลสม่ำเสมอ payout ~80%+</div></div>
+        <div class="mval">฿4.81</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 10.3% − g 3%)/(r 9% − g 3%) ≈ 1.215x × BVPS ฿3.29</div></div>
+        <div class="mval">฿4.00</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿4.00 – ฿5.12</span></div>
+        <div class="r">฿4.64</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        วิธี P/E ให้ค่าสูงสุด (฿5.12) เพราะ P/E เป้าหมาย 16x ยังใกล้เคียงราคาตลาดปัจจุบัน (15.5x) — สะท้อนมุมมองที่ตลาดให้ราคาหุ้นค่อนข้างสมเหตุสมผลแล้ว ส่วนวิธี Justified P/BV ให้ค่าต่ำสุด (฿4.00) เพราะ ROE เฉลี่ย 3 ปี (~10.3%) ลดลงจากช่วงพีค COVID (16.8% ปี 2565) ทำให้ ratio ที่เหมาะสมต่ำกว่า P/BV ตลาดปัจจุบัน (1.51x) FV เฉลี่ย ฿4.64 ต่ำกว่าราคาปัจจุบันเล็กน้อย — สอดคล้องกับกำไร Q1/2569 ที่ชะลอตัว (−32.6% YoY) ทำให้ยังไม่มี MOS ในจุดนี้
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿4.96</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿4.64</div></div>
+        </div>
+        <div class="scale">
+          <span>฿3.25<br><small>MOS 30%</small></span>
+          <span>฿3.71<br><small>MOS 20%</small></span>
+          <span style="text-align:center">฿4.64<br><small>Fair Value</small></span>
+          <span style="text-align:right">฿4.90<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">฿5.12<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน ฿4.96 อยู่<b>เหนือ</b>มูลค่าเหมาะสม ฿4.64 เล็กน้อย (~7%) และใกล้กรอบบนของ Fair Value (฿5.12) — สะท้อนว่าตลาดให้ราคาหุ้นค่อนข้างเต็มมูลค่าแล้ว หลังกำไร Q1/2569 ชะลอตัว นักลงทุนที่สนใจสะสมควรรอราคาย่อลงมาใกล้โซน MOS 20% (฿3.71) หรือต่ำกว่า เพื่อให้มีส่วนเผื่อความปลอดภัยที่เหมาะสม (หมายเหตุ: หุ้นนี้มี analyst coverage จำกัด เป้าฯ ข้างต้นเป็นค่าประมาณจากกรอบ valuation ไม่ใช่ consensus จริง)
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">−6.9%</div>
+        <div class="txt"><b>ไม่มี Margin of Safety</b><br>ราคาปัจจุบัน ฿4.96 สูงกว่ามูลค่าเหมาะสม ฿4.64 ราว 7% → ตามเกณฑ์ value investor ถือว่า<b>เต็มมูลค่าเล็กน้อย</b> โดยเฉพาะเมื่อกำไร Q1/2569 เริ่มชะลอตัว ยังไม่ใช่จุดซื้อที่มี MOS เพียงพอ</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿3.71</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿3.25</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿4.64</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="4.96" step="0.05">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿4.96 • EPS ฐาน ~฿0.32 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS −3%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿3.80</div>
+          <div class="ret neg">−8.3%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.29</span></li>
+            <li><span>P/E ออก</span><span>13x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.75</span></li>
+            <li><span>สถานการณ์</span><span>กำไรหดตัวต่อเนื่อง แข่งขันสูง ต้นทุนบุคลากร/เวชภัณฑ์เพิ่ม</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +4%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿5.76</div>
+          <div class="ret pos">+34.3%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.36</span></li>
+            <li><span>P/E ออก</span><span>16x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.90</span></li>
+            <li><span>สถานการณ์</span><span>รายได้ฟื้นตัวช้าๆ ตามผู้ป่วยเงินสด/ประกัน กำไรกลับมาเติบโตปกติ</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +9%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿7.45</div>
+          <div class="ret pos">+71.4%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.41</span></li>
+            <li><span>P/E ออก</span><span>18x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿1.05</span></li>
+            <li><span>สถานการณ์</span><span>ขยายบริการเฉพาะทาง/ศูนย์การแพทย์ใหม่ ดึงผู้ป่วยประกันพรีเมียมเพิ่ม margin ฟื้นตัว</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      กรอบผลตอบแทน 3 ปี ตั้งแต่ −8.3% (Bear) ถึง +71.4% (Bull) สะท้อนความไม่แน่นอนของกำไรหลัง Q1/2569 ชะลอตัวแรง (−32.6% YoY) นักลงทุนควรติดตามผลประกอบการไตรมาสถัดไปว่าเป็นการชะลอชั่วคราวหรือแนวโน้มต่อเนื่อง ก่อนตัดสินใจเพิ่มน้ำหนักการลงทุน
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>ปันผลสูงสม่ำเสมอ:</b> yield ~5.65% payout ratio ~82% จ่าย 2 ครั้ง/ปี เหมาะกับนักลงทุนเน้นรายได้</li>
+          <li><b>งบดุลแข็งแกร่ง:</b> D/E ~0 (แทบไม่มีหนี้สินที่มีภาระดอกเบี้ย) current ratio 3.6x สภาพคล่องสูง</li>
+          <li><b>ฐานลูกค้าผูกขาดระดับภูมิภาค:</b> รพ.เอกชนหลักใน จ.ขอนแก่น แข่งขันจำกัดในตลาด mid-tier ท้องถิ่น</li>
+          <li><b>ความต้องการบริการสุขภาพเพิ่มขึ้นระยะยาว:</b> สังคมสูงวัยและรายได้ครัวเรือนภาคอีสานเพิ่มขึ้นหนุนดีมานด์ รพ.เอกชน</li>
+          <li><b>ราคาหุ้นค่อนข้างนิ่ง:</b> เหมาะเป็นหุ้น defensive ในพอร์ต ผันผวนต่ำเมื่อเทียบตลาดรวม</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>กำไรชะลอตัวแรงใน Q1/2569:</b> รายได้ −5.5% YoY, EBITDA −24.6% YoY, กำไรสุทธิ −32.6% YoY — ยังไม่ชัดว่าเป็นปัจจัยชั่วคราวหรือแนวโน้ม</li>
+          <li><b>Margin ถูกกดดันต่อเนื่อง:</b> อัตรากำไรขั้นต้นลดจาก 37.6% (2565) เหลือ 33.6% (2568) จากต้นทุนบุคลากร/เวชภัณฑ์และการแข่งขัน</li>
+          <li><b>สภาพคล่องการซื้อขายต่ำ:</b> มูลค่าซื้อขายรายวันเพียง ~1.3 ล้านบาท เข้า-ออกตำแหน่งใหญ่ยาก ราคาผันผวนง่ายหากมีแรงขาย</li>
+          <li><b>กระจุกตัวทางภูมิศาสตร์:</b> รายได้เกือบทั้งหมดพึ่งพา รพ.เดียวใน จ.ขอนแก่น ไม่มีการกระจายความเสี่ยงข้ามพื้นที่</li>
+          <li><b>ความเสี่ยงกำกับดูแล:</b> นโยบายควบคุมค่ารักษาพยาบาลเอกชน/ประกันสุขภาพภาครัฐอาจกระทบราคาบริการในอนาคต</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>ถือรอดูงบ / รอราคาย่อก่อนสะสมเพิ่ม</h2>
+      <p>RPH เป็นหุ้น รพ.เอกชนภูมิภาคขนาดเล็กที่มีจุดเด่นด้านปันผลสูง (~5.65%) และงบดุลแข็งแกร่งไร้หนี้ แต่ราคาปัจจุบัน ฿4.96 อยู่เหนือมูลค่าเหมาะสมที่ประเมินได้ (฿4.64) เล็กน้อย โดยเฉพาะหลังกำไร Q1/2569 ชะลอตัวแรง (−32.6% YoY) ทำให้ยังไม่มี Margin of Safety ที่น่าดึงดูดในจุดนี้ เหมาะสำหรับผู้ถือเดิมที่รับปันผลระยะยาว แต่นักลงทุนใหม่ควรรอราคาย่อลงมาใกล้โซน MOS 20% ก่อนเข้าซื้อ และติดตามผลประกอบการไตรมาสถัดไปว่ากำไรจะฟื้นตัวหรือชะลอต่อเนื่อง</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿4.64 <span style="font-size:12px;color:#cab9a8">(฿4.00–฿5.12)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −6.9%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿4.90 (ประมาณการ)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ผู้ถือเดิมที่เน้นรายรับปันผลสามารถถือต่อได้ ส่วนนักลงทุนใหม่ควรรอราคาย่อลงมาใกล้ ฿3.71–4.00 (โซน MOS 20–30%) เพื่อให้มีส่วนเผื่อความปลอดภัย และติดตามงบ Q2–Q3/2569 ว่ากำไรฟื้นตัวจากภาวะชะลอใน Q1 หรือไม่ ก่อนตัดสินใจเพิ่มน้ำหนัก
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ข้อมูลอ้างอิงจาก StockAnalysis.com, SET.or.th, Yahoo Finance ณ วันที่ 3-4 ก.ค. 2569
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 5 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
