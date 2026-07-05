@@ -32,9 +32,9 @@
 
 | # | Wave | Symbol | กลุ่ม | ทำไม (1yr @ 5 ก.ค. 69) | 🔺 | สถานะ |
 |---|---|---|---|---|---|---|
-| 1 | W1 | FDS | ข้อมูลการเงิน | FactSet −33% — AI-fear de-rate แบบเดียวกับ RELX (ซึ่งได้ MOS +17.5%) | | ⬜ |
-| 2 | W1 | TRI | ข้อมูล/กฎหมาย | Thomson Reuters −50% — Westlaw/Clarivate AI-fear, moat หนา | 🔺 | ⬜ |
-| 3 | W1 | IT | วิจัย/ที่ปรึกษา | Gartner −46% — AI-fear ถล่มกลุ่ม research/advisory | 🔺 | ⬜ |
+| 1 | W1 | FDS | ข้อมูลการเงิน | FactSet −33% — AI-fear de-rate แบบเดียวกับ RELX (ซึ่งได้ MOS +17.5%) | | ✅ $250/$278 MOS+10% |
+| 2 | W1 | TRI | ข้อมูล/กฎหมาย | Thomson Reuters −50% — Westlaw/Clarivate AI-fear, moat หนา | 🔺 | ✅ $89/$74 MOS−20% (แพง) |
+| 3 | W1 | IT | วิจัย/ที่ปรึกษา | Gartner −46% — AI-fear ถล่มกลุ่ม research/advisory | 🔺 | ✅ $136/$141 MOS+3% |
 | 4 | W2 | CSGP | ข้อมูลอสังหาฯ | CoStar −66% ($30) — crash หนัก ต้องแยก structural vs overspend (ไม่ใช่ REIT — P/E ปกติ) | 🔺 | ⬜ |
 | 5 | W2 | ADP | payroll | −20% — dividend aristocrat 50 ปี, duopoly payroll | | ⬜ |
 | 6 | W2 | PAYX | payroll | −24% — คู่ duopoly กับ ADP, มาร์จิ้นสูงกว่า | | ⬜ |

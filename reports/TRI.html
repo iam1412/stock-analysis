@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น Thomson Reuters (TRI) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Opus 4.8">
+<script type="application/json" id="stock-meta">
+{"symbol":"TRI","currency":"USD","price":89.21,"fairValue":74.14,"mos":-20.33,"upside":-16.89,"pe":25.93,"dividendYield":2.94,"roe":12.6}
+</script>
+<script type="application/json" id="report-data">
+{"theme":{"accent":"#E8401C","accentDark":"#b52e12","darkGrad":"linear-gradient(135deg,#7a1a08 0%,#b52e12 50%,#E8401C 100%)","glow":"rgba(232,64,28,0.35)","subColor":"#f07555","headerMuted":"rgba(255,255,255,0.65)","verdictText":"#c03010","vcellLabel":"#b52e12","badge":"#E8401C","chgBg":"#8b1a1a","chgColor":"#ffffff"},"chart":{"data":[["Aug 25",177.61],["Sep 25",155.33],["Oct 25",153.06],["Nov 25",135.43],["Dec 25",131.89],["Jan 26",110.63],["Feb 26",96.41],["Mar 26",89.98],["Apr 26",95.69],["May 26",86.51],["Jun 26",81.67],["Jul 26",89.21]],"min":70,"max":190,"grid":[70,100,130,160,190],"fairLine":74.14,"currency":"$","highlight":[0,11]},"gauge":{"min":45,"max":140,"cur":89.21,"fair":74.14,"fairLabelTop":true},"fv":74.14}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">●●●</div>
+    <div>
+      <span class="tag">NASDAQ: TRI</span>
+      <span class="tag">Information Services</span>
+      <span class="tag">Legal & Tax Data</span>
+    </div>
+    <h1>Thomson Reuters Corporation (TRI)</h1>
+    <div class="sub">Westlaw (legal research) • Checkpoint (tax & accounting) • Practical Law • CoCounsel (agentic AI legal assistant) • Reuters News • Global Trade & Risk data</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$89.21<small>(TRI)</small></div>
+      </div>
+      <div class="chg">▼ −49.8% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 2 ก.ค. 2569 (2026-07-02)<br>
+        กรอบ 52 สัปดาห์ $76.28 – $221.85<br>
+        ที่มา: Yahoo Finance / StockAnalysis.com / Thomson Reuters IR
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ไตรมาส 1/2569 (Q1 2026)</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">$38.4B</div><div class="d">~430M หุ้น (หลัง reverse split พ.ค. 69)</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~25.9x</div><div class="d">Forward P/E ~19.7–22x (EPS 2569E ~$4.06)</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~32x</div><div class="d">พรีเมียมสูงกว่าตลาดมาตลอด (quality/moat premium)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">~3.3x</div><div class="d">BVPS ~$27.2 (equity ~$11.7B หลังคืนทุน)</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ TTM</div><div class="v">~$1.48B</div><div class="d">Net margin ~19.8% ของรายได้ TTM</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$3.44</div><div class="d">EPS 2569E (consensus) ~$4.06</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~$27.20</div><div class="d">หลังคืนทุนพิเศษ $605M (พ.ค. 69)</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~12.6% / ~7%</div><div class="d">ต่ำกว่าค่าในอดีตที่เคยพองจาก LSEG (ขายหมดแล้วปี 2567)</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">~$7.5B</div><div class="d">Organic growth Q1/69 +8% YoY</div></div>
+      <div class="metric"><div class="k">Adj. EBITDA Margin</div><div class="v">~39.2%</div><div class="d">ขยายตัว +100bps YoY (2568)</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~2.9%</div><div class="d">$2.62/ปี (เพิ่ม 10% ก.พ. 69 — ปีที่ 33 ติดต่อกัน)</div></div>
+      <div class="metric"><div class="k">FCF (2568)</div><div class="v">~$1.95B</div><div class="d">FCF yield ~5.1% ของ market cap</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">รายเดือน ส.ค. 2568 – ก.ค. 2569</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#E8401C"></i>ราคา TRI</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $74.14</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        TRI ทำ all-time high ที่ ~$218–221 ช่วง ก.ค. 2568 ก่อนร่วงต่อเนื่อง 12 เดือนติดจนแตะ $81.67 (มิ.ย. 69) — รวมลดลง ~50% จาก ATH
+        แรงขายเริ่มหนักช่วง ธ.ค. 2568–ก.พ. 2569 หลัง Anthropic เปิดตัวเครื่องมือ AI สำหรับนักกฎหมาย (Claude for legal) จุดกระแส
+        "agentic AI disruption" ทั้งกลุ่ม legal/data software (รวม LSEG, RELX, Verisk) แม้ผลประกอบการจริงของ TRI ยังโต 8% organic ต่อเนื่อง
+        ราคาฟื้นตัวเล็กน้อยจากจุดต่ำสุด $81.67 ขึ้นมา $89.21 (ก.ค. 69) หลังตลาดเริ่มแยกแยะว่า Thomson Reuters เองก็เป็นพันธมิตร Anthropic
+        (ผนวก Claude เข้า CoCounsel) ไม่ใช่แค่ถูก disrupt ฝ่ายเดียว
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ยถ่วงน้ำหนัก 3 วิธี — เน้น P/E และ Justified P/BV</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS adj. $4.06 × P/E 22x — ใช้ EPS ปี 2569 (consensus forward) คูณ P/E เป้าหมาย 22x (ลดจากค่าเฉลี่ย 5 ปี ~32x เพื่อสะท้อนความไม่แน่นอนจาก AI แต่สูงกว่าราคาตลาดปัจจุบันที่ตื่นตระหนกเกินจริง)</div></div>
+        <div class="mval">$89.32</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล $2.62 × (1+g); g 6%, r 9.5% → ใช้ dividend growth ระยะยาวที่ชะลอจาก 10%/ปีล่าสุดเหลือ 6% ระยะยาว (33 ปีเพิ่มต่อเนื่อง แต่ payout เริ่มโตช้าลง)</div></div>
+        <div class="mval">$79.35</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 12.6% − g 6%)/(r 9.5% − g 6%) ≈ 1.9x × BVPS $27.20 — ROE คำนวณจากกำไรสุทธิจริง TTM หารด้วย equity หลังคืนทุน (ไม่รวมกำไรพิเศษจาก LSEG ที่ขายหมดแล้วตั้งแต่ปี 2567)</div></div>
+        <div class="mval">$51.65</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $51.65 – $89.32</span></div>
+        <div class="r">$74.14</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        Fair Value ใช้ค่าถ่วงน้ำหนัก 45% P/E + 35% Justified P/BV + 20% DDM (ลดน้ำหนัก DDM เพราะไวต่อสมมติฐาน g−r มาก)
+        วิธี P/E ให้ค่าสูงสุด ($89.32 ≈ ราคาตลาดปัจจุบันพอดี) สะท้อนว่าตลาดกำลังราคาหุ้นด้วยมุมมอง "โตต่อได้ในราคาที่สมเหตุสมผล"
+        ส่วนวิธี Justified P/BV ให้ค่าต่ำสุด ($51.65) เพราะ ROE ปัจจุบัน (~12.6%) ต่ำกว่าที่ตลาดเคย premium ไว้มาก — ที่ผ่านมา ROE ของ TRI
+        เคยถูกดันสูงจากกำไร equity-method ของหุ้น LSEG ที่ถือ (ขายหมดสิ้นปี 2567) ตอนนี้ ROE สะท้อนธุรกิจหลัก (Westlaw/Checkpoint) ล้วนๆ
+        FV เฉลี่ยถ่วงน้ำหนัก $74.14 ต่ำกว่าราคาตลาด ~17% — บ่งชี้ว่าตลาดยัง "จ่ายแพงกว่าพื้นฐานที่วัดได้จริง" แม้ราคาร่วงมาแล้ว 50%
+        ⚠️ Sum-of-parts LSEG ไม่ใช้แล้ว เพราะ TRI ขายหุ้น LSEG ทั้งหมดเสร็จสิ้นในเดือน พ.ค. 2567 (ไม่มี stake เหลือ)
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $89.21</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $74.14</div></div>
+        </div>
+        <div class="scale">
+          <span>$51.90<br><small>MOS 30%</small></span>
+          <span>$59.31<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$74.14<br><small>Fair Value</small></span>
+          <span style="text-align:right">$89.32<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">$123.00<br><small>เป้าเฉลี่ย Analyst</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน ($89.21) อยู่ "เหนือ" Fair Value เชิงอนุรักษ์นิยม ($74.14) ~20% — ยังไม่เข้าเขต MOS ที่น่าซื้อ
+        แต่อยู่ "ต่ำกว่า" เป้าหมายเฉลี่ยของนักวิเคราะห์ ($123, กรอบ $87–$183 จาก 18 สำนัก) อย่างมีนัยสำคัญ
+        ช่องว่างนี้สะท้อนความเห็นต่างชัดเจน: นักวิเคราะห์ส่วนใหญ่ (Buy consensus) มองข้าม AI-fear และให้น้ำหนักการเติบโต organic 8%
+        ขณะที่การประเมินแบบอนุรักษ์นิยมนี้ยึดตาม ROE/BVPS ที่วัดได้จริงหลังตัด LSEG ออก — นักลงทุนที่รอ MOS ควรรอราคาลงมาที่ $59–65
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">−20.33%</div>
+        <div class="txt">ราคาปัจจุบันแพงกว่า Fair Value เชิงอนุรักษ์นิยม — MOS ติดลบ ยังไม่ใช่จุดเข้าที่ปลอดภัยตามหลัก value investing แม้ราคาร่วงมาแล้ว 50% จาก ATH</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$59.31</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$51.90</div><div class="d">โซนถูกมาก (deep value) — ใกล้เคียงจุดต่ำสุด 52 สัปดาห์</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $74.14</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="89.21" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $89.21 • EPS ฐาน ~$3.44 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS +3%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$67.68</div>
+          <div class="ret neg">−24.1% + ปันผล ~$8.34 (ราคาลด, รวม div ~ −14.7%)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$3.76</span></li>
+            <li><span>P/E ออก</span><span>18x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$8.34</span></li>
+            <li><span>สถานการณ์</span><span>AI disruption กัดกร่อน Westlaw จริง — law firm หันไป AI agent ราคาถูกกว่า, growth ชะลอเหลือ ~3%, multiple ถูก de-rate ต่อเหลือ 18x</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +8%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$99.59</div>
+          <div class="ret pos">+11.6% + ปันผล ~$8.84 (รวม ~+21.5%)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$4.33</span></li>
+            <li><span>P/E ออก</span><span>23x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$8.84</span></li>
+            <li><span>สถานการณ์</span><span>AI เป็น "enabler" เหมือน RELX — Westlaw/CoCounsel เก็บค่าบริการ AI เพิ่มได้ organic growth ทรงตัว 7–8%/ปี ตลาดค่อยๆ คลายกังวล multiple กลับสู่ระดับกลาง</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +13%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$133.92</div>
+          <div class="ret pos">+50.1% + ปันผล ~$9.36 (รวม ~+60.6%)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$4.96</span></li>
+            <li><span>P/E ออก</span><span>27x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$9.36</span></li>
+            <li><span>สถานการณ์</span><span>Westlaw Advantage/CoCounsel เร่ง adoption เร็วกว่ารอบอัปเกรดที่ผ่านมา, cross-sell Tax/Audit เต็มสูบ, ตลาดให้ premium multiple กลับคืนใกล้ค่าเฉลี่ยเดิม ~30x</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      Bear case (EPS +3%, P/E 18x) สะท้อนสถานการณ์ที่ AI เป็น "structural threat" จริง — แต่ต้องใช้เวลาหลายปีกว่า agentic AI จะแทนที่ Westlaw
+      ได้เต็มรูปแบบ เพราะ switching cost/ความน่าเชื่อถือทางกฎหมายยังสูง Base case สอดคล้องกับผลประกอบการจริงล่าสุด (organic +8%, Legal +9%)
+      ที่มาก่อนราคาหุ้นจะสะท้อนอยู่แล้ว — บ่งชี้ว่าตลาด "overreact" ต่อ headline risk มากกว่าปัจจัยพื้นฐาน
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง — วิเคราะห์ Moat เชิงลึก</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>Westlaw Advantage adoption เร่งตัว:</b> ผลิตภัณฑ์ agentic deep-research ที่เปิดตัว ส.ค. 2568 กำลัง adopt เร็วกว่า 2 รอบอัปเกรดก่อนหน้าทั้งกลุ่ม large/mid/small law firm — สัญญาณว่า AI ถูกดูดซับเป็น "upsell" ไม่ใช่ตัวทำลายรายได้</li>
+          <li><b>พันธมิตร Anthropic เชิงลึก:</b> ผนวก Claude เข้า CoCounsel (legal research/drafting) — Thomson Reuters เองก็เป็นผู้ใช้/พาร์ทเนอร์ AI ชั้นนำ ไม่ใช่ผู้ถูก disrupt ฝ่ายเดียวเหมือนที่ตลาดกลัวช่วงแรก</li>
+          <li><b>Recurring/subscription moat สูง:</b> รายได้ recurring majority ของกลุ่ม Legal/Tax — สัญญา multi-year ผูกกับ workflow ของ law firm/บัญชี (Checkpoint ฝังลึกใน tax compliance cycle) switching cost สูงมาก</li>
+          <li><b>Organic growth เร่งตัวจริง:</b> Q1/2569 total organic +8%, Legal +9% (ไม่รวมรัฐบาล +11%), Tax/Audit/Accounting +10% — เร็วกว่าเป้าที่บริษัทเคยให้ไว้ ยืนยันว่า AI ยังไม่กัดกร่อนรายได้จริงในตัวเลข</li>
+          <li><b>Dividend track record 33 ปี:</b> เพิ่มเงินปันผลต่อเนื่อง 33 ปี ล่าสุดเพิ่ม 10% (ก.พ. 2569) เป็นปีที่ 5 ติดต่อกันที่เพิ่ม 10% — สะท้อนความมั่นใจของผู้บริหารต่อ cash flow ระยะยาว</li>
+          <li><b>Valuation compression มากเกินพื้นฐาน:</b> ราคาร่วง 50% จาก ATH ขณะที่กำไร/รายได้ยังโตต่อเนื่อง — ส่วนหนึ่งของการร่วงเป็น sentiment/multiple compression ไม่ใช่ earnings downgrade</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>Agentic AI เป็น structural threat ระยะยาว:</b> CEO เอง (ส.ค. 2568) ยอมรับว่าวิชาชีพกฎหมายเผชิญ "biggest disruption in its history" — หาก AI agent ราคาถูก (จาก startup/Anthropic เอง) ทำ legal research ได้ดีพอ อาจกัดกร่อน pricing power ของ Westlaw ระยะยาว แม้วันนี้ยังไม่เกิด</li>
+          <li><b>Harvey AI และคู่แข่ง AI-native:</b> สตาร์ทอัพ legal-AI (Harvey, CoCounsel คู่แข่งอื่น) ระดมทุนหนักเพื่อแย่งงบประมาณ legal-tech ของ law firm — แม้ยังเป็นส่วนน้อยของตลาด แต่ growth rate สูงกว่า TRI มาก</li>
+          <li><b>LSEG stake ไม่มีแล้ว — เสีย buffer มูลค่า:</b> Thomson Reuters ขายหุ้น LSEG ที่เหลือทั้งหมดเสร็จสิ้นในเดือน พ.ค. 2567 (ก่อนหน้าเคยถือ ~27-30%) ทำให้ไม่มี "sum-of-parts cushion" อีกต่อไป และ ROE ที่เคยพองจากกำไร equity-method หายไป (ROE ปัจจุบันสะท้อนธุรกิจหลักล้วนๆ ~12.6% ต่ำกว่าที่ตลาดเคย premium ไว้)</li>
+          <li><b>Nasdaq/TSX dual-listing + FX:</b> TRI ย้ายจาก NYSE ไป Nasdaq (ก.พ. 2568) และยังคู่ขนานที่ TSX (โควตเป็น CAD) — ตัวเลข P/E/ราคาที่หาเจอบางแหล่งอาจสับสนกับราคา TSX (CAD) ต้องยืนยันสกุลเงิน/ตลาดทุกครั้ง</li>
+          <li><b>Capital return event บิดเบือนตัวเลข YoY:</b> คืนทุนพิเศษ $605M + reverse share consolidation (0.98456 เท่า) เดือน พ.ค. 2569 ทำให้ EPS/dividend per share รายไตรมาสเทียบ YoY ตรงๆ คลาดเคลื่อน ต้อง normalize ก่อนเปรียบเทียบ</li>
+          <li><b>Valuation ยังไม่ถูกจริงเมื่อวัดจาก ROE จริง:</b> แม้ราคาร่วง 50% แต่ P/E TTM ยังคง ~26x และ P/BV ~3.3x ขณะที่ ROE เหลือ ~12.6% — Justified P/BV บ่งชี้มูลค่าที่เหมาะสมต่ำกว่าราคาตลาดปัจจุบันอยู่ดี</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>AI-fear ยังไม่ใช่ Structural Collapse — แต่ราคายังไม่ถูกพอ (Watchlist ไม่ใช่ซื้อทันที)</h2>
+      <p>
+        การ diagnose เชิงลึกชี้ว่า −50% จาก ATH ของ TRI ส่วนใหญ่เป็น <b>sentiment/multiple compression</b> ไม่ใช่ earnings collapse จริง —
+        organic revenue growth ยังเร่งตัว (+8% total, Legal +9-11%), Westlaw Advantage adopt เร็วกว่ารอบก่อน, และบริษัทเองผนวก Claude
+        เข้า CoCounsel แทนที่จะถูก AI "แทนที่" ล้วนๆ เหมือนกรณี RELX ที่ AI กลายเป็น enabler ไม่ใช่ disruptor
+        อย่างไรก็ตาม เมื่อตัด LSEG stake ออก (ขายหมดปี 2567) ROE ที่แท้จริงของธุรกิจหลักอยู่ที่ ~12.6% เท่านั้น — ต่ำกว่าที่ตลาดเคยให้ premium
+        P/E ~32x ในอดีต ราคาปัจจุบัน $89.21 ยังสูงกว่า Fair Value เชิงอนุรักษ์นิยม ($74.14) ~20% ดังนั้นแม้ moat ของ Westlaw/Checkpoint
+        (switching cost, recurring revenue, law-school lock-in) ยังแข็งแกร่ง แต่ราคาหุ้นยังไม่ได้สะท้อนส่วนเผื่อความปลอดภัยที่เพียงพอ
+        เหมาะเป็น <b>watchlist รอสะสมที่โซน $59–65</b> มากกว่าเข้าซื้อทันทีที่ราคาปัจจุบัน
+      </p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$74.14 <span style="font-size:12px;color:#cab9a8">($51.65–$89.32)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −20.3%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$123 (Buy — 18 สำนัก)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> รอสะสมทยอยในโซน MOS20 ($59.31) ถึง MOS30 ($51.90) ซึ่งใกล้เคียงจุดต่ำสุด 52 สัปดาห์ ($76.28 เป็น low ที่รายงานไว้ แต่เคยแตะ $81.67 ระหว่างเดือน)
+        ติดตามผลประกอบการ Q2-Q3/2569 ว่า organic growth ของ Legal segment ยังทรงตัว ≥7-8% หรือไม่ หากใช่ = ยืนยัน "AI-fear temporary"
+        หากเห็น deceleration ชัดเจนต่อเนื่อง 2 ไตรมาส = สัญญาณเตือนว่า structural threat เริ่มกัดกร่อนจริง ควรทบทวน thesis ใหม่
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    แหล่งข้อมูล: Yahoo Finance (finance.yahoo.com/quote/TRI), StockAnalysis.com (stockanalysis.com/stocks/tri), Thomson Reuters IR (ir.thomsonreuters.com), Wells Fargo/UBS analyst notes (ผ่าน Investing.com), SEC 6-K filings — ข้อมูล ณ 2-3 ก.ค. 2569
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 3 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
