@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="th">
+<!--
+  ════════════════════════════════════════════════════════════════════════════
+  SKELETON — หุ้นต่างประเทศ (USD $ / NASDAQ·NYSE)  ★ ก๊อปไฟล์นี้เป็นจุดตั้งต้นหุ้นต่างประเทศ
+  ════════════════════════════════════════════════════════════════════════════
+  วิธีใช้:  cp _template/skeleton-us.html reports/<SYMBOL>.html  แล้วแทนทุก {{...}} ด้วยข้อมูลจริง
+  • ทุกช่องที่ต้องแก้คือ {{...}}  — ห้ามเหลือค้าง (gate E13 จะ error ถ้าเจอ {{ }} ในรายงาน)
+  • ตัวเลขต้องสอดคล้องกันตามกฎใน CLAUDE.md ข้อ 7 — เช่น MOS20=273.36×0.8, MOS=(FV−price)/FV
+  • เลือกสีแบรนด์ใน theme (ห้ามปล่อย default) — ดู tools/brand-colors.md + tools/seeds.json
+  • โครง CSS/engine ถูก inject ตอน build (marker STYLE/ENGINE) — ไม่ต้องแตะ
+  ════════════════════════════════════════════════════════════════════════════
+-->
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น ADP (Automatic Data Processing) (ADP) — Stock Analysis Dashboard</title>
+<!-- ★ ใส่รุ่นโมเดล AI ที่ใช้วิเคราะห์จริง (Opus→"Claude Opus 4.8", Sonnet→"Claude Sonnet 4.6") — gate E28 บังคับ -->
+<meta name="ai-model" content="Claude Opus 4.8">
+<!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
+<script type="application/json" id="stock-meta">
+{"symbol":"ADP","currency":"USD","price":242.27,"fairValue":273.36,"mos":11.4,"upside":12.83,"pe":22.6,"dividendYield":2.81,"roe":71}
+</script>
+<!--
+  report-data: ธีมสี + ข้อมูลกราฟ/gauge ต่อหุ้น (build เอาไปวาด)  ดู schema เต็มใน CLAUDE.md ข้อ 9
+  • theme.* = สีแบรนด์ (accent ห้ามเป็นน้ำเงิน default) • chart.fairLine = gauge.fair = fv = 273.36
+  • gauge.cur = ราคาปัจจุบัน = 242.27 • highlight = ดัชนีจุดเด่นบนกราฟ (เช่น [2,7])
+  • chart.data = ราคาย้อนหลัง ~1 ปี (ไม่เกิน 13 จุด · E37) — จุดแรก = ราคา ~1 ปีก่อน, จุดท้าย = ราคาปัจจุบัน 242.27
+    (ผลตอบแทน จุดแรก→จุดท้าย ต้อง = ป้าย % รอบปีใน header · E36)
+  • theme.chgBg/chgColor = สีป้าย % รอบปี: ขึ้น→เขียว var(--green-soft)/#1e8e3e · ลง→แดง var(--red-soft)/#c5221f (E34)
+  • dataFmt อ้าง d[1] เท่านั้น, gridFmt อ้าง v เท่านั้น (ผิด scope = กราฟดับ)
+-->
+<script type="application/json" id="report-data">
+{"theme": {"accent": "#CC0000", "accentDark": "#990000", "darkGrad": "linear-gradient(135deg,#5c0000 0%,#990000 50%,#CC0000 100%)", "glow": "rgba(204,0,0,0.35)", "subColor": "#ff4444", "headerMuted": "rgba(255,255,255,0.65)", "verdictText": "#CC0000", "vcellLabel": "#aa0000", "badge": "#CC0000", "chgBg": "#8b1a1a", "chgColor": "#ffffff"}, "chart": {"data": [["ส.ค. 68", 304.05], ["ก.ย. 68", 293.5], ["ต.ค. 68", 260.3], ["พ.ย. 68", 255.3], ["ธ.ค. 68", 257.23], ["ม.ค. 69", 246.82], ["ก.พ. 69", 214.36], ["มี.ค. 69", 203.18], ["เม.ย. 69", 211.94], ["พ.ค. 69", 221.84], ["มิ.ย. 69", 223.95], ["ก.ค. 69", 242.27]], "min": 180, "max": 320, "grid": [180, 220, 260, 300], "fairLine": 273.36, "currency": "$", "highlight": [7, 11]}, "gauge": {"min": 160, "max": 320, "cur": 242.27, "fair": 273.36, "fairLabelTop": true}, "fv": 273.36}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots"></div>
+    <div>
+      <span class="tag">NASDAQ: ADP</span>
+      <span class="tag">Payroll & HCM</span>
+      <span class="tag">Dividend Aristocrat</span>
+    </div>
+    <!-- ★ คำโปรยธุรกิจ (gate E32) — .sub ต้องอยู่ติดใต้ </h1> (ห้ามมีคอมเมนต์/แท็กคั่น) : บริษัททำอะไร ใช้ • คั่นกลุ่ม -->
+    <h1>Automatic Data Processing (ADP)</h1>
+    <div class="sub">Payroll processing, HR software (Workforce Now, Vantage HQ), Tax Filing, Time &amp; Attendance • PEO (Employer Services + PEO Services) • ผู้นำตลาด Payroll/HCM ร่วมกับ Paychex</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$242.27<small>(ADP)</small></div>
+      </div>
+      <!-- ★ ป้าย % รอบปี (gate E35/E36) — ผลตอบแทน ~1 ปี (เทียบราคา ~1 ปีก่อน) = ผลตอบแทนปลายกราฟ section 2 (จุดแรก→ท้าย)
+           รูปแบบ: "▲ +X.X% (รอบปี)" ขึ้น · "▼ −X.X% (รอบปี)" ลง · "≈ ทรงตัว (รอบปี)" · หุ้น IPO <1 ปี ใช้ "(ตั้งแต่ IPO)"
+           ไม่ใช่ % รายวัน/YTD/52 สัปดาห์ · ตั้งสี theme.chgBg/chgColor ให้ตรงทิศ (ขึ้น=เขียว/ลง=แดง · E34) -->
+      <div class="chg">▼ −20.3% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 2 ก.ค. 2569 (July 2, 2026)<br>
+        กรอบ 52 สัปดาห์ $188.16 – $315.98<br>
+        ที่มา: Yahoo Finance, StockAnalysis.com, SEC 10-Q/8-K (Q3 FY2026)
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">FY2025 full year + TTM ล่าสุด</div></div>
+    <!-- ✏️ ปรับการ์ด metric ให้เหมาะกับหุ้น/เซกเตอร์ได้อิสระ — gate ไม่บังคับชุด metric (เปลี่ยน label / สลับ / เพิ่ม-ลดการ์ดได้)
+         • คงป้าย "P/E (TTM)", "P/BV", "เงินปันผล", "ROE" ไว้ถ้าหุ้นมีจริง → W10 cross-check กับ stock-meta · ไม่มี (ขาดทุน/ไม่ปันผล) = ตัดการ์ดออก + ตั้ง stock-meta เป็น null
+         • ธนาคาร → NIM / NPL / CASA / Loan growth / Cost-to-income   • REIT/กองอสังหา → Occupancy / DPU / NAV / Gearing   • ประกัน → Combined ratio / EV
+         • หุ้นเติบโต-ขาดทุน → Revenue growth / Gross margin / FCF / Cash runway (ตัด P/E ออก) -->
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">$96.8B</div><div class="d">~399.7M หุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~22.6x</div><div class="d">Forward P/E ~20.2x</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~30.3x</div><div class="d">เฉลี่ย 5 ปี — ปัจจุบันต่ำกว่าค่าเฉลี่ย</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~71% / 13.5%</div><div class="d">ROE สูงจากฐานทุนต่ำ (buyback สะสม) ไม่ใช่ leverage ผิดปกติ</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">$4.08B</div><div class="d">+8.7% YoY</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$10.71</div><div class="d">FY2025 diluted EPS $9.98 → TTM ล่าสุด $10.71</div></div>
+      <div class="metric"><div class="k">Client Retention</div><div class="v pos">~92%</div><div class="d">Client retention 92.1% (FY26 guidance: ทรงตัวถึงลด ~20bps)</div></div>
+      <div class="metric"><div class="k">รายได้จาก Float Income</div><div class="v neu">$403.9M/ไตรมาส</div><div class="d">ดอกเบี้ยจากเงินลูกค้า Q3 FY26 (+13.7% YoY) เฉลี่ยเงินลูกค้า $48.3B</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$20.6B</div><div class="d">FY2025 +7.1% YoY • FY26 guide +5–6%</div></div>
+      <div class="metric"><div class="k">อัตรากำไรสุทธิ</div><div class="v">~19.9%</div><div class="d">อัตรากำไรสุทธิ FY2025</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~2.81%</div><div class="d">$6.80/ปี • เพิ่มติดต่อกัน 51 ปี (Dividend King)</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">0.84</div><div class="d">ผันผวนต่ำกว่าตลาด</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART (ราคาย้อนหลัง ~1 ปี) ===== -->
+  <!-- ★ กราฟต้องเป็น "ราคาย้อนหลัง ~1 ปี" (gate E37): ไม่เกิน 13 จุด (รายเดือน 12 เดือน = 13 จุด · รายสองเดือน = ~8 จุด)
+       ห้ามใส่ 18 เดือน/1.5 ปี · จุดสุดท้าย = ราคาปัจจุบัน · ผลตอบแทน จุดแรก→จุดท้าย ต้องตรงกับป้าย % รอบปีใน header (E36) -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#CC0000"></i>ราคา ADP</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $273.36</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        <!-- ✏️ บรรยายการเคลื่อนไหวราคา ~1 ปี: จุดสูง/ต่ำ, เปลี่ยนแปลง %, สาเหตุหลัก -->
+        ราคาร่วงจากจุดสูง ~$304 (ส.ค. 2568) ลงมาต่ำสุด ~$203 (มี.ค. 2569) กดดันจากตัวเลขจ้างงานสหรัฐฯ ที่อ่อนแอต่อเนื่อง (private payrolls เพิ่มเพียง 98,000 ตำแหน่ง ต่ำกว่าคาด) ทำให้ตลาดกังวลรายได้ ADP ที่ผูกกับปริมาณการจ้างงาน ก่อนจะฟื้นตัวกลับมาที่ $242.27 ในเดือน ก.ค. 2569 หลังผลประกอบการ Q3 FY26 ออกมาดีกว่าคาดและบริษัทปรับเพิ่ม guidance ทั้งปี รวมทั้งหมดลดลง ~20.3% ในรอบปีที่ผ่านมา
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION (เฉลี่ย 3 วิธี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 2 วิธี</div></div>
+    <div class="card">
+      <!-- ✏️ เลือก ≥2 วิธีให้เหมาะกับหุ้น — gate เช็คคณิตเฉพาะวิธีชื่อ "P/E" (E21) และ "Justified P/BV" (E22) เมื่อมีวิธีนั้น
+           ADP: ตัด Justified P/BV ออก — ROE ~71% ถูกบิดเบือนจากฐานทุนต่ำ (buyback สะสมหลายสิบปี) ทำให้ P/BV justified ไม่มีความหมาย ใช้ P/E + DDM (ปันผลโต 51 ปีติดต่อกัน) แทน -->
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS (TTM) $10.71 × P/E เป้าหมาย ~24x — P/E เป้าหมายต่ำกว่าค่าเฉลี่ย 5 ปี (~30x) สะท้อนความกังวลการเติบโตชะลอตัว/AI disruption</div></div>
+        <div class="mval">$257.04</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล $6.80 × (1+g); g 6.5%, r 9.0% → g สะท้อนการเติบโตปันผลระยะยาวที่ชะลอจาก ~10%+ ในอดีต, r ต่ำจาก beta 0.84</div></div>
+        <div class="mval">$289.68</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $257.04 – $289.68</span></div>
+        <div class="r">$273.36</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        <!-- ✏️ หมายเหตุ: วิธีไหนให้ค่าสูง/ต่ำเพราะอะไร, ทำไม FV กลางจึงสมเหตุสมผล -->
+        ตัด Justified P/BV ออกเพราะ ROE ~71% ของ ADP ถูกบิดเบือนจากฐานทุนต่ำ (ซื้อหุ้นคืนสะสมหลายสิบปี) ทำให้ P/BV justified ไม่สะท้อนมูลค่าจริง ใช้ P/E (อิงกำไรสุทธิ) และ DDM (อิงกระแสปันผลที่โตต่อเนื่อง 51 ปี) แทน — DDM ให้ค่าสูงกว่าเพราะสะท้อน stability ของปันผล ขณะที่ P/E สะท้อนความกังวลระยะสั้นเรื่องการเติบโต Fair Value เฉลี่ย $273 ใกล้เคียงเป้าหมาย analyst เฉลี่ย ($247–265) แต่สูงกว่าเล็กน้อยเพราะให้น้ำหนักกับความแข็งแกร่งของ dividend franchise
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $242.27</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $273.36</div></div>
+        </div>
+        <div class="scale">
+          <span>$191.35<br><small>MOS 30%</small></span>
+          <span>$218.69<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$255<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">$273.36<br><small>Fair Value</small></span>
+          <span style="text-align:right">$289.68<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน ($242.27) อยู่ต่ำกว่าทั้งเป้าหมาย analyst เฉลี่ย (~$247–265 จากหลายสำนัก, กลาง ~$255) และ Fair Value ($273.36) — อยู่ในโซนเริ่มน่าสนใจแต่ยังไม่ถึงระดับ deep value
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <!-- ✏️ class ของ mos-verdict: MOS<10 → "bad", 10–20 → "ok", ≥20 → "good" -->
+      <div class="mos-verdict ok">
+        <div class="big">+11.4%</div>
+        <div class="txt">MOS ~11% อยู่ในระดับปานกลาง — ราคาปัจจุบันต่ำกว่ามูลค่าเหมาะสมพอสมควรหลังร่วงจากจุดสูงเกือบ 23% แต่ยังไม่ใช่ deep value เทียบ MOS 30%</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$218.69</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$191.35</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $273.36</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="242.27" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $242.27 • EPS ฐาน ~$10.71 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS 2%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$204.58</div>
+          <div class="ret neg">−6.6%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$11.37</span></li>
+            <li><span>P/E ออก</span><span>18x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$21.65</span></li>
+            <li><span>สถานการณ์</span><span>Fed ลดดอกเบี้ยแรง float income หด + AI-native payroll (Rippling/Gusto) แย่งลูกค้า SME + จ้างงานสหรัฐฯ ชะลอตัวรุนแรง</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +8%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$296.81</div>
+          <div class="ret pos">+32.2%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$13.49</span></li>
+            <li><span>P/E ออก</span><span>22x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$23.39</span></li>
+            <li><span>สถานการณ์</span><span>เติบโตตาม guidance FY26 (+8–10% EPS) ต่อเนื่อง retention ทรงตัว float income คงที่</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +12%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$376.17</div>
+          <div class="ret pos">+65.3%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$15.05</span></li>
+            <li><span>P/E ออก</span><span>25x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$24.30</span></li>
+            <li><span>สถานการณ์</span><span>Enterprise upsell (Vantage HQ) เร่งตัว + AI HR tools เป็น upsell สำเร็จ + จ้างงานฟื้นตัวหนุน float income</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      Bear case สะท้อนความเสี่ยงจาก Fed cut rate กดดัน float income และ SME churn ไปหา AI-native payroll ผู้ท้าทายรายใหม่ • Base case สอดคล้องกับ guidance บริษัท FY26 (revenue +5–6%, EPS +8–10%) • Bull case คือ upsell enterprise (Workforce Now → Vantage) เร่งตัวพร้อมจ้างงานสหรัฐฯ ฟื้นตัว
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <!-- ✏️ 4–6 ข้อ: เขียน <b>หัวข้อ:</b> รายละเอียด -->
+          <li><b>Enterprise upsell:</b> ย้ายลูกค้าจาก Workforce Now ไปแพลตฟอร์มใหม่ Vantage HQ เพิ่ม ARPU และความเหนียวแน่นลูกค้า</li>
+          <li><b>International expansion:</b> ขยายธุรกิจ HCM/payroll ในตลาดต่างประเทศ ลดการพึ่งพาตลาดสหรัฐฯ อย่างเดียว</li>
+          <li><b>AI HR tools เป็น upsell ไม่ใช่ภัยคุกคาม:</b> ADP Assist และเครื่องมือ AI ช่วยลูกค้าองค์กรใหญ่ใช้งานง่ายขึ้น เป็นช่องทางขายเพิ่ม ไม่ใช่แทนที่ตัวบริการหลัก</li>
+          <li><b>Dividend King status:</b> เพิ่มปันผลติดต่อกัน 51 ปี ดึงดูดนักลงทุนสาย income/defensive</li>
+          <li><b>Guidance FY26 ถูกปรับเพิ่ม:</b> หลังผล Q3 FY26 ดีกว่าคาด บริษัทปรับเพิ่ม guidance ทั้ง revenue, margin และ EPS growth</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <!-- ✏️ 4–6 ข้อ: เขียน <b>หัวข้อ:</b> รายละเอียด -->
+          <li><b>AI-native payroll แข่งขันในกลุ่ม SME:</b> Rippling, Gusto และผู้เล่นใหม่เสนอโซลูชันราคาถูกกว่า ใช้งานง่ายกว่า อาจกัดส่วนแบ่งตลาดกลุ่มธุรกิจขนาดเล็ก</li>
+          <li><b>Float income ลดลงเมื่อ Fed ลดดอกเบี้ย:</b> รายได้ดอกเบี้ยจากเงินลูกค้า (Q3 FY26 ~$404M/ไตรมาส) เป็นสัดส่วนสำคัญของกำไร หาก Fed cut rate ต่อเนื่องจะกดดันกำไรทันที</li>
+          <li><b>จ้างงานสหรัฐฯ ชะลอตัว:</b> รายได้ ADP (โดยเฉพาะ PEO) ผูกกับปริมาณการจ้างงานและค่าจ้าง หากตลาดแรงงานอ่อนแอต่อเนื่องกระทบรายได้โดยตรง</li>
+          <li><b>Valuation ยังไม่ถูกมาก:</b> P/E TTM ~22.6x แม้ต่ำกว่าค่าเฉลี่ย 5 ปี (~30x) แต่ยังไม่ใช่ deep value เทียบ MOS 30%</li>
+          <li><b>Client retention มีแนวโน้มทรงตัวถึงลดลงเล็กน้อย:</b> guidance FY26 คาด retention ทรงตัวถึงลด ~20bps สะท้อนการแข่งขันที่รุนแรงขึ้น</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>ADP: Dividend Aristocrat ที่ยังไม่ถูกมาก แต่ moat แข็งแรง</h2>
+      <p>ADP เป็นหนึ่งใน duopoly ผู้ให้บริการ payroll/HCM รายใหญ่ของสหรัฐฯ ร่วมกับ Paychex ด้วย switching cost สูง (การย้ายระบบ payroll คือ "ฝันร้าย" ของฝ่าย HR) และรายได้เสริมจาก float income ที่แข็งแกร่งเมื่อดอกเบี้ยสูง ราคาหุ้นร่วงลงมาจากจุดสูงเกือบ 23% ในรอบปีที่ผ่านมาจากความกังวลตลาดแรงงานสหรัฐฯ ที่ชะลอตัวและความเสี่ยงจาก AI-native payroll ผู้ท้าทายรายใหม่ (Rippling, Gusto) ที่กัดส่วนแบ่งตลาดกลุ่ม SME แต่ ADP ยังคง moat ที่แข็งแกร่งในกลุ่มลูกค้าองค์กรใหญ่ retention >92% และสถานะ Dividend King ที่เพิ่มปันผลต่อเนื่อง 51 ปี ราคาปัจจุบันมี MOS ~11% เทียบ Fair Value ซึ่งอยู่ในระดับปานกลาง เหมาะกับนักลงทุนสาย income/defensive มากกว่าสาย deep-value</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$273.36 <span style="font-size:12px;color:#cab9a8">($257.04–$289.68)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +11.4%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$255 (Hold)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> เหมาะสำหรับนักลงทุนสาย income/defensive ที่ต้องการ dividend growth stock มั่นคง ทยอยสะสมหากราคาลงมาใกล้โซน MOS 20% (~$219) จะน่าสนใจมากขึ้น ระวังความเสี่ยง float income หด หาก Fed ลดดอกเบี้ยต่อเนื่องในปี 2569–2570 และติดตามการแข่งขันจาก AI-native payroll ในกลุ่ม SME อย่างใกล้ชิด
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ข้อมูล ณ 2 ก.ค. 2569 จาก Yahoo Finance, StockAnalysis.com, SEC 10-Q/8-K (Q3 FY2026)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 2 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>

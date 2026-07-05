@@ -35,9 +35,9 @@
 | 1 | W1 | FDS | ข้อมูลการเงิน | FactSet −33% — AI-fear de-rate แบบเดียวกับ RELX (ซึ่งได้ MOS +17.5%) | | ✅ $250/$278 MOS+10% |
 | 2 | W1 | TRI | ข้อมูล/กฎหมาย | Thomson Reuters −50% — Westlaw/Clarivate AI-fear, moat หนา | 🔺 | ✅ $89/$74 MOS−20% (แพง) |
 | 3 | W1 | IT | วิจัย/ที่ปรึกษา | Gartner −46% — AI-fear ถล่มกลุ่ม research/advisory | 🔺 | ✅ $136/$141 MOS+3% |
-| 4 | W2 | CSGP | ข้อมูลอสังหาฯ | CoStar −66% ($30) — crash หนัก ต้องแยก structural vs overspend (ไม่ใช่ REIT — P/E ปกติ) | 🔺 | ⬜ |
-| 5 | W2 | ADP | payroll | −20% — dividend aristocrat 50 ปี, duopoly payroll | | ⬜ |
-| 6 | W2 | PAYX | payroll | −24% — คู่ duopoly กับ ADP, มาร์จิ้นสูงกว่า | | ⬜ |
+| 4 | W2 | CSGP | ข้อมูลอสังหาฯ | CoStar −66% ($30) — crash หนัก ต้องแยก structural vs overspend (ไม่ใช่ REIT — P/E ปกติ) | 🔺 | ✅ $30/$49 MOS+39% (Homes.com drag แต่ core ยังดี) |
+| 5 | W2 | ADP | payroll | −20% — dividend aristocrat 50 ปี, duopoly payroll | | ✅ $242/$273 MOS+11% |
+| 6 | W2 | PAYX | payroll | −24% — คู่ duopoly กับ ADP, มาร์จิ้นสูงกว่า | | ✅ $106/$119 MOS+11% |
 | 7 | W3 | TMUS | โทรคมนาคม | T-Mobile −30% — ผู้ชนะ 5G ที่โตเร็วสุดใน 3 เจ้า | | ⬜ |
 | 8 | W3 | T | โทรคมนาคม | AT&T −30% ($20.58) — ปันผลสูง fiber โต หนี้ลดลง | | ⬜ |
 | 9 | W3 | CMCSA | สื่อ/บรอดแบนด์ | Comcast −25% ($23.79) — ถูกมากเทียบ FCF, broadband คงทน | | ⬜ |
