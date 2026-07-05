@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น eBay Inc (EBAY) — Stock Analysis Dashboard</title>
+<!-- ★ ใส่รุ่นโมเดล AI ที่ใช้วิเคราะห์จริง (Opus→"Claude Opus 4.8", Sonnet→"Claude Sonnet 4.6") — gate E28 บังคับ -->
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
+<script type="application/json" id="stock-meta">
+{"symbol":"EBAY","currency":"USD","price":114.84,"fairValue":102.28,"mos":-12.3,"upside":-10.9,"pe":19.8,"dividendYield":1.08,"roe":42.88}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#e43137",
+    "accentDark": "#a01a1f",
+    "darkGrad": "linear-gradient(135deg,#3d0f11 0%,#1f0607 100%)",
+    "glow": "rgba(228,49,55,0.45)",
+    "subColor": "#f0b3b6",
+    "headerMuted": "rgba(255,255,255,0.55)",
+    "verdictText": "#fde8e8",
+    "vcellLabel": "#f0b3b6",
+    "badge": "#e43137",
+    "chgBg": "#1e8e3e",
+    "chgColor": "#ffffff"
+  },
+  "chart": {
+    "data": [
+      ["ก.ค. 68", 90.59],
+      ["ส.ค. 68", 89.74],
+      ["ก.ย. 68", 90.08],
+      ["ต.ค. 68", 80.53],
+      ["พ.ย. 68", 82.29],
+      ["ธ.ค. 68", 86.57],
+      ["ม.ค. 69", 90.66],
+      ["ก.พ. 69", 90.31],
+      ["มี.ค. 69", 90.77],
+      ["เม.ย. 69", 103.19],
+      ["พ.ค. 69", 109.27],
+      ["มิ.ย. 69", 111.75],
+      ["ก.ค. 69", 114.84]
+    ],
+    "min": 75,
+    "max": 120,
+    "grid": [75, 82.5, 90, 97.5, 105, 112.5, 120],
+    "fairLine": 102.28,
+    "currency": "$",
+    "highlight": [3, 9, 12]
+  },
+  "gauge": {
+    "min": 64,
+    "max": 124,
+    "cur": 114.84,
+    "fair": 102.28,
+    "fairLabelTop": "-58px"
+  },
+  "fv": 102.28
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">◉ ◉ ◉</div>
+    <div>
+      <span class="tag">NASDAQ: EBAY</span>
+      <span class="tag">E-commerce / Online Marketplace</span>
+      <span class="tag">C2C · Recommerce · Focus Categories</span>
+    </div>
+    <!-- ★ คำโปรยธุรกิจ (gate E32) — .sub ต้องอยู่ติดใต้ </h1> (ห้ามมีคอมเมนต์/แท็กคั่น) : บริษัททำอะไร ใช้ • คั่นกลุ่ม -->
+    <h1>eBay Inc (EBAY)</h1>
+    <div class="sub">มาร์เก็ตเพลสออนไลน์ระดับโลก C2C/refurbished • eBay Motors (อะไหล่รถ) • Collectibles (การ์ด/ของสะสม) • Fashion/Luxury resale (รวม Depop) • มุ่งเน้นกลุ่ม "Enthusiast Buyers" ที่มูลค่าซื้อสูง + ปันผล/ซื้อหุ้นคืนต่อเนื่อง</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$114.84<small>(EBAY)</small></div>
+      </div>
+      <!-- ★ ป้าย % รอบปี (gate E35/E36) — ผลตอบแทน ~1 ปี (เทียบราคา ~1 ปีก่อน) = ผลตอบแทนปลายกราฟ section 2 (จุดแรก→ท้าย)
+           รูปแบบ: "▲ +X.X% (รอบปี)" ขึ้น · "▼ −X.X% (รอบปี)" ลง · "≈ ทรงตัว (รอบปี)" · หุ้น IPO <1 ปี ใช้ "(ตั้งแต่ IPO)"
+           ไม่ใช่ % รายวัน/YTD/52 สัปดาห์ · ตั้งสี theme.chgBg/chgColor ให้ตรงทิศ (ขึ้น=เขียว/ลง=แดง · E34) -->
+      <div class="chg">▲ +26.8% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 2 กรกฎาคม 2569<br>
+        กรอบ 52 สัปดาห์ $75.12 – $119.31<br>
+        ที่มา: StockAnalysis.com / Yahoo Finance / eBay Investor Relations (Q1 2026)
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">FY2025 / TTM ถึง Q1 2026</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">$50.99B</div><div class="d">444M หุ้น (หลังซื้อคืนต่อเนื่อง)</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~19.8x</div><div class="d">อิง adjusted EPS TTM $5.80 · Forward P/E ~18.6x</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~13–15x</div><div class="d">Re-rate ขึ้นปี 2569 จากกระแส GameStop bid + AI commerce</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">11.6x</div><div class="d">BVPS ต่ำจากซื้อหุ้นคืนสะสม (ROE จึงสูงเทียม)</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">$2.0B</div><div class="d">GAAP EPS $4.26 (+7.8% YoY)</div></div>
+      <div class="metric"><div class="k">EPS (TTM, adj.)</div><div class="v">~$5.80</div><div class="d">Non-GAAP; FY2025 เต็มปี $5.52 (+13.1% YoY)</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~$9.89</div><div class="d">ส่วนของผู้ถือหุ้นถูกกดจากซื้อหุ้นคืน</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~42.9% / 8.6%</div><div class="d">ROE พองจาก equity ต่ำ ไม่ใช่ประสิทธิภาพเงินทุนแท้จริง</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$11.6B</div><div class="d">+12.5% YoY · GMV TTM ~$83.0B</div></div>
+      <div class="metric"><div class="k">FCF TTM / Margin</div><div class="v">$1.74B</div><div class="d">FCF yield ~3.4% ของ Market Cap</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~1.08%</div><div class="d">$1.24/ปี (ขึ้น 7% ก.พ. 2569) + ซื้อคืนหุ้น ~$2.5B/ปี</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">1.37</div><div class="d">ผันผวนสูงกว่าตลาด (ดีล GameStop เพิ่มความไม่แน่นอน)</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART (ราคาย้อนหลัง ~1 ปี) ===== -->
+  <!-- ★ กราฟต้องเป็น "ราคาย้อนหลัง ~1 ปี" (gate E37): ไม่เกิน 13 จุด (รายเดือน 12 เดือน = 13 จุด · รายสองเดือน = ~8 จุด)
+       ห้ามใส่ 18 เดือน/1.5 ปี · จุดสุดท้าย = ราคาปัจจุบัน · ผลตอบแทน จุดแรก→จุดท้าย ต้องตรงกับป้าย % รอบปีใน header (E36) -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#e43137"></i>ราคา EBAY</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $102.28</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคาแกว่งในกรอบ $80–91 ช่วง ก.ค.–ก.ย. 2568 ก่อนร่วงแรงลงไปแตะ <b>52-week low $75.12 (8 ก.ค. 2568)</b> และ <b>ทรุด ~16% ในวันเดียว</b>
+        หลังงบ Q3 2025 (29 ต.ค. 2568) เพราะ guidance Q4 อ่อนกว่าคาดแม้ผลประกอบการจริงจะเกินคาด จากนั้นฟื้นตัวต่อเนื่องตั้งแต่ ม.ค. 2569
+        ทะยานขึ้นแรงหลังงบ Q1 2026 (EPS beat + ดีล Depop) และกระแสข่าว <b>GameStop เสนอซื้อกิจการที่ $125/หุ้น (พ.ค. 2569, ถูกบอร์ดปฏิเสธ)</b>
+        ผลักดันราคาแตะ <b>52-week high $119.31 (20 พ.ค. 2569)</b> ก่อนย่อลงมาปิดที่ $114.84 — รวมผลตอบแทนรอบปี <b>+26.8%</b>
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION (เฉลี่ย 3 วิธี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <!-- หมายเหตุ: ข้าม DDM/Justified P/BV — ปันผล eBay เล็กมาก (~1.08%) และ BVPS ถูกกดจากซื้อหุ้นคืนสะสม ทำให้ ROE/P/BV ไม่สะท้อนมูลค่าที่แท้จริง
+           ใช้ P/E + P/FCF (สอดคล้องโมเดล cash-cow ที่ FCF สำคัญกว่ากำไรบัญชี) + ค่าเฉลี่ยเป้านักวิเคราะห์แทน -->
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS adj. $5.80 × P/E เป้าหมาย ~18x — ต่ำกว่า P/E ปัจจุบัน 19.8x เล็กน้อย สะท้อนความไม่แน่นอนของ GMV growth ระยะยาว</div></div>
+        <div class="mval">$104.40</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. P/FCF Valuation</div><div class="mdesc">FCF TTM $1,738M ÷ 444M หุ้น = $3.91/หุ้น × P/FCF 24x — ต่ำกว่า P/FCF ปัจจุบัน ~29x สะท้อน FCF margin ที่อาจแกว่งจาก working capital</div></div>
+        <div class="mval">$93.95</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Analyst Target Average</div><div class="mdesc">ค่าเฉลี่ยเป้าหมายนักวิเคราะห์ (~26–31 ราย, กรอบ $97–$127) — StockAnalysis.com/Yahoo เฉลี่ย $108.20, Citi (พ.ค. 2569) ปรับเป้าขึ้นเป็น $127</div></div>
+        <div class="mval">$108.50</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $93.95 – $108.50</span></div>
+        <div class="r">$102.28</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        วิธี P/FCF ให้ค่าต่ำสุด ($93.95) เพราะ FCF ผันผวนจาก working capital (Q2 2025 FCF ติดลบ) และ P/FCF ตลาดปัจจุบัน (~29x) สูงกว่าคุณภาพธุรกิจที่ GMV โตช้า
+        วิธี Analyst Average ให้ค่าสูงสุด ($108.50) แต่ยังต่ำกว่าราคาตลาด — นักวิเคราะห์ส่วนใหญ่มอง "Hold/Neutral" ไม่ใช่ Buy ที่ระดับราคานี้
+        ค่าเฉลี่ย $102.28 ต่ำกว่าราคาปัจจุบัน ~12% สะท้อนว่าหุ้น <b>เต็มมูลค่าถึงค่อนข้างแพง</b> หลังพุ่งแรงจากข่าว GameStop bid + งบ Q1 2026 ที่แข็งแกร่ง
+        (ข้อสังเกต: ราคาที่ GameStop เสนอซื้อกิจการจริง $125/หุ้น สูงกว่าทั้ง FV และราคาตลาดปัจจุบัน — เป็น catalyst เชิงบวกที่ valuation แบบ fundamental จับไม่ได้)
+        ที่มา: StockAnalysis.com, Yahoo Finance, eBay IR Q1 2026 Press Release
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $114.84</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $102.28</div></div>
+        </div>
+        <div class="scale">
+          <span>$71.60<br><small>MOS 30%</small></span>
+          <span>$81.82<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$102.28<br><small>Fair Value</small></span>
+          <span style="text-align:right">$108.50<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">$108.50<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน $114.84 อยู่ <b>เหนือ</b> ทั้งมูลค่าเหมาะสม ($102.28) และเป้าเฉลี่ยนักวิเคราะห์ ($108.50) — ไม่มี Margin of Safety ในจุดนี้
+        นักลงทุนสาย value ควรรอราคาย่อลงมาใกล้โซน $82–92 (MOS 20–30%) หรือรอความชัดเจนของสถานการณ์ GameStop ก่อนตัดสินใจเพิ่มสถานะ
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <!-- ✏️ class ของ mos-verdict: MOS<10 → "bad", 10–20 → "ok", ≥20 → "good" -->
+      <div class="mos-verdict bad">
+        <div class="big">−12.3%</div>
+        <div class="txt"><b>ไม่มี Margin of Safety</b><br>ราคาปัจจุบัน $114.84 สูงกว่ามูลค่าเหมาะสม $102.28 ราว 12% — ตามเกณฑ์ value investor ถือว่า <b>เต็มมูลค่าถึงแพง</b> หลังพุ่งแรงจากข่าว GameStop bid + งบ Q1 2026 แข็งแกร่ง ยังไม่ใช่จุดซื้อที่ปลอดภัย</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$81.82</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$71.60</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $102.28</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="114.84" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $114.84 • EPS ฐาน ~$5.80 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS −2%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$76.44</div>
+          <div class="ret neg">−30.1% (3 ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$5.46</span></li>
+            <li><span>P/E ออก</span><span>14x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$3.80</span></li>
+            <li><span>สถานการณ์</span><span>GMV หดตัวจากแข่งขัน Temu/Shein/Amazon, take rate ทรงตัว, De-rate P/E</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +8%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$131.58</div>
+          <div class="ret pos">+18.0% (3 ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$7.31</span></li>
+            <li><span>P/E ออก</span><span>18x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$3.91</span></li>
+            <li><span>สถานการณ์</span><span>Focus Categories โตต่อเนื่อง + buyback หนุน EPS, GMV รวมทรงตัว/โตช้า</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +15%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$194.04</div>
+          <div class="ret pos">+72.4% (3 ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$8.82</span></li>
+            <li><span>P/E ออก</span><span>22x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$4.00</span></li>
+            <li><span>สถานการณ์</span><span>Depop/AI commerce เร่ง GMV, take rate ขยับขึ้น, หรือ M&A premium (เช่นดีล GameStop) เกิดขึ้นจริง</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      ฐาน EPS adjusted TTM $5.80 · P/E ออกอิงช่วง 14–22x (ปัจจุบันเทรดที่ 19.8x) · ปันผลปีละ ~$1.24/หุ้น เติบโตเล็กน้อยทุกปี ·
+      สถานการณ์ Bull มีความเป็นไปได้เพิ่มจากดีล GameStop ที่เสนอซื้อที่ $125/หุ้น (ถูกปฏิเสธแต่ยังไม่จบ) ซึ่งอาจกลับมาเป็นตัวเร่งราคาได้
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><div><b>Focus Categories โตเร็ว:</b> Collectibles/Motors/Luxury +24% YoY (Q1 2026) เร็วกว่าตลาดรวม ~15 จุด — กลุ่ม Enthusiast Buyer ใช้จ่ายเฉลี่ย &gt;$3,400/ปี มูลค่าสูงกว่าลูกค้าทั่วไปมาก</div></li>
+          <li><div><b>Buyback + ปันผลต่อเนื่อง:</b> ซื้อหุ้นคืน ~$2.5B/ปี (FY2025) + เพิ่มปันผล 7% (ก.พ. 2569) → ลดจำนวนหุ้นหมุนเวียนต่อเนื่อง หนุน EPS growth แม้กำไรรวมทรงตัว</div></li>
+          <li><div><b>ดีล GameStop ยังไม่จบ:</b> GameStop เสนอซื้อกิจการที่ $125/หุ้น (พ.ค. 2569) ถูกบอร์ดปฏิเสธ แต่ยังถือหุ้น/derivative ต่อเนื่อง — อาจกลับมาเป็น catalyst ราคาได้อีก</div></li>
+          <li><div><b>Depop + AI commerce:</b> ซื้อกิจการ Depop (~$1.2B จาก Etsy) ขยาย C2C fashion resale + พัฒนา AI listing tools ("Magical Listing") เร่งการลงขายของผู้ขาย</div></li>
+          <li><div><b>Take rate ขยับขึ้น:</b> จากการขยาย managed payments + ad services บน platform หนุน margin โดยไม่ต้องพึ่ง GMV growth สูง</div></li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><div><b>GMV โตช้า/แบน:</b> ตลาดสินค้าทั่วไป (non-focus) เสียส่วนแบ่งให้ Amazon, Temu, Shein ต่อเนื่อง — FY2025 GMV โตเพียง +6.1% YoY</div></li>
+          <li><div><b>Valuation ตึงตัว:</b> ราคาปัจจุบันสูงกว่าเป้าเฉลี่ยนักวิเคราะห์ ($108.20) และ Fair Value ($102.28) — ขึ้นมาเร็วจากข่าว M&A ไม่ใช่ fundamental ที่เปลี่ยนแปลงมาก</div></li>
+          <li><div><b>Beta สูง/ความผันผวนจากดีล M&A:</b> Beta 1.37 + ความไม่แน่นอนจากสถานการณ์ GameStop อาจทำให้ราคาแกว่งแรงทั้งขึ้นและลงในระยะสั้น</div></li>
+          <li><div><b>FCF ผันผวน:</b> Free Cash Flow รายไตรมาสแกว่งแรง (Q2 2025 ติดลบ $441M จาก working capital) ทำให้ P/FCF ตีความยาก</div></li>
+          <li><div><b>ความเสี่ยง AI agentic commerce:</b> eBay บล็อก AI agent ซื้อของอัตโนมัติของบุคคลที่สาม (ก.พ. 2569) เพื่อป้องกัน disintermediation แต่หากเทรนด์นี้ชนะ อาจกระทบ traffic ระยะยาว</div></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>Cash Cow ที่ราคาแพงไปหน่อย — รอจังหวะย่อก่อนสะสม</h2>
+      <p>eBay เป็นมาร์เก็ตเพลส C2C ที่แข็งแกร่งในกลุ่ม Focus Categories (Motors, Collectibles, Luxury) และเป็นเครื่องผลิตกระแสเงินสดที่ดี ปันผล + ซื้อหุ้นคืนต่อเนื่องหนุน EPS growth แม้ GMV รวมโตช้า
+      แต่หลังราคาพุ่งแรง ~55% ในรอบปีจากข่าวดีล GameStop และงบ Q1 2026 ที่แข็งแกร่ง ราคาปัจจุบัน $114.84 ได้วิ่งนำหน้ามูลค่าพื้นฐานและเป้าเฉลี่ยนักวิเคราะห์ไปแล้ว
+      เหมาะกับการถือรอ ไม่ใช่จังหวะซื้อเพิ่มที่ระดับราคานี้ — ควรรอย่อกลับมาใกล้โซน MOS 20–30% ($82–92) หรือรอความชัดเจนเพิ่มเติมของสถานการณ์ GameStop</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$102.28 <span style="font-size:12px;color:#cab9a8">($93.95–$108.50)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −12.3%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$108.20 (Hold/Neutral)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ผู้ถือเดิม: ถือต่อเพื่อรับปันผล + ประโยชน์จาก buyback ที่ลดหุ้นหมุนเวียนต่อเนื่อง (แต่พิจารณาลดสัดส่วนบางส่วนหากราคาขึ้นต่อโดยไม่มีปัจจัยพื้นฐานรองรับ)
+        นักลงทุนใหม่: รอสะสมที่โซน $82–92 (MOS 20–30%) หรือเมื่อสถานการณ์ GameStop คลี่คลายชัดเจนขึ้น เพื่อให้มี margin of safety ที่เหมาะสม
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ข้อมูลอ้างอิงจาก StockAnalysis.com, Yahoo Finance, eBay Investor Relations (Q1 2026, FY2025 Press Releases), SEC 8-K Filings
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 6 กรกฎาคม 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>

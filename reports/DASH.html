@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น DoorDash (DASH) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"DASH","currency":"USD","price":192.01,"fairValue":210,"mos":8.57,"upside":9.37,"pe":null,"dividendYield":null,"roe":null}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#eb1700",
+    "accentDark": "#a51100",
+    "darkGrad": "linear-gradient(135deg,#3d0f0a 0%,#1f0705 100%)",
+    "glow": "rgba(235,23,0,0.45)",
+    "subColor": "#f0b3a8",
+    "headerMuted": "rgba(255,255,255,0.55)",
+    "verdictText": "#fdeeec",
+    "vcellLabel": "#f0b3a8",
+    "badge": "#eb1700",
+    "chgBg": "#c5221f",
+    "chgColor": "#ffffff"
+  },
+  "chart": {
+    "data": [
+      ["ส.ค. 68", 245.25],
+      ["ก.ย. 68", 271.99],
+      ["ต.ค. 68", 254.37],
+      ["พ.ย. 68", 198.37],
+      ["ธ.ค. 68", 226.48],
+      ["ม.ค. 69", 204.62],
+      ["ก.พ. 69", 176.47],
+      ["มี.ค. 69", 150.15],
+      ["เม.ย. 69", 168.65],
+      ["พ.ค. 69", 159.29],
+      ["มิ.ย. 69", 184.53],
+      ["ก.ค. 69", 192.01]
+    ],
+    "min": 140,
+    "max": 280,
+    "grid": [140, 160, 180, 200, 220, 240, 260, 280],
+    "fairLine": 210,
+    "currency": "$",
+    "highlight": [1, 7, 11]
+  },
+  "gauge": {
+    "min": 130,
+    "max": 260,
+    "cur": 192.01,
+    "fair": 210,
+    "fairLabelTop": true
+  },
+  "fv": 210
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">●●●</div>
+    <div>
+      <span class="tag">NASDAQ: DASH</span>
+      <span class="tag">Consumer Discretionary</span>
+      <span class="tag">Online Food Delivery / Local Commerce</span>
+    </div>
+    <h1>DoorDash, Inc.</h1>
+    <div class="sub">แพลตฟอร์มส่งอาหาร-สินค้าออนไลน์อันดับ 1 ในสหรัฐฯ • Marketplace ร้านอาหาร/ร้านสะดวกซื้อ/ร้านขายยา/ของชำ • DashPass สมาชิกรายเดือน • โฆษณา (Ads) • Wolt &amp; Deliveroo ต่างประเทศ (ยุโรป/ตะวันออกกลาง)</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$192.01<small>(DASH)</small></div>
+      </div>
+      <div class="chg">▼ −21.7% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 2 ก.ค. 2569<br>
+        กรอบ 52 สัปดาห์ $143.30 – $285.50<br>
+        ที่มา: StockAnalysis.com, Yahoo Finance, SEC 8-K (Q1 2026 Earnings Release)
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">TTM ถึง Q1 2569 (มี.ค. 2569) • ปรับชุด metric ให้เหมาะกับหุ้นเติบโตที่เพิ่งทำกำไร</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">$83.66B</div><div class="d">435.7M shares · EV $81.42B</div></div>
+      <div class="metric"><div class="k">EV/EBITDA (TTM)</div><div class="v neu">~27.7x</div><div class="d">Adj. EBITDA TTM $2.94B · โต 28% YoY</div></div>
+      <div class="metric"><div class="k">P/FCF (TTM)</div><div class="v neu">~38.9x</div><div class="d">FCF TTM $2.15B · FCF/share $4.93</div></div>
+      <div class="metric"><div class="k">EV/Revenue</div><div class="v neu">5.53x</div><div class="d">Revenue TTM $14.72B · โต ~30% YoY</div></div>
+
+      <div class="metric"><div class="k">Marketplace GOV Q1'69</div><div class="v pos">$31.6B</div><div class="d">+37% YoY · Total Orders 933M (+27%)</div></div>
+      <div class="metric"><div class="k">Adj. EBITDA Q1'69</div><div class="v pos">$754M</div><div class="d">margin ~18.7% ของ revenue · +28% YoY</div></div>
+      <div class="metric"><div class="k">FCF/share (TTM)</div><div class="v">~$4.93</div><div class="d">ใช้แทน EPS adj. เพราะ GAAP EPS ยังผันผวน</div></div>
+      <div class="metric"><div class="k">GAAP Net Income Q1'69</div><div class="v pos">$184M</div><div class="d">EPS GAAP $0.42 (beat est. $0.37)</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$14.72B</div><div class="d">Q1'69 revenue $4.04B (+33% YoY)</div></div>
+      <div class="metric"><div class="k">DashPass/Wolt+ Subscribers</div><div class="v pos">35M+</div><div class="d">ผู้ใช้จ่ายรายเดือน ณ สิ้นปี 2568</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">— ไม่มี</div><div class="d">Reinvest ทั้งหมดเพื่อขยาย GOV/international</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">1.35</div><div class="d">ผันผวนสูงกว่าตลาด · growth stock</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART (ราคาย้อนหลัง ~1 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#eb1700"></i>ราคา DASH</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $210</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคาทำจุดสูงสุดรอบปีที่ $271.99 (ก.ย. 2568) หลังผลประกอบการแข็งแกร่งต่อเนื่อง ก่อนร่วงลงหนักช่วง พ.ย. 2568–มี.ค. 2569
+        แตะจุดต่ำสุด $150.15 (มี.ค. 2569) จากความกังวลเรื่อง valuation ที่ตึงตัว การแข่งขันด้านราคา (Uber Eats promotion) และ
+        ตลาดเทคโนโลยีปรับฐานทั้งกลุ่ม ก่อนฟื้นตัวกลับมาที่ $192.01 ในเดือน ก.ค. 2569 หลัง Q1 2569 รายงาน GOV และ Total Orders
+        เติบโตแรง (+37% / +27% YoY) แม้ EPS จะเกินคาดแต่ revenue พลาดเป้าเล็กน้อย ภาพรวมรอบปีลดลง −21.7%
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION (เฉลี่ย 3 วิธี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี — ใช้ FCF/EBITDA/Revenue แทน P/E แบบดั้งเดิม เพราะ DASH เพิ่งเริ่มทำกำไร GAAP</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/FCF Valuation</div><div class="mdesc">FCF/share $4.93 × P/FCF เป้าหมาย ~45x — peers: UBER ~25x, CART ~11x; DASH คุณภาพเติบโต GOV สูงกว่า (+37% YoY) จึงให้ premium multiple</div></div>
+        <div class="mval">$222</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. EV/EBITDA Valuation</div><div class="mdesc">Adj. EBITDA TTM $2.94B × EV/EBITDA เป้าหมาย ~30x = EV $88.3B + Net Cash $2.24B = Equity $90.5B ÷ 435.7M shares</div></div>
+        <div class="mval">$208</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. EV/Revenue Valuation</div><div class="mdesc">Revenue TTM $14.72B × EV/Revenue เป้าหมาย ~6.0x = EV $88.3B + Net Cash $2.24B = Equity $90.6B ÷ 435.7M shares</div></div>
+        <div class="mval">$208</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $208 – $222</span></div>
+        <div class="r">$210</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        วิธี P/FCF ให้ค่าสูงสุด ($222) เพราะ FCF margin ของ DASH (~14.6% ของ revenue) แข็งแกร่งกว่าคู่แข่งส่วนใหญ่ในกลุ่ม delivery
+        ส่วน EV/EBITDA และ EV/Revenue ให้ค่าใกล้เคียงกันที่ ~$208 สะท้อนมุมมองระมัดระวังกว่าต่อ margin expansion ในอนาคต
+        (Wolt/Deliveroo international ยัง margin ต่ำกว่าสหรัฐฯ) ค่าเฉลี่ย $210 ใกล้เคียงราคาตลาดปัจจุบัน สะท้อนว่าหุ้นซื้อขายใกล้มูลค่าที่เหมาะสม
+        ต่ำกว่าเป้านักวิเคราะห์เฉลี่ย ($245.94) ค่อนข้างมาก ซึ่งอาจสะท้อน optimism ของ sell-side ต่อ margin ระยะยาว
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $192.01</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $210</div></div>
+        </div>
+        <div class="scale">
+          <span>$147.00<br><small>MOS 30%</small></span>
+          <span>$168.00<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$210<br><small>Fair Value</small></span>
+          <span style="text-align:right">$222<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">$245.94<br><small>เป้าเฉลี่ย Analyst</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน $192.01 อยู่ระหว่างโซน MOS 20% ($168) กับมูลค่าเหมาะสม ($210) — ยังไม่เข้าเขต deep value แต่มี margin of safety
+        พอสมควรหลังราคาปรับฐานจากจุดสูงสุดกว่า 30% เป้าเฉลี่ยนักวิเคราะห์ ($245.94) สูงกว่ามูลค่าประเมินของเราเล็กน้อย
+        เนื่องจาก sell-side มักให้น้ำหนักกับ growth premium และ margin expansion ระยะยาวมากกว่าที่เราประเมินแบบระมัดระวัง
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict ok">
+        <div class="big">+8.57%</div>
+        <div class="txt">MOS ระดับปานกลาง — ราคาต่ำกว่ามูลค่าเหมาะสมเล็กน้อย ยังไม่ถึงระดับ "ถูกมาก" แต่มีส่วนเผื่อความปลอดภัยบ้างหลังราคาร่วงจากจุดสูงสุด</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$168.00</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$147.00</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $210</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="192.01" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $192.01 • FCF/share ฐาน ~$4.93 • ไม่มีปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>FCF +5%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$136.97</div>
+          <div class="ret neg">−28.7%</div>
+          <ul>
+            <li><span>FCF/share ปี 3</span><span>~$5.71</span></li>
+            <li><span>P/FCF ออก</span><span>24x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$0</span></li>
+            <li><span>สถานการณ์</span><span>แข่งขันดุเดือด (Uber Eats/Grubhub), GOV growth ชะลอ, margin ถูกกดจาก promotion</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>FCF +17%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$236.88</div>
+          <div class="ret pos">+23.4%</div>
+          <ul>
+            <li><span>FCF/share ปี 3</span><span>~$7.90</span></li>
+            <li><span>P/FCF ออก</span><span>30x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$0</span></li>
+            <li><span>สถานการณ์</span><span>GOV โตต่อเนื่อง ~15-20%/ปี, EBITDA margin ขยายตามแผน, Wolt/Deliveroo คุมต้นทุนได้</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>FCF +26%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$345.16</div>
+          <div class="ret pos">+79.8%</div>
+          <ul>
+            <li><span>FCF/share ปี 3</span><span>~$9.86</span></li>
+            <li><span>P/FCF ออก</span><span>35x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$0</span></li>
+            <li><span>สถานการณ์</span><span>Ads business เร่งตัว, international (Wolt/Deliveroo) breakeven เร็ว, new verticals (grocery/retail) ขยายตัวแรง</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      DASH ไม่จ่ายปันผล — ผลตอบแทนทั้งหมดมาจาก capital gain โดยอิงการเติบโตของ Free Cash Flow ต่อหุ้นเป็นตัวขับเคลื่อนหลัก
+      แทน EPS แบบดั้งเดิม เนื่องจาก GAAP net income ของบริษัทเพิ่งเป็นบวกและยังผันผวนจากรายการพิเศษ (stock-based compensation,
+      M&amp;A ของ Wolt/Deliveroo) สมมติฐาน P/FCF exit ในแต่ละ scenario สะท้อนความเชื่อมั่นของตลาดต่อคุณภาพกำไรที่ต่างกัน
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>ครองตลาดสหรัฐฯ เด็ดขาด:</b> ส่วนแบ่งตลาด food delivery ในสหรัฐฯ ราว 56-67% ทิ้งห่าง Uber Eats (~23%) และ Grubhub (~16%) ชัดเจน ให้อำนาจต่อรองกับร้านค้า/ผู้ขับสูง</li>
+          <li><b>GOV และ Orders โตแรงต่อเนื่อง:</b> Q1 2569 Marketplace GOV +37% YoY เป็น $31.6B, Total Orders +27% เป็น 933M — สะท้อน demand แข็งแกร่งข้าม vertical (ร้านอาหาร/ของชำ/ร้านสะดวกซื้อ)</li>
+          <li><b>Ads + DashPass หนุน margin:</b> ธุรกิจโฆษณาที่ margin สูงมาก และฐานสมาชิก DashPass/Wolt+ กว่า 35 ล้านคน ช่วยเพิ่ม retention และลด CAC ระยะยาว</li>
+          <li><b>ขยายสากลผ่าน Wolt/Deliveroo:</b> การควบรวม Deliveroo (2026) ต่อยอดจาก Wolt (2022) เปิดตลาดยุโรป/ตะวันออกกลางเพิ่มเติม แม้ยัง margin ต่ำกว่าสหรัฐฯ แต่เป็น optionality การเติบโตระยะยาว</li>
+          <li><b>Adjusted EBITDA margin ขยายตัวต่อเนื่อง:</b> จาก 2.2% ของ GOV (Q2 2567) เป็น ~3.0% (Q3 2568) แสดง operating leverage ที่ดีขึ้นเรื่อยๆ</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>Valuation ยังตึงตัว:</b> EV/EBITDA ~28x และ P/FCF ~39x สูงกว่าค่าเฉลี่ยตลาดมาก หากเติบโตชะลอกว่าคาด หุ้นเสี่ยง de-rate รุนแรง (เห็นได้จากการร่วง 30%+ ในรอบปีที่ผ่านมา)</li>
+          <li><b>การแข่งขันดุเดือด:</b> Uber Eats และ Grubhub ใช้ promotion/discount แย่งส่วนแบ่งตลาดต่อเนื่อง กดดัน take rate และ margin ระยะสั้น</li>
+          <li><b>กฎระเบียบแรงงาน (gig worker):</b> ความเสี่ยงกฎหมายจัดประเภทไรเดอร์เป็นพนักงาน (employee classification) ในหลายรัฐ/ประเทศ อาจเพิ่มต้นทุนแรงงานอย่างมีนัยสำคัญ</li>
+          <li><b>International margin ยังติดลบ/ต่ำ:</b> Wolt และ Deliveroo ยังอยู่ระหว่างปรับ synergy และทำกำไร การ integrate ช้ากว่าแผนจะฉุด EBITDA รวม</li>
+          <li><b>GAAP EPS ยังผันผวน:</b> stock-based compensation สูงและรายการที่เกี่ยวกับ M&amp;A ทำให้กำไรบัญชีไม่สะท้อนกระแสเงินสดจริงเสมอไป นักลงทุนต้องพึ่งพา non-GAAP metric เป็นหลัก</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>DASH — ผู้นำตลาด food delivery สหรัฐฯ ที่เติบโตเร็ว แต่ valuation ยังไม่ถูกมาก</h2>
+      <p>
+        DoorDash เป็นผู้เล่นอันดับ 1 ในตลาด food delivery สหรัฐฯ อย่างชัดเจน ด้วย Marketplace GOV และ Total Orders ที่เติบโตต่อเนื่องในอัตราสูง (+37%/+27% YoY)
+        พร้อม Adjusted EBITDA margin ที่ขยายตัวสม่ำเสมอ และกระแสเงินสดอิสระ (FCF) ที่แข็งแกร่งกว่า $2 พันล้านต่อปี อย่างไรก็ตาม ราคาหุ้นยังซื้อขายที่ multiple
+        ค่อนข้างสูง (EV/EBITDA ~28x, P/FCF ~39x) สะท้อนความคาดหวังการเติบโตที่สูงต่อเนื่อง MOS ปัจจุบันอยู่ในระดับปานกลาง (+8.6%) เหมาะสำหรับนักลงทุนที่เชื่อมั่นใน
+        เรื่องราวการเติบโตระยะยาวของ platform economy และการขยายตัวสู่ verticals ใหม่ (ของชำ, ร้านสะดวกซื้อ, โฆษณา) มากกว่านักลงทุนสาย deep value
+      </p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$210 <span style="font-size:12px;color:#cab9a8">($208–$222)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +8.57%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$245.94 (Buy)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> พิจารณาทยอยสะสมที่ราคาปัจจุบันหรือต่ำกว่า โดยเน้นเข้าซื้อเพิ่มในโซน MOS 20% ($168) หรือ MOS 30% ($147) หากตลาดปรับฐาน
+        เหมาะกับพอร์ตที่รับความผันผวนสูงได้และมีมุมมองระยะยาว 3-5 ปี ติดตาม Adjusted EBITDA margin, GOV growth และความคืบหน้าการ integrate Wolt/Deliveroo เป็นตัวชี้วัดหลัก
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ข้อมูลจาก StockAnalysis.com, Yahoo Finance, SEC 8-K/10-Q Filings, DoorDash Investor Relations
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 6 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
