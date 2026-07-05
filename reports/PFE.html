@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น Pfizer (PFE) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Opus 4.8">
+<script type="application/json" id="stock-meta">
+{"symbol":"PFE","currency":"USD","price":24.32,"fairValue":27.00,"mos":9.9,"upside":11.0,"pe":8.4,"dividendYield":7.07,"roe":14.0}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#0093c8",
+    "accentDark": "#006f99",
+    "darkGrad": "linear-gradient(135deg,#001824 0%,#002d40 100%)",
+    "glow": "rgba(0,147,200,0.35)",
+    "subColor": "#5fc9ea",
+    "headerMuted": "rgba(255,255,255,0.55)",
+    "verdictText": "#ffd180",
+    "vcellLabel": "rgba(255,255,255,0.6)",
+    "badge": "#0093c8",
+    "chgBg": "#1e8e3e",
+    "chgColor": "#ffffff"
+  },
+  "chart": {
+    "data": [
+      ["ก.ค. 68", 22.14],
+      ["ส.ค. 68", 23.54],
+      ["ก.ย. 68", 24.23],
+      ["ต.ค. 68", 23.44],
+      ["พ.ย. 68", 24.90],
+      ["ธ.ค. 68", 24.09],
+      ["ม.ค. 69", 26.01],
+      ["ก.พ. 69", 27.20],
+      ["มี.ค. 69", 27.62],
+      ["เม.ย. 69", 26.27],
+      ["พ.ค. 69", 26.18],
+      ["มิ.ย. 69", 24.08],
+      ["ก.ค. 69", 24.32]
+    ],
+    "min": 20,
+    "max": 30,
+    "grid": [20, 22.5, 25, 27.5, 30],
+    "fairLine": 27.00,
+    "currency": "$",
+    "highlight": [8, 12]
+  },
+  "gauge": {
+    "min": 15,
+    "max": 32,
+    "cur": 24.32,
+    "fair": 27.00,
+    "fairLabelTop": true
+  },
+  "fv": 27.00
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">●●●</div>
+    <div>
+      <span class="tag">NYSE: PFE</span>
+      <span class="tag">Healthcare — Pharmaceuticals</span>
+      <span class="tag">Value/Dividend • Patent-cliff Risk</span>
+    </div>
+    <h1>Pfizer Inc. (PFE)</h1>
+    <div class="sub">วัคซีน Comirnaty • ยาต้านไวรัส Paxlovid • หัวใจ-หลอดเลือด Eliquis, Vyndaqel • มะเร็ง Ibrance, Padcev, Adcetris (Seagen) • วัคซีนป้องกันโรค Prevnar • เวชภัณฑ์โรคหายาก • อยู่ระหว่างต่อยอดกลุ่มโรคอ้วนผ่าน Metsera</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$24.32<small>(PFE)</small></div>
+      </div>
+      <div class="chg">▲ +9.9% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 2 ก.ค. 2569 (2 ก.ค. 2026)<br>
+        กรอบ 52 สัปดาห์ $23.11 – $28.75<br>
+        ที่มา: StockAnalysis.com, Yahoo Finance/CNBC, Pfizer IR (SEC 8-K)
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">อิง TTM/FY2025 + guidance FY2026</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">$138.6B</div><div class="d">~5.70B หุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM, GAAP)</div><div class="v neu">~18.6x</div><div class="d">GAAP EPS ถูกกดจาก write-down/ตัดจำหน่าย Seagen</div></div>
+      <div class="metric"><div class="k">P/E ปรับปรุง (adj. EPS)</div><div class="v neu">~8.4x</div><div class="d">อิง adj. EPS ปรับสมดุลวงจร ~$2.90</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">~1.60x</div><div class="d">BVPS ~$15.22</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2025 (GAAP)</div><div class="v">~$7.8B</div><div class="d">EPS GAAP $1.36 (ปี 2024: $1.41)</div></div>
+      <div class="metric"><div class="k">EPS (TTM, GAAP)</div><div class="v">~$1.31</div><div class="d">Adj. EPS FY25 จริง $3.22 (แถลงงบ ก.พ. 2569)</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~$15.22</div><div class="d">ส่วนของผู้ถือหุ้น $86.8B ÷ หุ้น 5.70B</div></div>
+      <div class="metric"><div class="k">ROE (adj.) / ROA</div><div class="v pos">~14% / ~5%</div><div class="d">ปรับสมดุลวงจร (ไม่ใช้เลข adj. EPS เต็มที่มี one-time)</div></div>
+
+      <div class="metric"><div class="k">รายได้ FY2025</div><div class="v neu">$62.6B</div><div class="d">ลดลง 2% YoY — Comirnaty/Paxlovid หดตัวต่อเนื่อง</div></div>
+      <div class="metric"><div class="k">Guidance FY2026</div><div class="v">$59.5–62.5B</div><div class="d">Adj. EPS $2.80–$3.00 (เผชิญ Eliquis เริ่มหมดสิทธิบัตร)</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~7.07%</div><div class="d">$1.72/ปี ($0.43/ไตรมาส) — FCF payout ~93–108%</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">~0.55</div><div class="d">ผันผวนต่ำกว่าตลาด แต่มีความเสี่ยงเฉพาะตัวสูง (patent cliff)</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART (ราคาย้อนหลัง ~1 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#0093c8"></i>ราคา PFE</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $27.00</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคาซื้อขายในกรอบแคบ $22.1–$27.6 ตลอด 12 เดือนที่ผ่านมา จุดต่ำสุดอยู่ที่ ก.ค. 2568 ($22.14) ก่อนไต่ขึ้นแตะจุดสูงสุดรอบปีที่ มี.ค. 2569 ($27.62)
+        หลังผลประกอบการ FY2025 ดีกว่าคาดและปรับเพิ่ม guidance ระหว่างปี จากนั้นย่อลงมาสู่ $24 ระดับปัจจุบันหลัง Pfizer ประกาศ guidance ปี 2569 ที่ต่ำกว่าปี 2568
+        (adj. EPS $2.80–3.00 เทียบ actual ปี 2568 ที่ $3.22) สะท้อนความกังวลเรื่อง Eliquis เริ่มเผชิญการแข่งขันยาชื่อสามัญ — รวม ~1 ปี ราคาขึ้น +9.9%
+        (ยังไม่รวมปันผล ~7% ต่อปี ซึ่งถ้ารวมจะเป็น total return ที่สูงกว่านี้)
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION (เฉลี่ย 3 วิธี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี — ใช้ EPS ปรับสมดุลวงจร (ex-COVID windfall)</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS adj. $2.95 × P/E 9.5x — EPS ปรับสมดุลวงจรกึ่งกลางระหว่าง adj. EPS จริงปี 2568 ($3.22, ยังมี Paxlovid/Comirnaty tail) กับ guidance ปี 2569 ($2.80–3.00, เริ่มเจอ Eliquis LOE); P/E เป้าหมาย 9.5x ต่ำกว่าค่าเฉลี่ยย้อนหลังของ big pharma (~12–14x) สะท้อนความเสี่ยง patent cliff 2027–28</div></div>
+        <div class="mval">$28.03</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล $1.72 × (1+g); g 1.5%, r 8.5% → อัตราการเติบโตปันผลต่ำมาก (แทบไม่โต) สะท้อนว่า FCF ปัจจุบันแทบไม่พอจ่ายปันผล ($9.4B) — ต้องรอ FCF ฟื้นตัวหลัง Eliquis LOE ผ่านพ้นก่อนจึงจะขึ้นปันผลได้จริง</div></div>
+        <div class="mval">$24.94</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 14% − g 2%)/(r 8.5% − g 2%) ≈ 1.85 × BVPS $15.22 — ใช้ ROE ปรับสมดุลวงจร 14% (ต่ำกว่าเลขดิบ ~21% ที่พองจาก adj. EPS เต็มซึ่งมี one-time cost cuts ปนอยู่)</div></div>
+        <div class="mval">$28.10</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $24.94 – $28.10</span></div>
+        <div class="r">$27.00</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        วิธี DDM ให้ค่าต่ำสุด ($24.94) เพราะสะท้อนข้อจำกัดจริงของกระแสเงินสด (FCF payout ratio ปัจจุบัน >100% บางไตรมาส) — เป็นวิธีที่ "ระมัดระวังที่สุด" และใกล้เคียงราคาตลาดปัจจุบัน
+        วิธี P/E และ Justified P/BV ให้ค่าใกล้กัน ($28.0–28.1) เพราะทั้งคู่อิง ROE/EPS ปรับสมดุลวงจรที่ยังมองบวกกว่า FCF ล้วนๆ
+        FV เฉลี่ย $27.00 จึงเป็นค่ากลางที่ระมัดระวัง — ไม่ใช่ "ดีล deep-value ชัดเจน" แต่เป็นโซนที่มูลค่าเหมาะสมกับราคาในระดับหนึ่ง หากปันผลไม่ถูกตัด
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $24.32</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $27.00</div></div>
+        </div>
+        <div class="scale">
+          <span>$18.90<br><small>MOS 30%</small></span>
+          <span>$21.60<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$27.00<br><small>Fair Value</small></span>
+          <span style="text-align:right">$27.50<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">$28.10<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน ($24.32) อยู่ต่ำกว่ามูลค่าเหมาะสม ($27.00) ราว 10% แต่ยังไม่ถึงระดับ MOS 20% ($21.60) ที่ถือว่าน่าสนใจสำหรับสาย value —
+        นักวิเคราะห์ Wall Street มีทั้งกลุ่มที่ให้เป้าเฉลี่ยสูงถึง ~$28.8–30.6 (มองบวกต่อ pipeline oncology/obesity) และกลุ่มที่ให้เป้ากลาง (median) เพียง ~$27
+        (ระมัดระวังเรื่อง patent cliff) — รายงานนี้ใช้เป้าที่ระดับกลางระหว่างสองค่านี้ ($27.50) เพื่อความระมัดระวัง
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict ok">
+        <div class="big">+9.9%</div>
+        <div class="txt">MOS ระดับปานกลาง-ต่ำ — ราคาปัจจุบันใกล้เคียงมูลค่าเหมาะสมมากกว่าจะเป็นดีล "ถูกมาก" ผลตอบแทนส่วนใหญ่มาจากปันผล ~7% ไม่ใช่ capital gain</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$21.60</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$18.90</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $27.00</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="24.32" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $24.32 • EPS ฐาน ~$2.90 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS -8%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$18.07</div>
+          <div class="ret neg">-8.7%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$2.26</span></li>
+            <li><span>P/E ออก</span><span>8.0x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$4.13</span></li>
+            <li><span>สถานการณ์</span><span>Eliquis/Ibrance หมดสิทธิบัตรเร็วกว่าคาด, pipeline oncology/obesity ล่าช้า, ปันผลถูกตัด ~30% ปีที่ 2–3</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +0%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$27.55</div>
+          <div class="ret pos">+34.5%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$2.90</span></li>
+            <li><span>P/E ออก</span><span>9.5x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$5.16</span></li>
+            <li><span>สถานการณ์</span><span>รายได้ Eliquis/Ibrance หายไปถูกชดเชยพอดีด้วย Vyndaqel + oncology (Padcev/Adcetris) + ต้นทุนที่คุมได้ ปันผลคงเดิม</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +6%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$37.99</div>
+          <div class="ret pos">+78.1%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$3.45</span></li>
+            <li><span>P/E ออก</span><span>11.0x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$5.31</span></li>
+            <li><span>สถานการณ์</span><span>Padcev/Adcetris โตต่อเนื่อง >30%, GLP-1 จาก Metsera (PF-08653944) สำเร็จ, ตลาดให้เครดิต pipeline ใหม่ + คืน multiple re-rate</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      Bear case สะท้อนความเสี่ยง "value trap" ตรงๆ — ถ้าปันผลถูกตัดพร้อมกับ EPS หด ผลตอบแทนรวม 3 ปีติดลบได้แม้ราคาเริ่มต้นต่ำ Base case คือกรณีที่ผู้บริหารบริหารการเปลี่ยนผ่าน (patent cliff → pipeline ใหม่) ได้สำเร็จตามแผน
+      ทั้งสามกรณีใช้ EPS ฐาน ~$2.90 (ใกล้เคียง guidance FY2026 midpoint $2.90) ไม่ใช่ EPS สูงสุดปี 2568 ($3.22) เพื่อความระมัดระวัง
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>Oncology จาก Seagen (~$43B, 2023):</b> Padcev เติบโต 39% (Q1 2569) กลายเป็นมาตรฐานการรักษามะเร็งกระเพาะปัสสาวะร่วมกับ Keytruda ของ Merck ส่วน Adcetris/Tukysa เสริมพอร์ตต่อเนื่อง — เป้าหมายรายได้กลุ่ม Seagen ~$10B ภายในปี 2573</li>
+          <li><b>Vyndaqel (amyloidosis):</b> รายได้ ~$6.4B ในปี 2568 โต 4% ต่อปี ยังมีช่องเติบโตจากการวินิจฉัยโรคที่เพิ่มขึ้นทั่วโลกและการเข้าถึงตลาดต่างประเทศที่ดีขึ้น</li>
+          <li><b>กลุ่มโรคอ้วน (Metsera, ~$10B, พ.ย. 2568):</b> ได้ตัวยา GLP-1 ออกฤทธิ์ยาวมาก PF-08653944 ที่อาจฉีดเดือนละครั้ง — ข้อมูล early-2026 มีสัญญาณบวก เปิดตลาดใหม่มูลค่าสูงหลังยกเลิก danuglipron ไปเมื่อ เม.ย. 2568</li>
+          <li><b>วินัยด้านต้นทุน:</b> แผนลดค่าใช้จ่าย SI&A/R&D ต่อเนื่อง ช่วยพยุงมาร์จิ้นระหว่างที่รายได้จาก COVID หดตัว และไม่มีแผนซื้อหุ้นคืนปี 2569 (สงวนเงินสดไว้จ่ายปันผลแทน)</li>
+          <li><b>เงินปันผลสูง ~7%:</b> จ่ายต่อเนื่องมา 55+ ปี หากบริหารผ่านช่วง patent cliff ได้ Total return ระยะยาวจะได้แรงหนุนจากปันผลเป็นหลัก</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>Patent cliff 2027–2028 (ความเสี่ยงหลัก):</b> Eliquis (สิทธิบัตรสหรัฐฯ หมดปลายปี 2569), Ibrance (มี.ค. 2570), Xeljanz และ Prevnar 13 — รวมกันเป็นสัดส่วนรายได้จำนวนมาก (Eliquis+Ibrance ~20% ของรายได้รวมปี 2566) เสี่ยงถูกยาชื่อสามัญแย่งส่วนแบ่งตลาดเร็วและรุนแรง</li>
+          <li><b>ความยั่งยืนของเงินปันผล:</b> FCF ปี 2568 ($9.08B) ต่ำกว่าเงินปันผลที่จ่ายจริง ($9.77B) → FCF payout ratio ~108% (บางช่วงวัด 93%) ต้องพึ่งการฟื้นตัวของกระแสเงินสดปี 2569 เป็นต้นไป ไม่เช่นนั้นเสี่ยงต้องลดปันผนหรือกู้เพิ่ม</li>
+          <li><b>รายได้ COVID หดตัวต่อเนื่อง:</b> Comirnaty+Paxlovid ลดจากจุดสูงสุด ~$57B (ปี 2565) เหลือ Comirnaty $4.4B + Paxlovid $2.4B ในปี 2568 (รวม ~$6.8B) และ guidance ปี 2569 มองรายได้ COVID ลดต่ออีก ~$1.5B</li>
+          <li><b>Guidance ปี 2569 ต่ำกว่าปี 2568 จริง:</b> Adj. EPS guide $2.80–3.00 เทียบ actual ปี 2568 ที่ $3.22 คือ "กำไรกำลังหดตัว" ไม่ใช่แค่ COVID แต่เริ่มเห็นผลกระทบจาก loss of exclusivity แล้ว</li>
+          <li><b>"Value trap" risk:</b> ROE บนกระดาษดูสูง (จาก adj. EPS ที่ยังไม่หัก one-time cost cuts เต็มที่) อาจทำให้ราคาถูกดูน่าสนใจเกินจริง หากรายได้ยังหดตัวต่อเนื่องหลัง 2570 ราคาอาจ "ถูกต่อไปเรื่อยๆ" แทนที่จะ re-rate ขึ้น</li>
+          <li><b>ความเสี่ยงด้านกฎระเบียบ/ราคายา:</b> แรงกดดันจากนโยบายควบคุมราคายาในสหรัฐฯ (IRA negotiation) กระทบ Medicare-heavy products หลายตัวในพอร์ต</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>Deep Value ที่มีความเสี่ยง Value Trap — เหมาะกับสายปันผลที่รับความเสี่ยง Patent Cliff ได้</h2>
+      <p>
+        Pfizer ซื้อขายที่ P/E ปรับปรุงเพียง ~8.4x และให้ปันผล ~7% ซึ่งดูน่าสนใจในแวบแรก แต่ตัวเลขเหล่านี้ซ่อนความเสี่ยงเชิงโครงสร้างจาก patent cliff 2027–2028
+        (Eliquis, Ibrance, Xeljanz) ที่จะทำให้กำไรลดต่อเนื่องอย่างน้อยอีก 1–2 ปีก่อนที่ pipeline ใหม่ (oncology จาก Seagen, กลุ่มโรคอ้วนจาก Metsera, Vyndaqel) จะเข้ามาชดเชยได้เต็มที่
+        ผลตอบแทนที่คาดหวังได้จริงในกรณีฐานมาจากปันผลเป็นหลัก ไม่ใช่ capital gain — และมีความเสี่ยงจริงที่ปันผลอาจถูกปรับลดหากกระแสเงินสดไม่ฟื้นตัวทันเวลา
+        นี่จึงเป็นหุ้น "deep value ที่มีเงื่อนไข" มากกว่าจะเป็นดีลที่ปลอดภัยชัดเจน
+      </p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$27.00 <span style="font-size:12px;color:#cab9a8">($24.94–$28.10)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +9.9%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$27.50 (Hold/Buy ผสม)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> เหมาะกับการทยอยสะสมเพื่อรับปันผล (income play) ไม่ใช่การเก็งกำไรราคาขึ้นระยะสั้น — ควรติดตาม (1) ทิศทาง FCF เทียบกับภาระปันผล $9.4B/ปี อย่างใกล้ชิดทุกไตรมาส
+        (2) ความคืบหน้าของ Padcev/Adcetris และ GLP-1 จาก Metsera ว่าชดเชย Eliquis/Ibrance ได้ทันหรือไม่ หากซื้อควรกระจายความเสี่ยง ไม่ทุ่มน้ำหนักมากในพอร์ต และเตรียมใจรับความเป็นไปได้ที่ปันผลอาจถูกปรับลดในอนาคต
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ข้อมูลจาก StockAnalysis.com, Yahoo Finance, CNBC, Pfizer Investor Relations (SEC 8-K/10-K, Q4 2025 Earnings Release, FY2026 Guidance), Digrin.com, StatMuse — ราคาย้อนหลังอ้างอิงราคาปิดรายเดือนที่เผยแพร่โดย Digrin.com และ StatMuse (ตรงกันทั้งสองแหล่ง)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 6 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
