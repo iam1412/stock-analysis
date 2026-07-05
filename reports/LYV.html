@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น Live Nation Entertainment (LYV) — Stock Analysis Dashboard</title>
+<!-- ★ ใส่รุ่นโมเดล AI ที่ใช้วิเคราะห์จริง (Opus→"Claude Opus 4.8", Sonnet→"Claude Sonnet 4.6") — gate E28 บังคับ -->
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
+<script type="application/json" id="stock-meta">
+{"symbol":"LYV","currency":"USD","price":186.59,"fairValue":180.95,"mos":-3.1,"upside":-3,"pe":null,"dividendYield":null,"roe":null}
+</script>
+<script type="application/json" id="report-data">
+{"theme":{"accent":"#e31837","accentDark":"#9c0c1e","darkGrad":"linear-gradient(135deg,#2a0509,#150204)","glow":"rgba(227,24,55,0.35)","subColor":"#f3b7c0","headerMuted":"rgba(255,255,255,0.6)","verdictText":"#f8d7dc","vcellLabel":"#e8b4bb","badge":"#e31837","chgBg":"var(--green-soft)","chgColor":"#1e8e3e"},
+"chart":{"data":[["ก.ค.68",145.45],["ส.ค.68",162.14],["ก.ย.68",152.51],["ต.ค.68",139.50],["พ.ย.68",139.22],["ธ.ค.68",148.00],["ม.ค.69",155.00],["ก.พ.69",141.00],["มี.ค.69",150.00],["เม.ย.69",157.94],["พ.ค.69",168.41],["มิ.ย.69",183.11],["ก.ค.69",186.59]],"min":115,"max":200,"grid":[120,140,160,180,200],"fairLine":180.95,"currency":"$","highlight":[4,12]},
+"gauge":{"min":110,"max":210,"cur":186.59,"fair":180.95,"fairLabelTop":true},
+"fv":180.95}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●</div>
+    <div>
+      <span class="tag">NYSE: LYV</span>
+      <span class="tag">Live Entertainment</span>
+      <span class="tag">Ticketing Monopoly Overhang</span>
+    </div>
+    <!-- ★ คำโปรยธุรกิจ (gate E32) — .sub ต้องอยู่ติดใต้ </h1> (ห้ามมีคอมเมนต์/แท็กคั่น) : บริษัททำอะไร ใช้ • คั่นกลุ่ม -->
+    <h1>Live Nation Entertainment (LYV)</h1>
+    <div class="sub">คอนเสิร์ตและเทศกาลดนตรีทั่วโลก (Live Nation Concerts) • Ticketmaster ระบบขายบัตรหลัก • Live Nation Sponsorship & Advertising • เจ้าของ/บริหารสถานที่จัดงาน (Venue Nation)</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$186.59<small>(LYV)</small></div>
+      </div>
+      <!-- ★ ป้าย % รอบปี (gate E35/E36) — ผลตอบแทน ~1 ปี (เทียบราคา ~1 ปีก่อน) = ผลตอบแทนปลายกราฟ section 2 (จุดแรก→ท้าย)
+           รูปแบบ: "▲ +X.X% (รอบปี)" ขึ้น · "▼ −X.X% (รอบปี)" ลง · "≈ ทรงตัว (รอบปี)" · หุ้น IPO <1 ปี ใช้ "(ตั้งแต่ IPO)"
+           ไม่ใช่ % รายวัน/YTD/52 สัปดาห์ · ตั้งสี theme.chgBg/chgColor ให้ตรงทิศ (ขึ้น=เขียว/ลง=แดง · E34) -->
+      <div class="chg">▲ +28.3% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 2 ก.ค. 2569<br>
+        กรอบ 52 สัปดาห์ $125.34 – $187.64<br>
+        ที่มา: StockAnalysis.com, Yahoo Finance, MarketBeat
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">งบ FY2025 (10-K) + Q1 2026 (10-Q)</div></div>
+    <!-- ✏️ หุ้นนี้ GAAP EPS/ROE/P/BV ไม่มีความหมาย (ขาดทุนจาก amortization/ค่าใช้จ่ายกฎหมาย + ส่วนของผู้ถือหุ้นบางมาก) — ใช้ AOI (Adjusted Operating Income) เป็นตัวชี้วัดหลักแทน P/E/ROE ตามที่บริษัทรายงานเอง -->
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~$43.9B</div><div class="d">~235.4 ล้านหุ้น (diluted)</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neg">N/A</div><div class="d">ขาดทุนสุทธิ GAAP <span class="pill r">loss-making</span></div></div>
+      <div class="metric"><div class="k">EV/AOI (TTM)</div><div class="v neu">~19.0x</div><div class="d">เทียบ 10Y median EV/EBITDA ~17.7x</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neg">N/A</div><div class="d">ส่วนของผู้ถือหุ้นบางมาก (deferred-revenue model)</div></div>
+
+      <div class="metric"><div class="k">AOI FY2025</div><div class="v pos">$2.37B</div><div class="d pos">▲ +10% YoY</div></div>
+      <div class="metric"><div class="k">EPS (TTM, GAAP)</div><div class="v neg">−$1.78</div><div class="d">ขาดทุนสุทธิจากค่าใช้จ่ายกฎหมาย $450M</div></div>
+      <div class="metric"><div class="k">Free Cash Flow (Adj.) FY2025</div><div class="v">$1.30B</div><div class="d pos">▲ double-digit YoY</div></div>
+      <div class="metric"><div class="k">ROE / ROIC</div><div class="v neg">N/A / ~6.1%</div><div class="d">ROE ไม่มีความหมาย (equity ต่ำ)</div></div>
+
+      <div class="metric"><div class="k">รายได้ FY2025</div><div class="v neu">$25.2B</div><div class="d pos">▲ +9% YoY</div></div>
+      <div class="metric"><div class="k">แฟนที่เข้าชม FY2025</div><div class="v">159 ล้านคน</div><div class="d">▲ +8M คน • 55,000 คอนเสิร์ต</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v neg">ไม่จ่าย</div><div class="d">ไม่มีนโยบายปันผล (reinvest ธุรกิจ)</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">~1.4</div><div class="d">ผันผวนสูงกว่าตลาด (กฎหมาย + วงจรคอนเสิร์ต)</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART (ราคาย้อนหลัง ~1 ปี) ===== -->
+  <!-- ★ กราฟต้องเป็น "ราคาย้อนหลัง ~1 ปี" (gate E37): ไม่เกิน 13 จุด (รายเดือน 12 เดือน = 13 จุด · รายสองเดือน = ~8 จุด)
+       ห้ามใส่ 18 เดือน/1.5 ปี · จุดสุดท้าย = ราคาปัจจุบัน · ผลตอบแทน จุดแรก→จุดท้าย ต้องตรงกับป้าย % รอบปีใน header (E36) -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#e31837"></i>ราคา LYV</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $180.95</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคาขึ้นจาก ~$145 (ก.ค. 2568) แตะ 52-สัปดาห์สูงสุด $175.25 (ก.ย. 2568) ก่อนร่วงลงมาแตะจุดต่ำสุด $125.34 (25 พ.ย. 2568) จากความกังวลคดี DOJ/รัฐฟ้องผูกขาด
+        จากนั้นร่วงต่ออีกครั้ง −9% (27 ก.พ. 2569) ก่อนวันไต่สวนคดี แล้วฟื้นตัวหลัง DOJ ยอมความ (มี.ค. 2569) แม้ 33 รัฐยังสู้คดีต่อจนศาลตัดสินให้ผิดทุกข้อหาผูกขาด (15 เม.ย. 2569)
+        หุ้นกลับมาไต่ขึ้นแรงหลัง Q1/2569 โชว์ AOI โต +9% (ต่างจาก headline net loss ที่มาจากค่าใช้จ่ายกฎหมายครั้งเดียว) แตะ $186.59 ปัจจุบัน (2 ก.ค. 2569) รวมผลตอบแทนรอบปี +28.3%
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION (เฉลี่ย 3 วิธี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <!-- ✏️ LYV: GAAP EPS ติดลบจากค่าตัดจำหน่าย/ค่าใช้จ่ายกฎหมาย ไม่เหมาะทำ P/E — ใช้ EV/AOI (ตัวชี้วัดหลักที่บริษัทรายงานเอง) + P/FCF + เทียบเป้านักวิเคราะห์แทน (ตัด DDM เพราะไม่จ่ายปันผล) -->
+      <div class="vmethod">
+        <div><div class="mname">1. EV/AOI Valuation</div><div class="mdesc">AOI ปี 2569 คาด ~$2.61B (โต +10%) × EV/AOI เป้าหมาย ~16.5x (ส่วนลดจาก median 17.7x จากความเสี่ยงคดีผูกขาด) − net debt ~$1.1B</div></div>
+        <div class="mval">$178.06</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. P/FCF (Adjusted)</div><div class="mdesc">FCF adj. ปี 2569 คาด ~$1.46B × P/FCF เป้าหมาย ~29x ÷ 235.4M หุ้น</div></div>
+        <div class="mval">$179.37</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Analyst Price Target (cross-check)</div><div class="mdesc">ค่าเฉลี่ยเป้านักวิเคราะห์ 24 สำนัก (Strong Buy 20/3/1) — ใช้เป็นจุดอ้างอิงตลาด ไม่ใช่ตัวขับหลัก</div></div>
+        <div class="mval">$185.43</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $178.06 – $185.43</span></div>
+        <div class="r">$180.95</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        วิธี EV/AOI ให้ค่าต่ำสุดเพราะใช้ multiple ที่มีส่วนลดชัดเจนจากความเสี่ยงคดีผูกขาด (ต่ำกว่า 10Y median EV/EBITDA ~17.7x) ส่วนเป้านักวิเคราะห์สูงสุดสะท้อนมุมมองที่เชื่อว่าคดีจบแล้ว (DOJ ยอมความ มี.ค. 2569) แม้รัฐยังชนะคดี เม.ย. 2569 —
+        FV เฉลี่ย $180.95 ต่ำกว่าราคาปัจจุบันเล็กน้อย (~3%) สะท้อนว่าตลาดราคาหุ้นตอนนี้ "เต็มมูลค่า" ไปแล้วหลังฟื้นตัวแรงจากจุดต่ำสุด พร้อมมีความเสี่ยง remedy phase (บังคับขาย Ticketmaster/สนามกีฬาบางส่วน) ที่ยังไม่คลี่คลาย
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $186.59</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $180.95</div></div>
+        </div>
+        <div class="scale">
+          <span>$126.66<br><small>MOS 30%</small></span>
+          <span>$144.76<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$180.95<br><small>Fair Value</small></span>
+          <span style="text-align:right">$185.43<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">$185.43<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน $186.59 อยู่ "เหนือ" กรอบบนของ Fair Value ($178.06–$185.43) เล็กน้อย — ยังไม่มี Margin of Safety ในทุกวิธีประเมิน รอย่อตัวลงมาโซน $145–$158 (MOS 20–30%) ก่อนพิจารณาสะสมเพิ่ม
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <!-- ✏️ class ของ mos-verdict: MOS<10 → "bad", 10–20 → "ok", ≥20 → "good" -->
+      <div class="mos-verdict bad">
+        <div class="big">−3.1%</div>
+        <div class="txt">ราคาปัจจุบันสูงกว่ามูลค่าเหมาะสมเล็กน้อย (~3%) — ยังไม่มี Margin of Safety รอย่อตัวก่อนเข้าซื้อเพิ่ม</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$144.76</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$126.66</div><div class="d">โซนถูกมาก (deep value) — ใกล้ 52wk low $125.34</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $180.95</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="186.59" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $186.59 • AOI/หุ้น ฐาน ~$10.07 (FY2025) • ไม่มีปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>AOI −5%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$112.22</div>
+          <div class="ret neg">−39.9%</div>
+          <ul>
+            <li><span>AOI/หุ้น ปี 3</span><span>~$8.63</span></li>
+            <li><span>EV/AOI ออก</span><span>13x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>$0 (ไม่จ่าย)</span></li>
+            <li><span>สถานการณ์</span><span>Remedy phase บังคับแยก Ticketmaster + ทัวร์ใหญ่ชะลอ + fee cap กระทบ margin</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>AOI +9%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$208.61</div>
+          <div class="ret pos">+11.8%</div>
+          <ul>
+            <li><span>AOI/หุ้น ปี 3</span><span>~$13.04</span></li>
+            <li><span>EV/AOI ออก</span><span>16x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>$0 (ไม่จ่าย)</span></li>
+            <li><span>สถานการณ์</span><span>คดีจบด้วย behavioral remedy (ไม่บังคับแยกบริษัท) ธุรกิจโตต่อเนื่องตามแนวโน้ม 5 ปีล่าสุด</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>AOI +15%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$275.62</div>
+          <div class="ret pos">+47.7%</div>
+          <ul>
+            <li><span>AOI/หุ้น ปี 3</span><span>~$15.31</span></li>
+            <li><span>EV/AOI ออก</span><span>18x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>$0 (ไม่จ่าย)</span></li>
+            <li><span>สถานการณ์</span><span>คดีคลี่คลายเร็ว + international touring โตแรง + Sponsorship/Ticketing margin ขยายต่อเนื่อง</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      ใช้ AOI ต่อหุ้น (Adjusted Operating Income ÷ 235.4M หุ้น) แทน GAAP EPS เพราะ GAAP EPS ติดลบจากค่าตัดจำหน่ายและค่าใช้จ่ายกฎหมายที่ไม่ใช่กระแสเงินสดปกติ — LYV ไม่จ่ายปันผล จึงผลตอบแทนทั้งหมดมาจาก capital gain
+      สเปรดกว้าง (−40% ถึง +48%) สะท้อนความไม่แน่นอนสูงจาก remedy phase ของคดี DOJ/รัฐที่ยังไม่ได้ข้อสรุปสุดท้าย (คาดใช้เวลาอีกหลายปีรวมอุทธรณ์)
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>ผู้นำตลาดคอนเสิร์ตล้นเหลือ:</b> ครองส่วนแบ่งโปรโมทคอนเสิร์ตในสหรัฐ &gt;80% + Ticketmaster ครองระบบขายบัตรหลัก &gt;70% ของตลาด primary ticketing สหรัฐ — โครงสร้างธุรกิจยากที่คู่แข่งจะไล่ทัน</li>
+          <li><b>AOI โตต่อเนื่องแม้ GAAP ขาดทุน:</b> FY2025 AOI +10% เป็น $2.37B, Q1/2569 AOI +9% แม้ net loss มาจากค่าใช้จ่ายกฎหมายครั้งเดียว ($450M) ไม่ใช่ปัญหาการดำเนินงาน</li>
+          <li><b>แฟนเข้าชมสถิติใหม่:</b> 159 ล้านคนทั่วโลกปี 2568 (+8M) เป็นครั้งแรกที่แฟนต่างประเทศแซงสหรัฐ — กระจายความเสี่ยงจากตลาดเดียว + deferred revenue $7.4B รองรับปี 2569</li>
+          <li><b>Sponsorship & Advertising margin สูงมาก:</b> AOI margin ~65% ของรายได้ segment นี้ (สูงกว่า Concerts ที่ margin แค่ ~3%) ช่วยยกกำไรรวมเมื่อโตต่อเนื่อง</li>
+          <li><b>DOJ ยอมความแล้ว (มี.ค. 2569):</b> ไม่ต้องแยก Ticketmaster ตามข้อตกลงกับรัฐบาลกลาง ลดความเสี่ยง "ถูกบังคับแยกบริษัท" ในระดับ federal แม้ยังมีคดีระดับรัฐ</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>แพ้คดีผูกขาดระดับรัฐ (เม.ย. 2569):</b> ศาลตัดสินให้ผิดทุกข้อหาผูกขาด/บันเดิลธุรกิจ — อยู่ระหว่าง remedy phase ที่ 33 รัฐเรียกร้องให้บังคับแยก Ticketmaster + ขายสนามกีฬาบางส่วน ผลสุดท้ายยังไม่รู้ (มีทั้ง Rule 50/59 motion + อุทธรณ์ที่ใช้เวลาหลายปี)</li>
+          <li><b>GAAP ขาดทุนต่อเนื่อง:</b> Net loss FY2025 $496M (คิดจากยอดผู้ถือหุ้น) + Q1/2569 ขาดทุน $389M — แม้ตัวขับหลักคือค่าใช้จ่ายกฎหมายที่ไม่เกิดซ้ำ แต่ยังกดดันความเชื่อมั่นตลาดหากยืดเยื้อ</li>
+          <li><b>Margin ธุรกิจ Concerts ต่ำมาก:</b> AOI margin ของ segment ใหญ่สุด (~80% ของรายได้) อยู่แค่ ~3.3% ทำให้กำไรรวมอ่อนไหวสูงต่อต้นทุนศิลปิน/ค่าเช่าสถานที่ที่พุ่งขึ้น</li>
+          <li><b>หนี้สูง ส่วนของผู้ถือหุ้นบางมาก:</b> หนี้รวม ~$8.2B vs stockholders' equity เพียงหลักร้อยล้านดอลลาร์ — โครงสร้างทุนเสี่ยงต่อดอกเบี้ยขาขึ้น/สภาพคล่องตึงตัว</li>
+          <li><b>ไม่มี Margin of Safety ในปัจจุบัน:</b> ราคาฟื้นตัวแรงจากจุดต่ำสุด $125.34 ขึ้นมา +28% ในรอบปี ทำให้ valuation ตึงเทียบ Fair Value ($180.95) แล้ว — ความเสี่ยงขาลงหากผลคดี remedy ออกมาแย่กว่าคาด</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>ผู้นำตลาดไร้คู่แข่ง แต่ราคาวิ่งนำหน้าความเสี่ยงคดีที่ยังไม่จบ</h2>
+      <p>Live Nation คือเจ้าตลาดคอนเสิร์ต+ระบบขายบัตรที่แทบไม่มีคู่แข่งทาบรัศมี ด้วย AOI ที่โตต่อเนื่อง +10% และแฟนเข้าชมสถิติใหม่ 159 ล้านคนในปี 2568 แต่ราคาหุ้นฟื้นตัวแรงเกิน +28% ในรอบปีจนขึ้นมาสูงกว่า Fair Value ที่ประเมินไว้แล้ว
+      ขณะที่คดีผูกขาดระดับรัฐยังอยู่ระหว่าง remedy phase — ผลลัพธ์ตั้งแต่ behavioral remedy เบา ๆ ไปจนถึงบังคับแยก Ticketmaster ยังไม่ชัดเจน ทำให้หุ้นนี้เหมาะกับการ "รอจังหวะ" มากกว่าไล่ซื้อ ณ ราคาปัจจุบัน</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$180.95 <span style="font-size:12px;color:#cab9a8">($178.06–$185.43)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −3.1%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$185.43 (Strong Buy)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> รอย่อตัวลงมาโซน $145–$160 (MOS 20–30%) ก่อนทยอยสะสม — ติดตามความคืบหน้า remedy phase ของคดี DOJ/รัฐอย่างใกล้ชิด เพราะเป็นตัวแปรใหญ่สุดต่อมูลค่าบริษัทในระยะสั้น-กลาง แม้พื้นฐานธุรกิจ (AOI, fan attendance, Sponsorship margin) ยังแข็งแกร่งต่อเนื่อง
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ EV/AOI เป้าหมาย, อัตราเติบโต (g) และผลลัพธ์คดีความ DOJ/รัฐที่ยังไม่สิ้นสุด (อยู่ระหว่าง remedy phase + คาดมีการอุทธรณ์)
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ข้อมูลจาก StockAnalysis.com, Yahoo Finance, MarketBeat, SEC 10-K/10-Q filings, ข่าวศาล (NPR, Billboard, Reuters)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 2 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
