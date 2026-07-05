@@ -44,9 +44,9 @@
 | 10 | W4 | AZO | ค้าปลีกอะไหล่ | AutoZone −25% — buyback cannibal ระดับตำนาน (นับหุ้นลดทุกปี) | | ✅ $3,159/$2,855 MOS−11% (ยังแพง) |
 | 11 | W4 | TSCO | ค้าปลีก rural | Tractor Supply −49% ($31.76) — ต้องหาสาเหตุ crash ให้ชัดก่อนตัดสิน | 🔺 | ✅ $32/$35 MOS+9% cyclical de-rate ไม่ใช่ structural |
 | 12 | W4 | DPZ | ร้านอาหาร | Domino's −32% — franchise royalty model, ปกติ premium multiple | | ✅ $312/$345 MOS+10% |
-| 13 | W5 | DEO | เครื่องดื่มแอลกอฮอล์ | Diageo ADR −27% — จุดต่ำสุดหลายปี yield ~5%, spirits down-cycle (normalize) | 🔺 | ⬜ |
-| 14 | W5 | DIS | สื่อ/สวนสนุก | Disney −16% กลับมาต่ำกว่า $100 — streaming เพิ่งทำกำไร | | ⬜ |
-| 15 | W5 | EFX | ข้อมูลเครดิต | Equifax −30% — bureau oligopoly, โดน housing ซบ + AI-fear | | ⬜ |
+| 13 | W5 | DEO | เครื่องดื่มแอลกอฮอล์ | Diageo ADR −27% — จุดต่ำสุดหลายปี yield ~5%, spirits down-cycle (normalize) | 🔺 | ✅ $82/$88 MOS+7% ⚠️ปันผลถูกตัด51% ก.พ.69 yield=2.7% |
+| 14 | W5 | DIS | สื่อ/สวนสนุก | Disney −16% กลับมาต่ำกว่า $100 — streaming เพิ่งทำกำไร | | ✅ $100/$105 MOS+5% streaming margin 10.6% |
+| 15 | W5 | EFX | ข้อมูลเครดิต | Equifax −30% — bureau oligopoly, โดน housing ซบ + AI-fear | | ✅ $172/$175 MOS+2% (แทบไม่มี MOS) |
 | 16 | W6 | ARES | asset manager | Ares −35% — alt-credit ผู้นำ, fee-related earnings โตต่อ | | ⬜ |
 | 17 | W6 | APO | asset manager | Apollo −13% — ถูกเทียบ FRE+SRE, Athene เป็นทั้งจุดแข็ง/จุดเสี่ยง | | ⬜ |
 | 18 | W6 | PYPL | payments | PayPal −35% ($45) — FCF ถูกมาก, คำถามคือ moat ยังอยู่ไหม | | ⬜ |
