@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น ไทยฟู้ดส์ กรุ๊ป (TFG) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"TFG","currency":"THB","price":10.50,"fairValue":5.40,"mos":-94.4,"upside":-48.6,"pe":20.2,"dividendYield":6.67,"roe":13.7}
+</script>
+<script type="application/json" id="report-data">
+{"theme":{"accent":"#33d685","accentDark":"#21a162","darkGrad":"linear-gradient(135deg,#093921 0%,#116a3e 58%,#1ba762 140%)","glow":"rgba(43,212,128,.35)","subColor":"#c3e9d6","headerMuted":"#a8d2bd","verdictText":"#d2efe1","vcellLabel":"#aad9c2","badge":"#21a162","chgBg":"var(--green-soft)","chgColor":"#1e8e3e"},"chart":{"data":[["ก.ค.68",5.05],["ส.ค.68",5.05],["ก.ย.68",4.54],["ต.ค.68",4.52],["พ.ย.68",4.46],["ธ.ค.68",4.76],["ม.ค.69",6.5],["ก.พ.69",8.65],["มี.ค.69",10],["เม.ย.69",9.75],["พ.ค.69",11],["ก.ค.69",10.5]],"min":3.8,"max":12,"grid":[4,6,8,10,12],"fairLine":5.4,"currency":"฿","highlight":[4,11]},"gauge":{"min":3.5,"max":11.5,"cur":10.5,"fair":5.4,"fairLabelTop":true},"fv":5.4}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots"><span style="background:#ea4335"></span><span style="background:#f9ab00"></span><span style="background:#1e8e3e"></span></div>
+    <div>
+      <span class="tag">SET: TFG</span>
+      <span class="tag">อาหาร/เกษตร</span>
+      <span class="tag">ไก่-สุกรครบวงจร</span>
+    </div>
+    <h1>ไทยฟู้ดส์ กรุ๊ป (TFG)</h1>
+    <div class="sub">ผู้ผลิต-แปรรูปไก่และสุกรครบวงจร • อาหารสัตว์ (feed mill) • ร้านสะดวกซื้อ/ค้าปลีกเนื้อสัตว์ • ส่งออกไทย เวียดนาม ญี่ปุ่น</div>
+    <div class="price-row">
+      <div>
+        <div class="px">฿10.50<small>(TFG)</small></div>
+      </div>
+      <div class="chg">▲ +107.9% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 3 ก.ค. 2569<br>
+        กรอบ 52 สัปดาห์ ฿4.14 – ฿11.60<br>
+        ที่มา: StockAnalysis.com, Yahoo Finance, SET
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">หุ้นกึ่งวัฏจักร — ดู TTM คู่กับค่า Normalized เสมอ</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">฿61.15 พันล้าน</div><div class="d">~5,824 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~8.4x</div><div class="d">ต่ำเพราะ EPS อยู่จุดสูงสุดรอบวัฏจักร</div></div>
+      <div class="metric"><div class="k">P/E บน EPS Normalized</div><div class="v neg">~20.2x</div><div class="d">฿10.50 ÷ EPS ปกติ ~฿0.52 — ตัวเลขที่แท้จริงกว่า</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">2.74x</div><div class="d">BVPS ~฿3.84</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2568</div><div class="v">฿7,441 ล้าน</div><div class="d">+48.8% YoY (จุดสูงสุดรอบวัฏจักร)</div></div>
+      <div class="metric"><div class="k">EPS (TTM) / Normalized</div><div class="v">~฿1.25 / ~฿0.52</div><div class="d">Normalized = เฉลี่ย EPS 5 ปี (2564–2568)</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~฿3.84</div><div class="d">ROE TTM 36.6% สูงผิดปกติ (peak)</div></div>
+      <div class="metric"><div class="k">ROE Normalized / ROA</div><div class="v pos">~13.7% / 12.3%</div><div class="d">ROE normalized = EPS 5yr avg ÷ BVPS</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">฿72.91 พันล้าน</div><div class="d">+6.4% YoY</div></div>
+      <div class="metric"><div class="k">อัตรากำไรขั้นต้น TTM/เฉลี่ย 5ปี</div><div class="v">20.9% / 14.1%</div><div class="d">2566 เคยเหลือ 7.2% ช่วง ASF+ต้นทุนอาหารสัตว์พุ่ง</div></div>
+      <div class="metric"><div class="k">เงินปันผล (TTM)</div><div class="v">~6.67%</div><div class="d">~฿0.70/หุ้น • payout ~56% ของ EPS TTM</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">0.10</div><div class="d">ผันผวนต่ำเทียบตลาด (แต่ EPS ผันผวนสูงตามวัฏจักร)</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">รายเดือน ก.ค. 2568 – ก.ค. 2569</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#33d685"></i>ราคา TFG</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿5.40</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคาทรงตัวโซน ฿4.5–5.1 ตลอดครึ่งปีหลัง 2568 (ช่วงราคาหมู/ไก่อ่อนตัว + ต้นทุนอาหารสัตว์สูง) ก่อนพุ่งแรงตั้งแต่ ม.ค. 2569
+        (฿4.76→฿6.50) ต่อเนื่องถึง มี.ค.–มิ.ย. 2569 แตะ ฿11.00 จากราคาหมู/ไก่ฟื้นตัวแรง + กำไร FY2568 โตกระโดด +48.8% YoY
+        + เข้าคำนวณดัชนี SET50 ครึ่งหลังปี 2569 หนุนแรงซื้อกองทุน รวมทั้งปีขึ้น +107.9% เกือบแตะจุดสูงสุด 52 สัปดาห์ ฿11.60
+        ก่อนย่อลงมาปิดที่ ฿10.50 ปัจจุบัน — ราคาปัจจุบันอยู่สูงกว่ามูลค่าเหมาะสม (normalized) มาก สะท้อนตลาดกำลังให้ราคาแบบ "วัฏจักรขาขึ้นจะอยู่ยาว"
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี — ใช้ EPS/ปันผล/ROE แบบ Normalized (mid-cycle) ไม่ใช่ TTM</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation (Normalized)</div><div class="mdesc">EPS normalized ฿0.52 × P/E เป้าหมาย ~12x — มัลติเพิลกลางวัฏจักรของหุ้นโปรตีน/เกษตรไทย</div></div>
+        <div class="mval">฿6.24</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล ฿0.30 × (1+g); g 3.5%, r 10% → ปันผลปกติ (payout ~55% ของ EPS normalized)</div></div>
+        <div class="mval">฿4.62</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 13.7% − g 4%)/(r 11% − g 4%) ≈ 1.39 × BVPS ฿3.84</div></div>
+        <div class="mval">฿5.34</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿4.62 – ฿6.24</span></div>
+        <div class="r">฿5.40</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ทั้ง 3 วิธีใช้ตัวเลข "normalized/mid-cycle" แทน TTM ที่อยู่จุดสูงสุดของวัฏจักรราคาหมู-ไก่ — DDM ให้ค่าต่ำสุด (฿4.62)
+        เพราะปันผลปกติ (payout ~55% ของ EPS normalized ที่ต่ำ) ยังน้อยเทียบ required return, P/E normalized ให้ค่ากลาง (฿6.24),
+        Justified P/BV ให้ค่าใกล้เคียง (฿5.34) เฉลี่ยได้ ฿5.40 — ต่ำกว่าราคาตลาดปัจจุบัน ฿10.50 มาก
+        สะท้อนว่าตลาดกำลังประเมินราคาโดยยึด EPS TTM (peak) เป็นฐาน ไม่ใช่กำไรเฉลี่ยตลอดวัฏจักร — ความเสี่ยง valuation trap แบบคลาสสิกของหุ้นวัฏจักร
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿10.50</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿5.40</div></div>
+        </div>
+        <div class="scale">
+          <span>฿3.78<br><small>MOS 30%</small></span>
+          <span>฿4.32<br><small>MOS 20%</small></span>
+          <span style="text-align:center">฿5.40<br><small>Fair Value</small></span>
+          <span style="text-align:right">฿6.24<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">฿10.86<br><small>เป้าเฉลี่ย Analyst</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน ฿10.50 อยู่สูงกว่ากรอบบนของมูลค่าเหมาะสม (normalized) ถึง ~68% และใกล้เคียงเป้าเฉลี่ยนักวิเคราะห์ ฿10.86 (ซึ่งอิงกำไร TTM ที่กำลังอยู่จุดพีค)
+        — นักวิเคราะห์ส่วนใหญ่ยังมองบวกจากโมเมนตัมระยะสั้น แต่มุมมอง valuation เชิงวัฏจักร (mid-cycle) มองว่าราคาตึงตัวมาก
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">−94.4%</div>
+        <div class="txt"><b>ไม่มีส่วนเผื่อความปลอดภัย</b> — ราคาปัจจุบันแพงกว่ามูลค่าเหมาะสม (normalized) เกือบเท่าตัว</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿4.32</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿3.78</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿5.40</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="10.50" step="0.05">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿10.50 • EPS ฐาน (normalized) ~฿0.52 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS -15%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿2.24</div>
+          <div class="ret neg">-72.0%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.32</span></li>
+            <li><span>P/E ออก</span><span>7x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.70</span></li>
+            <li><span>สถานการณ์</span><span>ASF ระบาดซ้ำ + หมู/ไก่ล้นตลาด + ต้นทุนอาหารสัตว์พุ่ง</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +8%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿6.60</div>
+          <div class="ret neg">-25.7%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.66</span></li>
+            <li><span>P/E ออก</span><span>10x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿1.20</span></li>
+            <li><span>สถานการณ์</span><span>วัฏจักรกลับสู่ค่าเฉลี่ย + ค้าปลีกโตต่อเนื่อง</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +18%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿9.35</div>
+          <div class="ret pos">+6.2%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.85</span></li>
+            <li><span>P/E ออก</span><span>11x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿1.80</span></li>
+            <li><span>สถานการณ์</span><span>วัฏจักรขาขึ้นยืดยาว + ส่งออก/ค้าปลีกขยายตัวแรง</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      แม้ในกรณี Bull ที่วัฏจักรขาขึ้นยืดยาวและกำไรยังโตต่อเนื่อง ผลตอบแทน 3 ปีจากจุดเข้าปัจจุบันก็ยังจำกัดอยู่ในหลักหน่วย%
+      เพราะราคาเข้าที่ ฿10.50 ได้สะท้อนมุมมองบวกไปมากแล้ว — สถานการณ์ Base และ Bear สะท้อนความเสี่ยง "วัฏจักรกลับตัว"
+      ซึ่งเป็นความเสี่ยงหลักของหุ้นกลุ่มนี้ (ราคาหมู/ไก่ขึ้นลงตามซัพพลาย + ต้นทุนอาหารสัตว์ผันผวนตามราคาข้าวโพด/กากถั่วเหลืองโลก)
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>ธุรกิจค้าปลีกขยายตัวเร็ว:</b> ร้านค้าปลีกเนื้อสัตว์/สะดวกซื้อเป็นตัวขับเคลื่อนใหม่ ช่วยลดความผันผวนของรายได้จากธุรกิจต้นน้ำ</li>
+          <li><b>เข้า SET50 ครึ่งหลังปี 2569:</b> หนุนแรงซื้อจากกองทุนดัชนี เพิ่มสภาพคล่องซื้อขาย</li>
+          <li><b>ราคาหมู/ไก่ฟื้นตัวแรงต่อเนื่อง:</b> กำไร FY2568 โต +48.8% YoY จากอุปทานตึงตัวหลัง ASF และดีมานด์ในประเทศ/ส่งออกฟื้น</li>
+          <li><b>ขยายธุรกิจใหม่:</b> ตั้งบริษัทย่อยข้าว (Thai Foods Rice Agritrade) และกาแฟ/เครื่องดื่ม (2569) กระจายความเสี่ยงธุรกิจ</li>
+          <li><b>TRIS rating BBB+:</b> ยืนยันฐานะการเงินมั่นคง เข้าถึงแหล่งทุนได้ดี</li>
+          <li><b>ปันผลสม่ำเสมอรายไตรมาส:</b> yield TTM ~6.7% ช่วยพยุงผลตอบแทนรวมแม้ราคาหุ้นผันผวน</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>วัฏจักรราคาหมู/ไก่กลับตัว:</b> ความเสี่ยงหลักที่สุด — กำไรปัจจุบันอยู่จุดสูงสุดของวัฏจักร มีโอกาสหดตัวแรงเมื่ออุปทานกลับมาล้นตลาด</li>
+          <li><b>African Swine Fever (ASF) ระบาดซ้ำ:</b> ยังเป็นความเสี่ยงเชิงโครงสร้างของอุตสาหกรรมสุกรทั้งภูมิภาค กระทบต้นทุนและปริมาณผลผลิต</li>
+          <li><b>ต้นทุนอาหารสัตว์ผันผวน:</b> ราคาข้าวโพด/กากถั่วเหลืองโลกเป็นต้นทุนหลัก การพุ่งขึ้นกระทบ margin โดยตรง (เคยกดกำไรปี 2566 ขาดทุน)</li>
+          <li><b>Valuation ตึงตัวมาก:</b> ราคาปัจจุบันซื้อขายที่ P/E ~20x บน EPS normalized (เทียบ P/E TTM ต่ำเพียง 8.4x) — เสี่ยง "cyclical value trap"</li>
+          <li><b>การแข่งขันในธุรกิจโปรตีนสูง:</b> คู่แข่งรายใหญ่ (CPF, GFPT, BTG) แข่งขันด้านราคาและส่วนแบ่งตลาดต่อเนื่อง</li>
+          <li><b>ความเสี่ยงกฎระเบียบส่งออก/สุขอนามัยสัตว์:</b> มาตรการนำเข้า-ส่งออกของประเทศคู่ค้า (ญี่ปุ่น เวียดนาม) อาจเปลี่ยนแปลงกะทันหัน</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>ราคาสะท้อนจุดสูงสุดวัฏจักร — Valuation ตึงตัว ไม่มี Margin of Safety</h2>
+      <p>
+        TFG กำลังอยู่ในจุดสูงสุดของวัฏจักรราคาหมู-ไก่ กำไร FY2568 โตกระโดด +48.8% ดัน P/E TTM ลงเหลือเพียง 8.4x ซึ่งดูน่าสนใจผิวเผิน
+        แต่เมื่อคำนวณบน EPS normalized (เฉลี่ย 5 ปี ~฿0.52 รวมปีขาดทุน 2566 จาก ASF+ต้นทุนอาหารสัตว์) มูลค่าเหมาะสมอยู่เพียง ~฿5.40
+        (กรอบ ฿4.62–฿6.24) ต่ำกว่าราคาตลาดปัจจุบัน ฿10.50 มาก MOS ติดลบหนัก (~-94%) — นี่คือรูปแบบคลาสสิกของ "cyclical value trap"
+        ที่ P/E ต่ำตอนกำไรพีคหลอกให้ดูถูก ทั้งที่ความเสี่ยงวัฏจักรกลับตัวยังคงอยู่สูง
+      </p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿5.40 <span style="font-size:12px;color:#cab9a8">(฿4.62–฿6.24)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −94.4%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿10.86 (Buy, 10 โบรกฯ)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ผู้ที่ถือหุ้นอยู่แล้วอาจพิจารณาทยอยลดพอร์ต/ล็อกกำไรบางส่วน เนื่องจากราคาสะท้อนมุมมองบวกไปมากแล้ว
+        สำหรับนักลงทุนใหม่ควรระมัดระวังการซื้อที่ราคาปัจจุบัน — รอสะสมในโซน MOS 20-30% (฿3.78–฿4.32) หรือรอสัญญาณกำไรเข้าสู่ mid-cycle
+        ชัดเจนก่อน และติดตามราคาหมู/ไก่ + ต้นทุนอาหารสัตว์อย่างใกล้ชิด เนื่องจากเป็นตัวแปรหลักที่กำหนดทิศทางกำไรระยะถัดไป
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    TFG เป็นหุ้นกึ่งวัฏจักร (semi-cyclical) กำไรผันผวนตามราคาหมู/ไก่และต้นทุนอาหารสัตว์ EPS normalized ที่ใช้เป็นเพียงประมาณการ ไม่ใช่ตัวเลขที่แน่นอน
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ข้อมูล: StockAnalysis.com, Yahoo Finance (TFG.BK), SET, ข่าวบริษัท (ณ ก.ค. 2569)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 5 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
