@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น Airbnb (ABNB) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"ABNB","currency":"USD","price":148.93,"fairValue":154.09,"mos":3.3,"upside":3.5,"pe":36.5,"dividendYield":null,"roe":30}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#ff5a5f",
+    "accentDark": "#c73338",
+    "darkGrad": "linear-gradient(135deg,#4a0e10 0%,#8f2023 50%,#ff5a5f 100%)",
+    "glow": "rgba(255,90,95,0.35)",
+    "subColor": "#ffd3d4",
+    "headerMuted": "rgba(255,211,212,0.65)",
+    "verdictText": "#fff0f0",
+    "vcellLabel": "rgba(255,211,212,0.75)",
+    "badge": "#ff8589",
+    "chgBg": "#1e8e3e",
+    "chgColor": "#ffffff"
+  },
+  "chart": {
+    "data": [
+      ["ส.ค. 68", 130.53],
+      ["ก.ย. 68", 121.42],
+      ["ต.ค. 68", 126.54],
+      ["พ.ย. 68", 116.99],
+      ["ธ.ค. 68", 135.72],
+      ["ม.ค. 69", 129.37],
+      ["ก.พ. 69", 135.11],
+      ["มี.ค. 69", 126.28],
+      ["เม.ย. 69", 140.36],
+      ["พ.ค. 69", 133.31],
+      ["มิ.ย. 69", 143.10],
+      ["ก.ค. 69", 148.93]
+    ],
+    "min": 105,
+    "max": 155,
+    "grid": [110, 120, 130, 140, 150],
+    "fairLine": 154.09,
+    "currency": "$",
+    "highlight": [3, 11]
+  },
+  "gauge": {
+    "min": 100,
+    "max": 175,
+    "cur": 148.93,
+    "fair": 154.09
+  },
+  "fv": 154.09
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">◉ ◉ ◉</div>
+    <div>
+      <span class="tag">NASDAQ: ABNB</span>
+      <span class="tag">Travel & Online Marketplace</span>
+      <span class="tag">Short-Term Rental</span>
+    </div>
+    <h1>Airbnb, Inc. (ABNB)</h1>
+    <div class="sub">แพลตฟอร์มจองที่พักและประสบการณ์ทั่วโลก 8 ล้าน+ listing ใน 220+ ประเทศ • Airbnb Experiences • ธุรกิจ asset-light เก็บค่าธรรมเนียมจาก guest+host</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$148.93<small>(ABNB)</small></div>
+      </div>
+      <div class="chg">▲ +14.1% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 2 ก.ค. 2569 (2 Jul 2026)<br>
+        กรอบ 52 สัปดาห์ $110.81 – $150.19<br>
+        ที่มา: StockAnalysis.com, Yahoo Finance, Investing.com
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">Marketplace metrics + การเงิน</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~$88.4B</div><div class="d">593.5M หุ้น (diluted)</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~36.5x</div><div class="d">EPS GAAP $4.08 TTM · ยืนยัน 2 แหล่ง</div></div>
+      <div class="metric"><div class="k">P/FCF (TTM)</div><div class="v neu">~19.5x</div><div class="d">FCF/หุ้น $7.64 · FCF TTM $4.54B</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">~10.8x</div><div class="d">BVPS ~$13.82 · equity ~$8.2B</div></div>
+
+      <div class="metric"><div class="k">Nights & Experiences Booked</div><div class="v pos">156.2M</div><div class="d">Q1 2569 +9% YoY</div></div>
+      <div class="metric"><div class="k">Gross Booking Value (GBV)</div><div class="v pos">$29.2B</div><div class="d">Q1 2569 +19% YoY</div></div>
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">~$12.6B</div><div class="d">Q1 2569 +18% YoY · FY2568 +10.3%</div></div>
+      <div class="metric"><div class="k">FCF Margin (TTM)</div><div class="v pos">~36%</div><div class="d">Q1 2569 FCF margin สูงถึง 64% (ตามฤดูกาล)</div></div>
+
+      <div class="metric"><div class="k">Take Rate (โดยประมาณ)</div><div class="v">~11.5%</div><div class="d">รายได้ ÷ GBV · ทยอยขยับขึ้นจากค่าธรรมเนียม+ประกัน</div></div>
+      <div class="metric"><div class="k">Adjusted EBITDA Margin</div><div class="v pos">~35%</div><div class="d">FY2568 guidance ≥34.5% · Q1 2569 19%</div></div>
+      <div class="metric"><div class="k">ROE</div><div class="v pos">~30%</div><div class="d">Net income TTM ~$2.4B / equity ~$8.2B</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">ไม่มี (0%)</div><div class="d">Buyback แทน: Q1 2569 ซื้อคืน $1.1B</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART (ราคาย้อนหลัง ~1 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#ff5a5f"></i>ราคา ABNB</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $154.09</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคาแตะจุดต่ำ ~$117 ในเดือน พ.ย. 2568 หลังตลาดกังวลการชะลอตัวของนักท่องเที่ยวสหรัฐฯ และแรงกดดันด้านกฎระเบียบ STR ในหลายเมือง
+        ก่อนฟื้นตัวแรงตลอดครึ่งปีหลัง 2569 แตะจุดสูงรอบปีที่ $148.93 (ปัจจุบัน) หนุนโดยผลประกอบการ Q1 2569 ที่ GBV และ Nights Booked เติบโตเร่งขึ้น
+        พร้อมประกาศ Adjusted EBITDA margin ที่ดีกว่าคาด — ผลตอบแทนรอบปี +14.1%
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION (เฉลี่ย 3 วิธี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS adj. $4.08 × P/E เป้าหมาย ~32x — สอดคล้องกับ P/E ปัจจุบัน 36.5x แต่ปรับลงเล็กน้อยสะท้อนความเสี่ยงกฎระเบียบ STR</div></div>
+        <div class="mval">$130.56</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. P/FCF Valuation</div><div class="mdesc">FCF TTM $4,536M ÷ 593.5M หุ้น = $7.64/หุ้น × P/FCF 22x — เหมาะกับโมเดล asset-light ที่ FCF margin สูงถึง ~36% ไม่มีภาระ capex ที่พัก</div></div>
+        <div class="mval">$168.14</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. EV/EBITDA Valuation</div><div class="mdesc">Adjusted EBITDA TTM ~$4,380M × EV/EBITDA 20x = EV $87,600M + เงินสดสุทธิ $9,470M ÷ 593.5M หุ้น</div></div>
+        <div class="mval">$163.56</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $130.56 – $168.14</span></div>
+        <div class="r">$154.09</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        วิธี P/E ให้ค่าต่ำสุด ($130.56) เพราะใช้ P/E เป้าหมายอนุรักษ์นิยมกว่าตลาดปัจจุบัน (36.5x) สะท้อนความเสี่ยงกฎระเบียบระยะยาว
+        วิธี P/FCF ให้ค่าสูงสุด ($168.14) เพราะ ABNB มี FCF margin สูงกว่ากำไรบัญชีมาก (SBC เป็นรายการที่ไม่ใช่เงินสดจำนวนมาก)
+        ค่าเฉลี่ย $154.09 ใกล้เคียงเป้าเฉลี่ยนักวิเคราะห์ ($156.74) และสูงกว่าราคาปัจจุบันเล็กน้อย (~3%) — สะท้อนหุ้นที่เทรดใกล้มูลค่าเหมาะสม ไม่ถูกไม่แพงมาก
+        หมายเหตุ: ใช้ GAAP diluted EPS TTM เป็นฐาน (ABNB ไม่รายงาน adjusted EPS แยกเป็นทางการ ต่างจาก Adjusted EBITDA/FCF ที่เป็น non-GAAP metric หลัก)
+        ที่มา: StockAnalysis.com, Yahoo Finance, Airbnb Q1 2026 Shareholder Letter
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $148.93</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $154.09</div></div>
+        </div>
+        <div class="scale">
+          <span>$107.86<br><small>MOS 30%</small></span>
+          <span>$123.27<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$154.09<br><small>Fair Value</small></span>
+          <span style="text-align:right">$156.74<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">$168.14<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน $148.93 อยู่ใกล้ Fair Value ($154.09) และต่ำกว่าเป้าเฉลี่ยนักวิเคราะห์ ($156.74) เล็กน้อย —
+        ยังไม่เข้าโซน MOS 20-30% ที่น่าสนใจสำหรับการเข้าซื้อเชิง value แต่ก็ไม่ได้แพงเกินพื้นฐาน
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">+3.3%</div>
+        <div class="txt">MOS ต่ำ — ราคาใกล้เคียงมูลค่าเหมาะสม ยังไม่มีส่วนเผื่อความปลอดภัยมากนัก เหมาะกับการทยอยสะสมมากกว่าเข้าซื้อเต็มไม้</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$123.27</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$107.86</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $154.09</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="148.93" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $148.93 • EPS ฐาน ~$4.08 • ไม่มีปันผล (buyback แทน)</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS 0%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$97.92</div>
+          <div class="ret neg">-34.3%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$4.08</span></li>
+            <li><span>P/E ออก</span><span>24x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$0</span></li>
+            <li><span>สถานการณ์</span><span>กฎระเบียบ STR รุนแรงขึ้น + นักท่องเที่ยวชะลอตัว + take rate โดนกดดันจากคู่แข่ง</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +14%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$181.34</div>
+          <div class="ret pos">+21.8%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$6.04</span></li>
+            <li><span>P/E ออก</span><span>30x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$0</span></li>
+            <li><span>สถานการณ์</span><span>เติบโตต่อเนื่องระดับ low-to-mid teens ทั้ง GBV/Nights Booked + margin ขยายจาก Experiences/insurance</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +22%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$259.30</div>
+          <div class="ret pos">+74.1%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$7.41</span></li>
+            <li><span>P/E ออก</span><span>35x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$0</span></li>
+            <li><span>สถานการณ์</span><span>Experiences/international ขยายตัวเร่ง + take rate เพิ่มจากผลิตภัณฑ์ใหม่ + re-rating multiple</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      ไม่มีปันผล — Airbnb ใช้ buyback เป็นช่องทางคืนเงินให้ผู้ถือหุ้นแทน (ซื้อคืน $1.1B ใน Q1 2569 เพียงไตรมาสเดียว) ผลตอบแทนทั้งหมดจึงมาจาก capital gain
+      สถานการณ์ Base สะท้อนการเติบโตต่อเนื่องแบบ double-digit ของ Nights & Experiences Booked/GBV ที่เห็นใน Q1 2569 (+9%/+19% YoY) พร้อม margin ขยายตัวจากการปรับโครงสร้างค่าธรรมเนียม
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>Nights & Experiences Booked โตต่อเนื่อง:</b> 156.2M ครั้งใน Q1 2569 (+9% YoY) สะท้อน demand ที่แข็งแรงแม้ฐานใหญ่</li>
+          <li><b>GBV เร่งตัว:</b> $29.2B ใน Q1 2569 (+19% YoY) เร็วกว่าการเติบโตของ Nights Booked สะท้อน ADR/take rate ที่ดีขึ้น</li>
+          <li><b>FCF margin สูงมาก:</b> โมเดล asset-light ไม่มี capex ที่พัก → FCF TTM margin ~36% หนุน buyback ต่อเนื่อง</li>
+          <li><b>Airbnb Experiences + Services ขยายตัว:</b> ธุรกิจใหม่นอกเหนือที่พัก เพิ่ม TAM และช่วยกระจายความเสี่ยงจากธุรกิจหลัก</li>
+          <li><b>International growth:</b> ตลาดนอกสหรัฐฯ/ยุโรปยังมี penetration ต่ำ เป็นโอกาสเติบโตระยะยาว</li>
+          <li><b>Buyback ต่อเนื่อง:</b> ลดจำนวนหุ้น diluted ลง ~9% ตั้งแต่เริ่มโครงการปี 2565 หนุน EPS growth</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>กฎระเบียบ Short-Term Rental:</b> หลายเมืองใหญ่ (New York, Barcelona, ฯลฯ) จำกัด/แบน STR กระทบ supply listing ในพื้นที่สำคัญ</li>
+          <li><b>การแข่งขันสูง:</b> Booking.com, Vrbo/Expedia และ OTA อื่น ๆ แย่งส่วนแบ่งตลาดที่พักทางเลือก</li>
+          <li><b>Stock-based compensation สูง:</b> SBC จำนวนมากทำให้ GAAP EPS ต่ำกว่าความสามารถทำกำไรจริงตามกระแสเงินสด และ dilution ต่อเนื่อง</li>
+          <li><b>วัฏจักรท่องเที่ยว/เศรษฐกิจมหภาค:</b> ธุรกิจอ่อนไหวต่อกำลังซื้อผู้บริโภคและความเชื่อมั่นการเดินทาง</li>
+          <li><b>คุณภาพ/ความสม่ำเสมอของที่พัก:</b> ไม่มีมาตรฐานแบรนด์เหมือนโรงแรม เสี่ยงประสบการณ์ลูกค้าไม่สม่ำเสมอ กระทบความน่าเชื่อถือ</li>
+          <li><b>Valuation ตึงตัว:</b> P/E TTM ~36.5x และ MOS ต่ำ (~3%) ทำให้ upside จำกัดหากไม่มี catalyst ใหม่</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>ธุรกิจแข็งแรง แต่ราคาใกล้มูลค่าเหมาะสม — เหมาะทยอยสะสมมากกว่าเข้าซื้อเต็มไม้</h2>
+      <p>
+        Airbnb ยังคงเป็นผู้นำตลาด short-term rental ระดับโลกด้วยโมเดล asset-light ที่สร้าง FCF margin สูงถึง ~36% และเติบโตต่อเนื่องทั้ง Nights & Experiences Booked (+9% YoY)
+        และ GBV (+19% YoY) ใน Q1 2569 พร้อมงบดุลแข็งแกร่ง (เงินสดสุทธิ ~$9.5B) หนุนโครงการ buyback ต่อเนื่อง
+        อย่างไรก็ตาม ที่ราคา $148.93 ปัจจุบัน หุ้นเทรดใกล้เคียง Fair Value ($154.09) มาก MOS เหลือเพียง ~3% ทำให้ส่วนเผื่อความปลอดภัยต่ำ
+        เหมาะกับการทยอยสะสมระยะยาวหรือรอจังหวะย่อตัวเข้าโซน MOS 20% ($123) มากกว่าการเข้าซื้อเต็มไม้ ณ ราคาปัจจุบัน
+      </p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$154.09 <span style="font-size:12px;color:#cab9a8">($130.56–$168.14)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +3.3%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$156.74 (Buy)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ทยอยสะสม (DCA) เป็นหลัก และเพิ่มน้ำหนักหากราคาย่อลงมาสู่โซน MOS 20% ($123) หรือต่ำกว่า — ติดตามความคืบหน้าด้านกฎระเบียบ STR ในเมืองใหญ่และการเติบโตของ Experiences อย่างใกล้ชิด
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ข้อมูล ณ 2 ก.ค. 2569 จาก StockAnalysis.com, Yahoo Finance, Airbnb Q1 2026 Shareholder Letter, Investing.com
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 2 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
