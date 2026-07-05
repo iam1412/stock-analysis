@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น Philip Morris International (PM) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"PM","currency":"USD","price":182.27,"fairValue":188.09,"mos":3.09,"upside":3.19,"pe":25.7,"dividendYield":3.23,"roe":null}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#c8102e",
+    "accentDark": "#8b0000",
+    "darkGrad": "linear-gradient(135deg,#1a0505 0%,#3a0a0a 100%)",
+    "glow": "rgba(200,16,46,0.4)",
+    "subColor": "#e8a0a8",
+    "headerMuted": "rgba(255,255,255,0.55)",
+    "verdictText": "#f0c060",
+    "vcellLabel": "#d4a0a5",
+    "badge": "#c8102e",
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#1e8e3e"
+  },
+  "chart": {
+    "data": [
+      ["ส.ค. 2568", 167.13],
+      ["ก.ย. 2568", 162.20],
+      ["ต.ค. 2568", 144.33],
+      ["พ.ย. 2568", 157.48],
+      ["ธ.ค. 2568", 160.40],
+      ["ม.ค. 2569", 179.44],
+      ["ก.พ. 2569", 186.83],
+      ["มี.ค. 2569", 165.34],
+      ["เม.ย. 2569", 165.07],
+      ["พ.ค. 2569", 177.38],
+      ["มิ.ย. 2569", 180.91],
+      ["ก.ค. 2569", 182.27]
+    ],
+    "min": 130,
+    "max": 200,
+    "grid": [130, 155, 188, 200],
+    "fairLine": 188.09,
+    "currency": "$",
+    "highlight": [2, 11]
+  },
+  "gauge": {
+    "min": 120,
+    "max": 215,
+    "cur": 182.27,
+    "fair": 188.09,
+    "fairLabelTop": true
+  },
+  "fv": 188.09
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">&#9679; &#9675; &#9679;</div>
+    <div>
+      <span class="tag">NYSE: PM</span>
+      <span class="tag">Tobacco / Smoke-Free</span>
+      <span class="tag">Dividend Aristocrat</span>
+    </div>
+    <h1>Philip Morris International Inc. (PM)</h1>
+    <div class="sub">Marlboro (นอกสหรัฐฯ) • IQOS ยาสูบแบบให้ความร้อน (Heated Tobacco) • ZYN ถุงนิโคติน (Nicotine Pouches) • VEEV บุหรี่ไฟฟ้า • ผลิตภัณฑ์ปลอดควัน (Smoke-Free) &gt;40% ของรายได้</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$182.27<small>(PM)</small></div>
+      </div>
+      <div class="chg">▲ +9.1% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 2 ก.ค. 2569<br>
+        กรอบ 52 สัปดาห์ $142.11 – $193.05<br>
+        ที่มา: stockanalysis.com, marketbeat.com, PMI Q1 2026 earnings release
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ก.ค. 2569</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">$284.1B</div><div class="d">1.558 พันล้านหุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM, GAAP)</div><div class="v neu">~25.7x</div><div class="d">EPS GAAP TTM $7.10</div></div>
+      <div class="metric"><div class="k">P/E adj. (FY2026E)</div><div class="v">~21.7x</div><div class="d">EPS adj. guidance $8.31–$8.46</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~20.6x</div><div class="d">ปัจจุบันสูงกว่าค่าเฉลี่ย</div></div>
+
+      <div class="metric"><div class="k">รายได้สุทธิ FY2025</div><div class="v">$40.0B</div><div class="d">Smoke-free 41.5% ของรายได้</div></div>
+      <div class="metric"><div class="k">EPS adj. FY2025</div><div class="v">~$7.54</div><div class="d">+14.8% YoY (+14.2% cc)</div></div>
+      <div class="metric"><div class="k">Net debt/EBITDA</div><div class="v neu">~2.95x</div><div class="d">เป้าหมาย ~2x ปลาย 2026</div></div>
+      <div class="metric"><div class="k">ROE</div><div class="v">n/a</div><div class="d">ส่วนผู้ถือหุ้นติดลบ (buyback สะสม)</div></div>
+
+      <div class="metric"><div class="k">ZYN ส่วนแบ่งตลาดสหรัฐฯ</div><div class="v pos">~70%</div><div class="d">ถุงนิโคติน — ผู้นำตลาด</div></div>
+      <div class="metric"><div class="k">IQOS ส่วนแบ่งตลาดโลก (HTU)</div><div class="v pos">~77-78%</div><div class="d">Heated tobacco — ครองตลาด</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~3.23%</div><div class="d">$5.88/ปี · เพิ่มขึ้น 17 ปีติดต่อกัน</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">0.65</div><div class="d">ผันผวนต่ำกว่าตลาด (defensive)</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART (ราคาย้อนหลัง ~1 ปี) ===== -->
+  <!-- ★ กราฟต้องเป็น "ราคาย้อนหลัง ~1 ปี" (gate E37): ไม่เกิน 13 จุด (รายเดือน 12 เดือน = 13 จุด · รายสองเดือน = ~8 จุด)
+       ห้ามใส่ 18 เดือน/1.5 ปี · จุดสุดท้าย = ราคาปัจจุบัน · ผลตอบแทน จุดแรก→จุดท้าย ต้องตรงกับป้าย % รอบปีใน header (E36) -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ส.ค. 2568 – ก.ค. 2569</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#c8102e"></i>ราคา PM</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $188.09</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        PM เริ่มต้นที่ $167.13 ในส.ค. 2568 แล้วอ่อนตัวลงต่อเนื่องสู่จุดต่ำสุด $144.33 ในต.ค. 2568 จากความกังวลเรื่องภาษีนิโคตินและแรงขายทำกำไรหลังหุ้นวิ่งแรงในปี 2568 ก่อนฟื้นตัวแข็งแกร่งช่วงปลายปีสู่ $179-187 ในม.ค.-ก.พ. 2569 หลังผลประกอบการ Q4 2025 และ FY2025 แข็งแกร่ง (adj. EPS +14.8%) จากนั้นย่อตัวลงมาที่ $165 ในมี.ค.-เม.ย. 2569 ตามความผันผวนตลาดโดยรวม ก่อนไต่ขึ้นอีกครั้งสู่ $177-183 ในพ.ค.-ก.ค. 2569 หลัง Q1 2026 IQOS แซง Marlboro ขึ้นเป็นแบรนด์นิโคตินอันดับ 1 และ EPS โต 16% เกินคาด ผลตอบแทนรอบปี +9.1%
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION (เฉลี่ย 3 วิธี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation (adj. EPS)</div><div class="mdesc">EPS adj. $8.39 (FY2026 guidance กลาง $8.31–$8.46) × P/E เป้าหมาย ~20x — ใกล้เคียงค่าเฉลี่ย 5 ปี (~20.6x) สะท้อนคุณภาพการเปลี่ยนผ่านสู่ smoke-free แต่ไม่ premium เกินไป</div></div>
+        <div class="mval">$167.80</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล $5.88 × (1+5.5%) = $6.20; g 5.5% (อิงการเติบโตปันผลระยะยาว หลังปรับขึ้นล่าสุด 8.9%); r 8.5% (WACC โดยประมาณ) → $6.20 ÷ (0.085−0.055) = $6.20 ÷ 0.03</div></div>
+        <div class="mval">$206.78</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Target Dividend Yield</div><div class="mdesc">ปันผลปัจจุบัน $5.88 ÷ yield เป้าหมาย 3.1% (ใกล้เคียงค่าเฉลี่ยย้อนหลังของหุ้นปันผลสูงกลุ่ม tobacco/staples ที่ปรับ re-rate ขึ้นจากช่วง smoke-free growth)</div></div>
+        <div class="mval">$189.68</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $167.80 – $206.78</span></div>
+        <div class="r">$188.09</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        วิธี P/E ให้ค่าต่ำสุด ($167.80) อนุรักษ์นิยมสุดเพราะใช้ P/E เฉลี่ย 5 ปีที่ยังไม่รวม premium เต็มที่จาก smoke-free transformation · วิธี DDM ให้ค่าสูงสุด ($206.78) สะท้อนคุณภาพการเติบโตปันผลระยะยาว 17 ปีติดต่อกัน · วิธี Target Yield ให้ค่ากลาง ($189.68) ใกล้เคียงราคาตลาดปัจจุบัน · ค่าเฉลี่ย 3 วิธี ≈ $188 ใกล้เคียงราคาปัจจุบัน ($182.27) มาก แสดงว่าหุ้นซื้อขายใกล้มูลค่าเหมาะสมหลังจากรีเรทขึ้นแรงในปี 2568-2569 จากความสำเร็จของ IQOS+ZYN ROE ไม่มีความหมาย (ส่วนของผู้ถือหุ้นติดลบจากการซื้อหุ้นคืนสะสม) จึงตัดวิธี Justified P/BV ออก
+        <br><br><b>แหล่งข้อมูล ≥3 แหล่ง:</b> (1) stockanalysis.com/stocks/pm/ — ราคา $182.27 วันที่ 2 ก.ค. 2569, P/E TTM 25.67x, EPS TTM $7.10, yield 3.23%, Market Cap $284.08B · (2) marketbeat.com/stocks/NYSE/PM/ — ราคา $182.52 (2 ก.ค. 2569, ต่างกัน 0.14% ✓), P/E 25.67x, yield 3.22%, เป้าเฉลี่ย analyst $194.63 · (3) PMI Q1 2026 earnings release (SEC 8-K) — adj. diluted EPS Q1 2026 $1.96 (+16.0%), FY2026 guidance ปรับใหม่ $8.31-$8.46 (2 มิ.ย. 2569), FY2025 adj. EPS $7.54 (+14.8%) · (4) businesswire.com — PMI ประกาศปรับ guidance EPS 2 มิ.ย. 2569 จาก impairment charge และ currency
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $182.27</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $188.09</div></div>
+        </div>
+        <div class="scale">
+          <span>$131.66<br><small>MOS 30%</small></span>
+          <span>$150.47<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$188.09<br><small>Fair Value</small></span>
+          <span style="text-align:right">$194.63<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">$206.78<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน $182.27 อยู่ต่ำกว่า Fair Value $188.09 เล็กน้อยประมาณ 3.1% → หุ้นซื้อขายในโซน "ใกล้ Fair Value" เป้าหมายนักวิเคราะห์เฉลี่ย $194.63 (Moderate Buy) ยังมี upside ราว 6.8% จากราคาปัจจุบัน สะท้อนมุมมองเชิงบวกต่อการเติบโตของ IQOS และ ZYN โซน MOS 20% ที่ $150.47 และ MOS 30% ที่ $131.66 เป็นจุดที่น่าสะสมเพิ่มหากราคาย่อลงอย่างมีนัยสำคัญ (เคยเห็นที่ $144.33 ในต.ค. 2568)
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict ok">
+        <div class="big">+3.09%</div>
+        <div class="txt">ราคาใกล้เคียง Fair Value — MOS จำกัด แต่ยังมี upside จากปันผล + การเติบโตของ smoke-free</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$150.47</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$131.66</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $188.09</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="182.27" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $182.27 • EPS ฐาน ~$8.39 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS -2%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$134.24</div>
+          <div class="ret neg">-16.2%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$7.90</span></li>
+            <li><span>P/E ออก</span><span>17x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$18.54</span></li>
+            <li><span>สถานการณ์</span><span>ZYN destocking ลากยาว + ภาษีนิโคตินสหรัฐฯ กดดันหนัก + ค่าเงินเสียเปรียบ</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +8%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$211.38</div>
+          <div class="ret pos">+26.1%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$10.57</span></li>
+            <li><span>P/E ออก</span><span>20x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$18.54</span></li>
+            <li><span>สถานการณ์</span><span>IQOS+ZYN เติบโตต่อเนื่อง smoke-free แตะ ~48-50% ของรายได้ ตาม guidance</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +13%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$278.44</div>
+          <div class="ret pos">+62.9%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$12.11</span></li>
+            <li><span>P/E ออก</span><span>23x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$18.54</span></li>
+            <li><span>สถานการณ์</span><span>ZYN ULTRA + ขยายตลาดใหม่เร่งตัว, IQOS ILUMA ในสหรัฐฯ ได้รับอนุมัติ FDA เต็มรูปแบบ, re-rate P/E สูงขึ้นตาม growth premium</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      สมมติฐาน: เงินปันผลปีละ ~$5.88-6.5 เติบโตตามนโยบาย dividend aristocrat (17 ปีติดต่อกัน) รวม 3 ปี ~$18.54 ทุกสถานการณ์ (ปรับเพิ่มเล็กน้อยตาม EPS growth ในเคส Bull/Base) EPS ฐานอิง FY2026 guidance กลาง $8.31-$8.46 · Bear สะท้อนความเสี่ยงกฎระเบียบ (ภาษี/FDA) และการชะลอตัวของ ZYN · Base ตาม consensus การเติบโต smoke-free ต่อเนื่อง · Bull หากการขยายตัวระหว่างประเทศของ ZYN และ IQOS ในสหรัฐฯ (ผ่าน Swedish Match/Altria JV เดิม) เร่งตัวเกินคาด
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>ZYN ครองตลาดสหรัฐฯ:</b> ส่วนแบ่งตลาดถุงนิโคติน ~70% consumer offtake โต +10% YoY ใน Q1 2026 แม้ shipment ลดจาก inventory normalization; เพิ่งได้ ZYN ULTRA เข้าตลาดมิ.ย. 2569 และ FDA อนุญาตให้สื่อสารว่า "harm reduction" ได้</li>
+          <li><b>IQOS แซง Marlboro:</b> Q1 2026 IQOS กลายเป็นแบรนด์นิโคตินอันดับ 1 ของบริษัท ครองส่วนแบ่งตลาดโลก HTU ~77-78% แข็งแกร่งในญี่ปุ่น (32.2%) อิตาลี (53.6%) และโปแลนด์ (44%)</li>
+          <li><b>Smoke-free transformation:</b> สัดส่วนรายได้จากผลิตภัณฑ์ปลอดควันแตะ 43% ใน Q1 2026 (จาก 41.5% ทั้งปี 2025) หนุน margin สูงขึ้นระยะยาว</li>
+          <li><b>เงินปันผลมั่นคง:</b> เพิ่มขึ้นต่อเนื่อง 17 ปี ล่าสุดปรับขึ้น 8.9% เป็น $5.88/ปี ให้ yield ~3.2% เหมาะกับนักลงทุนสาย income</li>
+          <li><b>EPS โตแข็งแกร่ง:</b> Q1 2026 adj. EPS +16.0% เกินคาด นำไปสู่การปรับ guidance FY2026 ขึ้นเป็น $8.31-$8.46 (+10-12% YoY)</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>ความเสี่ยงกฎระเบียบ FDA/ภาษี:</b> นิโคตินพัชยังเผชิญความไม่แน่นอนด้านกฎระเบียบในสหรัฐฯ รวมถึงภาษีสรรพสามิตที่อาจเพิ่มขึ้นในหลายรัฐ</li>
+          <li><b>ZYN destocking:</b> shipment Q1 2026 ลด 23.5% จาก inventory normalization และคู่แข่งเข้าตลาดมากขึ้น แม้ demand จริงยังโต แต่สร้างความผันผวนรายไตรมาส</li>
+          <li><b>หนี้สูงจาก Swedish Match:</b> Net debt/EBITDA ~2.95x เป้าหมายลดเหลือ ~2x ปลาย 2026 จำกัดความยืดหยุ่นทางการเงินระยะสั้น</li>
+          <li><b>ความผันผวนค่าเงิน:</b> รายได้ส่วนใหญ่มาจากนอกสหรัฐฯ (เงินท้องถิ่นหลากหลายสกุล) ขณะที่รายงานผลเป็น USD ทำให้ currency headwind/tailwind กระทบ EPS ปรับปรุงล่าสุดของ FY2026 guidance</li>
+          <li><b>ROE ไม่มีความหมาย:</b> ส่วนของผู้ถือหุ้นติดลบจากการซื้อหุ้นคืนสะสม ทำให้ตัวชี้วัดบางตัวใช้เปรียบเทียบยาก ต้องพึ่ง P/E และกระแสเงินสดแทน</li>
+          <li><b>P/E สูงกว่าค่าเฉลี่ยประวัติศาสตร์:</b> P/E TTM ~25.7x สูงกว่าค่าเฉลี่ย 5 ปี ~20.6x สะท้อนว่าตลาดตั้งราคาเผื่อการเติบโตไว้มากแล้ว จำกัด upside ระยะสั้น</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>ถือ/ทยอยสะสม — Smoke-Free Transformation แข็งแกร่ง แต่ MOS จำกัดหลังราคาวิ่งขึ้นแรง</h2>
+      <p>Philip Morris International เป็นผู้นำการเปลี่ยนผ่านสู่ผลิตภัณฑ์ปลอดควันที่ชัดเจนที่สุดในกลุ่มยาสูบโลก ด้วย IQOS ที่ครองตลาด heated tobacco ทั่วโลกและ ZYN ที่ครองตลาดถุงนิโคตินในสหรัฐฯ ผลักดันให้ EPS เติบโตสองหลักต่อเนื่องพร้อมเงินปันผลที่เพิ่มขึ้นทุกปีมา 17 ปี อย่างไรก็ตาม ราคาหุ้นที่ปรับตัวขึ้นแรงในช่วง 1 ปีที่ผ่านมาทำให้ P/E ซื้อขายสูงกว่าค่าเฉลี่ยประวัติศาสตร์ ราคาปัจจุบันใกล้เคียงกับมูลค่าเหมาะสมมาก (MOS เพียง ~3%) จึงเหมาะกับการถือครองระยะยาวเพื่อรับปันผล+การเติบโต มากกว่าเป็นจุดซื้อ deep value ผู้ที่สนใจเข้าใหม่ควรรอจังหวะย่อตัวลงมาใกล้โซน MOS 20% ($150) เพื่อเพิ่มส่วนเผื่อความปลอดภัย</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$188.09 <span style="font-size:12px;color:#cab9a8">($167.80–$206.78)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +3.09%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$194.63 (Moderate Buy)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ถือ/ทยอยสะสมสำหรับนักลงทุนสาย income ที่ต้องการปันผลสม่ำเสมอ + การเติบโตจาก smoke-free transformation; นักลงทุนสายเข้าใหม่ควรรอย่อตัวสู่โซน $150-165 (MOS 20%+) เพื่อ margin of safety ที่มากขึ้น ก่อนเข้าซื้อขนาดใหญ่ ระวังความเสี่ยงกฎระเบียบ FDA/ภาษีต่อ ZYN และความผันผวนค่าเงินที่อาจกระทบ EPS รายไตรมาส
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • แหล่งข้อมูล: stockanalysis.com, marketbeat.com, PMI SEC 8-K filings (Q1 2026, FY2025), businesswire.com
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 6 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>

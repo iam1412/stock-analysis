@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น Altria Group (MO) — Stock Analysis Dashboard</title>
+<!-- ★ ใส่รุ่นโมเดล AI ที่ใช้วิเคราะห์จริง (Opus→"Claude Opus 4.8", Sonnet→"Claude Sonnet 4.6") — gate E28 บังคับ -->
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
+<script type="application/json" id="stock-meta">
+{"symbol":"MO","currency":"USD","price":72.71,"fairValue":73.34,"mos":0.86,"upside":0.87,"pe":13.42,"dividendYield":5.83,"roe":null}
+</script>
+<!-- report-data: ธีมสี + ข้อมูลกราฟ/gauge ของ MO -->
+<script type="application/json" id="report-data">
+{"theme":{"accent":"#b8860b","accentDark":"#8b6508","darkGrad":"linear-gradient(135deg,#3d2e05 0%,#6b4e07 50%,#b8860b 100%)","glow":"rgba(184,134,11,0.35)","subColor":"#e0b84d","headerMuted":"rgba(255,255,255,0.65)","verdictText":"#8b6508","vcellLabel":"#8b6508","badge":"#b8860b","chgBg":"#1e6b2e","chgColor":"#ffffff"},"chart":{"data":[["ก.ค.'25",58.00],["ส.ค.'25",62.94],["ก.ย.'25",62.86],["ต.ค.'25",53.65],["พ.ย.'25",56.16],["ธ.ค.'25",55.87],["ม.ค.'26",60.07],["ก.พ.'26",66.90],["มี.ค.'26",65.02],["เม.ย.'26",71.58],["พ.ค.'26",68.56],["มิ.ย.'26",71.95],["ก.ค.'26",72.71]],"min":48,"max":78,"grid":[48,54,60,66,72,78],"fairLine":73.34,"currency":"$","highlight":[3,12]},"gauge":{"min":48,"max":82,"cur":72.71,"fair":73.34,"fairLabelTop":true},"fv":73.34}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">●●●</div>
+    <div>
+      <span class="tag">NYSE: MO</span>
+      <span class="tag">Consumer Staples · Tobacco</span>
+      <span class="tag">Dividend King · Managed Decline</span>
+    </div>
+    <!-- ★ คำโปรยธุรกิจ (gate E32) — .sub ต้องอยู่ติดใต้ </h1> (ห้ามมีคอมเมนต์/แท็กคั่น) : บริษัททำอะไร ใช้ • คั่นกลุ่ม -->
+    <h1>Altria Group (MO)</h1>
+    <div class="sub">Marlboro (บุหรี่อันดับ 1 ในสหรัฐฯ ส่วนแบ่งตลาด ~40%) • Copenhagen/Skoal (ยาเส้นไร้ควัน) • on! (นิโคตินพัช) • NJOY (บุหรี่ไฟฟ้า) • ธุรกิจบุหรี่เฉพาะตลาดสหรัฐฯ เท่านั้น (แยกจาก Philip Morris International)</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$72.71<small>(MO)</small></div>
+      </div>
+      <!-- ★ ป้าย % รอบปี (gate E35/E36) — ผลตอบแทน ~1 ปี (เทียบราคา ~1 ปีก่อน) = ผลตอบแทนปลายกราฟ section 2 (จุดแรก→ท้าย)
+           รูปแบบ: "▲ +X.X% (รอบปี)" ขึ้น · "▼ −X.X% (รอบปี)" ลง · "≈ ทรงตัว (รอบปี)" · หุ้น IPO <1 ปี ใช้ "(ตั้งแต่ IPO)"
+           ไม่ใช่ % รายวัน/YTD/52 สัปดาห์ · ตั้งสี theme.chgBg/chgColor ให้ตรงทิศ (ขึ้น=เขียว/ลง=แดง · E34) -->
+      <div class="chg">▲ +25.4% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 2 ก.ค. 2569 (2 Jul 2026)<br>
+        กรอบ 52 สัปดาห์ $54.70 – $74.56<br>
+        ที่มา: StockAnalysis.com, Yahoo Finance, Altria Investor Relations (Q1 2026 8-K)
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">Dividend King — ปันผลขึ้นต่อเนื่อง 60 ปี</div></div>
+    <!-- ✏️ ROE ไม่มีความหมาย (ส่วนของผู้ถือหุ้นติดลบจาก buyback สะสม) → ตัดออก แทนด้วย Net Debt/EBITDA และ Payout ratio -->
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">$121.4B</div><div class="d">~1.67 พันล้านหุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~13.4x</div><div class="d">อิง adj. EPS FY2025 $5.42</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~10.5x</div><div class="d">กรอบ 8x–13.5x (rerate ขึ้นปี 2568-69)</div></div>
+      <div class="metric"><div class="k">Net Debt / EBITDA</div><div class="v neu">~2.0x</div><div class="d">เป้าหมายบริษัท ~2.0x (คงที่)</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิปรับปรุง FY2025</div><div class="v">~$9.0B</div><div class="d">Adj. diluted EPS +4.4% YoY</div></div>
+      <div class="metric"><div class="k">EPS ปรับปรุง (TTM)</div><div class="v">~$5.42</div><div class="d">FY2026E guide $5.56–$5.72</div></div>
+      <div class="metric"><div class="k">ส่วนของผู้ถือหุ้น</div><div class="v">−$3.5B</div><div class="d">ติดลบจาก buyback สะสม — P/BV/ROE ใช้ไม่ได้</div></div>
+      <div class="metric"><div class="k">Payout Ratio (adj.)</div><div class="v pos">~78%</div><div class="d">ปันผล/EPS ปรับปรุง — สูงแต่มั่นคง</div></div>
+
+      <div class="metric"><div class="k">รายได้สุทธิ TTM</div><div class="v neu">~$20.1B</div><div class="d">หลังหักภาษีสรรพสามิต ทรงตัว/ลดเล็กน้อย</div></div>
+      <div class="metric"><div class="k">ปริมาณขายบุหรี่ (shipment)</div><div class="v">−4% YoY</div><div class="d">Q1/2569 ชะลอจาก −6-8% ปีก่อน</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~5.83%</div><div class="d">$4.24/ปี ($1.06/ไตรมาส) เพิ่มต่อเนื่อง 60 ปี</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">0.49</div><div class="d">ผันผวนต่ำกว่าตลาดมาก (defensive)</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART (ราคาย้อนหลัง ~1 ปี) ===== -->
+  <!-- ★ กราฟต้องเป็น "ราคาย้อนหลัง ~1 ปี" (gate E37): ไม่เกิน 13 จุด (รายเดือน 12 เดือน = 13 จุด · รายสองเดือน = ~8 จุด)
+       ห้ามใส่ 18 เดือน/1.5 ปี · จุดสุดท้าย = ราคาปัจจุบัน · ผลตอบแทน จุดแรก→จุดท้าย ต้องตรงกับป้าย % รอบปีใน header (E36) -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#b8860b"></i>ราคา MO</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $73.34</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคาต่ำสุดรอบปีที่ $53.65 (ต.ค. 2568) หลังผลประกอบการ Q3/2568 พลาดคาด รายได้ลดลงจากผู้บริโภคหันไปซื้อบุหรี่ราคาถูก/ตลาดผิดกฎหมาย
+        จากนั้นฟื้นตัวแรงต่อเนื่อง +25.4% ในรอบ 12 เดือน จากผลประกอบการ Q1/2569 ที่ EPS ปรับปรุงโต +7.3% การชะลอตัวของปริมาณขายที่ลดลงเหลือ −4%
+        (จากเดิม −6 ถึง −8%) และตลาดบุหรี่ไฟฟ้าผิดกฎหมายเริ่มอิ่มตัวจากการบังคับใช้กฎหมายที่เข้มขึ้น ทำให้นักลงทุนกลับมาเชื่อมั่นในอำนาจการตั้งราคา (pricing power) ของ Marlboro
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION (เฉลี่ย 3 วิธี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <!-- ✏️ เลือก ≥2 วิธีให้เหมาะกับหุ้น — gate เช็คคณิตเฉพาะวิธีชื่อ "P/E" (E21) และ "Justified P/BV" (E22) เมื่อมีวิธีนั้น
+           MO: ส่วนของผู้ถือหุ้นติดลบ (buyback สะสม) → ตัด Justified P/BV ออก ใช้ P/E + DDM (หลัก) + FCF Yield แทน -->
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS adj. $5.64 × P/E 13.5x — เฉลี่ย EPS ปรับปรุง FY2026E ($5.56–5.72) คูณ P/E เป้าหมายใกล้เคียงค่าเฉลี่ยตลาดปัจจุบัน</div></div>
+        <div class="mval">$76.14</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. DDM / Gordon Growth (วิธีหลัก)</div><div class="mdesc">D₁ = ปันผล $4.35 × (1+g); g 2.5%, r 8.5% → สะท้อนหุ้นปันผลสูง โตต่ำ ความเสี่ยงกฎหมาย/ปริมาณขายลด</div></div>
+        <div class="mval">$72.43</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. FCF Yield Valuation</div><div class="mdesc">FCF/หุ้น ~$5.36 (≈95% ของ EPS adj. เพราะ capex ต่ำ) หาร FCF yield ที่ต้องการ 7.5% → ทางเลือกแทน P/BV เนื่องจากส่วนของผู้ถือหุ้นติดลบ</div></div>
+        <div class="mval">$71.44</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $71.44 – $76.14</span></div>
+        <div class="r">$73.34</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ทั้ง 3 วิธีให้ค่าใกล้เคียงกันมาก ($71-76) สะท้อนว่าตลาดตีราคาหุ้นได้ค่อนข้างมีประสิทธิภาพแล้วหลังการรีเรทช่วง 12 เดือนที่ผ่านมา (+25%)
+        DDM (วิธีหลักสำหรับหุ้นปันผลสูง) ให้ค่าใกล้ราคาตลาดที่สุด เพราะ MO อยู่ในช่วง "managed decline" — ปริมาณขายลด แต่การขึ้นราคาชดเชยได้เกือบหมด
+        ทำให้ growth ต่ำแต่มั่นคง ไม่มี margin of safety มากนักที่ราคาปัจจุบัน
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $72.71</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $73.34</div></div>
+        </div>
+        <div class="scale">
+          <span>$51.34<br><small>MOS 30%</small></span>
+          <span>$58.67<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$70.40<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">$73.34<br><small>Fair Value</small></span>
+          <span style="text-align:right">$76.14<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน ($72.71) อยู่ใกล้เคียงกับมูลค่าเหมาะสม ($73.34) มาก — ต่างกันไม่ถึง 1% สะท้อนหุ้นที่ตลาดตีราคาได้มีประสิทธิภาพในระดับหนึ่งแล้ว
+        น่าสังเกตว่าเป้าหมายเฉลี่ยของนักวิเคราะห์ (Consensus Analyst Target ~$70.40, Hold rating) ต่ำกว่าทั้งราคาตลาดและ Fair Value ของเรา
+        สะท้อนมุมมองที่ระมัดระวังกว่าต่อความเสี่ยงเชิงโครงสร้าง (ปริมาณขายบุหรี่ลดต่อเนื่อง, กฎระเบียบ FDA)
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <!-- ✏️ class ของ mos-verdict: MOS<10 → "bad", 10–20 → "ok", ≥20 → "good" -->
+      <div class="mos-verdict bad">
+        <div class="big">+0.86%</div>
+        <div class="txt">แทบไม่มีส่วนเผื่อความปลอดภัย — ราคาปัจจุบันใกล้เคียงมูลค่าเหมาะสมมาก เหมาะกับการถือเพื่อรับปันผล มากกว่าเก็งกำไรส่วนต่างราคา</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$58.67</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$51.34</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $73.34</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="72.71" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $72.71 • EPS ฐาน ~$5.64 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS −2%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$58.39</div>
+          <div class="ret neg">−1.5%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$5.31</span></li>
+            <li><span>P/E ออก</span><span>11x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$13.24</span></li>
+            <li><span>สถานการณ์</span><span>ปริมาณขายลดเร่ง (FDA เข้มงวด/เศรษฐกิจถดถอย), NJOY ไม่กลับมา, P/E หด</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +3%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$83.20</div>
+          <div class="ret pos">+33.4%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$6.16</span></li>
+            <li><span>P/E ออก</span><span>13.5x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$13.77</span></li>
+            <li><span>สถานการณ์</span><span>ปริมาณขายลด ~4%/ปี ชดเชยด้วยราคา, ปันผลโตต่อเนื่องตามเป้า mid-single digit</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +6%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$104.12</div>
+          <div class="ret pos">+62.5%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$6.72</span></li>
+            <li><span>P/E ออก</span><span>15.5x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$14.03</span></li>
+            <li><span>สถานการณ์</span><span>NJOY ACE กลับสู่ตลาด, ปริมาณขายลดช้าลง, ตลาดให้ P/E premium หุ้นปันผลสูง</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      MO เป็นหุ้น "รายได้" มากกว่า "เติบโต" — สัดส่วนผลตอบแทนหลักมาจากปันผล (~5.8%/ปี) ไม่ใช่การขยับของราคาหุ้น
+      แม้ในภาพ Bear ที่ EPS หดตัว ปันผลยังคงช่วยพยุงผลตอบแทนรวมให้ใกล้เคียงจุดคุ้มทุน สะท้อนความมั่นคงของกระแสเงินสดจากธุรกิจแม้ปริมาณขายบุหรี่จะลดลงระยะยาว
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>Pricing power ของ Marlboro:</b> ส่วนแบ่งตลาดพรีเมียม ~59.5% ทำให้ขึ้นราคาชดเชยปริมาณขายที่ลดได้อย่างต่อเนื่อง</li>
+          <li><b>Dividend King 60 ปี:</b> ประวัติขึ้นปันผลต่อเนื่องยาวนานที่สุดกลุ่มหนึ่งในตลาด สร้างความเชื่อมั่นนักลงทุนสายรายได้</li>
+          <li><b>ปริมาณขายบุหรี่ชะลอการลด:</b> Q1/2569 ลดเพียง −4% (จากเดิม −6 ถึง −8%) เหตุตลาดบุหรี่ไฟฟ้าผิดกฎหมายเริ่มอิ่มตัวจากการบังคับใช้กฎหมายเข้มขึ้น</li>
+          <li><b>นิโคตินพัช on! เติบโตแรง:</b> พัชนิโคติน/oral tobacco เป็น >58% ของปริมาณ oral tobacco ทั้งหมด ช่วยกระจายความเสี่ยงจากบุหรี่</li>
+          <li><b>Valuation ยังต่ำกว่าตลาดรวม:</b> P/E ~13.4x เทียบ S&P500 median ที่สูงกว่ามาก เหมาะเป็นหุ้น defensive ในพอร์ต</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>ปริมาณขายบุหรี่ลดระยะยาวเชิงโครงสร้าง:</b> ผู้สูบบุหรี่ลดลงต่อเนื่องจากพฤติกรรมผู้บริโภคเปลี่ยน — ธุรกิจหลักเป็น "managed decline" ตลอดไป</li>
+          <li><b>NJOY ACE ถูกระงับนำเข้า:</b> ปัญหาข้อพิพาทสิทธิบัตร (patent) ทำให้สินค้าหลักของ NJOY ไม่มีขายในตลาดตั้งแต่ปลายปี 2568 — เดิมพันบุหรี่ไฟฟ้าสะดุด แผน 2569 ไม่รวมการกลับมาของ ACE</li>
+          <li><b>ความเสี่ยงกฎระเบียบ FDA:</b> ข้อเสนอห้ามเมนทอล/แต่งกลิ่นบุหรี่ไฟฟ้ายังค้างอยู่ อาจกระทบยอดขายและต้นทุนปฏิบัติตามกฎหมาย</li>
+          <li><b>ส่วนของผู้ถือหุ้นติดลบ:</b> จาก buyback สะสมหลายปี ทำให้ไม่มี "เบาะรองรับ" ทางบัญชีหากธุรกิจสะดุดแรง แม้กระแสเงินสดยังแข็งแรง</li>
+          <li><b>ตลาดบุหรี่ไฟฟ้าผิดกฎหมายยังครองส่วนแบ่งสูง:</b> ~70% ของปริมาณบุหรี่ไฟฟ้ายังเป็นสินค้าผิดกฎหมาย กดดันการเติบโตของ NJOY ต่อเนื่อง</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>หุ้นปันผลมั่นคง แต่แทบไม่มีส่วนเผื่อความปลอดภัยที่ราคาปัจจุบัน</h2>
+      <p>Altria เป็นธุรกิจ "managed decline" ที่มีคุณภาพสูง — ปริมาณขายบุหรี่ลดลงต่อเนื่องทุกปี แต่อำนาจการตั้งราคาของ Marlboro ชดเชยได้เกือบหมด
+      ทำให้กระแสเงินสดและปันผลยังคงมั่นคง (Dividend King 60 ปี, yield ~5.8%) หลังราคาหุ้นปรับขึ้นแรง +25% ในรอบปีที่ผ่านมา ราคาปัจจุบันใกล้เคียงมูลค่าเหมาะสมมากแล้ว
+      เหมาะสำหรับนักลงทุนที่ต้องการกระแสเงินสดจากปันผลสม่ำเสมอมากกว่าคาดหวังส่วนต่างราคาหุ้น ความเสี่ยงหลักคือการชะงักของแผน NJOY (ACE ถูกระงับนำเข้าจากข้อพิพาทสิทธิบัตร) และกฎระเบียบ FDA ที่ยังค้างอยู่</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$73.34 <span style="font-size:12px;color:#cab9a8">($71.44–$76.14)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +0.86%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$70.40 (Hold)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ถือเพื่อรับปันผล (income play) เหมาะสำหรับพอร์ต defensive/รายได้สม่ำเสมอ ไม่ใช่หุ้นเติบโต — หากต้องการ MOS มากขึ้นให้รอจังหวะย่อตัวลงมาโซน $58–66 (MOS 10-20%)
+        ก่อนเพิ่มสถานะ ติดตามความคืบหน้าคดีสิทธิบัตร NJOY ACE และกฎ FDA เรื่องเมนทอล/บุหรี่ไฟฟ้าอย่างใกล้ชิด เพราะเป็นปัจจัยเสี่ยงที่กระทบ narrative การเติบโตระยะยาว
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ข้อมูลจาก StockAnalysis.com, Yahoo Finance, Altria Investor Relations (Q1 2026 8-K/Earnings), WallStreetZen (analyst consensus) ณ 2-5 ก.ค. 2569
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 5 กรกฎาคม 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
