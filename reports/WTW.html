@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น Willis Towers Watson (WTW) — Stock Analysis Dashboard</title>
+<!-- ★ ใส่รุ่นโมเดล AI ที่ใช้วิเคราะห์จริง (Opus→"Claude Opus 4.8", Sonnet→"Claude Sonnet 4.6") — gate E28 บังคับ -->
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
+<script type="application/json" id="stock-meta">
+{"symbol":"WTW","currency":"USD","price":286.22,"fairValue":328,"mos":12.7,"upside":14.6,"pe":16.2,"dividendYield":1.34,"roe":20.6}
+</script>
+<script type="application/json" id="report-data">
+{"theme":{"accent":"#00a3e0","accentDark":"#006f9b","darkGrad":"linear-gradient(135deg, #041820 0%, #062a38 100%)","glow":"rgba(0,163,224,0.35)","subColor":"#5bc2e8","headerMuted":"rgba(0,163,224,0.12)","verdictText":"#d2eef7","vcellLabel":"rgba(210,238,247,0.6)","badge":"#00a3e0","chgBg":"rgba(239,68,68,0.15)","chgColor":"#EF4444"},"chart":{"data":[["ส.ค. 68",326.79],["ก.ย. 68",345.45],["ต.ค. 68",313.10],["พ.ย. 68",321.00],["ธ.ค. 68",328.60],["ม.ค. 69",317.47],["ก.พ. 69",305.17],["มี.ค. 69",290.70],["เม.ย. 69",256.20],["พ.ค. 69",249.67],["มิ.ย. 69",261.37],["ก.ค. 69",286.22]],"min":230,"max":360,"grid":[260,300,340],"fairLine":328,"currency":"$","highlight":[9]},"gauge":{"min":220,"max":400,"cur":286.22,"fair":328,"fairLabelTop":false},"fv":328}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">WTW · NASDAQ · Insurance Broking &amp; HR Consulting</div>
+    <div>
+      <span class="tag">NASDAQ: WTW</span>
+      <span class="tag">Insurance Brokerage</span>
+      <span class="tag">Risk &amp; HR Consulting</span>
+    </div>
+    <!-- ★ คำโปรยธุรกิจ (gate E32) — .sub ต้องอยู่ติดใต้ </h1> (ห้ามมีคอมเมนต์/แท็กคั่น) : บริษัททำอะไร ใช้ • คั่นกลุ่ม -->
+    <h1>Willis Towers Watson plc</h1>
+    <div class="sub">นายหน้าประกันภัย/ประกันต่อ Top-3 โลก • Risk &amp; Broking (นายหน้าประกัน/reinsurance) • Health, Wealth &amp; Career (สวัสดิการพนักงาน/บำนาญ/HR consulting) • แผน "Grow, Simplify, Transform"</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$286.22<small>(WTW)</small></div>
+      </div>
+      <!-- ★ ป้าย % รอบปี (gate E35/E36) — ผลตอบแทน ~1 ปี (เทียบราคา ~1 ปีก่อน) = ผลตอบแทนปลายกราฟ section 2 (จุดแรก→ท้าย)
+           รูปแบบ: "▲ +X.X% (รอบปี)" ขึ้น · "▼ −X.X% (รอบปี)" ลง · "≈ ทรงตัว (รอบปี)" · หุ้น IPO <1 ปี ใช้ "(ตั้งแต่ IPO)"
+           ไม่ใช่ % รายวัน/YTD/52 สัปดาห์ · ตั้งสี theme.chgBg/chgColor ให้ตรงทิศ (ขึ้น=เขียว/ลง=แดง · E34) -->
+      <div class="chg">▼ −12.4% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 2 ก.ค. 2569 (2 Jul 2026)<br>
+        กรอบ 52 สัปดาห์ $240.62 – $352.79<br>
+        ที่มา: StockAnalysis.com, Yahoo Finance, WTW Investor Relations (Q4/FY2025 &amp; Q1 2026 earnings release)
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">นายหน้าประกัน Top-3 โลก • ราคาลง ~12% ใน 1 ปี</div></div>
+    <!-- ✏️ ปรับการ์ด metric ให้เหมาะกับหุ้น/เซกเตอร์ได้อิสระ — gate ไม่บังคับชุด metric (เปลี่ยน label / สลับ / เพิ่ม-ลดการ์ดได้)
+         • คงป้าย "P/E (TTM)", "P/BV", "เงินปันผล", "ROE" ไว้ถ้าหุ้นมีจริง → W10 cross-check กับ stock-meta · ไม่มี (ขาดทุน/ไม่ปันผล) = ตัดการ์ดออก + ตั้ง stock-meta เป็น null
+         • ธนาคาร → NIM / NPL / CASA / Loan growth / Cost-to-income   • REIT/กองอสังหา → Occupancy / DPU / NAV / Gearing   • ประกัน → Combined ratio / EV
+         • หุ้นเติบโต-ขาดทุน → Revenue growth / Gross margin / FCF / Cash runway (ตัด P/E ออก) -->
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">$27.0B</div><div class="d">~94.2M หุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~16.2x</div><div class="d">อิง adjusted diluted EPS TTM ส่วนลดเทียบ AON (~18x) และ MMC (~21x)</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~21x</div><div class="d">กรอบ 17x–25x (บิดเบือนช่วง Aon-merger 2020-21)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">3.38x</div><div class="d">BVPS ~$84.6</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">$1.61B</div><div class="d">Adj. diluted EPS $17.08 (+5% YoY)</div></div>
+      <div class="metric"><div class="k">EPS adj. (TTM)</div><div class="v">~$17.67</div><div class="d">Q1'26 adj. EPS $3.72 (+19% YoY)</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~$84.61</div><div class="d">อิงงบ Q1 2026 (94.2M หุ้น)</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~20.6% / 5.1%</div><div class="d">ROE ต่ำกว่า AON (~46%) แต่สูงกว่า MMC (~15%)</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$9.90B</div><div class="d">FY2025 organic +5% (R&amp;B แข็งแกร่ง, HWC ฟื้นตัว)</div></div>
+      <div class="metric"><div class="k">Adjusted EBITDA margin</div><div class="v">~25.2%</div><div class="d">FY2025 ขยายตัว +130 bps YoY</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~1.34%</div><div class="d">$0.96/ไตรมาส ($3.84/ปี) · payout ~22% · เน้น buyback</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">0.44</div><div class="d">ผันผวนต่ำกว่าตลาดชัดเจน (defensive)</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART (ราคาย้อนหลัง ~1 ปี) ===== -->
+  <!-- ★ กราฟต้องเป็น "ราคาย้อนหลัง ~1 ปี" (gate E37): ไม่เกิน 13 จุด (รายเดือน 12 เดือน = 13 จุด · รายสองเดือน = ~8 จุด)
+       ห้ามใส่ 18 เดือน/1.5 ปี · จุดสุดท้าย = ราคาปัจจุบัน · ผลตอบแทน จุดแรก→จุดท้าย ต้องตรงกับป้าย % รอบปีใน header (E36) -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#00a3e0"></i>ราคา WTW</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $328</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        <!-- ✏️ บรรยายการเคลื่อนไหวราคา ~1 ปี: จุดสูง/ต่ำ, เปลี่ยนแปลง %, สาเหตุหลัก -->
+        ราคาขึ้นทำจุดสูงสุดรอบปีที่ ~$345 ในเดือน ก.ย. 2568 หลังผลประกอบการ Q2/Q3 2568 แข็งแกร่ง ก่อนร่วงลงต่อเนื่องจนแตะจุดต่ำสุด ~$250 ในเดือน พ.ค. 2569 (−28% จากจุดสูงสุด) จากความกังวลเรื่อง organic growth ชะลอตัวใน Risk &amp; Broking, ความไม่แน่นอนของ Willis Re JV dilution และภาวะตลาดหุ้นผันผวนโดยรวม ก่อนจะฟื้นตัวกลับมาที่ ~$286 หลังผลประกอบการ Q1 2569 ที่ EPS โต 19% เกินคาด สุทธิรวมทั้งปีราคาลดลง −12.4%</p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION (เฉลี่ย 3 วิธี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <!-- ✏️ เลือก ≥2 วิธีให้เหมาะกับหุ้น — gate เช็คคณิตเฉพาะวิธีชื่อ "P/E" (E21) และ "Justified P/BV" (E22) เมื่อมีวิธีนั้น
+           ธนาคาร → เน้น P/BV / Residual income   • REIT → DDM / NAV   • หุ้นไม่ปันผล → ตัด DDM ออก ใช้ P/E + DCF/Justified P/BV -->
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation (TTM)</div><div class="mdesc">EPS adj. $17.67 × P/E เป้าหมาย ~19x — ส่วนลดเทียบ AON/MMC ที่สะท้อนความไม่แน่นอนจาก integration ของ Newfront/Willis Re JV</div></div>
+        <div class="mval">$335.73</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. Forward P/E (FY26E)</div><div class="mdesc">EPS adj. FY26E $18.60 × P/E เป้าหมาย ~18x — คาดกำไรโต ~5% (FX tailwind +$0.35 หักด้วย Newfront −$0.10 และ Willis Re JV −$0.30)</div></div>
+        <div class="mval">$334.80</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. P/FCF Valuation</div><div class="mdesc">FCF/Share $16.45 × multiple 19x — FCF ปี 2025 $1.55B โต +22% YoY จาก margin expansion และ transformation cost ลดลง</div></div>
+        <div class="mval">$312.55</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $313 – $336</span></div>
+        <div class="r">$328</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        <!-- ✏️ หมายเหตุ: วิธีไหนให้ค่าสูง/ต่ำเพราะอะไร, ทำไม FV กลางจึงสมเหตุสมผล -->
+        P/E TTM และ Forward P/E ให้ค่าใกล้กันที่ ~$335 สะท้อนการ re-rating บางส่วนจาก P/E ปัจจุบัน 16.2x ขึ้นสู่ 18-19x (ยังต่ำกว่า AON ~18x และ MMC ~21x) ส่วน P/FCF ที่ $313 ระมัดระวังกว่าเพราะยังไม่รวม upside เต็มจากการขยาย margin ต่อเนื่อง · ไม่ใช้ DDM เพราะ yield 1.34% ต่ำ (WTW เน้น buyback $1.65B/ปีมากกว่าปันผล เหมือน AON) · เฉลี่ย 3 วิธี ≈ $327.7 → ปัดเป็น $328
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $286.22</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $328</div></div>
+        </div>
+        <div class="scale">
+          <span>$229.6<br><small>MOS 30%</small></span>
+          <span>$262.4<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$328<br><small>Fair Value</small></span>
+          <span style="text-align:right">$333<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">$336<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน $286.22 อยู่ต่ำกว่ามูลค่าเหมาะสม $328 ประมาณ 12.7% และยังต่ำกว่าโซน MOS 20% ($262.4) พอสมควร — ยังไม่ใช่โซน "ถูกมาก" (deep value ต้องรอ ~$230) แต่ก็อยู่ในกรอบราคาที่มี margin of safety ที่สมเหตุสมผลสำหรับหุ้นคุณภาพดีที่ปันผล+buyback สม่ำเสมอ เป้าเฉลี่ยนักวิเคราะห์ 21 คน (S&amp;P Global) ที่ $333 ใกล้เคียงกับ FV ของเรา สนับสนุนมุมมอง undervalued
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <!-- ✏️ class ของ mos-verdict: MOS<10 → "bad", 10–20 → "ok", ≥20 → "good" -->
+      <div class="mos-verdict ok">
+        <div class="big">+12.7%</div>
+        <div class="txt">Margin of Safety ระดับปานกลาง — ราคาปัจจุบันต่ำกว่ามูลค่าเหมาะสมพอสมควร แต่ยังไม่ถึงโซน deep value</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$262.4</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$229.6</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $328</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="286.22" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $286.22 • EPS ฐาน ~$17.67 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS −3%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$225.78</div>
+          <div class="ret neg">−17.5%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$16.13</span></li>
+            <li><span>P/E ออก</span><span>14x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$10.4</span></li>
+            <li><span>สถานการณ์</span><span>Organic growth ชะลอ/ติดลบ, integration Newfront สะดุด, multiple compress</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +7%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$367.99</div>
+          <div class="ret pos">+32.8%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$21.65</span></li>
+            <li><span>P/E ออก</span><span>17x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$12.2</span></li>
+            <li><span>สถานการณ์</span><span>Organic growth mid-single digit ต่อเนื่อง, margin ขยายตามแผน, buyback หนุน EPS</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +12%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$496.50</div>
+          <div class="ret pos">+78.0%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$24.83</span></li>
+            <li><span>P/E ออก</span><span>20x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$12.9</span></li>
+            <li><span>สถานการณ์</span><span>R&amp;B เร่งตัว, Newfront/Willis Re สร้างมูลค่าเกินคาด, ช่องว่าง P/E เทียบ AON/MMC ปิดลง</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      Base case สมมติ organic growth ทรงตัวที่ ~5-6%/ปี ตามเป้าระยะยาวของบริษัท ("Grow, Simplify, Transform") ร่วมกับ margin expansion และ buyback ต่อเนื่อง (~$1.0B+/ปี) ทำให้ EPS โตเฉลี่ย ~7%/ปี และ P/E ขยับขึ้นเล็กน้อยจาก 16.2x ปัจจุบันสู่ 17x (ยังคงส่วนลดเทียบ AON/MMC) — Bear case สะท้อนความเสี่ยงจาก Willis Re JV dilution และการแข่งขันที่รุนแรงขึ้น ส่วน Bull case คือกรณีที่ตลาดให้เครดิตกับ transformation program เต็มที่และปิดช่องว่าง valuation เทียบคู่แข่ง
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>EPS Momentum +19% YoY:</b> Q1 2569 EPS adj. $3.72 เกินคาดมาก สะท้อนว่า "Grow, Simplify, Transform" เริ่มเห็นผล → อาจนำไปสู่การ re-rate P/E กลับสู่ 18–19x</li>
+          <li><b>Margin Expansion ต่อเนื่อง:</b> Adj. EBITDA margin ขยาย +130 bps/ปี ในปี 2568 — เป้า transformation ลดต้นทุน ~$300M ยังไปต่อถึงปี 2570</li>
+          <li><b>Valuation Gap vs Peers:</b> P/E 16.2x ส่วนลด ~10-25% เทียบ AON (~18x) และ MMC (~21x) ทั้งที่ ROE 20.6% เท่ากัน — ช่องว่างนี้แคบลงได้ถ้า execution ดีต่อ</li>
+          <li><b>Buyback Yield ~5.8%:</b> Buyback $1.65B/ปี ที่ราคาปัจจุบัน = ผลตอบแทนนอกปันผลสูง รองรับ downside + EPS accretive</li>
+          <li><b>R&amp;B Segment ฟื้นตัว:</b> Risk &amp; Broking organic growth กลับมาบวกหลังผ่านจุดต่ำ — insurance pricing cycle ยังเอื้อ (commercial lines +5-8%)</li>
+          <li><b>Willis Re JV Value Unlock:</b> หาก Gallagher Re JV พิสูจน์มูลค่าได้ชัด อาจเป็น catalyst ให้ตลาดประเมินธุรกิจ reinsurance ใหม่</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>Willis Re JV Dilution:</b> การ JV reinsurance กับ Gallagher Re ทำให้สูญเสีย revenue share บางส่วน — ความไม่แน่นอนยังกดดัน multiple</li>
+          <li><b>FX Headwind:</b> รายได้นอก US ~40% — USD แข็งค่ากระทบรายได้แปลงกลับ; Q1 2569 FX drag ~$0.15/share</li>
+          <li><b>Organic Growth ชะลอได้:</b> Insurance pricing cycle นุ่มลง (soft market) อาจกดดัน R&amp;B ซึ่งเป็น ~60% รายได้</li>
+          <li><b>การแข่งขันสูง:</b> AON, MMC, AJG ล้วนมีขนาดใหญ่กว่า มีงบ technology มากกว่า — WTW เสี่ยงสูญเสีย talent และลูกค้าบางส่วน</li>
+          <li><b>Newfront Integration Risk:</b> การลงทุนใน Newfront (digital broker) ยังไม่เห็น ROI ชัด อาจกดดัน margin ในระยะใกล้</li>
+          <li><b>เศรษฐกิจชะลอตัว:</b> HWC (HR consulting/benefit) อ่อนไหวต่อการจ้างงานและ M&amp;A activity — ถ้าเศรษฐกิจซบ segment นี้ชะลอก่อน</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>นายหน้าประกัน Top-3 โลก — ส่วนลดจากคู่แข่ง + EPS Momentum ฟื้น</h2>
+      <p>WTW ซื้อขายที่ P/E 16.2x ส่วนลดชัดเจนเทียบ AON (~18x) และ MMC (~21x) ขณะที่ EPS โต +19% YoY ใน Q1 2569 และ margin ขยายตัวต่อเนื่อง +130 bps/ปี ราคา $286.22 ให้ MOS ~12.7% ต่ำกว่ามูลค่าเหมาะสม $328 — เหมาะสำหรับนักลงทุนที่ต้องการ defensive quality ในภาคบริการทางการเงินที่ execution กำลังพิสูจน์ตัวเอง หากช่องว่าง P/E เทียบคู่แข่งแคบลงแม้บางส่วน upside มีนัยสำคัญ</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$328 <span style="font-size:12px;color:#cab9a8">($313–$336)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +12.7%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$333 (Buy majority)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ทยอยสะสมได้ที่ราคาปัจจุบัน ~$286 (MOS 12.7%) · เพิ่มสถานะเมื่อแตะโซน $262 (MOS 20%) · Catalyst หลักคือ EPS momentum ต่อเนื่องและการปิดช่องว่าง P/E เทียบ AON/MMC · Buyback $1.65B/ปี เป็น downside support
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • แหล่งข้อมูล: StockAnalysis.com · Yahoo Finance · WTW Investor Relations (Q4/FY2025 &amp; Q1 2026 earnings release) · S&amp;P Global (เป้านักวิเคราะห์ 21 คน)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 2 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
