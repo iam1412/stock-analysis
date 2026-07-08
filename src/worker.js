@@ -168,6 +168,15 @@ export default {
     const url = new URL(request.url);
     const p = url.pathname;
 
+    // Google Search Console — ไฟล์ยืนยันความเป็นเจ้าของเว็บ ต้องเสิร์ฟที่ราก /<ชื่อไฟล์> ตรง ๆ
+    //   (วางใน static/ ไม่ได้ เพราะจะไปอยู่ /static/... · วางใน dist ราก gate จะจับเป็น "รายงาน")
+    //   เนื้อหา = บรรทัดเดียวมาตรฐานของ Google: "google-site-verification: <ชื่อไฟล์>"
+    if (p === '/googlec5cce354d9886fae.html') {
+      return new Response('google-site-verification: googlec5cce354d9886fae.html', {
+        headers: { 'content-type': 'text/html; charset=utf-8', 'cache-control': 'public, max-age=3600' },
+      });
+    }
+
     // ไม่ใช่ API → เสิร์ฟ static (ไฟล์ส่วนใหญ่ถูก edge cache ตัดไปก่อนไม่ถึง Worker อยู่แล้ว)
     if (!p.startsWith('/api/')) return env.ASSETS.fetch(request);
 
