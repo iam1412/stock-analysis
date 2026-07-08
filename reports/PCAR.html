@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น PACCAR Inc (PCAR) — Stock Analysis Dashboard</title>
+<!-- ★ ใส่รุ่นโมเดล AI ที่ใช้วิเคราะห์จริง (Opus→"Claude Opus 4.8", Sonnet→"Claude Sonnet 4.6") — gate E28 บังคับ -->
+<meta name="ai-model" content="Claude Opus 4.8">
+<!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
+<script type="application/json" id="stock-meta">
+{"symbol":"PCAR","currency":"USD","price":124.35,"fairValue":92,"mos":-35.2,"upside":-26.0,"pe":26.5,"dividendYield":2.2,"roe":13.1}
+</script>
+<!--
+  report-data: ธีมสี + ข้อมูลกราฟ/gauge ต่อหุ้น (build เอาไปวาด)  ดู schema เต็มใน CLAUDE.md ข้อ 9
+  • theme.* = สีแบรนด์ (accent ห้ามเป็นน้ำเงิน default) • chart.fairLine = gauge.fair = fv = {{FV}}
+  • gauge.cur = ราคาปัจจุบัน = {{PRICE}} • highlight = ดัชนีจุดเด่นบนกราฟ (เช่น [2,7])
+  • chart.data = ราคาย้อนหลัง ~1 ปี (ไม่เกิน 13 จุด · E37) — จุดแรก = ราคา ~1 ปีก่อน, จุดท้าย = ราคาปัจจุบัน {{PRICE}}
+    (ผลตอบแทน จุดแรก→จุดท้าย ต้อง = ป้าย % รอบปีใน header · E36)
+  • theme.chgBg/chgColor = สีป้าย % รอบปี: ขึ้น→เขียว var(--green-soft)/#1e8e3e · ลง→แดง var(--red-soft)/#c5221f (E34)
+  • dataFmt อ้าง d[1] เท่านั้น, gridFmt อ้าง v เท่านั้น (ผิด scope = กราฟดับ)
+-->
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#c8860a",
+    "accentDark": "#7a5c06",
+    "darkGrad": "linear-gradient(135deg,#2e2004 0%,#6b4700 60%,#c8860a 100%)",
+    "glow": "rgba(200,134,10,0.35)",
+    "subColor": "#e6b95c",
+    "headerMuted": "rgba(255,255,255,0.55)",
+    "verdictText": "#FCEEDA",
+    "vcellLabel": "rgba(255,255,255,0.65)",
+    "badge": "#c8860a",
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#1e8e3e"
+  },
+  "chart": {
+    "data": [
+      ["ส.ค. 25", 99.98],
+      ["ก.ย. 25", 98.32],
+      ["ต.ค. 25", 98.40],
+      ["พ.ย. 25", 105.42],
+      ["ธ.ค. 25", 109.51],
+      ["ม.ค. 26", 122.91],
+      ["ก.พ. 26", 126.09],
+      ["มี.ค. 26", 115.50],
+      ["เม.ย. 26", 118.80],
+      ["พ.ค. 26", 110.37],
+      ["มิ.ย. 26", 120.12],
+      ["ปัจจุบัน", 124.35]
+    ],
+    "min": 85,
+    "max": 135,
+    "grid": [92, 105, 118, 131],
+    "fairLine": 92,
+    "currency": "$",
+    "highlight": [1, 6]
+  },
+  "gauge": {
+    "min": 55,
+    "max": 145,
+    "cur": 124.35,
+    "fair": 92,
+    "fairLabelTop": false
+  },
+  "fv": 92
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">●●●</div>
+    <div>
+      <span class="tag">NASDAQ: PCAR</span>
+      <span class="tag">Industrials / Heavy Trucks</span>
+      <span class="tag">Premium Truck OEM + Parts + Captive Finance</span>
+    </div>
+    <!-- ★ คำโปรยธุรกิจ (gate E32) — .sub ต้องอยู่ติดใต้ </h1> (ห้ามมีคอมเมนต์/แท็กคั่น) : บริษัททำอะไร ใช้ • คั่นกลุ่ม -->
+    <h1>PACCAR Inc (PCAR)</h1>
+    <div class="sub">ผู้ผลิตรถบรรทุกหนักพรีเมียม Kenworth, Peterbilt (สหรัฐฯ) และ DAF (ยุโรป) • PACCAR Parts อะไหล่หลังการขายมาร์จิ้นสูง • PACCAR Financial Services สินเชื่อ/ลีสซิ่งรถบรรทุก • ส่วนแบ่งตลาด Class 8 ทั่วโลก ~29%</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$124.35<small>(PCAR)</small></div>
+      </div>
+      <!-- ★ ป้าย % รอบปี (gate E35/E36) — ผลตอบแทน ~1 ปี (เทียบราคา ~1 ปีก่อน) = ผลตอบแทนปลายกราฟ section 2 (จุดแรก→ท้าย)
+           รูปแบบ: "▲ +X.X% (รอบปี)" ขึ้น · "▼ −X.X% (รอบปี)" ลง · "≈ ทรงตัว (รอบปี)" · หุ้น IPO <1 ปี ใช้ "(ตั้งแต่ IPO)"
+           ไม่ใช่ % รายวัน/YTD/52 สัปดาห์ · ตั้งสี theme.chgBg/chgColor ให้ตรงทิศ (ขึ้น=เขียว/ลง=แดง · E34) -->
+      <div class="chg">▲ +24.4% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 7 ก.ค. 2569 (7 Jul 2026, ตลาดสหรัฐฯ)<br>
+        กรอบ 52 สัปดาห์ $92.25 – $131.88<br>
+        ที่มา: Yahoo Finance, StockAnalysis.com, MarketBeat
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">EPS ยังอยู่จุดต่ำวงจร — ใช้ EPS mid-cycle ประเมินมูลค่า</div></div>
+    <!-- ✏️ ปรับการ์ด metric ให้เหมาะกับหุ้น/เซกเตอร์ได้อิสระ — gate ไม่บังคับชุด metric (เปลี่ยน label / สลับ / เพิ่ม-ลดการ์ดได้)
+         • คงป้าย "P/E (TTM)", "P/BV", "เงินปันผล", "ROE" ไว้ถ้าหุ้นมีจริง → W10 cross-check กับ stock-meta · ไม่มี (ขาดทุน/ไม่ปันผล) = ตัดการ์ดออก + ตั้ง stock-meta เป็น null
+         • ธนาคาร → NIM / NPL / CASA / Loan growth / Cost-to-income   • REIT/กองอสังหา → Occupancy / DPU / NAV / Gearing   • ประกัน → Combined ratio / EV
+         • หุ้นเติบโต-ขาดทุน → Revenue growth / Gross margin / FCF / Cash runway (ตัด P/E ออก) -->
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">$65.4B</div><div class="d">~526.3M หุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~26.5x</div><div class="d">EPS TTM ลดลง ~29% YoY จากจุดต่ำวงจร</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~14x</div><div class="d">10x (พีค FY2023) – 27x (จุดต่ำปัจจุบัน)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">3.35x</div><div class="d">BVPS $37.46 — ROE คุณภาพสูงกว่าคู่แข่ง</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">$2.38B</div><div class="d">−42.9% YoY (จากจุดพีค FY2024)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$4.70</div><div class="d">ฟื้นจากจุดต่ำ FY2025 $4.51 — consensus FY2027 ~$6.56</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~$37.46</div><div class="d">ส่วนของผู้ถือหุ้น $19.76B / ~526M หุ้น</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~13.1% / 5.7%</div><div class="d">ต่ำกว่าค่าเฉลี่ยวงจร (พีค FY2023 ROE >25%)</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$28.4B</div><div class="d">FY2025 (เทียบเท่า TTM); 1Q/2026 $6.78B</div></div>
+      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">14.0%</div><div class="d">Parts (aftermarket) margin ~30% ช่วยพยุง blended margin</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~2.2%</div><div class="d">รวมปันผลพิเศษ $2.96 (จ่าย ม.ค. 2569); ปันผลปกติ $1.40/ปี (~1.1%)</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">0.98</div><div class="d">ใกล้เคียงตลาด แต่กำไรผันผวนตามวงจรอุตสาหกรรมสูง</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART (ราคาย้อนหลัง ~1 ปี) ===== -->
+  <!-- ★ กราฟต้องเป็น "ราคาย้อนหลัง ~1 ปี" (gate E37): ไม่เกิน 13 จุด (รายเดือน 12 เดือน = 13 จุด · รายสองเดือน = ~8 จุด)
+       ห้ามใส่ 18 เดือน/1.5 ปี · จุดสุดท้าย = ราคาปัจจุบัน · ผลตอบแทน จุดแรก→จุดท้าย ต้องตรงกับป้าย % รอบปีใน header (E36) -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#c8860a"></i>ราคา PCAR</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $92</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        <!-- ✏️ บรรยายการเคลื่อนไหวราคา ~1 ปี: จุดสูง/ต่ำ, เปลี่ยนแปลง %, สาเหตุหลัก -->
+        ราคาฟื้นตัวจากโซนต่ำ ~$98 (ก.ย.–ต.ค. 2568) ขึ้นไปแตะจุดสูงสุดรอบปีที่ ~$126 (ก.พ. 2569) รับข่าวยอดสั่งซื้อ Class 8 เริ่มฟื้นและกระแส pre-buy ก่อนกฎเกณฑ์ปล่อยมลพิษ EPA 2570 ก่อนย่อลงมาแกว่งตัวช่วง $110–120 ปัจจุบันอยู่ที่ $124.35 ให้ผลตอบแทนรอบปี +24.4%
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION (เฉลี่ย 3 วิธี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี (ถ่วงน้ำหนัก)</div></div>
+    <div class="card">
+      <!-- ✏️ เลือก ≥2 วิธีให้เหมาะกับหุ้น — gate เช็คคณิตเฉพาะวิธีชื่อ "P/E" (E21) และ "Justified P/BV" (E22) เมื่อมีวิธีนั้น
+           ธนาคาร → เน้น P/BV / Residual income   • REIT → DDM / NAV   • หุ้นไม่ปันผล → ตัด DDM ออก ใช้ P/E + DCF/Justified P/BV -->
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation (Normalized)</div><div class="mdesc">EPS adj. $7.50 × P/E ~15x — mid-cycle normalized (พีค ~$8.76, trough ~$3.57, TTM ~$4.70) เป็นค่าเฉลี่ยที่ยั่งยืนกว่า; multiple 15x สะท้อน premium brand + ROIC สูงกว่าคู่แข่ง</div></div>
+        <div class="mval">$112.50</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผลปกติ $1.40 × (1+g); g 5%, r 9% → payout ratio ต่ำ (~19% ของ EPS mid-cycle) เพราะ PACCAR คืนทุนหลักผ่านปันผลพิเศษที่ไม่สม่ำเสมอ ไม่ใช่ปันผลปกติที่โตต่อเนื่อง — ใช้เป็นฐานล่างเท่านั้น น้ำหนักน้อยในค่าเฉลี่ย</div></div>
+        <div class="mval">$37</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 17% − g 5%)/(r 10% − g 5%) ≈ 2.40 × BVPS $37.46 — ROE normalized สะท้อนความสามารถทำกำไรเฉลี่ยตลอดวงจร (ไม่ใช่ ROE TTM ปัจจุบันที่ 13.1% ซึ่งต่ำกว่าวงจรปกติ)</div></div>
+        <div class="mval">$89.90</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $37 – $112.50</span></div>
+        <div class="r">$92</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        <!-- ✏️ หมายเหตุ: วิธีไหนให้ค่าสูง/ต่ำเพราะอะไร, ทำไม FV กลางจึงสมเหตุสมผล -->
+        วิธี P/E (ใช้ EPS mid-cycle ปรับวงจรแล้ว) ให้ค่าสูงสุด $112.50 สะท้อนกำลังทำกำไรระยะยาวของธุรกิจ ส่วนวิธี DDM ให้ค่าต่ำสุดเพียง $37 เพราะ PACCAR จ่ายปันผลปกติในสัดส่วนต่ำและคืนทุนส่วนใหญ่ผ่านปันผลพิเศษที่ไม่สม่ำเสมอ — DDM จึงเป็นเพียง "ฐานล่าง" ให้น้ำหนักน้อย (~15%) ส่วน Justified P/BV (ROE normalized 17%) ให้ $89.90 ใกล้เคียง Fair Value ถ่วงน้ำหนัก (45% P/E + 40% P/BV + 15% DDM) จึงอยู่ที่ $92 ต่ำกว่าราคาตลาดปัจจุบัน $124.35 ซึ่งเทรดบน P/E TTM สูงถึง 26.5x เพราะ EPS ยังอยู่จุดต่ำวงจร ไม่ใช่กำลังทำกำไรที่แท้จริงระยะยาว
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $124.35</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $92</div></div>
+        </div>
+        <div class="scale">
+          <span>$64.40<br><small>MOS 30%</small></span>
+          <span>$73.60<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$92<br><small>Fair Value</small></span>
+          <span style="text-align:right">$123<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">$140<br><small>เป้าสูงสุด Analyst</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน ($124.35) อยู่ <b>สูงกว่ามูลค่าเหมาะสม</b> เชิงพื้นฐาน (mid-cycle) แต่ยังต่ำกว่าเป้าหมายนักวิเคราะห์สูงสุด (Street High $140) เพราะนักวิเคราะห์ส่วนใหญ่มองไปข้างหน้าที่การฟื้นตัวของวงจรถัดไป ไม่ใช่กำไรปัจจุบัน — จุดซื้อที่มี margin of safety จริงต้องรอราคาย่อลงมาโซน $64–$74
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <!-- ✏️ class ของ mos-verdict: MOS<10 → "bad", 10–20 → "ok", ≥20 → "good" -->
+      <div class="mos-verdict bad">
+        <div class="big">−35.2%</div>
+        <div class="txt"><b>ไม่มี Margin of Safety</b><br>ราคาปัจจุบัน $124.35 สูงกว่ามูลค่าเหมาะสม $92 ราว 35% → ตามเกณฑ์ value investor ถือว่า <b>แพง</b> ที่จุดนี้ของวงจร (EPS ยังไม่ฟื้นเต็มที่) ยังไม่ใช่จุดซื้อที่ปลอดภัย</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$73.60</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$64.40</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $92</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="124.35" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $124.35 • EPS ฐาน ~$4.70 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS 0%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$75</div>
+          <div class="ret neg">−36.2%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$4.70</span></li>
+            <li><span>P/E ออก</span><span>16x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$4.20</span></li>
+            <li><span>สถานการณ์</span><span>ดีมานด์รถบรรทุกซบเซาต่อเนื่อง freight recession ยืดเยื้อ ไม่มี upcycle ใหม่ P/E ถูกกดจากมุมมองระมัดระวัง</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +17%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$113</div>
+          <div class="ret neg">−4.1%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$7.53</span></li>
+            <li><span>P/E ออก</span><span>15x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$6.30</span></li>
+            <li><span>สถานการณ์</span><span>ทยอยฟื้นตัวสู่ mid-cycle ตามคาด อุตสาหกรรมกลับเข้าสู่วงจรปกติ Parts/Financial Services พยุงกำไรฐาน</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +28%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$168</div>
+          <div class="ret pos">+43.6%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$9.86</span></li>
+            <li><span>P/E ออก</span><span>17x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$10.50</span></li>
+            <li><span>สถานการณ์</span><span>Freight upcycle แรง + pre-buy คึกคักก่อน EPA 2570 กำไรทำ new peak เหนือปี 2566 P/E ขยายตัวตาม sentiment เชิงบวก</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      สมมติฐาน: EPS ฐาน $4.70 (TTM ปัจจุบัน) เติบโตสู่ระดับต่างๆ ใน 3 ปีตามสถานการณ์ ผลตอบแทนรวม = (ราคาเป้าหมาย + ปันผลสะสม 3 ปี − ราคาปัจจุบัน)/ราคาปัจจุบัน สถานการณ์ Base สะท้อนการฟื้นตัวสู่ EPS mid-cycle ตามธรรมชาติของวงจรอุตสาหกรรมรถบรรทุก — แม้ Base case ก็ยังให้ผลตอบแทนติดลบเล็กน้อยเพราะราคาปัจจุบันวิ่งนำหน้าไปมากแล้ว
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <!-- ✏️ 4–6 ข้อ: เขียน <b>หัวข้อ:</b> รายละเอียด -->
+          <li><b>Pre-buy ก่อน EPA 2570:</b> กฎเกณฑ์ปล่อยมลพิษใหม่ของสหรัฐฯ ที่จะบังคับใช้ปี 2570 กระตุ้นให้ผู้ประกอบการเร่งซื้อรถรุ่นเก่าที่ถูกกว่าก่อนกฎใหม่มีผล หนุนยอดสั่งซื้อระยะสั้น-กลาง</li>
+          <li><b>อายุเฉลี่ยกองรถบรรทุกสูงเป็นประวัติการณ์:</b> fleet age ในสหรัฐฯ อยู่ในระดับสูง สร้างดีมานด์ replacement สะสมที่รอวันฟื้นตัวเมื่อ freight rate กระเตื้อง</li>
+          <li><b>PACCAR Parts มาร์จิ้นสูง:</b> ธุรกิจอะไหล่หลังการขาย gross margin ~30% เติบโตตาม installed base ทำหน้าที่กันชนกำไรในช่วงวงจรขาลง</li>
+          <li><b>แบรนด์พรีเมียม:</b> Kenworth/Peterbilt/DAF ตั้งราคาพรีเมียมเหนือคู่แข่ง (Freightliner, International) ได้ต่อเนื่อง ROIC สูงกว่าอุตสาหกรรม</li>
+          <li><b>ลงทุนรถบรรทุกไฟฟ้า/ไฮโดรเจน:</b> DAF/Kenworth เร่งพัฒนา zero-emission truck รองรับกฎเกณฑ์ยุโรป/แคลิฟอร์เนียระยะยาว</li>
+          <li><b>งบดุลแข็งแกร่ง:</b> ธุรกิจ manufacturing สุทธิแทบไม่มีหนี้ กระแสเงินสดอิสระสูง หนุนการจ่ายปันผลพิเศษ/buyback เมื่อวงจรฟื้น</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <!-- ✏️ 4–6 ข้อ: เขียน <b>หัวข้อ:</b> รายละเอียด -->
+          <li><b>วงจรขาลงยืดเยื้อ:</b> ยอดสั่งซื้อ Class 8 อ่อนไหวสูงต่อ freight rate, spot market และอัตราดอกเบี้ย freight recession ที่ยาวนานกว่าคาดกดดันกำไรต่อ</li>
+          <li><b>P/E TTM แพง:</b> เทรดที่ ~26.5x บน EPS ที่ยังอยู่จุดต่ำวงจร หากการฟื้นตัวช้ากว่าตลาดคาด มีความเสี่ยง multiple compression</li>
+          <li><b>ต้นทุนวัตถุดิบ/ภาษีนำเข้า:</b> ราคาเหล็กและชิ้นส่วนผันผวน รวมถึงความเสี่ยงภาษีนำเข้าชิ้นส่วนใหม่กดดันมาร์จิ้น</li>
+          <li><b>ความเสี่ยงสินเชื่อ PACCAR Financial:</b> ธุรกิจปล่อยกู้/ลีสซิ่งรถบรรทุกมีความเสี่ยงจากราคารถมือสองตกและอัตราผิดนัดชำระที่สูงขึ้นในช่วง freight อ่อนแอ</li>
+          <li><b>การแข่งขันสูง:</b> Daimler Truck, Volvo/Mack, Traton (International/Navistar) แข่งขันด้านราคาและการลงทุนเปลี่ยนผ่านสู่ EV อย่างดุเดือด</li>
+          <li><b>Air-pocket หลัง EPA 2570:</b> pre-buy ที่ดันยอดขายช่วงนี้อาจตามมาด้วยช่วงสุญญากาศดีมานด์หลังกฎใหม่มีผล คล้ายรูปแบบที่เคยเกิดในรอบ EPA ปี 2545/2550/2553</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>แบรนด์รถบรรทุกพรีเมียมคุณภาพสูง แต่ราคาวิ่งนำหน้าการฟื้นตัวของกำไรไปมากแล้ว</h2>
+      <p>PACCAR เป็นผู้นำตลาดรถบรรทุกหนักพรีเมียมที่มี moat แข็งแกร่งจากแบรนด์ Kenworth/Peterbilt/DAF ธุรกิจ Parts อะไหล่มาร์จิ้นสูงที่ทำหน้าที่เป็นตัวกันชนวงจร และงบดุลแข็งแรงมาก อย่างไรก็ตาม ราคาหุ้นปัจจุบันที่ $124.35 เทรดบน P/E TTM สูงถึง ~26.5x เพราะ EPS ยังอยู่จุดต่ำของวงจร ($4.70) เมื่อประเมินด้วย EPS mid-cycle ที่ปรับวงจรแล้ว (~$7.50) มูลค่าเหมาะสมอยู่ที่ราว $92 ต่ำกว่าราคาตลาดปัจจุบันราว 35% นักลงทุนที่เข้าซื้อตอนนี้กำลังเดิมพันว่าวงจรขาขึ้นรอบใหม่ (หนุนจาก pre-buy ก่อน EPA 2570) จะดันกำไรกลับสู่หรือเกินจุดพีคปี 2566 เร็วกว่าที่ตลาดเผื่อไว้</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$92 <span style="font-size:12px;color:#cab9a8">($37–$112.50)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −35.2%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$123 (Hold)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> รอราคาย่อลงมาใกล้โซน MOS 20–30% (~$64–$74) ก่อนพิจารณาเข้าซื้อเพื่อให้มี margin of safety ที่แท้จริง หรือทยอยสะสมเบา ๆ เฉพาะช่วงตลาดตื่นตระหนกจากข่าว freight ระยะสั้น นักลงทุนที่ถือหุ้นอยู่แล้วอาจพิจารณา trim บางส่วนหากราคาวิ่งเกิน $130 โดยไม่มีปัจจัยพื้นฐานสนับสนุนเพิ่มเติม
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ข้อมูล ณ 7 ก.ค. 2569 จาก Yahoo Finance, StockAnalysis.com, MarketBeat — EPS mid-cycle เป็นการประมาณการปรับวงจรของผู้จัดทำ ไม่ใช่ตัวเลขที่บริษัทเผยแพร่อย่างเป็นทางการ
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 8 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>

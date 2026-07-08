@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น L3Harris Technologies (LHX) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"LHX","currency":"USD","price":295.35,"fairValue":337,"mos":12.4,"upside":14.1,"pe":32.1,"dividendYield":1.69,"roe":8.9}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#4175c8",
+    "accentDark": "#2c5596",
+    "darkGrad": "linear-gradient(135deg,#0f1d33 0%,#1b355f 58%,#2b5596 140%)",
+    "glow": "rgba(65,113,190,.35)",
+    "subColor": "#cad3e2",
+    "headerMuted": "#b3bbc6",
+    "verdictText": "#d7deea",
+    "vcellLabel": "#b5bfcf",
+    "badge": "#4175c8",
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#1e8e3e"
+  },
+  "chart": {
+    "data": [
+      ["ก.ค. 25", 274.82],
+      ["ส.ค. 25", 277.62],
+      ["ก.ย. 25", 305.41],
+      ["ต.ค. 25", 289.10],
+      ["พ.ย. 25", 278.69],
+      ["ธ.ค. 25", 293.57],
+      ["ม.ค. 26", 342.85],
+      ["ก.พ. 26", 364.54],
+      ["มี.ค. 26", 345.15],
+      ["เม.ย. 26", 320.55],
+      ["พ.ค. 26", 315.18],
+      ["มิ.ย. 26", 290.59],
+      ["ปัจจุบัน", 295.35]
+    ],
+    "min": 250,
+    "max": 400,
+    "grid": [280, 320, 360, 400],
+    "fairLine": 337,
+    "currency": "$",
+    "highlight": [7, 12]
+  },
+  "gauge": { "min": 200, "max": 450, "cur": 295.35, "fair": 337, "fairLabelTop": true },
+  "fv": 337
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">●●●</div>
+    <div>
+      <span class="tag">NYSE: LHX</span>
+      <span class="tag">Aerospace &amp; Defense</span>
+      <span class="tag">Electronics / EW / ISR Prime Contractor</span>
+    </div>
+    <h1>L3Harris Technologies (LHX)</h1>
+    <div class="sub">ระบบอิเล็กทรอนิกส์ F-35 &amp; สงครามอิเล็กทรอนิกส์ (EW) • ดาวเทียม ISR • วิทยุทหาร (tactical radio) • กล้องมองกลางคืน (night vision) • Integrated Mission Systems • Aviation Systems • Missile Solutions (แบรนด์ใหม่ Axyv)</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$295.35<small>(LHX)</small></div>
+      </div>
+      <div class="chg">▲ +7.5% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 7 ก.ค. 2569 (7 Jul 2026)<br>
+        กรอบ 52 สัปดาห์ $254.12 – $379.23<br>
+        ที่มา: StockAnalysis.com, Google Finance, Yahoo Finance, L3Harris IR (SEC 8-K Q1 2026 &amp; FY2025 earnings release)
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">หลัง merger L3+Harris (2019) — backlog สถิติใหม่ $40.7B</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">$55.1B</div><div class="d">~186.7M หุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM, GAAP)</div><div class="v neu">~32x</div><div class="d">EPS TTM $9.21 (GAAP)</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~22x</div><div class="d">ช่วง ~15x–36x (โดยประมาณ, 5 ปี)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">2.86x</div><div class="d">BVPS $105.47 (31 มี.ค. 2569)</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">~$1.59B</div><div class="d">GAAP diluted EPS $8.53 · Non-GAAP $10.73</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$9.21</div><div class="d">FY26E guidance (GAAP) $11.40–$11.60</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~$105.47</div><div class="d">ส่วนของผู้ถือหุ้นรวม $19.68B</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~8.9% / 4.4%</div><div class="d">ต่ำกว่ากลุ่มเพราะ asset-heavy หลัง merger</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$22.48B</div><div class="d">FY26 guide $23.0–23.5B (+7% organic)</div></div>
+      <div class="metric"><div class="k">Segment Operating Margin</div><div class="v">~16.1%</div><div class="d">เป้า FY26 low-16% จาก 15.8% ปี 2568</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~1.69%</div><div class="d">$5.00/ปี · payout ~54% ของ GAAP EPS TTM</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">0.51</div><div class="d">ผันผวนต่ำ — รายได้อิงสัญญารัฐบาลระยะยาว</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART (ราคาย้อนหลัง ~1 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#4175c8"></i>ราคา LHX</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $337</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคาปรับตัวขึ้นแรงจาก $274.82 (ก.ค. 2568) แตะจุดสูงสุดรอบปีที่ $364.54 ในเดือน ก.พ. 2569 (+32.7% จากจุดเริ่มต้น)
+        หนุนโดยงบกลาโหมสหรัฐฯ ปี 2026 ที่ผ่านสภาฯ พร้อม NATO ผูกพันเพิ่มงบเป็น 5% ของ GDP และ backlog ที่ทำสถิติใหม่ต่อเนื่อง
+        จากนั้นราคาย่อตัวลงมาช่วง มี.ค.–มิ.ย. 2569 (จาก $364.54 เหลือ $290.59 ใน มิ.ย. 2569, -20.3%) จาก sector rotation ออกจากหุ้นกลาโหมหลัง valuation ตึงตัว
+        ก่อนฟื้นตัวเล็กน้อยมาปิดที่ $295.35 ในปัจจุบัน รวมทั้งปีราคาขึ้น +7.5% (รอบปี)
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION (เฉลี่ย 3 วิธี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">ถ่วงน้ำหนัก 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS adj. $11.50 × P/E 26x — EPS อิงเป้า FY2026 GAAP guidance ($11.40–$11.60); P/E 26x สะท้อน premium multiple ของหุ้นกลาโหมที่มี backlog เร่งตัวเป็นสถิติใหม่ เทียบค่าเฉลี่ยกลุ่ม defense prime ~18–22 เท่า</div></div>
+        <div class="mval">$299</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. EV/EBITDA</div><div class="mdesc">EBITDA TTM $3.53B × EV/EBITDA เป้าหมาย 19x = EV $67.1B ลบหนี้สุทธิ $10.83B หารด้วย ~186.7M หุ้น — มัลติเปิลสะท้อน margin ขยายตัวต่อเนื่องและ backlog สถิติใหม่ $40.7B</div></div>
+        <div class="mval">$301</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. DCF (Discounted Cash Flow)</div><div class="mdesc">FCF ปีฐาน $3.0B (เป้าหมาย FY2026 บริษัท) เติบโต 8%/ปี 5 ปี, terminal growth 3.5%, discount rate (WACC) 8.5% → PV กระแสเงินสด 5 ปี + terminal value หารด้วย ~186.7M หุ้น</div></div>
+        <div class="mval">$405</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $299 – $405</span></div>
+        <div class="r">$337</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        FV คำนวณแบบถ่วงน้ำหนัก: P/E (forward) 35% + EV/EBITDA 30% + DCF 35% เพราะไม่มีวิธีใดวิธีหนึ่งเหมาะกับหุ้นกลาโหมสมบูรณ์แบบ —
+        P/E ใช้ EPS guidance FY2026 (GAAP) ที่ยังมีความไม่แน่นอนจากการแยกธุรกิจ Axyv, EV/EBITDA สะท้อนโครงสร้างทุน (หนี้สุทธิ $10.8B) ได้ดีกว่า P/E เพียงอย่างเดียว,
+        DCF จับมูลค่าระยะยาวจาก backlog $40.7B ที่ยังไม่รวมคำสั่งซื้อ Munitions Acceleration Council $25B ที่กำลังเจรจา
+        FV $337 ต่ำกว่าเป้าเฉลี่ยนักวิเคราะห์ ($381) เพราะระมัดระวังกว่าเรื่องความเสี่ยง valuation ตึงตัวและการแยกธุรกิจ Axyv ที่ยังไม่แน่นอน
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $295.35</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $337</div></div>
+        </div>
+        <div class="scale">
+          <span>$236<br><small>MOS 30%</small></span>
+          <span>$270<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$337<br><small>Fair Value</small></span>
+          <span style="text-align:right">$381<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">$405<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน ($295.35) ต่ำกว่ามูลค่าเหมาะสม ($337) ~12% และต่ำกว่าเป้าเฉลี่ยนักวิเคราะห์ ($381) ~22%
+        สะท้อนว่าตลาดยังไม่รับรู้ปัจจัยบวกจาก backlog สถิติใหม่และการแยกธุรกิจ Axyv เต็มที่ แต่ก็ไม่ใช่จุดที่ถูกมากเทียบมูลค่าพื้นฐาน เพราะราคารีเรทขึ้นมามากแล้วในช่วงต้นปี 2569
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict ok">
+        <div class="big">+12.4%</div>
+        <div class="txt">Margin of Safety ระดับปานกลาง — ราคาปัจจุบันต่ำกว่ามูลค่าเหมาะสมพอสมควรแต่ไม่ใช่จุดเข้าราคาถูกมาก (deep value) เนื่องจากราคาปรับตัวขึ้นแรงในช่วงต้นปี 2569 ตามธีม defense budget supercycle และ Axyv spinoff catalyst</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$270</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$236</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $337</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="295.35" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $295.35 • EPS ฐาน ~$11.50 (FY26E) • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS +2%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$220</div>
+          <div class="ret neg">−20.4%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$12.20</span></li>
+            <li><span>P/E ออก</span><span>18x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$15.0</span></li>
+            <li><span>สถานการณ์</span><span>งบกลาโหมสหรัฐฯ สะดุด (continuing resolution), Axyv spinoff กระทบ margin ระยะสั้น, P/E de-rate สู่ค่าเฉลี่ยกลุ่ม</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +10%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$367</div>
+          <div class="ret pos">+29.6%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$15.31</span></li>
+            <li><span>P/E ออก</span><span>24x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$15.8</span></li>
+            <li><span>สถานการณ์</span><span>backlog $40.7B แปลงเป็นรายได้ตามแผน, margin ขยายสู่เป้า low-16%, P/E ย่อลงเล็กน้อยจาก 32x เหลือ 24x</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +13%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$448</div>
+          <div class="ret pos">+57.2%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$16.59</span></li>
+            <li><span>P/E ออก</span><span>27x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$16.2</span></li>
+            <li><span>สถานการณ์</span><span>Munitions Acceleration Council orders $25B แปลงเป็น backlog จริง + Axyv IPO ปลดล็อกมูลค่า + งบกลาโหม NATO เร่งตัวเร็วกว่าคาด</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      Base case (+29.6% รวมปันผล 3 ปี) อิงกับ EPS เติบโต 10%/ปีตามแผน backlog conversion + margin ขยายตัวสู่เป้า low-16% และ P/E ย่อลงเล็กน้อยจาก ~32x ปัจจุบันเป็น 24x (ยังคง premium แต่ไม่สุดโต่ง)
+      Bear case เกิดได้หากงบกลาโหมสหรัฐฯ สะดุด หรือการแยกธุรกิจ Axyv กระทบ margin ระยะสั้น กด P/E กลับสู่ค่าเฉลี่ยกลุ่ม ~18x
+      Bull case ต้องอาศัย Munitions Acceleration Council orders $25B แปลงเป็น backlog จริง, Axyv IPO ปลดล็อกมูลค่าธุรกิจ Missile Solutions และงบกลาโหม NATO เร่งตัวเร็วกว่าคาด ดัน P/E ให้คงระดับพรีเมียม ~27x
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>Backlog สถิติใหม่ $40.7B:</b> book-to-bill 1.4x ใน Q1 2026 ให้ visibility รายได้หลายปี และยังไม่รวมคำสั่งซื้อ Munitions Acceleration Council อีก $25B ที่กำลังเจรจา</li>
+          <li><b>Axyv missile spinoff/IPO:</b> ปลดล็อกมูลค่าธุรกิจ Missile Solutions (มอเตอร์จรวด, ระบบนำวิถี Patriot/THAAD/Tomahawk) ที่รัฐบาลสหรัฐฯ ลงทุนตรง $1B แล้ว เป้า IPO ครึ่งหลังปี 2569 โดย L3Harris ยังถือครองมากกว่า 80%</li>
+          <li><b>Defense spending supercycle:</b> NATO ผูกพันงบกลาโหม 5% ของ GDP, สงคราม Ukraine/ตะวันออกกลาง/ความตึงเครียด Indo-Pacific หนุนอุปสงค์ EW, ISR, night vision, tactical radio ต่อเนื่อง</li>
+          <li><b>Margin ขยายตัวต่อเนื่อง:</b> เป้า adjusted segment operating margin low-16% ในปี 2026 จาก 15.8% ปี 2025 หนุนโดย backlog conversion และ cost synergy หลังควบรวม L3-Harris</li>
+          <li><b>F-35 electronics/EW content เพิ่มขึ้นต่อรุ่น:</b> สัญญาระยะยาวกับ Lockheed Martin สร้างรายได้ที่คาดการณ์ได้สูงตลอดอายุโครงการ</li>
+          <li><b>สถานะการเงินแข็งแกร่งขึ้น:</b> net leverage เข้าใกล้เป้าหมาย เปิดทางคืนทุนผู้ถือหุ้นเพิ่มเติมผ่าน buyback และเงินปันผล</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>Valuation ตึงตัว:</b> P/E TTM ~32x (GAAP) สูงกว่าค่าเฉลี่ยกลุ่ม defense prime มาก หากงบกลาโหมสหรัฐฯ ชะลอหรือผ่านงบประมาณล่าช้า (continuing resolution) อาจกดดันให้ multiple de-rate กลับ</li>
+          <li><b>Axyv spinoff execution risk:</b> การแยกธุรกิจ Missile Solutions ออกมา IPO อาจกระทบโครงสร้างรายได้/margin ระยะสั้น และผลตอบแทนจาก IPO ไม่แน่นอน ขึ้นกับสภาวะตลาดช่วงครึ่งหลังปี 2569</li>
+          <li><b>กระแสเงินสดผันผวนตามฤดูกาล:</b> Q1 2026 FCF ติดลบ $187M (ฤดูกาลปกติของอุตสาหกรรมกลาโหม) เป้า FCF $3.0B ปี 2026 เอนเอียงไปครึ่งปีหลังมาก มีความเสี่ยง execution</li>
+          <li><b>ความเสี่ยงกระจุกตัวลูกค้า:</b> รายได้ส่วนใหญ่พึ่งพารัฐบาลสหรัฐฯ และพันธมิตร NATO งบประมาณผูกกับการเมือง/นโยบาย เปลี่ยนรัฐบาลอาจกระทบลำดับความสำคัญโครงการ</li>
+          <li><b>หนี้สุทธิ ~$10.8B:</b> debt/equity 0.61 ต้นทุนดอกเบี้ยกดกำไรสุทธิ แม้ยังอยู่ในเกณฑ์ที่จัดการได้</li>
+          <li><b>การแข่งขันสูง:</b> คู่แข่งอย่าง RTX, Northrop Grumman, General Dynamics แข่งชิงหลายสัญญาสำคัญ อาจกดดัน margin/win rate ระยะยาว</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>L3Harris (LHX): หุ้นกลาโหมคุณภาพสูง backlog สถิติใหม่ — ราคาใกล้มูลค่าเหมาะสมหลังรีเรทแรงต้นปี 2569</h2>
+      <p>L3Harris เป็นหนึ่งใน defense prime อันดับต้นของสหรัฐฯ ที่มี backlog สถิติใหม่ $40.7B และแนวโน้มธุรกิจแข็งแกร่งจาก defense budget supercycle รวมถึง catalyst ใหม่จากการแยกธุรกิจ Missile Solutions (Axyv) ออก IPO
+      แต่ราคาหุ้นรีเรทขึ้นแรงตั้งแต่ต้นปี 2569 ทำให้ valuation ตึงตัวขึ้นมาก (P/E TTM ~32x) MOS ปัจจุบันอยู่ในระดับปานกลาง ไม่ใช่จุดเข้าราคาถูกมาก เหมาะสำหรับผู้ลงทุนระยะยาวที่เชื่อในธีมกลาโหมมากกว่าการเก็งกำไรระยะสั้น</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$337 <span style="font-size:12px;color:#cab9a8">($299–$405)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +12.4%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$381 (Buy)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ราคาปัจจุบัน ($295.35) มี MOS ~12% เทียบมูลค่าเหมาะสม ($337) — เหมาะสำหรับทยอยสะสม (DCA) มากกว่าซื้อครั้งเดียว โดยเฉพาะหากราคาย่อลงมาใกล้โซน MOS20% ($270) จะเป็นจุดเข้าที่น่าสนใจกว่า
+        ผู้ลงทุนระยะยาวที่เชื่อในธีม defense supercycle และ Axyv unlock ยังถือได้ต่อ แต่ผู้ที่เพิ่งเข้าใหม่ควรรอจังหวะย่อตัวเพื่อเพิ่ม margin of safety
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ข้อมูล ณ 7 ก.ค. 2569 จาก StockAnalysis.com, Google Finance, Yahoo Finance, L3Harris IR (SEC 8-K Q1 2026 &amp; FY2025 earnings release)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 7 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
