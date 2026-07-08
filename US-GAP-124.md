@@ -5,7 +5,7 @@
 > **จัดลำดับ:** Tier A = ย่อลึก/de-rate แรง ณ ก.ค. 2569 (ทำก่อน มีโอกาสเจอ MOS จริง) → Tier B = บลูชิพ/quality ที่ขาดเพื่อความครบ → Tier C = สายปันผล/defensive (utilities·REITs·midstream·materials)
 > สร้าง 2026-07-05 · % ในตาราง = ผลตอบแทน 1 ปีจาก Yahoo ณ วันสร้างแผน (ตอนวิเคราะห์จริงต้องดึงใหม่ + ตรวจข้ามแหล่งเสมอ)
 >
-> **📊 ความคืบหน้า (อัปเดต 8 ก.ค. 2569): เสร็จ 54/124 — จบ W18 · resume ที่ W19 (#55 WCN · #56 CNI · #57 CP)** · เหลือ 70 ตัว (W19→~W42)
+> **📊 ความคืบหน้า (อัปเดต 8 ก.ค. 2569): เสร็จ 60/124 — จบ W20 · resume ที่ W21 (#61 ZBRA · #62 AKAM · #63 MCHP🔺)** · เหลือ 64 ตัว (W21→~W42)
 
 ---
 
@@ -93,12 +93,12 @@
 | 52 | W18 | HUBB | ไฟฟ้า | Hubbell — grid hardware ธีม electrification | | ✅ $478.89/$522.96 MOS+8% |
 | 53 | W18 | XYL | น้ำ | Xylem −17% — water tech ผู้นำโลก | | ✅ $120.65/$107.79 MOS-12% |
 | 54 | W18 | GGG | อุตสาหกรรม | Graco −12% ใกล้ 52w low — pump/spray compounder งบเนี้ยบ | | ✅ $75.2/$83.81 MOS+10% |
-| 55 | W19 | WCN | ขยะ | Waste Connections — คู่ WM/RSG ที่มีแล้ว, secondary markets moat | | ⬜ |
-| 56 | W19 | CNI | รถไฟ | Canadian National — rail duopoly แคนาดา (US-listed USD) | | ⬜ |
-| 57 | W19 | CP | รถไฟ | CP-KC — เส้นทางเดียวที่เชื่อม แคนาดา-US-เม็กซิโก | | ⬜ |
-| 58 | W20 | TDY | เซนเซอร์/ป้องกัน | Teledyne — digital imaging/drone payload, serial acquirer | | ⬜ |
-| 59 | W20 | CDW | IT reseller | CDW −19% — IT VAR ใหญ่สุด, โดน AI-fear เกินเหตุ? | | ⬜ |
-| 60 | W20 | VRSN | อินเทอร์เน็ต | Verisign — ผูกขาด .com registry, Buffett ถือ | | ⬜ |
+| 55 | W19 | WCN | ขยะ | Waste Connections — คู่ WM/RSG ที่มีแล้ว, secondary markets moat | $172.93/$150.70 MOS−14.8% | ✅ |
+| 56 | W19 | CNI | รถไฟ | Canadian National — rail duopoly แคนาดา (US-listed USD) | $122.78/$109 MOS−12.6% | ✅ |
+| 57 | W19 | CP | รถไฟ | CP-KC — เส้นทางเดียวที่เชื่อม แคนาดา-US-เม็กซิโก | $88.72/$85.44 MOS−3.8% | ✅ |
+| 58 | W20 | TDY | เซนเซอร์/ป้องกัน | Teledyne — digital imaging/drone payload, serial acquirer | $641.70/$601.22 MOS−6.7% | ✅ |
+| 59 | W20 | CDW | IT reseller | CDW −19% — IT VAR ใหญ่สุด, โดน AI-fear เกินเหตุ? | $139.23/$143 MOS+2.6% | ✅ |
+| 60 | W20 | VRSN | อินเทอร์เน็ต | Verisign — ผูกขาด .com registry, Buffett ถือ | $266.78/$250 MOS−6.7% | ✅ |
 | 61 | W21 | ZBRA | ฮาร์ดแวร์ | Zebra −16% — barcode/warehouse automation duopoly | | ⬜ |
 | 62 | W21 | AKAM | cybersecurity/CDN | Akamai +43% — เปลี่ยนผ่านสู่ security/compute สำเร็จ | | ⬜ |
 | 63 | W21 | MCHP | เซมิ | Microchip +30% — MCU cyclical กำลังฟื้นจาก trough (normalize EPS) | 🔺 | ⬜ |
