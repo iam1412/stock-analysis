@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="th">
+<!--
+  ════════════════════════════════════════════════════════════════════════════
+  SKELETON — หุ้นต่างประเทศ (USD $ / NASDAQ·NYSE)  ★ ก๊อปไฟล์นี้เป็นจุดตั้งต้นหุ้นต่างประเทศ
+  ════════════════════════════════════════════════════════════════════════════
+  วิธีใช้:  cp _template/skeleton-us.html reports/<SYMBOL>.html  แล้วแทนทุก {{...}} ด้วยข้อมูลจริง
+  • ทุกช่องที่ต้องแก้คือ {{...}}  — ห้ามเหลือค้าง (gate E13 จะ error ถ้าเจอ {{ }} ในรายงาน)
+  • ตัวเลขต้องสอดคล้องกันตามกฎใน CLAUDE.md ข้อ 7 — เช่น MOS20=829×0.8, MOS=(FV−price)/FV
+  • เลือกสีแบรนด์ใน theme (ห้ามปล่อย default) — ดู tools/brand-colors.md + tools/seeds.json
+  • โครง CSS/engine ถูก inject ตอน build (marker STYLE/ENGINE) — ไม่ต้องแตะ
+  ════════════════════════════════════════════════════════════════════════════
+-->
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น United Rentals, Inc. (URI) — Stock Analysis Dashboard</title>
+<!-- ★ ใส่รุ่นโมเดล AI ที่ใช้วิเคราะห์จริง (Opus→"Claude Opus 4.8", Sonnet→"Claude Sonnet 4.6") — gate E28 บังคับ -->
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
+<script type="application/json" id="stock-meta">
+{"symbol": "URI", "currency": "USD", "price": 1056.02, "fairValue": 829, "mos": -27.4, "upside": -21.5, "pe": 27.0, "dividendYield": 0.75, "roe": 28.2}
+</script>
+<!--
+  report-data: ธีมสี + ข้อมูลกราฟ/gauge ต่อหุ้น (build เอาไปวาด)  ดู schema เต็มใน CLAUDE.md ข้อ 9
+  • theme.* = สีแบรนด์ (accent ห้ามเป็นน้ำเงิน default) • chart.fairLine = gauge.fair = fv = 829
+  • gauge.cur = ราคาปัจจุบัน = 1,056.02 • highlight = ดัชนีจุดเด่นบนกราฟ (เช่น [2,7])
+  • chart.data = ราคาย้อนหลัง ~1 ปี (ไม่เกิน 13 จุด · E37) — จุดแรก = ราคา ~1 ปีก่อน, จุดท้าย = ราคาปัจจุบัน 1,056.02
+    (ผลตอบแทน จุดแรก→จุดท้าย ต้อง = ป้าย % รอบปีใน header · E36)
+  • theme.chgBg/chgColor = สีป้าย % รอบปี: ขึ้น→เขียว var(--green-soft)/#1e8e3e · ลง→แดง var(--red-soft)/#c5221f (E34)
+  • dataFmt อ้าง d[1] เท่านั้น, gridFmt อ้าง v เท่านั้น (ผิด scope = กราฟดับ)
+-->
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#ed8f1d",
+    "accentDark": "#b3690f",
+    "darkGrad": "linear-gradient(135deg,#3e2404 0%,#734207 58%,#b6690c 140%)",
+    "glow": "rgba(236,138,19,.35)",
+    "subColor": "#ebd8c2",
+    "headerMuted": "rgba(255,255,255,0.55)",
+    "verdictText": "#f1e2d0",
+    "vcellLabel": "#ddc5a6",
+    "badge": "#ed8f1d",
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#1e8e3e"
+  },
+  "chart": {
+    "data": [
+      [
+        "ส.ค. 25",
+        956.34
+      ],
+      [
+        "ก.ย. 25",
+        954.66
+      ],
+      [
+        "ต.ค. 25",
+        871.18
+      ],
+      [
+        "พ.ย. 25",
+        815.18
+      ],
+      [
+        "ธ.ค. 25",
+        809.32
+      ],
+      [
+        "ม.ค. 26",
+        782.06
+      ],
+      [
+        "ก.พ. 26",
+        840.0
+      ],
+      [
+        "มี.ค. 26",
+        728.56
+      ],
+      [
+        "เม.ย. 26",
+        959.84
+      ],
+      [
+        "พ.ค. 26",
+        995.67
+      ],
+      [
+        "มิ.ย. 26",
+        1132.89
+      ],
+      [
+        "ก.ค. 26",
+        1098.59
+      ],
+      [
+        "ปัจจุบัน",
+        1056.02
+      ]
+    ],
+    "min": 650,
+    "max": 1200,
+    "grid": [
+      750,
+      900,
+      1050,
+      1200
+    ],
+    "fairLine": 829,
+    "currency": "$",
+    "highlight": [
+      7,
+      10
+    ]
+  },
+  "gauge": {
+    "min": 450,
+    "max": 1200,
+    "cur": 1056.02,
+    "fair": 829,
+    "fairLabelTop": false
+  },
+  "fv": 829
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">●●●</div>
+    <div>
+      <span class="tag">NYSE: URI</span>
+      <span class="tag">Industrials / Equipment Rental</span>
+      <span class="tag">ผู้นำตลาดเช่าอุปกรณ์ก่อสร้างโลก</span>
+    </div>
+    <!-- ★ คำโปรยธุรกิจ (gate E32) — .sub ต้องอยู่ติดใต้ </h1> (ห้ามมีคอมเมนต์/แท็กคั่น) : บริษัททำอะไร ใช้ • คั่นกลุ่ม -->
+    <h1>United Rentals, Inc. (URI)</h1>
+    <div class="sub">ผู้นำตลาดเช่าอุปกรณ์ก่อสร้างรายใหญ่ที่สุดในโลก ~1,600 สาขาในสหรัฐฯ-แคนาดา • General Rentals (เครื่องจักรก่อสร้าง, Aerial Work Platforms, Material Handling) • Specialty (Trench Safety, Power &amp; HVAC, Fluid Solutions, Mobile Storage) • ลูกค้าก่อสร้าง, data center, อุตสาหกรรม, ภาครัฐ</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$1,056.02<small>(URI)</small></div>
+      </div>
+      <!-- ★ ป้าย % รอบปี (gate E35/E36) — ผลตอบแทน ~1 ปี (เทียบราคา ~1 ปีก่อน) = ผลตอบแทนปลายกราฟ section 2 (จุดแรก→ท้าย)
+           รูปแบบ: "▲ +X.X% (รอบปี)" ขึ้น · "▼ −X.X% (รอบปี)" ลง · "≈ ทรงตัว (รอบปี)" · หุ้น IPO <1 ปี ใช้ "(ตั้งแต่ IPO)"
+           ไม่ใช่ % รายวัน/YTD/52 สัปดาห์ · ตั้งสี theme.chgBg/chgColor ให้ตรงทิศ (ขึ้น=เขียว/ลง=แดง · E34) -->
+      <div class="chg">▲ +10.4% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 7 ก.ค. 2569 (7 Jul 2026, ตลาดปิด NYSE)<br>
+        กรอบ 52 สัปดาห์ $701.59 – $1,143.69<br>
+        ที่มา: Yahoo Finance, StockAnalysis.com, United Rentals Investor Relations
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">P/E เทรดสูงกว่าค่าเฉลี่ย 5 ปีมาก — สะท้อนช่วง earnings momentum/data center capex boom</div></div>
+    <!-- ✏️ ปรับการ์ด metric ให้เหมาะกับหุ้น/เซกเตอร์ได้อิสระ — gate ไม่บังคับชุด metric (เปลี่ยน label / สลับ / เพิ่ม-ลดการ์ดได้)
+         • คงป้าย "P/E (TTM)", "P/BV", "เงินปันผล", "ROE" ไว้ถ้าหุ้นมีจริง → W10 cross-check กับ stock-meta · ไม่มี (ขาดทุน/ไม่ปันผล) = ตัดการ์ดออก + ตั้ง stock-meta เป็น null
+         • ธนาคาร → NIM / NPL / CASA / Loan growth / Cost-to-income   • REIT/กองอสังหา → Occupancy / DPU / NAV / Gearing   • ประกัน → Combined ratio / EV
+         • หุ้นเติบโต-ขาดทุน → Revenue growth / Gross margin / FCF / Cash runway (ตัด P/E ออก) -->
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">$66.16B</div><div class="d">~62.65M หุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~27.0x</div><div class="d">สูงกว่าค่าเฉลี่ย 5 ปี (~17x) มาก — ตลาดให้ premium กับ earnings momentum ปัจจุบัน</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~17x</div><div class="d">12x (จุดต่ำ FY2022) – 21x (FY2025)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">7.4x</div><div class="d">BVPS $142.96 — ROE สูงจากโครงสร้างทุนที่ใช้ leverage ของธุรกิจให้เช่าฟลีต</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">$2.49B</div><div class="d">รายได้ FY2025 $16.1B +5.0% YoY (TTM)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$39.15</div><div class="d">Adjusted EPS TTM ~$42.97 (Q2/2025–Q1/2026); FY2026 consensus ~$46.66</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~$142.96</div><div class="d">ส่วนของผู้ถือหุ้น $8.97B / ~62.65M หุ้น</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~28.2% / 8.4%</div><div class="d">ROE สูงจาก leverage (Net debt/EBITDA ~2.1x) ธุรกิจให้เช่าฟลีตแบบ capital-intensive</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$16.37B</div><div class="d">+5.0% YoY; FY2026 guidance $16.9–17.4B</div></div>
+      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">43.9%</div><div class="d">EBITDA TTM $7.19B; FY2026 guidance adj. EBITDA $7.6–7.9B</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~0.75%</div><div class="d">$7.88/ปี ($1.97/ไตรมาส) +10% YoY; payout ~18-20% ของ adjusted EPS</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">1.79</div><div class="d">ผันผวนสูงกว่าตลาด ตามวงจรก่อสร้าง/ดอกเบี้ย</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART (ราคาย้อนหลัง ~1 ปี) ===== -->
+  <!-- ★ กราฟต้องเป็น "ราคาย้อนหลัง ~1 ปี" (gate E37): ไม่เกิน 13 จุด (รายเดือน 12 เดือน = 13 จุด · รายสองเดือน = ~8 จุด)
+       ห้ามใส่ 18 เดือน/1.5 ปี · จุดสุดท้าย = ราคาปัจจุบัน · ผลตอบแทน จุดแรก→จุดท้าย ต้องตรงกับป้าย % รอบปีใน header (E36) -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#ed8f1d"></i>ราคา URI</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $829</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        <!-- ✏️ บรรยายการเคลื่อนไหวราคา ~1 ปี: จุดสูง/ต่ำ, เปลี่ยนแปลง %, สาเหตุหลัก -->
+        ราคาร่วงต่อเนื่องจาก ~$956 (ส.ค. 2568) มาแตะจุดต่ำสุดรอบปีที่ ~$728.56 (มี.ค. 2569) จากความกังวลอัตราดอกเบี้ยสูงและผลประกอบการ Q4/2025 ที่แม้ทำสถิติสูงสุดแต่อัตราเติบโตชะลอตัว ก่อนพลิกกลับแรงขึ้นไปแตะจุดสูงสุดรอบปีที่ ~$1,132.89 (มิ.ย. 2569) รับข่าว Q1/2026 ทำสถิติสูงสุด ปรับเพิ่มคำแนะนำปี 2026 และกระแส data center/AI capex supercycle ปัจจุบันย่อลงมาอยู่ที่ $1,056.02 ให้ผลตอบแทนรอบปี +10.4%
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION (เฉลี่ย 3 วิธี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <!-- ✏️ เลือก ≥2 วิธีให้เหมาะกับหุ้น — gate เช็คคณิตเฉพาะวิธีชื่อ "P/E" (E21) และ "Justified P/BV" (E22) เมื่อมีวิธีนั้น
+           ธนาคาร → เน้น P/BV / Residual income   • REIT → DDM / NAV   • หุ้นไม่ปันผล → ตัด DDM ออก ใช้ P/E + DCF/Justified P/BV -->
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS (TTM) $42.97 × P/E เป้าหมาย ~20x — normalized มากกว่า P/E TTM (GAAP) ปัจจุบัน ~27x ที่สะท้อนช่วง earnings momentum/data center capex boom; 20x ยังสูงกว่าค่าเฉลี่ย 5 ปี (~17x) เพราะมาร์จิ้นและมิกซ์ Specialty ดีขึ้นเชิงโครงสร้าง</div></div>
+        <div class="mval">$859.40</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล $7.88 × (1+g); g 6%, r 9% → payout ratio ต่ำมาก (~18% ของ adjusted EPS) เพราะ URI คืนทุนหลักผ่าน buyback (~$2B/ปี) ไม่ใช่ปันผล — ใช้เป็นฐานล่างเท่านั้น น้ำหนักน้อยในค่าเฉลี่ย</div></div>
+        <div class="mval">$278.43</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 28% − g 7%)/(r 10% − g 7%) ≈ 7.00 × BVPS $142.96</div></div>
+        <div class="mval">$1,000.72</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $278 – $1,001</span></div>
+        <div class="r">$829</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        <!-- ✏️ หมายเหตุ: วิธีไหนให้ค่าสูง/ต่ำเพราะอะไร, ทำไม FV กลางจึงสมเหตุสมผล -->
+        วิธี Justified P/BV (ROE 28%) ให้ค่าสูงสุด $1,000.72 สะท้อนความสามารถทำกำไรที่แท้จริงของธุรกิจ ส่วนวิธี DDM ให้ค่าต่ำสุดเพียง $278.43 เพราะ URI จ่ายปันผลในสัดส่วนต่ำมาก (payout ~18-20%) และคืนทุนหลักผ่าน buyback แทน — DDM จึงเป็นเพียง "ฐานล่าง" ให้น้ำหนักน้อย (15%) วิธี P/E (EPS adjusted × P/E normalized 20x เทียบค่าเฉลี่ย 5 ปี ~17x) ให้ $859.40 ถ่วงน้ำหนัก 45% P/E + 40% Justified P/BV + 15% DDM จึงได้ Fair Value เฉลี่ย ~$829 ต่ำกว่าราคาตลาดปัจจุบัน $1,056.02 ซึ่งเทรดบน P/E TTM สูงถึง 27x สะท้อนว่าตลาดให้ premium กับ earnings momentum ระยะสั้นมากกว่ามูลค่าฐานระยะยาว
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $1,056.02</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $829</div></div>
+        </div>
+        <div class="scale">
+          <span>$580.30<br><small>MOS 30%</small></span>
+          <span>$663.20<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$829<br><small>Fair Value</small></span>
+          <span style="text-align:right">$1,001<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">$1,127<br><small>เป้าเฉลี่ย Analyst</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน ($1,056.02) อยู่ <b>สูงกว่ามูลค่าเหมาะสม</b> ($829) ค่อนข้างมาก และใกล้เคียงเป้าเฉลี่ยนักวิเคราะห์ 12 เดือน ($1,127) มากกว่า — บ่งชี้ตลาดให้น้ำหนักกับ earnings momentum/การเติบโตต่อเนื่องมากกว่ามูลค่าฐาน (normalized) จุดที่มี margin of safety จริงต้องรอราคาย่อกลับลงมาโซน $580–$663
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <!-- ✏️ class ของ mos-verdict: MOS<10 → "bad", 10–20 → "ok", ≥20 → "good" -->
+      <div class="mos-verdict bad">
+        <div class="big">−27.4%</div>
+        <div class="txt"><b>ไม่มี Margin of Safety</b><br>ราคาปัจจุบัน $1,056.02 สูงกว่ามูลค่าเหมาะสม $829 ราว 27% → หุ้นคุณภาพดีแต่ปัจจุบันเทรดแพงเชิงพื้นฐาน (P/E TTM ~27x เทียบค่าเฉลี่ย 5 ปี ~17x) ยังไม่ใช่จุดซื้อที่ปลอดภัยตามเกณฑ์ value investor</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$663.20</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$580.30</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $829</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="1056.02" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $1,056.02 • EPS ฐาน ~$42.97 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS 0%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$516</div>
+          <div class="ret neg">−48.9%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$42.97</span></li>
+            <li><span>P/E ออก</span><span>12x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$24</span></li>
+            <li><span>สถานการณ์</span><span>เศรษฐกิจ/ก่อสร้างชะลอแรง ดอกเบี้ยสูงต่อเนื่อง time utilization และราคาเช่าอ่อนตัว P/E หดกลับสู่จุดต่ำวงจร</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +8%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$1,083</div>
+          <div class="ret pos">+5.2%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$54.14</span></li>
+            <li><span>P/E ออก</span><span>20x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$28</span></li>
+            <li><span>สถานการณ์</span><span>เติบโตตามคำแนะนำ FY2026 ($16.9–17.4B) infrastructure spending (IIJA) + data center capex ต่อเนื่อง P/E ค่อยๆ คลายจากจุดสูงสุดสู่ระดับ normalized</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +15%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$1,438</div>
+          <div class="ret pos">+39.1%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$65.36</span></li>
+            <li><span>P/E ออก</span><span>22x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$31</span></li>
+            <li><span>สถานการณ์</span><span>Data center/AI capex เร่งตัวแรง M&A เพิ่มเติม (ตาม track record Ahern/BlueLine) ขยาย Specialty segment เร็ว มาร์จิ้นสูงขึ้นต่อเนื่อง ตลาดให้ premium multiple ต่อ</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      สมมติฐานอิงคำแนะนำ FY2026 ของบริษัท ($16.9–17.4B รายได้ / $7.6–7.9B adj. EBITDA) และวงจร P/E ในอดีต (12x จุดต่ำ – 21x จุดสูง) ปันผลรวมคำนวณจากอัตราการเติบโตของแต่ละ scenario บนฐานปันผลปัจจุบัน $7.88/ปี
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <!-- ✏️ 4–6 ข้อ: เขียน <b>หัวข้อ:</b> รายละเอียด -->
+          <li><b>Data center capex supercycle:</b> การลงทุนสร้าง data center รองรับ AI ทั่วสหรัฐฯ ต้องพึ่งอุปกรณ์ก่อสร้าง/ไฟฟ้าสำรองจำนวนมาก — URI เป็นซัพพลายเออร์เช่าอุปกรณ์รายใหญ่ที่สุดในตลาดนี้</li>
+      <li><b>Infrastructure spending (IIJA):</b> งบลงทุนโครงสร้างพื้นฐานสหรัฐฯ ที่ยังทยอยเบิกจ่ายต่อเนื่องหนุนดีมานด์เช่าอุปกรณ์ก่อสร้างระยะยาว</li>
+      <li><b>Specialty segment ขยายตัวเร็ว:</b> Specialty (Trench, Power/HVAC, Fluid Solutions) โต +13.6% YoY เร็วกว่า General Rentals (+2.5%) และมาร์จิ้นสูงกว่า ช่วยยกระดับ blended margin</li>
+      <li><b>Scale advantage + M&amp;A:</b> ฟลีตใหญ่ที่สุดในอุตสาหกรรม (OEC เติบโต +5.7% YoY ใน Q1/2026) ต่อยอดด้วยกลยุทธ์ควบรวมกิจการต่อเนื่อง (Ahern 2022, BlueLine 2018) เพิ่มส่วนแบ่งตลาดในตลาดที่กระจัดกระจาย</li>
+      <li><b>คืนทุนผู้ถือหุ้นเชิงรุก:</b> แผนคืนทุน ~$2B ในปี 2026 ผ่านโครงการซื้อหุ้นคืนวงเงินใหม่ $5B + เพิ่มปันผล +10% ต่อเนื่อง</li>
+      <li><b>ผลประกอบการ Q1/2026 ทำสถิติสูงสุด:</b> ปรับเพิ่มคำแนะนำรายได้/EBITDA ปี 2026 สะท้อนความแข็งแกร่งของดีมานด์</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <!-- ✏️ 4–6 ข้อ: เขียน <b>หัวข้อ:</b> รายละเอียด -->
+          <li><b>วงจรก่อสร้างและอัตราดอกเบี้ย:</b> ธุรกิจเช่าอุปกรณ์อ่อนไหวสูงต่อวงจรเศรษฐกิจ/ก่อสร้าง อัตราดอกเบี้ยสูงต่อเนื่องอาจกดดันการลงทุนภาคเอกชนและ time utilization</li>
+      <li><b>P/E สูงกว่าค่าเฉลี่ยประวัติศาสตร์มาก:</b> เทรดที่ P/E TTM ~27x เทียบค่าเฉลี่ย 5 ปี ~17x หากอัตราเติบโตชะลอ อาจเห็นการ de-rate ของ multiple เหมือนช่วง ธ.ค. 2025–มี.ค. 2026</li>
+      <li><b>หนี้สินระดับสูง:</b> Net debt/EBITDA ~2.1x จากโมเดลธุรกิจที่ต้องกู้ยืมซื้อฟลีตต่อเนื่อง เสี่ยงจากดอกเบี้ยขาขึ้นหรือสภาพคล่องตึงตัว</li>
+      <li><b>ความเสี่ยงจากการควบรวมกิจการ:</b> กลยุทธ์เติบโตผ่าน M&amp;A มีความเสี่ยงบูรณาการ/จ่ายแพงเกินไปสำหรับดีลใหญ่ในอนาคต</li>
+      <li><b>คู่แข่งและ oversupply ฟลีต:</b> หากผู้เล่นรายอื่น (Sunbelt, Herc) เพิ่มฟลีตเร็วเกินดีมานด์ อาจกดราคาเช่าและ utilization</li>
+      <li><b>Payout ต่ำ พึ่งพา buyback:</b> คืนทุนหลักผ่าน buyback (~18-20% payout จาก adjusted EPS) ซึ่งอาจชะลอ/หยุดได้ในช่วงเศรษฐกิจถดถอย</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>ธุรกิจคุณภาพสูง แต่ราคาแพงกว่าพื้นฐาน — รอจังหวะสะสม</h2>
+      <p>United Rentals เป็นผู้นำตลาดเช่าอุปกรณ์ก่อสร้างที่ใหญ่ที่สุดในโลก ด้วย scale advantage จากฟลีตขนาดใหญ่ที่สุดในอุตสาหกรรมและกลยุทธ์ M&amp;A ต่อเนื่อง (Ahern, BlueLine) หนุนด้วยกระแส data center/AI capex supercycle และงบลงทุนโครงสร้างพื้นฐาน IIJA อย่างไรก็ตาม หลังราคาพุ่งขึ้นแรงจากจุดต่ำ $728.56 (มี.ค. 2569) มาที่ $1,056.02 ปัจจุบัน หุ้นเทรดที่ P/E TTM ~27x สูงกว่าค่าเฉลี่ย 5 ปี (~17x) มาก และไม่มี margin of safety เทียบกับมูลค่าเหมาะสมเชิงพื้นฐาน (normalized) ที่ $829 — เหมาะสำหรับนักลงทุนระยะยาวที่เชื่อมั่นในธุรกิจ แต่ควรรอราคาย่อกลับมาก่อนเข้าซื้อเพิ่ม</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$829 <span style="font-size:12px;color:#cab9a8">($278–$1,001)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −27.4%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$1,127 (Buy, 22 นักวิเคราะห์)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> รอสะสมในโซน MOS 20–30% ($580–$663) หรือเมื่อ P/E ย่อกลับใกล้ค่าเฉลี่ย 5 ปี (~17-18x); ผู้ถือครองอยู่แล้วอาจถือต่อรับปันผล+buyback ต่อเนื่อง แต่ไม่แนะนำไล่ซื้อเพิ่มที่ราคาปัจจุบันซึ่งไม่มี margin of safety
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ข้อมูล ณ 7 ก.ค. 2569 จาก Yahoo Finance, StockAnalysis.com, United Rentals Investor Relations (8-K FY2025 / Q1 2026) — EPS adjusted normalized และ P/E เป้าหมายเป็นการประมาณการของผู้จัดทำ ไม่ใช่ตัวเลขที่บริษัทเผยแพร่อย่างเป็นทางการ
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 8 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>

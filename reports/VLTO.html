@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="th">
+<!--
+  ════════════════════════════════════════════════════════════════════════════
+  SKELETON — หุ้นต่างประเทศ (USD $ / NASDAQ·NYSE)  ★ ก๊อปไฟล์นี้เป็นจุดตั้งต้นหุ้นต่างประเทศ
+  ════════════════════════════════════════════════════════════════════════════
+  วิธีใช้:  cp _template/skeleton-us.html reports/<SYMBOL>.html  แล้วแทนทุก {{...}} ด้วยข้อมูลจริง
+  • ทุกช่องที่ต้องแก้คือ {{...}}  — ห้ามเหลือค้าง (gate E13 จะ error ถ้าเจอ {{ }} ในรายงาน)
+  • ตัวเลขต้องสอดคล้องกันตามกฎใน CLAUDE.md ข้อ 7 — เช่น MOS20=96.50×0.8, MOS=(FV−price)/FV
+  • เลือกสีแบรนด์ใน theme (ห้ามปล่อย default) — ดู tools/brand-colors.md + tools/seeds.json
+  • โครง CSS/engine ถูก inject ตอน build (marker STYLE/ENGINE) — ไม่ต้องแตะ
+  ════════════════════════════════════════════════════════════════════════════
+-->
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น Veralto Corporation (VLTO) — Stock Analysis Dashboard</title>
+<!-- ★ ใส่รุ่นโมเดล AI ที่ใช้วิเคราะห์จริง (Opus→"Claude Opus 4.8", Sonnet→"Claude Sonnet 4.6") — gate E28 บังคับ -->
+<meta name="ai-model" content="Claude Opus 4.8">
+<!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
+<script type="application/json" id="stock-meta">
+{"symbol":"VLTO","currency":"USD","price":93.10,"fairValue":96.50,"mos":3.5,"upside":3.7,"pe":24.0,"dividendYield":0.56,"roe":36.5}
+</script>
+<!--
+  report-data: ธีมสี + ข้อมูลกราฟ/gauge ต่อหุ้น (build เอาไปวาด)  ดู schema เต็มใน CLAUDE.md ข้อ 9
+  • theme.* = สีแบรนด์ (accent ห้ามเป็นน้ำเงิน default) • chart.fairLine = gauge.fair = fv = 96.50
+  • gauge.cur = ราคาปัจจุบัน = 93.10 • highlight = ดัชนีจุดเด่นบนกราฟ (เช่น [2,7])
+  • chart.data = ราคาย้อนหลัง ~1 ปี (ไม่เกิน 13 จุด · E37) — จุดแรก = ราคา ~1 ปีก่อน, จุดท้าย = ราคาปัจจุบัน 93.10
+    (ผลตอบแทน จุดแรก→จุดท้าย ต้อง = ป้าย % รอบปีใน header · E36)
+  • theme.chgBg/chgColor = สีป้าย % รอบปี: ขึ้น→เขียว var(--green-soft)/#1e8e3e · ลง→แดง var(--red-soft)/#c5221f (E34)
+  • dataFmt อ้าง d[1] เท่านั้น, gridFmt อ้าง v เท่านั้น (ผิด scope = กราฟดับ)
+-->
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#1db0ed",
+    "accentDark": "#0f83b3",
+    "darkGrad": "linear-gradient(135deg,#042d3e 0%,#075473 58%,#0c84b6 140%)",
+    "glow": "rgba(19,173,236,.35)",
+    "subColor": "#c2dfeb",
+    "headerMuted": "#a5c6d4",
+    "verdictText": "#d0e7f1",
+    "vcellLabel": "#a6cddd",
+    "badge": "#1db0ed",
+    "chgBg": "var(--red-soft)",
+    "chgColor": "#c5221f"
+  },
+  "chart": {
+    "data": [
+      [
+        "ก.ค. 25",
+        104.83
+      ],
+      [
+        "ส.ค. 25",
+        106.19
+      ],
+      [
+        "ก.ย. 25",
+        106.61
+      ],
+      [
+        "ต.ค. 25",
+        98.68
+      ],
+      [
+        "พ.ย. 25",
+        101.22
+      ],
+      [
+        "ธ.ค. 25",
+        99.78
+      ],
+      [
+        "ม.ค. 26",
+        98.98
+      ],
+      [
+        "ก.พ. 26",
+        97.43
+      ],
+      [
+        "มี.ค. 26",
+        88.42
+      ],
+      [
+        "เม.ย. 26",
+        88.2
+      ],
+      [
+        "พ.ค. 26",
+        82.23
+      ],
+      [
+        "มิ.ย. 26",
+        88.68
+      ],
+      [
+        "ปัจจุบัน",
+        93.1
+      ]
+    ],
+    "min": 75,
+    "max": 115,
+    "grid": [
+      80,
+      90,
+      100,
+      110
+    ],
+    "fairLine": 96.5,
+    "currency": "$",
+    "highlight": [
+      2,
+      10
+    ]
+  },
+  "gauge": {
+    "min": 60,
+    "max": 125,
+    "cur": 93.1,
+    "fair": 96.5,
+    "fairLabelTop": false
+  },
+  "fv": 96.5
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">●●●</div>
+    <div>
+      <span class="tag">NYSE: VLTO</span>
+      <span class="tag">Water &amp; Environmental Quality</span>
+      <span class="tag">DHR Spin-off / Niche Monopoly</span>
+    </div>
+    <!-- ★ คำโปรยธุรกิจ (gate E32) — .sub ต้องอยู่ติดใต้ </h1> (ห้ามมีคอมเมนต์/แท็กคั่น) : บริษัททำอะไร ใช้ • คั่นกลุ่ม -->
+    <h1>Veralto Corporation (VLTO)</h1>
+    <div class="sub">Hach, ChemTreat, Trojan Technologies, OTT HydroMet — เครื่องมือวัด/บำบัดคุณภาพน้ำ • Videojet, Esko, X-Rite, Pantone, Linx — ระบบพิมพ์บาร์โค้ด/ตรวจสอบคุณภาพบรรจุภัณฑ์ • แยกตัวจาก Danaher (DHR) ก.ย. 2566</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$93.10<small>(VLTO)</small></div>
+      </div>
+      <!-- ★ ป้าย % รอบปี (gate E35/E36) — ผลตอบแทน ~1 ปี (เทียบราคา ~1 ปีก่อน) = ผลตอบแทนปลายกราฟ section 2 (จุดแรก→ท้าย)
+           รูปแบบ: "▲ +X.X% (รอบปี)" ขึ้น · "▼ −X.X% (รอบปี)" ลง · "≈ ทรงตัว (รอบปี)" · หุ้น IPO <1 ปี ใช้ "(ตั้งแต่ IPO)"
+           ไม่ใช่ % รายวัน/YTD/52 สัปดาห์ · ตั้งสี theme.chgBg/chgColor ให้ตรงทิศ (ขึ้น=เขียว/ลง=แดง · E34) -->
+      <div class="chg">▼ −11.2% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 7 ก.ค. 2569 (7 Jul 2026, ตลาดสหรัฐฯ)<br>
+        กรอบ 52 สัปดาห์ $80.03 – $110.11<br>
+        ที่มา: Yahoo Finance, StockAnalysis.com, TipRanks
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">recurring revenue สูง (~60% consumables/services/software)</div></div>
+    <!-- ✏️ ปรับการ์ด metric ให้เหมาะกับหุ้น/เซกเตอร์ได้อิสระ — gate ไม่บังคับชุด metric (เปลี่ยน label / สลับ / เพิ่ม-ลดการ์ดได้)
+         • คงป้าย "P/E (TTM)", "P/BV", "เงินปันผล", "ROE" ไว้ถ้าหุ้นมีจริง → W10 cross-check กับ stock-meta · ไม่มี (ขาดทุน/ไม่ปันผล) = ตัดการ์ดออก + ตั้ง stock-meta เป็น null
+         • ธนาคาร → NIM / NPL / CASA / Loan growth / Cost-to-income   • REIT/กองอสังหา → Occupancy / DPU / NAV / Gearing   • ประกัน → Combined ratio / EV
+         • หุ้นเติบโต-ขาดทุน → Revenue growth / Gross margin / FCF / Cash runway (ตัด P/E ออก) -->
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">$22.9B</div><div class="d">~245.6M หุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~24.0x</div><div class="d">TTM; ใกล้ราคาตลาดหลังปรับฐาน 1 ปี</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~26x</div><div class="d">~22x (จุดต่ำปัจจุบัน) – ~34x (พีคปี 2567) — ข้อมูลตั้งแต่ spin-off ก.ย. 2566 ยังไม่ถึง 5 ปี</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">7.6x</div><div class="d">BVPS $12.24 — สูงเพราะฐานทุนเบาหลัง spin-off จาก Danaher</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">$940M</div><div class="d">+12.8% YoY (จาก $833M ปี 2567)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$3.88</div><div class="d">non-GAAP adj.; GAAP TTM ~$3.80 — FY2026E guide $4.20–4.28</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~$12.24</div><div class="d">ส่วนของผู้ถือหุ้น ~$3.0B / 245.6M หุ้น</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~36.5% / 11.3%</div><div class="d">สูงเพราะฐานทุนเบาหลัง spin-off ไม่ใช่ signal คุณภาพแท้จริงทั้งหมด</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$5.59B</div><div class="d">FY2025 $5.50B +6.0% YoY; Q1/2569 $1.42B +6.8% YoY</div></div>
+      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">~60%</div><div class="d">Gross margin; Adj. EBITDA margin ~25.9%</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~0.56%</div><div class="d">payout ratio ต่ำ ~13% — เพิ่งขึ้นปันผล 18% เม.ย. 2569</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">0.78</div><div class="d">ผันผวนต่ำกว่าตลาด (5Y)</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART (ราคาย้อนหลัง ~1 ปี) ===== -->
+  <!-- ★ กราฟต้องเป็น "ราคาย้อนหลัง ~1 ปี" (gate E37): ไม่เกิน 13 จุด (รายเดือน 12 เดือน = 13 จุด · รายสองเดือน = ~8 จุด)
+       ห้ามใส่ 18 เดือน/1.5 ปี · จุดสุดท้าย = ราคาปัจจุบัน · ผลตอบแทน จุดแรก→จุดท้าย ต้องตรงกับป้าย % รอบปีใน header (E36) -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#1db0ed"></i>ราคา VLTO</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $96.50</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        <!-- ✏️ บรรยายการเคลื่อนไหวราคา ~1 ปี: จุดสูง/ต่ำ, เปลี่ยนแปลง %, สาเหตุหลัก -->
+        ราคาปรับตัวขึ้นทำจุดสูงสุดรอบปีที่ ~$106.6 ในเดือน ก.ย. 2568 ก่อนย่อตัวลงต่อเนื่องจากความกังวลการเติบโตชะลอตัว (core sales guide เหลือ 3.0–4.5%) และแรงขายหุ้นกลุ่มอุตสาหกรรม ลงไปแตะจุดต่ำสุดรอบปีที่ ~$82.2 ในเดือน พ.ค. 2569 ก่อนฟื้นตัวกลับมาที่ $93.10 หลังผลประกอบการ Q1/2569 และ guidance ดีกว่าคาด รวมทั้งปีราคาปรับตัวลง ~11.2%
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION (เฉลี่ย 3 วิธี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <!-- ✏️ เลือก ≥2 วิธีให้เหมาะกับหุ้น — gate เช็คคณิตเฉพาะวิธีชื่อ "P/E" (E21) และ "Justified P/BV" (E22) เมื่อมีวิธีนั้น
+           ธนาคาร → เน้น P/BV / Residual income   • REIT → DDM / NAV   • หุ้นไม่ปันผล → ตัด DDM ออก ใช้ P/E + DCF/Justified P/BV -->
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS adj. $4.24 (FY2026E guidance midpoint $4.20–4.28) × P/E เป้าหมาย 23x — มัลติเพิลใกล้เคียงปัจจุบัน สะท้อนการเติบโตชะลอลงสู่ mid-single-digit</div></div>
+        <div class="mval">$97.52</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. DCF (Free Cash Flow)</div><div class="mdesc">FCF/หุ้น $4.13 (FY2025) เติบโตเฉลี่ย 6%/ปี 5 ปี discount rate 8.3% (beta 0.78), terminal growth 3% → มูลค่าปัจจุบันสุทธิของกระแสเงินสด ~$91.50/หุ้น — ระมัดระวังสุดในกลุ่มวิธี</div></div>
+        <div class="mval">$91.50</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. EV/EBITDA Multiple</div><div class="mdesc">EV/EBITDA เป้าหมาย 17.5x บน Adj. EBITDA FY2026E ~$1.49B (margin ~26.2%) → EV ~$26.1B หักหนี้สุทธิ (หนี้ $2.87B − เงินสด $1.43B) ÷ 245.6M หุ้น</div></div>
+        <div class="mval">$100.50</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $91.50 – $112</span></div>
+        <div class="r">$96.50</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        <!-- ✏️ หมายเหตุ: วิธีไหนให้ค่าสูง/ต่ำเพราะอะไร, ทำไม FV กลางจึงสมเหตุสมผล -->
+        วิธี EV/EBITDA (มัลติเพิลอุตสาหกรรม 17.5x) ให้ค่าสูงสุด $100.50 สะท้อนกำไรก่อนตัดจำหน่ายที่แท้จริง (VLTO มีค่าตัดจำหน่าย non-cash สูงจากการแยกตัวจาก DHR ที่กดกำไรบัญชี GAAP) วิธี DCF (FCF-based, discount 8.3%) ระมัดระวังกว่าให้ $91.50 เพราะ terminal growth อนุรักษ์นิยม (3%) ส่วนวิธี P/E บน EPS ปี 2569 คาดการณ์ให้ $97.52 ใกล้ราคาตลาดปัจจุบัน เฉลี่ย 3 วิธีได้ Fair Value ~$96.50 ใกล้เคียงราคาตลาดมาก สะท้อนว่าหุ้นเพิ่งปรับฐานมาอยู่ในโซนมูลค่าที่เหมาะสมแล้ว หลังเคยเทรดแพงกว่านี้มากช่วงปี 2566–2567
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $93.10</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $96.50</div></div>
+        </div>
+        <div class="scale">
+          <span>$67.55<br><small>MOS 30%</small></span>
+          <span>$77.20<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$96.50<br><small>Fair Value</small></span>
+          <span style="text-align:right">$108<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">$112<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบันใกล้เคียงมูลค่าเหมาะสมมาก แทบไม่มีส่วนต่างเป็นบวกเหลือ ต่างจากราคาเป้าเฉลี่ยนักวิเคราะห์ที่ยังมองเห็น upside ~16% (คาดหวัง core growth เร่งตัว + multiple ฟื้นตัว) นักลงทุนที่เน้น margin of safety ควรรอราคาย่อลงมาที่โซน MOS20 ($77.20) หรือ MOS30 ($67.55) ก่อนเข้าซื้อ
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <!-- ✏️ class ของ mos-verdict: MOS<10 → "bad", 10–20 → "ok", ≥20 → "good" -->
+      <div class="mos-verdict bad">
+        <div class="big">+3.5%</div>
+        <div class="txt">ราคาปัจจุบัน ($93.10) ใกล้เคียงมูลค่าเหมาะสม ($96.50) มาก มี margin of safety เพียง ~3.5% ต่ำกว่าเกณฑ์ที่ถือว่าปลอดภัย (>20%) หุ้นเพิ่งผ่านการปรับฐานจากจุดสูงเกือบ $107 มาเทรดในโซนที่ยุติธรรมมากขึ้น แต่ยังไม่ใช่จุดเข้าซื้อที่มีส่วนเผื่อความปลอดภัยสูง</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$77.20</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$67.55</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $96.50</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="93.10" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $93.10 • EPS ฐาน ~$4.24 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS 1%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$74</div>
+          <div class="ret neg">−18.8%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$4.37</span></li>
+            <li><span>P/E ออก</span><span>17x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$1.60</span></li>
+            <li><span>สถานการณ์</span><span>core sales ชะลอตัวต่อเนื่อง PQI (Videojet/Esko) อ่อนแอจากดีมานด์บรรจุภัณฑ์ซบเซา multiple ถูกกดจากมุมมองระมัดระวัง</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +7%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$114</div>
+          <div class="ret pos">+24.4%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$5.19</span></li>
+            <li><span>P/E ออก</span><span>22x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$1.85</span></li>
+            <li><span>สถานการณ์</span><span>core growth ฟื้นตัวสู่กรอบ guide 3–4.5% DBS ช่วยขยายมาร์จิ้นต่อเนื่อง Water Quality ยังเป็นเครื่องยนต์หลัก</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +10%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$136</div>
+          <div class="ret pos">+48.2%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$5.65</span></li>
+            <li><span>P/E ออก</span><span>24x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$1.95</span></li>
+            <li><span>สถานการณ์</span><span>กฎเกณฑ์น้ำ/PFAS เข้มขึ้นทั่วโลกหนุน Water Quality เร่งตัว + M&A tuck-in เสริมกำไร multiple ฟื้นกลับสู่ระดับหลัง spin-off</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      ประมาณการอิง EPS ฐาน FY2026E $4.24 (guidance midpoint) เติบโตแบบทบต้น 3 ปีตามแต่ละสถานการณ์ + ปันผลสะสม (เริ่มจาก $0.52/ปี เติบโตตามกำไร) ผลตอบแทนรวม = (ราคาเป้า + ปันผลสะสม − ราคาเข้า) / ราคาเข้า — ยังไม่ปรับด้วยอัตราคิดลด
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <!-- ✏️ 4–6 ข้อ: เขียน <b>หัวข้อ:</b> รายละเอียด -->
+          
+          <li><b>Recurring revenue สูง:</b> ~60% ของยอดขายมาจาก consumables, spare parts, services และ software (reagent ของ Hach, สารเคมีของ ChemTreat, หมึกของ Videojet) ให้กระแสรายได้ที่วนซ้ำและมาร์จิ้นสูงสม่ำเสมอ</li>
+          <li><b>Danaher Business System (DBS):</b> กรอบการทำงานปรับปรุงต่อเนื่องที่สืบทอดจาก DHR ช่วยขยาย adjusted operating margin ~25bps/ปีต่อเนื่องแม้ท่ามกลาง core growth ที่ชะลอตัว</li>
+          <li><b>กฎเกณฑ์น้ำ/PFAS เข้มขึ้น:</b> มาตรฐานคุณภาพน้ำและ wastewater ที่เข้มงวดขึ้นทั่วโลก (สหรัฐฯ/EU/ตลาดเกิดใหม่) หนุนดีมานด์เครื่องมือวัด/บำบัดของ Hach, ChemTreat, Trojan ระยะยาว</li>
+          <li><b>งบดุลแข็งแรง หนุน M&amp;A tuck-in:</b> FCF conversion ~100% ของกำไรสุทธิ หนี้สุทธิต่ำ เปิดทางทำ M&amp;A ขนาดเล็ก-กลางตามสูตร Danaher เพื่อเร่งการเติบโตเหนือ organic</li>
+          <li><b>คืนทุนผู้ถือหุ้นเพิ่มขึ้น:</b> ปันผลเพิ่งปรับขึ้น 18% (เม.ย. 2569) พร้อมโปรแกรม buyback สะท้อนความมั่นใจของผู้บริหารต่อกระแสเงินสด</li>
+          <li><b>สัดส่วนตลาดเกิดใหม่:</b> ~27% ของยอดขายมาจาก high-growth markets ที่กำลังลงทุนโครงสร้างพื้นฐานน้ำและบรรจุภัณฑ์เพิ่มขึ้น</li>
+
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <!-- ✏️ 4–6 ข้อ: เขียน <b>หัวข้อ:</b> รายละเอียด -->
+          
+          <li><b>Core growth ชะลอตัว:</b> guidance FY2569 core sales เพียง 3.0–4.5% ต่ำกว่าค่าเฉลี่ยยุคหลัง spin-off ถ้าตลาดปลายทางอ่อนแอกว่าคาด การเติบโตอาจต่ำกว่านี้อีก</li>
+          <li><b>PQI ถ่วงการเติบโตรวม:</b> Product Quality &amp; Innovation (Videojet/Esko/X-Rite) โตเพียง 1.7% ใน Q1/2569 เทียบกับ Water Quality ที่โต 10.1% ความอ่อนแอของดีมานด์บรรจุภัณฑ์/สินค้าอุปโภคบริโภคกดดันกำไรกลุ่มนี้ต่อ</li>
+          <li><b>Valuation ไม่มี margin of safety มาก:</b> เทรดที่ P/E TTM ~24x ใกล้เคียง Fair Value ประเมิน ($96.50) มาก หาก guidance พลาดเป้าจะเสี่ยง multiple compression ต่อ</li>
+          <li><b>FX/มหภาคโลก:</b> รายได้กว่าครึ่งมาจากต่างประเทศ เงินดอลลาร์แข็งค่าหรือเศรษฐกิจยุโรป/จีนชะลอตัวกระทบยอดขายและกำไรที่แปลงกลับเป็นดอลลาร์</li>
+          <li><b>ยังปรับตัวเป็นบริษัทอิสระ:</b> เพิ่งแยกจาก Danaher ก.ย. 2566 อยู่ระหว่างเปลี่ยนผ่านออกจากระบบ/บริการที่ใช้ร่วมกับ DHR (TSA) มีความเสี่ยงด้านต้นทุน/การดำเนินงานช่วงเปลี่ยนผ่าน</li>
+          <li><b>การแข่งขัน:</b> Xylem (น้ำ), Domino Printing/Brother (coding &amp; marking), HP/Kodak (digital printing) แข่งขันด้านราคาและเทคโนโลยีในหลายกลุ่มผลิตภัณฑ์</li>
+
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>ธุรกิจคุณภาพสูง moat แข็งแกร่งจาก recurring revenue แต่ราคาเทรดใกล้มูลค่าเหมาะสมแล้วหลังปรับฐาน 1 ปี</h2>
+      <p>Veralto เป็นหนึ่งในบริษัทคุณภาพสูงที่แยกตัวออกจาก Danaher (ก.ย. 2566) สืบทอด Danaher Business System (DBS) และพอร์ตแบรนด์ niche monopoly อย่าง Hach, ChemTreat, Trojan Technologies (Water Quality) และ Videojet, Esko, X-Rite, Pantone (Product Quality &amp; Innovation) รายได้ราว 60% มาจาก consumables/services/software ที่ให้มาร์จิ้นสูงและวนซ้ำสม่ำเสมอ ROE สูงถึง ~36% (ส่วนหนึ่งมาจากฐานทุนเบาหลัง spin-off) และ FCF conversion เกือบ 100% ของกำไรสุทธิ อย่างไรก็ตาม ราคาหุ้นปรับตัวลง ~11.2% ในรอบ 1 ปี จากความกังวลการเติบโตชะลอตัว (core sales guide FY2569 เพียง 3.0–4.5%) โดยเฉพาะฝั่ง Product Quality &amp; Innovation ที่โตเพียง 1.7% ใน Q1/2569 เทียบกับ Water Quality ที่โต 10.1% เมื่อประเมินด้วย 3 วิธี (P/E, DCF, EV/EBITDA) Fair Value เฉลี่ยอยู่ที่ $96.50 ใกล้เคียงราคาตลาดปัจจุบันที่ $93.10 มาก สะท้อนว่าหุ้นเพิ่งปรับฐานมาอยู่ในโซนมูลค่าที่เหมาะสมแล้ว ไม่ถูกไม่แพง</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$96.50 <span style="font-size:12px;color:#cab9a8">($91.50–$112)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +3.5%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$108 (Buy)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> รอราคาย่อตัวลงมาใกล้โซน MOS 20–30% (~$67.55–$77.20) ก่อนเข้าซื้อเพื่อให้มี margin of safety ที่แท้จริง หรือทยอยสะสมเบา ๆ เฉพาะช่วงตลาดตื่นตระหนกจากข่าวระยะสั้น (เช่น guidance miss ของกลุ่ม PQI) นักลงทุนที่ถือหุ้นอยู่แล้วสามารถถือต่อเพื่อรับปันผลที่เพิ่งปรับขึ้น 18% และรอ core growth เร่งตัวกลับ แต่ไม่ควรไล่ซื้อเพิ่มที่ราคาปัจจุบันเพราะ upside จำกัด
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ข้อมูล ณ 7 ก.ค. 2569 จาก Yahoo Finance, StockAnalysis.com, TipRanks/MarketBeat (analyst consensus) — DCF/EV-EBITDA เป็นการประมาณการของผู้จัดทำ ไม่ใช่ตัวเลขที่บริษัทเผยแพร่อย่างเป็นทางการ
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 7 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
