@@ -4,6 +4,8 @@
 > **ที่มา:** diff S&P 500 ทั้งดัชนี (5 ก.ค. 2569) → ขาด 187 → ตัด dup/alias/spinoff ใหม่/คุณภาพต่ำ/เคยตัดสิน RICH ~63 ตัว → เหลือ 114 + หุ้นคุณภาพนอก S&P 500 อีก 10 (MKL·WCN·BN·SHOP·CNI·CP·TRI·LNG·UL·DEO·GGG)
 > **จัดลำดับ:** Tier A = ย่อลึก/de-rate แรง ณ ก.ค. 2569 (ทำก่อน มีโอกาสเจอ MOS จริง) → Tier B = บลูชิพ/quality ที่ขาดเพื่อความครบ → Tier C = สายปันผล/defensive (utilities·REITs·midstream·materials)
 > สร้าง 2026-07-05 · % ในตาราง = ผลตอบแทน 1 ปีจาก Yahoo ณ วันสร้างแผน (ตอนวิเคราะห์จริงต้องดึงใหม่ + ตรวจข้ามแหล่งเสมอ)
+>
+> **📊 ความคืบหน้า (อัปเดต 8 ก.ค. 2569): เสร็จ 54/124 — จบ W18 · resume ที่ W19 (#55 WCN · #56 CNI · #57 CP)** · เหลือ 70 ตัว (W19→~W42)
 
 ---
 
@@ -47,50 +49,50 @@
 | 13 | W5 | DEO | เครื่องดื่มแอลกอฮอล์ | Diageo ADR −27% — จุดต่ำสุดหลายปี yield ~5%, spirits down-cycle (normalize) | 🔺 | ✅ $82/$88 MOS+7% ⚠️ปันผลถูกตัด51% ก.พ.69 yield=2.7% |
 | 14 | W5 | DIS | สื่อ/สวนสนุก | Disney −16% กลับมาต่ำกว่า $100 — streaming เพิ่งทำกำไร | | ✅ $100/$105 MOS+5% streaming margin 10.6% |
 | 15 | W5 | EFX | ข้อมูลเครดิต | Equifax −30% — bureau oligopoly, โดน housing ซบ + AI-fear | | ✅ $172/$175 MOS+2% (แทบไม่มี MOS) |
-| 16 | W6 | ARES | asset manager | Ares −35% — alt-credit ผู้นำ, fee-related earnings โตต่อ | | ⬜ |
-| 17 | W6 | APO | asset manager | Apollo −13% — ถูกเทียบ FRE+SRE, Athene เป็นทั้งจุดแข็ง/จุดเสี่ยง | | ⬜ |
-| 18 | W6 | PYPL | payments | PayPal −35% ($45) — FCF ถูกมาก, คำถามคือ moat ยังอยู่ไหม | | ⬜ |
-| 19 | W7 | FISV | payments | Fiserv −62% ($52, ticker ใหม่ FISV) — crash จาก Clover; แยก one-time vs structural | 🔺 | ⬜ |
-| 20 | W7 | PFE | ยา | Pfizer $24 yield ~7% — patent cliff 2027-28 ต้อง normalize EPS ระวัง value trap | 🔺 | ⬜ |
-| 21 | W7 | TTD | ad-tech | Trade Desk −65% ($19) — โดน Amazon กดดัน เสี่ยงสุดในชุด ประเมินแบบอนุรักษ์นิยม | 🔺 | ⬜ |
+| 16 | W6 | ARES | asset manager | Ares −35% — alt-credit ผู้นำ, fee-related earnings โตต่อ | | ✅ $116.9/$120 MOS+3% |
+| 17 | W6 | APO | asset manager | Apollo −13% — ถูกเทียบ FRE+SRE, Athene เป็นทั้งจุดแข็ง/จุดเสี่ยง | | ✅ $118.61/$148.25 MOS+20% |
+| 18 | W6 | PYPL | payments | PayPal −35% ($45) — FCF ถูกมาก, คำถามคือ moat ยังอยู่ไหม | | ✅ $45.47/$75 MOS+39% |
+| 19 | W7 | FISV | payments | Fiserv −62% ($52, ticker ใหม่ FISV) — crash จาก Clover; แยก one-time vs structural | 🔺 | ✅ $52.33/$67 MOS+22% |
+| 20 | W7 | PFE | ยา | Pfizer $24 yield ~7% — patent cliff 2027-28 ต้อง normalize EPS ระวัง value trap | 🔺 | ✅ $24.32/$27 MOS+10% |
+| 21 | W7 | TTD | ad-tech | Trade Desk −65% ($19) — โดน Amazon กดดัน เสี่ยงสุดในชุด ประเมินแบบอนุรักษ์นิยม | 🔺 | ✅ $19.1/$19.64 MOS+3% |
 
 ## Tier B — บลูชิพ/quality ที่ขาด (56 ตัว · เวฟ 8–26)
 
 | # | Wave | Symbol | กลุ่ม | ทำไม | 🔺 | สถานะ |
 |---|---|---|---|---|---|---|
-| 22 | W8 | BRK-B | โฮลดิ้ง | Berkshire — ชื่อที่ขาดชัดสุดในรีโป · P/B + sum-of-parts · ไม่มีปันผล | 🔺 | ⬜ |
-| 23 | W8 | JNJ | ยา/อุปกรณ์แพทย์ | ใหญ่สุดในกลุ่ม healthcare ที่ยังไม่มี (+49% ใกล้ ATH — คาด MOS ติดลบ) | | ⬜ |
-| 24 | W8 | MRK | ยา | Merck/Keytruda (+54% ฟื้นแรง — ประเมิน cliff 2028 ตรง ๆ) | | ⬜ |
-| 25 | W9 | GE | aerospace | GE Aerospace — engine aftermarket moat (+37% ใกล้ ATH) | | ⬜ |
-| 26 | W9 | PM | ยาสูบ | Philip Morris — ZYN/IQOS โตแรง ปันผลดี | | ⬜ |
-| 27 | W9 | MO | ยาสูบ | Altria — yield ~7% แลกกับ volume ถดถอย (DDM หลัก) | | ⬜ |
-| 28 | W10 | VZ | โทรคมนาคม | Verizon — yield ~6.5% เสถียร (DDM หลัก) | | ⬜ |
-| 29 | W10 | ABNB | ท่องเที่ยว | Airbnb — asset-light network effect, FCF margin สูง | | ⬜ |
-| 30 | W10 | SHOP | อีคอมเมิร์ซ | Shopify — เบอร์ 2 ecommerce infra, ระวัง GAAP/SBC | | ⬜ |
-| 31 | W11 | DASH | delivery | DoorDash −22% — ผู้นำ delivery US เพิ่งทำกำไร | | ⬜ |
-| 32 | W11 | EXPE | ท่องเที่ยว | Expedia — OTA เบอร์ 2 ถูกกว่า BKNG มาก | | ⬜ |
-| 33 | W11 | EBAY | อีคอมเมิร์ซ | eBay — cash cow buyback สม่ำเสมอ | | ⬜ |
-| 34 | W12 | EA | เกม | Electronic Arts — sports franchise ผูกขาด (FC/Madden) | | ⬜ |
-| 35 | W12 | TTWO | เกม | Take-Two — GTA VI cycle | | ⬜ |
-| 36 | W12 | LYV | บันเทิงสด | Live Nation — ผูกขาด live events/Ticketmaster (จับตาคดี DOJ) | | ⬜ |
-| 37 | W13 | HLT | โรงแรม | Hilton — asset-light franchise (+23% — คาด MOS บาง) | | ⬜ |
-| 38 | W13 | DRI | ร้านอาหาร | Darden (Olive Garden/LongHorn) — ปันผลดี เสถียร | | ⬜ |
-| 39 | W13 | WSM | ค้าปลีกบ้าน | Williams-Sonoma — มาร์จิ้นสูงสุดในกลุ่ม home retail | | ⬜ |
-| 40 | W14 | RL | แฟชั่น | Ralph Lauren — luxury brand เดียวของ US ที่ execution ดี | | ⬜ |
-| 41 | W14 | COF | ธนาคาร/บัตร | Capital One — งบหลังควบ Discover 2025 บิดเบือน ต้อง normalize | 🔺 | ⬜ |
-| 42 | W14 | AIG | ประกัน | AIG — turnaround สำเร็จ P/B ยังต่ำกว่ากลุ่ม | | ⬜ |
-| 43 | W15 | NTRS | ธนาคาร trust | Northern Trust — custody + wealth, fee-based | | ⬜ |
-| 44 | W15 | WTW | โบรกเกอร์ประกัน | Willis Towers Watson −12% — ถูกกว่า AON/MRSH/AJG ที่มีแล้ว | | ⬜ |
-| 45 | W15 | MKL | ประกัน/โฮลดิ้ง | Markel "baby Berkshire" — P/B + insurance+investments | 🔺 | ⬜ |
-| 46 | W16 | BN | โฮลดิ้ง | Brookfield Corp — โครงสร้างซับซ้อน sum-of-parts (ใช้แทน BAM ที่ชนชื่อไทย) | 🔺 | ⬜ |
-| 47 | W16 | LHX | ป้องกันประเทศ | L3Harris — defense เบอร์ 6 ราคากลาง ๆ ต่างจากกลุ่มที่วิ่งแล้ว | | ⬜ |
-| 48 | W16 | PCAR | รถบรรทุก | Paccar (Kenworth/Peterbilt) — quality cyclical, งบแข็ง | 🔺 | ⬜ |
-| 49 | W17 | URI | เช่าเครื่องจักร | United Rentals — ผู้นำ equipment rental, scale moat | | ⬜ |
-| 50 | W17 | FTV | อุตสาหกรรม | Fortive +31% — เช็คหลัง spin Ralliant ว่างบ standalone สะอาดหรือยัง | 🔺 | ⬜ |
-| 51 | W17 | VLTO | น้ำ/คุณภาพ | Veralto −13% — spin จาก DHR (2023, ประวัติพอ) recurring สูง | | ⬜ |
-| 52 | W18 | HUBB | ไฟฟ้า | Hubbell — grid hardware ธีม electrification | | ⬜ |
-| 53 | W18 | XYL | น้ำ | Xylem −17% — water tech ผู้นำโลก | | ⬜ |
-| 54 | W18 | GGG | อุตสาหกรรม | Graco −12% ใกล้ 52w low — pump/spray compounder งบเนี้ยบ | | ⬜ |
+| 22 | W8 | BRK-B | โฮลดิ้ง | Berkshire — ชื่อที่ขาดชัดสุดในรีโป · P/B + sum-of-parts · ไม่มีปันผล | 🔺 | ✅ $507.78/$527.8 MOS+4% |
+| 23 | W8 | JNJ | ยา/อุปกรณ์แพทย์ | ใหญ่สุดในกลุ่ม healthcare ที่ยังไม่มี (+49% ใกล้ ATH — คาด MOS ติดลบ) | | ✅ $263.04/$218.39 MOS-20% |
+| 24 | W8 | MRK | ยา | Merck/Keytruda (+54% ฟื้นแรง — ประเมิน cliff 2028 ตรง ๆ) | | ✅ $129.56/$121.32 MOS-7% |
+| 25 | W9 | GE | aerospace | GE Aerospace — engine aftermarket moat (+37% ใกล้ ATH) | | ✅ $377.52/$280.39 MOS-35% |
+| 26 | W9 | PM | ยาสูบ | Philip Morris — ZYN/IQOS โตแรง ปันผลดี | | ✅ $182.27/$188.09 MOS+3% |
+| 27 | W9 | MO | ยาสูบ | Altria — yield ~7% แลกกับ volume ถดถอย (DDM หลัก) | | ✅ $72.71/$73.34 MOS+1% |
+| 28 | W10 | VZ | โทรคมนาคม | Verizon — yield ~6.5% เสถียร (DDM หลัก) | | ✅ $42.56/$48.38 MOS+12% |
+| 29 | W10 | ABNB | ท่องเที่ยว | Airbnb — asset-light network effect, FCF margin สูง | | ✅ $148.93/$154.09 MOS+3% |
+| 30 | W10 | SHOP | อีคอมเมิร์ซ | Shopify — เบอร์ 2 ecommerce infra, ระวัง GAAP/SBC | | ✅ $119.46/$134.15 MOS+11% |
+| 31 | W11 | DASH | delivery | DoorDash −22% — ผู้นำ delivery US เพิ่งทำกำไร | | ✅ $192.01/$210 MOS+9% |
+| 32 | W11 | EXPE | ท่องเที่ยว | Expedia — OTA เบอร์ 2 ถูกกว่า BKNG มาก | | ✅ $268.69/$284.7 MOS+6% |
+| 33 | W11 | EBAY | อีคอมเมิร์ซ | eBay — cash cow buyback สม่ำเสมอ | | ✅ $114.84/$102.28 MOS-12% |
+| 34 | W12 | EA | เกม | Electronic Arts — sports franchise ผูกขาด (FC/Madden) | | ✅ $205.21/$210 MOS+2% |
+| 35 | W12 | TTWO | เกม | Take-Two — GTA VI cycle | | ✅ $254.99/$265 MOS+4% |
+| 36 | W12 | LYV | บันเทิงสด | Live Nation — ผูกขาด live events/Ticketmaster (จับตาคดี DOJ) | | ✅ $186.59/$180.95 MOS-3% |
+| 37 | W13 | HLT | โรงแรม | Hilton — asset-light franchise (+23% — คาด MOS บาง) | | ✅ $338.5/$221.24 MOS-53% |
+| 38 | W13 | DRI | ร้านอาหาร | Darden (Olive Garden/LongHorn) — ปันผลดี เสถียร | | ✅ $204.32/$213.74 MOS+4% |
+| 39 | W13 | WSM | ค้าปลีกบ้าน | Williams-Sonoma — มาร์จิ้นสูงสุดในกลุ่ม home retail | | ✅ $227.53/$202.12 MOS-13% |
+| 40 | W14 | RL | แฟชั่น | Ralph Lauren — luxury brand เดียวของ US ที่ execution ดี | | ✅ $398.22/$407.01 MOS+2% |
+| 41 | W14 | COF | ธนาคาร/บัตร | Capital One — งบหลังควบ Discover 2025 บิดเบือน ต้อง normalize | 🔺 | ✅ $205.12/$212 MOS+3% |
+| 42 | W14 | AIG | ประกัน | AIG — turnaround สำเร็จ P/B ยังต่ำกว่ากลุ่ม | | ✅ $79.39/$87 MOS+9% |
+| 43 | W15 | NTRS | ธนาคาร trust | Northern Trust — custody + wealth, fee-based | | ✅ $176.5/$178 MOS+1% |
+| 44 | W15 | WTW | โบรกเกอร์ประกัน | Willis Towers Watson −12% — ถูกกว่า AON/MRSH/AJG ที่มีแล้ว | | ✅ $286.22/$328 MOS+13% |
+| 45 | W15 | MKL | ประกัน/โฮลดิ้ง | Markel "baby Berkshire" — P/B + insurance+investments | 🔺 | ✅ $1,979.65/$1,948.34 MOS-2% |
+| 46 | W16 | BN | โฮลดิ้ง | Brookfield Corp — โครงสร้างซับซ้อน sum-of-parts (ใช้แทน BAM ที่ชนชื่อไทย) | 🔺 | ✅ $43.83/$56.35 MOS+22% |
+| 47 | W16 | LHX | ป้องกันประเทศ | L3Harris — defense เบอร์ 6 ราคากลาง ๆ ต่างจากกลุ่มที่วิ่งแล้ว | | ✅ $295.35/$337 MOS+12% |
+| 48 | W16 | PCAR | รถบรรทุก | Paccar (Kenworth/Peterbilt) — quality cyclical, งบแข็ง | 🔺 | ✅ $124.35/$92 MOS-35% |
+| 49 | W17 | URI | เช่าเครื่องจักร | United Rentals — ผู้นำ equipment rental, scale moat | | ✅ $1,056.02/$829 MOS-27% |
+| 50 | W17 | FTV | อุตสาหกรรม | Fortive +31% — เช็คหลัง spin Ralliant ว่างบ standalone สะอาดหรือยัง | 🔺 | ✅ $62.55/$63.44 MOS+1% |
+| 51 | W17 | VLTO | น้ำ/คุณภาพ | Veralto −13% — spin จาก DHR (2023, ประวัติพอ) recurring สูง | | ✅ $93.1/$96.5 MOS+4% |
+| 52 | W18 | HUBB | ไฟฟ้า | Hubbell — grid hardware ธีม electrification | | ✅ $478.89/$522.96 MOS+8% |
+| 53 | W18 | XYL | น้ำ | Xylem −17% — water tech ผู้นำโลก | | ✅ $120.65/$107.79 MOS-12% |
+| 54 | W18 | GGG | อุตสาหกรรม | Graco −12% ใกล้ 52w low — pump/spray compounder งบเนี้ยบ | | ✅ $75.2/$83.81 MOS+10% |
 | 55 | W19 | WCN | ขยะ | Waste Connections — คู่ WM/RSG ที่มีแล้ว, secondary markets moat | | ⬜ |
 | 56 | W19 | CNI | รถไฟ | Canadian National — rail duopoly แคนาดา (US-listed USD) | | ⬜ |
 | 57 | W19 | CP | รถไฟ | CP-KC — เส้นทางเดียวที่เชื่อม แคนาดา-US-เม็กซิโก | | ⬜ |
