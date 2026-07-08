@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="th">
+<!--
+  ════════════════════════════════════════════════════════════════════════════
+  SKELETON — หุ้นต่างประเทศ (USD $ / NASDAQ·NYSE)  ★ ก๊อปไฟล์นี้เป็นจุดตั้งต้นหุ้นต่างประเทศ
+  ════════════════════════════════════════════════════════════════════════════
+  วิธีใช้:  cp _template/skeleton-us.html reports/<SYMBOL>.html  แล้วแทนทุก {{...}} ด้วยข้อมูลจริง
+  • ทุกช่องที่ต้องแก้คือ {{...}}  — ห้ามเหลือค้าง (gate E13 จะ error ถ้าเจอ {{ }} ในรายงาน)
+  • ตัวเลขต้องสอดคล้องกันตามกฎใน CLAUDE.md ข้อ 7 — เช่น MOS20=522.96×0.8, MOS=(FV−price)/FV
+  • เลือกสีแบรนด์ใน theme (ห้ามปล่อย default) — ดู tools/brand-colors.md + tools/seeds.json
+  • โครง CSS/engine ถูก inject ตอน build (marker STYLE/ENGINE) — ไม่ต้องแตะ
+  ════════════════════════════════════════════════════════════════════════════
+-->
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น Hubbell Incorporated (HUBB) — Stock Analysis Dashboard</title>
+<!-- ★ ใส่รุ่นโมเดล AI ที่ใช้วิเคราะห์จริง (Opus→"Claude Opus 4.8", Sonnet→"Claude Sonnet 4.6") — gate E28 บังคับ -->
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
+<script type="application/json" id="stock-meta">
+{"symbol":"HUBB","currency":"USD","price":478.89,"fairValue":522.96,"mos":8.43,"upside":9.2,"pe":28.3,"dividendYield":1.19,"roe":25.8}
+</script>
+<!--
+  report-data: ธีมสี + ข้อมูลกราฟ/gauge ต่อหุ้น (build เอาไปวาด)  ดู schema เต็มใน CLAUDE.md ข้อ 9
+  • theme.* = สีแบรนด์ (accent ห้ามเป็นน้ำเงิน default) • chart.fairLine = gauge.fair = fv = 522.96
+  • gauge.cur = ราคาปัจจุบัน = 478.89 • highlight = ดัชนีจุดเด่นบนกราฟ (เช่น [2,7])
+  • chart.data = ราคาย้อนหลัง ~1 ปี (ไม่เกิน 13 จุด · E37) — จุดแรก = ราคา ~1 ปีก่อน, จุดท้าย = ราคาปัจจุบัน 478.89
+    (ผลตอบแทน จุดแรก→จุดท้าย ต้อง = ป้าย % รอบปีใน header · E36)
+  • theme.chgBg/chgColor = สีป้าย % รอบปี: ขึ้น→เขียว var(--green-soft)/#1e8e3e · ลง→แดง var(--red-soft)/#c5221f (E34)
+  • dataFmt อ้าง d[1] เท่านั้น, gridFmt อ้าง v เท่านั้น (ผิด scope = กราฟดับ)
+-->
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#317cd9",
+    "accentDark": "#1e5aa3",
+    "darkGrad": "linear-gradient(135deg,#081f3a 0%,#0f386b 58%,#1959a9 140%)",
+    "glow": "rgba(40,118,215,.35)",
+    "subColor": "#c2d4ea",
+    "headerMuted": "#a6bad3",
+    "verdictText": "#d1dff0",
+    "vcellLabel": "#a9bfdb",
+    "badge": "#1e5aa3",
+    "chgBg": "rgba(34,197,94,0.15)",
+    "chgColor": "#22C55E"
+  },
+  "chart": {
+    "data": [
+      [
+        "ส.ค. 68",
+        430.99
+      ],
+      [
+        "ก.ย. 68",
+        430.31
+      ],
+      [
+        "ต.ค. 68",
+        470.0
+      ],
+      [
+        "พ.ย. 68",
+        431.43
+      ],
+      [
+        "ธ.ค. 68",
+        444.11
+      ],
+      [
+        "ม.ค. 69",
+        487.94
+      ],
+      [
+        "ก.พ. 69",
+        511.63
+      ],
+      [
+        "มี.ค. 69",
+        490.74
+      ],
+      [
+        "เม.ย. 69",
+        508.17
+      ],
+      [
+        "พ.ค. 69",
+        473.61
+      ],
+      [
+        "มิ.ย. 69",
+        523.2
+      ],
+      [
+        "ปัจจุบัน",
+        478.89
+      ]
+    ],
+    "min": 400,
+    "max": 580,
+    "grid": [
+      420,
+      460,
+      500,
+      540
+    ],
+    "fairLine": 522.96,
+    "currency": "$",
+    "highlight": [
+      6,
+      11
+    ]
+  },
+  "gauge": {
+    "min": 320,
+    "max": 650,
+    "cur": 478.89,
+    "fair": 522.96,
+    "fairLabelTop": false
+  },
+  "fv": 522.96
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">●●●</div>
+    <div>
+      <span class="tag">NYSE: HUBB</span>
+      <span class="tag">Electrical Equipment</span>
+      <span class="tag">Grid Electrification / Data Center</span>
+    </div>
+    <!-- ★ คำโปรยธุรกิจ (gate E32) — .sub ต้องอยู่ติดใต้ </h1> (ห้ามมีคอมเมนต์/แท็กคั่น) : บริษัททำอะไร ใช้ • คั่นกลุ่ม -->
+    <h1>Hubbell Incorporated</h1>
+    <div class="sub">โซลูชันโครงข่ายไฟฟ้า Utility Solutions (หม้อแปลง สวิตช์เกียร์ อุปกรณ์เชื่อมต่อสายส่ง-จำหน่าย) • Electrical Solutions (wiring devices ระบบไฟส่องสว่างและอุปกรณ์ไฟฟ้าอุตสาหกรรม/อาคาร) • อานิสงส์ grid modernization + ดาต้าเซ็นเตอร์</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$478.89<small>(HUBB)</small></div>
+      </div>
+      <!-- ★ ป้าย % รอบปี (gate E35/E36) — ผลตอบแทน ~1 ปี (เทียบราคา ~1 ปีก่อน) = ผลตอบแทนปลายกราฟ section 2 (จุดแรก→ท้าย)
+           รูปแบบ: "▲ +X.X% (รอบปี)" ขึ้น · "▼ −X.X% (รอบปี)" ลง · "≈ ทรงตัว (รอบปี)" · หุ้น IPO <1 ปี ใช้ "(ตั้งแต่ IPO)"
+           ไม่ใช่ % รายวัน/YTD/52 สัปดาห์ · ตั้งสี theme.chgBg/chgColor ให้ตรงทิศ (ขึ้น=เขียว/ลง=แดง · E34) -->
+      <div class="chg">▲ +11.1% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 8 ก.ค. 2569<br>
+        กรอบ 52 สัปดาห์ $403.82 – $565.50<br>
+        ที่มา: Yahoo Finance, StockAnalysis.com, Hubbell Investor Relations
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">อัปเดตล่าสุด Q1/2569</div></div>
+    <!-- ✏️ ปรับการ์ด metric ให้เหมาะกับหุ้น/เซกเตอร์ได้อิสระ — gate ไม่บังคับชุด metric (เปลี่ยน label / สลับ / เพิ่ม-ลดการ์ดได้)
+         • คงป้าย "P/E (TTM)", "P/BV", "เงินปันผล", "ROE" ไว้ถ้าหุ้นมีจริง → W10 cross-check กับ stock-meta · ไม่มี (ขาดทุน/ไม่ปันผล) = ตัดการ์ดออก + ตั้ง stock-meta เป็น null
+         • ธนาคาร → NIM / NPL / CASA / Loan growth / Cost-to-income   • REIT/กองอสังหา → Occupancy / DPU / NAV / Gearing   • ประกัน → Combined ratio / EV
+         • หุ้นเติบโต-ขาดทุน → Revenue growth / Gross margin / FCF / Cash runway (ตัด P/E ออก) -->
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">$25.31B</div><div class="d">52.84M หุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~28.3x</div><div class="d">GAAP TTM; adj. TTM ~25.7x</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~20–22x</div><div class="d">ก่อน grid/data center re-rating (2566–2567)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">6.71x</div><div class="d">BVPS $71.32</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">~$875M</div><div class="d">+12.5% YoY (FY2024 $777.8M)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$16.93</div><div class="d">GAAP; adj. TTM ~$18.64 (+16% YoY)</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~$71.32</div><div class="d">P/BV 6.71x</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~25.8% / 10.2%</div><div class="d">สูงกว่าเฉลี่ยกลุ่มอุปกรณ์ไฟฟ้าอุตสาหกรรม</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$6.00B</div><div class="d">หนุนจาก Utility T&D + ดาต้าเซ็นเตอร์</div></div>
+      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">35.7%</div><div class="d">Op.margin adj. 19.8% (+110bps YoY)</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~1.19%</div><div class="d">$5.68/ปี · เพิ่มต่อเนื่อง 18 ปี (+8% ล่าสุด) · จ่ายต่อเนื่อง 56 ปี</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">0.89</div><div class="d">ผันผวนต่ำกว่าตลาดโดยรวม</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART (ราคาย้อนหลัง ~1 ปี) ===== -->
+  <!-- ★ กราฟต้องเป็น "ราคาย้อนหลัง ~1 ปี" (gate E37): ไม่เกิน 13 จุด (รายเดือน 12 เดือน = 13 จุด · รายสองเดือน = ~8 จุด)
+       ห้ามใส่ 18 เดือน/1.5 ปี · จุดสุดท้าย = ราคาปัจจุบัน · ผลตอบแทน จุดแรก→จุดท้าย ต้องตรงกับป้าย % รอบปีใน header (E36) -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#317cd9"></i>ราคา HUBB</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $522.96</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        <!-- ✏️ บรรยายการเคลื่อนไหวราคา ~1 ปี: จุดสูง/ต่ำ, เปลี่ยนแปลง %, สาเหตุหลัก -->
+        ราคาหุ้น HUBB แกว่งในกรอบ $403.82–$565.50 ในรอบ ~1 ปีที่ผ่านมา จากจุดต่ำ ~$430 ช่วง ก.ย.–พ.ย. 2568 ไต่ขึ้นแรงตามกระแส grid modernization และดาต้าเซ็นเตอร์ แตะจุดสูงสุดของช่วง ~$566 ราวเดือน เม.ย. 2569 ก่อนย่อฐานลงมาซื้อขายที่ $478.89 ในปัจจุบัน (~15% ต่ำกว่าจุดสูงสุด) ผลตอบแทนรอบปี (จุดแรก→ปัจจุบัน) อยู่ที่ +11.1%
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION (เฉลี่ย 3 วิธี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <!-- ✏️ เลือก ≥2 วิธีให้เหมาะกับหุ้น — gate เช็คคณิตเฉพาะวิธีชื่อ "P/E" (E21) และ "Justified P/BV" (E22) เมื่อมีวิธีนั้น
+           ธนาคาร → เน้น P/BV / Residual income   • REIT → DDM / NAV   • หุ้นไม่ปันผล → ตัด DDM ออก ใช้ P/E + DCF/Justified P/BV -->
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS (TTM) $19.58 × P/E เป้าหมาย ~27x — P/E คาดการณ์ ~27x สะท้อน premium จากกระแส grid/data center supercycle เทียบค่าเฉลี่ยก่อน re-rating ~20–22x</div></div>
+        <div class="mval">$528.66</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล $5.68 × (1+g); g 6.4%, r 8.5% → payout ratio ต่ำ ~30% ของ adj. EPS เพราะ HUBB คืนทุนผ่านการลงทุนขยายธุรกิจ/M&A มากกว่าปันผล — ใช้เป็นฐานล่าง น้ำหนักน้อยในค่าเฉลี่ย</div></div>
+        <div class="mval">$287.62</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 26% − g 6.5%)/(r 8.8% − g 6.5%) ≈ 8.48 × BVPS $71.32</div></div>
+        <div class="mval">$604.79</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $287.62 – $604.79</span></div>
+        <div class="r">$522.96</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        <!-- ✏️ หมายเหตุ: วิธีไหนให้ค่าสูง/ต่ำเพราะอะไร, ทำไม FV กลางจึงสมเหตุสมผล -->
+        ถ่วงน้ำหนัก P/E 45% + Justified P/BV 40% + DDM 15% (ให้น้ำหนัก DDM น้อยเพราะ payout ratio ต่ำ ~30% ทำให้ DDM ประเมินมูลค่าต่ำเกินจริงสำหรับหุ้นเติบโตที่คืนทุนผ่านการลงทุนขยายธุรกิจเป็นหลัก คล้ายกรณี URI) ได้ Fair Value เฉลี่ยถ่วงน้ำหนัก ~$522.96 สูงกว่าราคาตลาดปัจจุบัน $478.89 เล็กน้อย (MOS ~+8.4%) สะท้อนว่าราคาสะท้อนแนวโน้มเติบโตจาก grid/data center ไปมากแล้ว เหลือ margin of safety จำกัด
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $478.89</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $522.96</div></div>
+        </div>
+        <div class="scale">
+          <span>$366.07<br><small>MOS 30%</small></span>
+          <span>$418.37<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$522.96<br><small>Fair Value</small></span>
+          <span style="text-align:right">$556.55<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">$604.79<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน $478.89 ต่ำกว่ามูลค่าเหมาะสม $522.96 เล็กน้อย (MOS ~+8.4%) และต่ำกว่าราคาเป้าเฉลี่ยนักวิเคราะห์ $556.55 (12 ราย: Strong Buy 6, Hold 5, Sell 1) ผู้ลงทุนที่ต้องการ margin of safety มากขึ้นอาจรอจังหวะย่อไปโซน MOS20 ~$418 หรือ MOS30 ~$366
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <!-- ✏️ class ของ mos-verdict: MOS<10 → "bad", 10–20 → "ok", ≥20 → "good" -->
+      <div class="mos-verdict bad">
+        <div class="big">+8.43%</div>
+        <div class="txt">ส่วนต่างจากมูลค่าเหมาะสม ~+8.4% อยู่ในระดับต่ำ (ไม่ใช่ deep value) เหมาะกับผู้ลงทุนระยะยาวที่เชื่อมั่นในธีม grid modernization/data center มากกว่าผู้ที่มองหาส่วนลดมาก</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$418.37</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$366.07</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $522.96</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="478.89" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $478.89 • EPS ฐาน ~$18.64 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS 2%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$395.62</div>
+          <div class="ret neg">−13.5%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$19.78</span></li>
+            <li><span>P/E ออก</span><span>20x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$18.80</span></li>
+            <li><span>สถานการณ์</span><span>capex สาธารณูปโภคชะลอ/ดาต้าเซ็นเตอร์แผ่วลง มัลติเพิลหดกลับสู่ค่าเฉลี่ยก่อน re-rating</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +9%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$627.62</div>
+          <div class="ret pos">+35.2%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$24.14</span></li>
+            <li><span>P/E ออก</span><span>26x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$19.91</span></li>
+            <li><span>สถานการณ์</span><span>เติบโตตาม guidance FY2569 (ยอดขาย +8–11%) มาร์จิ้นขยายต่อเนื่อง มัลติเพิลทรงตัวใกล้ปัจจุบัน</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +15%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$822.12</div>
+          <div class="ret pos">+76.0%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$28.35</span></li>
+            <li><span>P/E ออก</span><span>29x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$20.68</span></li>
+            <li><span>สถานการณ์</span><span>ดาต้าเซ็นเตอร์/grid capex เร่งตัวเกินคาด backlog แปลงเป็นรายได้เร็ว M&A เสริมกำไร มัลติเพิลขยายต่อ</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      ประมาณการอิง EPS ปรับปรุง (adjusted) ฐาน TTM $18.64 คูณอัตราเติบโต 3 ปีข้างหน้าตามสถานการณ์ แล้วออกด้วย P/E เป้าหมายที่ต่างกัน บวกเงินปันผลสะสม 3 ปี — Bear สะท้อน capex ชะลอตัว/มัลติเพิลหด, Base ใกล้เคียง guidance FY2569 ล่าสุดของบริษัท, Bull สะท้อนดาต้าเซ็นเตอร์เร่งตัวและ M&A เสริมการเติบโต
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <!-- ✏️ 4–6 ข้อ: เขียน <b>หัวข้อ:</b> รายละเอียด -->
+          <li><b>Grid modernization supercycle:</b> การลงทุนสายส่ง-จำหน่ายเพื่อความน่าเชื่อถือ/พลังงานหมุนเวียน หนุนโดยโอกาส high-voltage transmission มูลค่า $1.5B หลายปี</li>
+          <li><b>ดาต้าเซ็นเตอร์เร่งตัว:</b> ยอดขายกลุ่มดาต้าเซ็นเตอร์ในไตรมาส 1/2569 โต ~40% YoY จาก hyperscaler/colocation ขยายกำลังผลิต</li>
+          <li><b>Backlog หนา + M&amp;A ต่อเนื่อง:</b> backlog มั่นคง $2.16B ณ สิ้นปี 2568 ธุรกิจ modular power distribution จองเต็มปี 2569 ต่อคิวถึงปี 2570–2571 บวก bolt-on M&amp;A หนุนโต ~2–3%/ปี</li>
+          <li><b>มาร์จิ้นขยายตัว:</b> Adjusted operating margin ไตรมาส 1/2569 ขึ้นแตะ 19.8% (+110bps YoY) จาก pricing/productivity หนุนปรับ guidance ปี 2569 ขึ้น</li>
+          <li><b>ปันผลมั่นคง:</b> จ่ายเงินปันผลต่อเนื่อง 56 ปี เพิ่มต่อเนื่อง 18 ปี (ล่าสุด +8%) พร้อม buyback เสริมผลตอบแทนผู้ถือหุ้น</li>
+          <li><b>งบการเงินแข็งแรง:</b> Debt/Equity 0.72 · Current ratio 1.58 เอื้อต่อการลงทุนขยายกำลังผลิต/ซื้อกิจการต่อเนื่อง</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <!-- ✏️ 4–6 ข้อ: เขียน <b>หัวข้อ:</b> รายละเอียด -->
+          <li><b>Valuation ตึง:</b> เทรดที่ P/E TTM (GAAP) ~28.3x และ P/BV ~6.7x สูงกว่าค่าเฉลี่ยในอดีตมาก หากการเติบโตชะลอกว่าคาดอาจเห็นมัลติเพิลหด</li>
+          <li><b>วัฏจักรก่อสร้าง:</b> กลุ่ม Electrical Solutions บางส่วนอิงตลาดที่อยู่อาศัย/การก่อสร้างเชิงพาณิชย์ที่อ่อนไหวต่ออัตราดอกเบี้ย</li>
+          <li><b>ต้นทุนวัตถุดิบ/ภาษีนำเข้า:</b> ทองแดง อะลูมิเนียม เหล็กกล้า และความเสี่ยงภาษีนำเข้าชิ้นส่วนอาจกดดันมาร์จิ้น</li>
+          <li><b>จังหวะ capex ลูกค้าสาธารณูปโภค:</b> งบลงทุนของ utility รายใหญ่อาจล่าช้าจากกระบวนการอนุมัติ/กำกับดูแล ทำให้คำสั่งซื้อไม่สม่ำเสมอ</li>
+          <li><b>พึ่งพาดาต้าเซ็นเตอร์:</b> หากวงจร capex AI/ดาต้าเซ็นเตอร์ชะลอตัว จะกระทบส่วนธุรกิจที่เติบโตเร็วที่สุดของบริษัท</li>
+          <li><b>ความเสี่ยงจาก M&amp;A:</b> กลยุทธ์ซื้อกิจการต่อเนื่อง (bolt-on) มีความเสี่ยงด้าน integration และอาจกดดันงบดุลหากจ่ายแพงเกินไป</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>คุณภาพดี โตตามกระแส Grid/Data Center แต่ราคาเริ่มเต็มมูลค่า</h2>
+      <p>Hubbell เป็นผู้นำอุปกรณ์ไฟฟ้าโครงข่ายและอุตสาหกรรมคุณภาพสูง ได้อานิสงส์โดยตรงจากการลงทุนปรับปรุงโครงข่ายไฟฟ้าและการขยายตัวของดาต้าเซ็นเตอร์ พร้อมมาร์จิ้นขยายตัวต่อเนื่องและ backlog หนาแน่น อย่างไรก็ตามราคาหุ้นวิ่งขึ้นสะท้อนข่าวดีไปมากแล้ว เหลือ margin of safety เพียง ~+8.4% ทำให้ upside ระยะสั้นจำกัดเมื่อเทียบราคาปัจจุบัน เหมาะกับการถือระยะยาวหรือทยอยสะสมเมื่อราคาย่อ มากกว่าไล่ซื้อ ณ จุดนี้</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$522.96 <span style="font-size:12px;color:#cab9a8">($287.62–$604.79)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +8.43%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$556.55 (Buy)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ผู้ถือเดิม: ถือต่อรับปันผล + เติบโตตามธีม grid modernization/data center · ผู้ลงทุนใหม่: รอจังหวะย่อสู่โซน MOS20 ~$418 หรือ MOS30 ~$366 เพื่อ margin of safety ที่มากขึ้นก่อนทยอยสะสม
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ข้อมูล ณ 8 ก.ค. 2569 จาก Yahoo Finance, StockAnalysis.com, Hubbell Investor Relations (ผลประกอบการ Q1/2569 และ FY2568)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 8 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
