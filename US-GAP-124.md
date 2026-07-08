@@ -5,7 +5,7 @@
 > **จัดลำดับ:** Tier A = ย่อลึก/de-rate แรง ณ ก.ค. 2569 (ทำก่อน มีโอกาสเจอ MOS จริง) → Tier B = บลูชิพ/quality ที่ขาดเพื่อความครบ → Tier C = สายปันผล/defensive (utilities·REITs·midstream·materials)
 > สร้าง 2026-07-05 · % ในตาราง = ผลตอบแทน 1 ปีจาก Yahoo ณ วันสร้างแผน (ตอนวิเคราะห์จริงต้องดึงใหม่ + ตรวจข้ามแหล่งเสมอ)
 >
-> **📊 ความคืบหน้า (อัปเดต 8 ก.ค. 2569): เสร็จ 60/124 — จบ W20 · resume ที่ W21 (#61 ZBRA · #62 AKAM · #63 MCHP🔺)** · เหลือ 64 ตัว (W21→~W42)
+> **📊 ความคืบหน้า (อัปเดต 9 ก.ค. 2569): เสร็จ 63/124 — จบ W21 · resume ที่ W22 (#64 NTAP · #65 WST · #66 DGX)** · เหลือ 61 ตัว (W22→~W42)
 
 ---
 
@@ -99,9 +99,9 @@
 | 58 | W20 | TDY | เซนเซอร์/ป้องกัน | Teledyne — digital imaging/drone payload, serial acquirer | $641.70/$601.22 MOS−6.7% | ✅ |
 | 59 | W20 | CDW | IT reseller | CDW −19% — IT VAR ใหญ่สุด, โดน AI-fear เกินเหตุ? | $139.23/$143 MOS+2.6% | ✅ |
 | 60 | W20 | VRSN | อินเทอร์เน็ต | Verisign — ผูกขาด .com registry, Buffett ถือ | $266.78/$250 MOS−6.7% | ✅ |
-| 61 | W21 | ZBRA | ฮาร์ดแวร์ | Zebra −16% — barcode/warehouse automation duopoly | | ⬜ |
-| 62 | W21 | AKAM | cybersecurity/CDN | Akamai +43% — เปลี่ยนผ่านสู่ security/compute สำเร็จ | | ⬜ |
-| 63 | W21 | MCHP | เซมิ | Microchip +30% — MCU cyclical กำลังฟื้นจาก trough (normalize EPS) | 🔺 | ⬜ |
+| 61 | W21 | ZBRA | ฮาร์ดแวร์ | Zebra −16% — barcode/warehouse automation duopoly | | ✅ $264.65/FV$255 MOS−3.8% |
+| 62 | W21 | AKAM | cybersecurity/CDN | Akamai +43% — เปลี่ยนผ่านสู่ security/compute สำเร็จ | | ✅ $114.37/FV$116 MOS+1.4% |
+| 63 | W21 | MCHP | เซมิ | Microchip +30% — MCU cyclical กำลังฟื้นจาก trough (normalize EPS) | 🔺 | ✅ $84.15/FV$70 MOS−20.2% |
 | 64 | W22 | NTAP | สตอเรจ | NetApp — enterprise storage + AI data infra, FCF ดี | | ⬜ |
 | 65 | W22 | WST | อุปกรณ์ยา | West Pharma +48% — ผูกขาด injectable components (GLP-1) | | ⬜ |
 | 66 | W22 | DGX | แล็บ | Quest Diagnostics — duopoly lab (ใช้แทน LH ที่ชนชื่อไทย) | | ⬜ |
