@@ -5,7 +5,7 @@
 > **จัดลำดับ:** Tier A = ย่อลึก/de-rate แรง ณ ก.ค. 2569 (ทำก่อน มีโอกาสเจอ MOS จริง) → Tier B = บลูชิพ/quality ที่ขาดเพื่อความครบ → Tier C = สายปันผล/defensive (utilities·REITs·midstream·materials)
 > สร้าง 2026-07-05 · % ในตาราง = ผลตอบแทน 1 ปีจาก Yahoo ณ วันสร้างแผน (ตอนวิเคราะห์จริงต้องดึงใหม่ + ตรวจข้ามแหล่งเสมอ)
 >
-> **📊 ความคืบหน้า (อัปเดต 9 ก.ค. 2569): เสร็จ 63/124 — จบ W21 · resume ที่ W22 (#64 NTAP · #65 WST · #66 DGX)** · เหลือ 61 ตัว (W22→~W42)
+> **📊 ความคืบหน้า (อัปเดต 9 ก.ค. 2569): เสร็จ 66/124 — จบ W22 · resume ที่ W23 (#67 GEHC · #68 CAH · #69 CRL)** · เหลือ 58 ตัว (W23→~W42)
 
 ---
 
@@ -102,9 +102,9 @@
 | 61 | W21 | ZBRA | ฮาร์ดแวร์ | Zebra −16% — barcode/warehouse automation duopoly | | ✅ $264.65/FV$255 MOS−3.8% |
 | 62 | W21 | AKAM | cybersecurity/CDN | Akamai +43% — เปลี่ยนผ่านสู่ security/compute สำเร็จ | | ✅ $114.37/FV$116 MOS+1.4% |
 | 63 | W21 | MCHP | เซมิ | Microchip +30% — MCU cyclical กำลังฟื้นจาก trough (normalize EPS) | 🔺 | ✅ $84.15/FV$70 MOS−20.2% |
-| 64 | W22 | NTAP | สตอเรจ | NetApp — enterprise storage + AI data infra, FCF ดี | | ⬜ |
-| 65 | W22 | WST | อุปกรณ์ยา | West Pharma +48% — ผูกขาด injectable components (GLP-1) | | ⬜ |
-| 66 | W22 | DGX | แล็บ | Quest Diagnostics — duopoly lab (ใช้แทน LH ที่ชนชื่อไทย) | | ⬜ |
+| 64 | W22 | NTAP | สตอเรจ | NetApp — enterprise storage + AI data infra, FCF ดี | | ✅ $163.44/FV$145 MOS−13.0% |
+| 65 | W22 | WST | อุปกรณ์ยา | West Pharma +48% — ผูกขาด injectable components (GLP-1) | | ✅ $352.28/FV$300 MOS−17.4% |
+| 66 | W22 | DGX | แล็บ | Quest Diagnostics — duopoly lab (ใช้แทน LH ที่ชนชื่อไทย) | | ✅ $208.21/FV$189 MOS−10.2% |
 | 67 | W23 | GEHC | อุปกรณ์แพทย์ | GE HealthCare −11% — imaging เบอร์ 1, spin 2023 ประวัติพอ | | ⬜ |
 | 68 | W23 | CAH | ยา/กระจาย | Cardinal Health +61% — drug distribution oligopoly (คาด MOS บาง) | | ⬜ |
 | 69 | W23 | CRL | CRO | Charles River +41% — preclinical CRO ผู้นำ ฟื้นจาก biotech winter | | ⬜ |
