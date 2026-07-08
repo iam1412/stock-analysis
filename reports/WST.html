@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น West Pharmaceutical Services (WST) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"WST","currency":"USD","price":352.28,"fairValue":300,"mos":-17.4,"upside":-14.8,"pe":47.09,"dividendYield":0.25,"roe":19.13}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#1b6f6a",
+    "accentDark": "#0d3f3c",
+    "darkGrad": "linear-gradient(135deg,#031f1c 0%,#0d3f3c 58%,#1b6f6a 140%)",
+    "glow": "rgba(27,111,106,.35)",
+    "subColor": "#a8ded9",
+    "headerMuted": "#7fc9c2",
+    "verdictText": "#e0f5f2",
+    "vcellLabel": "#7fd8d0",
+    "badge": "#0d3f3c",
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#1e8e3e"
+  },
+  "chart": {
+    "data": [
+      ["ส.ค. 68", 246.34],
+      ["ก.ย. 68", 261.68],
+      ["ต.ค. 68", 281.38],
+      ["พ.ย. 68", 276.79],
+      ["ธ.ค. 68", 274.68],
+      ["ม.ค. 69", 230.95],
+      ["ก.พ. 69", 254.15],
+      ["มี.ค. 69", 250.45],
+      ["เม.ย. 69", 297.59],
+      ["พ.ค. 69", 322.81],
+      ["มิ.ย. 69", 359.00],
+      ["ก.ค. 69", 356.08],
+      ["ปัจจุบัน", 352.28]
+    ],
+    "min": 200,
+    "max": 380,
+    "grid": [240, 280, 320, 360],
+    "fairLine": 300,
+    "currency": "$",
+    "highlight": [5, 10]
+  },
+  "gauge": {
+    "min": 190,
+    "max": 380,
+    "cur": 352.28,
+    "fair": 300,
+    "fairLabelTop": false
+  },
+  "fv": 300
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots"><span style="background:#1b6f6a"></span><span style="background:#0d3f3c"></span><span style="background:#031f1c"></span><span style="background:#a8ded9"></span></div>
+    <div>
+      <span class="tag">NYSE: WST</span>
+      <span class="tag">Healthcare</span>
+      <span class="tag">Injectable Drug Packaging</span>
+    </div>
+    <h1>West Pharmaceutical Services, Inc.</h1>
+    <div class="sub">Injectable Components • Seals & Stoppers • Drug Delivery Systems • GLP-1 Packaging</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$352.28<small>(WST)</small></div>
+      </div>
+      <div class="chg">▲ +43.0% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 8 ก.ค. 2569 16:00 ET (ตลาดปิด)<br>
+        กรอบ 52 สัปดาห์ $206.80 – $367.66<br>
+        ที่มา: StockAnalysis.com, Yahoo Finance, SEC EDGAR (10-K/10-Q)
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">อิง TTM / FY2025</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~$24.9B</div><div class="d">~70.7 ล้านหุ้น (NYSE)</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~47.1x</div><div class="d">Forward P/E ~40.4x</div></div>
+      <div class="metric"><div class="k">PEG Ratio</div><div class="v">3.05</div><div class="d">สูง (&gt;2 = แพงเทียบการเติบโต)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">~8.8x</div><div class="d">สูงจาก ROE เด่น + asset-light</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ (TTM)</div><div class="v">$542.7M</div><div class="d">Net margin 16.85%</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$7.48</div><div class="d">FY2026E ~$8.83 (+18.1% ประเมิน)</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~$40.13</div><div class="d">Equity ≈ NI ÷ ROE</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~19.13% / 12.34%</div><div class="d">ROIC ~19.97% — moat แข็งแกร่ง</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$3.22B</div><div class="d">FY2025 $3.07B (+6.25% YoY)</div></div>
+      <div class="metric"><div class="k">อัตรากำไรสุทธิ (Net Margin)</div><div class="v">16.85%</div><div class="d">Operating margin ~20.3%</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~0.25%</div><div class="d">$0.88/หุ้น/ปี Payout ~12% (ต่ำ, เน้น reinvest)</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">1.16</div><div class="d">ผันผวนสูงกว่าตลาดเล็กน้อย</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#1b6f6a"></i>ราคา WST</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $300</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        WST ไต่จาก ~$246 (ส.ค. 2568) ขึ้นไปแตะ ~$281 ในเดือน ต.ค. ก่อนร่วงแรงลงมาต่ำสุดรอบปีที่ ~$230.95
+        ในเดือน ม.ค. 2569 (กังวลอุปสงค์ชะลอ/valuation แพง) จากนั้นฟื้นตัวรุนแรงต่อเนื่อง 5 เดือนติดจากแรงหนุน
+        อุปสงค์ injectable/biologics และ GLP-1 packaging ที่เร่งตัว ขึ้นแตะจุดสูงสุดรอบปี ~$359 ในเดือน มิ.ย. 2569
+        (ใกล้ 52-week high $367.66) ก่อนย่อลงมาปิดที่ $352.28 ปัจจุบัน รวมผลตอบแทนทั้งรอบปี +43.0%
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS (TTM) $8.83 × P/E เป้าหมาย ~36x — ใช้ EPS ประเมิน FY2026 สะท้อนโมเมนตัมเติบโต GLP-1/biologics, P/E เป้าหมายลดจาก forward ปัจจุบัน 40.4x เพื่อสะท้อน normalization ระยะยาว</div></div>
+        <div class="mval">$317.88</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. DCF (FCF 2-stage)</div><div class="mdesc">FCF/หุ้น $6.48 โต 14%/ปี 5 ปีแรก แล้วเข้าสู่ terminal growth 4.5%; discount rate (WACC) 8% → PV รวม</div></div>
+        <div class="mval">$292.00</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. EV/EBITDA</div><div class="mdesc">EBITDA TTM $831.6M × 25x (fair multiple สำหรับ moat/monopoly packaging) → EV ~$20.8B ลบ Net Debt ~$0.2B ÷ ~70.7M หุ้น</div></div>
+        <div class="mval">$291.00</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $291 – $318</span></div>
+        <div class="r">$300</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ทั้ง 3 วิธีให้ค่าใกล้เคียงกันใน $291–$318 ต่ำกว่าราคาตลาดปัจจุบัน $352.28 ราว 14–18% สะท้อนว่า WST
+        ซื้อขายที่ premium เหนือมูลค่าพื้นฐานล้วน — ตลาดให้เครดิตเพิ่มเติมกับสถานะ "ผู้ผูกขาด" ใน seals/stoppers
+        สำหรับยาฉีด/GLP-1 ที่มี switching cost สูงจากกระบวนการขึ้นทะเบียนยา ซึ่งโมเดล P/E, DCF, EV/EBITDA
+        แบบอนุรักษ์นิยมจับ premium นี้ได้ไม่เต็มที่ PEG 3.05 ยืนยันว่าราคาปัจจุบัน "แพง" เทียบการเติบโต
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $352.28</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $300</div></div>
+        </div>
+        <div class="scale">
+          <span>$210.00<br><small>MOS 30%</small></span>
+          <span>$240.00<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$300<br><small>Fair Value</small></span>
+          <span style="text-align:right">$318<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">$362<br><small>เป้าเฉลี่ย Analyst</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน ($352.28) สูงกว่า Fair Value ($300) ราว 17.4% และสูงกว่าแม้กรอบบนของ Fair Value ($318)
+        แต่ยังต่ำกว่าเป้าเฉลี่ยนักวิเคราะห์ ($362, Strong Buy 15 สำนัก) ราว 2.8% นักลงทุนที่เน้น margin of safety
+        ควรรอ pullback สู่โซน $240 (MOS 20%) หรือ $210 (MOS 30%) ซึ่งใกล้เคียงจุดต่ำสุดที่เคยเห็นในรอบปี ($230.95)
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">−17.4%</div>
+        <div class="txt">ราคาปัจจุบันสูงกว่ามูลค่าเหมาะสมที่ประเมิน — ไม่มี margin of safety ที่ระดับนี้ เหมาะสำหรับผู้ที่เชื่อมั่นในธีม GLP-1/biologics ระยะยาวเท่านั้น ผู้ต้องการ MOS ควรรอจังหวะย่อ</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$240.00</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$210.00</div><div class="d">โซนถูกมาก (ใกล้ 52wk low)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $300</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="352.28" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $352.28 • EPS ฐาน ~$7.48 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS −2%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$211.20</div>
+          <div class="ret neg">−39.3% (3 ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$7.04</span></li>
+            <li><span>P/E ออก</span><span>30x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$2.64</span></li>
+            <li><span>สถานการณ์</span><span>อุปสงค์ GLP-1/biologics ชะลอ, P/E de-rate สู่ระดับตลาดทั่วไป</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +12%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$378.36</div>
+          <div class="ret pos">+8.3% (3 ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$10.51</span></li>
+            <li><span>P/E ออก</span><span>36x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$3.09</span></li>
+            <li><span>สถานการณ์</span><span>อุปสงค์ injectable/biologics เติบโตต่อเนื่องตามคาด มาร์จิ้นทรงตัว</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +18%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$516.18</div>
+          <div class="ret pos">+47.4% (3 ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$12.29</span></li>
+            <li><span>P/E ออก</span><span>42x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$3.20</span></li>
+            <li><span>สถานการณ์</span><span>GLP-1/biologics เร่งตัวแรงกว่าคาด mix shift HVP หนุนมาร์จิ้น</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      Base case (+8.3% / 3 ปี) ดูสมเหตุสมผลแต่ไม่หวือหวา เพราะ P/E ปัจจุบันแพงมากแล้ว (47x) — แม้ EPS โตต่อเนื่อง
+      ผลตอบแทนหลักต้องมาจาก multiple คงระดับพรีเมียม ไม่ compress แรง ความเสี่ยงหลักคือ bear case (−39%)
+      หาก valuation de-rate กลับสู่ระดับตลาดทั่วไปพร้อมการเติบโตชะลอ นักลงทุนควรเข้าซื้อแบบทยอย ไม่ all-in ที่ราคานี้
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>GLP-1 Packaging Tailwind:</b> ผู้ผลิตยา GLP-1 (Novo Nordisk, Eli Lilly ฯลฯ) ต้องพึ่ง seals/stoppers/auto-injector ของ WST ซึ่งผ่านการขึ้นทะเบียนร่วมกับตัวยา — สลับซัพพลายเออร์ยากมาก</li>
+          <li><b>High-Value Products (HVP) Mix Shift:</b> กลุ่มผลิตภัณฑ์พรีเมียม (NovaPure, Daikyo Crystal Zenith) มาร์จิ้นสูงกว่า มีสัดส่วนเพิ่มต่อเนื่องหนุน profitability</li>
+          <li><b>Biologics/Cell & Gene Therapy Growth:</b> ยาฉีดกลุ่ม biologics, mRNA, cell & gene therapy ขยายตัวเร็ว ต้องการ containment ที่ได้มาตรฐานสูงซึ่ง WST ครองส่วนแบ่งตลาดมาก</li>
+          <li><b>งบดุลแข็งแกร่ง:</b> Debt/Equity เพียง 0.11, Current Ratio 2.71 — มีกระสุนสำหรับขยายกำลังผลิต/M&A รองรับดีมานด์ GLP-1</li>
+          <li><b>ROE/ROIC สูงเด่น:</b> ROE ~19.1%, ROIC ~20.0% สะท้อนการจัดสรรทุนมีประสิทธิภาพและ pricing power จาก moat</li>
+          <li><b>กำลังการผลิตขยายตัว:</b> ลงทุนโรงงานใหม่ต่อเนื่องรองรับดีมานด์ delivery devices ที่ล้นตลาด</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>Valuation Risk:</b> P/E (TTM) ~47x, PEG 3.05 — ราคาสะท้อนความคาดหวังสูงมาก หากเติบโตชะลอแม้เล็กน้อยอาจเห็น de-rating รุนแรง (เคยเห็นร่วง 15% ในเดือนเดียวช่วง ม.ค. 2569)</li>
+          <li><b>Customer Concentration:</b> การเติบโตของ HVP ผูกกับลูกค้า pharma/biotech รายใหญ่จำนวนไม่มาก โดยเฉพาะกลุ่ม GLP-1 — ดีมานด์อาจ lumpy รายไตรมาส</li>
+          <li><b>FX Exposure:</b> รายได้/ต้นทุนการผลิตกระจายหลายประเทศ ความผันผวนค่าเงินกระทบมาร์จิ้น</li>
+          <li><b>ต้นทุนวัตถุดิบ/พลังงาน:</b> ราคา elastomer/resin และพลังงานผันผวน กดดันมาร์จิ้นการผลิต</li>
+          <li><b>Regulatory Risk:</b> ต้องผ่านมาตรฐาน FDA/EMA เข้มงวดสำหรับบรรจุภัณฑ์ยา — ปัญหาคุณภาพ/recall กระทบชื่อเสียง moat ได้</li>
+          <li><b>EPS Growth Deceleration:</b> Consensus คาดการเติบโต EPS ชะลอจาก ~18% เหลือ ~11% ปีถัดไป — ช่องว่างสำหรับความผิดหวังมีจำกัด</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>ผู้ผูกขาด Injectable Packaging คุณภาพสูง — แต่ราคาแพงเกินมูลค่าพื้นฐาน</h2>
+      <p>West Pharmaceutical Services เป็นผู้ผลิต seals/stoppers/delivery systems สำหรับยาฉีดและวัคซีนแบบกึ่งผูกขาด
+      ด้วยสถานะ switching cost สูงจากกระบวนการขึ้นทะเบียนยา ได้รับแรงหนุนเป็นพิเศษจากการเติบโตของ GLP-1 และ biologics
+      ROE/ROIC ระดับ ~19-20% และงบดุลแข็งแกร่ง (D/E 0.11) สะท้อนคุณภาพธุรกิจชั้นนำ อย่างไรก็ตาม ราคาปัจจุบัน $352.28
+      ซื้อขายสูงกว่ามูลค่าเหมาะสมที่ประเมิน ($300, กรอบ $291-$318) ราว 14-18% และ PEG 3.05 ยืนยันว่าแพงเทียบการเติบโต
+      เหมาะสำหรับนักลงทุนระยะยาวที่เชื่อมั่นในธีม GLP-1/biologics เท่านั้น ผู้ต้องการ margin of safety ควรรอ pullback</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$300 <span style="font-size:12px;color:#cab9a8">($291–$318)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −17.4%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$362 (Strong Buy)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ทยอยสะสมเฉพาะช่วงย่อเท่านั้น — MOS 20% ที่ $240 และ MOS 30% ที่ $210 เป็นจุดเพิ่มน้ำหนักที่น่าสนใจกว่า
+        ราคาปัจจุบันเหมาะกับ Hold สำหรับผู้ถืออยู่แล้ว ไม่ใช่จุดเข้าใหม่ที่ดีสำหรับนักลงทุนสาย value · ติดตาม EPS FY2026 และการขยายกำลังผลิต GLP-1
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    ราคา ณ 8 ก.ค. 2569 · แหล่ง: StockAnalysis.com (ราคา/EPS/valuation/analyst target) · Yahoo Finance (กราฟราคา 1 ปี, cross-verify ราคา) · SEC EDGAR (10-K/10-Q ประวัติงบการเงิน)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 8 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
