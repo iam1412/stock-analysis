@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น Akamai Technologies (AKAM) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"AKAM","currency":"USD","price":114.37,"fairValue":116.01,"mos":1.4,"upside":1.4,"pe":38.68,"dividendYield":null,"roe":9}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#2b9bdf",
+    "accentDark": "#1a73a8",
+    "darkGrad": "linear-gradient(135deg,#07283c 0%,#0c496e 58%,#1474ae 140%)",
+    "glow": "rgba(34,151,221,.35)",
+    "subColor": "#c2dbeb",
+    "headerMuted": "#a5c2d4",
+    "verdictText": "#d0e5f1",
+    "vcellLabel": "#a6c9dd",
+    "badge": "#4db2ef",
+    "chgBg": "#1e8e3e",
+    "chgColor": "#ffffff"
+  },
+  "chart": {
+    "data": [
+      ["ส.ค. 68", 79.13],
+      ["ก.ย. 68", 75.76],
+      ["ต.ค. 68", 75.10],
+      ["พ.ย. 68", 89.52],
+      ["ธ.ค. 68", 87.25],
+      ["ม.ค. 69", 97.15],
+      ["ก.พ. 69", 98.39],
+      ["มี.ค. 69", 114.85],
+      ["เม.ย. 69", 102.98],
+      ["พ.ค. 69", 149.54],
+      ["มิ.ย. 69", 118.21],
+      ["ก.ค. 69", 114.37]
+    ],
+    "min": 70,
+    "max": 155,
+    "grid": [80, 100, 120, 140],
+    "fairLine": 116.01,
+    "currency": "$",
+    "highlight": [2, 9, 11]
+  },
+  "gauge": {
+    "min": 75,
+    "max": 130,
+    "cur": 114.37,
+    "fair": 116.01
+  },
+  "fv": 116.01
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">◉ ◉ ◉</div>
+    <div>
+      <span class="tag">NASDAQ: AKAM</span>
+      <span class="tag">Cybersecurity / CDN</span>
+      <span class="tag">Cloud Compute / Edge</span>
+    </div>
+    <h1>Akamai Technologies (AKAM)</h1>
+    <div class="sub">CDN เบอร์ 1 โลก • Cybersecurity — Zero Trust, Guardicore, App & API Protection • Akamai Cloud (Linode) • รายได้ security แซงหน้า delivery แล้ว</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$114.37<small>(AKAM)</small></div>
+      </div>
+      <div class="chg">▲ +44.5% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 7 ก.ค. 2569<br>
+        กรอบ 52 สัปดาห์ $69.78 – $165.45<br>
+        ที่มา: StockAnalysis.com, Yahoo Finance, Akamai Newsroom/IR
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ไตรมาสล่าสุด (TTM)</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">$16.63B</div><div class="d">145.4M หุ้น (ลดลง ~3.9% YoY จาก buyback)</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~38.7x</div><div class="d">GAAP EPS ถูกกดจากต้นทุน M&A integration</div></div>
+      <div class="metric"><div class="k">P/E (Forward)</div><div class="v">~16.9x</div><div class="d">EPS ปีหน้า (consensus) ~$6.76</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">3.39x</div><div class="d">BVPS $33.73</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">~$435M</div><div class="d">EPS -6.1% YoY (ต้นทุน integration)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$2.96</div><div class="d">GAAP diluted; กดจากต้นทุน Guardicore/LayerX</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~$33.73</div><div class="d">Equity $4.91B ÷ 145.4M หุ้น</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~9.0% / 3.9%</div><div class="d">ROIC ~4.7% ต่ำกว่าทุนจาก capex cloud</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$4.27B</div><div class="d">+6.2% YoY</div></div>
+      <div class="metric"><div class="k">Operating Margin</div><div class="v">~12.4%</div><div class="d">Security mix เพิ่มขึ้นหนุน margin ระยะยาว</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~0%</div><div class="d">ไม่จ่ายปันผล เน้น reinvest R&D/cloud + buyback</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">0.63</div><div class="d">ผันผวนต่ำกว่าตลาดเฉลี่ย</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART (ราคาย้อนหลัง ~1 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#2b9bdf"></i>ราคา AKAM</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $116.01</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคาย่อลงมาแตะจุดต่ำสุดรอบปีที่ $75.10 ในเดือน ต.ค. 2568 ก่อนไต่ขึ้นต่อเนื่องหลังผลประกอบการ security/cloud ดีกว่าคาด
+        จนพุ่งแตะจุดสูงสุดรอบปีที่ $149.54 ในเดือน พ.ค. 2569 (หลังข่าวดีล cloud infrastructure มูลค่า $1.8B)
+        ก่อนย่อตัวลงมาปิดที่ $114.37 ในเดือน ก.ค. 2569 จากแรงขายทำกำไรและความกังวลเรื่อง valuation ที่ตึงตัว
+        รวมผลตอบแทนทั้งปี +44.5% แม้จะถอยจากจุดสูงสุดมาแล้ว ~23%
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION (เฉลี่ย 3 วิธี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. Forward P/E Valuation</div><div class="mdesc">EPS ปีหน้า (Forward, consensus) $6.76 × P/E เป้าหมาย ~18x — สอดคล้องกับ Forward P/E ตลาดปัจจุบัน (16.9x) บวกพรีเมียมเล็กน้อยสะท้อนสัดส่วนรายได้ security ที่เพิ่มขึ้น</div></div>
+        <div class="mval">$121.68</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. EV/Revenue Valuation</div><div class="mdesc">รายได้ TTM $4,270M × EV/Revenue เป้าหมาย ~5.2x = EV $22,204M − หนี้สินสุทธิ $4,630M ÷ 145.39M หุ้น</div></div>
+        <div class="mval">$120.87</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. EV/EBITDA Valuation</div><div class="mdesc">EBITDA TTM ~$1,175M (ย้อนคำนวณจาก EV/EBITDA ปัจจุบัน 18.1x) × EV/EBITDA เป้าหมาย ~17x = EV $19,968M − หนี้สินสุทธิ $4,630M ÷ 145.39M หุ้น</div></div>
+        <div class="mval">$105.50</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $105.50 – $121.68</span></div>
+        <div class="r">$116.01</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        วิธี EV/EBITDA ให้ค่าต่ำสุด ($105.50) เพราะใช้ตัวคูณอนุรักษ์นิยมกว่าปัจจุบันเล็กน้อย สะท้อน capex สูงจากการลงทุน cloud/compute
+        วิธี Forward P/E ให้ค่าสูงสุด ($121.68) เพราะรวมพรีเมียมเล็กน้อยจากธุรกิจ security ที่ margin สูงขึ้น
+        ค่าเฉลี่ย $116.01 ใกล้เคียงราคาปัจจุบันมาก ($114.37) ต่างกันเพียง ~1.4% สะท้อนหุ้นที่เทรดใกล้มูลค่าเหมาะสมพอดี
+        แม้เป้าเฉลี่ยนักวิเคราะห์ ($159.30) จะสูงกว่ามากเพราะรวมมุมมองการเติบโตระยะยาวของธุรกิจ cloud/security ที่ยังไม่สะท้อนในตัวเลขงบการเงินปัจจุบัน
+        หมายเหตุ: ใช้ GAAP diluted EPS TTM ($2.96) เป็นฐาน คำนวณ EPS ปีหน้า (Forward) จากราคาปัจจุบัน ÷ Forward P/E 16.92x ที่ StockAnalysis.com รายงาน
+        เนื่องจาก Akamai ไม่แยกรายงาน adjusted EPS อย่างเป็นทางการ ที่มา: StockAnalysis.com, Yahoo Finance
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $114.37</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $116.01</div></div>
+        </div>
+        <div class="scale">
+          <span>$81.21<br><small>MOS 30%</small></span>
+          <span>$92.81<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$116.01<br><small>Fair Value</small></span>
+          <span style="text-align:right">$121.68<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">$159.30<br><small>เป้าเฉลี่ย Analyst</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน $114.37 อยู่ใกล้เคียง Fair Value ($116.01) มาก และต่ำกว่าเป้าเฉลี่ยนักวิเคราะห์ ($159.30) ค่อนข้างมาก —
+        ยังไม่เข้าโซน MOS 20-30% ที่น่าสนใจสำหรับการเข้าซื้อเชิง value นักวิเคราะห์มองบวกกว่าฝั่ง fundamental valuation ค่อนข้างมาก
+        เพราะให้น้ำหนักกับการเติบโตระยะยาวของธุรกิจ cloud/security ที่ยังไม่ปรากฏในตัวเลขงบการเงินปัจจุบัน
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">+1.4%</div>
+        <div class="txt">ราคาปัจจุบันเกือบเท่ากับมูลค่าเหมาะสม (~1.4%) แทบไม่มีส่วนเผื่อความปลอดภัย — ยังไม่ใช่จังหวะเข้าซื้อเชิง Value แม้ปัจจัยพื้นฐานเปลี่ยนผ่านสู่ security/cloud จะแข็งแรงขึ้นต่อเนื่อง</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$92.81</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$81.21</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $116.01</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="114.37" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $114.37 • EPS ฐาน ~$2.96 • ไม่มีปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS +3%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$80.88</div>
+          <div class="ret neg">-29.3%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$3.24</span></li>
+            <li><span>P/E ออก</span><span>25x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$0</span></li>
+            <li><span>สถานการณ์</span><span>ต้นทุน integration ยืดเยื้อ + CDN delivery โดนกดราคาต่อเนื่อง + multiple de-rate</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +12%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$133.09</div>
+          <div class="ret pos">+16.4%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$4.16</span></li>
+            <li><span>P/E ออก</span><span>32x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$0</span></li>
+            <li><span>สถานการณ์</span><span>EPS ฟื้นตัวจากฐานที่ถูกกด + security/cloud มี margin ดีขึ้นต่อเนื่อง</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +25%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$202.34</div>
+          <div class="ret pos">+76.9%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$5.78</span></li>
+            <li><span>P/E ออก</span><span>35x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$0</span></li>
+            <li><span>สถานการณ์</span><span>Akamai Cloud เร่งตัวจาก AI workload + security เติบโตเร่ง + re-rating multiple</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      ไม่มีปันผล — Akamai ไม่จ่ายเงินปันผล เน้นนำกระแสเงินสดไปลงทุนขยายธุรกิจ cloud/security และซื้อหุ้นคืนบางส่วน (จำนวนหุ้นลดลง ~3.9% YoY)
+      ผลตอบแทนทั้งหมดจึงมาจาก capital gain ล้วน สถานการณ์ Base สะท้อนการฟื้นตัวของ GAAP EPS จากฐานที่ถูกกดในปี 2568
+      (ต้นทุน integration Guardicore/Noname/LayerX ทยอยลดลง) พร้อมสัดส่วนรายได้ security ที่มี margin สูงกว่าเพิ่มขึ้นต่อเนื่อง
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>Security revenue แซง Delivery แล้ว:</b> ธุรกิจ security (Zero Trust, Guardicore, App & API Protection) เติบโตเร็วและมี margin สูงกว่า CDN delivery ดั้งเดิม ทำให้ mix รายได้โดยรวมดีขึ้นต่อเนื่อง</li>
+          <li><b>Akamai Cloud (เดิม Linode) ขยายตัว:</b> รุกตลาด cloud compute/edge สำหรับ AI inference ล่าสุดได้ดีล cloud infrastructure มูลค่า $1.8B เป็นสัญญาณ traction ที่ดี</li>
+          <li><b>LayerX (secure enterprise browser):</b> ขยาย portfolio security เข้าสู่ browser security ซึ่งเป็นเซกเมนต์ที่กำลังเติบโตในองค์กร</li>
+          <li><b>Beta ต่ำ (0.63) + FCF สม่ำเสมอ:</b> ลักษณะ defensive ดึงดูดเงินทุนได้ในช่วงตลาดผันผวน พร้อม FCF margin ~14%</li>
+          <li><b>Buyback ต่อเนื่อง:</b> จำนวนหุ้นลดลง ~3.9% YoY ช่วยหนุน EPS ต่อหุ้นในระยะยาว</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>ธุรกิจ CDN delivery โดนกดราคา:</b> การแข่งขันจาก Cloudflare และ hyperscaler (AWS/Azure/GCP) กดราคาธุรกิจ CDN ดั้งเดิมต่อเนื่อง</li>
+          <li><b>ต้นทุน M&A integration ยืดเยื้อ:</b> EPS แบบ GAAP หดตัว -6.1% YoY (FY2568) จากต้นทุนควบรวม Guardicore/Noname/LayerX อาจกดต่อเนื่องอีกหลายไตรมาส</li>
+          <li><b>แข่งขันธุรกิจ cloud/compute:</b> Akamai Cloud ต้องเผชิญ hyperscaler รายใหญ่ที่มีทุนหนากว่ามากในตลาด capital-intensive</li>
+          <li><b>หนี้สินสูง:</b> Debt/Equity ~1.2x จากการควบรวมกิจการต่อเนื่อง จำกัดความยืดหยุ่นทางการเงิน</li>
+          <li><b>Valuation ตึงตัว:</b> P/E (TTM) ~38.7x สูงกว่าค่าเฉลี่ยในอดีต หากธุรกิจ security/cloud เติบโตไม่ทันคาด อาจเห็นการ de-rate ของ multiple</li>
+          <li><b>รายได้ผันผวนตามฤดูกาล traffic:</b> ลูกค้ารายใหญ่กลุ่ม media/streaming ทำให้รายได้บางไตรมาสอาจไม่สม่ำเสมอ</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>Akamai: เปลี่ยนผ่านสู่ Security/Cloud สำเร็จ แต่ราคาสะท้อนไปเกือบเต็มมูลค่าแล้ว</h2>
+      <p>Akamai Technologies เปลี่ยนโครงสร้างธุรกิจจาก CDN delivery แบบเดิมสู่ cybersecurity (Zero Trust, Guardicore) และ cloud compute (Akamai Cloud/Linode) ได้สำเร็จ
+      โดยรายได้ security แซงหน้า delivery แล้ว เป็นเรื่องราวการเปลี่ยนผ่านที่ solid ทว่าเมื่อประเมินด้วย 3 วิธี (Forward P/E, EV/Revenue, EV/EBITDA)
+      มูลค่าเหมาะสมเฉลี่ยอยู่ที่ ~$116.01 ใกล้เคียงราคาตลาดปัจจุบัน ($114.37) มาก แทบไม่เหลือส่วนเผื่อความปลอดภัย (MOS ~1.4%)
+      แม้เป้าเฉลี่ยนักวิเคราะห์ Wall Street จะสูงถึง $159.30 (+39%) ซึ่งสะท้อนมุมมองบวกต่อการเติบโตระยะยาวของธุรกิจ cloud/security
+      ที่ยังไม่ปรากฏชัดในตัวเลขงบการเงินปัจจุบัน (EPS แบบ GAAP ยังหดตัว -6.1% YoY จากต้นทุนควบรวมกิจการ)</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$116.01 <span style="font-size:12px;color:#cab9a8">($105.50–$121.68)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +1.4%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$159.30 (เฉลี่ยนักวิเคราะห์)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> รอจังหวะราคาย่อสู่โซน MOS 15-20% (ประมาณ $93-99) ก่อนทยอยสะสม เพราะราคาปัจจุบันแทบไม่มีส่วนเผื่อความปลอดภัยจากมุมมอง fundamental
+        แม้เรื่องราวเปลี่ยนผ่านสู่ security/cloud จะแข็งแรงและเป้านักวิเคราะห์จะสูงกว่ามาก นักลงทุนที่เชื่อมั่นในธีมระยะยาวอาจทยอยสะสมบางส่วนได้
+        แต่ควรจับตาความผันผวนของ GAAP EPS และความคืบหน้าธุรกิจ cloud/compute ในไตรมาสถัดไป (ประกาศงบ Q2 2569 วันที่ 6 ส.ค. 2569)
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ที่มา: StockAnalysis.com (7 ก.ค. 2569), Yahoo Finance (7 ก.ค. 2569), Akamai Newsroom/IR
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 7 กรกฎาคม 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
