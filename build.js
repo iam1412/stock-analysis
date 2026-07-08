@@ -429,6 +429,28 @@ fs.writeFileSync(
   JSON.stringify(reports.map(({ symbol, file, name, title, desc, updated, metrics }) => ({ symbol, file, name, title, desc, updated, url: '/' + file, metrics })), null, 2) + '\n'
 );
 
+// ---- 4.5) sitemap.xml + robots.txt (ส่ง Google Search Console — auto จากรายการหุ้น) ----
+// URL หุ้นใช้ clean URL /<SYM> (เดียวกับ og:url) · lastmod = วันที่อัปเดตของรายงานนั้น
+const sitemapEntries = [
+  `  <url><loc>${SITE_ORIGIN}/</loc><changefreq>daily</changefreq><priority>1.0</priority></url>`,
+  ...reports.map((r) =>
+    `  <url><loc>${SITE_ORIGIN}/${encodeURIComponent(r.symbol)}</loc>` +
+    `<lastmod>${(r.updated || '').slice(0, 10)}</lastmod>` +
+    `<changefreq>weekly</changefreq><priority>0.8</priority></url>`
+  ),
+];
+fs.writeFileSync(
+  path.join(OUT, 'sitemap.xml'),
+  '<?xml version="1.0" encoding="UTF-8"?>\n' +
+  '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
+  sitemapEntries.join('\n') + '\n</urlset>\n'
+);
+fs.writeFileSync(
+  path.join(OUT, 'robots.txt'),
+  `User-agent: *\nAllow: /\n\nSitemap: ${SITE_ORIGIN}/sitemap.xml\n`
+);
+log('sitemap:', 'sitemap.xml (' + (reports.length + 1) + ' urls) + robots.txt');
+
 // ---- 5) คัดลอก assets + ไฟล์พิเศษของ Cloudflare ----
 for (const nm of fs.readdirSync(ROOT)) {
   const p = path.join(ROOT, nm);
