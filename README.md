@@ -72,7 +72,7 @@ flowchart TD
 **Endpoints:** `POST /api/views/<SYM>` (+1 วิว) · `GET /api/views/<SYM>` · `GET /api/views` (batch ทั้ง index, แคช edge 60 วิ) · `POST /api/vote/<SYM>?from=&to=` (server คิด delta เอง ∈ −1..1)
 
 > 🆓 อยู่ใน **Cloudflare Free tier** สบาย ๆ (ใช้โควต้า DO ~1–4%) · กันนับซ้ำฝั่ง client: วิว = `sessionStorage`, โหวต = `localStorage`
-> รายละเอียด deploy / ถอด D1 ดูที่ [DEPLOY.md](DEPLOY.md) · กฎระบบใน [CLAUDE.md](CLAUDE.md) §8
+> รายละเอียด deploy / ถอด D1 ดูที่ [DEPLOY.md](DEPLOY.md) · โครงสร้างระบบนับดูที่ [`docs/counters.md`](docs/counters.md)
 
 ## ➕ เพิ่มหุ้นใหม่
 
@@ -81,7 +81,7 @@ flowchart TD
 cp _template/skeleton-th.html reports/AAPL.html      # หรือ skeleton-us.html
 
 # 2. แทนทุก {{TOKEN}} ด้วยข้อมูลจริง (gate E13 จะ error ถ้าเหลือ {{...}} ค้าง)
-#    เลือกสีแบรนด์ใน report-data.theme (ดู tools/brand-colors.md) + ให้ตัวเลขสอดคล้องกัน (CLAUDE.md §7)
+#    เลือกสีแบรนด์ใน report-data.theme (ดู tools/brand-colors.md) + ให้ตัวเลขสอดคล้องกัน (docs/quality-gate.md)
 
 # 3. push — Cloudflare build & deploy ให้เอง
 npm run verify && git add -A && git commit -m "analyze: add AAPL stock analysis" && git pull --rebase origin main && git push origin HEAD:main
@@ -124,6 +124,8 @@ git config core.hooksPath .githooks   # เปิดใช้ pre-push hook (ค
 ```
 
 > ⚠️ gate ตรวจ "ความสอดคล้อง + ความสด + การอ้างอิง" ได้ แต่ **ตรวจ "ความถูกต้องตามจริง" ของราคา/งบเทียบตลาดไม่ได้** — ส่วนนั้นต้องทวนแหล่งข้อมูล ≥3 ตอนสร้าง + วิจารณญาณคน
+
+> รายละเอียดทุกชั้น / ทุก E-code + env threshold: [`docs/quality-gate.md`](docs/quality-gate.md)
 
 ## 🚀 Deploy
 
