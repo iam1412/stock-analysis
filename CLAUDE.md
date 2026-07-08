@@ -63,12 +63,13 @@ dist/                   # ⚠️ build output (gitignore) — ห้ามแก
    - เกิน 7 วัน → วิเคราะห์ซ้ำ (อัปเดต) · ยังไม่มี → วิเคราะห์ใหม่
 3. กันซ้ำข้าม session = §3.2 push per-wave + pull --rebase ก่อนแต่ละเวฟ (ตัวที่คนอื่น push แล้วโผล่ใน reports.json → ถูกคัดออก)
 
-### 3.2 รัน — 1 หุ้น/agent · เวฟละ ≤3 · push per-wave
+### 3.2 รัน — 1 หุ้น/agent · **sequential** · เวฟละ ≤3 · push per-wave
 - **★ โมเดล (บังคับ): ห้าม Haiku ทุกขั้น** (Sonnet+Haiku และ Haiku-ล้วน ห้ามทั้งคู่) · **ค่าเริ่มต้น = All-Sonnet main + escalate**: controller=Sonnet, worker=Sonnet (`model:"sonnet"`) — ตราบใดที่ controller ตรวจข้ามแหล่ง price/EPS ≥2 + ดึงกราฟจริง + จับ split/ticker เอง · **หุ้นยาก** (IPO <1 ปี/spinoff/split/cyclical/ราคา cross-source ต่าง >5%) → **escalate อัตโนมัติ** spawn worker ตัวนั้นเป็น **Opus** (`Agent model:"opus"`) ไม่ต้องบอก user · ถ้า **การตัดสิน publish/skip ของ controller เองกำกวม** → หยุด ping user สลับ session เป็น Opus
 - **spawn 1 Agent/หุ้น** — full analysis หุ้นตัวเดียว รวม cross-source verify เริ่มจาก skeleton เขียนลง `reports/<SYMBOL>.html` ของตัวเองเท่านั้น · context แยกสะอาด กันเลขปนข้ามหุ้น (ตัวร้าย #1 ของรีโป) · **ใช้ prompt แม่แบบ `_template/agent-prompt.md`**
 - **★ STEP 0 กัน cwd-stray:** prompt ให้ agent เริ่ม `cd <worktree> && pwd` + ห้าม `cd` ลง main repo · ตอน push เช็ค `ls reports/<SYM>.html` ใน worktree — ไม่มี = ไปหยิบจาก main repo + ลบตัวหลง (ดู memory [[bulk-stock-analysis-workflow]])
-- **★ เวฟละ ≤3 agents** (≤3 tool call ในข้อความเดียว) → เวฟนั้น push เสร็จค่อยยิงเวฟถัดไป · ห้ามยิงทุกตัวรวดเดียว
-- **ห้าม agent push เอง · push per-wave** — รอ ≤3 agent เสร็จครบ → main รัน §4 ครั้งเดียว/เวฟ (commit รวม `analyze: add A, B, C`) · **ทำไมไม่ push รายตัว:** verify สแกนทุกไฟล์ใน `reports/` → sibling ที่เขียนค้างจะบล็อกตัวที่เสร็จแล้ว
+- **★ SEQUENTIAL (บังคับ): spawn 1 agent → รอ notification "completed" → ตรวจ/แก้ error → spawn ถัดไป** — ห้าม spawn parallel หลายตัวพร้อมกัน เพราะกด API session rate limit ทุกตัว fail พร้อมกัน (เห็นแล้วใน W19–W21) · fallback: ถ้า agent fail → ทำ inline ในนี้แทน (fetch + write ใน main session)
+- **เวฟละ ≤3 หุ้น** → push รวมเมื่อครบเวฟ · ห้ามยิงทุกตัวรวดเดียว
+- **ห้าม agent push เอง · push per-wave** — รอทุก agent ในเวฟเสร็จ → main รัน §4 ครั้งเดียว/เวฟ (commit รวม `analyze: add A, B, C`) · **ทำไมไม่ push รายตัว:** verify สแกนทุกไฟล์ใน `reports/` → sibling ที่เขียนค้างจะบล็อกตัวที่เสร็จแล้ว
 - **push per-wave serialize** — ห้าม push ซ้อนหลายเวฟ/หลาย session กัน git race
 
 ### 3.3 ลดจำนวนเองได้ ถ้าของดีไม่พอ (ไม่ต้องถาม แต่แจ้งเหตุผล)
