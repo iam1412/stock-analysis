@@ -5,7 +5,7 @@
 > **จัดลำดับ:** Tier A = ย่อลึก/de-rate แรง ณ ก.ค. 2569 (ทำก่อน มีโอกาสเจอ MOS จริง) → Tier B = บลูชิพ/quality ที่ขาดเพื่อความครบ → Tier C = สายปันผล/defensive (utilities·REITs·midstream·materials)
 > สร้าง 2026-07-05 · % ในตาราง = ผลตอบแทน 1 ปีจาก Yahoo ณ วันสร้างแผน (ตอนวิเคราะห์จริงต้องดึงใหม่ + ตรวจข้ามแหล่งเสมอ)
 >
-> **📊 ความคืบหน้า (อัปเดต 9 ก.ค. 2569): เสร็จ 74/124 — W25: UL+LNG ✅ · resume ที่ #75 DHI🔺 · #76 LEN🔺 · #77 PHM🔺** · เหลือ 50 ตัว (W26→~W42)
+> **📊 ความคืบหน้า (อัปเดต 9 ก.ค. 2569): เสร็จ 77/124 — W26: DHI+LEN+PHM ✅ (Big 3 homebuilders) · resume ที่ #78 SRE** · เหลือ 47 ตัว (W27→~W42)
 
 ---
 
@@ -113,15 +113,15 @@
 | 72 | W24 | KDP | เครื่องดื่ม | Keurig Dr Pepper — เบอร์ 3 soft drinks ถูกกว่า KO/PEP ที่มีแล้ว | | ✅ $31.03/FV$30 MOS−4.4% |
 | 73 | W25 | UL | consumer staples | Unilever ADR −12% — global staples yield ~3.5% turnaround | | ✅ $61.84/FV$63 MOS+1.1% |
 | 74 | W25 | LNG | พลังงาน LNG | Cheniere — ผูกขาด LNG export US, take-or-pay contracts (DCF) | | ✅ $260.94/FV$265 MOS+1.5% |
-| 75 | W25 | DHI | บ้าน | D.R. Horton — เบอร์ 1 US, housing cyclical → normalize EPS | 🔺 | ⬜ |
-| 76 | W26 | LEN | บ้าน | Lennar −34% — เบอร์ 2, ย่อลึกกว่ากลุ่ม (normalize EPS) | 🔺 | ⬜ |
-| 77 | W26 | PHM | บ้าน | PulteGroup — มาร์จิ้นดีสุดใน 3 เจ้า (normalize EPS) | 🔺 | ⬜ |
+| 75 | W26 | DHI | บ้าน | D.R. Horton — เบอร์ 1 US, housing cyclical → normalize EPS | 🔺 | ✅ $148.51/FV$137 MOS−8.7% |
+| 76 | W26 | LEN | บ้าน | Lennar −34% — เบอร์ 2, ย่อลึกกว่ากลุ่ม (normalize EPS) | 🔺 | ✅ $83.59/FV$79 MOS−6.2% |
+| 77 | W26 | PHM | บ้าน | PulteGroup — มาร์จิ้นดีสุดใน 3 เจ้า (normalize EPS) | 🔺 | ✅ $122.94/FV$137 MOS+10.3% |
 
 ## Tier C — สายปันผล/defensive (47 ตัว · เวฟ 26–42)
 
 | # | Wave | Symbol | กลุ่ม | ทำไม | 🔺 | สถานะ |
 |---|---|---|---|---|---|---|
-| 78 | W26 | SRE | utility | Sempra — gas/ไฟฟ้า + LNG infra, ใหญ่สุดที่ยังไม่มี | | ⬜ |
+| 78 | W27 | SRE | utility | Sempra — gas/ไฟฟ้า + LNG infra, ใหญ่สุดที่ยังไม่มี | | ⬜ |
 | 79 | W27 | ED | utility | Con Edison — NYC ผูกขาด, dividend aristocrat 50+ ปี | | ⬜ |
 | 80 | W27 | XEL | utility | Xcel — renewables ผู้นำกลุ่ม utility | | ⬜ |
 | 81 | W27 | PEG | utility | PSEG — NJ + nuclear (ธีม data center PPA) | | ⬜ |
