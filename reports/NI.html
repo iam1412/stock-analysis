@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น NiSource (NI) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"NI","currency":"USD","price":46.79,"fairValue":46.42,"mos":-0.8,"upside":-0.8,"pe":23.2,"dividendYield":2.56,"roe":9.11}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#52708c",
+    "accentDark": "#33475c",
+    "darkGrad": "linear-gradient(135deg,#1c2b38 0%,#2d4256 60%,#3f5b73 100%)",
+    "glow": "rgba(82,112,140,0.35)",
+    "subColor": "#a8c0d4",
+    "headerMuted": "rgba(168,192,212,0.65)",
+    "verdictText": "#f0f6fa",
+    "vcellLabel": "rgba(168,192,212,0.7)",
+    "badge": "#52708c",
+    "chgBg": "#123d1f",
+    "chgColor": "#34a853"
+  },
+  "chart": {
+    "data": [
+      ["ส.ค. 68", 42.27],
+      ["ก.ย. 68", 43.30],
+      ["ต.ค. 68", 42.11],
+      ["พ.ย. 68", 44.13],
+      ["ธ.ค. 68", 41.76],
+      ["ม.ค. 69", 44.29],
+      ["ก.พ. 69", 47.30],
+      ["มี.ค. 69", 46.66],
+      ["เม.ย. 69", 48.28],
+      ["พ.ค. 69", 46.22],
+      ["มิ.ย. 69", 47.55],
+      ["ก.ค. 69", 46.79]
+    ],
+    "min": 36,
+    "max": 52,
+    "grid": [36, 40, 44, 48, 52],
+    "fairLine": 46.42,
+    "currency": "$",
+    "highlight": [4, 8]
+  },
+  "gauge": {
+    "min": 30,
+    "max": 54,
+    "cur": 46.79,
+    "fair": 46.42,
+    "fairLabelTop": true
+  },
+  "fv": 46.42
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">NI</div>
+    <div>
+      <span class="tag">NYSE: NI</span>
+      <span class="tag">Utilities — Regulated Gas &amp; Electric</span>
+      <span class="tag">Gas Pipeline Modernization</span>
+    </div>
+    <h1>NiSource</h1>
+    <div class="sub">Gas &amp; Electric Utility • Indiana/Ohio/PA/VA/KY/MD • Columbia Gas • Grid Modernization</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$46.79<small>(NI)</small></div>
+      </div>
+      <div class="chg">▲ +10.7% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 9 ก.ค. 2569 (งวดล่าสุด ไตรมาส 1 ปี 2569 / Q1 2026)<br>
+        กรอบ 52 สัปดาห์ $38.45 – $49.21<br>
+        ที่มา: StockAnalysis.com, Yahoo Finance, Google Finance
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ก.ค. 2569</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~$22.44 พัน ล.</div><div class="d">~479 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~23.2x</div><div class="d">EPS TTM $2.02 · Forward P/E ~22.2x (EPS ~$2.11 est.)</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~17–22x</div><div class="d">กรอบ utility ขยายจากค่าเฉลี่ยเดิม (rate base growth + data center demand)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">~2.31x</div><div class="d">BVPS $20.27 (TTM)</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">$1,013 ล้าน</div><div class="d">EPS +20.4% YoY (FY24 $1.62 → FY25 $1.95)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$2.02</div><div class="d">StockAnalysis $2.02 · Yahoo $2.01 (cross-verify ≤2%)</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~$20.27</div><div class="d">มูลค่าสินทรัพย์สุทธิต่อหุ้น (TTM)</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~9.11% / 3.39%</div><div class="d">สอดคล้องกับ allowed ROE ของ regulated utility</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$6,822 ล้าน</div><div class="d">Op. margin ~27.8%</div></div>
+      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">Op. margin ~27.8%</div><div class="d">Net margin ~15.3%</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~2.56%</div><div class="d">$1.20/ปี · Payout ~59% · DGR guidance ~6%/ปี</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">~0.54</div><div class="d">ต่ำกว่าตลาดมาก — defensive สูง (regulated utility)</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART (ราคาย้อนหลัง ~1 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#52708c"></i>ราคา NI</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $46.42</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        NI ปรับตัวขึ้น +10.7% ในรอบปี (ส.ค. 2568 – ก.ค. 2569) จาก $42.27 มาอยู่ที่ $46.79
+        ราคาแตะต่ำสุดที่ $41.76 ในเดือนธ.ค. 2568 จากแรงกดดันอัตราดอกเบี้ยและฤดูหนาวที่ไม่รุนแรงกดดัน gas demand ตามฤดูกาล
+        ก่อนฟื้นตัวขึ้นแตะสูงสุดที่ $48.28 ในเดือนเม.ย. 2569 จากผลประกอบการไตรมาส 1 ที่แข็งแกร่งและความเชื่อมั่นต่อแผน capex ท่อก๊าซ modernization
+        ปัจจุบันซื้อขายใกล้เคียง Fair Value $46.42 มาก สะท้อนว่าตลาดให้ราคาที่ค่อนข้างมีประสิทธิภาพแล้ว
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION (เฉลี่ย 2 วิธี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 2 วิธี — DDM (หลัก) + P/E (เสริม)</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. DDM / Gordon Growth (วิธีหลัก)</div><div class="mdesc">D₀ = ปันผลปัจจุบัน $1.20 → D₁ = D₀×(1+g) = $1.20×1.055 = $1.27; g 5.5% (ระมัดระวังกว่า historical dividend growth เฉลี่ย ~6.2%/ปี ปี 2022–2025), r 8.0% (risk-free ~4.3% + beta 0.54 × ERP ~6.5%) → FV = D₁/(r−g) = $1.27/(8.0%−5.5%) = $50.64 — เหมาะกับ regulated utility ที่กระแสเงินสด/ปันผลคาดการณ์ได้สูง</div></div>
+        <div class="mval">$50.64</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. P/E Valuation (เสริม)</div><div class="mdesc">EPS forward $2.11 × P/E เป้าหมาย 20x = $42.20 (ปรับลดจาก Forward P/E ปัจจุบัน 22.15x สู่กรอบ utility ทั่วไป 18–21x) — ใช้ EPS forward เพราะสะท้อนแนวโน้มเติบโตตาม guidance บริษัทมากกว่า TTM</div></div>
+        <div class="mval">$42.20</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $42.20 – $50.64</span></div>
+        <div class="r">$46.42</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        DDM ให้ค่าสูงกว่า ($50.64) สะท้อนความมั่นคงของกระแสเงินสด/ปันผลที่เติบโตต่อเนื่อง ~6%/ปีของ regulated utility
+        ขณะที่ P/E Valuation ให้ค่าระมัดระวังกว่า ($42.20) โดยปรับ multiple ลงจากระดับ premium ปัจจุบัน (22–23x) มาสู่กรอบ utility ทั่วไป (~20x)
+        ค่าเฉลี่ยสองวิธี $46.42 ใกล้เคียงราคาตลาดปัจจุบันมาก บ่งชี้ว่า NI ซื้อขายที่ระดับใกล้เคียง fair value พอดี แทบไม่มี margin of safety ในขณะนี้
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $46.79</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $46.42</div></div>
+        </div>
+        <div class="scale">
+          <span>$32.49<br><small>MOS 30%</small></span>
+          <span>$37.14<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$46.42<br><small>Fair Value</small></span>
+          <span style="text-align:right">$50.64<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">$51.30<br><small>เป้าเฉลี่ย Analyst</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน $46.79 ใกล้เคียง Fair Value $46.42 มาก (สูงกว่าเล็กน้อย ~0.8%) — แทบไม่มี margin of safety ในการเข้าซื้อตอนนี้
+        นักวิเคราะห์ 16 รายให้เป้าเฉลี่ย $51.30 (Buy consensus) สูงกว่า FV ของเราเล็กน้อย สะท้อนมุมมองบวกต่อ rate base growth จาก gas pipeline modernization และดีมานด์ไฟฟ้าจาก data center
+        จุดซื้อที่น่าสนใจสำหรับ value investor คือ $32–$37 (MOS 20–30%) ส่วนราคาปัจจุบันเหมาะสำหรับผู้ที่เน้น dividend income ระยะยาวมากกว่าการเก็งกำไรส่วนต่างราคา
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">−0.8%</div>
+        <div class="txt">ราคาปัจจุบันใกล้เคียงกับ Fair Value มาก แทบไม่มี Margin of Safety (−0.8%) เหมาะสำหรับนักลงทุนที่เน้นปันผลระยะยาวมากกว่าการเข้าซื้อเพื่อหวังส่วนต่างราคา ผู้ที่ต้องการ MOS สูงควรรอจังหวะราคาย่อตัว</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$37.14</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$32.49</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $46.42</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="46.79" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $46.79 • EPS ฐาน ~$2.02 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS +2%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$38.59</div>
+          <div class="ret neg">-9.5% รวม (รวมปันผล)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$2.14</span></li>
+            <li><span>P/E ออก</span><span>18x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$3.75</span></li>
+            <li><span>สถานการณ์</span><span>อัตราดอกเบี้ยสูงต่อเนื่อง + rate case ไม่เป็นใจ</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +6%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$50.52</div>
+          <div class="ret pos">+16.6% รวม / ~5.3%/ปี</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$2.41</span></li>
+            <li><span>P/E ออก</span><span>21x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$4.05</span></li>
+            <li><span>สถานการณ์</span><span>EPS/ปันผลโตตาม guidance rate base growth</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +8%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$58.53</div>
+          <div class="ret pos">+34.1% รวม / ~10.3%/ปี</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$2.54</span></li>
+            <li><span>P/E ออก</span><span>23x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$4.21</span></li>
+            <li><span>สถานการณ์</span><span>capex modernization เร่งตัวเกิน guidance + data center demand เร่งตัว</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      สมมติฐาน: ราคาเข้า $46.79 · EPS ฐาน $2.02 (TTM) · ปันผลเติบโตตามอัตราเดียวกับ EPS ในแต่ละ scenario (เริ่มจาก D₀ $1.20/ปี)
+      Base case ให้ผลตอบแทนรวม ~16.6% ใน 3 ปี (~5.3%/ปี) สอดคล้องกับ guidance EPS growth ~6–8%/ปี บวก dividend yield ~2.6%
+      Bear case ติดลบ ~9.5% หากอัตราดอกเบี้ยสูงกดดัน multiple ต่อเนื่องและ rate case ไม่เป็นใจในบางรัฐ
+      Bull case เปิด upside ~34% จาก capex modernization เร่งตัวเกิน guidance และดีมานด์ไฟฟ้า data center เร่งตัว ตัวเลขเป็นการประมาณเพื่อการศึกษา ไม่ใช่การรับประกันผลตอบแทน
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก &amp; ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>Gas Pipeline Modernization:</b> โครงการเปลี่ยนท่อส่งก๊าซเก่า (cast iron/bare steel) เป็นท่อใหม่ต่อเนื่องหลายปี หนุน rate base เติบโต ~10%/ปี ผ่านกลไก regulatory tracker ที่อนุมัติแล้ว</li>
+          <li><b>Pure-play Regulated Gas &amp; Electric:</b> หลังขาย Columbia Gas of Massachusetts ออกไป (2020, หลังเหตุ Merrimack Valley) เหลือธุรกิจ regulated ล้วนใน 6 รัฐ (Indiana, Ohio, Pennsylvania, Virginia, Kentucky, Maryland) ลดความเสี่ยง litigation แบบเดิม</li>
+          <li><b>NIPSCO Renewable Transition:</b> เปลี่ยนโรงไฟฟ้าถ่านหินเป็น wind/solar/battery storage ในอินเดียนา ลดต้นทุนเชื้อเพลิงระยะยาวและตอบโจทย์ ESG</li>
+          <li><b>Data Center Demand Growth:</b> ความต้องการไฟฟ้าจาก data center ในพื้นที่ให้บริการอินเดียนาเพิ่มขึ้นต่อเนื่อง หนุน load growth และ rate base เพิ่มเติมในอนาคต</li>
+          <li><b>Dividend Growth ต่อเนื่อง:</b> DGR เฉลี่ย ~6.2%/ปี ต่อเนื่องช่วง FY2022–2025 yield ~2.6% ดึงดูด income investor</li>
+          <li><b>Constructive Regulatory Track Record:</b> ประวัติการอนุมัติ rate case ที่ค่อนข้างสร้างสรรค์ในหลายรัฐ ช่วยให้ ROE allowed สม่ำเสมอ</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>Regulatory Risk:</b> การขอขึ้นค่าไฟ/ก๊าซต้องผ่านการอนุมัติจากคณะกรรมการกำกับ 6 รัฐ ความล่าช้าหรือได้ rate ต่ำกว่าคาดกระทบ ROE และ cash flow</li>
+          <li><b>Capex หนักกดกระแสเงินสด:</b> แผนลงทุน modernization หลายพันล้านดอลลาร์ต่อปีทำให้ FCF ติดลบต่อเนื่อง ต้องพึ่งพาการกู้ยืม/ออกหุ้นเพิ่มเป็นระยะ</li>
+          <li><b>อัตราดอกเบี้ยสูง:</b> หนี้สินระดับสูง (Total debt ~$16.8 พัน ล.) ต้นทุนดอกเบี้ยเพิ่มขึ้นเมื่อ refinance กระทบกำไรสุทธิ</li>
+          <li><b>Valuation Premium:</b> P/E TTM ~23.2x สูงกว่าค่าเฉลี่ยกลุ่ม utility ทั่วไป (~17–22x) หากตลาดปรับ multiple ลง ราคาหุ้นอาจ underperform</li>
+          <li><b>Weather Volatility:</b> ฤดูหนาวที่ไม่รุนแรง (mild winter) กดดัน gas demand และรายได้ตามฤดูกาล ขณะที่พายุรุนแรงเพิ่มต้นทุนซ่อมแซมโครงข่าย</li>
+          <li><b>Legacy Liability Risk:</b> แม้ขาย Columbia Gas of Massachusetts ไปแล้ว ความเสี่ยงจากคดีความ/ภาระผูกพันเก่าที่อาจหลงเหลืออยู่ยังต้องติดตาม</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>NI: Pure-play Regulated Utility เติบโตจาก Gas Pipeline Modernization — ราคาใกล้เคียง Fair Value มาก</h2>
+      <p>NiSource เป็น regulated utility ที่ผสมผสานธุรกิจก๊าซ (Columbia Gas) และไฟฟ้า (NIPSCO) ใน 6 รัฐ (Indiana, Ohio, Pennsylvania, Virginia, Kentucky, Maryland)
+        หลังขาย Columbia Gas of Massachusetts ออกไปแล้วในปี 2020 ปัจจุบันเป็น pure-play regulated utility ที่มีความชัดเจนของ rate base growth จากโครงการเปลี่ยนท่อก๊าซเก่า (~10%/ปี)
+        ราคาปัจจุบัน $46.79 ใกล้เคียง Fair Value $46.42 มาก (MOS −0.8%) แทบไม่มี margin of safety ในขณะนี้ นักวิเคราะห์ยังให้เป้าเฉลี่ย $51.30 (Buy) สูงกว่า FV ของเราเล็กน้อย สะท้อนมุมมองบวกต่อดีมานด์ไฟฟ้าจาก data center
+        ความเสี่ยงหลักคือ regulatory risk จากการขอ rate case ใน 6 รัฐ และ capex หนักที่กดกระแสเงินสด
+        นักลงทุนที่เน้น dividend income ระยะยาวสามารถถือ/ทยอยสะสมได้ ส่วน value investor ที่ต้องการ MOS สูงควรรอราคาย่อตัวลงมาที่ $32–$37</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$46.42 <span style="font-size:12px;color:#cab9a8">($42.20–$50.64)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −0.8% (ใกล้เคียง fair value)</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$51.30 (Buy)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ถือ/ทยอยสะสมสำหรับ income portfolio เน้นรับปันผล ~2.6% + DGR guidance ~6%/ปี
+        จุดเข้าที่น่าสนใจกว่าสำหรับ value investor คือ $37 (MOS 20%) หรือ $32 (MOS 30%) ในช่วงที่ราคาย่อตัวจากความกังวลอัตราดอกเบี้ยหรือ regulatory delay
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    แหล่งข้อมูล: StockAnalysis.com (stockanalysis.com/stocks/ni) · Yahoo Finance (finance.yahoo.com/quote/NI) · Yahoo Finance Chart API (query1.finance.yahoo.com) · Google Finance (google.com/finance/quote/NI:NYSE) · งวดล่าสุดที่รายงาน: Q1 ปีงบประมาณ 2569 (เม.ย. 2569)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 10 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
