@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น Public Service Enterprise Group (PEG) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"PEG","currency":"USD","price":81.09,"fairValue":87.34,"mos":7.2,"upside":7.7,"pe":18.0,"dividendYield":3.3,"roe":13.2}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#6366f1",
+    "accentDark": "#4338ca",
+    "darkGrad": "linear-gradient(135deg,#1e1b4b 0%,#312e81 60%,#3730a3 100%)",
+    "glow": "rgba(99,102,241,0.35)",
+    "subColor": "#c7d2fe",
+    "headerMuted": "rgba(199,210,254,0.65)",
+    "verdictText": "#eef2ff",
+    "vcellLabel": "rgba(199,210,254,0.7)",
+    "badge": "#6366f1",
+    "chgBg": "#3a1210",
+    "chgColor": "#ea4335"
+  },
+  "chart": {
+    "data": [
+      ["ส.ค. 68", 82.33],
+      ["ก.ย. 68", 83.46],
+      ["ต.ค. 68", 80.56],
+      ["พ.ย. 68", 83.52],
+      ["ธ.ค. 68", 80.30],
+      ["ม.ค. 69", 82.36],
+      ["ก.พ. 69", 86.07],
+      ["มี.ค. 69", 80.95],
+      ["เม.ย. 69", 81.66],
+      ["พ.ค. 69", 78.65],
+      ["มิ.ย. 69", 81.16],
+      ["ก.ค. 69", 81.26],
+      ["ก.ค. 69", 81.09]
+    ],
+    "min": 70,
+    "max": 95,
+    "grid": [70, 75, 80, 85, 90, 95],
+    "fairLine": 87.34,
+    "currency": "$",
+    "highlight": [6, 9]
+  },
+  "gauge": {
+    "min": 55,
+    "max": 98,
+    "cur": 81.09,
+    "fair": 87.34,
+    "fairLabelTop": false
+  },
+  "fv": 87.34
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">PEG</div>
+    <div>
+      <span class="tag">NYSE: PEG</span>
+      <span class="tag">Utilities — Regulated Electric &amp; Gas</span>
+      <span class="tag">Nuclear + Data Center Demand</span>
+    </div>
+    <h1>Public Service Enterprise Group</h1>
+    <div class="sub">NJ Electric &amp; Gas Monopoly • Nuclear Fleet 3.7 GW (Hope Creek, Salem 1&amp;2) • Data Center PPA Growth • Dividend Aristocrat</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$81.09<small>(PEG)</small></div>
+      </div>
+      <div class="chg">▼ −1.5% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 9 ก.ค. 2569 (งวดล่าสุด ไตรมาส 1 ปี 2569 / Q1 2026)<br>
+        กรอบ 52 สัปดาห์ $76.05 – $91.26<br>
+        ที่มา: StockAnalysis.com, Yahoo Finance, Google Finance
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ก.ค. 2569</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">$40.5B</div><div class="d">~499M หุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~18.0x</div><div class="d">ใกล้เคียงค่าเฉลี่ยกลุ่ม utility</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~17.5x</div><div class="d">กรอบ 15x – 20x</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">~2.34x</div><div class="d">BVPS $34.57</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ TTM</div><div class="v">$2.26B</div><div class="d">รวม Q1 2569</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$4.50</div><div class="d">เฉลี่ย 2 แหล่ง ($4.49–$4.52)</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~$34.57</div><div class="d">Equity $17.3B / ~499M หุ้น</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~13.2% / ~3.9%</div><div class="d">สูงกว่าค่าเฉลี่ยกลุ่ม regulated utility</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">~$12.8B</div><div class="d">ไฟฟ้า + ก๊าซธรรมชาติ NJ</div></div>
+      <div class="metric"><div class="k">อัตรากำไรสุทธิ</div><div class="v">~17.7%</div><div class="d">หนุนจากมิกซ์นิวเคลียร์ต้นทุนต่ำ</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~3.3%</div><div class="d">Payout ~57.5% • เพิ่มต่อเนื่อง 20+ ปี</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">~0.55</div><div class="d">Low-beta defensive utility</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART (ราคาย้อนหลัง ~1 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#6366f1"></i>ราคา PEG</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $87.34</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคาในรอบ 1 ปีที่ผ่านมาแกว่งในกรอบ $78.65 – $86.07 ค่อนข้างแคบสอดคล้องกับหุ้น utility defensive จุดสูงสุดเดือนกุมภาพันธ์ 2569 ที่ $86.07 รับอานิสงส์ข่าว data-center PPA ในนิวเจอร์ซีย์ ก่อนย่อลงมาแตะจุดต่ำสุด $78.65 เดือนพฤษภาคม 2569 จากแรงกดดันอัตราดอกเบี้ยระยะยาวและความกังวลต้นทุน maintenance โรงไฟฟ้านิวเคลียร์ ก่อนฟื้นตัวแกว่งแคบใกล้ $81 ในปัจจุบัน ผลตอบแทนรวมรอบปีอยู่ที่ประมาณ −1.5% แทบทรงตัว สะท้อนลักษณะหุ้นปันผลผันผวนต่ำมากกว่าหุ้นเติบโต
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION (เฉลี่ย 3 วิธี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS (TTM) $4.50 × P/E เป้าหมาย ~19x — สอดคล้องค่าเฉลี่ยกลุ่ม regulated utility คุณภาพสูง (18x–20x)</div></div>
+        <div class="mval">$85.50</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล $2.68 × (1+g); g 5.0%, r 8.2% → สะท้อน rate-base growth จาก grid mod + data-center load</div></div>
+        <div class="mval">$87.94</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 13.2% − g 5.0%)/(r 8.2% − g 5.0%) ≈ 2.56x × BVPS $34.57</div></div>
+        <div class="mval">$88.59</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $85.50 – $88.59</span></div>
+        <div class="r">$87.34</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ทั้ง 3 วิธีให้ผลใกล้เคียงกัน (ส่วนต่าง &lt;4%) เพราะ PEG เป็น regulated utility ที่ผลตอบแทนถูกกำกับด้วยอัตรากำไรที่รัฐอนุญาต (allowed ROE) ทำให้ P/E, DDM และ P/BV มาบรรจบกันตามทฤษฎี — DDM ให้น้ำหนักหลักเพราะหุ้นจ่ายปันผลสม่ำเสมอ 20+ ปี และ g สอดคล้องกับแผน capex 5 ปีที่บริษัทประกาศ (rate base +6-7%/ปี) FV เฉลี่ย $87.34 ใกล้เคียงเป้าหมายนักวิเคราะห์เฉลี่ย $89.71 เป็นสัญญาณยืนยันไขว้ (cross-check) ที่ดี
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $81.09</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $87.34</div></div>
+        </div>
+        <div class="scale">
+          <span>$61.14<br><small>MOS 30%</small></span>
+          <span>$69.87<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$87.34<br><small>Fair Value</small></span>
+          <span style="text-align:right">$88.59<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">$89.71<br><small>เป้าเฉลี่ย Analyst</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน $81.09 อยู่ต่ำกว่ามูลค่าเหมาะสมเพียงเล็กน้อย (~7% MOS) และต่ำกว่าเป้าหมายเฉลี่ยนักวิเคราะห์ $89.71 ราว 11% — สะท้อนหุ้นที่เทรดใกล้ fair value มากกว่าจะเป็น deep value ต้องรอย่อลงมาโซน MOS 20% ($69.87) หรือต่ำกว่าเพื่อได้ส่วนเผื่อความปลอดภัยที่มีนัยสำคัญ
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">+7.2%</div>
+        <div class="txt">MOS ต่ำ — ราคาซื้อขายใกล้เคียงมูลค่าเหมาะสม เหมาะกับการถือระยะยาวรับปันผล มากกว่าเก็งกำไรส่วนต่างราคา</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$69.87</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$61.14</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $87.34</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="81.09" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $81.09 • EPS ฐาน ~$4.50 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS 2%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$71.60</div>
+          <div class="ret neg">−1.4%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$4.78</span></li>
+            <li><span>P/E ออก</span><span>15x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$8.36</span></li>
+            <li><span>สถานการณ์</span><span>Nuclear outage/rate case ไม่เป็นใจ load growth ชะลอ</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +6%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$101.80</div>
+          <div class="ret pos">+36.6%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$5.36</span></li>
+            <li><span>P/E ออก</span><span>19x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$9.04</span></li>
+            <li><span>สถานการณ์</span><span>Rate base โตตามแผน data-center PPA ทยอยเข้า</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +9%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$122.40</div>
+          <div class="ret pos">+62.7%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$5.83</span></li>
+            <li><span>P/E ออก</span><span>21x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$9.57</span></li>
+            <li><span>สถานการณ์</span><span>Data-center demand เร่งตัว + nuclear PTC หนุน re-rating แบบ CEG/VST</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      สมมติฐาน EPS growth อ้างอิงแผนทุน 5 ปีที่บริษัทประกาศ (rate base +6-7%/ปี) ผสานอัพไซด์จาก data-center PPA และเครดิตภาษีนิวเคลียร์ (45U PTC) กรณี Base สอดคล้องกับ guidance ของบริษัท ส่วน Bull สะท้อนกรณี PEG ได้ re-rating แบบเดียวกับ Constellation (CEG) หรือ Vistra (VST) ที่ตลาดให้พรีเมียมหุ้นนิวเคลียร์เชื่อมโยง AI/data-center
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก &amp; ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>Data Center Power Demand:</b> การก่อสร้าง data center ใน NJ/PJM เร่งตัว ดันความต้องการไฟฟ้าโตสูงสุดในรอบหลายทศวรรษ PSEG อยู่ระหว่างเจรจา direct PPA จากนิวเคลียร์ คล้ายดีลของ CEG-Microsoft/Talen-Amazon</li>
+          <li><b>Nuclear PTC (45U):</b> เครดิตภาษีของรัฐบาลกลางสำหรับโรงไฟฟ้านิวเคลียร์เดิมช่วยหนุนเศรษฐศาสตร์ของ Hope Creek/Salem เป็นฐานกำไรที่มั่นคง</li>
+          <li><b>แผนลงทุน Rate Base:</b> capex ~$22–24B ใน 5 ปี (grid modernization, resiliency, clean energy) หนุน EPS/ปันผลโต 5-7%/ปี ถึงปี 2572</li>
+          <li><b>Dividend Aristocrat:</b> เพิ่มปันผลต่อเนื่อง 20+ ปี ให้ yield ~3.3% ลักษณะ defensive low-beta เหมาะพอร์ตรับความผันผวนต่ำ</li>
+          <li><b>โครงสร้างธุรกิจเรียบง่ายขึ้น:</b> ขายกิจการโรงไฟฟ้าฟอสซิลนอกเครือข่ายไปแล้ว (2566) เหลือแค่ regulated utility + nuclear ทำให้มีโอกาส re-rating สู่มัลติเปิลของ pure-play utility</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>ความเสี่ยงปฏิบัติการนิวเคลียร์:</b> outage หรือ refueling ที่ Salem/Hope Creek กระทบกำไรรายไตรมาสได้มาก เพราะพึ่งพากำลังผลิตนิวเคลียร์สูง</li>
+          <li><b>ความเสี่ยงนโยบายกลาง:</b> 45U PTC มีกำหนดหมดอายุปี 2575 การเปลี่ยนแปลงนโยบายพลังงานอาจลดแรงหนุนกำไรในอนาคต</li>
+          <li><b>ผลการพิจารณา Rate Case:</b> NJ BPU อาจอนุมัติ allowed ROE หรืองบลงทุนต่ำกว่าที่บริษัทวางแผนไว้</li>
+          <li><b>ความอ่อนไหวดอกเบี้ย:</b> โมเดล capex/หนี้สูงของ utility อ่อนไหวต่ออัตราดอกเบี้ยระยะยาว กดดัน valuation และต้นทุนทางการเงิน</li>
+          <li><b>ความเสี่ยง overbuild ของ data center:</b> pipeline ความต้องการ data center อาจชะลอตัวหาก AI capex cycle เย็นลง ทำให้อัพไซด์ PPA ล่าช้ากว่าคาด</li>
+          <li><b>Valuation ใกล้ Fair Value:</b> ราคาปัจจุบันมี margin of safety จำกัด (~7%) ผลตอบแทนจึงพึ่งพาการดำเนินตามแผนเติบโตมากกว่าการ re-rating ราคาถูก</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>PSEG — ผูกขาดไฟฟ้า+นิวเคลียร์คุณภาพสูง ราคาใกล้มูลค่าเหมาะสม รอจังหวะสะสม</h2>
+      <p>Public Service Enterprise Group เป็น regulated utility ผูกขาดในนิวเจอร์ซีย์ที่มีฐานนิวเคลียร์ใหญ่ที่สุดฝั่งตะวันออก (3.7 GW) หนุนด้วยดีมานด์ data center ที่กำลังเร่งตัวและเครดิตภาษีนิวเคลียร์ของรัฐบาลกลาง ธุรกิจโปร่งใสขึ้นหลังขายกิจการฟอสซิลนอกเครือข่าย เหลือแค่ regulated + nuclear ที่คาดการณ์กระแสเงินสดได้ง่าย ราคาปัจจุบัน $81.09 ใกล้เคียงมูลค่าเหมาะสม $87.34 (MOS ~7%) ทำให้หุ้นเหมาะกับนักลงทุนที่มองหาปันผลสม่ำเสมอ + เติบโตช้าแต่มั่นคง มากกว่าการเก็งกำไรส่วนต่างราคาระยะสั้น</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$87.34 <span style="font-size:12px;color:#cab9a8">($85.50–$88.59)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +7.2%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$89.71 (Moderate Buy)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ราคาปัจจุบันใกล้เคียง Fair Value (MOS จำกัด ~7%) เหมาะกับการถือระยะยาวรับปันผล 3.3% + เติบโตจาก data-center/nuclear premium มากกว่าเก็งกำไรระยะสั้น แนะนำทยอยสะสมหากราคาย่อลงมาที่โซน MOS 20% ($69.87) หรือต่ำกว่า เพื่อเพิ่มส่วนเผื่อความปลอดภัยก่อนเข้าซื้อ
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ข้อมูลจาก StockAnalysis.com, Yahoo Finance, Google Finance ณ 9 ก.ค. 2569
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 9 กรกฎาคม 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
