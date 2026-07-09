@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น Keurig Dr Pepper (KDP) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"KDP","currency":"USD","price":31.03,"fairValue":29.71,"mos":-4.4,"upside":-4.3,"pe":23.0,"dividendYield":2.97,"roe":6.31}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#7a1735",
+    "accentDark": "#3a0a19",
+    "darkGrad": "linear-gradient(135deg,#1a0509 0%,#3a0a19 55%,#7a1735 140%)",
+    "glow": "rgba(122,23,53,.35)",
+    "subColor": "#e8b8c8",
+    "headerMuted": "#d99ab0",
+    "verdictText": "#f5dee6",
+    "vcellLabel": "#e8b8c8",
+    "badge": "#7a1735",
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#1e8e3e"
+  },
+  "chart": {
+    "data": [
+      ["ส.ค. 68", 29.09],
+      ["ก.ย. 68", 25.51],
+      ["ต.ค. 68", 27.16],
+      ["พ.ย. 68", 27.90],
+      ["ธ.ค. 68", 28.01],
+      ["ม.ค. 69", 27.44],
+      ["ก.พ. 69", 30.28],
+      ["มี.ค. 69", 26.33],
+      ["เม.ย. 69", 29.40],
+      ["พ.ค. 69", 30.03],
+      ["มิ.ย. 69", 32.73],
+      ["ก.ค. 69", 30.97],
+      ["ปัจจุบัน", 31.03]
+    ],
+    "min": 22,
+    "max": 36,
+    "grid": [24, 28, 32],
+    "fairLine": 29.71,
+    "currency": "$",
+    "highlight": [1, 10]
+  },
+  "gauge": {
+    "min": 18,
+    "max": 37,
+    "cur": 31.03,
+    "fair": 29.71
+  },
+  "fv": 29.71
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">●●●</div>
+    <div>
+      <span class="tag">NASDAQ: KDP</span>
+      <span class="tag">Consumer Staples</span>
+      <span class="tag">Beverage &amp; Coffee</span>
+    </div>
+    <h1>Keurig Dr Pepper Inc. (KDP)</h1>
+    <div class="sub">Dr Pepper • 7UP • Snapple • Green Mountain Coffee • Keurig Brewing Systems • เบอร์ 3 เครื่องดื่มสหรัฐฯ</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$31.03<small>(KDP)</small></div>
+      </div>
+      <div class="chg">▲ +6.7% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 8 ก.ค. 2569 (16:00 ET)<br>
+        กรอบ 52 สัปดาห์ $24.88 – $35.94<br>
+        ที่มา: StockAnalysis.com, Yahoo Finance
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ไตรมาสล่าสุด / TTM</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">$42.14B</div><div class="d">~1.36B หุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~23.0x</div><div class="d">EPS GAAP ถูกกดจากต้นทุนดีล JDE Peet's — P/E adj. (fwd) ~13x</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~20–22x</div><div class="d">ช่วงก่อนดีล JDE Peet's</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">1.67x</div><div class="d">BVPS ~$18.58</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">$2.08B</div><div class="d">+44% YoY • diluted EPS $1.53</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$1.35</div><div class="d">ต่ำกว่า FY2025 ($1.53) จากดอกเบี้ย/ต้นทุนดีลใน Q ล่าสุด • EPS adj. FY26E consensus $2.29</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~$18.58</div><div class="d">P/BV 1.67x</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~6.31% / 4.22%</div><div class="d">กดดันจากหนี้เพิ่มหลังซื้อ JDE Peet's</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$16.94B</div><div class="d">FY2025 $16.60B (+8.16%) • guidance FY26 $25.9–26.4B (รวม JDE Peet's เต็มปี)</div></div>
+      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">~53%</div><div class="d">Net margin TTM ~10.8%</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~2.97%</div><div class="d">$0.92/หุ้น/ปี • payout ~68% ของ EPS GAAP (สูงเพราะ EPS ถูกกดชั่วคราว)</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">0.41</div><div class="d">ต่ำกว่าตลาด — defensive staple แม้หนี้เพิ่ม</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART (ราคาย้อนหลัง ~1 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#7a1735"></i>ราคา KDP</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $29.71</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคาปรับตัวลงจาก ~$29.1 (ส.ค. 68) แตะจุดต่ำสุดในรอบปี ~$25.5 (ก.ย. 68) ก่อนฟื้นตัวเป็นลำดับ แตะจุดสูงสุด ~$32.7 (มิ.ย. 69) รับข่าวดีลควบรวม JDE Peet's และแผนแยกธุรกิจปี 2570 แล้วย่อลงมาปิดที่ $31.03 ในปัจจุบัน รวมทั้งรอบปีขึ้น ~+6.7%
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION (เฉลี่ย 3 วิธี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS adj. (forward) $2.29 × P/E เป้าหมาย ~14x — คาดการณ์ FY2026E consensus (non-GAAP) ส่วนลดจาก P/E เฉลี่ยกลุ่มเครื่องดื่ม สะท้อนหนี้สูงหลังดีล JDE Peet's</div></div>
+        <div class="mval">$32.06</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล $0.92 × (1+g); g 4%, r 7.5% → ค่าต่ำสุดในสามวิธี เพราะปันผลโตช้าจากภาระหนี้เพิ่ม</div></div>
+        <div class="mval">$27.34</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. DCF (Free Cash Flow 2-Stage)</div><div class="mdesc">FCF/หุ้น ~$1.16 (FCF $1.58B / 1.36B หุ้น) โต 8%/ปี 5 ปีจาก synergy การควบรวม, terminal g 3%, r 8% → มูลค่ากลาง</div></div>
+        <div class="mval">$29.74</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $27.34 – $32.06</span></div>
+        <div class="r">$29.71</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        วิธี P/E ให้ค่าสูงสุด ($32.06) เพราะใช้ EPS ปรับปรุง (adjusted) ปี 2569E ที่ยังไม่รวมภาระดอกเบี้ย/ต้นทุนควบรวมเต็มที่ ส่วน DDM ให้ค่าต่ำสุด ($27.34) เพราะปันผลปัจจุบันโตช้าจากภาระหนี้ที่เพิ่มขึ้นหลังดีล JDE Peet's และ DCF จากกระแสเงินสดอิสระให้ค่ากลาง ($29.74) โดยสมมติ synergy ทยอยเกิดจริงใน 5 ปีข้างหน้า ค่าเฉลี่ย 3 วิธี ~$29.71 ใกล้เคียงราคาตลาดปัจจุบัน สะท้อนว่าหุ้นไม่ได้ถูกมาก แต่ก็ไม่แพงเกินไปเมื่อเทียบกับความเสี่ยง integration ที่ยังไม่หมดไป
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $31.03</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $29.71</div></div>
+        </div>
+        <div class="scale">
+          <span>$20.80<br><small>MOS 30%</small></span>
+          <span>$23.77<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$29.71<br><small>Fair Value</small></span>
+          <span style="text-align:right">$32.06<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">$34.06<br><small>เป้าเฉลี่ย Analyst</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน $31.03 อยู่สูงกว่ามูลค่าเหมาะสมที่ประเมิน ($29.71) เล็กน้อย และยังต่ำกว่าเป้าเฉลี่ยของนักวิเคราะห์ ($34.06) และกรอบบนของ Fair Value ($32.06) — ยังไม่ใช่จุดเข้าซื้อที่มี margin of safety ชัดเจน นักลงทุนสาย value ควรรอราคาย่อลงมาที่โซน MOS 20% ($23.77) ซึ่งใกล้เคียง 52 สัปดาห์ต่ำสุด ($24.88)
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">−4.4%</div>
+        <div class="txt">ราคาปัจจุบันสูงกว่ามูลค่าเหมาะสมที่ประเมินไว้ (Fair Value $29.71) ประมาณ 4.4% — ยังไม่มีส่วนเผื่อความปลอดภัย (MOS ติดลบเล็กน้อย) นักลงทุนสาย value ควรรอราคาย่อกลับมาใกล้หรือต่ำกว่า Fair Value หรือรอถึงโซน MOS 20% ($23.77) ก่อนเข้าซื้อ</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$23.77</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$20.80</div><div class="d">โซนถูกมาก (deep value) — ต่ำกว่า 52wk low $24.88</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $29.71</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="31.03" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $31.03 • EPS ฐาน ~$2.29 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS 3%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$27.50</div>
+          <div class="ret neg">−2.5%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$2.50</span></li>
+            <li><span>P/E ออก</span><span>11x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$2.76</span></li>
+            <li><span>สถานการณ์</span><span>ดีล JDE Peet's synergy ไม่มา หนี้สูงกดดันงบ แผนแยกบริษัท 2570 ล่าช้า/ยกเลิก multiple ย่อลงจากความไม่แน่นอน</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +10%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$42.70</div>
+          <div class="ret pos">+46.5%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$3.05</span></li>
+            <li><span>P/E ออก</span><span>14x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$2.76</span></li>
+            <li><span>สถานการณ์</span><span>Integration เป็นไปตามแผน EPS adj. โตตาม guidance low double-digit แผนแยกบริษัทปี 2570 เดินหน้าตามกำหนด multiple ทรงตัวใกล้ปัจจุบัน</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +13%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$52.80</div>
+          <div class="ret pos">+79.1%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$3.30</span></li>
+            <li><span>P/E ออก</span><span>16x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$2.76</span></li>
+            <li><span>สถานการณ์</span><span>Synergy จากดีล JDE Peet's เกินเป้า แยกบริษัทสำเร็จก่อนกำหนดปลดล็อกมูลค่าแบบ sum-of-the-parts multiple ยกระดับใกล้เคียงคู่แข่ง KO/PEP</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      สมมติฐานตั้งอยู่บน EPS ปรับปรุง (adjusted, non-GAAP) ปี 2569E ที่ $2.29 เป็นฐาน เนื่องจาก EPS GAAP TTM ($1.35) ยังถูกกดจากต้นทุนควบรวม JDE Peet's ชั่วคราว ปันผลรวม 3 ปีสมมติคงที่ที่ $0.92/ปี (ยังไม่รวมการปรับขึ้นเพิ่มเติม) ผลตอบแทนรวมยังไม่หักภาษี/ค่าธรรมเนียม
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>ดีล JDE Peet's:</b> ควบรวมผู้นำกาแฟระดับโลก (Jacobs, Douwe Egberts, Peet's Coffee) เสริมสเกลธุรกิจกาแฟ ดัน guidance FY26 net sales $25.9–26.4B</li>
+          <li><b>แผนแยกบริษัทปี 2570:</b> วางแผนแยกเป็น 2 บริษัทจดทะเบียนแยกกัน "Beverage Co." (เครื่องดื่มสหรัฐฯ) และ "Global Coffee Co." (กาแฟทั่วโลก) ภายในต้นปี 2570 — อาจปลดล็อกมูลค่าแบบ sum-of-the-parts</li>
+          <li><b>Guidance เติบโตแรง:</b> FY26 คาด adjusted EPS โต low double-digit % หนุนจาก synergy การควบรวม</li>
+          <li><b>เงินปันผลสม่ำเสมอ:</b> ให้ผลตอบแทนปันผล ~3% ต่อปี เพิ่มขึ้นต่อเนื่องตั้งแต่แยกตัวจาก Mondelez ปี 2018</li>
+          <li><b>Analyst มุมมองบวก:</b> Consensus "Buy" จาก 18 นักวิเคราะห์ เป้าเฉลี่ย $34.06 (+9.8% จากราคาปัจจุบัน)</li>
+          <li><b>Portfolio แข็งแกร่ง:</b> แบรนด์เบอร์ 3 ตลาดเครื่องดื่มอัดลมสหรัฐฯ (Dr Pepper, 7UP, Snapple) บวกระบบ Keurig single-serve ที่ครองส่วนแบ่งสูง</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>หนี้สูงหลังดีล:</b> หนี้รวม $28.9B, Net Debt/EBITDA ~5.76x, Debt/Equity 0.86 — ภาระดอกเบี้ยกดดันกำไรสุทธิ GAAP (TTM EPS $1.35 ต่ำกว่า FY2025 $1.53)</li>
+          <li><b>ความเสี่ยงการแยกบริษัท:</b> แผนแยกเป็น 2 บริษัทภายในปี 2570 มีความซับซ้อนสูง อาจล่าช้าหรือไม่ได้ผลตามคาด</li>
+          <li><b>ผู้ถือหุ้นใหญ่ถอนตัว:</b> JAB Holding ขายหุ้นทั้งหมด (~4.3%, ~59.1M หุ้น มูลค่า ~$3.4B) มิ.ย. 2569 อาจกดดันราคาระยะสั้น</li>
+          <li><b>ต้นทุนวัตถุดิบ:</b> ราคาเมล็ดกาแฟและวัตถุดิบผันผวน กดดัน margin ธุรกิจกาแฟ</li>
+          <li><b>แข่งขันสูง:</b> เผชิญคู่แข่งยักษ์ใหญ่ Coca-Cola, PepsiCo และสินค้า private label</li>
+          <li><b>Valuation:</b> ราคาปัจจุบันใกล้เคียง/สูงกว่ามูลค่าเหมาะสมที่ประเมิน (MOS ติดลบเล็กน้อย) ไม่มีส่วนเผื่อความปลอดภัยจากราคาปัจจุบัน</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>KDP: แบรนด์แข็งแกร่ง แต่ราคายังไม่มีส่วนเผื่อความปลอดภัยหลังดีล JDE Peet's</h2>
+      <p>Keurig Dr Pepper เป็นเบอร์ 3 ตลาดเครื่องดื่มอัดลมสหรัฐฯ ที่เพิ่งขยายสเกลสู่ธุรกิจกาแฟระดับโลกผ่านการควบรวม JDE Peet's พร้อมแผนแยกเป็น 2 บริษัทจดทะเบียน ("Beverage Co." และ "Global Coffee Co.") ภายในต้นปี 2570 ซึ่งอาจปลดล็อกมูลค่าได้ในระยะยาว แต่ระยะสั้นบริษัทแบกหนี้สูง ($28.9B, Net Debt/EBITDA ~5.76x) กดดันกำไร GAAP และสร้างความไม่แน่นอนด้าน execution ราคาปัจจุบัน ($31.03) ใกล้เคียงมูลค่าเหมาะสมที่ประเมิน ($29.71) จึงยังไม่มี margin of safety ที่ชัดเจน เหมาะกับการรอจังหวะราคาย่อหรือติดตามความคืบหน้าการแยกบริษัทก่อนตัดสินใจเพิ่มน้ำหนัก</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$29.71 <span style="font-size:12px;color:#cab9a8">($27.34–$32.06)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −4.4%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$34.06 (Buy)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> รอราคาย่อลงมาใกล้โซน Fair Value ~$27–30 หรือ MOS 20% ที่ $23.77 (ใกล้เคียง 52wk low $24.88) ก่อนทยอยสะสม ผู้ถือหุ้นเดิมอาจถือต่อรับปันผล ~3% ระหว่างติดตามความคืบหน้าดีล JDE Peet's และแผนแยกบริษัทปี 2570 ยังไม่แนะนำไล่ราคาในจุดนี้
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ข้อมูล ณ 8 ก.ค. 2569 จาก StockAnalysis.com, Yahoo Finance
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 9 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
