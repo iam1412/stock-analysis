@@ -5,7 +5,7 @@
 > **จัดลำดับ:** Tier A = ย่อลึก/de-rate แรง ณ ก.ค. 2569 (ทำก่อน มีโอกาสเจอ MOS จริง) → Tier B = บลูชิพ/quality ที่ขาดเพื่อความครบ → Tier C = สายปันผล/defensive (utilities·REITs·midstream·materials)
 > สร้าง 2026-07-05 · % ในตาราง = ผลตอบแทน 1 ปีจาก Yahoo ณ วันสร้างแผน (ตอนวิเคราะห์จริงต้องดึงใหม่ + ตรวจข้ามแหล่งเสมอ)
 >
-> **📊 ความคืบหน้า (อัปเดต 9 ก.ค. 2569): เสร็จ 66/124 — จบ W22 · resume ที่ W23 (#67 GEHC · #68 CAH · #69 CRL)** · เหลือ 58 ตัว (W23→~W42)
+> **📊 ความคืบหน้า (อัปเดต 9 ก.ค. 2569): เสร็จ 69/124 — จบ W23 · resume ที่ W24 (#70 BIIB🔺 · #71 KVUE · #72 KDP)** · เหลือ 55 ตัว (W24→~W42)
 
 ---
 
@@ -105,9 +105,9 @@
 | 64 | W22 | NTAP | สตอเรจ | NetApp — enterprise storage + AI data infra, FCF ดี | | ✅ $163.44/FV$145 MOS−13.0% |
 | 65 | W22 | WST | อุปกรณ์ยา | West Pharma +48% — ผูกขาด injectable components (GLP-1) | | ✅ $352.28/FV$300 MOS−17.4% |
 | 66 | W22 | DGX | แล็บ | Quest Diagnostics — duopoly lab (ใช้แทน LH ที่ชนชื่อไทย) | | ✅ $208.21/FV$189 MOS−10.2% |
-| 67 | W23 | GEHC | อุปกรณ์แพทย์ | GE HealthCare −11% — imaging เบอร์ 1, spin 2023 ประวัติพอ | | ⬜ |
-| 68 | W23 | CAH | ยา/กระจาย | Cardinal Health +61% — drug distribution oligopoly (คาด MOS บาง) | | ⬜ |
-| 69 | W23 | CRL | CRO | Charles River +41% — preclinical CRO ผู้นำ ฟื้นจาก biotech winter | | ⬜ |
+| 67 | W23 | GEHC | อุปกรณ์แพทย์ | GE HealthCare −11% — imaging เบอร์ 1, spin 2023 ประวัติพอ | | ✅ $64.68/FV$70 MOS+7.2% |
+| 68 | W23 | CAH | ยา/กระจาย | Cardinal Health +61% — drug distribution oligopoly (คาด MOS บาง) | | ✅ $237.15/FV$198 MOS−19.6% |
+| 69 | W23 | CRL | CRO | Charles River +41% — preclinical CRO ผู้นำ ฟื้นจาก biotech winter | | ✅ $223.96/FV$185 MOS−21.3% |
 | 70 | W24 | BIIB | ไบโอเทค | Biogen +64% — ถูกเชิง P/E แต่ pipeline/Leqembi ต้องตัดสินเอง | 🔺 | ⬜ |
 | 71 | W24 | KVUE | consumer health | Kenvue $19.83 — Tylenol/Neutrogena, spin JNJ (2023), yield ดี | | ⬜ |
 | 72 | W24 | KDP | เครื่องดื่ม | Keurig Dr Pepper — เบอร์ 3 soft drinks ถูกกว่า KO/PEP ที่มีแล้ว | | ⬜ |
