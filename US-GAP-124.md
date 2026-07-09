@@ -5,7 +5,7 @@
 > **จัดลำดับ:** Tier A = ย่อลึก/de-rate แรง ณ ก.ค. 2569 (ทำก่อน มีโอกาสเจอ MOS จริง) → Tier B = บลูชิพ/quality ที่ขาดเพื่อความครบ → Tier C = สายปันผล/defensive (utilities·REITs·midstream·materials)
 > สร้าง 2026-07-05 · % ในตาราง = ผลตอบแทน 1 ปีจาก Yahoo ณ วันสร้างแผน (ตอนวิเคราะห์จริงต้องดึงใหม่ + ตรวจข้ามแหล่งเสมอ)
 >
-> **📊 ความคืบหน้า (อัปเดต 9 ก.ค. 2569): เสร็จ 69/124 — จบ W23 · resume ที่ W24 (#70 BIIB🔺 · #71 KVUE · #72 KDP)** · เหลือ 55 ตัว (W24→~W42)
+> **📊 ความคืบหน้า (อัปเดต 9 ก.ค. 2569): เสร็จ 72/124 — จบ W24 · resume ที่ W25 (#73 UL · #74 LNG · #75 DEO🔺)** · เหลือ 52 ตัว (W25→~W42)
 
 ---
 
@@ -108,9 +108,9 @@
 | 67 | W23 | GEHC | อุปกรณ์แพทย์ | GE HealthCare −11% — imaging เบอร์ 1, spin 2023 ประวัติพอ | | ✅ $64.68/FV$70 MOS+7.2% |
 | 68 | W23 | CAH | ยา/กระจาย | Cardinal Health +61% — drug distribution oligopoly (คาด MOS บาง) | | ✅ $237.15/FV$198 MOS−19.6% |
 | 69 | W23 | CRL | CRO | Charles River +41% — preclinical CRO ผู้นำ ฟื้นจาก biotech winter | | ✅ $223.96/FV$185 MOS−21.3% |
-| 70 | W24 | BIIB | ไบโอเทค | Biogen +64% — ถูกเชิง P/E แต่ pipeline/Leqembi ต้องตัดสินเอง | 🔺 | ⬜ |
-| 71 | W24 | KVUE | consumer health | Kenvue $19.83 — Tylenol/Neutrogena, spin JNJ (2023), yield ดี | | ⬜ |
-| 72 | W24 | KDP | เครื่องดื่ม | Keurig Dr Pepper — เบอร์ 3 soft drinks ถูกกว่า KO/PEP ที่มีแล้ว | | ⬜ |
+| 70 | W24 | BIIB | ไบโอเทค | Biogen +64% — ถูกเชิง P/E แต่ pipeline/Leqembi ต้องตัดสินเอง | 🔺 | ✅ $200.36/FV$193 MOS−3.8% |
+| 71 | W24 | KVUE | consumer health | Kenvue $19.83 — Tylenol/Neutrogena, spin JNJ (2023), yield ดี | | ✅ $19.40/FV$20 MOS+3.0% |
+| 72 | W24 | KDP | เครื่องดื่ม | Keurig Dr Pepper — เบอร์ 3 soft drinks ถูกกว่า KO/PEP ที่มีแล้ว | | ✅ $31.03/FV$30 MOS−4.4% |
 | 73 | W25 | UL | consumer staples | Unilever ADR −12% — global staples yield ~3.5% turnaround | | ⬜ |
 | 74 | W25 | LNG | พลังงาน LNG | Cheniere — ผูกขาด LNG export US, take-or-pay contracts (DCF) | | ⬜ |
 | 75 | W25 | DHI | บ้าน | D.R. Horton — เบอร์ 1 US, housing cyclical → normalize EPS | 🔺 | ⬜ |
