@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น AvalonBay Communities (AVB) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"AVB","currency":"USD","price":190.12,"fairValue":196,"mos":3.0,"upside":3.1,"pe":null,"dividendYield":3.75,"roe":9.75}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#0369a1",
+    "accentDark": "#0c4a6e",
+    "darkGrad": "linear-gradient(135deg,#0c4a6e 0%,#0369a1 60%,#0284c7 100%)",
+    "glow": "rgba(3,105,161,0.35)",
+    "subColor": "#a8d8f0",
+    "headerMuted": "rgba(168,216,240,0.75)",
+    "verdictText": "#d4f0ff",
+    "vcellLabel": "rgba(168,216,240,0.8)",
+    "badge": "#0284c7",
+    "chgBg": "#1e8e3e",
+    "chgColor": "#ffffff"
+  },
+  "chart": {
+    "data": [
+      ["Jul '25", 179.16],
+      ["Aug '25", 188.37],
+      ["Sep '25", 187.49],
+      ["Oct '25", 168.80],
+      ["Nov '25", 176.59],
+      ["Dec '25", 177.66],
+      ["Jan '26", 174.09],
+      ["Feb '26", 173.66],
+      ["Mar '26", 161.84],
+      ["Apr '26", 181.31],
+      ["May '26", 180.82],
+      ["Jun '26", 188.69],
+      ["Jul '26", 190.12]
+    ],
+    "min": 155,
+    "max": 210,
+    "grid": [160, 170, 180, 190, 200, 210],
+    "fairLine": 196,
+    "currency": "$",
+    "highlight": [3, 8]
+  },
+  "gauge": {
+    "min": 130,
+    "max": 210,
+    "cur": 190.12,
+    "fair": 196,
+    "fairLabelTop": false
+  },
+  "fv": 196
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">●●●</div>
+    <div>
+      <span class="tag">NYSE: AVB</span>
+      <span class="tag">อสังหาริมทรัพย์</span>
+      <span class="tag">Apartment REIT</span>
+    </div>
+    <h1>AvalonBay Communities (AVB)</h1>
+    <div class="sub">Coastal Apartment REIT • ~300 Communities (~93,000 หน่วย) • Boston • NY Metro • DC • Seattle • LA/San Jose • ขยายสู่ Denver/Southeast • Occupancy 96.1%</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$190.12<small>(AVB)</small></div>
+      </div>
+      <div class="chg">▲ +6.1% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 9 ก.ค. 2569<br>
+        กรอบ 52 สัปดาห์ $160.10 – $205.00<br>
+        ที่มา: StockAnalysis.com, Yahoo Finance, AvalonBay IR/SEC filings
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">REIT — ใช้ FFO/AFFO แทน P/E</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">$27.13B</div><div class="d">~142.7M หุ้น · NYSE: AVB</div></div>
+      <div class="metric"><div class="k">P/FFO (TTM)</div><div class="v neu">~16.9x</div><div class="d">Core FFO/sh $11.24 (FY2025)</div></div>
+      <div class="metric"><div class="k">P/AFFO (TTM, est.)</div><div class="v neu">~19.9x</div><div class="d">AFFO/sh ~$9.55 (ประมาณจาก FFO−capex)</div></div>
+      <div class="metric"><div class="k">Core FFO/หุ้น (TTM)</div><div class="v">$11.24</div><div class="d">+2.1% YoY (FY2025 จริง)</div></div>
+
+      <div class="metric"><div class="k">AFFO/หุ้น (est.)</div><div class="v">~$9.55</div><div class="d">AVB ไม่แจ้ง AFFO แยกในไกด์แดนซ์</div></div>
+      <div class="metric"><div class="k">FY2026F Core FFO</div><div class="v neu">$11.00–11.50</div><div class="d">กลาง $11.25 · ทรงตัว vs 2025</div></div>
+      <div class="metric"><div class="k">Occupancy (Q1'26)</div><div class="v pos">96.1%</div><div class="d">+10bps YoY · สูงต่อเนื่อง</div></div>
+      <div class="metric"><div class="k">Same-Store NOI (Q1'26)</div><div class="v neu">+0.2%</div><div class="d">รายได้ +1.6% หักค่าใช้จ่าย +4.7%</div></div>
+
+      <div class="metric"><div class="k">เงินปันผล (Yield)</div><div class="v">~3.75%</div><div class="d">$7.12/ปี ($1.78/ไตรมาส)</div></div>
+      <div class="metric"><div class="k">Payout (FFO basis)</div><div class="v pos">~63%</div><div class="d">อนุรักษ์นิยม เหลือพื้นที่ขึ้นปันผล</div></div>
+      <div class="metric"><div class="k">Debt/EBITDA</div><div class="v neu">4.96x</div><div class="d">Leverage ระดับ investment-grade</div></div>
+      <div class="metric"><div class="k">ROE (GAAP)</div><div class="v">~9.75%</div><div class="d">EPS TTM $8.06 · P/E 23.5x (ไม่ใช้ประเมินมูลค่า)</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ก.ค. 2568 – ก.ค. 2569</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#0369a1"></i>ราคา AVB</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $196</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        AVB เริ่มต้นรอบปีที่ $179.16 (ก.ค. 2568) ไต่ขึ้นแตะ $187–188 ช่วงปลายฤดูร้อน ก่อนร่วงลงต่อเนื่องจากแรงกดดันอุปทานอพาร์ตเมนต์ล้นตลาดทั่วสหรัฐฯ และดอกเบี้ยที่ยังสูง ทำจุดต่ำสุดรอบปีที่ $161.84 (มี.ค. 2569) จากนั้นฟื้นตัวแรงหลังผลประกอบการ Q1 2569 ออกมาดีกว่าคาด (occupancy 96.1%, รายได้ same-store +1.6%) และตลาดเริ่มมองว่าคลื่นอุปทานใหม่ผ่านจุดสูงสุดไปแล้ว ราคาปิดที่ $190.12 (9 ก.ค. 2569) ให้ผลตอบแทนรอบปี +6.1%
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">3 วิธี — REIT: ไม่ใช้ P/E แต่ใช้ P/FFO + P/AFFO + DDM</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/FFO Valuation</div><div class="mdesc">Core FFO/sh FY26F $11.25 (กลางไกด์แดนซ์ $11.00–11.50) × P/FFO เป้าหมาย 18x (ต่ำกว่าค่าเฉลี่ยย้อนหลัง ~19-21x ก่อนปี 2565 สะท้อนการเติบโตทรงตัวปี 2568-69)</div></div>
+        <div class="mval">$202.50</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. P/AFFO Valuation</div><div class="mdesc">AFFO/sh est. $9.55 × P/AFFO เป้าหมาย 20x (REIT คุณภาพสูง ตลาดชายฝั่งเข้าถึงยาก barrier-to-entry สูง)</div></div>
+        <div class="mval">$191.00</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. DDM (Gordon Growth)</div><div class="mdesc">D₁ = ปันผล $7.12 × (1+g); g 3.5% (สอดคล้องคาดการณ์ FFO กลับมาโตปี 2570-71), r 7.3% (required return REIT มั่นคง) → $7.12×1.035/(7.3%−3.5%)</div></div>
+        <div class="mval">$193.90</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $191 – $202.50</span></div>
+        <div class="r">$196</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        <b>หมายเหตุ:</b> AVB เป็น REIT จึงไม่ใช้ P/E เป็นตัวชี้วัดหลัก (GAAP EPS $8.06 บิดเบือนจากค่าเสื่อมอาคารขนาดใหญ่) ตัวชี้วัดหลักคือ <b>Core FFO/AFFO</b> ซึ่งสะท้อนกระแสเงินสดจากการดำเนินงานที่แท้จริง ปัจจุบันเทรดที่ P/FFO ~16.9x ต่ำกว่าค่าเฉลี่ยประวัติศาสตร์ของ REIT อพาร์ตเมนต์คุณภาพสูงเล็กน้อย ทั้ง 3 วิธีให้ค่าใกล้เคียงกัน ($191–$202.50) สะท้อนว่าตลาดตีราคาใกล้เคียงมูลค่าที่เหมาะสมแล้ว ไม่มีส่วนลดขนาดใหญ่เหมือนช่วงวิกฤต FV เฉลี่ย $196 ให้ upside เพียง ~3% ที่ราคาปัจจุบัน — เหมาะกับนักลงทุนเน้นปันผล/สม่ำเสมอมากกว่าเก็งกำไรส่วนต่างราคา
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $190.12</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $196</div></div>
+        </div>
+        <div class="scale">
+          <span>$137<br><small>MOS 30%</small></span>
+          <span>$157<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$196<br><small>Fair Value</small></span>
+          <span style="text-align:right">$197<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">$202.50<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน $190.12 อยู่ใกล้เคียง Fair Value ($196) และเป้าเฉลี่ยนักวิเคราะห์ ($197 — Hold consensus จาก 17 นักวิเคราะห์) แทบไม่มีส่วนต่างเหลือ ต้องรอราคาย่อลงมาที่โซน $157–175 (MOS 10-20%) จึงจะเริ่มมี margin of safety ที่น่าสนใจสำหรับนักลงทุนเน้นคุณค่า
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">+3%</div>
+        <div class="txt">ส่วนเผื่อจำกัดมาก — ราคาใกล้เคียงมูลค่าเหมาะสม เหมาะกับนักลงทุนเน้นปันผลมากกว่าส่วนต่างราคา</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$157</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$137</div><div class="d">โซนถูกมาก (deep value, ต่ำกว่า 52wk low)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $196</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="190.12" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $190.12 • Core FFO ฐาน ~$11.24/หุ้น • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>FFO −2%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$159</div>
+          <div class="ret neg">−5%</div>
+          <ul>
+            <li><span>FFO ปี 3</span><span>~$10.58/sh</span></li>
+            <li><span>Exit P/FFO</span><span>15x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$21.4</span></li>
+            <li><span>สถานการณ์</span><span>อุปทานล้นตลาดยืดเยื้อถึงปี 2570, ดอกเบี้ยค้างสูง</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>FFO +3%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$221</div>
+          <div class="ret pos">+28%</div>
+          <ul>
+            <li><span>FFO ปี 3</span><span>~$12.28/sh</span></li>
+            <li><span>Exit P/FFO</span><span>18x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$21.8</span></li>
+            <li><span>สถานการณ์</span><span>อุปทานคลี่คลาย เช่าเดิม re-rating เข้าปกติ</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>FFO +6%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$268</div>
+          <div class="ret pos">+53%</div>
+          <ul>
+            <li><span>FFO ปี 3</span><span>~$13.39/sh</span></li>
+            <li><span>Exit P/FFO</span><span>20x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$22.2</span></li>
+            <li><span>สถานการณ์</span><span>ตลาดชายฝั่งขาดแคลนที่อยู่อาศัยรุนแรง rent growth เร่งตัว</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      การคาดการณ์อิง Core FFO/share เป็นตัวชี้วัดหลัก (ไม่ใช่ EPS) เนื่องจาก REIT มีค่าเสื่อมสูง FFO สะท้อนกระแสเงินสดจริงจากการดำเนินงาน โดย base case ให้ผลตอบแทนรวม (price + dividend) ราว +28% ใน 3 ปี ขึ้นกับการฟื้นตัวของ same-store NOI growth หลังคลื่นอุปทานอพาร์ตเมนต์ผ่านจุดสูงสุด ความเสี่ยงหลักคือหากอุปทานใหม่ยังกดดันต่อเนื่องและดอกเบี้ยไม่ลดตามคาด
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>ตลาดชายฝั่งขาดแคลนที่ดินก่อสร้าง:</b> Boston, NY Metro, DC, Seattle มีข้อจำกัดผังเมือง/ที่ดินสูง ทำให้อุปทานใหม่เข้าตลาดยากกว่า Sunbelt มาก — คุ้มครองอำนาจตั้งราคาระยะยาว</li>
+          <li><b>Occupancy สูงต่อเนื่อง 96.1%:</b> เพิ่มขึ้น 10bps YoY (Q1 2569) แสดงดีมานด์ยังแข็งแกร่งแม้อุปทานอพาร์ตเมนต์ทั่วสหรัฐฯ ล้นตลาด</li>
+          <li><b>คลื่นอุปทานเริ่มผ่านจุดสูงสุด:</b> การส่งมอบอพาร์ตเมนต์ใหม่ทั่วสหรัฐฯ (peak 2566-2568) กำลังลดลงต่อเนื่องปี 2569-2570 — น่าจะหนุน rent growth กลับมาเร่งตัวปี 2570-71</li>
+          <li><b>งบดุลแข็งแกร่งระดับ Investment Grade:</b> Debt/EBITDA ~4.96x อนุรักษ์นิยมกว่า REIT เฉลี่ย เข้าถึงต้นทุนเงินทุนต่ำ</li>
+          <li><b>ขยายฐานสู่ตลาดเติบโตสูง:</b> พัฒนาโครงการใหม่ใน Denver, Charlotte, Raleigh (Expansion regions) เสริมพอร์ตนอกเหนือตลาดชายฝั่งเดิม กระจายความเสี่ยง</li>
+          <li><b>Payout ratio (FFO basis) อนุรักษ์นิยม ~63%:</b> เหลือพื้นที่ขึ้นปันผลต่อเนื่องแม้ปี 2568-69 FFO เติบโตทรงตัว</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>Same-Store NOI growth ทรงตัว/อ่อนแอ:</b> ไกด์แดนซ์ FY2569 อยู่ที่ −0.7% ถึง +1.3% เท่านั้น สะท้อนแรงกดดันจากอุปทานใหม่ที่ยังอยู่ในระบบ</li>
+          <li><b>อัตราดอกเบี้ยยังสูง:</b> กดดัน valuation REIT โดยรวม เพิ่มต้นทุนพัฒนาโครงการใหม่และ refinance</li>
+          <li><b>Margin of Safety จำกัดมาก (~3%):</b> ราคาปัจจุบันใกล้เคียง Fair Value มาก แทบไม่มีส่วนเผื่อรองรับความผิดพลาดของสมมติฐาน</li>
+          <li><b>รายได้ same-store ชะลอตัว:</b> เติบโตเพียง +1.6% YoY (Q1 2569) ต่ำกว่าค่าเฉลี่ยปีที่แข็งแกร่ง (mid-single digit)</li>
+          <li><b>ความเสี่ยงจากการขยายตลาดใหม่:</b> โครงการนอกฐานชายฝั่งเดิม (Sunbelt-adjacent) ยังไม่มี track record เท่าตลาดหลัก มีความเสี่ยง lease-up</li>
+          <li><b>กฎระเบียบควบคุมค่าเช่า:</b> บางตลาดหลัก (NY, CA, WA) มีนโยบาย rent control/stabilization จำกัดความยืดหยุ่นด้านราคา</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>Fairly Valued — REIT คุณภาพสูง เหมาะเน้นปันผลมากกว่าส่วนต่างราคา</h2>
+      <p>AvalonBay Communities (AVB) คือ REIT อพาร์ตเมนต์ชายฝั่งชั้นนำของสหรัฐฯ ครอบคลุม Boston, NY Metro, DC, Seattle และ LA/San Jose ด้วย occupancy สูงต่อเนื่อง 96.1% และงบดุลแข็งแกร่งระดับ investment-grade แม้เผชิญแรงกดดันจากคลื่นอุปทานอพาร์ตเมนต์ล้นตลาดทั่วสหรัฐฯ ที่ทำให้ same-store NOI growth ปี 2568-69 ทรงตัว ราคาหุ้นฟื้นตัวจากจุดต่ำสุด $161.84 (มี.ค. 2569) กลับมาที่ $190.12 ใกล้เคียง Fair Value เฉลี่ย 3 วิธีที่ $196 (P/FFO + P/AFFO + DDM) ให้ MOS เพียง ~3% — ไม่ใช่จุดเข้าที่มีส่วนเผื่อความปลอดภัยสูง แต่เหมาะสำหรับนักลงทุนระยะยาวที่ต้องการถือ REIT คุณภาพสูงพร้อมปันผล yield ~3.75% ระหว่างรอคลื่นอุปทานคลี่คลายและ rent growth กลับมาเร่งตัวช่วงปี 2570-71</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$196 <span style="font-size:12px;color:#cab9a8">($191–$202.50)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +3%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$197 (Hold · 17 คน)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ราคาปัจจุบันใกล้ fair value แล้ว — รอทยอยสะสมที่ &lt;$157 (MOS 20%) หรือ deep value ที่ &lt;$137 (MOS 30%, ต่ำกว่า 52wk low) เหมาะกับนักลงทุนเน้นปันผลถือยาว 3-5 ปี มากกว่าเก็งกำไรส่วนต่างราคาระยะสั้น ปันผล $7.12/ปี (yield ~3.75%) พร้อม payout ratio อนุรักษ์นิยม ~63% ของ FFO ช่วยให้มีโอกาสขึ้นปันผลต่อเนื่อง
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/FFO และ P/AFFO เป้าหมาย, AFFO/share (เป็นค่าประมาณ เนื่องจาก AVB ไม่แจ้งแยกในไกด์แดนซ์), อัตราเติบโต (g) และผลตอบแทนที่ต้องการ (r)
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • แหล่งข้อมูล: StockAnalysis.com (ราคา/EPS/ปันผล/เป้า analyst), Yahoo Finance (ราคารายเดือน), AvalonBay Communities IR press release Q1 2569 + SEC 10-Q (FFO/occupancy/same-store NOI), วันที่ข้อมูล: 9 ก.ค. 2569
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 9 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
