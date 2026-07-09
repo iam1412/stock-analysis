@@ -5,7 +5,7 @@
 > **จัดลำดับ:** Tier A = ย่อลึก/de-rate แรง ณ ก.ค. 2569 (ทำก่อน มีโอกาสเจอ MOS จริง) → Tier B = บลูชิพ/quality ที่ขาดเพื่อความครบ → Tier C = สายปันผล/defensive (utilities·REITs·midstream·materials)
 > สร้าง 2026-07-05 · % ในตาราง = ผลตอบแทน 1 ปีจาก Yahoo ณ วันสร้างแผน (ตอนวิเคราะห์จริงต้องดึงใหม่ + ตรวจข้ามแหล่งเสมอ)
 >
-> **📊 ความคืบหน้า (อัปเดต 10 ก.ค. 2569): เสร็จ 83/124 — W28: PEG+DTE+AEE ✅ (utilities) · resume ที่ #84 ES** · เหลือ 41 ตัว (W29→~W42)
+> **📊 ความคืบหน้า (อัปเดต 10 ก.ค. 2569): เสร็จ 89/124 — W30: CNP+PNW ✅ · resume ที่ #90 FE** · เหลือ 35 ตัว (W31→~W42)
 
 ---
 
@@ -127,12 +127,12 @@
 | 81 | W27 | PEG | utility | PSEG — NJ + nuclear (ธีม data center PPA) | | ✅ $81.09/FV$87.34 MOS+7.2% |
 | 82 | W28 | DTE | utility | DTE — Michigan ครบวงจร | | ✅ $150.30/FV$152.87 MOS+1.7% |
 | 83 | W28 | AEE | utility | Ameren — Missouri/Illinois โตสม่ำเสมอ | | ✅ $112.59/FV$106.55 MOS-5.7% |
-| 84 | W28 | ES | utility | Eversource — New England, ผ่านจุด offshore-wind write-off แล้ว | | ⬜ |
-| 85 | W29 | LNT | utility | Alliant — Wisconsin/Iowa เล็กแต่เนี้ยบ | | ⬜ |
-| 86 | W29 | EVRG | utility | Evergy — Kansas/Missouri | | ⬜ |
-| 87 | W29 | NI | utility | NiSource — gas utility โตจาก grid modernization | | ⬜ |
-| 88 | W30 | CNP | utility | CenterPoint — Texas โตตาม data center/ประชากร | | ⬜ |
-| 89 | W30 | PNW | utility | Pinnacle West — Arizona (ธีม chip fab/data center) | | ⬜ |
+| 84 | W28 | ES | utility | Eversource — New England, ผ่านจุด offshore-wind write-off แล้ว | | ✅ $74.07/FV$74.64 MOS+0.8% |
+| 85 | W29 | LNT | utility | Alliant — Wisconsin/Iowa เล็กแต่เนี้ยบ | | ✅ $76.04/FV$72.61 MOS-4.7% |
+| 86 | W29 | EVRG | utility | Evergy — Kansas/Missouri | | ✅ $85.69/FV$79.39 MOS-7.9% |
+| 87 | W29 | NI | utility | NiSource — gas utility โตจาก grid modernization | | ✅ $46.79/FV$46.42 MOS-0.8% |
+| 88 | W30 | CNP | utility | CenterPoint — Texas โตตาม data center/ประชากร | | ✅ $43.81/FV$39.56 MOS-10.7% |
+| 89 | W30 | PNW | utility | Pinnacle West — Arizona (ธีม chip fab/data center) | | ✅ $107.13/FV$102.12 MOS-4.9% |
 | 90 | W30 | FE | utility | FirstEnergy — transmission-heavy, past scandal คลี่คลายแล้ว | | ⬜ |
 | 91 | W31 | EIX | utility | Edison Int'l +35% — California wildfire risk ต้องกำกับชัด | 🔺 | ⬜ |
 | 92 | W31 | AVB | REIT อพาร์ตเมนต์ | AvalonBay — apartment REIT ชายฝั่ง (P/AFFO · pe:null) | | ⬜ |
