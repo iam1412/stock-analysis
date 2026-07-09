@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น Unilever PLC (UL) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"UL","currency":"USD","price":61.84,"fairValue":62.54,"mos":1.1,"upside":1.1,"pe":16.7,"dividendYield":3.65,"roe":31}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#1a237e",
+    "accentDark": "#0d1442",
+    "darkGrad": "linear-gradient(135deg,#050b2e 0%,#0d1442 55%,#1a237e 140%)",
+    "glow": "rgba(26,35,126,0.35)",
+    "subColor": "#9fa8da",
+    "headerMuted": "rgba(159,168,218,0.75)",
+    "verdictText": "#e8eaf6",
+    "vcellLabel": "rgba(159,168,218,0.85)",
+    "badge": "#3949ab",
+    "chgBg": "#c5221f",
+    "chgColor": "#ffffff"
+  },
+  "chart": {
+    "data": [
+      ["ก.ค. 68", 63.58],
+      ["ส.ค. 68", 69.36],
+      ["ก.ย. 68", 65.05],
+      ["ต.ค. 68", 66.05],
+      ["พ.ย. 68", 67.07],
+      ["ธ.ค. 68", 64.29],
+      ["ม.ค. 69", 67.20],
+      ["ก.พ. 69", 73.05],
+      ["มี.ค. 69", 56.43],
+      ["เม.ย. 69", 58.42],
+      ["พ.ค. 69", 56.45],
+      ["มิ.ย. 69", 60.12],
+      ["ก.ค. 69", 61.84]
+    ],
+    "min": 50,
+    "max": 78,
+    "grid": [55, 60, 65, 70, 75],
+    "fairLine": 62.54,
+    "currency": "$",
+    "highlight": [7, 8, 12]
+  },
+  "gauge": {
+    "min": 40,
+    "max": 72,
+    "cur": 61.84,
+    "fair": 62.54
+  },
+  "fv": 62.54
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">◉ ◉ ◉</div>
+    <div>
+      <span class="tag">NYSE: UL</span>
+      <span class="tag">Consumer Staples</span>
+      <span class="tag">Global FMCG ADR</span>
+    </div>
+    <h1>Unilever PLC (UL)</h1>
+    <div class="sub">Dove • Knorr • Hellmann's • Vaseline • Global Consumer Staples ADR</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$61.84<small>(UL)</small></div>
+      </div>
+      <div class="chg">▼ −2.7% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 8 ก.ค. 2569<br>
+        กรอบ 52 สัปดาห์ $54.75 – $74.98<br>
+        ที่มา: StockAnalysis.com, Yahoo Finance, Unilever plc SEC 6-K filings (FY2025)
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล FY2025 (H1+H2 2568, TTM) หลังปิดดีล demerge ธุรกิจ Ice Cream (Magnum)</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">$134.05B</div><div class="d">~2.18B หุ้น (ADR 1:1)</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~16.7x</div><div class="d">P/E GAAP จริง ~12.2x เพราะ EPS TTM รวม one-off gain จากดีล demerge Magnum Ice Cream (ปิดดีล 2568) — การ์ดนี้ใช้ P/E จาก EPS ปรับปรุง (forward) แทนเพื่อภาพที่สมจริงกว่า</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~19.3x</div><div class="d">ช่วง 15.7x–23.8x (2564–2567 ไม่รวมปี 2568 ที่บิดเบือนจาก one-off)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">7.65x</div><div class="d">BVPS ต่ำ ($8.08) จาก buyback สะสมหลายปี — ปกติของ FMCG global เช่น P&amp;G/Colgate ไม่ได้แปลว่าแพง</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2568</div><div class="v">~$11.1B</div><div class="d">รวม gain ครั้งเดียว ~€3.8B จากดีล demerge Ice Cream (Magnum) — กำไรดำเนินงานต่อเนื่องปกติต่ำกว่านี้มาก</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$5.07</div><div class="d">รวม one-off gain จาก demerger; EPS ปรับปรุง (forward) ~$3.71 ใช้เป็นฐาน valuation แทน</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~$8.08</div><div class="d">P/BV 7.65x</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~31% / 14%</div><div class="d">สูงจากทั้ง one-off gain และ book equity ต่ำ (asset-light, buyback สะสม) — ROE ปกติของ Unilever ในอดีตก็สูงต่อเนื่องอยู่แล้ว</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$59.30B</div><div class="d">รายได้รายงานลดลง ~-3.8% YoY จาก FX + deconsolidation บางส่วนจากดีล Ice Cream demerger; ยอดขายออร์แกนิกยังโตต่อเนื่อง</div></div>
+      <div class="metric"><div class="k">อัตรากำไรจากการดำเนินงาน</div><div class="v">~17.9%</div><div class="d">ทรงตัว/ขยับขึ้นเล็กน้อยหลัง portfolio โฟกัสมากขึ้นหลัง demerger</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~3.65%</div><div class="d">$2.26/ปี ต่อเนื่องมั่นคงหลายทศวรรษ — โดดเด่นด้าน income สำหรับสาย defensive</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">0.45</div><div class="d">ผันผวนต่ำกว่าตลาดมาก (defensive consumer staples)</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART (ราคาย้อนหลัง ~1 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#1a237e"></i>ราคา UL</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $62.54</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคาเริ่มรอบปีที่ $63.58 (ก.ค. 2568) ปรับขึ้นแตะจุดสูงสุดของรอบปีที่ $73.05 (ก.พ. 2569) ตามกระแสบวกจากการปิดดีล demerge ธุรกิจ Ice Cream (Magnum) และการรีเรทหลัง portfolio โฟกัสมากขึ้น
+        ก่อนร่วงแรงลงมาต่ำสุดรอบปีที่ $56.43 (มี.ค. 2569) จากความกังวลเรื่องการเติบโตออร์แกนิกที่ชะลอตัวในตลาดเกิดใหม่และแรงกดดันจากอัตราแลกเปลี่ยน EUR/USD
+        จากนั้นฟื้นตัวค่อยเป็นค่อยไปสู่ $61.84 ในปัจจุบัน รวมผลตอบแทนราคา ~-2.7% ในรอบปี (ยังไม่รวมเงินปันผล ~3.65%/ปี)
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION (เฉลี่ย 3 วิธี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS ปรับปรุง (forward) $3.71 × P/E เป้าหมาย ~18x — ใกล้เคียงค่าเฉลี่ย 5 ปีของ Unilever เอง (~19.3x) ไม่ใช้ EPS TTM ที่พองตัวจาก one-off gain</div></div>
+        <div class="mval">$66.78</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล $2.26 × (1+g); g 4%, r 8% → อิงเงินปันผลมั่นคงระยะยาว + required return ที่รวม premium ความเสี่ยง FX/political สำหรับ ADR ต่างประเทศ</div></div>
+        <div class="mval">$58.76</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. DCF (FCF Perpetuity)</div><div class="mdesc">FCF/หุ้น TTM $4.87 เติบโต g 2%/ปี (terminal, mature FMCG), discount rate r 10% (รวม premium ADR ต่างประเทศ) → FCF₁/(r−g)</div></div>
+        <div class="mval">$62.09</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $58.76 – $66.78</span></div>
+        <div class="r">$62.54</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        วิธี P/E ให้ค่าสูงสุด ($66.78) เพราะอิง EPS ปรับปรุง (forward, ไม่รวม one-off gain จากดีล demerge Ice Cream) คูณ P/E เป้าหมายใกล้เคียงค่าเฉลี่ย 5 ปีของบริษัทเอง
+        DCF (FCF Perpetuity) ให้ค่ากลาง ($62.09) สะท้อนกระแสเงินสดอิสระที่มั่นคงของธุรกิจ FMCG แกนหลัก ส่วน DDM ให้ค่าต่ำสุด ($58.76) เพราะสมมติฐาน required return ที่สูงกว่าสำหรับ ADR ต่างประเทศ (FX/political risk premium)
+        ค่าเฉลี่ย $62.54 จึงใกล้เคียงราคาตลาดปัจจุบันมาก สะท้อนว่าหุ้นซื้อขายใกล้มูลค่าเหมาะสม ไม่ถูกไม่แพง
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $61.84</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $62.54</div></div>
+        </div>
+        <div class="scale">
+          <span>$43.78<br><small>MOS 30%</small></span>
+          <span>$50.03<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$62.54<br><small>Fair Value</small></span>
+          <span style="text-align:right">$66.78<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">$68.59<br><small>เป้าเฉลี่ย Analyst</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน $61.84 อยู่ <b>ใกล้เคียงมูลค่าเหมาะสมเฉลี่ย ($62.54) มาก</b> และต่ำกว่าทั้งกรอบบนของ FV ($66.78) และเป้าเฉลี่ยนักวิเคราะห์ ($68.59) เล็กน้อย
+        สะท้อนว่าราคาตลาดสะท้อนมูลค่าพื้นฐานไปมากแล้ว เหลือ upside จำกัดหากไม่มี catalyst เพิ่มเติมนอกเหนือจากเงินปันผล
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">+1.1%</div>
+        <div class="txt"><b>แทบไม่มี Margin of Safety</b><br>ราคาปัจจุบัน $61.84 ใกล้เคียงมูลค่าเหมาะสมเฉลี่ย 3 วิธี ($62.54) มาก เหลือส่วนต่างเพียง ~1.1% นักลงทุนสาย value อาจรอจังหวะย่อสู่โซน MOS 20% ($50.03) หรือ MOS 30% ($43.78) เพื่อเพิ่ม safety margin</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$50.03</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$43.78</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $62.54</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="61.84" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $61.84 • EPS ฐาน ~$3.71 (ปรับปรุง/forward) • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS -2%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$45.39</div>
+          <div class="ret neg">-16.2%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$3.49</span></li>
+            <li><span>P/E ออก</span><span>13x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$6.45</span></li>
+            <li><span>สถานการณ์</span><span>การเติบโตออร์แกนิกชะลอตัว ต้นทุนวัตถุดิบ/FX กดดันมาร์จิ้น หุ้นถูก de-rate ต่ำกว่าค่าเฉลี่ยกลุ่ม</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +5%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$73.01</div>
+          <div class="ret pos">+29.9%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$4.29</span></li>
+            <li><span>P/E ออก</span><span>17x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$7.33</span></li>
+            <li><span>สถานการณ์</span><span>เติบโตยอดขายออร์แกนิก mid-single-digit ตามเป้าบริษัท มาร์จิ้นทรงตัว/ขยับขึ้นเล็กน้อยหลัง portfolio โฟกัสมากขึ้น</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +9%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$96.09</div>
+          <div class="ret pos">+67.7%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$4.80</span></li>
+            <li><span>P/E ออก</span><span>20x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$7.63</span></li>
+            <li><span>สถานการณ์</span><span>Premiumization/Beauty &amp; Wellbeing โตแรง ตลาด Emerging Markets ฟื้นตัว มาร์จิ้นขยายเกินคาด หุ้นได้ re-rate multiple สูงขึ้น</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      ใช้ EPS ปรับปรุง (forward) $3.71 เป็นฐานคำนวณแทน EPS TTM $5.07 ที่รวม one-off gain จากดีล demerge Ice Cream (Magnum) เพื่อไม่ให้ประมาณการเติบโตบิดเบือน
+      สถานการณ์ Base สะท้อนการเติบโตออร์แกนิก mid-single-digit ตามเป้าหมายบริษัทหลัง portfolio โฟกัสมากขึ้น ส่วน Bear สะท้อนความเสี่ยงจากการเติบโตที่ชะลอตัวและแรงกดดันด้านต้นทุน/FX
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>Portfolio โฟกัสหลัง demerger:</b> ปิดดีลแยกธุรกิจ Ice Cream (The Magnum Ice Cream Company) สำเร็จในปี 2568 เหลือ 4 กลุ่มธุรกิจหลักที่มาร์จิ้นสูงกว่า (Beauty &amp; Wellbeing, Personal Care, Home Care, Foods)</li>
+          <li><b>Premiumization:</b> กลยุทธ์ขยับพอร์ตสู่สินค้าพรีเมียม/prestige beauty (เช่น K18, Liquid I.V., Nutrafol) หนุน mix และมาร์จิ้น</li>
+          <li><b>ฟื้นตัวตลาดเกิดใหม่:</b> อินเดีย เอเชียตะวันออกเฉียงใต้ และละตินอเมริกา มีสัญญาณฟื้นตัวของ volume หลังเงินเฟ้อคลี่คลาย</li>
+          <li><b>โปรแกรมลดต้นทุน:</b> มาตรการ productivity/restructuring ต่อเนื่องหนุนมาร์จิ้นระยะกลาง</li>
+          <li><b>เงินปันผลมั่นคง:</b> yield ~3.65% จ่ายต่อเนื่องหลายทศวรรษ เหมาะกับสาย income/defensive</li>
+          <li><b>ซื้อหุ้นคืน:</b> โปรแกรม buyback ต่อเนื่องช่วยหนุน EPS ต่อหุ้นในระยะยาว</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>ความผันผวนค่าเงิน:</b> รายได้/กำไรหลักเป็น EUR/GBP แต่ราคา ADR ซื้อขายเป็น USD ผู้ถือ ADR รับความเสี่ยง FX เต็มที่</li>
+          <li><b>การเติบโตชะลอในตลาดพัฒนาแล้ว:</b> แรงกดดันจาก private label และความอ่อนไหวต่อราคาผู้บริโภค</li>
+          <li><b>EPS/ROE บิดเบือนจาก one-off:</b> ตลาดอาจปรับมุมมองเมื่อกำไรปกติ (ไม่รวม gain จาก demerger) ปรากฏชัดในผลประกอบการถัดไป</li>
+          <li><b>ต้นทุนวัตถุดิบ:</b> ราคาน้ำมันปาล์ม บรรจุภัณฑ์ และพลังงานผันผวน กดดันมาร์จิ้น</li>
+          <li><b>ความเสี่ยงภูมิรัฐศาสตร์/ตลาดเกิดใหม่:</b> ค่าเงินอ่อนค่า ความขัดแย้งทางการค้าในตลาดเอเชีย/แอฟริกา/ละตินอเมริกา</li>
+          <li><b>ความเสี่ยงจากการแยกธุรกิจ:</b> ต้นทุนแยก shared services/supply chain จาก Magnum อาจกระทบกำไรระยะสั้น</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>หุ้นดีเฟนซีฟที่ซื้อขายใกล้มูลค่าเหมาะสม เหมาะกับสายปันผลมากกว่าสายเก็งกำไรส่วนต่าง</h2>
+      <p>Unilever เป็นหนึ่งในผู้นำตลาด FMCG ระดับโลกที่เพิ่งปรับพอร์ตให้แข็งแกร่งขึ้นหลังปิดดีล demerge ธุรกิจ Ice Cream (Magnum) ในปี 2568 เหลือ 4 กลุ่มธุรกิจหลักที่มาร์จิ้นสูงกว่า (Beauty &amp; Wellbeing, Personal Care, Home Care, Foods)
+      กระแสเงินสดอิสระและเงินปันผลยังมั่นคง (yield ~3.65%) แต่ราคาหุ้นที่ผันผวนในรอบปี (~-2.7%) ทำให้ปัจจุบันเทรดใกล้เคียงมูลค่าเหมาะสมเฉลี่ยมาก เหลือ margin of safety จำกัด
+      เหมาะกับนักลงทุนที่มองหาหุ้นปันผลมั่นคงมากกว่าการเก็งกำไรส่วนต่างราคาระยะสั้น</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$62.54 <span style="font-size:12px;color:#cab9a8">($58.76–$66.78)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +1.1%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$68.59 (Buy)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> สายปันผล/defensive — ถือเพื่อรับ yield ~3.65%/ปี บน valuation ที่สมเหตุสมผล ไม่แพงเกินไป
+        สาย value ที่ต้องการ margin of safety มากกว่านี้ ควรรอย่อสู่โซน MOS 20% ($50.03) หรือต่ำกว่า ก่อนทยอยสะสม —
+        ติดตามผลประกอบการ H1 2569 (ส.ค. 2569) และความคืบหน้าการ integrate portfolio หลัง demerger เป็นตัวชี้วัดหลัก
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ข้อมูล ณ 8 ก.ค. 2569 จาก StockAnalysis.com, Yahoo Finance และ Unilever plc SEC 6-K filings (FY2025)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 8 กรกฎาคม 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
