@@ -5,7 +5,7 @@
 > **จัดลำดับ:** Tier A = ย่อลึก/de-rate แรง ณ ก.ค. 2569 (ทำก่อน มีโอกาสเจอ MOS จริง) → Tier B = บลูชิพ/quality ที่ขาดเพื่อความครบ → Tier C = สายปันผล/defensive (utilities·REITs·midstream·materials)
 > สร้าง 2026-07-05 · % ในตาราง = ผลตอบแทน 1 ปีจาก Yahoo ณ วันสร้างแผน (ตอนวิเคราะห์จริงต้องดึงใหม่ + ตรวจข้ามแหล่งเสมอ)
 >
-> **📊 ความคืบหน้า (อัปเดต 9 ก.ค. 2569): เสร็จ 77/124 — W26: DHI+LEN+PHM ✅ (Big 3 homebuilders) · resume ที่ #78 SRE** · เหลือ 47 ตัว (W27→~W42)
+> **📊 ความคืบหน้า (อัปเดต 9 ก.ค. 2569): เสร็จ 80/124 — W27: SRE+ED+XEL ✅ (utilities) · resume ที่ #81 PEG** · เหลือ 44 ตัว (W28→~W42)
 
 ---
 
@@ -121,9 +121,9 @@
 
 | # | Wave | Symbol | กลุ่ม | ทำไม | 🔺 | สถานะ |
 |---|---|---|---|---|---|---|
-| 78 | W27 | SRE | utility | Sempra — gas/ไฟฟ้า + LNG infra, ใหญ่สุดที่ยังไม่มี | | ⬜ |
-| 79 | W27 | ED | utility | Con Edison — NYC ผูกขาด, dividend aristocrat 50+ ปี | | ⬜ |
-| 80 | W27 | XEL | utility | Xcel — renewables ผู้นำกลุ่ม utility | | ⬜ |
+| 78 | W27 | SRE | utility | Sempra — gas/ไฟฟ้า + LNG infra, ใหญ่สุดที่ยังไม่มี | | ✅ $95.33/FV$104.05 MOS+8.4% |
+| 79 | W27 | ED | utility | Con Edison — NYC ผูกขาด, dividend aristocrat 50+ ปี | | ✅ $112.09/FV$104 MOS-7.8% |
+| 80 | W27 | XEL | utility | Xcel — renewables ผู้นำกลุ่ม utility | | ✅ $79.62/FV$86.90 MOS+8.4% |
 | 81 | W27 | PEG | utility | PSEG — NJ + nuclear (ธีม data center PPA) | | ⬜ |
 | 82 | W28 | DTE | utility | DTE — Michigan ครบวงจร | | ⬜ |
 | 83 | W28 | AEE | utility | Ameren — Missouri/Illinois โตสม่ำเสมอ | | ⬜ |
