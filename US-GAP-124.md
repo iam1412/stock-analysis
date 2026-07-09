@@ -5,7 +5,7 @@
 > **จัดลำดับ:** Tier A = ย่อลึก/de-rate แรง ณ ก.ค. 2569 (ทำก่อน มีโอกาสเจอ MOS จริง) → Tier B = บลูชิพ/quality ที่ขาดเพื่อความครบ → Tier C = สายปันผล/defensive (utilities·REITs·midstream·materials)
 > สร้าง 2026-07-05 · % ในตาราง = ผลตอบแทน 1 ปีจาก Yahoo ณ วันสร้างแผน (ตอนวิเคราะห์จริงต้องดึงใหม่ + ตรวจข้ามแหล่งเสมอ)
 >
-> **📊 ความคืบหน้า (อัปเดต 10 ก.ค. 2569): เสร็จ 89/124 — W30: CNP+PNW ✅ · resume ที่ #90 FE** · เหลือ 35 ตัว (W31→~W42)
+> **📊 ความคืบหน้า (อัปเดต 10 ก.ค. 2569): เสร็จ 92/124 — W31: FE+EIX+AVB ✅ · resume ที่ #93 EQR** · เหลือ 32 ตัว (W32→~W42)
 
 ---
 
@@ -133,9 +133,9 @@
 | 87 | W29 | NI | utility | NiSource — gas utility โตจาก grid modernization | | ✅ $46.79/FV$46.42 MOS-0.8% |
 | 88 | W30 | CNP | utility | CenterPoint — Texas โตตาม data center/ประชากร | | ✅ $43.81/FV$39.56 MOS-10.7% |
 | 89 | W30 | PNW | utility | Pinnacle West — Arizona (ธีม chip fab/data center) | | ✅ $107.13/FV$102.12 MOS-4.9% |
-| 90 | W30 | FE | utility | FirstEnergy — transmission-heavy, past scandal คลี่คลายแล้ว | | ⬜ |
-| 91 | W31 | EIX | utility | Edison Int'l +35% — California wildfire risk ต้องกำกับชัด | 🔺 | ⬜ |
-| 92 | W31 | AVB | REIT อพาร์ตเมนต์ | AvalonBay — apartment REIT ชายฝั่ง (P/AFFO · pe:null) | | ⬜ |
+| 90 | W30 | FE | utility | FirstEnergy — transmission-heavy, past scandal คลี่คลายแล้ว | | ✅ $47.67/FV$51.61 MOS+7.6% |
+| 91 | W31 | EIX | utility | Edison Int'l +35% — California wildfire risk ต้องกำกับชัด | 🔺 | ✅ $74.84/FV$71.00 MOS-5.4% |
+| 92 | W31 | AVB | REIT อพาร์ตเมนต์ | AvalonBay — apartment REIT ชายฝั่ง (P/AFFO · pe:null) | | ✅ $190.12/FV$196 MOS+3.0% |
 | 93 | W31 | EQR | REIT อพาร์ตเมนต์ | Equity Residential (P/AFFO · pe:null) | | ⬜ |
 | 94 | W32 | IRM | REIT ข้อมูล | Iron Mountain — records + data center โต (P/AFFO) | | ⬜ |
 | 95 | W32 | SBAC | REIT เสาสัญญาณ | SBA Communications −10% — tower REIT คู่ AMT/CCI (P/AFFO) | | ⬜ |
