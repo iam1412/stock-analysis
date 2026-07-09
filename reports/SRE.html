@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น Sempra (SRE) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"SRE","currency":"USD","price":95.33,"fairValue":104.05,"mos":8.4,"upside":9.1,"pe":32.4,"dividendYield":2.76,"roe":7.55}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#BF5700",
+    "accentDark": "#7A3502",
+    "darkGrad": "linear-gradient(135deg,#7A3502 0%,#BF5700 60%,#E8770D 100%)",
+    "glow": "rgba(191,87,0,0.35)",
+    "subColor": "#fdf0e3",
+    "headerMuted": "rgba(253,240,227,0.70)",
+    "verdictText": "#7A3502",
+    "vcellLabel": "#8a3d02",
+    "badge": "#BF5700",
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#1e8e3e"
+  },
+  "chart": {
+    "data": [
+      ["ส.ค. 25", 82.56],
+      ["ก.ย. 25", 89.98],
+      ["ต.ค. 25", 91.94],
+      ["พ.ย. 25", 94.72],
+      ["ธ.ค. 25", 88.29],
+      ["ม.ค. 26", 87.01],
+      ["ก.พ. 26", 96.27],
+      ["มี.ค. 26", 97.17],
+      ["เม.ย. 26", 95.12],
+      ["พ.ค. 26", 89.13],
+      ["มิ.ย. 26", 92.71],
+      ["ก.ค. 26", 95.33]
+    ],
+    "min": 75,
+    "max": 112,
+    "grid": [80, 90, 100, 110],
+    "fairLine": 104.05,
+    "currency": "$",
+    "highlight": [5, 7]
+  },
+  "gauge": {
+    "min": 68,
+    "max": 118,
+    "cur": 95.33,
+    "fair": 104.05,
+    "fairLabelTop": true
+  },
+  "fv": 104.05
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">&#9679;&#9679;&#9679;</div>
+    <div>
+      <span class="tag">NYSE: SRE</span>
+      <span class="tag">Regulated Utility</span>
+      <span class="tag">LNG Export Growth</span>
+    </div>
+    <h1>Sempra</h1>
+    <div class="sub">Gas & Electric แคลิฟอร์เนีย (SoCalGas • SDG&E) • Oncor เท็กซัส (ถือหุ้น 80.25%) • Sempra Infrastructure — Port Arthur LNG Export</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$95.33<small>(SRE)</small></div>
+      </div>
+      <div class="chg">▲ +15.5% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 8 ก.ค. 2569<br>
+        กรอบ 52 สัปดาห์ $73.18 – $101.04<br>
+        ที่มา: StockAnalysis.com, Yahoo Finance
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ก.ค. 2569 — อ้างอิง StockAnalysis.com · Yahoo Finance</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~$62.3B</div><div class="d">~653.7M shares outstanding</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~32.4x</div><div class="d">EPS TTM (GAAP) $2.94 · Forward P/E ~18.4x (EPS 2026F $5.11)</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~17–19x</div><div class="d">utility+LNG hybrid พรีเมียมเบาเหนือ utility เพียว</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">1.93x</div><div class="d">BVPS $49.34 · ROE 7.55% (ต่ำกว่าปกติชั่วคราว)</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">$2,070M</div><div class="d">EPS diluted $2.75 (−41% YoY) — ปี 2024 มีกำไรพิเศษจากขายหุ้น Sempra Infrastructure Partners (KKR/ADIA)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$2.94</div><div class="d">FY2025 $2.75 · FY2024 $4.42 · Consensus 2026F $5.11 / 2027F $5.54</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~$49.34</div><div class="d">Equity ~$32.3B · Total debt $36.43B</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~7.55% / ~2.7%</div><div class="d">Debt/Equity ~1.13x · EV/EBITDA 17.4x</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">~$13.70B</div><div class="d">FY2025 $13.70B (+3.8% YoY จาก $13.2B)</div></div>
+      <div class="metric"><div class="k">EBITDA Margin</div><div class="v">~41%</div><div class="d">EBITDA (TTM) $5.62B</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~2.76%</div><div class="d">$2.63/หุ้น/ปี · DPS 2566–2568: $2.38→$2.48→$2.58 (โตต่อเนื่อง ~4%/ปี)</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">0.57</div><div class="d">ผันผวนต่ำกว่าตลาด — regulated utility + LNG growth platform</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#BF5700"></i>ราคา SRE</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $104.05</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        SRE เริ่มช่วงต้นที่ราว $82.56 (ส.ค. 2568) ก่อนไต่ขึ้นต่อเนื่องแตะ $94.72 ในเดือนพฤศจิกายน จากนั้นย่อลงมาที่ $87.01 ในมกราคม 2569 (จุดต่ำสุดรอบนี้) ตามความกังวลอัตราดอกเบี้ยและ California wildfire liability ก่อนฟื้นตัวแรงขึ้นแตะจุดสูงสุดรอบปี $97.17 ในมีนาคม 2569 หนุนจาก Port Arthur Pipeline ที่ทยอยเข้าสู่ production และคาดการณ์ EPS ปี 2569-2570 ที่เร่งตัว จากนั้นแกว่งตัวลงมาแถว $89–93 ในเดือนเมษายน-มิถุนายน ก่อนกลับมาปิดที่ $95.33 ปัจจุบัน ผลตอบแทนรอบปี +15.5%
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 2 วิธี — DDM หลัก + P/E เสริม</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล $2.63 × (1+g); g 5.5%, r 8.0% → ปันผลโตต่อเนื่อง 4 ปี (~4%/ปี) ผสาน guidance EPS growth ระยะยาว 7-9% แบบระมัดระวัง</div></div>
+        <div class="mval">$111.00</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. P/E Valuation</div><div class="mdesc">EPS adj. $5.11 (Consensus FY2026) × P/E เป้าหมาย 19x — utility+LNG hybrid พรีเมียมเบาเหนือ utility เพียว (~17x) จาก Port Arthur LNG optionality</div></div>
+        <div class="mval">$97.09</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $97.09 – $111.00 · ถ่วงน้ำหนักเท่ากัน DDM 50% + P/E 50%</span></div>
+        <div class="r">$104.05</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        วิธี DDM ($111.00) ให้ค่าสูงกว่าเพราะสมมติฐาน dividend growth 5.5%/ปีเทียบกับต้นทุนทุน 8.0% ที่ใกล้กันไม่มาก ส่วนวิธี P/E ($97.09) ใช้ EPS ปรับปรุง (adjusted) ปี 2569 ที่ consensus คาด $5.11 คูณ P/E เป้าหมาย 19x ซึ่งใกล้เคียง Forward P/E ตลาดปัจจุบัน ~18.4x อยู่แล้ว Fair Value เฉลี่ย $104.05 ใกล้เคียงเป้าหมายเฉลี่ยของนักวิเคราะห์ 20 รายที่ $104.19 มาก (ต่างกัน <1%) ยืนยันว่าสมมติฐานสมเหตุสมผล
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $95.33</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $104.05</div></div>
+        </div>
+        <div class="scale">
+          <span>$72.84<br><small>MOS 30%</small></span>
+          <span>$83.24<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$104.05<br><small>Fair Value</small></span>
+          <span style="text-align:right">$104.19<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">$111.00<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        SRE ซื้อขายที่ $95.33 ต่ำกว่า Fair Value $104.05 ราว 8.4% (MOS) และแทบตรงกับเป้าหมายเฉลี่ยนักวิเคราะห์ 20 ราย ($104.19, Buy) สะท้อนว่าตลาดยัง price-in growth จาก Oncor (Texas data center demand) และ Port Arthur LNG ไม่เต็มที่ โซนน่าสนใจสะสมเพิ่มคือ $83–88 (MOS 15–20%) ซึ่งเคยเกิดขึ้นช่วง ธ.ค. 2568 – ม.ค. 2569 ($87.01 ต่ำสุดรอบปี)
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">+8.4%</div>
+        <div class="txt">MOS ต่ำกว่าเกณฑ์ 10% ที่นักลงทุนสาย value มักต้องการ ราคาปัจจุบันสะท้อน upside ไปแล้วส่วนหนึ่ง แต่ยังมีช่องว่างเหลือถึงเป้าเฉลี่ยนักวิเคราะห์ ($104.19) — รอจังหวะย่อตัวสู่โซน MOS 15–20% ก่อนเพิ่มน้ำหนักจะปลอดภัยกว่า</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$83.24</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$72.84</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $104.05</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="95.33" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $95.33 • EPS ฐาน ~$5.11 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS 0%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$77</div>
+          <div class="ret neg">-11% รวม 3 ปี</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$5.11</span></li>
+            <li><span>P/E ออก</span><span>15x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$7.90</span></li>
+            <li><span>สถานการณ์</span><span>wildfire liability เพิ่ม + rate case สะดุด + ดอกเบี้ยสูงค้าง</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +7%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$113</div>
+          <div class="ret pos">+28% รวม 3 ปี</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$6.26</span></li>
+            <li><span>P/E ออก</span><span>18x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$8.70</span></li>
+            <li><span>สถานการณ์</span><span>Oncor + Port Arthur LNG ramp ตามแผน + rate base growth ปกติ</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +9%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$132</div>
+          <div class="ret pos">+48% รวม 3 ปี</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$6.62</span></li>
+            <li><span>P/E ออก</span><span>20x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$8.88</span></li>
+            <li><span>สถานการณ์</span><span>Port Arthur LNG Phase 2 FID + Oncor Texas data center demand เร่งตัว</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      Base case อิง EPS adjusted โต 7%/ปี ใกล้เคียง management guidance ระยะยาว 7-9% ผลตอบแทน 3 ปีรวมปันผล ~28% หรือ ~8.6%/ปี Bull case เกิดหาก Port Arthur LNG Phase 2 ได้ FID (Final Investment Decision) และ Oncor ได้ประโยชน์เต็มที่จาก Texas data center/AI power demand ที่เร่งตัว Bear case เกิดเมื่อ California wildfire liability เพิ่มขึ้นหรือ rate case ที่ CPUC/PUCT ไม่ผ่านเต็มจำนวน กดดัน multiple ให้ de-rate ต่ำกว่า sector average
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>Oncor Texas Data Center Boom:</b> Sempra ถือหุ้น 80.25% ใน Oncor ผู้ให้บริการ transmission/distribution ไฟฟ้ารายใหญ่สุดของเท็กซัส ได้ประโยชน์โดยตรงจาก AI data center + population growth ในเท็กซัสที่ขยายตัวเร็วที่สุดในสหรัฐฯ</li>
+          <li><b>Port Arthur LNG Export Growth:</b> Sempra Infrastructure กำลังพัฒนา Port Arthur LNG Phase 1 — Port Arthur Pipeline เพิ่งเข้าสู่ production มิถุนายน 2569 รองรับกำลังส่งก๊าซ 2 Bcf/d เป็น structural growth platform นอกเหนือจาก regulated utility ทั่วไป</li>
+          <li><b>Dividend Growth Track Record:</b> ปันผลโตต่อเนื่อง 4 ปี ($2.38→$2.48→$2.58→$2.63 indicated) แม้ GAAP EPS ผันผวนจากรายการพิเศษ สะท้อนความมั่นใจของบอร์ดต่อกระแสเงินสดจาก regulated business</li>
+          <li><b>EPS Consensus เร่งตัวปี 2569-2570:</b> นักวิเคราะห์คาด EPS ปรับปรุงโตจาก TTM $2.94 (GAAP) สู่ $5.11 (2569F) และ $5.54 (2570F) หลัง normalize ผ่านปี 2568 ที่มีรายการพิเศษกดดัน</li>
+          <li><b>California Regulatory Framework:</b> SoCalGas/SDG&E อยู่ใน rate case cycle ที่อนุมัติ capex คืนทุนสม่ำเสมอ รองรับแผนลงทุนโครงข่ายก๊าซ-ไฟฟ้าต่อเนื่อง</li>
+          <li><b>Analyst Consensus Buy:</b> นักวิเคราะห์ 20 ราย ให้ rating เฉลี่ย Buy เป้าหมายเฉลี่ย $104.19 (กรอบ $93–$118) สอดคล้องกับ Fair Value จากแบบจำลอง DDM/P/E ที่ $104.05</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>California Wildfire Liability:</b> SDG&E/SoCalGas อยู่ในพื้นที่เสี่ยง wildfire สูง เผชิญความเสี่ยง inverse condemnation และต้นทุนประกันภัยที่เพิ่มขึ้นต่อเนื่อง เป็นความเสี่ยงเฉพาะตัวของ utility แคลิฟอร์เนีย</li>
+          <li><b>GAAP EPS ผันผวนสูง:</b> EPS diluted ลดจาก $4.42 (2567) เหลือ $2.75 (2568) หรือ -41% YoY ส่วนหนึ่งเพราะปี 2567 มีกำไรพิเศษจากการขายหุ้น Sempra Infrastructure Partners ที่ไม่เกิดซ้ำ ทำให้ P/E TTM สูงถึง 32.4x บิดเบือนภาพรวม ต้องดู adjusted EPS ประกอบ</li>
+          <li><b>Capex ขนาดใหญ่ + หนี้สินสูง:</b> Total debt $36.43B แผนลงทุน LNG + T&D ต้องการเงินทุนต่อเนื่อง เสี่ยงต่อ equity dilution หรือต้นทุนหนี้สูงขึ้นหากดอกเบี้ยค้างสูง</li>
+          <li><b>Rate Case Risk (CPUC/PUCT):</b> การอนุมัติ rate case ทั้งในแคลิฟอร์เนีย (SoCalGas/SDG&E) และเท็กซัส (Oncor) หากผลลัพธ์ ROE ที่ได้จริงต่ำกว่า guidance จะกระทบ earnings growth ที่คาดหวังไว้</li>
+          <li><b>LNG Execution Risk:</b> โครงการ Port Arthur LNG เป็น megaproject ที่มีความเสี่ยง cost overrun และความล่าช้าจาก supply chain เหมือนโครงการ LNG ขนาดใหญ่ทั่วโลก</li>
+          <li><b>ดอกเบี้ยสูงระยะยาว:</b> Utility ที่มี debt หนักอ่อนไหวต่อดอกเบี้ยสูง ต้นทุนทุน (r) ในแบบจำลอง DDM หากปรับขึ้นจะกด Fair Value ลงอย่างมีนัยสำคัญ</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>SRE — Utility California/Texas ผสาน LNG Growth (Port Arthur) | ราคาต่ำกว่า Fair Value ~8%, Analyst Consensus Buy</h2>
+      <p>Sempra เป็น holding company ของ regulated utility 3 ธุรกิจหลัก: SoCalGas + SDG&E ในแคลิฟอร์เนีย, Oncor ในเท็กซัส (ถือหุ้น 80.25% ไม่ใช่แค่ minority stake) ที่ได้ประโยชน์จาก Texas data center/AI power boom, และ Sempra Infrastructure ที่กำลังพัฒนา Port Arthur LNG export platform — Port Arthur Pipeline เพิ่งเข้าสู่ production มิถุนายน 2569 หนุน growth นอกเหนือจาก utility ทั่วไป GAAP EPS ปี 2568 ลดลง 41% YoY เหลือ $2.75 ส่วนหนึ่งเพราะปี 2567 มีกำไรพิเศษจากการขายหุ้น Sempra Infrastructure Partners ที่ไม่เกิดซ้ำ ทำให้ P/E TTM ดูสูงถึง 32.4x แต่ EPS consensus ปรับปรุงคาดเร่งตัวสู่ $5.11 (2569) และ $5.54 (2570) แบบจำลอง DDM (ปันผลหลัก) และ P/E (เสริม) ให้ Fair Value เฉลี่ย $104.05 ใกล้เคียงเป้าหมายเฉลี่ยนักวิเคราะห์ 20 ราย ($104.19, Buy) มาก ที่ราคาปัจจุบัน $95.33 มี MOS ~8.4% และ upside ~9.1% ความเสี่ยงหลักคือ California wildfire liability และ capex ขนาดใหญ่ที่ต้องพึ่งพาเงินทุนต่อเนื่อง</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$104.05 <span style="font-size:12px;color:#cab9a8">($97.09–$111.00)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +8.4%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$104.19 (Buy)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ราคาปัจจุบัน $95.33 มี upside ~9% สู่ Fair Value $104.05 และใกล้เป้าเฉลี่ยนักวิเคราะห์ $104.19 (Buy, 20 ราย) เหมาะทยอยสะสมสำหรับนักลงทุนที่รับความเสี่ยง wildfire/capex ได้ โซนน่าสนใจเพิ่มน้ำหนักคือ $83–88 (MOS 15–20%) ซึ่งเคยเกิดขึ้นช่วง ธ.ค. 2568 – ม.ค. 2569 ถือระยะยาวรับปันผล ~2.8%/ปีที่โตต่อเนื่องมา 4 ปี บวก upside จาก Port Arthur LNG Phase 1 ramp และ Oncor Texas data center growth
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ที่มา: StockAnalysis.com (ราคา $95.33, EPS TTM $2.94, forward P/E 18.3x, analyst target $104.19, EBITDA $5.62B), Yahoo Finance (ราคา $95.33 ยืนยันตรงกัน, EPS TTM $2.94, ปันผล $2.63/2.76%, 52wk $73.18–$101.04), ข้อมูล ณ 8 ก.ค. 2569
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 8 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
