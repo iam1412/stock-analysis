@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น DuPont de Nemours (DD) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"DD","currency":"USD","price":134.79,"fairValue":135.9,"mos":0.8,"upside":0.8,"pe":19.0,"dividendYield":1.78,"roe":6.9}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#ea1f41",
+    "accentDark": "#b1102b",
+    "darkGrad": "linear-gradient(135deg,#3e040e 0%,#730719 58%,#b60c28 140%)",
+    "glow": "rgba(234,21,57,.35)",
+    "subColor": "#ebc2c9",
+    "headerMuted": "#d4a5ad",
+    "verdictText": "#f1d0d5",
+    "vcellLabel": "#dda6b0",
+    "badge": "#ea1f41",
+    "chgBg": "#0d3321",
+    "chgColor": "#34a853"
+  },
+  "chart": {
+    "data": [
+      ["ส.ค. 68", 95.30],
+      ["ก.ย. 68", 96.51],
+      ["ต.ค. 68", 101.16],
+      ["พ.ย. 68", 118.36],
+      ["ธ.ค. 68", 119.64],
+      ["ม.ค. 69", 130.71],
+      ["ก.พ. 69", 148.93],
+      ["มี.ค. 69", 136.86],
+      ["เม.ย. 69", 136.44],
+      ["พ.ค. 69", 145.26],
+      ["มิ.ย. 69", 135.64],
+      ["ก.ค. 69", 134.79]
+    ],
+    "min": 80,
+    "max": 160,
+    "grid": [80, 100, 120, 140, 160],
+    "fairLine": 135.9,
+    "currency": "$",
+    "highlight": [3, 8]
+  },
+  "gauge": {
+    "min": 75,
+    "max": 190,
+    "cur": 134.79,
+    "fair": 135.9,
+    "fairLabelTop": true
+  },
+  "fv": 135.9
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">●●●○○</div>
+    <div>
+      <span class="tag">NYSE: DD</span>
+      <span class="tag">Specialty Chemicals</span>
+      <span class="tag">Post-Qnity Spin-off</span>
+    </div>
+    <h1>DuPont de Nemours, Inc.</h1>
+    <div class="sub">Water Solutions & Filtration • Healthcare/Medical Materials • Diversified Industrials — หลังแยก Qnity Electronics + ขาย Aramids (Kevlar/Nomex)</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$134.79<small>(DD)</small></div>
+      </div>
+      <div class="chg">▲ +41.3% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 9 กรกฎาคม 2569 (ปิดตลาด 16:00 EDT)<br>
+        กรอบ 52 สัปดาห์ $86.55 – $157.98 (ปรับด้วย reverse split 1:3 แล้ว)<br>
+        ที่มา: StockAnalysis.com, Google Finance, Yahoo Finance
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">TTM / FY2025 (หลัง spin Qnity + reverse split 1:3) · ณ ก.ค. 2569</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~$18.2B</div><div class="d">135.02M หุ้น (หลัง reverse split 1:3, 24 มิ.ย. 2569)</div></div>
+      <div class="metric"><div class="k">P/E (adj., fwd FY26E)</div><div class="v neu">~19.0x</div><div class="d">อิง EPS adj. guidance FY2026 กลาง $7.09 (GAAP TTM บิดเบือนจาก spin)</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">N/A</div><div class="d">ประวัติเดิมก่อน spin/reverse split ไม่สะท้อนธุรกิจปัจจุบัน</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">1.31x</div><div class="d">BVPS $102.77 · equity ~$13.9B</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">−$779M (GAAP)</div><div class="d">FY2024 กำไร $703M → ขาดทุนจาก discontinued ops (แยก Qnity) ไม่ใช่ operating loss</div></div>
+      <div class="metric"><div class="k">EPS (TTM GAAP)</div><div class="v neg">−$0.21</div><div class="d">บิดเบือนจาก accounting การแยก Qnity (พ.ย. 68) + ขาย Aramids (เม.ย. 69)</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~$102.77</div><div class="d">หลัง spin Qnity + reverse split 1:3 (24 มิ.ย. 2569)</div></div>
+      <div class="metric"><div class="k">ROE (adj., fwd FY26E)</div><div class="v pos">~6.9%</div><div class="d">อิงกำไร adj. โดยประมาณ ~$957M / equity ~$13.9B</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">~$6.92B</div><div class="d">+28% YoY — ส่วนหนึ่งเพราะสัดส่วน continuing ops เปลี่ยนหลัง spin ไม่ใช่ organic ล้วน</div></div>
+      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">35.0%</div><div class="d">Operating margin 13.2% · EBITDA margin ~22.4%</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~1.78%</div><div class="d">$2.40/ปี (หลัง reverse split) · payout ต่ำเทียบ FCF</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">1.08</div><div class="d">ผันผวนใกล้เคียงตลาด แม้มี corporate action ถี่ในรอบปี</div></div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6">
+      DuPont วันนี้เหลือ 2 กลุ่มธุรกิจหลักคือ <b>Healthcare & Water Technologies</b> (ชิ้นส่วนอุปกรณ์การแพทย์, ระบบบำบัด/กรองน้ำ,
+      งานวิศวกรรมก่อสร้าง — ยอดขาย 1Q26 $806M +6% YoY) และ <b>Diversified Industrials</b> (วัสดุอุตสาหกรรม, เทคโนโลยีก่อสร้าง,
+      ชิ้นส่วนอิเล็กทรอนิกส์ขั้นสูงที่เหลืออยู่ — ยอดขาย 1Q26 $875M) หลังแยก Qnity Electronics ออกไปเป็นบริษัทจดทะเบียนแยก
+      (พ.ย. 2568) และขายธุรกิจ Aramids (Kevlar/Nomex) ให้ Arclin มูลค่า $1.8B (ปิดดีล เม.ย. 2569) พอร์ตธุรกิจจึงมี margin
+      สูงขึ้นและโฟกัสชัดเจนกว่าเดิมมาก แต่ยังมีประวัติ standalone สั้นไม่ถึง 1 ปี
+    </p>
+  </section>
+
+  <!-- ===== 2. PRICE CHART (ราคาย้อนหลัง ~1 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ส.ค. 2568 – ก.ค. 2569</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#ea1f41"></i>ราคา DD</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $135.9</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคา DD เริ่มต้นที่ ~$95 ใน ส.ค. 2568 ก่อนไต่ขึ้นแรงหลังปิดดีลแยก Qnity Electronics ใน พ.ย. 2568 (ตลาดตอบรับบวกต่อ
+        พอร์ตธุรกิจที่เหลือคุณภาพสูงขึ้น) พุ่งต่อเนื่องแตะจุดสูงสุดรอบปีที่ ~$148.93 ใน ก.พ. 2569 ตามความคาดหวังผลประกอบการ
+        ก่อนพักฐานลงราว 8% ช่วง มี.ค.–เม.ย. 2569 คาบเกี่ยวกับการปิดดีลขาย Aramids ให้ Arclin จากนั้นฟื้นตัวสู่ ~$145 ใน
+        พ.ค. 2569 ก่อนย่อตัวปิดที่ $134.79 ใน ก.ค. 2569 หลัง guidance ไตรมาส 2/2569 ต่ำกว่า consensus เล็กน้อย
+        ผลตอบแทนรอบปี +41.3%
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION (เฉลี่ย 3 วิธี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">EV/EBITDA · P/E adj. · DCF/FCF — เฉลี่ยถ่วงน้ำหนัก</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. EV/EBITDA (น้ำหนัก 40%, primary)</div><div class="mdesc">EBITDA ~$1.55B (EV $20.7B ÷ EV/EBITDA ปัจจุบัน 13.33x) × เป้าหมาย 14x (peer เคมีภัณฑ์พิเศษ/น้ำ/เฮลท์แคร์ 13–16x) − หนี้สุทธิ ~$2.51B ÷ 135.02M หุ้น</div></div>
+        <div class="mval">$142.46</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. P/E Valuation (Adjusted, น้ำหนัก 30%)</div><div class="mdesc">EPS adj. $7.09 (กลาง guidance FY2026 $7.02–7.16) × P/E เป้าหมาย 19.5x — ใกล้เคียง forward P/E ตลาดปัจจุบัน ~19x</div></div>
+        <div class="mval">$138.26</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. DCF / FCF Gordon Growth (น้ำหนัก 30%)</div><div class="mdesc">FCF $6.67/หุ้น (FCF ~$901M ÷ 135.02M หุ้น) โต g 3%/ปี, discount rate r 8.5% → FCF×(1+g)/(r−g)</div></div>
+        <div class="mval">$124.90</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $124.9 – $142.5</span></div>
+        <div class="r">$135.9</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        <b>น้ำหนัก:</b> EV/EBITDA 40% + P/E adj. 30% + DCF/FCF Gordon Growth 30% = $135.9<br>
+        EV/EBITDA ให้น้ำหนักสูงสุดเพราะสะท้อนกระแสเงินสดจากธุรกิจ capex-heavy ได้ดีกว่า P/E ที่ยังมีสัญญาณรบกวนจากรายการ
+        one-time ของการแยกธุรกิจ (~$142.5) · P/E adj. บนฐาน guidance FY2026 ให้ค่ากลาง (~$138.3) · DCF/FCF Gordon Growth
+        อนุรักษ์นิยมสุด (~$124.9) เพราะไม่รวมมูลค่าจาก portfolio high-grading ที่ยังพิสูจน์ผลจริงไม่เต็มที่<br>
+        <b>หมายเหตุสำคัญ:</b> เป้าหมายนักวิเคราะห์เฉลี่ย $170.69 (+26.6%) สูงกว่าประมาณการของเราเพราะสมมติฐาน P/E ~24x
+        (เทียบเท่า bull case ของเรา) สะท้อนความเชื่อมั่นว่า margin/multiple จะยกระดับต่อเนื่องหลัง spin Qnity + ขาย Aramids
+        ขณะที่โมเดลอนุรักษ์นิยมของเรารอดูผลงานจริงอีก 2–3 ไตรมาสก่อนให้น้ำหนักเต็มที่กับมุมมองนั้น
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $134.79</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $135.9</div></div>
+        </div>
+        <div class="scale">
+          <span>$95.13<br><small>MOS 30%</small></span>
+          <span>$108.72<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$135.9<br><small>Fair Value</small></span>
+          <span style="text-align:right">$142.5<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">$170.69<br><small>เป้าเฉลี่ย Analyst</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน $134.79 ใกล้เคียงมูลค่าเหมาะสมโดยประมาณ $135.9 มาก (ต่างกันไม่ถึง 1%) หลังปรับตัวขึ้น +41.3% ในรอบปี
+        จาก re-rating ของธุรกิจหลัง portfolio high-grading เป้าหมายนักวิเคราะห์เฉลี่ย $170.69 อยู่สูงกว่ากรอบบนของโมเดล
+        ($142.5) สะท้อนมุมมองเชิงบวกต่อ margin expansion ที่ยังไม่ยืนยันชัดเจนในงบไตรมาสถัดไป
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">+0.8%</div>
+        <div class="txt">แทบไม่มี margin of safety เชิง valuation อนุรักษ์นิยม ราคาสะท้อนมูลค่าเหมาะสมโดยประมาณแล้วหลัง rally
+        แรง +41.3% ในรอบปี รอ pullback สู่โซน MOS 20% ($108.72) หรือ MOS 30% ($95.13) ก่อนสะสมเพิ่มน้ำหนักอย่างมี
+        margin of safety จริง</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$108.72</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$95.13</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $135.9</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="134.79" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $134.79 • EPS ฐาน ~$7.09 (adj. FY26E) • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS 2%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$112.85</div>
+          <div class="ret neg">−10.9% (3 ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$7.52</span></li>
+            <li><span>P/E ออก</span><span>15x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$7.20</span></li>
+            <li><span>สถานการณ์</span><span>Standalone execution สะดุด, multiple compression</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +7%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$165.10</div>
+          <div class="ret pos">+28.0% (3 ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$8.69</span></li>
+            <li><span>P/E ออก</span><span>19x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$7.40</span></li>
+            <li><span>สถานการณ์</span><span>Guidance FY26 เป็นไปตามแผน, multiple ทรงตัว</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +12%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$239.10</div>
+          <div class="ret pos">+83.0% (3 ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$9.96</span></li>
+            <li><span>P/E ออก</span><span>24x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$7.60</span></li>
+            <li><span>สถานการณ์</span><span>Margin expansion เต็มที่ multiple ขยายตามมุมมอง analyst</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      Bear: EPS โตช้า (+2%/ปี) จากความไม่แน่นอนของ standalone execution + multiple compression กลับสู่ 15x • Base: EPS
+      โต +7%/ปี ตาม guidance FY2026 ที่ต่อเนื่อง multiple ทรงตัว ~19x • Bull: EPS โต +12%/ปี จาก margin expansion เต็มที่
+      หลัง portfolio high-grading multiple ขยายสู่ 24x ตามมุมมองนักวิเคราะห์เฉลี่ย ทั้งหมดรวมปันผล ~$2.40/ปี (yield ~1.8%)
+      เป็นผลตอบแทนสะสม 3 ปี
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>Portfolio high-grading เสร็จสมบูรณ์:</b> แยก Qnity Electronics (พ.ย. 2568) + ขาย Aramids/Kevlar-Nomex
+          ให้ Arclin $1.8B (ปิดดีล เม.ย. 2569 — ได้เงินสด $1.2B + ตั๋วเงินรับ $300M + หุ้น Arclin ~17.5%) เหลือธุรกิจ
+          margin สูงขึ้น</li>
+          <li><b>Healthcare & Water Technologies โตต่อเนื่อง:</b> ยอดขาย 1Q26 +6% YoY หนุนจากดีมานด์ water treatment/
+          desalination และชิ้นส่วนอุปกรณ์การแพทย์ที่มี regulatory moat สูง</li>
+          <li><b>FCF แข็งแกร่ง หนี้ต่ำ:</b> FCF ~$901M/ปี, Net Debt/EBITDA เพียง ~1.46x เปิดทางเพิ่มปันผล/ซื้อหุ้นคืนต่อเนื่อง</li>
+          <li><b>Reverse split 1:3 (24 มิ.ย. 2569):</b> ปรับราคาต่อหุ้นให้เหมาะสมกับมูลค่าบริษัทหลัง spin-off ช่วยเรื่อง
+          index eligibility และสภาพคล่องสถาบัน</li>
+          <li><b>นักวิเคราะห์เชิงบวก:</b> 17 สำนัก ให้ Strong Buy 11 / Buy 3 / Hold 3 / Sell 0 เป้าเฉลี่ย $170.69 (+26.6%)</li>
+          <li><b>Diversified Industrials เกาะกระแส AI/data center:</b> วัสดุอุตสาหกรรมขั้นสูงบางส่วนยังเชื่อมโยงกับ
+          downstream ของ electronics supply chain</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>Standalone track record สั้นมาก:</b> เพิ่งแยกเป็น pure-play Water/Healthcare + Diversified Industrials
+          ตั้งแต่ พ.ย. 2568 งบ FY2025 บิดเบือนหนักจากรายการ discontinued ops ยังไม่มีประวัติ run-rate ที่ชัดเจนพอ</li>
+          <li><b>Valuation รันขึ้นมาเกือบเต็มมูลค่าแล้ว:</b> ราคา +41.3% ในรอบปี MOS เชิงอนุรักษ์นิยมเหลือเพียง ~0.8%
+          ความเสี่ยง downside หากงบไม่เป็นไปตาม guidance</li>
+          <li><b>Guidance 2Q26 ต่ำกว่า consensus เล็กน้อย:</b> adj. EPS guidance ~$1.75 เทียบ consensus $1.77 และ
+          FY26 guidance $7.02–7.16 เทียบ consensus $7.17 — สัญญาณชะลอตัวที่ต้องติดตาม</li>
+          <li><b>Diversified Industrials ผูกกับวัฏจักรอุตสาหกรรม/ก่อสร้าง/เซมิคอนดักเตอร์:</b> ยังอ่อนไหวต่อ capex cycle
+          ของลูกค้าอุตสาหกรรมและ electronics แม้ตัดธุรกิจ pure electronics ออกไปแล้ว</li>
+          <li><b>โครงสร้างบริษัทซับซ้อนจากการปรับพอร์ตถี่:</b> spin + 2 divestitures + reverse split ในเวลา &lt;18 เดือน
+          ทำให้ historical multiple/comps เชื่อถือได้น้อยลง valuation model มี uncertainty สูงกว่าปกติ</li>
+          <li><b>หุ้น Arclin ที่ถือ (~$325M, ~17.5%):</b> เป็นบริษัทเอกชนสภาพคล่องต่ำ มูลค่าอาจผันผวน/ไม่สะท้อนในราคาตลาดทันที</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>DD: Post-Spin Re-rating เกือบเต็มมูลค่าแล้ว — รอจังหวะ Pullback</h2>
+      <p>หลังแยก Qnity Electronics และขาย Aramids ออกไป DuPont เหลือธุรกิจ Healthcare & Water Technologies และ
+      Diversified Industrials ที่มี margin สูงขึ้นและโฟกัสชัดเจนกว่าเดิม ราคาหุ้นตอบรับเชิงบวกมาก +41.3% ในรอบปี ทำให้
+      ปัจจุบันเทรดใกล้เคียงมูลค่าเหมาะสมที่เราประเมินไว้ที่ $135.9 (กรอบ $124.9–$142.5) แทบไม่เหลือ margin of safety
+      เชิงอนุรักษ์นิยม แม้เป้าหมายนักวิเคราะห์เฉลี่ย $170.69 จะสูงกว่านี้มาก (สะท้อนมุมมองการขยาย multiple ต่อเนื่อง)
+      แต่ยังต้องรอพิสูจน์ standalone execution อีก 2–3 ไตรมาสก่อนให้น้ำหนักกับมุมมองนั้นเต็มที่</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$135.9 <span style="font-size:12px;color:#cab9a8">($124.9–$142.5)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +0.8%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$170.69 (Buy)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> รอ pullback สู่โซน MOS 20% ($108.72) เป็นจุดสะสมที่มี margin of safety แท้จริง หรือทยอยสะสม
+        เบา ๆ (DCA) หากเชื่อมั่นระยะยาวในธีม Water/Healthcare Technologies ติดตามงบ 2Q/3Q 2569 อย่างใกล้ชิดเพื่อยืนยัน
+        ว่า guidance FY2026 ($7.02–7.16) จะไม่ถูกปรับลดเพิ่มเติม
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ข้อมูล ณ 9 ก.ค. 2569 จาก
+    StockAnalysis.com, Google Finance, Yahoo Finance, SEC filings (8-K/10-Q), DuPont Investor Relations
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 9 กรกฎาคม 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
