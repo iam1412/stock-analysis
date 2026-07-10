@@ -5,7 +5,7 @@
 > **จัดลำดับ:** Tier A = ย่อลึก/de-rate แรง ณ ก.ค. 2569 (ทำก่อน มีโอกาสเจอ MOS จริง) → Tier B = บลูชิพ/quality ที่ขาดเพื่อความครบ → Tier C = สายปันผล/defensive (utilities·REITs·midstream·materials)
 > สร้าง 2026-07-05 · % ในตาราง = ผลตอบแทน 1 ปีจาก Yahoo ณ วันสร้างแผน (ตอนวิเคราะห์จริงต้องดึงใหม่ + ตรวจข้ามแหล่งเสมอ)
 >
-> **📊 ความคืบหน้า (อัปเดต 10 ก.ค. 2569): เสร็จ 101/124 — W34: WY+BXP+REG ✅ · resume ที่ #102 UDR** · เหลือ 23 ตัว (W35→~W42)
+> **📊 ความคืบหน้า (อัปเดต 10 ก.ค. 2569): เสร็จ 104/124 — W35: UDR+DOC+CBRE ✅ · resume ที่ #105 WMB** · เหลือ 20 ตัว (W36→~W42)
 
 ---
 
@@ -145,9 +145,9 @@
 | 99 | W34 | WY | REIT ป่าไม้ | Weyerhaeuser — timber REIT, lumber cyclical (normalize) | 🔺 | ✅ $22.50/FV$29.10 MOS+22.7% |
 | 100 | W34 | BXP | REIT ออฟฟิศ | BXP — office premium, ประเมินแบบระวัง (P/FFO) | | ✅ $66.93/FV$66.15 MOS-1.2% |
 | 101 | W34 | REG | REIT ค้าปลีก | Regency — grocery-anchored คู่ KIM ที่มีแล้ว (P/AFFO) | | ✅ $79.44/FV$80.79 MOS+1.7% |
-| 102 | W35 | UDR | REIT อพาร์ตเมนต์ | UDR (P/AFFO · pe:null) | | ⬜ |
-| 103 | W35 | DOC | REIT การแพทย์ | Healthpeak — medical office/lab (P/AFFO) | | ⬜ |
-| 104 | W35 | CBRE | อสังหาฯ services | CBRE −13% — เบอร์ 1 RE services (ไม่ใช่ REIT — P/E ปกติ) | | ⬜ |
+| 102 | W35 | UDR | REIT อพาร์ตเมนต์ | UDR (P/AFFO · pe:null) | | ✅ $39.69/FV$41 MOS+3.2% |
+| 103 | W35 | DOC | REIT การแพทย์ | Healthpeak — medical office/lab (P/AFFO) | | ✅ $21.57/FV$21.40 MOS-0.8% |
+| 104 | W35 | CBRE | อสังหาฯ services | CBRE −13% — เบอร์ 1 RE services (ไม่ใช่ REIT — P/E ปกติ) | | ✅ $141.06/FV$151.43 MOS+6.8% |
 | 105 | W35 | WMB | midstream | Williams — gas pipeline ผูกขาดเส้นทาง (DCF/EV-EBITDA) | | ⬜ |
 | 106 | W36 | KMI | midstream | Kinder Morgan — gas infra ใหญ่สุด yield ~5% | | ⬜ |
 | 107 | W36 | TRGP | midstream | Targa +54% — NGL ผู้นำ Permian (คาด MOS บาง) | | ⬜ |
