@@ -5,7 +5,7 @@
 > **จัดลำดับ:** Tier A = ย่อลึก/de-rate แรง ณ ก.ค. 2569 (ทำก่อน มีโอกาสเจอ MOS จริง) → Tier B = บลูชิพ/quality ที่ขาดเพื่อความครบ → Tier C = สายปันผล/defensive (utilities·REITs·midstream·materials)
 > สร้าง 2026-07-05 · % ในตาราง = ผลตอบแทน 1 ปีจาก Yahoo ณ วันสร้างแผน (ตอนวิเคราะห์จริงต้องดึงใหม่ + ตรวจข้ามแหล่งเสมอ)
 >
-> **📊 ความคืบหน้า (อัปเดต 10 ก.ค. 2569): เสร็จ 104/124 — W35: UDR+DOC+CBRE ✅ · resume ที่ #105 WMB** · เหลือ 20 ตัว (W36→~W42)
+> **📊 ความคืบหน้า (อัปเดต 10 ก.ค. 2569): เสร็จ 107/124 — W36: WMB+KMI+TRGP ✅ · resume ที่ #108 BKR** · เหลือ 17 ตัว (W37→~W42)
 
 ---
 
@@ -148,9 +148,9 @@
 | 102 | W35 | UDR | REIT อพาร์ตเมนต์ | UDR (P/AFFO · pe:null) | | ✅ $39.69/FV$41 MOS+3.2% |
 | 103 | W35 | DOC | REIT การแพทย์ | Healthpeak — medical office/lab (P/AFFO) | | ✅ $21.57/FV$21.40 MOS-0.8% |
 | 104 | W35 | CBRE | อสังหาฯ services | CBRE −13% — เบอร์ 1 RE services (ไม่ใช่ REIT — P/E ปกติ) | | ✅ $141.06/FV$151.43 MOS+6.8% |
-| 105 | W35 | WMB | midstream | Williams — gas pipeline ผูกขาดเส้นทาง (DCF/EV-EBITDA) | | ⬜ |
-| 106 | W36 | KMI | midstream | Kinder Morgan — gas infra ใหญ่สุด yield ~5% | | ⬜ |
-| 107 | W36 | TRGP | midstream | Targa +54% — NGL ผู้นำ Permian (คาด MOS บาง) | | ⬜ |
+| 105 | W36 | WMB | midstream | Williams — gas pipeline ผูกขาดเส้นทาง (DCF/EV-EBITDA) | | ✅ $75.45/FV$60 MOS-25.8% |
+| 106 | W36 | KMI | midstream | Kinder Morgan — gas infra ใหญ่สุด yield ~5% | | ✅ $32.40/FV$31.44 MOS-3.1% |
+| 107 | W36 | TRGP | midstream | Targa +54% — NGL ผู้นำ Permian (คาด MOS บาง) | | ✅ $273.02/FV$248.22 MOS-10.0% |
 | 108 | W36 | BKR | บริการน้ำมัน | Baker Hughes — LNG equipment + services (normalize cycle) | 🔺 | ⬜ |
 | 109 | W37 | FANG | E&P | Diamondback — Permian ต้นทุนต่ำสุด (mid-cycle EPS) | 🔺 | ⬜ |
 | 110 | W37 | EXE | E&P gas | Expand Energy (Chesapeake+Southwestern) — gas เบอร์ 1 US (mid-cycle) | 🔺 | ⬜ |
