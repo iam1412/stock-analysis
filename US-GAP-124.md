@@ -5,7 +5,7 @@
 > **จัดลำดับ:** Tier A = ย่อลึก/de-rate แรง ณ ก.ค. 2569 (ทำก่อน มีโอกาสเจอ MOS จริง) → Tier B = บลูชิพ/quality ที่ขาดเพื่อความครบ → Tier C = สายปันผล/defensive (utilities·REITs·midstream·materials)
 > สร้าง 2026-07-05 · % ในตาราง = ผลตอบแทน 1 ปีจาก Yahoo ณ วันสร้างแผน (ตอนวิเคราะห์จริงต้องดึงใหม่ + ตรวจข้ามแหล่งเสมอ)
 >
-> **📊 ความคืบหน้า (อัปเดต 10 ก.ค. 2569): เสร็จ 107/124 — W36: WMB+KMI+TRGP ✅ · resume ที่ #108 BKR** · เหลือ 17 ตัว (W37→~W42)
+> **📊 ความคืบหน้า (อัปเดต 10 ก.ค. 2569): เสร็จ 110/124 — W37: BKR+FANG+EXE ✅ · resume ที่ #111 CRH** · เหลือ 14 ตัว (W38→~W42)
 
 ---
 
@@ -151,9 +151,9 @@
 | 105 | W36 | WMB | midstream | Williams — gas pipeline ผูกขาดเส้นทาง (DCF/EV-EBITDA) | | ✅ $75.45/FV$60 MOS-25.8% |
 | 106 | W36 | KMI | midstream | Kinder Morgan — gas infra ใหญ่สุด yield ~5% | | ✅ $32.40/FV$31.44 MOS-3.1% |
 | 107 | W36 | TRGP | midstream | Targa +54% — NGL ผู้นำ Permian (คาด MOS บาง) | | ✅ $273.02/FV$248.22 MOS-10.0% |
-| 108 | W36 | BKR | บริการน้ำมัน | Baker Hughes — LNG equipment + services (normalize cycle) | 🔺 | ⬜ |
-| 109 | W37 | FANG | E&P | Diamondback — Permian ต้นทุนต่ำสุด (mid-cycle EPS) | 🔺 | ⬜ |
-| 110 | W37 | EXE | E&P gas | Expand Energy (Chesapeake+Southwestern) — gas เบอร์ 1 US (mid-cycle) | 🔺 | ⬜ |
+| 108 | W37 | BKR | บริการน้ำมัน | Baker Hughes — LNG equipment + services (normalize cycle) | 🔺 | ✅ $57.20/FV$46 MOS-24.3% |
+| 109 | W37 | FANG | E&P | Diamondback — Permian ต้นทุนต่ำสุด (mid-cycle EPS) | 🔺 | ✅ $182.00/FV$172 MOS-5.8% |
+| 110 | W37 | EXE | E&P gas | Expand Energy (Chesapeake+Southwestern) — gas เบอร์ 1 US (mid-cycle) | 🔺 | ✅ $89.59/FV$71.85 MOS-24.7% |
 | 111 | W37 | CRH | วัสดุก่อสร้าง | CRH — aggregates ผู้นำ US-listed, ธีม infra | | ⬜ |
 | 112 | W38 | STLD | เหล็ก | Steel Dynamics +68% — เหล็ก mini-mill ดีสุด (mid-cycle EPS — ระวัง peak) | 🔺 | ⬜ |
 | 113 | W38 | DD | เคมี | DuPont +45% — หลัง spin Qnity เช็คงบ standalone | 🔺 | ⬜ |
