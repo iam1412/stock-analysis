@@ -5,7 +5,7 @@
 > **จัดลำดับ:** Tier A = ย่อลึก/de-rate แรง ณ ก.ค. 2569 (ทำก่อน มีโอกาสเจอ MOS จริง) → Tier B = บลูชิพ/quality ที่ขาดเพื่อความครบ → Tier C = สายปันผล/defensive (utilities·REITs·midstream·materials)
 > สร้าง 2026-07-05 · % ในตาราง = ผลตอบแทน 1 ปีจาก Yahoo ณ วันสร้างแผน (ตอนวิเคราะห์จริงต้องดึงใหม่ + ตรวจข้ามแหล่งเสมอ)
 >
-> **📊 ความคืบหน้า (อัปเดต 10 ก.ค. 2569): เสร็จ 110/124 — W37: BKR+FANG+EXE ✅ · resume ที่ #111 CRH** · เหลือ 14 ตัว (W38→~W42)
+> **📊 ความคืบหน้า (อัปเดต 10 ก.ค. 2569): เสร็จ 113/124 — W38: CRH+STLD+DD ✅ · resume ที่ #114 IFF** · เหลือ 11 ตัว (W39→~W42)
 
 ---
 
@@ -154,19 +154,19 @@
 | 108 | W37 | BKR | บริการน้ำมัน | Baker Hughes — LNG equipment + services (normalize cycle) | 🔺 | ✅ $57.20/FV$46 MOS-24.3% |
 | 109 | W37 | FANG | E&P | Diamondback — Permian ต้นทุนต่ำสุด (mid-cycle EPS) | 🔺 | ✅ $182.00/FV$172 MOS-5.8% |
 | 110 | W37 | EXE | E&P gas | Expand Energy (Chesapeake+Southwestern) — gas เบอร์ 1 US (mid-cycle) | 🔺 | ✅ $89.59/FV$71.85 MOS-24.7% |
-| 111 | W37 | CRH | วัสดุก่อสร้าง | CRH — aggregates ผู้นำ US-listed, ธีม infra | | ⬜ |
-| 112 | W38 | STLD | เหล็ก | Steel Dynamics +68% — เหล็ก mini-mill ดีสุด (mid-cycle EPS — ระวัง peak) | 🔺 | ⬜ |
-| 113 | W38 | DD | เคมี | DuPont +45% — หลัง spin Qnity เช็คงบ standalone | 🔺 | ⬜ |
-| 114 | W38 | IFF | เคมีอาหาร | IFF — flavors/fragrances oligopoly, deleveraging | | ⬜ |
+| 111 | W38 | CRH | วัสดุก่อสร้าง | CRH — aggregates ผู้นำ US-listed, ธีม infra | | ✅ $104.36/FV$113.60 MOS+8.1% |
+| 112 | W38 | STLD | เหล็ก | Steel Dynamics +68% — เหล็ก mini-mill ดีสุด (mid-cycle EPS — ระวัง peak) | 🔺 | ✅ $222.06/FV$125 MOS-77.6% |
+| 113 | W38 | DD | เคมี | DuPont +45% — หลัง spin Qnity เช็คงบ standalone | 🔺 | ✅ $134.79/FV$135.9 MOS+0.8% |
+| 114 | W39 | IFF | เคมีอาหาร | IFF — flavors/fragrances oligopoly, deleveraging | | ⬜ |
 | 115 | W39 | IP | บรรจุภัณฑ์ | International Paper −22% — containerboard + DS Smith (normalize) | 🔺 | ⬜ |
 | 116 | W39 | SW | บรรจุภัณฑ์ | Smurfit Westrock — ควบรวม 2024 เบอร์ 1 โลก | | ⬜ |
-| 117 | W39 | AVY | วัสดุ/ฉลาก | Avery Dennison — label ผูกขาดเงียบ ๆ RFID โต | | ⬜ |
+| 117 | W40 | AVY | วัสดุ/ฉลาก | Avery Dennison — label ผูกขาดเงียบ ๆ RFID โต | | ⬜ |
 | 118 | W40 | BALL | บรรจุภัณฑ์ | Ball — กระป๋องอลูมิเนียม เบอร์ 1 โลก | | ⬜ |
 | 119 | W40 | LYB | ปิโตรเคมี | LyondellBasell — yield สูง cyclical ก้นวัฏจักร (mid-cycle) | 🔺 | ⬜ |
-| 120 | W40 | AMCR | บรรจุภัณฑ์ | Amcor — flexible packaging + Berry merger, yield ~5% | | ⬜ |
+| 120 | W41 | AMCR | บรรจุภัณฑ์ | Amcor — flexible packaging + Berry merger, yield ~5% | | ⬜ |
 | 121 | W41 | BF-B | เครื่องดื่มแอลกอฮอล์ | Brown-Forman −13% (Jack Daniel's) — multi-year low, spirits cycle (ไฟล์ BF-B.html) | 🔺 | ⬜ |
 | 122 | W41 | TSN | อาหาร | Tyson — โปรตีนเบอร์ 1 US, protein cycle ฟื้น | | ⬜ |
-| 123 | W41 | TAP | เครื่องดื่ม | Molson Coors −21% — ถูกมาก P/E หลักเดียว แลก volume ถดถอย | | ⬜ |
+| 123 | W42 | TAP | เครื่องดื่ม | Molson Coors −21% — ถูกมาก P/E หลักเดียว แลก volume ถดถอย | | ⬜ |
 | 124 | W42 | BG | อาหารเกษตร | Bunge +26% — agribusiness + Viterra merger (mid-cycle) | 🔺 | ⬜ |
 
 ---
