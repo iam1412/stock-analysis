@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น Weyerhaeuser (WY) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Opus 4.8">
+<script type="application/json" id="stock-meta">
+{"symbol":"WY","currency":"USD","price":22.50,"fairValue":29.10,"mos":22.7,"upside":29.3,"pe":null,"dividendYield":3.73,"roe":4.16}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#166534",
+    "accentDark": "#14532d",
+    "darkGrad": "linear-gradient(135deg,#052e16 0%,#14532d 55%,#166534 100%)",
+    "glow": "rgba(22,101,52,0.35)",
+    "subColor": "#86efac",
+    "headerMuted": "rgba(134,239,172,0.75)",
+    "verdictText": "#dcfce7",
+    "vcellLabel": "rgba(134,239,172,0.8)",
+    "badge": "#22c55e",
+    "chgBg": "var(--red-soft)",
+    "chgColor": "#c5221f"
+  },
+  "chart": {
+    "data": [
+      ["ส.ค. 68", 25.41],
+      ["ก.ย. 68", 24.35],
+      ["ต.ค. 68", 22.59],
+      ["พ.ย. 68", 22.02],
+      ["ธ.ค. 68", 23.49],
+      ["ม.ค. 69", 25.56],
+      ["ก.พ. 69", 24.32],
+      ["มี.ค. 69", 24.43],
+      ["เม.ย. 69", 24.52],
+      ["พ.ค. 69", 24.51],
+      ["มิ.ย. 69", 23.94],
+      ["ก.ค. 69", 22.50]
+    ],
+    "min": 20,
+    "max": 30,
+    "grid": [22, 24, 26, 28],
+    "fairLine": 29.10,
+    "currency": "$",
+    "highlight": [3, 5]
+  },
+  "gauge": {
+    "min": 18,
+    "max": 34,
+    "cur": 22.50,
+    "fair": 29.10,
+    "fairLabelTop": false
+  },
+  "fv": 29.10
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">●●●</div>
+    <div>
+      <span class="tag">NYSE: WY</span>
+      <span class="tag">วัสดุ/ป่าไม้</span>
+      <span class="tag">Timber REIT</span>
+    </div>
+    <h1>Weyerhaeuser Company (WY)</h1>
+    <div class="sub">Timber REIT • 11M Acres • Pacific NW + US South • Timberlands • Wood Products • Real Estate</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$22.50<small>(WY)</small></div>
+      </div>
+      <div class="chg">▼ −11.4% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 9 ก.ค. 2569<br>
+        กรอบ 52 สัปดาห์ $21.16 – $27.75<br>
+        ที่มา: StockAnalysis.com, Yahoo Finance, SEC 10-K/8-K filings (Weyerhaeuser IR)
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">Timber REIT — ใช้ AFAD (Adjusted FAD) แทน P/E</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">$16.22B</div><div class="d">~721.0M หุ้น · NYSE: WY</div></div>
+      <div class="metric"><div class="k">P/AFAD (Normalized)</div><div class="v neu">~15.0x</div><div class="d">AFAD ปกติ $1.50/หุ้น (เฉลี่ย FY22-25 ไม่รวมพีค 2021)</div></div>
+      <div class="metric"><div class="k">P/AFAD (TTM, cycle-low)</div><div class="v neu">~34.6x</div><div class="d">AFAD 2025E ~$0.65/หุ้น — จุดต่ำวัฏจักร lumber</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">1.72x</div><div class="d">BVPS $13.07 (Q1 2569)</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">~$330M</div><div class="d">EPS $0.45 ↓17% YoY จาก FY2024 $0.54</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$0.55</div><div class="d">ฟื้นเล็กน้อยจากจุดต่ำ FY2025 ($0.45)</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~$13.07</div><div class="d">Equity $9,439M ÷ 722M หุ้น (Q1 2569)</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v neu">~4.2% / 0.7%</div><div class="d">ต่ำกว่าค่าเฉลี่ยตาม lumber cycle ขาลง</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$6.87B</div><div class="d">ทรงตัว/ลดลงเล็กน้อยจาก FY2024 $7.12B</div></div>
+      <div class="metric"><div class="k">อัตรากำไรสุทธิ</div><div class="v">5.78%</div><div class="d">Operating margin 2.77%</div></div>
+      <div class="metric"><div class="k">เงินปันผล (Yield)</div><div class="v">~3.73%</div><div class="d">Base $0.84/ปี ($0.21/ไตรมาส) · ไม่มี supplemental ตอนนี้</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">0.91</div><div class="d">ต่ำกว่าตลาดเล็กน้อย แต่แกว่งแรงตาม lumber cycle</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ส.ค. 2568 – ก.ค. 2569 · ตามวัฏจักรราคาไม้แปรรูป (lumber)</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#166534"></i>ราคา WY</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $29.10</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        WY เริ่มต้นช่วงที่วิเคราะห์ที่ $25.41 (ส.ค. 2568) ก่อนร่วงลงต่อเนื่องตามราคาไม้แปรรูป (Random Lengths Framing Lumber Composite) ที่อ่อนตัวจากดีมานด์บ้านใหม่ในสหรัฐฯ ที่ซบเซาเพราะดอกเบี้ยจำนองยังสูง ทำจุดต่ำสุดของช่วงที่ $22.02 (พ.ย. 2568) จากนั้นดีดตัวขึ้นแรงเป็น $25.56 (ม.ค. 2569) ตามความหวังดอกเบี้ยเริ่มลดและฤดูก่อสร้างฤดูใบไม้ผลิ ก่อนแกว่งตัวในกรอบ $23.9–24.5 ตลอดไตรมาส 2/2569 แล้วอ่อนตัวลงอีกครั้งช่วง มิ.ย.–ก.ค. 2569 หลังราคา lumber composite ร่วงแตะระดับ ~$378/MBF ต่ำสุดในรอบหลายทศวรรษ (ปรับเงินเฟ้อ) ปิดที่ $22.50 (9 ก.ค. 2569) ให้ผลตอบแทนช่วง ~11 เดือนที่ −11.4% สะท้อนว่า timber/lumber cycle ยังอยู่ในช่วงขาลงต่อเนื่อง
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี — Timber REIT: P/AFAD + Cash Return Yield + NAV ที่ดิน (ไม่ใช้ P/E)</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/AFAD Valuation (Normalized)</div><div class="mdesc">AFAD/sh normalized $1.50 (เฉลี่ย FY2022–2025: $3.20, $1.34, $0.78, ~$0.65 — ไม่รวม FY2021 $3.57 ที่ lumber พุ่งประวัติการณ์เกิน $1,500/MBF) × P/AFAD เป้าหมาย 21x (ค่ากลางช่วง 20-22x ที่ timber REIT คุณภาพสูงเทรดในภาวะปกติ)</div></div>
+        <div class="mval">$31.50</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. Cash Return Yield Model</div><div class="mdesc">Normalized total distribution $1.16/sh (77.5% ของ AFAD ปกติ ตามกรอบ cash-return 75-80% ของบริษัท รวม base+supplemental dividend และ buyback) ÷ target cash yield 4.0% (ค่าเฉลี่ยที่ WY เทรดในภาวะวัฏจักรปกติ)</div></div>
+        <div class="mval">$29.00</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. NAV (มูลค่าที่ดินป่าไม้)</div><div class="mdesc">พื้นที่ป่าไม้ 11.0M เอเคอร์ × มูลค่าตลาดเฉลี่ยถ่วงน้ำหนัก ~$2,200/เอเคอร์ (Pacific NW ~$3,000+ ผสาน US South ~$1,600-1,800) ≈ $24.2B หักหนี้สุทธิ ~$4.9B (หนี้รวม $5,424M − เงินสด est.)</div></div>
+        <div class="mval">$26.80</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $26.80 – $31.50</span></div>
+        <div class="r">$29.10</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        <b>หมายเหตุ:</b> WY เป็น timber REIT ที่กำไร/กระแสเงินสดผันผวนตามวัฏจักรราคาไม้แปรรูปรุนแรง (EPS FY2021 $3.47 → FY2025 $0.45) จึงใช้ <b>AFAD normalized</b> (เฉลี่ยหลายปีตัดปีพีค 2021 ออก) แทนตัวเลขปีล่าสุดที่ยังอยู่จุดต่ำวัฏจักร Method 1 และ 2 ให้ค่าใกล้เคียงกัน ($29.00–31.50) เพราะอิงกระแสเงินสด normalize แล้วเหมือนกัน ส่วน Method 3 (NAV ที่ดิน) ให้ค่าต่ำสุด ($26.80) เพราะเป็นมูลค่าทรัพย์สินสุทธิแบบอนุรักษ์นิยม ไม่รวมมูลค่าเพิ่มจากธุรกิจ Wood Products manufacturing และ Real Estate development FV เฉลี่ย $29.10 ใกล้เคียงเป้าหมาย analyst consensus $31.27 (12 นักวิเคราะห์ เรตติ้ง Buy) ยืนยันว่าราคาปัจจุบัน $22.50 ต่ำกว่ามูลค่าที่ควรจะเป็นในภาวะ lumber cycle ปกติ
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $22.50</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $29.10</div></div>
+        </div>
+        <div class="scale">
+          <span>$20.37<br><small>MOS 30%</small></span>
+          <span>$23.28<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$29.10<br><small>Fair Value</small></span>
+          <span style="text-align:right">$31.27<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">$31.50<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน $22.50 อยู่ในโซนระหว่าง MOS 20% ($23.28) และ MOS 30% ($20.37) — เกือบเป็นโซน "ถูกมาก" อยู่แล้ว สะท้อนว่าตลาดกำลัง price-in ภาวะ lumber cycle ขาลงต่อเนื่อง (ราคาไม้แปรรูปปัจจุบัน ~$378/MBF เทียบระดับปกติ ~$450-500/MBF) หากราคาไม้แปรรูปฟื้นตัวกลับสู่ระดับปกติตามวัฏจักร housing starts กระแสเงินสด AFAD มีโอกาสฟื้นขึ้นมาที่ระดับ normalized ได้ในช่วง 2-3 ปีข้างหน้า
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict good">
+        <div class="big">+22.7%</div>
+        <div class="txt">ส่วนเผื่อความปลอดภัยอยู่ในเกณฑ์ดี (MOS ≥20%) เหมาะสำหรับนักลงทุนที่เข้าใจและรับความผันผวนของวัฏจักรไม้แปรรูปได้ และมองข้ามจุดต่ำสุดของวัฏจักรปัจจุบันไปสู่การฟื้นตัว</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$23.28</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$20.37</div><div class="d">โซนถูกมาก (deep value, ต่ำกว่า 52wk low $21.16)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $29.10</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="22.50" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $22.50 • AFAD normalized ฐาน ~$1.50/หุ้น • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>AFAD −3%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$19.20</div>
+          <div class="ret neg">−3.5%</div>
+          <ul>
+            <li><span>AFAD ปี 3</span><span>~$1.37/sh</span></li>
+            <li><span>Exit P/AFAD</span><span>14x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$2.52</span></li>
+            <li><span>สถานการณ์</span><span>ราคา lumber ต่ำต่อเนื่อง &lt;$400/MBF จาก housing starts อ่อนแอต่อเนื่อง ไม่มี supplemental dividend</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>AFAD +4%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$32.10</div>
+          <div class="ret pos">+56.0%</div>
+          <ul>
+            <li><span>AFAD ปี 3</span><span>~$1.69/sh</span></li>
+            <li><span>Exit P/AFAD</span><span>19x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$3.00</span></li>
+            <li><span>สถานการณ์</span><span>Lumber ฟื้นตัวสู่ระดับปกติ ~$450-500/MBF ตามดอกเบี้ยลดและ housing starts ฟื้น กลับมาจ่าย supplemental dividend บางส่วน</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>AFAD +10%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$44.00</div>
+          <div class="ret pos">+116.9%</div>
+          <ul>
+            <li><span>AFAD ปี 3</span><span>~$2.00/sh</span></li>
+            <li><span>Exit P/AFAD</span><span>22x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$4.80</span></li>
+            <li><span>สถานการณ์</span><span>Housing boom รอบใหม่ + lumber supply ตึงตัวจาก sawmill closures ราคาพุ่งเกิน $600/MBF กลับมาจ่าย supplemental dividend เต็มรูปแบบเหมือนปี 2021-2022</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      สมมติฐานอิงจาก AFAD normalized ($1.50/sh) ไม่ใช่ตัวเลขจุดต่ำวัฏจักรปัจจุบัน (~$0.65/sh) — Bear case สะท้อนความเสี่ยงที่วัฏจักรฟื้นช้ากว่าคาดหรือแย่ลง Base/Bull สะท้อนการฟื้นตัวของ lumber cycle ตามระดับความรุนแรงต่างกัน ผลตอบแทนที่สูงในกรณี Base/Bull เป็นลักษณะทั่วไปของหุ้น deep-cycle ที่ราคาปัจจุบันอยู่ใกล้จุดต่ำวัฏจักร (คล้ายการฟื้นตัว 2020-2021 ในอดีต)
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>ดอกเบี้ย Fed ลดลง:</b> ลดต้นทุนจำนอง หนุน housing starts และดีมานด์ lumber ให้ฟื้นตัว</li>
+          <li><b>Carbon credit / Natural Climate Solutions:</b> รายได้ใหม่จากการขายคาร์บอนเครดิตในพื้นที่ป่า เติบโตต่อเนื่องและมาร์จิ้นสูง</li>
+          <li><b>Real Estate segment (HBU):</b> ขายที่ดิน "Higher & Better Use" มาร์จิ้นสูงกว่าธุรกิจไม้ปกติมาก</li>
+          <li><b>Share buyback:</b> บริษัทซื้อหุ้นคืนต่อเนื่องเมื่อ AFAD สูงกว่าภาระ dividend ตามกรอบ cash-return</li>
+          <li><b>Supply ตึงตัวเชิงโครงสร้าง:</b> โรงเลื่อย (sawmill) หลายแห่งปิดตัวช่วง downturn จะทำให้ supply ตึงตัวเมื่อดีมานด์ฟื้น</li>
+          <li><b>กระจายความเสี่ยงภูมิภาค:</b> Pacific NW + US South ลดผลกระทบจากภัยธรรมชาติ/นโยบายภูมิภาคเดียว</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>Lumber price volatility:</b> ราคาไม้แปรรูปผันผวนสูงมากตามวัฏจักรที่อยู่อาศัย กระทบกำไรรุนแรงทั้งขาขึ้นและขาลง</li>
+          <li><b>Housing start cycle:</b> ดอกเบี้ยสูงต่อเนื่องหรือเศรษฐกิจถดถอย กดดันดีมานด์บ้านใหม่และราคาไม้ต่อเนื่อง</li>
+          <li><b>Supplemental dividend cut risk:</b> หากกำไรไม่ฟื้นตัว อาจไม่มี supplemental dividend ต่อเนื่องหลายปี (ปัจจุบันจ่ายเฉพาะ base)</li>
+          <li><b>Trade policy / Softwood lumber duties:</b> ข้อพิพาทภาษีไม้แปรรูปกับแคนาดากระทบราคาตลาดและต้นทุนนำเข้า-ส่งออก</li>
+          <li><b>Wildfire / ภัยธรรมชาติ:</b> ไฟป่า โรคพืช พายุ กระทบพื้นที่ป่าไม้และเพิ่มต้นทุนประกันภัย</li>
+          <li><b>ต้นทุนดำเนินงานเพิ่มขึ้น:</b> ต้นทุนแรงงาน/พลังงานของ sawmill สูงขึ้นกดดันมาร์จิ้น Wood Products segment</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>WY: Timber REIT คุณภาพสูง ราคาสะท้อน Lumber Cycle ขาลง — มี Upside รอการฟื้นตัว</h2>
+      <p>Weyerhaeuser เป็นเจ้าของที่ดินป่าไม้เอกชนรายใหญ่ที่สุดในสหรัฐฯ (11 ล้านเอเคอร์ ครอบคลุม Pacific Northwest และ US South) ราคาหุ้นปัจจุบัน $22.50 สะท้อนภาวะ lumber cycle ขาลงรุนแรง (ราคาไม้แปรรูปคอมโพสิต ~$378/MBF ต่ำสุดในรอบหลายทศวรรษเมื่อปรับเงินเฟ้อ) กดดันกำไรและกระแสเงินสด AFAD ให้อยู่ต่ำกว่าค่าเฉลี่ยระยะยาวมาก เมื่อ normalize AFAD เฉลี่ย FY2022-2025 (ไม่รวมปี 2021 ที่ราคาพุ่งประวัติการณ์เกิน $1,500/MBF) ที่ ~$1.50/หุ้น มูลค่าเหมาะสมเฉลี่ย 3 วิธี ($31.50 P/AFAD + $29.00 Cash Return Yield + $26.80 NAV ที่ดิน) อยู่ที่ $29.10 ให้ Margin of Safety ~22.7% ที่ราคาปัจจุบัน เหมาะสำหรับนักลงทุนที่เข้าใจและยอมรับความผันผวนของวัฏจักรไม้แปรรูป มองข้ามจุดต่ำสุดปัจจุบันไปสู่การฟื้นตัวของ housing starts ในระยะ 2-3 ปีข้างหน้า</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$29.10 <span style="font-size:12px;color:#cab9a8">($26.80–$31.50)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +22.7%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$31.27 (Buy, 12 นักวิเคราะห์)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ทยอยสะสมที่ราคาปัจจุบันถึงโซน MOS 20-30% ($20.37-23.28) เน้นถือระยะยาว (3-5 ปี) เพื่อรอ lumber cycle ฟื้นตัว รับปันผล base $0.84/ปี (yield ~3.73%) ระหว่างรอ — ไม่เหมาะสำหรับนักลงทุนที่ต้องการผลตอบแทนสม่ำเสมอในระยะสั้นหรือรับความผันผวนของวัฏจักรไม่ได้
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ AFAD normalized, ราคาไม้แปรรูปในอนาคต, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และการฟื้นตัวของ housing starts
+    ราคาหุ้นมีความผันผวนสูงตามวัฏจักรสินค้าโภคภัณฑ์ ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ข้อมูลจาก StockAnalysis.com, Yahoo Finance, SEC filings (10-K FY2025, 8-K earnings releases), Weyerhaeuser Investor Relations ณ 9 ก.ค. 2569
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 9 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>

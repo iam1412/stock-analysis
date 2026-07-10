@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น Regency Centers (REG) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"REG","currency":"USD","price":79.44,"fairValue":80.79,"mos":1.7,"upside":1.7,"pe":null,"dividendYield":3.80,"roe":8.0}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#0d9488",
+    "accentDark": "#0f766e",
+    "darkGrad": "linear-gradient(135deg,#134e4a 0%,#0d9488 60%,#2dd4bf 100%)",
+    "glow": "rgba(13,148,136,0.35)",
+    "subColor": "#99f6e4",
+    "headerMuted": "rgba(153,246,228,0.7)",
+    "verdictText": "#ecfdf5",
+    "vcellLabel": "#5eead4",
+    "badge": "#0d9488",
+    "chgBg": "#1B5E20",
+    "chgColor": "#A5D6A7"
+  },
+  "chart": {
+    "data": [
+      ["ส.ค. 68", 69.65],
+      ["ก.ย. 68", 70.72],
+      ["ต.ค. 68", 66.89],
+      ["พ.ย. 68", 69.04],
+      ["ธ.ค. 68", 67.72],
+      ["ม.ค. 69", 71.49],
+      ["ก.พ. 69", 77.50],
+      ["มี.ค. 69", 74.95],
+      ["เม.ย. 69", 77.12],
+      ["พ.ค. 69", 76.63],
+      ["มิ.ย. 69", 79.74],
+      ["ก.ค. 69", 79.44]
+    ],
+    "min": 64,
+    "max": 84,
+    "grid": [64, 69, 74, 79, 84],
+    "fairLine": 80.79,
+    "currency": "$",
+    "highlight": [2, 6, 11]
+  },
+  "gauge": {
+    "min": 56,
+    "max": 88,
+    "cur": 79.44,
+    "fair": 80.79,
+    "fairLabelTop": true
+  },
+  "fv": 80.79
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">🛒🏬🥬🏪🌿</div>
+    <div>
+      <span class="tag">NYSE: REG</span>
+      <span class="tag">Real Estate • REIT</span>
+      <span class="tag">Grocery-Anchored Retail</span>
+    </div>
+    <h1>Regency Centers Corporation</h1>
+    <div class="sub">Grocery-Anchored Retail REIT • 480+ Shopping Centers • ~59M sq ft • Kroger • Publix • Whole Foods • Sprouts • Merged with Urstadt Biddle (2023) → เพิ่มพอร์ตตะวันออกเฉียงเหนือ • Credit rating สูงสุดในกลุ่ม (Moody's A3, S&amp;P A-) • pe:null — REIT วัดมูลค่าด้วย P/AFFO/DDM</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$79.44<small>(REG)</small></div>
+      </div>
+      <div class="chg">▲ +14.1% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 9 ก.ค. 2569<br>
+        กรอบ 52 สัปดาห์ $66.86 – $81.93<br>
+        ที่มา: StockAnalysis.com, Google Finance, Regency Centers IR
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ก.ค. 2569 — REIT ใช้ FFO/AFFO แทน EPS/P/E</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">$14.81B</div><div class="d">186.43M หุ้น (diluted)</div></div>
+      <div class="metric"><div class="k">AFFO/sh (FY2025A)</div><div class="v pos">$3.83</div><div class="d">Primary valuation metric — ใช้ P/AFFO แทน P/E</div></div>
+      <div class="metric"><div class="k">FFO/sh (2026E)</div><div class="v neu">$4.83–$4.87</div><div class="d">Nareit FFO guidance midpoint $4.85 (+4.5% YoY)</div></div>
+      <div class="metric"><div class="k">P/AFFO (current)</div><div class="v neu">~20.7x</div><div class="d">อิง AFFO FY25A $3.83 — premium tier</div></div>
+
+      <div class="metric"><div class="k">Occupancy Rate</div><div class="v pos">96.6%</div><div class="d">Anchors 98.2% • Shop spaces 94.1% (Q1 2569)</div></div>
+      <div class="metric"><div class="k">Same-Property NOI Growth</div><div class="v pos">+4.4%</div><div class="d">YoY Q1 2569 — สูงกว่าค่าเฉลี่ยกลุ่ม</div></div>
+      <div class="metric"><div class="k">Leasing Spreads</div><div class="v pos">+12.1% / +24.3%</div><div class="d">Cash / straight-line, blended Q1 2569</div></div>
+      <div class="metric"><div class="k">เงินปันผล (Yield)</div><div class="v pos">~3.80%</div><div class="d">$3.02/sh ปี ($0.755/qtr)</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$1.65B</div><div class="d">ค่าเช่าขั้นต่ำ + recoveries + อื่นๆ</div></div>
+      <div class="metric"><div class="k">Net Debt / EBITDA</div><div class="v pos">~4.89x</div><div class="d">A3(Moody's)/A-(S&amp;P) — leverage ต่ำสุดในกลุ่ม</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">~2.18x</div><div class="d">BVPS ~$36.44 — premium สะท้อน NAV เติบโต</div></div>
+      <div class="metric"><div class="k">ROE / Beta</div><div class="v">~8.0% / 0.82</div><div class="d">Beta ต่ำกว่าตลาด — defensive income profile</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ส.ค. 2568 – ก.ค. 2569 (รายเดือน)</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#0d9488"></i>ราคา REG</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $80.79</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        REG ปรับตัวขึ้น <b>+14.1%</b> ในรอบปี (ส.ค. 2568 ถึง ก.ค. 2569) จาก $69.65 สู่ $79.44 บวก dividend yield ~3.8% → total return ~17.9% ต่อปี
+        ราคาแตะจุดต่ำสุดที่ <b>$66.89</b> (ต.ค. 2568) ในช่วง rate-pressure ก่อนฟื้นตัวแรงตั้งแต่ ม.ค. 2569 ทะลุ $77+ ในเดือน ก.พ. 2569
+        แรงหนุนมาจาก: occupancy สู่ 96.6%, leasing spread cash +12.1% (straight-line +24.3%), และ same-property NOI growth +4.4% ใน Q1 2569
+        จุดสูงสุด 52 สัปดาห์ที่ $81.93 (มิ.ย. 2569) ใกล้เคียงราคาปัจจุบันมาก — สะท้อนว่าตลาดให้ premium valuation กับ REG ค่อนข้างเต็มแล้ว
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี — REIT ใช้ P/AFFO + DDM</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/AFFO Valuation (Conservative — 19x)</div><div class="mdesc">AFFO/sh FY2026E adj. $4.00 × P/AFFO เป้า ~19x — grocery-anchored REIT premium tier (A3/A-, leverage ต่ำสุด) แต่ระมัดระวังจาก valuation ที่ค่อนข้างเต็มแล้ว</div></div>
+        <div class="mval">$76.00</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. P/AFFO Valuation (Base — 21x)</div><div class="mdesc">AFFO/sh FY2026E adj. $4.00 × P/AFFO เป้า ~21x — สะท้อน premium สูงสุดในกลุ่ม grocery REIT จาก credit rating ดีที่สุด (A3/A-) และ leverage ต่ำสุด (~4.9x) เทียบ KIM ~13.9x P/FFO</div></div>
+        <div class="mval">$84.00</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. DDM / Gordon Growth Model</div><div class="mdesc">D₁ = $3.13 (forward, +3.5% growth สอดคล้อง same-property NOI growth +4.4%); g = 3.5%; r = 7.3% (required return, ต่ำกว่า KIM เพราะ credit rating สูงกว่า) → FV = $3.13 / (7.3%−3.5%)</div></div>
+        <div class="mval">$82.37</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $76.00 – $84.00</span></div>
+        <div class="r">$80.79</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        <b>หมายเหตุวิธี valuation:</b> REG เป็น REIT จึงใช้ P/AFFO (ไม่ใช่ P/FFO เหมือน KIM) เพราะ AFFO หักลบ capex/leasing cost ที่แท้จริง สะท้อนกระแสเงินสดที่จ่ายปันผลได้จริงมากกว่า
+        P/AFFO เป้า 19-21x สูงกว่า KIM (P/FFO 17-18x) เพราะ REG มี credit rating ดีกว่า (A3/A- vs KIM A3 เดี่ยว) และ leverage ต่ำกว่า (~4.9x vs ~6.5x)
+        DDM ($82.37) ใกล้เคียงกับ P/AFFO Base เพราะ dividend payout stable และ growth สอดคล้องกับ NOI growth
+        ราคาปัจจุบัน $79.44 ใกล้เคียงกับ fair value เฉลี่ย $80.79 มาก (P/AFFO ~20.7x ปัจจุบัน) → MOS เหลือน้อยกว่า KIM ชัดเจน สะท้อนว่าตลาด price-in คุณภาพของ REG ไปมากแล้ว
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $79.44</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $80.79</div></div>
+        </div>
+        <div class="scale">
+          <span>$56.55<br><small>MOS 30%</small></span>
+          <span>$64.63<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$80.79<br><small>Fair Value</small></span>
+          <span style="text-align:right">$84.00<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">$85.32<br><small>เป้าเฉลี่ย Analyst</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคา $79.44 อยู่ใน <b>โซน MOS 1.7%</b> — ใกล้เคียง fair value $80.79 มาก แทบไม่มี margin of safety เหลือ ต่างจาก KIM ที่ยังมี MOS ~15.5%
+        โซนทยอยสะสมที่น่าสนใจจริง: <b>ต่ำกว่า $64.63</b> (MOS 20%) ซึ่งใกล้เคียง 52W low $66.86 — ต้องรอ correction ระดับหนึ่งก่อนเข้าซื้อแบบมี margin
+        เป้านักวิเคราะห์เฉลี่ย $85.32 (+7.4%) สูงกว่า fundamental FV ที่คำนวณได้ ($80.79) สะท้อนมุมมองที่ optimistic กว่าการประเมินแบบ conservative
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">+1.7%</div>
+        <div class="txt">MOS ต่ำมาก — ราคาเกือบเท่ากับ fair value แทบไม่มีส่วนเผื่อความปลอดภัย เหมาะสำหรับถือระยะยาวรับ dividend มากกว่าเข้าซื้อใหม่จำนวนมาก ณ ราคานี้</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$64.63</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$56.55</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $80.79</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="79.44" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $79.44 • AFFO ฐาน ~$4.00 • รวมปันผล ~$3.02/ปี</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>AFFO 0%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$68.00</div>
+          <div class="ret neg">−3.0% (3 ปี)</div>
+          <ul>
+            <li><span>AFFO ปี 3</span><span>~$4.00</span></li>
+            <li><span>P/AFFO ออก</span><span>17x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$9.06</span></li>
+            <li><span>สถานการณ์</span><span>Rate สูงต่อ, AFFO ทรงตัว, multiple compress</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>AFFO +4%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$90.00</div>
+          <div class="ret pos">+25.1% (3 ปี)</div>
+          <ul>
+            <li><span>AFFO ปี 3</span><span>~$4.50</span></li>
+            <li><span>P/AFFO ออก</span><span>20x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$9.34</span></li>
+            <li><span>สถานการณ์</span><span>Same-property NOI +4%, rate ลด, multiple ทรงตัว</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>AFFO +6%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$104.75</div>
+          <div class="ret pos">+43.9% (3 ปี)</div>
+          <ul>
+            <li><span>AFFO ปี 3</span><span>~$4.76</span></li>
+            <li><span>P/AFFO ออก</span><span>22x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$9.52</span></li>
+            <li><span>สถานการณ์</span><span>Re-rating สู่ premium สูงสุด, redevelopment upside, rate ลดแรง</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      <b>หมายเหตุสำหรับ REIT:</b> ใช้ AFFO แทน EPS และ P/AFFO แทน P/E เพราะ GAAP earnings รวม depreciation อสังหาฯ จำนวนมากซึ่งไม่สะท้อนกระแสเงินสดจริงที่จ่ายปันผลได้
+      Bear case ยังให้ผลตอบแทนใกล้เคียงทุน (-3.0% ใน 3 ปี) เพราะ dividend yield 3.8% ช่วยพยุงผลตอบแทนรวมแม้ multiple compress
+      Base case +25.1% รวม capital gain + dividend สอดคล้องกับ AFFO growth ต่อเนื่อง +4%/ปี และ multiple ทรงตัวที่ระดับ premium
+      การประมาณการไม่รับประกันผลตอบแทนจริง — ขึ้นอยู่กับ rate environment, occupancy, และ M&amp;A/redevelopment execution
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>Grocery-anchor moat:</b> ~485 centers ยึดโยงกับ grocery ชั้นนำ (Kroger, Publix, Whole Foods, Sprouts) ดึง foot traffic รายสัปดาห์ กันผลกระทบ e-commerce ได้ดีกว่า retail ทั่วไป</li>
+          <li><b>Credit rating + leverage ดีที่สุดในกลุ่ม:</b> Moody's A3 / S&amp;P A- — สูงสุดในกลุ่ม grocery REIT, Net Debt/EBITDA ~4.9x ต่ำที่สุด เปิดทางต้นทุนทุนถูกและ flexibility สำหรับ M&amp;A</li>
+          <li><b>Occupancy + leasing momentum แข็งแกร่ง:</b> Same-property leased 96.6%, blended cash spread +12.1% (straight-line +24.3%) → embedded rent growth แม้ไม่มี occupancy เพิ่ม</li>
+          <li><b>Urstadt Biddle merger synergies:</b> การควบรวมปี 2566 เพิ่มพอร์ตหนาแน่นโซนตะวันออกเฉียงเหนือ (NY-NJ-CT) cost synergies ยังไหลเข้า same-property NOI growth (+4.4% Q1 2569)</li>
+          <li><b>Fed rate-cut tailwind:</b> ดอกเบี้ยระยะยาวที่ลดลงช่วยลดแรงกด cap rate และต้นทุนการเงิน หนุน multiple re-rating ต่อสำหรับ premium REIT อย่าง REG</li>
+          <li><b>Redevelopment pipeline:</b> โครงการพัฒนา/ปรับปรุงศูนย์การค้าคุณภาพสูงสร้าง embedded NAV growth ที่ยังไม่ถูก price in เต็มที่ใน P/AFFO ปัจจุบัน</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>Valuation ค่อนข้างเต็มแล้ว:</b> P/AFFO ~20.7x ปัจจุบันใกล้/สูงกว่าค่าเฉลี่ยกลุ่มแล้ว — เหลือพื้นที่ multiple expansion จำกัดถ้า growth ชะลอ; MOS จากการประเมิน &lt;5%</li>
+          <li><b>Interest rate sensitivity:</b> แม้ leverage ต่ำ แต่การ refinance หนี้ที่ rate สูงกว่าเดิมยังกดดัน AFFO growth ได้ถ้า rate สูงต่อเนื่องนานกว่าคาด</li>
+          <li><b>Anchor tenant concentration:</b> พึ่งพา grocery chain หลัก (Kroger, Publix) สูง — การควบรวม/ล้มละลาย/ปิดสาขาของ anchor กระทบ co-tenancy และ shop occupancy ได้</li>
+          <li><b>Cap rate expansion risk:</b> valuation ฐาน NAV เปราะบางถ้า cap rate อสังหาฯ ขยายตัวอีกครั้ง (เคยเห็นในปี 2565-2566) กดราคาหุ้นแม้ AFFO stable</li>
+          <li><b>Shop-space ยังตามหลัง anchor:</b> shop occupancy 94.1% ตามหลัง anchor 98.2% สะท้อน demand ร้าน inline ยังไม่ฟื้นเต็มที่ — consumer spending ชะลอตัวอาจถ่างช่องว่างนี้เพิ่ม</li>
+          <li><b>Integration/execution risk:</b> การผสาน Urstadt Biddle ต่อเนื่องและการดำเนินโครงการ redevelopment มีความเสี่ยง cost overrun/delay</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>REG — Premium Grocery-Anchored REIT ราคาใกล้มูลค่าเหมาะสม | Quality สูงแต่ Margin of Safety จำกัด</h2>
+      <p>Regency Centers เป็นผู้นำ grocery-anchored shopping center REIT คุณภาพสูงสุดของสหรัฐฯ ด้วย credit rating A3/A- สูงสุดในกลุ่ม, leverage ต่ำที่สุด (~4.9x), occupancy 96.6% และ leasing momentum แข็งแกร่ง (cash spread +12.1%) — fundamentals แข็งแกร่งกว่า KIM ในหลายมิติ (leverage ต่ำกว่า, credit สูงกว่า) แต่ valuation ก็แพงกว่าตามไปด้วย (P/AFFO ~20.7x ปัจจุบัน เทียบ KIM ~13.9x P/FFO)
+      ที่ราคาปัจจุบัน $79.44 ใกล้เคียงกับมูลค่าเหมาะสมจากการประเมิน ($80.79) มาก — MOS เหลือเพียง ~1.7% ต่ำกว่าเกณฑ์ safety margin ทั่วไป แม้ analyst consensus จะให้เป้าสูงกว่าที่ $85.32
+      เหมาะสำหรับนักลงทุนที่ต้องการ income-quality holding ระยะยาวมากกว่าการเข้าซื้อเพื่อ capital gain ระยะสั้น — ควรรอจังหวะราคาย่อตัวสู่โซน MOS 20% ($64.63) เพื่อเพิ่ม margin of safety ก่อนสะสมเพิ่ม</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$80.79 <span style="font-size:12px;color:#cab9a8">($76.00–$84.00)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +1.7%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$85.32 (Buy consensus)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ทยอยสะสมเฉพาะเมื่อราคาต่ำกว่า $75 (ใกล้เขต margin ที่มากขึ้น) เป้าหมายซื้อที่ดีที่สุดคือโซน MOS20 $64.63 (ใกล้ 52W low $66.86) ซึ่งให้ dividend yield ~4.7%
+        ถือระยะยาวรับ dividend สะสม + AFFO growth ค่อยเป็นค่อยไป ~4-6%/ปี ลดสัดส่วนหากราคาขึ้นเหนือ $88 (P/AFFO ~22x) หรือ same-property NOI growth ชะลอต่ำกว่า 2% ต่อเนื่อง 2 ไตรมาส
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/AFFO เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ AFFO ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    ที่มา: StockAnalysis.com (ราคา $79.44 ณ 9 ก.ค. 2569), Google Finance (ราคา $79.44 confirmed), Regency Centers IR — Q1 2026 &amp; FY2025 Earnings Releases (AFFO/sh $3.83 FY2025, FFO guidance $4.83–$4.87 FY2026, occupancy 96.6%, leasing spread +12.1%/+24.3%)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 9 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
