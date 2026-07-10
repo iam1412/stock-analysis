@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น Williams Companies (WMB) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"WMB","currency":"USD","price":75.45,"fairValue":60.0,"mos":-25.8,"upside":-20.5,"pe":32.95,"dividendYield":2.79,"roe":18.6}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#d97706",
+    "accentDark": "#b45309",
+    "darkGrad": "linear-gradient(135deg,#1c1206 0%,#2e1d0a 50%,#1c1508 100%)",
+    "glow": "rgba(217,119,6,0.25)",
+    "subColor": "#f3c47a",
+    "headerMuted": "rgba(243,196,122,0.65)",
+    "verdictText": "#ffdca8",
+    "vcellLabel": "#d1a76a",
+    "badge": "#d97706",
+    "chgBg": "#0d3321",
+    "chgColor": "#34a853"
+  },
+  "chart": {
+    "data": [
+      ["ส.ค. 68", 56.10],
+      ["ก.ย. 68", 61.92],
+      ["ต.ค. 68", 56.57],
+      ["พ.ย. 68", 59.56],
+      ["ธ.ค. 68", 59.24],
+      ["ม.ค. 69", 66.29],
+      ["ก.พ. 69", 73.64],
+      ["มี.ค. 69", 72.25],
+      ["เม.ย. 69", 75.75],
+      ["พ.ค. 69", 70.87],
+      ["มิ.ย. 69", 74.34],
+      ["ก.ค. 69", 75.45]
+    ],
+    "min": 50,
+    "max": 80,
+    "grid": [50, 60, 70, 80],
+    "fairLine": 60.0,
+    "currency": "$",
+    "highlight": [0, 8]
+  },
+  "gauge": {
+    "min": 35,
+    "max": 105,
+    "cur": 75.45,
+    "fair": 60.0,
+    "fairLabelTop": true
+  },
+  "fv": 60.0
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">●●●●○</div>
+    <div>
+      <span class="tag">NYSE: WMB</span>
+      <span class="tag">Energy Infrastructure</span>
+      <span class="tag">Natural Gas Pipelines</span>
+    </div>
+    <h1>The Williams Companies, Inc.</h1>
+    <div class="sub">Natural Gas Pipelines • Transco Backbone • 33,000+ Miles • AI/Data Center Demand</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$75.45<small>(WMB)</small></div>
+      </div>
+      <div class="chg">▲ +34.5% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 9 กรกฎาคม 2569 (ปิดตลาด 16:00 EDT)<br>
+        กรอบ 52 สัปดาห์ $55.82 – $80.08<br>
+        ที่มา: Yahoo Finance, MarketBeat.com, Williams Investor Relations
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล TTM / FY2025 · ณ ก.ค. 2569</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~$92.3B</div><div class="d">1,221.6M shares outstanding</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~32.95x</div><div class="d">EPS TTM $2.29 · เทียบ midstream peer ~15–20x</div></div>
+      <div class="metric"><div class="k">EV/EBITDA (TTM)</div><div class="v">~15.3x</div><div class="d">EV ~$122.5B · EBITDA TTM ~$8.0B</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">6.14x</div><div class="d">BVPS ~$12.28 · equity ~$15.0B</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">$2,615M</div><div class="d">+18% YoY (GAAP) · adj. $2,571M +10%</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$2.29</div><div class="d">FY2025 GAAP $2.14 · adj. $2.10 (+9%)</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~$12.28</div><div class="d">หนี้รวม $30.3B · leverage ~3.6x EBITDA</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~18.6% / ~4.8%</div><div class="d">ROE แข็งแกร่งจากธุรกิจ fee-based</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">~$11.9B</div><div class="d">FY2025 +11–14% YoY จาก volume ใหม่</div></div>
+      <div class="metric"><div class="k">EBITDA Margin</div><div class="v">~65%</div><div class="d">EBITDA FY2025 $7.75B / รายได้ $11.9B</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~2.79%</div><div class="d">$2.10/ปี · เพิ่มต่อเนื่องหลายปี</div></div>
+      <div class="metric"><div class="k">Debt / EBITDA</div><div class="v neu">~3.6x</div><div class="d">ลดจาก 3.83x ปีก่อน · เป้าลดต่อเนื่อง</div></div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6">
+      Williams เป็นผู้ให้บริการโครงข่ายท่อส่งก๊าซธรรมชาติรายใหญ่ที่สุดรายหนึ่งของสหรัฐฯ โดยมี Transco เป็นเส้นเลือดใหญ่
+      (backbone) เชื่อมต่อ Gulf Coast ถึง New York/New Jersey ยาวกว่า 33,000 ไมล์ รายได้ราว 95% เป็นแบบ fee-based
+      ภายใต้สัญญาระยะยาว ไม่ผันแปรตามราคาก๊าซโดยตรง ทำให้กระแสเงินสดมั่นคงสูง Q1 2026 ทำสถิติสูงสุดใหม่จากดีมานด์
+      ก๊าซที่เพิ่มขึ้นตามการขยายตัวของ AI data center และ LNG export terminal ใหม่ ๆ ทั่วประเทศ
+    </p>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ส.ค. 2568 – ก.ค. 2569</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#d97706"></i>ราคา WMB</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $60.00</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคา WMB เริ่มต้นที่ ~$56 ในเดือน ส.ค. 2568 แกว่งตัวในกรอบ $56–62 ช่วง ก.ย.–ธ.ค. 2568 ตามความกังวลอัตราดอกเบี้ย
+        และแรงขายทำกำไรระยะสั้น ก่อนเข้าสู่แนวโน้มขาขึ้นชัดเจนตั้งแต่ ม.ค. 2569 หนุนจากดีมานด์ก๊าซธรรมชาติเพื่อ
+        AI data center ที่เร่งตัวและผลประกอบการ Q1 2026 ที่ทำสถิติสูงสุด พุ่งแตะจุดสูงสุดรอบปีที่ ~$75.75 ใน เม.ย. 2569
+        ก่อนพักฐานสั้น ๆ และกลับมาปิดที่ $75.45 ผลตอบแทนรอบปี +34.5% เป็นหนึ่งใน midstream ที่ outperform ตลาดจากธีม
+        AI infrastructure demand
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">3 วิธี — EV/EBITDA · DDM · P/E</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. EV/EBITDA (น้ำหนัก 40%, primary)</div><div class="mdesc">EBITDA (เฉลี่ย TTM ~$8.0B / FY2026E guidance กลาง $8.2B) × EV/EBITDA เป้าหมาย 13x (กรอบ 12–14x มาตรฐาน midstream คุณภาพสูง) − หนี้สุทธิ ~$30.2B ÷ 1,221.6M หุ้น</div></div>
+        <div class="mval">$61.44</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. DDM / Gordon Growth (น้ำหนัก 30%)</div><div class="mdesc">D₁ = ปันผล $2.10 × (1+6%); g 6% ปีที่ 1–5 ลดสู่ terminal g 3.5%, r (cost of equity) 8% — เหมาะกับกระแสเงินสด fee-based มั่นคง แต่อนุรักษ์นิยม (ไม่รวมมูลค่าจาก retained cash flow ที่ใช้ทำ growth capex)</div></div>
+        <div class="mval">$53.93</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. P/E Valuation (น้ำหนัก 30%)</div><div class="mdesc">EPS (TTM) $2.29 × P/E เป้าหมาย ~28x — ต่ำกว่า P/E ตลาดปัจจุบัน 33x สะท้อน multiple ที่ normalize บางส่วนจากพรีเมียม AI ระยะสั้น</div></div>
+        <div class="mval">$64.12</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $53.9 – $64.1</span></div>
+        <div class="r">$60.00</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        <b>น้ำหนัก:</b> EV/EBITDA 40% + DDM 30% + P/E 30% = $60.0<br>
+        EV/EBITDA ให้น้ำหนักสูงสุดเพราะเป็น metric มาตรฐานของธุรกิจ midstream (fee-based, capex/D&A สูงบิดเบือน P/E)
+        DDM (~$53.9) ให้ค่าต่ำสุดเพราะอนุรักษ์นิยม — ไม่รวมมูลค่าจาก retained cash flow ที่ถูกนำไปลงทุน growth capex
+        P/E (~$64.1) ให้ค่าสูงสุดเพราะยังใช้ multiple ใกล้เคียงราคาตลาดปัจจุบัน<br>
+        <b>หมายเหตุสำคัญ:</b> EV/EBITDA ที่ตลาดให้จริงตอนนี้อยู่ที่ ~15x (เทียบ GuruFocus ~15.5x) สูงกว่ากรอบ fair 12–14x
+        ที่ใช้ในโมเดล — ส่วนต่างนี้คือพรีเมียมที่ตลาดให้กับคุณภาพ Transco backbone และดีมานด์ AI/data center ที่เร่งตัว
+        ซึ่งอาจสมเหตุสมผลหากดีมานด์ยังคงแข็งแกร่งต่อเนื่องหลายปี แต่มีความเสี่ยงหาก sentiment หรือดีมานด์ชะลอตัวลง
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $75.45</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $60.00</div></div>
+        </div>
+        <div class="scale">
+          <span>$42.00<br><small>MOS 30%</small></span>
+          <span>$48.00<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$60.00<br><small>Fair Value</small></span>
+          <span style="text-align:right">$84.00<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">$98.00<br><small>เป้าสูงสุด</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน $75.45 อยู่ <b>เหนือมูลค่าเหมาะสม</b> $60.00 ประมาณ 26% ในเชิง valuation อนุรักษ์นิยม (EV/EBITDA + DDM + P/E)
+        แต่ยัง <b>ต่ำกว่าเป้าหมาย 12 เดือน</b> เฉลี่ยของนักวิเคราะห์ที่ ~$84 (consensus "Buy", สูงสุด $98)
+        สะท้อนมุมมอง 2 ขั้ว: สาย value มองว่าตลาดให้พรีเมียม EV/EBITDA ~15x สูงกว่ากรอบ fair 12–14x ของ midstream ทั่วไป
+        ส่วนสาย growth เชื่อว่าดีมานด์ AI/data center และ LNG export ใหม่จะหนุนให้ multiple พรีเมียมนี้อยู่ต่อเนื่องไปอีกหลายปี
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">−25.8%</div>
+        <div class="txt">ราคาสูงกว่ามูลค่าเหมาะสม — ยังไม่มี Margin of Safety ในเชิง valuation อนุรักษ์นิยม รอจังหวะ pullback สู่โซน MOS 20% ($48) ก่อนสะสมเพิ่ม</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$48.00</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$42.00</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $60.00</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="75.45" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $75.45 • EPS ฐาน ~$2.29 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS −2%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$47.50</div>
+          <div class="ret neg">−28.6% รวมปันผล 3 ปี</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$2.16</span></li>
+            <li><span>P/E ออก</span><span>22x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$6.40</span></li>
+            <li><span>สถานการณ์</span><span>ดีมานด์ AI ชะลอ multiple หดสู่ค่าเฉลี่ย midstream</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +6%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$76.40</div>
+          <div class="ret pos">+10.4% รวมปันผล 3 ปี</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$2.73</span></li>
+            <li><span>P/E ออก</span><span>28x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$6.90</span></li>
+            <li><span>สถานการณ์</span><span>EBITDA โตตาม guidance Transco ขยายต่อเนื่อง</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +11%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$100.20</div>
+          <div class="ret pos">+42.3% รวมปันผล 3 ปี</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$3.13</span></li>
+            <li><span>P/E ออก</span><span>32x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$7.20</span></li>
+            <li><span>สถานการณ์</span><span>ดีมานด์ AI/LNG เร่งตัว multiple พรีเมียมคงอยู่</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      <b>ข้อสมมติฐาน Base Case:</b> Williams บรรลุ Adjusted EBITDA guidance $8.05–8.35B ปี 2026 และเติบโตต่อเนื่อง ~6%/ปี
+      จากโครงการขยาย Transco และ Gulf Coast (Shenandoah, Whale, Ballymore) หนี้สินทรงตัวหรือ leverage ลดลงเล็กน้อย
+      ปันผลเติบโต ~5–6%/ปีตามประวัติ <b>ความเสี่ยง Bear:</b> ดีมานด์ AI data center ชะลอกว่าคาด ต้นทุนดอกเบี้ยสูงกดดัน FCF
+      multiple compression กลับสู่ค่าเฉลี่ยกลุ่ม midstream ผลตอบแทนคาดหวังกรณีฐาน ~3–4%/ปี (รวมปันผล) ต่ำกว่าค่าเฉลี่ยตลาด
+      เพราะราคาปัจจุบันมีพรีเมียมสูงอยู่แล้ว
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก &amp; ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>Transco backbone ไม่มีคู่แข่งทดแทน:</b> ท่อส่งก๊าซที่ใหญ่ที่สุดในสหรัฐฯ เชื่อม Gulf Coast ถึง NY/NJ ยาวกว่า 33,000 ไมล์ regulatory barrier สูงมากสำหรับผู้เล่นใหม่</li>
+          <li><b>รายได้ fee-based ~95%:</b> ป้องกันความผันผวนราคา commodity กระแสเงินสดสม่ำเสมอ คาดการณ์ได้สูง</li>
+          <li><b>ดีมานด์ AI data center เร่งตัว:</b> ศูนย์ข้อมูลขนาดใหญ่ต้องการไฟฟ้าจาก gas-fired generation มากขึ้น หนุน volume ผ่านท่อระยะยาว</li>
+          <li><b>LNG export terminal ใหม่:</b> โครงการ LNG export หลายแห่งในอ่าวเม็กซิโกต้องการ supply ก๊าซเพิ่ม เป็น demand driver ระยะยาว</li>
+          <li><b>ปันผลเติบโตต่อเนื่อง:</b> เพิ่มต่อเนื่องหลายปีนับตั้งแต่ปรับโครงสร้างธุรกิจ yield ~2.79% พร้อมแนวโน้มเติบโต</li>
+          <li><b>Q1 2026 ทำสถิติสูงสุด:</b> Adjusted EBITDA โต +13% YoY, net income +25% สะท้อนโมเมนตัมธุรกิจแข็งแกร่ง</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>Valuation ตึงตัว:</b> EV/EBITDA ~15x สูงกว่ากรอบ fair 12–14x ของ midstream ทั่วไป เสี่ยง multiple compression หาก sentiment เปลี่ยน</li>
+          <li><b>Leverage สูง:</b> หนี้รวม ~$30.3B คิดเป็น ~3.6x EBITDA ต้นทุนดอกเบี้ยสูงกระทบ FCF และความยืดหยุ่นทางการเงิน</li>
+          <li><b>Capex หนักต่อเนื่อง:</b> Growth capex $7.0–7.6B ปี 2026 อาจเกินความต้องการจริงหากดีมานด์ AI ไม่เป็นไปตามคาด</li>
+          <li><b>Regulatory & ESG:</b> นโยบายสิ่งแวดล้อมเข้มงวดขึ้น ความเสี่ยงด้านการอนุมัติโครงการท่อใหม่และการขยายกำลังการผลิต</li>
+          <li><b>ดอกเบี้ยสูงนาน:</b> Higher-for-longer กดดัน valuation ของ yield/infrastructure plays และเพิ่มต้นทุน refinancing</li>
+          <li><b>การแข่งขัน:</b> คู่แข่งรายใหญ่ (Kinder Morgan, ONEOK, Energy Transfer) ขยาย capacity ใหม่ อาจกดดัน fee rate ระยะยาว</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>คุณภาพสินทรัพย์ยอดเยี่ยม แต่ราคาแพงกว่ามูลค่าเหมาะสม — รอจังหวะสะสม</h2>
+      <p>Williams เป็นเจ้าของ Transco backbone ท่อส่งก๊าซที่ใหญ่ที่สุดในสหรัฐฯ ด้วยรายได้ fee-based ~95% ที่ให้กระแสเงินสด
+        มั่นคงสูง และกำลังได้ประโยชน์โดยตรงจากดีมานด์ AI data center + LNG export ที่เร่งตัว สะท้อนใน Q1 2026 ที่ทำสถิติสูงสุด
+        อย่างไรก็ตาม ราคาปัจจุบัน $75.45 เทรดที่ EV/EBITDA ~15x สูงกว่ากรอบ fair 12–14x ของ midstream ทั่วไป ทำให้ FV
+        เชิงอนุรักษ์นิยมของเราอยู่ที่ $60.00 (MOS ~−25.8%) — ยังต่ำกว่าเป้าหมายนักวิเคราะห์เฉลี่ย ~$84 ที่สะท้อนมุมมอง growth
+        มากกว่า สำหรับนักลงทุนเน้นปันผลระยะยาว yield ~2.79% ยังพอรับได้ แต่จุดเข้าที่ดีกว่าคือรอ pullback สู่โซน MOS 20%</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$60.00 <span style="font-size:12px;color:#cab9a8">($53.9–$64.1)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −25.8%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$84 (Buy — 25 analysts)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> รอ pullback สู่โซน $48–60 (MOS 15–20%) ก่อนเพิ่มน้ำหนัก · จุดซื้อ deep value ที่ $42 (MOS 30%) ·
+        นักลงทุนเน้นปันผลถือต่อได้รับ yield ~2.79% พร้อมแนวโน้มเติบโต · ติดตาม EV/EBITDA ให้ compress เข้าใกล้กรอบ fair 12–14x ·
+        ระวังหาก leverage เพิ่มเกิน 4x EBITDA หรือดีมานด์ AI/data center ชะลอตัวกว่าคาด
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    ราคา ณ 9 กรกฎาคม 2569 · แหล่ง: Yahoo Finance (finance.yahoo.com/quote/WMB) · MarketBeat.com (marketbeat.com/stocks/NYSE/WMB) ·
+    Williams Companies Q1 2026 Earnings Release (williams.com)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 9 กรกฎาคม 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
