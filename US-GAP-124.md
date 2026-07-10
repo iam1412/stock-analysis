@@ -5,7 +5,7 @@
 > **จัดลำดับ:** Tier A = ย่อลึก/de-rate แรง ณ ก.ค. 2569 (ทำก่อน มีโอกาสเจอ MOS จริง) → Tier B = บลูชิพ/quality ที่ขาดเพื่อความครบ → Tier C = สายปันผล/defensive (utilities·REITs·midstream·materials)
 > สร้าง 2026-07-05 · % ในตาราง = ผลตอบแทน 1 ปีจาก Yahoo ณ วันสร้างแผน (ตอนวิเคราะห์จริงต้องดึงใหม่ + ตรวจข้ามแหล่งเสมอ)
 >
-> **📊 ความคืบหน้า (อัปเดต 10 ก.ค. 2569): เสร็จ 98/124 — W33: VTR+HST+INVH ✅ · resume ที่ #99 WY** · เหลือ 26 ตัว (W34→~W42)
+> **📊 ความคืบหน้า (อัปเดต 10 ก.ค. 2569): เสร็จ 101/124 — W34: WY+BXP+REG ✅ · resume ที่ #102 UDR** · เหลือ 23 ตัว (W35→~W42)
 
 ---
 
@@ -142,9 +142,9 @@
 | 96 | W33 | VTR | REIT สุขภาพ | Ventas +36% — senior housing ฟื้น คู่ WELL (P/FFO) | | ✅ $91.74/FV$92 MOS+0.3% |
 | 97 | W33 | HST | REIT โรงแรม | Host Hotels — luxury hotel REIT ใหญ่สุด (P/AFFO) | | ✅ $23.16/FV$23.88 MOS+3.0% |
 | 98 | W33 | INVH | REIT บ้านเช่า | Invitation Homes — single-family rental (P/AFFO) | | ✅ $29.37/FV$30.65 MOS+4.2% |
-| 99 | W34 | WY | REIT ป่าไม้ | Weyerhaeuser — timber REIT, lumber cyclical (normalize) | 🔺 | ⬜ |
-| 100 | W34 | BXP | REIT ออฟฟิศ | BXP — office premium, ประเมินแบบระวัง (P/FFO) | | ⬜ |
-| 101 | W34 | REG | REIT ค้าปลีก | Regency — grocery-anchored คู่ KIM ที่มีแล้ว (P/AFFO) | | ⬜ |
+| 99 | W34 | WY | REIT ป่าไม้ | Weyerhaeuser — timber REIT, lumber cyclical (normalize) | 🔺 | ✅ $22.50/FV$29.10 MOS+22.7% |
+| 100 | W34 | BXP | REIT ออฟฟิศ | BXP — office premium, ประเมินแบบระวัง (P/FFO) | | ✅ $66.93/FV$66.15 MOS-1.2% |
+| 101 | W34 | REG | REIT ค้าปลีก | Regency — grocery-anchored คู่ KIM ที่มีแล้ว (P/AFFO) | | ✅ $79.44/FV$80.79 MOS+1.7% |
 | 102 | W35 | UDR | REIT อพาร์ตเมนต์ | UDR (P/AFFO · pe:null) | | ⬜ |
 | 103 | W35 | DOC | REIT การแพทย์ | Healthpeak — medical office/lab (P/AFFO) | | ⬜ |
 | 104 | W35 | CBRE | อสังหาฯ services | CBRE −13% — เบอร์ 1 RE services (ไม่ใช่ REIT — P/E ปกติ) | | ⬜ |
