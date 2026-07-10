@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น Baker Hughes (BKR) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Opus 4.8">
+<script type="application/json" id="stock-meta">
+{"symbol":"BKR","currency":"USD","price":57.20,"fairValue":46,"mos":-24.3,"upside":-19.6,"pe":18.27,"dividendYield":1.65,"roe":17.18}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#B91C1C",
+    "accentDark": "#7A1212",
+    "darkGrad": "linear-gradient(135deg,#1a0505 0%,#2d0808 50%,#1a0505 100%)",
+    "glow": "rgba(185,28,28,0.35)",
+    "subColor": "#ff6f5c",
+    "headerMuted": "rgba(255,255,255,0.55)",
+    "verdictText": "#ff8f7a",
+    "vcellLabel": "#c9a89a",
+    "badge": "#B91C1C",
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#1e8e3e"
+  },
+  "chart": {
+    "data": [
+      ["ส.ค. 68", 44.87],
+      ["ก.ย. 68", 48.15],
+      ["ต.ค. 68", 47.84],
+      ["พ.ย. 68", 49.84],
+      ["ธ.ค. 68", 45.22],
+      ["ม.ค. 69", 55.64],
+      ["ก.พ. 69", 65.04],
+      ["มี.ค. 69", 60.85],
+      ["เม.ย. 69", 69.44],
+      ["พ.ค. 69", 63.88],
+      ["มิ.ย. 69", 55.50],
+      ["ปัจจุบัน", 57.20]
+    ],
+    "min": 25,
+    "max": 80,
+    "grid": [25, 35, 45, 55, 65, 75],
+    "fairLine": 46,
+    "currency": "$",
+    "highlight": [8, 11]
+  },
+  "gauge": {
+    "min": 25,
+    "max": 80,
+    "cur": 57.20,
+    "fair": 46,
+    "fairLabelTop": false
+  },
+  "fv": 46
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">◆ ◆ ◆</div>
+    <div>
+      <span class="tag">NASDAQ: BKR</span>
+      <span class="tag">Energy Equipment &amp; Services</span>
+      <span class="tag">Oilfield Services + LNG Technology (OFSE/IET)</span>
+    </div>
+    <h1>Baker Hughes Company</h1>
+    <div class="sub">Baker Hughes: อันดับ 2 oilfield services โลกรองจาก SLB • OFSE (drilling/completion/production) + IET (LNG technology, turbomachinery, compression) • ประกาศซื้อกิจการ Chart Industries มูลค่า $13.6B ขยายธุรกิจ LNG/cryogenic equipment • ~55,000 พนักงาน ดำเนินงานกว่า 120 ประเทศ</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$57.20<small>(BKR)</small></div>
+      </div>
+      <div class="chg">▲ +27.5% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 9 ก.ค. 2569<br>
+        กรอบ 52 สัปดาห์ $38.37 – $70.41<br>
+        ที่มา: Yahoo Finance, MarketBeat, Baker Hughes IR/SEC
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ก.ค. 2569 · ตัวเลข TTM / Q1 2026</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~$56.7B</div><div class="d">~992M shares outstanding</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~18.3x</div><div class="d">Forward P/E FY2026E ~20.8x</div></div>
+      <div class="metric"><div class="k">P/E Mid-Cycle (norm.)</div><div class="v">~18x</div><div class="d">Norm. EPS $2.18 (avg FY23–25) × 14–18x</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">~3.1x</div><div class="d">BVPS ~$18.3 (ประมาณจาก ROE)</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ TTM</div><div class="v">$3.12B</div><div class="d">FY2025 adj. EPS $2.60 (actual)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$3.13</div><div class="d">Norm. mid-cycle EPS ~$2.18</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~$18.3</div><div class="d">Equity ~$18.2B · D/E ~0.83x</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~17.2% / ~8.0%</div><div class="d">ROE ขยับขึ้นจาก IET margin expansion</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$27.89B</div><div class="d">OFSE ทรงตัว/อ่อนตัว · IET +20% YoY</div></div>
+      <div class="metric"><div class="k">EBITDA Margin</div><div class="v">~17.5%</div><div class="d">EBITDA TTM $4.89B · norm ~$4.7B</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~1.65%</div><div class="d">$0.92/share ต่อปี</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">0.97</div><div class="d">ใกล้เคียงตลาดโดยรวม</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#B91C1C"></i>ราคา BKR</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $46</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        BKR ปรับตัวขึ้น +27.5% ในช่วง ~11 เดือนที่ผ่านมา (ส.ค. 2568 – ก.ค. 2569) จากจุดต่ำสุด $44.87 ไปแตะจุดสูงสุด $69.44
+        ในเดือน เม.ย. 2569 หลัง Q1 2026 earnings beat + ประกาศดีลซื้อกิจการ Chart Industries + record IET backlog (RPO) $33.1B
+        ก่อนปรับฐานลงมาที่ $57.20 ในปัจจุบัน ราคาที่วิ่งนำหน้าไปมากสะท้อนว่าตลาด price in การเติบโตของ IET/LNG technology
+        ไปมากแล้วเมื่อเทียบกับ Fair Value mid-cycle ~$46
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">3 วิธี — ใช้ mid-cycle normalized EPS (cyclical OFS + growth IET)</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Normalized (Mid-Cycle)</div><div class="mdesc">EPS adj. $2.18 (normalized, เฉลี่ย FY2023–FY2025: $1.60/$2.35/$2.60) × P/E 18x = $39.24 · P/E 18x สูงกว่า pure-play OFS (HAL ~13x) เพราะ IET mix margin สูง/โตเร็วกว่า</div></div>
+        <div class="mval">$39.24</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. EV/EBITDA Normalized</div><div class="mdesc">norm. EBITDA ~$4,708M (เฉลี่ย FY2024 $4,591M + FY2025 $4,825M) × 10.5x = EV $49,434M − Net Debt $650M (ก่อนปิดดีล Chart) = $48,784M ÷ 992M shares ≈ $49.18</div></div>
+        <div class="mval">$49.18</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Segment SOTP (OFSE + IET แยกมูลค่า)</div><div class="mdesc">OFSE EBITDA ~$2.2B × 7x (multiple แบบ pure OFS) = $15.4B + IET EBITDA ~$2.6B × 13x (premium LNG/industrial growth) = $33.8B → EV $49.2B − Net Debt $650M ÷ 992M shares ≈ $48.94</div></div>
+        <div class="mval">$48.94</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $39 – $49</span></div>
+        <div class="r">$46</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ทั้ง 3 วิธีให้ค่า $39–49 ค่อนข้างสอดคล้องกัน โดย P/E normalized ให้ค่าต่ำสุด ($39.24) เพราะใช้ EPS เฉลี่ย 3 ปีที่ยังไม่รวม
+        upside เต็มที่จาก IET margin expansion (20.2% ใน Q1 2026) ส่วน EV/EBITDA และ SOTP ให้ค่าใกล้เคียงกัน ($48–49) เพราะสะท้อน
+        mix ของ IET ที่ margin สูงขึ้นต่อเนื่อง ราคาปัจจุบัน $57.20 อยู่เหนือ FV เฉลี่ย $46 ราว 24% (MOS −24.3%) สะท้อนว่าตลาด
+        price in อนาคตของดีล Chart Industries + LNG supercycle ไปมากแล้ว — Net Debt ที่ใช้คำนวณเป็นตัวเลขก่อนปิดดีล Chart Industries
+        ($13.6B) ซึ่งจะเพิ่ม leverage อย่างมีนัยสำคัญหลังปิดดีล
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $57.20</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $46</div></div>
+        </div>
+        <div class="scale">
+          <span>$32.20<br><small>MOS 30%</small></span>
+          <span>$36.80<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$46<br><small>Fair Value</small></span>
+          <span style="text-align:right">$49<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">$70.70<br><small>เป้าเฉลี่ย Analyst</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน $57.20 อยู่เหนือ Fair Value mid-cycle $46 ราว 24% สะท้อนว่าตลาดกำลัง price in ความสำเร็จของดีล Chart
+        Industries + LNG supercycle + data center power demand ไปมากแล้ว เป้านักวิเคราะห์เฉลี่ย $70.70 (Buy consensus จาก
+        ~22 คน) สูงกว่าปัจจุบัน ~24% สะท้อนมุมมอง bull case ที่เชื่อว่า IET margin expansion + Chart synergies จะดัน EPS โตแรงกว่า
+        normalized case โซนสะสมที่น่าสนใจสำหรับ value investor คือ $37–41 (MOS 15–20%)
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">−24.3%</div>
+        <div class="txt">ราคาปัจจุบันสูงกว่า Fair Value mid-cycle ค่อนข้างมาก — ยังไม่มี margin of safety รอโซนสะสม</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$36.80</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$32.20</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $46</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="57.20" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $57.20 • EPS ฐาน ~$2.75 (2026E) • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS −5%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$28.30</div>
+          <div class="ret neg">−45.7%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$2.36</span></li>
+            <li><span>P/E ออก</span><span>12x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$2.76</span></li>
+            <li><span>สถานการณ์</span><span>OFSE ทรุดหนัก · Chart integration สะดุด · oil &lt;$55</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +8%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$58.89</div>
+          <div class="ret pos">+7.8%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$3.46</span></li>
+            <li><span>P/E ออก</span><span>17x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$2.76</span></li>
+            <li><span>สถานการณ์</span><span>IET margin ถึงเป้า 20% + OFSE ทรงตัว + Chart ปิดดีลราบรื่น</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +15%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$83.66</div>
+          <div class="ret pos">+51.1%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$4.18</span></li>
+            <li><span>P/E ออก</span><span>20x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$2.76</span></li>
+            <li><span>สถานการณ์</span><span>LNG supercycle เร่ง + data center power demand + Chart synergies เกินคาด</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      การประมาณการใช้ EPS ฐาน ~$2.75 (ประมาณการ FY2026 จาก run-rate Q1 2026 adj. EPS $0.58 x4 + seasonality)
+      Base case (+8%/yr) สอดคล้องกับแนวโน้ม IET margin expansion ที่ประกาศเป้า 20% และ OFSE ที่คาดว่าจะทรงตัว
+      Bear case สะท้อนความเสี่ยงจาก oil price ต่ำ + integration risk ของดีล Chart Industries ($13.6B ใหญ่ที่สุดในประวัติศาสตร์บริษัท)
+      ปันผล $0.92/yr เป็น cushion เพิ่มเติม (yield ~1.65%) ควรทบทวนทุก 6 เดือนตามความคืบหน้าการปิดดีล Chart + ทิศทาง OFSE
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก &amp; ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>LNG megawave:</b> การขยายกำลังผลิต LNG ทั่วโลก (US Gulf Coast, Qatar North Field, Mozambique) หนุน order equipment/compression ของ IET — record RPO (backlog) $33.1B และ book-to-bill 1.5x ใน Q1 2026</li>
+          <li><b>Data center power demand:</b> เทคโนโลยี gas turbine/compression ของ IET กลายเป็นทางเลือกสำหรับ backup/prime power ให้ data center AI — เวคเตอร์เติบโตใหม่นอกเหนือจาก LNG</li>
+          <li><b>ดีล Chart Industries ($13.6B):</b> ขยาย portfolio cryogenic/LNG equipment เพิ่มเติม เปิดโอกาส cross-sell กับฐานลูกค้า IET เดิม คาดว่าจะ accretive ต่อ EPS หลัง integration สำเร็จ</li>
+          <li><b>Margin expansion จาก mix shift:</b> IET EBITDA margin แตะ 20.2% ใน Q1 2026 (+310bps YoY) ใกล้เป้า 20% เร็วกว่าแผน — mix ที่ margin สูงขึ้นหนุน EPS แม้ OFSE ทรงตัว</li>
+          <li><b>งบดุลแข็งแกร่งก่อนปิดดีล:</b> Net Debt เพียง ~$650M (Q1 2026, ก่อนปิดดีล Chart) ให้ความยืดหยุ่นทางการเงินสูง</li>
+          <li><b>Analyst bullish:</b> ~22 analysts ให้เป้าเฉลี่ย $70.70 (Buy consensus) สูงกว่าราคาปัจจุบัน ~24% สะท้อนความเชื่อมั่นใน LNG cycle + Chart synergies</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>Chart Industries integration risk:</b> ดีล all-cash $13.6B ใหญ่ที่สุดในประวัติศาสตร์บริษัท — ความเสี่ยงด้าน execution/culture fit + leverage ที่จะเพิ่มขึ้นมากหลังปิดดีล (Net Debt คาดพุ่งจาก ~$650M สู่ระดับหลายพันล้านดอลลาร์)</li>
+          <li><b>OFSE cyclicality:</b> Q4 2025 OFSE revenue −7% YoY, EBITDA −9% YoY, margin หดตัว 40bps เหลือ 17.4% — ธุรกิจยังพึ่งพา NA drilling/completion activity ที่ผันผวนตามราคาน้ำมัน</li>
+          <li><b>Oil price downturn:</b> Brent ต่ำกว่า $60/bbl ต่อเนื่องจะกดดัน E&amp;P capex ทั้ง OFSE และในที่สุดกระทบ order ของ IET เช่นกัน</li>
+          <li><b>Valuation ตึงตัว:</b> P/E TTM 18.3x และ EV/EBITDA ~13-14x สูงกว่าระดับ normalized mid-cycle มาก — ราคาสะท้อนการ execute ที่สมบูรณ์แบบ เหลือ room ผิดพลาดน้อย</li>
+          <li><b>การแข่งขัน:</b> SLB มี scale ใหญ่กว่าและ international footprint กว้างกว่า ส่วนตลาด LNG/compression equipment มีผู้เล่นเฉพาะทางอื่นที่อาจกดราคา</li>
+          <li><b>ต้นทุนการเงินเพิ่มขึ้น:</b> ออกหุ้นกู้ใหม่ $9.5B+ ใน Q1 2026 เพื่อรองรับดีล Chart — ดอกเบี้ยจ่ายเพิ่มขึ้น sensitive ต่อทิศทางอัตราดอกเบี้ย</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>BKR: IET/LNG Growth Engine เร่งเครื่อง — แต่ราคาวิ่งนำหน้า Fundamentals หลัง Rally +27% และดีล Chart Industries</h2>
+      <p>Baker Hughes กำลังอยู่ในช่วงเปลี่ยนผ่านสำคัญ จาก oilfield services แบบดั้งเดิมสู่ผู้เล่น LNG/energy technology ชั้นนำผ่าน
+        IET segment ที่เติบโตเร่ง (margin ขยายสู่ 20.2% ใน Q1 2026, RPO backlog สูงเป็นประวัติการณ์ $33.1B) และดีลซื้อกิจการ
+        Chart Industries มูลค่า $13.6B ที่จะเสริมความแข็งแกร่งด้าน cryogenic/LNG equipment เพิ่มเติม อย่างไรก็ตาม OFSE segment
+        ยังคงอ่อนตัวตามวัฏจักร NA drilling activity ราคาหุ้นที่ปรับขึ้น +27.5% ในรอบปีที่ผ่านมาสะท้อนความคาดหวังเชิงบวกเหล่านี้ไปมากแล้ว
+        เทียบกับ Fair Value mid-cycle เฉลี่ย $46 (กรอบ $39–49) ราคาปัจจุบัน $57.20 จึงไม่มี margin of safety นักลงทุนระยะยาว
+        ที่เชื่อในเรื่อง LNG supercycle + data center power อาจถือต่อได้ แต่ควรรอจังหวะปรับฐานสำหรับการเข้าซื้อเพิ่ม ความเสี่ยงสำคัญ
+        ที่ต้องติดตามคือความสำเร็จของการ integrate Chart Industries และทิศทาง OFSE ในช่วงที่เหลือของปี 2026</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$46 <span style="font-size:12px;color:#cab9a8">($39–$49)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −24.3%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$70.70 (Buy · ~22 คน)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ราคาปัจจุบัน $57.20 อยู่เหนือ FV mid-cycle $46 ราว 24% (MOS −24.3%) — ยังไม่ใช่จังหวะเข้าซื้อสำหรับ
+        value investor รอโซนสะสม $37–41 (MOS 15–20%) หรือรอ EPS โต catch-up ตาม IET margin expansion + Chart synergies ·
+        ติดตาม: Q2 2026 earnings, ความคืบหน้าการปิดดีล Chart Industries, OFSE North America rig count รายสัปดาห์
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐาน mid-cycle normalized ที่อาจคลาดเคลื่อน โดยเฉพาะ normalized EPS, EV/EBITDA multiple, ผลของดีล
+    Chart Industries ที่ยังไม่ปิด และ oil price outlook หุ้น OFS/energy equipment มีความผันผวนสูงตามวัฏจักรราคาน้ำมัน
+    ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    แหล่งข้อมูล: Yahoo Finance (ราคา $57.58 real-time / $57.20 chart close · EPS TTM $3.13 · P/E 18.40x · dividend yield 1.69% ·
+    52wk $38.37–$70.41 · analyst target $71.29 · ROE 17.18% · Beta 0.97 · EBITDA TTM $4.893B), MarketBeat (ราคา $57.20 ·
+    EPS TTM $3.13 ยืนยันตรงกัน · P/E 18.27x · analyst target $70.14 · 52wk ตรงกัน), Baker Hughes Investor Relations / SEC
+    8-K filings (FY2023–FY2025 adjusted EPS, adjusted EBITDA, segment revenue OFSE/IET, Q1 2026 balance sheet และรายละเอียด
+    ดีล Chart Industries) — ข้อมูล ณ 9-10 ก.ค. 2569
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 9 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
