@@ -73,3 +73,10 @@ npm run test:prices                      # unit test offline (fixture AAPL + moc
 - วันที่ราคา = วันของ `regularMarketTime` ตาม timezone ตลาด (เสาร์-อาทิตย์ได้วันศุกร์จริง ไม่แต่งวันที่) · คงรูปแบบปี พ.ศ./ค.ศ. ตามไฟล์เดิม
 - ราคา/MOS ขยับได้สูงสุด 15% ต่อการอัปเดต → prose ที่เขียน "~" คลาดเคลื่อนในกรอบยอมรับได้ (tradeoff ที่ตั้งใจ)
 - ถ้า Yahoo บล็อก IP ของ GitHub Actions ถี่ ๆ: เพิ่ม `FETCH_DELAY_MS` ใน script หรือย้ายไป self-hosted runner
+
+## Ticker เปลี่ยนชื่อ / กราฟไม่พอจุด / หุ้นเพิกถอน (เพิ่ม 12 ก.ค. 2569)
+
+- **`tools/symbol-map.json`** — Yahoo/StockAnalysis ใช้ ticker คนละชื่อกับไฟล์รายงาน (บริษัทปรับโครงสร้าง เช่น BKI→BKIH, STEC→STECON): ใส่ `{"<SYM>": {"yahoo": "<YSYM>", "sa": "<SASYM>", "note": "..."}}` — `toYahooSymbol` และ `fetch-fundamentals.js` อ่านให้อัตโนมัติ · re-analysis รอบหน้าควรพิจารณาย้ายไฟล์รายงานเป็นชื่อใหม่แล้วลบ entry
+- **กราฟรายเดือน <2 จุด** (IPO ใหม่มาก / Yahoo ล้างประวัติ — เคส BK ก.ค. 2569): script ลอง `interval=1wk` → ยังไม่พอ = ใช้กราฟเดิมในรายงาน อัปเดตเฉพาะจุดท้ายเป็นราคาปัจจุบัน (log ขึ้น `chart:1wk` / `chart:old-chart`) — ไม่ freeze `patch-failed` อีกถ้ากราฟเดิมใช้ได้
+- **หุ้นเพิกถอน** (Yahoo 404 + StockAnalysis ว่าง + ยืนยันข่าว): ลบ `reports/<SYM>.html` — flag ใน `price-flags.json` ของรายงานที่ถูกลบจะถูกตัดทิ้งเองรอบ `--write` ถัดไป (รายชื่อที่เคยเพิกถอน → memory delisted-stocks)
+- **`tools/fetch-fundamentals.js <SYM> [--th]`** — EPS/P/E/ปันผล/เป้า/52wk จาก Yahoo quoteSummary (crumb flow) + StockAnalysis (`__data.json`) พร้อมบรรทัด Δ เทียบสองแหล่ง — ให้ worker ใช้ cross-verify แทน WebFetch (SKILL STEP 1)

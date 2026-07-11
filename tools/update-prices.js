@@ -63,20 +63,30 @@ function styledRD(rd) {
   return s;
 }
 
-const toYahooSymbol = (symbol, currency) => currency === 'THB' ? `${symbol}.BK` : symbol;
+// ticker ที่ Yahoo ใช้คนละชื่อกับชื่อไฟล์รายงาน (บริษัทปรับโครงสร้าง/เปลี่ยนชื่อ) — override ที่ tools/symbol-map.json
+const SYMBOL_MAP = (() => {
+  try { return JSON.parse(fs.readFileSync(path.join(__dirname, 'symbol-map.json'), 'utf8')); }
+  catch (e) { return {}; }
+})();
+
+const toYahooSymbol = (symbol, currency) => {
+  const m = SYMBOL_MAP[String(symbol).toUpperCase()];
+  if (m && m.yahoo) return m.yahoo;
+  return currency === 'THB' ? `${symbol}.BK` : symbol;
+};
 
 // ---------- Yahoo fetch ----------
-async function fetchChart(ysym, attempt = 0) {
-  const url = `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(ysym)}?range=1y&interval=1mo`;
+async function fetchChart(ysym, attempt = 0, interval = '1mo') {
+  const url = `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(ysym)}?range=1y&interval=${interval}`;
   let res;
   try {
     res = await fetch(url, { headers: { 'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36' } });
   } catch (e) {
-    if (attempt < 3) { await sleep(2000 * Math.pow(3, attempt)); return fetchChart(ysym, attempt + 1); }
+    if (attempt < 3) { await sleep(2000 * Math.pow(3, attempt)); return fetchChart(ysym, attempt + 1, interval); }
     throw new Error(`network: ${e.message}`);
   }
   if (res.status === 429 || res.status >= 500) {
-    if (attempt < 3) { await sleep(2000 * Math.pow(3, attempt)); return fetchChart(ysym, attempt + 1); }
+    if (attempt < 3) { await sleep(2000 * Math.pow(3, attempt)); return fetchChart(ysym, attempt + 1, interval); }
     throw new Error(`HTTP ${res.status}`);
   }
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -171,7 +181,8 @@ function decide(ctx) {
 // ---------- patch รายงานหนึ่งไฟล์ ----------
 // คืน { html, changed } — ทุก pattern ต้อง match ไม่งั้น throw (ไป flag เป็น patch-failed)
 function patchReport(html, p) {
-  const { newPrice, dateParts /* {day, monIdx, yearCE} */, chartData } = p;
+  const { newPrice, dateParts /* {day, monIdx, yearCE} */ } = p;
+  let { chartData } = p;
   const need = (re, where) => { if (!re.test(html)) throw new Error(`patch ไม่เจอ pattern: ${where}`); };
 
   // --- stock-meta (FV เป็น source of truth ของการคำนวณ mos/upside) ---
@@ -188,6 +199,17 @@ function patchReport(html, p) {
   if (!rdM) throw new Error('ไม่มีบล็อก report-data');
   const rd = JSON.parse(rdM[2]);
   if (!rd.chart || !Array.isArray(rd.chart.data)) throw new Error('report-data.chart ใช้ไม่ได้');
+
+  // price-only fallback: Yahoo ไม่มีประวัติพอ (ล้างประวัติ/IPO ใหม่มาก) → คงกราฟเดิม อัปเดตเฉพาะจุดท้ายเป็นราคาปัจจุบัน
+  // (เดือนท้ายกราฟตรงเดือนราคา → แทนค่า · คนละเดือน → ต่อจุดใหม่แล้วตัดหัวให้ ≤MAX_PTS)
+  if (!chartData) {
+    const old = rd.chart.data;
+    if (!Array.isArray(old) || old.length < 2) throw new Error('กราฟใหม่ไม่พอจุด และกราฟเดิมใช้ไม่ได้');
+    const lab = `${THAI_MONTHS[dateParts.monIdx]}${String(dateParts.yearCE).slice(-2)}`;
+    chartData = old.map((d) => [d[0], d[1]]);
+    if (chartData[chartData.length - 1][0] === lab) chartData[chartData.length - 1][1] = round(newPrice, 2);
+    else chartData = chartData.concat([[lab, round(newPrice, 2)]]).slice(-MAX_PTS);
+  }
 
   const oldChg = (html.match(/<div class="chg"[^>]*>([\s\S]*?)<\/div>/i) || [, ''])[1].replace(/<[^>]*>/g, ' ').trim();
   const title2 = (html.match(/<div class="n">2<\/div><h2>([\s\S]*?)<\/h2>/) || [, ''])[1];
@@ -358,20 +380,32 @@ async function main() {
     const dateParts = { day: md.getUTCDate(), monIdx: md.getUTCMonth(), yearCE: md.getUTCFullYear() };
 
     try {
-      const chartData = buildChartData(q.bars, q.price, q.gmtoffset);
+      // เดือนไม่พอจุด (ประวัติสั้น/Yahoo ล้างประวัติ — เคส BK) → ลองรายสัปดาห์ → ยังไม่ได้ = null ให้ patchReport ใช้กราฟเดิม+จุดท้ายใหม่
+      let chartData = null, chartSrc = '1mo';
+      try { chartData = buildChartData(q.bars, q.price, q.gmtoffset); }
+      catch (e1) {
+        try {
+          const qw = await fetchChart(toYahooSymbol(symbol, sm.currency), 0, '1wk');
+          await sleep(FETCH_DELAY_MS);
+          chartData = buildChartData(qw.bars, q.price, qw.gmtoffset);
+          chartSrc = '1wk';
+        } catch (e2) { chartSrc = 'old-chart'; }
+      }
       const r = patchReport(html, { newPrice: q.price, dateParts, chartData });
       if (!r.changed) { skipped.push(symbol); continue; }
       if (WRITE) fs.writeFileSync(fp, r.html);
       updated.push({ symbol, old: sm.price, new: round(q.price, 2), diffPct });
-      console.log(`${WRITE ? '✓' : '·'} ${symbol.padEnd(10)} ${sm.price} → ${round(q.price, 2)} (${diffPct > 0 ? '+' : ''}${diffPct}%) · ${r.chg.text} · MOS ${r.mos}%`);
+      console.log(`${WRITE ? '✓' : '·'} ${symbol.padEnd(10)} ${sm.price} → ${round(q.price, 2)} (${diffPct > 0 ? '+' : ''}${diffPct}%) · ${r.chg.text} · MOS ${r.mos}%${chartSrc !== '1mo' ? ` · chart:${chartSrc}` : ''}`);
     } catch (e) {
       frozen.push({ symbol, reason: 'patch-failed', detail: e.message, reportPrice: sm.price, marketPrice: round(q.price, 2), diffPct });
       console.log(`⚠ ${symbol.padEnd(10)} patch fail: ${e.message}`);
     }
   }
 
-  // เขียน flags (เฉพาะ --write — dry-run ไม่ทิ้งร่องรอย)
-  const flags = mergeFlags(loadFlags(), new Set(files.map((f) => f.replace(/\.html$/i, ''))), frozen.concat(failed.map((x) => ({ ...x, reportPrice: null, marketPrice: null, diffPct: null }))));
+  // เขียน flags (เฉพาะ --write — dry-run ไม่ทิ้งร่องรอย) · flag ของรายงานที่ถูกลบแล้ว (หุ้นเพิกถอน) ตัดทิ้ง — ไม่งั้นค้างในคิวตลอด
+  const reportExists = new Set(fs.readdirSync(REPORTS).filter((f) => /\.html$/i.test(f)).map((f) => f.replace(/\.html$/i, '').toUpperCase()));
+  const flags = mergeFlags(loadFlags(), new Set(files.map((f) => f.replace(/\.html$/i, ''))), frozen.concat(failed.map((x) => ({ ...x, reportPrice: null, marketPrice: null, diffPct: null }))))
+    .filter((f) => reportExists.has(String(f.symbol).toUpperCase()));
   if (WRITE) fs.writeFileSync(FLAGS, JSON.stringify(flags, null, 2) + '\n');
 
   // log ต่อหุ้นสำหรับ commit body (ถาวรใน git history — Actions log หายใน ~90 วัน)

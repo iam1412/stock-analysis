@@ -4,7 +4,7 @@
 deploy อัตโนมัติบน **Cloudflare Workers (Static Assets)** ผ่านการเชื่อม GitHub
 
 > **รายละเอียดลึกแยกไปไฟล์อ้างอิง** (อ่านเมื่อต้องใช้ ไม่โหลดทุก session):
-> `.claude/skills/stock-analyzer/SKILL.md` (★ ขั้นตอนวิเคราะห์ต่อหุ้น — source of truth) · `docs/quality-gate.md` (gate ทีละ error) · `docs/templates.md` (content-only template) · `docs/counters.md` (view/vote infra) · `docs/price-refresh.md` (cron ราคา) · `_template/agent-prompt.md` (wrapper prompt worker) · `DEPLOY.md` (Cloudflare)
+> `.claude/skills/stock-analyzer/SKILL.md` (★ ขั้นตอนวิเคราะห์ต่อหุ้น — source of truth) · `docs/orchestration.md` (รายละเอียดรันหลายตัว/เวฟ/workflow) · `docs/quality-gate.md` (gate ทีละ error) · `docs/templates.md` (content-only template) · `docs/counters.md` (view/vote infra) · `docs/price-refresh.md` (cron ราคา) · `_template/agent-prompt.md` (wrapper prompt worker) · `DEPLOY.md` (Cloudflare)
 
 ---
 
@@ -29,9 +29,10 @@ dist/                   # ⚠️ build output (gitignore) — ห้ามแก
 เมื่อสั่ง "วิเคราะห์ GOOGL" / "analyze AAPL" / re-analysis / เคลียร์คิว price-flags:
 
 1. เรียก skill **`stock-analyzer`** (project skill — `.claude/skills/stock-analyzer/SKILL.md`) แล้ว**ทำตามทุกขั้น** —
-   นั่นคือ single source of truth ของขั้นตอนต่อหุ้น: เลือกโหมด NEW (skeleton) / UPDATE (แก้ไฟล์เดิมเฉพาะจุด) ·
-   เก็บข้อมูลผ่าน script (`fetch-facts.js` / `update-prices.js --force`) · cross-source verify · FV ≥2 วิธี ·
-   MOS/scenario · 4 บล็อกบังคับ · self-check `npm test -- <SYM>`
+   นั่นคือ single source of truth ของขั้นตอนต่อหุ้น: เลือกโหมด NEW (skeleton) / UPDATE (แก้ไฟล์เดิมเฉพาะจุด) /
+   UPDATE-LIGHT (refresh เร็วจากคิว price-flags) · เก็บข้อมูลผ่าน script (`fetch-facts.js` /
+   `update-prices.js --force` / `fetch-fundamentals.js` = EPS/เป้า 2 แหล่งในคำสั่งเดียว) · cross-source verify ·
+   FV ≥2 วิธี · MOS/scenario · 4 บล็อกบังคับ · self-check `npm test -- <SYM>`
 2. invariant ที่ห้ามหลุดไม่ว่ากรณีใด (สรุปจาก skill — รายละเอียดในนั้น):
    - **cross-source verify ราคา+EPS ≥2 แหล่งก่อนเขียนตัวเลข** — ราคาต่าง >5% / EPS ขัดกัน → หยุด ถามผู้ใช้ อย่าเผยแพร่ (gate ตรวจความจริงไม่ได้)
    - **หุ้นใหม่เริ่มจาก skeleton เท่านั้น · หุ้นเดิม = UPDATE mode ห้าม rewrite** — กราฟ/ราคา/ป้าย % มาจาก script ห้ามแต่งเอง
@@ -45,39 +46,27 @@ dist/                   # ⚠️ build output (gitignore) — ห้ามแก
 
 ## 3. วิเคราะห์หลายตัว / เป็นกลุ่ม (parallel agents)
 
-ใช้เมื่อสั่งหลายตัว ("วิเคราะห์ GOOGL AAPL MSFT") หรือธีม ("หาหุ้น AI 30 ตัว")
+ใช้เมื่อสั่งหลายตัวหรือธีม · **รายละเอียด+เหตุผลทั้งหมด → `docs/orchestration.md`** · invariant ที่ห้ามหลุด:
 
-### 3.1 ก่อนเริ่ม — กันซ้ำ + ความสด
-1. **`git pull --rebase origin main` ก่อนเสมอ** → อ่าน `reports.json` (ได้ของ session อื่นที่เพิ่ง push มาด้วย)
-2. เทียบแต่ละตัว (ฟิลด์ `updated`) — **เกณฑ์ความสด = 7 วัน** (คนละตัวกับ staleness gate 45/120 วัน):
-   - สด ≤7 วัน → **ไม่วิเคราะห์ซ้ำ** · ธีม/โควตา → หาตัวใหม่ในธีมมาแทน · ระบุชื่อชัด → ข้าม (แจ้ง)
-   - เกิน 7 วัน → วิเคราะห์ซ้ำ = **UPDATE mode** (แก้ไฟล์เดิมเฉพาะจุด §2 ข้อ 3) · ยังไม่มี → NEW (skeleton)
-3. กันซ้ำข้าม session = §3.2 push per-wave + pull --rebase ก่อนแต่ละเวฟ (ตัวที่คนอื่น push แล้วโผล่ใน reports.json → ถูกคัดออก)
-
-### 3.2 รัน — 1 หุ้น/agent · **sequential** · เวฟละ ≤3 · push per-wave
-- **★ โมเดล (บังคับ): ห้าม Haiku ทุกขั้น** (Sonnet+Haiku และ Haiku-ล้วน ห้ามทั้งคู่) · **ค่าเริ่มต้น = All-Sonnet main + escalate**: controller=Sonnet, worker=Sonnet (`model:"sonnet"`) — ตราบใดที่ controller ตรวจข้ามแหล่ง price/EPS ≥2 + กราฟจริงจาก script (§4 ข้อ 1) + จับ split/ticker เอง · **หุ้นยาก** (IPO <1 ปี/spinoff/split/cyclical/ราคา cross-source ต่าง >5%) → **escalate อัตโนมัติ** spawn worker ตัวนั้นเป็น **Opus** (`Agent model:"opus"`) ไม่ต้องบอก user · ถ้า **การตัดสิน publish/skip ของ controller เองกำกวม** → หยุด ping user สลับ session เป็น Opus
-- **spawn 1 Agent/หุ้น** — full analysis หุ้นตัวเดียว รวม cross-source verify (โหมด NEW = skeleton · โหมด UPDATE = แก้ไฟล์เดิมเฉพาะจุด) เขียนลง `reports/<SYMBOL>.html` ของตัวเองเท่านั้น · context แยกสะอาด กันเลขปนข้ามหุ้น (ตัวร้าย #1 ของรีโป) · **ใช้ prompt แม่แบบ `_template/agent-prompt.md`** (ระบุ `{{MODE}}` ให้ถูก)
-- **★ STEP 0 กัน cwd-stray:** prompt ให้ agent เริ่ม `cd <worktree> && pwd` + ห้าม `cd` ลง main repo · ตอน push เช็ค `ls reports/<SYM>.html` ใน worktree — ไม่มี = ไปหยิบจาก main repo + ลบตัวหลง (ดู memory [[bulk-stock-analysis-workflow]])
-- **★ SEQUENTIAL (บังคับ): spawn 1 agent → รอ notification "completed" → ตรวจ/แก้ error → spawn ถัดไป** — ห้าม spawn parallel หลายตัวพร้อมกัน เพราะกด API session rate limit ทุกตัว fail พร้อมกัน (เห็นแล้วใน W19–W21) · fallback: ถ้า agent fail → ทำ inline ในนี้แทน (fetch + write ใน main session)
-- **เวฟละ ≤3 หุ้น** → push รวมเมื่อครบเวฟ · ห้ามยิงทุกตัวรวดเดียว
-- **ห้าม agent push เอง · push per-wave** — รอทุก agent ในเวฟเสร็จ → main รัน §4 ครั้งเดียว/เวฟ (commit รวม `analyze: add A, B, C`) · **ทำไมไม่ push รายตัว:** verify สแกนทุกไฟล์ใน `reports/` → sibling ที่เขียนค้างจะบล็อกตัวที่เสร็จแล้ว
-- **push per-wave serialize** — ห้าม push ซ้อนหลายเวฟ/หลาย session กัน git race
-
-### 3.3 ลดจำนวนเองได้ ถ้าของดีไม่พอ (ไม่ต้องถาม แต่แจ้งเหตุผล)
-สั่ง 30 แต่คัดแล้วดีจริง 20 → ส่ง 20 ได้ (คุณภาพ > โควตา) · **ต้องแจ้งเหตุผล** (valuation แพงไม่มี MOS / ข้อมูลไม่พอ / ซ้ำของสด)
+1. **ก่อนเริ่ม**: `git pull --rebase origin main` → อ่าน `reports.json` — สด ≤7 วัน **ไม่ทำซ้ำ** (ธีม→หาตัวแทน · ระบุชื่อ→ข้ามพร้อมแจ้ง) · เกิน 7 วัน = UPDATE · ยังไม่มี = NEW
+2. **โมเดล**: ❌ Haiku ทุกขั้น · default = **All-Sonnet** (controller+worker) · หุ้นยาก (IPO <1 ปี/spinoff/split/cyclical/ราคา cross-source ต่าง >5%) → escalate worker ตัวนั้นเป็น **Opus** อัตโนมัติ · ตัดสิน publish/skip กำกวม → หยุด ping user
+3. **spawn**: 1 หุ้น/agent (context แยก กันเลขปนข้ามหุ้น — ตัวร้าย #1) · **sequential เท่านั้น** — spawn → รอเสร็จ → ตรวจ → ตัวถัดไป (parallel เคยพัง rate limit พร้อมกันทั้งเวฟ) · ใช้ prompt `_template/agent-prompt.md` + STEP 0 กัน cwd-stray · จะคุม effort ต่อ worker → workflow **`analyze-wave`** (docs/orchestration.md)
+4. **เวฟละ ≤3** → verify + push รวมครั้งเดียว/เวฟ (`analyze: add A, B, C`) · ห้าม agent push เอง · ห้าม push ซ้อนเวฟ/ซ้อน session
+5. ของดีไม่พอโควตา → ลดจำนวนเองได้ ไม่ต้องถาม แต่แจ้งเหตุผล (คุณภาพ > โควตา)
 
 ---
 
 ## 4. Token discipline — วิเคราะห์ให้ใช้ token ถูกลง
 
-ต้นทุน token ก้อนใหญ่ = เขียนไฟล์ทั้งใบซ้ำ + ดึงเว็บต่อหุ้น + context พอกใน controller + รอบ verify เสียเปล่า · 6 levers:
+วัดจริง (12 ก.ค. 2569): ต้นทุนใหญ่สุดคือ **input/cache-read ~70k ต่อ turn ของ worker** — ไม่ใช่ output (worker เฉลี่ย ~25-30 turns = cache-read ~2M/ตัว vs output แค่ ~3-4k) · 7 levers:
 
-1. **ตัวเลขโครงสร้าง = script ไม่ใช่ LLM** — ราคา/กราฟ/ป้าย %/สี/bounds: หุ้นใหม่ `node tools/fetch-facts.js <SYM> [--th]` (บล็อกพร้อมวาง) · หุ้นเดิม `node tools/update-prices.js --write --force <SYM>` (patch ลงไฟล์เลย) — 0 token + ไม่มี error คำนวณกราฟ (E36/E37)
-2. **หุ้นเดิม = UPDATE mode แก้เฉพาะจุด** — ห้าม rewrite skeleton ใหม่ (~22KB output/ตัว) · Edit เฉพาะ EPS/FV/prose ที่เปลี่ยน = output ลด ~70-85% · EPS ไม่เปลี่ยนจากรายงานเดิม (±2%) → 1 แหล่งพอ (ค่าเดิมผ่าน 2 แหล่งแล้ว) — ดู SKILL.md STEP 5B
-3. **WebFetch แบบ targeted คืนเลขสั้น** — prompt WebFetch ให้ดึงเฉพาะ price/EPS/dividend/target/52wk เป็นบรรทัดสั้น **ไม่ dump หน้าเต็ม** · แหล่ง authoritative (StockAnalysis.com) **2 อันพอ cross-verify** อย่ายิง 5
-4. **Compact / fresh session ทุก 1–2 เวฟ** — สลัด context หุ้นเก่าที่ไม่ใช้ต่อ (main controller พอกเร็ว) · Self-check `npm test -- <SYM>` ก่อนคืนงาน จับ E13/E28/E29/E32 → **ตัดรอบ verify เสียเปล่าทั้งเวฟ**
-5. **pull --rebase + อ่าน reports.json ก่อน** — ข้ามหุ้นสด ≤7 วัน = ประหยัด 100% ของตัวนั้น (§3.1)
-6. **All-Sonnet main + escalate ตัวยากเป็น Opus subagent** — อย่ารัน Opus เป็น main (§3.2 · W31 กิน ~15% ของลิมิต 5 ชม. กับ 3 หุ้น)
+1. **จำนวน turn = ต้นทุนอันดับหนึ่ง** — batch tool calls ที่อิสระกันใน**ข้อความเดียว** (script 2 ตัว + อ่านไฟล์ = 1 turn) · Edit หลายจุดพร้อมกัน · self-check `npm test -- <SYM>` **ครั้งเดียวตอนจบ** (จับ E13/E28/E29/E32 → ตัดรอบ verify เสียเปล่าทั้งเวฟ)
+2. **ตัวเลขโครงสร้าง = script ไม่ใช่ LLM** — ราคา/กราฟ/ป้าย %/สี: หุ้นใหม่ `node tools/fetch-facts.js <SYM> [--th]` · หุ้นเดิม `node tools/update-prices.js --write --force <SYM>` (patch ให้เลย) — 0 token, ไม่มี error กราฟ (E36/E37)
+3. **EPS/เป้า/ปันผล 2 แหล่งในคำสั่งเดียว** — `node tools/fetch-fundamentals.js <SYM> [--th]` (Yahoo+StockAnalysis + บรรทัด Δ เทียบให้) แทน WebFetch 2-3 turns · WebFetch targeted เป็น fallback เมื่อ script ล่ม — ห้าม dump หน้าเต็ม
+4. **หุ้นเดิม = UPDATE แก้เฉพาะจุด ห้าม rewrite** · มาจากคิว price-flags = **UPDATE-LIGHT** (SKILL STEP 5C — เป้า ≤10 turns) · EPS ไม่เปลี่ยน (±2%) → FV เดิมยืน ไม่ต้องคิดใหม่
+5. **Compact / fresh session ทุก 1–2 เวฟ** — สลัด context หุ้นเก่า (controller พอกเร็ว)
+6. **pull --rebase + อ่าน reports.json ก่อน** — ข้ามหุ้นสด ≤7 วัน = ประหยัด 100% ของตัวนั้น
+7. **All-Sonnet + escalate ตัวยากเป็น Opus subagent** — อย่ารัน Opus เป็น main (W31 กิน ~15% ของลิมิต 5 ชม. กับ 3 หุ้น) · worker งาน mechanical → effort medium ผ่าน workflow `analyze-wave`
 
 ---
 
@@ -139,7 +128,10 @@ Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>
 GitHub Actions (`.github/workflows/update-prices.yml`) รัน `tools/update-prices.js` ทุกวัน 07:17 น. ไทย —
 ดึงราคา Yahoo มา patch **เฉพาะตัวเลขโครงสร้าง** (ราคา header + วันที่ราคา + กราฟ 13 จุด + ป้าย % รอบปี + gauge.cur + MOS + pxIn + stock-meta) แล้ว verify + push เอง · **ไม่แตะ prose/EPS/FV** · `updated` (วันที่วิเคราะห์) คงเดิมผ่าน preserve-dates
 - ตัวที่ขยับแรง (ต่าง >15% / MOS พลิกเครื่องหมาย / หลุด gauge / สงสัย split) → **freeze** ลง `price-flags.json` + GitHub Issue รอ re-analysis
-- **"เคลียร์คิว price-flags"** = อ่าน `price-flags.json` → re-analysis ตาม §3 ทุกกติกาเดิม (flag หายเองเมื่อรายงานสดแล้ว)
+- **"เคลียร์คิว price-flags"** = **triage ตาม `reason` ก่อน** (เกณฑ์เต็มใน SKILL STEP 0):
+  `fetch/patch-failed` → plumbing ไม่ใช้ agent (ticker เปลี่ยน → `tools/symbol-map.json` · เพิกถอน → ลบรายงาน · flag ตัดเองรอบถัดไป) ·
+  `drift/mos-flip/gauge` → **UPDATE-LIGHT** · `suspect-split` → UPDATE เต็ม — จากนั้นรันตาม §3 ทุกกติกาเดิม (flag หายเองเมื่อรายงานสด)
+- ticker ที่ Yahoo/StockAnalysis เปลี่ยนชื่อ (บริษัทปรับโครงสร้าง) → override ที่ `tools/symbol-map.json` (เช่น BKI→BKIH, STEC→STECON)
 - รายละเอียด/debug → `docs/price-refresh.md`
 
 ## 10. Template system + counters (สรุป)

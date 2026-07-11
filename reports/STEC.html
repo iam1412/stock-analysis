@@ -6,7 +6,7 @@
 <title>วิเคราะห์หุ้น ซิโน-ไทย เอ็นจีเนียรริ่ง (STECON) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Sonnet 4.6">
 <script type="application/json" id="stock-meta">
-{"symbol":"STEC","currency":"THB","price":18.40,"fairValue":17.00,"mos":-8.2,"upside":-7.6,"pe":14.28,"dividendYield":2.17,"roe":9.7}
+{"symbol":"STEC","currency":"THB","price":18.8,"fairValue":17,"mos":-10.6,"upside":-9.6,"pe":14.28,"dividendYield":2.17,"roe":9.7}
 </script>
 <script type="application/json" id="report-data">
 {
@@ -25,36 +25,36 @@
   },
   "chart": {
     "data": [
-      ["ก.ค. 68", 7.65],
-      ["ส.ค. 68", 8.05],
-      ["ก.ย. 68", 8.20],
-      ["ต.ค. 68", 5.70],
-      ["พ.ย. 68", 6.35],
-      ["ธ.ค. 68", 7.95],
-      ["ม.ค. 69", 13.00],
-      ["ก.พ. 69", 11.50],
-      ["มี.ค. 69", 12.00],
-      ["เม.ย. 69", 15.70],
-      ["พ.ค. 69", 18.00],
-      ["มิ.ย. 69", 18.40]
+      ["ส.ค.25", 7.65],
+      ["ก.ย.25", 8.05],
+      ["ต.ค.25", 8.2],
+      ["พ.ย.25", 5.7],
+      ["ธ.ค.25", 6.35],
+      ["ม.ค.26", 7.95],
+      ["ก.พ.26", 13],
+      ["มี.ค.26", 11.5],
+      ["เม.ย.26", 12],
+      ["พ.ค.26", 15.7],
+      ["มิ.ย.26", 18],
+      ["ก.ค.26", 18.8]
     ],
-    "min": 4.0,
-    "max": 22.0,
-    "grid": [4.0, 8.0, 12.0, 16.0, 20.0],
-    "fairLine": 17.0,
+    "min": 0,
+    "max": 20,
+    "grid": [5, 10, 15],
+    "fairLine": 17,
     "currency": "฿",
-    "highlight": [0, 6],
+    "highlight": [3, 11],
     "gridFmt": "v.toFixed(0)",
     "dataFmt": "d[1].toFixed(2)"
   },
   "gauge": {
-    "min": 10.0,
-    "max": 24.0,
-    "cur": 18.40,
-    "fair": 17.0,
+    "min": 10,
+    "max": 24,
+    "cur": 18.8,
+    "fair": 17,
     "fairLabelTop": false
   },
-  "fv": 17.0
+  "fv": 17
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -74,11 +74,11 @@
     <div class="sub">Holdco ของ STEC — รับเหมาก่อสร้างขนาดใหญ่ (รถไฟฟ้า ทางด่วน สนามบิน เขื่อน) • สาธารณูปโภค &amp; พลังงาน • โลจิสติกส์ &amp; ขนส่ง • Data Center &amp; จัดเก็บเอกสาร</div>
     <div class="price-row">
       <div>
-        <div class="px">฿18.40<small>(STECON)</small></div>
+        <div class="px">฿18.80<small>(STECON)</small></div>
       </div>
-      <div class="chg">▲ +140.5% (รอบปี)</div>
+      <div class="chg">▲ +145.8% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 3 ก.ค. 2569<br>
+        ราคา ณ 10 ก.ค. 2569<br>
         กรอบ 52 สัปดาห์ ฿5.25 – ฿19.20<br>
         ที่มา: SET Factsheet • Yahoo Finance (STECON.BK) • Finnomena | งบ FY2568 / Q1/2569
       </div>
@@ -156,7 +156,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿18.40</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿18.80</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿17.00</div></div>
         </div>
         <div class="scale">
@@ -178,7 +178,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict bad">
-        <div class="big">−8.2%</div>
+        <div class="big">−11%</div>
         <div class="txt">ราคาปัจจุบันสูงกว่า Fair Value ~8% — ยังไม่มี Margin of Safety ชัดเจน · ควรรอโซนปรับฐาน</div>
       </div>
       <div class="grid g3">
@@ -189,7 +189,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="18.40" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="18.8" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

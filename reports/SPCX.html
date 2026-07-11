@@ -6,22 +6,42 @@
 <title>วิเคราะห์หุ้น SpaceX (SPCX) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Opus 4.8">
 <script type="application/json" id="stock-meta">
-{"symbol":"SPCX","currency":"USD","price":156.11,"fairValue":125,"mos":-24.9,"upside":-19.9,"pe":null,"dividendYield":0,"roe":null}
+{"symbol":"SPCX","currency":"USD","price":145.3,"fairValue":125,"mos":-16.2,"upside":-14,"pe":null,"dividendYield":0,"roe":null}
 </script>
 <script type="application/json" id="report-data">
 {
   "theme": {
-    "accent": "#1a73e8", "accentDark": "#1557b0",
+    "accent": "#1a73e8",
+    "accentDark": "#1557b0",
     "darkGrad": "linear-gradient(135deg,#05080f 0%,#0d1b3a 55%,#1f4fa0 150%)",
-    "glow": "rgba(120,170,255,.35)", "subColor": "#bcd0ee", "headerMuted": "#a9c0e2",
-    "chgBg": "var(--green-soft)", "chgColor": "#1e8e3e", "badge": "var(--blue)",
-    "verdictText": "#cdddf2", "vcellLabel": "#a9c0e2"
+    "glow": "rgba(120,170,255,.35)",
+    "subColor": "#bcd0ee",
+    "headerMuted": "#a9c0e2",
+    "chgBg": "var(--red-soft)",
+    "chgColor": "#c5221f",
+    "badge": "var(--blue)",
+    "verdictText": "#cdddf2",
+    "vcellLabel": "#a9c0e2"
   },
   "chart": {
-    "data": [["12 มิ.ย.",150],["13 มิ.ย.",161],["16 มิ.ย.",226],["17 มิ.ย.",210],["18 มิ.ย.",182],["19 มิ.ย.",158],["22 มิ.ย.",147],["23 มิ.ย.",156]],
-    "min": 110, "max": 240, "grid": [120,150,180,210], "fairLine": 125, "currency": "$", "highlight": [2,7]
+    "data": [
+      ["มิ.ย.26", 162],
+      ["ก.ค.26", 145.3]
+    ],
+    "min": 120,
+    "max": 170,
+    "grid": [130, 140, 150, 160],
+    "fairLine": 125,
+    "currency": "$",
+    "highlight": [0, 1]
   },
-  "gauge": { "min": 60, "max": 230, "cur": 156.11, "fair": 125, "fairLabelTop": "-58px" },
+  "gauge": {
+    "min": 60,
+    "max": 230,
+    "cur": 145.3,
+    "fair": 125,
+    "fairLabelTop": "-58px"
+  },
   "fv": 125
 }
 </script>
@@ -42,11 +62,11 @@
     <div class="sub">จรวด Falcon 9 / Falcon Heavy (นำกลับมาใช้ใหม่) • ยาน Starship • Starlink เน็ตดาวเทียม • Dragon ส่งคน/สินค้า • ปล่อยดาวเทียมภาครัฐ-กลาโหม • SpaceXAI (Grok)</div>
     <div class="price-row">
       <div>
-        <div class="px">$156.11<small>(SPCX)</small></div>
+        <div class="px">$145.30<small>(SPCX)</small></div>
       </div>
-      <div class="chg">▲ +4.0% (ตั้งแต่ IPO)</div>
+      <div class="chg">▼ −10.3% (ตั้งแต่ IPO)</div>
       <div class="px-meta">
-        ราคา ณ 23 มิ.ย. 2026 (ปิดตลาด)<br>
+        ราคา ณ 10 ก.ค. 2026 (ปิดตลาด)<br>
         IPO 12 มิ.ย. • ช่วงตั้งแต่ IPO $147 – $226<br>
         ที่มา: StockAnalysis.com / SEC S-1 / Morningstar / CNBC
       </div>
@@ -127,7 +147,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $156</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $145</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $125</div></div>
         </div>
         <div class="scale">
@@ -150,7 +170,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict bad">
-        <div class="big">−25%</div>
+        <div class="big">−16%</div>
         <div class="txt"><b>ไม่มี Margin of Safety</b><br>ราคาปัจจุบัน $156.11 สูงกว่ามูลค่าเหมาะสม $125 ราว 25% → ตามเกณฑ์ value investor ถือว่า <b>แพง</b> และยังเป็นหุ้น IPO ผันผวนสูง ยังไม่ใช่จุดซื้อที่ปลอดภัย</div>
       </div>
       <div class="grid g3">
@@ -161,7 +181,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="156.11" step="1">
+          <input id="pxIn" class="mono" type="number" value="145.3" step="1">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
