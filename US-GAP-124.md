@@ -5,7 +5,7 @@
 > **จัดลำดับ:** Tier A = ย่อลึก/de-rate แรง ณ ก.ค. 2569 (ทำก่อน มีโอกาสเจอ MOS จริง) → Tier B = บลูชิพ/quality ที่ขาดเพื่อความครบ → Tier C = สายปันผล/defensive (utilities·REITs·midstream·materials)
 > สร้าง 2026-07-05 · % ในตาราง = ผลตอบแทน 1 ปีจาก Yahoo ณ วันสร้างแผน (ตอนวิเคราะห์จริงต้องดึงใหม่ + ตรวจข้ามแหล่งเสมอ)
 >
-> **📊 ความคืบหน้า (อัปเดต 10 ก.ค. 2569): เสร็จ 119/124 — W40: AVY+BALL+LYB ✅ · resume ที่ #120 AMCR** · เหลือ 5 ตัว (W41→W42)
+> **📊 ความคืบหน้า (อัปเดต 11 ก.ค. 2569): เสร็จ 122/124 — W41: AMCR+BF-B+TSN ✅ · resume ที่ #123 TAP** · เหลือ 2 ตัว (W42)
 
 ---
 
@@ -163,9 +163,9 @@
 | 117 | W40 | AVY | วัสดุ/ฉลาก | Avery Dennison — label ผูกขาดเงียบ ๆ RFID โต | | ✅ $160.71/FV$187.1 MOS+14.1% |
 | 118 | W40 | BALL | บรรจุภัณฑ์ | Ball — กระป๋องอลูมิเนียม เบอร์ 1 โลก | | ✅ $61.69/FV$58.20 MOS-6.0% |
 | 119 | W40 | LYB | ปิโตรเคมี | LyondellBasell — yield สูง cyclical ก้นวัฏจักร (mid-cycle) | 🔺 | ✅ $56.35/FV$60.28 MOS+6.5% |
-| 120 | W41 | AMCR | บรรจุภัณฑ์ | Amcor — flexible packaging + Berry merger, yield ~5% | | ⬜ |
-| 121 | W41 | BF-B | เครื่องดื่มแอลกอฮอล์ | Brown-Forman −13% (Jack Daniel's) — multi-year low, spirits cycle (ไฟล์ BF-B.html) | 🔺 | ⬜ |
-| 122 | W41 | TSN | อาหาร | Tyson — โปรตีนเบอร์ 1 US, protein cycle ฟื้น | | ⬜ |
+| 120 | W41 | AMCR | บรรจุภัณฑ์ | Amcor — flexible packaging + Berry merger, yield ~5% | | ✅ $43.18/FV$45.53 MOS+5.2% |
+| 121 | W41 | BF-B | เครื่องดื่มแอลกอฮอล์ | Brown-Forman −13% (Jack Daniel's) — multi-year low, spirits cycle (ไฟล์ BF-B.html) | 🔺 | ✅ $26.17/FV$30.91 MOS+15.6% |
+| 122 | W41 | TSN | อาหาร | Tyson — โปรตีนเบอร์ 1 US, protein cycle ฟื้น | | ✅ $57.83/FV$49.53 MOS−16.8% |
 | 123 | W42 | TAP | เครื่องดื่ม | Molson Coors −21% — ถูกมาก P/E หลักเดียว แลก volume ถดถอย | | ⬜ |
 | 124 | W42 | BG | อาหารเกษตร | Bunge +26% — agribusiness + Viterra merger (mid-cycle) | 🔺 | ⬜ |
 
