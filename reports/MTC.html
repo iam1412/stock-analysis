@@ -6,10 +6,56 @@
 <title>วิเคราะห์หุ้น เมืองไทย แคปปิตอล (MTC) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Opus 4.8">
 <script type="application/json" id="stock-meta">
-{"symbol":"MTC","currency":"THB","price":29.50,"fairValue":40,"mos":26.3,"upside":35.6,"pe":9.0,"dividendYield":1.0,"roe":16.8}
+{"symbol":"MTC","currency":"THB","price":32.5,"fairValue":40,"mos":18.8,"upside":23.1,"pe":9,"dividendYield":1,"roe":16.8}
 </script>
 <script type="application/json" id="report-data">
-{"theme": {"accent": "#e1a328", "accentDark": "#aa7918", "darkGrad": "linear-gradient(135deg,#3c2a06 0%,#6f4d0b 58%,#b07b12 140%)", "glow": "rgba(224,159,31,.35)", "subColor": "#ebddc2", "headerMuted": "#d4c4a5", "verdictText": "#f1e6d0", "vcellLabel": "#ddcba6", "badge": "#aa7918", "chgBg": "var(--red-soft)", "chgColor": "#c5221f"}, "chart": {"data": [["มิ.ย.68", 35.25], ["ก.ค.", 37.75], ["ส.ค.", 37.25], ["ก.ย.", 40.5], ["ต.ค.", 40.5], ["พ.ย.", 33.25], ["ธ.ค.", 31.5], ["ม.ค.69", 33.75], ["ก.พ.", 37.0], ["มี.ค.", 28.75], ["เม.ย.", 29.5], ["พ.ค.", 28.75], ["มิ.ย.69", 29.5]], "min": 26, "max": 44, "grid": [26, 30, 34, 38, 42, 44], "fairLine": 40, "currency": "฿", "highlight": [3, 9], "gridFmt": "v", "dataFmt": "d[1].toFixed(2)"}, "gauge": {"min": 26, "max": 44, "cur": 29.5, "fair": 40, "fairLabelTop": true}, "fv": 40}
+{
+  "theme": {
+    "accent": "#e1a328",
+    "accentDark": "#aa7918",
+    "darkGrad": "linear-gradient(135deg,#3c2a06 0%,#6f4d0b 58%,#b07b12 140%)",
+    "glow": "rgba(224,159,31,.35)",
+    "subColor": "#ebddc2",
+    "headerMuted": "#d4c4a5",
+    "verdictText": "#f1e6d0",
+    "vcellLabel": "#ddcba6",
+    "badge": "#aa7918",
+    "chgBg": "var(--red-soft)",
+    "chgColor": "#c5221f"
+  },
+  "chart": {
+    "data": [
+      ["ส.ค.25", 37.25],
+      ["ก.ย.25", 40.5],
+      ["ต.ค.25", 40.5],
+      ["พ.ย.25", 33.25],
+      ["ธ.ค.25", 31.5],
+      ["ม.ค.26", 33.75],
+      ["ก.พ.26", 37],
+      ["มี.ค.26", 28.75],
+      ["เม.ย.26", 29.5],
+      ["พ.ค.26", 28.75],
+      ["มิ.ย.26", 31.5],
+      ["ก.ค.26", 32.5]
+    ],
+    "min": 25,
+    "max": 45,
+    "grid": [30, 35, 40],
+    "fairLine": 40,
+    "currency": "฿",
+    "highlight": [1, 7],
+    "gridFmt": "v",
+    "dataFmt": "d[1].toFixed(2)"
+  },
+  "gauge": {
+    "min": 26,
+    "max": 44,
+    "cur": 32.5,
+    "fair": 40,
+    "fairLabelTop": true
+  },
+  "fv": 40
+}
 </script>
 <!--TEMPLATE:STYLE-->
 </head>
@@ -28,11 +74,11 @@
     <div class="sub">สินเชื่อทะเบียนรถจักรยานยนต์ • รถยนต์ • ที่ดิน • นาโนไฟแนนซ์ • 8,754 สาขาทั่วไทย • กลุ่มลูกค้าฐานราก (underbanked)</div>
     <div class="price-row">
       <div>
-        <div class="px">฿29.50<small>(MTC)</small></div>
+        <div class="px">฿32.50<small>(MTC)</small></div>
       </div>
-      <div class="chg">▼ −16.3% (รอบปี)</div>
+      <div class="chg">▼ −12.8% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 23 มิ.ย. 2026<br>
+        ราคา ณ 10 ก.ค. 2026<br>
         กรอบ 52 สัปดาห์ ฿26.75 – ฿44.00<br>
         ที่มา: SET • StockAnalysis.com • Investing.com
       </div>
@@ -110,7 +156,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿29.50</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿32.50</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿40</div></div>
         </div>
         <div class="scale">
@@ -132,7 +178,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict good">
-        <div class="big">+26.3%</div>
+        <div class="big">+19%</div>
         <div class="txt">ราคาต่ำกว่ามูลค่าเหมาะสมมากกว่า 20% — ส่วนเผื่อความปลอดภัยอยู่ในเกณฑ์ดีสำหรับหุ้นเติบโต ROE สูง แต่ต้องเฝ้าระวังคุณภาพหนี้</div>
       </div>
       <div class="grid g3">
@@ -143,7 +189,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="29.50" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="32.5" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

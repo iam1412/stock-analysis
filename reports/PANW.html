@@ -6,22 +6,52 @@
 <title>วิเคราะห์หุ้น Palo Alto Networks (PANW) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Opus 4.8">
 <script type="application/json" id="stock-meta">
-{"symbol":"PANW","currency":"USD","price":288,"fairValue":270,"mos":-7,"upside":-6.3,"pe":76,"dividendYield":0,"roe":4.8}
+{"symbol":"PANW","currency":"USD","price":325.91,"fairValue":270,"mos":-20.7,"upside":-17.2,"pe":76,"dividendYield":0,"roe":4.8}
 </script>
 <script type="application/json" id="report-data">
 {
   "theme": {
-    "accent": "#ed481d", "accentDark": "#b3310f",
+    "accent": "#ed481d",
+    "accentDark": "#b3310f",
     "darkGrad": "linear-gradient(135deg,#3e1004 0%,#731e07 58%,#b62f0c 140%)",
-    "glow": "rgba(236,65,19,.35)", "subColor": "#ebcac2", "headerMuted": "#d4afa5",
-    "chgBg": "var(--green-soft)", "chgColor": "#1e8e3e", "badge": "var(--blue)",
-    "verdictText": "#f1d7d0", "vcellLabel": "#ddb2a6"
+    "glow": "rgba(236,65,19,.35)",
+    "subColor": "#ebcac2",
+    "headerMuted": "#d4afa5",
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#1e8e3e",
+    "badge": "var(--blue)",
+    "verdictText": "#f1d7d0",
+    "vcellLabel": "#ddb2a6"
   },
   "chart": {
-    "data": [["มิ.ย.25",205],["ส.ค.25",191],["ต.ค.25",220],["ธ.ค.25",184],["ก.พ.26",149],["เม.ย.26",179],["พ.ค.26",282],["มิ.ย.26",288]],
-    "min": 130, "max": 320, "grid": [150,200,250,300], "fairLine": 270, "currency": "$", "highlight": [4,7]
+    "data": [
+      ["ส.ค.25", 190.52],
+      ["ก.ย.25", 203.62],
+      ["ต.ค.25", 220.24],
+      ["พ.ย.25", 190.13],
+      ["ธ.ค.25", 184.2],
+      ["ม.ค.26", 176.97],
+      ["ก.พ.26", 148.92],
+      ["มี.ค.26", 160.32],
+      ["เม.ย.26", 179.32],
+      ["พ.ค.26", 281.69],
+      ["มิ.ย.26", 341.02],
+      ["ก.ค.26", 325.91]
+    ],
+    "min": 100,
+    "max": 400,
+    "grid": [150, 200, 250, 300, 350],
+    "fairLine": 270,
+    "currency": "$",
+    "highlight": [6, 10]
   },
-  "gauge": { "min": 180, "max": 390, "cur": 288, "fair": 270, "fairLabelTop": "-58px" },
+  "gauge": {
+    "min": 180,
+    "max": 390,
+    "cur": 325.91,
+    "fair": 270,
+    "fairLabelTop": "-58px"
+  },
   "fv": 270
 }
 </script>
@@ -42,11 +72,11 @@
     <div class="sub">ผู้นำความปลอดภัยไซเบอร์ระดับโลก • Precision AI, Cortex XSIAM (Autonomous SOC), Strata, Prisma, CyberArk</div>
     <div class="price-row">
       <div>
-        <div class="px">$288<small>(PANW)</small></div>
+        <div class="px">$325.91<small>(PANW)</small></div>
       </div>
-      <div class="chg">▲ +40.5% (รอบปี)</div>
+      <div class="chg">▲ +71.1% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ≈ $288.52 ณ 23 มิ.ย. 2026 (9:45 ET)<br>
+        ราคา ≈ $288.52 ณ 10 ก.ค. 2026 (9:45 ET)<br>
         ปรับ split 2:1 (ธ.ค. 2024) แล้ว<br>
         ที่มา: StockAnalysis.com / Yahoo Finance / Google Finance
       </div>
@@ -126,7 +156,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $288</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $326</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $270</div></div>
         </div>
         <div class="scale">
@@ -149,7 +179,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict bad">
-        <div class="big">−7%</div>
+        <div class="big">−21%</div>
         <div class="txt"><b>ไม่มี Margin of Safety</b><br>ราคาปัจจุบัน $288 สูงกว่ามูลค่าเหมาะสม $270 ราว 7% → ตามเกณฑ์ value investor ถือว่า <b>แพงเล็กน้อย</b> ยังไม่ใช่จุดซื้อที่ปลอดภัย</div>
       </div>
       <div class="grid g3">
@@ -160,7 +190,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="288" step="1">
+          <input id="pxIn" class="mono" type="number" value="325.91" step="1">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

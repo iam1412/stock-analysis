@@ -26,7 +26,7 @@ const THAI_MONTHS = ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.
 const THAI_MONTHS_FULL = ['มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'];
 const MAX_PTS = 13;          // กราฟรายเดือน ~1 ปี (E37)
 const FLAT_PP = 0.75;        // |% รอบปี| < 0.75 → "ทรงตัว" (ตาม migrate-annual-chg)
-const DRIFT_FREEZE = 0.10;   // ราคาใหม่ต่างจากในรายงาน > 10% → freeze (prose จะผิดความหมาย)
+const DRIFT_FREEZE = 0.15;   // ราคาใหม่ต่างจากในรายงาน > 15% → freeze (prose จะผิดความหมาย · เดิม 10% — ขยับขึ้นลดภาระ re-analysis)
 const SUSPECT_FREEZE = 0.25; // ต่าง > 25% → สงสัย split/ticker เปลี่ยน/ข้อมูลเพี้ยน
 const FETCH_DELAY_MS = 450;  // throttle Yahoo (~2 req/s)
 const UP = { bg: 'var(--green-soft)', col: '#1e8e3e' };
@@ -155,7 +155,7 @@ function decide(ctx) {
   if (!Number.isFinite(newPrice) || newPrice <= 0) return { freeze: 'bad-price' };
   const drift = Math.abs(newPrice - oldPrice) / oldPrice;
   if (drift > SUSPECT_FREEZE) return { freeze: 'suspect-split-or-data', drift };
-  if (drift > DRIFT_FREEZE) return { freeze: 'drift-gt-10pct', drift };
+  if (drift > DRIFT_FREEZE) return { freeze: `drift-gt-${Math.round(DRIFT_FREEZE * 100)}pct`, drift };
   if (Number.isFinite(fv) && fv > 0) {
     const mosOld = fv - oldPrice, mosNew = fv - newPrice;
     if (mosOld * mosNew < 0) return { freeze: 'mos-sign-flip', drift };

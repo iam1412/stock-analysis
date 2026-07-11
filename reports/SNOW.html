@@ -6,22 +6,52 @@
 <title>วิเคราะห์หุ้น Snowflake (SNOW) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Opus 4.8">
 <script type="application/json" id="stock-meta">
-{"symbol":"SNOW","currency":"USD","price":231,"fairValue":215,"mos":-7,"upside":-6.9,"pe":107,"dividendYield":0,"roe":null}
+{"symbol":"SNOW","currency":"USD","price":261.45,"fairValue":215,"mos":-21.6,"upside":-17.8,"pe":107,"dividendYield":0,"roe":null}
 </script>
 <script type="application/json" id="report-data">
 {
   "theme": {
-    "accent": "#1a73e8", "accentDark": "#1557b0",
+    "accent": "#1a73e8",
+    "accentDark": "#1557b0",
     "darkGrad": "linear-gradient(135deg,#0a3a5c 0%,#1577b8 60%,#29b5e8 140%)",
-    "glow": "rgba(41,181,232,.45)", "subColor": "#c7e4f4", "headerMuted": "#aed6ec",
-    "chgBg": "var(--green-soft)", "chgColor": "#1e8e3e", "badge": "var(--blue)",
-    "verdictText": "#d4e9f4", "vcellLabel": "#a8cde0"
+    "glow": "rgba(41,181,232,.45)",
+    "subColor": "#c7e4f4",
+    "headerMuted": "#aed6ec",
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#1e8e3e",
+    "badge": "var(--blue)",
+    "verdictText": "#d4e9f4",
+    "vcellLabel": "#a8cde0"
   },
   "chart": {
-    "data": [["มิ.ย.25",125],["ส.ค.25",155],["ต.ค.25",195],["ธ.ค.25",250],["ก.พ.26",278],["เม.ย.26",205],["พ.ค.26",240],["มิ.ย.26",231]],
-    "min": 100, "max": 300, "grid": [100,150,200,250,300], "fairLine": 215, "currency": "$", "highlight": [4,7]
+    "data": [
+      ["ส.ค.25", 238.66],
+      ["ก.ย.25", 225.55],
+      ["ต.ค.25", 274.88],
+      ["พ.ย.25", 251.24],
+      ["ธ.ค.25", 219.36],
+      ["ม.ค.26", 192.7],
+      ["ก.พ.26", 168.41],
+      ["มี.ค.26", 150.82],
+      ["เม.ย.26", 136.47],
+      ["พ.ค.26", 255.55],
+      ["มิ.ย.26", 254.5],
+      ["ก.ค.26", 261.45]
+    ],
+    "min": 100,
+    "max": 300,
+    "grid": [150, 200, 250],
+    "fairLine": 215,
+    "currency": "$",
+    "highlight": [2, 8]
   },
-  "gauge": { "min": 130, "max": 390, "cur": 231, "fair": 215, "fairLabelTop": "-58px" },
+  "gauge": {
+    "min": 130,
+    "max": 390,
+    "cur": 261.45,
+    "fair": 215,
+    "fairLabelTop": "-58px"
+  },
   "fv": 215
 }
 </script>
@@ -42,11 +72,11 @@
     <div class="sub">AI Data Cloud • Data Warehouse/Analytics • Cortex AI, Snowflake Intelligence</div>
     <div class="price-row">
       <div>
-        <div class="px">$231<small>(SNOW)</small></div>
+        <div class="px">$261.45<small>(SNOW)</small></div>
       </div>
-      <div class="chg">▲ +84.8% (รอบปี)</div>
+      <div class="chg">▲ +9.5% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ≈ $230.66 ณ 23 มิ.ย. 2026 (14:55 EDT)<br>
+        ราคา ≈ $230.66 ณ 10 ก.ค. 2026 (14:55 EDT)<br>
         ปิดก่อนหน้า ~$232 (เว็บคอนเซนซัส)<br>
         ที่มา: StockAnalysis.com / Yahoo Finance / MarketBeat
       </div>
@@ -127,7 +157,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $231</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $261</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $215</div></div>
         </div>
         <div class="scale">
@@ -150,7 +180,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict bad">
-        <div class="big">−7%</div>
+        <div class="big">−22%</div>
         <div class="txt"><b>ไม่มี Margin of Safety</b><br>ราคาปัจจุบัน $231 สูงกว่ามูลค่าเหมาะสม $215 ราว 7% → ตามเกณฑ์ value investor ถือว่า <b>แพงเล็กน้อย</b> และเมื่อบวกกับการที่ยังขาดทุน GAAP จึงยัง <b>ไม่ใช่จุดซื้อที่ปลอดภัย</b></div>
       </div>
       <div class="grid g3">
@@ -161,7 +191,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="231" step="1">
+          <input id="pxIn" class="mono" type="number" value="261.45" step="1">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

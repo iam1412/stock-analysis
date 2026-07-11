@@ -6,22 +6,52 @@
 <title>วิเคราะห์หุ้น Cameco (CCJ) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Opus 4.8">
 <script type="application/json" id="stock-meta">
-{"symbol":"CCJ","currency":"USD","price":108,"fairValue":114,"mos":5,"upside":5.6,"pe":101,"dividendYield":0.16,"roe":9.6}
+{"symbol":"CCJ","currency":"USD","price":95.99,"fairValue":114,"mos":15.8,"upside":18.8,"pe":101,"dividendYield":0.16,"roe":9.6}
 </script>
 <script type="application/json" id="report-data">
 {
   "theme": {
-    "accent": "#1a73e8", "accentDark": "#1557b0",
+    "accent": "#1a73e8",
+    "accentDark": "#1557b0",
     "darkGrad": "linear-gradient(135deg,#1b2a26 0%,#264b3f 60%,#1e7a4f 140%)",
-    "glow": "rgba(46,196,128,.35)", "subColor": "#c2dccf", "headerMuted": "#a9c8b8",
-    "chgBg": "var(--green-soft)", "chgColor": "#1e8e3e", "badge": "var(--blue)",
-    "verdictText": "#d2e4da", "vcellLabel": "#a6c4b5"
+    "glow": "rgba(46,196,128,.35)",
+    "subColor": "#c2dccf",
+    "headerMuted": "#a9c8b8",
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#1e8e3e",
+    "badge": "var(--blue)",
+    "verdictText": "#d2e4da",
+    "vcellLabel": "#a6c4b5"
   },
   "chart": {
-    "data": [["มิ.ย.25",70],["ส.ค.25",78],["ต.ค.25",92],["ธ.ค.25",110],["ก.พ.26",132],["เม.ย.26",120],["พ.ค.26",114],["มิ.ย.26",108]],
-    "min": 55, "max": 145, "grid": [60,80,100,120,140], "fairLine": 114, "currency": "$", "highlight": [4,7]
+    "data": [
+      ["ส.ค.25", 77.39],
+      ["ก.ย.25", 83.86],
+      ["ต.ค.25", 102.21],
+      ["พ.ย.25", 88.51],
+      ["ธ.ค.25", 91.49],
+      ["ม.ค.26", 123.39],
+      ["ก.พ.26", 118.4],
+      ["มี.ค.26", 108.61],
+      ["เม.ย.26", 123.04],
+      ["พ.ค.26", 112.7],
+      ["มิ.ย.26", 101.86],
+      ["ก.ค.26", 95.99]
+    ],
+    "min": 60,
+    "max": 140,
+    "grid": [80, 100, 120],
+    "fairLine": 114,
+    "currency": "$",
+    "highlight": [0, 5]
   },
-  "gauge": { "min": 70, "max": 185, "cur": 108, "fair": 114, "fairLabelTop": "-58px" },
+  "gauge": {
+    "min": 70,
+    "max": 185,
+    "cur": 95.99,
+    "fair": 114,
+    "fairLabelTop": "-58px"
+  },
   "fv": 114
 }
 </script>
@@ -42,11 +72,11 @@
     <div class="sub">หนึ่งในผู้ผลิตยูเรเนียมรายใหญ่สุดของโลก • ถือหุ้น 49% ใน Westinghouse • เชื้อเพลิงนิวเคลียร์ป้อนไฟฟ้ายุค AI</div>
     <div class="price-row">
       <div>
-        <div class="px">$108<small>(CCJ)</small></div>
+        <div class="px">$95.99<small>(CCJ)</small></div>
       </div>
-      <div class="chg">▲ +54.3% (รอบปี)</div>
+      <div class="chg">▲ +24.0% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ≈ 23 มิ.ย. 2026 (USD, NYSE)<br>
+        ราคา ≈ 10 ก.ค. 2026 (USD, NYSE)<br>
         ช่วงซื้อขาย ~$107–109 ระหว่างวัน<br>
         ที่มา: StockAnalysis.com / Yahoo Finance / CNBC
       </div>
@@ -127,7 +157,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $108</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $96</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $114</div></div>
         </div>
         <div class="scale">
@@ -150,7 +180,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict ok">
-        <div class="big">+5%</div>
+        <div class="big">+16%</div>
         <div class="txt"><b>Margin of Safety บางมาก</b><br>ราคาปัจจุบัน $108 ต่ำกว่ามูลค่าเหมาะสม $114 เพียง ~5% → ตามเกณฑ์ value investor ถือว่า <b>ราคายุติธรรม (fair) ไม่ใช่ถูก</b> ส่วนเผื่อยังไม่หนาพอสำหรับหุ้นวัฏจักรผันผวนสูง</div>
       </div>
       <div class="grid g3">
@@ -161,7 +191,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="108" step="1">
+          <input id="pxIn" class="mono" type="number" value="95.99" step="1">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

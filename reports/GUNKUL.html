@@ -6,7 +6,7 @@
 <title>วิเคราะห์หุ้น กันกุลเอ็นจิเนียริ่ง (GUNKUL) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Sonnet 4.6">
 <script type="application/json" id="stock-meta">
-{"symbol":"GUNKUL","currency":"THB","price":4.32,"fairValue":3.60,"mos":-20.0,"upside":-16.67,"pe":20.0,"dividendYield":3.27,"roe":12.64}
+{"symbol":"GUNKUL","currency":"THB","price":4.8,"fairValue":3.6,"mos":-33.3,"upside":-25,"pe":20,"dividendYield":3.27,"roe":12.64}
 </script>
 <script type="application/json" id="report-data">
 {
@@ -25,37 +25,36 @@
   },
   "chart": {
     "data": [
-      ["ก.ค. 68", 2.48],
-      ["ส.ค. 68", 2.46],
-      ["ก.ย. 68", 2.92],
-      ["ต.ค. 68", 3.98],
-      ["พ.ย. 68", 4.24],
-      ["ธ.ค. 68", 4.28],
-      ["ม.ค. 69", 4.30],
-      ["ก.พ. 69", 4.10],
-      ["มี.ค. 69", 3.80],
-      ["เม.ย. 69", 3.60],
-      ["พ.ค. 69", 3.56],
-      ["มิ.ย. 69", 3.92],
-      ["ก.ค. 69", 4.32]
+      ["ส.ค.25", 1.8],
+      ["ก.ย.25", 1.89],
+      ["ต.ค.25", 2.06],
+      ["พ.ย.25", 1.79],
+      ["ธ.ค.25", 1.9],
+      ["ม.ค.26", 1.82],
+      ["ก.พ.26", 2.48],
+      ["มี.ค.26", 2.46],
+      ["เม.ย.26", 2.92],
+      ["พ.ค.26", 3.98],
+      ["มิ.ย.26", 4.24],
+      ["ก.ค.26", 4.8]
     ],
-    "min": 2.20,
-    "max": 4.70,
-    "grid": [2.50, 3.00, 3.50, 4.00, 4.50],
-    "fairLine": 3.60,
+    "min": 1,
+    "max": 5,
+    "grid": [2, 3, 4],
+    "fairLine": 3.6,
     "currency": "฿",
-    "highlight": [3, 10],
+    "highlight": [3, 11],
     "gridFmt": "v.toFixed(2)",
     "dataFmt": "d[1].toFixed(2)"
   },
   "gauge": {
-    "min": 2.00,
-    "max": 5.70,
-    "cur": 4.32,
-    "fair": 3.60,
+    "min": 2,
+    "max": 5.7,
+    "cur": 4.8,
+    "fair": 3.6,
     "fairLabelTop": false
   },
-  "fv": 3.60
+  "fv": 3.6
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -75,11 +74,11 @@
     <div class="sub">โซลาร์ฟาร์ม + กังหันลม (IPP ขาย กฟผ.) • EPC รับเหมาติดตั้งระบบพลังงาน • จำหน่ายอุปกรณ์ไฟฟ้า • พลังน้ำ</div>
     <div class="price-row">
       <div>
-        <div class="px">฿4.32<small>(GUNKUL)</small></div>
+        <div class="px">฿4.80<small>(GUNKUL)</small></div>
       </div>
-      <div class="chg">▲ +74.2% (รอบปี)</div>
+      <div class="chg">▲ +166.7% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 4 กรกฎาคม 2569<br>
+        ราคา ณ 10 ก.ค. 2569<br>
         กรอบ 52 สัปดาห์ ฿1.51 – ฿4.40<br>
         ที่มา: StockAnalysis.com, Yahoo Finance, Settrade.com
       </div>
@@ -157,7 +156,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿4.32</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿4.80</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿3.60</div></div>
         </div>
         <div class="scale">
@@ -179,7 +178,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict bad">
-        <div class="big">−20.0%</div>
+        <div class="big">−33%</div>
         <div class="txt">ราคาปัจจุบันสูงกว่ามูลค่าเหมาะสม ~20% — ยังไม่มี Margin of Safety • รอโซนย่อตัว</div>
       </div>
       <div class="grid g3">
@@ -190,7 +189,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="4.32" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="4.8" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

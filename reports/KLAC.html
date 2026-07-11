@@ -6,22 +6,52 @@
 <title>วิเคราะห์หุ้น KLA Corporation (KLAC) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Opus 4.8">
 <script type="application/json" id="stock-meta">
-{"symbol":"KLAC","currency":"USD","price":269,"fairValue":183,"mos":-47,"upside":-32,"pe":76,"dividendYield":0.34,"roe":95}
+{"symbol":"KLAC","currency":"USD","price":231.52,"fairValue":183,"mos":-26.5,"upside":-21,"pe":76,"dividendYield":0.34,"roe":95}
 </script>
 <script type="application/json" id="report-data">
 {
   "theme": {
-    "accent": "#c88741", "accentDark": "#96632c",
+    "accent": "#c88741",
+    "accentDark": "#96632c",
     "darkGrad": "linear-gradient(135deg,#34220e 0%,#603f1a 58%,#98632a 140%)",
-    "glow": "rgba(193,130,62,.35)", "subColor": "#e3d7ca", "headerMuted": "#c7bdb2",
-    "chgBg": "var(--green-soft)", "chgColor": "#1e8e3e", "badge": "var(--blue)",
-    "verdictText": "#ebe1d6", "vcellLabel": "#d0c2b4"
+    "glow": "rgba(193,130,62,.35)",
+    "subColor": "#e3d7ca",
+    "headerMuted": "#c7bdb2",
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#1e8e3e",
+    "badge": "var(--blue)",
+    "verdictText": "#ebe1d6",
+    "vcellLabel": "#d0c2b4"
   },
   "chart": {
-    "data": [["มิ.ย.25",85],["ส.ค.25",100],["ต.ค.25",125],["ธ.ค.25",150],["ก.พ.26",185],["เม.ย.26",215],["พ.ค.26",240],["มิ.ย.26",269]],
-    "min": 70, "max": 290, "grid": [100,150,200,250], "fairLine": 183, "currency": "$", "highlight": [6,7]
+    "data": [
+      ["ส.ค.25", 87.2],
+      ["ก.ย.25", 107.86],
+      ["ต.ค.25", 120.87],
+      ["พ.ย.25", 117.55],
+      ["ธ.ค.25", 121.51],
+      ["ม.ค.26", 142.79],
+      ["ก.พ.26", 152.46],
+      ["มี.ค.26", 147.24],
+      ["เม.ย.26", 175.04],
+      ["พ.ค.26", 192.17],
+      ["มิ.ย.26", 301.71],
+      ["ก.ค.26", 231.52]
+    ],
+    "min": 0,
+    "max": 400,
+    "grid": [100, 200, 300],
+    "fairLine": 183,
+    "currency": "$",
+    "highlight": [0, 10]
   },
-  "gauge": { "min": 110, "max": 310, "cur": 269, "fair": 183, "fairLabelTop": "-58px" },
+  "gauge": {
+    "min": 110,
+    "max": 310,
+    "cur": 231.52,
+    "fair": 183,
+    "fairLabelTop": "-58px"
+  },
   "fv": 183
 }
 </script>
@@ -42,12 +72,12 @@
     <div class="sub">ผู้นำ "ตรวจสอบ-วัดคุณภาพ" การผลิตชิป (Inspection &amp; Metrology) • หัวใจของชิป AI ระดับ leading-edge</div>
     <div class="price-row">
       <div>
-        <div class="px">$269<small>(KLAC)</small></div>
+        <div class="px">$231.52<small>(KLAC)</small></div>
       </div>
-      <div class="chg">▲ +216.5% (รอบปี)</div>
+      <div class="chg">▲ +165.5% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 22 มิ.ย. 2026 ($269.16)<br>
-        ปรับ split 10:1 แล้ว (มีผล 12 มิ.ย. 2026)<br>
+        ราคา ณ 10 ก.ค. 2026 ($269.16)<br>
+        ปรับ split 10:1 แล้ว (มีผล 10 ก.ค. 2026)<br>
         ที่มา: StockAnalysis / Yahoo Finance / SEC
       </div>
     </div>
@@ -127,7 +157,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $269</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $232</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $183</div></div>
         </div>
         <div class="scale">
@@ -150,7 +180,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict bad">
-        <div class="big">−47%</div>
+        <div class="big">−27%</div>
         <div class="txt"><b>ไม่มี Margin of Safety</b><br>ราคาปัจจุบัน $269 สูงกว่ามูลค่าเหมาะสม $183 ราว 47% → ตามเกณฑ์ value investor ถือว่า <b>แพงมาก</b> ยังห่างไกลจากจุดซื้อที่ปลอดภัย</div>
       </div>
       <div class="grid g3">
@@ -161,7 +191,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="269" step="1">
+          <input id="pxIn" class="mono" type="number" value="231.52" step="1">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

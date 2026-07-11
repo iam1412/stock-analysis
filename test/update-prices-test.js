@@ -30,7 +30,8 @@ ok(U.toYahooSymbol('BF-B', 'USD') === 'BF-B', 'หุ้น US คงเดิ�
 // ---------- decide ----------
 const base = { oldPrice: 100, fv: 120, gaugeMin: 60, gaugeMax: 200, currencyOk: true };
 ok(U.decide({ ...base, newPrice: 105 }).update === true, 'decide: drift เล็ก → update');
-ok(U.decide({ ...base, newPrice: 112 }).freeze === 'drift-gt-10pct', 'decide: >10% → freeze');
+ok(U.decide({ ...base, newPrice: 112 }).update === true, 'decide: 12% ≤ เกณฑ์ 15% → update');
+ok(U.decide({ ...base, newPrice: 82 }).freeze === 'drift-gt-15pct', 'decide: >15% → freeze');
 ok(U.decide({ ...base, newPrice: 130 }).freeze === 'suspect-split-or-data', 'decide: >25% → suspect');
 ok(U.decide({ ...base, oldPrice: 118, newPrice: 121 }).freeze === 'mos-sign-flip', 'decide: MOS พลิกเครื่องหมาย → freeze');
 ok(U.decide({ ...base, oldPrice: 195, newPrice: 205, fv: 300 }).freeze === 'outside-gauge-range', 'decide: หลุด gauge → freeze');

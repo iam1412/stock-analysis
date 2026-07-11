@@ -8,7 +8,7 @@
 <meta name="ai-model" content="Claude Sonnet 4.6">
 <!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) -->
 <script type="application/json" id="stock-meta">
-{"symbol":"BAFS","currency":"THB","price":9.45,"fairValue":7.40,"mos":-27.7,"upside":-21.7,"pe":27.0,"dividendYield":3.49,"roe":2.5}
+{"symbol":"BAFS","currency":"THB","price":10.8,"fairValue":7.4,"mos":-45.9,"upside":-31.5,"pe":27,"dividendYield":3.49,"roe":2.5}
 </script>
 <!--
   report-data: ธีมสี + ข้อมูลกราฟ/gauge ต่อหุ้น
@@ -19,49 +19,48 @@
 <script type="application/json" id="report-data">
 {
   "theme": {
-    "accent":        "#0097a7",
-    "accentDark":    "#006978",
-    "darkGrad":      "linear-gradient(135deg,#004d5e 0%,#006978 60%,#0097a7 100%)",
-    "glow":          "rgba(0,151,167,0.18)",
-    "subColor":      "#b2ebf2",
-    "headerMuted":   "#80deea",
-    "verdictText":   "#e0f7fa",
-    "vcellLabel":    "#4dd0e1",
-    "badge":         "#0097a7",
-    "chgBg":         "var(--green-soft)",
-    "chgColor":      "#1e8e3e"
+    "accent": "#0097a7",
+    "accentDark": "#006978",
+    "darkGrad": "linear-gradient(135deg,#004d5e 0%,#006978 60%,#0097a7 100%)",
+    "glow": "rgba(0,151,167,0.18)",
+    "subColor": "#b2ebf2",
+    "headerMuted": "#80deea",
+    "verdictText": "#e0f7fa",
+    "vcellLabel": "#4dd0e1",
+    "badge": "#0097a7",
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#1e8e3e"
   },
   "chart": {
     "data": [
-      ["มิ.ย. 25", 8.15],
-      ["ก.ค. 25", 8.55],
-      ["ส.ค. 25", 8.50],
-      ["ก.ย. 25", 9.20],
-      ["ต.ค. 25", 9.95],
-      ["พ.ย. 25", 8.80],
-      ["ธ.ค. 25", 8.70],
-      ["ม.ค. 26", 8.60],
-      ["ก.พ. 26", 8.50],
-      ["มี.ค. 26", 8.45],
-      ["เม.ย. 26", 8.45],
-      ["พ.ค. 26", 8.45],
-      ["มิ.ย. 26", 9.45]
+      ["ส.ค.25", 8.45],
+      ["ก.ย.25", 10.2],
+      ["ต.ค.25", 9.65],
+      ["พ.ย.25", 8.7],
+      ["ธ.ค.25", 8.5],
+      ["ม.ค.26", 8.65],
+      ["ก.พ.26", 9.65],
+      ["มี.ค.26", 8.35],
+      ["เม.ย.26", 8.5],
+      ["พ.ค.26", 8.75],
+      ["มิ.ย.26", 10.2],
+      ["ก.ค.26", 10.8]
     ],
-    "min": 7.50,
-    "max": 11.00,
-    "grid": [8.00, 9.00, 10.00],
-    "fairLine": 7.40,
+    "min": 7,
+    "max": 12,
+    "grid": [8, 9, 10, 11],
+    "fairLine": 7.4,
     "currency": "฿",
-    "highlight": [4, 12]
+    "highlight": [7, 11]
   },
   "gauge": {
-    "min": 5.00,
-    "max": 13.00,
-    "cur": 9.45,
-    "fair": 7.40,
+    "min": 5,
+    "max": 13,
+    "cur": 10.8,
+    "fair": 7.4,
     "fairLabelTop": true
   },
-  "fv": 7.40
+  "fv": 7.4
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -81,11 +80,11 @@
     <div class="sub">บริการเติมน้ำมันอากาศยานที่สุวรรณภูมิ &amp; ดอนเมือง • สัมปทาน AOT • ระบบท่อขนส่งเชื้อเพลิง Eastern Pipeline • โซลาร์และพลังงานทดแทน • BAFS Digital Solutions</div>
     <div class="price-row">
       <div>
-        <div class="px">฿9.45<small>(BAFS)</small></div>
+        <div class="px">฿10.80<small>(BAFS)</small></div>
       </div>
-      <div class="chg">▲ +16.0% (รอบปี)</div>
+      <div class="chg">▲ +27.8% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 24 มิ.ย. 2569<br>
+        ราคา ณ 10 ก.ค. 2569<br>
         กรอบ 52 สัปดาห์ ฿7.00 – ฿10.90<br>
         ที่มา: StockAnalysis.com, SET Factsheet, Investing.com
       </div>
@@ -170,7 +169,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿9.45</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿10.80</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿7.40</div></div>
         </div>
         <div class="scale">
@@ -195,7 +194,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict bad">
-        <div class="big">−27.7%</div>
+        <div class="big">−46%</div>
         <div class="txt">ราคาสูงกว่ามูลค่าเหมาะสม — ไม่มี Margin of Safety ณ ราคาปัจจุบัน</div>
       </div>
       <div class="grid g3">
@@ -206,7 +205,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="9.45" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="10.8" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

@@ -6,49 +6,54 @@
 <title>วิเคราะห์หุ้น ASK Auto Sales (ASK) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Sonnet 4.6">
 <script type="application/json" id="stock-meta">
-{"symbol":"ASK","currency":"THB","price":10.60,"fairValue":9.40,"mos":-12.77,"upside":-11.32,"pe":12.29,"dividendYield":3.92,"roe":5.22}
+{"symbol":"ASK","currency":"THB","price":11.9,"fairValue":9.4,"mos":-26.6,"upside":-21,"pe":12.29,"dividendYield":3.92,"roe":5.22}
 </script>
 <script type="application/json" id="report-data">
 {
-  "theme":{
-    "accent":"#00695c",
-    "accentDark":"#004d40",
-    "darkGrad":"linear-gradient(135deg,#004d40 0%,#00695c 60%,#00897b 100%)",
-    "glow":"rgba(0,105,92,0.3)",
-    "subColor":"#b2dfdb",
-    "headerMuted":"rgba(255,255,255,0.6)",
-    "verdictText":"#e0f2f1",
-    "vcellLabel":"rgba(224,242,241,0.7)",
-    "badge":"#00897b",
-    "chgBg":"#2d6a4f",
-    "chgColor":"#d8f3dc"
+  "theme": {
+    "accent": "#00695c",
+    "accentDark": "#004d40",
+    "darkGrad": "linear-gradient(135deg,#004d40 0%,#00695c 60%,#00897b 100%)",
+    "glow": "rgba(0,105,92,0.3)",
+    "subColor": "#b2dfdb",
+    "headerMuted": "rgba(255,255,255,0.6)",
+    "verdictText": "#e0f2f1",
+    "vcellLabel": "rgba(224,242,241,0.7)",
+    "badge": "#00897b",
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#1e8e3e"
   },
-  "chart":{
-    "data":[
-      ["ม.ค. 68",7.30],
-      ["ก.พ. 68",8.80],
-      ["มี.ค. 68",7.75],
-      ["เม.ย. 68",7.10],
-      ["พ.ค. 68",7.30],
-      ["มิ.ย. 68",7.70],
-      ["ก.ค. 68",9.50],
-      ["ส.ค. 68",8.20],
-      ["ก.ย. 68",9.05],
-      ["ต.ค. 68",9.10],
-      ["พ.ย. 68",10.10],
-      ["ธ.ค. 68",10.20],
-      ["ก.ค. 69",10.60]
+  "chart": {
+    "data": [
+      ["ส.ค.25", 7.3],
+      ["ก.ย.25", 8.8],
+      ["ต.ค.25", 7.75],
+      ["พ.ย.25", 7.1],
+      ["ธ.ค.25", 7.3],
+      ["ม.ค.26", 7.7],
+      ["ก.พ.26", 9.5],
+      ["มี.ค.26", 8.2],
+      ["เม.ย.26", 9.05],
+      ["พ.ค.26", 9.1],
+      ["มิ.ย.26", 10.1],
+      ["ก.ค.26", 11.9]
     ],
-    "min":6.50,
-    "max":11.50,
-    "grid":[7.00,8.00,9.00,10.00,11.00],
-    "fairLine":9.40,
-    "currency":"฿",
-    "highlight":[6,10],
-    "gridFmt":"v.toFixed(2)"
+    "min": 6,
+    "max": 14,
+    "grid": [8, 10, 12],
+    "fairLine": 9.4,
+    "currency": "฿",
+    "highlight": [3, 11],
+    "gridFmt": "v.toFixed(2)"
   },
-  "gauge":{"min":6.50,"max":13.00,"cur":10.60,"fair":9.40,"fairLabelTop":true},
-  "fv":9.40
+  "gauge": {
+    "min": 6.5,
+    "max": 13,
+    "cur": 11.9,
+    "fair": 9.4,
+    "fairLabelTop": true
+  },
+  "fv": 9.4
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -68,11 +73,11 @@
     <div class="sub">เช่าซื้อรถยนต์ทุกประเภท (รถบรรทุก/รถพาณิชย์/รถยนต์) • สินเชื่อส่วนบุคคล • Floor Plan • BGPL (เช่าซื้อเครื่องจักร) • SKIB (นายหน้าประกัน)</div>
     <div class="price-row">
       <div>
-        <div class="px">฿10.60<small>(ASK)</small></div>
+        <div class="px">฿11.90<small>(ASK)</small></div>
       </div>
-      <div class="chg">▲ +45.2% (รอบปี)</div>
+      <div class="chg">▲ +63.0% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 3 ก.ค. 2569<br>
+        ราคา ณ 10 ก.ค. 2569<br>
         กรอบ 52 สัปดาห์ ฿6.80 – ฿10.70<br>
         ที่มา: Yahoo Finance API, StockAnalysis.com, Investing.com
       </div>
@@ -150,7 +155,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿10.60</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿11.90</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿9.40</div></div>
         </div>
         <div class="scale">
@@ -172,7 +177,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict bad">
-        <div class="big">−12.8%</div>
+        <div class="big">−27%</div>
         <div class="txt">ราคาปัจจุบันสูงกว่ามูลค่าเหมาะสม — ไม่มี Margin of Safety ณ ระดับนี้</div>
       </div>
       <div class="grid g3">
@@ -183,7 +188,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="10.60" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="11.9" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

@@ -6,22 +6,52 @@
 <title>วิเคราะห์หุ้น Lam Research (LRCX) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Opus 4.8">
 <script type="application/json" id="stock-meta">
-{"symbol":"LRCX","currency":"USD","price":410,"fairValue":290,"mos":-41,"upside":-29.3,"pe":77,"dividendYield":0.27,"roe":67}
+{"symbol":"LRCX","currency":"USD","price":350.33,"fairValue":290,"mos":-20.8,"upside":-17.2,"pe":77,"dividendYield":0.27,"roe":67}
 </script>
 <script type="application/json" id="report-data">
 {
   "theme": {
-    "accent": "#e27727", "accentDark": "#ab5617",
+    "accent": "#e27727",
+    "accentDark": "#ab5617",
     "darkGrad": "linear-gradient(135deg,#3c1d06 0%,#70360b 58%,#b15511 140%)",
-    "glow": "rgba(225,113,30,.35)", "subColor": "#ebd3c2", "headerMuted": "#d4b9a5",
-    "chgBg": "var(--green-soft)", "chgColor": "#1e8e3e", "badge": "var(--blue)",
-    "verdictText": "#f1ded0", "vcellLabel": "#ddbea6"
+    "glow": "rgba(225,113,30,.35)",
+    "subColor": "#ebd3c2",
+    "headerMuted": "#d4b9a5",
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#1e8e3e",
+    "badge": "var(--blue)",
+    "verdictText": "#f1ded0",
+    "vcellLabel": "#ddbea6"
   },
   "chart": {
-    "data": [["ก.ค.25",92],["ก.ย.25",130],["พ.ย.25",185],["ม.ค.26",250],["มี.ค.26",310],["เม.ย.26",350],["พ.ค.26",389],["มิ.ย.26",410]],
-    "min": 60, "max": 440, "grid": [100,150,200,250,300,350,400], "fairLine": 290, "currency": "$", "highlight": [6,7]
+    "data": [
+      ["ส.ค.25", 100.15],
+      ["ก.ย.25", 133.9],
+      ["ต.ค.25", 157.46],
+      ["พ.ย.25", 156],
+      ["ธ.ค.25", 171.18],
+      ["ม.ค.26", 233.46],
+      ["ก.พ.26", 233.89],
+      ["มี.ค.26", 213.66],
+      ["เม.ย.26", 257.86],
+      ["พ.ค.26", 318.18],
+      ["มิ.ย.26", 433.33],
+      ["ก.ค.26", 350.33]
+    ],
+    "min": 0,
+    "max": 500,
+    "grid": [100, 200, 300, 400],
+    "fairLine": 290,
+    "currency": "$",
+    "highlight": [0, 10]
   },
-  "gauge": { "min": 180, "max": 480, "cur": 410, "fair": 290, "fairLabelTop": "-58px" },
+  "gauge": {
+    "min": 180,
+    "max": 480,
+    "cur": 350.33,
+    "fair": 290,
+    "fairLabelTop": "-58px"
+  },
   "fv": 290
 }
 </script>
@@ -42,11 +72,11 @@
     <div class="sub">ผู้นำเครื่องจักรผลิตชิป (Etch &amp; Deposition) • หัวใจของชิป AI ขั้นสูง, HBM และ 3D-NAND</div>
     <div class="price-row">
       <div>
-        <div class="px">$410<small>(LRCX)</small></div>
+        <div class="px">$350.33<small>(LRCX)</small></div>
       </div>
-      <div class="chg">▲ +345.7% (รอบปี)</div>
+      <div class="chg">▲ +249.8% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ≈ 22 มิ.ย. 2026 (ทำจุดสูงสุดใหม่)<br>
+        ราคา ≈ 10 ก.ค. 2026 (ทำจุดสูงสุดใหม่)<br>
         ปิด $409.54 (จาก $389.04) หลัง Wells Fargo ขึ้นเป้าเป็น $450<br>
         ที่มา: Google Finance / StockAnalysis / MarketBeat
       </div>
@@ -127,7 +157,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $410</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $350</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $290</div></div>
         </div>
         <div class="scale">
@@ -150,7 +180,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict bad">
-        <div class="big">−41%</div>
+        <div class="big">−21%</div>
         <div class="txt"><b>ไม่มี Margin of Safety</b><br>ราคาปัจจุบัน $410 สูงกว่ามูลค่าเหมาะสม $290 ราว 41% → ตามเกณฑ์ value investor ถือว่า <b>แพงมาก</b> เป็นการเข้าซื้อที่ peak ของวัฏจักร ไม่มีส่วนเผื่อความปลอดภัย</div>
       </div>
       <div class="grid g3">
@@ -161,7 +191,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="410" step="1">
+          <input id="pxIn" class="mono" type="number" value="350.33" step="1">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -265,7 +295,7 @@
   <div class="disc">
     <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะการ <b>normalize กำไรตามวัฏจักร</b> และสมมติ P/E ออกในแต่ละ scenario ซึ่งเป็นจุดถกเถียงหลักของหุ้นวัฏจักร
-    ราคาหุ้น LRCX มีความผันผวนสูงและอยู่ที่จุดสูงสุดตลอดกาลหลังขึ้น +350% ในปีเดียว ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ตัวเลขปรับ stock split 10:1 (ต.ค. 2024) แล้ว • อ้างอิงราคา ณ 22 มิ.ย. 2026 (Google Finance / StockAnalysis / MarketBeat) และงบ Q3 FY2026 (8-K, มี.ค. 2026)
+    ราคาหุ้น LRCX มีความผันผวนสูงและอยู่ที่จุดสูงสุดตลอดกาลหลังขึ้น +350% ในปีเดียว ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ตัวเลขปรับ stock split 10:1 (ต.ค. 2024) แล้ว • อ้างอิงราคา ณ 10 ก.ค. 2026 (Google Finance / StockAnalysis / MarketBeat) และงบ Q3 FY2026 (8-K, มี.ค. 2026)
   </div>
   <footer>Stock Analysis Dashboard • ข้อมูล ณ 22–23 มิ.ย. 2026 • สร้างด้วย stock-analyzer workflow</footer>
 

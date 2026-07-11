@@ -6,22 +6,52 @@
 <title>วิเคราะห์หุ้น Teradyne (TER) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Opus 4.8">
 <script type="application/json" id="stock-meta">
-{"symbol":"TER","currency":"USD","price":416,"fairValue":340,"mos":-22,"upside":-18.3,"pe":77,"dividendYield":0.12,"roe":28.75}
+{"symbol":"TER","currency":"USD","price":359.6,"fairValue":340,"mos":-5.8,"upside":-5.5,"pe":77,"dividendYield":0.12,"roe":28.75}
 </script>
 <script type="application/json" id="report-data">
 {
   "theme": {
-    "accent": "#1a73e8", "accentDark": "#1557b0",
+    "accent": "#1a73e8",
+    "accentDark": "#1557b0",
     "darkGrad": "linear-gradient(135deg,#1b2a23 0%,#1f3b3a 60%,#0f7a6e 140%)",
-    "glow": "rgba(34,197,170,.35)", "subColor": "#bfe3da", "headerMuted": "#9fd0c5",
-    "chgBg": "var(--green-soft)", "chgColor": "#1e8e3e", "badge": "var(--blue)",
-    "verdictText": "#d4ede6", "vcellLabel": "#a8ccc2"
+    "glow": "rgba(34,197,170,.35)",
+    "subColor": "#bfe3da",
+    "headerMuted": "#9fd0c5",
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#1e8e3e",
+    "badge": "var(--blue)",
+    "verdictText": "#d4ede6",
+    "vcellLabel": "#a8ccc2"
   },
   "chart": {
-    "data": [["มิ.ย.25",95],["ส.ค.25",130],["ต.ค.25",185],["ธ.ค.25",250],["ก.พ.26",300],["เม.ย.26",350],["พ.ค.26",420],["มิ.ย.26",416]],
-    "min": 60, "max": 480, "grid": [100,200,300,400], "fairLine": 340, "currency": "$", "highlight": [6,7]
+    "data": [
+      ["ส.ค.25", 118.24],
+      ["ก.ย.25", 137.64],
+      ["ต.ค.25", 181.76],
+      ["พ.ย.25", 181.89],
+      ["ธ.ค.25", 193.56],
+      ["ม.ค.26", 241.05],
+      ["ก.พ.26", 320.03],
+      ["มี.ค.26", 296.46],
+      ["เม.ย.26", 343.47],
+      ["พ.ค.26", 374.31],
+      ["มิ.ย.26", 483.84],
+      ["ก.ค.26", 359.6]
+    ],
+    "min": 0,
+    "max": 600,
+    "grid": [100, 200, 300, 400, 500],
+    "fairLine": 340,
+    "currency": "$",
+    "highlight": [0, 10]
   },
-  "gauge": { "min": 210, "max": 560, "cur": 416, "fair": 340, "fairLabelTop": "-58px" },
+  "gauge": {
+    "min": 210,
+    "max": 560,
+    "cur": 359.6,
+    "fair": 340,
+    "fairLabelTop": "-58px"
+  },
   "fv": 340
 }
 </script>
@@ -42,11 +72,11 @@
     <div class="sub">เครื่องทดสอบชิป (Semiconductor Test) สำหรับ AI/HBM/SoC + หุ่นยนต์ Cobot (Universal Robots, MiR)</div>
     <div class="price-row">
       <div>
-        <div class="px">$416<small>(TER)</small></div>
+        <div class="px">$359.60<small>(TER)</small></div>
       </div>
-      <div class="chg">▲ +337.9% (รอบปี)</div>
+      <div class="chg">▲ +204.1% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ≈ 23 มิ.ย. 2026 (ผันผวนสูงมาก)<br>
+        ราคา ≈ 10 ก.ค. 2026 (ผันผวนสูงมาก)<br>
         ปิด 22 มิ.ย. $457 · ปิด 18 มิ.ย. $437.92 (ATH)<br>
         ที่มา: StockAnalysis / Yahoo Finance / StockInvest
       </div>
@@ -127,7 +157,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $416</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $360</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $340</div></div>
         </div>
         <div class="scale">
@@ -150,7 +180,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict bad">
-        <div class="big">−22%</div>
+        <div class="big">−6%</div>
         <div class="txt"><b>ไม่มี Margin of Safety</b><br>ราคาปัจจุบัน $416 สูงกว่ามูลค่าเหมาะสม $340 ราว 22% → ตามเกณฑ์ value investor ถือว่า <b>แพง</b> ราคาได้สะท้อน upside ของ AI test ไปมากแล้ว ยังไม่ใช่จุดซื้อที่ปลอดภัย</div>
       </div>
       <div class="grid g3">
@@ -161,7 +191,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="416" step="1">
+          <input id="pxIn" class="mono" type="number" value="359.6" step="1">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

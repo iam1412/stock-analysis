@@ -8,7 +8,7 @@
 <meta name="ai-model" content="Claude Sonnet 4.6">
 <!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
 <script type="application/json" id="stock-meta">
-{"symbol":"THANI","currency":"THB","price":1.84,"fairValue":2.50,"mos":26.4,"upside":35.9,"pe":9.2,"dividendYield":6.0,"roe":8.8}
+{"symbol":"THANI","currency":"THB","price":2.08,"fairValue":2.5,"mos":16.8,"upside":20.2,"pe":9.2,"dividendYield":6,"roe":8.8}
 </script>
 <script type="application/json" id="report-data">
 {
@@ -22,40 +22,39 @@
     "verdictText": "#fbe9e7",
     "vcellLabel": "rgba(251,233,231,0.7)",
     "badge": "#f4511e",
-    "chgBg": "#1e4620",
-    "chgColor": "#81c784"
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#1e8e3e"
   },
   "chart": {
     "data": [
-      ["ก.ค. 68", 1.66],
-      ["ส.ค. 68", 1.93],
-      ["ก.ย. 68", 1.61],
-      ["ต.ค. 68", 1.72],
-      ["พ.ย. 68", 1.65],
-      ["ธ.ค. 68", 1.74],
-      ["ม.ค. 69", 1.76],
-      ["ก.พ. 69", 1.84],
-      ["มี.ค. 69", 1.82],
-      ["เม.ย. 69", 1.80],
-      ["พ.ค. 69", 1.78],
-      ["มิ.ย. 69", 1.81],
-      ["ก.ค. 69", 1.84]
+      ["ส.ค.25", 1.69],
+      ["ก.ย.25", 1.66],
+      ["ต.ค.25", 1.6],
+      ["พ.ย.25", 1.74],
+      ["ธ.ค.25", 1.74],
+      ["ม.ค.26", 1.66],
+      ["ก.พ.26", 1.93],
+      ["มี.ค.26", 1.61],
+      ["เม.ย.26", 1.72],
+      ["พ.ค.26", 1.65],
+      ["มิ.ย.26", 1.74],
+      ["ก.ค.26", 2.08]
     ],
-    "min": 1.45,
-    "max": 2.10,
-    "grid": [1.50, 1.75, 2.00, 2.25],
-    "fairLine": 2.50,
+    "min": 1.5,
+    "max": 2.75,
+    "grid": [1.75, 2, 2.25, 2.5],
+    "fairLine": 2.5,
     "currency": "฿",
-    "highlight": [1, 7]
+    "highlight": [2, 11]
   },
   "gauge": {
-    "min": 1.40,
-    "max": 2.80,
-    "cur": 1.84,
-    "fair": 2.50,
+    "min": 1.4,
+    "max": 2.8,
+    "cur": 2.08,
+    "fair": 2.5,
     "fairLabelTop": true
   },
-  "fv": 2.50
+  "fv": 2.5
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -75,11 +74,11 @@
     <div class="sub">เช่าซื้อรถพาณิชย์/บรรทุก/เกษตร • Non-bank สินเชื่อยานยนต์ • 400+ สาขาทั่วไทย • NPL บริหารดี • ปันผลสม่ำเสมอ 23 ปีติดต่อกัน</div>
     <div class="price-row">
       <div>
-        <div class="px">฿1.84<small>(THANI)</small></div>
+        <div class="px">฿2.08<small>(THANI)</small></div>
       </div>
-      <div class="chg">▲ +10.8% (รอบปี)</div>
+      <div class="chg">▲ +23.1% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 3 ก.ค. 2569<br>
+        ราคา ณ 10 ก.ค. 2569<br>
         กรอบ 52 สัปดาห์ ฿1.40 – ฿2.06<br>
         ที่มา: Yahoo Finance, StockAnalysis, Investing.com
       </div>
@@ -164,7 +163,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿1.84</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿2.08</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿2.50</div></div>
         </div>
         <div class="scale">
@@ -188,7 +187,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict good">
-        <div class="big">+26.4%</div>
+        <div class="big">+17%</div>
         <div class="txt">น่าซื้อ — โซน Value Investor (MOS &gt; 20%)</div>
       </div>
       <div class="grid g3">
@@ -199,7 +198,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="1.84" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="2.08" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -313,7 +312,7 @@
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
     ราคาหุ้นมีความผันผวน ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
     แหล่งข้อมูล: Yahoo Finance (THANI.BK ราคา/กราฟรายเดือน), StockAnalysis.com (งบการเงิน/analyst targets), Investing.com (ราคา/P/BV/ROE cross-verify)
-    · ราคา ณ 3 ก.ค. 2569 · ข้อมูลงบการเงิน TTM Mar 2569
+    · ราคา ณ 10 ก.ค. 2569 · ข้อมูลงบการเงิน TTM Mar 2569
   </div>
   <footer>Stock Analysis Dashboard • ข้อมูล ณ 3 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 

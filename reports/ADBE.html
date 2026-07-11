@@ -6,22 +6,52 @@
 <title>วิเคราะห์หุ้น Adobe (ADBE) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Opus 4.8">
 <script type="application/json" id="stock-meta">
-{"symbol":"ADBE","currency":"USD","price":195,"fairValue":235,"mos":17,"upside":20.5,"pe":11.2,"dividendYield":null,"roe":61}
+{"symbol":"ADBE","currency":"USD","price":223.64,"fairValue":235,"mos":4.8,"upside":5.1,"pe":11.2,"dividendYield":null,"roe":61}
 </script>
 <script type="application/json" id="report-data">
 {
   "theme": {
-    "accent": "#1a73e8", "accentDark": "#1557b0",
+    "accent": "#1a73e8",
+    "accentDark": "#1557b0",
     "darkGrad": "linear-gradient(135deg,#2a0a0a 0%,#7a1010 55%,#d3211a 140%)",
-    "glow": "rgba(255,80,72,.35)", "subColor": "#f0cfcf", "headerMuted": "#e6bcbc",
-    "chgBg": "var(--red-soft)", "chgColor": "#c5221f", "badge": "var(--blue)",
-    "verdictText": "#f0d8d8", "vcellLabel": "#e2b8b8"
+    "glow": "rgba(255,80,72,.35)",
+    "subColor": "#f0cfcf",
+    "headerMuted": "#e6bcbc",
+    "chgBg": "var(--red-soft)",
+    "chgColor": "#c5221f",
+    "badge": "var(--blue)",
+    "verdictText": "#f0d8d8",
+    "vcellLabel": "#e2b8b8"
   },
   "chart": {
-    "data": [["มิ.ย.25",385],["ส.ค.25",350],["ต.ค.25",330],["ธ.ค.25",300],["ก.พ.26",265],["เม.ย.26",225],["พ.ค.26",205],["มิ.ย.26",195]],
-    "min": 160, "max": 410, "grid": [200,250,300,350,400], "fairLine": 235, "currency": "$", "highlight": [0,7]
+    "data": [
+      ["ส.ค.25", 356.7],
+      ["ก.ย.25", 352.75],
+      ["ต.ค.25", 340.31],
+      ["พ.ย.25", 320.13],
+      ["ธ.ค.25", 349.99],
+      ["ม.ค.26", 293.25],
+      ["ก.พ.26", 262.41],
+      ["มี.ค.26", 243.08],
+      ["เม.ย.26", 246.1],
+      ["พ.ค.26", 259.21],
+      ["มิ.ย.26", 205.02],
+      ["ก.ค.26", 223.64]
+    ],
+    "min": 150,
+    "max": 400,
+    "grid": [200, 250, 300, 350],
+    "fairLine": 235,
+    "currency": "$",
+    "highlight": [0, 10]
   },
-  "gauge": { "min": 150, "max": 480, "cur": 195, "fair": 235, "fairLabelTop": "-58px" },
+  "gauge": {
+    "min": 150,
+    "max": 480,
+    "cur": 223.64,
+    "fair": 235,
+    "fairLabelTop": "-58px"
+  },
   "fv": 235
 }
 </script>
@@ -42,11 +72,11 @@
     <div class="sub">ผู้นำซอฟต์แวร์สร้างสรรค์ • Creative Cloud, Express, Acrobat, Firefly (Generative AI)</div>
     <div class="price-row">
       <div>
-        <div class="px">$195<small>(ADBE)</small></div>
+        <div class="px">$223.64<small>(ADBE)</small></div>
       </div>
-      <div class="chg">▼ −49.4% (รอบปี)</div>
+      <div class="chg">▼ −37.3% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ≈ 22 มิ.ย. 2026 (ปิด $194.90)<br>
+        ราคา ≈ 10 ก.ค. 2026 (ปิด $194.90)<br>
         ใกล้จุดต่ำสุด 52 สัปดาห์ ($190.12)<br>
         ที่มา: StockAnalysis / Robinhood / Yahoo Finance
       </div>
@@ -128,7 +158,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $195</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $224</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $235</div></div>
         </div>
         <div class="scale">
@@ -151,7 +181,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict ok">
-        <div class="big">+17%</div>
+        <div class="big">+5%</div>
         <div class="txt"><b>มี Margin of Safety พอควร</b><br>ราคาปัจจุบัน $195 ต่ำกว่ามูลค่าเหมาะสม $235 ราว 17% → ตามเกณฑ์ value investor ถือว่า <b>เริ่มน่าสนใจ</b> เข้าโซนทยอยสะสมได้ แต่ยังไม่ถึงระดับ deep value (MOS &ge; 30%)</div>
       </div>
       <div class="grid g3">
@@ -162,7 +192,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="195" step="1">
+          <input id="pxIn" class="mono" type="number" value="223.64" step="1">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

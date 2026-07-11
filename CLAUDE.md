@@ -146,7 +146,7 @@ Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>
 
 GitHub Actions (`.github/workflows/update-prices.yml`) รัน `tools/update-prices.js` ทุกวัน 07:17 น. ไทย —
 ดึงราคา Yahoo มา patch **เฉพาะตัวเลขโครงสร้าง** (ราคา header + วันที่ราคา + กราฟ 13 จุด + ป้าย % รอบปี + gauge.cur + MOS + pxIn + stock-meta) แล้ว verify + push เอง · **ไม่แตะ prose/EPS/FV** · `updated` (วันที่วิเคราะห์) คงเดิมผ่าน preserve-dates
-- ตัวที่ขยับแรง (ต่าง >10% / MOS พลิกเครื่องหมาย / หลุด gauge / สงสัย split) → **freeze** ลง `price-flags.json` + GitHub Issue รอ re-analysis
+- ตัวที่ขยับแรง (ต่าง >15% / MOS พลิกเครื่องหมาย / หลุด gauge / สงสัย split) → **freeze** ลง `price-flags.json` + GitHub Issue รอ re-analysis
 - **"เคลียร์คิว price-flags"** = อ่าน `price-flags.json` → re-analysis ตาม §3 ทุกกติกาเดิม (flag หายเองเมื่อรายงานสดแล้ว)
 - รายละเอียด/debug → `docs/price-refresh.md`
 

@@ -6,22 +6,52 @@
 <title>วิเคราะห์หุ้น Autodesk (ADSK) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Opus 4.8">
 <script type="application/json" id="stock-meta">
-{"symbol":"ADSK","currency":"USD","price":187.62,"fairValue":246,"mos":24,"upside":31.1,"pe":15,"dividendYield":0,"roe":50}
+{"symbol":"ADSK","currency":"USD","price":208.45,"fairValue":246,"mos":15.3,"upside":18,"pe":15,"dividendYield":0,"roe":50}
 </script>
 <script type="application/json" id="report-data">
 {
   "theme": {
-    "accent": "#1daced", "accentDark": "#0f80b3",
+    "accent": "#1daced",
+    "accentDark": "#0f80b3",
     "darkGrad": "linear-gradient(135deg,#042c3e 0%,#075273 58%,#0c81b6 140%)",
-    "glow": "rgba(19,168,236,.35)", "subColor": "#c2deeb", "headerMuted": "#a5c5d4",
-    "chgBg": "var(--red-soft)", "chgColor": "#c5221f", "badge": "var(--blue)",
-    "verdictText": "#d0e7f1", "vcellLabel": "#a6ccdd"
+    "glow": "rgba(19,168,236,.35)",
+    "subColor": "#c2deeb",
+    "headerMuted": "#a5c5d4",
+    "chgBg": "var(--red-soft)",
+    "chgColor": "#c5221f",
+    "badge": "var(--blue)",
+    "verdictText": "#d0e7f1",
+    "vcellLabel": "#a6ccdd"
   },
   "chart": {
-    "data": [["มิ.ย.25",300],["ส.ค.25",325],["ต.ค.25",310],["ธ.ค.25",280],["ก.พ.26",255],["เม.ย.26",215],["พ.ค.26",200],["มิ.ย.26",188]],
-    "min": 160, "max": 345, "grid": [180,220,260,300,340], "fairLine": 246, "currency": "$", "highlight": [1,7]
+    "data": [
+      ["ส.ค.25", 314.7],
+      ["ก.ย.25", 317.67],
+      ["ต.ค.25", 301.34],
+      ["พ.ย.25", 303.34],
+      ["ธ.ค.25", 296.01],
+      ["ม.ค.26", 252.87],
+      ["ก.พ.26", 245.87],
+      ["มี.ค.26", 239.4],
+      ["เม.ย.26", 237],
+      ["พ.ค.26", 231.31],
+      ["มิ.ย.26", 194.42],
+      ["ก.ค.26", 208.45]
+    ],
+    "min": 150,
+    "max": 350,
+    "grid": [200, 250, 300],
+    "fairLine": 246,
+    "currency": "$",
+    "highlight": [1, 10]
   },
-  "gauge": { "min": 150, "max": 470, "cur": 187.62, "fair": 246, "fairLabelTop": "-58px" },
+  "gauge": {
+    "min": 150,
+    "max": 470,
+    "cur": 208.45,
+    "fair": 246,
+    "fairLabelTop": "-58px"
+  },
   "fv": 246
 }
 </script>
@@ -42,11 +72,11 @@
     <div class="sub">ซอฟต์แวร์ออกแบบ & ผลิต • AutoCAD, Revit, Fusion, Construction Cloud + Autodesk AI (generative design)</div>
     <div class="price-row">
       <div>
-        <div class="px">$187.62<small>(ADSK)</small></div>
+        <div class="px">$208.45<small>(ADSK)</small></div>
       </div>
-      <div class="chg">▼ −37.3% (รอบปี)</div>
+      <div class="chg">▼ −33.8% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 23 มิ.ย. 2026 (14:55 ET)<br>
+        ราคา ณ 10 ก.ค. 2026 (14:55 ET)<br>
         ปิดก่อนหน้า $187.72 • ช่วง 52 สัปดาห์ $185.50–$329.09<br>
         ที่มา: StockAnalysis.com / Yahoo Finance / MarketBeat
       </div>
@@ -127,7 +157,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $188</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $208</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $246</div></div>
         </div>
         <div class="scale">
@@ -150,7 +180,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict good">
-        <div class="big">+24%</div>
+        <div class="big">+15%</div>
         <div class="txt"><b>มี Margin of Safety พอสมควร</b><br>ราคาปัจจุบัน $187.62 ต่ำกว่ามูลค่าเหมาะสม $246 ราว 24% → ตามเกณฑ์ value investor ถือว่า <b>อยู่ในโซนน่าสนใจ</b> สำหรับทยอยสะสม (ยังไม่ถึง deep value)</div>
       </div>
       <div class="grid g3">
@@ -161,7 +191,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="187.62" step="1">
+          <input id="pxIn" class="mono" type="number" value="208.45" step="1">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

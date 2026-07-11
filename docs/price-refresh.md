@@ -45,7 +45,7 @@ git commit -F …                    # title: price: refresh N symbols (YYYY-MM-
 
 | reason | เงื่อนไข |
 |---|---|
-| `drift-gt-10pct` | ราคาใหม่ต่างจากในรายงาน >10% — prose ("จากจุดเข้า $X", "แพง ~Y%") จะผิดความหมาย |
+| `drift-gt-15pct` | ราคาใหม่ต่างจากในรายงาน >15% (เดิม 10% — ขยับ 2026-07-11 ลดภาระ re-analysis) — prose ("จากจุดเข้า $X", "แพง ~Y%") จะผิดความหมาย |
 | `mos-sign-flip` | MOS พลิกเครื่องหมาย — คำตัดสิน "แพง/ถูก" + สี/class กล่อง MOS ผิดทันทีแม้ขยับนิดเดียว |
 | `outside-gauge-range` | ราคาหลุดช่วง gauge min–max — เข็ม section 4 ตกขอบ |
 | `suspect-split-or-data` | ต่าง >25% — สงสัย split / เปลี่ยน ticker / ข้อมูลเพี้ยน |
@@ -67,5 +67,5 @@ npm run test:prices                      # unit test offline (fixture AAPL + moc
 
 หมายเหตุ:
 - วันที่ราคา = วันของ `regularMarketTime` ตาม timezone ตลาด (เสาร์-อาทิตย์ได้วันศุกร์จริง ไม่แต่งวันที่) · คงรูปแบบปี พ.ศ./ค.ศ. ตามไฟล์เดิม
-- ราคา/MOS ขยับได้สูงสุด 10% ต่อการอัปเดต → prose ที่เขียน "~" คลาดเคลื่อนในกรอบยอมรับได้ (tradeoff ที่ตั้งใจ)
+- ราคา/MOS ขยับได้สูงสุด 15% ต่อการอัปเดต → prose ที่เขียน "~" คลาดเคลื่อนในกรอบยอมรับได้ (tradeoff ที่ตั้งใจ)
 - ถ้า Yahoo บล็อก IP ของ GitHub Actions ถี่ ๆ: เพิ่ม `FETCH_DELAY_MS` ใน script หรือย้ายไป self-hosted runner
