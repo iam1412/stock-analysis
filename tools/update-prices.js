@@ -266,6 +266,18 @@ function mergeFlags(prev, processed, newFlags) {
   return kept.concat(fresh).sort((a, b) => a.symbol.localeCompare(b.symbol));
 }
 
+// ---------- commit body (log ถาวรต่อหุ้นใน git history) ----------
+// บรรทัดต่อหุ้นที่เปลี่ยน + ตัวที่ freeze — workflow เอาไปต่อท้าย commit message (git commit -F)
+function commitBody(updated, frozen) {
+  const fmt = (x) => `${x.symbol} ${x.old} → ${x.new} (${x.diffPct > 0 ? '+' : ''}${x.diffPct}%)`;
+  const lines = updated.map(fmt);
+  if (frozen.length) {
+    lines.push('');
+    for (const f of frozen) lines.push(`freeze ${f.symbol} [${f.reason}]${f.marketPrice != null ? ` ${f.reportPrice} → ${f.marketPrice} (${f.diffPct > 0 ? '+' : ''}${f.diffPct}%)` : ''}`);
+  }
+  return lines.join('\n');
+}
+
 // ---------- main ----------
 async function main() {
   const WRITE = process.argv.includes('--write');
@@ -327,7 +339,7 @@ async function main() {
       const r = patchReport(html, { newPrice: q.price, dateParts, chartData });
       if (!r.changed) { skipped.push(symbol); continue; }
       if (WRITE) fs.writeFileSync(fp, r.html);
-      updated.push(symbol);
+      updated.push({ symbol, old: sm.price, new: round(q.price, 2), diffPct });
       console.log(`${WRITE ? '✓' : '·'} ${symbol.padEnd(10)} ${sm.price} → ${round(q.price, 2)} (${diffPct > 0 ? '+' : ''}${diffPct}%) · ${r.chg.text} · MOS ${r.mos}%`);
     } catch (e) {
       frozen.push({ symbol, reason: 'patch-failed', detail: e.message, reportPrice: sm.price, marketPrice: round(q.price, 2), diffPct });
@@ -338,6 +350,10 @@ async function main() {
   // เขียน flags (เฉพาะ --write — dry-run ไม่ทิ้งร่องรอย)
   const flags = mergeFlags(loadFlags(), new Set(files.map((f) => f.replace(/\.html$/i, ''))), frozen.concat(failed.map((x) => ({ ...x, reportPrice: null, marketPrice: null, diffPct: null }))));
   if (WRITE) fs.writeFileSync(FLAGS, JSON.stringify(flags, null, 2) + '\n');
+
+  // log ต่อหุ้นสำหรับ commit body (ถาวรใน git history — Actions log หายใน ~90 วัน)
+  if (WRITE && process.env.PRICE_COMMIT_BODY)
+    fs.writeFileSync(process.env.PRICE_COMMIT_BODY, commitBody(updated, frozen) + '\n');
 
   const line = `${WRITE ? 'เขียนแล้ว' : '[dry-run]'} อัปเดต ${updated.length} · ไม่เปลี่ยน ${skipped.length} · freeze ${frozen.length} · error ${failed.length} (ทั้งหมด ${files.length})`;
   console.log('\n' + line);
@@ -352,6 +368,6 @@ async function main() {
   if (!WRITE) console.log('ใส่ --write เพื่อเขียนจริง');
 }
 
-module.exports = { fmtPrice, fmtLike, toYahooSymbol, buildChartData, niceBounds, annualChg, decide, patchReport, mergeFlags, styledRD };
+module.exports = { fmtPrice, fmtLike, toYahooSymbol, buildChartData, niceBounds, annualChg, decide, patchReport, mergeFlags, styledRD, commitBody };
 
 if (require.main === module) main().catch((e) => { console.error(e); process.exit(1); });
