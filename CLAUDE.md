@@ -4,7 +4,7 @@
 deploy อัตโนมัติบน **Cloudflare Workers (Static Assets)** ผ่านการเชื่อม GitHub
 
 > **รายละเอียดลึกแยกไปไฟล์อ้างอิง** (อ่านเมื่อต้องใช้ ไม่โหลดทุก session):
-> `docs/quality-gate.md` (gate ทีละ error) · `docs/templates.md` (content-only template) · `docs/counters.md` (view/vote infra) · `_template/agent-prompt.md` (prompt worker ต่อหุ้น) · `DEPLOY.md` (Cloudflare)
+> `docs/quality-gate.md` (gate ทีละ error) · `docs/templates.md` (content-only template) · `docs/counters.md` (view/vote infra) · `docs/price-refresh.md` (cron ราคา) · `_template/agent-prompt.md` (prompt worker ต่อหุ้น) · `DEPLOY.md` (Cloudflare)
 
 ---
 
@@ -142,7 +142,15 @@ Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>
 
 ---
 
-## 9. Template system + counters (สรุป)
+## 9. Price refresh อัตโนมัติ (cron)
+
+GitHub Actions (`.github/workflows/update-prices.yml`) รัน `tools/update-prices.js` ทุกวัน 07:17 น. ไทย —
+ดึงราคา Yahoo มา patch **เฉพาะตัวเลขโครงสร้าง** (ราคา header + วันที่ราคา + กราฟ 13 จุด + ป้าย % รอบปี + gauge.cur + MOS + pxIn + stock-meta) แล้ว verify + push เอง · **ไม่แตะ prose/EPS/FV** · `updated` (วันที่วิเคราะห์) คงเดิมผ่าน preserve-dates
+- ตัวที่ขยับแรง (ต่าง >10% / MOS พลิกเครื่องหมาย / หลุด gauge / สงสัย split) → **freeze** ลง `price-flags.json` + GitHub Issue รอ re-analysis
+- **"เคลียร์คิว price-flags"** = อ่าน `price-flags.json` → re-analysis ตาม §3 ทุกกติกาเดิม (flag หายเองเมื่อรายงานสดแล้ว)
+- รายละเอียด/debug → `docs/price-refresh.md`
+
+## 10. Template system + counters (สรุป)
 
 - **รายงาน = content-only template** — CSS/engine อยู่ใน `_template/` build `expandReport()` inject ตอน build · ไฟล์เก็บแค่ `report-data` (กราฟ/gauge/theme) + เนื้อหา 8 section · เริ่มจาก `_template/skeleton-{th,us}.html` · สีแบรนด์ต่อหุ้น (`tools/seeds.json` + `brandtheme.js`) → **`docs/templates.md`**
 - **view/vote counters** = Worker + Durable Object (`src/worker.js`) inject ตอน build เฉพาะ `dist/` → **`docs/counters.md`** + `DEPLOY.md`

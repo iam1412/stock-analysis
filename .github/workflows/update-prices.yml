@@ -1,0 +1,90 @@
+# Cron อัปเดตราคาหุ้น + วันที่ราคา ลง reports/*.html ทุกวัน (07:17 น. ไทย)
+# รายละเอียด: docs/price-refresh.md · ตัวรัน: tools/update-prices.js (deterministic ไม่มี LLM)
+# push เข้า main → Cloudflare Workers Builds deploy เว็บให้เองตามปกติ
+name: price-refresh
+
+on:
+  schedule:
+    - cron: '17 0 * * *' # 00:17 UTC = 07:17 Asia/Bangkok (หลังตลาด US ปิด + ได้ราคาปิด SET ล่าสุด)
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+  issues: write
+
+concurrency:
+  group: price-refresh
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Unit test ตัวอัปเดต (offline canary)
+        run: npm run test:prices
+
+      - name: ดึงราคา + patch รายงาน
+        run: node tools/update-prices.js --write
+
+      - name: Build + คงวันที่วิเคราะห์เดิม (ราคา refresh ไม่ใช่ re-analysis)
+        run: |
+          npm run build
+          node tools/preserve-dates.js
+          npm run build
+
+      - name: Quality gate 6 ขั้น
+        run: npm run verify
+
+      - name: Commit + push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then echo "ไม่มีอะไรเปลี่ยน — ข้าม commit"; exit 0; fi
+          n=$(git diff --cached --name-only -- 'reports/*.html' | wc -l | tr -d ' ')
+          git commit -m "price: refresh ${n} symbols ($(TZ=Asia/Bangkok date +%Y-%m-%d))"
+          for i in 1 2 3; do
+            git pull --rebase origin main && git push origin HEAD:main && exit 0
+            echo "push ชนกับ session อื่น — retry ($i/3)"
+            git rebase --abort 2>/dev/null || true
+            sleep 20
+          done
+          echo "push ไม่สำเร็จหลัง retry 3 รอบ — ปล่อยให้รอบ cron ถัดไปจัดการ"
+          exit 1
+
+      - name: อัปเดต issue คิว re-analysis (price-flags)
+        if: always()
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TITLE="Price-refresh flags — หุ้นรอ re-analysis"
+          num=$(gh issue list --state open --search "in:title \"$TITLE\"" --json number --jq '.[0].number' || echo "")
+          count=$(node -e 'try{console.log(require("./price-flags.json").length)}catch(e){console.log(0)}')
+          if [ "$count" = "0" ]; then
+            [ -n "$num" ] && gh issue close "$num" --comment "คิวเคลียร์หมดแล้ว ✅ (ปิดอัตโนมัติโดย price-refresh)"
+            exit 0
+          fi
+          body=$(node -e '
+            const f = require("./price-flags.json");
+            const rows = f.map(x => `| ${x.symbol} | ${x.reason} | ${x.reportPrice ?? "-"} | ${x.marketPrice ?? "-"} | ${x.diffPct != null ? x.diffPct + "%" : "-"} | ${x.flaggedAt} |`);
+            console.log([
+              "หุ้นที่ cron **ไม่กล้าอัปเดตอัตโนมัติ** (ราคาขยับแรง/ข้อมูลผิดปกติ) — ต้อง re-analysis ด้วย bulk workflow (§3):",
+              "", "| Symbol | เหตุผล | ราคาในรายงาน | ราคาตลาด | ต่าง | ตั้งแต่ |", "|---|---|---|---|---|---|",
+              ...rows, "",
+              "เคลียร์คิว: เปิด session แล้วสั่ง \"เคลียร์คิว price-flags\" — flag จะหายเองเมื่อรายงานถูก re-analyze แล้ว",
+              "_(อัปเดตอัตโนมัติโดย workflow price-refresh ทุกรอบ)_",
+            ].join("\n"));
+          ')
+          if [ -n "$num" ]; then
+            gh issue edit "$num" --body "$body"
+          else
+            gh issue create --title "$TITLE" --body "$body"
+          fi
