@@ -4,12 +4,56 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>วิเคราะห์หุ้น Axon Enterprise (AXON) — Stock Analysis Dashboard</title>
-<meta name="ai-model" content="Claude Sonnet 4.6">
+<meta name="ai-model" content="Claude Sonnet 5">
 <script type="application/json" id="stock-meta">
-{"symbol":"AXON","currency":"USD","price":464.83,"fairValue":440,"mos":-5.6,"upside":-5.3,"pe":67.9,"dividendYield":null,"roe":6.76}
+{"symbol":"AXON","currency":"USD","price":565.8,"fairValue":449,"mos":-26,"upside":-20.6,"pe":80.8,"dividendYield":null,"roe":6.76}
 </script>
 <script type="application/json" id="report-data">
-{"theme":{"accent":"#E0A000","accentDark":"#A87800","darkGrad":"linear-gradient(135deg, #120D00 0%, #241A00 100%)","glow":"rgba(224,160,0,0.35)","subColor":"#F0C040","headerMuted":"rgba(224,160,0,0.12)","verdictText":"#F5E4B0","vcellLabel":"rgba(245,228,176,0.6)","badge":"#E0A000","chgBg":"rgba(239,68,68,0.15)","chgColor":"#EF4444"},"chart":{"data":[["ก.ค. 68",755.49],["ส.ค. 68",747.29],["ก.ย. 68",717.64],["ต.ค. 68",732.23],["พ.ย. 68",540.14],["ธ.ค. 68",567.93],["ม.ค. 69",483.58],["ก.พ. 69",542.40],["มี.ค. 69",424.69],["เม.ย. 69",401.76],["พ.ค. 69",448.72],["มิ.ย. 69",464.83]],"min":380,"max":770,"grid":[450,570,690],"fairLine":440,"currency":"$","highlight":[9]},"gauge":{"min":360,"max":680,"cur":464.83,"fair":440,"fairLabelTop":false},"fv":440}
+{
+  "theme": {
+    "accent": "#E0A000",
+    "accentDark": "#A87800",
+    "darkGrad": "linear-gradient(135deg, #120D00 0%, #241A00 100%)",
+    "glow": "rgba(224,160,0,0.35)",
+    "subColor": "#F0C040",
+    "headerMuted": "rgba(224,160,0,0.12)",
+    "verdictText": "#F5E4B0",
+    "vcellLabel": "rgba(245,228,176,0.6)",
+    "badge": "#E0A000",
+    "chgBg": "var(--red-soft)",
+    "chgColor": "#c5221f"
+  },
+  "chart": {
+    "data": [
+      ["ส.ค.25", 747.29],
+      ["ก.ย.25", 717.64],
+      ["ต.ค.25", 732.23],
+      ["พ.ย.25", 540.14],
+      ["ธ.ค.25", 567.93],
+      ["ม.ค.26", 483.58],
+      ["ก.พ.26", 542.4],
+      ["มี.ค.26", 424.69],
+      ["เม.ย.26", 401.76],
+      ["พ.ค.26", 448.72],
+      ["มิ.ย.26", 560.61],
+      ["ก.ค.26", 565.8]
+    ],
+    "min": 300,
+    "max": 800,
+    "grid": [400, 500, 600, 700],
+    "fairLine": 449,
+    "currency": "$",
+    "highlight": [0, 8]
+  },
+  "gauge": {
+    "min": 360,
+    "max": 680,
+    "cur": 565.8,
+    "fair": 449,
+    "fairLabelTop": false
+  },
+  "fv": 449
+}
 </script>
 <!--TEMPLATE:STYLE-->
 </head>
@@ -28,11 +72,11 @@
     <div class="sub">อุปกรณ์ TASER (ปืนช็อตไฟฟ้า) • กล้องติดตัวตำรวจ body camera • ซอฟต์แวร์คลาวด์ Axon Evidence/Records • AI &amp; Real-time Operations สำหรับหน่วยงานความปลอดภัย</div>
     <div class="price-row">
       <div>
-        <div class="px">$464.83<small>(AXON)</small></div>
+        <div class="px">$565.80<small>(AXON)</small></div>
       </div>
-      <div class="chg">▼ −38.5% (รอบปี)</div>
+      <div class="chg">▼ −24.3% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 26 มิ.ย. 2569<br>
+        ราคา ณ 10 ก.ค. 2569<br>
         กรอบ 52 สัปดาห์ $339.01 / $885.92<br>
         ที่มา: StockAnalysis.com / Yahoo Finance / Axon Investor Relations / Macrotrends
       </div>
@@ -41,27 +85,27 @@
 
   <!-- ===== 1. KEY METRICS ===== -->
   <section>
-    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ มิ.ย. 2569 · non-GAAP adj EPS ใช้เป็นฐานหลัก (SBC สูง)</div></div>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ก.ค. 2569 · หลังงบ Q1 FY2569 + ปรับเป้ารายได้ทั้งปีขึ้น · non-GAAP adj EPS ใช้เป็นฐานหลัก (SBC สูง)</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">~$30.9B</div><div class="d">diluted shares ~66.5M</div></div>
-      <div class="metric"><div class="k">P/E (non-GAAP, TTM)</div><div class="v neu">~67.9x</div><div class="d">adj EPS $6.85 · GAAP P/E ~187x (SBC สูง)</div></div>
-      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">80–120x</div><div class="d">de-rating จาก peak 150x+ ปี 67</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">~9.0x</div><div class="d">BVPS ~$51 · ROE ต่ำเพราะ SBC</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~$37.6B</div><div class="d">diluted shares ~66.5M</div></div>
+      <div class="metric"><div class="k">P/E (non-GAAP, TTM)</div><div class="v neu">~80.8x</div><div class="d">adj EPS $7.00 · GAAP P/E ~227x (SBC สูง)</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">80–120x</div><div class="d">กลับขึ้นแตะกรอบบนหลังรีบาวด์แรง</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">~11.1x</div><div class="d">BVPS ~$51 · ROE ต่ำเพราะ SBC</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ FY2568</div><div class="v">~$100M (GAAP)</div><div class="d">EPS GAAP $1.51 · adj net ~$450M+</div></div>
-      <div class="metric"><div class="k">EPS (non-GAAP, TTM)</div><div class="v">~$6.85</div><div class="d">GAAP EPS $2.49 (SBC กด กำไร)</div></div>
+      <div class="metric"><div class="k">EPS (non-GAAP, TTM)</div><div class="v">~$7.00</div><div class="d">GAAP EPS $2.49 (SBC กด กำไร) · Q1/69 adj EPS $1.61 (+9.5% YoY)</div></div>
       <div class="metric"><div class="k">BVPS</div><div class="v">~$51</div><div class="d">book value เติบโตตาม retained earnings</div></div>
       <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~6.8% / 3.4%</div><div class="d">ต่ำตามบัญชี — SBC+ลงทุน AI กด net income</div></div>
 
-      <div class="metric"><div class="k">รายได้ FY2568 (TTM)</div><div class="v neu">$2.78B</div><div class="d">+34% YoY · CAGR 5 ปี ~34%</div></div>
+      <div class="metric"><div class="k">รายได้ Q1/2569</div><div class="v neu">$807M</div><div class="d">+34% YoY · เป้าปี 2569 ปรับขึ้นเป็น +30–32% (จาก +27–30%)</div></div>
       <div class="metric"><div class="k">Gross Margin</div><div class="v">59.7%</div><div class="d">Software 75%+ · Hardware ต่ำกว่า blended</div></div>
       <div class="metric"><div class="k">เงินปันผล</div><div class="v">ไม่มี</div><div class="d">ไม่จ่ายปันผล — ลงทุน R&amp;D / AI</div></div>
-      <div class="metric"><div class="k">Beta</div><div class="v">~1.4</div><div class="d">ผันผวนสูง · ราคาร่วง −38% รอบปี</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">~1.4</div><div class="d">ผันผวนสูง · รีบาวด์ +21.7% ใน ~2 สัปดาห์</div></div>
 
-      <div class="metric"><div class="k">ARR (Annual Recurring Revenue)</div><div class="v pos">$1.35B</div><div class="d">+35% YoY · Net Revenue Retention 125%</div></div>
-      <div class="metric"><div class="k">Backlog</div><div class="v">$14.4B</div><div class="d">รายได้ที่รอรับรู้ในอนาคต (~5x ARR)</div></div>
+      <div class="metric"><div class="k">ARR (Annual Recurring Revenue)</div><div class="v pos">$1.5B</div><div class="d">+35% YoY · Net Revenue Retention 125%</div></div>
+      <div class="metric"><div class="k">Backlog</div><div class="v">$14.3B</div><div class="d">+44% YoY · รายได้ที่รอรับรู้ในอนาคต (~9.5x ARR)</div></div>
       <div class="metric"><div class="k">Software &amp; Services</div><div class="v">43%</div><div class="d">TASER 33% · Sensors 14% · Platform 10%</div></div>
-      <div class="metric"><div class="k">เป้าเฉลี่ย Analyst</div><div class="v pos">$662</div><div class="d">20 ราย · upside +42% จากราคาปัจจุบัน</div></div>
+      <div class="metric"><div class="k">เป้าเฉลี่ย Analyst</div><div class="v pos">$670</div><div class="d">consensus · upside +18.5% จากราคาปัจจุบัน · Needham ปรับเป้าขึ้นเป็น $750</div></div>
     </div>
   </section>
 
@@ -74,11 +118,11 @@
       </div>
       <div class="legend">
         <span><i style="background:#E0A000"></i>ราคา AXON</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $440</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $449</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
-        ราคา AXON ในรอบปีที่ผ่านมา (ก.ค. 2568 – มิ.ย. 2569) ร่วงลงอย่างหนัก −38.5% จากจุดสูง ~$755 ลงมาแตะ $401.76 ในช่วง เม.ย. 2569 (จุด highlight) ซึ่งเป็นจุดต่ำสุดรอบปี — เกิดจากการ de-rating หุ้นเติบโต high-multiple ในภาวะดอกเบี้ยสูง และความกังวลด้านการใช้จ่ายงบประมาณภาครัฐสหรัฐฯ ราคาฟื้นกลับบางส่วนมาที่ $464.83 ณ ปัจจุบัน แต่ยังคงต่ำกว่าช่วงต้นปีอย่างมีนัยสำคัญ มูลค่าเหมาะสมที่ $440 อยู่ใกล้กับราคาปัจจุบัน
+        ราคา AXON ในรอบปีที่ผ่านมา (ส.ค. 2568 – ก.ค. 2569) ร่วงลงหนักจากจุดสูง ~$747 สู่จุดต่ำสุด $401.76 ในเดือน เม.ย. 2569 จากการ de-rating หุ้นเติบโต high-multiple ในภาวะดอกเบี้ยสูง ก่อนพลิกฟื้นตัวแรงในช่วง มิ.ย.–ก.ค. 2569 ขึ้นมาแตะ $565.80 (+21.7% ในราว 2 สัปดาห์) — แรงหนุนจากข่าวขยายสัญญากับ Los Angeles Police Department (เพิ่มเป็น ~$22M/ปี) รายได้ Dedrone counter-drone โตราว 300% ตามดีมานด์รักษาความปลอดภัยฟุตบอลโลก และบริษัทปรับเป้ารายได้ปี 2569 ขึ้นเป็น +30–32% (จากเดิม +27–30%) ปัจจัยพื้นฐานดีขึ้นจริงแต่ราคาน่าจะวิ่งนำหน้าไปมากกว่านั้น — มูลค่าเหมาะสมใหม่ $449 ต่ำกว่าราคาปัจจุบันพอสมควร
       </p>
     </div>
   </section>
@@ -88,23 +132,23 @@
     <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี · ใช้ non-GAAP adj EPS เป็นฐาน</div></div>
     <div class="card">
       <div class="vmethod">
-        <div><div class="mname">1. P/E Valuation (non-GAAP TTM)</div><div class="mdesc">adj EPS (TTM) $6.85 × P/E เป้าหมาย ~50x — สมเหตุสมผลสำหรับ growth สูง แต่ de-rate จาก peak; ตัด SBC ออกแล้ว</div></div>
-        <div class="mval">$342.50</div>
+        <div><div class="mname">1. P/E Valuation (non-GAAP TTM)</div><div class="mdesc">adj EPS (TTM) $7.00 × P/E เป้าหมาย ~50x — สมเหตุสมผลสำหรับ growth สูง แต่ de-rate จาก peak; ตัด SBC ออกแล้ว</div></div>
+        <div class="mval">$350.00</div>
       </div>
       <div class="vmethod">
-        <div><div class="mname">2. Forward P/E (FY2569E)</div><div class="mdesc">adj EPS FY26E ~$8.50 × Forward P/E 52x — นักวิเคราะห์คาด EPS โต +24% YoY; multiple ปรับลดจาก TTM เพราะ visibility สูงขึ้น</div></div>
-        <div class="mval">$442.00</div>
+        <div><div class="mname">2. Forward P/E (FY2569E)</div><div class="mdesc">adj EPS FY26E ~$8.70 × Forward P/E 52x — ปรับเพิ่มจากเดิมหลังบริษัทปรับเป้ารายได้ปี 2569 ขึ้นเป็น +30–32%; multiple ปรับลดจาก TTM เพราะ visibility สูงขึ้น</div></div>
+        <div class="mval">$452.40</div>
       </div>
       <div class="vmethod">
-        <div><div class="mname">3. Growth-DCF / EV-Sales</div><div class="mdesc">DCF อิง Revenue CAGR 25% (5 ปี) → 15% (ปลาย), EBIT margin ขยายสู่ 20%+, WACC 10% · EV/Sales cross-check ~19x FY26E Rev $3.4B ≈ EV $64B</div></div>
-        <div class="mval">$535.00</div>
+        <div><div class="mname">3. Growth-DCF / EV-Sales</div><div class="mdesc">DCF อิง Revenue CAGR 26% (5 ปี, ปรับขึ้นจากเดิม 25% ตามเป้ารายได้ใหม่) → 15% (ปลาย), EBIT margin ขยายสู่ 20%+, WACC 10% · EV/Sales cross-check ~19x FY26E Rev ~$3.64B ≈ EV $69B</div></div>
+        <div class="mval">$545.00</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $342 – $535</span></div>
-        <div class="r">$440</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $350 – $545</span></div>
+        <div class="r">$449</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
-        วิธี P/E TTM ($342.50) ให้ค่าต่ำสุด เพราะใช้กำไรปัจจุบันซึ่งถูกกด SBC และการลงทุน R&amp;D ระยะสั้น · วิธี Forward P/E ($442) และ DCF ($535) สะท้อน growth runway ที่กว้างกว่า โดย DCF ให้น้ำหนักสูงที่สุดหาก ARR ขยายตัวตามเป้า · เฉลี่ย 3 วิธี = ($342.50 + $442 + $535) / 3 ≈ $439.83 ปัดเป็น <b>$440</b> — สะท้อน premium ที่สมเหตุสมผลสำหรับ moat ระบบนิเวศ แต่ยัง discount risk growth slowdown และ multiple compression
+        วิธี P/E TTM ($350) ให้ค่าต่ำสุด เพราะใช้กำไรปัจจุบันซึ่งถูกกด SBC และการลงทุน R&amp;D ระยะสั้น · วิธี Forward P/E ($452.40) และ DCF ($545) สะท้อน growth runway ที่กว้างกว่า โดย DCF ให้น้ำหนักสูงที่สุดหาก ARR ขยายตัวตามเป้า · เฉลี่ย 3 วิธี = ($350 + $452.40 + $545) / 3 ≈ $449.13 ปัดเป็น <b>$449</b> — ปรับขึ้นเล็กน้อยจากรอบก่อน ($440) ตามเป้ารายได้/สัญญาใหม่ที่ยืนยันแล้ว แต่ราคาหุ้นรีบาวด์ +21.7% เร็วกว่าการปรับ FV มาก ทำให้ MOS ติดลบมากขึ้น
       </p>
     </div>
   </section>
@@ -115,19 +159,19 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $464.83</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $440</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $565.80</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $449</div></div>
         </div>
         <div class="scale">
-          <span>$308.00<br><small>MOS 30%</small></span>
-          <span>$352.00<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$440<br><small>Fair Value</small></span>
-          <span style="text-align:right">$535<br><small>กรอบบน FV</small></span>
-          <span style="text-align:right">$662<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span>$314.30<br><small>MOS 30%</small></span>
+          <span>$359.20<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$449<br><small>Fair Value</small></span>
+          <span style="text-align:right">$545<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">$670<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคาปัจจุบัน $464.83 อยู่สูงกว่า Fair Value $440 อยู่ราว 5.6% — MOS ติดลบ หมายความว่า ณ ราคานี้ยังไม่มีส่วนลดเผื่อความเสี่ยง · โซนน่าสนใจเริ่มต้นที่ &lt;$440 (ใกล้/ต่ำกว่า FV) และ deep value ที่ $352 (MOS 20%) ถึง $308 (MOS 30%) · นักวิเคราะห์ 20 รายมองเป้าเฉลี่ย $662 ซึ่งสะท้อน upside ในกรณีที่ growth ยังแข็งแกร่ง
+        ราคาปัจจุบัน $565.80 อยู่สูงกว่า Fair Value $449 อยู่ราว 26% หลังรีบาวด์แรง +21.7% จากข่าวสัญญา LAPD/Dedrone และเป้ารายได้ที่ปรับขึ้น — MOS ติดลบมากขึ้นกว่ารอบก่อน หมายความว่า ณ ราคานี้ไม่มีส่วนลดเผื่อความเสี่ยงเลย · โซนน่าสนใจเริ่มต้นที่ &lt;$449 (ใกล้/ต่ำกว่า FV) และ deep value ที่ $359 (MOS 20%) ถึง $314 (MOS 30%) · นักวิเคราะห์ consensus มองเป้าเฉลี่ย $670 (Needham ปรับขึ้นเป็น $750) สะท้อน upside ในกรณีที่ growth ยังแข็งแกร่งต่อ
       </p>
     </div>
   </section>
@@ -137,18 +181,18 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict bad">
-        <div class="big">−5.6%</div>
-        <div class="txt">ราคาปัจจุบันสูงกว่า Fair Value เล็กน้อย — ยังไม่มี Margin of Safety · รอโซน &lt;$440 หรือดีที่สุด &lt;$352</div>
+        <div class="big">−26%</div>
+        <div class="txt">ราคาปัจจุบันสูงกว่า Fair Value ชัดเจนหลังรีบาวด์แรง — ไม่มี Margin of Safety · รอโซน &lt;$449 หรือดีที่สุด &lt;$359</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$352.00</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$308.00</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $440</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$359.20</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$314.30</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $449</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="464.83" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="565.8" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -157,50 +201,50 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $464.83 • EPS ฐาน ~$6.85 (non-GAAP) • ไม่มีปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $565.80 • EPS ฐาน ~$7.00 (non-GAAP) • ไม่มีปันผล</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS +15%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$395.96</div>
-          <div class="ret neg">−14.8%</div>
+          <div class="tgt">$404.70</div>
+          <div class="ret neg">−28.5%</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~$10.42</span></li>
+            <li><span>EPS ปี 3</span><span>~$10.65</span></li>
             <li><span>P/E ออก</span><span>38x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~$0</span></li>
-            <li><span>สถานการณ์</span><span>growth ชะลอ + multiple หด</span></li>
+            <li><span>สถานการณ์</span><span>growth ชะลอ + multiple หดจากจุดรีบาวด์</span></li>
           </ul>
         </div>
       </div>
       <div class="col base">
-        <div class="top"><span>⚖️ Base</span><span>EPS +22%/ปี</span></div>
+        <div class="top"><span>⚖️ Base</span><span>EPS +23%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$559.80</div>
-          <div class="ret pos">+20.4%</div>
+          <div class="tgt">$586.35</div>
+          <div class="ret pos">+3.6%</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~$12.44</span></li>
+            <li><span>EPS ปี 3</span><span>~$13.03</span></li>
             <li><span>P/E ออก</span><span>45x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~$0</span></li>
-            <li><span>สถานการณ์</span><span>ARR โต 25–30%, margin ขยาย</span></li>
+            <li><span>สถานการณ์</span><span>เป้ารายได้ 30–32% ทำได้ต่อเนื่อง, margin ขยาย</span></li>
           </ul>
         </div>
       </div>
       <div class="col bull">
-        <div class="top"><span>🚀 Bull</span><span>EPS +27%/ปี</span></div>
+        <div class="top"><span>🚀 Bull</span><span>EPS +28%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$701.50</div>
-          <div class="ret pos">+51.0%</div>
+          <div class="tgt">$734.00</div>
+          <div class="ret pos">+29.7%</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~$14.03</span></li>
+            <li><span>EPS ปี 3</span><span>~$14.68</span></li>
             <li><span>P/E ออก</span><span>50x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~$0</span></li>
-            <li><span>สถานการณ์</span><span>AI expansion ระดับโลก + re-rating</span></li>
+            <li><span>สถานการณ์</span><span>AI expansion ระดับโลก + Dedrone/World Cup ต่อยอด + re-rating</span></li>
           </ul>
         </div>
       </div>
     </div>
     <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
-      การคาดการณ์ใช้ non-GAAP adj EPS $6.85 เป็นฐาน เติบโตต่อ 3 ปี ตาม scenario แต่ละกรณี แล้วคูณ P/E exit ที่สอดคล้องกับ multiple ที่เหมาะสมในแต่ละสถานการณ์ · ไม่มีปันผล ทั้ง 3 กรณี · Bear (−15%) เกิดหาก growth ชะลอแรง + multiple compression · Base (+20%) เกิดหาก ARR และ SaaS margin ขยายตามคาด · Bull (+51%) เกิดหาก AXON ขยายสู่ระดับนานาชาติและ AI feature ขับเคลื่อน re-rating
+      การคาดการณ์ใช้ non-GAAP adj EPS $7.00 เป็นฐาน (ปรับขึ้นจาก $6.85 ตาม Q1/69 adj EPS $1.61) เติบโตต่อ 3 ปี ตาม scenario แต่ละกรณี แล้วคูณ P/E exit ที่สอดคล้องกับ multiple ที่เหมาะสมในแต่ละสถานการณ์ · ไม่มีปันผล ทั้ง 3 กรณี · เนื่องจากจุดเข้าใหม่สูงกว่ารอบก่อนมาก (รีบาวด์ +21.7%) ผลตอบแทนคาดการณ์ทุก scenario จึงต่ำกว่ารอบก่อนตามไปด้วย แม้ปัจจัยพื้นฐาน (guidance, ARR, backlog) จะดีขึ้นจริง · Bear (−28.5%) เกิดหาก growth ชะลอ + multiple compress กลับ · Base (+3.6%) เกิดหากทำได้ตามเป้าที่ปรับใหม่แต่ไม่มี re-rating เพิ่ม · Bull (+29.7%) เกิดหาก AI/Dedrone/international ขับเคลื่อน re-rating ต่อ
     </p>
   </section>
 
@@ -212,17 +256,19 @@
         <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
         <ul>
           <li><b>Ecosystem moat:</b> TASER + body camera + Evidence cloud bundle สร้าง switching cost สูงมาก หน่วยงานตำรวจเปลี่ยนยาก</li>
-          <li><b>ARR โตเร็ว:</b> ARR $1.35B +35% YoY · NRR 125% หมายความว่าลูกค้าเดิมใช้จ่ายเพิ่มขึ้น</li>
-          <li><b>Backlog $14.4B:</b> รายได้ที่ "จอง" ไว้แล้วสูงถึง ~5x ARR — visibility สูง ลด revenue risk</li>
+          <li><b>ARR โตเร็ว:</b> ARR $1.5B +35% YoY · NRR 125% หมายความว่าลูกค้าเดิมใช้จ่ายเพิ่มขึ้น</li>
+          <li><b>Backlog $14.3B:</b> รายได้ที่ "จอง" ไว้แล้ว +44% YoY สูงถึง ~9.5x ARR — visibility สูง ลด revenue risk</li>
+          <li><b>สัญญา/ดีมานด์ใหม่ (Q2/69):</b> ขยายสัญญา LAPD เป็น ~$22M/ปี · Dedrone counter-drone revenue โต ~300% ตามดีมานด์รักษาความปลอดภัยฟุตบอลโลก</li>
+          <li><b>Guidance ปรับขึ้น:</b> เป้ารายได้ปี 2569 ปรับขึ้นเป็น +30–32% (จาก +27–30%) · Zacks อัปเกรดเป็น Strong Buy</li>
           <li><b>AI &amp; Real-time Ops:</b> Draft One (AI ช่วยเขียนรายงาน), Real-time Operations center — feature ใหม่เพิ่ม ARPU</li>
           <li><b>International expansion:</b> ตลาดยุโรป/ออสเตรเลีย/ละตินอเมริกา ยังเจาะน้อย — runway ใหม่นอก US</li>
-          <li><b>Margin expansion:</b> Software mix สูงขึ้น → gross margin และ operating leverage ขยายได้อีก</li>
         </ul>
       </div>
       <div class="box risk">
         <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
         <ul>
-          <li><b>Valuation premium:</b> P/E 68x non-GAAP (GAAP 187x) — ถ้า growth ชะลอเพียงเล็กน้อย multiple หดแรง</li>
+          <li><b>ราคาวิ่งนำหน้าปัจจัยพื้นฐาน:</b> รีบาวด์ +21.7% ใน ~2 สัปดาห์ (6 วันทำการเคยขึ้น ~40%) เร็วกว่าการปรับเป้า/สัญญาที่ยืนยันได้จริงมาก — เสี่ยง pull-back หากไม่มีข่าวดีต่อเนื่อง</li>
+          <li><b>Valuation premium สูงขึ้นอีก:</b> P/E ~81x non-GAAP (GAAP ~227x) — ถ้า growth ชะลอเพียงเล็กน้อย multiple หดแรง</li>
           <li><b>SBC สูง:</b> Stock-based compensation กด GAAP earnings อย่างมีนัยสำคัญ — dilution ผู้ถือหุ้น</li>
           <li><b>งบภาครัฐ:</b> ลูกค้าหลักคือ ตำรวจ/หน่วยงานความปลอดภัย — พึ่งงบรัฐบาล ซึ่งผันผวนตามการเมือง</li>
           <li><b>Scrutiny การใช้กำลัง:</b> ความกังวลด้านสิทธิมนุษยชน TASER — กฎหมายจำกัดการใช้อาจกระทบยอดขาย</li>
@@ -237,15 +283,15 @@
   <section>
     <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
     <div class="verdict">
-      <h2>คุณภาพสูง ราคาตึง — รอโซน $352–$440 ก่อนทยอยสะสม</h2>
-      <p>Axon Enterprise เป็นผู้นำเทคโนโลยีความปลอดภัยสาธารณะที่มี moat ระบบนิเวศแข็งแกร่ง (TASER + body camera + Evidence cloud) พร้อม ARR โต 35%, NRR 125%, backlog $14.4B และ Revenue CAGR ~34% ต่อเนื่อง 4 ปี อย่างไรก็ตาม ราคาปัจจุบัน $464.83 ยังสูงกว่า Fair Value $440 ราว 5.6% (MOS ติดลบ) แม้จะร่วงมาแล้ว −38% จาก peak — ใช้ non-GAAP adj EPS $6.85 เป็นฐาน P/E ~68x ยังสะท้อน premium ที่ต้องการ growth ต่อเนื่องสูง ถ้า growth ชะลอแม้เล็กน้อย multiple จะ compress แรง · นักวิเคราะห์ 20 รายมองเป้า $662 (growth bull case) สะท้อน upside +42% ในกรณีที่ AI expansion และ international ขับเคลื่อนต่อ</p>
+      <h2>รีบาวด์เร็วเกินปัจจัยพื้นฐาน — รอโซน $359–$449 ก่อนทยอยสะสม</h2>
+      <p>Axon Enterprise เป็นผู้นำเทคโนโลยีความปลอดภัยสาธารณะที่มี moat ระบบนิเวศแข็งแกร่ง (TASER + body camera + Evidence cloud) พร้อม ARR โต 35% เป็น $1.5B, NRR 125%, backlog $14.3B (+44% YoY) และเป้ารายได้ปี 2569 ที่เพิ่งปรับขึ้นเป็น +30–32% หลังข่าวขยายสัญญา LAPD และดีมานด์ Dedrone counter-drone พุ่งจากงานความปลอดภัยฟุตบอลโลก — ปัจจัยพื้นฐานดีขึ้นจริง แต่ราคาหุ้นรีบาวด์แรงถึง +21.7% ใน ~2 สัปดาห์จนแซงหน้าการปรับมูลค่าไปมาก ราคาปัจจุบัน $565.80 สูงกว่า Fair Value ใหม่ $449 ถึงราว 26% (MOS ติดลบมากขึ้นจากรอบก่อน) ใช้ non-GAAP adj EPS $7.00 เป็นฐาน P/E ~81x สะท้อน premium ที่ต้องการ growth ต่อเนื่องสูงมาก ถ้า growth ชะลอแม้เล็กน้อย multiple จะ compress แรง · นักวิเคราะห์ consensus มองเป้า $670 (Needham ปรับขึ้นเป็น $750) สะท้อน upside ในกรณีที่ AI expansion และ international ขับเคลื่อนต่อ</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$440 <span style="font-size:12px;color:#cab9a8">($342–$535)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −5.6%</div></div>
-        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$662 (Buy)</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$449 <span style="font-size:12px;color:#cab9a8">($350–$545)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −26%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$670 (Buy)</div></div>
       </div>
       <div class="zone">
-        💡 <b>กลยุทธ์:</b> รอราคาย่อลง &lt;$440 (ใกล้ FV) ก่อนเริ่มทยอยสะสม · โซน $352–$380 (MOS 15–20%) เหมาะที่สุดสำหรับ value investor · ถือระยะยาว 3–5 ปีหาก ARR ขยายตามคาดและ AI feature ขับ ARPU ขึ้น · ไม่เหมาะสำหรับนักลงทุนที่ focus GAAP หรือเน้นปันผล
+        💡 <b>กลยุทธ์:</b> รอราคาย่อลง &lt;$449 (ใกล้ FV) ก่อนเริ่มทยอยสะสม · โซน $314–$359 (MOS 20–30%) เหมาะที่สุดสำหรับ value investor · ถือระยะยาว 3–5 ปีหาก ARR ขยายตามคาดและ AI/Dedrone feature ขับ ARPU ขึ้น · ไม่เหมาะสำหรับนักลงทุนที่ focus GAAP หรือเน้นปันผล หรือไล่ซื้อตามข่าวรีบาวด์ระยะสั้น
       </div>
     </div>
   </section>
@@ -254,9 +300,9 @@
   <div class="disc">
     <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
-    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ข้อมูลอ้างอิง: StockAnalysis.com · Yahoo Finance · Axon Investor Relations (IR) · Macrotrends · งบการเงิน FY2568 (Q4 2025) · ราคา ณ 26 มิ.ย. 2569
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ข้อมูลอ้างอิง: StockAnalysis.com · Yahoo Finance · Axon Investor Relations (IR) · Macrotrends · งบการเงิน Q1 2026 (พ.ค. 2569) + ข่าวสัญญา LAPD/Dedrone (ก.ค. 2569) · ราคา ณ 10 ก.ค. 2569
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ 26 มิ.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 11 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
