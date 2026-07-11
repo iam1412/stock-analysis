@@ -6,7 +6,7 @@
   ════════════════════════════════════════════════════════════════════════════
   วิธีใช้:  cp _template/skeleton-us.html reports/<SYMBOL>.html  แล้วแทนทุก {{...}} ด้วยข้อมูลจริง
   • ทุกช่องที่ต้องแก้คือ {{...}}  — ห้ามเหลือค้าง (gate E13 จะ error ถ้าเจอ {{ }} ในรายงาน)
-  • ตัวเลขต้องสอดคล้องกันตามกฎใน CLAUDE.md ข้อ 7 — เช่น MOS20={{FV}}×0.8, MOS=(FV−price)/FV
+  • ตัวเลขต้องสอดคล้องกันตามกฎใน docs/quality-gate.md — เช่น MOS20={{FV}}×0.8, MOS=(FV−price)/FV
   • เลือกสีแบรนด์ใน theme (ห้ามปล่อย default) — ดู tools/brand-colors.md + tools/seeds.json
   • โครง CSS/engine ถูก inject ตอน build (marker STYLE/ENGINE) — ไม่ต้องแตะ
   ════════════════════════════════════════════════════════════════════════════
@@ -22,10 +22,10 @@
 {"symbol":"{{SYMBOL}}","currency":"USD","price":{{PRICE}},"fairValue":{{FV}},"mos":{{MOS}},"upside":{{UPSIDE}},"pe":{{PE}},"dividendYield":{{DIV_YIELD}},"roe":{{ROE}}}
 </script>
 <!--
-  report-data: ธีมสี + ข้อมูลกราฟ/gauge ต่อหุ้น (build เอาไปวาด)  ดู schema เต็มใน CLAUDE.md ข้อ 9
+  report-data: ธีมสี + ข้อมูลกราฟ/gauge ต่อหุ้น (build เอาไปวาด)  ดู schema เต็มใน docs/templates.md
   • theme.* = สีแบรนด์ (accent ห้ามเป็นน้ำเงิน default) • chart.fairLine = gauge.fair = fv = {{FV}}
   • gauge.cur = ราคาปัจจุบัน = {{PRICE}} • highlight = ดัชนีจุดเด่นบนกราฟ (เช่น [2,7])
-  • chart.data = ราคาย้อนหลัง ~1 ปี (ไม่เกิน 13 จุด · E37) — จุดแรก = ราคา ~1 ปีก่อน, จุดท้าย = ราคาปัจจุบัน {{PRICE}}
+  • chart.data = ราคาย้อนหลัง ~1 ปี (ไม่เกิน 13 จุด · E37) — ★ ใช้ node tools/fetch-facts.js <SYM> [--th] ได้บล็อกพร้อมวาง (ห้ามแต่งจุดเอง) · จุดแรก = ราคา ~1 ปีก่อน, จุดท้าย = ราคาปัจจุบัน {{PRICE}}
     (ผลตอบแทน จุดแรก→จุดท้าย ต้อง = ป้าย % รอบปีใน header · E36)
   • theme.chgBg/chgColor = สีป้าย % รอบปี: ขึ้น→เขียว var(--green-soft)/#1e8e3e · ลง→แดง var(--red-soft)/#c5221f (E34)
   • dataFmt อ้าง d[1] เท่านั้น, gridFmt อ้าง v เท่านั้น (ผิด scope = กราฟดับ)

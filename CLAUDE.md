@@ -31,6 +31,7 @@ dist/                   # ⚠️ build output (gitignore) — ห้ามแก
 1. เรียก **`/stock-analyzer`** (รวบรวม ≥3 แหล่ง → Fair Value 3 วิธี → MOS → return projection → dashboard HTML)
 2. **★ cross-source verify — บังคับก่อนเขียนตัวเลข** (ด่านเดียวที่กันเลขผิด/เก่าหลุดขึ้นเว็บ — gate ตรวจความจริงไม่ได้):
    ยืนยัน **ราคาปัจจุบัน + EPS(TTM)** (+ปันผล/เป้า ถ้าได้) จาก **≥2 แหล่งอิสระ** อ้างอิงในรายงาน ≥2 แหล่ง
+   (ราคา: Yahoo จาก script §4 ข้อ 1 นับเป็นแหล่งที่ 1 · UPDATE mode: EPS ตรงรายงานเดิม ±2% = ยืนยันแล้ว ไม่ต้องยิงแหล่งเพิ่ม — ดู `_template/agent-prompt.md` STEP 2)
    - ตรงกัน (ราคาต่าง ≤~2%) → ใช้ + ระบุ "ราคา ณ วันที่ + แหล่ง"
    - ต่าง >5% หรือ EPS คนละค่า → **หยุด ถามผู้ใช้ อย่าเผยแพร่**
 3. **Export เป็น `reports/<SYMBOL>.html`** (พิมพ์ใหญ่ · override default ของ skill ที่ตั้งชื่อ `[SYMBOL]_analysis.html`):
@@ -66,7 +67,7 @@ dist/                   # ⚠️ build output (gitignore) — ห้ามแก
 3. กันซ้ำข้าม session = §3.2 push per-wave + pull --rebase ก่อนแต่ละเวฟ (ตัวที่คนอื่น push แล้วโผล่ใน reports.json → ถูกคัดออก)
 
 ### 3.2 รัน — 1 หุ้น/agent · **sequential** · เวฟละ ≤3 · push per-wave
-- **★ โมเดล (บังคับ): ห้าม Haiku ทุกขั้น** (Sonnet+Haiku และ Haiku-ล้วน ห้ามทั้งคู่) · **ค่าเริ่มต้น = All-Sonnet main + escalate**: controller=Sonnet, worker=Sonnet (`model:"sonnet"`) — ตราบใดที่ controller ตรวจข้ามแหล่ง price/EPS ≥2 + ดึงกราฟจริง + จับ split/ticker เอง · **หุ้นยาก** (IPO <1 ปี/spinoff/split/cyclical/ราคา cross-source ต่าง >5%) → **escalate อัตโนมัติ** spawn worker ตัวนั้นเป็น **Opus** (`Agent model:"opus"`) ไม่ต้องบอก user · ถ้า **การตัดสิน publish/skip ของ controller เองกำกวม** → หยุด ping user สลับ session เป็น Opus
+- **★ โมเดล (บังคับ): ห้าม Haiku ทุกขั้น** (Sonnet+Haiku และ Haiku-ล้วน ห้ามทั้งคู่) · **ค่าเริ่มต้น = All-Sonnet main + escalate**: controller=Sonnet, worker=Sonnet (`model:"sonnet"`) — ตราบใดที่ controller ตรวจข้ามแหล่ง price/EPS ≥2 + กราฟจริงจาก script (§4 ข้อ 1) + จับ split/ticker เอง · **หุ้นยาก** (IPO <1 ปี/spinoff/split/cyclical/ราคา cross-source ต่าง >5%) → **escalate อัตโนมัติ** spawn worker ตัวนั้นเป็น **Opus** (`Agent model:"opus"`) ไม่ต้องบอก user · ถ้า **การตัดสิน publish/skip ของ controller เองกำกวม** → หยุด ping user สลับ session เป็น Opus
 - **spawn 1 Agent/หุ้น** — full analysis หุ้นตัวเดียว รวม cross-source verify (โหมด NEW = skeleton · โหมด UPDATE = แก้ไฟล์เดิมเฉพาะจุด) เขียนลง `reports/<SYMBOL>.html` ของตัวเองเท่านั้น · context แยกสะอาด กันเลขปนข้ามหุ้น (ตัวร้าย #1 ของรีโป) · **ใช้ prompt แม่แบบ `_template/agent-prompt.md`** (ระบุ `{{MODE}}` ให้ถูก)
 - **★ STEP 0 กัน cwd-stray:** prompt ให้ agent เริ่ม `cd <worktree> && pwd` + ห้าม `cd` ลง main repo · ตอน push เช็ค `ls reports/<SYM>.html` ใน worktree — ไม่มี = ไปหยิบจาก main repo + ลบตัวหลง (ดู memory [[bulk-stock-analysis-workflow]])
 - **★ SEQUENTIAL (บังคับ): spawn 1 agent → รอ notification "completed" → ตรวจ/แก้ error → spawn ถัดไป** — ห้าม spawn parallel หลายตัวพร้อมกัน เพราะกด API session rate limit ทุกตัว fail พร้อมกัน (เห็นแล้วใน W19–W21) · fallback: ถ้า agent fail → ทำ inline ในนี้แทน (fetch + write ใน main session)
