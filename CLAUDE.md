@@ -26,19 +26,13 @@ dist/                   # ⚠️ build output (gitignore) — ห้ามแก
 
 ## 2. วิเคราะห์หุ้นเดี่ยว (skill `stock-analyzer`)
 
-เมื่อสั่ง "วิเคราะห์ GOOGL" / "analyze AAPL" / re-analysis / เคลียร์คิว price-flags:
+เมื่อสั่ง "วิเคราะห์ X" / re-analysis / เคลียร์คิว price-flags → เรียก skill **`stock-analyzer`** แล้ว**ทำตามทุกขั้น**
+(skill = single source of truth: โหมด NEW/UPDATE/UPDATE-LIGHT · script เก็บข้อมูล · FV ≥2 วิธี · MOS/scenario · 4 บล็อกบังคับ · self-check) → `npm run verify` ผ่าน 6 ขั้น → **Auto-push** (§5)
 
-1. เรียก skill **`stock-analyzer`** (project skill — `.claude/skills/stock-analyzer/SKILL.md`) แล้ว**ทำตามทุกขั้น** —
-   นั่นคือ single source of truth ของขั้นตอนต่อหุ้น: เลือกโหมด NEW (skeleton) / UPDATE (แก้ไฟล์เดิมเฉพาะจุด) /
-   UPDATE-LIGHT (refresh เร็วจากคิว price-flags) · เก็บข้อมูลผ่าน script (`fetch-facts.js` /
-   `update-prices.js --force` / `fetch-fundamentals.js` = EPS/เป้า 2 แหล่งในคำสั่งเดียว) · cross-source verify ·
-   FV ≥2 วิธี · MOS/scenario · 4 บล็อกบังคับ · self-check `npm test -- <SYM>`
-2. invariant ที่ห้ามหลุดไม่ว่ากรณีใด (สรุปจาก skill — รายละเอียดในนั้น):
-   - **cross-source verify ราคา+EPS ≥2 แหล่งก่อนเขียนตัวเลข** — ราคาต่าง >5% / EPS ขัดกัน → หยุด ถามผู้ใช้ อย่าเผยแพร่ (gate ตรวจความจริงไม่ได้)
-   - **หุ้นใหม่เริ่มจาก skeleton เท่านั้น · หุ้นเดิม = UPDATE mode ห้าม rewrite** — กราฟ/ราคา/ป้าย % มาจาก script ห้ามแต่งเอง
-   - ไฟล์ = `reports/<SYMBOL>.html` พิมพ์ใหญ่ · `stock-meta.currency` = ISO (`USD`/`THB`)
-3. `npm run verify` ให้ผ่านครบ 6 ขั้น
-4. **Auto-push** (§5)
+invariant ที่ห้ามหลุดไม่ว่ากรณีใด:
+- **cross-source verify ราคา+EPS ≥2 แหล่งก่อนเขียนตัวเลข** — ราคาต่าง >5% / EPS ขัดกัน → หยุด ถามผู้ใช้ อย่าเผยแพร่ (gate ตรวจความจริงไม่ได้)
+- **หุ้นใหม่เริ่มจาก skeleton เท่านั้น · หุ้นเดิมห้าม rewrite** — กราฟ/ราคา/ป้าย % มาจาก script ห้ามแต่งเอง
+- ไฟล์ = `reports/<SYMBOL>.html` พิมพ์ใหญ่ · `stock-meta.currency` = ISO (`USD`/`THB`)
 
 > URL: `https://stock-ai.dotent.workers.dev/<SYMBOL>.html` (หรือ `/<SYMBOL>`)
 
@@ -56,17 +50,14 @@ dist/                   # ⚠️ build output (gitignore) — ห้ามแก
 
 ---
 
-## 4. Token discipline — วิเคราะห์ให้ใช้ token ถูกลง
+## 4. Token discipline
 
-วัดจริง (12 ก.ค. 2569): ต้นทุนใหญ่สุดคือ **input/cache-read ~70k ต่อ turn ของ worker** — ไม่ใช่ output (worker เฉลี่ย ~25-30 turns = cache-read ~2M/ตัว vs output แค่ ~3-4k) · 7 levers:
+วัดจริง 12 ก.ค. 2569: ต้นทุน = **จำนวน turn × ~70k cache-read ของ worker** ไม่ใช่ output — กติกา token-lean **ต่อหุ้น** (batch tool calls · script แทน WebFetch · UPDATE-LIGHT · self-check ครั้งเดียว) อยู่ใน **SKILL.md แล้ว** · เป้า+ตัวเลข → `docs/orchestration.md` §7 · ที่ controller ต้องคุมเองเพิ่ม:
 
-1. **จำนวน turn = ต้นทุนอันดับหนึ่ง** — batch tool calls ที่อิสระกันใน**ข้อความเดียว** (script 2 ตัว + อ่านไฟล์ = 1 turn) · Edit หลายจุดพร้อมกัน · self-check `npm test -- <SYM>` **ครั้งเดียวตอนจบ** (จับ E13/E28/E29/E32 → ตัดรอบ verify เสียเปล่าทั้งเวฟ)
-2. **ตัวเลขโครงสร้าง = script ไม่ใช่ LLM** — ราคา/กราฟ/ป้าย %/สี: หุ้นใหม่ `node tools/fetch-facts.js <SYM> [--th]` · หุ้นเดิม `node tools/update-prices.js --write --force <SYM>` (patch ให้เลย) — 0 token, ไม่มี error กราฟ (E36/E37)
-3. **EPS/เป้า/ปันผล 2 แหล่งในคำสั่งเดียว** — `node tools/fetch-fundamentals.js <SYM> [--th]` (Yahoo+StockAnalysis + บรรทัด Δ เทียบให้) แทน WebFetch 2-3 turns · WebFetch targeted เป็น fallback เมื่อ script ล่ม — ห้าม dump หน้าเต็ม
-4. **หุ้นเดิม = UPDATE แก้เฉพาะจุด ห้าม rewrite** · มาจากคิว price-flags = **UPDATE-LIGHT** (SKILL STEP 5C — เป้า ≤10 turns) · EPS ไม่เปลี่ยน (±2%) → FV เดิมยืน ไม่ต้องคิดใหม่
-5. **Compact / fresh session ทุก 1–2 เวฟ** — สลัด context หุ้นเก่า (controller พอกเร็ว)
-6. **pull --rebase + อ่าน reports.json ก่อน** — ข้ามหุ้นสด ≤7 วัน = ประหยัด 100% ของตัวนั้น
-7. **All-Sonnet + escalate ตัวยากเป็น Opus subagent** — อย่ารัน Opus เป็น main (W31 กิน ~15% ของลิมิต 5 ชม. กับ 3 หุ้น) · worker งาน mechanical → effort medium ผ่าน workflow `analyze-wave`
+- **Compact / fresh session ทุก 1–2 เวฟ** — context controller พอกเร็ว
+- pull --rebase + อ่าน `reports.json` ก่อน — ข้ามหุ้นสด ≤7 วัน = ประหยัด 100% ของตัวนั้น
+- ห้ามรัน Opus เป็น main (W31 กิน ~15% ของลิมิต 5 ชม. กับแค่ 3 หุ้น) · worker งาน mechanical → effort medium ผ่าน `analyze-wave`
+- controller อาจ pre-fetch `fetch-fundamentals` แล้ววางบล็อกใน `{{FUNDAMENTALS}}` ของ agent-prompt — ตัด turn ของ worker เพิ่ม
 
 ---
 
@@ -113,7 +104,7 @@ Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>
 ## 8. Quality gate — ก่อนเผยแพร่ (`npm run verify`)
 
 6 ขั้น ต้องผ่านทั้งหมดก่อน push (pre-push hook บังคับซ้ำ):
-`check-reports` (source ทีละไฟล์ 37 error + 11 warning) → `build` → `build-test` (unit-test build.js) → `engine-exec` (รัน engine ใน mock DOM) → `skeleton-test` (โครงต้นแบบ) → `check-site` (dist/ ระดับเว็บ)
+`check-reports` (37 error + 11 warning) → `build` → `build-test` → `engine-exec` → `skeleton-test` → `check-site`
 
 - เร็ว: `npm test -- <SYM>` = check-reports เฉพาะตัวนั้น (ใช้ตอน self-check ก่อนคืนงาน)
 - gate ตรวจ **ความสอดคล้อง/ความสด/การอ้างอิง** เท่านั้น — **ตรวจความจริงของราคา/EPS ไม่ได้** (ต้อง cross-source verify §2)
@@ -125,14 +116,9 @@ Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>
 
 ## 9. Price refresh อัตโนมัติ (cron)
 
-GitHub Actions (`.github/workflows/update-prices.yml`) รัน `tools/update-prices.js` ทุกวัน 07:17 น. ไทย —
-ดึงราคา Yahoo มา patch **เฉพาะตัวเลขโครงสร้าง** (ราคา header + วันที่ราคา + กราฟ 13 จุด + ป้าย % รอบปี + gauge.cur + MOS + pxIn + stock-meta) แล้ว verify + push เอง · **ไม่แตะ prose/EPS/FV** · `updated` (วันที่วิเคราะห์) คงเดิมผ่าน preserve-dates
-- ตัวที่ขยับแรง (ต่าง >15% / MOS พลิกเครื่องหมาย / หลุด gauge / สงสัย split) → **freeze** ลง `price-flags.json` + GitHub Issue รอ re-analysis
-- **"เคลียร์คิว price-flags"** = **triage ตาม `reason` ก่อน** (เกณฑ์เต็มใน SKILL STEP 0):
-  `fetch/patch-failed` → plumbing ไม่ใช้ agent (ticker เปลี่ยน → `tools/symbol-map.json` · เพิกถอน → ลบรายงาน · flag ตัดเองรอบถัดไป) ·
-  `drift/mos-flip/gauge` → **UPDATE-LIGHT** · `suspect-split` → UPDATE เต็ม — จากนั้นรันตาม §3 ทุกกติกาเดิม (flag หายเองเมื่อรายงานสด)
-- ticker ที่ Yahoo/StockAnalysis เปลี่ยนชื่อ (บริษัทปรับโครงสร้าง) → override ที่ `tools/symbol-map.json` (เช่น BKI→BKIH, STEC→STECON)
-- รายละเอียด/debug → `docs/price-refresh.md`
+GitHub Actions รัน `tools/update-prices.js` ทุกวัน 07:17 น. ไทย — patch **เฉพาะตัวเลขโครงสร้าง** (**ไม่แตะ prose/EPS/FV** · วันที่วิเคราะห์คงเดิมผ่าน preserve-dates) แล้ว verify + push เอง · ตัวที่ขยับแรง (ต่าง >15% / MOS พลิก / หลุด gauge / สงสัย split) → **freeze** ลง `price-flags.json` รอ re-analysis
+- **"เคลียร์คิว price-flags"** = **triage ตาม `reason` ก่อน** (เกณฑ์เต็มใน SKILL STEP 0: fetch/patch-failed = plumbing ไม่ใช้ agent · drift/mos-flip/gauge = **UPDATE-LIGHT** · suspect-split = UPDATE เต็ม) แล้วรันตาม §3 — flag หายเองเมื่อรายงานสด/ไฟล์ถูกลบ
+- ticker เปลี่ยนชื่อ (เช่น BKI→BKIH) → `tools/symbol-map.json` · รายละเอียด/debug → `docs/price-refresh.md`
 
 ## 10. Template system + counters (สรุป)
 
