@@ -5,7 +5,7 @@
 > **จัดลำดับ:** Tier A = ย่อลึก/de-rate แรง ณ ก.ค. 2569 (ทำก่อน มีโอกาสเจอ MOS จริง) → Tier B = บลูชิพ/quality ที่ขาดเพื่อความครบ → Tier C = สายปันผล/defensive (utilities·REITs·midstream·materials)
 > สร้าง 2026-07-05 · % ในตาราง = ผลตอบแทน 1 ปีจาก Yahoo ณ วันสร้างแผน (ตอนวิเคราะห์จริงต้องดึงใหม่ + ตรวจข้ามแหล่งเสมอ)
 >
-> **📊 ความคืบหน้า (อัปเดต 11 ก.ค. 2569): เสร็จ 122/124 — W41: AMCR+BF-B+TSN ✅ · resume ที่ #123 TAP** · เหลือ 2 ตัว (W42)
+> **📊 ความคืบหน้า (อัปเดต 11 ก.ค. 2569): ✅ เสร็จสมบูรณ์ 124/124 — W42: TAP+BG ✅ · US-GAP-124 COMPLETED**
 
 ---
 
@@ -166,8 +166,8 @@
 | 120 | W41 | AMCR | บรรจุภัณฑ์ | Amcor — flexible packaging + Berry merger, yield ~5% | | ✅ $43.18/FV$45.53 MOS+5.2% |
 | 121 | W41 | BF-B | เครื่องดื่มแอลกอฮอล์ | Brown-Forman −13% (Jack Daniel's) — multi-year low, spirits cycle (ไฟล์ BF-B.html) | 🔺 | ✅ $26.17/FV$30.91 MOS+15.6% |
 | 122 | W41 | TSN | อาหาร | Tyson — โปรตีนเบอร์ 1 US, protein cycle ฟื้น | | ✅ $57.83/FV$49.53 MOS−16.8% |
-| 123 | W42 | TAP | เครื่องดื่ม | Molson Coors −21% — ถูกมาก P/E หลักเดียว แลก volume ถดถอย | | ⬜ |
-| 124 | W42 | BG | อาหารเกษตร | Bunge +26% — agribusiness + Viterra merger (mid-cycle) | 🔺 | ⬜ |
+| 123 | W42 | TAP | เครื่องดื่ม | Molson Coors −21% — ถูกมาก P/E หลักเดียว แลก volume ถดถอย | | ✅ $39.17/FV$42.09 MOS+6.9% |
+| 124 | W42 | BG | อาหารเกษตร | Bunge +26% — agribusiness + Viterra merger (mid-cycle) | 🔺 | ✅ $114.32/FV$107.50 MOS−6.3% |
 
 ---
 
