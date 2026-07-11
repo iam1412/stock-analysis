@@ -61,7 +61,11 @@ git commit -F …                    # title: price: refresh N symbols (YYYY-MM-
 ```bash
 node tools/update-prices.js AAPL         # dry-run ตัวเดียว (โชว์ว่าจะเปลี่ยนอะไร ไม่เขียนไฟล์/flags)
 node tools/update-prices.js --write AAPL # เขียนจริงตัวเดียว → ตามด้วย build + preserve-dates + build + verify
+node tools/update-prices.js --write --force AAPL  # ข้าม freeze drift/mos-flip/gauge/suspect — ใช้เฉพาะตอน
+                                         # re-analysis UPDATE mode ที่ agent ยืนยัน cross-source แล้ว
+                                         # (ต้องระบุ SYMBOL · currency-mismatch/bad-price ยัง freeze · หลุด gauge = เตือนให้แก้ช่วงเอง)
 node tools/update-prices.js --write      # เต็มชุด ~763 ตัว (~7-8 นาที)
+node tools/fetch-facts.js AAPL           # พิมพ์ ราคา+วันที่+chart 13 จุด+ป้าย %+bounds พร้อมวาง (หุ้นใหม่ · ไทยเติม --th)
 npm run test:prices                      # unit test offline (fixture AAPL + mock Yahoo)
 ```
 

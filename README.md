@@ -78,7 +78,11 @@ cp _template/skeleton-us.html reports/AAPL.html    # หุ้นต่างป
 cp _template/skeleton-th.html reports/HMPRO.html   # หุ้นไทย (฿ · SET)
 
 # 2. แทนทุก {{TOKEN}} ด้วยข้อมูลจริง (gate E13 จะ error ถ้าเหลือ {{...}} ค้าง)
+#    ราคา + กราฟ 13 จุด + ป้าย % รอบปี + สี → node tools/fetch-facts.js AAPL (หุ้นไทยเติม --th) ได้บล็อกพร้อมวาง
 #    เลือกสีแบรนด์ใน report-data.theme (ดู tools/brand-colors.md) + ให้ตัวเลขสอดคล้องกัน (docs/quality-gate.md)
+
+# 2b. อัปเดตหุ้นเดิม → ไม่ต้องเริ่ม skeleton ใหม่: แก้ไฟล์เดิมเฉพาะจุด (EPS/FV/prose/วันที่วิเคราะห์)
+#     แล้ว node tools/update-prices.js --write --force AAPL patch ราคา/กราฟ/MOS ให้อัตโนมัติ
 
 # 3. push — Cloudflare build & deploy ให้เอง
 npm run verify && git add -A && git commit -m "analyze: add AAPL stock analysis" && git pull --rebase origin main && git push origin HEAD:main

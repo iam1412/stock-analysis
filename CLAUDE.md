@@ -34,16 +34,18 @@ dist/                   # ⚠️ build output (gitignore) — ห้ามแก
    - ตรงกัน (ราคาต่าง ≤~2%) → ใช้ + ระบุ "ราคา ณ วันที่ + แหล่ง"
    - ต่าง >5% หรือ EPS คนละค่า → **หยุด ถามผู้ใช้ อย่าเผยแพร่**
 3. **Export เป็น `reports/<SYMBOL>.html`** (พิมพ์ใหญ่ · override default ของ skill ที่ตั้งชื่อ `[SYMBOL]_analysis.html`):
-   - **★ เริ่มจาก skeleton เท่านั้น** (อย่าก๊อปรายงานเก่า — เลขเดิมติดมา):
+   - **★ หุ้นใหม่ → เริ่มจาก skeleton เท่านั้น** (อย่าก๊อปรายงานหุ้นอื่น — เลขเดิมติดมา):
      `cp _template/skeleton-th.html reports/<SYMBOL>.html` (ไทย ฿/SET) หรือ `skeleton-us.html` (ต่างประเทศ $/NASDAQ·NYSE)
      แทนทุก `{{TOKEN}}` ด้วยข้อมูลจริง · เหลือ `{{...}}` ค้าง = gate บล็อก
+   - **★ หุ้นเดิม (อัปเดต/re-analysis/เคลียร์คิว price-flags) → UPDATE mode: แก้ไฟล์เดิมเฉพาะจุด ห้าม rewrite ทั้งไฟล์** —
+     `node tools/update-prices.js --write --force <SYM>` patch ราคา/กราฟ/ป้าย %/MOS ให้ก่อน (0 token) → Edit เฉพาะ EPS/FV/prose ที่เปลี่ยน + วันที่วิเคราะห์ footer → ถ้าแก้ fairValue รัน `--force` ซ้ำ · ลำดับเต็มใน `_template/agent-prompt.md` STEP 3B
    - **★ ปรับ metric/valuation ตามเซกเตอร์ได้อิสระ** — gate บังคับแค่ "ครบ 8 section + ตัวเลขสอดคล้องกันเอง" ไม่บังคับชุด metric (ธนาคาร→NIM/NPL/CASA · REIT→Occupancy/DPU/NAV · หุ้นขาดทุน→ตัดการ์ด + `stock-meta.pe/roe=null`) · valuation เลือก ≥2 วิธีให้เหมาะ · **เซลล์ P/E เขียน `$` นำหน้าเสมอ** (`EPS adj. $8.44 × P/E 20x` — อย่าขึ้นต้นด้วยปี parser จะคว้าปีเป็น EPS)
    - **★ 4 บล็อกบังคับใน `<head>`/ใต้ `<h1>`:**
      - `<meta name="ai-model" content="Claude <รุ่นที่รันจริง>">` (Opus→`Claude Opus 4.8` · Sonnet→`Claude Sonnet 4.6`) → build เอาไปแทนเครดิต footer ต่อ report
      - `<script type="application/json" id="stock-meta">` = `{symbol, currency, price, fairValue, mos, upside, pe, dividendYield, roe}` · **`currency` = ISO 3 ตัว `"USD"`/`"THB"` ไม่ใช่ `"$"`** · ตัวเลขต้องตรงกับที่โชว์ในรายงาน (build → screener/การ์ด/ป้ายจุดเด่น)
      - `<div class="sub">` ใต้ `<h1>` = **คำโปรยธุรกิจจริง** ว่าบริษัททำอะไร (เช่น AAPL → `iPhone • Mac • Services • Apple Intelligence`) ใช้ `•` คั่น — ไม่ใช่ "วิเคราะห์หุ้น X - Dashboard" ซ้ำ ๆ (build → `desc` บนการ์ด)
    - **★ header ป้าย `.chg` = ผลตอบแทน "รอบปี"** (เทียบราคา ~1 ปีก่อน ไม่ใช่ รายวัน/YTD/52wk): `▲ +X.X% (รอบปี)` / `▼ −X.X% (รอบปี)` / `≈ ทรงตัว (รอบปี)` · IPO ใหม่ <1 ปี ใช้ `(ตั้งแต่ IPO)` · **ค่า % = ผลตอบแทนปลายกราฟ section 2** · สี ขึ้น=เขียว/ลง=แดง (`theme.chgBg/chgColor`)
-   - **★ กราฟ section 2 = ราคา ~1 ปี ≤13 จุด** (รายเดือน 12 เดือน=13 จุด · ห้าม 18 เดือน) · จุดท้าย=ราคาปัจจุบัน(=header) · จุดแรก=ราคา ~1 ปีก่อน · **ต้องดึงราคาจริง** (Yahoo `?range=1y&interval=1mo`) ไม่แต่งจุดกลาง
+   - **★ กราฟ section 2 = ราคา ~1 ปี ≤13 จุด** (รายเดือน · จุดท้าย=ราคาปัจจุบัน(=header) · จุดแรก=ราคา ~1 ปีก่อน) · **ต้องเป็นราคาจริง — ใช้ `node tools/fetch-facts.js <SYM> [--th]`** ได้บล็อก chart+ป้าย %+สี พร้อมวาง (ห้ามดึง Yahoo เอง/ห้ามแต่งจุดกลาง)
    - **★ สีแบรนด์** ใน `report-data.theme` เลือกตามลักษณะหุ้น (ห้ามปล่อยน้ำเงิน default) — ดู `docs/templates.md`
 4. `npm run verify` ให้ผ่านครบ 6 ขั้น
 5. **Auto-push** (§4)
@@ -60,12 +62,12 @@ dist/                   # ⚠️ build output (gitignore) — ห้ามแก
 1. **`git pull --rebase origin main` ก่อนเสมอ** → อ่าน `reports.json` (ได้ของ session อื่นที่เพิ่ง push มาด้วย)
 2. เทียบแต่ละตัว (ฟิลด์ `updated`) — **เกณฑ์ความสด = 7 วัน** (คนละตัวกับ staleness gate 45/120 วัน):
    - สด ≤7 วัน → **ไม่วิเคราะห์ซ้ำ** · ธีม/โควตา → หาตัวใหม่ในธีมมาแทน · ระบุชื่อชัด → ข้าม (แจ้ง)
-   - เกิน 7 วัน → วิเคราะห์ซ้ำ (อัปเดต) · ยังไม่มี → วิเคราะห์ใหม่
+   - เกิน 7 วัน → วิเคราะห์ซ้ำ = **UPDATE mode** (แก้ไฟล์เดิมเฉพาะจุด §2 ข้อ 3) · ยังไม่มี → NEW (skeleton)
 3. กันซ้ำข้าม session = §3.2 push per-wave + pull --rebase ก่อนแต่ละเวฟ (ตัวที่คนอื่น push แล้วโผล่ใน reports.json → ถูกคัดออก)
 
 ### 3.2 รัน — 1 หุ้น/agent · **sequential** · เวฟละ ≤3 · push per-wave
 - **★ โมเดล (บังคับ): ห้าม Haiku ทุกขั้น** (Sonnet+Haiku และ Haiku-ล้วน ห้ามทั้งคู่) · **ค่าเริ่มต้น = All-Sonnet main + escalate**: controller=Sonnet, worker=Sonnet (`model:"sonnet"`) — ตราบใดที่ controller ตรวจข้ามแหล่ง price/EPS ≥2 + ดึงกราฟจริง + จับ split/ticker เอง · **หุ้นยาก** (IPO <1 ปี/spinoff/split/cyclical/ราคา cross-source ต่าง >5%) → **escalate อัตโนมัติ** spawn worker ตัวนั้นเป็น **Opus** (`Agent model:"opus"`) ไม่ต้องบอก user · ถ้า **การตัดสิน publish/skip ของ controller เองกำกวม** → หยุด ping user สลับ session เป็น Opus
-- **spawn 1 Agent/หุ้น** — full analysis หุ้นตัวเดียว รวม cross-source verify เริ่มจาก skeleton เขียนลง `reports/<SYMBOL>.html` ของตัวเองเท่านั้น · context แยกสะอาด กันเลขปนข้ามหุ้น (ตัวร้าย #1 ของรีโป) · **ใช้ prompt แม่แบบ `_template/agent-prompt.md`**
+- **spawn 1 Agent/หุ้น** — full analysis หุ้นตัวเดียว รวม cross-source verify (โหมด NEW = skeleton · โหมด UPDATE = แก้ไฟล์เดิมเฉพาะจุด) เขียนลง `reports/<SYMBOL>.html` ของตัวเองเท่านั้น · context แยกสะอาด กันเลขปนข้ามหุ้น (ตัวร้าย #1 ของรีโป) · **ใช้ prompt แม่แบบ `_template/agent-prompt.md`** (ระบุ `{{MODE}}` ให้ถูก)
 - **★ STEP 0 กัน cwd-stray:** prompt ให้ agent เริ่ม `cd <worktree> && pwd` + ห้าม `cd` ลง main repo · ตอน push เช็ค `ls reports/<SYM>.html` ใน worktree — ไม่มี = ไปหยิบจาก main repo + ลบตัวหลง (ดู memory [[bulk-stock-analysis-workflow]])
 - **★ SEQUENTIAL (บังคับ): spawn 1 agent → รอ notification "completed" → ตรวจ/แก้ error → spawn ถัดไป** — ห้าม spawn parallel หลายตัวพร้อมกัน เพราะกด API session rate limit ทุกตัว fail พร้อมกัน (เห็นแล้วใน W19–W21) · fallback: ถ้า agent fail → ทำ inline ในนี้แทน (fetch + write ใน main session)
 - **เวฟละ ≤3 หุ้น** → push รวมเมื่อครบเวฟ · ห้ามยิงทุกตัวรวดเดียว
@@ -79,13 +81,14 @@ dist/                   # ⚠️ build output (gitignore) — ห้ามแก
 
 ## 4. Token discipline — วิเคราะห์ให้ใช้ token ถูกลง
 
-ต้นทุน token ก้อนใหญ่ = ดึงเว็บต่อหุ้น + context พอกใน controller + รอบ verify เสียเปล่า · 5 levers:
+ต้นทุน token ก้อนใหญ่ = เขียนไฟล์ทั้งใบซ้ำ + ดึงเว็บต่อหุ้น + context พอกใน controller + รอบ verify เสียเปล่า · 6 levers:
 
-1. **WebFetch แบบ targeted คืนเลขสั้น** — prompt WebFetch ให้ดึงเฉพาะ price/EPS/dividend/target/52wk เป็นบรรทัดสั้น **ไม่ dump หน้าเต็ม** · แหล่ง authoritative (StockAnalysis.com) **2 อันพอ cross-verify** อย่ายิง 5 · กราฟ Yahoo `?range=1y&interval=1mo` **ยิงเดียว** ได้ครบ 13 จุด (รายละเอียดใน `_template/agent-prompt.md`)
-2. **Compact / fresh session ทุก 1–2 เวฟ** — สลัด context หุ้นเก่าที่ไม่ใช้ต่อ (main controller พอกเร็ว)
-3. **Self-check ก่อนคืนงาน** — agent รัน `npm test -- <SYM>` (มีอยู่แล้ว) จับ E13/E28/E29/E32 ที่พลาดบ่อย → **ตัดรอบ verify เสียเปล่าทั้งเวฟ** (sibling ค้างทำ verify แดงหมด)
-4. **pull --rebase + อ่าน reports.json ก่อน** — ข้ามหุ้นสด ≤7 วัน = ประหยัด 100% ของตัวนั้น (§3.1)
-5. **All-Sonnet main + escalate ตัวยากเป็น Opus subagent** — อย่ารัน Opus เป็น main (§3.2 · W31 กิน ~15% ของลิมิต 5 ชม. กับ 3 หุ้น)
+1. **ตัวเลขโครงสร้าง = script ไม่ใช่ LLM** — ราคา/กราฟ/ป้าย %/สี/bounds: หุ้นใหม่ `node tools/fetch-facts.js <SYM> [--th]` (บล็อกพร้อมวาง) · หุ้นเดิม `node tools/update-prices.js --write --force <SYM>` (patch ลงไฟล์เลย) — 0 token + ไม่มี error คำนวณกราฟ (E36/E37)
+2. **หุ้นเดิม = UPDATE mode แก้เฉพาะจุด** — ห้าม rewrite skeleton ใหม่ (~22KB output/ตัว) · Edit เฉพาะ EPS/FV/prose ที่เปลี่ยน = output ลด ~70-85% · EPS ไม่เปลี่ยนจากรายงานเดิม (±2%) → 1 แหล่งพอ (ค่าเดิมผ่าน 2 แหล่งแล้ว) — ดู `_template/agent-prompt.md` STEP 3B
+3. **WebFetch แบบ targeted คืนเลขสั้น** — prompt WebFetch ให้ดึงเฉพาะ price/EPS/dividend/target/52wk เป็นบรรทัดสั้น **ไม่ dump หน้าเต็ม** · แหล่ง authoritative (StockAnalysis.com) **2 อันพอ cross-verify** อย่ายิง 5
+4. **Compact / fresh session ทุก 1–2 เวฟ** — สลัด context หุ้นเก่าที่ไม่ใช้ต่อ (main controller พอกเร็ว) · Self-check `npm test -- <SYM>` ก่อนคืนงาน จับ E13/E28/E29/E32 → **ตัดรอบ verify เสียเปล่าทั้งเวฟ**
+5. **pull --rebase + อ่าน reports.json ก่อน** — ข้ามหุ้นสด ≤7 วัน = ประหยัด 100% ของตัวนั้น (§3.1)
+6. **All-Sonnet main + escalate ตัวยากเป็น Opus subagent** — อย่ารัน Opus เป็น main (§3.2 · W31 กิน ~15% ของลิมิต 5 ชม. กับ 3 หุ้น)
 
 ---
 

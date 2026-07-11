@@ -10,9 +10,11 @@
  *   ราคาต่างจากในรายงาน >10% · MOS พลิกเครื่องหมาย · ราคาหลุดช่วง gauge ·
  *   ต่าง >25% / currency ไม่ตรง (สงสัย split/ticker) · fetch/patch ไม่สำเร็จ
  *
- * ใช้:  node tools/update-prices.js [--write] [SYMBOL ...]
+ * ใช้:  node tools/update-prices.js [--write] [--force] [SYMBOL ...]
  *   ไม่มี --write = dry-run · หลัง --write: npm run build → node tools/preserve-dates.js
  *   → npm run build → npm run verify (คงวันที่ "วิเคราะห์" เดิม — ราคา refresh ไม่ใช่ re-analysis)
+ *   --force = ข้าม freeze drift/mos-flip/gauge/suspect (ใช้ตอน re-analysis UPDATE mode ที่ agent
+ *   ยืนยัน cross-source แล้ว) — บังคับระบุ SYMBOL ชัด ๆ ห้ามใช้กับ full run · currency/bad-price ยัง freeze
  */
 const fs = require('fs');
 const path = require('path');
@@ -150,10 +152,11 @@ function annualChg(data, suffix) {
 
 // ---------- ตัดสิน update / freeze ----------
 function decide(ctx) {
-  const { oldPrice, newPrice, fv, gaugeMin, gaugeMax, currencyOk } = ctx;
+  const { oldPrice, newPrice, fv, gaugeMin, gaugeMax, currencyOk, force } = ctx;
   if (!currencyOk) return { freeze: 'currency-mismatch' };
   if (!Number.isFinite(newPrice) || newPrice <= 0) return { freeze: 'bad-price' };
   const drift = Math.abs(newPrice - oldPrice) / oldPrice;
+  if (force) return { update: true, drift }; // re-analysis ยืนยันแล้ว — ข้าม freeze เชิงนโยบาย (currency/bad-price กันไว้ก่อนถึงบรรทัดนี้)
   if (drift > SUSPECT_FREEZE) return { freeze: 'suspect-split-or-data', drift };
   if (drift > DRIFT_FREEZE) return { freeze: `drift-gt-${Math.round(DRIFT_FREEZE * 100)}pct`, drift };
   if (Number.isFinite(fv) && fv > 0) {
@@ -296,7 +299,9 @@ function commitBody(updated, frozen) {
 // ---------- main ----------
 async function main() {
   const WRITE = process.argv.includes('--write');
+  const FORCE = process.argv.includes('--force');
   const ONLY = new Set(process.argv.slice(2).filter((a) => !a.startsWith('--')).map((s) => s.replace(/\.html$/i, '').toUpperCase()));
+  if (FORCE && !ONLY.size) { console.error('✗ --force ต้องระบุ SYMBOL ชัด ๆ (กันข้าม freeze ทั้งรีโป)'); process.exit(1); }
 
   const files = fs.readdirSync(REPORTS).filter((f) => /\.html$/i.test(f)).sort()
     .filter((f) => !ONLY.size || ONLY.has(f.replace(/\.html$/i, '').toUpperCase()));
@@ -336,7 +341,10 @@ async function main() {
       oldPrice: sm.price, newPrice: q.price, fv: sm.fairValue,
       gaugeMin: gauge.min, gaugeMax: gauge.max,
       currencyOk: !q.currency || q.currency === sm.currency,
+      force: FORCE,
     });
+    if (FORCE && Number.isFinite(gauge.min) && Number.isFinite(gauge.max) && (q.price < gauge.min || q.price > gauge.max))
+      console.log(`⚠ ${symbol.padEnd(10)} ราคา ${round(q.price, 2)} หลุดช่วง gauge ${gauge.min}–${gauge.max} — แก้ gauge min/max ในรายงานเองด้วย`);
     const diffPct = round((q.price - sm.price) / sm.price * 100, 1);
 
     if (d.freeze) {
@@ -383,6 +391,6 @@ async function main() {
   if (!WRITE) console.log('ใส่ --write เพื่อเขียนจริง');
 }
 
-module.exports = { fmtPrice, fmtLike, toYahooSymbol, buildChartData, niceBounds, annualChg, decide, patchReport, mergeFlags, styledRD, commitBody };
+module.exports = { fmtPrice, fmtLike, toYahooSymbol, fetchChart, buildChartData, niceBounds, annualChg, decide, patchReport, mergeFlags, styledRD, commitBody, THAI_MONTHS };
 
 if (require.main === module) main().catch((e) => { console.error(e); process.exit(1); });

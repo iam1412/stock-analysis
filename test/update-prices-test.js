@@ -37,6 +37,14 @@ ok(U.decide({ ...base, oldPrice: 118, newPrice: 121 }).freeze === 'mos-sign-flip
 ok(U.decide({ ...base, oldPrice: 195, newPrice: 205, fv: 300 }).freeze === 'outside-gauge-range', 'decide: หลุด gauge → freeze');
 ok(U.decide({ ...base, newPrice: 105, currencyOk: false }).freeze === 'currency-mismatch', 'decide: currency ไม่ตรง → freeze');
 
+// ---------- decide --force (re-analysis UPDATE mode) ----------
+ok(U.decide({ ...base, newPrice: 82, force: true }).update === true, 'force: ข้าม drift freeze → update');
+ok(U.decide({ ...base, newPrice: 130, force: true }).update === true, 'force: ข้าม suspect freeze → update');
+ok(U.decide({ ...base, oldPrice: 118, newPrice: 121, force: true }).update === true, 'force: ข้าม mos-sign-flip → update');
+ok(U.decide({ ...base, oldPrice: 195, newPrice: 205, fv: 300, force: true }).update === true, 'force: ข้าม outside-gauge → update');
+ok(U.decide({ ...base, newPrice: 105, currencyOk: false, force: true }).freeze === 'currency-mismatch', 'force: currency ไม่ตรง ยัง freeze');
+ok(U.decide({ ...base, newPrice: NaN, force: true }).freeze === 'bad-price', 'force: ราคาเสีย ยัง freeze');
+
 // ---------- buildChartData ----------
 const mkBars = (n, startY, startM, price0) => Array.from({ length: n }, (_, i) => {
   const y = startY + Math.floor((startM + i) / 12), m = (startM + i) % 12;
