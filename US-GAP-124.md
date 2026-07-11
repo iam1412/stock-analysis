@@ -5,7 +5,7 @@
 > **จัดลำดับ:** Tier A = ย่อลึก/de-rate แรง ณ ก.ค. 2569 (ทำก่อน มีโอกาสเจอ MOS จริง) → Tier B = บลูชิพ/quality ที่ขาดเพื่อความครบ → Tier C = สายปันผล/defensive (utilities·REITs·midstream·materials)
 > สร้าง 2026-07-05 · % ในตาราง = ผลตอบแทน 1 ปีจาก Yahoo ณ วันสร้างแผน (ตอนวิเคราะห์จริงต้องดึงใหม่ + ตรวจข้ามแหล่งเสมอ)
 >
-> **📊 ความคืบหน้า (อัปเดต 10 ก.ค. 2569): เสร็จ 116/124 — W39: IFF+IP+SW ✅ · resume ที่ #117 AVY** · เหลือ 8 ตัว (W40→W42)
+> **📊 ความคืบหน้า (อัปเดต 10 ก.ค. 2569): เสร็จ 119/124 — W40: AVY+BALL+LYB ✅ · resume ที่ #120 AMCR** · เหลือ 5 ตัว (W41→W42)
 
 ---
 
@@ -160,9 +160,9 @@
 | 114 | W39 | IFF | เคมีอาหาร | IFF — flavors/fragrances oligopoly, deleveraging | | ✅ $78.53/FV$90 MOS+12.7% |
 | 115 | W39 | IP | บรรจุภัณฑ์ | International Paper −22% — containerboard + DS Smith (normalize) | 🔺 | ✅ $37.93/FV$38 MOS+0.2% |
 | 116 | W39 | SW | บรรจุภัณฑ์ | Smurfit Westrock — ควบรวม 2024 เบอร์ 1 โลก | | ✅ $44.23/FV$43.24 MOS-2.3% |
-| 117 | W40 | AVY | วัสดุ/ฉลาก | Avery Dennison — label ผูกขาดเงียบ ๆ RFID โต | | ⬜ |
-| 118 | W40 | BALL | บรรจุภัณฑ์ | Ball — กระป๋องอลูมิเนียม เบอร์ 1 โลก | | ⬜ |
-| 119 | W40 | LYB | ปิโตรเคมี | LyondellBasell — yield สูง cyclical ก้นวัฏจักร (mid-cycle) | 🔺 | ⬜ |
+| 117 | W40 | AVY | วัสดุ/ฉลาก | Avery Dennison — label ผูกขาดเงียบ ๆ RFID โต | | ✅ $160.71/FV$187.1 MOS+14.1% |
+| 118 | W40 | BALL | บรรจุภัณฑ์ | Ball — กระป๋องอลูมิเนียม เบอร์ 1 โลก | | ✅ $61.69/FV$58.20 MOS-6.0% |
+| 119 | W40 | LYB | ปิโตรเคมี | LyondellBasell — yield สูง cyclical ก้นวัฏจักร (mid-cycle) | 🔺 | ✅ $56.35/FV$60.28 MOS+6.5% |
 | 120 | W41 | AMCR | บรรจุภัณฑ์ | Amcor — flexible packaging + Berry merger, yield ~5% | | ⬜ |
 | 121 | W41 | BF-B | เครื่องดื่มแอลกอฮอล์ | Brown-Forman −13% (Jack Daniel's) — multi-year low, spirits cycle (ไฟล์ BF-B.html) | 🔺 | ⬜ |
 | 122 | W41 | TSN | อาหาร | Tyson — โปรตีนเบอร์ 1 US, protein cycle ฟื้น | | ⬜ |
