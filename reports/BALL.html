@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น Ball Corporation (BALL) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 4.6">
+<script type="application/json" id="stock-meta">
+{"symbol":"BALL","currency":"USD","price":61.69,"fairValue":58.20,"mos":-6.0,"upside":-5.7,"pe":17.83,"dividendYield":1.30,"roe":17.0}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#075985",
+    "accentDark": "#0c4a6e",
+    "darkGrad": "linear-gradient(135deg,#031824 0%,#0c4a6e 55%,#075985 140%)",
+    "glow": "rgba(7,89,133,0.32)",
+    "subColor": "#bfe3f5",
+    "headerMuted": "rgba(191,227,245,0.65)",
+    "verdictText": "#dceefc",
+    "vcellLabel": "#9fd3ec",
+    "badge": "#075985",
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#1e8e3e"
+  },
+  "chart": {
+    "data": [
+      ["ส.ค. 68", 52.64],
+      ["ก.ย. 68", 50.42],
+      ["ต.ค. 68", 47.00],
+      ["พ.ย. 68", 49.53],
+      ["ธ.ค. 68", 52.97],
+      ["ม.ค. 69", 56.87],
+      ["ก.พ. 69", 67.13],
+      ["มี.ค. 69", 59.11],
+      ["เม.ย. 69", 61.08],
+      ["พ.ค. 69", 54.67],
+      ["มิ.ย. 69", 62.40],
+      ["ก.ค. 69", 61.69]
+    ],
+    "min": 40,
+    "max": 70,
+    "grid": [40, 50, 60, 70],
+    "fairLine": 58.20,
+    "currency": "$",
+    "highlight": [2, 6]
+  },
+  "gauge": {
+    "min": 35,
+    "max": 80,
+    "cur": 61.69,
+    "fair": 58.20
+  },
+  "fv": 58.20
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">●●●●○</div>
+    <div>
+      <span class="tag">NYSE: BALL</span>
+      <span class="tag">Containers &amp; Packaging</span>
+      <span class="tag">Aluminum Beverage Cans</span>
+    </div>
+    <h1>Ball Corporation</h1>
+    <div class="sub">Aluminum Beverage Cans • Sustainable Packaging • Global Leader</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$61.69<small>(BALL)</small></div>
+      </div>
+      <div class="chg">▲ +17.2% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 10 กรกฎาคม 2569 (StockAnalysis.com, ปิดตลาด)<br>
+        กรอบ 52 สัปดาห์ $44.83 – $68.29<br>
+        ที่มา: StockAnalysis.com • Yahoo Finance • Ball Corporation Investor Relations
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล TTM ถึง 31 มี.ค. 2569 / FY2025 · ณ ก.ค. 2569</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">$16.42B</div><div class="d">266.25M shares outstanding</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~17.8x</div><div class="d">EPS TTM adj. $3.46 (เฉลี่ย 2 แหล่ง) · peer Crown/Silgan ~15–19x</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~16–19x</div><div class="d">ประมาณการหลังปรับเป็น pure-play packaging (ขาย Aerospace ธ.ค. 2566)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">~3.0x</div><div class="d">BVPS $20.62 · เพิ่มขึ้นหลัง book value ลดจากขาย Aerospace + buyback</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ (TTM)</div><div class="v">$938M</div><div class="d">TTM ถึง มี.ค. 2569 · ROE ~17.0%</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$3.46</div><div class="d">FY2025 GAAP $3.30 (adj./comparable $3.57) · FY2024 GAAP $13.00 ผิดปกติจากกำไรพิเศษขาย Ball Aerospace ให้ BAE Systems · Forward FY2026E ~$4.08</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~$20.62</div><div class="d">ณ 31 มี.ค. 2569 · Equity $5.62B</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~17.0% / 5.9%</div><div class="d">ROIC ~9.6% · เพิ่มขึ้นหลัง deleveraging + buyback ลดหุ้น</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$13.67B</div><div class="d">FY2025 $13.16B (+11.6% YoY จาก FY2024 $11.80B ฐานต่ำ)</div></div>
+      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">~18% (ประมาณการ)</div><div class="d">ธุรกิจ packaging อะลูมิเนียม margin ต่ำเพราะต้นทุนโลหะ pass-through เป็นหลัก</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~1.30%</div><div class="d">$0.80/หุ้น/ปี · payout ~23% ของ EPS adj.</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">~0.99</div><div class="d">5Y beta ต่ำกว่า 1 สะท้อนดีมานด์ consumer-staple ที่ผันผวนน้อย</div></div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6">
+      Ball Corporation คือผู้ผลิตกระป๋องเครื่องดื่มอะลูมิเนียม (aluminum beverage cans) รายใหญ่ที่สุดในโลก ครอบคลุมตลาด
+      อเมริกาเหนือ อเมริกากลาง-ใต้ ยุโรป ตะวันออกกลาง และเอเชียแปซิฟิก ลูกค้าหลักคือผู้ผลิตเครื่องดื่มอัดลม เบียร์ กลุ่ม
+      hard seltzer/energy drink และเครื่องดื่มแอลกอฮอล์พร้อมดื่ม (RTD) หลังขายธุรกิจ Ball Aerospace ให้ BAE Systems มูลค่า
+      ~$5.6 พันล้านดอลลาร์ (ปิดดีล ธ.ค. 2566) บริษัทกลายเป็น pure-play packaging company เต็มตัว ใช้เงินที่ได้ deleverage
+      งบดุลและซื้อหุ้นคืนต่อเนื่อง ธุรกิจได้รับแรงหนุนเชิงโครงสร้างจากกระแส sustainability เพราะกระป๋องอะลูมิเนียม recycle
+      ได้มากกว่า 70% เทียบพลาสติกที่ต่ำกว่า 10% ทำให้แบรนด์เครื่องดื่มจำนวนมากปรับสัดส่วนบรรจุภัณฑ์มาใช้กระป๋องเพิ่มขึ้นต่อเนื่อง
+    </p>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ส.ค. 2568 – ก.ค. 2569</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#075985"></i>ราคา BALL</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $58.20</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคาเริ่มต้นที่ ~$52.64 ในเดือน ส.ค. 68 ปรับตัวลงต่อเนื่องจนแตะจุดต่ำสุดรอบปีที่ ~$47.00 ในเดือน ต.ค. 68 จาก
+        ความกังวลต้นทุนอะลูมิเนียมและดีมานด์ปริมาณกระป๋องในอเมริกาเหนือที่เติบโตช้า จากนั้นฟื้นตัวแรงตลอดไตรมาส 4/2568
+        ทำจุดสูงสุดรอบปีที่ ~$67.13 ในเดือน ก.พ. 69 หลังผลประกอบการ Q4 2568 ออกมาดีกว่าคาดและบริษัทยืนยันแผนเพิ่ม buyback
+        จากนั้นปรับฐานลงมาที่ $59.11 ในเดือน มี.ค. 69 และแกว่งตัวในกรอบ $54.67–$62.40 ตลอดไตรมาส 2/2569 ก่อนปิดที่ $61.69
+        ในเดือน ก.ค. 69 ผลตอบแทนรวมรอบปีอยู่ที่ประมาณ +17.2%
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">3 วิธี — P/E · EV/EBITDA · DCF (FCF Yield)</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS (TTM) $3.50 × P/E เป้าหมาย ~18x — ใกล้เคียง P/E ตลาดปัจจุบัน ~17.8x สะท้อนคุณภาพผู้นำตลาด global aluminum can #1 โดยไม่ให้พรีเมียมเพิ่มมาก</div></div>
+        <div class="mval">$63.00</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. EV/EBITDA Valuation</div><div class="mdesc">EBITDA TTM (ประมาณการจาก EV/EBITDA ตลาดปัจจุบัน 11.63x) ~$2.02B × EV/EBITDA เป้าหมาย 11x → EV ~$22.22B หักหนี้สุทธิ $7.08B ÷ 266.25M หุ้น</div></div>
+        <div class="mval">$56.87</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. DCF (FCF Yield)</div><div class="mdesc">FCF ปกติ (เฉลี่ย TTM $596M และ FY2025 $788M) ~$692M ÷ 266.25M หุ้น = FCF/หุ้น $2.60 หารด้วยอัตราผลตอบแทนเป้าหมาย (FCF yield) 4.75%</div></div>
+        <div class="mval">$54.74</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $54.74 – $63.00</span></div>
+        <div class="r">$58.20</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ทั้ง 3 วิธีให้ค่าใกล้เคียงกันในกรอบ $54.7–$63.0 — วิธี P/E ให้ค่าสูงสุดเพราะอิงมูลค่าตลาดปัจจุบันที่ยังไม่รวมส่วนลด
+        จากธุรกิจ capital-intensive ส่วน EV/EBITDA และ DCF/FCF yield ให้ค่าใกล้เคียงกันและต่ำกว่าราคาตลาด สะท้อนว่าราคา
+        $61.69 ปัจจุบันเทรดเหนือมูลค่าพื้นฐานเชิงอนุรักษ์นิยมเล็กน้อย เพราะตลาดให้เครดิตกับความมั่นคงของธุรกิจ pure-play
+        packaging และแผน deleveraging ต่อเนื่องหลังขาย Ball Aerospace ไปมากแล้ว <b>หมายเหตุ:</b> เป้าหมายนักวิเคราะห์เฉลี่ย
+        ~$70.93 สูงกว่า FV เชิงอนุรักษ์นิยมของเราค่อนข้างมาก สะท้อนมุมมองที่เชื่อว่า multiple ยังขยายต่อได้จากดีมานด์
+        กระป๋องที่โตต่อเนื่องและ margin ที่ฟื้นตัว
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $61.69</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $58.20</div></div>
+        </div>
+        <div class="scale">
+          <span>$40.74<br><small>MOS 30%</small></span>
+          <span>$46.56<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$58.20<br><small>Fair Value</small></span>
+          <span style="text-align:right">$63.00<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">$70.93<br><small>เป้าเฉลี่ย Analyst</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน $61.69 อยู่ <b>สูงกว่ามูลค่าเหมาะสม</b> เชิงอนุรักษ์นิยม $58.20 ประมาณ 6% แต่ยัง <b>ต่ำกว่าเป้าหมาย
+        นักวิเคราะห์เฉลี่ย</b> ~$70.93 ราว 15% ส่วนต่างนี้สะท้อนมุมมอง 2 ขั้ว — วิธีประเมินเชิงอนุรักษ์นิยมของเรามองที่
+        multiple ปัจจุบัน (~18x P/E, ~11x EV/EBITDA) ใกล้เคียงหรือสูงกว่าค่าเฉลี่ยระยะยาวแล้ว ขณะที่นักวิเคราะห์ส่วนใหญ่
+        เชื่อว่า margin จะฟื้นตัวต่อและ multiple จะขยายตามธีม sustainable packaging ระยะยาว
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">−6.0%</div>
+        <div class="txt">ราคาปัจจุบัน $61.69 สูงกว่ามูลค่าเหมาะสมเชิงอนุรักษ์นิยม $58.20 ประมาณ 6% → <b>เต็มมูลค่าเล็กน้อย
+        (slightly overvalued)</b> ยังไม่ใช่จุดที่มี margin of safety ตามเกณฑ์ value investor แม้เป็นธุรกิจคุณภาพดีก็ตาม
+        นักลงทุนที่เน้น MOS ควรรอจังหวะราคาย่อตัวลงมาใกล้ $58 หรือต่ำกว่าก่อนเข้าซื้อก้อนใหญ่</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$46.56</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$40.74</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $58.20</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="61.69" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $61.69 • EPS ฐาน ~$3.50 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS +2%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$51.94</div>
+          <div class="ret neg">−12.0% รวมปันผล 3 ปี (≈ −4.2%/ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$3.71</span></li>
+            <li><span>P/E ออก</span><span>14x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$2.40</span></li>
+            <li><span>สถานการณ์</span><span>ดีมานด์กระป๋องอเมริกาเหนือทรงตัว ต้นทุนอะลูมิเนียมกดดันมาร์จิ้น multiple de-rate</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +8%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$79.38</div>
+          <div class="ret pos">+32.8% รวมปันผล 3 ปี (≈ +9.9%/ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$4.41</span></li>
+            <li><span>P/E ออก</span><span>18x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$2.55</span></li>
+            <li><span>สถานการณ์</span><span>ดีมานด์กระป๋องโต low-single-digit + buyback ลดหุ้น + margin ฟื้นตัวตาม guidance</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +13%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$101.00</div>
+          <div class="ret pos">+68.1% รวมปันผล 3 ปี (≈ +18.9%/ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$5.05</span></li>
+            <li><span>P/E ออก</span><span>20x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$2.70</span></li>
+            <li><span>สถานการณ์</span><span>sustainability trend เร่งส่วนแบ่งกระป๋องแทนพลาสติก + margin expansion + multiple re-rate</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      <b>ข้อสมมติฐาน Base Case:</b> Ball เติบโต EPS ~8%/ปี จากดีมานด์กระป๋องที่โตต่อเนื่องแบบ low-single-digit ทั่วโลก
+      บวก buyback ลดจำนวนหุ้นและ margin ที่ฟื้นตัวจากการบริหารต้นทุนหลัง deleveraging สำเร็จ multiple ทรงตัวใกล้ค่าเฉลี่ย
+      ~18x <b>ความเสี่ยง Bear:</b> ต้นทุนอะลูมิเนียม/พลังงานเพิ่มขึ้นเร็วกว่าที่ pass-through ได้ทัน ดีมานด์ soft drink/beer
+      ในอเมริกาเหนือชะลอตัว และ multiple compression กลับสู่ระดับต่ำกว่าปัจจุบัน
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก &amp; ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>Sustainability Tailwind:</b> กระป๋องอะลูมิเนียม recycle ได้ &gt;70% เทียบพลาสติกที่ &lt;10% กฎหมาย ESG/แบน
+          พลาสติกในยุโรปและหลายรัฐของสหรัฐฯ ผลักดันแบรนด์เครื่องดื่มเปลี่ยนมาใช้กระป๋องต่อเนื่อง</li>
+          <li><b>Deleveraging หลังขาย Aerospace:</b> เงิน ~$5.6 พันล้านดอลลาร์จากการขาย Ball Aerospace (ธ.ค. 2566) ใช้ลดหนี้
+          และซื้อหุ้นคืนต่อเนื่อง ทำให้เป็น pure-play packaging ที่งบดุลแข็งแกร่งขึ้น</li>
+          <li><b>ดีมานด์กระป๋อง Premium Categories:</b> การเติบโตของ hard seltzer, energy drink และเครื่องดื่มแอลกอฮอล์
+          พร้อมดื่ม (RTD) เป็นดีมานด์ใหม่ที่ใช้กระป๋องเป็นบรรจุภัณฑ์หลัก</li>
+          <li><b>Cost Discipline &amp; Operating Leverage:</b> ปรับ footprint โรงงานต่อเนื่อง ลด SKU ที่ไม่ทำกำไร หนุน EBITDA
+          margin ให้ฟื้นตัวจากจุดต่ำหลังโควิด</li>
+          <li><b>Global Diversification:</b> ธุรกิจกระจายในยุโรป อเมริกาใต้ และเอเชียแปซิฟิก ซึ่งอัตราการบริโภคกระป๋อง
+          ต่อหัวยังต่ำกว่าอเมริกาเหนือมาก เหลือ room เติบโตอีกมาก</li>
+          <li><b>Share Buyback ต่อเนื่อง:</b> ลดจำนวนหุ้นหมุนเวียนต่อเนื่องหลัง deleverage สำเร็จ หนุน EPS growth สูงกว่า
+          กำไรจากการดำเนินงานจริง</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>ต้นทุนอะลูมิเนียมผันผวน:</b> แม้มีสัญญา pass-through ต้นทุนโลหะ แต่ timing lag ระหว่างต้นทุนขึ้นกับการปรับราคา
+          ขายอาจกดดันมาร์จิ้นระยะสั้น</li>
+          <li><b>Customer Concentration:</b> ลูกค้าเครื่องดื่มรายใหญ่ (AB InBev, Coca-Cola system ฯลฯ) มีอำนาจต่อรองสัญญา
+          ราคาสูง กระทบความสามารถในการขึ้นราคา</li>
+          <li><b>Volume Growth จำกัดในตลาดเดิม:</b> ดีมานด์ carbonated soft drink/beer ในอเมริกาเหนือโตช้าระดับ
+          low-single-digit เป็นข้อจำกัดการเติบโตของปริมาณกระป๋อง</li>
+          <li><b>Leverage ยังสูง:</b> Debt/Equity ~1.4x, Quick Ratio ~0.65 ธุรกิจ capital-intensive ต้อง capex ต่อเนื่อง
+          หากดีมานด์ชะลอ leverage อาจตึงตัว</li>
+          <li><b>FX Exposure:</b> รายได้ส่วนหนึ่งจากยุโรปและอเมริกาใต้ เผชิญความเสี่ยงอัตราแลกเปลี่ยนเมื่อแปลงกลับเป็นดอลลาร์</li>
+          <li><b>Valuation ตึงตัว:</b> ราคาปัจจุบันเทรดเหนือ FV เชิงอนุรักษ์นิยมแล้วเล็กน้อย (MOS ติดลบ) จำกัด upside
+          ระยะสั้นหาก multiple ไม่ขยายต่อตามที่ตลาดคาด</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>ผู้นำกระป๋องอะลูมิเนียมระดับโลก ธุรกิจมั่นคง แต่ราคาปัจจุบันตึงเกินมูลค่าเหมาะสมเล็กน้อย</h2>
+      <p>Ball Corporation เป็นผู้ผลิตกระป๋องเครื่องดื่มอะลูมิเนียมรายใหญ่ที่สุดในโลก หลังขายธุรกิจ Ball Aerospace ให้ BAE
+        Systems (ธ.ค. 2566) บริษัทกลายเป็น pure-play packaging เต็มตัว ใช้เงินที่ได้ deleverage งบดุลและซื้อหุ้นคืนต่อเนื่อง
+        ธุรกิจได้แรงหนุนเชิงโครงสร้างจากกระแส sustainability ที่ผลักดันให้แบรนด์เครื่องดื่มเปลี่ยนจากพลาสติกมาใช้กระป๋อง
+        มากขึ้น อย่างไรก็ตาม ราคาปัจจุบัน $61.69 สูงกว่ามูลค่าเหมาะสมเชิงอนุรักษ์นิยมของเราที่ $58.20 ราว 6% (MOS ~−6.0%)
+        แม้ยังต่ำกว่าเป้าหมายนักวิเคราะห์เฉลี่ย ~$70.93 พอสมควร สำหรับนักลงทุนระยะยาวที่เชื่อในธีม sustainable packaging
+        และการฟื้นตัวของมาร์จิ้น หุ้นนี้ยังน่าติดตาม แต่ margin of safety ปัจจุบันยังไม่เอื้อต่อการเข้าซื้อก้อนใหญ่</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$58.20 <span style="font-size:12px;color:#cab9a8">($54.74–$63.00)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">เต็มมูลค่า ~6.0%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$70.93 (Buy เฉลี่ย)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> รอราคาย่อตัวลงมาใกล้มูลค่าเหมาะสม $58.20 หรือต่ำกว่าก่อนเริ่มทยอยสะสม · เพิ่มน้ำหนักในโซน MOS 20%
+        ($46.56) หรือต่ำกว่าเพื่อเพิ่มส่วนเผื่อความปลอดภัย · จุดซื้อ deep value ที่ $40.74 (MOS 30%) · ผู้ที่ถืออยู่แล้ว
+        ถือต่อรับปันผล ~1.3% ระหว่างรอ margin ฟื้นตัวและ deleveraging ต่อเนื่อง · ติดตาม net debt/EBITDA และปริมาณกระป๋อง
+        ที่ขายได้ในแต่ละไตรมาสว่าเป็นไปตามเป้าหรือไม่
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    ราคา ณ 10 กรกฎาคม 2569 · แหล่ง: StockAnalysis.com (stockanalysis.com/stocks/BALL) · Yahoo Finance
+    (finance.yahoo.com/quote/BALL) · Ball Corporation Investor Relations (ball.com)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 10 กรกฎาคม 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
