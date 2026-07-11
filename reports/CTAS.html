@@ -8,22 +8,52 @@
 <meta name="ai-model" content="Claude Opus 4.8">
 <!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
 <script type="application/json" id="stock-meta">
-{"symbol":"CTAS","currency":"USD","price":171.90,"fairValue":188,"mos":8.56,"upside":9.37,"pe":36.27,"dividendYield":1.05,"roe":41.2}
+{"symbol":"CTAS","currency":"USD","price":179.64,"fairValue":188,"mos":4.4,"upside":4.7,"pe":36.27,"dividendYield":1.05,"roe":41.2}
 </script>
 <script type="application/json" id="report-data">
 {
   "theme": {
-    "accent": "#1f7a8c", "accentDark": "#155564",
+    "accent": "#1f7a8c",
+    "accentDark": "#155564",
     "darkGrad": "linear-gradient(135deg,#0e2a31 0%,#14424c 55%,#1f7a8c 150%)",
-    "glow": "rgba(31,122,140,.35)", "subColor": "#bfdce2", "headerMuted": "#a8c8cf",
-    "chgBg": "var(--red-soft)", "chgColor": "#c5221f", "badge": "var(--blue)",
-    "verdictText": "#d3dee0", "vcellLabel": "#a6c0c6"
+    "glow": "rgba(31,122,140,.35)",
+    "subColor": "#bfdce2",
+    "headerMuted": "#a8c8cf",
+    "chgBg": "var(--red-soft)",
+    "chgColor": "#c5221f",
+    "badge": "var(--blue)",
+    "verdictText": "#d3dee0",
+    "vcellLabel": "#a6c0c6"
   },
   "chart": {
-    "data": [["ก.ค.25",221.06],["ส.ค.25",209.05],["ก.ย.25",204.30],["ต.ค.25",182.41],["พ.ย.25",185.59],["ธ.ค.25",187.64],["ม.ค.26",190.95],["ก.พ.26",201.13],["มี.ค.26",169.14],["เม.ย.26",174.71],["พ.ค.26",171.26],["มิ.ย.26",171.90]],
-    "min": 165, "max": 222, "grid": [175,190,205,220], "fairLine": 188, "currency": "$", "highlight": [10,11]
+    "data": [
+      ["ส.ค.25", 210.03],
+      ["ก.ย.25", 205.26],
+      ["ต.ค.25", 183.27],
+      ["พ.ย.25", 186.02],
+      ["ธ.ค.25", 188.07],
+      ["ม.ค.26", 191.39],
+      ["ก.พ.26", 201.13],
+      ["มี.ค.26", 169.14],
+      ["เม.ย.26", 174.71],
+      ["พ.ค.26", 171.26],
+      ["มิ.ย.26", 170.08],
+      ["ก.ค.26", 179.64]
+    ],
+    "min": 160,
+    "max": 220,
+    "grid": [180, 200],
+    "fairLine": 188,
+    "currency": "$",
+    "highlight": [0, 7]
   },
-  "gauge": { "min": 131.60, "max": 222, "cur": 171.90, "fair": 188, "fairLabelTop": "-58px" },
+  "gauge": {
+    "min": 131.6,
+    "max": 222,
+    "cur": 179.64,
+    "fair": 188,
+    "fairLabelTop": "-58px"
+  },
   "fv": 188
 }
 </script>
@@ -45,14 +75,14 @@
     <div class="sub">เช่า/ซักเครื่องแบบพนักงาน • พรม/ผ้าเช็ดเท้า/ผ้าเช็ดมือ • First Aid &amp; Safety • Fire Protection • บริการสุขอนามัยรายทาง (route-based B2B)</div>
     <div class="price-row">
       <div>
-        <div class="px">$171.90<small>(CTAS)</small></div>
+        <div class="px">$179.64<small>(CTAS)</small></div>
       </div>
       <!-- ★ ป้าย % รอบปี (gate E35/E36) — ผลตอบแทน ~1 ปี (เทียบราคา ~1 ปีก่อน) = ผลตอบแทนปลายกราฟ section 2 (จุดแรก→ท้าย)
            รูปแบบ: "▲ +X.X% (รอบปี)" ขึ้น · "▼ −X.X% (รอบปี)" ลง · "≈ ทรงตัว (รอบปี)" · หุ้น IPO <1 ปี ใช้ "(ตั้งแต่ IPO)"
            ไม่ใช่ % รายวัน/YTD/52 สัปดาห์ · ตั้งสี theme.chgBg/chgColor ให้ตรงทิศ (ขึ้น=เขียว/ลง=แดง · E34) -->
-      <div class="chg">▼ −22.2% (รอบปี)</div>
+      <div class="chg">▼ −14.5% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 29 มิ.ย. 2026 (งบ FY2025)<br>
+        ราคา ณ 10 ก.ค. 2026 (งบ FY2025)<br>
         กรอบ 52 สัปดาห์ $161.16 – $226.75 • เป้าเฉลี่ย Analyst $210.65<br>
         ที่มา: StockAnalysis.com, Yahoo Finance, Cintas IR/10-K, digrin.com
       </div>
@@ -140,7 +170,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $171.90</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $179.64</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $188</div></div>
         </div>
         <div class="scale">
@@ -163,7 +193,7 @@
     <div class="card">
       <!-- ✏️ class ของ mos-verdict: MOS<10 → "bad", 10–20 → "ok", ≥20 → "good" -->
       <div class="mos-verdict bad">
-        <div class="big">+8.56%</div>
+        <div class="big">+4%</div>
         <div class="txt">ราคาต่ำกว่ามูลค่าเหมาะสมเล็กน้อย — มี <b>ส่วนเผื่อบาง ๆ</b> ราว +8.6% ยังไม่ถึงโซน value ที่ปลอดภัยมาก (MOS &lt; 10%) เหมาะกับนักลงทุนที่เน้นคุณภาพ/compounder ระยะยาวมากกว่าเน้นส่วนลด — รอย่อหา MOS 20% ที่ $150 จะปลอดภัยกว่า</div>
       </div>
       <div class="grid g3">
@@ -174,7 +204,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="171.90" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="179.64" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

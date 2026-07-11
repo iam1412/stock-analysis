@@ -19,7 +19,7 @@
 <meta name="ai-model" content="Claude Sonnet 4.6">
 <!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
 <script type="application/json" id="stock-meta">
-{"symbol":"FAST","currency":"USD","price":47.10,"fairValue":40,"mos":-17.75,"upside":-15.1,"pe":41.68,"dividendYield":2.04,"roe":33.84}
+{"symbol":"FAST","currency":"USD","price":46.49,"fairValue":40,"mos":-16.2,"upside":-14,"pe":41.68,"dividendYield":2.04,"roe":33.84}
 </script>
 <!--
   report-data: ธีมสี + ข้อมูลกราฟ/gauge ต่อหุ้น (build เอาไปวาด)  ดู schema เต็มใน CLAUDE.md ข้อ 9
@@ -31,9 +31,53 @@
   • dataFmt อ้าง d[1] เท่านั้น, gridFmt อ้าง v เท่านั้น (ผิด scope = กราฟดับ)
 -->
 <script type="application/json" id="report-data">
-{"theme":{"accent":"#0061AA","accentDark":"#00427A","darkGrad":"linear-gradient(135deg, #020A12 0%, #051726 100%)","glow":"rgba(0,97,170,0.35)","subColor":"#3D90CE","headerMuted":"rgba(0,97,170,0.12)","verdictText":"#CFE3F2","vcellLabel":"rgba(207,227,242,0.6)","badge":"#0061AA","chgBg":"rgba(34,197,94,0.15)","chgColor":"#22C55E"},
-"chart":{"data":[["ก.ค. 68",46.13],["ส.ค. 68",49.66],["ก.ย. 68",49.04],["ต.ค. 68",41.15],["พ.ย. 68",40.40],["ธ.ค. 68",40.13],["ม.ค. 69",43.36],["ก.พ. 69",46.04],["มี.ค. 69",46.40],["เม.ย. 69",44.93],["พ.ค. 69",44.20],["มิ.ย. 69",47.10]],"min":38,"max":52,"grid":[40,45,50],"fairLine":40,"currency":"$","highlight":[1],"gridFmt":"v.toFixed(0)","dataFmt":"d[1].toFixed(2)"},
-"gauge":{"min":36,"max":54,"cur":47.10,"fair":40,"fairLabelTop":false},"fv":40}
+{
+  "theme": {
+    "accent": "#0061AA",
+    "accentDark": "#00427A",
+    "darkGrad": "linear-gradient(135deg, #020A12 0%, #051726 100%)",
+    "glow": "rgba(0,97,170,0.35)",
+    "subColor": "#3D90CE",
+    "headerMuted": "rgba(0,97,170,0.12)",
+    "verdictText": "#CFE3F2",
+    "vcellLabel": "rgba(207,227,242,0.6)",
+    "badge": "#0061AA",
+    "chgBg": "var(--red-soft)",
+    "chgColor": "#c5221f"
+  },
+  "chart": {
+    "data": [
+      ["ส.ค.25", 49.66],
+      ["ก.ย.25", 49.04],
+      ["ต.ค.25", 41.15],
+      ["พ.ย.25", 40.4],
+      ["ธ.ค.25", 40.13],
+      ["ม.ค.26", 43.36],
+      ["ก.พ.26", 46.04],
+      ["มี.ค.26", 46.4],
+      ["เม.ย.26", 44.93],
+      ["พ.ค.26", 44.2],
+      ["มิ.ย.26", 48.03],
+      ["ก.ค.26", 46.49]
+    ],
+    "min": 37.5,
+    "max": 52.5,
+    "grid": [40, 42.5, 45, 47.5, 50],
+    "fairLine": 40,
+    "currency": "$",
+    "highlight": [0, 4],
+    "gridFmt": "v.toFixed(0)",
+    "dataFmt": "d[1].toFixed(2)"
+  },
+  "gauge": {
+    "min": 36,
+    "max": 54,
+    "cur": 46.49,
+    "fair": 40,
+    "fairLabelTop": false
+  },
+  "fv": 40
+}
 </script>
 <!--TEMPLATE:STYLE-->
 </head>
@@ -53,14 +97,14 @@
     <div class="sub">จัดจำหน่ายตัวยึด/อุปกรณ์อุตสาหกรรม &amp; MRO • Onsite ณ โรงงานลูกค้า (~2,657) • เครื่องจ่ายอัตโนมัติ FMI/vending • ดิจิทัล 61% ของยอดขาย</div>
     <div class="price-row">
       <div>
-        <div class="px">$47.10<small>(FAST)</small></div>
+        <div class="px">$46.49<small>(FAST)</small></div>
       </div>
       <!-- ★ ป้าย % รอบปี (gate E35/E36) — ผลตอบแทน ~1 ปี (เทียบราคา ~1 ปีก่อน) = ผลตอบแทนปลายกราฟ section 2 (จุดแรก→ท้าย)
            รูปแบบ: "▲ +X.X% (รอบปี)" ขึ้น · "▼ −X.X% (รอบปี)" ลง · "≈ ทรงตัว (รอบปี)" · หุ้น IPO <1 ปี ใช้ "(ตั้งแต่ IPO)"
            ไม่ใช่ % รายวัน/YTD/52 สัปดาห์ · ตั้งสี theme.chgBg/chgColor ให้ตรงทิศ (ขึ้น=เขียว/ลง=แดง · E34) -->
-      <div class="chg">▲ +2.1% (รอบปี)</div>
+      <div class="chg">▼ −6.4% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 26 มิ.ย. 2569<br>
+        ราคา ณ 10 ก.ค. 2569<br>
         กรอบ 52 สัปดาห์ $38.97 / $50.63<br>
         ที่มา: StockAnalysis.com / Yahoo Finance / Fastenal Investor Relations / Macrotrends
       </div>
@@ -146,7 +190,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $47.10</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $46.49</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $40</div></div>
         </div>
         <div class="scale">
@@ -169,7 +213,7 @@
     <div class="card">
       <!-- ✏️ class ของ mos-verdict: MOS<10 → "bad", 10–20 → "ok", ≥20 → "good" -->
       <div class="mos-verdict bad">
-        <div class="big">−17.8%</div>
+        <div class="big">−16%</div>
         <div class="txt">ราคาแพงกว่ามูลค่าเหมาะสม — ยังไม่มี Margin of Safety</div>
       </div>
       <div class="grid g3">
@@ -180,7 +224,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="47.10" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="46.49" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

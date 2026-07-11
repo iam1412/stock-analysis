@@ -6,13 +6,52 @@
 <title>วิเคราะห์หุ้น O'Reilly Automotive (ORLY) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Sonnet 4.6">
 <script type="application/json" id="stock-meta">
-{"symbol":"ORLY","currency":"USD","price":89.55,"fairValue":91,"mos":1.6,"upside":1.6,"pe":29.15,"dividendYield":null,"roe":null}
+{"symbol":"ORLY","currency":"USD","price":86.28,"fairValue":91,"mos":5.2,"upside":5.5,"pe":29.15,"dividendYield":null,"roe":null}
 </script>
 <script type="application/json" id="report-data">
 {
-  "theme": {"accent":"#CC0000","accentDark":"#990000","darkGrad":"linear-gradient(135deg, #0A0000 0%, #1A0000 100%)","glow":"rgba(204, 0, 0, 0.3)","subColor":"#FF4444","headerMuted":"rgba(204, 0, 0, 0.1)","verdictText":"#FFD7D7","vcellLabel":"rgba(255, 215, 215, 0.6)","badge":"#CC0000","chgBg":"rgba(239, 68, 68, 0.15)","chgColor":"#EF4444"},
-  "chart": {"data":[["ก.ค. 68",98.32],["ส.ค. 68",103.68],["ก.ย. 68",107.81],["ต.ค. 68",94.44],["พ.ย. 68",101.70],["ธ.ค. 68",91.21],["ม.ค. 69",98.41],["ก.พ. 69",93.88],["มี.ค. 69",92.31],["เม.ย. 69",99.40],["พ.ค. 69",86.88],["มิ.ย. 69",89.55]],"min":80,"max":115,"grid":[85,95,105],"fairLine":91,"currency":"$","highlight":[2]},
-  "gauge": {"min":60,"max":115,"cur":89.55,"fair":91,"fairLabelTop":false},
+  "theme": {
+    "accent": "#CC0000",
+    "accentDark": "#990000",
+    "darkGrad": "linear-gradient(135deg, #0A0000 0%, #1A0000 100%)",
+    "glow": "rgba(204, 0, 0, 0.3)",
+    "subColor": "#FF4444",
+    "headerMuted": "rgba(204, 0, 0, 0.1)",
+    "verdictText": "#FFD7D7",
+    "vcellLabel": "rgba(255, 215, 215, 0.6)",
+    "badge": "#CC0000",
+    "chgBg": "var(--red-soft)",
+    "chgColor": "#c5221f"
+  },
+  "chart": {
+    "data": [
+      ["ส.ค.25", 103.68],
+      ["ก.ย.25", 107.81],
+      ["ต.ค.25", 94.44],
+      ["พ.ย.25", 101.7],
+      ["ธ.ค.25", 91.21],
+      ["ม.ค.26", 98.41],
+      ["ก.พ.26", 93.88],
+      ["มี.ค.26", 92.31],
+      ["เม.ย.26", 99.4],
+      ["พ.ค.26", 86.88],
+      ["มิ.ย.26", 92.09],
+      ["ก.ค.26", 86.28]
+    ],
+    "min": 80,
+    "max": 110,
+    "grid": [90, 100],
+    "fairLine": 91,
+    "currency": "$",
+    "highlight": [1, 11]
+  },
+  "gauge": {
+    "min": 60,
+    "max": 115,
+    "cur": 86.28,
+    "fair": 91,
+    "fairLabelTop": false
+  },
   "fv": 91
 }
 </script>
@@ -33,11 +72,11 @@
     <div class="sub">จำหน่ายอะไหล่รถยนต์ aftermarket • DIY &amp; Professional • 6,100+ สาขาทั่วอเมริกาเหนือ • buyback-driven compounder (ไม่มีเงินปันผล)</div>
     <div class="price-row">
       <div>
-        <div class="px">$89.55<small>(ORLY)</small></div>
+        <div class="px">$86.28<small>(ORLY)</small></div>
       </div>
-      <div class="chg">▼ −8.9% (รอบปี)</div>
+      <div class="chg">▼ −16.8% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 26 มิ.ย. 2569<br>
+        ราคา ณ 10 ก.ค. 2569<br>
         กรอบ 52 สัปดาห์ $84.76 / $108.72<br>
         ที่มา: StockAnalysis.com / Yahoo Finance / O'Reilly Investor Relations / Macrotrends
       </div>
@@ -111,7 +150,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $89.55</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $86.28</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $91</div></div>
         </div>
         <div class="scale">
@@ -133,7 +172,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict bad">
-        <div class="big">+1.6%</div>
+        <div class="big">+5%</div>
         <div class="txt">MOS ต่ำมาก — ราคาใกล้ fair value ยังไม่มี buffer เพียงพอ</div>
       </div>
       <div class="grid g3">
@@ -144,7 +183,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="89.55" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="86.28" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

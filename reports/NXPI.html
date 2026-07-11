@@ -6,22 +6,52 @@
 <title>วิเคราะห์หุ้น NXP Semiconductors (NXPI) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Opus 4.8">
 <script type="application/json" id="stock-meta">
-{"symbol":"NXPI","currency":"USD","price":306,"fairValue":285,"mos":-7,"upside":-6.9,"pe":26,"dividendYield":1.33,"roe":35}
+{"symbol":"NXPI","currency":"USD","price":292.26,"fairValue":285,"mos":-2.5,"upside":-2.5,"pe":26,"dividendYield":1.33,"roe":35}
 </script>
 <script type="application/json" id="report-data">
 {
   "theme": {
-    "accent": "#e87421", "accentDark": "#b05412",
+    "accent": "#e87421",
+    "accentDark": "#b05412",
     "darkGrad": "linear-gradient(135deg,#3e1c04 0%,#733408 58%,#b6530c 140%)",
-    "glow": "rgba(231,110,24,.35)", "subColor": "#ebd3c2", "headerMuted": "#d4b9a5",
-    "chgBg": "var(--green-soft)", "chgColor": "#1e8e3e", "badge": "var(--blue)",
-    "verdictText": "#f1ded0", "vcellLabel": "#ddbda6"
+    "glow": "rgba(231,110,24,.35)",
+    "subColor": "#ebd3c2",
+    "headerMuted": "#d4b9a5",
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#1e8e3e",
+    "badge": "var(--blue)",
+    "verdictText": "#f1ded0",
+    "vcellLabel": "#ddbda6"
   },
   "chart": {
-    "data": [["มิ.ย.25",195],["ส.ค.25",215],["ต.ค.25",240],["ธ.ค.25",260],["ก.พ.26",285],["เม.ย.26",315],["พ.ค.26",338],["มิ.ย.26",306]],
-    "min": 170, "max": 360, "grid": [180,220,260,300,340], "fairLine": 285, "currency": "$", "highlight": [6,7]
+    "data": [
+      ["ส.ค.25", 234.85],
+      ["ก.ย.25", 227.73],
+      ["ต.ค.25", 209.12],
+      ["พ.ย.25", 194.94],
+      ["ธ.ค.25", 217.06],
+      ["ม.ค.26", 226.14],
+      ["ก.พ.26", 227.01],
+      ["มี.ค.26", 196.86],
+      ["เม.ย.26", 293.59],
+      ["พ.ค.26", 321.35],
+      ["มิ.ย.26", 281.03],
+      ["ก.ค.26", 292.26]
+    ],
+    "min": 150,
+    "max": 350,
+    "grid": [200, 250, 300],
+    "fairLine": 285,
+    "currency": "$",
+    "highlight": [3, 9]
   },
-  "gauge": { "min": 180, "max": 410, "cur": 306, "fair": 285, "fairLabelTop": "-58px" },
+  "gauge": {
+    "min": 180,
+    "max": 410,
+    "cur": 292.26,
+    "fair": 285,
+    "fairLabelTop": "-58px"
+  },
   "fv": 285
 }
 </script>
@@ -42,11 +72,11 @@
     <div class="sub">ผู้นำชิป Edge-AI • ยานยนต์ (ADAS, software-defined vehicle) • อุตสาหกรรม/IoT • สัญชาติเนเธอร์แลนด์</div>
     <div class="price-row">
       <div>
-        <div class="px">$306<small>(NXPI)</small></div>
+        <div class="px">$292.26<small>(NXPI)</small></div>
       </div>
-      <div class="chg">▲ +56.9% (รอบปี)</div>
+      <div class="chg">▲ +24.4% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ≈ 23 มิ.ย. 2026 (10:10 ET, ผันผวน)<br>
+        ราคา ≈ 10 ก.ค. 2026 (10:10 ET, ผันผวน)<br>
         ปิดก่อนหน้า ~$304.8 • ระหว่างวันร่วง ~5%<br>
         ที่มา: StockAnalysis.com / Yahoo Finance / MarketBeat
       </div>
@@ -126,7 +156,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $306</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $292</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $285</div></div>
         </div>
         <div class="scale">
@@ -149,7 +179,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict bad">
-        <div class="big">−7%</div>
+        <div class="big">−3%</div>
         <div class="txt"><b>ไม่มี Margin of Safety</b><br>ราคาปัจจุบัน $306 สูงกว่ามูลค่าเหมาะสม $285 ราว 7% → ตามเกณฑ์ value investor ถือว่า <b>แพงเล็กน้อย</b> ยังไม่ใช่จุดซื้อที่ปลอดภัย โดยเฉพาะสำหรับหุ้นวัฏจักร</div>
       </div>
       <div class="grid g3">
@@ -160,7 +190,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="306" step="1">
+          <input id="pxIn" class="mono" type="number" value="292.26" step="1">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

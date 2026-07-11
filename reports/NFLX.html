@@ -6,23 +6,54 @@
 <title>วิเคราะห์หุ้น Netflix (NFLX) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Opus 4.8">
 <script type="application/json" id="stock-meta">
-{"symbol":"NFLX","currency":"USD","price":73.81,"fairValue":110,"mos":32.9,"upside":49.0,"pe":23.84,"dividendYield":null,"roe":42.76}
+{"symbol":"NFLX","currency":"USD","price":73.37,"fairValue":110,"mos":33.3,"upside":49.9,"pe":23.84,"dividendYield":null,"roe":42.76}
 </script>
 <script type="application/json" id="report-data">
 {
   "theme": {
-    "accent": "#E50914", "accentDark": "#B0060F",
+    "accent": "#E50914",
+    "accentDark": "#B0060F",
     "darkGrad": "linear-gradient(135deg,#141414 0%,#1f0708 55%,#3a0a0d 140%)",
-    "glow": "rgba(229,9,20,.30)", "subColor": "#f0cdce", "headerMuted": "#e3b3b5",
-    "chgBg": "var(--red-soft)", "chgColor": "#c5221f", "badge": "var(--blue)",
-    "verdictText": "#e8d2d3", "vcellLabel": "#d3a9ab"
+    "glow": "rgba(229,9,20,.30)",
+    "subColor": "#f0cdce",
+    "headerMuted": "#e3b3b5",
+    "chgBg": "var(--red-soft)",
+    "chgColor": "#c5221f",
+    "badge": "var(--blue)",
+    "verdictText": "#e8d2d3",
+    "vcellLabel": "#d3a9ab"
   },
   "chart": {
-    "data": [["มิ.ย.25",133.91],["ก.ค.25",115.94],["ส.ค.25",120.82],["ก.ย.25",119.89],["ต.ค.25",111.89],["พ.ย.25",107.58],["ธ.ค.25",93.76],["ม.ค.26",83.49],["ก.พ.26",96.24],["มี.ค.26",96.15],["เม.ย.26",93.61],["พ.ค.26",86.02],["มิ.ย.26",73.81]],
-    "min": 68, "max": 138, "grid": [80,95,110,125], "fairLine": 110, "currency": "$", "highlight": [11,12],
-    "gridFmt": "v.toFixed(0)", "dataFmt": "d[1].toFixed(0)"
+    "data": [
+      ["ส.ค.25", 120.82],
+      ["ก.ย.25", 119.89],
+      ["ต.ค.25", 111.89],
+      ["พ.ย.25", 107.58],
+      ["ธ.ค.25", 93.76],
+      ["ม.ค.26", 83.49],
+      ["ก.พ.26", 96.24],
+      ["มี.ค.26", 96.15],
+      ["เม.ย.26", 93.61],
+      ["พ.ค.26", 86.02],
+      ["มิ.ย.26", 71.4],
+      ["ก.ค.26", 73.37]
+    ],
+    "min": 60,
+    "max": 140,
+    "grid": [80, 100, 120],
+    "fairLine": 110,
+    "currency": "$",
+    "highlight": [0, 10],
+    "gridFmt": "v.toFixed(0)",
+    "dataFmt": "d[1].toFixed(0)"
   },
-  "gauge": { "min": 70, "max": 124, "cur": 73.81, "fair": 110, "fairLabelTop": "-58px" },
+  "gauge": {
+    "min": 70,
+    "max": 124,
+    "cur": 73.37,
+    "fair": 110,
+    "fairLabelTop": "-58px"
+  },
   "fv": 110
 }
 </script>
@@ -43,11 +74,11 @@
     <div class="sub">สตรีมมิงทั่วโลก 300M+ สมาชิก • คอนเทนต์ Original (หนัง·ซีรีส์·สารคดี) • โฆษณา (ad-supported tier) • เกม • Live events/กีฬา</div>
     <div class="price-row">
       <div>
-        <div class="px">$73.81<small>(NFLX)</small></div>
+        <div class="px">$73.37<small>(NFLX)</small></div>
       </div>
-      <div class="chg">▼ −44.9% (รอบปี)</div>
+      <div class="chg">▼ −39.3% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 27 มิ.ย. 2026<br>
+        ราคา ณ 10 ก.ค. 2026<br>
         กรอบ 52 สัปดาห์ $70.86 – $134.12 (หลังแตกพาร์)<br>
         ที่มา: StockAnalysis.com / Yahoo Finance / Netflix IR / digrin.com
       </div>
@@ -130,7 +161,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $73.81</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $73.37</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $110</div></div>
         </div>
         <div class="scale">
@@ -154,7 +185,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict good">
-        <div class="big">+32.9%</div>
+        <div class="big">+33%</div>
         <div class="txt">ราคาต่ำกว่ามูลค่าเหมาะสม $110 อยู่มาก — ส่วนเผื่อความปลอดภัยกว้าง <b>แต่ขึ้นกับสมมติฐาน P/E/การเติบโต</b> (เช็คให้แน่ใจว่าไม่ใช่ value trap จากการชะลอตัวเชิงโครงสร้าง)</div>
       </div>
       <div class="grid g3">
@@ -165,7 +196,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="73.81" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="73.37" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

@@ -6,10 +6,54 @@
 <title>วิเคราะห์หุ้น Waste Management (WM) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Sonnet 4.6">
 <script type="application/json" id="stock-meta">
-{"symbol":"WM","currency":"USD","price":225.53,"fairValue":199,"mos":-13.3,"upside":-11.8,"pe":32.64,"dividendYield":1.68,"roe":29.94}
+{"symbol":"WM","currency":"USD","price":233.33,"fairValue":199,"mos":-17.3,"upside":-14.7,"pe":32.64,"dividendYield":1.68,"roe":29.94}
 </script>
 <script type="application/json" id="report-data">
-{"theme":{"accent":"#0E9D4E","accentDark":"#0A6E37","darkGrad":"linear-gradient(135deg, #02100A 0%, #051F12 100%)","glow":"rgba(14,157,78,0.35)","subColor":"#42C47E","headerMuted":"rgba(14,157,78,0.12)","verdictText":"#CFEDD9","vcellLabel":"rgba(207,237,217,0.6)","badge":"#0E9D4E","chgBg":"rgba(239,68,68,0.15)","chgColor":"#EF4444"},"chart":{"data":[["ก.ค. 68",229.16],["ส.ค. 68",226.39],["ก.ย. 68",220.83],["ต.ค. 68",199.77],["พ.ย. 68",217.87],["ธ.ค. 68",219.71],["ม.ค. 69",222.24],["ก.พ. 69",240.84],["มี.ค. 69",229.79],["เม.ย. 69",232.55],["พ.ค. 69",211.46],["มิ.ย. 69",225.53]],"min":195,"max":245,"grid":[205,220,235],"fairLine":199,"currency":"$","highlight":[3]},"gauge":{"min":190,"max":250,"cur":225.53,"fair":199,"fairLabelTop":false},"fv":199}
+{
+  "theme": {
+    "accent": "#0E9D4E",
+    "accentDark": "#0A6E37",
+    "darkGrad": "linear-gradient(135deg, #02100A 0%, #051F12 100%)",
+    "glow": "rgba(14,157,78,0.35)",
+    "subColor": "#42C47E",
+    "headerMuted": "rgba(14,157,78,0.12)",
+    "verdictText": "#CFEDD9",
+    "vcellLabel": "rgba(207,237,217,0.6)",
+    "badge": "#0E9D4E",
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#1e8e3e"
+  },
+  "chart": {
+    "data": [
+      ["ส.ค.25", 226.39],
+      ["ก.ย.25", 220.83],
+      ["ต.ค.25", 199.77],
+      ["พ.ย.25", 217.87],
+      ["ธ.ค.25", 219.71],
+      ["ม.ค.26", 222.24],
+      ["ก.พ.26", 240.84],
+      ["มี.ค.26", 229.79],
+      ["เม.ย.26", 232.55],
+      ["พ.ค.26", 211.46],
+      ["มิ.ย.26", 222.88],
+      ["ก.ค.26", 233.33]
+    ],
+    "min": 180,
+    "max": 260,
+    "grid": [200, 220, 240],
+    "fairLine": 199,
+    "currency": "$",
+    "highlight": [2, 6]
+  },
+  "gauge": {
+    "min": 190,
+    "max": 250,
+    "cur": 233.33,
+    "fair": 199,
+    "fairLabelTop": false
+  },
+  "fv": 199
+}
 </script>
 <!--TEMPLATE:STYLE-->
 </head>
@@ -28,11 +72,11 @@
     <div class="sub">เก็บ-ขนส่ง-กำจัดขยะรายใหญ่สุดอเมริกาเหนือ • Collection/Transfer/Landfill (257 แห่ง) • Recycling • Renewable Natural Gas (RNG) • WM Healthcare Solutions (Stericycle)</div>
     <div class="price-row">
       <div>
-        <div class="px">$225.53<small>(WM)</small></div>
+        <div class="px">$233.33<small>(WM)</small></div>
       </div>
-      <div class="chg">▼ −1.6% (รอบปี)</div>
+      <div class="chg">▲ +3.1% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 26 มิ.ย. 2569<br>
+        ราคา ณ 10 ก.ค. 2569<br>
         กรอบ 52 สัปดาห์ $194.11 / $248.13<br>
         ที่มา: StockAnalysis.com / Yahoo Finance / Waste Management IR / Macrotrends
       </div>
@@ -110,7 +154,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $225.53</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $233.33</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $199</div></div>
         </div>
         <div class="scale">
@@ -132,7 +176,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict bad">
-        <div class="big">−13.3%</div>
+        <div class="big">−17%</div>
         <div class="txt">ราคาแพงกว่า Fair Value — ยังไม่มี Margin of Safety · รอจังหวะย่อ</div>
       </div>
       <div class="grid g3">
@@ -143,7 +187,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="225.53" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="233.33" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

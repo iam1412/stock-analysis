@@ -6,22 +6,52 @@
 <title>วิเคราะห์หุ้น Palantir (PLTR) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Opus 4.8">
 <script type="application/json" id="stock-meta">
-{"symbol":"PLTR","currency":"USD","price":119.5,"fairValue":63,"mos":-90,"upside":-47.3,"pe":134,"dividendYield":0,"roe":44}
+{"symbol":"PLTR","currency":"USD","price":126.79,"fairValue":63,"mos":-101.3,"upside":-50.3,"pe":134,"dividendYield":0,"roe":44}
 </script>
 <script type="application/json" id="report-data">
 {
   "theme": {
-    "accent": "#1a73e8", "accentDark": "#1557b0",
+    "accent": "#1a73e8",
+    "accentDark": "#1557b0",
     "darkGrad": "linear-gradient(135deg,#0b0f17 0%,#13202e 60%,#1557b0 150%)",
-    "glow": "rgba(66,133,244,.35)", "subColor": "#c7d2e4", "headerMuted": "#aebfd6",
-    "chgBg": "var(--red-soft)", "chgColor": "#c5221f", "badge": "var(--blue)",
-    "verdictText": "#d4dded", "vcellLabel": "#a8b6cc"
+    "glow": "rgba(66,133,244,.35)",
+    "subColor": "#c7d2e4",
+    "headerMuted": "#aebfd6",
+    "chgBg": "var(--red-soft)",
+    "chgColor": "#c5221f",
+    "badge": "var(--blue)",
+    "verdictText": "#d4dded",
+    "vcellLabel": "#a8b6cc"
   },
   "chart": {
-    "data": [["มิ.ย.25",128],["ส.ค.25",158],["ต.ค.25",185],["ธ.ค.25",208],["ก.พ.26",172],["เม.ย.26",148],["พ.ค.26",133],["มิ.ย.26",119.5]],
-    "min": 40, "max": 220, "grid": [50,90,130,170,210], "fairLine": 63, "currency": "$", "highlight": [3,7]
+    "data": [
+      ["ส.ค.25", 156.71],
+      ["ก.ย.25", 182.42],
+      ["ต.ค.25", 200.47],
+      ["พ.ย.25", 168.45],
+      ["ธ.ค.25", 177.75],
+      ["ม.ค.26", 146.59],
+      ["ก.พ.26", 137.19],
+      ["มี.ค.26", 146.28],
+      ["เม.ย.26", 139.11],
+      ["พ.ค.26", 156.54],
+      ["มิ.ย.26", 116.67],
+      ["ก.ค.26", 126.79]
+    ],
+    "min": 50,
+    "max": 250,
+    "grid": [100, 150, 200],
+    "fairLine": 63,
+    "currency": "$",
+    "highlight": [2, 10]
   },
-  "gauge": { "min": 35, "max": 200, "cur": 119.5, "fair": 63, "fairLabelTop": "-58px" },
+  "gauge": {
+    "min": 35,
+    "max": 200,
+    "cur": 126.79,
+    "fair": 63,
+    "fairLabelTop": "-58px"
+  },
   "fv": 63
 }
 </script>
@@ -42,11 +72,11 @@
     <div class="sub">แพลตฟอร์ม AIP (Artificial Intelligence Platform) • Foundry / Gotham / Apollo — ลูกค้ารัฐบาล & เอกชน</div>
     <div class="price-row">
       <div>
-        <div class="px">$119.50<small>(PLTR)</small></div>
+        <div class="px">$126.79<small>(PLTR)</small></div>
       </div>
-      <div class="chg">▼ −6.6% (รอบปี)</div>
+      <div class="chg">▼ −19.1% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 22 มิ.ย. 2026 (ปิดตลาด 16:00 EDT)<br>
+        ราคา ณ 10 ก.ค. 2026 (ปิดตลาด 16:00 EDT)<br>
         ร่วง ~7% จาก ~$128.5 หลังกังวลวาลูเอชันแพง<br>
         ที่มา: StockAnalysis.com / Yahoo Finance / CNBC
       </div>
@@ -127,7 +157,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $119.50</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $126.79</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $63</div></div>
         </div>
         <div class="scale">
@@ -150,7 +180,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict bad">
-        <div class="big">−90%</div>
+        <div class="big">−101%</div>
         <div class="txt"><b>ไม่มี Margin of Safety (ติดลบหนัก)</b><br>ราคาปัจจุบัน $119.50 สูงกว่ามูลค่าเหมาะสม $63 ราว 90% → ตามเกณฑ์ value investor ถือว่า <b>แพงสุดขั้ว</b> ไม่มีส่วนเผื่อความปลอดภัยเลย เป็นการซื้อ "ความคาดหวัง" ล้วน</div>
       </div>
       <div class="grid g3">
@@ -161,7 +191,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="119.5" step="1">
+          <input id="pxIn" class="mono" type="number" value="126.79" step="1">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

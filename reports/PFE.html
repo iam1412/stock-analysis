@@ -6,7 +6,7 @@
 <title>วิเคราะห์หุ้น Pfizer (PFE) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Opus 4.8">
 <script type="application/json" id="stock-meta">
-{"symbol":"PFE","currency":"USD","price":24.32,"fairValue":27.00,"mos":9.9,"upside":11.0,"pe":8.4,"dividendYield":7.07,"roe":14.0}
+{"symbol":"PFE","currency":"USD","price":24.17,"fairValue":27,"mos":10.5,"upside":11.7,"pe":8.4,"dividendYield":7.07,"roe":14}
 </script>
 <script type="application/json" id="report-data">
 {
@@ -20,40 +20,39 @@
     "verdictText": "#ffd180",
     "vcellLabel": "rgba(255,255,255,0.6)",
     "badge": "#0093c8",
-    "chgBg": "#1e8e3e",
-    "chgColor": "#ffffff"
+    "chgBg": "var(--red-soft)",
+    "chgColor": "#c5221f"
   },
   "chart": {
     "data": [
-      ["ก.ค. 68", 22.14],
-      ["ส.ค. 68", 23.54],
-      ["ก.ย. 68", 24.23],
-      ["ต.ค. 68", 23.44],
-      ["พ.ย. 68", 24.90],
-      ["ธ.ค. 68", 24.09],
-      ["ม.ค. 69", 26.01],
-      ["ก.พ. 69", 27.20],
-      ["มี.ค. 69", 27.62],
-      ["เม.ย. 69", 26.27],
-      ["พ.ค. 69", 26.18],
-      ["มิ.ย. 69", 24.08],
-      ["ก.ค. 69", 24.32]
+      ["ส.ค.25", 24.76],
+      ["ก.ย.25", 25.48],
+      ["ต.ค.25", 24.65],
+      ["พ.ย.25", 25.74],
+      ["ธ.ค.25", 24.9],
+      ["ม.ค.26", 26.44],
+      ["ก.พ.26", 27.65],
+      ["มี.ค.26", 28.08],
+      ["เม.ย.26", 26.7],
+      ["พ.ค.26", 26.18],
+      ["มิ.ย.26", 24.08],
+      ["ก.ค.26", 24.17]
     ],
-    "min": 20,
-    "max": 30,
-    "grid": [20, 22.5, 25, 27.5, 30],
-    "fairLine": 27.00,
+    "min": 23,
+    "max": 29,
+    "grid": [24, 25, 26, 27, 28],
+    "fairLine": 27,
     "currency": "$",
-    "highlight": [8, 12]
+    "highlight": [7, 10]
   },
   "gauge": {
     "min": 15,
     "max": 32,
-    "cur": 24.32,
-    "fair": 27.00,
+    "cur": 24.17,
+    "fair": 27,
     "fairLabelTop": true
   },
-  "fv": 27.00
+  "fv": 27
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -73,11 +72,11 @@
     <div class="sub">วัคซีน Comirnaty • ยาต้านไวรัส Paxlovid • หัวใจ-หลอดเลือด Eliquis, Vyndaqel • มะเร็ง Ibrance, Padcev, Adcetris (Seagen) • วัคซีนป้องกันโรค Prevnar • เวชภัณฑ์โรคหายาก • อยู่ระหว่างต่อยอดกลุ่มโรคอ้วนผ่าน Metsera</div>
     <div class="price-row">
       <div>
-        <div class="px">$24.32<small>(PFE)</small></div>
+        <div class="px">$24.17<small>(PFE)</small></div>
       </div>
-      <div class="chg">▲ +9.9% (รอบปี)</div>
+      <div class="chg">▼ −2.4% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 2 ก.ค. 2569 (2 ก.ค. 2026)<br>
+        ราคา ณ 10 ก.ค. 2569 (10 ก.ค. 2026)<br>
         กรอบ 52 สัปดาห์ $23.11 – $28.75<br>
         ที่มา: StockAnalysis.com, Yahoo Finance/CNBC, Pfizer IR (SEC 8-K)
       </div>
@@ -160,7 +159,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $24.32</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $24.17</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $27.00</div></div>
         </div>
         <div class="scale">
@@ -184,7 +183,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict ok">
-        <div class="big">+9.9%</div>
+        <div class="big">+10%</div>
         <div class="txt">MOS ระดับปานกลาง-ต่ำ — ราคาปัจจุบันใกล้เคียงมูลค่าเหมาะสมมากกว่าจะเป็นดีล "ถูกมาก" ผลตอบแทนส่วนใหญ่มาจากปันผล ~7% ไม่ใช่ capital gain</div>
       </div>
       <div class="grid g3">
@@ -195,7 +194,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="24.32" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="24.17" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

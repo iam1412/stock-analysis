@@ -6,7 +6,7 @@
 <title>วิเคราะห์หุ้น บริหารสินทรัพย์กรุงเทพพาณิชย์ (BAM) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Sonnet 4.6">
 <script type="application/json" id="stock-meta">
-{"symbol":"BAM","currency":"THB","price":6.95,"fairValue":8.10,"mos":14.2,"upside":16.5,"pe":12.4,"dividendYield":7.2,"roe":12.17}
+{"symbol":"BAM","currency":"THB","price":6.85,"fairValue":8.1,"mos":15.4,"upside":18.2,"pe":12.4,"dividendYield":7.2,"roe":12.17}
 </script>
 <script type="application/json" id="report-data">
 {
@@ -20,42 +20,41 @@
     "verdictText": "#e0f2f1",
     "vcellLabel": "rgba(224,242,241,0.7)",
     "badge": "#00796b",
-    "chgBg": "#c5221f",
-    "chgColor": "#ffffff"
+    "chgBg": "var(--red-soft)",
+    "chgColor": "#c5221f"
   },
   "chart": {
     "data": [
-      ["ม.ค. 68", 8.15],
-      ["ก.พ. 68", 7.75],
-      ["มี.ค. 68", 6.75],
-      ["เม.ย. 68", 7.65],
-      ["พ.ค. 68", 8.00],
-      ["มิ.ย. 68", 8.00],
-      ["ก.ค. 68", 7.60],
-      ["ส.ค. 68", 7.10],
-      ["ก.ย. 68", 7.40],
-      ["ต.ค. 68", 6.45],
-      ["พ.ย. 68", 6.55],
-      ["ธ.ค. 68", 6.80],
-      ["ม.ค. 69", 6.95]
+      ["ส.ค.25", 8.15],
+      ["ก.ย.25", 7.75],
+      ["ต.ค.25", 6.75],
+      ["พ.ย.25", 7.65],
+      ["ธ.ค.25", 8],
+      ["ม.ค.26", 8],
+      ["ก.พ.26", 7.6],
+      ["มี.ค.26", 7.1],
+      ["เม.ย.26", 7.4],
+      ["พ.ค.26", 6.45],
+      ["มิ.ย.26", 6.55],
+      ["ก.ค.26", 6.85]
     ],
-    "min": 6.0,
-    "max": 9.0,
-    "grid": [6.0, 6.5, 7.0, 7.5, 8.0, 8.5, 9.0],
-    "fairLine": 8.10,
+    "min": 6,
+    "max": 8.5,
+    "grid": [6.5, 7, 7.5, 8],
+    "fairLine": 8.1,
     "currency": "฿",
-    "highlight": [4, 5],
+    "highlight": [0, 9],
     "gridFmt": "v.toFixed(2)",
     "dataFmt": "d[1].toFixed(2)"
   },
   "gauge": {
     "min": 0,
-    "max": 12.0,
-    "cur": 6.95,
-    "fair": 8.10,
+    "max": 12,
+    "cur": 6.85,
+    "fair": 8.1,
     "fairLabelTop": true
   },
-  "fv": 8.10
+  "fv": 8.1
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -75,11 +74,11 @@
     <div class="sub">AMC รายใหญ่สุดไทย • บริหาร NPL+NPA จากธนาคาร • พอร์ตสินทรัพย์ 1.36 แสนล้านบาท • รัฐถือ 100% ผ่าน FIDF</div>
     <div class="price-row">
       <div>
-        <div class="px">฿6.95<small>(BAM)</small></div>
+        <div class="px">฿6.85<small>(BAM)</small></div>
       </div>
-      <div class="chg">▼ −14.7% (รอบปี)</div>
+      <div class="chg">▼ −16.0% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 5 มกราคม 2569<br>
+        ราคา ณ 10 ก.ค. 2569<br>
         กรอบ 52 สัปดาห์ ฿6.20 – ฿8.60<br>
         ที่มา: Yahoo Finance, investor.bam.co.th, AiO Panphol, Investing.com
       </div>
@@ -163,7 +162,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿6.95</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿6.85</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿8.10</div></div>
         </div>
         <div class="scale">
@@ -187,7 +186,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict ok">
-        <div class="big">+14.2%</div>
+        <div class="big">+15%</div>
         <div class="txt">ราคาพอใช้ — ทยอยสะสมได้ · ยังไม่ถึง Deep Value Zone (MOS 20%)</div>
       </div>
       <div class="grid g3">
@@ -198,7 +197,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="6.95" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="6.85" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

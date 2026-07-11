@@ -8,13 +8,52 @@
 <meta name="ai-model" content="Claude Sonnet 4.6">
 <!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
 <script type="application/json" id="stock-meta">
-{"symbol":"ICE","currency":"USD","price":123.86,"fairValue":144,"mos":14.0,"upside":16.3,"pe":18.06,"dividendYield":1.68,"roe":11.0}
+{"symbol":"ICE","currency":"USD","price":135.26,"fairValue":144,"mos":6.1,"upside":6.5,"pe":18.06,"dividendYield":1.68,"roe":11}
 </script>
 <script type="application/json" id="report-data">
 {
-  "theme": {"accent":"#1F4E96","accentDark":"#14365F","darkGrad":"linear-gradient(135deg, #050A14 0%, #0C1A30 100%)","glow":"rgba(31,78,150,0.35)","subColor":"#5B8AC9","headerMuted":"rgba(31,78,150,0.12)","verdictText":"#CFE0F5","vcellLabel":"rgba(207,224,245,0.6)","badge":"#1F4E96","chgBg":"rgba(239,68,68,0.15)","chgColor":"#EF4444"},
-  "chart": {"data":[["ก.ค. 68",184.83],["ส.ค. 68",176.60],["ก.ย. 68",168.48],["ต.ค. 68",146.29],["พ.ย. 68",157.30],["ธ.ค. 68",161.96],["ม.ค. 69",173.78],["ก.พ. 69",164.13],["มี.ค. 69",157.28],["เม.ย. 69",158.09],["พ.ค. 69",147.85],["มิ.ย. 69",123.86]],"min":110,"max":195,"grid":[125,150,175],"fairLine":144,"currency":"$","highlight":[11]},
-  "gauge": {"min":90,"max":200,"cur":123.86,"fair":144,"fairLabelTop":false},
+  "theme": {
+    "accent": "#1F4E96",
+    "accentDark": "#14365F",
+    "darkGrad": "linear-gradient(135deg, #050A14 0%, #0C1A30 100%)",
+    "glow": "rgba(31,78,150,0.35)",
+    "subColor": "#5B8AC9",
+    "headerMuted": "rgba(31,78,150,0.12)",
+    "verdictText": "#CFE0F5",
+    "vcellLabel": "rgba(207,224,245,0.6)",
+    "badge": "#1F4E96",
+    "chgBg": "var(--red-soft)",
+    "chgColor": "#c5221f"
+  },
+  "chart": {
+    "data": [
+      ["ส.ค.25", 176.6],
+      ["ก.ย.25", 168.48],
+      ["ต.ค.25", 146.29],
+      ["พ.ย.25", 157.3],
+      ["ธ.ค.25", 161.96],
+      ["ม.ค.26", 173.78],
+      ["ก.พ.26", 164.13],
+      ["มี.ค.26", 157.28],
+      ["เม.ย.26", 158.09],
+      ["พ.ค.26", 147.85],
+      ["มิ.ย.26", 123.11],
+      ["ก.ค.26", 135.26]
+    ],
+    "min": 100,
+    "max": 180,
+    "grid": [120, 140, 160],
+    "fairLine": 144,
+    "currency": "$",
+    "highlight": [0, 10]
+  },
+  "gauge": {
+    "min": 90,
+    "max": 200,
+    "cur": 135.26,
+    "fair": 144,
+    "fairLabelTop": false
+  },
   "fv": 144
 }
 </script>
@@ -36,12 +75,12 @@
     <div class="sub">เจ้าของตลาด NYSE + ICE Futures (พลังงาน/Brent) • Fixed Income &amp; Data Services • Mortgage Technology (Black Knight, Ellie Mae) • รายได้ recurring ~สูง</div>
     <div class="price-row">
       <div>
-        <div class="px">$123.86<small>(ICE)</small></div>
+        <div class="px">$135.26<small>(ICE)</small></div>
       </div>
       <!-- ★ ป้าย % รอบปี (gate E35/E36) -->
-      <div class="chg">▼ −33.0% (รอบปี)</div>
+      <div class="chg">▼ −23.4% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 26 มิ.ย. 2569<br>
+        ราคา ณ 10 ก.ค. 2569<br>
         กรอบ 52 สัปดาห์ $123.74 / $189.35<br>
         ที่มา: StockAnalysis.com / Yahoo Finance / ICE Investor Relations (ir.theice.com) / Macrotrends
       </div>
@@ -119,7 +158,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $123.86</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $135.26</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $144</div></div>
         </div>
         <div class="scale">
@@ -142,7 +181,7 @@
     <div class="card">
       <!-- MOS 14.0% → class "ok" (10–20%) -->
       <div class="mos-verdict ok">
-        <div class="big">+14.0%</div>
+        <div class="big">+6%</div>
         <div class="txt">MOS ระดับกลาง — น่าสนใจแต่ยังไม่ถูกมาก (เป้า MOS 20%+ ที่ &lt;$115)</div>
       </div>
       <div class="grid g3">
@@ -153,7 +192,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="123.86" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="135.26" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

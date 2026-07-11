@@ -6,10 +6,54 @@
 <title>วิเคราะห์หุ้น Abbott Laboratories (ABT) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Sonnet 4.6">
 <script type="application/json" id="stock-meta">
-{"symbol":"ABT","currency":"USD","price":94.12,"fairValue":105,"mos":10.4,"upside":11.6,"pe":18.3,"dividendYield":2.76,"roe":12.51}
+{"symbol":"ABT","currency":"USD","price":93.93,"fairValue":105,"mos":10.5,"upside":11.8,"pe":18.3,"dividendYield":2.76,"roe":12.51}
 </script>
 <script type="application/json" id="report-data">
-{"theme":{"accent":"#0095CA","accentDark":"#006B92","darkGrad":"linear-gradient(135deg, #020A0F 0%, #04181F 100%)","glow":"rgba(0,149,202,0.35)","subColor":"#40B5DE","headerMuted":"rgba(0,149,202,0.12)","verdictText":"#CDE9F2","vcellLabel":"rgba(205,233,242,0.6)","badge":"#0095CA","chgBg":"rgba(239,68,68,0.15)","chgColor":"#EF4444"},"chart":{"data":[["ก.ค. 68",126.19],["ส.ค. 68",132.66],["ก.ย. 68",133.94],["ต.ค. 68",123.62],["พ.ย. 68",128.90],["ธ.ค. 68",125.29],["ม.ค. 69",109.30],["ก.พ. 69",116.35],["มี.ค. 69",102.67],["เม.ย. 69",90.79],["พ.ค. 69",85.60],["มิ.ย. 69",94.12]],"min":82,"max":138,"grid":[95,110,125],"fairLine":105,"currency":"$","highlight":[10]},"gauge":{"min":80,"max":138,"cur":94.12,"fair":105,"fairLabelTop":false},"fv":105}
+{
+  "theme": {
+    "accent": "#0095CA",
+    "accentDark": "#006B92",
+    "darkGrad": "linear-gradient(135deg, #020A0F 0%, #04181F 100%)",
+    "glow": "rgba(0,149,202,0.35)",
+    "subColor": "#40B5DE",
+    "headerMuted": "rgba(0,149,202,0.12)",
+    "verdictText": "#CDE9F2",
+    "vcellLabel": "rgba(205,233,242,0.6)",
+    "badge": "#0095CA",
+    "chgBg": "var(--red-soft)",
+    "chgColor": "#c5221f"
+  },
+  "chart": {
+    "data": [
+      ["ส.ค.25", 132.66],
+      ["ก.ย.25", 133.94],
+      ["ต.ค.25", 123.62],
+      ["พ.ย.25", 128.9],
+      ["ธ.ค.25", 125.29],
+      ["ม.ค.26", 109.3],
+      ["ก.พ.26", 116.35],
+      ["มี.ค.26", 102.67],
+      ["เม.ย.26", 90.79],
+      ["พ.ค.26", 85.6],
+      ["มิ.ย.26", 90.74],
+      ["ก.ค.26", 93.93]
+    ],
+    "min": 80,
+    "max": 140,
+    "grid": [100, 120],
+    "fairLine": 105,
+    "currency": "$",
+    "highlight": [1, 9]
+  },
+  "gauge": {
+    "min": 80,
+    "max": 138,
+    "cur": 93.93,
+    "fair": 105,
+    "fairLabelTop": false
+  },
+  "fv": 105
+}
 </script>
 <!--TEMPLATE:STYLE-->
 </head>
@@ -28,11 +72,11 @@
     <div class="sub">เครื่องมือแพทย์กระจายตัว • Medical Devices (FreeStyle Libre CGM, structural heart) • Diagnostics • Established Pharmaceuticals (EM) • Nutrition (Ensure/Similac)</div>
     <div class="price-row">
       <div>
-        <div class="px">$94.12<small>(ABT)</small></div>
+        <div class="px">$93.93<small>(ABT)</small></div>
       </div>
-      <div class="chg">▼ −25.4% (รอบปี)</div>
+      <div class="chg">▼ −29.2% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 26 มิ.ย. 2569<br>
+        ราคา ณ 10 ก.ค. 2569<br>
         กรอบ 52 สัปดาห์ $81.97 / $137.54<br>
         ที่มา: StockAnalysis.com / Yahoo Finance / Abbott Investor Relations / Macrotrends · อิงงบ FY2025 (Q4 2025)
       </div>
@@ -110,7 +154,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $94.12</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $93.93</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $105</div></div>
         </div>
         <div class="scale">
@@ -132,7 +176,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict ok">
-        <div class="big">+10.4%</div>
+        <div class="big">+11%</div>
         <div class="txt">MOS เป็นบวก — ราคาต่ำกว่า Fair Value อยู่พอสมควร แต่ NEC litigation overhang ทำให้ความเสี่ยงยังสูง ควรทยอยสะสมในโซน $84–$95</div>
       </div>
       <div class="grid g3">
@@ -143,7 +187,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="94.12" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="93.93" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -248,7 +292,7 @@
   <div class="disc">
     <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
-    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ข้อมูลอ้างอิง: StockAnalysis.com · Yahoo Finance · Abbott Investor Relations (ir.abbott.com) · Macrotrends.net · ราคา ณ 26 มิ.ย. 2569
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ข้อมูลอ้างอิง: StockAnalysis.com · Yahoo Finance · Abbott Investor Relations (ir.abbott.com) · Macrotrends.net · ราคา ณ 10 ก.ค. 2569
   </div>
   <footer>Stock Analysis Dashboard • ข้อมูล ณ 26 มิ.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 

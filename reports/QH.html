@@ -6,7 +6,7 @@
 <title>วิเคราะห์หุ้น ควอลิตี้เฮ้าส์ (QH) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Sonnet 4.6">
 <script type="application/json" id="stock-meta">
-{"symbol":"QH","currency":"THB","price":1.38,"fairValue":1.57,"mos":12.1,"upside":13.8,"pe":8.26,"dividendYield":7.10,"roe":5.8}
+{"symbol":"QH","currency":"THB","price":1.39,"fairValue":1.57,"mos":11.5,"upside":12.9,"pe":8.26,"dividendYield":7.1,"roe":5.8}
 </script>
 <script type="application/json" id="report-data">
 {
@@ -20,36 +20,35 @@
     "verdictText": "#ffd5bf",
     "vcellLabel": "rgba(244,196,168,0.6)",
     "badge": "#c0533a",
-    "chgBg": "#fce8e6",
-    "chgColor": "#c5221f"
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#1e8e3e"
   },
   "chart": {
     "data": [
-      ["ก.ค. 68", 1.53],
-      ["ส.ค. 68", 1.38],
-      ["ก.ย. 68", 1.35],
-      ["ต.ค. 68", 1.35],
-      ["พ.ย. 68", 1.36],
-      ["ธ.ค. 68", 1.38],
-      ["ม.ค. 69", 1.36],
-      ["ก.พ. 69", 1.36],
-      ["มี.ค. 69", 1.32],
-      ["เม.ย. 69", 1.28],
-      ["พ.ค. 69", 1.33],
-      ["มิ.ย. 69", 1.34],
-      ["ก.ค. 69", 1.38]
+      ["ส.ค.25", 1.36],
+      ["ก.ย.25", 1.36],
+      ["ต.ค.25", 1.32],
+      ["พ.ย.25", 1.28],
+      ["ธ.ค.25", 1.33],
+      ["ม.ค.26", 1.29],
+      ["ก.พ.26", 1.53],
+      ["มี.ค.26", 1.38],
+      ["เม.ย.26", 1.35],
+      ["พ.ค.26", 1.35],
+      ["มิ.ย.26", 1.36],
+      ["ก.ค.26", 1.39]
     ],
-    "min": 1.10,
-    "max": 1.80,
-    "grid": [1.10, 1.20, 1.30, 1.40, 1.50, 1.60, 1.70, 1.80],
+    "min": 1.2,
+    "max": 1.6,
+    "grid": [1.3, 1.4, 1.5],
     "fairLine": 1.57,
     "currency": "฿",
-    "highlight": [0, 3, 9]
+    "highlight": [3, 6]
   },
   "gauge": {
-    "min": 1.00,
-    "max": 2.00,
-    "cur": 1.38,
+    "min": 1,
+    "max": 2,
+    "cur": 1.39,
     "fair": 1.57,
     "fairLabelTop": true
   },
@@ -73,11 +72,11 @@
     <div class="sub">บ้านเดี่ยว PRUKPIROM &amp; LADDAROM · ทาวน์เฮาส์ THE TRUST &amp; GUSTO · คอนโด Q CONDO &amp; CASA CONDO · ถือหุ้น HMPRO ~20%</div>
     <div class="price-row">
       <div>
-        <div class="px">฿1.38<small>(QH)</small></div>
+        <div class="px">฿1.39<small>(QH)</small></div>
       </div>
-      <div class="chg">▼ −9.8% (รอบปี)</div>
+      <div class="chg">▲ +2.2% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 4 ก.ค. 2569<br>
+        ราคา ณ 10 ก.ค. 2569<br>
         กรอบ 52 สัปดาห์ ฿1.21 – ฿1.53<br>
         ที่มา: Investing.com, SET, QH Investor Relations
       </div>
@@ -155,7 +154,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿1.38</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿1.39</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿1.57</div></div>
         </div>
         <div class="scale">
@@ -177,7 +176,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict ok">
-        <div class="big">+12.1%</div>
+        <div class="big">+11%</div>
         <div class="txt">ราคาพอใช้ — ทยอยสะสมได้ในโซนนี้ หากเชื่อว่า EPS จะฟื้นตัวและ P/E จะ re-rate กลับ</div>
       </div>
       <div class="grid g3">
@@ -188,7 +187,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="1.38" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="1.39" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

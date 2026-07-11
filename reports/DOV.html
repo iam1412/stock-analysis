@@ -6,10 +6,54 @@
 <title>วิเคราะห์หุ้น Dover Corporation (DOV) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Sonnet 4.6">
 <script type="application/json" id="stock-meta">
-{"symbol":"DOV","currency":"USD","price":225.96,"fairValue":209,"mos":-8.1,"upside":-7.5,"pe":23.5,"dividendYield":0.92,"roe":15.0}
+{"symbol":"DOV","currency":"USD","price":215.33,"fairValue":209,"mos":-3,"upside":-2.9,"pe":23.5,"dividendYield":0.92,"roe":15}
 </script>
 <script type="application/json" id="report-data">
-{"theme":{"accent":"#2E7D8C","accentDark":"#1E5660","darkGrad":"linear-gradient(135deg, #020E10 0%, #051D21 100%)","glow":"rgba(46,125,140,0.35)","subColor":"#5CB0BE","headerMuted":"rgba(46,125,140,0.12)","verdictText":"#CDE8EC","vcellLabel":"rgba(205,232,236,0.6)","badge":"#2E7D8C","chgBg":"rgba(34,197,94,0.15)","chgColor":"#22C55E"},"chart":{"data":[["ก.ค. 68",181.14],["ส.ค. 68",178.86],["ก.ย. 68",166.83],["ต.ค. 68",181.46],["พ.ย. 68",185.28],["ธ.ค. 68",195.24],["ม.ค. 69",201.49],["ก.พ. 69",225.50],["มี.ค. 69",208.45],["เม.ย. 69",226.41],["พ.ค. 69",211.36],["มิ.ย. 69",225.96]],"min":162,"max":230,"grid":[180,200,220],"fairLine":209,"currency":"$","highlight":[9]},"gauge":{"min":160,"max":232,"cur":225.96,"fair":209,"fairLabelTop":false},"fv":209}
+{
+  "theme": {
+    "accent": "#2E7D8C",
+    "accentDark": "#1E5660",
+    "darkGrad": "linear-gradient(135deg, #020E10 0%, #051D21 100%)",
+    "glow": "rgba(46,125,140,0.35)",
+    "subColor": "#5CB0BE",
+    "headerMuted": "rgba(46,125,140,0.12)",
+    "verdictText": "#CDE8EC",
+    "vcellLabel": "rgba(205,232,236,0.6)",
+    "badge": "#2E7D8C",
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#1e8e3e"
+  },
+  "chart": {
+    "data": [
+      ["ส.ค.25", 178.86],
+      ["ก.ย.25", 166.83],
+      ["ต.ค.25", 181.46],
+      ["พ.ย.25", 185.28],
+      ["ธ.ค.25", 195.24],
+      ["ม.ค.26", 201.49],
+      ["ก.พ.26", 225.5],
+      ["มี.ค.26", 208.45],
+      ["เม.ย.26", 226.41],
+      ["พ.ค.26", 211.36],
+      ["มิ.ย.26", 224.28],
+      ["ก.ค.26", 215.33]
+    ],
+    "min": 160,
+    "max": 240,
+    "grid": [180, 200, 220],
+    "fairLine": 209,
+    "currency": "$",
+    "highlight": [1, 8]
+  },
+  "gauge": {
+    "min": 160,
+    "max": 232,
+    "cur": 215.33,
+    "fair": 209,
+    "fairLabelTop": false
+  },
+  "fv": 209
+}
 </script>
 <!--TEMPLATE:STYLE-->
 </head>
@@ -28,11 +72,11 @@
     <div class="sub">กลุ่มอุตสาหกรรม 5 เซกเมนต์ • Engineered Products • Clean Energy &amp; Fueling • Imaging &amp; ID • Pumps &amp; Process (biopharma/CO2) • Climate &amp; Sustainability (data-center cooling) • Dividend King 69 ปี</div>
     <div class="price-row">
       <div>
-        <div class="px">$225.96<small>(DOV)</small></div>
+        <div class="px">$215.33<small>(DOV)</small></div>
       </div>
-      <div class="chg">▲ +24.7% (รอบปี)</div>
+      <div class="chg">▲ +20.4% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 26 มิ.ย. 2569<br>
+        ราคา ณ 10 ก.ค. 2569<br>
         กรอบ 52 สัปดาห์ $158.97 / $237.54<br>
         ที่มา: StockAnalysis.com / Yahoo Finance / Dover Investor Relations / Macrotrends
       </div>
@@ -110,7 +154,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $225.96</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $215.33</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $209</div></div>
         </div>
         <div class="scale">
@@ -132,7 +176,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict bad">
-        <div class="big">−8.1%</div>
+        <div class="big">−3%</div>
         <div class="txt">ราคาเกิน Fair Value — ยังไม่มี Margin of Safety · ควรรอย่อกลับใกล้ $167–$209</div>
       </div>
       <div class="grid g3">
@@ -143,7 +187,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="225.96" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="215.33" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

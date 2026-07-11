@@ -8,10 +8,54 @@
 <meta name="ai-model" content="Claude Sonnet 4.6">
 <!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
 <script type="application/json" id="stock-meta">
-{"symbol":"TMUS","currency":"USD","price":177.52,"fairValue":205,"mos":13.4,"upside":15.5,"pe":18.9,"dividendYield":2.3,"roe":18.2}
+{"symbol":"TMUS","currency":"USD","price":187.61,"fairValue":205,"mos":8.5,"upside":9.3,"pe":18.9,"dividendYield":2.3,"roe":18.2}
 </script>
 <script type="application/json" id="report-data">
-{"theme":{"accent":"#E20074","accentDark":"#a80055","darkGrad":"linear-gradient(135deg,#5c0030 0%,#a80055 50%,#E20074 100%)","glow":"rgba(226,0,116,0.35)","subColor":"#ff4da6","headerMuted":"rgba(255,255,255,0.65)","verdictText":"#c0005a","vcellLabel":"#a80055","badge":"#E20074","chgBg":"#8b1a1a","chgColor":"#ffffff"},"chart":{"data":[["ส.ค.68",251.99],["ก.ย.68",239.38],["ต.ค.68",210.05],["พ.ย.68",209.01],["ธ.ค.68",203.04],["ม.ค.69",197.21],["ก.พ.69",217.09],["มี.ค.69",210.03],["เม.ย.69",195.50],["พ.ค.69",187.53],["มิ.ย.69",167.73],["ก.ค.69",177.52]],"min":150,"max":260,"grid":[150,175,200,225,250],"fairLine":205,"currency":"$","highlight":[10,11]},"gauge":{"min":130,"max":230,"cur":177.52,"fair":205,"fairLabelTop":true},"fv":205}
+{
+  "theme": {
+    "accent": "#E20074",
+    "accentDark": "#a80055",
+    "darkGrad": "linear-gradient(135deg,#5c0030 0%,#a80055 50%,#E20074 100%)",
+    "glow": "rgba(226,0,116,0.35)",
+    "subColor": "#ff4da6",
+    "headerMuted": "rgba(255,255,255,0.65)",
+    "verdictText": "#c0005a",
+    "vcellLabel": "#a80055",
+    "badge": "#E20074",
+    "chgBg": "var(--red-soft)",
+    "chgColor": "#c5221f"
+  },
+  "chart": {
+    "data": [
+      ["ส.ค.25", 251.99],
+      ["ก.ย.25", 239.38],
+      ["ต.ค.25", 210.05],
+      ["พ.ย.25", 209.01],
+      ["ธ.ค.25", 203.04],
+      ["ม.ค.26", 197.21],
+      ["ก.พ.26", 217.09],
+      ["มี.ค.26", 210.03],
+      ["เม.ย.26", 195.5],
+      ["พ.ค.26", 187.53],
+      ["มิ.ย.26", 167.73],
+      ["ก.ค.26", 187.61]
+    ],
+    "min": 150,
+    "max": 275,
+    "grid": [175, 200, 225, 250],
+    "fairLine": 205,
+    "currency": "$",
+    "highlight": [0, 10]
+  },
+  "gauge": {
+    "min": 130,
+    "max": 230,
+    "cur": 187.61,
+    "fair": 205,
+    "fairLabelTop": true
+  },
+  "fv": 205
+}
 </script>
 <!--TEMPLATE:STYLE-->
 </head>
@@ -31,14 +75,14 @@
     <div class="sub">Wireless postpaid/prepaid 5G network • Home Internet (fixed wireless broadband) • Enterprise B2B • Fiber joint-venture partnerships</div>
     <div class="price-row">
       <div>
-        <div class="px">$177.52<small>(TMUS)</small></div>
+        <div class="px">$187.61<small>(TMUS)</small></div>
       </div>
       <!-- ★ ป้าย % รอบปี (gate E35/E36) — ผลตอบแทน ~1 ปี (เทียบราคา ~1 ปีก่อน) = ผลตอบแทนปลายกราฟ section 2 (จุดแรก→ท้าย)
            รูปแบบ: "▲ +X.X% (รอบปี)" ขึ้น · "▼ −X.X% (รอบปี)" ลง · "≈ ทรงตัว (รอบปี)" · หุ้น IPO <1 ปี ใช้ "(ตั้งแต่ IPO)"
            ไม่ใช่ % รายวัน/YTD/52 สัปดาห์ · ตั้งสี theme.chgBg/chgColor ให้ตรงทิศ (ขึ้น=เขียว/ลง=แดง · E34) -->
-      <div class="chg">▼ −29.6% (รอบปี)</div>
+      <div class="chg">▼ −25.5% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 2 ก.ค. 2569 (2 Jul 2026)<br>
+        ราคา ณ 10 ก.ค. 2569 (2 Jul 2026)<br>
         กรอบ 52 สัปดาห์ $165.66 – $261.56<br>
         ที่มา: StockAnalysis.com, Google Finance, Yahoo Finance
       </div>
@@ -126,7 +170,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $177.52</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $187.61</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $205</div></div>
         </div>
         <div class="scale">
@@ -150,7 +194,7 @@
     <div class="card">
       <!-- ✏️ class ของ mos-verdict: MOS<10 → "bad", 10–20 → "ok", ≥20 → "good" -->
       <div class="mos-verdict ok">
-        <div class="big">+13.4%</div>
+        <div class="big">+8%</div>
         <div class="txt">ราคาพอใช้ — ต่ำกว่ามูลค่าเหมาะสมพอสมควร ทยอยสะสมได้ ยังไม่ถึงโซน deep value</div>
       </div>
       <div class="grid g3">
@@ -161,7 +205,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="177.52" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="187.61" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

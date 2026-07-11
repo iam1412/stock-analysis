@@ -6,7 +6,7 @@
 <title>วิเคราะห์หุ้น โรงพยาบาลพระราม 9 (PR9) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Sonnet 4.6">
 <script type="application/json" id="stock-meta">
-{"symbol":"PR9","currency":"THB","price":18.20,"fairValue":20.84,"mos":12.7,"upside":14.5,"pe":17.93,"dividendYield":2.75,"roe":14.0}
+{"symbol":"PR9","currency":"THB","price":17.6,"fairValue":20.84,"mos":15.5,"upside":18.4,"pe":17.93,"dividendYield":2.75,"roe":14}
 </script>
 <script type="application/json" id="report-data">
 {
@@ -20,36 +20,35 @@
     "verdictText": "#f3e5f5",
     "vcellLabel": "rgba(243,229,245,0.7)",
     "badge": "#7b1fa2",
-    "chgBg": "#c5221f",
-    "chgColor": "#fff"
+    "chgBg": "var(--red-soft)",
+    "chgColor": "#c5221f"
   },
   "chart": {
     "data": [
-      ["ม.ค. 68", 21.97],
-      ["ก.พ. 68", 22.46],
-      ["มี.ค. 68", 21.10],
-      ["เม.ย. 68", 18.36],
-      ["พ.ค. 68", 18.36],
-      ["มิ.ย. 68", 18.65],
-      ["ก.ค. 68", 19.05],
-      ["ส.ค. 68", 16.20],
-      ["ก.ย. 68", 16.20],
-      ["ต.ค. 68", 16.50],
-      ["พ.ย. 68", 17.70],
-      ["ธ.ค. 68", 18.40],
-      ["ม.ค. 69", 18.20]
+      ["ส.ค.25", 22.6],
+      ["ก.ย.25", 23.1],
+      ["ต.ค.25", 21.7],
+      ["พ.ย.25", 18.7],
+      ["ธ.ค.25", 18.7],
+      ["ม.ค.26", 19],
+      ["ก.พ.26", 19.4],
+      ["มี.ค.26", 16.5],
+      ["เม.ย.26", 16.2],
+      ["พ.ค.26", 16.5],
+      ["มิ.ย.26", 17.7],
+      ["ก.ค.26", 17.6]
     ],
-    "min": 14.0,
-    "max": 26.0,
-    "grid": [14, 16, 18, 20, 22, 24, 26],
+    "min": 14,
+    "max": 24,
+    "grid": [16, 18, 20, 22],
     "fairLine": 20.84,
     "currency": "฿",
-    "highlight": [0, 1, 7]
+    "highlight": [1, 8]
   },
   "gauge": {
-    "min": 12.0,
-    "max": 27.0,
-    "cur": 18.20,
+    "min": 12,
+    "max": 27,
+    "cur": 17.6,
     "fair": 20.84,
     "fairLabelTop": false
   },
@@ -73,11 +72,11 @@
     <div class="sub">โรงพยาบาลเอกชนพรีเมียม กรุงเทพ • Medical Tourism ตะวันออกกลาง • ศูนย์เฉพาะทางระดับสูง • เติบโตต่อเนื่อง 4 ปี</div>
     <div class="price-row">
       <div>
-        <div class="px">฿18.20<small>(PR9)</small></div>
+        <div class="px">฿17.60<small>(PR9)</small></div>
       </div>
-      <div class="chg">▼ −17.2% (รอบปี)</div>
+      <div class="chg">▼ −22.1% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 3 ก.ค. 2569 (FY2568 Q1/2569)<br>
+        ราคา ณ 10 ก.ค. 2569 (FY2568 Q1/2569)<br>
         กรอบ 52 สัปดาห์ ฿15.70 – ฿25.25<br>
         ที่มา: Yahoo Finance, SET Factsheet, StockAnalysis.com
       </div>
@@ -160,7 +159,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿18.20</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿17.60</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿20.84</div></div>
         </div>
         <div class="scale">
@@ -184,7 +183,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict ok">
-        <div class="big">+12.7%</div>
+        <div class="big">+16%</div>
         <div class="txt">ราคาพอใช้ — ทยอยสะสมได้ในโซนนี้ ยังต่ำกว่า FV แต่ MOS ไม่มาก</div>
       </div>
       <div class="grid g3">
@@ -195,7 +194,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="18.20" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="17.6" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

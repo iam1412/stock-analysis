@@ -6,7 +6,7 @@
 <title>วิเคราะห์หุ้น KeyCorp (KEY) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Sonnet 4.6">
 <script type="application/json" id="stock-meta">
-{"symbol":"KEY","currency":"USD","price":23.15,"fairValue":22.00,"mos":-5.2,"upside":-5.0,"pe":14.2,"dividendYield":3.54,"roe":11.0}
+{"symbol":"KEY","currency":"USD","price":23.3,"fairValue":22,"mos":-5.9,"upside":-5.6,"pe":14.2,"dividendYield":3.54,"roe":11}
 </script>
 <script type="application/json" id="report-data">
 {
@@ -20,42 +20,41 @@
     "verdictText": "#c8f0d8",
     "vcellLabel": "rgba(168,213,181,0.8)",
     "badge": "#008542",
-    "chgBg": "#1e5c38",
-    "chgColor": "#6fcf97"
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#1e8e3e"
   },
   "chart": {
     "data": [
-      ["ก.ค. 2568", 17.92],
-      ["ส.ค. 2568", 19.36],
-      ["ก.ย. 2568", 18.69],
-      ["ต.ค. 2568", 17.59],
-      ["พ.ย. 2568", 18.38],
-      ["ธ.ค. 2568", 20.64],
-      ["ม.ค. 2569", 21.52],
-      ["ก.พ. 2569", 20.74],
-      ["มี.ค. 2569", 20.05],
-      ["เม.ย. 2569", 22.11],
-      ["พ.ค. 2569", 21.33],
-      ["มิ.ย. 2569", 23.15],
-      ["ก.ค. 2569", 23.06]
+      ["ส.ค.25", 19.36],
+      ["ก.ย.25", 18.69],
+      ["ต.ค.25", 17.59],
+      ["พ.ย.25", 18.38],
+      ["ธ.ค.25", 20.64],
+      ["ม.ค.26", 21.52],
+      ["ก.พ.26", 20.74],
+      ["มี.ค.26", 20.05],
+      ["เม.ย.26", 22.11],
+      ["พ.ค.26", 21.33],
+      ["มิ.ย.26", 23.05],
+      ["ก.ค.26", 23.3]
     ],
-    "min": 15,
-    "max": 26,
-    "grid": [15, 18, 21, 24, 27],
-    "fairLine": 22.00,
+    "min": 16,
+    "max": 24,
+    "grid": [18, 20, 22],
+    "fairLine": 22,
     "currency": "$",
-    "highlight": [9, 12],
+    "highlight": [2, 11],
     "gridFmt": "v.toFixed(0)",
     "dataFmt": "d[1].toFixed(2)"
   },
   "gauge": {
     "min": 13,
     "max": 30,
-    "cur": 23.15,
-    "fair": 22.00,
+    "cur": 23.3,
+    "fair": 22,
     "fairLabelTop": false
   },
-  "fv": 22.00
+  "fv": 22
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -75,11 +74,11 @@
     <div class="sub">KeyCorp: Top-15 US bank (~$188B assets, 15 states, ~1,000 branches) • Ohio + Pacific Northwest + Colorado + Alaska footprint • Scotiabank ~14.9% stake ($2.8B, 2024) → balance sheet recapitalized, HTM losses addressed • Commercial (middle-market C&I, CRE) + Investment Banking (KeyBanc Capital Markets — TMT, healthcare) + Consumer • NIM recovery 2.87% → ~3.05% target 2026 • ROTCE 13%+ → 15%+ target 2027 • ~3.5% dividend yield</div>
     <div class="price-row">
       <div>
-        <div class="px">$23.15<small>(KEY)</small></div>
+        <div class="px">$23.30<small>(KEY)</small></div>
       </div>
-      <div class="chg">▲ +28.7% (รอบปี)</div>
+      <div class="chg">▲ +20.4% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 1 ก.ค. 2569<br>
+        ราคา ณ 10 ก.ค. 2569<br>
         กรอบ 52 สัปดาห์ $16.47 – $23.72<br>
         ที่มา: StockAnalysis, Yahoo Finance, PR Newswire (KeyCorp IR)
       </div>
@@ -164,7 +163,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $23.15</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $23.30</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $22.00</div></div>
         </div>
         <div class="scale">
@@ -189,7 +188,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict bad">
-        <div class="big">-5.2%</div>
+        <div class="big">−6%</div>
         <div class="txt">ราคาเกิน Fair Value เล็กน้อย — ซื้อขายที่ Premium ~5% เหนือ FV เฉลี่ย • ยังไม่ถึงโซน MOS ที่ชัดเจน</div>
       </div>
       <div class="grid g3">
@@ -200,7 +199,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="23.15" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="23.3" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

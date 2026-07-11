@@ -6,7 +6,7 @@
 <title>วิเคราะห์หุ้น สตาร์เฟล็กซ์ (SFLEX) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Sonnet 4.6">
 <script type="application/json" id="stock-meta">
-{"symbol":"SFLEX","currency":"THB","price":2.96,"fairValue":3.13,"mos":5.4,"upside":5.7,"pe":9.25,"dividendYield":5.74,"roe":21.17}
+{"symbol":"SFLEX","currency":"THB","price":2.98,"fairValue":3.13,"mos":4.8,"upside":5,"pe":9.25,"dividendYield":5.74,"roe":21.17}
 </script>
 <script type="application/json" id="report-data">
 {
@@ -20,36 +20,35 @@
     "verdictText": "#d0f1e7",
     "vcellLabel": "#a6ddcc",
     "badge": "#1dedac",
-    "chgBg": "#1e8e3e",
-    "chgColor": "#ffffff"
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#1e8e3e"
   },
   "chart": {
     "data": [
-      ["ก.ค. 68", 2.90],
-      ["ส.ค. 68", 2.76],
-      ["ก.ย. 68", 2.54],
-      ["ต.ค. 68", 2.78],
-      ["พ.ย. 68", 3.14],
-      ["ธ.ค. 68", 3.16],
-      ["ม.ค. 69", 3.36],
-      ["ก.พ. 69", 2.94],
-      ["มี.ค. 69", 2.94],
-      ["เม.ย. 69", 2.80],
-      ["พ.ค. 69", 3.00],
-      ["มิ.ย. 69", 2.96],
-      ["ก.ค. 69", 2.96]
+      ["ส.ค.25", 2.9],
+      ["ก.ย.25", 2.76],
+      ["ต.ค.25", 2.54],
+      ["พ.ย.25", 2.78],
+      ["ธ.ค.25", 3.14],
+      ["ม.ค.26", 3.16],
+      ["ก.พ.26", 3.36],
+      ["มี.ค.26", 2.94],
+      ["เม.ย.26", 2.94],
+      ["พ.ค.26", 2.8],
+      ["มิ.ย.26", 3],
+      ["ก.ค.26", 2.98]
     ],
-    "min": 2.34,
-    "max": 3.56,
-    "grid": [2.5, 3.0, 3.5],
+    "min": 2.25,
+    "max": 3.5,
+    "grid": [2.5, 2.75, 3, 3.25],
     "fairLine": 3.13,
     "currency": "฿",
-    "highlight": [6, 12]
+    "highlight": [2, 6]
   },
   "gauge": {
     "min": 1.89,
-    "max": 4.10,
-    "cur": 2.96,
+    "max": 4.1,
+    "cur": 2.98,
     "fair": 3.13,
     "fairLabelTop": "-38px"
   },
@@ -73,11 +72,11 @@
     <div class="sub">ผลิต-จำหน่ายบรรจุภัณฑ์พลาสติกยืดหยุ่น (Flexible Packaging) ทั้งแบบม้วน (Roll) และถุงสำเร็จรูป (Pouch) • ลูกค้าหลักกลุ่มอาหาร-เครื่องดื่ม-ของใช้ในบ้าน • ผลิตตามคำสั่งซื้อ (Made-to-order) • เดินหน้า Solar Rooftop ลดต้นทุนพลังงาน</div>
     <div class="price-row">
       <div>
-        <div class="px">฿2.96<small>(SFLEX)</small></div>
+        <div class="px">฿2.98<small>(SFLEX)</small></div>
       </div>
-      <div class="chg">▲ +2.1% (รอบปี)</div>
+      <div class="chg">▲ +2.8% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 3 ก.ค. 2569 (ปิดตลาด SET)<br>
+        ราคา ณ 10 ก.ค. 2569 (ปิดตลาด SET)<br>
         กรอบ 52 สัปดาห์ ฿2.50 – ฿3.58<br>
         ที่มา: StockAnalysis.com, SET (ตลาดหลักทรัพย์แห่งประเทศไทย), Settrade.com
       </div>
@@ -158,7 +157,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿2.96</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿2.98</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿3.13</div></div>
         </div>
         <div class="scale">
@@ -181,7 +180,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict ok">
-        <div class="big">+5.4%</div>
+        <div class="big">+5%</div>
         <div class="txt">ส่วนเผื่อความปลอดภัยยังบาง — ราคาใกล้เคียงมูลค่าเหมาะสม ยังไม่ใช่จังหวะ all-in แต่พอทยอยสะสมได้หากชอบปันผล ~5.7%</div>
       </div>
       <div class="grid g3">
@@ -192,7 +191,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="2.96" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="2.98" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

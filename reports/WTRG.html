@@ -6,7 +6,7 @@
 <title>วิเคราะห์หุ้น Essential Utilities (WTRG) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Sonnet 4.6">
 <script type="application/json" id="stock-meta">
-{"symbol":"WTRG","currency":"USD","price":38.23,"fairValue":39.21,"mos":2.5,"upside":2.56,"pe":19.41,"dividendYield":3.54,"roe":8.52}
+{"symbol":"WTRG","currency":"USD","price":38.58,"fairValue":39.21,"mos":1.6,"upside":1.6,"pe":19.41,"dividendYield":3.54,"roe":8.52}
 </script>
 <script type="application/json" id="report-data">
 {
@@ -20,38 +20,37 @@
     "verdictText": "#1B8CA6",
     "vcellLabel": "#9ecfda",
     "badge": "#1B8CA6",
-    "chgBg": "#1e8e3e",
-    "chgColor": "#ffffff"
+    "chgBg": "var(--red-soft)",
+    "chgColor": "#c5221f"
   },
   "chart": {
     "data": [
-      ["ม.ค. 68", 36.80],
-      ["ก.พ. 68", 39.51],
-      ["มี.ค. 68", 39.90],
-      ["เม.ย. 68", 39.03],
-      ["พ.ค. 68", 39.59],
-      ["มิ.ย. 68", 38.36],
-      ["ก.ค. 68", 38.79],
-      ["ส.ค. 68", 39.97],
-      ["ก.ย. 68", 40.27],
-      ["ต.ค. 68", 38.20],
-      ["พ.ย. 68", 36.89],
-      ["ธ.ค. 68", 38.31],
-      ["ก.ค. 69", 38.23]
+      ["ส.ค.25", 39.51],
+      ["ก.ย.25", 39.9],
+      ["ต.ค.25", 39.03],
+      ["พ.ย.25", 39.59],
+      ["ธ.ค.25", 38.36],
+      ["ม.ค.26", 38.79],
+      ["ก.พ.26", 39.97],
+      ["มี.ค.26", 40.27],
+      ["เม.ย.26", 38.2],
+      ["พ.ค.26", 36.89],
+      ["มิ.ย.26", 38.31],
+      ["ก.ค.26", 38.58]
     ],
-    "min": 34,
-    "max": 44,
-    "grid": [34, 36, 38, 40, 42, 44],
+    "min": 36,
+    "max": 41,
+    "grid": [37, 38, 39, 40],
     "fairLine": 39.21,
     "currency": "$",
-    "highlight": [8, 10],
+    "highlight": [7, 9],
     "gridFmt": "v.toFixed(0)",
     "dataFmt": "d[1].toFixed(2)"
   },
   "gauge": {
     "min": 25,
     "max": 50,
-    "cur": 38.23,
+    "cur": 38.58,
     "fair": 39.21,
     "fairLabelTop": true
   },
@@ -75,11 +74,11 @@
     <div class="sub">น้ำประปา + ก๊าซธรรมชาติแบบ regulated · ~5.5 ล้านลูกค้า · 10 รัฐ · Peoples Natural Gas (ซื้อกิจการ 2020) · ปันผลต่อเนื่อง 30+ ปี · rate base โต ~8-10%/ปี · สำนักงานใหญ่ Bryn Mawr PA</div>
     <div class="price-row">
       <div>
-        <div class="px">$38.23<small>(WTRG)</small></div>
+        <div class="px">$38.58<small>(WTRG)</small></div>
       </div>
-      <div class="chg">▲ +3.9% (รอบปี)</div>
+      <div class="chg">▼ −2.4% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 1 ก.ค. 2569<br>
+        ราคา ณ 10 ก.ค. 2569<br>
         กรอบ 52 สัปดาห์ $36.11 – $42.37<br>
         ที่มา: Yahoo Finance, StockAnalysis.com, Macrotrends
       </div>
@@ -157,7 +156,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $38.23</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $38.58</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $39.21</div></div>
         </div>
         <div class="scale">
@@ -179,7 +178,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict bad">
-        <div class="big">+2.5%</div>
+        <div class="big">+1.6%</div>
         <div class="txt">ราคาใกล้ Fair Value — MOS จำกัด แต่ยังให้ Yield ~3.5%</div>
       </div>
       <div class="grid g3">
@@ -190,7 +189,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="38.23" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="38.58" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

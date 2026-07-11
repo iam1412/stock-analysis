@@ -6,10 +6,54 @@
 <title>วิเคราะห์หุ้น Ulta Beauty (ULTA) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Sonnet 4.6">
 <script type="application/json" id="stock-meta">
-{"symbol":"ULTA","currency":"USD","price":488.45,"fairValue":498,"mos":1.9,"upside":2.0,"pe":18.32,"dividendYield":null,"roe":47.45}
+{"symbol":"ULTA","currency":"USD","price":469.2,"fairValue":498,"mos":5.8,"upside":6.1,"pe":18.32,"dividendYield":null,"roe":47.45}
 </script>
 <script type="application/json" id="report-data">
-{"theme":{"accent":"#DD5C34","accentDark":"#A53F22","darkGrad":"linear-gradient(135deg, #100503 0%, #200B06 100%)","glow":"rgba(221,92,52,0.35)","subColor":"#EC8665","headerMuted":"rgba(221,92,52,0.12)","verdictText":"#F5DACE","vcellLabel":"rgba(245,218,206,0.6)","badge":"#DD5C34","chgBg":"rgba(239,68,68,0.15)","chgColor":"#EF4444"},"chart":{"data":[["ก.ค. 68",515.01],["ส.ค. 68",492.73],["ก.ย. 68",546.75],["ต.ค. 68",519.88],["พ.ย. 68",538.83],["ธ.ค. 68",605.01],["ม.ค. 69",647.36],["ก.พ. 69",684.79],["มี.ค. 69",522.71],["เม.ย. 69",537.48],["พ.ค. 69",508.85],["มิ.ย. 69",488.45]],"min":470,"max":700,"grid":[540,610,680],"fairLine":498,"currency":"$","highlight":[7]},"gauge":{"min":440,"max":700,"cur":488.45,"fair":498,"fairLabelTop":false},"fv":498}
+{
+  "theme": {
+    "accent": "#DD5C34",
+    "accentDark": "#A53F22",
+    "darkGrad": "linear-gradient(135deg, #100503 0%, #200B06 100%)",
+    "glow": "rgba(221,92,52,0.35)",
+    "subColor": "#EC8665",
+    "headerMuted": "rgba(221,92,52,0.12)",
+    "verdictText": "#F5DACE",
+    "vcellLabel": "rgba(245,218,206,0.6)",
+    "badge": "#DD5C34",
+    "chgBg": "var(--red-soft)",
+    "chgColor": "#c5221f"
+  },
+  "chart": {
+    "data": [
+      ["ส.ค.25", 492.73],
+      ["ก.ย.25", 546.75],
+      ["ต.ค.25", 519.88],
+      ["พ.ย.25", 538.83],
+      ["ธ.ค.25", 605.01],
+      ["ม.ค.26", 647.36],
+      ["ก.พ.26", 684.79],
+      ["มี.ค.26", 522.71],
+      ["เม.ย.26", 537.48],
+      ["พ.ค.26", 508.85],
+      ["มิ.ย.26", 450.98],
+      ["ก.ค.26", 469.2]
+    ],
+    "min": 400,
+    "max": 700,
+    "grid": [500, 600],
+    "fairLine": 498,
+    "currency": "$",
+    "highlight": [6, 10]
+  },
+  "gauge": {
+    "min": 440,
+    "max": 700,
+    "cur": 469.2,
+    "fair": 498,
+    "fairLabelTop": false
+  },
+  "fv": 498
+}
 </script>
 <!--TEMPLATE:STYLE-->
 </head>
@@ -28,11 +72,11 @@
     <div class="sub">ค้าปลีกความงามใหญ่สุดในสหรัฐ • เครื่องสำอาง/สกินแคร์/น้ำหอม/ผม mass+prestige ในร้านเดียว • salon services • ~1,505 สาขา • loyalty 44M สมาชิก</div>
     <div class="price-row">
       <div>
-        <div class="px">$488.45<small>(ULTA)</small></div>
+        <div class="px">$469.20<small>(ULTA)</small></div>
       </div>
-      <div class="chg">▼ −5.2% (รอบปี)</div>
+      <div class="chg">▼ −4.8% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 26 มิ.ย. 2569<br>
+        ราคา ณ 10 ก.ค. 2569<br>
         กรอบ 52 สัปดาห์ $448.57 / $714.97<br>
         ที่มา: StockAnalysis.com / Yahoo Finance / Ulta Beauty IR / Macrotrends
       </div>
@@ -115,7 +159,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $488.45</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $469.20</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $498</div></div>
         </div>
         <div class="scale">
@@ -139,7 +183,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict bad">
-        <div class="big">+1.9%</div>
+        <div class="big">+6%</div>
         <div class="txt">ราคาปัจจุบันใกล้มูลค่าเหมาะสม — ยังไม่มี Margin of Safety มากพอสำหรับ value investor</div>
       </div>
       <div class="grid g3">
@@ -150,7 +194,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="488.45" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="469.2" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

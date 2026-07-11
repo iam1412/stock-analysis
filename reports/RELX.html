@@ -8,7 +8,7 @@
 <meta name="ai-model" content="Claude Opus 4.8">
 <!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
 <script type="application/json" id="stock-meta">
-{"symbol":"RELX","currency":"USD","price":31.34,"fairValue":38.00,"mos":17.5,"upside":21.3,"pe":21.3,"dividendYield":2.87,"roe":null}
+{"symbol":"RELX","currency":"USD","price":32.44,"fairValue":38,"mos":14.6,"upside":17.1,"pe":21.3,"dividendYield":2.87,"roe":null}
 </script>
 <script type="application/json" id="report-data">
 {
@@ -22,40 +22,39 @@
     "verdictText": "#fff8f0",
     "vcellLabel": "#D09050",
     "badge": "#ED7000",
-    "chgBg": "#3c1212",
+    "chgBg": "var(--red-soft)",
     "chgColor": "#c5221f"
   },
   "chart": {
     "data": [
-      ["มิ.ย.25",53.01],
-      ["ก.ค.25",50.62],
-      ["ส.ค.25",45.77],
-      ["ก.ย.25",46.84],
-      ["ต.ค.25",43.39],
-      ["พ.ย.25",39.44],
-      ["ธ.ค.25",39.64],
-      ["ม.ค.26",35.11],
-      ["ก.พ.26",34.12],
-      ["มี.ค.26",32.51],
-      ["เม.ย.26",35.89],
-      ["พ.ค.26",32.79],
-      ["มิ.ย.26",31.34]
+      ["ส.ค.25", 46.67],
+      ["ก.ย.25", 47.76],
+      ["ต.ค.25", 44.24],
+      ["พ.ย.25", 40.21],
+      ["ธ.ค.25", 40.42],
+      ["ม.ค.26", 35.8],
+      ["ก.พ.26", 34.79],
+      ["มี.ค.26", 33.15],
+      ["เม.ย.26", 36.59],
+      ["พ.ค.26", 32.79],
+      ["มิ.ย.26", 31.67],
+      ["ก.ค.26", 32.44]
     ],
-    "min": 25,
-    "max": 58,
-    "fairLine": 38.00,
+    "min": 30,
+    "max": 50,
+    "fairLine": 38,
     "currency": "$",
-    "highlight": [0, 12],
-    "grid": [30, 35, 40, 45, 50, 55]
+    "highlight": [1, 10],
+    "grid": [35, 40, 45]
   },
   "gauge": {
-    "min": 26.60,
+    "min": 26.6,
     "max": 55,
-    "cur": 31.34,
-    "fair": 38.00,
+    "cur": 32.44,
+    "fair": 38,
     "fairLabelTop": false
   },
-  "fv": 38.00
+  "fv": 38
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -75,11 +74,11 @@
     <div class="sub">LexisNexis Risk Solutions (ข้อมูลความเสี่ยง/กันฉ้อโกง/KYC) • Elsevier (วารสารวิทยาศาสตร์ • ScienceDirect • Scopus) • LexisNexis Legal (Lexis+ AI) • RX (งานแสดงสินค้า)</div>
     <div class="price-row">
       <div>
-        <div class="px">$31.34<small>(RELX)</small></div>
+        <div class="px">$32.44<small>(RELX)</small></div>
       </div>
-      <div class="chg" style="background:#3c1212;color:#c5221f">▼ −40.9% (รอบปี)</div>
+      <div class="chg">▼ −30.5% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 27 มิ.ย. 2026<br>
+        ราคา ณ 10 ก.ค. 2026<br>
         กรอบ 52 สัปดาห์ $27.57 – $54.37<br>
         ที่มา: StockAnalysis.com, Yahoo Finance, RELX IR
       </div>
@@ -157,7 +156,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $31.34</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $32.44</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $38.00</div></div>
         </div>
         <div class="scale">
@@ -179,7 +178,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict ok">
-        <div class="big">+17.5%</div>
+        <div class="big">+15%</div>
         <div class="txt">MOS ระดับกลาง — ราคาต่ำกว่า Fair Value พอสมควร แต่ AI-risk ยังไม่แน่ใจทิศทาง</div>
       </div>
       <div class="grid g3">
@@ -190,7 +189,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="31.34" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="32.44" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -296,7 +295,7 @@
   <div class="disc">
     <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และสมมติฐาน AI-risk ที่มีความไม่แน่นอนสูง
-    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ข้อมูลราคา ณ 27 มิ.ย. 2026 จาก StockAnalysis.com + Yahoo Finance (ครอสเช็ค ≥2 แหล่ง ราคาต่าง &lt;1%) · ข้อมูลงบการเงิน/EPS จาก RELX IR (FY2025 Results) + StockAnalysis.com · ราคาประวัติ ADR จาก digrin.com · เป้านักวิเคราะห์ ADR จาก Yahoo Finance (3 นักวิเคราะห์ แปลงจาก LSE targets)
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ข้อมูลราคา ณ 10 ก.ค. 2026 จาก StockAnalysis.com + Yahoo Finance (ครอสเช็ค ≥2 แหล่ง ราคาต่าง &lt;1%) · ข้อมูลงบการเงิน/EPS จาก RELX IR (FY2025 Results) + StockAnalysis.com · ราคาประวัติ ADR จาก digrin.com · เป้านักวิเคราะห์ ADR จาก Yahoo Finance (3 นักวิเคราะห์ แปลงจาก LSE targets)
   </div>
   <footer>Stock Analysis Dashboard • ข้อมูล ณ 27 มิ.ย. 2026 • สร้างด้วย stock-analyzer workflow</footer>
 

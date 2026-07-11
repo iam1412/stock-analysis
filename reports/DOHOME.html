@@ -6,50 +6,55 @@
 <title>วิเคราะห์หุ้น ดูโฮม (DOHOME) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Sonnet 4.6">
 <script type="application/json" id="stock-meta">
-{"symbol":"DOHOME","currency":"THB","price":3.76,"fairValue":3.25,"mos":-15.7,"upside":-13.6,"pe":22.1,"dividendYield":0.12,"roe":4.54}
+{"symbol":"DOHOME","currency":"THB","price":3.84,"fairValue":3.25,"mos":-18.2,"upside":-15.4,"pe":22.1,"dividendYield":0.12,"roe":4.54}
 </script>
 <script type="application/json" id="report-data">
 {
-  "theme":{
-    "accent":"#e65100",
-    "accentDark":"#bf360c",
-    "darkGrad":"linear-gradient(135deg,#bf360c 0%,#e65100 60%,#ef6c00 100%)",
-    "glow":"rgba(230,81,0,0.3)",
-    "subColor":"#ffe0b2",
-    "headerMuted":"rgba(255,255,255,0.6)",
-    "verdictText":"#fff3e0",
-    "vcellLabel":"rgba(255,243,224,0.7)",
-    "badge":"#ef6c00",
-    "chgBg":"var(--green-soft)",
-    "chgColor":"#1e8e3e"
+  "theme": {
+    "accent": "#e65100",
+    "accentDark": "#bf360c",
+    "darkGrad": "linear-gradient(135deg,#bf360c 0%,#e65100 60%,#ef6c00 100%)",
+    "glow": "rgba(230,81,0,0.3)",
+    "subColor": "#ffe0b2",
+    "headerMuted": "rgba(255,255,255,0.6)",
+    "verdictText": "#fff3e0",
+    "vcellLabel": "rgba(255,243,224,0.7)",
+    "badge": "#ef6c00",
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#1e8e3e"
   },
-  "chart":{
-    "data":[
-      ["ก.พ. 68",3.62],
-      ["มี.ค. 68",3.92],
-      ["เม.ย. 68",3.90],
-      ["พ.ค. 68",3.80],
-      ["มิ.ย. 68",3.42],
-      ["ก.ค. 68",3.38],
-      ["ส.ค. 68",3.75],
-      ["ก.ย. 68",3.30],
-      ["ต.ค. 68",3.36],
-      ["พ.ย. 68",3.46],
-      ["ธ.ค. 68",3.72],
-      ["ม.ค. 69",3.74],
-      ["ก.พ. 69",3.76]
+  "chart": {
+    "data": [
+      ["ส.ค.25", 3.62],
+      ["ก.ย.25", 3.92],
+      ["ต.ค.25", 3.9],
+      ["พ.ย.25", 3.8],
+      ["ธ.ค.25", 3.42],
+      ["ม.ค.26", 3.38],
+      ["ก.พ.26", 3.75],
+      ["มี.ค.26", 3.3],
+      ["เม.ย.26", 3.36],
+      ["พ.ค.26", 3.46],
+      ["มิ.ย.26", 3.72],
+      ["ก.ค.26", 3.84]
     ],
-    "min":3.0,
-    "max":4.2,
-    "grid":[3.0,3.25,3.5,3.75,4.0,4.2],
-    "fairLine":3.25,
-    "currency":"฿",
-    "highlight":[2,5],
-    "gridFmt":"v.toFixed(2)",
-    "dataFmt":"d[1].toFixed(2)"
+    "min": 3.2,
+    "max": 4,
+    "grid": [3.4, 3.6, 3.8],
+    "fairLine": 3.25,
+    "currency": "฿",
+    "highlight": [1, 7],
+    "gridFmt": "v.toFixed(2)",
+    "dataFmt": "d[1].toFixed(2)"
   },
-  "gauge":{"min":0,"max":100,"cur":3.76,"fair":3.25,"fairLabelTop":true},
-  "fv":3.25
+  "gauge": {
+    "min": 0,
+    "max": 100,
+    "cur": 3.84,
+    "fair": 3.25,
+    "fairLabelTop": true
+  },
+  "fv": 3.25
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -69,11 +74,11 @@
     <div class="sub">ค้าปลีกวัสดุก่อสร้าง-ตกแต่งบ้าน • Warehouse Format ครบวงจร • 37 สาขาทั่วไทย • House Brand โต 22% • คู่แข่ง HomePro-Global House</div>
     <div class="price-row">
       <div>
-        <div class="px">฿3.76<small>(DOHOME)</small></div>
+        <div class="px">฿3.84<small>(DOHOME)</small></div>
       </div>
-      <div class="chg">▲ +3.9% (รอบปี)</div>
+      <div class="chg">▲ +6.1% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ ก.พ. 2569<br>
+        ราคา ณ 10 ก.ค. 2569<br>
         กรอบ 52 สัปดาห์ ฿3.02 – ฿4.52<br>
         ที่มา: Yahoo Finance, Investing.com, StockAnalysis.com
       </div>
@@ -151,7 +156,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿3.76</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿3.84</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿3.25</div></div>
         </div>
         <div class="scale">
@@ -173,7 +178,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict bad">
-        <div class="big">−15.7%</div>
+        <div class="big">−18%</div>
         <div class="txt">ราคาเกิน Fair Value — ยังไม่มี Margin of Safety · รอจุดเข้าที่เหมาะสม</div>
       </div>
       <div class="grid g3">
@@ -184,7 +189,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="3.76" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="3.84" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

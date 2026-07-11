@@ -6,22 +6,52 @@
 <title>วิเคราะห์หุ้น Salesforce (CRM) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Opus 4.8">
 <script type="application/json" id="stock-meta">
-{"symbol":"CRM","currency":"USD","price":151,"fairValue":185,"mos":18,"upside":22.5,"pe":17.4,"dividendYield":1.16,"roe":21.8}
+{"symbol":"CRM","currency":"USD","price":163.32,"fairValue":185,"mos":11.7,"upside":13.3,"pe":17.4,"dividendYield":1.16,"roe":21.8}
 </script>
 <script type="application/json" id="report-data">
 {
   "theme": {
-    "accent": "#1a73e8", "accentDark": "#1557b0",
+    "accent": "#1a73e8",
+    "accentDark": "#1557b0",
     "darkGrad": "linear-gradient(135deg,#0b3d6e 0%,#1568c4 60%,#00a1e0 140%)",
-    "glow": "rgba(0,161,224,.45)", "subColor": "#cbe4f5", "headerMuted": "#aed4ee",
-    "chgBg": "var(--red-soft)", "chgColor": "#c5221f", "badge": "var(--blue)",
-    "verdictText": "#d4e8f6", "vcellLabel": "#aecbe2"
+    "glow": "rgba(0,161,224,.45)",
+    "subColor": "#cbe4f5",
+    "headerMuted": "#aed4ee",
+    "chgBg": "var(--red-soft)",
+    "chgColor": "#c5221f",
+    "badge": "var(--blue)",
+    "verdictText": "#d4e8f6",
+    "vcellLabel": "#aecbe2"
   },
   "chart": {
-    "data": [["มิ.ย.25",262],["ส.ค.25",250],["ต.ค.25",235],["ธ.ค.25",215],["ก.พ.26",198],["เม.ย.26",172],["พ.ค.26",158],["มิ.ย.26",151]],
-    "min": 120, "max": 290, "grid": [140,170,200,230,260,290], "fairLine": 185, "currency": "$", "highlight": [0,7]
+    "data": [
+      ["ส.ค.25", 256.25],
+      ["ก.ย.25", 237],
+      ["ต.ค.25", 260.41],
+      ["พ.ย.25", 230.54],
+      ["ธ.ค.25", 264.91],
+      ["ม.ค.26", 212.29],
+      ["ก.พ.26", 194.79],
+      ["มี.ค.26", 186.67],
+      ["เม.ย.26", 176.53],
+      ["พ.ค.26", 191.1],
+      ["มิ.ย.26", 156.66],
+      ["ก.ค.26", 163.32]
+    ],
+    "min": 150,
+    "max": 300,
+    "grid": [200, 250],
+    "fairLine": 185,
+    "currency": "$",
+    "highlight": [4, 10]
   },
-  "gauge": { "min": 115, "max": 500, "cur": 151, "fair": 185, "fairLabelTop": "-58px" },
+  "gauge": {
+    "min": 115,
+    "max": 500,
+    "cur": 163.32,
+    "fair": 185,
+    "fairLabelTop": "-58px"
+  },
   "fv": 185
 }
 </script>
@@ -42,11 +72,11 @@
     <div class="sub">ผู้นำ CRM บนคลาวด์ • Agentforce (AI Agent อัตโนมัติ), Einstein, Data 360, Slack, Tableau</div>
     <div class="price-row">
       <div>
-        <div class="px">$151<small>(CRM)</small></div>
+        <div class="px">$163.32<small>(CRM)</small></div>
       </div>
-      <div class="chg">▼ −42.4% (รอบปี)</div>
+      <div class="chg">▼ −36.3% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ≈ 22 มิ.ย. 2026 (ปิด $150.12)<br>
+        ราคา ≈ 10 ก.ค. 2026 (ปิด $150.12)<br>
         ใกล้จุดต่ำสุด 52 สัปดาห์ ($146)<br>
         ที่มา: Stockanalysis.com / Yahoo Finance / CNBC
       </div>
@@ -128,7 +158,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $151</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $163</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $185</div></div>
         </div>
         <div class="scale">
@@ -152,7 +182,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict ok">
-        <div class="big">+18%</div>
+        <div class="big">+12%</div>
         <div class="txt"><b>มี Margin of Safety พอสมควร</b><br>ราคาปัจจุบัน $151 ต่ำกว่ามูลค่าเหมาะสม $185 ราว 18% → ตามเกณฑ์ value investor ถือว่า <b>เริ่มน่าสนใจ</b> เป็นโซนทยอยสะสมได้ แต่ยังไม่ถึงระดับ deep value</div>
       </div>
       <div class="grid g3">
@@ -163,7 +193,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="151" step="1">
+          <input id="pxIn" class="mono" type="number" value="163.32" step="1">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

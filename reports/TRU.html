@@ -6,7 +6,7 @@
 <title>วิเคราะห์หุ้น TransUnion (TRU) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Sonnet 4.6">
 <script type="application/json" id="stock-meta">
-{"symbol":"TRU","currency":"USD","price":78.31,"fairValue":83.00,"mos":5.6,"upside":6.0,"pe":21.7,"dividendYield":0.65,"roe":15.4}
+{"symbol":"TRU","currency":"USD","price":75.02,"fairValue":83,"mos":9.6,"upside":10.6,"pe":21.7,"dividendYield":0.65,"roe":15.4}
 </script>
 <script type="application/json" id="report-data">
 {
@@ -20,40 +20,39 @@
     "verdictText": "#E3F2FD",
     "vcellLabel": "#90CAF9",
     "badge": "#1565C0",
-    "chgBg": "#c5221f",
-    "chgColor": "#fff"
+    "chgBg": "var(--red-soft)",
+    "chgColor": "#c5221f"
   },
   "chart": {
     "data": [
-      ["ก.พ. 25", 87.97],
-      ["มี.ค. 25", 83.37],
-      ["เม.ย. 25", 80.78],
-      ["พ.ค. 25", 84.76],
-      ["มิ.ย. 25", 85.45],
-      ["ก.ค. 25", 78.75],
-      ["ส.ค. 25", 78.41],
-      ["ก.ย. 25", 69.07],
-      ["ต.ค. 25", 70.87],
-      ["พ.ย. 25", 71.56],
-      ["ธ.ค. 25", 72.14],
-      ["ม.ค. 69", 74.47],
-      ["ก.พ. 69", 78.31]
+      ["ส.ค.25", 88.4],
+      ["ก.ย.25", 83.78],
+      ["ต.ค.25", 81.18],
+      ["พ.ย.25", 85.05],
+      ["ธ.ค.25", 85.75],
+      ["ม.ค.26", 79.02],
+      ["ก.พ.26", 78.55],
+      ["มี.ค.26", 69.19],
+      ["เม.ย.26", 71],
+      ["พ.ค.26", 71.56],
+      ["มิ.ย.26", 72.14],
+      ["ก.ค.26", 75.02]
     ],
-    "min": 60,
-    "max": 105,
-    "grid": [65, 75, 85, 95],
-    "fairLine": 83.00,
+    "min": 65,
+    "max": 90,
+    "grid": [70, 75, 80, 85],
+    "fairLine": 83,
     "currency": "$",
-    "highlight": [4, 7]
+    "highlight": [0, 7]
   },
   "gauge": {
     "min": 50,
     "max": 110,
-    "cur": 78.31,
-    "fair": 83.00,
+    "cur": 75.02,
+    "fair": 83,
     "fairLabelTop": true
   },
-  "fv": 83.00
+  "fv": 83
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -73,11 +72,11 @@
     <div class="sub">Credit bureau &amp; data analytics • US Markets + International (India, UK, Africa) • Lending, insurance, tenant screening • Deleveraging post-PE</div>
     <div class="price-row">
       <div>
-        <div class="px">$78.31<small>(TRU)</small></div>
+        <div class="px">$75.02<small>(TRU)</small></div>
       </div>
-      <div class="chg">▼ −11.0% (รอบปี)</div>
+      <div class="chg">▼ −15.1% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ กุมภาพันธ์ 2569<br>
+        ราคา ณ 10 ก.ค. 2569<br>
         กรอบ 52 สัปดาห์ $63.37 – $99.39<br>
         ที่มา: Yahoo Finance, StockAnalysis, Finviz
       </div>
@@ -166,7 +165,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $78.31</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $75.02</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $83.00</div></div>
         </div>
         <div class="scale">
@@ -191,7 +190,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict ok">
-        <div class="big">+5.6%</div>
+        <div class="big">+10%</div>
         <div class="txt">MOS ต่ำ — ราคาใกล้ Fair Value · รอโซน MOS 20% ($66.40) เพื่อ margin ที่ดีขึ้น</div>
       </div>
       <div class="grid g3">
@@ -202,7 +201,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="78.31" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="75.02" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

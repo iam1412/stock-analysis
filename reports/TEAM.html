@@ -6,22 +6,52 @@
 <title>วิเคราะห์หุ้น Atlassian (TEAM) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Opus 4.8">
 <script type="application/json" id="stock-meta">
-{"symbol":"TEAM","currency":"USD","price":82,"fairValue":115,"mos":29,"upside":40,"pe":17,"dividendYield":0,"roe":null}
+{"symbol":"TEAM","currency":"USD","price":88.86,"fairValue":115,"mos":22.7,"upside":29.4,"pe":17,"dividendYield":0,"roe":null}
 </script>
 <script type="application/json" id="report-data">
 {
   "theme": {
-    "accent": "#1a73e8", "accentDark": "#1557b0",
+    "accent": "#1a73e8",
+    "accentDark": "#1557b0",
     "darkGrad": "linear-gradient(135deg,#0747a6 0%,#1868db 60%,#2684ff 140%)",
-    "glow": "rgba(38,132,255,.45)", "subColor": "#c7d2e4", "headerMuted": "#aebfd6",
-    "chgBg": "var(--red-soft)", "chgColor": "#c5221f", "badge": "var(--blue)",
-    "verdictText": "#d4dded", "vcellLabel": "#a8b6cc"
+    "glow": "rgba(38,132,255,.45)",
+    "subColor": "#c7d2e4",
+    "headerMuted": "#aebfd6",
+    "chgBg": "var(--red-soft)",
+    "chgColor": "#c5221f",
+    "badge": "var(--blue)",
+    "verdictText": "#d4dded",
+    "vcellLabel": "#a8b6cc"
   },
   "chart": {
-    "data": [["มิ.ย.25",185],["ส.ค.25",195],["ต.ค.25",210],["ธ.ค.25",220],["ก.พ.26",165],["เม.ย.26",110],["พ.ค.26",88],["มิ.ย.26",82]],
-    "min": 60, "max": 240, "grid": [60,100,140,180,220], "fairLine": 115, "currency": "$", "highlight": [3,7]
+    "data": [
+      ["ส.ค.25", 177.78],
+      ["ก.ย.25", 159.7],
+      ["ต.ค.25", 169.42],
+      ["พ.ย.25", 149.52],
+      ["ธ.ค.25", 162.14],
+      ["ม.ค.26", 118.18],
+      ["ก.พ.26", 75.13],
+      ["มี.ค.26", 68.25],
+      ["เม.ย.26", 68.59],
+      ["พ.ค.26", 107.61],
+      ["มิ.ย.26", 77.79],
+      ["ก.ค.26", 88.86]
+    ],
+    "min": 50,
+    "max": 200,
+    "grid": [100, 150],
+    "fairLine": 115,
+    "currency": "$",
+    "highlight": [0, 7]
   },
-  "gauge": { "min": 70, "max": 240, "cur": 82, "fair": 115, "fairLabelTop": "-58px" },
+  "gauge": {
+    "min": 70,
+    "max": 240,
+    "cur": 88.86,
+    "fair": 115,
+    "fairLabelTop": "-58px"
+  },
   "fv": 115
 }
 </script>
@@ -42,11 +72,11 @@
     <div class="sub">เจ้าของ Jira, Confluence, Trello • แพลตฟอร์มทำงานร่วมกัน + AI agent "Rovo"</div>
     <div class="price-row">
       <div>
-        <div class="px">$82<small>(TEAM)</small></div>
+        <div class="px">$88.86<small>(TEAM)</small></div>
       </div>
-      <div class="chg">▼ −55.7% (รอบปี)</div>
+      <div class="chg">▼ −50.0% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ≈ 23 มิ.ย. 2026 ($81.75, 14:55 EDT)<br>
+        ราคา ≈ 10 ก.ค. 2026 ($81.75, 14:55 EDT)<br>
         ร่วง ~63% จากจุดสูงสุด $222.59 (รอบปี)<br>
         ที่มา: StockAnalysis.com / Yahoo Finance / Google Finance
       </div>
@@ -126,7 +156,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $82</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $89</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $115</div></div>
         </div>
         <div class="scale">
@@ -149,7 +179,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict good">
-        <div class="big">+29%</div>
+        <div class="big">+23%</div>
         <div class="txt"><b>มี Margin of Safety พอควร</b><br>ราคาปัจจุบัน $82 ต่ำกว่ามูลค่าเหมาะสม $115 ราว 29% → ตามเกณฑ์ value investor ถือว่า <b>เริ่มน่าสนใจ</b> เข้าโซนทยอยสะสมได้ แต่ต้องยอมรับความเสี่ยง AI/SBC</div>
       </div>
       <div class="grid g3">
@@ -160,7 +190,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="82" step="1">
+          <input id="pxIn" class="mono" type="number" value="88.86" step="1">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

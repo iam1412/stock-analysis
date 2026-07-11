@@ -6,48 +6,51 @@
 <title>วิเคราะห์หุ้น MFEC (MFEC) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Sonnet 4.6">
 <script type="application/json" id="stock-meta">
-{"symbol":"MFEC","currency":"THB","price":5.80,"fairValue":7.15,"mos":18.9,"upside":23.3,"pe":10.24,"dividendYield":8.70,"roe":9.56}
+{"symbol":"MFEC","currency":"THB","price":5.85,"fairValue":7.15,"mos":18.2,"upside":22.2,"pe":10.24,"dividendYield":8.7,"roe":9.56}
 </script>
 <script type="application/json" id="report-data">
 {
   "theme": {
-    "accent":       "#ef6c00",
-    "accentDark":   "#e65100",
-    "darkGrad":     "linear-gradient(135deg,#e65100 0%,#ef6c00 60%,#f57c00 100%)",
-    "glow":         "rgba(239,108,0,0.3)",
-    "subColor":     "#ffcc80",
-    "headerMuted":  "rgba(255,204,128,0.7)",
-    "verdictText":  "#fff8f0",
-    "vcellLabel":   "#ffcc80",
-    "badge":        "#ef6c00",
-    "chgBg":        "#e6f4ea",
-    "chgColor":     "#1e8e3e"
+    "accent": "#ef6c00",
+    "accentDark": "#e65100",
+    "darkGrad": "linear-gradient(135deg,#e65100 0%,#ef6c00 60%,#f57c00 100%)",
+    "glow": "rgba(239,108,0,0.3)",
+    "subColor": "#ffcc80",
+    "headerMuted": "rgba(255,204,128,0.7)",
+    "verdictText": "#fff8f0",
+    "vcellLabel": "#ffcc80",
+    "badge": "#ef6c00",
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#1e8e3e"
   },
   "chart": {
     "data": [
-      ["ก.ค. 68", 5.30],
-      ["ส.ค. 68", 5.60],
-      ["ก.ย. 68", 5.90],
-      ["ต.ค. 68", 6.05],
-      ["พ.ย. 68", 6.10],
-      ["ธ.ค. 68", 5.75],
-      ["ม.ค. 69", 5.75],
-      ["ก.พ. 69", 5.75],
-      ["มี.ค. 69", 5.80]
+      ["ส.ค.25", 5.25],
+      ["ก.ย.25", 5.25],
+      ["ต.ค.25", 5.1],
+      ["พ.ย.25", 5.05],
+      ["ธ.ค.25", 5.15],
+      ["ม.ค.26", 5.3],
+      ["ก.พ.26", 5.9],
+      ["มี.ค.26", 6.05],
+      ["เม.ย.26", 6.1],
+      ["พ.ค.26", 5.75],
+      ["มิ.ย.26", 5.75],
+      ["ก.ค.26", 5.85]
     ],
-    "min": 5.00,
-    "max": 6.50,
-    "grid": [5.00, 5.25, 5.50, 5.75, 6.00, 6.25, 6.50],
+    "min": 4,
+    "max": 8,
+    "grid": [5, 6, 7],
     "fairLine": 7.15,
     "currency": "฿",
-    "highlight": [4, 8],
+    "highlight": [3, 8],
     "gridFmt": "v.toFixed(2)",
     "dataFmt": "d[1].toFixed(2)"
   },
   "gauge": {
-    "min": 4.50,
-    "max": 8.50,
-    "cur": 5.80,
+    "min": 4.5,
+    "max": 8.5,
+    "cur": 5.85,
     "fair": 7.15,
     "fairLabelTop": false
   },
@@ -71,11 +74,11 @@
     <div class="sub">Cloud Infrastructure • Cybersecurity • Data Analytics & AI • Digital Transformation • IT Professional Services • System Integration</div>
     <div class="price-row">
       <div>
-        <div class="px">฿5.80<small>(MFEC)</small></div>
+        <div class="px">฿5.85<small>(MFEC)</small></div>
       </div>
-      <div class="chg">▲ +9.4% (รอบปี)</div>
+      <div class="chg">▲ +11.4% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 3 มีนาคม 2569<br>
+        ราคา ณ 10 ก.ค. 2569<br>
         กรอบ 52 สัปดาห์ ฿4.98 – ฿6.15<br>
         ที่มา: Yahoo Finance, StockAnalysis.com, SET.or.th
       </div>
@@ -153,7 +156,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿5.80</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿5.85</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿7.15</div></div>
         </div>
         <div class="scale">
@@ -175,7 +178,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict ok">
-        <div class="big">+18.9%</div>
+        <div class="big">+18%</div>
         <div class="txt">MOS อยู่ในโซนน่าสนใจ — ราคาต่ำกว่า Fair Value ~19% · ทยอยสะสมได้ · Dividend Yield 8.7% รองรับ Downside</div>
       </div>
       <div class="grid g3">
@@ -186,7 +189,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="5.80" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="5.85" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

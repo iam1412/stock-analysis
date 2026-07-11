@@ -6,7 +6,7 @@
 <title>วิเคราะห์หุ้น สยามเวลเนส กรุ๊ป (SPA) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Sonnet 4.6">
 <script type="application/json" id="stock-meta">
-{"symbol":"SPA","currency":"THB","price":3.32,"fairValue":2.32,"mos":-43.1,"upside":-30.1,"pe":22.02,"dividendYield":3.01,"roe":14.94}
+{"symbol":"SPA","currency":"THB","price":3.28,"fairValue":2.32,"mos":-41.4,"upside":-29.3,"pe":22.02,"dividendYield":3.01,"roe":14.94}
 </script>
 <script type="application/json" id="report-data">
 {
@@ -25,33 +25,32 @@
   },
   "chart": {
     "data": [
-      ["ก.ค. 68", 3.04],
-      ["ส.ค. 68", 3.28],
-      ["ก.ย. 68", 2.92],
-      ["ต.ค. 68", 2.78],
-      ["พ.ย. 68", 3.08],
-      ["ธ.ค. 68", 3.00],
-      ["ม.ค. 69", 3.88],
-      ["ก.พ. 69", 3.24],
-      ["มี.ค. 69", 3.08],
-      ["เม.ย. 69", 2.92],
-      ["พ.ค. 69", 3.30],
-      ["มิ.ย. 69", 3.32],
-      ["ก.ค. 69", 3.32]
+      ["ส.ค.25", 3.04],
+      ["ก.ย.25", 3.28],
+      ["ต.ค.25", 2.92],
+      ["พ.ย.25", 2.78],
+      ["ธ.ค.25", 3.08],
+      ["ม.ค.26", 3],
+      ["ก.พ.26", 3.88],
+      ["มี.ค.26", 3.24],
+      ["เม.ย.26", 3.08],
+      ["พ.ค.26", 2.92],
+      ["มิ.ย.26", 3.3],
+      ["ก.ค.26", 3.28]
     ],
-    "min": 2.0,
-    "max": 4.5,
-    "grid": [2.0, 2.5, 3.0, 3.5, 4.0, 4.5],
+    "min": 2,
+    "max": 4,
+    "grid": [2.5, 3, 3.5],
     "fairLine": 2.32,
     "currency": "฿",
-    "highlight": [0, 6, 12],
+    "highlight": [3, 6],
     "gridFmt": "v.toFixed(2)",
     "dataFmt": "d[1].toFixed(2)"
   },
   "gauge": {
     "min": 1.5,
     "max": 4.2,
-    "cur": 3.32,
+    "cur": 3.28,
     "fair": 2.32,
     "fairLabelTop": true
   },
@@ -75,11 +74,11 @@
     <div class="sub">Let's Relax Spa • RarinJinda Wellness Spa • Baan Suan Massage • Stretch Me / Wellnessme Clinic • ธุรกิจสปา นวด และเวลเนสรายใหญ่ของไทย เกาะกระแสฟื้นตัวนักท่องเที่ยว</div>
     <div class="price-row">
       <div>
-        <div class="px">฿3.32<small>(SPA)</small></div>
+        <div class="px">฿3.28<small>(SPA)</small></div>
       </div>
-      <div class="chg">▲ +9.2% (รอบปี)</div>
+      <div class="chg">▲ +7.9% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 3 ก.ค. 2569 (ปิดตลาด)<br>
+        ราคา ณ 10 ก.ค. 2569 (ปิดตลาด)<br>
         กรอบ 52 สัปดาห์ ฿2.60 – ฿4.08<br>
         ที่มา: stockanalysis.com, Yahoo Finance (SPA.BK), SET.or.th
       </div>
@@ -161,7 +160,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿3.32</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿3.28</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿2.32</div></div>
         </div>
         <div class="scale">
@@ -184,7 +183,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict bad">
-        <div class="big">−43.1%</div>
+        <div class="big">−41%</div>
         <div class="txt"><b>ไม่มี Margin of Safety</b><br>ราคาปัจจุบัน ฿3.32 สูงกว่ามูลค่าเหมาะสม ฿2.32 ราว 43% → ตามเกณฑ์ value investor ถือว่า <b>แพงกว่าพื้นฐานปัจจุบัน</b> ยังไม่ใช่จุดซื้อที่ปลอดภัยตามโมเดลนี้ แม้นักวิเคราะห์ยังให้เป้าสูงกว่าราคาตลาด</div>
       </div>
       <div class="grid g3">
@@ -195,7 +194,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="3.32" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="3.28" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

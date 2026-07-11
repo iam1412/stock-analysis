@@ -6,10 +6,54 @@
 <title>วิเคราะห์หุ้น A. O. Smith Corporation (AOS) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Sonnet 5">
 <script type="application/json" id="stock-meta">
-{"symbol":"AOS","currency":"USD","price":62.72,"fairValue":68.37,"mos":8.27,"upside":9.01,"pe":16.7,"dividendYield":2.3,"roe":28.2}
+{"symbol":"AOS","currency":"USD","price":60.44,"fairValue":68.37,"mos":11.6,"upside":13.1,"pe":16.7,"dividendYield":2.3,"roe":28.2}
 </script>
 <script type="application/json" id="report-data">
-{"theme":{"accent":"#0072CE","accentDark":"#00509E","darkGrad":"linear-gradient(135deg, #02101F 0%, #062A4D 100%)","glow":"rgba(0,114,206,0.35)","subColor":"#5CA8E8","headerMuted":"rgba(0,114,206,0.12)","verdictText":"#D2E6F7","vcellLabel":"rgba(210,230,247,0.6)","badge":"#0072CE","chgBg":"rgba(239,68,68,0.15)","chgColor":"#EF4444"},"chart":{"data":[["ก.ค. 68",70.79],["ส.ค. 68",71.29],["ก.ย. 68",73.41],["ต.ค. 68",65.99],["พ.ย. 68",65.98],["ธ.ค. 68",66.88],["ม.ค. 69",73.49],["ก.พ. 69",78.00],["มี.ค. 69",65.94],["เม.ย. 69",61.84],["พ.ค. 69",56.72],["มิ.ย. 69",61.68],["30 มิ.ย. 69",62.72]],"min":52,"max":82,"grid":[60,68,76],"fairLine":68.37,"currency":"$","highlight":[7,10]},"gauge":{"min":50,"max":85,"cur":62.72,"fair":68.37,"fairLabelTop":false},"fv":68.37}
+{
+  "theme": {
+    "accent": "#0072CE",
+    "accentDark": "#00509E",
+    "darkGrad": "linear-gradient(135deg, #02101F 0%, #062A4D 100%)",
+    "glow": "rgba(0,114,206,0.35)",
+    "subColor": "#5CA8E8",
+    "headerMuted": "rgba(0,114,206,0.12)",
+    "verdictText": "#D2E6F7",
+    "vcellLabel": "rgba(210,230,247,0.6)",
+    "badge": "#0072CE",
+    "chgBg": "var(--red-soft)",
+    "chgColor": "#c5221f"
+  },
+  "chart": {
+    "data": [
+      ["ส.ค.25", 71.29],
+      ["ก.ย.25", 73.41],
+      ["ต.ค.25", 65.99],
+      ["พ.ย.25", 65.98],
+      ["ธ.ค.25", 66.88],
+      ["ม.ค.26", 73.49],
+      ["ก.พ.26", 78],
+      ["มี.ค.26", 65.94],
+      ["เม.ย.26", 61.84],
+      ["พ.ค.26", 56.72],
+      ["มิ.ย.26", 62.72],
+      ["ก.ค.26", 60.44]
+    ],
+    "min": 50,
+    "max": 80,
+    "grid": [60, 70],
+    "fairLine": 68.37,
+    "currency": "$",
+    "highlight": [6, 9]
+  },
+  "gauge": {
+    "min": 50,
+    "max": 85,
+    "cur": 60.44,
+    "fair": 68.37,
+    "fairLabelTop": false
+  },
+  "fv": 68.37
+}
 </script>
 <!--TEMPLATE:STYLE-->
 </head>
@@ -28,11 +72,11 @@
     <div class="sub">เครื่องทำน้ำอุ่น/น้ำร้อนที่พักอาศัยและเชิงพาณิชย์ • ระบบกรองและบำบัดน้ำ (water treatment/filtration) • Boiler เชิงพาณิชย์ • ผู้นำตลาดอเมริกาเหนือ • ขยายธุรกิจในจีนผ่านแบรนด์ A.O. Smith China</div>
     <div class="price-row">
       <div>
-        <div class="px">$62.72<small>(AOS)</small></div>
+        <div class="px">$60.44<small>(AOS)</small></div>
       </div>
-      <div class="chg">▼ −11.4% (รอบปี)</div>
+      <div class="chg">▼ −15.2% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 30 มิ.ย. 2569<br>
+        ราคา ณ 10 ก.ค. 2569<br>
         กรอบ 52 สัปดาห์ $54.16 – $81.87<br>
         ที่มา: StockAnalysis.com, Yahoo Finance, MarketBeat
       </div>
@@ -114,7 +158,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $62.72</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $60.44</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $68.37</div></div>
         </div>
         <div class="scale">
@@ -137,7 +181,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict ok">
-        <div class="big">+8.27%</div>
+        <div class="big">+12%</div>
         <div class="txt">MOS อยู่ในระดับต่ำ-ปานกลาง — ราคาเข้าใกล้มูลค่าเหมาะสมแล้ว ยังไม่ใช่จุดเข้าที่มี margin of safety สูง</div>
       </div>
       <div class="grid g3">
@@ -148,7 +192,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="62.72" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="60.44" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

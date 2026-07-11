@@ -6,51 +6,55 @@
 <title>วิเคราะห์หุ้น พริ้นซิเพิล แคปิตอล (PRINC) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Sonnet 4.6">
 <script type="application/json" id="stock-meta">
-{"symbol":"PRINC","currency":"THB","price":1.71,"fairValue":2.05,"mos":16.6,"upside":19.9,"pe":null,"dividendYield":0.58,"roe":null}
-
+{"symbol":"PRINC","currency":"THB","price":1.72,"fairValue":2.05,"mos":16.1,"upside":19.2,"pe":null,"dividendYield":0.58,"roe":null}
 </script>
 <script type="application/json" id="report-data">
 {
-  "theme":{
-    "accent":"#f57f17",
-    "accentDark":"#e65100",
-    "darkGrad":"linear-gradient(135deg,#e65100 0%,#f57f17 60%,#ffa000 100%)",
-    "glow":"rgba(245,127,23,0.3)",
-    "subColor":"#fff9c4",
-    "headerMuted":"rgba(255,255,255,0.6)",
-    "verdictText":"#fffde7",
-    "vcellLabel":"rgba(255,253,231,0.7)",
-    "badge":"#f9a825",
-    "chgBg":"#c5221f",
-    "chgColor":"#fff"
+  "theme": {
+    "accent": "#f57f17",
+    "accentDark": "#e65100",
+    "darkGrad": "linear-gradient(135deg,#e65100 0%,#f57f17 60%,#ffa000 100%)",
+    "glow": "rgba(245,127,23,0.3)",
+    "subColor": "#fff9c4",
+    "headerMuted": "rgba(255,255,255,0.6)",
+    "verdictText": "#fffde7",
+    "vcellLabel": "rgba(255,253,231,0.7)",
+    "badge": "#f9a825",
+    "chgBg": "var(--red-soft)",
+    "chgColor": "#c5221f"
   },
-  "chart":{
-    "data":[
-      ["ม.ค. 68",2.04],
-      ["ก.พ. 68",2.02],
-      ["มี.ค. 68",1.98],
-      ["เม.ย. 68",1.72],
-      ["พ.ค. 68",1.70],
-      ["มิ.ย. 68",1.70],
-      ["ก.ค. 68",1.92],
-      ["ส.ค. 68",1.81],
-      ["ก.ย. 68",1.72],
-      ["ต.ค. 68",1.72],
-      ["พ.ย. 68",1.71],
-      ["ธ.ค. 68",1.72],
-      ["ม.ค. 69",1.71]
+  "chart": {
+    "data": [
+      ["ส.ค.25", 2.04],
+      ["ก.ย.25", 2.02],
+      ["ต.ค.25", 1.98],
+      ["พ.ย.25", 1.72],
+      ["ธ.ค.25", 1.7],
+      ["ม.ค.26", 1.7],
+      ["ก.พ.26", 1.92],
+      ["มี.ค.26", 1.81],
+      ["เม.ย.26", 1.72],
+      ["พ.ค.26", 1.72],
+      ["มิ.ย.26", 1.71],
+      ["ก.ค.26", 1.72]
     ],
-    "min":1.50,
-    "max":2.25,
-    "grid":[1.50,1.75,2.00,2.25],
-    "fairLine":2.05,
-    "currency":"฿",
-    "highlight":[0,3,6],
-    "gridFmt":"v.toFixed(2)",
-    "dataFmt":"d[1].toFixed(2)"
+    "min": 1.6,
+    "max": 2.1,
+    "grid": [1.7, 1.8, 1.9, 2],
+    "fairLine": 2.05,
+    "currency": "฿",
+    "highlight": [0, 4],
+    "gridFmt": "v.toFixed(2)",
+    "dataFmt": "d[1].toFixed(2)"
   },
-  "gauge":{"min":1.20,"max":2.60,"cur":1.71,"fair":2.05,"fairLabelTop":true},
-  "fv":2.05
+  "gauge": {
+    "min": 1.2,
+    "max": 2.6,
+    "cur": 1.72,
+    "fair": 2.05,
+    "fairLabelTop": true
+  },
+  "fv": 2.05
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -70,11 +74,11 @@
     <div class="sub">เครือรพ.พรินซิเพิล เฮลท์แคร์ • ขยายต่างจังหวัดรวดเร็ว 15 รพ. 12 จังหวัด • Mid-tier Regional • EBITDA ปรับตัวดีขึ้นต่อเนื่อง</div>
     <div class="price-row">
       <div>
-        <div class="px">฿1.71<small>(PRINC)</small></div>
+        <div class="px">฿1.72<small>(PRINC)</small></div>
       </div>
-      <div class="chg">▼ −16.2% (รอบปี)</div>
+      <div class="chg">▼ −15.7% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 3 ก.ค. 2569<br>
+        ราคา ณ 10 ก.ค. 2569<br>
         กรอบ 52 สัปดาห์ ฿1.66 – ฿2.50<br>
         ที่มา: Yahoo Finance, Google Finance, Investing.com
       </div>
@@ -157,7 +161,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿1.71</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿1.72</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿2.05</div></div>
         </div>
         <div class="scale">
@@ -181,7 +185,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict ok">
-        <div class="big">+16.6%</div>
+        <div class="big">+16%</div>
         <div class="txt">ราคาพอใช้ — MOS อยู่ในช่วง 10–20% เหมาะสำหรับทยอยสะสม ยังไม่ถึงโซน deep value</div>
       </div>
       <div class="grid g3">
@@ -192,7 +196,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="1.71" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="1.72" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

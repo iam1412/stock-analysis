@@ -8,7 +8,7 @@
 <meta name="ai-model" content="Claude Sonnet 4.6">
 <!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
 <script type="application/json" id="stock-meta">
-{"symbol":"NNN","currency":"USD","price":46.85,"fairValue":52.00,"mos":9.9,"upside":11.0,"pe":null,"dividendYield":5.12,"roe":9.1}
+{"symbol":"NNN","currency":"USD","price":46.77,"fairValue":52,"mos":10.1,"upside":11.2,"pe":null,"dividendYield":5.12,"roe":9.1}
 </script>
 <script type="application/json" id="report-data">
 {
@@ -22,40 +22,39 @@
     "verdictText": "#d0e4ff",
     "vcellLabel": "#8faec8",
     "badge": "#003087",
-    "chgBg": "#1e4620",
-    "chgColor": "#81c784"
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#1e8e3e"
   },
   "chart": {
     "data": [
-      ["ส.ค. 67", 41.26],
-      ["ก.ย. 67", 42.91],
-      ["ต.ค. 67", 42.57],
-      ["พ.ย. 67", 40.46],
-      ["ธ.ค. 67", 41.35],
-      ["ม.ค. 68", 39.63],
-      ["ก.พ. 68", 41.67],
-      ["มี.ค. 68", 45.32],
-      ["เม.ย. 68", 42.03],
-      ["พ.ค. 68", 43.79],
-      ["มิ.ย. 68", 44.51],
-      ["ก.ค. 68", 47.33],
-      ["ปัจจุบัน", 46.85]
+      ["ส.ค.25", 42.91],
+      ["ก.ย.25", 42.57],
+      ["ต.ค.25", 40.46],
+      ["พ.ย.25", 41.35],
+      ["ธ.ค.25", 39.63],
+      ["ม.ค.26", 41.67],
+      ["ก.พ.26", 45.32],
+      ["มี.ค.26", 42.03],
+      ["เม.ย.26", 43.79],
+      ["พ.ค.26", 44.51],
+      ["มิ.ย.26", 46.53],
+      ["ก.ค.26", 46.77]
     ],
-    "min": 37.0,
-    "max": 55.0,
-    "grid": [38, 42, 46, 50, 54],
-    "fairLine": 52.00,
+    "min": 35,
+    "max": 55,
+    "grid": [40, 45, 50],
+    "fairLine": 52,
     "currency": "$",
-    "highlight": [7, 11]
+    "highlight": [4, 11]
   },
   "gauge": {
-    "min": 32.0,
-    "max": 58.0,
-    "cur": 46.85,
-    "fair": 52.00,
+    "min": 32,
+    "max": 58,
+    "cur": 46.77,
+    "fair": 52,
     "fairLabelTop": false
   },
-  "fv": 52.00
+  "fv": 52
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -75,11 +74,11 @@
     <div class="sub">Net lease REIT (~3,711 single-tenant properties, 50 states, 39.6M sq ft) • 35+ consecutive years dividend increases (Dividend Aristocrat + Champion) • Triple-net leases: tenants pay taxes/insurance/maintenance • Tenants: 7-Eleven, Circle K, Mister Car Wash, casual dining, auto service • ~99.4% occupancy, avg 10.1 yr remaining lease term • ~5.1% dividend yield • pe:null — valued on P/AFFO/NAV</div>
     <div class="price-row">
       <div>
-        <div class="px">$46.85<small>(NNN)</small></div>
+        <div class="px">$46.77<small>(NNN)</small></div>
       </div>
-      <div class="chg">▲ +13.5% (รอบปี)</div>
+      <div class="chg">▲ +9.0% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 1 ก.ค. 2569<br>
+        ราคา ณ 10 ก.ค. 2569<br>
         กรอบ 52 สัปดาห์ $38.90 – $47.47<br>
         ที่มา: StockAnalysis.com, Yahoo Finance, NNN REIT IR (Q1 2026)
       </div>
@@ -157,7 +156,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $46.85</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $46.77</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $52.00</div></div>
         </div>
         <div class="scale">
@@ -179,7 +178,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict ok">
-        <div class="big">+9.9%</div>
+        <div class="big">+10%</div>
         <div class="txt">MOS ปานกลาง — ใกล้ fair value · รอโซน $41–43 เพื่อ MOS ที่ดีกว่า</div>
       </div>
       <div class="grid g3">
@@ -190,7 +189,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="46.85" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="46.77" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

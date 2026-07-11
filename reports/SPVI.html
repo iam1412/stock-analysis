@@ -6,7 +6,7 @@
 <title>วิเคราะห์หุ้น เอส พี วี ไอ (SPVI) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Sonnet 4.6">
 <script type="application/json" id="stock-meta">
-{"symbol":"SPVI","currency":"THB","price":3.16,"fairValue":4.20,"mos":24.8,"upside":32.9,"pe":9.25,"dividendYield":4.71,"roe":21.3}
+{"symbol":"SPVI","currency":"THB","price":3.36,"fairValue":4.2,"mos":20,"upside":25,"pe":9.25,"dividendYield":4.71,"roe":21.3}
 </script>
 <script type="application/json" id="report-data">
 {
@@ -20,42 +20,41 @@
     "verdictText": "#E8F4FD",
     "vcellLabel": "#A8D8F0",
     "badge": "#007AFF",
-    "chgBg": "#1e8e3e",
-    "chgColor": "#ffffff"
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#1e8e3e"
   },
   "chart": {
     "data": [
-      ["ก.ค. 68", 2.02],
-      ["ส.ค. 68", 2.30],
-      ["ก.ย. 68", 2.55],
-      ["ต.ค. 68", 2.88],
-      ["พ.ย. 68", 3.18],
-      ["ธ.ค. 68", 3.76],
-      ["ม.ค. 69", 3.52],
-      ["ก.พ. 69", 3.20],
-      ["มี.ค. 69", 2.95],
-      ["เม.ย. 69", 3.05],
-      ["พ.ค. 69", 3.36],
-      ["มิ.ย. 69", 3.48],
-      ["ก.ค. 69", 3.16]
+      ["ส.ค.25", 2.38],
+      ["ก.ย.25", 2.34],
+      ["ต.ค.25", 2.28],
+      ["พ.ย.25", 2.28],
+      ["ธ.ค.25", 2.16],
+      ["ม.ค.26", 2.32],
+      ["ก.พ.26", 2.66],
+      ["มี.ค.26", 2.9],
+      ["เม.ย.26", 2.86],
+      ["พ.ค.26", 3.3],
+      ["มิ.ย.26", 3.12],
+      ["ก.ค.26", 3.36]
     ],
-    "min": 1.80,
-    "max": 4.30,
-    "grid": [2.00, 2.50, 3.00, 3.50, 4.00],
-    "fairLine": 4.20,
+    "min": 2,
+    "max": 5,
+    "grid": [3, 4],
+    "fairLine": 4.2,
     "currency": "฿",
-    "highlight": [5, 12],
+    "highlight": [4, 11],
     "gridFmt": "v.toFixed(2)",
     "dataFmt": "d[1].toFixed(2)"
   },
   "gauge": {
-    "min": 2.00,
-    "max": 5.00,
-    "cur": 3.16,
-    "fair": 4.20,
+    "min": 2,
+    "max": 5,
+    "cur": 3.36,
+    "fair": 4.2,
     "fairLabelTop": true
   },
-  "fv": 4.20
+  "fv": 4.2
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -75,11 +74,11 @@
     <div class="sub">iStudio by SPVi — Apple Premium Reseller (APR) • iBeat by SPVi • U•Store by SPVi (Campus Store) • iCenter — Authorized Apple Service Provider • SP Service &amp; Repair</div>
     <div class="price-row">
       <div>
-        <div class="px">฿3.16<small>(SPVI)</small></div>
+        <div class="px">฿3.36<small>(SPVI)</small></div>
       </div>
-      <div class="chg">▲ +56.4% (รอบปี)</div>
+      <div class="chg">▲ +41.2% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 4 ก.ค. 2569<br>
+        ราคา ณ 10 ก.ค. 2569<br>
         กรอบ 52 สัปดาห์ ฿1.86 – ฿3.76<br>
         ที่มา: SET, Investing.com, StockAnalysis.com
       </div>
@@ -163,7 +162,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿3.16</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿3.36</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿4.20</div></div>
         </div>
         <div class="scale">
@@ -187,7 +186,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict good">
-        <div class="big">+24.8%</div>
+        <div class="big">+20%</div>
         <div class="txt">MOS ดีระดับน่าสนใจ — ราคาต่ำกว่ามูลค่าเหมาะสมชัดเจน เหมาะสำหรับนักลงทุนเน้นคุณค่า</div>
       </div>
       <div class="grid g3">
@@ -198,7 +197,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="3.16" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="3.36" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

@@ -6,22 +6,52 @@
 <title>วิเคราะห์หุ้น Onto Innovation (ONTO) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Opus 4.8">
 <script type="application/json" id="stock-meta">
-{"symbol":"ONTO","currency":"USD","price":310,"fairValue":293,"mos":-5.8,"upside":-5.5,"pe":48,"dividendYield":0,"roe":10.5}
+{"symbol":"ONTO","currency":"USD","price":321.44,"fairValue":293,"mos":-9.7,"upside":-8.8,"pe":48,"dividendYield":0,"roe":10.5}
 </script>
 <script type="application/json" id="report-data">
 {
   "theme": {
-    "accent": "#ce803b", "accentDark": "#9b5d27",
+    "accent": "#ce803b",
+    "accentDark": "#9b5d27",
     "darkGrad": "linear-gradient(135deg,#37200b 0%,#663b15 58%,#a15d21 140%)",
-    "glow": "rgba(204,123,51,.35)", "subColor": "#e7d5c6", "headerMuted": "#cdbcac",
-    "chgBg": "var(--green-soft)", "chgColor": "#1e8e3e", "badge": "var(--blue)",
-    "verdictText": "#ede0d4", "vcellLabel": "#d5c1ae"
+    "glow": "rgba(204,123,51,.35)",
+    "subColor": "#e7d5c6",
+    "headerMuted": "#cdbcac",
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#1e8e3e",
+    "badge": "var(--blue)",
+    "verdictText": "#ede0d4",
+    "vcellLabel": "#d5c1ae"
   },
   "chart": {
-    "data": [["มิ.ย.25",92],["ส.ค.25",130],["ต.ค.25",175],["ธ.ค.25",205],["ก.พ.26",250],["เม.ย.26",285],["พ.ค.26",320],["มิ.ย.26",310]],
-    "min": 70, "max": 360, "grid": [100,170,240,310], "fairLine": 293, "currency": "$", "highlight": [6,7]
+    "data": [
+      ["ส.ค.25", 106],
+      ["ก.ย.25", 129.22],
+      ["ต.ค.25", 134.96],
+      ["พ.ย.25", 143.16],
+      ["ธ.ค.25", 157.86],
+      ["ม.ค.26", 202.05],
+      ["ก.พ.26", 215.89],
+      ["มี.ค.26", 205.07],
+      ["เม.ย.26", 295.06],
+      ["พ.ค.26", 258.24],
+      ["มิ.ย.26", 378.45],
+      ["ก.ค.26", 321.44]
+    ],
+    "min": 0,
+    "max": 400,
+    "grid": [100, 200, 300],
+    "fairLine": 293,
+    "currency": "$",
+    "highlight": [0, 10]
   },
-  "gauge": { "min": 190, "max": 470, "cur": 310, "fair": 293, "fairLabelTop": "-58px" },
+  "gauge": {
+    "min": 190,
+    "max": 470,
+    "cur": 321.44,
+    "fair": 293,
+    "fairLabelTop": "-58px"
+  },
   "fv": 293
 }
 </script>
@@ -42,11 +72,11 @@
     <div class="sub">เครื่องวัด/ตรวจสอบ (metrology &amp; inspection) สำหรับ advanced packaging — Dragonfly/Iris ตรวจ HBM, panel-level &amp; 2.5D/3D packaging ที่หนุน AI accelerator และ co-packaged optics (CPO)</div>
     <div class="price-row">
       <div>
-        <div class="px">$310<small>(ONTO)</small></div>
+        <div class="px">$321.44<small>(ONTO)</small></div>
       </div>
-      <div class="chg">▲ +237.0% (รอบปี)</div>
+      <div class="chg">▲ +203.2% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 23 มิ.ย. 2026 (ระหว่างวัน ~14:57 ET)<br>
+        ราคา ณ 10 ก.ค. 2026 (ระหว่างวัน ~14:57 ET)<br>
         ต่ำกว่าจุดสูงสุดตลอดกาล $349.38 (52 สัปดาห์)<br>
         ที่มา: StockAnalysis.com / Yahoo Finance / MarketBeat
       </div>
@@ -127,7 +157,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $310</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $321</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $293</div></div>
         </div>
         <div class="scale">
@@ -150,7 +180,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict bad">
-        <div class="big">−5.8%</div>
+        <div class="big">−10%</div>
         <div class="txt"><b>แทบไม่มี Margin of Safety</b><br>ราคาปัจจุบัน $310 สูงกว่ามูลค่าเหมาะสม $293 ราว 6% → ตามเกณฑ์ value investor ถือว่า <b>เต็มมูลค่าถึงแพงเล็กน้อย</b> ยังไม่ใช่จุดซื้อที่ปลอดภัย</div>
       </div>
       <div class="grid g3">
@@ -161,7 +191,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="310" step="1">
+          <input id="pxIn" class="mono" type="number" value="321.44" step="1">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

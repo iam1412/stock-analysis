@@ -8,10 +8,54 @@
 <meta name="ai-model" content="Claude Sonnet 4.6">
 <!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) -->
 <script type="application/json" id="stock-meta">
-{"symbol":"VMC","currency":"USD","price":307.27,"fairValue":265,"mos":-16.0,"upside":-13.8,"pe":36.5,"dividendYield":0.68,"roe":13.46}
+{"symbol":"VMC","currency":"USD","price":295.25,"fairValue":265,"mos":-11.4,"upside":-10.2,"pe":36.5,"dividendYield":0.68,"roe":13.46}
 </script>
 <script type="application/json" id="report-data">
-{"theme":{"accent":"#9C7B3E","accentDark":"#6E552A","darkGrad":"linear-gradient(135deg, #0F0C04 0%, #1F1809 100%)","glow":"rgba(156,123,62,0.35)","subColor":"#C2A062","headerMuted":"rgba(156,123,62,0.12)","verdictText":"#EEE2C8","vcellLabel":"rgba(238,226,200,0.6)","badge":"#9C7B3E","chgBg":"rgba(34,197,94,0.15)","chgColor":"#22C55E"},"chart":{"data":[["ก.ค. 68",274.67],["ส.ค. 68",291.16],["ก.ย. 68",307.62],["ต.ค. 68",289.50],["พ.ย. 68",297.24],["ธ.ค. 68",285.22],["ม.ค. 69",300.54],["ก.พ. 69",310.00],["มี.ค. 69",272.30],["เม.ย. 69",301.74],["พ.ค. 69",282.92],["มิ.ย. 69",307.27]],"min":260,"max":315,"grid":[275,290,305],"fairLine":265,"currency":"$","highlight":[7]},"gauge":{"min":258,"max":315,"cur":307.27,"fair":265,"fairLabelTop":false},"fv":265}
+{
+  "theme": {
+    "accent": "#9C7B3E",
+    "accentDark": "#6E552A",
+    "darkGrad": "linear-gradient(135deg, #0F0C04 0%, #1F1809 100%)",
+    "glow": "rgba(156,123,62,0.35)",
+    "subColor": "#C2A062",
+    "headerMuted": "rgba(156,123,62,0.12)",
+    "verdictText": "#EEE2C8",
+    "vcellLabel": "rgba(238,226,200,0.6)",
+    "badge": "#9C7B3E",
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#1e8e3e"
+  },
+  "chart": {
+    "data": [
+      ["ส.ค.25", 291.16],
+      ["ก.ย.25", 307.62],
+      ["ต.ค.25", 289.5],
+      ["พ.ย.25", 297.24],
+      ["ธ.ค.25", 285.22],
+      ["ม.ค.26", 300.54],
+      ["ก.พ.26", 310],
+      ["มี.ค.26", 272.3],
+      ["เม.ย.26", 301.74],
+      ["พ.ค.26", 282.92],
+      ["มิ.ย.26", 295.01],
+      ["ก.ค.26", 295.25]
+    ],
+    "min": 260,
+    "max": 320,
+    "grid": [280, 300],
+    "fairLine": 265,
+    "currency": "$",
+    "highlight": [6, 7]
+  },
+  "gauge": {
+    "min": 258,
+    "max": 315,
+    "cur": 295.25,
+    "fair": 265,
+    "fairLabelTop": false
+  },
+  "fv": 265
+}
 </script>
 <!--TEMPLATE:STYLE-->
 </head>
@@ -30,11 +74,11 @@
     <div class="sub">ผู้ผลิตวัสดุก่อสร้างมวลรวม (aggregates) รายใหญ่สุดสหรัฐ • หิน/ทราย/กรวด (~79% รายได้) • asphalt &amp; concrete • pricing power local-monopoly • ได้ประโยชน์ infrastructure (IIJA)</div>
     <div class="price-row">
       <div>
-        <div class="px">$307.27<small>(VMC)</small></div>
+        <div class="px">$295.25<small>(VMC)</small></div>
       </div>
-      <div class="chg">▲ +11.9% (รอบปี)</div>
+      <div class="chg">▲ +1.4% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 26 มิ.ย. 2569<br>
+        ราคา ณ 10 ก.ค. 2569<br>
         กรอบ 52 สัปดาห์ $252.35 / $331.09<br>
         ที่มา: StockAnalysis.com / Yahoo Finance / Vulcan Materials IR / Macrotrends
       </div>
@@ -118,7 +162,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $307.27</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $295.25</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $265</div></div>
         </div>
         <div class="scale">
@@ -142,7 +186,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict bad">
-        <div class="big">−16.0%</div>
+        <div class="big">−11%</div>
         <div class="txt">ราคาแพงกว่ามูลค่าเหมาะสม ~16% · รอย่อก่อนสะสม</div>
       </div>
       <div class="grid g3">
@@ -153,7 +197,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="307.27" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="295.25" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -264,7 +308,7 @@
     <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
     ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
-    แหล่งข้อมูล: StockAnalysis.com / Yahoo Finance / Vulcan Materials Investor Relations / Macrotrends · ราคา ณ 26 มิ.ย. 2569
+    แหล่งข้อมูล: StockAnalysis.com / Yahoo Finance / Vulcan Materials Investor Relations / Macrotrends · ราคา ณ 10 ก.ค. 2569
   </div>
   <footer>Stock Analysis Dashboard • ข้อมูล ณ 26 มิ.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 

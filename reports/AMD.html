@@ -6,22 +6,52 @@
 <title>วิเคราะห์หุ้น Advanced Micro Devices (AMD) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Opus 4.8">
 <script type="application/json" id="stock-meta">
-{"symbol":"AMD","currency":"USD","price":552,"fairValue":415,"mos":-33,"upside":-24.8,"pe":120,"dividendYield":0,"roe":8}
+{"symbol":"AMD","currency":"USD","price":557.89,"fairValue":415,"mos":-34.4,"upside":-25.6,"pe":120,"dividendYield":0,"roe":8}
 </script>
 <script type="application/json" id="report-data">
 {
   "theme": {
-    "accent": "#1a73e8", "accentDark": "#1557b0",
+    "accent": "#1a73e8",
+    "accentDark": "#1557b0",
     "darkGrad": "linear-gradient(135deg,#1a1410 0%,#2c1e12 55%,#b3520a 140%)",
-    "glow": "rgba(237,28,36,.4)", "subColor": "#e6cdb6", "headerMuted": "#e0bd9a",
-    "chgBg": "var(--green-soft)", "chgColor": "#1e8e3e", "badge": "var(--blue)",
-    "verdictText": "#e6d6c6", "vcellLabel": "#d6bca2"
+    "glow": "rgba(237,28,36,.4)",
+    "subColor": "#e6cdb6",
+    "headerMuted": "#e0bd9a",
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#1e8e3e",
+    "badge": "var(--blue)",
+    "verdictText": "#e6d6c6",
+    "vcellLabel": "#d6bca2"
   },
   "chart": {
-    "data": [["มิ.ย.25",135],["ส.ค.25",165],["ต.ค.25",240],["ธ.ค.25",330],["ก.พ.26",400],["เม.ย.26",455],["พ.ค.26",530],["มิ.ย.26",552]],
-    "min": 100, "max": 600, "grid": [100,200,300,400,500,600], "fairLine": 415, "currency": "$", "highlight": [6,7]
+    "data": [
+      ["ส.ค.25", 162.63],
+      ["ก.ย.25", 161.79],
+      ["ต.ค.25", 256.12],
+      ["พ.ย.25", 217.53],
+      ["ธ.ค.25", 214.16],
+      ["ม.ค.26", 236.73],
+      ["ก.พ.26", 200.21],
+      ["มี.ค.26", 203.43],
+      ["เม.ย.26", 354.49],
+      ["พ.ค.26", 516.1],
+      ["มิ.ย.26", 580.91],
+      ["ก.ค.26", 557.89]
+    ],
+    "min": 0,
+    "max": 800,
+    "grid": [200, 400, 600],
+    "fairLine": 415,
+    "currency": "$",
+    "highlight": [1, 10]
   },
-  "gauge": { "min": 270, "max": 700, "cur": 552, "fair": 415, "fairLabelTop": "-58px" },
+  "gauge": {
+    "min": 270,
+    "max": 700,
+    "cur": 557.89,
+    "fair": 415,
+    "fairLabelTop": "-58px"
+  },
   "fv": 415
 }
 </script>
@@ -42,11 +72,11 @@
     <div class="sub">ผู้ผลิตชิป AI GPU เบอร์ 2 • Instinct MI300X/MI325/MI350/MI400 • EPYC server CPU • Ryzen</div>
     <div class="price-row">
       <div>
-        <div class="px">$552<small>(AMD)</small></div>
+        <div class="px">$557.89<small>(AMD)</small></div>
       </div>
-      <div class="chg">▲ +308.9% (รอบปี)</div>
+      <div class="chg">▲ +243.0% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ≈ 22 มิ.ย. 2026 (ปิด $551.63)<br>
+        ราคา ≈ 10 ก.ค. 2026 (ปิด $551.63)<br>
         วิ่งจาก $507 (16 มิ.ย.) — ผันผวนสูง ใกล้ All-time high $562.99<br>
         ที่มา: StockAnalysis.com / Yahoo Finance / CNBC / Macrotrends
       </div>
@@ -127,7 +157,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $552</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $558</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $415</div></div>
         </div>
         <div class="scale">
@@ -150,7 +180,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict bad">
-        <div class="big">−33%</div>
+        <div class="big">−34%</div>
         <div class="txt"><b>ไม่มี Margin of Safety</b><br>ราคาปัจจุบัน $552 สูงกว่ามูลค่าเหมาะสม $415 ราว 33% → ตามเกณฑ์ value investor ถือว่า <b>แพงมาก</b> ราคาตีรับการเติบโต AI ในอนาคตไปล่วงหน้าจำนวนมาก ยังไม่ใช่จุดซื้อที่ปลอดภัย</div>
       </div>
       <div class="grid g3">
@@ -161,7 +191,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="552" step="1">
+          <input id="pxIn" class="mono" type="number" value="557.89" step="1">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

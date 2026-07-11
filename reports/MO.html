@@ -8,11 +8,55 @@
 <meta name="ai-model" content="Claude Sonnet 4.6">
 <!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
 <script type="application/json" id="stock-meta">
-{"symbol":"MO","currency":"USD","price":72.71,"fairValue":73.34,"mos":0.86,"upside":0.87,"pe":13.42,"dividendYield":5.83,"roe":null}
+{"symbol":"MO","currency":"USD","price":71.79,"fairValue":73.34,"mos":2.1,"upside":2.2,"pe":13.42,"dividendYield":5.83,"roe":null}
 </script>
 <!-- report-data: ธีมสี + ข้อมูลกราฟ/gauge ของ MO -->
 <script type="application/json" id="report-data">
-{"theme":{"accent":"#b8860b","accentDark":"#8b6508","darkGrad":"linear-gradient(135deg,#3d2e05 0%,#6b4e07 50%,#b8860b 100%)","glow":"rgba(184,134,11,0.35)","subColor":"#e0b84d","headerMuted":"rgba(255,255,255,0.65)","verdictText":"#8b6508","vcellLabel":"#8b6508","badge":"#b8860b","chgBg":"#1e6b2e","chgColor":"#ffffff"},"chart":{"data":[["ก.ค.'25",58.00],["ส.ค.'25",62.94],["ก.ย.'25",62.86],["ต.ค.'25",53.65],["พ.ย.'25",56.16],["ธ.ค.'25",55.87],["ม.ค.'26",60.07],["ก.พ.'26",66.90],["มี.ค.'26",65.02],["เม.ย.'26",71.58],["พ.ค.'26",68.56],["มิ.ย.'26",71.95],["ก.ค.'26",72.71]],"min":48,"max":78,"grid":[48,54,60,66,72,78],"fairLine":73.34,"currency":"$","highlight":[3,12]},"gauge":{"min":48,"max":82,"cur":72.71,"fair":73.34,"fairLabelTop":true},"fv":73.34}
+{
+  "theme": {
+    "accent": "#b8860b",
+    "accentDark": "#8b6508",
+    "darkGrad": "linear-gradient(135deg,#3d2e05 0%,#6b4e07 50%,#b8860b 100%)",
+    "glow": "rgba(184,134,11,0.35)",
+    "subColor": "#e0b84d",
+    "headerMuted": "rgba(255,255,255,0.65)",
+    "verdictText": "#8b6508",
+    "vcellLabel": "#8b6508",
+    "badge": "#b8860b",
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#1e8e3e"
+  },
+  "chart": {
+    "data": [
+      ["ส.ค.25", 67.21],
+      ["ก.ย.25", 66.06],
+      ["ต.ค.25", 56.38],
+      ["พ.ย.25", 59.01],
+      ["ธ.ค.25", 57.66],
+      ["ม.ค.26", 61.99],
+      ["ก.พ.26", 69.04],
+      ["มี.ค.26", 65.99],
+      ["เม.ย.26", 72.65],
+      ["พ.ค.26", 69.58],
+      ["มิ.ย.26", 71.95],
+      ["ก.ค.26", 71.79]
+    ],
+    "min": 55,
+    "max": 75,
+    "grid": [60, 65, 70],
+    "fairLine": 73.34,
+    "currency": "$",
+    "highlight": [2, 8]
+  },
+  "gauge": {
+    "min": 48,
+    "max": 82,
+    "cur": 71.79,
+    "fair": 73.34,
+    "fairLabelTop": true
+  },
+  "fv": 73.34
+}
 </script>
 <!--TEMPLATE:STYLE-->
 </head>
@@ -32,14 +76,14 @@
     <div class="sub">Marlboro (บุหรี่อันดับ 1 ในสหรัฐฯ ส่วนแบ่งตลาด ~40%) • Copenhagen/Skoal (ยาเส้นไร้ควัน) • on! (นิโคตินพัช) • NJOY (บุหรี่ไฟฟ้า) • ธุรกิจบุหรี่เฉพาะตลาดสหรัฐฯ เท่านั้น (แยกจาก Philip Morris International)</div>
     <div class="price-row">
       <div>
-        <div class="px">$72.71<small>(MO)</small></div>
+        <div class="px">$71.79<small>(MO)</small></div>
       </div>
       <!-- ★ ป้าย % รอบปี (gate E35/E36) — ผลตอบแทน ~1 ปี (เทียบราคา ~1 ปีก่อน) = ผลตอบแทนปลายกราฟ section 2 (จุดแรก→ท้าย)
            รูปแบบ: "▲ +X.X% (รอบปี)" ขึ้น · "▼ −X.X% (รอบปี)" ลง · "≈ ทรงตัว (รอบปี)" · หุ้น IPO <1 ปี ใช้ "(ตั้งแต่ IPO)"
            ไม่ใช่ % รายวัน/YTD/52 สัปดาห์ · ตั้งสี theme.chgBg/chgColor ให้ตรงทิศ (ขึ้น=เขียว/ลง=แดง · E34) -->
-      <div class="chg">▲ +25.4% (รอบปี)</div>
+      <div class="chg">▲ +6.8% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 2 ก.ค. 2569 (2 Jul 2026)<br>
+        ราคา ณ 10 ก.ค. 2569 (2 Jul 2026)<br>
         กรอบ 52 สัปดาห์ $54.70 – $74.56<br>
         ที่มา: StockAnalysis.com, Yahoo Finance, Altria Investor Relations (Q1 2026 8-K)
       </div>
@@ -126,7 +170,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $72.71</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $71.79</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $73.34</div></div>
         </div>
         <div class="scale">
@@ -151,7 +195,7 @@
     <div class="card">
       <!-- ✏️ class ของ mos-verdict: MOS<10 → "bad", 10–20 → "ok", ≥20 → "good" -->
       <div class="mos-verdict bad">
-        <div class="big">+0.86%</div>
+        <div class="big">+2%</div>
         <div class="txt">แทบไม่มีส่วนเผื่อความปลอดภัย — ราคาปัจจุบันใกล้เคียงมูลค่าเหมาะสมมาก เหมาะกับการถือเพื่อรับปันผล มากกว่าเก็งกำไรส่วนต่างราคา</div>
       </div>
       <div class="grid g3">
@@ -162,7 +206,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="72.71" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="71.79" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

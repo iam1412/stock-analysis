@@ -6,7 +6,7 @@
 <title>วิเคราะห์หุ้น ซันสวีท (SNNP) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Sonnet 4.6">
 <script type="application/json" id="stock-meta">
-{"symbol":"SNNP","currency":"THB","price":6.95,"fairValue":10.50,"mos":33.8,"upside":51.1,"pe":12.2,"dividendYield":8.63,"roe":18.16}
+{"symbol":"SNNP","currency":"THB","price":6.9,"fairValue":10.5,"mos":34.3,"upside":52.2,"pe":12.2,"dividendYield":8.63,"roe":18.16}
 </script>
 <script type="application/json" id="report-data">
 {
@@ -20,42 +20,41 @@
     "verdictText": "#fffde7",
     "vcellLabel": "rgba(255,253,231,0.7)",
     "badge": "#f9a825",
-    "chgBg": "rgba(197,34,31,0.18)",
-    "chgColor": "#ef5350"
+    "chgBg": "var(--red-soft)",
+    "chgColor": "#c5221f"
   },
   "chart": {
     "data": [
-      ["ม.ค. 25", 9.80],
-      ["ก.พ. 25", 9.00],
-      ["มี.ค. 25", 7.85],
-      ["เม.ย. 25", 7.10],
-      ["พ.ค. 25", 7.35],
-      ["มิ.ย. 25", 7.15],
-      ["ก.ค. 25", 7.75],
-      ["ส.ค. 25", 7.30],
-      ["ก.ย. 25", 7.25],
-      ["ต.ค. 25", 6.65],
-      ["พ.ย. 25", 6.85],
-      ["ธ.ค. 25", 6.90],
-      ["ม.ค. 26", 6.95]
+      ["ส.ค.25", 9.8],
+      ["ก.ย.25", 9],
+      ["ต.ค.25", 7.85],
+      ["พ.ย.25", 7.1],
+      ["ธ.ค.25", 7.35],
+      ["ม.ค.26", 7.15],
+      ["ก.พ.26", 7.75],
+      ["มี.ค.26", 7.3],
+      ["เม.ย.26", 7.25],
+      ["พ.ค.26", 6.65],
+      ["มิ.ย.26", 6.85],
+      ["ก.ค.26", 6.9]
     ],
-    "min": 6.00,
-    "max": 11.00,
-    "grid": [6.50, 7.50, 8.50, 9.50, 10.50],
-    "fairLine": 10.50,
+    "min": 6,
+    "max": 11,
+    "grid": [7, 8, 9, 10],
+    "fairLine": 10.5,
     "currency": "฿",
-    "highlight": [0, 2],
+    "highlight": [0, 9],
     "gridFmt": "v.toFixed(2)",
     "dataFmt": "d[1].toFixed(2)"
   },
   "gauge": {
-    "min": 5.00,
-    "max": 13.00,
-    "cur": 6.95,
-    "fair": 10.50,
+    "min": 5,
+    "max": 13,
+    "cur": 6.9,
+    "fair": 10.5,
     "fairLabelTop": true
   },
-  "fv": 10.50
+  "fv": 10.5
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -75,11 +74,11 @@
     <div class="sub">ขนม/เยลลี่แบรนด์ Jele, Bento, Taro • ส่งออก 40+ ประเทศ • Gross Margin ~30% • ปันผลสม่ำเสมอ</div>
     <div class="price-row">
       <div>
-        <div class="px">฿6.95<small>(SNNP)</small></div>
+        <div class="px">฿6.90<small>(SNNP)</small></div>
       </div>
-      <div class="chg" style="background:rgba(197,34,31,0.18);color:#ef5350">▼ −29.1% (รอบปี)</div>
+      <div class="chg">▼ −29.6% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ มกราคม 2569 (ม.ค. 2026)<br>
+        ราคา ณ 10 ก.ค. 2569 (10 ก.ค. 2026)<br>
         กรอบ 52 สัปดาห์ ฿6.40 – ฿10.50<br>
         ที่มา: Yahoo Finance, StockAnalysis.com
       </div>
@@ -162,7 +161,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿6.95</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿6.90</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿10.50</div></div>
         </div>
         <div class="scale">
@@ -186,7 +185,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict good">
-        <div class="big">+33.8%</div>
+        <div class="big">+34%</div>
         <div class="txt">MOS สูง — ถือว่าราคาถูกมาก (Deep Value Zone)</div>
       </div>
       <div class="grid g3">
@@ -197,7 +196,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="6.95" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="6.9" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

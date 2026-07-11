@@ -8,7 +8,7 @@
 <meta name="ai-model" content="Claude Sonnet 4.6">
 <!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
 <script type="application/json" id="stock-meta">
-{"symbol":"MEGA","currency":"THB","price":34.50,"fairValue":40.00,"mos":13.75,"upside":15.94,"pe":14.55,"dividendYield":4.12,"roe":19.7}
+{"symbol":"MEGA","currency":"THB","price":37,"fairValue":40,"mos":7.5,"upside":8.1,"pe":14.55,"dividendYield":4.12,"roe":19.7}
 </script>
 <script type="application/json" id="report-data">
 {
@@ -27,33 +27,32 @@
   },
   "chart": {
     "data": [
-      ["มิ.ย.68", 25.75],
-      ["ก.ค.68", 30.75],
-      ["ส.ค.68", 28],
-      ["ก.ย.68", 31],
-      ["ต.ค.68", 29.5],
-      ["พ.ย.68", 31.5],
-      ["ธ.ค.68", 33.5],
-      ["ม.ค.69", 36],
-      ["ก.พ.69", 38],
-      ["มี.ค.69", 34],
-      ["เม.ย.69", 35.75],
-      ["พ.ค.69", 36],
-      ["มิ.ย.69", 34.5]
+      ["ส.ค.25", 28],
+      ["ก.ย.25", 31],
+      ["ต.ค.25", 29.5],
+      ["พ.ย.25", 31.5],
+      ["ธ.ค.25", 33.5],
+      ["ม.ค.26", 36],
+      ["ก.พ.26", 38],
+      ["มี.ค.26", 34],
+      ["เม.ย.26", 35.75],
+      ["พ.ค.26", 36],
+      ["มิ.ย.26", 36.75],
+      ["ก.ค.26", 37]
     ],
-    "min": 22,
-    "max": 42,
-    "grid": [22, 26, 30, 34, 38, 42],
+    "min": 25,
+    "max": 45,
+    "grid": [30, 35, 40],
     "fairLine": 40,
     "currency": "฿",
-    "highlight": [0, 8],
+    "highlight": [0, 6],
     "gridFmt": "v.toFixed(0)",
     "dataFmt": "d[1].toFixed(2)"
   },
   "gauge": {
     "min": 22,
     "max": 48,
-    "cur": 34.5,
+    "cur": 37,
     "fair": 40,
     "fairLabelTop": true
   },
@@ -77,11 +76,11 @@
     <div class="sub">จัดจำหน่ายยา OTC · ผลิตภัณฑ์สุขภาพ · FMCG ใน 30+ ประเทศ • เมียนมา · เวียดนาม · กัมพูชา · แอฟริกา · CIS • แบรนด์เป็ดแดง · Cenovis · Enervon · Mega We Care</div>
     <div class="price-row">
       <div>
-        <div class="px">฿34.50<small>(MEGA)</small></div>
+        <div class="px">฿37.00<small>(MEGA)</small></div>
       </div>
-      <div class="chg">▲ +34.0% (รอบปี)</div>
+      <div class="chg">▲ +32.1% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 24 มิ.ย. 2569<br>
+        ราคา ณ 10 ก.ค. 2569<br>
         กรอบ 52 สัปดาห์ ฿25.00 – ฿40.00<br>
         ที่มา: SET Factsheet (set.or.th) • Yahoo Finance API • Kaohoon International
       </div>
@@ -161,7 +160,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿34.50</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿37.00</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿40.00</div></div>
         </div>
         <div class="scale">
@@ -185,7 +184,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict ok">
-        <div class="big">+13.8%</div>
+        <div class="big">+8%</div>
         <div class="txt">ราคาปัจจุบันต่ำกว่ามูลค่าเหมาะสม ~13.8% — MOS พอประมาณ เหมาะทยอยสะสม (ยังไม่ถึงโซน deep value)</div>
       </div>
       <div class="grid g3">
@@ -196,7 +195,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="34.50" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="37" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

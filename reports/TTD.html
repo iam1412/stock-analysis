@@ -8,10 +8,54 @@
 <meta name="ai-model" content="Claude Opus 4.8">
 <!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
 <script type="application/json" id="stock-meta">
-{"symbol":"TTD","currency":"USD","price":19.10,"fairValue":19.64,"mos":2.8,"upside":2.8,"pe":11.1,"dividendYield":null,"roe":17.8}
+{"symbol":"TTD","currency":"USD","price":19.53,"fairValue":19.64,"mos":0.6,"upside":0.6,"pe":11.1,"dividendYield":null,"roe":17.8}
 </script>
 <script type="application/json" id="report-data">
-{"theme":{"accent":"#00cc66","accentDark":"#009944","darkGrad":"linear-gradient(135deg,#00351c 0%,#00713a 50%,#00cc66 100%)","glow":"rgba(0,204,102,0.35)","subColor":"#5ce89a","headerMuted":"rgba(255,255,255,0.65)","verdictText":"#00994d","vcellLabel":"#009944","badge":"#00cc66","chgBg":"#8b1a1a","chgColor":"#ffffff"},"chart":{"data":[["ส.ค.'25",54.66],["ก.ย.'25",49.01],["ต.ค.'25",50.28],["พ.ย.'25",39.56],["ธ.ค.'25",37.96],["ม.ค.'26",30.33],["ก.พ.'26",23.82],["มี.ค.'26",22.69],["เม.ย.'26",23.59],["พ.ค.'26",21.56],["มิ.ย.'26",18.08],["ก.ค.'26",19.10]],"min":16,"max":58,"grid":[16,25,34,43,52,58],"fairLine":19.64,"currency":"$","highlight":[0,11]},"gauge":{"min":12,"max":26,"cur":19.10,"fair":19.64,"fairLabelTop":true},"fv":19.64}
+{
+  "theme": {
+    "accent": "#00cc66",
+    "accentDark": "#009944",
+    "darkGrad": "linear-gradient(135deg,#00351c 0%,#00713a 50%,#00cc66 100%)",
+    "glow": "rgba(0,204,102,0.35)",
+    "subColor": "#5ce89a",
+    "headerMuted": "rgba(255,255,255,0.65)",
+    "verdictText": "#00994d",
+    "vcellLabel": "#009944",
+    "badge": "#00cc66",
+    "chgBg": "var(--red-soft)",
+    "chgColor": "#c5221f"
+  },
+  "chart": {
+    "data": [
+      ["ส.ค.25", 54.66],
+      ["ก.ย.25", 49.01],
+      ["ต.ค.25", 50.28],
+      ["พ.ย.25", 39.56],
+      ["ธ.ค.25", 37.96],
+      ["ม.ค.26", 30.33],
+      ["ก.พ.26", 23.82],
+      ["มี.ค.26", 22.69],
+      ["เม.ย.26", 23.59],
+      ["พ.ค.26", 21.56],
+      ["มิ.ย.26", 18.08],
+      ["ก.ค.26", 19.53]
+    ],
+    "min": 10,
+    "max": 60,
+    "grid": [20, 30, 40, 50],
+    "fairLine": 19.64,
+    "currency": "$",
+    "highlight": [0, 10]
+  },
+  "gauge": {
+    "min": 12,
+    "max": 26,
+    "cur": 19.53,
+    "fair": 19.64,
+    "fairLabelTop": true
+  },
+  "fv": 19.64
+}
 </script>
 <!--TEMPLATE:STYLE-->
 </head>
@@ -31,14 +75,14 @@
     <div class="sub">แพลตฟอร์มโฆษณาโปรแกรมเมติกฝั่งผู้ซื้อ (independent DSP) • Connected TV (CTV) • Kokai AI platform • UID2 identity • Retail media data partnerships</div>
     <div class="price-row">
       <div>
-        <div class="px">$19.10<small>(TTD)</small></div>
+        <div class="px">$19.53<small>(TTD)</small></div>
       </div>
       <!-- ★ ป้าย % รอบปี (gate E35/E36) — ผลตอบแทน ~1 ปี (เทียบราคา ~1 ปีก่อน) = ผลตอบแทนปลายกราฟ section 2 (จุดแรก→ท้าย)
            รูปแบบ: "▲ +X.X% (รอบปี)" ขึ้น · "▼ −X.X% (รอบปี)" ลง · "≈ ทรงตัว (รอบปี)" · หุ้น IPO <1 ปี ใช้ "(ตั้งแต่ IPO)"
            ไม่ใช่ % รายวัน/YTD/52 สัปดาห์ · ตั้งสี theme.chgBg/chgColor ให้ตรงทิศ (ขึ้น=เขียว/ลง=แดง · E34) -->
-      <div class="chg">▼ −65.1% (รอบปี)</div>
+      <div class="chg">▼ −64.3% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 2 ก.ค. 2569 (2 Jul 2026)<br>
+        ราคา ณ 10 ก.ค. 2569 (2 Jul 2026)<br>
         กรอบ 52 สัปดาห์ $16.98 – $91.45<br>
         ที่มา: StockAnalysis.com, Yahoo Finance, บริษัท (8-K Q1 2026)
       </div>
@@ -126,7 +170,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $19.10</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $19.53</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $19.64</div></div>
         </div>
         <div class="scale">
@@ -150,7 +194,7 @@
     <div class="card">
       <!-- ✏️ class ของ mos-verdict: MOS<10 → "bad", 10–20 → "ok", ≥20 → "good" -->
       <div class="mos-verdict bad">
-        <div class="big">+2.8%</div>
+        <div class="big">+0.6%</div>
         <div class="txt">MOS ต่ำมาก — แม้ราคาจะร่วงมา 65% แล้ว แต่ตาม valuation แบบระมัดระวังนี้ TTD ยังไม่ใช่ "หุ้นถูก" ชัดเจน เป็นเพียง "ราคาที่ใกล้เคียงมูลค่าที่ควรเป็น" เท่านั้น</div>
       </div>
       <div class="grid g3">
@@ -161,7 +205,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="19.10" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="19.53" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

@@ -6,7 +6,7 @@
 <title>วิเคราะห์หุ้น โรงพยาบาลวัฒนแพทย์ ตรัง (WPH) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Sonnet 4.6">
 <script type="application/json" id="stock-meta">
-{"symbol":"WPH","currency":"THB","price":5.95,"fairValue":8.50,"mos":30.0,"upside":42.9,"pe":11.64,"dividendYield":1.22,"roe":18.0}
+{"symbol":"WPH","currency":"THB","price":5.9,"fairValue":8.5,"mos":30.6,"upside":44.1,"pe":11.64,"dividendYield":1.22,"roe":18}
 </script>
 <script type="application/json" id="report-data">
 {
@@ -25,37 +25,36 @@
   },
   "chart": {
     "data": [
-      ["ก.ค. 68", 5.88],
-      ["ส.ค. 68", 6.67],
-      ["ก.ย. 68", 6.37],
-      ["ต.ค. 68", 5.64],
-      ["พ.ย. 68", 5.93],
-      ["ธ.ค. 68", 5.64],
-      ["ม.ค. 69", 7.50],
-      ["ก.พ. 69", 5.85],
-      ["มี.ค. 69", 5.65],
-      ["เม.ย. 69", 5.95],
-      ["พ.ค. 69", 5.85],
-      ["มิ.ย. 69", 5.64],
-      ["ก.ค. 69", 5.95]
+      ["ส.ค.25", 5.88],
+      ["ก.ย.25", 6.67],
+      ["ต.ค.25", 6.37],
+      ["พ.ย.25", 5.64],
+      ["ธ.ค.25", 5.93],
+      ["ม.ค.26", 5.64],
+      ["ก.พ.26", 7.5],
+      ["มี.ค.26", 5.85],
+      ["เม.ย.26", 5.65],
+      ["พ.ค.26", 5.95],
+      ["มิ.ย.26", 5.85],
+      ["ก.ค.26", 5.9]
     ],
-    "min": 5.20,
-    "max": 8.00,
-    "grid": [5.50, 6.00, 6.50, 7.00, 7.50],
-    "fairLine": 8.50,
+    "min": 5,
+    "max": 9,
+    "grid": [6, 7, 8],
+    "fairLine": 8.5,
     "currency": "฿",
-    "highlight": [6],
+    "highlight": [3, 6],
     "gridFmt": "v.toFixed(2)",
     "dataFmt": "d[1].toFixed(2)"
   },
   "gauge": {
-    "min": 4.50,
-    "max": 11.00,
-    "cur": 5.95,
-    "fair": 8.50,
+    "min": 4.5,
+    "max": 11,
+    "cur": 5.9,
+    "fair": 8.5,
     "fairLabelTop": false
   },
-  "fv": 8.50
+  "fv": 8.5
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -75,11 +74,11 @@
     <div class="sub">โรงพยาบาลเอกชน จ.ตรัง • กระบี่ • เกาะสมุย • ขยายสู่ภูเก็ต • 20+ แผนก ออร์โธปิดิกส์ หัวใจ ประสาทวิทยา • ก่อตั้ง 2500</div>
     <div class="price-row">
       <div>
-        <div class="px">฿5.95<small>(WPH)</small></div>
+        <div class="px">฿5.90<small>(WPH)</small></div>
       </div>
-      <div class="chg">▲ +1.2% (รอบปี)</div>
+      <div class="chg">≈ ทรงตัว (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 4 ก.ค. 2569<br>
+        ราคา ณ 10 ก.ค. 2569<br>
         กรอบ 52 สัปดาห์ ฿5.20 – ฿8.82<br>
         ที่มา: SET, Investing.com
       </div>
@@ -157,7 +156,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿5.95</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿5.90</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿8.50</div></div>
         </div>
         <div class="scale">
@@ -179,7 +178,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict good">
-        <div class="big">+30.0%</div>
+        <div class="big">+31%</div>
         <div class="txt">โซน Deep Value — ราคาต่ำกว่ามูลค่าเหมาะสมมากกว่า 30% เป็น Margin of Safety ที่น่าสนใจสำหรับนักลงทุน VI ระยะยาว</div>
       </div>
       <div class="grid g3">
@@ -190,7 +189,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="5.95" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="5.9" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -296,7 +295,7 @@
   <div class="disc">
     <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
-    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ที่มา: SET (set.or.th), Investing.com, StockAnalysis.com, efin.finance — ราคา ณ 4 ก.ค. 2569
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ที่มา: SET (set.or.th), Investing.com, StockAnalysis.com, efin.finance — ราคา ณ 10 ก.ค. 2569
   </div>
   <footer>Stock Analysis Dashboard • ข้อมูล ณ 4 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 

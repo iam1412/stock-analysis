@@ -6,22 +6,52 @@
 <title>วิเคราะห์หุ้น Visa Inc. (V) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Opus 4.8">
 <script type="application/json" id="stock-meta">
-{"symbol":"V","currency":"USD","price":336.23,"fairValue":363,"mos":7.37,"upside":7.96,"pe":29.31,"dividendYield":0.80,"roe":60.35}
+{"symbol":"V","currency":"USD","price":348.97,"fairValue":363,"mos":3.9,"upside":4,"pe":29.31,"dividendYield":0.8,"roe":60.35}
 </script>
 <script type="application/json" id="report-data">
 {
   "theme": {
-    "accent": "#1434CB", "accentDark": "#0d2596",
+    "accent": "#1434CB",
+    "accentDark": "#0d2596",
     "darkGrad": "linear-gradient(135deg,#0a1a52 0%,#1434CB 60%,#1a1f71 140%)",
-    "glow": "rgba(20,52,203,.32)", "subColor": "#c5cdf0", "headerMuted": "#aab4e0",
-    "chgBg": "var(--red-soft)", "chgColor": "#c5221f", "badge": "var(--blue)",
-    "verdictText": "#d6dbf2", "vcellLabel": "#aab2d8"
+    "glow": "rgba(20,52,203,.32)",
+    "subColor": "#c5cdf0",
+    "headerMuted": "#aab4e0",
+    "chgBg": "var(--red-soft)",
+    "chgColor": "#c5221f",
+    "badge": "var(--blue)",
+    "verdictText": "#d6dbf2",
+    "vcellLabel": "#aab2d8"
   },
   "chart": {
-    "data": [["ก.ค.25",342.75],["ส.ค.25",349.63],["ก.ย.25",339.29],["ต.ค.25",338.66],["พ.ย.25",333.06],["ธ.ค.25",349.26],["ม.ค.26",320.50],["ก.พ.26",319.48],["มี.ค.26",301.62],["เม.ย.26",329.16],["พ.ค.26",326.36],["มิ.ย.26",336.23]],
-    "min": 250, "max": 400, "grid": [270,310,350,390], "fairLine": 363, "currency": "$", "highlight": [10,11]
+    "data": [
+      ["ส.ค.25", 351.78],
+      ["ก.ย.25", 341.38],
+      ["ต.ค.25", 340.74],
+      ["พ.ย.25", 334.44],
+      ["ธ.ค.25", 350.71],
+      ["ม.ค.26", 321.83],
+      ["ก.พ.26", 320.14],
+      ["มี.ค.26", 302.24],
+      ["เม.ย.26", 329.84],
+      ["พ.ค.26", 326.36],
+      ["มิ.ย.26", 343.09],
+      ["ก.ค.26", 348.97]
+    ],
+    "min": 280,
+    "max": 380,
+    "grid": [300, 320, 340, 360],
+    "fairLine": 363,
+    "currency": "$",
+    "highlight": [0, 7]
   },
-  "gauge": { "min": 254, "max": 399, "cur": 336.23, "fair": 363, "fairLabelTop": "-58px" },
+  "gauge": {
+    "min": 254,
+    "max": 399,
+    "cur": 348.97,
+    "fair": 363,
+    "fairLabelTop": "-58px"
+  },
   "fv": 363
 }
 </script>
@@ -42,11 +72,11 @@
     <div class="sub">เครือข่ายชำระเงินดิจิทัลทั่วโลก • บัตรเดบิต/เครดิต/พรีเพด • Visa Direct (โอนเงิน P2P/B2B) • Value Added Services • Cybersource • Tink (Open Banking)</div>
     <div class="price-row">
       <div>
-        <div class="px">$336.23<small>(V)</small></div>
+        <div class="px">$348.97<small>(V)</small></div>
       </div>
-      <div class="chg">▼ −1.9% (รอบปี)</div>
+      <div class="chg">▼ −0.8% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 26 มิ.ย. 2026<br>
+        ราคา ณ 10 ก.ค. 2026<br>
         กรอบ 52 สัปดาห์ $293.89 – $359.66<br>
         ที่มา: StockAnalysis.com • Yahoo Finance • Visa IR
       </div>
@@ -124,7 +154,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $336.23</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $348.97</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $363</div></div>
         </div>
         <div class="scale">
@@ -146,7 +176,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict bad">
-        <div class="big">+7.37%</div>
+        <div class="big">+4%</div>
         <div class="txt">ราคาต่ำกว่ามูลค่าเหมาะสมเล็กน้อย — มี MOS บางๆ เหมาะ "ทยอยสะสม" มากกว่าซื้อหนักครั้งเดียว; รอย่อจะได้ MOS ที่ดีกว่า</div>
       </div>
       <div class="grid g3">
@@ -157,7 +187,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="336.23" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="348.97" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

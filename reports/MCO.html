@@ -6,22 +6,52 @@
 <title>วิเคราะห์หุ้น Moody's (MCO) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Opus 4.8">
 <script type="application/json" id="stock-meta">
-{"symbol":"MCO","currency":"USD","price":450.01,"fairValue":510,"mos":11.8,"upside":13.3,"pe":32.29,"dividendYield":0.92,"roe":null}
+{"symbol":"MCO","currency":"USD","price":487.28,"fairValue":510,"mos":4.5,"upside":4.7,"pe":32.29,"dividendYield":0.92,"roe":null}
 </script>
 <script type="application/json" id="report-data">
 {
   "theme": {
-    "accent": "#1c5fbf", "accentDark": "#10357a",
+    "accent": "#1c5fbf",
+    "accentDark": "#10357a",
     "darkGrad": "linear-gradient(135deg,#08183a 0%,#10357a 58%,#1c5fbf 140%)",
-    "glow": "rgba(28,95,191,.35)", "subColor": "#bcd2f2", "headerMuted": "#a8c0e4",
-    "chgBg": "var(--red-soft)", "chgColor": "#c5221f", "badge": "var(--blue)",
-    "verdictText": "#d3e2f7", "vcellLabel": "#a6c2e6"
+    "glow": "rgba(28,95,191,.35)",
+    "subColor": "#bcd2f2",
+    "headerMuted": "#a8c0e4",
+    "chgBg": "var(--red-soft)",
+    "chgColor": "#c5221f",
+    "badge": "var(--blue)",
+    "verdictText": "#d3e2f7",
+    "vcellLabel": "#a6c2e6"
   },
   "chart": {
-    "data": [["ก.ค.25",511.45],["ส.ค.25",506.44],["ก.ย.25",473.38],["ต.ค.25",477.18],["พ.ย.25",488.56],["ธ.ค.25",508.54],["ม.ค.26",513.22],["ก.พ.26",475.42],["มี.ค.26",435.21],["เม.ย.26",460.75],["พ.ค.26",453.25],["มิ.ย.26",450.01]],
-    "min": 425, "max": 560, "grid": [440,470,500,530,560], "fairLine": 510, "currency": "$", "highlight": [10,11]
+    "data": [
+      ["ส.ค.25", 509.76],
+      ["ก.ย.25", 476.48],
+      ["ต.ค.25", 480.3],
+      ["พ.ย.25", 490.78],
+      ["ธ.ค.25", 510.85],
+      ["ม.ค.26", 515.56],
+      ["ก.พ.26", 477.59],
+      ["มี.ค.26", 436.25],
+      ["เม.ย.26", 461.85],
+      ["พ.ค.26", 453.25],
+      ["มิ.ย.26", 452.92],
+      ["ก.ค.26", 487.28]
+    ],
+    "min": 420,
+    "max": 540,
+    "grid": [440, 460, 480, 500, 520],
+    "fairLine": 510,
+    "currency": "$",
+    "highlight": [5, 7]
   },
-  "gauge": { "min": 350, "max": 545, "cur": 450.01, "fair": 510, "fairLabelTop": "-58px" },
+  "gauge": {
+    "min": 350,
+    "max": 545,
+    "cur": 487.28,
+    "fair": 510,
+    "fairLabelTop": "-58px"
+  },
   "fv": 510
 }
 </script>
@@ -42,11 +72,11 @@
     <div class="sub">Moody's Ratings (จัดอันดับเครดิตตราสารหนี้/องค์กรทั่วโลก) • Moody's Analytics (ข้อมูล/ซอฟต์แวร์ความเสี่ยงทางการเงิน)</div>
     <div class="price-row">
       <div>
-        <div class="px">$450.01<small>(MCO)</small></div>
+        <div class="px">$487.28<small>(MCO)</small></div>
       </div>
-      <div class="chg">▼ −12.0% (รอบปี)</div>
+      <div class="chg">▼ −4.4% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 29 มิ.ย. 2026<br>
+        ราคา ณ 10 ก.ค. 2026<br>
         กรอบ 52 สัปดาห์ $402.28 – $546.88<br>
         ที่มา: StockAnalysis.com, Yahoo Finance, Moody's IR, digrin.com
       </div>
@@ -124,7 +154,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $450.01</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $487.28</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $510</div></div>
         </div>
         <div class="scale">
@@ -146,7 +176,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict ok">
-        <div class="big">+11.8%</div>
+        <div class="big">+4%</div>
         <div class="txt">ราคาต่ำกว่ามูลค่าเหมาะสมพอประมาณ — มี MOS ระดับกลาง เหมาะทยอยสะสมในหุ้น moat กว้าง ยังไม่ใช่ deep value</div>
       </div>
       <div class="grid g3">
@@ -157,7 +187,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="450.01" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="487.28" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

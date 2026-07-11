@@ -19,7 +19,7 @@
 <meta name="ai-model" content="Claude Sonnet 4.6">
 <!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
 <script type="application/json" id="stock-meta">
-{"symbol":"CREDIT","currency":"THB","price":22.20,"fairValue":23.86,"mos":7.0,"upside":7.5,"pe":6.42,"dividendYield":4.41,"roe":16.64}
+{"symbol":"CREDIT","currency":"THB","price":23.7,"fairValue":23.86,"mos":0.7,"upside":0.7,"pe":6.42,"dividendYield":4.41,"roe":16.64}
 </script>
 <!--
   report-data: ธีมสี + ข้อมูลกราฟ/gauge ต่อหุ้น (build เอาไปวาด)  ดู schema เต็มใน CLAUDE.md ข้อ 9
@@ -42,80 +42,35 @@
     "verdictText": "#f1ddd0",
     "vcellLabel": "#ddbca6",
     "badge": "#ed6e1d",
-    "chgBg": "#1e8e3e",
-    "chgColor": "#ffffff"
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#1e8e3e"
   },
   "chart": {
     "data": [
-      [
-        "ส.ค. 2568",
-        16.7
-      ],
-      [
-        "ก.ย. 2568",
-        16.9
-      ],
-      [
-        "ต.ค. 2568",
-        17.0
-      ],
-      [
-        "พ.ย. 2568",
-        16.5
-      ],
-      [
-        "ธ.ค. 2568",
-        15.5
-      ],
-      [
-        "ม.ค. 2569",
-        16.1
-      ],
-      [
-        "ก.พ. 2569",
-        18.9
-      ],
-      [
-        "มี.ค. 2569",
-        16.9
-      ],
-      [
-        "เม.ย. 2569",
-        18.9
-      ],
-      [
-        "พ.ค. 2569",
-        18.9
-      ],
-      [
-        "มิ.ย. 2569",
-        21.6
-      ],
-      [
-        "ก.ค. 2569",
-        22.2
-      ]
+      ["ส.ค.25", 16.7],
+      ["ก.ย.25", 16.9],
+      ["ต.ค.25", 17],
+      ["พ.ย.25", 16.5],
+      ["ธ.ค.25", 15.5],
+      ["ม.ค.26", 16.1],
+      ["ก.พ.26", 18.9],
+      ["มี.ค.26", 16.9],
+      ["เม.ย.26", 18.9],
+      ["พ.ค.26", 18.9],
+      ["มิ.ย.26", 21.6],
+      ["ก.ค.26", 23.7]
     ],
-    "min": 14,
-    "max": 30,
-    "grid": [
-      15,
-      18,
-      21,
-      24,
-      27
-    ],
+    "min": 12.5,
+    "max": 25,
+    "grid": [15, 17.5, 20, 22.5],
     "fairLine": 23.86,
     "currency": "฿",
-    "highlight": [
-      4,
-      11
-    ]
+    "highlight": [4, 11]
   },
   "gauge": {
     "min": 12,
     "max": 32,
-    "cur": 22.2,
+    "cur": 23.7,
     "fair": 23.86,
     "fairLabelTop": true
   },
@@ -140,14 +95,14 @@
     <div class="sub">ธนาคารเพื่อ Micro SME • สินเชื่อบ้านแลกเงิน (Home Equity) • นาโน-ไมโครไฟแนนซ์ • NIM สูงสุดในกลุ่มแบงก์ไทย</div>
     <div class="price-row">
       <div>
-        <div class="px">฿22.20<small>(CREDIT)</small></div>
+        <div class="px">฿23.70<small>(CREDIT)</small></div>
       </div>
       <!-- ★ ป้าย % รอบปี (gate E35/E36) — ผลตอบแทน ~1 ปี (เทียบราคา ~1 ปีก่อน) = ผลตอบแทนปลายกราฟ section 2 (จุดแรก→ท้าย)
            รูปแบบ: "▲ +X.X% (รอบปี)" ขึ้น · "▼ −X.X% (รอบปี)" ลง · "≈ ทรงตัว (รอบปี)" · หุ้น IPO <1 ปี ใช้ "(ตั้งแต่ IPO)"
            ไม่ใช่ % รายวัน/YTD/52 สัปดาห์ · ตั้งสี theme.chgBg/chgColor ให้ตรงทิศ (ขึ้น=เขียว/ลง=แดง · E34) -->
-      <div class="chg">▲ +32.9% (รอบปี)</div>
+      <div class="chg">▲ +41.9% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 3 ก.ค. 2569<br>
+        ราคา ณ 10 ก.ค. 2569<br>
         กรอบ 52 สัปดาห์ ฿14.70 – ฿23.30<br>
         ที่มา: StockAnalysis.com, SET Factsheet, Yahoo Finance
       </div>
@@ -235,7 +190,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿22.20</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿23.70</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿23.86</div></div>
         </div>
         <div class="scale">
@@ -258,7 +213,7 @@
     <div class="card">
       <!-- ✏️ class ของ mos-verdict: MOS<10 → "bad", 10–20 → "ok", ≥20 → "good" -->
       <div class="mos-verdict bad">
-        <div class="big">+7.0%</div>
+        <div class="big">+0.7%</div>
         <div class="txt">ราคาใกล้เคียง Fair Value — Margin of Safety จำกัด (~7%) ยังไม่ใช่โซนถูกสำหรับ value investor</div>
       </div>
       <div class="grid g3">
@@ -269,7 +224,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="22.20" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="23.7" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -377,7 +332,7 @@
   <div class="disc">
     <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
-    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • แหล่งข้อมูล: (1) StockAnalysis.com — ราคา, P/E, EPS TTM, เงินปันผล, ราคาเป้านักวิเคราะห์ 3 ก.ค. 2569 (2) SET Factsheet (set.or.th) — ราคา, P/E, P/BV, Market Cap 4 ก.ค. 2569 (3) Yahoo Finance (CREDIT.BK) — กราฟราคาย้อนหลัง 1 ปี (4) Kaohoon International — ผลประกอบการ Q1/2569, เป้าหมายปี 2569, Cost-to-Income (5) Thai Credit Bank Investor Relations (investor.thaicreditbank.com) — โครงสร้างสินเชื่อ, ROE/ROA
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • แหล่งข้อมูล: (1) StockAnalysis.com — ราคา, P/E, EPS TTM, เงินปันผล, ราคาเป้านักวิเคราะห์ 10 ก.ค. 2569 (2) SET Factsheet (set.or.th) — ราคา, P/E, P/BV, Market Cap 10 ก.ค. 2569 (3) Yahoo Finance (CREDIT.BK) — กราฟราคาย้อนหลัง 1 ปี (4) Kaohoon International — ผลประกอบการ Q1/2569, เป้าหมายปี 2569, Cost-to-Income (5) Thai Credit Bank Investor Relations (investor.thaicreditbank.com) — โครงสร้างสินเชื่อ, ROE/ROA
   </div>
   <footer>Stock Analysis Dashboard • ข้อมูล ณ 3 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 

@@ -6,10 +6,54 @@
 <title>วิเคราะห์หุ้น KKR & Co. Inc. (KKR) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Sonnet 4.6">
 <script type="application/json" id="stock-meta">
-{"symbol":"KKR","currency":"USD","price":90.13,"fairValue":105,"mos":14.2,"upside":16.5,"pe":18.5,"dividendYield":0.87,"roe":8.5}
+{"symbol":"KKR","currency":"USD","price":96.94,"fairValue":105,"mos":7.7,"upside":8.3,"pe":18.5,"dividendYield":0.87,"roe":8.5}
 </script>
 <script type="application/json" id="report-data">
-{"theme":{"accent":"#3E6494","accentDark":"#2A4A6B","darkGrad":"linear-gradient(135deg, #03060A 0%, #080F18 100%)","glow":"rgba(62,100,148,0.38)","subColor":"#7193BC","headerMuted":"rgba(62,100,148,0.13)","verdictText":"#D6E0EE","vcellLabel":"rgba(214,224,238,0.6)","badge":"#3E6494","chgBg":"rgba(239,68,68,0.15)","chgColor":"#EF4444"},"chart":{"data":[["ก.ค. 68",146.58],["ส.ค. 68",139.49],["ก.ย. 68",129.95],["ต.ค. 68",118.33],["พ.ย. 68",122.31],["ธ.ค. 68",127.48],["ม.ค. 69",114.26],["ก.พ. 69",87.68],["มี.ค. 69",92.50],["เม.ย. 69",104.34],["พ.ค. 69",95.94],["มิ.ย. 69",90.13]],"min":82,"max":150,"grid":[100,120,140],"fairLine":105,"currency":"$","highlight":[7]},"gauge":{"min":80,"max":150,"cur":90.13,"fair":105,"fairLabelTop":false},"fv":105}
+{
+  "theme": {
+    "accent": "#3E6494",
+    "accentDark": "#2A4A6B",
+    "darkGrad": "linear-gradient(135deg, #03060A 0%, #080F18 100%)",
+    "glow": "rgba(62,100,148,0.38)",
+    "subColor": "#7193BC",
+    "headerMuted": "rgba(62,100,148,0.13)",
+    "verdictText": "#D6E0EE",
+    "vcellLabel": "rgba(214,224,238,0.6)",
+    "badge": "#3E6494",
+    "chgBg": "var(--red-soft)",
+    "chgColor": "#c5221f"
+  },
+  "chart": {
+    "data": [
+      ["ส.ค.25", 139.49],
+      ["ก.ย.25", 129.95],
+      ["ต.ค.25", 118.33],
+      ["พ.ย.25", 122.31],
+      ["ธ.ค.25", 127.48],
+      ["ม.ค.26", 114.26],
+      ["ก.พ.26", 87.68],
+      ["มี.ค.26", 92.5],
+      ["เม.ย.26", 104.34],
+      ["พ.ค.26", 95.94],
+      ["มิ.ย.26", 91.78],
+      ["ก.ค.26", 96.94]
+    ],
+    "min": 80,
+    "max": 160,
+    "grid": [100, 120, 140],
+    "fairLine": 105,
+    "currency": "$",
+    "highlight": [0, 6]
+  },
+  "gauge": {
+    "min": 80,
+    "max": 150,
+    "cur": 96.94,
+    "fair": 105,
+    "fairLabelTop": false
+  },
+  "fv": 105
+}
 </script>
 <!--TEMPLATE:STYLE-->
 </head>
@@ -28,11 +72,11 @@
     <div class="sub">บริษัทจัดการสินทรัพย์ทางเลือกระดับโลก • Private Equity • Credit • Real Assets (infra/energy) • ประกัน Global Atlantic • Strategic Holdings • AUM $744B+</div>
     <div class="price-row">
       <div>
-        <div class="px">$90.13<small>(KKR)</small></div>
+        <div class="px">$96.94<small>(KKR)</small></div>
       </div>
-      <div class="chg">▼ −38.5% (รอบปี)</div>
+      <div class="chg">▼ −30.5% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 26 มิ.ย. 2569<br>
+        ราคา ณ 10 ก.ค. 2569<br>
         กรอบ 52 สัปดาห์ $82.67 / $153.87<br>
         ที่มา: StockAnalysis.com / Yahoo Finance / KKR Investor Relations / SEC Filings
       </div>
@@ -110,7 +154,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $90.13</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $96.94</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $105</div></div>
         </div>
         <div class="scale">
@@ -132,7 +176,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict ok">
-        <div class="big">+14.2%</div>
+        <div class="big">+8%</div>
         <div class="txt">MOS อยู่ในเกณฑ์ "พอรับได้" — ราคาต่ำกว่า Fair Value แต่ยังไม่ถึงโซน deep value (MOS 20%+) · เหมาะทยอยสะสม</div>
       </div>
       <div class="grid g3">
@@ -143,7 +187,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="90.13" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="96.94" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

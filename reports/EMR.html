@@ -6,10 +6,54 @@
 <title>วิเคราะห์หุ้น Emerson Electric Co. (EMR) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Sonnet 4.6">
 <script type="application/json" id="stock-meta">
-{"symbol":"EMR","currency":"USD","price":143.49,"fairValue":130,"mos":-10.4,"upside":-9.4,"pe":23.9,"dividendYield":1.55,"roe":12.33}
+{"symbol":"EMR","currency":"USD","price":138.88,"fairValue":130,"mos":-6.8,"upside":-6.4,"pe":23.9,"dividendYield":1.55,"roe":12.33}
 </script>
 <script type="application/json" id="report-data">
-{"theme":{"accent":"#1B7A6E","accentDark":"#115850","darkGrad":"linear-gradient(135deg, #02100E 0%, #051F1B 100%)","glow":"rgba(27,122,110,0.35)","subColor":"#46B0A2","headerMuted":"rgba(27,122,110,0.12)","verdictText":"#CDEBE6","vcellLabel":"rgba(205,235,230,0.6)","badge":"#1B7A6E","chgBg":"rgba(239,68,68,0.15)","chgColor":"#EF4444"},"chart":{"data":[["ก.ค. 68",145.51],["ส.ค. 68",132.00],["ก.ย. 68",131.18],["ต.ค. 68",139.57],["พ.ย. 68",133.38],["ธ.ค. 68",132.72],["ม.ค. 69",146.96],["ก.พ. 69",150.75],["มี.ค. 69",131.02],["เม.ย. 69",140.44],["พ.ค. 69",143.82],["มิ.ย. 69",143.49]],"min":128,"max":153,"grid":[135,143,151],"fairLine":130,"currency":"$","highlight":[7]},"gauge":{"min":125,"max":155,"cur":143.49,"fair":130,"fairLabelTop":false},"fv":130}
+{
+  "theme": {
+    "accent": "#1B7A6E",
+    "accentDark": "#115850",
+    "darkGrad": "linear-gradient(135deg, #02100E 0%, #051F1B 100%)",
+    "glow": "rgba(27,122,110,0.35)",
+    "subColor": "#46B0A2",
+    "headerMuted": "rgba(27,122,110,0.12)",
+    "verdictText": "#CDEBE6",
+    "vcellLabel": "rgba(205,235,230,0.6)",
+    "badge": "#1B7A6E",
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#1e8e3e"
+  },
+  "chart": {
+    "data": [
+      ["ส.ค.25", 132],
+      ["ก.ย.25", 131.18],
+      ["ต.ค.25", 139.57],
+      ["พ.ย.25", 133.38],
+      ["ธ.ค.25", 132.72],
+      ["ม.ค.26", 146.96],
+      ["ก.พ.26", 150.75],
+      ["มี.ค.26", 131.02],
+      ["เม.ย.26", 140.44],
+      ["พ.ค.26", 143.82],
+      ["มิ.ย.26", 143.15],
+      ["ก.ค.26", 138.88]
+    ],
+    "min": 120,
+    "max": 160,
+    "grid": [130, 140, 150],
+    "fairLine": 130,
+    "currency": "$",
+    "highlight": [6, 7]
+  },
+  "gauge": {
+    "min": 125,
+    "max": 155,
+    "cur": 138.88,
+    "fair": 130,
+    "fairLabelTop": false
+  },
+  "fv": 130
+}
 </script>
 <!--TEMPLATE:STYLE-->
 </head>
@@ -28,11 +72,11 @@
     <div class="sub">ระบบอัตโนมัติอุตสาหกรรม (process/discrete) • Intelligent Devices (Final Control/Measurement) • Software &amp; Control (AspenTech, NI) • pure-play automation หลัง divest Copeland</div>
     <div class="price-row">
       <div>
-        <div class="px">$143.49<small>(EMR)</small></div>
+        <div class="px">$138.88<small>(EMR)</small></div>
       </div>
-      <div class="chg">▼ −1.4% (รอบปี)</div>
+      <div class="chg">▲ +5.2% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 26 มิ.ย. 2569<br>
+        ราคา ณ 10 ก.ค. 2569<br>
         กรอบ 52 สัปดาห์ $122.64 / $165.15<br>
         ที่มา: StockAnalysis.com / Yahoo Finance / Emerson Investor Relations / Macrotrends
       </div>
@@ -110,7 +154,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $143.49</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $138.88</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $130</div></div>
         </div>
         <div class="scale">
@@ -132,7 +176,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict bad">
-        <div class="big">−10.4%</div>
+        <div class="big">−7%</div>
         <div class="txt">ราคาสูงกว่า Fair Value — ยังไม่มี Margin of Safety · รอย่อลงใกล้ $104–$130</div>
       </div>
       <div class="grid g3">
@@ -143,7 +187,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="143.49" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="138.88" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

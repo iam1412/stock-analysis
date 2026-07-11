@@ -6,10 +6,54 @@
 <title>วิเคราะห์หุ้น Thomson Reuters (TRI) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Opus 4.8">
 <script type="application/json" id="stock-meta">
-{"symbol":"TRI","currency":"USD","price":89.21,"fairValue":74.14,"mos":-20.33,"upside":-16.89,"pe":25.93,"dividendYield":2.94,"roe":12.6}
+{"symbol":"TRI","currency":"USD","price":89.65,"fairValue":74.14,"mos":-20.9,"upside":-17.3,"pe":25.93,"dividendYield":2.94,"roe":12.6}
 </script>
 <script type="application/json" id="report-data">
-{"theme":{"accent":"#E8401C","accentDark":"#b52e12","darkGrad":"linear-gradient(135deg,#7a1a08 0%,#b52e12 50%,#E8401C 100%)","glow":"rgba(232,64,28,0.35)","subColor":"#f07555","headerMuted":"rgba(255,255,255,0.65)","verdictText":"#c03010","vcellLabel":"#b52e12","badge":"#E8401C","chgBg":"#8b1a1a","chgColor":"#ffffff"},"chart":{"data":[["Aug 25",177.61],["Sep 25",155.33],["Oct 25",153.06],["Nov 25",135.43],["Dec 25",131.89],["Jan 26",110.63],["Feb 26",96.41],["Mar 26",89.98],["Apr 26",95.69],["May 26",86.51],["Jun 26",81.67],["Jul 26",89.21]],"min":70,"max":190,"grid":[70,100,130,160,190],"fairLine":74.14,"currency":"$","highlight":[0,11]},"gauge":{"min":45,"max":140,"cur":89.21,"fair":74.14,"fairLabelTop":true},"fv":74.14}
+{
+  "theme": {
+    "accent": "#E8401C",
+    "accentDark": "#b52e12",
+    "darkGrad": "linear-gradient(135deg,#7a1a08 0%,#b52e12 50%,#E8401C 100%)",
+    "glow": "rgba(232,64,28,0.35)",
+    "subColor": "#f07555",
+    "headerMuted": "rgba(255,255,255,0.65)",
+    "verdictText": "#c03010",
+    "vcellLabel": "#b52e12",
+    "badge": "#E8401C",
+    "chgBg": "var(--red-soft)",
+    "chgColor": "#c5221f"
+  },
+  "chart": {
+    "data": [
+      ["ส.ค.25", 177.61],
+      ["ก.ย.25", 155.33],
+      ["ต.ค.25", 153.06],
+      ["พ.ย.25", 135.43],
+      ["ธ.ค.25", 131.89],
+      ["ม.ค.26", 110.63],
+      ["ก.พ.26", 96.41],
+      ["มี.ค.26", 89.98],
+      ["เม.ย.26", 95.69],
+      ["พ.ค.26", 86.51],
+      ["มิ.ย.26", 81.67],
+      ["ก.ค.26", 89.65]
+    ],
+    "min": 50,
+    "max": 200,
+    "grid": [100, 150],
+    "fairLine": 74.14,
+    "currency": "$",
+    "highlight": [0, 10]
+  },
+  "gauge": {
+    "min": 45,
+    "max": 140,
+    "cur": 89.65,
+    "fair": 74.14,
+    "fairLabelTop": true
+  },
+  "fv": 74.14
+}
 </script>
 <!--TEMPLATE:STYLE-->
 </head>
@@ -28,11 +72,11 @@
     <div class="sub">Westlaw (legal research) • Checkpoint (tax & accounting) • Practical Law • CoCounsel (agentic AI legal assistant) • Reuters News • Global Trade & Risk data</div>
     <div class="price-row">
       <div>
-        <div class="px">$89.21<small>(TRI)</small></div>
+        <div class="px">$89.65<small>(TRI)</small></div>
       </div>
-      <div class="chg">▼ −49.8% (รอบปี)</div>
+      <div class="chg">▼ −49.5% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 2 ก.ค. 2569 (2026-07-02)<br>
+        ราคา ณ 10 ก.ค. 2569 (2026-07-02)<br>
         กรอบ 52 สัปดาห์ $76.28 – $221.85<br>
         ที่มา: Yahoo Finance / StockAnalysis.com / Thomson Reuters IR
       </div>
@@ -119,7 +163,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $89.21</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $89.65</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $74.14</div></div>
         </div>
         <div class="scale">
@@ -144,7 +188,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict bad">
-        <div class="big">−20.33%</div>
+        <div class="big">−21%</div>
         <div class="txt">ราคาปัจจุบันแพงกว่า Fair Value เชิงอนุรักษ์นิยม — MOS ติดลบ ยังไม่ใช่จุดเข้าที่ปลอดภัยตามหลัก value investing แม้ราคาร่วงมาแล้ว 50% จาก ATH</div>
       </div>
       <div class="grid g3">
@@ -155,7 +199,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="89.21" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="89.65" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

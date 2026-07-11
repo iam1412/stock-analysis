@@ -6,22 +6,52 @@
 <title>วิเคราะห์หุ้น Alphabet (GOOGL) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Opus 4.8">
 <script type="application/json" id="stock-meta">
-{"symbol":"GOOGL","currency":"USD","price":345,"fairValue":311,"mos":-11,"upside":-9.9,"pe":26,"dividendYield":0.26,"roe":30}
+{"symbol":"GOOGL","currency":"USD","price":357.18,"fairValue":311,"mos":-14.8,"upside":-12.9,"pe":26,"dividendYield":0.26,"roe":30}
 </script>
 <script type="application/json" id="report-data">
 {
   "theme": {
-    "accent": "#1d6bed", "accentDark": "#0f4db3",
+    "accent": "#1d6bed",
+    "accentDark": "#0f4db3",
     "darkGrad": "linear-gradient(135deg,#041a3e 0%,#073073 58%,#0c4cb6 140%)",
-    "glow": "rgba(19,101,236,.35)", "subColor": "#c2d1eb", "headerMuted": "#a5b7d4",
-    "chgBg": "var(--green-soft)", "chgColor": "#1e8e3e", "badge": "var(--blue)",
-    "verdictText": "#d0dcf1", "vcellLabel": "#a6bbdd"
+    "glow": "rgba(19,101,236,.35)",
+    "subColor": "#c2d1eb",
+    "headerMuted": "#a5b7d4",
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#1e8e3e",
+    "badge": "var(--blue)",
+    "verdictText": "#d0dcf1",
+    "vcellLabel": "#a6bbdd"
   },
   "chart": {
-    "data": [["มิ.ย.25",175],["ส.ค.25",200],["ต.ค.25",255],["ธ.ค.25",305],["ก.พ.26",340],["เม.ย.26",385],["พ.ค.26",408],["มิ.ย.26",345]],
-    "min": 140, "max": 430, "grid": [150,200,250,300,350,400], "fairLine": 311, "currency": "$", "highlight": [6,7]
+    "data": [
+      ["ส.ค.25", 212.91],
+      ["ก.ย.25", 243.1],
+      ["ต.ค.25", 281.19],
+      ["พ.ย.25", 320.18],
+      ["ธ.ค.25", 313],
+      ["ม.ค.26", 338],
+      ["ก.พ.26", 311.76],
+      ["มี.ค.26", 287.56],
+      ["เม.ย.26", 384.8],
+      ["พ.ค.26", 380.34],
+      ["มิ.ย.26", 357.37],
+      ["ก.ค.26", 357.18]
+    ],
+    "min": 200,
+    "max": 400,
+    "grid": [250, 300, 350],
+    "fairLine": 311,
+    "currency": "$",
+    "highlight": [0, 8]
   },
-  "gauge": { "min": 200, "max": 530, "cur": 345, "fair": 311, "fairLabelTop": "-58px" },
+  "gauge": {
+    "min": 200,
+    "max": 530,
+    "cur": 357.18,
+    "fair": 311,
+    "fairLabelTop": "-58px"
+  },
   "fv": 311
 }
 </script>
@@ -42,11 +72,11 @@
     <div class="sub">บริษัทแม่ของ Google • Search, YouTube, Cloud, Android, Waymo, DeepMind</div>
     <div class="price-row">
       <div>
-        <div class="px">$345<small>(GOOGL)</small></div>
+        <div class="px">$357.18<small>(GOOGL)</small></div>
       </div>
-      <div class="chg">▲ +97.1% (รอบปี)</div>
+      <div class="chg">▲ +67.8% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ≈ 22 มิ.ย. 2026 (ผันผวนสูง)<br>
+        ราคา ≈ 10 ก.ค. 2026 (ผันผวนสูง)<br>
         ปิด 18 มิ.ย. ที่ $368.03 ก่อนร่วง ~7%<br>
         ที่มา: Google Finance / Robinhood / Yahoo
       </div>
@@ -126,7 +156,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $345</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $357</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $311</div></div>
         </div>
         <div class="scale">
@@ -149,7 +179,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict bad">
-        <div class="big">−11%</div>
+        <div class="big">−15%</div>
         <div class="txt"><b>ไม่มี Margin of Safety</b><br>ราคาปัจจุบัน $345 สูงกว่ามูลค่าเหมาะสม $311 ราว 11% → ตามเกณฑ์ value investor ถือว่า <b>แพงเล็กน้อย</b> ยังไม่ใช่จุดซื้อที่ปลอดภัย</div>
       </div>
       <div class="grid g3">
@@ -160,7 +190,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="345" step="1">
+          <input id="pxIn" class="mono" type="number" value="357.18" step="1">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

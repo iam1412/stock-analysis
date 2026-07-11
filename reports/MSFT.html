@@ -6,22 +6,52 @@
 <title>วิเคราะห์หุ้น Microsoft (MSFT) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Opus 4.8">
 <script type="application/json" id="stock-meta">
-{"symbol":"MSFT","currency":"USD","price":367,"fairValue":455,"mos":19,"upside":23.9,"pe":21.9,"dividendYield":0.99,"roe":31.6}
+{"symbol":"MSFT","currency":"USD","price":385.1,"fairValue":455,"mos":15.4,"upside":18.2,"pe":21.9,"dividendYield":0.99,"roe":31.6}
 </script>
 <script type="application/json" id="report-data">
 {
   "theme": {
-    "accent": "#1d92ed", "accentDark": "#0f6cb3",
+    "accent": "#1d92ed",
+    "accentDark": "#0f6cb3",
     "darkGrad": "linear-gradient(135deg,#04253e 0%,#074473 58%,#0c6cb6 140%)",
-    "glow": "rgba(19,142,236,.35)", "subColor": "#c2d9eb", "headerMuted": "#a5c0d4",
-    "chgBg": "var(--red-soft)", "chgColor": "#c5221f", "badge": "var(--blue)",
-    "verdictText": "#d0e3f1", "vcellLabel": "#a6c5dd"
+    "glow": "rgba(19,142,236,.35)",
+    "subColor": "#c2d9eb",
+    "headerMuted": "#a5c0d4",
+    "chgBg": "var(--red-soft)",
+    "chgColor": "#c5221f",
+    "badge": "var(--blue)",
+    "verdictText": "#d0e3f1",
+    "vcellLabel": "#a6c5dd"
   },
   "chart": {
-    "data": [["มิ.ย.25",450],["ส.ค.25",505],["ต.ค.25",530],["ธ.ค.25",555],["ก.พ.26",490],["เม.ย.26",420],["พ.ค.26",390],["มิ.ย.26",367]],
-    "min": 320, "max": 580, "grid": [350,400,450,500,550], "fairLine": 455, "currency": "$", "highlight": [3,7]
+    "data": [
+      ["ส.ค.25", 506.69],
+      ["ก.ย.25", 517.95],
+      ["ต.ค.25", 517.81],
+      ["พ.ย.25", 492.01],
+      ["ธ.ค.25", 483.62],
+      ["ม.ค.26", 430.29],
+      ["ก.พ.26", 392.74],
+      ["มี.ค.26", 370.17],
+      ["เม.ย.26", 407.78],
+      ["พ.ค.26", 450.24],
+      ["มิ.ย.26", 373.02],
+      ["ก.ค.26", 385.1]
+    ],
+    "min": 350,
+    "max": 550,
+    "grid": [400, 450, 500],
+    "fairLine": 455,
+    "currency": "$",
+    "highlight": [1, 7]
   },
-  "gauge": { "min": 300, "max": 890, "cur": 367, "fair": 455, "fairLabelTop": "-58px" },
+  "gauge": {
+    "min": 300,
+    "max": 890,
+    "cur": 385.1,
+    "fair": 455,
+    "fairLabelTop": "-58px"
+  },
   "fv": 455
 }
 </script>
@@ -42,11 +72,11 @@
     <div class="sub">Azure • Microsoft 365 Copilot • GitHub Copilot • OpenAI partnership • Maia AI silicon</div>
     <div class="price-row">
       <div>
-        <div class="px">$367.34<small>(MSFT)</small></div>
+        <div class="px">$385.10<small>(MSFT)</small></div>
       </div>
-      <div class="chg">▼ −18.4% (รอบปี)</div>
+      <div class="chg">▼ −24.0% (รอบปี)</div>
       <div class="px-meta">
-        ราคาปิด 22 มิ.ย. 2026 (ปิดก่อน $379.40)<br>
+        ราคาปิด 10 ก.ค. 2026 (ปิดก่อน $379.40)<br>
         ร่วง ~20% จากต้นปี • ต่ำกว่าจุดสูงสุด $555<br>
         ที่มา: Yahoo Finance / StockAnalysis / Macrotrends
       </div>
@@ -127,7 +157,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $367</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $385</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $455</div></div>
         </div>
         <div class="scale">
@@ -150,7 +180,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict ok">
-        <div class="big">+19%</div>
+        <div class="big">+15%</div>
         <div class="txt"><b>มี Margin of Safety ระดับพอใช้</b><br>ราคาปัจจุบัน $367 ต่ำกว่ามูลค่าเหมาะสม $455 ราว 19% → ตามเกณฑ์ value investor ถือว่า <b>เริ่มน่าสนใจ</b> เข้าทยอยสะสมได้ ยังไม่ถึงโซน deep value</div>
       </div>
       <div class="grid g3">
@@ -161,7 +191,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="367" step="1">
+          <input id="pxIn" class="mono" type="number" value="385.1" step="1">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

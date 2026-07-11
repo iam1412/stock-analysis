@@ -6,10 +6,54 @@
 <title>วิเคราะห์หุ้น Cummins Inc. (CMI) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Sonnet 4.6">
 <script type="application/json" id="stock-meta">
-{"symbol":"CMI","currency":"USD","price":693.16,"fairValue":557,"mos":-24.4,"upside":-19.6,"pe":29.1,"dividendYield":1.16,"roe":21.99}
+{"symbol":"CMI","currency":"USD","price":675.95,"fairValue":557,"mos":-21.4,"upside":-17.6,"pe":29.1,"dividendYield":1.16,"roe":21.99}
 </script>
 <script type="application/json" id="report-data">
-{"theme":{"accent":"#D11F2D","accentDark":"#9A1620","darkGrad":"linear-gradient(135deg, #120303 0%, #240608 100%)","glow":"rgba(209,31,45,0.35)","subColor":"#E85A64","headerMuted":"rgba(209,31,45,0.12)","verdictText":"#F8D2D5","vcellLabel":"rgba(248,210,213,0.6)","badge":"#D11F2D","chgBg":"rgba(34,197,94,0.15)","chgColor":"#22C55E"},"chart":{"data":[["ก.ค. 68",367.62],["ส.ค. 68",398.44],["ก.ย. 68",422.37],["ต.ค. 68",437.68],["พ.ย. 68",497.98],["ธ.ค. 68",510.45],["ม.ค. 69",578.82],["ก.พ. 69",583.87],["มี.ค. 69",538.02],["เม.ย. 69",671.01],["พ.ค. 69",646.63],["มิ.ย. 69",693.16]],"min":350,"max":700,"grid":[430,520,610],"fairLine":557,"currency":"$","highlight":[11]},"gauge":{"min":345,"max":700,"cur":693.16,"fair":557,"fairLabelTop":false},"fv":557}
+{
+  "theme": {
+    "accent": "#D11F2D",
+    "accentDark": "#9A1620",
+    "darkGrad": "linear-gradient(135deg, #120303 0%, #240608 100%)",
+    "glow": "rgba(209,31,45,0.35)",
+    "subColor": "#E85A64",
+    "headerMuted": "rgba(209,31,45,0.12)",
+    "verdictText": "#F8D2D5",
+    "vcellLabel": "rgba(248,210,213,0.6)",
+    "badge": "#D11F2D",
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#1e8e3e"
+  },
+  "chart": {
+    "data": [
+      ["ส.ค.25", 398.44],
+      ["ก.ย.25", 422.37],
+      ["ต.ค.25", 437.68],
+      ["พ.ย.25", 497.98],
+      ["ธ.ค.25", 510.45],
+      ["ม.ค.26", 578.82],
+      ["ก.พ.26", 583.87],
+      ["มี.ค.26", 538.02],
+      ["เม.ย.26", 671.01],
+      ["พ.ค.26", 646.63],
+      ["มิ.ย.26", 713.21],
+      ["ก.ค.26", 675.95]
+    ],
+    "min": 300,
+    "max": 800,
+    "grid": [400, 500, 600, 700],
+    "fairLine": 557,
+    "currency": "$",
+    "highlight": [0, 10]
+  },
+  "gauge": {
+    "min": 345,
+    "max": 700,
+    "cur": 675.95,
+    "fair": 557,
+    "fairLabelTop": false
+  },
+  "fv": 557
+}
 </script>
 <!--TEMPLATE:STYLE-->
 </head>
@@ -28,11 +72,11 @@
     <div class="sub">ผู้นำเครื่องยนต์ดีเซล/ก๊าซธรรมชาติ • Engine (truck/industrial) • Power Systems (gensets/data-center backup power) • Components • Distribution • Accelera (hydrogen/zero-emission)</div>
     <div class="price-row">
       <div>
-        <div class="px">$693.16<small>(CMI)</small></div>
+        <div class="px">$675.95<small>(CMI)</small></div>
       </div>
-      <div class="chg">▲ +88.6% (รอบปี)</div>
+      <div class="chg">▲ +69.6% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 26 มิ.ย. 2569<br>
+        ราคา ณ 10 ก.ค. 2569<br>
         กรอบ 52 สัปดาห์ $319.37 / $737.76<br>
         ที่มา: StockAnalysis.com / Yahoo Finance / Cummins Investor Relations
       </div>
@@ -114,7 +158,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $693.16</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $675.95</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $557</div></div>
         </div>
         <div class="scale">
@@ -138,7 +182,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict bad">
-        <div class="big">−24.4%</div>
+        <div class="big">−21%</div>
         <div class="txt">ราคาแพงกว่ามูลค่าเหมาะสม — ไม่มี Margin of Safety ในปัจจุบัน</div>
       </div>
       <div class="grid g3">
@@ -149,7 +193,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="693.16" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="675.95" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

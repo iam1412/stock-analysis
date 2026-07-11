@@ -6,22 +6,51 @@
 <title>วิเคราะห์หุ้น Costco Wholesale (COST) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Opus 4.8">
 <script type="application/json" id="stock-meta">
-{"symbol":"COST","currency":"USD","price":952.54,"fairValue":816,"mos":-16.7,"upside":-14.3,"pe":47.91,"dividendYield":0.62,"roe":30.7}
+{"symbol":"COST","currency":"USD","price":916.25,"fairValue":816,"mos":-12.3,"upside":-10.9,"pe":47.91,"dividendYield":0.62,"roe":30.7}
 </script>
 <script type="application/json" id="report-data">
 {
   "theme": {
-    "accent": "#E31837", "accentDark": "#a80f24",
+    "accent": "#E31837",
+    "accentDark": "#a80f24",
     "darkGrad": "linear-gradient(135deg,#1a0508 0%,#2d0c12 55%,#3d1218 140%)",
-    "glow": "rgba(227,24,55,.28)", "subColor": "#e8c4c9", "headerMuted": "#d4a8ae",
-    "chgBg": "#d4edda", "chgColor": "#1e8e3e", "badge": "#E31837",
-    "verdictText": "#f0d8da", "vcellLabel": "#c9a4a8"
+    "glow": "rgba(227,24,55,.28)",
+    "subColor": "#e8c4c9",
+    "headerMuted": "#d4a8ae",
+    "chgBg": "var(--red-soft)",
+    "chgColor": "#c5221f",
+    "badge": "#E31837",
+    "verdictText": "#f0d8da",
+    "vcellLabel": "#c9a4a8"
   },
   "chart": {
-    "data": [["ก.ค.25",934.38],["ส.ค.25",939.34],["ก.ย.25",921.72],["ต.ค.25",908.89],["พ.ย.25",911.02],["ธ.ค.25",859.92],["ม.ค.26",938.89],["ก.พ.26",1009.32],["มี.ค.26",994.99],["เม.ย.26",1013.06],["พ.ค.26",956.32],["มิ.ย.26",952.54]],
-    "min": 830, "max": 1110, "grid": [870,930,990,1050], "fairLine": 816, "currency": "$", "highlight": [10,11]
+    "data": [
+      ["ส.ค.25", 943.32],
+      ["ก.ย.25", 925.63],
+      ["ต.ค.25", 911.45],
+      ["พ.ย.25", 913.59],
+      ["ธ.ค.25", 862.34],
+      ["ม.ค.26", 940.25],
+      ["ก.พ.26", 1010.79],
+      ["มี.ค.26", 996.43],
+      ["เม.ย.26", 1014.53],
+      ["พ.ค.26", 956.32],
+      ["มิ.ย.26", 935.47],
+      ["ก.ค.26", 916.25]
+    ],
+    "min": 800,
+    "max": 1050,
+    "grid": [850, 900, 950, 1000],
+    "fairLine": 816,
+    "currency": "$",
+    "highlight": [4, 8]
   },
-  "gauge": { "min": 571, "max": 1096, "cur": 952.54, "fair": 816 },
+  "gauge": {
+    "min": 571,
+    "max": 1096,
+    "cur": 916.25,
+    "fair": 816
+  },
   "fv": 816
 }
 </script>
@@ -42,11 +71,11 @@
     <div class="sub">ร้านค้าส่งสมาชิก (warehouse club) ขาย bulk ใกล้ทุน • ค่าสมาชิกรายปี = แหล่งกำไรหลัก (renewal >90%) • Kirkland Signature • อีคอมเมิร์ซ/ปั๊มน้ำมัน/ร้านยา</div>
     <div class="price-row">
       <div>
-        <div class="px">$952.54<small>(COST)</small></div>
+        <div class="px">$916.25<small>(COST)</small></div>
       </div>
-      <div class="chg">▲ +1.9% (รอบปี)</div>
+      <div class="chg">▼ −2.9% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 26 มิ.ย. 2026<br>
+        ราคา ณ 10 ก.ค. 2026<br>
         กรอบ 52 สัปดาห์ $844.06 – $1,096.50<br>
         ที่มา: StockAnalysis.com / Yahoo Finance
       </div>
@@ -124,7 +153,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $952.54</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $916.25</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $816</div></div>
         </div>
         <div class="scale">
@@ -146,7 +175,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict bad">
-        <div class="big">−16.7%</div>
+        <div class="big">−12%</div>
         <div class="txt">ราคาปัจจุบันสูงกว่ามูลค่าเหมาะสม ~17% — ธุรกิจยอดเยี่ยม แต่ราคา premium เกินไปสำหรับ value investor</div>
       </div>
       <div class="grid g3">
@@ -157,7 +186,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="952.54" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="916.25" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -263,7 +292,7 @@
   <div class="disc">
     <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
-    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ข้อมูลอ้างอิง: StockAnalysis.com, Yahoo Finance, Costco IR/10-K, digrin.com (ราคารายเดือน) • ราคา ณ 26 มิ.ย. 2026
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ข้อมูลอ้างอิง: StockAnalysis.com, Yahoo Finance, Costco IR/10-K, digrin.com (ราคารายเดือน) • ราคา ณ 10 ก.ค. 2026
   </div>
   <footer>Stock Analysis Dashboard • ข้อมูล ณ 26 มิ.ย. 2026 • สร้างด้วย stock-analyzer workflow</footer>
 

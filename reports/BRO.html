@@ -6,7 +6,7 @@
 <title>วิเคราะห์หุ้น Brown &amp; Brown (BRO) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Sonnet 4.6">
 <script type="application/json" id="stock-meta">
-{"symbol":"BRO","currency":"USD","price":65.97,"fairValue":90,"mos":26.7,"upside":36.4,"pe":15.7,"dividendYield":1.00,"roe":12.2}
+{"symbol":"BRO","currency":"USD","price":67.66,"fairValue":90,"mos":24.8,"upside":33,"pe":15.7,"dividendYield":1,"roe":12.2}
 </script>
 <script type="application/json" id="report-data">
 {
@@ -20,31 +20,35 @@
     "verdictText": "#f5e6d3",
     "vcellLabel": "#c9a87a",
     "badge": "#8B5E3C",
-    "chgBg": "#c5221f",
-    "chgColor": "#ffffff"
+    "chgBg": "var(--red-soft)",
+    "chgColor": "#c5221f"
   },
   "chart": {
     "data": [
-      ["ก.ค. 68", 72.10],
-      ["ส.ค. 68", 71.82],
-      ["ก.ย. 68", 65.21],
-      ["ต.ค. 68", 60.15],
-      ["พ.ย. 68", 56.25],
-      ["ธ.ค. 68", 64.15],
-      ["ม.ค. 69", 66.06],
-      ["ก.ค. 69", 65.97]
+      ["ส.ค.25", 96.95],
+      ["ก.ย.25", 93.79],
+      ["ต.ค.25", 79.74],
+      ["พ.ย.25", 80.43],
+      ["ธ.ค.25", 79.7],
+      ["ม.ค.26", 72.1],
+      ["ก.พ.26", 71.82],
+      ["มี.ค.26", 65.21],
+      ["เม.ย.26", 60.15],
+      ["พ.ค.26", 56.25],
+      ["มิ.ย.26", 64.15],
+      ["ก.ค.26", 67.66]
     ],
-    "min": 50,
-    "max": 110,
-    "grid": [50, 60, 70, 80, 90, 100, 110],
+    "min": 40,
+    "max": 100,
+    "grid": [60, 80],
     "fairLine": 90,
     "currency": "$",
-    "highlight": [4, 7]
+    "highlight": [0, 9]
   },
   "gauge": {
     "min": 50,
     "max": 110,
-    "cur": 65.97,
+    "cur": 67.66,
     "fair": 90,
     "fairLabelTop": true
   },
@@ -68,11 +72,11 @@
     <div class="sub">Top-5 US independent insurance brokerage • P&amp;C / Life / Health / Employee Benefits • 30+ yr Dividend Aristocrat • Acquisition-driven compounder • 25%+ revenue CAGR (20 yr) • Daytona Beach, FL</div>
     <div class="price-row">
       <div>
-        <div class="px">$65.97<small>(BRO)</small></div>
+        <div class="px">$67.66<small>(BRO)</small></div>
       </div>
-      <div class="chg">▼ −8.5% (รอบปี)</div>
+      <div class="chg">▼ −30.2% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 1 ก.ค. 2569<br>
+        ราคา ณ 10 ก.ค. 2569<br>
         กรอบ 52 สัปดาห์ $53.81 – $108.79<br>
         ที่มา: Yahoo Finance, StockAnalysis.com, Digrin.com
       </div>
@@ -150,7 +154,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $65.97</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $67.66</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $90</div></div>
         </div>
         <div class="scale">
@@ -172,7 +176,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict good">
-        <div class="big">+26.7%</div>
+        <div class="big">+25%</div>
         <div class="txt">ราคาต่ำกว่า Fair Value มีนัยสำคัญ — โซนสะสมที่น่าสนใจสำหรับนักลงทุนระยะยาว</div>
       </div>
       <div class="grid g3">
@@ -183,7 +187,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="65.97" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="67.66" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -289,7 +293,7 @@
   <div class="disc">
     <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
-    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ที่มา: Yahoo Finance (finance.yahoo.com/quote/BRO), StockAnalysis.com (stockanalysis.com/stocks/bro), Digrin.com (digrin.com/stocks/detail/BRO) · งบการเงินอ้างอิง Q1/2026 (TTM มี.ค. 2026) · ราคา ณ 1 ก.ค. 2026
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ที่มา: Yahoo Finance (finance.yahoo.com/quote/BRO), StockAnalysis.com (stockanalysis.com/stocks/bro), Digrin.com (digrin.com/stocks/detail/BRO) · งบการเงินอ้างอิง Q1/2026 (TTM มี.ค. 2026) · ราคา ณ 10 ก.ค. 2026
   </div>
   <footer>Stock Analysis Dashboard • ข้อมูล ณ 1 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 

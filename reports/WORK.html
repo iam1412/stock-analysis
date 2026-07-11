@@ -6,7 +6,7 @@
 <title>วิเคราะห์หุ้น เวิร์คพอยท์ เอ็นเทอร์เทนเมนท์ (WORK) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Sonnet 4.6">
 <script type="application/json" id="stock-meta">
-{"symbol":"WORK","currency":"THB","price":3.48,"fairValue":4.00,"mos":13.0,"upside":14.9,"pe":null,"dividendYield":null,"roe":null}
+{"symbol":"WORK","currency":"THB","price":3.5,"fairValue":4,"mos":12.5,"upside":14.3,"pe":null,"dividendYield":null,"roe":null}
 </script>
 <script type="application/json" id="report-data">
 {
@@ -20,40 +20,39 @@
     "verdictText": "#ffcc80",
     "vcellLabel": "#ffb74d",
     "badge": "#f57c00",
-    "chgBg": "#c5221f",
-    "chgColor": "#ffffff"
+    "chgBg": "var(--red-soft)",
+    "chgColor": "#c5221f"
   },
   "chart": {
     "data": [
-      ["ม.ค. 68", 4.22],
-      ["ก.พ. 68", 4.26],
-      ["มี.ค. 68", 4.12],
-      ["เม.ย. 68", 3.80],
-      ["พ.ค. 68", 3.64],
-      ["มิ.ย. 68", 3.66],
-      ["ก.ค. 68", 3.92],
-      ["ส.ค. 68", 3.52],
-      ["ก.ย. 68", 3.50],
-      ["ต.ค. 68", 3.54],
-      ["พ.ย. 68", 3.46],
-      ["ธ.ค. 68", 3.48],
-      ["ม.ค. 69", 3.48]
+      ["ส.ค.25", 4.22],
+      ["ก.ย.25", 4.26],
+      ["ต.ค.25", 4.12],
+      ["พ.ย.25", 3.8],
+      ["ธ.ค.25", 3.64],
+      ["ม.ค.26", 3.66],
+      ["ก.พ.26", 3.92],
+      ["มี.ค.26", 3.52],
+      ["เม.ย.26", 3.5],
+      ["พ.ค.26", 3.54],
+      ["มิ.ย.26", 3.46],
+      ["ก.ค.26", 3.5]
     ],
-    "min": 3.10,
-    "max": 4.80,
-    "grid": [3.20, 3.50, 3.80, 4.10, 4.40, 4.70],
-    "fairLine": 4.00,
+    "min": 3.4,
+    "max": 4.4,
+    "grid": [3.6, 3.8, 4, 4.2],
+    "fairLine": 4,
     "currency": "฿",
-    "highlight": [1, 6]
+    "highlight": [1, 10]
   },
   "gauge": {
-    "min": 2.50,
-    "max": 5.50,
-    "cur": 3.48,
-    "fair": 4.00,
+    "min": 2.5,
+    "max": 5.5,
+    "cur": 3.5,
+    "fair": 4,
     "fairLabelTop": false
   },
-  "fv": 4.00
+  "fv": 4
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -73,11 +72,11 @@
     <div class="sub">ผลิตคอนเทนต์โทรทัศน์ ช่อง 23 • รายการวาไรตี้ บันเทิง • ข่าว-สาระ • ดิจิทัลมีเดีย &amp; สตรีมมิง</div>
     <div class="price-row">
       <div>
-        <div class="px">฿3.48<small>(WORK)</small></div>
+        <div class="px">฿3.50<small>(WORK)</small></div>
       </div>
-      <div class="chg">▼ −17.5% (รอบปี)</div>
+      <div class="chg">▼ −17.1% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 4 ก.ค. 2569<br>
+        ราคา ณ 10 ก.ค. 2569<br>
         กรอบ 52 สัปดาห์ ฿3.34 – ฿4.60<br>
         ที่มา: SET.or.th, Yahoo Finance, StockAnalysis.com
       </div>
@@ -162,7 +161,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿3.48</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿3.50</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿4.00</div></div>
         </div>
         <div class="scale">
@@ -187,7 +186,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict ok">
-        <div class="big">+13.0%</div>
+        <div class="big">+13%</div>
         <div class="txt">MOS ปานกลาง — ยังมีส่วนลดจาก Fair Value แต่ยังไม่อยู่ในโซน Deep Value (MOS 20%+)</div>
       </div>
       <div class="grid g3">
@@ -198,7 +197,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="3.48" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="3.5" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

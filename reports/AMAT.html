@@ -6,22 +6,52 @@
 <title>วิเคราะห์หุ้น Applied Materials (AMAT) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Opus 4.8">
 <script type="application/json" id="stock-meta">
-{"symbol":"AMAT","currency":"USD","price":640,"fairValue":420,"mos":-52,"upside":-34.4,"pe":60,"dividendYield":0.34,"roe":40}
+{"symbol":"AMAT","currency":"USD","price":602.5,"fairValue":420,"mos":-43.5,"upside":-30.3,"pe":60,"dividendYield":0.34,"roe":40}
 </script>
 <script type="application/json" id="report-data">
 {
   "theme": {
-    "accent": "#cf843a", "accentDark": "#9c6126",
+    "accent": "#cf843a",
+    "accentDark": "#9c6126",
     "darkGrad": "linear-gradient(135deg,#37210b 0%,#663d14 58%,#a26020 140%)",
-    "glow": "rgba(205,127,50,.35)", "subColor": "#e7d6c5", "headerMuted": "#cebdab",
-    "chgBg": "var(--green-soft)", "chgColor": "#1e8e3e", "badge": "var(--blue)",
-    "verdictText": "#eee0d3", "vcellLabel": "#d6c2ae"
+    "glow": "rgba(205,127,50,.35)",
+    "subColor": "#e7d6c5",
+    "headerMuted": "#cebdab",
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#1e8e3e",
+    "badge": "var(--blue)",
+    "verdictText": "#eee0d3",
+    "vcellLabel": "#d6c2ae"
   },
   "chart": {
-    "data": [["มิ.ย.25",165],["ส.ค.25",185],["ต.ค.25",250],["ธ.ค.25",330],["ก.พ.26",410],["เม.ย.26",480],["พ.ค.26",560],["มิ.ย.26",640]],
-    "min": 120, "max": 680, "grid": [150,250,350,450,550,650], "fairLine": 420, "currency": "$", "highlight": [0,7]
+    "data": [
+      ["ส.ค.25", 160.76],
+      ["ก.ย.25", 204.74],
+      ["ต.ค.25", 233.1],
+      ["พ.ย.25", 252.25],
+      ["ธ.ค.25", 256.99],
+      ["ม.ค.26", 322.32],
+      ["ก.พ.26", 372.3],
+      ["มี.ค.26", 341.79],
+      ["เม.ย.26", 394.49],
+      ["พ.ค.26", 450.06],
+      ["มิ.ย.26", 723],
+      ["ก.ค.26", 602.5]
+    ],
+    "min": 0,
+    "max": 800,
+    "grid": [200, 400, 600],
+    "fairLine": 420,
+    "currency": "$",
+    "highlight": [0, 10]
   },
-  "gauge": { "min": 260, "max": 760, "cur": 640, "fair": 420, "fairLabelTop": "-58px" },
+  "gauge": {
+    "min": 260,
+    "max": 760,
+    "cur": 602.5,
+    "fair": 420,
+    "fairLabelTop": "-58px"
+  },
   "fv": 420
 }
 </script>
@@ -42,11 +72,11 @@
     <div class="sub">ผู้ผลิตเครื่องจักรผลิตชิปรายใหญ่สุดของโลก • Deposition / Etch / CMP / Process Control — หัวใจการผลิตชิป AI &amp; หน่วยความจำ HBM</div>
     <div class="price-row">
       <div>
-        <div class="px">$640<small>(AMAT)</small></div>
+        <div class="px">$602.50<small>(AMAT)</small></div>
       </div>
-      <div class="chg">▲ +287.9% (รอบปี)</div>
+      <div class="chg">▲ +274.8% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 22 มิ.ย. 2026 (ปิดตลาด)<br>
+        ราคา ณ 10 ก.ค. 2026 (ปิดตลาด)<br>
         ช่วงในวัน $612.50 – $638.90 • ใกล้จุดสูงสุดตลอดกาล<br>
         ที่มา: StockAnalysis / Yahoo Finance / CNBC
       </div>
@@ -128,7 +158,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $640</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $603</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $420</div></div>
         </div>
         <div class="scale">
@@ -152,7 +182,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict bad">
-        <div class="big">−52%</div>
+        <div class="big">−43%</div>
         <div class="txt"><b>ไม่มี Margin of Safety</b><br>ราคาปัจจุบัน $640 สูงกว่ามูลค่าเหมาะสม $420 ราว 52% → ตามเกณฑ์ value investor ถือว่า <b>แพงมาก</b> เป็นการซื้อที่ราคา "พีคของวัฏจักร" ซึ่งเสี่ยงสูง ยังไม่ใช่จุดเข้าที่ปลอดภัย</div>
       </div>
       <div class="grid g3">
@@ -163,7 +193,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="640" step="1">
+          <input id="pxIn" class="mono" type="number" value="602.5" step="1">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

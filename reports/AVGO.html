@@ -6,22 +6,52 @@
 <title>วิเคราะห์หุ้น Broadcom (AVGO) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Opus 4.8">
 <script type="application/json" id="stock-meta">
-{"symbol":"AVGO","currency":"USD","price":393,"fairValue":470,"mos":16,"upside":19.6,"pe":65,"dividendYield":0.66,"roe":35}
+{"symbol":"AVGO","currency":"USD","price":399.97,"fairValue":470,"mos":14.9,"upside":17.5,"pe":65,"dividendYield":0.66,"roe":35}
 </script>
 <script type="application/json" id="report-data">
 {
   "theme": {
-    "accent": "#1a73e8", "accentDark": "#1557b0",
+    "accent": "#1a73e8",
+    "accentDark": "#1557b0",
     "darkGrad": "linear-gradient(135deg,#1a1230 0%,#3a1f5c 60%,#c41230 140%)",
-    "glow": "rgba(196,18,48,.4)", "subColor": "#d8c7e4", "headerMuted": "#cdb6da",
-    "chgBg": "var(--green-soft)", "chgColor": "#1e8e3e", "badge": "var(--blue)",
-    "verdictText": "#ddd4ed", "vcellLabel": "#bca8cc"
+    "glow": "rgba(196,18,48,.4)",
+    "subColor": "#d8c7e4",
+    "headerMuted": "#cdb6da",
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#1e8e3e",
+    "badge": "var(--blue)",
+    "verdictText": "#ddd4ed",
+    "vcellLabel": "#bca8cc"
   },
   "chart": {
-    "data": [["มิ.ย.25",250],["ส.ค.25",300],["ต.ค.25",360],["ธ.ค.25",405],["ก.พ.26",440],["เม.ย.26",495],["พ.ค.26",430],["มิ.ย.26",393]],
-    "min": 220, "max": 520, "grid": [250,300,350,400,450,500], "fairLine": 470, "currency": "$", "highlight": [5,7]
+    "data": [
+      ["ส.ค.25", 297.39],
+      ["ก.ย.25", 329.91],
+      ["ต.ค.25", 369.63],
+      ["พ.ย.25", 402.96],
+      ["ธ.ค.25", 346.1],
+      ["ม.ค.26", 331.3],
+      ["ก.พ.26", 319.55],
+      ["มี.ค.26", 309.51],
+      ["เม.ย.26", 417.43],
+      ["พ.ค.26", 446.77],
+      ["มิ.ย.26", 377.75],
+      ["ก.ค.26", 399.97]
+    ],
+    "min": 250,
+    "max": 500,
+    "grid": [300, 350, 400, 450],
+    "fairLine": 470,
+    "currency": "$",
+    "highlight": [0, 9]
   },
-  "gauge": { "min": 300, "max": 680, "cur": 393, "fair": 470, "fairLabelTop": "-58px" },
+  "gauge": {
+    "min": 300,
+    "max": 680,
+    "cur": 399.97,
+    "fair": 470,
+    "fairLabelTop": "-58px"
+  },
   "fv": 470
 }
 </script>
@@ -42,11 +72,11 @@
     <div class="sub">ออกแบบชิป AI เฉพาะทาง (XPU/ASIC) ให้ hyperscaler • AI Networking (Tomahawk/Jericho) • ซอฟต์แวร์ VMware</div>
     <div class="price-row">
       <div>
-        <div class="px">$393<small>(AVGO)</small></div>
+        <div class="px">$399.97<small>(AVGO)</small></div>
       </div>
-      <div class="chg">▲ +57.2% (รอบปี)</div>
+      <div class="chg">▲ +34.5% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ≈ 22 มิ.ย. 2026 (ผันผวนสูง)<br>
+        ราคา ≈ 10 ก.ค. 2026 (ผันผวนสูง)<br>
         ปิด $392–393 จากกรอบวัน $392–$415<br>
         ที่มา: StockAnalysis.com / Yahoo Finance / CNBC
       </div>
@@ -128,7 +158,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $393</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $400</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $470</div></div>
         </div>
         <div class="scale">
@@ -152,7 +182,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict ok">
-        <div class="big">+16%</div>
+        <div class="big">+15%</div>
         <div class="txt"><b>มี Margin of Safety พอประมาณ</b><br>ราคาปัจจุบัน $393 ต่ำกว่ามูลค่าเหมาะสม $470 ราว 16% → ตามเกณฑ์ value investor ถือว่า <b>เริ่มน่าสนใจ</b> แต่ยังไม่ถึงโซน deep value (เพราะมูลค่าอิงสมมติฐานการโต AI สูง)</div>
       </div>
       <div class="grid g3">
@@ -163,7 +193,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="393" step="1">
+          <input id="pxIn" class="mono" type="number" value="399.97" step="1">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

@@ -6,10 +6,54 @@
 <title>วิเคราะห์หุ้น Principal Financial Group (PFG) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Sonnet 4.6">
 <script type="application/json" id="stock-meta">
-{"symbol":"PFG","currency":"USD","price":107.78,"fairValue":102,"mos":-5.7,"upside":-5.4,"pe":15.46,"dividendYield":3.04,"roe":13.51}
+{"symbol":"PFG","currency":"USD","price":112.23,"fairValue":102,"mos":-10,"upside":-9.1,"pe":15.46,"dividendYield":3.04,"roe":13.51}
 </script>
 <script type="application/json" id="report-data">
-{"theme":{"accent":"#1B6BB5","accentDark":"#124D87","darkGrad":"linear-gradient(135deg,#020A14 0%,#051828 50%,#020A14 100%)","glow":"rgba(27,107,181,0.22)","subColor":"#5B9FD6","headerMuted":"rgba(91,159,214,0.70)","verdictText":"#C8DDEF","vcellLabel":"rgba(200,221,239,0.65)","badge":"#1B6BB5","chgBg":"rgba(34,197,94,0.15)","chgColor":"#22C55E"},"chart":{"data":[["ก.ค. 68",75.07],["ส.ค. 68",77.66],["ก.ย. 68",80.76],["ต.ค. 68",81.86],["พ.ย. 68",82.62],["ธ.ค. 68",86.73],["ม.ค. 69",93.13],["ก.พ. 69",93.82],["มี.ค. 69",89.40],["เม.ย. 69",100.11],["พ.ค. 69",102.80],["มิ.ย. 69",108.51],["ก.ค. 69",107.78]],"min":68,"max":120,"grid":[80,95,110],"fairLine":102,"currency":"$","highlight":[11]},"gauge":{"min":60,"max":135,"cur":107.78,"fair":102,"fairLabelTop":true},"fv":102}
+{
+  "theme": {
+    "accent": "#1B6BB5",
+    "accentDark": "#124D87",
+    "darkGrad": "linear-gradient(135deg,#020A14 0%,#051828 50%,#020A14 100%)",
+    "glow": "rgba(27,107,181,0.22)",
+    "subColor": "#5B9FD6",
+    "headerMuted": "rgba(91,159,214,0.70)",
+    "verdictText": "#C8DDEF",
+    "vcellLabel": "rgba(200,221,239,0.65)",
+    "badge": "#1B6BB5",
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#1e8e3e"
+  },
+  "chart": {
+    "data": [
+      ["ส.ค.25", 80.51],
+      ["ก.ย.25", 82.91],
+      ["ต.ค.25", 84.04],
+      ["พ.ย.25", 84.82],
+      ["ธ.ค.25", 88.21],
+      ["ม.ค.26", 94.72],
+      ["ก.พ.26", 95.42],
+      ["มี.ค.26", 90.11],
+      ["เม.ย.26", 100.91],
+      ["พ.ค.26", 103.62],
+      ["มิ.ย.26", 107.78],
+      ["ก.ค.26", 112.23]
+    ],
+    "min": 70,
+    "max": 120,
+    "grid": [80, 90, 100, 110],
+    "fairLine": 102,
+    "currency": "$",
+    "highlight": [0, 11]
+  },
+  "gauge": {
+    "min": 60,
+    "max": 135,
+    "cur": 112.23,
+    "fair": 102,
+    "fairLabelTop": true
+  },
+  "fv": 102
+}
 </script>
 <!--TEMPLATE:STYLE-->
 </head>
@@ -28,11 +72,11 @@
     <div class="sub">แผนเกษียณอายุองค์กร (401k/DB) • ประกันสุขภาพ-ชีวิตกลุ่ม • จัดการสินทรัพย์ AUM $781B • ตลาดเกิดใหม่ (ละตินอเมริกา, เอเชีย)</div>
     <div class="price-row">
       <div>
-        <div class="px">$107.78<small>(PFG)</small></div>
+        <div class="px">$112.23<small>(PFG)</small></div>
       </div>
-      <div class="chg">▲ +43.6% (รอบปี)</div>
+      <div class="chg">▲ +39.4% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 1 กรกฎาคม 2569<br>
+        ราคา ณ 10 ก.ค. 2569<br>
         กรอบ 52 สัปดาห์ $75.00 – $112.45<br>
         ที่มา: Yahoo Finance, StockAnalysis.com, digrin.com
       </div>
@@ -110,7 +154,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $107.78</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $112.23</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $102</div></div>
         </div>
         <div class="scale">
@@ -132,7 +176,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict bad">
-        <div class="big">−5.7%</div>
+        <div class="big">−10%</div>
         <div class="txt">ราคาสูงกว่า Fair Value · ยังไม่มี MOS · รอโอกาสเข้า</div>
       </div>
       <div class="grid g3">
@@ -143,7 +187,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="107.78" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="112.23" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

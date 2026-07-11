@@ -8,7 +8,7 @@
 <meta name="ai-model" content="Claude Sonnet 5">
 <!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
 <script type="application/json" id="stock-meta">
-{"symbol":"ESS","currency":"USD","price":291.59,"fairValue":302,"mos":3.4,"upside":3.6,"pe":null,"dividendYield":3.55,"roe":null}
+{"symbol":"ESS","currency":"USD","price":293.55,"fairValue":302,"mos":2.8,"upside":2.9,"pe":null,"dividendYield":3.55,"roe":null}
 </script>
 <script type="application/json" id="report-data">
 {
@@ -22,36 +22,35 @@
     "verdictText": "#fbeee0",
     "vcellLabel": "#e8c39a",
     "badge": "#B5722E",
-    "chgBg": "rgba(30,142,62,0.18)",
-    "chgColor": "#34d07f"
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#1e8e3e"
   },
   "chart": {
     "data": [
-      ["ก.ค. 68", 260.18],
-      ["ส.ค. 68", 270.21],
-      ["ก.ย. 68", 267.66],
-      ["ต.ค. 68", 251.77],
-      ["พ.ย. 68", 263.62],
-      ["ธ.ค. 68", 261.68],
-      ["ม.ค. 69", 251.87],
-      ["ก.พ. 69", 255.11],
-      ["มี.ค. 69", 242.00],
-      ["เม.ย. 69", 263.21],
-      ["พ.ค. 69", 272.64],
-      ["มิ.ย. 69", 295.93],
-      ["30 มิ.ย.", 291.59]
+      ["ส.ค.25", 270.21],
+      ["ก.ย.25", 267.66],
+      ["ต.ค.25", 251.77],
+      ["พ.ย.25", 263.62],
+      ["ธ.ค.25", 261.68],
+      ["ม.ค.26", 251.87],
+      ["ก.พ.26", 255.11],
+      ["มี.ค.26", 242],
+      ["เม.ย.26", 263.21],
+      ["พ.ค.26", 272.64],
+      ["มิ.ย.26", 291.59],
+      ["ก.ค.26", 293.55]
     ],
-    "min": 225,
-    "max": 305,
-    "grid": [225, 245, 265, 285, 305],
+    "min": 220,
+    "max": 320,
+    "grid": [240, 260, 280, 300],
     "fairLine": 302,
     "currency": "$",
-    "highlight": [8, 11]
+    "highlight": [7, 11]
   },
   "gauge": {
     "min": 200,
     "max": 335,
-    "cur": 291.59,
+    "cur": 293.55,
     "fair": 302,
     "fairLabelTop": true
   },
@@ -76,14 +75,14 @@
     <div class="sub">อพาร์ตเมนต์ให้เช่า 259 ชุมชน กว่า 63,000 ยูนิต ใน Southern California, Northern California และ Seattle Metro • เน้นตลาด high-barrier-to-entry ที่ supply ใหม่ถูกจำกัดด้วยกฎผังเมือง • Dividend Aristocrat ปันผลเพิ่มต่อเนื่อง 33 ปี</div>
     <div class="price-row">
       <div>
-        <div class="px">$291.59<small>(ESS)</small></div>
+        <div class="px">$293.55<small>(ESS)</small></div>
       </div>
       <!-- ★ ป้าย % รอบปี (gate E35/E36) — ผลตอบแทน ~1 ปี (เทียบราคา ~1 ปีก่อน) = ผลตอบแทนปลายกราฟ section 2 (จุดแรก→ท้าย)
            รูปแบบ: "▲ +X.X% (รอบปี)" ขึ้น · "▼ −X.X% (รอบปี)" ลง · "≈ ทรงตัว (รอบปี)" · หุ้น IPO <1 ปี ใช้ "(ตั้งแต่ IPO)"
            ไม่ใช่ % รายวัน/YTD/52 สัปดาห์ · ตั้งสี theme.chgBg/chgColor ให้ตรงทิศ (ขึ้น=เขียว/ลง=แดง · E34) -->
-      <div class="chg">▲ +12.1% (รอบปี)</div>
+      <div class="chg">▲ +8.6% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 30 มิ.ย. 2569<br>
+        ราคา ณ 10 ก.ค. 2569<br>
         กรอบ 52 สัปดาห์ $238.46 – $296.07<br>
         ที่มา: StockAnalysis.com, Yahoo Finance, MarketBeat.com
       </div>
@@ -169,7 +168,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $291.59</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $293.55</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $302</div></div>
         </div>
         <div class="scale">
@@ -193,7 +192,7 @@
     <div class="card">
       <!-- ✏️ class ของ mos-verdict: MOS<10 → "bad", 10–20 → "ok", ≥20 → "good" -->
       <div class="mos-verdict bad">
-        <div class="big">+3.4%</div>
+        <div class="big">+3%</div>
         <div class="txt">MOS แคบมาก — ราคาใกล้เคียงมูลค่าเหมาะสมแล้ว เหมาะกับ income/defensive holding มากกว่าการซื้อหวัง capital gain</div>
       </div>
       <div class="grid g3">
@@ -204,7 +203,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="291.59" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="293.55" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

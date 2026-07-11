@@ -8,22 +8,52 @@
 <meta name="ai-model" content="Claude Opus 4.8">
 <!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
 <script type="application/json" id="stock-meta">
-{"symbol":"BKNG","currency":"USD","price":181.46,"fairValue":216,"mos":16.0,"upside":19.0,"pe":23.82,"dividendYield":0.93,"roe":null}
+{"symbol":"BKNG","currency":"USD","price":178.39,"fairValue":216,"mos":17.4,"upside":21.1,"pe":23.82,"dividendYield":0.93,"roe":null}
 </script>
 <script type="application/json" id="report-data">
 {
   "theme": {
-    "accent": "#0071c2", "accentDark": "#00224f",
+    "accent": "#0071c2",
+    "accentDark": "#00224f",
     "darkGrad": "linear-gradient(135deg,#00224f 0%,#003580 55%,#0071c2 140%)",
-    "glow": "rgba(0,113,194,.35)", "subColor": "#bcd4ec", "headerMuted": "#a9c2dd",
-    "chgBg": "var(--red-soft)", "chgColor": "#c5221f", "badge": "var(--blue)",
-    "verdictText": "#cfdcea", "vcellLabel": "#a4b8cf"
+    "glow": "rgba(0,113,194,.35)",
+    "subColor": "#bcd4ec",
+    "headerMuted": "#a9c2dd",
+    "chgBg": "var(--red-soft)",
+    "chgColor": "#c5221f",
+    "badge": "var(--blue)",
+    "verdictText": "#cfdcea",
+    "vcellLabel": "#a4b8cf"
   },
   "chart": {
-    "data": [["ก.ค.25",218.86],["ส.ค.25",222.64],["ก.ย.25",215.07],["ต.ค.25",202.26],["พ.ย.25",195.77],["ธ.ค.25",213.73],["ม.ค.26",199.62],["ก.พ.26",169.19],["มี.ค.26",168.41],["เม.ย.26",168.36],["พ.ค.26",167.43],["มิ.ย.26",181.46]],
-    "min": 160, "max": 240, "grid": [160,180,200,220,240], "fairLine": 216, "currency": "$", "highlight": [10,11]
+    "data": [
+      ["ส.ค.25", 223.96],
+      ["ก.ย.25", 215.97],
+      ["ต.ค.25", 203.11],
+      ["พ.ย.25", 196.59],
+      ["ธ.ค.25", 214.21],
+      ["ม.ค.26", 200.07],
+      ["ก.พ.26", 169.57],
+      ["มี.ค.26", 168.41],
+      ["เม.ย.26", 168.36],
+      ["พ.ค.26", 167.43],
+      ["มิ.ย.26", 178.24],
+      ["ก.ค.26", 178.39]
+    ],
+    "min": 160,
+    "max": 240,
+    "grid": [180, 200, 220],
+    "fairLine": 216,
+    "currency": "$",
+    "highlight": [0, 9]
   },
-  "gauge": { "min": 151.20, "max": 233.58, "cur": 181.46, "fair": 216, "fairLabelTop": "-58px" },
+  "gauge": {
+    "min": 151.2,
+    "max": 233.58,
+    "cur": 178.39,
+    "fair": 216,
+    "fairLabelTop": "-58px"
+  },
   "fv": 216
 }
 </script>
@@ -45,14 +75,14 @@
     <div class="sub">Booking.com • Priceline • Agoda • KAYAK • OpenTable — ผู้นำโลกแพลตฟอร์มจองท่องเที่ยวออนไลน์ (ที่พัก·เที่ยวบิน·รถเช่า·ร้านอาหาร)</div>
     <div class="price-row">
       <div>
-        <div class="px">$181.46<small>(BKNG)</small></div>
+        <div class="px">$178.39<small>(BKNG)</small></div>
       </div>
       <!-- ★ ป้าย % รอบปี (gate E35/E36) — ผลตอบแทน ~1 ปี (เทียบราคา ~1 ปีก่อน) = ผลตอบแทนปลายกราฟ section 2 (จุดแรก→ท้าย)
            รูปแบบ: "▲ +X.X% (รอบปี)" ขึ้น · "▼ −X.X% (รอบปี)" ลง · "≈ ทรงตัว (รอบปี)" · หุ้น IPO <1 ปี ใช้ "(ตั้งแต่ IPO)"
            ไม่ใช่ % รายวัน/YTD/52 สัปดาห์ · ตั้งสี theme.chgBg/chgColor ให้ตรงทิศ (ขึ้น=เขียว/ลง=แดง · E34) -->
-      <div class="chg">▼ −17.1% (รอบปี)</div>
+      <div class="chg">▼ −20.3% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 26 มิ.ย. 2026<br>
+        ราคา ณ 10 ก.ค. 2026<br>
         กรอบ 52 สัปดาห์ $150.14 – $233.58<br>
         ที่มา: StockAnalysis.com • Yahoo Finance • digrin.com
       </div>
@@ -142,7 +172,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $181.46</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $178.39</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $216</div></div>
         </div>
         <div class="scale">
@@ -166,7 +196,7 @@
     <div class="card">
       <!-- ✏️ class ของ mos-verdict: MOS<10 → "bad", 10–20 → "ok", ≥20 → "good" -->
       <div class="mos-verdict ok">
-        <div class="big">+16.0%</div>
+        <div class="big">+17%</div>
         <div class="txt">ราคาต่ำกว่ามูลค่าเหมาะสม $216 ราว 16% — ส่วนเผื่อความปลอดภัยพอใช้ เหมาะเริ่มทยอยสะสม</div>
       </div>
       <div class="grid g3">
@@ -177,7 +207,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="181.46" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="178.39" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

@@ -6,22 +6,52 @@
 <title>วิเคราะห์หุ้น CME Group (CME) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Opus 4.8">
 <script type="application/json" id="stock-meta">
-{"symbol":"CME","currency":"USD","price":221.00,"fairValue":257,"mos":14.0,"upside":16.3,"pe":18.86,"dividendYield":2.35,"roe":15.4}
+{"symbol":"CME","currency":"USD","price":240.27,"fairValue":257,"mos":6.5,"upside":7,"pe":18.86,"dividendYield":2.35,"roe":15.4}
 </script>
 <script type="application/json" id="report-data">
 {
   "theme": {
-    "accent": "#00915a", "accentDark": "#006e44",
+    "accent": "#00915a",
+    "accentDark": "#006e44",
     "darkGrad": "linear-gradient(135deg,#0a1a12 0%,#0d2318 55%,#102d1f 140%)",
-    "glow": "rgba(0,145,90,.30)", "subColor": "#a8c8b8", "headerMuted": "#90b8a4",
-    "chgBg": "#fde8e8", "chgColor": "#c5221f", "badge": "#00915a",
-    "verdictText": "#c8ddd5", "vcellLabel": "#9ab8aa"
+    "glow": "rgba(0,145,90,.30)",
+    "subColor": "#a8c8b8",
+    "headerMuted": "#90b8a4",
+    "chgBg": "var(--red-soft)",
+    "chgColor": "#c5221f",
+    "badge": "#00915a",
+    "verdictText": "#c8ddd5",
+    "vcellLabel": "#9ab8aa"
   },
   "chart": {
-    "data": [["ก.ค.25",269.25],["ส.ค.25",257.86],["ก.ย.25",262.67],["ต.ค.25",258.10],["พ.ย.25",273.63],["ธ.ค.25",266.70],["ม.ค.26",282.31],["ก.พ.26",312.04],["มี.ค.26",295.35],["เม.ย.26",287.82],["พ.ค.26",273.54],["มิ.ย.26",221.00]],
-    "min": 210, "max": 330, "grid": [220,250,280,310], "fairLine": 257, "currency": "$", "highlight": [7,11]
+    "data": [
+      ["ส.ค.25", 266.51],
+      ["ก.ย.25", 270.19],
+      ["ต.ค.25", 265.49],
+      ["พ.ย.25", 281.46],
+      ["ธ.ค.25", 273.08],
+      ["ม.ค.26", 289.06],
+      ["ก.พ.26", 319.5],
+      ["มี.ค.26", 295.35],
+      ["เม.ย.26", 287.82],
+      ["พ.ค.26", 273.54],
+      ["มิ.ย.26", 220.83],
+      ["ก.ค.26", 240.27]
+    ],
+    "min": 200,
+    "max": 350,
+    "grid": [225, 250, 275, 300, 325],
+    "fairLine": 257,
+    "currency": "$",
+    "highlight": [6, 10]
   },
-  "gauge": { "min": 170, "max": 330, "cur": 221.00, "fair": 257, "fairLabelTop": "-58px" },
+  "gauge": {
+    "min": 170,
+    "max": 330,
+    "cur": 240.27,
+    "fair": 257,
+    "fairLabelTop": "-58px"
+  },
   "fv": 257
 }
 </script>
@@ -42,11 +72,11 @@
     <div class="sub">ตลาดอนุพันธ์ใหญ่สุดในโลก • อัตราดอกเบี้ย (Treasury/SOFR) • ดัชนีหุ้น (E-mini S&amp;P) • พลังงาน • เกษตร • โลหะ • FX • ข้อมูลตลาด</div>
     <div class="price-row">
       <div>
-        <div class="px">$221.00<small>(CME)</small></div>
+        <div class="px">$240.27<small>(CME)</small></div>
       </div>
-      <div class="chg">▼ −17.9% (รอบปี)</div>
+      <div class="chg">▼ −9.8% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 29 มิ.ย. 2026 (จุดต่ำสุด 52 สัปดาห์)<br>
+        ราคา ณ 10 ก.ค. 2026 (จุดต่ำสุด 52 สัปดาห์)<br>
         กรอบ 52 สัปดาห์ $220.73 – $329.16<br>
         ที่มา: StockAnalysis.com / Yahoo Finance / digrin.com
       </div>
@@ -132,7 +162,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $221.00</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $240.27</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $257</div></div>
         </div>
         <div class="scale">
@@ -157,7 +187,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict ok">
-        <div class="big">+14.0%</div>
+        <div class="big">+7%</div>
         <div class="txt">ราคาต่ำกว่ามูลค่า — มีส่วนเผื่อความปลอดภัยพอสมควร</div>
       </div>
       <div class="grid g3">
@@ -168,7 +198,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="221.00" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="240.27" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

@@ -6,7 +6,7 @@
 <title>วิเคราะห์หุ้น VGI PCL (VGI) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Sonnet 4.6">
 <script type="application/json" id="stock-meta">
-{"symbol":"VGI","currency":"THB","price":0.94,"fairValue":1.20,"mos":21.7,"upside":27.7,"pe":null,"dividendYield":1.38,"roe":-3.61}
+{"symbol":"VGI","currency":"THB","price":1.01,"fairValue":1.2,"mos":15.8,"upside":18.8,"pe":null,"dividendYield":1.38,"roe":-3.61}
 </script>
 <script type="application/json" id="report-data">
 {
@@ -20,42 +20,41 @@
     "verdictText": "#e8f5e9",
     "vcellLabel": "#a5d6a7",
     "badge": "#43a047",
-    "chgBg": "#c5221f",
-    "chgColor": "#ffffff"
+    "chgBg": "var(--red-soft)",
+    "chgColor": "#c5221f"
   },
   "chart": {
     "data": [
-      ["ก.ค. 68", 1.17],
-      ["ส.ค. 68", 0.93],
-      ["ก.ย. 68", 0.87],
-      ["ต.ค. 68", 0.95],
-      ["พ.ย. 68", 0.93],
-      ["ธ.ค. 68", 0.92],
-      ["ม.ค. 69", 0.94],
-      ["ก.พ. 69", 0.91],
-      ["มี.ค. 69", 0.89],
-      ["เม.ย. 69", 0.88],
-      ["พ.ค. 69", 0.87],
-      ["มิ.ย. 69", 0.93],
-      ["ก.ค. 69", 0.94]
+      ["ส.ค.25", 2.1],
+      ["ก.ย.25", 1.58],
+      ["ต.ค.25", 1.25],
+      ["พ.ย.25", 1.08],
+      ["ธ.ค.25", 0.95],
+      ["ม.ค.26", 0.86],
+      ["ก.พ.26", 1.17],
+      ["มี.ค.26", 0.93],
+      ["เม.ย.26", 0.87],
+      ["พ.ค.26", 0.95],
+      ["มิ.ย.26", 0.93],
+      ["ก.ค.26", 1.01]
     ],
-    "min": 0.75,
-    "max": 1.40,
-    "grid": [0.80, 0.90, 1.00, 1.10, 1.20, 1.30],
-    "fairLine": 1.20,
+    "min": 0.5,
+    "max": 2.5,
+    "grid": [1, 1.5, 2],
+    "fairLine": 1.2,
     "currency": "฿",
-    "highlight": [0, 6],
+    "highlight": [0, 5],
     "gridFmt": "v.toFixed(2)",
     "dataFmt": "d[1].toFixed(2)"
   },
   "gauge": {
-    "min": 0.70,
-    "max": 1.50,
-    "cur": 0.94,
-    "fair": 1.20,
+    "min": 0.7,
+    "max": 1.5,
+    "cur": 1.01,
+    "fair": 1.2,
     "fairLabelTop": true
   },
-  "fv": 1.20
+  "fv": 1.2
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -75,11 +74,11 @@
     <div class="sub">สื่อโฆษณา Out-of-Home บนระบบรถไฟฟ้า BTS • สื่อนอกบ้านทั่วประเทศ • บริการดิจิทัล &amp; FinTech • จัดจำหน่ายสินค้าเทคโนโลยี</div>
     <div class="price-row">
       <div>
-        <div class="px">฿0.94<small>(VGI)</small></div>
+        <div class="px">฿1.01<small>(VGI)</small></div>
       </div>
-      <div class="chg">▼ −19.7% (รอบปี)</div>
+      <div class="chg">▼ −51.9% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 4 ก.ค. 2569<br>
+        ราคา ณ 10 ก.ค. 2569<br>
         กรอบ 52 สัปดาห์ ฿0.77 – ฿2.28<br>
         ที่มา: Yahoo Finance, Google Finance, Investing.com
       </div>
@@ -161,7 +160,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿0.94</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿1.01</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿1.20</div></div>
         </div>
         <div class="scale">
@@ -185,7 +184,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict good">
-        <div class="big">+21.7%</div>
+        <div class="big">+16%</div>
         <div class="txt">MOS ≥ 20% — ซื้อขายต่ำกว่ามูลค่าเหมาะสมพอสมควร แต่ความเสี่ยงด้านกำไรยังสูง</div>
       </div>
       <div class="grid g3">
@@ -196,7 +195,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="0.94" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="1.01" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

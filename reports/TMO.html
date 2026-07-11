@@ -6,10 +6,54 @@
 <title>วิเคราะห์หุ้น Thermo Fisher Scientific (TMO) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Sonnet 4.6">
 <script type="application/json" id="stock-meta">
-{"symbol":"TMO","currency":"USD","price":513.03,"fairValue":503,"mos":-2.0,"upside":-2.0,"pe":22.4,"dividendYield":0.37,"roe":13.52}
+{"symbol":"TMO","currency":"USD","price":527.05,"fairValue":503,"mos":-4.8,"upside":-4.6,"pe":22.4,"dividendYield":0.37,"roe":13.52}
 </script>
 <script type="application/json" id="report-data">
-{"theme":{"accent":"#DA2B2B","accentDark":"#A11C1C","darkGrad":"linear-gradient(135deg, #120303 0%, #240707 100%)","glow":"rgba(218,43,43,0.35)","subColor":"#EC6464","headerMuted":"rgba(218,43,43,0.12)","verdictText":"#F8D4D4","vcellLabel":"rgba(248,212,212,0.6)","badge":"#DA2B2B","chgBg":"rgba(34,197,94,0.15)","chgColor":"#22C55E"},"chart":{"data":[["ก.ค. 68",467.68],["ส.ค. 68",492.72],["ก.ย. 68",485.02],["ต.ค. 68",567.39],["พ.ย. 68",590.83],["ธ.ค. 68",579.45],["ม.ค. 69",578.61],["ก.พ. 69",521.11],["มี.ค. 69",491.53],["เม.ย. 69",478.96],["พ.ค. 69",492.51],["มิ.ย. 69",513.03]],"min":455,"max":600,"grid":[490,530,570],"fairLine":503,"currency":"$","highlight":[4]},"gauge":{"min":450,"max":600,"cur":513.03,"fair":503,"fairLabelTop":false},"fv":503}
+{
+  "theme": {
+    "accent": "#DA2B2B",
+    "accentDark": "#A11C1C",
+    "darkGrad": "linear-gradient(135deg, #120303 0%, #240707 100%)",
+    "glow": "rgba(218,43,43,0.35)",
+    "subColor": "#EC6464",
+    "headerMuted": "rgba(218,43,43,0.12)",
+    "verdictText": "#F8D4D4",
+    "vcellLabel": "rgba(248,212,212,0.6)",
+    "badge": "#DA2B2B",
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#1e8e3e"
+  },
+  "chart": {
+    "data": [
+      ["ส.ค.25", 492.72],
+      ["ก.ย.25", 485.02],
+      ["ต.ค.25", 567.39],
+      ["พ.ย.25", 590.83],
+      ["ธ.ค.25", 579.45],
+      ["ม.ค.26", 578.61],
+      ["ก.พ.26", 521.11],
+      ["มี.ค.26", 491.53],
+      ["เม.ย.26", 478.96],
+      ["พ.ค.26", 492.51],
+      ["มิ.ย.26", 501.36],
+      ["ก.ค.26", 527.05]
+    ],
+    "min": 450,
+    "max": 600,
+    "grid": [500, 550],
+    "fairLine": 503,
+    "currency": "$",
+    "highlight": [3, 8]
+  },
+  "gauge": {
+    "min": 450,
+    "max": 600,
+    "cur": 527.05,
+    "fair": 503,
+    "fairLabelTop": false
+  },
+  "fv": 503
+}
 </script>
 <!--TEMPLATE:STYLE-->
 </head>
@@ -28,11 +72,11 @@
     <div class="sub">เครื่องมือ/น้ำยาวิทยาศาสตร์ชีวภาพรายใหญ่สุดโลก • Life Sciences Solutions • Analytical Instruments • Specialty Diagnostics • Lab Products &amp; Biopharma Services (CRO/CDMO)</div>
     <div class="price-row">
       <div>
-        <div class="px">$513.03<small>(TMO)</small></div>
+        <div class="px">$527.05<small>(TMO)</small></div>
       </div>
-      <div class="chg">▲ +9.7% (รอบปี)</div>
+      <div class="chg">▲ +7.0% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 26 มิ.ย. 2569<br>
+        ราคา ณ 10 ก.ค. 2569<br>
         กรอบ 52 สัปดาห์ $401.45 / $643.99<br>
         ที่มา: StockAnalysis.com / Yahoo Finance / Macrotrends
       </div>
@@ -110,7 +154,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $513.03</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $527.05</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $503</div></div>
         </div>
         <div class="scale">
@@ -132,7 +176,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict bad">
-        <div class="big">−2.0%</div>
+        <div class="big">−5%</div>
         <div class="txt">ราคาสูงกว่ามูลค่าเหมาะสมเล็กน้อย (~2%) — ยังไม่มี MOS · รอย่อสู่ใกล้ $503 หรือต่ำกว่า</div>
       </div>
       <div class="grid g3">
@@ -143,7 +187,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="513.03" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="527.05" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

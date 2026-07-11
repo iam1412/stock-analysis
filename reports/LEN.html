@@ -6,7 +6,7 @@
 <title>วิเคราะห์หุ้น Lennar Corporation (LEN) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Sonnet 4.6">
 <script type="application/json" id="stock-meta">
-{"symbol":"LEN","currency":"USD","price":83.59,"fairValue":78.68,"mos":-6.24,"upside":-5.87,"pe":13.00,"dividendYield":2.39,"roe":7.37}
+{"symbol":"LEN","currency":"USD","price":84.27,"fairValue":78.68,"mos":-7.1,"upside":-6.6,"pe":13,"dividendYield":2.39,"roe":7.37}
 </script>
 <script type="application/json" id="report-data">
 {
@@ -20,22 +20,35 @@
     "verdictText": "#DCEDDD",
     "vcellLabel": "#BFE0C4",
     "badge": "#1b5e20",
-    "chgBg": "#fce8e6",
+    "chgBg": "var(--red-soft)",
     "chgColor": "#c5221f"
   },
   "chart": {
-    "data": [["ส.ค. 68",133.14],["ก.ย. 68",126.04],["ต.ค. 68",123.77],["พ.ย. 68",131.30],["ธ.ค. 68",102.80],["ม.ค. 69",109.35],["ก.พ. 69",114.36],["มี.ค. 69",86.84],["เม.ย. 69",90.30],["พ.ค. 69",89.78],["มิ.ย. 69",90.49],["ก.ค. 69",83.59],["ปัจจุบัน",83.59]],
-    "min": 75,
-    "max": 138,
-    "grid": [90,105,120],
+    "data": [
+      ["ส.ค.25", 133.14],
+      ["ก.ย.25", 126.04],
+      ["ต.ค.25", 123.77],
+      ["พ.ย.25", 131.3],
+      ["ธ.ค.25", 102.8],
+      ["ม.ค.26", 109.35],
+      ["ก.พ.26", 114.36],
+      ["มี.ค.26", 86.84],
+      ["เม.ย.26", 90.3],
+      ["พ.ค.26", 89.78],
+      ["มิ.ย.26", 90.49],
+      ["ก.ค.26", 84.27]
+    ],
+    "min": 60,
+    "max": 140,
+    "grid": [80, 100, 120],
     "fairLine": 78.68,
     "currency": "$",
-    "highlight": [0,7]
+    "highlight": [0, 11]
   },
   "gauge": {
     "min": 50,
     "max": 100,
-    "cur": 83.59,
+    "cur": 84.27,
     "fair": 78.68,
     "fairLabelTop": false
   },
@@ -59,11 +72,11 @@
     <div class="sub">#2 US Homebuilder • Entry-Level & Luxury • Multifamily Rental • Tech-Enabled Construction</div>
     <div class="price-row">
       <div>
-        <div class="px">$83.59<small>(LEN)</small></div>
+        <div class="px">$84.27<small>(LEN)</small></div>
       </div>
-      <div class="chg">▼ −37.2% (รอบปี)</div>
+      <div class="chg">▼ −36.7% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 8 ก.ค. 2569<br>
+        ราคา ณ 10 ก.ค. 2569<br>
         กรอบ 52 สัปดาห์ $81.18 – $144.24<br>
         ที่มา: StockAnalysis.com, Yahoo Finance
       </div>
@@ -146,7 +159,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $83.59</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $84.27</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $78.68</div></div>
         </div>
         <div class="scale">
@@ -170,7 +183,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict bad">
-        <div class="big">−6.2%</div>
+        <div class="big">−7%</div>
         <div class="txt">ราคาปัจจุบันสูงกว่ามูลค่าเหมาะสม ~6.2% — ยังไม่มี Margin of Safety แม้ราคาจะร่วงมาแล้ว ~42% จาก 52 สัปดาห์สูงสุด รอจังหวะราคาย่อสู่โซน MOS 20% ($62.94) หรือต่ำกว่าก่อนเริ่มสะสม</div>
       </div>
       <div class="grid g3">
@@ -181,7 +194,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="83.59" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="84.27" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

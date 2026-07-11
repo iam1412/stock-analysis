@@ -6,7 +6,7 @@
 <title>วิเคราะห์หุ้น ทีทีดับบลิว (TTW) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Sonnet 4.6">
 <script type="application/json" id="stock-meta">
-{"symbol":"TTW","currency":"THB","price":9.80,"fairValue":11.30,"mos":13.3,"upside":15.3,"pe":11.96,"dividendYield":6.12,"roe":19.46}
+{"symbol":"TTW","currency":"THB","price":10,"fairValue":11.3,"mos":11.5,"upside":13,"pe":11.96,"dividendYield":6.12,"roe":19.46}
 </script>
 <script type="application/json" id="report-data">
 {
@@ -20,40 +20,39 @@
     "verdictText": "#e1f5fe",
     "vcellLabel": "rgba(225,245,254,0.7)",
     "badge": "#0288d1",
-    "chgBg": "rgba(30,142,62,0.18)",
+    "chgBg": "var(--green-soft)",
     "chgColor": "#1e8e3e"
   },
   "chart": {
     "data": [
-      ["ม.ค. 68", 9.10],
-      ["ก.พ. 68", 9.10],
-      ["มี.ค. 68", 9.05],
-      ["เม.ย. 68", 9.00],
-      ["พ.ค. 68", 9.05],
-      ["มิ.ย. 68", 9.20],
-      ["ก.ค. 68", 9.40],
-      ["ส.ค. 68", 9.15],
-      ["ก.ย. 68", 9.25],
-      ["ต.ค. 68", 9.30],
-      ["พ.ย. 68", 9.85],
-      ["ธ.ค. 68", 9.85],
-      ["ม.ค. 69", 9.80]
+      ["ส.ค.25", 9.1],
+      ["ก.ย.25", 9.1],
+      ["ต.ค.25", 9.05],
+      ["พ.ย.25", 9],
+      ["ธ.ค.25", 9.05],
+      ["ม.ค.26", 9.2],
+      ["ก.พ.26", 9.4],
+      ["มี.ค.26", 9.15],
+      ["เม.ย.26", 9.25],
+      ["พ.ค.26", 9.3],
+      ["มิ.ย.26", 9.85],
+      ["ก.ค.26", 10]
     ],
-    "min": 8.60,
-    "max": 10.20,
-    "grid": [8.60, 9.00, 9.40, 9.80, 10.20],
-    "fairLine": 11.30,
+    "min": 8,
+    "max": 12,
+    "grid": [9, 10, 11],
+    "fairLine": 11.3,
     "currency": "฿",
-    "highlight": [6, 10]
+    "highlight": [3, 11]
   },
   "gauge": {
-    "min": 7.00,
-    "max": 13.00,
-    "cur": 9.80,
-    "fair": 11.30,
+    "min": 7,
+    "max": 13,
+    "cur": 10,
+    "fair": 11.3,
     "fairLabelTop": false
   },
-  "fv": 11.30
+  "fv": 11.3
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -73,11 +72,11 @@
     <div class="sub">ผลิตน้ำประปาสัมปทาน 30 ปี • ขายให้ PWA นครปฐม–สมุทรสาคร • รายได้แน่นอนตามสัญญา • ปันผลสม่ำเสมอ ≥6% ทุกปี</div>
     <div class="price-row">
       <div>
-        <div class="px">฿9.80<small>(TTW)</small></div>
+        <div class="px">฿10.00<small>(TTW)</small></div>
       </div>
-      <div class="chg">▲ +7.7% (รอบปี)</div>
+      <div class="chg">▲ +9.9% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 3 ก.ค. 2569<br>
+        ราคา ณ 10 ก.ค. 2569<br>
         กรอบ 52 สัปดาห์ ฿8.60 – ฿9.95<br>
         ที่มา: Investing.com, Yahoo Finance, th.Investing.com Financial Summary (FY2568)
       </div>
@@ -160,7 +159,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿9.80</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿10.00</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿11.30</div></div>
         </div>
         <div class="scale">
@@ -184,7 +183,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict ok">
-        <div class="big">+13.3%</div>
+        <div class="big">+12%</div>
         <div class="txt">MOS ระดับ "น่าสนใจ" — ราคาต่ำกว่า FV ~13% เหมาะทยอยสะสม</div>
       </div>
       <div class="grid g3">
@@ -195,7 +194,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="9.80" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="10" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

@@ -6,22 +6,52 @@
 <title>วิเคราะห์หุ้น Tesla (TSLA) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Opus 4.8">
 <script type="application/json" id="stock-meta">
-{"symbol":"TSLA","currency":"USD","price":405,"fairValue":280,"mos":-45,"upside":-30.9,"pe":372,"dividendYield":0,"roe":4.9}
+{"symbol":"TSLA","currency":"USD","price":407.76,"fairValue":280,"mos":-45.6,"upside":-31.3,"pe":372,"dividendYield":0,"roe":4.9}
 </script>
 <script type="application/json" id="report-data">
 {
   "theme": {
-    "accent": "#ed1d1d", "accentDark": "#b30f0f",
+    "accent": "#ed1d1d",
+    "accentDark": "#b30f0f",
     "darkGrad": "linear-gradient(135deg,#3e0404 0%,#730707 58%,#b60c0c 140%)",
-    "glow": "rgba(236,19,19,.35)", "subColor": "#ebc2c2", "headerMuted": "#d4a5a5",
-    "chgBg": "var(--green-soft)", "chgColor": "#1e8e3e", "badge": "var(--blue)",
-    "verdictText": "#f1d0d0", "vcellLabel": "#dda6a6"
+    "glow": "rgba(236,19,19,.35)",
+    "subColor": "#ebc2c2",
+    "headerMuted": "#d4a5a5",
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#1e8e3e",
+    "badge": "var(--blue)",
+    "verdictText": "#f1d0d0",
+    "vcellLabel": "#dda6a6"
   },
   "chart": {
-    "data": [["มิ.ย.25",315],["ส.ค.25",340],["ต.ค.25",430],["ธ.ค.25",490],["ก.พ.26",390],["เม.ย.26",350],["พ.ค.26",430],["มิ.ย.26",405]],
-    "min": 260, "max": 520, "grid": [300,350,400,450,500], "fairLine": 280, "currency": "$", "highlight": [3,7]
+    "data": [
+      ["ส.ค.25", 333.87],
+      ["ก.ย.25", 444.72],
+      ["ต.ค.25", 456.56],
+      ["พ.ย.25", 430.17],
+      ["ธ.ค.25", 449.72],
+      ["ม.ค.26", 430.41],
+      ["ก.พ.26", 402.51],
+      ["มี.ค.26", 371.75],
+      ["เม.ย.26", 381.63],
+      ["พ.ค.26", 435.79],
+      ["มิ.ย.26", 420.6],
+      ["ก.ค.26", 407.76]
+    ],
+    "min": 250,
+    "max": 500,
+    "grid": [300, 350, 400, 450],
+    "fairLine": 280,
+    "currency": "$",
+    "highlight": [0, 2]
   },
-  "gauge": { "min": 180, "max": 640, "cur": 405, "fair": 280, "fairLabelTop": "-58px" },
+  "gauge": {
+    "min": 180,
+    "max": 640,
+    "cur": 407.76,
+    "fair": 280,
+    "fairLabelTop": "-58px"
+  },
   "fv": 280
 }
 </script>
@@ -42,11 +72,11 @@
     <div class="sub">รถ EV • พลังงาน/Megapack • FSD • Robotaxi • Optimus • Dojo/AI5 compute</div>
     <div class="price-row">
       <div>
-        <div class="px">$405<small>(TSLA)</small></div>
+        <div class="px">$407.76<small>(TSLA)</small></div>
       </div>
-      <div class="chg">▲ +28.6% (รอบปี)</div>
+      <div class="chg">▲ +22.1% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 22 มิ.ย. 2026 (ปิดตลาด $405.05)<br>
+        ราคา ณ 10 ก.ค. 2026 (ปิดตลาด $405.05)<br>
         ช่วงวัน $392.50 – $414.75 • ผันผวนสูง<br>
         ที่มา: StockAnalysis / Yahoo Finance / TradingEconomics / GuruFocus
       </div>
@@ -128,7 +158,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $405</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $408</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $280</div></div>
         </div>
         <div class="scale">
@@ -152,7 +182,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict bad">
-        <div class="big">−45%</div>
+        <div class="big">−46%</div>
         <div class="txt"><b>ไม่มี Margin of Safety</b><br>ราคาปัจจุบัน $405 สูงกว่ามูลค่าเหมาะสม $280 ราว 45% → ตามเกณฑ์ value investor ถือว่า <b>แพงมาก (overvalued)</b> เป็นการซื้อ "เรื่องเล่าอนาคต" ล้วน ไม่ใช่จุดซื้อที่ปลอดภัย</div>
       </div>
       <div class="grid g3">
@@ -163,7 +193,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="405" step="1">
+          <input id="pxIn" class="mono" type="number" value="407.76" step="1">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

@@ -13,10 +13,54 @@
 <meta name="ai-model" content="Claude Sonnet 4.6">
 <!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
 <script type="application/json" id="stock-meta">
-{"symbol":"NKE","currency":"USD","price":40.75,"fairValue":49,"mos":16.8,"upside":20.2,"pe":26.87,"dividendYield":4.02,"roe":24.36}
+{"symbol":"NKE","currency":"USD","price":44.37,"fairValue":49,"mos":9.4,"upside":10.4,"pe":26.87,"dividendYield":4.02,"roe":24.36}
 </script>
 <script type="application/json" id="report-data">
-{"theme":{"accent":"#EE6730","accentDark":"#B44A1F","darkGrad":"linear-gradient(135deg, #100603 0%, #200C06 100%)","glow":"rgba(238,103,48,0.35)","subColor":"#F58E63","headerMuted":"rgba(238,103,48,0.12)","verdictText":"#F8DCCE","vcellLabel":"rgba(248,220,206,0.6)","badge":"#EE6730","chgBg":"rgba(239,68,68,0.15)","chgColor":"#EF4444"},"chart":{"data":[["ก.ค. 68",74.69],["ส.ค. 68",77.37],["ก.ย. 68",69.73],["ต.ค. 68",64.59],["พ.ย. 68",64.63],["ธ.ค. 68",63.71],["ม.ค. 69",61.81],["ก.พ. 69",62.18],["มี.ค. 69",52.82],["เม.ย. 69",44.36],["พ.ค. 69",46.23],["มิ.ย. 69",40.75]],"min":38,"max":80,"grid":[50,60,70],"fairLine":49,"currency":"$","highlight":[11]},"gauge":{"min":36,"max":72,"cur":40.75,"fair":49,"fairLabelTop":false},"fv":49}
+{
+  "theme": {
+    "accent": "#EE6730",
+    "accentDark": "#B44A1F",
+    "darkGrad": "linear-gradient(135deg, #100603 0%, #200C06 100%)",
+    "glow": "rgba(238,103,48,0.35)",
+    "subColor": "#F58E63",
+    "headerMuted": "rgba(238,103,48,0.12)",
+    "verdictText": "#F8DCCE",
+    "vcellLabel": "rgba(248,220,206,0.6)",
+    "badge": "#EE6730",
+    "chgBg": "var(--red-soft)",
+    "chgColor": "#c5221f"
+  },
+  "chart": {
+    "data": [
+      ["ส.ค.25", 77.37],
+      ["ก.ย.25", 69.73],
+      ["ต.ค.25", 64.59],
+      ["พ.ย.25", 64.63],
+      ["ธ.ค.25", 63.71],
+      ["ม.ค.26", 61.81],
+      ["ก.พ.26", 62.18],
+      ["มี.ค.26", 52.82],
+      ["เม.ย.26", 44.36],
+      ["พ.ค.26", 46.23],
+      ["มิ.ย.26", 41.05],
+      ["ก.ค.26", 44.37]
+    ],
+    "min": 30,
+    "max": 80,
+    "grid": [40, 50, 60, 70],
+    "fairLine": 49,
+    "currency": "$",
+    "highlight": [0, 10]
+  },
+  "gauge": {
+    "min": 36,
+    "max": 72,
+    "cur": 44.37,
+    "fair": 49,
+    "fairLabelTop": false
+  },
+  "fv": 49
+}
 </script>
 <!--TEMPLATE:STYLE-->
 </head>
@@ -36,12 +80,12 @@
     <div class="sub">แบรนด์รองเท้า/เครื่องแต่งกายกีฬาอันดับ 1 โลก • Nike + Jordan + Converse • DTC + wholesale • turnaround ภายใต้ CEO ใหม่ Elliott Hill</div>
     <div class="price-row">
       <div>
-        <div class="px">$40.75<small>(NKE)</small></div>
+        <div class="px">$44.37<small>(NKE)</small></div>
       </div>
       <!-- ★ ป้าย % รอบปี (gate E35/E36) — ผลตอบแทน ~1 ปี ลง −45.4% -->
-      <div class="chg">▼ −45.4% (รอบปี)</div>
+      <div class="chg">▼ −42.7% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 26 มิ.ย. 2569<br>
+        ราคา ณ 10 ก.ค. 2569<br>
         กรอบ 52 สัปดาห์ $40.00 / $80.17<br>
         ที่มา: StockAnalysis.com / Yahoo Finance / NIKE Investor Relations
       </div>
@@ -119,7 +163,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $40.75</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $44.37</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $49</div></div>
         </div>
         <div class="scale">
@@ -142,7 +186,7 @@
     <div class="card">
       <!-- MOS 16.8% → class "ok" (10–20%) -->
       <div class="mos-verdict ok">
-        <div class="big">+16.8%</div>
+        <div class="big">+9%</div>
         <div class="txt">MOS ปานกลาง · ราคาต่ำกว่ามูลค่าเหมาะสม ~$8.25 · เหมาะสะสมทยอย · ยังไม่ถึงโซน deep value MOS 30%</div>
       </div>
       <div class="grid g3">
@@ -153,7 +197,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="40.75" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="44.37" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

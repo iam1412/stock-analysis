@@ -8,7 +8,7 @@
 <meta name="ai-model" content="Claude Sonnet 4.6">
 <!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
 <script type="application/json" id="stock-meta">
-{"symbol":"AMGN","currency":"USD","price":360.55,"fairValue":360,"mos":-0.2,"upside":-0.2,"pe":17.19,"dividendYield":2.80,"roe":null}
+{"symbol":"AMGN","currency":"USD","price":363.39,"fairValue":360,"mos":-0.9,"upside":-0.9,"pe":17.19,"dividendYield":2.8,"roe":null}
 </script>
 <script type="application/json" id="report-data">
 {
@@ -22,35 +22,35 @@
     "verdictText": "#e8f4fd",
     "vcellLabel": "rgba(255,255,255,0.6)",
     "badge": "#0066CC",
-    "chgBg": "rgba(30,142,62,0.18)",
+    "chgBg": "var(--green-soft)",
     "chgColor": "#1e8e3e"
   },
   "chart": {
     "data": [
-      ["Jul 25", 295.10],
-      ["Aug 25", 287.71],
-      ["Sep 25", 282.20],
-      ["Oct 25", 298.43],
-      ["Nov 25", 345.46],
-      ["Dec 25", 327.31],
-      ["Jan 26", 341.88],
-      ["Feb 26", 388.16],
-      ["Mar 26", 351.85],
-      ["Apr 26", 346.25],
-      ["May 26", 336.79],
-      ["Jun 26", 358.33]
+      ["ส.ค.25", 287.71],
+      ["ก.ย.25", 282.2],
+      ["ต.ค.25", 298.43],
+      ["พ.ย.25", 345.46],
+      ["ธ.ค.25", 327.31],
+      ["ม.ค.26", 341.88],
+      ["ก.พ.26", 388.16],
+      ["มี.ค.26", 351.85],
+      ["เม.ย.26", 346.25],
+      ["พ.ค.26", 336.79],
+      ["มิ.ย.26", 362.12],
+      ["ก.ค.26", 363.39]
     ],
     "min": 250,
-    "max": 410,
-    "grid": [280, 310, 340, 370, 400],
+    "max": 400,
+    "grid": [300, 350],
     "fairLine": 360,
     "currency": "$",
-    "highlight": [4, 7]
+    "highlight": [1, 6]
   },
   "gauge": {
     "min": 240,
     "max": 385,
-    "cur": 360.55,
+    "cur": 363.39,
     "fair": 360,
     "fairLabelTop": true
   },
@@ -74,11 +74,11 @@
     <div class="sub">Biopharmaceuticals (Repatha · Prolia · Otezla) • Horizon (Tepezza · Krystexxa) • Cardiovascular · Inflammation · Oncology • MariTide (obesity pipeline)</div>
     <div class="price-row">
       <div>
-        <div class="px">$360.55<small>(AMGN)</small></div>
+        <div class="px">$363.39<small>(AMGN)</small></div>
       </div>
-      <div class="chg">▲ +21.4% (รอบปี)</div>
+      <div class="chg">▲ +26.3% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 29 มิ.ย. 2569<br>
+        ราคา ณ 10 ก.ค. 2569<br>
         กรอบ 52 สัปดาห์ $269.77 – $391.29<br>
         ที่มา: StockAnalysis.com, Yahoo Finance, Amgen Investor Relations
       </div>
@@ -161,7 +161,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $360.55</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $363.39</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $360</div></div>
         </div>
         <div class="scale">
@@ -185,7 +185,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict bad">
-        <div class="big">−0.2%</div>
+        <div class="big">−0.9%</div>
         <div class="txt">ราคาใกล้มูลค่าเหมาะสม (At Fair Value) — ไม่มี MOS ณ ราคาปัจจุบัน · รอโอกาสดีกว่าในโซน &lt;$290</div>
       </div>
       <div class="grid g3">
@@ -196,7 +196,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="360.55" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="363.39" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -308,7 +308,7 @@
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ EPS ในอนาคต
     ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ
     • ที่มา: StockAnalysis.com (stockanalysis.com/stocks/amgn/), Yahoo Finance (finance.yahoo.com/quote/AMGN), Amgen Investor Relations Q4 2025 + Q1 2026 earnings (prnewswire.com), Amgen Newsroom (amgen.com/newsroom), StockAnalysis Forecast (stockanalysis.com/stocks/amgn/forecast/)
-    • ราคา ณ 29 มิ.ย. 2569 · ยืนยัน 2 แหล่ง: $360.55 (StockAnalysis) = $360.55 (Yahoo Finance) ✓ · adj EPS TTM $20.98 ยืนยันจากรายงาน Q1 2569 (Amgen IR) + Seeking Alpha
+    • ราคา ณ 10 ก.ค. 2569 · ยืนยัน 2 แหล่ง: $360.55 (StockAnalysis) = $360.55 (Yahoo Finance) ✓ · adj EPS TTM $20.98 ยืนยันจากรายงาน Q1 2569 (Amgen IR) + Seeking Alpha
   </div>
   <footer>Stock Analysis Dashboard • ข้อมูล ณ 29 มิถุนายน 2569 • สร้างด้วย stock-analyzer workflow</footer>
 

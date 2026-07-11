@@ -6,7 +6,7 @@
 <title>วิเคราะห์หุ้น เอพี (ไทยแลนด์) (AP) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Opus 4.8">
 <script type="application/json" id="stock-meta">
-{"symbol":"AP","currency":"THB","price":7.25,"fairValue":8.30,"mos":12.7,"upside":14.5,"pe":5.25,"dividendYield":7.2,"roe":9.5}
+{"symbol":"AP","currency":"THB","price":7.7,"fairValue":8.3,"mos":7.2,"upside":7.8,"pe":5.25,"dividendYield":7.2,"roe":9.5}
 </script>
 <script type="application/json" id="report-data">
 {
@@ -25,31 +25,36 @@
   },
   "chart": {
     "data": [
-      ["มิ.ย.68", 6.25],
-      ["ก.ค.68", 7.25],
-      ["ส.ค.68", 7.35],
-      ["ก.ย.68", 8.85],
-      ["ต.ค.68", 8.65],
-      ["พ.ย.68", 8.60],
-      ["ธ.ค.68", 8.60],
-      ["ม.ค.69", 9.05],
-      ["ก.พ.69", 9.20],
-      ["มี.ค.69", 8.40],
-      ["เม.ย.69", 8.60],
-      ["พ.ค.69", 7.30],
-      ["มิ.ย.69", 7.25]
+      ["ส.ค.25", 7.35],
+      ["ก.ย.25", 8.85],
+      ["ต.ค.25", 8.65],
+      ["พ.ย.25", 8.6],
+      ["ธ.ค.25", 8.6],
+      ["ม.ค.26", 9.05],
+      ["ก.พ.26", 9.2],
+      ["มี.ค.26", 8.4],
+      ["เม.ย.26", 8.6],
+      ["พ.ค.26", 7.3],
+      ["มิ.ย.26", 7.55],
+      ["ก.ค.26", 7.7]
     ],
-    "min": 5.5,
-    "max": 10.0,
-    "grid": [5.5, 6.5, 7.5, 8.5, 9.5, 10.0],
-    "fairLine": 8.30,
+    "min": 7,
+    "max": 9.5,
+    "grid": [7.5, 8, 8.5, 9],
+    "fairLine": 8.3,
     "currency": "฿",
-    "highlight": [8, 12],
+    "highlight": [6, 9],
     "gridFmt": "v.toFixed(1)",
     "dataFmt": "d[1].toFixed(2)"
   },
-  "gauge": { "min": 5.5, "max": 9.7, "cur": 7.25, "fair": 8.30, "fairLabelTop": true },
-  "fv": 8.30
+  "gauge": {
+    "min": 5.5,
+    "max": 9.7,
+    "cur": 7.7,
+    "fair": 8.3,
+    "fairLabelTop": true
+  },
+  "fv": 8.3
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -69,11 +74,11 @@
     <div class="sub">บ้านเดี่ยว The Palazzo, Centro • ทาวน์โฮม Pleno, Baan Klang Muang • คอนโด Aspire, LIFE, RHYTHM • JV กับ Mitsubishi Estate • หุ้น P/E ต่ำ ปันผลสูง</div>
     <div class="price-row">
       <div>
-        <div class="px">฿7.25<small>(AP)</small></div>
+        <div class="px">฿7.70<small>(AP)</small></div>
       </div>
-      <div class="chg">▲ +16.0% (รอบปี)</div>
+      <div class="chg">▲ +4.8% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 24 มิ.ย. 2026<br>
+        ราคา ณ 10 ก.ค. 2026<br>
         กรอบ 52 สัปดาห์ ฿5.60 – ฿9.70<br>
         ที่มา: StockAnalysis.com • Investing.com • Yahoo Finance
       </div>
@@ -151,7 +156,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿7.25</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿7.70</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿8.30</div></div>
         </div>
         <div class="scale">
@@ -173,7 +178,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict ok">
-        <div class="big">+12.7%</div>
+        <div class="big">+7%</div>
         <div class="txt">ราคาต่ำกว่ามูลค่าเหมาะสมพอสมควร แต่ MOS ยังไม่ถึง 20% — น่าสนใจสำหรับนักลงทุนเน้นปันผล แนะนำทยอยสะสมและรอย่อเพิ่ม MOS</div>
       </div>
       <div class="grid g3">
@@ -184,7 +189,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="7.25" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="7.7" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

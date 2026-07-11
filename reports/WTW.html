@@ -8,10 +8,54 @@
 <meta name="ai-model" content="Claude Sonnet 4.6">
 <!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
 <script type="application/json" id="stock-meta">
-{"symbol":"WTW","currency":"USD","price":286.22,"fairValue":328,"mos":12.7,"upside":14.6,"pe":16.2,"dividendYield":1.34,"roe":20.6}
+{"symbol":"WTW","currency":"USD","price":289.65,"fairValue":328,"mos":11.7,"upside":13.2,"pe":16.2,"dividendYield":1.34,"roe":20.6}
 </script>
 <script type="application/json" id="report-data">
-{"theme":{"accent":"#00a3e0","accentDark":"#006f9b","darkGrad":"linear-gradient(135deg, #041820 0%, #062a38 100%)","glow":"rgba(0,163,224,0.35)","subColor":"#5bc2e8","headerMuted":"rgba(0,163,224,0.12)","verdictText":"#d2eef7","vcellLabel":"rgba(210,238,247,0.6)","badge":"#00a3e0","chgBg":"rgba(239,68,68,0.15)","chgColor":"#EF4444"},"chart":{"data":[["ส.ค. 68",326.79],["ก.ย. 68",345.45],["ต.ค. 68",313.10],["พ.ย. 68",321.00],["ธ.ค. 68",328.60],["ม.ค. 69",317.47],["ก.พ. 69",305.17],["มี.ค. 69",290.70],["เม.ย. 69",256.20],["พ.ค. 69",249.67],["มิ.ย. 69",261.37],["ก.ค. 69",286.22]],"min":230,"max":360,"grid":[260,300,340],"fairLine":328,"currency":"$","highlight":[9]},"gauge":{"min":220,"max":400,"cur":286.22,"fair":328,"fairLabelTop":false},"fv":328}
+{
+  "theme": {
+    "accent": "#00a3e0",
+    "accentDark": "#006f9b",
+    "darkGrad": "linear-gradient(135deg, #041820 0%, #062a38 100%)",
+    "glow": "rgba(0,163,224,0.35)",
+    "subColor": "#5bc2e8",
+    "headerMuted": "rgba(0,163,224,0.12)",
+    "verdictText": "#d2eef7",
+    "vcellLabel": "rgba(210,238,247,0.6)",
+    "badge": "#00a3e0",
+    "chgBg": "var(--red-soft)",
+    "chgColor": "#c5221f"
+  },
+  "chart": {
+    "data": [
+      ["ส.ค.25", 326.79],
+      ["ก.ย.25", 345.45],
+      ["ต.ค.25", 313.1],
+      ["พ.ย.25", 321],
+      ["ธ.ค.25", 328.6],
+      ["ม.ค.26", 317.47],
+      ["ก.พ.26", 305.17],
+      ["มี.ค.26", 290.7],
+      ["เม.ย.26", 256.2],
+      ["พ.ค.26", 249.67],
+      ["มิ.ย.26", 261.37],
+      ["ก.ค.26", 289.65]
+    ],
+    "min": 225,
+    "max": 375,
+    "grid": [250, 275, 300, 325, 350],
+    "fairLine": 328,
+    "currency": "$",
+    "highlight": [1, 9]
+  },
+  "gauge": {
+    "min": 220,
+    "max": 400,
+    "cur": 289.65,
+    "fair": 328,
+    "fairLabelTop": false
+  },
+  "fv": 328
+}
 </script>
 <!--TEMPLATE:STYLE-->
 </head>
@@ -31,14 +75,14 @@
     <div class="sub">นายหน้าประกันภัย/ประกันต่อ Top-3 โลก • Risk &amp; Broking (นายหน้าประกัน/reinsurance) • Health, Wealth &amp; Career (สวัสดิการพนักงาน/บำนาญ/HR consulting) • แผน "Grow, Simplify, Transform"</div>
     <div class="price-row">
       <div>
-        <div class="px">$286.22<small>(WTW)</small></div>
+        <div class="px">$289.65<small>(WTW)</small></div>
       </div>
       <!-- ★ ป้าย % รอบปี (gate E35/E36) — ผลตอบแทน ~1 ปี (เทียบราคา ~1 ปีก่อน) = ผลตอบแทนปลายกราฟ section 2 (จุดแรก→ท้าย)
            รูปแบบ: "▲ +X.X% (รอบปี)" ขึ้น · "▼ −X.X% (รอบปี)" ลง · "≈ ทรงตัว (รอบปี)" · หุ้น IPO <1 ปี ใช้ "(ตั้งแต่ IPO)"
            ไม่ใช่ % รายวัน/YTD/52 สัปดาห์ · ตั้งสี theme.chgBg/chgColor ให้ตรงทิศ (ขึ้น=เขียว/ลง=แดง · E34) -->
-      <div class="chg">▼ −12.4% (รอบปี)</div>
+      <div class="chg">▼ −11.4% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 2 ก.ค. 2569 (2 Jul 2026)<br>
+        ราคา ณ 10 ก.ค. 2569 (2 Jul 2026)<br>
         กรอบ 52 สัปดาห์ $240.62 – $352.79<br>
         ที่มา: StockAnalysis.com, Yahoo Finance, WTW Investor Relations (Q4/FY2025 &amp; Q1 2026 earnings release)
       </div>
@@ -125,7 +169,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $286.22</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $289.65</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $328</div></div>
         </div>
         <div class="scale">
@@ -148,7 +192,7 @@
     <div class="card">
       <!-- ✏️ class ของ mos-verdict: MOS<10 → "bad", 10–20 → "ok", ≥20 → "good" -->
       <div class="mos-verdict ok">
-        <div class="big">+12.7%</div>
+        <div class="big">+12%</div>
         <div class="txt">Margin of Safety ระดับปานกลาง — ราคาปัจจุบันต่ำกว่ามูลค่าเหมาะสมพอสมควร แต่ยังไม่ถึงโซน deep value</div>
       </div>
       <div class="grid g3">
@@ -159,7 +203,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="286.22" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="289.65" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

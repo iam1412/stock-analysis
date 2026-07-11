@@ -6,10 +6,54 @@
 <title>วิเคราะห์หุ้น GE Aerospace (GE) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Sonnet 4.6">
 <script type="application/json" id="stock-meta">
-{"symbol":"GE","currency":"USD","price":377.52,"fairValue":280.39,"mos":-34.6,"upside":-25.7,"pe":56,"dividendYield":0.5,"roe":45.4}
+{"symbol":"GE","currency":"USD","price":359.27,"fairValue":280.39,"mos":-28.1,"upside":-22,"pe":56,"dividendYield":0.5,"roe":45.4}
 </script>
 <script type="application/json" id="report-data">
-{"theme": {"accent": "#0066cc", "accentDark": "#004499", "darkGrad": "linear-gradient(135deg,#001830 0%,#003366 55%,#0066cc 140%)", "glow": "rgba(0,102,204,.4)", "subColor": "#b8d4f0", "headerMuted": "#8fb8e0", "verdictText": "#dce9f7", "vcellLabel": "#9fc3e8", "badge": "#0066cc", "chgBg": "rgba(30,142,62,.16)", "chgColor": "#1e8e3e"}, "chart": {"data": [["ก.ค. 68", 270.05], ["ส.ค. 68", 274.15], ["ก.ย. 68", 300.04], ["ต.ค. 68", 308.15], ["พ.ย. 68", 297.68], ["ธ.ค. 68", 307.58], ["ม.ค. 69", 306.34], ["ก.พ. 69", 341.76], ["มี.ค. 69", 283.77], ["เม.ย. 69", 289.93], ["พ.ค. 69", 323.76], ["มิ.ย. 69", 373.73], ["ก.ค. 69", 377.52]], "min": 240, "max": 400, "grid": [240, 280, 320, 360, 400], "fairLine": 280.39, "currency": "$", "highlight": [7, 12]}, "gauge": {"min": 196.27, "max": 400, "cur": 377.52, "fair": 280.39, "fairLabelTop": true}, "fv": 280.39}
+{
+  "theme": {
+    "accent": "#0066cc",
+    "accentDark": "#004499",
+    "darkGrad": "linear-gradient(135deg,#001830 0%,#003366 55%,#0066cc 140%)",
+    "glow": "rgba(0,102,204,.4)",
+    "subColor": "#b8d4f0",
+    "headerMuted": "#8fb8e0",
+    "verdictText": "#dce9f7",
+    "vcellLabel": "#9fc3e8",
+    "badge": "#0066cc",
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#1e8e3e"
+  },
+  "chart": {
+    "data": [
+      ["ส.ค.25", 275.2],
+      ["ก.ย.25", 300.82],
+      ["ต.ค.25", 308.95],
+      ["พ.ย.25", 298.45],
+      ["ธ.ค.25", 308.03],
+      ["ม.ค.26", 306.79],
+      ["ก.พ.26", 342.26],
+      ["มี.ค.26", 283.77],
+      ["เม.ย.26", 289.93],
+      ["พ.ค.26", 323.76],
+      ["มิ.ย.26", 373.73],
+      ["ก.ค.26", 359.27]
+    ],
+    "min": 250,
+    "max": 400,
+    "grid": [275, 300, 325, 350, 375],
+    "fairLine": 280.39,
+    "currency": "$",
+    "highlight": [0, 10]
+  },
+  "gauge": {
+    "min": 196.27,
+    "max": 400,
+    "cur": 359.27,
+    "fair": 280.39,
+    "fairLabelTop": true
+  },
+  "fv": 280.39
+}
 </script>
 <!--TEMPLATE:STYLE-->
 </head>
@@ -28,11 +72,11 @@
     <div class="sub">เครื่องยนต์เจ็ต CFM56 · LEAP (กับ Safran) · GE9X • บริการซ่อมบำรุงเครื่องยนต์ (MRO/Aftermarket) • เครื่องยนต์ทางทหาร F110/F404/T901 • หลัง spin-off GE Vernova (เม.ย. 2567) และ GE HealthCare (ม.ค. 2566) เหลือธุรกิจการบิน-กลาโหมล้วน</div>
     <div class="price-row">
       <div>
-        <div class="px">$377.52<small>(GE)</small></div>
+        <div class="px">$359.27<small>(GE)</small></div>
       </div>
-      <div class="chg">▲ +39.8% (รอบปี)</div>
+      <div class="chg">▲ +30.5% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 2 ก.ค. 2569 (2 Jul 2026)<br>
+        ราคา ณ 10 ก.ค. 2569 (2 Jul 2026)<br>
         กรอบ 52 สัปดาห์ $243.34 – $382.97<br>
         ที่มา: StockAnalysis.com, StatMuse Money, GE Aerospace IR (ราคาปิดรายเดือน/ผลประกอบการ)
       </div>
@@ -113,7 +157,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $377.52</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $359.27</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $280.39</div></div>
         </div>
         <div class="scale">
@@ -136,7 +180,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict bad">
-        <div class="big">−34.6%</div>
+        <div class="big">−28%</div>
         <div class="txt">MOS ติดลบ — ราคาปัจจุบันสูงกว่ามูลค่าเหมาะสมโดยประมาณ ~35% ไม่มีส่วนเผื่อความปลอดภัยสำหรับการเข้าซื้อใหม่ ณ ระดับนี้</div>
       </div>
       <div class="grid g3">
@@ -147,7 +191,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="377.52" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="359.27" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

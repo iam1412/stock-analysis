@@ -8,7 +8,7 @@
 <meta name="ai-model" content="Claude Sonnet 4.6">
 <!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) -->
 <script type="application/json" id="stock-meta">
-{"symbol":"ED","currency":"USD","price":112.09,"fairValue":104,"mos":-7.8,"upside":-7.2,"pe":18.81,"dividendYield":3.17,"roe":8.73}
+{"symbol":"ED","currency":"USD","price":111.12,"fairValue":104,"mos":-6.8,"upside":-6.4,"pe":18.81,"dividendYield":3.17,"roe":8.73}
 </script>
 <script type="application/json" id="report-data">
 {
@@ -22,27 +22,27 @@
     "verdictText": "#cfe0f7",
     "vcellLabel": "#8fb8e8",
     "badge": "#2f5fa8",
-    "chgBg": "rgba(46,125,50,0.22)",
-    "chgColor": "#66bb6a"
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#1e8e3e"
   },
   "chart": {
     "data": [
-      ["ส.ค.68", 95.86],
-      ["ก.ย.68", 98.09],
-      ["ต.ค.68", 95.06],
-      ["พ.ย.68", 98.75],
-      ["ธ.ค.68", 97.73],
-      ["ม.ค.69", 104.92],
-      ["ก.พ.69", 111.59],
-      ["มี.ค.69", 112.24],
-      ["เม.ย.69", 110.56],
-      ["พ.ค.69", 105.63],
-      ["มิ.ย.69", 110.63],
-      ["ก.ค.69", 112.09]
+      ["ส.ค.25", 98.23],
+      ["ก.ย.25", 100.52],
+      ["ต.ค.25", 97.41],
+      ["พ.ย.25", 100.36],
+      ["ธ.ค.25", 99.32],
+      ["ม.ค.26", 106.63],
+      ["ก.พ.26", 112.52],
+      ["มี.ค.26", 113.18],
+      ["เม.ย.26", 111.49],
+      ["พ.ค.26", 105.63],
+      ["มิ.ย.26", 110.63],
+      ["ก.ค.26", 111.12]
     ],
-    "min": 92,
+    "min": 95,
     "max": 115,
-    "grid": [95, 100, 105, 110, 115],
+    "grid": [100, 105, 110],
     "fairLine": 104,
     "currency": "$",
     "highlight": [2, 7]
@@ -50,7 +50,7 @@
   "gauge": {
     "min": 65,
     "max": 130,
-    "cur": 112.09,
+    "cur": 111.12,
     "fair": 104
   },
   "fv": 104
@@ -73,11 +73,11 @@
     <div class="sub">NYC Regulated Electric &amp; Gas • 130-Year Monopoly • Con Edison Transmission • Dividend Aristocrat</div>
     <div class="price-row">
       <div>
-        <div class="px">$112.09<small>(ED)</small></div>
+        <div class="px">$111.12<small>(ED)</small></div>
       </div>
-      <div class="chg">▲ +16.9% (รอบปี)</div>
+      <div class="chg">▲ +13.1% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 8 กรกฎาคม 2569<br>
+        ราคา ณ 10 ก.ค. 2569<br>
         กรอบ 52 สัปดาห์ $94.96 – $116.23<br>
         ที่มา: StockAnalysis.com, MarketBeat.com, Yahoo Finance
       </div>
@@ -156,7 +156,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $112.09</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $111.12</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $104</div></div>
         </div>
         <div class="scale">
@@ -178,7 +178,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict bad">
-        <div class="big">−7.8%</div>
+        <div class="big">−7%</div>
         <div class="txt">ราคาปัจจุบันสูงกว่า Fair Value ~7.2–7.8% — ไม่มี Margin of Safety ณ ราคานี้ (Overvalued เล็กน้อยถึงปานกลาง)</div>
       </div>
       <div class="grid g3">
@@ -189,7 +189,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="112.09" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="111.12" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -296,7 +296,7 @@
     <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
     ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
-    ราคา ณ 8 กรกฎาคม 2569 · แหล่งข้อมูล: StockAnalysis.com (https://stockanalysis.com/stocks/ED/), MarketBeat.com (https://www.marketbeat.com/stocks/NYSE/ED/), Yahoo Finance (https://finance.yahoo.com/quote/ED/) — ใช้อ้างอิงกราฟราคาย้อนหลัง · ราคาสองแหล่งหลักตรงกันในกรอบ 0.09% ($112.09 vs $111.99) · EPS TTM ตรงกันในกรอบ 0.3% ($5.96 vs $5.94)
+    ราคา ณ 10 ก.ค. 2569 · แหล่งข้อมูล: StockAnalysis.com (https://stockanalysis.com/stocks/ED/), MarketBeat.com (https://www.marketbeat.com/stocks/NYSE/ED/), Yahoo Finance (https://finance.yahoo.com/quote/ED/) — ใช้อ้างอิงกราฟราคาย้อนหลัง · ราคาสองแหล่งหลักตรงกันในกรอบ 0.09% ($112.09 vs $111.99) · EPS TTM ตรงกันในกรอบ 0.3% ($5.96 vs $5.94)
   </div>
   <footer>Stock Analysis Dashboard • ข้อมูล ณ 8 กรกฎาคม 2569 • สร้างด้วย stock-analyzer workflow</footer>
 

@@ -6,22 +6,52 @@
 <title>วิเคราะห์หุ้น SAP SE (SAP) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Opus 4.8">
 <script type="application/json" id="stock-meta">
-{"symbol":"SAP","currency":"USD","price":149.51,"fairValue":181,"mos":17,"upside":21,"pe":21,"dividendYield":1.9,"roe":16}
+{"symbol":"SAP","currency":"USD","price":157.86,"fairValue":181,"mos":12.8,"upside":14.7,"pe":21,"dividendYield":1.9,"roe":16}
 </script>
 <script type="application/json" id="report-data">
 {
   "theme": {
-    "accent": "#1da3ed", "accentDark": "#0f79b3",
+    "accent": "#1da3ed",
+    "accentDark": "#0f79b3",
     "darkGrad": "linear-gradient(135deg,#042a3e 0%,#074d73 58%,#0c7ab6 140%)",
-    "glow": "rgba(19,159,236,.35)", "subColor": "#c2dceb", "headerMuted": "#a5c3d4",
-    "chgBg": "var(--red-soft)", "chgColor": "#c5221f", "badge": "var(--blue)",
-    "verdictText": "#d0e5f1", "vcellLabel": "#a6cadd"
+    "glow": "rgba(19,159,236,.35)",
+    "subColor": "#c2dceb",
+    "headerMuted": "#a5c3d4",
+    "chgBg": "var(--red-soft)",
+    "chgColor": "#c5221f",
+    "badge": "var(--blue)",
+    "verdictText": "#d0e5f1",
+    "vcellLabel": "#a6cadd"
   },
   "chart": {
-    "data": [["มิ.ย.25",295],["ส.ค.25",310],["ต.ค.25",288],["ธ.ค.25",262],["ก.พ.26",228],["เม.ย.26",195],["พ.ค.26",168],["มิ.ย.26",149.51]],
-    "min": 120, "max": 330, "grid": [150,200,250,300], "fairLine": 181, "currency": "$", "highlight": [1,7]
+    "data": [
+      ["ส.ค.25", 272.16],
+      ["ก.ย.25", 267.21],
+      ["ต.ค.25", 260.01],
+      ["พ.ย.25", 241.75],
+      ["ธ.ค.25", 242.91],
+      ["ม.ค.26", 201.04],
+      ["ก.พ.26", 201.53],
+      ["มี.ค.26", 171.21],
+      ["เม.ย.26", 169.49],
+      ["พ.ค.26", 181.79],
+      ["มิ.ย.26", 154.11],
+      ["ก.ค.26", 157.86]
+    ],
+    "min": 100,
+    "max": 300,
+    "grid": [150, 200, 250],
+    "fairLine": 181,
+    "currency": "$",
+    "highlight": [0, 10]
   },
-  "gauge": { "min": 110, "max": 340, "cur": 149.51, "fair": 181, "fairLabelTop": "-58px" },
+  "gauge": {
+    "min": 110,
+    "max": 340,
+    "cur": 157.86,
+    "fair": 181,
+    "fairLabelTop": "-58px"
+  },
   "fv": 181
 }
 </script>
@@ -42,11 +72,11 @@
     <div class="sub">บริษัทซอฟต์แวร์ใหญ่ที่สุดในยุโรป • ERP / S/4HANA Cloud, Business AI (Joule), BTP, Ariba, SuccessFactors</div>
     <div class="price-row">
       <div>
-        <div class="px">$149.51<small>(SAP)</small></div>
+        <div class="px">$157.86<small>(SAP)</small></div>
       </div>
-      <div class="chg">▼ −49.3% (รอบปี)</div>
+      <div class="chg">▼ −42.0% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 22 มิ.ย. 2026 (ปิดตลาด NYSE)<br>
+        ราคา ณ 10 ก.ค. 2026 (ปิดตลาด NYSE)<br>
         ดิ่ง ~47% ใน 1 ปี · ใกล้จุดต่ำสุด 52 สัปดาห์<br>
         ที่มา: Yahoo Finance / StockAnalysis / CNBC
       </div>
@@ -127,7 +157,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $150</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $158</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $181</div></div>
         </div>
         <div class="scale">
@@ -151,7 +181,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict ok">
-        <div class="big">+17%</div>
+        <div class="big">+13%</div>
         <div class="txt"><b>เริ่มมี Margin of Safety พอประมาณ</b><br>ราคาปัจจุบัน $149.51 ต่ำกว่ามูลค่าเหมาะสม $181 ราว 17% → ตามเกณฑ์ value investor ถือว่า <b>เริ่มน่าสนใจ ทยอยสะสมได้</b> แต่ยังไม่ถึงโซนถูกมาก (MOS 20–30%)</div>
       </div>
       <div class="grid g3">
@@ -162,7 +192,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="149.51" step="1">
+          <input id="pxIn" class="mono" type="number" value="157.86" step="1">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

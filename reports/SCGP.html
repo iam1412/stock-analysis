@@ -6,7 +6,7 @@
 <title>วิเคราะห์หุ้น เอสซีจี แพคเกจจิ้ง (SCGP) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Opus 4.8">
 <script type="application/json" id="stock-meta">
-{"symbol":"SCGP","currency":"THB","price":28.00,"fairValue":21.00,"mos":-33.3,"upside":-25.0,"pe":25.2,"dividendYield":2.1,"roe":6.0}
+{"symbol":"SCGP","currency":"THB","price":28.5,"fairValue":21,"mos":-35.7,"upside":-26.3,"pe":25.2,"dividendYield":2.1,"roe":6}
 </script>
 <script type="application/json" id="report-data">
 {
@@ -25,33 +25,32 @@
   },
   "chart": {
     "data": [
-      ["มิ.ย.68", 17],
-      ["ก.ค.68", 18.7],
-      ["ส.ค.68", 17.1],
-      ["ก.ย.68", 19.2],
-      ["ต.ค.68", 18.2],
-      ["พ.ย.68", 15.6],
-      ["ธ.ค.68", 17.1],
-      ["ม.ค.69", 20],
-      ["ก.พ.69", 20.6],
-      ["มี.ค.69", 20.2],
-      ["เม.ย.69", 25],
-      ["พ.ค.69", 23.6],
-      ["มิ.ย.69", 28]
+      ["ส.ค.25", 17.1],
+      ["ก.ย.25", 19.2],
+      ["ต.ค.25", 18.2],
+      ["พ.ย.25", 15.6],
+      ["ธ.ค.25", 17.1],
+      ["ม.ค.26", 20],
+      ["ก.พ.26", 20.6],
+      ["มี.ค.26", 20.2],
+      ["เม.ย.26", 25],
+      ["พ.ค.26", 23.6],
+      ["มิ.ย.26", 28.5],
+      ["ก.ค.26", 28.5]
     ],
-    "min": 12,
+    "min": 10,
     "max": 30,
-    "grid": [12, 16, 20, 24, 28],
+    "grid": [15, 20, 25],
     "fairLine": 21,
     "currency": "฿",
-    "highlight": [5, 12],
+    "highlight": [3, 10],
     "gridFmt": "v.toFixed(0)",
     "dataFmt": "d[1].toFixed(2)"
   },
   "gauge": {
     "min": 12,
     "max": 30,
-    "cur": 28,
+    "cur": 28.5,
     "fair": 21,
     "fairLabelTop": true
   },
@@ -75,11 +74,11 @@
     <div class="sub">บรรจุภัณฑ์กระดาษ (containerboard • กล่องลูกฟูก) • บรรจุภัณฑ์โพลิเมอร์/ฟิล์มอ่อน • บรรจุภัณฑ์อาหาร • เยื่อ-กระดาษ • ฐานการผลิตอาเซียน (ไทย • เวียดนาม • อินโดนีเซีย • ฟิลิปปินส์) ขยายผ่าน M&A</div>
     <div class="price-row">
       <div>
-        <div class="px">฿28.00<small>(SCGP)</small></div>
+        <div class="px">฿28.50<small>(SCGP)</small></div>
       </div>
-      <div class="chg">▲ +64.7% (รอบปี)</div>
+      <div class="chg">▲ +66.7% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 24 มิ.ย. 2026 (ปิดตลาด)<br>
+        ราคา ณ 10 ก.ค. 2026 (ปิดตลาด)<br>
         กรอบ 52 สัปดาห์ ฿14.90 – ฿28.50<br>
         ที่มา: StockAnalysis.com • Investing.com • SET (set.or.th)
       </div>
@@ -157,7 +156,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿28.00</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿28.50</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿21.00</div></div>
         </div>
         <div class="scale">
@@ -179,7 +178,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict bad">
-        <div class="big">−33.3%</div>
+        <div class="big">−36%</div>
         <div class="txt">ราคาปัจจุบัน <b>สูงกว่า</b> มูลค่าเหมาะสม — ไม่มีส่วนเผื่อความปลอดภัย (MOS ติดลบ) ควรรอย่อหรือหลีกเลี่ยงไล่ราคาที่จุดสูงสุด 52 สัปดาห์</div>
       </div>
       <div class="grid g3">
@@ -190,7 +189,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="28.00" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="28.5" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

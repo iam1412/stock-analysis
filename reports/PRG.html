@@ -12,7 +12,7 @@
 <meta name="ai-model" content="Claude Sonnet 4.6">
 <!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
 <script type="application/json" id="stock-meta">
-{"symbol":"PRG","currency":"THB","price":9.20,"fairValue":8.88,"mos":-3.6,"upside":-3.5,"pe":11.76,"dividendYield":8.26,"roe":6.41}
+{"symbol":"PRG","currency":"THB","price":9.2,"fairValue":8.88,"mos":-3.6,"upside":-3.5,"pe":11.76,"dividendYield":8.26,"roe":6.41}
 </script>
 <!--
   report-data: ธีมสี + ข้อมูลกราฟ/gauge ต่อหุ้น (build เอาไปวาด) ดู schema เต็มใน CLAUDE.md ข้อ 9
@@ -20,7 +20,51 @@
   chart.data = ราคาย้อนหลัง ~1 ปี (13 จุดรายเดือน ก.ค.68–ก.ค.69 จาก Yahoo Finance PRG.BK) จุดท้าย = ราคาปัจจุบัน • theme.chgBg/chgColor = เขียว (ราคาขึ้นรอบปี)
 -->
 <script type="application/json" id="report-data">
-{"theme":{"accent":"#e7b122","accentDark":"#af8413","darkGrad":"linear-gradient(135deg,#3e2e04 0%,#725508 58%,#b5870d 140%)","glow":"rgba(230,174,25,.35)","subColor":"#ebdfc2","headerMuted":"#d4c7a5","verdictText":"#f1e8d0","vcellLabel":"#ddcea6","badge":"var(--blue)","chgBg":"var(--green-soft)","chgColor":"#1e8e3e"},"chart":{"data":[["ก.ค.68",7.70],["ส.ค.68",8.30],["ก.ย.68",8.40],["ต.ค.68",8.70],["พ.ย.68",9.00],["ธ.ค.68",9.00],["ม.ค.69",9.40],["ก.พ.69",8.85],["มี.ค.69",8.90],["เม.ย.69",9.20],["พ.ค.69",9.15],["มิ.ย.69",9.20],["ก.ค.69",9.20]],"min":7.0,"max":9.8,"grid":[7.0,7.9,8.8,9.7],"fairLine":8.88,"currency":"฿","highlight":[6,9]},"gauge":{"min":6.0,"max":10.2,"cur":9.20,"fair":8.88,"fairLabelTop":true},"fv":8.88}
+{
+  "theme": {
+    "accent": "#e7b122",
+    "accentDark": "#af8413",
+    "darkGrad": "linear-gradient(135deg,#3e2e04 0%,#725508 58%,#b5870d 140%)",
+    "glow": "rgba(230,174,25,.35)",
+    "subColor": "#ebdfc2",
+    "headerMuted": "#d4c7a5",
+    "verdictText": "#f1e8d0",
+    "vcellLabel": "#ddcea6",
+    "badge": "var(--blue)",
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#1e8e3e"
+  },
+  "chart": {
+    "data": [
+      ["ส.ค.25", 7.7],
+      ["ก.ย.25", 8.3],
+      ["ต.ค.25", 8.4],
+      ["พ.ย.25", 8.7],
+      ["ธ.ค.25", 9],
+      ["ม.ค.26", 9],
+      ["ก.พ.26", 9.4],
+      ["มี.ค.26", 8.85],
+      ["เม.ย.26", 8.9],
+      ["พ.ค.26", 9.2],
+      ["มิ.ย.26", 9.15],
+      ["ก.ค.26", 9.2]
+    ],
+    "min": 7.5,
+    "max": 10,
+    "grid": [8, 8.5, 9, 9.5],
+    "fairLine": 8.88,
+    "currency": "฿",
+    "highlight": [0, 6]
+  },
+  "gauge": {
+    "min": 6,
+    "max": 10.2,
+    "cur": 9.2,
+    "fair": 8.88,
+    "fairLabelTop": true
+  },
+  "fv": 8.88
+}
 </script>
 <!--TEMPLATE:STYLE-->
 </head>
@@ -47,7 +91,7 @@
            ไม่ใช่ % รายวัน/YTD/52 สัปดาห์ · ตั้งสี theme.chgBg/chgColor ให้ตรงทิศ (ขึ้น=เขียว/ลง=แดง · E34) -->
       <div class="chg">▲ +19.5% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 3 ก.ค. 2569<br>
+        ราคา ณ 10 ก.ค. 2569<br>
         กรอบ 52 สัปดาห์ ฿7.00 – ฿9.50<br>
         ที่มา: StockAnalysis.com / Yahoo Finance (PRG.BK) / SET (set.or.th)
       </div>
@@ -164,7 +208,7 @@
     <div class="card">
       <!-- ✏️ class ของ mos-verdict: MOS<10 → "bad", 10–20 → "ok", ≥20 → "good" -->
       <div class="mos-verdict bad">
-        <div class="big">−3.6%</div>
+        <div class="big">−4%</div>
         <div class="txt"><b>ไม่มี Margin of Safety</b> — ราคาปัจจุบัน ฿9.20 อยู่ <b>สูงกว่า</b> Fair Value ฿8.88 ประมาณ 3.6% ใกล้เคียงมูลค่าพื้นฐานมาก แต่ยังไม่ใช่จุดเข้าซื้อที่มี margin ตามหลัก Value Investing</div>
       </div>
       <div class="grid g3">
@@ -175,7 +219,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="9.20" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="9.2" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

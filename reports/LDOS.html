@@ -6,10 +6,54 @@
 <title>วิเคราะห์หุ้น Leidos Holdings (LDOS) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Sonnet 4.6">
 <script type="application/json" id="stock-meta">
-{"symbol":"LDOS","currency":"USD","price":107.56,"fairValue":168.0,"mos":36.0,"upside":56.2,"pe":9.84,"dividendYield":1.60,"roe":28.4}
+{"symbol":"LDOS","currency":"USD","price":107.02,"fairValue":168,"mos":36.3,"upside":57,"pe":9.84,"dividendYield":1.6,"roe":28.4}
 </script>
 <script type="application/json" id="report-data">
-{"theme":{"accent":"#CC2529","accentDark":"#8B0000","darkGrad":"linear-gradient(135deg,#1a0003 0%,#2d0006 50%,#1a0003 100%)","glow":"rgba(204,37,41,0.35)","subColor":"#f0a0a2","headerMuted":"rgba(204,37,41,0.55)","verdictText":"#ffcdd2","vcellLabel":"#ef9a9a","badge":"#CC2529","chgBg":"#c5221f","chgColor":"#fff"},"chart":{"data":[["ก.ค. 68",157.99],["ส.ค. 68",179.04],["ก.ย. 68",187.40],["ต.ค. 68",188.90],["พ.ย. 68",189.53],["ธ.ค. 68",179.32],["ม.ค. 69",187.15],["ก.พ. 69",174.05],["มี.ค. 69",154.97],["เม.ย. 69",148.69],["พ.ค. 69",127.35],["มิ.ย. 69",102.97],["ก.ค. 69",107.56]],"min":85,"max":210,"grid":[100,130,160,190],"fairLine":168.0,"currency":"$","highlight":[4,11]},"gauge":{"min":80,"max":220,"cur":107.56,"fair":168.0,"fairLabelTop":true},"fv":168.0}
+{
+  "theme": {
+    "accent": "#CC2529",
+    "accentDark": "#8B0000",
+    "darkGrad": "linear-gradient(135deg,#1a0003 0%,#2d0006 50%,#1a0003 100%)",
+    "glow": "rgba(204,37,41,0.35)",
+    "subColor": "#f0a0a2",
+    "headerMuted": "rgba(204,37,41,0.55)",
+    "verdictText": "#ffcdd2",
+    "vcellLabel": "#ef9a9a",
+    "badge": "#CC2529",
+    "chgBg": "var(--red-soft)",
+    "chgColor": "#c5221f"
+  },
+  "chart": {
+    "data": [
+      ["ส.ค.25", 180.92],
+      ["ก.ย.25", 188.96],
+      ["ต.ค.25", 190.47],
+      ["พ.ย.25", 191.1],
+      ["ธ.ค.25", 180.4],
+      ["ม.ค.26", 188.28],
+      ["ก.พ.26", 175.1],
+      ["มี.ค.26", 155.52],
+      ["เม.ย.26", 149.22],
+      ["พ.ค.26", 127.8],
+      ["มิ.ย.26", 102.97],
+      ["ก.ค.26", 107.02]
+    ],
+    "min": 75,
+    "max": 200,
+    "grid": [100, 125, 150, 175],
+    "fairLine": 168,
+    "currency": "$",
+    "highlight": [3, 10]
+  },
+  "gauge": {
+    "min": 80,
+    "max": 220,
+    "cur": 107.02,
+    "fair": 168,
+    "fairLabelTop": true
+  },
+  "fv": 168
+}
 </script>
 <!--TEMPLATE:STYLE-->
 </head>
@@ -28,11 +72,11 @@
     <div class="sub">Defense, intelligence &amp; health technology • DoD, intelligence community, VA, FAA • F-35 sustainment, air traffic management, VA EHR • ~$16.7B revenue, strong backlog</div>
     <div class="price-row">
       <div>
-        <div class="px">$107.56<small>(LDOS)</small></div>
+        <div class="px">$107.02<small>(LDOS)</small></div>
       </div>
-      <div class="chg">▼ −31.9% (รอบปี)</div>
+      <div class="chg">▼ −40.8% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 2 ก.ค. 2569<br>
+        ราคา ณ 10 ก.ค. 2569<br>
         กรอบ 52 สัปดาห์ $98.86 – $205.77<br>
         ที่มา: StockAnalysis.com, Yahoo Finance, Macrotrends
       </div>
@@ -110,7 +154,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $107.56</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $107.02</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $168</div></div>
         </div>
         <div class="scale">
@@ -132,7 +176,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict good">
-        <div class="big">+36.0%</div>
+        <div class="big">+36%</div>
         <div class="txt">ส่วนต่างความปลอดภัยสูง — ราคาต่ำกว่า Fair Value $168 มากกว่า 1 ใน 3</div>
       </div>
       <div class="grid g3">
@@ -143,7 +187,7 @@
       <div class="calc">
         <label>&#129522; ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="107.56" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="107.02" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

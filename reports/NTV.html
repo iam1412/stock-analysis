@@ -6,48 +6,53 @@
 <title>วิเคราะห์หุ้น โรงพยาบาลนนทเวช (NTV) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Sonnet 4.6">
 <script type="application/json" id="stock-meta">
-{"symbol":"NTV","currency":"THB","price":19.10,"fairValue":22.50,"mos":15.1,"upside":17.8,"pe":12.51,"dividendYield":null,"roe":9.0}
+{"symbol":"NTV","currency":"THB","price":18.9,"fairValue":22.5,"mos":16,"upside":19,"pe":12.51,"dividendYield":null,"roe":9}
 </script>
 <script type="application/json" id="report-data">
 {
-  "theme":{
-    "accent":"#1a6fa8",
-    "accentDark":"#124f7a",
-    "darkGrad":"linear-gradient(135deg,#0a2a40 0%,#1a4d6e 55%,#2473a0 130%)",
-    "glow":"rgba(26,111,168,.35)",
-    "subColor":"#b8d4ea",
-    "headerMuted":"#8bbfd8",
-    "verdictText":"#d0e8f5",
-    "vcellLabel":"#8bbfd8",
-    "badge":"var(--blue)",
-    "chgBg":"#c5221f",
-    "chgColor":"#fff"
+  "theme": {
+    "accent": "#1a6fa8",
+    "accentDark": "#124f7a",
+    "darkGrad": "linear-gradient(135deg,#0a2a40 0%,#1a4d6e 55%,#2473a0 130%)",
+    "glow": "rgba(26,111,168,.35)",
+    "subColor": "#b8d4ea",
+    "headerMuted": "#8bbfd8",
+    "verdictText": "#d0e8f5",
+    "vcellLabel": "#8bbfd8",
+    "badge": "var(--blue)",
+    "chgBg": "var(--red-soft)",
+    "chgColor": "#c5221f"
   },
-  "chart":{
-    "data":[
-      ["ม.ค. 68",24.90],
-      ["ก.พ. 68",24.80],
-      ["มี.ค. 68",24.40],
-      ["เม.ย. 68",22.50],
-      ["พ.ค. 68",23.00],
-      ["มิ.ย. 68",22.60],
-      ["ก.ค. 68",23.70],
-      ["ส.ค. 68",21.90],
-      ["ก.ย. 68",22.10],
-      ["ต.ค. 68",19.00],
-      ["พ.ย. 68",18.90],
-      ["ธ.ค. 68",18.80],
-      ["ม.ค. 69",19.10]
+  "chart": {
+    "data": [
+      ["ส.ค.25", 24.9],
+      ["ก.ย.25", 24.8],
+      ["ต.ค.25", 24.4],
+      ["พ.ย.25", 22.5],
+      ["ธ.ค.25", 23],
+      ["ม.ค.26", 22.6],
+      ["ก.พ.26", 23.7],
+      ["มี.ค.26", 21.9],
+      ["เม.ย.26", 22.1],
+      ["พ.ค.26", 19],
+      ["มิ.ย.26", 18.9],
+      ["ก.ค.26", 18.9]
     ],
-    "min":15.00,
-    "max":27.00,
-    "grid":[16.00,18.00,20.00,22.00,24.00,26.00],
-    "fairLine":22.50,
-    "currency":"฿",
-    "highlight":[0,12]
+    "min": 18,
+    "max": 26,
+    "grid": [20, 22, 24],
+    "fairLine": 22.5,
+    "currency": "฿",
+    "highlight": [0, 10]
   },
-  "gauge":{"min":13.00,"max":28.00,"cur":19.10,"fair":22.50,"fairLabelTop":true},
-  "fv":22.50
+  "gauge": {
+    "min": 13,
+    "max": 28,
+    "cur": 18.9,
+    "fair": 22.5,
+    "fairLabelTop": true
+  },
+  "fv": 22.5
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -67,11 +72,11 @@
     <div class="sub">โรงพยาบาลเอกชนขนาดกลางในนนทบุรี • บริการ OPD/IPD ครบวงจร 24 ชม. • ศูนย์เฉพาะทางด้านหัวใจ สมอง ออร์โธปิดิกส์ มะเร็ง • รองรับผู้ป่วยในเขต Bangkok Noi และปริมณฑล</div>
     <div class="price-row">
       <div>
-        <div class="px">฿19.10<small>(NTV)</small></div>
+        <div class="px">฿18.90<small>(NTV)</small></div>
       </div>
-      <div class="chg">▼ −23.3% (รอบปี)</div>
+      <div class="chg">▼ −24.1% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 3 ก.ค. 2569<br>
+        ราคา ณ 10 ก.ค. 2569<br>
         กรอบ 52 สัปดาห์ ฿18.30 – ฿27.25<br>
         ที่มา: SET.or.th, Finnomena.com, Yahoo Finance
       </div>
@@ -156,7 +161,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿19.10</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿18.90</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿22.50</div></div>
         </div>
         <div class="scale">
@@ -181,7 +186,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict ok">
-        <div class="big">+15.1%</div>
+        <div class="big">+16%</div>
         <div class="txt">MOS ระดับกลาง — ราคาต่ำกว่า Fair Value แต่ยังไม่ถึงโซน Deep Value (MOS 20–30%)</div>
       </div>
       <div class="grid g3">
@@ -192,7 +197,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="19.10" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="18.9" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

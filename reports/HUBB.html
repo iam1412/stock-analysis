@@ -19,7 +19,7 @@
 <meta name="ai-model" content="Claude Sonnet 4.6">
 <!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
 <script type="application/json" id="stock-meta">
-{"symbol":"HUBB","currency":"USD","price":478.89,"fairValue":522.96,"mos":8.43,"upside":9.2,"pe":28.3,"dividendYield":1.19,"roe":25.8}
+{"symbol":"HUBB","currency":"USD","price":490.94,"fairValue":522.96,"mos":6.1,"upside":6.5,"pe":28.3,"dividendYield":1.19,"roe":25.8}
 </script>
 <!--
   report-data: ธีมสี + ข้อมูลกราฟ/gauge ต่อหุ้น (build เอาไปวาด)  ดู schema เต็มใน CLAUDE.md ข้อ 9
@@ -42,79 +42,35 @@
     "verdictText": "#d1dff0",
     "vcellLabel": "#a9bfdb",
     "badge": "#1e5aa3",
-    "chgBg": "rgba(34,197,94,0.15)",
-    "chgColor": "#22C55E"
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#1e8e3e"
   },
   "chart": {
     "data": [
-      [
-        "ส.ค. 68",
-        430.99
-      ],
-      [
-        "ก.ย. 68",
-        430.31
-      ],
-      [
-        "ต.ค. 68",
-        470.0
-      ],
-      [
-        "พ.ย. 68",
-        431.43
-      ],
-      [
-        "ธ.ค. 68",
-        444.11
-      ],
-      [
-        "ม.ค. 69",
-        487.94
-      ],
-      [
-        "ก.พ. 69",
-        511.63
-      ],
-      [
-        "มี.ค. 69",
-        490.74
-      ],
-      [
-        "เม.ย. 69",
-        508.17
-      ],
-      [
-        "พ.ค. 69",
-        473.61
-      ],
-      [
-        "มิ.ย. 69",
-        523.2
-      ],
-      [
-        "ปัจจุบัน",
-        478.89
-      ]
+      ["ส.ค.25", 430.99],
+      ["ก.ย.25", 430.31],
+      ["ต.ค.25", 470],
+      ["พ.ย.25", 431.43],
+      ["ธ.ค.25", 444.11],
+      ["ม.ค.26", 487.94],
+      ["ก.พ.26", 511.63],
+      ["มี.ค.26", 490.74],
+      ["เม.ย.26", 508.17],
+      ["พ.ค.26", 473.61],
+      ["มิ.ย.26", 523.2],
+      ["ก.ค.26", 490.94]
     ],
     "min": 400,
-    "max": 580,
-    "grid": [
-      420,
-      460,
-      500,
-      540
-    ],
+    "max": 550,
+    "grid": [425, 450, 475, 500, 525],
     "fairLine": 522.96,
     "currency": "$",
-    "highlight": [
-      6,
-      11
-    ]
+    "highlight": [1, 10]
   },
   "gauge": {
     "min": 320,
     "max": 650,
-    "cur": 478.89,
+    "cur": 490.94,
     "fair": 522.96,
     "fairLabelTop": false
   },
@@ -139,14 +95,14 @@
     <div class="sub">โซลูชันโครงข่ายไฟฟ้า Utility Solutions (หม้อแปลง สวิตช์เกียร์ อุปกรณ์เชื่อมต่อสายส่ง-จำหน่าย) • Electrical Solutions (wiring devices ระบบไฟส่องสว่างและอุปกรณ์ไฟฟ้าอุตสาหกรรม/อาคาร) • อานิสงส์ grid modernization + ดาต้าเซ็นเตอร์</div>
     <div class="price-row">
       <div>
-        <div class="px">$478.89<small>(HUBB)</small></div>
+        <div class="px">$490.94<small>(HUBB)</small></div>
       </div>
       <!-- ★ ป้าย % รอบปี (gate E35/E36) — ผลตอบแทน ~1 ปี (เทียบราคา ~1 ปีก่อน) = ผลตอบแทนปลายกราฟ section 2 (จุดแรก→ท้าย)
            รูปแบบ: "▲ +X.X% (รอบปี)" ขึ้น · "▼ −X.X% (รอบปี)" ลง · "≈ ทรงตัว (รอบปี)" · หุ้น IPO <1 ปี ใช้ "(ตั้งแต่ IPO)"
            ไม่ใช่ % รายวัน/YTD/52 สัปดาห์ · ตั้งสี theme.chgBg/chgColor ให้ตรงทิศ (ขึ้น=เขียว/ลง=แดง · E34) -->
-      <div class="chg">▲ +11.1% (รอบปี)</div>
+      <div class="chg">▲ +13.9% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 8 ก.ค. 2569<br>
+        ราคา ณ 10 ก.ค. 2569<br>
         กรอบ 52 สัปดาห์ $403.82 – $565.50<br>
         ที่มา: Yahoo Finance, StockAnalysis.com, Hubbell Investor Relations
       </div>
@@ -234,7 +190,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $478.89</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $490.94</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $522.96</div></div>
         </div>
         <div class="scale">
@@ -257,7 +213,7 @@
     <div class="card">
       <!-- ✏️ class ของ mos-verdict: MOS<10 → "bad", 10–20 → "ok", ≥20 → "good" -->
       <div class="mos-verdict bad">
-        <div class="big">+8.43%</div>
+        <div class="big">+6%</div>
         <div class="txt">ส่วนต่างจากมูลค่าเหมาะสม ~+8.4% อยู่ในระดับต่ำ (ไม่ใช่ deep value) เหมาะกับผู้ลงทุนระยะยาวที่เชื่อมั่นในธีม grid modernization/data center มากกว่าผู้ที่มองหาส่วนลดมาก</div>
       </div>
       <div class="grid g3">
@@ -268,7 +224,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="478.89" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="490.94" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

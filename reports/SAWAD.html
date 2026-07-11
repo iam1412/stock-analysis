@@ -8,7 +8,7 @@
 <meta name="ai-model" content="Claude Sonnet 4.6">
 <!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
 <script type="application/json" id="stock-meta">
-{"symbol":"SAWAD","currency":"THB","price":23.60,"fairValue":26.50,"mos":10.9,"upside":12.3,"pe":7.45,"dividendYield":2.97,"roe":13.6}
+{"symbol":"SAWAD","currency":"THB","price":24.6,"fairValue":26.5,"mos":7.2,"upside":7.7,"pe":7.45,"dividendYield":2.97,"roe":13.6}
 </script>
 <script type="application/json" id="report-data">
 {
@@ -22,40 +22,39 @@
     "verdictText": "#e8f5e9",
     "vcellLabel": "rgba(232,245,233,0.7)",
     "badge": "#388e3c",
-    "chgBg": "var(--green-soft)",
-    "chgColor": "#1e8e3e"
+    "chgBg": "var(--red-soft)",
+    "chgColor": "#c5221f"
   },
   "chart": {
     "data": [
-      ["ก.ค. 68", 20.30],
-      ["ส.ค. 68", 25.00],
-      ["ก.ย. 68", 30.00],
-      ["ต.ค. 68", 28.25],
-      ["พ.ย. 68", 25.25],
-      ["ธ.ค. 68", 25.50],
-      ["ม.ค. 69", 25.00],
-      ["ก.พ. 69", 28.75],
-      ["มี.ค. 69", 22.20],
-      ["เม.ย. 69", 23.30],
-      ["พ.ค. 69", 21.90],
-      ["มิ.ย. 69", 23.10],
-      ["ก.ค. 69", 23.60]
+      ["ส.ค.25", 25],
+      ["ก.ย.25", 30],
+      ["ต.ค.25", 28.25],
+      ["พ.ย.25", 25.25],
+      ["ธ.ค.25", 25.5],
+      ["ม.ค.26", 25],
+      ["ก.พ.26", 28.75],
+      ["มี.ค.26", 22.2],
+      ["เม.ย.26", 23.3],
+      ["พ.ค.26", 21.9],
+      ["มิ.ย.26", 23.1],
+      ["ก.ค.26", 24.6]
     ],
-    "min": 17,
-    "max": 35,
-    "grid": [18, 22, 26, 30, 34],
-    "fairLine": 26.50,
+    "min": 20,
+    "max": 32.5,
+    "grid": [22.5, 25, 27.5, 30],
+    "fairLine": 26.5,
     "currency": "฿",
-    "highlight": [2]
+    "highlight": [1, 9]
   },
   "gauge": {
     "min": 15,
     "max": 40,
-    "cur": 23.60,
-    "fair": 26.50,
+    "cur": 24.6,
+    "fair": 26.5,
     "fairLabelTop": true
   },
-  "fv": 26.50
+  "fv": 26.5
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -75,11 +74,11 @@
     <div class="sub">จำนำทะเบียนรถ • สินเชื่อบุคคล • สินเชื่อนาโน • ฐานลูกค้า ~3 ล้านราย • &gt;5,700 สาขาทั่วไทย • SET50</div>
     <div class="price-row">
       <div>
-        <div class="px">฿23.60<small>(SAWAD)</small></div>
+        <div class="px">฿24.60<small>(SAWAD)</small></div>
       </div>
-      <div class="chg">▲ +16.3% (รอบปี)</div>
+      <div class="chg">▼ −1.6% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 2 ก.ค. 2569<br>
+        ราคา ณ 10 ก.ค. 2569<br>
         กรอบ 52 สัปดาห์ ฿16.50 – ฿32.00<br>
         ที่มา: SET / Yahoo Finance
       </div>
@@ -161,7 +160,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿23.60</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿24.60</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿26.50</div></div>
         </div>
         <div class="scale">
@@ -185,7 +184,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict ok">
-        <div class="big">+10.9%</div>
+        <div class="big">+7%</div>
         <div class="txt">ราคาต่ำกว่า Fair Value พอควร — น่าสนใจแต่ยังไม่ถึง "ถูกมาก"</div>
       </div>
       <div class="grid g3">
@@ -196,7 +195,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="23.60" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="24.6" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

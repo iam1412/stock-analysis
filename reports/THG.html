@@ -6,7 +6,7 @@
 <title>วิเคราะห์หุ้น ธนบุรี เฮลท์แคร์ กรุ๊ป (THG) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Sonnet 4.6">
 <script type="application/json" id="stock-meta">
-{"symbol":"THG","currency":"THB","price":7.70,"fairValue":6.70,"mos":-14.93,"upside":-12.99,"pe":99.25,"dividendYield":1.82,"roe":0.93}
+{"symbol":"THG","currency":"THB","price":7.5,"fairValue":6.7,"mos":-11.9,"upside":-10.7,"pe":99.25,"dividendYield":1.82,"roe":0.93}
 </script>
 <script type="application/json" id="report-data">
 {
@@ -20,42 +20,41 @@
     "verdictText": "#e0f7fa",
     "vcellLabel": "rgba(224,247,250,0.7)",
     "badge": "#00acc1",
-    "chgBg": "#1e8e3e",
-    "chgColor": "#ffffff"
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#1e8e3e"
   },
   "chart": {
     "data": [
-      ["ม.ค. 68", 7.20],
-      ["ก.พ. 68", 7.70],
-      ["มี.ค. 68", 8.05],
-      ["เม.ย. 68", 8.50],
-      ["พ.ค. 68", 8.55],
-      ["มิ.ย. 68", 8.60],
-      ["ก.ค. 68", 9.30],
-      ["ส.ค. 68", 9.10],
-      ["ก.ย. 68", 8.35],
-      ["ต.ค. 68", 7.75],
-      ["พ.ย. 68", 7.30],
-      ["ธ.ค. 68", 7.80],
-      ["ม.ค. 69", 7.70]
+      ["ส.ค.25", 7.2],
+      ["ก.ย.25", 7.7],
+      ["ต.ค.25", 8.05],
+      ["พ.ย.25", 8.5],
+      ["ธ.ค.25", 8.55],
+      ["ม.ค.26", 8.6],
+      ["ก.พ.26", 9.3],
+      ["มี.ค.26", 9.1],
+      ["เม.ย.26", 8.35],
+      ["พ.ค.26", 7.75],
+      ["มิ.ย.26", 7.3],
+      ["ก.ค.26", 7.5]
     ],
-    "min": 6.00,
-    "max": 10.50,
-    "grid": [6.50, 7.50, 8.50, 9.50],
-    "fairLine": 6.70,
+    "min": 6,
+    "max": 10,
+    "grid": [7, 8, 9],
+    "fairLine": 6.7,
     "currency": "฿",
-    "highlight": [6, 8],
+    "highlight": [0, 6],
     "gridFmt": "v.toFixed(2)",
     "dataFmt": "d[1].toFixed(2)"
   },
   "gauge": {
-    "min": 4.00,
-    "max": 11.00,
-    "cur": 7.70,
-    "fair": 6.70,
+    "min": 4,
+    "max": 11,
+    "cur": 7.5,
+    "fair": 6.7,
     "fairLabelTop": false
   },
-  "fv": 6.70
+  "fv": 6.7
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -75,11 +74,11 @@
     <div class="sub">เครือโรงพยาบาลธนบุรี • ขยายต่างจังหวัด + CLMV (เมียนมา/เวียดนาม) • Affordable Healthcare • 20+ โรงพยาบาล</div>
     <div class="price-row">
       <div>
-        <div class="px">฿7.70<small>(THG)</small></div>
+        <div class="px">฿7.50<small>(THG)</small></div>
       </div>
-      <div class="chg" style="background:var(--chgBg,#1e8e3e);color:var(--chgColor,#fff)">▲ +6.9% (รอบปี)</div>
+      <div class="chg">▲ +4.2% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 3 ก.ค. 2569<br>
+        ราคา ณ 10 ก.ค. 2569<br>
         กรอบ 52 สัปดาห์ ฿6.15 – ฿9.90<br>
         ที่มา: Yahoo Finance, Investing.com, AiO
       </div>
@@ -165,7 +164,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿7.70</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿7.50</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿6.70</div></div>
         </div>
         <div class="scale">
@@ -190,7 +189,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict bad">
-        <div class="big">−14.9%</div>
+        <div class="big">−12%</div>
         <div class="txt">ราคาแพงกว่ามูลค่าเหมาะสม ~15% — ยังไม่มี Margin of Safety เพียงพอสำหรับ Value Investor</div>
       </div>
       <div class="grid g3">
@@ -201,7 +200,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="7.70" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="7.5" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -316,7 +315,7 @@
     <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
     ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
-    แหล่งข้อมูล: Yahoo Finance (THG.BK), Investing.com, StockAnalysis.com (BKK:THG), AiO Panphol, ir.thg.co.th — ราคา ณ 3 ก.ค. 2569
+    แหล่งข้อมูล: Yahoo Finance (THG.BK), Investing.com, StockAnalysis.com (BKK:THG), AiO Panphol, ir.thg.co.th — ราคา ณ 10 ก.ค. 2569
   </div>
   <footer>Stock Analysis Dashboard • ข้อมูล ณ 3 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 

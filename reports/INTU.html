@@ -6,22 +6,52 @@
 <title>วิเคราะห์หุ้น Intuit (INTU) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Opus 4.8">
 <script type="application/json" id="stock-meta">
-{"symbol":"INTU","currency":"USD","price":257,"fairValue":310,"mos":17,"upside":20.6,"pe":13,"dividendYield":1.86,"roe":22.5}
+{"symbol":"INTU","currency":"USD","price":274.96,"fairValue":310,"mos":11.3,"upside":12.7,"pe":13,"dividendYield":1.86,"roe":22.5}
 </script>
 <script type="application/json" id="report-data">
 {
   "theme": {
-    "accent": "#1a73e8", "accentDark": "#1557b0",
+    "accent": "#1a73e8",
+    "accentDark": "#1557b0",
     "darkGrad": "linear-gradient(135deg,#0b3d2e 0%,#11604a 60%,#1a73e8 150%)",
-    "glow": "rgba(54,179,126,.35)", "subColor": "#c7d2e4", "headerMuted": "#aebfd6",
-    "chgBg": "var(--red-soft)", "chgColor": "#c5221f", "badge": "var(--blue)",
-    "verdictText": "#d4dded", "vcellLabel": "#a8b6cc"
+    "glow": "rgba(54,179,126,.35)",
+    "subColor": "#c7d2e4",
+    "headerMuted": "#aebfd6",
+    "chgBg": "var(--red-soft)",
+    "chgColor": "#c5221f",
+    "badge": "var(--blue)",
+    "verdictText": "#d4dded",
+    "vcellLabel": "#a8b6cc"
   },
   "chart": {
-    "data": [["มิ.ย.25",760],["ส.ค.25",700],["ต.ค.25",640],["ธ.ค.25",560],["ก.พ.26",470],["เม.ย.26",360],["พ.ค.26",290],["มิ.ย.26",257]],
-    "min": 220, "max": 820, "grid": [300,400,500,600,700,800], "fairLine": 310, "currency": "$", "highlight": [0,7]
+    "data": [
+      ["ส.ค.25", 667],
+      ["ก.ย.25", 682.91],
+      ["ต.ค.25", 667.55],
+      ["พ.ย.25", 634.08],
+      ["ธ.ค.25", 662.42],
+      ["ม.ค.26", 498.92],
+      ["ก.พ.26", 409.03],
+      ["มี.ค.26", 432.38],
+      ["เม.ย.26", 388.5],
+      ["พ.ค.26", 331.53],
+      ["มิ.ย.26", 261],
+      ["ก.ค.26", 274.96]
+    ],
+    "min": 200,
+    "max": 800,
+    "grid": [400, 600],
+    "fairLine": 310,
+    "currency": "$",
+    "highlight": [1, 10]
   },
-  "gauge": { "min": 190, "max": 660, "cur": 257, "fair": 310, "fairLabelTop": "-58px" },
+  "gauge": {
+    "min": 190,
+    "max": 660,
+    "cur": 274.96,
+    "fair": 310,
+    "fairLabelTop": "-58px"
+  },
   "fv": 310
 }
 </script>
@@ -42,11 +72,11 @@
     <div class="sub">เจ้าของ TurboTax • QuickBooks • Credit Karma • Mailchimp • ผู้ช่วย AI "Intuit Assist"</div>
     <div class="price-row">
       <div>
-        <div class="px">$257<small>(INTU)</small></div>
+        <div class="px">$274.96<small>(INTU)</small></div>
       </div>
-      <div class="chg">▼ −66.2% (รอบปี)</div>
+      <div class="chg">▼ −58.8% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ≈ 22–23 มิ.ย. 2026 (ใกล้จุดต่ำสุด 52 สัปดาห์)<br>
+        ราคา ≈ 10 ก.ค. 2026 (ใกล้จุดต่ำสุด 52 สัปดาห์)<br>
         ปิด 22 มิ.ย. ที่ $257.77 (ก่อนหน้า $267.00)<br>
         ที่มา: StockAnalysis / Yahoo Finance / MarketBeat
       </div>
@@ -129,7 +159,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $257</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $275</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $310</div></div>
         </div>
         <div class="scale">
@@ -153,7 +183,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict ok">
-        <div class="big">+17%</div>
+        <div class="big">+11%</div>
         <div class="txt"><b>มี Margin of Safety พอประมาณ</b><br>ราคาปัจจุบัน $257 ต่ำกว่ามูลค่าเหมาะสม $310 ราว 17% → ตามเกณฑ์ value investor ถือว่า <b>เริ่มน่าสนใจ</b> แต่ยังไม่ถึงโซน "ถูกมาก" เพราะความเสี่ยงดิสรัปต์ยังสูง</div>
       </div>
       <div class="grid g3">
@@ -164,7 +194,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="257" step="1">
+          <input id="pxIn" class="mono" type="number" value="274.96" step="1">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

@@ -8,7 +8,7 @@
 <meta name="ai-model" content="Claude Sonnet 4.6">
 <!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
 <script type="application/json" id="stock-meta">
-{"symbol":"PLUS","currency":"THB","price":1.32,"fairValue":0.69,"mos":-91.3,"upside":-47.7,"pe":null,"dividendYield":4.55,"roe":-5.77}
+{"symbol":"PLUS","currency":"THB","price":1.37,"fairValue":0.69,"mos":-98.6,"upside":-49.6,"pe":null,"dividendYield":4.55,"roe":-5.77}
 </script>
 <script type="application/json" id="report-data">
 {
@@ -27,33 +27,32 @@
   },
   "chart": {
     "data": [
-      ["ก.ค. 68", 2.92],
-      ["ส.ค. 68", 2.76],
-      ["ก.ย. 68", 2.00],
-      ["ต.ค. 68", 1.20],
-      ["พ.ย. 68", 1.15],
-      ["ธ.ค. 68", 1.48],
-      ["ม.ค. 69", 1.45],
-      ["ก.พ. 69", 1.29],
-      ["มี.ค. 69", 1.28],
-      ["เม.ย. 69", 1.16],
-      ["พ.ค. 69", 1.37],
-      ["มิ.ย. 69", 1.32],
-      ["ก.ค. 69", 1.32]
+      ["ส.ค.25", 2.92],
+      ["ก.ย.25", 2.76],
+      ["ต.ค.25", 2],
+      ["พ.ย.25", 1.2],
+      ["ธ.ค.25", 1.15],
+      ["ม.ค.26", 1.48],
+      ["ก.พ.26", 1.45],
+      ["มี.ค.26", 1.29],
+      ["เม.ย.26", 1.28],
+      ["พ.ค.26", 1.16],
+      ["มิ.ย.26", 1.37],
+      ["ก.ค.26", 1.37]
     ],
-    "min": 0.8,
-    "max": 3.1,
-    "grid": [0.8, 1.4, 2.0, 2.6, 3.1],
+    "min": 0,
+    "max": 4,
+    "grid": [1, 2, 3],
     "fairLine": 0.69,
     "currency": "฿",
-    "highlight": [2, 3],
+    "highlight": [0, 4],
     "gridFmt": "v.toFixed(2)",
     "dataFmt": "d[1].toFixed(2)"
   },
   "gauge": {
     "min": 0.4,
     "max": 3.3,
-    "cur": 1.32,
+    "cur": 1.37,
     "fair": 0.69,
     "fairLabelTop": true
   },
@@ -78,14 +77,14 @@
     <div class="sub">ผลิต-จำหน่ายน้ำมะพร้าว นมจากพืช น้ำผลไม้ และเครื่องดื่มชา ภายใต้แบรนด์ COCO ROYAL, Nita, MABU • ส่งออกกว่า 111 ประเทศทั่วโลก • OEM ให้แบรนด์ต่างประเทศ</div>
     <div class="price-row">
       <div>
-        <div class="px">฿1.32<small>(PLUS)</small></div>
+        <div class="px">฿1.37<small>(PLUS)</small></div>
       </div>
       <!-- ★ ป้าย % รอบปี (gate E35/E36) — ผลตอบแทน ~1 ปี (เทียบราคา ~1 ปีก่อน) = ผลตอบแทนปลายกราฟ section 2 (จุดแรก→ท้าย)
            รูปแบบ: "▲ +X.X% (รอบปี)" ขึ้น · "▼ −X.X% (รอบปี)" ลง · "≈ ทรงตัว (รอบปี)" · หุ้น IPO <1 ปี ใช้ "(ตั้งแต่ IPO)"
            ไม่ใช่ % รายวัน/YTD/52 สัปดาห์ · ตั้งสี theme.chgBg/chgColor ให้ตรงทิศ (ขึ้น=เขียว/ลง=แดง · E34) -->
-      <div class="chg">▼ −54.8% (รอบปี)</div>
+      <div class="chg">▼ −53.1% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 3 ก.ค. 2569<br>
+        ราคา ณ 10 ก.ค. 2569<br>
         กรอบ 52 สัปดาห์ ฿0.97 – ฿3.24<br>
         ที่มา: StockAnalysis.com, SET Factsheet, Yahoo Finance, Royal Plus IR
       </div>
@@ -168,7 +167,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿1.32</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿1.37</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿0.69</div></div>
         </div>
         <div class="scale">
@@ -192,7 +191,7 @@
     <div class="card">
       <!-- ✏️ class ของ mos-verdict: MOS<10 → "bad", 10–20 → "ok", ≥20 → "good" -->
       <div class="mos-verdict bad">
-        <div class="big">−91.3%</div>
+        <div class="big">−99%</div>
         <div class="txt">ราคาปัจจุบัน (฿1.32) สูงกว่ามูลค่าเหมาะสม (฿0.69) มาก — ไม่มี Margin of Safety เลย ถือว่า "แพงกว่าพื้นฐาน" อย่างมีนัยสำคัญ</div>
       </div>
       <div class="grid g3">
@@ -203,7 +202,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="1.32" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="1.37" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

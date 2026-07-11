@@ -8,7 +8,7 @@
 <meta name="ai-model" content="Claude Sonnet 4.6">
 <!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) -->
 <script type="application/json" id="stock-meta">
-{"symbol":"CL","currency":"USD","price":92.4,"fairValue":95,"mos":2.74,"upside":2.81,"pe":24.6,"dividendYield":2.3,"roe":null}
+{"symbol":"CL","currency":"USD","price":92.24,"fairValue":95,"mos":2.9,"upside":3,"pe":24.6,"dividendYield":2.3,"roe":null}
 </script>
 <script type="application/json" id="report-data">
 {
@@ -22,33 +22,37 @@
     "verdictText": "#fff",
     "vcellLabel": "rgba(255,255,255,0.75)",
     "badge": "#E31837",
-    "chgBg": "rgba(34,197,94,0.20)",
-    "chgColor": "#22c55e"
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#1e8e3e"
   },
   "chart": {
     "data": [
-      ["Jun 25", 79.41],
-      ["Jul 25", 90.29],
-      ["Aug 25", 99.14],
-      ["Sep 25", 85.23],
-      ["Oct 25", 85.36],
-      ["Nov 25", 90.13],
-      ["Dec 25", 92.07],
-      ["Jan 26", 83.85],
-      ["Feb 26", 84.07],
-      ["Mar 26", 79.94],
-      ["Apr 26", 77.05],
-      ["May 26", 80.39],
-      ["Jun 26", 92.40]
+      ["ส.ค.25", 84.07],
+      ["ก.ย.25", 79.94],
+      ["ต.ค.25", 77.05],
+      ["พ.ย.25", 80.39],
+      ["ธ.ค.25", 79.02],
+      ["ม.ค.26", 90.29],
+      ["ก.พ.26", 99.14],
+      ["มี.ค.26", 85.23],
+      ["เม.ย.26", 85.36],
+      ["พ.ค.26", 90.13],
+      ["มิ.ย.26", 91.68],
+      ["ก.ค.26", 92.24]
     ],
-    "min": 74,
-    "max": 102,
-    "grid": [76, 82, 88, 94, 100],
+    "min": 70,
+    "max": 110,
+    "grid": [80, 90, 100],
     "fairLine": 95,
     "currency": "$",
-    "highlight": [2, 12]
+    "highlight": [2, 6]
   },
-  "gauge": {"min": 65, "max": 115, "cur": 92.40, "fair": 95},
+  "gauge": {
+    "min": 65,
+    "max": 115,
+    "cur": 92.24,
+    "fair": 95
+  },
   "fv": 95
 }
 </script>
@@ -69,11 +73,11 @@
     <div class="sub">Colgate toothpaste &amp; oral care • Palmolive dish soap &amp; home care • Hill's Pet Nutrition • ~200 ประเทศ • Dividend King 63 ปีติดต่อกัน</div>
     <div class="price-row">
       <div>
-        <div class="px">$92.40<small>(CL)</small></div>
+        <div class="px">$92.24<small>(CL)</small></div>
       </div>
-      <div class="chg">▲ +16.4% (รอบปี)</div>
+      <div class="chg">▲ +9.7% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 30 มิถุนายน 2569<br>
+        ราคา ณ 10 ก.ค. 2569<br>
         กรอบ 52 สัปดาห์ $74.55 – $99.33<br>
         ที่มา: Yahoo Finance, StockAnalysis.com, MarketBeat
       </div>
@@ -158,7 +162,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $92.40</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $92.24</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $95</div></div>
         </div>
         <div class="scale">
@@ -182,7 +186,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict bad">
-        <div class="big">+2.7%</div>
+        <div class="big">+3%</div>
         <div class="txt">MOS เล็กน้อย — CL ซื้อขายใกล้ Fair Value ยังไม่ถึงโซน "ถูก" อย่างมีนัยสำคัญ</div>
       </div>
       <div class="grid g3">
@@ -193,7 +197,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="92.40" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="92.24" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

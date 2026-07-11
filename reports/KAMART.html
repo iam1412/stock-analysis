@@ -6,23 +6,54 @@
 <title>วิเคราะห์หุ้น เคมาร์ท (KAMART) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Sonnet 4.6">
 <script type="application/json" id="stock-meta">
-{"symbol":"KAMART","currency":"THB","price":7.70,"fairValue":8.65,"mos":11.0,"upside":12.3,"pe":14.43,"dividendYield":5.75,"roe":19.94}
+{"symbol":"KAMART","currency":"THB","price":7.7,"fairValue":8.65,"mos":11,"upside":12.3,"pe":14.43,"dividendYield":5.75,"roe":19.94}
 </script>
 <script type="application/json" id="report-data">
 {
   "theme": {
-    "accent": "#e9208d", "accentDark": "#b11168",
+    "accent": "#e9208d",
+    "accentDark": "#b11168",
     "darkGrad": "linear-gradient(135deg,#3e0424 0%,#730742 58%,#b60c68 140%)",
-    "glow": "rgba(232,23,136,.35)", "subColor": "#ebc2d8", "headerMuted": "#d4a5bf",
-    "chgBg": "var(--red-soft)", "chgColor": "#c5221f", "badge": "#e9208d",
-    "verdictText": "#f1d0e2", "vcellLabel": "#dda6c4"
+    "glow": "rgba(232,23,136,.35)",
+    "subColor": "#ebc2d8",
+    "headerMuted": "#d4a5bf",
+    "chgBg": "var(--red-soft)",
+    "chgColor": "#c5221f",
+    "badge": "#e9208d",
+    "verdictText": "#f1d0e2",
+    "vcellLabel": "#dda6c4"
   },
   "chart": {
-    "data": [["ก.ค.25",8.20],["ส.ค.25",8.50],["ก.ย.25",8.70],["ต.ค.25",8.95],["พ.ย.25",8.60],["ธ.ค.25",8.20],["ม.ค.26",8.20],["ก.พ.26",8.00],["มี.ค.26",7.85],["เม.ย.26",7.75],["พ.ค.26",7.70],["มิ.ย.26",7.65],["ก.ค.26",7.70]],
-    "min": 7.0, "max": 9.8, "grid": [7.5,8.0,8.65,9.0], "fairLine": 8.65, "currency": "฿", "highlight": [3,12],
-    "gridFmt": "v.toFixed(1)", "dataFmt": "d[1].toFixed(2)"
+    "data": [
+      ["ส.ค.25", 7.7],
+      ["ก.ย.25", 8.2],
+      ["ต.ค.25", 8.2],
+      ["พ.ย.25", 8.65],
+      ["ธ.ค.25", 8.95],
+      ["ม.ค.26", 8.85],
+      ["ก.พ.26", 9.2],
+      ["มี.ค.26", 8.2],
+      ["เม.ย.26", 7.6],
+      ["พ.ค.26", 7.35],
+      ["มิ.ย.26", 7.75],
+      ["ก.ค.26", 7.7]
+    ],
+    "min": 7,
+    "max": 9.5,
+    "grid": [7.5, 8, 8.5, 9],
+    "fairLine": 8.65,
+    "currency": "฿",
+    "highlight": [6, 9],
+    "gridFmt": "v.toFixed(1)",
+    "dataFmt": "d[1].toFixed(2)"
   },
-  "gauge": { "min": 5.5, "max": 11.0, "cur": 7.70, "fair": 8.65, "fairLabelTop": "-58px" },
+  "gauge": {
+    "min": 5.5,
+    "max": 11,
+    "cur": 7.7,
+    "fair": 8.65,
+    "fairLabelTop": "-58px"
+  },
   "fv": 8.65
 }
 </script>
@@ -45,9 +76,9 @@
       <div>
         <div class="px">฿7.70<small>(KAMART)</small></div>
       </div>
-      <div class="chg">▼ −6.1% (รอบปี)</div>
+      <div class="chg">≈ ทรงตัว (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 4 ก.ค. 2569<br>
+        ราคา ณ 10 ก.ค. 2569<br>
         กรอบ 52 สัปดาห์ ฿7.15 – ฿9.95<br>
         ที่มา: SET.or.th, StockAnalysis.com, Yahoo Finance
       </div>
@@ -156,7 +187,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict ok">
-        <div class="big">+11.0%</div>
+        <div class="big">+11%</div>
         <div class="txt">MOS พอประมาณ — น่าเริ่มทยอยสะสม แต่ยังไม่ถึงโซน Deep Value</div>
       </div>
       <div class="grid g3">
@@ -167,7 +198,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="7.70" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="7.7" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

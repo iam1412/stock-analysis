@@ -6,7 +6,7 @@
 <title>วิเคราะห์หุ้น น้ำมันพืชไทย (TVO) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Sonnet 4.6">
 <script type="application/json" id="stock-meta">
-{"symbol":"TVO","currency":"THB","price":26.00,"fairValue":22.32,"mos":-16.5,"upside":-14.2,"pe":13.33,"dividendYield":7.58,"roe":14.13}
+{"symbol":"TVO","currency":"THB","price":26.75,"fairValue":22.32,"mos":-19.8,"upside":-16.6,"pe":13.33,"dividendYield":7.58,"roe":14.13}
 </script>
 <script type="application/json" id="report-data">
 {
@@ -20,36 +20,35 @@
     "verdictText": "#f1e2d0",
     "vcellLabel": "#ddc4a6",
     "badge": "#ed8c1d",
-    "chgBg": "#1e8e3e",
-    "chgColor": "#ffffff"
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#1e8e3e"
   },
   "chart": {
     "data": [
-      ["ก.ค. 68", 24.70],
-      ["ส.ค. 68", 25.25],
-      ["ก.ย. 68", 24.20],
-      ["ต.ค. 68", 22.70],
-      ["พ.ย. 68", 22.40],
-      ["ธ.ค. 68", 23.40],
-      ["ม.ค. 69", 24.70],
-      ["ก.พ. 69", 25.00],
-      ["มี.ค. 69", 24.70],
-      ["เม.ย. 69", 25.00],
-      ["พ.ค. 69", 26.00],
-      ["มิ.ย. 69", 26.00],
-      ["ก.ค. 69", 26.00]
+      ["ส.ค.25", 24.7],
+      ["ก.ย.25", 25.25],
+      ["ต.ค.25", 24.2],
+      ["พ.ย.25", 22.7],
+      ["ธ.ค.25", 22.4],
+      ["ม.ค.26", 23.4],
+      ["ก.พ.26", 24.7],
+      ["มี.ค.26", 25],
+      ["เม.ย.26", 24.7],
+      ["พ.ค.26", 25],
+      ["มิ.ย.26", 26],
+      ["ก.ค.26", 26.75]
     ],
-    "min": 20,
+    "min": 22,
     "max": 28,
-    "grid": [20, 22, 24, 26, 28],
+    "grid": [24, 26],
     "fairLine": 22.32,
     "currency": "฿",
-    "highlight": [3, 4]
+    "highlight": [4, 11]
   },
   "gauge": {
     "min": 14,
     "max": 29,
-    "cur": 26.00,
+    "cur": 26.75,
     "fair": 22.32,
     "fairLabelTop": true
   },
@@ -74,14 +73,14 @@
     <div class="sub">ผู้ผลิตน้ำมันถั่วเหลืองสกัด/กากถั่วเหลืองรายใหญ่ของไทย แบรนด์ "องุ่น" • น้ำมันพืชหลากชนิด (ถั่วเหลือง ทานตะวัน ข้าวโพด คาโนลา มะกอก) • อาหารสัตว์ • ปลากระป๋อง • ส่งออกกากถั่วเหลืองเป็นวัตถุดิบอาหารสัตว์</div>
     <div class="price-row">
       <div>
-        <div class="px">฿26.00<small>(TVO)</small></div>
+        <div class="px">฿26.75<small>(TVO)</small></div>
       </div>
       <!-- ★ ป้าย % รอบปี (gate E35/E36) — ผลตอบแทน ~1 ปี (เทียบราคา ~1 ปีก่อน) = ผลตอบแทนปลายกราฟ section 2 (จุดแรก→ท้าย)
            รูปแบบ: "▲ +X.X% (รอบปี)" ขึ้น · "▼ −X.X% (รอบปี)" ลง · "≈ ทรงตัว (รอบปี)" · หุ้น IPO <1 ปี ใช้ "(ตั้งแต่ IPO)"
            ไม่ใช่ % รายวัน/YTD/52 สัปดาห์ · ตั้งสี theme.chgBg/chgColor ให้ตรงทิศ (ขึ้น=เขียว/ลง=แดง · E34) -->
-      <div class="chg">▲ +5.3% (รอบปี)</div>
+      <div class="chg">▲ +8.3% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 3 ก.ค. 2569<br>
+        ราคา ณ 10 ก.ค. 2569<br>
         กรอบ 52 สัปดาห์ ฿21.00 – ฿26.75<br>
         ที่มา: StockAnalysis.com, SET (ตลาดหลักทรัพย์แห่งประเทศไทย), Yahoo Finance
       </div>
@@ -165,7 +164,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿26.00</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿26.75</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿22.32</div></div>
         </div>
         <div class="scale">
@@ -188,7 +187,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict bad">
-        <div class="big">−16.5%</div>
+        <div class="big">−20%</div>
         <div class="txt">ราคาปัจจุบัน ฿26.00 สูงกว่ามูลค่าเหมาะสม normalized ฿22.32 — ไม่มี Margin of Safety ในกรอบ normalized valuation (ยังพอมี upside เทียบเป้านักวิเคราะห์และกรอบบน FV จาก DDM)</div>
       </div>
       <div class="grid g3">
@@ -199,7 +198,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="26.00" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="26.75" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

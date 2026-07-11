@@ -6,10 +6,54 @@
 <title>วิเคราะห์หุ้น Medtronic (MDT) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Sonnet 4.6">
 <script type="application/json" id="stock-meta">
-{"symbol":"MDT","currency":"USD","price":80.98,"fairValue":94,"mos":13.9,"upside":16.1,"pe":14.75,"dividendYield":3.51,"roe":9.84}
+{"symbol":"MDT","currency":"USD","price":83.87,"fairValue":94,"mos":10.8,"upside":12.1,"pe":14.75,"dividendYield":3.51,"roe":9.84}
 </script>
 <script type="application/json" id="report-data">
-{"theme":{"accent":"#0C5FA8","accentDark":"#08427A","darkGrad":"linear-gradient(135deg, #02080F 0%, #04162A 100%)","glow":"rgba(12,95,168,0.35)","subColor":"#3D8FCE","headerMuted":"rgba(12,95,168,0.12)","verdictText":"#CFE2F2","vcellLabel":"rgba(207,226,242,0.6)","badge":"#0C5FA8","chgBg":"rgba(239,68,68,0.15)","chgColor":"#EF4444"},"chart":{"data":[["ก.ค. 68",90.24],["ส.ค. 68",92.81],["ก.ย. 68",95.24],["ต.ค. 68",90.70],["พ.ย. 68",105.33],["ธ.ค. 68",96.06],["ม.ค. 69",102.96],["ก.พ. 69",97.66],["มี.ค. 69",86.65],["เม.ย. 69",80.97],["พ.ค. 69",73.81],["มิ.ย. 69",80.98]],"min":70,"max":108,"grid":[80,90,100],"fairLine":94,"currency":"$","highlight":[10]},"gauge":{"min":68,"max":105,"cur":80.98,"fair":94,"fairLabelTop":false},"fv":94}
+{
+  "theme": {
+    "accent": "#0C5FA8",
+    "accentDark": "#08427A",
+    "darkGrad": "linear-gradient(135deg, #02080F 0%, #04162A 100%)",
+    "glow": "rgba(12,95,168,0.35)",
+    "subColor": "#3D8FCE",
+    "headerMuted": "rgba(12,95,168,0.12)",
+    "verdictText": "#CFE2F2",
+    "vcellLabel": "rgba(207,226,242,0.6)",
+    "badge": "#0C5FA8",
+    "chgBg": "var(--red-soft)",
+    "chgColor": "#c5221f"
+  },
+  "chart": {
+    "data": [
+      ["ส.ค.25", 92.81],
+      ["ก.ย.25", 95.24],
+      ["ต.ค.25", 90.7],
+      ["พ.ย.25", 105.33],
+      ["ธ.ค.25", 96.06],
+      ["ม.ค.26", 102.96],
+      ["ก.พ.26", 97.66],
+      ["มี.ค.26", 86.65],
+      ["เม.ย.26", 80.97],
+      ["พ.ค.26", 73.81],
+      ["มิ.ย.26", 78.23],
+      ["ก.ค.26", 83.87]
+    ],
+    "min": 70,
+    "max": 110,
+    "grid": [80, 90, 100],
+    "fairLine": 94,
+    "currency": "$",
+    "highlight": [3, 9]
+  },
+  "gauge": {
+    "min": 68,
+    "max": 105,
+    "cur": 83.87,
+    "fair": 94,
+    "fairLabelTop": false
+  },
+  "fv": 94
+}
 </script>
 <!--TEMPLATE:STYLE-->
 </head>
@@ -28,11 +72,11 @@
     <div class="sub">อุปกรณ์การแพทย์รายใหญ่ระดับโลก • Cardiovascular (PFA ablation, TAVR) • Neuroscience • Medical Surgical (หุ่นยนต์ Hugo) • Diabetes/MiniMed (กำลังแยก IPO)</div>
     <div class="price-row">
       <div>
-        <div class="px">$80.98<small>(MDT)</small></div>
+        <div class="px">$83.87<small>(MDT)</small></div>
       </div>
-      <div class="chg">▼ −10.3% (รอบปี)</div>
+      <div class="chg">▼ −9.6% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 26 มิ.ย. 2569<br>
+        ราคา ณ 10 ก.ค. 2569<br>
         กรอบ 52 สัปดาห์ $73.31 / $106.33<br>
         ที่มา: StockAnalysis.com / Yahoo Finance / Medtronic IR / Macrotrends
       </div>
@@ -110,7 +154,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $80.98</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $83.87</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $94</div></div>
         </div>
         <div class="scale">
@@ -132,7 +176,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict ok">
-        <div class="big">+13.9%</div>
+        <div class="big">+11%</div>
         <div class="txt">MOS ระดับน่าสนใจ · ยังต่ำกว่า Fair Value อยู่พอสมควร</div>
       </div>
       <div class="grid g3">
@@ -143,7 +187,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="80.98" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="83.87" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -249,7 +293,7 @@
   <div class="disc">
     <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
-    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ข้อมูลอ้างอิง: StockAnalysis.com · Yahoo Finance · Medtronic Investor Relations · Macrotrends · ราคา ณ 26 มิ.ย. 2569
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ข้อมูลอ้างอิง: StockAnalysis.com · Yahoo Finance · Medtronic Investor Relations · Macrotrends · ราคา ณ 10 ก.ค. 2569
   </div>
   <footer>Stock Analysis Dashboard • ข้อมูล ณ 26 มิ.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 

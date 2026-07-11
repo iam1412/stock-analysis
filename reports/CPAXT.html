@@ -8,7 +8,7 @@
 <meta name="ai-model" content="Claude Opus 4.8">
 <!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
 <script type="application/json" id="stock-meta">
-{"symbol":"CPAXT","currency":"THB","price":14.60,"fairValue":15.30,"mos":4.6,"upside":4.8,"pe":16.0,"dividendYield":4.8,"roe":3.1}
+{"symbol":"CPAXT","currency":"THB","price":14.9,"fairValue":15.3,"mos":2.6,"upside":2.7,"pe":16,"dividendYield":4.8,"roe":3.1}
 </script>
 <script type="application/json" id="report-data">
 {
@@ -26,18 +26,37 @@
     "chgColor": "#c5221f"
   },
   "chart": {
-    "data": [["มิ.ย.68",17.90],["ก.ค.",20.60],["ส.ค.",17.90],["ก.ย.",22.50],["ต.ค.",19.60],["พ.ย.",16.20],["ธ.ค.",15.70],["ม.ค.69",14.80],["ก.พ.",16.80],["มี.ค.",16.00],["เม.ย.",14.70],["พ.ค.",15.20],["มิ.ย.",14.60]],
-    "min": 13,
-    "max": 23,
-    "grid": [13,15,17,19,21,23],
-    "fairLine": 15.30,
+    "data": [
+      ["ส.ค.25", 17.9],
+      ["ก.ย.25", 22.5],
+      ["ต.ค.25", 19.6],
+      ["พ.ย.25", 16.2],
+      ["ธ.ค.25", 15.7],
+      ["ม.ค.26", 14.8],
+      ["ก.พ.26", 16.8],
+      ["มี.ค.26", 16],
+      ["เม.ย.26", 14.7],
+      ["พ.ค.26", 15.2],
+      ["มิ.ย.26", 14.9],
+      ["ก.ค.26", 14.9]
+    ],
+    "min": 14,
+    "max": 24,
+    "grid": [16, 18, 20, 22],
+    "fairLine": 15.3,
     "currency": "฿",
-    "highlight": [3,12],
+    "highlight": [1, 8],
     "gridFmt": "v.toFixed(0)",
     "dataFmt": "d[1].toFixed(2)"
   },
-  "gauge": { "min": 10, "max": 18, "cur": 14.60, "fair": 15.30, "fairLabelTop": true },
-  "fv": 15.30
+  "gauge": {
+    "min": 10,
+    "max": 18,
+    "cur": 14.9,
+    "fair": 15.3,
+    "fairLabelTop": true
+  },
+  "fv": 15.3
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -58,11 +77,11 @@
     <div class="sub">Makro ค้าส่งแบบ Cash &amp; Carry (B2B) • Lotus's ไฮเปอร์มาร์เก็ต–ค้าปลีก • พื้นที่เช่าศูนย์การค้า • Makro PRO &amp; Lotus's SMART App (อีคอมเมิร์ซของชำเบอร์ 1 ไทย) • ขยายภูมิภาค</div>
     <div class="price-row">
       <div>
-        <div class="px">฿14.60<small>(CPAXT)</small></div>
+        <div class="px">฿14.90<small>(CPAXT)</small></div>
       </div>
-      <div class="chg">▼ −18.4% (รอบปี)</div>
+      <div class="chg">▼ −16.8% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 24 มิ.ย. 2569 (2026)<br>
+        ราคา ณ 10 ก.ค. 2569 (2026)<br>
         กรอบ 52 สัปดาห์ ฿13.90 – ฿23.40<br>
         ที่มา: SET • StockAnalysis.com • Investing.com
       </div>
@@ -154,7 +173,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿14.60</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿14.90</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿15.30</div></div>
         </div>
         <div class="scale">
@@ -179,7 +198,7 @@
     <div class="card">
       <!-- ✏️ class ของ mos-verdict: MOS<10 → "bad", 10–20 → "ok", ≥20 → "good" -->
       <div class="mos-verdict bad">
-        <div class="big">+4.6%</div>
+        <div class="big">+3%</div>
         <div class="txt">ส่วนเผื่อความปลอดภัยบาง — ราคาใกล้มูลค่าเหมาะสม ไม่ใช่จังหวะ "ของถูก"</div>
       </div>
       <div class="grid g3">
@@ -190,7 +209,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="14.60" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="14.9" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

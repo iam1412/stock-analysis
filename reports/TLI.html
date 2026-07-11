@@ -6,7 +6,7 @@
 <title>วิเคราะห์หุ้น ไทยประกันชีวิต (TLI) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Sonnet 4.6">
 <script type="application/json" id="stock-meta">
-{"symbol":"TLI","currency":"THB","price":11.60,"fairValue":12.70,"mos":8.7,"upside":9.5,"pe":10.4,"dividendYield":5.2,"roe":9.6}
+{"symbol":"TLI","currency":"THB","price":11.9,"fairValue":12.7,"mos":6.3,"upside":6.7,"pe":10.4,"dividendYield":5.2,"roe":9.6}
 </script>
 <script type="application/json" id="report-data">
 {
@@ -25,37 +25,36 @@
   },
   "chart": {
     "data": [
-      ["ก.ค.68", 10.10],
-      ["ส.ค.68", 9.55],
-      ["ก.ย.68", 10.60],
-      ["ต.ค.68", 10.30],
-      ["พ.ย.68", 9.75],
-      ["ธ.ค.68", 9.95],
-      ["ม.ค.69", 11.90],
-      ["ก.พ.69", 11.00],
-      ["มี.ค.69", 10.40],
-      ["เม.ย.69", 10.50],
-      ["พ.ค.69", 11.10],
-      ["มิ.ย.69", 11.50],
-      ["ก.ค.69", 11.60]
+      ["ส.ค.25", 9.55],
+      ["ก.ย.25", 10.6],
+      ["ต.ค.25", 10.3],
+      ["พ.ย.25", 9.75],
+      ["ธ.ค.25", 9.95],
+      ["ม.ค.26", 11.9],
+      ["ก.พ.26", 11],
+      ["มี.ค.26", 10.4],
+      ["เม.ย.26", 10.5],
+      ["พ.ค.26", 11.1],
+      ["มิ.ย.26", 11.5],
+      ["ก.ค.26", 11.9]
     ],
-    "min": 9.0,
-    "max": 13.5,
-    "grid": [9.0, 10.0, 11.0, 12.0, 13.0],
-    "fairLine": 12.70,
+    "min": 9,
+    "max": 13,
+    "grid": [10, 11, 12],
+    "fairLine": 12.7,
     "currency": "฿",
-    "highlight": [6, 12],
+    "highlight": [0, 5],
     "gridFmt": "v.toFixed(2)",
     "dataFmt": "d[1].toFixed(2)"
   },
   "gauge": {
-    "min": 7.0,
-    "max": 17.0,
-    "cur": 11.60,
-    "fair": 12.70,
+    "min": 7,
+    "max": 17,
+    "cur": 11.9,
+    "fair": 12.7,
     "fairLabelTop": true
   },
-  "fv": 12.70
+  "fv": 12.7
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -75,11 +74,11 @@
     <div class="sub">ประกันชีวิตรายใหญ่อันดับ 2 ของไทย • เบี้ยประกันรับโต • ปันผลสม่ำเสมอ ≥5% • สินทรัพย์รวม 6.5 แสนล้านบาท • SET50</div>
     <div class="price-row">
       <div>
-        <div class="px">฿11.60<small>(TLI)</small></div>
+        <div class="px">฿11.90<small>(TLI)</small></div>
       </div>
-      <div class="chg">▲ +14.9% (รอบปี)</div>
+      <div class="chg">▲ +24.6% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 3 ก.ค. 2569<br>
+        ราคา ณ 10 ก.ค. 2569<br>
         กรอบ 52 สัปดาห์ ฿9.00 – ฿12.20<br>
         ที่มา: SET Factsheet • Investing.com • Yahoo Finance
       </div>
@@ -157,7 +156,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿11.60</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿11.90</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿12.70</div></div>
         </div>
         <div class="scale">
@@ -179,7 +178,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict ok">
-        <div class="big">+8.7%</div>
+        <div class="big">+6%</div>
         <div class="txt">MOS พอใช้ — ราคาต่ำกว่า Fair Value เล็กน้อย ยังไม่ถึงโซนถูกชัด แต่มีปันผลสม่ำเสมอ ~5.2% เป็นตัวพยุงผลตอบแทน</div>
       </div>
       <div class="grid g3">
@@ -190,7 +189,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="11.60" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="11.9" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

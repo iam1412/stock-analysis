@@ -6,7 +6,7 @@
 <title>วิเคราะห์หุ้น แอดไวซ์ ไอที อินฟินิท (ADVICE) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Sonnet 4.6">
 <script type="application/json" id="stock-meta">
-{"symbol":"ADVICE","currency":"THB","price":6.45,"fairValue":8.60,"mos":25.0,"upside":33.3,"pe":12.4,"dividendYield":5.43,"roe":26.9}
+{"symbol":"ADVICE","currency":"THB","price":6.6,"fairValue":8.6,"mos":23.3,"upside":30.3,"pe":12.4,"dividendYield":5.43,"roe":26.9}
 </script>
 <script type="application/json" id="report-data">
 {
@@ -20,40 +20,39 @@
     "verdictText": "#e3f2fd",
     "vcellLabel": "rgba(227,242,253,0.7)",
     "badge": "#1976d2",
-    "chgBg": "#1e8e3e",
-    "chgColor": "#ffffff"
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#1e8e3e"
   },
   "chart": {
     "data": [
-      ["ก.พ. 68", 5.55],
-      ["มี.ค. 68", 6.00],
-      ["เม.ย. 68", 4.84],
-      ["พ.ค. 68", 5.15],
-      ["มิ.ย. 68", 5.85],
-      ["ก.ค. 68", 5.90],
-      ["ส.ค. 68", 5.75],
-      ["ก.ย. 68", 5.40],
-      ["ต.ค. 68", 5.75],
-      ["พ.ย. 68", 6.35],
-      ["ธ.ค. 68", 6.20],
-      ["ม.ค. 69", 6.35],
-      ["ก.พ. 69", 6.45]
+      ["ส.ค.25", 5.55],
+      ["ก.ย.25", 6],
+      ["ต.ค.25", 4.84],
+      ["พ.ย.25", 5.15],
+      ["ธ.ค.25", 5.85],
+      ["ม.ค.26", 5.9],
+      ["ก.พ.26", 5.75],
+      ["มี.ค.26", 5.4],
+      ["เม.ย.26", 5.75],
+      ["พ.ค.26", 6.35],
+      ["มิ.ย.26", 6.2],
+      ["ก.ค.26", 6.6]
     ],
-    "min": 4.50,
-    "max": 10.00,
-    "grid": [5.00, 6.00, 7.00, 8.00, 9.00],
-    "fairLine": 8.60,
+    "min": 4,
+    "max": 9,
+    "grid": [5, 6, 7, 8],
+    "fairLine": 8.6,
     "currency": "฿",
-    "highlight": [2, 9]
+    "highlight": [2, 11]
   },
   "gauge": {
-    "min": 4.50,
-    "max": 10.00,
-    "cur": 6.45,
-    "fair": 8.60,
+    "min": 4.5,
+    "max": 10,
+    "cur": 6.6,
+    "fair": 8.6,
     "fairLabelTop": true
   },
-  "fv": 8.60
+  "fv": 8.6
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -73,13 +72,13 @@
     <div class="sub">ค้าปลีก/แฟรนไชส์ไอที • กว่า 400 ร้านค้าทั่วไทย • ขยาย CLMV ลาว-เมียนมา-กัมพูชา • จัดจำหน่ายสินค้าไอทีและสมาร์ทโฟน • iStore Apple Premium Reseller</div>
     <div class="price-row">
       <div>
-        <div class="px">฿6.45<small>(ADVICE)</small></div>
+        <div class="px">฿6.60<small>(ADVICE)</small></div>
       </div>
-      <div class="chg">▲ +16.2% (รอบปี)</div>
+      <div class="chg">▲ +18.9% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 3 ก.ค. 2569<br>
+        ราคา ณ 10 ก.ค. 2569<br>
         กรอบ 52 สัปดาห์ ฿4.72–฿6.85<br>
-        ที่มา: Yahoo Finance, StockAnalysis.com, SET/SETTRADE · งบ FY2568 (31 ธ.ค. 2568)
+        ที่มา: Yahoo Finance, StockAnalysis.com, SET/SETTRADE · งบ FY2568 (10 ก.ค. 2569)
       </div>
     </div>
   </header>
@@ -161,7 +160,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿6.45</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿6.60</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿8.60</div></div>
         </div>
         <div class="scale">
@@ -185,7 +184,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict good">
-        <div class="big">+25.0%</div>
+        <div class="big">+23%</div>
         <div class="txt">โซนน่าซื้อ — MOS &gt; 20% เหมาะสำหรับ Value Investor ทยอยสะสม</div>
       </div>
       <div class="grid g3">
@@ -196,7 +195,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="6.45" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="6.6" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

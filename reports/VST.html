@@ -6,22 +6,52 @@
 <title>วิเคราะห์หุ้น Vistra (VST) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Opus 4.8">
 <script type="application/json" id="stock-meta">
-{"symbol":"VST","currency":"USD","price":167.26,"fairValue":201,"mos":17,"upside":20,"pe":28,"dividendYield":0.56,"roe":42.9}
+{"symbol":"VST","currency":"USD","price":158.86,"fairValue":201,"mos":21,"upside":26.5,"pe":28,"dividendYield":0.56,"roe":42.9}
 </script>
 <script type="application/json" id="report-data">
 {
   "theme": {
-    "accent": "#3acf5e", "accentDark": "#269c43",
+    "accent": "#3acf5e",
+    "accentDark": "#269c43",
     "darkGrad": "linear-gradient(135deg,#0b3716 0%,#146628 58%,#20a240 140%)",
-    "glow": "rgba(50,205,88,.35)", "subColor": "#c5e7ce", "headerMuted": "#abceb4",
-    "chgBg": "var(--red-soft)", "chgColor": "#c5221f", "badge": "var(--blue)",
-    "verdictText": "#d3eeda", "vcellLabel": "#aed6b7"
+    "glow": "rgba(50,205,88,.35)",
+    "subColor": "#c5e7ce",
+    "headerMuted": "#abceb4",
+    "chgBg": "var(--red-soft)",
+    "chgColor": "#c5221f",
+    "badge": "var(--blue)",
+    "verdictText": "#d3eeda",
+    "vcellLabel": "#aed6b7"
   },
   "chart": {
-    "data": [["มิ.ย.25",185],["ส.ค.25",205],["ก.ย.25",219],["พ.ย.25",190],["ม.ค.26",165],["เม.ย.26",145],["พ.ค.26",133],["มิ.ย.26",167]],
-    "min": 120, "max": 240, "grid": [140,160,180,200,220], "fairLine": 201, "currency": "$", "highlight": [2,6,7]
+    "data": [
+      ["ส.ค.25", 189.11],
+      ["ก.ย.25", 195.92],
+      ["ต.ค.25", 188.3],
+      ["พ.ย.25", 178.86],
+      ["ธ.ค.25", 161.33],
+      ["ม.ค.26", 158.35],
+      ["ก.พ.26", 173.89],
+      ["มี.ค.26", 150.33],
+      ["เม.ย.26", 157.84],
+      ["พ.ค.26", 160.23],
+      ["มิ.ย.26", 158.63],
+      ["ก.ค.26", 158.86]
+    ],
+    "min": 140,
+    "max": 220,
+    "grid": [160, 180, 200],
+    "fairLine": 201,
+    "currency": "$",
+    "highlight": [1, 7]
   },
-  "gauge": { "min": 130, "max": 310, "cur": 167.26, "fair": 201, "fairLabelTop": "-58px" },
+  "gauge": {
+    "min": 130,
+    "max": 310,
+    "cur": 158.86,
+    "fair": 201,
+    "fairLabelTop": "-58px"
+  },
   "fv": 201
 }
 </script>
@@ -42,11 +72,11 @@
     <div class="sub">ผู้ผลิตไฟฟ้าอิสระรายใหญ่สุดของสหรัฐ • นิวเคลียร์ (Comanche Peak), ก๊าซธรรมชาติ, ค้าปลีกไฟฟ้า, แบตเตอรี่</div>
     <div class="price-row">
       <div>
-        <div class="px">$167.26<small>(VST)</small></div>
+        <div class="px">$158.86<small>(VST)</small></div>
       </div>
-      <div class="chg">▼ −9.7% (รอบปี)</div>
+      <div class="chg">▼ −16.0% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ ปิดตลาด 22 มิ.ย. 2026<br>
+        ราคา ณ ปิดตลาด 10 ก.ค. 2026<br>
         ช่วงในวัน $162.91–$170.48 • ผันผวนสูง<br>
         ที่มา: StockAnalysis / MarketBeat / Yahoo Finance
       </div>
@@ -126,7 +156,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $167</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $159</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $201</div></div>
         </div>
         <div class="scale">
@@ -149,7 +179,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict ok">
-        <div class="big">+17%</div>
+        <div class="big">+21%</div>
         <div class="txt"><b>มี Margin of Safety พอควร</b><br>ราคาปัจจุบัน $167.26 ต่ำกว่ามูลค่าเหมาะสม $201 ราว 17% → ตามเกณฑ์ value investor ถือว่า <b>เริ่มน่าสนใจ ทยอยสะสมได้</b> แต่ยังไม่ถึงโซนถูกมาก</div>
       </div>
       <div class="grid g3">
@@ -160,7 +190,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="167.26" step="1">
+          <input id="pxIn" class="mono" type="number" value="158.86" step="1">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

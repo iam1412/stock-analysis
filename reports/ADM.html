@@ -8,7 +8,7 @@
 <meta name="ai-model" content="Claude Sonnet 4.6">
 <!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
 <script type="application/json" id="stock-meta">
-{"symbol":"ADM","currency":"USD","price":76.40,"fairValue":54.00,"mos":-41.5,"upside":-29.3,"pe":17.0,"dividendYield":2.72,"roe":4.77}
+{"symbol":"ADM","currency":"USD","price":80.41,"fairValue":54,"mos":-48.9,"upside":-32.8,"pe":17,"dividendYield":2.72,"roe":4.77}
 </script>
 <script type="application/json" id="report-data">
 {
@@ -22,42 +22,41 @@
     "verdictText": "#fff8e8",
     "vcellLabel": "rgba(255,248,232,0.65)",
     "badge": "#D4A017",
-    "chgBg": "#1e8e3e",
-    "chgColor": "#ffffff"
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#1e8e3e"
   },
   "chart": {
     "data": [
-      ["ก.ค. 68", 52.53],
-      ["ส.ค. 68", 61.25],
-      ["ก.ย. 68", 58.41],
-      ["ต.ค. 68", 59.18],
-      ["พ.ย. 68", 59.89],
-      ["ธ.ค. 68", 56.69],
-      ["ม.ค. 69", 66.37],
-      ["ก.พ. 69", 68.59],
-      ["มี.ค. 69", 72.21],
-      ["เม.ย. 69", 74.05],
-      ["พ.ค. 69", 79.78],
-      ["มิ.ย. 69", 76.87],
-      ["ก.ค. 69", 76.40]
+      ["ส.ค.25", 62.64],
+      ["ก.ย.25", 59.74],
+      ["ต.ค.25", 60.53],
+      ["พ.ย.25", 60.74],
+      ["ธ.ค.25", 57.49],
+      ["ม.ค.26", 67.31],
+      ["ก.พ.26", 69.04],
+      ["มี.ค.26", 72.69],
+      ["เม.ย.26", 74.54],
+      ["พ.ค.26", 79.78],
+      ["มิ.ย.26", 76.4],
+      ["ก.ค.26", 80.41]
     ],
-    "min": 45,
-    "max": 92,
-    "grid": [50, 60, 70, 80, 90],
-    "fairLine": 54.00,
+    "min": 50,
+    "max": 90,
+    "grid": [60, 70, 80],
+    "fairLine": 54,
     "currency": "$",
-    "highlight": [1, 10],
+    "highlight": [4, 11],
     "gridFmt": "v.toFixed(0)",
     "dataFmt": "d[1].toFixed(2)"
   },
   "gauge": {
     "min": 35,
     "max": 95,
-    "cur": 76.40,
-    "fair": 54.00,
+    "cur": 80.41,
+    "fair": 54,
     "fairLabelTop": false
   },
-  "fv": 54.00
+  "fv": 54
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -77,11 +76,11 @@
     <div class="sub">แปรรูปธัญพืชและน้ำมันพืชระดับโลก • Ag Services &amp; Oilseeds (สกัดถั่วเหลือง/คาโนลา) • Carbohydrate Solutions (เอทานอล/ข้าวโพดเปียก) • Nutrition (โปรตีน/แต่งกลิ่น/สุขภาพ) • เครือข่ายท่าเรือ/ไซโลทั่วโลก</div>
     <div class="price-row">
       <div>
-        <div class="px">$76.40<small>(ADM)</small></div>
+        <div class="px">$80.41<small>(ADM)</small></div>
       </div>
-      <div class="chg">▲ +45.5% (รอบปี)</div>
+      <div class="chg">▲ +28.4% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 30 มิถุนายน 2569<br>
+        ราคา ณ 10 ก.ค. 2569<br>
         กรอบ 52 สัปดาห์ $52.23 – $85.37<br>
         ที่มา: Yahoo Finance, StockAnalysis.com, MarketBeat
       </div>
@@ -159,7 +158,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $76.40</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $80.41</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $54.00</div></div>
         </div>
         <div class="scale">
@@ -181,7 +180,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict bad">
-        <div class="big">−41.5%</div>
+        <div class="big">−49%</div>
         <div class="txt">ราคาปัจจุบัน $76.40 สูงกว่า Fair Value $54.00 อยู่ 41.5% — ไม่มี Margin of Safety ณ ราคานี้</div>
       </div>
       <div class="grid g3">
@@ -192,7 +191,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="76.40" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="80.41" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

@@ -21,6 +21,9 @@ const REPORTS = path.join(__dirname, '..', 'reports');
 const FLAGS = path.join(__dirname, '..', 'price-flags.json');
 
 const THAI_MONTHS = ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'];
+// บางรายงานเขียนวันที่ด้วยชื่อเดือนเต็ม ("1 กรกฎาคม 2569") — รับทั้งสองแบบ แต่เขียนกลับเป็นตัวย่อเสมอ
+// (canonical: ตัวย่อคือแบบเดียวที่ parsePriceAge ของ gate อ่านออก → staleness check เห็นไฟล์นั้นด้วย)
+const THAI_MONTHS_FULL = ['มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'];
 const MAX_PTS = 13;          // กราฟรายเดือน ~1 ปี (E37)
 const FLAT_PP = 0.75;        // |% รอบปี| < 0.75 → "ทรงตัว" (ตาม migrate-annual-chg)
 const DRIFT_FREEZE = 0.10;   // ราคาใหม่ต่างจากในรายงาน > 10% → freeze (prose จะผิดความหมาย)
@@ -105,7 +108,7 @@ function buildChartData(bars, currentPrice, gmtoffset) {
     byMonth.set(`${y}-${m}`, { y, m, close: b.close });
   }
   let pts = [...byMonth.values()].slice(-MAX_PTS);
-  if (!pts.length) throw new Error('ไม่มีแท่งราคารายเดือน');
+  if (pts.length < 2) throw new Error(`กราฟรายเดือนมี ${pts.length} จุด (<2 — IPO ใหม่มาก?) คงกราฟเดิมไว้`);
   const data = pts.map((p) => [`${THAI_MONTHS[p.m]}${String(p.y).slice(-2)}`, round(p.close, 2)]);
   data[data.length - 1][1] = round(currentPrice, 2); // จุดท้าย = ราคา header (check-site: จุดสุดท้าย≈ราคา)
   return data;
@@ -212,14 +215,26 @@ function patchReport(html, p) {
   out = out.replace(/(<div class="px">\s*[฿$])([\d.,]+)/, (m, a) => a + fmtPrice(newPrice));
 
   // --- header: วันที่ราคา (แทนทุก date-token ไทยใน <header> — คงรูปแบบ พ.ศ./ค.ศ. เดิม) ---
-  const monthAlt = THAI_MONTHS.map((x) => x.replace(/\./g, '\\.')).join('|');
+  // รับเดือนตัวย่อ + ชื่อเต็ม (ชื่อเต็มไว้ก่อนใน alternation กัน match ครึ่งเดียว) — เขียนกลับเป็นตัวย่อเสมอ
+  const monthAlt = THAI_MONTHS_FULL.concat(THAI_MONTHS.map((x) => x.replace(/\./g, '\\.'))).join('|');
   const dateRe = new RegExp(`\\d{1,2}(?:\\s*[–\\-]\\s*\\d{1,2})?\\s*(?:${monthAlt})\\s*(20\\d\\d|25\\d\\d|26\\d\\d)`, 'g');
   const headM = out.match(/<header[\s\S]*?<\/header>/i);
-  if (!headM || !dateRe.test(headM[0])) throw new Error('ไม่เจอวันที่ราคาใน header');
-  const newHeader = headM[0].replace(dateRe, (m, yr) => {
+  if (!headM) throw new Error('ไม่มี <header>');
+  const newDate = (yr) => {
     const era = parseInt(yr, 10) >= 2400 ? dateParts.yearCE + 543 : dateParts.yearCE;
     return `${dateParts.day} ${THAI_MONTHS[dateParts.monIdx]} ${era}`;
-  });
+  };
+  let newHeader = headM[0];
+  if (dateRe.test(newHeader)) {
+    newHeader = newHeader.replace(dateRe, (m, yr) => newDate(yr));
+  } else {
+    // บางรายงานลงวันที่แบบไม่มีวัน ("ราคา ณ มิถุนายน 2569" / "ณ ก.พ. 2569 (ก.พ. 2026)")
+    // จำกัดการแทนแบบนี้ไว้ใน .px-meta เท่านั้น — เดือน+ปีลอย ๆ ที่อื่น (เช่นใน tag) อาจไม่ใช่วันที่ราคา
+    const moYrRe = new RegExp(`(?:${monthAlt})\\s*(20\\d\\d|25\\d\\d|26\\d\\d)`, 'g');
+    const pmM = newHeader.match(/<div class="px-meta">[\s\S]*?<\/div>/i);
+    if (!pmM || !moYrRe.test(pmM[0])) throw new Error('ไม่เจอวันที่ราคาใน header');
+    newHeader = newHeader.replace(pmM[0], pmM[0].replace(moYrRe, (m, yr) => newDate(yr)));
+  }
   out = out.replace(headM[0], newHeader);
 
   // --- disclaimer: "ราคา ณ <วันที่>" (ถ้ามี) ---

@@ -8,7 +8,7 @@
 <meta name="ai-model" content="Claude Sonnet 4.6">
 <!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) -->
 <script type="application/json" id="stock-meta">
-{"symbol":"KKP","currency":"THB","price":103.5,"fairValue":87,"mos":-19.0,"upside":-15.9,"pe":12.48,"dividendYield":5.51,"roe":9.3}
+{"symbol":"KKP","currency":"THB","price":104,"fairValue":87,"mos":-19.5,"upside":-16.3,"pe":12.48,"dividendYield":5.51,"roe":9.3}
 </script>
 <script type="application/json" id="report-data">
 {
@@ -22,33 +22,38 @@
     "verdictText": "#e0f7fa",
     "vcellLabel": "rgba(224,247,250,0.7)",
     "badge": "#00838f",
-    "chgBg": "#1e8e3e",
-    "chgColor": "#ffffff"
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#1e8e3e"
   },
   "chart": {
     "data": [
-      ["ก.ค. 2568", 59.50],
-      ["ส.ค. 2568", 58.75],
-      ["ก.ย. 2568", 65.75],
-      ["ต.ค. 2568", 64.25],
-      ["พ.ย. 2568", 68.00],
-      ["ธ.ค. 2568", 72.00],
-      ["ม.ค. 2569", 77.75],
-      ["ก.พ. 2569", 75.75],
-      ["มี.ค. 2569", 79.00],
-      ["เม.ย. 2569", 88.00],
-      ["พ.ค. 2569", 100.50],
-      ["มิ.ย. 2569", 101.00],
-      ["ก.ค. 2569", 103.50]
+      ["ส.ค.25", 59.5],
+      ["ก.ย.25", 58.75],
+      ["ต.ค.25", 65.75],
+      ["พ.ย.25", 64.25],
+      ["ธ.ค.25", 68],
+      ["ม.ค.26", 72],
+      ["ก.พ.26", 77.75],
+      ["มี.ค.26", 75.75],
+      ["เม.ย.26", 79],
+      ["พ.ค.26", 88],
+      ["มิ.ย.26", 100.5],
+      ["ก.ค.26", 104]
     ],
-    "min": 50,
+    "min": 40,
     "max": 120,
-    "grid": [55, 70, 80, 90, 100, 110],
+    "grid": [60, 80, 100],
     "fairLine": 87,
     "currency": "฿",
-    "highlight": [10, 12]
+    "highlight": [1, 11]
   },
-  "gauge": {"min": 0, "max": 130, "cur": 103.5, "fair": 87, "fairLabelTop": false},
+  "gauge": {
+    "min": 0,
+    "max": 130,
+    "cur": 104,
+    "fair": 87,
+    "fairLabelTop": false
+  },
   "fv": 87
 }
 </script>
@@ -69,11 +74,11 @@
     <div class="sub">ธนาคารพาณิชย์ขนาดกลาง • สินเชื่อรถยนต์-SME (KKP Auto) • วาณิชธนกิจภัทร (Investment Banking) • Wealth Management &amp; Private Equity</div>
     <div class="price-row">
       <div>
-        <div class="px">฿103.50<small>(KKP)</small></div>
+        <div class="px">฿104.00<small>(KKP)</small></div>
       </div>
-      <div class="chg">▲ +73.9% (รอบปี)</div>
+      <div class="chg">▲ +74.8% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 3 ก.ค. 2569<br>
+        ราคา ณ 10 ก.ค. 2569<br>
         กรอบ 52 สัปดาห์ ฿46.00 – ฿104.00<br>
         ที่มา: Yahoo Finance / SET Factsheet / KKPFG IR
       </div>
@@ -156,7 +161,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿103.50</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿104.00</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿87</div></div>
         </div>
         <div class="scale">
@@ -178,7 +183,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict bad">
-        <div class="big">-19.0%</div>
+        <div class="big">−20%</div>
         <div class="txt">ราคาสูงกว่า Fair Value ~19% — ยังไม่มี Margin of Safety</div>
       </div>
       <div class="grid g3">
@@ -189,7 +194,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="103.5" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="104" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

@@ -6,10 +6,54 @@
 <title>วิเคราะห์หุ้น Rockwell Automation (ROK) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Sonnet 4.6">
 <script type="application/json" id="stock-meta">
-{"symbol":"ROK","currency":"USD","price":480.06,"fairValue":357,"mos":-34.5,"upside":-25.6,"pe":45.6,"dividendYield":1.15,"roe":27.18}
+{"symbol":"ROK","currency":"USD","price":472.12,"fairValue":357,"mos":-32.2,"upside":-24.4,"pe":45.6,"dividendYield":1.15,"roe":27.18}
 </script>
 <script type="application/json" id="report-data">
-{"theme":{"accent":"#C8341E","accentDark":"#922514","darkGrad":"linear-gradient(135deg, #100402 0%, #200A05 100%)","glow":"rgba(200,52,30,0.35)","subColor":"#E06A54","headerMuted":"rgba(200,52,30,0.12)","verdictText":"#F5D8D0","vcellLabel":"rgba(245,216,208,0.6)","badge":"#C8341E","chgBg":"rgba(34,197,94,0.15)","chgColor":"#22C55E"},"chart":{"data":[["ก.ค. 68",351.71],["ส.ค. 68",343.43],["ก.ย. 68",349.53],["ต.ค. 68",368.36],["พ.ย. 68",395.86],["ธ.ค. 68",389.07],["ม.ค. 69",421.65],["ก.พ. 69",407.45],["มี.ค. 69",358.88],["เม.ย. 69",408.91],["พ.ค. 69",451.06],["มิ.ย. 69",480.06]],"min":335,"max":490,"grid":[370,410,450],"fairLine":357,"currency":"$","highlight":[11]},"gauge":{"min":330,"max":490,"cur":480.06,"fair":357,"fairLabelTop":false},"fv":357}
+{
+  "theme": {
+    "accent": "#C8341E",
+    "accentDark": "#922514",
+    "darkGrad": "linear-gradient(135deg, #100402 0%, #200A05 100%)",
+    "glow": "rgba(200,52,30,0.35)",
+    "subColor": "#E06A54",
+    "headerMuted": "rgba(200,52,30,0.12)",
+    "verdictText": "#F5D8D0",
+    "vcellLabel": "rgba(245,216,208,0.6)",
+    "badge": "#C8341E",
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#1e8e3e"
+  },
+  "chart": {
+    "data": [
+      ["ส.ค.25", 343.43],
+      ["ก.ย.25", 349.53],
+      ["ต.ค.25", 368.36],
+      ["พ.ย.25", 395.86],
+      ["ธ.ค.25", 389.07],
+      ["ม.ค.26", 421.65],
+      ["ก.พ.26", 407.45],
+      ["มี.ค.26", 358.88],
+      ["เม.ย.26", 408.91],
+      ["พ.ค.26", 451.06],
+      ["มิ.ย.26", 495.08],
+      ["ก.ค.26", 472.12]
+    ],
+    "min": 300,
+    "max": 550,
+    "grid": [350, 400, 450, 500],
+    "fairLine": 357,
+    "currency": "$",
+    "highlight": [0, 10]
+  },
+  "gauge": {
+    "min": 330,
+    "max": 490,
+    "cur": 472.12,
+    "fair": 357,
+    "fairLabelTop": false
+  },
+  "fv": 357
+}
 </script>
 <!--TEMPLATE:STYLE-->
 </head>
@@ -28,11 +72,11 @@
     <div class="sub">ผู้นำ industrial automation ใน US • Intelligent Devices (drives/motors/safety) • Software &amp; Control (PLC Logix, FactoryTalk) • Lifecycle Services • reshoring/electrification tailwind</div>
     <div class="price-row">
       <div>
-        <div class="px">$480.06<small>(ROK)</small></div>
+        <div class="px">$472.12<small>(ROK)</small></div>
       </div>
-      <div class="chg">▲ +36.5% (รอบปี)</div>
+      <div class="chg">▲ +37.5% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 26 มิ.ย. 2569<br>
+        ราคา ณ 10 ก.ค. 2569<br>
         กรอบ 52 สัปดาห์ $305.44 / $486.47<br>
         ที่มา: StockAnalysis.com / Yahoo Finance / Macrotrends
       </div>
@@ -110,7 +154,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $480.06</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $472.12</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $357</div></div>
         </div>
         <div class="scale">
@@ -132,7 +176,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict bad">
-        <div class="big">−34.5%</div>
+        <div class="big">−32%</div>
         <div class="txt">ราคาแพงกว่ามูลค่าเหมาะสมมาก — ไม่มี Margin of Safety · ความเสี่ยงสูง</div>
       </div>
       <div class="grid g3">
@@ -143,7 +187,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="480.06" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="472.12" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

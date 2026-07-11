@@ -6,10 +6,54 @@
 <title>วิเคราะห์หุ้น The TJX Companies (TJX) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Sonnet 4.6">
 <script type="application/json" id="stock-meta">
-{"symbol":"TJX","currency":"USD","price":155.43,"fairValue":138,"mos":-12.6,"upside":-11.2,"pe":30.23,"dividendYield":1.24,"roe":61.25}
+{"symbol":"TJX","currency":"USD","price":151.34,"fairValue":138,"mos":-9.7,"upside":-8.8,"pe":30.23,"dividendYield":1.24,"roe":61.25}
 </script>
 <script type="application/json" id="report-data">
-{"theme":{"accent":"#C8102E","accentDark":"#920B21","darkGrad":"linear-gradient(135deg, #120203 0%, #240609 100%)","glow":"rgba(200,16,46,0.35)","subColor":"#E8505F","headerMuted":"rgba(200,16,46,0.12)","verdictText":"#F5D0D5","vcellLabel":"rgba(245,208,213,0.6)","badge":"#C8102E","chgBg":"rgba(34,197,94,0.15)","chgColor":"#22C55E"},"chart":{"data":[["ก.ค. 68",124.53],["ส.ค. 68",136.61],["ก.ย. 68",144.54],["ต.ค. 68",140.14],["พ.ย. 68",151.92],["ธ.ค. 68",153.61],["ม.ค. 69",149.81],["ก.พ. 69",161.66],["มี.ค. 69",159.70],["เม.ย. 69",156.75],["พ.ค. 69",154.75],["มิ.ย. 69",155.43]],"min":120,"max":165,"grid":[130,145,160],"fairLine":138,"currency":"$","highlight":[7]},"gauge":{"min":115,"max":170,"cur":155.43,"fair":138,"fairLabelTop":false},"fv":138}
+{
+  "theme": {
+    "accent": "#C8102E",
+    "accentDark": "#920B21",
+    "darkGrad": "linear-gradient(135deg, #120203 0%, #240609 100%)",
+    "glow": "rgba(200,16,46,0.35)",
+    "subColor": "#E8505F",
+    "headerMuted": "rgba(200,16,46,0.12)",
+    "verdictText": "#F5D0D5",
+    "vcellLabel": "rgba(245,208,213,0.6)",
+    "badge": "#C8102E",
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#1e8e3e"
+  },
+  "chart": {
+    "data": [
+      ["ส.ค.25", 136.61],
+      ["ก.ย.25", 144.54],
+      ["ต.ค.25", 140.14],
+      ["พ.ย.25", 151.92],
+      ["ธ.ค.25", 153.61],
+      ["ม.ค.26", 149.81],
+      ["ก.พ.26", 161.66],
+      ["มี.ค.26", 159.7],
+      ["เม.ย.26", 156.75],
+      ["พ.ค.26", 154.75],
+      ["มิ.ย.26", 151.5],
+      ["ก.ค.26", 151.34]
+    ],
+    "min": 130,
+    "max": 170,
+    "grid": [140, 150, 160],
+    "fairLine": 138,
+    "currency": "$",
+    "highlight": [0, 6]
+  },
+  "gauge": {
+    "min": 115,
+    "max": 170,
+    "cur": 151.34,
+    "fair": 138,
+    "fairLabelTop": false
+  },
+  "fv": 138
+}
 </script>
 <!--TEMPLATE:STYLE-->
 </head>
@@ -28,11 +72,11 @@
     <div class="sub">ค้าปลีก off-price (แบรนด์ลดราคา) • T.J. Maxx / Marshalls / HomeGoods (สหรัฐ) • TK Maxx (ยุโรป) • Winners (แคนาดา) • treasure-hunt model</div>
     <div class="price-row">
       <div>
-        <div class="px">$155.43<small>(TJX)</small></div>
+        <div class="px">$151.34<small>(TJX)</small></div>
       </div>
-      <div class="chg">▲ +24.8% (รอบปี)</div>
+      <div class="chg">▲ +10.8% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 26 มิ.ย. 2569<br>
+        ราคา ณ 10 ก.ค. 2569<br>
         กรอบ 52 สัปดาห์ $119.84 / $170.00<br>
         ที่มา: StockAnalysis.com / Yahoo Finance / Macrotrends
       </div>
@@ -117,7 +161,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $155.43</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $151.34</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $138</div></div>
         </div>
         <div class="scale">
@@ -142,7 +186,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict bad">
-        <div class="big">−12.6%</div>
+        <div class="big">−10%</div>
         <div class="txt">ราคาปัจจุบันสูงกว่า Fair Value — ไม่มี Margin of Safety · รอย่อก่อนเข้า</div>
       </div>
       <div class="grid g3">
@@ -153,7 +197,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="155.43" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="151.34" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

@@ -6,7 +6,7 @@
 <title>วิเคราะห์หุ้น หาญ เอ็นจิเนียริ่ง (HARN) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Sonnet 4.6">
 <script type="application/json" id="stock-meta">
-{"symbol":"HARN","currency":"THB","price":2.04,"fairValue":2.23,"mos":8.5,"upside":9.3,"pe":12.0,"dividendYield":5.9,"roe":6.06}
+{"symbol":"HARN","currency":"THB","price":2.08,"fairValue":2.23,"mos":6.7,"upside":7.2,"pe":12,"dividendYield":5.9,"roe":6.06}
 </script>
 <script type="application/json" id="report-data">
 {
@@ -20,38 +20,37 @@
     "verdictText": "#ffe0cc",
     "vcellLabel": "rgba(255,220,200,0.7)",
     "badge": "#e05c1a",
-    "chgBg": "#1e8e3e",
-    "chgColor": "#ffffff"
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#1e8e3e"
   },
   "chart": {
     "data": [
-      ["ก.ค. 68", 2.00],
-      ["ส.ค. 68", 1.99],
-      ["ก.ย. 68", 1.96],
-      ["ต.ค. 68", 1.96],
-      ["พ.ย. 68", 1.95],
-      ["ธ.ค. 68", 1.93],
-      ["ม.ค. 69", 2.02],
-      ["ก.พ. 69", 2.02],
-      ["มี.ค. 69", 2.02],
-      ["เม.ย. 69", 2.08],
-      ["พ.ค. 69", 2.04],
-      ["มิ.ย. 69", 2.04],
-      ["ก.ค. 69", 2.04]
+      ["ส.ค.25", 2],
+      ["ก.ย.25", 1.99],
+      ["ต.ค.25", 1.96],
+      ["พ.ย.25", 1.96],
+      ["ธ.ค.25", 1.95],
+      ["ม.ค.26", 1.93],
+      ["ก.พ.26", 2.02],
+      ["มี.ค.26", 2.02],
+      ["เม.ย.26", 2.02],
+      ["พ.ค.26", 2.08],
+      ["มิ.ย.26", 2.04],
+      ["ก.ค.26", 2.08]
     ],
-    "min": 1.80,
-    "max": 2.40,
-    "grid": [1.80, 1.90, 2.00, 2.10, 2.20, 2.30, 2.40],
+    "min": 1.9,
+    "max": 2.3,
+    "grid": [2, 2.1, 2.2],
     "fairLine": 2.23,
     "currency": "฿",
-    "highlight": [9],
+    "highlight": [5, 9],
     "gridFmt": "v.toFixed(2)",
     "dataFmt": "d[1].toFixed(2)"
   },
   "gauge": {
-    "min": 1.40,
-    "max": 2.60,
-    "cur": 2.04,
+    "min": 1.4,
+    "max": 2.6,
+    "cur": 2.08,
     "fair": 2.23,
     "fairLabelTop": true
   },
@@ -74,11 +73,11 @@
     <div class="sub">ระบบดับเพลิงและป้องกันอัคคีภัย • ระบบปรับอากาศและสุขาภิบาล • ระบบทำความเย็นอุตสาหกรรม • Digital Printing &amp; Harn 3DMed</div>
     <div class="price-row">
       <div>
-        <div class="px">฿2.04<small>(HARN)</small></div>
+        <div class="px">฿2.08<small>(HARN)</small></div>
       </div>
-      <div class="chg">▲ +2.0% (รอบปี)</div>
+      <div class="chg">▲ +4.0% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 4 ก.ค. 2569<br>
+        ราคา ณ 10 ก.ค. 2569<br>
         กรอบ 52 สัปดาห์ ฿1.90 – ฿2.22<br>
         ที่มา: SET.or.th, Yahoo Finance, harn.co.th
       </div>
@@ -152,7 +151,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿2.04</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿2.08</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿2.23</div></div>
         </div>
         <div class="scale">
@@ -173,7 +172,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict ok">
-        <div class="big">+8.5%</div>
+        <div class="big">+7%</div>
         <div class="txt">MOS พอประมาณ — ราคายังต่ำกว่ามูลค่าเหมาะสม แต่ยังไม่ถึงโซน "ถูกมาก" อาจทยอยสะสมได้</div>
       </div>
       <div class="grid g3">
@@ -184,7 +183,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="2.04" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="2.08" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

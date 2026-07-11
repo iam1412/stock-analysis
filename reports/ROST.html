@@ -6,10 +6,54 @@
 <title>วิเคราะห์หุ้น Ross Stores (ROST) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Sonnet 4.6">
 <script type="application/json" id="stock-meta">
-{"symbol":"ROST","currency":"USD","price":213.26,"fairValue":184,"mos":-15.9,"upside":-13.7,"pe":29.78,"dividendYield":0.83,"roe":38.98}
+{"symbol":"ROST","currency":"USD","price":222.88,"fairValue":184,"mos":-21.1,"upside":-17.4,"pe":29.78,"dividendYield":0.83,"roe":38.98}
 </script>
 <script type="application/json" id="report-data">
-{"theme":{"accent":"#6B3FA0","accentDark":"#492A6E","darkGrad":"linear-gradient(135deg, #08050F 0%, #120A20 100%)","glow":"rgba(107,63,160,0.35)","subColor":"#9B72CE","headerMuted":"rgba(107,63,160,0.12)","verdictText":"#E0D2F0","vcellLabel":"rgba(224,210,240,0.6)","badge":"#6B3FA0","chgBg":"rgba(34,197,94,0.15)","chgColor":"#22C55E"},"chart":{"data":[["ก.ค. 68",136.54],["ส.ค. 68",147.16],["ก.ย. 68",152.39],["ต.ค. 68",158.92],["พ.ย. 68",176.36],["ธ.ค. 68",180.14],["ม.ค. 69",188.65],["ก.พ. 69",205.64],["มี.ค. 69",216.63],["เม.ย. 69",227.79],["พ.ค. 69",231.73],["มิ.ย. 69",213.26]],"min":130,"max":235,"grid":[155,185,215],"fairLine":184,"currency":"$","highlight":[10]},"gauge":{"min":125,"max":240,"cur":213.26,"fair":184,"fairLabelTop":false},"fv":184}
+{
+  "theme": {
+    "accent": "#6B3FA0",
+    "accentDark": "#492A6E",
+    "darkGrad": "linear-gradient(135deg, #08050F 0%, #120A20 100%)",
+    "glow": "rgba(107,63,160,0.35)",
+    "subColor": "#9B72CE",
+    "headerMuted": "rgba(107,63,160,0.12)",
+    "verdictText": "#E0D2F0",
+    "vcellLabel": "rgba(224,210,240,0.6)",
+    "badge": "#6B3FA0",
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#1e8e3e"
+  },
+  "chart": {
+    "data": [
+      ["ส.ค.25", 147.16],
+      ["ก.ย.25", 152.39],
+      ["ต.ค.25", 158.92],
+      ["พ.ย.25", 176.36],
+      ["ธ.ค.25", 180.14],
+      ["ม.ค.26", 188.65],
+      ["ก.พ.26", 205.64],
+      ["มี.ค.26", 216.63],
+      ["เม.ย.26", 227.79],
+      ["พ.ค.26", 231.73],
+      ["มิ.ย.26", 212.85],
+      ["ก.ค.26", 222.88]
+    ],
+    "min": 125,
+    "max": 250,
+    "grid": [150, 175, 200, 225],
+    "fairLine": 184,
+    "currency": "$",
+    "highlight": [0, 9]
+  },
+  "gauge": {
+    "min": 125,
+    "max": 240,
+    "cur": 222.88,
+    "fair": 184,
+    "fairLabelTop": false
+  },
+  "fv": 184
+}
 </script>
 <!--TEMPLATE:STYLE-->
 </head>
@@ -28,11 +72,11 @@
     <div class="sub">ค้าปลีก off-price • Ross Dress for Less • dd's DISCOUNTS • treasure-hunt model • เสื้อผ้า/ของแต่งบ้านราคาประหยัด • ขยายสาขาตะวันออก</div>
     <div class="price-row">
       <div>
-        <div class="px">$213.26<small>(ROST)</small></div>
+        <div class="px">$222.88<small>(ROST)</small></div>
       </div>
-      <div class="chg">▲ +56.2% (รอบปี)</div>
+      <div class="chg">▲ +51.5% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 26 มิ.ย. 2569<br>
+        ราคา ณ 10 ก.ค. 2569<br>
         กรอบ 52 สัปดาห์ $124.49 / $242.81<br>
         งบ Q1 FY2026 (งวดสิ้นสุด พ.ค. 2569)<br>
         ที่มา: StockAnalysis.com / Yahoo Finance / Ross Stores Investor Relations / Macrotrends
@@ -115,7 +159,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $213.26</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $222.88</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $184</div></div>
         </div>
         <div class="scale">
@@ -139,7 +183,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict bad">
-        <div class="big">−15.9%</div>
+        <div class="big">−21%</div>
         <div class="txt">ราคาแพงกว่า Fair Value — ยังไม่มี Margin of Safety · รอย่อก่อนสะสม</div>
       </div>
       <div class="grid g3">
@@ -150,7 +194,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="213.26" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="222.88" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

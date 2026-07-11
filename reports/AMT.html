@@ -6,10 +6,54 @@
 <title>วิเคราะห์หุ้น American Tower (AMT) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Sonnet 4.6">
 <script type="application/json" id="stock-meta">
-{"symbol":"AMT","currency":"USD","price":175.59,"fairValue":193,"mos":9.0,"upside":9.9,"pe":16.3,"dividendYield":4.08,"roe":29.95}
+{"symbol":"AMT","currency":"USD","price":168.59,"fairValue":193,"mos":12.6,"upside":14.5,"pe":16.3,"dividendYield":4.08,"roe":29.95}
 </script>
 <script type="application/json" id="report-data">
-{"theme":{"accent":"#C8202E","accentDark":"#920F1A","darkGrad":"linear-gradient(135deg, #120304 0%, #240709 100%)","glow":"rgba(200,32,46,0.35)","subColor":"#E8545F","headerMuted":"rgba(200,32,46,0.12)","verdictText":"#F5D2D5","vcellLabel":"rgba(245,210,213,0.6)","badge":"#C8202E","chgBg":"rgba(239,68,68,0.15)","chgColor":"#EF4444"},"chart":{"data":[["ก.ค. 68",208.39],["ส.ค. 68",203.85],["ก.ย. 68",192.32],["ต.ค. 68",178.98],["พ.ย. 68",181.27],["ธ.ค. 68",175.57],["ม.ค. 69",179.28],["ก.พ. 69",191.86],["มี.ค. 69",172.58],["เม.ย. 69",182.71],["พ.ค. 69",186.96],["มิ.ย. 69",175.59]],"min":168,"max":212,"grid":[180,192,204],"fairLine":193,"currency":"$","highlight":[8]},"gauge":{"min":165,"max":220,"cur":175.59,"fair":193,"fairLabelTop":false},"fv":193}
+{
+  "theme": {
+    "accent": "#C8202E",
+    "accentDark": "#920F1A",
+    "darkGrad": "linear-gradient(135deg, #120304 0%, #240709 100%)",
+    "glow": "rgba(200,32,46,0.35)",
+    "subColor": "#E8545F",
+    "headerMuted": "rgba(200,32,46,0.12)",
+    "verdictText": "#F5D2D5",
+    "vcellLabel": "rgba(245,210,213,0.6)",
+    "badge": "#C8202E",
+    "chgBg": "var(--red-soft)",
+    "chgColor": "#c5221f"
+  },
+  "chart": {
+    "data": [
+      ["ส.ค.25", 203.85],
+      ["ก.ย.25", 192.32],
+      ["ต.ค.25", 178.98],
+      ["พ.ย.25", 181.27],
+      ["ธ.ค.25", 175.57],
+      ["ม.ค.26", 179.28],
+      ["ก.พ.26", 191.86],
+      ["มี.ค.26", 172.58],
+      ["เม.ย.26", 182.71],
+      ["พ.ค.26", 186.96],
+      ["มิ.ย.26", 163.57],
+      ["ก.ค.26", 168.59]
+    ],
+    "min": 160,
+    "max": 220,
+    "grid": [180, 200],
+    "fairLine": 193,
+    "currency": "$",
+    "highlight": [0, 10]
+  },
+  "gauge": {
+    "min": 165,
+    "max": 220,
+    "cur": 168.59,
+    "fair": 193,
+    "fairLabelTop": false
+  },
+  "fv": 193
+}
 </script>
 <!--TEMPLATE:STYLE-->
 </head>
@@ -28,11 +72,11 @@
     <div class="sub">REIT เสาสัญญาณมือถือใหญ่สุดในโลก • ~149,000 เสาทั่วโลก • ให้เช่าพื้นที่เสา (สัญญายาว escalator ~3%) • CoreSite Data Centers (US) • ขายธุรกิจอินเดียออก</div>
     <div class="price-row">
       <div>
-        <div class="px">$175.59<small>(AMT)</small></div>
+        <div class="px">$168.59<small>(AMT)</small></div>
       </div>
-      <div class="chg">▼ −15.7% (รอบปี)</div>
+      <div class="chg">▼ −17.3% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 26 มิ.ย. 2569<br>
+        ราคา ณ 10 ก.ค. 2569<br>
         กรอบ 52 สัปดาห์ $165.08 / $234.33<br>
         ที่มา: StockAnalysis.com / Yahoo Finance / American Tower IR / Macrotrends
       </div>
@@ -115,7 +159,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $175.59</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $168.59</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $193</div></div>
         </div>
         <div class="scale">
@@ -139,7 +183,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict bad">
-        <div class="big">+9.0%</div>
+        <div class="big">+13%</div>
         <div class="txt">MOS ต่ำ — ยังถูกกว่า Fair Value แต่ส่วนเผื่อน้อย เหมาะสะสมระยะยาวมากกว่า all-in</div>
       </div>
       <div class="grid g3">
@@ -150,7 +194,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="175.59" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="168.59" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

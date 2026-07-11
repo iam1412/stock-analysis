@@ -6,22 +6,52 @@
 <title>วิเคราะห์หุ้น Cisco Systems (CSCO) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Opus 4.8">
 <script type="application/json" id="stock-meta">
-{"symbol":"CSCO","currency":"USD","price":121.53,"fairValue":116,"mos":-5,"upside":-4.6,"pe":27,"dividendYield":1.38,"roe":28}
+{"symbol":"CSCO","currency":"USD","price":121.31,"fairValue":116,"mos":-4.6,"upside":-4.4,"pe":27,"dividendYield":1.38,"roe":28}
 </script>
 <script type="application/json" id="report-data">
 {
   "theme": {
-    "accent": "#1db4ed", "accentDark": "#0f86b3",
+    "accent": "#1db4ed",
+    "accentDark": "#0f86b3",
     "darkGrad": "linear-gradient(135deg,#042e3e 0%,#075673 58%,#0c88b6 140%)",
-    "glow": "rgba(19,177,236,.35)", "subColor": "#c2dfeb", "headerMuted": "#a5c7d4",
-    "chgBg": "var(--green-soft)", "chgColor": "#1e8e3e", "badge": "var(--blue)",
-    "verdictText": "#d0e8f1", "vcellLabel": "#a6cedd"
+    "glow": "rgba(19,177,236,.35)",
+    "subColor": "#c2dfeb",
+    "headerMuted": "#a5c7d4",
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#1e8e3e",
+    "badge": "var(--blue)",
+    "verdictText": "#d0e8f1",
+    "vcellLabel": "#a6cedd"
   },
   "chart": {
-    "data": [["มิ.ย.25",66],["ส.ค.25",70],["ต.ค.25",78],["ธ.ค.25",90],["ก.พ.26",102],["เม.ย.26",112],["พ.ค.26",128],["มิ.ย.26",121.53]],
-    "min": 55, "max": 140, "grid": [60,80,100,120,140], "fairLine": 116, "currency": "$", "highlight": [6,7]
+    "data": [
+      ["ส.ค.25", 69.09],
+      ["ก.ย.25", 68.42],
+      ["ต.ค.25", 73.11],
+      ["พ.ย.25", 76.94],
+      ["ธ.ค.25", 77.03],
+      ["ม.ค.26", 78.32],
+      ["ก.พ.26", 79.46],
+      ["มี.ค.26", 77.59],
+      ["เม.ย.26", 91.5],
+      ["พ.ค.26", 120.42],
+      ["มิ.ย.26", 117.46],
+      ["ก.ค.26", 121.31]
+    ],
+    "min": 60,
+    "max": 140,
+    "grid": [80, 100, 120],
+    "fairLine": 116,
+    "currency": "$",
+    "highlight": [1, 11]
   },
-  "gauge": { "min": 72, "max": 158, "cur": 121.53, "fair": 116, "fairLabelTop": "-58px" },
+  "gauge": {
+    "min": 72,
+    "max": 158,
+    "cur": 121.31,
+    "fair": 116,
+    "fairLabelTop": "-58px"
+  },
   "fv": 116
 }
 </script>
@@ -42,11 +72,11 @@
     <div class="sub">โครงสร้างพื้นฐานเครือข่าย AI • Silicon One, Enterprise Networking, Security (Splunk)</div>
     <div class="price-row">
       <div>
-        <div class="px">$121.53<small>(CSCO)</small></div>
+        <div class="px">$121.31<small>(CSCO)</small></div>
       </div>
-      <div class="chg">▲ +84.1% (รอบปี)</div>
+      <div class="chg">▲ +75.6% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ≈ 22 มิ.ย. 2026 (ปิดตลาด)<br>
+        ราคา ≈ 10 ก.ค. 2026 (ปิดตลาด)<br>
         ใกล้จุดสูงสุด 52 สัปดาห์ ($130.37)<br>
         ที่มา: StockAnalysis / Yahoo Finance / Investing.com
       </div>
@@ -126,7 +156,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $121.53</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $121.31</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $116</div></div>
         </div>
         <div class="scale">
@@ -160,7 +190,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="121.53" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="121.31" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -264,7 +294,7 @@
   <div class="disc">
     <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ "EPS non-GAAP" และความยั่งยืนของคำสั่งซื้อ AI infrastructure ซึ่งเป็นจุดถกเถียงหลัก
-    ราคาหุ้นมีความผันผวนและช่วงนี้เคลื่อนไหวใกล้จุดสูงสุดตลอดกาล ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • อ้างอิงงบจริงจาก SEC (8-K Q4 FY2025, 8-K Q3 FY2026) และข้อมูลราคา ณ 22 มิ.ย. 2026
+    ราคาหุ้นมีความผันผวนและช่วงนี้เคลื่อนไหวใกล้จุดสูงสุดตลอดกาล ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • อ้างอิงงบจริงจาก SEC (8-K Q4 FY2025, 8-K Q3 FY2026) และข้อมูลราคา ณ 10 ก.ค. 2026
   </div>
   <footer>Stock Analysis Dashboard • ข้อมูล ณ 22–23 มิ.ย. 2026 • สร้างด้วย stock-analyzer workflow</footer>
 

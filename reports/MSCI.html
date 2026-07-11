@@ -8,7 +8,7 @@
 <meta name="ai-model" content="Claude Opus 4.8">
 <!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
 <script type="application/json" id="stock-meta">
-{"symbol":"MSCI","currency":"USD","price":554.85,"fairValue":610,"mos":9.0,"upside":9.9,"pe":31.76,"dividendYield":1.48,"roe":null}
+{"symbol":"MSCI","currency":"USD","price":604.71,"fairValue":610,"mos":0.9,"upside":0.9,"pe":31.76,"dividendYield":1.48,"roe":null}
 </script>
 <script type="application/json" id="report-data">
 {
@@ -22,32 +22,38 @@
     "verdictText": "#d0e4f7",
     "vcellLabel": "#8ab4d8",
     "badge": "#1a4f8a",
-    "chgBg": "#3a3f45",
-    "chgColor": "#80868b"
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#1e8e3e"
   },
   "chart": {
     "data": [
-      ["ก.ค.25", 553.63],
-      ["ส.ค.25", 561.69],
-      ["ก.ย.25", 561.38],
-      ["ต.ค.25", 582.30],
-      ["พ.ย.25", 559.49],
-      ["ธ.ค.25", 569.42],
-      ["ม.ค.26", 604.64],
-      ["ก.พ.26", 569.77],
-      ["มี.ค.26", 537.07],
-      ["เม.ย.26", 589.28],
+      ["ส.ค.25", 567.72],
+      ["ก.ย.25", 567.41],
+      ["ต.ค.25", 588.55],
+      ["พ.ย.25", 563.72],
+      ["ธ.ค.25", 573.73],
+      ["ม.ค.26", 609.22],
+      ["ก.พ.26", 571.83],
+      ["มี.ค.26", 539.01],
+      ["เม.ย.26", 591.41],
       ["พ.ค.26", 631.38],
-      ["มิ.ย.26", 554.85]
+      ["มิ.ย.26", 560.04],
+      ["ก.ค.26", 604.71]
     ],
-    "min": 510,
-    "max": 660,
-    "grid": [530, 570, 610, 650],
+    "min": 525,
+    "max": 650,
+    "grid": [550, 575, 600, 625],
     "fairLine": 610,
     "currency": "$",
-    "highlight": [10, 11]
+    "highlight": [7, 9]
   },
-  "gauge": { "min": 427, "max": 690, "cur": 554.85, "fair": 610, "fairLabelTop": "-58px" },
+  "gauge": {
+    "min": 427,
+    "max": 690,
+    "cur": 604.71,
+    "fair": 610,
+    "fairLabelTop": "-58px"
+  },
   "fv": 610
 }
 </script>
@@ -68,11 +74,11 @@
     <div class="sub">ดัชนีหุ้น (MSCI Index — benchmark ETF/กองทุนทั่วโลก) • Analytics (บริหารความเสี่ยงพอร์ต/factor) • ESG &amp; Climate • Private Assets</div>
     <div class="price-row">
       <div>
-        <div class="px">$554.85<small>(MSCI)</small></div>
+        <div class="px">$604.71<small>(MSCI)</small></div>
       </div>
-      <div class="chg">≈ ทรงตัว (รอบปี)</div>
+      <div class="chg">▲ +6.5% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 26 มิ.ย. 2026<br>
+        ราคา ณ 10 ก.ค. 2026<br>
         กรอบ 52 สัปดาห์ $501.08 – $644.68<br>
         ที่มา: StockAnalysis.com / Yahoo Finance / MSCI IR
       </div>
@@ -156,7 +162,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $554.85</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $604.71</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $610</div></div>
         </div>
         <div class="scale">
@@ -180,7 +186,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict ok">
-        <div class="big">+9.0%</div>
+        <div class="big">+0.9%</div>
         <div class="txt">MOS พอประมาณ — ธุรกิจคุณภาพ wide-moat ราคาสมเหตุสมผล</div>
       </div>
       <div class="grid g3">
@@ -191,7 +197,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="554.85" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="604.71" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

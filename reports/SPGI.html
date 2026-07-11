@@ -6,22 +6,52 @@
 <title>วิเคราะห์หุ้น S&amp;P Global (SPGI) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Opus 4.8">
 <script type="application/json" id="stock-meta">
-{"symbol":"SPGI","currency":"USD","price":408.16,"fairValue":472,"mos":13.5,"upside":15.6,"pe":25.84,"dividendYield":0.95,"roe":14.24}
+{"symbol":"SPGI","currency":"USD","price":430.5,"fairValue":472,"mos":8.8,"upside":9.6,"pe":25.84,"dividendYield":0.95,"roe":14.24}
 </script>
 <script type="application/json" id="report-data">
 {
   "theme": {
-    "accent": "#D6002A", "accentDark": "#8c0019",
+    "accent": "#D6002A",
+    "accentDark": "#8c0019",
     "darkGrad": "linear-gradient(135deg,#2a0008 0%,#4a0612 55%,#7a0a20 140%)",
-    "glow": "rgba(214,0,42,.30)", "subColor": "#f0c9d0", "headerMuted": "#e2adb6",
-    "chgBg": "var(--red-soft)", "chgColor": "#c5221f", "badge": "var(--red)",
-    "verdictText": "#e7c9cf", "vcellLabel": "#d29aa4"
+    "glow": "rgba(214,0,42,.30)",
+    "subColor": "#f0c9d0",
+    "headerMuted": "#e2adb6",
+    "chgBg": "var(--red-soft)",
+    "chgColor": "#c5221f",
+    "badge": "var(--red)",
+    "verdictText": "#e7c9cf",
+    "vcellLabel": "#d29aa4"
   },
   "chart": {
-    "data": [["ก.ค.25",547.79],["ส.ค.25",546.10],["ก.ย.25",484.63],["ต.ค.25",485.13],["พ.ย.25",497.67],["ธ.ค.25",521.38],["ม.ค.26",526.57],["ก.พ.26",441.88],["มี.ค.26",425.34],["เม.ย.26",431.23],["พ.ค.26",424.00],["มิ.ย.26",408.16]],
-    "min": 390, "max": 590, "grid": [420,470,520,570], "fairLine": 472, "currency": "$", "highlight": [10,11]
+    "data": [
+      ["ส.ค.25", 518.86],
+      ["ก.ย.25", 460.46],
+      ["ต.ค.25", 460.94],
+      ["พ.ย.25", 471.93],
+      ["ธ.ค.25", 494.41],
+      ["ม.ค.26", 499.33],
+      ["ก.พ.26", 418.05],
+      ["มี.ค.26", 402.4],
+      ["เม.ย.26", 407.98],
+      ["พ.ค.26", 401.14],
+      ["มิ.ย.26", 385.3],
+      ["ก.ค.26", 430.5]
+    ],
+    "min": 350,
+    "max": 550,
+    "grid": [400, 450, 500],
+    "fairLine": 472,
+    "currency": "$",
+    "highlight": [0, 10]
   },
-  "gauge": { "min": 330, "max": 533, "cur": 408.16, "fair": 472, "fairLabelTop": "-58px" },
+  "gauge": {
+    "min": 330,
+    "max": 533,
+    "cur": 430.5,
+    "fair": 472,
+    "fairLabelTop": "-58px"
+  },
   "fv": 472
 }
 </script>
@@ -42,11 +72,11 @@
     <div class="sub">Ratings (จัดอันดับเครดิตตราสารหนี้) • Market Intelligence • Indices (S&amp;P 500/Dow Jones) • Commodity Insights (Platts) • Mobility</div>
     <div class="price-row">
       <div>
-        <div class="px">$408.16<small>(SPGI)</small></div>
+        <div class="px">$430.50<small>(SPGI)</small></div>
       </div>
-      <div class="chg">▼ −25.5% (รอบปี)</div>
+      <div class="chg">▼ −17.0% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 26 มิ.ย. 2026<br>
+        ราคา ณ 10 ก.ค. 2026<br>
         กรอบ 52 สัปดาห์ $381.61 – $579.05<br>
         ที่มา: StockAnalysis.com, Yahoo Finance, S&amp;P Global IR/10-K, digrin.com
       </div>
@@ -128,7 +158,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $408.16</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $430.50</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $472</div></div>
         </div>
         <div class="scale">
@@ -151,7 +181,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict ok">
-        <div class="big">+13.5%</div>
+        <div class="big">+9%</div>
         <div class="txt">ราคาปัจจุบันมีส่วนลดจากมูลค่าเหมาะสมระดับปานกลาง — ส่วนเผื่อพอใช้สำหรับหุ้นคุณภาพสูง (wide-moat) ที่ valuation derate ลงมาจากค่าเฉลี่ย</div>
       </div>
       <div class="grid g3">
@@ -162,7 +192,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="408.16" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="430.5" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

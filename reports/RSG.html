@@ -6,10 +6,54 @@
 <title>วิเคราะห์หุ้น Republic Services (RSG) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Sonnet 4.6">
 <script type="application/json" id="stock-meta">
-{"symbol":"RSG","currency":"USD","price":216.41,"fairValue":190,"mos":-13.9,"upside":-12.2,"pe":30.8,"dividendYield":1.16,"roe":18.35}
+{"symbol":"RSG","currency":"USD","price":219.2,"fairValue":190,"mos":-15.4,"upside":-13.3,"pe":30.8,"dividendYield":1.16,"roe":18.35}
 </script>
 <script type="application/json" id="report-data">
-{"theme":{"accent":"#1B6CA8","accentDark":"#114A75","darkGrad":"linear-gradient(135deg, #02080F 0%, #041626 100%)","glow":"rgba(27,108,168,0.35)","subColor":"#4E97CB","headerMuted":"rgba(27,108,168,0.12)","verdictText":"#CFE3F2","vcellLabel":"rgba(207,227,242,0.6)","badge":"#1B6CA8","chgBg":"rgba(239,68,68,0.15)","chgColor":"#EF4444"},"chart":{"data":[["ก.ค. 68",230.65],["ส.ค. 68",233.97],["ก.ย. 68",229.48],["ต.ค. 68",208.24],["พ.ย. 68",217.06],["ธ.ค. 68",211.93],["ม.ค. 69",215.09],["ก.พ. 69",229.00],["มี.ค. 69",219.02],["เม.ย. 69",209.22],["พ.ค. 69",200.44],["มิ.ย. 69",215.99]],"min":185,"max":240,"grid":[200,215,230],"fairLine":190,"currency":"$","highlight":[10]},"gauge":{"min":182,"max":245,"cur":216.41,"fair":190,"fairLabelTop":false},"fv":190}
+{
+  "theme": {
+    "accent": "#1B6CA8",
+    "accentDark": "#114A75",
+    "darkGrad": "linear-gradient(135deg, #02080F 0%, #041626 100%)",
+    "glow": "rgba(27,108,168,0.35)",
+    "subColor": "#4E97CB",
+    "headerMuted": "rgba(27,108,168,0.12)",
+    "verdictText": "#CFE3F2",
+    "vcellLabel": "rgba(207,227,242,0.6)",
+    "badge": "#1B6CA8",
+    "chgBg": "var(--red-soft)",
+    "chgColor": "#c5221f"
+  },
+  "chart": {
+    "data": [
+      ["ส.ค.25", 233.97],
+      ["ก.ย.25", 229.48],
+      ["ต.ค.25", 208.24],
+      ["พ.ย.25", 217.06],
+      ["ธ.ค.25", 211.93],
+      ["ม.ค.26", 215.09],
+      ["ก.พ.26", 229],
+      ["มี.ค.26", 219.02],
+      ["เม.ย.26", 209.22],
+      ["พ.ค.26", 200.44],
+      ["มิ.ย.26", 213.08],
+      ["ก.ค.26", 219.2]
+    ],
+    "min": 180,
+    "max": 240,
+    "grid": [200, 220],
+    "fairLine": 190,
+    "currency": "$",
+    "highlight": [0, 9]
+  },
+  "gauge": {
+    "min": 182,
+    "max": 245,
+    "cur": 219.2,
+    "fair": 190,
+    "fairLabelTop": false
+  },
+  "fv": 190
+}
 </script>
 <!--TEMPLATE:STYLE-->
 </head>
@@ -28,11 +72,11 @@
     <div class="sub">เก็บ-ขนส่ง-กำจัดขยะอันดับ 2 อเมริกาเหนือ • Collection ~68% • Landfill (207 แห่ง) • Environmental Solutions (hazardous) • Recycling • RNG/sustainability • pricing power</div>
     <div class="price-row">
       <div>
-        <div class="px">$216.41<small>(RSG)</small></div>
+        <div class="px">$219.20<small>(RSG)</small></div>
       </div>
-      <div class="chg">▼ −6.4% (รอบปี)</div>
+      <div class="chg">▼ −6.3% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 26 มิ.ย. 2569<br>
+        ราคา ณ 10 ก.ค. 2569<br>
         กรอบ 52 สัปดาห์ $196.41 / $246.82<br>
         ที่มา: StockAnalysis.com / Yahoo Finance / Republic Services IR / Macrotrends
       </div>
@@ -115,7 +159,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $216.41</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $219.20</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $190</div></div>
         </div>
         <div class="scale">
@@ -139,7 +183,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict bad">
-        <div class="big">−13.9%</div>
+        <div class="big">−15%</div>
         <div class="txt">ราคาแพงกว่ามูลค่าเหมาะสม — ยังไม่มี Margin of Safety</div>
       </div>
       <div class="grid g3">
@@ -150,7 +194,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="216.41" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="219.2" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

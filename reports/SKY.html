@@ -6,7 +6,7 @@
 <title>วิเคราะห์หุ้น สกาย ไอซีที (SKY) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Sonnet 4.6">
 <script type="application/json" id="stock-meta">
-{"symbol":"SKY","currency":"THB","price":15.00,"fairValue":16.00,"mos":6.3,"upside":6.7,"pe":13.7,"dividendYield":2.0,"roe":12.4}
+{"symbol":"SKY","currency":"THB","price":15.6,"fairValue":16,"mos":2.5,"upside":2.6,"pe":13.7,"dividendYield":2,"roe":12.4}
 </script>
 <script type="application/json" id="report-data">
 {
@@ -20,42 +20,41 @@
     "verdictText": "#e1f5fe",
     "vcellLabel": "rgba(225,245,254,0.7)",
     "badge": "#0288d1",
-    "chgBg": "#1e4620",
-    "chgColor": "#81c784"
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#1e8e3e"
   },
   "chart": {
     "data": [
-      ["ก.ค. 68", 12.00],
-      ["ส.ค. 68", 13.40],
-      ["ก.ย. 68", 14.90],
-      ["ต.ค. 68", 17.70],
-      ["พ.ย. 68", 15.10],
-      ["ธ.ค. 68", 14.50],
-      ["ม.ค. 69", 14.30],
-      ["ก.พ. 69", 11.90],
-      ["มี.ค. 69", 11.10],
-      ["เม.ย. 69", 10.60],
-      ["พ.ค. 69", 9.80],
-      ["มิ.ย. 69", 12.20],
-      ["ก.ค. 69", 15.00]
+      ["ส.ค.25", 14],
+      ["ก.ย.25", 13.4],
+      ["ต.ค.25", 12.3],
+      ["พ.ย.25", 12.2],
+      ["ธ.ค.25", 11.1],
+      ["ม.ค.26", 10.6],
+      ["ก.พ.26", 14.9],
+      ["มี.ค.26", 12.5],
+      ["เม.ย.26", 11.9],
+      ["พ.ค.26", 14.3],
+      ["มิ.ย.26", 14.5],
+      ["ก.ค.26", 15.6]
     ],
-    "min": 8.5,
-    "max": 19.5,
-    "grid": [10, 12, 14, 16, 18],
-    "fairLine": 16.00,
+    "min": 10,
+    "max": 18,
+    "grid": [12, 14, 16],
+    "fairLine": 16,
     "currency": "฿",
-    "highlight": [3, 10],
+    "highlight": [5, 11],
     "gridFmt": "v.toFixed(0)",
     "dataFmt": "d[1].toFixed(2)"
   },
   "gauge": {
-    "min": 8.0,
-    "max": 20.0,
-    "cur": 15.00,
-    "fair": 16.00,
+    "min": 8,
+    "max": 20,
+    "cur": 15.6,
+    "fair": 16,
     "fairLabelTop": true
   },
-  "fv": 16.00
+  "fv": 16
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -75,11 +74,11 @@
     <div class="sub">โซลูชัน IT สนามบิน (AOT/SAWASDEE Platform) • AI/Biometric &amp; E-KYC • CCTV &amp; Cybersecurity • Smart City &amp; Facility Management • Cloud &amp; IoT</div>
     <div class="price-row">
       <div>
-        <div class="px">฿15.00<small>(SKY)</small></div>
+        <div class="px">฿15.60<small>(SKY)</small></div>
       </div>
-      <div class="chg">▲ +25.0% (รอบปี)</div>
+      <div class="chg">▲ +11.4% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 3 ก.ค. 2569 · FY2025/FY2568<br>
+        ราคา ณ 10 ก.ค. 2569 · FY2025/FY2568<br>
         กรอบ 52 สัปดาห์ ฿9.80 – ฿17.70<br>
         ที่มา: StockAnalysis.com / SET Factsheet / skyict.co.th
       </div>
@@ -165,7 +164,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿15.00</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿15.60</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿16.00</div></div>
         </div>
         <div class="scale">
@@ -189,7 +188,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict ok">
-        <div class="big">+6.3%</div>
+        <div class="big">+3%</div>
         <div class="txt">ราคาพอใช้ — ยังไม่ถึงโซน Value (MOS 20%) · เหมาะสะสมทยอย</div>
       </div>
       <div class="grid g3">
@@ -200,7 +199,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="15.00" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="15.6" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

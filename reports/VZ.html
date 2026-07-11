@@ -8,13 +8,57 @@
 <meta name="ai-model" content="Claude Sonnet 4.6">
 <!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
 <script type="application/json" id="stock-meta">
-{"symbol":"VZ","currency":"USD","price":42.56,"fairValue":48.38,"mos":12.0,"upside":13.7,"pe":10.4,"dividendYield":6.65,"roe":19.4}
+{"symbol":"VZ","currency":"USD","price":42.12,"fairValue":48.38,"mos":12.9,"upside":14.9,"pe":10.4,"dividendYield":6.65,"roe":19.4}
 </script>
 <!--
   report-data: ธีมสี + ข้อมูลกราฟ/gauge ต่อหุ้น (build เอาไปวาด)  ดู schema เต็มใน CLAUDE.md ข้อ 9
 -->
 <script type="application/json" id="report-data">
-{"theme":{"accent":"#cd040b","accentDark":"#8f0008","darkGrad":"linear-gradient(135deg,#3a0003 0%,#8f0008 50%,#cd040b 100%)","glow":"rgba(205,4,11,0.35)","subColor":"#ff5c5c","headerMuted":"rgba(255,255,255,0.65)","verdictText":"#8f0008","vcellLabel":"#8f0008","badge":"#cd040b","chgBg":"#3a3a3a","chgColor":"#ffffff"},"chart":{"data":[["ก.ค.68",42.76],["ส.ค.68",44.23],["ก.ย.68",43.95],["ต.ค.68",39.74],["พ.ย.68",41.11],["ธ.ค.68",40.73],["ม.ค.69",44.52],["ก.พ.69",50.14],["มี.ค.69",50.20],["เม.ย.69",48.03],["พ.ค.69",47.81],["มิ.ย.69",42.34],["ก.ค.69",42.56]],"min":38,"max":52,"grid":[38,42,46,50],"fairLine":48.38,"currency":"$","highlight":[7,12]},"gauge":{"min":33,"max":53,"cur":42.56,"fair":48.38,"fairLabelTop":true},"fv":48.38}
+{
+  "theme": {
+    "accent": "#cd040b",
+    "accentDark": "#8f0008",
+    "darkGrad": "linear-gradient(135deg,#3a0003 0%,#8f0008 50%,#cd040b 100%)",
+    "glow": "rgba(205,4,11,0.35)",
+    "subColor": "#ff5c5c",
+    "headerMuted": "rgba(255,255,255,0.65)",
+    "verdictText": "#8f0008",
+    "vcellLabel": "#8f0008",
+    "badge": "#cd040b",
+    "chgBg": "var(--red-soft)",
+    "chgColor": "#c5221f"
+  },
+  "chart": {
+    "data": [
+      ["ส.ค.25", 44.23],
+      ["ก.ย.25", 43.95],
+      ["ต.ค.25", 39.74],
+      ["พ.ย.25", 41.11],
+      ["ธ.ค.25", 40.73],
+      ["ม.ค.26", 44.52],
+      ["ก.พ.26", 50.14],
+      ["มี.ค.26", 50.2],
+      ["เม.ย.26", 48.03],
+      ["พ.ค.26", 47.81],
+      ["มิ.ย.26", 42.34],
+      ["ก.ค.26", 42.12]
+    ],
+    "min": 35,
+    "max": 55,
+    "grid": [40, 45, 50],
+    "fairLine": 48.38,
+    "currency": "$",
+    "highlight": [2, 7]
+  },
+  "gauge": {
+    "min": 33,
+    "max": 53,
+    "cur": 42.12,
+    "fair": 48.38,
+    "fairLabelTop": true
+  },
+  "fv": 48.38
+}
 </script>
 <!--TEMPLATE:STYLE-->
 </head>
@@ -34,11 +78,11 @@
     <div class="sub">เครือข่ายไร้สาย 5G/4G อันดับ 2 ของสหรัฐฯ • Fios fiber broadband • Fixed Wireless Access (home internet) • Verizon Business • ล่าสุดควบรวม Frontier Communications (fiber ~30M passings)</div>
     <div class="price-row">
       <div>
-        <div class="px">$42.56<small>(VZ)</small></div>
+        <div class="px">$42.12<small>(VZ)</small></div>
       </div>
-      <div class="chg">≈ ทรงตัว (รอบปี)</div>
+      <div class="chg">▼ −4.8% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 2 ก.ค. 2569<br>
+        ราคา ณ 10 ก.ค. 2569<br>
         กรอบ 52 สัปดาห์ $38.39–$51.68<br>
         ที่มา: StockAnalysis.com, Yahoo Finance, CNBC
       </div>
@@ -123,7 +167,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $42.56</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $42.12</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $48.38</div></div>
         </div>
         <div class="scale">
@@ -146,7 +190,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict ok">
-        <div class="big">+12.0%</div>
+        <div class="big">+13%</div>
         <div class="txt">MOS ระดับปานกลาง — ราคาต่ำกว่ามูลค่าเหมาะสมพอสมควร แต่ยังไม่เข้าโซนถูกมาก</div>
       </div>
       <div class="grid g3">
@@ -157,7 +201,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="42.56" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="42.12" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

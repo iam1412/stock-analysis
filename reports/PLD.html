@@ -6,10 +6,54 @@
 <title>วิเคราะห์หุ้น Prologis (PLD) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Sonnet 4.6">
 <script type="application/json" id="stock-meta">
-{"symbol":"PLD","currency":"USD","price":139.97,"fairValue":138,"mos":-1.4,"upside":-1.4,"pe":24.1,"dividendYield":3.06,"roe":6.84}
+{"symbol":"PLD","currency":"USD","price":140.87,"fairValue":138,"mos":-2.1,"upside":-2,"pe":24.1,"dividendYield":3.06,"roe":6.84}
 </script>
 <script type="application/json" id="report-data">
-{"theme":{"accent":"#0E8C9E","accentDark":"#0A6571","darkGrad":"linear-gradient(135deg, #02100F 0%, #051F20 100%)","glow":"rgba(14,140,158,0.35)","subColor":"#3FB5C4","headerMuted":"rgba(14,140,158,0.12)","verdictText":"#CDEAEF","vcellLabel":"rgba(205,234,239,0.6)","badge":"#0E8C9E","chgBg":"rgba(34,197,94,0.15)","chgColor":"#22C55E"},"chart":{"data":[["ก.ค. 68",106.78],["ส.ค. 68",113.78],["ก.ย. 68",114.52],["ต.ค. 68",124.09],["พ.ย. 68",128.53],["ธ.ค. 68",127.66],["ม.ค. 69",130.56],["ก.พ. 69",142.57],["มี.ค. 69",132.18],["เม.ย. 69",142.02],["พ.ค. 69",143.47],["มิ.ย. 69",139.97]],"min":100,"max":150,"grid":[115,130,145],"fairLine":138,"currency":"$","highlight":[10]},"gauge":{"min":98,"max":155,"cur":139.97,"fair":138,"fairLabelTop":false},"fv":138}
+{
+  "theme": {
+    "accent": "#0E8C9E",
+    "accentDark": "#0A6571",
+    "darkGrad": "linear-gradient(135deg, #02100F 0%, #051F20 100%)",
+    "glow": "rgba(14,140,158,0.35)",
+    "subColor": "#3FB5C4",
+    "headerMuted": "rgba(14,140,158,0.12)",
+    "verdictText": "#CDEAEF",
+    "vcellLabel": "rgba(205,234,239,0.6)",
+    "badge": "#0E8C9E",
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#1e8e3e"
+  },
+  "chart": {
+    "data": [
+      ["ส.ค.25", 113.78],
+      ["ก.ย.25", 114.52],
+      ["ต.ค.25", 124.09],
+      ["พ.ย.25", 128.53],
+      ["ธ.ค.25", 127.66],
+      ["ม.ค.26", 130.56],
+      ["ก.พ.26", 142.57],
+      ["มี.ค.26", 132.18],
+      ["เม.ย.26", 142.02],
+      ["พ.ค.26", 143.47],
+      ["มิ.ย.26", 135.47],
+      ["ก.ค.26", 140.87]
+    ],
+    "min": 110,
+    "max": 150,
+    "grid": [120, 130, 140],
+    "fairLine": 138,
+    "currency": "$",
+    "highlight": [0, 9]
+  },
+  "gauge": {
+    "min": 98,
+    "max": 155,
+    "cur": 140.87,
+    "fair": 138,
+    "fairLabelTop": false
+  },
+  "fv": 138
+}
 </script>
 <!--TEMPLATE:STYLE-->
 </head>
@@ -28,11 +72,11 @@
     <div class="sub">REIT คลังสินค้า/โลจิสติกส์ใหญ่สุดในโลก • ~1.2B ตร.ฟุต ใน 19 ประเทศ • ทำเล last-mile ใกล้เมือง • ลูกค้า e-commerce/3PL • Data Center conversion + Solar</div>
     <div class="price-row">
       <div>
-        <div class="px">$139.97<small>(PLD)</small></div>
+        <div class="px">$140.87<small>(PLD)</small></div>
       </div>
-      <div class="chg">▲ +31.1% (รอบปี)</div>
+      <div class="chg">▲ +23.8% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 26 มิ.ย. 2569<br>
+        ราคา ณ 10 ก.ค. 2569<br>
         กรอบ 52 สัปดาห์ $103.41 / $150.18<br>
         ที่มา: StockAnalysis.com / Yahoo Finance / Prologis Investor Relations / Macrotrends
       </div>
@@ -110,7 +154,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $139.97</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $140.87</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $138</div></div>
         </div>
         <div class="scale">
@@ -132,7 +176,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict bad">
-        <div class="big">−1.4%</div>
+        <div class="big">−2%</div>
         <div class="txt">ราคาตึงเล็กน้อย — เหนือ Fair Value $138 · คุณภาพสูงแต่รอจังหวะย่อ</div>
       </div>
       <div class="grid g3">
@@ -143,7 +187,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="139.97" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="140.87" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

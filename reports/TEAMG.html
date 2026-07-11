@@ -6,10 +6,56 @@
 <title>วิเคราะห์หุ้น TEAM Consulting Engineering and Management (TEAMG) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Sonnet 4.6">
 <script type="application/json" id="stock-meta">
-{"symbol":"TEAMG","currency":"THB","price":3.04,"fairValue":3.20,"mos":5.0,"upside":5.3,"pe":12.67,"dividendYield":5.26,"roe":14.09}
+{"symbol":"TEAMG","currency":"THB","price":3.08,"fairValue":3.2,"mos":3.8,"upside":3.9,"pe":12.67,"dividendYield":5.26,"roe":14.09}
 </script>
 <script type="application/json" id="report-data">
-{"theme":{"accent":"#059669","accentDark":"#047857","darkGrad":"linear-gradient(135deg, #022c22 0%, #064e3b 100%)","glow":"rgba(5,150,105,0.35)","subColor":"#6ee7b7","headerMuted":"rgba(255,255,255,0.7)","verdictText":"#d1fae5","vcellLabel":"#a7f3d0","badge":"#10b981","chgBg":"rgba(30,142,62,0.16)","chgColor":"#1e8e3e"},"chart":{"data":[["ก.ค. 68",2.86],["ส.ค. 68",3.30],["ก.ย. 68",3.10],["ต.ค. 68",3.04],["พ.ย. 68",3.16],["ธ.ค. 68",3.08],["ม.ค. 69",3.52],["ก.พ. 69",2.90],["มี.ค. 69",3.02],["เม.ย. 69",3.02],["พ.ค. 69",2.94],["มิ.ย. 69",3.04],["ก.ค. 69",3.04]],"min":2.5,"max":3.9,"grid":[2.5,2.9,3.3,3.7],"fairLine":3.20,"currency":"฿","highlight":[6,12],"gridFmt":"v.toFixed(2)","dataFmt":"d[1].toFixed(2)"},"gauge":{"min":2.0,"max":4.0,"cur":3.04,"fair":3.20,"fairLabelTop":true},"fv":3.20}
+{
+  "theme": {
+    "accent": "#059669",
+    "accentDark": "#047857",
+    "darkGrad": "linear-gradient(135deg, #022c22 0%, #064e3b 100%)",
+    "glow": "rgba(5,150,105,0.35)",
+    "subColor": "#6ee7b7",
+    "headerMuted": "rgba(255,255,255,0.7)",
+    "verdictText": "#d1fae5",
+    "vcellLabel": "#a7f3d0",
+    "badge": "#10b981",
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#1e8e3e"
+  },
+  "chart": {
+    "data": [
+      ["ส.ค.25", 2.86],
+      ["ก.ย.25", 3.3],
+      ["ต.ค.25", 3.1],
+      ["พ.ย.25", 3.04],
+      ["ธ.ค.25", 3.16],
+      ["ม.ค.26", 3.08],
+      ["ก.พ.26", 3.52],
+      ["มี.ค.26", 2.9],
+      ["เม.ย.26", 3.02],
+      ["พ.ค.26", 3.02],
+      ["มิ.ย.26", 2.94],
+      ["ก.ค.26", 3.08]
+    ],
+    "min": 2.8,
+    "max": 3.6,
+    "grid": [3, 3.2, 3.4],
+    "fairLine": 3.2,
+    "currency": "฿",
+    "highlight": [0, 6],
+    "gridFmt": "v.toFixed(2)",
+    "dataFmt": "d[1].toFixed(2)"
+  },
+  "gauge": {
+    "min": 2,
+    "max": 4,
+    "cur": 3.08,
+    "fair": 3.2,
+    "fairLabelTop": true
+  },
+  "fv": 3.2
+}
 </script>
 <!--TEMPLATE:STYLE-->
 </head>
@@ -28,11 +74,11 @@
     <div class="sub">ที่ปรึกษาวิศวกรรมและบริหารโครงการรายใหญ่ของไทย • ถนน สะพาน ทางด่วน รถไฟฟ้า รถไฟทางคู่ รถไฟความเร็วสูง สนามบิน ท่าเรือ • บริหารจัดการน้ำและสิ่งแวดล้อม • รับงาน EPC โครงสร้างพื้นฐานภาครัฐ</div>
     <div class="price-row">
       <div>
-        <div class="px">฿3.04<small>(TEAMG)</small></div>
+        <div class="px">฿3.08<small>(TEAMG)</small></div>
       </div>
-      <div class="chg">▲ +6.3% (รอบปี)</div>
+      <div class="chg">▲ +7.7% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 4 ก.ค. 2569<br>
+        ราคา ณ 10 ก.ค. 2569<br>
         กรอบ 52 สัปดาห์ ฿2.66 – ฿3.80<br>
         ที่มา: StockAnalysis.com, SET.or.th, Yahoo Finance
       </div>
@@ -110,7 +156,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿3.04</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿3.08</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿3.20</div></div>
         </div>
         <div class="scale">
@@ -132,7 +178,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict bad">
-        <div class="big">+5.0%</div>
+        <div class="big">+4%</div>
         <div class="txt">MOS บางมาก — ราคาซื้อขายใกล้เคียงมูลค่าเหมาะสม ไม่มีส่วนเผื่อความปลอดภัยที่มีนัยสำคัญ</div>
       </div>
       <div class="grid g3">
@@ -143,7 +189,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="3.04" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="3.08" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

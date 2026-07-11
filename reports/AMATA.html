@@ -8,7 +8,7 @@
 <meta name="ai-model" content="Claude Sonnet 4.6">
 <!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
 <script type="application/json" id="stock-meta">
-{"symbol":"AMATA","currency":"THB","price":27.00,"fairValue":29.50,"mos":8.47,"upside":9.26,"pe":8.39,"dividendYield":4.07,"roe":15.01}
+{"symbol":"AMATA","currency":"THB","price":28.5,"fairValue":29.5,"mos":3.4,"upside":3.5,"pe":8.39,"dividendYield":4.07,"roe":15.01}
 </script>
 <script type="application/json" id="report-data">
 {
@@ -22,40 +22,39 @@
     "verdictText": "#fff8f0",
     "vcellLabel": "#c4956b",
     "badge": "#e8700a",
-    "chgBg": "#0d3b0f",
-    "chgColor": "#4caf50"
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#1e8e3e"
   },
   "chart": {
     "data": [
-      ["มิ.ย. 25", 13.00],
-      ["ก.ค. 25", 13.50],
-      ["ส.ค. 25", 14.20],
-      ["ก.ย. 25", 16.40],
-      ["ต.ค. 25", 17.50],
-      ["พ.ย. 25", 19.00],
-      ["ธ.ค. 25", 18.50],
-      ["ม.ค. 26", 17.80],
-      ["ก.พ. 26", 18.00],
-      ["มี.ค. 26", 18.30],
-      ["เม.ย. 26", 20.40],
-      ["พ.ค. 26", 24.90],
-      ["มิ.ย. 26", 27.00]
+      ["ส.ค.25", 15.8],
+      ["ก.ย.25", 16.1],
+      ["ต.ค.25", 14.4],
+      ["พ.ย.25", 16.7],
+      ["ธ.ค.25", 16.6],
+      ["ม.ค.26", 15.6],
+      ["ก.พ.26", 19.5],
+      ["มี.ค.26", 19],
+      ["เม.ย.26", 20.6],
+      ["พ.ค.26", 24.5],
+      ["มิ.ย.26", 26.75],
+      ["ก.ค.26", 28.5]
     ],
-    "min": 11,
-    "max": 32,
-    "grid": [12, 16, 20, 24, 28],
-    "fairLine": 29.50,
+    "min": 10,
+    "max": 35,
+    "grid": [15, 20, 25, 30],
+    "fairLine": 29.5,
     "currency": "฿",
-    "highlight": [3, 11, 12]
+    "highlight": [2, 11]
   },
   "gauge": {
     "min": 15,
     "max": 40,
-    "cur": 27.00,
-    "fair": 29.50,
+    "cur": 28.5,
+    "fair": 29.5,
     "fairLabelTop": true
   },
-  "fv": 29.50
+  "fv": 29.5
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -75,11 +74,11 @@
     <div class="sub">นิคมอุตสาหกรรม Amata City ชลบุรี &amp; ระยอง (EEC) • Amata City เบียนฮหว่า &amp; Long Thanh เวียดนาม • สาธารณูปโภค (ไฟฟ้า น้ำ ก๊าซ) • ผู้รับประโยชน์หลัก China+1 &amp; EV Supply Chain ใน ASEAN</div>
     <div class="price-row">
       <div>
-        <div class="px">฿27.00<small>(AMATA)</small></div>
+        <div class="px">฿28.50<small>(AMATA)</small></div>
       </div>
-      <div class="chg">▲ +107.7% (รอบปี)</div>
+      <div class="chg">▲ +80.4% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 25 มิ.ย. 2569<br>
+        ราคา ณ 10 ก.ค. 2569<br>
         กรอบ 52 สัปดาห์ ฿13.00–฿28.00<br>
         ที่มา: SET.or.th, Investing.com, StockAnalysis.com
       </div>
@@ -162,7 +161,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿27.00</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿28.50</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿29.50</div></div>
         </div>
         <div class="scale">
@@ -186,7 +185,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict ok">
-        <div class="big">+8.47%</div>
+        <div class="big">+3%</div>
         <div class="txt">ราคาพอใช้ — ต่ำกว่า Fair Value เล็กน้อย ทยอยสะสมได้ในราคาต่ำกว่า ฿26</div>
       </div>
       <div class="grid g3">
@@ -197,7 +196,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="27.00" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="28.5" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

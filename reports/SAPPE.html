@@ -8,7 +8,7 @@
 <meta name="ai-model" content="Claude Sonnet 4.6">
 <!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
 <script type="application/json" id="stock-meta">
-{"symbol":"SAPPE","currency":"THB","price":33.75,"fairValue":35,"mos":3.57,"upside":3.70,"pe":14.06,"dividendYield":5.19,"roe":16.33}
+{"symbol":"SAPPE","currency":"THB","price":33.5,"fairValue":35,"mos":4.3,"upside":4.5,"pe":14.06,"dividendYield":5.19,"roe":16.33}
 </script>
 <script type="application/json" id="report-data">
 {
@@ -22,28 +22,27 @@
     "verdictText": "#e0f2f1",
     "vcellLabel": "rgba(224,242,241,0.7)",
     "badge": "#00897b",
-    "chgBg": "#e6f4ea",
+    "chgBg": "var(--green-soft)",
     "chgColor": "#1e8e3e"
   },
   "chart": {
     "data": [
-      ["ม.ค. 68", 32.50],
-      ["ก.พ. 68", 35.00],
-      ["มี.ค. 68", 36.25],
-      ["เม.ย. 68", 32.75],
-      ["พ.ค. 68", 30.75],
-      ["มิ.ย. 68", 33.00],
-      ["ก.ค. 68", 34.25],
-      ["ส.ค. 68", 31.25],
-      ["ก.ย. 68", 29.50],
-      ["ต.ค. 68", 29.75],
-      ["พ.ย. 68", 33.00],
-      ["ธ.ค. 68", 33.25],
-      ["ม.ค. 69", 33.75]
+      ["ส.ค.25", 32.5],
+      ["ก.ย.25", 35],
+      ["ต.ค.25", 36.25],
+      ["พ.ย.25", 32.75],
+      ["ธ.ค.25", 30.75],
+      ["ม.ค.26", 33],
+      ["ก.พ.26", 34.25],
+      ["มี.ค.26", 31.25],
+      ["เม.ย.26", 29.5],
+      ["พ.ค.26", 29.75],
+      ["มิ.ย.26", 33],
+      ["ก.ค.26", 33.5]
     ],
-    "min": 26,
-    "max": 44,
-    "grid": [28, 32, 35, 38, 42],
+    "min": 28,
+    "max": 38,
+    "grid": [30, 32, 34, 36],
     "fairLine": 35,
     "currency": "฿",
     "highlight": [2, 8],
@@ -53,7 +52,7 @@
   "gauge": {
     "min": 0,
     "max": 100,
-    "cur": 33.75,
+    "cur": 33.5,
     "fair": 35
   },
   "fv": 35
@@ -76,11 +75,11 @@
     <div class="sub">Sappe Beauti Drink · เครื่องดื่มฟังก์ชันส่งออก 60+ ประเทศ · ชาเขียว · บิวตี้ดริงก์ · อาเซียน+ยุโรป · Gross Margin ~45%</div>
     <div class="price-row">
       <div>
-        <div class="px">฿33.75<small>(SAPPE)</small></div>
+        <div class="px">฿33.50<small>(SAPPE)</small></div>
       </div>
-      <div class="chg">▲ +3.8% (รอบปี)</div>
+      <div class="chg">▲ +3.1% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 3 ก.ค. 2569<br>
+        ราคา ณ 10 ก.ค. 2569<br>
         กรอบ 52 สัปดาห์ ฿28.50 – ฿41.75<br>
         ที่มา: StockAnalysis.com, Investing.com, Yahoo Finance (SAPPE.BK)
       </div>
@@ -165,7 +164,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿33.75</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿33.50</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿35</div></div>
         </div>
         <div class="scale">
@@ -190,7 +189,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict bad">
-        <div class="big">+3.6%</div>
+        <div class="big">+4%</div>
         <div class="txt">ราคาใกล้ Fair Value — MOS ต่ำมาก ยังไม่ถึงโซนน่าซื้อ ควรรอจังหวะราคาอ่อนตัว</div>
       </div>
       <div class="grid g3">
@@ -201,7 +200,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="33.75" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="33.5" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

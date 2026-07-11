@@ -10,7 +10,7 @@
 <title>วิเคราะห์หุ้น PulteGroup (PHM) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Sonnet 4.6">
 <script type="application/json" id="stock-meta">
-{"symbol":"PHM","currency":"USD","price":122.94,"fairValue":137,"mos":10.3,"upside":11.4,"pe":11.9,"dividendYield":0.85,"roe":23}
+{"symbol":"PHM","currency":"USD","price":124.75,"fairValue":137,"mos":8.9,"upside":9.8,"pe":11.9,"dividendYield":0.85,"roe":23}
 </script>
 <script type="application/json" id="report-data">
 {
@@ -24,36 +24,35 @@
     "verdictText": "#eceff1",
     "vcellLabel": "#b0bec5",
     "badge": "#263238",
-    "chgBg": "rgba(197,34,31,.16)",
+    "chgBg": "var(--red-soft)",
     "chgColor": "#c5221f"
   },
   "chart": {
     "data": [
-      ["ก.ค. 68", 132.02],
-      ["ส.ค. 68", 132.13],
-      ["ก.ย. 68", 119.87],
-      ["ต.ค. 68", 127.19],
-      ["พ.ย. 68", 117.26],
-      ["ธ.ค. 68", 125.09],
-      ["ม.ค. 69", 137.20],
-      ["ก.พ. 69", 117.61],
-      ["มี.ค. 69", 122.36],
-      ["เม.ย. 69", 118.18],
-      ["พ.ค. 69", 137.21],
-      ["มิ.ย. 69", 122.94],
-      ["ปัจจุบัน", 122.94]
+      ["ส.ค.25", 132.02],
+      ["ก.ย.25", 132.13],
+      ["ต.ค.25", 119.87],
+      ["พ.ย.25", 127.19],
+      ["ธ.ค.25", 117.26],
+      ["ม.ค.26", 125.09],
+      ["ก.พ.26", 137.2],
+      ["มี.ค.26", 117.61],
+      ["เม.ย.26", 122.36],
+      ["พ.ค.26", 118.18],
+      ["มิ.ย.26", 137.21],
+      ["ก.ค.26", 124.75]
     ],
-    "min": 108,
-    "max": 148,
-    "grid": [115, 120, 125, 130, 135, 140],
+    "min": 115,
+    "max": 140,
+    "grid": [120, 125, 130, 135],
     "fairLine": 137,
     "currency": "$",
-    "highlight": [4]
+    "highlight": [4, 10]
   },
   "gauge": {
     "min": 85,
     "max": 155,
-    "cur": 122.94,
+    "cur": 124.75,
     "fair": 137
   },
   "fv": 137
@@ -76,11 +75,11 @@
     <div class="sub">#3 US Homebuilder • Best-in-Class Margin • Centex • Del Webb Active Adult • DiVosta</div>
     <div class="price-row">
       <div>
-        <div class="px">$122.94<small>(PHM)</small></div>
+        <div class="px">$124.75<small>(PHM)</small></div>
       </div>
-      <div class="chg">▼ −6.9% (รอบปี)</div>
+      <div class="chg">▼ −5.5% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 8 ก.ค. 2569<br>
+        ราคา ณ 10 ก.ค. 2569<br>
         กรอบ 52 สัปดาห์ $107.16–$144.50<br>
         ที่มา: StockAnalysis.com, Yahoo Finance
       </div>
@@ -158,7 +157,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $122.94</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $124.75</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $137</div></div>
         </div>
         <div class="scale">
@@ -180,7 +179,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict ok">
-        <div class="big">+10.3%</div>
+        <div class="big">+9%</div>
         <div class="txt">MOS ระดับพอยอมรับ — ดีสุดใน Big 3 homebuilder (DHI −8.7%, LEN −6.2%)</div>
       </div>
       <div class="grid g3">
@@ -191,7 +190,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="122.94" step="1">
+          <input id="pxIn" class="mono" type="number" value="124.75" step="1">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -295,7 +294,7 @@
   <div class="disc">
     <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ EPS normalized, P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
-    ราคาหุ้นมีความผันผวนสูง โดยเฉพาะ cyclical sector ผู้ลงทุนควรศึกษาเพิ่มเติมและพิจารณาความเสี่ยงก่อนตัดสินใจ • ราคา ณ 8 ก.ค. 2569 · ที่มา: StockAnalysis.com, Yahoo Finance, Macrotrends
+    ราคาหุ้นมีความผันผวนสูง โดยเฉพาะ cyclical sector ผู้ลงทุนควรศึกษาเพิ่มเติมและพิจารณาความเสี่ยงก่อนตัดสินใจ • ราคา ณ 10 ก.ค. 2569 · ที่มา: StockAnalysis.com, Yahoo Finance, Macrotrends
   </div>
   <footer>Stock Analysis Dashboard • ข้อมูล ณ 8 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 

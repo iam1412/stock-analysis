@@ -6,7 +6,7 @@
 <title>วิเคราะห์หุ้น Gentex (GNTX) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Sonnet 4.6">
 <script type="application/json" id="stock-meta">
-{"symbol":"GNTX","currency":"USD","price":24.33,"fairValue":32.00,"mos":24.0,"upside":31.5,"pe":13.86,"dividendYield":1.96,"roe":15.5}
+{"symbol":"GNTX","currency":"USD","price":24.2,"fairValue":32,"mos":24.4,"upside":32.2,"pe":13.86,"dividendYield":1.96,"roe":15.5}
 </script>
 <script type="application/json" id="report-data">
 {
@@ -20,40 +20,39 @@
     "verdictText": "#c8daf0",
     "vcellLabel": "#8fb8e0",
     "badge": "#4A6FA5",
-    "chgBg": "#c5221f",
-    "chgColor": "#fff"
+    "chgBg": "var(--red-soft)",
+    "chgColor": "#c5221f"
   },
   "chart": {
     "data": [
-      ["ก.ค. 68", 28.01],
-      ["ส.ค. 68", 28.30],
-      ["ก.ย. 68", 23.45],
-      ["ต.ค. 68", 22.83],
-      ["พ.ย. 68", 23.27],
-      ["ธ.ค. 68", 23.01],
-      ["ม.ค. 69", 23.40],
-      ["ก.พ. 69", 21.85],
-      ["มี.ค. 69", 23.11],
-      ["เม.ย. 69", 24.16],
-      ["พ.ค. 69", 25.27],
-      ["มิ.ย. 69", 24.67],
-      ["ก.ค. 69", 24.33]
+      ["ส.ค.25", 28.01],
+      ["ก.ย.25", 28.3],
+      ["ต.ค.25", 23.45],
+      ["พ.ย.25", 22.83],
+      ["ธ.ค.25", 23.27],
+      ["ม.ค.26", 23.01],
+      ["ก.พ.26", 23.4],
+      ["มี.ค.26", 21.85],
+      ["เม.ย.26", 23.11],
+      ["พ.ค.26", 24.16],
+      ["มิ.ย.26", 25.27],
+      ["ก.ค.26", 24.2]
     ],
-    "min": 19,
-    "max": 33,
-    "grid": [20, 24, 28, 32],
-    "fairLine": 32.00,
+    "min": 20,
+    "max": 35,
+    "grid": [25, 30],
+    "fairLine": 32,
     "currency": "$",
     "highlight": [1, 7]
   },
   "gauge": {
     "min": 18,
     "max": 40,
-    "cur": 24.33,
-    "fair": 32.00,
+    "cur": 24.2,
+    "fair": 32,
     "fairLabelTop": true
   },
-  "fv": 32.00
+  "fv": 32
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -77,11 +76,11 @@
     <div class="sub">Auto-dimming rearview mirrors (~90% global share) • HomeLink garage integration • Full Display Mirror (FDM) cameras • Dimmable aircraft windows • Capital-light, consistent buybacks</div>
     <div class="price-row">
       <div>
-        <div class="px">$24.33<small>(GNTX)</small></div>
+        <div class="px">$24.20<small>(GNTX)</small></div>
       </div>
-      <div class="chg">▼ −13.2% (รอบปี)</div>
+      <div class="chg">▼ −13.6% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 3 กรกฎาคม 2569<br>
+        ราคา ณ 10 ก.ค. 2569<br>
         กรอบ 52 สัปดาห์ $20.48 – $29.38<br>
         ที่มา: Yahoo Finance API, StockAnalysis.com
       </div>
@@ -164,7 +163,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $24.33</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $24.20</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $32.00</div></div>
         </div>
         <div class="scale">
@@ -188,7 +187,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict good">
-        <div class="big">+24.0%</div>
+        <div class="big">+24%</div>
         <div class="txt">MOS สูง — ราคาต่ำกว่ามูลค่าเหมาะสมอย่างมีนัยสำคัญ เหมาะกับ value investor</div>
       </div>
       <div class="grid g3">
@@ -199,7 +198,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="24.33" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="24.2" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -310,7 +309,7 @@
     <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
     ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
-    แหล่งข้อมูล: Yahoo Finance API (ราคา/กราฟ ณ 3 ก.ค. 2569), StockAnalysis.com (งบการเงิน/EPS/Balance Sheet/Analyst targets), Nasdaq (ข้อมูลบริษัท), Macrotrends.net (ROE/margins historical)
+    แหล่งข้อมูล: Yahoo Finance API (ราคา/กราฟ ณ 10 ก.ค. 2569), StockAnalysis.com (งบการเงิน/EPS/Balance Sheet/Analyst targets), Nasdaq (ข้อมูลบริษัท), Macrotrends.net (ROE/margins historical)
   </div>
   <footer>Stock Analysis Dashboard • ข้อมูล ณ 3 กรกฎาคม 2569 • สร้างด้วย stock-analyzer workflow</footer>
 

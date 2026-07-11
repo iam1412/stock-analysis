@@ -6,7 +6,7 @@
 <title>วิเคราะห์หุ้น เอกชล (AHC) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Sonnet 4.6">
 <script type="application/json" id="stock-meta">
-{"symbol":"AHC","currency":"THB","price":13.30,"fairValue":10.52,"mos":-26.4,"upside":-20.9,"pe":15.77,"dividendYield":3.23,"roe":5.89}
+{"symbol":"AHC","currency":"THB","price":13.1,"fairValue":10.52,"mos":-24.5,"upside":-19.7,"pe":15.77,"dividendYield":3.23,"roe":5.89}
 </script>
 <script type="application/json" id="report-data">
 {
@@ -20,38 +20,37 @@
     "verdictText": "#cdf3ec",
     "vcellLabel": "#9fdcd3",
     "badge": "#0D9488",
-    "chgBg": "rgba(197,34,31,0.18)",
-    "chgColor": "#e05d59"
+    "chgBg": "var(--red-soft)",
+    "chgColor": "#c5221f"
   },
   "chart": {
     "data": [
-      ["ก.ค. 68", 13.90],
-      ["ส.ค. 68", 14.30],
-      ["ก.ย. 68", 14.00],
-      ["ต.ค. 68", 12.20],
-      ["พ.ย. 68", 12.70],
-      ["ธ.ค. 68", 13.20],
-      ["ม.ค. 69", 13.60],
-      ["ก.พ. 69", 13.30],
-      ["มี.ค. 69", 13.80],
-      ["เม.ย. 69", 12.50],
-      ["พ.ค. 69", 12.60],
-      ["มิ.ย. 69", 13.30],
-      ["ก.ค. 69", 13.30]
+      ["ส.ค.25", 13.9],
+      ["ก.ย.25", 14.3],
+      ["ต.ค.25", 14],
+      ["พ.ย.25", 12.2],
+      ["ธ.ค.25", 12.7],
+      ["ม.ค.26", 13.2],
+      ["ก.พ.26", 13.6],
+      ["มี.ค.26", 13.3],
+      ["เม.ย.26", 13.8],
+      ["พ.ค.26", 12.5],
+      ["มิ.ย.26", 12.6],
+      ["ก.ค.26", 13.1]
     ],
-    "min": 10.0,
-    "max": 15.0,
-    "grid": [10.0, 11.5, 13.0, 14.5],
+    "min": 10,
+    "max": 15,
+    "grid": [11, 12, 13, 14],
     "fairLine": 10.52,
     "currency": "฿",
-    "highlight": [1, 12],
+    "highlight": [1, 3],
     "gridFmt": "v.toFixed(2)",
     "dataFmt": "d[1].toFixed(2)"
   },
   "gauge": {
     "min": 6.5,
     "max": 14.5,
-    "cur": 13.30,
+    "cur": 13.1,
     "fair": 10.52,
     "fairLabelTop": false
   },
@@ -75,11 +74,11 @@
     <div class="sub">โรงพยาบาลเอกชนระดับภูมิภาค 2 สาขา • ชลบุรี (แหลมฉบัง/บ่อวิน) และ อ่างศิลา • ศูนย์หัวใจ ศูนย์กระดูกสันหลัง สูติ-นรีเวช กุมารเวช • รองรับฐานลูกค้าอุตสาหกรรม EEC</div>
     <div class="price-row">
       <div>
-        <div class="px">฿13.30<small>(AHC)</small></div>
+        <div class="px">฿13.10<small>(AHC)</small></div>
       </div>
-      <div class="chg">▼ −4.3% (รอบปี)</div>
+      <div class="chg">▼ −5.8% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 3 ก.ค. 2569<br>
+        ราคา ณ 10 ก.ค. 2569<br>
         กรอบ 52 สัปดาห์ ฿11.70 – ฿16.20<br>
         ที่มา: StockAnalysis.com, SET Factsheet (set.or.th), Yahoo Finance
       </div>
@@ -162,7 +161,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿13.30</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿13.10</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿10.52</div></div>
         </div>
         <div class="scale">
@@ -186,7 +185,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict bad">
-        <div class="big">−26.4%</div>
+        <div class="big">−25%</div>
         <div class="txt">ราคาปัจจุบันสูงกว่ามูลค่าเหมาะสม — MOS ติดลบ ยังไม่มีส่วนเผื่อความปลอดภัย</div>
       </div>
       <div class="grid g3">
@@ -197,7 +196,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="13.30" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="13.1" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -312,7 +311,7 @@
   <div class="disc">
     <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
-    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ข้อมูลจาก StockAnalysis.com, SET Factsheet (set.or.th), Yahoo Finance (AHC.BK) — ราคาและงบการเงิน ณ 3 ก.ค. 2569
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ข้อมูลจาก StockAnalysis.com, SET Factsheet (set.or.th), Yahoo Finance (AHC.BK) — ราคาและงบการเงิน ณ 10 ก.ค. 2569
   </div>
   <footer>Stock Analysis Dashboard • ข้อมูล ณ 3 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 

@@ -6,10 +6,54 @@
 <title>วิเคราะห์หุ้น Blackstone Inc. (BX) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Sonnet 4.6">
 <script type="application/json" id="stock-meta">
-{"symbol":"BX","currency":"USD","price":115.40,"fairValue":131,"mos":11.9,"upside":13.5,"pe":20.7,"dividendYield":4.11,"roe":37.4}
+{"symbol":"BX","currency":"USD","price":123.09,"fairValue":131,"mos":6,"upside":6.4,"pe":20.7,"dividendYield":4.11,"roe":37.4}
 </script>
 <script type="application/json" id="report-data">
-{"theme":{"accent":"#4A6491","accentDark":"#2C3E5C","darkGrad":"linear-gradient(135deg, #04060A 0%, #0A1018 100%)","glow":"rgba(74,100,145,0.38)","subColor":"#7E93B5","headerMuted":"rgba(74,100,145,0.13)","verdictText":"#D6DEEC","vcellLabel":"rgba(214,222,236,0.6)","badge":"#4A6491","chgBg":"rgba(239,68,68,0.15)","chgColor":"#EF4444"},"chart":{"data":[["ก.ค. 68",172.96],["ส.ค. 68",171.40],["ก.ย. 68",170.85],["ต.ค. 68",146.64],["พ.ย. 68",146.42],["ธ.ค. 68",154.14],["ม.ค. 69",142.42],["ก.พ. 69",113.37],["มี.ค. 69",114.99],["เม.ย. 69",125.58],["พ.ค. 69",116.97],["มิ.ย. 69",115.40]],"min":108,"max":178,"grid":[125,145,165],"fairLine":131,"currency":"$","highlight":[7]},"gauge":{"min":100,"max":175,"cur":115.40,"fair":131,"fairLabelTop":false},"fv":131}
+{
+  "theme": {
+    "accent": "#4A6491",
+    "accentDark": "#2C3E5C",
+    "darkGrad": "linear-gradient(135deg, #04060A 0%, #0A1018 100%)",
+    "glow": "rgba(74,100,145,0.38)",
+    "subColor": "#7E93B5",
+    "headerMuted": "rgba(74,100,145,0.13)",
+    "verdictText": "#D6DEEC",
+    "vcellLabel": "rgba(214,222,236,0.6)",
+    "badge": "#4A6491",
+    "chgBg": "var(--red-soft)",
+    "chgColor": "#c5221f"
+  },
+  "chart": {
+    "data": [
+      ["ส.ค.25", 171.4],
+      ["ก.ย.25", 170.85],
+      ["ต.ค.25", 146.64],
+      ["พ.ย.25", 146.42],
+      ["ธ.ค.25", 154.14],
+      ["ม.ค.26", 142.42],
+      ["ก.พ.26", 113.37],
+      ["มี.ค.26", 114.99],
+      ["เม.ย.26", 125.58],
+      ["พ.ค.26", 116.97],
+      ["มิ.ย.26", 117.67],
+      ["ก.ค.26", 123.09]
+    ],
+    "min": 100,
+    "max": 180,
+    "grid": [120, 140, 160],
+    "fairLine": 131,
+    "currency": "$",
+    "highlight": [0, 6]
+  },
+  "gauge": {
+    "min": 100,
+    "max": 175,
+    "cur": 123.09,
+    "fair": 131,
+    "fairLabelTop": false
+  },
+  "fv": 131
+}
 </script>
 <!--TEMPLATE:STYLE-->
 </head>
@@ -28,11 +72,11 @@
     <div class="sub">บริษัทจัดการสินทรัพย์ทางเลือกใหญ่สุดในโลก AUM $1.3T+ • Private Equity • Real Estate • Credit &amp; Insurance • Multi-Asset (Hedge Fund Solutions)</div>
     <div class="price-row">
       <div>
-        <div class="px">$115.40<small>(BX)</small></div>
+        <div class="px">$123.09<small>(BX)</small></div>
       </div>
-      <div class="chg">▼ −33.3% (รอบปี)</div>
+      <div class="chg">▼ −28.2% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 26 มิ.ย. 2569<br>
+        ราคา ณ 10 ก.ค. 2569<br>
         กรอบ 52 สัปดาห์ $101.73 / $190.09<br>
         ที่มา: StockAnalysis.com / Yahoo Finance / Blackstone Investor Relations / Macrotrends
       </div>
@@ -115,7 +159,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $115.40</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $123.09</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $131</div></div>
         </div>
         <div class="scale">
@@ -139,7 +183,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict ok">
-        <div class="big">+11.9%</div>
+        <div class="big">+6%</div>
         <div class="txt">MOS ปานกลาง — น่าสนใจสะสม ยังไม่ถึง deep value</div>
       </div>
       <div class="grid g3">
@@ -150,7 +194,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="115.40" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="123.09" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

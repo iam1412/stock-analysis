@@ -6,22 +6,52 @@
 <title>วิเคราะห์หุ้น NetEase (NTES) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Opus 4.8">
 <script type="application/json" id="stock-meta">
-{"symbol":"NTES","currency":"USD","price":118.98,"fairValue":137,"mos":13,"upside":15.1,"pe":15.4,"dividendYield":2.53,"roe":22}
+{"symbol":"NTES","currency":"USD","price":128.03,"fairValue":137,"mos":6.5,"upside":7,"pe":15.4,"dividendYield":2.53,"roe":22}
 </script>
 <script type="application/json" id="report-data">
 {
   "theme": {
-    "accent": "#1a73e8", "accentDark": "#1557b0",
+    "accent": "#1a73e8",
+    "accentDark": "#1557b0",
     "darkGrad": "linear-gradient(135deg,#202938 0%,#2c3a52 60%,#b1141d 140%)",
-    "glow": "rgba(234,67,53,.32)", "subColor": "#c7d2e4", "headerMuted": "#aebfd6",
-    "chgBg": "var(--red-soft)", "chgColor": "#c5221f", "badge": "var(--blue)",
-    "verdictText": "#d4dded", "vcellLabel": "#a8b6cc"
+    "glow": "rgba(234,67,53,.32)",
+    "subColor": "#c7d2e4",
+    "headerMuted": "#aebfd6",
+    "chgBg": "var(--red-soft)",
+    "chgColor": "#c5221f",
+    "badge": "var(--blue)",
+    "verdictText": "#d4dded",
+    "vcellLabel": "#a8b6cc"
   },
   "chart": {
-    "data": [["มิ.ย.25",128],["ส.ค.25",140],["ต.ค.25",152],["ธ.ค.25",159],["ก.พ.26",148],["เม.ย.26",132],["พ.ค.26",124],["มิ.ย.26",119]],
-    "min": 90, "max": 170, "grid": [100,120,140,160], "fairLine": 137, "currency": "$", "highlight": [3,7]
+    "data": [
+      ["ส.ค.25", 136.19],
+      ["ก.ย.25", 151.99],
+      ["ต.ค.25", 140.1],
+      ["พ.ย.25", 138.05],
+      ["ธ.ค.25", 137.62],
+      ["ม.ค.26", 128.83],
+      ["ก.พ.26", 114.97],
+      ["มี.ค.26", 111.94],
+      ["เม.ย.26", 117.51],
+      ["พ.ค.26", 122.82],
+      ["มิ.ย.26", 128.14],
+      ["ก.ค.26", 128.03]
+    ],
+    "min": 100,
+    "max": 160,
+    "grid": [120, 140],
+    "fairLine": 137,
+    "currency": "$",
+    "highlight": [1, 7]
   },
-  "gauge": { "min": 90, "max": 200, "cur": 118.98, "fair": 137, "fairLabelTop": "-58px" },
+  "gauge": {
+    "min": 90,
+    "max": 200,
+    "cur": 128.03,
+    "fair": 137,
+    "fairLabelTop": "-58px"
+  },
   "fv": 137
 }
 </script>
@@ -42,11 +72,11 @@
     <div class="sub">ผู้พัฒนาเกมรายใหญ่อันดับ 2 ของจีน • Games, Youdao (การศึกษา AI), NetEase Cloud Music • ADR (1 ADR = 5 หุ้นสามัญ)</div>
     <div class="price-row">
       <div>
-        <div class="px">$118.98<small>(NTES)</small></div>
+        <div class="px">$128.03<small>(NTES)</small></div>
       </div>
-      <div class="chg">▼ −7.0% (รอบปี)</div>
+      <div class="chg">▼ −6.0% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 23 มิ.ย. 2026 (14:59 EDT)<br>
+        ราคา ณ 10 ก.ค. 2026 (14:59 EDT)<br>
         ปิดก่อนหน้า $121.57<br>
         ที่มา: StockAnalysis.com / Finviz / Yahoo Finance
       </div>
@@ -127,7 +157,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $119</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $128</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $137</div></div>
         </div>
         <div class="scale">
@@ -150,7 +180,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict ok">
-        <div class="big">13%</div>
+        <div class="big">+7%</div>
         <div class="txt"><b>มี Margin of Safety พอประมาณ</b><br>ราคาปัจจุบัน $118.98 ต่ำกว่ามูลค่าเหมาะสม $137 ราว 13% → ตามเกณฑ์ value investor ถือว่า <b>เริ่มน่าสนใจ</b> สำหรับทยอยสะสม แต่ยังไม่ถึงโซน deep value</div>
       </div>
       <div class="grid g3">
@@ -161,7 +191,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="118.98" step="1">
+          <input id="pxIn" class="mono" type="number" value="128.03" step="1">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

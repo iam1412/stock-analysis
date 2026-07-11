@@ -6,10 +6,54 @@
 <title>วิเคราะห์หุ้น Aon plc (AON) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Sonnet 4.6">
 <script type="application/json" id="stock-meta">
-{"symbol":"AON","currency":"USD","price":328.69,"fairValue":374,"mos":12.1,"upside":13.8,"pe":18.05,"dividendYield":1.00,"roe":46.5}
+{"symbol":"AON","currency":"USD","price":356.94,"fairValue":374,"mos":4.6,"upside":4.8,"pe":18.05,"dividendYield":1,"roe":46.5}
 </script>
 <script type="application/json" id="report-data">
-{"theme":{"accent":"#1B3A6B","accentDark":"#0F2444","darkGrad":"linear-gradient(135deg, #04070D 0%, #0A1426 100%)","glow":"rgba(27,58,107,0.35)","subColor":"#5B7CAE","headerMuted":"rgba(27,58,107,0.12)","verdictText":"#D2DCEC","vcellLabel":"rgba(210,220,236,0.6)","badge":"#1B3A6B","chgBg":"rgba(239,68,68,0.15)","chgColor":"#EF4444"},"chart":{"data":[["ก.ค. 68",355.71],["ส.ค. 68",367.00],["ก.ย. 68",356.58],["ต.ค. 68",340.68],["พ.ย. 68",353.92],["ธ.ค. 68",352.88],["ม.ค. 69",349.64],["ก.พ. 69",335.47],["มี.ค. 69",322.78],["เม.ย. 69",311.65],["พ.ค. 69",316.06],["มิ.ย. 69",328.69]],"min":300,"max":380,"grid":[320,345,370],"fairLine":374,"currency":"$","highlight":[9]},"gauge":{"min":290,"max":390,"cur":328.69,"fair":374,"fairLabelTop":false},"fv":374}
+{
+  "theme": {
+    "accent": "#1B3A6B",
+    "accentDark": "#0F2444",
+    "darkGrad": "linear-gradient(135deg, #04070D 0%, #0A1426 100%)",
+    "glow": "rgba(27,58,107,0.35)",
+    "subColor": "#5B7CAE",
+    "headerMuted": "rgba(27,58,107,0.12)",
+    "verdictText": "#D2DCEC",
+    "vcellLabel": "rgba(210,220,236,0.6)",
+    "badge": "#1B3A6B",
+    "chgBg": "var(--red-soft)",
+    "chgColor": "#c5221f"
+  },
+  "chart": {
+    "data": [
+      ["ส.ค.25", 367],
+      ["ก.ย.25", 356.58],
+      ["ต.ค.25", 340.68],
+      ["พ.ย.25", 353.92],
+      ["ธ.ค.25", 352.88],
+      ["ม.ค.26", 349.64],
+      ["ก.พ.26", 335.47],
+      ["มี.ค.26", 322.78],
+      ["เม.ย.26", 311.65],
+      ["พ.ค.26", 316.06],
+      ["มิ.ย.26", 331.69],
+      ["ก.ค.26", 356.94]
+    ],
+    "min": 300,
+    "max": 380,
+    "grid": [320, 340, 360],
+    "fairLine": 374,
+    "currency": "$",
+    "highlight": [0, 8]
+  },
+  "gauge": {
+    "min": 290,
+    "max": 390,
+    "cur": 356.94,
+    "fair": 374,
+    "fairLabelTop": false
+  },
+  "fv": 374
+}
 </script>
 <!--TEMPLATE:STYLE-->
 </head>
@@ -28,11 +72,11 @@
     <div class="sub">นายหน้าประกันภัย/ประกันต่อระดับโลก • Risk Capital (Commercial Risk + Reinsurance) • Human Capital (Health + Wealth/บำนาญ) • NFP (middle-market)</div>
     <div class="price-row">
       <div>
-        <div class="px">$328.69<small>(AON)</small></div>
+        <div class="px">$356.94<small>(AON)</small></div>
       </div>
-      <div class="chg">▼ −7.6% (รอบปี)</div>
+      <div class="chg">▼ −2.7% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 26 มิ.ย. 2569<br>
+        ราคา ณ 10 ก.ค. 2569<br>
         กรอบ 52 สัปดาห์ $304.59 / $381.00<br>
         ที่มา: StockAnalysis.com / Yahoo Finance / Macrotrends
       </div>
@@ -110,7 +154,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $328.69</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $356.94</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $374</div></div>
         </div>
         <div class="scale">
@@ -132,7 +176,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict ok">
-        <div class="big">+12.1%</div>
+        <div class="big">+5%</div>
         <div class="txt">MOS ปานกลาง — ราคาต่ำกว่ามูลค่าเหมาะสม เหมาะสะสมในโซนนี้สำหรับนักลงทุนระยะยาว</div>
       </div>
       <div class="grid g3">
@@ -143,7 +187,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="328.69" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="356.94" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

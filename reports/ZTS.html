@@ -6,13 +6,52 @@
 <title>วิเคราะห์หุ้น Zoetis (ZTS) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Sonnet 4.6">
 <script type="application/json" id="stock-meta">
-{"symbol":"ZTS","currency":"USD","price":76.09,"fairValue":127,"mos":40.1,"upside":66.9,"pe":12.46,"dividendYield":2.79,"roe":52.0}
+{"symbol":"ZTS","currency":"USD","price":75.56,"fairValue":127,"mos":40.5,"upside":68.1,"pe":12.46,"dividendYield":2.79,"roe":52}
 </script>
 <script type="application/json" id="report-data">
 {
-  "theme": {"accent":"#E8590C","accentDark":"#B44008","darkGrad":"linear-gradient(135deg, #0F0500 0%, #220B00 100%)","glow":"rgba(232, 89, 12, 0.35)","subColor":"#F07030","headerMuted":"rgba(232, 89, 12, 0.12)","verdictText":"#FFD7B3","vcellLabel":"rgba(255, 215, 179, 0.6)","badge":"#E8590C","chgBg":"rgba(239, 68, 68, 0.15)","chgColor":"#EF4444"},
-  "chart": {"data":[["ก.ค. 68",145.79],["ส.ค. 68",156.40],["ก.ย. 68",146.32],["ต.ค. 68",144.09],["พ.ย. 68",128.18],["ธ.ค. 68",125.82],["ม.ค. 69",124.82],["ก.พ. 69",131.10],["มี.ค. 69",118.21],["เม.ย. 69",114.97],["พ.ค. 69",77.69],["มิ.ย. 69",76.09]],"min":65,"max":170,"grid":[80,100,120,140,160],"fairLine":127,"currency":"$","highlight":[1,10]},
-  "gauge": {"min":50,"max":170,"cur":76.09,"fair":127,"fairLabelTop":false},
+  "theme": {
+    "accent": "#E8590C",
+    "accentDark": "#B44008",
+    "darkGrad": "linear-gradient(135deg, #0F0500 0%, #220B00 100%)",
+    "glow": "rgba(232, 89, 12, 0.35)",
+    "subColor": "#F07030",
+    "headerMuted": "rgba(232, 89, 12, 0.12)",
+    "verdictText": "#FFD7B3",
+    "vcellLabel": "rgba(255, 215, 179, 0.6)",
+    "badge": "#E8590C",
+    "chgBg": "var(--red-soft)",
+    "chgColor": "#c5221f"
+  },
+  "chart": {
+    "data": [
+      ["ส.ค.25", 156.4],
+      ["ก.ย.25", 146.32],
+      ["ต.ค.25", 144.09],
+      ["พ.ย.25", 128.18],
+      ["ธ.ค.25", 125.82],
+      ["ม.ค.26", 124.82],
+      ["ก.พ.26", 131.1],
+      ["มี.ค.26", 118.21],
+      ["เม.ย.26", 114.97],
+      ["พ.ค.26", 77.69],
+      ["มิ.ย.26", 71.86],
+      ["ก.ค.26", 75.56]
+    ],
+    "min": 50,
+    "max": 175,
+    "grid": [75, 100, 125, 150],
+    "fairLine": 127,
+    "currency": "$",
+    "highlight": [0, 10]
+  },
+  "gauge": {
+    "min": 50,
+    "max": 170,
+    "cur": 75.56,
+    "fair": 127,
+    "fairLabelTop": false
+  },
   "fv": 127
 }
 </script>
@@ -33,11 +72,11 @@
     <div class="sub">วัคซีนสัตว์ • ยาปรสิต • Apoquel/Librela (ผิวหนัง/ปวด สุนัข-แมว) • ยาต้านการติดเชื้อ • Companion Animal 54% • Livestock 46%</div>
     <div class="price-row">
       <div>
-        <div class="px">$76.09<small>(ZTS)</small></div>
+        <div class="px">$75.56<small>(ZTS)</small></div>
       </div>
-      <div class="chg">▼ −47.8% (รอบปี)</div>
+      <div class="chg">▼ −51.7% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 26 มิ.ย. 2569<br>
+        ราคา ณ 10 ก.ค. 2569<br>
         กรอบ 52 สัปดาห์ $72.38 / $161.77<br>
         ที่มา: StockAnalysis.com / Yahoo Finance / Zoetis Investor Relations (investor.zoetis.com) / S&amp;P Global Analyst Consensus
       </div>
@@ -115,7 +154,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $76.09</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $75.56</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $127</div></div>
         </div>
         <div class="scale">
@@ -137,7 +176,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict good">
-        <div class="big">+40.1%</div>
+        <div class="big">+41%</div>
         <div class="txt">ราคาต่ำกว่า Fair Value มาก — โซน Deep Value ต่ำกว่า MOS 30% แล้ว</div>
       </div>
       <div class="grid g3">
@@ -148,7 +187,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="76.09" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="75.56" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

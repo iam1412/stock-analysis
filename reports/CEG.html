@@ -6,22 +6,52 @@
 <title>วิเคราะห์หุ้น Constellation Energy (CEG) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Opus 4.8">
 <script type="application/json" id="stock-meta">
-{"symbol":"CEG","currency":"USD","price":276,"fairValue":282,"mos":2,"upside":2.2,"pe":23.5,"dividendYield":0.62,"roe":23}
+{"symbol":"CEG","currency":"USD","price":251.38,"fairValue":282,"mos":10.9,"upside":12.2,"pe":23.5,"dividendYield":0.62,"roe":23}
 </script>
 <script type="application/json" id="report-data">
 {
   "theme": {
-    "accent": "#1a73e8", "accentDark": "#1557b0",
+    "accent": "#1a73e8",
+    "accentDark": "#1557b0",
     "darkGrad": "linear-gradient(135deg,#0f2c22 0%,#16463a 55%,#1e8e3e 140%)",
-    "glow": "rgba(52,168,83,.40)", "subColor": "#c4ddd1", "headerMuted": "#a9c9bc",
-    "chgBg": "var(--green-soft)", "chgColor": "#1e8e3e", "badge": "var(--blue)",
-    "verdictText": "#cfe3da", "vcellLabel": "#a6c6b9"
+    "glow": "rgba(52,168,83,.40)",
+    "subColor": "#c4ddd1",
+    "headerMuted": "#a9c9bc",
+    "chgBg": "var(--red-soft)",
+    "chgColor": "#c5221f",
+    "badge": "var(--blue)",
+    "verdictText": "#cfe3da",
+    "vcellLabel": "#a6c6b9"
   },
   "chart": {
-    "data": [["มิ.ย.25",250],["ส.ค.25",290],["ต.ค.25",330],["ธ.ค.25",370],["ก.พ.26",410],["เม.ย.26",330],["พ.ค.26",295],["มิ.ย.26",276]],
-    "min": 180, "max": 440, "grid": [200,250,300,350,400], "fairLine": 282, "currency": "$", "highlight": [4,7]
+    "data": [
+      ["ส.ค.25", 307.98],
+      ["ก.ย.25", 329.07],
+      ["ต.ค.25", 377],
+      ["พ.ย.25", 364.36],
+      ["ธ.ค.25", 353.27],
+      ["ม.ค.26", 280.68],
+      ["ก.พ.26", 329.88],
+      ["มี.ค.26", 279.25],
+      ["เม.ย.26", 313],
+      ["พ.ค.26", 287.75],
+      ["มิ.ย.26", 248.37],
+      ["ก.ค.26", 251.38]
+    ],
+    "min": 200,
+    "max": 400,
+    "grid": [250, 300, 350],
+    "fairLine": 282,
+    "currency": "$",
+    "highlight": [2, 10]
   },
-  "gauge": { "min": 180, "max": 470, "cur": 276, "fair": 282, "fairLabelTop": "-58px" },
+  "gauge": {
+    "min": 180,
+    "max": 470,
+    "cur": 251.38,
+    "fair": 282,
+    "fairLabelTop": "-58px"
+  },
   "fv": 282
 }
 </script>
@@ -42,11 +72,11 @@
     <div class="sub">ผู้ผลิตไฟฟ้านิวเคลียร์/พลังงานสะอาดรายใหญ่สุดของสหรัฐฯ • หุ้นเด่นธีม "AI Power" ป้อนไฟ datacenter</div>
     <div class="price-row">
       <div>
-        <div class="px">$276<small>(CEG)</small></div>
+        <div class="px">$251.38<small>(CEG)</small></div>
       </div>
-      <div class="chg">▲ +10.4% (รอบปี)</div>
+      <div class="chg">▼ −18.4% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ≈ 22 มิ.ย. 2026 (ปิดตลาด)<br>
+        ราคา ≈ 10 ก.ค. 2026 (ปิดตลาด)<br>
         StockAnalysis $275.53 · Yahoo/Investing $276.60<br>
         ที่มา: StockAnalysis.com / Yahoo Finance / Investing.com
       </div>
@@ -127,7 +157,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $276</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $251</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $282</div></div>
         </div>
         <div class="scale">
@@ -150,7 +180,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict ok">
-        <div class="big">+2%</div>
+        <div class="big">+11%</div>
         <div class="txt"><b>Margin of Safety บางมาก</b><br>ราคาปัจจุบัน $276 ต่ำกว่ามูลค่าเหมาะสม $282 เพียง ~2% → ตามเกณฑ์ value investor ถือว่า <b>ราคาสมเหตุสมผล (fair)</b> แต่ยังไม่มีส่วนเผื่อความปลอดภัยที่หนาพอ</div>
       </div>
       <div class="grid g3">
@@ -161,7 +191,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="276" step="1">
+          <input id="pxIn" class="mono" type="number" value="251.38" step="1">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

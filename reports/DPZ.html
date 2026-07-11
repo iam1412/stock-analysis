@@ -6,10 +6,54 @@
 <title>วิเคราะห์หุ้น Domino's Pizza (DPZ) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Sonnet 4.6">
 <script type="application/json" id="stock-meta">
-{"symbol":"DPZ","currency":"USD","price":311.66,"fairValue":345,"mos":9.66,"upside":10.68,"pe":17.94,"dividendYield":2.55,"roe":null}
+{"symbol":"DPZ","currency":"USD","price":299.46,"fairValue":345,"mos":13.2,"upside":15.2,"pe":17.94,"dividendYield":2.55,"roe":null}
 </script>
 <script type="application/json" id="report-data">
-{"theme":{"accent":"#006491","accentDark":"#00436a","darkGrad":"linear-gradient(135deg,#001f35 0%,#00436a 50%,#006491 100%)","glow":"rgba(0,100,145,0.35)","subColor":"#0099cc","headerMuted":"rgba(255,255,255,0.65)","verdictText":"#005580","vcellLabel":"#00436a","badge":"#006491","chgBg":"#8b1a1a","chgColor":"#ffffff"},"chart":{"data":[["ส.ค. 68",458.30],["ก.ย. 68",431.71],["ต.ค. 68",398.46],["พ.ย. 68",419.63],["ธ.ค. 68",416.82],["ม.ค. 69",410.33],["ก.พ. 69",402.51],["มี.ค. 69",358.79],["เม.ย. 69",339.42],["พ.ค. 69",310.58],["มิ.ย. 69",296.04],["ก.ค. 69",311.66]],"min":260,"max":480,"grid":[260,320,380,440],"fairLine":345,"currency":"$","highlight":[10,11]},"gauge":{"min":230,"max":410,"cur":311.66,"fair":345,"fairLabelTop":true},"fv":345}
+{
+  "theme": {
+    "accent": "#006491",
+    "accentDark": "#00436a",
+    "darkGrad": "linear-gradient(135deg,#001f35 0%,#00436a 50%,#006491 100%)",
+    "glow": "rgba(0,100,145,0.35)",
+    "subColor": "#0099cc",
+    "headerMuted": "rgba(255,255,255,0.65)",
+    "verdictText": "#005580",
+    "vcellLabel": "#00436a",
+    "badge": "#006491",
+    "chgBg": "var(--red-soft)",
+    "chgColor": "#c5221f"
+  },
+  "chart": {
+    "data": [
+      ["ส.ค.25", 458.3],
+      ["ก.ย.25", 431.71],
+      ["ต.ค.25", 398.46],
+      ["พ.ย.25", 419.63],
+      ["ธ.ค.25", 416.82],
+      ["ม.ค.26", 410.33],
+      ["ก.พ.26", 402.51],
+      ["มี.ค.26", 358.79],
+      ["เม.ย.26", 339.42],
+      ["พ.ค.26", 310.58],
+      ["มิ.ย.26", 296.04],
+      ["ก.ค.26", 299.46]
+    ],
+    "min": 250,
+    "max": 500,
+    "grid": [300, 350, 400, 450],
+    "fairLine": 345,
+    "currency": "$",
+    "highlight": [0, 10]
+  },
+  "gauge": {
+    "min": 230,
+    "max": 410,
+    "cur": 299.46,
+    "fair": 345,
+    "fairLabelTop": true
+  },
+  "fv": 345
+}
 </script>
 <!--TEMPLATE:STYLE-->
 </head>
@@ -28,11 +72,11 @@
     <div class="sub">พิซซ่าเดลิเวอรี่และวอล์กอิน อันดับ 1 ของโลก • ~21,500 สาขา แฟรนไชส์ &gt;99% • ธุรกิจ US + International • พันธมิตร Uber Eats (Emergency Pizza, Domino's Rewards) • Supply Chain (โรงงานผลิต-กระจายวัตถุดิบให้แฟรนไชส์)</div>
     <div class="price-row">
       <div>
-        <div class="px">$311.66<small>(DPZ)</small></div>
+        <div class="px">$299.46<small>(DPZ)</small></div>
       </div>
-      <div class="chg">▼ −32.0% (รอบปี)</div>
+      <div class="chg">▼ −34.7% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 5 ก.ค. 2569 (2 ก.ค. 2569 ตลาดปิด) — Yahoo Finance / StockAnalysis.com<br>
+        ราคา ณ 10 ก.ค. 2569 (10 ก.ค. 2569 ตลาดปิด) — Yahoo Finance / StockAnalysis.com<br>
         กรอบ 52 สัปดาห์ $282.00 – $496.00<br>
         ที่มา: Yahoo Finance, StockAnalysis.com, StockTitan (Q1 2026 earnings release)
       </div>
@@ -114,7 +158,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $311.66</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $299.46</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $345</div></div>
         </div>
         <div class="scale">
@@ -137,7 +181,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict ok">
-        <div class="big">+9.66%</div>
+        <div class="big">+13%</div>
         <div class="txt">MOS ระดับปานกลาง — ราคาต่ำกว่า FV แต่ยังไม่ถึงโซน "ถูกมาก" ควรรอจังหวะย่อเพิ่มหรือทยอยสะสม</div>
       </div>
       <div class="grid g3">
@@ -148,7 +192,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="311.66" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="299.46" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

@@ -6,7 +6,7 @@
 <title>วิเคราะห์หุ้น New York Times (NYT) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Sonnet 4.6">
 <script type="application/json" id="stock-meta">
-{"symbol":"NYT","currency":"USD","price":73.85,"fairValue":70,"mos":-5.5,"upside":-5.2,"pe":31.7,"dividendYield":1.25,"roe":19.68}
+{"symbol":"NYT","currency":"USD","price":74.96,"fairValue":70,"mos":-7.1,"upside":-6.6,"pe":31.7,"dividendYield":1.25,"roe":19.68}
 </script>
 <script type="application/json" id="report-data">
 {
@@ -20,36 +20,35 @@
     "verdictText": "#fff8f8",
     "vcellLabel": "rgba(255,255,255,0.6)",
     "badge": "#CC0000",
-    "chgBg": "#1e8e3e",
-    "chgColor": "#ffffff"
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#1e8e3e"
   },
   "chart": {
     "data": [
-      ["ส.ค. 68", 59.84],
-      ["ก.ย. 68", 57.40],
-      ["ต.ค. 68", 56.99],
-      ["พ.ย. 68", 64.50],
-      ["ธ.ค. 68", 69.42],
-      ["ม.ค. 69", 73.31],
-      ["ก.พ. 69", 79.79],
-      ["มี.ค. 69", 83.73],
-      ["เม.ย. 69", 79.03],
-      ["พ.ค. 69", 75.21],
-      ["มิ.ย. 69", 69.98],
-      ["ก.ค. 69", 71.79],
-      ["ก.ค. 69", 73.85]
+      ["ส.ค.25", 59.84],
+      ["ก.ย.25", 57.4],
+      ["ต.ค.25", 56.99],
+      ["พ.ย.25", 64.5],
+      ["ธ.ค.25", 69.42],
+      ["ม.ค.26", 73.31],
+      ["ก.พ.26", 79.79],
+      ["มี.ค.26", 83.73],
+      ["เม.ย.26", 79.03],
+      ["พ.ค.26", 75.21],
+      ["มิ.ย.26", 69.98],
+      ["ก.ค.26", 74.96]
     ],
     "min": 50,
-    "max": 95,
-    "grid": [55, 65, 70, 75, 85],
+    "max": 90,
+    "grid": [60, 70, 80],
     "fairLine": 70,
     "currency": "$",
-    "highlight": [7, 9]
+    "highlight": [2, 7]
   },
   "gauge": {
     "min": 40,
     "max": 100,
-    "cur": 73.85,
+    "cur": 74.96,
     "fair": 70,
     "fairLabelTop": false
   },
@@ -73,11 +72,11 @@
     <div class="sub">Digital news subscription • NYT Cooking • Games (Wordle, Connections, Spelling Bee) • The Athletic • Wirecutter • 13M+ subscribers</div>
     <div class="price-row">
       <div>
-        <div class="px">$73.85<small>(NYT)</small></div>
+        <div class="px">$74.96<small>(NYT)</small></div>
       </div>
-      <div class="chg">▲ +23.4% (รอบปี)</div>
+      <div class="chg">▲ +25.3% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 2 ก.ค. 2569<br>
+        ราคา ณ 10 ก.ค. 2569<br>
         กรอบ 52 สัปดาห์ $51.03 – $87.10<br>
         ที่มา: Yahoo Finance, StockAnalysis, Finviz
       </div>
@@ -155,7 +154,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $73.85</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $74.96</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $70</div></div>
         </div>
         <div class="scale">
@@ -177,7 +176,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict bad">
-        <div class="big">−5.5%</div>
+        <div class="big">−7%</div>
         <div class="txt">ราคาเหนือมูลค่าเหมาะสม — ไม่มี MOS ณ ราคาปัจจุบัน</div>
       </div>
       <div class="grid g3">
@@ -188,7 +187,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="73.85" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="74.96" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -294,7 +293,7 @@
   <div class="disc">
     <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
-    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ที่มาข้อมูล: Yahoo Finance (ราคา ณ 2 ก.ค. 2569), StockAnalysis.com (งบการเงิน), SEC 8-K Q1/2569, Finviz (ratios), StockAnalysis Forecast (analyst targets)
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ที่มาข้อมูล: Yahoo Finance (ราคา ณ 10 ก.ค. 2569), StockAnalysis.com (งบการเงิน), SEC 8-K Q1/2569, Finviz (ratios), StockAnalysis Forecast (analyst targets)
   </div>
   <footer>Stock Analysis Dashboard • ข้อมูล ณ 2 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 

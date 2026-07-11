@@ -8,7 +8,7 @@
 <meta name="ai-model" content="Claude Sonnet 4.6">
 <!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
 <script type="application/json" id="stock-meta">
-{"symbol":"WSM","currency":"USD","price":227.53,"fairValue":202.12,"mos":-12.6,"upside":-11.2,"pe":25.5,"dividendYield":1.34,"roe":55.3}
+{"symbol":"WSM","currency":"USD","price":221.75,"fairValue":202.12,"mos":-9.7,"upside":-8.9,"pe":25.5,"dividendYield":1.34,"roe":55.3}
 </script>
 <!--
   report-data: ธีมสี + ข้อมูลกราฟ/gauge ต่อหุ้น (build เอาไปวาด)  ดู schema เต็มใน CLAUDE.md ข้อ 9
@@ -25,22 +25,35 @@
     "verdictText": "#f3e3d3",
     "vcellLabel": "#cab9a8",
     "badge": "#c87941",
-    "chgBg": "rgba(30,142,62,0.18)",
+    "chgBg": "var(--green-soft)",
     "chgColor": "#1e8e3e"
   },
   "chart": {
-    "data": [["ก.ค.68",187.05],["ส.ค.68",188.19],["ก.ย.68",195.45],["ต.ค.68",194.34],["พ.ย.68",180.01],["ธ.ค.68",178.59],["ม.ค.69",204.65],["ก.พ.69",205.65],["มี.ค.69",182.33],["เม.ย.69",181.21],["พ.ค.69",203.57],["มิ.ย.69",233.10],["ก.ค.69",227.53]],
+    "data": [
+      ["ส.ค.25", 188.19],
+      ["ก.ย.25", 195.45],
+      ["ต.ค.25", 194.34],
+      ["พ.ย.25", 180.01],
+      ["ธ.ค.25", 178.59],
+      ["ม.ค.26", 204.65],
+      ["ก.พ.26", 205.65],
+      ["มี.ค.26", 182.33],
+      ["เม.ย.26", 181.21],
+      ["พ.ค.26", 203.57],
+      ["มิ.ย.26", 233.1],
+      ["ก.ค.26", 221.75]
+    ],
     "min": 160,
-    "max": 245,
-    "grid": [160,180,200,220,240],
+    "max": 240,
+    "grid": [180, 200, 220],
     "fairLine": 202.12,
     "currency": "$",
-    "highlight": [11,12]
+    "highlight": [4, 10]
   },
   "gauge": {
     "min": 141.48,
     "max": 235,
-    "cur": 227.53,
+    "cur": 221.75,
     "fair": 202.12,
     "fairLabelTop": true
   },
@@ -65,14 +78,14 @@
     <div class="sub">Williams Sonoma, Pottery Barn, Pottery Barn Kids/Teen, West Elm, Rejuvenation, Mark and Graham • เฟอร์นิเจอร์-ของแต่งบ้านพรีเมียม • B2B/Business-to-Business (โรงแรม-องค์กร) • ขายผ่านออนไลน์เป็นหลัก (DTC)</div>
     <div class="price-row">
       <div>
-        <div class="px">$227.53<small>(WSM)</small></div>
+        <div class="px">$221.75<small>(WSM)</small></div>
       </div>
       <!-- ★ ป้าย % รอบปี (gate E35/E36) — ผลตอบแทน ~1 ปี (เทียบราคา ~1 ปีก่อน) = ผลตอบแทนปลายกราฟ section 2 (จุดแรก→ท้าย)
            รูปแบบ: "▲ +X.X% (รอบปี)" ขึ้น · "▼ −X.X% (รอบปี)" ลง · "≈ ทรงตัว (รอบปี)" · หุ้น IPO <1 ปี ใช้ "(ตั้งแต่ IPO)"
            ไม่ใช่ % รายวัน/YTD/52 สัปดาห์ · ตั้งสี theme.chgBg/chgColor ให้ตรงทิศ (ขึ้น=เขียว/ลง=แดง · E34) -->
-      <div class="chg">▲ +21.6% (รอบปี)</div>
+      <div class="chg">▲ +17.8% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 2 ก.ค. 2569 (2 Jul 2026)<br>
+        ราคา ณ 10 ก.ค. 2569 (2 Jul 2026)<br>
         กรอบ 52 สัปดาห์ $161.76 – $244.65<br>
         ที่มา: StockAnalysis.com, Yahoo Finance, SEC EDGAR (8-K)
       </div>
@@ -166,7 +179,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $227.53</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $221.75</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $202.12</div></div>
         </div>
         <div class="scale">
@@ -191,7 +204,7 @@
     <div class="card">
       <!-- ✏️ class ของ mos-verdict: MOS<10 → "bad", 10–20 → "ok", ≥20 → "good" -->
       <div class="mos-verdict bad">
-        <div class="big">−12.6%</div>
+        <div class="big">−10%</div>
         <div class="txt">ราคาสูงกว่า Fair Value ราว 12.6% — ยังไม่ถึงโซน Value หลังหุ้นวิ่งขึ้น +48% ในรอบปี</div>
       </div>
       <div class="grid g3">
@@ -202,7 +215,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="227.53" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="221.75" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

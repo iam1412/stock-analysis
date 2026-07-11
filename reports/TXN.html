@@ -6,22 +6,52 @@
 <title>วิเคราะห์หุ้น Texas Instruments (TXN) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Opus 4.8">
 <script type="application/json" id="stock-meta">
-{"symbol":"TXN","currency":"USD","price":332,"fairValue":272,"mos":-22,"upside":-18.1,"pe":57,"dividendYield":1.71,"roe":32}
+{"symbol":"TXN","currency":"USD","price":311.46,"fairValue":272,"mos":-14.5,"upside":-12.7,"pe":57,"dividendYield":1.71,"roe":32}
 </script>
 <script type="application/json" id="report-data">
 {
   "theme": {
-    "accent": "#d13838", "accentDark": "#9e2424",
+    "accent": "#d13838",
+    "accentDark": "#9e2424",
     "darkGrad": "linear-gradient(135deg,#380a0a 0%,#671313 58%,#a41e1e 140%)",
-    "glow": "rgba(208,47,47,.35)", "subColor": "#e8c5c5", "headerMuted": "#cfaaaa",
-    "chgBg": "var(--green-soft)", "chgColor": "#1e8e3e", "badge": "var(--blue)",
-    "verdictText": "#eed3d3", "vcellLabel": "#d7acac"
+    "glow": "rgba(208,47,47,.35)",
+    "subColor": "#e8c5c5",
+    "headerMuted": "#cfaaaa",
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#1e8e3e",
+    "badge": "var(--blue)",
+    "verdictText": "#eed3d3",
+    "vcellLabel": "#d7acac"
   },
   "chart": {
-    "data": [["มิ.ย.25",185],["ส.ค.25",205],["ต.ค.25",225],["ธ.ค.25",250],["ก.พ.26",270],["เม.ย.26",295],["พ.ค.26",315],["มิ.ย.26",332]],
-    "min": 160, "max": 350, "grid": [180,210,240,270,300,330], "fairLine": 272, "currency": "$", "highlight": [6,7]
+    "data": [
+      ["ส.ค.25", 202.48],
+      ["ก.ย.25", 183.73],
+      ["ต.ค.25", 161.46],
+      ["พ.ย.25", 168.27],
+      ["ธ.ค.25", 173.49],
+      ["ม.ค.26", 215.55],
+      ["ก.พ.26", 212.11],
+      ["มี.ค.26", 194.14],
+      ["เม.ย.26", 281.08],
+      ["พ.ค.26", 305.68],
+      ["มิ.ย.26", 298.07],
+      ["ก.ค.26", 311.46]
+    ],
+    "min": 150,
+    "max": 350,
+    "grid": [200, 250, 300],
+    "fairLine": 272,
+    "currency": "$",
+    "highlight": [2, 11]
   },
-  "gauge": { "min": 170, "max": 420, "cur": 332, "fair": 272, "fairLabelTop": "-58px" },
+  "gauge": {
+    "min": 170,
+    "max": 420,
+    "cur": 311.46,
+    "fair": 272,
+    "fairLabelTop": "-58px"
+  },
   "fv": 272
 }
 </script>
@@ -42,11 +72,11 @@
     <div class="sub">ผู้นำชิป Analog & Embedded Processing • พลังงาน/เซนเซอร์รอบระบบ AI, อุตสาหกรรม, ยานยนต์, Edge AI</div>
     <div class="price-row">
       <div>
-        <div class="px">$332<small>(TXN)</small></div>
+        <div class="px">$311.46<small>(TXN)</small></div>
       </div>
-      <div class="chg">▲ +79.5% (รอบปี)</div>
+      <div class="chg">▲ +53.8% (รอบปี)</div>
       <div class="px-meta">
-        ราคา $332.28 ณ 22 มิ.ย. 2026 (ปิดตลาด)<br>
+        ราคา $332.28 ณ 10 ก.ค. 2026 (ปิดตลาด)<br>
         ทำจุดสูงสุดตลอดกาล $334.03 ในสัปดาห์เดียวกัน<br>
         ที่มา: StockAnalysis.com / Yahoo Finance / Investing.com
       </div>
@@ -127,7 +157,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $332</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $311</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $272</div></div>
         </div>
         <div class="scale">
@@ -150,7 +180,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict bad">
-        <div class="big">−22%</div>
+        <div class="big">−15%</div>
         <div class="txt"><b>ไม่มี Margin of Safety</b><br>ราคาปัจจุบัน $332 สูงกว่ามูลค่าเหมาะสม $272 ราว 22% → ตามเกณฑ์ value investor ถือว่า <b>แพง</b> ราคาเลยจุดซื้อปลอดภัยไปมากหลังวัฏจักรขาขึ้น</div>
       </div>
       <div class="grid g3">
@@ -161,7 +191,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="332" step="1">
+          <input id="pxIn" class="mono" type="number" value="311.46" step="1">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

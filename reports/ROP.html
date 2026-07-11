@@ -6,10 +6,54 @@
 <title>วิเคราะห์หุ้น Roper Technologies (ROP) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Sonnet 4.6">
 <script type="application/json" id="stock-meta">
-{"symbol":"ROP","currency":"USD","price":338.31,"fairValue":409,"mos":17.3,"upside":20.9,"pe":21.17,"dividendYield":1.08,"roe":7.73}
+{"symbol":"ROP","currency":"USD","price":355.9,"fairValue":409,"mos":13,"upside":14.9,"pe":21.17,"dividendYield":1.08,"roe":7.73}
 </script>
 <script type="application/json" id="report-data">
-{"theme":{"accent":"#4B3F9E","accentDark":"#332B70","darkGrad":"linear-gradient(135deg, #08060F 0%, #120E26 100%)","glow":"rgba(75,63,158,0.35)","subColor":"#8579D0","headerMuted":"rgba(75,63,158,0.12)","verdictText":"#DAD5F0","vcellLabel":"rgba(218,213,240,0.6)","badge":"#4B3F9E","chgBg":"rgba(239,68,68,0.15)","chgColor":"#EF4444"},"chart":{"data":[["ก.ค. 68",550.40],["ส.ค. 68",526.31],["ก.ย. 68",498.69],["ต.ค. 68",446.15],["พ.ย. 68",446.22],["ธ.ค. 68",445.13],["ม.ค. 69",371.23],["ก.พ. 69",349.73],["มี.ค. 69",353.86],["เม.ย. 69",354.81],["พ.ค. 69",325.53],["มิ.ย. 69",338.31]],"min":315,"max":560,"grid":[360,430,500],"fairLine":409,"currency":"$","highlight":[10]},"gauge":{"min":300,"max":480,"cur":338.31,"fair":409,"fairLabelTop":false},"fv":409}
+{
+  "theme": {
+    "accent": "#4B3F9E",
+    "accentDark": "#332B70",
+    "darkGrad": "linear-gradient(135deg, #08060F 0%, #120E26 100%)",
+    "glow": "rgba(75,63,158,0.35)",
+    "subColor": "#8579D0",
+    "headerMuted": "rgba(75,63,158,0.12)",
+    "verdictText": "#DAD5F0",
+    "vcellLabel": "rgba(218,213,240,0.6)",
+    "badge": "#4B3F9E",
+    "chgBg": "var(--red-soft)",
+    "chgColor": "#c5221f"
+  },
+  "chart": {
+    "data": [
+      ["ส.ค.25", 526.31],
+      ["ก.ย.25", 498.69],
+      ["ต.ค.25", 446.15],
+      ["พ.ย.25", 446.22],
+      ["ธ.ค.25", 445.13],
+      ["ม.ค.26", 371.23],
+      ["ก.พ.26", 349.73],
+      ["มี.ค.26", 353.86],
+      ["เม.ย.26", 354.81],
+      ["พ.ค.26", 325.53],
+      ["มิ.ย.26", 338.39],
+      ["ก.ค.26", 355.9]
+    ],
+    "min": 300,
+    "max": 600,
+    "grid": [400, 500],
+    "fairLine": 409,
+    "currency": "$",
+    "highlight": [0, 9]
+  },
+  "gauge": {
+    "min": 300,
+    "max": 480,
+    "cur": 355.9,
+    "fair": 409,
+    "fairLabelTop": false
+  },
+  "fv": 409
+}
 </script>
 <!--TEMPLATE:STYLE-->
 </head>
@@ -28,11 +72,11 @@
     <div class="sub">กลุ่มซอฟต์แวร์เฉพาะทาง (vertical SaaS) • Application Software (Deltek, Vertafore) • Network Software (DAT, Foundry) • Tech-Enabled Products (Neptune) • serial acquirer FCF compounder</div>
     <div class="price-row">
       <div>
-        <div class="px">$338.31<small>(ROP)</small></div>
+        <div class="px">$355.90<small>(ROP)</small></div>
       </div>
-      <div class="chg">▼ −38.5% (รอบปี)</div>
+      <div class="chg">▼ −32.4% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 26 มิ.ย. 2569<br>
+        ราคา ณ 10 ก.ค. 2569<br>
         กรอบ 52 สัปดาห์ $305.96 / $575.77<br>
         ที่มา: StockAnalysis.com / Yahoo Finance / Roper Investor Relations / Macrotrends
       </div>
@@ -110,7 +154,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $338.31</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $355.90</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $409</div></div>
         </div>
         <div class="scale">
@@ -132,7 +176,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict ok">
-        <div class="big">+17.3%</div>
+        <div class="big">+13%</div>
         <div class="txt">MOS ปานกลาง — ราคาต่ำกว่า Fair Value $409 อยู่ $70.69 (17.3%) เหมาะกับนักลงทุนระยะกลาง-ยาวที่เน้นคุณภาพ</div>
       </div>
       <div class="grid g3">
@@ -143,7 +187,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="338.31" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="355.9" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -249,7 +293,7 @@
   <div class="disc">
     <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
-    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ข้อมูลราคา ณ 26 มิ.ย. 2569 จาก StockAnalysis.com, Yahoo Finance, Roper Investor Relations, Macrotrends — ทวนสอบ ≥2 แหล่งอิสระก่อนใช้ตัวเลข
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ข้อมูลราคา ณ 10 ก.ค. 2569 จาก StockAnalysis.com, Yahoo Finance, Roper Investor Relations, Macrotrends — ทวนสอบ ≥2 แหล่งอิสระก่อนใช้ตัวเลข
   </div>
   <footer>Stock Analysis Dashboard • ข้อมูล ณ 26 มิ.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 

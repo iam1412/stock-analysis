@@ -6,10 +6,54 @@
 <title>วิเคราะห์หุ้น Iron Mountain (IRM) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Sonnet 4.6">
 <script type="application/json" id="stock-meta">
-{"symbol":"IRM","currency":"USD","price":118.28,"fairValue":107,"mos":-10.5,"upside":-9.5,"pe":null,"dividendYield":2.9,"roe":null}
+{"symbol":"IRM","currency":"USD","price":121.51,"fairValue":107,"mos":-13.6,"upside":-11.9,"pe":null,"dividendYield":2.9,"roe":null}
 </script>
 <script type="application/json" id="report-data">
-{"theme":{"accent":"#f59e0b","accentDark":"#b45309","darkGrad":"linear-gradient(135deg, #111827 0%, #1f2937 100%)","glow":"rgba(245,158,11,0.35)","subColor":"#fbbf24","headerMuted":"rgba(245,158,11,0.12)","verdictText":"#fde68a","vcellLabel":"rgba(253,230,138,0.6)","badge":"#f59e0b","chgBg":"rgba(34,197,94,0.15)","chgColor":"#22C55E"},"chart":{"data":[["ส.ค. 68",89.29],["ก.ย. 68",99.39],["ต.ค. 68",100.37],["พ.ย. 68",84.19],["ธ.ค. 68",81.72],["ม.ค. 69",90.76],["ก.พ. 69",106.72],["มี.ค. 69",101.45],["เม.ย. 69",125.13],["พ.ค. 69",127.38],["มิ.ย. 69",126.31],["ก.ค. 69",118.28]],"min":75,"max":133,"grid":[90,105,120],"fairLine":107,"currency":"$","highlight":[4,8]},"gauge":{"min":70,"max":140,"cur":118.28,"fair":107,"fairLabelTop":false},"fv":107}
+{
+  "theme": {
+    "accent": "#f59e0b",
+    "accentDark": "#b45309",
+    "darkGrad": "linear-gradient(135deg, #111827 0%, #1f2937 100%)",
+    "glow": "rgba(245,158,11,0.35)",
+    "subColor": "#fbbf24",
+    "headerMuted": "rgba(245,158,11,0.12)",
+    "verdictText": "#fde68a",
+    "vcellLabel": "rgba(253,230,138,0.6)",
+    "badge": "#f59e0b",
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#1e8e3e"
+  },
+  "chart": {
+    "data": [
+      ["ส.ค.25", 92.33],
+      ["ก.ย.25", 101.94],
+      ["ต.ค.25", 102.95],
+      ["พ.ย.25", 86.35],
+      ["ธ.ค.25", 82.95],
+      ["ม.ค.26", 92.13],
+      ["ก.พ.26", 108.33],
+      ["มี.ค.26", 102.14],
+      ["เม.ย.26", 125.99],
+      ["พ.ค.26", 128.25],
+      ["มิ.ย.26", 126.31],
+      ["ก.ค.26", 121.51]
+    ],
+    "min": 80,
+    "max": 140,
+    "grid": [100, 120],
+    "fairLine": 107,
+    "currency": "$",
+    "highlight": [4, 9]
+  },
+  "gauge": {
+    "min": 70,
+    "max": 140,
+    "cur": 121.51,
+    "fair": 107,
+    "fairLabelTop": false
+  },
+  "fv": 107
+}
 </script>
 <!--TEMPLATE:STYLE-->
 </head>
@@ -28,11 +72,11 @@
     <div class="sub">Records Management • Data Center REIT (Project Matterhorn) • 225,000+ Enterprise Customers • AI Infrastructure Play</div>
     <div class="price-row">
       <div>
-        <div class="px">$118.28<small>(IRM)</small></div>
+        <div class="px">$121.51<small>(IRM)</small></div>
       </div>
-      <div class="chg">▲ +32.5% (รอบปี)</div>
+      <div class="chg">▲ +31.6% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 9 ก.ค. 2569<br>
+        ราคา ณ 10 ก.ค. 2569<br>
         กรอบ 52 สัปดาห์ $77.77 / $134.68<br>
         ที่มา: StockAnalysis.com / Yahoo Finance / SEC EDGAR (8-K)
       </div>
@@ -115,7 +159,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $118.28</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $121.51</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $107</div></div>
         </div>
         <div class="scale">
@@ -139,7 +183,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict bad">
-        <div class="big">−10.5%</div>
+        <div class="big">−14%</div>
         <div class="txt"><b>ไม่มี Margin of Safety</b><br>ราคาปัจจุบัน $118.28 สูงกว่ามูลค่าเหมาะสม $107 ราว 10.5% → ตามเกณฑ์ value investor ถือว่า <b>ตึง</b> ยังไม่ใช่จุดซื้อที่ปลอดภัย รอย่อตัวก่อน</div>
       </div>
       <div class="grid g3">
@@ -150,7 +194,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="118.28" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="121.51" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

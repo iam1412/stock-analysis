@@ -8,7 +8,7 @@
 <meta name="ai-model" content="Claude Sonnet 4.6">
 <!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) -->
 <script type="application/json" id="stock-meta">
-{"symbol":"DITTO","currency":"THB","price":15.30,"fairValue":16.60,"mos":7.8,"upside":8.5,"pe":17.4,"dividendYield":3.27,"roe":15.98}
+{"symbol":"DITTO","currency":"THB","price":15.6,"fairValue":16.6,"mos":6,"upside":6.4,"pe":17.4,"dividendYield":3.27,"roe":15.98}
 </script>
 <script type="application/json" id="report-data">
 {
@@ -22,39 +22,38 @@
     "verdictText": "#e0f2f1",
     "vcellLabel": "rgba(224,242,241,0.7)",
     "badge": "#00897b",
-    "chgBg": "#1e8e3e",
-    "chgColor": "#ffffff"
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#1e8e3e"
   },
   "chart": {
     "data": [
-      ["ก.ค. 68", 11.40],
-      ["ส.ค. 68", 13.30],
-      ["ก.ย. 68", 13.00],
-      ["ต.ค. 68", 11.90],
-      ["พ.ย. 68", 11.00],
-      ["ธ.ค. 68", 10.90],
-      ["ม.ค. 69", 11.20],
-      ["ก.พ. 69", 12.60],
-      ["มี.ค. 69", 10.70],
-      ["เม.ย. 69", 10.80],
-      ["พ.ค. 69", 13.70],
-      ["มิ.ย. 69", 14.00],
-      ["ก.ค. 69", 15.30]
+      ["ส.ค.25", 13.3],
+      ["ก.ย.25", 13],
+      ["ต.ค.25", 11.9],
+      ["พ.ย.25", 11],
+      ["ธ.ค.25", 10.9],
+      ["ม.ค.26", 11.2],
+      ["ก.พ.26", 12.6],
+      ["มี.ค.26", 10.7],
+      ["เม.ย.26", 10.8],
+      ["พ.ค.26", 13.7],
+      ["มิ.ย.26", 14],
+      ["ก.ค.26", 15.6]
     ],
-    "min": 9.0,
-    "max": 18.0,
-    "grid": [9.0, 11.0, 13.0, 15.0, 17.0],
-    "fairLine": 16.60,
+    "min": 10,
+    "max": 18,
+    "grid": [12, 14, 16],
+    "fairLine": 16.6,
     "currency": "฿",
-    "highlight": [10, 11, 12]
+    "highlight": [7, 11]
   },
   "gauge": {
-    "min": 9.0,
-    "max": 22.0,
-    "cur": 15.30,
-    "fair": 16.60
+    "min": 9,
+    "max": 22,
+    "cur": 15.6,
+    "fair": 16.6
   },
-  "fv": 16.60
+  "fv": 16.6
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -74,11 +73,11 @@
     <div class="sub">Digital Document Management • Print &amp; Copy Solutions • AI &amp; Automation • Cybersecurity • ESG &amp; Carbon Platform • B2B Enterprise</div>
     <div class="price-row">
       <div>
-        <div class="px">฿15.30<small>(DITTO)</small></div>
+        <div class="px">฿15.60<small>(DITTO)</small></div>
       </div>
-      <div class="chg" style="background:var(--chgBg,#1e8e3e);color:var(--chgColor,#fff)">▲ +34.2% (รอบปี)</div>
+      <div class="chg">▲ +17.3% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 3 ก.ค. 2569<br>
+        ราคา ณ 10 ก.ค. 2569<br>
         กรอบ 52 สัปดาห์ ฿9.90 – ฿15.80<br>
         ที่มา: StockAnalysis.com, Yahoo Finance, investor.dittothailand.com
       </div>
@@ -156,7 +155,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿15.30</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿15.60</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿16.60</div></div>
         </div>
         <div class="scale">
@@ -178,7 +177,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict bad">
-        <div class="big">+7.8%</div>
+        <div class="big">+6%</div>
         <div class="txt">MOS ต่ำ — ราคาใกล้ Fair Value · ความปลอดภัยจำกัด · รอโซนที่ดีกว่า</div>
       </div>
       <div class="grid g3">
@@ -189,7 +188,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="15.30" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="15.6" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -296,7 +295,7 @@
     <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
     ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
-    แหล่งข้อมูล: StockAnalysis.com (stockanalysis.com/quote/bkk/DITTO/), Yahoo Finance (finance.yahoo.com/quote/DITTO.BK/), investor.dittothailand.com, thestorythailand.com • ราคา ณ 3 ก.ค. 2569
+    แหล่งข้อมูล: StockAnalysis.com (stockanalysis.com/quote/bkk/DITTO/), Yahoo Finance (finance.yahoo.com/quote/DITTO.BK/), investor.dittothailand.com, thestorythailand.com • ราคา ณ 10 ก.ค. 2569
   </div>
   <footer>Stock Analysis Dashboard • ข้อมูล ณ 3 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 
