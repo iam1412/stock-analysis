@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น Bunge Global (BG) — Stock Analysis Dashboard</title>
+<!-- ★ ใส่รุ่นโมเดล AI ที่ใช้วิเคราะห์จริง -->
+<meta name="ai-model" content="Claude Opus 4.8">
+<!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
+<script type="application/json" id="stock-meta">
+{"symbol":"BG","currency":"USD","price":114.32,"fairValue":107.50,"mos":-6.3,"upside":-6.0,"pe":30.1,"dividendYield":2.53,"roe":4.93}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#92400e",
+    "accentDark": "#78350f",
+    "darkGrad": "linear-gradient(135deg,#1a0f00 0%,#2a1800 60%,#1a0f00 100%)",
+    "glow": "rgba(146,64,14,0.25)",
+    "subColor": "#d99a54",
+    "headerMuted": "rgba(146,64,14,0.55)",
+    "verdictText": "#fff3e0",
+    "vcellLabel": "rgba(255,243,224,0.65)",
+    "badge": "#92400e",
+    "chgBg": "#1e8e3e",
+    "chgColor": "#ffffff"
+  },
+  "chart": {
+    "data": [
+      ["ส.ค. 68", 82.63],
+      ["ก.ย. 68", 79.72],
+      ["ต.ค. 68", 92.82],
+      ["พ.ย. 68", 94.95],
+      ["ธ.ค. 68", 88.04],
+      ["ม.ค. 69", 112.55],
+      ["ก.พ. 69", 119.93],
+      ["มี.ค. 69", 126.44],
+      ["เม.ย. 69", 126.31],
+      ["พ.ค. 69", 123.30],
+      ["มิ.ย. 69", 106.73],
+      ["ก.ค. 69", 114.32]
+    ],
+    "min": 70,
+    "max": 135,
+    "grid": [80, 90, 100, 110, 120, 130],
+    "fairLine": 107.50,
+    "currency": "$",
+    "highlight": [1, 7],
+    "gridFmt": "v.toFixed(0)",
+    "dataFmt": "d[1].toFixed(2)"
+  },
+  "gauge": {
+    "min": 65,
+    "max": 145,
+    "cur": 114.32,
+    "fair": 107.50,
+    "fairLabelTop": true
+  },
+  "fv": 107.50
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots">★ ★ ★</div>
+    <div>
+      <span class="tag">NYSE: BG</span>
+      <span class="tag">Agribusiness / Oilseed Processing</span>
+      <span class="tag">Post-Viterra Merger</span>
+    </div>
+    <h1>Bunge Global</h1>
+    <div class="sub">Oilseed Processing • Grain Trading • Edible Oils • Sugar &amp; Bioenergy • Viterra Integration (S. America/Black Sea/Canada)</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$114.32<small>(BG)</small></div>
+      </div>
+      <div class="chg">▲ +38.3% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 10 กรกฎาคม 2569<br>
+        กรอบ 52 สัปดาห์ $71.60 – $134.87<br>
+        ที่มา: StockAnalysis.com, Yahoo Finance, Zacks.com
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ก.ค. 2569 — TTM ถึง มี.ค. 2569 ครอบคลุม Viterra เต็มไตรมาสแรก (ปิดดีล พ.ย. 2567)</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~$22.18 B</div><div class="d">~194.02 ล้านหุ้น (diluted)</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neg">~30.1x</div><div class="d">EPS TTM $3.80 — จุดต่ำวัฏจักร+ต้นทุนควบรวม</div></div>
+      <div class="metric"><div class="k">P/E Forward (FY2569E)</div><div class="v pos">~12.1x</div><div class="d">Consensus EPS FY2569E $9.45</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">1.38x</div><div class="d">BVPS $82.70</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ TTM</div><div class="v neg">~$714 M</div><div class="d">ลดจาก FY2567 $2,376M (ต้นทุน integration)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$3.80</div><div class="d">เฉลี่ย 2 แหล่ง: StockAnalysis $3.78 / Yahoo $3.82</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~$82.70</div><div class="d">Equity ~$16.05B / 194.02M หุ้น</div></div>
+      <div class="metric"><div class="k">ROE / อัตรากำไรสุทธิ</div><div class="v neg">4.93% / 0.85%</div><div class="d">ต่ำกว่าค่าเฉลี่ยวัฏจักรมาก (ชั่วคราว)</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">~$80.5 B</div><div class="d">เพิ่มจาก FY2567 $53.1B (Viterra consolidate เต็มปีแรก)</div></div>
+      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v neu">4.44%</div><div class="d">margin บางตามธุรกิจ commodity trading</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v pos">~2.53%</div><div class="d">$2.88/หุ้น — payout ~34% ของ mid-cycle EPS</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v pos">0.64</div><div class="d">ผันผวนต่ำกว่าตลาดโดยรวม</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ราคาปิดรายเดือน Yahoo Finance</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#92400e"></i>ราคา BG</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $107.50</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        BG ฟื้นตัวแรงในรอบปี จากจุดต่ำ ~$79.72 (ก.ย. 2568) ช่วงตลาดกังวลต้นทุนควบรวม Viterra และราคาสินค้าเกษตรอ่อนตัว ขึ้นมาแตะจุดสูงสุดรอบปี ~$126.44 (มี.ค. 2569) ก่อนย่อลงมาที่ $106.73 (มิ.ย. 2569) แล้วดีดกลับมาปิดที่ $114.32 (ก.ค. 2569) ผลตอบแทนรอบปี +38.3% แรงหนุนหลักคือสัญญาณ crush margin ฟื้นตัว, Zacks ปรับเรตติ้งขึ้นเป็น Buy จากคาดการณ์กำไรปรับขึ้น 17.4% และตลาดเริ่มมองข้ามต้นทุน integration ของดีล Viterra ไปสู่ปีที่ synergies เริ่มเห็นผลชัดเจนขึ้น
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 2 วิธี — ใช้ Mid-Cycle Adj. EPS แทน EPS TTM ที่ถูกบิดเบือนจากดีล Viterra</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation (Mid-Cycle Adj. EPS)</div><div class="mdesc">EPS adj. $8.50 × P/E 12x (mid-cycle) — EPS ปกติกลางวัฏจักร $8.50 = เฉลี่ย consensus EPS FY2568E $7.57 + FY2569E $9.45; ไม่ใช้ EPS TTM $3.80 ซึ่งถูกกดจากต้นทุน integration Viterra + จุดต่ำ crush margin; P/E 12x อิงค่าเฉลี่ยประวัติศาสตร์ ag processor (10–14x)</div></div>
+        <div class="mval">$102.00</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. EV/EBITDA (Mid-Cycle, ปรับ Net Debt แบบ Inventory-Backed)</div><div class="mdesc">EBITDA เฉลี่ยกลางวัฏจักร FY2564–2567 ~$2.74B × EV/EBITDA เป้า 8x = EV $21.92B — Net Debt ที่รายงาน $15.25B เกือบทั้งหมดผูกกับสินค้าคงคลัง $15.43B ที่ hedge แล้ว (ไม่ใช่ leverage เชิงโครงสร้าง) จึงปรับ Net Debt สุทธิเป็น ~$0 → Equity Value $21.92B ÷ 194.02M หุ้น</div></div>
+        <div class="mval">$113.00</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $102.00 – $113.00</span></div>
+        <div class="r">$107.50</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        วิธี P/E ให้ค่าต่ำกว่า ($102.00) แบบอนุรักษนิยมโดยไม่รวมส่วนเพิ่มจาก Viterra synergies ที่ยังพิสูจน์ไม่เต็มที่ ส่วนวิธี EV/EBITDA ให้ค่าสูงกว่า ($113.00) เพราะปรับ Net Debt ที่แท้จริงลงหลังตัดหนี้ที่ผูกกับสินค้าคงคลัง hedge แล้วออก ค่าเฉลี่ย 2 วิธี = $107.50 ราคาปัจจุบัน $114.32 อยู่สูงกว่ากรอบบนเล็กน้อย (~1.2%) สะท้อนว่าตลาดเริ่ม price-in การฟื้นตัวของกำไรไปพอสมควรแล้ว ที่มา: StockAnalysis.com (ราคา/EPS/EBITDA/งบดุล), Yahoo Finance (ราคา cross-check), stockanalysis.com/forecast (consensus EPS)
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $114.32</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $107.50</div></div>
+        </div>
+        <div class="scale">
+          <span>$75.25<br><small>MOS 30%</small></span>
+          <span>$86.00<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$107.50<br><small>Fair Value</small></span>
+          <span style="text-align:right">$113.00<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">$141.44<br><small>เป้าเฉลี่ย Analyst</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคา $114.32 อยู่เหนือกรอบบน Fair Value ($113.00) เล็กน้อยราว 1.2% แต่ยังต่ำกว่าเป้าเฉลี่ย Analyst ที่ $141.44 อยู่มาก (consensus Buy จาก 9 นักวิเคราะห์ — 5 Strong Buy / 3 Buy / 1 Hold) โซน MOS 20% อยู่ที่ $86.00 และ MOS 30% ที่ $75.25 ห่างจากราคาปัจจุบันพอสมควร นักลงทุนสาย value ที่ต้องการ margin of safety จริงต้องรอราคาย่อตัวลงมาระดับนั้น หรือรอกำไรฟื้นตัวเกินคาดในปี 2569–2570 จนกว่า mid-cycle EPS จริงจะสูงกว่าสมมติฐานปัจจุบัน
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">−6.3%</div>
+        <div class="txt">ราคาปัจจุบัน $114.32 สูงกว่า Fair Value $107.50 อยู่ประมาณ 6.3% — แทบไม่มี Margin of Safety ณ ราคานี้ ถือว่าใกล้เคียงมูลค่าเหมาะสม (fairly valued) มากกว่าถูกหรือแพงชัดเจน</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$86.00</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$75.25</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $107.50</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="114.32" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $114.32 • EPS ฐาน ~$8.50 (mid-cycle) • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS −5%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$65.60</div>
+          <div class="ret neg">−35.1%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$7.29</span></li>
+            <li><span>P/E ออก</span><span>9x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$8.60</span></li>
+            <li><span>สถานการณ์</span><span>วัฏจักรสินค้าเกษตรซบเซา + integration cost บานปลาย</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +5%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$118.10</div>
+          <div class="ret pos">+11.2%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$9.84</span></li>
+            <li><span>P/E ออก</span><span>12x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$9.00</span></li>
+            <li><span>สถานการณ์</span><span>crush margin ฟื้นตัวปกติ + Viterra synergies เริ่มเห็นผล</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +10%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$169.65</div>
+          <div class="ret pos">+56.7%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$11.31</span></li>
+            <li><span>P/E ออก</span><span>15x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$9.50</span></li>
+            <li><span>สถานการณ์</span><span>วัฏจักรขาขึ้น + Viterra synergies เต็มที่ + renewable diesel demand แรง</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      หมายเหตุ: EPS ฐาน Mid-Cycle $8.50; Bear = $8.50×(0.95)³≈$7.29, Base = $8.50×(1.05)³≈$9.84, Bull = $8.50×(1.10)³≈$11.31 — ราคาเป้า = EPS ปีที่ 3 × P/E ออก + ปันผลรวม 3 ปี จากราคาเข้า $114.32 กรณี Base ให้ผลตอบแทนบวกเล็กน้อย (+11.2%) ต้องเป็น Bull Scenario (Viterra synergies เต็มที่ + วัฏจักรสินค้าเกษตรขาขึ้น) จึงจะได้ผลตอบแทนสองหลักชัดเจน (+56.7%) ขณะที่ Bear Scenario (วัฏจักรซบเซา + ต้นทุน integration บานปลาย) ขาดทุนหนัก (−35.1%)
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>Viterra Synergies:</b> หลังปิดดีลควบรวม Viterra (พ.ย. 2567) BG ตั้งเป้า synergies ต้นทุน/รายได้รวมหลายร้อยล้านดอลลาร์ต่อปี จากเครือข่าย origination ที่ใหญ่ขึ้นในอเมริกาใต้ ทะเลดำ และแคนาดา</li>
+          <li><b>Crush Margin ฟื้นตัว:</b> อัตรากำไรจากการสกัดถั่วเหลือง/คาโนลาเริ่มฟื้นตัวหลังจุดต่ำปี 2568 ผลประกอบการ Q1 2569 และ guidance FY2569 บ่งชี้ EPS เติบโต YoY แรง (Zacks ประเมิน ~52.7%)</li>
+          <li><b>Renewable Diesel/Biofuel Demand:</b> นโยบายพลังงานสะอาด (RFS, SAF) ในสหรัฐฯ และตลาดโลกหนุนดีมานด์น้ำมันพืช (ถั่วเหลือง/คาโนลา) เป็น feedstock ต่อเนื่อง BG มีเครือข่ายโรงสกัดขนาดใหญ่รองรับ</li>
+          <li><b>Analyst Sentiment เชิงบวก:</b> Zacks ปรับเรตติ้งขึ้นเป็น Buy จากคาดการณ์กำไรปรับขึ้น 17.4% consensus 9 นักวิเคราะห์ให้ Buy (5 Strong Buy, 3 Buy, 1 Hold) เป้าเฉลี่ย $141.44 (+23.7%)</li>
+          <li><b>โครงสร้างหนี้แบบ Inventory-Backed:</b> หนี้สินรวม $16.3B ส่วนใหญ่ผูกกับสินค้าคงคลังที่ hedge แล้ว ($15.4B) ไม่ใช่ leverage เชิงโครงสร้าง ลดความเสี่ยงด้าน solvency เทียบกับหนี้ปกติ</li>
+          <li><b>ปันผลสม่ำเสมอ:</b> $2.88/หุ้น yield 2.53% payout ~34% ของ mid-cycle EPS เหลือพื้นที่ปรับขึ้นได้เมื่อกำไรฟื้นตัวเต็มที่</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>ความผันผวนวัฏจักรสินค้าเกษตร:</b> กำไร BG อิงราคาธัญพืช/น้ำมันพืชและ crush spread โดยตรง สภาพอากาศ/ผลผลิตในอเมริกาใต้และทะเลดำผันผวนสูง อาจกดกำไรต่ำกว่าคาดมาก</li>
+          <li><b>ความเสี่ยง Integration Viterra:</b> การรวมระบบ/บุคลากร/วัฒนธรรมองค์กรยังดำเนินอยู่ตั้งแต่ปิดดีล พ.ย. 2567 หากล่าช้าหรือ synergies ไม่เป็นไปตามเป้า อาจกดดันกำไรและราคาหุ้น</li>
+          <li><b>กำไร GAAP ปัจจุบันต่ำมาก:</b> EPS TTM เพียง ~$3.80 (P/E TTM ~30x) เทียบ mid-cycle ที่ประเมิน ~$8.50 หากการฟื้นตัวช้ากว่า consensus FY2569 ($9.45) ราคาปัจจุบันจะแพงกว่าที่ประเมินไว้</li>
+          <li><b>ความเสี่ยงนโยบายการค้า:</b> ธุรกิจ trading สินค้าเกษตรผูกกับความสัมพันธ์การค้าสหรัฐฯ-จีน ภาษีส่งออก และความไม่แน่นอนภูมิรัฐศาสตร์ (เช่น เส้นทางส่งออกธัญพืชทะเลดำ ภาษีส่งออกอาร์เจนตินา/บราซิล)</li>
+          <li><b>หนี้สินรวมสูงในมูลค่าสัมบูรณ์:</b> แม้ส่วนใหญ่ผูกกับสินค้าคงคลัง แต่หนี้สุทธิ ~$15.2B ในมูลค่าสัมบูรณ์สูง หากราคาสินค้าเกษตรร่วงแรงฉับพลันอาจกระทบสภาพคล่อง working capital</li>
+          <li><b>Valuation ใกล้เต็มมูลค่าแล้ว:</b> ราคาบวก +38.3% ในรอบปี ปัจจุบันซื้อขายเหนือกรอบบน Fair Value เล็กน้อย เหลือ margin of safety จำกัดมากสำหรับนักลงทุนสาย value</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>BG: ฟื้นตัวเกือบเต็มมูลค่าแล้ว — รอจังหวะย่อ หรือถือระยะยาวรับ Viterra Synergies</h2>
+      <p>Bunge Global ฟื้นตัวแรง +38.3% ในรอบปีหลังปิดดีลควบรวม Viterra (พ.ย. 2567) และสัญญาณ crush margin ที่เริ่มดีขึ้น อย่างไรก็ดี กำไร GAAP TTM ยังต่ำมาก ($3.80/หุ้น) จากต้นทุน integration + จุดต่ำวัฏจักร เมื่อ normalize เป็น Mid-Cycle Adj. EPS ~$8.50 (เฉลี่ย consensus FY2568E $7.57 + FY2569E $9.45) Fair Value จาก 2 วิธี (P/E + EV/EBITDA ปรับหนี้แบบ inventory-backed) เฉลี่ยอยู่ที่ $107.50 (กรอบ $102.00–$113.00) ราคาปัจจุบัน $114.32 อยู่เหนือกรอบบนเล็กน้อย (MOS ~ −6.3%) ทำให้แทบไม่เหลือ margin of safety สำหรับผู้ซื้อใหม่ ผู้ที่ถืออยู่แล้วอาจถือต่อรับปันผล 2.53% พร้อมรอ synergies Viterra ชัดเจนขึ้น ส่วนนักลงทุนสาย value ควรรอราคาย่อสู่โซน $86–$96 ก่อนพิจารณาสะสมใหม่</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$107.50 <span style="font-size:12px;color:#cab9a8">($102.00–$113.00)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −6.3% (ราคาสูงกว่า FV เล็กน้อย)</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$141.44 (Buy — 9 นักวิเคราะห์)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ราคาปัจจุบัน $114.32 อยู่เหนือกรอบบน Fair Value ($113.00) เล็กน้อย และต่ำกว่าเป้าเฉลี่ย Analyst ($141.44) มาก เหมาะสำหรับผู้ถือเดิมที่รอรับปันผลระหว่างที่ Viterra synergies ทยอยเห็นผล แต่ไม่ใช่จังหวะสะสมใหม่ที่มี margin of safety ชัดเจน ระดับน่าสนใจสำหรับนักลงทุน value คือช่วง $86 (MOS 20%) ถึง $75 (MOS 30%) — ควรติดตามผลประกอบการ Q2 2569 (ประกาศ 29 ก.ค. 2569) และ guidance FY2569–70 เพื่อยืนยันว่ากำไรฟื้นตัวเข้าสู่ mid-cycle ตามคาด ก่อนตัดสินใจเพิ่มสถานะ
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ Mid-Cycle Adj. EPS ($8.50) ซึ่งยังไม่มีผลจริงครบปี, P/E เป้าหมาย, EBITDA multiple และการปรับ Net Debt แบบ inventory-backed ซึ่งเป็นสมมติฐานเชิงคุณภาพ ราคาหุ้นมีความผันผวนสูงตามวัฏจักรสินค้าเกษตร ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ที่มา: StockAnalysis.com (ราคา $114.32, EPS TTM $3.78, งบการเงิน/EBITDA/งบดุล — ยืนยัน 10 ก.ค. 2569), Yahoo Finance (ราคา $114.32 ตรงกัน, EPS TTM $3.82, เป้าราคา/rating — ยืนยัน 10 ก.ค. 2569), stockanalysis.com/forecast (consensus EPS FY2568 $7.57 / FY2569 $9.45, เป้าราคาเฉลี่ย $141.44, 9 นักวิเคราะห์), Zacks.com (rating upgrade เป็น Buy จากคาดการณ์กำไรปรับขึ้น 17.4%)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 10 กรกฎาคม 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
