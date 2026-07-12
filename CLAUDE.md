@@ -45,7 +45,7 @@ invariant ที่ห้ามหลุดไม่ว่ากรณีใด:
 1. **ก่อนเริ่ม**: `git pull --rebase origin main` → อ่าน `reports.json` — สด ≤7 วัน **ไม่ทำซ้ำ** (ธีม→หาตัวแทน · ระบุชื่อ→ข้ามพร้อมแจ้ง) · เกิน 7 วัน = UPDATE · ยังไม่มี = NEW
 2. **โมเดล**: ❌ Haiku ทุกขั้น · default = **All-Sonnet** (controller+worker) · หุ้นยาก (IPO <1 ปี/spinoff/split/cyclical/ราคา cross-source ต่าง >5%) → escalate worker ตัวนั้นเป็น **Opus** อัตโนมัติ · ตัดสิน publish/skip กำกวม → หยุด ping user
 3. **spawn**: 1 หุ้น/agent (context แยก กันเลขปนข้ามหุ้น — ตัวร้าย #1) · **sequential เท่านั้น** — spawn → รอเสร็จ → ตรวจ → ตัวถัดไป (parallel เคยพัง rate limit พร้อมกันทั้งเวฟ) · ใช้ prompt `_template/agent-prompt.md` + STEP 0 กัน cwd-stray · จะคุม effort ต่อ worker → workflow **`analyze-wave`** (docs/orchestration.md)
-4. **push รายตัว**: worker เสร็จ 1 ตัว → controller ตรวจ → verify + push หุ้นนั้นทันที (รวมเป็น Bash call เดียว §5) ก่อน spawn ตัวถัดไป · **เวฟละ ≤3** = หน่วยวางแผน/รายงานผล/จังหวะ compact เท่านั้น ไม่ใช่หน่วย push · ห้าม agent push เอง · ห้าม push ซ้อน session
+4. **push รายตัว**: worker เสร็จ 1 ตัว → controller ตรวจ → verify + push หุ้นนั้นทันที (รวมเป็น Bash call เดียว §5) ก่อน spawn ตัวถัดไป · **จำนวนหุ้นต่อรอบไม่จำกัด** (ยกเลิก "เวฟละ ≤3" 12 ก.ค. 2569 — sequential + push รายตัวจำกัด blast radius = 1 หุ้นให้แล้ว) · ห้าม agent push เอง · ห้าม push ซ้อน session
 5. ของดีไม่พอโควตา → ลดจำนวนเองได้ ไม่ต้องถาม แต่แจ้งเหตุผล (คุณภาพ > โควตา)
 
 ---
@@ -54,7 +54,7 @@ invariant ที่ห้ามหลุดไม่ว่ากรณีใด:
 
 วัดจริง 12 ก.ค. 2569: ต้นทุน = **จำนวน turn × ~70k cache-read ของ worker** ไม่ใช่ output — กติกา token-lean **ต่อหุ้น** (batch tool calls · script แทน WebFetch · UPDATE-LIGHT · self-check ครั้งเดียว) อยู่ใน **SKILL.md แล้ว** · เป้า+ตัวเลข → `docs/orchestration.md` §7 · ที่ controller ต้องคุมเองเพิ่ม:
 
-- **Compact / fresh session ทุก 1–2 เวฟ** — context controller พอกเร็ว
+- **Compact / fresh session ทุก ~5-10 หุ้น** — context controller พอกเร็ว
 - pull --rebase + อ่าน `reports.json` ก่อน — ข้ามหุ้นสด ≤7 วัน = ประหยัด 100% ของตัวนั้น
 - ห้ามรัน Opus เป็น main (W31 กิน ~15% ของลิมิต 5 ชม. กับแค่ 3 หุ้น) · worker งาน mechanical → effort medium ผ่าน `analyze-wave`
 - controller อาจ pre-fetch `fetch-fundamentals` แล้ววางบล็อกใน `{{FUNDAMENTALS}}` ของ agent-prompt — ตัด turn ของ worker เพิ่ม

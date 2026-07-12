@@ -9,7 +9,7 @@
 2. เทียบแต่ละตัว (ฟิลด์ `updated`) — **เกณฑ์ความสด = 7 วัน** (คนละตัวกับ staleness gate 45/120 วัน):
    - สด ≤7 วัน → **ไม่วิเคราะห์ซ้ำ** · ธีม/โควตา → หาตัวใหม่ในธีมมาแทน · ระบุชื่อชัด → ข้าม (แจ้ง)
    - เกิน 7 วัน → วิเคราะห์ซ้ำ = **UPDATE mode** · ยังไม่มี → NEW (skeleton) · จากคิว price-flags → triage ตาม SKILL STEP 0 (UPDATE-LIGHT / UPDATE เต็ม / plumbing)
-3. กันซ้ำข้าม session = push รายตัว + pull --rebase ก่อนแต่ละเวฟ (ตัวที่คนอื่น push แล้วโผล่ใน `reports.json` → ถูกคัดออก — push รายตัวทำให้ session อื่นเห็นเร็วสุด)
+3. กันซ้ำข้าม session = push รายตัว (pull --rebase มากับลำดับ push ของทุกตัวอยู่แล้ว — ตัวที่คนอื่น push แล้วโผล่ใน `reports.json` → ถูกคัดออก session อื่นเห็นเร็วสุด)
 
 ## 2. โมเดล (บังคับ)
 
@@ -19,13 +19,13 @@
 - การตัดสิน publish/skip ของ controller เอง**กำกวม** → หยุด ping user สลับ session เป็น Opus
 - **effort ต่อ worker**: งาน mechanical (UPDATE-LIGHT / UPDATE ที่ EPS ไม่เปลี่ยน) ไม่จำเป็นต้องใช้ effort สูง — spawn ผ่าน workflow `analyze-wave` (ข้อ 5) เพื่อตั้ง `effort:"medium"` ได้ · Agent tool ปกติตั้ง effort ไม่ได้
 
-## 3. Spawn — 1 หุ้น/agent · sequential · เวฟละ ≤3
+## 3. Spawn — 1 หุ้น/agent · sequential
 
 - **spawn 1 Agent/หุ้น** — full analysis หุ้นตัวเดียวจบใน context ของ agent เอง เขียนลง `reports/<SYMBOL>.html` ของตัวเองเท่านั้น · เหตุผล: context แยกสะอาด กันเลขปนข้ามหุ้น (**ตัวร้าย #1 ของรีโป**) · ใช้ prompt แม่แบบ `_template/agent-prompt.md` (ระบุ `{{MODE}}` ให้ถูก · วางบล็อก `{{FUNDAMENTALS}}` ถ้า controller pre-fetch ให้)
 - **★ STEP 0 กัน cwd-stray:** prompt ให้ agent เริ่ม `cd <worktree> && pwd` + ห้าม `cd` ลง main repo · ตอน push เช็ค `ls reports/<SYM>.html` ใน worktree — ไม่มี = ไปหยิบจาก main repo + ลบตัวหลง (ดู memory bulk-stock-analysis-workflow)
 - **★ SEQUENTIAL (บังคับ):** spawn 1 agent → รอ notification "completed" → ตรวจ/แก้ error → spawn ถัดไป — **ห้าม spawn parallel หลายตัวพร้อมกัน** เพราะกด API session rate limit ทุกตัว fail พร้อมกัน (เกิดจริงใน US-GAP W19–W21 — งานพังกลางคันต้องทำซ้ำ = token เสียเปล่าสองเท่า)
 - fallback: agent fail → ทำ inline ใน main session แทน (fetch + write เอง)
-- **เวฟละ ≤3 หุ้น** — หน่วย "วางแผน/รายงานผลผู้ใช้/จังหวะ compact" (CLAUDE.md §4) ไม่ใช่หน่วย push (push รายตัว — ข้อ 4) · ยังห้ามยิงทุกตัวรวดเดียว: จำกัด blast radius ของ error
+- **จำนวนหุ้นต่อรอบไม่จำกัด** (ยกเลิก "เวฟละ ≤3" 12 ก.ค. 2569) — sequential + push รายตัว (ข้อ 4) ทำให้ blast radius = 1 หุ้นอยู่แล้ว · คิวยาวจัดเป็น batch ตามสะดวกไว้รายงานความคืบหน้า และ compact/fresh session เมื่อ context โต (CLAUDE.md §4: ~ทุก 5-10 หุ้น)
 
 ## 4. Push รายตัว (ห้าม agent push เอง)
 
@@ -56,4 +56,4 @@
 ## 7. เกร็ดต้นทุน (วัดจริง 12 ก.ค. 2569 — ดู memory token-usage-benchmarks)
 
 - ต้นทุน worker อยู่ที่ **จำนวน turn × ~70k cache-read** ไม่ใช่ output (~3-4k/ตัวเท่านั้น) → เป้า: NEW/UPDATE ~15 turns · UPDATE-LIGHT ≤10 turns
-- เวฟ 3 ตัวบน Sonnet ≈ 25k output + ~10M cache-read → เย็นเดียวเคลียร์ได้ ~15 ตัวสบาย ๆ · ห้ามหวนกลับไป Opus main (กิน ~15% ลิมิต/3 หุ้น)
+- 3 หุ้นบน Sonnet ≈ 25k output + ~10M cache-read → เย็นเดียวเคลียร์ได้ ~15 ตัวสบาย ๆ · ห้ามหวนกลับไป Opus main (กิน ~15% ลิมิต/3 หุ้น)
