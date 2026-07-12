@@ -4,6 +4,7 @@
  * apply-edits.js — apply การแก้ไขหลายจุดลงไฟล์เดียวใน **คำสั่งเดียว แบบ all-or-nothing**
  * แก้ปัญหา worker ยิง Edit tool ทีละ turn (วัดจริง 12 ก.ค. 2569: 12–16 turns = +~1M cache-read/หุ้น)
  * — จุดไหนหาไม่เจอ / เจอซ้ำ = ไม่เขียนไฟล์เลยทั้งชุด แล้วรายงานทุกจุดที่พังพร้อมกัน ให้แก้แล้วรันใหม่
+ * — "หาไม่เจอ" จะพิมพ์บรรทัดจริงในไฟล์ที่ใกล้เคียงสุดมาให้ copy เป็น "เดิม" ได้ทันที (ไม่ต้อง grep กู้)
  *
  * ใช้ (stdin heredoc — ไม่ทิ้งไฟล์ temp ใน worktree):
  *   node tools/apply-edits.js reports/<SYM>.html <<'EOF'
@@ -62,17 +63,59 @@ for (let i = 0; i < lines.length; i++) {
 if (state !== 'out') die(`✗ บล็อกที่เริ่มบรรทัด ${cur.line} ไม่ปิดด้วย @@end`);
 if (!edits.length) die('✗ ไม่มีบล็อกแก้ไขใน stdin (ต้องมี @@ ... @@= ... @@end อย่างน้อย 1 ชุด)');
 
+// ---- near-match hint: หา window ในไฟล์ที่คล้ายข้อความเดิมสุด แล้วพิมพ์บรรทัดจริงให้ copy ----
+function bigrams(s) {
+  const t = s.replace(/\s+/g, ' ').trim();
+  const m = new Map();
+  for (let i = 0; i < t.length - 1; i++) { const b = t.slice(i, i + 2); m.set(b, (m.get(b) || 0) + 1); }
+  return m;
+}
+// containment: สัดส่วน bigram ของ "เดิม" ที่พบใน window — ทนกรณี "เดิม" เป็นเศษของบรรทัดยาว
+function containment(target, win) {
+  let inter = 0, na = 0;
+  for (const v of target.values()) na += v;
+  if (!na) return 0;
+  for (const [k, v] of target) { const w = win.get(k); if (w) inter += Math.min(v, w); }
+  return inter / na;
+}
+function nearMatch(hay, old) {
+  const fileLines = hay.split('\n');
+  if (fileLines.length > 20000) return null;
+  const oldLines = old.split('\n');
+  const win = Math.min(oldLines.length, 8);
+  const target = bigrams(old);
+  let best = { score: 0, at: -1 };
+  for (let i = 0; i <= fileLines.length - win; i++) {
+    const s = containment(target, bigrams(fileLines.slice(i, i + win).join('\n')));
+    if (s > best.score) { best.score = s; best.at = i; }
+  }
+  if (best.score < 0.6 || best.at < 0) return null;
+  const upto = Math.min(best.at + Math.min(oldLines.length, 12), fileLines.length);
+  return { from: best.at + 1, to: upto, pct: Math.round(best.score * 100),
+           text: fileLines.slice(best.at, upto).join('\n') };
+}
+
 // ---- validate + apply in-memory (all-or-nothing) ----
 let text = fs.readFileSync(file, 'utf8');
 let work = text;
 const fails = [];
+let hints = 0;
 const preview = (s) => JSON.stringify(s.length > 70 ? s.slice(0, 70) + '…' : s);
 edits.forEach((e, k) => {
   const tag = `edit #${k + 1} (stdin บรรทัด ${e.line})`;
   if (e.old === '') { fails.push(`✗ ${tag}: ข้อความเดิมว่าง`); return; }
   if (e.old === e.new) { fails.push(`✗ ${tag}: เดิม = ใหม่ ${preview(e.old)}`); return; }
   const n = work.split(e.old).length - 1;
-  if (n === 0) { fails.push(`✗ ${tag}: หาไม่เจอ ${preview(e.old)}`); return; }
+  if (n === 0) {
+    let msg = `✗ ${tag}: หาไม่เจอ ${preview(e.old)}`;
+    const nm = hints < 5 ? nearMatch(work, e.old) : null; // hint สูงสุด 5 จุด กัน stderr บวม
+    if (nm) {
+      hints++;
+      msg += `\n  ↳ ใกล้เคียงสุด: ไฟล์บรรทัด ${nm.from}-${nm.to} (คล้าย ${nm.pct}%) — copy บรรทัดจริงระหว่างเส้นไปเป็น "เดิม" แล้วรันใหม่ทั้งชุด:\n`
+           + `  ─────\n${nm.text}\n  ─────`;
+    }
+    fails.push(msg); return;
+  }
   if (!e.all && n > 1) { fails.push(`✗ ${tag}: เจอ ${n} ที่ — เพิ่ม context ให้ unique หรือใช้ @@all ${preview(e.old)}`); return; }
   work = work.split(e.old).join(e.new);
 });

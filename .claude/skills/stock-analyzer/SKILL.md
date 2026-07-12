@@ -96,7 +96,7 @@ cp _template/skeleton-{th|us}.html reports/<SYMBOL>.html
 1. **batch เดียว**: `node tools/update-prices.js --write --force <SYM>` + `node tools/fetch-fundamentals.js <SYM> [--th]` + อ่าน `reports/<SYM>.html`
 2. **จุดตัดสิน**: EPS(TTM) จาก fundamentals ≈ EPS ในรายงานเดิม (±2%) และไม่มีสัญญาณงบใหม่/split
    → FV เดิมยังยืน ไปข้อ 3 · **เกินเกณฑ์ → ยกระดับเป็น UPDATE เต็ม** (STEP 2→5B ตามปกติ)
-3. **แก้ไฟล์ — 2 turns เท่านั้น**: turn แรก `grep` หา**ทุกจุด**ที่อ้างเลขเก่าในไฟล์ (จุดเข้า / "แพง~X%" / คำบรรยายทิศกราฟ / gauge ถ้า script เตือนหลุดช่วง / วันที่ footer / `meta ai-model`) → turn ถัดไป apply ทุกจุดใน **Bash call เดียว** ผ่าน `tools/apply-edits.js` (all-or-nothing — จุดไหนหาไม่เจอ/ไม่ unique = ไม่เขียนไฟล์เลย script บอกทุกจุดที่พัง แก้ block แล้วรันใหม่):
+3. **แก้ไฟล์ — 2 turns เท่านั้น**: turn แรก `grep -n` หา**ทุกจุด**ที่อ้างเลขเก่าในไฟล์ (จุดเข้า / "แพง~X%" / คำบรรยายทิศกราฟ / gauge ถ้า script เตือนหลุดช่วง / วันที่ footer / `meta ai-model`) **+ `sed -n 'X,Yp'` ดึงบรรทัดจริงของทุกจุดใน Bash เดียวกัน** → turn ถัดไป apply ทุกจุดใน **Bash call เดียว** ผ่าน `tools/apply-edits.js` (all-or-nothing — จุดไหนหาไม่เจอ/ไม่ unique = ไม่เขียนไฟล์เลย script บอกทุกจุดที่พัง แก้ block แล้วรันใหม่):
    ```bash
    node tools/apply-edits.js reports/<SYM>.html <<'EOF'
    @@
@@ -111,8 +111,9 @@ cp _template/skeleton-{th|us}.html reports/<SYMBOL>.html
    @@end
    EOF
    ```
+   ⚠ **ข้อความ "เดิม" ใน block ต้อง copy verbatim จากบรรทัดจริง (ผล `sed -n`) — ห้ามพิมพ์จากความจำ/จัดเว้นวรรคใหม่เอง** (วัดจริงเวฟ 25 ตัว 12 ก.ค. 2569: "หาไม่เจอ" 21 ครั้ง เสีย ~2-3 turns/ครั้ง = leak อันดับ 1) · ถ้า fail: error พิมพ์บรรทัดจริงที่ใกล้เคียงสุดมาให้แล้ว — copy ไปแก้ block แล้วรันใหม่ทั้งชุดได้เลย **ไม่ต้อง grep กู้เพิ่ม**
    ⚠ **ห้ามใช้ Edit tool ทีละจุดทีละ turn** — วัดจริง 12 ก.ค. 2569: worker ยิงทีละ turn 12–16 ครั้ง = +~1M cache-read/ตัว กินเป้า ≤10 turns หมด (Edit tool = fallback เฉพาะเมื่อ apply-edits fail ซ้ำ และต้องยิงทุกจุดในข้อความเดียว)
-   ⚠ ห้าม grep/สำรวจ `_template/` `build.js` `test/` — สงสัยความหมาย class/gauge → `docs/templates.md` ครั้งเดียวพอ
+   ⚠ ห้าม grep/สำรวจ `_template/` `build.js` `test/` — สงสัยความหมาย class/gauge → `docs/templates.md` ครั้งเดียวพอ · E/W code จาก gate → `docs/quality-gate.md` เฉพาะ code นั้น
 4. `npm test -- <SYM>` **ครั้งเดียว** → เขียว → คืนงาน (ไม่แตะ FV/EPS = ไม่ต้องรัน update-prices ซ้ำ)
 
 ## STEP 6 — self-check ก่อนจบ
@@ -120,6 +121,6 @@ cp _template/skeleton-{th|us}.html reports/<SYMBOL>.html
 ```
 npm test -- <SYMBOL>
 ```
-ต้อง **0 error** (พลาดบ่อย: E13 token ค้าง · E28 ai-model · E29 currency ISO · E32 .sub) — แดงตรงไหนแก้ให้เขียว
+ต้อง **0 error** (พลาดบ่อย: E13 token ค้าง · E28 ai-model · E29 currency ISO · E32 .sub) — แดงตรงไหนแก้ให้เขียว · code ไหนไม่เข้าใจ → อ่าน `docs/quality-gate.md` เฉพาะหัวข้อนั้น (**ห้ามขุด `test/check-reports.js`** — วัดจริง: FN เสีย ~12 turns ตรงนี้)
 - session หลัก: ต่อด้วย `npm run verify` + auto-push ตาม CLAUDE.md §5
 - worker agent: **ห้าม push** — รายงานกลับ controller สั้น ๆ (ราคา/FV/MOS + แหล่งที่ใช้)

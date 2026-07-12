@@ -25,7 +25,7 @@
 - **★ STEP 0 กัน cwd-stray:** prompt ให้ agent เริ่ม `cd <worktree> && pwd` + ห้าม `cd` ลง main repo · ตอน push เช็ค `ls reports/<SYM>.html` ใน worktree — ไม่มี = ไปหยิบจาก main repo + ลบตัวหลง (ดู memory bulk-stock-analysis-workflow)
 - **★ SEQUENTIAL (บังคับ):** spawn 1 agent → รอ notification "completed" → ตรวจ/แก้ error → spawn ถัดไป — **ห้าม spawn parallel หลายตัวพร้อมกัน** เพราะกด API session rate limit ทุกตัว fail พร้อมกัน (เกิดจริงใน US-GAP W19–W21 — งานพังกลางคันต้องทำซ้ำ = token เสียเปล่าสองเท่า)
 - fallback: agent fail → ทำ inline ใน main session แทน (fetch + write เอง)
-- **จำนวนหุ้นต่อรอบไม่จำกัด** (ยกเลิก "เวฟละ ≤3" 12 ก.ค. 2569) — sequential + push รายตัว (ข้อ 4) ทำให้ blast radius = 1 หุ้นอยู่แล้ว · คิวยาวจัดเป็น batch ตามสะดวกไว้รายงานความคืบหน้า และ compact/fresh session เมื่อ context โต (CLAUDE.md §4: ~ทุก 5-10 หุ้น)
+- **จำนวนหุ้นต่อรอบ (เวฟ) ไม่จำกัด** (ยกเลิก "เวฟละ ≤3" 12 ก.ค. 2569) — sequential + push รายตัว (ข้อ 4) ทำให้ blast radius = 1 หุ้นอยู่แล้ว **แต่จำกัดต่อ session: คิวยาวหั่นเป็น chunk ≤8 ตัว/session** — จบ chunk = ทุกตัว push แล้ว → **หยุด สรุปผล + วางคำสั่ง kickoff ให้ user เปิด session ใหม่ทำ chunk ถัดไป** (state ทั้งหมดอยู่ใน git + `price-flags.json` แล้ว ไม่มีอะไรต้อง handoff) · เหตุผล: cacheR/turn ของ controller โตตาม context — วัดจริง 12 ก.ค. 2569 รัน 25 ตัวรวดเดียว = 2.28M cacheR/หุ้น (~139k/turn) vs session สั้น 5 ตัว = 0.75M (~70k/turn)
 
 ## 4. Push รายตัว (ห้าม agent push เอง)
 
@@ -56,4 +56,5 @@
 ## 7. เกร็ดต้นทุน (วัดจริง 12 ก.ค. 2569 — ดู memory token-usage-benchmarks)
 
 - ต้นทุน worker อยู่ที่ **จำนวน turn × ~70k cache-read** ไม่ใช่ output (~3-4k/ตัวเท่านั้น) → เป้า: NEW/UPDATE ~15 turns · UPDATE-LIGHT ≤10 turns
+- ฝั่ง controller: cacheR/turn **ไม่คงที่** — โตตาม context (~70k session สั้น → ~139k เมื่อรัน 25 ตัวรวด) → ต้องหั่น chunk ≤8 ตัว/session (ข้อ 3 + CLAUDE.md §4)
 - 3 หุ้นบน Sonnet ≈ 25k output + ~10M cache-read → เย็นเดียวเคลียร์ได้ ~15 ตัวสบาย ๆ · ห้ามหวนกลับไป Opus main (กิน ~15% ลิมิต/3 หุ้น)

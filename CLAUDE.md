@@ -54,7 +54,7 @@ invariant ที่ห้ามหลุดไม่ว่ากรณีใด:
 
 วัดจริง 12 ก.ค. 2569: ต้นทุน = **จำนวน turn × ~70k cache-read ของ worker** ไม่ใช่ output — กติกา token-lean **ต่อหุ้น** (batch tool calls · script แทน WebFetch · UPDATE-LIGHT · self-check ครั้งเดียว) อยู่ใน **SKILL.md แล้ว** · เป้า+ตัวเลข → `docs/orchestration.md` §7 · ที่ controller ต้องคุมเองเพิ่ม:
 
-- **Compact / fresh session ทุก ~5-10 หุ้น** — context controller พอกเร็ว
+- **★ หยุดทุก ≤8 หุ้น → จบ chunk แล้วให้ user เปิด session ใหม่** (push ครบทุกตัวก่อน · ปิดท้ายด้วยคำสั่ง kickoff พร้อมใช้ · state อยู่ใน git+price-flags.json ครบ ไม่ต้อง handoff) — วัดจริง 12 ก.ค. 2569: รัน 25 ตัวรวดเดียว controller บวมเป็น **2.28M cacheR/หุ้น = 3 เท่า**ของ session สั้น (~0.75M) เพราะ cacheR/turn โตตาม context (~70k → ~139k)
 - pull --rebase + อ่าน `reports.json` ก่อน — ข้ามหุ้นสด ≤7 วัน = ประหยัด 100% ของตัวนั้น
 - ห้ามรัน Opus เป็น main (W31 กิน ~15% ของลิมิต 5 ชม. กับแค่ 3 หุ้น) · worker งาน mechanical → effort medium ผ่าน `analyze-wave`
 - controller อาจ pre-fetch `fetch-fundamentals` แล้ววางบล็อกใน `{{FUNDAMENTALS}}` ของ agent-prompt — ตัด turn ของ worker เพิ่ม
