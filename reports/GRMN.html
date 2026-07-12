@@ -8,14 +8,14 @@
 <meta name="ai-model" content="Claude Sonnet 4.6">
 <!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
 <script type="application/json" id="stock-meta">
-{"symbol":"GRMN","currency":"USD","price":237.54,"fairValue":240,"mos":1.03,"upside":1.03,"pe":26.5,"dividendYield":1.77,"roe":18.5}
+{"symbol":"GRMN","currency":"USD","price":243.11,"fairValue":240,"mos":-1.3,"upside":-1.3,"pe":27.1,"dividendYield":1.77,"roe":18.5}
 </script>
 <!--
   report-data: ธีมสี + ข้อมูลกราฟ/gauge ต่อหุ้น (build เอาไปวาด)
   Garmin brand color: rich teal-green #00856B (Garmin Green)
-  Annual return: (237.54 - 218.76) / 218.76 = +8.6% รอบปี (ก.ค. 2568 -> ก.ค. 2569)
-  13 data points (monthly Jul 2025 - Jul 2026) - within E37 limit
-  chgBg/chgColor: green (ขึ้น +8.6%) - E34 compliant
+  Annual return (12mo window Aug25-Jul26): (243.11 - 241.82) / 241.82 = +0.5% -> flat, ทรงตัว (รอบปี)
+  12 data points (monthly Aug 2025 - Jul 2026, rolling window) - within E37 limit
+  chgBg/chgColor: green (ขึ้น +0.5% ทรงตัว, E34 skipped เพราะไม่มีทิศทาง ▲/▼) 
 -->
 <script type="application/json" id="report-data">
 {
@@ -34,31 +34,30 @@
   },
   "chart": {
     "data": [
-      ["ก.ค. 25", 218.76],
-      ["ส.ค. 25", 241.82],
-      ["ก.ย. 25", 246.22],
-      ["ต.ค. 25", 213.94],
-      ["พ.ย. 25", 195.32],
-      ["ธ.ค. 25", 202.85],
-      ["ม.ค. 26", 201.64],
-      ["ก.พ. 26", 252.83],
-      ["มี.ค. 26", 232.01],
-      ["เม.ย. 26", 251.14],
-      ["พ.ค. 26", 233.92],
-      ["มิ.ย. 26", 237.54],
-      ["ก.ค. 26", 237.54]
+      ["ส.ค.25", 241.82],
+      ["ก.ย.25", 246.22],
+      ["ต.ค.25", 213.94],
+      ["พ.ย.25", 195.32],
+      ["ธ.ค.25", 202.85],
+      ["ม.ค.26", 201.64],
+      ["ก.พ.26", 252.83],
+      ["มี.ค.26", 232.01],
+      ["เม.ย.26", 251.14],
+      ["พ.ค.26", 233.92],
+      ["มิ.ย.26", 237.54],
+      ["ก.ค.26", 243.11]
     ],
-    "min": 175,
-    "max": 275,
-    "grid": [180, 200, 220, 240, 260],
+    "min": 180,
+    "max": 260,
+    "grid": [200, 220, 240],
     "fairLine": 240,
     "currency": "$",
-    "highlight": [1, 7, 9]
+    "highlight": [3, 6, 11]
   },
   "gauge": {
     "min": 150,
     "max": 290,
-    "cur": 237.54,
+    "cur": 243.11,
     "fair": 240,
     "fairLabelTop": true
   },
@@ -82,13 +81,13 @@
     <div class="sub">GPS navigation · Fenix/Forerunner wearables · aviation instruments · marine electronics · fitness tracking · net cash $2.5B · Olathe KS / Switzerland</div>
     <div class="price-row">
       <div>
-        <div class="px">$237.54<small>(GRMN)</small></div>
+        <div class="px">$243.11<small>(GRMN)</small></div>
       </div>
       <!-- ★ ป้าย % รอบปี (E35/E36/E34):
-           annual return = (237.54 - 218.76) / 218.76 = +8.6% ขึ้น → chgBg เขียว ✓ -->
-      <div class="chg">▲ +8.6% (รอบปี)</div>
+           annual return (12mo Aug25-Jul26) = +0.5% -> flat → chgBg neutral ✓ -->
+      <div class="chg">≈ ทรงตัว (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 1 กรกฎาคม 2569<br>
+        ราคา ณ 10 ก.ค. 2569<br>
         กรอบ 52 สัปดาห์ $186.67 – $273.32<br>
         ที่มา: Yahoo Finance, StockAnalysis.com, Digrin
       </div>
@@ -99,8 +98,8 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ Q1 FY2026 (มี.ค. 2569)</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">~$45.8B</div><div class="d">192.86M หุ้น</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~26.5x</div><div class="d">EPS GAAP TTM $8.97 | Pro forma $8.56</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~$46.9B</div><div class="d">192.86M หุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~27.1x</div><div class="d">EPS GAAP TTM $8.97 | Pro forma $8.56</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~25–27x</div><div class="d">กรอบปกติ 20–32x</div></div>
       <div class="metric"><div class="k">P/BV</div><div class="v neu">~4.96x</div><div class="d">BVPS $47.89 | Equity $9.27B</div></div>
 
@@ -129,10 +128,10 @@
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
-        ราคา GRMN เริ่มต้นที่ $218.76 ใน ก.ค. 2568 ก่อนพุ่งขึ้นแตะจุดสูง $246 ใน ก.ย.
+        ราคา GRMN เริ่มต้นที่ $241.82 ใน ส.ค. 2568 ก่อนพุ่งขึ้นแตะจุดสูง $246 ใน ก.ย.
         จากนั้นปรับลงแรงในช่วง ต.ค.–พ.ย. สู่จุดต่ำสุด $195 หลังแรงขายกลุ่ม consumer tech
         และความกังวลเรื่อง FX ฟื้นตัวแรงสู่ $252 ใน ก.พ. 2569 หลังผล FY2025 รายได้ $7.25B
-        และ guidance FY2026 ที่ $7.9B เกินคาด ปิด ก.ค. 2569 ที่ $237.54 ผลตอบแทนรอบปี +8.6%
+        และ guidance FY2026 ที่ $7.9B เกินคาด ปิด ก.ค. 2569 ที่ $243.11 ผลตอบแทนรอบปี (12 เดือน) ประมาณ ทรงตัว +0.5%
       </p>
     </div>
   </section>
@@ -161,7 +160,7 @@
         วิธี P/E และ Forward P/E ให้ค่าใกล้เคียงกันที่ $224 สะท้อนการให้ราคาแบบอนุรักษ์นิยม
         EV/EBITDA ให้ค่าสูงกว่าที่ $261 เพราะ EBITDA margin ~34% สูงผิดปกติสำหรับกลุ่ม Consumer Electronics
         และฐานะ net cash $2.5B ช่วยเพิ่มมูลค่าต่อหุ้น FV เฉลี่ย $240 เหมาะสมสำหรับ
-        หุ้นคุณภาพสูงที่เติบโตสม่ำเสมอ ราคาปัจจุบัน $237.54 ซื้อขายใกล้ Fair Value
+        หุ้นคุณภาพสูงที่เติบโตสม่ำเสมอ ราคาปัจจุบัน $243.11 ซื้อขายใกล้ Fair Value
       </p>
     </div>
   </section>
@@ -172,7 +171,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $237.54</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $243.11</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $240</div></div>
         </div>
         <div class="scale">
@@ -184,7 +183,7 @@
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคาปัจจุบัน $237.54 ต่ำกว่า Fair Value $240 เพียง ~1% — อยู่ในโซน "ราคายุติธรรม" แต่ยังไม่มี MOS
+        ราคาปัจจุบัน $243.11 สูงกว่า Fair Value $240 ~1.3% — อยู่ในโซน "ราคายุติธรรม" แต่ไม่มี MOS
         นักวิเคราะห์เฉลี่ยตั้งเป้า $262 (upside ~10%) กรอบเป้า $220–$325
         จุดซื้อ MOS 20% ($192) และ MOS 30% ($168) อยู่ใต้จุดต่ำสุด 52 สัปดาห์ที่ $186.67
         สำหรับนักลงทุนระยะยาวที่เชื่อในคุณภาพธุรกิจ การทยอยสะสมใกล้ $230–$237 ยังพอรับได้
@@ -198,7 +197,7 @@
     <div class="card">
       <!-- MOS ~1% → class="bad" (< 10%) -->
       <div class="mos-verdict bad">
-        <div class="big">+1.0%</div>
+        <div class="big">−1.3%</div>
         <div class="txt">ราคาใกล้ Fair Value — ยังไม่มี MOS เพียงพอสำหรับนักลงทุนแบบ Value</div>
       </div>
       <div class="grid g3">
@@ -209,7 +208,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="237.54" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="243.11" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -218,13 +217,13 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $237.54 • EPS ฐาน ~$8.97 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $243.11 • EPS ฐาน ~$8.97 • รวมปันผล</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS +3%/ปี</span></div>
         <div class="body">
           <div class="tgt">$208</div>
-          <div class="ret neg">−4%/ปี (−12%)</div>
+          <div class="ret neg">−3%/ปี (−9%)</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$9.80</span></li>
             <li><span>P/E ออก</span><span>20x</span></li>
@@ -237,7 +236,7 @@
         <div class="top"><span>⚖️ Base</span><span>EPS +10%/ปี</span></div>
         <div class="body">
           <div class="tgt">$300</div>
-          <div class="ret pos">+8%/ปี (+26%)</div>
+          <div class="ret pos">+9%/ปี (+29%)</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$11.94</span></li>
             <li><span>P/E ออก</span><span>24x</span></li>
@@ -250,7 +249,7 @@
         <div class="top"><span>🚀 Bull</span><span>EPS +15%/ปี</span></div>
         <div class="body">
           <div class="tgt">$368</div>
-          <div class="ret pos">+16%/ปี (+55%)</div>
+          <div class="ret pos">+16%/ปี (+57%)</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$13.64</span></li>
             <li><span>P/E ออก</span><span>26x</span></li>
@@ -289,7 +288,7 @@
         <ul>
           <li><b>การแข่งขัน Consumer Wearable:</b> Apple Watch, Samsung Galaxy Watch, Whoop, Polar รุกตลาดอย่างต่อเนื่อง — Apple มีระบบนิเวศที่แข็งแกร่งกว่า Garmin ในกลุ่ม mainstream</li>
           <li><b>FX Exposure:</b> รายได้นอก US มากกว่า 50% — USD แข็งค่าเป็นอุปสรรคต่อ reported revenue/EPS จากการแปลงสกุลเงิน</li>
-          <li><b>Valuation Compression:</b> P/E 26.5x ไม่ถูกสำหรับหุ้นที่เติบโต ~10%/ปี — หากตลาดปรับ multiple ลงสู่ 20x ราคาอาจกลับมา $180 แม้พื้นฐานไม่เปลี่ยน</li>
+          <li><b>Valuation Compression:</b> P/E 27.1x ไม่ถูกสำหรับหุ้นที่เติบโต ~10%/ปี — หากตลาดปรับ multiple ลงสู่ 20x ราคาอาจกลับมา $180 แม้พื้นฐานไม่เปลี่ยน</li>
           <li><b>Consumer Spending ชะลอ:</b> ผลิตภัณฑ์ premium $500–$1,500 เป็น discretionary spending — ถ้าเศรษฐกิจถดถอยจะกระทบ Fitness/Outdoor segment โดยตรง</li>
           <li><b>Supply Chain &amp; Tariff:</b> การผลิตในไต้หวัน + component sourcing — นโยบายภาษีศุลกากร US-China อาจเพิ่มต้นทุนการผลิตอย่างมีนัยสำคัญ</li>
           <li><b>Segment Concentration:</b> Fitness (~40%) + Outdoor (~26%) = 66% รายได้ — หาก secular trend wearable ชะงักจะกระทบรายได้รวมอย่างรุนแรง</li>
@@ -307,12 +306,12 @@
         gross margin ~59% สูงระดับซอฟต์แวร์ net cash $2.5B ไม่มีหนี้สุทธิ ROE ~18.5% สม่ำเสมอ
         จ่ายปันผลต่อเนื่องกว่า 24 ปี FY2025 รายได้ $7.25B +15% YoY กำไร $1.66B +18% YoY
         เป็น record ทั้งคู่ guidance FY2026 $7.9B Revenue และ EPS $9.35 แสดงถึงความมั่นใจของผู้บริหาร
-        อย่างไรก็ตาม ราคา $237.54 ซื้อขายใกล้ Fair Value $240 มาก MOS เพียง ~1%
+        อย่างไรก็ตาม ราคา $243.11 ซื้อขายใกล้ Fair Value $240 มาก MOS ติดลบเล็กน้อย ~1.3%
         ยังไม่เหมาะสำหรับนักลงทุน value — แนะนำรอจังหวะย่อก่อนทยอยสะสม
       </p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$240 <span style="font-size:12px;color:#cab9a8">($224–$261)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +1.0%</div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ -1.3%</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$262 (Buy)</div></div>
       </div>
       <div class="zone">
@@ -329,9 +328,9 @@
     <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
     ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
-    ที่มาข้อมูล: Yahoo Finance (finance.yahoo.com/quote/GRMN) · StockAnalysis.com (stockanalysis.com/stocks/grmn) · Digrin (digrin.com/stocks/detail/GRMN) · Garmin Investor Relations (garmin.com/aboutGarmin/invRelations) — ข้อมูลราคา ณ 1 ก.ค. 2569
+    ที่มาข้อมูล: Yahoo Finance (finance.yahoo.com/quote/GRMN) · StockAnalysis.com (stockanalysis.com/stocks/grmn) · Digrin (digrin.com/stocks/detail/GRMN) · Garmin Investor Relations (garmin.com/aboutGarmin/invRelations) — ข้อมูลราคา ณ 10 ก.ค. 2569
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ 1 กรกฎาคม 2569 • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 10 กรกฎาคม 2569 • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
