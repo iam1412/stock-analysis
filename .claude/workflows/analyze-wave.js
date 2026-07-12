@@ -6,12 +6,15 @@ export const meta = {
 }
 
 // sequential ตามกติกา CLAUDE.md §3 — ห้าม parallel (เคยพัง rate limit ทั้งเวฟใน W19–W21)
-const stocks = (args && args.stocks) || []
+// args อาจมาเป็น JSON string (เรียกผ่าน Skill tool / controller stringify) — เกิดจริง 12 ก.ค. ล้มทั้ง 3 call จน fallback ไป Agent tool แบบไม่มี effort control
+let a = args
+if (typeof a === 'string') { try { a = JSON.parse(a) } catch (e) { a = null } }
+const stocks = (a && a.stocks) || []
 if (!Array.isArray(stocks) || !stocks.length) {
-  return { error: 'ต้องส่ง args.stocks = [{label, prompt, model?, effort?}] — prompt เต็มจาก _template/agent-prompt.md' }
+  return { error: 'ต้องส่ง args.stocks = [{label, prompt, model?, effort?}] (object หรือ JSON string ก็ได้) — prompt เต็มจาก _template/agent-prompt.md' }
 }
-const waveEffort = (args && args.effort) || 'medium'
-const waveModel = (args && args.model) || 'sonnet'
+const waveEffort = (a && a.effort) || 'medium'
+const waveModel = (a && a.model) || 'sonnet'
 
 phase('Analyze')
 const results = []

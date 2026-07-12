@@ -92,8 +92,9 @@ cp _template/skeleton-{th|us}.html reports/<SYMBOL>.html
 1. **batch เดียว**: `node tools/update-prices.js --write --force <SYM>` + `node tools/fetch-fundamentals.js <SYM> [--th]` + อ่าน `reports/<SYM>.html`
 2. **จุดตัดสิน**: EPS(TTM) จาก fundamentals ≈ EPS ในรายงานเดิม (±2%) และไม่มีสัญญาณงบใหม่/split
    → FV เดิมยังยืน ไปข้อ 3 · **เกินเกณฑ์ → ยกระดับเป็น UPDATE เต็ม** (STEP 2→5B ตามปกติ)
-3. **Edit เฉพาะ** (รวมหลายจุดใน turn เดียว): prose ที่อ้างเลขเก่า (จุดเข้า / "แพง~X%" / คำบรรยายทิศกราฟ) ·
-   gauge min/max ถ้า script เตือนหลุดช่วง · วันที่วิเคราะห์ footer "ข้อมูล ณ …" = วันนี้ · `meta ai-model` = โมเดลที่รันจริง
+3. **Edit เฉพาะ — 2 turns เท่านั้น**: turn แรก `grep` หา**ทุกจุด**ที่อ้างเลขเก่าในไฟล์ (จุดเข้า / "แพง~X%" / คำบรรยายทิศกราฟ / gauge ถ้า script เตือนหลุดช่วง / วันที่ footer / `meta ai-model`) → turn ถัดไป**ยิง Edit ทุกจุดพร้อมกันในข้อความเดียว** (หลาย tool call ต่อข้อความได้)
+   ⚠ ห้าม Edit ทีละ turn — วัดจริง 12 ก.ค. 2569: worker ยิงทีละ turn 12–16 ครั้ง = +~1M cache-read/ตัว กินเป้า ≤10 turns หมด
+   ⚠ ห้าม grep/สำรวจ `_template/` `build.js` `test/` — สงสัยความหมาย class/gauge → `docs/templates.md` ครั้งเดียวพอ
 4. `npm test -- <SYM>` **ครั้งเดียว** → เขียว → คืนงาน (ไม่แตะ FV/EPS = ไม่ต้องรัน update-prices ซ้ำ)
 
 ## STEP 6 — self-check ก่อนจบ
