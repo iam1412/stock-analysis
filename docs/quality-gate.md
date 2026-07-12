@@ -18,6 +18,63 @@ npm run test:self        # meta-test: พิสูจน์ว่า checker เ
 ## ชั้น 1 — `test/check-reports.js`
 ตรวจ source `reports/<SYMBOL>.html` ทีละไฟล์ — 37 error + 11 warning
 
+### ตารางอ้างอิง code ครบชุด (E01–E37 · W01–W12)
+
+> ดึงจาก field `id`/`level`/`label` ของ `CHECKS` ใน `test/check-reports.js` — **gate ฟ้อง code ไหน เปิดตารางนี้ก่อน ไม่ต้องขุด test/** · ไม่มี W11 (ยกระดับเป็น E36 แล้ว) · แก้/เพิ่ม check ในโค้ด → อัปเดตแถวในตารางนี้ด้วย
+
+| code | level | ตรวจอะไร |
+|------|-------|-----------|
+| E01 | error | DOCTYPE html |
+| E02 | error | `<html lang="th">` |
+| E03 | error | ปิด `</html>` |
+| E04 | error | title มีชื่อย่อหุ้น |
+| E05 | error | มี `<h1>` |
+| E06 | error | ครบ 8 section |
+| E07 | error | กราฟราคา |
+| E08 | error | เครื่องคิดเลข MOS |
+| E09 | error | gauge ราคา |
+| E10 | error | disclaimer |
+| E11 | error | footer |
+| E12 | error | ราคา+วันที่+แหล่งที่มา (header) |
+| E13 | error | ไม่มี placeholder ค้าง |
+| E14 | error | ไม่มี undefined/NaN |
+| E15 | error | FV ใน JS = FV ในกล่อง |
+| E16 | error | MOS = (FV−ราคา)/FV |
+| E17 | error | ≥2 วิธีประเมินมูลค่า + Fair Value |
+| E18 | error | จุดซื้อ MOS20/30 = FV×0.8 / ×0.7 |
+| E19 | error | gauge marker ตรงกับ ราคา/FV |
+| E20 | error | Fair Value อยู่ในกรอบ low–high |
+| E21 | error | วิธี P/E: ค่า = EPS × P/E ในคำอธิบาย |
+| E22 | error | วิธี P/BV: ค่า = ratio × BVPS, ratio = (ROE−g)/(r−g) |
+| E23 | error | ราคา header = ค่าตั้งต้นเครื่องคิดเลข |
+| E24 | error | scenario: EPS ปี3 = EPS ฐาน×(1+g)³ |
+| E25 | error | FV ในสรุป (verdict) = FV ในกล่อง |
+| E26 | error | gauge scale: เรียงขึ้น + MOS20/30 = FV×0.8/0.7 |
+| E27 | error | ราคาไม่เก่า/ไม่อยู่อนาคต |
+| E28 | error | ระบุโมเดล AI (meta ai-model) |
+| E29 | error | มีบล็อก stock-meta (JSON ครบ key) |
+| E30 | error | stock-meta = เลขที่โชว์ (ราคา/FV/MOS) |
+| E31 | error | stock-meta สอดคล้องในตัว (mos/upside) |
+| E32 | error | คำโปรยธุรกิจใต้ `<h1>` (.sub → desc การ์ด index) |
+| E33 | error | CSS var ที่อ้างถึงต้องถูกนิยาม (กันสี/พื้นหลังหายเงียบ) |
+| E34 | error | สีป้าย change ตรงทิศทาง (เขียว=ขึ้น/แดง=ลง) |
+| E35 | error | header % = ผลตอบแทนรอบปี (รอบปี) |
+| E36 | error | % รอบปี = ผลตอบแทนปลายกราฟ (จุดแรก→ท้าย) |
+| E37 | error | กราฟ ~1 ปี (ไม่เกิน ~13 จุด) |
+| W01 | warn | scenario: EPS×P/E ≈ ราคาเป้า |
+| W02 | warn | สกุลเงินปน |
+| W03 | warn | CSS เพี้ยน .seg-label |
+| W04 | warn | สี verdict ตรงกับโซน MOS |
+| W05 | warn | FV ≈ ค่าเฉลี่ยวิธีที่แสดง |
+| W06 | warn | สรุป "ส่วนต่างจากราคา" ตรงกับ MOS |
+| W07 | warn | ตัวเลขพื้นฐานสมเหตุสมผล |
+| W08 | warn | แหล่งข้อมูล ≥3 + อ้างอิงครบ |
+| W09 | warn | ความสดของราคา |
+| W10 | warn | stock-meta P/E·Yield·ROE ≈ ที่โชว์ |
+| W12 | warn | label จุดกราฟไม่ว่าง |
+
+### คำอธิบายประกอบตามกลุ่ม
+
 - **โครงสร้าง:** DOCTYPE/`lang="th"`/ปิด `</html>`, `<title>` มีชื่อย่อ, `<h1>`, ครบ 8 section, กราฟ, gauge, เครื่องคิดเลข MOS, disclaimer, footer, header (ราคา+วันที่+แหล่งที่มา), **meta `ai-model` (E28: ต้องระบุโมเดล AI ที่ใช้วิเคราะห์ ขึ้นต้น "Claude ")**, **คำโปรยธุรกิจ `<div class="sub">` ใต้ `<h1>` (E32: ต้องมี + ยาวพอ → build ดึงเป็น `desc` โชว์บนการ์ดหน้า index)**
 - **ตัวเลขสอดคล้องกันเอง:** `const FV` = Fair Value กล่อง = FV ในสรุป (vgrid) • MOS = (FV−ราคา)/FV • จุดซื้อ MOS20/30 = FV×0.8/0.7 (ทั้งกล่องและแกน gauge) • ราคา header = ค่าตั้งต้นเครื่องคิดเลข • **คณิตแต่ละวิธี: P/E = EPS×P/E, Justified P/BV = ratio×BVPS และ ratio=(ROE−g)/(r−g)** • scenario: EPS ปี3 = EPS ฐาน×(1+g)³ และ tgt = EPS×P/E
 - **stock-meta (screener) [E29–31, W10]:** บล็อก `<script id="stock-meta">` JSON ครบ key + ชนิดถูก + symbol/currency ตรง (E29) • ตัวเลข = ที่โชว์จริง: price/fairValue/MOS ตรงกล่อง (E30) + mos/upside สอดคล้องราคา&FV (E31) • (warn W10) pe/yield/roe ≈ ที่โชว์เท่าที่ดึงได้
