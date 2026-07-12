@@ -4,9 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>วิเคราะห์หุ้น Five Below (FIVE) — Stock Analysis Dashboard</title>
-<meta name="ai-model" content="Claude Sonnet 4.6">
+<meta name="ai-model" content="Claude Sonnet 5">
 <script type="application/json" id="stock-meta">
-{"symbol":"FIVE","currency":"USD","price":182.43,"fairValue":185,"mos":1.39,"upside":1.41,"pe":23.01,"dividendYield":null,"roe":21.13}
+{"symbol":"FIVE","currency":"USD","price":189.39,"fairValue":185,"mos":-2.4,"upside":-2.3,"pe":23.01,"dividendYield":null,"roe":21.13}
 </script>
 <script type="application/json" id="report-data">
 {
@@ -20,36 +20,35 @@
     "verdictText": "#fce7f3",
     "vcellLabel": "rgba(244,114,182,0.7)",
     "badge": "#CC0066",
-    "chgBg": "#16a34a",
-    "chgColor": "#fff"
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#1e8e3e"
   },
   "chart": {
     "data": [
-      ["ส.ค. 25", 145.10],
-      ["ก.ย. 25", 154.70],
-      ["ต.ค. 25", 157.27],
-      ["พ.ย. 25", 164.89],
-      ["ธ.ค. 25", 188.36],
-      ["ม.ค. 26", 191.64],
-      ["ก.พ. 26", 223.53],
-      ["มี.ค. 26", 228.48],
-      ["เม.ย. 26", 235.66],
-      ["พ.ค. 26", 227.36],
-      ["มิ.ย. 26", 179.79],
-      ["ก.ค. 26", 182.64],
-      ["ก.ค. 26*", 182.43]
+      ["ส.ค.25", 145.1],
+      ["ก.ย.25", 154.7],
+      ["ต.ค.25", 157.27],
+      ["พ.ย.25", 164.89],
+      ["ธ.ค.25", 188.36],
+      ["ม.ค.26", 191.64],
+      ["ก.พ.26", 223.53],
+      ["มี.ค.26", 228.48],
+      ["เม.ย.26", 235.66],
+      ["พ.ค.26", 227.36],
+      ["มิ.ย.26", 179.79],
+      ["ก.ค.26", 189.39]
     ],
-    "min": 130,
-    "max": 260,
-    "grid": [130, 160, 185, 210, 235, 260],
+    "min": 125,
+    "max": 250,
+    "grid": [150, 175, 200, 225],
     "fairLine": 185,
     "currency": "$",
-    "highlight": [8, 10]
+    "highlight": [0, 8]
   },
   "gauge": {
     "min": 120,
     "max": 280,
-    "cur": 182.43,
+    "cur": 189.39,
     "fair": 185,
     "fairLabelTop": false
   },
@@ -73,11 +72,11 @@
     <div class="sub">Discount retail $1–$25 • ~1,700+ US stores • Tweens &amp; teens • Five Beyond expansion</div>
     <div class="price-row">
       <div>
-        <div class="px">$182.43<small>(FIVE)</small></div>
+        <div class="px">$189.39<small>(FIVE)</small></div>
       </div>
-      <div class="chg" style="background:#16a34a;color:#fff">▲ +25.7% (รอบปี)</div>
+      <div class="chg">▲ +30.5% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 2 ก.ค. 2569<br>
+        ราคา ณ 10 ก.ค. 2569<br>
         กรอบ 52 สัปดาห์ $126.10 – $251.63<br>
         ที่มา: StockAnalysis.com, Finviz.com, Yahoo Finance
       </div>
@@ -121,7 +120,7 @@
         FIVE เริ่มต้นปีใน ส.ค. 2568 ที่ราคา ~$145 หลังจากตกหนักจากปัญหาสินค้าคงคลังและการเปลี่ยนแปลงผู้บริหารในปี 2567
         ราคาฟื้นตัวต่อเนื่องผ่านปลายปี 2568 สู่ $188–$228 ช่วง ธ.ค. 2568 – เม.ย. 2569 ขับเคลื่อนด้วยความเชื่อมั่นของนักวิเคราะห์และ same-store-sales (SSS) ที่ฟื้นตัว
         อย่างไรก็ตาม ราคาปรับลดลงแรงในเดือน มิ.ย. 2569 กลับมาที่ ~$180 สะท้อนความกังวลเรื่องผู้บริโภคและ macro headwinds
-        รวมทั้งปี ผลตอบแทนอยู่ที่ +25.7% (รอบปี ส.ค. 2568 – ก.ค. 2569)
+        รวมทั้งปี ผลตอบแทนอยู่ที่ +30.5% (รอบปี ส.ค. 2568 – ก.ค. 2569)
       </p>
     </div>
   </section>
@@ -158,7 +157,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $182.43</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $189.39</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $185</div></div>
         </div>
         <div class="scale">
@@ -170,7 +169,7 @@
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคาปัจจุบัน $182.43 อยู่ต่ำกว่า Fair Value $185 เพียงเล็กน้อย (~1.4%) ชี้ว่า FIVE ซื้อขายในโซน "ใกล้มูลค่าพื้นฐาน" — ยังไม่ถึงโซน Deep Value ที่ $129–$148 (MOS 20–30%)
+        ราคาปัจจุบัน $189.39 อยู่สูงกว่า Fair Value $185 เล็กน้อย (~2.4%) ชี้ว่า FIVE ซื้อขายในโซน "ใกล้มูลค่าพื้นฐานแต่เริ่มแพงกว่าเล็กน้อย" — ยังไม่ถึงโซน Deep Value ที่ $129–$148 (MOS 20–30%)
         อย่างไรก็ตามนักวิเคราะห์ 25 คนมีเป้าหมายเฉลี่ย $261.57 (+43%) สะท้อน upside จาก SSS ฟื้นตัว + การขยายสาขา + margin expansion ในช่วง 12 เดือน
       </p>
     </div>
@@ -181,7 +180,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict bad">
-        <div class="big">+1.4%</div>
+        <div class="big">−2%</div>
         <div class="txt">ราคาใกล้มูลค่าพื้นฐาน — MOS ต่ำ ยังไม่มีส่วนเผื่อความปลอดภัยเพียงพอ</div>
       </div>
       <div class="grid g3">
@@ -192,7 +191,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="182.43" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="189.39" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -201,13 +200,13 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $182.43 • EPS ฐาน ~$9.04 • ไม่มีปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $189.39 • EPS ฐาน ~$9.04 • ไม่มีปันผล</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS −5%/ปี</span></div>
         <div class="body">
           <div class="tgt">$109</div>
-          <div class="ret neg">−40.2%</div>
+          <div class="ret neg">−42.4%</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$7.75</span></li>
             <li><span>P/E ออก</span><span>14x</span></li>
@@ -220,7 +219,7 @@
         <div class="top"><span>⚖️ Base</span><span>EPS +8%/ปี</span></div>
         <div class="body">
           <div class="tgt">$239</div>
-          <div class="ret pos">+31.0%</div>
+          <div class="ret pos">+26.2%</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$11.38</span></li>
             <li><span>P/E ออก</span><span>21x</span></li>
@@ -233,7 +232,7 @@
         <div class="top"><span>🚀 Bull</span><span>EPS +15%/ปี</span></div>
         <div class="body">
           <div class="tgt">$330</div>
-          <div class="ret pos">+81.0%</div>
+          <div class="ret pos">+74.2%</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$13.76</span></li>
             <li><span>P/E ออก</span><span>24x</span></li>
@@ -282,11 +281,11 @@
   <section>
     <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
     <div class="verdict">
-      <h2>ใกล้มูลค่าพื้นฐาน — รอโซน MOS ที่ดีกว่าก่อนสะสม</h2>
-      <p>Five Below เป็น discount retailer คุณภาพดีที่กำลัง turnaround จากวิกฤต inventory/management ปี 2566–2567 ผลประกอบการฟื้นชัดเจน: EPS TTM $7.93 · FCF $505M · Revenue growth 26% · ROE 21% แสดงให้เห็น competitive moat ในกลุ่ม teen/tween specialty retail อย่างไรก็ตาม ราคาปัจจุบัน $182 ซื้อขายใกล้ Fair Value $185 อย่างมาก MOS เพียง 1.4% — ไม่ให้ "ส่วนเผื่อ" เพียงพอสำหรับ value investor นักวิเคราะห์ bullish มีเป้าเฉลี่ย $261 (+43%) แต่ระยะสั้นมี macro headwinds และ tariff risk กดดัน</p>
+      <h2>ซื้อขายสูงกว่ามูลค่าเหมาะสมเล็กน้อย — รอโซน MOS ที่ดีกว่าก่อนสะสม</h2>
+      <p>Five Below เป็น discount retailer คุณภาพดีที่กำลัง turnaround จากวิกฤต inventory/management ปี 2566–2567 ผลประกอบการฟื้นชัดเจน: EPS TTM $7.93 · FCF $505M · Revenue growth 26% · ROE 21% แสดงให้เห็น competitive moat ในกลุ่ม teen/tween specialty retail อย่างไรก็ตาม ราคาปัจจุบัน $189 ซื้อขายสูงกว่า Fair Value $185 เล็กน้อย MOS ติดลบ ~2.4% — ไม่ให้ "ส่วนเผื่อ" ความปลอดภัยสำหรับ value investor นักวิเคราะห์ bullish มีเป้าเฉลี่ย $261 (+43%) แต่ระยะสั้นมี macro headwinds และ tariff risk กดดัน</p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$185 <span style="font-size:12px;color:#cab9a8">($164–$208)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +1.4%</div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ff5252">MOS ~ -2.4%</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$261.57 (Buy)</div></div>
       </div>
       <div class="zone">
@@ -299,9 +298,9 @@
   <div class="disc">
     <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
-    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ที่มา: StockAnalysis.com, Finviz.com, Yahoo Finance (ราคา ณ 2 ก.ค. 2569)
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ที่มา: StockAnalysis.com, Finviz.com, Yahoo Finance (ราคา ณ 10 ก.ค. 2569)
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ 2 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 12 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
