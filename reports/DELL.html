@@ -4,24 +4,54 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>วิเคราะห์หุ้น Dell Technologies (DELL) — Stock Analysis Dashboard</title>
-<meta name="ai-model" content="Claude Opus 4.8">
+<meta name="ai-model" content="Claude Sonnet 5">
 <script type="application/json" id="stock-meta">
-{"symbol":"DELL","currency":"USD","price":418.71,"fairValue":430,"mos":3,"upside":2.7,"pe":33.5,"dividendYield":0.6,"roe":null}
+{"symbol":"DELL","currency":"USD","price":434.97,"fairValue":430,"mos":-1.2,"upside":-1.1,"pe":33.5,"dividendYield":0.6,"roe":null}
 </script>
 <script type="application/json" id="report-data">
 {
   "theme": {
-    "accent": "#1d94ed", "accentDark": "#0f6db3",
+    "accent": "#1d94ed",
+    "accentDark": "#0f6db3",
     "darkGrad": "linear-gradient(135deg,#04253e 0%,#074573 58%,#0c6db6 140%)",
-    "glow": "rgba(19,143,236,.35)", "subColor": "#c2d9eb", "headerMuted": "#a5c0d4",
-    "chgBg": "var(--green-soft)", "chgColor": "#1e8e3e", "badge": "var(--blue)",
-    "verdictText": "#d0e3f1", "vcellLabel": "#a6c6dd"
+    "glow": "rgba(19,143,236,.35)",
+    "subColor": "#c2d9eb",
+    "headerMuted": "#a5c0d4",
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#1e8e3e",
+    "badge": "var(--blue)",
+    "verdictText": "#d0e3f1",
+    "vcellLabel": "#a6c6dd"
   },
   "chart": {
-    "data": [["มิ.ย.25",112],["ส.ค.25",135],["ต.ค.25",165],["ธ.ค.25",195],["ก.พ.26",240],["เม.ย.26",330],["พ.ค.26",465],["มิ.ย.26",419]],
-    "min": 90, "max": 490, "grid": [100,150,200,250,300,350,400,450], "fairLine": 430, "currency": "$", "highlight": [6,7]
+    "data": [
+      ["ส.ค.25", 122.15],
+      ["ก.ย.25", 141.77],
+      ["ต.ค.25", 162.01],
+      ["พ.ย.25", 133.35],
+      ["ธ.ค.25", 125.88],
+      ["ม.ค.26", 114.44],
+      ["ก.พ.26", 148.08],
+      ["มี.ค.26", 164.13],
+      ["เม.ย.26", 208.95],
+      ["พ.ค.26", 420.91],
+      ["มิ.ย.26", 431.46],
+      ["ก.ค.26", 434.97]
+    ],
+    "min": 0,
+    "max": 500,
+    "grid": [100, 200, 300, 400],
+    "fairLine": 430,
+    "currency": "$",
+    "highlight": [5, 11]
   },
-  "gauge": { "min": 280, "max": 720, "cur": 419, "fair": 430, "fairLabelTop": "-58px" },
+  "gauge": {
+    "min": 280,
+    "max": 720,
+    "cur": 434.97,
+    "fair": 430,
+    "fairLabelTop": "-58px"
+  },
   "fv": 430
 }
 </script>
@@ -42,11 +72,11 @@
     <div class="sub">ผู้นำ AI Server (PowerEdge + Nvidia GPU) • Infrastructure (ISG), PC/อุปกรณ์ (CSG), Storage</div>
     <div class="price-row">
       <div>
-        <div class="px">$419<small>(DELL)</small></div>
+        <div class="px">$434.97<small>(DELL)</small></div>
       </div>
-      <div class="chg">▲ +274.1% (รอบปี)</div>
+      <div class="chg">▲ +256.1% (รอบปี)</div>
       <div class="px-meta">
-        ราคา $418.71 ณ 22 มิ.ย. 2026 (ปิดตลาด)<br>
+        ราคา $434.97 ณ 10 ก.ค. 2026 (ปิดตลาด)<br>
         ขึ้นแรงตามกระแส AI server (+~30% ในเดือน)<br>
         ที่มา: StockAnalysis.com / Yahoo Finance / CNBC
       </div>
@@ -87,7 +117,7 @@
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
-        หุ้นพุ่ง <b>+251% ในรอบปี</b> จากจุดต่ำ ~$110 (กลางปี 2025) สู่จุดสูงสุดตลอดกาล $469.47 ก่อนย่อมาที่ ~$419
+        หุ้นพุ่ง <b>+256% ในรอบปี</b> จากจุดต่ำ ~$110 (กลางปี 2025) สู่จุดสูงสุดตลอดกาล $469.47 ก่อนย่อมาที่ ~$435
         แรงขับหลักคือ <b>ดีมานด์ AI server มหาศาล</b> (ISG +181% YoY) — Dell กลายเป็นหนึ่งในผู้ได้ประโยชน์สูงสุดของวงจรลงทุน AI infrastructure
         แต่ราคาก็วิ่งเร็วจนนักวิเคราะห์บางราย (UBS) เริ่มเตือนว่า upside เหลือจำกัด
       </p>
@@ -127,7 +157,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $419</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $435</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $430</div></div>
         </div>
         <div class="scale">
@@ -139,7 +169,7 @@
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคา $419 อยู่ <b>ใกล้เคียงมูลค่าเหมาะสม $430</b> ในเชิงพื้นฐาน — มีส่วนเผื่อความปลอดภัยบางมาก
+        ราคา $435 อยู่ <b>ใกล้เคียงมูลค่าเหมาะสม $430</b> ในเชิงพื้นฐาน — เริ่มแพงกว่ามูลค่าเล็กน้อย ไม่มีส่วนเผื่อความปลอดภัย
         ยัง <b>ต่ำกว่าเป้าหมาย 12 เดือน</b> เฉลี่ยของนักวิเคราะห์ ($484, สูงสุด $700) แต่กรอบเป้ากว้างมาก (ต่ำสุด $213)
         สะท้อนความไม่แน่นอนสูงว่าวงจร AI server จะยั่งยืนแค่ไหน
       </p>
@@ -151,8 +181,8 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict bad">
-        <div class="big">+3%</div>
-        <div class="txt"><b>Margin of Safety บางมาก</b><br>ราคาปัจจุบัน $419 ต่ำกว่ามูลค่าเหมาะสม $430 เพียง ~3% → ตามเกณฑ์ value investor ถือว่า <b>ราคาสมเหตุสมผลแต่ไม่มีส่วนเผื่อ</b> ยังไม่ใช่จุดซื้อที่ปลอดภัยชัดเจน</div>
+        <div class="big">−1.2%</div>
+        <div class="txt"><b>Margin of Safety ติดลบเล็กน้อย</b><br>ราคาปัจจุบัน $434.97 สูงกว่ามูลค่าเหมาะสม $430 เล็กน้อย (~1%) → ตามเกณฑ์ value investor ถือว่า <b>ราคาแพงกว่าพื้นฐานเล็กน้อย ไม่มีส่วนเผื่อความปลอดภัย</b> ยังไม่ใช่จุดซื้อ</div>
       </div>
       <div class="grid g3">
         <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$344</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
@@ -162,7 +192,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="419" step="1">
+          <input id="pxIn" class="mono" type="number" value="434.97" step="1">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -171,13 +201,13 @@
 
   <!-- ===== RETURN PROJECTION ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $419 • EPS ฐาน ~$18.4 (non-GAAP)</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $434.97 • EPS ฐาน ~$18.4 (non-GAAP)</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS +5%/ปี</span></div>
         <div class="body">
           <div class="tgt">$298</div>
-          <div class="ret neg">รวม ~ −29% (≈ −11%/ปี)</div>
+          <div class="ret neg">รวม ~ −31% (≈ −12%/ปี)</div>
           <ul>
             <li><span>EPS ปี 3</span><span>$21.3</span></li>
             <li><span>P/E ออก</span><span>14x</span></li>
@@ -189,7 +219,7 @@
         <div class="top"><span>⚖️ Base</span><span>EPS +12%/ปี</span></div>
         <div class="body">
           <div class="tgt">$464</div>
-          <div class="ret pos">รวม ~ +11% (≈ +3.5%/ปี)</div>
+          <div class="ret pos">รวม ~ +7% (≈ +2.2%/ปี)</div>
           <ul>
             <li><span>EPS ปี 3</span><span>$25.8</span></li>
             <li><span>P/E ออก</span><span>18x</span></li>
@@ -201,7 +231,7 @@
         <div class="top"><span>🚀 Bull</span><span>EPS +20%/ปี</span></div>
         <div class="body">
           <div class="tgt">$700</div>
-          <div class="ret pos">รวม ~ +67% (≈ +19%/ปี)</div>
+          <div class="ret pos">รวม ~ +61% (≈ +17%/ปี)</div>
           <ul>
             <li><span>EPS ปี 3</span><span>$31.8</span></li>
             <li><span>P/E ออก</span><span>22x</span></li>
@@ -211,7 +241,7 @@
       </div>
     </div>
     <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
-      ความเสี่ยง–ผลตอบแทน <b>เบ้ลง (asymmetric ทางลบ)</b> ที่ราคานี้: bear case ขาดทุนได้แรง (~−29%) เพราะ multiple AI server หดได้เร็วถ้าวงจรพลิก
+      ความเสี่ยง–ผลตอบแทน <b>เบ้ลง (asymmetric ทางลบ)</b> ที่ราคานี้: bear case ขาดทุนได้แรง (~−31%) เพราะ multiple AI server หดได้เร็วถ้าวงจรพลิก
       ส่วน <b>base case ให้ผลตอบแทนต่ำ</b> (~3–4%/ปี) — upside ที่แท้จริงผูกกับว่า backlog AI จะแปลงเป็นกำไรที่ยั่งยืนได้จริงและมาร์จิ้น server ที่บางจะไม่ถูกบีบลงอีก
     </p>
   </section>
@@ -239,7 +269,7 @@
           <li><div><b>การแข่งขันรุนแรง:</b> Super Micro (SMCI), HPE, Lenovo + ODM ไต้หวันแย่งดีล AI server — เป็นสงครามราคา กดมาร์จิ้น</div></li>
           <li><div><b>งบดุลตึง:</b> <b>ส่วนผู้ถือหุ้นติดลบ (−$1.4B)</b>, หนี้สูง, Altman Z-Score ต่ำ — leverage มากทำให้เปราะถ้ากระแสเงินสดสะดุด</div></li>
           <li><div><b>วงจร PC ผันผวน:</b> CSG (PC/อุปกรณ์) ยังเป็นฐานใหญ่ของกำไร — ดีมานด์ PC อ่อนไหวต่อเศรษฐกิจและรอบเปลี่ยนเครื่อง</div></li>
-          <li><div><b>Valuation วิ่งเร็ว:</b> ราคา +251% ใน 1 ปี, P/E TTM ~33x — UBS เตือน upside จำกัด; กรอบเป้านักวิเคราะห์กว้างมาก ($213–$700)</div></li>
+          <li><div><b>Valuation วิ่งเร็ว:</b> ราคา +256% ใน 1 ปี, P/E TTM ~33.5x — UBS เตือน upside จำกัด; กรอบเป้านักวิเคราะห์กว้างมาก ($213–$700)</div></li>
         </ul>
       </div>
     </div>
@@ -250,10 +280,10 @@
     <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
     <div class="verdict">
       <h2>ผู้ชนะรอบ AI server — แต่ราคาวิ่งมาเต็มมูลค่าแล้ว</h2>
-      <p>Dell เป็นหนึ่งในผู้ได้ประโยชน์สูงสุดของวงจรลงทุน AI infrastructure — รายได้และ EPS non-GAAP โตระเบิดจาก AI server (ISG +181% YoY) พร้อม backlog หนา แต่ที่ราคา ~$419 ตลาดได้สะท้อนความคาดหวังเชิงบวกไปมากแล้ว ส่วนเผื่อความปลอดภัยเหลือบางมาก ขณะที่มาร์จิ้น server บางและส่วนผู้ถือหุ้นติดลบเพิ่มความเสี่ยงด้าน leverage</p>
+      <p>Dell เป็นหนึ่งในผู้ได้ประโยชน์สูงสุดของวงจรลงทุน AI infrastructure — รายได้และ EPS non-GAAP โตระเบิดจาก AI server (ISG +181% YoY) พร้อม backlog หนา แต่ที่ราคา ~$435 ตลาดได้สะท้อนความคาดหวังเชิงบวกไปมากแล้วและแพงกว่ามูลค่าเหมาะสมเล็กน้อย ส่วนเผื่อความปลอดภัยติดลบ ขณะที่มาร์จิ้น server บางและส่วนผู้ถือหุ้นติดลบเพิ่มความเสี่ยงด้าน leverage</p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$430 <span style="font-size:12px;color:#a8b6cc">($405–$455)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#a5d6a7">ถูก ~3%</div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#e57373">แพง ~1%</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">$484 (+16%)</div></div>
       </div>
       <div class="zone">
@@ -268,7 +298,7 @@
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ "EPS non-GAAP forward" และความยั่งยืนของวงจร AI server ซึ่งเป็นจุดถกเถียงหลัก
     DELL มีส่วนผู้ถือหุ้นติดลบทำให้ ROE/P/BV ไม่มีความหมาย และราคาช่วงนี้ผันผวนแรงตามกระแส AI ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • อ้างอิงงบจริงจาก Dell IR (8-K Q1 FY2027, พ.ค. 2026)
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ 22–23 มิ.ย. 2026 • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 10 ก.ค. 2026 • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
