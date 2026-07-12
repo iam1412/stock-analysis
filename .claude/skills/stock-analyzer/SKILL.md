@@ -78,7 +78,7 @@ cp _template/skeleton-{th|us}.html reports/<SYMBOL>.html
 ## STEP 5B — เขียนรายงาน โหมด UPDATE (แก้เฉพาะจุด)
 
 1. อ่าน `reports/<SYMBOL>.html` (ราคา/กราฟ/วันที่ราคา สดแล้วจาก STEP 1) → ประเมิน EPS/FV/มุมมอง เปลี่ยนไหม
-2. **Edit เฉพาะจุดที่เปลี่ยนจริง:**
+2. **แก้เฉพาะจุดที่เปลี่ยนจริง** (หลายจุด → รวมยิงใน Bash เดียวผ่าน `tools/apply-edits.js` แบบ STEP 5C ข้อ 3):
    - EPS / FV ทุกวิธี / จุดซื้อ MOS20-30 / scenario + `stock-meta` (fairValue, pe, eps, dividendYield, roe — **ยกเว้น price/mos/upside script คำนวณให้**)
    - **prose ทุกประโยคที่อ้างเลขเก่า** (จุดเข้า / "แพง~X%" / เป้า / คำบรรยายกราฟ-ทิศทาง) + มุมมอง/catalyst ที่เปลี่ยน
    - วันที่วิเคราะห์ footer "ข้อมูล ณ …" = วันนี้ · `meta ai-model` = โมเดลที่รันจริง
@@ -92,8 +92,22 @@ cp _template/skeleton-{th|us}.html reports/<SYMBOL>.html
 1. **batch เดียว**: `node tools/update-prices.js --write --force <SYM>` + `node tools/fetch-fundamentals.js <SYM> [--th]` + อ่าน `reports/<SYM>.html`
 2. **จุดตัดสิน**: EPS(TTM) จาก fundamentals ≈ EPS ในรายงานเดิม (±2%) และไม่มีสัญญาณงบใหม่/split
    → FV เดิมยังยืน ไปข้อ 3 · **เกินเกณฑ์ → ยกระดับเป็น UPDATE เต็ม** (STEP 2→5B ตามปกติ)
-3. **Edit เฉพาะ — 2 turns เท่านั้น**: turn แรก `grep` หา**ทุกจุด**ที่อ้างเลขเก่าในไฟล์ (จุดเข้า / "แพง~X%" / คำบรรยายทิศกราฟ / gauge ถ้า script เตือนหลุดช่วง / วันที่ footer / `meta ai-model`) → turn ถัดไป**ยิง Edit ทุกจุดพร้อมกันในข้อความเดียว** (หลาย tool call ต่อข้อความได้)
-   ⚠ ห้าม Edit ทีละ turn — วัดจริง 12 ก.ค. 2569: worker ยิงทีละ turn 12–16 ครั้ง = +~1M cache-read/ตัว กินเป้า ≤10 turns หมด
+3. **แก้ไฟล์ — 2 turns เท่านั้น**: turn แรก `grep` หา**ทุกจุด**ที่อ้างเลขเก่าในไฟล์ (จุดเข้า / "แพง~X%" / คำบรรยายทิศกราฟ / gauge ถ้า script เตือนหลุดช่วง / วันที่ footer / `meta ai-model`) → turn ถัดไป apply ทุกจุดใน **Bash call เดียว** ผ่าน `tools/apply-edits.js` (all-or-nothing — จุดไหนหาไม่เจอ/ไม่ unique = ไม่เขียนไฟล์เลย script บอกทุกจุดที่พัง แก้ block แล้วรันใหม่):
+   ```bash
+   node tools/apply-edits.js reports/<SYM>.html <<'EOF'
+   @@
+   ข้อความเดิม verbatim (หลายบรรทัดได้ ไม่ต้อง escape)
+   @@=
+   ข้อความใหม่
+   @@end
+   @@
+   (บล็อกถัดไป — กี่จุดก็ได้ในคำสั่งเดียว · `@@all` แทน `@@` = replace ทุก occurrence)
+   @@=
+   ...
+   @@end
+   EOF
+   ```
+   ⚠ **ห้ามใช้ Edit tool ทีละจุดทีละ turn** — วัดจริง 12 ก.ค. 2569: worker ยิงทีละ turn 12–16 ครั้ง = +~1M cache-read/ตัว กินเป้า ≤10 turns หมด (Edit tool = fallback เฉพาะเมื่อ apply-edits fail ซ้ำ และต้องยิงทุกจุดในข้อความเดียว)
    ⚠ ห้าม grep/สำรวจ `_template/` `build.js` `test/` — สงสัยความหมาย class/gauge → `docs/templates.md` ครั้งเดียวพอ
 4. `npm test -- <SYM>` **ครั้งเดียว** → เขียว → คืนงาน (ไม่แตะ FV/EPS = ไม่ต้องรัน update-prices ซ้ำ)
 
