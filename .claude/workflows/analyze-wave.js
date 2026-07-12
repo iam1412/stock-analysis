@@ -1,7 +1,7 @@
 export const meta = {
   name: 'analyze-wave',
   description: 'รันเวฟวิเคราะห์หุ้น: worker 1 ตัว/หุ้น แบบ sequential พร้อมคุม effort ต่อ worker (default medium)',
-  whenToUse: 'controller ใช้แทน Agent tool เมื่อต้องการตั้ง effort ให้ worker (งาน mechanical เช่น UPDATE-LIGHT) — args = { stocks: [{label, prompt, model?, effort?}], effort?, model? } · prompt เตรียมจาก _template/agent-prompt.md · กติกาเวฟ ≤3 / push per-wave อยู่ที่ controller (docs/orchestration.md §5)',
+  whenToUse: 'controller ใช้แทน Agent tool เมื่อต้องการตั้ง effort ให้ worker (งาน mechanical เช่น UPDATE-LIGHT) — args = { stocks: [{label, prompt, model?, effort?}], effort?, model? } · prompt เตรียมจาก _template/agent-prompt.md · แนะนำเรียก 1 หุ้น/call เพื่อคง push รายตัวของ controller (docs/orchestration.md §4–5)',
   phases: [{ title: 'Analyze' }],
 }
 

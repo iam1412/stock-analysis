@@ -27,4 +27,4 @@ cd {{WORKTREE}} && pwd
 {{FUNDAMENTALS}}
 
 **STEP 2 — คืนงาน:** รายงานกลับ controller สั้น ๆ: เขียน `reports/{{SYMBOL}}.html` เสร็จ + ราคา/FV/MOS + แหล่งที่ใช้ (ไม่ต้องเล่าขั้นตอน)
-**ห้าม `git add/commit/push` เอง** — controller push เป็นราย-เวฟ
+**ห้าม `git add/commit/push` เอง** — controller เป็นคน push (รายตัว หลังตรวจงานเสร็จ)

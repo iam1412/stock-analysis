@@ -9,7 +9,7 @@
 2. เทียบแต่ละตัว (ฟิลด์ `updated`) — **เกณฑ์ความสด = 7 วัน** (คนละตัวกับ staleness gate 45/120 วัน):
    - สด ≤7 วัน → **ไม่วิเคราะห์ซ้ำ** · ธีม/โควตา → หาตัวใหม่ในธีมมาแทน · ระบุชื่อชัด → ข้าม (แจ้ง)
    - เกิน 7 วัน → วิเคราะห์ซ้ำ = **UPDATE mode** · ยังไม่มี → NEW (skeleton) · จากคิว price-flags → triage ตาม SKILL STEP 0 (UPDATE-LIGHT / UPDATE เต็ม / plumbing)
-3. กันซ้ำข้าม session = push per-wave + pull --rebase ก่อนแต่ละเวฟ (ตัวที่คนอื่น push แล้วโผล่ใน `reports.json` → ถูกคัดออก)
+3. กันซ้ำข้าม session = push รายตัว + pull --rebase ก่อนแต่ละเวฟ (ตัวที่คนอื่น push แล้วโผล่ใน `reports.json` → ถูกคัดออก — push รายตัวทำให้ session อื่นเห็นเร็วสุด)
 
 ## 2. โมเดล (บังคับ)
 
@@ -25,13 +25,14 @@
 - **★ STEP 0 กัน cwd-stray:** prompt ให้ agent เริ่ม `cd <worktree> && pwd` + ห้าม `cd` ลง main repo · ตอน push เช็ค `ls reports/<SYM>.html` ใน worktree — ไม่มี = ไปหยิบจาก main repo + ลบตัวหลง (ดู memory bulk-stock-analysis-workflow)
 - **★ SEQUENTIAL (บังคับ):** spawn 1 agent → รอ notification "completed" → ตรวจ/แก้ error → spawn ถัดไป — **ห้าม spawn parallel หลายตัวพร้อมกัน** เพราะกด API session rate limit ทุกตัว fail พร้อมกัน (เกิดจริงใน US-GAP W19–W21 — งานพังกลางคันต้องทำซ้ำ = token เสียเปล่าสองเท่า)
 - fallback: agent fail → ทำ inline ใน main session แทน (fetch + write เอง)
-- **เวฟละ ≤3 หุ้น** — ห้ามยิงทุกตัวรวดเดียว: จำกัด blast radius ของ error + ให้ push ได้ถี่พอที่ session อื่นเห็นใน reports.json
+- **เวฟละ ≤3 หุ้น** — หน่วย "วางแผน/รายงานผลผู้ใช้/จังหวะ compact" (CLAUDE.md §4) ไม่ใช่หน่วย push (push รายตัว — ข้อ 4) · ยังห้ามยิงทุกตัวรวดเดียว: จำกัด blast radius ของ error
 
-## 4. Push per-wave (ห้าม agent push เอง)
+## 4. Push รายตัว (ห้าม agent push เอง)
 
-- รอทุก agent ในเวฟเสร็จ → controller รัน verify + push **ครั้งเดียว/เวฟ** (commit รวม `analyze: add A, B, C`) ตามลำดับใน CLAUDE.md §5
-- **ทำไมไม่ push รายตัว:** `npm run verify` สแกนทุกไฟล์ใน `reports/` → sibling ที่เขียนค้างอยู่จะบล็อกตัวที่เสร็จแล้ว
-- **ห้าม push ซ้อน** หลายเวฟ/หลาย session พร้อมกัน — กัน git race (commit ก่อน pull --rebase เสมอ)
+- worker เสร็จ 1 ตัว → controller ตรวจผล → verify + commit + push **หุ้นตัวนั้นทันที ก่อน spawn ตัวถัดไป** — รวมเป็น Bash call เดียวตามลำดับ CLAUDE.md §5 (ไม่เพิ่ม turn):
+  `npm run verify && git add -A && git commit -m "analyze: add <SYM> …" && git pull --rebase origin main && git push origin HEAD:main`
+- **ทำไมรายตัว (เปลี่ยนจาก per-wave 12 ก.ค. 2569):** verify เป็น gate ทั้งรีโป — แบบรายเวฟ ตัวเดียวที่พังจะบล็อกตัวที่เสร็จแล้วทั้งเวฟ · แบบรายตัว งานที่เสร็จ = deploy แล้ว ไม่ค้างใน worktree ถ้า session ตาย + revert/bisect รายหุ้นได้ · เหตุผล per-wave เดิม ("sibling ที่เขียนค้างบล็อก verify") หมดไปตั้งแต่บังคับ **sequential** — ตอน push ไม่มี sibling เขียนค้างแล้ว · ต้นทุน verify ต่ำมาก (วัดจริง ~3.5s @761 รายงาน)
+- **ห้าม push ซ้อน** หลาย session พร้อมกัน — กัน git race (commit ก่อน pull --rebase เสมอ)
 
 ## 5. Workflow `analyze-wave` — spawn แบบคุม effort ได้ (ทางเลือก)
 
@@ -41,13 +42,12 @@
 2. เรียก `Workflow` tool:
    ```
    Workflow { name: "analyze-wave",
-              args: { stocks: [ {label:"AAPL", prompt:"<prompt เต็ม>"},
-                                {label:"NVDA", prompt:"...", model:"opus", effort:"high"} ],
+              args: { stocks: [ {label:"AAPL", prompt:"<prompt เต็ม>"} ],
                       effort: "medium" } }
    ```
-   - `effort` ระดับเวฟ default `medium` · override รายตัวด้วย `stocks[i].effort` / `stocks[i].model` (เช่น escalate ตัวยากเป็น opus+high)
-   - script รัน **ทีละตัวตามลำดับ** (sequential ตามกติกา §3) และ log ความคืบหน้า
-3. เสร็จแล้ว controller ตรวจผลรายตัว (แต่ละ entry คืนสรุปราคา/FV/MOS จาก worker) → verify + push per-wave ตามข้อ 4
+   - **เรียก 1 หุ้น/call** (คง push รายตัว — workflow คืนผลตอนจบทั้งชุด ส่งหลายตัวใน call เดียวจะ push คั่นระหว่างตัวไม่ได้) · override รายตัว: `stocks[0].effort` / `stocks[0].model` (เช่น escalate ตัวยากเป็น opus+high)
+   - script ยังรองรับหลายตัว (รัน sequential) — ใช้เฉพาะกรณียอมรับว่า push ได้หลังจบทั้งชุดเท่านั้น
+3. แต่ละ call เสร็จ → controller ตรวจผล (คืนสรุปราคา/FV/MOS จาก worker) → verify + push รายตัวตามข้อ 4 → ค่อยเรียกตัวถัดไป
 
 ## 6. ลดจำนวนเองได้ ถ้าของดีไม่พอ
 

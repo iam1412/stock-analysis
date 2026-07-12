@@ -45,7 +45,7 @@ invariant ที่ห้ามหลุดไม่ว่ากรณีใด:
 1. **ก่อนเริ่ม**: `git pull --rebase origin main` → อ่าน `reports.json` — สด ≤7 วัน **ไม่ทำซ้ำ** (ธีม→หาตัวแทน · ระบุชื่อ→ข้ามพร้อมแจ้ง) · เกิน 7 วัน = UPDATE · ยังไม่มี = NEW
 2. **โมเดล**: ❌ Haiku ทุกขั้น · default = **All-Sonnet** (controller+worker) · หุ้นยาก (IPO <1 ปี/spinoff/split/cyclical/ราคา cross-source ต่าง >5%) → escalate worker ตัวนั้นเป็น **Opus** อัตโนมัติ · ตัดสิน publish/skip กำกวม → หยุด ping user
 3. **spawn**: 1 หุ้น/agent (context แยก กันเลขปนข้ามหุ้น — ตัวร้าย #1) · **sequential เท่านั้น** — spawn → รอเสร็จ → ตรวจ → ตัวถัดไป (parallel เคยพัง rate limit พร้อมกันทั้งเวฟ) · ใช้ prompt `_template/agent-prompt.md` + STEP 0 กัน cwd-stray · จะคุม effort ต่อ worker → workflow **`analyze-wave`** (docs/orchestration.md)
-4. **เวฟละ ≤3** → verify + push รวมครั้งเดียว/เวฟ (`analyze: add A, B, C`) · ห้าม agent push เอง · ห้าม push ซ้อนเวฟ/ซ้อน session
+4. **push รายตัว**: worker เสร็จ 1 ตัว → controller ตรวจ → verify + push หุ้นนั้นทันที (รวมเป็น Bash call เดียว §5) ก่อน spawn ตัวถัดไป · **เวฟละ ≤3** = หน่วยวางแผน/รายงานผล/จังหวะ compact เท่านั้น ไม่ใช่หน่วย push · ห้าม agent push เอง · ห้าม push ซ้อน session
 5. ของดีไม่พอโควตา → ลดจำนวนเองได้ ไม่ต้องถาม แต่แจ้งเหตุผล (คุณภาพ > โควตา)
 
 ---
@@ -74,9 +74,9 @@ git pull --rebase origin main      # 3. sync
 git push origin HEAD:main          # 4. ★ worktree ต้องใช้ HEAD:main (ไม่ใช่ 'main' เปล่า)
 ```
 
-มี `pre-push` hook (`.githooks/pre-push`) บังคับ verify ซ้ำ 6 ขั้น (เปิดครั้งเดียว: `git config core.hooksPath .githooks`)
+มี `pre-push` hook (`.githooks/pre-push`) บังคับ verify ซ้ำ 6 ขั้น (เปิดครั้งเดียว: `git config core.hooksPath .githooks`) · รวมทั้ง 5 ขั้นเป็นคำสั่งเดียวด้วย `&&` ได้ — push รายตัวโดยไม่เพิ่ม turn ของ controller
 
-**commit message:** หุ้นใหม่ `analyze: add <SYMBOL> stock analysis` · อัปเดต `analyze: update <SYMBOL> …` · หลายตัว `analyze: add A, B, C …` · ลงท้าย:
+**commit message:** **1 commit = 1 หุ้น** (push รายตัว §3.4) — หุ้นใหม่ `analyze: add <SYMBOL> stock analysis` · อัปเดต `analyze: update <SYMBOL> …` (เลิกใช้ commit รวม `analyze: add A, B, C` ตั้งแต่ 12 ก.ค. 2569) · ลงท้าย:
 ```
 Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>
 ```
