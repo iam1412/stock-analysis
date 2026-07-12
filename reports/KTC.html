@@ -4,9 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>วิเคราะห์หุ้น บัตรกรุงไทย (KTC) — Stock Analysis Dashboard</title>
-<meta name="ai-model" content="Claude Opus 4.8">
+<meta name="ai-model" content="Claude Sonnet 5">
 <script type="application/json" id="stock-meta">
-{"symbol":"KTC","currency":"THB","price":32.00,"fairValue":34.00,"mos":5.9,"upside":6.3,"pe":10.2,"dividendYield":4.6,"roe":18.0}
+{"symbol":"KTC","currency":"THB","price":37,"fairValue":34,"mos":-8.8,"upside":-8.1,"pe":11.8,"dividendYield":4.6,"roe":18}
 </script>
 <script type="application/json" id="report-data">
 {
@@ -25,31 +25,36 @@
   },
   "chart": {
     "data": [
-      ["มิ.ย.68", 24.00],
-      ["ก.ค.68", 28.50],
-      ["ส.ค.68", 27.25],
-      ["ก.ย.68", 30.00],
-      ["ต.ค.68", 28.50],
-      ["พ.ย.68", 27.25],
-      ["ธ.ค.68", 26.25],
-      ["ม.ค.69", 28.75],
-      ["ก.พ.69", 33.25],
-      ["มี.ค.69", 29.75],
-      ["เม.ย.69", 29.25],
-      ["พ.ค.69", 30.00],
-      ["มิ.ย.69", 32.00]
+      ["ส.ค.25", 27.25],
+      ["ก.ย.25", 30],
+      ["ต.ค.25", 28.5],
+      ["พ.ย.25", 27.25],
+      ["ธ.ค.25", 26.25],
+      ["ม.ค.26", 28.75],
+      ["ก.พ.26", 33.25],
+      ["มี.ค.26", 29.75],
+      ["เม.ย.26", 29.25],
+      ["พ.ค.26", 30],
+      ["มิ.ย.26", 33.25],
+      ["ก.ค.26", 37]
     ],
-    "min": 22,
-    "max": 36,
-    "grid": [22, 25, 28, 31, 34],
-    "fairLine": 34.00,
+    "min": 25,
+    "max": 40,
+    "grid": [30, 35],
+    "fairLine": 34,
     "currency": "฿",
-    "highlight": [0, 12],
+    "highlight": [4, 11],
     "gridFmt": "v.toFixed(0)",
     "dataFmt": "d[1].toFixed(2)"
   },
-  "gauge": { "min": 22, "max": 38, "cur": 32.00, "fair": 34.00, "fairLabelTop": true },
-  "fv": 34.00
+  "gauge": {
+    "min": 22,
+    "max": 38,
+    "cur": 37,
+    "fair": 34,
+    "fairLabelTop": true
+  },
+  "fv": 34
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -69,11 +74,11 @@
     <div class="sub">บัตรเครดิต KTC • สินเชื่อบุคคล KTC PROUD • สินเชื่อทะเบียนรถ "KTC พี่เบิ้ม" • บริษัทลูกธนาคารกรุงไทย • ROE สูงสุดในกลุ่มไฟแนนซ์</div>
     <div class="price-row">
       <div>
-        <div class="px">฿32.00<small>(KTC)</small></div>
+        <div class="px">฿37.00<small>(KTC)</small></div>
       </div>
-      <div class="chg">▲ +33.3% (รอบปี)</div>
+      <div class="chg">▲ +35.8% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 24 มิ.ย. 2026<br>
+        ราคา ณ 10 ก.ค. 2026<br>
         กรอบ 52 สัปดาห์ ฿21.80 – ฿34.50<br>
         ที่มา: StockAnalysis.com • Investing.com • Yahoo Finance
       </div>
@@ -85,7 +90,7 @@
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ตัวเลขกลุ่มไฟแนนซ์</div></div>
     <div class="grid g4">
       <div class="metric"><div class="k">Market Cap</div><div class="v">~฿82.5B</div><div class="d">หุ้น 2.58 พันล้านหุ้น</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~10.2x</div><div class="d">ต่ำกว่าค่าเฉลี่ยในอดีต</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~11.8x</div><div class="d">ต่ำกว่าค่าเฉลี่ยในอดีต</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~13–16x</div><div class="d">เคยซื้อขายพรีเมียม</div></div>
       <div class="metric"><div class="k">P/BV</div><div class="v neu">~1.9x</div><div class="d">หนุนด้วย ROE สูง</div></div>
 
@@ -114,7 +119,7 @@
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
-        ราคา KTC ทำจุดต่ำสุดราว ฿24 ช่วงกลางปี 2025 จากแรงกดดันเศรษฐกิจไทยและความกังวลคุณภาพสินเชื่อกลุ่มผู้บริโภค จากนั้นฟื้นตัวต่อเนื่อง โดยขึ้นแตะ ~฿33 ในเดือน ก.พ. 2026 หลังกำไร Q1/2026 โต +16.7% YoY และ credit cost ลดลง ก่อนย่อพักฐานแถว ฿29–30 และกลับมายืนที่ ฿32 ในเดือน มิ.ย. 2026 — รวมประมาณ +33% จากจุดต่ำสุดในรอบปี
+        ราคา KTC ทำจุดต่ำสุดราว ฿24 ช่วงกลางปี 2025 จากแรงกดดันเศรษฐกิจไทยและความกังวลคุณภาพสินเชื่อกลุ่มผู้บริโภค จากนั้นฟื้นตัวต่อเนื่อง โดยขึ้นแตะ ~฿33 ในเดือน ก.พ. 2026 หลังกำไร Q1/2026 โต +16.7% YoY และ credit cost ลดลง ก่อนย่อพักฐานแถว ฿29–30 และฟื้นตัวขึ้นแรงมาปิดที่ ฿37 ในเดือน ก.ค. 2026 — รวมประมาณ +54% จากจุดต่ำสุดในรอบปี (฿24)
       </p>
     </div>
   </section>
@@ -151,7 +156,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿32.00</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿37.00</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿34</div></div>
         </div>
         <div class="scale">
@@ -163,7 +168,7 @@
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคาปัจจุบัน ฿32 อยู่ต่ำกว่ามูลค่าเหมาะสม ฿34 เล็กน้อย (MOS ~6%) และต่ำกว่าเป้าเฉลี่ยนักวิเคราะห์ ฿36.07 พอสมควร — โซนราคาปัจจุบันถือว่า "สมเหตุสมผล–ใกล้เต็มมูลค่า" ยังไม่ใช่ deep value ต้องรอย่อแถว ฿27 (MOS 20%) จึงจะมีส่วนเผื่อความปลอดภัยที่น่าสนใจขึ้น
+        ราคาปัจจุบัน ฿37 สูงกว่ามูลค่าเหมาะสม ฿34 แล้ว (MOS ติดลบราว -8.8%) และสูงกว่าเป้าเฉลี่ยนักวิเคราะห์ ฿36.07 เล็กน้อย — โซนราคาปัจจุบันถือว่า "แพงกว่ามูลค่าเหมาะสม" ไม่มีส่วนเผื่อความปลอดภัยเหลือ ต้องรอย่อแถว ฿27 (MOS 20%) หรือ ฿24 (MOS 30%) จึงจะมีส่วนเผื่อความปลอดภัยที่น่าสนใจขึ้น
       </p>
     </div>
   </section>
@@ -173,8 +178,8 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict bad">
-        <div class="big">+5.9%</div>
-        <div class="txt">ส่วนเผื่อความปลอดภัยบาง — ราคาใกล้มูลค่าเหมาะสมแล้ว ควรรอจังหวะย่อเพื่อเพิ่ม MOS</div>
+        <div class="big">−9%</div>
+        <div class="txt">ส่วนเผื่อความปลอดภัยติดลบ — ราคาสูงกว่ามูลค่าเหมาะสมแล้ว ควรรอจังหวะย่อเพื่อให้มี MOS</div>
       </div>
       <div class="grid g3">
         <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿27.20</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
@@ -184,7 +189,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="32.00" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="37" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -193,7 +198,7 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿32.00 • EPS ฐาน ~฿3.14 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿37.00 • EPS ฐาน ~฿3.14 • รวมปันผล</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS 0%/ปี</span></div>
@@ -212,7 +217,7 @@
         <div class="top"><span>⚖️ Base</span><span>EPS +6%/ปี</span></div>
         <div class="body">
           <div class="tgt">฿41.2</div>
-          <div class="ret pos">+44% (รวมปันผล)</div>
+          <div class="ret pos">+25% (รวมปันผล)</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿3.74</span></li>
             <li><span>P/E ออก</span><span>11.0x</span></li>
@@ -225,7 +230,7 @@
         <div class="top"><span>🚀 Bull</span><span>EPS +10%/ปี</span></div>
         <div class="body">
           <div class="tgt">฿50.2</div>
-          <div class="ret pos">+73% (รวมปันผล)</div>
+          <div class="ret pos">+50% (รวมปันผล)</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿4.18</span></li>
             <li><span>P/E ออก</span><span>12.0x</span></li>
@@ -236,7 +241,7 @@
       </div>
     </div>
     <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
-      สมมติฐาน Base ใช้ EPS โต +6%/ปี (สอดคล้องเป้าใช้จ่ายบัตร +5% และ KTC พี่เบิ้มที่ยังขยายตัว) และ P/E ออก 11x ราคาเป้า 3 ปี ฿41.2 + ปันผลสะสม ~฿4.9 ให้ผลตอบแทนรวม ~+44% เฉลี่ย ~13%/ปี — น่าสนใจหากเข้าซื้อในจังหวะย่อ ส่วน Bear สะท้อนกรณีเศรษฐกิจไทยซบเซา NPL ปรับขึ้นจนกำไรไม่โต และตลาด de-rate ลงเหลือ P/E 9x
+      สมมติฐาน Base ใช้ EPS โต +6%/ปี (สอดคล้องเป้าใช้จ่ายบัตร +5% และ KTC พี่เบิ้มที่ยังขยายตัว) และ P/E ออก 11x ราคาเป้า 3 ปี ฿41.2 + ปันผลสะสม ~฿4.9 ให้ผลตอบแทนรวม ~+25% เฉลี่ย ~8%/ปี — น่าสนใจหากเข้าซื้อในจังหวะย่อ ส่วน Bear สะท้อนกรณีเศรษฐกิจไทยซบเซา NPL ปรับขึ้นจนกำไรไม่โต และตลาด de-rate ลงเหลือ P/E 9x
     </p>
   </section>
 
@@ -273,11 +278,11 @@
   <section>
     <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
     <div class="verdict">
-      <h2>แฟรนไชส์คุณภาพสูง ROE เด่น — แต่ราคาปัจจุบันใกล้เต็มมูลค่า</h2>
-      <p>KTC เป็นผู้นำบัตรเครดิตและสินเชื่อบุคคลของไทยที่มี ROE สูงสุดในกลุ่ม (~18%) คุณภาพสินทรัพย์ดีเยี่ยม (NPL 1.93%, coverage ~408%) และกำไรโตสวนเศรษฐกิจ (Q1/2026 +16.7% YoY) เป็นหุ้นคุณภาพที่บริหารดี มีปันผลสม่ำเสมอ จุดอ่อนเดียวคือ "ราคา" — ที่ ฿32 ซื้อขายใกล้มูลค่าเหมาะสม ฿34 (MOS เพียง ~6%) ทำให้ส่วนเผื่อความปลอดภัยบาง เหมาะสำหรับนักลงทุนระยะยาวที่ทยอยสะสม และน่าสนใจขึ้นมากหากย่อแถว ฿27 (MOS 20%)</p>
+      <h2>แฟรนไชส์คุณภาพสูง ROE เด่น — แต่ราคาปัจจุบันเกินมูลค่าเหมาะสมแล้ว</h2>
+      <p>KTC เป็นผู้นำบัตรเครดิตและสินเชื่อบุคคลของไทยที่มี ROE สูงสุดในกลุ่ม (~18%) คุณภาพสินทรัพย์ดีเยี่ยม (NPL 1.93%, coverage ~408%) และกำไรโตสวนเศรษฐกิจ (Q1/2026 +16.7% YoY) เป็นหุ้นคุณภาพที่บริหารดี มีปันผลสม่ำเสมอ จุดอ่อนเดียวคือ "ราคา" — ที่ ฿37 ซื้อขายสูงกว่ามูลค่าเหมาะสม ฿34 แล้ว (MOS ติดลบ ~-8.8%) ทำให้ไม่มีส่วนเผื่อความปลอดภัยเหลือ เหมาะสำหรับการทยอยสะสมเฉพาะเมื่อราคาย่อ และน่าสนใจขึ้นมากหากย่อแถว ฿27 (MOS 20%)</p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿34.00 <span style="font-size:12px;color:#cab9a8">(฿28–฿40)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +5.9%</div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS -8.8%</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿36.07 (Buy)</div></div>
       </div>
       <div class="zone">
@@ -290,9 +295,9 @@
   <div class="disc">
     <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
-    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ที่มาข้อมูล: StockAnalysis.com, Investing.com, Yahoo Finance, InnovestX/มิติหุ้น (ณ 24 มิ.ย. 2026)
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ที่มาข้อมูล: StockAnalysis.com, Investing.com, Yahoo Finance, InnovestX/มิติหุ้น (ณ 12 ก.ค. 2026)
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ 24 มิ.ย. 2026 • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 12 ก.ค. 2026 • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
