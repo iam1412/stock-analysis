@@ -66,6 +66,10 @@ cp _template/skeleton-{th|us}.html reports/<SYMBOL>.html
 ```
 (TH → `skeleton-th.html` ฿/SET · US → `skeleton-us.html` $/NASDAQ·NYSE)
 แทนทุก `{{TOKEN}}` ด้วยข้อมูลจริง — เหลือ `{{...}}` ค้าง = gate E13 บล็อก · ครบ 8 section
+- **การแทนค่า = Bash เดียวผ่าน `tools/apply-edits.js`** (รูปแบบเดียวกับ STEP 5C ข้อ 3 — ห้ามใช้ Edit tool ทีละจุดทีละ turn): คิด/เตรียมข้อมูลให้ครบทุก STEP ก่อน แล้วยิงทุก token ในชุดเดียว
+  - token ที่โผล่หลายจุด (`{{PRICE}}` `{{SYMBOL}}` `{{FV}}` `{{PE}}` …) → ใช้บล็อก `@@all` — ค่าเดียวกันลงทุกจุดพร้อมกัน การันตีเลขไม่เพี้ยนข้ามจุด (ต้นเหตุ E21/E22 คลาสสิก)
+  - ลบ comment "วิธีใช้" หัวไฟล์ skeleton ในชุดเดียวกัน (บล็อก `@@` ทั้งก้อน → `@@=` → `@@end` โดย new ว่าง)
+  - เนื้อหายาว (`{{REPORT_DATA}}` / prose ทั้ง section) = new หลายบรรทัด verbatim ได้เลย ไม่ต้อง escape
 - **chart/ป้าย .chg/สี** → วางจากผลลัพธ์ fetch-facts ตรง ๆ (fairLine หลุดช่วง min/max → คำนวณ bounds ใหม่รวม FV)
 - **4 บล็อกบังคับ**:
   1. `<meta name="ai-model" content="Claude <รุ่นที่รันจริง>">` (ขึ้นต้น "Claude " — build ใช้ทำเครดิต footer)
