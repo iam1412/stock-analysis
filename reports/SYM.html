@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น Symbotic Inc. (SYM) — Stock Analysis Dashboard</title>
+<!-- ★ ใส่รุ่นโมเดล AI ที่ใช้วิเคราะห์จริง (Opus→"Claude Opus 4.8", Sonnet→"Claude Sonnet 4.6") — gate E28 บังคับ -->
+<meta name="ai-model" content="Claude Sonnet 5">
+<!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
+<script type="application/json" id="stock-meta">
+{"symbol":"SYM","currency":"USD","price":43.64,"fairValue":28.25,"mos":-54.5,"upside":-35.3,"pe":null,"dividendYield":null,"roe":null}
+</script>
+<!--
+  report-data: ธีมสี + ข้อมูลกราฟ/gauge ต่อหุ้น (build เอาไปวาด)  ดู schema เต็มใน docs/templates.md
+  • theme.* = สีแบรนด์ (accent ห้ามเป็นน้ำเงิน default) • chart.fairLine = gauge.fair = fv = 28.25
+  • gauge.cur = ราคาปัจจุบัน = 43.64 • highlight = ดัชนีจุดเด่นบนกราฟ (จุดสูง พ.ย.68 / จุดต่ำ ก.ค.69)
+  • chart.data = ราคาย้อนหลัง ~1 ปี (ไม่เกิน 13 จุด · E37) — จาก node tools/fetch-facts.js SYM
+  • theme.chgBg/chgColor = สีป้าย % รอบปี: ลง→แดง var(--red-soft)/#c5221f (E34)
+-->
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#89de2b",
+    "accentDark": "#64a81a",
+    "darkGrad": "linear-gradient(135deg,#223b07 0%,#3f6e0d 58%,#64ad14 140%)",
+    "glow": "rgba(132,221,34,.35)",
+    "subColor": "#d7ebc2",
+    "headerMuted": "#bed4a5",
+    "verdictText": "#e1f1d0",
+    "vcellLabel": "#c3dda6",
+    "chgBg": "var(--red-soft)",
+    "chgColor": "#c5221f"
+  },
+  "chart": {
+    "data": [
+      ["ส.ค.25", 47.43],
+      ["ก.ย.25", 53.9],
+      ["ต.ค.25", 80.95],
+      ["พ.ย.25", 83.77],
+      ["ธ.ค.25", 59.5],
+      ["ม.ค.26", 54.37],
+      ["ก.พ.26", 54.78],
+      ["มี.ค.26", 53.2],
+      ["เม.ย.26", 59.1],
+      ["พ.ค.26", 46.42],
+      ["มิ.ย.26", 44.95],
+      ["ก.ค.26", 43.64]
+    ],
+    "min": 15,
+    "max": 90,
+    "grid": [30, 50, 70],
+    "fairLine": 28.25,
+    "currency": "$",
+    "highlight": [3, 11]
+  },
+  "gauge": {
+    "min": 15,
+    "max": 90,
+    "cur": 43.64,
+    "fair": 28.25
+  },
+  "fv": 28.25
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots"><div style="width:8px;height:8px;border-radius:50%;background:#89de2b;display:inline-block;margin:0 3px"></div><div style="width:8px;height:8px;border-radius:50%;background:#64a81a;display:inline-block;margin:0 3px"></div><div style="width:8px;height:8px;border-radius:50%;background:#3f6e0d;display:inline-block;margin:0 3px"></div></div>
+    <div>
+      <span class="tag">NASDAQ: SYM</span>
+      <span class="tag">Industrials</span>
+      <span class="tag">Warehouse Automation / AS-RS Robotics</span>
+    </div>
+    <h1>Symbotic Inc.</h1>
+    <div class="sub">AI-Powered AS/RS Warehouse Robotics • Walmart Strategic Partner & ผู้ถือหุ้นใหญ่ • GreenBox Systems JV (SoftBank) • Robotics-as-a-Service</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$43.64<small>(SYM)</small></div>
+      </div>
+      <div class="chg">▼ −8.0% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ ปิดตลาด 10 ก.ค. 2569 (16:00 EDT)<br>
+        กรอบ 52 สัปดาห์ $38.19 – $87.88<br>
+        ที่มา: StockAnalysis.com, Yahoo Finance, stockanalysis.com/forecast
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ TTM / Q2 FY2026 (งวดจบ มี.ค. 2569)</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">$26.30B</div><div class="d">602.71M หุ้น (fully diluted)</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neg">N/A</div><div class="d">ขาดทุนบัญชี TTM (EPS −$0.07) — พลิกกำไร 2 ไตรมาสล่าสุด</div></div>
+      <div class="metric"><div class="k">P/E Forward (FY26e)</div><div class="v neu">~85.6x</div><div class="d">อิง EPS consensus $0.51 (17 นักวิเคราะห์) — ยังแพงกว่าตลาดมาก</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">~8.1x</div><div class="d">BVPS $5.40 — ธุรกิจ asset-light</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ Q2 FY2026</div><div class="v pos">$9.4M</div><div class="d">พลิกกำไรจาก Q2 FY2025 ที่ขาดทุน $9.9M</div></div>
+      <div class="metric"><div class="k">EPS (TTM, GAAP)</div><div class="v neg">−$0.07</div><div class="d">ยังติดลบ เพราะรวมไตรมาสขาดทุนหนัก Q3–Q4 FY2025</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~$5.40</div><div class="d">Equity ~$3.25B</div></div>
+      <div class="metric"><div class="k">ROE (TTM)</div><div class="v neg">~−0.9%</div><div class="d">ใกล้จุดคุ้มทุน — 2 ไตรมาสล่าสุดกำไรต่อเนื่อง</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v pos">$2.52B</div><div class="d">+23% YoY (Q2 FY26 $676M vs Q2 FY25 $550M)</div></div>
+      <div class="metric"><div class="k">FCF (TTM)</div><div class="v pos">$748.7M</div><div class="d">margin ~30% — แข็งแกร่งกว่ากำไรบัญชีมาก (ลูกค้าจ่ายมัดจำล่วงหน้า)</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">ไม่มี (0%)</div><div class="d">เก็บกระแสเงินสดลงทุนขยายกำลังผลิต</div></div>
+      <div class="metric"><div class="k">เงินสดสุทธิ</div><div class="v pos">~$1.98B</div><div class="d">เงินสด $2.01B, หนี้เพียง $27.9M</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART (ราคาย้อนหลัง ~1 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#89de2b"></i>ราคา SYM</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $28.25</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคาพุ่งขึ้นแรงจาก ~$47 ในเดือน ส.ค. 2568 สู่จุดสูงสุดรอบปีที่ $83.77 ใน พ.ย. 2568 ตามกระแสความคาดหวัง AI-หุ่นยนต์/warehouse automation และข่าวขยายความร่วมมือกับ Walmart
+        ก่อนร่วงลงหนักตลอดครึ่งปีแรก 2569 จากความกังวล valuation ที่แพงเกินไปเทียบกับกำไรที่เพิ่งเริ่มพลิกบวก มาแตะจุดต่ำสุดรอบปีที่ $43.64 ใน ก.ค. 2569 (ปัจจุบัน)
+        รวมผลตอบแทน −8.0% ในรอบ 1 ปี แม้เคยพุ่งขึ้นเกือบเท่าตัวก่อนร่วงกลับ สะท้อนความผันผวนสูงของหุ้นที่กำลังถูกประเมินมูลค่าแบบ hyper-growth story
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION (เฉลี่ย 2 วิธี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 2 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS forward (consensus) $0.51 × P/E เป้าหมาย ~50x — ใช้ EPS คาดการณ์ปีงบหน้าแทน TTM เพราะ EPS TTM ยังติดลบ (−$0.07 จากไตรมาสขาดทุนเก่าก่อนพลิกกำไรช่วงต้นปีงบนี้) · P/E 50x อนุรักษ์นิยมกว่า forward P/E ตลาดปัจจุบันที่ ~75–85x</div></div>
+        <div class="mval">$25.50</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. FCF Yield Valuation (P/FCF)</div><div class="mdesc">FCF ต่อหุ้น (TTM) $1.24 ($748.7M ÷ 602.71M หุ้น) × P/FCF เป้าหมาย ~25x — ใช้กระแสเงินสดแทนกำไรบัญชีเพราะโมเดลธุรกิจเก็บเงินมัดจำล่วงหน้าจากลูกค้าทำให้ FCF แข็งแกร่งกว่า GAAP EPS มาก · 25x ต่ำกว่า P/FCF ตลาดปัจจุบัน ~35x</div></div>
+        <div class="mval">$31.00</div>
+      </div>
+
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $25.50 – $31.00</span></div>
+        <div class="r">$28.25</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        วิธี FCF Yield ให้ค่าสูงกว่าเล็กน้อยเพราะสะท้อนกระแสเงินสดจริงที่แข็งแกร่งกว่ากำไรบัญชี (ผลจากโมเดลเก็บเงินมัดจำล่วงหน้า) ส่วนวิธี P/E ใช้ EPS forward ที่เพิ่งพลิกบวกทำให้ฐานกำไรยังต่ำ —
+        เฉลี่ย 2 วิธีได้ Fair Value $28.25 ต่ำกว่าราคาตลาดปัจจุบัน ($43.64) ค่อนข้างมาก สะท้อนว่าตลาดให้พรีเมียมสูงกับเรื่องเล่าการเติบโตระยะยาว (Walmart backlog, GreenBox JV) มากกว่าที่ตัวเลขกำไร/กระแสเงินสดปัจจุบันจะสนับสนุนได้เต็มที่
+        (ตัดวิธี Justified P/BV ออกเพราะ ROE ยังติดลบ/ใกล้ศูนย์ ไม่สะท้อนศักยภาพธุรกิจจริง)
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $43.64</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $28.25</div></div>
+        </div>
+        <div class="scale">
+          <span>$19.78<br><small>MOS 30%</small></span>
+          <span>$22.60<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$28.25<br><small>Fair Value</small></span>
+          <span style="text-align:right">$31.00<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">$65.67<br><small>เป้าเฉลี่ย Analyst</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน ($43.64) อยู่เหนือมูลค่าเหมาะสม ($28.25) และกรอบบนของ Fair Value ($31.00) ค่อนข้างมาก แต่ยังต่ำกว่าเป้าเฉลี่ยนักวิเคราะห์ ($65.67) เกือบเท่าตัว —
+        ฝั่ง sell-side ให้เครดิตกับศักยภาพการเติบโตระยะยาวและ backlog สัญญากับ Walmart มากกว่าการประเมินมูลค่าเชิงอนุรักษ์นิยมจากกำไร/กระแสเงินสดปัจจุบัน
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">−54.5%</div>
+        <div class="txt"><b>ไม่มี Margin of Safety — ราคาแพงกว่ามูลค่าเหมาะสมมาก</b><br>ราคาปัจจุบัน $43.64 สูงกว่ามูลค่าเหมาะสม $28.25 ที่ประเมินได้ราว 54.5% (เกือบ 1.55 เท่าของ FV) → ตามเกณฑ์ value investor ถือว่า <b>แพงเกินไปมาก</b> ไม่ใช่จุดซื้อ ยกเว้นเชื่อมั่นสูงในเรื่องเล่าการเติบโตระยะยาวเกินกว่าที่ตัวเลขปัจจุบันจะสนับสนุนได้</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$22.60</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$19.78</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $28.25</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="43.64" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $43.64 • EPS ฐาน ~$0.51 • ไม่มีปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS +10%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$13.60</div>
+          <div class="ret neg">−68.8% (3 ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$0.68</span></li>
+            <li><span>P/E ออก</span><span>20x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$0</span></li>
+            <li><span>สถานการณ์</span><span>การเติบโตชะลอแรงกว่าคาด Walmart ชะลอ capex/เลื่อนโครงการใหม่ คู่แข่ง AutoStore/Dematic กดมาร์จิ้น ตลาดคลายพรีเมียม growth กลับสู่ P/E ระดับอุตสาหกรรมทั่วไป</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +40%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$35.00</div>
+          <div class="ret neg">−19.8% (3 ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$1.40</span></li>
+            <li><span>P/E ออก</span><span>25x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$0</span></li>
+            <li><span>สถานการณ์</span><span>รายได้โตต่อเนื่องตาม backlog Walmart + ลูกค้าใหม่ margin ขยายตามการใช้กำลังผลิต แต่ตลาดปรับ P/E ลงจากระดับสูงมากในปัจจุบันสู่ระดับใกล้เคียงพื้นฐานมากขึ้น</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +75%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$122.85</div>
+          <div class="ret pos">+181.5% (3 ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$2.73</span></li>
+            <li><span>P/E ออก</span><span>45x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$0</span></li>
+            <li><span>สถานการณ์</span><span>GreenBox JV กับ SoftBank ขยายตัวเร็ว ลูกค้าใหม่นอกเหนือ Walmart เพิ่มขึ้นมาก margin ขยายเร็วกว่าคาดจาก operating leverage ตลาดยังให้พรีเมียมสูงต่อธีม physical-AI/หุ่นยนต์คลังสินค้า</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      คำนวณจาก EPS ฐาน (forward FY2026e) $0.51 เติบโตตามอัตราของแต่ละสถานการณ์เป็นเวลา 3 ปี คูณ P/E ขาออกที่ต่างกันตามความเชื่อมั่นตลาด ไม่มีปันผล (SYM ไม่จ่ายเงินปันผล) —
+      ช่วง Bear/Bull กว้างมากสะท้อนความผันผวนสูงของหุ้นที่เพิ่งพลิกกำไรและถูกประเมินมูลค่าแบบ hyper-growth story
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>Walmart backlog:</b> สัญญาระยะยาวกับ Walmart (ลูกค้าหลัก/ผู้ถือหุ้นใหญ่) ยังมี backlog การติดตั้งระบบ AS/RS อีกหลายร้อยแห่งทยอยรับรู้รายได้หลายปีข้างหน้า</li>
+          <li><b>GreenBox Systems (JV กับ SoftBank):</b> โมเดล "robotics-as-a-service" บุกตลาดใหม่นอกเหนือลูกค้าเดิม เปิดทาง recurring revenue ระยะยาว</li>
+          <li><b>พลิกทำกำไรสุทธิต่อเนื่อง 2 ไตรมาส (Q1–Q2 FY2026):</b> สัญญาณ operating leverage เริ่มทำงานเมื่อฐานรายได้ใหญ่ขึ้น</li>
+          <li><b>กระแสเงินสดแข็งแกร่ง:</b> FCF TTM $748.7M (margin ~30%) สูงกว่ากำไรบัญชีมาก จากโมเดลเก็บเงินมัดจำล่วงหน้า ช่วยพยุงสภาพคล่องระหว่างพลิกฟื้นกำไร GAAP</li>
+          <li><b>งบดุลแข็งแกร่ง:</b> เงินสดสุทธิ ~$1.98B แทบไม่มีหนี้ (หนี้รวมเพียง $27.9M) เปิดทางลงทุนขยายกำลังผลิต/M&amp;A โดยไม่ต้องเพิ่มทุน</li>
+          <li><b>ธีม physical-AI/หุ่นยนต์ร้อนแรง:</b> นักลงทุนให้พรีเมียมกลุ่ม warehouse automation/robotics ทั้งกลุ่ม หนุน multiple ของ SYM</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>Valuation สูงมาก:</b> เทรดที่ forward P/E ~75–85x แพงกว่า Fair Value ที่ประเมินได้ (~$28.25) เกือบเท่าตัว ราคาตั้งอยู่บนสมมติฐานเติบโตสูงต่อเนื่องหลายปี หากผิดคาดปรับฐานได้รุนแรง (เคยร่วงจาก $83.77 มา $43.64 ในเวลาไม่ถึงปี)</li>
+          <li><b>ลูกค้ากระจุกตัวสูง:</b> รายได้ส่วนใหญ่พึ่งพา Walmart รายเดียว (ทั้งลูกค้าหลักและผู้ถือหุ้นใหญ่) หาก Walmart ชะลอ/ปรับแผนการลงทุน กระทบรายได้รุนแรง</li>
+          <li><b>กำไร GAAP ยังเปราะบาง:</b> เพิ่งพลิกกำไรสุทธิ 2 ไตรมาสหลังขาดทุนต่อเนื่องมาก่อน (Q3–Q4 FY2025 ขาดทุนรวมกว่า $50M) ความสม่ำเสมอของกำไรยังไม่ผ่านการพิสูจน์รอบวัฏจักรเต็ม</li>
+          <li><b>การแข่งขันสูง:</b> คู่แข่งอย่าง AutoStore, Dematic (KION), Ocado Solutions, Attabotics แข่งขันในตลาด warehouse automation ที่กำลังขยายตัวเร็ว กดดันราคาขาย/มาร์จิ้น</li>
+          <li><b>ไม่มีปันผล:</b> ผลตอบแทนพึ่งพาการเติบโตของราคาหุ้น/มัลติเปิลเกือบทั้งหมด หากตลาดเปลี่ยนมุมมองต่อธีม growth ความผันผวนจะสูง</li>
+          <li><b>โครงสร้างรายได้ตีความยาก:</b> รายได้/กำไร GAAP รับรู้ตามความคืบหน้าโครงการ (percentage-of-completion) ต่างจากกระแสเงินสดที่รับล่วงหน้า ทำให้ตัวเลขบัญชีผันผวนและตีความยาก</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>ธุรกิจศักยภาพสูงในธีม Warehouse Robotics แต่ราคาแพงกว่ามูลค่าพื้นฐานมาก</h2>
+      <p>Symbotic เป็นผู้นำระบบ AS/RS อัตโนมัติสำหรับคลังสินค้า พึ่งพา Walmart เป็นทั้งลูกค้าหลักและผู้ถือหุ้นใหญ่ เพิ่งพลิกทำกำไรสุทธิต่อเนื่อง 2 ไตรมาสหลังขาดทุนมาก่อนหน้า และมีกระแสเงินสด (FCF) แข็งแกร่งกว่ากำไรบัญชีมากจากโมเดลเก็บเงินมัดจำล่วงหน้า
+      อย่างไรก็ตาม ราคาหุ้นที่ $43.64 คิดเป็น forward P/E ~75–85x สูงกว่ามูลค่าเหมาะสมที่ประเมินได้ (~$28.25 จาก EPS forward + FCF yield) ราว 54.5% — ไม่มี Margin of Safety เลย
+      เหมาะสำหรับผู้เชื่อมั่นสูงในธีม physical-AI/หุ่นยนต์คลังสินค้าระยะยาวที่รับความเสี่ยง valuation ได้ มากกว่านักลงทุนสาย value ที่ต้องการส่วนเผื่อความปลอดภัย</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$28.25 <span style="font-size:12px;color:#cab9a8">($25.50–$31.00)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS −54.5%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">$65.67 (Buy)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> รอราคาย่อลงมาใกล้โซน MOS20 (~$22.60) หรือต่ำกว่า Fair Value $28.25 ก่อนพิจารณาเข้าสะสม หากเชื่อมั่นธีม warehouse robotics/physical-AI ระยะยาวอาจแบ่งเข้าสัดส่วนเล็กได้ แต่ไม่แนะนำไล่ราคาที่ระดับปัจจุบันซึ่งยังสะท้อนความคาดหวังการเติบโตสูงมากเกินกว่าตัวเลขพื้นฐานจะรองรับได้เต็มที่
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ที่มา: StockAnalysis.com (ราคา/EPS/เป้านักวิเคราะห์/ประมาณการ), Yahoo Finance (cross-check ราคา/EPS/เป้าราคา) — ราคา ณ 10 ก.ค. 2569
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 13 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
