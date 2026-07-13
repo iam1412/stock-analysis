@@ -4,25 +4,55 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>วิเคราะห์หุ้น Taiwan Semiconductor (TSM) — Stock Analysis Dashboard</title>
-<meta name="ai-model" content="Claude Opus 4.8">
+<meta name="ai-model" content="Claude Sonnet 5">
 <script type="application/json" id="stock-meta">
-{"symbol":"TSM","currency":"USD","price":465,"fairValue":443,"mos":-5,"upside":-4.7,"pe":39,"dividendYield":0.82,"roe":37}
+{"symbol":"TSM","currency":"USD","price":434.11,"fairValue":439,"mos":1,"upside":1,"pe":38,"dividendYield":0.64,"roe":37}
 </script>
 <script type="application/json" id="report-data">
 {
   "theme": {
-    "accent": "#e6232a", "accentDark": "#ae1419",
+    "accent": "#e6232a",
+    "accentDark": "#ae1419",
     "darkGrad": "linear-gradient(135deg,#3e0507 0%,#72090c 58%,#b40e13 140%)",
-    "glow": "rgba(229,26,33,.35)", "subColor": "#ebc2c3", "headerMuted": "#d4a5a7",
-    "chgBg": "var(--green-soft)", "chgColor": "#1e8e3e", "badge": "var(--blue)",
-    "verdictText": "#f1d0d1", "vcellLabel": "#dda6a8"
+    "glow": "rgba(229,26,33,.35)",
+    "subColor": "#ebc2c3",
+    "headerMuted": "#d4a5a7",
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#1e8e3e",
+    "badge": "var(--blue)",
+    "verdictText": "#f1d0d1",
+    "vcellLabel": "#dda6a8"
   },
   "chart": {
-    "data": [["มิ.ย.25",215],["ส.ค.25",240],["ต.ค.25",290],["ธ.ค.25",330],["ก.พ.26",375],["เม.ย.26",410],["พ.ค.26",455],["มิ.ย.26",465]],
-    "min": 190, "max": 500, "grid": [200,250,300,350,400,450,500], "fairLine": 443, "currency": "$", "highlight": [6,7]
+    "data": [
+      ["ส.ค.25", 230.87],
+      ["ก.ย.25", 279.29],
+      ["ต.ค.25", 300.43],
+      ["พ.ย.25", 291.51],
+      ["ธ.ค.25", 303.89],
+      ["ม.ค.26", 330.56],
+      ["ก.พ.26", 374.58],
+      ["มี.ค.26", 337.95],
+      ["เม.ย.26", 396.06],
+      ["พ.ค.26", 418.45],
+      ["มิ.ย.26", 477.57],
+      ["ก.ค.26", 434.11]
+    ],
+    "min": 200,
+    "max": 500,
+    "grid": [300, 400],
+    "fairLine": 439,
+    "currency": "$",
+    "highlight": [0, 10]
   },
-  "gauge": { "min": 280, "max": 620, "cur": 465, "fair": 443, "fairLabelTop": "-58px" },
-  "fv": 443
+  "gauge": {
+    "min": 280,
+    "max": 620,
+    "cur": 434.11,
+    "fair": 439,
+    "fairLabelTop": "-58px"
+  },
+  "fv": 439
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -42,11 +72,11 @@
     <div class="sub">โรงงานรับจ้างผลิตชิป (foundry) ใหญ่ที่สุดในโลก • ผลิตชิป AI ระดับ 3nm/2nm + CoWoS ให้ Nvidia, AMD, Apple, Broadcom</div>
     <div class="price-row">
       <div>
-        <div class="px">$465<small>(TSM)</small></div>
+        <div class="px">$434.11<small>(TSM)</small></div>
       </div>
-      <div class="chg">▲ +116.3% (รอบปี)</div>
+      <div class="chg">▲ +88.0% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ADR ≈ 22 มิ.ย. 2026 (USD)<br>
+        ราคา ADR ≈ 10 ก.ค. 2026 (USD)<br>
         ปิดก่อนหน้า $432.15 → เด้งทำ ATH บริเวณ $477<br>
         ที่มา: StockAnalysis.com / Trendlyne / Yahoo Finance
       </div>
@@ -58,7 +88,7 @@
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">งบ FY2025 + Q1/2026 (6-K)</div></div>
     <div class="grid g4">
       <div class="metric"><div class="k">Market Cap</div><div class="v">~$2.4 ล้านล้าน</div><div class="d">ADR + หุ้นไทเป รวม</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v">~39x</div><div class="d">EPS TTM (ต่อ ADR) ~$11.80 <span class="pill a">สูงกว่าค่าเฉลี่ย</span></div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v">~38x</div><div class="d">EPS TTM (ต่อ ADR) ~$11.51 <span class="pill a">สูงกว่าค่าเฉลี่ย</span></div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย 4 ไตรมาส</div><div class="v neu">~28x</div><div class="d">re-rate ขึ้นจากธีม AI</div></div>
       <div class="metric"><div class="k">ROE (TTM)</div><div class="v">~37%</div><div class="d">FY2025 ~35% (แกร่งมาก)</div></div>
 
@@ -68,8 +98,8 @@
       <div class="metric"><div class="k">EPS FY2025 (Diluted)</div><div class="v">NT$327.35</div><div class="d pos">▲ +46.6% YoY</div></div>
 
       <div class="metric"><div class="k">Q1/2026 รายได้</div><div class="v">+~42% YoY</div><div class="d pos">EPS NT$22.08 <span class="pill g">โต AI/HPC</span></div></div>
-      <div class="metric"><div class="k">EPS TTM (ต่อ ADR)</div><div class="v">~$11.80</div><div class="d">งวด TTM ถึง มี.ค. 2026 (USD)</div></div>
-      <div class="metric"><div class="k">เงินปันผล</div><div class="v">0.82%</div><div class="d">~$3.80/ADR/ปี • จ่ายรายไตรมาส</div></div>
+      <div class="metric"><div class="k">EPS TTM (ต่อ ADR)</div><div class="v">~$11.51</div><div class="d">งวด TTM ถึง มี.ค. 2026 (USD)</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">0.64%</div><div class="d">~$2.76/ADR/ปี • จ่ายรายไตรมาส</div></div>
       <div class="metric"><div class="k">ช่วง 52 สัปดาห์</div><div class="v" style="font-size:18px">$206 – $477</div><div class="d">All-time high ~$476.79</div></div>
     </div>
   </section>
@@ -83,7 +113,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#1a73e8"></i>ราคา TSM (ADR)</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $443</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $439</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -98,8 +128,8 @@
     <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">3 วิธี เฉลี่ยถ่วงน้ำหนัก</div></div>
     <div class="card">
       <div class="vmethod">
-        <div><div class="mname">1. P/E Valuation <span class="pill a">ระมัดระวัง</span></div><div class="mdesc">EPS ~$11.80 × P/E ~35x (ยอมให้พรีเมียมจาก growth AI แต่ต่ำกว่า P/E ปัจจุบัน ~39x)</div></div>
-        <div class="mval">$413</div>
+        <div><div class="mname">1. P/E Valuation <span class="pill a">ระมัดระวัง</span></div><div class="mdesc">EPS ~$11.51 × P/E ~35x (ยอมให้พรีเมียมจาก growth AI แต่ต่ำกว่า P/E ปัจจุบัน ~38x)</div></div>
+        <div class="mval">$403</div>
       </div>
       <div class="vmethod">
         <div><div class="mname">2. DCF (2-stage)</div><div class="mdesc">FCF โต stage-1 สูง (AI capex จ่ายผล), WACC ~10%, Terminal ~3.5% — สะท้อนช่วงเร่งตัวของกำไร</div></div>
@@ -110,12 +140,12 @@
         <div class="mval">$465</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $413 – $465</span></div>
-        <div class="r">$443</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $403 – $465</span></div>
+        <div class="r">$439</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
-        <b>หมายเหตุ:</b> ข้าม DDM เพราะปันผล (0.82%) น้อยเกินไปไม่มีนัยสำคัญ • ใช้กรอบ <b>Margin of Safety</b> ที่ค่อนข้างอนุรักษ์นิยม
-        จึงต่ำกว่าเป้าเฉลี่ยนักวิเคราะห์ ($473) เล็กน้อย — ความเสี่ยงหลักคือ valuation ถูก re-rate ขึ้นเร็วตามธีม AI
+        <b>หมายเหตุ:</b> ข้าม DDM เพราะปันผล (0.64%) น้อยเกินไปไม่มีนัยสำคัญ • ใช้กรอบ <b>Margin of Safety</b> ที่ค่อนข้างอนุรักษ์นิยม
+        จึงต่ำกว่าเป้าเฉลี่ยนักวิเคราะห์ ($490) พอสมควร — ความเสี่ยงหลักคือ valuation ถูก re-rate ขึ้นเร็วตามธีม AI
       </p>
     </div>
   </section>
@@ -126,19 +156,19 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $465</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $443</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $434</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $439</div></div>
         </div>
         <div class="scale">
-          <span>$310<br><small>MOS 30%</small></span>
-          <span>$354<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$443<br><small>Fair Value</small></span>
-          <span style="text-align:right">$473<br><small>เป้า Analyst</small></span>
+          <span>$307<br><small>MOS 30%</small></span>
+          <span>$351<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$439<br><small>Fair Value</small></span>
+          <span style="text-align:right">$490<br><small>เป้า Analyst</small></span>
           <span style="text-align:right">$575<br><small>เป้าสูงสุด</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคา $465 อยู่ <b>สูงกว่ามูลค่าเหมาะสม</b> เล็กน้อยในเชิงพื้นฐาน — แต่ยังต่ำกว่า <b>เป้าหมาย 12 เดือน</b> เฉลี่ยของนักวิเคราะห์ ($473, Strong Buy: 17 ซื้อ / 0 ขาย)
+        ราคา $434.11 อยู่ <b>ใกล้เคียงมูลค่าเหมาะสม</b> (ต่ำกว่าเล็กน้อย ~1%) ในเชิงพื้นฐาน — และยังต่ำกว่า <b>เป้าหมาย 12 เดือน</b> เฉลี่ยของนักวิเคราะห์ ($490, Strong Buy)
         สะท้อนความเห็น 2 ขั้ว: สาย value มองว่าแพง, สาย AI growth มองว่ายังมี upside จากดีมานด์ชิปที่เกินกำลังผลิต
       </p>
     </div>
@@ -149,18 +179,18 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict bad">
-        <div class="big">−5%</div>
-        <div class="txt"><b>ไม่มี Margin of Safety</b><br>ราคาปัจจุบัน $465 สูงกว่ามูลค่าเหมาะสม $443 ราว 5% → ตามเกณฑ์ value investor ถือว่า <b>แพงเล็กน้อย</b> ยังไม่ใช่จุดซื้อที่ปลอดภัย</div>
+        <div class="big">+2%</div>
+        <div class="txt"><b>ไม่มี Margin of Safety</b><br>ราคาปัจจุบัน $434.11 ใกล้เคียงมูลค่าเหมาะสม $439 (ต่ำกว่าราว 1%) → เกือบเท่าทุน ยังไม่ถึงเกณฑ์ MOS ที่ปลอดภัย ต้องรอราคาย่อมากกว่านี้</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$354</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$310</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $443</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$351</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$307</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $439</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="465" step="1">
+          <input id="pxIn" class="mono" type="number" value="434.11" step="1">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -169,15 +199,15 @@
 
   <!-- ===== RETURN PROJECTION ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $465 • EPS ฐาน ~$11.80</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $434.11 • EPS ฐาน ~$11.51</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS +8%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$417</div>
-          <div class="ret neg">รวม ~ −10% (≈ −3.4%/ปี)</div>
+          <div class="tgt">$406</div>
+          <div class="ret neg">รวม ~ −6% (≈ −2.2%/ปี)</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>$14.9</span></li>
+            <li><span>EPS ปี 3</span><span>$14.5</span></li>
             <li><span>P/E ออก</span><span>28x</span></li>
             <li><span>สถานการณ์</span><span>วัฏจักรชิปอ่อน / AI ชะลอ</span></li>
           </ul>
@@ -186,10 +216,10 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +18%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$582</div>
-          <div class="ret pos">รวม ~ +25% (≈ +7.8%/ปี)</div>
+          <div class="tgt">$567</div>
+          <div class="ret pos">รวม ~ +31% (≈ +9.3%/ปี)</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>$19.4</span></li>
+            <li><span>EPS ปี 3</span><span>$18.9</span></li>
             <li><span>P/E ออก</span><span>30x</span></li>
             <li><span>สถานการณ์</span><span>2nm ramp + AI โตต่อเนื่อง</span></li>
           </ul>
@@ -198,10 +228,10 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +25%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$759</div>
-          <div class="ret pos">รวม ~ +63% (≈ +17.7%/ปี)</div>
+          <div class="tgt">$743</div>
+          <div class="ret pos">รวม ~ +71% (≈ +19.6%/ปี)</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>$23.0</span></li>
+            <li><span>EPS ปี 3</span><span>$22.5</span></li>
             <li><span>P/E ออก</span><span>33x</span></li>
             <li><span>สถานการณ์</span><span>AI supercycle + ขึ้นราคา</span></li>
           </ul>
@@ -235,7 +265,7 @@
           <li><div><b>ความเสี่ยงไต้หวัน/ภูมิรัฐศาสตร์:</b> ความตึงเครียดจีน–ไต้หวันเป็นความเสี่ยง tail-risk ที่ใหญ่ที่สุด — กระทบทั้งการผลิตและ valuation ทันที</div></li>
           <li><div><b>กระจุกตัวลูกค้า:</b> รายได้พึ่งลูกค้ารายใหญ่ไม่กี่ราย (Apple, Nvidia) — ดีมานด์ AI ที่ชะลอหรือดีไซน์ในเฮาส์ของลูกค้าจะกระทบแรง</div></li>
           <li><div><b>วัฏจักร + capex มหาศาล:</b> อุตฯ ชิปเป็นวัฏจักร, capex สูงมากต่อปี — หากดีมานด์ AI พลิก กำไร/มาร์จิ้นจะหดเร็ว</div></li>
-          <li><div><b>Valuation ไม่ถูก:</b> P/E ~39x สูงกว่าค่าเฉลี่ยอดีต ~28x — margin of safety จำกัด, เสี่ยง de-rate ถ้าโมเมนตัม AI แผ่ว</div></li>
+          <li><div><b>Valuation ไม่ถูก:</b> P/E ~38x สูงกว่าค่าเฉลี่ยอดีต ~28x — margin of safety จำกัด, เสี่ยง de-rate ถ้าโมเมนตัม AI แผ่ว</div></li>
           <li><div><b>การค้า/ภาษี + ส่งออกเทคโนโลยี:</b> นโยบายภาษีนำเข้า/มาตรการคุมส่งออกชิปขั้นสูงสร้างความไม่แน่นอนต่อคำสั่งซื้อ</div></li>
           <li><div><b>ความเสี่ยง FX:</b> รายได้/งบเป็น TWD ส่วนใหญ่ — ค่าเงิน TWD/USD ผันผวนกระทบมาร์จิ้นและมูลค่าที่แปลงเป็น USD ของ ADR</div></li>
         </ul>
@@ -248,14 +278,14 @@
     <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
     <div class="verdict">
       <h2>ธุรกิจคุณภาพสูงสุดของวงการชิป แต่ราคา ณ ตอนนี้ "ไม่ถูก"</h2>
-      <p>TSMC คือผู้ผลิตชิป leading-edge ที่แทบผูกขาดและเป็นหัวใจของซัพพลายเชน AI ทั้งโลก — กำไรโตแรง ROE สูง อำนาจตั้งราคาเด่น แต่ที่ราคา ~$465 ตลาดสะท้อนความคาดหวังธีม AI ไปมากแล้ว สำหรับสาย value จึงยังไม่มีส่วนเผื่อความปลอดภัย ส่วนสาย growth ยังพอเห็น upside ถ้า AI supercycle ดำเนินต่อ แต่ต้องยอมรับความเสี่ยงภูมิรัฐศาสตร์และวัฏจักร</p>
+      <p>TSMC คือผู้ผลิตชิป leading-edge ที่แทบผูกขาดและเป็นหัวใจของซัพพลายเชน AI ทั้งโลก — กำไรโตแรง ROE สูง อำนาจตั้งราคาเด่น แต่ที่ราคา ~$434 ตลาดยังให้ premium ตามธีม AI ไปมากแล้ว สำหรับสาย value จึงยังไม่มีส่วนเผื่อความปลอดภัยที่แท้จริง ส่วนสาย growth ยังพอเห็น upside ถ้า AI supercycle ดำเนินต่อ แต่ต้องยอมรับความเสี่ยงภูมิรัฐศาสตร์และวัฏจักร</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$443 <span style="font-size:12px;color:#a8b6cc">($413–$465)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ff8a80">แพง ~5%</div></div>
-        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">$473 (+1.7%)</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$439 <span style="font-size:12px;color:#a8b6cc">($403–$465)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd54f">ใกล้ FV (~1%)</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">$490 (+12.9%)</div></div>
       </div>
       <div class="zone">
-        💡 <b>กลยุทธ์:</b> สาย value — รอย่อ/ทยอยสะสมเมื่อราคา <b>ต่ำกว่า ~$443</b> (น่าสนใจที่ &lt;$354) • สาย growth — เข้าได้แบบ DCA ยอมรับความผันผวน โดยติดตาม <b>ดีมานด์ AI/HPC, CoWoS, 2nm ramp</b> และ <b>ความเสี่ยงไต้หวัน</b> เป็นตัวชี้วัดหลัก
+        💡 <b>กลยุทธ์:</b> สาย value — รอย่อ/ทยอยสะสมเมื่อราคา <b>ต่ำกว่า ~$439</b> (น่าสนใจที่ &lt;$351) • สาย growth — เข้าได้แบบ DCA ยอมรับความผันผวน โดยติดตาม <b>ดีมานด์ AI/HPC, CoWoS, 2nm ramp</b> และ <b>ความเสี่ยงไต้หวัน</b> เป็นตัวชี้วัดหลัก
       </div>
     </div>
   </section>
@@ -267,7 +297,7 @@
     EPS รายงานเป็น <b>หน่วยต่อ ADR ในสกุล USD</b> (1 ADR = 5 หุ้นสามัญไทเป) ไม่ใช่ EPS หน่วย NT$ ของหุ้นไทเป • ราคาหุ้นผันผวนสูง ผู้ลงทุนควรศึกษาเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ
     • อ้างอิงงบจริงจาก SEC Form 6-K (FY2025, Q1 2026) และข่าวบริษัท TSMC IR
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ 22–23 มิ.ย. 2026 • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 10 ก.ค. 2026 • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
