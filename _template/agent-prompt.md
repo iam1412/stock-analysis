@@ -24,6 +24,7 @@ cd {{WORKTREE}} && pwd
 - **batch tool calls** — เรียก tool ที่อิสระต่อกันหลายตัวในข้อความเดียวเสมอ (script 2 ตัว + อ่านไฟล์ = 1 turn)
 - **แก้ไฟล์ = สแกนหาทุกจุดก่อน แล้ว apply ทั้งหมดใน Bash call เดียวผ่าน `node tools/apply-edits.js`** (รูปแบบบล็อก `@@` ดู SKILL STEP 5C ข้อ 3) — **ห้ามใช้ Edit tool แก้ทีละจุดทีละ turn** (วัดจริง: 12–16 turn ที่หายไปต่อหุ้นเกิดตรงนี้) · ข้อความ "เดิม" ใน block = **copy verbatim จากบรรทัดจริง (ผล `sed -n`)** ห้ามพิมพ์จากความจำ — วัดจริง: "หาไม่เจอ" 21 ครั้ง/เวฟเกิดตรงนี้ · ถ้า fail ใช้บรรทัด near-match ที่ error พิมพ์มาให้เลย ไม่ต้อง grep กู้
 - ห้าม grep/สำรวจ `_template/` `build.js` `test/` เพื่อไล่ความหมาย class — ดู `docs/templates.md` ครั้งเดียวพอ · E/W code จาก gate → `docs/quality-gate.md` เฉพาะ code นั้น
+- ป้าย MOS (`mos-verdict`) ใช้โซน **bad <10% / ok 10–20% / good ≥20%** — ราคาพลิกโซนให้แก้ `class="mos-verdict …"` ตามนี้เลย ห้าม survey รายงานตัวอื่น
 - `find` โดน rtk hook ดัดแล้วพังกับ `-not`/`-prune` — ใช้ `grep -rl`/`ls` แทน หรือ `rtk proxy find …`
 - self-check `npm test` **ครั้งเดียวตอนงานเสร็จ** ไม่รันระหว่างทาง · ไม่อ่านไฟล์ซ้ำหลัง Edit (harness ตรวจให้แล้ว)
 

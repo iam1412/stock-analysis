@@ -20,58 +20,58 @@ npm run test:self        # meta-test: พิสูจน์ว่า checker เ
 
 ### ตารางอ้างอิง code ครบชุด (E01–E37 · W01–W12)
 
-> ดึงจาก field `id`/`level`/`label` ของ `CHECKS` ใน `test/check-reports.js` — **gate ฟ้อง code ไหน เปิดตารางนี้ก่อน ไม่ต้องขุด test/** · ไม่มี W11 (ยกระดับเป็น E36 แล้ว) · แก้/เพิ่ม check ในโค้ด → อัปเดตแถวในตารางนี้ด้วย
+> ดึงจาก field `id`/`level`/`label` ของ `CHECKS` ใน `test/check-reports.js` · คอลัมน์ "เกณฑ์+วิธีแก้" สรุปจากตัว `fn` และค่าคงที่ `TOL_*` ในไฟล์เดียวกัน — **gate ฟ้อง code ไหน เปิดตารางนี้แล้วแก้ได้เลย ไม่ต้องขุด test/ ไม่ต้อง survey รายงานตัวอื่น** · ไม่มี W11 (ยกระดับเป็น E36 แล้ว) · แก้/เพิ่ม check ในโค้ด → อัปเดตแถวในตารางนี้ด้วย
 
-| code | level | ตรวจอะไร |
-|------|-------|-----------|
-| E01 | error | DOCTYPE html |
-| E02 | error | `<html lang="th">` |
-| E03 | error | ปิด `</html>` |
-| E04 | error | title มีชื่อย่อหุ้น |
-| E05 | error | มี `<h1>` |
-| E06 | error | ครบ 8 section |
-| E07 | error | กราฟราคา |
-| E08 | error | เครื่องคิดเลข MOS |
-| E09 | error | gauge ราคา |
-| E10 | error | disclaimer |
-| E11 | error | footer |
-| E12 | error | ราคา+วันที่+แหล่งที่มา (header) |
-| E13 | error | ไม่มี placeholder ค้าง |
-| E14 | error | ไม่มี undefined/NaN |
-| E15 | error | FV ใน JS = FV ในกล่อง |
-| E16 | error | MOS = (FV−ราคา)/FV |
-| E17 | error | ≥2 วิธีประเมินมูลค่า + Fair Value |
-| E18 | error | จุดซื้อ MOS20/30 = FV×0.8 / ×0.7 |
-| E19 | error | gauge marker ตรงกับ ราคา/FV |
-| E20 | error | Fair Value อยู่ในกรอบ low–high |
-| E21 | error | วิธี P/E: ค่า = EPS × P/E ในคำอธิบาย |
-| E22 | error | วิธี P/BV: ค่า = ratio × BVPS, ratio = (ROE−g)/(r−g) |
-| E23 | error | ราคา header = ค่าตั้งต้นเครื่องคิดเลข |
-| E24 | error | scenario: EPS ปี3 = EPS ฐาน×(1+g)³ |
-| E25 | error | FV ในสรุป (verdict) = FV ในกล่อง |
-| E26 | error | gauge scale: เรียงขึ้น + MOS20/30 = FV×0.8/0.7 |
-| E27 | error | ราคาไม่เก่า/ไม่อยู่อนาคต |
-| E28 | error | ระบุโมเดล AI (meta ai-model) |
-| E29 | error | มีบล็อก stock-meta (JSON ครบ key) |
-| E30 | error | stock-meta = เลขที่โชว์ (ราคา/FV/MOS) |
-| E31 | error | stock-meta สอดคล้องในตัว (mos/upside) |
-| E32 | error | คำโปรยธุรกิจใต้ `<h1>` (.sub → desc การ์ด index) |
-| E33 | error | CSS var ที่อ้างถึงต้องถูกนิยาม (กันสี/พื้นหลังหายเงียบ) |
-| E34 | error | สีป้าย change ตรงทิศทาง (เขียว=ขึ้น/แดง=ลง) |
-| E35 | error | header % = ผลตอบแทนรอบปี (รอบปี) |
-| E36 | error | % รอบปี = ผลตอบแทนปลายกราฟ (จุดแรก→ท้าย) |
-| E37 | error | กราฟ ~1 ปี (ไม่เกิน ~13 จุด) |
-| W01 | warn | scenario: EPS×P/E ≈ ราคาเป้า |
-| W02 | warn | สกุลเงินปน |
-| W03 | warn | CSS เพี้ยน .seg-label |
-| W04 | warn | สี verdict ตรงกับโซน MOS |
-| W05 | warn | FV ≈ ค่าเฉลี่ยวิธีที่แสดง |
-| W06 | warn | สรุป "ส่วนต่างจากราคา" ตรงกับ MOS |
-| W07 | warn | ตัวเลขพื้นฐานสมเหตุสมผล |
-| W08 | warn | แหล่งข้อมูล ≥3 + อ้างอิงครบ |
-| W09 | warn | ความสดของราคา |
-| W10 | warn | stock-meta P/E·Yield·ROE ≈ ที่โชว์ |
-| W12 | warn | label จุดกราฟไม่ว่าง |
+| code | level | ตรวจอะไร | เกณฑ์ + วิธีแก้ (ย่อ) |
+|------|-------|-----------|------------------------|
+| E01 | error | DOCTYPE html | ต้องมี `<!doctype html>` เป็นอย่างแรกของไฟล์ |
+| E02 | error | `<html lang="th">` | ต้องมี attribute `lang="th"` บน `<html>` |
+| E03 | error | ปิด `</html>` | ไฟล์ต้องจบด้วย `</html>` ไม่มีอะไรต่อท้าย |
+| E04 | error | title มีชื่อย่อหุ้น | `<title>` ต้องมีสตริงชื่อย่อตรงตามชื่อไฟล์ |
+| E05 | error | มี `<h1>` | ต้องมีและข้อความไม่ว่าง |
+| E06 | error | ครบ 8 section | ต้องเจอ `<div class="n">1</div>` … `8` ครบทุกเลข — ขาดเลขไหนเติม section นั้น |
+| E07 | error | กราฟราคา | ต้องมี `id="priceChart"` |
+| E08 | error | เครื่องคิดเลข MOS | ต้องครบ 3 อย่าง: `#pxIn` + `#mosOut` + `const FV=` |
+| E09 | error | gauge ราคา | ต้องมี `#mCur` + `#mFair` |
+| E10 | error | disclaimer | ต้องมีข้อความ "ไม่ใช่คำแนะนำ" |
+| E11 | error | footer | ต้องมี `<footer>` |
+| E12 | error | ราคา+วันที่+แหล่งที่มา (header) | header ต้องมีราคา `.px` + ปีของวันที่ (ค.ศ./พ.ศ.) + คำระบุแหล่ง (ที่มา/แหล่ง/อ้างอิง/source) |
+| E13 | error | ไม่มี placeholder ค้าง | ห้ามเหลือ `[SYMBOL]`-family · `${…}` · `{{…}}` · `STOCK_DATA` — เติมค่าจริงทุก token |
+| E14 | error | ไม่มี undefined/NaN | เนื้อหาที่มองเห็นห้ามมีคำ `undefined`/`NaN` — render พลาด แก้ที่ต้นทาง |
+| E15 | error | FV ใน JS = FV ในกล่อง | `const FV` ต่างจาก `.fv-box` ได้ ≤1% — แก้ให้เท่ากันทั้งสองจุด |
+| E16 | error | MOS = (FV−ราคา)/FV | MOS ที่โชว์ (`.big`) = (FV−ราคา)/FV×100 ต่างได้ ≤2 จุด% — คำนวณใหม่จากราคา/FV ปัจจุบัน |
+| E17 | error | ≥2 วิธีประเมินมูลค่า + Fair Value | `.vmethod` ≥2 บล็อก + มีกล่อง `.fv-box` |
+| E18 | error | จุดซื้อ MOS20/30 = FV×0.8 / ×0.7 | กล่อง MOS20 = FV×0.8 · MOS30 = FV×0.7 ต่างได้ ≤2.5% — FV เปลี่ยนต้องคูณใหม่ทั้งคู่ |
+| E19 | error | gauge marker ตรงกับ ราคา/FV | `gpos()` ของ `mCur` = ราคา header · `mFair` = FV ต่างได้ ≤2% — แก้เลขใน script |
+| E20 | error | Fair Value อยู่ในกรอบ low–high | FV ต้องอยู่ใน "กรอบ lo–hi" ที่เขียนใน `.fv-box` และ lo ≤ hi |
+| E21 | error | วิธี P/E: ค่า = EPS × P/E ในคำอธิบาย | `.mval` = EPS × P/E ที่เขียนใน `.mdesc` ต่างได้ ≤3% — แก้เลขใน desc/val ให้คูณกันลงตัว |
+| E22 | error | วิธี P/BV: ค่า = ratio × BVPS, ratio = (ROE−g)/(r−g) | `.mval` = ratio×BVPS ต่างได้ ≤3% · ratio = (ROE−g)/(r−g) ต่างได้ ±0.05 (ตรวจเมื่อ r>g) — เลขทุกตัวอยู่ใน `.mdesc` |
+| E23 | error | ราคา header = ค่าตั้งต้นเครื่องคิดเลข | ราคา `.px` = `value` ของ `#pxIn` ต่างได้ ≤2% — อัปเดตราคาต้องแก้ทั้งสองจุด |
+| E24 | error | scenario: EPS ปี3 = EPS ฐาน×(1+g)³ | ต่างได้ ≤5% ทุกคอลัมน์ Bear/Base/Bull — เปลี่ยน g ต้องคูณใหม่ |
+| E25 | error | FV ในสรุป (verdict) = FV ในกล่อง | "มูลค่าเหมาะสม" ใน `.vgrid` = FV กล่อง ต่างได้ ≤2% |
+| E26 | error | gauge scale: เรียงขึ้น + MOS20/30 = FV×0.8/0.7 | ป้าย `.scale` ต้องเรียงน้อย→มาก + ป้าย MOS20/30 บนแกน = FV×0.8/0.7 ต่างได้ ≤2.5% |
+| E27 | error | ราคาไม่เก่า/ไม่อยู่อนาคต | เก่า >120 วัน (`STALE_ERROR_DAYS`) หรืออยู่อนาคต >7 วัน = error — รัน `update-prices --write --force <SYM>` |
+| E28 | error | ระบุโมเดล AI (meta ai-model) | `<meta name="ai-model">` ต้องขึ้นต้น "Claude " ห้ามว่าง/placeholder |
+| E29 | error | มีบล็อก stock-meta (JSON ครบ key) | `symbol` = ชื่อไฟล์ · `currency` = ISO 3 ตัว · price/fairValue/mos/upside = ตัวเลข · pe/dividendYield/roe = ตัวเลขหรือ null |
+| E30 | error | stock-meta = เลขที่โชว์ (ราคา/FV/MOS) | price ±2% ของ header · fairValue ±1% ของกล่อง · mos ±2 จุด% — แก้เลขที่โชว์แล้วต้องแก้ stock-meta ตามทุกครั้ง |
+| E31 | error | stock-meta สอดคล้องในตัว (mos/upside) | mos = (FV−price)/FV×100 ต่างได้ ±2 จุด% · upside = (FV−price)/price×100 ต่างได้ ±5% (ขั้นต่ำ 0.6) |
+| E32 | error | คำโปรยธุรกิจใต้ `<h1>` (.sub → desc การ์ด index) | `<div class="sub">` ใต้ `<h1>` ยาว ≥10 อักขระ สรุปว่าบริษัททำอะไร |
+| E33 | error | CSS var ที่อ้างถึงต้องถูกนิยาม (กันสี/พื้นหลังหายเงียบ) | ทุก `var(--x)` ที่ไม่มี fallback ต้องถูกนิยามในไฟล์ — เปลี่ยนไปอ้าง var ที่มีในพาเลต หรือเพิ่มนิยาม |
+| E34 | error | สีป้าย change ตรงทิศทาง (เขียว=ขึ้น/แดง=ลง) | ▼/− ห้ามคู่สีเขียว · ▲/+ ห้ามคู่สีแดง — แก้ `theme.chgBg/chgColor` ให้ตรงทิศ ("ทรงตัว" ข้าม) |
+| E35 | error | header % = ผลตอบแทนรอบปี (รอบปี) | `.chg` ต้องมีคำ "รอบปี" (IPO <1 ปี ใช้ "ตั้งแต่ IPO") + ▲/▼+ตัวเลข% หรือ "ทรงตัว" |
+| E36 | error | % รอบปี = ผลตอบแทนปลายกราฟ (จุดแรก→ท้าย) | % ใน `.chg` = (จุดท้าย−จุดแรก)/จุดแรก×100 ของ `chart.data` ต่างได้ ≤12 จุด% — ใช้ % จาก script ราคา ห้ามคิดเอง |
+| E37 | error | กราฟ ~1 ปี (ไม่เกิน ~13 จุด) | `chart.data` ≤13 จุด — เกินให้ตัดเหลือ ~12 เดือนล่าสุด (`tools/migrate-annual-chg.js`) |
+| W01 | warn | scenario: EPS×P/E ≈ ราคาเป้า | ราคาเป้า (tgt) = EPS ปี3 × P/E ออก ต่างได้ ≤7% ต่อคอลัมน์ |
+| W02 | warn | สกุลเงินปน | สกุลหลัก = สัญลักษณ์หน้า `.px` — รายงาน ฿ ไม่ควรมี $ ในเนื้อหา (และกลับกัน) |
+| W03 | warn | CSS เพี้ยน .seg-label | พบ `transform:transl(` — แก้เป็น `translate(` หรือลบ dead CSS |
+| W04 | warn | สี verdict ตรงกับโซน MOS | โซน MOS: **bad <10% · ok 10–20% · good ≥20%** — warn เมื่อ class ข้ามโซน 2 ขั้น (bad↔good) — แก้ `class="mos-verdict …"` ให้ตรงโซน MOS ใหม่ |
+| W05 | warn | FV ≈ ค่าเฉลี่ยวิธีที่แสดง | FV กล่องต่างจากค่าเฉลี่ย `.mval` ทุกวิธีได้ ≤7% |
+| W06 | warn | สรุป "ส่วนต่างจากราคา" ตรงกับ MOS | ทิศ: MOS < −3% ห้ามเขียน "ถูก/MOS+" · MOS > +3% ห้ามเขียน "แพง/เต็มมูลค่า" (โซนกลาง ±3% เขียน "เต็มมูลค่า/แฟร์" ได้) · เลข % ในเซลล์ต่างจาก MOS จริงได้ ≤2.5 จุด — แก้ prose ในเซลล์นั้นให้ตรง MOS จริง |
+| W07 | warn | ตัวเลขพื้นฐานสมเหตุสมผล | ราคา >0 · P/E (0, 600] · P/BV (0, 20] · yield 0–20% · ROE −100–200% — หลุดวิสัย = เช็คหน่วย/พิมพ์ผิด |
+| W08 | warn | แหล่งข้อมูล ≥3 + อ้างอิงครบ | header ระบุแหล่ง ≥3 (คั่นด้วย , / •) + เนื้อหามี "เป้า/นักวิเคราะห์" + "52 สัปดาห์" + งวดงบ (FY/ไตรมาส) |
+| W09 | warn | ความสดของราคา | อายุราคา >45 วัน (`STALE_WARN_DAYS`) แต่ ≤120 — ควรรัน update-prices ก่อน push |
+| W10 | warn | stock-meta P/E·Yield·ROE ≈ ที่โชว์ | เทียบเลขที่โชว์: pe ±5% (ขั้นต่ำ 0.1) · dividendYield ±10% (ขั้นต่ำ 0.15) · roe ±8% (ขั้นต่ำ 0.5) |
+| W12 | warn | label จุดกราฟไม่ว่าง | ทุกจุด `chart.data` = `["label", ตัวเลข]` — label ห้ามว่าง (กัน `["",v]`) |
 
 ### คำอธิบายประกอบตามกลุ่ม
 
