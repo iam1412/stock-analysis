@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น Serve Robotics (SERV) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 5">
+<script type="application/json" id="stock-meta">
+{"symbol":"SERV","currency":"USD","price":5.76,"fairValue":3.70,"mos":-55.7,"upside":-35.8,"pe":null,"dividendYield":0,"roe":null}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#e13f28",
+    "accentDark": "#aa2a17",
+    "darkGrad": "linear-gradient(135deg,#3c0d06 0%,#6f180b 58%,#b02612 140%)",
+    "glow": "rgba(224,55,31,.35)",
+    "subColor": "#ebc7c2",
+    "headerMuted": "#d4aba5",
+    "verdictText": "#f1d4d0",
+    "vcellLabel": "#ddada6",
+    "chgBg": "var(--red-soft)",
+    "chgColor": "#c5221f"
+  },
+  "chart": {
+    "data": [["ส.ค.25", 11.1], ["ก.ย.25", 11.63], ["ต.ค.25", 13.23], ["พ.ย.25", 10.26],
+             ["ธ.ค.25", 10.38], ["ม.ค.26", 10.43], ["ก.พ.26", 9.99], ["มี.ค.26", 8.44],
+             ["เม.ย.26", 9.43], ["พ.ค.26", 9.35], ["มิ.ย.26", 6.58], ["ก.ค.26", 5.76]],
+    "min": 2, "max": 14, "grid": [4, 6, 8, 10, 12],
+    "fairLine": 3.70, "currency": "$", "highlight": [11, 2]
+  },
+  "gauge": { "min": 2, "max": 6.5, "cur": 5.76, "fair": 3.70 },
+  "fv": 3.70
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots"><div style="width:8px;height:8px;border-radius:50%;background:#e13f28;display:inline-block;margin:0 3px"></div><div style="width:8px;height:8px;border-radius:50%;background:#aa2a17;display:inline-block;margin:0 3px"></div><div style="width:8px;height:8px;border-radius:50%;background:#6f180b;display:inline-block;margin:0 3px"></div></div>
+    <div>
+      <span class="tag">NASDAQ: SERV</span>
+      <span class="tag">Robotics / Physical AI</span>
+      <span class="tag">Last-Mile Sidewalk Delivery Robots</span>
+    </div>
+    <h1>Serve Robotics</h1>
+    <div class="sub">หุ่นยนต์ส่งของอัตโนมัติบนทางเท้า (sidewalk delivery robot) • พันธมิตร Uber Eats/DoorDash/7-Eleven/Shake Shack • ขยายสู่หุ่นยนต์โรงพยาบาล (Diligent Robotics/Moxi) ปี 2569</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$5.76<small>(SERV)</small></div>
+      </div>
+      <div class="chg">▼ −48.1% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 13 ก.ค. 2569 (StockAnalysis.com, ตรงกับ Google Finance)<br>
+        กรอบ 52 สัปดาห์ $5.63 – $18.64<br>
+        ที่มา: StockAnalysis.com, Google Finance, SEC EDGAR (10-Q/8-K), The Robot Report
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">pre-commercial-scale — ปรับชุด metric เน้น revenue/unit economics/cash runway แทน P/E</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">$446M</div><div class="d">77.33M หุ้น (13 ก.ค. 2569)</div></div>
+      <div class="metric"><div class="k">Revenue Growth (TTM YoY)</div><div class="v pos">+297.8%</div><div class="d">เร่งจาก FY2568 +46.2%</div></div>
+      <div class="metric"><div class="k">รายได้ (TTM)</div><div class="v neu">$5.2M</div><div class="d">FY2568 $2.7M • FY2569E guidance ~$26M</div></div>
+      <div class="metric"><div class="k">อัตรากำไรขั้นต้น (TTM)</div><div class="v neg">−441.1%</div><div class="d">ยังห่างจุดคุ้มทุนมาก</div></div>
+
+      <div class="metric"><div class="k">ขาดทุนสุทธิ FY2568</div><div class="v neg">−$101M</div><div class="d">FY2567 −$39.2M (ขาดทุนขยายตาม fleet+ดีล Diligent)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v neg">−$2.05</div><div class="d">เฉลี่ยหุ้น TTM 67.0M หุ้น</div></div>
+      <div class="metric"><div class="k">เงินสด+หลักทรัพย์ (Q1/2569)</div><div class="v">~$197M</div><div class="d">หนี้สินเพียง $4.8M (net cash)</div></div>
+      <div class="metric"><div class="k">Cash Runway (ที่ burn ปัจจุบัน)</div><div class="v neg">~14 เดือน</div><div class="d">burn ops ไตรมาส 1/2569 ~$41.4M/ไตรมาส</div></div>
+
+      <div class="metric"><div class="k">Fleet ที่ deploy จริง</div><div class="v neu">2,000+ คัน</div><div class="d">ณ 31 ธ.ค. 2568 (8-K/investor deck) • หยุด deploy เพิ่ม H1/2569</div></div>
+      <div class="metric"><div class="k">FCF (TTM)</div><div class="v neg">−$148M</div><div class="d">รวม capex ขยาย fleet</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">0%</div><div class="d">ไม่จ่าย — อยู่ช่วงเติบโต-ขาดทุน</div></div>
+      <div class="metric"><div class="k">ROE</div><div class="v neg">N/A</div><div class="d">ขาดทุนสุทธิ — ตัด P/E/ROE ออกจาก valuation</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#e13f28"></i>ราคา SERV</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $3.70</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคาขึ้นไปแตะจุดสูงสุด 52 สัปดาห์ $13.23 ในเดือน ต.ค. 2568 ตามกระแส Uber Eats/DoorDash momentum แล้วทยอยร่วงต่อเนื่องผ่านปี 2569 จนถึง $5.76 (13 ก.ค. 2569) รวม −48.1% รอบปี — สาเหตุหลักคือความกังวล dilution จาก ATM offering ต่อเนื่อง (สรุปสัดส่วนหุ้นเพิ่มจาก 51.5M เป็น 76M+ ใน ~15 เดือน), ผลขาดทุน Q1/2569 ที่กว้างขึ้นเป็น $49M หลังรวมดีล Diligent Robotics และรายงานว่า fleet utilization จริงต่ำ (812/2,000 คัน active รายวัน)
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 2 วิธี — ไม่ใช้ P/E/DDM (ขาดทุนสุทธิ, ไม่จ่ายปันผล)</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. EV/Sales Scenario-Weighted (FY2571/2028E)</div><div class="mdesc">รายได้ FY2571E ถ่วงน้ำหนักตามสถานการณ์ (Bear 25% $50M · Base 50% $110M · Bull 25% $200M) × EV/Sales อนุรักษ์นิยม (1.0x/3.0x/5.0x ตามลำดับ — ยังกดต่ำเพราะ gross margin ห่างจุดคุ้มทุน) = EV ถ่วงน้ำหนัก ~$427.5M คิดลดกลับ ~2.5 ปีที่ r=18% + เงินสดสุทธิปัจจุบัน ~$185M หารด้วยหุ้น diluted คาดการณ์ ~115M หุ้น (รวม dilution จาก ATM/follow-on ที่คาดว่าจะเกิดเพิ่ม)</div></div>
+        <div class="mval">$4.07</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. Unit-Economics Revenue Scaffold (FY2571 Base-Case Cross-Check)</div><div class="mdesc">Bottom-up: fleet ~8,000 คัน (Base case ปี 2571) × utilization 65% = 5,200 คัน active × 12 deliveries/คัน/วัน × $4.50/delivery ≈ รายได้ $102.5M/ปี (ใกล้เคียง Base case วิธีที่ 1 — cross-validate กันเอง) × EV/Sales 3.0x คิดลดกลับ 2.5 ปี + เงินสดสุทธิ ÷ หุ้น diluted ~115M หุ้น</div></div>
+        <div class="mval">$3.38</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $3.38 – $4.07</span></div>
+        <div class="r">$3.70</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ทั้งสองวิธีให้ผลใกล้กัน ($3.4–4.1) เพราะผูกกับสมมติฐาน fleet scale/utilization/GM trajectory เดียวกัน — จุดเปราะบางคือทั้งคู่พึ่งการ scale ที่ยังไม่เกิดขึ้นจริง (utilization ปัจจุบันเพียง ~41%) ราคาตลาด $5.76 จึงสูงกว่ากรอบ FV ทั้งหมด สะท้อนว่าตลาด price-in สถานการณ์ดีกว่า Bull case ในกรอบเวลาที่สั้นกว่าที่สมเหตุสมผล
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $5.76</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $3.70</div></div>
+        </div>
+        <div class="scale">
+          <span>$2.59<br><small>MOS 30%</small></span>
+          <span>$2.96<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$3.70<br><small>Fair Value</small></span>
+          <span style="text-align:right">$4.07<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">$18.45<br><small>เป้าเฉลี่ย Analyst</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน $5.76 อยู่เหนือกรอบ Fair Value ทั้งหมด (แม้แต่กรอบบน $4.07) สะท้อนว่าตลาดให้เครดิตการเติบโตของ fleet/revenue ล่วงหน้าไปมาก เป้าหมายนักวิเคราะห์เฉลี่ย 12 เดือน $18.45 (Strong Buy) มาจาก coverage ที่ยังบางมากและคำนวณไว้ก่อนราคาร่วงจากจุดสูงสุด 52 สัปดาห์ (−69% จาก $18.64) — ไม่ควรใช้เป็นตัวอ้างอิง valuation โดยตรง ระบุไว้ที่นี่เพื่อความครบถ้วนเท่านั้น
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">−55.7%</div>
+        <div class="txt"><b>ไม่มี Margin of Safety (ราคาสูงกว่ามูลค่าเหมาะสมมาก)</b><br>ที่ราคา $5.76 ตลาดกำลังตีมูลค่าโดยอิงการ scale fleet/revenue ในอนาคตไกล ทั้งที่ unit economics ยังขาดทุนหนัก (GM −441%) และ utilization จริงเพียง ~41% นักลงทุนควรรอราคาลงมาใกล้โซน MOS 20–30% หรือรอสัญญาณ unit economics ดีขึ้นชัดเจน (utilization >60%, GM แคบลงต่อเนื่อง) ก่อนพิจารณาเข้าซื้อ</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$2.96</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$2.59</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $3.70</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="5.76" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $5.76 • Revenue ฐาน TTM ~$5.2M (pre-commercial-scale, EPS ยังติดลบ −$2.05) • ไม่มีปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>Rev +35.7%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$0.66</div>
+          <div class="ret neg">−88.5% (3 ปี)</div>
+          <ul>
+            <li><span>Revenue/หุ้น ปี 3</span><span>~$0.45</span></li>
+            <li><span>P/S ออก</span><span>1.47x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$0</span></li>
+            <li><span>สถานการณ์</span><span>Fleet หยุดโตที่ ~2,500 คัน utilization ไม่ดีขึ้น ต้องระดมทุนซ้ำที่ราคาต่ำ (dilutive) แข่งขันบีบ margin</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>Rev +81.2%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$4.91</div>
+          <div class="ret neg">−14.8% (3 ปี)</div>
+          <ul>
+            <li><span>Revenue/หุ้น ปี 3</span><span>~$1.35</span></li>
+            <li><span>P/S ออก</span><span>3.64x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$0</span></li>
+            <li><span>สถานการณ์</span><span>Fleet ขยายถึง ~8,000 คัน utilization ดีขึ้นเป็น ~65% GM ใกล้จุดคุ้มทุนปีที่ 3 ระดมทุนเพิ่ม 1 รอบใหญ่</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>Rev +135.7%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$17.90</div>
+          <div class="ret pos">+210.8% (3 ปี)</div>
+          <ul>
+            <li><span>Revenue/หุ้น ปี 3</span><span>~$3.24</span></li>
+            <li><span>P/S ออก</span><span>5.53x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$0</span></li>
+            <li><span>สถานการณ์</span><span>Unit economics เป็นบวก ขยายหลายแพลตฟอร์ม (DoorDash/7-Eleven/healthcare ผ่าน Diligent) fleet >12,000 คัน utilization >80%</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      ใช้ Revenue-per-share × P/S ออก แทน EPS×P/E เพราะบริษัทยังขาดทุนสุทธิหนัก (EPS ติดลบทุก scenario ในช่วง 3 ปีนี้ตามแผนขยาย fleet) — ตัวเลข % การเติบโตรายได้สูงในทุก scenario (แม้ Bear) เพราะฐานรายได้ปัจจุบันยังต่ำมาก ไม่ได้แปลว่าเป็นบวกกับผู้ถือหุ้น เพราะ dilution และ GM ที่ยังติดลบเป็นตัวกำหนดผลตอบแทนที่แท้จริงมากกว่า % การเติบโตของรายได้เพียงอย่างเดียว
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>กระจายแพลตฟอร์มลูกค้า:</b> เพิ่ม DoorDash ควบคู่ Uber Eats พร้อมพันธมิตรร้านค้า 7-Eleven, Shake Shack — ลดความเสี่ยง customer concentration ที่เคยพึ่ง Uber Eats รายเดียว</li>
+          <li><b>รายได้เร่งตัวชัดเจน:</b> Q1/2569 รายได้ $3.0M (+578% YoY, +238% QoQ) มากกว่ารายได้ทั้งปี FY2568 ในไตรมาสเดียว บริษัทปรับเพิ่ม guidance FY2569 เป็น ~$26M</li>
+          <li><b>ดีล Diligent Robotics (Moxi):</b> ขยาย Physical-AI platform เข้าสู่หุ่นยนต์โรงพยาบาล (deploy แล้ว 25+ โรงพยาบาล ส่งของสำเร็จ 1.25M+ ครั้ง) เปิด TAM ใหม่นอกเหนือจาก food delivery</li>
+          <li><b>งบดุลแข็งแรง (net cash):</b> เงินสด+หลักทรัพย์ ~$197M เทียบหนี้สินเพียง $4.8M ให้เวลาบริษัทปรับ unit economics ก่อนต้องระดมทุนฉุกเฉิน</li>
+          <li><b>วินัยด้านทุน:</b> หยุด deploy fleet เพิ่มใน H1/2569 เพื่อโฟกัสยก utilization ของ fleet เดิมก่อน (คุณภาพมากกว่าปริมาณ) อาจช่วย GM trajectory ในระยะถัดไป</li>
+          <li><b>ตลาดใหญ่กำลังโต:</b> ตลาด delivery robot โตจาก ~$0.8B (2568) เป็น ~$3.2B ปี 2573 (CAGR ~32%) Serve อยู่ใน top-3 ผู้เล่นตามขนาด fleet</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>Unit economics ยังติดลบหนัก:</b> Gross margin TTM −441% ทุกการส่งของยังขาดทุนมากกว่ารายได้ที่ได้รับ ยังห่างจุดคุ้มทุนมาก</li>
+          <li><b>Fleet utilization ต่ำ:</b> มีเพียง 812/2,000 คัน (~41%) active รายวัน (Q1/2569) — การมี fleet ใหญ่ไม่ได้แปลว่าสร้างรายได้/margin ได้จริงถ้า utilization ไม่ตาม</li>
+          <li><b>Runway ตึงกว่าที่คิด + dilution แทบแน่นอน:</b> burn ops ~$41.4M/ไตรมาส เทียบเงินสด ~$197M ≈ runway ~14 เดือน (ไม่ใช่ 1.5 ปีเต็ม) หุ้นเพิ่มจาก 51.5M (สิ้นปี 2567) เป็น 76M+ (มี.ค. 2569) ผ่าน ATM ต่อเนื่อง (ขาย ATM รอบก่อน $80M ที่เฉลี่ย $14.04/หุ้น) มีโอกาสสูงต้องระดมทุนเพิ่มใน 12-18 เดือนข้างหน้า</li>
+          <li><b>เป้า Analyst $18.45 ไม่ใช่ตัวชี้วัด valuation:</b> อิง coverage บางและคำนวณก่อนราคาร่วง 69% จากจุดสูงสุด 52 สัปดาห์ — ห้ามใช้เป็น anchor มูลค่าที่แท้จริง</li>
+          <li><b>แข่งขันดุเดือด:</b> Starship Technologies (5,500+ คัน), Yango Noon (4,200+ คัน), Coco Robotics, Kiwibot/Robot.com (500+ คัน) แย่งส่วนแบ่งตลาด last-mile เดียวกัน Serve ไม่ได้ผูกขาดแม้แต่ใน Uber Eats</li>
+          <li><b>ความเสี่ยงจากดีล Diligent:</b> การรวมธุรกิจหุ่นยนต์โรงพยาบาล (กฎเกณฑ์/operation ต่างจาก sidewalk delivery มาก) อาจดึงความสนใจและเงินทุนออกจากการแก้ unit economics ธุรกิจหลัก</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>หุ้นเก็งกำไรระดับสูง (Speculative Growth, Pre-Commercial Scale)</h2>
+      <p>Serve Robotics เป็นหุ้นเรื่องราวการเติบโต (story stock) ที่ราคาตลาด $5.76 สะท้อนความหวังต่อการ scale fleet หุ่นยนต์ส่งของและรายได้ในอนาคตไกลกว่าที่ unit economics ปัจจุบันรองรับได้จริง — รายได้ TTM เพียง $5.2M เทียบ market cap $446M (~86x P/S) gross margin ยังติดลบหนัก (−441%) และ fleet utilization จริงเพียง ~41% (812/2,000 คัน) ขณะที่งบดุลมี net cash ~$192M ให้เวลาปรับตัว แต่ที่ burn pace ปัจจุบัน (~$41M/ไตรมาส) runway เหลือราว 14 เดือนเท่านั้น ทำให้การระดมทุนเพิ่ม (และ dilution ต่อเนื่อง) มีโอกาสสูงมากใน 12-18 เดือนข้างหน้า ทั้งสองวิธี valuation (EV/Sales scenario-weighted และ unit-economics scaffold) ให้ Fair Value กรอบ $3.38–4.07 ต่ำกว่าราคาตลาดทั้งกรอบ เหมาะสำหรับนักลงทุนที่รับความเสี่ยงสูงได้และเชื่อในเรื่องราวการเติบโตของ physical-AI/delivery-robot เท่านั้น ไม่เหมาะกับพอร์ตที่เน้นความปลอดภัยของเงินต้น</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$3.70 <span style="font-size:12px;color:#cab9a8">($3.38–4.07)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −55.7%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$18.45 (Strong Buy, coverage บาง)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> รอราคาปรับเข้าใกล้โซน MOS 20–30% ($2.6–3.0) หรือรอสัญญาณ unit economics ดีขึ้นชัดเจน (utilization >60%, GM แคบลงต่อเนื่องหลายไตรมาส) ก่อนพิจารณาเข้าซื้อ — ถือเป็นสถานะเก็งกำไรขนาดเล็กเท่านั้น ติดตามการระดมทุนรอบถัดไปและตัวเลข utilization ทุกไตรมาสอย่างใกล้ชิด
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อนสูง โดยเฉพาะ fleet scale, utilization, GM trajectory, EV/Sales เป้าหมาย และจำนวนหุ้น diluted ในอนาคต — Serve Robotics เป็นหุ้น pre-commercial-scale (รายได้ TTM $5.2M เทียบ market cap $446M) ที่มีความเสี่ยงสูงมาก ได้แก่ unit economics ยังขาดทุนหนัก, cash runway ที่ burn pace ปัจจุบันเหลือราว 14 เดือนและมีโอกาสสูงต้องระดมทุน/dilution เพิ่มใน 12-18 เดือนข้างหน้า, พึ่งพาแพลตฟอร์ม Uber Eats/DoorDash เป็นหลัก และการแข่งขันจากผู้เล่นรายอื่น (Starship, Yango Noon, Coco, Kiwibot) รายงาน 10-Q ไตรมาส 1/2569 ระบุว่าบริษัทคาดว่าจะมีเงินทุนเพียงพอดำเนินงานต่อเนื่องอย่างน้อย 12 เดือนข้างหน้า (ไม่มีถ้อยคำ substantial-doubt/going-concern อย่างเป็นทางการ ณ วันที่วิเคราะห์) แต่ด้วย burn pace ปัจจุบันนักลงทุนควรตระหนักถึงความเสี่ยง dilution สูง • ราคาหุ้นมีความผันผวนสูงมาก ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ราคา ณ 13 ก.ค. 2569 จาก StockAnalysis.com (cross-check กับ Google Finance ตรงกัน) • ข้อมูลงบการเงิน/ประมาณการจาก StockAnalysis.com • ข้อมูล fleet/พันธมิตร/ดีล Diligent จาก SEC EDGAR (8-K/10-Q/DEF14A), The Robot Report, Seeking Alpha
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 14 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
