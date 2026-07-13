@@ -43,7 +43,7 @@ invariant ที่ห้ามหลุดไม่ว่ากรณีใด:
 ใช้เมื่อสั่งหลายตัวหรือธีม · **รายละเอียด+เหตุผลทั้งหมด → `docs/orchestration.md`** · invariant ที่ห้ามหลุด:
 
 1. **ก่อนเริ่ม**: `git pull --rebase origin main` → อ่าน `reports.json` — สด ≤7 วัน **ไม่ทำซ้ำ** (ธีม→หาตัวแทน · ระบุชื่อ→ข้ามพร้อมแจ้ง) · เกิน 7 วัน = UPDATE · ยังไม่มี = NEW
-2. **โมเดล**: ❌ Haiku ทุกขั้น · default = **All-Sonnet** (controller+worker) · หุ้นยาก (IPO <1 ปี/spinoff/split/cyclical/ราคา cross-source ต่าง >5%) → escalate worker ตัวนั้นเป็น **Opus** อัตโนมัติ · ตัดสิน publish/skip กำกวม → หยุด ping user
+2. **โมเดล**: ❌ Haiku ทุกขั้น · **Sonnet ทุกชั้น** (controller+worker — ยกเลิก Opus ทั้งหมด 13 ก.ค. 2569) · หุ้นยาก (IPO <1 ปี/spinoff/split/cyclical/pre-profit/ราคา cross-source ต่าง >5%) → worker = Sonnet **effort high** + controller **ปรึกษา `advisor` ก่อน spawn** แล้วฝังแนวทางลง prompt (session ไม่มี advisor → หยุดถาม user) · ตัดสิน publish/skip กำกวม → advisor ก่อน ยังกำกวม → หยุด ping user
 3. **spawn**: 1 หุ้น/agent (context แยก กันเลขปนข้ามหุ้น — ตัวร้าย #1) · **sequential เท่านั้น** — spawn → รอเสร็จ → ตรวจ → ตัวถัดไป (parallel เคยพัง rate limit พร้อมกันทั้งเวฟ) · ใช้ prompt `_template/agent-prompt.md` + STEP 0 กัน cwd-stray · จะคุม effort ต่อ worker → workflow **`analyze-wave`** (docs/orchestration.md)
 4. **push รายตัว**: worker เสร็จ 1 ตัว → controller ตรวจ → verify + push หุ้นนั้นทันที (รวมเป็น Bash call เดียว §5) ก่อน spawn ตัวถัดไป · **จำนวนหุ้นต่อรอบไม่จำกัด** (ยกเลิก "เวฟละ ≤3" 12 ก.ค. 2569 — sequential + push รายตัวจำกัด blast radius = 1 หุ้นให้แล้ว) · ห้าม agent push เอง · ห้าม push ซ้อน session
 5. ของดีไม่พอโควตา → ลดจำนวนเองได้ ไม่ต้องถาม แต่แจ้งเหตุผล (คุณภาพ > โควตา)
@@ -56,7 +56,7 @@ invariant ที่ห้ามหลุดไม่ว่ากรณีใด:
 
 - **รันยาวได้ ไม่ต้องหยุดรอ user เปิด session ใหม่** (ยกเลิก chunk ≤10 หุ้น/session — 13 ก.ค. 2569 user เคาะ: ปล่อย auto-compact จัดการ context เอง) · ข้อเท็จจริงต้นทุน: cacheR/turn ของ controller โตตาม context (วัดจริง ~70k → ~139k ตอน 25 ตัวรวด) — controller ช่วยได้โดยคุมตัวเอง: รวม verify+push เป็น Bash เดียว · ไม่อ่านรายงานทั้งไฟล์ · สรุประหว่างเวฟให้สั้น
 - pull --rebase + อ่าน `reports.json` ก่อน — ข้ามหุ้นสด ≤7 วัน = ประหยัด 100% ของตัวนั้น
-- ห้ามรัน Opus เป็น main (W31 กิน ~15% ของลิมิต 5 ชม. กับแค่ 3 หุ้น) · worker งาน mechanical → effort medium ผ่าน `analyze-wave`
+- ทุกชั้น = Sonnet (§3.2) · worker งาน mechanical → effort medium ผ่าน `analyze-wave` · หุ้นยาก → effort high
 - controller **pre-fetch `fetch-fundamentals` เสมอ** แล้ววางบล็อกใน `{{FUNDAMENTALS}}` ของ agent-prompt (output มีงบ 5 ปีแล้ว — จูนรอบ 5) — worker ห้ามรันซ้ำ/ห้าม WebFetch หน้า financials เอง
 
 ---
@@ -78,7 +78,7 @@ git push origin HEAD:main          # 4. ★ worktree ต้องใช้ HEAD:
 
 **commit message:** **1 commit = 1 หุ้น** (push รายตัว §3.4) — หุ้นใหม่ `analyze: add <SYMBOL> stock analysis` · อัปเดต `analyze: update <SYMBOL> …` (เลิกใช้ commit รวม `analyze: add A, B, C` ตั้งแต่ 12 ก.ค. 2569) · ลงท้าย:
 ```
-Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>
+Co-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>
 ```
 > ขอบเขต auto-push = งานใน `reports/` · แก้โครงสร้างระบบ (build.js, wrangler.toml, CLAUDE.md, docs/) → สรุปก่อน push ตามปกติ
 
@@ -94,7 +94,7 @@ Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>
 ## 7. ข้อห้าม / ข้อควรระวัง
 
 - ⏰ **Time Zone = Asia/Bangkok (UTC+7)** — ทุกการคิด "วันนี้"/ความสด (header · dedup 7 วัน · staleness 45/120 วัน) ใช้เวลาไทย · วันที่ในรายงานใช้ปี พ.ศ.
-- ❌ **ห้าม Haiku** ทุกขั้น · ค่าเริ่มต้น = All-Sonnet main + escalate Opus (§3.2 + memory `model-config-rules`)
+- ❌ **ห้าม Haiku** ทุกขั้น · ❌ **ไม่ใช้ Opus แล้ว** — Sonnet ทุกชั้น หุ้นยาก = advisor + effort high (§3.2 + memory `model-config-rules`)
 - ❌ อย่า commit `dist/`, `node_modules/`, `.DS_Store` · อย่าแก้ไฟล์ใน `dist/` ตรง ๆ (แก้ต้นฉบับ)
 - ❌ ชื่อไฟล์รายงาน = `<SYMBOL>.html` พิมพ์ใหญ่ ไม่มีเว้นวรรค
 - ✅ ทุกรายงานมี disclaimer "ไม่ใช่คำแนะนำการลงทุน" + "ราคา ณ วันที่ + แหล่งที่มา"

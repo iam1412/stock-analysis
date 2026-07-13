@@ -14,9 +14,9 @@
 ## 2. โมเดล (บังคับ)
 
 - **ห้าม Haiku ทุกขั้น** (Sonnet+Haiku และ Haiku-ล้วน ห้ามทั้งคู่ — benchmark AMGN 30 มิ.ย. 2569: Haiku = build-crash + fake-chart + wrong-EPS)
-- **ค่าเริ่มต้น = All-Sonnet**: controller=Sonnet, worker=Sonnet (`model:"sonnet"`) — ตราบใดที่ controller ตรวจข้ามแหล่ง price/EPS ≥2 + กราฟจริงจาก script + จับ split/ticker เอง
-- **หุ้นยาก** (IPO <1 ปี / spinoff / split / cyclical / ราคา cross-source ต่าง >5%) → **escalate อัตโนมัติ** spawn worker ตัวนั้นเป็น **Opus** (`model:"opus"`) ไม่ต้องบอก user
-- การตัดสิน publish/skip ของ controller เอง**กำกวม** → หยุด ping user สลับ session เป็น Opus
+- **Sonnet ทุกชั้น**: controller=Sonnet, worker=Sonnet (`model:"sonnet"`) — ตราบใดที่ controller ตรวจข้ามแหล่ง price/EPS ≥2 + กราฟจริงจาก script + จับ split/ticker เอง · **ยกเลิก Opus ทั้งหมด 13 ก.ค. 2569** (user เคาะ — override เคยพังระดับ harness + วัดแล้ว Sonnet+high ถึงมาตรฐาน publish บนหุ้น pre-profit ที่ยากสุด: Tier 2 batch 1)
+- **หุ้นยาก** (IPO <1 ปี / spinoff / split / cyclical / pre-profit / ราคา cross-source ต่าง >5%) → worker ยังเป็น Sonnet แต่ตั้ง `effort:"high"` + **controller เรียก `advisor` ก่อน spawn**: เก็บข้อมูลขัดแย้ง/ประเด็นยากให้ครบก่อน แล้วเรียก advisor (ไม่มีพารามิเตอร์ — เห็น context ทั้งหมดเอง) → ฝังแนวทางที่ได้ลง prompt ของ worker (เช่นเคส MBLY: ชี้ impairment ครั้งเดียว + ห้ามใช้ P/E×EPS) + บังคับย่อหน้า full-disclosure/uncertainty ในรายงาน · **session ที่ไม่มี advisor tool (หรือเรียกแล้ว unavailable) → หยุดถาม user**
+- การตัดสิน publish/skip ของ controller เอง**กำกวม** → เรียก `advisor` ก่อน ถ้ายังกำกวม → หยุด ping user
 - **effort ต่อ worker**: งาน mechanical (UPDATE-LIGHT / UPDATE ที่ EPS ไม่เปลี่ยน) ไม่จำเป็นต้องใช้ effort สูง — spawn ผ่าน workflow `analyze-wave` (ข้อ 5) เพื่อตั้ง `effort:"medium"` ได้ · Agent tool ปกติตั้ง effort ไม่ได้
 
 ## 3. Spawn — 1 หุ้น/agent · sequential
@@ -45,8 +45,8 @@
               args: { stocks: [ {label:"AAPL", prompt:"<prompt เต็ม>"} ],
                       effort: "medium" } }
    ```
-   - **เรียก 1 หุ้น/call** (คง push รายตัว — workflow คืนผลตอนจบทั้งชุด ส่งหลายตัวใน call เดียวจะ push คั่นระหว่างตัวไม่ได้) · override รายตัว: `stocks[0].effort` / `stocks[0].model` (เช่น escalate ตัวยากเป็น opus+high)
-   - ⚠ **bug: model override เคยถูก runtime เมิน (วัดจริง 13 ก.ค. 2569 · session ec046fa3 เวฟ ABBNY)** — `stocks[].model:"opus"` ถูกต้องทั้งใน args และ script ส่งต่อถูก (`s.model || waveModel`) แต่ runtime fallback เงียบไป default model — transcript + workflow record ยืนยัน worker รัน claude-sonnet-5 ทั้ง session ไม่มี error ใด ๆ · **ก่อนเวฟที่ต้อง escalate Opus (เช่น Tier 2 robotics) ให้ probe ก่อน:** รัน analyze-wave 1 call จิ๋ว `model:"opus"` แล้วเช็ค field `model` ใน `~/.claude/projects/<projdir>/<session>/workflows/wf_*.json` ว่าเป็น `claude-opus-*` จริง — ถ้าไม่ใช่ → เปิด session แยกที่ main model = Opus สำหรับตัวยากแทน (อย่าเชื่อว่า override ทำงานโดยไม่ probe)
+   - **เรียก 1 หุ้น/call** (คง push รายตัว — workflow คืนผลตอนจบทั้งชุด ส่งหลายตัวใน call เดียวจะ push คั่นระหว่างตัวไม่ได้) · override รายตัว: `stocks[0].effort` (หุ้นยาก → `"high"`)
+   - **ห้ามใช้ `stocks[].model` override** — ชั้น escalate Opus ถูกยกเลิกทั้งหมด 13 ก.ค. 2569 (runtime เคยเมิน override เงียบ ๆ ระดับ harness ทั้ง analyze-wave และ Agent tool · ประวัติ+วิธี probe อยู่ใน memory `model-config-rules`) — ทุก worker = Sonnet · หุ้นยากใช้ advisor + effort high (§2)
    - script ยังรองรับหลายตัว (รัน sequential) — ใช้เฉพาะกรณียอมรับว่า push ได้หลังจบทั้งชุดเท่านั้น
 3. แต่ละ call เสร็จ → controller ตรวจผล (คืนสรุปราคา/FV/MOS จาก worker) → verify + push รายตัวตามข้อ 4 → ค่อยเรียกตัวถัดไป
 
@@ -58,4 +58,4 @@
 
 - ต้นทุน worker อยู่ที่ **จำนวน turn × ~70k cache-read** ไม่ใช่ output (~3-4k/ตัวเท่านั้น) → เป้า: NEW/UPDATE ~15 turns · UPDATE-LIGHT ≤10 turns
 - ฝั่ง controller: cacheR/turn **ไม่คงที่** — โตตาม context (~70k session สั้น → ~139k เมื่อรัน 25 ตัวรวด) — รันยาวได้ ไม่มี chunk/session (ข้อ 3) แต่คุม turn ตัวเองให้น้อย/ตอบสั้นระหว่างเวฟ
-- 3 หุ้นบน Sonnet ≈ 25k output + ~10M cache-read → เย็นเดียวเคลียร์ได้ ~15 ตัวสบาย ๆ · ห้ามหวนกลับไป Opus main (กิน ~15% ลิมิต/3 หุ้น)
+- 3 หุ้นบน Sonnet ≈ 25k output + ~10M cache-read → เย็นเดียวเคลียร์ได้ ~15 ตัวสบาย ๆ · Sonnet ทุกชั้นเท่านั้น (Opus main เคยกิน ~15% ลิมิต/3 หุ้น — เลิกใช้ทั้งหมดแล้ว)
