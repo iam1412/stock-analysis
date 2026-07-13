@@ -21,9 +21,10 @@
 - อยู่ใน `_template/` (ไม่ใช่ `reports/`) → ไม่ถูก build เป็นหน้า/ไม่ถูก gate ตรวจเป็นรายงานจริง · ทั้งสองไฟล์ต่างกันแค่สัญลักษณ์สกุลเงิน/ตลาด (โครงเดียวกัน)
 - `test/skeleton-test.js` กำกับ: เติม token ด้วยข้อมูลจริง (ไทย = HMPRO จริง) แล้ว **ต้องผ่าน check-reports (0 error) + engine รันได้** + token coverage (เพิ่ม token แล้วลืมอัปเดต = เทส fail)
 
-## ตัวอย่าง filled (NEW) — worker อ่านตรงนี้จบ ไม่ต้อง grep รายงานตัวอื่น / ไม่ต้องทดลอง `node -e` หา format
+## ตัวอย่าง filled (NEW) — worker อ่านตรงนี้จบ **ห้าม Read/grep/sed ไฟล์ใน `reports/` ตัวอื่นทุกกรณี** / ไม่ต้องทดลอง `node -e` หา format
 
-> ตัวอย่างจริงจาก `reports/CGNX.html` (US · ราคา $66.80 · FV $50.00) · ข้อ 6–7 จาก `reports/KTOS.html` (US · ราคา $48.19 · FV $50.00) — โหมด NEW compose เนื้อหาครบทุก STEP แล้ว **Write ทั้งไฟล์ครั้งเดียว** (SKILL STEP 5A)
+> ตัวอย่างจริงจาก `reports/CGNX.html` (US · ราคา $66.80 · FV $50.00) · ข้อ 2 (วิธีที่ 2)/4 (ตัวปกติ)/6–7 จาก `reports/KTOS.html` (US · ราคา $48.19 · FV $50.00) — โหมด NEW compose เนื้อหาครบทุก STEP แล้ว **Write ทั้งไฟล์ครั้งเดียว** (SKILL STEP 5A)
+> บล็อกไหนหาไม่เจอในหน้านี้ = ใส่ตามแบบตัวอย่างที่ใกล้สุดที่มี แล้วให้ gate (`npm test -- <SYM>`) จับ — ถูกกว่าไปขุดรายงานตัวอื่น (วัดจริง 13 ก.ค. 2569: HON เผา 5–6 turns grep/Read/sed รายงาน sibling ทั้งที่ทุกบล็อกอยู่ในนี้แล้ว)
 
 ### 1) บล็อก `report-data` ทั้งก้อน
 
@@ -80,7 +81,17 @@
 </div>
 ```
 
-- วิธีชื่อ "P/E" → gate E21 เช็คคณิต `EPS × P/E = mval` จริง · **เขียน `$` นำหน้า EPS เสมอ** (ขึ้นต้นด้วยปี parser จะคว้าปีเป็น EPS) · วิธีชื่อ "Justified P/BV" → E22
+วิธีที่ 2 ขึ้นไป / วิธีที่ไม่ใช่ P/E — **โครง HTML เดียวกันเป๊ะ เปลี่ยนแค่ข้อความ 3 จุด** (`mname`/`mdesc`/`mval`) — ตัวอย่างจริงวิธี P/S จาก `reports/KTOS.html`:
+
+```html
+<div class="vmethod">
+  <div><div class="mname">2. P/S (Price-to-Sales) Valuation</div><div class="mdesc">รายได้คาดการณ์ FY69 (2026E) ต่อหุ้น $9.34 (จาก $1.75B ÷ 187.33M หุ้น) × P/S เป้าหมาย ~5.8x — ต่ำกว่า P/S ปัจจุบัน 6.36x เล็กน้อย</div></div>
+  <div class="mval">$54.17</div>
+</div>
+```
+
+- วิธีชื่อ "P/E" → gate E21 เช็คคณิต `EPS × P/E = mval` จริง (คลาด ≤3%) · **เขียน `$` นำหน้า EPS เสมอ** (ขึ้นต้นด้วยปี parser จะคว้าปีเป็น EPS) · วิธีชื่อ "Justified P/BV" → E22
+- วิธีชื่ออื่น (P/S · DCF · DDM · EV/Sales · NAV · Residual income) gate **ไม่เช็คคณิต** — ใช้โครงข้างบนได้เลย ไม่มี format พิเศษต้องตามหาอีก
 - ≥2 วิธี → `fv-box` = ค่าเฉลี่ย + กรอบ = ค่าต่ำสุด–สูงสุดของทุกวิธี
 
 ### 3) บล็อก gauge + scale (section 4)
@@ -103,7 +114,19 @@
 
 (id `gbar/mCur/mFair` คงตามนี้ — engine หาตาม id · ตำแหน่ง marker engine คำนวณจาก `report-data.gauge` เอง · MOS30 = FV×0.7, MOS20 = FV×0.8)
 
-### 4) เคสพิเศษ: หุ้นขาดทุน / ไม่จ่ายปันผล (ตัวอย่างจริง `reports/AAOI.html`)
+### 4) บล็อก `stock-meta` — ตัวปกติ + เคสขาดทุน/ไม่จ่ายปันผล
+
+ตัวปกติ (ตัวอย่างจริง `reports/KTOS.html` — มีกำไร จึงมี `pe`/`roe` เป็นเลขจริง):
+
+```html
+<script type="application/json" id="stock-meta">
+{"symbol":"KTOS","currency":"USD","price":48.19,"fairValue":50.00,"mos":3.6,"upside":3.8,"pe":280.79,"dividendYield":0,"roe":1.09}
+</script>
+```
+
+- `currency` = ISO 3 ตัว (`"USD"`/`"THB"`) · ทุกเลขต้องตรงกับที่โชว์ในรายงาน · `mos` = (FV−ราคา)/FV ×100 · `upside` = (FV−ราคา)/ราคา ×100 (ทศนิยม 1 ตำแหน่ง)
+
+เคสพิเศษ: หุ้นขาดทุน / ไม่จ่ายปันผล (ตัวอย่างจริง `reports/AAOI.html`):
 
 ```html
 <script type="application/json" id="stock-meta">
@@ -169,17 +192,17 @@
 ### 8) สีแบรนด์ — 1 คำสั่งจบ (ห้ามอ่าน brandtheme.js / ห้าม `node -e` ทดลองเอง / ห้ามแก้ seeds.json มือ)
 
 1. เลือก hex 1 ค่าตามหลัก `tools/brand-colors.md` (สีโลโก้ > สีเซกเตอร์ · ห้ามน้ำเงิน default)
-2. รัน **ครั้งเดียว**: `node tools/pick-brand.js <SYM> "#0f9d8c"` (แทน hex ของคุณ) — ตรวจสีชน/ใกล้เคียงกับ seed เดิมทั้งหมดให้ (ชน = exit 1 พร้อมรายชื่อตัวที่ชน → เลือกเฉดใหม่แล้วรันซ้ำ · แบรนด์ร่วมจริงเท่านั้นจึงใช้ `--force`) + บันทึกลง `tools/seeds.json` ให้เอง + พิมพ์ **8 คีย์ theme** และ **บรรทัด `{{GDOTS}}`** พร้อม copy
+2. รัน **ครั้งเดียว**: `node tools/pick-brand.js <SYM> "#0f9d8c" --auto` (แทน hex ของคุณ) — ตรวจสีชน/ใกล้เคียงกับ seed เดิมทั้งหมดให้ · **ชนแล้ว `--auto` สลับเป็นเฉดว่างที่ใกล้แบรนด์สุดให้เองในคำสั่งเดียว** (ไล่ sat/hue ใน hue เดิม — จบ 1 turn ไม่ต้องเดาเฉดใหม่เอง) + บันทึกลง `tools/seeds.json` + พิมพ์ **8 คีย์ theme** และ **บรรทัด `{{GDOTS}}`** พร้อม copy · ไม่ใส่ `--auto` = ชนแล้ว exit 1 พร้อมข้อเสนอเฉดว่าง 2–3 ตัวให้เลือกรันซ้ำ · แบรนด์ร่วมจริงเท่านั้น (เช่น TSM/STM สีเดียวกันจริง) จึงใช้ `--force`
 3. วาง 8 คีย์ลง `report-data.theme` แล้วเติม `chgBg/chgColor` จากผล fetch-facts ต่อท้าย — จบ ไม่มี verify สีเพิ่ม
 
 ## สีแบรนด์ — เลือกตาม "ลักษณะของหุ้น" ทุกตัว (ห้ามปล่อย default น้ำเงิน)
 ทุกรายงานต้องมีสีเฉพาะตัวใน `report-data.theme` — **มีสีแบรนด์/โลโก้จำได้ใช้สีนั้น** (Google ฟ้า, Tesla/TSMC แดง, Accenture ม่วง, PANW ส้ม…),
 **ไม่มีก็เลือกตามเซกเตอร์** (photonics→teal/cyan/magenta/violet · foundry/metrology→copper/bronze · power/energy→เขียว · memory→amber · cybersecurity→ส้ม/แดง)
 - หลักการ + เหตุผลรายตัว + วิธีทำ: ดู **`tools/brand-colors.md`** (record ถาวร)
-- เครื่องมือ: **หุ้นใหม่** → `node tools/pick-brand.js <SYM> "#hex"` ครั้งเดียวจบ (ตรวจชน + ลง `seeds.json` + พิมพ์ theme/GDOTS — ข้อ 8 ข้างบน) · **regenerate ธีมจาก seed เดิมทั้งระบบ** → `node tools/brandtheme.js tools/seeds.json --write` (`makeTheme()` สร้างธีมเต็มจาก seed ด้วย HSL)
+- เครื่องมือ: **หุ้นใหม่** → `node tools/pick-brand.js <SYM> "#hex" --auto` ครั้งเดียวจบ (ตรวจชน — ชนแล้วสลับเฉดว่างใกล้สุดให้เอง + ลง `seeds.json` + พิมพ์ theme/GDOTS — ข้อ 8 ข้างบน) · **regenerate ธีมจาก seed เดิมทั้งระบบ** → `node tools/brandtheme.js tools/seeds.json --write` (`makeTheme()` สร้างธีมเต็มจาก seed ด้วย HSL)
 
 ## เครื่องมือ (`tools/`)
 - `migrate.js <SYM…> [--write]` — แปลง HTML เต็ม → content-only + **round-trip faithful check** (resolve CSS var→สีจริง + body verbatim + stock-meta + brand/engine values ตรงเป๊ะจึงเขียน ไม่งั้น flag ปล่อย old-style)
-- `pick-brand.js <SYM> "#hex" [--force]` — one-shot สีแบรนด์หุ้นใหม่: ตรวจชน (เทียบใน accent space หลัง makeTheme) → เพิ่ม `seeds.json` → พิมพ์ theme 8 คีย์ + บรรทัด GDOTS
+- `pick-brand.js <SYM> "#hex" [--auto] [--force]` — one-shot สีแบรนด์หุ้นใหม่: ตรวจชน (เทียบใน accent space หลัง makeTheme) → ชน+`--auto` = สลับเฉดว่างใกล้สุดให้เอง / ไม่ `--auto` = exit 1 พร้อมข้อเสนอเฉดว่าง → เพิ่ม `seeds.json` → พิมพ์ theme 8 คีย์ + บรรทัด GDOTS
 - `brandtheme.js` — `makeTheme(seed)` → ธีมเต็มชุด · `preserve-dates.js` — คงวันที่ `updated` หลัง migrate (source เปลี่ยน → freshHash ขยับ → ดึงวันเดิมจาก git HEAD)
 - gate ครอบคลุม template: `check-reports.js` ตรวจ **หลัง** expand · `build-test.js` ทดสอบ `expandReport`/validate · `engine-exec.js` รัน engine จริง · `skeleton-test.js` กำกับโครงต้นแบบ

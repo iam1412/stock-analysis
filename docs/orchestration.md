@@ -46,6 +46,7 @@
                       effort: "medium" } }
    ```
    - **เรียก 1 หุ้น/call** (คง push รายตัว — workflow คืนผลตอนจบทั้งชุด ส่งหลายตัวใน call เดียวจะ push คั่นระหว่างตัวไม่ได้) · override รายตัว: `stocks[0].effort` / `stocks[0].model` (เช่น escalate ตัวยากเป็น opus+high)
+   - ⚠ **bug: model override เคยถูก runtime เมิน (วัดจริง 13 ก.ค. 2569 · session ec046fa3 เวฟ ABBNY)** — `stocks[].model:"opus"` ถูกต้องทั้งใน args และ script ส่งต่อถูก (`s.model || waveModel`) แต่ runtime fallback เงียบไป default model — transcript + workflow record ยืนยัน worker รัน claude-sonnet-5 ทั้ง session ไม่มี error ใด ๆ · **ก่อนเวฟที่ต้อง escalate Opus (เช่น Tier 2 robotics) ให้ probe ก่อน:** รัน analyze-wave 1 call จิ๋ว `model:"opus"` แล้วเช็ค field `model` ใน `~/.claude/projects/<projdir>/<session>/workflows/wf_*.json` ว่าเป็น `claude-opus-*` จริง — ถ้าไม่ใช่ → เปิด session แยกที่ main model = Opus สำหรับตัวยากแทน (อย่าเชื่อว่า override ทำงานโดยไม่ probe)
    - script ยังรองรับหลายตัว (รัน sequential) — ใช้เฉพาะกรณียอมรับว่า push ได้หลังจบทั้งชุดเท่านั้น
 3. แต่ละ call เสร็จ → controller ตรวจผล (คืนสรุปราคา/FV/MOS จาก worker) → verify + push รายตัวตามข้อ 4 → ค่อยเรียกตัวถัดไป
 
