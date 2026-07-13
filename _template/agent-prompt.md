@@ -2,7 +2,7 @@
 
 Controller ใช้แม่แบบนี้ตั้ง prompt ให้ **worker agent 1 ตัว = 1 หุ้น** (CLAUDE.md §3.2 + docs/orchestration.md)
 แทน `{{SYMBOL}}`, `{{MARKET}}` (TH/US), `{{MODE}}` (**NEW** = ยังไม่มีรายงาน / **UPDATE** = มี `reports/<SYM>.html` แล้ว / **UPDATE-LIGHT** = refresh จากคิว price-flags), `{{WORKTREE}}` แล้วส่งเป็น `prompt` ของ `Agent` (หรือ args ของ workflow `analyze-wave`)
-`{{FUNDAMENTALS}}` = *ทางเลือก* — controller รัน `node tools/fetch-fundamentals.js <SYM> [--th]` เองแล้ววาง output มา (worker จะได้ไม่ต้องเสีย turn รัน) · ไม่วางก็ปล่อยว่าง/ลบทิ้งได้ — บรรทัดกำกับใน wrapper สั่ง worker รันเองเมื่อ block ว่างอยู่แล้ว
+`{{FUNDAMENTALS}}` = controller **ควรรัน** `node tools/fetch-fundamentals.js <SYM> [--th]` เองแล้ววาง output มาเสมอ (output มีตารางงบ 5 ปีแล้ว — ตัดทั้ง turn รันซ้ำและ WebFetch หน้า financials 3-6 call ของ worker) · ไม่วางก็ปล่อยว่าง/ลบทิ้งได้ — บรรทัดกำกับใน wrapper สั่ง worker รันเองเมื่อ block ว่างอยู่แล้ว
 เนื้อหาขั้นตอนทั้งหมดอยู่ **`.claude/skills/stock-analyzer/SKILL.md`** (single source of truth) — wrapper นี้มีแค่สิ่งที่ skill ไม่รู้: ที่อยู่ worktree, โหมด, กติกาห้าม push
 
 ---
@@ -30,7 +30,7 @@ cd {{WORKTREE}} && pwd
 - `find` โดน rtk hook ดัดแล้วพังกับ `-not`/`-prune` — ใช้ `grep -rl`/`ls` แทน หรือ `rtk proxy find …`
 - self-check `npm test` **ครั้งเดียวตอนงานเสร็จ** ไม่รันระหว่างทาง · ไม่อ่านไฟล์ซ้ำหลัง Edit (harness ตรวจให้แล้ว)
 
-**FUNDAMENTALS (controller อาจ pre-fetch มาให้ — เช็คก่อนใช้):** ถ้า block ด้านล่างว่าง/เหลือ placeholder/ไม่มีตัวเลข → รัน `node tools/fetch-fundamentals.js {{SYMBOL}}` (หุ้นไทยเติม `--th`) เองใน batch แรกของ SKILL STEP 1 · มีตัวเลขครบ → ใช้เลย ห้ามรันซ้ำ
+**FUNDAMENTALS:** ถ้าบล็อกด้านล่างมีข้อมูลแล้ว **ห้ามรัน fetch-fundamentals ซ้ำ** — ใช้ตัวเลขจาก block นี้เลย (controller cross-verify มาแล้ว · วัดจริง 13 ก.ค. 2569: worker 3/3 รันซ้ำทั้งที่ block ครบ = เสีย 1 turn/หุ้นเปล่า) · block มีตารางงบ 5 ปี [3] → ใช้เขียน section งบ/แนวโน้ม/scenario ได้เลย **ห้าม WebFetch หน้า financials/balance-sheet/ratios/cash-flow/statistics ของ stockanalysis ซ้ำ** · **ถ้า block ว่าง/เหลือ placeholder/ไม่มีตัวเลขเท่านั้น**จึงรัน `node tools/fetch-fundamentals.js {{SYMBOL}}` (หุ้นไทยเติม `--th`) เองใน batch แรกของ SKILL STEP 1
 
 {{FUNDAMENTALS}}
 

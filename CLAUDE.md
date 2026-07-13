@@ -57,7 +57,7 @@ invariant ที่ห้ามหลุดไม่ว่ากรณีใด:
 - **รันยาวได้ ไม่ต้องหยุดรอ user เปิด session ใหม่** (ยกเลิก chunk ≤10 หุ้น/session — 13 ก.ค. 2569 user เคาะ: ปล่อย auto-compact จัดการ context เอง) · ข้อเท็จจริงต้นทุน: cacheR/turn ของ controller โตตาม context (วัดจริง ~70k → ~139k ตอน 25 ตัวรวด) — controller ช่วยได้โดยคุมตัวเอง: รวม verify+push เป็น Bash เดียว · ไม่อ่านรายงานทั้งไฟล์ · สรุประหว่างเวฟให้สั้น
 - pull --rebase + อ่าน `reports.json` ก่อน — ข้ามหุ้นสด ≤7 วัน = ประหยัด 100% ของตัวนั้น
 - ห้ามรัน Opus เป็น main (W31 กิน ~15% ของลิมิต 5 ชม. กับแค่ 3 หุ้น) · worker งาน mechanical → effort medium ผ่าน `analyze-wave`
-- controller อาจ pre-fetch `fetch-fundamentals` แล้ววางบล็อกใน `{{FUNDAMENTALS}}` ของ agent-prompt — ตัด turn ของ worker เพิ่ม
+- controller **pre-fetch `fetch-fundamentals` เสมอ** แล้ววางบล็อกใน `{{FUNDAMENTALS}}` ของ agent-prompt (output มีงบ 5 ปีแล้ว — จูนรอบ 5) — worker ห้ามรันซ้ำ/ห้าม WebFetch หน้า financials เอง
 
 ---
 
