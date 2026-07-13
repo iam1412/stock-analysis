@@ -17,9 +17,118 @@
 
 ## โครงต้นแบบ (skeleton) — จุดตั้งต้นของรายงานใหม่
 - `_template/skeleton-th.html` (หุ้นไทย ฿/SET) · `_template/skeleton-us.html` (หุ้นต่างประเทศ $/NASDAQ·NYSE) — โครง content-only เปล่า ๆ มีครบ 8 section + marker + บล็อก `stock-meta`/`report-data` + comment กำกับทุกช่อง
-- **ทุกค่าต่อหุ้นเป็น `{{TOKEN}}`** (ไม่มีตัวเลขหุ้นเก่าติดมา ต่างจากการก๊อปรายงานเดิม) — `cp` แล้วแทนทุก token · เหลือ `{{...}}` ค้าง = **gate E13 บล็อก**
+- **ทุกค่าต่อหุ้นเป็น `{{TOKEN}}`** (ไม่มีตัวเลขหุ้นเก่าติดมา ต่างจากการก๊อปรายงานเดิม) — **อ่าน skeleton เป็นโครง → compose เนื้อหาครบ → Write ไฟล์เต็มใบครั้งเดียว** (SKILL STEP 5A · เลิกวิธี `cp`+ไล่แทน token แล้ว 13 ก.ค. 2569 — เปลือง ~20 turns) · เหลือ `{{...}}` ค้าง = **gate E13 บล็อก**
 - อยู่ใน `_template/` (ไม่ใช่ `reports/`) → ไม่ถูก build เป็นหน้า/ไม่ถูก gate ตรวจเป็นรายงานจริง · ทั้งสองไฟล์ต่างกันแค่สัญลักษณ์สกุลเงิน/ตลาด (โครงเดียวกัน)
 - `test/skeleton-test.js` กำกับ: เติม token ด้วยข้อมูลจริง (ไทย = HMPRO จริง) แล้ว **ต้องผ่าน check-reports (0 error) + engine รันได้** + token coverage (เพิ่ม token แล้วลืมอัปเดต = เทส fail)
+
+## ตัวอย่าง filled (NEW) — worker อ่านตรงนี้จบ ไม่ต้อง grep รายงานตัวอื่น / ไม่ต้องทดลอง `node -e` หา format
+
+> ตัวอย่างจริงจาก `reports/CGNX.html` (US · ราคา $66.80 · FV $50.00) — โหมด NEW compose เนื้อหาครบทุก STEP แล้ว **Write ทั้งไฟล์ครั้งเดียว** (SKILL STEP 5A)
+
+### 1) บล็อก `report-data` ทั้งก้อน
+
+```html
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#20ead1",
+    "accentDark": "#11b19e",
+    "darkGrad": "linear-gradient(135deg,#043e37 0%,#077366 58%,#0cb6a2 140%)",
+    "glow": "rgba(22,233,208,.35)",
+    "subColor": "#c2ebe6",
+    "headerMuted": "#a5d4ce",
+    "verdictText": "#d0f1ed",
+    "vcellLabel": "#a6ddd7",
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#1e8e3e"
+  },
+  "chart": {
+    "data": [["ส.ค.25", 43.94], ["ก.ย.25", 45.3], ["ต.ค.25", 41.39], ["พ.ย.25", 38.1],
+             ["ธ.ค.25", 35.98], ["ม.ค.26", 38.74], ["ก.พ.26", 54.4], ["มี.ค.26", 48.99],
+             ["เม.ย.26", 55.51], ["พ.ค.26", 65.85], ["มิ.ย.26", 72.42], ["ก.ค.26", 66.8]],
+    "min": 30, "max": 80, "grid": [40, 50, 60, 70],
+    "fairLine": 50, "currency": "$", "highlight": [4, 9]
+  },
+  "gauge": { "min": 30, "max": 80, "cur": 66.8, "fair": 50 },
+  "fv": 50
+}
+</script>
+```
+
+ใครให้ค่าอะไร — **ห้ามคิดเอง field ที่ script ให้**:
+
+| field | ที่มา |
+|---|---|
+| `chart.data / min / max / grid / currency` + ป้าย `.chg` + `theme.chgBg/chgColor` | `node tools/fetch-facts.js <SYM> [--th]` พิมพ์พร้อมวาง (ขึ้น=เขียว `var(--green-soft)`/`#1e8e3e` · ลง=แดง `var(--red-soft)`/`#c5221f`) |
+| `chart.fairLine` = `gauge.fair` = `fv` | FV ที่คำนวณ STEP 3 (ค่าเดียวกันทั้ง 3 จุด) · fairLine หลุดช่วง min/max → คำนวณ bounds ใหม่รวม FV |
+| `chart.highlight` | `[ดัชนีจุดต่ำสุด, ดัชนีจุดสูงสุด]` ของ chart.data เรียงน้อย→มาก (กติกาเดียวกับ update-prices.js — cron จะ normalize ให้ทุกวันอยู่แล้ว) |
+| `gauge.min/max` | ช่วงที่ครอบทั้งราคาปัจจุบัน + FV + จุดซื้อ MOS30 (ใช้เลขเดียวกับ chart.min/max ได้ถ้าครอบ) |
+| `gauge.cur` | ราคาปัจจุบัน (เลขเดียวกับ header/stock-meta.price) |
+| `theme` 8 คีย์แรก | `makeTheme()` — สูตร 3 บรรทัด ข้อ 6 |
+
+### 2) การ์ดวิธี valuation (`vmethod`) + กล่องสรุป FV
+
+```html
+<div class="vmethod">
+  <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS forward (NTM) $1.48 × P/E เป้าหมาย ~36x — เหตุผลที่เลือก EPS/P/E นี้สั้น ๆ</div></div>
+  <div class="mval">$53.28</div>
+</div>
+
+<div class="fv-box">
+  <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $46.72 – $53.28</span></div>
+  <div class="r">$50.00</div>
+</div>
+```
+
+- วิธีชื่อ "P/E" → gate E21 เช็คคณิต `EPS × P/E = mval` จริง · **เขียน `$` นำหน้า EPS เสมอ** (ขึ้นต้นด้วยปี parser จะคว้าปีเป็น EPS) · วิธีชื่อ "Justified P/BV" → E22
+- ≥2 วิธี → `fv-box` = ค่าเฉลี่ย + กรอบ = ค่าต่ำสุด–สูงสุดของทุกวิธี
+
+### 3) บล็อก gauge + scale (section 4)
+
+```html
+<div class="gauge">
+  <div class="gbar" id="gbar">
+    <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $66.80</div></div>
+    <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $50.00</div></div>
+  </div>
+  <div class="scale">
+    <span>$35.00<br><small>MOS 30%</small></span>
+    <span>$40.00<br><small>MOS 20%</small></span>
+    <span style="text-align:center">$50.00<br><small>Fair Value</small></span>
+    <span style="text-align:right">$53.28<br><small>กรอบบน FV</small></span>
+    <span style="text-align:right">$77.40<br><small>เป้าเฉลี่ย Analyst</small></span>
+  </div>
+</div>
+```
+
+(id `gbar/mCur/mFair` คงตามนี้ — engine หาตาม id · ตำแหน่ง marker engine คำนวณจาก `report-data.gauge` เอง · MOS30 = FV×0.7, MOS20 = FV×0.8)
+
+### 4) เคสพิเศษ: หุ้นขาดทุน / ไม่จ่ายปันผล (ตัวอย่างจริง `reports/AAOI.html`)
+
+```html
+<script type="application/json" id="stock-meta">
+{"symbol":"AAOI","currency":"USD","price":119.92,"fairValue":158,"mos":24.1,"upside":31.8,"pe":null,"dividendYield":0,"roe":null}
+</script>
+```
+
+- ขาดทุน → `pe:null, roe:null` (JSON `null` จริง ไม่ใช่สตริง `"null"`/`"N/A"`) + **ตัดการ์ด P/E (TTM) ออก** จาก section 1 + ตัดวิธีชื่อ "P/E" ออกจาก valuation (ใช้ P/S · DCF · EV/Sales แทน — E21 เช็คเฉพาะวิธีชื่อ "P/E")
+- ไม่จ่ายปันผล → `dividendYield:0` + การ์ด `<div class="k">เงินปันผล</div><div class="v">0%</div><div class="d">ไม่จ่ายปันผล</div>` (หรือตัดการ์ดออก) + ตัดวิธี DDM
+- W10 cross-check การ์ดใน section 1 กับ stock-meta — มีการ์ดแต่ meta เป็น null (หรือกลับกัน) = warning
+
+### 5) ป้าย MOS (`mos-verdict`) — โซน `bad` <10% / `ok` 10–20% / `good` ≥20% (MOS ติดลบ = `bad`)
+
+```html
+<div class="mos-verdict bad">
+  <div class="big">−33.6%</div>
+  <div class="txt"><b>ไม่มี Margin of Safety (ราคาแพงกว่ามูลค่าเหมาะสม)</b><br>คำอธิบาย 1–2 ประโยค: ราคาเทียบ FV + นักลงทุนควรทำอะไร</div>
+</div>
+```
+
+### 6) สีแบรนด์ — 3 บรรทัดจบ (ห้ามทดลอง `node -e` หลายรอบ / ห้ามอ่าน brandtheme.js)
+
+1. เลือก hex 1 ค่าตามหลัก `tools/brand-colors.md` (สีโลโก้ > สีเซกเตอร์ · ห้ามน้ำเงิน default)
+2. รัน **ครั้งเดียว**: `node -e "const{makeTheme}=require('./tools/brandtheme.js');console.log(JSON.stringify(makeTheme('#0f9d8c'),null,1))"` (แทน hex ของคุณ) → ได้ 8 คีย์ (`accent accentDark darkGrad glow subColor headerMuted verdictText vcellLabel`) วางลง `report-data.theme` ตรง ๆ แล้วเติม `chgBg/chgColor` จากผล fetch-facts ต่อท้าย
+3. เพิ่ม entry ใน `tools/seeds.json`: `"<SYM>": "#0f9d8c"` (object เดียว key เรียงตามตัวอักษร — เก็บ seed ไว้ให้เครื่องมือ regenerate ธีมได้)
 
 ## สีแบรนด์ — เลือกตาม "ลักษณะของหุ้น" ทุกตัว (ห้ามปล่อย default น้ำเงิน)
 ทุกรายงานต้องมีสีเฉพาะตัวใน `report-data.theme` — **มีสีแบรนด์/โลโก้จำได้ใช้สีนั้น** (Google ฟ้า, Tesla/TSMC แดง, Accenture ม่วง, PANW ส้ม…),
