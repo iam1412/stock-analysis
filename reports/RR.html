@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น Richtech Robotics (RR) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 5">
+<script type="application/json" id="stock-meta">
+{"symbol":"RR","currency":"USD","price":1.62,"fairValue":1.27,"mos":-27.6,"upside":-21.6,"pe":null,"dividendYield":0,"roe":null}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#eb1f79",
+    "accentDark": "#b21058",
+    "darkGrad": "linear-gradient(135deg,#3e041e 0%,#730737 58%,#b60c57 140%)",
+    "glow": "rgba(234,21,115,.35)",
+    "subColor": "#ebc2d4",
+    "headerMuted": "#d4a5ba",
+    "verdictText": "#f1d0de",
+    "vcellLabel": "#dda6bf",
+    "chgBg": "var(--red-soft)",
+    "chgColor": "#c5221f"
+  },
+  "chart": {
+    "data": [["ส.ค.25", 3.05], ["ก.ย.25", 4.29], ["ต.ค.25", 4.82], ["พ.ย.25", 3.55],
+             ["ธ.ค.25", 3.23], ["ม.ค.26", 3.58], ["ก.พ.26", 2.49], ["มี.ค.26", 2.09],
+             ["เม.ย.26", 2.46], ["พ.ค.26", 3.02], ["มิ.ย.26", 2.11], ["ก.ค.26", 1.62]],
+    "min": 1, "max": 6, "grid": [2, 3, 4, 5],
+    "fairLine": 1.27, "currency": "$", "highlight": [11, 2]
+  },
+  "gauge": { "min": 0.8, "max": 2.1, "cur": 1.62, "fair": 1.27 },
+  "fv": 1.27
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots"><div style="width:8px;height:8px;border-radius:50%;background:#eb1f79;display:inline-block;margin:0 3px"></div><div style="width:8px;height:8px;border-radius:50%;background:#b21058;display:inline-block;margin:0 3px"></div><div style="width:8px;height:8px;border-radius:50%;background:#730737;display:inline-block;margin:0 3px"></div></div>
+    <div>
+      <span class="tag">NASDAQ: RR</span>
+      <span class="tag">Robotics & Automation</span>
+      <span class="tag">AI Service Robots (Hospitality)</span>
+    </div>
+    <h1>Richtech Robotics Inc. (RR)</h1>
+    <div class="sub">หุ่นยนต์บริการอัตโนมัติขับเคลื่อนด้วย AI • ร้านอาหาร • โรงแรม • คาสิโน</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$1.62<small>(RR)</small></div>
+      </div>
+      <div class="chg">▼ −46.9% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 13 ก.ค. 2569 (Yahoo Finance)<br>
+        กรอบ 52 สัปดาห์ $1.62 – $7.43<br>
+        ที่มา: Yahoo Finance, StockAnalysis.com, Google Finance
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">Cash-heavy pre-profit — กรอบ SOTP</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">$362.2M</div><div class="d">223.60M หุ้น • ≈$367.82M ที่ราคา Google Finance $1.65</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">N/A</div><div class="d">ขาดทุนสุทธิ TTM −$20.6M — ไม่มี P/E ที่มีความหมาย</div></div>
+      <div class="metric"><div class="k">เงินสด & รายการเทียบเท่า</div><div class="v pos">$328M</div><div class="d">~89% ของ Market Cap</div></div>
+      <div class="metric"><div class="k">เงินสด/หุ้น</div><div class="v pos">$1.46</div><div class="d">เทียบราคาหุ้น $1.62 (~88% ของราคา)</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ TTM</div><div class="v neg">−$20.6M</div><div class="d">ขาดทุนเพิ่มจาก FY68 (2025) −$15.8M</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v neg">−$0.14</div><div class="d">FY68 −$0.13 • FY67 (2024) −$0.12</div></div>
+      <div class="metric"><div class="k">FCF (TTM)</div><div class="v neg">−$12.1M</div><div class="d">ใกล้เคียง FY68 −$14.1M</div></div>
+      <div class="metric"><div class="k">ROE</div><div class="v neg">−10.6%</div><div class="d">ขาดทุนต่อเนื่องทุกปีใน 5 ปีหลังสุด</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$4.9M</div><div class="d">+12.4% YoY (ผันผวนสูง FY68 เคย −51.6%)</div></div>
+      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">55.8%</div><div class="d">ต่ำกว่า FY68 65.2% (สัดส่วน hardware/RaaS เปลี่ยน)</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">0%</div><div class="d">ไม่จ่ายปันผล — สะสมเงินสดไว้ขยายธุรกิจ</div></div>
+      <div class="metric"><div class="k">Cash Runway</div><div class="v neu">~9–13 ปี</div><div class="d">ที่ burn คาดการณ์ $25–35M/ปี (ไตรมาสล่าสุดมีสัญญาณเร่งตัว)</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART (ราคาย้อนหลัง ~1 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#eb1f79"></i>ราคา RR</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $1.27</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคาหุ้น RR ไต่ขึ้นแตะจุดสูงสุดของกราฟรายเดือนที่ $4.82 ในเดือน ต.ค. 2568 (จุดสูงสุด 52 สัปดาห์แบบ intraday อยู่ที่ $7.43) ก่อนร่วงลงต่อเนื่องท่ามกลางกระแส hype หุ่นยนต์บริการที่แผ่วลง มาปิดที่ $1.62 ในเดือน ก.ค. 2569 คิดเป็นผลตอบแทนรอบปี ▼ −46.9% และร่วงจากจุดสูงสุด 52 สัปดาห์ราว −78% สะท้อน pattern hype-then-fade ของหุ้น micro-cap ธีมหุ่นยนต์/AI ที่มีการระดมทุนเพิ่มทุนต่อเนื่องในช่วงราคาสูง
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">กรอบ Sum-of-the-Parts (SOTP) — เฉลี่ย 2 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. SOTP (Conservative): เงินสดสุทธิหักส่วนลด + มูลค่าธุรกิจดำเนินงาน</div><div class="mdesc">เงินสดสุทธิ/หุ้น $1.46 (เงินสด $328M หักหนี้ $0.6M ÷ 223.6M หุ้น) × (1−22% ส่วนลด agency risk จากประวัติ dilution +1,411% ใน 5 ปี และ burn ที่เร่งตัว) = $1.14 + มูลค่าธุรกิจดำเนินงาน: รายได้คาดการณ์ FY69 (2026E) ~$5.6M × EV/Sales 3.0x ÷ 223.6M หุ้น = $0.08</div></div>
+        <div class="mval">$1.22</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. SOTP (Less Discount): เงินสดสุทธิ + มูลค่าธุรกิจดำเนินงาน (EV/Sales สูงกว่า)</div><div class="mdesc">เงินสดสุทธิ/หุ้น $1.46 × (1−18% ส่วนลด agency risk) = $1.20 + มูลค่าธุรกิจดำเนินงาน: รายได้คาดการณ์ ~$5.6M × EV/Sales 5.0x ÷ 223.6M หุ้น = $0.13</div></div>
+        <div class="mval">$1.33</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $1.22 – $1.33</span></div>
+        <div class="r">$1.27</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ใช้กรอบ Sum-of-the-Parts (SOTP) แทน P/E เพราะ RR ขาดทุนและมูลค่าส่วนใหญ่มาจากเงินสด ($328M = ~89% ของ market cap) ไม่ใช่กำไรจากธุรกิจ — ความต่างระหว่าง 2 วิธีอยู่ที่ขนาดส่วนลด agency risk (18–22%) ที่ใช้หักมูลค่าเงินสด เนื่องจากเงินสดยังไม่ถูกคืนผู้ถือหุ้นแต่ใช้เผา burn ที่กำลังเร่งตัวและมีประวัติ dilution รุนแรง FV เฉลี่ย $1.27 ต่ำกว่าราคาตลาด $1.62 ~22% สะท้อนว่าตลาดยังไม่ discount ความเสี่ยง agency/dilution เท่าที่ควร
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $1.62</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $1.27</div></div>
+        </div>
+        <div class="scale">
+          <span>$0.89<br><small>MOS 30%</small></span>
+          <span>$1.02<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$1.27<br><small>Fair Value</small></span>
+          <span style="text-align:right">$1.33<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">$4.00<br><small>เป้าเฉลี่ย Analyst</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน $1.62 อยู่เหนือกรอบ Fair Value SOTP ทั้งหมด ($1.22–$1.33) และเหนือจุดซื้อ MOS 20–30% มาก สะท้อนว่าตลาดให้มูลค่าเงินสด + ธุรกิจดำเนินงานสูงกว่ากรอบระมัดระวังของเรา ขณะที่เป้าหมายนักวิเคราะห์เฉลี่ย $4.00 (Hold, อ้างอิงจากนักวิเคราะห์จำนวนจำกัดเพียง 1–2 ราย) สะท้อนมุมมอง Bull-case ระยะยาวมากกว่ามูลค่าปัจจุบัน
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">−27.6%</div>
+        <div class="txt"><b>ไม่มี Margin of Safety (ราคาแพงกว่ามูลค่าเหมาะสมตามกรอบ SOTP)</b><br>ที่ราคา $1.62 นักลงทุนจ่ายพรีเมียมเหนือมูลค่าเงินสดสุทธิที่ปรับความเสี่ยง agency แล้ว — ไม่ใช่สถานการณ์ "net-net" ที่ปลอดภัยแบบ Graham เพราะเงินสดยังไม่ถูกคืนผู้ถือหุ้นและมีความเสี่ยง dilution ต่อเนื่อง ผู้ลงทุนที่สนใจควรรอราคาต่ำกว่า $1.02–$0.89 (MOS 20–30%) หรือรอสัญญาณ deployment เชิงพาณิชย์ที่ชัดเจนขึ้นก่อน</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$1.02</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$0.89</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $1.27</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="1.62" step="0.01">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $1.62 • มูลค่า SOTP ฐาน ~$1.27 • ไม่มีปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>มูลค่า −9%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$0.96</div>
+          <div class="ret neg">−40.7%</div>
+          <ul>
+            <li><span>มูลค่า SOTP/หุ้น ปี 3</span><span>~$0.96</span></li>
+            <li><span>ตัวคูณ (SOTP ตรง)</span><span>1.0x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$0.00</span></li>
+            <li><span>สถานการณ์</span><span>เชิงพาณิชย์แผ่วลงเหลือแค่ pilot program รายได้ hardware sale ประปราย ไม่มี RaaS recurring จริงจัง ขณะที่ burn เร่งตัวและต้อง dilute หุ้นเพิ่มมาก (>280M หุ้น) กัดกร่อน cash floor ต่อหุ้น</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>มูลค่า +12%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$1.78</div>
+          <div class="ret pos">+9.9%</div>
+          <ul>
+            <li><span>มูลค่า SOTP/หุ้น ปี 3</span><span>~$1.78</span></li>
+            <li><span>ตัวคูณ (SOTP ตรง)</span><span>1.0x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$0.00</span></li>
+            <li><span>สถานการณ์</span><span>deployment ของ ADAM/DEX ขยายเป็น RaaS จริงจัง รายได้แตะ $15–25M ภายในปี FY72 (2029) ที่ EV/Sales 3–5x แต่ dilution ต่อเนื่อง (~270M หุ้น) ทำให้ upside จำกัด ใกล้เคียงราคาปัจจุบัน (MOS บาง)</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>มูลค่า +47%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$4.03</div>
+          <div class="ret pos">+148.8%</div>
+          <ul>
+            <li><span>มูลค่า SOTP/หุ้น ปี 3</span><span>~$4.03</span></li>
+            <li><span>ตัวคูณ (SOTP ตรง)</span><span>1.0x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$0.00</span></li>
+            <li><span>สถานการณ์</span><span>traction humanoid/RaaS เร่งตัวเกินคาด รายได้ทะลุ $50M+ ตลาดให้มูลค่าธุรกิจดำเนินงานสูงขึ้นมาก (EV/Sales 6–8x) สอดคล้องกับเป้าหมายนักวิเคราะห์ $4.00 ปัจจุบัน — สถานการณ์นี้ยังไม่ยืนยัน ต้องติดตาม deployment จริงต่อไป</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      หมายเหตุระเบียบวิธี: เนื่องจาก RR ยังขาดทุนและมูลค่าหลักมาจากเงินสด การคาดการณ์นี้ใช้ "มูลค่า SOTP/หุ้น" (เงินสดสุทธิคงเหลือ + มูลค่าธุรกิจดำเนินงานตามรายได้ที่คาด) เป็นตัวแปรตั้งต้นแทน EPS แบบเดิม — ตัวคูณ 1.0x หมายถึงใช้มูลค่า SOTP โดยตรง ไม่มีการคูณ P/E เพิ่ม เพราะขาดทุนไม่มี P/E ที่มีความหมาย · Bull case ใกล้เคียงเป้าหมายนักวิเคราะห์เฉลี่ย $4.00 แต่ต้องยืนยัน deployment เชิงพาณิชย์จริงก่อนเชื่อมั่นได้
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>Cash-rich balance sheet:</b> เงินสด $328M (~89% ของ market cap) ให้ runway ยาวนาน (~9–13 ปีที่ burn คาดการณ์ $25–35M/ปี) รองรับการขยายธุรกิจโดยไม่ต้องพึ่ง external financing ระยะสั้น</li>
+          <li><b>Robotics/AI theme demand:</b> อุตสาหกรรมหุ่นยนต์บริการเติบโตตามแรงงานขาดแคลนในภาคโรงแรม-ร้านอาหาร-คาสิโน เปิดโอกาส RaaS (Robot-as-a-Service) recurring revenue หากขยาย deployment ได้จริง</li>
+          <li><b>รายได้ TTM กลับมาโต:</b> +12.4% YoY หลังหดตัว −51.6% ใน FY2024 อาจสะท้อนสัญญาณฟื้นตัวของ order/deployment แม้ฐานยังเล็กมาก</li>
+          <li><b>Rating นักวิเคราะห์เชิงบวก:</b> เป้าเฉลี่ย $4.00 (+143% จากราคาปัจจุบัน) แม้ต้อง verify จำนวนนักวิเคราะห์ที่ให้เรตติ้ง (อาจมีเพียง 1–2 ราย)</li>
+          <li><b>Nasdaq listing กดมาตรฐาน governance ขั้นต่ำ:</b> ต้องเปิดเผยงบ/filing สม่ำเสมอ ลดความเสี่ยง information asymmetry เทียบหุ้นนอกตลาด</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>Agency risk บนเงินสด:</b> เงินสด $328M ไม่ได้เป็นของผู้ถือหุ้นโดยอัตโนมัติ — ฝ่ายบริหารอาจใช้ burn ต่อเนื่อง (opex เร่งตัวมาก) หรือทำ M&A ที่ทำลายมูลค่าแทนที่จะคืนทุน</li>
+          <li><b>ประวัติ dilution รุนแรง + serial-issuer ยืนยันแล้ว:</b> จำนวนหุ้น +1,411% ใน 5 ปี (14.8M→223.6M) — ยืนยัน timeline ระดมทุนจริงจาก SEC filings: private placement 8.5M หุ้น Class B ที่ $4.553/หุ้น (~$38.7M, ม.ค. 2569), ATM ใหม่วงเงิน $100M (มี.ค. 2569, แทนที่ ATM เดิม), และ shelf registration วงเงินสูงถึง $1,000M (ก.ย. 2568) — บริษัทยังมีช่องทางเพิ่มทุนอีกมาก เสี่ยง dilution ต่อเนื่อง 5–10%/ปี</li>
+          <li><b>โครงสร้าง dual-class:</b> หุ้นแบ่งเป็น Class A/Class B — CEO/ผู้ก่อตั้ง Zhenwu Huang ถือ Class B ~30.5M หุ้นโดยตรง (ธ.ค. 2568) มีอิทธิพลต่อการตัดสินใจบริษัทสูง แม้ไม่พบอัตราส่วนสิทธิออกเสียง Class A:Class B ที่ชัดเจนในแหล่งที่ตรวจสอบได้ — เป็นปัจจัยเสี่ยง governance/agency ที่นักลงทุนควรตรวจสอบเพิ่มเติมจาก proxy statement</li>
+          <li><b>Burn เร่งตัว:</b> ขาดทุนสุทธิ TTM −$20.6M สูงกว่า FY2025 −$15.8M และ opex เร่งตัวเร็วกว่ารายได้มาก (OpM% −523.9% TTM เทียบ −355.7% FY2025)</li>
+          <li><b>รายได้เล็กและผันผวนสูง:</b> TTM เพียง $4.9M เคยหดตัว −51.6% ใน FY2024 — บ่งชี้ concentrated/lumpy hardware sale มากกว่า recurring RaaS ที่มั่นคง</li>
+          <li><b>Deployment เชิงพาณิชย์ยังอยู่ระยะต้น:</b> ยืนยันมีการติดตั้งจริง (ADAM ที่ tm:rw Times Square, พันธมิตร Vegas Golden Knights ฤดูกาล 2568-69) แต่บริษัทยังเน้นออกงานแสดงสินค้าต่อเนื่องตลอดปี 2569 (CES, HITEC, Automate) มากกว่าประกาศยอด fleet เชิงพาณิชย์ขนาดใหญ่ — บ่งชี้ว่ายังอยู่ระยะ early-commercial/pilot ไม่ใช่ scale-up เต็มรูปแบบ</li>
+          <li><b>สภาพคล่องหุ้น + ความเสี่ยงหลุด Nasdaq minimum:</b> ราคา $1.62 ใกล้ 52wk-low $1.62 มาก และใกล้เกณฑ์ Nasdaq ราคาขั้นต่ำ $1.00 หากราคาร่วงต่อเนื่องอาจเสี่ยง compliance/reverse split</li>
+          <li><b>Analyst coverage บาง (ยืนยันแล้ว):</b> พบข้อมูล 2–3 รายจากหลายแหล่ง (StockAnalysis: 2 ราย consensus Hold; TickerNerd: 3 ราย รวม Buy 1/Sell 1) เป้าหมายกระจายกว้าง $2.00–$6.00 (median $4.00) — ความเชื่อมั่นของ consensus ต่ำ ไม่ควรยึดเป็น anchor หลัก</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>Cash-Rich Micro-Cap ที่มี Agency Risk — ไม่ใช่ "Net-Net" ที่ปลอดภัย</h2>
+      <p>RR ถือเงินสด $328M คิดเป็น ~89% ของ market cap $362M บนรายได้ TTM เพียง $4.9M — ตลาดกำลังให้มูลค่าธุรกิจหุ่นยนต์บริการที่แท้จริงเพียง ~$34M (EV implied) แต่เงินสดก้อนนี้ไม่ใช่ทรัพย์สินที่ผู้ถือหุ้นสามารถอ้างสิทธิ์ได้เต็มที่ เพราะบริษัทมีประวัติ dilution รุนแรง (+1,411% ใน 5 ปี) และ burn ที่กำลังเร่งตัว (ขาดทุนสุทธิ TTM −$20.6M) กรอบ SOTP ของเราให้ Fair Value เฉลี่ย $1.27 (กรอบ $1.22–$1.33) ต่ำกว่าราคาตลาด $1.62 ราว 22% ทำให้ MOS ติดลบ ~27.6% แม้เป้าหมายนักวิเคราะห์ Bull-case ระยะยาวจะสูงถึง $4.00 หากธุรกิจ RaaS ขยายตัวได้จริง แต่ในกรอบปัจจุบันนี้ยังไม่มี margin of safety ที่เพียงพอสำหรับการเข้าซื้อ</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$1.27 <span style="font-size:12px;color:#cab9a8">($1.22–$1.33)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −27.6%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$4.00 (Hold)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> รอ — ยังไม่มี Margin of Safety ที่กรอบ SOTP ปัจจุบัน ราคาที่น่าสนใจอยู่แถว $1.02 (MOS 20%) ถึง $0.89 (MOS 30%) หรือรอสัญญาณ deployment เชิงพาณิชย์ (RaaS contract ใหม่/ลูกค้าเพิ่ม) ที่ยืนยันได้จาก 10-Q/10-K ก่อนพิจารณาเข้าซื้อ ผู้ที่ถืออยู่แล้วควรติดตามอัตรา burn และแผนการใช้เงินสดอย่างใกล้ชิด
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ราคา ณ 13 ก.ค. 2569 จาก Yahoo Finance (cross-check กับ StockAnalysis.com $1.65 ต่าง 1.8% และ Google Finance mktcap $367.82M ตรงกัน) • ข้อมูลงบการเงิน/ประมาณการจาก StockAnalysis.com (5 ปีย้อนหลัง + TTM) • ข้อมูลระดมทุน/dual-class/deployment จาก SEC filings (8-K/S-3ASR), StockTitan, GuruFocus, Yahoo Finance • จำนวนนักวิเคราะห์จาก StockAnalysis.com/TickerNerd • กรอบ SOTP และสมมติฐานส่วนลด agency risk เป็นการประเมินของผู้จัดทำ ไม่ใช่ตัวเลขที่บริษัทเปิดเผย
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 14 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
