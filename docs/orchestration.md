@@ -16,6 +16,7 @@
 - **ห้าม Haiku ทุกขั้น** (Sonnet+Haiku และ Haiku-ล้วน ห้ามทั้งคู่ — benchmark AMGN 30 มิ.ย. 2569: Haiku = build-crash + fake-chart + wrong-EPS)
 - **Sonnet ทุกชั้น**: controller=Sonnet, worker=Sonnet (`model:"sonnet"`) — ตราบใดที่ controller ตรวจข้ามแหล่ง price/EPS ≥2 + กราฟจริงจาก script + จับ split/ticker เอง · **ยกเลิก Opus ทั้งหมด 13 ก.ค. 2569** (user เคาะ — override เคยพังระดับ harness + วัดแล้ว Sonnet+high ถึงมาตรฐาน publish บนหุ้น pre-profit ที่ยากสุด: Tier 2 batch 1)
 - **หุ้นยาก** (IPO <1 ปี / spinoff / split / cyclical / pre-profit / ราคา cross-source ต่าง >5%) → worker ยังเป็น Sonnet แต่ตั้ง `effort:"high"` + **controller เรียก `advisor` ก่อน spawn**: เก็บข้อมูลขัดแย้ง/ประเด็นยากให้ครบก่อน แล้วเรียก advisor (ไม่มีพารามิเตอร์ — เห็น context ทั้งหมดเอง) → ฝังแนวทางที่ได้ลง prompt ของ worker (เช่นเคส MBLY: ชี้ impairment ครั้งเดียว + ห้ามใช้ P/E×EPS) + บังคับย่อหน้า full-disclosure/uncertainty ในรายงาน · **session ที่ไม่มี advisor tool (หรือเรียกแล้ว unavailable) → หยุดถาม user**
+- **advisor ยืนยันแล้ว 13 ก.ค. 2569**: advisor = Fable (`advisorModel` ใน `~/.claude/settings.json`) เรียกได้จริงจาก Sonnet context ทั้งระดับ controller และ **worker subagent** (probe สำเร็จ) — worker ที่เจอประเด็นยาก*ใหม่*กลางทางที่ controller ไม่ได้เตรียมไว้ เรียก advisor เองได้ 1 ครั้งแทนการเดา · ที่เรียกไม่ได้คือ session ที่ main model = Fable เอง (advisor ซ้ำกับ main — harness ปิด)
 - การตัดสิน publish/skip ของ controller เอง**กำกวม** → เรียก `advisor` ก่อน ถ้ายังกำกวม → หยุด ping user
 - **effort ต่อ worker**: งาน mechanical (UPDATE-LIGHT / UPDATE ที่ EPS ไม่เปลี่ยน) ไม่จำเป็นต้องใช้ effort สูง — spawn ผ่าน workflow `analyze-wave` (ข้อ 5) เพื่อตั้ง `effort:"medium"` ได้ · Agent tool ปกติตั้ง effort ไม่ได้
 
@@ -46,7 +47,7 @@
                       effort: "medium" } }
    ```
    - **เรียก 1 หุ้น/call** (คง push รายตัว — workflow คืนผลตอนจบทั้งชุด ส่งหลายตัวใน call เดียวจะ push คั่นระหว่างตัวไม่ได้) · override รายตัว: `stocks[0].effort` (หุ้นยาก → `"high"`)
-   - **ห้ามใช้ `stocks[].model` override** — ชั้น escalate Opus ถูกยกเลิกทั้งหมด 13 ก.ค. 2569 (runtime เคยเมิน override เงียบ ๆ ระดับ harness ทั้ง analyze-wave และ Agent tool · ประวัติ+วิธี probe อยู่ใน memory `model-config-rules`) — ทุก worker = Sonnet · หุ้นยากใช้ advisor + effort high (§2)
+   - **ห้ามใช้ `stocks[].model` override** — ชั้น escalate Opus ถูกยกเลิกทั้งหมด 13 ก.ค. 2569 · ที่ override เคย "พัง" ไม่ใช่บั๊ก product: **สาเหตุจริง = `CLAUDE_CODE_SUBAGENT_MODEL=sonnet` ใน `~/.claude/settings.json`** บังคับ subagent ทุกตัวเป็น Sonnet ระดับ harness (จงใจคงไว้ — enforce กติกา Sonnet-only ให้ฟรี) — ทุก worker = Sonnet · หุ้นยากใช้ advisor + effort high (§2)
    - script ยังรองรับหลายตัว (รัน sequential) — ใช้เฉพาะกรณียอมรับว่า push ได้หลังจบทั้งชุดเท่านั้น
 3. แต่ละ call เสร็จ → controller ตรวจผล (คืนสรุปราคา/FV/MOS จาก worker) → verify + push รายตัวตามข้อ 4 → ค่อยเรียกตัวถัดไป
 
