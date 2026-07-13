@@ -23,7 +23,7 @@
 
 ## ตัวอย่าง filled (NEW) — worker อ่านตรงนี้จบ ไม่ต้อง grep รายงานตัวอื่น / ไม่ต้องทดลอง `node -e` หา format
 
-> ตัวอย่างจริงจาก `reports/CGNX.html` (US · ราคา $66.80 · FV $50.00) — โหมด NEW compose เนื้อหาครบทุก STEP แล้ว **Write ทั้งไฟล์ครั้งเดียว** (SKILL STEP 5A)
+> ตัวอย่างจริงจาก `reports/CGNX.html` (US · ราคา $66.80 · FV $50.00) · ข้อ 6–7 จาก `reports/KTOS.html` (US · ราคา $48.19 · FV $50.00) — โหมด NEW compose เนื้อหาครบทุก STEP แล้ว **Write ทั้งไฟล์ครั้งเดียว** (SKILL STEP 5A)
 
 ### 1) บล็อก `report-data` ทั้งก้อน
 
@@ -124,19 +124,62 @@
 </div>
 ```
 
-### 6) สีแบรนด์ — 3 บรรทัดจบ (ห้ามทดลอง `node -e` หลายรอบ / ห้ามอ่าน brandtheme.js)
+### 6) หัวรายงาน: บรรทัด `ai-model` + บล็อก `gdots`/tags (ตัวอย่างจริง `reports/KTOS.html`)
+
+```html
+<meta name="ai-model" content="Claude Sonnet 5">
+```
+
+- ใส่**รุ่นที่รันจริง** ขึ้นต้น `Claude ` เสมอ (gate E28 · build ใช้ทำเครดิต footer)
+
+```html
+<div class="gdots"><div style="width:8px;height:8px;border-radius:50%;background:#a0c841;display:inline-block;margin:0 3px"></div><div style="width:8px;height:8px;border-radius:50%;background:#77962c;display:inline-block;margin:0 3px"></div><div style="width:8px;height:8px;border-radius:50%;background:#4a5c1e;display:inline-block;margin:0 3px"></div></div>
+<div>
+  <span class="tag">NASDAQ: KTOS</span>
+  <span class="tag">Aerospace & Defense</span>
+  <span class="tag">Unmanned Systems / Hypersonics</span>
+</div>
+```
+
+- `{{GDOTS}}` = จุด 3 สีจากธีม (`accent` → `accentDark` → โทนเข้มกลางของ `darkGrad`) — **`pick-brand.js` (ข้อ 8) พิมพ์บรรทัดนี้ให้แล้ว copy วางตรง ๆ ห้าม derive เอง** · tags 3 ใบ = `ตลาด: SYMBOL` / เซกเตอร์ / niche ของหุ้น
+
+### 7) ท้ายรายงาน: ที่มาราคา + disclaimer + วันที่ "ข้อมูล ณ" (ตัวอย่างจริง `reports/KTOS.html`)
+
+```html
+<div class="px-meta">
+  ราคา ณ 10 ก.ค. 2569 (StockAnalysis.com, ตรงกับ Google Finance)<br>
+  กรอบ 52 สัปดาห์ $44.85 – $134.00<br>
+  ที่มา: StockAnalysis.com, Google Finance
+</div>
+```
+
+- `px-meta` (ใน header ใต้ราคา) = วันที่ราคา (พ.ศ.) + กรอบ 52 สัปดาห์ + บรรทัด `ที่มา:` — ต้องเป็นแหล่งที่ cross-verify จริงใน STEP 2
+
+```html
+<div class="disc">
+  <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+  ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+  ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ราคา ณ 10 ก.ค. 2569 จาก StockAnalysis.com (cross-check กับ Google Finance ตรงกัน) • ข้อมูลงบการเงิน/ประมาณการจาก StockAnalysis.com • บริบทข่าวการร่วงของราคาจาก ad-hoc-news.de และ GuruFocus.com
+</div>
+<footer>Stock Analysis Dashboard • ข้อมูล ณ 13 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+```
+
+- `disc` = คำเตือน "ไม่ใช่คำแนะนำ…" (บังคับทุกรายงาน) + ราคา ณ วันที่/แหล่ง + แหล่งงบ-ข่าวที่ใช้จริง · `footer` `ข้อมูล ณ <วันนี้ พ.ศ.>` = วันที่วิเคราะห์ (เวลาไทย UTC+7) — gate ใช้คิดความสด
+
+### 8) สีแบรนด์ — 1 คำสั่งจบ (ห้ามอ่าน brandtheme.js / ห้าม `node -e` ทดลองเอง / ห้ามแก้ seeds.json มือ)
 
 1. เลือก hex 1 ค่าตามหลัก `tools/brand-colors.md` (สีโลโก้ > สีเซกเตอร์ · ห้ามน้ำเงิน default)
-2. รัน **ครั้งเดียว**: `node -e "const{makeTheme}=require('./tools/brandtheme.js');console.log(JSON.stringify(makeTheme('#0f9d8c'),null,1))"` (แทน hex ของคุณ) → ได้ 8 คีย์ (`accent accentDark darkGrad glow subColor headerMuted verdictText vcellLabel`) วางลง `report-data.theme` ตรง ๆ แล้วเติม `chgBg/chgColor` จากผล fetch-facts ต่อท้าย
-3. เพิ่ม entry ใน `tools/seeds.json`: `"<SYM>": "#0f9d8c"` (object เดียว key เรียงตามตัวอักษร — เก็บ seed ไว้ให้เครื่องมือ regenerate ธีมได้)
+2. รัน **ครั้งเดียว**: `node tools/pick-brand.js <SYM> "#0f9d8c"` (แทน hex ของคุณ) — ตรวจสีชน/ใกล้เคียงกับ seed เดิมทั้งหมดให้ (ชน = exit 1 พร้อมรายชื่อตัวที่ชน → เลือกเฉดใหม่แล้วรันซ้ำ · แบรนด์ร่วมจริงเท่านั้นจึงใช้ `--force`) + บันทึกลง `tools/seeds.json` ให้เอง + พิมพ์ **8 คีย์ theme** และ **บรรทัด `{{GDOTS}}`** พร้อม copy
+3. วาง 8 คีย์ลง `report-data.theme` แล้วเติม `chgBg/chgColor` จากผล fetch-facts ต่อท้าย — จบ ไม่มี verify สีเพิ่ม
 
 ## สีแบรนด์ — เลือกตาม "ลักษณะของหุ้น" ทุกตัว (ห้ามปล่อย default น้ำเงิน)
 ทุกรายงานต้องมีสีเฉพาะตัวใน `report-data.theme` — **มีสีแบรนด์/โลโก้จำได้ใช้สีนั้น** (Google ฟ้า, Tesla/TSMC แดง, Accenture ม่วง, PANW ส้ม…),
 **ไม่มีก็เลือกตามเซกเตอร์** (photonics→teal/cyan/magenta/violet · foundry/metrology→copper/bronze · power/energy→เขียว · memory→amber · cybersecurity→ส้ม/แดง)
 - หลักการ + เหตุผลรายตัว + วิธีทำ: ดู **`tools/brand-colors.md`** (record ถาวร)
-- เครื่องมือ: เก็บ "สีเมล็ด" 1 ค่า/หุ้นใน `tools/seeds.json` → `node tools/brandtheme.js tools/seeds.json --write` (`makeTheme()` สร้างธีมเต็มจาก seed ด้วย HSL)
+- เครื่องมือ: **หุ้นใหม่** → `node tools/pick-brand.js <SYM> "#hex"` ครั้งเดียวจบ (ตรวจชน + ลง `seeds.json` + พิมพ์ theme/GDOTS — ข้อ 8 ข้างบน) · **regenerate ธีมจาก seed เดิมทั้งระบบ** → `node tools/brandtheme.js tools/seeds.json --write` (`makeTheme()` สร้างธีมเต็มจาก seed ด้วย HSL)
 
 ## เครื่องมือ (`tools/`)
 - `migrate.js <SYM…> [--write]` — แปลง HTML เต็ม → content-only + **round-trip faithful check** (resolve CSS var→สีจริง + body verbatim + stock-meta + brand/engine values ตรงเป๊ะจึงเขียน ไม่งั้น flag ปล่อย old-style)
+- `pick-brand.js <SYM> "#hex" [--force]` — one-shot สีแบรนด์หุ้นใหม่: ตรวจชน (เทียบใน accent space หลัง makeTheme) → เพิ่ม `seeds.json` → พิมพ์ theme 8 คีย์ + บรรทัด GDOTS
 - `brandtheme.js` — `makeTheme(seed)` → ธีมเต็มชุด · `preserve-dates.js` — คงวันที่ `updated` หลัง migrate (source เปลี่ยน → freshHash ขยับ → ดึงวันเดิมจาก git HEAD)
 - gate ครอบคลุม template: `check-reports.js` ตรวจ **หลัง** expand · `build-test.js` ทดสอบ `expandReport`/validate · `engine-exec.js` รัน engine จริง · `skeleton-test.js` กำกับโครงต้นแบบ
