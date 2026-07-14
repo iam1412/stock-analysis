@@ -4,9 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>วิเคราะห์หุ้น ออโรร่า ดีไซน์ (AURA) — Stock Analysis Dashboard</title>
-<meta name="ai-model" content="Claude Sonnet 4.6">
+<meta name="ai-model" content="Claude Sonnet 5">
 <script type="application/json" id="stock-meta">
-{"symbol":"AURA","currency":"THB","price":14.1,"fairValue":14.11,"mos":0.1,"upside":0.1,"pe":10.76,"dividendYield":3.97,"roe":21.26}
+{"symbol":"AURA","currency":"THB","price":14.3,"fairValue":14.11,"mos":-1.3,"upside":-1.3,"pe":10.76,"dividendYield":3.97,"roe":21.26}
 </script>
 <script type="application/json" id="report-data">
 {
@@ -36,7 +36,7 @@
       ["เม.ย.26", 14.2],
       ["พ.ค.26", 14.6],
       ["มิ.ย.26", 14],
-      ["ก.ค.26", 14.1]
+      ["ก.ค.26", 14.3]
     ],
     "min": 12,
     "max": 16,
@@ -50,7 +50,7 @@
   "gauge": {
     "min": 9,
     "max": 20,
-    "cur": 14.1,
+    "cur": 14.3,
     "fair": 14.11,
     "fairLabelTop": false
   },
@@ -74,11 +74,11 @@
     <div class="sub">ห้างเพชรทองออโรร่า 490+ สาขาทั่วประเทศ • ค้าปลีกทองรูปพรรณ/ทองแท่ง/เพชร (Modern Gold) • ธุรกิจขายฝาก-สินเชื่อทองคำ "ทองมาเงินไป"</div>
     <div class="price-row">
       <div>
-        <div class="px">฿14.10<small>(AURA)</small></div>
+        <div class="px">฿14.30<small>(AURA)</small></div>
       </div>
-      <div class="chg">▼ −4.1% (รอบปี)</div>
+      <div class="chg">▼ −2.7% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 10 ก.ค. 2569<br>
+        ราคา ณ 14 ก.ค. 2569<br>
         กรอบ 52 สัปดาห์ ฿12.10 – ฿16.10<br>
         ที่มา: StockAnalysis.com • SET (Factsheet/Price) • Yahoo Finance (AURA.BK) | งบการเงิน FY2025 / Q1/2026 (Q1/2569)
       </div>
@@ -87,7 +87,7 @@
 
   <!-- ===== 1. KEY METRICS ===== -->
   <section>
-    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">TTM / Q1-2569 (2026) | ราคา ณ 3 ก.ค. 2569</div></div>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">TTM / Q1-2569 (2026) | ราคา ณ 14 ก.ค. 2569</div></div>
     <div class="grid g4">
       <div class="metric"><div class="k">Market Cap</div><div class="v">~฿18,862 ล้าน</div><div class="d">~1,338 ล้านหุ้น (Par ฿1)</div></div>
       <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~10.76x</div><div class="d">SET Factsheet 10.70x — สอดคล้อง</div></div>
@@ -149,7 +149,7 @@
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         ทั้ง 3 วิธีให้ค่าใกล้เคียงกัน (฿13.19–14.77) เพราะจงใจ "ปรับฐาน" EPS/ROE/g ลงจากระดับ peak-cycle ปัจจุบัน (กำไร Q1 โต +75.7% YoY
-        คือระดับที่ไม่ควร extrapolate ตรง ๆ) FV เฉลี่ย ฿14.11 ใกล้เคียงราคาตลาด ฿14.10 มาก บ่งชี้ว่าราคาปัจจุบัน "สะท้อนมูลค่าพอดี"
+        คือระดับที่ไม่ควร extrapolate ตรง ๆ) FV เฉลี่ย ฿14.11 ใกล้เคียงราคาตลาด ฿14.30 มาก บ่งชี้ว่าราคาปัจจุบัน "สะท้อนมูลค่าพอดี"
         ไม่มีส่วนเผื่อความปลอดภัยเหลือ หากกำไรและราคาทองคำยังทรงตัวสูงต่อได้ อัพไซด์จะมาจาก re-rating เพิ่มเติม ไม่ใช่จาก undervaluation
       </p>
     </div>
@@ -161,7 +161,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿14.10</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿14.30</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม ฿14.11</div></div>
         </div>
         <div class="scale">
@@ -173,7 +173,7 @@
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคาปัจจุบัน ฿14.10 อยู่ "พอดี" กับมูลค่าเหมาะสมที่ประเมินแบบ normalize แล้ว (฿14.11) แต่ต่ำกว่าเป้าเฉลี่ยนักวิเคราะห์ ฿19.37
+        ราคาปัจจุบัน ฿14.30 อยู่ "พอดี" กับมูลค่าเหมาะสมที่ประเมินแบบ normalize แล้ว (฿14.11) แต่ต่ำกว่าเป้าเฉลี่ยนักวิเคราะห์ ฿19.37
         มากถึง ~27% — ส่วนต่างนี้สะท้อนมุมมองที่ต่างกัน: โบรกเกอร์ส่วนใหญ่ยัง extrapolate การเติบโตของกำไรในอัตราสูงต่อเนื่อง
         ขณะที่การประเมินนี้เลือก "ระมัดระวัง" กว่า โดย haircut กำไร/ROE ลงเพื่อสะท้อนความเสี่ยงวัฏจักรราคาทองคำ
       </p>
@@ -185,7 +185,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict bad">
-        <div class="big">+0.1%</div>
+        <div class="big">−1.3%</div>
         <div class="txt">แทบไม่มีส่วนเผื่อความปลอดภัย — ราคาตลาดเท่ากับมูลค่าเหมาะสมโดยประมาณ (Fairly Valued)</div>
       </div>
       <div class="grid g3">
@@ -196,7 +196,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="14.1" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="14.3" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -205,7 +205,7 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿14.10 • EPS ฐาน ~฿1.31 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿14.30 • EPS ฐาน ~฿1.31 • รวมปันผล</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS −5%/ปี</span></div>
@@ -289,12 +289,12 @@
       <p>ออโรร่า ดีไซน์ เป็นผู้นำค้าปลีกทองรูปพรรณผ่านเครือข่าย 490+ สาขา ผสมธุรกิจขายฝาก-สินเชื่อทองคำ "ทองมาเงินไป" ที่กำลังเติบโตแรง
       Q1/2569 กำไรทำนิวไฮ ~฿700 ล้าน (+75.7% YoY) รับแรงหนุนราคาทองคำพุ่งสู่ระดับสูงสุดเป็นประวัติการณ์ อย่างไรก็ตาม อัตราการเติบโตนี้ผูกกับ
       วัฏจักรราคาทองคำที่ผันผวนสูง ไม่ควรคาดหวังว่าจะดำเนินต่อในอัตราเดียวกันทุกปี หลังปรับฐาน EPS/ROE ให้สะท้อนวัฏจักรระยะยาวมากขึ้น
-      Fair Value เฉลี่ยอยู่ที่ ฿14.11 ใกล้เคียงราคาตลาด ฿14.10 มาก แปลว่าราคาปัจจุบัน "แฟร์" ไม่ถูกไม่แพง แม้เป้าหมายนักวิเคราะห์เฉลี่ยจะสูงกว่ามาก
+      Fair Value เฉลี่ยอยู่ที่ ฿14.11 ใกล้เคียงราคาตลาด ฿14.30 มาก แปลว่าราคาปัจจุบัน "แฟร์" ไม่ถูกไม่แพง แม้เป้าหมายนักวิเคราะห์เฉลี่ยจะสูงกว่ามาก
       (~฿19.37) จากมุมมองที่เชื่อการเติบโตต่อเนื่อง • กลยุทธ์: เหมาะกับการถือเพื่อรับปันผล ~4% ต่อปี มากกว่าไล่ราคา รอจังหวะราคาย่อสู่โซน MOS 20%
       (~฿11.29) ก่อนสะสมเพิ่ม เพื่อสร้างส่วนเผื่อความปลอดภัยรองรับความเสี่ยงราคาทองคำกลับทิศ</p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿14.11 <span style="font-size:12px;color:#cab9a8">(฿13.19–฿14.77)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +0.1%</div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ -1.3%</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿19.37 (Strong Buy)</div></div>
       </div>
       <div class="zone">
@@ -312,7 +312,7 @@
     ราคาหุ้นมีความผันผวนสูง โดยเฉพาะตามราคาทองคำโลกที่เป็นปัจจัยขับเคลื่อนหลักของธุรกิจ ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
     ที่มา: StockAnalysis.com (BKK:AURA) • SET Factsheet/Price (AURA) • Yahoo Finance Chart API (AURA.BK) • Thansettakij/Siam Outlook/ThaiPR (ข่าว Q1/2569)
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ 3 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 14 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
