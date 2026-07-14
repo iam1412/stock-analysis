@@ -78,18 +78,29 @@ function resolveKeys(found, keys) {
   }
   return out;
 }
-async function fromStockAnalysis(symbol, th) {
+// ticker US ที่เทรด OTC (ADR/F-share เช่น FANUY, KYCCF, ABBNY) อยู่ namespace quote/otc/ ไม่ใช่ stocks/
+// → ลอง stocks/ ก่อน (เคสปกติจบที่ request แรก) พังค่อย fallback otc
+function saBases(symbol, th) {
   const saSym = (SYMBOL_MAP[symbol] && SYMBOL_MAP[symbol].sa) || symbol;
-  const pathPart = th ? `quote/bkk/${saSym}` : `stocks/${saSym}`;
-  const r = await fetch(`https://stockanalysis.com/${pathPart}/__data.json`, { headers: H });
-  if (!r.ok) throw new Error('HTTP ' + r.status);
-  const j = await r.json();
-  if (!j.nodes || JSON.stringify(j).length < 500) throw new Error('payload ว่าง (ticker ไม่มีใน StockAnalysis?)');
-  const info = resolveKeys(findObj(j.nodes, ['eps', 'peRatio', 'target']),
-    ['eps', 'peRatio', 'forwardPE', 'dividend', 'dps', 'dividendYield', 'target', 'analysts', 'earningsDate', 'marketCap', 'payoutRatio']);
-  const quote = resolveKeys(findObj(j.nodes, ['p', 'h52', 'l52']), ['p', 'cl', 'u', 'h52', 'l52']);
-  if (!('eps' in info)) throw new Error('หา info object (eps/peRatio/target) ในผลลัพธ์ไม่เจอ — โครง payload อาจเปลี่ยน');
-  return { src: pathPart, info, quote };
+  return th ? [`quote/bkk/${saSym}`] : [`stocks/${saSym}`, `quote/otc/${saSym}`];
+}
+async function fromStockAnalysis(symbol, th) {
+  let lastErr = null;
+  for (const pathPart of saBases(symbol, th)) {
+    let j;
+    try {
+      const r = await fetch(`https://stockanalysis.com/${pathPart}/__data.json`, { headers: H });
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      j = await r.json();
+      if (!j.nodes || JSON.stringify(j).length < 500) throw new Error('payload ว่าง (ticker ไม่มีใน StockAnalysis?)');
+    } catch (e) { lastErr = e; continue; }
+    const info = resolveKeys(findObj(j.nodes, ['eps', 'peRatio', 'target']),
+      ['eps', 'peRatio', 'forwardPE', 'dividend', 'dps', 'dividendYield', 'target', 'analysts', 'earningsDate', 'marketCap', 'payoutRatio']);
+    const quote = resolveKeys(findObj(j.nodes, ['p', 'h52', 'l52']), ['p', 'cl', 'u', 'h52', 'l52']);
+    if (!('eps' in info)) { lastErr = new Error('หา info object (eps/peRatio/target) ในผลลัพธ์ไม่เจอ — โครง payload อาจเปลี่ยน'); continue; }
+    return { src: pathPart, info, quote };
+  }
+  throw lastErr;
 }
 
 // ---------- แหล่งเสริม: งบย้อนหลัง 5 ปี + TTM (StockAnalysis /financials 3 หน้า — SvelteKit devalue เหมือนข้างบน) ----------
@@ -104,9 +115,26 @@ const BS_ROWS = [['Cash', ['totalcash', 'cashneq'], 'm'], ['Debt', ['debt'], 'm'
 const RATIO_ROWS = [['D/E', ['debtequity'], 'num'], ['ROE%', ['roe'], 'pct']];
 const FIN_SUBS = ['', 'balance-sheet/', 'ratios/'];
 
-async function fetchFinPage(symbol, th, sub) {
-  const saSym = (SYMBOL_MAP[symbol] && SYMBOL_MAP[symbol].sa) || symbol;
-  const base = th ? `quote/bkk/${saSym}` : `stocks/${saSym}`;
+// ADR/F-share บน OTC: SA เก็บงบเต็มไว้ใต้ตลาดแม่เท่านั้น — payload หน้า quote มี primaryPath ชี้ไป (เช่น /quote/tyo/6954/)
+const primaryPathCache = {};
+function saPrimaryPath(symbol, th) {
+  if (!(symbol in primaryPathCache)) {
+    primaryPathCache[symbol] = (async () => {
+      for (const base of saBases(symbol, th)) {
+        try {
+          const r = await fetch(`https://stockanalysis.com/${base}/__data.json`, { headers: H });
+          if (!r.ok) continue;
+          const j = await r.json();
+          const pp = resolveKeys(findObj(j.nodes, ['primaryPath']), ['primaryPath']).primaryPath;
+          if (typeof pp === 'string' && pp.startsWith('/quote/')) return pp.replace(/^\/+|\/+$/g, '');
+        } catch (e) { /* ลอง base ถัดไป */ }
+      }
+      return null;
+    })();
+  }
+  return primaryPathCache[symbol];
+}
+async function finPageFrom(base, sub) {
   const r = await fetch(`https://stockanalysis.com/${base}/financials/${sub}__data.json`, { headers: H });
   if (!r.ok) throw new Error('HTTP ' + r.status);
   const j = await r.json();
@@ -115,9 +143,18 @@ async function fetchFinPage(symbol, th, sub) {
     const root = node.data[0];
     if (!root || typeof root !== 'object' || Array.isArray(root) || typeof root.financialData !== 'number') continue;
     const fd = node.data[root.financialData];
-    if (fd && typeof fd === 'object' && !Array.isArray(fd)) return { arr: node.data, fd };
+    if (fd && typeof fd === 'object' && !Array.isArray(fd)) return { arr: node.data, fd, src: base };
   }
   throw new Error('ไม่พบ financialData ใน payload');
+}
+async function fetchFinPage(symbol, th, sub) {
+  let lastErr = null;
+  for (const base of saBases(symbol, th)) {
+    try { return await finPageFrom(base, sub); } catch (e) { lastErr = e; }
+  }
+  const pp = th ? null : await saPrimaryPath(symbol, th);
+  if (pp) { try { return await finPageFrom(pp, sub); } catch (e) { lastErr = e; } }
+  throw lastErr;
 }
 // คืน array ค่าต่อคอลัมน์ของ alias แรกที่มี (devalue: สมาชิก list = index ชี้กลับเข้า arr เดียวกัน · ติดลบ = undefined/NaN)
 function finRow(page, aliases) {
@@ -167,7 +204,9 @@ function printFinancialTable(pages, finErr) {
     console.log(`[3] งบย้อนหลัง 5 ปี: ✗ โครง payload เปลี่ยน (ไม่เจอแถวที่รู้จัก) — WebFetch หน้า financials แทน`);
     return;
   }
-  console.log('[3] งบย้อนหลัง (StockAnalysis /financials) — Revenue/NI/FCF/Shares/Cash/Debt หน่วยล้าน · margin/ROE = %:');
+  const srcNote = master.src && /^quote\/(?!bkk\/)/.test(master.src)
+    ? ` — จาก ${master.src} (ตลาดแม่ — ตัวเลขเป็นสกุลท้องถิ่น ไม่ใช่ USD)` : '';
+  console.log(`[3] งบย้อนหลัง (StockAnalysis /financials${srcNote}) — Revenue/NI/FCF/Shares/Cash/Debt หน่วยล้าน · margin/ROE = %:`);
   const all = [['', heads], ...rows];
   const labelW = Math.max(...all.map((r) => r[0].length));
   const colW = heads.map((_, c) => Math.max(...all.map((r) => String(r[1][c]).length)));
@@ -208,6 +247,8 @@ async function main() {
       ` target=${fmt(i.target)}${i.analysts != null ? ` (${i.analysts})` : ''} 52wk=${fmt(q.l52)}–${fmt(q.h52)}` +
       `${i.earningsDate ? ` earnings=${i.earningsDate}` : ''}`);
   } else console.log(`[2] StockAnalysis: ✗ ${sErr} — ใช้ WebFetch targeted แทนแหล่งนี้`);
+  if (s && s.src.startsWith('quote/otc/'))
+    console.log('    ⚠ OTC listing (ADR/F-share) — งบข้างล่างอาจเป็นสกุลท้องถิ่นของตลาดแม่ (เช่น JPY) ขณะที่ราคา/epsTTM บรรทัดบนเป็น USD ต่อหน่วย OTC — ห้ามเอา EPS จากงบไปหารราคา USD ตรง ๆ ต้องเช็ค ADR ratio + FX ก่อน');
 
   const sPrice = s && asNum(s.quote.p), sEps = s && asNum(s.info.eps);
   if (y && s && Number.isFinite(y.price) && sPrice) {
