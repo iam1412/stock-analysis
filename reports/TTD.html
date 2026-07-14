@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>วิเคราะห์หุ้น The Trade Desk, Inc. (TTD) — Stock Analysis Dashboard</title>
 <!-- ★ ใส่รุ่นโมเดล AI ที่ใช้วิเคราะห์จริง (Opus→"Claude Opus 4.8", Sonnet→"Claude Sonnet 4.6") — gate E28 บังคับ -->
-<meta name="ai-model" content="Claude Opus 4.8">
+<meta name="ai-model" content="Claude Sonnet 5">
 <!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
 <script type="application/json" id="stock-meta">
-{"symbol":"TTD","currency":"USD","price":19.53,"fairValue":19.64,"mos":0.6,"upside":0.6,"pe":11.1,"dividendYield":null,"roe":17.8}
+{"symbol":"TTD","currency":"USD","price":19.79,"fairValue":19.64,"mos":-0.8,"upside":-0.8,"pe":11.1,"dividendYield":null,"roe":17.8}
 </script>
 <script type="application/json" id="report-data">
 {
@@ -38,7 +38,7 @@
       ["เม.ย.26", 23.59],
       ["พ.ค.26", 21.56],
       ["มิ.ย.26", 18.08],
-      ["ก.ค.26", 19.53]
+      ["ก.ค.26", 19.79]
     ],
     "min": 10,
     "max": 60,
@@ -50,7 +50,7 @@
   "gauge": {
     "min": 12,
     "max": 26,
-    "cur": 19.53,
+    "cur": 19.79,
     "fair": 19.64,
     "fairLabelTop": true
   },
@@ -75,14 +75,14 @@
     <div class="sub">แพลตฟอร์มโฆษณาโปรแกรมเมติกฝั่งผู้ซื้อ (independent DSP) • Connected TV (CTV) • Kokai AI platform • UID2 identity • Retail media data partnerships</div>
     <div class="price-row">
       <div>
-        <div class="px">$19.53<small>(TTD)</small></div>
+        <div class="px">$19.79<small>(TTD)</small></div>
       </div>
       <!-- ★ ป้าย % รอบปี (gate E35/E36) — ผลตอบแทน ~1 ปี (เทียบราคา ~1 ปีก่อน) = ผลตอบแทนปลายกราฟ section 2 (จุดแรก→ท้าย)
            รูปแบบ: "▲ +X.X% (รอบปี)" ขึ้น · "▼ −X.X% (รอบปี)" ลง · "≈ ทรงตัว (รอบปี)" · หุ้น IPO <1 ปี ใช้ "(ตั้งแต่ IPO)"
            ไม่ใช่ % รายวัน/YTD/52 สัปดาห์ · ตั้งสี theme.chgBg/chgColor ให้ตรงทิศ (ขึ้น=เขียว/ลง=แดง · E34) -->
-      <div class="chg">▼ −64.3% (รอบปี)</div>
+      <div class="chg">▼ −63.8% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 10 ก.ค. 2569 (2 Jul 2026)<br>
+        ราคา ณ 13 ก.ค. 2569 (2 Jul 2026)<br>
         กรอบ 52 สัปดาห์ $16.98 – $91.45<br>
         ที่มา: StockAnalysis.com, Yahoo Finance, บริษัท (8-K Q1 2026)
       </div>
@@ -126,7 +126,7 @@
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
-        ราคาร่วงจาก $54.66 (ส.ค. 2568) ลงมาต่ำสุด ~$18.08 (มิ.ย. 2569) ก่อนฟื้นเล็กน้อยมาปิดที่ $19.10 — รวมทั้งปีลดลง ~65%
+        ราคาร่วงจาก $54.66 (ส.ค. 2568) ลงมาต่ำสุด ~$18.08 (มิ.ย. 2569) ก่อนฟื้นเล็กน้อยมาอยู่ที่ $19.79 — รวมทั้งปีลดลง ~65%
         สาเหตุหลัก: (1) Q4 2025 รายได้เติบโตชะลอเหลือ 14% (จากเดิม 20%+) กระทบความเชื่อมั่นตลาดรุนแรง (2) แรงกดดันแข่งขันจาก Amazon DSP
         ที่ได้พาร์ทเนอร์ CTV พิเศษ (Disney+, ESPN, Hulu ผ่านดีล Amazon) แย่งส่วนแบ่งงบโฆษณา CTV (3) นักวิเคราะห์หลายรายลดคำแนะนำ/เป้าราคาต่อเนื่อง
         ตั้งแต่ต้นปี 2569 แม้ราคาหุ้นจะเข้าใกล้โซนถูกมากแล้ว แต่ยังไม่มีสัญญาณฟื้นตัวชัดเจนของอัตราเติบโตรายได้
@@ -170,7 +170,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $19.53</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $19.79</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $19.64</div></div>
         </div>
         <div class="scale">
@@ -181,8 +181,8 @@
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคาปัจจุบัน $19.10 อยู่ต่ำกว่า Fair Value ($19.64) เพียงเล็กน้อย — ไม่ได้อยู่ในโซน MOS 20-30% ที่ถือว่า "ถูก" ชัดเจน
-        แสดงว่าหลังการร่วงลง ~65% ตลาดได้ price-in ความเสี่ยงจาก Amazon DSP และการเติบโตชะลอตัวไปพอสมควรแล้ว เป้าเฉลี่ยนักวิเคราะห์ $24.42 (Hold consensus, 36 ราย)
+        ราคาปัจจุบัน $19.79 อยู่สูงกว่า Fair Value ($19.64) เล็กน้อย — ไม่ได้อยู่ในโซน MOS 20-30% ที่ถือว่า "ถูก" ชัดเจน
+        แสดงว่าหลังการร่วงลง ~65% ตลาดได้ price-in ความเสี่ยงจาก Amazon DSP และการเติบโตชะลอตัวไปพอสมควรแล้ว เป้าเฉลี่ยนักวิเคราะห์ $24.32 (Hold consensus, 36 ราย)
         สูงกว่า FV ของเราเล็กน้อย สะท้อนว่า Street ยังให้น้ำหนักกับโอกาสฟื้นตัวของ Kokai platform มากกว่าที่การประเมินแบบระมัดระวังนี้สะท้อน
       </p>
     </div>
@@ -194,7 +194,7 @@
     <div class="card">
       <!-- ✏️ class ของ mos-verdict: MOS<10 → "bad", 10–20 → "ok", ≥20 → "good" -->
       <div class="mos-verdict bad">
-        <div class="big">+0.6%</div>
+        <div class="big">−0.8%</div>
         <div class="txt">MOS ต่ำมาก — แม้ราคาจะร่วงมา 65% แล้ว แต่ตาม valuation แบบระมัดระวังนี้ TTD ยังไม่ใช่ "หุ้นถูก" ชัดเจน เป็นเพียง "ราคาที่ใกล้เคียงมูลค่าที่ควรเป็น" เท่านั้น</div>
       </div>
       <div class="grid g3">
@@ -205,7 +205,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="19.53" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="19.79" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -214,7 +214,7 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $19.10 • EPS ฐาน (non-GAAP TTM) ~$1.72 • ไม่มีปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $19.79 • EPS ฐาน (non-GAAP TTM) ~$1.72 • ไม่มีปันผล</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS +2%/ปี</span></div>
@@ -258,7 +258,7 @@
     </div>
     <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
       TTD ไม่จ่ายปันผล — ผลตอบแทนทั้งหมดมาจาก capital gain (price return) เท่านั้น บริษัทคืนเงินผู้ถือหุ้นผ่านการซื้อหุ้นคืน ($164M ใน Q1 2569 เพียงไตรมาสเดียว)
-      ที่ราคา $19.10 ตลาดกำลัง price-in อัตราเติบโตระยะยาวราว 10-13%/ปี (ต่ำกว่า guided 12% ปัจจุบันเล็กน้อยถ้าใช้ P/E ~13x) — ถ้า Amazon DSP กัดกร่อนต่อจนเติบโต
+      ที่ราคา $19.79 ตลาดกำลัง price-in อัตราเติบโตระยะยาวราว 10-13%/ปี (ต่ำกว่า guided 12% ปัจจุบันเล็กน้อยถ้าใช้ P/E ~13x) — ถ้า Amazon DSP กัดกร่อนต่อจนเติบโต
       หลุดต่ำกว่านี้ (bear) หุ้นมีดาวน์ไซด์จำกัดแต่ยังเป็นไปได้ ~14% ส่วนกรณี Kokai พลิกกลับมาเร่งการเติบโต (bull) มี upside สูงมากเพราะฐานราคาต่ำ
     </p>
   </section>
@@ -300,14 +300,14 @@
       <p>
         The Trade Desk ร่วงลง ~65% ในรอบ 1 ปีจากแรงกดดันคู่แข่ง Amazon DSP ที่รุกตลาด CTV และการเติบโตรายได้ชะลอตัวจาก 25%+ เหลือ 12%
         หลังปรับฐานรุนแรง P/E (non-GAAP) เหลือเพียง ~11x จากค่าเฉลี่ย ~45x ในอดีต ทำให้ระดับความคาดหวังของตลาดต่ำลงมาก การประเมินมูลค่าแบบระมัดระวัง
-        (P/E adj. + P/FCF + Conservative Forward P/E) ให้ Fair Value เฉลี่ย $19.64 ใกล้เคียงราคาตลาดปัจจุบัน $19.10 มาก (MOS เพียง +2.8%)
+        (P/E adj. + P/FCF + Conservative Forward P/E) ให้ Fair Value เฉลี่ย $19.64 ใกล้เคียงราคาตลาดปัจจุบัน $19.79 มาก (MOS เพียง -0.8%)
         สะท้อนว่าราคาปัจจุบันไม่ใช่ "ของถูกที่ตลาดมองข้าม" แต่ก็ไม่ได้แพงเกินพื้นฐาน — ความเสี่ยงหลักคือ Amazon DSP อาจกัดกร่อน moat ของ TTD ต่อเนื่อง
         ขณะที่โอกาสคือ Kokai AI platform และ UID2 identity อาจช่วยให้บริษัทรักษาตำแหน่ง DSP อิสระอันดับ 1 ไว้ได้
       </p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$19.64 <span style="font-size:12px;color:#cab9a8">($16.65–$22.36)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +2.8%</div></div>
-        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$24.42 (Hold)</div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ -0.8%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$24.32 (Hold)</div></div>
       </div>
       <div class="zone">
         💡 <b>กลยุทธ์:</b> สำหรับนักลงทุนที่ยอมรับความเสี่ยงสูงได้ อาจทยอยสะสมเป็นส่วนน้อยของพอร์ต (satellite position) โดยรอราคาลงมาที่โซน MOS 20-30% ($13.75-$15.71)
