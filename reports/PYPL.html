@@ -8,7 +8,7 @@
 <meta name="ai-model" content="Claude Sonnet 4.6">
 <!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
 <script type="application/json" id="stock-meta">
-{"symbol":"PYPL","currency":"USD","price":47.65,"fairValue":75,"mos":36.5,"upside":57.4,"pe":8.53,"dividendYield":1.23,"roe":25.1}
+{"symbol":"PYPL","currency":"USD","price":47.37,"fairValue":75,"mos":36.8,"upside":58.3,"pe":8.53,"dividendYield":1.23,"roe":25.1}
 </script>
 <!--
   report-data: ธีมสี + ข้อมูลกราฟ/gauge ต่อหุ้น (build เอาไปวาด)  ดู schema เต็มใน CLAUDE.md ข้อ 9
@@ -47,7 +47,7 @@
       ["เม.ย.26", 50.14],
       ["พ.ค.26", 44.75],
       ["มิ.ย.26", 43.18],
-      ["ก.ค.26", 47.65]
+      ["ก.ค.26", 47.37]
     ],
     "min": 40,
     "max": 80,
@@ -59,7 +59,7 @@
   "gauge": {
     "min": 38,
     "max": 90,
-    "cur": 47.65,
+    "cur": 47.37,
     "fair": 75,
     "fairLabelTop": true
   },
@@ -84,14 +84,14 @@
     <div class="sub">PayPal checkout (branded) • Venmo (P2P + social commerce) • Braintree (unbranded processing) • Zettle (POS) • Pay Later (BNPL) • PayPal Ads</div>
     <div class="price-row">
       <div>
-        <div class="px">$47.65<small>(PYPL)</small></div>
+        <div class="px">$47.37<small>(PYPL)</small></div>
       </div>
       <!-- ★ ป้าย % รอบปี (gate E35/E36) — ผลตอบแทน ~1 ปี (เทียบราคา ~1 ปีก่อน) = ผลตอบแทนปลายกราฟ section 2 (จุดแรก→ท้าย)
            รูปแบบ: "▲ +X.X% (รอบปี)" ขึ้น · "▼ −X.X% (รอบปี)" ลง · "≈ ทรงตัว (รอบปี)" · หุ้น IPO <1 ปี ใช้ "(ตั้งแต่ IPO)"
            ไม่ใช่ % รายวัน/YTD/52 สัปดาห์ · ตั้งสี theme.chgBg/chgColor ให้ตรงทิศ (ขึ้น=เขียว/ลง=แดง · E34) -->
-      <div class="chg">▼ −32.1% (รอบปี)</div>
+      <div class="chg">▼ −32.5% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 13 ก.ค. 2569 (Jul 3, 2026)<br>
+        ราคา ณ 14 ก.ค. 2569 (Jul 3, 2026)<br>
         กรอบ 52 สัปดาห์ $38.46 – $79.50<br>
         ที่มา: Yahoo Finance, StockAnalysis.com
       </div>
@@ -180,7 +180,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $47.65</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $47.37</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $75</div></div>
         </div>
         <div class="scale">
@@ -203,7 +203,7 @@
     <div class="card">
       <!-- ✏️ class ของ mos-verdict: MOS<10 → "bad", 10–20 → "ok", ≥20 → "good" -->
       <div class="mos-verdict good">
-        <div class="big">+36%</div>
+        <div class="big">+37%</div>
         <div class="txt">MOS สูงมาก — เข้าเกณฑ์ "All-in zone" ตามตัวเลข แต่ควรตรวจสอบว่าไม่ใช่ value trap จาก moat erosion ก่อนตัดสินใจ</div>
       </div>
       <div class="grid g3">
@@ -214,7 +214,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="47.65" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="47.37" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
