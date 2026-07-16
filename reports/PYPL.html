@@ -8,7 +8,7 @@
 <meta name="ai-model" content="Claude Sonnet 4.6">
 <!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
 <script type="application/json" id="stock-meta">
-{"symbol":"PYPL","currency":"USD","price":47.37,"fairValue":75,"mos":36.8,"upside":58.3,"pe":8.53,"dividendYield":1.23,"roe":25.1}
+{"symbol":"PYPL","currency":"USD","price":55.52,"fairValue":75,"mos":26,"upside":35.1,"pe":8.53,"dividendYield":1.23,"roe":25.1}
 </script>
 <!--
   report-data: ธีมสี + ข้อมูลกราฟ/gauge ต่อหุ้น (build เอาไปวาด)  ดู schema เต็มใน CLAUDE.md ข้อ 9
@@ -47,7 +47,7 @@
       ["เม.ย.26", 50.14],
       ["พ.ค.26", 44.75],
       ["มิ.ย.26", 43.18],
-      ["ก.ค.26", 47.37]
+      ["ก.ค.26", 55.52]
     ],
     "min": 40,
     "max": 80,
@@ -59,7 +59,7 @@
   "gauge": {
     "min": 38,
     "max": 90,
-    "cur": 47.37,
+    "cur": 55.52,
     "fair": 75,
     "fairLabelTop": true
   },
@@ -84,16 +84,16 @@
     <div class="sub">PayPal checkout (branded) • Venmo (P2P + social commerce) • Braintree (unbranded processing) • Zettle (POS) • Pay Later (BNPL) • PayPal Ads</div>
     <div class="price-row">
       <div>
-        <div class="px">$47.37<small>(PYPL)</small></div>
+        <div class="px">$55.52<small>(PYPL)</small></div>
       </div>
       <!-- ★ ป้าย % รอบปี (gate E35/E36) — ผลตอบแทน ~1 ปี (เทียบราคา ~1 ปีก่อน) = ผลตอบแทนปลายกราฟ section 2 (จุดแรก→ท้าย)
            รูปแบบ: "▲ +X.X% (รอบปี)" ขึ้น · "▼ −X.X% (รอบปี)" ลง · "≈ ทรงตัว (รอบปี)" · หุ้น IPO <1 ปี ใช้ "(ตั้งแต่ IPO)"
            ไม่ใช่ % รายวัน/YTD/52 สัปดาห์ · ตั้งสี theme.chgBg/chgColor ให้ตรงทิศ (ขึ้น=เขียว/ลง=แดง · E34) -->
-      <div class="chg">▼ −32.5% (รอบปี)</div>
+      <div class="chg">▼ −20.9% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 14 ก.ค. 2569 (Jul 3, 2026)<br>
+        ราคา ณ 16 ก.ค. 2569 (Jul 15, 2026)<br>
         กรอบ 52 สัปดาห์ $38.46 – $79.50<br>
-        ที่มา: Yahoo Finance, StockAnalysis.com
+        ที่มา: Yahoo Finance, StockAnalysis.com, WSJ/Reuters (ข่าวประมูล M&A)
       </div>
     </div>
   </header>
@@ -136,9 +136,9 @@
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
         <!-- ✏️ บรรยายการเคลื่อนไหวราคา ~1 ปี: จุดสูง/ต่ำ, เปลี่ยนแปลง %, สาเหตุหลัก -->
-        ราคาไหลลงต่อเนื่องจาก $69.59 (ก.ค. 2568) สู่จุดต่ำสุดรอบปี $43.18 (พ.ค. 2569) ก่อนดีดกลับเล็กน้อยมาที่ $45.47 —
-        รวมลดลง −34.7% ในรอบ 1 ปี สาเหตุหลัก: เร่งลดลงหลัง Q4/25 (ก.พ. 2569) กำไร/รายได้พลาดคาด + นักวิเคราะห์ downgrade
-        เรื่อง branded checkout growth ชะลอและแรงกดดันจาก Apple Pay/Stripe/Shopify Payments ที่แย่ง market share ในฝั่ง unbranded/checkout
+        ราคาไหลลงต่อเนื่องจาก $70.19 (ส.ค. 2568) สู่จุดต่ำสุดรอบปี $43.18 (มิ.ย. 2569) จากกำไร/รายได้พลาดคาด + นักวิเคราะห์ downgrade
+        เรื่อง branded checkout growth ชะลอและแรงกดดันจาก Apple Pay/Stripe/Shopify Payments ที่แย่ง market share — จากนั้นพุ่งขึ้น +28.6% ในเดือนเดียวมาปิดที่ $55.52 (15 ก.ค. 2569)
+        หลังมีข่าว Stripe และ Advent International เสนอซื้อกิจการ PayPal มูลค่า ~$53.4B ที่ $60.50/หุ้น รวมทั้งปียังลดลง −20.9%
       </p>
     </div>
   </section>
@@ -180,7 +180,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $47.37</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $55.52</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $75</div></div>
         </div>
         <div class="scale">
@@ -191,8 +191,8 @@
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคาปัจจุบัน $45.47 อยู่ต่ำกว่าทั้ง Fair Value ($75) และแม้แต่โซน MOS 30% ($52.5) — สะท้อนว่าตลาดตีราคาลงลึกกว่าที่ fundamentals (FCF, buyback, ROE) บ่งชี้
-        อย่างไรก็ตาม เป้าเฉลี่ยนักวิเคราะห์ Street ($51.5, Hold) ยังต่ำกว่า FV ของเราค่อนข้างมาก — เป็นสัญญาณเตือนให้ระวัง "value trap" หากปัญหา moat/growth ไม่กลับตัวจริง
+        ราคาปัจจุบัน $55.52 (หลังพุ่งขึ้นจากข่าวเสนอซื้อกิจการ Stripe/Advent ที่ $60.50/หุ้น) ยังต่ำกว่า Fair Value ($75) และโซน MOS 20% ($60.0) — สะท้อนว่าแม้มีข่าว M&A ตลาดยังไม่มั่นใจว่าดีลจะปิดที่ราคาสูงกว่านี้หรือปิดสำเร็จเลยหรือไม่
+        เป้าเฉลี่ยนักวิเคราะห์ Street ($51.5, Hold) ยังต่ำกว่าทั้งราคาปัจจุบันและ FV ของเรา — สะท้อนความไม่แน่นอนของดีลและมุมมอง "value trap" หากดีลล่ม/moat ยังเสื่อมต่อ
       </p>
     </div>
   </section>
@@ -203,7 +203,7 @@
     <div class="card">
       <!-- ✏️ class ของ mos-verdict: MOS<10 → "bad", 10–20 → "ok", ≥20 → "good" -->
       <div class="mos-verdict good">
-        <div class="big">+37%</div>
+        <div class="big">+26%</div>
         <div class="txt">MOS สูงมาก — เข้าเกณฑ์ "All-in zone" ตามตัวเลข แต่ควรตรวจสอบว่าไม่ใช่ value trap จาก moat erosion ก่อนตัดสินใจ</div>
       </div>
       <div class="grid g3">
@@ -214,7 +214,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="47.37" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="55.52" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -223,13 +223,13 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $45.47 • EPS ฐาน ~$5.36 (non-GAAP) • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $55.52 • EPS ฐาน ~$5.36 (non-GAAP) • รวมปันผล (ไม่รวมสถานการณ์ M&A ปิดดีล)</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS +1%/ปี</span></div>
         <div class="body">
           <div class="tgt">$44.18</div>
-          <div class="ret neg">+0.3%/ปี (3 ปี รวม +0.9%)</div>
+          <div class="ret neg">−6.2%/ปี (3 ปี รวม −17.4%)</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$5.52</span></li>
             <li><span>P/E ออก</span><span>8x</span></li>
@@ -242,7 +242,7 @@
         <div class="top"><span>⚖️ Base</span><span>EPS +4%/ปี</span></div>
         <div class="body">
           <div class="tgt">$72.35</div>
-          <div class="ret pos">+17.7%/ปี (3 ปี รวม +62.9%)</div>
+          <div class="ret pos">+10.1%/ปี (3 ปี รวม +33.4%)</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$6.03</span></li>
             <li><span>P/E ออก</span><span>12x</span></li>
@@ -255,7 +255,7 @@
         <div class="top"><span>🚀 Bull</span><span>EPS +7%/ปี</span></div>
         <div class="body">
           <div class="tgt">$98.49</div>
-          <div class="ret pos">+30.1%/ปี (3 ปี รวม +120.4%)</div>
+          <div class="ret pos">+21.8%/ปี (3 ปี รวม +80.5%)</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$6.57</span></li>
             <li><span>P/E ออก</span><span>15x</span></li>
@@ -266,9 +266,9 @@
       </div>
     </div>
     <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
-      Base case ให้ผลตอบแทนต่อปี ~17.7% (ต่อเนื่อง 3 ปี) จากทั้ง capital gain และปันผลเล็กน้อย — สมมติฐานหลักคือ P/E re-rate กลับไปแถว 12x
-      (ยังต่ำกว่าค่าเฉลี่ยประวัติศาสตร์ 18-22x มาก) ซึ่งต้องพิสูจน์ด้วยการที่ branded checkout growth เร่งตัวชัดเจนกว่านี้ — risk สำคัญคือ Bear case แทบไม่ขาดทุนแต่ก็แทบไม่ได้กำไร
-      สะท้อนว่าตลาดราคาหุ้นไว้ที่ระดับที่ "ไม่ต้องการให้ธุรกิจดีขึ้นเลยก็ยังพอคุ้ม" — จุดที่ต้องระวังคือถ้า TPV/margin แย่ลงกว่านี้อีก
+      Base case ให้ผลตอบแทนต่อปี ~10.1% (ต่อเนื่อง 3 ปี) จากทั้ง capital gain และปันผลเล็กน้อย — สมมติฐานหลักคือ P/E re-rate กลับไปแถว 12x
+      (ยังต่ำกว่าค่าเฉลี่ยประวัติศาสตร์ 18-22x มาก) ซึ่งต้องพิสูจน์ด้วยการที่ branded checkout growth เร่งตัวชัดเจนกว่านี้ — risk สำคัญคือ Bear case ขาดทุนจริง (−6.2%/ปี) เพราะราคาปัจจุบันขยับขึ้นมาใกล้ FV แล้วจากข่าว M&A
+      สะท้อนว่าราคาตอนนี้ผูกกับความหวังดีล Stripe/Advent มากกว่า fundamentals ล้วน ๆ — จุดที่ต้องระวังคือถ้าดีลล่มและ TPV/margin แย่ลงพร้อมกัน
     </p>
   </section>
 
@@ -279,6 +279,7 @@
       <div class="box cat">
         <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
         <ul>
+          <li><b>ข้อเสนอซื้อกิจการ Stripe/Advent International:</b> เสนอราคา $60.50/หุ้น มูลค่ารวม ~$53.4B (15 ก.ค. 2569, รายงานโดย WSJ/Reuters) — สูงกว่าราคาตลาดปัจจุบัน $55.52 ~9% หาก deal ผ่านจะเป็น "lifeline" ให้ผู้ถือหุ้นทันที แต่ยังไม่มีข้อสรุปว่าบอร์ด PayPal จะรับข้อเสนอหรือหน่วยงานกำกับดูแลจะอนุมัติหรือไม่</li>
           <li><b>PayPal Ads (Curated Ads):</b> เปิดตัว 22 เม.ย. 2569 ใช้ purchase data จริงจาก 25 พันล้าน transaction บน 400M+ บัญชี PayPal/Venmo — สร้าง revenue margin สูงกว่า core payments มาก และ Google/Meta ทำไม่ได้เพราะไม่มี checkout data</li>
           <li><b>Venmo กลายเป็น standalone segment:</b> reorganize เม.ย. 2569 แยก Consumer Financial Services & Venmo — Venmo TPV โต 14% YoY ต่อเนื่อง 6 ไตรมาสติด, revenue Venmo ~$1.7B (+20% YoY) สะท้อน monetization เริ่มติดเครื่อง</li>
           <li><b>Buyback อย่างจริงจัง:</b> คืนทุน $6B/ปี (ลดหุ้นถ่วงน้ำหนัก 8% YoY) — ที่ราคานี้ (P/FCF ~7x) การซื้อหุ้นคืนเป็น capital allocation ที่ทรงพลังมาก และหนุน EPS แม้กำไรรวมไม่โตเร็ว</li>
@@ -295,6 +296,7 @@
           <li><b>Analyst sentiment ยังลบ:</b> เป้าเฉลี่ย Street เพียง ~$51.5 (Hold) — ต่ำกว่า FV เราที่ $75 มาก มีความเป็นไปได้ที่ตลาดมองเห็นความเสี่ยงเชิงโครงสร้างที่ valuation model เชิงตัวเลขจับไม่ได้ทั้งหมด</li>
           <li><b>CEO ใหม่ (Alex Chriss) ยังพิสูจน์ผลลัพธ์ไม่ครบ:</b> reorganize เม.ย. 2569 เป็นการเดิมพันเชิงกลยุทธ์ครั้งใหญ่ — หากล้มเหลวในการเร่ง Venmo/Ads monetization อาจกระทบความเชื่อมั่นซ้ำ</li>
           <li><b>2026 EPS guidance กว้างและเสี่ยงขาลง:</b> non-GAAP EPS guided "declined low-single digits ถึง slightly positive" — เป็นปีแรกในรอบหลายปีที่ EPS อาจหดตัว</li>
+          <li><b>ความไม่แน่นอนของดีล M&A:</b> ข้อเสนอ Stripe/Advent เป็นเพียงข้อเสนอเบื้องต้น ยังไม่มีข้อตกลงผูกพัน — เสี่ยงถูกบอร์ดปฏิเสธ/หน่วยงานกำกับดูแล (antitrust) ไม่อนุมัติ/เจรจาราคาใหม่ ราคาหุ้นอาจย่อกลับหากดีลล่ม</li>
         </ul>
       </div>
     </div>
@@ -321,7 +323,7 @@
       </p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$75 <span style="font-size:12px;color:#cab9a8">($69–$80)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +39.4%</div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +26.0%</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$51.5 (Hold)</div></div>
       </div>
       <div class="zone">
@@ -339,7 +341,7 @@
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
     ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ข้อมูลจาก Yahoo Finance, StockAnalysis.com, PayPal Investor Relations (Q1 2026 Earnings Release), และรายงานข่าว/บทวิเคราะห์นักวิเคราะห์ ณ ก.ค. 2569
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ 3 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 16 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
