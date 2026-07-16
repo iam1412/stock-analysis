@@ -19,7 +19,7 @@
 <meta name="ai-model" content="Claude Opus 4.8">
 <!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
 <script type="application/json" id="stock-meta">
-{"symbol":"VLTO","currency":"USD","price":91.9,"fairValue":96.5,"mos":4.8,"upside":5,"pe":24,"dividendYield":0.56,"roe":36.5}
+{"symbol":"VLTO","currency":"USD","price":91,"fairValue":96.5,"mos":5.7,"upside":6,"pe":24,"dividendYield":0.56,"roe":36.5}
 </script>
 <!--
   report-data: ธีมสี + ข้อมูลกราฟ/gauge ต่อหุ้น (build เอาไปวาด)  ดู schema เต็มใน CLAUDE.md ข้อ 9
@@ -58,7 +58,7 @@
       ["เม.ย.26", 88.2],
       ["พ.ค.26", 82.23],
       ["มิ.ย.26", 88.68],
-      ["ก.ค.26", 91.9]
+      ["ก.ค.26", 91]
     ],
     "min": 80,
     "max": 110,
@@ -70,7 +70,7 @@
   "gauge": {
     "min": 60,
     "max": 125,
-    "cur": 91.9,
+    "cur": 91,
     "fair": 96.5,
     "fairLabelTop": false
   },
@@ -95,14 +95,14 @@
     <div class="sub">Hach, ChemTreat, Trojan Technologies, OTT HydroMet — เครื่องมือวัด/บำบัดคุณภาพน้ำ • Videojet, Esko, X-Rite, Pantone, Linx — ระบบพิมพ์บาร์โค้ด/ตรวจสอบคุณภาพบรรจุภัณฑ์ • แยกตัวจาก Danaher (DHR) ก.ย. 2566</div>
     <div class="price-row">
       <div>
-        <div class="px">$91.90<small>(VLTO)</small></div>
+        <div class="px">$91.00<small>(VLTO)</small></div>
       </div>
       <!-- ★ ป้าย % รอบปี (gate E35/E36) — ผลตอบแทน ~1 ปี (เทียบราคา ~1 ปีก่อน) = ผลตอบแทนปลายกราฟ section 2 (จุดแรก→ท้าย)
            รูปแบบ: "▲ +X.X% (รอบปี)" ขึ้น · "▼ −X.X% (รอบปี)" ลง · "≈ ทรงตัว (รอบปี)" · หุ้น IPO <1 ปี ใช้ "(ตั้งแต่ IPO)"
            ไม่ใช่ % รายวัน/YTD/52 สัปดาห์ · ตั้งสี theme.chgBg/chgColor ให้ตรงทิศ (ขึ้น=เขียว/ลง=แดง · E34) -->
-      <div class="chg">▼ −13.5% (รอบปี)</div>
+      <div class="chg">▼ −14.3% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 14 ก.ค. 2569 (7 Jul 2026, ตลาดสหรัฐฯ)<br>
+        ราคา ณ 15 ก.ค. 2569 (7 Jul 2026, ตลาดสหรัฐฯ)<br>
         กรอบ 52 สัปดาห์ $80.03 – $110.11<br>
         ที่มา: Yahoo Finance, StockAnalysis.com, TipRanks
       </div>
@@ -190,7 +190,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $91.90</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $91.00</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $96.50</div></div>
         </div>
         <div class="scale">
@@ -213,7 +213,7 @@
     <div class="card">
       <!-- ✏️ class ของ mos-verdict: MOS<10 → "bad", 10–20 → "ok", ≥20 → "good" -->
       <div class="mos-verdict bad">
-        <div class="big">+5%</div>
+        <div class="big">+6%</div>
         <div class="txt">ราคาปัจจุบัน ($93.10) ใกล้เคียงมูลค่าเหมาะสม ($96.50) มาก มี margin of safety เพียง ~3.5% ต่ำกว่าเกณฑ์ที่ถือว่าปลอดภัย (>20%) หุ้นเพิ่งผ่านการปรับฐานจากจุดสูงเกือบ $107 มาเทรดในโซนที่ยุติธรรมมากขึ้น แต่ยังไม่ใช่จุดเข้าซื้อที่มีส่วนเผื่อความปลอดภัยสูง</div>
       </div>
       <div class="grid g3">
@@ -224,7 +224,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="91.9" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="91" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
