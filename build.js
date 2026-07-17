@@ -66,12 +66,13 @@ const FONT_LINKS =
   '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n' +
   '<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">';
 // ธีมเริ่มต้น (โทนน้ำเงิน เหมือนหน้า index) — ใช้เมื่อ report-data.theme ไม่ระบุคีย์ใด
+// ทุกคู่ default ต้องผ่าน WCAG AA (gate E38 ตรวจ) — badge เป็นพื้นตัวหนังสือขาว 13px จึงใช้ --blue-d (accent สว่างเกิน)
 const THEME_DEFAULTS = {
   accent: '#1a73e8', accentDark: '#1557b0',
   darkGrad: 'linear-gradient(135deg,#202938 0%,#2c3a52 60%,#1557b0 140%)',
   glow: 'rgba(66,133,244,.35)', subColor: '#c7d2e4', headerMuted: '#aebfd6',
-  chgBg: 'var(--red-soft)', chgColor: '#c5221f', badge: 'var(--blue)',
-  verdictText: '#d4dded', vcellLabel: '#a8b6cc',
+  chgBg: 'var(--red-soft)', chgColor: '#c5221f', badge: 'var(--blue-d)',
+  verdictText: '#d4dded', vcellLabel: '#c8d1df',
 };
 const _partialCache = {};
 const readPartial = (name) => (_partialCache[name] || (_partialCache[name] = fs.readFileSync(path.join(TEMPLATE_DIR, name), 'utf8')));
@@ -92,7 +93,7 @@ function renderEngine(data) {
   const c = data.chart, g = data.gauge, t = { ...THEME_DEFAULTS, ...(data.theme || {}) };
   const js = fillTokens(readPartial('engine.js'), {
     __RD_DATA__: JSON.stringify(c.data), __RD_MIN__: String(c.min), __RD_MAX__: String(c.max),
-    __RD_GRID__: c.grid.join(','), __RD_FAIRLINE__: String(c.fairLine), __RD_ACCENT__: t.accent,
+    __RD_GRID__: c.grid.join(','), __RD_FAIRLINE__: String(c.fairLine), __RD_ACCENT__: t.accent, __RD_ACCENTD__: t.accentDark,
     __RD_CURSYM__: c.currency || '$', __RD_HL__: JSON.stringify(c.highlight),
     __RD_GRIDVAL__: c.gridFmt || 'v',          // นิพจน์ format ป้ายแกน (v / v.toFixed(2) / Math.round(v))
     __RD_DATAVAL__: c.dataFmt || 'd[1]',       // นิพจน์ format ป้ายจุด (d[1] / d[1].toFixed(2) / Math.round(d[1]))
@@ -370,7 +371,7 @@ function computeLeaders(reps) {
 }
 
 // export ฟังก์ชันให้ unit-test (test/build-test.js) — ต้องอยู่ก่อนโค้ดที่รัน build จริง
-module.exports = { extractMeta, extractMetrics, freshHash, injectModelCredit, injectContactFooter, decorateReport, pickHighlight, computeLeaders, HL_DEFS, AI_MODEL, AI_MAKER, expandReport, renderHead, renderEngine, validateReportData };
+module.exports = { extractMeta, extractMetrics, freshHash, injectModelCredit, injectContactFooter, decorateReport, pickHighlight, computeLeaders, HL_DEFS, AI_MODEL, AI_MAKER, expandReport, renderHead, renderEngine, validateReportData, THEME_DEFAULTS };
 // ถูก require เข้ามาเพื่อเทส → ส่งออกฟังก์ชันแล้วหยุด ไม่รัน build (top-level return ใช้ได้ใน CommonJS module)
 if (require.main !== module) return;
 

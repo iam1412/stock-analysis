@@ -32,24 +32,72 @@ function hslToHex(h, s, l) {
 }
 const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
 
+// ── WCAG contrast (โมดูลกลาง — makeTheme / tools/fix-contrast.js / gate E38 ต้องใช้ตัวเดียวกัน ห้าม copy สูตรแยก) ──
+const hexToRgb = (hex) => { const m = hex.replace('#', ''); const f = m.length === 3 ? m.split('').map((c) => c + c).join('') : m; return [parseInt(f.slice(0, 2), 16), parseInt(f.slice(2, 4), 16), parseInt(f.slice(4, 6), 16)]; };
+const rgbToHex = (rgb) => '#' + rgb.map((v) => clamp(Math.round(v), 0, 255).toString(16).padStart(2, '0')).join('');
+const relLum = (hex) => { const [r, g, b] = hexToRgb(hex).map((v) => { v /= 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); }); return 0.2126 * r + 0.7152 * g + 0.0722 * b; };
+const contrast = (a, b) => { const x = relLum(a), y = relLum(b); return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05); };
+const mixHex = (a, b, t) => { const A = hexToRgb(a), B = hexToRgb(b); return rgbToHex(A.map((v, i) => v + (B[i] - v) * t)); };
+// เกณฑ์: gate ตรวจที่ WCAG AA (ตัวหนังสือปกติ 4.5 / ตัวใหญ่-กราฟิก 3.0) — ตัวสร้างสีเผื่อ margin กัน hex↔hsl round-trip
+const AA = { text: 4.5, graphic: 3.0 };
+const AA_MARGIN = { text: 4.75, graphic: 3.15 };
+
+// สีสว่างสุดที่ "มองเห็นจริง" ของ linear-gradient — stop อาจประกาศเกิน 100% (เช่น 140%) จึงต้อง
+// interpolate กลับมาในช่วง 0–100% แล้ว sample ทีละ 5% (peak อาจอยู่กลางช่วง) · คืน null ถ้า parse ไม่ได้
+function gradBrightest(grad) {
+  const stops = [...String(grad).matchAll(/#([0-9a-fA-F]{6})\s+(-?\d+(?:\.\d+)?)%/g)].map((m) => ({ c: '#' + m[1].toLowerCase(), p: parseFloat(m[2]) }));
+  if (!stops.length) return null;
+  let best = null;
+  for (let p = 0; p <= 100; p += 5) {
+    let c;
+    if (p <= stops[0].p) c = stops[0].c;
+    else if (p >= stops[stops.length - 1].p) c = stops[stops.length - 1].c;
+    else for (let i = 0; i < stops.length - 1; i++) if (p >= stops[i].p && p <= stops[i + 1].p) { c = mixHex(stops[i].c, stops[i + 1].c, (p - stops[i].p) / (stops[i + 1].p - stops[i].p)); break; }
+    if (best === null || relLum(c) > relLum(best)) best = c;
+  }
+  return best;
+}
+
+// ปรับ lightness ของ fg ไปทางเดียว (ทิศตายตัวตามบทบาทสี: ตัวหนังสืออ่อนบนพื้นเข้ม → lighten,
+// สีเข้มบนพื้นอ่อน → darken) จนผ่าน min — คง hue/sat ไว้ ให้ยังรู้สึกเป็นสีแบรนด์เดิม
+function tuneContrast(fg, bg, min, dir) {
+  let [h, s, l] = hexToHsl(fg);
+  let hex = hslToHex(h, s, l);
+  const step = dir === 'lighten' ? 1 : -1;
+  while (contrast(hex, bg) < min && (dir === 'lighten' ? l < 100 : l > 0)) {
+    l = clamp(l + step, 0, 100);                         // clamp ให้แตะขาว/ดำแท้พอดี (L=100 = #ffffff) = contrast สูงสุดที่ไปได้
+    hex = hslToHex(h, s, l);
+  }
+  return hex;
+}
+
 // seed = สีแบรนด์ตัวแทน (สดกลาง ๆ) → ธีมเต็มชุด (โทนเข้มไล่ระดับ + tint อ่อนสำหรับตัวอักษร)
+// ทุกคู่ ตัวหนังสือ/พื้นหลัง ที่ธีมคุม การันตี WCAG AA (+margin) ตั้งแต่ตอนสร้าง — gate E38 ตรวจซ้ำ
 function makeTheme(seed) {
   const [h, s0] = hexToHsl(seed);
   const s = clamp(s0, 45, 85);                          // คุมความอิ่มไม่ให้จืด/จัดเกิน
   const dg = (l) => hslToHex(h, clamp(s + 6, 45, 88), l);
+  // gradient header/verdict: ลดความสว่างทั้งชุด (คงรูปทรง ramp) จนตัวหนังสือขาวเล็กอ่านออกทุกจุดที่มองเห็น
+  // ผิวอ้างอิง = จุดสว่างสุด "ทับด้วยกล่องขาวโปร่ง 7%" (.vcell) ซึ่งสว่างกว่า gradient เปล่า — cap ที่ผิวนี้ทีเดียวคลุมทุกชั้น
+  let L = [13, 24, 38];
+  const grad = () => `linear-gradient(135deg,${dg(L[0])} 0%,${dg(L[1])} 58%,${dg(L[2])} 140%)`;
+  while (contrast('#ffffff', mixHex(gradBrightest(grad()), '#ffffff', 0.07)) < AA_MARGIN.text && L[2] > 5) L = L.map((l) => Math.max(l - 1, 4));
+  const darkGrad = grad();
+  const bright = gradBrightest(darkGrad);
+  const lightText = (base) => tuneContrast(base, bright, AA_MARGIN.text, 'lighten');
   return {
-    accent: hslToHex(h, clamp(s, 55, 85), 52),          // สีสด: เส้นกราฟ, เลข section, underline
-    accentDark: hslToHex(h, clamp(s, 55, 85), 38),
-    darkGrad: `linear-gradient(135deg,${dg(13)} 0%,${dg(24)} 58%,${dg(38)} 140%)`,  // header/verdict เข้ม→สว่าง
-    glow: (() => { const c = hslToHex(h, s, 50).replace('#', ''); const r = parseInt(c.slice(0, 2), 16), g = parseInt(c.slice(2, 4), 16), b = parseInt(c.slice(4, 6), 16); return `rgba(${r},${g},${b},.35)`; })(),
-    subColor: hslToHex(h, clamp(s - 20, 18, 50), 84),    // คำโปรยใต้ h1 (อ่อน ทินต์แบรนด์)
-    headerMuted: hslToHex(h, clamp(s - 35, 12, 35), 74), // ราคา meta (เทาอมแบรนด์)
-    verdictText: hslToHex(h, clamp(s - 18, 20, 55), 88), // ข้อความในกล่องสรุป
-    vcellLabel: hslToHex(h, clamp(s - 28, 15, 45), 76),  // label การ์ดสรุป
+    accent: tuneContrast(hslToHex(h, clamp(s, 55, 85), 52), '#ffffff', AA_MARGIN.graphic, 'darken'),  // เส้นกราฟ/กราฟิกบนพื้นขาว ≥3
+    accentDark: tuneContrast(hslToHex(h, clamp(s, 55, 85), 38), '#e8f0fe', AA_MARGIN.text, 'darken'), // ตัวหนังสือบน blue-soft + พื้นหลังตัวหนังสือขาว ≥4.5
+    darkGrad,
+    glow: (() => { const [r, g, b] = hexToRgb(hslToHex(h, s, 50)); return `rgba(${r},${g},${b},.35)`; })(),
+    subColor: lightText(hslToHex(h, clamp(s - 20, 18, 50), 84)),    // คำโปรยใต้ h1 (อ่อน ทินต์แบรนด์)
+    headerMuted: lightText(hslToHex(h, clamp(s - 35, 12, 35), 74)), // ราคา meta (เทาอมแบรนด์)
+    verdictText: lightText(hslToHex(h, clamp(s - 18, 20, 55), 88)), // ข้อความในกล่องสรุป
+    vcellLabel: tuneContrast(hslToHex(h, clamp(s - 28, 15, 45), 76), mixHex(bright, '#ffffff', 0.07), AA_MARGIN.text, 'lighten'), // label การ์ดสรุป (อยู่บนกล่องขาวโปร่ง 7%)
   };
 }
 
-module.exports = { makeTheme, hexToHsl, hslToHex };
+module.exports = { makeTheme, hexToHsl, hslToHex, hexToRgb, rgbToHex, relLum, contrast, mixHex, gradBrightest, tuneContrast, AA, AA_MARGIN };
 
 if (require.main === module) {
   const args = process.argv.slice(2);

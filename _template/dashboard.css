@@ -1,6 +1,6 @@
   :root{
     --bg:#eef1f5; --card:#ffffff; --ink:#1a1d23; --muted:#5f6675; --line:#e4e8ee;
-    --blue:__RD_ACCENT__; --blue-d:__RD_ACCENTD__; --red:#ea4335; --yellow:#f9ab00; --orange:#f57c00; --green:#1e8e3e;
+    --blue:__RD_ACCENT__; --blue-d:__RD_ACCENTD__; --red:#ea4335; --yellow:#f9ab00; --orange:#f57c00; --green:#137333;
     --green-soft:#e6f4ea; --red-soft:#fce8e6; --amber-soft:#fef7e0; --blue-soft:#e8f0fe;
     --dark-grad:__RD_DARKGRAD__; --glow:__RD_GLOW__; --sub-col:__RD_SUBCOL__; --header-muted:__RD_HMUTED__;
     --chg-bg:__RD_CHGBG__; --chg-fg:__RD_CHGFG__; --badge:__RD_BADGE__;
@@ -42,9 +42,10 @@
   .metric .k{font-size:12.5px;color:var(--muted);font-weight:500;display:flex;align-items:center;gap:5px}
   .metric .v{font-size:23px;font-weight:700;margin-top:3px;letter-spacing:-.3px}
   .metric .d{font-size:11.5px;color:var(--muted);margin-top:1px}
-  .pos{color:var(--green)} .neg{color:var(--red)} .neu{color:var(--yellow)}
+  /* .neu ใช้เหลืองเข้ม (--yellow สดเกินไปเป็นตัวหนังสือบนพื้นขาว — 1.9:1) · .neg ใช้แดงเข้มพออ่าน */
+  .pos{color:var(--green)} .neg{color:#c5221f} .neu{color:#b06000}
   .pill{font-size:10px;font-weight:700;padding:1px 7px;border-radius:99px;vertical-align:middle}
-  .pill.g{background:var(--green-soft);color:var(--green)} .pill.r{background:var(--red-soft);color:#c5221f} .pill.a{background:var(--amber-soft);color:#b06000}
+  .pill.g{background:var(--green-soft);color:var(--green)} .pill.r{background:var(--red-soft);color:#c5221f} .pill.a{background:var(--amber-soft);color:#9a5f00}
 
   .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px;box-shadow:var(--shadow)}
 
@@ -56,11 +57,13 @@
   /* Valuation gauge */
   .gauge{margin:8px 0 4px}
   .gbar{position:relative;height:48px;border-radius:12px;overflow:hidden;background:linear-gradient(90deg,#1e8e3e 0%,#34a853 22%,#f9ab00 46%,#ea4335 100%)}
-  .gbar .seg-label{position:absolute;top:50%;transform:translate(-50%,-50%);font-size:10.5px;font-weight:700;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.25);white-space:nowrap}
+  /* ป้ายโซน gauge อยู่บน gradient เขียว→เหลือง→แดง — โซนเหลืองอ่านไม่ออกถ้าไม่มีพื้นรอง (ขาว/เหลือง = 1.9:1) */
+  .gbar .seg-label{position:absolute;top:50%;transform:translate(-50%,-50%);font-size:10.5px;font-weight:700;color:#fff;background:rgba(0,0,0,.4);padding:2px 8px;border-radius:99px;white-space:nowrap}
   .marker{position:absolute;top:-6px;bottom:-6px;width:3px;background:#111;border-radius:2px}
   .marker .lab{position:absolute;top:-34px;left:50%;transform:translateX(-50%);background:#111;color:#fff;font-size:11px;font-weight:700;padding:3px 8px;border-radius:7px;white-space:nowrap}
   .marker .lab::after{content:"";position:absolute;bottom:-4px;left:50%;transform:translateX(-50%) rotate(45deg);width:8px;height:8px;background:#111}
-  .marker.cur{background:var(--blue)} .marker.cur .lab{background:var(--blue)} .marker.cur .lab::after{background:var(--blue)}
+  /* เส้น marker = accent (กราฟิก) แต่ "ป้ายตัวหนังสือขาว" ต้องพื้นเข้มกว่า → ใช้ accentDark (การันตี ≥4.5 กับขาว) */
+  .marker.cur{background:var(--blue)} .marker.cur .lab{background:var(--blue-d)} .marker.cur .lab::after{background:var(--blue-d)}
   .scale{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-top:14px}
 
   .vmethod{display:flex;align-items:center;justify-content:space-between;padding:13px 0;border-bottom:1px solid var(--line)}
@@ -90,7 +93,7 @@
   .scn{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
   .scn .col{border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--card)}
   .scn .top{padding:12px 15px;color:#fff;font-weight:700;display:flex;justify-content:space-between;align-items:center}
-  .scn .bear .top{background:#c5221f} .scn .base .top{background:var(--blue-d)} .scn .bull .top{background:#1e8e3e}
+  .scn .bear .top{background:#c5221f} .scn .base .top{background:var(--blue-d)} .scn .bull .top{background:#137333}
   .scn .body{padding:14px 15px}
   .scn .tgt{font-size:26px;font-weight:800;letter-spacing:-.5px}
   .scn .ret{font-size:13px;font-weight:600;margin-top:2px}

@@ -111,7 +111,7 @@ const HMPRO = {
   strategy: 'สาย value/ปันผล — ทยอยสะสมเมื่อราคา <b>ต่ำกว่า ฿6.9</b> (น่าสนใจมากที่ &lt;฿5.52) ล็อก yield ~6% • ติดตาม SSSG, กำไรรายไตรมาส และการแข่งขันค้าปลีกวัสดุ',
   disclaimerSources: 'อ้างอิงงบ FY2025 (กำไรสุทธิ ฿6,011 ล้าน) จาก stockanalysis.com / SET • ราคา ณ 23–24 มิ.ย. 2026 จาก SET, stockanalysis.com, Investing.com',
   reportData: {
-    theme: { accent: '#f57c00', accentDark: '#c25e00', darkGrad: 'linear-gradient(135deg,#3a2410 0%,#5e3a12 55%,#8a5418 140%)', glow: 'rgba(245,150,70,.35)', subColor: '#e0d2c2', headerMuted: '#cdbfb0', chgBg: 'var(--red-soft)', chgColor: '#c5221f', badge: 'var(--orange)', verdictText: '#e4d8cc', vcellLabel: '#cab9a8' },
+    theme: { accent: '#e17200', accentDark: '#a34f00', darkGrad: 'linear-gradient(135deg,#3a2410 0%,#5e3a12 55%,#8a5418 140%)', glow: 'rgba(245,150,70,.35)', subColor: '#e0d2c2', headerMuted: '#d5c9bc', chgBg: 'var(--red-soft)', chgColor: '#c5221f', badge: 'var(--blue-d)', verdictText: '#e4d8cc', vcellLabel: '#e5ddd4' },
     chart: { data: [['มิ.ย.25', 6.50], ['ส.ค.25', 7.10], ['ต.ค.25', 6.55], ['ธ.ค.25', 6.65], ['ก.พ.26', 7.40], ['เม.ย.26', 6.05], ['พ.ค.26', 6.05], ['มิ.ย.26', 6.15]], min: 5.5, max: 8.2, grid: [6.0, 6.9, 7.5, 8.0], fairLine: 6.9, currency: '฿', highlight: [4, 7], gridFmt: 'v.toFixed(1)', dataFmt: 'd[1].toFixed(2)' },
     gauge: { min: 4.5, max: 9.0, cur: 6.15, fair: 6.9, fairLabelTop: '-58px' }, fv: 6.9,
   },
@@ -151,7 +151,7 @@ const NWND = {
   strategy: 'สาย growth — ทยอยสะสมเมื่อราคา <b>ต่ำกว่า $168</b> (น่าสนใจที่ &lt;$134) • ติดตามอัตราต่ออายุ, การเติบโตรายได้คลาวด์ และการแข่งขัน',
   disclaimerSources: 'บริษัทตัวอย่างสำหรับโครงต้นแบบ • อ้างอิงรูปแบบงบ FY2025 จาก stockanalysis.com • ราคา ณ 23–24 มิ.ย. 2026',
   reportData: {
-    theme: { accent: '#2f6bdf', accentDark: '#1f4fb0', darkGrad: 'linear-gradient(135deg,#0f1f3a 0%,#163a6e 55%,#1f4fb0 140%)', glow: 'rgba(80,134,247,.35)', subColor: '#c9d6ee', headerMuted: '#b3c2dc', chgBg: 'var(--green-soft)', chgColor: '#1e6e30', badge: 'var(--blue)', verdictText: '#d6e0f2', vcellLabel: '#aebcd6' },
+    theme: { accent: '#2f6bdf', accentDark: '#1f4fb0', darkGrad: 'linear-gradient(135deg,#0f1f3a 0%,#163a6e 55%,#1f4fb0 140%)', glow: 'rgba(80,134,247,.35)', subColor: '#c9d6ee', headerMuted: '#b3c2dc', chgBg: 'var(--green-soft)', chgColor: '#1e6e30', badge: 'var(--blue)', verdictText: '#d6e0f2', vcellLabel: '#c6d0e2' },
     chart: { data: [['Jun25', 127], ['Aug25', 138], ['Oct25', 149], ['Dec25', 158], ['Feb26', 164], ['Apr26', 156], ['May26', 152], ['Jun26', 150]], min: 115, max: 185, grid: [120, 140, 160, 180], fairLine: 168, currency: '$', highlight: [4, 7], gridFmt: 'v.toFixed(0)', dataFmt: 'd[1].toFixed(0)' },
     gauge: { min: 110, max: 230, cur: 150, fair: 168, fairLabelTop: '-58px' }, fv: 168,
   },

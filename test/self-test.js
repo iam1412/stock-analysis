@@ -201,6 +201,23 @@ expect('E37', 'error', mutJson('report-data', (d) => {
 rejectBase('E37', `กราฟฐาน BBL (${C.rd.data.chart.data.length} จุด ~1 ปี) → ต้องไม่ฟ้อง E37`);
 expect('W12', 'warn', mutJson('report-data', (d) => { d.chart.data[0][0] = ''; }), 'จุดกราฟแรก label ว่าง (["",…]) → เตือน W12');
 
+// ── E38: contrast ธีมอ่านออก — WCAG AA (ก.ค. 2026) ──
+// derive สีทดสอบจากธีมจริงของฐาน: verdictText = stop แรก (เข้มสุด) ของ gradient ตัวเอง → contrast ~1 แบบเคส ADP/DIS
+expect('E38', 'error', mutJson('report-data', (d) => { d.theme = d.theme || {}; const m = String(d.theme.darkGrad || '').match(/#[0-9a-fA-F]{6}/); d.theme.verdictText = m ? m[0] : '#202938'; }), 'verdictText สีเดียวกับ gradient ของตัวเอง (เคส ADP/DIS ตัวหนังสือล่องหน) → ต้องจับ E38');
+expect('E38', 'error', mutJson('report-data', (d) => { d.theme = d.theme || {}; d.theme.badge = '#f9ab00'; }), 'badge เหลืองสดเป็นพื้นตัวหนังสือขาว (เคส CAT) → ต้องจับ E38');
+reject('E38', mutJson('report-data', (d) => { d.theme = d.theme || {}; if (d.theme.subColor) d.theme.subColor = d.theme.subColor.toUpperCase(); }), 'ธีมจริงของฐาน (สีเดิม แค่เปลี่ยน case hex) → ต้องไม่ฟ้อง E38');
+// fix-contrast ต้อง idempotent (ธีมผ่านแล้วรันซ้ำ = 0 diff) และซ่อมธีมพังจนผ่านจริง
+{
+  const { fixTheme } = require('../tools/fix-contrast.js');
+  const theme0 = (C.rd && C.rd.ok && C.rd.data.theme) || {};
+  ok(Object.keys(fixTheme(theme0).changed).length === 0, 'fix-contrast: ธีมฐานที่ผ่าน gate → รันซ้ำไม่แก้อะไร (idempotent)');
+  const m0 = String(theme0.darkGrad || '').match(/#[0-9a-fA-F]{6}/);
+  const broken = { ...theme0, verdictText: m0 ? m0[0] : '#202938', badge: '#f9ab00' };
+  const once = fixTheme(broken);
+  ok(Object.keys(once.changed).length > 0, 'fix-contrast: ธีมพัง → มี field ถูกซ่อม');
+  ok(Object.keys(fixTheme(once.theme).changed).length === 0, 'fix-contrast: ธีมที่ซ่อมแล้ว รันซ้ำ = 0 diff');
+}
+
 // ── กัน false-positive (จากผล adversarial review) ──
 reject('E13', (h) => h.replace('<h1>', '<h1>[NASDAQ] '), 'ticker/exchange ในวงเล็บ [NASDAQ] ไม่ใช่ placeholder');
 reject('E13', (h) => h.replace('<h1>', '<h1>[ADR] '), 'acronym [ADR] ไม่ใช่ placeholder');

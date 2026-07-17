@@ -21,7 +21,10 @@ const fs = require('fs');
 const path = require('path');
 // expandReport: ขยายรายงานแบบ template (content-only) ให้เป็น HTML เต็มก่อนตรวจ — ไฟล์เก่า (ไม่มี marker) = identity
 // (require build.js ได้ exports เฉย ๆ ไม่รัน build เพราะ guard `if (require.main !== module) return;`)
-const { expandReport } = require('../build.js');
+const { expandReport, THEME_DEFAULTS } = require('../build.js');
+// โมดูล contrast กลางชุดเดียวกับตัวสร้างธีม/ตัวซ่อม — E38 ต้องคิดเลขตรงกับ tools/fix-contrast.js เป๊ะ ไม่งั้นเถียงกันที่ขอบเกณฑ์
+const bt = require('../tools/brandtheme.js');
+const { resolveColor } = require('../tools/fix-contrast.js');
 
 const REPORTS_DIR = path.join(__dirname, '..', 'reports');
 const TOL_MOS_PP = 2.0;   // MOS แสดง vs คำนวณ — ต่างได้ ≤ 2 จุด %
@@ -298,6 +301,32 @@ const CHECKS = [
     const data = (c.rd && c.rd.ok && c.rd.data && c.rd.data.chart) ? c.rd.data.chart.data : null;
     if (!Array.isArray(data)) return null;
     return data.length > 13 ? `กราฟมี ${data.length} จุด — เกิน ~1 ปี (กราฟรายเดือน ~1 ปี = ไม่เกิน 13 จุด) · section 2 ต้องเป็น "ราคาย้อนหลัง ~1 ปี" (ตัดให้เหลือ ~12 เดือนล่าสุด)` : null;
+  } },
+
+  // ── E38: ทุกคู่ ตัวหนังสือ/พื้นหลัง ที่ theme คุม ต้องอ่านออก — WCAG AA (ตัวหนังสือ ≥4.5 · กราฟิก/เส้นกราฟ ≥3) ──
+  // เคสจริง ก.ค. 2026: verdictText สีเดียวกับ gradient (ADP/DIS/BRK-B contrast 1.0 = ตัวหนังสือล่องหน),
+  // badge เหลืองสดกับตัวหนังสือขาว (CAT 1.5) — gate อื่นมองไม่เห็น (สีเป็น CSS ถูกไวยากรณ์หมด)
+  // ผิวอ้างอิง gradient = จุดสว่างสุดที่มองเห็น 0–100% (stop ประกาศเกิน 100% ได้) · .vcell มีกล่องขาวโปร่ง 7% ทับ
+  { id: 'E38', level: 'error', label: 'contrast ธีมอ่านออก (WCAG AA)', fn: (c) => {
+    if (!c.rd || !c.rd.present || !c.rd.ok || !c.rd.data) return null;
+    const t = { ...THEME_DEFAULTS, ...(c.rd.data.theme || {}) };
+    const bad = [];
+    const chk = (name, fg, bg, min) => { if (!fg || !bg) return; const r = bt.contrast(fg, bg); if (r < min) bad.push(`${name} = ${r.toFixed(2)} (ต้อง ≥${min})`); };
+    const hex = (v) => (/^#[0-9a-fA-F]{6}$/.test(v || '') ? v : null);
+    const br = bt.gradBrightest(t.darkGrad);
+    if (br) {
+      const ov = bt.mixHex(br, '#ffffff', 0.07);                       // ผิว .vcell (สว่างกว่า gradient เปล่า = จุดยากสุดของตัวหนังสือขาว)
+      chk('ขาวบน darkGrad/vcell', '#ffffff', ov, bt.AA.text);
+      chk('subColor บน darkGrad', hex(t.subColor), br, bt.AA.text);
+      chk('headerMuted บน darkGrad', hex(t.headerMuted), br, bt.AA.text);
+      chk('verdictText บน darkGrad', hex(t.verdictText), br, bt.AA.text);
+      chk('vcellLabel บน vcell', hex(t.vcellLabel), ov, bt.AA.text);
+    }
+    chk('accent (เส้นกราฟ) บนการ์ดขาว', hex(t.accent), '#ffffff', bt.AA.graphic);
+    chk('accentDark บน blue-soft (.fv-box)', hex(t.accentDark), '#e8f0fe', bt.AA.text);
+    chk('ขาวบน badge (เลข section)', '#ffffff', resolveColor(t.badge, t), bt.AA.text);
+    chk('chgColor บน chgBg (ป้าย %)', resolveColor(t.chgColor, t), resolveColor(t.chgBg, t), bt.AA.text);
+    return bad.length ? `${bad.join(' ; ')} — แก้อัตโนมัติ: node tools/fix-contrast.js <SYM> --write (ซ่อมเฉพาะ field ที่ตก คงโทนแบรนด์)` : null;
   } },
 
   { id: 'W01', level: 'warn', label: 'scenario: EPS×P/E ≈ ราคาเป้า', fn: (c) => { const bad = []; const nm = ['Bear', 'Base', 'Bull']; c.scenarios.forEach((s, i) => { if (s.tgt == null || s.eps == null || s.pe == null) return; const calc = s.eps * s.pe; const d = Math.abs(calc - s.tgt) / s.tgt; if (d > TOL_SCN_REL) bad.push(`${nm[i] || ('#' + i)}: EPS ${s.eps}×P/E ${s.pe}=${calc.toFixed(0)} ≠ target ${s.tgt} (ต่าง ${(d * 100).toFixed(0)}%)`); }); return bad.length ? bad.join(' ; ') : null; } },

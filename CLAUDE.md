@@ -104,7 +104,7 @@ Co-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>
 ## 8. Quality gate — ก่อนเผยแพร่ (`npm run verify`)
 
 6 ขั้น ต้องผ่านทั้งหมดก่อน push (pre-push hook บังคับซ้ำ):
-`check-reports` (37 error + 11 warning) → `build` → `build-test` → `engine-exec` → `skeleton-test` → `check-site`
+`check-reports` (38 error + 11 warning) → `build` → `build-test` → `engine-exec` → `skeleton-test` → `check-site`
 
 - เร็ว: `npm test -- <SYM>` = check-reports เฉพาะตัวนั้น (ใช้ตอน self-check ก่อนคืนงาน)
 - gate ตรวจ **ความสอดคล้อง/ความสด/การอ้างอิง** เท่านั้น — **ตรวจความจริงของราคา/EPS ไม่ได้** (ต้อง cross-source verify §2)
