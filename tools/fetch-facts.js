@@ -14,7 +14,7 @@
  */
 const { fetchChart, buildChartData, niceBounds, annualChg, toYahooSymbol, styledRD, THAI_MONTHS } = require('./update-prices.js');
 
-const UP = { bg: 'var(--green-soft)', col: '#1e8e3e' };
+const UP = { bg: 'var(--green-soft)', col: '#137333' };
 const DOWN = { bg: 'var(--red-soft)', col: '#c5221f' };
 
 async function main() {

@@ -21,7 +21,7 @@ const ONLY = new Set(process.argv.slice(2).filter((a) => !a.startsWith('--')).ma
 
 const MAX_PTS = 13;       // กราฟรายเดือน ~1 ปี = ไม่เกิน 13 จุด
 const FLAT_PP = 0.75;     // |%| < 0.75 → "ทรงตัว"
-const UP = { bg: 'var(--green-soft)', col: '#1e8e3e' };
+const UP = { bg: 'var(--green-soft)', col: '#137333' };
 const DOWN = { bg: 'var(--red-soft)', col: '#c5221f' };
 
 // serialize report-data ให้สไตล์เหมือนต้นฉบับ (จุดกราฟ [label, num] บรรทัดเดียว, array ตัวเลขล้วนบรรทัดเดียว)
