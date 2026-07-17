@@ -49,6 +49,7 @@
    - **เรียก 1 หุ้น/call** (คง push รายตัว — workflow คืนผลตอนจบทั้งชุด ส่งหลายตัวใน call เดียวจะ push คั่นระหว่างตัวไม่ได้) · override รายตัว: `stocks[0].effort` (หุ้นยาก → `"high"`)
    - **ห้ามใช้ `stocks[].model` override** — ชั้น escalate Opus ถูกยกเลิกทั้งหมด 13 ก.ค. 2569 · ที่ override เคย "พัง" ไม่ใช่บั๊ก product: **สาเหตุจริง = `CLAUDE_CODE_SUBAGENT_MODEL=sonnet` ใน `~/.claude/settings.json`** บังคับ subagent ทุกตัวเป็น Sonnet ระดับ harness (จงใจคงไว้ — enforce กติกา Sonnet-only ให้ฟรี) — ทุก worker = Sonnet · หุ้นยากใช้ advisor + effort high (§2)
    - script ยังรองรับหลายตัว (รัน sequential) — ใช้เฉพาะกรณียอมรับว่า push ได้หลังจบทั้งชุดเท่านั้น
+   - **★ ห้ามรัน analyze-wave ซ้อนกัน — อนุญาต 1 run ในเวลาเดียวเท่านั้น**: Workflow รันเป็น background task — ห้าม spawn call ที่สองระหว่าง run เดิมยังไม่จบ ต้องรอ notification "completed" + ตรวจ/push เสร็จก่อนค่อยเรียกใหม่ · เหตุผลเดียวกับ sequential §3: หลาย run พร้อมกัน = worker ขนานโดยพฤตินัย ชน rate limit ทั้งชุด + push ชนกันข้าม run
 3. แต่ละ call เสร็จ → controller ตรวจผล (คืนสรุปราคา/FV/MOS จาก worker) → verify + push รายตัวตามข้อ 4 → ค่อยเรียกตัวถัดไป
 
 ## 6. ลดจำนวนเองได้ ถ้าของดีไม่พอ
