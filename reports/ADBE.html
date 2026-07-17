@@ -4,9 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>วิเคราะห์หุ้น Adobe (ADBE) — Stock Analysis Dashboard</title>
-<meta name="ai-model" content="Claude Opus 4.8">
+<meta name="ai-model" content="Claude Sonnet 5">
 <script type="application/json" id="stock-meta">
-{"symbol":"ADBE","currency":"USD","price":224.56,"fairValue":235,"mos":4.4,"upside":4.6,"pe":11.2,"dividendYield":null,"roe":61}
+{"symbol":"ADBE","currency":"USD","price":235.31,"fairValue":235,"mos":-0.1,"upside":-0.1,"pe":13.5,"dividendYield":null,"roe":61}
 </script>
 <script type="application/json" id="report-data">
 {
@@ -36,7 +36,7 @@
       ["เม.ย.26", 246.1],
       ["พ.ค.26", 259.21],
       ["มิ.ย.26", 205.02],
-      ["ก.ค.26", 224.56]
+      ["ก.ค.26", 235.31]
     ],
     "min": 150,
     "max": 400,
@@ -48,7 +48,7 @@
   "gauge": {
     "min": 150,
     "max": 480,
-    "cur": 224.56,
+    "cur": 235.31,
     "fair": 235,
     "fairLabelTop": "-58px"
   },
@@ -72,12 +72,12 @@
     <div class="sub">ผู้นำซอฟต์แวร์สร้างสรรค์ • Creative Cloud, Express, Acrobat, Firefly (Generative AI)</div>
     <div class="price-row">
       <div>
-        <div class="px">$224.56<small>(ADBE)</small></div>
+        <div class="px">$235.31<small>(ADBE)</small></div>
       </div>
-      <div class="chg">▼ −37.0% (รอบปี)</div>
+      <div class="chg">▼ −34.0% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ≈ 15 ก.ค. 2026 (ปิด $194.90)<br>
-        ใกล้จุดต่ำสุด 52 สัปดาห์ ($190.12)<br>
+        ราคา ≈ 17 ก.ค. 2026 (ปิด $235.31)<br>
+        อยู่ในกรอบ 52 สัปดาห์ $190.12–$376.16<br>
         ที่มา: StockAnalysis / Robinhood / Yahoo Finance
       </div>
     </div>
@@ -87,9 +87,9 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">งบ TTM + Q2 FY2026 (12 มิ.ย. 2026)</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">~$77B</div><div class="d">~397.5 ล้านหุ้น</div></div>
-      <div class="metric"><div class="k">P/E (TTM, GAAP)</div><div class="v">~11.2x</div><div class="d">EPS TTM $17.48 <span class="pill g">ถูกผิดปกติ</span></div></div>
-      <div class="metric"><div class="k">Forward P/E</div><div class="v neu">~7.5x</div><div class="d">non-GAAP EPS โต ~12%</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~$97.4B</div><div class="d">~414 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM, GAAP)</div><div class="v">~13.5x</div><div class="d">EPS TTM $17.48 <span class="pill g">ต่ำกว่าเฉลี่ยมาก</span></div></div>
+      <div class="metric"><div class="k">Forward P/E</div><div class="v neu">~9.1x</div><div class="d">non-GAAP EPS โต ~12%</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย 5 ปี</div><div class="v">~33x</div><div class="d">ปัจจุบันต่ำกว่าค่าเฉลี่ยมาก</div></div>
 
       <div class="metric"><div class="k">รายได้ TTM</div><div class="v">$25.2B</div><div class="d pos">▲ +11.5% YoY</div></div>
@@ -146,7 +146,7 @@
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         <b>หมายเหตุ:</b> ข้าม DDM เพราะ Adobe <b>ไม่จ่ายปันผล</b> (คืนเงินผ่าน buyback $11.3B ใน FY2025 + วงเงินใหม่ $25B) •
-        ใช้กรอบ <b>Value Investor / Margin of Safety</b> อนุรักษ์นิยม จึงต่ำกว่าเป้านักวิเคราะห์เฉลี่ย ($282) อย่างมีนัยสำคัญ
+        ใช้กรอบ <b>Value Investor / Margin of Safety</b> อนุรักษ์นิยม จึงต่ำกว่าเป้านักวิเคราะห์เฉลี่ย ($272) เล็กน้อย
         เพราะให้น้ำหนักความเสี่ยงดิสรัปต์ AI มากกว่า
       </p>
     </div>
@@ -158,19 +158,19 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $225</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $235</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $235</div></div>
         </div>
         <div class="scale">
           <span>$164<br><small>MOS 30%</small></span>
           <span>$188<br><small>MOS 20%</small></span>
           <span style="text-align:center">$235<br><small>Fair Value</small></span>
-          <span style="text-align:right">$282<br><small>เป้า Analyst</small></span>
+          <span style="text-align:right">$272<br><small>เป้า Analyst</small></span>
           <span style="text-align:right">$460<br><small>เป้าสูงสุด</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคา $195 อยู่ <b>ต่ำกว่ามูลค่าเหมาะสม</b> ในเชิงมูลค่าพื้นฐาน → เริ่มมี <b>ส่วนเผื่อความปลอดภัย</b> และยัง <b>ต่ำกว่าเป้าหมาย 12 เดือน</b> ของนักวิเคราะห์ (เฉลี่ย $282 จาก 38 ราย • เรตติ้ง "Hold")
+        ราคา $235 <b>ใกล้เคียงมูลค่าเหมาะสม</b> ในเชิงมูลค่าพื้นฐานแล้ว → <b>ส่วนเผื่อความปลอดภัยแทบหมด</b> แต่ยัง <b>ต่ำกว่าเป้าหมาย 12 เดือน</b> ของนักวิเคราะห์ (เฉลี่ย $272 • เรตติ้ง "Hold")
         สะท้อนความเห็น 2 ขั้ว: สาย value มองว่าถูกเกินไป, สาย bear กลัว genAI กัดกร่อนโมเดลธุรกิจระยะยาว
       </p>
     </div>
@@ -180,9 +180,9 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict ok">
-        <div class="big">+4%</div>
-        <div class="txt"><b>มี Margin of Safety พอควร</b><br>ราคาปัจจุบัน $195 ต่ำกว่ามูลค่าเหมาะสม $235 ราว 17% → ตามเกณฑ์ value investor ถือว่า <b>เริ่มน่าสนใจ</b> เข้าโซนทยอยสะสมได้ แต่ยังไม่ถึงระดับ deep value (MOS &ge; 30%)</div>
+      <div class="mos-verdict bad">
+        <div class="big">−0.1%</div>
+        <div class="txt"><b>ไม่มี Margin of Safety (ราคาใกล้เคียงมูลค่าเหมาะสม)</b><br>ราคาปัจจุบัน $235 ใกล้เคียงมูลค่าเหมาะสม $235 (ต่างกันไม่ถึง 1%) → ตามเกณฑ์ value investor ถือว่า <b>หมดส่วนเผื่อความปลอดภัยแล้ว</b> ควรรอราคาย่อกลับมาใกล้โซน MOS 20% ($188) ก่อนเข้าเพิ่ม</div>
       </div>
       <div class="grid g3">
         <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$188</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
@@ -192,7 +192,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="224.56" step="1">
+          <input id="pxIn" class="mono" type="number" value="235.31" step="1">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -201,13 +201,13 @@
 
   <!-- ===== RETURN PROJECTION ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $195 • EPS ฐาน ~$17.5</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $235 • EPS ฐาน ~$17.5</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS +5%/ปี</span></div>
         <div class="body">
           <div class="tgt">$223</div>
-          <div class="ret pos">รวม ~ +14% (≈ +4.6%/ปี)</div>
+          <div class="ret neg">รวม ~ −5% (≈ −1.8%/ปี)</div>
           <ul>
             <li><span>EPS ปี 3</span><span>$20.3</span></li>
             <li><span>P/E ออก</span><span>11x</span></li>
@@ -219,7 +219,7 @@
         <div class="top"><span>⚖️ Base</span><span>EPS +10%/ปี</span></div>
         <div class="body">
           <div class="tgt">$303</div>
-          <div class="ret pos">รวม ~ +55% (≈ +16%/ปี)</div>
+          <div class="ret pos">รวม ~ +29% (≈ +8.8%/ปี)</div>
           <ul>
             <li><span>EPS ปี 3</span><span>$23.3</span></li>
             <li><span>P/E ออก</span><span>13x</span></li>
@@ -231,7 +231,7 @@
         <div class="top"><span>🚀 Bull</span><span>EPS +14%/ปี</span></div>
         <div class="body">
           <div class="tgt">$414</div>
-          <div class="ret pos">รวม ~ +112% (≈ +28%/ปี)</div>
+          <div class="ret pos">รวม ~ +76% (≈ +20.7%/ปี)</div>
           <ul>
             <li><span>EPS ปี 3</span><span>$25.9</span></li>
             <li><span>P/E ออก</span><span>16x</span></li>
@@ -241,7 +241,7 @@
       </div>
     </div>
     <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
-      ความเสี่ยง–ผลตอบแทน <b>เอียงบวกชัดเจน</b> เพราะเข้าซื้อที่มัลทิเปิลต่ำสุดในรอบหลายปี (P/E ~11x) — แม้ใน <b>Bear case ก็ยังไม่ขาดทุน</b> ตราบใดที่กำไรยังโต
+      ความเสี่ยง–ผลตอบแทน <b>เอียงบวกจาก Base/Bull</b> แต่ <b>Bear case เริ่มขาดทุนได้แล้ว</b> เพราะราคาขึ้นมาใกล้ fair value (P/E ~13.5x) ไม่ใช่จุดต่ำสุดเดิม (~11x ตอน 52wk low)
       ความเสี่ยงหลักคือ <b>genAI ดิสรัปต์โมเดลธุรกิจ</b> จนกำไรหดและมัลทิเปิลถูกกดต่ำกว่านี้อีก
     </p>
   </section>
@@ -255,7 +255,7 @@
         <ul>
           <li><div><b>AI กลายเป็นรายได้จริง:</b> AI-first ARR <b>ทะลุ $500M โต &gt;3 เท่า YoY</b> — Firefly (สร้างภาพ/วิดีโอ), Acrobat AI Assistant, GenStudio พิสูจน์ว่า Adobe มอเนไทซ์ AI ได้แล้ว ไม่ใช่แค่ดิสรัปต์ฝ่ายเดียว</div></li>
           <li><div><b>ผลประกอบการแกร่ง:</b> Q2 FY2026 รายได้ <b>สูงสุดเป็นประวัติการณ์ $6.62B (+13% YoY)</b>, non-GAAP EPS $5.96 เกินคาด, Total ARR $27.1B — บริษัทขึ้นเป้าทั้งปี</div></li>
-          <li><div><b>Valuation ถูกผิดปกติ:</b> P/E ~11x และ Forward P/E ~7.5x ต่ำกว่าค่าเฉลี่ย 5 ปี (~33x) มาก — ตลาดราคาในความเสี่ยงไว้สูงมากแล้ว</div></li>
+          <li><div><b>Valuation ยังต่ำกว่าเฉลี่ย:</b> P/E ~13.5x และ Forward P/E ~9.1x ต่ำกว่าค่าเฉลี่ย 5 ปี (~33x) มาก — แม้ราคาเด้งจากจุดต่ำสุดแล้ว มัลทิเปิลยังไม่แพง</div></li>
           <li><div><b>Buyback หนักมือ:</b> ซื้อหุ้นคืน $11.3B ใน FY2025 + วงเงินใหม่ <b>$25B</b> — ลดจำนวนหุ้น หนุน EPS โดยตรงที่ราคาถูก</div></li>
           <li><div><b>คูเมือง distribution + ข้อมูล:</b> ฐานผู้ใช้มืออาชีพ + ไฟล์/เวิร์กโฟลว์ฝังในองค์กร — Firefly เทรนด้วยข้อมูลที่ "ปลอดภัยเชิงพาณิชย์" (commercially safe) เป็นจุดขายต่อองค์กร</div></li>
           <li><div><b>FCF + งบดุลแกร่ง:</b> Operating cash flow ~$10B/ปี, margin สูง, ROE ~61% — มีกระสุนลงทุน AI และซื้อหุ้นคืนพร้อมกัน</div></li>
@@ -268,7 +268,7 @@
           <li><div><b>การเติบโตชะลอตัว:</b> รายได้โต ~10–13% ลดจากยุค ~20% — ตลาดตั้งคำถามว่า moat ยังกว้างเท่าเดิมหรือไม่ จึง de-rate มัลทิเปิลแรง</div></li>
           <li><div><b>CFO ลาออกกะทันหัน:</b> มีข่าว CFO ออกในช่วงประกาศงบ Q2 — สร้างความไม่แน่นอนเรื่องความต่อเนื่องของผู้บริหารและทิศทาง</div></li>
           <li><div><b>เปลี่ยนกลยุทธ์สู่ freemium:</b> เร่งหาผู้ใช้ผ่านโมเดลฟรี — อาจกดดัน ARPU/มาร์จิ้นระยะสั้น กว่าจะแปลงเป็นรายได้</div></li>
-          <li><div><b>มูลค่าอาจถูกได้อีก (value trap):</b> ถ้าตลาดเชื่อว่า genAI ทำให้กำไรหด มัลทิเปิล 11x ก็ยัง "ไม่ถูก" — ราคายังลงต่อได้</div></li>
+          <li><div><b>มูลค่าอาจถูกได้อีก (value trap):</b> ถ้าตลาดเชื่อว่า genAI ทำให้กำไรหด มัลทิเปิล 13.5x ก็ยัง "ไม่ถูก" — ราคายังลงต่อได้</div></li>
           <li><div><b>การแข่งขัน + ต้นทุน AI:</b> ต้องลงทุนพัฒนา Firefly/โครงสร้าง AI หนักขึ้นเพื่อตามเกม — แรงกดดันด้านต้นทุนและการแข่งราคา</div></li>
         </ul>
       </div>
@@ -279,15 +279,15 @@
   <section>
     <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
     <div class="verdict">
-      <h2>บริษัทคุณภาพสูง ราคา "ถูกผิดปกติ" — แต่เพราะกลัวดิสรัปต์ AI</h2>
-      <p>Adobe ยังเป็นเครื่องจักรทำเงิน margin สูง ROE ~61% และ AI เริ่มเป็นรายได้จริง (ARR &gt;$500M โต 3 เท่า) — แต่ที่ราคา ~$195 ตลาดราคาในความกลัวว่า genAI จะกัดกร่อนธุรกิจหลักไว้มาก ทำให้ P/E เหลือเพียง ~11x สำหรับสาย value จึงเริ่มมีส่วนเผื่อความปลอดภัย ส่วนความเสี่ยงคือคำถามเชิงโครงสร้างว่า moat จะกว้างเท่าเดิมในยุค AI หรือไม่</p>
+      <h2>บริษัทคุณภาพสูง ราคาฟื้นกลับมาใกล้มูลค่าเหมาะสมแล้ว — ประเด็น AI ยังไม่จบ</h2>
+      <p>Adobe ยังเป็นเครื่องจักรทำเงิน margin สูง ROE ~61% และ AI เริ่มเป็นรายได้จริง (ARR &gt;$500M โต 3 เท่า) — ราคาฟื้นตัวขึ้นมาที่ ~$235 แล้วจากจุดต่ำสุด 52 สัปดาห์ ~$190 ทำให้ P/E ขยับจาก ~11x เป็น ~13.5x ใกล้เคียงมูลค่าเหมาะสม ส่วนเผื่อความปลอดภัยจึงหายไปเกือบหมด ส่วนความเสี่ยงคือคำถามเชิงโครงสร้างว่า moat จะกว้างเท่าเดิมในยุค AI หรือไม่</p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$235 <span style="font-size:12px;color:#e2b8b8">($228–$245)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#a5d6a7">ถูก ~17%</div></div>
-        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">$282 (+45%)</div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#e2b8b8">แพง ~0%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">$272 (+15.8%)</div></div>
       </div>
       <div class="zone">
-        💡 <b>กลยุทธ์:</b> สาย value — ทยอยสะสมในโซนปัจจุบัน (&lt;$200) น่าสนใจมากขึ้นที่ &lt;$188 และถูกมากที่ &lt;$164 • ทุกสาย — ติดตาม <b>โมเมนตัม AI ARR (Firefly/Acrobat)</b> และ <b>อัตราการเติบโตของรายได้</b> เป็นตัวชี้วัดว่า moat ยังอยู่หรือถูกดิสรัปต์
+        💡 <b>กลยุทธ์:</b> สาย value — ที่ราคาปัจจุบัน $235 ใกล้ fair value แล้ว รอย่อกลับมา &lt;$200 น่าสนใจมากขึ้นที่ &lt;$188 และถูกมากที่ &lt;$164 • ทุกสาย — ติดตาม <b>โมเมนตัม AI ARR (Firefly/Acrobat)</b> และ <b>อัตราการเติบโตของรายได้</b> เป็นตัวชี้วัดว่า moat ยังอยู่หรือถูกดิสรัปต์
       </div>
     </div>
   </section>
@@ -298,7 +298,7 @@
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ <b>ผลกระทบของ Generative AI</b> ต่อโมเดลธุรกิจของ Adobe ซึ่งเป็นจุดถกเถียงหลักและประเมินได้ยาก
     ราคาหุ้นอาจถูกหรือแพงได้อีกขึ้นกับว่าตลาดเชื่อว่า AI จะดิสรัปต์หรือเสริมคูเมือง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • อ้างอิงงบจริงจาก SEC (8-K Q2 FY2026, 12 มิ.ย. 2026) และ Adobe Investor Relations
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ 22–23 มิ.ย. 2026 • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 17 ก.ค. 2026 • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
