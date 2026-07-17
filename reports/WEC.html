@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>วิเคราะห์หุ้น WEC Energy Group (WEC) — Stock Analysis Dashboard</title>
 <!-- ★ ใส่รุ่นโมเดล AI ที่ใช้วิเคราะห์จริง (Opus→"Claude Opus 4.8", Sonnet→"Claude Sonnet 4.6") — gate E28 บังคับ -->
-<meta name="ai-model" content="Claude Sonnet 4.6">
+<meta name="ai-model" content="Claude Sonnet 5">
 <!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
 <script type="application/json" id="stock-meta">
-{"symbol":"WEC","currency":"USD","price":112.97,"fairValue":113,"mos":0,"upside":0,"pe":22.5,"dividendYield":3.37,"roe":11.4}
+{"symbol":"WEC","currency":"USD","price":113.44,"fairValue":113,"mos":-0.4,"upside":-0.4,"pe":22.5,"dividendYield":3.37,"roe":11.4}
 </script>
 <script type="application/json" id="report-data">
 {
@@ -38,7 +38,7 @@
       ["เม.ย.26", 117.94],
       ["พ.ค.26", 111.05],
       ["มิ.ย.26", 116.77],
-      ["ก.ค.26", 112.97]
+      ["ก.ค.26", 113.44]
     ],
     "min": 100,
     "max": 120,
@@ -50,7 +50,7 @@
   "gauge": {
     "min": 75,
     "max": 140,
-    "cur": 112.97,
+    "cur": 113.44,
     "fair": 113,
     "fairLabelTop": false
   },
@@ -74,11 +74,11 @@
     <div class="sub">สาธารณูปโภคไฟฟ้าและก๊าซธรรมชาติกำกับโดยรัฐ • Wisconsin / Illinois / Michigan / Minnesota • ~4.6 ล้านลูกค้า • We Energies · Wisconsin Public Service · Peoples Energy · Michigan Gas Utilities • เปลี่ยนผ่านพลังงานหมุนเวียน (ลม+โซลาร์) • Dividend Aristocrat เพิ่มปันผล 20+ ปีต่อเนื่อง • Milwaukee, WI</div>
     <div class="price-row">
       <div>
-        <div class="px">$112.97<small>(WEC)</small></div>
+        <div class="px">$113.44<small>(WEC)</small></div>
       </div>
-      <div class="chg">▲ +6.1% (รอบปี)</div>
+      <div class="chg">▲ +6.5% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 15 ก.ค. 2569<br>
+        ราคา ณ 17 ก.ค. 2569<br>
         กรอบ 52 สัปดาห์ $102.49 – $119.62<br>
         ที่มา: Yahoo Finance, StockAnalysis.com, Digrin.com
       </div>
@@ -87,7 +87,7 @@
 
   <!-- ===== 1. KEY METRICS ===== -->
   <section>
-    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ มิ.ย. 2569</div></div>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ก.ค. 2569</div></div>
     <div class="grid g4">
       <div class="metric"><div class="k">Market Cap</div><div class="v">~$36.8 พัน ล.</div><div class="d">~326 ล้านหุ้น</div></div>
       <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~22.5x</div><div class="d">EPS TTM $5.01 · Forward P/E ~20.8x (EPS 2026e $5.60)</div></div>
@@ -119,7 +119,7 @@
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
-        WEC ปรับตัวขึ้น +6.1% ในรอบปี (ส.ค. 2568 – ก.ค. 2569) จาก $106.51 มาอยู่ที่ $112.97
+        WEC ปรับตัวขึ้น +6.5% ในรอบปี (ส.ค. 2568 – ก.ค. 2569) จาก $106.51 มาอยู่ที่ $113.44
         ราคาแตะต่ำสุดที่ $105.46 ในเดือนธ.ค. 2568 จากแรงกดดันอัตราดอกเบี้ย
         ก่อนกลับมาสูงสุดที่ $117.94 ในเดือนเม.ย. 2569 จากความคาดหวัง data center load growth ใน Wisconsin
         ปัจจุบันซื้อขายใกล้เคียง Fair Value $113.00 แทบไม่มีส่วนต่าง สะท้อนว่าตลาดประเมินมูลค่าอย่างสมเหตุสมผล
@@ -162,7 +162,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $112.97</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $113.44</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $113.00</div></div>
         </div>
         <div class="scale">
@@ -174,7 +174,7 @@
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคาปัจจุบัน $112.97 ใกล้เคียง Fair Value $113.00 มาก (ต่ำกว่าเพียง ~0.03%) — ถือว่า "ซื้อขายที่ fair value พอดี"
+        ราคาปัจจุบัน $113.44 ใกล้เคียง Fair Value $113.00 มาก (ต่ำกว่าเพียง ~0.03%) — ถือว่า "ซื้อขายที่ fair value พอดี"
         สำหรับ Dividend Aristocrat ที่มี visibility สูง การซื้อขายที่ fair value เป็นเรื่องปกติในตลาด
         นักวิเคราะห์ 20 คนให้เป้าเฉลี่ย $124.19 (Buy consensus) สูงกว่า FV ของเรา สะท้อน premium ที่ตลาดให้กับ data center growth
         จุดซื้อที่น่าสนใจที่สุดคือ $90–$100 (MOS 20–30%) — ที่ราคาปัจจุบันยังพอซื้อสะสมระยะยาวเพื่อรับ dividend
@@ -187,7 +187,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict bad">
-        <div class="big">+0.0%</div>
+        <div class="big">−0.4%</div>
         <div class="txt">ราคาปัจจุบันเหนือ Fair Value เล็กน้อย — ยังไม่มี Margin of Safety ที่ชัดเจน รอจังหวะ dip</div>
       </div>
       <div class="grid g3">
@@ -198,7 +198,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="112.97" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="113.44" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -207,7 +207,7 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $112.97 • EPS ฐาน ~$5.01 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $113.44 • EPS ฐาน ~$5.01 • รวมปันผล</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS +3%/ปี</span></div>
@@ -250,7 +250,7 @@
       </div>
     </div>
     <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
-      สมมติฐาน: ราคาเข้า $112.97 · EPS ฐาน $5.01 (TTM) · ปันผลเติบโต ~6.5%/ปี conservative กว่า 5Y CAGR 8.2%
+      สมมติฐาน: ราคาเข้า $113.44 · EPS ฐาน $5.01 (TTM) · ปันผลเติบโต ~6.5%/ปี conservative กว่า 5Y CAGR 8.2%
       Base case ให้ผลตอบแทนรวม ~30% (9.2%/ปี) สอดคล้องกับ EPS guidance 6–7%/ปี บวก dividend yield ~3.4%
       Bear case ผลตอบแทนรวมติดลบเล็กน้อย แต่ยังรักษา dividend ได้ (regulated revenue คุ้มปันผล แม้ FCF ติดลบจาก capex สูง)
       ตัวเลขเป็นการประมาณการเพื่อการศึกษา ไม่ใช่การรับประกันผลตอบแทน
@@ -294,7 +294,7 @@
       <p>WEC Energy Group เป็น regulated utility คุณภาพสูงที่ให้ความมั่นคงของกำไรและปันผลระดับ Dividend Aristocrat
         ธุรกิจมีความชัดเจนและคาดการณ์ได้ — rate base โตตามแผน capex, EPS guidance 6–7%/ปี, ปันผล DGR5Y 8.2%
         Catalyst ใหม่คือ data center load growth ใน Wisconsin ที่เพิ่มความต้องการไฟฟ้าอย่างมีนัยสำคัญ
-        อย่างไรก็ดี ราคาปัจจุบัน $112.97 ซื้อขายใกล้เคียง Fair Value $113.00 (MOS ~0%)
+        อย่างไรก็ดี ราคาปัจจุบัน $113.44 ซื้อขายใกล้เคียง Fair Value $113.00 (MOS ~0%)
         นักลงทุนที่เน้น income อาจเริ่มสะสมได้ในราคานี้ แต่ value investor ที่ต้องการ MOS ควรรอ dip สู่แนว $100–$105</p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$113.00 <span style="font-size:12px;color:#cab9a8">($85–$134)</span></div></div>
@@ -316,7 +316,7 @@
     ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
     แหล่งข้อมูล: Yahoo Finance (finance.yahoo.com) · StockAnalysis.com (stockanalysis.com/stocks/wec) · Digrin.com (digrin.com/stocks/detail/WEC) · Yahoo Finance Analyst Forecast (finance.yahoo.com/quote/WEC/analysis)
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ 16 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 18 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
