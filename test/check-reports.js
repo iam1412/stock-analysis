@@ -312,18 +312,18 @@ const CHECKS = [
     const t = { ...THEME_DEFAULTS, ...(c.rd.data.theme || {}) };
     const bad = [];
     const chk = (name, fg, bg, min) => { if (!fg || !bg) return; const r = bt.contrast(fg, bg); if (r < min) bad.push(`${name} = ${r.toFixed(2)} (ต้อง ≥${min})`); };
-    const hex = (v) => (/^#[0-9a-fA-F]{6}$/.test(v || '') ? v : null);
+    // effectiveHex: รับ hex/rgba/hsl(a) — ค่าโปร่งแสง composite ทับผิวจริงก่อนวัด (ไม่งั้น alpha ต่ำหลุดตรวจทั้งที่แทบล่องหน)
     const br = bt.gradBrightest(t.darkGrad);
     if (br) {
       const ov = bt.mixHex(br, '#ffffff', 0.07);                       // ผิว .vcell (สว่างกว่า gradient เปล่า = จุดยากสุดของตัวหนังสือขาว)
       chk('ขาวบน darkGrad/vcell', '#ffffff', ov, bt.AA.text);
-      chk('subColor บน darkGrad', hex(t.subColor), br, bt.AA.text);
-      chk('headerMuted บน darkGrad', hex(t.headerMuted), br, bt.AA.text);
-      chk('verdictText บน darkGrad', hex(t.verdictText), br, bt.AA.text);
-      chk('vcellLabel บน vcell', hex(t.vcellLabel), ov, bt.AA.text);
+      chk('subColor บน darkGrad', bt.effectiveHex(t.subColor, br), br, bt.AA.text);
+      chk('headerMuted บน darkGrad', bt.effectiveHex(t.headerMuted, br), br, bt.AA.text);
+      chk('verdictText บน darkGrad', bt.effectiveHex(t.verdictText, br), br, bt.AA.text);
+      chk('vcellLabel บน vcell', bt.effectiveHex(t.vcellLabel, ov), ov, bt.AA.text);
     }
-    chk('accent (เส้นกราฟ) บนการ์ดขาว', hex(t.accent), '#ffffff', bt.AA.graphic);
-    chk('accentDark บน blue-soft (.fv-box)', hex(t.accentDark), '#e8f0fe', bt.AA.text);
+    chk('accent (เส้นกราฟ) บนการ์ดขาว', bt.effectiveHex(t.accent, '#ffffff'), '#ffffff', bt.AA.graphic);
+    chk('accentDark บน blue-soft (.fv-box)', bt.effectiveHex(t.accentDark, '#e8f0fe'), '#e8f0fe', bt.AA.text);
     chk('ขาวบน badge (เลข section)', '#ffffff', resolveColor(t.badge, t), bt.AA.text);
     chk('chgColor บน chgBg (ป้าย %)', resolveColor(t.chgColor, t), resolveColor(t.chgBg, t), bt.AA.text);
     return bad.length ? `${bad.join(' ; ')} — แก้อัตโนมัติ: node tools/fix-contrast.js <SYM> --write (ซ่อมเฉพาะ field ที่ตก คงโทนแบรนด์)` : null;

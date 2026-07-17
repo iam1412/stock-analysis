@@ -23,7 +23,8 @@ const { AA, AA_MARGIN } = bt;
 // ค่าคงที่ของพาเลตใน _template/dashboard.css ที่ theme อ้างถึงได้
 const SOFT = { 'var(--red-soft)': '#fce8e6', 'var(--green-soft)': '#e6f4ea', 'var(--amber-soft)': '#fef7e0', 'var(--blue-soft)': '#e8f0fe' };
 const isHex = (v) => /^#[0-9a-fA-F]{6}$/.test(v || '');
-const resolveColor = (v, t) => v === 'var(--blue)' ? t.accent : v === 'var(--blue-d)' ? t.accentDark : SOFT[v] || (isHex(v) ? v : null);
+// bgHex = พื้นหลังสำหรับ composite ค่า rgba/hsla โปร่งแสง (ป้อนเมื่อรู้ผิวจริง เช่น gradient)
+const resolveColor = (v, t, bgHex) => v === 'var(--blue)' ? t.accent : v === 'var(--blue-d)' ? t.accentDark : SOFT[v] || bt.effectiveHex(v, bgHex);
 
 // ซ่อม theme (pure function — ใช้ตรง ๆ ใน test/self-test.js ได้) → { theme, changed: {field: [เดิม, ใหม่]} }
 function fixTheme(theme) {
@@ -32,7 +33,11 @@ function fixTheme(theme) {
   const set = (k, v) => { if (t[k] != null && v != null && t[k] !== v) { changed[k] = [t[k], v]; t[k] = v; } };
 
   // แก้เฉพาะเมื่อตกเกณฑ์ gate — ซ่อมด้วยเป้า margin
-  const tuneIf = (k, bg, aa, target, dir) => { if (isHex(t[k]) && bt.contrast(t[k], bg) < aa) set(k, bt.tuneContrast(t[k], bg, target, dir)); };
+  // ค่า rgba/hsl โปร่งแสง: วัดจาก "สีตามที่ตาเห็น" (composite ทับพื้น) — ตกเกณฑ์ → เขียนกลับเป็น hex ทึบที่จูนแล้ว
+  const tuneIf = (k, bg, aa, target, dir) => {
+    const eff = bt.effectiveHex(t[k], bg);
+    if (eff && bt.contrast(eff, bg) < aa) set(k, bt.tuneContrast(eff, bg, target, dir));
+  };
 
   // pass 1: gradient
   if (t.darkGrad) {

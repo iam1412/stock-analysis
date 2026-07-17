@@ -58,6 +58,28 @@ function gradBrightest(grad) {
   return best;
 }
 
+// แปลงค่าสีทุกรูปแบบที่ theme ใช้จริง (hex / rgba / hsl / hsla) เป็น hex ทึบ "ตามที่ตาเห็น" บนพื้น bgHex
+// — rgba/hsla ต้อง composite ทับพื้นก่อนวัด contrast ไม่งั้นค่า alpha ต่ำ (เช่น 0.12) หลุดการตรวจทั้งที่แทบล่องหน
+// คืน null ถ้า parse ไม่ได้ (เช่น var(--x) — ผู้เรียกจัดการเอง)
+function effectiveHex(value, bgHex) {
+  const v = String(value || '').trim();
+  if (/^#[0-9a-fA-F]{6}$/.test(v)) return v.toLowerCase();
+  if (/^#[0-9a-fA-F]{3}$/.test(v)) return ('#' + v.slice(1).split('').map((c) => c + c).join('')).toLowerCase();
+  let m = v.match(/^rgba?\(\s*([\d.]+)\s*,\s*([\d.]+)\s*,\s*([\d.]+)\s*(?:,\s*([\d.]+)\s*)?\)$/);
+  if (m) {
+    const a = m[4] === undefined ? 1 : parseFloat(m[4]);
+    const solid = rgbToHex([+m[1], +m[2], +m[3]]);
+    return a >= 1 || !bgHex ? solid : mixHex(bgHex, solid, a);
+  }
+  m = v.match(/^hsla?\(\s*([\d.]+)\s*,\s*([\d.]+)%\s*,\s*([\d.]+)%\s*(?:,\s*([\d.]+)\s*)?\)$/);
+  if (m) {
+    const a = m[4] === undefined ? 1 : parseFloat(m[4]);
+    const solid = hslToHex(+m[1], +m[2], +m[3]);
+    return a >= 1 || !bgHex ? solid : mixHex(bgHex, solid, a);
+  }
+  return null;
+}
+
 // ปรับ lightness ของ fg ไปทางเดียว (ทิศตายตัวตามบทบาทสี: ตัวหนังสืออ่อนบนพื้นเข้ม → lighten,
 // สีเข้มบนพื้นอ่อน → darken) จนผ่าน min — คง hue/sat ไว้ ให้ยังรู้สึกเป็นสีแบรนด์เดิม
 function tuneContrast(fg, bg, min, dir) {
@@ -97,7 +119,7 @@ function makeTheme(seed) {
   };
 }
 
-module.exports = { makeTheme, hexToHsl, hslToHex, hexToRgb, rgbToHex, relLum, contrast, mixHex, gradBrightest, tuneContrast, AA, AA_MARGIN };
+module.exports = { makeTheme, hexToHsl, hslToHex, hexToRgb, rgbToHex, relLum, contrast, mixHex, gradBrightest, tuneContrast, effectiveHex, AA, AA_MARGIN };
 
 if (require.main === module) {
   const args = process.argv.slice(2);

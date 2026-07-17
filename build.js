@@ -188,8 +188,8 @@ function injectContactFooter(html) {
     `<button class="vbtn" id="likeBtn" type="button">👍 <b id="likeNum">0</b></button> ` +
     `<button class="vbtn" id="dislikeBtn" type="button">👎 <b id="dislikeNum">0</b></button></span>`;
   const link =
-    `<a href="/" style="color:#1a73e8;text-decoration:none">← ดูรายงานทั้งหมด</a> · ` +
-    `ติดต่อ <a href="mailto:${CONTACT_EMAIL}" style="color:#1a73e8;text-decoration:none">${CONTACT_EMAIL}</a>${views}${vote}`;
+    `<a href="/" style="color:#1557b0;text-decoration:none">← ดูรายงานทั้งหมด</a> · ` +
+    `ติดต่อ <a href="mailto:${CONTACT_EMAIL}" style="color:#1557b0;text-decoration:none">${CONTACT_EMAIL}</a>${views}${vote}`;
 
   const fi = html.toLowerCase().lastIndexOf('</footer>');
   if (fi !== -1) {

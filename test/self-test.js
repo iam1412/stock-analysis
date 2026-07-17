@@ -205,6 +205,7 @@ expect('W12', 'warn', mutJson('report-data', (d) => { d.chart.data[0][0] = ''; }
 // derive สีทดสอบจากธีมจริงของฐาน: verdictText = stop แรก (เข้มสุด) ของ gradient ตัวเอง → contrast ~1 แบบเคส ADP/DIS
 expect('E38', 'error', mutJson('report-data', (d) => { d.theme = d.theme || {}; const m = String(d.theme.darkGrad || '').match(/#[0-9a-fA-F]{6}/); d.theme.verdictText = m ? m[0] : '#202938'; }), 'verdictText สีเดียวกับ gradient ของตัวเอง (เคส ADP/DIS ตัวหนังสือล่องหน) → ต้องจับ E38');
 expect('E38', 'error', mutJson('report-data', (d) => { d.theme = d.theme || {}; d.theme.badge = '#f9ab00'; }), 'badge เหลืองสดเป็นพื้นตัวหนังสือขาว (เคส CAT) → ต้องจับ E38');
+expect('E38', 'error', mutJson('report-data', (d) => { d.theme = d.theme || {}; d.theme.headerMuted = 'rgba(255,255,255,0.12)'; }), 'headerMuted rgba alpha ต่ำ (แทบล่องหนบน gradient — เคส ORLY/MCD) → ต้องจับ E38 หลัง composite');
 reject('E38', mutJson('report-data', (d) => { d.theme = d.theme || {}; if (d.theme.subColor) d.theme.subColor = d.theme.subColor.toUpperCase(); }), 'ธีมจริงของฐาน (สีเดิม แค่เปลี่ยน case hex) → ต้องไม่ฟ้อง E38');
 // fix-contrast ต้อง idempotent (ธีมผ่านแล้วรันซ้ำ = 0 diff) และซ่อมธีมพังจนผ่านจริง
 {
