@@ -8,7 +8,7 @@
 <meta name="ai-model" content="Claude Sonnet 4.6">
 <!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
 <script type="application/json" id="stock-meta">
-{"symbol":"MO","currency":"USD","price":70.52,"fairValue":73.34,"mos":3.8,"upside":4,"pe":13.42,"dividendYield":5.83,"roe":null}
+{"symbol":"MO","currency":"USD","price":73.03,"fairValue":73.34,"mos":0.4,"upside":0.4,"pe":13.42,"dividendYield":5.83,"roe":null}
 </script>
 <!-- report-data: ธีมสี + ข้อมูลกราฟ/gauge ของ MO -->
 <script type="application/json" id="report-data">
@@ -39,19 +39,19 @@
       ["เม.ย.26", 72.65],
       ["พ.ค.26", 69.58],
       ["มิ.ย.26", 71.95],
-      ["ก.ค.26", 70.52]
+      ["ก.ค.26", 73.03]
     ],
     "min": 55,
     "max": 75,
     "grid": [60, 65, 70],
     "fairLine": 73.34,
     "currency": "$",
-    "highlight": [2, 8]
+    "highlight": [2, 11]
   },
   "gauge": {
     "min": 48,
     "max": 82,
-    "cur": 70.52,
+    "cur": 73.03,
     "fair": 73.34,
     "fairLabelTop": true
   },
@@ -76,14 +76,14 @@
     <div class="sub">Marlboro (บุหรี่อันดับ 1 ในสหรัฐฯ ส่วนแบ่งตลาด ~40%) • Copenhagen/Skoal (ยาเส้นไร้ควัน) • on! (นิโคตินพัช) • NJOY (บุหรี่ไฟฟ้า) • ธุรกิจบุหรี่เฉพาะตลาดสหรัฐฯ เท่านั้น (แยกจาก Philip Morris International)</div>
     <div class="price-row">
       <div>
-        <div class="px">$70.52<small>(MO)</small></div>
+        <div class="px">$73.03<small>(MO)</small></div>
       </div>
       <!-- ★ ป้าย % รอบปี (gate E35/E36) — ผลตอบแทน ~1 ปี (เทียบราคา ~1 ปีก่อน) = ผลตอบแทนปลายกราฟ section 2 (จุดแรก→ท้าย)
            รูปแบบ: "▲ +X.X% (รอบปี)" ขึ้น · "▼ −X.X% (รอบปี)" ลง · "≈ ทรงตัว (รอบปี)" · หุ้น IPO <1 ปี ใช้ "(ตั้งแต่ IPO)"
            ไม่ใช่ % รายวัน/YTD/52 สัปดาห์ · ตั้งสี theme.chgBg/chgColor ให้ตรงทิศ (ขึ้น=เขียว/ลง=แดง · E34) -->
-      <div class="chg">▲ +4.9% (รอบปี)</div>
+      <div class="chg">▲ +8.7% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 15 ก.ค. 2569 (2 Jul 2026)<br>
+        ราคา ณ 16 ก.ค. 2569 (2 Jul 2026)<br>
         กรอบ 52 สัปดาห์ $54.70 – $74.56<br>
         ที่มา: StockAnalysis.com, Yahoo Finance, Altria Investor Relations (Q1 2026 8-K)
       </div>
@@ -170,7 +170,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $70.52</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $73.03</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#1e8e3e">เหมาะสม $73.34</div></div>
         </div>
         <div class="scale">
@@ -195,7 +195,7 @@
     <div class="card">
       <!-- ✏️ class ของ mos-verdict: MOS<10 → "bad", 10–20 → "ok", ≥20 → "good" -->
       <div class="mos-verdict bad">
-        <div class="big">+4%</div>
+        <div class="big">+0.4%</div>
         <div class="txt">แทบไม่มีส่วนเผื่อความปลอดภัย — ราคาปัจจุบันใกล้เคียงมูลค่าเหมาะสมมาก เหมาะกับการถือเพื่อรับปันผล มากกว่าเก็งกำไรส่วนต่างราคา</div>
       </div>
       <div class="grid g3">
@@ -206,7 +206,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="70.52" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="73.03" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
