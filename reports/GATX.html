@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>วิเคราะห์หุ้น GATX Corporation (GATX) — Stock Analysis Dashboard</title>
 <!-- ★ โมเดล AI ที่ใช้วิเคราะห์จริง — gate E28 บังคับ -->
-<meta name="ai-model" content="Claude Sonnet 4.6">
+<meta name="ai-model" content="Claude Sonnet 5">
 <!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — gate E29–31 -->
 <script type="application/json" id="stock-meta">
-{"symbol":"GATX","currency":"USD","price":177.09,"fairValue":181,"mos":2.2,"upside":2.2,"pe":19,"dividendYield":1.49,"roe":12.56}
+{"symbol":"GATX","currency":"USD","price":180.1,"fairValue":181,"mos":0.5,"upside":0.5,"pe":19,"dividendYield":1.49,"roe":12.56}
 </script>
 <!--
   report-data: ธีมสี railroad dark red/maroon (GATX heritage) + ข้อมูลกราฟ/gauge
@@ -45,7 +45,7 @@
       ["เม.ย.26", 195.92],
       ["พ.ค.26", 169.08],
       ["มิ.ย.26", 177.19],
-      ["ก.ค.26", 177.09]
+      ["ก.ค.26", 180.1]
     ],
     "min": 150,
     "max": 200,
@@ -57,7 +57,7 @@
   "gauge": {
     "min": 120,
     "max": 230,
-    "cur": 177.09,
+    "cur": 180.1,
     "fair": 181
   },
   "fv": 181
@@ -80,11 +80,11 @@
     <div class="sub">North America's #1 railcar lessor · 130,000+ fleet (tank/hopper/gondola/box) · Long-term lease contracts · Europe via AAE JV · 50+ yr Dividend Aristocrat · Chicago IL</div>
     <div class="price-row">
       <div>
-        <div class="px">$177.09<small>(GATX)</small></div>
+        <div class="px">$180.10<small>(GATX)</small></div>
       </div>
-      <div class="chg">▲ +5.2% (รอบปี)</div>
+      <div class="chg">▲ +7.0% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 15 ก.ค. 2569<br>
+        ราคา ณ 17 ก.ค. 2569<br>
         กรอบ 52 สัปดาห์ $148.20 – $205.56<br>
         ที่มา: StockAnalysis.com, Finviz.com, Yahoo Finance
       </div>
@@ -156,7 +156,7 @@
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         วิธี Justified P/BV ให้ค่าสูงสุด ($216.84) สะท้อน ROE ที่แข็งแกร่งเทียบ cost of capital
         ส่วน DDM ให้ค่าต่ำสุด ($141.24) เพราะ GATX จ่ายปันผลน้อย (payout ~28%) เน้นลงทุนขยายกองเรือ
-        FV เฉลี่ย $181 สอดคล้องกับราคาตลาด $177.13 บ่งชี้ว่าหุ้น Fairly Valued
+        FV เฉลี่ย $181 สอดคล้องกับราคาตลาด $180.10 บ่งชี้ว่าหุ้น Fairly Valued
         แหล่งอ้างอิง: StockAnalysis.com, Finviz.com (ราคา/EPS/ROE) · Yahoo Finance API (กราฟ)
       </p>
     </div>
@@ -168,7 +168,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $177.09</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $180.10</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $181</div></div>
         </div>
         <div class="scale">
@@ -180,7 +180,7 @@
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคา $177.13 อยู่ใต้ Fair Value $181 เล็กน้อย (MOS เพียง 2.1%) บ่งชี้ว่าหุ้นซื้อขาย Fairly Valued
+        ราคา $180.10 อยู่ใต้ Fair Value $181 เล็กน้อย (MOS เพียง 0.5%) บ่งชี้ว่าหุ้นซื้อขาย Fairly Valued
         นักวิเคราะห์ 4 ราย (Strong Buy ทั้งหมด) มีเป้าเฉลี่ย $218 (+23% upside)
         โซนสะสมน่าสนใจ: ต่ำกว่า $181 (FV) / โซน Deep Value: ต่ำกว่า $144.80 (MOS 20%)
       </p>
@@ -192,7 +192,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict bad">
-        <div class="big">+2%</div>
+        <div class="big">+0.5%</div>
         <div class="txt">หุ้นซื้อขายใกล้ Fair Value — ยังไม่มี Margin of Safety เพียงพอ รอโซนต่ำกว่า $145</div>
       </div>
       <div class="grid g3">
@@ -203,7 +203,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="177.09" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="180.1" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -212,7 +212,7 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $177.13 • EPS ฐาน ~$9.32 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $180.10 • EPS ฐาน ~$9.32 • รวมปันผล</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS +3%/ปี</span></div>
@@ -297,7 +297,7 @@
     <div class="verdict">
       <h2>Fairly Valued — ธุรกิจเยี่ยม รอจังหวะราคาลง</h2>
       <p>GATX เป็นบริษัทคุณภาพสูง ผู้ให้เช่ารถไฟอันดับ 1 ในอเมริกาเหนือ กองเรือ 130,000+ คัน utilization เกิน 99% pricing power แข็งแกร่ง EPS เติบโต CAGR 28% ช่วง 3 ปี และเพิ่มปันผลมากกว่า 50 ปีติดต่อกัน
-      อย่างไรก็ตาม ราคาปัจจุบัน $177.13 ซื้อขายใกล้ Fair Value $181 (MOS เพียง 2.1%) แทบไม่มี margin of safety
+      อย่างไรก็ตาม ราคาปัจจุบัน $180.10 ซื้อขายใกล้ Fair Value $181 (MOS เพียง 0.5%) แทบไม่มี margin of safety
       นักวิเคราะห์ 4 รายให้ Strong Buy เป้าเฉลี่ย $218 (+23%) แต่ด้วย leverage สูง (D/E ~3.4x) และดอกเบี้ยสูง กลยุทธ์ที่ดีที่สุดคือรอสะสมใกล้โซน $144–$165 (MOS 20–30%)</p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$181 <span style="font-size:12px;color:#cab9a8">($141–$220)</span></div></div>
@@ -314,9 +314,9 @@
   <div class="disc">
     <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
-    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • แหล่งข้อมูล: StockAnalysis.com, Finviz.com, Yahoo Finance API (ราคา/EPS ยืนยัน ≥2 แหล่ง · ณ 1 กรกฎาคม 2569)
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • แหล่งข้อมูล: StockAnalysis.com, Finviz.com, Yahoo Finance API (ราคา/EPS ยืนยัน ≥2 แหล่ง · ณ 17 กรกฎาคม 2569)
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ 1 กรกฎาคม 2569 • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 17 กรกฎาคม 2569 • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
