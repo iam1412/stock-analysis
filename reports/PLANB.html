@@ -4,9 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>วิเคราะห์หุ้น แพลน บี มีเดีย (PLANB) — Stock Analysis Dashboard</title>
-<meta name="ai-model" content="Claude Sonnet 4.6">
+<meta name="ai-model" content="Claude Sonnet 5">
 <script type="application/json" id="stock-meta">
-{"symbol":"PLANB","currency":"THB","price":5.65,"fairValue":5.61,"mos":-0.7,"upside":-0.7,"pe":21.9,"dividendYield":3.68,"roe":8.7}
+{"symbol":"PLANB","currency":"THB","price":5.6,"fairValue":5.61,"mos":0.2,"upside":0.2,"pe":21.9,"dividendYield":3.68,"roe":8.7}
 </script>
 <script type="application/json" id="report-data">
 {
@@ -36,11 +36,11 @@
       ["เม.ย.26", 4.32],
       ["พ.ค.26", 4.18],
       ["มิ.ย.26", 4.64],
-      ["ก.ค.26", 5.65]
+      ["ก.ค.26", 5.6]
     ],
-    "min": 3,
+    "min": 3.5,
     "max": 6,
-    "grid": [4, 5],
+    "grid": [4, 4.5, 5, 5.5],
     "fairLine": 5.61,
     "currency": "฿",
     "highlight": [5, 11]
@@ -48,7 +48,7 @@
   "gauge": {
     "min": 3.4,
     "max": 7.4,
-    "cur": 5.65,
+    "cur": 5.6,
     "fair": 5.61,
     "fairLabelTop": "-58px"
   },
@@ -72,11 +72,11 @@
     <div class="sub">OOH Media No.1 ไทย • Billboard &amp; LED ดิจิทัล • Transit Ads • สื่อในห้างสรรพสินค้า • ขยาย SEA • SET50</div>
     <div class="price-row">
       <div>
-        <div class="px">฿5.65<small>(PLANB)</small></div>
+        <div class="px">฿5.60<small>(PLANB)</small></div>
       </div>
-      <div class="chg">▲ +28.4% (รอบปี)</div>
+      <div class="chg">▲ +27.3% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 16 ก.ค. 2569<br>
+        ราคา ณ 17 ก.ค. 2569<br>
         กรอบ 52 สัปดาห์ ฿3.00 – ฿5.85<br>
         ที่มา: Yahoo Finance API, StockAnalysis.com, SET.or.th
       </div>
@@ -117,11 +117,11 @@
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
-        ราคา PLANB เคลื่อนไหวในกรอบ <b>฿3.64–฿5.70</b> ตลอด 12 เดือนที่ผ่านมา เริ่มต้นที่ ฿4.40 (ส.ค. 2568) และปิดที่ ฿5.70 (ก.ค. 2569)
-        ให้ผลตอบแทนรอบปี <b>+29.5%</b> ช่วง พ.ย. 2568 – ม.ค. 2569 ราคาลดลงแตะ ฿3.64 (จุดต่ำสุดรอบปี)
+        ราคา PLANB เคลื่อนไหวในกรอบ <b>฿3.64–฿5.60</b> ตลอด 12 เดือนที่ผ่านมา เริ่มต้นที่ ฿4.40 (ส.ค. 2568) และปิดที่ ฿5.60 (ก.ค. 2569)
+        ให้ผลตอบแทนรอบปี <b>+27.3%</b> ช่วง พ.ย. 2568 – ม.ค. 2569 ราคาลดลงแตะ ฿3.64 (จุดต่ำสุดรอบปี)
         สาเหตุหลักจากความกังวลเรื่องเศรษฐกิจไทยชะลอตัวและงบโฆษณาลด ก่อนฟื้นตัวแรงขึ้น ฿4.76 ในเดือน ก.พ. 2569
-        และเร่งตัวชัดเจนช่วง มิ.ย.–ก.ค. 2569 แตะ ฿5.70 ใกล้ 52-week high ฿5.85 (ห่างเพียง ~2.6%)
-        และขึ้นเหนือ Fair Value ฿5.61 ไปแล้วเล็กน้อย ~1.6%
+        และเร่งตัวชัดเจนช่วง มิ.ย.–ก.ค. 2569 แตะ ฿5.60 ใกล้ 52-week high ฿5.85 (ห่างเพียง ~4.3%)
+        และใกล้เคียง Fair Value ฿5.61 มาก (ต่ำกว่าเพียง ~0.2%)
       </p>
     </div>
   </section>
@@ -157,7 +157,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿5.65</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿5.60</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿5.61</div></div>
         </div>
         <div class="scale">
@@ -169,10 +169,10 @@
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคา ฿5.70 ขึ้นเหนือ Fair Value ฿5.61 ไปแล้วเล็กน้อย ~1.6% และอยู่เหนือทุกโซน MOS (20%/30%)
+        ราคา ฿5.60 ใกล้เคียง Fair Value ฿5.61 มาก (ต่ำกว่าเพียง ~0.2%) และอยู่เหนือทุกโซน MOS (20%/30%)
         นักลงทุนที่มองหาส่วนเผื่อความปลอดภัย ควรรอราคาย่อกลับมาที่โซน ฿4.49 (MOS 20%)
         หรือต่ำกว่า ฿3.93 (MOS 30%) จึงจะถือว่าเป็นจังหวะสะสมที่มีนัยสำคัญ
-        เป้านักวิเคราะห์เฉลี่ย ฿6.04 (Strong Buy, 8 ราย) ยังสูงกว่าราคาปัจจุบันเล็กน้อย (+5.9%)
+        เป้านักวิเคราะห์เฉลี่ย ฿6.04 (Strong Buy, 8 ราย) ยังสูงกว่าราคาปัจจุบันเล็กน้อย (+7.9%)
         สะท้อนความคาดหวังต่อการเติบโตของ OOH digital และการขยายตลาด SEA
       </p>
     </div>
@@ -183,8 +183,8 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict bad">
-        <div class="big">−0.7%</div>
-        <div class="txt">MOS ติดลบ — ราคาสูงกว่า Fair Value เล็กน้อย ยังไม่ใช่จังหวะเข้าซื้อเพิ่ม</div>
+        <div class="big">+0.2%</div>
+        <div class="txt">MOS เกือบเป็นศูนย์ — ราคาใกล้เคียง Fair Value มาก ยังไม่ถือเป็นจังหวะเข้าซื้อเพิ่ม</div>
       </div>
       <div class="grid g3">
         <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿4.49</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
@@ -194,7 +194,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="5.65" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="5.6" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -203,13 +203,13 @@
 
   <!-- ===== 6. RETURN PROJECTION ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿5.70 • EPS ฐาน ~฿0.26 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿5.60 • EPS ฐาน ~฿0.26 • รวมปันผล</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS +3%/ปี</span></div>
         <div class="body">
           <div class="tgt">฿4.48</div>
-          <div class="ret neg">-10.4%</div>
+          <div class="ret neg">-8.8%</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿0.28</span></li>
             <li><span>P/E ออก</span><span>16x</span></li>
@@ -222,7 +222,7 @@
         <div class="top"><span>⚖️ Base</span><span>EPS +8%/ปี</span></div>
         <div class="body">
           <div class="tgt">฿6.60</div>
-          <div class="ret pos">+28.1%</div>
+          <div class="ret pos">+30.4%</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿0.33</span></li>
             <li><span>P/E ออก</span><span>20x</span></li>
@@ -235,7 +235,7 @@
         <div class="top"><span>🚀 Bull</span><span>EPS +13%/ปี</span></div>
         <div class="body">
           <div class="tgt">฿8.74</div>
-          <div class="ret pos">+66.3%</div>
+          <div class="ret pos">+69.3%</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿0.38</span></li>
             <li><span>P/E ออก</span><span>23x</span></li>
@@ -247,10 +247,10 @@
     </div>
     <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
       <b>Base Case</b> คาดกำไรเติบโต 8%/ปี ใกล้เคียงกับ consensus analyst ที่ +7–8%/ปี (FY2026E ฿0.27, FY2027E ฿0.29)
-      ให้ผลตอบแทนรวม ~28.1% (capital gain ~15.8% + ปันผลรวม ~฿0.70) ใน 3 ปี (~8.6%/ปี) จากจุดเข้าที่สูงขึ้นแล้ว
-      <b>Bear Case</b> สมมติว่าตลาดโฆษณาชะลอแรงและ P/E หดลงสู่ 16x ผลตอบแทนรวมอาจติดลบราว -10.4% แม้ปันผล ~฿0.63 ช่วยดูดซับบางส่วน
+      ให้ผลตอบแทนรวม ~30.4% (capital gain ~17.9% + ปันผลรวม ~฿0.70) ใน 3 ปี (~9.2%/ปี) จากจุดเข้าที่ใกล้เคียง Fair Value
+      <b>Bear Case</b> สมมติว่าตลาดโฆษณาชะลอแรงและ P/E หดลงสู่ 16x ผลตอบแทนรวมอาจติดลบราว -8.8% แม้ปันผล ~฿0.63 ช่วยดูดซับบางส่วน
       <b>Bull Case</b> หาก PLANB ขยายตลาด SEA (เวียดนาม/อินโดนีเซีย) สำเร็จ + ดิจิทัล OOH ฟื้นแรง อาจเห็น EPS โต 13%+
-      ราคาเป้า ฿8.74 ให้ผลตอบแทนรวม ~+66.3% ใน 3 ปี · ปันผลคาดจ่ายต่อเนื่อง DPS ~฿0.21+ Payout ratio ~80% ยืนยันฐานธุรกิจมั่นคง
+      ราคาเป้า ฿8.74 ให้ผลตอบแทนรวม ~+69.3% ใน 3 ปี · ปันผลคาดจ่ายต่อเนื่อง DPS ~฿0.21+ Payout ratio ~80% ยืนยันฐานธุรกิจมั่นคง
     </p>
   </section>
 
@@ -297,11 +297,11 @@
       </p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿5.61 <span style="font-size:12px;color:#cab9a8">(฿5.20–฿6.04)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −1.6%</div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +0.2%</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿6.04 (Strong Buy)</div></div>
       </div>
       <div class="zone">
-        💡 <b>กลยุทธ์:</b> ราคาปัจจุบัน ฿5.70 ขึ้นเหนือ Fair Value ฿5.61 ไปแล้ว — ยังไม่แนะนำไล่ซื้อเพิ่ม ·
+        💡 <b>กลยุทธ์:</b> ราคาปัจจุบัน ฿5.60 ใกล้เคียง Fair Value ฿5.61 มาก — ยังไม่แนะนำไล่ซื้อเพิ่ม ·
         รอราคาย่อกลับมาโซน <b>฿4.49–฿5.61</b> ก่อนทยอยสะสม สำหรับนักลงทุนระยะ 2–3 ปี ·
         เข้าซื้อเพิ่มหนักขึ้นถ้าราคาลงถึง <b>฿3.93 (MOS 30%)</b> · ผู้ที่ถืออยู่แล้วยังไม่จำเป็นต้องขาย
       </div>
@@ -313,9 +313,9 @@
     <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย (20x), อัตราเติบโต (g), EV/EBITDA multiple (10x) และผลประกอบการในอนาคต
     ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
-    แหล่งอ้างอิง: Yahoo Finance API (chart/ราคา ณ 16 ก.ค. 2569), StockAnalysis.com (financials/balance sheet/EPS/analyst forecast), SET.or.th (ข้อมูลบริษัท)
+    แหล่งอ้างอิง: Yahoo Finance API (chart/ราคา ณ 17 ก.ค. 2569), StockAnalysis.com (financials/balance sheet/EPS/analyst forecast), SET.or.th (ข้อมูลบริษัท)
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ 3 กรกฎาคม 2569 • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 17 กรกฎาคม 2569 • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
