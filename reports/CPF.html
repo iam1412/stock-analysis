@@ -6,7 +6,7 @@
 <title>วิเคราะห์หุ้น เจริญโภคภัณฑ์อาหาร (CPF) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Sonnet 5">
 <script type="application/json" id="stock-meta">
-{"symbol":"CPF","currency":"THB","price":22.1,"fairValue":20,"mos":-10.5,"upside":-9.5,"pe":8.3,"dividendYield":5.6,"roe":7.5}
+{"symbol":"CPF","currency":"THB","price":22.4,"fairValue":20,"mos":-12,"upside":-10.7,"pe":8.3,"dividendYield":5.6,"roe":7.5}
 </script>
 <script type="application/json" id="report-data">
 {
@@ -36,21 +36,21 @@
       ["เม.ย.26", 19.3],
       ["พ.ค.26", 19],
       ["มิ.ย.26", 19.6],
-      ["ก.ค.26", 22.1]
+      ["ก.ค.26", 22.4]
     ],
     "min": 18,
     "max": 23,
     "grid": [19, 20, 21, 22],
     "fairLine": 20,
     "currency": "฿",
-    "highlight": [1, 9],
+    "highlight": [9, 11],
     "gridFmt": "v.toFixed(0)",
     "dataFmt": "d[1].toFixed(1)"
   },
   "gauge": {
     "min": 13,
     "max": 28,
-    "cur": 22.1,
+    "cur": 22.4,
     "fair": 20,
     "fairLabelTop": "-58px"
   },
@@ -74,11 +74,11 @@
     <div class="sub">อาหารสัตว์ • ฟาร์มปศุสัตว์ (หมู/ไก่/ไข่) • เพาะเลี้ยงสัตว์น้ำ (กุ้ง) • อาหารแปรรูป/พร้อมทาน • ธุรกิจต่างประเทศ (จีน/เวียดนาม) • ส่งออก ~50 ประเทศ</div>
     <div class="price-row">
       <div>
-        <div class="px">฿22.10<small>(CPF)</small></div>
+        <div class="px">฿22.40<small>(CPF)</small></div>
       </div>
-      <div class="chg">▲ +0.9% (รอบปี)</div>
+      <div class="chg">▲ +2.3% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ≈ 20 ก.ค. 2026<br>
+        ราคา ≈ 21 ก.ค. 2026<br>
         อยู่ช่วงกลาง–บนของกรอบ 52 สัปดาห์ (฿18.10–24.70)<br>
         ที่มา: SET / stockanalysis.com / TradingView / Investing
       </div>
@@ -159,7 +159,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿22.1</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿22.4</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿20</div></div>
         </div>
         <div class="scale">
@@ -182,7 +182,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict bad">
-        <div class="big">−11%</div>
+        <div class="big">−12%</div>
         <div class="txt"><b>ไม่เหลือ margin of safety แล้ว</b><br>ราคาปัจจุบัน ฿22.2 สูงกว่ามูลค่าเหมาะสม ฿20 ราว 11% → ถือว่า <b>ราคาตึงเล็กน้อย</b> หลังรีบาวด์แรงในเดือนที่ผ่านมา ควรรอย่อสู่ต่ำกว่า ฿20 ก่อนเริ่มสะสม หรือรอถึง ฿16 (MOS 20%+) สำหรับจังหวะที่ปลอดภัยกว่า</div>
       </div>
       <div class="grid g3">
@@ -193,7 +193,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="22.1" step="0.1">
+          <input id="pxIn" class="mono" type="number" value="22.4" step="0.1">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -301,7 +301,7 @@
   <div class="disc">
     <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ Normalized EPS กลางวัฏจักร, อัตราเติบโตปันผล (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต ซึ่งอ่อนไหวมากต่อราคาเนื้อสัตว์/ต้นทุนอาหารสัตว์และวัฏจักรอุตสาหกรรม
-    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • อ้างอิงงบจริง FY2025 (กำไรสุทธิ ฿25,197 ล้าน • รายได้ ฿571,135 ล้าน • ปันผล ฿1.25) จาก CPF IR / Kaohoon / Nation Thailand • ราคา ณ ~20 ก.ค. 2026 จาก SET, stockanalysis.com, TradingView, Investing.com
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • อ้างอิงงบจริง FY2025 (กำไรสุทธิ ฿25,197 ล้าน • รายได้ ฿571,135 ล้าน • ปันผล ฿1.25) จาก CPF IR / Kaohoon / Nation Thailand • ราคา ณ ~21 ก.ค. 2026 จาก SET, stockanalysis.com, TradingView, Investing.com
   </div>
   <footer>Stock Analysis Dashboard • ข้อมูล ณ 12 ก.ค. 2026 • สร้างด้วย stock-analyzer workflow</footer>
 
