@@ -12,7 +12,7 @@
 <meta name="ai-model" content="Claude Sonnet 4.6">
 <!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
 <script type="application/json" id="stock-meta">
-{"symbol":"PRG","currency":"THB","price":9.9,"fairValue":8.88,"mos":-11.5,"upside":-10.3,"pe":11.76,"dividendYield":8.26,"roe":6.41}
+{"symbol":"PRG","currency":"THB","price":9.95,"fairValue":8.88,"mos":-12,"upside":-10.8,"pe":11.76,"dividendYield":8.26,"roe":6.41}
 </script>
 <!--
   report-data: ธีมสี + ข้อมูลกราฟ/gauge ต่อหุ้น (build เอาไปวาด) ดู schema เต็มใน CLAUDE.md ข้อ 9
@@ -47,7 +47,7 @@
       ["เม.ย.26", 8.9],
       ["พ.ค.26", 9.2],
       ["มิ.ย.26", 9.15],
-      ["ก.ค.26", 9.9]
+      ["ก.ค.26", 9.95]
     ],
     "min": 7,
     "max": 11,
@@ -59,7 +59,7 @@
   "gauge": {
     "min": 6,
     "max": 10.2,
-    "cur": 9.9,
+    "cur": 9.95,
     "fair": 8.88,
     "fairLabelTop": true
   },
@@ -84,14 +84,14 @@
     <div class="sub">ผลิต-จำหน่ายข้าวสารบรรจุถุงแบรนด์ "มาบุญครอง" (Mah Boonkrong) และ Jasmine Gold • ธุรกิจ Food Center • ธุรกิจบริหารสินทรัพย์ • ปรับโครงสร้างขยายสู่อาหารพร้อมทาน-โลจิสติกส์</div>
     <div class="price-row">
       <div>
-        <div class="px">฿9.90<small>(PRG)</small></div>
+        <div class="px">฿9.95<small>(PRG)</small></div>
       </div>
       <!-- ★ ป้าย % รอบปี (gate E35/E36) — ผลตอบแทน ~1 ปี (เทียบราคา ~1 ปีก่อน) = ผลตอบแทนปลายกราฟ section 2 (จุดแรก→ท้าย)
            รูปแบบ: "▲ +X.X% (รอบปี)" ขึ้น · "▼ −X.X% (รอบปี)" ลง · "≈ ทรงตัว (รอบปี)" · หุ้น IPO <1 ปี ใช้ "(ตั้งแต่ IPO)"
            ไม่ใช่ % รายวัน/YTD/52 สัปดาห์ · ตั้งสี theme.chgBg/chgColor ให้ตรงทิศ (ขึ้น=เขียว/ลง=แดง · E34) -->
-      <div class="chg">▲ +28.6% (รอบปี)</div>
+      <div class="chg">▲ +29.2% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 20 ก.ค. 2569<br>
+        ราคา ณ 22 ก.ค. 2569<br>
         กรอบ 52 สัปดาห์ ฿7.00 – ฿9.50<br>
         ที่มา: StockAnalysis.com / Yahoo Finance (PRG.BK) / SET (set.or.th)
       </div>
@@ -183,7 +183,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿9.90</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿9.95</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿8.88</div></div>
         </div>
         <div class="scale">
@@ -208,7 +208,7 @@
     <div class="card">
       <!-- ✏️ class ของ mos-verdict: MOS<10 → "bad", 10–20 → "ok", ≥20 → "good" -->
       <div class="mos-verdict bad">
-        <div class="big">−11%</div>
+        <div class="big">−12%</div>
         <div class="txt"><b>ไม่มี Margin of Safety</b> — ราคาปัจจุบัน ฿9.20 อยู่ <b>สูงกว่า</b> Fair Value ฿8.88 ประมาณ 3.6% ใกล้เคียงมูลค่าพื้นฐานมาก แต่ยังไม่ใช่จุดเข้าซื้อที่มี margin ตามหลัก Value Investing</div>
       </div>
       <div class="grid g3">
@@ -219,7 +219,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="9.9" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="9.95" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

@@ -12,7 +12,7 @@
 <meta name="ai-model" content="Claude Sonnet 4.6">
 <!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
 <script type="application/json" id="stock-meta">
-{"symbol":"Q-CON","currency":"THB","price":6.2,"fairValue":5.7,"mos":-8.8,"upside":-8.1,"pe":11.7,"dividendYield":6.4,"roe":8.1}
+{"symbol":"Q-CON","currency":"THB","price":6.25,"fairValue":5.7,"mos":-9.6,"upside":-8.8,"pe":11.7,"dividendYield":6.4,"roe":8.1}
 </script>
 <!--
   report-data: ธีมสี + ข้อมูลกราฟ/gauge ต่อหุ้น (build เอาไปวาด) ดู schema เต็มใน CLAUDE.md ข้อ 9
@@ -47,7 +47,7 @@
       ["เม.ย.26", 6.35],
       ["พ.ค.26", 6.2],
       ["มิ.ย.26", 6.15],
-      ["ก.ค.26", 6.2]
+      ["ก.ค.26", 6.25]
     ],
     "min": 5.5,
     "max": 7.5,
@@ -59,7 +59,7 @@
   "gauge": {
     "min": 3.9,
     "max": 6.7,
-    "cur": 6.2,
+    "cur": 6.25,
     "fair": 5.7,
     "fairLabelTop": true
   },
@@ -84,14 +84,14 @@
     <div class="sub">ผลิต-จำหน่ายอิฐมวลเบาออโตเคลฟ (AAC) แบรนด์ Q-CON • ผนังสำเร็จรูป-แผ่นพื้น-คานทับหลัง • ฐานลูกค้าโครงการที่อยู่อาศัย-อาคารพาณิชย์ในเครือข่าย SCG</div>
     <div class="price-row">
       <div>
-        <div class="px">฿6.20<small>(Q-CON)</small></div>
+        <div class="px">฿6.25<small>(Q-CON)</small></div>
       </div>
       <!-- ★ ป้าย % รอบปี (gate E35/E36) — ผลตอบแทน ~1 ปี (เทียบราคา ~1 ปีก่อน) = ผลตอบแทนปลายกราฟ section 2 (จุดแรก→ท้าย)
            รูปแบบ: "▲ +X.X% (รอบปี)" ขึ้น · "▼ −X.X% (รอบปี)" ลง · "≈ ทรงตัว (รอบปี)" · หุ้น IPO <1 ปี ใช้ "(ตั้งแต่ IPO)"
            ไม่ใช่ % รายวัน/YTD/52 สัปดาห์ · ตั้งสี theme.chgBg/chgColor ให้ตรงทิศ (ขึ้น=เขียว/ลง=แดง · E34) -->
-      <div class="chg">▼ −8.1% (รอบปี)</div>
+      <div class="chg">▼ −7.4% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 21 ก.ค. 2569<br>
+        ราคา ณ 22 ก.ค. 2569<br>
         กรอบ 52 สัปดาห์ ฿5.65 – ฿7.40<br>
         ที่มา: SET (set.or.th) / stockanalysis.com / Investing.com
       </div>
@@ -183,7 +183,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿6.20</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿6.25</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿5.70</div></div>
         </div>
         <div class="scale">
@@ -208,7 +208,7 @@
     <div class="card">
       <!-- ✏️ class ของ mos-verdict: MOS<10 → "bad", 10–20 → "ok", ≥20 → "good" -->
       <div class="mos-verdict bad">
-        <div class="big">−9%</div>
+        <div class="big">−10%</div>
         <div class="txt"><b>ไม่มี Margin of Safety</b> — ราคาปัจจุบัน ฿6.25 อยู่ <b>สูงกว่า</b> Fair Value ฿5.70 ประมาณ 9.6% ยังไม่ใช่จุดเข้าซื้อที่ปลอดภัยตามหลัก Value Investing</div>
       </div>
       <div class="grid g3">
@@ -219,7 +219,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="6.2" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="6.25" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
