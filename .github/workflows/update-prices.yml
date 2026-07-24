@@ -73,20 +73,15 @@ jobs:
           num=$(gh issue list --state open --search "in:title \"$TITLE\"" --json number --jq '.[0].number' || echo "")
           count=$(node -e 'try{console.log(require("./price-flags.json").length)}catch(e){console.log(0)}')
           if [ "$count" = "0" ]; then
-            [ -n "$num" ] && gh issue close "$num" --comment "คิวเคลียร์หมดแล้ว ✅ (ปิดอัตโนมัติโดย price-refresh)"
+            if [ -n "$num" ]; then gh issue close "$num" --comment "คิวเคลียร์หมดแล้ว ✅ (ปิดอัตโนมัติโดย price-refresh)"; fi
             exit 0
           fi
-          body=$(node -e '
-            const f = require("./price-flags.json");
-            const rows = f.map(x => `| ${x.symbol} | ${x.reason} | ${x.reportPrice ?? "-"} | ${x.marketPrice ?? "-"} | ${x.diffPct != null ? x.diffPct + "%" : "-"} | ${x.flaggedAt} |`);
-            console.log([
-              "หุ้นที่ cron **ไม่กล้าอัปเดตอัตโนมัติ** (ราคาขยับแรง/ข้อมูลผิดปกติ) — ต้อง re-analysis ด้วย bulk workflow (§3):",
-              "", "| Symbol | เหตุผล | ราคาในรายงาน | ราคาตลาด | ต่าง | ตั้งแต่ |", "|---|---|---|---|---|---|",
-              ...rows, "",
-              "เคลียร์คิว: เปิด session แล้วสั่ง \"เคลียร์คิว price-flags\" — flag จะหายเองเมื่อรายงานถูก re-analyze แล้ว",
-              "_(อัปเดตอัตโนมัติโดย workflow price-refresh ทุกรอบ)_",
-            ].join("\n"));
-          ')
+          # body เดิมคือ state ของ issue เอง (ตารางประวัติจำนวนคิว + ฐานเทียบว่าตัวไหนเข้า/ออกรอบนี้)
+          # ตั้งใจไม่ใส่ `|| true`: ถ้าอ่านไม่ได้ ให้ step นี้ล้มไปเลย (continue-on-error) แล้วรอบหน้าค่อยว่ากัน
+          # — ดีกว่าเขียนทับ issue ด้วย body ที่ประวัติหายและตัวเลขเข้า/ออกผิด
+          prev=""
+          if [ -n "$num" ]; then prev=$(gh issue view "$num" --json body --jq .body); fi
+          body=$(PREV_BODY="$prev" TODAY="$(TZ=Asia/Bangkok date +%F)" node tools/flags-issue-body.js)
           if [ -n "$num" ]; then
             gh issue edit "$num" --body "$body"
           else

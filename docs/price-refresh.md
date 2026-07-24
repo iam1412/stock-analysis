@@ -54,6 +54,8 @@ git commit -F …                    # title: price: refresh N symbols (YYYY-MM-
 
 - flags เป็น **snapshot ต่อรอบ**: symbol ที่กลับมาปกติ (re-analyze แล้ว / ราคาย่อกลับเข้าเกณฑ์) หายจากไฟล์เอง ไม่ต้องลบมือ · `flaggedAt` คงวันแรกที่โดนไว้ (ถ้าเหตุผลเดิม)
 - workflow เปิด/อัปเดต GitHub Issue "Price-refresh flags" ใบเดียว (ปิดเองเมื่อคิวว่าง) + สรุปใน job summary
+  - body สร้างโดย `tools/flags-issue-body.js` — **เขียนทับทั้งใบทุกรอบ** จึงอ่าน body เดิมกลับเข้ามาก่อน เพื่อเทียบว่าตัวไหนเข้า/ออกคิว และสะสม **ตารางประวัติจำนวนคิว 14 รอบล่าสุด** (issue เก็บ state ตัวเอง ไม่ต้องมีไฟล์ history) · ประวัติจะเริ่มนับใหม่เมื่อคิวว่างจนปิด issue แล้วเปิดใบใหม่
+  - marker `<!--flags-->` / `<!--history-->` ในตัว body คือจุดที่สคริปต์อ่านกลับ — **ห้ามแก้ body ด้วยมือจนคู่ marker หาย** (หายแล้วประวัติจะรีเซ็ต) · ทดสอบแห้ง: `PREV_BODY="$(gh issue view N --json body --jq .body)" TODAY=$(date +%F) node tools/flags-issue-body.js`
 - **เคลียร์คิว:** เปิด session สั่ง "เคลียร์คิว price-flags" → อ่าน `price-flags.json` → re-analysis ตาม bulk workflow (§3) ทุกกติกาเดิม (ตัว suspect-split เข้าข่าย "หุ้นยาก" → controller ปรึกษา `advisor` ผ่าน courier subagent ก่อน spawn (ห้ามเรียกตรง — orchestration §2) + effort high — ไม่มี Opus แล้ว) · ปล่อยค้าง = วันที่ราคาเก่าลงจนโดน staleness gate เดิม (warn 45 / error 120 วัน) กดดันตามปกติ
 
 ## รันมือ / debug
