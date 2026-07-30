@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>วิเคราะห์หุ้น Expedia Group (EXPE) — Stock Analysis Dashboard</title>
 <!-- ★ ใส่รุ่นโมเดล AI ที่ใช้วิเคราะห์จริง (Opus→"Claude Opus 4.8", Sonnet→"Claude Sonnet 4.6") — gate E28 บังคับ -->
-<meta name="ai-model" content="Claude Sonnet 4.6">
+<meta name="ai-model" content="Claude Sonnet 5">
 <!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
 <script type="application/json" id="stock-meta">
-{"symbol":"EXPE","currency":"USD","price":288.77,"fairValue":284.7,"mos":-1.4,"upside":-1.4,"pe":23.65,"dividendYield":0.71,"roe":null}
+{"symbol":"EXPE","currency":"USD","price":294.1,"fairValue":284.7,"mos":-3.3,"upside":-3.2,"pe":23.65,"dividendYield":0.71,"roe":null}
 </script>
 <!--
   report-data: ธีมสี + ข้อมูลกราฟ/gauge ต่อหุ้น (build เอาไปวาด)  ดู schema เต็มใน CLAUDE.md ข้อ 9
@@ -47,19 +47,19 @@
       ["เม.ย.26", 248.37],
       ["พ.ค.26", 225.79],
       ["มิ.ย.26", 255.88],
-      ["ก.ค.26", 288.77]
+      ["ก.ค.26", 294.1]
     ],
     "min": 200,
     "max": 300,
-    "grid": [220, 240, 260, 280],
+    "grid": [225, 250, 275],
     "fairLine": 284.7,
     "currency": "$",
     "highlight": [1, 11]
   },
   "gauge": {
     "min": 199.29,
-    "max": 288,
-    "cur": 288.77,
+    "max": 300,
+    "cur": 294.1,
     "fair": 284.7,
     "fairLabelTop": "-58px"
   },
@@ -84,12 +84,12 @@
     <div class="sub">Expedia.com • Hotels.com • Vrbo • Orbitz • Travelocity • trivago (บางส่วน) — แพลตฟอร์มจองท่องเที่ยวออนไลน์ (ที่พัก·เที่ยวบิน·รถเช่า·แพ็กเกจ) ครบวงจร B2C/B2B พร้อมโปรแกรมสมาชิก One Key</div>
     <div class="price-row">
       <div>
-        <div class="px">$288.77<small>(EXPE)</small></div>
+        <div class="px">$294.10<small>(EXPE)</small></div>
       </div>
       <!-- ★ ป้าย % รอบปี (gate E35/E36) — ผลตอบแทน ~1 ปี (เทียบราคา ~1 ปีก่อน) = ผลตอบแทนปลายกราฟ section 2 (จุดแรก→ท้าย)
            รูปแบบ: "▲ +X.X% (รอบปี)" ขึ้น · "▼ −X.X% (รอบปี)" ลง · "≈ ทรงตัว (รอบปี)" · หุ้น IPO <1 ปี ใช้ "(ตั้งแต่ IPO)"
            ไม่ใช่ % รายวัน/YTD/52 สัปดาห์ · ตั้งสี theme.chgBg/chgColor ให้ตรงทิศ (ขึ้น=เขียว/ลง=แดง · E34) -->
-      <div class="chg">▲ +34.4% (รอบปี)</div>
+      <div class="chg">▲ +36.9% (รอบปี)</div>
       <div class="px-meta">
         ราคา ณ 30 ก.ค. 2026<br>
         กรอบ 52 สัปดาห์ $169.23 – $303.80<br>
@@ -100,7 +100,7 @@
 
   <!-- ===== 1. KEY METRICS ===== -->
   <section>
-    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ราคาปิด 2 ก.ค. 2026 • งบไตรมาส Q1 2026</div></div>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ราคาปิด 30 ก.ค. 2026 • งบไตรมาส Q1 2026</div></div>
     <!-- ✏️ ปรับการ์ด metric ให้เหมาะกับหุ้น/เซกเตอร์ได้อิสระ — gate ไม่บังคับชุด metric (เปลี่ยน label / สลับ / เพิ่ม-ลดการ์ดได้)
          • คงป้าย "P/E (TTM)", "P/BV", "เงินปันผล", "ROE" ไว้ถ้าหุ้นมีจริง → W10 cross-check กับ stock-meta · ไม่มี (ขาดทุน/ไม่ปันผล) = ตัดการ์ดออก + ตั้ง stock-meta เป็น null
          • ธนาคาร → NIM / NPL / CASA / Loan growth / Cost-to-income   • REIT/กองอสังหา → Occupancy / DPU / NAV / Gearing   • ประกัน → Combined ratio / EV
@@ -138,9 +138,9 @@
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
-        ราคาช่วง ก.ค. 2025 อยู่ที่จุดต่ำสุดรอบปีราว <b>$180</b> ก่อนไต่ขึ้นต่อเนื่องจากผลประกอบการที่แข็งแกร่งและมาร์จิ้นที่ขยายตัว ทำจุดสูงสุดรอบปีที่ <b>$283.31</b> (ธ.ค. 2025)
-        จากนั้นย่อตัวลงมาช่วง ก.พ.–พ.ค. 2026 ($216–$249) ตามความกังวลมาโคร/การชะลอตัวของดีมานด์ท่องเที่ยวช่วงต้นปี ก่อนฟื้นตัวกลับมาที่ <b>$268.69</b> หลัง Q1 2026 กำไรและ EBITDA margin เติบโตแรงกว่าคาด (+83% YoY)
-        รวมผลตอบแทนรอบปี <b>+49.1%</b> สะท้อนการรีเรทหลังตลาดเริ่มให้เครดิตกับมาร์จิ้นที่ดีขึ้นและโปรแกรม One Key ที่เริ่มเห็นผล
+        ราคาช่วง ก.ย. 2025 อยู่ที่จุดต่ำสุดของกราฟรอบปีราว <b>$213.75</b> ก่อนไต่ขึ้นแรงจากผลประกอบการที่แข็งแกร่งและมาร์จิ้นที่ขยายตัว ทำจุดสูงสุดรอบปีแรกที่ <b>$283.31</b> (ธ.ค. 2025)
+        จากนั้นย่อตัวลงมาช่วง ก.พ.–มิ.ย. 2026 ($215.69–$255.88) ตามความกังวลมาโคร/การชะลอตัวของดีมานด์ท่องเที่ยวช่วงต้นปี ก่อนพุ่งขึ้นทำจุดสูงสุดใหม่ที่ <b>$294.10</b> (ก.ค. 2026) หลัง Q1 2026 กำไรและ EBITDA margin เติบโตแรงกว่าคาด (+83% YoY)
+        รวมผลตอบแทนรอบปี <b>+36.9%</b> สะท้อนการรีเรทหลังตลาดเริ่มให้เครดิตกับมาร์จิ้นที่ดีขึ้นและโปรแกรม One Key ที่เริ่มเห็นผล
       </p>
     </div>
   </section>
@@ -180,7 +180,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $288.77</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $294.10</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $284.70</div></div>
         </div>
         <div class="scale">
@@ -192,8 +192,8 @@
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคาปัจจุบัน <b>$268.69</b> อยู่ <b>สูงกว่า</b> โซน MOS 20% ($227.76) พอสมควร และใกล้เคียงมูลค่าเหมาะสม $284.70 มาก (ต่ำกว่าเพียง ~5.6%) รวมถึงต่ำกว่าเป้าเฉลี่ยนักวิเคราะห์ $286.21 เล็กน้อย
-        หลังราคาวิ่งขึ้น +49% ในรอบปี ส่วนเผื่อความปลอดภัยจึงบางลงมาก — เหมาะกับการทยอยสะสมเฉพาะจังหวะย่อตัว ไม่ใช่โซน deep value อีกต่อไป
+        ราคาปัจจุบัน <b>$294.10</b> อยู่ <b>สูงกว่า</b> มูลค่าเหมาะสม $284.70 ไปแล้วเล็กน้อย (~3.3%) และสูงกว่าเป้าเฉลี่ยนักวิเคราะห์ $286.21 เช่นกัน
+        หลังราคาวิ่งขึ้น +36.9% ในรอบปี ส่วนเผื่อความปลอดภัย (MOS) พลิกเป็นติดลบ — ไม่ใช่โซนเข้าซื้อ ควรรอย่อกลับสู่โซน MOS 20% ($227.76) หรือต่ำกว่าก่อนพิจารณาสะสมเพิ่ม
       </p>
     </div>
   </section>
@@ -204,8 +204,8 @@
     <div class="card">
       <!-- ✏️ class ของ mos-verdict: MOS<10 → "bad", 10–20 → "ok", ≥20 → "good" -->
       <div class="mos-verdict bad">
-        <div class="big">−1.4%</div>
-        <div class="txt">ราคาต่ำกว่ามูลค่าเหมาะสม $284.70 เพียง ~5.6% — ส่วนเผื่อความปลอดภัยค่อนข้างบาง หลังราคารีเรทขึ้นแรงในรอบปี ควรรอจังหวะย่อก่อนเข้าเพิ่ม</div>
+        <div class="big">−3%</div>
+        <div class="txt">ราคาสูงกว่ามูลค่าเหมาะสม $284.70 ไปแล้ว ~3.3% — ส่วนเผื่อความปลอดภัยหมดไป (MOS ติดลบ) หลังราคารีเรทขึ้นแรงในรอบปี ควรรอจังหวะย่อก่อนเข้าเพิ่ม</div>
       </div>
       <div class="grid g3">
         <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$227.76</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
@@ -215,7 +215,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="288.77" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="294.1" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -224,13 +224,13 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $268.69 • EPS ฐาน ~$17.55 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $294.10 • EPS ฐาน ~$17.55 • รวมปันผล</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS −8%/ปี</span></div>
         <div class="body">
           <div class="tgt">$163.99</div>
-          <div class="ret neg">−39.0%</div>
+          <div class="ret neg">−42.6%</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$13.67</span></li>
             <li><span>P/E ออก</span><span>12x</span></li>
@@ -243,7 +243,7 @@
         <div class="top"><span>⚖️ Base</span><span>EPS +10%/ปี</span></div>
         <div class="body">
           <div class="tgt">$373.74</div>
-          <div class="ret pos">+39.1%</div>
+          <div class="ret pos">+29.1%</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$23.36</span></li>
             <li><span>P/E ออก</span><span>16x</span></li>
@@ -256,7 +256,7 @@
         <div class="top"><span>🚀 Bull</span><span>EPS +18%/ปี</span></div>
         <div class="body">
           <div class="tgt">$519.03</div>
-          <div class="ret pos">+93.2%</div>
+          <div class="ret pos">+78.8%</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$28.84</span></li>
             <li><span>P/E ออก</span><span>18x</span></li>
@@ -303,17 +303,17 @@
   <section>
     <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
     <div class="verdict">
-      <h2>OTA อันดับ 2 มาร์จิ้นดีขึ้นชัดเจน แต่ราคาวิ่งมาไกลแล้ว — MOS บางลง</h2>
+      <h2>OTA อันดับ 2 มาร์จิ้นดีขึ้นชัดเจน แต่ราคาวิ่งมาไกลแล้ว — MOS ติดลบ</h2>
       <p>Expedia Group เป็นผู้เล่น OTA อันดับ 2 ของโลก รองจาก Booking Holdings ด้วยแบรนด์ Expedia/Hotels.com/Vrbo และโปรแกรม One Key ที่เริ่มเห็นผลด้าน retention/cross-sell
-      ผลประกอบการ Q1 2026 โดดเด่น (Adjusted EBITDA +83% YoY, margin สูงสุดรอบ 10 ปี) ผลักดันราคาขึ้น <b>+49.1% ในรอบปี</b> มาที่ $268.69 ซึ่งใกล้เคียงมูลค่าเหมาะสม $284.70 มาก (MOS เหลือเพียง ~5.6%)
-      แม้ยังเทรดที่ส่วนลดจาก BKNG อย่างมีนัยสำคัญ (EV/EBITDA ~7.8x เทียบ ~12.9x) แต่หลังราคารีเรทไปมากแล้ว ส่วนเผื่อความปลอดภัยจึงบางลง เหมาะรอจังหวะย่อมากกว่าไล่ซื้อที่ราคาปัจจุบัน</p>
+      ผลประกอบการ Q1 2026 โดดเด่น (Adjusted EBITDA +83% YoY, margin สูงสุดรอบ 10 ปี) ผลักดันราคาขึ้น <b>+36.9% ในรอบปี</b> มาที่ $294.10 ซึ่งแซงมูลค่าเหมาะสม $284.70 ไปแล้วเล็กน้อย (MOS ติดลบ ~3.3%)
+      แม้ยังเทรดที่ส่วนลดจาก BKNG อย่างมีนัยสำคัญ (EV/EBITDA ~7.8x เทียบ ~12.9x) แต่หลังราคารีเรทไปมากแล้ว ส่วนเผื่อความปลอดภัยจึงหมดไป เหมาะรอจังหวะย่อมากกว่าไล่ซื้อที่ราคาปัจจุบัน</p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$284.70 <span style="font-size:12px;color:#cab9a8">($281–$288)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +5.6%</div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffab91">MOS ~ −3.3%</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$286.21 (Buy)</div></div>
       </div>
       <div class="zone">
-        💡 <b>กลยุทธ์:</b> ไม่เหมาะไล่ซื้อที่ระดับปัจจุบัน ($268.69) เนื่องจาก MOS บางมาก · รอทยอยสะสมที่โซน MOS 20% (~$228) หรือต่ำกว่า · ติดตามเทรนด์ B2B growth, EBITDA margin และความคืบหน้า One Key รายไตรมาสเพื่อประเมินโอกาส re-rate เทียบ BKNG
+        💡 <b>กลยุทธ์:</b> ไม่เหมาะไล่ซื้อที่ระดับปัจจุบัน ($294.10) เนื่องจาก MOS ติดลบแล้ว · รอทยอยสะสมที่โซน MOS 20% (~$228) หรือต่ำกว่า · ติดตามเทรนด์ B2B growth, EBITDA margin และความคืบหน้า One Key รายไตรมาสเพื่อประเมินโอกาส re-rate เทียบ BKNG
       </div>
     </div>
   </section>
@@ -324,7 +324,7 @@
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
     ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ที่มาข้อมูล: StockAnalysis.com, Yahoo Finance, SEC 8-K (Expedia Group Q1 2026/Q4 2025 earnings release)
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ 2 ก.ค. 2026 • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 30 ก.ค. 2026 • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
