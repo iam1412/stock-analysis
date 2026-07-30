@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>วิเคราะห์หุ้น FactSet Research Systems (FDS) — Stock Analysis Dashboard</title>
 <!-- ★ ใส่รุ่นโมเดล AI ที่ใช้วิเคราะห์จริง (Opus→"Claude Opus 4.8", Sonnet→"Claude Sonnet 4.6") — gate E28 บังคับ -->
-<meta name="ai-model" content="Claude Sonnet 4.6">
+<meta name="ai-model" content="Claude Sonnet 5">
 <!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
 <script type="application/json" id="stock-meta">
-{"symbol":"FDS","currency":"USD","price":264.44,"fairValue":278.07,"mos":4.9,"upside":5.2,"pe":16.47,"dividendYield":1.86,"roe":27.03}
+{"symbol":"FDS","currency":"USD","price":267.15,"fairValue":278.07,"mos":3.9,"upside":4.1,"pe":16.47,"dividendYield":1.86,"roe":27.03}
 </script>
 <script type="application/json" id="report-data">
 {
@@ -38,7 +38,7 @@
       ["เม.ย.26", 227.58],
       ["พ.ค.26", 245.47],
       ["มิ.ย.26", 230.08],
-      ["ก.ค.26", 264.44]
+      ["ก.ค.26", 267.15]
     ],
     "min": 200,
     "max": 400,
@@ -50,7 +50,7 @@
   "gauge": {
     "min": 180,
     "max": 300,
-    "cur": 264.44,
+    "cur": 267.15,
     "fair": 278.07,
     "fairLabelTop": true
   },
@@ -75,12 +75,12 @@
     <div class="sub">FactSet Workstation — ข้อมูลการเงิน/วิเคราะห์/วิจัยสำหรับนักลงทุนสถาบัน • Portfolio Analytics & Risk • Wealth & Asset Management solutions • Content & data feeds (API/CTS) • เพิ่งประกาศพันธมิตร Google Cloud/Gemini (มิ.ย. 2569)</div>
     <div class="price-row">
       <div>
-        <div class="px">$264.44<small>(FDS)</small></div>
+        <div class="px">$267.15<small>(FDS)</small></div>
       </div>
       <!-- ★ ป้าย % รอบปี (gate E35/E36) — ผลตอบแทน ~1 ปี (เทียบราคา ~1 ปีก่อน) = ผลตอบแทนปลายกราฟ section 2 (จุดแรก→ท้าย)
            รูปแบบ: "▲ +X.X% (รอบปี)" ขึ้น · "▼ −X.X% (รอบปี)" ลง · "≈ ทรงตัว (รอบปี)" · หุ้น IPO <1 ปี ใช้ "(ตั้งแต่ IPO)"
            ไม่ใช่ % รายวัน/YTD/52 สัปดาห์ · ตั้งสี theme.chgBg/chgColor ให้ตรงทิศ (ขึ้น=เขียว/ลง=แดง · E34) -->
-      <div class="chg">▼ −29.2% (รอบปี)</div>
+      <div class="chg">▼ −28.4% (รอบปี)</div>
       <div class="px-meta">
         ราคา ณ 30 ก.ค. 2569<br>
         กรอบ 52 สัปดาห์ $185.00 – $453.41<br>
@@ -173,7 +173,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $264.44</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $267.15</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $278.07</div></div>
         </div>
         <div class="scale">
@@ -185,7 +185,7 @@
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคาปัจจุบัน $250.09 อยู่ต่ำกว่า Fair Value ($278.07) และต่ำกว่าเป้าเฉลี่ยนักวิเคราะห์ 12 เดือน ($292.40 ตาม StockAnalysis.com, 10 analysts) — นักวิเคราะห์ให้เรตติ้งผสม (Strong Buy 1, Hold 6, Strong Sell 3)
+        ราคาปัจจุบัน $267.15 อยู่ต่ำกว่า Fair Value ($278.07) และต่ำกว่าเป้าเฉลี่ยนักวิเคราะห์ 12 เดือน ($292.40 ตาม StockAnalysis.com, 10 analysts) — นักวิเคราะห์ให้เรตติ้งผสม (Strong Buy 1, Hold 6, Strong Sell 3)
         สะท้อนความเห็นแตกแยกเรื่องผลกระทบ AI ต่อโมเดลธุรกิจ subscription data ระยะยาว (แหล่งอื่นให้เป้าเฉลี่ยต่ำกว่านี้ เช่น MarketBeat ~$267.69 จากมุมมอง Reduce)
       </p>
     </div>
@@ -197,7 +197,7 @@
     <div class="card">
       <!-- ✏️ class ของ mos-verdict: MOS<10 → "bad", 10–20 → "ok", ≥20 → "good" -->
       <div class="mos-verdict ok">
-        <div class="big">+5%</div>
+        <div class="big">+4%</div>
         <div class="txt">MOS ระดับปานกลาง — ราคาต่ำกว่ามูลค่าเหมาะสมพอสมควร แต่ยังไม่ถึงระดับ "ถูกมาก" ที่ควรทยอยสะสมหนัก</div>
       </div>
       <div class="grid g3">
@@ -208,7 +208,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="264.44" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="267.15" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -217,13 +217,13 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $250.09 • EPS ฐาน ~$15.19 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $267.15 • EPS ฐาน ~$15.19 • รวมปันผล</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS -2%/ปี</span></div>
         <div class="body">
           <div class="tgt">$185.86</div>
-          <div class="ret neg">-25.7%</div>
+          <div class="ret neg">-30.4%</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$14.30</span></li>
             <li><span>P/E ออก</span><span>13x</span></li>
@@ -236,7 +236,7 @@
         <div class="top"><span>⚖️ Base</span><span>EPS +8%/ปี</span></div>
         <div class="body">
           <div class="tgt">$344.43</div>
-          <div class="ret pos">+37.7%</div>
+          <div class="ret pos">+28.9%</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$19.14</span></li>
             <li><span>P/E ออก</span><span>18x</span></li>
@@ -249,7 +249,7 @@
         <div class="top"><span>🚀 Bull</span><span>EPS +14%/ปี</span></div>
         <div class="body">
           <div class="tgt">$540.11</div>
-          <div class="ret pos">+116.0%</div>
+          <div class="ret pos">+102.2%</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$22.50</span></li>
             <li><span>P/E ออก</span><span>24x</span></li>
@@ -305,11 +305,11 @@
       <h2>น่าสนใจ — Value Play ในธุรกิจ Moat แข็งที่ถูก AI-fear กดราคาเกินจริง</h2>
       <p>FactSet เป็นตัวอย่าง classic "AI-fear de-rate" คล้าย RELX/MSCI/SPGI: ราคาร่วง −32% ในรอบปีจากความกลัวว่า LLM จะทำลายธุรกิจ subscription research
       แต่ปัจจัยพื้นฐาน (ROE ~27%, operating margin ~31–35%, ปันผลเพิ่มต่อเนื่อง 25+ ปี, moat จาก switching cost สูง) ยังแข็งแรง และล่าสุดบริษัทเลือกเดินเกม
-      "ผนวก AI เข้าเป็นส่วนหนึ่งของ Workstation" ผ่านพันธมิตร Google Cloud/Gemini แทนที่จะถูก AI แทนที่ — MOS ~10% ยังไม่ใช่ deep value แต่ valuation
+      "ผนวก AI เข้าเป็นส่วนหนึ่งของ Workstation" ผ่านพันธมิตร Google Cloud/Gemini แทนที่จะถูก AI แทนที่ — MOS ~4% ยังไม่ใช่ deep value แต่ valuation
       ที่ต่ำกว่าเฉลี่ย 5 ปีและต่ำกว่า peers มากเมื่อเทียบ ROE ที่ยังสูง ทำให้เป็นจุดเข้าที่สมเหตุสมผลสำหรับนักลงทุนระยะยาวที่รับความเสี่ยง AI disruption ได้</p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$278.07 <span style="font-size:12px;color:#cab9a8">($278.07–$288.61)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +10.06%</div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +3.9%</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$292.40 (Hold เฉลี่ย)</div></div>
       </div>
       <div class="zone">
@@ -325,7 +325,7 @@
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
     ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • แหล่งข้อมูล: Yahoo Finance (finance.yahoo.com/quote/FDS), StockAnalysis.com (stockanalysis.com/stocks/fds), FactSet Investor Relations (investor.factset.com), WallStreetZen (analyst targets), Macrotrends (P/E history)
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ 2 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 31 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
