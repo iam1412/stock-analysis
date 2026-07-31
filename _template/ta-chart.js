@@ -185,7 +185,8 @@
       rightPriceScale: { borderColor: '#eef1f5' },
     }));
     var rsiSeries = line(rsiChart, '#7b1fa2', 2);
-    [30, 70].forEach(function (lv) { rsiSeries.createPriceLine({ price: lv, color: '#c9ced6', lineStyle: 3, lineWidth: 1, title: String(lv) }); });
+    // เส้น 30/70 ไม่ใส่ label (เคยซ้ำซ้อน "70|70.00" — user ทัก) — เส้นประ+แถบโซนสื่อระดับพอแล้ว
+    [30, 70].forEach(function (lv) { rsiSeries.createPriceLine({ price: lv, color: '#c9ced6', lineStyle: 3, lineWidth: 1, axisLabelVisible: false, title: '' }); });
     // แถบพื้นหลังโซนปกติ RSI 30–70 (ม่วงจางตามสีเส้น) — นอกแถบ = โซน oversold/overbought เห็นชัดทันที
     var rsiZonePrim = {
       updateAllViews: function () {},
