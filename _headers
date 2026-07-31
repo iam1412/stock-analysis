@@ -9,3 +9,7 @@
 # รายงาน HTML — ให้ revalidate เสมอ เพื่อให้เห็นรายงานล่าสุด
 /*.html
   Cache-Control: public, max-age=0, must-revalidate
+
+# JS bundle มี hash ในชื่อไฟล์ — cache ยาวได้เต็มที่
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable

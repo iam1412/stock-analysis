@@ -179,6 +179,14 @@ function extractMetrics(html) {
   return { mos: num(o.mos), upside: num(o.upside), pe: num(o.pe), dividendYield: num(o.dividendYield), roe: num(o.roe), market };
 }
 
+// อ่าน JSON block ตาม id แบบดิบ (ไม่กรอง field) — ใช้เตรียมข้อมูลให้ injectTA (ต้องการ currency ดิบจาก
+// stock-meta และทั้งก้อน report-data ที่ extractMetrics/expandReport ไม่ได้ return ออกมา)
+function parseJsonScript(html, id) {
+  const m = html.match(new RegExp(`<script[^>]*\\bid=["']${id}["'][^>]*>([\\s\\S]*?)<\\/script>`, 'i'));
+  if (!m) return null;
+  try { return JSON.parse(m[1]); } catch { return null; }
+}
+
 // แทรกแถบติดต่อ + ลิงก์กลับหน้ารวม + ตัวนับยอดวิว + ปุ่ม Like/Dislike ในแต่ละหน้ารายงาน
 // ถ้ามี <footer> เดิมอยู่แล้ว → ต่อท้ายเข้าไปข้างใน (ขึ้นบรรทัดใหม่) ไม่สร้าง footer ซ้อน
 function injectContactFooter(html) {
@@ -201,6 +209,18 @@ function injectContactFooter(html) {
     `font-family:'Sarabun',system-ui,-apple-system,Segoe UI,sans-serif;font-size:12px;color:#5f6675">${link}</footer>\n`;
   const bi = html.toLowerCase().lastIndexOf('</body>');
   return bi === -1 ? html + bar : html.slice(0, bi) + bar + html.slice(bi);
+}
+
+// inject config + script TA เฉพาะรายงานแบบ template ใน dist (source ยัง content-only)
+// currency มาจาก stock-meta (ISO) · dec = ทศนิยมราคา (THB 2 ตำแหน่ง, ราคา<1 = 4)
+function injectTA(html, symbol, rd, meta, taAsset) {
+  if (!rd) return html;                       // รายงาน legacy (ไม่มี report-data) → ข้าม
+  const cur = meta && meta.currency === 'THB' ? 'THB' : 'USD';
+  const px = rd.gauge && rd.gauge.cur || 0;
+  const dec = px && px < 1 ? 4 : 2;
+  const t = { ...THEME_DEFAULTS, ...(rd.theme || {}) };
+  const cfg = { sym: symbol, cur, fv: rd.fv, accent: t.accent, accentDark: t.accentDark, dec };
+  return html.replace('</body>', `<script>window.__TA_CFG__=${JSON.stringify(cfg)}</script>\n<script defer src="/${taAsset}"></script>\n</body>`);
 }
 
 // แทรก <style> ของปุ่มโหวตเข้าไปใน <head>
@@ -371,7 +391,7 @@ function computeLeaders(reps) {
 }
 
 // export ฟังก์ชันให้ unit-test (test/build-test.js) — ต้องอยู่ก่อนโค้ดที่รัน build จริง
-module.exports = { extractMeta, extractMetrics, freshHash, injectModelCredit, injectContactFooter, decorateReport, pickHighlight, computeLeaders, HL_DEFS, AI_MODEL, AI_MAKER, expandReport, renderHead, renderEngine, validateReportData, THEME_DEFAULTS };
+module.exports = { extractMeta, extractMetrics, freshHash, injectModelCredit, injectContactFooter, injectTA, parseJsonScript, decorateReport, pickHighlight, computeLeaders, HL_DEFS, AI_MODEL, AI_MAKER, expandReport, renderHead, renderEngine, validateReportData, THEME_DEFAULTS };
 // ถูก require เข้ามาเพื่อเทส → ส่งออกฟังก์ชันแล้วหยุด ไม่รัน build (top-level return ใช้ได้ใน CommonJS module)
 if (require.main !== module) return;
 
@@ -390,6 +410,16 @@ if (fs.existsSync(MANIFEST)) {
 }
 const nowISO = new Date().toISOString();
 
+// ---- 2.5) TA chart bundle: vendor + engine + glue → ไฟล์ shared เดียว (immutable cache ข้ามทุกรายงาน) ----
+// ทำก่อน loop รายงาน (ข้อ 3) เพราะแต่ละรายงานต้อง inject <script src="/{TA_ASSET}"> ที่รู้ hash แล้ว
+const taSrc = ['vendor/lightweight-charts.standalone.production.js', 'ta-engine.js', 'ta-chart.js']
+  .map((f) => fs.readFileSync(path.join(ROOT, '_template', f), 'utf8')).join('\n;\n');
+const taHash = crypto.createHash('sha256').update(taSrc).digest('hex').slice(0, 8);
+const TA_ASSET = `assets/ta-${taHash}.js`;
+fs.mkdirSync(path.join(OUT, 'assets'), { recursive: true });
+fs.writeFileSync(path.join(OUT, 'assets', `ta-${taHash}.js`), taSrc);
+log('assets:', TA_ASSET);
+
 // ---- 3) อ่านรายงานจาก reports/ → flatten ลง dist/ ----
 const reports = [];
 if (fs.existsSync(REPORTS_DIR)) {
@@ -405,8 +435,12 @@ if (fs.existsSync(REPORTS_DIR)) {
 
     const rec = { symbol, file: entry.name, ...extractMeta(content, symbol), metrics: extractMetrics(content), updated, hash: h };
     reports.push(rec);
+    // report-data/stock-meta ดิบ (จาก source ต้นฉบับ) → ให้ injectTA ประกอบ __TA_CFG__ ; รายงาน legacy (ไม่มี report-data) → rd=null → injectTA ข้าม
+    const rd = parseJsonScript(content, 'report-data');
+    const meta = parseJsonScript(content, 'stock-meta');
     // expandReport: source แบบ template (content-only) → inject โครงที่ใช้ร่วม ; source เก่า → identity (ไม่เปลี่ยน)
-    fs.writeFileSync(path.join(OUT, entry.name), decorateReport(expandReport(content), rec)); // hash อิงต้นฉบับ, share meta+footer+ตัวนับใส่เฉพาะใน dist
+    // injectTA ครอบผลลัพธ์สุดท้าย เพิ่ม __TA_CFG__ + <script src="/assets/ta-*.js"> เฉพาะใน dist (เหมือน decorateReport)
+    fs.writeFileSync(path.join(OUT, entry.name), injectTA(decorateReport(expandReport(content), rec), symbol, rd, meta, TA_ASSET)); // hash อิงต้นฉบับ, share meta+footer+ตัวนับ+TA ใส่เฉพาะใน dist
     log('report:', entry.name, updated === nowISO ? '(updated)' : '');
   }
 } else {

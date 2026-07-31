@@ -40,7 +40,11 @@ function checkSecurityStructure(html, name, isReport) {
     const url = m[1];
     if (!FONT_ALLOW.test(url)) errors.push(`external resource ไม่อนุญาต: ${url} (อนุญาตเฉพาะ Google Fonts https)`);
   }
-  if (/<script[^>]*\bsrc\s*=/i.test(html)) errors.push('พบ <script src=…> ภายนอก (เสี่ยง supply-chain) — ห้าม');
+  // <script src=…> อนุญาตเฉพาะ bundle TA ของเราเอง (same-origin, ชื่อไฟล์มี hash) — อย่างอื่นถือเป็นความเสี่ยง supply-chain
+  const TA_SCRIPT_SRC = /^\/assets\/ta-[0-9a-f]{8}\.js$/;
+  for (const m of html.matchAll(/<script[^>]*\bsrc\s*=\s*["']([^"']+)["'][^>]*>/gi)) {
+    if (!TA_SCRIPT_SRC.test(m[1])) errors.push(`พบ <script src="${m[1]}"> ที่ไม่อนุญาต (เสี่ยง supply-chain) — ห้าม`);
+  }
 
   // script parse + referenced ids
   for (const m of html.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/gi)) {
@@ -143,6 +147,50 @@ function checkMetricsCards(indexHtml, distDir, distSyms) {
   return { errors, warnings };
 }
 
+// ---- TA chart bundle + inject (build.js §2.5/§injectTA) ----
+//   1) dist/assets/ ต้องมี bundle ta-*.js อยู่ไฟล์เดียว (shared, hashed)
+//   2) สุ่มรายงานแบบ template (มีบล็อก report-data) 1 ไฟล์ใน dist → ต้องมี __TA_CFG__ + <script src> ชี้ไฟล์ bundle จริง
+//   3) source ใน reports/ ต้องไม่มี __TA_CFG__ เลย (กัน inject รั่วเข้า source — ต้องอยู่แค่ dist)
+function checkTaBundle(distDir, reportsDir, srcSyms) {
+  const errors = [], warnings = [];
+
+  const assetsDir = path.join(distDir, 'assets');
+  let taFiles = [];
+  if (!fs.existsSync(assetsDir)) {
+    errors.push('dist/assets/ ไม่มี — build wiring ของ TA bundle หาย');
+  } else {
+    taFiles = fs.readdirSync(assetsDir).filter((f) => /^ta-[0-9a-f]{8}\.js$/.test(f));
+    if (taFiles.length !== 1) errors.push(`dist/assets/ ต้องมีไฟล์ ta-*.js เดียว — พบ ${taFiles.length} ไฟล์ (${taFiles.join(', ') || 'ไม่มี'})`);
+  }
+
+  if (taFiles.length === 1) {
+    const taFile = taFiles[0];
+    // สุ่มรายงาน template 1 ไฟล์ (มีบล็อก report-data = ผ่าน expandReport แล้วยังเหลือ marker script เดิม)
+    const templateSym = srcSyms.find((s) => {
+      const p = path.join(distDir, s + '.html');
+      return fs.existsSync(p) && /<script[^>]*\bid=["']report-data["']/i.test(fs.readFileSync(p, 'utf8'));
+    });
+    if (!templateSym) {
+      warnings.push('ไม่พบรายงานแบบ template (report-data) ใน dist เพื่อสุ่มตรวจ __TA_CFG__');
+    } else {
+      const html = fs.readFileSync(path.join(distDir, templateSym + '.html'), 'utf8');
+      if (!/window\.__TA_CFG__\s*=/.test(html)) errors.push(`${templateSym}: dist ไม่มี window.__TA_CFG__ (inject TA พัง)`);
+      const srcM = html.match(/<script[^>]*\bdefer\s+src=["']\/assets\/(ta-[0-9a-f]{8}\.js)["'][^>]*>/i);
+      if (!srcM) errors.push(`${templateSym}: dist ไม่มี <script defer src="/assets/ta-*.js"> ที่ถูกรูปแบบ`);
+      else if (srcM[1] !== taFile) errors.push(`${templateSym}: script src ชี้ ${srcM[1]} แต่ bundle จริงคือ ${taFile} (hash ไม่ตรง)`);
+    }
+  }
+
+  // source รั่ว: reports/ (ต้นฉบับ) ต้อง content-only เสมอ — ห้ามมี __TA_CFG__ (inject เฉพาะ dist เท่านั้น)
+  for (const s of srcSyms) {
+    const src = path.join(reportsDir, s + '.html');
+    if (fs.existsSync(src) && /__TA_CFG__/.test(fs.readFileSync(src, 'utf8')))
+      errors.push(`${s}: reports/ (source) มี __TA_CFG__ หลุดเข้ามา — inject ต้องอยู่แค่ dist/`);
+  }
+
+  return { errors, warnings };
+}
+
 function main() {
   if (!fs.existsSync(DIST)) { console.error('❌ ไม่พบ dist/ — รัน `node build.js` ก่อน'); process.exit(1); }
 
@@ -181,6 +229,9 @@ function main() {
   for (const s of distSyms) if (!A.has(s)) cov.errors.push(`${s}: อยู่ใน dist/ แต่ไม่มีต้นฉบับใน reports/ (ไฟล์ค้าง)`);
   add('site (coverage)', cov);
 
+  // 1.4) TA chart bundle: dist มี bundle เดียว + inject ถูกไฟล์ + ไม่รั่วเข้า source
+  add('site (ta chart)', checkTaBundle(DIST, REPORTS_DIR, srcSyms));
+
   // 1.5) metric บนการ์ด index = stock-meta ของ report (build wiring ถูกต้อง)
   if (indexHtml) add('site (metric cards)', checkMetricsCards(indexHtml, DIST, distSyms));
 
@@ -216,4 +267,4 @@ function main() {
 }
 
 if (require.main === module) main();
-module.exports = { checkSecurityStructure, checkRender, checkModelCredit, checkMetricsCards };
+module.exports = { checkSecurityStructure, checkRender, checkModelCredit, checkMetricsCards, checkTaBundle };
