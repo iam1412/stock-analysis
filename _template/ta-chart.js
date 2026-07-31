@@ -283,14 +283,27 @@
       chart.priceScale('right').applyOptions({ mode: logOn ? 1 : 0 });
       el.classList.toggle('on', logOn);
     }));
-    if (chart.takeScreenshot) actWrap.appendChild(mkBtn('📷', 'บันทึกรูปกราฟ (PNG)', function () {
-      var c1 = chart.takeScreenshot();
-      var c2 = rsiEl.style.display === 'none' ? null : rsiChart.takeScreenshot();
+    // บันทึกรูป: compose จาก canvas จริงบนจอ (WYSIWYG — takeScreenshot() ของ LWC re-render เอง
+    // แล้วป้าย FV/MOS/band/ลายน้ำที่วาดผ่าน primitive หายจากรูป — user เจอ 1 ส.ค. 2569)
+    actWrap.appendChild(mkBtn('📷', 'บันทึกรูปกราฟ (PNG)', function () {
+      var dpr = window.devicePixelRatio || 1;
+      var parts = [priceEl];
+      if (rsiEl.style.display !== 'none') parts.push(rsiEl);
+      var W = 0, H = 0;
+      parts.forEach(function (el) { var r = el.getBoundingClientRect(); W = Math.max(W, r.width); H += r.height; });
       var cv = document.createElement('canvas');
-      cv.width = Math.max(c1.width, c2 ? c2.width : 0); cv.height = c1.height + (c2 ? c2.height : 0);
+      cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
       var cx = cv.getContext('2d');
       cx.fillStyle = '#ffffff'; cx.fillRect(0, 0, cv.width, cv.height);
-      cx.drawImage(c1, 0, 0); if (c2) cx.drawImage(c2, 0, c1.height);
+      var yOff = 0;
+      parts.forEach(function (el) {
+        var baseR = el.getBoundingClientRect();
+        el.querySelectorAll('canvas').forEach(function (c2) {
+          var r = c2.getBoundingClientRect();
+          cx.drawImage(c2, Math.round((r.left - baseR.left) * dpr), Math.round((r.top - baseR.top) * dpr) + yOff, Math.round(r.width * dpr), Math.round(r.height * dpr));
+        });
+        yOff += Math.round(baseR.height * dpr);
+      });
       var a = document.createElement('a');
       a.download = CFG.sym + '-chart.png'; a.href = cv.toDataURL('image/png'); a.click();
     }));
