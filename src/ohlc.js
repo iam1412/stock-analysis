@@ -1,9 +1,14 @@
 // src/ohlc.js — แปลงข้อมูล Yahoo chart API → payload กะทัดรัดสำหรับกราฟ TA
 // pure ESM ไม่ import cloudflare:* → unit test ใน node ได้ (test/ohlc-test.js)
+import SYMBOL_MAP from '../tools/symbol-map.json' with { type: 'json' };
+
 export const OHLC_CACHE_TTL = 21600; // edge cache 6 ชม. — สมดุลความสด vs กัน Yahoo ล่ม
 
-// THB = ตลาดไทย → Yahoo ใช้ suffix .BK (ตรรกะเดียวกับ tools/update-prices.js toYahooSymbol)
+// THB = ตลาดไทย → Yahoo ใช้ suffix .BK · หุ้นเปลี่ยนชื่อ/ปรับโครงสร้างใช้ override จาก tools/symbol-map.json
+// (ตรรกะเดียวกับ toYahooSymbol ใน tools/update-prices.js — map ก่อน แล้วค่อย suffix)
 export function toYahoo(sym, cur) {
+  const m = SYMBOL_MAP[sym];
+  if (m && m.yahoo) return m.yahoo;
   return cur === 'THB' ? `${sym}.BK` : sym;
 }
 

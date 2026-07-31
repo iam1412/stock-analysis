@@ -22,6 +22,10 @@ const FIX = { chart: { result: [{ meta: { currency: 'USD', symbol: 'TEST' },
   assert.equal(toYahoo('PTT', 'THB'), 'PTT.BK');
   assert.equal(toYahoo('AAPL', 'USD'), 'AAPL');
 
+  // symbol-map override: หุ้นเปลี่ยนชื่อต้องได้ ticker ใหม่ (BKI→BKIH.BK ไทย, LANC→MZTI US)
+  assert.equal(toYahoo('BKI', 'THB'), 'BKIH.BK');
+  assert.equal(toYahoo('LANC', 'USD'), 'MZTI');
+
   const out = transformChart(FIX);
   assert.equal(out.sym, 'TEST');
   assert.equal(out.currency, 'USD');
@@ -33,5 +37,10 @@ const FIX = { chart: { result: [{ meta: { currency: 'USD', symbol: 'TEST' },
 
   // payload เสีย → ต้อง throw (worker จะจับไปตอบ 503)
   assert.throws(() => transformChart({ chart: { result: null, error: { code: 'Not Found' } } }));
+
+  // แท่งข้อมูลไม่พอ (<2 แท่ง valid) → throw
+  assert.throws(() => transformChart({ chart: { result: [{ meta: {}, timestamp: [1700000000],
+    indicators: { quote: [{ open: [1], high: [1], low: [1], close: [1], volume: [1] }] } }], error: null } }));
+
   console.log('✅ ohlc-test ผ่าน');
 })().catch((e) => { console.error('✗', e.message); process.exit(1); });
