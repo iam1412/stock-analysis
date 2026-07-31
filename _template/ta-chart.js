@@ -186,6 +186,28 @@
     }));
     var rsiSeries = line(rsiChart, '#7b1fa2', 2);
     [30, 70].forEach(function (lv) { rsiSeries.createPriceLine({ price: lv, color: '#c9ced6', lineStyle: 3, lineWidth: 1, title: String(lv) }); });
+    // แถบพื้นหลังโซนปกติ RSI 30–70 (ม่วงจางตามสีเส้น) — นอกแถบ = โซน oversold/overbought เห็นชัดทันที
+    var rsiZonePrim = {
+      updateAllViews: function () {},
+      paneViews: function () {
+        return [{
+          zOrder: function () { return 'bottom'; },
+          renderer: function () {
+            return {
+              draw: function (target) {
+                target.useMediaCoordinateSpace(function (scope) {
+                  var y70 = rsiSeries.priceToCoordinate(70), y30 = rsiSeries.priceToCoordinate(30);
+                  if (y70 == null || y30 == null) return;
+                  scope.context.fillStyle = 'rgba(123,31,162,.07)';
+                  scope.context.fillRect(0, y70, scope.mediaSize.width, y30 - y70);
+                });
+              },
+            };
+          },
+        }];
+      },
+    };
+    if (rsiSeries.attachPrimitive) rsiSeries.attachPrimitive(rsiZonePrim);
     // เส้น divergence อิง index รายวัน — โชว์เฉพาะ TF D (TF อื่นแกนเวลาไม่ตรงกัน)
     var divSeries = divs.map(function (dv) {
       var s = rsiChart.addSeries(LWC.LineSeries, { color: dv.type === 'bull' ? '#137333' : '#c5221f', lineWidth: 1, lineStyle: 2, priceLineVisible: false, lastValueVisible: false });
