@@ -1,0 +1,90 @@
+#!/usr/bin/env node
+'use strict';
+// ta-engine-test.js — ตรึงนิยาม TA ให้ deterministic (สเปกอยู่ใน docs/superpowers/specs/2026-08-01-ta-chart-design.md)
+const assert = require('node:assert');
+const TA = require('../_template/ta-engine.js');
+const close = (a, b, eps = 1e-6) => assert.ok(Math.abs(a - b) < eps, `${a} ≉ ${b}`);
+
+// ── ema: seed = SMA(period) แล้วไล่ k=2/(period+1) — เทียบค่าคำนวณมือ
+{
+  const e = TA.ema([1, 2, 3, 4, 5, 6], 3);
+  assert.equal(e[0], null); assert.equal(e[1], null);
+  close(e[2], 2);                    // SMA(1,2,3)
+  close(e[3], 3);                    // 2 + (4-2)*0.5
+  close(e[4], 4); close(e[5], 5);
+  assert.equal(e.length, 6);
+}
+// ── rsi: ขึ้นล้วน = 100 · ลงล้วน = 0 · สลับ +1/-1 สมมาตร → แกว่งรอบ 50 (Wilder เหลื่อมเฟส ไม่ใช่ 50 พอดี)
+{
+  const up = TA.rsi(Array.from({ length: 20 }, (_, i) => 10 + i), 14);
+  assert.equal(up[13], null, 'index < period ยังไม่มีค่า');
+  close(up[14], 100);
+  const dn = TA.rsi(Array.from({ length: 20 }, (_, i) => 30 - i), 14);
+  close(dn[14], 0);
+  const alt = TA.rsi(Array.from({ length: 40 }, (_, i) => 10 + (i % 2)), 14);
+  assert.ok(alt[39] > 45 && alt[39] < 55, 'สลับขึ้นลงสมมาตร → RSI อยู่ย่านกลาง');
+}
+// ── findPivots: zigzag สังเคราะห์ — ยอดที่ i=5 (สูง 20) และแอ่งที่ i=10 (ต่ำ 5)
+{
+  const hi = [10,11,12,13,14,20,14,13,12,11, 8, 9,10,11,12,13];
+  const lo = hi.map((x) => x - 2);
+  const pv = TA.findPivots(hi, lo, 3);
+  assert.deepEqual(pv.map((p) => [p.i, p.type]), [[5, 'H'], [10, 'L']]);
+  close(pv[0].price, 20); close(pv[1].price, 6);
+}
+// ── labelStructure: H สองตัว 20→25 = HH · L สองตัว 6→8 = HL
+{
+  const labeled = TA.labelStructure([
+    { i: 5, type: 'H', price: 20 }, { i: 10, type: 'L', price: 6 },
+    { i: 15, type: 'H', price: 25 }, { i: 20, type: 'L', price: 8 },
+    { i: 25, type: 'H', price: 22 }, { i: 30, type: 'L', price: 5 },
+  ]);
+  assert.deepEqual(labeled.map((p) => p.label), [null, null, 'HH', 'HL', 'LH', 'LL']);
+}
+// ── detectBreaks: ขาขึ้น (HH/HL) แล้วปิดหลุด swing low ล่าสุด = CHoCH ลง · ทะลุ swing high ตามเทรนด์ = BOS ขึ้น
+{
+  const pivots = [
+    { i: 2, type: 'L', price: 10 }, { i: 5, type: 'H', price: 20 },
+    { i: 8, type: 'L', price: 14 }, { i: 11, type: 'H', price: 24 },
+  ];
+  // closes ยาว 20: i=10 ปิด 22 ทะลุ H(20) = BOS ขึ้น · i=15 ปิด 25 ทะลุ H(24) = BOS ขึ้นซ้ำตามเทรนด์
+  // · i=18 ปิด 13 หลุด L(14) สวนเทรนด์ขึ้น = CHoCH ลง (BOS เกิดซ้ำได้ทุก swing ที่ถูกทะลุตามเทรนด์ — นิยามใน spec)
+  const closes = [10,11,10,12,15,20,18,16,14,18,22,24,23,22,23,25,20,15,13,12];
+  const ev = TA.detectBreaks(closes, pivots);
+  const bos = ev.filter((e) => e.type === 'BOS');
+  assert.deepEqual(bos.map((e) => [e.i, e.dir, e.level]), [[10, 'up', 20], [15, 'up', 24]]);
+  const choch = ev.find((e) => e.type === 'CHoCH');
+  assert.ok(choch && choch.i === 18 && choch.dir === 'down' && choch.level === 14);
+}
+// ── detectDivergence: price LL แต่ RSI HL = bullish divergence
+{
+  const pivots = [{ i: 3, type: 'L', price: 10 }, { i: 9, type: 'L', price: 9 }];
+  const rsiArr = new Array(12).fill(50); rsiArr[3] = 25; rsiArr[9] = 35;
+  const closes = new Array(12).fill(10);
+  const d = TA.detectDivergence(closes, rsiArr, pivots);
+  assert.equal(d.length, 1);
+  assert.equal(d[0].type, 'bull');
+  assert.deepEqual([d[0].p1.i, d[0].p2.i], [3, 9]);
+}
+// ── summarizeSignals: มี chip EMA + RSI เสมอเมื่อข้อมูลพอ · ห้ามมีคำแนะนำซื้อขาย
+{
+  const closes = Array.from({ length: 120 }, (_, i) => 10 + i * 0.1);
+  const chips = TA.summarizeSignals({
+    closes, ema20: TA.ema(closes, 20), ema50: TA.ema(closes, 50),
+    rsiArr: TA.rsi(closes, 14), breaks: [], divs: [],
+  });
+  assert.ok(chips.length >= 2);
+  assert.ok(chips.some((c) => /EMA/.test(c.label)));
+  assert.ok(chips.some((c) => /RSI/.test(c.label)));
+  for (const c of chips) {
+    assert.ok(['pos', 'neg', 'neu'].includes(c.tone));
+    assert.ok(!/ซื้อ|ขาย|buy|sell/i.test(c.label), 'chip ต้องเป็นข้อเท็จจริง ไม่ใช่คำแนะนำ');
+  }
+}
+// ── ข้อมูลบาง (C6): แท่งน้อย → ไม่ throw, คืนโครงว่าง
+{
+  assert.doesNotThrow(() => TA.ema([1, 2], 20));
+  assert.doesNotThrow(() => TA.rsi([1, 2], 14));
+  assert.deepEqual(TA.findPivots([1, 2], [0, 1], 3), []);
+}
+console.log('✅ ta-engine-test ผ่าน');
