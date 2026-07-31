@@ -1,6 +1,6 @@
 /* ta-chart.js — สลับกราฟ SVG เดิมเป็นกราฟ TA แบบ TradingView (progressive enhancement)
  * กติกาความต่อเนื่อง (spec C1-C8): ล้มเหลวทุกกรณี = คงกราฟ SVG เดิมไว้ ห้ามมี error UI
- * ลูกเล่น (user เคาะ 1 ส.ค. 2569): TF 1H/4H/D/Y · ปุ่ม range/ซูม/รีเซ็ต · OHLC legend · toggle indicator · log scale · บันทึกรูป
+ * ลูกเล่น (user เคาะ 1 ส.ค. 2569): TF 1H/4H/D/W · ปุ่ม range (default 6M) /ซูม/รีเซ็ต · OHLC legend · toggle indicator · log scale · บันทึกรูป
  * chips สัญญาณตรึงคำนวณจากแท่งรายวันเสมอ (บทสรุปมาตรฐานของรายงาน ไม่แกว่งตาม TF ที่กดเล่น) */
 (function () {
   'use strict';
@@ -219,11 +219,14 @@
       var from = Math.max(b.t[0], b.t[last] - mo * 2629800);
       [chart, rsiChart].forEach(function (c) { c.timeScale().setVisibleRange({ from: from, to: b.t[last] }); });
     }
-    var TF_DEF_RANGE = { '1H': 1, '4H': 3, D: 4, Y: 'all' };         // range เริ่มต้นเมื่อสลับ TF
+    var TF_DEF_RANGE = { '1H': 1, '4H': 3, D: 6, W: 12 };            // range เริ่มต้นเมื่อสลับ TF
     function setTF(tf, btn) {
-      var done = function (bars) { setBars(tf, bars); setRangeMonths(TF_DEF_RANGE[tf]); markOn(tfWrap, btn); };
+      var done = function (bars) {
+        setBars(tf, bars); setRangeMonths(TF_DEF_RANGE[tf]);
+        markOn(tfWrap, btn); markOn(rangeWrap, rangeBtns[TF_DEF_RANGE[tf]] || null);
+      };
       if (tf === 'D') return done(daily);
-      if (tf === 'Y') return done(TA.resample(daily, 'Y'));
+      if (tf === 'W') return done(TA.resample(daily, 'W'));
       if (hourly) return done(tf === '4H' ? TA.resample(hourly, '4H') : hourly);
       btn.disabled = true;
       fetchOhlc('H', 8000).then(function (d2) {
@@ -246,14 +249,17 @@
 
     var toolbar = document.createElement('div'); toolbar.className = 'ta-toolbar';
     var tfWrap = group();
-    [['1H', '1H'], ['4H', '4H'], ['D', 'D'], ['Y', 'Y']].forEach(function (t) {
+    [['1H', '1H'], ['4H', '4H'], ['D', 'D'], ['W', 'W']].forEach(function (t) {
       var btn = mkBtn(t[0], 'timeframe ' + t[0], function (el) { setTF(t[1], el); });
       if (t[1] === 'D') btn.classList.add('on');
       tfWrap.appendChild(btn);
     });
-    var rangeWrap = group();
+    var rangeWrap = group(), rangeBtns = {};
     [['1M', 1], ['3M', 3], ['6M', 6], ['1Y', 12], ['3Y', 36]].forEach(function (r) {
-      rangeWrap.appendChild(mkBtn(r[0], 'ดูย้อนหลัง ' + r[0], function (el) { setRangeMonths(r[1]); markOn(rangeWrap, el); }));
+      var btn = mkBtn(r[0], 'ดูย้อนหลัง ' + r[0], function (el) { setRangeMonths(r[1]); markOn(rangeWrap, el); });
+      if (r[1] === 6) btn.classList.add('on');                       // default = 6M (active ตั้งแต่โหลด)
+      rangeBtns[r[1]] = btn;
+      rangeWrap.appendChild(btn);
     });
     var actWrap = group('ta-acts');
     // ปุ่มแว่นขยาย: ซูมยึดขอบขวา (แท่งล่าสุดคาที่เดิม) — user เคาะแบบปุ่มแทน Ctrl+scroll
@@ -267,9 +273,9 @@
     }
     actWrap.appendChild(mkBtn('🔍−', 'ซูมออก', function () { zoom(1.5); }));
     actWrap.appendChild(mkBtn('🔍+', 'ซูมเข้า', function () { zoom(1 / 1.5); }));
-    actWrap.appendChild(mkBtn('รีเซ็ต', 'กลับมุมมองเริ่มต้น (TF D · 4 เดือน)', function () {
-      setBars('D', daily); setRangeMonths(4);
-      markOn(tfWrap, tfWrap.children[2]); markOn(rangeWrap, null);
+    actWrap.appendChild(mkBtn('รีเซ็ต', 'กลับมุมมองเริ่มต้น (TF D · 6 เดือน)', function () {
+      setBars('D', daily); setRangeMonths(6);
+      markOn(tfWrap, tfWrap.children[2]); markOn(rangeWrap, rangeBtns[6]);
     }));
     var logOn = false;
     actWrap.appendChild(mkBtn('Log', 'สลับแกนราคา log/linear', function (el) {
@@ -349,7 +355,7 @@
       // clientWidth/Height ตอนนั้น = 0 ทำให้ canvas ได้ขนาดผิด (สูงเกือบ 0) ต้อง resize() ให้ถูกทันทีหลัง attach จริง
       chart.resize(priceEl.clientWidth, priceEl.clientHeight);
       rsiChart.resize(rsiEl.clientWidth, rsiEl.clientHeight);
-      setRangeMonths(4);                                             // มุมมองเริ่มต้น ~4 เดือน (แท่งเทียนอ่านชัด)
+      setRangeMonths(6);                                             // มุมมองเริ่มต้น 6 เดือน (ตรงปุ่ม 6M ที่ active)
       new ResizeObserver(function () {
         chart.resize(priceEl.clientWidth, priceEl.clientHeight);
         rsiChart.resize(rsiEl.clientWidth, rsiEl.clientHeight);

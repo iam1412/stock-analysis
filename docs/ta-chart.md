@@ -7,7 +7,7 @@
 เส้น FV/MOS 20%/MOS 30% + RSI14 · โครงสร้างราคา (BOS, CHoCH, divergence) สรุปเป็น chips ใต้กราฟ
 (ไม่วาด marker บนกราฟ — feedback user 1 ส.ค. 2569) · band สีเขียว/แดงอ่อนระหว่าง EMA7↔EMA30 ตามทิศ cross
 · viewport เริ่มต้น = ~4 เดือนหลังสุด (เลื่อนย้อนได้ 3 ปี) · ป้าย FV/MOS เขียนบนเส้นชิดขวา
-· **toolbar โต้ตอบได้**: TF 1H/4H/D/Y (1H/4H โหลด `tf=H` lazy · 4H/Y resample ฝั่ง client) + range 1M/3M/6M/1Y/3Y
+· **toolbar โต้ตอบได้**: TF 1H/4H/D/W (1H/4H โหลด `tf=H` lazy · 4H/W resample ฝั่ง client) + range 1M/3M/6M/1Y/3Y (default = 6M, ปุ่ม active)
 + ปุ่มแว่นขยายซูมเข้า-ออก (ยึดแท่งล่าสุด) + ปุ่มรีเซ็ต + log scale + บันทึกรูป PNG (`takeScreenshot` ต่อ 2 pane)
 + OHLC legend ตาม crosshair + toggle เปิด/ปิด EMA แต่ละเส้น/band/volume/RSI
 · **chips สัญญาณตรึงคำนวณจากรายวันเสมอ** ไม่แกว่งตาม TF ที่กดเล่น **โดยไม่แก้ไฟล์รายงานแม้แต่ไฟล์เดียว**
@@ -56,7 +56,7 @@ reports/<SYM>.html (source, content-only) ── build.js ──▶ dist/<SYM>.h
   "bars": { "t": [1700000000, ...], "o": [...], "h": [...], "l": [...], "c": [...], "v": [...] }
 }
 ```
-- `t` = unix seconds (UTC) เรียงจากเก่า→ใหม่ · แท่งที่มี OHLC เป็น `null` (วันข้อมูลขาด/OTC บาง) **ถูกตัดออกตั้งแต่ worker** · ~3 ปีข้อมูล (warm-up EMA200) — client ตั้ง viewport เริ่มต้น = ~90 แท่งหลังสุด (~4 เดือน แท่งเทียนอ่านชัด) ลาก/เลื่อนย้อนดูได้ทั้งหมด
+- `t` = unix seconds (UTC) เรียงจากเก่า→ใหม่ · แท่งที่มี OHLC เป็น `null` (วันข้อมูลขาด/OTC บาง) **ถูกตัดออกตั้งแต่ worker** · ~3 ปีข้อมูล (warm-up EMA200) — client ตั้ง viewport เริ่มต้น = 6 เดือนหลังสุด (ปุ่ม 6M active) ลาก/เลื่อนย้อนดูได้ทั้งหมด
 - `v` = volume, `0` ถ้า Yahoo ไม่ส่งมา
 
 **Error responses** — ทุกเคส client (`ta-chart.js`) ตีความเป็น "fallback SVG" เหมือนกันหมด (ไม่แยก UI ตาม error code)
