@@ -75,6 +75,8 @@ const close = (a, b, eps = 1e-6) => assert.ok(Math.abs(a - b) < eps, `${a} ≉ $
   });
   assert.ok(chips.length >= 3);
   assert.ok(chips.some((c) => /EMA7 > EMA30/.test(c.label) && c.tone === 'pos'));
+  // ป้าย cross ไม่ใช้คำ golden/death แล้ว (user เคาะ 1 ส.ค. 2569) — ทิศบอกด้วยเครื่องหมาย >/< อยู่แล้ว
+  for (const c of chips) assert.ok(!/golden|death/i.test(c.label), 'ห้ามมีคำ golden/death: ' + c.label);
   assert.ok(chips.some((c) => /ราคา > EMA200/.test(c.label) && c.tone === 'pos'));
   assert.ok(chips.some((c) => /RSI/.test(c.label)));
   for (const c of chips) {
@@ -89,6 +91,14 @@ const close = (a, b, eps = 1e-6) => assert.ok(Math.abs(a - b) < eps, `${a} ≉ $
   });
   assert.ok(chips2.some((c) => /EMA7 > EMA30/.test(c.label)));
   assert.ok(!chips2.some((c) => /EMA200/.test(c.label)));
+  // เคสมี cross จริง (V-shape: ลง 80 แท่งแล้วเด้งแรง) → ป้ายรูปแบบใหม่ "(cross N แท่งก่อน)" ห้ามมี golden/death
+  const vshape = Array.from({ length: 120 }, (_, i) => (i < 80 ? 100 - i : 20 + (i - 80) * 3));
+  const chips3 = TA.summarizeSignals({
+    closes: vshape, ema7: TA.ema(vshape, 7), ema30: TA.ema(vshape, 30), ema200: TA.ema(vshape, 200),
+    rsiArr: TA.rsi(vshape, 14), breaks: [], divs: [],
+  });
+  const emaChip = chips3.find((c) => /EMA7/.test(c.label));
+  assert.ok(/^EMA7 > EMA30 \(cross \d+ แท่งก่อน\)$/.test(emaChip.label), 'ป้าย cross รูปแบบใหม่ — พบ: ' + emaChip.label);
 }
 // ── ข้อมูลบาง (C6): แท่งน้อย → ไม่ throw, คืนโครงว่าง
 {

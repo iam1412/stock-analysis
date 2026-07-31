@@ -122,7 +122,8 @@
         if (a <= b !== (s.ema7[i] <= s.ema30[i])) { crossAge = last - i; break; }
       }
       const rel = e7 > e30 ? 'EMA7 > EMA30' : 'EMA7 < EMA30';
-      const cross = crossAge != null ? (e7 > e30 ? ` (golden cross ${crossAge} แท่งก่อน)` : ` (death cross ${crossAge} แท่งก่อน)`) : '';
+      // ไม่ใช้คำ golden/death (user เคาะ 1 ส.ค. 2569) — ทิศบอกด้วย >/< อยู่แล้ว
+      const cross = crossAge != null ? ` (cross ${crossAge} แท่งก่อน)` : '';
       chips.push({ label: rel + cross, tone: e7 > e30 ? 'pos' : 'neg' });
     } else chips.push({ label: 'EMA — ข้อมูลไม่พอ', tone: 'neu' });
     if (e200 != null)

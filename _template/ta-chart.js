@@ -62,9 +62,66 @@
     }
     var pts = function (arr) { return b.t.map(function (t, i) { return arr[i] == null ? null : { time: t, value: arr[i] }; }).filter(Boolean); };
     // EMA 7 เขียว / 30 แดง เส้นบางสุด · EMA200 น้ำเงิน หนา +1 (แนวโน้มระยะยาว)
-    line(chart, pts(ema7), '#137333', 1);
+    var s7 = line(chart, pts(ema7), '#137333', 1);
     line(chart, pts(ema30), '#c5221f', 1);
     line(chart, pts(ema200), '#1a73e8', 2);
+
+    // แถบพื้นระหว่าง EMA7↔EMA30: เขียวอ่อนช่วง 7 อยู่เหนือ 30 / แดงอ่อนช่วงอยู่ใต้ (จางพอไม่บังแท่ง)
+    // วาดด้วย series primitive (zOrder bottom = อยู่หลังทุก series) — คำนวณพิกัดสดทุกเฟรม รองรับ pan/zoom
+    var bandPrim = {
+      updateAllViews: function () {},
+      paneViews: function () {
+        return [{
+          zOrder: function () { return 'bottom'; },
+          renderer: function () {
+            return {
+              draw: function (target) {
+                target.useMediaCoordinateSpace(function (scope) {
+                  var ctx = scope.context;
+                  var ts = chart.timeScale();
+                  var pb = [];
+                  for (var i = 0; i < n; i++) {
+                    if (ema7[i] == null || ema30[i] == null) continue;
+                    var x = ts.timeToCoordinate(b.t[i]);
+                    if (x == null) continue; // นอกจอ — ช่วงที่เห็นเป็น run ต่อเนื่องเสมอ
+                    var y7 = s7.priceToCoordinate(ema7[i]), y30 = s7.priceToCoordinate(ema30[i]);
+                    if (y7 == null || y30 == null) continue;
+                    pb.push({ x: x, y7: y7, y30: y30, d: ema7[i] - ema30[i] });
+                  }
+                  function fillRun(run, up) {
+                    if (run.length < 2) return;
+                    ctx.beginPath();
+                    ctx.moveTo(run[0].x, run[0].y7);
+                    for (var j = 1; j < run.length; j++) ctx.lineTo(run[j].x, run[j].y7);
+                    for (var k2 = run.length - 1; k2 >= 0; k2--) ctx.lineTo(run[k2].x, run[k2].y30);
+                    ctx.closePath();
+                    ctx.fillStyle = up ? 'rgba(19,115,51,.12)' : 'rgba(197,34,31,.12)';
+                    ctx.fill();
+                  }
+                  var run = [], up = null;
+                  for (var k = 0; k < pb.length; k++) {
+                    var p = pb[k], sgn = p.d >= 0;
+                    if (up === null) up = sgn;
+                    if (sgn !== up) { // ตัดกันระหว่างแท่ง — หาจุดตัดเชิงเส้นแล้วปิด run เดิม เริ่ม run ใหม่
+                      var q = pb[k - 1];
+                      var r = q.d === p.d ? 0 : q.d / (q.d - p.d);
+                      var xi = q.x + (p.x - q.x) * r, yi = q.y7 + (p.y7 - q.y7) * r;
+                      run.push({ x: xi, y7: yi, y30: yi });
+                      fillRun(run, up);
+                      run = [{ x: xi, y7: yi, y30: yi }];
+                      up = sgn;
+                    }
+                    run.push(p);
+                  }
+                  fillRun(run, up);
+                });
+              },
+            };
+          },
+        }];
+      },
+    };
+    if (s7.attachPrimitive) s7.attachPrimitive(bandPrim);
     // เส้นอ้างอิงมูลค่า: FV + ระดับราคาที่มีส่วนเผื่อ 20%/30% (โซนสีตามเครื่องคิดเลข MOS ใน engine เดิม)
     candles.createPriceLine({ price: CFG.fv, color: '#1e8e3e', lineStyle: 2, lineWidth: 1, title: 'FV' });
     candles.createPriceLine({ price: CFG.fv * 0.8, color: '#b06000', lineStyle: 1, lineWidth: 1, title: 'MOS 20%' });
@@ -83,8 +140,10 @@
       s.setData([{ time: b.t[dv.p1.i], value: dv.p1.rsi }, { time: b.t[dv.p2.i], value: dv.p2.rsi }]);
     });
 
-    // sync แกนเวลา 2 pane + แสดงเต็มช่วงข้อมูลที่ดึงได้ (~2 ปี) — ไม่ fix 1 ปีแล้ว (user เคาะ 1 ส.ค. 2569)
-    [chart, rsiChart].forEach(function (c) { c.timeScale().fitContent(); });
+    // sync แกนเวลา 2 pane · viewport เริ่มต้น = หลัง warm-up EMA200 (แท่งที่ 200 เป็นต้นไป → เส้นน้ำเงินเต็มจอ)
+    // เลื่อนย้อนดูช่วง warm-up ได้ · ข้อมูลสั้น (IPO) = โชว์ทั้งหมด
+    if (n > 220) [chart, rsiChart].forEach(function (c) { c.timeScale().setVisibleRange({ from: b.t[199], to: b.t[n - 1] }); });
+    else [chart, rsiChart].forEach(function (c) { c.timeScale().fitContent(); });
     chart.timeScale().subscribeVisibleTimeRangeChange(function (r) { if (r) rsiChart.timeScale().setVisibleRange(r); });
 
     // chips สรุปสัญญาณ + attribution (เงื่อนไข license) — ต่อท้ายในการ swap เดียวกัน (C2)

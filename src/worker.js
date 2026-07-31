@@ -181,7 +181,7 @@ export default {
     // ไม่ใช่ API → เสิร์ฟ static (ไฟล์ส่วนใหญ่ถูก edge cache ตัดไปก่อนไม่ถึง Worker อยู่แล้ว)
     if (!p.startsWith('/api/')) return env.ASSETS.fetch(request);
 
-    // GET /api/ohlc/<SYM>?cur=USD|THB — proxy Yahoo 2y/1d สำหรับกราฟ TA (docs/ta-chart.md)
+    // GET /api/ohlc/<SYM>?cur=USD|THB — proxy Yahoo 3y/1d สำหรับกราฟ TA (3 ปี = warm-up EMA200 แล้วเหลือโชว์ ~2 ปีเต็ม · docs/ta-chart.md)
     // ล้มเหลวฝั่งเรา/Yahoo → client fallback ไปกราฟ SVG เดิมเสมอ (สัญญา C3/C4 ใน spec)
     const mOhlc = p.match(/^\/api\/ohlc\/([^/]+)$/);
     if (request.method === 'GET' && mOhlc) {
@@ -201,7 +201,7 @@ export default {
 
       try {
         const y = await fetch(
-          `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(toYahoo(v.sym, cur))}?range=2y&interval=1d`,
+          `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(toYahoo(v.sym, cur))}?range=3y&interval=1d`,
           { headers: { 'User-Agent': 'Mozilla/5.0 (stock-ai chart)' }, signal: AbortSignal.timeout(8000) }
         );
         if (!y.ok) throw new Error('yahoo ' + y.status);

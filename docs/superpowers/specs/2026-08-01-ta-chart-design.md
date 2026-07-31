@@ -18,7 +18,8 @@ TradingView-style: แท่งเทียนรายวัน + volume + EMA 
    คำนวณ → **สลับกราฟในที่เดิม** เมื่อพร้อมเท่านั้น · ล้มเหลวทุกกรณี = SVG เดิมอยู่ครบ
    ผู้ใช้ไม่เห็น error state ใหญ่ ๆ
 2. **ข้อมูลสด ไม่เก็บลง git** — Worker route ใหม่ `GET /api/ohlc/<SYM>?cur=<USD|THB>`
-   proxy Yahoo `range=2y&interval=1d` (2 ปีเพื่อ warm-up EMA/RSI · แสดงเต็มช่วงที่ดึงได้
+   proxy Yahoo `range=3y&interval=1d` (3 ปี = warm-up EMA200 · viewport เริ่มต้นตัด 200 แท่งแรกออก
+   ให้เส้น EMA200 เต็มจอ เลื่อนย้อนได้ · แสดงช่วงที่เหลือเต็ม ~2 ปี
    ไม่ fix 1 ปี — user เคาะ 1 ส.ค. 2569)
    + cache ที่ edge (Cache API) `s-maxage=21600` (6 ชม.) · Yahoo ล่ม → เสิร์ฟ cache เก่า
    → ไม่มี cache → 503 → client fallback SVG
@@ -49,6 +50,8 @@ TradingView-style: แท่งเทียนรายวัน + volume + EMA 
 
 - **EMA 7/30/200**: seed = SMA(period), จากนั้น `k=2/(period+1)` · ค่าเป็น null จนพ้น warm-up
   · สี/ขนาดเส้น: 7 = เขียว บาง (1) · 30 = แดง บาง (1) · 200 = น้ำเงิน หนา (2)
+  · **band ระหว่าง EMA7↔EMA30**: เขียวอ่อน `rgba(19,115,51,.12)` ช่วง 7>30 / แดงอ่อน
+  `rgba(197,34,31,.12)` ช่วง 7<30 — วาดด้วย series primitive zOrder bottom ไม่บังแท่ง
 - **เส้นอ้างอิงมูลค่า**: FV (เขียว dashed เดิม) + MOS 20% = FV×0.8 (amber dotted) + MOS 30% = FV×0.7
   (เขียวเข้ม dotted) — สีตามโซนเครื่องคิดเลข MOS ใน engine เดิม
 - **RSI 14**: Wilder smoothing (avgGain/avgLoss) · null จนพ้น warm-up
@@ -60,7 +63,7 @@ TradingView-style: แท่งเทียนรายวัน + volume + EMA 
   ทิศของ pivots คู่แรก แล้วพลิกเมื่อเกิด CHoCH)
 - **Divergence (regular)**: price LL + RSI HL = bullish · price HH + RSI LH = bearish
   เทียบ pivot ราคา 2 ตัวติดกัน กับค่า RSI ณ แท่ง pivot
-- **แถบสัญญาณ (chips)**: ข้อเท็จจริงล่าสุด เช่น "EMA7 > EMA30 (golden cross X แท่งก่อน)", "ราคา > EMA200",
+- **แถบสัญญาณ (chips)**: ข้อเท็จจริงล่าสุด เช่น "EMA7 > EMA30 (cross X แท่งก่อน)", "ราคา > EMA200",
   "RSI 28 — oversold", "CHoCH ขาขึ้น", "Bullish divergence" · **ภาษาเป็นข้อเท็จจริงเชิงเทคนิค
   ไม่ใช่คำแนะนำซื้อขาย** — disclaimer เดิมของรายงานคงอยู่
 
