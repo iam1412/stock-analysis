@@ -50,7 +50,7 @@
     var chart = LWC.createChart(priceEl, base);
     // ลายน้ำกลางกราฟ: ชื่อหุ้นตัวใหญ่ + โดเมนเว็บบรรทัดล่าง — สีจางไม่บังแท่ง (v5 createTextWatermark)
     if (LWC.createTextWatermark && chart.panes) LWC.createTextWatermark(chart.panes()[0], {
-      horzAlign: 'center', vertAlign: 'center',
+      horzAlign: 'center', vertAlign: 'top',
       lines: [
         { text: CFG.sym, color: 'rgba(107,115,131,.16)', fontSize: 44, fontStyle: 'bold', fontFamily: 'IBM Plex Mono, monospace' },
         { text: 'stock-ai.dotent.workers.dev', color: 'rgba(107,115,131,.15)', fontSize: 13, fontFamily: 'IBM Plex Mono, monospace' },
