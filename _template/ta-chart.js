@@ -130,10 +130,45 @@
       },
     };
     if (s7.attachPrimitive) s7.attachPrimitive(bandPrim);
-    // เส้นอ้างอิงมูลค่า: FV + ระดับราคาที่มีส่วนเผื่อ 20%/30% (โซนสีตามเครื่องคิดเลข MOS ใน engine เดิม)
-    candles.createPriceLine({ price: CFG.fv, color: '#1e8e3e', lineStyle: 2, lineWidth: 1, title: 'FV' });
-    candles.createPriceLine({ price: CFG.fv * 0.8, color: '#b06000', lineStyle: 1, lineWidth: 1, title: 'MOS 20%' });
-    candles.createPriceLine({ price: CFG.fv * 0.7, color: '#137333', lineStyle: 1, lineWidth: 1, title: 'MOS 30%' });
+    // เส้นอ้างอิงมูลค่า: FV + ระดับส่วนเผื่อ 20%/30% (โซนสีตามเครื่องคิดเลข MOS ใน engine เดิม)
+    // ★ ไม่ใช้ axis label (3 กล่องซ้อนกันบังกราฟ — feedback user 1 ส.ค. 2569) → เขียนชื่อ+ค่าบนเส้นประเอง
+    //   (LWC ไม่วาด title ในกราฟเมื่อ axisLabelVisible:false — วัดจริงด้วย pixel test) — วาดผ่าน primitive ด้านล่าง
+    var refs = [
+      { p: CFG.fv, c: '#1e8e3e', style: 2, t: 'FV ' + CFG.fv.toFixed(CFG.dec) },
+      { p: CFG.fv * 0.8, c: '#b06000', style: 1, t: 'MOS 20% ' + (CFG.fv * 0.8).toFixed(CFG.dec) },
+      { p: CFG.fv * 0.7, c: '#137333', style: 1, t: 'MOS 30% ' + (CFG.fv * 0.7).toFixed(CFG.dec) },
+    ];
+    refs.forEach(function (rf) {
+      candles.createPriceLine({ price: rf.p, color: rf.c, lineStyle: rf.style, lineWidth: 1, axisLabelVisible: false, title: '' });
+    });
+    var refPrim = {
+      updateAllViews: function () {},
+      paneViews: function () {
+        return [{
+          zOrder: function () { return 'top'; },
+          renderer: function () {
+            return {
+              draw: function (target) {
+                target.useMediaCoordinateSpace(function (scope) {
+                  var ctx = scope.context;
+                  ctx.font = '11px "IBM Plex Mono", monospace';
+                  ctx.textBaseline = 'bottom';
+                  refs.forEach(function (rf) {
+                    var y = candles.priceToCoordinate(rf.p);
+                    if (y == null || y < 12 || y > scope.mediaSize.height - 2) return; // เส้นหลุดจอ = ไม่เขียน
+                    ctx.strokeStyle = 'rgba(255,255,255,.85)'; ctx.lineWidth = 3;       // ขอบขาวให้อ่านออกบนแท่ง
+                    ctx.strokeText(rf.t, 8, y - 2);
+                    ctx.fillStyle = rf.c;
+                    ctx.fillText(rf.t, 8, y - 2);
+                  });
+                });
+              },
+            };
+          },
+        }];
+      },
+    };
+    if (candles.attachPrimitive) candles.attachPrimitive(refPrim);
     // โครงสร้างราคา (pivots/BOS/CHoCH) ไม่วาด marker บนกราฟแล้ว — สรุปเป็น chips ด้านล่างอย่างเดียว
 
     // โลโก้ TradingView แสดงที่ price pane เดียวพอ (attribution ครบด้วย .ta-attr) — pane RSI ปิดไม่ให้ซ้ำ
