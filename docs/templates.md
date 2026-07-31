@@ -201,6 +201,13 @@
 - หลักการ + เหตุผลรายตัว + วิธีทำ: ดู **`tools/brand-colors.md`** (record ถาวร)
 - เครื่องมือ: **หุ้นใหม่** → `node tools/pick-brand.js <SYM> "#hex" --auto` ครั้งเดียวจบ (ตรวจชน — ชนแล้วสลับเฉดว่างใกล้สุดให้เอง + ลง `seeds.json` + พิมพ์ theme/GDOTS — ข้อ 8 ข้างบน) · **regenerate ธีมจาก seed เดิมทั้งระบบ** → `node tools/brandtheme.js tools/seeds.json --write` (`makeTheme()` สร้างธีมเต็มจาก seed ด้วย HSL)
 
+## กราฟ TA (TradingView-style)
+
+`build.js` inject `window.__TA_CFG__` + `<script defer src="/assets/ta-<hash>.js">` ต่อท้าย `</body>`
+**เฉพาะใน `dist/`** (ดู `injectTA()`) — รายงานใน `reports/` (source) **ไม่ต้องรู้จักกลไกนี้เลย**
+อย่าเขียน `__TA_CFG__` หรือ `<script src="/assets/ta-...">` ลงไฟล์ source มือ (ไม่มีผลตอน build, จะถูกเขียนทับ/inject ซ้ำอยู่ดี) ·
+รายละเอียดสถาปัตยกรรม/contract `/api/ohlc`/นิยาม TA/debug → **`docs/ta-chart.md`**
+
 ## เครื่องมือ (`tools/`)
 - `migrate.js <SYM…> [--write]` — แปลง HTML เต็ม → content-only + **round-trip faithful check** (resolve CSS var→สีจริง + body verbatim + stock-meta + brand/engine values ตรงเป๊ะจึงเขียน ไม่งั้น flag ปล่อย old-style)
 - `pick-brand.js <SYM> "#hex" [--auto] [--force]` — one-shot สีแบรนด์หุ้นใหม่: ตรวจชน (เทียบใน accent space หลัง makeTheme) → ชน+`--auto` = สลับเฉดว่างใกล้สุดให้เอง / ไม่ `--auto` = exit 1 พร้อมข้อเสนอเฉดว่าง → เพิ่ม `seeds.json` → พิมพ์ theme 8 คีย์ + บรรทัด GDOTS
