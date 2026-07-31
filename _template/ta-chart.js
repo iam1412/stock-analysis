@@ -33,7 +33,8 @@
     // C2: สร้างนอกจอให้เสร็จ แล้ว swap ครั้งเดียว — SVG เดิมแค่ซ่อน (print/fallback ยังใช้ได้)
     var box = document.createElement('div');
     box.className = 'ta-box';
-    var priceEl = document.createElement('div'); priceEl.style.height = Math.round(wrap.getBoundingClientRect().height || 300) + 'px';
+    // จอแคบ SVG หดตาม aspect (920:300) เหลือ ~100px — ห้ามใช้ตรง ๆ ไม่งั้น pane เตี้ยจน LWC วางป้ายแกนเพี้ยน → ขั้นต่ำ 240px
+    var priceEl = document.createElement('div'); priceEl.style.height = Math.max(240, Math.round(wrap.getBoundingClientRect().height || 300)) + 'px';
     var rsiEl = document.createElement('div'); rsiEl.style.height = '110px';
     box.appendChild(priceEl); box.appendChild(rsiEl);
 
@@ -76,7 +77,11 @@
     markers.sort(function (a, z) { return a.time - z.time; });
     if (LWC.createSeriesMarkers) LWC.createSeriesMarkers(candles, markers); else candles.setMarkers(markers);
 
-    var rsiChart = LWC.createChart(rsiEl, Object.assign({}, base, { rightPriceScale: { borderColor: '#eef1f5' } }));
+    // โลโก้ TradingView แสดงที่ price pane เดียวพอ (attribution ครบด้วย .ta-attr) — pane RSI ปิดไม่ให้ซ้ำ
+    var rsiChart = LWC.createChart(rsiEl, Object.assign({}, base, {
+      layout: Object.assign({}, base.layout, { attributionLogo: false }),
+      rightPriceScale: { borderColor: '#eef1f5' },
+    }));
     var rsiSeries = line(rsiChart, pts(rsiArr), '#7b1fa2', 2);
     [30, 70].forEach(function (lv) { rsiSeries.createPriceLine({ price: lv, color: '#c9ced6', lineStyle: 3, lineWidth: 1, title: String(lv) }); });
     divs.forEach(function (dv) {
