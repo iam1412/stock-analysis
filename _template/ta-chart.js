@@ -25,7 +25,7 @@
 
   function render(d) {
     var b = d.bars, n = b.t.length;
-    var ema20 = TA.ema(b.c, 20), ema50 = TA.ema(b.c, 50), rsiArr = TA.rsi(b.c, 14);
+    var ema7 = TA.ema(b.c, 7), ema30 = TA.ema(b.c, 30), ema200 = TA.ema(b.c, 200), rsiArr = TA.rsi(b.c, 14);
     var pivots = TA.labelStructure(TA.findPivots(b.h, b.l, 3));
     var breaks = n >= 60 ? TA.detectBreaks(b.c, pivots) : [];       // C6: ข้อมูลบาง → ข้ามโครงสร้าง
     var divs = n >= 60 ? TA.detectDivergence(b.c, rsiArr, pivots) : [];
@@ -61,21 +61,15 @@
       s.setData(data); return s;
     }
     var pts = function (arr) { return b.t.map(function (t, i) { return arr[i] == null ? null : { time: t, value: arr[i] }; }).filter(Boolean); };
-    line(chart, pts(ema20), CFG.accent, 2);
-    line(chart, pts(ema50), CFG.accentDark, 2);
+    // EMA 7 เขียว / 30 แดง เส้นบางสุด · EMA200 น้ำเงิน หนา +1 (แนวโน้มระยะยาว)
+    line(chart, pts(ema7), '#137333', 1);
+    line(chart, pts(ema30), '#c5221f', 1);
+    line(chart, pts(ema200), '#1a73e8', 2);
+    // เส้นอ้างอิงมูลค่า: FV + ระดับราคาที่มีส่วนเผื่อ 20%/30% (โซนสีตามเครื่องคิดเลข MOS ใน engine เดิม)
     candles.createPriceLine({ price: CFG.fv, color: '#1e8e3e', lineStyle: 2, lineWidth: 1, title: 'FV' });
-
-    // annotations: HH/HL/LH/LL + BOS/CHoCH เป็น marker · divergence เป็นเส้นบน RSI
-    var markers = [];
-    pivots.forEach(function (p) {
-      if (!p.label) return;
-      markers.push({ time: b.t[p.i], position: p.type === 'H' ? 'aboveBar' : 'belowBar', color: '#6b7383', shape: p.type === 'H' ? 'arrowDown' : 'arrowUp', text: p.label, size: 0 });
-    });
-    breaks.forEach(function (e) {
-      markers.push({ time: b.t[e.i], position: e.dir === 'up' ? 'belowBar' : 'aboveBar', color: e.type === 'CHoCH' ? '#b06000' : (e.dir === 'up' ? '#137333' : '#c5221f'), shape: 'circle', text: e.type, size: 1 });
-    });
-    markers.sort(function (a, z) { return a.time - z.time; });
-    if (LWC.createSeriesMarkers) LWC.createSeriesMarkers(candles, markers); else candles.setMarkers(markers);
+    candles.createPriceLine({ price: CFG.fv * 0.8, color: '#b06000', lineStyle: 1, lineWidth: 1, title: 'MOS 20%' });
+    candles.createPriceLine({ price: CFG.fv * 0.7, color: '#137333', lineStyle: 1, lineWidth: 1, title: 'MOS 30%' });
+    // โครงสร้างราคา (pivots/BOS/CHoCH) ไม่วาด marker บนกราฟแล้ว — สรุปเป็น chips ด้านล่างอย่างเดียว
 
     // โลโก้ TradingView แสดงที่ price pane เดียวพอ (attribution ครบด้วย .ta-attr) — pane RSI ปิดไม่ให้ซ้ำ
     var rsiChart = LWC.createChart(rsiEl, Object.assign({}, base, {
@@ -89,13 +83,12 @@
       s.setData([{ time: b.t[dv.p1.i], value: dv.p1.rsi }, { time: b.t[dv.p2.i], value: dv.p2.rsi }]);
     });
 
-    // sync แกนเวลา 2 pane + แสดงช่วง ~1 ปีหลังสุด (ข้อมูลมี 2 ปีไว้ warm-up)
-    var from = b.t[Math.max(0, n - 252)];
-    [chart, rsiChart].forEach(function (c) { c.timeScale().setVisibleRange({ from: from, to: b.t[n - 1] }); });
+    // sync แกนเวลา 2 pane + แสดงเต็มช่วงข้อมูลที่ดึงได้ (~2 ปี) — ไม่ fix 1 ปีแล้ว (user เคาะ 1 ส.ค. 2569)
+    [chart, rsiChart].forEach(function (c) { c.timeScale().fitContent(); });
     chart.timeScale().subscribeVisibleTimeRangeChange(function (r) { if (r) rsiChart.timeScale().setVisibleRange(r); });
 
     // chips สรุปสัญญาณ + attribution (เงื่อนไข license) — ต่อท้ายในการ swap เดียวกัน (C2)
-    var chips = TA.summarizeSignals({ closes: b.c, ema20: ema20, ema50: ema50, rsiArr: rsiArr, breaks: breaks, divs: divs });
+    var chips = TA.summarizeSignals({ closes: b.c, ema7: ema7, ema30: ema30, ema200: ema200, rsiArr: rsiArr, breaks: breaks, divs: divs });
     var bar = document.createElement('div'); bar.className = 'ta-chips';
     chips.forEach(function (c) { var el = document.createElement('span'); el.className = 'ta-chip ' + c.tone; el.textContent = c.label; bar.appendChild(el); });
     var attr = document.createElement('span'); attr.className = 'ta-attr';

@@ -5,8 +5,9 @@
 ## เป้าหมาย
 
 ยกระดับ section 2 "ราคาย้อนหลัง ~1 ปี" ของรายงานทุกตัว (784 ไฟล์) เป็นกราฟ
-TradingView-style: แท่งเทียนรายวัน + volume + EMA 20/50 + RSI 14 + annotation
-โครงสร้างราคาอัตโนมัติ (HH/HL/LH/LL, BOS, CHoCH, RSI divergence) + แถบสรุปสัญญาณ
+TradingView-style: แท่งเทียนรายวัน + volume + EMA 7/30/200 + RSI 14 + เส้น FV/MOS 20%/MOS 30%
++ โครงสร้างราคาอัตโนมัติ (BOS, CHoCH, RSI divergence) **สรุปเป็นแถบสัญญาณใต้กราฟเท่านั้น
+ไม่วาด marker บนกราฟ** (ปรับตาม feedback user 1 ส.ค. 2569 — เดิมวาด HH/LL/BOS/CHoCH บนกราฟ)
 — **โดยไม่แก้ไฟล์รายงานแม้แต่ไฟล์เดียว ไม่ใช้ token ของ agent ต่อหุ้น และผู้ใช้
 ไม่มีทางเห็นหน้าพัง** (progressive enhancement บนกราฟ SVG เดิม)
 
@@ -17,7 +18,8 @@ TradingView-style: แท่งเทียนรายวัน + volume + EMA 
    คำนวณ → **สลับกราฟในที่เดิม** เมื่อพร้อมเท่านั้น · ล้มเหลวทุกกรณี = SVG เดิมอยู่ครบ
    ผู้ใช้ไม่เห็น error state ใหญ่ ๆ
 2. **ข้อมูลสด ไม่เก็บลง git** — Worker route ใหม่ `GET /api/ohlc/<SYM>?cur=<USD|THB>`
-   proxy Yahoo `range=2y&interval=1d` (2 ปีเพื่อ warm-up EMA/RSI, แสดงจริง ~1 ปี)
+   proxy Yahoo `range=2y&interval=1d` (2 ปีเพื่อ warm-up EMA/RSI · แสดงเต็มช่วงที่ดึงได้
+   ไม่ fix 1 ปี — user เคาะ 1 ส.ค. 2569)
    + cache ที่ edge (Cache API) `s-maxage=21600` (6 ชม.) · Yahoo ล่ม → เสิร์ฟ cache เก่า
    → ไม่มี cache → 503 → client fallback SVG
 3. **คำนวณฝั่ง browser** — indicator + annotation ทั้งหมดเป็น pure function ใน
@@ -36,7 +38,7 @@ TradingView-style: แท่งเทียนรายวัน + volume + EMA 
 | `src/ohlc.js` (ใหม่, ESM) | map symbol→Yahoo (THB→`.BK`) + แปลง Yahoo JSON → payload กะทัดรัด `{sym,currency,t[],o[],h[],l[],c[],v[]}` (ตัดแท่ง null, ปัดทศนิยม) — pure, ไม่ import cloudflare → test ใน node ได้ |
 | `src/worker.js` (แก้) | route `GET /api/ohlc/<SYM>` : validate ด้วย `SYM_RE`+`knownSymbols()` เดิม → Cache API → fetch Yahoo → transform → JSON + rate limit namespace ใหม่ |
 | `_template/ta-engine.js` (ใหม่) | pure functions: `ema, rsi, findPivots, labelStructure, detectBreaks, detectDivergence, summarizeSignals` (UMD: browser global + CJS export) |
-| `_template/ta-chart.js` (ใหม่) | glue: อ่าน `window.__TA_CFG__` → IntersectionObserver → fetch (timeout 6 วิ) → คำนวณ → วาด lightweight-charts (แท่งเทียน+volume+EMA+RSI pane+markers) → สลับแทน SVG · จัดการ fallback ทุกทาง |
+| `_template/ta-chart.js` (ใหม่) | glue: อ่าน `window.__TA_CFG__` → IntersectionObserver → fetch (timeout 6 วิ) → คำนวณ → วาด lightweight-charts (แท่งเทียน+volume+EMA 7/30/200+เส้น FV/MOS+RSI pane — ไม่มี marker บนกราฟ) → สลับแทน SVG · จัดการ fallback ทุกทาง |
 | `_template/vendor/lightweight-charts.standalone.production.js` (ใหม่) | ไลบรารี pin เวอร์ชัน + `LICENSE` |
 | `build.js` (แก้) | รวม 3 ไฟล์ JS → hash → `dist/assets/ta-<hash>.js` · inject `<script defer>` + `window.__TA_CFG__` (symbol/currency/fv/accent/decimals) ลงรายงานแบบ template **เฉพาะใน dist** (source ยัง content-only) |
 | `_headers` (แก้) | `/assets/*` → `Cache-Control: public, max-age=31536000, immutable` |
@@ -45,7 +47,10 @@ TradingView-style: แท่งเทียนรายวัน + volume + EMA 
 
 ## นิยาม TA (deterministic ทั้งหมด)
 
-- **EMA 20/50**: seed = SMA(period), จากนั้น `k=2/(period+1)` · ค่าเป็น null จนพ้น warm-up
+- **EMA 7/30/200**: seed = SMA(period), จากนั้น `k=2/(period+1)` · ค่าเป็น null จนพ้น warm-up
+  · สี/ขนาดเส้น: 7 = เขียว บาง (1) · 30 = แดง บาง (1) · 200 = น้ำเงิน หนา (2)
+- **เส้นอ้างอิงมูลค่า**: FV (เขียว dashed เดิม) + MOS 20% = FV×0.8 (amber dotted) + MOS 30% = FV×0.7
+  (เขียวเข้ม dotted) — สีตามโซนเครื่องคิดเลข MOS ใน engine เดิม
 - **RSI 14**: Wilder smoothing (avgGain/avgLoss) · null จนพ้น warm-up
 - **Swing pivots**: fractal `k=3` — high ที่สูงกว่าทั้ง 3 แท่งซ้าย-ขวา = swing high
   (ยืนยันหลังผ่านไป k แท่ง — annotation จึง lag ตามนิยาม ไม่ repaint)
@@ -55,7 +60,7 @@ TradingView-style: แท่งเทียนรายวัน + volume + EMA 
   ทิศของ pivots คู่แรก แล้วพลิกเมื่อเกิด CHoCH)
 - **Divergence (regular)**: price LL + RSI HL = bullish · price HH + RSI LH = bearish
   เทียบ pivot ราคา 2 ตัวติดกัน กับค่า RSI ณ แท่ง pivot
-- **แถบสัญญาณ (chips)**: ข้อเท็จจริงล่าสุด เช่น "EMA20 > EMA50 (golden cross X วันก่อน)",
+- **แถบสัญญาณ (chips)**: ข้อเท็จจริงล่าสุด เช่น "EMA7 > EMA30 (golden cross X แท่งก่อน)", "ราคา > EMA200",
   "RSI 28 — oversold", "CHoCH ขาขึ้น", "Bullish divergence" · **ภาษาเป็นข้อเท็จจริงเชิงเทคนิค
   ไม่ใช่คำแนะนำซื้อขาย** — disclaimer เดิมของรายงานคงอยู่
 

@@ -66,20 +66,29 @@ const close = (a, b, eps = 1e-6) => assert.ok(Math.abs(a - b) < eps, `${a} ≉ $
   assert.equal(d[0].type, 'bull');
   assert.deepEqual([d[0].p1.i, d[0].p2.i], [3, 9]);
 }
-// ── summarizeSignals: มี chip EMA + RSI เสมอเมื่อข้อมูลพอ · ห้ามมีคำแนะนำซื้อขาย
+// ── summarizeSignals: ชุด EMA 7/30/200 — chip cross EMA7/30 + ราคาเทียบ EMA200 + RSI · ห้ามมีคำแนะนำซื้อขาย
 {
-  const closes = Array.from({ length: 120 }, (_, i) => 10 + i * 0.1);
+  const closes = Array.from({ length: 260 }, (_, i) => 10 + i * 0.1);
   const chips = TA.summarizeSignals({
-    closes, ema20: TA.ema(closes, 20), ema50: TA.ema(closes, 50),
+    closes, ema7: TA.ema(closes, 7), ema30: TA.ema(closes, 30), ema200: TA.ema(closes, 200),
     rsiArr: TA.rsi(closes, 14), breaks: [], divs: [],
   });
-  assert.ok(chips.length >= 2);
-  assert.ok(chips.some((c) => /EMA/.test(c.label)));
+  assert.ok(chips.length >= 3);
+  assert.ok(chips.some((c) => /EMA7 > EMA30/.test(c.label) && c.tone === 'pos'));
+  assert.ok(chips.some((c) => /ราคา > EMA200/.test(c.label) && c.tone === 'pos'));
   assert.ok(chips.some((c) => /RSI/.test(c.label)));
   for (const c of chips) {
     assert.ok(['pos', 'neg', 'neu'].includes(c.tone));
     assert.ok(!/ซื้อ|ขาย|buy|sell/i.test(c.label), 'chip ต้องเป็นข้อเท็จจริง ไม่ใช่คำแนะนำ');
   }
+  // ข้อมูลไม่พอ EMA200 (แท่ง < 200) → ไม่มี chip EMA200 แต่ chip อื่นยังครบ ไม่ throw
+  const short = Array.from({ length: 120 }, (_, i) => 10 + i * 0.1);
+  const chips2 = TA.summarizeSignals({
+    closes: short, ema7: TA.ema(short, 7), ema30: TA.ema(short, 30), ema200: TA.ema(short, 200),
+    rsiArr: TA.rsi(short, 14), breaks: [], divs: [],
+  });
+  assert.ok(chips2.some((c) => /EMA7 > EMA30/.test(c.label)));
+  assert.ok(!chips2.some((c) => /EMA200/.test(c.label)));
 }
 // ── ข้อมูลบาง (C6): แท่งน้อย → ไม่ throw, คืนโครงว่าง
 {

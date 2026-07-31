@@ -109,21 +109,24 @@
   }
 
   // chips สรุปสถานะล่าสุด — ★ ข้อเท็จจริงเชิงเทคนิคเท่านั้น ห้ามใช้คำว่า ซื้อ/ขาย (test บังคับ)
+  // ชุด EMA: 7/30 = cross ระยะสั้น · 200 = แนวโน้มระยะยาว (แท่ง <200 → ไม่มี chip EMA200)
   function summarizeSignals(s) {
     const chips = [];
     const last = s.closes.length - 1;
-    const e20 = s.ema20[last], e50 = s.ema50[last], r = s.rsiArr[last];
-    if (e20 != null && e50 != null) {
+    const e7 = s.ema7[last], e30 = s.ema30[last], e200 = s.ema200[last], r = s.rsiArr[last];
+    if (e7 != null && e30 != null) {
       let crossAge = null; // หา cross ล่าสุด
       for (let i = last; i > 0; i--) {
-        const a = s.ema20[i - 1], b = s.ema50[i - 1];
+        const a = s.ema7[i - 1], b = s.ema30[i - 1];
         if (a == null || b == null) break;
-        if (a <= b !== (s.ema20[i] <= s.ema50[i])) { crossAge = last - i; break; }
+        if (a <= b !== (s.ema7[i] <= s.ema30[i])) { crossAge = last - i; break; }
       }
-      const rel = e20 > e50 ? 'EMA20 > EMA50' : 'EMA20 < EMA50';
-      const cross = crossAge != null ? (e20 > e50 ? ` (golden cross ${crossAge} แท่งก่อน)` : ` (death cross ${crossAge} แท่งก่อน)`) : '';
-      chips.push({ label: rel + cross, tone: e20 > e50 ? 'pos' : 'neg' });
+      const rel = e7 > e30 ? 'EMA7 > EMA30' : 'EMA7 < EMA30';
+      const cross = crossAge != null ? (e7 > e30 ? ` (golden cross ${crossAge} แท่งก่อน)` : ` (death cross ${crossAge} แท่งก่อน)`) : '';
+      chips.push({ label: rel + cross, tone: e7 > e30 ? 'pos' : 'neg' });
     } else chips.push({ label: 'EMA — ข้อมูลไม่พอ', tone: 'neu' });
+    if (e200 != null)
+      chips.push({ label: s.closes[last] > e200 ? 'ราคา > EMA200' : 'ราคา < EMA200', tone: s.closes[last] > e200 ? 'pos' : 'neg' });
     if (r != null) chips.push({ label: `RSI ${r.toFixed(0)}` + (r >= 70 ? ' — overbought' : r <= 30 ? ' — oversold' : ''), tone: r >= 70 ? 'neg' : r <= 30 ? 'pos' : 'neu' });
     else chips.push({ label: 'RSI — ข้อมูลไม่พอ', tone: 'neu' });
     const lastBrk = s.breaks[s.breaks.length - 1];

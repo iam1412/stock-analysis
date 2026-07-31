@@ -3,8 +3,9 @@
 > `CLAUDE.md §10` มีแค่ pointer สั้น ๆ · ไฟล์นี้คือรายละเอียดเต็ม
 > Design doc ต้นทาง (หลักการ/นิยาม TA/เหตุผลการตัดสินใจ): `docs/superpowers/specs/2026-08-01-ta-chart-design.md`
 
-ยกระดับกราฟ SVG เดิม (section 2 "ราคาย้อนหลัง ~1 ปี") เป็นกราฟแท่งเทียน + volume + EMA20/50 +
-RSI14 + โครงสร้างราคาอัตโนมัติ (HH/HL/LH/LL, BOS, CHoCH, divergence) **โดยไม่แก้ไฟล์รายงานแม้แต่ไฟล์เดียว**
+ยกระดับกราฟ SVG เดิม (section 2 "ราคาย้อนหลัง ~1 ปี") เป็นกราฟแท่งเทียน + volume + EMA 7/30/200 +
+เส้น FV/MOS 20%/MOS 30% + RSI14 · โครงสร้างราคา (BOS, CHoCH, divergence) สรุปเป็น chips ใต้กราฟ
+(ไม่วาด marker บนกราฟ — feedback user 1 ส.ค. 2569) · แสดงเต็มช่วงข้อมูล ~2 ปี **โดยไม่แก้ไฟล์รายงานแม้แต่ไฟล์เดียว**
 — progressive enhancement บนกราฟ SVG เดิม กราฟเดิมคือ baseline ที่ผู้ใช้ไม่มีทางเห็นพัง
 
 ## สถาปัตยกรรม
@@ -49,7 +50,7 @@ reports/<SYM>.html (source, content-only) ── build.js ──▶ dist/<SYM>.h
   "bars": { "t": [1700000000, ...], "o": [...], "h": [...], "l": [...], "c": [...], "v": [...] }
 }
 ```
-- `t` = unix seconds (UTC) เรียงจากเก่า→ใหม่ · แท่งที่มี OHLC เป็น `null` (วันข้อมูลขาด/OTC บาง) **ถูกตัดออกตั้งแต่ worker** · ~2 ปีข้อมูล (warm-up EMA50/RSI) แม้ client จะโชว์จริงแค่ ~1 ปีหลังสุด
+- `t` = unix seconds (UTC) เรียงจากเก่า→ใหม่ · แท่งที่มี OHLC เป็น `null` (วันข้อมูลขาด/OTC บาง) **ถูกตัดออกตั้งแต่ worker** · ~2 ปีข้อมูล (warm-up EMA200/RSI) — client แสดงเต็มช่วง (`fitContent`)
 - `v` = volume, `0` ถ้า Yahoo ไม่ส่งมา
 
 **Error responses** — ทุกเคส client (`ta-chart.js`) ตีความเป็น "fallback SVG" เหมือนกันหมด (ไม่แยก UI ตาม error code)
@@ -62,7 +63,7 @@ reports/<SYM>.html (source, content-only) ── build.js ──▶ dist/<SYM>.h
 
 ## นิยาม TA (deterministic — ห้ามเดา ไปอ่านที่ spec)
 
-EMA20/50 (seed=SMA), RSI14 (Wilder smoothing), swing pivot (fractal k=3, lag ตามนิยาม ไม่ repaint),
+EMA 7/30/200 (seed=SMA), RSI14 (Wilder smoothing), swing pivot (fractal k=3, lag ตามนิยาม ไม่ repaint),
 HH/HL/LH/LL, BOS/CHoCH, regular divergence, chips สรุปสัญญาณ — นิยามเต็มทุกตัว +
 เหตุผลการเลือกพารามิเตอร์ → **`docs/superpowers/specs/2026-08-01-ta-chart-design.md` หัวข้อ "นิยาม TA (deterministic ทั้งหมด)"**
 แก้พฤติกรรมต้องแก้ `test/ta-engine-test.js` (fixture test) พร้อมกันเสมอ — ห้ามแก้นิยามลอย ๆ โดยไม่มี test คุม
@@ -106,10 +107,10 @@ code path เดิม (`ta-engine.js`/`ta-chart.js` เป๊ะ ๆ) ตรง
 | C3 | API พัง/timeout/offline | ✅ ผ่าน | รัน fetch+catch เส้นทางเดียวกับ `load()` เป๊ะ พร้อม mock `fetch` ให้ reject — จับได้ที่ `.catch`, log `console.warn('[ta-chart] fallback SVG: …')` เท่านั้น ไม่มี error UI, ไม่มีการเปลี่ยน DOM เพิ่มเติม |
 | C4 | ทุก API ล่ม (ไม่มี Worker) | ✅ ผ่าน | เสิร์ฟ `dist/` ด้วย `python3 -m http.server` ล้วน ๆ (ไม่มี Worker) → `/api/ohlc/AAPL` = 404 จริง (curl ยืนยัน) · หน้าเว็บโหลดปกติ SVG อยู่ครบ ไม่มี console error, ไม่มี ta-box |
 | C5 | มือถือ (375px) | ✅ ผ่าน | resize เป็น 375×812 ไม่มี horizontal overflow (`scrollWidth===innerWidth`) · โค้ด config ตรงสเปกเป๊ะ: `handleScroll:{mouseWheel:false, vertTouchDrag:false}`, `handleScale:{mouseWheel:false, pinch:true}` |
-| C6 | หุ้นข้อมูลบาง (<60 แท่ง) | ✅ ผ่าน (logic review) | ทุก symbol ที่มีจริงในระบบคืน 502 แท่ง (2 ปี) ไม่มีตัว <60 ให้ทดสอบสด — จำลอง 40 แท่งสังเคราะห์ผ่าน `TA.*` เป๊ะ: ไม่ throw, `ema50` เป็น `null` ทุกจุด (warm-up ไม่พอ), `breaks/divs` ว่าง (การ์ด `n>=60` ใน `ta-chart.js`), chip แสดง "EMA — ข้อมูลไม่พอ" แทนที่จะ crash |
+| C6 | หุ้นข้อมูลบาง (<60 แท่ง) | ✅ ผ่าน (logic review) | ทุก symbol ที่มีจริงในระบบคืน 502 แท่ง (2 ปี) ไม่มีตัว <60 ให้ทดสอบสด — จำลอง 40 แท่งสังเคราะห์ผ่าน `TA.*` เป๊ะ: ไม่ throw, `ema200` เป็น `null` ทุกจุด (→ ไม่มี chip EMA200), `breaks/divs` ว่าง (การ์ด `n>=60` ใน `ta-chart.js`), chips EMA7/30+RSI แสดงตามข้อมูลที่มี ไม่ crash |
 | C7 | เปิดรายงานหลายตัว | ✅ ผ่าน | AAPL→MSFT ใช้ `/assets/ta-<hash>.js` ไฟล์เดียวกันเป๊ะ (hash เดิม) · header ตอบ `Cache-Control: public, max-age=31536000, immutable` |
 | C8 | print / no-JS | ✅ ผ่าน | `dashboard.css` (inline เข้า `dist/*.html` แล้ว) มี `@media print{.ta-box{display:none}#priceChart{display:block!important}}` — ยืนยันมีอยู่จริงใน `dist/AAPL.html` |
-| C9 | perf | ✅ ผ่าน | bundle gzip = 67,299 bytes (~65.7 KB, เป้า ≤~80KB) · คำนวณ TA เต็ม (`ema20/50+rsi+pivots+breaks+divs+chips`) 502 แท่งจริงจาก `/api/ohlc/MSFT` = 1.8ms (เป้า <50ms) |
+| C9 | perf | ✅ ผ่าน | bundle gzip = 67,299 bytes (~65.7 KB, เป้า ≤~80KB) · คำนวณ TA เต็ม 502 แท่งจริงจาก `/api/ohlc/MSFT` = 1.8ms (เป้า <50ms — วัดตอนชุด EMA 20/50; ชุด 7/30/200 ปัจจุบันต้นทุนระดับเดียวกัน) |
 | C10 | gate/cron เดิม | ✅ ผ่าน | `npm run verify` เขียวครบ 8 ขั้น (check-reports 0 error 1 warning ไม่เกี่ยว TA + build + build-test + engine-exec 784/784 + skeleton-test + check-site + `test:ohlc` + `test:ta`) exit 0 · `git status --porcelain reports/` ว่างเปล่า (ไม่มีไฟล์ใน `reports/` ถูกแตะ) · E35/E36/E37 อ่านจาก `report-data`/header ใน source ซึ่ง TA ไม่แตะเลย |
 
 **ผลรวม: ผ่านครบ 10/10** — ไม่พบบั๊กที่ต้องแก้โค้ดระหว่างตรวจ (Tasks 1–4 implement ถูกต้องตามสเปกทุกจุดที่ตรวจได้)
