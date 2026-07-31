@@ -6,7 +6,11 @@
 ยกระดับกราฟ SVG เดิม (section 2 "ราคาย้อนหลัง ~1 ปี") เป็นกราฟแท่งเทียน + volume + EMA 7/30/200 +
 เส้น FV/MOS 20%/MOS 30% + RSI14 · โครงสร้างราคา (BOS, CHoCH, divergence) สรุปเป็น chips ใต้กราฟ
 (ไม่วาด marker บนกราฟ — feedback user 1 ส.ค. 2569) · band สีเขียว/แดงอ่อนระหว่าง EMA7↔EMA30 ตามทิศ cross
-· viewport เริ่มต้น = ~4 เดือนหลังสุด (เลื่อนย้อนได้ 3 ปี) · ป้าย FV/MOS เขียนบนเส้นชิดขวา **โดยไม่แก้ไฟล์รายงานแม้แต่ไฟล์เดียว**
+· viewport เริ่มต้น = ~4 เดือนหลังสุด (เลื่อนย้อนได้ 3 ปี) · ป้าย FV/MOS เขียนบนเส้นชิดขวา
+· **toolbar โต้ตอบได้**: TF 1H/4H/D/Y (1H/4H โหลด `tf=H` lazy · 4H/Y resample ฝั่ง client) + range 1M/3M/6M/1Y/3Y
++ ปุ่มแว่นขยายซูมเข้า-ออก (ยึดแท่งล่าสุด) + ปุ่มรีเซ็ต + log scale + บันทึกรูป PNG (`takeScreenshot` ต่อ 2 pane)
++ OHLC legend ตาม crosshair + toggle เปิด/ปิด EMA แต่ละเส้น/band/volume/RSI
+· **chips สัญญาณตรึงคำนวณจากรายวันเสมอ** ไม่แกว่งตาม TF ที่กดเล่น **โดยไม่แก้ไฟล์รายงานแม้แต่ไฟล์เดียว**
 — progressive enhancement บนกราฟ SVG เดิม กราฟเดิมคือ baseline ที่ผู้ใช้ไม่มีทางเห็นพัง
 
 ## สถาปัตยกรรม
@@ -37,11 +41,12 @@ reports/<SYM>.html (source, content-only) ── build.js ──▶ dist/<SYM>.h
 - **`build.js`** — รวม 3 ไฟล์ (`vendor + ta-engine.js + ta-chart.js`) → sha256 8 ตัวแรก → เขียน `dist/assets/ta-<hash>.js` **ก่อน** loop รายงาน แล้ว `injectTA()` ใส่ `<script>` 2 บรรทัดต่อท้าย `</body>` **เฉพาะ dist** (source ใน `reports/` ไม่ถูกแตะ) — รายงาน legacy (ไม่มี `report-data`) ถูกข้าม (`injectTA` คืน html เดิม)
 - **`_headers`** — `/assets/*` → `Cache-Control: public, max-age=31536000, immutable` (ไฟล์ hash เปลี่ยนเมื่อเนื้อหาเปลี่ยนเท่านั้น → เปิดรายงานตัวที่ 2 เป็นต้นไป 0 KB เพราะ browser cache ตรง)
 
-## Contract: `GET /api/ohlc/<SYM>?cur=USD|THB`
+## Contract: `GET /api/ohlc/<SYM>?cur=USD|THB&tf=D|H`
 
 **Request**
 - `<SYM>` = ตัวย่อหุ้นพิมพ์ใหญ่ (`SYM_RE = /^[A-Z0-9.\-]{1,10}$/`) + ต้องอยู่ใน `reports.json` (ถ้าโหลด whitelist ได้)
 - `cur` = `USD` (default) หรือ `THB` — ใช้เลือก suffix Yahoo (`.BK` สำหรับ THB, override จาก `tools/symbol-map.json` ถ้ามี)
+- `tf` = `D` (default, 3y/1d) หรือ `H` (1y/1h — สำหรับ TF 1H/4H ฝั่ง client ที่ resample 4H เอง) · cache แยก key ต่อ tf
 
 **Response 200** (`application/json`, `Cache-Control: public, max-age=3600, s-maxage=21600`)
 ```json

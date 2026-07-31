@@ -100,6 +100,29 @@ const close = (a, b, eps = 1e-6) => assert.ok(Math.abs(a - b) < eps, `${a} ≉ $
   const emaChip = chips3.find((c) => /EMA7/.test(c.label));
   assert.ok(/^EMA7 > EMA30 \(cross \d+ แท่งก่อน\)$/.test(emaChip.label), 'ป้าย cross รูปแบบใหม่ — พบ: ' + emaChip.label);
 }
+// ── resample: รายวัน → W/M (o=แท่งแรก h=max l=min c=แท่งสุดท้าย v=รวม, t=เวลาแท่งแรกของช่วง) · 'D' = ผ่านตรง
+{
+  const D = 86400, t0 = 1704067200; // จันทร์ 1 ม.ค. 2024 00:00 UTC
+  const bars = { t: [t0, t0 + D, t0 + 2 * D, t0 + 7 * D], o: [10, 11, 12, 20], h: [15, 13, 12, 22], l: [9, 10, 11, 19], c: [11, 12, 10, 21], v: [100, 200, 300, 400] };
+  const w = TA.resample(bars, 'W'); // 3 แท่งแรกสัปดาห์เดียวกัน (จ-พ) · แท่งที่ 4 = จันทร์ถัดไป
+  assert.deepEqual(w.t, [t0, t0 + 7 * D]);
+  assert.deepEqual(w.o, [10, 20]);
+  assert.deepEqual(w.h, [15, 22]);
+  assert.deepEqual(w.l, [9, 19]);
+  assert.deepEqual(w.c, [10, 21]);
+  assert.deepEqual(w.v, [600, 400]);
+  const m = TA.resample(bars, 'M'); // ทุกแท่งอยู่ ม.ค. 2024 → เหลือแท่งเดียว
+  assert.deepEqual(m.t, [t0]); assert.deepEqual(m.h, [22]); assert.deepEqual(m.l, [9]); assert.deepEqual(m.c, [21]); assert.deepEqual(m.v, [1000]);
+  assert.deepEqual(TA.resample(bars, 'D'), bars);
+  // 'Y' = รายปี · '4H' = ก้อนละ 4 ชั่วโมง (จากแท่งรายชั่วโมง)
+  const y = TA.resample({ t: [t0, t0 + 40 * D, t0 + 400 * D], o: [1, 2, 3], h: [5, 6, 7], l: [0.5, 1, 2], c: [2, 3, 4], v: [10, 10, 10] }, 'Y');
+  assert.deepEqual(y.t, [t0, t0 + 400 * D]); // 2024 สองแท่งแรก · 2025 แท่งท้าย
+  assert.deepEqual(y.h, [6, 7]); assert.deepEqual(y.c, [3, 4]); assert.deepEqual(y.v, [20, 10]);
+  const H = 3600;
+  const h4 = TA.resample({ t: [t0, t0 + H, t0 + 4 * H, t0 + 5 * H], o: [1, 2, 3, 4], h: [1, 2, 3, 4], l: [1, 2, 3, 4], c: [1, 2, 3, 4], v: [1, 1, 1, 1] }, '4H');
+  assert.deepEqual(h4.t, [t0, t0 + 4 * H]); // ก้อน 00-04 กับ 04-08
+  assert.deepEqual(h4.o, [1, 3]); assert.deepEqual(h4.c, [2, 4]); assert.deepEqual(h4.v, [2, 2]);
+}
 // ── ข้อมูลบาง (C6): แท่งน้อย → ไม่ throw, คืนโครงว่าง
 {
   assert.doesNotThrow(() => TA.ema([1, 2], 20));

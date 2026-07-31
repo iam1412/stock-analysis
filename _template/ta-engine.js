@@ -138,5 +138,34 @@
     return chips;
   }
 
-  return { ema, rsi, findPivots, labelStructure, detectBreaks, detectDivergence, summarizeSignals };
+  // รวมแท่งเป็น timeframe ใหญ่ขึ้น: 'D' ผ่านตรง · 'W' สัปดาห์ (เริ่มจันทร์) · 'M' เดือน · 'Y' ปี · '4H' ก้อน 4 ชม.
+  // o=แท่งแรก h=max l=min c=แท่งสุดท้าย v=รวม · t=เวลาแท่งแรกของช่วง (period-start)
+  function resample(bars, tf) {
+    if (tf === 'D') return bars;
+    const out = { t: [], o: [], h: [], l: [], c: [], v: [] };
+    let key = null;
+    for (let i = 0; i < bars.t.length; i++) {
+      let k;
+      if (tf === 'W') k = Math.floor((Math.floor(bars.t[i] / 86400) - 4) / 7); // epoch เป็นพฤหัส → -4 ให้สัปดาห์เริ่มจันทร์
+      else if (tf === '4H') k = Math.floor(bars.t[i] / 14400);
+      else {
+        const d = new Date(bars.t[i] * 1000);
+        k = tf === 'Y' ? d.getUTCFullYear() : d.getUTCFullYear() * 12 + d.getUTCMonth();
+      }
+      if (k !== key) {
+        key = k;
+        out.t.push(bars.t[i]); out.o.push(bars.o[i]); out.h.push(bars.h[i]);
+        out.l.push(bars.l[i]); out.c.push(bars.c[i]); out.v.push(bars.v[i]);
+      } else {
+        const j = out.t.length - 1;
+        out.h[j] = Math.max(out.h[j], bars.h[i]);
+        out.l[j] = Math.min(out.l[j], bars.l[i]);
+        out.c[j] = bars.c[i];
+        out.v[j] += bars.v[i];
+      }
+    }
+    return out;
+  }
+
+  return { ema, rsi, findPivots, labelStructure, detectBreaks, detectDivergence, summarizeSignals, resample };
 });

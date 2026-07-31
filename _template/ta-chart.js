@@ -1,5 +1,7 @@
 /* ta-chart.js — สลับกราฟ SVG เดิมเป็นกราฟ TA แบบ TradingView (progressive enhancement)
- * กติกาความต่อเนื่อง (spec C1-C8): ล้มเหลวทุกกรณี = คงกราฟ SVG เดิมไว้ ห้ามมี error UI */
+ * กติกาความต่อเนื่อง (spec C1-C8): ล้มเหลวทุกกรณี = คงกราฟ SVG เดิมไว้ ห้ามมี error UI
+ * ลูกเล่น (user เคาะ 1 ส.ค. 2569): TF 1H/4H/D/Y · ปุ่ม range/ซูม/รีเซ็ต · OHLC legend · toggle indicator · log scale · บันทึกรูป
+ * chips สัญญาณตรึงคำนวณจากแท่งรายวันเสมอ (บทสรุปมาตรฐานของรายงาน ไม่แกว่งตาม TF ที่กดเล่น) */
 (function () {
   'use strict';
   var CFG = window.__TA_CFG__;
@@ -14,29 +16,40 @@
   }, { rootMargin: '400px' });
   io.observe(wrap);
 
-  function load() {
+  function fetchOhlc(tf, ms) {
     var ctl = new AbortController();
-    var timer = setTimeout(function () { ctl.abort(); }, 6000);     // C3: timeout 6 วิ
-    fetch('/api/ohlc/' + encodeURIComponent(CFG.sym) + '?cur=' + CFG.cur, { signal: ctl.signal })
+    var timer = setTimeout(function () { ctl.abort(); }, ms || 6000);
+    return fetch('/api/ohlc/' + encodeURIComponent(CFG.sym) + '?cur=' + CFG.cur + '&tf=' + tf, { signal: ctl.signal })
       .then(function (r) { if (!r.ok) throw new Error('api ' + r.status); return r.json(); })
-      .then(function (d) { clearTimeout(timer); render(d); })
-      .catch(function (e) { clearTimeout(timer); console.warn('[ta-chart] fallback SVG:', e.message); }); // C3/C4
+      .finally(function () { clearTimeout(timer); });
+  }
+
+  function load() {
+    fetchOhlc('D')                                                   // C3: timeout 6 วิ
+      .then(function (d) { render(d); })
+      .catch(function (e) { console.warn('[ta-chart] fallback SVG:', e.message); }); // C3/C4
   }
 
   function render(d) {
-    var b = d.bars, n = b.t.length;
-    var ema7 = TA.ema(b.c, 7), ema30 = TA.ema(b.c, 30), ema200 = TA.ema(b.c, 200), rsiArr = TA.rsi(b.c, 14);
-    var pivots = TA.labelStructure(TA.findPivots(b.h, b.l, 3));
-    var breaks = n >= 60 ? TA.detectBreaks(b.c, pivots) : [];       // C6: ข้อมูลบาง → ข้ามโครงสร้าง
-    var divs = n >= 60 ? TA.detectDivergence(b.c, rsiArr, pivots) : [];
+    var daily = d.bars;
+    var nD = daily.t.length;
+    // สัญญาณสรุป (chips) คำนวณจากรายวันครั้งเดียว — ไม่เปลี่ยนตาม TF
+    var dEma7 = TA.ema(daily.c, 7), dEma30 = TA.ema(daily.c, 30), dEma200 = TA.ema(daily.c, 200), dRsi = TA.rsi(daily.c, 14);
+    var pivots = TA.labelStructure(TA.findPivots(daily.h, daily.l, 3));
+    var breaks = nD >= 60 ? TA.detectBreaks(daily.c, pivots) : [];   // C6: ข้อมูลบาง → ข้ามโครงสร้าง
+    var divs = nD >= 60 ? TA.detectDivergence(daily.c, dRsi, pivots) : [];
+
+    // มุมมองปัจจุบัน (เปลี่ยนตาม TF) — primitive/legend อ่านจาก view เสมอ
+    var view = { tf: 'D', b: daily, ema7: dEma7, ema30: dEma30, ema200: dEma200, rsi: dRsi, idx: {}, showBand: true };
+    var hourly = null;                                               // แท่งรายชั่วโมง โหลดครั้งแรกที่กด 1H/4H
 
     // C2: สร้างนอกจอให้เสร็จ แล้ว swap ครั้งเดียว — SVG เดิมแค่ซ่อน (print/fallback ยังใช้ได้)
     var box = document.createElement('div');
     box.className = 'ta-box';
     // จอแคบ SVG หดตาม aspect (920:300) เหลือ ~100px — ห้ามใช้ตรง ๆ ไม่งั้น pane เตี้ยจน LWC วางป้ายแกนเพี้ยน → ขั้นต่ำ 240px
     var priceEl = document.createElement('div'); priceEl.style.height = Math.max(240, Math.round(wrap.getBoundingClientRect().height || 300)) + 'px';
+    priceEl.style.position = 'relative';
     var rsiEl = document.createElement('div'); rsiEl.style.height = '110px';
-    box.appendChild(priceEl); box.appendChild(rsiEl);
 
     var base = {
       layout: { background: { color: 'transparent' }, textColor: '#6b7383', fontFamily: 'IBM Plex Mono, monospace', attributionLogo: true },
@@ -48,7 +61,7 @@
     };
     var LWC = window.LightweightCharts;
     var chart = LWC.createChart(priceEl, base);
-    // ลายน้ำกลางกราฟ: ชื่อหุ้นตัวใหญ่ + โดเมนเว็บบรรทัดล่าง — สีจางไม่บังแท่ง (v5 createTextWatermark)
+    // ลายน้ำ: ชื่อหุ้นตัวใหญ่ + โดเมนเว็บ ชิดบนกลางกราฟ — สีจางไม่บังแท่ง (v5 createTextWatermark)
     if (LWC.createTextWatermark && chart.panes) LWC.createTextWatermark(chart.panes()[0], {
       horzAlign: 'center', vertAlign: 'top',
       lines: [
@@ -60,22 +73,16 @@
       upColor: '#137333', downColor: '#c5221f', borderVisible: false, wickUpColor: '#137333', wickDownColor: '#c5221f',
       priceFormat: { type: 'price', precision: CFG.dec, minMove: Math.pow(10, -CFG.dec) },
     });
-    candles.setData(b.t.map(function (t, i) { return { time: t, open: b.o[i], high: b.h[i], low: b.l[i], close: b.c[i] }; }));
     var vol = chart.addSeries(LWC.HistogramSeries, { priceScaleId: 'vol', priceFormat: { type: 'volume' }, color: 'rgba(107,115,131,.25)' });
     chart.priceScale('vol').applyOptions({ scaleMargins: { top: 0.82, bottom: 0 } });
-    vol.setData(b.t.map(function (t, i) { return { time: t, value: b.v[i] }; }));
-    function line(el, data, color, width) {
-      var s = el.addSeries(LWC.LineSeries, { color: color, lineWidth: width, priceLineVisible: false, lastValueVisible: false, crosshairMarkerVisible: false });
-      s.setData(data); return s;
+    function line(el, color, width) {
+      return el.addSeries(LWC.LineSeries, { color: color, lineWidth: width, priceLineVisible: false, lastValueVisible: false, crosshairMarkerVisible: false });
     }
-    var pts = function (arr) { return b.t.map(function (t, i) { return arr[i] == null ? null : { time: t, value: arr[i] }; }).filter(Boolean); };
     // EMA 7 เขียว / 30 แดง เส้นบางสุด · EMA200 น้ำเงิน หนา +1 (แนวโน้มระยะยาว)
-    var s7 = line(chart, pts(ema7), '#137333', 1);
-    line(chart, pts(ema30), '#c5221f', 1);
-    line(chart, pts(ema200), '#1a73e8', 2);
+    var s7 = line(chart, '#137333', 1), s30 = line(chart, '#c5221f', 1), s200 = line(chart, '#1a73e8', 2);
 
     // แถบพื้นระหว่าง EMA7↔EMA30: เขียวอ่อนช่วง 7 อยู่เหนือ 30 / แดงอ่อนช่วงอยู่ใต้ (จางพอไม่บังแท่ง)
-    // วาดด้วย series primitive (zOrder bottom = อยู่หลังทุก series) — คำนวณพิกัดสดทุกเฟรม รองรับ pan/zoom
+    // วาดด้วย series primitive (zOrder bottom = อยู่หลังทุก series) — อ่านจาก view สด รองรับ pan/zoom/สลับ TF
     var bandPrim = {
       updateAllViews: function () {},
       paneViews: function () {
@@ -84,17 +91,18 @@
           renderer: function () {
             return {
               draw: function (target) {
+                if (!view.showBand) return;
                 target.useMediaCoordinateSpace(function (scope) {
                   var ctx = scope.context;
                   var ts = chart.timeScale();
                   var pb = [];
-                  for (var i = 0; i < n; i++) {
-                    if (ema7[i] == null || ema30[i] == null) continue;
-                    var x = ts.timeToCoordinate(b.t[i]);
+                  for (var i = 0; i < view.b.t.length; i++) {
+                    if (view.ema7[i] == null || view.ema30[i] == null) continue;
+                    var x = ts.timeToCoordinate(view.b.t[i]);
                     if (x == null) continue; // นอกจอ — ช่วงที่เห็นเป็น run ต่อเนื่องเสมอ
-                    var y7 = s7.priceToCoordinate(ema7[i]), y30 = s7.priceToCoordinate(ema30[i]);
+                    var y7 = s7.priceToCoordinate(view.ema7[i]), y30 = s7.priceToCoordinate(view.ema30[i]);
                     if (y7 == null || y30 == null) continue;
-                    pb.push({ x: x, y7: y7, y30: y30, d: ema7[i] - ema30[i] });
+                    pb.push({ x: x, y7: y7, y30: y30, d: view.ema7[i] - view.ema30[i] });
                   }
                   function fillRun(run, up) {
                     if (run.length < 2) return;
@@ -130,9 +138,9 @@
       },
     };
     if (s7.attachPrimitive) s7.attachPrimitive(bandPrim);
-    // เส้นอ้างอิงมูลค่า: FV + ระดับส่วนเผื่อ 20%/30% (โซนสีตามเครื่องคิดเลข MOS ใน engine เดิม)
-    // ★ ไม่ใช้ axis label (3 กล่องซ้อนกันบังกราฟ — feedback user 1 ส.ค. 2569) → เขียนชื่อ+ค่าบนเส้นประเอง
-    //   (LWC ไม่วาด title ในกราฟเมื่อ axisLabelVisible:false — วัดจริงด้วย pixel test) — วาดผ่าน primitive ด้านล่าง
+
+    // เส้นอ้างอิงมูลค่า: FV + ระดับส่วนเผื่อ 20%/30% — ไม่ใช้ axis label (ซ้อนกันบังกราฟ) →
+    // เขียนชื่อ+ค่าบนเส้นเองผ่าน primitive ชิดขวา (LWC ไม่วาด title ในกราฟเมื่อปิด axis label — วัดจริง)
     var refs = [
       { p: CFG.fv, c: '#1e8e3e', style: 2, t: 'FV ' + CFG.fv.toFixed(CFG.dec) },
       { p: CFG.fv * 0.8, c: '#b06000', style: 1, t: 'MOS 20% ' + (CFG.fv * 0.8).toFixed(CFG.dec) },
@@ -151,7 +159,6 @@
               draw: function (target) {
                 target.useMediaCoordinateSpace(function (scope) {
                   var ctx = scope.context;
-                  // ชิดขวาใกล้แกนราคา (สายตาผู้ใช้อยู่ฝั่งขวา) เยื้องเข้ามา 14px ไม่ติดขอบ · ฟอนต์เล็กลง
                   ctx.font = '9px "IBM Plex Mono", monospace';
                   ctx.textBaseline = 'bottom'; ctx.textAlign = 'right';
                   refs.forEach(function (rf) {
@@ -170,34 +177,169 @@
       },
     };
     if (candles.attachPrimitive) candles.attachPrimitive(refPrim);
-    // โครงสร้างราคา (pivots/BOS/CHoCH) ไม่วาด marker บนกราฟแล้ว — สรุปเป็น chips ด้านล่างอย่างเดียว
 
     // โลโก้ TradingView แสดงที่ price pane เดียวพอ (attribution ครบด้วย .ta-attr) — pane RSI ปิดไม่ให้ซ้ำ
     var rsiChart = LWC.createChart(rsiEl, Object.assign({}, base, {
       layout: Object.assign({}, base.layout, { attributionLogo: false }),
       rightPriceScale: { borderColor: '#eef1f5' },
     }));
-    var rsiSeries = line(rsiChart, pts(rsiArr), '#7b1fa2', 2);
+    var rsiSeries = line(rsiChart, '#7b1fa2', 2);
     [30, 70].forEach(function (lv) { rsiSeries.createPriceLine({ price: lv, color: '#c9ced6', lineStyle: 3, lineWidth: 1, title: String(lv) }); });
-    divs.forEach(function (dv) {
+    // เส้น divergence อิง index รายวัน — โชว์เฉพาะ TF D (TF อื่นแกนเวลาไม่ตรงกัน)
+    var divSeries = divs.map(function (dv) {
       var s = rsiChart.addSeries(LWC.LineSeries, { color: dv.type === 'bull' ? '#137333' : '#c5221f', lineWidth: 1, lineStyle: 2, priceLineVisible: false, lastValueVisible: false });
-      s.setData([{ time: b.t[dv.p1.i], value: dv.p1.rsi }, { time: b.t[dv.p2.i], value: dv.p2.rsi }]);
+      s.setData([{ time: daily.t[dv.p1.i], value: dv.p1.rsi }, { time: daily.t[dv.p2.i], value: dv.p2.rsi }]);
+      return s;
+    });
+    chart.timeScale().subscribeVisibleTimeRangeChange(function (r) { if (r) try { rsiChart.timeScale().setVisibleRange(r); } catch (_) {} });
+
+    // ── view จัดการข้อมูลตาม TF ──
+    var pts = function (arr) { return view.b.t.map(function (t, i) { return arr[i] == null ? null : { time: t, value: arr[i] }; }).filter(Boolean); };
+    function applyView() {
+      var b = view.b;
+      candles.setData(b.t.map(function (t, i) { return { time: t, open: b.o[i], high: b.h[i], low: b.l[i], close: b.c[i] }; }));
+      vol.setData(b.t.map(function (t, i) { return { time: t, value: b.v[i] }; }));
+      s7.setData(pts(view.ema7)); s30.setData(pts(view.ema30)); s200.setData(pts(view.ema200));
+      rsiSeries.setData(pts(view.rsi));
+      view.idx = {};
+      b.t.forEach(function (t, i) { view.idx[t] = i; });
+      divSeries.forEach(function (s) { s.applyOptions({ visible: view.tf === 'D' }); });
+    }
+    function setBars(tf, bars) {
+      view.tf = tf; view.b = bars;
+      view.ema7 = TA.ema(bars.c, 7); view.ema30 = TA.ema(bars.c, 30); view.ema200 = TA.ema(bars.c, 200);
+      view.rsi = TA.rsi(bars.c, 14);
+      applyView();
+    }
+    // ช่วงมองเห็นตามจำนวนเดือน ('all' = ทั้งหมด) — คิดจากเวลา ใช้ได้ทุก TF
+    function setRangeMonths(mo) {
+      var b = view.b, last = b.t.length - 1;
+      if (last < 1) return;
+      if (mo === 'all') { chart.timeScale().fitContent(); rsiChart.timeScale().fitContent(); return; }
+      var from = Math.max(b.t[0], b.t[last] - mo * 2629800);
+      [chart, rsiChart].forEach(function (c) { c.timeScale().setVisibleRange({ from: from, to: b.t[last] }); });
+    }
+    var TF_DEF_RANGE = { '1H': 1, '4H': 3, D: 4, Y: 'all' };         // range เริ่มต้นเมื่อสลับ TF
+    function setTF(tf, btn) {
+      var done = function (bars) { setBars(tf, bars); setRangeMonths(TF_DEF_RANGE[tf]); markOn(tfWrap, btn); };
+      if (tf === 'D') return done(daily);
+      if (tf === 'Y') return done(TA.resample(daily, 'Y'));
+      if (hourly) return done(tf === '4H' ? TA.resample(hourly, '4H') : hourly);
+      btn.disabled = true;
+      fetchOhlc('H', 8000).then(function (d2) {
+        hourly = d2.bars;
+        done(tf === '4H' ? TA.resample(hourly, '4H') : hourly);
+      }).catch(function (e) {
+        console.warn('[ta-chart] โหลดข้อมูลรายชั่วโมงไม่ได้ — คงมุมมองเดิม:', e.message);
+      }).finally(function () { btn.disabled = false; });
+    }
+
+    // ── toolbar ──
+    function mkBtn(txt, title, fn) {
+      var el = document.createElement('button');
+      el.type = 'button'; el.className = 'ta-btn'; el.textContent = txt; el.title = title || '';
+      el.addEventListener('click', function () { try { fn(el); } catch (e) { console.warn('[ta-chart]', e.message); } });
+      return el;
+    }
+    function group(cls) { var g = document.createElement('span'); g.className = 'ta-tgroup' + (cls ? ' ' + cls : ''); return g; }
+    function markOn(g, btn) { [].forEach.call(g.children, function (c) { c.classList.remove('on'); }); if (btn) btn.classList.add('on'); }
+
+    var toolbar = document.createElement('div'); toolbar.className = 'ta-toolbar';
+    var tfWrap = group();
+    [['1H', '1H'], ['4H', '4H'], ['D', 'D'], ['Y', 'Y']].forEach(function (t) {
+      var btn = mkBtn(t[0], 'timeframe ' + t[0], function (el) { setTF(t[1], el); });
+      if (t[1] === 'D') btn.classList.add('on');
+      tfWrap.appendChild(btn);
+    });
+    var rangeWrap = group();
+    [['1M', 1], ['3M', 3], ['6M', 6], ['1Y', 12], ['3Y', 36]].forEach(function (r) {
+      rangeWrap.appendChild(mkBtn(r[0], 'ดูย้อนหลัง ' + r[0], function (el) { setRangeMonths(r[1]); markOn(rangeWrap, el); }));
+    });
+    var actWrap = group('ta-acts');
+    // ปุ่มแว่นขยาย: ซูมยึดขอบขวา (แท่งล่าสุดคาที่เดิม) — user เคาะแบบปุ่มแทน Ctrl+scroll
+    function zoom(factor) {
+      var ts = chart.timeScale();
+      var lr = ts.getVisibleLogicalRange();
+      if (!lr) return;
+      var span = (lr.to - lr.from) * factor;
+      ts.setVisibleLogicalRange({ from: lr.to - Math.max(8, span), to: lr.to });
+      markOn(rangeWrap, null);
+    }
+    actWrap.appendChild(mkBtn('🔍−', 'ซูมออก', function () { zoom(1.5); }));
+    actWrap.appendChild(mkBtn('🔍+', 'ซูมเข้า', function () { zoom(1 / 1.5); }));
+    actWrap.appendChild(mkBtn('รีเซ็ต', 'กลับมุมมองเริ่มต้น (TF D · 4 เดือน)', function () {
+      setBars('D', daily); setRangeMonths(4);
+      markOn(tfWrap, tfWrap.children[2]); markOn(rangeWrap, null);
+    }));
+    var logOn = false;
+    actWrap.appendChild(mkBtn('Log', 'สลับแกนราคา log/linear', function (el) {
+      logOn = !logOn;
+      chart.priceScale('right').applyOptions({ mode: logOn ? 1 : 0 });
+      el.classList.toggle('on', logOn);
+    }));
+    if (chart.takeScreenshot) actWrap.appendChild(mkBtn('📷', 'บันทึกรูปกราฟ (PNG)', function () {
+      var c1 = chart.takeScreenshot();
+      var c2 = rsiEl.style.display === 'none' ? null : rsiChart.takeScreenshot();
+      var cv = document.createElement('canvas');
+      cv.width = Math.max(c1.width, c2 ? c2.width : 0); cv.height = c1.height + (c2 ? c2.height : 0);
+      var cx = cv.getContext('2d');
+      cx.fillStyle = '#ffffff'; cx.fillRect(0, 0, cv.width, cv.height);
+      cx.drawImage(c1, 0, 0); if (c2) cx.drawImage(c2, 0, c1.height);
+      var a = document.createElement('a');
+      a.download = CFG.sym + '-chart.png'; a.href = cv.toDataURL('image/png'); a.click();
+    }));
+    toolbar.appendChild(tfWrap); toolbar.appendChild(rangeWrap); toolbar.appendChild(actWrap);
+
+    // ── OHLC legend ตาม crosshair (มุมซ้ายบนของ pane ราคา) ──
+    var legend = document.createElement('div'); legend.className = 'ta-legend';
+    priceEl.appendChild(legend);
+    var thDate = function (t) {
+      var dt = new Date(t * 1000);
+      var s = dt.toLocaleDateString('th-TH', { day: 'numeric', month: 'short', year: '2-digit' });
+      if (view.tf === '1H' || view.tf === '4H') s += ' ' + dt.toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' });
+      return s;
+    };
+    chart.subscribeCrosshairMove(function (param) {
+      var i = param && param.time != null ? view.idx[param.time] : undefined;
+      if (i == null) { legend.textContent = ''; return; }
+      var b = view.b;
+      var prev = i > 0 ? b.c[i - 1] : b.o[i];
+      var chg = prev ? ((b.c[i] - prev) / prev) * 100 : 0;
+      var f = function (v) { return v.toFixed(CFG.dec); };
+      legend.innerHTML = thDate(b.t[i]) + '  O <b>' + f(b.o[i]) + '</b> H <b>' + f(b.h[i]) + '</b> L <b>' + f(b.l[i]) + '</b> C <b>' + f(b.c[i]) +
+        '</b> <span style="color:' + (chg >= 0 ? '#137333' : '#c5221f') + '">' + (chg >= 0 ? '+' : '') + chg.toFixed(2) + '%</span>';
     });
 
-    // sync แกนเวลา 2 pane · viewport เริ่มต้น = ~4 เดือนหลังสุด (แท่งเทียนอ่านออกชัด — user เคาะ 1 ส.ค. 2569)
-    // ลาก/เลื่อนย้อนดูข้อมูลทั้ง 3 ปีได้ · ข้อมูลสั้นกว่านั้น = โชว์เท่าที่มี
-    var vFrom = Math.max(0, n - 90);
-    [chart, rsiChart].forEach(function (c) { c.timeScale().setVisibleRange({ from: b.t[vFrom], to: b.t[n - 1] }); });
-    chart.timeScale().subscribeVisibleTimeRangeChange(function (r) { if (r) rsiChart.timeScale().setVisibleRange(r); });
+    // ── toggle indicator ──
+    var togWrap = document.createElement('div'); togWrap.className = 'ta-toggles';
+    function mkTog(txt, init, fn) {
+      var el = document.createElement('button');
+      el.type = 'button'; el.className = 'ta-tog' + (init ? '' : ' off'); el.textContent = txt;
+      el.addEventListener('click', function () {
+        var on = el.classList.toggle('off') === false;
+        try { fn(on); } catch (e) { console.warn('[ta-chart]', e.message); }
+      });
+      togWrap.appendChild(el);
+    }
+    mkTog('EMA7', true, function (on) { s7.applyOptions({ visible: on }); });
+    mkTog('EMA30', true, function (on) { s30.applyOptions({ visible: on }); });
+    mkTog('EMA200', true, function (on) { s200.applyOptions({ visible: on }); });
+    mkTog('Band', true, function (on) { view.showBand = on; chart.timeScale().applyOptions({}); }); // applyOptions เปล่า = บังคับ repaint
+    mkTog('Vol', true, function (on) { vol.applyOptions({ visible: on }); });
+    mkTog('RSI', true, function (on) { rsiEl.style.display = on ? '' : 'none'; });
+
+    box.appendChild(toolbar); box.appendChild(priceEl); box.appendChild(rsiEl); box.appendChild(togWrap);
 
     // chips สรุปสัญญาณ + attribution (เงื่อนไข license) — ต่อท้ายในการ swap เดียวกัน (C2)
-    var chips = TA.summarizeSignals({ closes: b.c, ema7: ema7, ema30: ema30, ema200: ema200, rsiArr: rsiArr, breaks: breaks, divs: divs });
+    var chips = TA.summarizeSignals({ closes: daily.c, ema7: dEma7, ema30: dEma30, ema200: dEma200, rsiArr: dRsi, breaks: breaks, divs: divs });
     var bar = document.createElement('div'); bar.className = 'ta-chips';
     chips.forEach(function (c) { var el = document.createElement('span'); el.className = 'ta-chip ' + c.tone; el.textContent = c.label; bar.appendChild(el); });
     var attr = document.createElement('span'); attr.className = 'ta-attr';
     attr.innerHTML = 'chart: <a href="https://www.tradingview.com/" rel="noopener" target="_blank">TradingView Lightweight Charts™</a> · สัญญาณคำนวณอัตโนมัติ ไม่ใช่คำแนะนำการลงทุน';
     bar.appendChild(attr);
     box.appendChild(bar);
+
+    applyView();
 
     // C2/C3: swap แล้วต้องกลับได้ — พังตรงไหนหลังจากนี้ = ถอน box คืน SVG เดิมเสมอ
     try {
@@ -207,6 +349,7 @@
       // clientWidth/Height ตอนนั้น = 0 ทำให้ canvas ได้ขนาดผิด (สูงเกือบ 0) ต้อง resize() ให้ถูกทันทีหลัง attach จริง
       chart.resize(priceEl.clientWidth, priceEl.clientHeight);
       rsiChart.resize(rsiEl.clientWidth, rsiEl.clientHeight);
+      setRangeMonths(4);                                             // มุมมองเริ่มต้น ~4 เดือน (แท่งเทียนอ่านชัด)
       new ResizeObserver(function () {
         chart.resize(priceEl.clientWidth, priceEl.clientHeight);
         rsiChart.resize(rsiEl.clientWidth, rsiEl.clientHeight);
