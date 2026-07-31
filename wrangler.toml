@@ -52,3 +52,10 @@ namespace_id = "1002"
 [ratelimits.simple]
 limit = 30           # นับวิว (POST) ได้ 30 ครั้ง
 period = 60          # ต่อ 60 วิ ต่อ IP
+
+[[ratelimits]]
+name = "OHLC_LIMITER"
+namespace_id = "1003"
+[ratelimits.simple]
+limit = 20           # ดึง OHLC ได้ 20 ครั้ง
+period = 60          # ต่อ 60 วิ ต่อ IP (ปกติ 1 หน้า = 1 ครั้ง + edge cache ช่วยอยู่แล้ว)

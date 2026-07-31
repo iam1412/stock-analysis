@@ -20,6 +20,7 @@
 // หมายเหตุ: ไฟล์ static เสิร์ฟจาก edge cache ไม่ผ่าน Worker → ฟรี/ไม่จำกัด; มีเฉพาะ /api/* ที่เรียก Worker + DO
 
 import { DurableObject } from 'cloudflare:workers';
+import { toYahoo, transformChart, OHLC_CACHE_TTL } from './ohlc.js';
 
 const SYM_RE = /^[A-Z0-9.\-]{1,10}$/;
 const VOTES = new Set(['none', 'like', 'dislike']);
@@ -179,6 +180,38 @@ export default {
 
     // ไม่ใช่ API → เสิร์ฟ static (ไฟล์ส่วนใหญ่ถูก edge cache ตัดไปก่อนไม่ถึง Worker อยู่แล้ว)
     if (!p.startsWith('/api/')) return env.ASSETS.fetch(request);
+
+    // GET /api/ohlc/<SYM>?cur=USD|THB — proxy Yahoo 2y/1d สำหรับกราฟ TA (docs/ta-chart.md)
+    // ล้มเหลวฝั่งเรา/Yahoo → client fallback ไปกราฟ SVG เดิมเสมอ (สัญญา C3/C4 ใน spec)
+    const mOhlc = p.match(/^\/api\/ohlc\/([^/]+)$/);
+    if (request.method === 'GET' && mOhlc) {
+      const v = await validSym(mOhlc[1], env, url);
+      if (v.err) return v.err;
+      const cur = url.searchParams.get('cur') === 'THB' ? 'THB' : 'USD';
+      const { success } = await env.OHLC_LIMITER.limit({ key: request.headers.get('CF-Connecting-IP') || '' });
+      if (!success) return json({ error: 'rate limited' }, { status: 429 });
+
+      // cache key คงที่ต่อ (symbol, cur) — ไม่อิง header ผู้ใช้
+      const cacheKey = new Request(new URL(`/api/ohlc/${v.sym}?cur=${cur}`, url).toString());
+      const cache = caches.default;
+      const hit = await cache.match(cacheKey);
+      if (hit) return hit;
+
+      try {
+        const y = await fetch(
+          `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(toYahoo(v.sym, cur))}?range=2y&interval=1d`,
+          { headers: { 'User-Agent': 'Mozilla/5.0 (stock-ai chart)' }, signal: AbortSignal.timeout(8000) }
+        );
+        if (!y.ok) throw new Error('yahoo ' + y.status);
+        const body = transformChart(await y.json());
+        const res = json(body, { cache: `public, max-age=3600, s-maxage=${OHLC_CACHE_TTL}` });
+        ctx.waitUntil(cache.put(cacheKey, res.clone()));
+        return res;
+      } catch (e) {
+        // Yahoo ล่ม → ไม่มีอะไรเสิร์ฟ (edge cache หมดแล้ว) → 503 ให้ client อยู่กับ SVG เดิม
+        return json({ error: 'upstream unavailable' }, { status: 503 });
+      }
+    }
 
     // DO เดียวทั้งระบบ (สร้าง stub ตอนนี้ ราคาถูก ยังไม่มี I/O จนกว่าจะเรียกเมธอด)
     const stub = env.COUNTERS.get(env.COUNTERS.idFromName('global'));
