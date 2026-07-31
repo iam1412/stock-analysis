@@ -18,9 +18,9 @@ TradingView-style: แท่งเทียนรายวัน + volume + EMA 
    คำนวณ → **สลับกราฟในที่เดิม** เมื่อพร้อมเท่านั้น · ล้มเหลวทุกกรณี = SVG เดิมอยู่ครบ
    ผู้ใช้ไม่เห็น error state ใหญ่ ๆ
 2. **ข้อมูลสด ไม่เก็บลง git** — Worker route ใหม่ `GET /api/ohlc/<SYM>?cur=<USD|THB>`
-   proxy Yahoo `range=3y&interval=1d` (3 ปี = warm-up EMA200 · viewport เริ่มต้นตัด 200 แท่งแรกออก
-   ให้เส้น EMA200 เต็มจอ เลื่อนย้อนได้ · แสดงช่วงที่เหลือเต็ม ~2 ปี
-   ไม่ fix 1 ปี — user เคาะ 1 ส.ค. 2569)
+   proxy Yahoo `range=3y&interval=1d` (3 ปี = warm-up EMA200 พอ ·
+   viewport เริ่มต้น = ~4 เดือนหลังสุด (~90 แท่ง) ให้แท่งเทียนอ่านชัด — ลาก/เลื่อนย้อนดูได้ทั้ง 3 ปี
+   · user เคาะ 1 ส.ค. 2569)
    + cache ที่ edge (Cache API) `s-maxage=21600` (6 ชม.) · Yahoo ล่ม → เสิร์ฟ cache เก่า
    → ไม่มี cache → 503 → client fallback SVG
 3. **คำนวณฝั่ง browser** — indicator + annotation ทั้งหมดเป็น pure function ใน

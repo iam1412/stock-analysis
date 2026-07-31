@@ -151,15 +151,16 @@
               draw: function (target) {
                 target.useMediaCoordinateSpace(function (scope) {
                   var ctx = scope.context;
-                  ctx.font = '11px "IBM Plex Mono", monospace';
-                  ctx.textBaseline = 'bottom';
+                  // ชิดขวาใกล้แกนราคา (สายตาผู้ใช้อยู่ฝั่งขวา) เยื้องเข้ามา 14px ไม่ติดขอบ · ฟอนต์เล็กลง
+                  ctx.font = '9px "IBM Plex Mono", monospace';
+                  ctx.textBaseline = 'bottom'; ctx.textAlign = 'right';
                   refs.forEach(function (rf) {
                     var y = candles.priceToCoordinate(rf.p);
-                    if (y == null || y < 12 || y > scope.mediaSize.height - 2) return; // เส้นหลุดจอ = ไม่เขียน
+                    if (y == null || y < 10 || y > scope.mediaSize.height - 2) return; // เส้นหลุดจอ = ไม่เขียน
                     ctx.strokeStyle = 'rgba(255,255,255,.85)'; ctx.lineWidth = 3;       // ขอบขาวให้อ่านออกบนแท่ง
-                    ctx.strokeText(rf.t, 8, y - 2);
+                    ctx.strokeText(rf.t, scope.mediaSize.width - 14, y - 2);
                     ctx.fillStyle = rf.c;
-                    ctx.fillText(rf.t, 8, y - 2);
+                    ctx.fillText(rf.t, scope.mediaSize.width - 14, y - 2);
                   });
                 });
               },
@@ -183,10 +184,10 @@
       s.setData([{ time: b.t[dv.p1.i], value: dv.p1.rsi }, { time: b.t[dv.p2.i], value: dv.p2.rsi }]);
     });
 
-    // sync แกนเวลา 2 pane · viewport เริ่มต้น = หลัง warm-up EMA200 (แท่งที่ 200 เป็นต้นไป → เส้นน้ำเงินเต็มจอ)
-    // เลื่อนย้อนดูช่วง warm-up ได้ · ข้อมูลสั้น (IPO) = โชว์ทั้งหมด
-    if (n > 220) [chart, rsiChart].forEach(function (c) { c.timeScale().setVisibleRange({ from: b.t[199], to: b.t[n - 1] }); });
-    else [chart, rsiChart].forEach(function (c) { c.timeScale().fitContent(); });
+    // sync แกนเวลา 2 pane · viewport เริ่มต้น = ~4 เดือนหลังสุด (แท่งเทียนอ่านออกชัด — user เคาะ 1 ส.ค. 2569)
+    // ลาก/เลื่อนย้อนดูข้อมูลทั้ง 3 ปีได้ · ข้อมูลสั้นกว่านั้น = โชว์เท่าที่มี
+    var vFrom = Math.max(0, n - 90);
+    [chart, rsiChart].forEach(function (c) { c.timeScale().setVisibleRange({ from: b.t[vFrom], to: b.t[n - 1] }); });
     chart.timeScale().subscribeVisibleTimeRangeChange(function (r) { if (r) rsiChart.timeScale().setVisibleRange(r); });
 
     // chips สรุปสัญญาณ + attribution (เงื่อนไข license) — ต่อท้ายในการ swap เดียวกัน (C2)
