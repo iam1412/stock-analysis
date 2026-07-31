@@ -98,15 +98,22 @@
     bar.appendChild(attr);
     box.appendChild(bar);
 
-    host.style.display = 'none';                                     // C8: ซ่อน ไม่ลบ (print โชว์กลับด้วย CSS)
-    wrap.appendChild(box);
-    // priceEl/rsiEl ยังไม่อยู่ใน DOM ตอน createChart() ด้านบน (สร้างนอกจอจริง ๆ = detached) →
-    // clientWidth/Height ตอนนั้น = 0 ทำให้ canvas ได้ขนาดผิด (สูงเกือบ 0) ต้อง resize() ให้ถูกทันทีหลัง attach จริง
-    chart.resize(priceEl.clientWidth, priceEl.clientHeight);
-    rsiChart.resize(rsiEl.clientWidth, rsiEl.clientHeight);
-    new ResizeObserver(function () {
+    // C2/C3: swap แล้วต้องกลับได้ — พังตรงไหนหลังจากนี้ = ถอน box คืน SVG เดิมเสมอ
+    try {
+      host.style.display = 'none';                                   // C8: ซ่อน ไม่ลบ (print โชว์กลับด้วย CSS)
+      wrap.appendChild(box);
+      // priceEl/rsiEl ยังไม่อยู่ใน DOM ตอน createChart() ด้านบน (สร้างนอกจอจริง ๆ = detached) →
+      // clientWidth/Height ตอนนั้น = 0 ทำให้ canvas ได้ขนาดผิด (สูงเกือบ 0) ต้อง resize() ให้ถูกทันทีหลัง attach จริง
       chart.resize(priceEl.clientWidth, priceEl.clientHeight);
       rsiChart.resize(rsiEl.clientWidth, rsiEl.clientHeight);
-    }).observe(priceEl);
+      new ResizeObserver(function () {
+        chart.resize(priceEl.clientWidth, priceEl.clientHeight);
+        rsiChart.resize(rsiEl.clientWidth, rsiEl.clientHeight);
+      }).observe(priceEl);
+    } catch (e) {
+      box.remove();
+      host.style.display = '';
+      console.warn('[ta-chart] fallback SVG (post-swap):', e.message);
+    }
   }
 })();

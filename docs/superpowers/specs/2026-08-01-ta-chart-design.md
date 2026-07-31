@@ -68,7 +68,7 @@ TradingView-style: แท่งเทียนรายวัน + volume + EMA 
 | C3 | API พัง/timeout 6 วิ/offline | SVG เดิมอยู่ครบ · log ลง console เท่านั้น ไม่มี error UI |
 | C4 | Yahoo ล่ม | edge cache 6 ชม. คั่นไว้ · พ้น cache → 503 → C3 |
 | C5 | มือถือ | `vertTouchDrag:false` + ปิด `mouseWheel` zoom → นิ้วลาก/ล้อเมาส์ผ่านกราฟ = หน้าเลื่อนปกติ **ไม่โดน hijack** · pinch zoom ในกราฟยังได้ |
-| C6 | หุ้น IPO/OTC ข้อมูลบาง | แท่งที่มี null ถูกตัดตั้งแต่ worker · แท่ง <60 ตัว → แสดงเฉพาะแท่งเทียน+chips "ข้อมูลไม่พอสำหรับ EMA50/โครงสร้าง" (ไม่ crash) |
+| C6 | หุ้น IPO/OTC ข้อมูลบาง | แท่งที่มี null ถูกตัดตั้งแต่ worker · แท่ง <60 ตัว → แสดงแท่งเทียน/EMA/RSI ปกติ แต่ข้าม structure (BOS/CHoCH) + divergence · chips แจ้งเท่าที่คำนวณได้ (ไม่ crash) |
 | C7 | เปิดรายงานหลายตัว | ta-<hash>.js โหลดครั้งเดียว (immutable cache) — ตัวถัดไป 0 KB |
 | C8 | no-JS / บอต / print | SVG path เดิมทำงาน · `@media print` ซ่อน interactive โชว์ SVG |
 | C9 | perf | ไฟล์ shared ≤ ~80KB gzip · คำนวณ TA 500 แท่ง < 50ms |

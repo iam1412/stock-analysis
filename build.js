@@ -220,7 +220,9 @@ function injectTA(html, symbol, rd, meta, taAsset) {
   const dec = px && px < 1 ? 4 : 2;
   const t = { ...THEME_DEFAULTS, ...(rd.theme || {}) };
   const cfg = { sym: symbol, cur, fv: rd.fv, accent: t.accent, accentDark: t.accentDark, dec };
-  return html.replace('</body>', `<script>window.__TA_CFG__=${JSON.stringify(cfg)}</script>\n<script defer src="/${taAsset}"></script>\n</body>`);
+  // escape '<' กัน </script>/<!-- breakout — ค่า theme accent มาจาก regex สีที่ปล่อยผ่าน </> ได้ ไม่ผ่าน HTML-escape
+  const cfgJson = JSON.stringify(cfg).replace(/</g, '\\u003c');
+  return html.replace('</body>', `<script>window.__TA_CFG__=${cfgJson}</script>\n<script defer src="/${taAsset}"></script>\n</body>`);
 }
 
 // แทรก <style> ของปุ่มโหวตเข้าไปใน <head>

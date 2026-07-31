@@ -172,6 +172,22 @@ ok(!threw(() => b.expandReport(NEWDOC.replace('"accent":"#0071e3"', '"accent":"#
 ok(!threw(() => b.expandReport(NEWDOC.replace('"accent":"#0071e3"', '"accent":"var(--blue)"'))), 'validateReportData: theme.accent = var(--blue) → ไม่ throw');
 ok(!threw(() => b.expandReport(NEWDOC.replace('"accent":"#0071e3"', '"accent":"rgba(20,30,40,.5)"'))), 'validateReportData: theme.accent = rgba() → ไม่ throw');
 
+// ── injectTA: config + <script> ก่อน </body> เฉพาะ dist (rd=null = รายงาน legacy → ข้าม) ──
+const taBody = '<body><h1>X</h1></body>';
+const rdBase = { fv: 120, gauge: { cur: 100 }, theme: { accent: '#0071e3', accentDark: '#0058b9' } };
+{
+  const out = b.injectTA(taBody, 'AAPL', rdBase, { currency: 'USD' }, 'assets/ta-abc123.js');
+  ok(/window\.__TA_CFG__=\{/.test(out), 'injectTA: แทรก window.__TA_CFG__= ก่อน </body>');
+  ok(out.includes('<script defer src="/assets/ta-abc123.js"></script>'), 'injectTA: แทรก <script defer src="/assets/ta-XXXX.js">');
+}
+ok(b.injectTA(taBody, 'AAPL', null, { currency: 'USD' }, 'assets/ta-abc123.js') === taBody, 'injectTA: rd=null (รายงาน legacy) → คืน html เดิมเป๊ะ (identity)');
+{
+  const evilRd = { ...rdBase, theme: { ...rdBase.theme, accent: 'rgb(0,0,0)</script><script>alert(1)//)' } };
+  const out = b.injectTA(taBody, 'AAPL', evilRd, { currency: 'USD' }, 'assets/ta-abc123.js');
+  ok(!out.includes('</script><script>alert'), 'injectTA: theme.accent มี </script><script> → ไม่หลุดออกจาก inline script เดิม (escape < กัน breakout)');
+  ok(out.includes('\\u003cscript>alert'), 'injectTA: "<" ใน theme.accent ถูก escape เป็น \\u003c ใน __TA_CFG__ (">" ไม่ต้อง escape)');
+}
+
 console.log('\n' + '─'.repeat(50));
 console.log(`build-test: ${n - fails}/${n} ผ่าน`);
 if (fails) { console.log('\n❌ build.js มีพฤติกรรมผิด — แก้ build.js ก่อน push\n'); process.exit(1); }
