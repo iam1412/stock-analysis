@@ -62,7 +62,8 @@ TradingView-style: แท่งเทียนรายวัน + volume + EMA 
 - **CHoCH**: ราคาปิดทะลุ swing "สวนทิศ trend" ครั้งแรก (trend state เริ่มจาก
   ทิศของ pivots คู่แรก แล้วพลิกเมื่อเกิด CHoCH)
 - **Divergence (regular)**: price LL + RSI HL = bullish · price HH + RSI LH = bearish
-  เทียบ pivot ราคา 2 ตัวติดกัน กับค่า RSI ณ แท่ง pivot
+  เทียบ pivot ราคา 2 ตัวติดกัน กับค่า RSI ณ แท่ง pivot · **กรอง 2 ชั้น** (บทเรียน AMKR 1 ส.ค. 2569):
+  RSI ต้องต่างกัน ≥ 2 จุด (ตัด noise) + ราคาปิดหลัง p2 ต้องยังไม่ทะลุ pivot ของ p2 (invalidation)
 - **แถบสัญญาณ (chips)**: ข้อเท็จจริงล่าสุด เช่น "EMA7 > EMA30 (cross X แท่งก่อน)", "ราคา > EMA200",
   "RSI 28 — oversold", "CHoCH ขาขึ้น", "Bullish divergence" · **ภาษาเป็นข้อเท็จจริงเชิงเทคนิค
   ไม่ใช่คำแนะนำซื้อขาย** — disclaimer เดิมของรายงานคงอยู่

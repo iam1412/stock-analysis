@@ -90,18 +90,27 @@
   }
 
   // regular divergence จาก pivot ราคา 2 ตัวชนิด L (bull) / H (bear) ติดกัน เทียบ RSI ณ แท่งนั้น
+  // กรอง 2 ชั้น (บทเรียน AMKR 1 ส.ค. 2569 — user ทักสัญญาณผี):
+  //   1) RSI ต้องต่างกัน ≥ 2 จุด — ต่างกันหลักทศนิยม = noise มองบนกราฟไม่เห็น
+  //   2) invalidation: ราคาปิดหลัง p2 ทะลุ pivot ของ p2 (bull หลุด low / bear ทะลุ high) = สัญญาณถูกทำลาย ตัดทิ้ง
+  const MIN_RSI_DIFF = 2;
   function detectDivergence(closes, rsiArr, pivots) {
     const out = [];
     const byType = (t) => pivots.filter((p) => p.type === t);
+    const brokenAfter = (i, price, below) => {
+      for (let j = i + 1; j < closes.length; j++)
+        if (below ? closes[j] < price : closes[j] > price) return true;
+      return false;
+    };
     for (const [t, kind] of [['L', 'bull'], ['H', 'bear']]) {
       const ps = byType(t);
       for (let n = 1; n < ps.length; n++) {
         const a = ps[n - 1], b = ps[n];
         const ra = rsiArr[a.i], rb = rsiArr[b.i];
         if (ra == null || rb == null) continue;
-        if (kind === 'bull' && b.price < a.price && rb > ra)
+        if (kind === 'bull' && b.price < a.price && rb - ra >= MIN_RSI_DIFF && !brokenAfter(b.i, b.price, true))
           out.push({ type: 'bull', p1: { i: a.i, price: a.price, rsi: ra }, p2: { i: b.i, price: b.price, rsi: rb } });
-        if (kind === 'bear' && b.price > a.price && rb < ra)
+        if (kind === 'bear' && b.price > a.price && ra - rb >= MIN_RSI_DIFF && !brokenAfter(b.i, b.price, false))
           out.push({ type: 'bear', p1: { i: a.i, price: a.price, rsi: ra }, p2: { i: b.i, price: b.price, rsi: rb } });
       }
     }

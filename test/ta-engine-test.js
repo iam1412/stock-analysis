@@ -65,6 +65,21 @@ const close = (a, b, eps = 1e-6) => assert.ok(Math.abs(a - b) < eps, `${a} ≉ $
   assert.equal(d.length, 1);
   assert.equal(d[0].type, 'bull');
   assert.deepEqual([d[0].p1.i, d[0].p2.i], [3, 9]);
+
+  // RSI ต่างกันน้อยกว่า 2 จุด = noise ไม่ใช่ divergence (เคสจริง AMKR 38.6→39.5 ที่ user ทัก 1 ส.ค. 2569)
+  const weak = new Array(12).fill(50); weak[3] = 38.6; weak[9] = 39.5;
+  assert.equal(TA.detectDivergence(closes, weak, pivots).length, 0, 'RSI diff < 2 ต้องไม่นับ');
+
+  // invalidation: ราคาปิดหลัง p2 หลุดต่ำกว่า pivot low ของ p2 = สัญญาณ bull ถูกทำลาย ห้ามรายงาน
+  const crashed = new Array(12).fill(10); crashed[11] = 7; // 7 < p2.price 9
+  assert.equal(TA.detectDivergence(crashed, rsiArr, pivots).length, 0, 'bull div ที่โดนทะลุ low ต้องหาย');
+
+  // bear divergence กลับด้าน: ราคาปิดหลัง p2 ทะลุเหนือ pivot high = invalidate เช่นกัน
+  const hPivots = [{ i: 3, type: 'H', price: 20 }, { i: 9, type: 'H', price: 21 }];
+  const hRsi = new Array(12).fill(50); hRsi[3] = 75; hRsi[9] = 60;
+  assert.equal(TA.detectDivergence(new Array(12).fill(18), hRsi, hPivots).length, 1, 'bear div ปกติต้องอยู่');
+  const pumped = new Array(12).fill(18); pumped[11] = 22; // 22 > p2.price 21
+  assert.equal(TA.detectDivergence(pumped, hRsi, hPivots).length, 0, 'bear div ที่โดนทะลุ high ต้องหาย');
 }
 // ── summarizeSignals: ชุด EMA 7/30/200 — chip cross EMA7/30 + ราคาเทียบ EMA200 + RSI · ห้ามมีคำแนะนำซื้อขาย
 {
