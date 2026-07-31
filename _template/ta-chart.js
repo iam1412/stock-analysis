@@ -48,6 +48,14 @@
     };
     var LWC = window.LightweightCharts;
     var chart = LWC.createChart(priceEl, base);
+    // ลายน้ำกลางกราฟ: ชื่อหุ้นตัวใหญ่ + โดเมนเว็บบรรทัดล่าง — สีจางไม่บังแท่ง (v5 createTextWatermark)
+    if (LWC.createTextWatermark && chart.panes) LWC.createTextWatermark(chart.panes()[0], {
+      horzAlign: 'center', vertAlign: 'center',
+      lines: [
+        { text: CFG.sym, color: 'rgba(107,115,131,.16)', fontSize: 44, fontStyle: 'bold', fontFamily: 'IBM Plex Mono, monospace' },
+        { text: 'stock-ai.dotent.workers.dev', color: 'rgba(107,115,131,.15)', fontSize: 13, fontFamily: 'IBM Plex Mono, monospace' },
+      ],
+    });
     var candles = chart.addSeries(LWC.CandlestickSeries, {
       upColor: '#137333', downColor: '#c5221f', borderVisible: false, wickUpColor: '#137333', wickDownColor: '#c5221f',
       priceFormat: { type: 'price', precision: CFG.dec, minMove: Math.pow(10, -CFG.dec) },
