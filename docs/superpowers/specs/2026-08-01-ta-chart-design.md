@@ -58,7 +58,8 @@ TradingView-style: แท่งเทียนรายวัน + volume + EMA 
 - **Swing pivots**: fractal `k=3` — high ที่สูงกว่าทั้ง 3 แท่งซ้าย-ขวา = swing high
   (ยืนยันหลังผ่านไป k แท่ง — annotation จึง lag ตามนิยาม ไม่ repaint)
 - **HH/HL/LH/LL**: เทียบ pivot กับ pivot ชนิดเดียวกันตัวก่อนหน้า
-- **BOS**: ราคาปิดทะลุ swing high/low ล่าสุด "ตามทิศ trend ปัจจุบัน"
+- **BOS**: ราคาปิดทะลุ swing high/low ล่าสุด "ตามทิศ trend ปัจจุบัน" · **ไม่มี look-ahead** —
+  แนว swing ใช้ได้ตั้งแต่แท่งที่ pivot ยืนยัน (p.i + k) เท่านั้น (แก้ 1 ส.ค. 2569 หลัง audit)
 - **CHoCH**: ราคาปิดทะลุ swing "สวนทิศ trend" ครั้งแรก (trend state เริ่มจาก
   ทิศของ pivots คู่แรก แล้วพลิกเมื่อเกิด CHoCH)
 - **Divergence (regular)**: price LL + RSI HL = bullish · price HH + RSI LH = bearish

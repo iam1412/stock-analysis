@@ -56,6 +56,15 @@ const close = (a, b, eps = 1e-6) => assert.ok(Math.abs(a - b) < eps, `${a} ≉ $
   const choch = ev.find((e) => e.type === 'CHoCH');
   assert.ok(choch && choch.i === 18 && choch.dir === 'down' && choch.level === 14);
 }
+// ── detectBreaks ห้ามมี look-ahead: pivot fractal k=3 ยืนยันจริงที่แท่ง p.i+3 — ใช้เป็นแนวก่อนหน้านั้นไม่ได้
+{
+  const pivots = [{ i: 2, type: 'L', price: 10 }, { i: 5, type: 'H', price: 20 }];
+  const closes = [10, 11, 10, 12, 15, 20, 21, 22, 23, 24, 25, 26];
+  // close ทะลุ 20 ตั้งแต่ i=6 แต่เรียลไทม์ยังไม่รู้ว่า i=5 เป็น pivot จนถึง i=8 → event แรกต้องอยู่ i=8
+  const ev = TA.detectBreaks(closes, pivots);
+  assert.equal(ev.length, 1);
+  assert.deepEqual([ev[0].i, ev[0].type, ev[0].dir, ev[0].level], [8, 'BOS', 'up', 20]);
+}
 // ── detectDivergence: price LL แต่ RSI HL = bullish divergence
 {
   const pivots = [{ i: 3, type: 'L', price: 10 }, { i: 9, type: 'L', price: 9 }];

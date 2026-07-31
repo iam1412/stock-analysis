@@ -65,14 +65,16 @@
   }
 
   // เดินตามแท่งปิด: ทะลุ swing ตามเทรนด์ = BOS · สวนเทรนด์ครั้งแรก = CHoCH (แล้วพลิกเทรนด์)
-  // เทรนด์เริ่มต้น = ทิศจาก pivot คู่แรก (H ก่อน L = down เริ่ม ฯลฯ ใช้ราคา pivot เทียบ)
-  function detectBreaks(closes, pivots) {
+  // เทรนด์เริ่มต้น = ทิศจาก pivot คู่แรก · ★ ไม่มี look-ahead: pivot fractal ยืนยันจริงที่แท่ง p.i+k
+  // (เรียลไทม์ก่อนหน้านั้นยังไม่รู้ว่าเป็น swing) — ใช้เป็นแนวได้ตั้งแต่แท่งนั้นเป็นต้นไปเท่านั้น
+  function detectBreaks(closes, pivots, k) {
+    k = k || 3;                                  // ต้องตรงกับ k ของ findPivots ที่ผลิต pivots ชุดนี้
     if (pivots.length < 2) return [];
     const ev = [];
     let trend = null, refH = null, refL = null; // ref = swing ล่าสุดที่ "ยังไม่ถูกทะลุ"
     let pi = 0;
     for (let i = 0; i < closes.length; i++) {
-      while (pi < pivots.length && pivots[pi].i <= i - 1) { // pivot ยืนยันแล้วถึงใช้เป็นแนว
+      while (pi < pivots.length && pivots[pi].i + k <= i) { // pivot ยืนยันแล้ว (ผ่าน k แท่ง) ถึงใช้เป็นแนว
         const p = pivots[pi];
         if (p.type === 'H') refH = { level: p.price, i: p.i }; else refL = { level: p.price, i: p.i };
         if (trend === null && refH && refL) trend = refH.i > refL.i ? 'up' : 'down';
