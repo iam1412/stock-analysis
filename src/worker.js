@@ -188,8 +188,6 @@ export default {
       const v = await validSym(mOhlc[1], env, url);
       if (v.err) return v.err;
       const cur = url.searchParams.get('cur') === 'THB' ? 'THB' : 'USD';
-      const { success } = await env.OHLC_LIMITER.limit({ key: request.headers.get('CF-Connecting-IP') || '' });
-      if (!success) return json({ error: 'rate limited' }, { status: 429 });
 
       // cache key คงที่ต่อ (symbol, cur) — ไม่อิง header ผู้ใช้
       const cacheKey = new Request(new URL(`/api/ohlc/${v.sym}?cur=${cur}`, url).toString());
@@ -197,13 +195,17 @@ export default {
       const hit = await cache.match(cacheKey);
       if (hit) return hit;
 
+      // cache miss เท่านั้นที่กินโควตา limiter — hit จาก edge ไม่ต้องผ่าน gate นี้
+      const { success } = await env.OHLC_LIMITER.limit({ key: request.headers.get('CF-Connecting-IP') || '' });
+      if (!success) return json({ error: 'rate limited' }, { status: 429 });
+
       try {
         const y = await fetch(
           `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(toYahoo(v.sym, cur))}?range=2y&interval=1d`,
           { headers: { 'User-Agent': 'Mozilla/5.0 (stock-ai chart)' }, signal: AbortSignal.timeout(8000) }
         );
         if (!y.ok) throw new Error('yahoo ' + y.status);
-        const body = transformChart(await y.json());
+        const body = { ...transformChart(await y.json()), sym: v.sym };
         const res = json(body, { cache: `public, max-age=3600, s-maxage=${OHLC_CACHE_TTL}` });
         ctx.waitUntil(cache.put(cacheKey, res.clone()));
         return res;
