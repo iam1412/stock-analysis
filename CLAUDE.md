@@ -14,20 +14,19 @@ deploy อัตโนมัติบน **Cloudflare Workers (Static Assets)** 
 reports/<SYMBOL>.html   # ★ ต้นฉบับรายงาน — 1 ไฟล์ = 1 หุ้น (พิมพ์ใหญ่)
 _template/              # skeleton-{th,us}.html, dashboard.css, engine.js, agent-prompt.md
 build.js                # สแกน reports/ → index.html + reports.json → flatten ลง dist/
-reports.json            # manifest (build เขียนเอง, committed — track วันที่/hash) ห้ามแก้มือ
+reports.json            # manifest (build เขียนเอง, committed) ห้ามแก้มือ
 tools/  test/  docs/    # เครื่องมือ / quality gate / เอกสารอ้างอิง
 wrangler.toml _headers  # Workers Static Assets / HTTP headers
 dist/                   # ⚠️ build output (gitignore) — ห้ามแก้มือ
 ```
 
-**ห้ามแก้มือ** (build สร้างเอง): `dist/` ทั้งโฟลเดอร์ · `reports.json` · landing/การ์ด/footer/ช่องค้นหา (อยู่ใน template ของ `build.js` — แก้ที่นั่น) · หน้า index เรียง **อัปเดตล่าสุดขึ้นก่อน** อัตโนมัติ
+**ห้ามแก้มือ** (build สร้างเอง): `dist/` · `reports.json` · landing/การ์ด/footer/ช่องค้นหา (แก้ใน template ของ `build.js`) · หน้า index เรียงอัปเดตล่าสุดขึ้นก่อนอัตโนมัติ
 
 ---
 
 ## 2. วิเคราะห์หุ้นเดี่ยว (skill `stock-analyzer`)
 
-เมื่อสั่ง "วิเคราะห์ X" / re-analysis / เคลียร์คิว price-flags → เรียก skill **`stock-analyzer`** แล้ว**ทำตามทุกขั้น**
-(skill = single source of truth: โหมด NEW/UPDATE/UPDATE-LIGHT · script เก็บข้อมูล · FV ≥2 วิธี · MOS/scenario · 4 บล็อกบังคับ · self-check) → `npm run verify` ผ่าน 6 ขั้น → **Auto-push** (§5)
+เมื่อสั่ง "วิเคราะห์ X" / re-analysis / เคลียร์คิว price-flags → เรียก skill **`stock-analyzer`** แล้ว**ทำตามทุกขั้น** → `npm run verify` ผ่าน 6 ขั้น → **Auto-push** (§5)
 
 invariant ที่ห้ามหลุดไม่ว่ากรณีใด:
 - **cross-source verify ราคา+EPS ≥2 แหล่งก่อนเขียนตัวเลข** — ราคาต่าง >5% / EPS ขัดกัน → หยุด ถามผู้ใช้ อย่าเผยแพร่ (gate ตรวจความจริงไม่ได้)
@@ -43,21 +42,21 @@ invariant ที่ห้ามหลุดไม่ว่ากรณีใด:
 ใช้เมื่อสั่งหลายตัวหรือธีม · **รายละเอียด+เหตุผลทั้งหมด → `docs/orchestration.md`** · invariant ที่ห้ามหลุด:
 
 1. **ก่อนเริ่ม**: `git pull --rebase origin main` → อ่าน `reports.json` — สด ≤7 วัน **ไม่ทำซ้ำ** (ธีม→หาตัวแทน · ระบุชื่อ→ข้ามพร้อมแจ้ง) · เกิน 7 วัน = UPDATE · ยังไม่มี = NEW
-2. **โมเดล**: ❌ Haiku ทุกขั้น · **Sonnet ทุกชั้น** (controller+worker — ยกเลิก Opus ทั้งหมด 13 ก.ค. 2569) · หุ้นยาก (IPO <1 ปี/spinoff/split/cyclical/pre-profit/ราคา cross-source ต่าง >5%) → worker = Sonnet **effort high** + controller ปรึกษา `advisor` **ผ่าน courier subagent เท่านั้น** ก่อน spawn แล้วฝังแนวทางลง prompt (❌ ห้าม controller/worker เรียก advisor ตรง — advisor มีเพดาน transcript ~25k token เรียกจาก context งานจริงจะ unavailable เสมอ · วิธีเต็ม docs/orchestration.md §2 · courier ล้มเหลว → หยุดถาม user) · ตัดสิน publish/skip กำกวม → advisor (courier) ก่อน ยังกำกวม → หยุด ping user
-3. **spawn**: 1 หุ้น/agent (context แยก กันเลขปนข้ามหุ้น — ตัวร้าย #1) · **sequential เท่านั้น** — spawn → รอเสร็จ → ตรวจ → ตัวถัดไป (parallel เคยพัง rate limit พร้อมกันทั้งเวฟ) · ใช้ prompt `_template/agent-prompt.md` + STEP 0 กัน cwd-stray · จะคุม effort ต่อ worker → workflow **`analyze-wave`** (docs/orchestration.md) · **ห้ามรัน analyze-wave ซ้อนกัน — 1 run ในเวลาเดียวเท่านั้น** (รอ run เดิมจบก่อนค่อยเรียก call ถัดไป)
-4. **push รายตัว**: worker เสร็จ 1 ตัว → controller ตรวจ → verify + push หุ้นนั้นทันที (รวมเป็น Bash call เดียว §5) ก่อน spawn ตัวถัดไป · **จำนวนหุ้นต่อรอบไม่จำกัด** (ยกเลิก "เวฟละ ≤3" 12 ก.ค. 2569 — sequential + push รายตัวจำกัด blast radius = 1 หุ้นให้แล้ว) · ห้าม agent push เอง · ห้าม push ซ้อน session
+2. **โมเดล**: ❌ Haiku ทุกขั้น · **Sonnet ทุกชั้น** (Opus ยกเลิกทั้งหมด 13 ก.ค. 69) · หุ้นยาก (IPO <1 ปี/spinoff/split/cyclical/pre-profit/ราคา cross-source ต่าง >5%) → worker effort **high** + ปรึกษา `advisor` **ผ่าน courier subagent เท่านั้น** ก่อน spawn แล้วฝังแนวทางลง prompt (เรียกตรง = unavailable เสมอ — วิธี/เหตุผล `docs/orchestration.md` §2 · courier ล้มเหลว → หยุดถาม user) · ตัดสิน publish/skip กำกวม → advisor (courier) ก่อน ยังกำกวม → หยุด ping user
+3. **spawn**: 1 หุ้น/agent (กันเลขปนข้ามหุ้น — ตัวร้าย #1) · **sequential เท่านั้น** (parallel เคยชน rate limit ทั้งเวฟ) · prompt = `_template/agent-prompt.md` + STEP 0 กัน cwd-stray · คุม effort ต่อ worker → workflow **`analyze-wave`** · **ห้ามรัน analyze-wave ซ้อน — 1 run ต่อครั้ง** รอ run เดิมจบก่อน
+4. **push รายตัว**: worker เสร็จ 1 ตัว → controller ตรวจ → verify + push ทันที (Bash call เดียว §5) ก่อน spawn ตัวถัดไป · จำนวนหุ้นต่อรอบไม่จำกัด (ยกเลิกเวฟละ ≤3 — 12 ก.ค. 69) · ห้าม agent push เอง · ห้าม push ซ้อน session
 5. ของดีไม่พอโควตา → ลดจำนวนเองได้ ไม่ต้องถาม แต่แจ้งเหตุผล (คุณภาพ > โควตา)
 
 ---
 
 ## 4. Token discipline
 
-วัดจริง 12 ก.ค. 2569: ต้นทุน = **จำนวน turn × ~70k cache-read ของ worker** ไม่ใช่ output — กติกา token-lean **ต่อหุ้น** (batch tool calls · script แทน WebFetch · UPDATE-LIGHT · self-check ครั้งเดียว) อยู่ใน **SKILL.md แล้ว** · เป้า+ตัวเลข → `docs/orchestration.md` §7 · ที่ controller ต้องคุมเองเพิ่ม:
+ต้นทุนจริง = **จำนวน turn × cache-read** ไม่ใช่ output — กติกา token-lean ต่อหุ้นอยู่ใน **SKILL.md** · เป้า+ตัวเลขวัดจริง → `docs/orchestration.md` §7 + memory `token-usage-benchmarks` · ที่ controller คุมเองเพิ่ม:
 
-- **รันยาวได้ ไม่ต้องหยุดรอ user เปิด session ใหม่** (ยกเลิก chunk ≤10 หุ้น/session — 13 ก.ค. 2569 user เคาะ: ปล่อย auto-compact จัดการ context เอง) · ข้อเท็จจริงต้นทุน: cacheR/turn ของ controller โตตาม context (วัดจริง ~70k → ~139k ตอน 25 ตัวรวด) — controller ช่วยได้โดยคุมตัวเอง: รวม verify+push เป็น Bash เดียว · ไม่อ่านรายงานทั้งไฟล์ · สรุประหว่างเวฟให้สั้น
-- pull --rebase + อ่าน `reports.json` ก่อน — ข้ามหุ้นสด ≤7 วัน = ประหยัด 100% ของตัวนั้น
-- ทุกชั้น = Sonnet (§3.2) · worker งาน mechanical → effort medium ผ่าน `analyze-wave` · หุ้นยาก → effort high
-- controller **pre-fetch ด้วย `node tools/prep-stock.js <SYM> [--th] [--update]` เสมอ** (2026-08-02: 1 คำสั่ง = fundamentals + facts (NEW) + **CROSS-VERIFY verdict deterministic** — Δราคา >5% = exit 2 หยุดตาม §2) แล้ววางทั้ง block ใน `{{FUNDAMENTALS}}` ของ agent-prompt — worker ห้ามรัน fetch-fundamentals/fetch-facts ซ้ำ/ห้าม WebFetch หน้า financials เอง
+- **รันยาวได้ ไม่ต้องหยุดรอ user เปิด session ใหม่** (ยกเลิก chunk/session — 13 ก.ค. 69, auto-compact จัดการเอง) · คุมตัวเอง: รวม verify+push เป็น Bash เดียว · ไม่อ่านรายงานทั้งไฟล์ · สรุประหว่างเวฟให้สั้น
+- pull --rebase + อ่าน `reports.json` ก่อน — ข้ามหุ้นสด ≤7 วัน
+- งาน mechanical → effort medium ผ่าน `analyze-wave` · หุ้นยาก → effort high
+- controller **pre-fetch `node tools/prep-stock.js <SYM> [--th] [--update]` เสมอ** แล้ววางทั้ง block ใน `{{FUNDAMENTALS}}` — บรรทัดแรกคือ CROSS-VERIFY verdict, **exit 2 = ราคาขัดแหล่ง >5% ห้าม spawn หยุดถาม user (§2)** · worker ห้ามรัน fetch ซ้ำ/ห้าม WebFetch หน้า financials เอง
 
 ---
 
@@ -74,9 +73,9 @@ git pull --rebase origin main      # 3. sync
 git push origin HEAD:main          # 4. ★ worktree ต้องใช้ HEAD:main (ไม่ใช่ 'main' เปล่า)
 ```
 
-มี `pre-push` hook (`.githooks/pre-push`) บังคับ verify ซ้ำ 6 ขั้น (เปิดครั้งเดียว: `git config core.hooksPath .githooks`) · รวมทั้ง 5 ขั้นเป็นคำสั่งเดียวด้วย `&&` ได้ — push รายตัวโดยไม่เพิ่ม turn ของ controller
+มี `pre-push` hook (`.githooks/pre-push`) บังคับ verify ซ้ำ (เปิดครั้งเดียว: `git config core.hooksPath .githooks`) · รวมทั้ง 5 ขั้นเป็นคำสั่งเดียวด้วย `&&` ได้
 
-**commit message:** **1 commit = 1 หุ้น** (push รายตัว §3.4) — หุ้นใหม่ `analyze: add <SYMBOL> stock analysis` · อัปเดต `analyze: update <SYMBOL> …` (เลิกใช้ commit รวม `analyze: add A, B, C` ตั้งแต่ 12 ก.ค. 2569) · ลงท้าย:
+**commit message:** **1 commit = 1 หุ้น** (ห้าม commit รวมหลายหุ้น) — หุ้นใหม่ `analyze: add <SYMBOL> stock analysis` · อัปเดต `analyze: update <SYMBOL> …` · ลงท้าย:
 ```
 Co-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>
 ```
@@ -94,7 +93,7 @@ Co-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>
 ## 7. ข้อห้าม / ข้อควรระวัง
 
 - ⏰ **Time Zone = Asia/Bangkok (UTC+7)** — ทุกการคิด "วันนี้"/ความสด (header · dedup 7 วัน · staleness 45/120 วัน) ใช้เวลาไทย · วันที่ในรายงานใช้ปี พ.ศ.
-- ❌ **ห้าม Haiku** ทุกขั้น · ❌ **ไม่ใช้ Opus แล้ว** — Sonnet ทุกชั้น หุ้นยาก = advisor + effort high (§3.2 + memory `model-config-rules`)
+- ❌ โมเดลนอกกติกา §3.2 (Haiku ทุกขั้น / Opus) — Sonnet ทุกชั้นเท่านั้น
 - ❌ อย่า commit `dist/`, `node_modules/`, `.DS_Store` · อย่าแก้ไฟล์ใน `dist/` ตรง ๆ (แก้ต้นฉบับ)
 - ❌ ชื่อไฟล์รายงาน = `<SYMBOL>.html` พิมพ์ใหญ่ ไม่มีเว้นวรรค
 - ✅ ทุกรายงานมี disclaimer "ไม่ใช่คำแนะนำการลงทุน" + "ราคา ณ วันที่ + แหล่งที่มา"
@@ -110,18 +109,18 @@ Co-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>
 - gate ตรวจ **ความสอดคล้อง/ความสด/การอ้างอิง** เท่านั้น — **ตรวจความจริงของราคา/EPS ไม่ได้** (ต้อง cross-source verify §2)
 - แก้ check ต้องเพิ่มเคสใน `test/self-test.js` + `npm run test:self` ผ่าน
 
-> **รายละเอียดทุกชั้น/ทุก E-code + env threshold → `docs/quality-gate.md`**
+> **รายละเอียดทุกชั้น/ทุก E-code + เกณฑ์ → `docs/quality-gate.md`**
 
 ---
 
 ## 9. Price refresh อัตโนมัติ (cron)
 
-GitHub Actions รัน `tools/update-prices.js` ทุกวัน 07:17 น. ไทย — patch **เฉพาะตัวเลขโครงสร้าง** (**ไม่แตะ prose/EPS/FV** · วันที่วิเคราะห์คงเดิมผ่าน preserve-dates) แล้ว verify + push เอง · ตัวที่ขยับแรง (ต่าง >15% / MOS พลิกเกิน dead-band ±3 จุด / สงสัย split) → **freeze** ลง `price-flags.json` รอ re-analysis (flip ใน ±3 จุด = patch ผ่าน · หลุดขอบ gauge = ขยายขอบเอง — 2026-08-02)
+GitHub Actions รัน `tools/update-prices.js` ทุกวัน 07:17 น. ไทย — patch **เฉพาะตัวเลขโครงสร้าง** (**ไม่แตะ prose/EPS/FV** · วันที่วิเคราะห์คงเดิมผ่าน preserve-dates) แล้ว verify + push เอง · freeze ลง `price-flags.json` เมื่อ: ต่าง >15% / MOS พลิกเกิน dead-band ±3 จุด / สงสัย split (flip ใน ±3 จุด = patch ผ่าน · หลุดขอบ gauge = ขยายขอบเอง)
 - **"เคลียร์คิว price-flags"** = **triage ตาม `reason` ก่อน** (เกณฑ์เต็มใน SKILL STEP 0: fetch/patch-failed = plumbing ไม่ใช้ agent · drift/mos-flip = **UPDATE-LIGHT** · suspect-split = UPDATE เต็ม) แล้วรันตาม §3 — flag หายเองเมื่อรายงานสด/ไฟล์ถูกลบ
-- ticker เปลี่ยนชื่อ (เช่น BKI→BKIH) → `tools/symbol-map.json` · รายละเอียด/debug → `docs/price-refresh.md`
+- ticker เปลี่ยนชื่อ (เช่น BKI→BKIH) → `tools/symbol-map.json` · canary โครงแหล่งข้อมูลรายสัปดาห์ = `.github/workflows/fundamentals-canary.yml` · รายละเอียด/debug → `docs/price-refresh.md`
 
 ## 10. Template system + counters (สรุป)
 
 - **รายงาน = content-only template** — CSS/engine อยู่ใน `_template/` build `expandReport()` inject ตอน build · ไฟล์เก็บแค่ `report-data` (กราฟ/gauge/theme) + เนื้อหา 8 section · เริ่มจาก `_template/skeleton-{th,us}.html` · สีแบรนด์ต่อหุ้น (`tools/seeds.json` + `brandtheme.js`) → **`docs/templates.md`**
 - **view/vote counters** = Worker + Durable Object (`src/worker.js`) inject ตอน build เฉพาะ `dist/` → **`docs/counters.md`** + `DEPLOY.md`
-- **กราฟ TA (TradingView-style)** = Worker route `/api/ohlc` proxy Yahoo + client engine (`_template/ta-engine.js`/`ta-chart.js`) + bundle inject ตอน build เฉพาะ `dist/` (progressive enhancement บน SVG เดิม) → **`docs/ta-chart.md`**
+- **กราฟ TA (TradingView-style)** = Worker route `/api/ohlc` proxy Yahoo + client engine (`_template/ta-engine.js`/`ta-chart.js`) + bundle inject ตอน build เฉพาะ `dist/` → **`docs/ta-chart.md`**
