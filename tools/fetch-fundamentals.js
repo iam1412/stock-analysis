@@ -113,7 +113,9 @@ const FIN_ROWS = [
 ];
 const BS_ROWS = [['Cash', ['totalcash', 'cashneq'], 'm'], ['Debt', ['debt'], 'm']];
 const RATIO_ROWS = [['D/E', ['debtequity'], 'num'], ['ROE%', ['roe'], 'pct']];
-const FIN_SUBS = ['', 'balance-sheet/', 'ratios/'];
+// SA ย้าย income statement: /financials/ กลายเป็นหน้า overview (financialData ว่าง) ตั้งแต่ ~ส.ค. 2569
+// → ลอง income-statement/ ก่อน แล้ว fallback path เก่า '' (เผื่อ namespace bkk/OTC ยังโครงเดิม)
+const FIN_SUBS = [['income-statement/', ''], ['balance-sheet/'], ['ratios/']];
 
 // ADR/F-share บน OTC: SA เก็บงบเต็มไว้ใต้ตลาดแม่เท่านั้น — payload หน้า quote มี primaryPath ชี้ไป (เช่น /quote/tyo/6954/)
 const primaryPathCache = {};
@@ -147,13 +149,15 @@ async function finPageFrom(base, sub) {
   }
   throw new Error('ไม่พบ financialData ใน payload');
 }
-async function fetchFinPage(symbol, th, sub) {
+async function fetchFinPage(symbol, th, subCandidates) {
   let lastErr = null;
-  for (const base of saBases(symbol, th)) {
-    try { return await finPageFrom(base, sub); } catch (e) { lastErr = e; }
+  for (const sub of subCandidates) {
+    for (const base of saBases(symbol, th)) {
+      try { return await finPageFrom(base, sub); } catch (e) { lastErr = e; }
+    }
+    const pp = th ? null : await saPrimaryPath(symbol, th);
+    if (pp) { try { return await finPageFrom(pp, sub); } catch (e) { lastErr = e; } }
   }
-  const pp = th ? null : await saPrimaryPath(symbol, th);
-  if (pp) { try { return await finPageFrom(pp, sub); } catch (e) { lastErr = e; } }
   throw lastErr;
 }
 // คืน array ค่าต่อคอลัมน์ของ alias แรกที่มี (devalue: สมาชิก list = index ชี้กลับเข้า arr เดียวกัน · ติดลบ = undefined/NaN)
