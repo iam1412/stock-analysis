@@ -22,7 +22,7 @@
 
 ## 3. Spawn — 1 หุ้น/agent · sequential
 
-- **spawn 1 Agent/หุ้น** — full analysis หุ้นตัวเดียวจบใน context ของ agent เอง เขียนลง `reports/<SYMBOL>.html` ของตัวเองเท่านั้น · เหตุผล: context แยกสะอาด กันเลขปนข้ามหุ้น (**ตัวร้าย #1 ของรีโป**) · ใช้ prompt แม่แบบ `_template/agent-prompt.md` (ระบุ `{{MODE}}` ให้ถูก · **pre-fetch `node tools/fetch-fundamentals.js <SYM> [--th]` แล้ววางลง `{{FUNDAMENTALS}}` เสมอ** — output มีตารางงบ 5 ปีแล้ว ตัดทั้ง turn รันซ้ำและ WebFetch financials 3-6 call ของ worker · จูนรอบ 5, 13 ก.ค. 2569)
+- **spawn 1 Agent/หุ้น** — full analysis หุ้นตัวเดียวจบใน context ของ agent เอง เขียนลง `reports/<SYMBOL>.html` ของตัวเองเท่านั้น · เหตุผล: context แยกสะอาด กันเลขปนข้ามหุ้น (**ตัวร้าย #1 ของรีโป**) · ใช้ prompt แม่แบบ `_template/agent-prompt.md` (ระบุ `{{MODE}}` ให้ถูก · **pre-fetch `node tools/prep-stock.js <SYM> [--th] [--update]` แล้ววาง output ทั้ง block ลง `{{FUNDAMENTALS}}` เสมอ** — 1 คำสั่ง = fundamentals + facts (NEW) + CROSS-VERIFY verdict deterministic · **exit 2 = ราคาขัดแหล่ง >5% → ห้าม spawn worker หยุดถามผู้ใช้ตาม CLAUDE.md §2** · ตัดทั้ง turn รันซ้ำและ WebFetch financials 3-6 call ของ worker · จูนรอบ 5 + prep-stock 2 ส.ค. 2569)
 - **★ STEP 0 กัน cwd-stray:** prompt ให้ agent เริ่ม `cd <worktree> && pwd` + ห้าม `cd` ลง main repo · ตอน push เช็ค `ls reports/<SYM>.html` ใน worktree — ไม่มี = ไปหยิบจาก main repo + ลบตัวหลง (ดู memory bulk-stock-analysis-workflow)
 - **★ SEQUENTIAL (บังคับ):** spawn 1 agent → รอ notification "completed" → ตรวจ/แก้ error → spawn ถัดไป — **ห้าม spawn parallel หลายตัวพร้อมกัน** เพราะกด API session rate limit ทุกตัว fail พร้อมกัน (เกิดจริงใน US-GAP W19–W21 — งานพังกลางคันต้องทำซ้ำ = token เสียเปล่าสองเท่า)
 - fallback: agent fail → ทำ inline ใน main session แทน (fetch + write เอง)

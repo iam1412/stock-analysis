@@ -57,7 +57,7 @@ invariant ที่ห้ามหลุดไม่ว่ากรณีใด:
 - **รันยาวได้ ไม่ต้องหยุดรอ user เปิด session ใหม่** (ยกเลิก chunk ≤10 หุ้น/session — 13 ก.ค. 2569 user เคาะ: ปล่อย auto-compact จัดการ context เอง) · ข้อเท็จจริงต้นทุน: cacheR/turn ของ controller โตตาม context (วัดจริง ~70k → ~139k ตอน 25 ตัวรวด) — controller ช่วยได้โดยคุมตัวเอง: รวม verify+push เป็น Bash เดียว · ไม่อ่านรายงานทั้งไฟล์ · สรุประหว่างเวฟให้สั้น
 - pull --rebase + อ่าน `reports.json` ก่อน — ข้ามหุ้นสด ≤7 วัน = ประหยัด 100% ของตัวนั้น
 - ทุกชั้น = Sonnet (§3.2) · worker งาน mechanical → effort medium ผ่าน `analyze-wave` · หุ้นยาก → effort high
-- controller **pre-fetch `fetch-fundamentals` เสมอ** แล้ววางบล็อกใน `{{FUNDAMENTALS}}` ของ agent-prompt (output มีงบ 5 ปีแล้ว — จูนรอบ 5) — worker ห้ามรันซ้ำ/ห้าม WebFetch หน้า financials เอง
+- controller **pre-fetch ด้วย `node tools/prep-stock.js <SYM> [--th] [--update]` เสมอ** (2026-08-02: 1 คำสั่ง = fundamentals + facts (NEW) + **CROSS-VERIFY verdict deterministic** — Δราคา >5% = exit 2 หยุดตาม §2) แล้ววางทั้ง block ใน `{{FUNDAMENTALS}}` ของ agent-prompt — worker ห้ามรัน fetch-fundamentals/fetch-facts ซ้ำ/ห้าม WebFetch หน้า financials เอง
 
 ---
 

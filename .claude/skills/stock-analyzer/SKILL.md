@@ -23,7 +23,7 @@ description: วิเคราะห์หุ้นรายตัว (ไท�
 ## STEP 1 — เก็บข้อมูล (token-lean — จุดชี้ขาดค่าใช้จ่าย)
 
 - **ราคา + กราฟ ~1 ปี + ป้าย % รอบปี + สี** — ห้ามดึง Yahoo เอง / ห้ามคำนวณกราฟ-bounds เอง / ห้ามแต่งจุด:
-  - NEW → `node tools/fetch-facts.js <SYMBOL>` (หุ้นไทยเติม `--th` — ★ บังคับ กัน ticker ไทยชนหุ้น US เคส AIT/ORI) — ได้บล็อก chart+ป้าย+สี พร้อมวาง (= แหล่งราคาที่ 1)
+  - NEW → **prompt มีบล็อก `=== FACTS ===` แล้ว = ห้ามรันซ้ำ ใช้เลย** (controller pre-fetch ผ่าน `prep-stock.js` มาแล้ว) · ไม่มีจึงรัน `node tools/fetch-facts.js <SYMBOL>` (หุ้นไทยเติม `--th` — ★ บังคับ กัน ticker ไทยชนหุ้น US เคส AIT/ORI) — ได้บล็อก chart+ป้าย+สี พร้อมวาง (= แหล่งราคาที่ 1)
   - UPDATE → `node tools/update-prices.js --write --force <SYMBOL>` — patch ราคา header/วันที่ราคา/กราฟ/ป้าย %/gauge.cur/MOS/pxIn/stock-meta ลงไฟล์เดิมให้เลย (= แหล่งราคาที่ 1) · ราคาหลุดขอบ gauge script ขยาย `gauge.min/max` ให้เอง — แต่ถ้า **FV เปลี่ยน** ต้องแก้โซน scale (MOS 20/30 = FV×0.8/0.7) เองใน STEP 5B ตามเดิม
 - **EPS(TTM)/forward / P/E / ปันผล / เป้านักวิเคราะห์ / 52wk + งบย้อนหลัง 5 ปี — แหล่งเดียวจบ**: `fetch-fundamentals`
   - **★ เช็คก่อนรัน: prompt มีบล็อก `FUNDAMENTALS` พร้อมตัวเลขจริงแล้ว → ห้ามรันซ้ำ** ใช้เลขนั้น cross-verify ได้เลย (controller รันมาแล้ว — รันซ้ำ = เสีย turn เปล่า วัดจริง 13 ก.ค. 2569: worker 3/3 รันซ้ำทั้งที่ block ครบ) · บล็อกว่าง/ไม่มีตัวเลขเท่านั้น → รันเอง: `node tools/fetch-fundamentals.js <SYMBOL> [--th]` ใน batch เดียวกับ script ราคาข้างบน
