@@ -145,9 +145,36 @@ async function finPageFrom(base, sub) {
     const root = node.data[0];
     if (!root || typeof root !== 'object' || Array.isArray(root) || typeof root.financialData !== 'number') continue;
     const fd = node.data[root.financialData];
-    if (fd && typeof fd === 'object' && !Array.isArray(fd)) return { arr: node.data, fd, src: base };
+    if (fd && typeof fd === 'object' && !Array.isArray(fd)) {
+      injectRevenueGrowth(node.data, root, fd);
+      return { arr: node.data, fd, src: base };
+    }
   }
   throw new Error('ไม่พบ financialData ใน payload');
+}
+// SA เลิกส่งแถว revenueGrowth สำเร็จรูป (~ส.ค. 2569 พร้อมย้าย income-statement) — เหลือ root.prior
+// (ค่าปีก่อนคอลัมน์เก่าสุด) + root.ttmPrior (ค่า TTM ย้อน 1 ปี) ให้ client คิด YoY เอง
+// → สังเคราะห์กลับเป็น fd.revenueGrowth ในโครง devalue เดิม เพื่อให้แถว YoY% ใน FIN_ROWS ใช้ต่อได้
+// (annual เท่านั้น: YoY ของคอลัมน์ i = revenue[i]/revenue[i+1] − 1 · คอลัมน์เก่าสุดใช้ prior · TTM ใช้ ttmPrior)
+function injectRevenueGrowth(arr, root, fd) {
+  if ('revenueGrowth' in fd) return;
+  const page = { arr, fd };
+  const rev = finRow(page, ['revenue']), dk = finRow(page, ['datekey']);
+  if (!rev || !dk) return;
+  const deref = (i) => (typeof i === 'number' && i >= 0 && i < arr.length) ? arr[i] : undefined;
+  const priorObj = deref(root.prior), ttmObj = deref(root.ttmPrior);
+  const priorList = priorObj ? deref(priorObj.revenue) : undefined;
+  const priorRev = Array.isArray(priorList) ? deref(priorList[0]) : undefined;
+  const ttmPrevRev = ttmObj ? deref(ttmObj.revenue) : undefined;
+  const idxs = rev.map((v, i) => {
+    const den = asNum(dk[i] === 'TTM' ? ttmPrevRev : (i + 1 < rev.length ? rev[i + 1] : priorRev));
+    const num = asNum(v);
+    if (num == null || den == null || den <= 0) return -1; // devalue: ติดลบ = cell ว่าง
+    arr.push(num / den - 1);
+    return arr.length - 1;
+  });
+  arr.push(idxs);
+  fd.revenueGrowth = arr.length - 1;
 }
 async function fetchFinPage(symbol, th, subCandidates) {
   let lastErr = null;
