@@ -116,8 +116,8 @@ Co-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>
 
 ## 9. Price refresh อัตโนมัติ (cron)
 
-GitHub Actions รัน `tools/update-prices.js` ทุกวัน 07:17 น. ไทย — patch **เฉพาะตัวเลขโครงสร้าง** (**ไม่แตะ prose/EPS/FV** · วันที่วิเคราะห์คงเดิมผ่าน preserve-dates) แล้ว verify + push เอง · ตัวที่ขยับแรง (ต่าง >15% / MOS พลิก / หลุด gauge / สงสัย split) → **freeze** ลง `price-flags.json` รอ re-analysis
-- **"เคลียร์คิว price-flags"** = **triage ตาม `reason` ก่อน** (เกณฑ์เต็มใน SKILL STEP 0: fetch/patch-failed = plumbing ไม่ใช้ agent · drift/mos-flip/gauge = **UPDATE-LIGHT** · suspect-split = UPDATE เต็ม) แล้วรันตาม §3 — flag หายเองเมื่อรายงานสด/ไฟล์ถูกลบ
+GitHub Actions รัน `tools/update-prices.js` ทุกวัน 07:17 น. ไทย — patch **เฉพาะตัวเลขโครงสร้าง** (**ไม่แตะ prose/EPS/FV** · วันที่วิเคราะห์คงเดิมผ่าน preserve-dates) แล้ว verify + push เอง · ตัวที่ขยับแรง (ต่าง >15% / MOS พลิกเกิน dead-band ±3 จุด / สงสัย split) → **freeze** ลง `price-flags.json` รอ re-analysis (flip ใน ±3 จุด = patch ผ่าน · หลุดขอบ gauge = ขยายขอบเอง — 2026-08-02)
+- **"เคลียร์คิว price-flags"** = **triage ตาม `reason` ก่อน** (เกณฑ์เต็มใน SKILL STEP 0: fetch/patch-failed = plumbing ไม่ใช้ agent · drift/mos-flip = **UPDATE-LIGHT** · suspect-split = UPDATE เต็ม) แล้วรันตาม §3 — flag หายเองเมื่อรายงานสด/ไฟล์ถูกลบ
 - ticker เปลี่ยนชื่อ (เช่น BKI→BKIH) → `tools/symbol-map.json` · รายละเอียด/debug → `docs/price-refresh.md`
 
 ## 10. Template system + counters (สรุป)

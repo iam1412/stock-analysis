@@ -15,7 +15,7 @@ description: วิเคราะห์หุ้นรายตัว (ไท�
 - มี `reports/<SYMBOL>.html` อยู่แล้ว → **UPDATE** (แก้เฉพาะจุด **ห้าม rewrite/ห้ามเริ่ม skeleton ใหม่**)
 - ยังไม่มี → **NEW** (เริ่มจาก skeleton เท่านั้น — ห้ามก๊อปรายงานหุ้นอื่น เลขเดิมจะติดมา)
 - **มาจากคิว price-flags** — triage ตามเหตุผลใน `price-flags.json`:
-  - `drift-gt-*` / `mos-sign-flip` / `outside-gauge-range` (ตลาดขยับ ไม่ใช่ธุรกิจเปลี่ยน) → เริ่มที่ **UPDATE-LIGHT** (STEP 5C)
+  - `drift-gt-*` / `mos-sign-flip` (ตลาดขยับ ไม่ใช่ธุรกิจเปลี่ยน — flip ใน dead-band ±3 จุด กับราคาหลุดขอบ gauge cron patch เองแล้ว ไม่เข้าคิว ตั้งแต่ 2 ส.ค. 2569) → เริ่มที่ **UPDATE-LIGHT** (STEP 5C)
   - `suspect-split-or-data` → **UPDATE เต็ม** + ตรวจ split/ticker ก่อนเขียนเลขใด ๆ
   - `fetch-failed` / `patch-failed` → ปัญหา plumbing (ticker เปลี่ยน/เพิกถอน/ประวัติกราฟ) — **ไม่ใช่งานวิเคราะห์** แจ้ง controller ไปแก้ `tools/symbol-map.json` หรือเช็คเพิกถอน
 - ความสด: `reports.json` ฟิลด์ `updated` ≤7 วัน → ไม่วิเคราะห์ซ้ำ (กติกา dedup อยู่ CLAUDE.md §3.1)
@@ -24,7 +24,7 @@ description: วิเคราะห์หุ้นรายตัว (ไท�
 
 - **ราคา + กราฟ ~1 ปี + ป้าย % รอบปี + สี** — ห้ามดึง Yahoo เอง / ห้ามคำนวณกราฟ-bounds เอง / ห้ามแต่งจุด:
   - NEW → `node tools/fetch-facts.js <SYMBOL>` (หุ้นไทยเติม `--th` — ★ บังคับ กัน ticker ไทยชนหุ้น US เคส AIT/ORI) — ได้บล็อก chart+ป้าย+สี พร้อมวาง (= แหล่งราคาที่ 1)
-  - UPDATE → `node tools/update-prices.js --write --force <SYMBOL>` — patch ราคา header/วันที่ราคา/กราฟ/ป้าย %/gauge.cur/MOS/pxIn/stock-meta ลงไฟล์เดิมให้เลย (= แหล่งราคาที่ 1) · script เตือนราคาหลุดช่วง gauge → จดไว้แก้ STEP 5B
+  - UPDATE → `node tools/update-prices.js --write --force <SYMBOL>` — patch ราคา header/วันที่ราคา/กราฟ/ป้าย %/gauge.cur/MOS/pxIn/stock-meta ลงไฟล์เดิมให้เลย (= แหล่งราคาที่ 1) · ราคาหลุดขอบ gauge script ขยาย `gauge.min/max` ให้เอง — แต่ถ้า **FV เปลี่ยน** ต้องแก้โซน scale (MOS 20/30 = FV×0.8/0.7) เองใน STEP 5B ตามเดิม
 - **EPS(TTM)/forward / P/E / ปันผล / เป้านักวิเคราะห์ / 52wk + งบย้อนหลัง 5 ปี — แหล่งเดียวจบ**: `fetch-fundamentals`
   - **★ เช็คก่อนรัน: prompt มีบล็อก `FUNDAMENTALS` พร้อมตัวเลขจริงแล้ว → ห้ามรันซ้ำ** ใช้เลขนั้น cross-verify ได้เลย (controller รันมาแล้ว — รันซ้ำ = เสีย turn เปล่า วัดจริง 13 ก.ค. 2569: worker 3/3 รันซ้ำทั้งที่ block ครบ) · บล็อกว่าง/ไม่มีตัวเลขเท่านั้น → รันเอง: `node tools/fetch-fundamentals.js <SYMBOL> [--th]` ใน batch เดียวกับ script ราคาข้างบน
   - output = Yahoo quoteSummary + StockAnalysis พร้อมบรรทัด Δ เทียบสองแหล่ง **+ ตารางงบ 5 ปี + TTM [3]** (รายได้/margin/NI/EPS/FCF/shares/cash/debt/D-E/ROE) — ใช้เขียน section งบ/แนวโน้ม/scenario ได้เลย **ห้าม WebFetch หน้า financials/balance-sheet/ratios/cash-flow/statistics ของ stockanalysis ซ้ำ** (จูนรอบ 5: เดิม leak 3-6 call/หุ้นตรงนี้)
@@ -90,7 +90,7 @@ description: วิเคราะห์หุ้นรายตัว (ไท�
    - EPS / FV ทุกวิธี / จุดซื้อ MOS20-30 / scenario + `stock-meta` (fairValue, pe, eps, dividendYield, roe — **ยกเว้น price/mos/upside script คำนวณให้**)
    - **prose ทุกประโยคที่อ้างเลขเก่า** (จุดเข้า / "แพง~X%" / เป้า / คำบรรยายกราฟ-ทิศทาง) + มุมมอง/catalyst ที่เปลี่ยน
    - วันที่วิเคราะห์ footer "ข้อมูล ณ …" = วันนี้ · `meta ai-model` = โมเดลที่รันจริง
-   - ราคาหลุดช่วง gauge (script เตือนใน STEP 1) → ขยาย gauge min/max ให้ครอบ + สอดคล้อง FV ใหม่
+   - gauge min/max: ราคาหลุดขอบ script ขยายให้เองแล้วใน STEP 1 — เหลือหน้าที่เดียวคือ **FV เปลี่ยน** → ปรับขอบ/โซน scale ให้สอดคล้อง FV ใหม่
 3. **ถ้าแก้ `stock-meta.fairValue`** → รัน `node tools/update-prices.js --write --force <SYMBOL>` ซ้ำ (MOS/upside/ป้าย MOS คำนวณใหม่จาก FV ใหม่ให้เอง — ห้ามแก้เลขพวกนี้มือ)
 
 ## STEP 5C — โหมด UPDATE-LIGHT (refresh จากคิว price-flags — เป้า ≤10 turns)

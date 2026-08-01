@@ -7,8 +7,9 @@
  * + gauge.cur + MOS + เครื่องคิดเลข + stock-meta) — **ไม่แตะ prose วิเคราะห์ / EPS / Fair Value**
  *
  * Freeze + flag (ไม่แตะไฟล์ เขียนลง price-flags.json รอ re-analysis) เมื่อ:
- *   ราคาต่างจากในรายงาน >10% · MOS พลิกเครื่องหมาย · ราคาหลุดช่วง gauge ·
+ *   ราคาต่างจากในรายงาน >15% · MOS พลิกเครื่องหมายเกิน dead-band ±3 จุด ·
  *   ต่าง >25% / currency ไม่ตรง (สงสัย split/ticker) · fetch/patch ไม่สำเร็จ
+ *   (MOS พลิกใน ±3 จุด = แกว่งรอบ FV → patch ผ่าน · ราคาหลุดขอบ gauge → ขยายขอบเอง ไม่ freeze)
  *
  * ใช้:  node tools/update-prices.js [--write] [--force] [SYMBOL ...]
  *   ไม่มี --write = dry-run · หลัง --write: npm run build → node tools/preserve-dates.js
@@ -30,6 +31,9 @@ const MAX_PTS = 13;          // กราฟรายเดือน ~1 ปี (
 const FLAT_PP = 0.75;        // |% รอบปี| < 0.75 → "ทรงตัว" (ตาม migrate-annual-chg)
 const DRIFT_FREEZE = 0.15;   // ราคาใหม่ต่างจากในรายงาน > 15% → freeze (prose จะผิดความหมาย · เดิม 10% — ขยับขึ้นลดภาระ re-analysis)
 const SUSPECT_FREEZE = 0.25; // ต่าง > 25% → สงสัย split/ticker เปลี่ยน/ข้อมูลเพี้ยน
+const MOS_FLIP_DEADBAND_PP = 3; // MOS พลิกเครื่องหมายแต่ทั้งเก่า-ใหม่อยู่ใน ±3 จุด = แกว่งรอบ FV → patch ผ่าน ไม่ freeze
+                                // (3 = dead-band เดียวกับ gate W06 — prose "ถูก/แพงเล็กน้อย" ไม่ขัด gate ในช่วงนี้)
+const GAUGE_PAD = 0.05;      // ราคาหลุดขอบ gauge → ขยายขอบเป็น ราคา±5% (ขอบเป็น display scaffolding — engine วาดจาก report-data.gauge)
 const FETCH_DELAY_MS = 450;  // throttle Yahoo (~2 req/s)
 const UP = { bg: 'var(--green-soft)', col: '#137333' };
 const DOWN = { bg: 'var(--red-soft)', col: '#c5221f' };
@@ -162,7 +166,7 @@ function annualChg(data, suffix) {
 
 // ---------- ตัดสิน update / freeze ----------
 function decide(ctx) {
-  const { oldPrice, newPrice, fv, gaugeMin, gaugeMax, currencyOk, force } = ctx;
+  const { oldPrice, newPrice, fv, currencyOk, force } = ctx;
   if (!currencyOk) return { freeze: 'currency-mismatch' };
   if (!Number.isFinite(newPrice) || newPrice <= 0) return { freeze: 'bad-price' };
   const drift = Math.abs(newPrice - oldPrice) / oldPrice;
@@ -170,11 +174,11 @@ function decide(ctx) {
   if (drift > SUSPECT_FREEZE) return { freeze: 'suspect-split-or-data', drift };
   if (drift > DRIFT_FREEZE) return { freeze: `drift-gt-${Math.round(DRIFT_FREEZE * 100)}pct`, drift };
   if (Number.isFinite(fv) && fv > 0) {
-    const mosOld = fv - oldPrice, mosNew = fv - newPrice;
-    if (mosOld * mosNew < 0) return { freeze: 'mos-sign-flip', drift };
+    const mosOld = (fv - oldPrice) / fv * 100, mosNew = (fv - newPrice) / fv * 100;
+    const inDeadband = Math.abs(mosOld) <= MOS_FLIP_DEADBAND_PP && Math.abs(mosNew) <= MOS_FLIP_DEADBAND_PP;
+    if (mosOld * mosNew < 0 && !inDeadband) return { freeze: 'mos-sign-flip', drift };
   }
-  if (Number.isFinite(gaugeMin) && Number.isFinite(gaugeMax) && (newPrice < gaugeMin || newPrice > gaugeMax))
-    return { freeze: 'outside-gauge-range', drift };
+  // ราคาหลุดขอบ gauge ไม่ freeze แล้ว — patchReport ขยายขอบเอง (drift ใหญ่จริงโดนเกณฑ์ 15%/25% ก่อนเสมอ)
   return { update: true, drift };
 }
 
@@ -223,7 +227,20 @@ function patchReport(html, p) {
   let iMin = 0, iMax = 0;
   prices.forEach((v, i) => { if (v < prices[iMin]) iMin = i; if (v > prices[iMax]) iMax = i; });
   rd.chart.highlight = [...new Set([iMin, iMax])].sort((x, y) => x - y);
-  if (rd.gauge) rd.gauge.cur = round(newPrice, 2);
+  if (rd.gauge) {
+    rd.gauge.cur = round(newPrice, 2);
+    // ราคาหลุด/ชิดขอบ gauge → ขยายขอบฝั่งนั้นเป็น ราคา±GAUGE_PAD (คงจำนวนทศนิยมเดิมของขอบ · ขยายอย่างเดียว ไม่หด)
+    // check-site เตือนเมื่อ marker ชิดขอบ (v >= gmax / v <= gmin) — ×(1±5%) วางราคาไว้ในขอบแบบ strict เสมอ
+    const decOf = (v) => (String(v).split('.')[1] || '').length;
+    if (Number.isFinite(rd.gauge.max) && rd.gauge.cur >= rd.gauge.max) {
+      const k = Math.pow(10, decOf(rd.gauge.max));
+      rd.gauge.max = Math.ceil(rd.gauge.cur * (1 + GAUGE_PAD) * k) / k;
+    }
+    if (Number.isFinite(rd.gauge.min) && rd.gauge.cur <= rd.gauge.min) {
+      const k = Math.pow(10, decOf(rd.gauge.min));
+      rd.gauge.min = Math.max(0, Math.floor(rd.gauge.cur * (1 - GAUGE_PAD) * k) / k);
+    }
+  }
   const theme = chg.dir === 'up' ? UP : chg.dir === 'down' ? DOWN : null;
   if (theme && rd.theme) { rd.theme.chgBg = theme.bg; rd.theme.chgColor = theme.col; }
 
@@ -355,18 +372,11 @@ async function main() {
       continue;
     }
 
-    const rdRaw = (html.match(/<script[^>]*\bid=["']report-data["'][^>]*>([\s\S]*?)<\/script>/i) || [])[1];
-    let gauge = {};
-    try { gauge = (JSON.parse(rdRaw) || {}).gauge || {}; } catch (e) { /* patchReport จะ throw เอง */ }
-
     const d = decide({
       oldPrice: sm.price, newPrice: q.price, fv: sm.fairValue,
-      gaugeMin: gauge.min, gaugeMax: gauge.max,
       currencyOk: !q.currency || q.currency === sm.currency,
       force: FORCE,
     });
-    if (FORCE && Number.isFinite(gauge.min) && Number.isFinite(gauge.max) && (q.price < gauge.min || q.price > gauge.max))
-      console.log(`⚠ ${symbol.padEnd(10)} ราคา ${round(q.price, 2)} หลุดช่วง gauge ${gauge.min}–${gauge.max} — แก้ gauge min/max ในรายงานเองด้วย`);
     const diffPct = round((q.price - sm.price) / sm.price * 100, 1);
 
     if (d.freeze) {

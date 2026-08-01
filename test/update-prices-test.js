@@ -33,15 +33,19 @@ ok(U.decide({ ...base, newPrice: 105 }).update === true, 'decide: drift เล�
 ok(U.decide({ ...base, newPrice: 112 }).update === true, 'decide: 12% ≤ เกณฑ์ 15% → update');
 ok(U.decide({ ...base, newPrice: 82 }).freeze === 'drift-gt-15pct', 'decide: >15% → freeze');
 ok(U.decide({ ...base, newPrice: 130 }).freeze === 'suspect-split-or-data', 'decide: >25% → suspect');
-ok(U.decide({ ...base, oldPrice: 118, newPrice: 121 }).freeze === 'mos-sign-flip', 'decide: MOS พลิกเครื่องหมาย → freeze');
-ok(U.decide({ ...base, oldPrice: 195, newPrice: 205, fv: 300 }).freeze === 'outside-gauge-range', 'decide: หลุด gauge → freeze');
+ok(U.decide({ ...base, oldPrice: 112, newPrice: 126 }).freeze === 'mos-sign-flip', 'decide: MOS พลิกเกิน dead-band ทั้งสองฝั่ง (+6.7→−5) → freeze');
+ok(U.decide({ ...base, oldPrice: 112, newPrice: 121 }).freeze === 'mos-sign-flip', 'decide: ฝั่งเก่าเกิน dead-band (+6.7→−0.8) → freeze');
+ok(U.decide({ ...base, oldPrice: 118, newPrice: 126 }).freeze === 'mos-sign-flip', 'decide: ฝั่งใหม่เกิน dead-band (+1.7→−5) → freeze');
+ok(U.decide({ ...base, oldPrice: 118, newPrice: 121 }).update === true, 'decide: flip ใน dead-band ±3 (+1.7→−0.8) → update (noise รอบ FV)');
+ok(U.decide({ ...base, oldPrice: 118.5, newPrice: 123.6 }).update === true, 'decide: flip ขอบเขต 3.0 จุดพอดี (+1.25→−3.0) → update');
+ok(U.decide({ ...base, oldPrice: 195, newPrice: 205, fv: 300 }).update === true, 'decide: หลุด gauge → ไม่ freeze แล้ว (patchReport ขยายขอบเอง)');
 ok(U.decide({ ...base, newPrice: 105, currencyOk: false }).freeze === 'currency-mismatch', 'decide: currency ไม่ตรง → freeze');
 
 // ---------- decide --force (re-analysis UPDATE mode) ----------
 ok(U.decide({ ...base, newPrice: 82, force: true }).update === true, 'force: ข้าม drift freeze → update');
 ok(U.decide({ ...base, newPrice: 130, force: true }).update === true, 'force: ข้าม suspect freeze → update');
-ok(U.decide({ ...base, oldPrice: 118, newPrice: 121, force: true }).update === true, 'force: ข้าม mos-sign-flip → update');
-ok(U.decide({ ...base, oldPrice: 195, newPrice: 205, fv: 300, force: true }).update === true, 'force: ข้าม outside-gauge → update');
+ok(U.decide({ ...base, oldPrice: 112, newPrice: 126, force: true }).update === true, 'force: ข้าม mos-sign-flip (เกิน dead-band) → update');
+ok(U.decide({ ...base, oldPrice: 195, newPrice: 205, fv: 300, force: true }).update === true, 'force: หลุด gauge → update (เหมือน non-force)');
 ok(U.decide({ ...base, newPrice: 105, currencyOk: false, force: true }).freeze === 'currency-mismatch', 'force: currency ไม่ตรง ยัง freeze');
 ok(U.decide({ ...base, newPrice: NaN, force: true }).freeze === 'bad-price', 'force: ราคาเสีย ยัง freeze');
 
@@ -110,6 +114,37 @@ ok(up ? /green/.test(rd.theme.chgBg) : /red/.test(rd.theme.chgBg), 'สีป้
 ok(!/\{\{|\}\}|undefined|NaN/.test(out.replace(/[\s\S]*<body/, '')), 'ไม่มี placeholder/undefined หลุด (E13/E14)');
 const oldLab = aapl.match(/id="mCur"><div class="lab">ปัจจุบัน \$([\d,.]+)/)[1];
 ok(out.match(/id="mCur"><div class="lab">ปัจจุบัน \$([\d,.]+)/)[1] === U.fmtLike(301.5, oldLab), 'gauge label คงสไตล์ทศนิยมเดิม');
+
+// ---------- gauge auto-rescale (แทน freeze outside-gauge-range) ----------
+// ราคาทะลุ max → ขยาย max ให้ราคาอยู่ในขอบแบบ strict (check-site เตือนเมื่อ v >= gmax) · min คงเดิม
+const gaugeIn = JSON.parse(aapl.match(/<script[^>]*id=["']report-data["'][^>]*>([\s\S]*?)<\/script>/i)[1]).gauge;
+const pxHigh = Math.round(gaugeIn.max * 1.02 * 100) / 100;
+const rHigh = U.patchReport(aapl, { newPrice: pxHigh, dateParts: { day: 11, monIdx: 6, yearCE: 2026 }, chartData: U.buildChartData(mkBars(13, 2025, 6, 250), pxHigh, 0) });
+const rdHigh = JSON.parse(rHigh.html.match(/<script[^>]*id=["']report-data["'][^>]*>([\s\S]*?)<\/script>/i)[1]);
+ok(rdHigh.gauge.cur === pxHigh, 'gauge rescale: cur = ราคาใหม่');
+ok(rdHigh.gauge.max > pxHigh, 'gauge rescale: ราคาทะลุ max → max ใหม่ > ราคา (strict)', `max=${rdHigh.gauge.max} px=${pxHigh}`);
+ok(rdHigh.gauge.max >= pxHigh * 1.05 - 0.01, 'gauge rescale: max ใหม่ ≥ ราคา×1.05', `max=${rdHigh.gauge.max}`);
+ok(rdHigh.gauge.min === gaugeIn.min && rdHigh.gauge.fair === gaugeIn.fair, 'gauge rescale: min/fair ไม่แตะ');
+// ราคาหลุด min → ขยาย min ลง · max คงเดิม
+const pxLow = Math.round(gaugeIn.min * 0.98 * 100) / 100;
+const rLow = U.patchReport(aapl, { newPrice: pxLow, dateParts: { day: 11, monIdx: 6, yearCE: 2026 }, chartData: U.buildChartData(mkBars(13, 2025, 6, 250), pxLow, 0) });
+const rdLow = JSON.parse(rLow.html.match(/<script[^>]*id=["']report-data["'][^>]*>([\s\S]*?)<\/script>/i)[1]);
+ok(rdLow.gauge.min < pxLow, 'gauge rescale: ราคาหลุด min → min ใหม่ < ราคา (strict)', `min=${rdLow.gauge.min} px=${pxLow}`);
+ok(rdLow.gauge.min <= pxLow * 0.95 + 0.01 && rdLow.gauge.min >= 0, 'gauge rescale: min ใหม่ ≤ ราคา×0.95 และไม่ติดลบ');
+ok(rdLow.gauge.max === gaugeIn.max, 'gauge rescale: max ไม่แตะเมื่อหลุด min');
+// ราคาอยู่ในขอบ → bounds ไม่ขยับ
+const pxMid = Math.round((gaugeIn.min + gaugeIn.max) / 2 * 100) / 100;
+const rMid = U.patchReport(aapl, { newPrice: pxMid, dateParts: { day: 11, monIdx: 6, yearCE: 2026 }, chartData: U.buildChartData(mkBars(13, 2025, 6, 250), pxMid, 0) });
+const rdMid = JSON.parse(rMid.html.match(/<script[^>]*id=["']report-data["'][^>]*>([\s\S]*?)<\/script>/i)[1]);
+ok(rdMid.gauge.min === gaugeIn.min && rdMid.gauge.max === gaugeIn.max, 'gauge rescale: ราคาในขอบ → bounds คงเดิม');
+
+// ---------- MOS .big พลิกเครื่องหมายตามค่าจริง (dead-band flip ถูก patch ผ่านแล้ว) ----------
+const pxOverFV = Math.round(FV * 1.01 * 100) / 100; // MOS ≈ −1%
+const rNeg = U.patchReport(aapl, { newPrice: pxOverFV, dateParts: { day: 11, monIdx: 6, yearCE: 2026 }, chartData: U.buildChartData(mkBars(13, 2025, 6, 250), pxOverFV, 0) });
+ok(/class="big">−[\d.]+%/.test(rNeg.html), 'MOS .big: ราคา > FV → เครื่องหมาย −', (rNeg.html.match(/class="big">[^<]*/) || [])[0]);
+const pxUnderFV = Math.round(FV * 0.99 * 100) / 100; // MOS ≈ +1%
+const rPos = U.patchReport(aapl, { newPrice: pxUnderFV, dateParts: { day: 11, monIdx: 6, yearCE: 2026 }, chartData: U.buildChartData(mkBars(13, 2025, 6, 250), pxUnderFV, 0) });
+ok(/class="big">\+[\d.]+%/.test(rPos.html), 'MOS .big: ราคา < FV → เครื่องหมาย +', (rPos.html.match(/class="big">[^<]*/) || [])[0]);
 
 // idempotent: patch ซ้ำด้วยข้อมูลเดิม → เนื้อหาเท่าเดิม
 const r2 = U.patchReport(out, { newPrice: 301.5, dateParts: { day: 11, monIdx: 6, yearCE: 2026 }, chartData });

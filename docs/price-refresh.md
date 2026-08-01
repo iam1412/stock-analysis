@@ -46,8 +46,8 @@ git commit -F …                    # title: price: refresh N symbols (YYYY-MM-
 | reason | เงื่อนไข |
 |---|---|
 | `drift-gt-15pct` | ราคาใหม่ต่างจากในรายงาน >15% (เดิม 10% — ขยับ 2026-07-11 ลดภาระ re-analysis) — prose ("จากจุดเข้า $X", "แพง ~Y%") จะผิดความหมาย |
-| `mos-sign-flip` | MOS พลิกเครื่องหมาย — คำตัดสิน "แพง/ถูก" + สี/class กล่อง MOS ผิดทันทีแม้ขยับนิดเดียว |
-| `outside-gauge-range` | ราคาหลุดช่วง gauge min–max — เข็ม section 4 ตกขอบ |
+| `mos-sign-flip` | MOS พลิกเครื่องหมาย **เกิน dead-band ±3 จุด** (2026-08-02: flip ที่ทั้งเก่า-ใหม่อยู่ใน ±3 จุด = แกว่งรอบ FV → patch ผ่าน patcher เขียนเครื่องหมายใหม่เอง — ±3 ตรง dead-band ของ gate W06 ดังนั้น prose "ถูก/แพงเล็กน้อย" ไม่ขัด gate) |
+| ~~`outside-gauge-range`~~ | ยกเลิก 2026-08-02 — ราคาหลุดขอบ gauge ไม่ freeze แล้ว patcher ขยาย `gauge.min/max` เป็น ราคา±5% เอง (ขอบเป็น display scaffolding, engine วาดจาก report-data — drift ใหญ่จริงโดนเกณฑ์ 15%/25% ก่อนเสมอ) |
 | `suspect-split-or-data` | ต่าง >25% — สงสัย split / เปลี่ยน ticker / ข้อมูลเพี้ยน |
 | `currency-mismatch` | Yahoo คืนสกุลเงินไม่ตรง stock-meta |
 | `fetch-failed` / `patch-failed` | ดึงข้อมูลไม่ได้ (delisted?) / ไฟล์ผิดโครงจน regex ไม่ match |
@@ -63,9 +63,9 @@ git commit -F …                    # title: price: refresh N symbols (YYYY-MM-
 ```bash
 node tools/update-prices.js AAPL         # dry-run ตัวเดียว (โชว์ว่าจะเปลี่ยนอะไร ไม่เขียนไฟล์/flags)
 node tools/update-prices.js --write AAPL # เขียนจริงตัวเดียว → ตามด้วย build + preserve-dates + build + verify
-node tools/update-prices.js --write --force AAPL  # ข้าม freeze drift/mos-flip/gauge/suspect — ใช้เฉพาะตอน
+node tools/update-prices.js --write --force AAPL  # ข้าม freeze drift/mos-flip/suspect — ใช้เฉพาะตอน
                                          # re-analysis UPDATE mode ที่ agent ยืนยัน cross-source แล้ว
-                                         # (ต้องระบุ SYMBOL · currency-mismatch/bad-price ยัง freeze · หลุด gauge = เตือนให้แก้ช่วงเอง)
+                                         # (ต้องระบุ SYMBOL · currency-mismatch/bad-price ยัง freeze · หลุดขอบ gauge = patcher ขยายขอบให้เอง)
 node tools/update-prices.js --write      # เต็มชุด ~763 ตัว (~7-8 นาที)
 node tools/fetch-facts.js AAPL           # พิมพ์ ราคา+วันที่+chart 13 จุด+ป้าย %+bounds พร้อมวาง (หุ้นใหม่ · ไทยเติม --th)
 npm run test:prices                      # unit test offline (fixture AAPL + mock Yahoo)
