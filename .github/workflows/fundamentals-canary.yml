@@ -1,0 +1,71 @@
+# Canary รายสัปดาห์: ตรวจว่า fetch-fundamentals ยังดึงข้อมูลจากแหล่งจริงได้ครบทุกแถว
+# เหตุเกิด 2 ส.ค. 2569: StockAnalysis ย้าย /financials/ เป็นหน้า overview ว่าง → ตารางงบขาดแถว income
+# แบบ "degrade เงียบ" อยู่หลายวันโดยไม่มีใครรู้ จนไปพังกลางเวฟวิเคราะห์ — canary นี้จับตั้งแต่วันแรกที่โครงเปลี่ยน
+# deterministic ล้วน ไม่มี LLM · ล้ม → เปิด/คอมเมนต์ GitHub Issue "Fundamentals canary failed"
+name: fundamentals-canary
+
+on:
+  schedule:
+    - cron: '0 2 * * 1' # จันทร์ 02:00 UTC = 09:00 น. ไทย
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: fundamentals-canary
+  cancel-in-progress: false
+
+jobs:
+  canary:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: รัน fetch-fundamentals (US + TH) แล้วตรวจแถวที่ต้องมี
+        run: |
+          check() {
+            local sym="$1"; shift
+            local out="/tmp/canary-$sym.txt"
+            # retry 1 ครั้งกัน transient network (คั่น 30s) — ล้มทั้งสองรอบค่อยถือว่าพัง
+            for attempt in 1 2; do
+              node tools/fetch-fundamentals.js "$sym" $@ > "$out" 2>&1 || true
+              local missing=""
+              # แหล่ง [1]/[2] อย่างน้อยหนึ่งแหล่งต้องมีราคา + บรรทัด Δ + ตารางงบครบแถวหลัก
+              for pat in "price=" "Δ ราคา=" "Revenue" "EPS(dil)" "FCF" "Shares" "Cash" "Debt" "D/E" "ROE%"; do
+                grep -qF "$pat" "$out" || missing="$missing '$pat'"
+              done
+              if [ -z "$missing" ]; then echo "✓ $sym ครบทุกแถว"; return 0; fi
+              echo "✗ $sym รอบ $attempt ขาด:$missing"
+              [ "$attempt" = "1" ] && sleep 30
+            done
+            echo "--- output ล่าสุดของ $sym ---"; cat "$out"
+            return 1
+          }
+          fail=0
+          check AAPL || fail=1
+          check ADVANC --th || fail=1
+          exit $fail
+
+      - name: เปิด/อัปเดต issue เมื่อ canary ล้ม
+        if: failure()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          title="Fundamentals canary failed — โครงแหล่งข้อมูล (StockAnalysis/Yahoo) อาจเปลี่ยน"
+          body="Canary รัน fetch-fundamentals (AAPL + ADVANC --th) แล้วแถวข้อมูลหาย — ดูรายละเอียดใน run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
+          มักเกิดจาก StockAnalysis เปลี่ยนโครง __data.json (เคสก่อนหน้า: /financials/ กลายเป็น overview ย้ายไป income-statement/ — commit ตัวอย่างการแก้: 'fix(tools): fetch-fundamentals ตามโครง SA ใหม่')
+          วิธีไล่: probe __data.json ตาม docs ใน tools/fetch-fundamentals.js แล้วแก้ FIN_SUBS / aliases ใน FIN_ROWS"
+          existing=$(gh issue list --state open --search "in:title Fundamentals canary failed" --json number --jq '.[0].number // empty')
+          if [ -n "$existing" ]; then
+            gh issue comment "$existing" --body "ยังล้มอยู่ ($(date -u +%F)) — run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          else
+            gh issue create --title "$title" --body "$body"
+          fi
