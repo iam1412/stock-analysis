@@ -8,7 +8,7 @@
 <meta name="ai-model" content="Claude Sonnet 5">
 <!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
 <script type="application/json" id="stock-meta">
-{"symbol":"BG","currency":"USD","price":106.23,"fairValue":111.2,"mos":4.5,"upside":4.7,"pe":20.4,"dividendYield":2.75,"roe":6}
+{"symbol":"BG","currency":"USD","price":105.4,"fairValue":111.2,"mos":5.2,"upside":5.5,"pe":20.4,"dividendYield":2.75,"roe":6}
 </script>
 <script type="application/json" id="report-data">
 {
@@ -27,7 +27,6 @@
   },
   "chart": {
     "data": [
-      ["ส.ค.25", 84.22],
       ["ก.ย.25", 81.25],
       ["ต.ค.25", 94.6],
       ["พ.ย.25", 96.07],
@@ -38,21 +37,22 @@
       ["เม.ย.26", 127.07],
       ["พ.ค.26", 123.3],
       ["มิ.ย.26", 106.73],
-      ["ก.ค.26", 106.23]
+      ["ก.ค.26", 106.23],
+      ["ส.ค.26", 105.4]
     ],
     "min": 60,
     "max": 140,
     "grid": [80, 100, 120],
     "fairLine": 111.2,
     "currency": "$",
-    "highlight": [1, 7],
+    "highlight": [0, 6],
     "gridFmt": "v.toFixed(0)",
     "dataFmt": "d[1].toFixed(2)"
   },
   "gauge": {
     "min": 65,
     "max": 145,
-    "cur": 106.23,
+    "cur": 105.4,
     "fair": 111.2,
     "fairLabelTop": true
   },
@@ -76,11 +76,11 @@
     <div class="sub">Oilseed Processing • Grain Trading • Edible Oils • Sugar &amp; Bioenergy • Viterra Integration (S. America/Black Sea/Canada)</div>
     <div class="price-row">
       <div>
-        <div class="px">$106.23<small>(BG)</small></div>
+        <div class="px">$105.40<small>(BG)</small></div>
       </div>
-      <div class="chg">▲ +26.1% (รอบปี)</div>
+      <div class="chg">▲ +29.7% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 31 ก.ค. 2569<br>
+        ราคา ณ 3 ส.ค. 2569<br>
         กรอบ 52 สัปดาห์ $71.60 – $134.87<br>
         ที่มา: StockAnalysis.com, Yahoo Finance, Zacks.com
       </div>
@@ -154,7 +154,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $106.23</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $105.40</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $111.20</div></div>
         </div>
         <div class="scale">
@@ -176,7 +176,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict bad">
-        <div class="big">+4%</div>
+        <div class="big">+5%</div>
         <div class="txt">ราคาปัจจุบัน $104.75 ต่ำกว่า Fair Value $111.20 อยู่ประมาณ 5.8% — มี Margin of Safety จำกัด ถือว่าใกล้เคียงมูลค่าเหมาะสม (fairly valued) มากกว่าถูกชัดเจน</div>
       </div>
       <div class="grid g3">
@@ -187,7 +187,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="106.23" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="105.4" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
