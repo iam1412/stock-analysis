@@ -19,7 +19,7 @@
 <meta name="ai-model" content="Claude Sonnet 5">
 <!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
 <script type="application/json" id="stock-meta">
-{"symbol":"ADP","currency":"USD","price":270.62,"fairValue":273.36,"mos":1,"upside":1,"pe":22.6,"dividendYield":2.81,"roe":71}
+{"symbol":"ADP","currency":"USD","price":270.09,"fairValue":273.36,"mos":1.2,"upside":1.2,"pe":22.6,"dividendYield":2.81,"roe":71}
 </script>
 <!--
   report-data: ธีมสี + ข้อมูลกราฟ/gauge ต่อหุ้น (build เอาไปวาด)  ดู schema เต็มใน CLAUDE.md ข้อ 9
@@ -58,7 +58,7 @@
       ["พ.ค.26", 221.84],
       ["มิ.ย.26", 223.95],
       ["ก.ค.26", 266.46],
-      ["ส.ค.26", 270.62]
+      ["ส.ค.26", 270.09]
     ],
     "min": 175,
     "max": 300,
@@ -70,7 +70,7 @@
   "gauge": {
     "min": 160,
     "max": 320,
-    "cur": 270.62,
+    "cur": 270.09,
     "fair": 273.36,
     "fairLabelTop": true
   },
@@ -95,14 +95,14 @@
     <div class="sub">Payroll processing, HR software (Workforce Now, Vantage HQ), Tax Filing, Time &amp; Attendance • PEO (Employer Services + PEO Services) • ผู้นำตลาด Payroll/HCM ร่วมกับ Paychex</div>
     <div class="price-row">
       <div>
-        <div class="px">$270.62<small>(ADP)</small></div>
+        <div class="px">$270.09<small>(ADP)</small></div>
       </div>
       <!-- ★ ป้าย % รอบปี (gate E35/E36) — ผลตอบแทน ~1 ปี (เทียบราคา ~1 ปีก่อน) = ผลตอบแทนปลายกราฟ section 2 (จุดแรก→ท้าย)
            รูปแบบ: "▲ +X.X% (รอบปี)" ขึ้น · "▼ −X.X% (รอบปี)" ลง · "≈ ทรงตัว (รอบปี)" · หุ้น IPO <1 ปี ใช้ "(ตั้งแต่ IPO)"
            ไม่ใช่ % รายวัน/YTD/52 สัปดาห์ · ตั้งสี theme.chgBg/chgColor ให้ตรงทิศ (ขึ้น=เขียว/ลง=แดง · E34) -->
-      <div class="chg">▼ −7.8% (รอบปี)</div>
+      <div class="chg">▼ −8.0% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 4 ส.ค. 2569 (July 30, 2026)<br>
+        ราคา ณ 5 ส.ค. 2569 (July 30, 2026)<br>
         กรอบ 52 สัปดาห์ $188.16 – $315.98<br>
         ที่มา: Yahoo Finance, StockAnalysis.com, SEC 10-Q/8-K (Q3 FY2026)
       </div>
@@ -186,7 +186,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $270.62</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $270.09</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $273.36</div></div>
         </div>
         <div class="scale">
@@ -209,7 +209,7 @@
     <div class="card">
       <!-- ✏️ class ของ mos-verdict: MOS<10 → "bad", 10–20 → "ok", ≥20 → "good" -->
       <div class="mos-verdict bad">
-        <div class="big">+1.0%</div>
+        <div class="big">+1.2%</div>
         <div class="txt">MOS ~4% อยู่ในระดับต่ำ — ราคาฟื้นตัวขึ้นมาใกล้เคียง Fair Value แล้วหลังรีบาวด์จากจุดต่ำ ยังไม่ใช่โซนน่าสนใจสำหรับสาย value เทียบ MOS 20-30%</div>
       </div>
       <div class="grid g3">
@@ -220,7 +220,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="270.62" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="270.09" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
