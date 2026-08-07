@@ -8,7 +8,7 @@
 <meta name="ai-model" content="Claude Sonnet 4.6">
 <!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
 <script type="application/json" id="stock-meta">
-{"symbol":"HTC","currency":"THB","price":16.7,"fairValue":15.41,"mos":-8.4,"upside":-7.7,"pe":10.9,"dividendYield":6.23,"roe":13.42}
+{"symbol":"HTC","currency":"THB","price":16.8,"fairValue":15.41,"mos":-9,"upside":-8.3,"pe":10.9,"dividendYield":6.23,"roe":13.42}
 </script>
 <script type="application/json" id="report-data">
 {
@@ -38,11 +38,11 @@
       ["พ.ค.26", 15.7],
       ["มิ.ย.26", 15.7],
       ["ก.ค.26", 16],
-      ["ส.ค.26", 16.7]
+      ["ส.ค.26", 16.8]
     ],
-    "min": 14.5,
+    "min": 14,
     "max": 17,
-    "grid": [15, 15.5, 16, 16.5],
+    "grid": [15, 16],
     "fairLine": 15.41,
     "currency": "฿",
     "highlight": [2, 11],
@@ -52,7 +52,7 @@
   "gauge": {
     "min": 10.5,
     "max": 18.5,
-    "cur": 16.7,
+    "cur": 16.8,
     "fair": 15.41,
     "fairLabelTop": true
   },
@@ -77,12 +77,12 @@
     <div class="sub">ผู้บรรจุและจัดจำหน่าย Coca-Cola แต่เพียงผู้เดียวใน 14 จังหวัดภาคใต้ • ครอบคลุมกระบี่-สงขลา-ปัตตานี-ภูเก็ต • สัญญาสิทธิ์ระยะยาวจาก Coca-Cola • ราคาตายตัว ดีมานด์คงที่ ปันผลสม่ำเสมอ</div>
     <div class="price-row">
       <div>
-        <div class="px">฿16.70<small>(HTC)</small></div>
+        <div class="px">฿16.80<small>(HTC)</small></div>
       </div>
       <!-- ★ ป้าย % รอบปี (gate E35/E36) — ผลตอบแทน ~1 ปี (เทียบราคา ~1 ปีก่อน) = ผลตอบแทนปลายกราฟ section 2 (จุดแรก→ท้าย)
            รูปแบบ: "▲ +X.X% (รอบปี)" ขึ้น · "▼ −X.X% (รอบปี)" ลง · "≈ ทรงตัว (รอบปี)" · หุ้น IPO <1 ปี ใช้ "(ตั้งแต่ IPO)"
            ไม่ใช่ % รายวัน/YTD/52 สัปดาห์ · ตั้งสี theme.chgBg/chgColor ให้ตรงทิศ (ขึ้น=เขียว/ลง=แดง · E34) -->
-      <div class="chg">▲ +12.1% (รอบปี)</div>
+      <div class="chg">▲ +12.8% (รอบปี)</div>
       <div class="px-meta">
         ราคา ณ 6 ส.ค. 2569 (ปิดตลาด SET)<br>
         กรอบ 52 สัปดาห์ ฿14.60 – ฿16.40<br>
@@ -171,7 +171,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿16.70</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿16.80</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿15.41</div></div>
         </div>
         <div class="scale">
@@ -195,7 +195,7 @@
     <div class="card">
       <!-- ✏️ class ของ mos-verdict: MOS<10 → "bad", 10–20 → "ok", ≥20 → "good" -->
       <div class="mos-verdict bad">
-        <div class="big">−8%</div>
+        <div class="big">−9%</div>
         <div class="txt">ราคาเหมาะสม–ตึงเล็กน้อย (ราคาเหนือ FV ~3%) · ยังไม่มี MOS · รอย่อสู่ใกล้ ฿12.33–13.85 ก่อนเริ่มสะสม</div>
       </div>
       <div class="grid g3">
@@ -206,7 +206,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="16.7" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="16.8" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
