@@ -12,7 +12,7 @@ tools/update-prices.js --write     # ดึงราคา Yahoo → patch repor
 npm run build                      # dist + reports.json (วันที่ขยับเป็นวันนี้)
 node tools/preserve-dates.js       # คืนวันที่ "วิเคราะห์" เดิม (refresh ราคา ≠ re-analysis)
 npm run build                      # build อีกรอบให้ dist ตรงวันที่เดิม
-npm run verify                     # gate 6 ขั้นเดิม — แดง = ไม่ push
+npm run verify                     # gate 8 ขั้นเดิม — แดง = ไม่ push
 git commit -F …                    # title: price: refresh N symbols (YYYY-MM-DD)
                                    # body:  log ต่อหุ้น "AAPL 297.21 → 315.32 (+6.1%)" + บรรทัด freeze — ถาวรใน git history
 ```

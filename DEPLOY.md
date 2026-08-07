@@ -60,16 +60,16 @@ open dist/index.html
 `push → main` คือสิ่งที่ trigger ให้ Cloudflare deploy → **ต้องผ่าน gate ก่อนเสมอ**:
 
 ```bash
-npm run verify     # 6 ขั้น: check-reports → build → build-test → engine-exec → skeleton-test → check-site
+npm run verify     # 8 ขั้น: check-reports → ohlc-test → ta-engine-test → build → build-test → engine-exec → skeleton-test → check-site
 ```
 
 เปิด git pre-push hook (ครั้งเดียวต่อ clone) ให้บล็อก `git push` อัตโนมัติถ้า gate ไม่ผ่าน:
 
 ```bash
-git config core.hooksPath .githooks   # .githooks/pre-push รัน 6 ขั้นเดียวกัน
+git config core.hooksPath .githooks   # .githooks/pre-push รัน 8 ขั้นเดียวกัน
 ```
 
-> มี error = ห้าม push · รายละเอียด gate ดู `CLAUDE.md` ข้อ 7 · gate ตรวจเฉพาะ static — Worker/DO ต้องทดสอบผ่าน `wrangler dev`
+> มี error = ห้าม push · รายละเอียด gate ดู `CLAUDE.md` ข้อ 8 · gate ตรวจเฉพาะ static — Worker/DO ต้องทดสอบผ่าน `wrangler dev`
 
 ---
 

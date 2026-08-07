@@ -26,7 +26,7 @@ dist/                   # ⚠️ build output (gitignore) — ห้ามแก
 
 ## 2. วิเคราะห์หุ้นเดี่ยว (skill `stock-analyzer`)
 
-เมื่อสั่ง "วิเคราะห์ X" / re-analysis / เคลียร์คิว price-flags → เรียก skill **`stock-analyzer`** แล้ว**ทำตามทุกขั้น** → `npm run verify` ผ่าน 6 ขั้น → **Auto-push** (§5)
+เมื่อสั่ง "วิเคราะห์ X" / re-analysis / เคลียร์คิว price-flags → เรียก skill **`stock-analyzer`** แล้ว**ทำตามทุกขั้น** → `npm run verify` ผ่าน 8 ขั้น → **Auto-push** (§5)
 
 invariant ที่ห้ามหลุดไม่ว่ากรณีใด:
 - **cross-source verify ราคา+EPS ≥2 แหล่งก่อนเขียนตัวเลข** — ราคาต่าง >5% / EPS ขัดกัน → หยุด ถามผู้ใช้ อย่าเผยแพร่ (gate ตรวจความจริงไม่ได้)
@@ -66,7 +66,7 @@ invariant ที่ห้ามหลุดไม่ว่ากรณีใด:
 (commit **ก่อน** pull --rebase เสมอ ไม่งั้น rebase error "Please commit or stash")
 
 ```bash
-npm run verify                     # 0. quality gate 6 ขั้น — error = ห้าม push
+npm run verify                     # 0. quality gate 8 ขั้น — error = ห้าม push
 git add -A                         # 1.
 git commit -m "<message>"          # 2.
 git pull --rebase origin main      # 3. sync
@@ -85,7 +85,7 @@ Co-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>
 
 ## 6. Build & Deploy
 
-- **Build:** `npm run build` (= `node build.js`) — ไม่มี dependency, Node ≥18
+- **Build:** `npm run build` (= `node build.js`) — ไม่มี dependency, Node ≥20.19
 - **Deploy:** Cloudflare รัน build + `wrangler deploy` อัตโนมัติเมื่อ push เข้า `main` · เว็บนี้เป็น **Worker (Static Assets)** ไม่ใช่ Pages — อย่าใช้ `wrangler pages deploy` (ดู `DEPLOY.md`)
 
 ---
@@ -102,8 +102,8 @@ Co-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>
 
 ## 8. Quality gate — ก่อนเผยแพร่ (`npm run verify`)
 
-6 ขั้น ต้องผ่านทั้งหมดก่อน push (pre-push hook บังคับซ้ำ):
-`check-reports` (38 error + 11 warning) → `build` → `build-test` → `engine-exec` → `skeleton-test` → `check-site`
+8 ขั้น ต้องผ่านทั้งหมดก่อน push (pre-push hook บังคับซ้ำ):
+`check-reports` (38 error + 11 warning) → `ohlc-test` → `ta-engine-test` → `build` → `build-test` → `engine-exec` → `skeleton-test` → `check-site`
 
 - เร็ว: `npm test -- <SYM>` = check-reports เฉพาะตัวนั้น (ใช้ตอน self-check ก่อนคืนงาน)
 - gate ตรวจ **ความสอดคล้อง/ความสด/การอ้างอิง** เท่านั้น — **ตรวจความจริงของราคา/EPS ไม่ได้** (ต้อง cross-source verify §2)

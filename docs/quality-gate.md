@@ -1,14 +1,16 @@
 # Quality gate — รายละเอียดเต็ม
 
-> สรุปย่อ + คำสั่งอยู่ใน `CLAUDE.md §7` — ไฟล์นี้คือรายละเอียดไล่ทีละชั้น/ทีละ error
+> สรุปย่อ + คำสั่งอยู่ใน `CLAUDE.md §8` — ไฟล์นี้คือรายละเอียดไล่ทีละชั้น/ทีละ error
 > **enforcement จริงอยู่ในโค้ด `test/*.js`** เอกสารนี้เป็นคำอธิบายประกอบเท่านั้น
 
-มี gate หลายชั้น ต้องผ่านทั้งหมด **ก่อน push เสมอ** (มี `pre-push` hook บังคับซ้ำ 6 ขั้น):
+มี gate หลายชั้น ต้องผ่านทั้งหมด **ก่อน push เสมอ** (มี `pre-push` hook บังคับซ้ำ 8 ขั้น):
 
 ```bash
-npm run verify           # ★ ครบชุด 6 ขั้น: check-reports → build → build-test → engine-exec → skeleton-test → check-site
+npm run verify           # ★ ครบชุด 8 ขั้น: check-reports → ohlc-test → ta-engine-test → build → build-test → engine-exec → skeleton-test → check-site
 npm test                 # ชั้น 1 อย่างเดียว (= node test/check-reports.js)  •  npm test -- BBL  = เฉพาะบางตัว
-npm run test:build       # ชั้น 1.5 อย่างเดียว (unit-test build.js: เครดิตโมเดล + freshHash)
+npm run test:ohlc        # ชั้น TA อย่างเดียว (แปลง Yahoo OHLC → payload แท่งเทียน)
+npm run test:ta          # ชั้น TA อย่างเดียว (ตรึงนิยาม TA engine ด้วย fixture)
+npm run test:build       # ชั้น 1.5 อย่างเดียว (unit-test build.js: เครดิตโมเดล + freshHash + injectTA)
 npm run test:engine      # ชั้น 1.7 อย่างเดียว (รัน engine ทุกรายงานใน mock DOM)  •  test:engine -- BBL = เฉพาะบางตัว
 npm run test:skeleton    # ชั้น skeleton อย่างเดียว (เติม token โครงต้นแบบ TH/US แล้วผ่าน gate)
 npm run check:site       # ชั้น 2 อย่างเดียว (ต้อง build ก่อน)
@@ -90,6 +92,15 @@ npm run test:self        # meta-test: พิสูจน์ว่า checker เ
   - **(warn W12)** ทุกจุดกราฟต้องมี label แกน x ไม่ว่าง (กัน `["",value]`)
   > ⚠️ **สิ่งที่ E34/E36 ตรวจไม่ได้:** ราคาในกราฟ **ตรงกับราคาตลาดจริงไหม** — gate ไม่มี network/ข้อมูลจริง จับได้แค่ "header % รอบปี ↔ ปลายกราฟ สอดคล้องกัน" เท่านั้น · ความถูกต้องของ **ข้อมูลกราฟ ~1 ปี + ราคา ~1 ปีก่อน** ต้องเป็นราคาจริงตอนสร้าง — ใช้ `node tools/fetch-facts.js <SYM> [--th]` (หุ้นใหม่) / `node tools/update-prices.js --write --force <SYM>` (อัปเดตหุ้นเดิม) ห้ามดึง/แต่งเอง (ดู memory `chart-data-must-be-real`)
 
+## ชั้น TA — `test/ohlc-test.js` + `test/ta-engine-test.js`
+กำกับระบบกราฟ TA (ดู `docs/ta-chart.md`) — รันก่อน build เพราะเป็น pure function ล้วน ไม่ต้องมี `dist/`
+
+- **`ohlc-test.js`** → `src/ohlc.js`: แปลง Yahoo JSON → payload `{sym,currency,bars:{t,o,h,l,c,v}}` — ตัดแท่งที่มี `null`, ปัดทศนิยม 4 ตำแหน่ง, คืน symbol ตามที่ client ขอ · เป็น ESM ไม่ import `cloudflare:*` จึงเทสใน node ได้ตรง ๆ
+- **`ta-engine-test.js`** → `_template/ta-engine.js`: **ตรึงนิยาม TA ด้วย fixture** — `ema` · `rsi` · `findPivots` · `labelStructure` · `detectBreaks` · `detectDivergence` · `summarizeSignals`
+  - กันการถดถอยที่เคยเกิดจริง: **`detectBreaks` ห้าม look-ahead** (pivot ใช้เป็นแนวได้เมื่อยืนยันครบ k แท่งแล้วเท่านั้น) · **divergence ต้องมี RSI diff ≥2 จุด + invalidate เมื่อราคาทะลุ pivot p2** (เคสสัญญาณผี AMKR)
+  - นิยามเต็มทุกตัวอยู่ใน `docs/superpowers/specs/2026-08-01-ta-chart-design.md` §"นิยาม TA"
+> กราฟ TA เป็น **progressive enhancement** — inject เฉพาะ `dist/` ตอน build ไม่แตะ `reports/` · พังเมื่อไหร่ผู้ใช้เห็นกราฟ SVG เดิม ไม่ใช่หน้าขาว จึงไม่มี check ระดับรายงานใน ชั้น 1
+
 ## ชั้น 1.5 — `test/build-test.js`
 unit-test ฟังก์ชันใน build.js — require แบบไม่รัน build จริง
 
@@ -97,6 +108,7 @@ unit-test ฟังก์ชันใน build.js — require แบบไม่
 - **injectModelCredit:** แทน "stock-analyzer workflow" → เครดิตโมเดล + fallback ผนวกท้าย `<footer>` • **decorateReport:** per-report model ไหลจาก meta → footer ถูกตัว (Opus/Sonnet) + ตกลงค่ากลาง `AI_MODEL` เมื่อไม่มี tag
 - **extractMetrics / pickHighlight / computeLeaders:** ดึง metric จากบล็อก `stock-meta` → เลือก "จุดเด่น" ของหุ้นต่อการ์ด (tier ของแต่ละ metric + ป้ายมงกุฎ 👑 เมื่อเป็นค่าดีสุดในกลุ่ม) · computeLeaders หาค่าดีสุดต่อ metric (มาก = ดีสุด, P/E น้อย = ดีสุด ข้ามค่าติดลบ)
 - **extractMeta `desc`:** ดึงคำโปรยธุรกิจจาก `<div class="sub">` ใต้ `<h1>` + ถอด HTML entity (`&amp;` → `&` กัน double-escape ตอน render) → ฟิลด์ `desc` ที่โชว์บนการ์ด (ไม่มี `.sub` → `desc = ""` การ์ด fallback ไป title)
+- **injectTA:** แทรก `window.__TA_CFG__` + `<script defer src="/assets/ta-<hash>.js">` ก่อน `</body>` เฉพาะตอนสร้าง `dist/` · รายงาน legacy (ไม่มี `report-data` → `rd=null`) ต้องคืน html เดิม **เป๊ะแบบ identity** · escape `<` ใน config กัน breakout
 - **gridFmt/dataFmt scope:** `validateReportData` แยก regex ต่อฟิลด์ — gridFmt อ้าง `v` เท่านั้น, dataFmt อ้าง `d[1]` เท่านั้น (ผิด scope = throw กัน ReferenceError ตอน render)
 - **validateReportData guards (กัน render พังเงียบที่ค่า "ผ่าน JSON แต่ทำให้ NaN/Infinity"):** chart.max>min, gauge.max>min (กันหาร 0 → พิกัด NaN), fv>0 (กัน MOS Infinity), chart.data ทุกจุด = `[string, finite number]`, grid ตัวเลขล้วน · **ค่าสี theme** = hex/rgb/hsl/var/gradient ที่ถูกต้อง + ห้ามมี `;{}` (กัน CSS declaration breakout/inject + hex 5 หลัก → เส้นกราฟล่องหน)
 
