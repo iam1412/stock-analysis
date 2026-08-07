@@ -1,0 +1,208 @@
+#!/usr/bin/env node
+'use strict';
+/**
+ * dead-ticker-canary.js — ตรวจว่าทุก symbol ใน reports/ ยัง "มีตัวตนบนกระดาน" อยู่จริง
+ *
+ * ทำไมต้องมี: Yahoo ไม่ 404 เมื่อหุ้นตาย — มัน serve ราคาปิดวันสุดท้ายค้างไปเรื่อย ๆ ⇒ cron ราคา
+ * เห็น drift 0% ⇒ ไม่มี flag (เคสจริง 8 ส.ค. 2569: EA ปิดดีล take-private, BPP ควบบริษัทกับ BANPU)
+ * TradingView scanner ตรงข้าม: ticker ที่หมดสภาพ **หายจากผลลัพธ์** (ไม่ค้างราคา) → ใช้เป็นตัวจับ
+ * แหล่งที่สอง ที่ล้มแบบดัง ไม่ล้มแบบเงียบ · ตัว detectStaleQuotes ใน update-prices.js จับจาก
+ * timestamp ค้าง (รายวัน ฟรี) — สองสัญญาณนี้เสริมกัน ตัวนี้ยืนยันด้วยแหล่งอิสระรายสัปดาห์
+ *
+ * ใช้:  node tools/dead-ticker-canary.js [--write] [SYMBOL ...]
+ *   ไม่มี --write = dry-run (ไม่แตะไฟล์) · --write = อัปเดต price-flags.json + cache ticker
+ *   flag reason `not-on-exchange` → triage = **ยืนยันด้วยมือแล้วลบรายงาน** ไม่ใช่ re-analyze
+ *   (ดู .claude/skills/stock-analyzer/SKILL.md STEP 0 · docs/price-refresh.md)
+ *
+ * ข้อจำกัดที่ตั้งใจ: endpoint นี้ไม่มี doc ทางการ (ความเสี่ยงระดับเดียวกับ Yahoo chart API ที่ cron
+ * ใช้อยู่แล้ว) · ยิงล้มทั้งรอบ = ไม่เขียนอะไรเลย ไม่เดาว่า "หาย = ตาย" (กัน mass-flag ผิดเวลา
+ * TradingView บล็อก IP ของ Actions)
+ */
+const fs = require('fs');
+const path = require('path');
+
+const REPORTS = path.join(__dirname, '..', 'reports');
+const FLAGS = path.join(__dirname, '..', 'price-flags.json');
+const CACHE = path.join(__dirname, 'tv-tickers.json');
+const SCAN_URL = 'https://scanner.tradingview.com/global/scan';
+const CHUNK = 1200;          // ต่อ 1 request (เพดาน scanner ~2000 — เผื่อไว้)
+const MIN_ALIVE_RATIO = 0.8; // ถ้า sweep เต็มเจอ "เป็น" < 80% ของที่ถาม = น่าจะโดนบล็อก/โครงเปลี่ยน → ยกเลิกรอบ
+const GUARD_MIN_PROBES = 20; // ต่ำกว่านี้ อัตราส่วนไม่มีความหมายทางสถิติ → ไม่ใช้ยาม
+
+// exchange ที่หุ้น US ในรีโปนี้เคยอยู่จริง (วัดจากการ resolve 579 ตัว 8 ส.ค. 2569):
+// NASDAQ/NYSE ส่วนใหญ่ · AMEX บางตัว · OTC = ADR ญี่ปุ่น/ยุโรป (FANUY, ABBNY, KYCCF) · CBOE:CBOE
+const US_EXCHANGES = ['NASDAQ', 'NYSE', 'AMEX', 'OTC', 'CBOE'];
+
+const SYMBOL_MAP = (() => {
+  try { return JSON.parse(fs.readFileSync(path.join(__dirname, 'symbol-map.json'), 'utf8')); }
+  catch (e) { return {}; }
+})();
+
+const loadJson = (p, fallback) => {
+  try { return JSON.parse(fs.readFileSync(p, 'utf8')); } catch (e) { return fallback; }
+};
+
+// ---------- pure helpers (ทดสอบใน test/dead-ticker-test.js) ----------
+
+// ชื่อ ticker ที่ TradingView ใช้ ≠ ชื่อไฟล์รายงานได้ 3 แบบ:
+//   1. บริษัทเปลี่ยนชื่อ/ticker → tools/symbol-map.json (BKI→BKIH, STEC→STECON, LANC→MZTI)
+//   2. หุ้นสองคลาส: ไฟล์ใช้ขีด (BRK-B) แต่ TradingView ใช้จุด (BRK.B)
+//   3. ไม่รู้ว่าอยู่กระดานไหน → ยิงทุก exchange ที่เป็นไปได้ ตัวไหนตอบมาถือว่าอยู่กระดานนั้น
+function tvCandidates(symbol, currency, opts = {}) {
+  const mapped = (SYMBOL_MAP[String(symbol).toUpperCase()] || {}).sa;
+  const base = String(mapped || symbol).toUpperCase();
+  const names = base.includes('-') ? [base.replace(/-/g, '.'), base] : [base];
+  const out = [];
+  if (opts.cached) out.push(String(opts.cached).toUpperCase());   // ที่ resolve ได้รอบก่อน — ถามก่อนเสมอ
+  if (currency === 'THB') for (const n of names) out.push(`SET:${n}`);
+  else for (const ex of US_EXCHANGES) for (const n of names) out.push(`${ex}:${n}`);
+  return [...new Set(out)];
+}
+
+// { totalCount, data: [{ s: 'NASDAQ:NVDA', d: [223.96, 'USD'] }] } → Map ticker → { price, currency }
+function parseRows(json) {
+  const rows = new Map();
+  for (const r of (json && json.data) || []) {
+    if (!r || !r.s) continue;
+    rows.set(String(r.s).toUpperCase(), { price: (r.d || [])[0], currency: (r.d || [])[1] });
+  }
+  return rows;
+}
+
+// จับคู่ผลลัพธ์กลับเป็น symbol → ticker ที่ยังมีตัวตน · ตัวที่ไม่มี candidate ไหนตอบ = ต้องสงสัย
+function classify(probes, rows) {
+  const alive = new Map(), dead = [];
+  for (const p of probes) {
+    const hit = p.candidates.find((c) => rows.has(c));
+    if (hit) alive.set(p.symbol, { ticker: hit, ...rows.get(hit) });
+    else dead.push(p);
+  }
+  return { alive, dead };
+}
+
+// flag ของ canary นี้ merge แบบ "เติม/ทับตัวที่ตาย + ล้างของตัวที่ฟื้น" — ห้ามใช้ mergeFlags ของ
+// update-prices.js เพราะอันนั้นถือว่า symbol ที่ประมวลแล้วไม่มี flag = เคลียร์ ⇒ จะลบ flag drift
+// ของหุ้นที่ยังเทรดอยู่ทิ้งหมด (canary นี้ไม่รู้เรื่อง drift เลย)
+// ยามกัน mass-flag เวลา TradingView บล็อก IP ของ Actions / เปลี่ยนโครง response
+// ใช้เฉพาะ sweep เต็มที่ตัวอย่างมากพอ — รันเจาะจง (`… EA BPP`) ผู้ใช้ตั้งใจถามตัวนั้นอยู่แล้ว
+// "ตายทั้ง 2 ตัวที่ถาม" คือคำตอบที่ถูก ไม่ใช่สัญญาณว่าโดนบล็อก (ยามเดิมเตะ debug run ทิ้ง)
+function shouldAbort({ onlyMode, probed, aliveCount }) {
+  if (onlyMode || probed < GUARD_MIN_PROBES) return false;
+  return aliveCount / probed < MIN_ALIVE_RATIO;
+}
+
+function mergeDeadFlags(prev, dead, aliveSymbols, today) {
+  const by = new Map((prev || []).map((f) => [f.symbol, f]));
+  for (const sym of aliveSymbols) {
+    const old = by.get(sym);
+    if (old && old.reason === 'not-on-exchange') by.delete(sym);  // เคยสงสัย แต่กลับมาแล้ว → ถอน
+  }
+  for (const d of dead) {
+    const old = by.get(d.symbol);
+    by.set(d.symbol, { ...d, flaggedAt: old && old.reason === d.reason ? old.flaggedAt : today });
+  }
+  return [...by.values()].sort((a, b) => String(a.symbol).localeCompare(String(b.symbol)));
+}
+
+// ---------- io ----------
+function readMeta(file) {
+  const html = fs.readFileSync(path.join(REPORTS, file), 'utf8');
+  const m = html.match(/<script[^>]*\bid=["']stock-meta["'][^>]*>([\s\S]*?)<\/script>/i);
+  if (!m) return null;
+  try { return JSON.parse(m[1]); } catch (e) { return null; }
+}
+
+async function scan(tickers) {
+  const res = await fetch(SCAN_URL, {
+    method: 'POST',
+    headers: {
+      'content-type': 'application/json',
+      'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36',
+      origin: 'https://www.tradingview.com',
+    },
+    body: JSON.stringify({ symbols: { tickers }, columns: ['close', 'currency'], range: [0, tickers.length] }),
+  });
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  return parseRows(await res.json());
+}
+
+// ---------- main ----------
+async function main() {
+  const WRITE = process.argv.includes('--write');
+  const ONLY = new Set(process.argv.slice(2).filter((a) => !a.startsWith('--'))
+    .map((s) => s.replace(/\.html$/i, '').toUpperCase()));
+
+  const cache = loadJson(CACHE, {});
+  const probes = [];
+  for (const f of fs.readdirSync(REPORTS).filter((x) => /\.html$/i.test(x)).sort()) {
+    const symbol = f.replace(/\.html$/i, '');
+    if (ONLY.size && !ONLY.has(symbol.toUpperCase())) continue;
+    const meta = readMeta(f);
+    if (!meta) { console.log(`⚠ ${symbol} — ไม่มี stock-meta ข้าม (gate จับเองอยู่แล้ว)`); continue; }
+    probes.push({
+      symbol, currency: meta.currency, reportPrice: meta.price != null ? meta.price : null,
+      candidates: tvCandidates(symbol, meta.currency, { cached: cache[symbol.toUpperCase()] }),
+    });
+  }
+  if (!probes.length) { console.log('ไม่มีรายงานให้ตรวจ'); return; }
+
+  // รอบ 1: ถาม ticker ที่น่าจะถูกที่สุดตัวเดียวต่อ symbol (cache → ไม่มี cache ใช้ตัวแรกของ candidates)
+  // รอบ 2: เฉพาะตัวที่ยังไม่เจอ ค่อยยิง candidate ที่เหลือทั้งหมด — กันเดา "ตาย" เพราะย้ายกระดาน
+  const rows = new Map();
+  const ask = async (list, label) => {
+    for (let i = 0; i < list.length; i += CHUNK) {
+      const part = list.slice(i, i + CHUNK);
+      const got = await scan(part);
+      for (const [k, v] of got) rows.set(k, v);
+      console.log(`· ${label}: ถาม ${part.length} ticker → เจอ ${got.size}`);
+    }
+  };
+  await ask(probes.map((p) => p.candidates[0]), 'รอบ 1');
+  const round1 = classify(probes, rows);
+  const retry = round1.dead.flatMap((p) => p.candidates.slice(1));
+  if (retry.length) await ask([...new Set(retry)], 'รอบ 2 (ยิงทุกกระดาน)');
+
+  const { alive, dead } = classify(probes, rows);
+  for (const p of dead) console.log(`☠ ${p.symbol.padEnd(10)} ไม่พบบนกระดานใดเลย (ถาม ${p.candidates.length}: ${p.candidates.join(', ')})`);
+
+  // ยาม: "เป็น" น้อยผิดปกติใน sweep เต็ม = โดนบล็อก/โครงเปลี่ยน ไม่ใช่หุ้นตายพร้อมกันทั้งรีโป
+  if (shouldAbort({ onlyMode: ONLY.size > 0, probed: probes.length, aliveCount: alive.size })) {
+    console.error(`✗ เจอ alive แค่ ${alive.size}/${probes.length} (${(alive.size / probes.length * 100).toFixed(0)}%) — น่าจะโดนบล็อกหรือ response เปลี่ยนโครง ยกเลิกรอบนี้ ไม่เขียน flag`);
+    process.exit(2);
+  }
+
+  for (const [sym, hit] of alive) {
+    const key = sym.toUpperCase();
+    if (cache[key] !== hit.ticker) cache[key] = hit.ticker;
+  }
+
+  const today = new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Bangkok' }); // YYYY-MM-DD เวลาไทย
+  const newFlags = dead.map((p) => ({
+    symbol: p.symbol, reason: 'not-on-exchange', reportPrice: p.reportPrice,
+    marketPrice: null, diffPct: null, probed: p.candidates.length,
+  }));
+  const flags = mergeDeadFlags(loadJson(FLAGS, []), newFlags, [...alive.keys()], today);
+
+  if (WRITE) {
+    fs.writeFileSync(FLAGS, JSON.stringify(flags, null, 2) + '\n');
+    cache._readme = 'ticker ที่ TradingView ใช้จริงต่อ symbol — dead-ticker-canary.js เขียนเอง (cache กันยิงหลายกระดานซ้ำ) ห้ามแก้มือ';
+    fs.writeFileSync(CACHE, JSON.stringify(cache, null, 2) + '\n');
+  }
+
+  const line = `${WRITE ? 'เขียนแล้ว' : '[dry-run]'} ตรวจ ${probes.length} · อยู่บนกระดาน ${alive.size} · ต้องสงสัย ${dead.length}`;
+  console.log('\n' + line);
+  if (process.env.GITHUB_STEP_SUMMARY) {
+    let md = `## Dead-ticker canary\n${line}\n`;
+    if (dead.length) {
+      md += `\n### ☠ ไม่พบบนกระดาน (${dead.length}) — ยืนยันด้วยมือก่อนลบรายงาน\n| Symbol | สกุลเงิน | ราคาในรายงาน | ticker ที่ถาม |\n|---|---|---|---|\n`;
+      for (const p of dead) md += `| ${p.symbol} | ${p.currency} | ${p.reportPrice != null ? p.reportPrice : '-'} | ${p.candidates.join(' · ')} |\n`;
+      md += `\nflag \`not-on-exchange\` ลง \`price-flags.json\` แล้ว — triage: ยืนยันจากแหล่งปฐมภูมิ (SEC Form 25 / ประกาศตลาด) แล้ว**ลบรายงาน** ไม่ใช่ re-analyze\n`;
+    }
+    fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, md);
+  }
+  if (!WRITE) console.log('ใส่ --write เพื่อเขียน price-flags.json + cache');
+}
+
+module.exports = { tvCandidates, parseRows, classify, mergeDeadFlags, shouldAbort, scan };
+
+if (require.main === module) main().catch((e) => { console.error(`✗ canary ล้ม: ${e.message}`); process.exit(1); });

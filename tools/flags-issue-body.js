@@ -58,8 +58,30 @@ const flagRows = flags.map(
   (x) =>
     `| ${x.symbol} | ${x.reason} | ${x.reportPrice ?? '-'} | ${x.marketPrice ?? '-'} | ${
       x.diffPct != null ? x.diffPct + '%' : '-'
-    } | ${x.flaggedAt} |`
+    } | ${x.flaggedAt} | ${detailOf(x)} |`
 );
+
+// ฟิลด์วินิจฉัยที่ตัวตรวจแต่ละแบบแนบมา — ถ้าไม่โชว์ ข้อมูลที่ช่วย triage จะหายไปเงียบ ๆ
+function detailOf(x) {
+  const bits = [];
+  if (x.missedSessions != null) bits.push(`ค้าง ${x.missedSessions} session`);
+  if (x.probed != null) bits.push(`ถาม ${x.probed} กระดาน`);
+  if (x.detail) bits.push(x.detail);
+  return bits.join(' · ') || '-';
+}
+
+// reason ที่ **ห้าม re-analyze** — งานคือยืนยันเพิกถอนแล้วลบรายงาน (ดู SKILL.md STEP 0)
+const DEAD_REASONS = new Set(['not-on-exchange', 'stale-quote']);
+const hasDead = flags.some((f) => DEAD_REASONS.has(f.reason));
+const deadNote = hasDead
+  ? [
+      '',
+      '> ⚠️ **`not-on-exchange` = สงสัยหุ้นตาย ไม่ใช่งานวิเคราะห์** — ยืนยันจากแหล่งปฐมภูมิ (SEC Form 25/8-K ·',
+      '> ประกาศตลาด/SET · IR) ก่อน แล้ว **ลบ `reports/<SYM>.html`** · **ห้าม re-analyze** (วิเคราะห์หุ้นที่เลิกเทรด',
+      '> แล้วคือการเผยแพร่ข้อมูลผิด) · flag นี้ **re-analysis ไม่เคลียร์** — หายเมื่อไฟล์ถูกลบ หรือเมื่อ canary',
+      '> เจอ ticker กลับมาบนกระดานเท่านั้น · ถ้ายืนยันว่ายังเทรดอยู่จริง = ปัญหา mapping ห้ามลบรายงาน',
+    ]
+  : [];
 
 console.log(
   [
@@ -68,10 +90,11 @@ console.log(
     'หุ้นที่ cron **ไม่กล้าอัปเดตอัตโนมัติ** (ราคาขยับแรง/ข้อมูลผิดปกติ) — ต้อง re-analysis ด้วย bulk workflow (§3):',
     '',
     '<!--flags-->',
-    '| Symbol | เหตุผล | ราคาในรายงาน | ราคาตลาด | ต่าง | ตั้งแต่ |',
-    '|---|---|---|---|---|---|',
+    '| Symbol | เหตุผล | ราคาในรายงาน | ราคาตลาด | ต่าง | ตั้งแต่ | รายละเอียด |',
+    '|---|---|---|---|---|---|---|',
     ...flagRows,
     '<!--/flags-->',
+    ...deadNote,
     '',
     `<details><summary>เปลี่ยนแปลงรอบนี้ (+${added.length} / -${removed.length})</summary>`,
     '',
@@ -88,7 +111,8 @@ console.log(
     ...historyRows,
     '<!--/history-->',
     '',
-    'เคลียร์คิว: เปิด session แล้วสั่ง "เคลียร์คิว price-flags" — flag จะหายเองเมื่อรายงานถูก re-analyze แล้ว',
+    'เคลียร์คิว: เปิด session แล้วสั่ง "เคลียร์คิว price-flags" — flag ราคา (drift/mos-flip/suspect) หายเองเมื่อรายงานถูก re-analyze แล้ว' +
+      (hasDead ? ' · `not-on-exchange` ต้องยืนยันแล้วลบไฟล์ (ดูกล่องเตือนด้านบน)' : '') + '',
     '_(อัปเดตอัตโนมัติโดย workflow price-refresh ทุกรอบ)_',
   ].join('\n')
 );

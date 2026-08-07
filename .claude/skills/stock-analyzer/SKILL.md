@@ -18,6 +18,11 @@ description: วิเคราะห์หุ้นรายตัว (ไท�
   - `drift-gt-*` / `mos-sign-flip` (ตลาดขยับ ไม่ใช่ธุรกิจเปลี่ยน — flip ใน dead-band ±3 จุด กับราคาหลุดขอบ gauge cron patch เองแล้ว ไม่เข้าคิว ตั้งแต่ 2 ส.ค. 2569) → เริ่มที่ **UPDATE-LIGHT** (STEP 5C)
   - `suspect-split-or-data` → **UPDATE เต็ม** + ตรวจ split/ticker ก่อนเขียนเลขใด ๆ
   - `fetch-failed` / `patch-failed` → ปัญหา plumbing (ticker เปลี่ยน/เพิกถอน/ประวัติกราฟ) — **ไม่ใช่งานวิเคราะห์** แจ้ง controller ไปแก้ `tools/symbol-map.json` หรือเช็คเพิกถอน
+  - `not-on-exchange` → **สงสัยหุ้นตาย ห้าม re-analyze ห้าม UPDATE-LIGHT** (วิเคราะห์หุ้นที่เลิกเทรดแล้วคือการเผยแพร่ข้อมูลผิด) — งานคือ **ยืนยันสถานะจากแหล่งปฐมภูมิ** (SEC Form 25/8-K · ประกาศตลาด/SET · IR) แล้ว:
+    - เพิกถอน/ควบบริษัท (ผู้ถือหุ้นได้เงินสดหรือหุ้นนิติบุคคลใหม่) → **ลบ `reports/<SYM>.html`** + บันทึกใน memory delisted-stocks · **ห้ามใส่ `symbol-map`** (ไม่ใช่การเปลี่ยนชื่อ — เคส BPP→BANPU ratio 0.80208:1 ถ้า map จะทำให้ cron patch ราคา NewCo ทับ = drift ปลอม)
+    - เปลี่ยนชื่อ/ticker แบบ 1:1 บริษัทเดิม → `tools/symbol-map.json` (แบบ BKI→BKIH, STEC→STECON, LANC→MZTI)
+    - ยังเทรดอยู่จริง (แค่ provider mapping เพี้ยน) → แจ้ง controller ปรับ candidate ใน `tools/dead-ticker-canary.js` — **ห้ามลบรายงาน**
+    - ยืนยันไม่ได้ (เอกสารตลาดเข้าไม่ถึง) → **หยุด ถาม user** ห้ามเดาทั้งสองทาง
 - ความสด: `reports.json` ฟิลด์ `updated` ≤7 วัน → ไม่วิเคราะห์ซ้ำ (กติกา dedup อยู่ CLAUDE.md §3.1)
 
 ## STEP 1 — เก็บข้อมูล (token-lean — จุดชี้ขาดค่าใช้จ่าย)

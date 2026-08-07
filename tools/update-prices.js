@@ -10,6 +10,12 @@
  *   ราคาต่างจากในรายงาน >15% · MOS พลิกเครื่องหมายเกิน dead-band ±3 จุด ·
  *   ต่าง >25% / currency ไม่ตรง (สงสัย split/ticker) · fetch/patch ไม่สำเร็จ
  *   (MOS พลิกใน ±3 จุด = แกว่งรอบ FV → patch ผ่าน · ราคาหลุดขอบ gauge → ขยายขอบเอง ไม่ freeze)
+ *   + `not-on-exchange`: quote ค้างหลัง cohort เดียวกัน ≥3 session (detectStaleQuotes)
+ *   **และ** TradingView ยืนยันว่าไม่พบ ticker บนกระดานใด (confirmDead) — สองชั้นเพราะ
+ *   regularMarketTime ค้างที่ "วันซื้อขายล่าสุด" ไม่ใช่ "session ล่าสุด" ⇒ หุ้นสภาพคล่องต่ำ
+ *   หน้าตาเหมือนหุ้นตาย (วัดจริง: flag จาก timestamp เพียว ๆ = FP 99/248 วัน)
+ *   ตัวที่ติด flag นี้อยู่แล้ว **หยุด patch** — ราคาเป็น no-op จริง แต่หน้าต่างกราฟ 1 ปีเลื่อน
+ *   ทุกครั้งที่ข้ามเดือน ⇒ ป้าย % รอบปี/สี/chart.data จะถูกเขียนใหม่ทั้งที่หุ้นไม่ได้เทรด
  *
  * ใช้:  node tools/update-prices.js [--write] [--force] [SYMBOL ...]
  *   ไม่มี --write = dry-run · หลัง --write: npm run build → node tools/preserve-dates.js
@@ -19,6 +25,9 @@
  */
 const fs = require('fs');
 const path = require('path');
+// ยืนยัน "ticker ตายจริงไหม" ด้วยแหล่งอิสระ — ใช้ helper ร่วมกับ canary รายสัปดาห์ (ไม่มี require วน:
+// dead-ticker-canary ไม่ได้ require ไฟล์นี้ · main() ของมันรันเฉพาะเมื่อถูกเรียกเป็น entry point)
+const { tvCandidates, scan: scanTickers } = require('./dead-ticker-canary.js');
 
 const REPORTS = path.join(__dirname, '..', 'reports');
 const FLAGS = path.join(__dirname, '..', 'price-flags.json');
@@ -35,6 +44,9 @@ const MOS_FLIP_DEADBAND_PP = 3; // MOS พลิกเครื่องหม�
                                 // (3 = dead-band เดียวกับ gate W06 — prose "ถูก/แพงเล็กน้อย" ไม่ขัด gate ในช่วงนี้)
 const GAUGE_PAD = 0.05;      // ราคาหลุดขอบ gauge → ขยายขอบเป็น ราคา±5% (ขอบเป็น display scaffolding — engine วาดจาก report-data.gauge)
 const FETCH_DELAY_MS = 450;  // throttle Yahoo (~2 req/s)
+const STALE_QUOTE_SESSIONS = 3; // ตลาดเดินหน้าไป ≥3 session แล้ว quote ตัวนี้ยังค้าง → flag stale-quote
+                                // (3 = ทนสุดสัปดาห์ + วันหยุดยาว/ไม่มีเทรด 1 วันได้ แต่จับ EA ได้ในวันที่ 4 หลังปิดดีล)
+const STALE_MIN_COHORT = 5;     // cohort เล็กกว่านี้ = คาลิเบรตไม่ได้ (รัน --only ไม่กี่ตัว) → ไม่ flag
 const UP = { bg: 'var(--green-soft)', col: '#137333' };
 const DOWN = { bg: 'var(--red-soft)', col: '#c5221f' };
 
@@ -182,6 +194,75 @@ function decide(ctx) {
   return { update: true, drift };
 }
 
+// ---------- canary: quote ค้าง = หุ้นหยุดเทรด/เพิกถอน ----------
+// จุดบอดที่ฟังก์ชันนี้ปิด: หุ้นตายแล้ว Yahoo **ไม่ 404** — มัน serve ราคาปิดวันสุดท้ายค้างไปเรื่อย ๆ
+// ⇒ drift = 0% ⇒ ไม่มีเกณฑ์ freeze ข้อไหนจับได้เลย (เคสจริง 8 ส.ค. 2569: EA ปิดดีล take-private,
+// BPP ควบบริษัทกับ BANPU — ทั้งคู่อยู่ในรีโปมาหลายวันโดยไม่มี flag)
+// วิธีวัด: เทียบ regularMarketTime กับ cohort สกุลเงินเดียวกัน**ในรอบเดียวกัน** แล้วนับ session ที่พลาด
+// — relative จึงไม่ต้องมีปฏิทินวันหยุดของแต่ละตลาด · เสาร์-อาทิตย์ไม่นับ (ไม่มีใครเทรด ไม่ใช่สัญญาณ)
+const localDay = (marketTime, gmtoffset) => Math.floor((marketTime + (gmtoffset || 0)) / 86400);
+const dowOf = (day) => (day + 4) % 7;   // epoch day 0 = 1 ม.ค. 1970 = พฤหัส → 0=อาทิตย์ … 6=เสาร์
+function missedSessions(fromDay, toDay) {
+  let n = 0;
+  for (let d = fromDay + 1; d <= toDay; d++) { const w = dowOf(d); if (w >= 1 && w <= 5) n++; }
+  return n;
+}
+// ★ ข้อจำกัดสำคัญที่วัดมาแล้ว (8 ส.ค. 2569): `regularMarketTime` ค้างที่ **"วันที่มีการซื้อขายล่าสุด"**
+// ไม่ใช่ "session ล่าสุดของตลาด" — ตรวจหุ้นไทยในรีโป 204/205 ตัว ตรงกับ bar ล่าสุดที่ volume > 0 เป๊ะ
+// ⇒ หุ้นสภาพคล่องต่ำที่ไม่มีใครเทรดหลายวัน (ในรีโปนี้: NRF, PB, ZEN) หน้าตาเหมือนหุ้นตายทุกประการ
+// replay 248 session จริงย้อนหลัง 1 ปี: ถ้าเอาผลนี้ไป flag ตรง ๆ จะ false positive **99/248 วัน**
+// (NRF ติดยาว 55 session ติด) และไม่มี threshold ไหนต่ำกว่า 56 ที่ทำให้เป็นศูนย์
+// ⇒ ผลของฟังก์ชันนี้เป็น **candidate ไปถาม TradingView ต่อ** (confirmDead) ไม่ใช่ข้อสรุปว่าตาย
+function detectStaleQuotes(quotes, opts = {}) {
+  const sessions = Number.isFinite(opts.sessions) ? opts.sessions : STALE_QUOTE_SESSIONS;
+  const minCohort = Number.isFinite(opts.minCohort) ? opts.minCohort : STALE_MIN_COHORT;
+  const cohorts = new Map();
+  for (const q of quotes) {
+    if (!Number.isFinite(q.marketTime)) continue;   // meta ไม่มี timestamp → วัดไม่ได้ ข้ามเงียบ ๆ
+    const key = q.currency || '?';
+    if (!cohorts.has(key)) cohorts.set(key, []);
+    cohorts.get(key).push({ ...q, day: localDay(q.marketTime, q.gmtoffset) });
+  }
+  const out = [];
+  for (const [cohort, list] of cohorts) {
+    if (list.length < minCohort) continue;
+    const ref = list.reduce((mx, q) => Math.max(mx, q.day), -Infinity); // session ล่าสุดที่ตลาดนี้เดินถึง
+    for (const q of list) {
+      const missed = missedSessions(q.day, ref);
+      if (missed < sessions) continue;
+      out.push({
+        symbol: q.symbol, signal: 'stale-quote',   // ★ `signal` ไม่ใช่ `reason` — ห้ามเขียนลง flag ตรง ๆ
+        reportPrice: q.reportPrice != null ? q.reportPrice : null,
+        marketPrice: q.marketPrice != null ? q.marketPrice : null,
+        diffPct: q.diffPct != null ? q.diffPct : null,
+        missedSessions: missed, cohort,
+      });
+    }
+  }
+  return out.sort((a, b) => a.symbol.localeCompare(b.symbol));
+}
+
+// เพดานจำนวน candidate ที่ยอมเชื่อว่าเป็นเรื่องจริง — เกินนี้คือ "การวัดเพี้ยน" ไม่ใช่หุ้นตายยกแผง
+// (เคสที่ทำให้เพี้ยนได้จริง: quote ตัวหนึ่งมี timestamp อนาคตดัน ref ไปข้างหน้า · รอบที่คร่อม
+// session boundary · ตลาดหยุดยาวหลายวัน) → log แล้วไม่ถาม ไม่ flag ปล่อย canary รายสัปดาห์จัดการ
+const probeCap = (cohortSize) => Math.max(5, Math.round(cohortSize * 0.05));
+
+// แยก candidate เป็น "ตายจริง (TradingView ไม่มี ticker)" กับ "แค่ไม่มีคนเทรด (ยังอยู่บนกระดาน)"
+// flag ที่ออกใช้ reason `not-on-exchange` เดียวกับ canary รายสัปดาห์ — triage จึงเหมือนกันเป๊ะ
+function classifyStale(candidates, rows, probeMap) {
+  const dead = [], quiet = [];
+  for (const c of candidates) {
+    const hit = (probeMap.get(c.symbol) || []).find((t) => rows.has(t));
+    if (hit) quiet.push({ ...c, ticker: hit });
+    else dead.push({
+      symbol: c.symbol, reason: 'not-on-exchange',
+      reportPrice: c.reportPrice, marketPrice: c.marketPrice, diffPct: c.diffPct,
+      missedSessions: c.missedSessions, detail: 'quote ค้าง + TradingView ไม่พบ ticker',
+    });
+  }
+  return { dead, quiet };
+}
+
 // ---------- patch รายงานหนึ่งไฟล์ ----------
 // คืน { html, changed } — ทุก pattern ต้อง match ไม่งั้น throw (ไป flag เป็น patch-failed)
 function patchReport(html, p) {
@@ -311,16 +392,23 @@ function patchReport(html, p) {
 function loadFlags() {
   try { return JSON.parse(fs.readFileSync(FLAGS, 'utf8')); } catch (e) { return []; }
 }
+// เหตุผลที่เครื่องมืออื่นเป็นเจ้าของ (tools/dead-ticker-canary.js รายสัปดาห์) — cron ราคารายวัน
+// ตรวจเรื่องนี้เองไม่ได้ ห้ามเคลียร์ทิ้งเวลาเห็นว่า "ตัวนี้ไม่มี freeze รอบนี้" ไม่งั้น canary เขียน
+// flag คืนวันจันทร์ แล้วเช้าวันอังคารหายเกลี้ยง (หุ้นตายกลับไปเงียบเหมือนเดิม) · canary เท่านั้นที่ถอนเองได้
+const EXTERNAL_REASONS = new Set(['not-on-exchange']);
+
 // snapshot: flag ของ symbol ที่ประมวลรอบนี้ = ผลรอบนี้ (เคลียร์เองเมื่อหาย) · symbol นอกรอบ (--only) คงเดิม
 function mergeFlags(prev, processed, newFlags) {
   const today = new Date().toISOString().slice(0, 10);
   const prevBy = new Map(prev.map((f) => [f.symbol, f]));
+  const external = prev.filter((f) => processed.has(f.symbol) && EXTERNAL_REASONS.has(f.reason));
+  const externalSyms = new Set(external.map((f) => f.symbol));
   const kept = prev.filter((f) => !processed.has(f.symbol));
-  const fresh = newFlags.map((f) => {
+  const fresh = newFlags.filter((f) => !externalSyms.has(f.symbol)).map((f) => {
     const old = prevBy.get(f.symbol);
     return { ...f, flaggedAt: old && old.reason === f.reason ? old.flaggedAt : today };
   });
-  return kept.concat(fresh).sort((a, b) => a.symbol.localeCompare(b.symbol));
+  return kept.concat(external, fresh).sort((a, b) => a.symbol.localeCompare(b.symbol));
 }
 
 // ---------- commit body (log ถาวรต่อหุ้นใน git history) ----------
@@ -346,6 +434,9 @@ async function main() {
     .filter((f) => !ONLY.size || ONLY.has(f.replace(/\.html$/i, '').toUpperCase()));
 
   const updated = [], skipped = [], frozen = [], failed = [];
+  const quotes = [];   // ทุกตัวที่ fetch สำเร็จ (รวมตัวที่ freeze) — ป้อน detectStaleQuotes หลังจบลูป
+  // หุ้นที่รอบก่อน (cron หรือ canary รายสัปดาห์) ยืนยันแล้วว่าไม่อยู่บนกระดาน → ไม่ patch อีก
+  const deadAlready = new Set(loadFlags().filter((f) => f.reason === 'not-on-exchange').map((f) => f.symbol));
   let fetchFails = 0, done = 0;
 
   for (const f of files) {
@@ -378,6 +469,21 @@ async function main() {
       force: FORCE,
     });
     const diffPct = round((q.price - sm.price) / sm.price * 100, 1);
+    // เก็บก่อนแยกทาง freeze/patch — canary ต้องเห็นทุกตัวที่ fetch ได้ ไม่ใช่แค่ตัวที่ patch
+    quotes.push({
+      symbol, currency: q.currency || sm.currency, marketTime: q.marketTime, gmtoffset: q.gmtoffset,
+      reportPrice: sm.price, marketPrice: round(q.price, 2), diffPct,
+    });
+
+    // หุ้นที่ยืนยันแล้วว่าไม่อยู่บนกระดาน: หยุด patch ทันที — ราคาเป็น no-op จริง แต่ **หน้าต่างกราฟ 1 ปี
+    // เลื่อนทุกครั้งที่ข้ามเดือน** ⇒ ป้าย % รอบปี/สี/chart.data ถูกเขียนใหม่แล้ว push ขึ้นเว็บได้เรื่อย ๆ
+    // ทั้งที่หุ้นไม่ได้เทรด (เคสจริง BPP: ป้ายจะพลิก +47% → −6%) · ยัง fetch ไว้เพื่อให้ canary เห็น
+    // ว่ามันกลับมาเทรดหรือยัง (กลับมา = TradingView เจอ ticker → ถอน flag → รอบหน้า patch ต่อเอง)
+    if (deadAlready.has(symbol)) {
+      skipped.push(symbol);
+      console.log(`⏸ ${symbol.padEnd(10)} ข้าม patch — ติด flag not-on-exchange อยู่ (รอยืนยัน/ลบรายงาน)`);
+      continue;
+    }
 
     if (d.freeze) {
       frozen.push({ symbol, reason: d.freeze, reportPrice: sm.price, marketPrice: round(q.price, 2), diffPct });
@@ -412,17 +518,46 @@ async function main() {
     }
   }
 
+  // quote ค้าง → **ถาม TradingView ยืนยันก่อน** ห้าม flag จาก timestamp เพียว ๆ (ดูคอมเมนต์
+  // detectStaleQuotes: หุ้นสภาพคล่องต่ำหน้าตาเหมือนหุ้นตาย — วัดแล้ว FP 99/248 วันถ้า flag ตรง ๆ)
+  const candidates = detectStaleQuotes(quotes);
+  let deadConfirmed = [], quietSyms = new Set();
+  if (candidates.length) {
+    const cap = probeCap(quotes.length);
+    if (candidates.length > cap) {
+      console.log(`⚠ quote ค้าง ${candidates.length} ตัว เกินเพดาน ${cap} — ถือว่าการวัดเพี้ยน (ไม่ใช่หุ้นตายยกแผง) ไม่ถาม TradingView ไม่ flag`);
+    } else {
+      try {
+        const probeMap = new Map(candidates.map((c) => [c.symbol, tvCandidates(c.symbol, c.cohort)]));
+        const rows = await scanTickers([...new Set([...probeMap.values()].flat())]);
+        const res = classifyStale(candidates, rows, probeMap);
+        deadConfirmed = res.dead;
+        quietSyms = new Set(res.quiet.map((q) => q.symbol));
+        for (const q of res.quiet)
+          console.log(`· ${q.symbol.padEnd(10)} quote ค้าง ${q.missedSessions} session แต่ ${q.ticker} ยังอยู่บนกระดาน = ไม่มีคนเทรด ไม่ใช่หุ้นตาย`);
+        for (const d of deadConfirmed)
+          console.log(`☠ ${d.symbol.padEnd(10)} quote ค้าง ${d.missedSessions} session + TradingView ไม่พบ ticker → flag not-on-exchange (ยืนยันด้วยมือก่อนลบ)`);
+      } catch (e) {
+        console.log(`⚠ ถาม TradingView ไม่สำเร็จ (${e.message}) — ไม่ flag รอบนี้ ปล่อย canary รายสัปดาห์จัดการ · candidate: ${candidates.map((c) => c.symbol).join(', ')}`);
+      }
+    }
+  }
+  // ตัวที่ TradingView บอกว่ายังอยู่บนกระดาน = ถอน not-on-exchange เดิมทิ้ง (ไม่ค้างคิวตลอด)
+  const prevFlags = loadFlags().filter((f) => !(quietSyms.has(f.symbol) && f.reason === 'not-on-exchange'));
+  const deadSyms = new Set(deadConfirmed.map((f) => f.symbol));
+  const frozenAll = frozen.filter((f) => !deadSyms.has(f.symbol)).concat(deadConfirmed);
+
   // เขียน flags (เฉพาะ --write — dry-run ไม่ทิ้งร่องรอย) · flag ของรายงานที่ถูกลบแล้ว (หุ้นเพิกถอน) ตัดทิ้ง — ไม่งั้นค้างในคิวตลอด
   const reportExists = new Set(fs.readdirSync(REPORTS).filter((f) => /\.html$/i.test(f)).map((f) => f.replace(/\.html$/i, '').toUpperCase()));
-  const flags = mergeFlags(loadFlags(), new Set(files.map((f) => f.replace(/\.html$/i, ''))), frozen.concat(failed.map((x) => ({ ...x, reportPrice: null, marketPrice: null, diffPct: null }))))
+  const flags = mergeFlags(prevFlags, new Set(files.map((f) => f.replace(/\.html$/i, ''))), frozenAll.concat(failed.map((x) => ({ ...x, reportPrice: null, marketPrice: null, diffPct: null }))))
     .filter((f) => reportExists.has(String(f.symbol).toUpperCase()));
   if (WRITE) fs.writeFileSync(FLAGS, JSON.stringify(flags, null, 2) + '\n');
 
   // log ต่อหุ้นสำหรับ commit body (ถาวรใน git history — Actions log หายใน ~90 วัน)
   if (WRITE && process.env.PRICE_COMMIT_BODY)
-    fs.writeFileSync(process.env.PRICE_COMMIT_BODY, commitBody(updated, frozen) + '\n');
+    fs.writeFileSync(process.env.PRICE_COMMIT_BODY, commitBody(updated, frozenAll) + '\n');
 
-  const line = `${WRITE ? 'เขียนแล้ว' : '[dry-run]'} อัปเดต ${updated.length} · ไม่เปลี่ยน ${skipped.length} · freeze ${frozen.length} · error ${failed.length} (ทั้งหมด ${files.length})`;
+  const line = `${WRITE ? 'เขียนแล้ว' : '[dry-run]'} อัปเดต ${updated.length} · ไม่เปลี่ยน ${skipped.length} · freeze ${frozenAll.length}${deadConfirmed.length ? ` (ในนั้น not-on-exchange ${deadConfirmed.length})` : ''} · error ${failed.length} (ทั้งหมด ${files.length})`;
   console.log('\n' + line);
   if (process.env.GITHUB_STEP_SUMMARY) {
     let mdOut = `## Price refresh\n${line}\n`;
@@ -435,6 +570,6 @@ async function main() {
   if (!WRITE) console.log('ใส่ --write เพื่อเขียนจริง');
 }
 
-module.exports = { fmtPrice, fmtLike, toYahooSymbol, fetchChart, buildChartData, niceBounds, annualChg, decide, patchReport, mergeFlags, styledRD, commitBody, THAI_MONTHS };
+module.exports = { fmtPrice, fmtLike, toYahooSymbol, fetchChart, buildChartData, niceBounds, annualChg, decide, detectStaleQuotes, missedSessions, probeCap, classifyStale, patchReport, mergeFlags, styledRD, commitBody, THAI_MONTHS };
 
 if (require.main === module) main().catch((e) => { console.error(e); process.exit(1); });

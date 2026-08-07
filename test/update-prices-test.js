@@ -173,6 +173,85 @@ try { U.patchReport(aapl.replace('<div class="px">', '<div class="pxx">'), { new
 catch (e) { threw = true; }
 ok(threw, 'self-check: ไฟล์ผิดโครง → throw (ไป flag patch-failed)');
 
+// ---------- detectStaleQuotes (canary หุ้นหยุดเทรด/เพิกถอน) ----------
+// เกณฑ์ = "ตลาดเดินหน้าไปกี่ session แล้วตัวนี้ยังค้าง" เทียบใน cohort สกุลเงินเดียวกัน
+// (วัด relative จึงไม่ต้องรู้ปฏิทินวันหยุด · เสาร์-อาทิตย์ไม่นับเพราะไม่มีใครเทรด)
+const at = (dayNum, h = 16) => dayNum * 86400 + h * 3600;
+// epoch day จริงของสัปดาห์ที่ EA เพิกถอน — dow = (d+4)%7 (0=อาทิตย์) ตรวจแล้วตรงปฏิทิน 2569
+const TUE_4AUG = 20669;   // วันซื้อขายสุดท้ายของ EA
+const WED_5AUG = 20670;
+const FRI_7AUG = 20672;   // session ล่าสุดของตลาด
+const MON_10AUG = 20675;
+const cohortOf = (n, dayNum, cur = 'USD', off = 0) => Array.from({ length: n }, (_, i) =>
+  ({ symbol: `${cur}${i}`, currency: cur, marketTime: at(dayNum), gmtoffset: off, reportPrice: 10, marketPrice: 10, diffPct: 0 }));
+
+ok(U.detectStaleQuotes(cohortOf(8, FRI_7AUG)).length === 0, 'stale: timestamp เท่ากันหมด → ไม่ flag');
+
+// เคส EA จริง: ค้าง 4 ส.ค. ขณะตลาดถึง 7 ส.ค. = พลาด พ.-พฤ.-ศ. 3 session → ถึงเกณฑ์พอดี
+const st = U.detectStaleQuotes(cohortOf(8, FRI_7AUG).concat(
+  [{ symbol: 'DEAD', currency: 'USD', marketTime: at(TUE_4AUG), gmtoffset: 0, reportPrice: 209.7, marketPrice: 209.7, diffPct: 0 }]));
+ok(st.length === 1 && st[0].symbol === 'DEAD', 'stale: ค้าง 3 session → flag', JSON.stringify(st.map((f) => f.symbol)));
+ok(st[0].signal === 'stale-quote' && st[0].reason === undefined, 'stale: คืน signal ไม่ใช่ reason (ห้ามเขียนลง flag ตรง ๆ)');
+ok(st[0].missedSessions === 3, 'stale: นับ session ที่พลาดได้ถูก', String(st[0] && st[0].missedSessions));
+
+// ค้าง 2 session ยังไม่ถึงเกณฑ์ → ปล่อยผ่าน (กัน false positive หุ้นสภาพคล่องต่ำ)
+ok(U.detectStaleQuotes(cohortOf(8, FRI_7AUG).concat([{ symbol: 'THIN', currency: 'USD', marketTime: at(WED_5AUG), gmtoffset: 0 }])).length === 0,
+  'stale: ค้าง 2 session → ยังไม่ flag');
+
+// เสาร์-อาทิตย์ต้องไม่ทำให้ตัวปกติกลายเป็น stale: ศุกร์ → จันทร์ = ผ่านแค่ 1 session
+ok(U.detectStaleQuotes(cohortOf(8, MON_10AUG).concat([{ symbol: 'FRIDAY', currency: 'USD', marketTime: at(FRI_7AUG), gmtoffset: 0 }])).length === 0,
+  'stale: ข้ามสุดสัปดาห์ (ศ→จ) = 1 session → ไม่ flag');
+
+// คนละตลาด = คนละ cohort — SET ปิดก่อน NYSE + วันหยุดไม่ตรงกัน ห้ามเทียบข้ามกัน
+const mixed = cohortOf(6, FRI_7AUG).concat(cohortOf(6, TUE_4AUG, 'THB', 25200));
+ok(U.detectStaleQuotes(mixed).length === 0, 'stale: THB ช้ากว่า USD 3 วัน แต่แยก cohort → ไม่ flag',
+  JSON.stringify(U.detectStaleQuotes(mixed).map((f) => f.symbol)));
+
+// cohort เล็ก (รัน --only ไม่กี่ตัว) → คาลิเบรตไม่ได้ ไม่ flag แม้ห่างมาก
+ok(U.detectStaleQuotes([
+  { symbol: 'A', currency: 'USD', marketTime: at(FRI_7AUG), gmtoffset: 0 },
+  { symbol: 'B', currency: 'USD', marketTime: at(FRI_7AUG - 20), gmtoffset: 0 },
+]).length === 0, 'stale: cohort < 5 ตัว → ไม่ flag (รัน --only)');
+
+// เคส BPP จริง: ค้าง 3 สัปดาห์ (16 ก.ค. → 7 ส.ค.)
+const bppFlags = U.detectStaleQuotes(cohortOf(10, FRI_7AUG, 'THB', 25200).concat(
+  [{ symbol: 'BPP', currency: 'THB', marketTime: at(FRI_7AUG - 22), gmtoffset: 25200, reportPrice: 12, marketPrice: 12, diffPct: 0 }]));
+ok(bppFlags.length === 1 && bppFlags[0].symbol === 'BPP', 'stale: เคส BPP (ค้าง 3 สัปดาห์) → flag');
+ok(bppFlags[0].missedSessions >= 14, 'stale: BPP นับได้ ≥14 session', String(bppFlags[0] && bppFlags[0].missedSessions));
+
+// marketTime เสีย → ข้ามเงียบ ๆ ไม่ crash ไม่ flag
+ok(U.detectStaleQuotes(cohortOf(8, FRI_7AUG).concat([{ symbol: 'NAN', currency: 'USD', marketTime: null, gmtoffset: 0 }])).length === 0,
+  'stale: marketTime null → ข้าม ไม่ flag');
+
+// จูนเกณฑ์ผ่าน opts ได้ (workflow/ผู้ใช้ปรับได้ ไม่ต้องแก้โค้ด)
+ok(U.detectStaleQuotes(cohortOf(8, FRI_7AUG).concat([{ symbol: 'THIN', currency: 'USD', marketTime: at(WED_5AUG), gmtoffset: 0 }]), { sessions: 2 }).length === 1,
+  'stale: opts.sessions=2 → ตัวค้าง 2 session ถูก flag');
+
+// ---------- probeCap / classifyStale (ยืนยันหุ้นตายด้วยแหล่งที่สองก่อน flag) ----------
+// ทำไมต้องยืนยัน: regularMarketTime ค้างที่ "วันซื้อขายล่าสุด" ไม่ใช่ "session ล่าสุด" (วัด 204/205
+// หุ้นไทยในรีโป) → หุ้นสภาพคล่องต่ำ (NRF/PB/ZEN) volume 0 หลายวันจะหน้าตาเหมือนหุ้นตายเป๊ะ ๆ
+ok(U.probeCap(784) === 39, 'probeCap: 5% ของ cohort ใหญ่', String(U.probeCap(784)));
+ok(U.probeCap(20) === 5 && U.probeCap(0) === 5, 'probeCap: พื้นขั้นต่ำ 5 ตัว');
+
+const cands = [
+  { symbol: 'NRF', cohort: 'THB', missedSessions: 55, reportPrice: 5, marketPrice: 5, diffPct: 0 },
+  { symbol: 'EA', cohort: 'USD', missedSessions: 3, reportPrice: 209.7, marketPrice: 209.7, diffPct: 0 },
+];
+const pm = new Map([['NRF', ['SET:NRF']], ['EA', ['NASDAQ:EA', 'NYSE:EA']]]);
+// rows = ผลจาก TradingView scanner (Map ticker → {price, currency}) — ตัวไหนไม่อยู่ในนี้ = scanner ไม่พบ
+const rowsFor = (tickers) => new Map(tickers.map((t) => [t, { price: 1, currency: 'THB' }]));
+const cs = U.classifyStale(cands, rowsFor(['SET:NRF']), pm);
+ok(cs.quiet.length === 1 && cs.quiet[0].symbol === 'NRF' && cs.quiet[0].ticker === 'SET:NRF',
+  'classifyStale: ยังอยู่บนกระดาน → quiet (ไม่มีคนเทรด ไม่ใช่ตาย)', JSON.stringify(cs.quiet.map((q) => q.symbol)));
+ok(cs.dead.length === 1 && cs.dead[0].symbol === 'EA', 'classifyStale: ไม่พบทุกกระดาน → dead');
+ok(cs.dead[0].reason === 'not-on-exchange', 'classifyStale: reason เดียวกับ canary รายสัปดาห์ (triage ตรงกัน)');
+ok(cs.dead[0].missedSessions === 3 && cs.dead[0].detail, 'classifyStale: พา missedSessions + detail ไปด้วย');
+const csEmpty = U.classifyStale([], new Map(), new Map());
+ok(csEmpty.dead.length === 0 && csEmpty.quiet.length === 0, 'classifyStale: ไม่มี candidate → ว่างทั้งคู่');
+// หุ้นสภาพคล่องต่ำที่ค้างนานมาก (NRF 55 session) ต้องไม่ถูก flag ถ้า ticker ยังอยู่ — เคสที่ review จับได้
+ok(U.classifyStale([cands[0]], rowsFor(['SET:NRF']), pm).dead.length === 0,
+  'classifyStale: ค้าง 55 session แต่ ticker อยู่ → ไม่ flag (กัน FP 99/248 วันที่วัดได้)');
+
 // ---------- mergeFlags ----------
 const prev = [
   { symbol: 'AAA', reason: 'drift-gt-10pct', flaggedAt: '2026-07-01' },
@@ -183,6 +262,20 @@ const merged = U.mergeFlags(prev, new Set(['AAA', 'BBB']), [{ symbol: 'AAA', rea
 ok(merged.length === 2, 'flags: ตัวที่หาย freeze ถูกเคลียร์ / นอกรอบคงไว้', JSON.stringify(merged.map((f) => f.symbol)));
 ok(merged.find((f) => f.symbol === 'AAA').flaggedAt === '2026-07-01', 'flags: flaggedAt เดิมคงอยู่เมื่อเหตุผลเดิม');
 ok(merged.find((f) => f.symbol === 'ZZZ'), 'flags: symbol นอกรอบ (--only) ไม่ถูกลบ');
+
+// flag ที่ dead-ticker-canary เป็นเจ้าของ: cron รายวันไม่รู้จักเหตุผลนี้ ห้ามเคลียร์ทิ้ง
+// (ไม่งั้น canary รายสัปดาห์เขียน not-on-exchange คืนหนึ่ง เช้าวันถัดไปหายเกลี้ยง — เงียบสนิท)
+const withExternal = [
+  { symbol: 'EA', reason: 'not-on-exchange', reportPrice: 209.7, flaggedAt: '2026-08-04' },
+  { symbol: 'CCC', reason: 'drift-gt-15pct', flaggedAt: '2026-08-05' },
+];
+const keptExt = U.mergeFlags(withExternal, new Set(['EA', 'CCC']), []);
+ok(keptExt.length === 1 && keptExt[0].symbol === 'EA', 'flags: not-on-exchange รอด cron รายวัน · drift ที่หายถูกเคลียร์', JSON.stringify(keptExt.map((f) => f.symbol + ':' + f.reason)));
+ok(keptExt[0].flaggedAt === '2026-08-04', 'flags: not-on-exchange คงวันที่เดิม ไม่รีเซ็ตทุกวัน');
+
+const bothFlags = U.mergeFlags(withExternal, new Set(['EA']), [{ symbol: 'EA', reason: 'drift-gt-15pct', reportPrice: 209.7, marketPrice: 250, diffPct: 19.2 }]);
+ok(bothFlags.filter((f) => f.symbol === 'EA').length === 1, 'flags: ไม่เกิด entry ซ้ำเมื่อทั้งสองเครื่องมือ flag ตัวเดียวกัน', JSON.stringify(bothFlags));
+ok(bothFlags.find((f) => f.symbol === 'EA').reason === 'not-on-exchange', 'flags: ticker ตาย (not-on-exchange) ชนะ drift — triage คือยืนยันแล้วลบ');
 
 // ---------- commitBody ----------
 const body = U.commitBody(

@@ -1,0 +1,53 @@
+# Canary รายสัปดาห์: ตรวจว่าทุก symbol ใน reports/ ยัง "มีตัวตนบนกระดาน" อยู่จริง
+# เหตุเกิด 8 ส.ค. 2569: EA (ปิดดีล take-private) กับ BPP (ควบบริษัทกับ BANPU) ถูกเพิกถอนไปแล้ว
+# แต่ Yahoo ยัง serve ราคาปิดวันสุดท้ายค้างไปเรื่อย ๆ ⇒ cron ราคาเห็น drift 0% ⇒ ไม่มี flag
+# ⇒ รายงานอ้างราคาหุ้นที่เลิกซื้อขายแล้วได้ไม่จำกัด — จุดบอดเชิงโครงสร้าง ไม่ใช่ bug รายตัว
+# ตัวนี้ถาม TradingView scanner (แหล่งอิสระที่ ticker ตาย = "หายจากผลลัพธ์" ไม่ใช่ค้างราคา)
+# deterministic ล้วน ไม่มี LLM · รายละเอียด: docs/price-refresh.md §Canary หุ้นหยุดเทรด/เพิกถอน
+name: dead-ticker-canary
+
+on:
+  schedule:
+    - cron: '23 2 * * 1' # จันทร์ 02:23 UTC = 09:23 น. ไทย (หลัง price-refresh ของเช้านั้น)
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: dead-ticker-canary
+  cancel-in-progress: false
+
+jobs:
+  canary:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Unit test ตัวแคนารี (offline — canary ของ canary)
+        run: npm run test:dead
+
+      - name: ถาม TradingView ว่า ticker ยังอยู่บนกระดานไหม
+        run: node tools/dead-ticker-canary.js --write
+
+      - name: Commit + push (เฉพาะเมื่อ flag/cache เปลี่ยน)
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add price-flags.json tools/tv-tickers.json
+          if git diff --cached --quiet; then echo "ไม่มีอะไรเปลี่ยน — ข้าม commit"; exit 0; fi
+          n=$(node -e 'try{console.log(require("./price-flags.json").filter(f=>f.reason==="not-on-exchange").length)}catch(e){console.log(0)}')
+          git commit -m "canary: ตรวจ ticker บนกระดาน — not-on-exchange ${n} ตัว ($(TZ=Asia/Bangkok date +%Y-%m-%d))"
+          for i in 1 2 3; do
+            git pull --rebase origin main && git push origin HEAD:main && exit 0
+            echo "push ชนกับ session อื่น — retry ($i/3)"
+            git rebase --abort 2>/dev/null || true
+            sleep 20
+          done
+          echo "push ไม่สำเร็จหลัง retry 3 รอบ — รอบหน้าจัดการเอง"
+          exit 1
