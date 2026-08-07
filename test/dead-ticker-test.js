@@ -89,6 +89,22 @@ const a = upgraded.find((f) => f.symbol === 'AAOI');
 ok(a.reason === 'not-on-exchange' && a.flaggedAt === '2026-08-08', 'mergeDeadFlags: ทับเหตุผลเดิม + รีเซ็ตวันที่');
 ok(upgraded.filter((f) => f.symbol === 'AAOI').length === 1, 'mergeDeadFlags: ไม่เกิด entry ซ้ำ symbol เดียวกัน');
 
+// เคสจริง BPP (ควบกับ BANPU · วัด 8 ส.ค. 2569): Yahoo ยังเสิร์ฟ 12.00 บาท เด้ง −20% ⇒ เกินเกณฑ์
+// freeze 15% ⇒ cron รายวัน flag ให้จริง **แต่ผิดเหตุผล** — `drift-gt-15pct` สั่ง triage = UPDATE-LIGHT
+// ⇒ ไล่ re-analyze หุ้นที่ไม่มีอยู่บนกระดานแล้ว · ต่างจาก EA ที่ drift 0% แล้วหลุดตาข่ายไปเลย
+// canary ต้องทับเป็น not-on-exchange (triage = ยืนยันแหล่งปฐมภูมิแล้วลบรายงาน)
+const bpp = C.mergeDeadFlags(
+  [{ symbol: 'BPP', reason: 'drift-gt-15pct', reportPrice: 15, marketPrice: 12, diffPct: -20, flaggedAt: '2026-08-07' }],
+  [{ symbol: 'BPP', reason: 'not-on-exchange', reportPrice: 15, marketPrice: null, diffPct: null, probed: 1 }],
+  [], '2026-08-08');
+const b = bpp.find((f) => f.symbol === 'BPP');
+ok(b.reason === 'not-on-exchange', 'BPP: drift-gt-15pct → not-on-exchange (triage พลิกจาก re-analyze เป็นยืนยันแล้วลบ)');
+ok(b.flaggedAt === '2026-08-08', 'BPP: เหตุผลเปลี่ยน → รีเซ็ตวันเป็นวันที่ตัดสินว่าตาย ไม่ใช่วันที่ราคาเพี้ยน');
+ok(b.marketPrice === null && b.diffPct === null,
+  'BPP: ตัวเลข drift เดิมต้องไม่ติดมา (ป้าย not-on-exchange ที่โชว์ −20% อ่านเหมือนราคายังเดินอยู่)',
+  JSON.stringify({ marketPrice: b.marketPrice, diffPct: b.diffPct }));
+ok(bpp.length === 1, 'BPP: ไม่เกิด entry ซ้ำ');
+
 // ---------- shouldAbort (ยามกัน mass-flag) ----------
 ok(C.shouldAbort({ onlyMode: false, probed: 784, aliveCount: 120 }) === true, 'shouldAbort: sweep เต็มเจอ alive 15% → ยกเลิกรอบ (โดนบล็อก)');
 ok(C.shouldAbort({ onlyMode: false, probed: 784, aliveCount: 782 }) === false, 'shouldAbort: sweep เต็มปกติ 99.7% → ไปต่อ');
