@@ -2,8 +2,8 @@
 'use strict';
 /**
  * dead-ticker-test.js — unit-test tools/dead-ticker-canary.js แบบ offline (ไม่ยิง network)
- * ตรวจ 4 ส่วนที่พลาดแล้วเสียหาย: สร้าง candidate ticker ถูกกระดาน · parse response ·
- * แยกเป็น/ตาย · merge flag โดยไม่ลบ flag ของหุ้นที่ยังเทรดอยู่
+ * ตรวจ 5 ส่วนที่พลาดแล้วเสียหาย: สร้าง candidate ticker ถูกกระดาน · parse response ·
+ * แยกเป็น/ตาย · merge flag โดยไม่ลบ flag ของหุ้นที่ยังเทรดอยู่ · retry ตอน scanner สะอึก
  */
 const C = require('../tools/dead-ticker-canary.js');
 
@@ -98,5 +98,52 @@ ok(C.shouldAbort({ onlyMode: false, probed: 100, aliveCount: 79 }) === true, 'sh
 ok(C.shouldAbort({ onlyMode: true, probed: 2, aliveCount: 0 }) === false, 'shouldAbort: --only ตายทั้งคู่ → ไม่ใช้ยาม (ไม่งั้น debug run โดนเตะทิ้ง)');
 ok(C.shouldAbort({ onlyMode: false, probed: 8, aliveCount: 0 }) === false, 'shouldAbort: ตัวอย่าง < 20 → อัตราส่วนไม่มีความหมาย ไม่ใช้ยาม');
 
-console.log(nFail ? `\n✗ dead-ticker-test: ${nFail} failed / ${nOK} passed` : `\n✓ dead-ticker-test: ${nOK} passed`);
-process.exit(nFail ? 1 : 0);
+// ---------- scan + withRetry (ยิงจริงไม่ได้ในเทสต์ → ฉีด fetch/หน่วงปลอม) ----------
+// scanner คืน body ว่างเป็นช่วง ๆ · canary รันสัปดาห์ละครั้ง ไม่มีรอบถัดไปให้แก้ตัว → ต้องลองใหม่เอง
+const res = (body, ok = true, status = 200) => ({ ok, status, text: async () => body });
+const PTT = JSON.stringify({ data: [{ s: 'SET:PTT', d: [38.75, 'THB'] }] });
+const noWait = { sleep: async () => {} };
+const quiet = async (fn) => {                       // กลบ log "ลองใหม่ใน N วิ" ให้ผลเทสต์อ่านง่าย
+  const log = console.log; console.log = () => {};
+  try { return await fn(); } finally { console.log = log; }
+};
+
+(async () => {
+  // โหมดล้มที่เจอจริง — ของเดิม JSON.parse('') ระเบิด → ทิ้งทั้งรอบ
+  let n = 0;
+  const got = await quiet(() => C.scan(['SET:PTT'], { ...noWait, fetch: async () => res(++n === 1 ? '' : PTT) }));
+  ok(n === 2 && got.get('SET:PTT').price === 38.75, 'scan: body ว่าง → ลองใหม่แล้วผ่าน', `ยิง ${n} ครั้ง`);
+
+  // เชื่อมต่อค้างจน AbortSignal.timeout เตะ (undici default ~300 วิ = กินงบ job ไปหนึ่งในสาม)
+  let n2 = 0;
+  await quiet(() => C.scan(['SET:PTT'], { ...noWait, fetch: async () => {
+    if (++n2 === 1) { const e = new Error('The operation was aborted due to timeout'); e.name = 'TimeoutError'; throw e; }
+    return res(PTT);
+  } }));
+  ok(n2 === 2, 'scan: timeout → ลองใหม่แล้วผ่าน', `ยิง ${n2} ครั้ง`);
+
+  let n3 = 0;
+  await quiet(() => C.scan(['SET:PTT'], { ...noWait, fetch: async () => res(++n3 === 1 ? '' : PTT, n3 !== 1, n3 === 1 ? 502 : 200) }));
+  ok(n3 === 2, 'scan: HTTP 502 → ลองใหม่แล้วผ่าน', `ยิง ${n3} ครั้ง`);
+
+  let n4 = 0;
+  await quiet(() => C.scan(['SET:PTT'], { ...noWait, fetch: async () => res(++n4 === 1 ? '<html>blocked</html>' : PTT) }));
+  ok(n4 === 2, 'scan: JSON เสีย (หน้า HTML) → ลองใหม่แล้วผ่าน', `ยิง ${n4} ครั้ง`);
+
+  // ต้นทางล่มยาว → ยอมแพ้แล้วโยน ไม่กลืน error เป็น "หาย = ตาย" (main จับ → exit 1 ไม่เขียน flag)
+  let n5 = 0, threw = null;
+  try { await quiet(() => C.scan(['SET:PTT'], { ...noWait, fetch: async () => { n5++; return res(''); } })); }
+  catch (e) { threw = e; }
+  ok(threw !== null, 'scan: ล้มทุกรอบ → โยน error (ห้ามคืน Map ว่าง = จะกลายเป็น mass-flag ผิด)');
+  ok(n5 === 3, 'scan: ยิงครบ 1 + retry 2 ครั้งแล้วหยุด (ไม่วนไม่รู้จบ)', `ยิง ${n5} ครั้ง`);
+
+  // ปกติต้องไม่หน่วง/ไม่ยิงซ้ำ — sweep เต็ม ~784 ตัว retry เกินจำเป็นคือค่าใช้จ่ายล้วน
+  let n6 = 0, slept = 0;
+  await C.scan(['SET:PTT'], { fetch: async () => { n6++; return res(PTT); }, sleep: async () => { slept++; } });
+  ok(n6 === 1 && slept === 0, 'scan: รอบแรกผ่าน → ไม่ retry ไม่หน่วง', `ยิง ${n6} · หน่วง ${slept}`);
+
+  ok(await C.withRetry(async () => 'ok', noWait) === 'ok', 'withRetry: คืนค่าที่ fn คืน');
+
+  console.log(nFail ? `\n✗ dead-ticker-test: ${nFail} failed / ${nOK} passed` : `\n✓ dead-ticker-test: ${nOK} passed`);
+  process.exit(nFail ? 1 : 0);
+})();

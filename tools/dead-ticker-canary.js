@@ -16,7 +16,8 @@
  *
  * ข้อจำกัดที่ตั้งใจ: endpoint นี้ไม่มี doc ทางการ (ความเสี่ยงระดับเดียวกับ Yahoo chart API ที่ cron
  * ใช้อยู่แล้ว) · ยิงล้มทั้งรอบ = ไม่เขียนอะไรเลย ไม่เดาว่า "หาย = ตาย" (กัน mass-flag ผิดเวลา
- * TradingView บล็อก IP ของ Actions)
+ * TradingView บล็อก IP ของ Actions) · **ไม่ทำ stale cache** ทั้งที่ต้นทางล่มได้ — canary วัด
+ * "ยังมีตัวตนไหม" การเสิร์ฟผลเก่าตอนต้นทางล่มคือ false negative ที่ห้ามเกิดกับเครื่องมือประเภทนี้
  */
 const fs = require('fs');
 const path = require('path');
@@ -26,6 +27,8 @@ const FLAGS = path.join(__dirname, '..', 'price-flags.json');
 const CACHE = path.join(__dirname, 'tv-tickers.json');
 const SCAN_URL = 'https://scanner.tradingview.com/global/scan';
 const CHUNK = 1200;          // ต่อ 1 request (เพดาน scanner ~2000 — เผื่อไว้)
+const REQ_TIMEOUT_MS = 20000; // undici default ~300 วิ — ยิงเดียวค้างกินงบ job (15 นาที) ไปหนึ่งในสาม
+const RETRY_DELAYS = [1000, 4000]; // ลองใหม่ 2 ครั้งแบบ backoff ก่อนยอมแพ้ (ค่าเดียวกับที่ tradingview-mcp ใช้)
 const MIN_ALIVE_RATIO = 0.8; // ถ้า sweep เต็มเจอ "เป็น" < 80% ของที่ถาม = น่าจะโดนบล็อก/โครงเปลี่ยน → ยกเลิกรอบ
 const GUARD_MIN_PROBES = 20; // ต่ำกว่านี้ อัตราส่วนไม่มีความหมายทางสถิติ → ไม่ใช้ยาม
 
@@ -112,18 +115,43 @@ function readMeta(file) {
   try { return JSON.parse(m[1]); } catch (e) { return null; }
 }
 
-async function scan(tickers) {
-  const res = await fetch(SCAN_URL, {
-    method: 'POST',
-    headers: {
-      'content-type': 'application/json',
-      'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36',
-      origin: 'https://www.tradingview.com',
-    },
-    body: JSON.stringify({ symbols: { tickers }, columns: ['close', 'currency'], range: [0, tickers.length] }),
-  });
-  if (!res.ok) throw new Error(`HTTP ${res.status}`);
-  return parseRows(await res.json());
+// scanner สะอึกเป็นช่วง ๆ (~30-90 วิ) แล้วคืน body ว่าง → JSON.parse ระเบิด · ของเดิมยิงครั้งเดียว
+// แล้วโยนทิ้ง = เสีย canary ไปทั้งสัปดาห์เพราะสะดุดชั่วขณะ (รันสัปดาห์ละครั้ง ไม่มีรอบถัดไปให้แก้ตัว)
+// ลองใหม่แบบ backoff ก่อน — ไม่ใส่ jitter เพราะ canary ยิงทีละ chunk ตามลำดับ ไม่มี caller ขนาน
+async function withRetry(fn, { delays = RETRY_DELAYS, sleep = (ms) => new Promise((r) => setTimeout(r, ms)) } = {}) {
+  let last;
+  for (let i = 0; ; i++) {
+    try { return await fn(); } catch (e) {
+      last = e;
+      if (i >= delays.length) throw last;
+      console.log(`· ยิงไม่ผ่าน (${e.message}) — ลองใหม่ใน ${delays[i] / 1000} วิ [${i + 1}/${delays.length}]`);
+      await sleep(delays[i]);
+    }
+  }
+}
+
+// deps = ช่องฉีดของ test เท่านั้น (offline) — โปรดักชันใช้ fetch/หน่วงจริง
+async function scan(tickers, deps = {}) {
+  const doFetch = deps.fetch || fetch;
+  return withRetry(async () => {
+    const res = await doFetch(SCAN_URL, {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+        'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36',
+        origin: 'https://www.tradingview.com',
+      },
+      body: JSON.stringify({ symbols: { tickers }, columns: ['close', 'currency'], range: [0, tickers.length] }),
+      signal: AbortSignal.timeout(REQ_TIMEOUT_MS),
+    });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const text = await res.text();
+    if (!text.trim()) throw new Error('body ว่าง (scanner สะอึกชั่วคราว)');
+    let json;
+    try { json = JSON.parse(text); }
+    catch (e) { throw new Error(`JSON เสีย: ${text.slice(0, 60)}`); }
+    return parseRows(json);
+  }, deps);
 }
 
 // ---------- main ----------
@@ -203,6 +231,6 @@ async function main() {
   if (!WRITE) console.log('ใส่ --write เพื่อเขียน price-flags.json + cache');
 }
 
-module.exports = { tvCandidates, parseRows, classify, mergeDeadFlags, shouldAbort, scan };
+module.exports = { tvCandidates, parseRows, classify, mergeDeadFlags, shouldAbort, scan, withRetry };
 
 if (require.main === module) main().catch((e) => { console.error(`✗ canary ล้ม: ${e.message}`); process.exit(1); });
