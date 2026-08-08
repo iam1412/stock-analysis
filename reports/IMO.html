@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น Imperial Oil (IMO) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Opus 5">
+<script type="application/json" id="stock-meta">
+{"symbol":"IMO","currency":"USD","price":124.95,"fairValue":69.1,"mos":-80.8,"upside":-44.7,"pe":20.4,"dividendYield":1.84,"roe":17.8}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#c85041",
+    "accentDark": "#96372c",
+    "darkGrad": "linear-gradient(135deg,#33130f 0%,#5e241c 58%,#95382d 140%)",
+    "glow": "rgba(188,80,67,.35)",
+    "subColor": "#e2cdcb",
+    "headerMuted": "#c5b6b4",
+    "verdictText": "#ead9d7",
+    "vcellLabel": "#d8c7c5",
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#137333"
+  },
+  "chart": {
+    "data": [["ก.ย.25", 90.74], ["ต.ค.25", 88.21], ["พ.ย.25", 98.8], ["ธ.ค.25", 86.31],
+             ["ม.ค.26", 101.25], ["ก.พ.26", 117.3], ["มี.ค.26", 130.82], ["เม.ย.26", 134.02],
+             ["พ.ค.26", 118.72], ["มิ.ย.26", 112.02], ["ก.ค.26", 129.57], ["ส.ค.26", 124.95]],
+    "min": 60, "max": 140, "grid": [80, 100, 120],
+    "fairLine": 69.1, "currency": "$", "highlight": [3, 7]
+  },
+  "gauge": { "min": 40, "max": 135, "cur": 124.95, "fair": 69.1 },
+  "fv": 69.1
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots"><div style="width:8px;height:8px;border-radius:50%;background:#c85041;display:inline-block;margin:0 3px"></div><div style="width:8px;height:8px;border-radius:50%;background:#96372c;display:inline-block;margin:0 3px"></div><div style="width:8px;height:8px;border-radius:50%;background:#5e241c;display:inline-block;margin:0 3px"></div></div>
+    <div>
+      <span class="tag">NYSE American: IMO</span>
+      <span class="tag">Energy — Integrated Oil &amp; Gas</span>
+      <span class="tag">Canadian Oil Sands / Refining</span>
+    </div>
+    <h1>Imperial Oil Limited</h1>
+    <div class="sub">ทรายน้ำมัน Kearl • Cold Lake • โรงกลั่น 3 แห่ง • ปั๊ม Esso/Mobil • ExxonMobil ถือ ~69.6%</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$124.95<small>(IMO)</small></div>
+      </div>
+      <div class="chg">▲ +37.7% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 7 ส.ค. 2569 (Yahoo Finance ตรงกับ StockAnalysis.com — ต่างกัน 0.00%)<br>
+        กรอบ 52 สัปดาห์ $82.45 – $139.44<br>
+        ที่มา: Yahoo Finance, StockAnalysis.com, งบการเงิน Imperial Oil FY2021–FY2025, TradingView (WTI / อัตราแลกเปลี่ยน)
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">งบสกุล CAD · ราคา/มูลค่าแสดงเป็น USD ที่ CADUSD 0.717</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~$61.3 พันล้าน</div><div class="d">491 ล้านหุ้น (≈ 85.5 พันล้าน CAD)</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~20.4x</div><div class="d">124.95 ÷ EPS 6.12 (USD ทั้งเศษ-ส่วน)</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">9.8x</div><div class="d">มัธยฐาน FY2021–FY2025 · ช่วง 5.8x–18.3x</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">~3.7x</div><div class="d">สูงกว่ากรอบเดิมของตัวเองมาก</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">3,268 ล้าน CAD</div><div class="d">−31.8% YoY (FY2024 = 4,790)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$6.12</div><div class="d">= 8.53 CAD จากคอลัมน์ TTM ของงบ</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~$34.1</div><div class="d">ส่วนของผู้ถือหุ้น ~23.4 พันล้าน CAD</div></div>
+      <div class="metric"><div class="k">ROE / D-E</div><div class="v pos">~17.8% / 0.16</div><div class="d">งบดุลแข็งมาก หนี้สุทธิเกือบเป็นศูนย์</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">51.6 พันล้าน CAD</div><div class="d">+4.5% YoY</div></div>
+      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">18.1%</div><div class="d">TTM (FY2025 = 17.3%)</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~1.84%</div><div class="d">$2.30/ปี — ประกาศจริงเป็น CAD ~3.21</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">0.55</div><div class="d">วัด 60 เดือน — ต่ำหลอกตา ไม่ใช้ CAPM</div></div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.7">
+      <b>อ่านตัวเลขให้ถูก — กับดักสองสกุล:</b> Imperial Oil ทำงบเป็น <b>ดอลลาร์แคนาดา (CAD)</b> แต่หุ้นที่นักลงทุนไทยซื้อผ่านโบรกต่างประเทศซื้อขายเป็น <b>ดอลลาร์สหรัฐ (USD)</b>
+      รายงานฉบับนี้จึงคำนวณมูลค่าต่อหุ้นในสกุล CAD ก่อน แล้วค่อยแปลงเป็น USD ที่อัตรา <b>CADUSD = 0.717 (8 ส.ค. 2569)</b> — ตรวจยืนยันได้จากราคาหุ้นเดียวกันสองตลาด:
+      IMO.TO ที่โตรอนโต 174.21 CAD × 0.717 = 124.90 USD ≈ ราคาที่นิวยอร์ก $124.95 ✓
+      ห้ามเอาราคา USD ไปหารด้วย EPS ในตารางงบซึ่งเป็น CAD เด็ดขาด (จะได้ P/E แค่ ~14.6x คือถูกกว่าความจริงราว 28%)
+      · <b>ปันผลประกาศเป็น CAD</b> ⇒ ผลตอบแทนปันผลที่ผู้ถือหุ้นสกุล USD ได้รับจะผันผวนตามอัตราแลกเปลี่ยนอีกชั้นหนึ่ง
+    </p>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#c85041"></i>ราคา IMO</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $69.10</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคาขึ้น <b>+37.7% ในรอบปี</b> จาก $90.74 (ก.ย. 2568) มาที่ $124.95 โดยจุดต่ำสุดของช่วงคือ $86.31 (ธ.ค. 2568) และจุดสูงสุดคือ $134.02 (เม.ย. 2569)
+        สิ่งที่ต้องสังเกตคือ <b>กำไรไม่ได้โตตามราคา</b> — ในสกุล CAD ราคาหุ้นวิ่งจาก 88.59 (สิ้นปี 2567) มา 174.21 คือ <b>+97% ในเวลา 20 เดือน</b>
+        ขณะที่กำไรต่อหุ้นของงวดเดียวกันกลับ<b>ลดลง</b> จาก 9.03 CAD เหลือ 8.53 CAD
+        การขึ้นทั้งหมดจึงมาจาก <b>การขยายตัวของตัวคูณ (multiple expansion)</b> ล้วน ๆ ไม่ใช่จากกำไรที่โต ซึ่งเป็นหัวใจของบทวิเคราะห์นี้
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 2 วิธี — อิงตลาดทั้งคู่</div></div>
+    <div class="card">
+      <p style="font-size:12.5px;color:var(--muted);margin:0 0 16px;line-height:1.7">
+        <b>ทำไมไม่ใช้ CAPM / ไม่มีตัวแปร r และ g ในรายงานนี้เลย:</b> ค่าเบต้าที่วัดจริงจากผลตอบแทนรายเดือน 60 เดือนเทียบ S&amp;P 500 ของ IMO = <b>0.55</b>
+        ซึ่งถ้าเอาไปเข้าสูตร CAPM จะได้ต้นทุนส่วนของผู้ถือหุ้นเพียง ~6.4% — ต่ำจนไม่มีความหมายสำหรับธุรกิจสำรวจและผลิตน้ำมัน
+        สาเหตุคือในหน้าต่าง 2564–2569 หุ้นน้ำมันเคลื่อนไหวแยกจากดัชนี ทำให้ค่าสหสัมพันธ์ต่ำหลอกตา (ความเสี่ยงจริงของหุ้นกลุ่มนี้ไปกองอยู่ที่<b>ราคาน้ำมัน</b> ไม่ได้อยู่ที่ดัชนีตลาด)
+        รายงานนี้จึงใช้ <b>สองวิธีที่อิงราคาตลาดในอดีตของตัวหุ้นเองทั้งคู่</b> ไม่รับตัวแปรดุลพินิจอย่าง r หรือ g เข้ามาเลยแม้แต่ตัวเดียว
+      </p>
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation (มัธยฐานของตัวเอง × กำไรกลางวัฏจักร)</div><div class="mdesc">EPS mid-cycle $6.65 × P/E เป้าหมาย ~9.8x — กำไรกลางวัฏจักรต่อหุ้น = กำไรสุทธิเฉลี่ย 5 ปี (4,553 ล้าน CAD) ÷ 491 ล้านหุ้น = 9.27 CAD แปลงที่ CADUSD 0.717 · ตัวคูณ 9.8x = มัธยฐานของ IMO เอง FY2021–FY2025</div></div>
+        <div class="mval">$65.20</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. EV/EBITDA (มัธยฐานของตัวเอง) หักหนี้สุทธิ</div><div class="mdesc">EBITDA กลางวัฏจักร 8,729 ล้าน CAD × ตัวคูณ 5.85x = มูลค่ากิจการ 51,065 ล้าน CAD − หนี้สุทธิ 1,149 ล้าน CAD = 49,916 ล้าน CAD ÷ 491 ล้านหุ้น = 101.66 CAD = $72.90 · มัธยฐาน FY2022–FY2025 (4 จุดข้อมูลเท่าที่ดึงได้จริง)</div></div>
+        <div class="mval">$72.90</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $65.20 – $72.90</span></div>
+        <div class="r">$69.10</div>
+      </div>
+
+      <div style="overflow-x:auto;margin-top:20px">
+        <table style="width:100%;border-collapse:collapse;font-size:12.5px;min-width:520px">
+          <thead>
+            <tr style="text-align:left;border-bottom:2px solid rgba(128,128,128,.3)">
+              <th style="padding:7px 8px">งวดงบ</th>
+              <th style="padding:7px 8px;text-align:right">ราคาสิ้นงวด (CAD)</th>
+              <th style="padding:7px 8px;text-align:right">EPS (CAD)</th>
+              <th style="padding:7px 8px;text-align:right">P/E</th>
+              <th style="padding:7px 8px;text-align:right">EV/EBITDA</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="border-bottom:1px solid rgba(128,128,128,.2)"><td style="padding:6px 8px">FY2021</td><td style="padding:6px 8px;text-align:right">45.62</td><td style="padding:6px 8px;text-align:right">3.48</td><td style="padding:6px 8px;text-align:right">13.1x</td><td style="padding:6px 8px;text-align:right">—</td></tr>
+            <tr style="border-bottom:1px solid rgba(128,128,128,.2)"><td style="padding:6px 8px">FY2022</td><td style="padding:6px 8px;text-align:right">65.95</td><td style="padding:6px 8px;text-align:right">11.44</td><td style="padding:6px 8px;text-align:right">5.8x</td><td style="padding:6px 8px;text-align:right">3.8x</td></tr>
+            <tr style="border-bottom:1px solid rgba(128,128,128,.2)"><td style="padding:6px 8px">FY2023</td><td style="padding:6px 8px;text-align:right">75.48</td><td style="padding:6px 8px;text-align:right">8.49</td><td style="padding:6px 8px;text-align:right">8.9x</td><td style="padding:6px 8px;text-align:right">5.6x</td></tr>
+            <tr style="border-bottom:1px solid rgba(128,128,128,.2)"><td style="padding:6px 8px">FY2024</td><td style="padding:6px 8px;text-align:right">88.59</td><td style="padding:6px 8px;text-align:right">9.03</td><td style="padding:6px 8px;text-align:right">9.8x</td><td style="padding:6px 8px;text-align:right">6.1x</td></tr>
+            <tr style="border-bottom:1px solid rgba(128,128,128,.2)"><td style="padding:6px 8px">FY2025</td><td style="padding:6px 8px;text-align:right">118.58</td><td style="padding:6px 8px;text-align:right">6.48</td><td style="padding:6px 8px;text-align:right">18.3x</td><td style="padding:6px 8px;text-align:right">9.1x</td></tr>
+            <tr style="border-bottom:1px solid rgba(128,128,128,.3)"><td style="padding:6px 8px"><b>มัธยฐาน</b></td><td style="padding:6px 8px;text-align:right">—</td><td style="padding:6px 8px;text-align:right">—</td><td style="padding:6px 8px;text-align:right"><b>9.8x</b></td><td style="padding:6px 8px;text-align:right"><b>5.9x</b></td></tr>
+            <tr><td style="padding:6px 8px"><b>ปัจจุบัน (ส.ค. 2569)</b></td><td style="padding:6px 8px;text-align:right"><b>174.21</b></td><td style="padding:6px 8px;text-align:right"><b>8.53</b> (TTM)</td><td style="padding:6px 8px;text-align:right"><b>20.4x</b></td><td style="padding:6px 8px;text-align:right"><b>10.8x</b></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p style="font-size:12px;color:var(--muted);margin-top:16px;line-height:1.75">
+        <b>ข้อเท็จจริงดิบที่อธิบายว่าทำไมส่วนต่างถึงติดลบมาก:</b> ตารางข้างบนเป็นข้อมูลที่ตรวจสอบซ้ำได้ทุกบรรทัด (ราคาสิ้นงวดจากราคาปิดรายเดือนของ IMO.TO · EPS และงบจาก StockAnalysis)
+        วันนี้ IMO ซื้อขายที่ <b>P/E 20.4x เทียบกับจุดสูงสุดของตัวเองใน 5 ปีที่ 18.3x</b> และ <b>EV/EBITDA 10.8x เทียบกับจุดสูงสุดของตัวเองที่ 9.1x</b> —
+        คือ<b>สูงกว่าเพดานเดิมของตัวเองทั้งสองมาตรวัด</b> วิธีที่อิงมัธยฐานย้อนหลังจึงต้องให้ค่าต่ำกว่าราคาตลาดโดยโครงสร้าง นี่คือสิ่งที่วิธีนี้ควรบอก ไม่ใช่ความผิดพลาดของการคำนวณ
+        <br><br>
+        <b>ทำไมการจับคู่ "มัธยฐาน P/E × EPS กลางวัฏจักร" ไม่ใช่การนับซ้ำ:</b> ข้อโต้แย้งที่พบบ่อยคือ P/E ของหุ้นวัฏจักรจะต่ำตอนกำไรสูงและสูงตอนกำไรต่ำ การเอามัธยฐาน P/E ไปคูณกำไรกลางวัฏจักรจึงอาจกดค่าซ้ำสองรอบ
+        แต่ในกรณีนี้ปีที่ให้ค่ามัธยฐานคือ <b>FY2024 ซึ่ง P/E = 9.8x บนกำไรต่อหุ้น 9.03 CAD</b> ซึ่งใกล้เคียงกับ EPS กลางวัฏจักรที่ใช้ (9.27 CAD) มาก
+        แปลว่าตัวคูณมัธยฐานนั้นถูกสังเกตในปีที่กำไร<b>อยู่กลางวัฏจักรพอดี</b> การจับคู่จึงสอดคล้องกันในตัวเอง
+        <br><br>
+        <b>ราคาน้ำมันตอนนี้อยู่กลางวัฏจักรพอดี — ข้อนี้สำคัญมาก:</b> วัดจริง 8 ส.ค. 2569 <b>WTI ราคาปัจจุบัน $78.18 · มัธยฐาน 5 ปี $76.99 · ค่าเฉลี่ย 3 ปี $73.85</b> — ทั้งสามค่าเกาะกลุ่มกันแทบสนิท
+        แปลว่ากำไรย้อนหลัง 12 เดือนของ IMO เกิดขึ้นบนราคาน้ำมันที่ใกล้ค่ากลางอยู่แล้ว การปรับค่ากำไรให้เป็น "กลางวัฏจักร" จึงเป็นเรื่องเล็ก (ต่างจากกรณีหุ้นทองคำที่ราคาสปอตสูงกว่ามัธยฐานตัวเองเป็นเท่าตัว)
+        และนั่นคือเหตุผลที่ใช้ตัวคูณบนกำไรย้อนหลังได้อย่างมีเหตุผลในหุ้นตัวนี้ — สังเกตว่า EPS TTM จริง 8.53 CAD ห่างจาก EPS กลางวัฏจักร 9.27 CAD เพียง 8%
+        <br><br>
+        <b>เทียบกับนักวิเคราะห์:</b> ราคาเป้าเฉลี่ยของนักวิเคราะห์อยู่ที่ $109.07 พร้อมคำแนะนำ <b>Sell</b> ซึ่งต่ำกว่าราคาตลาด 12.7% — <b>ทิศทางตรงกับรายงานนี้</b> (คือมองว่าราคาเกินมูลค่า) ต่างกันแค่ขนาด
+        เป้านักวิเคราะห์ถูกใช้เป็นเพียงการตรวจทานตอนท้ายเท่านั้น ไม่ได้ถูกใช้เป็นตัวตั้งในการคำนวณใด ๆ
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $124.95</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $69.10</div></div>
+        </div>
+        <div class="scale">
+          <span>$48.37<br><small>MOS 30%</small></span>
+          <span>$55.28<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$69.10<br><small>Fair Value</small></span>
+          <span style="text-align:right">$72.90<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">$109.07<br><small>เป้าเฉลี่ย Analyst</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.7">
+        เข็มราคาปัจจุบันอยู่<b>ขวาสุดของแกน เลยแม้กระทั่งเป้าเฉลี่ยของนักวิเคราะห์ไปแล้ว</b> ราคาต้องลดลงประมาณ 45% จึงจะแตะมูลค่าเหมาะสม และต้องลดลงราว 56% จึงจะเข้าโซนส่วนเผื่อความปลอดภัย 20%
+        ระยะห่างขนาดนี้บอกว่าราคาตลาดกำลังฝังสมมติฐานที่ต่างจากค่ากลางในอดีตของบริษัทเองอย่างมีนัยสำคัญ — ดูตัวเลขที่ตลาดฝังอยู่ในหัวข้อถัดไป
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">−80.8%</div>
+        <div class="txt"><b>ไม่มี Margin of Safety เลย (ราคาแพงกว่ามูลค่าเหมาะสมอย่างมาก)</b><br>ราคา $124.95 อยู่สูงกว่ามูลค่าเหมาะสม $69.10 ราว 81% ของฐานมูลค่า — นิยามที่ใช้คือ MOS = 1 − ราคา ÷ มูลค่าเหมาะสม สำหรับนักลงทุนสาย value นี่ไม่ใช่จุดเริ่มสะสม ผู้ที่ถืออยู่ควรทบทวนว่าตนกำลังรับความเสี่ยงราคาน้ำมันในระดับที่ตลาดตีราคาไว้แพงแล้วหรือไม่</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$55.28</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$48.37</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $69.10</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+
+      <p style="font-size:12.5px;color:var(--muted);margin-top:20px;line-height:1.75">
+        <b>ความอ่อนไหวต่อราคาน้ำมัน — มูลค่าเหมาะสมที่ WTI สามระดับ</b><br>
+        สมมติฐานความชัน (เปิดเผยเพื่อให้เทียบกับหุ้นตัวอื่นในกลุ่มได้): ปริมาณการผลิตต้นน้ำราว 430,000 บาร์เรลเทียบเท่าต่อวัน และค่าความชัน <b>≈ 180 ล้าน CAD ของ EBITDA ต่อการเปลี่ยนแปลง WTI ทุก $1/บาร์เรล</b>
+        (คิดที่ค่าสหสัมพันธ์ราคาบิทูเมนกับ WTI ~0.85) และ <b>≈ 0.275 CAD ของกำไรต่อหุ้นต่อ $1/บาร์เรล</b> (หลังภาษี ~25% หารด้วย 491 ล้านหุ้น)
+      </p>
+      <div style="overflow-x:auto;margin-top:10px">
+        <table style="width:100%;border-collapse:collapse;font-size:12.5px;min-width:480px">
+          <thead>
+            <tr style="text-align:left;border-bottom:2px solid rgba(128,128,128,.3)">
+              <th style="padding:7px 8px">ราคา WTI</th>
+              <th style="padding:7px 8px;text-align:right">ขา P/E</th>
+              <th style="padding:7px 8px;text-align:right">ขา EV/EBITDA</th>
+              <th style="padding:7px 8px;text-align:right">มูลค่าเหมาะสม</th>
+              <th style="padding:7px 8px;text-align:right">MOS</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="border-bottom:1px solid rgba(128,128,128,.2)"><td style="padding:6px 8px">$65 (ต่ำกว่าค่ากลาง)</td><td style="padding:6px 8px;text-align:right">$42.00</td><td style="padding:6px 8px;text-align:right">$54.40</td><td style="padding:6px 8px;text-align:right"><b>$48.20</b></td><td style="padding:6px 8px;text-align:right">−159%</td></tr>
+            <tr style="border-bottom:1px solid rgba(128,128,128,.2)"><td style="padding:6px 8px">$77 (ค่ากลาง — กรณีฐาน)</td><td style="padding:6px 8px;text-align:right">$65.20</td><td style="padding:6px 8px;text-align:right">$72.90</td><td style="padding:6px 8px;text-align:right"><b>$69.10</b></td><td style="padding:6px 8px;text-align:right">−81%</td></tr>
+            <tr><td style="padding:6px 8px">$90 (วัฏจักรขาขึ้น)</td><td style="padding:6px 8px;text-align:right">$90.40</td><td style="padding:6px 8px;text-align:right">$92.90</td><td style="padding:6px 8px;text-align:right"><b>$91.70</b></td><td style="padding:6px 8px;text-align:right">−36%</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:16px;line-height:1.75">
+        <b>★ ราคาน้ำมันที่ตลาดฝังอยู่ในราคาหุ้นวันนี้ ≈ WTI $109 ต่อบาร์เรล</b><br>
+        คำนวณย้อนกลับจากตารางข้างบน โดยหาว่าราคา WTI เท่าไรจึงจะทำให้มูลค่าเหมาะสมเท่ากับราคาตลาด $124.95 พอดี
+        ความชันระหว่าง $77 กับ $90 เท่ากับมูลค่าเหมาะสมเพิ่ม $1.74 ต่อ WTI ทุก $1 ⇒ ต้องเพิ่มอีกราว $19 จากระดับ $90 จึงได้ <b>≈ $109/บาร์เรล</b>
+        (หมายเหตุความซื่อตรงของโมเดล: ค่านี้เป็นการ<b>ประมาณเชิงเส้นเลยช่วง $90 ออกไป</b> และอิงความชันที่ระบุไว้ข้างบน หากเทียบกับหุ้นตัวอื่นในกลุ่มต้องเทียบบนความชันที่เปิดเผยเหมือนกัน)
+        เทียบกับความจริงคือ WTI ปัจจุบัน $78.18 และมัธยฐาน 5 ปี $76.99 ⇒ <b>ตลาดกำลังตีราคาหุ้นตัวนี้ราวกับว่าน้ำมันจะยืนเหนือค่ากลางในอดีตถึง ~42% ไปอย่างถาวร</b>
+      </p>
+
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="124.95" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $124.95 • EPS ฐาน ~$6.12 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS -12%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$37.50</div>
+          <div class="ret neg">−64.8% (≈ −29.5%/ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$4.17</span></li>
+            <li><span>P/E ออก</span><span>9x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$6.50</span></li>
+            <li><span>สถานการณ์</span><span>WTI หลุด $60 พร้อมตัวคูณกลับสู่ค่ากลางเดิม</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +4%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$82.60</div>
+          <div class="ret neg">−28.0% (≈ −10.4%/ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$6.88</span></li>
+            <li><span>P/E ออก</span><span>12x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$7.40</span></li>
+            <li><span>สถานการณ์</span><span>WTI ทรงตัว ~$77 กำไรรวมนิ่ง EPS โตจากซื้อหุ้นคืน</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +14%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$136.00</div>
+          <div class="ret pos">+15.2% (≈ +4.8%/ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$9.07</span></li>
+            <li><span>P/E ออก</span><span>15x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$8.00</span></li>
+            <li><span>สถานการณ์</span><span>WTI ยืน $90+ ส่วนต่าง WCS แคบ ตลาดยอมให้ตัวคูณสูงต่อ</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.7;padding:0 4px">
+      หมายเหตุเรื่องฐานที่ใช้: ตารางนี้ตั้งต้นจาก <b>EPS ย้อนหลัง 12 เดือนจริง $6.12</b> (= 8.53 CAD) เพราะเป็นตัวเลขที่ผู้อ่านตรวจกับงบได้ตรง ๆ
+      ต่างจากส่วนประเมินมูลค่าที่ใช้ <b>EPS กลางวัฏจักร $6.65</b> ซึ่งเป็นค่าที่ปรับให้สะท้อนกำไรเฉลี่ยตลอดรอบบนจำนวนหุ้นปัจจุบัน — ทั้งสองค่าห่างกันเพียง 8% และไม่ได้ขัดกัน
+      · จุดที่ต้องเน้นคือแม้แต่กรณี Bull ที่สมมติให้น้ำมันยืน $90 <b>และ</b> ตลาดยอมให้ตัวคูณ 15x (ยังสูงกว่ามัธยฐานเดิม 9.8x มาก) ผลตอบแทนรวม 3 ปีก็ได้เพียง ~4.8% ต่อปี
+      ซึ่งบอกว่าราคาปัจจุบันได้ "กินล่วงหน้า" กรณีดีไปเกือบหมดแล้ว
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก &amp; ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>ซื้อหุ้นคืนดุที่สุดในกลุ่ม:</b> จำนวนหุ้นลดจาก 713 ล้าน (FY2021) เหลือ 491 ล้าน (TTM) = <b>ลดลง 31.1% ใน 5 ปี</b> ถ้าซื้อคืนในจังหวะนี้ต่อ ผู้ถือหุ้นเดิมจะได้สัดส่วนในทรัพย์สินเดิมมากขึ้นเรื่อย ๆ</li>
+          <li><b>งบดุลแทบไม่มีหนี้:</b> หนี้สิน 3,988 ล้าน CAD เทียบกับเงินสด 2,839 ล้าน CAD ⇒ หนี้สุทธิเหลือเพียง 1,149 ล้าน CAD และ D/E เพียง 0.16 — ทนวัฏจักรขาลงได้ดีกว่าคู่แข่งที่กู้หนัก</li>
+          <li><b>กระแสเงินสดอิสระแข็งแรง:</b> FCF ย้อนหลัง 12 เดือน 5,035 ล้าน CAD สูงกว่ากำไรสุทธิ 4,161 ล้าน CAD — เป็นแหล่งเงินของทั้งปันผลและการซื้อหุ้นคืนโดยไม่ต้องก่อหนี้</li>
+          <li><b>สินทรัพย์อายุยืนมาก:</b> Kearl และ Cold Lake มีปริมาณสำรองระดับหลายสิบปี ต้นทุนคงที่สูงแต่ไม่ต้องเจาะหลุมใหม่ทุกปีแบบหินดินดาน (shale) จึงมีความสม่ำเสมอของปริมาณผลิตสูง</li>
+          <li><b>โครงสร้างบูรณาการครบวงจร:</b> เมื่อส่วนต่างราคาน้ำมันดิบแคนาดาถ่างออก ธุรกิจโรงกลั่นและค้าปลีกของบริษัทเองจะได้ประโยชน์ ช่วยหักล้างผลกระทบฝั่งต้นน้ำได้บางส่วน</li>
+          <li><b>ราคาน้ำมันอยู่กลางวัฏจักร ไม่ใช่จุดต่ำ:</b> WTI ปัจจุบัน $78.18 เทียบมัธยฐาน 5 ปี $76.99 — กำไรฐานที่ใช้จึงไม่ได้ถูกกดจากภาวะราคาน้ำมันตกต่ำชั่วคราว</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>ตัวคูณสูงกว่าเพดานเดิมของตัวเอง:</b> P/E 20.4x เทียบจุดสูงสุด 5 ปีของตัวเอง 18.3x และ EV/EBITDA 10.8x เทียบจุดสูงสุด 9.1x — ถ้าตัวคูณเพียงกลับไปหาค่ากลางเดิมโดยกำไรไม่เปลี่ยนเลย ราคาก็ลดลงราวครึ่งหนึ่ง</li>
+          <li><b>ราคาน้ำมันหลุด $60:</b> ที่ WTI $65 มูลค่าเหมาะสมลดเหลือ $48.20 ตามตารางความอ่อนไหว หากหลุดต่ำกว่า $60 ต่อเนื่อง กำไรฝั่งต้นน้ำจะหดรุนแรงเพราะทรายน้ำมันมีต้นทุนดำเนินงานต่อบาร์เรลสูงกว่าค่าเฉลี่ยอุตสาหกรรม</li>
+          <li><b>ส่วนต่างราคา WCS ถ่างออก:</b> น้ำมันดิบหนักแคนาดา (Western Canadian Select) ขายต่ำกว่า WTI เสมอ ถ้าท่อส่งเต็มหรือมีเหตุขัดข้อง ส่วนต่างจะถ่างขึ้นทันทีและกินกำไรต่อบาร์เรลโดยที่ราคา WTI บนจอไม่ได้ลดลงเลย — ความเสี่ยงนี้ไม่ปรากฏในตารางความอ่อนไหวข้างบน</li>
+          <li><b>ต้นทุนคาร์บอนและนโยบายสิ่งแวดล้อมแคนาดา:</b> ราคาคาร์บอนภาคอุตสาหกรรมของแคนาดามีเส้นทางเพิ่มขึ้นตามกฎหมาย บวกกับภาระลงทุนในโครงการดักจับคาร์บอน ซึ่งเป็นรายจ่ายที่ไม่สร้างบาร์เรลเพิ่ม กดผลตอบแทนต่อเงินลงทุนระยะยาว</li>
+          <li><b>★ ExxonMobil ถือ ~69.6% — ความเสี่ยงเชิงโครงสร้าง:</b> ผู้ถือหุ้นรายย่อยถือรวมกันเพียงราว 30% ⇒ (1) <b>ไม่มีอำนาจต่อรองใด ๆ</b> ในการกำหนดนโยบายเงินทุน ปันผล หรือการซื้อหุ้นคืน ทุกอย่างสอดคล้องกับความต้องการของบริษัทแม่เป็นหลัก (2) หุ้นหมุนเวียนอิสระมีมูลค่าเพียงราว $18.7 พันล้าน <b>สภาพคล่องจริงจึงน้อยกว่าที่มูลค่าตลาด $61.3 พันล้านทำให้เข้าใจ</b> แรงขายก้อนใหญ่กระทบราคาได้แรงกว่าปกติ (3) หากวันหนึ่ง ExxonMobil ตัดสินใจลดสัดส่วนการถือครอง จะเกิดแรงขายจำนวนมหาศาลเทียบกับหุ้นหมุนเวียนที่มีอยู่ ซึ่งเป็นความเสี่ยงราคาที่ไม่เกี่ยวกับผลประกอบการเลย</li>
+          <li><b>การซื้อหุ้นคืนที่ราคาแพงทำลายมูลค่า:</b> เมื่อหุ้นซื้อขายสูงกว่ามูลค่าเหมาะสมมาก การนำกระแสเงินสดไปซื้อหุ้นคืนที่ระดับนี้จะลดมูลค่าต่อหุ้นของผู้ที่ถือต่อ แทนที่จะเพิ่ม — จุดแข็งข้อแรกจะกลายเป็นจุดอ่อนทันทีถ้าราคายังอยู่สูง</li>
+        </ul>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:16px;line-height:1.75;padding:0 4px">
+      <b>★ แยกให้ออก: กำไรต่อหุ้นที่โต มาจากธุรกิจโตหรือมาจากการลดจำนวนหุ้น</b><br>
+      ตั้งแต่ FY2021 ถึงปัจจุบัน กำไรต่อหุ้นของ IMO เพิ่มจาก 3.48 CAD เป็น 8.53 CAD = <b>+145%</b> ตัวเลขนี้ดูน่าประทับใจมาก แต่ในช่วงเดียวกัน<b>กำไรสุทธิรวมของบริษัทโตเพียง +68%</b> (2,479 → 4,161 ล้าน CAD)
+      ส่วนต่างทั้งหมดมาจากจำนวนหุ้นที่ลดลง 31.1%<br>
+      ตรวจง่าย ๆ ด้วยการหารกลับ: ถ้าจำนวนหุ้นยังเป็น 713 ล้านหุ้นเท่าเดิม กำไรต่อหุ้นวันนี้จะเป็นเพียง <b>5.84 CAD ไม่ใช่ 8.53 CAD</b> ⇒ <b>ราว 32% ของกำไรต่อหุ้นปัจจุบันถูกสร้างขึ้นจากการซื้อหุ้นคืน ไม่ใช่จากราคาน้ำมันหรือปริมาณการผลิต</b>
+      สิ่งนี้เป็นการเติบโต<b>เชิงโครงสร้าง</b> ไม่ใช่<b>เชิงวัฏจักร</b> และมีขีดจำกัด — บริษัทซื้อหุ้นคืนได้เรื่อย ๆ ก็ต่อเมื่อยังมีกระแสเงินสดอิสระ และการซื้อคืนที่ราคาแพงกว่ามูลค่าจะกลายเป็นการทำลายมูลค่าแทน
+      (เทียบให้เห็นภาพ: คู่แข่งอย่าง CNQ ลดจำนวนหุ้นในช่วงเดียวกันราว 11.8% ⇒ IMO ดุกว่าเกือบสามเท่า)
+    </p>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>บริษัทคุณภาพสูง แต่ราคาตลาดฝังราคาน้ำมันไว้ที่ ~$109 ขณะที่ของจริงอยู่ที่ $78</h2>
+      <p>
+        Imperial Oil เป็นธุรกิจที่ดีจริงในเชิงคุณภาพ — งบดุลแทบไม่มีหนี้ (D/E 0.16) กระแสเงินสดอิสระ 5,035 ล้าน CAD สูงกว่ากำไรสุทธิ ผลตอบแทนต่อส่วนของผู้ถือหุ้น 17.8% และซื้อหุ้นคืนอย่างมีวินัยจน<b>จำนวนหุ้นลดลง 31.1% ในห้าปี</b> ซึ่งดุที่สุดในกลุ่มผู้ผลิตทรายน้ำมันแคนาดา
+        ปัญหาไม่ได้อยู่ที่ธุรกิจ แต่อยู่ที่<b>ราคา</b> วันนี้หุ้นซื้อขายที่ P/E 20.4x และ EV/EBITDA 10.8x ซึ่ง<b>สูงกว่าจุดสูงสุดของตัวเองในรอบ 5 ปีทั้งสองมาตรวัด</b> (18.3x และ 9.1x ตามลำดับ)
+        และการขึ้น +97% ในสกุล CAD ตลอด 20 เดือนที่ผ่านมาเกิดขึ้นทั้งที่กำไรต่อหุ้น<b>ลดลง</b> — เป็นการขยายตัวของตัวคูณล้วน ๆ
+        ทั้งสองวิธีประเมินมูลค่าในรายงานนี้อิงราคาตลาดในอดีตของตัวหุ้นเองและไม่ใช้ตัวแปรดุลพินิจอย่าง r หรือ g เลย ให้ค่า $65.20 และ $72.90 ซึ่งใกล้เคียงกัน เฉลี่ยได้ $69.10
+        แปลกลับเป็นภาษาน้ำมัน: <b>ราคาหุ้นวันนี้สมเหตุสมผลก็ต่อเมื่อ WTI ยืนที่ ~$109 ต่อบาร์เรลอย่างถาวร</b> ขณะที่ราคาจริงคือ $78.18 และมัธยฐาน 5 ปีคือ $76.99
+        แม้แต่นักวิเคราะห์ที่ให้เป้า $109.07 ก็ให้คำแนะนำ Sell คือมองว่าราคาเกินมูลค่าเช่นกัน ต่างกันแค่ขนาดของส่วนต่าง สุดท้ายอย่าลืมว่า ExxonMobil ถือหุ้นราว 69.6% ⇒ หุ้นหมุนเวียนอิสระน้อย สภาพคล่องต่ำกว่าที่มูลค่าตลาดบอก และผู้ถือหุ้นรายย่อยไม่มีเสียงในการกำหนดนโยบายเงินทุน
+      </p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$69.10 <span style="font-size:12px;color:#cab9a8">($65.20–$72.90)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS −80.8% (แพงกว่ามูลค่า)</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$109.07 (Sell)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ระดับราคาปัจจุบันไม่มีส่วนเผื่อความปลอดภัยเหลืออยู่เลย ผู้ที่ยังไม่มีหุ้น<b>ไม่มีเหตุผลเชิงมูลค่าให้เริ่มซื้อที่นี่</b> — โซนที่เริ่มน่าสนใจในเชิง value คือต่ำกว่า $69.10 และเข้าเกณฑ์ส่วนเผื่อ 20% ที่ $55.28
+        ผู้ที่ถืออยู่แล้วและมีกำไรมาก ควรตระหนักว่าสิ่งที่กำลังรับความเสี่ยงอยู่คือ<b>สมมติฐานราคาน้ำมันที่ ~$109</b> ไม่ใช่คุณภาพของบริษัท ซึ่งดีอยู่แล้ว
+        สัญญาณที่ควรจับตาเพื่อทบทวนมุมมองคือ ราคา WTI ยืนเหนือ $90 อย่างต่อเนื่อง หรือส่วนต่าง WCS แคบลงอย่างมีนัยสำคัญ ซึ่งจะดันมูลค่าเหมาะสมขึ้นตามตารางความอ่อนไหว
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะตัวคูณ P/E และ EV/EBITDA เป้าหมาย, ระดับกำไรกลางวัฏจักร, ความชันของกำไรต่อราคาน้ำมัน และอัตราแลกเปลี่ยน CADUSD
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ
+    • ราคา ณ 7 ส.ค. 2569 จาก Yahoo Finance ตรวจยืนยันกับ StockAnalysis.com ตรงกัน 0.00% • กำไรต่อหุ้นย้อนหลัง 12 เดือน 8.53 CAD อ้างอิงคอลัมน์ TTM ของตารางงบการเงิน StockAnalysis (ตรวจสอบข้ามกับ Yahoo 6.02 USD หลังแปลงสกุลแล้วต่างกัน 1.6%)
+    • ข้อมูลงบการเงิน FY2021–FY2025 และ EBITDA รายปีจาก StockAnalysis.com และ Yahoo Finance • ราคาปิดรายเดือนของ IMO.TO ใช้คำนวณตัวคูณย้อนหลัง • WTI และอัตราแลกเปลี่ยน CADUSD 0.717 ณ 8 ส.ค. 2569
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 8 ส.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
