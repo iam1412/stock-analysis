@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น The Toronto-Dominion Bank (TD) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Opus 5">
+<script type="application/json" id="stock-meta">
+{"symbol":"TD","currency":"USD","price":121.31,"fairValue":94.70,"mos":-28.1,"upside":-21.9,"pe":20.0,"dividendYield":2.64,"roe":11.91}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#0da171",
+    "accentDark": "#0a7653",
+    "darkGrad": "linear-gradient(135deg,#022217 0%,#06563c 58%,#0a996b 140%)",
+    "glow": "rgba(19,236,165,.35)",
+    "subColor": "#ddf4ec",
+    "headerMuted": "#e3f2ed",
+    "verdictText": "#dcf5ec",
+    "vcellLabel": "#ffffff",
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#137333"
+  },
+  "chart": {
+    "data": [["ก.ย.25", 79.95], ["ต.ค.25", 82.13], ["พ.ย.25", 83.93], ["ธ.ค.25", 94.2],
+             ["ม.ค.26", 93.49], ["ก.พ.26", 97.36], ["มี.ค.26", 93.31], ["เม.ย.26", 107.7],
+             ["พ.ค.26", 113.58], ["มิ.ย.26", 121.43], ["ก.ค.26", 119.92], ["ส.ค.26", 121.31]],
+    "min": 60, "max": 140, "grid": [80, 100, 120],
+    "fairLine": 94.7, "currency": "$", "highlight": [0, 9]
+  },
+  "gauge": { "min": 45, "max": 130, "cur": 121.31, "fair": 94.7 },
+  "fv": 94.7
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots"><div style="width:8px;height:8px;border-radius:50%;background:#0da171;display:inline-block;margin:0 3px"></div><div style="width:8px;height:8px;border-radius:50%;background:#0a7653;display:inline-block;margin:0 3px"></div><div style="width:8px;height:8px;border-radius:50%;background:#06563c;display:inline-block;margin:0 3px"></div></div>
+    <div>
+      <span class="tag">NYSE: TD</span>
+      <span class="tag">Banks — Diversified</span>
+      <span class="tag">Canadian Big-5 / U.S. Retail</span>
+    </div>
+    <h1>The Toronto-Dominion Bank (TD)</h1>
+    <div class="sub">ธนาคารรายใหญ่อันดับ 2 ของแคนาดา • Canadian Personal &amp; Commercial • U.S. Retail (ภายใต้เพดานสินทรัพย์) • Wealth &amp; Insurance • Wholesale Banking</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$121.31<small>(TD)</small></div>
+      </div>
+      <div class="chg">▲ +51.7% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 7 ส.ค. 2569 (Yahoo Finance ตรงกับ StockAnalysis.com พอดี 0.00%)<br>
+        กรอบ 52 สัปดาห์ $72.72 – $124.87<br>
+        ที่มา: Yahoo Finance, StockAnalysis.com, GuruFocus
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ราคาซื้อขาย USD • งบการเงินสกุล CAD</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~US$205 พันล้าน</div><div class="d">1,693 ล้านหุ้น (dil. avg TTM)</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~20.0x</div><div class="d">EPS GAAP $6.06 — สูงกว่ากรอบปกติของกลุ่มธนาคารแคนาดามาก</div></div>
+      <div class="metric"><div class="k">P/E ล่วงหน้า (Fwd)</div><div class="v neu">~15.8x</div><div class="d">EPS fwd $7.69 (Yahoo) • StockAnalysis 16.9x</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">~2.25x</div><div class="d">P/B ปัจจุบัน 2.25x (ราคา $121.31 ÷ BVPS $53.88) <b>สูงกว่าจุดสูงสุดของตัวเองในรอบ 5 ปีที่ 1.64x</b></div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">CAD 19,973 ล้าน</div><div class="d">+140% YoY — รวมกำไรพิเศษจากการขายหุ้น Schwab</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$6.06</div><div class="d">GAAP diluted (USD) • adjusted ~$6.22 สูงกว่า ~3%</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~$53.88</div><div class="d">≈ CAD 75.1 • ณ ไตรมาส 2 ปีบัญชี 2569 (30 เม.ย. 2569)</div></div>
+      <div class="metric"><div class="k">ROE (TTM) / CET1</div><div class="v neu">~11.9% / 14.3%</div><div class="d">ROE ต่ำกว่าคู่แข่งแคนาดาชัด • CET1 สูงกว่าเกณฑ์ OSFI ~11.5%</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">CAD 59,180 ล้าน</div><div class="d">−4.5% YoY (ฐาน FY2025 มีรายการพิเศษ)</div></div>
+      <div class="metric"><div class="k">อัตรากำไรสุทธิ (TTM)</div><div class="v">25.2%</div><div class="d">FY2025 32.0% เพราะกำไรขายเงินลงทุน</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~2.6%</div><div class="d">CAD 1.12/ไตรมาส (ขึ้น CAD 0.04 ใน Q2/FY2026) = CAD 4.48/ปี</div></div>
+      <div class="metric"><div class="k">เพดานสินทรัพย์สหรัฐ</div><div class="v neg">US$434 พันล้าน</div><div class="d">ยังบังคับใช้ — OCC ยังไม่ปลด (ตรวจ ส.ค. 2569)</div></div>
+    </div>
+    <div class="card" style="margin-top:16px">
+      <div style="font-size:12.5px;color:var(--muted);margin-bottom:8px"><b>งบการเงินสกุล CAD · ปีบัญชีสิ้นสุด 31 ต.ค.</b> (FY2025 = พ.ย. 2024 – ต.ค. 2025) — ห้ามนำ EPS ในตารางนี้ (CAD) ไปหารกับราคา USD</div>
+      <div style="overflow-x:auto">
+      <table style="width:100%;border-collapse:collapse;font-size:12.5px">
+        <tr style="text-align:right">
+          <th style="text-align:left;padding:6px 8px;border-bottom:1px solid #ddd">CAD ล้าน</th>
+          <th style="padding:6px 8px;border-bottom:1px solid #ddd">TTM</th>
+          <th style="padding:6px 8px;border-bottom:1px solid #ddd">FY2025</th>
+          <th style="padding:6px 8px;border-bottom:1px solid #ddd">FY2024</th>
+          <th style="padding:6px 8px;border-bottom:1px solid #ddd">FY2023</th>
+          <th style="padding:6px 8px;border-bottom:1px solid #ddd">FY2022</th>
+          <th style="padding:6px 8px;border-bottom:1px solid #ddd">FY2021</th>
+        </tr>
+        <tr style="text-align:right"><td style="text-align:left;padding:6px 8px">รายได้รวม</td><td style="padding:6px 8px">59,180</td><td style="padding:6px 8px">63,271</td><td style="padding:6px 8px">52,970</td><td style="padding:6px 8px">47,757</td><td style="padding:6px 8px">47,965</td><td style="padding:6px 8px">42,917</td></tr>
+        <tr style="text-align:right"><td style="text-align:left;padding:6px 8px">กำไรสุทธิ</td><td style="padding:6px 8px">14,328</td><td style="padding:6px 8px">19,973</td><td style="padding:6px 8px">8,316</td><td style="padding:6px 8px">10,071</td><td style="padding:6px 8px">17,170</td><td style="padding:6px 8px">14,049</td></tr>
+        <tr style="text-align:right"><td style="text-align:left;padding:6px 8px">EPS (dil., CAD)</td><td style="padding:6px 8px">8.48</td><td style="padding:6px 8px">11.56</td><td style="padding:6px 8px">4.72</td><td style="padding:6px 8px">5.52</td><td style="padding:6px 8px">9.47</td><td style="padding:6px 8px">7.72</td></tr>
+        <tr style="text-align:right"><td style="text-align:left;padding:6px 8px">ROE</td><td style="padding:6px 8px">11.8%</td><td style="padding:6px 8px">16.7%</td><td style="padding:6px 8px">7.2%</td><td style="padding:6px 8px">8.7%</td><td style="padding:6px 8px">15.6%</td><td style="padding:6px 8px">13.8%</td></tr>
+        <tr style="text-align:right"><td style="text-align:left;padding:6px 8px">จำนวนหุ้น (ล้าน)</td><td style="padding:6px 8px">1,693</td><td style="padding:6px 8px">1,728</td><td style="padding:6px 8px">1,760</td><td style="padding:6px 8px">1,824</td><td style="padding:6px 8px">1,814</td><td style="padding:6px 8px">1,820</td></tr>
+      </table>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:10px;line-height:1.6">
+        FY2024 คือปีที่ถูกกระทบเต็ม ๆ จากค่าปรับคดีฟอกเงินฝั่งสหรัฐ (รวม ~US$3 พันล้าน) — ROE ตกเหลือ 7.2% ·
+        FY2025 เด้งกลับเป็น 16.7% แต่ส่วนใหญ่มาจากกำไรพิเศษการขายหุ้น Charles Schwab ไม่ใช่กำลังกำไรปกติ ·
+        TTM ล่าสุด ROE ลงมาที่ ~11.8–11.9% ซึ่งสะท้อน "กำลังกำไรจริงหลังโดนเพดานสินทรัพย์" ได้ตรงกว่า · ฐานที่ใช้ประเมินมูลค่าในหัวข้อ 3 คือ <b>ROE ปกติ (normalized) 12.4%</b> = ค่าเฉลี่ย FY2021–2025 (13.8 / 15.6 / 8.7 / 7.2 / 16.7) ซึ่งเฉลี่ยข้ามทั้งปีที่โดนค่าปรับและปีที่กำไรพีค ·
+        จำนวนหุ้นลดลงต่อเนื่องจากโครงการซื้อหุ้นคืน CAD 7 พันล้าน (เงินกองทุน CET1 14.3% เหลือเฟือเทียบเกณฑ์ OSFI)
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#0da171"></i>ราคา TD</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $94.70</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        รอบ 12 เดือนที่ผ่านมา TD วิ่งขึ้น <b>+51.7%</b> จาก ~$79.95 (ก.ย. 2568) ไปทำจุดสูงสุดของกราฟที่ ~$121.43 (มิ.ย. 2569)
+        และยืนแถว $121.31 ในต้นเดือน ส.ค. 2569 — เป็นการรีเรตติ้งครั้งใหญ่ที่เกิดจาก 3 เรื่องซ้อนกัน:
+        (1) ตลาดเริ่มมองข้ามค่าปรับคดีฟอกเงินไปแล้ว และเก็งว่าเพดานสินทรัพย์สหรัฐจะถูกปลดในปี 2570
+        (2) กำไรพิเศษจากการขายหุ้น Charles Schwab ทำให้เงินกองทุนล้น (CET1 14.3%) แล้วถูกส่งคืนผ่านการซื้อหุ้นคืน CAD 7 พันล้าน
+        (3) ผลประกอบการไตรมาส 2 ปีบัญชี 2569 ออกมาแข็ง (กำไรสุทธิปรับปรุง +15% YoY, adjusted ROE 14.4%) พร้อมขึ้นปันผล
+        ผลคือราคาขึ้นเร็วกว่ามูลค่าตามบัญชีมาก — P/BV ขยับขึ้นไปที่ ~2.25x และ P/E (TTM) ~20x ซึ่งเป็นระดับที่ธนาคารแคนาดาแทบไม่เคยยืนได้นาน
+        ราคาปัจจุบันยังสูงกว่าเป้าเฉลี่ยนักวิเคราะห์ ($113.02) อยู่ประมาณ 7% ด้วย
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 2 วิธีที่เหมาะกับธนาคาร</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 12.4% − g 3.75%)/(r 7.9% − g 3.75%) ≈ 2.084 × BVPS $53.88 — ROE ที่ใช้คือ <b>ROE ปกติ 12.4%</b> (ค่าเฉลี่ย FY2021–2025) ไม่ใช่ adjusted ROE 14.4% ของไตรมาสล่าสุด เพราะเพดานสินทรัพย์สหรัฐยังจำกัดการโตของธุรกิจรีเทลที่เคยเป็นเครื่องยนต์กำไรหลัก และค่าใช้จ่ายแก้ไขระบบ AML ยังกดกำไรต่อเนื่อง</div></div>
+        <div class="mval">$112.30</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. P/B มัธยฐาน × BVPS</div><div class="mdesc">มัธยฐาน P/B ของ TD = <b>1.43x</b> คำนวณจาก P/B ณ สิ้นปีบัญชี FY2021–2025 (1.64 / 1.43 / 1.24 / 1.17 / 1.52) × BVPS $53.88 — วิธีนี้<b>ไม่ใช้ (r, g) เลย</b> จึงเป็นสมออิสระตัวเดียวในสองวิธี โดยยึดพฤติกรรมการให้ราคาจริงของตลาดต่อธนาคารนี้แทนสมมติฐาน · <b>ตัวคูณในอดีตใช้หน้าต่าง FY2021–2025 เท่านั้น (ข้อจำกัดของแหล่งข้อมูล — วิธีมาตรฐานกำหนด 10 ปี)</b> · P/B ปัจจุบัน 2.25x (ราคา $121.31 ÷ BVPS $53.88) <b>สูงกว่าจุดสูงสุดของตัวเองในรอบ 5 ปีที่ 1.64x</b></div></div>
+        <div class="mval">$77.05</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $77.05 – $112.30</span></div>
+        <div class="r">$94.70</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        <b>ที่มาของผลตอบแทนที่ต้องการ (r) — ตรวจสอบย้อนได้:</b> r = rf 3.643% + β 0.85 × ERP 5.0% = <b>7.9%</b> ·
+        rf ที่ใช้คือ<b>พันธบัตรรัฐบาลแคนาดาอายุ 10 ปี</b> (TVC:CA10Y ณ 8 ส.ค. 2569) ไม่ใช่พันธบัตรสหรัฐ เพราะกำไร/ปันผลของ TD เกิดและประกาศเป็น <b>CAD</b> —
+        ถ้าหยิบ rf ฝั่ง USD มาใช้จะได้ r สูงเกินจริงราว 1 จุด และกดมูลค่าลงผิดทางทั้งกระดาน ·
+        g = <b>3.75%</b> (กลางกรอบ 3.5–4.0% = การเติบโตระยะยาวของเศรษฐกิจแคนาดา + เงินเฟ้อ) — ROE × retention ให้ตัวเลขสูงกว่านี้ แต่ส่วนเกินนั้นถูกใช้ซื้อหุ้นคืน ไม่ใช่การเติบโตของฐานทุน<br><br>
+        <b>ความไวต่อ r (บังคับต้องดู — r − g เหลือแค่ ~4 จุด):</b> ที่ r 7.4% (−0.5 จุด) FV เฉลี่ย = <b>$102.37</b> · ที่ r 8.4% (+0.5 จุด) FV เฉลี่ย = <b>$88.64</b> —
+        MOS แกว่งในช่วง −18.5% ถึง −36.9% · ข้อสรุปว่า "แพง" ไม่พลิกตลอดช่วงนี้ · เพราะขา P/B มัธยฐานไม่ขยับตาม r ค่าเฉลี่ยจึงไวต่อ r น้อยกว่าตอนที่ยังใช้สามวิธี แต่ <b>ขนาด</b>ของความแพงยังไวต่อสมมติฐานพอควร ควรอ่านตัวเลขนี้เป็นช่วง ไม่ใช่จุดเดียว<br><br>
+        <b>ทำไมเหลือ 2 วิธี (ตัด DDM ทิ้ง):</b> ธนาคารประเมินด้วย DCF/FCF ไม่ได้ (กระแสเงินสดอิสระของธนาคารสะท้อนการเปลี่ยนแปลงงบดุลไม่ใช่กำไร — ดูแถว FCF ที่แกว่งจาก +52,760 ถึง −71,791 ล้าน CAD)
+        จึงเหลือ Justified P/BV (ยึดโยงกับส่วนของผู้ถือหุ้นและ ROE โดยตรง) คู่กับ P/B มัธยฐาน ·
+        <b>DDM ถูกตัดออกเพราะมันกับ justified P/B คือตระกูล Gordon เดียวกัน ใช้ (r, g) ชุดเดียวกัน ⇒ การเอาสองตัวมาเฉลี่ยกันคือการนับซ้ำ</b> —
+        และเคสของ TD เองพิสูจน์ชัด: justified P/B บอกว่าปันผลที่ยั่งยืนควรเป็น <b>$4.59</b> แต่ DDM ใช้ปันผลจริง <b>$3.33</b> ⇒ ทิ้งกำไรสะสมที่บริษัทเก็บไว้ไปทั้งก้อน กดมูลค่าต่ำเกินจริง ·
+        ส่วน Residual income ยังไม่นับ เพราะพีชคณิตแล้วเท่ากับ Justified P/BV ตัวเดียวกัน · จึงเหลือ P/B มัธยฐานเป็นสมออิสระตัวเดียวที่ไม่แตะ (r, g)<br><br>
+        <b>ถ้าใช้ขา justified P/B อย่างเดียว FV = $112.30 → MOS −8.0%</b> — แม้ในขาที่ให้ค่าสูงกว่าก็ยังไม่เหลือส่วนเผื่อความปลอดภัย<br><br>
+        <b>ช่องว่างที่ขา P/B มัธยฐานเปิดให้เห็น:</b> ย้อนสมการ r* = g + (ROE − g)/(P/B) — ราคาวันนี้ที่ P/BV ~2.25x แปลว่าตลาดกำลังคิด r เพียง ~7.6%
+        ขณะที่มัธยฐาน FY2021–2025 (1.43x) แปลว่าในอดีตตลาดคิด r ราว ~9.8% กับธนาคารตัวเดียวกันนี้ · ส่วนต่างนี้คือแก่นของคำถามทั้งหมด:
+        ตลาดกำลังบอกว่า TD ปลอดภัยกว่าที่เคยเป็นมาตลอดสิบปี ซึ่งเป็นข้อสมมติที่หนักพอควรสำหรับธนาคารที่ยังอยู่ใต้คำสั่งยินยอมและเพดานสินทรัพย์<br><br>
+        <b>เพดานสินทรัพย์ถูกคิดเป็นส่วนลดตัวคูณแล้ว (ไม่ใช่แค่ข้อความเตือน):</b> ถ้าใช้ adjusted ROE 14.4% ที่รายงานในไตรมาส 2/FY2569 ตัวคูณจะเป็น ~2.566x ≈ $138 —
+        แต่รายงานนี้ใช้ ROE ปกติ 12.4% ให้ตัวคูณ 2.084x ≈ $112 · <b>ส่วนต่าง ~$26/หุ้น คือราคาของเพดานสินทรัพย์ + ต้นทุนแก้ไขระบบ</b> ที่ถูกหักออกจากมูลค่าโดยตรง<br><br>
+        <b>ทวนด้วย P/E เป็นเลนส์ที่สาม (ไม่นับรวมค่าเฉลี่ย):</b> EPS ล่วงหน้า $7.69 × P/E เป้าหมาย 11–12x (กรอบปกติของธนาคารใหญ่แคนาดา หัก discount เล็กน้อยจากเพดาน) = <b>$85–92</b> —
+        ต่ำกว่าค่า FV เฉลี่ย $94.70 เล็กน้อย และยังต่ำกว่าราคาปัจจุบันมาก · ทั้งสามเลนส์ชี้ทิศเดียวกัน ต่างกันแค่ขนาด<br><br>
+        <b>เรื่อง EPS สองแหล่ง:</b> Yahoo ให้ EPS(TTM) แบบ GAAP diluted $6.06 ส่วน StockAnalysis ให้ $6.22 ต่างกัน ~2.6% —
+        เป็นความต่างเชิงนิยาม (ตัวหลังน่าจะเป็น adjusted EPS ที่ตัดค่าตัดจำหน่ายสินทรัพย์ไม่มีตัวตน/รายการปรับโครงสร้างออก ซึ่งธนาคารแคนาดารายงานควบคู่เสมอ) ไม่ใช่ข้อมูลขัดกัน
+        รายงานนี้เลือก <b>GAAP $6.06 เป็นตัวหลัก</b> เพื่อความอนุรักษ์นิยม
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $121.31</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $94.70</div></div>
+        </div>
+        <div class="scale">
+          <span>$66.29<br><small>MOS 30%</small></span>
+          <span>$75.76<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$94.70<br><small>Fair Value</small></span>
+          <span style="text-align:right">$112.30<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">$113.02<br><small>เป้าเฉลี่ย Analyst</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        เข็มราคาอยู่ขวาสุดของแถบ — สูงกว่าแม้กระทั่ง "กรอบบน" ของมูลค่าเหมาะสม ($112.30 = วิธี Justified P/BV ซึ่งเป็นวิธีที่ให้ค่าสูงกว่าในสองวิธี) อยู่ ~8.0%
+        และสูงกว่าเป้าเฉลี่ยนักวิเคราะห์ 12 เดือน ($113.02, เรตติ้ง Buy) อยู่ ~7% ด้วย
+        น่าสังเกตว่าแม้ใช้เป้านักวิเคราะห์ซึ่งเป็นตัวเลขเชิงโมเมนตัม 12 เดือน (ไม่ใช่การประเมินมูลค่าแบบ Gordon) ราคาปัจจุบันก็ยัง<b>สูงกว่า</b>อยู่ดี
+        โซนที่จะเริ่มมี Margin of Safety จริง ๆ อยู่ต่ำกว่า $75.76 ลงไป ซึ่งยังห่างจากราคาวันนี้พอสมควร
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">−28.1%</div>
+        <div class="txt"><b>แพงเมื่อเทียบกับประวัติของตัวเอง ไม่เหลือส่วนเผื่อความปลอดภัยที่ราคาปัจจุบัน</b><br>
+        ราคา $121.31 สูงกว่ามูลค่าเหมาะสม $94.70 ประมาณ 28% ของฐาน FV · ธนาคารที่ ROE ~11.9% แต่ซื้อขายที่ P/BV ~2.25x คือการจ่ายราคาล่วงหน้าให้กับ "การปลดเพดานสินทรัพย์ + การกลับไป ROE 15–16%" ที่ยังไม่เกิดขึ้นและยังไม่มีกำหนด นักลงทุนแนวมูลค่าควรรอ ไม่ใช่ไล่ราคา</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$75.76</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$66.29</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $94.70</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="121.31" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $121.31 • EPS ฐาน ~$6.06 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS −2%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$51.30</div>
+          <div class="ret neg">−49.7% (≈ −20.5%/ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$5.70</span></li>
+            <li><span>P/E ออก</span><span>9x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$9.70</span></li>
+            <li><span>สถานการณ์</span><span>เศรษฐกิจแคนาดาถดถอย · คลื่นรีไฟแนนซ์สินเชื่อบ้านที่ต่ออายุจากยุคดอกเบี้ยต่ำดันการผิดนัดชำระ · PCL พุ่ง · เพดานสินทรัพย์ยังไม่ถูกปลด · ตลาดกลับไปให้ P/E ระดับธนาคารแคนาดาปกติ</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +6%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$86.60</div>
+          <div class="ret neg">−20.1% (≈ −7.2%/ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$7.22</span></li>
+            <li><span>P/E ออก</span><span>12x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$10.30</span></li>
+            <li><span>สถานการณ์</span><span>ธุรกิจเดินปกติ · ซื้อหุ้นคืนหนุน EPS · เพดานสินทรัพย์ถูกปลดช่วงปี 2570 แต่การโตกลับมาช้า · PCL กลับสู่ระดับปกติ · ตลาดคืน multiple ส่วนเกินที่ให้ไว้ล่วงหน้า</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +11%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$124.30</div>
+          <div class="ret pos">+11.7% (≈ +3.8%/ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$8.29</span></li>
+            <li><span>P/E ออก</span><span>15x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$11.20</span></li>
+            <li><span>สถานการณ์</span><span>OCC ปลดเพดานเร็วกว่าคาด · ธุรกิจรีเทลสหรัฐกลับมาโตสินเชื่อ/เงินฝาก · ROE ไต่กลับ 15%+ · ซื้อหุ้นคืนต่อเนื่อง · ตลาดยอมให้ premium multiple ค้างไว้</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      กรณี Base ให้ราคาเป้าปีที่ 3 ที่ $86.60 ซึ่งอยู่ใกล้ Fair Value วันนี้ ($94.70) — อ่านได้ว่าฉากทัศน์ฐานคือตลาดค่อย ๆ คืน multiple ส่วนเกินกลับลงมาที่มูลค่าเหมาะสม —
+      แปลว่าแม้ธุรกิจเดินตามคาดทุกอย่าง ผู้ที่ซื้อที่ $121.31 วันนี้ยังมีโอกาสขาดทุนราว 20% ในสามปีเพราะจ่าย multiple ล่วงหน้าไปแล้ว ·
+      สังเกตว่าแม้กรณี Bull ที่ทุกอย่างเข้าทาง (ปลดเพดานเร็ว + ROE กลับ 15%+ + ตลาดยอมให้ P/E 15x ค้างไว้) ผลตอบแทนก็ยังได้แค่ ~3.8%/ปี
+      ซึ่ง<b>ต่ำกว่าผลตอบแทนพันธบัตร</b> — นี่คือรูปทรงความเสี่ยง/ผลตอบแทนที่ไม่สมมาตรในทางลบ ·
+      ปันผลรวม 3 ปีคำนวณจากฐาน $3.21/ปี โตปีละ ~5% และแปลงเป็น USD ที่อัตราปัจจุบัน (ค่าเงิน CAD อ่อนลงจะทำให้ตัวเลขจริงต่ำกว่านี้)
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก &amp; ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>ปลดเพดานสินทรัพย์สหรัฐ:</b> ถ้า OCC พอใจกับผลงานผู้ตรวจสอบอิสระที่ DOJ แต่งตั้ง เพดาน US$434 พันล้านอาจถูกปลด — ปลดล็อกเครื่องยนต์การเติบโตที่ถูกแช่แข็งมาตั้งแต่ปี 2567 (ฝ่ายบริหารเรียกปี 2569 ว่า "ปีแห่งการพิสูจน์" แต่นักวิเคราะห์ส่วนใหญ่ยังมองปี 2570 เป็นอย่างเร็ว)</li>
+          <li><b>เงินกองทุนล้นเกิน:</b> CET1 14.3% สูงกว่าเกณฑ์ OSFI (DSB) ~11.5% มาก — รองรับโครงการซื้อหุ้นคืน CAD 7 พันล้าน (รวมคืนทุนผู้ถือหุ้น CAD 15 พันล้านเมื่อจบ) ซึ่งหนุน EPS และ ROE ทางบัญชี</li>
+          <li><b>โมเมนตัมกำไรฟื้น:</b> ไตรมาส 2 ปีบัญชี 2569 กำไรสุทธิปรับปรุง +15% YoY, EPS ปรับปรุง +21% YoY, adjusted ROE 14.4% พร้อมขึ้นปันผลอีก CAD 0.04</li>
+          <li><b>โครงสร้าง oligopoly 5 เจ้า:</b> ระบบธนาคารแคนาดาถูกกันคู่แข่งต่างชาติมากว่า 100 ปี — ฐานเงินฝากรายย่อยเหนียว ต้นทุนเงินทุนต่ำ คือ moat ที่แท้จริงของทั้งกลุ่ม และของ TD ในฐานะเบอร์ 2</li>
+          <li><b>Wealth &amp; Insurance + Wholesale:</b> ธุรกิจที่ไม่ติดเพดานสหรัฐยังเติบโตได้ ช่วยชดเชยระหว่างที่รีเทลสหรัฐถูกจำกัด</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>ราคาแพงมากเมื่อเทียบมูลค่า (ความเสี่ยงอันดับ 1):</b> P/BV ~2.25x บน ROE ~11.9% (มัธยฐาน FY2021–2025 อยู่แค่ ~1.43x และจุดสูงสุด 5 ปีของตัวเองแค่ 1.64x) — MOS ติดลบ ~28.1% · ตลาดกำลังคิดราคาราวกับเพดานถูกปลดแล้วและ ROE กลับไป 15–16% แล้ว ทั้งที่ยังไม่เกิด</li>
+          <li><b>เพดานสินทรัพย์อาจอยู่ยาวกว่าที่คิด:</b> กรณีตัวอย่าง Wells Fargo ถูกครองเพดานนานหลายปี · หน่วยงานกำกับไม่แสดงท่าทีเร่งรีบ และคำสั่งยินยอมยังผูกกับดุลพินิจของ OCC ล้วน ๆ · ทุกไตรมาสที่ยืดออกไปคือการเติบโตที่หายไปถาวร</li>
+          <li><b>ต้นทุนแก้ไขระบบ AML ต่อเนื่อง:</b> ค่าใช้จ่ายด้านการกำกับ/เทคโนโลยี/บุคลากรกดอัตราส่วนต้นทุนต่อรายได้ และเป็นสาเหตุหลักที่ ROE ของ TD ต่ำกว่าคู่แข่งแคนาดาอย่างเห็นได้ชัด</li>
+          <li><b>คลื่นรีไฟแนนซ์สินเชื่อบ้านแคนาดา:</b> สินเชื่อที่ทำในยุคดอกเบี้ยต่ำทยอยครบกำหนดต่ออายุที่ดอกเบี้ยสูงกว่ามาก — ภาระผ่อนต่อเดือนกระโดด เสี่ยงดันการผิดนัดชำระและ PCL ขึ้นพร้อมกันทั้งระบบ</li>
+          <li><b>PCL กลับสู่ปกติ/พุ่งช่วงถดถอย:</b> ระดับการตั้งสำรองปัจจุบันอยู่ในภาวะเศรษฐกิจที่ยังดี — การกลับสู่ค่าเฉลี่ยรอบวัฏจักรเพียงอย่างเดียวก็กินกำไรได้หลายเปอร์เซ็นต์</li>
+          <li><b>ความเสี่ยงค่าเงิน:</b> ปันผลและกำไรเป็น CAD แต่หุ้นซื้อขายเป็น USD — CAD อ่อนค่าจะกดทั้งผลตอบแทนปันผลและมูลค่าที่แปลงกลับเป็น USD (รายงานนี้ใช้ CADUSD 0.717)</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>ธุรกิจดี งบแข็ง แต่ราคาวิ่งไปไกลเกินพื้นฐานมาก — ไม่มีส่วนเผื่อความปลอดภัยเหลืออยู่เลย</h2>
+      <p>TD เป็นธนาคารเบอร์ 2 ของแคนาดาในระบบ oligopoly 5 เจ้าที่แทบไม่มีคู่แข่งใหม่เข้ามาได้ เงินกองทุนแข็งแรงมาก (CET1 14.3%) และผลประกอบการล่าสุดฟื้นตัวชัด
+      แต่ปัญหาไม่ได้อยู่ที่คุณภาพธุรกิจ — อยู่ที่ <b>ราคา</b> · ราคาวิ่งขึ้น 51.7% ในหนึ่งปีจนซื้อขายที่ P/BV ~2.25x และ P/E (TTM) ~20x
+      ขณะที่ ROE จริงอยู่แค่ ~11.9% ต่ำกว่าคู่แข่งในกลุ่มอย่างเห็นได้ชัด เพราะ<b>เพดานจำกัดขนาดสินทรัพย์ธุรกิจรีเทลสหรัฐ (US$434 พันล้าน)</b>
+      จากคำสั่งยินยอมคดีฟอกเงินปี 2567 (ค่าปรับรวม ~US$3 พันล้าน) <b>ยังบังคับใช้อยู่</b> ณ ส.ค. 2569 บวกกับค่าใช้จ่ายแก้ไขระบบที่ยังกดกำไรต่อเนื่อง
+      รายงานนี้จึงหักส่วนลดของเพดานเข้าไปในตัวคูณโดยตรง (ใช้ ROE ปกติ 12.4% = ค่าเฉลี่ย FY2021–2025 แทน adjusted 14.4% → ตัวคูณ 2.084x แทน 2.566x)
+      ได้มูลค่าเหมาะสม $94.70 (เฉลี่ย 2 วิธี — Justified P/BV $112.30 · มัธยฐาน P/B FY2021–2025 $77.05 · ตัด DDM ออกเพราะเป็นตระกูล Gordon เดียวกับ justified P/B การเฉลี่ยรวมคือการนับซ้ำ · ใช้ r 7.9% จาก rf พันธบัตรแคนาดา 10 ปี 3.643%)
+      แม้ทวนด้วย P/E ล่วงหน้า 11–12x ก็ได้ $85–92 ซึ่งต่ำกว่า FV เล็กน้อย · ทุกเลนส์ชี้ทางเดียวกัน
+      ที่ราคา $121.31 นักลงทุนกำลังจ่ายเงินล่วงหน้าให้กับสถานการณ์ที่ดีที่สุด (ปลดเพดานเร็ว + ROE กลับ 15%+) ทั้งที่ยังไม่มีกำหนดการใด ๆ จากหน่วยงานกำกับ</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$94.70 <span style="font-size:12px;color:#cab9a8">($77.05–$112.30)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −28.1% (แพงกว่า FV)</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$113.02 (Buy)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ผู้ที่ยังไม่มีหุ้น — <b>รอ ไม่ไล่ราคา</b> · โซนที่เริ่มมีส่วนเผื่อความปลอดภัยจริงคือต่ำกว่า $75.76 (MOS 20%) และน่าสนใจมากที่ $66.29 (MOS 30%)
+        ซึ่งห่างจากราคาวันนี้มาก ทางที่สมจริงกว่าคือ<b>ใส่ไว้ใน watchlist แล้วรอจังหวะ de-rating</b> (ข่าวร้ายเรื่องเพดาน · PCL พุ่ง · ตลาดหมี) มากกว่ารอให้พื้นฐานไล่ราคาทัน
+        ผู้ที่ถืออยู่แล้ว — กำไรรอบนี้มาจากการขยาย multiple ไม่ใช่กำไรที่โตขึ้น ควรทบทวนขนาดสถานะและพิจารณาทยอยลดตามวินัยของตัวเอง ·
+        <b>สิ่งที่ต้องจับตาเป็นอันดับแรกคือประกาศของ OCC เรื่องเพดานสินทรัพย์</b> — เป็นตัวแปรเดียวที่จะเปลี่ยนสมมติฐาน ROE ในรายงานนี้อย่างมีนัยสำคัญ
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    ราคา ณ 7 ส.ค. 2569 จาก Yahoo Finance (cross-check กับ StockAnalysis.com ตรงกันพอดี 0.00%) • ข้อมูลงบการเงินย้อนหลัง 5 ปี (สกุล CAD, ปีบัญชีสิ้นสุด 31 ต.ค.) และเป้านักวิเคราะห์จาก StockAnalysis.com •
+    BVPS จาก GuruFocus (ณ ไตรมาส 2 ปีบัญชี 2569) • สถานะเพดานสินทรัพย์/คำสั่งยินยอม BSA-AML จากประกาศ OCC และรายงานของ American Banker •
+    ตัวเลขไตรมาส 2 ปีบัญชี 2569 (CET1 14.3%, ปันผล CAD 1.12, adjusted ROE 14.4%) จาก TD Q2 FY2026 earnings call ผ่าน TradingView/Quartr •
+    อัตราแลกเปลี่ยน CADUSD 0.717 ณ 8 ส.ค. 2569 •
+    อัตราปลอดความเสี่ยง (rf) 3.643% = ผลตอบแทนพันธบัตรรัฐบาลแคนาดาอายุ 10 ปี (TVC:CA10Y) ณ 8 ส.ค. 2569 ผ่าน TradingView • β 0.85 · ERP 5.0% (สมมติฐานของรายงาน) •
+    มัธยฐาน P/B 1.43x คำนวณจาก P/B ณ สิ้นปีบัญชี FY2021–2025 (1.64 / 1.43 / 1.24 / 1.17 / 1.52) — ใช้หน้าต่าง FY2021–2025 เท่านั้นเพราะข้อจำกัดของแหล่งข้อมูล (วิธีมาตรฐานกำหนด 10 ปี)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 8 ส.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
