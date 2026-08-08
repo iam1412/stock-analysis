@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น Bank of Montreal (BMO) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Opus 5">
+<script type="application/json" id="stock-meta">
+{"symbol":"BMO","currency":"USD","price":181.55,"fairValue":140.50,"mos":-29.2,"upside":-22.6,"pe":19.60,"dividendYield":2.7,"roe":11.37}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#2793e2",
+    "accentDark": "#176cab",
+    "darkGrad": "linear-gradient(135deg,#06253c 0%,#0b456f 58%,#116db1 140%)",
+    "glow": "rgba(30,143,225,.35)",
+    "subColor": "#c2d9eb",
+    "headerMuted": "#c1d3e1",
+    "verdictText": "#d0e3f1",
+    "vcellLabel": "#d6e5ef",
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#137333"
+  },
+  "chart": {
+    "data": [["ก.ย.25", 130.25], ["ต.ค.25", 124.18], ["พ.ย.25", 126.13], ["ธ.ค.25", 129.79],
+             ["ม.ค.26", 136.15], ["ก.พ.26", 143.93], ["มี.ค.26", 135.34], ["เม.ย.26", 152.1],
+             ["พ.ค.26", 162.01], ["มิ.ย.26", 176.7], ["ก.ค.26", 179.45], ["ส.ค.26", 181.55]],
+    "min": 100, "max": 200, "grid": [120, 140, 160, 180],
+    "fairLine": 140.50, "currency": "$", "highlight": [1, 11]
+  },
+  "gauge": { "min": 70, "max": 200, "cur": 181.55, "fair": 140.50 },
+  "fv": 140.50
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots"><div style="width:8px;height:8px;border-radius:50%;background:#2793e2;display:inline-block;margin:0 3px"></div><div style="width:8px;height:8px;border-radius:50%;background:#176cab;display:inline-block;margin:0 3px"></div><div style="width:8px;height:8px;border-radius:50%;background:#0b456f;display:inline-block;margin:0 3px"></div></div>
+    <div>
+      <span class="tag">NYSE: BMO</span>
+      <span class="tag">Banks — Diversified</span>
+      <span class="tag">Canadian Big-5 / US Midwest Commercial</span>
+    </div>
+    <h1>Bank of Montreal (BMO)</h1>
+    <div class="sub">ธนาคารพาณิชย์ใหญ่อันดับ 3 ของแคนาดา • Personal &amp; Commercial Banking แคนาดา-สหรัฐฯ • BMO Capital Markets • Wealth Management • จ่ายปันผลต่อเนื่องตั้งแต่ปี 1829</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$181.55<small>(BMO)</small></div>
+      </div>
+      <div class="chg">▲ +39.4% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 7 ส.ค. 2569<br>
+        กรอบ 52 สัปดาห์ $112.21 – $184.21<br>
+        ที่มา: Yahoo Finance, StockAnalysis.com, Google Finance
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ราคาหุ้น USD · งบการเงินสกุล CAD</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">$127.2 พันล้าน</div><div class="d">~701 ล้านหุ้น · เฉลี่ยปรับลด TTM 713 ล้าน</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~19.6x</div><div class="d">สูงกว่ากรอบเทรดในอดีตของกลุ่ม (~10–12x) มาก</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~11x</div><div class="d">กรอบ ~8–13x (ธนาคารใหญ่แคนาดา)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">2.06x</div><div class="d">ราคา $181.55 ÷ BVPS $88.12 — สูงกว่าจุดสูงสุดของตัวเองในรอบ 5 ปีที่ 1.51x</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">CAD 8,709 ล้าน</div><div class="d">+19.0% YoY (ปีบัญชีสิ้นสุด 31 ต.ค. 2568)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$9.26</div><div class="d">GAAP diluted (Yahoo, USD) · adjusted $9.56 สูงกว่า 3.1%</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~$88.12</div><div class="d">ค่าที่วัดจริงจากงบล่าสุด แปลงเป็น USD ที่ CADUSD 0.717 (8 ส.ค. 2569)</div></div>
+      <div class="metric"><div class="k">ROE (TTM)</div><div class="v pos">~11.4%</div><div class="d">ต่ำสุดในกลุ่มธนาคารใหญ่ 5 เจ้าของแคนาดา</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">CAD 34,683 ล้าน</div><div class="d">+13.3% YoY · FY2025 CAD 32,657 ล้าน</div></div>
+      <div class="metric"><div class="k">อัตรากำไรสุทธิ (TTM)</div><div class="v">28.1%</div><div class="d">FY2025 26.7% · FY2024 25.2% · FY2023 16.4%</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~2.7%</div><div class="d">$4.84/ปี (≈ CAD 6.75) · payout ~52% · จ่ายไม่ขาดตั้งแต่ปี 1829</div></div>
+      <div class="metric"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v">~$162.45</div><div class="d">ต่ำกว่าราคาปัจจุบัน 10.5% · คำแนะนำรวม Hold</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART (ราคาย้อนหลัง ~1 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#2793e2"></i>ราคา BMO</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $140.50</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคาทำจุดต่ำรอบปีที่ ~$124 ในเดือน ต.ค. 2568 ตอนตลาดยังกังวลว่าการตั้งสำรองหนี้เสีย (PCL) ฝั่งสินเชื่อธุรกิจสหรัฐฯ หลังดีล Bank of the West จะยืดเยื้อ
+        จากนั้นวิ่งขึ้นแทบไม่หยุดตลอด 9 เดือน จนแตะ ~$181.55 ในเดือน ส.ค. 2569 คิดเป็น <b>+39.4% รอบปี</b> — แรงหนุนมาจากกำไร FY2025 ที่ฟื้นแรง (+19.0% YoY)
+        ประกอบกับ PCL เริ่มลดจากจุดสูงสุด และกระแสเงินไหลเข้ากลุ่มธนาคารแคนาดาทั้งกลุ่ม
+        ผลคือ P/E ขยับจาก ~13x ขึ้นมาที่ ~19.6x และ P/BV ขึ้นมาที่ 2.06x ซึ่งเป็นการ re-rate ที่แรงกว่าการฟื้นตัวของกำไรพื้นฐานมาก
+        ราคาปัจจุบันอยู่เหนือเป้าเฉลี่ยนักวิเคราะห์ (~$162.45) ไปแล้ว ~11.8% และห่างจุดสูงสุด 52 สัปดาห์ ($184.21) เพียง 1.4%
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 2 วิธี + cross-check P/E</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. Justified P/BV (Gordon Growth)</div><div class="mdesc">P/BV เหมาะสม = (ROE ปกติ 12.0% − g 3.75%)/(r 7.9% − g 3.75%) = 1.988 × BVPS $88.12 — ROE ปกติ 12.0% คือค่าเฉลี่ย FY2021–2025 (13.6 / 21.1 / 6.0 / 9.1 / 10.1%) · <b>FY2022 สูงผิดปกติที่ 21.1%</b> และ <b>FY2023 ต่ำผิดปกติที่ 6.0%</b> (PCL ฝั่งสหรัฐฯ พุ่ง) — การเฉลี่ยทั้งหน้าต่างคือการกลบความผันผวนสองปีนี้ให้เหลือค่ากลางที่ใช้ได้จริง ไม่ใช่การหยิบปีใดปีหนึ่งมาอ้าง · ที่มาของ r ดูบรรทัดใต้กล่อง</div></div>
+        <div class="mval">$175.19</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. P/B ในอดีต (median) × BVPS</div><div class="mdesc">median P/B <b>1.20x</b> × BVPS $88.12 — median จาก P/B ณ สิ้นปีบัญชี FY2021–2025 ที่วัดจริงได้ 1.51 / 1.20 / 0.99 / 1.10 / 1.40 (รอบก่อนใช้<b>ค่าประมาณ 1.35x</b> จากกลางกรอบของกลุ่ม รอบนี้เปลี่ยนเป็น<b>ค่าที่วัดจริง</b>ของ BMO เอง) · ★ วิธีนี้<b>ไม่ใช้ (r, g) เลย</b> จึงเป็นสมออิสระจากขา Justified P/BV · <b>ตัวคูณในอดีตใช้หน้าต่าง FY2021–2025 เท่านั้น (ข้อจำกัดของแหล่งข้อมูล — วิธีมาตรฐานกำหนด 10 ปี)</b></div></div>
+        <div class="mval">$105.74</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $105.74 – $175.19</span></div>
+        <div class="r">$140.50</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        <b>ที่มาของ r (cost of equity) — ตรวจสอบได้:</b> r = rf <b>3.643%</b> + β <b>0.85</b> × ERP <b>5.0%</b> = <b>7.9%</b> · rf คือผลตอบแทนพันธบัตรรัฐบาล<b>แคนาดา</b>อายุ 10 ปี (TVC:CA10Y ณ 8 ส.ค. 2569) — ต้องใช้ rf สกุลเดียวกับกระแสเงินสดที่ประเมิน ซึ่งเป็น CAD ถ้าหยิบ rf ของสหรัฐฯ มาใช้จะได้ r สูงเกินจริงและกด FV ลงแบบไม่มีเหตุผลทางเศรษฐศาสตร์ · g = <b>3.75%</b> (กลางกรอบ 3.5–4.0% ไม่เกิน 4% เพราะส่วนเกินจาก ROE × retention มาจาก buyback ไม่ใช่การเติบโตของกำไร) · ตรวจย้อนกลับ: r ที่ตลาดคิดอยู่จริงจาก r* = g + (ROE−g)/(P/B) ได้ราว <b>7.8%</b> ⇒ 7.9% สอดคล้องกับที่ตลาดใช้จริง<br>
+        <b>ทำไมไม่ใช้ DCF/FCF และทำไมรอบนี้ตัด DDM ทิ้ง:</b> ธนาคารรับฝาก-ปล่อยกู้ FCF ผันผวนตามงบดุล ไม่ใช่กระแสเงินสดอิสระในความหมายของกิจการทั่วไป (ดูตาราง FCF ที่แกว่งจาก CAD 4,180 ล้าน ถึง 43,565 ล้าน) จึงใช้ Justified P/BV เป็นขาหลักตามมาตรฐานการประเมินมูลค่าสถาบันการเงิน · <b>รอบก่อนมี DDM เป็นวิธีที่สอง รอบนี้ตัดทิ้ง</b> เพราะ <b>DDM กับ justified P/B คือตระกูล Gordon เดียวกัน ใช้ (r, g) ชุดเดียวกัน ⇒ การเฉลี่ยสองอันนี้คือการนับสมมติฐานชุดเดิมซ้ำสองครั้ง</b> ไม่ได้เพิ่มข้อมูลใหม่ให้ FV เลย · เหลือสองขาที่อิสระกันจริง: ขาทฤษฎี (Justified P/BV) กับขาตัวคูณในอดีตที่ไม่ใช้ (r, g) · Residual income ไม่นับเพราะทางพีชคณิตให้ผลเดียวกับ Justified P/BV<br>
+        <b>Cross-check ด้วย P/E:</b> EPS(TTM) $9.26 × กรอบ P/E ในอดีตของกลุ่ม 10–13x → $92.6 – $120.4 · EPS forward $11.63 × 12x → ~$139.6 ⇒ กรอบราว $93–140 เกาะขอบล่างของ FV $140.50 พอดี<br>
+        <b>ความอ่อนไหวของสมมติฐาน (เปิดเผยตรง ๆ):</b> <b>ถ้าใช้ขา justified P/B อย่างเดียว FV = $175.19 → MOS −3.6%</b> — คือกรณีที่ผ่อนที่สุดเท่าที่สมมติฐานชุดนี้จะให้ได้ และก็<b>ยังไม่เหลือส่วนเผื่อ</b> · ถ้าใช้ขา median P/B อย่างเดียวได้ $105.74 · ถ้าใช้ ROE TTM 11.37% แทน ROE ปกติ 12.0% ขา justified P/B จะเหลือ ~$161.8 และ FV เฉลี่ยลงมาที่ ~$133.8 ⇒ ทุกทางยังต่ำกว่าราคาตลาด — สมมติฐานที่เลือกใช้ดัน FV <b>ขึ้น</b> ไม่ใช่ลง<br>
+        <b>ความอ่อนไหวต่อ r (บังคับดู — r − g เหลือแค่ ~4.2 จุด ตัวคูณจึงไวมาก):</b> r 7.4% (−0.5 จุด) → FV ~<b>$152.5</b> · r 7.9% (ฐาน) → FV <b>$140.50</b> · r 8.4% (+0.5 จุด) → FV ~<b>$131.0</b> ⇒ ขยับ r เพียงครึ่งจุดเปลี่ยน FV ราว ±8% (ขา median P/B ไม่ขยับตาม r จึงช่วยหน่วงไว้) · ข้อสรุป "ราคาแพงกว่ามูลค่าเหมาะสม" ยังยืนในทั้งสามกรณี<br>
+        <b>สกุลเงิน:</b> ประเมินต่อหุ้นในสกุล CAD ก่อน แล้วแปลงเป็น USD ที่สปอต CADUSD = 0.717 (8 ส.ค. 2569) · งบการเงินทั้งตารางเป็น CAD ราคาซื้อขายเป็น USD — ห้ามหารข้ามสกุล
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $181.55</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $140.50</div></div>
+        </div>
+        <div class="scale">
+          <span>$98.35<br><small>MOS 30%</small></span>
+          <span>$112.40<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$140.50<br><small>Fair Value</small></span>
+          <span style="text-align:right">$162.45<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">$175.19<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน $181.55 อยู่<b>เหนือทุกโซน</b>ที่คำนวณได้ — เหนือกรอบบนของ Fair Value ($175.19) อีก 3.6% และเหนือเป้าเฉลี่ยนักวิเคราะห์ ($162.45) อีก 11.8%
+        นี่คือภาพเดียวกันทั้งกลุ่มธนาคารใหญ่ 5 เจ้าของแคนาดาหลังราคาวิ่งแรงรอบปี ไม่ใช่เรื่องเฉพาะตัวของ BMO
+        แต่ BMO เป็นตัวที่ระยะห่างกว้างที่สุด เพราะ ROE ต่ำสุดในกลุ่มขณะที่ตลาดให้ P/BV ใกล้เคียงเพื่อน
+        <b>P/B ปัจจุบัน 2.06x (ราคา $181.55 ÷ BVPS $88.12) สูงกว่าจุดสูงสุดของตัวเองในรอบ 5 ปีที่ 1.51x</b> — ไม่ใช่แค่แพงกว่าค่ากลาง แต่แพงกว่าปีที่แพงที่สุดของตัวเองในหน้าต่างที่วัดได้
+        ROE ที่ตลาดฝังไว้ในราคานี้คำนวณย้อนได้ <b>12.3%</b> (ROE = g + P/B × (r − g) = 3.75% + 2.06 × 4.15%) เทียบกับ ROE ปกติ FY2021–2025 ที่ 12.0% ⇒ ตลาดฝังไว้<b>พอดี ๆ ไม่ได้เผื่ออะไรให้เลย</b> ถ้า PCL ฝั่งสหรัฐฯ กลับมาเป็นวงจรอีกรอบ ราคานี้ไม่มีที่รองรับ
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">−29.2%</div>
+        <div class="txt"><b>แพงเมื่อเทียบกับประวัติของตัวเอง ไม่เหลือส่วนเผื่อความปลอดภัยที่ราคาปัจจุบัน</b><br>ราคา $181.55 สูงกว่ามูลค่าเหมาะสม $140.50 ราว 29% ของฐาน FV (คิดจากราคาปัจจุบัน = แพงเกิน ~23%) · <b>P/B ปัจจุบัน 2.06x (ราคา $181.55 ÷ BVPS $88.12) สูงกว่าจุดสูงสุดของตัวเองในรอบ 5 ปีที่ 1.51x</b> · แม้ใช้ขา justified P/B อย่างเดียว FV = $175.19 → MOS −3.6% ก็ยังไม่เหลือส่วนเผื่อ ผู้ที่ยังไม่ถือไม่ควรไล่ราคาที่ระดับนี้ ผู้ที่ถืออยู่แล้วอาจพิจารณาทยอยลดน้ำหนักและรอราคาย่อกลับเข้าใกล้ $140 หรือต่ำกว่าก่อนสะสมใหม่ — ตัวเลขนี้ตั้งอยู่บนสมมติฐาน r 7.9% (rf พันธบัตรแคนาดา 10 ปี 3.643% + β 0.85 × ERP 5.0%) และ g 3.75% ซึ่งใกล้เคียงกับ cost of equity ที่ตลาดคิดอยู่จริงราว 7.8% ไม่ใช่ค่าที่ตั้งให้เข้มเกินจริง · ความไวต่อ r ดูบรรทัด r ± 0.5 จุด ในหัวข้อ 3</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$112.40</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$98.35</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $140.50</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="181.55" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $181.55 • EPS ฐาน ~$9.26 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS −2%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$87.20</div>
+          <div class="ret neg">−44.0% (≈ −17.6%/ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$8.72</span></li>
+            <li><span>P/E ออก</span><span>10x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$14.52</span></li>
+            <li><span>สถานการณ์</span><span>เศรษฐกิจสหรัฐฯ ถดถอย PCL สินเชื่อธุรกิจฝั่งสหรัฐฯ (พอร์ต Bank of the West) พุ่งกลับขึ้นเป็นวงจร พร้อมกับคลื่นรีไฟแนนซ์สินเชื่อบ้านแคนาดา ตลาดกด P/E กลับสู่ระดับต่ำสุดในอดีต 10x และปันผลถูกแช่แข็ง</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +6%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$132.35</div>
+          <div class="ret neg">−18.3% (≈ −6.5%/ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$11.03</span></li>
+            <li><span>P/E ออก</span><span>12x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$16.00</span></li>
+            <li><span>สถานการณ์</span><span>กำไรโตต่อเนื่องระดับกลาง PCL ทรงตัวที่ระดับปกติ ROE ไต่ขึ้นสู่ ~12.5% แต่ P/E คลายตัวกลับสู่ค่ากลางในอดีต 12x — กำไรที่โตชดเชยการ de-rate ได้ไม่หมด ปันผลช่วยพยุงผลตอบแทนไว้บางส่วน</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +11%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$189.90</div>
+          <div class="ret pos">+13.8% (≈ +4.4%/ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$12.66</span></li>
+            <li><span>P/E ออก</span><span>15x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$16.65</span></li>
+            <li><span>สถานการณ์</span><span>การผนวก Bank of the West ให้ผลเต็มที่ ต้นทุนต่อรายได้ลดตามแผน ROE แตะเป้า 15% และตลาดยอมรับ "การ re-rate ถาวร" ของกลุ่มธนาคารแคนาดา คง P/E ไว้ที่ 15x — ยังให้ผลตอบแทนต่ำกว่าดัชนีทั่วไป</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      จุดสำคัญ: แม้ในกรณี Bull ที่ทุกอย่างเข้าทาง (ROE แตะเป้า 15% + ตลาดยอมคง P/E สูงถึง 15x) ผลตอบแทนรวม 3 ปียังได้เพียง ~+13.8% หรือ ~4.4% ต่อปี ซึ่งต่ำกว่าที่ควรได้รับจากการรับความเสี่ยงหุ้นธนาคาร (r 7.9%)
+      นี่คือลักษณะของหุ้นที่ "ราคาวิ่งไปกินผลตอบแทนอนาคตล่วงหน้าไปแล้ว" — ไม่ใช่ธุรกิจไม่ดี แต่ราคาปัจจุบันไม่เหลือส่วนเผื่อ
+      EPS ฐานใช้ GAAP diluted TTM $9.26 จาก Yahoo (อนุรักษ์นิยม) ถ้าใช้ adjusted EPS $9.56 จาก StockAnalysis ทุกฉากทัศน์จะดีขึ้นราว 3% ซึ่งไม่เปลี่ยนข้อสรุป
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก &amp; ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>ประวัติปันผลยาวที่สุดในแคนาดา:</b> BMO จ่ายเงินปันผลต่อเนื่อง<b>ตั้งแต่ปี 1829</b> — ยาวนานเกือบ 200 ปี ผ่านสงครามโลก วิกฤตปี 1929 และวิกฤตการเงินปี 2008 โดยไม่เคยขาด เป็นสถิติที่ยาวที่สุดในบรรดาบริษัทแคนาดาทั้งหมด สะท้อนวินัยด้านเงินกองทุนและความสม่ำเสมอของฐานกำไร</li>
+          <li><b>โครงสร้างตลาดแบบ oligopoly 5 เจ้า:</b> ธนาคารใหญ่ 5 แห่งของแคนาดาครองส่วนแบ่งตลาดร่วมกันมากว่า 100 ปี ภายใต้กฎเกณฑ์ที่กันคู่แข่งต่างชาติออกไปโดยปริยาย — moat เชิงโครงสร้างที่หาไม่ได้ในระบบธนาคารสหรัฐฯ ที่มีผู้เล่นหลายพันราย</li>
+          <li><b>กำไรฟื้นตัวชัดเจน:</b> กำไรสุทธิ FY2025 CAD 8,709 ล้าน (+19.0% YoY) และ TTM CAD 9,731 ล้าน · อัตรากำไรสุทธิไต่จาก 16.4% (FY2023) ขึ้นมา 28.1% (TTM) · รายได้ TTM +13.3% YoY</li>
+          <li><b>ผลจากการผนวก Bank of the West:</b> ถ้า synergy ด้านต้นทุนออกมาเต็มปีตามแผน จะเป็นตัวดัน ROE จาก ~11.4% ขึ้นสู่เป้าหมายระยะกลาง ~15% ของผู้บริหาร และเปิดฐานลูกค้าฝั่งตะวันตกของสหรัฐฯ ให้ธุรกิจ Commercial Banking ที่ BMO ถนัด</li>
+          <li><b>ฐานเงินกองทุนแข็ง:</b> CET1 อยู่ในระดับ ~11.5%+ ซึ่งสูงกว่าเกณฑ์ขั้นต่ำรวม Domestic Stability Buffer (DSB) ของ OSFI — เปิดทางให้เพิ่มปันผลและซื้อหุ้นคืนได้ต่อเนื่องเมื่อภาวะสินเชื่อคลี่คลาย</li>
+          <li><b>รายได้กระจายหลายขา:</b> Personal &amp; Commercial ทั้งแคนาดาและสหรัฐฯ + Capital Markets + Wealth Management ทำให้กำไรไม่ผูกกับวงจรดอกเบี้ยขาเดียว</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>★ คุณภาพสินเชื่อธุรกิจฝั่งสหรัฐฯ หลังดีล Bank of the West (ความเสี่ยงอันดับ 1):</b> พอร์ต US Commercial ที่โตขึ้นมากจากดีลนี้คือแหล่งที่มาหลักของการตั้งสำรอง (PCL) ที่พุ่งขึ้นในช่วง FY2023–FY2024 จนกด ROE ลงเหลือ 6.0% และ 9.1% ตามลำดับ · แม้ PCL จะผ่อนคลายลงแล้ว แต่เป็นรายการที่<b>กลับมาเป็นวงจรได้เร็ว</b> — สินเชื่อธุรกิจ (โดยเฉพาะกลุ่มขนส่ง อสังหาริมทรัพย์เชิงพาณิชย์ และธุรกิจขนาดกลางในสหรัฐฯ) เสื่อมคุณภาพเร็วกว่าสินเชื่อรายย่อยมาก และ BMO มีสัดส่วนสินเชื่อธุรกิจสูงกว่าเพื่อนในกลุ่ม ⇒ ควรติดตามแนวโน้ม PCL ฝั่ง US commercial รายไตรมาสเป็นตัวชี้ขาด</li>
+          <li><b>ROE ต่ำสุดในกลุ่ม:</b> ROE 11.4% เทียบกับเพื่อนในกลุ่มที่ทำได้ 13–16% แต่ตลาดกลับให้ P/BV ที่ระดับใกล้เคียงกัน — ถ้า ROE ไม่ไต่ขึ้นตามแผน การ de-rate กลับสู่ค่าเหมาะสมจะแรงกว่าหุ้นธนาคารตัวอื่นในกลุ่ม</li>
+          <li><b>คลื่นรีไฟแนนซ์สินเชื่อบ้านแคนาดา:</b> สินเชื่อบ้านแคนาดาส่วนใหญ่กำหนดดอกเบี้ยเป็นช่วง 5 ปี — ชุดที่ปล่อยตอนดอกเบี้ยต่ำสุดกำลังทยอยครบกำหนดต่ออายุที่ดอกเบี้ยสูงกว่าเดิมมาก อาจกดความสามารถชำระหนี้ของครัวเรือนและดัน PCL ฝั่งรายย่อยขึ้นพร้อมกันทั้งกลุ่ม</li>
+          <li><b>ราคาปัจจุบันไม่เหลือส่วนเผื่อ:</b> P/E 19.6x และ <b>P/B ปัจจุบัน 2.06x (ราคา $181.55 ÷ BVPS $88.12) สูงกว่าจุดสูงสุดของตัวเองในรอบ 5 ปีที่ 1.51x</b> (หน้าต่าง FY2021–2025 = 1.51 / 1.20 / 0.99 / 1.10 / 1.40) — ระดับนี้ฝัง ROE ระยะยาวไว้ 12.3% พอดีกับ ROE ปกติ 12.0% ที่ทำได้จริง คือไม่มีส่วนเผื่อเหลือให้เลย ราคายังอยู่เหนือเป้าเฉลี่ยนักวิเคราะห์ ($162.45) ซึ่งให้คำแนะนำรวมเพียง Hold</li>
+          <li><b>ความเสี่ยงอัตราแลกเปลี่ยน:</b> เงินปันผลประกาศเป็น <b>CAD</b> แต่ผู้ถือหุ้น NYSE รับเป็น USD ⇒ yield ที่ได้จริงผันผวนตาม CADUSD (ใช้ 0.717 ณ 8 ส.ค. 2569) · CAD อ่อนค่าจะกดทั้งเงินปันผลและมูลค่าหุ้นในสายตานักลงทุนสหรัฐฯ พร้อมกัน</li>
+          <li><b>ข้อจำกัดจาก OSFI:</b> ถ้า OSFI ปรับ Domestic Stability Buffer ขึ้นเพื่อรับมือความเสี่ยงระบบ ธนาคารต้องกันทุนเพิ่ม ⇒ ชะลอการขึ้นปันผลและซื้อหุ้นคืน ซึ่งเป็นสองตัวหลักที่ตลาดใช้ให้ราคาพรีเมียมกับกลุ่มนี้</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>ธนาคารคุณภาพที่ราคาวิ่งนำพื้นฐานไปไกล — ธุรกิจดี แต่ไม่ใช่ราคาที่ดี</h2>
+      <p>
+        BMO เป็นหนึ่งในธนาคารใหญ่ 5 เจ้าของแคนาดา ธุรกิจอยู่ในโครงสร้างตลาดที่กันคู่แข่งมากว่าศตวรรษ และมีสถิติจ่ายปันผลต่อเนื่อง<b>ตั้งแต่ปี 1829</b> ยาวที่สุดในบรรดาบริษัทแคนาดาทั้งหมด
+        กำไรกำลังฟื้นชัดเจน — FY2025 (ปีบัญชีสิ้นสุด 31 ต.ค.) กำไรสุทธิ CAD 8,709 ล้าน +19.0% YoY และอัตรากำไรสุทธิไต่กลับขึ้นมาที่ 28.1% ใน TTM
+        ปัญหาอยู่ที่<b>ราคา ไม่ใช่ตัวธุรกิจ</b>: หุ้นวิ่ง +39.4% ในรอบปี ดัน P/E ขึ้นสู่ ~19.6x และ <b>P/B ปัจจุบัน 2.06x (ราคา $181.55 ÷ BVPS $88.12) สูงกว่าจุดสูงสุดของตัวเองในรอบ 5 ปีที่ 1.51x</b> — แพงเมื่อเทียบกับประวัติของตัวเอง ไม่ใช่แค่เทียบเพื่อนในกลุ่ม
+        เมื่อประเมินด้วย 2 วิธีที่เหมาะกับสถาบันการเงิน — Justified P/BV ผ่าน Gordon (ROE ปกติเฉลี่ย FY2021–2025 = 12.0%, r 7.9%, g 3.75%) ได้ $175.19 · และ median P/B ในอดีตที่วัดจริง 1.20x × BVPS $88.12 ได้ $105.74 (วิธีนี้ไม่พึ่ง r/g จึงเป็นตัวถ่วงอิสระ) — <b>รอบนี้ตัด DDM ทิ้ง</b> เพราะ DDM กับ justified P/B คือตระกูล Gordon เดียวกัน ใช้ (r, g) ชุดเดียวกัน เฉลี่ยกันแล้วเท่ากับนับสมมติฐานชุดเดิมซ้ำ — Fair Value เฉลี่ยอยู่ที่ <b>$140.50</b> ต่ำกว่าราคาตลาดอย่างมีนัยสำคัญ
+        จุดอ่อนเฉพาะตัวคือ ROE 11.4% <b>ต่ำสุดในกลุ่ม 5 เจ้า</b> ขณะที่ตลาดให้ P/BV ใกล้เคียงเพื่อน และความเสี่ยงหลักที่ต้องเฝ้าคือแนวโน้ม PCL ของพอร์ตสินเชื่อธุรกิจฝั่งสหรัฐฯ หลังดีล Bank of the West ซึ่งเคยกด ROE ลงเหลือ 6.0% ในปี FY2023 มาแล้ว
+        แม้ในฉากทัศน์ Bull ที่ ROE แตะเป้า 15% ผลตอบแทน 3 ปียังได้เพียง ~4.4% ต่อปี ต่ำกว่าผลตอบแทนที่ควรได้จากการรับความเสี่ยงหุ้นธนาคาร
+      </p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$140.50 <span style="font-size:12px;color:#cab9a8">($105.74–$175.19)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −29.2% (แพงกว่ามูลค่าเหมาะสม)</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$162.45 (Hold)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ที่ราคา $181.55 ไม่ใช่โซนสะสม — แม้แต่เป้าเฉลี่ยของนักวิเคราะห์เองก็ยังอยู่ต่ำกว่าราคาปัจจุบัน 10.5% พร้อมคำแนะนำรวมเพียง Hold
+        ผู้ที่ยังไม่ถือ: ใส่ไว้ใน watchlist แล้วรอราคาย่อกลับเข้าใกล้ Fair Value $140.50 หรือต่ำกว่า (โซน MOS 20% = $112.40) จึงเริ่มทยอยสะสม
+        ผู้ที่ถืออยู่: พิจารณาทยอยลดน้ำหนักเพื่อล็อกกำไรจากการ re-rate รอบนี้ โดยติดตาม 3 ตัวชี้เป็นหลัก — <b>แนวโน้ม PCL ของพอร์ตสินเชื่อธุรกิจฝั่งสหรัฐฯ รายไตรมาส</b>, ROE ว่าไต่ขึ้นสู่ 15% ตามแผนหรือไม่ และระดับ CET1 เทียบเกณฑ์ OSFI ที่กำหนดเพดานการเพิ่มปันผล/ซื้อหุ้นคืน
+        (งบถัดไปกำหนดประกาศ 25 ส.ค. 2569)
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ราคา ณ 7 ส.ค. 2569 จาก Yahoo Finance ($181.55) ตรงกันทั้ง StockAnalysis.com และ Google Finance • ข้อมูลงบการเงินย้อนหลัง 5 ปีและ TTM (สกุล CAD, ปีบัญชีสิ้นสุด 31 ต.ค.) จาก StockAnalysis.com • EPS/ROE/เป้านักวิเคราะห์/กรอบ 52 สัปดาห์ จาก Yahoo Finance quoteSummary และ StockAnalysis.com • อัตราแลกเปลี่ยน CADUSD = 0.717 ณ 8 ส.ค. 2569 • EPS ที่ใช้เป็นฐานคือ GAAP diluted TTM $9.26 (Yahoo) ซึ่งต่ำกว่า adjusted EPS $9.56 (StockAnalysis) อยู่ 3.1% — เลือกตัวที่อนุรักษ์นิยมกว่า
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 8 ส.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
