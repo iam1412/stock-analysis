@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น Service Corporation International (SCI) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 5">
+<script type="application/json" id="stock-meta">
+{"symbol":"SCI","currency":"USD","price":85.01,"fairValue":91.18,"mos":6.8,"upside":7.3,"pe":22.2,"dividendYield":1.69,"roe":33.9}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#8b41c8",
+    "accentDark": "#662c96",
+    "darkGrad": "linear-gradient(135deg,#231032 0%,#401e5c 58%,#662f92 140%)",
+    "glow": "rgba(133,70,185,.35)",
+    "subColor": "#d7cce0",
+    "headerMuted": "#bdb5c5",
+    "verdictText": "#e1d8e9",
+    "vcellLabel": "#c5bace",
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#137333"
+  },
+  "chart": {
+    "data": [["ก.ย.25", 83.22], ["ต.ค.25", 83.51], ["พ.ย.25", 79.43], ["ธ.ค.25", 77.97],
+             ["ม.ค.26", 80.43], ["ก.พ.26", 84.18], ["มี.ค.26", 82.51], ["เม.ย.26", 81.03],
+             ["พ.ค.26", 75.19], ["มิ.ย.26", 75.96], ["ก.ค.26", 86.19], ["ส.ค.26", 85.01]],
+    "min": 70, "max": 100, "grid": [75, 80, 85, 90, 95],
+    "fairLine": 91.18, "currency": "$", "highlight": [8, 10]
+  },
+  "gauge": { "min": 60, "max": 100, "cur": 85.01, "fair": 91.18 },
+  "fv": 91.18
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots"><div style="width:8px;height:8px;border-radius:50%;background:#8b41c8;display:inline-block;margin:0 3px"></div><div style="width:8px;height:8px;border-radius:50%;background:#662c96;display:inline-block;margin:0 3px"></div><div style="width:8px;height:8px;border-radius:50%;background:#662f92;display:inline-block;margin:0 3px"></div></div>
+    <div>
+      <span class="tag">NYSE: SCI</span>
+      <span class="tag">Consumer Discretionary / Death Care</span>
+      <span class="tag">Funeral Homes &amp; Cemeteries (ผู้นำตลาดสหรัฐฯ)</span>
+    </div>
+    <h1>Service Corporation International</h1>
+    <div class="sub">Funeral Homes • Cemeteries • Preneed Funeral &amp; Cemetery Contracts • Trust &amp; Insurance-Funded Backlog</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$85.01<small>(SCI)</small></div>
+      </div>
+      <div class="chg">▲ +2.2% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 7 ส.ค. 2569 (StockAnalysis.com, ตรงกับ Yahoo Finance)<br>
+        กรอบ 52 สัปดาห์ $68.41 – $90.99<br>
+        ที่มา: StockAnalysis.com, Yahoo Finance, SEC Form 10-Q (งวด Q2/2569)
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">TTM + ไตรมาสล่าสุด (Q2/2569)</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">$11.90B</div><div class="d">140M หุ้น (TTM diluted ลดจาก 170M ปี 2564)</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~22.2x</div><div class="d">เทียบ EPS TTM $3.83</div></div>
+      <div class="metric"><div class="k">P/E Forward (FY69E)</div><div class="v">~20.2x</div><div class="d">อิง guidance EPS $4.20 (ช่วง $4.10–4.30 → 19.8x–20.7x)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">~7.50x</div><div class="d">BVPS ~$11.34 (equity บาง จากทุนหนี้ D/E 3.32x)</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2568</div><div class="v">$543M</div><div class="d">+4.6% YoY (จาก $519M ปี 2567)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$3.83</div><div class="d">FY2568 $3.80 · โตช้าจากรายได้ +2.9% หนุนด้วย buyback</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~$11.34</div><div class="d">= Equity (≈$1,587M) ÷ หุ้น 140M</div></div>
+      <div class="metric"><div class="k">ROE</div><div class="v pos">~33.9%</div><div class="d">สูงจากทุนหนี้ D/E 3.32x ไม่ใช่แค่ประสิทธิภาพดำเนินงาน</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$4,369M</div><div class="d">+2.9% YoY เร่งขึ้นจากปี 2565–66 ที่โตต่ำกว่า 1%</div></div>
+      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">26.0%</div><div class="d">OpM 22.4% · NetM 12.3%</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~1.69%</div><div class="d">$1.44/หุ้น/ปี · payout ~37.6%</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">~0.85</div><div class="d">โดยประมาณ · ธุรกิจทนเศรษฐกิจถดถอย ผันผวนต่ำกว่าตลาด</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#8b41c8"></i>ราคา SCI</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $91.18</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคาแกว่งในกรอบ $75–$86 ตลอด 12 เดือนที่ผ่านมา ทำจุดต่ำสุดรอบปีที่ $75.19 (พ.ค.69) ท่ามกลางความกังวลอัตราดอกเบี้ยกดดันหุ้นที่มีหนี้สูง
+        ก่อนฟื้นตัวแรงแตะจุดสูงสุดรอบปีที่ $86.19 (ก.ค.69) หลังผลประกอบการ Q2/2569 ออกตามคาด (adjusted EPS $0.90) และบริษัทยืนยัน guidance EPS ปี 2569
+        ที่ $4.10–4.30 พร้อมปรับเพิ่มเป้ากระแสเงินสดจากการดำเนินงานอีก $50M ราคาปิดล่าสุด ส.ค.69 ที่ $85.01 ให้ผลตอบแทนรวมรอบปี +2.2%
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 2 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS forward guidance ปีหน้า (adjusted, midpoint) $4.20 × P/E เป้าหมาย ~21x — ต่ำกว่า P/E TTM ปัจจุบัน 22.2x เล็กน้อยเพื่อสะท้อนความเสี่ยง leverage (D/E 3.32x)</div></div>
+        <div class="mval">$88.20</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 33.9% − g 6.5%)/(r 9.8% − g 6.5%) ≈ 8.30 × BVPS $11.34 — r จาก CAPM (rf 4.3% สกุล USD + beta 1.0 × ERP 5.5%), g อิงแนวโน้ม EPS ระยะยาวจากรายได้ +2–3%/ปี บวก buyback ~3%/ปี</div></div>
+        <div class="mval">$94.16</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $88.20 – $94.16</span></div>
+        <div class="r">$91.18</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        วิธี P/E ให้ค่าต่ำกว่าเพราะยึด EPS guidance ปี 2569 ที่ยังระมัดระวัง ไม่รวม upside จากมาร์จิ้นขยายตัว ส่วนวิธี Justified P/BV ให้ค่าสูงกว่าเพราะ ROE 33.9%
+        สูงกว่า cost of equity มาก แต่ต้องระวังว่าส่วนหนึ่งมาจากโครงสร้างทุนที่ใช้หนี้สูง (D/E 3.32x) ไม่ใช่ประสิทธิภาพดำเนินงานล้วน ๆ FV เฉลี่ยจึงอยู่กึ่งกลางสองมุมมองนี้
+        — ทั้งสองวิธีอิงตัวแปรฉาก (EPS guidance / ROE-BVPS) ไม่ใช่ตัวคูณคงที่ตายตัว
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $85.01</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $91.18</div></div>
+        </div>
+        <div class="scale">
+          <span>$63.83<br><small>MOS 30%</small></span>
+          <span>$72.94<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$91.18<br><small>Fair Value</small></span>
+          <span style="text-align:right">$94.16<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">$100.33<br><small>เป้าเฉลี่ย Analyst</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบันใกล้เคียงมูลค่าเหมาะสมมาก MOS เหลือจำกัด (~6.8%) นักลงทุนที่เข้าซื้อตอนนี้รับความเสี่ยง de-rating หากอัตราดอกเบี้ยขาขึ้นกดดันหุ้นที่มีหนี้สูงอย่าง SCI
+        เป้าเฉลี่ยนักวิเคราะห์ $100.33 (Strong Buy, n=6) สูงกว่า FV จากโมเดลนี้ สะท้อนมุมมองตลาดที่ยังให้เครดิตกับ backlog preneed ขนาดใหญ่
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">+6.8%</div>
+        <div class="txt"><b>Margin of Safety จำกัด — ราคาใกล้เคียงมูลค่าเหมาะสม</b><br>เหมาะสำหรับถือระยะยาวจากคุณภาพธุรกิจ (backlog + duopoly) มากกว่าซื้อเพื่อส่วนต่างราคา ผู้ลงทุนเน้น value ควรรอ pullback ใกล้โซน MOS 20% ก่อนสะสมเพิ่ม</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$72.94</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$63.83</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $91.18</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="85.01" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $85.01 • EPS ฐาน ~$3.83 (TTM, ไม่ใช้ปี 2564 พีคโควิด) • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS +2%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$64.96</div>
+          <div class="ret neg">−18.5% (3 ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$4.06</span></li>
+            <li><span>P/E ออก</span><span>16x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$4.35</span></li>
+            <li><span>สถานการณ์</span><span>อัตราตายกลับสู่ปกติเร็ว + ดอกเบี้ยสูงกดพรีเมียมมัลติเปิลจากหนี้ D/E 3.32x</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +6%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$95.76</div>
+          <div class="ret pos">+18.5% (3 ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$4.56</span></li>
+            <li><span>P/E ออก</span><span>21x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$4.95</span></li>
+            <li><span>สถานการณ์</span><span>แนวโน้มปกติต่อเนื่อง: รายได้ +2–3%/ปี + buyback หนุน EPS + backlog แปลงเป็นรายได้ตามแผน</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +10%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$122.40</div>
+          <div class="ret pos">+50.3% (3 ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$5.10</span></li>
+            <li><span>P/E ออก</span><span>24x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$5.40</span></li>
+            <li><span>สถานการณ์</span><span>M&amp;A tuck-in เร่ง + margin ขยายตัว หนุน re-rating กลับสู่มัลติเปิลประวัติ ~24x</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      ฐาน EPS ใช้ TTM $3.83 ไม่ใช่ปี 2564 ($4.72) ที่พีคผิดปกติจากอัตราตายช่วงโควิด · Bear คาดอัตราตายกลับสู่ระดับปกติเร็ว + ดอกเบี้ยสูงกดพรีเมียมมัลติเปิล ·
+      Base สอดคล้องแนวโน้ม EPS +6%/ปีจากรายได้โต 2–3%/ปี บวก buyback + backlog แปลงเป็นรายได้ตามคาด · Bull คาด M&amp;A tuck-in และมาร์จิ้นขยายตัวหนุน re-rating
+      สู่มัลติเปิลประวัติสูงสุด ~24x · รวมปันผลสะสม 3 ปีทุก scenario
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก &amp; ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>Backlog preneed $17.6B:</b> ณ 30 มิ.ย. 2569 (SEC Form 10-Q) — แบ่งเป็นสุสาน $5.03B + งานศพ $12.04B ล็อครายได้อนาคตไว้แล้วมากกว่า TTM revenue เกือบ 4 เท่า สร้างเสถียรภาพรายได้สูง</li>
+          <li><b>Demographic tailwind:</b> ประชากรกลุ่ม baby boomer เข้าสู่วัยสูงอายุ อัตราตายเฉลี่ยระยะยาวในสหรัฐฯ มีแนวโน้มเพิ่มขึ้นตามธรรมชาติในช่วง 10–15 ปีข้างหน้า</li>
+          <li><b>Duopoly + market leader:</b> อุตสาหกรรมกระจัดกระจาย SCI เป็นผู้นำส่วนแบ่งตลาด ให้อำนาจต่อรองราคาและช่องทาง M&amp;A แบบ tuck-in ต่อเนื่อง</li>
+          <li><b>Buyback ต่อเนื่อง:</b> ลดจำนวนหุ้นจาก 170M (ปี 2564) เหลือ 140M (TTM) หนุน EPS growth แม้รายได้โตช้า</li>
+          <li><b>Guidance ปี 2569 ยืนยัน:</b> adjusted EPS $4.10–4.30 (midpoint $4.20) พร้อมปรับเพิ่มเป้ากระแสเงินสดจากการดำเนินงานอีก $50M เป็น $1,085M</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>หนี้สูง:</b> D/E 3.32x อ่อนไหวต่ออัตราดอกเบี้ยขาขึ้นและการรีไฟแนนซ์หนี้ก้อนใหญ่</li>
+          <li><b>Trust fund ผันผวน:</b> เงินลูกค้าที่กันไว้ตามกฎหมายลงทุนในตลาดทุน ทำให้กำไรจากการลงทุนบางไตรมาสแกว่งตามตลาด — ไม่ใช่ผลจากการดำเนินงานปกติ ต้องแยกวิเคราะห์</li>
+          <li><b>ฐาน EPS ปี 2564 บิดเบือน:</b> EPS $4.72 พีคผิดปกติจากอัตราตายช่วงโควิด ใช้เป็นฐานเปรียบเทียบแนวโน้มไม่ได้</li>
+          <li><b>กฎระเบียบ:</b> FTC Funeral Rule และการตรวจสอบความโปร่งใสด้านราคาอาจกดดันมาร์จิ้นระยะยาว</li>
+          <li><b>Valuation ใกล้ fair value:</b> MOS เหลือจำกัด (~6.8%) รับความเสี่ยง de-rating ได้ง่ายหากตลาดปรับมุมมองความเสี่ยง leverage</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>SCI: ธุรกิจทนวัฏจักรคุณภาพสูง ราคาใกล้มูลค่าเหมาะสม</h2>
+      <p>
+        Service Corporation International เป็นผู้นำอันดับ 1 ธุรกิจบริการงานศพ/สุสานในสหรัฐฯ ธุรกิจทนวัฏจักรที่สุดกลุ่มหนึ่งเพราะอิงความต้องการพื้นฐานของมนุษย์
+        หัวใจของโมเดลคือ backlog preneed มูลค่า $17.6B (30 มิ.ย. 2569) ที่ล็อครายได้อนาคตไว้แล้ว สร้างเสถียรภาพกระแสเงินสดสูงกว่าธุรกิจทั่วไป แต่งบมี trust fund
+        ขนาดใหญ่ที่ทำให้ผลตอบแทนการลงทุนแกว่งตามตลาดทุน — ต้องแยกจากกำไรดำเนินงานปกติ และฐาน EPS ปี 2564 ที่พีคจากอัตราตายช่วงโควิดใช้เทียบแนวโน้มไม่ได้
+        ที่ราคา $85.01 หุ้นซื้อขายใกล้เคียงมูลค่าเหมาะสม $91.18 (MOS ~6.8%) โดยมีหนี้สินสูง (D/E 3.32x) เป็นความเสี่ยงหลักต่ออัตราดอกเบี้ย
+      </p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$91.18 <span style="font-size:12px;color:#cab9a8">($88.20–94.16)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +6.8%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$100.33 (Strong Buy)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> เหมาะทยอยสะสมระยะยาวจากคุณภาพ backlog + demographic tailwind มากกว่าซื้อเพื่อเก็งกำไรส่วนต่าง เนื่องจาก MOS ปัจจุบันจำกัด รอจังหวะ pullback สู่โซน MOS 20% (~$72.94) หากตลาดปรับฐานจากความกังวลดอกเบี้ย/หนี้ จะเป็นจังหวะสะสมที่ดีกว่า
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ราคา ณ 7 ส.ค. 2569 จาก StockAnalysis.com (cross-check กับ Yahoo Finance ตรงกัน) •
+    ข้อมูลงบการเงิน/ประมาณการจาก StockAnalysis.com • ข้อมูล backlog preneed จาก SEC Form 10-Q งวดสิ้นสุด 30 มิ.ย. 2569 • guidance ปี 2569 จากรายงานผลประกอบการ Q2/2569 (PRNewswire/investors.sci-corp.com)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 8 ส.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
