@@ -28,6 +28,8 @@ const path = require('path');
 // ยืนยัน "ticker ตายจริงไหม" ด้วยแหล่งอิสระ — ใช้ helper ร่วมกับ canary รายสัปดาห์ (ไม่มี require วน:
 // dead-ticker-canary ไม่ได้ require ไฟล์นี้ · main() ของมันรันเฉพาะเมื่อถูกเรียกเป็น entry point)
 const { tvCandidates, scan: scanTickers } = require('./dead-ticker-canary.js');
+const { entryFor } = require('./symbol-map.js');
+const { readStockMeta, STOCK_META_PARTS_RE } = require('./report-meta.js');
 
 const REPORTS = path.join(__dirname, '..', 'reports');
 const FLAGS = path.join(__dirname, '..', 'price-flags.json');
@@ -80,14 +82,9 @@ function styledRD(rd) {
 }
 
 // ticker ที่ Yahoo ใช้คนละชื่อกับชื่อไฟล์รายงาน (บริษัทปรับโครงสร้าง/เปลี่ยนชื่อ) — override ที่ tools/symbol-map.json
-const SYMBOL_MAP = (() => {
-  try { return JSON.parse(fs.readFileSync(path.join(__dirname, 'symbol-map.json'), 'utf8')); }
-  catch (e) { return {}; }
-})();
-
 const toYahooSymbol = (symbol, currency) => {
-  const m = SYMBOL_MAP[String(symbol).toUpperCase()];
-  if (m && m.yahoo) return m.yahoo;
+  const m = entryFor(symbol);
+  if (m.yahoo) return m.yahoo;
   return currency === 'THB' ? `${symbol}.BK` : symbol;
 };
 
@@ -271,7 +268,7 @@ function patchReport(html, p) {
   const need = (re, where) => { if (!re.test(html)) throw new Error(`patch ไม่เจอ pattern: ${where}`); };
 
   // --- stock-meta (FV เป็น source of truth ของการคำนวณ mos/upside) ---
-  const smM = html.match(/(<script[^>]*\bid=["']stock-meta["'][^>]*>)([\s\S]*?)(<\/script>)/i);
+  const smM = html.match(STOCK_META_PARTS_RE);
   if (!smM) throw new Error('ไม่มีบล็อก stock-meta');
   const sm = JSON.parse(smM[2]);
   const fv = sm.fairValue;
@@ -330,8 +327,12 @@ function patchReport(html, p) {
 
   // --- stock-meta: price/mos/upside (คีย์อื่นคงเดิม — freshHash ไม่นับบล็อกนี้อยู่แล้ว) ---
   sm.price = round(newPrice, 2); sm.mos = round(mos, 1); sm.upside = round(upside, 1);
-  out = out.replace(/(<script[^>]*\bid=["']stock-meta["'][^>]*>)[\s\S]*?(<\/script>)/i,
-    (m, a, z) => a + '\n' + JSON.stringify(sm) + '\n' + z);
+  // ใช้ regex ตัวเดียวกับตอนอ่าน (report-meta.js) — เดิมเป็นสำเนาแยกที่ไม่มี need() คุม ⇒ ถ้า skeleton
+  // เปลี่ยนวิธีฝัง แล้วมีคนแก้แค่ฝั่งอ่าน ตัวเขียนจะ replace ไม่โดนแล้ว "สำเร็จ" เงียบ ๆ = ราคา/กราฟถูก
+  // patch แต่ stock-meta.price/mos/upside ค้างค่าเก่า (self-inconsistency ที่ gate มีไว้จับพอดี)
+  need(STOCK_META_PARTS_RE, 'stock-meta (เขียนกลับ)');   // ไม่มี guard = replace ไม่โดนแล้วผ่านเงียบ ๆ
+  out = out.replace(STOCK_META_PARTS_RE,
+    (m, a, b, z) => a + '\n' + JSON.stringify(sm) + '\n' + z);   // 3 กลุ่ม: หัว/เนื้อ/ท้าย
 
   // --- header: ราคา .px ---
   need(/(<div class="px">\s*[฿$])([\d.,]+)/, 'ราคา header (.px)');
@@ -448,9 +449,8 @@ async function main() {
     // abort ทั้งรอบถ้าโดนบล็อก (fetch พังเกินครึ่งใน 20 ตัวแรก) — กัน mass-flag ผิด ๆ
     if (done === 21 && fetchFails > 10) { console.error('✗ fetch พังเกินครึ่งใน 20 ตัวแรก — น่าจะโดน rate-limit, ยกเลิกทั้งรอบ'); process.exit(2); }
 
-    let sm;
-    try { sm = JSON.parse((html.match(/<script[^>]*\bid=["']stock-meta["'][^>]*>([\s\S]*?)<\/script>/i) || [])[1]); }
-    catch (e) { failed.push({ symbol, reason: 'no-stock-meta' }); continue; }
+    const sm = readStockMeta(html);
+    if (!sm) { failed.push({ symbol, reason: 'no-stock-meta' }); continue; }
 
     let q;
     try {

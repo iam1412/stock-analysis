@@ -15,14 +15,8 @@
  * ตารางงบ: หน้าไหนล่มก็ข้ามแถวของหน้านั้นเงียบ ๆ (พิมพ์เท่าที่ได้ ไม่ crash)
  * ticker ที่ Yahoo เปลี่ยนชื่อ → ใช้ tools/symbol-map.json อัตโนมัติ (ผ่าน toYahooSymbol)
  */
-const fs = require('fs');
-const path = require('path');
 const { toYahooSymbol } = require('./update-prices.js');
-
-const SYMBOL_MAP = (() => {
-  try { return JSON.parse(fs.readFileSync(path.join(__dirname, 'symbol-map.json'), 'utf8')); }
-  catch (e) { return {}; }
-})();
+const { entryFor } = require('./symbol-map.js');
 
 const H = { 'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36' };
 // quoteSummary คืน {} เปล่าเมื่อไม่มีค่า — ต้องได้ undefined ไม่ใช่ object
@@ -81,7 +75,7 @@ function resolveKeys(found, keys) {
 // ticker US ที่เทรด OTC (ADR/F-share เช่น FANUY, KYCCF, ABBNY) อยู่ namespace quote/otc/ ไม่ใช่ stocks/
 // → ลอง stocks/ ก่อน (เคสปกติจบที่ request แรก) พังค่อย fallback otc
 function saBases(symbol, th) {
-  const saSym = (SYMBOL_MAP[symbol] && SYMBOL_MAP[symbol].sa) || symbol;
+  const saSym = entryFor(symbol).sa || symbol;
   return th ? [`quote/bkk/${saSym}`] : [`stocks/${saSym}`, `quote/otc/${saSym}`];
 }
 async function fromStockAnalysis(symbol, th) {

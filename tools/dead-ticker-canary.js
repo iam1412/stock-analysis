@@ -36,10 +36,8 @@ const GUARD_MIN_PROBES = 20; // ต่ำกว่านี้ อัตรา�
 // NASDAQ/NYSE ส่วนใหญ่ · AMEX บางตัว · OTC = ADR ญี่ปุ่น/ยุโรป (FANUY, ABBNY, KYCCF) · CBOE:CBOE
 const US_EXCHANGES = ['NASDAQ', 'NYSE', 'AMEX', 'OTC', 'CBOE'];
 
-const SYMBOL_MAP = (() => {
-  try { return JSON.parse(fs.readFileSync(path.join(__dirname, 'symbol-map.json'), 'utf8')); }
-  catch (e) { return {}; }
-})();
+const { entryFor } = require('./symbol-map.js');
+const { readStockMeta } = require('./report-meta.js');
 
 const loadJson = (p, fallback) => {
   try { return JSON.parse(fs.readFileSync(p, 'utf8')); } catch (e) { return fallback; }
@@ -52,8 +50,7 @@ const loadJson = (p, fallback) => {
 //   2. หุ้นสองคลาส: ไฟล์ใช้ขีด (BRK-B) แต่ TradingView ใช้จุด (BRK.B)
 //   3. ไม่รู้ว่าอยู่กระดานไหน → ยิงทุก exchange ที่เป็นไปได้ ตัวไหนตอบมาถือว่าอยู่กระดานนั้น
 function tvCandidates(symbol, currency, opts = {}) {
-  const mapped = (SYMBOL_MAP[String(symbol).toUpperCase()] || {}).sa;
-  const base = String(mapped || symbol).toUpperCase();
+  const base = String(entryFor(symbol).sa || symbol).toUpperCase();
   const names = base.includes('-') ? [base.replace(/-/g, '.'), base] : [base];
   const out = [];
   if (opts.cached) out.push(String(opts.cached).toUpperCase());   // ที่ resolve ได้รอบก่อน — ถามก่อนเสมอ
@@ -108,12 +105,7 @@ function mergeDeadFlags(prev, dead, aliveSymbols, today) {
 }
 
 // ---------- io ----------
-function readMeta(file) {
-  const html = fs.readFileSync(path.join(REPORTS, file), 'utf8');
-  const m = html.match(/<script[^>]*\bid=["']stock-meta["'][^>]*>([\s\S]*?)<\/script>/i);
-  if (!m) return null;
-  try { return JSON.parse(m[1]); } catch (e) { return null; }
-}
+const readMeta = (file) => readStockMeta(fs.readFileSync(path.join(REPORTS, file), 'utf8'));
 
 // scanner สะอึกเป็นช่วง ๆ (~30-90 วิ) แล้วคืน body ว่าง → JSON.parse ระเบิด · ของเดิมยิงครั้งเดียว
 // แล้วโยนทิ้ง = เสีย canary ไปทั้งสัปดาห์เพราะสะดุดชั่วขณะ (รันสัปดาห์ละครั้ง ไม่มีรอบถัดไปให้แก้ตัว)
