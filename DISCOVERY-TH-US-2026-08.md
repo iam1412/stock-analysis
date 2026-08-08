@@ -6,18 +6,18 @@
 
 ---
 
-## ✅ สถานะความคืบหน้า — **32 / 129** (อัปเดต 8 ส.ค. 2569)
+## ✅ สถานะความคืบหน้า — **65 / 129** (อัปเดต 8 ส.ค. 2569)
 
 > เป้าจริง = **129 ตัว** (130 − TECK ที่ตัดออก) · ทุกตัวที่ทำแล้ว **push ขึ้น `main` เรียบร้อย**
+> ★ **US Tier 1 + Tier 2 เสร็จครบทั้งหมดแล้ว**
 
-**เสร็จแล้ว 32 ตัว** (เรียงตามลำดับที่ทำ):
-`RY` `TD` `BMO` `BNS` `CM` — ธนาคารแคนาดา (1A) · `AZN` `TTE` `UBS` `ALC` `CCEP` `FER` — ADR ยุโรป (1B)
-`ENB` `TRP` `PBA` `FTS` `EMA` `CNQ` `SU` `IMO` — ท่อ/พลังงาน/สาธารณูปโภคแคนาดา (1C)
-`AEM` `B` `WPM` `FNV` `KGC` `PAAS` — ทองคำ/โลหะมีค่า (1D)
-`SLF` (1A) · `ESLT` (1B) · `WSO` `CSL` `MANH` `BWXT` `CACI` — Tier 2 ชุดแรก
+**Tier 1 ครบ 29 ตัว:** `RY` `TD` `BMO` `BNS` `CM` `MFC` `SLF` (1A ธนาคาร/ประกันแคนาดา) · `AZN` `TTE` `UBS` `ALC` `CCEP` `FER` `DB` `ESLT` (1B ADR) · `ENB` `TRP` `PBA` `FTS` `EMA` `CNQ` `SU` `IMO` (1C ท่อ/พลังงาน) · `AEM` `B` `WPM` `FNV` `KGC` `PAAS` (1D ทองคำ)
 
-**ค้างอยู่ระหว่างทำ:** `MFC` `DB` (1A/1B ที่เหลือ) · `FERG` · แบตช์ Tier 2 ชุดสอง (`TW` `OWL` `LPLA` `EWBC` `RYAN` `SSNC` `RBC` `SN` `GWRE` `TXRH`)
-**ต่อไป:** Tier 2 ที่เหลือ (`XPO` `USFD` `PFGC` `WCC` `SNX` `ULS` `MTZ` `STRL` `APG` `DY` `CW` `WWD` `MOG-A` `DRS` `CG` `TPG` `SCI` …) → Tier 3 → ฝั่งไทย
+**Tier 2 ครบ 36 ตัว:** `FERG` `WSO` `XPO` `USFD` `PFGC` `WCC` `SNX` `ULS` (2A) · `MTZ` `STRL` `APG` `DY` (2B) · `CW` `BWXT` `WWD` `MOG-A` `DRS` `CACI` (2C) · `TW` `OWL` `CG` `TPG` `LPLA` `FCNCA` `EWBC` `PNFP` `RYAN` (2D) · `CSL` `RBC` `SN` `AS` `MANH` `GWRE` `SSNC` `TXRH` `SCI` (2E)
+> ยังไม่ได้ทำใน 2B: `IESC` 🔺 · `TLN` 🔺 (เลื่อนไปรวมกับชุด effort high)
+
+**กำลังทำ (Tier 3A + DTM):** `ILMN` `ALNY` `NTRA` `RPRX` `JAZZ` `INSM` `CNC` `ICLR` `PEN` `DTM`
+**ต่อไป:** Tier 3B MLP (`EPD` `ET` `MPLX`) → Tier 3C AI/IPO ใหม่ 11 ตัว (**ต้อง courier→advisor ทุกตัวก่อน spawn**) → Tier 3D (`GRAB` `CPNG` `AER` `CHKP`) → **ฝั่งไทย 34 ตัว**
 
 **บทเรียนจากรอบที่ทำไปแล้ว (บังคับใช้กับที่เหลือ — รายละเอียดเต็มใน `docs/quality-gate.md` ชั้น 0.4b / 0.5):**
 - หุ้นวัฏจักร/โภคภัณฑ์: อัตราส่วนปรับฉากต้อง anchor ที่ **ราคาเฉลี่ยหน้าต่าง TTM ของบริษัทนั้น ไม่ใช่ spot** — และหน้าต่างสิ้นสุดที่ **ไตรมาสที่ประกาศงบแล้วจริง** (เช็ควันประกาศงบเทียบวันนี้ก่อนเสมอ)
