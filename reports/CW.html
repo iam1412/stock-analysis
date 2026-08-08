@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น Curtiss-Wright (CW) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 5">
+<script type="application/json" id="stock-meta">
+{"symbol":"CW","currency":"USD","price":691.52,"fairValue":530.88,"mos":-30.3,"upside":-23.2,"pe":47.6,"dividendYield":0.15,"roe":20.4}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#c84173",
+    "accentDark": "#962c53",
+    "darkGrad": "linear-gradient(135deg,#330f1c 0%,#5f1c34 58%,#962c53 140%)",
+    "glow": "rgba(190,65,111,.35)",
+    "subColor": "#e2cad3",
+    "headerMuted": "#c6b4ba",
+    "verdictText": "#ead7de",
+    "vcellLabel": "#d7c1c9",
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#137333"
+  },
+  "chart": {
+    "data": [["ก.ย.25", 542.94], ["ต.ค.25", 595.73], ["พ.ย.25", 564.29], ["ธ.ค.25", 551.27],
+             ["ม.ค.26", 656.69], ["ก.พ.26", 700.33], ["มี.ค.26", 681.12], ["เม.ย.26", 720.2],
+             ["พ.ค.26", 747.61], ["มิ.ย.26", 757.76], ["ก.ค.26", 724], ["ส.ค.26", 691.52]],
+    "min": 500, "max": 800, "grid": [600, 700],
+    "fairLine": 530.88, "currency": "$", "highlight": [0, 9]
+  },
+  "gauge": { "min": 350, "max": 850, "cur": 691.52, "fair": 530.88 },
+  "fv": 530.88
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="gdots"><div style="width:8px;height:8px;border-radius:50%;background:#c84173;display:inline-block;margin:0 3px"></div><div style="width:8px;height:8px;border-radius:50%;background:#962c53;display:inline-block;margin:0 3px"></div><div style="width:8px;height:8px;border-radius:50%;background:#5f1c34;display:inline-block;margin:0 3px"></div></div>
+    <div>
+      <span class="tag">NYSE: CW</span>
+      <span class="tag">Aerospace &amp; Defense</span>
+      <span class="tag">Naval Nuclear Propulsion • Defense Electronics</span>
+    </div>
+    <h1>Curtiss-Wright Corporation</h1>
+    <div class="sub">ชิ้นส่วน/ระบบเรือดำน้ำ-เรือบรรทุกเครื่องบินกองทัพเรือสหรัฐ • Defense Electronics • นิวเคลียร์เชิงพาณิชย์/SMR • Aerospace Components</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$691.52<small>(CW)</small></div>
+      </div>
+      <div class="chg">▲ +27.4% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 7 ส.ค. 2569 (StockAnalysis.com, ตรงกับ Yahoo Finance)<br>
+        กรอบ 52 สัปดาห์ $464.91 – $808.16<br>
+        ที่มา: Yahoo Finance • StockAnalysis.com • SEC EDGAR (8-K ผลประกอบการ)
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">TTM ถึง Q2/2569 (2026) + FY2025</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~$25.8B</div><div class="d">~37.3M หุ้น (diluted wtd avg TTM)</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~47.6x</div><div class="d">สูงกว่าค่าเฉลี่ยยาวนานมาก จาก re-rating ธุรกิจกลาโหม</div></div>
+      <div class="metric"><div class="k">Backlog</div><div class="v pos">~$4.5B</div><div class="d">+10% จากสิ้นปี 2568 (ณ Q2/2569)</div></div>
+      <div class="metric"><div class="k">Book-to-bill</div><div class="v pos">1.16x</div><div class="d">คำสั่งซื้อใหม่ $1.1B ใน Q2/2569 (+8% YoY)</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">$484M</div><div class="d">+19.5% YoY (FY2024 $405M)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$14.54</div><div class="d">Q2/2569 EPS $4.07 (+28% YoY)</div></div>
+      <div class="metric"><div class="k">Operating Margin (TTM)</div><div class="v pos">18.8%</div><div class="d">FY2025 18.1% → ขยายตัวต่อเนื่อง</div></div>
+      <div class="metric"><div class="k">ROE (TTM)</div><div class="v pos">~20.4%</div><div class="d">FY2025 19.4%</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$3,654M</div><div class="d">+10.5% YoY</div></div>
+      <div class="metric"><div class="k">อัตรากำไรขั้นต้น (TTM)</div><div class="v">37.7%</div><div class="d">ทรงตัว ~37% ต่อเนื่องหลายปี</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~0.15%</div><div class="d">$1.04/หุ้น/ปี — payout ต่ำ เน้น reinvest/buyback</div></div>
+      <div class="metric"><div class="k">Free Cash Flow (TTM)</div><div class="v">$625M</div><div class="d">FCF conversion ~116% ใน Q2/2569</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#c84173"></i>ราคา CW</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $530.88</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคาปรับตัวขึ้นแรงจากจุดต่ำสุดรอบปี $542.94 (ก.ย. 2568) ไต่ระดับต่อเนื่องจนแตะจุดสูงสุดที่ $757.76 (มิ.ย. 2569) ก่อนย่อตัวลงมาซื้อขายที่ $691.52 ในปัจจุบัน (ส.ค. 2569) รวมผลตอบแทน ~+27.4% ในรอบปีที่ผ่านมา แรงหนุนหลักมาจากอานิสงส์งบกลาโหมสหรัฐที่เพิ่มขึ้น อัตรากำไรที่ขยายตัวต่อเนื่อง และผลประกอบการที่ทำสถิติใหม่ติดต่อกันหลายไตรมาส ก่อนตลาดจะ take-profit บางส่วนช่วงเดือนกรกฎาคม
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 2 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS (TTM) $14.54 × P/E เป้าหมาย ~38x — ต่ำกว่า P/E ปัจจุบัน 47.6x ค่อนข้างมาก สะท้อนมุมมองระมัดระวังต่อการขยาย multiple ต่อเนื่อง แม้ backlog $4.5B จะหนุนทัศนวิสัยรายได้หลายปีข้างหน้า</div></div>
+        <div class="mval">$552.52</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. DCF (Discounted Cash Flow)</div><div class="mdesc">FCF ฐาน TTM $625M คาดโต 15%→12%→10%→8%→6% ลดหลั่น 5 ปี (Terminal g 3%, WACC 7.5%) → Enterprise Value ~$19.7B หัก net debt $672M ÷ หุ้น 37.3M</div></div>
+        <div class="mval">$509.24</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $509.24 – $552.52</span></div>
+        <div class="r">$530.88</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ทั้งสองวิธีให้ค่าใกล้เคียงกัน ($509–$553) เพราะตั้งสมมติฐานอนุรักษ์นิยมกว่าราคาตลาดปัจจุบัน (P/E เป้าหมาย 38x ต่ำกว่าราคาตลาดที่ 47.6x มาก และ DCF ใช้ WACC 7.5% กับการเติบโตที่ชะลอตัวหลังปีแรก) — สะท้อนว่าราคาตลาดปัจจุบันได้ price-in มุมมองบวกต่อวงจรกลาโหมและการขยาย multiple ไปมากพอสมควรแล้ว ไม่ได้ให้น้ำหนักมูลค่ากับธุรกิจ SMR/นิวเคลียร์เชิงพาณิชย์ในฐานคำนวณนี้ (สัดส่วนรายได้ยังเล็ก)
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $691.52</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $530.88</div></div>
+        </div>
+        <div class="scale">
+          <span>$371.62<br><small>MOS 30%</small></span>
+          <span>$424.70<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$530.88<br><small>Fair Value</small></span>
+          <span style="text-align:right">$552.52<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">$822.17<br><small>เป้าเฉลี่ย Analyst</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน $691.52 อยู่เหนือมูลค่าเหมาะสม $530.88 และเหนือกรอบบน FV $552.52 ไปแล้ว สะท้อนว่าตลาดให้ premium สูงกับ backlog กลาโหมและ growth momentum ปัจจุบัน ขณะที่เป้าเฉลี่ยนักวิเคราะห์ 12 เดือนที่ $822.17 (Buy) ยังอยู่สูงกว่าราคาตลาดอีก สะท้อนมุมมองที่เชื่อการขยายตัวของ multiple ต่อเนื่อง ต่างจากฐานประเมินแบบอนุรักษ์นิยมของรายงานนี้
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">−30.3%</div>
+        <div class="txt"><b>ไม่มี Margin of Safety (ราคาแพงกว่ามูลค่าเหมาะสมมาก)</b><br>ราคาปัจจุบันสูงกว่ามูลค่าเหมาะสมที่ประเมินราว 23% (upside ติดลบ) ตลาดให้มูลค่าพรีเมียมกับธุรกิจกลาโหมที่มี backlog หนาแน่นและกำไรโตเร็ว นักลงทุนเน้นคุณค่าควรรอจังหวะย่อตัวลงมาใกล้โซน FV/MOS ก่อนพิจารณาเข้าซื้อ</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$424.70</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$371.62</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $530.88</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="691.52" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $691.52 • EPS ฐาน ~$14.54 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS +3%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$476.70</div>
+          <div class="ret neg">−30.6%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$15.89</span></li>
+            <li><span>P/E ออก</span><span>30x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$3.12</span></li>
+            <li><span>สถานการณ์</span><span>งบกลาโหมชะลอ/โครงการเรือดำน้ำ Virginia-class ล่าช้า + multiple de-rate กลับสู่ค่าเฉลี่ยระยะยาว</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +9%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$715.54</div>
+          <div class="ret pos">+4.0%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$18.83</span></li>
+            <li><span>P/E ออก</span><span>38x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$3.28</span></li>
+            <li><span>สถานการณ์</span><span>Backlog $4.5B หนุนรายได้ทยอยรับรู้ตามแผน กำไรโตต่อเนื่องแต่ multiple ย่อกลับใกล้เป้าประเมิน</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +14%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$969.30</div>
+          <div class="ret pos">+40.7%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$21.54</span></li>
+            <li><span>P/E ออก</span><span>45x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$3.38</span></li>
+            <li><span>สถานการณ์</span><span>งบกลาโหมสหรัฐเพิ่มต่อเนื่อง + คำสั่งซื้อเรือดำน้ำ/เรือบรรทุกเครื่องบินเร่งตัว + ธุรกิจ SMR/นิวเคลียร์เชิงพาณิชย์เริ่มสร้างมูลค่าเสริม (optionality เก็งกำไร ไม่ใช่ธุรกิจหลัก)</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      ทุกฉากอิงการเติบโตของ EPS ต่อปีคูณด้วย P/E ขาออกที่ต่างกันตามความเชื่อมั่นของตลาด แล้วบวกปันผลสะสม 3 ปี หารด้วยราคาที่จุดเข้า $691.52 — Base มี upside ต่ำเพราะ multiple ปัจจุบัน (47.6x) แพงกว่าค่าเฉลี่ยระยะยาวมาก ผลตอบแทนส่วนใหญ่จึงขึ้นกับว่าตลาดจะให้ multiple สูงต่อไปได้นานแค่ไหน
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก &amp; ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>Backlog แข็งแกร่ง:</b> $4.5B ณ Q2/2569 (+10% จากสิ้นปี 2568) หนุนทัศนวิสัยรายได้หลายปีข้างหน้า</li>
+          <li><b>งบกลาโหมสหรัฐขาขึ้น:</b> โครงการเรือดำน้ำชั้น Virginia และเรือบรรทุกเครื่องบินชั้น Ford เป็นสัดส่วนรายได้หลักระยะยาว ได้อานิสงส์งบประมาณกองทัพเรือที่เพิ่มขึ้นต่อเนื่อง</li>
+          <li><b>อัตรากำไรขยายตัว:</b> Operating margin TTM 18.8% (FY2025 18.1%) ธุรกิจ Defense Electronics/Naval มี margin สูงกว่าค่าเฉลี่ยกลุ่มอุตสาหกรรม</li>
+          <li><b>งบดุล/กระแสเงินสดแข็งแรง:</b> D/E 0.34x, FCF conversion ~116% ใน Q2/2569 เปิดทางซื้อหุ้นคืน/M&amp;A เสริม</li>
+          <li><b>ธุรกิจนิวเคลียร์เชิงพาณิชย์/SMR:</b> โอกาสระยะยาวจากดีมานด์พลังงานสะอาด/ศูนย์ข้อมูล AI (ยังสัดส่วนรายได้เล็ก — เป็น optionality ไม่ใช่ตัวขับหลักของธุรกิจ)</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>Valuation ตึงตัวมาก:</b> เทรดที่ P/E TTM ~47.6x สูงกว่าค่าเฉลี่ยประวัติศาสตร์มาก MOS ติดลบราว −30% ความเสี่ยง de-rating สูงหากผลประกอบการสะดุด</li>
+          <li><b>Concentration ความเสี่ยงงบประมาณกลาโหม:</b> รายได้ส่วนใหญ่ผูกกับสัญญารัฐบาลสหรัฐ/กองทัพเรือ ความล่าช้าของงบประมาณ (continuing resolution/shutdown) กระทบจังหวะรับรู้รายได้ได้</li>
+          <li><b>โตช้ากว่าที่ตลาดคาด:</b> โครงการต่อเรือระยะยาวเติบโตตามแผนอู่ต่อเรือแบบเชิงเส้น ไม่ใช่ growth stock — หากตลาดคาดหวัง SMR/นิวเคลียร์เกินจริงอาจผิดหวัง</li>
+          <li><b>Supply chain/แรงงาน:</b> อุตสาหกรรมต่อเรือกลาโหมสหรัฐเผชิญปัญหาขาดแคลนแรงงานฝีมือและ supply chain ที่กดดันอัตราการส่งมอบทั้งอุตสาหกรรม</li>
+          <li><b>เงินปันผลต่ำ:</b> yield เพียง 0.15% ผลตอบแทนพึ่งพา capital gain เกือบทั้งหมด ความผันผวนราคาสูงหาก sentiment กลาโหมเปลี่ยน</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>ธุรกิจกลาโหมคุณภาพสูง แต่ราคาแพงกว่ามูลค่าเหมาะสมมาก</h2>
+      <p>Curtiss-Wright เป็นหนึ่งในซัพพลายเออร์ชิ้นส่วนวิกฤตของกองทัพเรือสหรัฐ (เรือดำน้ำ/เรือบรรทุกเครื่องบิน) ที่มี backlog หนาแน่น ($4.5B) และกำไรโตต่อเนื่อง (EPS TTM $14.54 หลัง Q2/2569 โต +28% YoY) แต่ราคาปัจจุบัน $691.52 ได้สะท้อนมุมมองบวกต่อวงจรกลาโหมและการขยาย multiple ไปมากแล้ว เทรดที่ P/E ~47.6x สูงกว่ากรอบมูลค่าเหมาะสมที่ประเมิน ($509.24–$552.52) พอสมควร นักลงทุนที่เข้าซื้อ ณ ราคานี้ต้องยอมรับความเสี่ยง valuation ที่สูง ควรพิจารณาทยอยเข้าเฉพาะช่วงราคาย่อตัว หรือถือระยะยาวหากเชื่อในวงจรกลาโหมขาขึ้นและ backlog ที่ยังหนาแน่นต่อเนื่องหลายปี</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$530.88 <span style="font-size:12px;color:#cab9a8">($509.24–$552.52)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS −30.3%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$822.17 (Buy, เฉลี่ย 6 นักวิเคราะห์)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> รอสะสมในโซน MOS 20–30% ($372–$425) เป็นหลัก หรือทยอยสะสมเล็กน้อยระหว่างทางหากเชื่อ backlog $4.5B และวงจรกลาโหมขาขึ้นจะหนุนกำไรต่อเนื่องได้อีกหลายปี พร้อมรับความผันผวนจาก valuation ที่ตึงตัวในระยะสั้น
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ราคา ณ 7 ส.ค. 2569 จาก Yahoo Finance และ StockAnalysis.com (ตรงกัน) • EPS(TTM) $14.54 กระทบยอดจากผลรวม EPS รายไตรมาส Q3/2568–Q2/2569 ($3.31+$3.69+$3.48+$4.07) ตามรายงานผลประกอบการทางการของบริษัท (SEC Form 8-K) เนื่องจาก Yahoo Finance รายงาน TTM EPS $14.04 ต่างจาก StockAnalysis.com $14.54 เกินเกณฑ์ 2% จึงยืนยันด้วยผลรวมรายไตรมาสจากแหล่งปฐมภูมิ • ข้อมูลงบการเงินย้อนหลัง 5 ปีจาก StockAnalysis.com • Backlog/Book-to-bill จากรายงานผลประกอบการ Q2 2569 ของ Curtiss-Wright (ประกาศ 5 ส.ค. 2569, เผยแพร่ผ่าน SEC Form 8-K)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 8 ส.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
