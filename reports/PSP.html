@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น พี.เอส.พี. สเปเชียลตี้ส์ (PSP) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 5">
+<script type="application/json" id="stock-meta">
+{"symbol":"PSP","currency":"THB","price":8.40,"fairValue":4.81,"mos":-74.6,"upside":-42.7,"pe":13.8,"dividendYield":3.33,"roe":20.4}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#d81ded",
+    "accentDark": "#a30fb3",
+    "darkGrad": "linear-gradient(135deg,#39043e 0%,#690773 58%,#a60cb6 140%)",
+    "glow": "rgba(215,19,236,.35)",
+    "subColor": "#e7c2eb",
+    "headerMuted": "#dabade",
+    "verdictText": "#eed0f1",
+    "vcellLabel": "#e7c7ea",
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#137333"
+  },
+  "chart": {
+    "data": [["ก.ย.25", 5], ["ต.ค.25", 4.68], ["พ.ย.25", 4.58], ["ธ.ค.25", 4.56],
+             ["ม.ค.26", 4.6], ["ก.พ.26", 4.52], ["มี.ค.26", 4.34], ["เม.ย.26", 4.52],
+             ["พ.ค.26", 4.62], ["มิ.ย.26", 6.55], ["ก.ค.26", 7.65], ["ส.ค.26", 8.4]],
+    "min": 4, "max": 10, "grid": [6, 8],
+    "fairLine": 4.81, "currency": "฿", "highlight": [6, 11]
+  },
+  "gauge": { "min": 3, "max": 10, "cur": 8.40, "fair": 4.81 },
+  "fv": 4.81
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots"><div style="width:8px;height:8px;border-radius:50%;background:#d81ded;display:inline-block;margin:0 3px"></div><div style="width:8px;height:8px;border-radius:50%;background:#a30fb3;display:inline-block;margin:0 3px"></div><div style="width:8px;height:8px;border-radius:50%;background:#690773;display:inline-block;margin:0 3px"></div></div>
+    <div>
+      <span class="tag">SET: PSP</span>
+      <span class="tag">วัสดุ/เคมีภัณฑ์เฉพาะทาง</span>
+      <span class="tag">น้ำมันหล่อลื่น-จารบี</span>
+    </div>
+    <h1>พี.เอส.พี. สเปเชียลตี้ส์ (P.S.P. Specialties)</h1>
+    <div class="sub">ผู้ผลิต-จำหน่ายน้ำมันหล่อลื่นและจารบี • ยานยนต์ • อุตสาหกรรม • เครื่องยนต์เรือ • สารเคมีเฉพาะทาง</div>
+    <div class="price-row">
+      <div>
+        <div class="px">฿8.40<small>(PSP)</small></div>
+      </div>
+      <div class="chg">▲ +68.0% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 7 ส.ค. 2569 (Yahoo Finance PSP.BK — ใหม่กว่า StockAnalysis.com ที่ปิด ฿8.20 เมื่อ 6 ส.ค. 2569 ตรวจสอบเพิ่มด้วย Google Finance ที่ให้ราคาล่าสุด ฿8.40 และราคาปิดก่อนหน้า ฿8.20 ตรงกันทั้งสองรอบ)<br>
+        กรอบ 52 สัปดาห์ ฿4.22 – ฿8.70 • งวดงบล่าสุด FY2025 (FY2568)<br>
+        ที่มา: Yahoo Finance, StockAnalysis.com, Google Finance, SET
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูลงบล่าสุด TTM ก.ค. 2569</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">฿11,760 ล้าน</div><div class="d">1,400 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~13.8x</div><div class="d">สูงกว่ามัธยฐาน 3 ปีหลัง IPO มาก</div></div>
+      <div class="metric"><div class="k">P/E มัธยฐาน 3 ปีหลัง IPO</div><div class="v">8.8x</div><div class="d">ช่วง 7.51–14.67x (FY2566-68)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">2.64x</div><div class="d">เทียบเฉลี่ย 3 ปี ~1.68x</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2568</div><div class="v">฿851 ล้าน</div><div class="d">+26.6% YoY (FY2567 ฿672 ล้าน)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿0.61</div><div class="d">เท่ากับ FY2568 (TTM≈FY68)</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~฿3.18</div><div class="d">TTM ณ มี.ค. 2569</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~20.4% / 10.6%</div><div class="d">เฉลี่ย 6 ปี ROE ~20.7%</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">฿12,491 ล้าน</div><div class="d">-6.4% YoY</div></div>
+      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">14.0%</div><div class="d">สูงสุดในรอบ 6 ปี (11.1–14.0%)</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~3.33%</div><div class="d">฿0.28/หุ้น (Yahoo)</div></div>
+      <div class="metric"><div class="k">D/E</div><div class="v">0.29x</div><div class="d">หนี้สินต่ำ สุขภาพการเงินแข็งแรง</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART (ราคาย้อนหลัง ~1 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#d81ded"></i>ราคา PSP</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿4.81</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคาหุ้น PSP เคลื่อนไหวในกรอบแคบ ฿4.34–5.00 ตั้งแต่ ก.ย. 2568 ถึง พ.ค. 2569 ก่อนพุ่งแรงตั้งแต่ มิ.ย. 2569 (฿6.55) ต่อเนื่องถึง ก.ค. (฿7.65) และ ส.ค. 2569 (฿8.40) รวมผลตอบแทนรอบปี +68.0% แรงหนุนหลักจากอัตรากำไรขั้นต้น TTM ที่ทำจุดสูงสุดในรอบ 6 ปี (14.0%) และกำไรสุทธิ FY2568 ที่โต +26.6% ทำให้ตลาดปรับ P/E ขึ้นจาก ~7.5x (FY2568) เป็น ~13.8x ในปัจจุบัน
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">หุ้นวัฏจักร/โภคภัณฑ์ — ยึดตลาดเป็นหลัก</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS (TTM) ฿0.61 × P/E เป้าหมาย ~8.8x (มัธยฐาน P/E 3 ปีหลัง IPO: FY2566 14.67x, FY2567 8.80x, FY2568 7.51x — ต่ำกว่า P/E ปัจจุบัน 13.81x ที่ตลาดให้พรีเมียมจากมาร์จิ้นสูงสุดในรอบ 6 ปี) — ขายึดตลาด ไม่ใช้ (r,g)</div></div>
+        <div class="mval">฿5.37</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล ฿0.28 × (1+g); g 3.0%, r 9.8% (rf พันธบัตรรัฐบาลไทย 10 ปี สมมติ ~2.3% — ดึงข้อมูลสด ThaiBMA ไม่ได้ในเซสชันนี้ + β 1.0 ประมาณการ + ERP ตลาดไทย 7.5%) → D₁≈฿0.288, (r−g)=6.8pp</div></div>
+        <div class="mval">฿4.24</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 20.4% − g 3.0%)/(r 9.8% − g 3.0%) ≈ 2.56 × BVPS ฿3.18 — ใช้ (r,g) ชุดเดียวกับวิธี DDM (ตระกูลเดียวกันตามกฎ 0.4c-bis) จึงนับเป็น "บริบท" เท่านั้น ไม่รวมในค่าเฉลี่ยหลัก</div></div>
+        <div class="mval">฿8.14</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿4.24 – ฿8.14</span></div>
+        <div class="r">฿4.81</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        <b>หุ้นวัฏจักร (ชั้น 0.4b):</b> ต้นทุนหลักของ PSP คือ base oil ซึ่งอิงราคาน้ำมันดิบ ⇒ ใช้วิธี P/E (ขายึดตลาด ไม่พึ่ง r,g) เฉลี่ยกับตระกูล r,g (DDM เป็นตัวแทน 1 เสียง ตัด Justified P/BV ออกเป็นบริบทเพราะใช้ r,g ชุดเดียวกัน) = (฿5.37+฿4.24)/2 = <b>฿4.81</b> · ทุกขากระจาย ≤1.92 เท่า (฿8.14/฿4.24) ผ่านเกณฑ์ dispersion gate 0.4c (&lt;2.0x) จึงเฉลี่ยได้ · <b>หมายเหตุ:</b> FV กล่องนี้ไม่เท่ากับค่าเฉลี่ยเลขคณิตของทั้ง 3 วิธีที่แสดง (คาดว่า W05 จะเตือน) เพราะตั้งใจถ่วงน้ำหนักตามตระกูลของ (r,g) ไม่ใช่ตามจำนวนวิธี ตามกฎ 0.4c-bis — ไม่ใช่ข้อผิดพลาด · <b>MOS ที่ได้ (~−74.6%) รุนแรงเกินเกณฑ์ 40%</b> (0.2) มีขา P/E ที่ไม่ใช้ (r,g) ยืนยันทิศทางเดียวกัน (FV ฿5.37 < ราคา ฿8.40) จึงเผยแพร่ได้ตามเกณฑ์ override 0.5 — สาเหตุที่วัดได้: อัตรากำไรขั้นต้น/สุทธิ TTM (14.0%/6.8%) อยู่ที่จุดสูงสุดในรอบ 6 ปี (11.1–14.0% / 3.5–6.8%) ขณะที่ P/E ปัจจุบัน (13.8x) สูงกว่ามัธยฐาน 3 ปีหลัง IPO (8.8x) ประมาณ 57% สะท้อนตลาด re-rating เร็วกว่าพื้นฐาน · <b>sensitivity ขา P/E</b> (EPS ฿0.61): ที่ P/E 7x/9x/11x/13x → FV ≈ ฿4.27/฿5.49/฿6.71/฿7.93
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿8.40</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿4.81</div></div>
+        </div>
+        <div class="scale">
+          <span>฿3.37<br><small>MOS 30%</small></span>
+          <span>฿3.85<br><small>MOS 20%</small></span>
+          <span style="text-align:center">฿4.81<br><small>Fair Value</small></span>
+          <span style="text-align:right">฿8.14<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">฿9.70<br><small>เป้าเฉลี่ย Analyst</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน ฿8.40 สูงกว่ากรอบบนของ Fair Value (฿8.14) และใกล้เคียงเป้าเฉลี่ยนักวิเคราะห์ ฿9.70 (n=1) มาก แต่หากมาร์จิ้นที่จุดสูงสุดย่อกลับสู่ค่าเฉลี่ยและตลาดคืน P/E สู่มัธยฐานเดิม ราคาที่คุ้มค่าจะอยู่ในโซน MOS 20-30% (฿3.37–3.85) ต่ำกว่าปัจจุบันมาก
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">−74.6%</div>
+        <div class="txt"><b>ไม่มี Margin of Safety (ราคาแพงกว่ามูลค่าเหมาะสมมาก)</b><br>ตลาดให้ราคาที่มาร์จิ้นขั้นต้น/สุทธิระดับสูงสุดในรอบ 6 ปี (14.0%/6.8%) และ P/E ปัจจุบัน (13.8x) สูงกว่ามัธยฐานหลัง IPO (8.8x) ~57% นักลงทุนควรรอจังหวะย่อตัวหรือรอผลประกอบการยืนยันว่ามาร์จิ้นระดับนี้ยั่งยืนจริงก่อนเข้าซื้อ</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿3.85</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿3.37</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿4.81</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="8.40" step="0.05">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿8.40 • EPS ฐาน ~฿0.61 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS −14.7%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿2.65</div>
+          <div class="ret neg">−61.1% (3 ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.38</span></li>
+            <li><span>P/E ออก</span><span>7.0x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.62</span></li>
+            <li><span>สถานการณ์</span><span>มาร์จิ้นย่อกลับสู่ค่าเฉลี่ยระยะยาว (~4.5%) เพราะราคา base oil พุ่งเร็วกว่าปรับราคาขายทัน ตลาดคืน P/E สู่ระดับต่ำเหมือน FY2568 (~7.5x)</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +0.7%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿5.47</div>
+          <div class="ret neg">−24.8% (3 ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.62</span></li>
+            <li><span>P/E ออก</span><span>8.8x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.85</span></li>
+            <li><span>สถานการณ์</span><span>มาร์จิ้นย่อบางส่วนสู่ ~6.2% รายได้โตช้า (+4%/ปี) ตลาดให้ P/E กลับสู่มัธยฐาน 3 ปี (8.8x)</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +5.8%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿7.95</div>
+          <div class="ret pos">+5.8% (3 ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.72</span></li>
+            <li><span>P/E ออก</span><span>11.0x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.94</span></li>
+            <li><span>สถานการณ์</span><span>รักษามาร์จิ้นระดับสูงสุดต่อเนื่อง (~6.8%) รายได้ฟื้นตัว (+6%/ปี) ตลาดยังให้พรีเมียมบางส่วน (P/E 11x ต่ำกว่าปัจจุบัน 13.8x)</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      ทั้งสาม scenario ให้ผลตอบแทน 3 ปีต่ำหรือติดลบ สะท้อนว่าราคาปัจจุบัน (฿8.40) ได้รวมมาร์จิ้นระดับสูงสุด + P/E ที่ขยายตัวไปมากแล้ว แม้ Bull case ที่มาร์จิ้นคงระดับสูงสุดและรายได้โต 6%/ปี ก็ให้ผลตอบแทนรวมเพียง +5.8% ตลอด 3 ปี เพราะออกที่ P/E 11x (ยังต่ำกว่าปัจจุบัน 13.8x) — จุดเข้าที่คุ้มค่ากว่าคือโซน MOS 20-30% (฿3.37–3.85)
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>มาร์จิ้นขั้นต้นสูงสุดรอบ 6 ปี:</b> TTM 14.0% (เทียบช่วง 11.1–14.0%) จากการบริหารต้นทุนวัตถุดิบและผลิตภัณฑ์มูลค่าเพิ่มสูงขึ้น</li>
+          <li><b>กระแสเงินสดอิสระฟื้นตัวแรง:</b> FCF TTM ฿1,109 ล้าน เทียบ FY2567 ฿742 ล้าน</li>
+          <li><b>ROE สูงต่อเนื่อง หนี้สินต่ำ:</b> ROE 19–25% ตลอด 6 ปี, D/E เพียง 0.29x</li>
+          <li><b>เงินปันผลจ่ายสม่ำเสมอ:</b> yield ~3.3% payout ~46% ของกำไร</li>
+          <li><b>ธุรกิจกระจายกลุ่มลูกค้า:</b> ครอบคลุมทั้งยานยนต์ อุตสาหกรรม และเครื่องยนต์เรือ ลดการพึ่งพากลุ่มเดียว</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>ต้นทุน base oil ผันผวน:</b> วัตถุดิบหลักอิงราคาน้ำมันดิบตลาดโลก หากพุ่งเร็วกว่าที่ปรับราคาขายทันจะกดมาร์จิ้น</li>
+          <li><b>ความเสี่ยงค่าเงิน:</b> นำเข้า base oil เป็นสกุล USD ขณะรายได้ส่วนใหญ่เป็น THB</li>
+          <li><b>ราคาพุ่งนำหน้าพื้นฐาน:</b> รอบปี +68% ทำให้ P/E ปัจจุบัน 13.8x สูงกว่ามัธยฐาน 3 ปี (8.8x) มาก</li>
+          <li><b>รายได้หดตัวต่อเนื่อง:</b> TTM -6.4% YoY, FY2568 -4.7% YoY แม้กำไรจะโตจากมาร์จิ้น</li>
+          <li><b>มาร์จิ้นเสี่ยง mean-reversion:</b> ระดับปัจจุบันเป็นจุดสูงสุดในรอบ 6 ปี อาจย่อกลับสู่ค่าเฉลี่ยระยะยาว</li>
+          <li><b>สภาพคล่องนักวิเคราะห์ต่ำ:</b> มีเป้าราคาจากนักวิเคราะห์เพียง 1 ราย (n=1)</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>ราคาวิ่งนำหน้าพื้นฐาน — รอจังหวะที่ปลอดภัยกว่า</h2>
+      <p>PSP เป็นผู้ผลิต-จำหน่ายน้ำมันหล่อลื่นและจารบีที่มีฐานะการเงินแข็งแรง (D/E 0.29x, ROE ~20%) และมาร์จิ้นขั้นต้น/สุทธิทำจุดสูงสุดในรอบ 6 ปี แต่ราคาหุ้นที่วิ่งขึ้น +68% ในรอบปีทำให้ P/E ปัจจุบัน (13.8x) สูงกว่ามัธยฐาน 3 ปีหลัง IPO (8.8x) มาก สะท้อนว่าตลาด re-rating เร็วกว่าพื้นฐานและเผื่อว่ามาร์จิ้นระดับสูงสุดนี้จะยั่งยืน — เป็นสมมติฐานที่ยังไม่ถูกพิสูจน์ Fair Value โดยประมาณอยู่ที่ ฿4.81 (กรอบ ฿4.24–8.14) ต่ำกว่าราคาตลาดมาก</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿4.81 <span style="font-size:12px;color:#cab9a8">(฿4.24–฿8.14)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ff8a65">MOS ~ −74.6% (แพงกว่ามูลค่าเหมาะสมมาก)</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿9.70 (n=1, ข้อมูลจำกัด)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> รอจังหวะย่อตัวเข้าใกล้โซน MOS 20-30% (฿3.37–3.85) หรือรอผลประกอบการยืนยันว่ามาร์จิ้นระดับสูงสุดในรอบ 6 ปี (14.0%/6.8%) ยั่งยืนจริงก่อนเข้าซื้อ — ราคาปัจจุบันสะท้อนการ re-rating ของตลาดที่เร็วกว่าปัจจัยพื้นฐานที่วัดได้
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ราคา ณ 7 ส.ค. 2569 จาก Yahoo Finance (PSP.BK) cross-check กับ StockAnalysis.com (ราคาปิด 6 ส.ค. 2569 ต่าง 2.44% เพราะคนละวันซื้อขาย ไม่ใช่ความขัดแย้งของแหล่งข้อมูล) และ Google Finance (ราคาล่าสุด ฿8.40 ตรงกับ Yahoo, ราคาปิดก่อนหน้า ฿8.20 ตรงกับ StockAnalysis) • ข้อมูลงบการเงิน/อัตราส่วน (P/E, P/B, EV/EBITDA, BVPS) จาก StockAnalysis.com • ชื่อบริษัท/สถานะจดทะเบียนยืนยันจาก SET • rf/β/ERP ที่ใช้ในวิธี DDM/Justified P/BV เป็นค่าประมาณการ (ไม่มีข้อมูลสด ThaiBMA/beta เฉพาะหุ้นในเซสชันนี้) — ระบุไว้อย่างชัดเจนในย่อหน้า valuation
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 8 ส.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
