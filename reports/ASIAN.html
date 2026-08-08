@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น เอเชี่ยนซี คอร์ปอเรชั่น (ASIAN) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 5">
+<script type="application/json" id="stock-meta">
+{"symbol":"ASIAN","currency":"THB","price":7.60,"fairValue":9.20,"mos":17.4,"upside":21.1,"pe":10.56,"dividendYield":8.87,"roe":9.7}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#719d0c",
+    "accentDark": "#527109",
+    "darkGrad": "linear-gradient(135deg,#111802 0%,#374d05 58%,#679009 140%)",
+    "glow": "rgba(171,236,19,.35)",
+    "subColor": "#e2eeca",
+    "headerMuted": "#e7edd9",
+    "verdictText": "#e7f1d0",
+    "vcellLabel": "#f9fbf3",
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#137333"
+  },
+  "chart": {
+    "data": [["ก.ย.25", 7.3], ["ต.ค.25", 7.3], ["พ.ย.25", 7.25], ["ธ.ค.25", 7.2],
+             ["ม.ค.26", 7.45], ["ก.พ.26", 7.6], ["มี.ค.26", 7], ["เม.ย.26", 7.15],
+             ["พ.ค.26", 6.95], ["มิ.ย.26", 7.2], ["ก.ค.26", 7.5], ["ส.ค.26", 7.6]],
+    "min": 6.5, "max": 9.5, "grid": [7, 7.5, 8, 8.5, 9],
+    "fairLine": 9.20, "currency": "฿", "highlight": [8, 11]
+  },
+  "gauge": { "min": 6, "max": 11, "cur": 7.60, "fair": 9.20 },
+  "fv": 9.20
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots"><div style="width:8px;height:8px;border-radius:50%;background:#719d0c;display:inline-block;margin:0 3px"></div><div style="width:8px;height:8px;border-radius:50%;background:#527109;display:inline-block;margin:0 3px"></div><div style="width:8px;height:8px;border-radius:50%;background:#374d05;display:inline-block;margin:0 3px"></div></div>
+    <div>
+      <span class="tag">SET: ASIAN</span>
+      <span class="tag">อาหารทะเลแปรรูป/ส่งออก</span>
+      <span class="tag">Pet Food OEM</span>
+    </div>
+    <h1>เอเชี่ยนซี คอร์ปอเรชั่น จำกัด (มหาชน)</h1>
+    <div class="sub">อาหารทะเลแปรรูปส่งออก (กุ้ง • ปลาทูน่า • อาหารสัตว์น้ำแช่แข็ง) • อาหารสัตว์เลี้ยง (Pet Food) แบบ OEM ส่งออกสหรัฐ/ยุโรป</div>
+    <div class="price-row">
+      <div>
+        <div class="px">฿7.60<small>(ASIAN)</small></div>
+      </div>
+      <div class="chg">▲ +4.1% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 7 ส.ค. 2569<br>
+        กรอบ 52 สัปดาห์ ฿6.75 – ฿8.25<br>
+        ที่มา: Yahoo Finance, StockAnalysis.com, ThaiPR.net, HoonVision.com
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">TTM ณ มิ.ย. 2569 · งบปี FY2568</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">฿6,171 ล้าน</div><div class="d">~812 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~10.56x</div><div class="d">฿7.60 ÷ EPS ฿0.72</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~11.6x</div><div class="d">ช่วง 7.72x–18.70x (FY2565–68, ปี 2566 ผิดปกติจากกำไรตกต่ำ)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">0.79x</div><div class="d">ต่ำกว่าเฉลี่ย 5 ปี (0.73–1.43x)</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2568</div><div class="v">฿682 ล้าน</div><div class="d">-19.6% YoY (จาก FY2567 ฿848 ล.)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿0.72</div><div class="d">FY2568 ฿0.84, ลดจาก FY2567 ฿1.04</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~฿8.08</div><div class="d">งบดุล 30 มิ.ย. 2569 (ทุน ฿6,385 ล./790.4 ล.หุ้น)</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~9.7% / N/A</div><div class="d">ROE TTM ลดจากจุดสูง 27.7% (FY2564) — ROA ไม่ระบุแยกในแหล่งที่ใช้</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">฿10,388 ล้าน</div><div class="d">-4.0% YoY (pet food ชะลอ+ต้นทุนวัตถุดิบสูง)</div></div>
+      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">13.6%</div><div class="d">ต่ำกว่าเฉลี่ย 5 ปี (~15.8%) — บริษัทปรับเป้าปี 2568 เหลือ 14-15%</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~8.87%</div><div class="d">Payout ~93% (Yahoo ให้เป้าปันผลไปข้างหน้าต่ำกว่าที่ 6.51%)</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">N/A</div><div class="d">ไม่มีข้อมูลจาก 2 แหล่งที่ใช้ cross-verify</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#719d0c"></i>ราคา ASIAN</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿9.20</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคาทรงตัวโซน ฿7.2–7.6 ช่วง ก.ย.–ธ.ค. 2568 ก่อนไหลลงแตะจุดต่ำสุดรอบปีที่ ฿6.95 ในเดือน พ.ค. 2569 สอดคล้องกับข่าวกำไร Q1/2569 ลด 38% เหลือ 126 ล้านบาท จากต้นทุนวัตถุดิบปลาทะเลพุ่งและยอดขาย pet food ชะลอ ก่อนฟื้นตัวกลับมา +9.4% ในช่วง มิ.ย.–ส.ค. 2569 แตะ ฿7.60 อีกครั้ง ผลตอบแทนรอบปี (ก.ย.68→ส.ค.69) อยู่ที่ +4.1%
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS (TTM) ฿0.72 × P/E เป้าหมาย ~10.75x (ถ่วงน้ำหนักตามสัดส่วนรายได้: pet food ~55% ที่ P/E 13x แบบ specialty/OEM food + อาหารทะเลส่งออก ~45% ที่ P/E 8x แบบ commodity processor)</div></div>
+        <div class="mval">฿7.74</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 10.0%[ปรับฐานเฉลี่ย FY2566-68+TTM] − g 3.5%)/(r 8.5% − g 3.5%) ≈ 1.30 × BVPS ฿8.08</div></div>
+        <div class="mval">฿10.50</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Sum-of-Parts (EV/Sales)</div><div class="mdesc">Pet food TTM revenue ~฿5,713 ล. × EV/Sales 0.9x + อาหารทะเล TTM revenue ~฿4,675 ล. × EV/Sales 0.45x = EV ฿7,245 ล. + เงินสดสุทธิ ฿363.5 ล. ÷ 812 ล.หุ้น</div></div>
+        <div class="mval">฿9.37</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿7.74 – ฿10.50</span></div>
+        <div class="r">฿9.20</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        <b>Full disclosure — การแยกส่วนธุรกิจและที่มาตัวเลข:</b> ASIAN มี 2 ธุรกิจหลัก อาหารทะเลแปรรูปส่งออก และอาหารสัตว์เลี้ยง (pet food) แบบ OEM ตามข่าวแจ้งตลาด (ThaiPR.net, HoonVision, mgronline อ้างอิงข้อมูลบริษัท) รายได้ pet food ปี 2567 อยู่ที่ ฿6,010 ล้าน (~55% ของรายได้รวม ฿10,864 ล้าน) เติบโต 37% YoY จากปริมาณขาย 37,593 ตัน (+33%) และบริษัทตั้งเป้า pet food ปี 2569 ที่ ฿6,800 ล้าน (~57% ของเป้ารวม ฿11,927 ล้าน) +7.9% — ยืนยันว่า pet food โตเร็วกว่าและกลายเป็นสัดส่วนรายได้ข้างมากแล้ว แต่บริษัทไม่เปิดเผยมาร์จิ้นแยกรายกลุ่มในแหล่งที่เข้าถึงได้ (บางหน้าข่าว/opportunity day ถูกบล็อกการเข้าถึงอัตโนมัติ) จึงใช้สัดส่วนรายได้ (~55%/45%) เป็นตัวถ่วงน้ำหนักในวิธี P/E ผสมและ Sum-of-Parts แทนมาร์จิ้นแยกจริง — เป็นข้อจำกัดของข้อมูลที่ควรตระหนัก<br><br>
+        <b>ที่มาส่วนต่าง EPS:</b> Yahoo รายงาน EPS(TTM) ฿0.75 ขณะที่ StockAnalysis รายงาน ฿0.72 ทั้งในหน้า quote และตารางงบการเงินโดยตรง (EPS diluted TTM) ต่างกัน 4.2% เกินเกณฑ์ ±2% แต่ตารางงบเต็ม (แหล่งที่ 3) ยืนยันตัวเลข diluted TTM ตรงกับ StockAnalysis quote เป๊ะที่ ฿0.72 (สอดคล้องกัน 2 ใน 3 จุดข้อมูลบนฐาน diluted) รายงานนี้จึงใช้ ฿0.72 เป็นฐาน EPS หลัก — ตรวจสอบย้อนกลับได้จาก P/E ปัจจุบันที่ทั้งสองแหล่งรายงานตรงกันที่ ~10.56x (7.60/0.72) ส่วน Yahoo ฿0.75 น่าจะเป็น EPS พื้นฐาน (basic) หรือคำนวณช้ากว่า 1 ไตรมาส<br><br>
+        <b>ฐานหุ้น/BVPS:</b> BVPS ฿8.08 มาจากงบดุล 30 มิ.ย. 2569 (ส่วนของผู้ถือหุ้นบริษัทใหญ่ ฿6,385 ล้าน ÷ หุ้นสามัญ 790.4 ล้านหุ้น ตาม StockAnalysis balance sheet — ไม่ได้ derive เอง) ขณะที่ Market Cap/EPS/Sum-of-Parts ใช้จำนวนหุ้น 812 ล้านหุ้น (ฐานเดียวกับตาราง Revenue/NI/EPS จาก StockAnalysis financials) ต่างกันเล็กน้อย ~2.7% จากนิยามหุ้นถัวเฉลี่ยถ่วงน้ำหนัก diluted vs หุ้นคงค้าง ณ วันที่งบดุล ไม่กระทบทิศทางการประเมินมูลค่าอย่างมีนัยสำคัญ<br><br>
+        3 วิธีห่างกันไม่เกิน 1.4 เท่า (ไม่ชน dispersion gate 0.4c) จึงเฉลี่ยตรงได้ · r ที่ใช้ = risk-free พันธบัตรรัฐบาลไทย 10 ปี ~2.7% (ส.ค. 2569) + ERP ~5.8% × β~1.0 ≈ 8.5%
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿7.60</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿9.20</div></div>
+        </div>
+        <div class="scale">
+          <span>฿6.44<br><small>MOS 30%</small></span>
+          <span>฿7.36<br><small>MOS 20%</small></span>
+          <span style="text-align:center">฿9.20<br><small>Fair Value</small></span>
+          <span style="text-align:right">N/A<br><small>เป้าเฉลี่ย Analyst (ไม่มี Consensus)</small></span>
+          <span style="text-align:right">฿10.50<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ทั้ง Yahoo Finance และ StockAnalysis.com ไม่มีเป้าราคานักวิเคราะห์ (analyst target) ให้สำหรับ ASIAN ในช่วงที่ทำรายงานนี้ — สะท้อนว่าหุ้นนี้ไม่มีสถาบันในประเทศ/ต่างประเทศติดตามอย่างกว้างขวาง ราคาปัจจุบัน ฿7.60 อยู่เหนือโซน MOS 20-30% เล็กน้อยแต่ยังต่ำกว่ามูลค่าเหมาะสม ฿9.20 อยู่พอสมควร
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict ok">
+        <div class="big">+17.4%</div>
+        <div class="txt"><b>มี Margin of Safety ระดับปานกลาง</b><br>ราคาปัจจุบัน ฿7.60 ต่ำกว่ามูลค่าเหมาะสม ฿9.20 พอสมควรแต่ยังไม่เข้าโซนถูกมาก นักลงทุนระยะยาวที่เชื่อมั่นธุรกิจ pet food อาจเริ่มทยอยสะสม รอราคาย่อลงมาที่ ~฿7.36 (MOS20%) จะได้ส่วนเผื่อความปลอดภัยที่มากขึ้น</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿7.36</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿6.44</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿9.20</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="7.60" step="0.05">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿7.60 • EPS ฐาน ~฿0.72 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS −10%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿4.25</div>
+          <div class="ret neg">−36.2% (3 ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.53</span></li>
+            <li><span>P/E ออก</span><span>8x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.60</span></li>
+            <li><span>สถานการณ์</span><span>ต้นทุนปลาทะเลพุ่งต่อเนื่อง + กำแพงภาษี/บาทแข็งกดส่งออก มาร์จิ้นทั้งกลุ่มย่ำแย่แบบปี 2566</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +9%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿9.75</div>
+          <div class="ret pos">+55.9% (3 ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.93</span></li>
+            <li><span>P/E ออก</span><span>10.5x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿2.10</span></li>
+            <li><span>สถานการณ์</span><span>มาร์จิ้นทรงตัวตามไกด์บริษัท 14-15%, pet food โตต่อเนื่องใกล้เคียงเป้า</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +15%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿13.20</div>
+          <div class="ret pos">+107.3% (3 ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿1.10</span></li>
+            <li><span>P/E ออก</span><span>12x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿2.55</span></li>
+            <li><span>สถานการณ์</span><span>ราคาปลาทะเลผ่อนคลาย มาร์จิ้นฟื้นใกล้ปี 2567 (Gross ~18%) + pet food ขยายลูกค้าใหม่เร่งตัว</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      ฉาก Bear/Base/Bull ผูกกับอัตรากำไรขั้นต้น/ต้นทุนวัตถุดิบปลาทะเล โดย anchor ที่ระดับมาร์จิ้นเฉลี่ยหน้าต่าง TTM (13.6%) และไกด์บริษัทปี 2568 (14-15%) ไม่ใช่มาร์จิ้น Q1/2569 ที่ถูกกดชั่วคราว (กำไรสุทธิ Q1 ลด 38% เหลือ 126 ล้านบาท) Bear = มาร์จิ้นแย่ต่อเนื่องแบบปี 2566 (Gross 13.1%), Base = มาร์จิ้นทรงตัวใกล้เฉลี่ย TTM/ไกด์บริษัท, Bull = มาร์จิ้นฟื้นใกล้ปี 2567 (Gross 18.2%) ปันผลประมาณจาก payout ~85-93% ของ EPS แต่ละปี
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>Pet food ยังเป็นเครื่องยนต์หลัก:</b> เป้ารายได้กลุ่มนี้ปี 2569 ที่ ฿6,800 ล้าน +7.9% YoY หนุนจากลูกค้าใหม่สหรัฐ/ยุโรปและขยายไลน์ OEM</li>
+          <li><b>งบดุลแข็งแรงมาก:</b> D/E TTM ~0.00 (แทบไม่มีหนี้) เปิดพื้นที่จ่ายปันผลสูงต่อเนื่อง (payout ~90%+)</li>
+          <li><b>Diversification:</b> รายได้ pet food ~55% ช่วยลดความผันผวนของกำไรเทียบผู้เล่นที่ทำอาหารทะเลอย่างเดียว</li>
+          <li><b>มาร์จิ้นมีโอกาสฟื้น:</b> เป้า Gross Margin ปี 2569 ตามไกด์ 14-15% หากราคาปลาทะเลชะลอขาขึ้นนอกฤดูจับปลา</li>
+          <li><b>FCF เป็นบวกต่อเนื่อง:</b> TTM ฿763 ล้าน รองรับขยายกำลังผลิต pet food โดยไม่ต้องพึ่งหนี้</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>ต้นทุนวัตถุดิบผันผวนตามฤดูกาล:</b> ราคาปลาทะเล/ปริมาณจับกดกำไร Q1/2569 ลง 38% เหลือ 126 ล้านบาท</li>
+          <li><b>ความเสี่ยงส่งออก:</b> พึ่งตลาดสหรัฐ/ยุโรปเป็นหลัก เสี่ยงกำแพงภาษีนำเข้าสหรัฐและมาตรการการค้าที่เปลี่ยนได้ — บริษัทปรับลดเป้ารายได้/มาร์จิ้นปี 2568 บางส่วนจากเหตุนี้</li>
+          <li><b>ความเสี่ยงค่าเงินบาท:</b> บาทแข็งค่ากดทับรายได้ส่งออกเมื่อแปลงกลับเป็นบาท</li>
+          <li><b>Pet food เป็น OEM เป็นหลัก:</b> มาร์จิ้นขึ้นกับสัญญาลูกค้าแบรนด์ต่างประเทศ เสี่ยงถูกต่อรองราคาหรือสูญเสียลูกค้ารายใหญ่</li>
+          <li><b>วัฏจักรกำไรผ่านจุดสูงสุดแล้ว:</b> ROE ลดจาก 27.7% (FY2564) เหลือ 9.7% (TTM) สะท้อนกำไรพิเศษปี 2564-2565 ไม่ใช่ระดับปกติ</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>ทยอยสะสม — ธุรกิจกำลังเปลี่ยนโครงสร้างไปทาง Pet Food มาร์จิ้นสูงกว่า แต่ยังต้องผ่านช่วงต้นทุนวัตถุดิบผันผวน</h2>
+      <p>ASIAN เปลี่ยนจากผู้ผลิตอาหารทะเลแปรรูปเป็นหลักมาเป็นบริษัทที่รายได้ข้างมาก (~55-57%) มาจากธุรกิจ pet food OEM ที่โตเร็วกว่าและ (โดยแนวโน้มกำไรที่ดีขึ้นชัดเจนในปี 2567) น่าจะมีมาร์จิ้นสูงกว่าอาหารทะเลส่งออก แม้ธุรกิจยังผูกกับต้นทุนวัตถุดิบปลาทะเลที่ผันผวนตามฤดูกาลและความเสี่ยงการค้าระหว่างประเทศ (ภาษีนำเข้าสหรัฐ, ค่าเงินบาท) ราคาปัจจุบัน ฿7.60 ต่ำกว่ามูลค่าเหมาะสมที่ประเมินได้ ฿9.20 (MOS ~17.4%) งบดุลแข็งแรงมากและปันผลสูงเป็นตัวรองรับความเสี่ยงด้านราคาระหว่างรอธุรกิจฟื้นตัวตามไกด์ไลน์บริษัท</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿9.20 <span style="font-size:12px;color:#cab9a8">(฿7.74–฿10.50)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +17.4%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">ไม่มี Consensus (ไม่มีข้อมูล)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> เหมาะกับนักลงทุนที่รับความผันผวนของธุรกิจกึ่งวัฏจักรได้ ทยอยสะสมเป็นรอบ เน้นเข้าซื้อโซนใกล้/ต่ำกว่า MOS20 (~฿7.36) ลงมา และติดตามอัตรากำไรขั้นต้นรายไตรมาสเทียบไกด์บริษัท 14-15% เป็นสัญญาณว่าธุรกิจฟื้นตามคาดหรือไม่ ก่อนเพิ่มน้ำหนักการลงทุน
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ราคา ณ 7 ส.ค. 2569 จาก Yahoo Finance (cross-check กับ StockAnalysis.com ตรงกัน 0%) • EPS(TTM) ใช้ ฿0.72 จาก StockAnalysis.com (quote+งบการเงิน 2 จุดตรงกัน) ต่างจาก Yahoo ฿0.75 4.2% (ดูคำอธิบายในย่อหน้า full-disclosure ส่วนที่ 3) • ข้อมูลสัดส่วนรายได้ pet food/อาหารทะเลจาก ThaiPR.net, HoonVision.com, mgronline.com (อ้างอิงข้อมูลบริษัท) • ข้อมูลงบการเงินย้อนหลังจาก StockAnalysis.com
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 8 ส.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
