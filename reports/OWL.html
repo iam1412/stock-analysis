@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น Blue Owl Capital (OWL) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 5">
+<script type="application/json" id="stock-meta">
+{"symbol":"OWL","currency":"USD","price":11.87,"fairValue":13.58,"mos":12.6,"upside":14.4,"pe":99.2,"dividendYield":7.75,"roe":5.8}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#9a2fda",
+    "accentDark": "#711da5",
+    "darkGrad": "linear-gradient(135deg,#27083a 0%,#490f6c 58%,#7317ab 140%)",
+    "glow": "rgba(149,38,217,.35)",
+    "subColor": "#dbc2eb",
+    "headerMuted": "#c2a5d4",
+    "verdictText": "#e4d0f0",
+    "vcellLabel": "#cfb3e0",
+    "chgBg": "var(--red-soft)",
+    "chgColor": "#c5221f"
+  },
+  "chart": {
+    "data": [["ก.ย.25", 16.93], ["ต.ค.25", 15.77], ["พ.ย.25", 15], ["ธ.ค.25", 14.94],
+             ["ม.ค.26", 13.64], ["ก.พ.26", 10.55], ["มี.ค.26", 9.13], ["เม.ย.26", 9.75],
+             ["พ.ค.26", 10.28], ["มิ.ย.26", 8.75], ["ก.ค.26", 10.3], ["ส.ค.26", 11.87]],
+    "min": 7.5, "max": 17.5, "grid": [10, 12.5, 15],
+    "fairLine": 13.58, "currency": "$", "highlight": [0, 9]
+  },
+  "gauge": { "min": 8, "max": 17, "cur": 11.87, "fair": 13.58 },
+  "fv": 13.58
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots"><div style="width:8px;height:8px;border-radius:50%;background:#9a2fda;display:inline-block;margin:0 3px"></div><div style="width:8px;height:8px;border-radius:50%;background:#711da5;display:inline-block;margin:0 3px"></div><div style="width:8px;height:8px;border-radius:50%;background:#490f6c;display:inline-block;margin:0 3px"></div></div>
+    <div>
+      <span class="tag">NYSE: OWL</span>
+      <span class="tag">Alternative Asset Management</span>
+      <span class="tag">Direct Lending / Permanent Capital</span>
+    </div>
+    <h1>Blue Owl Capital (OWL)</h1>
+    <div class="sub">Direct Lending • GP Solutions (GP Stakes) • Real Assets • ฐาน Permanent Capital สูงสุดในกลุ่ม alternative asset manager</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$11.87<small>(OWL)</small></div>
+      </div>
+      <div class="chg">▼ −29.9% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 7 ส.ค. 2569 (StockAnalysis.com, ตรงกับ Yahoo Finance)<br>
+        กรอบ 52 สัปดาห์ $7.95 – $20.58<br>
+        ที่มา: StockAnalysis.com, Yahoo Finance, Google Finance, Blue Owl Capital IR (Q2 2026 Press Release)
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ฐานกำไรหลัก: FRE/DE ต่อหุ้น (ไม่ใช่ GAAP EPS) — ดูคำอธิบายด้านล่าง</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">$7.1B</div><div class="d">Class A · ~680M หุ้น fully-exchanged (Up-C)</div></div>
+      <div class="metric"><div class="k">P/E (TTM, GAAP)</div><div class="v neu">~99x</div><div class="d">บิดเบือนจาก amortization/equity comp — ดู DE/FRE แทน</div></div>
+      <div class="metric"><div class="k">P/DE (fwd, 2026E)</div><div class="v neu">~13.3x</div><div class="d">ราคา ÷ DE คาดการณ์ 2569 $0.89/หุ้น</div></div>
+      <div class="metric"><div class="k">P/FRE (fwd, 2026E)</div><div class="v neu">~11.6x</div><div class="d">ราคา ÷ FRE คาดการณ์ 2569 $1.02/หุ้น</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ GAAP FY2025</div><div class="v">$78.8M</div><div class="d">−28.4% YoY (amortization ดีล M&A กดดัน)</div></div>
+      <div class="metric"><div class="k">DE ต่อหุ้น (FY25 → 2026E)</div><div class="v pos">$0.84 → $0.89</div><div class="d">+9% YoY ใน Q2/2569 ($0.22/หุ้น)</div></div>
+      <div class="metric"><div class="k">FRE ต่อหุ้น (FY25 → 2026E)</div><div class="v pos">$0.96 → $1.02</div><div class="d">FRE margin 58.5% (Q2/2569)</div></div>
+      <div class="metric"><div class="k">ROE (GAAP)</div><div class="v">~5.8%</div><div class="d">ต่ำเพราะฐาน NI บิดเบือน ไม่สะท้อนเศรษฐกิจจริง</div></div>
+
+      <div class="metric"><div class="k">AUM รวม</div><div class="v neu">$319.0B</div><div class="d">ณ 30 มิ.ย. 2569 · โต 5 เท่านับจาก IPO</div></div>
+      <div class="metric"><div class="k">Fee-Paying AUM (FPAUM)</div><div class="v">$190.6B</div><div class="d">AUM ยังไม่เก็บค่าธรรมเนียม $31.1B (~$380M fee/ปีเมื่อ deploy ครบ)</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v pos">~7.75%</div><div class="d">$0.92/ปี ($0.23/ไตรมาส) จ่าย 27 ส.ค. 2569</div></div>
+      <div class="metric"><div class="k">Permanent Capital</div><div class="v pos">~75% ของ AUM</div><div class="d">สูงสุดในกลุ่ม alt-manager — รายได้ค่าธรรมเนียมคาดการณ์ได้</div></div>
+    </div>
+
+    <div class="card" style="margin-top:16px">
+      <p style="font-size:12.5px;color:var(--muted);margin:0;line-height:1.7">
+        <b style="color:var(--ink)">⚠️ ทำไมเราไม่ใช้ GAAP EPS เป็นฐานหลัก:</b>
+        Blue Owl จดทะเบียนผ่านโครงสร้าง <b>Up-C</b> — หุ้น Class A ที่ซื้อขายในตลาด (OWL) เป็นเพียงส่วนหนึ่งของกิจการทั้งหมด ยังมีหน่วย
+        Blue Owl Operating Group ("OpCo Units") ที่ผู้บริหาร/พาร์ทเนอร์เดิมถืออยู่และแลกเป็นหุ้น Class A ได้ในอนาคต ทำให้ EPS แบบ GAAP
+        ต่อหุ้น Class A (TTM เพียง $0.12 ⇒ P/E ~99x) <b>ไม่สะท้อนเศรษฐกิจทั้งบริษัท</b> และยังถูกกดดันเพิ่มจาก amortization ของสินทรัพย์ไม่มีตัวตน
+        (ค่าความนิยม/สัญญาบริหารจัดการจากดีล M&A) และค่าใช้จ่ายหุ้นตอบแทนพนักงาน (equity compensation) ซึ่งเป็นรายการที่ไม่ใช่เงินสดจำนวนมาก —
+        สะท้อนชัดจากกำไรสุทธิ GAAP ที่ลดลง −28.4% ในปี 2568 ทั้งที่รายได้โต +25% YoY ตัวชี้วัดที่กลุ่มอุตสาหกรรมนี้ใช้จริง (และที่ Blue Owl
+        เปิดเผยเองทุกไตรมาส) คือ <b>Fee-Related Earnings (FRE)</b> และ <b>Distributable Earnings (DE)</b> ต่อหุ้น ซึ่งคำนวณบนฐานหุ้นแบบ
+        fully-exchanged/fully-diluted (รวม OpCo Units ที่แลกได้ทั้งหมด) อยู่แล้วตามมาตรฐานที่กลุ่ม alt-manager ใช้ (BX/APO/ARES/KKR ก็รายงานแบบเดียวกัน)
+        รายงานนี้จึงใช้ <b>DE ต่อหุ้น เป็นฐานหลักในการประเมินมูลค่า</b> (FRE ใช้ประกอบดูคุณภาพกำไรก่อนรายการลงทุน) และแสดง GAAP EPS/P-E คู่กันไว้
+        เพื่อความโปร่งใส แหล่ง: Blue Owl Capital Q2 2026 Press Release (IR, 30 ก.ค. 2569), StockAnalysis.com/financials.
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART (ราคาย้อนหลัง ~1 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#9a2fda"></i>ราคา OWL</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $13.58</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคาหุ้น OWL ร่วงจากจุดสูง $16.93 (ก.ย. 2568) ลงต่อเนื่องมาแตะจุดต่ำสุดของกราฟที่ $8.75 ในเดือน มิ.ย. 2569 คิดเป็นการปรับฐานราว 48%
+        จากจุดสูงสุด ท่ามกลางกระแส "private credit meltdown" ที่นักลงทุนกังวลความเสี่ยงสินเชื่อกลุ่ม software ในพอร์ต direct lending ทั่วอุตสาหกรรม
+        (Blue Owl เองประกาศจำกัดการถอนเงิน/gate ในกองทุนค้าปลีกกองหนึ่งช่วงต้นปี 2569) จากนั้นราคาเริ่มฟื้นตัวหลังผลประกอบการไตรมาส 2/2569
+        ที่ AUM แตะ $319B และ DE ต่อหุ้นโต +9% YoY มาปิดที่ $11.87 ณ 7 ส.ค. 2569 รวมผลตอบแทนรอบปี −29.9%
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION (เฉลี่ย 2 วิธี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 2 วิธี — อิงฐาน DE ต่อหุ้น ไม่ใช่ GAAP EPS</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/DE Valuation (เทียบมัธยฐานกลุ่ม alt-manager)</div><div class="mdesc">DE ต่อหุ้นคาดการณ์ 2569 (2026E, guidance บริษัท) $0.89 × P/DE เป้าหมาย ~15x — ต่ำกว่ามัลติเปิ้ลพรีเมียมในอดีตของ OWL (~20-25x ช่วงก่อน selloff) และต่ำกว่าที่ BX/ARES เทรดอยู่ปัจจุบัน สะท้อนความไม่แน่นอนจากภาวะตึงตัวใน private credit ที่ยังไม่คลี่คลาย</div></div>
+        <div class="mval">$13.35</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. DDM / Gordon Growth (ผลตอบแทนเงินปันผล)</div><div class="mdesc">D₀ ปันผล TTM $0.92 × (1+g 5%) = D₁ $0.966; r (ต้นทุนส่วนทุน โดยประมาณ CAPM: rf 4.6% + β~1.3 × ERP 5.5%) ≈ 12%, g (อัตราเติบโตปันผลระยะยาว สอดคล้องแนวโน้ม DE) 5% → D₁/(r−g)</div></div>
+        <div class="mval">$13.80</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $13.35 – $13.80</span></div>
+        <div class="r">$13.58</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ทั้งสองวิธีอิงฐานกำไร DE (Distributable Earnings) ต่อหุ้น ไม่ใช่ GAAP EPS ที่ถูกบิดเบือนจาก amortization ของสินทรัพย์ไม่มีตัวตน —
+        P/DE ให้ค่าต่ำกว่าเล็กน้อยเพราะยังคำนึงถึงความไม่แน่นอนจาก private credit stress ปัจจุบัน ส่วน DDM ให้ค่าสูงกว่าเล็กน้อยจาก r/g ที่เลือก
+        ทั้งสองวิธีเป็นอิสระจากกันจริง (วิธีแรกใช้มัลติเปิ้ลเทียบกลุ่ม ไม่ใช้ r,g / วิธีที่สองใช้ r,g) ค่าเฉลี่ย $13.58 จึงเป็นมูลค่าที่ระมัดระวัง
+        ไม่รวม upside จากการรีเรตติ้งมัลติเปิ้ลกลับสู่ระดับพรีเมียมเดิมของกลุ่ม
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $11.87</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $13.58</div></div>
+        </div>
+        <div class="scale">
+          <span>$9.51<br><small>MOS 30%</small></span>
+          <span>$10.86<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$12.56<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">$13.58<br><small>Fair Value</small></span>
+          <span style="text-align:right">$13.80<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน $11.87 อยู่ต่ำกว่ามูลค่าเหมาะสม $13.58 ประมาณ 12.6% และต่ำกว่าเป้าเฉลี่ยนักวิเคราะห์ $12.56 (Buy, n=17) เล็กน้อยเช่นกัน
+        สะท้อนว่าตลาดยังกังวลกับความเสี่ยง private credit มากกว่าที่โมเดลซึ่งอิงฐาน DE มองเห็น
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict ok">
+        <div class="big">+12.6%</div>
+        <div class="txt"><b>มี Margin of Safety ระดับพอใช้</b><br>ราคาต่ำกว่ามูลค่าเหมาะสมราว 12.6% ยังไม่ถึงระดับ deep value แต่ปันผล 7.75% ต่อปีช่วยลดความเสี่ยงขาลง เหมาะสำหรับทยอยสะสมมากกว่าซื้อครั้งเดียวเต็มไม้</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$10.86</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$9.51</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $13.58</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="11.87" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $11.87 • DE ฐาน ~$0.89 (2026E) • รวมปันผล • อิง DE×P/DE ไม่ใช่ GAAP EPS</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>DE +2%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$10.39</div>
+          <div class="ret neg">+10.7% (~3.5%/ปี)</div>
+          <ul>
+            <li><span>DE ปี 3</span><span>~$0.94</span></li>
+            <li><span>P/DE ออก</span><span>11x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$2.76</span></li>
+            <li><span>สถานการณ์</span><span>private-credit stress ยืดเยื้อ เงินปันผลทรงตัว มัลติเปิ้ลยังไม่ฟื้น</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>DE +7%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$16.35</div>
+          <div class="ret pos">+62.6% (~17.6%/ปี)</div>
+          <ul>
+            <li><span>DE ปี 3</span><span>~$1.09</span></li>
+            <li><span>P/DE ออก</span><span>15x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$2.96</span></li>
+            <li><span>สถานการณ์</span><span>AUM รอเก็บค่าธรรมเนียม $31.1B ทยอย deploy ตามแผน มัลติเปิ้ลกลับสู่ระดับ fair</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>DE +12%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$22.50</div>
+          <div class="ret pos">+115.8% (~29%/ปี)</div>
+          <ul>
+            <li><span>DE ปี 3</span><span>~$1.25</span></li>
+            <li><span>P/DE ออก</span><span>18x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$3.11</span></li>
+            <li><span>สถานการณ์</span><span>ความกังวล private credit พิสูจน์ว่าเกินจริง เฟดลดดอกเบี้ยหนุน deployment เร็ว มัลติเปิ้ลรีเรตติ้งใกล้กลุ่ม BX/ARES</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      ทั้ง 3 scenario อิง DE ต่อหุ้น × มัลติเปิ้ล P/DE ทางออก ไม่ใช่ GAAP EPS แม้ใน Bear case ราคาจะปรับตัวลงต่อ (−12.5%) แต่ผลตอบแทนรวม
+      (รวมปันผล) ยังเป็นบวกเล็กน้อยเพราะ dividend yield สูงถึง 7.75% ช่วยพยุงไว้
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>AUM รอเก็บค่าธรรมเนียม:</b> มี AUM ที่ยังไม่จ่ายค่าธรรมเนียม $31.1B ณ 30 มิ.ย. 2569 คิดเป็นศักยภาพรายได้ค่าธรรมเนียมเพิ่มเติมราว $380M ต่อปีเมื่อ deploy ครบ</li>
+          <li><b>Permanent Capital สูงสุดในกลุ่ม:</b> ราว 75% ของ AUM ($224.8B ณ 1Q/2569 ขึ้น 15% YoY) อยู่ในโครงสร้างถาวร/กึ่งถาวร ทำให้รายได้ค่าธรรมเนียมมั่นคงกว่าคู่แข่งที่พึ่ง drawdown fund</li>
+          <li><b>ช่องทางประกันภัย:</b> การขยายพันธมิตรด้านประกันภัยหนุนการเติบโตของ AUM ถาวรต่อเนื่อง</li>
+          <li><b>ระดมทุนแข็งแกร่ง:</b> ปี 2568 ระดมทุนได้ $56B สูงสุดเป็นประวัติการณ์ หนุน AUM รวมโต 5 เท่านับจาก IPO</li>
+          <li><b>Guidance ปี 2569:</b> ผู้บริหารยืนยันว่าจะทำได้ดีกว่า consensus ทั้ง FRE ($1.02/หุ้น) และ DE ($0.89/หุ้น)</li>
+          <li><b>ปันผลสูงและสม่ำเสมอ:</b> DE โต +9% YoY ใน Q2/2569 หนุนความสามารถจ่าย/ปรับขึ้นเงินปันผลต่อเนื่อง</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>Private Credit Stress:</b> Blue Owl ประกาศจำกัดการถอนเงิน (gate) ในกองทุนค้าปลีกกองหนึ่งช่วงต้นปี 2569 ท่ามกลางความกังวลสินเชื่อกลุ่ม software ทั่วอุตสาหกรรม ฉุดราคาหุ้นลงเกือบ 2/3 จากจุดสูงสุด</li>
+          <li><b>GAAP EPS บิดเบือน:</b> P/E TTM ตามบัญชี ~99x อาจทำให้นักลงทุน/สกรีนเนอร์ที่ไม่เข้าใจโครงสร้าง Up-C ตีความผิดว่าหุ้นแพงเกินจริง</li>
+          <li><b>เลเวอเรจเพิ่มขึ้น:</b> D/E รวม TTM 0.77x เทียบ 0.34x ในปี 2565 สะท้อนการก่อหนี้เพื่อการเติบโต ความอ่อนไหวต่อวัฏจักรสินเชื่อเพิ่มขึ้น</li>
+          <li><b>กระจุกตัวในสินเชื่อ:</b> fee-earning AUM ราว 53% อยู่ในกลุ่ม credit/direct lending ทำให้ผลตอบแทนอ่อนไหวต่อวงจรสินเชื่อองค์กร</li>
+          <li><b>แรงกดดันค่าธรรมเนียม:</b> การแข่งขันในกลุ่ม alt-manager อาจกดดัน fee margin ระยะยาว</li>
+          <li><b>ความเสี่ยงกำกับดูแล:</b> มาตรการ gate การถอนเงินในกองทุน non-traded ดึงความสนใจจากหน่วยงานกำกับดูแลต่อโครงสร้าง private credit ทั้งอุตสาหกรรม</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>OWL: กำไรที่แท้จริง (DE/FRE) แข็งแรงกว่าที่ GAAP EPS สะท้อน — MOS ระดับพอใช้ท่ามกลางความกังวลรอบวงจร private credit</h2>
+      <p>
+        Blue Owl เป็นผู้จัดการสินทรัพย์ทางเลือกที่มีสัดส่วน permanent capital สูงสุดในกลุ่ม (~75% ของ AUM $319B) ทำให้รายได้ค่าธรรมเนียมคาดการณ์ได้
+        มากกว่าคู่แข่งที่พึ่งพา drawdown fund แม้ GAAP EPS จะดูต่ำผิดปกติ ($0.12 TTM) จากโครงสร้าง Up-C และการตัดจำหน่ายสินทรัพย์ไม่มีตัวตนจากดีล M&A
+        แต่ตัวชี้วัดที่กลุ่มนี้ใช้จริงคือ FRE และ DE ต่อหุ้น ซึ่งยังคงเติบโต (+9% YoY ใน Q2/2569) ท่ามกลางกระแส "private credit stress" ที่กดราคาหุ้นลง
+        −29.9% ในรอบปี เราประเมินมูลค่าเหมาะสมที่ $13.58 ให้ MOS ราว 12.6% ซึ่งอยู่ในโซนที่น่าสนใจแต่ยังไม่ใช่ deep value
+      </p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$13.58 <span style="font-size:12px;color:#cab9a8">($13.35–$13.80)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +12.6%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$12.56 (Buy, n=17)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ทยอยสะสมได้ที่ระดับปัจจุบันเพื่อรับ margin of safety ~12.6% และปันผล 7.75% แต่แนะนำแบ่งไม้ซื้อเพิ่มหากราคาลงมาที่โซน
+        MOS20% ($10.86) หรือ MOS30% ($9.51) เพื่อรองรับความเสี่ยงหากภาวะ private credit stress ยืดเยื้อกว่าคาด
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/DE เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และการคาดการณ์ DE/FRE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ราคา ณ 7 ส.ค. 2569 จาก StockAnalysis.com
+    (cross-check กับ Yahoo Finance ตรงกัน) • ข้อมูลงบการเงิน/AUM/FRE/DE จาก Blue Owl Capital Q2 2026 Press Release (Investor Relations, 30 ก.ค. 2569)
+    และ StockAnalysis.com/financials • บริบทข่าว private credit stress จาก Fortune และ StockTitan
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 8 ส.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
