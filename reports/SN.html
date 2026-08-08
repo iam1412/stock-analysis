@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น SharkNinja (SN) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 5">
+<script type="application/json" id="stock-meta">
+{"symbol":"SN","currency":"USD","price":185.52,"fairValue":156.23,"mos":-18.7,"upside":-15.8,"pe":37.86,"dividendYield":0,"roe":25.2}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#cc3dcc",
+    "accentDark": "#992899",
+    "darkGrad": "linear-gradient(135deg,#370c37 0%,#651665 58%,#9f229f 140%)",
+    "glow": "rgba(202,53,202,.35)",
+    "subColor": "#e6c7e6",
+    "headerMuted": "#d4bad4",
+    "verdictText": "#edd4ed",
+    "vcellLabel": "#e2cae2",
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#137333"
+  },
+  "chart": {
+    "data": [["ก.ย.25", 103.15], ["ต.ค.25", 85.5], ["พ.ย.25", 97.57], ["ธ.ค.25", 111.9],
+             ["ม.ค.26", 118.2], ["ก.พ.26", 122.87], ["มี.ค.26", 105.9], ["เม.ย.26", 115.53],
+             ["พ.ค.26", 121.89], ["มิ.ย.26", 152.27], ["ก.ค.26", 161.77], ["ส.ค.26", 185.52]],
+    "min": 50, "max": 200, "grid": [100, 150],
+    "fairLine": 156.23, "currency": "$", "highlight": [1, 11]
+  },
+  "gauge": { "min": 100, "max": 210, "cur": 185.52, "fair": 156.23 },
+  "fv": 156.23
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots"><div style="width:8px;height:8px;border-radius:50%;background:#cc3dcc;display:inline-block;margin:0 3px"></div><div style="width:8px;height:8px;border-radius:50%;background:#992899;display:inline-block;margin:0 3px"></div><div style="width:8px;height:8px;border-radius:50%;background:#651665;display:inline-block;margin:0 3px"></div></div>
+    <div>
+      <span class="tag">NYSE: SN</span>
+      <span class="tag">Consumer Discretionary • Household Appliances</span>
+      <span class="tag">Direct-to-Consumer Small Appliances</span>
+    </div>
+    <h1>SharkNinja, Inc. (SN)</h1>
+    <div class="sub">Shark เครื่องดูดฝุ่น/ทำความสะอาด • Ninja เครื่องใช้ในครัว • FlexBreeze พัดลม/ปรับอากาศพกพา • SharkNinja Beauty ผลิตภัณฑ์ดูแลเส้นผม</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$185.52<small>(SN)</small></div>
+      </div>
+      <div class="chg">▲ +79.9% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 7 ส.ค. 2569 (StockAnalysis.com, ตรงกับ Yahoo Finance)<br>
+        กรอบ 52 สัปดาห์ $83.12 – $187.63<br>
+        ที่มา: StockAnalysis.com, Yahoo Finance, SharkNinja Q2/2569 Earnings Release (stocktitan.net)
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">TTM ถึงไตรมาส 2/2569 (สิ้นสุด มิ.ย. 2569) • งบปี FY2025 สิ้นสุด ธ.ค. 2568</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~$26.3B</div><div class="d">~142M หุ้น (diluted, TTM)</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~37.86x</div><div class="d">พรีเมียมสูงจากการเติบโต+มาร์จิ้นขยายตัว</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">N/A</div><div class="d">เริ่มเทรด NYSE ก.ค. 2566 (~3.1 ปี ยังไม่มีค่าเฉลี่ย 5 ปี)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">~9.56x</div><div class="d">ประมาณจาก Equity=NI TTM÷ROE (ไม่มี BVPS ตรงในแหล่ง)</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">$701M</div><div class="d">+59.7% YoY (FY2024: $439M)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$4.90</div><div class="d">GAAP diluted, กระทบยอดข้ามแหล่งแล้ว (ดูย่อหน้าเปิดเผยข้อมูล)</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~$19.42</div><div class="d">ประมาณจาก Equity/หุ้น (ไม่ได้ระบุตรงในแหล่งที่ใช้)</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~25.2% / N/A</div><div class="d">ROA ไม่มีข้อมูลสินทรัพย์รวมจากแหล่งที่ใช้</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$6,910M</div><div class="d">+17.5% YoY (เร่งขึ้นจาก FY2024 +15.7%)</div></div>
+      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">48.9%</div><div class="d">ขยายจาก 44.9% ปี 2566 หลังพอร์ตสินค้า/มาร์จิ้นฟื้นตัว</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~0%</div><div class="d">ไม่จ่ายปันผล — นำกระแสเงินสดไปลงทุนขยายไลน์สินค้า</div></div>
+      <div class="metric"><div class="k">D/E (หนี้สิน/ทุน)</div><div class="v">~0.31x</div><div class="d">หนี้ $913M • เงินสด $780M (TTM)</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#cc3dcc"></i>ราคา SN</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $156.23</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคาต่ำสุดรอบปีอยู่ที่ $85.50 (ต.ค. 2568, ราคาปิดรายเดือน) ท่ามกลางความกังวลเรื่องภาษีนำเข้า/การชะลอตัวของผู้บริโภค จากนั้นฟื้นตัวขึ้นแรงหลังบริษัททยอยปรับเพิ่มเป้าปี 2569 ต่อเนื่องหลายไตรมาส แม้จะย่อตัวลงมาที่ $105.90 ในเดือน มี.ค. 2569 (~-13% จากจุดสูงช่วงต้นปี) แต่หลังรายงานผลประกอบการไตรมาส 1 และไตรมาส 2/2569 ที่ยอดขายโตแรง +22% YoY และปรับเพิ่มเป้าทั้งปี ราคาก็พุ่งขึ้นต่อเนื่องมาปิดที่ $185.52 (7 ส.ค. 2569) รวมผลตอบแทนรอบปี +79.9%
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 2 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS (TTM, GAAP diluted) $4.90 × P/E เป้าหมาย ~30x — ลดจาก P/E ปัจจุบัน 37.9x สะท้อนการชะลอตัวจากอัตราเติบโตช่วง catch-up หลังแยกตัวจาก JS Global (2566-2568) สู่การเติบโตที่ยั่งยืนกว่าในระยะยาว (~12%/ปี) แต่ยังคงพรีเมียมเหนือตลาดจากมาร์จิ้นขยายตัวต่อเนื่องและ ROE 25%+</div></div>
+        <div class="mval">$147.00</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. P/S (Price-to-Sales) Valuation</div><div class="mdesc">รายได้ต่อหุ้น TTM $48.66 ($6,910M ÷ 142M หุ้น) × P/S เป้าหมาย 3.4x — ผูกกับมาร์จิ้นสุทธิ TTM 10.1% ที่ขยายต่อเนื่องจาก 3.9% ปี 2566 (พรีเมียมเหนือกลุ่มเครื่องใช้ในบ้านทั่วไปจากยอดขายโตสองหลัก) — ต่ำกว่า P/S ปัจจุบัน 3.81x เล็กน้อย สะท้อนความระมัดระวังต่อความเสี่ยงภาษี/วงจรสินค้าใหม่</div></div>
+        <div class="mval">$165.45</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $147.00 – $165.45</span></div>
+        <div class="r">$156.23</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ทั้งสองวิธีให้ FV ต่ำกว่าราคาตลาดปัจจุบัน ($185.52) เพราะราคาสะท้อนโมเมนตัมยอดขาย/การปรับเพิ่มเป้าล่าสุด (ไตรมาส 2/2569) ไว้มากแล้ว — เป้าเฉลี่ยนักวิเคราะห์ ($198.65–$203.41, เฉลี่ย $201.03) สูงกว่ากรอบ FV ของเรา สะท้อนมุมมองที่บวกกว่าต่อโมเมนตัมระยะสั้น ขณะที่ประมาณการนี้ระมัดระวังกว่าเพราะความเสี่ยงจากภาษีนำเข้า/ความต่อเนื่องของวงจรสินค้าใหม่ในระยะยาว
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $185.52</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $156.23</div></div>
+        </div>
+        <div class="scale">
+          <span>$109.36<br><small>MOS 30%</small></span>
+          <span>$124.98<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$156.23<br><small>Fair Value</small></span>
+          <span style="text-align:right">$165.45<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">$201.03<br><small>เป้าเฉลี่ย Analyst</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบันอยู่สูงกว่ากรอบบนของ Fair Value ที่ประเมินไว้แล้ว แต่ยังต่ำกว่าเป้าเฉลี่ยนักวิเคราะห์ (Strong Buy, n=10) ที่ $201.03 — ช่องว่างนี้สะท้อนมุมมองที่ต่างกันระหว่างโมเมนตัมระยะสั้น (นักวิเคราะห์) กับความระมัดระวังต่อความยั่งยืนของมาร์จิ้น/วงจรสินค้าใหม่ในระยะยาว (โมเดลนี้)
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">−18.7%</div>
+        <div class="txt"><b>ไม่มี Margin of Safety (ราคาแพงกว่ามูลค่าเหมาะสม)</b><br>ราคาปัจจุบันสูงกว่า FV ที่ประเมิน ~19% ตลาดกำลังให้เครดิตกับโมเมนตัมยอดขาย/มาร์จิ้นที่เพิ่งประกาศไปมากแล้ว นักลงทุนที่เข้าใหม่ ณ ราคานี้เผชิญความเสี่ยง downside มากกว่า upside เมื่อเทียบกับมูลค่าพื้นฐาน ควรรอจังหวะราคาย่อ</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$124.98</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$109.36</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $156.23</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="185.52" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $185.52 • EPS ฐาน ~$4.90 • SN ไม่จ่ายปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS +3%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$107.00</div>
+          <div class="ret neg">−42.3% (3 ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$5.35</span></li>
+            <li><span>P/E ออก</span><span>20x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$0</span></li>
+            <li><span>สถานการณ์</span><span>วงจรสินค้าใหม่แผ่วลงจริง + ภาษีนำเข้ากดมาร์จิ้น ตลาดปรับ P/E ลงแรงจาก 37.9x เหลือ 20x</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +12%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$206.40</div>
+          <div class="ret pos">+11.3% (3 ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$6.88</span></li>
+            <li><span>P/E ออก</span><span>30x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$0</span></li>
+            <li><span>สถานการณ์</span><span>เติบโตต่อเนื่องในอัตราที่ชะลอลงจากปัจจุบัน ย้ายฐานผลิตนอกจีนสำเร็จตามแผน มาร์จิ้นทรงตัว-ขยายเล็กน้อย</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +22%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$311.50</div>
+          <div class="ret pos">+67.9% (3 ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$8.90</span></li>
+            <li><span>P/E ออก</span><span>35x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$0</span></li>
+            <li><span>สถานการณ์</span><span>วงจรสินค้าใหม่/หมวดใหม่ (outdoor, personal care) ต่อยอดสำเร็จ ขยายตลาดต่างประเทศเร่งขึ้น มาร์จิ้นขยายต่อเนื่อง ตลาดยังให้พรีเมียม</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      Bear case ไม่ได้แค่ลดอัตราเติบโต แต่จำลองวงจรสินค้าใหม่ที่แผ่วลงจริงร่วมกับตลาดปรับ P/E ลงแรง (de-rating) ซึ่งเป็นความเสี่ยงเฉพาะของโมเดลที่พึ่งพาการออกสินค้าใหม่ถี่ • Base case สะท้อนการ "ย่อยข่าวดี" ของราคาปัจจุบันแล้วบางส่วน ผลตอบแทน 3 ปีจึงต่ำกว่าที่นักลงทุนเข้าใหม่คาดหวัง แม้ธุรกิจยังโตดี • SN ไม่จ่ายปันผลทุก scenario
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>วงจรสินค้าใหม่ต่อเนื่อง:</b> เปิดตัวหมวดใหม่ต่อเนื่อง (Shark Home Luxe Collection, SharkNinja Beauty เช่น SilkiPro หวียืดผม, Ninja AutoBarista/SLUSHi) ต่อยอดจาก Shark/Ninja core ผลักดันยอดขายไตรมาส 2/2569 โต +22% YoY</li>
+          <li><b>ปรับเพิ่มเป้าปี 2569 ต่อเนื่อง:</b> ผู้บริหารปรับเพิ่มเป้ายอดขายเป็น +16–17% และ Adjusted EPS $6.45–6.55 หลังผลประกอบการ Q2/69 แข็งแกร่งกว่าคาด</li>
+          <li><b>ขยายตลาดต่างประเทศ:</b> สัดส่วนนอกสหรัฐฯ ยังน้อยเทียบฐานลูกค้าในประเทศ เหลือช่องว่างเติบโตอีกมาก</li>
+          <li><b>ลดความเสี่ยงห่วงโซ่การผลิตระยะยาว:</b> ย้ายฐานผลิตเครื่องใช้ในบ้านเกือบทั้งหมดออกจากจีนภายในสิ้นปี 2569 (ผลิต ~90% ในเอเชียตะวันออกเฉียงใต้แล้วตั้งแต่กลางปี 2568) พร้อม dual-sourcing เกือบทุก SKU หลัก</li>
+          <li><b>ROE สูง + กระแสเงินสดแข็งแกร่ง:</b> ROE TTM ~25% หนี้สินต่ำ (D/E ~0.31x) สนับสนุนการลงทุน R&D/ขยายไลน์สินค้าต่อเนื่องโดยไม่ต้องพึ่งหนี้เพิ่ม</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>ความเสี่ยงภาษีนำเข้า/ห่วงโซ่การผลิต:</b> แม้ย้ายฐานผลิต ~90% ไปเอเชียตะวันออกเฉียงใต้ (กัมพูชา อินโดนีเซีย มาเลเซีย เวียดนาม) แล้ว แต่ราว 66% ของธุรกิจยังเจออัตราภาษีใกล้เคียงกันไม่ว่าผลิตในจีนหรือนอกจีน และเป้าปี 2569 อิงสมมติฐานอัตราภาษีพื้นฐาน 10% คงที่ทั้ง 6 ประเทศ — ผู้บริหารระบุว่าภาษีทำให้บริษัทเสียหายแล้ว "หลายร้อยล้านดอลลาร์" หากอัตรานี้เปลี่ยนแปลงจะกระทบมาร์จิ้นโดยตรง</li>
+          <li><b>พึ่งพาวงจรสินค้าใหม่ถี่:</b> รายได้โตเร็วส่วนใหญ่มาจากการออกสินค้าใหม่ต่อเนื่องทุกปี หากสินค้าตัวใหม่ไม่ตอบโจทย์ตลาด/แข่งขันสูงขึ้น (Dyson, Instant Pot, Vitamix ฯลฯ) อัตราเติบโตจะชะลอเร็วกว่าคาด และมักถูกลงโทษด้วยการลด P/E ลงแรง ไม่ใช่แค่ปรับลดคาดการณ์การเติบโต</li>
+          <li><b>Valuation ตึงตัว:</b> เทรดที่ P/E TTM ~37.9x สูงกว่ากรอบ Fair Value ที่ประเมิน ($147–165) ราคาสะท้อนการเติบโต+มาร์จิ้นในอนาคตไว้มากแล้ว ผลประกอบการสะดุดแม้เพียงไตรมาสเดียวมีความเสี่ยงปรับฐานแรง</li>
+          <li><b>งบย้อนหลังก่อนปี 2566 ไม่เทียบเท่าฐาน stand-alone เต็มรูปแบบ:</b> SharkNinja แยกตัวจาก JS Global Lifestyle อย่างเป็นทางการเดือน ก.ค. 2566 ตัวเลขปี 2564–2565 ในตารางเป็นฐาน carve-out/combined ก่อนแยกบริษัท มี cost allocation ที่ต่างจากบริษัทอิสระเต็มรูปแบบ ควรระมัดระวังเทียบกับปี 2566 เป็นต้นไป</li>
+          <li><b>FCF ผันผวนสูง:</b> FCF TTM $805M สูงกว่า FY2568 ที่ $488M มาก ส่วนหนึ่งจากจังหวะบริหาร working capital (สต๊อกสินค้า/นำเข้าก่อนภาษีขึ้น) ไม่ควรประเมินมูลค่าจาก FCF ช่วงเดียวโดยไม่ปรับให้เป็นค่าปกติ</li>
+          <li><b>ความอ่อนไหวต่ออัตราแลกเปลี่ยน:</b> ไตรมาส 2/2569 กำไรสุทธิ GAAP ลดลง 7% YoY ส่วนหนึ่งจากขาดทุนอัตราแลกเปลี่ยน สะท้อนความเสี่ยง FX ที่เพิ่มขึ้นตามสัดส่วนธุรกิจต่างประเทศ</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>โมเมนตัมธุรกิจแข็งแกร่ง แต่ราคาสะท้อนข่าวดีไปมากแล้ว</h2>
+      <p>SharkNinja รายงานผลประกอบการไตรมาส 2/2569 ที่แข็งแกร่ง ยอดขายโต +22% YoY และปรับเพิ่มเป้าทั้งปีต่อเนื่อง สะท้อนความสำเร็จของโมเดลออกสินค้าใหม่ถี่ (Shark/Ninja/CLIKS) และ ROE ที่สูงถึง ~25% แต่ราคาหุ้นที่พุ่งขึ้น +79.9% ในรอบปีทำให้เทรดที่ P/E ~37.9x สูงกว่ากรอบ Fair Value ที่ประเมินได้ ($147–165) ไปแล้วราว 12–26% ความเสี่ยงหลักคือการพึ่งพาฐานผลิตที่เชื่อมโยงกับจีนสูงท่ามกลางนโยบายภาษีนำเข้าที่ยังไม่นิ่ง และความต่อเนื่องของวงจรสินค้าใหม่ที่ต้องรักษาระดับความสำเร็จไว้ให้ได้ต่อเนื่องหลายปี นักลงทุนที่ยังไม่มีสถานะควรรอจังหวะราคาย่อ ผู้ที่ถืออยู่แล้วอาจพิจารณาคงสถานะแต่ไม่แนะนำไล่ราคาเพิ่ม ณ ระดับนี้</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$156.23 <span style="font-size:12px;color:#cab9a8">($147.00–$165.45)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS −18.7%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$201.03 (Strong Buy)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> รอจังหวะราคาย่อลงมาใกล้กรอบ Fair Value ($147–165) หรือโซน MOS 20% ที่ ~$125 ก่อนพิจารณาเข้าซื้อรอบใหม่ ถือเดิมได้แต่ไม่แนะนำไล่ราคาเพิ่ม ติดตามอัตราภาษีนำเข้า/ความคืบหน้าการย้ายฐานผลิต และความต่อเนื่องของวงจรสินค้าใหม่อย่างใกล้ชิด
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ราคา ณ 7 ส.ค. 2569 จาก StockAnalysis.com (ตรงกับ Yahoo Finance เป๊ะที่ $185.52) • <b>เปิดเผยการเลือก EPS:</b> ใช้ EPS(TTM) $4.90 (GAAP diluted) จากตารางงบของ StockAnalysis.com — ตรวจสอบไขว้สำเร็จด้วยตัวเลขรายไตรมาสจริงจากเอกสารข่าวผลประกอบการทางการของ SharkNinja (stocktitan.net, 5 ส.ค. 2569): EPS(dil) TTM = FY2568 (4.94) − 6 เดือนแรกปี 2568 (1.81) + 6 เดือนแรกปี 2569 (1.77) = 4.90 ตรงกับ StockAnalysis เป๊ะ ส่วน Yahoo Finance quoteSummary แสดง epsTTM=5.05 (ต่าง 3.1%) ซึ่งเป็นฟิลด์ derived ของผู้ให้บริการที่มักคลาดเคลื่อนจากตัวเลข GAAP diluted จริง (ล่าช้าหนึ่งไตรมาส/เป็นเลข normalized) จึงไม่นำมาใช้เป็นตัวหลัก • <b>ผลจากการแยกตัวจาก JS Global:</b> SharkNinja แยกตัวจาก JS Global Lifestyle Company Limited เป็นบริษัทมหาชนอิสระในสหรัฐฯ อย่างเป็นทางการเดือน ก.ค. 2566 ตัวเลขงบปี 2564–2565 ที่ใช้ในรายงานนี้เป็นฐาน carve-out/combined ก่อนการแยกตัว จึงอาจมี cost allocation ต่างจากบริษัทอิสระเต็มรูปแบบ — ตัวเลขปี 2566 เป็นต้นไปเป็นฐาน stand-alone เต็มรูปแบบ • ข้อมูลงบการเงิน/อัตราส่วนจาก StockAnalysis.com • บริบทความเสี่ยงภาษีนำเข้า/ห่วงโซ่การผลิตจาก stocktitan.net, supplychaindive.com, manufacturingdive.com (ก.ค.–ส.ค. 2569)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 8 ส.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
