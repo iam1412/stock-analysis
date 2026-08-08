@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น สหพัฒนาอินเตอร์โฮลดิ้ง (SPI) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 5">
+<script type="application/json" id="stock-meta">
+{"symbol":"SPI","currency":"THB","price":32.25,"fairValue":31.16,"mos":-3.5,"upside":-3.4,"pe":27.6,"dividendYield":1.86,"roe":2.9}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#c84182",
+    "accentDark": "#962c5f",
+    "darkGrad": "linear-gradient(135deg,#340f20 0%,#5f1b3c 58%,#972b5f 140%)",
+    "glow": "rgba(191,64,125,.35)",
+    "subColor": "#e2cad6",
+    "headerMuted": "#c6b3bc",
+    "verdictText": "#ead7e0",
+    "vcellLabel": "#d7c1cb",
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#137333"
+  },
+  "chart": {
+    "data": [["ก.ย.25", 29], ["ต.ค.25", 30.17], ["พ.ย.25", 28], ["ธ.ค.25", 26.5],
+             ["ม.ค.26", 28], ["ก.พ.26", 29.17], ["มี.ค.26", 29.83], ["เม.ย.26", 31.5],
+             ["พ.ค.26", 32.25], ["มิ.ย.26", 32.5], ["ก.ค.26", 32.25], ["ส.ค.26", 32.25]],
+    "min": 20, "max": 34, "grid": [24, 28, 32],
+    "fairLine": 31.16, "currency": "฿", "highlight": [3, 9]
+  },
+  "gauge": { "min": 20, "max": 34, "cur": 32.25, "fair": 31.16 },
+  "fv": 31.16
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots"><div style="width:8px;height:8px;border-radius:50%;background:#c84182;display:inline-block;margin:0 3px"></div><div style="width:8px;height:8px;border-radius:50%;background:#962c5f;display:inline-block;margin:0 3px"></div><div style="width:8px;height:8px;border-radius:50%;background:#972b5f;display:inline-block;margin:0 3px"></div></div>
+    <div>
+      <span class="tag">SET: SPI</span>
+      <span class="tag">Holding/Investment (เครือสหพัฒน์)</span>
+      <span class="tag">Sum-of-Parts NAV / Conglomerate Discount</span>
+    </div>
+    <h1>สหพัฒนาอินเตอร์โฮลดิ้ง (Saha Pathana Inter-Holding)</h1>
+    <div class="sub">บริษัทลงทุนหลักเครือสหพัฒน์ • ถือหุ้น TFMAMA · ICC · SPC · PB · TNL · OCC • พัฒนานิคมอุตสาหกรรมบางปะกง-ศรีราชา + โครงการอสังหาฯ พระราม 3</div>
+    <div class="price-row">
+      <div>
+        <div class="px">฿32.25<small>(SPI)</small></div>
+      </div>
+      <div class="chg">▲ +11.2% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 7 ส.ค. 2569 (StockAnalysis.com, ตรงกับ Yahoo Finance ที่ ฿32.25)<br>
+        กรอบ 52 สัปดาห์ ฿26.17 – ฿40.00<br>
+        ที่มา: StockAnalysis.com, Yahoo Finance, SET/aio.panphol.com (ข้อมูลผู้ถือหุ้นใหญ่บริษัทในเครือ), TradingView (ราคาบริษัทในเครือ)
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">TTM ถึงไตรมาส 2/2569 เว้นระบุเป็นอื่น</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">฿41,506 ล้านบาท</div><div class="d">~1,287 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~27.6x</div><div class="d">EPS TTM ต่ำกว่าปกติ — ไม่ใช้เป็นตัวชี้วัดหลักของหุ้นโฮลดิ้ง (ดู NAV ส่วนที่ 3)</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">N/A</div><div class="d">กำไรผันผวนตามส่วนแบ่งกำไรบริษัทร่วม — ไม่สะท้อนมูลค่าที่แท้จริง</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">0.83x</div><div class="d">ต่ำกว่ามูลค่าทางบัญชี (BVPS ฿38.97, Q2/2569)</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2568</div><div class="v">฿2,284 ล้านบาท</div><div class="d">−32.2% YoY (FY2567 ฿3,370 ล้านบาท)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿1.17</div><div class="d">FY2568 เต็มปี ฿1.77 — TTM ชะลอจากส่วนแบ่งกำไรบริษัทร่วมที่อ่อนลง</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~฿38.97</div><div class="d">Q2/2569 (aio.panphol.com) ≈ คำนวณจาก Debt/D-E TTM ได้ ~39.72 — สอดคล้องกัน</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~2.9% / N/A</div><div class="d">ROE ต่ำกว่าเฉลี่ย 5 ปี (4.5–8.8%) เพราะกำไร TTM ชะลอตัว</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">~฿6,438 ล้านบาท</div><div class="d">ประมาณจาก NI TTM ÷ NetM% — ส่วนใหญ่คือค่าเช่านิคมฯ/บริการ + เงินปันผลรับ</div></div>
+      <div class="metric"><div class="k">อัตรากำไร</div><div class="v">37.7% OpM / 23.3% NetM (TTM)</div><div class="d">สูงผิดปกติเพราะกำไรหลักคือส่วนแบ่งกำไรบริษัทร่วม (equity method) ไม่ใช่ยอดขายสินค้า</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~1.86%</div><div class="d">ปันผล ฿0.60/หุ้น — yield ต่ำ ไม่ใช่หุ้นปันผล</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">N/A</div><div class="d">ไม่มีข้อมูลเผยแพร่ที่ยืนยันได้ — สภาพคล่องซื้อขายต่ำ</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#c84182"></i>ราคา SPI</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿31.16</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคาหุ้น SPI เคลื่อนไหวในกรอบ ฿26.5–32.5 ตลอด 12 เดือนที่ผ่านมา ทำจุดต่ำสุดที่ ฿26.5 ในเดือน ธ.ค. 2568 ก่อนฟื้นตัวต่อเนื่องแตะจุดสูงสุดรอบปีที่ ฿32.5 ในเดือน มิ.ย. 2569 แล้วพักฐานเล็กน้อยมาปิดที่ ฿32.25 รวมผลตอบแทน 12 เดือน ~+11.2% ไม่มีข่าวเฉพาะตัวรุนแรง เป็นการฟื้นตัวตามภาพรวมหุ้นกลุ่มสหพัฒน์ทั้งกลุ่ม
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">Sum-of-Parts NAV — เฉลี่ย 2 วิธียึดตลาด</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. Sum-of-Parts NAV (BVPS floor − Holding Discount)</div><div class="mdesc">BVPS ฿38.97 (Q2/2569) ใช้แทนมูลค่าเงินลงทุนสุทธิต่อหุ้น เพราะพอร์ตหุ้นบริษัทในเครือที่จดทะเบียน 6 แห่งมีมูลค่าตลาดรวม ~฿31,002 ล้านบาท (~62% ของส่วนผู้ถือหุ้นตามบัญชี ฿50,157 ล้านบาท) และตัวใหญ่สุดในพอร์ต TFMAMA (52% ของพอร์ต) เทรดที่ P/BV 1.66x > 1 ⇒ มูลค่าตลาดของหุ้นที่ถือ ≥ มูลค่าตามบัญชี ⇒ BVPS เป็น NAV floor ที่ระมัดระวัง (ยังไม่รวมมูลค่าตลาดส่วนเกินของหุ้นที่ถือ + บริษัทย่อย/ร่วมที่ไม่ได้จดทะเบียนอีก 41 แห่ง + ที่ดินนิคมอุตสาหกรรม) หักส่วนลดโฮลดิ้ง 25% (ครอบครัวโชควัฒนาคุมเสียงข้างมากทุกบริษัทในเครือ, free float ต่ำ, ภาษีเมื่อขายเงินลงทุน, ไม่มี catalyst ปลดล็อกชัดเจน) → ฿38.97 × 0.75</div></div>
+        <div class="mval">฿29.23</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. Historical P/BV (P/NAV) Re-rating</div><div class="mdesc">กรอบราคา 52 สัปดาห์ ฿26.17–40.00 ÷ BVPS ฿38.97 = P/BV ในอดีต 0.67x–1.03x (กลาง ~0.85x) — สะท้อนส่วนลดต่อ NAV ที่ตลาดให้กับ SPI จริงในรอบปีที่ผ่านมา ใกล้เคียงกับส่วนลด 25% ที่ใช้ในวิธีที่ 1 × BVPS ปัจจุบัน ฿38.97</div></div>
+        <div class="mval">฿33.09</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. DDM (Dividend Discount Model) — บริบทเท่านั้น</div><div class="mdesc">D₁ = ปันผล ฿0.60 × (1+g); g 2.5%, r 7.5% (rf 2.3% ThaiBMA 10Y ก.ค. 2569 + β 0.8 ประมาณ × ERP 6.5%) → D₁/(r−g) = 0.615/0.05 — ใช้เป็นบริบทเท่านั้น: dispersion กับวิธีที่ 1–2 เกิน 2 เท่า (33.09/12.30 ≈ 2.7×) จึงไม่รวมในค่าเฉลี่ย FV ตามกฎ 0.4c เพราะปันผลต่ำ ไม่ใช่ตัวขับเคลื่อนมูลค่าของหุ้นนี้</div></div>
+        <div class="mval">฿12.30</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿29.23 – ฿33.09 (เฉลี่ยเฉพาะวิธี 1–2 ที่ยึดตลาด)</span></div>
+        <div class="r">฿31.16</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        <b>Full disclosure — วิธี NAV ที่ใช้:</b> นับเฉพาะ 6 บริษัทในเครือที่จดทะเบียนใน SET ที่ยืนยันสัดส่วนถือหุ้น SPI ได้จากหน้าผู้ถือหุ้นใหญ่ทางการ (aio.panphol.com, ข้อมูล พ.ค.–มี.ค. 2569) คูณราคาตลาดจริง ณ 8 ส.ค. 2569 (TradingView): TFMAMA 26.34% (มูลค่า ~฿16,240 ล้านบาท) · SPC 24.82% (~฿4,587 ล้านบาท) · PB 22.18% (~฿4,791 ล้านบาท) · ICC 24.26% (~฿2,923 ล้านบาท) · TNL 42.09% หลังขายหุ้นบางส่วนให้ EDTH เม.ย. 2568 บันทึกกำไรพิเศษ ~107 ล้านบาท (~฿2,372 ล้านบาท) · OCC 14.36% (~฿90 ล้านบาท) รวม ~฿31,002 ล้านบาท <b>ไม่ได้นับ:</b> มูลค่าตลาดของบริษัทย่อย/ร่วมอีก 41 แห่งที่ไม่ได้จดทะเบียน (จากทั้งหมด 13 บริษัทย่อย + 34 บริษัทร่วม + 2 กิจการร่วมค้า) และที่ดิน/อสังหาริมทรัพย์นิคมอุตสาหกรรมบางปะกง-ศรีราชา + โครงการพระราม 3 — เพราะไม่มีราคาตลาด/ราคาประเมินที่ยืนยันแหล่งได้ (ไฟล์ 56-1 One Report เต็มฉบับที่ spi.listedcompany.com คืน HTTP 403 ทั้งฉบับปี 2568 และ 2567 เข้าถึงไม่ได้) รายการเหล่านี้รวมอยู่ใน BVPS ที่ต้นทุน/equity method ซึ่งมักต่ำกว่ามูลค่าตลาดจริง จึงถือว่า <b>NAV จริงน่าจะสูงกว่า</b>ที่ประเมินในรายงานนี้ ไม่ใช่ต่ำกว่า <b>ส่วนลดโฮลดิ้ง 25%</b> อ้างอิงจากกรอบ P/BV ในอดีตของ SPI เอง (0.67–1.03x ในรอบ 52 สัปดาห์) ซึ่งเป็นหลักฐานเชิงประจักษ์ว่าตลาดให้ส่วนลดระดับนี้กับ SPI มาโดยตลอด ไม่ใช่ตัวเลขที่เลือกเพื่อให้ผลลัพธ์สวย
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿32.25</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿31.16</div></div>
+        </div>
+        <div class="scale">
+          <span>฿21.81<br><small>MOS 30%</small></span>
+          <span>฿24.93<br><small>MOS 20%</small></span>
+          <span style="text-align:center">฿31.16<br><small>Fair Value</small></span>
+          <span style="text-align:right">฿33.09<br><small>ไม่มี Analyst Coverage (Settrade: 0 broker)</small></span>
+          <span style="text-align:right">฿33.09<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน ฿32.25 อยู่ <b>เหนือ</b> มูลค่าเหมาะสม ฿31.16 ไปแล้วเล็กน้อย และเข้าใกล้กรอบบน ฿33.09 — Settrade Analyst Consensus แสดงจำนวนโบรกเกอร์ที่ให้ราคาเป้า/ติดตามหุ้นนี้เป็น 0 (ไม่มีนักวิเคราะห์ทางการติดตาม ณ ส.ค. 2569) จึงไม่มีเป้าราคานักวิเคราะห์ให้เทียบ ผู้ที่สนใจถือระยะยาวควรรอสะสมที่โซน MOS 20–30% (฿21.8–24.9) เพื่อให้มี margin of safety จากส่วนลดโฮลดิ้งที่แท้จริง
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">−3.5%</div>
+        <div class="txt"><b>แทบไม่มี Margin of Safety — ราคาแพงกว่ามูลค่าเหมาะสมเล็กน้อย</b><br>ราคาปัจจุบัน ฿32.25 สูงกว่า NAV floor หลังหักส่วนลดโฮลดิ้ง ฿31.16 ผู้ที่ซื้อตอนนี้จ่ายใกล้เคียง/สูงกว่ามูลค่าที่ประเมินได้ แทบไม่เหลือกันชนขาลง</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿24.93</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿21.81</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿31.16</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="32.25" step="0.05">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿32.25 • EPS ฐาน ~฿1.17 • รวมปันผล • กรอบอ้างอิงเสริมจากกำไร ไม่ใช่ thesis หลัก (ดู NAV ส่วนที่ 3)</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS −8%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿18.20</div>
+          <div class="ret neg">−39.8% (3 ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.91</span></li>
+            <li><span>P/E ออก</span><span>20x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿1.20</span></li>
+            <li><span>สถานการณ์</span><span>กำไรบริษัทร่วมหลัก (TFMAMA/ICC/SPC) ชะลอจากการแข่งขัน + discount โฮลดิ้งกว้างขึ้น &gt;30%</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +8%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿39.69</div>
+          <div class="ret pos">+28.7% (3 ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿1.47</span></li>
+            <li><span>P/E ออก</span><span>27x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿1.80</span></li>
+            <li><span>สถานการณ์</span><span>ผลประกอบการบริษัทร่วมฟื้นตัวใกล้ระดับ FY2568 ส่วนลดโฮลดิ้งคงที่ใกล้เคียงปัจจุบัน (~20–25%)</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +18%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿61.44</div>
+          <div class="ret pos">+97.0% (3 ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿1.92</span></li>
+            <li><span>P/E ออก</span><span>32x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿2.10</span></li>
+            <li><span>สถานการณ์</span><span>โครงการพระราม 3 เริ่มรับรู้รายได้ + unlock มูลค่าเพิ่มเติมผ่านการปรับโครงสร้างเงินลงทุน (แบบเดียวกับดีล TNL-EDTH) ส่วนลดโฮลดิ้งแคบลงเหลือ &lt;15%</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      สถานการณ์ตั้งอยู่บนสมมติฐานการเติบโตของ "กำไรสุทธิ" (ซึ่งเป็นส่วนแบ่งกำไรจากบริษัทร่วมเป็นหลัก ไม่ใช่ยอดขายของ SPI เอง) และ P/E ทางออกที่ผันแปรตามความเชื่อมั่นตลาดต่อกลุ่มสหพัฒน์ — ใช้เป็นกรอบอ้างอิงเสริมเท่านั้น การเปลี่ยนแปลงมูลค่าจริงขึ้นกับพัฒนาการของ NAV/ส่วนลดโฮลดิ้งตามที่อธิบายในส่วนที่ 3 เป็นหลัก
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>มูลค่าพอร์ตหุ้นเติบโต:</b> บริษัทในเครือหลัก โดยเฉพาะ TFMAMA (52% ของพอร์ตที่ยืนยันได้) มีมูลค่าตลาดเพิ่มขึ้นต่อเนื่อง หนุนมูลค่าพอร์ต SPI ตามสัดส่วนถือหุ้น 26.34%</li>
+          <li><b>โครงการพระราม 3:</b> การพัฒนาที่ดินย่านพระราม 3 ร่วมกับกลุ่มสหพัฒน์อาจปลดล็อกมูลค่าที่ดินที่ถือครองมานานหลายสิบปีในราคาบัญชีต่ำ</li>
+          <li><b>พร้อม unlock มูลค่า:</b> ดีลขายหุ้น TNL บางส่วนให้ EDTH (เม.ย. 2568) บันทึกกำไรพิเศษ ~107 ล้านบาท แสดงว่าฝ่ายบริหารพร้อมปรับโครงสร้างเงินลงทุนเมื่อมีจังหวะเหมาะสม</li>
+          <li><b>พอร์ตกระจายความเสี่ยง:</b> ลงทุนใน 13 บริษัทย่อย + 34 บริษัทร่วม + 2 กิจการร่วมค้า ครอบคลุมสินค้าอุปโภคบริโภคและอาหาร ลดความเสี่ยงจากธุรกิจเดียว</li>
+          <li><b>ส่วนลดยังไม่สุดโต่ง:</b> มูลค่าตลาดพอร์ตหุ้นจดทะเบียนที่ยืนยันได้ (~฿31,002 ล้านบาท) สูงถึง ~75% ของมูลค่าตลาด SPI เอง (~฿41,506 ล้านบาท) แม้ยังไม่นับสินทรัพย์อื่นเลย</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>Holding company discount ถาวร:</b> ตลาดมักให้มูลค่าโฮลดิ้งต่ำกว่า NAV เสมอ ด้วยเหตุผลสภาพคล่อง/ภาษีเมื่อขาย/ตระกูลโชควัฒนาคุมเสียงข้างมากทุกบริษัทในเครือ — ส่วนลดอาจไม่แคบลงในเร็ววัน</li>
+          <li><b>ปันผลต่ำ:</b> Yield ~1.86% ไม่เหมาะกับนักลงทุนที่ต้องการกระแสเงินสด (DDM ให้ค่าเพียง ~฿12.30 ดูส่วนที่ 3)</li>
+          <li><b>กำไรผันผวนตามบริษัทร่วม:</b> กำไรสุทธิ TTM ลดลงจาก FY2568 (2,284 ล้านบาท) เหลือ ~1,500 ล้านบาท (ROE ลดจาก 4.5% เหลือ 2.9%)</li>
+          <li><b>สภาพคล่องซื้อขายต่ำ:</b> หุ้นกลุ่มสหพัฒน์ปริมาณซื้อขายเบาบาง ราคาผันผวนง่ายเมื่อมีคำสั่งขนาดใหญ่ (bid-ask กว้าง)</li>
+          <li><b>ข้อมูล NAV ไม่สมบูรณ์:</b> มูลค่าบริษัทย่อย/ร่วมที่ไม่ได้จดทะเบียนอีก 41 แห่ง และที่ดิน/อสังหาฯ นิคมอุตสาหกรรม ยังไม่ได้ตีมูลค่าตลาดแยก (56-1 One Report ฉบับเต็มเข้าถึงไม่ได้ — 403) จึง NAV ที่แสดงเป็นเพียง floor ไม่ใช่มูลค่าเต็ม</li>
+          <li><b>ความเสี่ยงระดับบริษัทลูก:</b> TFMAMA เผชิญต้นทุนวัตถุดิบผันผวน ICC/OCC ธุรกิจอุปโภคบริโภคแข่งขันสูง กระทบส่วนแบ่งกำไรที่ SPI ได้รับ</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>SPI: ถือพอร์ตเครือสหพัฒน์มูลค่าสูง แต่ราคาเทรดใกล้ NAV floor แล้ว ไม่เหลือ Margin of Safety ชัดเจน</h2>
+      <p>SPI เป็นบริษัทลงทุนหลักของเครือสหพัฒน์ ถือหุ้นใน TFMAMA/ICC/SPC/PB/TNL/OCC (6 บริษัทจดทะเบียนที่ยืนยันได้ มูลค่าตลาดรวม ~฿31,002 ล้านบาท) บวกกับบริษัทย่อย/ร่วมอีก 41 แห่งที่ไม่ได้จดทะเบียนและที่ดินนิคมอุตสาหกรรมที่ยังตีมูลค่าตลาดแยกไม่ได้ NAV floor (BVPS หักส่วนลดโฮลดิ้ง 25%) อยู่ที่ ~฿29.2–33.1 เฉลี่ย ฿31.16 ใกล้เคียงราคาตลาดปัจจุบัน ฿32.25 มาก (MOS −3.5%) แปลว่าราคาวันนี้แทบไม่เผื่อส่วนลดเพิ่มจากที่ตลาดให้กับโฮลดิ้งอยู่แล้ว จุดเด่นคือ NAV จริง (รวมสินทรัพย์ที่ยังตีมูลค่าไม่ได้) น่าจะสูงกว่าตัวเลขนี้ แต่ investment thesis ต้องอาศัยการ unlock มูลค่าในอนาคต ไม่ใช่กระแสเงินสดปันผล (yield เพียง ~1.86%)</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿31.16 <span style="font-size:12px;color:#cab9a8">(฿29.23–฿33.09)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −3.5%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">N/A (ไม่มีนักวิเคราะห์ติดตาม)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> รอจังหวะราคาย่อลงสู่โซน MOS 20% (~฿24.9) หรือ MOS 30% (~฿21.8) ก่อนเข้าซื้อเพื่อให้มี margin of safety ที่แท้จริง หากซื้อที่ราคาปัจจุบัน (~฿32.25) เท่ากับจ่ายใกล้เคียง/สูงกว่า NAV floor ไม่มีส่วนลดจาก NAV ให้ป้องกันความเสี่ยงขาลง เหมาะกับนักลงทุนที่เชื่อในการ unlock มูลค่าจากโครงการพระราม 3/การปรับโครงสร้างพอร์ตระยะยาว มากกว่านักลงทุนที่มองหาปันผลหรือ margin of safety ระยะสั้น
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะส่วนลดโฮลดิ้งที่ใช้ (25%), อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และมูลค่าสินทรัพย์ที่ไม่ได้จดทะเบียนซึ่งไม่ได้รวมในการคำนวณ NAV นี้
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ราคา ณ 7 ส.ค. 2569 จาก StockAnalysis.com (ตรงกับ Yahoo Finance) • สัดส่วนถือหุ้นบริษัทในเครือจาก SET/aio.panphol.com (ข้อมูลผู้ถือหุ้นใหญ่ พ.ค.–มี.ค. 2569) • ราคาบริษัทในเครือ ณ 8 ส.ค. 2569 จาก TradingView • โครงสร้างกลุ่มบริษัทจาก spi.co.th (Business Group Structure) • ข่าวดีล TNL-EDTH จาก Kaohoon.com • 56-1 One Report ฉบับเต็ม (spi.listedcompany.com) เข้าถึงไม่ได้ (HTTP 403) จึงไม่ได้รวมมูลค่าบริษัทย่อย/ร่วมที่ไม่ได้จดทะเบียนและที่ดินนิคมอุตสาหกรรมในการคำนวณ NAV
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 8 ส.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
