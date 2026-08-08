@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น Forth Smart Service (FSMART) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 5">
+<script type="application/json" id="stock-meta">
+{"symbol":"FSMART","currency":"THB","price":7.85,"fairValue":7.32,"mos":-7.2,"upside":-6.8,"pe":10.33,"dividendYield":5.1,"roe":34.3}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#e723a5",
+    "accentDark": "#ae137a",
+    "darkGrad": "linear-gradient(135deg,#3e052a 0%,#72094e 58%,#b40e7c 140%)",
+    "glow": "rgba(230,25,161,.35)",
+    "subColor": "#ebc2dd",
+    "headerMuted": "#debad2",
+    "verdictText": "#f1d0e6",
+    "vcellLabel": "#e8c4dc",
+    "chgBg": "var(--red-soft)",
+    "chgColor": "#c5221f"
+  },
+  "chart": {
+    "data": [["ก.ย.25", 9.15], ["ต.ค.25", 7.4], ["พ.ย.25", 6.7], ["ธ.ค.25", 6.5],
+             ["ม.ค.26", 6.2], ["ก.พ.26", 7.2], ["มี.ค.26", 6.3], ["เม.ย.26", 6.7],
+             ["พ.ค.26", 7.35], ["มิ.ย.26", 7.15], ["ก.ค.26", 7.95], ["ส.ค.26", 7.85]],
+    "min": 6, "max": 10, "grid": [7, 8, 9],
+    "fairLine": 7.32, "currency": "฿", "highlight": [4, 0]
+  },
+  "gauge": { "min": 5, "max": 11, "cur": 7.85, "fair": 7.32 },
+  "fv": 7.32
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots"><div style="width:8px;height:8px;border-radius:50%;background:#e723a5;display:inline-block;margin:0 3px"></div><div style="width:8px;height:8px;border-radius:50%;background:#ae137a;display:inline-block;margin:0 3px"></div><div style="width:8px;height:8px;border-radius:50%;background:#72094e;display:inline-block;margin:0 3px"></div></div>
+    <div>
+      <span class="tag">SET: FSMART</span>
+      <span class="tag">Services / ICT</span>
+      <span class="tag">ตู้เติมเงินบุญเติม / สินเชื่อรายย่อย</span>
+    </div>
+    <h1>Forth Smart Service (FSMART)</h1>
+    <div class="sub">ตู้เติมเงินอัตโนมัติ "บุญเติม" • ตัวแทนรับชำระเงิน/บิล • Banking Agent 9 ธนาคาร • สินเชื่อรายย่อย/นาโนไฟแนนซ์ผ่านเครือข่ายตู้</div>
+    <div class="price-row">
+      <div>
+        <div class="px">฿7.85<small>(FSMART)</small></div>
+      </div>
+      <div class="chg">▼ −14.2% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 7 ส.ค. 2569<br>
+        กรอบ 52 สัปดาห์ ฿5.5 – ฿9.85<br>
+        ที่มา: Yahoo Finance, StockAnalysis.com, ข่าวงบการเงิน FY2568 (ThaiPR.net/Kaohoon)
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">TTM ณ ไตรมาส 1/2569 + งบปี 2568</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">฿5,912 ล้าน</div><div class="d">753.14 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~10.3x</div><div class="d">EPS TTM ฿0.76</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~9x</div><div class="d">ช่วงประมาณ 7x–13x (5 ปีย้อนหลัง)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">3.15x</div><div class="d">Justified P/BV ~3.13x (ใกล้เคียงราคาตลาด)</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2568</div><div class="v">฿587 ล้าน</div><div class="d">+36.5% YoY (นิวไฮ)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿0.76</div><div class="d">FY2568 ฿0.78 · FY2567 ฿0.57</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~฿2.49</div><div class="d">เพิ่มจาก ฿2.31 สิ้นปี 2568 (กำไรสะสม)</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~34.3% / 6.3%</div><div class="d">สูงต่อเนื่อง 5 ปี (26–39%)</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">฿2,280 ล้าน</div><div class="d">-3.9% YoY (core เติมเงินหด, ดอกเบี้ยชดเชยบางส่วน)</div></div>
+      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">32.9%</div><div class="d">จาก 19.7% ปี 2564 — มาร์จิ้นดีขึ้นจากสัดส่วนดอกเบี้ย/ค่าธรรมเนียม</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~5.1%</div><div class="d">฿0.40/หุ้น (TTM) · payout ~24–49%</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">N/A</div><div class="d">ไม่มีข้อมูลบีตาที่เชื่อถือได้จากแหล่งที่ใช้</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#e723a5"></i>ราคา FSMART</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿7.32</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคาขึ้นทำจุดสูงสุดรอบปีที่ ฿9.15 ใน ก.ย. 2568 ก่อนร่วงลงต่อเนื่องกว่า 32% แตะจุดต่ำสุด ฿6.2 ในเดือน ม.ค. 2569 จากความกังวลธุรกิจเติมเงินเดิมถดถอยและตลาดยังไม่มั่นใจในธุรกิจสินเชื่อใหม่
+        หลังจากนั้นฟื้นตัวขึ้นตามผลประกอบการปี 2568 ที่ทำนิวไฮ (กำไรสุทธิ 587 ล้านบาท ดอกเบี้ยรับโต 147%) มาอยู่ที่ ฿7.85 ในเดือน ส.ค. 2569 รวมทั้งปีลดลง −14.2%
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 2 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS (TTM) ฿0.76 × P/E เป้าหมาย ~9.0x — ต่ำกว่า P/E ปัจจุบัน (10.3x) ใกล้เคียง P/E ปี 2568 (8.34x) สะท้อนธุรกิจ core เติมเงินที่ยังถดถอยเชิงโครงสร้าง</div></div>
+        <div class="mval">฿6.84</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 34.3% − g 3.0%)/(r 13.0% − g 3.0%) ≈ 3.13x × BVPS ฿2.49 — ใช้ r สูงกว่าปกติ (13%) เพื่อสะท้อนความเสี่ยงเครดิตจากพอร์ตสินเชื่อที่ขยายเร็ว</div></div>
+        <div class="mval">฿7.79</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿6.84 – ฿7.79</span></div>
+        <div class="r">฿7.32</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        วิธี P/E ให้ค่าต่ำกว่าเพราะใช้ตัวคูณระมัดระวังตามแนวโน้มธุรกิจเดิมที่หด ส่วน Justified P/BV ให้ค่าสูงกว่าเพราะ ROE ยังสูงมาก (34%) แม้ใช้ r ที่สูงขึ้นเพื่อชดเชยความเสี่ยงสินเชื่อแล้ว
+        ไม่ใช้ DDM เพราะจะใช้ชุด (r,g) เดียวกับ Justified P/BV (นับเป็นตระกูลเดียวตาม dispersion gate) — FV เฉลี่ยจึงมาจาก 2 มุมมองที่เป็นอิสระต่อกันจริง (ตัวคูณตลาด vs ผลตอบแทนต่อทุน)
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿7.85</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿7.32</div></div>
+        </div>
+        <div class="scale">
+          <span>฿5.12<br><small>MOS 30%</small></span>
+          <span>฿5.86<br><small>MOS 20%</small></span>
+          <span style="text-align:center">฿7.32<br><small>Fair Value</small></span>
+          <span style="text-align:right">฿7.79<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">฿10.50<br><small>เป้าเฉลี่ย Analyst</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน (฿7.85) อยู่เหนือกรอบบนของ Fair Value เล็กน้อย — ไม่มี Margin of Safety ตามกรอบประเมินแบบระมัดระวังของรายงานนี้
+        เป้าเฉลี่ยนักวิเคราะห์ ฿10.50 อ้างอิงจากนักวิเคราะห์เพียง 1 รายเท่านั้น (Yahoo Finance) จึงมีนัยสำคัญทางสถิติต่ำ ไม่ควรใช้เป็นหลักยึดเดี่ยว
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">−7.2%</div>
+        <div class="txt"><b>ไม่มี Margin of Safety (ราคาแพงกว่ามูลค่าเหมาะสมของกรอบประเมินนี้)</b><br>ราคาปัจจุบันสะท้อนความหวังต่อธุรกิจสินเชื่อไปมากแล้ว ขณะที่ core เติมเงินยังถดถอย นักลงทุนที่เน้น margin of safety ควรรอราคาย่อลงมาก่อนสะสม</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿5.86</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿5.12</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿7.32</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="7.85" step="0.05">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿7.85 • EPS ฐาน ~฿0.76 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS −8%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿4.13</div>
+          <div class="ret neg">−37.8% (~−14.6%/ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.59</span></li>
+            <li><span>P/E ออก</span><span>7.0x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.75</span></li>
+            <li><span>สถานการณ์</span><span>NPL พอร์ตสินเชื่อเร่งตัวขึ้นชัดเจน ต้องตั้งสำรองเพิ่ม + core เติมเงินหดแรงกว่าคาด ตลาด de-rate เหลือ 7x</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +5%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿7.92</div>
+          <div class="ret pos">+16.2% (~5.1%/ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.88</span></li>
+            <li><span>P/E ออก</span><span>9.0x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿1.20</span></li>
+            <li><span>สถานการณ์</span><span>สินเชื่อโตต่อเนื่องแต่ควบคุม NPL ได้ ชดเชย core เติมเงินที่ยังหดตัวช้าๆ กำไรโตปานกลาง</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +15%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿12.76</div>
+          <div class="ret pos">+79.7% (~21.6%/ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿1.16</span></li>
+            <li><span>P/E ออก</span><span>11.0x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿1.35</span></li>
+            <li><span>สถานการณ์</span><span>ธุรกิจสินเชื่อ+โอนเงินข้ามพรมแดนสเกลได้ดี NPL คุมอยู่ ตลาดให้เครดิตเป็น fintech growth story ตัวคูณขยับขึ้น</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      สมมติฐาน EPS ฐานอ้างอิง EPS TTM ฿0.76 · Bear ใช้ de-rating จริงจัง (P/E ลงเหลือ 7x) สะท้อนความเสี่ยง NPL หากพอร์ตสินเชื่อเสื่อมคุณภาพ · Bull ใช้ตัวคูณ 11x สะท้อนการยอมรับว่าเป็น fintech growth story มากขึ้น ยังคงต่ำกว่า P/E ปัจจุบัน (10.3x) เพื่อความระมัดระวัง
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>สินเชื่อรายย่อยผ่านเครือข่ายตู้บุญเติม:</b> ดอกเบี้ยรับโต 147% YoY เป็น 333 ล้านบาทในปี 2568 พอร์ตสินเชื่อคงค้าง 1,423 ล้านบาท หนุนกำไรสุทธินิวไฮ 587 ล้านบาท (+36.5%)</li>
+          <li><b>ขยาย Banking Agent + โอนเงินข้ามพรมแดน:</b> เพิ่มพันธมิตรธนาคารจาก 8 เป็น 9 แห่ง และเปิดตัวบริการโอนเงินข้ามพรมแดนใน Q1/2569 เพิ่มรายได้ค่าธรรมเนียม non-cyclical</li>
+          <li><b>ปันผลสม่ำเสมอ:</b> ล่าสุดประกาศจ่ายรวม 0.38 บาท/หุ้น (yield ~5.1%) payout ratio ยังต่ำ (~24–49% ของกำไร) เปิดช่องเพิ่มปันผลได้อีกหากกำไรยังโต</li>
+          <li><b>มาร์จิ้นขยายตัวต่อเนื่อง:</b> อัตรากำไรขั้นต้นเพิ่มจาก 19.7% (2564) เป็น 32.9% (TTM) จากสัดส่วนรายได้ดอกเบี้ย/ค่าธรรมเนียมที่มาร์จิ้นสูงกว่าธุรกิจเติมเงินเดิม</li>
+          <li><b>ROE สูงต่อเนื่อง:</b> 26–39% ต่อปีใน 5 ปีล่าสุด สะท้อนโมเดลธุรกิจ asset-light ของเครือข่ายตู้กว่า 130,000+ จุด</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>ธุรกิจเติมเงินมือถือถดถอยเชิงโครงสร้าง:</b> ผู้ใช้ย้ายไปเติมเงินผ่านแอปธนาคาร/e-wallet และย้ายจากพรีเพดเป็นรายเดือน รายได้ TTM หดตัว −3.9% YoY ต่อเนื่องจากปี 2564–2566 ที่หด −6.7%/−8.3%/−9.5%</li>
+          <li><b>ความเสี่ยงเครดิตจากพอร์ตสินเชื่อที่ขยายเร็ว:</b> ยอดสินเชื่อคงค้าง 1,423 ล้านบาท (~76% ของส่วนของผู้ถือหุ้น) บริษัทระบุ NPL ต่ำกว่า 5% แต่ยังไม่มีการเปิดเผยรายละเอียด NPL รายไตรมาสต่อสาธารณะเพียงพอ หากเศรษฐกิจฐานรากชะลอตัวอาจต้องตั้งสำรอง (ECL) เพิ่มกดดันกำไร</li>
+          <li><b>กระแสเงินสดผันผวนจากการปล่อยสินเชื่อ:</b> FCF ติดลบในปี 2567 (−290 ล้านบาท) จากเงินสดที่ถูกดูดไปขยายพอร์ตสินเชื่อ แม้ฟื้นเป็นบวกในปี 2568/TTM (348/534 ล้านบาท) ต้องติดตามความยั่งยืนของปันผลหากสินเชื่อยังโตแรงต่อเนื่อง</li>
+          <li><b>Leverage เพิ่มขึ้น:</b> D/E จาก 0.29x (2566) เป็น 0.53x (TTM) จากการกู้ยืมมาปล่อยสินเชื่อ หากดอกเบี้ยตลาดปรับขึ้นจะกดดันต้นทุนทางการเงิน</li>
+          <li><b>Analyst coverage บางมาก:</b> เป้าราคาเฉลี่ยนักวิเคราะห์ ฿10.50 มาจากนักวิเคราะห์เพียง 1 รายเท่านั้น (Yahoo Finance) ความน่าเชื่อถือทางสถิติต่ำ ไม่ควรใช้อ้างอิงเดี่ยว</li>
+          <li><b>Valuation ตึงตัวเทียบธุรกิจ core ที่หด:</b> P/E 10.3x และ P/BV 3.15x ปัจจุบันสูงกว่ากรอบ Fair Value ของรายงานนี้ สะท้อนว่าตลาดอาจให้เครดิตล่วงหน้ากับธุรกิจสินเชื่อที่ยังไม่ผ่านการพิสูจน์คุณภาพหนี้เต็มวัฏจักรเศรษฐกิจ</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>รอจังหวะ — ธุรกิจเดิมถดถอย ความเสี่ยงสินเชื่อเพิ่ม ราคายังไม่มี Margin of Safety</h2>
+      <p>
+        <b>ความจริงที่ต้องเปิดเผย:</b> ธุรกิจตู้เติมเงินมือถือดั้งเดิมของ FSMART อยู่ในภาวะถดถอยเชิงโครงสร้าง (ผู้ใช้ย้ายไปเติมเงินผ่านแอปธนาคาร/e-wallet และระบบรายเดือน) — รายได้รวม TTM หดตัว −3.9% YoY ต่อเนื่องจากหลายปีก่อนหน้า
+        ตัวขับเคลื่อนกำไรหลักตอนนี้คือธุรกิจสินเชื่อรายย่อย/นาโนไฟแนนซ์ผ่านเครือข่ายตู้ ซึ่งมีดอกเบี้ยรับโต 147% YoY เป็น 333 ล้านบาทในปี 2568 และพอร์ตสินเชื่อคงค้างขยายถึง 1,423 ล้านบาท (คิดเป็นราว 76% ของส่วนของผู้ถือหุ้น 1,878 ล้านบาท)
+        แม้บริษัทรายงาน NPL ต่ำกว่า 5% แต่พอร์ตนี้ยังไม่ผ่านวัฏจักรเศรษฐกิจเต็มรูปแบบและยังไม่มีการเปิดเผยคุณภาพหนี้แบบละเอียดต่อสาธารณะ ทำให้ความเสี่ยงด้านเครดิตเป็นปัจจัยชี้ขาดของหุ้นตัวนี้ในระยะถัดไป
+        รายงานนี้ใช้ค่า r (ผลตอบแทนที่ต้องการ) สูงกว่าค่าเฉลี่ย SET small-cap ทั่วไปในการคำนวณ Justified P/BV เพื่อสะท้อนความเสี่ยงดังกล่าว และไม่ได้ทำ sum-of-parts แยกมูลค่าธุรกิจตู้/สินเชื่อ เนื่องจากบริษัทยังไม่เปิดเผยกำไรแยกรายส่วนธุรกิจอย่างเพียงพอต่อสาธารณะ
+      </p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿7.32 <span style="font-size:12px;color:#cab9a8">(฿6.84–฿7.79)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −7.2%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿10.50 (n=1 นักวิเคราะห์)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> รอราคาย่อลงมาสู่โซน MOS 20% (~฿5.86) หรือ MOS 30% (~฿5.12) ก่อนสะสม เนื่องจากธุรกิจ core เติมเงินยังถดถอยเชิงโครงสร้างและธุรกิจสินเชื่อยังไม่ผ่านการพิสูจน์คุณภาพหนี้เต็มวัฏจักรเศรษฐกิจ
+        ผู้ที่ถืออยู่แล้วควรติดตาม NPL รายไตรมาสและอัตราการเติบโตของดอกเบี้ยรับอย่างใกล้ชิด — หากคุณภาพหนี้แย่ลงชัดเจนควรทบทวนสถานะ
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ราคา ณ 7 ส.ค. 2569 จาก Yahoo Finance และ StockAnalysis.com (ตรงกันทั้งสองแหล่ง) • ข้อมูลงบการเงินย้อนหลังจาก StockAnalysis.com • ข้อมูลพอร์ตสินเชื่อ/ดอกเบี้ยรับ/NPL จากข่าวประกาศผลประกอบการ FY2568 (ThaiPR.net, Kaohoon.com อ้างอิงงบการเงิน/คำแถลงผู้บริหาร)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 8 ส.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
