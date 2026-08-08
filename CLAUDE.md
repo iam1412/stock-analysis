@@ -43,7 +43,7 @@ invariant ที่ห้ามหลุดไม่ว่ากรณีใด:
 
 1. **ก่อนเริ่ม**: `git pull --rebase origin main` → อ่าน `reports.json` — สด ≤7 วัน **ไม่ทำซ้ำ** (ธีม→หาตัวแทน · ระบุชื่อ→ข้ามพร้อมแจ้ง) · เกิน 7 วัน = UPDATE · ยังไม่มี = NEW
 2. **โมเดล**: ❌ Haiku ทุกขั้น · **Sonnet ทุกชั้น** (Opus ยกเลิกทั้งหมด 13 ก.ค. 69) · หุ้นยาก (IPO <1 ปี/spinoff/split/cyclical/pre-profit/ราคา cross-source ต่าง >5%) → worker effort **high** + ปรึกษา `advisor` **ผ่าน courier subagent เท่านั้น** ก่อน spawn แล้วฝังแนวทางลง prompt (เรียกตรง = unavailable เสมอ — วิธี/เหตุผล `docs/orchestration.md` §2 · courier ล้มเหลว → หยุดถาม user) · ตัดสิน publish/skip กำกวม → advisor (courier) ก่อน ยังกำกวม → หยุด ping user
-3. **spawn**: 1 หุ้น/agent (กันเลขปนข้ามหุ้น — ตัวร้าย #1) · **sequential เท่านั้น** (parallel เคยชน rate limit ทั้งเวฟ) · prompt = `_template/agent-prompt.md` + STEP 0 กัน cwd-stray · คุม effort ต่อ worker → workflow **`analyze-wave`** · **ห้ามรัน analyze-wave ซ้อน — 1 run ต่อครั้ง** รอ run เดิมจบก่อน
+3. **spawn**: 1 หุ้น/agent (กันเลขปนข้ามหุ้น — ตัวร้าย #1) · prompt = `_template/agent-prompt.md` + STEP 0 กัน cwd-stray · คุม effort ต่อ worker → workflow **`analyze-wave`** · **★ ข้อห้ามจริงคือ "หลายหุ้นใน 1 run" ไม่ใช่ "หลาย run"** — `stocks[]` ต้องมี **1 ตัวเสมอ** · รันหลาย run ขนานกันได้ (1 หุ้น/run) แต่ **จำนวนที่ขนานเป็นดุลพินิจ ไม่ใช่ค่าตายตัว** ขนานมาก = เสี่ยง rate limit ทั้งชุด (เคยพังจริง US-GAP W19–W21) → ramp ขึ้นทีละขั้น เจอ rate limit ให้หาร N ครึ่ง · **ก่อนขนานต้องทำ 2 อย่าง**: controller pre-assign สีแบรนด์เอง (seeds.json race — §10) + verify/push **รายแบตช์** ไม่ใช่รายตัว (verify เป็น gate ทั้งรีโป ไฟล์ worker ที่ยังเขียนไม่เสร็จจะทำ gate ตกและบล็อกตัวที่ดีแล้ว)
 4. **push รายตัว**: worker เสร็จ 1 ตัว → controller ตรวจ → verify + push ทันที (Bash call เดียว §5) ก่อน spawn ตัวถัดไป · จำนวนหุ้นต่อรอบไม่จำกัด (ยกเลิกเวฟละ ≤3 — 12 ก.ค. 69) · ห้าม agent push เอง · ห้าม push ซ้อน session
 5. ของดีไม่พอโควตา → ลดจำนวนเองได้ ไม่ต้องถาม แต่แจ้งเหตุผล (คุณภาพ > โควตา)
 
@@ -123,5 +123,6 @@ GitHub Actions รัน `tools/update-prices.js` ทุกวัน 07:17 น. 
 ## 10. Template system + counters (สรุป)
 
 - **รายงาน = content-only template** — CSS/engine อยู่ใน `_template/` build `expandReport()` inject ตอน build · ไฟล์เก็บแค่ `report-data` (กราฟ/gauge/theme) + เนื้อหา 8 section · เริ่มจาก `_template/skeleton-{th,us}.html` · สีแบรนด์ต่อหุ้น (`tools/seeds.json` + `brandtheme.js`) → **`docs/templates.md`**
+  - ⚠️ **`tools/pick-brand.js` ไม่ปลอดภัยเมื่อรันขนาน** — read-modify-write `seeds.json` โดยไม่มี lock (อ่าน ~บรรทัด 30 → เขียน ~บรรทัด 111) · รัน 2 ตัวพร้อมกัน = entry ทับหาย + ขั้นตอน "ตรวจ hex ชน" มองไม่เห็นสีของอีกตัว ⇒ **หุ้น 2 ตัวได้สีแบรนด์เดียวกันโดย gate จับไม่ได้** · เวลา spawn worker ขนาน **controller ต้อง pre-assign สีเองแบบ sequential** แล้วส่ง theme/GDOTS ลง prompt (ดู §3.3)
 - **view/vote counters** = Worker + Durable Object (`src/worker.js`) inject ตอน build เฉพาะ `dist/` → **`docs/counters.md`** + `DEPLOY.md`
 - **กราฟ TA (TradingView-style)** = Worker route `/api/ohlc` proxy Yahoo + client engine (`_template/ta-engine.js`/`ta-chart.js`) + bundle inject ตอน build เฉพาะ `dist/` → **`docs/ta-chart.md`**

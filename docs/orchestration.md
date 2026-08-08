@@ -49,7 +49,11 @@
    - **เรียก 1 หุ้น/call** (คง push รายตัว — workflow คืนผลตอนจบทั้งชุด ส่งหลายตัวใน call เดียวจะ push คั่นระหว่างตัวไม่ได้) · override รายตัว: `stocks[0].effort` (หุ้นยาก → `"high"`)
    - **ห้ามใช้ `stocks[].model` override** — ชั้น escalate Opus ถูกยกเลิกทั้งหมด 13 ก.ค. 2569 · ที่ override เคย "พัง" ไม่ใช่บั๊ก product: **สาเหตุจริง = `CLAUDE_CODE_SUBAGENT_MODEL=sonnet` ใน `~/.claude/settings.json`** บังคับ subagent ทุกตัวเป็น Sonnet ระดับ harness (จงใจคงไว้ — enforce กติกา Sonnet-only ให้ฟรี) — ทุก worker = Sonnet · หุ้นยากใช้ advisor + effort high (§2)
    - script ยังรองรับหลายตัว (รัน sequential) — ใช้เฉพาะกรณียอมรับว่า push ได้หลังจบทั้งชุดเท่านั้น
-   - **★ ห้ามรัน analyze-wave ซ้อนกัน — อนุญาต 1 run ในเวลาเดียวเท่านั้น**: Workflow รันเป็น background task — ห้าม spawn call ที่สองระหว่าง run เดิมยังไม่จบ ต้องรอ notification "completed" + ตรวจ/push เสร็จก่อนค่อยเรียกใหม่ · เหตุผลเดียวกับ sequential §3: หลาย run พร้อมกัน = worker ขนานโดยพฤตินัย ชน rate limit ทั้งชุด + push ชนกันข้าม run
+   - **★ ข้อห้ามจริง = "หลายหุ้นใน 1 run" ไม่ใช่ "หลาย run พร้อมกัน"** (แก้ 8 ส.ค. 2569 — ถ้อยคำเดิมเขียนกว้างเกินเจตนาเจ้าของรีโป): `stocks[]` ต้องมี **1 ตัวเสมอ** · การ spawn analyze-wave หลาย run ขนานกัน (run ละ 1 หุ้น) **ทำได้** แต่มีเงื่อนไขบังคับ 3 ข้อ:
+     1. **controller pre-assign สีแบรนด์เอง** ก่อน spawn แล้วส่ง theme/GDOTS ลง prompt — **ห้าม worker รัน `pick-brand.js` เอง** เพราะมัน read-modify-write `tools/seeds.json` โดยไม่มี lock (`tools/pick-brand.js` อ่านบรรทัด ~30 เขียนบรรทัด ~111) ⇒ ขนานแล้ว **entry หายทับกัน + ขั้นตอนตรวจสีชนมองไม่เห็นสีของ worker อื่น ⇒ หุ้น 2 ตัวได้สีเดียวกันโดยไม่มีใครจับได้**
+     2. **verify + push รายแบตช์ ไม่ใช่รายตัว** — `npm run verify` เป็น gate ทั้งรีโป ถ้ารันตอน worker อีกตัวเขียนไฟล์ค้าง ไฟล์ครึ่ง ๆ นั้นจะทำ gate ตกและบล็อกหุ้นที่เสร็จดีแล้ว (นี่คือเหตุผล per-wave เดิมที่หายไปเพราะ sequential — พอกลับมาขนาน มันกลับมาด้วย) · commit ยังคง **1 commit = 1 หุ้น** แค่ push รวมทีเดียวตอนจบแบตช์
+     3. **ramp ทีละขั้น** — จำนวนที่ขนานเป็นดุลพินิจต่อครั้ง ไม่ใช่ค่าตายตัวในกฎ · คอขวดจริงคือ **API session rate limit ที่ worker ทุกตัวใช้ร่วมกัน** (เคยพังทั้งเวฟจริงใน US-GAP W19–W21 — ขนานแล้ว fail พร้อมกันหมด ต้องทำใหม่ = เสีย token สองเท่า) → เจอ rate limit เมื่อไหร่ให้หาร N ครึ่งแล้ว re-run เฉพาะตัวที่ล้ม
+     - push ชนกันข้าม run **ไม่ใช่ปัญหา** — worker ไม่เคย push อยู่แล้ว controller เป็นคน push ⇒ serialize ผ่าน controller โดยโครงสร้าง
 3. แต่ละ call เสร็จ → controller ตรวจผล (คืนสรุปราคา/FV/MOS จาก worker) → verify + push รายตัวตามข้อ 4 → ค่อยเรียกตัวถัดไป
 
 ## 6. ลดจำนวนเองได้ ถ้าของดีไม่พอ
