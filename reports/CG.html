@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น The Carlyle Group (CG) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 5">
+<script type="application/json" id="stock-meta">
+{"symbol":"CG","currency":"USD","price":47.79,"fairValue":48.61,"mos":1.7,"upside":1.7,"pe":49.16,"dividendYield":2.93,"roe":7.6}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#bd832a",
+    "accentDark": "#8a601e",
+    "darkGrad": "linear-gradient(135deg,#38260a 0%,#684713 58%,#a4701d 140%)",
+    "glow": "rgba(209,146,46,.35)",
+    "subColor": "#f1e8da",
+    "headerMuted": "#ede7df",
+    "verdictText": "#f1e8d9",
+    "vcellLabel": "#faf8f5",
+    "chgBg": "var(--red-soft)",
+    "chgColor": "#c5221f"
+  },
+  "chart": {
+    "data": [["ก.ย.25",62.7],["ต.ค.25",53.32],["พ.ย.25",54.53],["ธ.ค.25",59.11],["ม.ค.26",58.78],["ก.พ.26",51.99],["มี.ค.26",48.39],["เม.ย.26",50.07],["พ.ค.26",45.43],["มิ.ย.26",42.11],["ก.ค.26",46.02],["ส.ค.26",47.79]],
+    "min": 40, "max": 70, "grid": [50, 60],
+    "fairLine": 48.61, "currency": "$", "highlight": [0, 9]
+  },
+  "gauge": { "min": 30, "max": 70, "cur": 47.79, "fair": 48.61 },
+  "fv": 48.61
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots"><div style="width:8px;height:8px;border-radius:50%;background:#bd832a;display:inline-block;margin:0 3px"></div><div style="width:8px;height:8px;border-radius:50%;background:#8a601e;display:inline-block;margin:0 3px"></div><div style="width:8px;height:8px;border-radius:50%;background:#684713;display:inline-block;margin:0 3px"></div></div>
+    <div>
+      <span class="tag">NASDAQ: CG</span>
+      <span class="tag">Alternative Asset Management</span>
+      <span class="tag">Private Equity • Credit • Secondaries</span>
+    </div>
+    <h1>The Carlyle Group Inc.</h1>
+    <div class="sub">การจัดการสินทรัพย์ทางเลือก (Alternative Asset Manager) • Global Private Equity • Global Credit • Global Investment Solutions (AlpInvest / Secondaries) • บริหาร AUM รวม $485 พันล้าน</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$47.79<small>(CG)</small></div>
+      </div>
+      <div class="chg">▼ −23.8% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 7 ส.ค. 2569 (StockAnalysis.com, ตรงกับ Yahoo Finance 0%)<br>
+        กรอบ 52 สัปดาห์ $39.60 – $69.85<br>
+        ที่มา: Yahoo Finance, StockAnalysis.com, Carlyle Investor Relations (ir.carlyle.com), SEC Form 8-K
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ตัวชี้ธุรกิจจริงของกลุ่ม PE = FRE/DE ไม่ใช่ GAAP EPS (เหตุผลเต็มในหัวข้อ 3)</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">$16.9B</div><div class="d">353.4M หุ้นสามัญ (30 มิ.ย. 2569, Carlyle IR)</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~49.16x</div><div class="d">GAAP ผันผวนจาก unrealized carry — ไม่ใช้ตั้งราคา (ดูหัวข้อ 3)</div></div>
+      <div class="metric"><div class="k">P/DE (TTM)</div><div class="v neu">~12.2x</div><div class="d">ราคา/Distributable Earnings — ต่ำสุดในกลุ่ม BX/KKR/APO</div></div>
+      <div class="metric"><div class="k">FRE Margin</div><div class="v pos">47%</div><div class="d">Q2 2026 FRE สถิติสูงสุด $357.7M (+11% YoY)</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ GAAP FY2025</div><div class="v">$809M</div><div class="d">+11.9% YoY — ผันผวนตามตีมูลค่าพอร์ต (ไม่ใช่กำไรดำเนินงานล้วน)</div></div>
+      <div class="metric"><div class="k">EPS (TTM) GAAP</div><div class="v">~$0.96</div><div class="d">Yahoo แสดง $1.43 (ต่าง 47% จาก unrealized carry — ดูหัวข้อ 3)</div></div>
+      <div class="metric"><div class="k">DE/หุ้น (TTM)</div><div class="v pos">$3.93</div><div class="d">Q3/25 $0.96+Q4/25 $1.01+Q1/26 $0.89+Q2/26 $1.07 (Carlyle IR)</div></div>
+      <div class="metric"><div class="k">ROE (GAAP, TTM)</div><div class="v">~7.6%</div><div class="d">ต่ำกว่า FY2025 (14.1%) เพราะฐาน TTM รวมไตรมาสตีมูลค่าพอร์ตลง</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM (GAAP, StockAnalysis)</div><div class="v neu">$3.61B</div><div class="d">−41.9% YoY — รวม performance allocations ที่ตีมูลค่าผันผวน (ดูหัวข้อ 3) ไม่ใช่ segment revenue จัดการล้วน; Q2/26 segment revenue เดี่ยวไตรมาส $1.11B</div></div>
+      <div class="metric"><div class="k">AUM รวม</div><div class="v">$485B</div><div class="d">+4% YoY ณ 30 มิ.ย. 2569 (Carlyle IR)</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~2.93%</div><div class="d">$0.35/ไตรมาส ($1.40/ปี) ประกาศจ่าย 26 ส.ค. 2569</div></div>
+      <div class="metric"><div class="k">Fee-earning AUM</div><div class="v neu">$334B</div><div class="d">Perpetual capital 34% ของ fee-earning AUM ($113B)</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#bd832a"></i>ราคา CG</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $48.61</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคาไหลลงจากจุดสูง $62.70 (ก.ย. 2568) สู่จุดต่ำสุด $42.11 (มิ.ย. 2569) ก่อนฟื้นตัวมาที่ $47.79 ปัจจุบัน — แรงกดดันหลักคือความกังวลเรื่องภาวะ fundraising ที่ชะลอตัวทั่วกลุ่ม private equity/credit ช่วงปลายปี 2568 ก่อนราคาจะฟื้นตัวหลัง Carlyle รายงาน Fee Related Earnings (FRE) ทำสถิติสูงสุดต่อเนื่องทั้งไตรมาส 1 และ 2 ปี 2569 (Carlyle IR, StockAnalysis.com) ผลตอบแทนรอบปี ≈ −23.8%
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 2 วิธี — บน DE/FRE ไม่ใช่ GAAP EPS</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/DE Valuation (Price-to-Distributable-Earnings)</div><div class="mdesc">DE ต่อหุ้น (TTM, 4 ไตรมาสล่าสุดที่ Carlyle เปิดเผยเอง: Q3/25 $0.96 + Q4/25 $1.01 + Q1/26 $0.89 + Q2/26 $1.07 = $3.93) × P/DE เป้าหมาย ~12.5x — premium เล็กน้อยจากตัวคูณต่ำสุดในกลุ่มที่ตลาดให้ CG อยู่ปัจจุบัน (~11x ตามรายงานนักวิเคราะห์) สะท้อน FRE margin 47% ที่ยืนได้ต่อเนื่องและ fee-earning AUM ที่โต แต่ยังต่ำกว่ากลุ่ม BX/KKR ที่มี perpetual capital สูงกว่ามาก</div></div>
+        <div class="mval">$49.13</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. Sum-of-the-Parts (ธุรกิจค่าธรรมเนียม + carry สุทธิ + งบดุล)</div><div class="mdesc">(ก) fee-related business: FRE TTM $1,259.7M (Q3/25 $312M+Q4/25 $290M+Q1/26 $300M+Q2/26 $357.7M) หลังภาษี ~80% = $1,007.8M × 13x (สอดคล้องตัวคูณที่ตลาดฝังอยู่ในราคาปัจจุบันของธุรกิจนี้) = $37.07/หุ้น (ข) net accrued performance revenues (carry ที่ยังไม่รับรู้ สุทธิค่าตอบแทน) $2,414.6M ณ 30 มิ.ย. 2569 หลังภาษี ~80% = $5.47/หุ้น (ค) เงินลงทุน+เงินสด−หนี้ของบริษัทเอง $1,960.4M = $5.55/หุ้น (หาร 353.4M หุ้น)</div></div>
+        <div class="mval">$48.09</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $48.09 – $49.13</span></div>
+        <div class="r">$48.61</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        <b>⚠️ Full disclosure — ทำไมไม่ใช้ P/E บน GAAP EPS:</b> EPS (TTM) ของ CG จาก Yahoo ($1.43) กับ StockAnalysis ($0.96) ต่างกันถึง 47.4% — ไม่ใช่ข้อมูลผิด แต่เป็นธรรมชาติของ GAAP net income ในธุรกิจ alternative asset manager ที่รวม <b>unrealized performance allocations (carried interest ที่ยังไม่รับรู้เป็นเงินสด)</b> ซึ่งต้องตีมูลค่าตาม NAV ของพอร์ตทุกไตรมาสตามมาตรฐานบัญชี — พอร์ตขึ้น กำไร GAAP พุ่ง พอร์ตลง กำไร GAAP หด ทั้งที่ธุรกิจค่าธรรมเนียมจริงไม่เปลี่ยน (หลักฐาน: งบ 5 ปีของ CG เอง มี GAAP EPS(dil) แกว่งจาก −$1.68 ปี 2566 ถึง $8.20 ปี 2564 ขณะที่ FRE เป็นบวกต่อเนื่องทุกปี) ส่วนต่าง 47% ระหว่าง 2 แหล่งน่าจะมาจากรอบตัด TTM ที่ต่างกัน/ปรับปรุงย้อนหลังคนละรอบ ไม่ใช่ตัวใดตัวหนึ่งผิด — จึงใช้ <b>Fee Related Earnings (FRE)</b> และ <b>Distributable Earnings (DE) ต่อหุ้น</b> ที่ Carlyle เปิดเผยเองทุกไตรมาสแทน (ตัด carry ที่ยังไม่รับรู้ออก เหลือค่าธรรมเนียมจัดการที่คาดการณ์ได้ + performance fees ที่ realized แล้วจริง) ซึ่งเป็นตัวชี้ที่ตลาดกลุ่มนี้ใช้ประเมินมูลค่าจริง ทั้ง 2 วิธีข้างต้นลู่เข้าใกล้กันที่ $48–49 ใกล้เคียงราคาตลาดมาก — บ่งชี้ว่าส่วนลดที่ CG เทรดต่ำกว่า BX/KKR/APO สมเหตุผลระดับหนึ่งจากพื้นฐานจริง ไม่ใช่ตลาดมองข้าม: (1) FRE margin 47% ต่ำกว่า BX ที่มักเกิน 55% (2) perpetual capital เพียง 34% ของ fee-earning AUM เทียบ BX/KKR ที่สูงกว่ามาก (รายได้สม่ำเสมอ ไม่ต้อง fundraise ใหม่ทุกรอบ — ตลาดให้พรีเมียมกับสัดส่วนนี้) (3) ธุรกิจ legacy corporate PE ของ CG มีวัฏจักร fundraising/realization ที่ผันผวนกว่ากลุ่ม credit-heavy — MOS ที่ได้จึงบางมาก (~1.7%) เป็นผลจากพื้นฐานเหล่านี้ ไม่ใช่ตัวเลขที่ปรับให้ดูถูกลง
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $47.79</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $48.61</div></div>
+        </div>
+        <div class="scale">
+          <span>$34.03<br><small>MOS 30%</small></span>
+          <span>$38.89<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$48.61<br><small>Fair Value</small></span>
+          <span style="text-align:right">$49.13<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">$57.82<br><small>เป้าเฉลี่ย Analyst</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน $47.79 อยู่ใกล้เคียงมูลค่าเหมาะสม $48.61 มาก (MOS เหลือเพียง ~1.7%) แต่ยังต่ำกว่าเป้าเฉลี่ยนักวิเคราะห์ 12 เดือน $57.82 (Buy, 17 ราย) ราว 21% — ส่วนต่างนี้สะท้อนมุมมองต่างกัน: FV จากวิธี P/DE/SOTP ยึดพื้นฐาน fee-related ปัจจุบัน ขณะที่เป้านักวิเคราะห์อาจรวม upside จาก catalyst การขยาย perpetual capital และ realization wave ที่ยังไม่เกิดขึ้นจริง
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">+1.7%</div>
+        <div class="txt"><b>แทบไม่มี Margin of Safety</b><br>ราคาปัจจุบันใกล้เคียงมูลค่าเหมาะสมมาก CG ถูกกว่ากลุ่ม BX/KKR/APO จริงแต่ด้วยเหตุผลเชิงโครงสร้าง (FRE margin ต่ำกว่า, perpetual capital สัดส่วนน้อยกว่า) ไม่ใช่ส่วนลดที่ตลาดมองข้าม — จังหวะเข้าที่มีส่วนเผื่อความปลอดภัยจริงคือราคาย่อลงมาใกล้โซน MOS 20% ($38.89) หรือต่ำกว่า</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$38.89</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$34.03</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $48.61</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="47.79" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $47.79 • DE ฐาน (TTM) ~$3.93 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>DE −5%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$33.70</div>
+          <div class="ret neg">−20.7% (3 ปีสะสม)</div>
+          <ul>
+            <li><span>DE ปี 3</span><span>~$3.37</span></li>
+            <li><span>P/DE ออก</span><span>10.0x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$4.20</span></li>
+            <li><span>สถานการณ์</span><span>Fundraising winter + private credit stress กด FRE growth และตัวคูณลงเหลือระดับต่ำสุดของกลุ่ม</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>DE +8%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$61.88</div>
+          <div class="ret pos">+39.0% (3 ปีสะสม)</div>
+          <ul>
+            <li><span>DE ปี 3</span><span>~$4.95</span></li>
+            <li><span>P/DE ออก</span><span>12.5x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$4.55</span></li>
+            <li><span>สถานการณ์</span><span>FRE/DE โตต่อเนื่องในอัตราชะลอจาก double-digit เหลือ high-single-digit ตัวคูณคงที่</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>DE +12%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$77.28</div>
+          <div class="ret pos">+71.6% (3 ปีสะสม)</div>
+          <ul>
+            <li><span>DE ปี 3</span><span>~$5.52</span></li>
+            <li><span>P/DE ออก</span><span>14.0x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$4.72</span></li>
+            <li><span>สถานการณ์</span><span>Realization wave ต่อเนื่อง + perpetual capital ขยายสัดส่วนจน P/DE ไล่ตามกลุ่ม BX/KKR ได้บางส่วน</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      ประมาณการอิงการเติบโตของ Distributable Earnings (DE) ต่อหุ้น ไม่ใช่ GAAP EPS (เหตุผลดูหัวข้อ 3) — Bear สะท้อนภาวะ fundraising winter กดทั้ง FRE growth และตัวคูณ P/DE / Base สอดคล้องแนวโน้มเติบโตของ 4 ไตรมาสล่าสุดที่ชะลอลงจาก double-digit เหลือ high-single-digit / Bull อิงการฟื้นตัวของ realization activity ต่อเนื่องบวกกับ perpetual capital ที่ขยายสัดส่วนจนตัวคูณไล่ตามกลุ่มได้บางส่วน
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>FRE margin ทำสถิติต่อเนื่อง:</b> Q2 2026 แตะ 47% พร้อม FRE $357.7M สูงสุดเป็นประวัติการณ์ (+11% YoY) — ถ้าต่อเนื่องตลาดอาจให้ตัวคูณสูงขึ้น</li>
+          <li><b>ขยาย perpetual capital:</b> ปัจจุบัน 34% ของ fee-earning AUM ($113B จาก $334B) — สัดส่วนที่มากขึ้นหมายถึงรายได้ค่าธรรมเนียมสม่ำเสมอขึ้น ลดการพึ่งพารอบ fundraising</li>
+          <li><b>Realization wave กลับมา:</b> Q2 2026 กระจายเงินคืนนักลงทุนเกือบ $7B ในไตรมาสเดียว ($37B ใน 12 เดือน) — exit ตลาดที่ดีต่อเนื่องช่วยปลดล็อก net accrued carry $2.4B ที่ยังไม่รับรู้</li>
+          <li><b>ส่วนลดจากกลุ่ม:</b> เทรดที่ P/DE ต่ำสุดในกลุ่ม diversified alt managers — โอกาส re-rate หากปิดช่องว่าง margin/perpetual capital กับ BX/KKR ได้บางส่วน</li>
+          <li><b>เงินปันผลสม่ำเสมอ:</b> ~2.9% ($0.35/ไตรมาส) จ่ายต่อเนื่อง พร้อมโครงการซื้อคืนหุ้น</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>GAAP earnings ผันผวนสูง:</b> ขึ้นกับการตีมูลค่าพอร์ตทุกไตรมาส (FY2023 ขาดทุนสุทธิ $608M ทั้งที่ FRE เป็นบวก) — นักลงทุนที่ดู headline EPS อาจตีความผิด</li>
+          <li><b>Legacy corporate PE cyclicality:</b> FRE/DE ยังผูกกับวัฏจักร fundraising-realization มากกว่ากลุ่ม credit-heavy (APO/Ares)</li>
+          <li><b>Perpetual capital สัดส่วนต่ำกว่ากลุ่ม:</b> 34% เทียบ BX/KKR ที่สูงกว่ามาก — ตัวคูณอาจติดเพดานนี้ไปอีกนาน</li>
+          <li><b>Carry $2.4B ยังไม่รับรู้จริง:</b> ขึ้นกับสภาวะ exit market — ถ้าตลาดทุน/M&A ชะลอ มูลค่านี้อาจ realize ช้ากว่าคาด</li>
+          <li><b>MOS บางมาก (~1.7%):</b> ราคาปัจจุบันแทบไม่มีส่วนเผื่อ หากประมาณการผิดทาง downside มีกันชนจำกัด</li>
+          <li><b>ภาวะสินเชื่อตึงตัว:</b> ธุรกิจ Global Credit ที่กำลังขยายตัวเร็วอาจกระทบจากดอกเบี้ย/สภาพคล่องตลาดสินเชื่อ</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>CG: ถูกกว่ากลุ่มด้วยเหตุผล ไม่ใช่ของถูกที่ตลาดมองข้าม</h2>
+      <p>Carlyle ซื้อขายที่ตัวคูณ Distributable Earnings ต่ำสุดในกลุ่ม alternative asset manager ขนาดใหญ่ (~12x เทียบ BX/KKR ที่สูงกว่ามาก) แต่ทั้งวิธี P/DE และ Sum-of-the-Parts ที่แยกอิสระจากกันจริงชี้มูลค่าเหมาะสมใกล้เคียงราคาตลาดปัจจุบันมาก (MOS ~1.7%) — ส่วนลดของ CG สะท้อนพื้นฐานจริง: FRE margin 47% ต่ำกว่า BX ที่มักเกิน 55%, perpetual capital เพียง 34% ของ fee-earning AUM เทียบ BX/KKR ที่สูงกว่ามาก, และธุรกิจ legacy corporate PE ที่วัฏจักรแรงกว่ากลุ่ม credit-heavy จุดแข็งคือ FRE ทำสถิติต่อเนื่อง ปันผล 2.9% และช่องว่างที่อาจปิดลงบางส่วนถ้าทำได้ต่อเนื่อง แต่ราคาปัจจุบันแทบไม่เหลือส่วนเผื่อความปลอดภัย เหมาะกับการติดตามรอจังหวะย่อมากกว่าซื้อเต็มไม้ ณ ราคานี้</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$48.61 <span style="font-size:12px;color:#cab9a8">($48.09–$49.13)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +1.7%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$57.82 (Buy)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ทยอยสะสมเฉพาะเมื่อราคาย่อลงใกล้โซน MOS 20% ($38.89) หรือต่ำกว่า ซึ่งจะให้ส่วนเผื่อความปลอดภัยที่มีความหมาย ณ ราคาปัจจุบัน ($47.79) ส่วนต่างจาก FV บางเกินไปที่จะเป็นจุดเข้าที่ดี ผู้ที่ถืออยู่แล้วอาจถือรับปันผล ~2.9% ต่อพร้อมติดตาม FRE margin และสัดส่วน perpetual capital ทุกไตรมาสเป็นสัญญาณยืนยันการ re-rate
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/DE เป้าหมาย, อัตราเติบโต (g), ตัวคูณของธุรกิจค่าธรรมเนียม และอัตราภาษี/discount ที่ใช้กับ carry สุทธิ
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ราคา ณ 7 ส.ค. 2569 จาก StockAnalysis.com (cross-check กับ Yahoo Finance ตรงกัน 0%) • ข้อมูลงบการเงิน/ประมาณการจาก StockAnalysis.com • ตัวเลข FRE/DE/AUM/perpetual capital/net accrued performance revenues จาก Carlyle Reports Second Quarter 2026 Financial Results, Carlyle Reports First Quarter 2026 Financial Results, และ Carlyle Reports Fourth Quarter and Full-Year 2025 Financial Results (ir.carlyle.com, SEC Form 8-K)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 8 ส.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
