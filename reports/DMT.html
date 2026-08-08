@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น ทางยกระดับดอนเมือง (DMT) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 5">
+<script type="application/json" id="stock-meta">
+{"symbol":"DMT","currency":"THB","price":12.30,"fairValue":10.24,"mos":-20.1,"upside":-16.7,"pe":13.4,"dividendYield":7.2,"roe":12.4}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#23a08d",
+    "accentDark": "#1a7568",
+    "darkGrad": "linear-gradient(135deg,#072722 0%,#0f574c 58%,#1a9381 140%)",
+    "glow": "rgba(46,209,185,.35)",
+    "subColor": "#e1f3f1",
+    "headerMuted": "#e5f1ef",
+    "verdictText": "#e1f4f1",
+    "vcellLabel": "#ffffff",
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#137333"
+  },
+  "chart": {
+    "data": [["ก.ย.25", 10.1], ["ต.ค.25", 10.3], ["พ.ย.25", 10.2], ["ธ.ค.25", 10.4],
+             ["ม.ค.26", 10.6], ["ก.พ.26", 11.2], ["มี.ค.26", 11.1], ["เม.ย.26", 11.1],
+             ["พ.ค.26", 11.2], ["มิ.ย.26", 11.8], ["ก.ค.26", 12.5], ["ส.ค.26", 12.3]],
+    "min": 9, "max": 13, "grid": [10, 11, 12],
+    "fairLine": 10.24, "currency": "฿", "highlight": [0, 10]
+  },
+  "gauge": { "min": 4, "max": 14, "cur": 12.30, "fair": 10.24 },
+  "fv": 10.24
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots"><div style="width:8px;height:8px;border-radius:50%;background:#23a08d;display:inline-block;margin:0 3px"></div><div style="width:8px;height:8px;border-radius:50%;background:#1a7568;display:inline-block;margin:0 3px"></div><div style="width:8px;height:8px;border-radius:50%;background:#0f574c;display:inline-block;margin:0 3px"></div></div>
+    <div>
+      <span class="tag">SET: DMT</span>
+      <span class="tag">โครงสร้างพื้นฐาน (Infrastructure)</span>
+      <span class="tag">ทางด่วนสัมปทาน (Concession Tollway)</span>
+    </div>
+    <h1>ทางยกระดับดอนเมือง (Don Muang Tollway)</h1>
+    <div class="sub">ทางยกระดับอุตราภิมุข ดินแดง–ดอนเมือง 21.9 กม. • เก็บค่าผ่านทางตามสัมปทาน • สัมปทานสิ้นสุด 11 ก.ย. 2577</div>
+    <div class="price-row">
+      <div>
+        <div class="px">฿12.30<small>(DMT)</small></div>
+      </div>
+      <div class="chg">▲ +21.8% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 7 ส.ค. 2569 (Yahoo Finance, ตรงกับ StockAnalysis.com)<br>
+        กรอบ 52 สัปดาห์ ฿9.90 – ฿12.50<br>
+        ที่มา: Yahoo Finance, StockAnalysis.com, Wikipedia (ปีสิ้นสุดสัมปทาน)
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูลงบล่าสุด TTM (ถึง 1Q/2569 — 2Q รอประกาศ 11 ส.ค. 2569)</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">฿14,514 ล้าน</div><div class="d">1,180 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~13.4x</div><div class="d">แพงกว่ากรอบอายุสัมปทานจำกัด (ดูหมายเหตุ)</div></div>
+      <div class="metric"><div class="k">เหลืออายุสัมปทาน</div><div class="v pos">~8.1 ปี</div><div class="d">ถึง 11 ก.ย. 2577 (คืนรัฐตาม BTO)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">~1.66x</div><div class="d">BVPS ประมาณ ฿7.43</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">฿1,073 ล้าน</div><div class="d">+19.6% YoY (FY24 ฿897 ล้าน)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿0.92</div><div class="d">FY2025 ฿0.91 ต่อเนื่อง</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~฿7.43</div><div class="d">ประมาณจาก NI TTM ÷ ROE 12.4%</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~12.4% / ~11.8%</div><div class="d">แทบไม่มีหนี้ (D/E ~0.00) ROA≈ROE</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">฿2,678 ล้าน</div><div class="d">+6.9% YoY</div></div>
+      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">59.5%</div><div class="d">Net margin ~40.6%</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~7.2%</div><div class="d">฿0.88/หุ้น (TTM)</div></div>
+      <div class="metric"><div class="k">Payout Ratio</div><div class="v">~95.7%</div><div class="d">ส่วนหนึ่งคือคืนทุน — ดูย่อหน้าเปิดเผยข้อมูล</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#23a08d"></i>ราคา DMT</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿10.24</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคาย้อนหลัง ~1 ปี ปรับขึ้นต่อเนื่องจาก ฿10.10 (ก.ย. 2568) สู่จุดสูงสุดรอบปี ฿12.50 (ก.ค. 2569) ก่อนย่อลงมาที่ ฿12.30 ปัจจุบัน รวมผลตอบแทนรอบปี +21.8% แรงหนุนหลักคือกำไรสุทธิ FY2025 ที่โต +19.6% YoY และเงินปันผลที่จ่ายสม่ำเสมอ ~7% ต่อปี อย่างไรก็ตาม เส้นมูลค่าเหมาะสม (เขียว) ที่คำนวณจากกรอบอายุสัมปทานจำกัดอยู่ต่ำกว่าราคาตลาดตลอดทั้งปีที่ผ่านมา สะท้อนว่าตลาดอาจยังไม่ตีราคาความเสี่ยง "terminal cliff" ปี 2577 อย่างเต็มที่ (หมายเหตุ: ไม่พบตัวเลขปริมาณจราจรรายวัน/เดือนที่เปิดเผยแยกจากบริษัทในแหล่งที่เข้าถึงได้ระหว่างวิเคราะห์ — เว็บ dmt.co.th เชื่อมต่อไม่สำเร็จ (TLS) ในเวลาวิเคราะห์ — ใช้รายได้/กำไร TTM จากตารางงบเป็นตัวแทนการฟื้นตัวของการใช้ทางแทน)
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">2 วิธีอิสระ — อายุจำกัดถึงสิ้นสุดสัมปทาน 2577</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. DCF อายุจำกัด + เงินสดสุทธิปัจจุบัน (FCFE ถึงสิ้นสุดสัมปทาน 2577 — ไม่มี terminal growth)</div><div class="mdesc">PV ของ FCF/หุ้นฐาน ~฿1.50 (TTM FCF ฿1,764 ล้าน ÷ 1,180 ล้านหุ้น) โต ~3%/ปี (2570–2574) ชะลอ ~1–1.5%/ปี ปีท้าย (2575–2576) จากค่าใช้จ่ายซ่อมบำรุงก่อนส่งมอบคืน ปี 2577 นับเฉพาะ ม.ค.–ก.ย. (8/12 ปี) คิดลดที่ r=6.7% (rf THB 10Y ~2.5% ประมาณการ ณ ส.ค. 2569 + β 0.6 × ERP Thailand ~7.0%) = ฿9.75 <b>บวกเงินสดสุทธิที่มีอยู่แล้ววันนี้ ฿1.31/หุ้น</b> (เงินสด ฿1,587 ล้าน − หนี้ ฿39 ล้าน ÷ 1,180 ล้านหุ้น — เป็นสินทรัพย์ของผู้ถือหุ้นอยู่แล้ว ไม่ใช่ terminal value) ไม่มี terminal growth เพราะกระแสเงินสดดำเนินงานจบเมื่อสัมปทานหมดอายุ</div></div>
+        <div class="mval">฿11.07</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. DDM อายุจำกัด + เงินสดสะสมคืนตอนหมดสัมปทาน (เงินปันผลจริงถึงสิ้นสุดสัมปทาน 2577)</div><div class="mdesc">PV ของเงินปันผล/หุ้นฐาน ฿0.88 (TTM, payout ~96% ของ EPS) โต 2.5%/ปี (2570–2574) ชะลอ 1%/ปี (2575–2576) ปี 2577 นับเฉพาะ 8/12 ปี คิดลดที่ r=7.2% (สูงกว่าขา DCF 0.5 จุด สะท้อนความเสี่ยงนโยบายปันผล — คนละชุด r,g กับขา DCF โดยเจตนา) = ฿5.53 <b>บวก PV ของเงินสดสะสมคืนผู้ถือหุ้นปีสุดท้าย</b> (~40% ของ FCF ที่ไม่จ่ายปันผลระหว่างทาง ฿5.44/หุ้น + เงินสดสุทธิวันนี้ ฿1.31/หุ้น = ฿6.75/หุ้น ณ ปี 2577 คิดลดกลับ 8 ปีที่ r=7.2% = ฿3.87) — เป็น closing cash balance ครั้งเดียว ไม่ใช่ perpetuity growth</div></div>
+        <div class="mval">฿9.40</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿9.40 – ฿11.07</span></div>
+        <div class="r">฿10.24</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        <b>ย่อหน้าเปิดเผยข้อมูล (full-disclosure):</b> DMT ดำเนินธุรกิจภายใต้สัญญาสัมปทานทางพิเศษกับกรมทางหลวง ซึ่งจะสิ้นสุดวันที่ 11 ก.ย. 2577 (ยืนยันจาก Wikipedia ภาษาไทย/อังกฤษ อ้างอิงสัญญาสัมปทานทางยกระดับ ช่วงดินแดง–ดอนเมือง — เหลือ ~8 ปี 1 เดือนนับจากวันวิเคราะห์) หลังจากนั้นทรัพย์สินดำเนินงานทั้งหมดตกเป็นของรัฐตามระบบ Build-Transfer-Operate จึงจงใจ<b>ไม่ใช้ terminal value แบบ perpetuity growth</b> — กระแสเงินสดดำเนินงานนับถึงปี 2577 เท่านั้น โดยใช้ชุด (r,g) ต่างกันในแต่ละขาโดยเจตนา (DCF r=6.7% / DDM r=7.2% + g ต่างกัน) เพื่อไม่ให้เป็น "วิธีเดียวรันสองรอบ" · <b>ทั้งสองขารวมเงินสดสุทธิที่บริษัทมีอยู่แล้ว (฿1.31/หุ้น) และเงินสดที่สะสมเพิ่มระหว่างทางแต่ไม่ได้จ่ายเป็นปันผล (~40% ของ FCF)</b> เพราะเงินสดนี้ยังเป็นทรัพย์สินของผู้ถือหุ้นอยู่แล้ว (ไม่มีหลักฐานภาระผูกพันการส่งมอบคืนเกินกว่าค่าซ่อมบำรุงที่หักออกไปแล้วในกระแสเงินสดปีท้าย และเงินสดสะสมเพิ่มขึ้นต่อเนื่อง ฿689→฿1,587 ล้าน ไม่ใช่ลดลง) — DCF นับเป็น cash-at-face วันนี้ ส่วน DDM คิดลดเป็น closing balance ปี 2577 (ครั้งเดียว ไม่ใช่ terminal growth) ทำให้ dispersion แคบลงเหลือ 1.18 เท่า (฿11.07 vs ฿9.40 < เกณฑ์ 2.0) เฉลี่ยได้ ฿10.24 · Sensitivity: ขา DCF (ไม่รวมเงินสด) ที่ r±0.5pp (6.2–7.2%) ให้ค่า ฿9.57–9.94 (แกว่ง ~4%) · การตรวจสอบแบบไม่ใช้ (r,g) เพื่อยืนยันทิศทาง: ผลรวมกระแสเงินสดตามบัญชีแบบไม่คิดลดเวลาเลยตลอดอายุที่เหลือ (~8.1 ปี) = เงินปันผลรวม (ไม่คิดลด) ~฿7.44/หุ้น + เงินสดคืนปีสุดท้าย ~฿6.75/หุ้น ≈ ฿14.2/หุ้น ใกล้เคียงราคาตลาด ฿12.30 (ไม่ต่างกันมากในเชิง nominal) แต่เมื่อคิดลดด้วยอัตราผลตอบแทนที่สมเหตุผลใด ๆ (6–8%) มูลค่าจะต่ำกว่าราคาตลาดเสมอ (ตามผลลัพธ์ ฿9.40–11.07 ข้างต้น) — ยืนยันทิศทางเดียวกับ DCF/DDM · <b>เงินปันผล ~7.1–7.25% ต่อปี ส่วนใหญ่ (payout ~95.7% ของ EPS) จึงควรมองเป็นการทยอยคืนทุนจากสินทรัพย์สัมปทานที่กำลังหมดอายุบางส่วน ไม่ใช่ผลตอบแทนจากธุรกิจที่เติบโตไม่สิ้นสุดล้วน ๆ</b> ต่างจากหุ้นปันผลทั่วไปที่ยังมีอนาคตระยะยาวรองรับ · เทียบกับ BEM ซึ่งถือสัมปทานทางด่วนหลายสายและรถไฟฟ้าที่ทยอยหมดอายุคนละช่วง DMT พึ่งพาสัมปทานเส้นทางเดียวที่หมดอายุพร้อมกันหมด ความเสี่ยงกระจุกตัวจึงสูงกว่า · ประวัติการขยายสัมปทานในอดีตยังไม่สามารถยืนยันรายละเอียด/ปีที่แน่ชัดจากแหล่งที่เข้าถึงได้ในการวิเคราะห์นี้ — หากมีการเจรจาต่อสัมปทานเกิดขึ้นก่อนปี 2577 กรอบมูลค่าทั้งหมดข้างต้นจะเปลี่ยนไปมาก แต่เป็นความเป็นไปได้ที่ไม่รวมอยู่ใน base case เนื่องจากยังไม่มีประกาศอย่างเป็นทางการ ณ วันวิเคราะห์ · P/E ปัจจุบัน ~13.4x ใช้เป็น<b>บริบทเท่านั้น ไม่ใช่ขาของ Fair Value</b> เพราะสมมติกิจการไปไม่สิ้นสุด ซึ่งขัดกับธรรมชาติสัมปทานอายุจำกัด — ตัวคูณนี้ควรหดตัวลงเรื่อย ๆ เมื่อปี 2577 ใกล้เข้ามา
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿12.30</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿10.24</div></div>
+        </div>
+        <div class="scale">
+          <span>฿7.17<br><small>MOS 30%</small></span>
+          <span>฿8.19<br><small>MOS 20%</small></span>
+          <span style="text-align:center">฿10.24<br><small>Fair Value</small></span>
+          <span style="text-align:right">฿11.07<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">฿13.10<br><small>เป้าเฉลี่ย Analyst</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน ฿12.30 อยู่สูงกว่ามูลค่าเหมาะสม ฿10.24 และสูงกว่าแม้แต่กรอบบนของช่วงประเมิน ฿11.07 — ไม่มีโซน Margin of Safety เหลืออยู่เลยในกรอบอายุสัมปทานจำกัด แม้เป้าราคาเฉลี่ยนักวิเคราะห์ (n=1) ที่ ~฿13.10 จะสูงกว่าราคาตลาดเล็กน้อย แต่เป้านั้นน่าจะยังอิงกรอบ P/E แบบ going-concern ที่ไม่ได้นับรวมความเสี่ยงสัมปทานหมดอายุปี 2577 อย่างเต็มที่
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">−20.1%</div>
+        <div class="txt"><b>ไม่มี Margin of Safety (ราคาแพงกว่ามูลค่าเหมาะสม)</b><br>ราคาตลาดสูงกว่ามูลค่าเหมาะสมที่ประเมินด้วยกรอบอายุสัมปทานจำกัด (รวมเงินสดสุทธิแล้ว) ราว 20% — นักลงทุนควรรอราคาย่อลงมาที่โซน ฿7.17–8.19 หรือรอความชัดเจนเรื่องการต่อสัมปทานก่อนเพิ่มน้ำหนักการลงทุน</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿8.19</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿7.17</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿10.24</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="12.30" step="0.05">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿12.30 • EPS ฐาน ~฿0.92 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS −3%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿6.72</div>
+          <div class="ret neg">−25.9% (~−9.5%/ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.84</span></li>
+            <li><span>P/E ออก</span><span>8x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿2.40</span></li>
+            <li><span>สถานการณ์</span><span>สัมปทานใกล้หมดกดดันมุมมองตลาด + รัฐกดดันไม่ให้ปรับค่าผ่านทาง + P/E de-rate เหลือ ~8x</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +3%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿10.10</div>
+          <div class="ret pos">+4.7% (~+1.5%/ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿1.01</span></li>
+            <li><span>P/E ออก</span><span>10x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿2.78</span></li>
+            <li><span>สถานการณ์</span><span>ธุรกิจดำเนินปกติ ปรับค่าผ่านทางตามรอบสัญญา (ธ.ค. 2572) P/E หดตัวช้า ๆ เหลือ ~10x</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +6%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿13.75</div>
+          <div class="ret pos">+35.4% (~+10.6%/ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿1.10</span></li>
+            <li><span>P/E ออก</span><span>12.5x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿2.91</span></li>
+            <li><span>สถานการณ์</span><span>เริ่มมีสัญญาณเจรจาต่อ/ขยายสัมปทาน ตลาดกลับมาให้มูลค่าแบบ going-concern + จราจรฟื้นแรงกว่าคาด</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      ทั้ง 3 สถานการณ์คำนวณจากราคาเข้า ฿12.30 บวกเงินปันผลสะสม 3 ปี โดยลดตัวคูณ P/E ทางออกลงเรื่อย ๆ (Bear 8x / Base 10x / Bull 12.5x) จากปัจจุบัน ~13.4x เพื่อสะท้อนธรรมชาติหุ้นสัมปทานที่ตัวคูณควรหดตัวเมื่อวันหมดอายุใกล้เข้ามา — มีเพียง Bull ที่สมมติว่าตลาดเริ่มเก็งกำไรความเป็นไปได้ของการต่อสัมปทาน
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>ปรับขึ้นค่าผ่านทางตามสัญญา:</b> รอบปัจจุบัน 22 ธ.ค. 2567–21 ธ.ค. 2572 ผูกกับสูตรในสัมปทาน ให้รายได้เพิ่มขึ้นแบบมีกำหนดเวลาแน่นอน ไม่ต้องพึ่งดุลพินิจการเมืองทุกปี</li>
+          <li><b>งบดุลแทบไร้หนี้:</b> D/E ~0.00 เงินสดสะสม ฿1,587 ล้าน (TTM) เพิ่มขึ้นต่อเนื่องจาก ฿689 ล้าน (FY24) — เป็นกันชนรองรับความผันผวนและอาจเป็นฐานปันผลพิเศษ</li>
+          <li><b>อัตรากำไรสูงมาก:</b> Net margin ~40.6% (TTM) จาก operating leverage สูง — กำไรสุทธิโต +19.6% YoY (FY2025 vs FY2024)</li>
+          <li><b>โอกาสต่อ/ขยายสัมปทาน:</b> ยังไม่มีประกาศอย่างเป็นทางการ ณ วันวิเคราะห์ แต่หากมีการเจรจาต่ออายุสัมปทานก่อนปี 2577 จะเปลี่ยนกรอบมูลค่าทั้งหมด (ไม่รวมใน base case — รายละเอียดประวัติการเจรจาในอดีตยังไม่สามารถยืนยันจากแหล่งที่เข้าถึงได้ในการวิเคราะห์นี้)</li>
+          <li><b>ปริมาณจราจร/รายได้ฟื้นตัว:</b> รายได้ TTM โต +6.9% YoY ต่อเนื่องจากการฟื้นตัวหลังโควิด-19 และการขยายตัวของพื้นที่รอบสนามบินดอนเมือง/กรุงเทพฯ ตอนเหนือ</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>Terminal cliff ปี 2577:</b> กระแสเงินสดผู้ถือหุ้นหยุดสนิทเมื่อสัมปทานหมดอายุ 11 ก.ย. 2577 (เหลือ ~8.1 ปี) ทรัพย์สินโอนคืนรัฐตามระบบ BTO — ไม่มีมูลค่าซากเหลือให้ผู้ถือหุ้น เว้นแต่เจรจาต่อสัมปทานได้</li>
+          <li><b>ปันผลส่วนหนึ่งคือการคืนทุน:</b> Payout ratio ~95.7% ของ EPS ทำให้ yield ~7.1–7.25% ดูสูง แต่เมื่อสัมปทานเหลือน้อยลง มูลค่าที่แท้จริงของหุ้นก็ลดลงตาม — ไม่ใช่ "ผลตอบแทนจากการเติบโต" ล้วน</li>
+          <li><b>กระจุกตัวสัมปทานเดียว:</b> ต่างจาก BEM ที่มีสัมปทานทางด่วนหลายสายและรถไฟฟ้าทยอยหมดอายุคนละช่วง DMT พึ่งพาเส้นทางเดียวที่หมดอายุพร้อมกันหมด — ความเสี่ยงกระจุกตัวสูงกว่า</li>
+          <li><b>ความเสี่ยงนโยบาย/การเมือง:</b> แรงกดดันจากประชาชน/ภาครัฐเรื่องค่าผ่านทางแพง หรือการแทรกแซงไม่ให้ปรับราคาตามสัญญา อาจกระทบกระแสเงินสดก่อนกำหนด</li>
+          <li><b>คู่แข่งทางเลือก:</b> การขยายโครงข่ายทางพิเศษ/มอเตอร์เวย์ และระบบขนส่งมวลชน (รถไฟฟ้าสายสีแดง บางซื่อ–รังสิต ที่วิ่งขนานเส้นทาง) อาจดึงส่วนแบ่งผู้ใช้ทางระยะยาว</li>
+          <li><b>นักวิเคราะห์ติดตามน้อย:</b> มีเพียง 1 รายที่ให้เป้าราคา (consensus บาง) ทำให้ราคาตลาดอาจไม่สะท้อนความเสี่ยง terminal cliff อย่างมีประสิทธิภาพ</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>ปันผลสูงแต่ต้นทุนคือ "นาฬิกาทราย" ที่กำลังจะหมด — ราคาปัจจุบันไม่มี Margin of Safety ในกรอบอายุสัมปทานจำกัด</h2>
+      <p>DMT เป็นธุรกิจสัมปทานทางด่วนคุณภาพสูง (แทบไม่มีหนี้ อัตรากำไรสุทธิ ~40% ROE ~12.4%) แต่สัมปทานจะสิ้นสุดในอีก ~8.1 ปี (11 ก.ย. 2577) เมื่อประเมินมูลค่าจากกระแสเงินสดที่เหลือจริงถึงวันนั้นบวกเงินสดสุทธิที่มีอยู่แล้ว (DCF/DDM แบบอายุจำกัด ไม่มี terminal growth) มูลค่าเหมาะสมอยู่ที่ ~฿10.24/หุ้น ต่ำกว่าราคาตลาด ฿12.30 ราว 20% แม้แต่การนับกระแสเงินสดทั้งหมด (ปันผล + เงินสดคืนปีสุดท้าย) แบบไม่คิดลดเวลาเลยตลอดอายุที่เหลือก็ยังใกล้เคียงราคาตลาดเท่านั้น (~฿14.2 ต่อ ฿12.30) ไม่ได้สูงกว่าอย่างมีนัยสำคัญ — เมื่อคิดลดด้วยอัตราผลตอบแทนที่สมเหตุผล มูลค่าจะต่ำกว่าราคาตลาดเสมอ สะท้อนว่าตลาดอาจกำลังตีราคาหุ้นด้วยกรอบ P/E แบบไปเรื่อย ๆ (going-concern) ซึ่งไม่เหมาะกับสินทรัพย์ที่มีวันหมดอายุชัดเจน</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿10.24 <span style="font-size:12px;color:#cab9a8">(฿9.40–฿11.07)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −20.1%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿13.10 (n=1)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> สำหรับนักลงทุนที่เข้าใจธรรมชาติ "สัมปทานอายุจำกัด" ของหุ้นนี้ — เหมาะเป็นการเก็งกำไรปันผลระยะสั้นถึงกลางเท่านั้น ไม่ใช่ถือยาวไม่จำกัดแบบหุ้นปันผลทั่วไป จุดที่น่าสนใจจริงคือโซน MOS 20–30% (฿7.17–฿8.19) ซึ่งต่ำกว่าราคาตลาดปัจจุบันพอสมควร ผู้ที่ถือครองอยู่แล้วควรติดตามข่าวการเจรจาต่อสัมปทานอย่างใกล้ชิด เพราะเป็นตัวแปรเดียวที่จะเปลี่ยนกรอบมูลค่าทั้งหมด
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะอัตราคิดลด (r), อัตราเติบโต (g), P/E เป้าหมาย และปีสิ้นสุดสัมปทานที่อาจเปลี่ยนแปลงได้หากมีการเจรจาต่อสัญญา
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ราคา ณ 7 ส.ค. 2569 จาก Yahoo Finance (cross-check กับ StockAnalysis.com ตรงกัน) • ข้อมูลงบการเงินจาก StockAnalysis.com • ปีสิ้นสุดสัมปทาน (11 ก.ย. 2577) จาก Wikipedia ภาษาไทย/อังกฤษ อ้างอิงสัญญาสัมปทานทางยกระดับดอนเมือง (Tollway Concession Agreement กับกรมทางหลวง)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 8 ส.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
