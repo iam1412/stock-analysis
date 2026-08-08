@@ -1,0 +1,307 @@
+# แผนหุ้นน่าสนใจที่ยังไม่มีในระบบ — TH / USA (Discovery 8 ส.ค. 2569)
+
+> **ที่มา:** สแกนด้วย MCP `tradingview` → `stock_screener` (`country=thailand` top-300 · `country=america` top-1500 เรียงตาม market cap, `exclude_otc=true`) เมื่อ 8 ส.ค. 2569 → diff กับ `reports.json` (มีอยู่ 782 ตัว = TH 204 · US 578) → หักรายการที่เคย**ตัดโดยตั้งใจ**ในแผนเก่า → คัดเชิงคุณภาพ
+> **ผลดิบ:** TH ขาด 140/300 · US ขาด 960/1500 → **หลังหักของที่เคยตัด + REIT/กองทุน + ชื่อไฟล์ชน → เสนอจริง TH 34 · US 96 = 130 ตัว**
+> **สถานะ:** 📋 แผน — ยังไม่เริ่มวิเคราะห์ · ทุกตัวเป็นโหมด **NEW** (เริ่มจาก skeleton)
+> **ตัวเลข market cap ในตาราง = TradingView ณ 8 ส.ค. 2569 ใช้จัดลำดับความสำคัญเท่านั้น** — ตอนวิเคราะห์จริงต้อง `tools/prep-stock.js` + cross-source verify ราคา/EPS ≥2 แหล่งตาม CLAUDE.md §2 เสมอ
+
+---
+
+## 🔑 ข้อค้นพบหลัก — ทำไมยังมีช่องว่างใหญ่ทั้งที่มี 782 ตัวแล้ว
+
+แผนเก่า **US-GAP-124 diff กับ S&P 500 เท่านั้น** ⇒ หุ้นคุณภาพที่ **ไม่ได้อยู่ใน S&P 500** ไม่เคยถูกสแกนเลยแม้แต่รอบเดียว ช่องว่างจึงกองอยู่ 3 ก้อนใหญ่:
+
+1. **แคนาดาทั้งประเทศ** — รีโปมีแค่ CNI/CP/BN · ธนาคาร 5 เจ้า (RY/TD/BMO/BNS/CM) · ท่อ/พลังงาน · ทองคำ ยังว่างทั้งหมด
+2. **ADR ยุโรป/โลกนอก S&P** — AZN ($250bn!) · TTE · UBS · ALC · CCEP · FER
+3. **US mid/large cap นอก S&P 500** — FERG · RPRX · TW · CSL · WSO · MANH · BWXT · STRL ฯลฯ
+
+ฝั่งไทยช่องว่างมาจากคนละเหตุ: THAI-GROWTH-130 **ตัดวัฏจักรทิ้งตั้งแต่ต้น** (เดินเรือ/น้ำตาล/ยาง/ถุงมือ/ปิโตร/โรงกลั่น/ชิ้นส่วนยานยนต์) ซึ่งยังคงเป็นนโยบายที่ถูกต้อง — ที่เหลือจริง ๆ คือ **กลุ่มโฮลดิ้ง/ประกัน/สัมปทาน/FMCG แบรนด์** ที่หลุดตะแกรงรอบก่อน
+
+---
+
+## ⚠️ ชื่อไฟล์ชนกัน (1 สัญลักษณ์ = 1 ไฟล์) — ต้องตัดสินก่อนยิง agent
+
+รีโปใช้ namespace แบน `reports/<SYMBOL>.html` ⇒ TH กับ US แย่งชื่อกันได้
+
+| สัญลักษณ์ | ฝั่งที่ชน | คำตัดสินที่เสนอ |
+|---|---|---|
+| **BAM** | US Brookfield AM ($86bn) vs **TH BAM (มีไฟล์แล้ว)** | ✅ คงไทยไว้ — US ใช้ **BN** แทนอยู่แล้ว (US-GAP-124 #46) |
+| **LH** | US Labcorp vs **TH Land & Houses (มีไฟล์แล้ว)** | ✅ คงไทย — US ใช้ **DGX** แทนแล้ว |
+| **RS · SUN · TU · SIRI · PB · THG · BTG · M · OR · PRM · SKY · BGC** | US ทั้งหมด vs **ไฟล์ไทยที่มีแล้ว** | ✅ คงไทย — US ตัดทิ้งรอบนี้ (ไม่มีตัวไหนคุณภาพพอจนต้องแลก) |
+| **PM · SPG · NYT · AIT · ORI** | TH ทั้งหมด vs **ไฟล์ US ที่มีแล้ว** | ✅ คงไฟล์ US — ฝั่งไทยไม่ทำ (AIT/ORI ยืนยันเดิมจาก THAI-GROWTH-130) |
+| **BA** | US Boeing ($185bn) vs TH Bangkok Airways (฿40.6bn) | ⏸️ **ยังไม่ทำทั้งคู่** — Boeing ถูกตัด "คุณภาพ/ความเสี่ยง" ใน US-GAP-124 · BA ไทยเป็นสายการบิน = วัฏจักร → ปล่อยชื่อไฟล์ว่างไว้ก่อน |
+| **RCL** | US Royal Caribbean vs TH Regional Container Lines | ⏸️ ตัดทั้งคู่ตามนโยบายเดิม (เรือสำราญ US-GAP-124 · เดินเรือ THAI-GROWTH-130) |
+| **ALLY** | US Ally Financial vs TH Ally | ⏸️ ตัดทั้งคู่ (US อยู่ในรายการตัดเดิม · TH เล็กเกิน) |
+| **MC** | US Moelis (~$5bn) vs **TH MC Group (฿9.4bn)** | ➡️ **ให้ฝั่งไทย** — อยู่ใน Tier 2 ไทยด้านล่าง |
+| **S** | US SentinelOne vs **TH Singha Estate** | ➡️ **ให้ฝั่งไทย** (Tier 3) |
+
+---
+
+## 🚫 ยืนยันไม่เสนอ (เคยตัดโดยตั้งใจ — ยกมาเพื่อกันหยิบซ้ำ)
+
+- **RICH watchlist** (แพงเกิน ณ 3 ก.ค. 69 · revisit เมื่อราคาย่อแรงเท่านั้น): `FFIV` `ACGL` `MEDP` `SCCO` `VIRT` — ทั้ง 4 ตัวแรกยังโผล่ในผลสแกนรอบนี้
+- **จีน/EM ADR** (นโยบาย user): `PDD` `NU` `AU`
+- **spinoff ใหม่ <1 ปี — defer** (US-GAP-124 บรรทัด 28 กำหนดทบทวน "ปลายปี 2569–2570"): `HONA` `FDXF` `Q` `SNDK` → **ตอนนี้ ส.ค. 69 ใกล้ครบเงื่อนไขแล้ว** ⚠️ ถ้าจะหยิบ ต้องยืนยันวันที่ spin จริงว่า ≥1 ปี ก่อน ไม่ใช่เดาจากความจำ
+- **คุณภาพ/ความเสี่ยงไม่ผ่าน** (US-GAP-124 บรรทัด 186 — โผล่ซ้ำรอบนี้): `BA` `GM` `F` `DAL` `UAL` `LUV` `CCL` `HOOD` `COIN` `CVNA` `XYZ` `HPE` `HWM` `FIX` `WBD` `KHC` `DLTR` `PCG` `MRNA` `CHTR` `SYF` `HBAN` `BBY` `ALB` `APA` `IVZ` `BEN`
+- **หุ้นไทยวัฏจักร/ธงแดง** (THAI-GROWTH-130): `PTTGC` `SPRC` `IRPC` `STA` `STGT` `PSL` `TTA` `KSL` `KTIS` `NER` `SAT` `AH` `TPIPL` · เสี่ยงเจ๊ง `EA` `ITD` `SINGER` `JMART`
+  - ⚠️ **`EA` ที่โผล่ในผลสแกน = Energy Absolute (ไทย) คนละบริษัทกับ Electronic Arts ที่เพิ่งลบออก** — ทั้งคดีทุจริต+ฟื้นฟูกิจการ และชนชื่อไฟล์ที่เพิ่งเคลียร์ → ไม่แตะ
+- **REIT / กองทุนโครงสร้างพื้นฐาน ไทย** (skeleton คิดจาก EPS/P/E/ROE ประเมิน FFO ไม่ได้): `VAYU1` `CPNREIT` `FTREIT` `WHART` `AXTRART` `BAREIT` `AIMIRT` `INETREIT` `IMPACT` `GVREIT` `PROSPECT` `CPTREIT` `LHHOTEL` `LHSC` `WHAIR` `FUTURERT` `TPRIME` `BOFFICE` `DREIT` → ถ้าอยากได้ ต้องทำ track แยกพร้อมวิธี P/FFO ก่อน
+- **MLP สหรัฐ** (`EPD` `ET` `MPLX` `WES` `PAA` `CQP`) — เป็น partnership จ่าย distribution + K-1 ไม่ใช่ dividend ปกติ · **ใส่ไว้ Tier 3 พร้อมคำเตือน** ไม่ใช่ตัดทิ้ง เพราะรีโปมี WMB/KMI/TRGP (บริษัทจำกัด) อยู่แล้วและอันนี้คือส่วนที่ขาด
+
+---
+
+# 🇺🇸 สหรัฐฯ + ADR — 96 ตัว
+
+## US Tier 1 — ช่องว่างเชิงโครงสร้างที่ใหญ่ที่สุด (30 ตัว · ทำก่อน)
+
+### 1A. ธนาคาร/ประกัน แคนาดา — oligopoly 5 เจ้า ปันผลยาว รีโปยังไม่มีสักตัว (7)
+
+| # | Symbol | $bn | ทำไมน่าสนใจ | 🔺 |
+|---|---|---|---|---|
+| 1 | RY | 293 | Royal Bank of Canada — ธนาคารใหญ่สุดแคนาดา, oligopoly 5 เจ้าที่กันคู่แข่งต่างชาติมา 100+ ปี | |
+| 2 | TD | 205 | Toronto-Dominion — เบอร์ 2 + เครือข่ายรีเทลฝั่ง US ใหญ่สุดในกลุ่ม (ตามคดี AML ให้ครบ) | 🔺 |
+| 3 | BMO | 128 | Bank of Montreal — ปันผลต่อเนื่องยาวที่สุดในแคนาดา (ตั้งแต่ 1829) | |
+| 4 | BNS | 110 | Scotiabank — เอียงไป LatAm มากสุดในกลุ่ม ⇒ ถูกกว่าเพื่อน ต้องตัดสินว่า discount สมเหตุผลไหม | 🔺 |
+| 5 | CM | 110 | CIBC — เน้นในประเทศสุด, ROE ดี | |
+| 6 | MFC | 74 | Manulife — ประกันชีวิต + asset mgmt, ฐานเอเชียโตเร็ว | |
+| 7 | SLF | 45 | Sun Life — ประกัน+asset mgmt คู่แข่ง MFC, งบอนุรักษ์กว่า | |
+
+### 1B. ADR ยุโรป/โลก ที่ใหญ่แต่หลุดตะแกรง S&P (8)
+
+| # | Symbol | $bn | ทำไมน่าสนใจ | 🔺 |
+|---|---|---|---|---|
+| 8 | AZN | 250 | **AstraZeneca — ช่องว่างที่ใหญ่สุดในรีโปทั้งหมด** ยา oncology เบอร์ต้นโลก, pipeline แน่น | |
+| 9 | TTE | 192 | TotalEnergies — integrated oil ยุโรป + ลงทุน renewables จริงจังกว่าเพื่อน (normalize วัฏจักร) | 🔺 |
+| 10 | UBS | 163 | UBS — หลังกลืน Credit Suisse เสร็จ, wealth management เบอร์ 1 โลก (งบช่วงควบรวมบิดเบือน) | 🔺 |
+| 11 | ALC | 36 | **Alcon — eye care เบอร์ 1 โลก (เลนส์/ผ่าตัดตา)** spin จาก Novartis, compounder ตรงสไตล์รีโป | |
+| 12 | CCEP | 48 | Coca-Cola Europacific — bottler ยุโรป+ออสเตรเลีย, กระแสเงินสดนิ่ง | |
+| 13 | FER | 48 | Ferrovial — สัมปทานทางด่วน/สนามบิน (404 Express Lanes, Heathrow) โมเดลคล้าย BEM/DMT | |
+| 14 | DB | 71 | Deutsche Bank — turnaround หลายปีเพิ่งกลับมามีกำไรสม่ำเสมอ, P/B ยังต่ำกว่ากลุ่ม | 🔺 |
+| 15 | ESLT | 40 | Elbit Systems — defense อิสราเอล, backlog ทำนิวไฮต่อเนื่อง | |
+
+### 1C. ท่อ/พลังงาน/สาธารณูปโภค แคนาดา — สายปันผล (8)
+
+| # | Symbol | $bn | ทำไมน่าสนใจ | 🔺 |
+|---|---|---|---|---|
+| 16 | ENB | 112 | Enbridge — ท่อน้ำมัน/ก๊าซใหญ่สุดอเมริกาเหนือ, yield ~6% ขึ้นปันผล 30 ปีติด | |
+| 17 | TRP | 63 | TC Energy — ท่อก๊าซ + ธีม data center PPA (หลัง spin South Bow) | 🔺 |
+| 18 | PBA | 28 | Pembina — ท่อ+processing ฝั่งตะวันตกแคนาดา | |
+| 19 | FTS | 29 | Fortis — utility regulated ล้วน ขึ้นปันผล 50+ ปี (เทียบชั้น dividend aristocrat US) | |
+| 20 | EMA | 16 | Emera — utility ฝั่งแอตแลนติก + ฟลอริดา | |
+| 21 | CNQ | 95 | Canadian Natural — ต้นทุนต่ำสุดใน oil sands, อายุแหล่งยาวมาก (mid-cycle EPS) | 🔺 |
+| 22 | SU | 71 | Suncor — integrated oil sands + ปั๊ม Petro-Canada (mid-cycle EPS) | 🔺 |
+| 23 | IMO | 60 | Imperial Oil — Exxon ถือ 69.6%, buyback ดุที่สุดในกลุ่ม (mid-cycle EPS) | 🔺 |
+
+### 1D. ทองคำ/โลหะมีค่า — ราคาทองทำนิวไฮ ⇒ **ทั้งกลุ่มต้อง normalize EPS** (7)
+
+> ⚠️ กับดักเดียวกับ TFG/STLD: P/E TTM จะดูถูกมากตอนราคาทองพีค — ห้ามใช้ TTM ตรง ๆ ต้องใช้ราคาทอง mid-cycle
+
+| # | Symbol | $bn | ทำไมน่าสนใจ | 🔺 |
+|---|---|---|---|---|
+| 24 | AEM | 91 | Agnico Eagle — ผู้ผลิตทองคุณภาพสูงสุดในกลุ่ม, เหมืองอยู่ในเขตการเมืองนิ่ง (แคนาดา/ฟินแลนด์) | 🔺 |
+| 25 | B | 73 | Barrick Mining (เดิม ticker GOLD) — เบอร์ 2 โลก ⚠️ **เปลี่ยน ticker แล้ว ตรวจให้ชัดก่อนดึงข้อมูล** | 🔺 |
+| 26 | WPM | 61 | Wheaton Precious Metals — **streaming ไม่ใช่เหมือง** มาร์จิ้นสูงกว่ามาก ไม่แบกต้นทุนขุด | 🔺 |
+| 27 | FNV | 46 | Franco-Nevada — royalty model ต้นตำรับ, ไม่มีหนี้ | 🔺 |
+| 28 | KGC | 33 | Kinross Gold — turnaround สำเร็จ งบสะอาดขึ้นมาก | 🔺 |
+| 29 | PAAS | 22 | Pan American Silver — เงิน+ทอง LatAm | 🔺 |
+| 30 | TECK | 33 | Teck Resources — ทองแดง (ธีม electrification) หลังขายถ่านหินออก | 🔺 |
+
+## US Tier 2 — คุณภาพนอก S&P 500 ที่ไม่เคยถูกสแกน (38 ตัว)
+
+### 2A. Distribution / Services compounder (8)
+
+| # | Symbol | $bn | ทำไมน่าสนใจ |
+|---|---|---|---|
+| 31 | FERG | 50 | Ferguson — จัดจำหน่ายประปา/HVAC เบอร์ 1 US, roll-up มาหลายสิบปี |
+| 32 | WSO | 13 | Watsco — จัดจำหน่าย HVAC, ปันผลสูง + roll-up ครอบครัว |
+| 33 | XPO | 24 | XPO — LTL freight เบอร์ 3 US, กำลังไล่มาร์จิ้นตาม ODFL (มีในรีโปแล้ว) |
+| 34 | USFD | 24 | US Foods — foodservice distribution เบอร์ 2 คู่ SYY (มีแล้ว) |
+| 35 | PFGC | 18 | Performance Food Group — เบอร์ 3 กลุ่มเดียวกัน โตจาก M&A |
+| 36 | WCC | 18 | WESCO — จัดจำหน่ายอุปกรณ์ไฟฟ้า ธีม data center/grid |
+| 37 | SNX | 20 | TD SYNNEX — IT distribution ใหญ่สุดโลก, ปริมาณ AI server ไหลผ่าน |
+| 38 | ULS | 16 | UL Solutions — testing/certification, รายได้ recurring ตามกฎระเบียบ |
+
+### 2B. โครงสร้างพื้นฐาน / data center build-out (6)
+
+| # | Symbol | $bn | ทำไมน่าสนใจ | 🔺 |
+|---|---|---|---|---|
+| 39 | MTZ | 22 | MasTec — สร้างสายส่ง/ท่อ/สื่อสาร ธีม grid + data center | |
+| 40 | STRL | 17 | Sterling Infrastructure — งานปรับพื้นที่ data center มาร์จิ้นดีสุดในกลุ่ม | |
+| 41 | IESC | 15 | IES Holdings — งานระบบไฟฟ้า data center โตแรงมาก | 🔺 |
+| 42 | APG | 18 | APi Group — ตรวจ/ซ่อมระบบดับเพลิง รายได้ recurring ตามกฎหมายอาคาร | |
+| 43 | DY | 12 | Dycom — วางไฟเบอร์ให้ telecom, backlog ยาว | |
+| 44 | TLN | 17 | Talen Energy — นิวเคลียร์ + สัญญาขายไฟ data center (หลังออกจาก Ch.11) | 🔺 |
+
+### 2C. Aerospace / Defense / นิวเคลียร์ (6)
+
+| # | Symbol | $bn | ทำไมน่าสนใจ |
+|---|---|---|---|
+| 45 | CW | 26 | Curtiss-Wright — ชิ้นส่วนเรือดำน้ำ/เรือบรรทุกเครื่องบิน + SMR |
+| 46 | BWXT | 16 | BWX Technologies — **ผูกขาดเครื่องปฏิกรณ์นิวเคลียร์กองทัพเรือ US** + SMR |
+| 47 | WWD | 21 | Woodward — ระบบควบคุมเครื่องยนต์อากาศยาน, aftermarket มาร์จิ้นสูง |
+| 48 | MOG-A | 13 | Moog — actuator การบิน/อวกาศ (ไฟล์ใช้ขีดกลาง `MOG-A.html`) |
+| 49 | DRS | 12 | Leonardo DRS — เซนเซอร์/ระบบไฟฟ้าเรือรบ โตจากงบกลาโหม |
+| 50 | CACI | 14 | CACI International — IT/ข่าวกรองให้รัฐบาลกลาง |
+
+### 2D. การเงิน / asset manager ที่ยังขาด (9)
+
+| # | Symbol | $bn | ทำไมน่าสนใจ | 🔺 |
+|---|---|---|---|---|
+| 51 | TW | 24 | **Tradeweb — แพลตฟอร์มเทรดบอนด์อิเล็กทรอนิกส์** มาร์จิ้น 40%+ เข้าชุดกับ MKTX/CME/ICE ที่มีแล้ว | |
+| 52 | OWL | 19 | Blue Owl — alt asset mgr รายได้ค่าธรรมเนียมถาวรสัดส่วนสูงสุดในกลุ่ม | |
+| 53 | CG | 17 | Carlyle Group — PE เบอร์ต้น ถูกกว่า BX/KKR/APO ที่มีแล้วมาก | |
+| 54 | TPG | 19 | TPG — PE ที่โตเร็วสุดหลัง IPO | |
+| 55 | LPLA | 29 | LPL Financial — แพลตฟอร์มที่ปรึกษาการเงินอิสระเบอร์ 1 US | |
+| 56 | FCNCA | 25 | First Citizens BancShares — ธนาคารที่ซื้อ SVB มาในราคาถูกมาก (งบหลังดีลบิดเบือน) | 🔺 |
+| 57 | EWBC | 18 | East West Bancorp — ธนาคารสะพาน US-จีน ROE สูงสุดในกลุ่มธนาคารกลาง | |
+| 58 | PNFP | 16 | Pinnacle Financial — ธนาคารภูมิภาคที่โตเร็วสุด (ระวังดีล Synovus) | 🔺 |
+| 59 | RYAN | 11 | Ryan Specialty — โบรกเกอร์ประกันเฉพาะทาง เข้าชุดกับ AON/MRSH/AJG/WTW | |
+
+### 2E. อุตสาหกรรม / ผู้บริโภค / ซอฟต์แวร์ คุณภาพ (9)
+
+| # | Symbol | $bn | ทำไมน่าสนใจ | 🔺 |
+|---|---|---|---|---|
+| 60 | CSL | 15 | Carlisle Companies — วัสดุมุงหลังคาเชิงพาณิชย์ มาร์จิ้นสูงมาก, buyback ดุ | |
+| 61 | RBC | 18 | RBC Bearings — ตลับลูกปืนการบิน/อุตสาหกรรม pricing power สูง | |
+| 62 | SN | 26 | SharkNinja — เครื่องใช้ในบ้าน ออกสินค้าใหม่เร็วผิดปกติ โต 20%+ ต่อเนื่อง | |
+| 63 | AS | 21 | Amer Sports — Arc'teryx/Salomon/Wilson, แบรนด์ premium โตแรงในจีน | 🔺 |
+| 64 | MANH | 11 | Manhattan Associates — ซอฟต์แวร์ซัพพลายเชน มาร์จิ้น+retention ระดับท็อป | |
+| 65 | GWRE | 14 | Guidewire — ระบบหลังบ้านประกันวินาศภัย ย้ายขึ้นคลาวด์สำเร็จ | |
+| 66 | SSNC | 19 | SS&C Technologies — fund administration, serial acquirer กระแสเงินสดแน่น | |
+| 67 | TXRH | 14 | Texas Roadhouse — ร้านอาหารที่ traffic โตจริงสวนกลุ่ม | |
+| 68 | SCI | 12 | Service Corporation International — ฌาปนกิจ/สุสาน ธุรกิจทนวัฏจักรที่สุด, pre-need backlog | |
+
+## US Tier 3 — เลือกได้/ต้องระวังเป็นพิเศษ (28 ตัว)
+
+### 3A. Healthcare — ย่อลึก/ไบโอเทคมีรายได้แล้ว (9)
+
+| # | Symbol | $bn | ทำไมน่าสนใจ | 🔺 |
+|---|---|---|---|---|
+| 69 | ILMN | 28 | Illumina — ผูกขาดเครื่องอ่านยีน แต่ราคาย่อหนักหลายปี ต้องแยก structural vs วัฏจักร | 🔺 |
+| 70 | ALNY | 29 | Alnylam — ผู้นำยา RNAi, เพิ่งพลิกกำไร | 🔺 |
+| 71 | NTRA | 46 | Natera — ตรวจพันธุกรรม/มะเร็งตกค้าง โตแรงมาก | 🔺 |
+| 72 | RPRX | 33 | **Royalty Pharma — ซื้อ royalty ยา ไม่ทำ R&D เอง** โมเดลเฉพาะตัว ต้องประเมินแบบ portfolio ไม่ใช่ P/E | 🔺 |
+| 73 | JAZZ | 17 | Jazz Pharmaceuticals — P/E หลักเดียว ประเด็นคือ patent cliff Xywav | 🔺 |
+| 74 | INSM | 28 | Insmed — Brensocatib เพิ่งอนุมัติ, pre-profit | 🔺 |
+| 75 | CNC | 32 | Centene — managed care ย่อแรงมาก ต้องตัดสินว่า margin กลับได้ไหม | 🔺 |
+| 76 | ICLR | 13 | ICON plc — CRO เบอร์ต้น เข้าชุดกับ CRL/IQV ที่มีแล้ว | |
+| 77 | PEN | 13 | Penumbra — อุปกรณ์ลิ่มเลือด/หลอดเลือดสมอง โตสองหลัก | |
+
+### 3B. Midstream MLP — ⚠️ partnership (K-1, distribution ไม่ใช่ dividend) (4)
+
+> ต้องตั้ง `dividendYield` จาก distribution + อธิบายโครงสร้าง unit ในรายงาน · ประเมินด้วย DCF/EV-EBITDA ไม่ใช่ P/E
+
+| # | Symbol | $bn | ทำไมน่าสนใจ | 🔺 |
+|---|---|---|---|---|
+| 78 | EPD | 82 | Enterprise Products — MLP คุณภาพสูงสุด ขึ้น distribution 26 ปีติด | 🔺 |
+| 79 | ET | 69 | Energy Transfer — เครือข่ายใหญ่สุด yield สูงสุด (ประวัติธรรมาภิบาลต้องพูดถึง) | 🔺 |
+| 80 | MPLX | 60 | MPLX — MLP ของ MPC (มีในรีโปแล้ว) | 🔺 |
+| 81 | DTM | 13 | DT Midstream — **เป็นบริษัทจำกัด ไม่ใช่ MLP** ท่อก๊าซบริสุทธิ์ ธีม data center | |
+
+### 3C. AI infra / IPO ใหม่ — **effort high + ปรึกษา advisor ผ่าน courier ก่อน spawn ทุกตัว** (11)
+
+> ทั้งกลุ่มเป็น IPO/spin ปี 2568–2569 · ประวัติงบสั้น · หลายตัว pre-profit หรือประเมินด้วย P/E ไม่ได้
+> ⚠️ **ต้องยืนยันตัวตนบริษัท + วันที่ IPO/spin จากแหล่งปฐมภูมิก่อนเขียนเลข** — อย่าเชื่อความจำ
+
+| # | Symbol | $bn | ทำไมน่าสนใจ | 🔺 |
+|---|---|---|---|---|
+| 82 | CRWV | 49 | CoreWeave — neocloud เช่า GPU ให้ AI lab, หนี้สูงมาก ต้องดู contract backlog vs capex | 🔺 |
+| 83 | NBIS | 47 | Nebius — neocloud ยุโรป (แยกจาก Yandex) ถือหุ้น Avride/Toloka ด้วย ⇒ sum-of-parts | 🔺 |
+| 84 | CBRS | 63 | Cerebras Systems — ชิป wafer-scale คู่แข่ง NVDA, IPO ใหม่ | 🔺 |
+| 85 | RKLB | 50 | Rocket Lab — จรวดเล็กเบอร์ 2 รองจาก SpaceX + Neutron, pre-profit | 🔺 |
+| 86 | ASTS | 28 | AST SpaceMobile — ดาวเทียมต่อมือถือตรง, pre-revenue เป็นหลัก | 🔺 |
+| 87 | MDLN | 46 | Medline — เวชภัณฑ์สิ้นเปลือง IPO ใหญ่สุดปีนี้, ธุรกิจจริงนิ่งมาก | 🔺 |
+| 88 | AMRZ | 26 | Amrize — Holcim อเมริกาเหนือ spin ออกมา, วัสดุก่อสร้าง (เทียบ CRH ที่มีแล้ว) | 🔺 |
+| 89 | SUNB | 33 | Sunbelt Rentals — Ashtead ย้ายจดทะเบียนมา US, เทียบ URI ที่มีแล้ว | 🔺 |
+| 90 | VG | 33 | Venture Global — ส่งออก LNG เบอร์ 2 US (เทียบ LNG ที่มีแล้ว) มีคดีกับลูกค้า | 🔺 |
+| 91 | IONQ | 18 | IonQ — quantum computing, pre-revenue เชิงพาณิชย์ | 🔺 |
+| 92 | QNT | 15 | Quantinuum — quantum (Honeywell spin) IPO ใหม่มาก | 🔺 |
+
+### 3D. อื่น ๆ ที่น่าสนใจแต่ไม่เร่ง (4)
+
+| # | Symbol | $bn | ทำไมน่าสนใจ | 🔺 |
+|---|---|---|---|---|
+| 93 | GRAB | 15 | Grab — ซูเปอร์แอปอาเซียน (เกี่ยวข้องกับผู้อ่านไทยโดยตรง) เพิ่งพลิก EBITDA บวก | 🔺 |
+| 94 | CPNG | 29 | Coupang — อีคอมเมิร์ซเบอร์ 1 เกาหลี, โมเดล fulfillment เอง | |
+| 95 | AER | 23 | AerCap — เช่าเครื่องบินใหญ่สุดโลก, ซื้อคืนหุ้นต่ำกว่า book ต่อเนื่อง | 🔺 |
+| 96 | CHKP | 13 | Check Point — cybersecurity อิสราเอล มาร์จิ้นสูงสุดในกลุ่ม ถูกกว่า PANW/CRWD/FTNT ที่มีแล้ว | |
+
+---
+
+# 🇹🇭 ไทย — 34 ตัว
+
+> เกณฑ์เดิมจาก THAI-GROWTH-130: ไม่เจ๊ง (สำคัญสุด) · มาร์จิ้นโตต่อเนื่อง · ROE ≥ ~12% · สภาพคล่องใช้ได้ · ปันผล = โบนัส
+> **ตัดวัฏจักรออกแล้ว** ตามนโยบายเดิม (ชิ้นส่วนยานยนต์ STANLY/PCSGH/TSC · เกษตร/โภคภัณฑ์ UVAN/LANNA/KBS/TSTH/GGC/BBGI · เหล็ก MCS/SKN · ฟิล์ม PTL · โบรกเกอร์ KGI/ASP/MST)
+
+## TH Tier 1 — คุณภาพชัด ทำก่อน (12 ตัว)
+
+| # | Symbol | ฿bn | ปันผล% | ธุรกิจ / ทำไมน่าสนใจ | 🔺 |
+|---|---|---|---|---|---|
+| 1 | SCCC | 46.0 | 7.1 | ปูนซีเมนต์นครหลวง (INSEE) — เบอร์ 2 ปูนไทย + ฐานเวียดนาม/ศรีลังกา · ปันผลสูง เข้าชุดกับ SCC/SCGP/SCGD/TASCO | 🔺 |
+| 2 | MRDIYT | 59.6 | 1.1 | MR.D.I.Y. ไทย — ร้านของใช้ราคาเดียว ขยายสาขาเร็วสุดในกลุ่มค้าปลีก ⚠️ IPO ใหม่ ประวัติงบสั้น | 🔺 |
+| 3 | DMT | 14.6 | 7.1 | ดอนเมืองโทลล์เวย์ — **สัมปทานทางด่วนถึงปี 2577** กระแสเงินสดคาดเดาได้สูงมาก เข้าชุดกับ BEM | |
+| 4 | PTG | 12.2 | 4.8 | PTG Energy — ปั๊มน้ำมันเบอร์ 2 รองจาก OR (มีแล้ว) + ขยายไป non-oil/LPG | |
+| 5 | MTI | 10.6 | 4.5 | เมืองไทยประกันภัย — ประกันวินาศภัยคุณภาพ combined ratio ดีต่อเนื่อง | |
+| 6 | RBF | 10.0 | 4.2 | R&B Food Supply — วัตถุแต่งกลิ่น/สีผสมอาหาร มาร์จิ้นสูง ขายให้โรงงานอาหารทั้งอุตสาหกรรม | |
+| 7 | NEO | 7.1 | 5.7 | Neo Corporate — FMCG ของใช้ในบ้าน (Fineline/Smart/BeNice) แบรนด์ไทยที่แย่งส่วนแบ่งจากข้ามชาติได้จริง | 🔺 |
+| 8 | AYUD | 16.8 | 5.4 | อลิอันซ์ อยุธยา แคปปิตอล — ประกันภายใต้แบรนด์ระดับโลก | |
+| 9 | SPI | 41.8 | 0.8 | สหพัฒนาอินเตอร์โฮลดิ้ง — โฮลดิ้งเครือสหพัฒน์ ถือหุ้นบริษัทลูกจำนวนมาก ⇒ **ประเมินแบบ sum-of-parts/NAV** | 🔺 |
+| 10 | SAV | 7.4 | 7.8 | สามารถ เอวิเอชั่น — **สัมปทานควบคุมจราจรทางอากาศกัมพูชาผูกขาดถึงปี 2594** moat แข็งผิดขนาดบริษัท | |
+| 11 | BOL | 4.2 | 6.3 | Business Online — ฐานข้อมูลนิติบุคคล/เครดิตธุรกิจไทย รายได้ subscription | |
+| 12 | TNH | 5.1 | 2.1 | โรงพยาบาลไทยนครินทร์ — งบสะอาด ไม่มีหนี้ เข้าชุดกับกลุ่ม รพ. ที่มีครบแล้ว | |
+
+## TH Tier 2 — ดี แต่รอง (12 ตัว)
+
+| # | Symbol | ฿bn | ปันผล% | ธุรกิจ / ทำไมน่าสนใจ | 🔺 |
+|---|---|---|---|---|---|
+| 13 | MBK | 33.8 | 4.5 | MBK — ศูนย์การค้า MBK Center + สนามกอล์ฟ/โรงแรม/ข้าว ⇒ sum-of-parts | 🔺 |
+| 14 | LHFG | 27.1 | 4.7 | LH Financial Group — โฮลดิ้งธนาคารแลนด์แอนด์เฮ้าส์ (ธนาคารเล็กสุดที่ยังไม่มีในรีโป) | |
+| 15 | FPT | 16.5 | 4.5 | เฟรเซอร์ส พร็อพเพอร์ตี้ ไทย — โรงงาน/คลังสินค้าให้เช่า เข้าชุดกับ WHA/AMATA | |
+| 16 | MC | 9.4 | 7.8 | MC Group (Mc Jeans) — แบรนด์ยีนส์เบอร์ 1 ไทย ปันผลสูง ⚠️ ชนกับ Moelis (US) → ให้ฝั่งไทย | |
+| 17 | SPC | 18.3 | 4.3 | สหพัฒนพิบูล — จัดจำหน่ายสินค้าอุปโภคบริโภคเครือสหพัฒน์ (มาม่า/เปา/โคโดโม) | |
+| 18 | TGH | 8.7 | 0.9 | ไทยกรุ๊ป โฮลดิ้งส์ — ประกัน (อาคเนย์/ไทยประกันภัย) + การเงิน | 🔺 |
+| 19 | KCG | 5.8 | 4.8 | KCG Corporation — เนย/ชีส/บิสกิต แบรนด์ Allowrie/Imperial ครองตลาดเบเกอรี่ไทย | |
+| 20 | TMAN | 4.4 | 5.1 | ที.แมน ฟาร์มาซูติคอล — ยาสามัญ/ผลิตภัณฑ์สุขภาพ มาร์จิ้นดี | |
+| 21 | ANI | 6.5 | 5.7 | Asia Network International — ตัวแทนขายระวางสินค้าทางอากาศ (GSA) asset-light | |
+| 22 | THCOM | 11.6 | 0.0 | ไทยคม — ดาวเทียม กลับมาได้ใบอนุญาตวงโคจรใหม่ (เปลี่ยนจากสัมปทานเป็นใบอนุญาต) | 🔺 |
+| 23 | PSP | 11.5 | 3.4 | PSP Specialties — น้ำมันหล่อลื่น/เคมีภัณฑ์เฉพาะทาง | |
+| 24 | TKS | 3.9 | 6.0 | ที.เค.เอส. เทคโนโลยี — สิ่งพิมพ์ปลอดภัย (บิล/เอกสารธนาคาร) + ถือหุ้น SYNEX (มีในรีโปแล้ว) | 🔺 |
+
+## TH Tier 3 — สถานการณ์พิเศษ / ทำเมื่อว่าง (10 ตัว)
+
+| # | Symbol | ฿bn | ปันผล% | ธุรกิจ / ข้อควรระวัง | 🔺 |
+|---|---|---|---|---|---|
+| 25 | THAI | 161.3 | 3.7 | **การบินไทย — กลับมาซื้อขายหลังฟื้นฟูกิจการ** ⚠️ งบถูกปรับโครงสร้างหนี้/แปลงหนี้เป็นทุน ⇒ EPS/ส่วนผู้ถือหุ้นย้อนหลังเทียบไม่ได้ตรง ๆ + เป็นสายการบิน (วัฏจักร) — **ตัวยากที่สุดในแผนนี้** | 🔺🔺 |
+| 26 | MEDEZE | 7.5 | 2.3 | เมดีซ กรุ๊ป — ธนาคารสเต็มเซลล์ โตแรง ⚠️ IPO ใหม่ ต้องดูความยั่งยืนของ deferred revenue | 🔺 |
+| 27 | SCAP | 12.9 | 3.7 | ศรีสวัสดิ์ แคปปิตอล 1969 — สินเชื่อทะเบียนรถ (เครือ SAWAD ที่มีแล้ว — ระวังรายการระหว่างกัน) | 🔺 |
+| 28 | SGC | 11.0 | 0.0 | SG Capital — สินเชื่อเช่าซื้อรถจักรยานยนต์ (เครือ SINGER ที่อยู่ในรายการเสี่ยง — ต้องตรวจงบแม่ด้วย) | 🔺 |
+| 29 | ASIAN | 6.2 | 8.8 | เอเชี่ยนซี — อาหารทะเลแปรรูป + **อาหารสัตว์เลี้ยงที่โตแรง** (ส่วนที่น่าสนใจจริงคือ pet food) | 🔺 |
+| 30 | TFM | 6.6 | 9.2 | ไทยยูเนี่ยน ฟีดมิลล์ — อาหารสัตว์น้ำ (บริษัทลูก TU ที่มีแล้ว) ปันผลสูงมาก | 🔺 |
+| 31 | SHANG | 5.7 | 1.1 | โรงแรมแชงกรี-ลา กรุงเทพ — สินทรัพย์ริมน้ำ ประเมินด้วย NAV/สินทรัพย์มากกว่า P/E | 🔺 |
+| 32 | OHTL | 3.9 | 0.0 | โอเรียนเต็ล (Mandarin Oriental Bangkok) — โรงแรมระดับตำนาน สภาพคล่องบางมาก | 🔺 |
+| 33 | S | 3.7 | 2.8 | สิงห์ เอสเตท — อสังหาฯ+โรงแรม ⚠️ หนี้สูง ต้องดู D/E ให้ละเอียด · ชนกับ SentinelOne (US) → ให้ฝั่งไทย | 🔺 |
+| 34 | FSMART | 5.5 | 4.9 | ฟอร์ท สมาร์ท เซอร์วิส — ตู้เติมเงินบุญเติม (บริษัทลูก FORTH ที่มีแล้ว) ต้องดูว่าธุรกิจตู้ยังโตไหม | 🔺 |
+
+---
+
+## 📋 วิธีรัน (ตาม CLAUDE.md §3–5)
+
+1. **ก่อนเริ่ม:** `git pull --rebase origin main` → เช็ค `reports.json` (สด ≤7 วัน = ข้าม)
+2. **pre-fetch เสมอ:** `node tools/prep-stock.js <SYM> [--th]` → วางทั้ง block ใน `{{FUNDAMENTALS}}` · **exit 2 = ราคาขัดแหล่ง >5% → หยุด ถาม user ห้าม spawn**
+3. **spawn:** 1 หุ้น/agent · **sequential เท่านั้น** · ผ่าน workflow `analyze-wave` (ห้ามรันซ้อน) · prompt = `_template/agent-prompt.md`
+4. **โมเดล:** Sonnet ทุกชั้น · **ตัวที่มี 🔺 → effort `high` + ปรึกษา `advisor` ผ่าน courier subagent ก่อน spawn** แล้วฝังแนวทางลง prompt
+5. **push รายตัว:** worker เสร็จ 1 ตัว → controller `npm run verify` → commit → `git push origin HEAD:main` ก่อน spawn ตัวถัดไป · **1 commit = 1 หุ้น** · ห้าม agent push เอง
+6. **quality > quota:** ตัวไหนตรวจแล้วพื้นฐานพัง/ทวนแหล่งไม่ได้ → SKIP + บันทึกเหตุผล ไม่ต้องฝืนให้ครบ 130
+
+## 🔺 สรุปตัวที่ต้อง effort high (รวม 62 ตัว จาก 130 = เกือบครึ่ง)
+
+- **วัฏจักร ต้อง normalize EPS:** ทองคำ/โลหะทั้ง 7 (AEM·B·WPM·FNV·KGC·PAAS·TECK) · น้ำมันแคนาดา (CNQ·SU·IMO) · TTE · SCCC
+- **IPO/spin ใหม่ ประวัติ <2 ปี:** CRWV·NBIS·CBRS·RKLB·ASTS·MDLN·AMRZ·SUNB·VG·IONQ·QNT · MRDIYT·NEO·MEDEZE
+- **งบบิดเบือนจากดีล/โครงสร้าง:** UBS (ควบ CS) · FCNCA (ซื้อ SVB) · PNFP (ดีล Synovus) · DB · TD (คดี AML) · TRP (หลัง spin) · **THAI (ฟื้นฟูกิจการ — ยากสุด)**
+- **ประเมินด้วย P/E ตรง ๆ ไม่ได้:** RPRX (portfolio royalty) · MLP ทั้ง 3 (EPD·ET·MPLX) · SPI/MBK (sum-of-parts) · NBIS · SHANG/OHTL (NAV) · TLN
+- **pre-profit / ต้องตัดสิน pipeline เอง:** ILMN·ALNY·NTRA·INSM·JAZZ·CNC · IESC·AS·GRAB·AER
+- **บริษัทแม่-ลูกในรีโปอยู่แล้ว (ระวังรายการระหว่างกัน):** SCAP·SGC·TFM·FSMART·TKS · MPLX
+
+---
+
+*สร้าง 8 ส.ค. 2569 · แหล่งสแกน: MCP `tradingview` stock_screener · ไม่ใช่คำแนะนำการลงทุน*
