@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น การบินไทย (THAI) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 5">
+<script type="application/json" id="stock-meta">
+{"symbol":"THAI","currency":"THB","price":5.75,"fairValue":7.93,"mos":27.5,"upside":37.9,"pe":5.2,"dividendYield":3.65,"roe":43.3}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#8539d0",
+    "accentDark": "#61259c",
+    "darkGrad": "linear-gradient(135deg,#210b37 0%,#3d1466 58%,#6120a2 140%)",
+    "glow": "rgba(128,49,206,.35)",
+    "subColor": "#d6c5e7",
+    "headerMuted": "#bdabce",
+    "verdictText": "#e0d3ee",
+    "vcellLabel": "#c5b0d8",
+    "chgBg": "var(--red-soft)",
+    "chgColor": "#c5221f"
+  },
+  "chart": {
+    "data": [["ก.ย.25", 13.1], ["ต.ค.25", 9.9], ["พ.ย.25", 8.55], ["ธ.ค.25", 6.95],
+             ["ม.ค.26", 7.45], ["ก.พ.26", 6.85], ["มี.ค.26", 6.1], ["เม.ย.26", 6],
+             ["พ.ค.26", 6.7], ["มิ.ย.26", 6.65], ["ก.ค.26", 5.6], ["ส.ค.26", 5.75]],
+    "min": 4, "max": 14, "grid": [6, 8, 10, 12],
+    "fairLine": 7.93, "currency": "฿", "highlight": [10, 0]
+  },
+  "gauge": { "min": 4, "max": 9, "cur": 5.75, "fair": 7.93 },
+  "fv": 7.93
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots"><div style="width:8px;height:8px;border-radius:50%;background:#8539d0;display:inline-block;margin:0 3px"></div><div style="width:8px;height:8px;border-radius:50%;background:#61259c;display:inline-block;margin:0 3px"></div><div style="width:8px;height:8px;border-radius:50%;background:#3d1466;display:inline-block;margin:0 3px"></div></div>
+    <div>
+      <span class="tag">SET: THAI</span>
+      <span class="tag">สายการบิน (Airline)</span>
+      <span class="tag">Full-Service Network Carrier • หลังฟื้นฟูกิจการ</span>
+    </div>
+    <h1>บริษัท การบินไทย จำกัด (มหาชน)</h1>
+    <div class="sub">สายการบินแห่งชาติไทย • เครือข่ายเส้นทางบินระหว่างประเทศ-ในประเทศ • เพิ่งออกจากแผนฟื้นฟูกิจการและกลับเข้าเทรด SET เมื่อปี 2568</div>
+    <div class="price-row">
+      <div>
+        <div class="px">฿5.75<small>(THAI)</small></div>
+      </div>
+      <div class="chg">▼ −56.1% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 7 ส.ค. 2569 (StockAnalysis.com, ตรงกับ Yahoo Finance)<br>
+        กรอบ 52 สัปดาห์ ฿5.25 – ฿19.40 (พุ่งแตะสูงสุดวันแรกที่กลับเข้าเทรด 4 ส.ค. 2568)<br>
+        ที่มา: Yahoo Finance, StockAnalysis.com, ตลาดหลักทรัพย์แห่งประเทศไทย (SET), การบินไทย (นักลงทุนสัมพันธ์)
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">อัปเดตหลังออกจากแผนฟื้นฟูกิจการ (FY2568–TTM ถึง Q1/2569)</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">฿162,742 ล้าน</div><div class="d">28,303 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~5.2x</div><div class="d">ยืนยัน 2 แหล่ง (Yahoo 5.2x, StockAnalysis 5.22x)</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">N/A</div><div class="d">ไม่มีนัย — คร่อมช่วงแผนฟื้นฟู · หลังกลับเข้าเทรด (2568–ปัจจุบัน) 5.2x–6.4x</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">1.84x</div><div class="d">บริบทเท่านั้น — ห้ามใช้เป็นขา FV (BVPS เพิ่งรีเซ็ตจากแปลงหนี้เป็นทุน)</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2568</div><div class="v">฿30,910 ล้าน</div><div class="d">พลิกจากขาดทุน ฿26,934 ล้าน (FY2567 มีรายการพิเศษ)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿1.10</div><div class="d">FY2568 ฿1.09 — ไม่มีรายการพิเศษบิดเบือน (Net margin ≈ Op margin)</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~฿3.13</div><div class="d">รีเซ็ตจากแปลงหนี้เป็นทุนปี 2567 — เทียบข้ามช่วงไม่ได้</div></div>
+      <div class="metric"><div class="k">ROE</div><div class="v pos">~43.3%</div><div class="d">ฐานทุนยังต่ำหลังรีเซ็ต ดันROEสูงผิดปกติ คาดปรับลงเมื่อกำไรสะสมเพิ่ม</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">฿184,741 ล้าน</div><div class="d">-2.6% YoY — งวดถึงไตรมาส 1/2569</div></div>
+      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">37.6%</div><div class="d">ดีขึ้นจากยุคก่อนฟื้นฟู (20-30%)</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~3.65%</div><div class="d">ปันผลแรกในรอบ 13 ปี ฿0.21/หุ้น (FY2568 รอ AGM 2569)</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">N/A</div><div class="d">ประวัติเทรดหลังฟื้นฟูเพิ่งครบ ~1 ปี ยังไม่พอคำนวณ beta ที่น่าเชื่อถือ</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#8539d0"></i>ราคา THAI</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿7.93</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคาพุ่งแตะสูงสุดที่ ฿19.40 ในวันแรกที่กลับเข้าเทรด 4 ส.ค. 2568 (เปิด ฿10.50) ก่อนไหลลงต่อเนื่องตลอดปีจากแรงขายทำกำไรของเจ้าหนี้ที่ได้รับหุ้นจากการแปลงหนี้เป็นทุน (~44% ของหุ้นทั้งหมด) ประกอบกับแรงกดดันเชิงมหภาค กราฟช่วง ก.ย.68–ส.ค.69 (~1 ปีล่าสุด) แสดงราคาไหลจาก ฿13.1 ลงสู่จุดต่ำสุด ฿5.6 (ก.ค.69) ก่อนทรงตัวที่ ฿5.75 ปัจจุบัน รวมลดลง −56.1% ตลอดช่วง — ต่ำกว่ามูลค่าเหมาะสมที่ประเมินได้ค่อนข้างมาก แม้พื้นฐานธุรกิจ (คาบิ้นแฟกเตอร์ กำไร) จะฟื้นตัวต่อเนื่อง
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 2 วิธีระดับ Enterprise Value</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS (TTM) ฿1.10 × P/E เป้าหมาย ~7.0x — อิงช่วง P/E จริงที่ตลาดให้หลังกลับเข้าเทรด (5.2x–6.4x) บวกพรีเมียมเล็กน้อยจากแนวโน้ม cabin factor ที่ดีขึ้นต่อเนื่อง</div></div>
+        <div class="mval">฿7.70</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. EV/EBITDA Valuation</div><div class="mdesc">EBITDA TTM ฿50,740 ล้าน (EBIT ฿36,025 ล้าน + D&amp;A ฿14,715 ล้าน) × EV/EBITDA เป้าหมาย 4.3x = EV ฿218,182 ล้าน + เงินสดสุทธิ (net cash) ฿12,420 ล้าน = มูลค่าส่วนผู้ถือหุ้น ฿230,602 ล้าน ÷ 28,303 ล้านหุ้น — เป้าหมายต่ำกว่าที่ตลาดเคยให้จริงเฉลี่ยปี 2568 (~4.75x) เพื่อความระมัดระวัง</div></div>
+        <div class="mval">฿8.15</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿7.70 – ฿8.15</span></div>
+        <div class="r">฿7.93</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        <b>⚠️ full-disclosure — ผลของการฟื้นฟูกิจการต่องบการเงิน:</b> การบินไทยเข้าสู่แผนฟื้นฟูกิจการภายใต้ศาลล้มละลายกลางตั้งแต่ปี 2563 หุ้นถูกพักซื้อขายตั้งแต่ 25 ก.พ. 2564 ที่ราคาปิด ฿3.32 ระหว่างแผนฟื้นฟูมีการแปลงหนี้เป็นทุนขนาดใหญ่ ทำให้จำนวนหุ้นเพิ่มจาก 2,183 ล้านหุ้น (FY2566) เป็น 28,303 ล้านหุ้น (ตั้งแต่ FY2567) หรือเพิ่มขึ้น ~13 เท่า — <b>EPS และจำนวนหุ้นก่อน FY2567 จึงเทียบกับปัจจุบันไม่ได้โดยตรง และห้ามคำนวณอัตราเติบโตคร่อมช่วงนี้</b> นอกจากนี้กำไรปี 2564 (฿55,118 ล้าน, Net margin +255.5% สวนทาง Op margin −88.2%) มาจากกำไรพิเศษจากการปรับโครงสร้างหนี้เป็นหลัก ไม่ใช่กำไรจากการดำเนินงาน ส่วนปี 2567 (Net margin −14.2% สวนทาง Op margin +21.7%) มีรายการขาดทุนพิเศษก้อนใหญ่ที่เกี่ยวเนื่องกับการปรับโครงสร้างทุน — ทั้งสองปีจึงถูกตัดออกจากฐานประเมินมูลค่า <b>ฐานที่ใช้ในรายงานนี้คือ FY2568 (ปีเต็มแรกหลังศาลสั่งยกเลิกแผนฟื้นฟูกลางปี 2568 และหุ้นกลับเข้าเทรด SET 4 ส.ค. 2568) และ TTM ถึงไตรมาส 1/2569</b> ซึ่ง Net margin (16.7%/16.9%) ใกล้เคียง Op margin (19.1%/19.5%) บ่งชี้ว่าไม่มีรายการพิเศษขนาดใหญ่บิดเบือน <b>จงใจไม่ใช้ P/BV เป็นขาของ Fair Value</b> เพราะมูลค่าทางบัญชี (BVPS ฿3.13) เพิ่งถูกรีเซ็ตทั้งหมดจากการแปลงหนี้เป็นทุนเมื่อปี 2567 ไม่มีความหมายเชิงเปรียบเทียบกับก่อนหน้าหรือกับคู่แข่ง ใช้เป็นบริบทได้เท่านั้น (P/BV ปัจจุบัน 1.84x)<br><br>
+        ทั้ง 2 วิธีทำงานระดับ Enterprise Value เพราะหนี้สินและภาระเช่าเครื่องบินของสายการบินมีสัดส่วนสูงมาก ผลลัพธ์ต่างกันเพียง 1.06 เท่า (&lt;2.0x) จึงเฉลี่ยตรงได้ตามเกณฑ์ dispersion gate ได้ Fair Value ฿7.93 ซึ่ง<b>ใกล้เคียงเป้าเฉลี่ยนักวิเคราะห์ ฿7.94 (n=15, Buy)</b> อย่างเป็นอิสระ — เป็นหลักฐานยืนยันเพิ่มเติมที่ไม่ได้มาจาก (r,g) หรือสมมติฐานของเราเอง
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿5.75</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿7.93</div></div>
+        </div>
+        <div class="scale">
+          <span>฿5.55<br><small>MOS 30%</small></span>
+          <span>฿6.34<br><small>MOS 20%</small></span>
+          <span style="text-align:center">฿7.93<br><small>Fair Value</small></span>
+          <span style="text-align:right">฿7.94<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">฿8.15<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบันอยู่ระหว่างโซน MOS 20-30% สะท้อนว่าตลาดยังไม่ปรับราคาให้สอดคล้องกับพื้นฐานที่ฟื้นตัวเต็มที่ ส่วนหนึ่งจากแรงขายทำกำไรของเจ้าหนี้ที่ได้รับหุ้นจากแผนฟื้นฟูตลอดปีที่ผ่านมา น่าสังเกตว่าเป้าเฉลี่ยนักวิเคราะห์ (฿7.94) ใกล้เคียงมูลค่าเหมาะสมที่ประเมินได้ (฿7.93) แบบเป็นอิสระ
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict good">
+        <div class="big">+27.5%</div>
+        <div class="txt"><b>มี Margin of Safety ในโซนดี (≥20%)</b><br>ราคาปัจจุบัน ฿5.75 ต่ำกว่ามูลค่าเหมาะสม ฿7.93 ถึง 27.5% แต่ธุรกิจเพิ่งกลับเข้าเทรดได้เพียง ~1 ปี ความผันผวนสูงและมีแรงขายจากเจ้าหนี้แผนฟื้นฟูกดดันราคาต่อเนื่อง ผู้ลงทุนควรทยอยสะสมมากกว่าเข้าครั้งเดียว</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿6.34</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿5.55</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿7.93</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="5.75" step="0.05">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿5.75 • EPS ฐาน ~฿1.10 (TTM ไม่มีรายการพิเศษ) • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS -8%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿4.73</div>
+          <div class="ret neg">−16.0% (3 ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.86</span></li>
+            <li><span>P/E ออก</span><span>5.5x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.10</span></li>
+            <li><span>สถานการณ์</span><span>คาบิ้นแฟกเตอร์ร่วงกลับ ~75% จากแข่งขันรุนแรงในภูมิภาค + ราคาน้ำมันอากาศยานพุ่งจากความเสี่ยงตะวันออกกลาง ต้นทุนโตเร็วกว่ารายได้ ตัดปันผล</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +6%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿9.17</div>
+          <div class="ret pos">+70.4% (3 ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿1.31</span></li>
+            <li><span>P/E ออก</span><span>7.0x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.63</span></li>
+            <li><span>สถานการณ์</span><span>คาบิ้นแฟกเตอร์ทรง 80-83% ตามแนวโน้มล่าสุด (Q1/69 = 83.1%) รายได้แตะเป้า 2 แสนล้านบาทปี 2569 ราคาน้ำมันทรงตัวใกล้ค่าเฉลี่ย TTM</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +15%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿15.03</div>
+          <div class="ret pos">+176.0% (3 ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿1.67</span></li>
+            <li><span>P/E ออก</span><span>9.0x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.84</span></li>
+            <li><span>สถานการณ์</span><span>ฝูงบิน/เส้นทางใหม่ดันผู้โดยสารทะลุ 20 ล้านคน คาบิ้นแฟกเตอร์ &gt;85% ทวงส่วนแบ่งตลาดตามเป้า 35% ใน 5 ปี ราคาน้ำมันอ่อนตัวหนุน margin</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      Bear/Base/Bull ผูกกับตัวแปรจริงของธุรกิจสายการบิน — คาบิ้นแฟกเตอร์ (ล่าสุด Q1/2569 = 83.1% เทียบ Q2/2568 = 77.0% และ Q2/2567 = 73.2%), ราคาน้ำมันอากาศยาน (อ้างอิง IATA Jet Fuel Price Monitor ซึ่งราคาเฉลี่ยโลกผันผวนราว 150-165 ดอลลาร์สหรัฐ/บาร์เรลช่วงกลางปี 2569) และแผนขยายรายได้แตะ 2 แสนล้านบาทปี 2569 ที่บริษัทประกาศเอง ไม่ใช่การปรับ growth ลอย ๆ — EPS ฐาน TTM ฿1.10 ไม่รวมรายการพิเศษ
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>ออกจากแผนฟื้นฟูสำเร็จ:</b> ศาลล้มละลายกลางสั่งยกเลิกแผนฟื้นฟูกิจการกลางปี 2568 หุ้นกลับเข้าเทรด SET วันแรก 4 ส.ค. 2568 ปลดล็อกสภาพคล่องนักลงทุนสถาบัน/กองทุน</li>
+          <li><b>ปันผลครั้งแรกในรอบ 13 ปี:</b> บอร์ดเสนอจ่าย ฿0.21/หุ้น สำหรับ FY2568 รอที่ประชุมผู้ถือหุ้น (AGM) 2569 อนุมัติ ส่งสัญญาณความเชื่อมั่นด้านกระแสเงินสด</li>
+          <li><b>โครงสร้างทุน-หนี้แข็งแกร่งขึ้นมาก:</b> เงินสด+เงินลงทุนระยะสั้น ~฿1.32 แสนล้าน มากกว่าหนี้สินที่มีภาระดอกเบี้ย ทำให้อยู่ในสถานะ net cash ครั้งแรก และ D/E ลดจาก 2.82x (FY2567) เหลือ 1.35x (TTM)</li>
+          <li><b>แผนขยายรายได้ชัดเจน:</b> เป้าหมายรายได้ทะลุ 2 แสนล้านบาทในปี 2569 (+5%) ผู้โดยสารใกล้ 20 ล้านคน และตั้งเป้าส่วนแบ่งตลาด 35% ใน 5 ปี</li>
+          <li><b>คาบิ้นแฟกเตอร์ฟื้นตัวต่อเนื่อง:</b> จาก 73.2% (Q2/2567) → 77.0% (Q2/2568) → 83.1% (Q1/2569) สะท้อนดีมานด์เดินทางแข็งแกร่งและการบริหารฝูงบิน/เส้นทางมีประสิทธิภาพขึ้น</li>
+          <li><b>Q3/2568 กำไรดีขึ้นต่อเนื่อง (แต่ระวังฐานเทียบ):</b> กำไรสุทธิ ฿26,394 ล้าน (+73.4% YoY) ทว่ากำไรจากการดำเนินงานปกติ (ไม่รวมรายการพิเศษ) โตเพียง ~19% — YoY สูงส่วนหนึ่งเพราะฐาน Q3/2567 มีรายการพิเศษเป็นรายได้ก้อนใหญ่ ไม่ใช่กำลังกำไรแกนหลักที่แท้จริงทั้งหมด</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>ฐานข้อมูลย้อนหลังเทียบกันไม่ได้:</b> งบก่อน FY2567 คร่อมช่วงแปลงหนี้เป็นทุน (จำนวนหุ้นเพิ่ม ~13 เท่า) และมีรายการพิเศษขนาดใหญ่ ทำให้ประเมินแนวโน้มระยะยาวมีความไม่แน่นอนสูงกว่าหุ้นทั่วไป</li>
+          <li><b>รัฐยังมีอิทธิพลสูงแม้พ้นสถานะรัฐวิสาหกิจตามกฎหมาย:</b> กระทรวงการคลังถือ 38.9% (ต่ำกว่า 50%) แต่รวมรัฐวิสาหกิจอื่น/กองทุนวายุภักษ์ ~42.9% ความเสี่ยงนโยบาย/การแทรกแซงราคาตั๋ว-เส้นทางเพื่อวัตถุประสงค์สาธารณะยังมีอยู่</li>
+          <li><b>ต้นทุนน้ำมันอากาศยานผันผวนสูง:</b> เป็นต้นทุนหลักของธุรกิจ ราคาน้ำมันโลกที่ยังผันผวนจากความเสี่ยงภูมิรัฐศาสตร์ตะวันออกกลางกดดัน margin ได้ทันที</li>
+          <li><b>แข่งขันรุนแรงในภูมิภาค:</b> สายการบินต้นทุนต่ำและคู่แข่งจีน/ตะวันออกกลางเพิ่มเที่ยวบินเข้ากรุงเทพฯ กดดัน RASK/ราคาตั๋ว</li>
+          <li><b>Capex สูงต่อเนื่อง:</b> ลงทุนฝูงบินใหม่ (Capex TTM ฿21,149 ล้าน เพิ่มจาก ฿5,026 ล้าน ปี 2566) กดดันกระแสเงินสดอิสระระยะสั้น แม้ FCF ยังเป็นบวก</li>
+          <li><b>ประวัติการเทรดหลังฟื้นฟูสั้นมาก (~1 ปี):</b> ข้อมูล beta/พฤติกรรมราคาระยะยาวยังไม่พอประเมิน risk-adjusted return แม่นยำ ราคาร่วงจากจุดสูงสุด ฿19.40 หลังกลับเข้าเทรด เหลือ ฿5.75 ปัจจุบัน (−70%)</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>หุ้นฟื้นตัวพื้นฐานแข็งแรง แต่ยังมีแรงขายกดดันหลังฟื้นฟู</h2>
+      <p>การบินไทยออกจากแผนฟื้นฟูกิจการสำเร็จกลางปี 2568 กลับมาเป็นบริษัทที่มีกำไรต่อเนื่อง งบดุลแข็งแกร่งขึ้นมาก (net cash ครั้งแรก D/E ลดลงเหลือ 1.35x) และเริ่มจ่ายปันผลครั้งแรกในรอบ 13 ปี อย่างไรก็ตาม ราคาหุ้นร่วงแรง −56.1% ในรอบปีที่ผ่านมา ส่วนใหญ่จากแรงขายทำกำไรของเจ้าหนี้ที่ได้รับหุ้นจากการแปลงหนี้เป็นทุนราว 44% ของหุ้นทั้งหมด ไม่ใช่จากปัจจัยพื้นฐานธุรกิจ ราคาปัจจุบันจึงมี Margin of Safety ~27.5% เทียบมูลค่าเหมาะสม แต่ยังเป็นหุ้นความเสี่ยงสูง เพราะรัฐยังมีอิทธิพลสูง (แม้กระทรวงการคลังถือ 38.9% ต่ำกว่า 50% พ้นสถานะรัฐวิสาหกิจตามกฎหมายแล้ว) และมีประวัติซื้อขายในตลาดหลังฟื้นฟูสั้นเพียง ~1 ปี</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿7.93 <span style="font-size:12px;color:#cab9a8">(฿7.70–฿8.15)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +27.5%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿7.94 (Buy, n=15)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> เหมาะสำหรับนักลงทุนที่รับความเสี่ยงได้สูงและเข้าใจธรรมชาติหุ้นวัฏจักร/พิเศษหลังฟื้นฟู ทยอยสะสมในโซน MOS 20-30% (฿6.34 ลงไปถึง ฿5.55) พร้อมติดตามแรงขายจากเจ้าหนี้ที่อาจกดราคาต่อ และจับตาราคาน้ำมันอากาศยาน+คาบิ้นแฟกเตอร์รายไตรมาสเป็นตัวชี้วัดหลัก ไม่ควรถือเป็นสัดส่วนใหญ่ในพอร์ตเนื่องจากความผันผวนสูงและความเสี่ยงเชิงนโยบายจากสถานะกึ่งรัฐวิสาหกิจ
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ราคา ณ 7 ส.ค. 2569 จาก StockAnalysis.com (cross-check กับ Yahoo Finance ตรงกัน) • ข้อมูลงบการเงิน/อัตราส่วนจาก StockAnalysis.com • ข้อมูลแผนฟื้นฟูกิจการ-โครงสร้างผู้ถือหุ้น-ผลประกอบการรายไตรมาสจาก Thairath, Bangkokbiznews, Thansettakij, Forbes Thailand, ThaiPublica และเว็บไซต์การบินไทย (thaiairways.com)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 8 ส.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
