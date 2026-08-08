@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น เมืองไทยประกันภัย (MTI) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 5">
+<script type="application/json" id="stock-meta">
+{"symbol":"MTI","currency":"THB","price":18,"fairValue":18.92,"mos":4.9,"upside":5.1,"pe":10.2,"dividendYield":4.53,"roe":12.8}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#a041c8",
+    "accentDark": "#772c96",
+    "darkGrad": "linear-gradient(135deg,#281032 0%,#4a1e5c 58%,#752f92 140%)",
+    "glow": "rgba(151,70,185,.35)",
+    "subColor": "#dacce0",
+    "headerMuted": "#c0b5c5",
+    "verdictText": "#e4d8e9",
+    "vcellLabel": "#cdc0d2",
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#137333"
+  },
+  "chart": {
+    "data": [["ก.ย.25", 17.8], ["ต.ค.25", 16.9], ["พ.ย.25", 15.5], ["ธ.ค.25", 15.6],
+             ["ม.ค.26", 15.8], ["ก.พ.26", 16.3], ["มี.ค.26", 15.1], ["เม.ย.26", 15],
+             ["พ.ค.26", 15.3], ["มิ.ย.26", 15.9], ["ก.ค.26", 17.6], ["ส.ค.26", 18]],
+    "min": 14, "max": 19, "grid": [15, 16, 17, 18],
+    "fairLine": 18.92, "currency": "฿", "highlight": [7, 11]
+  },
+  "gauge": { "min": 13, "max": 21, "cur": 18, "fair": 18.92 },
+  "fv": 18.92
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots"><div style="width:8px;height:8px;border-radius:50%;background:#a041c8;display:inline-block;margin:0 3px"></div><div style="width:8px;height:8px;border-radius:50%;background:#772c96;display:inline-block;margin:0 3px"></div><div style="width:8px;height:8px;border-radius:50%;background:#4a1e5c;display:inline-block;margin:0 3px"></div></div>
+    <div>
+      <span class="tag">SET: MTI</span>
+      <span class="tag">ประกันวินาศภัย (Non-Life Insurance)</span>
+      <span class="tag">เครือเมืองไทยกรุ๊ป</span>
+    </div>
+    <h1>เมืองไทยประกันภัย</h1>
+    <div class="sub">ประกันวินาศภัยครบวงจร • ประกันรถยนต์ • อัคคีภัย • ทางทะเลและขนส่ง • เบ็ดเตล็ด</div>
+    <div class="price-row">
+      <div>
+        <div class="px">฿18<small>(MTI)</small></div>
+      </div>
+      <div class="chg">▲ +1.1% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 7 ส.ค. 2569 (StockAnalysis.com, ตรงกับ Yahoo Finance)<br>
+        กรอบ 52 สัปดาห์ ฿14.70 – ฿19.30<br>
+        ที่มา: Yahoo Finance, StockAnalysis.com, SET (ตลาดหลักทรัพย์แห่งประเทศไทย)
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">TTM/FY2568 พร้อมผลกระทบภัยธรรมชาติ 2568</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">฿10,620 ล้าน</div><div class="d">590.0 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~10.2x</div><div class="d">อิงราคา ฿18 ÷ EPS TTM ฿1.76</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">1.24x</div><div class="d">BVPS ~฿14.46 (panphol.com/SET)</div></div>
+      <div class="metric"><div class="k">Combined Ratio (ประมาณการ)</div><div class="v">~92–95% ปกติ, สูงขึ้นชั่วคราว H1/68</div><div class="d">เป้าบริษัท ≤95% (2565) • กำไรหด 35.6% YoY H1/68 จากภัยธรรมชาติ</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">฿958 ล้าน</div><div class="d">-36.2% YoY (จาก ฿1,501 ล้าน)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿1.76</div><div class="d">FY2025 ฿1.62, FY2024 ฿2.54</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~฿14.46</div><div class="d">ROE TTM ~12.8%</div></div>
+      <div class="metric"><div class="k">ROE (TTM / FY2025)</div><div class="v pos">~12.8% / 12.0%</div><div class="d">FY2024 เคยสูงถึง 21.8% ก่อนภัยพิบัติปี 2568</div></div>
+
+      <div class="metric"><div class="k">รายได้รวม TTM</div><div class="v neu">~฿20,000 ล้าน</div><div class="d">ประมาณจาก NI TTM ÷ Net Margin TTM (5.2%)</div></div>
+      <div class="metric"><div class="k">อัตรากำไรจากการดำเนินงาน (Op. Margin)</div><div class="v">6.2%</div><div class="d">ลดจาก ~9% ค่าเฉลี่ย 2564-2567 จาก CR สูงขึ้นปี 2568</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~4.53%</div><div class="d">฿0.81/หุ้น • payout ~46% ของ EPS TTM</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">~0.5x (ประมาณ)</div><div class="d">หุ้นประกันเบต้าต่ำ ไม่มีแหล่งยืนยัน 2 แหล่ง</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART (ราคาย้อนหลัง ~1 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#a041c8"></i>ราคา MTI</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿18.92</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคาไต่ลงจาก ฿17.8 (ก.ย.68) สู่จุดต่ำสุดของกรอบที่ ฿15.0 (เม.ย.69) ตามความกังวลผลประกอบการที่ได้รับผลกระทบจากแผ่นดินไหว มี.ค.2568 ซึ่งดันค่าสินไหมทดแทนขึ้นและกดกำไรครึ่งปีแรก 2568 ลง 35.6% YoY
+        ก่อนฟื้นตัวแรงในช่วง ก.ค.-ส.ค.2569 ขึ้นแตะ ฿18.0 (จุดสูงสุดของกรอบ 1 ปี) ตามผลประกอบการที่ทยอยฟื้นตัว (EPS TTM ขยับขึ้นเป็น ฿1.76 จากจุดต่ำ FY2025 ฿1.62) และแรงหนุนจาก dividend yield ที่สูงราว 4.5% ผลตอบแทนรวมรอบปีอยู่ที่ +1.1%
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION (เฉลี่ย 2 วิธี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 2 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS (TTM) ฿1.76 × P/E เป้าหมาย ~10.0x — ใกล้เคียง P/E ปัจจุบัน 10.2x สะท้อนกำไรที่ยังฟื้นตัวไม่เต็มที่จากผลกระทบภัยธรรมชาติปี 2568</div></div>
+        <div class="mval">฿17.60</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 12.8% − g 3%)/(r 10% − g 3%) ≈ 1.40 × BVPS ฿14.46</div></div>
+        <div class="mval">฿20.24</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿17.60 – ฿20.24</span></div>
+        <div class="r">฿18.92</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        วิธี P/E ใช้ EPS TTM ที่ยังไม่ฟื้นตัวเต็มที่จากภัยพิบัติปี 2568 ให้ค่าระมัดระวังที่ ฿17.60 ขณะที่ Justified P/BV สะท้อน ROE ที่ยังสูงกว่าต้นทุนเงินทุน (r 10%) เล็กน้อยให้ค่าสูงกว่าที่ ฿20.24 — ค่าเฉลี่ย ฿18.92 ใกล้เคียงราคาตลาดปัจจุบัน (฿18) สะท้อนว่าตลาดตีราคาหุ้นได้ค่อนข้างเหมาะสมแล้วหลังปรับฐานจากปัจจัยภัยธรรมชาติ • กำไรจากการรับประกันภัย (underwriting) เป็นตัวขับเคลื่อนหลักของ ROE ข้างต้น ส่วนกำไรจากการลงทุน (investment income) เป็นองค์ประกอบเสริมที่ผันผวนตามตลาดตราสารหนี้/หุ้น จึงไม่ใช้เป็นฐานสมมติฐานเติบโตระยะยาว
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿18</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿18.92</div></div>
+        </div>
+        <div class="scale">
+          <span>฿13.24<br><small>MOS 30%</small></span>
+          <span>฿15.14<br><small>MOS 20%</small></span>
+          <span style="text-align:center">฿18.92<br><small>Fair Value</small></span>
+          <span style="text-align:right">N/A<br><small>เป้าเฉลี่ย Analyst (ไม่มี coverage)</small></span>
+          <span style="text-align:right">฿20.24<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน ฿18 อยู่ใกล้กับมูลค่าเหมาะสม ฿18.92 มาก (ต่ำกว่าเพียง ~4.9%) และยังต่ำกว่ากรอบบน FV ที่ ฿20.24 — ไม่มีนักวิเคราะห์สถาบันติดตามหุ้นตัวนี้อย่างเป็นทางการ (StockAnalysis.com และ Yahoo Finance รายงานเป้าเป็น N/A ตรงกันทั้งสองแหล่ง) จึงใช้กรอบ FV จากการประเมินเองเป็นหลัก
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">+4.9%</div>
+        <div class="txt"><b>Margin of Safety จำกัด (ราคาใกล้เคียงมูลค่าเหมาะสม)</b><br>ราคาปัจจุบัน ฿18 ใกล้เคียง FV ฿18.92 มาก ไม่เหลือส่วนเผื่อความปลอดภัยมากนัก นักลงทุนเน้นคุณค่าควรรอราคาปรับลงสู่โซน MOS 20% ก่อนเข้าซื้อเพิ่ม</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿15.14</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿13.24</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿18.92</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="18" step="0.05">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿18 • EPS ฐาน ~฿1.76 • รวมปันผล • ผูกกับ Combined Ratio</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS -8%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿10.96</div>
+          <div class="ret neg">-27.7% (3 ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿1.37</span></li>
+            <li><span>P/E ออก</span><span>8x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿2.05</span></li>
+            <li><span>สถานการณ์</span><span>Combined Ratio ขยับขึ้นถาวรสู่ ~101-103% จากภัยธรรมชาติซ้ำซาก (น้ำท่วม/แผ่นดินไหว) + การแข่งขันราคาประกันรถยนต์รุนแรง กดกำไรรับประกันติดลบ ตลาดลดค่า P/E</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +6%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿21.00</div>
+          <div class="ret pos">+31.8% (3 ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿2.10</span></li>
+            <li><span>P/E ออก</span><span>10x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿2.73</span></li>
+            <li><span>สถานการณ์</span><span>Combined Ratio กลับสู่ระดับเป้าหมายปกติ ~94-95% ตามที่บริษัทตั้งเป้า เบี้ยรับเติบโตต่อเนื่อง ~5-8%/ปี P/E ทรงตัวใกล้ระดับปัจจุบัน</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +10%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿24.57</div>
+          <div class="ret pos">+53.6% (3 ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿2.34</span></li>
+            <li><span>P/E ออก</span><span>10.5x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿3.08</span></li>
+            <li><span>สถานการณ์</span><span>Combined Ratio ดีขึ้นถึง ~90% (ใกล้เคียงระดับ FY2567 ก่อนภัยพิบัติ) จากการปรับขึ้นเบี้ย catastrophe cover + ปีที่ภัยธรรมชาติไม่รุนแรง ตลาดให้ P/E สูงขึ้นเล็กน้อยตามคุณภาพกำไรที่ดีขึ้น</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      Combined Ratio (loss ratio + expense ratio) เป็นตัวแปรกำหนดกำไรจากการรับประกันของ MTI โดยตรง — ต่ำกว่า 100% คือรับประกันแล้วมีกำไร บริษัทเคยรักษาระดับ ~92% (2565) และตั้งเป้าไม่เกิน 95% แต่ H1/2568 กำไรลดลง 35.6% YoY จากค่าสินไหมแผ่นดินไหวบ่งชี้ว่า CR ขยับขึ้นชั่วคราว ทั้ง 3 ฉากทัศน์จึงผูกทิศทาง EPS/P/E เข้ากับสมมติฐาน CR โดยตรงแทนการปรับ growth ลอยๆ
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>ฟื้นตัวหลังภัยพิบัติ:</b> EPS TTM ฟื้นเป็น ฿1.76 จากจุดต่ำ FY2025 ฿1.62 บ่งชี้ Combined Ratio เริ่มกลับสู่ระดับปกติ</li>
+          <li><b>เบี้ยประกันรับเติบโต:</b> รายได้จากการรับประกันภัยครึ่งปีแรก 2568 โต 5.07% YoY เป็น ฿9,597.85 ล้าน แม้กำไรลดลงจากค่าสินไหม</li>
+          <li><b>เงินปันผลสูง:</b> Yield ~4.53% ต่อปี (payout ~46%) หนุนผลตอบแทนรวมแม้ upside ด้านราคาจะจำกัด</li>
+          <li><b>วงจรเบี้ยประกันภัยพิบัติขาขึ้น:</b> หลังปีที่มีความเสียหายสูง ผู้รับประกันมักปรับเบี้ย/เงื่อนไข catastrophe cover ขึ้น ช่วยหนุน margin ปีถัดไป</li>
+          <li><b>ฐานะการเงินแข็งแกร่ง:</b> D/E ต่ำเพียง ~0.01 เท่า เงินสด ~฿982 ล้าน (TTM) รองรับความผันผวนของภัยพิบัติได้ดี</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>ภัยธรรมชาติ/มหันตภัย (น้ำท่วม/แผ่นดินไหว):</b> แผ่นดินไหว มี.ค.2568 ทำกำไรครึ่งปีแรกลด 35.6% YoY — เหตุการณ์รุนแรงในอนาคตยังเป็นความเสี่ยงหลักต่อ Combined Ratio</li>
+          <li><b>การแข่งขันด้านราคาประกันรถยนต์:</b> ตลาดประกันรถยนต์ไทยแข่งขันสูง กดดัน expense ratio และการรักษาส่วนแบ่งตลาด</li>
+          <li><b>การกำกับดูแลของ คปภ.:</b> กฎเกณฑ์เงินกองทุน (RBC) และการกำกับเบี้ยประกันอาจกระทบความยืดหยุ่นในการตั้งราคาผลิตภัณฑ์</li>
+          <li><b>กำไรจากการลงทุนผันผวน:</b> ส่วนหนึ่งของกำไรมาจากผลตอบแทนพอร์ตลงทุนซึ่งผันผวนตามตลาดตราสารหนี้/หุ้น แยกจากกำไรจากการรับประกันที่ยั่งยืนกว่า ไม่ควรใช้เป็นฐานแนวโน้มระยะยาว</li>
+          <li><b>สภาพคล่องหุ้นต่ำ:</b> มูลค่าตลาด ~฿10,620 ล้าน หุ้นหมุนเวียนน้อย อาจทำให้ราคาผันผวนสูงเมื่อมีข่าว และไม่มีนักวิเคราะห์สถาบันติดตามเป็นทางการ</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>MTI: ฟื้นตัวหลังภัยพิบัติ ราคาใกล้มูลค่าเหมาะสม</h2>
+      <p>เมืองไทยประกันภัยเป็นผู้รับประกันวินาศภัยรายใหญ่ที่มีฐานะการเงินแข็งแกร่ง (D/E ~0.01 เท่า) และจ่ายปันผลสม่ำเสมอในระดับสูง (~4.5%) แต่ผลกำไรผันผวนตาม Combined Ratio ซึ่งได้รับผลกระทบหนักจากแผ่นดินไหว มี.ค.2568 ทำให้กำไรครึ่งปีแรกลด 35.6% YoY ล่าสุด EPS TTM เริ่มฟื้นตัวเป็น ฿1.76 บ่งชี้ CR กำลังกลับสู่ระดับเป้าหมาย ~94-95% ราคาปัจจุบัน ฿18 อยู่ใกล้เคียงมูลค่าเหมาะสม ฿18.92 มาก (MOS ~4.9%) ทำให้ upside ด้านราคาจำกัด ผลตอบแทนหลักในระยะสั้นจึงมาจากเงินปันผลเป็นหลัก</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿18.92 <span style="font-size:12px;color:#cab9a8">(฿17.60–฿20.24)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +4.9%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">N/A (ไม่มี coverage)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ราคาปัจจุบันใกล้เคียง Fair Value (MOS ~4.9%) เหมาะสำหรับนักลงทุนที่ต้องการปันผลสม่ำเสมอ (yield ~4.5%) มากกว่าเก็งกำไรส่วนต่างราคา นักลงทุนเน้นคุณค่าอาจรอสะสมในโซน MOS 20% (~฿15.14) หรือต่ำกว่า เพื่อเพิ่ม margin of safety และติดตามทิศทาง Combined Ratio ในไตรมาสถัดไปเป็นตัวชี้วัดหลัก
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ราคา ณ 7 ส.ค. 2569 จาก StockAnalysis.com (cross-check กับ Yahoo Finance ตรงกัน) • ข้อมูลงบการเงิน 5 ปีจาก StockAnalysis.com • ข้อมูล Combined Ratio และผลกระทบภัยธรรมชาติจาก Bangkokbiznews (2565), Hoonsmart (H1/2568) • BVPS จาก panphol.com/SET
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 8 ส.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
