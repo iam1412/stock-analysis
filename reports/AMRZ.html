@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น Amrize (AMRZ) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 5">
+<script type="application/json" id="stock-meta">
+{"symbol":"AMRZ","currency":"USD","price":46.64,"fairValue":44.77,"mos":-4.2,"upside":-4.0,"pe":21.8,"dividendYield":1.18,"roe":10.2}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#91922a",
+    "accentDark": "#6a6b1f",
+    "darkGrad": "linear-gradient(135deg,#22230b 0%,#4c4d19 58%,#82832a 140%)",
+    "glow": "rgba(183,185,70,.35)",
+    "subColor": "#eaeadc",
+    "headerMuted": "#ebebe6",
+    "verdictText": "#eaebdb",
+    "vcellLabel": "#fdfdfc",
+    "chgBg": "var(--red-soft)",
+    "chgColor": "#c5221f"
+  },
+  "chart": {
+    "data": [["ก.ย.25", 48.53], ["ต.ค.25", 51.84], ["พ.ย.25", 51.51], ["ธ.ค.25", 54.08],
+             ["ม.ค.26", 52.62], ["ก.พ.26", 64.99], ["มี.ค.26", 56.02], ["เม.ย.26", 53.78],
+             ["พ.ค.26", 54.39], ["มิ.ย.26", 53.3], ["ก.ค.26", 48.91], ["ส.ค.26", 46.64]],
+    "min": 40, "max": 70, "grid": [45, 50, 55, 60, 65],
+    "fairLine": 44.77, "currency": "$", "highlight": [11, 5]
+  },
+  "gauge": { "min": 30, "max": 55, "cur": 46.64, "fair": 44.77 },
+  "fv": 44.77
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots"><div style="width:8px;height:8px;border-radius:50%;background:#91922a;display:inline-block;margin:0 3px"></div><div style="width:8px;height:8px;border-radius:50%;background:#6a6b1f;display:inline-block;margin:0 3px"></div><div style="width:8px;height:8px;border-radius:50%;background:#4c4d19;display:inline-block;margin:0 3px"></div></div>
+    <div>
+      <span class="tag">NYSE: AMRZ</span>
+      <span class="tag">วัสดุก่อสร้าง (Building Materials)</span>
+      <span class="tag">ปูนซีเมนต์ · มวลรวม · Roofing (Spin-off จาก Holcim)</span>
+    </div>
+    <h1>Amrize (AMRZ)</h1>
+    <div class="sub">ปูนซีเมนต์ • มวลรวม (หิน/ทราย) • คอนกรีตผสมเสร็จ • แอสฟัลต์ • วัสดุมุงหลังคา (Solutions &amp; Products) — ผู้นำวัสดุก่อสร้างอเมริกาเหนือ แยกตัวจาก Holcim 23 มิ.ย. 2568</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$46.64<small>(AMRZ)</small></div>
+      </div>
+      <div class="chg">▼ −3.9% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 7 ส.ค. 2569 (StockAnalysis.com, ตรงกับ Yahoo Finance ต่าง 0%)<br>
+        กรอบ 52 สัปดาห์ $44.12 – $65.94<br>
+        ที่มา: Yahoo Finance, StockAnalysis.com, Amrize Investor Relations (SEC filings)
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">Yahoo Finance + StockAnalysis.com ณ 7 ส.ค. 2569</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">$25.84B</div><div class="d">554M หุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~21.8x</div><div class="d">ใช้ EPS ปกติ FY2568 $2.14 (TTM vendor เพี้ยน — ดู full-disclosure ข้อ 3)</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">N/A</div><div class="d">spin-off จาก Holcim &lt;18 เดือน — เทียบ P/E ปิดปี 2568 25.3x กับ CRH 17.7x / MLM,VMC ~33.5–35.6x แทน</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">~1.95x</div><div class="d">BVPS ประมาณ $23.93 (ย้อนจาก P/B ปี 2568) — บริบทเท่านั้น ไม่ใช้เป็นขา FV (กฎหุ้นวัฏจักร 0.4b)</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2568</div><div class="v">$1.19B</div><div class="d">−7.0% YoY (จาก $1.27B ปี 2567)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$2.14</div><div class="d">GAAP diluted FY2568 — reconcile แล้ว (ดู full-disclosure ข้อ 3)</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~$23.93</div><div class="d">ประมาณจาก P/B ปี 2568 (2.26x) ย้อนกลับ</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~10.2% / ~6%</div><div class="d">ROE FY2568 (TTM 0.1% เพี้ยนจากไตรมาสขาดทุนตามฤดูกาล Q1/2569) · ROA ประมาณการ</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$12.19B</div><div class="d">+5.1% YoY — cement/aggregates โตสองหลักชดเชย Building Envelope ที่อ่อนตัว</div></div>
+      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">25.0%</div><div class="d">Adjusted EBITDA margin TTM ~25.4% (FY2568 27.2%)</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~1.18%</div><div class="d">เริ่มจ่ายครั้งแรกหลัง spin-off + special dividend $0.44/หุ้น</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">~1.1 (ประมาณ)</div><div class="d">ยังไม่มีประวัติซื้อขาย 5 ปี — กลุ่มวัสดุก่อสร้างมักมี beta &gt;1</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART (ราคาย้อนหลัง ~1 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#91922a"></i>ราคา AMRZ</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $44.77</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        เริ่มต้นรอบปีที่ $48.53 (ก.ย. 2568) ไต่ขึ้นต่อเนื่องช่วงปลายปี 2568 จนทำจุดสูงสุดของรอบที่ $64.99 ในเดือน ก.พ. 2569 หลังผลประกอบการไตรมาส 4/2568 และกระแสเงินสดแข็งแรง จากนั้นราคาปรับฐานลงต่อเนื่องตลอดครึ่งแรกปี 2569 จากไตรมาส 1/2569 ที่ขาดทุนสุทธิเพิ่มขึ้น (ปัจจัยฤดูกาลปกติของธุรกิจวัสดุก่อสร้าง) และแรงกดดันต้นทุนพลังงาน/ขนส่ง ก่อนร่วงแรงอีกครั้งหลังผลไตรมาส 2/2569 (6 ส.ค. 2569) ที่ปรับลดเป้า Adjusted EBITDA ปี 2569 ลงเหลือ $3.1–3.2B จากเดิม $3.25–3.34B ปิดที่ $46.64 ใกล้จุดต่ำสุดรอบ 52 สัปดาห์ ลดลง 3.9% เทียบปีก่อน แต่ลดลงเกือบ 28% จากจุดสูงสุดเดือน ก.พ. 2569
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION (เฉลี่ย 2 วิธี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 2 วิธี — หุ้นวัฏจักร/spin-off (กฎ 0.4b)</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS ปกติ $2.14 (GAAP diluted, normalized) × P/E เป้าหมาย ~21.0x — discount ~17% จากมัลติเปิลของ AMRZ เองที่ปิดปีก่อน (25.3x) สะท้อนความเสี่ยง margin หลังตัดเป้า EBITDA ปี 2569</div></div>
+        <div class="mval">$44.94</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. EV/EBITDA (through-cycle)</div><div class="mdesc">Adjusted EBITDA FY2568 $3,000M × EV/EBITDA เป้าหมาย ~10.2x (ใกล้ CRH 10.7x ต่ำกว่ามัลติเปิลของ AMRZ เองปิดปี 2568 ที่ 12.0x) − หนี้สุทธิ $5,904M ÷ 554M หุ้น</div></div>
+        <div class="mval">$44.60</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $44.60 – $44.94</span></div>
+        <div class="r">$44.77</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        <b>หมายเหตุความโปร่งใส (full-disclosure):</b><br>
+        (1) <b>EPS</b> — EPS(TTM) จากผู้ให้ข้อมูลขัดกัน 6.3% (Yahoo $2.09 vs StockAnalysis $2.23) และ EPS(TTM) ที่คำนวณตรงจากกำไรสุทธิ TTM ($17M) ÷ 554M หุ้น ให้เพียง $0.03 เพราะหน้าต่าง TTM คาบเกี่ยวไตรมาสขาดทุนตามฤดูกาล Q1/2569 (−$118M) กับกำไรก้อนโตของ Q2/2569 (+$476M) — เป็น artifact ของหน้าต่างสี่ไตรมาสในช่วงเปลี่ยนผ่าน carve-out→standalone ที่ยังใหม่ (แยกตัวจาก Holcim 23 มิ.ย. 2568) ไม่ใช่สัญญาณธุรกิจพัง จึง reconcile ที่ระดับงบ: EPS(diluted) FY2568 จริงตามรายงาน 10-K = $2.14 ตรงกับทั้งสองแหล่งในกรอบความคลาดเคลื่อนปกติ → ใช้ $2.14 เป็นฐาน normalized EPS ทุกวิธี (เหตุผลเดียวกันใช้กับ ROE ที่ TTM 0.1% เพี้ยน จึงใช้ ROE FY2568 10.2% แทน)<br>
+        (2) <b>Pro-forma standalone vs carve-out margin</b> — Adjusted EBITDA margin FY2567 (ฐาน carve-out เต็มปีก่อนแยกตัว) = 27.2% ($3.2B/$11.7B) เทียบกับ FY2568 จริง (ครึ่งปีแรกยังเป็น carve-out + ครึ่งปีหลัง standalone เต็มรูปแบบ) = 25.4% ($3.0B/$11.815B) ต่างกัน 1.8 จุด% หรือ ~6.8% เชิงสัมพัทธ์ — <b>ต่ำกว่าเกณฑ์ 10% ที่จะบังคับเปลี่ยนไปใช้มาร์จิ้นกลุ่มเทียบทั้งหมด</b> บริษัทเปิดเผยเองว่าไตรมาส 2/2568 มีต้นทุนสำนักงานใหญ่แบบบริษัทมหาชนเดี่ยว (standalone corporate cost) เพิ่มขึ้น ~$42M ที่ไม่อยู่ในฐาน EBITDA ไตรมาสเดียวกันปี 2567 (≈$168M/ปี หรือ ~5.3% ของ EBITDA carve-out FY2567) ซึ่งอธิบายส่วนต่างส่วนใหญ่ได้ → ยังใช้มาร์จิ้น/แนวโน้มรายได้ของบริษัทเองเป็นฐานได้ตามเกณฑ์ แต่เลือก anchor ที่ตัวเลข FY2568 จริง (25.4%) และ guidance ปี 2569 ($3.1–3.2B EBITDA บนรายได้ $12.5–12.7B ≈ 24.8–25.4%) แทนมาร์จิ้นยุค carve-out ที่สูงกว่า (27.2%) เพื่อความระมัดระวัง<br>
+        (3) <b>การ anchor หุ้นวัฏจักร (กฎ 0.4b)</b> — ทั้ง 2 ขาของ FV ใช้มัลติเปิลเป้าหมายที่ discount ~15–17% จากมัลติเปิลของ AMRZ เองที่ปิดปี 2568 (ราคา $54.08 ซึ่งใกล้เคียงราคาเฉลี่ย 12 เดือนที่ ~$53.05 มากกว่าราคาปัจจุบัน $46.64 — <b>anchor ที่หน้าต่างเฉลี่ยไม่ใช่ spot</b>) เพื่อสะท้อนความเสี่ยง margin ที่เพิ่งถูกยืนยันจากการตัดเป้า EBITDA ปี 2569 (6 ส.ค. 2569) มัลติเปิลเป้าหมายยังอยู่ในกรอบกลุ่มเทียบวัสดุก่อสร้างอเมริกาเหนือ: CRH (ธุรกิจกระจายตัวใกล้เคียง AMRZ ที่สุด — ซีเมนต์+มวลรวม+RMC+ผลิตภัณฑ์) P/E 17.7x / EV-EBITDA 10.7x เป็นขอบล่าง — MLM/VMC (มวลรวมล้วน มาร์จิ้นสูงกว่า) P/E 33.5–35.6x / EV-EBITDA 17.6–19.0x เป็นขอบบน ใช้ EV/Sales เป็น cross-check เพิ่มเติมที่ discount เดียวกัน (2.15x บนรายได้ TTM $12,186M) ให้ FV ≈ $36.6 ต่ำกว่าค่าเฉลี่ย 2 ขาหลักพอสมควร (dispersion 1.22× ยังไม่เกิน 2.0× ตามเกณฑ์ 0.4c) สะท้อนว่ากลุ่ม Solutions &amp; Products/Building Envelope ที่มาร์จิ้นต่ำกว่าเฉลี่ยกำลังฉุด multiple เชิงรายได้มากกว่ากำไร — เก็บไว้เป็นสัญญาณเตือนความเสี่ยงขาลง ไม่รวมเข้าค่าเฉลี่ย FV หลักเพื่อไม่ให้ตระกูล "มัลติเปิลของตัวเองลดราคา" ถูกนับซ้ำ 3 เสียงจาก 1 สมมติฐานเดียว (0.4c-bis)<br>
+        (4) <b>P/B × BVPS</b> ไม่ใช้เป็นขา FV เพราะ BVPS เป็นค่างบดุลที่ไม่ตอบสนองต่อราคาปูน/ปริมาณก่อสร้าง (กฎ 0.4b) — แสดงเป็นบริบทในการ์ด metric เท่านั้น
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $46.64</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $44.77</div></div>
+        </div>
+        <div class="scale">
+          <span>$31.34<br><small>MOS 30%</small></span>
+          <span>$35.82<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$44.77<br><small>Fair Value</small></span>
+          <span style="text-align:right">$44.94<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">$62.00<br><small>เป้าเฉลี่ย Analyst</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน $46.64 อยู่เหนือมูลค่าเหมาะสมที่ประเมินแบบระมัดระวัง $44.77 เล็กน้อย (~4%) และเหนือโซน MOS 20% ($35.82) / MOS 30% ($31.34) อยู่มาก แต่ยังต่ำกว่าเป้าหมายเฉลี่ยนักวิเคราะห์ $62.00 (n=19, Buy) ราว 33% — ช่องว่างนี้สะท้อนว่าฝั่ง sell-side ส่วนใหญ่ยังไม่ปรับประมาณการลงตามการตัดเป้า EBITDA ปี 2569 ที่เพิ่งประกาศ 6 ส.ค. 2569
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">−4.2%</div>
+        <div class="txt"><b>ไม่มี Margin of Safety (ราคาแพงกว่ามูลค่าเหมาะสมเล็กน้อย ~4%)</b><br>แม้ราคาจะร่วงจากจุดสูงสุด ก.พ. 2569 ($64.99) มาแล้วเกือบ 28% แต่ FV ที่ปรับลดมาร์จิ้นตามการตัดเป้า EBITDA ปี 2569 ก็ลดลงตามไปด้วย — ยังไม่ใช่จังหวะเข้าซื้อตาม MOS แนะนำรอสะสมโซน MOS 20% ($35.82) หรือต่ำกว่า</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$35.82</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$31.34</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $44.77</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="46.64" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $46.64 • EPS ฐาน ~$2.14 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS +1%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$37.40</div>
+          <div class="ret neg">−19.8% (3 ปี, ~−7%/ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$2.20</span></li>
+            <li><span>P/E ออก</span><span>17x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$1.65</span></li>
+            <li><span>สถานการณ์</span><span>ต้นทุนพลังงาน/ขนส่งค้างระดับสูงเกินกว่าที่บริษัทให้เป้า price-over-cost ไม่กลับมาเป็นบวกในไตรมาส 4/2569 ตามแผน + Building Envelope อ่อนตัวต่อเนื่องจากดีมานด์ปรับปรุงบ้านชะลอ + ก่อสร้างสหรัฐฯ ชะลอตามดอกเบี้ยสูงต่อเนื่อง → มัลติเปิลลดสู่ระดับ CRH</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +6%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$53.55</div>
+          <div class="ret pos">+14.8% (3 ปี, ~+4.7%/ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$2.55</span></li>
+            <li><span>P/E ออก</span><span>21x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$1.85</span></li>
+            <li><span>สถานการณ์</span><span>price-over-cost กลับเป็นบวกไตรมาส 4/2569 ตามเป้าบริษัท แกน Building Materials (ปูน/มวลรวม) โตต่อเนื่องหนุนด้วยงบโครงสร้างพื้นฐาน IIJA + M&amp;A (PB Materials) ส่วน Building Envelope ทรงตัว อัตราภาษีขึ้นสู่ 23–25% ตามเป้า</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +11%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$70.32</div>
+          <div class="ret pos">+50.8% (3 ปี, ~+14.7%/ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$2.93</span></li>
+            <li><span>P/E ออก</span><span>24x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$2.05</span></li>
+            <li><span>สถานการณ์</span><span>วัฏจักรก่อสร้างสหรัฐฯ ฟื้นแรง (ดอกเบี้ยลด หนุนที่อยู่อาศัย + data center/reshoring capex ต่อเนื่อง) ราคาปูนต่อตันปรับขึ้นตามดีมานด์ ประหยัดต้นทุน ASPIRE เกินเป้า $250M ก่อนกำหนด (2571) + price-over-cost ฟื้นเร็วกว่าคาด → มัลติเปิลไล่ขึ้นใกล้กลุ่ม MLM/VMC</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      สมมติฐาน EPS growth/ปี ผูกกับตัวแปรจริงของอุตสาหกรรมวัสดุก่อสร้างอเมริกาเหนือ (ปริมาณ/ราคาปูนต่อตัน, ต้นทุนพลังงาน-ขนส่ง (freight/diesel), จังหวะ price-over-cost, งบโครงสร้างพื้นฐาน IIJA) ไม่ใช่การปรับตัวเลข growth ลอย ๆ (กฎ 0.4b) — P/E ออกแต่ละฉากอยู่ในกรอบกลุ่มเทียบ CRH 17.7x–MLM/VMC 33.5–35.6x
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก &amp; ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>แกน Building Materials แข็งแรงมาก:</b> Segment Adjusted EBITDA ไตรมาส 1/2569 +41.7% YoY หนุนด้วยปูน/มวลรวมโตสองหลักและการซื้อกิจการ PB Materials ($425M) ขยายฐานมวลรวม</li>
+          <li><b>งบโครงสร้างพื้นฐานสหรัฐฯ (IIJA) + reshoring/data center:</b> หนุนดีมานด์ปูน-มวลรวม-คอนกรีตผสมเสร็จหลายปีข้างหน้า</li>
+          <li><b>โปรแกรม ASPIRE:</b> เป้า synergies กว่า $250M ถึงปี 2571 + คาดขยายมาร์จิ้น 70bps ในปี 2569 แม้เจอต้นทุนเงินเฟ้อ</li>
+          <li><b>ผลตอบแทนผู้ถือหุ้น:</b> อนุมัติ buyback $1.0B + เริ่มจ่ายปันผลปกติครั้งแรก + special dividend $0.44/หุ้น สะท้อนความมั่นใจกระแสเงินสด (FCF FY2568 $1.5B, cash conversion 49%)</li>
+          <li><b>เป้ารายได้ปี 2569 ปรับขึ้น:</b> เป็น $12.5–12.7B จากเดิม $12.29–12.52B แม้เป้า EBITDA จะถูกปรับลง — โมเมนตัมดีมานด์/ปริมาณยังอยู่</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>Building Envelope/Roofing อ่อนแอ:</b> ไตรมาส 1/2569 ถูกฉุดจากปริมาณ/ราคาหลังคาที่อ่อนตัว + โรงงานหยุดชะงักชั่วคราว — กลุ่มที่ผันผวนกว่าธุรกิจปูน/มวลรวมหลัก</li>
+          <li><b>ต้นทุนเงินเฟ้อ (freight/diesel/วัตถุดิบ):</b> บริษัทระบุเองว่า price-over-cost จะกลับเป็นบวกก็ต่อเมื่อถึงไตรมาส 4/2569 เท่านั้น — มาร์จิ้นกดดันต่อเนื่องเกือบทั้งปี</li>
+          <li><b>อัตราภาษีปรับขึ้น:</b> เป้าใหม่ 23–25% จากเดิม ~22% เป็นแรงกดดัน EPS โดยตรงแยกจากผลดำเนินงาน</li>
+          <li><b>ประวัติ standalone สั้น:</b> ซื้อขายอิสระจาก Holcim เพียง ~14 เดือน ตัวเลข TTM (EPS/ROE) ยังมี artifact จากช่วงเปลี่ยนผ่าน carve-out→standalone และไตรมาสขาดทุนตามฤดูกาล ทำให้ตัวเลขรายงานผันผวนกว่าบริษัทที่โตเต็มที่</li>
+          <li><b>วัฏจักรก่อสร้างสหรัฐฯ:</b> ที่อยู่อาศัยยังอ่อนไหวต่อดอกเบี้ย — หากวัฏจักรกลับทรุดจะกดปริมาณมวลรวม/RMC</li>
+          <li><b>ช่องว่างเป้านักวิเคราะห์:</b> เป้าเฉลี่ย $61.83–62.14 (+33–34%) สูงกว่า FV ที่นี่มาก และอาจยังไม่รวมผลจากการตัดเป้า EBITDA ล่าสุด — เสี่ยงถูกปรับลดประมาณการตามมา</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>แฟร์ถึงตึงตัวเล็กน้อย — รอราคาย่อสู่โซน MOS 20% ก่อนเพิ่มน้ำหนัก</h2>
+      <p>Amrize เป็นผู้นำวัสดุก่อสร้างอเมริกาเหนือที่เพิ่งแยกตัวจาก Holcim (23 มิ.ย. 2568) ด้วยพอร์ตปูนซีเมนต์-มวลรวม-คอนกรีตผสมเสร็จที่แข็งแรง (Segment EBITDA +41.7% YoY ไตรมาส 1/2569) ผสมกับธุรกิจ Solutions &amp; Products/Roofing ที่ผันผวนกว่า ราคาหุ้นร่วงเกือบ 28% จากจุดสูงสุด ก.พ. 2569 หลังตัดเป้า Adjusted EBITDA ปี 2569 จากต้นทุนพลังงาน-ขนส่งที่สูงขึ้น (6 ส.ค. 2569) เมื่อประเมินด้วยมัลติเปิลที่ discount จากระดับ AMRZ เองก่อนตัดเป้า (สะท้อนความเสี่ยง margin) และเทียบกรอบกลุ่ม CRH–MLM/VMC ราคาปัจจุบันแพงกว่ามูลค่าเหมาะสมที่ประเมินไว้เล็กน้อย (~4%) — ยังไม่ใช่จังหวะเข้าซื้อใหม่ แต่ก็ไม่ได้แพงเกินเหตุเมื่อเทียบกับโมเมนตัมแกนธุรกิจหลักที่ยังแข็งแรง</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$44.77 <span style="font-size:12px;color:#cab9a8">($44.60–$44.94)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −4.2%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$62.00 (Buy)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ยังไม่มี MOS เพียงพอสำหรับเข้าซื้อใหม่ ราคาปัจจุบันแพงกว่า FV ที่ประเมินแบบระมัดระวังราว 4% หลังหักมาร์จิ้นความเสี่ยงจากการตัดเป้า EBITDA ปี 2569 — ผู้ที่ถืออยู่แล้วโดยเชื่อมั่นแกน Building Materials อาจถือต่อได้เพราะโมเมนตัมยังแข็งแรง แต่นักลงทุนใหม่ควรรอราคาย่อสู่โซน MOS 20% ($35.82) หรือรอสัญญาณ price-over-cost กลับเป็นบวกตามเป้าไตรมาส 4/2569 ก่อนตัดสินใจ
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต — โดยเฉพาะ AMRZ ที่เพิ่งแยกตัวจาก Holcim และมีงบ carve-out ย้อนหลังที่ไม่ใช่ผลดำเนินงานจริงของบริษัทเดี่ยว
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ราคา ณ 7 ส.ค. 2569 จาก StockAnalysis.com (cross-check Yahoo Finance ตรงกัน 0%) • ข้อมูลงบการเงิน/EBITDA guidance จาก Amrize Q4/FY2568 และ Q2/2569 earnings release, SEC Form 10 (carve-out financials), 8-K filings, investors.amrize.com • ตัวคูณอ้างอิงจาก stockanalysis.com/stocks/AMRZ,MLM,VMC,CRH/financials/ratios/
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 8 ส.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
