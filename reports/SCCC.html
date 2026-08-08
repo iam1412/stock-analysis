@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น ปูนซีเมนต์นครหลวง (SCCC) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 5">
+<script type="application/json" id="stock-meta">
+{"symbol":"SCCC","currency":"THB","price":154,"fairValue":175.28,"mos":12.14,"upside":13.82,"pe":11.1,"dividendYield":7.14,"roe":12.0}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#cc7f10",
+    "accentDark": "#925c0c",
+    "darkGrad": "linear-gradient(135deg,#3e2704 0%,#734707 58%,#b6710c 140%)",
+    "glow": "rgba(236,148,19,.35)",
+    "subColor": "#f6efe5",
+    "headerMuted": "#f5f1ea",
+    "verdictText": "#f7efe4",
+    "vcellLabel": "#ffffff",
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#137333"
+  },
+  "chart": {
+    "data": [["ก.ย.25", 149], ["ต.ค.25", 142], ["พ.ย.25", 141], ["ธ.ค.25", 142.5],
+             ["ม.ค.26", 144], ["ก.พ.26", 151.5], ["มี.ค.26", 139], ["เม.ย.26", 139.5],
+             ["พ.ค.26", 147], ["มิ.ย.26", 146.5], ["ก.ค.26", 149], ["ส.ค.26", 154]],
+    "min": 125, "max": 185, "grid": [140, 155, 170],
+    "fairLine": 175.28, "currency": "฿", "highlight": [6, 11]
+  },
+  "gauge": { "min": 115, "max": 190, "cur": 154, "fair": 175.28 },
+  "fv": 175.28
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots"><div style="width:8px;height:8px;border-radius:50%;background:#cc7f10;display:inline-block;margin:0 3px"></div><div style="width:8px;height:8px;border-radius:50%;background:#925c0c;display:inline-block;margin:0 3px"></div><div style="width:8px;height:8px;border-radius:50%;background:#734707;display:inline-block;margin:0 3px"></div></div>
+    <div>
+      <span class="tag">SET: SCCC</span>
+      <span class="tag">วัสดุก่อสร้าง (Building Materials)</span>
+      <span class="tag">ปูนซีเมนต์ • ธุรกิจข้ามชาติ 6 ประเทศ (INSEE Group)</span>
+    </div>
+    <h1>ปูนซีเมนต์นครหลวง (SCCC / INSEE)</h1>
+    <div class="sub">ปูนซีเมนต์ • ปูนสำเร็จรูป • คอนกรีตผสมเสร็จ • วัสดุก่อสร้าง • ฐานผลิตไทย-เวียดนาม-ศรีลังกา-บังกลาเทศ-กัมพูชา</div>
+    <div class="price-row">
+      <div>
+        <div class="px">฿154<small>(SCCC)</small></div>
+      </div>
+      <div class="chg">▲ +3.4% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 7 ส.ค. 2569<br>
+        กรอบ 52 สัปดาห์ ฿138.00 – ฿157.00<br>
+        ที่มา: Yahoo Finance, StockAnalysis.com, SETTRADE.com
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">งบ TTM ถึงไตรมาส 2/2569 (มิ.ย. 2569) · งวดล่าสุด FY2568</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">฿45,892 ล้าน</div><div class="d">~298 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~11.1x</div><div class="d">ต่ำกว่าค่าเฉลี่ยกลุ่มวัสดุก่อสร้าง</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~10–15x</div><div class="d">กว้างตามวัฏจักรต้นทุนพลังงาน 2564–2568</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">~1.33x</div><div class="d">เทียบ BVPS ~฿115.80 (จาก ROE TTM)</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2568</div><div class="v">฿3,493 ล้าน</div><div class="d">-35.2% YoY (ปีก่อนมีรายการพิเศษหนุนกำไร)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿13.90</div><div class="d">EPS FY2568 ฿11.72 · TTM ฟื้นตัวจาก H2/68</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~฿115.80</div><div class="d">อิงROE TTM 12.0% ย้อนคำนวณ</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~12.0% / ~7.5%</div><div class="d">ROE TTM สูงกว่าเฉลี่ย 5 ปี (9.8%)</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">฿55,076 ล้าน</div><div class="d">+6.3% YoY</div></div>
+      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">33.9%</div><div class="d">OpM TTM 12.9% · NetM 7.5%</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~7.14%</div><div class="d">นโยบายขั้นต่ำ 60% ของกำไรสุทธิ · จ่ายจริง ~79% ของ EPS</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">~0.85</div><div class="d">ประมาณการ ใช้คำนวณ r ในโมเดล DDM/Justified P-BV</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART (ราคาย้อนหลัง ~1 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#cc7f10"></i>ราคา SCCC</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿175.28</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคาปรับตัวลงจาก ฿149 (ก.ย. 2568) สู่จุดต่ำสุดรอบปีที่ ฿139 ในเดือน มี.ค. 2569 ตามความกังวลต้นทุนพลังงานและดีมานด์ก่อสร้างในประเทศที่ชะลอตัว ก่อนฟื้นตัวต่อเนื่องมาปิดที่ ฿154 ในเดือน ส.ค. 2569 ให้ผลตอบแทนรอบปี +3.4% สอดคล้องกับมาร์จิ้นดำเนินงาน (OpM) ที่ทยอยฟื้นตัวเหนือค่าเฉลี่ย 5 ปี — เส้นมูลค่าเหมาะสม ฿175.28 อยู่เหนือกรอบราคาซื้อขายทั้งปี สะท้อนว่าตลาดยังให้ P/E ต่ำกว่าค่าเฉลี่ยรอบวัฏจักร
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION (เฉลี่ย 3 วิธี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS (TTM) ฿13.90 × P/E เป้าหมาย ~12.0x — อิงจาก P/E TTM ที่วัดจริงและ cross-verify แล้ว 11.1x บวกส่วนรีเรทเล็กน้อย (+0.9x) สะท้อนมาร์จิ้นดำเนินงานที่ฟื้นเหนือค่าเฉลี่ย 5 ปี (ประมาณการ ไม่ได้ pre-fetch ตัวคูณมัธยฐานกลุ่ม) ไม่ผูกกับสมมติฐาน r/g จึงเป็นขาที่ยึดตลาดอิสระ</div></div>
+        <div class="mval">฿166.80</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล ฿11.28 × (1+g); g 2.5%, r 8.7% (rf ~2.3% + β 0.85×ERP 6.5% + premium ความเสี่ยงต่างประเทศ ~0.9pp) → D₁/(r−g)</div></div>
+        <div class="mval">฿181.86</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 12.0% − g 2.5%)/(r 8.7% − g 2.5%) ≈ 1.53 × BVPS ฿115.80</div></div>
+        <div class="mval">฿177.17</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿166.80 – ฿181.86</span></div>
+        <div class="r">฿175.28</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        EPS TTM ฿13.90 (NetM 7.5%) ใกล้เคียงค่าเฉลี่ยมาร์จิ้นสุทธิ 5 ปี (7.7%) จึงใช้เป็นฐานคำนวณ — <b>ไม่ใช้กำไรจุดสูงสุดของวัฏจักรอย่างปี 2567</b> ที่ NetM พุ่งเป็น 12.2% จากรายการที่ไม่ใช่ดำเนินงานปกติ (ช่องว่างระหว่างการเติบโตของ OpM +4.8pp กับ NetM +5.9pp ในปีนั้นบ่งชี้รายการพิเศษใต้เส้นดำเนินงาน) วิธี P/E ใช้ตัวคูณอิงตลาด/ประวัติ ไม่พึ่ง (r,g) จึงเป็นขาอิสระที่ค้ำยืนวิธี DDM และ Justified P/BV ที่ใช้ r/g ชุดเดียวกัน — ทั้ง 3 ขาห่างกันไม่เกิน 1.09 เท่า (สูงสุด/ต่ำสุด) ต่ำกว่าเกณฑ์ dispersion 2.0 เท่า จึงเฉลี่ยได้ตามปกติ
+        <br><b>Sensitivity:</b> หาก r ±0.5pp (8.2%/9.2%) → DDM ให้ค่าในช่วง ฿168.28 – ฿197.81 (สเปรด r−g 6.2pp ค่อนข้างแคบ ผลลัพธ์จึงไวต่อสมมติฐาน r)
+        <br><b>เช็คทาง alternative:</b> หากใช้ EPS normalized เต็มรอบวัฏจักร (ค่าเฉลี่ย 5 ปี EPS ปี 2564–2568 = ฿11.86 แทน TTM ฿13.90) วิธี P/E จะให้ค่าเพียง ~฿142.3 (11.86×12.0) ดึง FV เฉลี่ยลงเหลือ ~฿167 และ MOS เหลือ ~8% (โซน bad) — เป็นกรอบล่างที่ควรพิจารณาคู่กับ ฿175.28 หากไม่มั่นใจว่ามาร์จิ้น TTM ยั่งยืน ราคาเข้าที่ปลอดภัยกว่าคือโซน MOS 20% (~฿140) ตามที่ระบุในกลยุทธ์
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿154</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿175.28</div></div>
+        </div>
+        <div class="scale">
+          <span>฿122.70<br><small>MOS 30%</small></span>
+          <span>฿140.22<br><small>MOS 20%</small></span>
+          <span style="text-align:center">฿175.28<br><small>Fair Value</small></span>
+          <span style="text-align:right">฿179.50<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">฿181.86<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน ฿154 อยู่ระหว่างจุดซื้อ MOS 20% (฿140.22) กับมูลค่าเหมาะสม (฿175.28) — ต่ำกว่า FV ประมาณ 12% และต่ำกว่าเป้าเฉลี่ยนักวิเคราะห์ ฿179.50 (Strong Buy แต่มีนักวิเคราะห์ให้เป้าเพียง 2 ราย ควรใช้เป็นข้อมูลอ้างอิงเสริมเท่านั้น) ผู้ที่เน้น value อาจรอสะสมเพิ่มบริเวณ ฿140–145 เพื่อเพิ่ม margin of safety
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict ok">
+        <div class="big">+12.1%</div>
+        <div class="txt"><b>มี Margin of Safety ระดับปานกลาง (ทยอยสะสม ไม่เร่งซื้อทั้งหมด)</b><br>ราคาปัจจุบัน ฿154 ต่ำกว่ามูลค่าเหมาะสมประมาณ 12% ยังไม่ใช่จุดถูกมาก (deep value) แต่เงินปันผลสูง ~7.1% ที่ครอบคลุมด้วยกระแสเงินสดช่วยชดเชยระหว่างรอราคาตลาดปรับเข้าใกล้มูลค่าที่แท้จริง</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿140.22</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿122.70</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿175.28</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="154" step="0.05">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿154 • EPS ฐาน ~฿13.90 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS -8%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿97.4</div>
+          <div class="ret neg">-19.5% (~-7.0%/ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿10.82</span></li>
+            <li><span>P/E ออก</span><span>9x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿26.5</span></li>
+            <li><span>สถานการณ์</span><span>ต้นทุนถ่านหิน-ไฟฟ้าพุ่งอีกรอบ + ดีมานด์ในประเทศชะลอ + แข่งราคากับกำลังผลิตส่วนเกินเวียดนาม กดมาร์จิ้นกลับใกล้ระดับปี 2565</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +4%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿187.7</div>
+          <div class="ret pos">+45.3% (~+13.3%/ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿15.64</span></li>
+            <li><span>P/E ออก</span><span>12x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿36.1</span></li>
+            <li><span>สถานการณ์</span><span>ดีมานด์ฟื้นตามงบลงทุนภาครัฐ ต้นทุนพลังงานทรงตัว มาร์จิ้นใกล้เคียงปัจจุบัน (~7.5% NetM)</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +10%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿259.0</div>
+          <div class="ret pos">+94.5% (~+24.8%/ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿18.50</span></li>
+            <li><span>P/E ออก</span><span>14x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿40.5</span></li>
+            <li><span>สถานการณ์</span><span>โครงการโครงสร้างพื้นฐานขนาดใหญ่เร่งตัว + ต้นทุนพลังงานลดลงต่อเนื่อง + ธุรกิจเวียดนาม-ศรีลังกาฟื้นตัวแรง ดันมาร์จิ้นกลับสู่ระดับปี 2567</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      สมมติฐานผูกกับตัวแปรฉากของธุรกิจปูนซีเมนต์ — ปริมาณขาย/ราคาปูนในประเทศ (งบลงทุนภาครัฐ+อสังหาฯ), ต้นทุนถ่านหิน-ไฟฟ้า และมาร์จิ้น EBITDA — ไม่ใช่การปรับอัตราการเติบโตลอย ๆ · P/E ทางออกแต่ละฉากสะท้อนความเชื่อมั่นของตลาดต่อความยั่งยืนของมาร์จิ้นในแต่ละสถานการณ์ (Bear 9x ใกล้จุดต่ำสุดที่เคยเทรด, Bull 14x ต่ำกว่าจุดสูงสุดในอดีต)
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>งบลงทุนภาครัฐ:</b> โครงการโครงสร้างพื้นฐานขนาดใหญ่ (รถไฟความเร็วสูง มอเตอร์เวย์ EEC) หนุนดีมานด์ปูนซีเมนต์ในประเทศให้ฟื้นตัวต่อเนื่อง</li>
+          <li><b>ต้นทุนพลังงานผ่อนคลาย:</b> ราคาถ่านหิน-ไฟฟ้าที่เริ่มทรงตัวหลังพุ่งสูงในปี 2565 ช่วยหนุนมาร์จิ้นให้ฟื้นตัว (OpM TTM 12.9% สูงกว่าค่าเฉลี่ย 5 ปีที่ 9.6%)</li>
+          <li><b>ปันผลสูงและมีเสถียรภาพ:</b> yield ~7.1% ครอบคลุมด้วย FCF (payout ~74% ของ FCF ต่อหุ้น) บวกนโยบายจ่ายขั้นต่ำ 60% ของกำไรสุทธิรวม</li>
+          <li><b>ธุรกิจต่างประเทศหลากหลาย:</b> ฐานผลิตในเวียดนาม ศรีลังกา บังกลาเทศ กัมพูชา (INSEE Group รวม 6 ประเทศ) กระจายความเสี่ยงจากตลาดในประเทศเพียงตลาดเดียว</li>
+          <li><b>ราคาเทรดต่ำกว่าพื้นฐาน:</b> P/E TTM 11.1x บนกำไรที่ใกล้เคียงค่าเฉลี่ยรอบวัฏจักร เปิดช่องรีเรทหากมาร์จิ้นฟื้นตัวต่อเนื่อง</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>วัฏจักรต้นทุนพลังงาน:</b> ราคาถ่านหิน-ไฟฟ้าผันผวนสูง เคยกดมาร์จิ้นสุทธิลงเหลือ 3.7% ในปี 2565 หากพุ่งอีกรอบมาร์จิ้นเสี่ยงหดตัวเร็ว</li>
+          <li><b>ความเสี่ยงค่าเงิน:</b> รายได้/สินทรัพย์บางส่วนอยู่ในเวียดนาม ศรีลังกา บังกลาเทศ — ความผันผวนของ VND/LKR/BDT กระทบกำไรสุทธิเมื่อแปลงกลับเป็นบาท</li>
+          <li><b>อุปทานล้นตลาดภูมิภาค:</b> กำลังการผลิตปูนซีเมนต์ส่วนเกินในเวียดนามและตลาดใกล้เคียงกดดันราคาขาย/มาร์จิ้นในต่างประเทศ</li>
+          <li><b>พึ่งพาการลงทุนภาครัฐ/อสังหาฯ:</b> ดีมานด์ปูนในประเทศผูกกับงบลงทุนภาครัฐและภาคอสังหาริมทรัพย์ที่ยังฟื้นตัวช้า</li>
+          <li><b>กำไรผันผวนตามรอบวัฏจักร:</b> EPS ย้อนหลัง 5 ปีแกว่างระหว่าง ฿6.23–18.08 (ปี 2567 มีรายการพิเศษหนุนกำไร) ทำให้ P/E TTM ตีความยากกว่าหุ้นทั่วไป — valuation ในรายงานนี้ normalize EPS แล้ว</li>
+          <li><b>ความเสี่ยงประเทศ (ศรีลังกา/บังกลาเทศ):</b> เศรษฐกิจศรีลังกาเพิ่งฟื้นจากวิกฤต และบังกลาเทศมีความไม่แน่นอนทางการเมือง อาจกระทบกำไรส่วนงานต่างประเทศ</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>ทยอยสะสมเพื่อปันผล — รอราคาย่อเพื่อเพิ่ม Margin of Safety</h2>
+      <p>SCCC เทรดที่ P/E TTM เพียง 11.1x บนกำไรที่ใกล้เคียงค่าเฉลี่ยรอบวัฏจักร (ไม่ใช่จุดสูงสุดของกำไร) และให้เงินปันผล ~7.1% ที่ครอบคลุมด้วยกระแสเงินสดอิสระ (FCF payout ~74%) มูลค่าเหมาะสมประเมินได้ ฿166.80–181.86 เฉลี่ย ฿175.28 คิดเป็น MOS ~12% (โซนปานกลาง) ความเสี่ยงหลักคือความผันผวนของต้นทุนถ่านหิน-ไฟฟ้าและความไม่แน่นอนของธุรกิจต่างประเทศ (เวียดนาม ศรีลังกา บังกลาเทศ) นักลงทุนที่รับความเสี่ยงวัฏจักรได้และต้องการกระแสเงินสดจากปันผลสม่ำเสมอ เหมาะจะทยอยสะสม โดยเฉพาะหากราคาย่อลงมาใกล้โซน MOS 20% (~฿140)</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿175.28 <span style="font-size:12px;color:#cab9a8">(฿166.80–฿181.86)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +12.1%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿179.50 (Strong Buy, n=2)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ทยอยสะสม (DCA) ที่ราคาปัจจุบันถึงโซน ฿140–145 เพื่อเก็บปันผล ~7% ต่อปี พร้อมติดตามราคาถ่านหิน-ไฟฟ้าและอัตราการเบิกจ่ายงบลงทุนภาครัฐเป็นตัวชี้วัดหลักของมาร์จิ้นในอนาคต
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ราคา ณ 7 ส.ค. 2569 จาก StockAnalysis.com (cross-check กับ Yahoo Finance ตรงกัน) • ข้อมูลงบการเงิน/ประมาณการจาก StockAnalysis.com • ข้อมูลบริษัท/นโยบายปันผลจาก SETTRADE.com และเว็บไซต์ INSEE Group (siamcitycement.com)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 8 ส.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
