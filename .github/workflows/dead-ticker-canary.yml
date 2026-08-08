@@ -13,6 +13,7 @@ on:
 
 permissions:
   contents: write
+  issues: write   # อัปเดต issue คิว re-analysis เอง — ไม่รอ price-refresh เช้าวันถัดไป
 
 concurrency:
   group: dead-ticker-canary
@@ -51,3 +52,29 @@ jobs:
           done
           echo "push ไม่สำเร็จหลัง retry 3 รอบ — รอบหน้าจัดการเอง"
           exit 1
+
+      # flag ที่ canary เขียนคือ reason ที่ต้องรีบที่สุด (triage = ยืนยันแล้วลบรายงาน) แต่ issue คิว
+      # ถูกเขียนโดย workflow price-refresh เท่านั้น ⇒ flag เช้าวันจันทร์จะไม่โผล่ในคิวจนถึงเช้าวันอังคาร
+      # (~22 ชม.) เหลือแค่ job summary ที่ไม่มีใครเปิดดู — จึงอัปเดต issue ใบเดียวกันเองตรงนี้
+      # ตรรกะเดียวกับ update-prices.yml เป๊ะ (ใบเดียว หัวเรื่องเดียว body สร้างจาก flags-issue-body.js)
+      - name: อัปเดต issue คิว re-analysis (price-flags)
+        if: always()
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TITLE="Price-refresh flags — หุ้นรอ re-analysis"
+          num=$(gh issue list --state open --search "in:title \"$TITLE\"" --json number --jq '.[0].number' || echo "")
+          count=$(node -e 'try{console.log(require("./price-flags.json").length)}catch(e){console.log(0)}')
+          if [ "$count" = "0" ]; then
+            if [ -n "$num" ]; then gh issue close "$num" --comment "คิวเคลียร์หมดแล้ว ✅ (ปิดอัตโนมัติโดย dead-ticker-canary)"; fi
+            exit 0
+          fi
+          prev=""
+          if [ -n "$num" ]; then prev=$(gh issue view "$num" --json body --jq .body); fi
+          body=$(PREV_BODY="$prev" TODAY="$(TZ=Asia/Bangkok date +%F)" node tools/flags-issue-body.js)
+          if [ -n "$num" ]; then
+            gh issue edit "$num" --body "$body"
+          else
+            gh issue create --title "$TITLE" --body "$body"
+          fi

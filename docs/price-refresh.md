@@ -176,6 +176,11 @@ POST https://scanner.tradingview.com/global/scan
   เพราะ undici default ~300 วิ — ยิงเดียวค้างกินงบ job 15 นาทีไปหนึ่งในสาม · **ไม่ทำ stale cache**
   ต่างจาก tradingview-mcp ที่พอร์ตวิธี retry มา: เสิร์ฟผลเก่าตอนต้นทางล่ม = false negative ที่เครื่องมือ
   วัด "ยังมีตัวตนไหม" ห้ามผลิต · ล้มครบทุกรอบยังโยน error ตามเดิม (exit 1 ไม่เขียนอะไร)
+- flag ของรายงานที่ถูกลบไปแล้วถูกตัดทิ้งด้วย (`reportExists` เดียวกับ cron) — `mergeDeadFlags` พา flag เดิม
+  มาทุกตัวโดยไม่รู้ว่าไฟล์ยังอยู่ไหม ⇒ ถ้ารัน canary หลังลบรายงานแต่ก่อน cron รอบถัดไป flag ที่เคลียร์ไปแล้ว
+  จะถูก commit กลับเข้าคิว
+- workflow อัปเดต **issue คิว re-analysis เอง** (step เดียวกับ price-refresh) — ไม่งั้น flag เช้าวันจันทร์
+  ซึ่งเป็น reason ที่ต้องรีบที่สุด จะไม่โผล่ในคิวจนถึง price-refresh เช้าวันอังคาร (~22 ชม.)
 - วัดจริง sweep เต็ม 784 รายงาน (8 ส.ค. 2569): **782 อยู่บนกระดาน / 2 ต้องสงสัย (EA, BPP)** — 3 request
   ทั้งรีโป (784 + 1200 + 303 ticker) · หลังมี cache ครบ รอบถัดไปเหลือ ~1 request
 

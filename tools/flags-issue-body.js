@@ -1,7 +1,9 @@
 #!/usr/bin/env node
 /**
  * สร้าง body ของ GitHub Issue "Price-refresh flags — หุ้นรอ re-analysis"
- * ใช้โดย .github/workflows/update-prices.yml (step "อัปเดต issue คิว re-analysis")
+ * ใช้โดย .github/workflows/update-prices.yml **และ** dead-ticker-canary.yml (step "อัปเดต issue คิว
+ * re-analysis") — สองตัวเขียน issue ใบเดียวกัน และวันจันทร์เขียนวันไทยเดียวกัน ⇒ แถวประวัติของวันนั้น
+ * ต้องบวกสะสม ไม่ใช่ทับทิ้ง (ดู historyRows ด้านล่าง)
  *
  *   PREV_BODY="$(gh issue view N --json body --jq .body)" TODAY=2026-07-25 node tools/flags-issue-body.js
  *
@@ -44,15 +46,22 @@ const removed = prevSymbols.filter((s) => !symbols.includes(s));
 const list = (arr) => (arr.length > MAX_LISTED ? `${arr.slice(0, MAX_LISTED).join(', ')} … (+${arr.length - MAX_LISTED})` : arr.join(', ') || '—');
 
 // ประวัติ: แถวของวันนี้ทับแถววันเดียวกันเสมอ (workflow_dispatch รันซ้ำวันเดิมได้) แล้วเก็บ N รอบล่าสุด
-const prevHistoryRows = (between(prev, '<!--history-->', '<!--/history-->') || '')
+// ★ แต่ต้อง **บวกสะสม** ไม่ใช่ทับทิ้ง — ตั้งแต่ 8 ส.ค. 2569 มีสอง workflow เขียน issue ใบนี้ในวันเดียวกัน
+// (price-refresh 07:17 น. · dead-ticker-canary จันทร์ 09:23 น. = วันไทยเดียวกัน) และ added/removed วัดจาก
+// PREV_BODY ที่ตัวแรกเพิ่งเขียนไป ⇒ ถ้าทับ แถววันจันทร์จะเหลือแค่ส่วนต่างของ canary และยอดเข้าใหม่จริง
+// ของ price-refresh หายจากตารางถาวร (คงเหลือขยับแต่ +N ไม่ตรง — ตารางไม่ reconcile)
+const prevHistoryAll = (between(prev, '<!--history-->', '<!--/history-->') || '')
   .split('\n')
   .map((l) => l.trim())
-  .filter((l) => /^\|\s*\d{4}-\d{2}-\d{2}\s*\|/.test(l))
-  .filter((l) => !l.startsWith(`| ${today} `));
-const historyRows = [`| ${today} | **${flags.length}** | +${added.length} | -${removed.length} |`, ...prevHistoryRows].slice(
-  0,
-  HISTORY_ROUNDS
-);
+  .filter((l) => /^\|\s*\d{4}-\d{2}-\d{2}\s*\|/.test(l));
+const todayRow = prevHistoryAll.find((l) => l.startsWith(`| ${today} `));
+const cellNum = (row, re) => (row && Number((row.match(re) || [])[1])) || 0;
+const addToday = added.length + cellNum(todayRow, /\|\s*\+(\d+)\s*\|/);
+const remToday = removed.length + cellNum(todayRow, /\|\s*-(\d+)\s*\|/);
+const historyRows = [
+  `| ${today} | **${flags.length}** | +${addToday} | -${remToday} |`,
+  ...prevHistoryAll.filter((l) => !l.startsWith(`| ${today} `)),
+].slice(0, HISTORY_ROUNDS);
 
 const flagRows = flags.map(
   (x) =>
@@ -71,15 +80,20 @@ function detailOf(x) {
 }
 
 // reason ที่ **ห้าม re-analyze** — งานคือยืนยันเพิกถอนแล้วลบรายงาน (ดู SKILL.md STEP 0)
-const DEAD_REASONS = new Set(['not-on-exchange', 'stale-quote']);
+// `stale-quote` ไม่อยู่ในนี้: detectStaleQuotes ตั้งใจคืนฟิลด์ `signal` ไม่ใช่ `reason` จึงไม่มีวัน
+// โผล่ใน price-flags.json — ใส่ไว้เท่ากับบอกผู้อ่านผิดว่ามันเขียนลงไฟล์ได้ (ชุดนี้ต้องตรงกับ
+// EXTERNAL_REASONS ใน update-prices.js ซึ่งมีแค่ not-on-exchange)
+const DEAD_REASONS = new Set(['not-on-exchange']);
 const hasDead = flags.some((f) => DEAD_REASONS.has(f.reason));
 const deadNote = hasDead
   ? [
       '',
       '> ⚠️ **`not-on-exchange` = สงสัยหุ้นตาย ไม่ใช่งานวิเคราะห์** — ยืนยันจากแหล่งปฐมภูมิ (SEC Form 25/8-K ·',
       '> ประกาศตลาด/SET · IR) ก่อน แล้ว **ลบ `reports/<SYM>.html`** · **ห้าม re-analyze** (วิเคราะห์หุ้นที่เลิกเทรด',
-      '> แล้วคือการเผยแพร่ข้อมูลผิด) · flag นี้ **re-analysis ไม่เคลียร์** — หายเมื่อไฟล์ถูกลบ หรือเมื่อ canary',
-      '> เจอ ticker กลับมาบนกระดานเท่านั้น · ถ้ายืนยันว่ายังเทรดอยู่จริง = ปัญหา mapping ห้ามลบรายงาน',
+      '> แล้วคือการเผยแพร่ข้อมูลผิด) · flag นี้ **re-analysis ปกติ (รวม `--force`) ไม่เคลียร์** — หายได้ 3 ทาง:',
+      '> ไฟล์รายงานถูกลบ · TradingView เจอ ticker กลับมา (cron รายวันตอนยืนยัน candidate หรือ canary รายสัปดาห์)',
+      '> · หรือยืนยันด้วยมือแล้วสั่ง `node tools/update-prices.js --write --alive <SYM>`',
+      '> ถ้ายืนยันว่ายังเทรดอยู่จริง = ปัญหา mapping **ห้ามลบรายงาน** (แก้ `tools/symbol-map.json` แล้ว `--alive`)',
     ]
   : [];
 
@@ -113,6 +127,6 @@ console.log(
     '',
     'เคลียร์คิว: เปิด session แล้วสั่ง "เคลียร์คิว price-flags" — flag ราคา (drift/mos-flip/suspect) หายเองเมื่อรายงานถูก re-analyze แล้ว' +
       (hasDead ? ' · `not-on-exchange` ต้องยืนยันแล้วลบไฟล์ (ดูกล่องเตือนด้านบน)' : '') + '',
-    '_(อัปเดตอัตโนมัติโดย workflow price-refresh ทุกรอบ)_',
+    '_(อัปเดตอัตโนมัติโดย workflow price-refresh ทุกวัน + dead-ticker-canary ทุกวันจันทร์)_',
   ].join('\n')
 );
