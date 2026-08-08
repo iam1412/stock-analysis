@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น Manulife Financial Corporation (MFC) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 5">
+<script type="application/json" id="stock-meta">
+{"symbol":"MFC","currency":"USD","price":44.32,"fairValue":34.55,"mos":-28.3,"upside":-22.0,"pe":17.05,"dividendYield":3.0,"roe":13.2}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#0da628",
+    "accentDark": "#0a761d",
+    "darkGrad": "linear-gradient(135deg,#022208 0%,#065614 58%,#0a9923 140%)",
+    "glow": "rgba(19,236,57,.35)",
+    "subColor": "#d9f3dd",
+    "headerMuted": "#e0f0e3",
+    "verdictText": "#d8f3dc",
+    "vcellLabel": "#f7fcf8",
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#137333"
+  },
+  "chart": {
+    "data": [["ก.ย.25", 31.15], ["ต.ค.25", 32.37], ["พ.ย.25", 35.21], ["ธ.ค.25", 36.28],
+             ["ม.ค.26", 38.11], ["ก.พ.26", 35.54], ["มี.ค.26", 34.44], ["เม.ย.26", 39.29],
+             ["พ.ค.26", 38.19], ["มิ.ย.26", 40.51], ["ก.ค.26", 44.44], ["ส.ค.26", 44.32]],
+    "min": 30, "max": 50, "grid": [35, 40, 45],
+    "fairLine": 34.55, "currency": "$", "highlight": [0, 10]
+  },
+  "gauge": { "min": 20, "max": 48, "cur": 44.32, "fair": 34.55 },
+  "fv": 34.55
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots"><div style="width:8px;height:8px;border-radius:50%;background:#0da628;display:inline-block;margin:0 3px"></div><div style="width:8px;height:8px;border-radius:50%;background:#0a761d;display:inline-block;margin:0 3px"></div><div style="width:8px;height:8px;border-radius:50%;background:#065614;display:inline-block;margin:0 3px"></div></div>
+    <div>
+      <span class="tag">NYSE: MFC</span>
+      <span class="tag">Life Insurance</span>
+      <span class="tag">Asia Growth &amp; Global WAM</span>
+    </div>
+    <h1>Manulife Financial Corporation</h1>
+    <div class="sub">ประกันชีวิต • ประกันสุขภาพ • บำนาญ • Global Wealth &amp; Asset Management (Global WAM) • ฐานลูกค้าเอเชีย (ฮ่องกง/เวียดนาม/จีน) เติบโตเร็วสุดในกลุ่ม</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$44.32<small>(MFC)</small></div>
+      </div>
+      <div class="chg">▲ +42.3% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 7 ส.ค. 2569 (Yahoo Finance, ตรงกับ StockAnalysis.com — Δ 0%)<br>
+        กรอบ 52 สัปดาห์ $29.70 – $45.33<br>
+        ที่มา: Yahoo Finance, StockAnalysis.com, Manulife Financial Corporation (Q2 2026 Press Release, SEC Form 6-K), TradingEconomics
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ไตรมาส 2/2569 (งบเป็น CAD ตามที่ Manulife รายงาน • ราคาซื้อขาย NYSE เป็น USD)</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">$74.6B</div><div class="d">1,683M หุ้น (ลดจาก 1,708M สิ้น FY2025 — buyback)</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~17.1x</div><div class="d">Yahoo 17.0x / StockAnalysis 16.8x — Δ0.4%</div></div>
+      <div class="metric"><div class="k">ช่วง P/E ล่าสุด (self, CAD)</div><div class="v">~11.3x–17.2x</div><div class="d">กรอบราคา 52 สัปดาห์ CAD ÷ EPS TTM CAD 3.70</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">~2.26x</div><div class="d">ราคา 62.13 CAD ÷ BVPS 27.48 CAD (สกุลเดียวกัน)</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">5,251 ล้าน CAD</div><div class="d">+3.5% YoY (FY2024 5,074M) • TTM 6,233M (+18.7%)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$2.60</div><div class="d">USD (cross-verified) ≈ 3.70 CAD ตามงบ — ดูหมายเหตุสกุลเงินใน §3</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~$19.61</div><div class="d">27.48 CAD (Q2/69, รายงานเอง) แปลงที่ 0.7135</div></div>
+      <div class="metric"><div class="k">ROE (TTM) / Core ROE</div><div class="v pos">13.2% / 16.3%</div><div class="d">ROE รายงาน Q2/69 (annualized) 18.0%</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$66,875M CAD</div><div class="d">+18.1% YoY</div></div>
+      <div class="metric"><div class="k">อัตรากำไรสุทธิ (NetM)</div><div class="v">10.6%</div><div class="d">OpM% TTM 50.8% (หลัง CSM release ตาม IFRS 17)</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~3.0%</div><div class="d">$1.33/ปี (USD) • payout ~51% ของ GAAP EPS</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">~1.10</div><div class="d">ประมาณการ (ไม่มีค่าที่เผยแพร่ในแหล่งที่ดึงมา) ใช้คำนวณ r</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART (ราคาย้อนหลัง ~1 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#0da628"></i>ราคา MFC</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $34.55</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคาไต่จากจุดต่ำสุดของกราฟ $31.15 (ก.ย. 2568) ขึ้นมาต่อเนื่อง แม้จะย่อลงมาที่ $34.44 ในเดือน มี.ค. 2569 ช่วงตลาดกังวลอัตราดอกเบี้ยกระทบมูลค่าหนี้สินประกันระยะยาวและ CSM ภายใต้ IFRS 17
+        ก่อนจะรีบาวด์แรงหลังผลประกอบการ Asia/Global WAM แข็งแกร่งและการซื้อหุ้นคืนต่อเนื่อง ทำจุดสูงสุดรอบปีที่ $44.44 (ก.ค. 2569) — ใกล้เคียงกับราคาปัจจุบัน $44.32 (หลังงบ Q2/2569 ที่รายงาน 5 ส.ค. 2569)
+        รวมผลตอบแทนทั้งปี +42.3% ซึ่งเร็วกว่าการเติบโตของ core EPS (+16% YoY ไตรมาสล่าสุด) มาก — เป็นสัญญาณว่าราคาส่วนหนึ่งมาจากการขยายตัวของ multiple ไม่ใช่กำไรอย่างเดียว
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 2 วิธีอิสระ — คำนวณเป็น CAD ทั้งหมด แล้วแปลงเป็น USD ครั้งเดียวตอนท้าย</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS (TTM, cross-verified 2 แหล่ง) $2.60 × P/E เป้าหมาย 13.0x (อนุรักษ์นิยมกว่าค่ากึ่งกลางของกรอบ P/E self ในรอบ 12 เดือนที่ผ่านมา ~11.3x–17.2x ซึ่งคำนวณจากกรอบราคา 52 สัปดาห์ CAD ÷ กำไรต่อหุ้นงบ CAD 3.70 — วิธีนี้ไม่ใช้ r,g เลย)</div></div>
+        <div class="mval">$33.80</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. Justified P/BV</div><div class="mdesc">BVPS $19.61 (27.48 CAD จาก Manulife Q2/2569 report แปลงที่ 0.7135) × justified P/BV = (ROE 13.2% − g 4.0%)/(r 9.1% − g 4.0%) = 1.80x — r = rf 3.64% (GoC 10Y, TradingEconomics 7 ส.ค. 2569) + β 1.10 (ประมาณการ) × ERP 5.0% = 9.1%</div></div>
+        <div class="mval">$35.30</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $33.80 – $35.30</span></div>
+        <div class="r">$34.55</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        <b>หมายเหตุสกุลเงิน (สำคัญ):</b> Manulife รายงานงบการเงินทั้งหมดเป็นดอลลาร์แคนาดา (CAD) แต่หุ้นซื้อขายบน NYSE เป็นดอลลาร์สหรัฐ (USD) รายงานนี้จึงคำนวณ EPS/BVPS/ROE/r/g เป็น CAD ทั้งชุดก่อน แล้วแปลงผลลัพธ์ (Fair Value) เป็น USD ครั้งเดียวด้วยอัตราสปอต ณ 7 ส.ค. 2569 ที่ 1 CAD = 0.7135 USD (1 USD = 1.4016 CAD, ที่มา: TradingEconomics) — ไม่มีจุดใดในการคำนวณที่นำราคาสกุลหนึ่งไปหารด้วยเลขงบอีกสกุลหนึ่งตรง ๆ (วิธี P/E ใช้ EPS ที่แปลงเป็น USD แล้วคูณ P/E ซึ่งเป็นอัตราส่วนไม่ผูกสกุลเงิน — ให้ผลเดียวกับคำนวณเป็น CAD ทั้งก้อนแล้วแปลงตอนท้าย) ข้อควรทราบ: EPS(TTM) จากหน้า quote ($2.60–2.61 USD) แปลงจาก EPS งบ CAD ด้วยอัตราแลกเปลี่ยน<i>เฉลี่ยรายไตรมาส</i> ไม่ใช่อัตราสปอตวันนี้ จึงคำนวณย้อนกลับได้อัตราโดยนัย ~0.7027 ต่างจากอัตราสปอตวันนี้ (~0.7135) ราว 1.5% — เป็นความต่างปกติจากช่วงอ้างอิงอัตราแลกเปลี่ยนคนละช่วง ไม่ใช่ข้อผิดพลาด และ<b>ไม่ใช่</b>ส่วนต่างระหว่าง "core" กับ "GAAP" ตามที่เข้าใจผิดในรอบวิเคราะห์ก่อนหน้า<br><br>
+        <b>Core EPS ที่แท้จริง (จาก Manulife เอง ไม่ใช่ตัวเลขที่คำนวณจากค่าเงิน):</b> Q2/2569 core EPS $1.09 CAD (+16% YoY จาก $0.95) • ปีเต็ม 2568 core EPS $4.21 CAD (+8% YoY) — ขณะที่ diluted EPS ตามเกณฑ์บัญชี (GAAP/IFRS 17) อยู่ที่ $3.70 CAD (TTM) และ $3.07 CAD (FY2025 เต็มปี) core earnings สูงกว่า GAAP net income เพราะตัดผลกระทบตลาดทุน/อัตราดอกเบี้ยและการเปลี่ยนสมมติฐานคณิตศาสตร์ประกันภัยออก (นิยามของ Manulife เอง) ที่มา: Manulife Reports Second Quarter 2026 Results (PR Newswire/SEC Form 6-K, 5 ส.ค. 2569) และ Manulife Reports Full Year and Fourth Quarter 2025 Results (11 ก.พ. 2569)<br><br>
+        <b>Sensitivity (r ± 0.5pp):</b> วิธี Justified P/BV ที่ r=8.6% → ratio 2.00x → FV2 ≈ $39.2 · ที่ r=9.6% → ratio 1.64x → FV2 ≈ $32.2 (r−g เพียง 5.1pp จึงไวต่อสมมติฐาน r/g พอสมควร) • คู่มา: FV เฉลี่ยของโมเดลนี้ ($34.55) ใกล้เคียงกับเป้าเฉลี่ยนักวิเคราะห์ ($35.80, n=2) โดยบังเอิญ — คำนวณอิสระจากกันคนละวิธี ไม่ได้ปรับให้เข้าเป้า
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $44.32</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $34.55</div></div>
+        </div>
+        <div class="scale">
+          <span>$24.19<br><small>MOS 30%</small></span>
+          <span>$27.64<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$34.55<br><small>Fair Value</small></span>
+          <span style="text-align:right">$35.30<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">$35.80<br><small>เป้าเฉลี่ย Analyst</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน $44.32 อยู่สูงกว่าทั้งกรอบบนของ Fair Value ($35.30) และเป้าเฉลี่ยนักวิเคราะห์ 12 เดือน ($35.80, n=2 — Buy rating) สะท้อนว่าตลาดให้เครดิตกับโมเมนตัมการเติบโตของ Asia/Global WAM ไปมากแล้ว มากกว่าที่โมเดล valuation แบบอนุรักษ์นิยมนี้จะรองรับได้
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">−28.3%</div>
+        <div class="txt"><b>ไม่มี Margin of Safety (ราคาแพงกว่ามูลค่าเหมาะสมที่ประเมินได้)</b><br>ราคาซื้อขายสูงกว่า Fair Value ราว 28% หลังพุ่งขึ้น +42% ในรอบปีจนหลุดกรอบ P/E และ P/BV ในอดีตของตัวเอง นักลงทุนที่ยังไม่ถือควรรอจังหวะย่อตัวลงใกล้เขต MOS 20% หรือต่ำกว่า แทนการไล่ราคาที่จุดสูงสุดรอบปี</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$27.64</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$24.19</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $34.55</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="44.32" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $44.32 • EPS ฐาน (TTM, USD) ~$2.60 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS −5%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$22.29</div>
+          <div class="ret neg">−41.6%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$2.23</span></li>
+            <li><span>P/E ออก</span><span>10.0x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$3.60</span></li>
+            <li><span>สถานการณ์</span><span>อัตราดอกเบี้ยลดกระทบ CSM, ยอดขาย Asia ชะลอ, multiple de-rate กลับสู่กรอบล่าง</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +8%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$42.64</div>
+          <div class="ret pos">+6.0%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$3.28</span></li>
+            <li><span>P/E ออก</span><span>13.0x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$4.32</span></li>
+            <li><span>สถานการณ์</span><span>core EPS โตตามเป้าระยะกลาง, multiple ค่อยๆ ปรับสู่ค่าเหมาะสม (13x)</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +14%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$61.60</div>
+          <div class="ret pos">+48.9%</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$3.85</span></li>
+            <li><span>P/E ออก</span><span>16.0x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$4.40</span></li>
+            <li><span>สถานการณ์</span><span>Asia/Global WAM เกินเป้า, buyback เร่งตัว, ตลาดให้ premium multiple ต่อเนื่อง</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      คำนวณจาก EPS ฐาน (TTM, USD, cross-verified) $2.60 ทบต้น 3 ปีตามอัตราการเติบโตแต่ละฉาก แล้วคูณ P/E ทางออกที่สมมติไว้ • ผลตอบแทนรวม = (ราคาเป้า − ราคาปัจจุบัน + ปันผลสะสม 3 ปี) ÷ ราคาปัจจุบัน • Base case ให้ผลตอบแทนต่ำแม้ EPS โตดี เพราะ multiple ปัจจุบัน (~17x) สูงกว่ากรอบปกติของหุ้น ต้องใช้เวลาให้กำไรตามทันราคา
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก &amp; ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>Asia เติบโตเร่งตัว:</b> ยอดขายใหม่ (APE) และมูลค่าธุรกิจใหม่ (NBV) ในเอเชียเติบโตสองหลักต่อเนื่อง โดยเฉพาะฮ่องกง เวียดนาม และจีนแผ่นดินใหญ่ผ่านช่องทางธนาคาร</li>
+          <li><b>Global WAM ขยายตัว:</b> สินทรัพย์ภายใต้การบริหาร (AUM) เติบโตตามกระแสเงินไหลเข้าสุทธิ หนุนรายได้ค่าธรรมเนียมที่ผันผวนน้อยกว่าธุรกิจประกัน</li>
+          <li><b>Core EPS โต 8% (FY2025):</b> core EPS เต็มปี 2568 อยู่ที่ $4.21 CAD (+8% YoY) สะท้อนธุรกิจพื้นฐานแข็งแรงกว่าที่ GAAP EPS ผันผวนแสดง</li>
+          <li><b>ซื้อหุ้นคืนต่อเนื่อง:</b> หุ้น diluted ลดจาก 1,946M (2564) เหลือ 1,683M (TTM) หนุน EPS ต่อหุ้นให้โตเร็วกว่ากำไรสุทธิรวม</li>
+          <li><b>เงินปันผลเพิ่มต่อเนื่อง:</b> ประกาศขึ้นเงินปันผล 10% ในผลประกอบการ Q4/2568 สะท้อนความมั่นใจของฝ่ายบริหารต่อกระแสเงินสดและเงินกองทุน (LICAT ratio สูง)</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>ความผันผวนจาก IFRS 17:</b> กำไรสุทธิ (GAAP) อ่อนไหวสูงต่อการเปลี่ยนอัตราคิดลด/สมมติฐานคณิตศาสตร์ประกันภัย เห็นได้จาก EPS ที่แกว่งจาก −1.15 CAD (2565) ถึง +3.70 CAD (TTM) ในไม่กี่ปี</li>
+          <li><b>Valuation ตึงตัว:</b> ราคาปัจจุบันสูงกว่ากรอบ P/E self 12 เดือน (11x–17x) และสูงกว่า Fair Value ที่ประเมินได้ ~28% หลังราคาพุ่ง +42% ในรอบปี</li>
+          <li><b>อัตราดอกเบี้ย/ตลาดทุน:</b> การปรับลดอัตราดอกเบี้ยแคนาดา/สหรัฐฯ กระทบมูลค่าปัจจุบันของหนี้สินประกันระยะยาวและ CSM</li>
+          <li><b>ความเสี่ยงตลาดเอเชีย:</b> กฎระเบียบประกันภัยจีน/ฮ่องกงเปลี่ยนแปลง หรือเศรษฐกิจจีนชะลอตัว กระทบยอดขายใหม่ในภูมิภาคที่เป็นเครื่องยนต์การเติบโตหลัก</li>
+          <li><b>ความเสี่ยงค่าเงิน:</b> งบเป็น CAD แต่ราคาซื้อขาย NYSE เป็น USD นักลงทุนสหรัฐฯ รับความเสี่ยงอัตราแลกเปลี่ยน CAD/USD เพิ่มเติมนอกเหนือจากความเสี่ยงธุรกิจ</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>ธุรกิจแข็งแรง แต่ราคาแพงกว่ามูลค่าที่ประเมินได้ ~28%</h2>
+      <p>Manulife เป็นบริษัทประกันชีวิตขนาดใหญ่ที่มีเครื่องยนต์เติบโตชัดเจนจาก Asia และ Global WAM core EPS โตต่อเนื่อง (+8% FY2025, +16% YoY ไตรมาสล่าสุด) และซื้อหุ้นคืน+เพิ่มปันผลต่อเนื่อง อย่างไรก็ตาม ราคาหุ้นที่พุ่งขึ้น +42% ในรอบปีทำให้ซื้อขายที่ P/E ~17x และ P/BV ~2.26x (คำนวณเป็น CAD สกุลเดียวกันทั้งตัวเศษ-ส่วน) ซึ่งอยู่ปลายบนของกรอบ valuation ในอดีตของตัวเอง เมื่อประเมินด้วย 2 วิธีอิสระ (P/E self-history และ Justified P/BV บน CoE ที่อิง GoC 10Y) ได้ Fair Value เฉลี่ย $34.55 USD ต่ำกว่าราคาปัจจุบันราว 28% — MOS ติดลบ ยังไม่ใช่จังหวะเข้าซื้อใหม่ในมุมมอง value</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$34.55 <span style="font-size:12px;color:#cab9a8">($33.80–$35.30)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS −28.3%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$35.80 (Buy, n=2)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> รอจังหวะย่อตัวลงมาใกล้เขต MOS 20% (~$27.64) หรือต่ำกว่า ก่อนเข้าซื้อเพิ่ม ผู้ที่ถืออยู่แล้วอาจพิจารณาทยอยลดสัดส่วนบางส่วนหลังราคาพุ่งแรงในรอบปี และติดตามผลประกอบการ Q3/2569 เพื่อยืนยันว่า core EPS ยังโตในกรอบเป้าหมายระยะกลางของบริษัท ก่อนตัดสินใจเพิ่มน้ำหนัก
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ราคา ณ 7 ส.ค. 2569 จาก Yahoo Finance และ StockAnalysis.com (cross-check ตรงกัน Δ0%) • งบการเงินปีย้อนหลัง + TTM จาก StockAnalysis.com (สกุล CAD ตามที่ Manulife รายงาน) • Core EPS/Book Value/ROE จาก Manulife Financial Corporation Q2 2026 และ Full Year 2025 Press Releases (SEC Form 6-K) • อัตราแลกเปลี่ยน CAD/USD และผลตอบแทนพันธบัตรรัฐบาลแคนาดา 10 ปี จาก TradingEconomics ณ 7 ส.ค. 2569
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 8 ส.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
