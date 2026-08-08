@@ -96,9 +96,10 @@ ok(sm.pe === smIn.pe && sm.roe === smIn.roe && sm.fairValue === FV && sm.symbol 
 const mosBig = parseFloat((out.match(/class="big">\s*([+\-−]?\s*[\d.]+)\s*%/) || [])[1].replace('−', '-'));
 ok(Math.abs(mosBig - sm.mos) <= 2, 'MOS .big ↔ stock-meta ภายใน 2pp (E16/E30)', `big=${mosBig} sm=${sm.mos}`);
 ok(out.includes('11 ก.ค. 2026'), 'วันที่ราคาใน header อัปเดต (คง ค.ศ.)');
-// ทุก date-token ใน header ต้องกลายเป็นวันใหม่หมด (ไม่เหลือวันเก่าตกค้าง)
+// วันที่ราคาต้องเป็นวันใหม่ — แต่ **ห้าม** เหมาว่า "ทุก token ต้องกลายเป็นวันใหม่หมด"
+// (เคสเดิมเขียนแบบนั้นไว้ = ล็อกบั๊ก 9 ส.ค. 2569 ที่ประทับวันที่รันทับวันที่ในอดีตทุกตัว)
 const hdrDates = out.match(/<header[\s\S]*?<\/header>/i)[0].match(/\d{1,2}\s*[ก-ฮ][ก-ฮ.]+\s*\d{4}/g) || [];
-ok(hdrDates.length > 0 && hdrDates.every((d) => d === '11 ก.ค. 2026'), 'ไม่เหลือวันที่เก่าใน header', JSON.stringify(hdrDates));
+ok(hdrDates.length > 0 && hdrDates[0] === '11 ก.ค. 2026', 'วันที่ราคา (token แรก) = วันใหม่', JSON.stringify(hdrDates));
 ok((out.match(/id="pxIn"[^>]*value="([\d.]+)"/) || [])[1] === '301.5', 'pxIn = ราคาใหม่ (E23)');
 ok(rd.gauge.cur === 301.5, 'gauge.cur = ราคาใหม่');
 ok(rd.chart.data.length === 13 && rd.chart.data[12][1] === 301.5, 'chart 13 จุด จุดท้าย = ราคา (E37)');
@@ -161,6 +162,46 @@ ok(!/กรกฎาคม/.test(rFull.html.match(/<header[\s\S]*?<\/header>/i)[
 const aaplNoDay = aapl.replace(/ราคา\s*[≈ณ]*\s*\d{1,2}(?:\s*[–\-]\s*\d{1,2})?\s*[ก-ฮ][ก-ฮ.]+\s*\d{4}\s*<br>/, 'ราคา ณ ธ.ค. 2568 (ธ.ค. 2025)<br>');
 const rNoDay = U.patchReport(aaplNoDay, { newPrice: 301.5, dateParts: { day: 11, monIdx: 6, yearCE: 2026 }, chartData });
 ok(rNoDay.html.includes('ราคา ณ 11 ก.ค. 2569 (11 ก.ค. 2026)<br>'), 'วันที่ไม่มีวัน → เติมวันครบ + คง era ต่อ token', (rNoDay.html.match(/ราคา ณ [^<]*/) || [])[0]);
+
+// ---------- regression: แทนเฉพาะ "วันที่ราคา" ไม่แตะวันที่ที่เป็นข้อเท็จจริงในอดีต ----------
+// บั๊ก 9 ส.ค. 2569: patchReport แทน date-token *ทุกตัว* ใน <header> ⇒ ทุกครั้งที่ cron รัน วัน ATH /
+// วันมีผลของ split / วันประกาศงบ ถูกประทับเป็นวันที่รัน (INTC: ATH จริง 22 มิ.ย. 2026 หายไปเงียบ ๆ)
+// gate จับไม่ได้เพราะฝั่งอ่าน (parsePriceAge) ก็หลงอ่าน token ท้าย ๆ เหมือนกัน — ดู tools/price-date.js
+const pxMeta = (body) => `<div class="px-meta">\n        ${body}\n      </div>`;
+const withPxMeta = (body) => aapl.replace(/<div class="px-meta">[\s\S]*?<\/div>/i, pxMeta(body));
+const patchDates = (h) => U.patchReport(h, { newPrice: 301.5, dateParts: { day: 11, monIdx: 6, yearCE: 2026 }, chartData });
+
+const aaplHist = withPxMeta(
+  'ราคา ณ 3 ส.ค. 2026 (ปิดตลาด) • ร่วง ~28% จากจุดสูงสุดตลอดกาล $141.45 (22 มิ.ย. 2026)<br>\n'
+  + '        ปรับ split 10:1 แล้ว (มีผล 14 พ.ค. 2026)<br>\n'
+  + '        52 สัปดาห์ $20.44 – $142.35<br>\n'
+  + '        ที่มา: StockAnalysis.com / Yahoo Finance (งบ Q2/2026 ประกาศ 22 ก.ค. 2026)');
+ok(aaplHist !== aapl, 'fixture px-meta (ประวัติศาสตร์) apply แล้วเปลี่ยนจริง — anchor ไม่เพี้ยน');
+const hdrHist = patchDates(aaplHist).html.match(/<header[\s\S]*?<\/header>/i)[0];
+ok(/ราคา ณ 11 ก\.ค\. 2026 \(ปิดตลาด\)/.test(hdrHist), 'วันที่ราคา → วันใหม่', (hdrHist.match(/ราคา ณ [^•<]*/) || [])[0]);
+ok(!/3 ส\.ค\. 2026/.test(hdrHist), 'ไม่เหลือวันที่ราคาเก่า');
+ok(hdrHist.includes('จากจุดสูงสุดตลอดกาล $141.45 (22 มิ.ย. 2026)'), '★ วันจุดสูงสุดตลอดกาล คงเดิม (เคส INTC)');
+ok(hdrHist.includes('ปรับ split 10:1 แล้ว (มีผล 14 พ.ค. 2026)'), '★ วันมีผลของ split คงเดิม (เคส KLAC/BNY/HON)');
+ok(hdrHist.includes('(งบ Q2/2026 ประกาศ 22 ก.ค. 2026)'), '★ วันประกาศงบในบรรทัด ที่มา: คงเดิม (เคส IBM/ADVICE/RKLB)');
+
+// วันที่ราคาที่ "ทวนซ้ำ" ในวงเล็บติดกัน (คนละศักราช) ต้องขยับตาม — ไม่งั้นหัวรายงานขัดกันเอง
+// (AZN·CSGP·DPZ·HIG·PFE·PNC·SNNP) · เงื่อนไข: ติดกันจริง + เป็นวันเดียวกับวันที่ราคาเดิม
+const hdrRestate = patchDates(withPxMeta('ราคา ณ 3 ส.ค. 2569 (3 ส.ค. 2026 ตลาดปิด)<br>\n        52 สัปดาห์ $20.44 – $142.35'))
+  .html.match(/<header[\s\S]*?<\/header>/i)[0];
+ok(/ราคา ณ 11 ก\.ค\. 2569 \(11 ก\.ค\. 2026 ตลาดปิด\)/.test(hdrRestate),
+  'วันที่ทวนซ้ำในวงเล็บขยับตาม + คงศักราชของแต่ละตัว', (hdrRestate.match(/ราคา ณ [^<]*/) || [])[0]);
+
+// วันเดียวกันแต่มีร้อยแก้วคั่น = คนละข้อเท็จจริง (เคส AMKR "· ร่วง ~24% วันเดียว (…)") → ต้องคงไว้
+const hdrGap = patchDates(withPxMeta('ราคา ≈ 3 ส.ค. 2026 · ร่วง ~24% วันเดียว (3 ส.ค. 2026)<br>\n        52 สัปดาห์ $20.44 – $142.35'))
+  .html.match(/<header[\s\S]*?<\/header>/i)[0];
+ok(/ราคา ≈ 11 ก\.ค\. 2026 · ร่วง ~24% วันเดียว \(3 ส\.ค\. 2026\)/.test(hdrGap),
+  '★ วันเดียวกันแต่มีร้อยแก้วคั่น = คงไว้ (ไม่ใช่การทวนซ้ำ)', (hdrGap.match(/ราคา ≈ [^<]*/) || [])[0]);
+
+// หาวันที่ราคาไม่เจอ (ไม่มีคำนำหน้า "ราคา") → throw ไป patch-failed ให้เห็นในคิว ดีกว่าเดาเขียนทับเงียบ ๆ
+let threwDate = false;
+try { patchDates(withPxMeta('อัปเดตล่าสุด 3 ส.ค. 2026<br>\n        52 สัปดาห์ $20.44 – $142.35')); }
+catch (e) { threwDate = /วันที่ราคา/.test(e.message); }
+ok(threwDate, 'ไม่มีคำนำหน้าราคา → throw (patch-failed) ไม่เดาเขียนทับ token อื่น');
 
 // กราฟรายเดือน <2 จุด (IPO ใหม่มาก เคส SPCX) → ต้อง throw (freeze คงกราฟเดิม)
 let threwIPO = false;

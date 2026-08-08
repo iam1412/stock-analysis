@@ -39,10 +39,8 @@ const { readStockMeta, STOCK_META_PARTS_RE } = require('./report-meta.js');
 const REPORTS = path.join(__dirname, '..', 'reports');
 const FLAGS = path.join(__dirname, '..', 'price-flags.json');
 
-const THAI_MONTHS = ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'];
-// บางรายงานเขียนวันที่ด้วยชื่อเดือนเต็ม ("1 กรกฎาคม 2569") — รับทั้งสองแบบ แต่เขียนกลับเป็นตัวย่อเสมอ
-// (canonical: ตัวย่อคือแบบเดียวที่ parsePriceAge ของ gate อ่านออก → staleness check เห็นไฟล์นั้นด้วย)
-const THAI_MONTHS_FULL = ['มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'];
+// ชื่อเดือน + ตัวหา "วันที่ราคา" มาจาก tools/price-date.js ที่เดียว (ใช้ร่วมกับ gate — อย่าทำสำเนา)
+const { findPriceDate, findRestatedDate, renderThaiDate, THAI_MONTHS, MONTH_ALT } = require('./price-date.js');
 const MAX_PTS = 13;          // กราฟรายเดือน ~1 ปี (E37)
 const FLAT_PP = 0.75;        // |% รอบปี| < 0.75 → "ทรงตัว" (ตาม migrate-annual-chg)
 const DRIFT_FREEZE = 0.15;   // ราคาใหม่ต่างจากในรายงาน > 15% → freeze (prose จะผิดความหมาย · เดิม 10% — ขยับขึ้นลดภาระ re-analysis)
@@ -396,32 +394,31 @@ function patchReport(html, p) {
   need(/(<div class="px">\s*[฿$])([\d.,]+)/, 'ราคา header (.px)');
   out = out.replace(/(<div class="px">\s*[฿$])([\d.,]+)/, (m, a) => a + fmtPrice(newPrice));
 
-  // --- header: วันที่ราคา (แทนทุก date-token ไทยใน <header> — คงรูปแบบ พ.ศ./ค.ศ. เดิม) ---
-  // รับเดือนตัวย่อ + ชื่อเต็ม (ชื่อเต็มไว้ก่อนใน alternation กัน match ครึ่งเดียว) — เขียนกลับเป็นตัวย่อเสมอ
-  const monthAlt = THAI_MONTHS_FULL.concat(THAI_MONTHS.map((x) => x.replace(/\./g, '\\.'))).join('|');
-  const dateRe = new RegExp(`\\d{1,2}(?:\\s*[–\\-]\\s*\\d{1,2})?\\s*(?:${monthAlt})\\s*(20\\d\\d|25\\d\\d|26\\d\\d)`, 'g');
+  // --- header: วันที่ราคา (แทน **เฉพาะ token ของราคา** ตัวเดียว — คงรูปแบบ พ.ศ./ค.ศ. เดิม) ---
+  // เดิมแทน date-token *ทุกตัว* ใน <header> ⇒ วันที่ที่เป็นข้อเท็จจริงในอดีต (จุดสูงสุดตลอดกาล ·
+  // วันมีผลของ split/เปลี่ยนสัญลักษณ์/spin-off · วันประกาศงบ) ถูกประทับเป็นวันที่รันทุกวัน
+  // — ตัวหา token อยู่ที่ tools/price-date.js ที่เดียว ใช้ร่วมกับตัวอ่านของ gate (parsePriceAge)
   const headM = out.match(/<header[\s\S]*?<\/header>/i);
   if (!headM) throw new Error('ไม่มี <header>');
-  const newDate = (yr) => {
-    const era = parseInt(yr, 10) >= 2400 ? dateParts.yearCE + 543 : dateParts.yearCE;
-    return `${dateParts.day} ${THAI_MONTHS[dateParts.monIdx]} ${era}`;
-  };
-  let newHeader = headM[0];
-  if (dateRe.test(newHeader)) {
-    newHeader = newHeader.replace(dateRe, (m, yr) => newDate(yr));
-  } else {
-    // บางรายงานลงวันที่แบบไม่มีวัน ("ราคา ณ มิถุนายน 2569" / "ณ ก.พ. 2569 (ก.พ. 2026)")
-    // จำกัดการแทนแบบนี้ไว้ใน .px-meta เท่านั้น — เดือน+ปีลอย ๆ ที่อื่น (เช่นใน tag) อาจไม่ใช่วันที่ราคา
-    const moYrRe = new RegExp(`(?:${monthAlt})\\s*(20\\d\\d|25\\d\\d|26\\d\\d)`, 'g');
-    const pmM = newHeader.match(/<div class="px-meta">[\s\S]*?<\/div>/i);
-    if (!pmM || !moYrRe.test(pmM[0])) throw new Error('ไม่เจอวันที่ราคาใน header');
-    newHeader = newHeader.replace(pmM[0], pmM[0].replace(moYrRe, (m, yr) => newDate(yr)));
+  const hit = findPriceDate(headM[0]);
+  // หาไม่เจอ = ถ้อยคำหน้าวันที่แปลกจนไม่มั่นใจว่าตัวไหนคือวันที่ราคา → ยอม patch-failed ให้เห็นในคิว
+  // (เดาแล้วเขียนทับผิดคือบั๊กเดิม — เงียบและกลับมาเองทุกวัน)
+  if (!hit || hit.monIdx < 0) throw new Error('ไม่เจอวันที่ราคาใน header');
+  // เขียนกลับเป็น "วัน เดือนย่อ ปี" เสมอ แม้ของเดิมจะเป็นเดือน+ปีลอย ๆ ("ราคา ณ มิถุนายน 2569")
+  // — ตัวย่อพร้อมวันคือแบบเดียวที่ parsePriceAge อ่านออก
+  // + วันที่ที่ "ทวนซ้ำ" ในวงเล็บติดกัน (คนละศักราช) ต้องขยับตามด้วย ไม่งั้นหัวรายงานขัดกันเอง
+  // เขียนจากขวาไปซ้าย — index ของตัวซ้ายจะได้ไม่ขยับตามความยาวที่เปลี่ยนของตัวขวา
+  const restate = findRestatedDate(headM[0], hit);
+  for (const t of [restate, hit].filter(Boolean)) {
+    const abs = headM.index + t.index;
+    out = out.slice(0, abs)
+      + renderThaiDate(dateParts.day, dateParts.monIdx, dateParts.yearCE, t.isBE)
+      + out.slice(abs + t.length);
   }
-  out = out.replace(headM[0], newHeader);
 
   // --- disclaimer: "ราคา ณ <วันที่>" (ถ้ามี) ---
   out = out.replace(/(<div class="disc">[\s\S]*?<\/div>)/i, (block) =>
-    block.replace(new RegExp(`(ราคา[^0-9<]{0,25})(\\d{1,2}(?:\\s*[–\\-]\\s*\\d{1,2})?\\s*(?:${monthAlt})\\s*(20\\d\\d|25\\d\\d|26\\d\\d))`, 'g'),
+    block.replace(new RegExp(`(ราคา[^0-9<]{0,25})(\\d{1,2}(?:\\s*[–\\-]\\s*\\d{1,2})?\\s*(?:${MONTH_ALT})\\s*(20\\d\\d|25\\d\\d|26\\d\\d))`, 'g'),
       (m, pre, tok, yr) => {
         const era = parseInt(yr, 10) >= 2400 ? dateParts.yearCE + 543 : dateParts.yearCE;
         return `${pre}${dateParts.day} ${THAI_MONTHS[dateParts.monIdx]} ${era}`;

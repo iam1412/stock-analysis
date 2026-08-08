@@ -175,6 +175,28 @@ expect('W10', 'warn', mutJson('stock-meta', (d) => { d.pe = (d.pe || 10) * 6; })
   ok(allIds(r).has('W09') && !errIds(r).has('E27'), `ราคาเก่า 45–120 วัน (จำลองวันนี้ ${today} = +60 วัน) → ต้องเตือน W09 (ไม่ block)` + (allIds(r).has('W09') ? '' : ' (เจอ: ' + [...allIds(r)].join(',') + ')'));
   delete process.env.STALE_TODAY;
 }
+// ★ วันที่ราคา ≠ วันที่อื่นในหัวรายงาน (regression 9 ส.ค. 2569)
+// parsePriceAge เดิมอ่าน "token สุดท้ายใน 140 ตัวอักษรหลังคำว่า ราคา" ⇒ หัวรายงานที่มีวัน ATH /
+// วันประกาศงบต่อท้าย จะอ่านโดนวันที่นั้นแทนวันที่ราคา (INTC/AMKR/ADVICE/RKLB) → staleness เพี้ยน
+// เดิมไม่ระเบิดเพราะ cron ก็ประทับวันที่รันทับ token ทุกตัวเหมือนกัน — พอแก้ cron แล้วต้องแก้ที่นี่ด้วย
+{
+  const M = ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'];
+  const thai = (iso) => { const d = new Date(Date.parse(iso)); return `${d.getUTCDate()} ${M[d.getUTCMonth()]} ${d.getUTCFullYear() + 543}`; };
+  const athDay = addDays(C.priceAge.iso, -300);   // วัน ATH เก่ากว่าวันที่ราคา 300 วัน (พ้นเกณฑ์ E27 120 วัน)
+  const withATH = base.replace(/(<div class="px-meta">)/i,
+    `$1\n        ราคาเคยขึ้นสูงสุดตลอดกาล ฿999 (${thai(athDay)}) · ประกาศงบ ${thai(addDays(C.priceAge.iso, -200))}<br>`);
+  ok(withATH !== base, 'fixture ATH/วันประกาศงบ apply แล้วเปลี่ยนจริง (anchor px-meta ไม่เพี้ยน)');
+  const cA = buildCtx(withATH, 'BBL.html');
+  ok(cA.priceAge && cA.priceAge.iso === C.priceAge.iso,
+    `หัวรายงานมีวัน ATH/วันประกาศงบต่อท้าย → ยังอ่าน "วันที่ราคา" ตัวเดิม`,
+    `อ่านได้ ${cA.priceAge && cA.priceAge.iso} ควรเป็น ${C.priceAge.iso}`);
+  process.env.STALE_TODAY = addDays(C.priceAge.iso, 1);
+  const rA = checkHtml(withATH, 'BBL.html');
+  ok(!errIds(rA).has('E27') && !allIds(rA).has('W09'),
+    'ราคาสดแต่มีวันที่เก่าในหัวรายงาน → ต้องไม่ฟ้อง staleness ปลอม (E27/W09)',
+    [...allIds(rA)].join(','));
+  delete process.env.STALE_TODAY;
+}
 
 // ── E34/E35/E36/E37/W12: ป้าย change รอบปี + กราฟ ~1 ปี (กฎ CLAUDE.md ข้อ 2 — มิ.ย. 2026) ──
 // E34: บังคับ theme เป็นเขียวใน mutation เอง (ไม่พึ่งว่าฐานปีนี้ขึ้นหรือลง) แล้วใส่ป้ายขาลง → ขัดสี

@@ -24,6 +24,8 @@ const path = require('path');
 const { expandReport, THEME_DEFAULTS } = require('../build.js');
 // โมดูล contrast กลางชุดเดียวกับตัวสร้างธีม/ตัวซ่อม — E38 ต้องคิดเลขตรงกับ tools/fix-contrast.js เป๊ะ ไม่งั้นเถียงกันที่ขอบเกณฑ์
 const bt = require('../tools/brandtheme.js');
+// "วันที่ราคา" อยู่ตรงไหนในหัวรายงาน = ความรู้ก้อนเดียวกับที่ cron ใช้เขียน — อย่าทำสำเนา
+const { parsePriceDate } = require('../tools/price-date.js');
 const { resolveColor } = require('../tools/fix-contrast.js');
 
 const REPORTS_DIR = path.join(__dirname, '..', 'reports');
@@ -72,26 +74,19 @@ function parseMethods(html) {
   }));
 }
 
-const THAI_MONTHS = ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'];
 // แปลง "ราคา ณ <วัน[–วัน]> <เดือนไทย> <ปี ค.ศ./พ.ศ.>" → อายุเป็นวันเทียบ "วันนี้"
 // ช่วงวัน (เช่น 14–18 มิ.ย.) ใช้ "วันท้าย" (ราคาที่สดสุด). พ.ศ.→ค.ศ. อัตโนมัติ.
+//
+// ★ ตัวหา token อยู่ที่ tools/price-date.js ที่เดียว ใช้ร่วมกับตัวเขียน (update-prices.patchReport)
+//   เดิมที่นี่หาเอง ด้วยกฎ "token สุดท้ายใน 140 ตัวอักษรหลังคำว่า ราคา" ⇒ หัวรายงานที่มีวันที่
+//   จุดสูงสุดตลอดกาล/วันประกาศงบต่อท้าย จะอ่านโดนวันที่นั้นแทนวันที่ราคา (INTC/AMKR/ADVICE/RKLB)
+//   — บังเอิญไม่ฟ้องเพราะตัวเขียนก็ประทับวันที่รันทับทุก token เหมือนกัน (บั๊กสองฝั่งหักล้างกัน)
 function parsePriceAge(header) {
-  const txt = norm(stripTags(header));
-  const i = txt.indexOf('ราคา');
-  const region = i === -1 ? txt : txt.slice(i, i + 140);
-  const monthAlt = THAI_MONTHS.map((m) => m.replace(/\./g, '\\.')).join('|');
-  const re = new RegExp(`(\\d{1,2})(?:\\s*[–\\-]\\s*(\\d{1,2}))?\\s*(${monthAlt})\\s*(20\\d\\d|25\\d\\d|26\\d\\d)`, 'g');
-  let m, last = null;
-  while ((m = re.exec(region))) last = m;
-  if (!last) return null;
-  const day = parseInt(last[2] || last[1], 10);
-  const mon = THAI_MONTHS.indexOf(last[3]);
-  let year = parseInt(last[4], 10);
-  if (year >= 2400) year -= 543; // พ.ศ. → ค.ศ.
-  if (mon < 0) return null;
+  const d = parsePriceDate(header);
+  if (!d) return null;
   const now = process.env.STALE_TODAY ? Date.parse(process.env.STALE_TODAY) : Date.now();
-  const dt = Date.UTC(year, mon, day);
-  return { iso: `${year}-${String(mon + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`, ageDays: Math.round((now - dt) / 86400000) };
+  const dt = Date.UTC(d.yearCE, d.monIdx, d.day);
+  return { iso: d.iso, ageDays: Math.round((now - dt) / 86400000) };
 }
 
 // ดึง key metric (ค่าในการ์ด .metric) ตามชื่อ label
