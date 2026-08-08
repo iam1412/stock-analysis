@@ -288,7 +288,7 @@
 
 1. **ก่อนเริ่ม:** `git pull --rebase origin main` → เช็ค `reports.json` (สด ≤7 วัน = ข้าม)
 2. **pre-fetch เสมอ:** `node tools/prep-stock.js <SYM> [--th]` → วางทั้ง block ใน `{{FUNDAMENTALS}}` · **exit 2 = ราคาขัดแหล่ง >5% → หยุด ถาม user ห้าม spawn**
-3. **spawn:** 1 หุ้น/agent · **sequential เท่านั้น** · ผ่าน workflow `analyze-wave` (ห้ามรันซ้อน) · prompt = `_template/agent-prompt.md`
+3. **spawn:** 1 หุ้น/agent · ผ่าน workflow `analyze-wave` โดย `stocks[]` มี **1 ตัวเสมอ** · **รันหลาย run ขนานกันได้** (แก้ 8 ส.ค. 2569 — ข้อห้ามจริงคือ "หลายหุ้นใน 1 run" ไม่ใช่ "หลาย run") · ก่อนขนานต้อง pre-assign สีแบรนด์เอง + verify/push รายแบตช์ · prompt = `_template/agent-prompt.md`
 4. **โมเดล:** Sonnet ทุกชั้น · **ตัวที่มี 🔺 → effort `high` + ปรึกษา `advisor` ผ่าน courier subagent ก่อน spawn** แล้วฝังแนวทางลง prompt
 5. **push รายตัว:** worker เสร็จ 1 ตัว → controller `npm run verify` → commit → `git push origin HEAD:main` ก่อน spawn ตัวถัดไป · **1 commit = 1 หุ้น** · ห้าม agent push เอง
 6. **quality > quota:** ตัวไหนตรวจแล้วพื้นฐานพัง/ทวนแหล่งไม่ได้ → SKIP + บันทึกเหตุผล ไม่ต้องฝืนให้ครบ 130

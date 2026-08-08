@@ -1,7 +1,7 @@
 export const meta = {
   name: 'analyze-wave',
   description: 'รันเวฟวิเคราะห์หุ้น: worker 1 ตัว/หุ้น แบบ sequential พร้อมคุม effort ต่อ worker (default medium)',
-  whenToUse: 'controller ใช้แทน Agent tool เมื่อต้องการตั้ง effort ให้ worker (งาน mechanical เช่น UPDATE-LIGHT) — args = { stocks: [{label, prompt, model?, effort?}], effort?, model? } · prompt เตรียมจาก _template/agent-prompt.md · แนะนำเรียก 1 หุ้น/call เพื่อคง push รายตัวของ controller (docs/orchestration.md §4–5) · ★ ห้ามรันซ้อน: อนุญาต 1 analyze-wave run ในเวลาเดียวเท่านั้น — รอ run เดิมจบก่อนค่อยเรียก call ใหม่',
+  whenToUse: 'controller ใช้แทน Agent tool เมื่อต้องการตั้ง effort ให้ worker (งาน mechanical เช่น UPDATE-LIGHT) — args = { stocks: [{label, prompt, model?, effort?}], effort?, model? } · prompt เตรียมจาก _template/agent-prompt.md · ★ `stocks[]` ต้องมี **1 ตัวเสมอ** — ข้อห้ามจริงคือ "หลายหุ้นใน 1 run" ไม่ใช่ "หลาย run" · **รันหลาย run ขนานกันได้** (1 หุ้น/run) แต่จำนวนที่ขนานเป็นดุลพินิจ เจอ rate limit ให้หาร N ครึ่ง · ก่อนขนานต้อง: controller pre-assign สีแบรนด์เอง (seeds.json race) + verify/push รายแบตช์ (docs/orchestration.md §4–5)',
   phases: [{ title: 'Analyze' }],
 }
 
