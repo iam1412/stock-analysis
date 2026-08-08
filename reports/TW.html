@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น Tradeweb Markets (TW) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 5">
+<script type="application/json" id="stock-meta">
+{"symbol":"TW","currency":"USD","price":102.62,"fairValue":115.01,"mos":10.8,"upside":12.1,"pe":24.55,"dividendYield":0.54,"roe":14.0}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#1da423",
+    "accentDark": "#157a1a",
+    "darkGrad": "linear-gradient(135deg,#062807 0%,#0c5a10 58%,#15981a 140%)",
+    "glow": "rgba(39,216,46,.35)",
+    "subColor": "#e1f5e2",
+    "headerMuted": "#e7f4e8",
+    "verdictText": "#e0f5e1",
+    "vcellLabel": "#ffffff",
+    "chgBg": "var(--red-soft)",
+    "chgColor": "#c5221f"
+  },
+  "chart": {
+    "data": [["ก.ย.25", 110.98], ["ต.ค.25", 105.39], ["พ.ย.25", 108.86], ["ธ.ค.25", 107.54],
+             ["ม.ค.26", 103.07], ["ก.พ.26", 123.25], ["มี.ค.26", 117.66], ["เม.ย.26", 113.25],
+             ["พ.ค.26", 100.25], ["มิ.ย.26", 99.66], ["ก.ค.26", 100.5], ["ส.ค.26", 102.62]],
+    "min": 90, "max": 130, "grid": [100, 110, 120],
+    "fairLine": 115.01, "currency": "$", "highlight": [9, 5]
+  },
+  "gauge": { "min": 75, "max": 135, "cur": 102.62, "fair": 115.01 },
+  "fv": 115.01
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots"><div style="width:8px;height:8px;border-radius:50%;background:#1da423;display:inline-block;margin:0 3px"></div><div style="width:8px;height:8px;border-radius:50%;background:#157a1a;display:inline-block;margin:0 3px"></div><div style="width:8px;height:8px;border-radius:50%;background:#0c5a10;display:inline-block;margin:0 3px"></div></div>
+    <div>
+      <span class="tag">NASDAQ: TW</span>
+      <span class="tag">Capital Markets / Fixed Income e-Trading</span>
+      <span class="tag">Multi-Asset Electronic Trading Platform</span>
+    </div>
+    <h1>Tradeweb Markets Inc. (TW)</h1>
+    <div class="sub">แพลตฟอร์มเทรดตราสารหนี้อิเล็กทรอนิกส์ • Rates • Credit • Money Markets • ETFs • Municipal Bonds</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$102.62<small>(TW)</small></div>
+      </div>
+      <div class="chg">▼ −7.5% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 7 ส.ค. 2569 (Yahoo Finance, ตรงกับ StockAnalysis.com)<br>
+        กรอบ 52 สัปดาห์ $91.42 – $139.31<br>
+        ที่มา: Yahoo Finance, StockAnalysis.com
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล TTM ล่าสุด</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">$21.96B</div><div class="d">~214M หุ้น (รวมทุกชั้น Class A/B/C/D)</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~24.55x</div><div class="d">EPS TTM $4.18 (dil.)</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~28x</div><div class="d">อดีตเทรด 20–45x ช่วงตลาดผันผวนสูง (ตั้งแต่ IPO 2019)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">~3.43x</div><div class="d">BVPS ประมาณ $29.94 (ประเมินจาก NI/ROE)</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ TTM</div><div class="v">$897M</div><div class="d">FY2025 $813M (+10.3% TTM YoY)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$4.18</div><div class="d">FY2025 $3.78 (+10.6% YoY)</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~$29.94</div><div class="d">ประเมินจาก NI TTM ÷ ROE 14.0%</div></div>
+      <div class="metric"><div class="k">ROE (TTM)</div><div class="v pos">~14.0%</div><div class="d">ขึ้นต่อเนื่องจาก 9.2% (FY2024)</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$2,206M</div><div class="d">+14.0% YoY • FY2025 +18.9%</div></div>
+      <div class="metric"><div class="k">อัตรากำไร</div><div class="v">OpM 43.7% / NetM 46.1%</div><div class="d">โมเดลแพลตฟอร์ม แทบไม่มีต้นทุนขาย</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~0.54%</div><div class="d">$0.56/หุ้น/ปี • payout ต่ำ เน้น reinvest</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">N/A</div><div class="d">ไม่มีข้อมูลยืนยันจากแหล่งที่ตรวจสอบ</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#1da423"></i>ราคา TW</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $115.01</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคาหุ้น TW เคลื่อนไหวในกรอบ $99.66–$123.25 ในรอบ 12 เดือนที่ผ่านมา ขึ้นไปแตะจุดสูงสุดที่ $123.25 ในเดือน ก.พ. 2569
+        ตามความคาดหวังปริมาณเทรด (ADV) ที่เร่งตัวจากความผันผวนของตลาดตราสารหนี้ ก่อนย่อตัวลงต่อเนื่องจนถึง $99.66 ในเดือน มิ.ย. 2569
+        จากความกังวลว่าปริมาณเทรดจะชะลอตัวเมื่อตลาดสงบลง ก่อนฟื้นตัวเล็กน้อยมาปิดที่ $102.62 ในปัจจุบัน
+        คิดเป็นผลตอบแทนรอบปีประมาณ −7.5%
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 2 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS (TTM) $4.18 × P/E เป้าหมาย ~27x — ต่ำกว่าค่าเฉลี่ยหลัง IPO ที่มักเทรด 30x+ สะท้อนดอกเบี้ยนโยบายที่สูงขึ้นและวัฏจักรตลาด rate ที่นิ่งกว่าเดิม</div></div>
+        <div class="mval">$112.86</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. EV/Revenue Valuation</div><div class="mdesc">รายได้ TTM ต่อหุ้น $10.31 (จาก $2,206M ÷ 214M หุ้น) × EV/Revenue เป้าหมาย ~10.5x (สูงกว่าปัจจุบัน 9.09x เล็กน้อย จากมาร์จิ้นที่ขยายตัวต่อเนื่อง — NetM 46.1% TTM vs 44.9% FY2025) แล้วปรับด้วยเงินสดสุทธิ $1,908M</div></div>
+        <div class="mval">$117.15</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $112.86 – $117.15</span></div>
+        <div class="r">$115.01</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ใช้ 2 วิธีที่อิงตัวคูณตลาด (ไม่ใช่ (r,g) แบบ DDM) — P/E ให้มูลค่าต่ำกว่าเล็กน้อยเพราะสมมติฐาน P/E เป้าหมายอนุรักษ์นิยมกว่าค่าเฉลี่ยประวัติศาสตร์
+        ส่วน EV/Revenue สะท้อนมาร์จิ้นที่ขยายตัวและฐานเงินสดสุทธิสูง ($2,058M เงินสด vs หนี้เพียง $150M, D/E 0.02) ไม่ใช้ DDM เพราะเงินปันผล
+        เพียง 0.54% ไม่ใช่ตัวขับเคลื่อนมูลค่าหลักของหุ้นนี้
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $102.62</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $115.01</div></div>
+        </div>
+        <div class="scale">
+          <span>$80.51<br><small>MOS 30%</small></span>
+          <span>$92.01<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$115.01<br><small>Fair Value</small></span>
+          <span style="text-align:right">$117.15<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">$123.86<br><small>เป้าเฉลี่ย Analyst</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน $102.62 อยู่ต่ำกว่ามูลค่าเหมาะสม $115.01 ประมาณ 10.8% และต่ำกว่าเป้าหมายนักวิเคราะห์เฉลี่ย $123.86 (n=14, Buy) ราว 17.2%
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict ok">
+        <div class="big">+10.8%</div>
+        <div class="txt"><b>มี Margin of Safety ระดับปานกลาง</b><br>ราคาต่ำกว่ามูลค่าเหมาะสมพอสมควร เหมาะสำหรับทยอยสะสมระยะยาว โดยเฉพาะหากราคาย่อลงมาใกล้โซน MOS 20% ($92.01) หรือ 30% ($80.51)</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$92.01</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$80.51</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $115.01</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="102.62" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $102.62 • EPS ฐาน ~$4.18 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS 5%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$96.80</div>
+          <div class="ret neg">−4.0% (3 ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$4.84</span></li>
+            <li><span>P/E ออก</span><span>20x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$1.68</span></li>
+            <li><span>สถานการณ์</span><span>ตลาดตราสารหนี้นิ่ง ADV ชะลอตัว P/E ถูก de-rate</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +12%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$143.82</div>
+          <div class="ret pos">+42.0% (3 ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$5.87</span></li>
+            <li><span>P/E ออก</span><span>24.5x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$1.85</span></li>
+            <li><span>สถานการณ์</span><span>เติบโตตามแนวโน้ม electronification ต่อเนื่อง ไม่มีการ re-rate</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +18%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$206.10</div>
+          <div class="ret pos">+102.9% (3 ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$6.87</span></li>
+            <li><span>P/E ออก</span><span>30x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$2.05</span></li>
+            <li><span>สถานการณ์</span><span>ADV เร่งตัวจากความผันผวน ส่วนแบ่งตลาด credit/repo เพิ่ม + re-rate</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      ผลตอบแทนรวมปันผล คำนวณจากราคาเป้า EPS ปี 3 × P/E ออก บวกปันผลสะสม 3 ปี หารด้วยราคาเข้า $102.62 — Base case ไม่ได้สมมติการ re-rating ของ P/E เพียงแค่เติบโตตามกำไร
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>Electronification ต่อเนื่อง:</b> การเทรดตราสารหนี้ (rates/credit) ยังย้ายจากโบรกเกอร์เสียงไปสู่แพลตฟอร์มอิเล็กทรอนิกส์ต่อเนื่อง ขยาย TAM ให้ Tradeweb</li>
+          <li><b>Credit trading เติบโตเร็ว:</b> portfolio trading และ all-to-all เป็นเซกเมนต์ที่โตเร็วสุด หนุนรายได้ +14–19% YoY ใน TTM/FY2025</li>
+          <li><b>Money markets/Repo:</b> ความผันผวนอัตราดอกเบี้ยระยะสั้นหนุนปริมาณเทรด repo และ money markets</li>
+          <li><b>ขยายตลาดต่างประเทศ:</b> ยุโรป/เอเชียยัง electronify ช้ากว่าสหรัฐฯ เหลือช่องว่างเติบโตอีกมาก</li>
+          <li><b>โมเดลมาร์จิ้นสูง กระแสเงินสดแข็งแกร่ง:</b> NetM TTM 46.1%, FCF TTM $1,145M, หนี้แทบไม่มี (D/E 0.02) เปิดทางซื้อหุ้นคืน/M&A</li>
+          <li><b>Network effect:</b> สภาพคล่องหลายสินทรัพย์ในแพลตฟอร์มเดียวเสริมความได้เปรียบเชิงโครงสร้างเหนือคู่แข่ง</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>รายได้ผูกกับปริมาณเทรด (ADV):</b> ปีที่ตลาดตราสารหนี้นิ่ง ความผันผวนต่ำ ปริมาณเทรดและรายได้จะโตช้าลงอย่างมีนัยสำคัญ</li>
+          <li><b>การแข่งขันสูง:</b> Bloomberg, MarketAxess, ICE และแพลตฟอร์มที่แบงก์เป็นเจ้าของ แข่งขันในตลาด e-trading ตราสารหนี้และ credit</li>
+          <li><b>โครงสร้างหุ้นหลายชั้น:</b> Class A/B/C/D กระจุกอำนาจโหวตไว้กับ LSEG (อดีต Refinitiv) และกลุ่มดีลเลอร์ผู้ก่อตั้ง จำกัดอิทธิพลผู้ถือหุ้นรายย่อย</li>
+          <li><b>ความเสี่ยงกฎระเบียบ:</b> การเปลี่ยนแปลงกฎเกณฑ์โครงสร้างตลาดตราสารหนี้/ทุนของดีลเลอร์อาจกระทบปริมาณเทรดหรือเศรษฐศาสตร์แพลตฟอร์ม</li>
+          <li><b>Valuation พรีเมียม:</b> P/E TTM ~24.5x ให้พื้นที่จำกัดหากการเติบโตชะลอตัวกว่าคาด อาจเกิด multiple compression</li>
+          <li><b>วัฏจักรดอกเบี้ย:</b> อัตราดอกเบี้ยขาลงอาจลดปริมาณเทรด money markets/repo ลง</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>TW: แพลตฟอร์มคุณภาพสูง มี MOS ปานกลาง เหมาะทยอยสะสม</h2>
+      <p>Tradeweb เป็นผู้นำตลาดเทรดตราสารหนี้อิเล็กทรอนิกส์ที่มีมาร์จิ้นสูง (NetM ~46%) กระแสเงินสดแข็งแกร่ง และแทบไม่มีหนี้ เติบโตตามการเปลี่ยนผ่านสู่การเทรดอิเล็กทรอนิกส์ของตลาด rates/credit/money markets ทั่วโลก
+      แม้ราคาหุ้นย่อตัวลง ~7.5% ในรอบปีจากความกังวลปริมาณเทรดชะลอตัวเมื่อตลาดสงบลง แต่ราคาปัจจุบันต่ำกว่ามูลค่าเหมาะสมประมาณ 10.8% ให้ margin of safety ระดับปานกลาง
+      เหมาะกับการทยอยสะสมระยะยาว โดยเฉพาะหากราคาย่อลงใกล้โซน MOS 20–30%</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$115.01 <span style="font-size:12px;color:#cab9a8">($112.86–$117.15)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +10.8%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$123.86 (Buy)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ทยอยสะสมที่ราคาปัจจุบันถึงโซน $92–$96 (MOS 20-30%) เพื่อเพิ่ม margin of safety ก่อนถือระยะยาว 3 ปีขึ้นไป ตามการเติบโตของปริมาณเทรด (ADV) และการขยายมาร์จิ้นของธุรกิจ
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ราคา ณ 7 ส.ค. 2569 จาก Yahoo Finance (cross-check กับ StockAnalysis.com ตรงกัน) • ข้อมูลงบการเงิน/ประมาณการจาก StockAnalysis.com
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 8 ส.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
