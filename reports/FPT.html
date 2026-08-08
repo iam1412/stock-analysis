@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น เฟรเซอร์ส พร็อพเพอร์ตี้ (ประเทศไทย) (FPT) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 5">
+<script type="application/json" id="stock-meta">
+{"symbol":"FPT","currency":"THB","price":7,"fairValue":6.86,"mos":-2.0,"upside":-2.0,"pe":6.86,"dividendYield":4.51,"roe":6.3}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#953ccd",
+    "accentDark": "#6e279b",
+    "darkGrad": "linear-gradient(135deg,#260b37 0%,#461565 58%,#7021a0 140%)",
+    "glow": "rgba(145,52,203,.35)",
+    "subColor": "#dac6e6",
+    "headerMuted": "#c0accd",
+    "verdictText": "#e3d4ed",
+    "vcellLabel": "#cbb6d9",
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#137333"
+  },
+  "chart": {
+    "data": [["ก.ย.25", 6.8], ["ต.ค.25", 6.4], ["พ.ย.25", 6.45], ["ธ.ค.25", 6],
+             ["ม.ค.26", 6.05], ["ก.พ.26", 6.5], ["มี.ค.26", 6], ["เม.ย.26", 6.3],
+             ["พ.ค.26", 6.4], ["มิ.ย.26", 6.5], ["ก.ค.26", 7.05], ["ส.ค.26", 7]],
+    "min": 5.5, "max": 7.5, "grid": [6, 6.5, 7],
+    "fairLine": 6.86, "currency": "฿", "highlight": [3, 10]
+  },
+  "gauge": { "min": 4.5, "max": 7.5, "cur": 7, "fair": 6.86 },
+  "fv": 6.86
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots"><div style="width:8px;height:8px;border-radius:50%;background:#953ccd;display:inline-block;margin:0 3px"></div><div style="width:8px;height:8px;border-radius:50%;background:#6e279b;display:inline-block;margin:0 3px"></div><div style="width:8px;height:8px;border-radius:50%;background:#461565;display:inline-block;margin:0 3px"></div></div>
+    <div>
+      <span class="tag">SET: FPT</span>
+      <span class="tag">อสังหาริมทรัพย์อุตสาหกรรม</span>
+      <span class="tag">โรงงาน-คลังสินค้าให้เช่า • สปอนเซอร์ FTREIT</span>
+    </div>
+    <h1>เฟรเซอร์ส พร็อพเพอร์ตี้ (ประเทศไทย) จำกัด (มหาชน)</h1>
+    <div class="sub">โรงงาน-คลังสินค้าสำเร็จรูปให้เช่า (Ready-Built) • อสังหาริมทรัพย์เพื่อขาย (ที่อยู่อาศัย) • โรงแรม • สปอนเซอร์ทรัสต์ FTREIT</div>
+    <div class="price-row">
+      <div>
+        <div class="px">฿7.00<small>(FPT)</small></div>
+      </div>
+      <div class="chg">▲ +2.9% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 7 ส.ค. 2569 (StockAnalysis.com, ตรงกับ Yahoo Finance ที่ ฿7.00 ต่าง 0%)<br>
+        กรอบ 52 สัปดาห์ ฿5.50 – ฿7.25<br>
+        ที่มา: Yahoo Finance, StockAnalysis.com, TradingEconomics.com
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ไตรมาสล่าสุด TTM (ประกาศงบ 7 ส.ค. 2569) + ปีบัญชี 2568 (ต.ค.2567–ก.ย.2568) — หมายเหตุ: ไม่มีข้อมูลพื้นที่ให้เช่า/อัตราการเช่า (occupancy)/ค่าเช่าต่อ ตร.ม. ล่าสุดจากแหล่งที่เข้าถึงได้ ณ วันวิเคราะห์ (เว็บ IR ของบริษัทขึ้น 404)</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">16,230 ลบ.</div><div class="d">2,319 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~6.86x</div><div class="d">อิง EPS(TTM) ที่มีกำไรพิเศษแฝง ~45% — ดูหมวด 3</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">16.96x (มัธยฐาน)</div><div class="d">ช่วง 10.80x–20.97x — สูงกว่าปัจจุบันมากเพราะ ROE เคยสูงกว่านี้</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">0.44x</div><div class="d">ต่ำกว่า book เกือบเท่าตัว สะท้อน ROE ต่ำกว่าต้นทุนทุน</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ ปีบัญชี 2568</div><div class="v">1,461 ลบ.</div><div class="d">+1.6% YoY (ปีบัญชี 2567: 1,438 ลบ.)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿1.02</div><div class="d">EPS ปกติ (ไม่รวมกำไรพิเศษ) ปีบัญชี 2568 = ฿0.63 — ใช้เป็นฐาน valuation แทน</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~฿15.73</div><div class="d">StockAnalysis.com งบดุลปีบัญชี 2568 (ไม่ derive จาก NI/ROE)</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~6.3% / 2.7% (ประมาณการ)</div><div class="d">TTM พองจากกำไรพิเศษ · ROE ปกติปีบัญชี 2568 = 4.0% · ROA ประมาณจากสินทรัพย์≈ส่วนผู้ถือหุ้น+หนี้มีดอกเบี้ย (ไม่รวมหนี้สินไม่มีดอกเบี้ย จริงจึงต่ำกว่านี้)</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">~12,940 ลบ.</div><div class="d">ประมาณจาก NetM%/กำไรสุทธิ (ไม่มีรายได้ตรงในชุดข้อมูลที่ pre-fetch)</div></div>
+      <div class="metric"><div class="k">อัตรากำไรจากดำเนินงาน (OpM)</div><div class="v">10.0% (TTM)</div><div class="d">ต่ำสุดใน 6 งวด — NetM TTM 18.3% สูงผิดปกติจากกำไรพิเศษ</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~4.51%</div><div class="d">฿0.32/หุ้น · payout ~31% ของกำไร TTM (~51% หากใช้ EPS ปกติ ฿0.63)</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">~0.9 (ประมาณการ)</div><div class="d">ไม่มีข้อมูล beta เผยแพร่จากแหล่งที่อนุญาตให้ใช้ ใช้ค่าประมาณตามลักษณะหุ้นอสังหาฯให้เช่าไทย</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART (ราคาย้อนหลัง ~1 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#953ccd"></i>ราคา FPT</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿6.86</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคาหุ้น FPT แกว่งในกรอบ ฿6.00–7.05 ตลอด 12 เดือนที่ผ่านมา จุดต่ำสุด ฿6.00 เกิดขึ้นช่วง ธ.ค.2568 และซ้ำอีกครั้งใน มี.ค.2569 (แรงขายช่วงตลาดกังวลดอกเบี้ย/อุปทานคลังสินค้าล้นบางทำเล) ก่อนจะฟื้นตัวต่อเนื่องตั้งแต่ เม.ย.2569 แตะจุดสูงสุดรอบปี ฿7.05 ใน ก.ค.2569 ใกล้เคียงช่วงประกาศงบไตรมาสล่าสุด (7 ส.ค. 2569) ราคาล่าสุดอยู่ที่ ฿7.00 ให้ผลตอบแทนรอบปี +2.9%
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 2 วิธี (ยึดตลาด, ไม่ใช้ r/g)</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation (EPS ปกติ)</div><div class="mdesc">EPS ปกติ (ไม่รวมกำไรพิเศษ อิงปีบัญชีล่าสุดซึ่ง NetM≈OpM พอดี) ฿0.63 × P/E เป้าหมาย 10.80x (= P/E จริงของปีบัญชีล่าสุดเอง — ไม่ใช้มัธยฐาน 5 ปี 16.96x เพราะสูงกว่าปัจจุบันจาก ROE ที่เคยสูงกว่านี้)</div></div>
+        <div class="mval">฿6.80</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. P/BV (Price-to-Book) Valuation</div><div class="mdesc">BVPS ปีบัญชี 2568 ฿15.73 (StockAnalysis.com งบดุลจริง ไม่ derive จาก NI/ROE) × P/B เป้าหมาย 0.44x (= P/B จริงของปีบัญชี 2568 เอง — ไม่ใช้มัธยฐาน 5 ปี 0.83x ด้วยเหตุผลเดียวกับวิธีที่ 1)</div></div>
+        <div class="mval">฿6.92</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿6.80 – ฿6.92</span></div>
+        <div class="r">฿6.86</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        <b>full-disclosure — เหตุที่ EPS 2 แหล่งต่างกัน 5.9% และวิธีคำนวณ FV:</b> EPS(TTM) จาก Yahoo Finance (฿1.08) กับ StockAnalysis.com (฿1.02) ต่างกัน 5.9% ตรวจสอบย้อนกลับด้วยงบจริงพบว่ากำไรสุทธิ TTM (2,368 ลบ.) ÷ หุ้นถัวเฉลี่ยถ่วงน้ำหนักปรับเจือจาง TTM (2,310 ล้านหุ้น) = ฿1.03 ใกล้เคียง StockAnalysis (ต่าง <1%) มากกว่า Yahoo มาก — สอดคล้องกับช่วงเวลาที่ StockAnalysis อัปเดตหลังบริษัทประกาศงบไตรมาสล่าสุดพอดีวันที่ 7 ส.ค. 2569 ขณะที่ Yahoo TTM น่าจะยังอิงหน้าต่างเก่าก่อนงบใหม่ ไม่ใช่ความขัดแย้งเชิงธุรกิจ จึงใช้ EPS(TTM)=฿1.02 เป็นค่าอ้างอิงหลัก แต่ EPS(TTM) นี้ (และ ROE TTM 6.3%) ยังพองสูงกว่าปกติ เพราะ NetM TTM (18.3%) สูงกว่า OpM TTM (10.0%) ถึง 8.3 จุด% ผิดปกติเมื่อเทียบทุกปีบัญชีก่อนหน้าที่ NetM≈OpM เสมอ (เช่นปีบัญชี 2568 NetM=OpM=10.7% พอดี) ส่วนต่างนี้บ่งชี้ว่า TTM มีรายการกำไรที่ไม่ใช่เงินสด/ไม่เกิดซ้ำก้อนใหญ่แฝงอยู่ราว 45% ของกำไรสุทธิ TTM (น่าจะเป็นกำไรจากการปรับมูลค่ายุติธรรมของอสังหาริมทรัพย์เพื่อการลงทุน และ/หรือกำไรจากการขายสินทรัพย์เข้าทรัสต์ FTREIT) รายงานนี้จึง<b>ไม่ใช้ EPS(TTM) ฿1.02 เป็นฐาน valuation</b> แต่ใช้ EPS ปีบัญชี 2568 (฿0.63) ที่ NetM≈OpM พอดี เป็น EPS ปกติแทน · เพิ่มเติม: ตัวคูณย้อนหลัง 5 ปี (P/E มัธยฐาน 16.96x, P/B มัธยฐาน 0.83x) สูงกว่าตัวคูณปัจจุบันมาก เพราะ ROE ลดลงต่อเนื่องจาก 7.0% (ปีบัญชี 2565) เหลือ 4.0% (ปีบัญชี 2568) — ตลาดปรับมูลค่าหุ้นลงตาม ROE ที่ลดลงจริง ไม่ใช่ตื่นตระหนกเกินเหตุ (คล้ายเคสธนาคารแคนาดาที่เทรดเหนือ P/B สูงสุดในรอบ 5 ปี แต่กลับด้าน) จึงเลือกใช้ตัวคูณของปีบัญชี 2568 เองเป็นเป้าหมายแทนค่ามัธยฐาน 5 ปี · <b>ข้อจำกัดของ 2 วิธีหลัก:</b> ทั้งวิธี P/E และ P/BV ข้างต้นใช้ตัวคูณ "ปีบัญชีล่าสุดเอง" ซึ่งโดยพีชคณิตแล้ว EPS×P/E และ BVPS×P/B ต่างก็ย้อนกลับไปประมาณราคาปิดปีบัญชีล่าสุดของหุ้นตัวมันเอง (ต่างกันแค่ทศนิยมของอัตราส่วนที่ปัดเศษ) ⇒ ช่วง ฿6.80–6.92 ที่แคบจึง**ไม่ใช่การยืนยันข้ามวิธีอย่างแท้จริง** เพียงแค่สะท้อนว่าราคาตลาดไม่ได้ขยับมากจากปีก่อน · <b>cross-check อิสระจริง 2 ทาง:</b> (1) DDM บนปันผลสดที่จ่ายจริง (ไม่ผูกกับราคาปีก่อน) D₁=฿0.32×(1+3%)=฿0.3296, r (CAPM: rf 2.05% พันธบัตรรัฐบาลไทย 10 ปี TradingEconomics.com 7 ส.ค. 2569 + β~0.9 ประมาณการ × ERP ไทย ~6.5%) ≈ 7.9%, g 3% → FV=0.3296/(7.9%−3%)≈฿6.73 (sensitivity r±0.5pp → ฿6.10–7.49 เพราะ r−g แคบเพียง 4.9pp) — ใกล้เคียง FV เฉลี่ย ฿6.86 มาก จึงเป็นหลักฐานยืนยันทิศทางที่หนักแน่นกว่า · (2) Justified P/BV=(ROE−g)/(r−g) กับ ROE ปกติ 4.0% (r,g ชุดเดียวกับ DDM) → ratio ~0.20x, FV~฿3.21 ต่ำกว่าราคาตลาดด้วยซ้ำ (sensitivity r±0.5pp → ฿2.91–3.57) เตือนว่าหาก ROE ไม่ฟื้นตัว หุ้นอาจไม่ถูกอย่างที่ P/B<1x ดูเหมือนบ่งชี้ — dispersion ของ DDM/Justified P/BV กับ 2 วิธีหลักเกิน 2 เท่า (Justified P/BV) จึงไม่นำมาเฉลี่ยรวมกับ FV หลัก ใช้เป็นบริบท/cross-check ทิศทางเท่านั้นตามเกณฑ์ dispersion gate — สรุป: ทั้ง DDM (ใกล้ FV) และ Justified P/BV (ต่ำกว่าราคาตลาด) ต่างชี้ไปทางเดียวกันคือ "ไม่ถูก" ไม่มีวิธีไหนสนับสนุนว่าราคาต่ำกว่ามูลค่าอย่างมีนัยสำคัญ
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿7.00</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿6.86</div></div>
+        </div>
+        <div class="scale">
+          <span>฿4.80<br><small>MOS 30%</small></span>
+          <span>฿5.49<br><small>MOS 20%</small></span>
+          <span style="text-align:center">฿6.86<br><small>Fair Value</small></span>
+          <span style="text-align:right">N/A<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">฿6.92<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน ฿7.00 อยู่เหนือมูลค่าเหมาะสม ฿6.86 เล็กน้อย (~2%) และห่างจากโซน MOS 20% (฿5.49) อยู่ประมาณ 22% — ยังไม่ใช่จังหวะที่มี margin of safety เพียงพอตามวิธีนี้ · ไม่มีนักวิเคราะห์ต่างชาติ/รายใหญ่เผยแพร่เป้าราคาสำหรับ FPT (ตรวจสอบ ณ 7 ส.ค. 2569 จาก Yahoo Finance และ StockAnalysis.com ทั้งสองแหล่งไม่มีข้อมูล analyst target)
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">−2.0%</div>
+        <div class="txt"><b>แทบไม่มี Margin of Safety (ราคาใกล้เคียงมูลค่าเหมาะสมมาก)</b><br>ราคาปัจจุบัน ฿7.00 สูงกว่ามูลค่าเหมาะสม ฿6.86 เล็กน้อย ไม่ใช่หุ้นที่ "ถูก" อย่างที่ P/B 0.44 เท่าดูเหมือนจะบ่งชี้ เพราะ ROE ลดลงตามไปด้วย นักลงทุนที่สนใจควรรอราคาย่อลงสู่โซน MOS 20–30% (฿4.80–5.49) เพื่อให้มีส่วนเผื่อความปลอดภัยจริง</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿5.49</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿4.80</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿6.86</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="7" step="0.05">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿7.00 • EPS ฐาน ~฿0.63 (ปกติ) • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS -3%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿4.60</div>
+          <div class="ret neg">−25.7% (3 ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.57</span></li>
+            <li><span>P/E ออก</span><span>8x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.60</span></li>
+            <li><span>สถานการณ์</span><span>ดอกเบี้ยค้างสูง อุปทานคลังสินค้า/โรงงานล้นตลาดกดค่าเช่า กำไรพิเศษจากขายเข้า REIT ชะลอ</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +5%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿7.29</div>
+          <div class="ret pos">+17.0% (3 ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.73</span></li>
+            <li><span>P/E ออก</span><span>10x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.90</span></li>
+            <li><span>สถานการณ์</span><span>อัตราเช่าทรงตัว-ฟื้นตัวช้าๆ ตาม FDI ในนิคมอุตสาหกรรม ดอกเบี้ยลดลงตามวัฏจักร ธปท.</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +12%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿11.51</div>
+          <div class="ret pos">+80.1% (3 ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.89</span></li>
+            <li><span>P/E ออก</span><span>13x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿1.20</span></li>
+            <li><span>สถานการณ์</span><span>ROE ฟื้นตัวใกล้ระดับปีบัญชี 2565 (7%) ตลาดให้ P/E สูงขึ้นตามความเชื่อมั่น + ขายสินทรัพย์เข้า FTREIT ต่อเนื่อง</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      ทุกฉากทัศน์ตั้งฐานบน EPS ปกติปีบัญชี 2568 (฿0.63) ไม่ใช่ EPS(TTM) ที่พองจากกำไรพิเศษ · Bear สะท้อนดอกเบี้ย/อุปทานกดค่าเช่า · Base สะท้อนแนวโน้มฟื้นตัวค่อยเป็นค่อยไป สอดคล้องกับ Fair Value หมวด 3 · Bull ต้องการทั้ง ROE ฟื้นตัวกลับสู่ 6-7% และตลาดให้ P/E กลับไปใกล้ระดับปีบัญชี 2566-67 (13-19x) ซึ่งยังไม่ใช่ base case
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>ดอกเบี้ยขาลง:</b> พันธบัตรรัฐบาลไทย 10 ปีล่าสุด 2.05% (TradingEconomics.com) ต่ำในรอบหลายปี ลดต้นทุนการเงินของบริษัทที่มี net D/E ~1.44 เท่า</li>
+          <li><b>Backlog โครงการ:</b> ที่อยู่อาศัย + โรงแรม หนุนรับรู้รายได้ต่อเนื่อง</li>
+          <li><b>Asset recycling ต่อเนื่อง:</b> ขายสินทรัพย์เข้าทรัสต์ FTREIT เป็นระยะ คืนทุนไปลงทุนใหม่/ลดหนี้ พร้อมรับรู้กำไรพิเศษเป็นช่วงๆ</li>
+          <li><b>FDI หนุนอุปสงค์:</b> อัตราการเช่าคลังสินค้า/โรงงานให้เช่า (RBW/RBF) มีโอกาสฟื้นตามการลงทุนตรงจากต่างประเทศในนิคมอุตสาหกรรมไทย</li>
+          <li><b>ปันผลรองรับ:</b> yield 4.51% ที่ราคาปัจจุบันให้ผลตอบแทนพื้นฐานระหว่างรอราคาฟื้นตัว</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>กำไรผันผวนสูง:</b> รายการไม่ใช่เงินสด (fair value gain/loss ของอสังหาริมทรัพย์เพื่อการลงทุน) ทำให้ EPS รายงวดเทียบกันตรงๆ ยาก — ดู full-disclosure หมวด 3</li>
+          <li><b>หนี้สูงตามธรรมชาติธุรกิจ:</b> Net D/E ~1.44 เท่า (หนี้ 53,140 ลบ. หักเงินสด 1,116 ลบ. ÷ ส่วนของผู้ถือหุ้น 36,221 ลบ.) อ่อนไหวต่อดอกเบี้ยและสภาพคล่องตลาดตราสารหนี้</li>
+          <li><b>ROE ลดลงต่อเนื่อง:</b> 7.0%→4.0% ใน 3 ปีบัญชี หากไม่ฟื้นตัว หุ้นอาจเทรดต่ำกว่า book value ต่อไปโดยมีเหตุผลรองรับ ไม่ใช่ undervalue จริง</li>
+          <li><b>อุปทานล้นตลาด:</b> คลังสินค้า/โรงงานให้เช่าในบางทำเลของไทยอุปทานสูง กดอัตราค่าเช่า/occupancy</li>
+          <li><b>รายได้จากขายเข้า REIT ไม่สม่ำเสมอ:</b> พึ่งพาจังหวะตลาดทุน/ความต้องการนักลงทุนสถาบัน</li>
+          <li><b>Coverage ต่ำ:</b> ไม่มีนักวิเคราะห์รายใหญ่ติดตามเผยแพร่เป้าราคา สภาพคล่องการซื้อขายค่อนข้างต่ำ</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>ถือ/รอจังหวะ — ราคาใกล้มูลค่าเหมาะสม ไม่ใช่หุ้นถูกอย่างที่ P/B ต่ำกว่า 1 เท่าดูเหมือนจะบ่งชี้</h2>
+      <p>FPT เทรดที่ P/BV เพียง 0.44 เท่า ต่ำกว่ามัธยฐาน 5 ปี (0.83x) มาก แต่การตรวจสอบพบว่า ROE ลดลงต่อเนื่องจาก 7.0% (ปีบัญชี 2565) เหลือ 4.0% (ปีบัญชี 2568) ในสัดส่วนใกล้เคียงกัน — ตลาดปรับราคาลงตาม ROE จริง ไม่ใช่ mispricing เมื่อใช้ตัวคูณของปีบัญชีล่าสุด (P/E 10.80x, P/B 0.44x) กับ EPS/BVPS ปกติที่ตัดกำไรพิเศษจากการปรับมูลค่ายุติธรรมออกแล้ว Fair Value อยู่ที่ ฿6.86 ใกล้เคียงราคาตลาดปัจจุบัน ฿7.00 มาก (MOS −2.0%) เหมาะกับการถือรับปันผล 4.51% มากกว่าไล่ซื้อเพิ่ม รอจังหวะราคาย่อหรือสัญญาณ ROE ฟื้นตัวชัดเจนก่อนเพิ่มน้ำหนัก</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿6.86 <span style="font-size:12px;color:#cab9a8">(฿6.80–฿6.92)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −2.0%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">ไม่มีข้อมูลเผยแพร่ (no coverage)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> รอสะสมในโซน MOS 20–30% (฿4.80–5.49) หรือรอสัญญาณ ROE ฟื้นตัวชัดเจน (NetM กลับมาใกล้ OpM ต่อเนื่อง 2-3 ไตรมาส) ก่อนเพิ่มน้ำหนัก นักลงทุนที่ถืออยู่แล้วรับปันผล 4.51% ระหว่างรอได้
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ราคา ณ 7 ส.ค. 2569 จาก StockAnalysis.com (cross-check กับ Yahoo Finance ตรงกัน ต่าง 0%) • ข้อมูลงบการเงิน/ตัวคูณย้อนหลังจาก StockAnalysis.com (financials/ratios, balance-sheet) • อัตราผลตอบแทนพันธบัตรรัฐบาลไทย 10 ปีจาก TradingEconomics.com (7 ส.ค. 2569) • EPS(TTM) 2 แหล่งต่างกัน 5.9% ตรวจสอบและกระทบยอดแล้ว ดูย่อหน้า full-disclosure ในหมวด 3
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 8 ส.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
