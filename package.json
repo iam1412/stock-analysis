@@ -17,7 +17,7 @@
     "test:ta": "node test/ta-engine-test.js",
     "check": "node test/check-reports.js",
     "check:site": "node test/check-site.js",
-    "verify": "node test/check-reports.js && node test/ohlc-test.js && node test/ta-engine-test.js && node build.js && node test/build-test.js && node test/engine-exec.js && node test/skeleton-test.js && node test/check-site.js",
+    "verify": "node test/update-prices-test.js && node test/dead-ticker-test.js && node test/check-reports.js && node test/ohlc-test.js && node test/ta-engine-test.js && node build.js && node test/build-test.js && node test/engine-exec.js && node test/skeleton-test.js && node test/check-site.js",
     "dev": "wrangler dev",
     "deploy": "wrangler deploy",
     "d1:init:local": "wrangler d1 execute stockai_d1 --local --file=./schema.sql",
