@@ -104,7 +104,7 @@
 | 27 | FNV | 46 | Franco-Nevada — royalty model ต้นตำรับ, ไม่มีหนี้ | 🔺 |
 | 28 | KGC | 33 | Kinross Gold — turnaround สำเร็จ งบสะอาดขึ้นมาก | 🔺 |
 | 29 | PAAS | 22 | Pan American Silver — เงิน+ทอง LatAm | 🔺 |
-| 30 | TECK | 33 | Teck Resources — ทองแดง (ธีม electrification) หลังขายถ่านหินออก | 🔺 |
+| 30 | ~~TECK~~ | 33 | ~~Teck Resources — ทองแดง (ธีม electrification) หลังขายถ่านหินออก~~ **⛔ ตัดออก 8 ส.ค. 2569** — อยู่ระหว่างควบรวมแบบ merger of equals กับ Anglo American (ดีลหุ้นแลกหุ้น ~$53bn) · ผู้ถือหุ้นอนุมัติแล้ว · ผ่านการพิจารณาฝั่งแคนาดาแล้ว · คาดปิดดีล ก.ย. 2569 – มี.ค. 2570 ⇒ ราคาถูกตรึงด้วยอัตราแลกหุ้น ไม่ใช่ปัจจัยพื้นฐาน การประเมินมูลค่าจึงไม่มีความหมาย · **เงื่อนไขกลับมาพิจารณา:** ดีลล่ม หรือหลังปิดดีลแล้ววิเคราะห์บริษัทใหม่ในชื่อใหม่แทน | 🔺 |
 
 ## US Tier 2 — คุณภาพนอก S&P 500 ที่ไม่เคยถูกสแกน (38 ตัว)
 
@@ -295,7 +295,7 @@
 
 ## 🔺 สรุปตัวที่ต้อง effort high (รวม 62 ตัว จาก 130 = เกือบครึ่ง)
 
-- **วัฏจักร ต้อง normalize EPS:** ทองคำ/โลหะทั้ง 7 (AEM·B·WPM·FNV·KGC·PAAS·TECK) · น้ำมันแคนาดา (CNQ·SU·IMO) · TTE · SCCC
+- **วัฏจักร ต้อง normalize EPS:** ทองคำ/โลหะ 6 ตัว (AEM·B·WPM·FNV·KGC·PAAS — ~~TECK~~ ตัดออก ดูแถว 30) · น้ำมันแคนาดา (CNQ·SU·IMO) · TTE · SCCC
 - **IPO/spin ใหม่ ประวัติ <2 ปี:** CRWV·NBIS·CBRS·RKLB·ASTS·MDLN·AMRZ·SUNB·VG·IONQ·QNT · MRDIYT·NEO·MEDEZE
 - **งบบิดเบือนจากดีล/โครงสร้าง:** UBS (ควบ CS) · FCNCA (ซื้อ SVB) · PNFP (ดีล Synovus) · DB · TD (คดี AML) · TRP (หลัง spin) · **THAI (ฟื้นฟูกิจการ — ยากสุด)**
 - **ประเมินด้วย P/E ตรง ๆ ไม่ได้:** RPRX (portfolio royalty) · MLP ทั้ง 3 (EPD·ET·MPLX) · SPI/MBK (sum-of-parts) · NBIS · SHANG/OHTL (NAV) · TLN
