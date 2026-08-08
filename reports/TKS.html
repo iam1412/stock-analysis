@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น ที.เค.เอส. เทคโนโลยี (TKS) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 5">
+<script type="application/json" id="stock-meta">
+{"symbol":"TKS","currency":"THB","price":8.15,"fairValue":8.11,"mos":-0.5,"upside":-0.5,"pe":11.3,"dividendYield":5.6,"roe":10.6}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#e92169",
+    "accentDark": "#b0124b",
+    "darkGrad": "linear-gradient(135deg,#3e0419 0%,#73082e 58%,#b60c49 140%)",
+    "glow": "rgba(232,23,99,.35)",
+    "subColor": "#ebc2d1",
+    "headerMuted": "#dcb6c4",
+    "verdictText": "#f1d0dc",
+    "vcellLabel": "#e7c0ce",
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#137333"
+  },
+  "chart": {
+    "data": [["ก.ย.25", 5.75], ["ต.ค.25", 5.6], ["พ.ย.25", 6.3], ["ธ.ค.25", 6.45],
+             ["ม.ค.26", 6.2], ["ก.พ.26", 6.95], ["มี.ค.26", 6.2], ["เม.ย.26", 6.25],
+             ["พ.ค.26", 7.2], ["มิ.ย.26", 7.15], ["ก.ค.26", 7.3], ["ส.ค.26", 8.15]],
+    "min": 5, "max": 9, "grid": [6, 7, 8],
+    "fairLine": 8.11, "currency": "฿", "highlight": [1, 11]
+  },
+  "gauge": { "min": 5, "max": 9, "cur": 8.15, "fair": 8.11 },
+  "fv": 8.11
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots"><div style="width:8px;height:8px;border-radius:50%;background:#e92169;display:inline-block;margin:0 3px"></div><div style="width:8px;height:8px;border-radius:50%;background:#b0124b;display:inline-block;margin:0 3px"></div><div style="width:8px;height:8px;border-radius:50%;background:#73082e;display:inline-block;margin:0 3px"></div></div>
+    <div>
+      <span class="tag">SET: TKS</span>
+      <span class="tag">Diversified Holdings / Security Printing &amp; IT</span>
+      <span class="tag">ถือหุ้นร่วม SYNEX 38.51% • PTECH 23.38%</span>
+    </div>
+    <h1>ที.เค.เอส. เทคโนโลยี (TKS)</h1>
+    <div class="sub">พิมพ์ธุรกิจ-บรรจุภัณฑ์ปลอดภัย (Security Printing) • Digital Transformation / System Integrator • ผู้ถือหุ้นใหญ่อันดับ 2 ใน SYNEX (38.51%) และ PTECH (23.38%) — สองบริษัทจดทะเบียนใน SET</div>
+    <div class="price-row">
+      <div>
+        <div class="px">฿8.15<small>(TKS)</small></div>
+      </div>
+      <div class="chg">▲ +41.7% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 7 ส.ค. 2569<br>
+        กรอบ 52 สัปดาห์ ฿5.35 – ฿8.45<br>
+        ที่มา: Yahoo Finance, StockAnalysis.com, SET.or.th / Settrade.com, Kaohoon.com
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">โครงสร้างโฮลดิ้ง — กำไรส่วนใหญ่มาจากส่วนแบ่งกำไรบริษัทร่วม</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">฿3,928 ล้านบาท</div><div class="d">482 ล้านหุ้น (คงเหลือ ส.ค. 69) • ทุนชำระแล้ว 508 ล้านหุ้น (SET)</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~11.3x</div><div class="d">อิง EPS ฿0.72 verified 3 แหล่ง (ดูย่อหน้า full-disclosure)</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~9.7x</div><div class="d">กรอบ 6.1x–12.1x (FY67 ขาดทุนไม่นับ)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">1.13x</div><div class="d">BVPS ฿7.19 (TTM, stockanalysis.com)</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2568</div><div class="v">฿277 ล้านบาท</div><div class="d">พลิกจากขาดทุน ฿55.7 ล้านบาท (+597.8% YoY)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿0.72</div><div class="d">FY2568 ฿0.56 • Q1/69 เร่งตัว +100.8% YoY</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~฿7.19</div><div class="d">ส่วนของผู้ถือหุ้น ฿3,465 ล้านบาท ÷ 482 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~10.6% / 2.8%</div><div class="d">ฟื้นจาก ROE −1.2% ปี 2567</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">฿1,440 ล้านบาท</div><div class="d">-4.9% YoY (ธุรกิจพิมพ์เดิมหดตัวต่อเนื่อง)</div></div>
+      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">35.8%</div><div class="d">ดีขึ้นจาก 34.7% (FY68)</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~5.6%</div><div class="d">฿0.46/หุ้น FY68 • Payout 76.8% • XD 27 เม.ย. 69</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">0.44</div><div class="d">ผันผวนต่ำกว่าตลาด (stockanalysis.com)</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#e92169"></i>ราคา TKS</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿8.11</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคาหุ้น TKS แกว่งตัวในกรอบ ฿5.6–6.5 ช่วงปลายปี 2568 (จุดต่ำสุด ฿5.6 ต.ค. 2568) ก่อนไต่ระดับขึ้นต่อเนื่องตั้งแต่ พ.ค. 2569 (฿7.2) จนถึง ฿8.15 ในปัจจุบัน (จุดสูงสุด ส.ค. 2569) รวมผลตอบแทน +41.7% ในรอบปี — แรงหนุนหลักมาจากผลประกอบการ Q1/2569 ที่กำไรสุทธิพุ่ง +100.8% YoY และผลงานแข็งแกร่งของ SYNEX ซึ่ง TKS ถือหุ้นเป็นอันดับ 2 (38.51%)
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 2 วิธีอิสระ</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. Sum-of-the-Parts (SOTP) — โฮลดิ้งบริษัทจดทะเบียน</div><div class="mdesc">หุ้น SYNEX 38.51% (มูลค่าตลาด ฿8,474 ล้าน) = ฿3,263 ล้าน หัก holding discount 25% = ฿2,447 ล้าน + หุ้น PTECH 23.38% (มูลค่าตลาด ฿367 ล้าน) = ฿86 ล้าน หัก discount 35% = ฿56 ล้าน + มูลค่าธุรกิจเดิม (พิมพ์ธุรกิจ/ดิจิทัล เฉพาะกำไรที่ไม่รวมส่วนแบ่งบริษัทร่วม ~฿136 ล้าน TTM) × P/E 11x = ฿1,496 ล้าน รวม ฿3,999 ล้านบาท ÷ 482 ล้านหุ้น</div></div>
+        <div class="mval">฿8.30</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. P/E Valuation (กำไรรวมส่วนของผู้ถือหุ้นบริษัทใหญ่)</div><div class="mdesc">EPS (TTM, verified: Yahoo + StockAnalysis financials + ข่าวกำไรสุทธิ) ฿0.72 × P/E เป้าหมาย ~11x — ใกล้เคียง P/E ปัจจุบัน 11.3x สะท้อนกำไรฟื้นตัวต่อเนื่องจากขาดทุนปี 2567</div></div>
+        <div class="mval">฿7.92</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿7.92 – ฿8.30</span></div>
+        <div class="r">฿8.11</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        <b>⚠️ Full disclosure — ที่มาของส่วนต่าง EPS(TTM) 33% ระหว่าง 2 แหล่ง:</b> Yahoo แสดง ฿0.72 ขณะที่หน้า quote summary ของ StockAnalysis.com แสดง ฿1.08 ตรวจสอบแล้วพบว่า <b>หน้า quote ของ StockAnalysis.com เป็นเลข vendor-derived ที่คลาดเคลื่อน/ไม่อัปเดต</b> เพราะหน้า financials/income-statement ของ StockAnalysis.com เจ้าเดียวกันกลับแสดง EPS(TTM) diluted = ฿0.72 ตรงกับ Yahoo เป๊ะ ตรงกับกำไรสุทธิส่วนของผู้ถือหุ้นบริษัทใหญ่ TTM ฿353.4 ล้านบาท ÷ หุ้นถัวเฉลี่ยถ่วงน้ำหนัก 492 ล้านหุ้น = ฿0.72 และตรงกับกำไรสุทธิ FY2568 ที่สื่อ (Kaohoon, ฐานเศรษฐกิจ) รายงานตรงกัน ฿277.3 ล้านบาท = EPS ฿0.56 — <b>สรุปใช้ EPS(TTM) ฿0.72 (กำไรส่วนของผู้ถือหุ้นบริษัทใหญ่ diluted) ตลอดรายงานนี้</b> ไม่ใช่ ฿1.08 ซึ่งเป็น artifact ระดับ quote ของผู้ให้บริการ ไม่ใช่นิยามกำไรอีกแบบจริง ๆ<br><br>
+        <b>สาเหตุเชิงโครงสร้าง:</b> TKS ถือหุ้น <b>บริษัทร่วม (equity method ไม่ใช่บริษัทย่อย)</b> 2 แห่งที่จดทะเบียนใน SET คือ <b>SYNEX (ซินเน็ค ประเทศไทย) 38.51%</b> และ <b>PTECH (พลัส เทค อินโนเวชั่น) 23.38%</b> (ยืนยันจากข้อมูลผู้ถือหุ้นรายใหญ่ SET/Settrade พ.ค. 2569 และ มิ.ย. 2568) SYNEX มีกำไรสุทธิ TTM ฿835 ล้านบาท (+8.5% YoY) ส่วนแบ่งกำไรที่ TKS รับรู้จึงเป็นสัดส่วนใหญ่ของกำไรรวม (ประมาณ ฿300 ล้านบาทขึ้นไปจากกำไรสุทธิรวม TTM ฿353 ล้านบาท — ประมาณจากกำไรจากการดำเนินงาน ฿221 ล้านบาท เทียบกับกำไรสุทธิ เพราะ TKS ไม่แยกเปิดเผยส่วนแบ่งกำไรรายบริษัทในงบ) ขณะที่ PTECH ขาดทุนหนัก TTM ฿921 ล้านบาท ฉุดกำไรรวมลง ส่วนได้เสียที่ไม่มีอำนาจควบคุม (NCI) ในงบ TKS มีขนาดเล็กเพียง ฿16.8 ล้านบาท (TTM) มาจากบริษัทย่อยอื่นที่ TKS ถือหุ้นข้างมากจริง <b>ไม่ใช่จาก SYNEX/PTECH ซึ่งใช้ equity method</b> — สมมติฐานตั้งต้นเรื่อง NCI ก้อนใหญ่จึงไม่ใช่สาเหตุหลักของส่วนต่าง EPS ที่แท้จริง<br><br>
+        <b>ป้องกันการนับซ้ำ:</b> เนื่องจากมูลค่าหุ้น SYNEX ที่ถือ (฿3,263 ล้านบาท) เพียงอย่างเดียวมากกว่ามูลค่าตลาดรวมของ TKS ทั้งบริษัท (~฿3.9–4.1 พันล้านบาท) จึงเข้าเกณฑ์บังคับใช้ sum-of-parts (Method 1) โดยมูลค่าธุรกิจเดิมคำนวณจาก<b>กำไรจากการดำเนินงานเท่านั้น (ไม่รวมส่วนแบ่งกำไรบริษัทร่วมซึ่งแยกออกไปแล้ว)</b> ส่วน Method 2 ใช้ EPS รวมทั้งก้อนซึ่ง<b>มีส่วนแบ่งกำไร SYNEX/ขาดทุน PTECH ปนอยู่แล้ว จึงห้ามบวกมูลค่าเงินลงทุนจาก Method 1 เข้าไปอีก</b> — สองวิธีเป็นมุมมองคู่ขนานที่เป็นอิสระต่อกันจริง (dispersion 8.30/7.92 = 1.05× ไม่เกิน 2 เท่า เฉลี่ยตรงได้) ให้ผลใกล้เคียงกันมาก FV เฉลี่ย ฿8.11 ใกล้เคียงราคาตลาดปัจจุบัน แสดงว่าตลาดให้ราคาหุ้น TKS สะท้อนมูลค่ารวมของสินทรัพย์ที่ถืออยู่เกือบเต็มแล้ว
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿8.15</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿8.11</div></div>
+        </div>
+        <div class="scale">
+          <span>฿5.68<br><small>MOS 30%</small></span>
+          <span>฿6.49<br><small>MOS 20%</small></span>
+          <span style="text-align:center">฿8.11<br><small>Fair Value</small></span>
+          <span style="text-align:right">N/A<br><small>เป้าเฉลี่ย Analyst (ไม่มี Coverage)</small></span>
+          <span style="text-align:right">฿8.30<br><small>กรอบบน FV</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน ฿8.15 อยู่เหนือ Fair Value เฉลี่ย ฿8.11 เล็กน้อย (ในกรอบ ฿7.92–8.30) — <b>ไม่มีนักวิเคราะห์ติดตามหุ้นนี้อย่างเป็นทางการ</b> (0 บทวิเคราะห์ consensus จาก IAA/Settrade ณ ส.ค. 2569) จึงไม่มีเป้าราคาเฉลี่ยนักวิเคราะห์แสดงบนกราฟ
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">−0.5%</div>
+        <div class="txt"><b>แทบไม่มี Margin of Safety — ราคาตลาดใกล้เคียงมูลค่าเหมาะสม (SOTP) มากแล้ว</b><br>นักลงทุนใหม่อาจรอจังหวะราคาย่อลงสู่โซน MOS20 (~฿6.49) ก่อนเข้าซื้อ ผู้ถืออยู่แล้วอาจถือรับปันผล ~5.6% ระหว่างติดตามผลประกอบการรายไตรมาสของ SYNEX/PTECH</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿6.49</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿5.68</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿8.11</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="8.15" step="0.05">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿8.15 • EPS ฐาน ~฿0.72 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS −5%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿4.96</div>
+          <div class="ret neg">−28.1% (3 ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.62</span></li>
+            <li><span>P/E ออก</span><span>8x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.90</span></li>
+            <li><span>สถานการณ์</span><span>ธุรกิจพิมพ์เดิมหดตัวต่อเนื่อง + SYNEX โตชะลอ + PTECH ขาดทุนหนักขึ้นจนต้อง write-down เพิ่ม กดดัน P/E ต่ำกว่าค่าเฉลี่ยประวัติศาสตร์</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +8%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿10.00</div>
+          <div class="ret pos">+41.1% (3 ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.91</span></li>
+            <li><span>P/E ออก</span><span>11x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿1.50</span></li>
+            <li><span>สถานการณ์</span><span>SYNEX เติบโตตามอุตสาหกรรม IT distribution ~8-10%/ปี ธุรกิจเดิมทรงตัว PTECH ขาดทุนคงที่ไม่ลุกลามเพิ่ม</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +18%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿15.30</div>
+          <div class="ret pos">+112.3% (3 ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿1.18</span></li>
+            <li><span>P/E ออก</span><span>13x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿2.00</span></li>
+            <li><span>สถานการณ์</span><span>SYNEX เร่งตัวจากดีมานด์ IT/data center + PTECH เทิร์นอราวด์ + ธุรกิจดิจิทัลของ TKS เองเติบโตเร่งขึ้น ตลาดให้ premium กับโครงสร้างโฮลดิ้ง</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      คาดการณ์อิง EPS ฐาน TTM ฿0.72 (กำไรส่วนของผู้ถือหุ้นบริษัทใหญ่ที่ verified แล้ว) Base Case สมมติ SYNEX เติบโตตามอุตสาหกรรมและ PTECH ไม่ลุกลามเพิ่ม P/E ออกปรับตามความเชื่อมั่นตลาดต่อโครงสร้างโฮลดิ้ง ผลตอบแทนต่อปีเป็นค่าประมาณ (รวม/3 ไม่ได้ทบต้น)
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>SYNEX เติบโตต่อเนื่อง:</b> กำไรสุทธิ TTM ของ SYNEX +8.5% YoY แตะ ฿835 ล้านบาท จากธุรกิจจัดจำหน่าย IT ที่ยังขยายตัว ทุกที่กำไร SYNEX โตขึ้นจะหนุนส่วนแบ่งกำไรของ TKS โดยตรง</li>
+          <li><b>ธุรกิจหลักฟื้นตัวชัดเจน:</b> Q1/2569 กำไรสุทธิส่วนของผู้ถือหุ้นบริษัทใหญ่ ฿151.6 ล้านบาท +100.8% YoY จากการควบคุมต้นทุนและ margin ขั้นต้นที่ดีขึ้น (35.8% TTM จาก 34.7% FY68)</li>
+          <li><b>ปันผลสม่ำเสมอ:</b> yield ~5.6% payout ~77% แม้เพิ่งพลิกจากขาดทุนในปี 2567</li>
+          <li><b>PTECH อาจลดแรงฉุด:</b> หากขาดทุนของ PTECH เริ่มควบคุมได้ (impairment ส่วนใหญ่รับรู้ไปแล้วในปี 2567-2568) ผลลบต่อกำไรรวมของ TKS จะเบาลง</li>
+          <li><b>ธุรกิจดิจิทัล/System Integrator เติบโต:</b> อาจชดเชยธุรกิจพิมพ์ธุรกิจดั้งเดิมที่หดตัวต่อเนื่อง</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>รายได้หลักหดตัวต่อเนื่อง:</b> TTM −4.9% YoY (ลดลง 4 ใน 5 ปีล่าสุด) ธุรกิจพิมพ์ธุรกิจดั้งเดิมถูก disrupt โดยดิจิทัล</li>
+          <li><b>พึ่งพากำไรจาก SYNEX สูง:</b> ประเมินว่ากว่า 80% ของกำไรสุทธิ TTM มาจากส่วนแบ่งกำไรบริษัทร่วม (SYNEX) ไม่ใช่ธุรกิจของตัวเอง — ความเสี่ยงกระจุกตัวสูง</li>
+          <li><b>PTECH ขาดทุนหนักต่อเนื่อง:</b> ขาดทุนสุทธิ TTM ฿921 ล้านบาท (มากกว่ามูลค่าตลาดทั้งบริษัท ฿367 ล้านบาทเสียอีก) ความเสี่ยง write-down เพิ่มเติมและอาจต้องเพิ่มทุน</li>
+          <li><b>ไม่มีนักวิเคราะห์ติดตามอย่างเป็นทางการ:</b> 0 บทวิเคราะห์ consensus (Settrade IAA ณ ส.ค. 2569) ทำให้การค้นพบราคา/ข้อมูลไม่โปร่งใสเท่าหุ้นใหญ่</li>
+          <li><b>โครงสร้างโฮลดิ้งซับซ้อน:</b> มูลค่าส่วนใหญ่ขึ้นกับราคาตลาดของ SYNEX/PTECH ที่ TKS ควบคุมไม่ได้โดยตรง (ถือ &lt;50% ทั้งคู่) ความเสี่ยงจาก sentiment ของหุ้นในพอร์ต ไม่ใช่ผลประกอบการ TKS เอง</li>
+          <li><b>สภาพคล่องหุ้นจำกัด:</b> มูลค่าตลาดเล็ก (~฿3.9-4.1 พันล้านบาท) เทียบกับหุ้นใหญ่ในตลาด</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>TKS: ราคาสะท้อนมูลค่าหุ้น SYNEX ที่ถืออยู่เกือบเต็มแล้ว</h2>
+      <p>TKS ไม่ใช่แค่บริษัทพิมพ์ธุรกิจ/บรรจุภัณฑ์อีกต่อไป แต่เป็นโฮลดิ้งที่กำไรส่วนใหญ่มาจากส่วนแบ่งกำไรของ SYNEX (ถือ 38.51%) ซึ่งกำลังเติบโตดี ขณะที่ PTECH (ถือ 23.38%) ยังขาดทุนหนักและฉุดกำไรรวม ทั้งวิธี Sum-of-the-Parts และ P/E บนกำไรรวมให้มูลค่าใกล้เคียงกันที่ ~฿8.11 ต่อหุ้น ใกล้เคียงราคาตลาดปัจจุบันมาก (MOS −0.5%) แสดงว่าราคาหุ้นได้สะท้อนมูลค่าของสินทรัพย์ที่ถืออยู่เกือบเต็มแล้ว ไม่ใช่หุ้น deep-value แต่เป็นหุ้นที่ให้ผลตอบแทนหลักผ่านการเติบโตของ SYNEX ในระยะยาวและเงินปันผลระหว่างทาง</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿8.11 <span style="font-size:12px;color:#cab9a8">(฿7.92–฿8.30)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −0.5%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">N/A (ไม่มี Coverage)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ราคาปัจจุบันใกล้เคียงมูลค่าเหมาะสมแล้ว นักลงทุนใหม่ควรรอจังหวะย่อตัวสู่โซน MOS20 (~฿6.49) ก่อนเข้าซื้อ ผู้ที่ถืออยู่แล้วอาจถือรับปันผล ~5.6% ต่อไป พร้อมติดตามผลประกอบการรายไตรมาสของ SYNEX และ PTECH อย่างใกล้ชิด เพราะเป็นตัวขับเคลื่อนมูลค่าหลักของ TKS
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, ส่วนลดโฮลดิ้ง (holding discount), และการประมาณกำไรธุรกิจเดิมที่ไม่รวมส่วนแบ่งบริษัทร่วม
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ราคา ณ 7 ส.ค. 2569 จาก Yahoo Finance / StockAnalysis.com (cross-check ตรงกัน 0%) • ข้อมูลงบการเงิน/อัตราส่วนจาก StockAnalysis.com (financials, ratios, balance-sheet) • ข้อมูลผู้ถือหุ้นรายใหญ่ SYNEX/PTECH และราคาตลาดจาก SET.or.th / Settrade.com / stockanalysis.com • ข่าวกำไรสุทธิ FY2568 จาก Kaohoon.com, Thansettakij.com
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 8 ส.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
