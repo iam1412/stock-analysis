@@ -72,6 +72,8 @@ npm run test:self        # meta-test: พิสูจน์ว่า checker เ
 
 - ★ **MLP: ห้ามทำ DCF บน "distributable cash flow" แล้วใส่อัตราการเติบโต** (พบ 8 ส.ค. 2569 จาก MPLX) — DCF ของ MLP เป็นตัวเลข **ก่อนหัก growth capex** ⇒ การสมมติว่าจ่ายออกทั้งหมด *และ* โตไปด้วย คือการนับเงินก้อนเดียวสองครั้ง (MPLX: DCF ไตรมาส $1,408M เทียบ adjusted FCF หลัง growth capex ที่บริษัทรายงานเอง $549M) · ให้ใช้ **DDM บน distribution** (แบบที่ EPD ใช้แล้วได้ผลสะอาด) หรือ **FCF หลังหัก growth capex** แทน
 
+- ★★ **หุ้นไทยก็ pre-fetch ตัวคูณได้** (ยืนยัน 8 ส.ค. 2569) — URL คือ **`stockanalysis.com/quote/bkk/<SYM>/financials/ratios/`** (ไม่ใช่ `/stocks/<SYM>/` แบบหุ้น US) ให้ P/E · P/B · EV/EBITDA รายปี · หน้า `/financials/balance-sheet/` ก็ใช้ได้ (ให้ส่วนของผู้ถือหุ้น + **BVPS** + จำนวนหุ้น) ⇒ **ไม่ต้องให้ worker derive BVPS จาก NI/ROE อีก** · เคส SCCC: worker derive ได้ ฿115.80 ส่วนค่าจริง ฿112.54 (ห่าง 2.9% — บังเอิญใกล้) แต่ทางเลือกที่ derive จาก D/E ให้ ฿139.14 ซึ่งผิด 24% ⇒ **การ derive เป็นการเดาที่บางครั้งแม่นบางครั้งพลาด อย่าพึ่ง**
+
 - ★ **ตัวคูณมัธยฐานต้องวัดจริงเสมอ ห้ามให้ worker ประมาณ** — บล็อก `prep-stock` ไม่มี D&A/EV รายปี ⇒ worker จะ "ประมาณจากความรู้โมเดล" โดยอัตโนมัติ (เกิดจริง 2 ตัวในเวฟเดียว) · **controller ต้อง pre-fetch ให้** · แหล่งที่ใช้ง่ายสุด: `stockanalysis.com/stocks/<SYM>/financials/ratios/` มี P/E · EV/EBITDA · P/B · P/S รายปีให้ตรง ๆ
 
 - ★ **`epsTTM` ระดับ quote = เลข derived ของ vendor** — ขัดกัน >2% ให้ reconcile ที่**ระดับงบ**ข้าม 2 vendor · **ห้ามนับ quote + financials ของเจ้าเดียวกันเป็น 2 แหล่ง** · เคสจริง 7/14 ตัวขึ้น ⚠ แต่งบของ 2 เจ้าตรงกันทุกตัว ตัวที่เพี้ยนคือฟิลด์ quote ของ Yahoo (บางตัวช้าไป 1 ไตรมาส บางตัวเป็น adjusted EPS)
