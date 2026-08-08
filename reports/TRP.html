@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น TC Energy (TRP) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Opus 5">
+<script type="application/json" id="stock-meta">
+{"symbol":"TRP","currency":"USD","price":63.23,"fairValue":52.46,"mos":-20.5,"upside":-17.0,"pe":26.4,"dividendYield":3.91,"roe":11.4}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#275de2",
+    "accentDark": "#1741ab",
+    "darkGrad": "linear-gradient(135deg,#06153c 0%,#0b286f 58%,#113fb0 140%)",
+    "glow": "rgba(30,86,225,.35)",
+    "subColor": "#c2cdeb",
+    "headerMuted": "#a5b3d4",
+    "verdictText": "#d0d9f1",
+    "vcellLabel": "#adbce0",
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#137333"
+  },
+  "chart": {
+    "data": [["ก.ย.25", 54.41], ["ต.ค.25", 50.16], ["พ.ย.25", 54.72], ["ธ.ค.25", 55.01],
+             ["ม.ค.26", 58.67], ["ก.พ.26", 64.37], ["มี.ค.26", 62.6], ["เม.ย.26", 66.93],
+             ["พ.ค.26", 66.62], ["มิ.ย.26", 66.29], ["ก.ค.26", 67.43], ["ส.ค.26", 63.23]],
+    "min": 45, "max": 70, "grid": [50, 55, 60, 65],
+    "fairLine": 52.46, "currency": "$", "highlight": [1, 10]
+  },
+  "gauge": { "min": 35, "max": 75, "cur": 63.23, "fair": 52.46 },
+  "fv": 52.46
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots"><div style="width:8px;height:8px;border-radius:50%;background:#275de2;display:inline-block;margin:0 3px"></div><div style="width:8px;height:8px;border-radius:50%;background:#1741ab;display:inline-block;margin:0 3px"></div><div style="width:8px;height:8px;border-radius:50%;background:#0b286f;display:inline-block;margin:0 3px"></div></div>
+    <div>
+      <span class="tag">NYSE: TRP</span>
+      <span class="tag">Energy — Midstream</span>
+      <span class="tag">ท่อก๊าซธรรมชาติอเมริกาเหนือ</span>
+    </div>
+    <h1>TC Energy Corporation</h1>
+    <div class="sub">ท่อก๊าซธรรมชาติแคนาดา–สหรัฐฯ–เม็กซิโก • NGTL &amp; Canadian Mainline • Columbia Gas • ธุรกิจไฟฟ้า (Bruce Power) • รายได้เกือบทั้งหมดมาจากสัญญาระยะยาว/ค่าผ่านท่อที่กำกับดูแล</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$63.23<small>(TRP)</small></div>
+      </div>
+      <div class="chg">▲ +16.2% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 7 ส.ค. 2569 (StockAnalysis.com ตรงกับ Yahoo Finance 0.00%)<br>
+        กรอบ 52 สัปดาห์ $49.27 – $71.47<br>
+        ที่มา: StockAnalysis.com, Yahoo Finance, TradingView (TVC:CA10Y)
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">งบการเงินสกุล CAD • ราคาซื้อขายสกุล USD</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~$65.8B</div><div class="d">1,041 ล้านหุ้น (TTM)</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~26.4x</div><div class="d">$63.23 ÷ EPS $2.39 (USD ทั้งคู่)</div></div>
+      <div class="metric"><div class="k">EV/EBITDA (TTM)</div><div class="v neu">~15.0x</div><div class="d">EV ~C$153.5B ÷ EBITDA ~C$10.3B</div></div>
+      <div class="metric"><div class="k">หนี้สุทธิ / EBITDA</div><div class="v neu">~6.0x</div><div class="d">หนี้สุทธิ ~C$61.7B (นิยามงบ)</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">C$3,400 ล้าน</div><div class="d">−26.0% YoY (ฐาน FY2024 สูงผิดปกติ)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$2.39</div><div class="d">= C$3.34 (dil.) × CADUSD 0.717</div></div>
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">C$15,690 ล้าน</div><div class="d">+9.7% YoY จาก FY2025</div></div>
+      <div class="metric"><div class="k">ROE (TTM)</div><div class="v pos">~11.4%</div><div class="d">ฐานส่วนของผู้ถือหุ้นสามัญ (ไม่รวม NCI)</div></div>
+
+      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">50.5%</div><div class="d">อัตรากำไรจากดำเนินงาน 45.0%</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~3.91%</div><div class="d">$2.48/หุ้น — ประกาศเป็น CAD ~C$3.46</div></div>
+      <div class="metric"><div class="k">Beta (60 เดือน)</div><div class="v">0.70 → 0.80</div><div class="d">ดิบ → ปรับ Blume (⅔β + ⅓)</div></div>
+      <div class="metric"><div class="k">FCF (TTM)</div><div class="v pos">C$4,059 ล้าน</div><div class="d">พลิกจาก −C$881 ล้าน FY2023</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#275de2"></i>ราคา TRP</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $52.46</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคาทำจุดต่ำสุดของช่วงที่ $50.16 ในเดือน ต.ค. 2568 แล้วไต่ขึ้นต่อเนื่องเกือบทั้งปีจนแตะจุดสูงสุด $67.43 ในเดือน ก.ค. 2569
+        ก่อนย่อกลับมาที่ $63.23 — รวมทั้งรอบปี <b>+16.2%</b> แรงหนุนหลักคือความต้องการก๊าซธรรมชาติจากศูนย์ข้อมูล/LNG ฝั่งอเมริกาเหนือ
+        การทยอยรับรู้รายได้จากโครงการ Southeast Gateway และ Coastal GasLink ที่เริ่มเดินเครื่องเต็มปี บวกกับงบดุลที่เบาลงหลังแยก South Bow ออกไปเมื่อ ต.ค. 2567
+        การย่อในเดือนล่าสุดสอดคล้องกับผลตอบแทนพันธบัตรที่ขยับขึ้น ซึ่งกดหุ้นกลุ่มโครงสร้างพื้นฐานอายุยาวเป็นปกติ
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 2 วิธี • ประเมิน native เป็น CAD แล้วแปลงเป็น USD</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. DDM / Gordon Growth (ระดับผู้ถือหุ้น)</div><div class="mdesc">D₁ = ปันผล C$3.46 × (1+g) = C$3.58 ; g 3.5%, r 7.6% → C$3.58 ÷ (7.6% − 3.5%) = C$87.34 ต่อหุ้น → × CADUSD 0.717</div></div>
+        <div class="mval">$62.62</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. EV/EBITDA มัธยฐานหลังสปิน − หนี้สุทธิ (ระดับกิจการ ไม่ใช้ r หรือ g เลย)</div><div class="mdesc">มัธยฐาน EV/EBITDA วัดจาก <b>2 จุดหลัง spin South Bow เท่านั้น</b> (FY2567 11.47x · FY2568 12.57x — วัดจากราคาปิดกระดาน TSX สกุล CAD ให้ตรงกับสกุลงบ) ⇒ ใช้ 12.0x × EBITDA TTM ~C$10.26B = EV C$123.12B − หนี้สุทธิ C$61.7B = C$61.42B ÷ 1,041 ล้านหุ้น = C$59.00 → × CADUSD 0.717 · หน้าต่างสั้นที่สุดในกลุ่ม ความไม่แน่นอนสูงกว่าตัวอื่น</div></div>
+        <div class="mval">$42.30</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $42.30 – $62.62</span></div>
+        <div class="r">$52.46</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        <b>ที่มาของ r (ผลตอบแทนที่ต้องการของผู้ถือหุ้น) — ตรวจสอบได้:</b> วัด β จากผลตอบแทนรายเดือน 60 เดือนเทียบ S&amp;P 500 ได้ <b>0.70</b>
+        แล้วปรับด้วยสูตร Blume มาตรฐาน β_adj = ⅔β + ⅓ = <b>0.80</b> (หน้าต่าง 2564–2569 มีช็อกดอกเบี้ยทำให้ β ดิบต่ำผิดปกติ การปรับ Blume เป็นวิธีเชิงกลไกที่เป็นมาตรฐาน)
+        · rf = พันธบัตรรัฐบาลแคนาดา 10 ปี <b>3.643%</b> (TVC:CA10Y ดึงจริง 8 ส.ค. 2569 — ใช้ rf สกุล CAD เพราะกระแสเงินสดและปันผลเป็น CAD) · ERP 5.0%
+        ⇒ <b>r = 3.643% + 0.80 × 5.0% = 7.6%</b>
+        <br><br>
+        <b>g ที่ใช้ = 3.5% (เพดาน 4.0%)</b> — บริษัทให้แนวทางการเติบโตของฐานสินทรัพย์/ปันผลราว 3–6% แต่นั่นคือการเติบโตช่วงสั้น <u>ไม่ใช่ perpetual growth</u>
+        ที่ r − g เพียง 4.1 จุด% ตัวคูณของ Gordon ไวมาก จึงต้องอ่านคู่กับบรรทัดความอ่อนไหวข้างล่างเสมอ
+        <br><br>
+        <b>บรรทัดความอ่อนไหว (บังคับ เพราะ r − g แคบ):</b> ถ้า <b>r = 7.1%</b> → ขา DDM = $71.32 และ FV เฉลี่ย = <b>$56.81</b> (MOS −11.3%) ·
+        ถ้า <b>r = 8.1%</b> → ขา DDM = $55.82 และ FV เฉลี่ย = <b>$49.06</b> (MOS −28.9%) — ขยับ r เพียง ±0.5 จุด% ทำให้ FV แกว่งในช่วง $49.06–$56.81 (−6.5% ถึง +8.3% รอบค่ากลาง $52.46) และยังต่ำกว่าราคาตลาดทั้งสองปลาย
+        <br><br>
+        <b>ตรวจอัตราคิดลดที่ตลาดฝังอยู่:</b> implied r ≈ ปันผลตอบแทนปัจจุบัน 3.91% + g 3.5% = <b>7.41%</b> เทียบกับ r จาก CAPM 7.6% → ห่างเพียง <b>0.19 จุด%</b>
+        ถือว่าสอดคล้องกันดีมาก (เกณฑ์สอบสวนคือห่างเกิน 1.5 จุด%) แปลว่าสมมติฐาน (r, g) ที่ใช้ไม่ได้หลุดจากสิ่งที่ตลาดกำลังคิดอยู่
+        <br><br>
+        <b>ข้อจำกัดที่ต้องบอกตรง ๆ:</b> TRP แยกธุรกิจท่อน้ำมันดิบ <b>South Bow</b> ออกไปเมื่อ <b>ต.ค. 2567</b> — ตาราง EPS ยืนยันว่าช่วงก่อนสปินเทียบกันไม่ได้
+        (C$0.64 ปี 2565 → C$4.43 ปี 2567 → C$3.27 ปี 2568) ดังนั้น<b>มัธยฐาน EV/EBITDA วัดจาก 2 จุดหลัง spin South Bow เท่านั้น (FY2567 11.47x · FY2568 12.57x)</b>
+        โดยใช้<b>ราคาปิดกระดาน TSX สกุล CAD ให้ตรงกับสกุลงบ</b> — เป็น<b>หน้าต่างสั้นที่สุดในกลุ่ม ความไม่แน่นอนสูงกว่าตัวอื่น</b> สั้นกว่ามาตรฐาน 5 ปีมาก
+        ⇒ ขา (2) ของ TRP <b>มีความไม่แน่นอนสูงกว่าหุ้นตัวอื่นในกลุ่มท่อ/สาธารณูปโภคที่ใช้หน้าต่างยาวได้</b>
+        (หมายเหตุ: ตัวคูณ 15.03x ที่ได้จากหน้าต่าง 12 เดือนล่าสุดสูงกว่าทั้งสองจุดที่วัดได้จริง จึงไม่ถูกใช้)
+        <br><br>
+        <b>หมายเหตุสกุลเงินและ EBITDA:</b> งบการเงินทั้งหมดเป็น CAD ราคาซื้อขายเป็น USD จึง<u>ห้ามเอาราคา USD หารด้วย EPS สกุล CAD</u>
+        รายงานนี้ประเมินมูลค่าเป็น CAD ก่อนแล้วแปลงที่ <b>CADUSD 0.717 (8 ส.ค. 2569)</b> · EBITDA TTM ประมาณจากงบ = กำไรจากการดำเนินงาน C$7.06B + ค่าเสื่อม/ตัดจำหน่ายราว C$3.2B ≈ C$10.26B
+        ซึ่ง<u>ต่ำกว่านิยาม comparable EBITDA ของบริษัทเอง</u> (บริษัทรวมส่วนแบ่งกำไรจากกิจการร่วมค้าเข้าไปด้วย) — ตัวเลข debt/EBITDA ที่ได้ 6.0x จึงสูงกว่าที่บริษัทรายงาน (~4.7–5.0x) ด้วยเหตุนี้
+        อย่างไรก็ตามขา (2) ใช้ EBITDA นิยามเดียวกันทั้งตัวเศษที่วัดมัธยฐานและตัวหารปัจจุบัน ผลลัพธ์จึงไม่บิดจากการเลือกนิยาม
+        <br><br>
+        <b>สรุปคณิต:</b> สองขาให้ค่า<b>ต่างกันมาก</b> ($62.62 กับ $42.30) โดยเป็นอิสระต่อกันจริง — ขา (1) ขับด้วย (r, g) ล้วน ขา (2) ไม่รับ (r, g) เลย
+        ขา DDM มองผ่านกระแสปันผลจึงให้ค่าสูง ส่วนขาระดับกิจการถูกหนี้สุทธิ C$61.7B กดลงแรงเมื่อใช้ตัวคูณ 12.0x ที่วัดได้จริงจาก 2 จุดหลังสปิน
+        ค่าเฉลี่ย $52.46 จึงมาพร้อมกรอบกว้าง $42.30–$62.62 ควรอ่านเป็นช่วงไม่ใช่จุดเดียว — และราคาตลาดวันนี้ ($63.23) อยู่<b>เหนือปลายบนของกรอบ</b>
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $63.23</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $52.46</div></div>
+        </div>
+        <div class="scale">
+          <span>$36.72<br><small>MOS 30%</small></span>
+          <span>$41.97<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$52.46<br><small>Fair Value</small></span>
+          <span style="text-align:right">$62.62<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">$66.99<br><small>เป้าเฉลี่ย Analyst</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        เข็มราคาปัจจุบันอยู่สูงกว่าเข็มมูลค่าเหมาะสมชัดเจน — $63.23 เทียบ $52.46 หรือแพงกว่าราว 20%
+        โซนที่จะเริ่มมีส่วนเผื่อความปลอดภัยจริงคือต่ำกว่า <b>$41.97</b> (MOS 20%) และ <b>$36.72</b> (MOS 30%)
+        ซึ่ง<b>ทั้งสองระดับอยู่ต่ำกว่ากรอบล่าง 52 สัปดาห์ ($49.27) และต่ำกว่าจุดต่ำสุดของกราฟรอบปี ($50.16)</b> จึงเป็นระดับที่ต้องมีเหตุการณ์เชิงลบชัดเจนจึงจะเกิดขึ้น
+        เป้าเฉลี่ยนักวิเคราะห์ $66.99 อยู่สูงกว่ามูลค่าเหมาะสมที่ประเมินได้ราว 28% — ใช้เป็นเพียงจุดตรวจความสอดคล้อง ไม่ได้ใช้เป็นตัวตั้งในการคำนวณ
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">−20.5%</div>
+        <div class="txt"><b>ราคาแพงกว่ามูลค่าเหมาะสมราว 20% — ไม่มีส่วนเผื่อความปลอดภัย</b><br>
+        นิยาม MOS = (มูลค่าเหมาะสม − ราคา) ÷ มูลค่าเหมาะสม = ($52.46 − $63.23) ÷ $52.46 = −20.5%
+        ผู้ที่ต้องการซื้อเพื่อรับส่วนต่างมูลค่าควรรอโซนต่ำกว่า $41.97 ซึ่งอยู่ต่ำกว่ากรอบล่าง 52 สัปดาห์ ($49.27) ส่วนผู้ที่ถือเพื่อรับกระแสปันผล 3.9% ที่มีสัญญาระยะยาวหนุน ยังถือได้โดยเข้าใจว่าผลตอบแทนต่อจากนี้จะมาจากปันผล + การเติบโตของกำไร ไม่ใช่จากส่วนลดของราคา</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$41.97</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$36.72</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $52.46</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="63.23" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $63.23 • EPS ฐาน ~$2.39 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS 0%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$45.41</div>
+          <div class="ret neg">−16.4% รวม (≈ −5.8%/ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$2.39</span></li>
+            <li><span>P/E ออก</span><span>19x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$7.44</span></li>
+            <li><span>สถานการณ์</span><span>ดอกเบี้ยยาวยืนสูง ตลาดคิดลดสินทรัพย์อายุยาวแรงขึ้น • ต้องรีไฟแนนซ์หนี้ก้อนใหญ่ที่ต้นทุนแพงกว่าเดิม • โครงการใหม่ล่าช้า/ต้นทุนบานปลาย • ปันผลหยุดโต</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +5%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$69.25</div>
+          <div class="ret pos">+22.1% รวม (≈ +6.9%/ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$2.77</span></li>
+            <li><span>P/E ออก</span><span>25x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$7.97</span></li>
+            <li><span>สถานการณ์</span><span>ฐานสินทรัพย์โตตามแผน 3–5% • ปริมาณก๊าซในระบบ NGTL/Columbia เพิ่มตามความต้องการจากศูนย์ข้อมูลและ LNG • ปันผลโตปีละ ~3.5%</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +9%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$83.70</div>
+          <div class="ret pos">+45.3% รวม (≈ +13.3%/ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$3.10</span></li>
+            <li><span>P/E ออก</span><span>27x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$8.20</span></li>
+            <li><span>สถานการณ์</span><span>ดอกเบี้ยยาวลดลง ตลาดกลับมาให้ค่าพรีเมียมกับกระแสเงินสดที่มีสัญญาหนุน • อนุมัติโครงการขยายท่อชุดใหม่ • ลดหนี้ได้เร็วกว่าแผนจนอันดับเครดิตดีขึ้น</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      ทั้งสามฉากใช้ EPS ฐานสกุล USD $2.39 (แปลงจาก C$3.34 ที่ CADUSD 0.717) และ<b>สมมติว่าอัตราแลกเปลี่ยนคงที่</b> —
+      ถ้า CAD อ่อนค่าลง ผลตอบแทนที่นักลงทุนสกุล USD ได้รับจริงจะต่ำกว่าตัวเลขนี้ทั้งฝั่งราคาและฝั่งปันผล (เพราะปันผลประกาศเป็น CAD) และกลับกันถ้า CAD แข็งค่า
+      ฉาก Base ให้ผลตอบแทนราว 6.9%/ปี ต่ำกว่า r = 7.6% ที่ใช้ประเมิน — สอดคล้องกับข้อสรุปว่าราคาปัจจุบันอยู่สูงกว่ามูลค่าเหมาะสม (MOS −20.5%)
+      กล่าวคือผู้ซื้อวันนี้คาดหวังผลตอบแทนได้ต่ำกว่าผลตอบแทนที่ควรได้ตามความเสี่ยง
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก &amp; ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>รายได้ผูกสัญญาระยะยาว:</b> เกือบทั้งหมดของ EBITDA มาจากค่าผ่านท่อที่กำกับดูแลหรือสัญญาระยะยาว ทำให้กำไรผันผวนตามราคาก๊าซน้อยมาก — เห็นได้จากอัตรากำไรจากดำเนินงานที่ยืนเหนือ 42% ทุกปีตั้งแต่ FY2023</li>
+          <li><b>ความต้องการก๊าซโครงสร้างใหม่:</b> ศูนย์ข้อมูล AI และการส่งออก LNG ฝั่งอเมริกาเหนือเพิ่มปริมาณผ่านระบบ NGTL และ Columbia Gas ซึ่งเป็นสองเส้นเลือดหลักของบริษัท</li>
+          <li><b>งบดุลเบาลงหลังแยก South Bow (ต.ค. 2567):</b> บริษัทที่เหลือเป็นธุรกิจก๊าซ/ไฟฟ้าล้วน โฟกัสชัดขึ้น และ FCF ของ TTM พลิกมาเป็นบวก C$4,059 ล้าน จากที่เคยติดลบ C$881 ล้านใน FY2023</li>
+          <li><b>โครงการที่เริ่มเดินเครื่อง:</b> Southeast Gateway (เม็กซิโก) และ Coastal GasLink ทยอยรับรู้รายได้เต็มปี หนุนรายได้ TTM +9.7% YoY</li>
+          <li><b>ปันผลสม่ำเสมอ ~3.9%:</b> เป็นฐานผลตอบแทนที่จับต้องได้ และเป็นตัวยึดมูลค่าเมื่อราคาย่อ</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>ต้นทุนการเงินสูงกดมูลค่าสินทรัพย์อายุยาว (ความเสี่ยงอันดับหนึ่ง):</b> หนี้สุทธิ ~C$61.7B และ D/E 1.56 เท่า — บรรทัดความอ่อนไหวในหมวด 3 แสดงชัดว่า r ที่เพิ่มเพียง 0.5 จุด% ทำให้ FV ลดลงเหลือ $49.06</li>
+          <li><b>ความเสี่ยงการรีไฟแนนซ์:</b> หนี้ก้อนใหญ่ที่ครบกำหนดต้องต่ออายุที่ดอกเบี้ยสูงกว่ารุ่นเดิม กัดกำไรสุทธิโดยตรงในกลุ่มที่ใช้เงินทุนหนักแบบนี้</li>
+          <li><b>กฎเกณฑ์และใบอนุญาต:</b> ค่าผ่านท่อถูกกำหนดโดยหน่วยงานกำกับ (CER ฝั่งแคนาดา, FERC ฝั่งสหรัฐฯ) การทบทวนอัตราหรือการต่อต้านโครงการใหม่กระทบทั้งรายได้และแผนลงทุน</li>
+          <li><b>ราคาแพงกว่ามูลค่า:</b> MOS = −20.5% และ P/E 26.4x สูงกว่ากลุ่มท่อโดยทั่วไป — ความผิดหวังเรื่องการเติบโตหรือดอกเบี้ยจะถูกสะท้อนลงราคาทันทีเพราะไม่มีเบาะรองรับ</li>
+          <li><b>ความเสี่ยงอัตราแลกเปลี่ยน:</b> งบและปันผลเป็น CAD แต่ผู้ถือหุ้นในตลาด NYSE รับผลตอบแทนเป็น USD — CAD อ่อนค่าทำให้ทั้งมูลค่าและปันผลที่ได้รับจริงลดลง</li>
+          <li><b>หน้าต่างเทียบมัธยฐานสั้น:</b> ข้อมูลหลังแยก South Bow มีเพียง 2 ปีบัญชี (FY2567 11.47x · FY2568 12.57x) ทำให้ขาที่สองของการประเมินมูลค่ามีความไม่แน่นอนสูงกว่าปกติ — หน้าต่างสั้นที่สุดในกลุ่ม</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>ธุรกิจท่อก๊าซคุณภาพดี แต่ราคาแพงกว่ามูลค่าราว 20% — รอส่วนลด อย่าไล่ราคา</h2>
+      <p>TC Energy หลังแยก South Bow ออกไปเมื่อ ต.ค. 2567 เหลือธุรกิจก๊าซธรรมชาติและไฟฟ้าที่รายได้เกือบทั้งหมดผูกกับสัญญาระยะยาว
+      กำไร TTM C$3,475 ล้าน (EPS C$3.34 = $2.39) รายได้โต 9.7% YoY และ FCF พลิกเป็นบวกชัดเจน — คุณภาพธุรกิจไม่ใช่ประเด็น
+      ประเด็นคือราคา: การประเมินด้วยสองวิธีที่เป็นอิสระต่อกันจริง — DDM ที่ r 7.6% (β วัดจริง 0.70 ปรับ Blume เป็น 0.80, rf = พันธบัตรแคนาดา 10 ปี 3.643%) กับ EV/EBITDA มัธยฐานหลังสปินหักหนี้สุทธิที่ไม่ใช้ (r, g) เลย —
+      ให้คำตอบต่างกันมาก — DDM $62.62 ส่วน EV/EBITDA (ตัวคูณ 12.0x จาก 2 จุดหลังสปิน) เพียง $42.30 — เฉลี่ยได้ <b>$52.46</b> ขณะที่ราคาตลาดอยู่ที่ $63.23 คือสูงกว่ามูลค่าเหมาะสมราว 20%
+      ตัวเลข implied r ที่ตลาดฝังอยู่ (3.91% + 3.5% = 7.41%) ก็ห่างจาก r ที่เราใช้แค่ 0.19 จุด% — ฝั่งปันผลจึงไม่ได้ผิดปกติ ส่วนลดที่หายไปมาจากฝั่งมูลค่ากิจการ ที่หนี้สุทธิ C$61.7B กินมูลค่าไปมากเมื่อใช้ตัวคูณที่วัดได้จริงหลังสปิน
+      สิ่งที่ผู้อ่านควรจับตาคือความไวต่อดอกเบี้ย: r ขยับ ±0.5 จุด% ทำให้ FV แกว่งไประหว่าง $49.06 ถึง $56.81 ซึ่งยังต่ำกว่าราคาตลาดทั้งสองปลาย</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$52.46 <span style="font-size:12px;color:#cab9a8">($42.30–$62.62)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −20.5% (แพงกว่ามูลค่า)</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$66.99 (Buy)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ราคาปัจจุบันสูงกว่ามูลค่าเหมาะสมราว 20% ไม่มีส่วนเผื่อความปลอดภัย ผู้ที่เน้นมูลค่าควรรอโซนต่ำกว่า <b>$41.97</b> (MOS 20%) ซึ่งอยู่ต่ำกว่ากรอบล่าง 52 สัปดาห์ ($49.27) จึงต้องมีเหตุการณ์เชิงลบชัดเจนจึงจะเกิดขึ้น
+        ผู้ที่ถืออยู่แล้วเพื่อกระแสปันผล 3.9% ยังถือได้โดยเข้าใจว่าผลตอบแทนต่อจากนี้จะมาจากปันผลบวกการเติบโตของกำไร (ฉาก Base ~6.9%/ปี) ไม่ใช่จากการปิดส่วนลดมูลค่า
+        และควรวัดความเสี่ยงหลักที่ทิศทางดอกเบี้ยระยะยาวกับค่าเงิน CAD เป็นสำคัญ
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ราคา ณ 7 ส.ค. 2569 จาก StockAnalysis.com (cross-check กับ Yahoo Finance ต่างกัน 0.00%) • ข้อมูลงบการเงิน FY2021–FY2025 และ TTM จาก StockAnalysis.com (ยืนยัน EPS ระดับงบข้าม 2 ผู้ให้บริการ: Yahoo C$3.33 vs StockAnalysis C$3.34) • อัตราผลตอบแทนพันธบัตรรัฐบาลแคนาดา 10 ปี 3.643% จาก TradingView (TVC:CA10Y) ณ 8 ส.ค. 2569 • อัตราแลกเปลี่ยน CADUSD 0.717 ณ 8 ส.ค. 2569
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 8 ส.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
