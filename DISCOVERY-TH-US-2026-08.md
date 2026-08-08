@@ -15,7 +15,7 @@
 **Tier 1 ครบ 29 ตัว:** `RY` `TD` `BMO` `BNS` `CM` `MFC` `SLF` (1A ธนาคาร/ประกันแคนาดา) · `AZN` `TTE` `UBS` `ALC` `CCEP` `FER` `DB` `ESLT` (1B ADR) · `ENB` `TRP` `PBA` `FTS` `EMA` `CNQ` `SU` `IMO` (1C ท่อ/พลังงาน) · `AEM` `B` `WPM` `FNV` `KGC` `PAAS` (1D ทองคำ)
 
 **Tier 2 ครบ 36 ตัว:** `FERG` `WSO` `XPO` `USFD` `PFGC` `WCC` `SNX` `ULS` (2A) · `MTZ` `STRL` `APG` `DY` (2B) · `CW` `BWXT` `WWD` `MOG-A` `DRS` `CACI` (2C) · `TW` `OWL` `CG` `TPG` `LPLA` `FCNCA` `EWBC` `PNFP` `RYAN` (2D) · `CSL` `RBC` `SN` `AS` `MANH` `GWRE` `SSNC` `TXRH` `SCI` (2E)
-> ยังไม่ได้ทำใน 2B: `IESC` 🔺 · `TLN` 🔺 (เลื่อนไปรวมกับชุด effort high)
+> `IESC` 🔺 · `TLN` 🔺 ที่เคยเลื่อนไว้ — **ทำเสร็จแล้วทั้งคู่**
 
 **Tier 3 + ฝั่งไทย — เสร็จครบ** · Tier 3A ชีวเวช · 3B MLP (`EPD` `ET` `MPLX`) · 3C AI/IPO (`CRWV` `NBIS` `CBRS` `RKLB` `MDLN` `AMRZ` `SUNB` `VG` — **ตัด `ASTS` `QNT` `IONQ`**) · 3D · ไทย 34 ตัว
 
