@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น Sun Life Financial (SLF) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 5">
+<script type="application/json" id="stock-meta">
+{"symbol":"SLF","currency":"USD","price":81.91,"fairValue":65.69,"mos":-24.7,"upside":-19.8,"pe":19.69,"dividendYield":3.24,"roe":13.8}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#ab8a26",
+    "accentDark": "#7d651c",
+    "darkGrad": "linear-gradient(135deg,#302609 0%,#5f4c11 58%,#9c7c1c 140%)",
+    "glow": "rgba(208,168,47,.35)",
+    "subColor": "#f2edde",
+    "headerMuted": "#f1eee5",
+    "verdictText": "#f2edde",
+    "vcellLabel": "#ffffff",
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#137333"
+  },
+  "chart": {
+    "data": [["ก.ย.25", 60.03], ["ต.ค.25", 60.86], ["พ.ย.25", 59.12], ["ธ.ค.25", 62.4],
+             ["ม.ค.26", 63.04], ["ก.พ.26", 65.55], ["มี.ค.26", 62.56], ["เม.ย.26", 72.08],
+             ["พ.ค.26", 71.8], ["มิ.ย.26", 78.42], ["ก.ค.26", 82.95], ["ส.ค.26", 81.91]],
+    "min": 40, "max": 90, "grid": [50, 60, 70, 80],
+    "fairLine": 65.69, "currency": "$", "highlight": [2, 10]
+  },
+  "gauge": { "min": 40, "max": 90, "cur": 81.91, "fair": 65.69 },
+  "fv": 65.69
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots"><div style="width:8px;height:8px;border-radius:50%;background:#ab8a26;display:inline-block;margin:0 3px"></div><div style="width:8px;height:8px;border-radius:50%;background:#7d651c;display:inline-block;margin:0 3px"></div><div style="width:8px;height:8px;border-radius:50%;background:#5f4c11;display:inline-block;margin:0 3px"></div></div>
+    <div>
+      <span class="tag">NYSE: SLF</span>
+      <span class="tag">ประกันชีวิต & จัดการสินทรัพย์</span>
+      <span class="tag">Insurance • Asset Management (MFS/SLC)</span>
+    </div>
+    <h1>Sun Life Financial</h1>
+    <div class="sub">ประกันชีวิต • ประกันสุขภาพ • จัดการสินทรัพย์ (MFS, SLC Management) • แคนาดา • สหรัฐฯ • เอเชีย</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$81.91<small>(SLF)</small></div>
+      </div>
+      <div class="chg">▲ +36.4% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 7 ส.ค. 2569 (Yahoo Finance, ตรงกับ StockAnalysis.com — ต่าง 0%)<br>
+        กรอบ 52 สัปดาห์ $56.61 – $84.38<br>
+        ที่มา: Yahoo Finance, StockAnalysis.com, Google Finance
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">TTM ถึง Q2 2026 (สิ้นสุด 30 มิ.ย. 2569) เว้นระบุ</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~$45.9B</div><div class="d">~560M หุ้น (ถัวเฉลี่ยถ่วงน้ำหนัก TTM)</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~19.7x</div><div class="d">EPS TTM normalized $4.16</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~14–17x</div><div class="d">ช่วงปกติกลุ่มประกัน+จัดการสินทรัพย์ (ประมาณ)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">~2.67x</div><div class="d">พรีเมียมจากธุรกิจ MFS/SLC AUM สูง</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">~$2,488M<small> (C$3,472M)</small></div><div class="d">+13.9% YoY</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$4.16</div><div class="d">normalized — ดูหมายเหตุ EPS ด้านล่าง</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~$30.75</div><div class="d">ประเมินจาก NI TTM/ROE TTM แปลง CAD→USD @0.7166</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~13.8% / n/a</div><div class="d">ROA ไม่เปิดเผยแยกสำหรับธุรกิจประกัน+AUM</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">~$25.3B<small> (C$35.3B)</small></div><div class="d">+3.3% YoY</div></div>
+      <div class="metric"><div class="k">อัตรากำไร</div><div class="v">10.2% (Net) / 14.5% (Op)</div><div class="d">TTM</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~3.24%</div><div class="d">$2.66/หุ้น/ปี • เพิ่มต่อเนื่องหลายปี</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">~0.85</div><div class="d">ประมาณ — ธุรกิจประกัน+จัดการสินทรัพย์ ผันผวนต่ำกว่าตลาด</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#ab8a26"></i>ราคา SLF</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $65.69</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคาไต่ขึ้นจาก ~$60 (ก.ย. 2568) สู่จุดสูงสุดรอบปี $82.95 (ก.ค. 2569) หนุนโดยผลประกอบการ MFS/SLC ที่แข็งแกร่งและตลาดหุ้นการเงินโลกที่คึกคัก
+        ก่อนย่อตัวเล็กน้อยมาปิดที่ $81.91 หลังประกาศงบ Q2 2026 (6 ส.ค. 2569) รวมผลตอบแทนรอบปี +36.4% — จุดต่ำสุดของรอบอยู่ที่ $59.12 (พ.ย. 2568)
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS (TTM) $4.16 × P/E เป้าหมาย ~16.5x — ใกล้เคียง P/E นัยจากเป้าเฉลี่ยนักวิเคราะห์ ($69.6/$4.16≈16.7x) ต่ำกว่า P/E ตลาดปัจจุบัน 19.7x สะท้อนการ mean-revert กลับสู่ระดับปกติของกลุ่มประกัน+จัดการสินทรัพย์</div></div>
+        <div class="mval">$68.64</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล $2.66 × (1+g); g 4%, r 8.5% (cost of equity สกุล USD) → มูลค่าปัจจุบันของกระแสปันผลระยะยาว</div></div>
+        <div class="mval">$61.48</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 13.8% − g 4%)/(r 8.5% − g 4%) ≈ 2.18x × BVPS $30.75</div></div>
+        <div class="mval">$66.95</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $61.48 – $68.64</span></div>
+        <div class="r">$65.69</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ทั้ง 3 วิธีให้ค่าใกล้เคียงกัน ($61.5–$68.6) — DDM ต่ำสุดเพราะให้น้ำหนักเฉพาะกระแสปันผล (ไม่รวมการเติบโตของ book value/AUM fee)
+        ส่วน P/E และ Justified P/BV สอดคล้องกันดี FV เฉลี่ย $65.69 ต่ำกว่าราคาตลาด $81.91 ~19.8% สะท้อนว่าตลาดให้พรีเมียมกับธุรกิจ MFS/SLC
+        และมองข้าม EPS ที่ผันผวนจาก IFRS17 ไปมากกว่าที่พื้นฐานรองรับในระยะสั้น
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $81.91</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $65.69</div></div>
+        </div>
+        <div class="scale">
+          <span>$45.98<br><small>MOS 30%</small></span>
+          <span>$52.55<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$65.69<br><small>Fair Value</small></span>
+          <span style="text-align:right">$68.64<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">$69.64<br><small>เป้าเฉลี่ย Analyst</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบันอยู่เหนือมูลค่าเหมาะสมและเหนือเป้าเฉลี่ยนักวิเคราะห์ทั้งสองแหล่ง (Yahoo $69.67 / StockAnalysis $69.61) ~15% —
+        สอดคล้องกับผลตอบแทนรอบปีที่พุ่งแรง +36.4% ซึ่งวิ่งนำพื้นฐานไปพอสมควร
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">−24.7%</div>
+        <div class="txt"><b>ไม่มี Margin of Safety (ราคาแพงกว่ามูลค่าเหมาะสม)</b><br>ราคาตลาด $81.91 สูงกว่า FV $65.69 ราว 24.7% นักลงทุนที่ยังไม่ถือควรรอจังหวะย่อตัวสู่โซน MOS 20% ($52.55) ก่อนสะสม</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$52.55</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$45.98</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $65.69</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="81.91" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $81.91 • EPS ฐาน ~$4.16 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS 0%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$54.08</div>
+          <div class="ret neg">−24.2% (3 ปี, ~−8.9%/ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$4.16</span></li>
+            <li><span>P/E ออก</span><span>13x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$7.98</span></li>
+            <li><span>สถานการณ์</span><span>IFRS17 mark-to-market กดกำไรทรงตัว ตลาด de-rate สู่ P/E กลุ่มประกันทั่วไป</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +5%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$79.46</div>
+          <div class="ret pos">+7.8% (3 ปี, ~+2.5%/ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$4.82</span></li>
+            <li><span>P/E ออก</span><span>16.5x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$8.81</span></li>
+            <li><span>สถานการณ์</span><span>MFS/SLC AUM โตตามแผน + new business เอเชียขยายตัว ตลาดปรับราคาลงใกล้ FV</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +9%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$102.36</div>
+          <div class="ret pos">+36.4% (3 ปี, ~+10.9%/ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$5.39</span></li>
+            <li><span>P/E ออก</span><span>19x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$9.33</span></li>
+            <li><span>สถานการณ์</span><span>ธุรกิจจัดการสินทรัพย์เร่งตัว + underwriting margin ดีขึ้น ตลาดรักษา premium multiple ปัจจุบันไว้</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      Base case ให้ผลตอบแทนบวกเล็กน้อยแม้ราคาเข้าสูงกว่า FV เพราะปันผล+การเติบโตของ EPS ชดเชยการ de-rate บางส่วน
+      ความเสี่ยงหลักคือ EPS รายไตรมาสผันผวนจาก IFRS17 ทำให้ตลาดตีความ headline กำไรผิดทางได้ง่าย
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>ธุรกิจจัดการสินทรัพย์ (MFS + SLC Management):</b> AUM ขยายต่อเนื่อง รายได้ค่าธรรมเนียมไม่ผันผวนตามเคลมประกัน ช่วยกระจายความเสี่ยงกำไร</li>
+          <li><b>ตลาดเอเชีย:</b> ฮ่องกง อินโดนีเซีย ฟิลิปปินส์ เวียดนาม — new business value เติบโตสองหลักต่อเนื่อง หนุนมูลค่าธุรกิจระยะยาว</li>
+          <li><b>งบดุลแข็งแกร่ง:</b> อัตราส่วนเงินกองทุน (LICAT) สูงกว่าเกณฑ์ขั้นต่ำมาก รองรับการซื้อหุ้นคืนและปันผลต่อเนื่อง</li>
+          <li><b>ปันผลเติบโตสม่ำเสมอ:</b> yield ~3.2% พร้อมประวัติเพิ่มปันผลต่อเนื่องหลายปี</li>
+          <li><b>Digital/AI ในการอันเดอร์ไรต์และเคลม:</b> ลดต้นทุนดำเนินงาน หนุน margin ระยะยาว</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>ความผันผวนจาก IFRS17:</b> กำไรรายไตรมาสผันผวนสูงจากรายการ mark-to-market ตีความยาก ตลาดอาจตอบสนองเกินจริงต่อ headline EPS (เห็นชัดจาก Δ EPS 8.7% ระหว่างแหล่งข้อมูล)</li>
+          <li><b>ความเสี่ยงตลาดทุน/ดอกเบี้ย:</b> ความผันผวนของอัตราดอกเบี้ยและตลาดหุ้นกระทบมูลค่าพอร์ตลงทุนและสำรองประกัน</li>
+          <li><b>การแข่งขันในธุรกิจจัดการสินทรัพย์:</b> แรงกดดันด้านค่าธรรมเนียม (fee compression) จากคู่แข่งและกองทุน passive</li>
+          <li><b>ความเสี่ยงค่าเงิน CAD/USD:</b> รายได้/กำไรหลักรายงานเป็น CAD ขณะหุ้น NYSE ซื้อขายเป็น USD ผลตอบแทนแปลงสกุลผันผวนตาม FX</li>
+          <li><b>Valuation ตึงตัว:</b> ราคาปัจจุบันสูงกว่า FV และเป้าเฉลี่ยนักวิเคราะห์ราว 15–25% — ความเสี่ยง de-rating หากผลประกอบการสะดุด</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>SLF: ธุรกิจมั่นคง แต่ราคาวิ่งนำมูลค่าเหมาะสมไปแล้ว</h2>
+      <p>Sun Life เป็นประกันชีวิต+จัดการสินทรัพย์ที่งบดุลแข็งแกร่งและมีธุรกิจ MFS/SLC ช่วยกระจายความเสี่ยงกำไรจากประกันแบบดั้งเดิม
+      แต่หลังราคาพุ่ง +36.4% ในรอบปี ราคาตลาด $81.91 วิ่งนำมูลค่าเหมาะสม $65.69 และเป้าเฉลี่ยนักวิเคราะห์ (~$69.6) ไปแล้ว
+      MOS ติดลบ 24.7% บ่งชี้ว่าไม่ใช่จังหวะเข้าซื้อใหม่ ควรรอย่อตัวสู่โซนที่มี margin of safety มากขึ้น</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$65.69 <span style="font-size:12px;color:#cab9a8">($61.48–$68.64)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −24.7%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$69.64 (Buy เฉลี่ย, เป้าต่ำกว่าราคาปัจจุบัน)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> รอสะสมในโซน MOS 20% ($52.55) ลงไปเป็นหลัก หรือถือต่อเพื่อรับปันผล ~3.2% หากเชื่อมั่นการเติบโตระยะยาวของ MFS/SLC —
+        ราคาปัจจุบันไม่ใช่จังหวะไล่ซื้อเพิ่ม
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    ราคา ณ 7 ส.ค. 2569 จาก Yahoo Finance (ตรงกับ StockAnalysis.com) • EPS(TTM) $4.16 cross-verify: StockAnalysis.com สอดคล้องกับ EPS(dil.) TTM 5-ปีจากงบการเงิน (C$5.92 แปลง USD @0.7166≈$4.24)
+    ส่วน Yahoo Finance แสดง EPS(TTM) $3.80 ซึ่งพบว่าสะท้อนไตรมาสที่ได้รับผลกระทบจากรายการ mark-to-market ภายใต้ IFRS17 มากกว่าค่าปกติของธุรกิจ —
+    ยืนยันทิศทางเพิ่มเติมด้วย Google Finance (P/E TTM 21.36 ใกล้เคียง Yahoo 21.6) และตารางงบการเงิน 5 ปีจาก StockAnalysis.com
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 8 ส.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
