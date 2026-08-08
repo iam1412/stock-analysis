@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น อาร์แอนด์บี ฟู้ด ซัพพลาย (RBF) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 5">
+<script type="application/json" id="stock-meta">
+{"symbol":"RBF","currency":"THB","price":5.1,"fairValue":4.24,"mos":-20.3,"upside":-16.9,"pe":21.4,"dividendYield":4.12,"roe":9.1}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#25a62f",
+    "accentDark": "#1b7822",
+    "darkGrad": "linear-gradient(135deg,#082b0a 0%,#105b16 58%,#1b9725 140%)",
+    "glow": "rgba(47,208,59,.35)",
+    "subColor": "#e2f4e3",
+    "headerMuted": "#e8f3e9",
+    "verdictText": "#e2f4e3",
+    "vcellLabel": "#ffffff",
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#137333"
+  },
+  "chart": {
+    "data": [["ก.ย.25", 3.96], ["ต.ค.25", 3.6], ["พ.ย.25", 3.5], ["ธ.ค.25", 3.04],
+             ["ม.ค.26", 3.1], ["ก.พ.26", 3.54], ["มี.ค.26", 4.14], ["เม.ย.26", 4.04],
+             ["พ.ค.26", 4.26], ["มิ.ย.26", 5.15], ["ก.ค.26", 4.98], ["ส.ค.26", 5.1]],
+    "min": 2, "max": 6, "grid": [3, 4, 5],
+    "fairLine": 4.24, "currency": "฿", "highlight": [3, 9]
+  },
+  "gauge": { "min": 2, "max": 6, "cur": 5.1, "fair": 4.24 },
+  "fv": 4.24
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots"><div style="width:8px;height:8px;border-radius:50%;background:#25a62f;display:inline-block;margin:0 3px"></div><div style="width:8px;height:8px;border-radius:50%;background:#1b7822;display:inline-block;margin:0 3px"></div><div style="width:8px;height:8px;border-radius:50%;background:#105b16;display:inline-block;margin:0 3px"></div></div>
+    <div>
+      <span class="tag">SET: RBF</span>
+      <span class="tag">อาหารและเครื่องดื่ม (Food Ingredients)</span>
+      <span class="tag">วัตถุแต่งกลิ่น/สี/ส่วนผสมอาหาร B2B</span>
+    </div>
+    <h1>R&amp;B Food Supply (RBF)</h1>
+    <div class="sub">วัตถุแต่งกลิ่น สี และส่วนผสมอาหารสำหรับโรงงานอุตสาหกรรม (B2B) • ผู้นำเฉพาะทางในไทย • ขยายตลาดเวียดนาม-อินโดนีเซีย</div>
+    <div class="price-row">
+      <div>
+        <div class="px">฿5.10<small>(RBF)</small></div>
+      </div>
+      <div class="chg">▲ +28.8% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 7 ส.ค. 2569<br>
+        กรอบ 52 สัปดาห์ ฿2.90 – ฿5.25<br>
+        ที่มา: Yahoo Finance, StockAnalysis.com, R&amp;B Food Supply Investor Relations
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">TTM ณ ส.ค. 2569</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">฿10,037 ล้าน</div><div class="d">~1,968 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~21.4x</div><div class="d">Yahoo 21.3x • StockAnalysis 21.46x</div></div>
+      <div class="metric"><div class="k">Forward P/E</div><div class="v">~17.4x</div><div class="d">อิง EPS คาดการณ์ปีถัดไป</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">~1.95x</div><div class="d">BVPS ประมาณ ฿2.61 (Equity/หุ้น)</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2568 (FY2025)</div><div class="v">฿432 ล้าน</div><div class="d">−15.8% YoY (FY2567/FY2024 ฿513 ล้าน)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿0.24</div><div class="d">FY2568/FY2025 ฿0.22 • FY2567/FY2024 ฿0.26</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~฿2.61</div><div class="d">ประมาณจาก Equity/shares (คำนวณจาก ROE & NI)</div></div>
+      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~9.1% / ~7.9%</div><div class="d">ROE: Yahoo 9.09% • SA FY2568 8.7% (ROA ประมาณ)</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">฿4,332 ล้าน</div><div class="d">+1.2% YoY (ฟื้นตัวหลัง FY2567 −2.1%)</div></div>
+      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">35.7%</div><div class="d">Op margin 12.6% • Net margin 10.8% (TTM)</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~4.12%</div><div class="d">฿0.21/หุ้น • payout ~87% ของ EPS</div></div>
+      <div class="metric"><div class="k">รายได้ต่างประเทศ</div><div class="v">~30%</div><div class="d">เป้าปี 2569: 35–40% (Kaohoon.com)</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART (ราคาย้อนหลัง ~1 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#25a62f"></i>ราคา RBF</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿4.24</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคาหุ้น RBF ปรับตัวลงจากปลายปี 2568 ต่อเนื่องมาแตะจุดต่ำสุดรอบปี ~฿3.04 (ธ.ค. 2568) ก่อนฟื้นตัวแรงขึ้นสู่จุดสูงสุดรอบปี ~฿5.15 (มิ.ย. 2569) จากผลประกอบการ TTM ที่กลับมาโต +1.2% YoY และกระแสข่าวขยายตลาดต่างประเทศ ก่อนย่อตัวเล็กน้อยมาปิดที่ ฿5.10 (ส.ค. 2569) รวมผลตอบแทนรอบปี +28.8%
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION (เฉลี่ย 2 วิธี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 2 วิธี</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS (TTM) ฿0.24 × P/E เป้าหมาย ~19x — ลดจาก P/E ปัจจุบัน 21.4x เล็กน้อย สะท้อนรายได้ที่โตช้า (FY2567/2568 ติดลบ) แม้มาร์จิ้นสูงจากธุรกิจ B2B ที่เปลี่ยนซัพพลายเออร์ยาก</div></div>
+        <div class="mval">฿4.56</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล ฿0.21 × (1+g); g 2.5%, r 8% → payout สูง (~87% ของ EPS) จำกัดอัตราการเติบโตของเงินปันผลในอนาคต</div></div>
+        <div class="mval">฿3.91</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿3.91 – ฿4.56</span></div>
+        <div class="r">฿4.24</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        P/E ให้มูลค่าสูงกว่า DDM เพราะ DDM สะท้อน payout ratio ที่สูง (~87%) ซึ่งจำกัดการเติบโตของปันผลในอนาคต ขณะที่ P/E สะท้อนกำไรสุทธิที่เริ่มทรงตัว/ฟื้นตัว FV เฉลี่ย ~฿4.24 ต่ำกว่าราคาตลาดปัจจุบัน ฿5.10 และใกล้เคียงเป้าราคานักวิเคราะห์เฉลี่ย ฿4.63 (n=3) ที่ต่ำกว่าราคาปัจจุบันเช่นกัน
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿5.10</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿4.24</div></div>
+        </div>
+        <div class="scale">
+          <span>฿2.97<br><small>MOS 30%</small></span>
+          <span>฿3.39<br><small>MOS 20%</small></span>
+          <span style="text-align:center">฿4.24<br><small>Fair Value</small></span>
+          <span style="text-align:right">฿4.56<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">฿4.63<br><small>เป้าเฉลี่ย Analyst</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน (฿5.10) อยู่เหนือ Fair Value ทุกวิธี และสูงกว่าเป้าเฉลี่ยนักวิเคราะห์ (฿4.63) แนะนำรอจังหวะย่อตัวเข้าใกล้โซน MOS 20% (~฿3.39) มากกว่าไล่ราคา ณ ระดับปัจจุบัน
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">−20.3%</div>
+        <div class="txt"><b>ไม่มี Margin of Safety (ราคาแพงกว่ามูลค่าเหมาะสม ~20%)</b><br>ราคาปัจจุบันสูงกว่า FV เฉลี่ยและสูงกว่าเป้าราคานักวิเคราะห์ นักลงทุนที่เน้น value ควรรอราคาย่อตัวลงสู่โซน MOS 20–30% ก่อนเข้าซื้อ</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿3.39</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿2.97</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿4.24</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="5.1" step="0.05">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿5.10 • EPS ฐาน ~฿0.24 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS −3%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿3.29</div>
+          <div class="ret neg">−26.7% (3 ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.22</span></li>
+            <li><span>P/E ออก</span><span>15x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.45</span></li>
+            <li><span>สถานการณ์</span><span>ต้นทุนวัตถุดิบเกษตรพุ่งกดมาร์จิ้น ลูกค้าอุตสาหกรรมชะลอคำสั่งซื้อ P/E de-rate</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +3%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿4.98</div>
+          <div class="ret pos">+9.4% (3 ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.26</span></li>
+            <li><span>P/E ออก</span><span>19x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.60</span></li>
+            <li><span>สถานการณ์</span><span>รายได้โตช้าตามภาวะเศรษฐกิจ มาร์จิ้นทรงตัว ขยายตลาดต่างประเทศตามแผน</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +8%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">฿6.95</div>
+          <div class="ret pos">+50.4% (3 ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~฿0.30</span></li>
+            <li><span>P/E ออก</span><span>23x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.72</span></li>
+            <li><span>สถานการณ์</span><span>สัดส่วนรายได้ต่างประเทศแตะ 35–40% ตามเป้า มาร์จิ้นสูงขึ้นจากสินค้ามูลค่าเพิ่ม</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      ประมาณการอิงสมมติฐาน P/E ออกและอัตราเติบโต EPS ที่แตกต่างกันในแต่ละสถานการณ์ ผลตอบแทนรวมปันผล 3 ปีราว 12–14% (payout ~85–90% ของ EPS) ทั้งนี้ Base case ให้ผลตอบแทนรวมเป็นบวกเล็กน้อยเพราะปันผลชดเชยส่วนต่างราคา แม้ FV ปัจจุบันจะต่ำกว่าราคาตลาด
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>ขยายตลาดต่างประเทศ:</b> สัดส่วนรายได้ต่างประเทศ (เวียดนาม/อินโดนีเซีย) เพิ่มจาก ~22% (FY2567) เป็น ~30% (ปัจจุบัน) เป้าปี 2569 ที่ 35–40% (Kaohoon.com)</li>
+          <li><b>Switching cost สูง:</b> ธุรกิจ B2B วัตถุแต่งกลิ่น/สี/ส่วนผสมอาหารต้องผ่านการรับรองสูตรกับลูกค้า ทำให้เปลี่ยนซัพพลายเออร์ยาก มาร์จิ้นจึงสูงกว่าผู้ผลิตอาหารทั่วไป</li>
+          <li><b>งบดุลแข็งแรง:</b> D/E ต่ำเพียง ~0.04 เท่า เปิดช่องขยายกำลังผลิต/M&amp;A ได้โดยไม่กดดันฐานะการเงิน</li>
+          <li><b>ปันผลสม่ำเสมอ:</b> yield ~4.1% payout ~87% ของ EPS เหมาะกับนักลงทุนสายรายได้</li>
+          <li><b>แนวโน้มอาหารสุขภาพ/clean-label:</b> ดีมานด์ส่วนผสมฟังก์ชันนัลและวัตถุแต่งกลิ่น-สีจากธรรมชาติเติบโตต่อเนื่องในอุตสาหกรรมอาหารแปรรูป</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>ต้นทุนวัตถุดิบเกษตร:</b> ราคาวัตถุดิบทางการเกษตรผันผวนตามสภาพอากาศ/ตลาดโลก กระทบมาร์จิ้นขั้นต้นโดยตรง (Gross margin แกว่ง 34–38% ใน 5 ปีล่าสุด)</li>
+          <li><b>พึ่งพาลูกค้ารายใหญ่:</b> ธุรกิจ B2B กับโรงงานอาหารรายใหญ่ หากสูญเสียลูกค้าหลักรายใดรายหนึ่งกระทบรายได้อย่างมีนัยสำคัญ (ไม่มีข้อมูลสัดส่วนลูกค้ารายใหญ่ระบุชัดจากแหล่งที่ใช้)</li>
+          <li><b>กำกับด้านความปลอดภัยอาหาร:</b> ต้องรักษามาตรฐาน GMP/HACCP/อย. และมาตรฐานส่งออกของแต่ละประเทศ การไม่ผ่านมาตรฐานกระทบสัญญาลูกค้าโดยตรง</li>
+          <li><b>ความเสี่ยงค่าเงิน:</b> รายได้ต่างประเทศที่เพิ่มสัดส่วน (~30% มุ่ง 35–40%) ทำให้ผลประกอบการอ่อนไหวต่อความผันผวนค่าเงินบาท/VND/IDR มากขึ้น</li>
+          <li><b>รายได้เติบโตช้า:</b> รายได้ FY2567 −2.1% และ FY2566 −0.7% ก่อนฟื้นเป็น TTM +1.2% ยังไม่ชัดเจนว่าการฟื้นตัวจะต่อเนื่อง</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>RBF: ธุรกิจส่วนผสมอาหาร B2B มั่นคง มาร์จิ้นสูง แต่ราคาหุ้นวิ่งนำหน้ามูลค่าไปแล้ว</h2>
+      <p>RBF เป็นผู้ผลิตวัตถุแต่งกลิ่น สี และส่วนผสมอาหารแบบ B2B ที่มีความได้เปรียบด้าน switching cost สูงและงบดุลแข็งแรง (D/E ~0.04) แต่หลังราคาหุ้นปรับขึ้น +28.8% ในรอบปี ราคาปัจจุบัน ฿5.10 ได้วิ่งนำหน้ามูลค่าเหมาะสมเฉลี่ย ฿4.24 ไปแล้ว ~20% และสูงกว่าเป้าราคานักวิเคราะห์เฉลี่ย ฿4.63 (n=3) เช่นกัน รายได้ยังโตช้า (FY2567/2568 หดตัว) แม้ TTM เริ่มฟื้น จุดที่น่าติดตามคือความคืบหน้าการขยายสัดส่วนรายได้ต่างประเทศสู่ 35–40% ภายในปี 2569 ซึ่งเป็นตัวกระตุ้นการเติบโตหลักในระยะถัดไป</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿4.24 <span style="font-size:12px;color:#cab9a8">(฿3.91–฿4.56)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −20.3%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿4.63 (Buy, n=3)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> รอสะสมในโซน MOS 20–30% (฿3.39–฿2.97) มากกว่าไล่ราคาปัจจุบัน เหมาะกับนักลงทุนที่เน้นปันผล (yield ~4.1%) ระยะยาว และติดตามความคืบหน้าการขยายตลาดต่างประเทศเป็นตัวกระตุ้นสำคัญ
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ราคา ณ 7 ส.ค. 2569 จาก Yahoo Finance (cross-check กับ StockAnalysis.com ตรงกัน) • ข้อมูลงบการเงิน/ประมาณการจาก StockAnalysis.com • สัดส่วนรายได้ต่างประเทศจาก Kaohoon.com (อ้างอิงข้อมูลบริษัท)
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 8 ส.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
