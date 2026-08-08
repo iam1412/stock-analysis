@@ -233,6 +233,30 @@ ok(U.detectStaleQuotes(cohortOf(8, FRI_7AUG).concat([{ symbol: 'THIN', currency:
 ok(U.probeCap(784) === 39, 'probeCap: 5% ของ cohort ใหญ่', String(U.probeCap(784)));
 ok(U.probeCap(20) === 5 && U.probeCap(0) === 5, 'probeCap: พื้นขั้นต่ำ 5 ตัว');
 
+// ★ เพดานต้องคิดต่อ cohort: ป้อนจำนวนทั้งรีโป (782) จะได้ 39 เท่ากันทั้งสองตลาด = 5% ของ US (~578)
+// แต่เป็น 19% ของ SET (~204) ⇒ ตลาดเล็กโดนปล่อยผ่านเกินที่ยามตั้งใจกันเกือบ 4 เท่า
+const quotesUS = Array.from({ length: 578 }, (_, i) => ({ symbol: `U${i}`, currency: 'USD', marketTime: 1 }));
+const quotesTH = Array.from({ length: 204 }, (_, i) => ({ symbol: `T${i}`, currency: 'THB', marketTime: 1 }));
+const allQuotes = quotesUS.concat(quotesTH);
+const candTH = (n) => Array.from({ length: n }, (_, i) => ({ symbol: `T${i}`, cohort: 'THB' }));
+const cap15 = U.capByCohort(candTH(15), allQuotes);
+ok(cap15.kept.length === 0 && cap15.over[0].cap === 10 && cap15.over[0].cohort === 'THB',
+  'capByCohort: 15 ตัวใน cohort THB (204) เกินเพดาน 10 → ไม่ถาม', JSON.stringify(cap15.over));
+ok(U.capByCohort(candTH(9), allQuotes).kept.length === 9, 'capByCohort: ต่ำกว่าเพดาน cohort → ผ่านครบ');
+// cohort หนึ่งเพี้ยนต้องไม่ลากอีก cohort ทิ้งไปด้วย
+const mixedCap = U.capByCohort(candTH(15).concat([{ symbol: 'EA', cohort: 'USD' }]), allQuotes);
+ok(mixedCap.kept.length === 1 && mixedCap.kept[0].symbol === 'EA',
+  'capByCohort: THB เพี้ยนแต่ USD ยังถูกถาม (แยกกันคนละตลาด)', JSON.stringify(mixedCap.kept.map((c) => c.symbol)));
+// quote ที่ไม่มี timestamp ไม่ถูกนับเป็น cohort (ตรงกับที่ detectStaleQuotes ข้าม)
+// ★ ตัวเลขต้องเลือกให้ "นับ" กับ "ไม่นับ" ให้คำตอบต่างกันจริง ไม่งั้น assert ผ่านทั้งสองทาง:
+// 100 ตัวจริง → cap 5 (6 candidate = เกิน) · ถ้าเผลอนับ 40 ตัวที่ marketTime null ด้วย → 140 → cap 7 (ไม่เกิน)
+const q100 = Array.from({ length: 100 }, (_, i) => ({ symbol: `T${i}`, currency: 'THB', marketTime: 1 }));
+const qNull = Array.from({ length: 40 }, (_, i) => ({ symbol: `N${i}`, currency: 'THB', marketTime: null }));
+ok(U.probeCap(100) === 5 && U.probeCap(140) === 7, 'capByCohort: fixture แยกสองกรณีได้จริง (cap 5 vs 7)');
+ok(U.capByCohort(candTH(6), q100.concat(qNull)).over.length === 1,
+  'capByCohort: cohort นับเฉพาะ quote ที่มี marketTime (นับ null ด้วยจะกลายเป็นไม่เกินเพดาน)',
+  JSON.stringify(U.capByCohort(candTH(6), q100.concat(qNull))));
+
 const cands = [
   { symbol: 'NRF', cohort: 'THB', missedSessions: 55, reportPrice: 5, marketPrice: 5, diffPct: 0 },
   { symbol: 'EA', cohort: 'USD', missedSessions: 3, reportPrice: 209.7, marketPrice: 209.7, diffPct: 0 },
@@ -251,6 +275,32 @@ ok(csEmpty.dead.length === 0 && csEmpty.quiet.length === 0, 'classifyStale: ไ�
 // หุ้นสภาพคล่องต่ำที่ค้างนานมาก (NRF 55 session) ต้องไม่ถูก flag ถ้า ticker ยังอยู่ — เคสที่ review จับได้
 ok(U.classifyStale([cands[0]], rowsFor(['SET:NRF']), pm).dead.length === 0,
   'classifyStale: ค้าง 55 session แต่ ticker อยู่ → ไม่ flag (กัน FP 99/248 วันที่วัดได้)');
+
+// ---------- ยาม scanner ตอบเปล่า ----------
+// scan() throw เฉพาะตอน body ว่าง/JSON เสีย/HTTP error — **ไม่ throw** เมื่อ scanner ตอบ 200 พร้อม
+// `{"data":[]}` (โดนบล็อก/เปลี่ยนโครง) ⇒ rows ว่าง ⇒ classifyStale เห็นว่าไม่มีใครอยู่บนกระดาน = flag ยกชุด
+// ตัวยามนี้คือคู่ของ shouldAbort ใน canary รายสัปดาห์ ที่ path รายวันเคยไม่มี
+const ctl = U.controlTickers([{ cohort: 'THB' }, { cohort: 'USD' }, { cohort: 'THB' }]);
+ok(ctl.includes('SET:PTT') && ctl.includes('NASDAQ:AAPL') && new Set(ctl).size === ctl.length,
+  'controlTickers: ครอบทุก cohort ที่มี candidate ไม่ซ้ำ', JSON.stringify(ctl));
+ok(U.controlTickers([{ cohort: 'THB' }]).length >= 2,
+  'controlTickers: หลายตัวต่อ cohort (control เองก็ถูกควบ/เปลี่ยนชื่อได้ ตัวเดียวคือจุดล้มเดี่ยว)');
+
+const TH1 = [{ symbol: 'A', cohort: 'THB' }];
+ok(U.unverifiedCohorts(TH1, new Map()).has('THB'), 'unverifiedCohorts: rows ว่างทั้งหมด → cohort ยืนยันไม่ได้ (ไม่ใช่หุ้นตายยกชุด)');
+ok(U.unverifiedCohorts(TH1, rowsFor(['SET:PTT'])).size === 0, 'unverifiedCohorts: control ตอบ → cohort ปกติ');
+ok(U.unverifiedCohorts(TH1, rowsFor(['SET:AOT'])).size === 0, 'unverifiedCohorts: control สำรองตอบตัวเดียวก็พอ (กัน control ตัวหลักถูกเปลี่ยนชื่อ)');
+// ★ ต้องแยกเป็นราย cohort: ตลาดหนึ่งเงียบต้องไม่ทำให้อีกตลาดถูกตัดสินโดยไม่มี control และไม่ลากทั้งรอบทิ้ง
+const mixedCohorts = [{ symbol: 'A', cohort: 'THB' }, { symbol: 'B', cohort: 'EUR' }];
+const badMixed = U.unverifiedCohorts(mixedCohorts, rowsFor(['SET:PTT']));
+ok(badMixed.has('EUR') && !badMixed.has('THB'),
+  'unverifiedCohorts: cohort ที่ไม่มี control → fail closed เฉพาะตัวมันเอง (THB ที่ control ตอบยังไปต่อ)',
+  JSON.stringify([...badMixed]));
+ok(U.unverifiedCohorts(mixedCohorts, new Map()).size === 2, 'unverifiedCohorts: ทุก cohort เงียบ → ยืนยันไม่ได้ทั้งคู่');
+// candidate ตายจริงตัวเดียวต้องยัง flag ได้ — เหตุผลที่ยามเช็ค control ไม่ใช่ rows.size ล้วน ๆ
+ok(U.unverifiedCohorts([{ symbol: 'EA', cohort: 'USD' }], rowsFor(['NASDAQ:AAPL'])).size === 0
+  && U.classifyStale([{ symbol: 'EA', cohort: 'USD', missedSessions: 3 }], rowsFor(['NASDAQ:AAPL']), new Map([['EA', ['NASDAQ:EA']]])).dead.length === 1,
+  'unverifiedCohorts: control ตอบแต่ candidate ไม่ตอบ → ยัง flag ตัวที่ตายจริงได้ (ไม่ใช่ false negative)');
 
 // ---------- mergeFlags ----------
 const prev = [

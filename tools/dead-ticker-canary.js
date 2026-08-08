@@ -43,14 +43,28 @@ const loadJson = (p, fallback) => {
   try { return JSON.parse(fs.readFileSync(p, 'utf8')); } catch (e) { return fallback; }
 };
 
+/** ticker ที่ resolve ได้รอบก่อน (tools/tv-tickers.json) — cron รายวันก็ใช้ร่วม ไม่ต้องยิงทุกกระดานซ้ำ */
+const loadTickerCache = () => loadJson(CACHE, {});
+
 // ---------- pure helpers (ทดสอบใน test/dead-ticker-test.js) ----------
+
+// ชื่อฐานที่จะยิง TradingView จาก entry ของ symbol-map · สัญญาของไฟล์นั้น (ดู `_readme`) คือ
+// **Yahoo override** — `sa` เป็นฟิลด์เสริมของ stockanalysis ที่ไม่มีอะไรบังคับให้ใส่ ⇒ entry ที่ใส่
+// แค่ `{"yahoo": "NEWCO.BK"}` ถูกต้องตามสัญญาทุกประการ แต่เดิมจะทำให้ตัวนี้กลับไปยิงชื่อไฟล์เดิม
+// เงียบ ๆ → ไม่เจอ → flag not-on-exchange ที่ triage คือ "ลบรายงาน" บนหุ้นที่แค่เปลี่ยนชื่อ
+// ⇒ ลำดับ: `tv` (override ตรงตัวถ้าวันหนึ่ง TradingView ใช้ชื่อต่างจากทั้งสองแหล่ง) → `sa` →
+//    `yahoo` ถอด suffix ตลาด (BKIH.BK → BKIH) → ชื่อไฟล์
+function tvBaseName(symbol, entry = {}) {
+  const fromYahoo = entry.yahoo ? String(entry.yahoo).replace(/\.[A-Za-z]+$/, '') : null;
+  return String(entry.tv || entry.sa || fromYahoo || symbol).toUpperCase();
+}
 
 // ชื่อ ticker ที่ TradingView ใช้ ≠ ชื่อไฟล์รายงานได้ 3 แบบ:
 //   1. บริษัทเปลี่ยนชื่อ/ticker → tools/symbol-map.json (BKI→BKIH, STEC→STECON, LANC→MZTI)
 //   2. หุ้นสองคลาส: ไฟล์ใช้ขีด (BRK-B) แต่ TradingView ใช้จุด (BRK.B)
 //   3. ไม่รู้ว่าอยู่กระดานไหน → ยิงทุก exchange ที่เป็นไปได้ ตัวไหนตอบมาถือว่าอยู่กระดานนั้น
 function tvCandidates(symbol, currency, opts = {}) {
-  const base = String(entryFor(symbol).sa || symbol).toUpperCase();
+  const base = tvBaseName(symbol, entryFor(symbol));
   const names = base.includes('-') ? [base.replace(/-/g, '.'), base] : [base];
   const out = [];
   if (opts.cached) out.push(String(opts.cached).toUpperCase());   // ที่ resolve ได้รอบก่อน — ถามก่อนเสมอ
@@ -152,9 +166,10 @@ async function main() {
   const ONLY = new Set(process.argv.slice(2).filter((a) => !a.startsWith('--'))
     .map((s) => s.replace(/\.html$/i, '').toUpperCase()));
 
-  const cache = loadJson(CACHE, {});
+  const cache = loadTickerCache();
+  const files = fs.readdirSync(REPORTS).filter((x) => /\.html$/i.test(x)).sort();
   const probes = [];
-  for (const f of fs.readdirSync(REPORTS).filter((x) => /\.html$/i.test(x)).sort()) {
+  for (const f of files) {
     const symbol = f.replace(/\.html$/i, '');
     if (ONLY.size && !ONLY.has(symbol.toUpperCase())) continue;
     const meta = readMeta(f);
@@ -191,17 +206,19 @@ async function main() {
     process.exit(2);
   }
 
-  for (const [sym, hit] of alive) {
-    const key = sym.toUpperCase();
-    if (cache[key] !== hit.ticker) cache[key] = hit.ticker;
-  }
+  for (const [sym, hit] of alive) cache[sym.toUpperCase()] = hit.ticker;
 
   const today = new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Bangkok' }); // YYYY-MM-DD เวลาไทย
   const newFlags = dead.map((p) => ({
     symbol: p.symbol, reason: 'not-on-exchange', reportPrice: p.reportPrice,
     marketPrice: null, diffPct: null, probed: p.candidates.length,
   }));
-  const flags = mergeDeadFlags(loadJson(FLAGS, []), newFlags, [...alive.keys()], today);
+  // flag ของรายงานที่ถูกลบไปแล้ว (= ปลายทางของ triage not-on-exchange) ต้องตัดทิ้งเหมือนที่
+  // update-prices.js ทำ — mergeDeadFlags พา flag เดิมมาทุกตัวโดยไม่รู้ว่าไฟล์ยังอยู่ไหม ⇒ ถ้ารัน
+  // canary หลังลบรายงานแต่ก่อน cron รอบถัดไป flag ที่เคลียร์ไปแล้วจะถูก commit กลับเข้าคิว
+  const reportExists = new Set(files.map((f) => f.replace(/\.html$/i, '').toUpperCase()));
+  const flags = mergeDeadFlags(loadJson(FLAGS, []), newFlags, [...alive.keys()], today)
+    .filter((f) => reportExists.has(String(f.symbol).toUpperCase()));
 
   if (WRITE) {
     fs.writeFileSync(FLAGS, JSON.stringify(flags, null, 2) + '\n');
@@ -223,6 +240,6 @@ async function main() {
   if (!WRITE) console.log('ใส่ --write เพื่อเขียน price-flags.json + cache');
 }
 
-module.exports = { tvCandidates, parseRows, classify, mergeDeadFlags, shouldAbort, scan, withRetry };
+module.exports = { tvBaseName, tvCandidates, parseRows, classify, mergeDeadFlags, shouldAbort, scan, withRetry, loadTickerCache };
 
 if (require.main === module) main().catch((e) => { console.error(`✗ canary ล้ม: ${e.message}`); process.exit(1); });

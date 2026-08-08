@@ -54,7 +54,8 @@ git commit -F …                    # title: price: refresh N symbols (YYYY-MM-
 | `not-on-exchange` | **สองชั้น**: quote ค้างหลัง cohort เดียวกัน ≥3 session **และ** TradingView ไม่พบ ticker บนกระดานใดเลย (เพิ่ม 8 ส.ค. 2569 — ดู §canary) · เขียนได้ทั้งจาก cron รายวัน (ยืนยันสด) และ `tools/dead-ticker-canary.js` รายสัปดาห์ · ตัวที่ติด flag นี้ **หยุด patch** รอบถัดไป (ไม่ใช่แค่ freeze รอบนี้) |
 
 - flags เป็น **snapshot ต่อรอบ**: symbol ที่กลับมาปกติ (re-analyze แล้ว / ราคาย่อกลับเข้าเกณฑ์) หายจากไฟล์เอง ไม่ต้องลบมือ · `flaggedAt` คงวันแรกที่โดนไว้ (ถ้าเหตุผลเดิม)
-- **ยกเว้น `not-on-exchange`**: อยู่ใน `EXTERNAL_REASONS` ของ `mergeFlags` — snapshot รายวัน **ไม่มีสิทธิเคลียร์แบบเงียบ ๆ** เพราะ "ไม่มี freeze รอบนี้" ไม่ได้แปลว่าหุ้นฟื้น (ไม่งั้น canary เขียนคืนวันจันทร์ เช้าอังคารหายเกลี้ยง) · ถอนได้ **2 ทางเท่านั้น**: TradingView เจอ ticker กลับมา (cron รายวันตอนยืนยัน candidate หรือ canary รายสัปดาห์) หรือไฟล์รายงานถูกลบ · ถ้าชนกับ flag ราคา → `not-on-exchange` ชนะ (triage ต่างกัน: ยืนยันแล้ว**ลบ** ไม่ใช่ re-analyze)
+- **ยกเว้น `not-on-exchange`**: อยู่ใน `EXTERNAL_REASONS` ของ `mergeFlags` — snapshot รายวัน **ไม่มีสิทธิเคลียร์แบบเงียบ ๆ** เพราะ "ไม่มี freeze รอบนี้" ไม่ได้แปลว่าหุ้นฟื้น (ไม่งั้น canary เขียนคืนวันจันทร์ เช้าอังคารหายเกลี้ยง) · ถอนได้ **3 ทางเท่านั้น**: TradingView เจอ ticker กลับมา (cron รายวันตอนยืนยัน candidate หรือ canary รายสัปดาห์) · ไฟล์รายงานถูกลบ · **`--alive <SYM>`** = ผู้ใช้ยืนยันด้วยมือว่ายังอยู่บนกระดาน (เคส "mapping เพี้ยน" ใน SKILL STEP 0 ที่ห้ามลบรายงาน — เดิมไม่มีทางออกเลยนอกจากแก้ `price-flags.json` มือ) · ถ้าชนกับ flag ราคา → `not-on-exchange` ชนะ (triage ต่างกัน: ยืนยันแล้ว**ลบ** ไม่ใช่ re-analyze)
+  > ⚠️ **`--alive` ต้องแยกจาก `--force`** — SKILL สั่ง `--force` เป็นคำสั่งประจำของ re-analysis ทุกครั้ง (STEP 1 · 5B · 5C) ถ้าผูกการปลด flag ไว้กับ `--force` แค่มีคนสั่ง "วิเคราะห์ X" ตามปกติ หุ้นที่ติด flag ก็จะถูก patch จากราคาค้างของ Yahoo แล้วลบ flag ทิ้งเงียบ ๆ = **เปิดจุดบอด EA/BPP คืนทางประตูหลัง** · `--alive` ปลดเฉพาะ symbol ที่รอบนั้นไม่ได้ล้มแบบ plumbing (fetch/patch/meta) ด้วย — ไม่งั้น net error ระหว่างรันจะแปลง flag เป็น `fetch-failed` = ลดระดับ triage จาก "ยืนยันแล้วลบ" เหลือ "plumbing" โดยไม่มีหลักฐานว่ายังเทรด
 - workflow เปิด/อัปเดต GitHub Issue "Price-refresh flags" ใบเดียว (ปิดเองเมื่อคิวว่าง) + สรุปใน job summary
   - body สร้างโดย `tools/flags-issue-body.js` — **เขียนทับทั้งใบทุกรอบ** จึงอ่าน body เดิมกลับเข้ามาก่อน เพื่อเทียบว่าตัวไหนเข้า/ออกคิว และสะสม **ตารางประวัติจำนวนคิว 14 รอบล่าสุด** (issue เก็บ state ตัวเอง ไม่ต้องมีไฟล์ history) · ประวัติจะเริ่มนับใหม่เมื่อคิวว่างจนปิด issue แล้วเปิดใบใหม่
   - marker `<!--flags-->` / `<!--history-->` ในตัว body คือจุดที่สคริปต์อ่านกลับ — **ห้ามแก้ body ด้วยมือจนคู่ marker หาย** (หายแล้วประวัติจะรีเซ็ต) · ทดสอบแห้ง: `PREV_BODY="$(gh issue view N --json body --jq .body)" TODAY=$(date +%F) node tools/flags-issue-body.js`
@@ -65,6 +66,7 @@ git commit -F …                    # title: price: refresh N symbols (YYYY-MM-
 ```bash
 node tools/update-prices.js AAPL         # dry-run ตัวเดียว (โชว์ว่าจะเปลี่ยนอะไร ไม่เขียนไฟล์/flags)
 node tools/update-prices.js --write AAPL # เขียนจริงตัวเดียว → ตามด้วย build + preserve-dates + build + verify
+node tools/update-prices.js --write --alive BKI  # ยืนยันด้วยมือว่ายังอยู่บนกระดาน → ปลด not-on-exchange + patch
 node tools/update-prices.js --write --force AAPL  # ข้าม freeze drift/mos-flip/suspect — ใช้เฉพาะตอน
                                          # re-analysis UPDATE mode ที่ agent ยืนยัน cross-source แล้ว
                                          # (ต้องระบุ SYMBOL · currency-mismatch/bad-price ยัง freeze · หลุดขอบ gauge = patcher ขยายขอบให้เอง)
@@ -128,6 +130,19 @@ npm run test:dead                        # unit test offline ของ canary (�
 - ไม่พบทุกกระดาน → flag **`not-on-exchange`** (reason เดียวกับ canary รายสัปดาห์ → triage ตรงกัน)
 - candidate เกินเพดาน `probeCap` (5% ของ cohort ขั้นต่ำ 5 ตัว) → ถือว่า**การวัดเพี้ยน** (ts อนาคตดัน ref /
   รอบคร่อม session boundary / ตลาดหยุดยาว) ไม่ถาม ไม่ flag · ยิงไม่สำเร็จ → log แล้วปล่อย canary รายสัปดาห์
+  > เพดานคิด **ต่อ cohort** (`capByCohort`) ไม่ใช่ต่อทั้งรอบ — เพราะเหตุที่ทำให้เพี้ยนเกิดต่อตลาด
+  > (SET หยุดยาวไม่ทำให้ NYSE เพี้ยน) · ป้อนจำนวนทั้งรีโป (782) จะได้เพดาน 39 เท่ากันสองตลาด =
+  > 5% ของ US (~578) แต่เป็น **19% ของ SET (~204)** ⇒ ตลาดเล็กปล่อยผ่านเกินที่ตั้งใจเกือบ 4 เท่า
+  > · cohort หนึ่งเกินเพดานไม่ลากอีก cohort ทิ้งไปด้วย
+- **ยาม control ticker** (คู่กับ `MIN_ALIVE_RATIO` ของ canary): scanner **ตอบ HTTP 200 พร้อม `data: []` ได้**
+  เวลาโดนบล็อก/เปลี่ยนโครง — `scan()` ไม่ throw (body ไม่ว่าง JSON ไม่เสีย) ⇒ rows ว่าง ⇒ `classifyStale`
+  เห็นว่า "ไม่มี candidate ไหนอยู่บนกระดาน" = **flag ยกชุด** ทั้งที่ยังเทรดกันอยู่ · จึงแนบ ticker สภาพคล่องสูง
+  ของแต่ละ cohort ไปในคำขอเดียวกัน (`NASDAQ:AAPL`+`NYSE:JPM` / `SET:PTT`+`SET:AOT` — **หลายตัว ขอแค่ตัวใด
+  ตัวหนึ่งตอบ** เพราะ control เองก็ถูกควบ/เปลี่ยนชื่อได้ ตัวเดียวคือจุดล้มเดี่ยวที่จะดับการตรวจเงียบ ๆ)
+  · เช็คจาก control ไม่ใช่ `rows.size` ล้วน ๆ เพราะรอบที่ candidate ตายจริงหมด (เช่นมี EA ตัวเดียว) ก็ rows ว่าง
+  เหมือนกัน — ตัวนั้นต้อง flag ได้ · ยาม `unverifiedCohorts` คืน **เซ็ตของ cohort ที่ยืนยันไม่ได้** แล้วข้ามเฉพาะ
+  cohort นั้น (ไม่ลากทั้งรอบทิ้ง) · cohort ที่ไม่มี control เลย (สกุลเงินนอก USD/THB) = ยืนยันไม่ได้ → fail closed
+  **เฉพาะตัวมันเอง** ไม่ใช่ปล่อยผ่านเพราะ cohort อื่นมี control
 
 ### สัญญาณ 2 — `not-on-exchange` (รายสัปดาห์, แหล่งอิสระ)
 
@@ -144,7 +159,11 @@ POST https://scanner.tradingview.com/global/scan
 - **ต้องส่ง `range` ให้ครบ N** — default page size ของ scanner = 50 ไม่งั้นได้แค่ 50 แถวเงียบ ๆ
 - ต้องมี exchange prefix (lookup เป็น exchange-scoped): ไทย `SET:` · US ยิง `NASDAQ/NYSE/AMEX/OTC/CBOE`
   (OTC = ADR ญี่ปุ่น/ยุโรป เช่น FANUY/ABBNY/KYCCF · CBOE:CBOE) · หุ้นสองคลาสไฟล์ใช้ขีดแต่ TradingView
-  ใช้จุด (BRK-B → `NYSE:BRK.B`) · บริษัทเปลี่ยนชื่ออ่านจาก `tools/symbol-map.json` (`sa`)
+  ใช้จุด (BRK-B → `NYSE:BRK.B`) · บริษัทเปลี่ยนชื่ออ่านจาก `tools/symbol-map.json` ตามลำดับ
+  **`tv` → `sa` → `yahoo` ถอด suffix ตลาด** (`tvBaseName`) — ไฟล์นั้นเป็น "Yahoo override" ตาม `_readme`
+  ของมัน `sa` จึงเป็นฟิลด์เสริมที่ไม่มีอะไรบังคับให้ใส่: entry `{"yahoo": "NEWCO.BK"}` ถูกต้องตามสัญญา
+  แต่ถ้าอ่าน `sa` อย่างเดียวจะตกกลับไปยิงชื่อไฟล์เดิม → ไม่เจอ → flag `not-on-exchange` (triage = ลบรายงาน)
+  **บนหุ้นที่แค่เปลี่ยนชื่อ** ซึ่งเป็นเคสที่ไฟล์ map มีไว้แก้พอดี · ใส่ `tv` เฉพาะเมื่อ TradingView ใช้ชื่อต่างจากทั้งคู่
 - **2 รอบ**: รอบ 1 ถาม ticker ที่น่าจะถูกที่สุดตัวเดียวต่อ symbol (จาก cache `tools/tv-tickers.json`) →
   รอบ 2 เฉพาะตัวที่ยังไม่เจอ ค่อยยิงทุกกระดาน — กันสรุปว่า "ตาย" เพราะย้ายกระดาน (uplist จาก OTC)
 - ยาม `MIN_ALIVE_RATIO` 80%: ถ้ารอบนั้นเจอ alive น้อยผิดปกติ = โดนบล็อก/โครง response เปลี่ยน →

@@ -21,7 +21,7 @@ description: วิเคราะห์หุ้นรายตัว (ไท�
   - `not-on-exchange` → **สงสัยหุ้นตาย ห้าม re-analyze ห้าม UPDATE-LIGHT** (วิเคราะห์หุ้นที่เลิกเทรดแล้วคือการเผยแพร่ข้อมูลผิด) — งานคือ **ยืนยันสถานะจากแหล่งปฐมภูมิ** (SEC Form 25/8-K · ประกาศตลาด/SET · IR) แล้ว:
     - เพิกถอน/ควบบริษัท (ผู้ถือหุ้นได้เงินสดหรือหุ้นนิติบุคคลใหม่) → **ลบ `reports/<SYM>.html`** + บันทึกใน memory delisted-stocks · **ห้ามใส่ `symbol-map`** (ไม่ใช่การเปลี่ยนชื่อ — เคส BPP→BANPU ratio 0.80208:1 ถ้า map จะทำให้ cron patch ราคา NewCo ทับ = drift ปลอม)
     - เปลี่ยนชื่อ/ticker แบบ 1:1 บริษัทเดิม → `tools/symbol-map.json` (แบบ BKI→BKIH, STEC→STECON, LANC→MZTI)
-    - ยังเทรดอยู่จริง (แค่ provider mapping เพี้ยน) → แจ้ง controller ปรับ candidate ใน `tools/dead-ticker-canary.js` — **ห้ามลบรายงาน**
+    - ยังเทรดอยู่จริง (แค่ provider mapping เพี้ยน) → แจ้ง controller ปรับ candidate ใน `tools/dead-ticker-canary.js` (หรือเติม `tv`/`sa` ใน `tools/symbol-map.json`) แล้วปลด flag + refresh ราคาด้วย `node tools/update-prices.js --write --alive <SYM>` (`--alive` เท่านั้น — `--force` ที่ใช้ประจำใน re-analysis **ไม่ปลด** flag นี้โดยตั้งใจ) — **ห้ามลบรายงาน**
     - ยืนยันไม่ได้ (เอกสารตลาดเข้าไม่ถึง) → **หยุด ถาม user** ห้ามเดาทั้งสองทาง
 - ความสด: `reports.json` ฟิลด์ `updated` ≤7 วัน → ไม่วิเคราะห์ซ้ำ (กติกา dedup อยู่ CLAUDE.md §3.1)
 

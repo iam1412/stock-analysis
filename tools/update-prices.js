@@ -22,12 +22,17 @@
  *   → npm run build → npm run verify (คงวันที่ "วิเคราะห์" เดิม — ราคา refresh ไม่ใช่ re-analysis)
  *   --force = ข้าม freeze drift/mos-flip/gauge/suspect (ใช้ตอน re-analysis UPDATE mode ที่ agent
  *   ยืนยัน cross-source แล้ว) — บังคับระบุ SYMBOL ชัด ๆ ห้ามใช้กับ full run · currency/bad-price ยัง freeze
+ *   --alive = ยืนยันด้วยมือว่า "ยังอยู่บนกระดานจริง" → ปลด `not-on-exchange` แล้ว patch ต่อ (เคส mapping
+ *   เพี้ยนใน SKILL STEP 0 ที่ห้ามลบรายงาน) · **แยกจาก --force โดยตั้งใจ**: SKILL สั่ง `--force` เป็นคำสั่ง
+ *   ประจำของ re-analysis ทุกครั้ง (STEP 1/5B/5C) ถ้าผูกกับ --force หุ้นตายจะถูก patch + ปลด flag เงียบ ๆ
+ *   ทุกครั้งที่มีคนสั่ง "วิเคราะห์ X" = เปิดจุดบอด EA/BPP คืนทางประตูหลัง · ปลด flag เฉพาะตัวที่รอบนี้
+ *   ไม่ได้ล้มแบบ plumbing (fetch/patch/meta) — ไม่งั้น net error ตอน --alive จะลดระดับ triage เงียบ ๆ
  */
 const fs = require('fs');
 const path = require('path');
 // ยืนยัน "ticker ตายจริงไหม" ด้วยแหล่งอิสระ — ใช้ helper ร่วมกับ canary รายสัปดาห์ (ไม่มี require วน:
 // dead-ticker-canary ไม่ได้ require ไฟล์นี้ · main() ของมันรันเฉพาะเมื่อถูกเรียกเป็น entry point)
-const { tvCandidates, scan: scanTickers } = require('./dead-ticker-canary.js');
+const { tvCandidates, scan: scanTickers, classify: classifyTickers, loadTickerCache } = require('./dead-ticker-canary.js');
 const { entryFor } = require('./symbol-map.js');
 const { readStockMeta, STOCK_META_PARTS_RE } = require('./report-meta.js');
 
@@ -229,9 +234,9 @@ function detectStaleQuotes(quotes, opts = {}) {
       if (missed < sessions) continue;
       out.push({
         symbol: q.symbol, signal: 'stale-quote',   // ★ `signal` ไม่ใช่ `reason` — ห้ามเขียนลง flag ตรง ๆ
-        reportPrice: q.reportPrice != null ? q.reportPrice : null,
-        marketPrice: q.marketPrice != null ? q.marketPrice : null,
-        diffPct: q.diffPct != null ? q.diffPct : null,
+        reportPrice: q.reportPrice ?? null,
+        marketPrice: q.marketPrice ?? null,
+        diffPct: q.diffPct ?? null,
         missedSessions: missed, cohort,
       });
     }
@@ -244,13 +249,66 @@ function detectStaleQuotes(quotes, opts = {}) {
 // session boundary · ตลาดหยุดยาวหลายวัน) → log แล้วไม่ถาม ไม่ flag ปล่อย canary รายสัปดาห์จัดการ
 const probeCap = (cohortSize) => Math.max(5, Math.round(cohortSize * 0.05));
 
+// ★ เพดานต้องคิด **ต่อ cohort** ไม่ใช่ต่อทั้งรอบ — cohort คือหน่วยที่ detectStaleQuotes ใช้วัด
+// (ตลาดเดียวกัน ปฏิทินเดียวกัน) เหตุที่ทำให้เพี้ยนก็เกิดต่อตลาด: SET หยุดยาวไม่ทำให้ NYSE เพี้ยน
+// ป้อน quotes.length ทั้งรีโป (~782) จะได้เพดาน 39 เท่ากันทั้งสองตลาด = 5% ของ US (~578) แต่เป็น
+// **19% ของ SET (~204)** ⇒ ยามที่ตั้งใจกัน 10 ตัวปล่อยผ่านได้ถึง 39 ตัวในตลาดเล็ก
+function capByCohort(candidates, quotes) {
+  const size = new Map();
+  for (const q of quotes) {
+    if (!Number.isFinite(q.marketTime)) continue;   // นับให้ตรงกับที่ detectStaleQuotes สร้าง cohort
+    const k = q.currency || '?';
+    size.set(k, (size.get(k) || 0) + 1);
+  }
+  const byCohort = new Map();
+  for (const c of candidates) {
+    if (!byCohort.has(c.cohort)) byCohort.set(c.cohort, []);
+    byCohort.get(c.cohort).push(c);
+  }
+  const kept = [], over = [];
+  for (const [cohort, list] of byCohort) {
+    const cap = probeCap(size.get(cohort) || 0);
+    if (list.length > cap) over.push({ cohort, count: list.length, cap });
+    else kept.push(...list);
+  }
+  return { kept: kept.sort((a, b) => a.symbol.localeCompare(b.symbol)), over };
+}
+
+// ticker ที่ "ต้องเจอเสมอ" ต่อ cohort — ตัวชี้ว่า scanner ตอบจริงหรือตอบเปล่า
+// **หลายตัวต่อ cohort ขอแค่ตัวใดตัวหนึ่งตอบ**: control ก็เป็นหุ้นที่ควบ/เปลี่ยนชื่อได้เหมือนกัน (เคส BKI→BKIH
+// ที่ symbol-map มีไว้แก้พอดี) ถ้าใช้ตัวเดียวแล้ววันหนึ่งมันหายไป ยามจะดับการตรวจของทั้ง cohort อย่างเงียบ ๆ
+const CONTROL_TICKERS = { USD: ['NASDAQ:AAPL', 'NYSE:JPM'], THB: ['SET:PTT', 'SET:AOT'] };
+const controlTickers = (candidates) =>
+  [...new Set(candidates.flatMap((c) => CONTROL_TICKERS[c.cohort] || []))];
+
+// ★ ยามคู่กับ shouldAbort ของ canary รายสัปดาห์: scanner **ตอบ HTTP 200 พร้อม data ว่างได้**
+// (โดนบล็อก / เปลี่ยนโครง response) — scan() ไม่ throw เพราะ body ไม่ว่างและ JSON ไม่เสีย
+// ⇒ rows ว่าง ⇒ classifyStale เห็น "ไม่มี candidate ไหนอยู่บนกระดาน" = flag ยกชุด ทั้งที่ยังเทรดกันอยู่
+// เช็คจาก control ticker แทน rows.size ล้วน ๆ เพราะ "candidate ตายจริงทุกตัว" (เช่นรอบที่มี candidate
+// ตัวเดียวคือ EA) ก็ทำให้ rows ว่างได้เหมือนกัน — ตัวนั้นต้อง flag ได้ ไม่ใช่โดนยามเตะทิ้ง
+// คืน **เซ็ตของ cohort ที่ยืนยันไม่ได้** ไม่ใช่ boolean ทั้งรอบ: เหตุที่ทำให้ scanner เงียบเกิดต่อกระดาน
+// (SET หายไม่ได้แปลว่า NASDAQ หาย) และ cohort ที่ไม่มี control เลย (สกุลเงินนอก USD/THB) ต้อง
+// fail closed **เฉพาะตัวมันเอง** — ไม่ลากทั้งรอบทิ้ง และไม่ปล่อยผ่านเพราะ cohort อื่นมี control
+function unverifiedCohorts(candidates, rows) {
+  const bad = new Set();
+  for (const c of candidates) {
+    const ctl = CONTROL_TICKERS[c.cohort] || [];
+    if (!ctl.length || !ctl.some((t) => rows.has(t))) bad.add(c.cohort);
+  }
+  return bad;
+}
+
 // แยก candidate เป็น "ตายจริง (TradingView ไม่มี ticker)" กับ "แค่ไม่มีคนเทรด (ยังอยู่บนกระดาน)"
 // flag ที่ออกใช้ reason `not-on-exchange` เดียวกับ canary รายสัปดาห์ — triage จึงเหมือนกันเป๊ะ
+// การจับคู่ ticker→row ใช้ classify() ของ canary ตัวเดียวกัน: กฎว่า "แถวแบบไหนนับว่ายังอยู่บนกระดาน"
+// ต้องมีคำตอบเดียวทั้งระบบ ไม่งั้น cron รายวันกับ canary รายสัปดาห์ตัดสินหุ้นตัวเดียวกันไม่ตรงกัน
 function classifyStale(candidates, rows, probeMap) {
+  const { alive } = classifyTickers(
+    candidates.map((c) => ({ symbol: c.symbol, candidates: probeMap.get(c.symbol) || [] })), rows);
   const dead = [], quiet = [];
   for (const c of candidates) {
-    const hit = (probeMap.get(c.symbol) || []).find((t) => rows.has(t));
-    if (hit) quiet.push({ ...c, ticker: hit });
+    const hit = alive.get(c.symbol);
+    if (hit) quiet.push({ ...c, ticker: hit.ticker });
     else dead.push({
       symbol: c.symbol, reason: 'not-on-exchange',
       reportPrice: c.reportPrice, marketPrice: c.marketPrice, diffPct: c.diffPct,
@@ -395,12 +453,17 @@ function loadFlags() {
 }
 // เหตุผลที่เครื่องมืออื่นเป็นเจ้าของ (tools/dead-ticker-canary.js รายสัปดาห์) — cron ราคารายวัน
 // ตรวจเรื่องนี้เองไม่ได้ ห้ามเคลียร์ทิ้งเวลาเห็นว่า "ตัวนี้ไม่มี freeze รอบนี้" ไม่งั้น canary เขียน
-// flag คืนวันจันทร์ แล้วเช้าวันอังคารหายเกลี้ยง (หุ้นตายกลับไปเงียบเหมือนเดิม) · canary เท่านั้นที่ถอนเองได้
+// flag คืนวันจันทร์ แล้วเช้าวันอังคารหายเกลี้ยง (หุ้นตายกลับไปเงียบเหมือนเดิม)
+// ถอนได้ 3 ทาง: TradingView เจอ ticker กลับมา · รายงานถูกลบ · `--force <SYM>` (ยืนยันด้วยมือ)
+// — ทั้งสามทางถอนที่ตัวเรียก (prevFlags) ก่อนถึง mergeFlags ตัวนี้จึงกันแค่การเคลียร์แบบเงียบ ๆ
 const EXTERNAL_REASONS = new Set(['not-on-exchange']);
 
 // snapshot: flag ของ symbol ที่ประมวลรอบนี้ = ผลรอบนี้ (เคลียร์เองเมื่อหาย) · symbol นอกรอบ (--only) คงเดิม
 function mergeFlags(prev, processed, newFlags) {
-  const today = new Date().toISOString().slice(0, 10);
+  // เวลาไทยเสมอ (CLAUDE.md §7) — ไฟล์เดียวกันนี้ถูกเขียนโดย dead-ticker-canary.js ด้วย ซึ่งใช้
+  // Asia/Bangkok · ถ้าตัวนี้ใช้ UTC ตาราง "ตั้งแต่" ในคิวจะปนสองปฏิทิน (รันมือ 00:00-07:00 น. ไทย
+  // จะได้วันที่ของเมื่อวาน = flag ดูเหมือนเกิดก่อนเหตุที่ทำให้เกิด)
+  const today = new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Bangkok' });
   const prevBy = new Map(prev.map((f) => [f.symbol, f]));
   const external = prev.filter((f) => processed.has(f.symbol) && EXTERNAL_REASONS.has(f.reason));
   const externalSyms = new Set(external.map((f) => f.symbol));
@@ -428,16 +491,24 @@ function commitBody(updated, frozen) {
 async function main() {
   const WRITE = process.argv.includes('--write');
   const FORCE = process.argv.includes('--force');
+  const ALIVE = process.argv.includes('--alive');
   const ONLY = new Set(process.argv.slice(2).filter((a) => !a.startsWith('--')).map((s) => s.replace(/\.html$/i, '').toUpperCase()));
   if (FORCE && !ONLY.size) { console.error('✗ --force ต้องระบุ SYMBOL ชัด ๆ (กันข้าม freeze ทั้งรีโป)'); process.exit(1); }
+  if (ALIVE && !ONLY.size) { console.error('✗ --alive ต้องระบุ SYMBOL ชัด ๆ (ปลด not-on-exchange ทั้งรีโปคือลบหลักฐานหุ้นตายทิ้ง)'); process.exit(1); }
 
   const files = fs.readdirSync(REPORTS).filter((f) => /\.html$/i.test(f)).sort()
     .filter((f) => !ONLY.size || ONLY.has(f.replace(/\.html$/i, '').toUpperCase()));
 
   const updated = [], skipped = [], frozen = [], failed = [];
   const quotes = [];   // ทุกตัวที่ fetch สำเร็จ (รวมตัวที่ freeze) — ป้อน detectStaleQuotes หลังจบลูป
+  // อ่าน flags ครั้งเดียวต่อรอบแล้วใช้ snapshot เดียวกันตลอด — เดิมอ่านสองครั้งคร่อมลูป fetch ~8 นาที
+  // ถ้า canary/รันมือเขียนไฟล์คั่นกลาง สอง snapshot จะไม่ตรงกัน (ตัวหนึ่งข้าม patch อีกตัวไม่เห็น flag)
+  const prevAll = loadFlags();
   // หุ้นที่รอบก่อน (cron หรือ canary รายสัปดาห์) ยืนยันแล้วว่าไม่อยู่บนกระดาน → ไม่ patch อีก
-  const deadAlready = new Set(loadFlags().filter((f) => f.reason === 'not-on-exchange').map((f) => f.symbol));
+  const deadAlready = new Set(prevAll.filter((f) => f.reason === 'not-on-exchange').map((f) => f.symbol));
+  // --alive = ผู้ใช้ยืนยันด้วยมือว่ายังอยู่บนกระดาน → patch ต่อได้ + ปลด flag (ทางออกของเคส "mapping
+  // เพี้ยน" ที่เดิมไม่มีเลยนอกจากแก้ price-flags.json มือ) · ปลดจริงหลังจบลูปเฉพาะตัวที่ไม่ล้ม plumbing
+  const aliveAsserted = new Set(ALIVE ? files.map((f) => f.replace(/\.html$/i, '')) : []);
   let fetchFails = 0, done = 0;
 
   for (const f of files) {
@@ -479,11 +550,15 @@ async function main() {
     // เลื่อนทุกครั้งที่ข้ามเดือน** ⇒ ป้าย % รอบปี/สี/chart.data ถูกเขียนใหม่แล้ว push ขึ้นเว็บได้เรื่อย ๆ
     // ทั้งที่หุ้นไม่ได้เทรด (เคสจริง BPP: ป้ายจะพลิก +47% → −6%) · ยัง fetch ไว้เพื่อให้ canary เห็น
     // ว่ามันกลับมาเทรดหรือยัง (กลับมา = TradingView เจอ ticker → ถอน flag → รอบหน้า patch ต่อเอง)
-    if (deadAlready.has(symbol)) {
+    // ★ เงื่อนไขคือ --alive ไม่ใช่ --force: SKILL สั่ง --force เป็นคำสั่งประจำของ re-analysis ทุกครั้ง
+    // (STEP 1/5B/5C) ⇒ ถ้าผูกกับ --force แค่สั่ง "วิเคราะห์ X" ตามปกติก็ patch หุ้นตายจากราคาค้างของ
+    // Yahoo แล้วลบ flag ทิ้งเงียบ ๆ = จุดบอด EA/BPP กลับมาทางประตูหลัง
+    if (deadAlready.has(symbol) && !ALIVE) {
       skipped.push(symbol);
-      console.log(`⏸ ${symbol.padEnd(10)} ข้าม patch — ติด flag not-on-exchange อยู่ (รอยืนยัน/ลบรายงาน)`);
+      console.log(`⏸ ${symbol.padEnd(10)} ข้าม patch — ติด flag not-on-exchange อยู่ (ยืนยัน/ลบรายงาน · ถ้ายังเทรดจริงใช้ --alive)`);
       continue;
     }
+    if (deadAlready.has(symbol)) console.log(`↻ ${symbol.padEnd(10)} --alive ทับ flag not-on-exchange — patch ต่อแล้วปลด flag (ยืนยันด้วยมือแล้ว)`);
 
     if (d.freeze) {
       frozen.push({ symbol, reason: d.freeze, reportPrice: sm.price, marketPrice: round(q.price, 2), diffPct });
@@ -520,30 +595,41 @@ async function main() {
 
   // quote ค้าง → **ถาม TradingView ยืนยันก่อน** ห้าม flag จาก timestamp เพียว ๆ (ดูคอมเมนต์
   // detectStaleQuotes: หุ้นสภาพคล่องต่ำหน้าตาเหมือนหุ้นตาย — วัดแล้ว FP 99/248 วันถ้า flag ตรง ๆ)
-  const candidates = detectStaleQuotes(quotes);
+  const { kept: candidates, over } = capByCohort(detectStaleQuotes(quotes), quotes);
+  for (const o of over)
+    console.log(`⚠ quote ค้าง ${o.count} ตัวใน cohort ${o.cohort} เกินเพดาน ${o.cap} — ถือว่าการวัดเพี้ยน (ไม่ใช่หุ้นตายยกแผง) ไม่ถาม TradingView ไม่ flag`);
   let deadConfirmed = [], quietSyms = new Set();
   if (candidates.length) {
-    const cap = probeCap(quotes.length);
-    if (candidates.length > cap) {
-      console.log(`⚠ quote ค้าง ${candidates.length} ตัว เกินเพดาน ${cap} — ถือว่าการวัดเพี้ยน (ไม่ใช่หุ้นตายยกแผง) ไม่ถาม TradingView ไม่ flag`);
-    } else {
-      try {
-        const probeMap = new Map(candidates.map((c) => [c.symbol, tvCandidates(c.symbol, c.cohort)]));
-        const rows = await scanTickers([...new Set([...probeMap.values()].flat())]);
-        const res = classifyStale(candidates, rows, probeMap);
-        deadConfirmed = res.dead;
-        quietSyms = new Set(res.quiet.map((q) => q.symbol));
-        for (const q of res.quiet)
-          console.log(`· ${q.symbol.padEnd(10)} quote ค้าง ${q.missedSessions} session แต่ ${q.ticker} ยังอยู่บนกระดาน = ไม่มีคนเทรด ไม่ใช่หุ้นตาย`);
-        for (const d of deadConfirmed)
-          console.log(`☠ ${d.symbol.padEnd(10)} quote ค้าง ${d.missedSessions} session + TradingView ไม่พบ ticker → flag not-on-exchange (ยืนยันด้วยมือก่อนลบ)`);
-      } catch (e) {
-        console.log(`⚠ ถาม TradingView ไม่สำเร็จ (${e.message}) — ไม่ flag รอบนี้ ปล่อย canary รายสัปดาห์จัดการ · candidate: ${candidates.map((c) => c.symbol).join(', ')}`);
-      }
+    try {
+      const tvCache = loadTickerCache();   // ticker ที่ canary resolve ไว้แล้ว → ยิงตัวเดียวแทนทุกกระดาน
+      const probeMap = new Map(candidates.map((c) =>
+        [c.symbol, tvCandidates(c.symbol, c.cohort, { cached: tvCache[c.symbol.toUpperCase()] })]));
+      const controls = controlTickers(candidates);
+      const rows = await scanTickers([...new Set([...[...probeMap.values()].flat(), ...controls])]);
+      const unverified = unverifiedCohorts(candidates, rows);
+      for (const co of unverified)
+        console.log(`⚠ cohort ${co}: control ticker ไม่ตอบเลย — scanner โดนบล็อก/เปลี่ยนโครง (หรือ cohort นี้ไม่มี control) ไม่ flag cohort นี้รอบนี้`);
+      const verified = candidates.filter((c) => !unverified.has(c.cohort));
+      if (!verified.length) throw new Error('ไม่มี cohort ไหนยืนยันได้เลย — ไม่ flag ทั้งรอบ');
+      const res = classifyStale(verified, rows, probeMap);
+      deadConfirmed = res.dead;
+      quietSyms = new Set(res.quiet.map((q) => q.symbol));
+      for (const q of res.quiet)
+        console.log(`· ${q.symbol.padEnd(10)} quote ค้าง ${q.missedSessions} session แต่ ${q.ticker} ยังอยู่บนกระดาน = ไม่มีคนเทรด ไม่ใช่หุ้นตาย`);
+      for (const d of deadConfirmed)
+        console.log(`☠ ${d.symbol.padEnd(10)} quote ค้าง ${d.missedSessions} session + TradingView ไม่พบ ticker → flag not-on-exchange (ยืนยันด้วยมือก่อนลบ)`);
+    } catch (e) {
+      console.log(`⚠ ถาม TradingView ไม่สำเร็จ (${e.message}) — ไม่ flag รอบนี้ ปล่อย canary รายสัปดาห์จัดการ · candidate: ${candidates.map((c) => c.symbol).join(', ')}`);
     }
   }
-  // ตัวที่ TradingView บอกว่ายังอยู่บนกระดาน = ถอน not-on-exchange เดิมทิ้ง (ไม่ค้างคิวตลอด)
-  const prevFlags = loadFlags().filter((f) => !(quietSyms.has(f.symbol) && f.reason === 'not-on-exchange'));
+  // ถอน not-on-exchange เดิมทิ้ง (ไม่ค้างคิวตลอด) เมื่อ TradingView เจอ ticker กลับมา หรือผู้ใช้ยืนยันด้วย --alive
+  // --alive ปลดเฉพาะตัวที่รอบนี้ไม่ได้ล้มแบบ plumbing — net error ระหว่างรัน --alive ไม่ควรแปลง flag
+  // "ยืนยันเพิกถอนแล้วลบรายงาน" ให้กลายเป็น fetch-failed = "plumbing ไม่ใช้ agent" โดยไม่มีหลักฐานว่ายังเป็น
+  const plumbingFail = new Set([...failed.map((x) => x.symbol),
+    ...frozen.filter((f) => f.reason === 'fetch-failed' || f.reason === 'patch-failed').map((f) => f.symbol)]);
+  const aliveConfirmed = new Set([...aliveAsserted].filter((s) => !plumbingFail.has(s)));
+  for (const s of aliveAsserted) if (plumbingFail.has(s)) console.log(`⚠ ${s.padEnd(10)} --alive แต่รอบนี้ล้มแบบ plumbing — คง flag not-on-exchange ไว้ก่อน (ยังไม่มีหลักฐานว่ายังเทรด)`);
+  const prevFlags = prevAll.filter((f) => !((quietSyms.has(f.symbol) || aliveConfirmed.has(f.symbol)) && f.reason === 'not-on-exchange'));
   const deadSyms = new Set(deadConfirmed.map((f) => f.symbol));
   const frozenAll = frozen.filter((f) => !deadSyms.has(f.symbol)).concat(deadConfirmed);
 
@@ -570,6 +656,6 @@ async function main() {
   if (!WRITE) console.log('ใส่ --write เพื่อเขียนจริง');
 }
 
-module.exports = { fmtPrice, fmtLike, toYahooSymbol, fetchChart, buildChartData, niceBounds, annualChg, decide, detectStaleQuotes, missedSessions, probeCap, classifyStale, patchReport, mergeFlags, styledRD, commitBody, THAI_MONTHS };
+module.exports = { fmtPrice, fmtLike, toYahooSymbol, fetchChart, buildChartData, niceBounds, annualChg, decide, detectStaleQuotes, missedSessions, probeCap, capByCohort, controlTickers, unverifiedCohorts, classifyStale, patchReport, mergeFlags, styledRD, commitBody, THAI_MONTHS };
 
 if (require.main === module) main().catch((e) => { console.error(e); process.exit(1); });

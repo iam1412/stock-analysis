@@ -34,6 +34,15 @@ ok(C.tvCandidates('STEC', 'THB')[0] === 'SET:STECON', 'candidates: symbol-map �
 ok(C.tvCandidates('LANC', 'USD')[0] === 'NASDAQ:MZTI', 'candidates: symbol-map US (LANC→MZTI)');
 ok(C.tvCandidates('BKI', 'THB')[0] === 'SET:BKIH', 'candidates: symbol-map ไทย (BKI→BKIH)');
 
+// symbol-map เป็น "Yahoo override" ตามสัญญาในไฟล์ — `sa` เป็นฟิลด์เสริม entry ที่มีแต่ `yahoo` ก็ถูกต้อง
+// ถ้าไม่ fallback จะยิงชื่อไฟล์เดิม → ไม่เจอ → flag not-on-exchange (triage = ลบรายงาน) บนหุ้นที่แค่เปลี่ยนชื่อ
+ok(C.tvBaseName('BKI', { yahoo: 'BKIH.BK', sa: 'BKIH' }) === 'BKIH', 'tvBaseName: sa มาก่อน');
+ok(C.tvBaseName('BKI', { yahoo: 'BKIH.BK' }) === 'BKIH', 'tvBaseName: มีแต่ yahoo → ถอด suffix ตลาด (.BK) ไม่ตกกลับชื่อเดิม');
+ok(C.tvBaseName('LANC', { yahoo: 'MZTI' }) === 'MZTI', 'tvBaseName: yahoo US ไม่มี suffix → ใช้ตรง ๆ');
+ok(C.tvBaseName('BRK-B', { yahoo: 'BRK-B' }) === 'BRK-B', 'tvBaseName: ขีดของหุ้นสองคลาสไม่ถูกถอด');
+ok(C.tvBaseName('NEW', { yahoo: 'OLD.BK', sa: 'OLD', tv: 'NEWCO' }) === 'NEWCO', 'tvBaseName: tv ทับทุกฟิลด์');
+ok(C.tvBaseName('PTT', {}) === 'PTT', 'tvBaseName: ไม่มี entry → ชื่อไฟล์');
+
 // cache = ticker ที่ resolve ได้รอบก่อน → ถามก่อนเสมอ และไม่ซ้ำในลิสต์
 const cached = C.tvCandidates('FANUY', 'USD', { cached: 'OTC:FANUY' });
 ok(cached[0] === 'OTC:FANUY', 'candidates: cache มาก่อน', JSON.stringify(cached.slice(0, 3)));
@@ -116,7 +125,8 @@ ok(C.shouldAbort({ onlyMode: false, probed: 8, aliveCount: 0 }) === false, 'shou
 
 // ---------- scan + withRetry (ยิงจริงไม่ได้ในเทสต์ → ฉีด fetch/หน่วงปลอม) ----------
 // scanner คืน body ว่างเป็นช่วง ๆ · canary รันสัปดาห์ละครั้ง ไม่มีรอบถัดไปให้แก้ตัว → ต้องลองใหม่เอง
-const res = (body, ok = true, status = 200) => ({ ok, status, text: async () => body });
+// ⚠ ห้ามตั้งชื่อ param ว่า `ok` — จะบัง ok() ที่ใช้ assert ทั้งไฟล์ (assert ที่เขียนในนี้จะระเบิดหรือเงียบ)
+const res = (body, okFlag = true, status = 200) => ({ ok: okFlag, status, text: async () => body });
 const PTT = JSON.stringify({ data: [{ s: 'SET:PTT', d: [38.75, 'THB'] }] });
 const noWait = { sleep: async () => {} };
 const quiet = async (fn) => {                       // กลบ log "ลองใหม่ใน N วิ" ให้ผลเทสต์อ่านง่าย
