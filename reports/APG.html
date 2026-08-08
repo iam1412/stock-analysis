@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น APi Group Corporation (APG) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Sonnet 5">
+<script type="application/json" id="stock-meta">
+{"symbol":"APG","currency":"USD","price":41.72,"fairValue":42.25,"mos":1.3,"upside":1.3,"pe":25.9,"dividendYield":0,"roe":10.0}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#24a380",
+    "accentDark": "#1a755c",
+    "darkGrad": "linear-gradient(135deg,#07271e 0%,#0f5743 58%,#1a9472 140%)",
+    "glow": "rgba(45,210,164,.35)",
+    "subColor": "#def2ec",
+    "headerMuted": "#e4f0ed",
+    "verdictText": "#ddf3ed",
+    "vcellLabel": "#ffffff",
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#137333"
+  },
+  "chart": {
+    "data": [["ก.ย.25", 34.37], ["ต.ค.25", 36.82], ["พ.ย.25", 39.56], ["ธ.ค.25", 38.26],
+             ["ม.ค.26", 41.57], ["ก.พ.26", 44.46], ["มี.ค.26", 40.52], ["เม.ย.26", 45.72],
+             ["พ.ค.26", 41], ["มิ.ย.26", 42.35], ["ก.ค.26", 39.68], ["ส.ค.26", 41.72]],
+    "min": 30, "max": 50, "grid": [35, 40, 45],
+    "fairLine": 42.25, "currency": "$", "highlight": [0, 7]
+  },
+  "gauge": { "min": 25, "max": 55, "cur": 41.72, "fair": 42.25 },
+  "fv": 42.25
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots"><div style="width:8px;height:8px;border-radius:50%;background:#24a380;display:inline-block;margin:0 3px"></div><div style="width:8px;height:8px;border-radius:50%;background:#1a755c;display:inline-block;margin:0 3px"></div><div style="width:8px;height:8px;border-radius:50%;background:#0f5743;display:inline-block;margin:0 3px"></div></div>
+    <div>
+      <span class="tag">NYSE: APG</span>
+      <span class="tag">Life Safety & Industrial Services</span>
+      <span class="tag">Fire Protection • Inspection & Service</span>
+    </div>
+    <h1>APi Group Corporation (APG)</h1>
+    <div class="sub">ระบบป้องกัน-ตรวจจับอัคคีภัย • ระบบรักษาความปลอดภัย (Chubb Fire & Security) • บริการอุตสาหกรรมเฉพาะทาง (Specialty Services)</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$41.72<small>(APG)</small></div>
+      </div>
+      <div class="chg">▲ +21.4% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 7 ส.ค. 2569 (StockAnalysis.com, ตรงกับ Yahoo Finance Δ0%)<br>
+        กรอบ 52 สัปดาห์ $33.40 – $49.99<br>
+        ที่มา: Yahoo Finance • StockAnalysis.com • APi Group Investor Relations • Businesswire
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">TTM ณ Q2/2569 (สิ้นสุด มิ.ย. 2569)</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">$17.90B</div><div class="d">429M หุ้น (diluted, TTM WA)</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~25.9x</div><div class="d">คำนวณจาก Adjusted EPS (GAAP ขาดทุนจากบุริมสิทธิ/amortization)</div></div>
+      <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">n/m</div><div class="d">GAAP EPS ติดลบ 4 ใน 5 ปีหลัง — ไม่มีค่าเฉลี่ยที่มีความหมาย (Fwd P/E ตลาดปัจจุบัน ~21–23x)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">~5.2x</div><div class="d">BVPS ประมาณจาก ROE×Equity (ไม่มีเลข equity ตรงจากแหล่งที่ใช้) — ใช้เป็นบริบท ไม่ใช่ขา FV</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">$(288)M</div><div class="d">ขาดทุนสุทธิผู้ถือหุ้นสามัญ (GAAP) แย่ลงจาก $(224)M ปี 2567 — ผลจากรายการบุริมสิทธิพิเศษครั้งเดียว $590M (ดูคำอธิบาย EPS ด้านล่าง)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$1.61</div><div class="d">Adjusted diluted · GAAP $(0.61) — ดูคำอธิบายเต็มด้านล่าง</div></div>
+      <div class="metric"><div class="k">BVPS</div><div class="v">~$8.07</div><div class="d">ประมาณจาก ROE-implied equity (Yahoo/StockAnalysis)</div></div>
+      <div class="metric"><div class="k">ROE</div><div class="v pos">~10.0%</div><div class="d">ROA ไม่มีข้อมูลจากแหล่งที่ตรวจสอบ</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$8.44B</div><div class="d">+14.1% YoY (organic ~10% + M&A)</div></div>
+      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">31.4%</div><div class="d">ทรงตัวจาก FY2568 31.4% — หนุนจากสัดส่วนงาน inspection/service ที่เพิ่มขึ้น</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">0%</div><div class="d">ไม่จ่ายปันผล — เน้นกระแสเงินสดลดหนี้/M&A</div></div>
+      <div class="metric"><div class="k">Beta</div><div class="v">n/a</div><div class="d">ไม่พบข้อมูลยืนยันจากแหล่งที่ใช้ในรายงานนี้</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#24a380"></i>ราคา APG</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $42.25</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        ราคาปรับขึ้นจาก $34.37 (ก.ย. 2568) แตะจุดสูงสุดของกราฟที่ $45.72 (เม.ย. 2569) หนุนจาก backlog ทำสถิติใหม่และการปรับเพิ่ม guidance ต่อเนื่อง 2 ไตรมาสติด ก่อนย่อตัวลงมาช่วง มี.ค./ก.ค. 2569 จากความกังวลอัตราดอกเบี้ย/หนี้ แล้วกลับมาปิดที่ $41.72 (7 ส.ค. 2569) รวมผลตอบแทนรอบปี +21.4%
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 2 วิธี — ใช้ Adjusted EPS/FCF ต่อหุ้นแทน GAAP EPS (ดูเหตุผลด้านล่าง)</div></div>
+    <div class="card">
+      <div class="vmethod">
+        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS (TTM adj.) $1.61 × P/E เป้าหมาย ~25x — ต่ำกว่า P/E ปัจจุบันของตลาด (~25.9x) เล็กน้อยเพื่อความระมัดระวัง อิงตัวคูณ fwd P/E ตลาด ~21–23x บวก premium สำหรับสัดส่วนรายได้เกิดซ้ำ</div></div>
+        <div class="mval">$40.25</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. FCF Yield Valuation</div><div class="mdesc">FCF/หุ้น (TTM) $1.58 × P/FCF เป้าหมาย ~28x — สะท้อน FCF conversion สูง (~80% ของ Adjusted EBITDA ปี 2568) ของธุรกิจบริการ asset-light</div></div>
+        <div class="mval">$44.24</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $40.25 – $44.24</span></div>
+        <div class="r">$42.25</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        วิธี P/E ให้ค่าต่ำกว่าเพราะใช้ตัวคูณระมัดระวังกว่าตลาดปัจจุบันเล็กน้อย ส่วนวิธี FCF Yield ให้ค่าสูงกว่าเพราะสะท้อน FCF conversion ที่แข็งแกร่งของโมเดลธุรกิจ — ทั้งสองวิธีใช้ "กำลังการทำกำไรที่แท้จริง" (adjusted/FCF) แทน GAAP EPS ที่ติดลบจากรายการบัญชีที่ไม่ใช่เนื้อธุรกิจ FV เฉลี่ย $42.25 ใกล้เคียงราคาตลาดมาก สะท้อนว่าราคาปัจจุบันได้ปรับรวมปัจจัยบวกส่วนใหญ่ไปแล้ว
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $41.72</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $42.25</div></div>
+        </div>
+        <div class="scale">
+          <span>$29.58<br><small>MOS 30%</small></span>
+          <span>$33.80<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$42.25<br><small>Fair Value</small></span>
+          <span style="text-align:right">$44.24<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">$52.32<br><small>เป้าเฉลี่ย Analyst</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบันอยู่เหนือ FV เล็กน้อยในทางปฏิบัติ (ต่างกันไม่ถึง 2%) แทบไม่มี margin of safety จากการประเมินแบบระมัดระวังของเรา ขณะที่นักวิเคราะห์ Wall Street (เฉลี่ย 11 สำนัก) มองเป้าสูงกว่ามากที่ $52.32 (+25.4% จากราคาปัจจุบัน) ซึ่งสะท้อนมุมมองที่เชื่อว่า multiple จะขยายต่อจาก momentum backlog/margin — ส่วนต่างนี้คือความเสี่ยงเชิงมุมมอง (view risk) ระหว่างการประเมินแบบอนุรักษ์นิยมกับฉันทามติตลาด
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">+1.3%</div>
+        <div class="txt"><b>แทบไม่มี Margin of Safety</b><br>ราคาปัจจุบัน $41.72 ใกล้เคียงมูลค่าเหมาะสม $42.25 มาก (ต่าง 1.3%) — ธุรกิจแข็งแกร่งแต่ราคาสะท้อนไปเกือบหมดแล้วในมุมมองระมัดระวัง นักลงทุนที่ต้องการส่วนเผื่อความปลอดภัยควรรอย่อตัว</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$33.80</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$29.58</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $42.25</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="41.72" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $41.72 • EPS ฐาน ~$1.61 (adj.) • ไม่มีปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS -5%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$22.08</div>
+          <div class="ret neg">-47.1% (3 ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$1.38</span></li>
+            <li><span>P/E ออก</span><span>16x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$0.00</span></li>
+            <li><span>สถานการณ์</span><span>Non-residential construction ชะลอ + ดอกเบี้ยสูงกดหนี้ + multiple de-rating รุนแรง</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +12%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$54.24</div>
+          <div class="ret pos">+30.0% (3 ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$2.26</span></li>
+            <li><span>P/E ออก</span><span>24x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$0.00</span></li>
+            <li><span>สถานการณ์</span><span>เติบโตตาม guidance ปัจจุบัน (organic ~7-9%) + margin ขยายต่อเนื่อง + M&A เสริม</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +20%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$77.84</div>
+          <div class="ret pos">+86.6% (3 ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$2.78</span></li>
+            <li><span>P/E ออก</span><span>28x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$0.00</span></li>
+            <li><span>สถานการณ์</span><span>สัดส่วน inspection/service แตะเป้า 60% เร็วกว่าแผน + margin เร่งตัว + multiple re-rate สู่ premium compounder</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      ทุก scenario ใช้ Adjusted diluted EPS TTM ($1.61) เป็นฐาน (ไม่ใช้ GAAP EPS ที่ติดลบจากรายการบัญชี) — Bear สมมติทั้งการเติบโตแผ่วและ multiple หดตัวรุนแรงพร้อมกัน (double hit) ซึ่งเคยเกิดกับหุ้นกลุ่มรับเหมา-อุตสาหกรรมเมื่อวัฏจักรก่อสร้างกลับตัว · Base สอดคล้องกับ guidance FY2569 ที่บริษัทปรับเพิ่ม 2 ไตรมาสติดกัน · บริษัทไม่จ่ายปันผล ผลตอบแทนทั้งหมดมาจาก capital gain
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก & ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>รายได้เกิดซ้ำตามกฎหมายอาคาร:</b> 54% ของรายได้มาจากงาน inspection/service/monitoring (เป้า 60% ภายในปี 2571, ที่มา: investor presentation Q2/2569) ซึ่งเป็นข้อบังคับด้าน fire-code compliance ทำให้กระแสรายได้สม่ำเสมอกว่าผู้รับเหมาโครงการทั่วไป</li>
+          <li><b>Backlog สูงสุดเป็นประวัติการณ์ &gt;$5 พันล้าน:</b> (Q2 2569) สะท้อนอุปสงค์แข็งแกร่งและช่วยมองเห็นรายได้ล่วงหน้าได้ดีขึ้น</li>
+          <li><b>Margin ขยายตัวต่อเนื่อง:</b> Adjusted EBITDA margin เพิ่มจาก 13.2% (FY2568) เป็น 13.8% (Q2 2569) จากการผสาน Chubb Fire & Security และ operating leverage</li>
+          <li><b>ปรับเพิ่ม guidance ต่อเนื่อง 2 ไตรมาสติด:</b> ผู้บริหารปรับเพิ่มเป้ารายได้/Adjusted EBITDA ปี 2569 ทั้งใน Q1 และ Q2 สะท้อนความเชื่อมั่นด้านการดำเนินงาน</li>
+          <li><b>FCF conversion สูง:</b> Adjusted FCF conversion ~80% ของ Adjusted EBITDA (FY2568) รองรับการลดหนี้และ M&A ต่อเนื่องโดยไม่ต้องพึ่งตลาดทุนมาก</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>หนี้จากดีล Chubb Fire & Security (2565):</b> Net debt ~$2.99B ต่อ Adjusted EBITDA มาตรฐาน ≈ 2.8–2.9x (บริษัทรายงาน net leverage ตาม covenant ที่ 1.6x ณ สิ้นปี 2568 ซึ่งใช้นิยาม EBITDA ที่กว้างกว่า) — อ่อนไหวต่อดอกเบี้ยลอยตัว</li>
+          <li><b>EPS ผู้ถือหุ้นสามัญถูกกดจากบุริมสิทธิ/amortization:</b> GAAP diluted EPS TTM ยังติดลบ (~$(0.61)) นักลงทุนต้องพึ่งตัวเลข Adjusted ซึ่งมีความเสี่ยงว่าไม่สะท้อนต้นทุนตัดจำหน่ายที่เป็นต้นทุนจริงในอดีต</li>
+          <li><b>วัฏจักรก่อสร้างที่ไม่ใช่ที่อยู่อาศัย (non-residential construction):</b> งานติดตั้งระบบใหม่แบบ project-based ยังผันผวนตามการลงทุนภาคก่อสร้างและอัตราดอกเบี้ย</li>
+          <li><b>ความเสี่ยงการผสานกิจการ (integration risk):</b> M&A ต่อเนื่องเพิ่มความเสี่ยงด้านระบบ/culture และอาจสร้างค่าใช้จ่าย transaction/restructuring ต่อเนื่อง (~$9M ใน Q2 2569)</li>
+          <li><b>การแปลงสภาพ Series A Preferred:</b> แปลงเป็นหุ้นสามัญได้ราว 6 ล้านหุ้นภายในสิ้นปี 2569 อาจสร้าง dilution เพิ่มเติมต่อผู้ถือหุ้นสามัญ</li>
+          <li><b>มูลค่าเทรดใกล้เพดาน:</b> เทรดที่ ~25.9x Adjusted EPS TTM ใกล้กับ FV ของเรา — หากผลประกอบการไม่ตอบโจทย์ guidance อาจเกิด multiple de-rating รุนแรงตามที่จำลองใน Bear case</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>ธุรกิจแข็งแกร่ง รายได้เกิดซ้ำสูง แต่ราคาแทบไม่เหลือส่วนเผื่อความปลอดภัย</h2>
+      <p>APi Group เป็นแพลตฟอร์มบริการป้องกันอัคคีภัย/ความปลอดภัยที่มีรายได้เกิดซ้ำจากงานตรวจสอบ-บำรุงรักษาตามกฎหมายราว 54% ของรายได้รวม พร้อม backlog และ guidance ที่ปรับเพิ่มต่อเนื่อง แต่ GAAP EPS ที่ติดลบ (เกิดจากรายการบุริมสิทธิ Series A + amortization จากดีล Chubb ไม่ใช่ผลขาดทุนจากธุรกิจจริง) ทำให้ต้องใช้ Adjusted EPS/FCF ต่อหุ้นเป็นฐานประเมินมูลค่า ผลคือ Fair Value $42.25 ใกล้เคียงราคาตลาดมาก (MOS +1.3%) สะท้อนว่าตลาดได้ให้เครดิตกับคุณภาพธุรกิจไปมากแล้ว ขณะที่หนี้จากดีลใหญ่ยังเป็นความเสี่ยงต่ออัตราดอกเบี้ยที่ต้องติดตาม</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$42.25 <span style="font-size:12px;color:#cab9a8">($40.25–$44.24)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +1.3%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$52.32 (Strong Buy)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ยังไม่มี margin of safety ชัดเจนสำหรับนักลงทุนสายเน้นคุณค่า — รอจังหวะย่อตัวเข้าใกล้โซน MOS 20% (~$33.80) หรือสะสมเบา ๆ เฉพาะผู้ที่เชื่อมั่นในโมเมนตัม backlog/margin ต่อเนื่อง โดยติดตามระดับหนี้ ความอ่อนไหวดอกเบี้ย และการแปลงสภาพ Series A Preferred ช่วงปลายปี 2569 อย่างใกล้ชิด</div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    ราคา ณ 7 ส.ค. 2569 จาก StockAnalysis.com (cross-check Yahoo Finance ตรงกัน 0%) •
+    งบการเงิน TTM/5 ปีจาก StockAnalysis.com financials •
+    <b>หมายเหตุ EPS:</b> GAAP diluted EPS ของ APG ติดลบต่อเนื่อง (TTM ประมาณ $(0.61) จากการคำนวณ H2/2568 + H1/2569, FY2568 GAAP $(0.69) อย่างเป็นทางการ) ไม่ได้แปลว่าธุรกิจขาดทุนจากการดำเนินงาน แต่มาจาก 2 ปัจจัยหลัก: (1) รายการ "accrued dividend" ของ Series A Preferred Stock ก้อนใหญ่ราว $590 ล้าน (one-time, non-cash) ในปีบัญชี 2568 ที่หักออกจากกำไรก่อนคำนวณ EPS ผู้ถือหุ้นสามัญ บวกส่วนแบ่งกำไรรายไตรมาสให้ Series A อีกปีละ ~$16–32 ล้าน และ (2) ค่าตัดจำหน่ายสินทรัพย์ไม่มีตัวตน (amortization) จากดีล Chubb Fire & Security (2565) ที่สูงถึง ~$131 ล้านในครึ่งปีแรก 2569 เพียงงวดเดียว ซึ่งเป็นต้นทุนทางบัญชีที่ไม่ใช่เงินสด — บริษัทจึงรายงาน Adjusted diluted EPS แยกต่างหาก (TTM คำนวณจาก FY2568 $1.48 − H1/2568 $0.64 + H1/2569 $0.77 = $1.61) ซึ่งใกล้เคียงกับ FCF/หุ้น TTM ที่ $1.58 มาก บ่งชี้ว่าเป็นตัวแทนกำลังการทำกำไรที่น่าเชื่อถือกว่า GAAP EPS มาก รายงานนี้จึงใช้ Adjusted EPS/FCF ต่อหุ้นเป็นฐานของ Fair Value ทั้ง 2 วิธี พร้อมแสดง GAAP EPS ควบคู่เพื่อความโปร่งใส ทั้งนี้ EPS(TTM) ระหว่างแหล่งข้อมูล 2 แหล่งที่ต่างกัน 5.1% (Yahoo $(0.62) vs StockAnalysis $(0.59)) กระทบยอดได้แล้วด้วยวิธีคำนวณตรงจากผลประกอบการทางการของบริษัท ได้ผล $(0.61) ซึ่งใกล้เคียง Yahoo ในกรอบ ~2% ส่วนต่างที่เหลือมาจากช่วงเวลา TTM/วิธีปัดเศษของผู้ให้บริการข้อมูลแต่ละราย ไม่ใช่ข้อขัดแย้งเชิงข้อเท็จจริง •
+    ข้อมูล net leverage ratio 1.6x (นิยาม covenant) และ Adjusted FCF conversion 80% จากผลประกอบการ Q4/FY2568 อย่างเป็นทางการ (ir.apigroupcorp.com) •
+    ข้อมูลรายได้เกิดซ้ำ inspection/service/monitoring 54% จาก investor presentation ไตรมาส 2/2569
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 8 ส.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
