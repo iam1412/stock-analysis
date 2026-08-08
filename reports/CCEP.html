@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์หุ้น Coca-Cola Europacific Partners (CCEP) — Stock Analysis Dashboard</title>
+<meta name="ai-model" content="Claude Opus 5">
+<script type="application/json" id="stock-meta">
+{"symbol":"CCEP","currency":"USD","price":108.29,"fairValue":103.00,"mos":-5.1,"upside":-4.9,"pe":21.2,"dividendYield":2.22,"roe":23.54}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": {
+    "accent": "#e22737",
+    "accentDark": "#ab1724",
+    "darkGrad": "linear-gradient(135deg,#3c060b 0%,#700b14 58%,#b1111f 140%)",
+    "glow": "rgba(225,30,47,.35)",
+    "subColor": "#ebc2c5",
+    "headerMuted": "#dbb3b6",
+    "verdictText": "#f1d0d2",
+    "vcellLabel": "#e5bcc0",
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#137333"
+  },
+  "chart": {
+    "data": [["ก.ย.25", 90.41], ["ต.ค.25", 88.83], ["พ.ย.25", 91.69], ["ธ.ค.25", 90.7],
+             ["ม.ค.26", 91.7], ["ก.พ.26", 110.43], ["มี.ค.26", 90.67], ["เม.ย.26", 94.57],
+             ["พ.ค.26", 90.69], ["มิ.ย.26", 100.07], ["ก.ค.26", 109.46], ["ส.ค.26", 108.29]],
+    "min": 80, "max": 120, "grid": [90, 100, 110],
+    "fairLine": 103, "currency": "$", "highlight": [1, 5]
+  },
+  "gauge": { "min": 70, "max": 120, "cur": 108.29, "fair": 103 },
+  "fv": 103
+}
+</script>
+<!--TEMPLATE:STYLE-->
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="gdots"><div style="width:8px;height:8px;border-radius:50%;background:#e22737;display:inline-block;margin:0 3px"></div><div style="width:8px;height:8px;border-radius:50%;background:#ab1724;display:inline-block;margin:0 3px"></div><div style="width:8px;height:8px;border-radius:50%;background:#700b14;display:inline-block;margin:0 3px"></div></div>
+    <div>
+      <span class="tag">NASDAQ: CCEP</span>
+      <span class="tag">Consumer Staples — Beverages</span>
+      <span class="tag">Coca-Cola Bottler (แฟรนไชส์บรรจุขวด)</span>
+    </div>
+    <h1>Coca-Cola Europacific Partners plc</h1>
+    <div class="sub">ผู้บรรจุขวด Coca-Cola รายใหญ่ที่สุดของโลกโดยรายได้ • ยุโรปตะวันตก 13 ประเทศ • ออสเตรเลีย–นิวซีแลนด์–แปซิฟิก • อินโดนีเซีย</div>
+    <div class="price-row">
+      <div>
+        <div class="px">$108.29<small>(CCEP)</small></div>
+      </div>
+      <div class="chg">▲ +19.8% (รอบปี)</div>
+      <div class="px-meta">
+        ราคา ณ 7 ส.ค. 2569 (Yahoo Finance ตรงกับ StockAnalysis.com พอดี 0.00%)<br>
+        กรอบ 52 สัปดาห์ $84.66 – $113.67<br>
+        ที่มา: Yahoo Finance • StockAnalysis.com • London Stock Exchange • Coca-Cola Europacific Partners IR
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 1. KEY METRICS ===== -->
+  <section>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ราคาเป็น USD · งบการเงินสกุล EUR</div></div>
+    <div class="grid g4">
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~$48.7B</div><div class="d">~450 ล้านหุ้น (≈ €42.2 พันล้าน)</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~21.2x</div><div class="d">ราคา USD $108.29 ÷ EPS (TTM) USD $5.12 — <b>USD/USD ทั้งคู่</b></div></div>
+      <div class="metric"><div class="k">EV/EBITDA (TTM)</div><div class="v neu">~12.5x</div><div class="d">EV ≈ €52.4 พันล้าน ÷ EBITDA ≈ €4.18 พันล้าน</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">~5.0x</div><div class="d">BVPS ~$21.5 (≈ €18.6) — ส่วนของผู้ถือหุ้นบาง เพราะซื้อกิจการด้วยหนี้</div></div>
+
+      <div class="metric"><div class="k">กำไรสุทธิ FY2568</div><div class="v">€1,942M</div><div class="d">+37.0% YoY (จาก €1,418M ใน FY2567)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$5.12</div><div class="d">= €4.44 ในงบ EUR แปลงที่ EURUSD 1.15566</div></div>
+      <div class="metric"><div class="k">Net debt / EBITDA</div><div class="v neu">~2.4x</div><div class="d">หนี้สุทธิ ≈ €10.2 พันล้าน (หนี้รวม €12,189M − เงินสด €1,994M)</div></div>
+      <div class="metric"><div class="k">ROE (TTM)</div><div class="v pos">~23.5%</div><div class="d">D/E 1.20 เท่า — ROE สูงส่วนหนึ่งมาจากเลเวอเรจ ไม่ใช่มาร์จิ้นล้วน</div></div>
+
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">€21,351M</div><div class="d">+2.2% YoY — โตด้วยราคา/มิกซ์ ปริมาณเกือบทรงตัว</div></div>
+      <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">35.6%</div><div class="d">อัตรากำไรจากการดำเนินงาน 13.5% (จาก 10.4% ใน FY2567)</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~2.2%</div><div class="d">$2.39/หุ้น/ปี — <b>สหราชอาณาจักรหักภาษี ณ ที่จ่าย 0% เหลือ ~2.2%</b></div></div>
+      <div class="metric"><div class="k">FCF (TTM)</div><div class="v pos">€2,285M</div><div class="d">FCF yield ~5.4% — สม่ำเสมอ €2.1–2.4 พันล้านมา 5 ปี</div></div>
+    </div>
+
+    <div class="card" style="margin-top:16px">
+      <div style="font-weight:700;margin-bottom:4px">งบการเงินย้อนหลัง 5 ปี + TTM — <span style="color:var(--muted);font-weight:400">หน่วย: ล้านยูโร (งบการเงินสกุล EUR)</span></div>
+      <p style="font-size:12px;color:var(--muted);margin:0 0 10px;line-height:1.6">
+        ⚠️ CCEP จดทะเบียนซื้อขายที่ Nasdaq เป็น<b>หุ้นสามัญโดยตรง (ไม่ใช่ ADR) อัตรา 1:1</b> กับหุ้นที่ LSE
+        (ตรวจแล้ว: LSE £79.50 × GBPUSD 1.3488 = $107.23 เทียบ Nasdaq $108.29 → ต่างกัน 1.0%)
+        แต่<b>รายงานงบการเงินเป็นสกุลยูโร</b> — ตัวเลขในตารางนี้จึงเป็น EUR ทั้งหมด ส่วน P/E · ราคา · Fair Value ในรายงานนี้เป็น USD
+        โดยแปลงที่อัตรา <b>EURUSD 1.15566 (ณ 8 ส.ค. 2569)</b>
+      </p>
+      <div style="overflow-x:auto">
+      <table style="width:100%;border-collapse:collapse;font-size:12.5px;line-height:1.7">
+        <thead>
+          <tr style="border-bottom:1.5px solid rgba(128,128,128,.35)">
+            <th style="text-align:left;padding:6px 8px">รายการ (€ ล้าน)</th>
+            <th style="text-align:right;padding:6px 8px">TTM</th>
+            <th style="text-align:right;padding:6px 8px">FY2568</th>
+            <th style="text-align:right;padding:6px 8px">FY2567</th>
+            <th style="text-align:right;padding:6px 8px">FY2566</th>
+            <th style="text-align:right;padding:6px 8px">FY2565</th>
+            <th style="text-align:right;padding:6px 8px">FY2564</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="border-bottom:1px solid rgba(128,128,128,.18)"><td style="padding:5px 8px">รายได้</td><td style="text-align:right;padding:5px 8px">21,351</td><td style="text-align:right;padding:5px 8px">20,901</td><td style="text-align:right;padding:5px 8px">20,438</td><td style="text-align:right;padding:5px 8px">18,302</td><td style="text-align:right;padding:5px 8px">17,320</td><td style="text-align:right;padding:5px 8px">13,763</td></tr>
+          <tr style="border-bottom:1px solid rgba(128,128,128,.18)"><td style="padding:5px 8px;color:var(--muted)">เติบโต YoY</td><td style="text-align:right;padding:5px 8px;color:var(--muted)">+2.2%</td><td style="text-align:right;padding:5px 8px;color:var(--muted)">+2.3%</td><td style="text-align:right;padding:5px 8px;color:var(--muted)">+11.7%</td><td style="text-align:right;padding:5px 8px;color:var(--muted)">+5.7%</td><td style="text-align:right;padding:5px 8px;color:var(--muted)">+25.8%</td><td style="text-align:right;padding:5px 8px;color:var(--muted)">+29.8%</td></tr>
+          <tr style="border-bottom:1px solid rgba(128,128,128,.18)"><td style="padding:5px 8px">อัตรากำไรขั้นต้น</td><td style="text-align:right;padding:5px 8px">35.6%</td><td style="text-align:right;padding:5px 8px">35.6%</td><td style="text-align:right;padding:5px 8px">35.3%</td><td style="text-align:right;padding:5px 8px">36.7%</td><td style="text-align:right;padding:5px 8px">35.9%</td><td style="text-align:right;padding:5px 8px">37.0%</td></tr>
+          <tr style="border-bottom:1px solid rgba(128,128,128,.18)"><td style="padding:5px 8px">อัตรากำไรจากการดำเนินงาน</td><td style="text-align:right;padding:5px 8px">13.5%</td><td style="text-align:right;padding:5px 8px">13.4%</td><td style="text-align:right;padding:5px 8px">10.4%</td><td style="text-align:right;padding:5px 8px">12.8%</td><td style="text-align:right;padding:5px 8px">12.0%</td><td style="text-align:right;padding:5px 8px">11.0%</td></tr>
+          <tr style="border-bottom:1px solid rgba(128,128,128,.18)"><td style="padding:5px 8px">กำไรสุทธิ</td><td style="text-align:right;padding:5px 8px">1,996</td><td style="text-align:right;padding:5px 8px">1,942</td><td style="text-align:right;padding:5px 8px">1,418</td><td style="text-align:right;padding:5px 8px">1,669</td><td style="text-align:right;padding:5px 8px">1,508</td><td style="text-align:right;padding:5px 8px">982</td></tr>
+          <tr style="border-bottom:1px solid rgba(128,128,128,.18)"><td style="padding:5px 8px">EPS (ปรับลด, €)</td><td style="text-align:right;padding:5px 8px">4.44</td><td style="text-align:right;padding:5px 8px">4.26</td><td style="text-align:right;padding:5px 8px">3.08</td><td style="text-align:right;padding:5px 8px">3.63</td><td style="text-align:right;padding:5px 8px">3.29</td><td style="text-align:right;padding:5px 8px">2.15</td></tr>
+          <tr style="border-bottom:1px solid rgba(128,128,128,.18)"><td style="padding:5px 8px">กระแสเงินสดอิสระ (FCF)</td><td style="text-align:right;padding:5px 8px">2,285</td><td style="text-align:right;padding:5px 8px">2,203</td><td style="text-align:right;padding:5px 8px">2,270</td><td style="text-align:right;padding:5px 8px">2,134</td><td style="text-align:right;padding:5px 8px">2,432</td><td style="text-align:right;padding:5px 8px">1,768</td></tr>
+          <tr style="border-bottom:1px solid rgba(128,128,128,.18)"><td style="padding:5px 8px">จำนวนหุ้น (ล้าน)</td><td style="text-align:right;padding:5px 8px">450</td><td style="text-align:right;padding:5px 8px">456</td><td style="text-align:right;padding:5px 8px">461</td><td style="text-align:right;padding:5px 8px">459</td><td style="text-align:right;padding:5px 8px">458</td><td style="text-align:right;padding:5px 8px">457</td></tr>
+          <tr style="border-bottom:1px solid rgba(128,128,128,.18)"><td style="padding:5px 8px">เงินสด</td><td style="text-align:right;padding:5px 8px">1,994</td><td style="text-align:right;padding:5px 8px">957</td><td style="text-align:right;padding:5px 8px">1,713</td><td style="text-align:right;padding:5px 8px">1,987</td><td style="text-align:right;padding:5px 8px">1,643</td><td style="text-align:right;padding:5px 8px">1,465</td></tr>
+          <tr style="border-bottom:1px solid rgba(128,128,128,.18)"><td style="padding:5px 8px">หนี้สินรวม (มีดอกเบี้ย)</td><td style="text-align:right;padding:5px 8px">12,189</td><td style="text-align:right;padding:5px 8px">10,694</td><td style="text-align:right;padding:5px 8px">11,331</td><td style="text-align:right;padding:5px 8px">11,396</td><td style="text-align:right;padding:5px 8px">11,907</td><td style="text-align:right;padding:5px 8px">13,140</td></tr>
+          <tr style="border-bottom:1px solid rgba(128,128,128,.18)"><td style="padding:5px 8px">D/E (เท่า)</td><td style="text-align:right;padding:5px 8px">1.20</td><td style="text-align:right;padding:5px 8px">1.23</td><td style="text-align:right;padding:5px 8px">1.11</td><td style="text-align:right;padding:5px 8px">1.27</td><td style="text-align:right;padding:5px 8px">1.42</td><td style="text-align:right;padding:5px 8px">1.64</td></tr>
+          <tr><td style="padding:5px 8px">ROE</td><td style="text-align:right;padding:5px 8px">23.8%</td><td style="text-align:right;padding:5px 8px">22.9%</td><td style="text-align:right;padding:5px 8px">17.0%</td><td style="text-align:right;padding:5px 8px">21.6%</td><td style="text-align:right;padding:5px 8px">20.8%</td><td style="text-align:right;padding:5px 8px">14.9%</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        <b>อ่านตารางนี้อย่างไร:</b> รายได้กระโดด 2 ปีติด (FY2564 +29.8%, FY2565 +25.8%) มาจากการรวมงบ <b>Coca-Cola Amatil</b>
+        (ออสเตรเลีย/แปซิฟิก/อินโดนีเซีย) ที่ปิดดีลกลางปี 2564 — ไม่ใช่การเติบโตอินทรีย์ หลังจากนั้นรายได้กลับมาโตปีละ 2–3% ตามปกติของธุรกิจเครื่องดื่มอิ่มตัว
+        สิ่งที่เปลี่ยนจริงคือ<b>อัตรากำไรจากการดำเนินงาน 10.4% → 13.5%</b> (การผนึกต้นทุนหลัง Amatil + การส่งผ่านราคา) และ <b>D/E ลดจาก 1.64 → 1.20</b> —
+        ทั้งสองอย่างคือเหตุผลที่ตลาด re-rate หุ้นตัวนี้ขึ้นในรอบ 2 ปีที่ผ่านมา
+        <br>งวดงบที่ใช้: ผลประกอบการ<b>ไตรมาส 2 ปี 2569</b> ประกาศ 4 ส.ค. 2569 (TTM สิ้นสุดครึ่งปีแรก 2569) + งบปีเต็ม <b>FY2568 (FY2025)</b>
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 2. PRICE CHART (ราคาย้อนหลัง ~1 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">โดยประมาณ</div></div>
+    <div class="card">
+      <div class="chart-wrap">
+        <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#e22737"></i>ราคา CCEP</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $103.00</span>
+        <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
+        รอบปีที่ผ่านมา CCEP ให้ผลตอบแทนราคา <b>+19.8%</b> (จาก ~$90.4 เมื่อ ก.ย. 2568 มาที่ $108.29) แต่เส้นทางไม่ราบเรียบ:
+        ราคานิ่งอยู่ในกรอบแคบ $89–92 ตลอดครึ่งหลังของปี 2568 (จุดต่ำสุดของกราฟที่ ~$88.8 เดือน ต.ค. 2568)
+        แล้วพุ่งขึ้นแตะ <b>~$110.4 ในเดือน ก.พ. 2569</b> — จุดสูงสุดของกราฟ — หลังตลาดรับรู้การขยายอัตรากำไรและการลดหนี้ ก่อนย่อกลับลงมา ~$90.7 ในเดือน มี.ค.
+        จากนั้นไต่ขึ้นต่อเนื่องตั้งแต่ มิ.ย. 2569 กลับมายืนเหนือ $108 อีกครั้ง
+        ปัจจุบันราคาอยู่ <b>เหนือเส้นมูลค่าเหมาะสม $103.00</b> และห่างจุดสูงสุด 52 สัปดาห์ ($113.67) ไม่ถึง 5%
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 3. VALUATION ===== -->
+  <section>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 2 วิธี · ประเมินใน EUR แล้วแปลงเป็น USD</div></div>
+    <div class="card">
+      <p style="font-size:12px;color:var(--muted);margin:0 0 14px;line-height:1.6">
+        <b>เหตุผลที่ไม่ใช้วิธี P/E เป็นตัวประเมินหลัก:</b> CCEP ซื้อกิจการด้วยหนี้จำนวนมาก (Coca-Cola Amatil)
+        กำไรสุทธิและ EPS จึงถูกกดด้วยดอกเบี้ยและโครงสร้างทุน การประเมินที่ตรงกับธุรกิจนี้กว่าคือการตีมูลค่าที่ระดับ<b>กิจการทั้งก้อน (EV)</b>
+        แล้ว<b>หักหนี้สุทธิออก</b> เหลือเป็นมูลค่าของผู้ถือหุ้น กับการคิดจาก<b>กระแสเงินสดที่ถึงมือผู้ถือหุ้นจริง (FCFE)</b> ซึ่งเป็นเงินสดหลังจ่ายดอกเบี้ยไปแล้ว
+      </p>
+      <div class="vmethod">
+        <div><div class="mname">1. EV/EBITDA (ตีมูลค่ากิจการ แล้วหักหนี้สุทธิ)</div><div class="mdesc">EBITDA (TTM) ≈ €4,180 ล้าน (กำไรจากการดำเนินงาน €2,882 ล้าน + ค่าเสื่อม/ตัดจำหน่าย ≈ €1,300 ล้าน) × ตัวคูณเป้าหมาย 11.8x = EV €49,324 ล้าน − หนี้สุทธิ €10,195 ล้าน = €39,129 ล้าน ÷ 450 ล้านหุ้น = €86.95 ต่อหุ้น × EURUSD 1.15566</div></div>
+        <div class="mval">$100.49</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">2. FCFE / Levered DCF (กระแสเงินสดถึงผู้ถือหุ้น)</div><div class="mdesc">FCFE ต่อหุ้น €5.08 (FCF TTM €2,285 ล้าน ÷ 450 ล้านหุ้น — เป็นเงินสดหลังจ่ายดอกเบี้ยแล้ว) × (1+g) ÷ (r − g); g 2.6%, r 8.3% → €5.21 ÷ 5.7% = €91.44 ต่อหุ้น × EURUSD 1.15566</div></div>
+        <div class="mval">$105.67</div>
+      </div>
+      <div class="fv-box">
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $100.49 – $105.67</span></div>
+        <div class="r">$103.00</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+        <b>สมมติฐานที่ต้องรู้:</b> ตัวคูณ EV/EBITDA เป้าหมาย 11.8x ตั้งไว้ <b>ต่ำกว่าระดับที่ตลาดให้ปัจจุบัน (~12.5x) เล็กน้อย</b>
+        แต่ยัง<b>สูงกว่า</b>ค่าที่ผู้บรรจุขวดมักได้รับในอดีต (~10–11x) เพื่อสะท้อนอัตรากำไรที่ขยายจริงและหนี้ที่ลดลงจริง
+        ฝั่ง FCFE ใช้ r 8.3% (ต้นทุนส่วนของผู้ถือหุ้นของธุรกิจ defensive ที่มีหนี้ปานกลาง) และ g 2.6% ระยะยาว ซึ่งใกล้เคียงเงินเฟ้อ +
+        การเติบโตของราคา/มิกซ์ — เหมาะกับธุรกิจที่<b>ปริมาณขายแทบไม่โต</b> วิธี FCFE ให้ค่าสูงกว่าเพราะสะท้อนคุณภาพกระแสเงินสดที่สม่ำเสมอมาก
+        ส่วนวิธี EV/EBITDA ให้ค่าต่ำกว่าเพราะโดน<b>หนี้สุทธิ €10.2 พันล้านหักออกเต็มจำนวน</b>
+        FV กลาง $103.00 จึงเป็นจุดสมดุลของ "งบดุลหนัก" กับ "กระแสเงินสดดี"
+        <br>⚠️ EBITDA เป็นค่าประมาณจากอัตรากำไรจากการดำเนินงานบวกค่าเสื่อมโดยประมาณ (CCEP ไม่ได้เปิดเผยตัวเลข EBITDA ตรง ๆ ในชุดข้อมูลที่ใช้)
+        — คลาดเคลื่อน ±5% ที่ EBITDA จะขยับ FV วิธีที่ 1 ประมาณ ±$5.9
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 4. GAUGE ===== -->
+  <section>
+    <div class="s-head"><div class="n">4</div><h2>ราคาปัจจุบัน vs โซนต่างๆ</h2></div>
+    <div class="card">
+      <div class="gauge">
+        <div class="gbar" id="gbar">
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $108.29</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $103.00</div></div>
+        </div>
+        <div class="scale">
+          <span>$72.10<br><small>MOS 30%</small></span>
+          <span>$82.40<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$103.00<br><small>Fair Value</small></span>
+          <span style="text-align:right">$105.67<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">$112.52<br><small>เป้าเฉลี่ย Analyst</small></span>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
+        ราคาปัจจุบัน $108.29 อยู่ <b>เหนือ Fair Value $103.00</b> และยังอยู่<b>เหนือกรอบบนของการประเมิน ($105.67)</b> ด้วย
+        แปลว่าตลาดกำลังให้มูลค่าที่มองบวกกว่าสมมติฐานในรายงานนี้ทุกวิธี
+        เป้าเฉลี่ยนักวิเคราะห์ 12 เดือนอยู่ที่ $112.52 (จาก 11 สำนัก, คำแนะนำรวม Buy) — สูงกว่าราคาปัจจุบันเพียง ~3.9%
+        ซึ่งเป็น upside ที่บางมากเมื่อเทียบกับความเสี่ยงของหุ้นที่มีหนี้ 2.4 เท่าของ EBITDA
+        โซนที่เริ่มน่าสนใจในเชิงมูลค่าคือ<b>ต่ำกว่า $103</b> และเข้าเกณฑ์ส่วนเผื่อความปลอดภัย 20% ที่ <b>$82.40</b> ซึ่งเป็นระดับที่ราคาไม่เคยลงไปแตะเลยในรอบ 52 สัปดาห์ (จุดต่ำสุด $84.66)
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 5. MARGIN OF SAFETY ===== -->
+  <section>
+    <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
+    <div class="card">
+      <div class="mos-verdict bad">
+        <div class="big">−5.1%</div>
+        <div class="txt"><b>ไม่มี Margin of Safety — ราคาซื้อขายสูงกว่ามูลค่าเหมาะสมประมาณ 5%</b><br>
+        ราคา $108.29 เทียบ FV $103.00 หมายความว่าผู้ที่ซื้อที่ราคานี้จ่ายเกินมูลค่าที่ประเมินได้ และไม่มีกันชนรองรับหากสมมติฐานพลาด
+        — สำหรับนักลงทุนเน้นคุณค่า ควร<b>เฝ้ารอ ยังไม่ใช่จุดเข้า</b> ผู้ที่ถืออยู่แล้วยังถือรับปันผลได้ แต่ไม่ควรเพิ่มน้ำหนักที่ระดับนี้</div>
+      </div>
+      <div class="grid g3">
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$82.40</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$72.10</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $103.00</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+      </div>
+      <div class="calc">
+        <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
+        <div class="calc-row">
+          <input id="pxIn" class="mono" type="number" value="108.29" step="0.5">
+          <div class="calc-out" id="mosOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
+  <section>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $108.29 • EPS ฐาน ~$5.12 • รวมปันผล</div></div>
+    <div class="scn">
+      <div class="col bear">
+        <div class="top"><span>🐻 Bear</span><span>EPS −1%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$79.50</div>
+          <div class="ret neg">−19.9% (≈ −7.1%/ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$4.97</span></li>
+            <li><span>P/E ออก</span><span>16x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$7.20</span></li>
+            <li><span>สถานการณ์</span><span>ปริมาณขายยุโรปหดจากภาษีน้ำตาล/กระแสสุขภาพ ต้นทุนอลูมิเนียม-น้ำตาลพุ่ง ส่งผ่านราคาไม่ได้ ตลาดลดตัวคูณกลับสู่ระดับผู้บรรจุขวดเดิม</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col base">
+        <div class="top"><span>⚖️ Base</span><span>EPS +6%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$115.90</div>
+          <div class="ret pos">+14.3% (≈ +4.6%/ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$6.10</span></li>
+            <li><span>P/E ออก</span><span>19x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$7.90</span></li>
+            <li><span>สถานการณ์</span><span>รายได้โต 2–3%/ปี ด้วยราคา/มิกซ์ อัตรากำไรทรงระดับ 13% ลดหนี้ต่อเนื่อง ซื้อหุ้นคืนเล็กน้อย ตลาดคงตัวคูณเดิม</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col bull">
+        <div class="top"><span>🚀 Bull</span><span>EPS +10%/ปี</span></div>
+        <div class="body">
+          <div class="tgt">$149.80</div>
+          <div class="ret pos">+46.2% (≈ +13.5%/ปี)</div>
+          <ul>
+            <li><span>EPS ปี 3</span><span>~$6.81</span></li>
+            <li><span>P/E ออก</span><span>22x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~$8.50</span></li>
+            <li><span>สถานการณ์</span><span>อินโดนีเซีย/แปซิฟิกเร่งตัว อัตรากำไรแตะ 15% หนี้สุทธิลงต่ำกว่า 2 เท่า EBITDA ตลาดเริ่มให้ตัวคูณใกล้เจ้าของแบรนด์</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
+      ตัวเลขทั้งหมดคิดจากจุดเข้า $108.29 และ EPS ฐาน (TTM) $5.12 ในสกุล USD
+      ข้อสังเกตสำคัญ: <b>กรณีฐานให้ผลตอบแทนเพียง ~4.6% ต่อปี</b> ซึ่งต่ำกว่าที่ควรได้จากหุ้นที่มีหนี้ระดับนี้
+      สาเหตุคือราคาเริ่มต้นอยู่เหนือมูลค่าเหมาะสมแล้ว — ผลตอบแทนส่วนใหญ่ในกรณีฐานมาจากการเติบโตของกำไร ไม่ใช่การ re-rate
+      ขณะที่กรณี Bear มีความเจ็บมากกว่ากรณี Base ให้กำไร เพราะหุ้นที่มีเลเวอเรจสูงจะถูกลดตัวคูณแรงเมื่ออัตรากำไรพลาดเป้า
+      <br><b>เรื่องอัตราแลกเปลี่ยนที่นักลงทุนไทย/สหรัฐฯ ต้องรู้:</b> กำไรของบริษัทเกิดในยูโร/ดอลลาร์ออสเตรเลีย/รูเปียห์
+      แต่ราคาหุ้นที่ Nasdaq เป็น USD — ค่าเงินยูโรอ่อนลงเทียบดอลลาร์จะกด EPS ในรูป USD ลงโดยที่ธุรกิจไม่ได้แย่ลงเลย และในทางกลับกันเช่นกัน
+      สมมติฐานข้างต้นถือ EURUSD คงที่ที่ 1.15566
+    </p>
+  </section>
+
+  <!-- ===== 7. CATALYST / RISK ===== -->
+  <section>
+    <div class="s-head"><div class="n">7</div><h2>ปัจจัยบวก &amp; ความเสี่ยง</h2></div>
+    <div class="cr">
+      <div class="box cat">
+        <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
+        <ul>
+          <li><b>สัญญาแฟรนไชส์ระยะยาวคือคูเมืองที่แท้จริง:</b> CCEP มีสิทธิผลิต–บรรจุ–กระจายสินค้าของ The Coca-Cola Company แบบ<b>ผูกขาดในอาณาเขต</b>ที่ครอบคลุมยุโรปตะวันตก 13 ประเทศ ออสเตรเลีย นิวซีแลนด์ แปซิฟิก และอินโดนีเซีย รวมประชากรกว่า 600 ล้านคน คู่แข่งไม่สามารถเข้ามาขาย Coca-Cola ในพื้นที่เหล่านี้ได้</li>
+          <li><b>อัตรากำไรขยายจริง ไม่ใช่แค่คำสัญญา:</b> อัตรากำไรจากการดำเนินงานไต่จาก 10.4% (FY2567) เป็น 13.5% (TTM) หลังผนึกต้นทุนจาก Coca-Cola Amatil เสร็จสิ้น — เป็นตัวขับหลักที่ทำให้กำไรสุทธิ FY2568 โต +37% YoY</li>
+          <li><b>งบดุลกำลังฟื้น:</b> หนี้รวมลดจาก €13,140 ล้าน (FY2564) มาที่ €12,189 ล้าน และ D/E ลดจาก 1.64 เหลือ 1.20 เท่า ทุก ๆ ระดับหนี้ที่ลดลงคือกำไรที่เหลือถึงผู้ถือหุ้นมากขึ้น</li>
+          <li><b>กระแสเงินสดคาดเดาได้สูงมาก:</b> FCF อยู่ในกรอบ €2.1–2.4 พันล้านต่อเนื่อง 5 ปี แม้ผ่านช่วงเงินเฟ้อรุนแรง — รองรับปันผลและการซื้อหุ้นคืน (จำนวนหุ้นลดจาก 461 → 450 ล้านหุ้น)</li>
+          <li><b>ตลาดเอเชีย–แปซิฟิกคือเครื่องยนต์เติบโต:</b> อินโดนีเซียมีประชากรกว่า 280 ล้านคนและการบริโภคเครื่องดื่มต่อหัวยังต่ำกว่าตะวันตกหลายเท่า ต่างจากยุโรปที่อิ่มตัวแล้ว</li>
+          <li><b>ปันผลปลอดภาษี ณ ที่จ่าย:</b> CCEP plc จดทะเบียนในสหราชอาณาจักร (England &amp; Wales) ซึ่ง<b>ไม่เก็บภาษีหัก ณ ที่จ่ายเงินปันผล (0%)</b> ต่างจากหุ้นสวิส (35%) หรือฝรั่งเศส (~25%) และเนื่องจากซื้อขายเป็นหุ้นสามัญโดยตรงไม่ใช่ ADR จึงไม่มีค่าธรรมเนียม depositary มากัดผลตอบแทน</li>
+        </ul>
+      </div>
+      <div class="box risk">
+        <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
+        <ul>
+          <li><b>ไม่ได้เป็นเจ้าของแบรนด์ — จุดต่างสำคัญที่สุดจาก KO:</b> The Coca-Cola Company (KO) ขาย<b>หัวเชื้อ</b>และเก็บค่าสิทธิ์ ได้อัตรากำไรจากการดำเนินงานระดับ ~30% โดยแทบไม่ต้องลงทุนโรงงาน ส่วน CCEP คือฝั่งที่ต้อง<b>ซื้อหัวเชื้อจาก KO</b> ลงทุนสายการผลิต รถขนส่ง ตู้แช่ และแบกต้นทุนวัตถุดิบ จึงได้อัตรากำไรเพียง ~13.5% CCEP ไม่มีอำนาจกำหนดกลยุทธ์แบรนด์ และ KO เป็นผู้กำหนดราคาหัวเชื้อ — <b>ห้ามคิดว่าซื้อ CCEP คือซื้อ Coca-Cola ในราคาถูก มันคือธุรกิจคนละแบบ</b></li>
+          <li><b>หนี้สูงจากดีล Amatil:</b> หนี้สุทธิ ≈ €10.2 พันล้าน หรือ <b>~2.4 เท่าของ EBITDA</b> ระดับนี้ยังบริหารได้ แต่ทำให้บริษัทอ่อนไหวต่อดอกเบี้ยที่สูงขึ้นตอนรีไฟแนนซ์ และจำกัดความยืดหยุ่นหากต้องซื้อกิจการเพิ่มหรือเจอวิกฤต</li>
+          <li><b>ราคาปัจจุบันไม่มีส่วนเผื่อความปลอดภัย:</b> ราคาสูงกว่า FV ~5% และสูงกว่ากรอบบนของการประเมินด้วย ขณะที่เป้านักวิเคราะห์เหลือ upside เพียง ~3.9% — โอกาสได้กำไรจากการ re-rate แทบหมดแล้ว</li>
+          <li><b>ปริมาณขายในยุโรปแทบไม่โต:</b> รายได้ที่โต 2–3% มาจากการขึ้นราคาเป็นหลัก ไม่ใช่ขายได้มากขึ้น หากผู้บริโภคเริ่มต้านราคาหรือหันไปสินค้าราคาถูก การส่งผ่านต้นทุนจะสะดุดทันที</li>
+          <li><b>กฎเกณฑ์ภาษีน้ำตาลและกระแสสุขภาพ:</b> หลายประเทศในยุโรปและอินโดนีเซียเพิ่มภาษีเครื่องดื่มที่มีน้ำตาล ซึ่งกดทั้งปริมาณและมิกซ์กำไร</li>
+          <li><b>ความเสี่ยงอัตราแลกเปลี่ยนสองชั้น:</b> งบการเงินรายงานเป็นยูโร แต่รายได้จริงมาจากหลายสกุล (GBP, AUD, IDR) และราคาหุ้นซื้อขายเป็น USD — ผู้ลงทุนรับความผันผวนของค่าเงินซ้อนกันสองชั้นโดยที่ธุรกิจไม่ได้เปลี่ยน</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. VERDICT ===== -->
+  <section>
+    <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
+    <div class="verdict">
+      <h2>ธุรกิจดี งบกำลังฟื้น แต่ราคาเดินหน้าไปก่อนแล้ว — เฝ้ารอ ไม่ใช่จุดเข้า</h2>
+      <p>CCEP คือผู้บรรจุขวด Coca-Cola รายใหญ่ที่สุดของโลกโดยรายได้ ครอบคลุมยุโรปตะวันตก ออสเตรเลีย–แปซิฟิก และอินโดนีเซีย
+      ภายใต้สัญญาแฟรนไชส์ผูกขาดในอาณาเขตซึ่งเป็นคูเมืองที่แข็งจริง สองปีที่ผ่านมาบริษัททำได้ดีในสิ่งที่สัญญาไว้:
+      ดันอัตรากำไรจากการดำเนินงานจาก 10.4% เป็น 13.5% หลังผนึก Coca-Cola Amatil และลด D/E จาก 1.64 เหลือ 1.20 เท่า
+      พร้อมกระแสเงินสดอิสระที่นิ่งอย่างน่าทึ่ง €2.1–2.4 พันล้านต่อปี
+      แต่ต้องเข้าใจให้ตรงว่า <b>นี่ไม่ใช่ KO</b> — KO เป็นเจ้าของแบรนด์ ขายหัวเชื้อ ได้มาร์จิ้น ~30% โดยไม่ต้องลงทุนหนัก
+      ส่วน CCEP คือฝั่งที่แบกโรงงาน รถขนส่ง และต้นทุนวัตถุดิบ ได้มาร์จิ้น ~13.5% และยังต้องซื้อหัวเชื้อจาก KO
+      เมื่อประเมินด้วย EV/EBITDA (หักหนี้สุทธิ €10.2 พันล้านออกเต็มจำนวน) ได้ $100.49 และด้วย FCFE ได้ $105.67
+      เฉลี่ยเป็นมูลค่าเหมาะสม $103.00 — <b>ต่ำกว่าราคาตลาด $108.29 อยู่ ~5%</b>
+      ราคาที่วิ่งขึ้น 19.8% ในรอบปีได้สะท้อนข่าวดีเรื่องมาร์จิ้นและการลดหนี้ไปเรียบร้อยแล้ว</p>
+      <div class="vgrid">
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$103.00 <span style="font-size:12px;color:#cab9a8">($100.49–$105.67)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −5.1% (แพงกว่ามูลค่า)</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$112.52 (Buy, 11 สำนัก)</div></div>
+      </div>
+      <div class="zone">
+        💡 <b>กลยุทธ์:</b> ใส่ไว้ในรายการเฝ้าดู ยังไม่ใช่จุดเข้าสำหรับนักลงทุนเน้นคุณค่า
+        โซนที่เริ่มสมเหตุสมผลคือ<b>ต่ำกว่า $103</b> และโซนที่มีส่วนเผื่อความปลอดภัย 20% เต็มคือ <b>$82.40</b>
+        (ซึ่งต่ำกว่าจุดต่ำสุด 52 สัปดาห์ที่ $84.66 — หมายความว่าต้องรอเหตุการณ์ใหญ่จริง ๆ)
+        ผู้ที่ถืออยู่แล้วยังถือรับปันผล ~2.2% ต่อปีได้ (สหราชอาณาจักรหักภาษี ณ ที่จ่าย 0% จึงเหลือ ~2.2% เต็ม — ยังต้องเสียภาษีตามถิ่นที่อยู่ของผู้ลงทุนเองต่างหาก)
+        แต่ไม่ควรเพิ่มน้ำหนักที่ระดับราคานี้ สิ่งที่ควรจับตาคือ <b>อัตรากำไรจากการดำเนินงานยืนเหนือ 13% ได้ต่อเนื่องไหม</b> และ
+        <b>หนี้สุทธิ/EBITDA ลงต่ำกว่า 2 เท่าได้เมื่อไร</b> — สองตัวนี้คือสิ่งที่จะเปลี่ยนมูลค่าเหมาะสมได้จริง
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISCLAIMER ===== -->
+  <div class="disc">
+    <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะตัวคูณ EV/EBITDA เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r), ค่าประมาณ EBITDA และอัตราแลกเปลี่ยน EURUSD ในอนาคต
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
+    ราคา ณ 7 ส.ค. 2569 จาก Yahoo Finance (cross-check กับ StockAnalysis.com ต่างกัน 0.00%) •
+    EPS (TTM) ยืนยัน 2 แหล่ง: Yahoo $5.12 · StockAnalysis $5.08 (ต่างกัน 0.8%) — <b>P/E ในรายงานนี้คำนวณจากราคา USD ÷ EPS USD ทั้งคู่ ไม่ได้หารด้วย EPS ในตารางงบซึ่งเป็นสกุล EUR</b> •
+    ข้อมูลงบการเงินย้อนหลัง 5 ปีจาก StockAnalysis.com (หน่วยยูโร ตามสกุลที่บริษัทรายงาน) •
+    ราคาอ้างอิงตลาดแม่จาก London Stock Exchange (£79.50 × GBPUSD 1.3488 = $107.23) ใช้ยืนยันว่าเป็นหุ้นสามัญอัตรา 1:1 ไม่ใช่ ADR •
+    อัตราแลกเปลี่ยน EURUSD 1.15566 ณ 8 ส.ค. 2569
+  </div>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 8 ส.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+
+</div>
+
+<!--TEMPLATE:ENGINE-->
+</body>
+</html>
