@@ -6,7 +6,7 @@
 <title>วิเคราะห์หุ้น Eaton (ETN) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Sonnet 5">
 <script type="application/json" id="stock-meta">
-{"symbol":"ETN","currency":"USD","price":415.2,"fairValue":416,"mos":0.2,"upside":0.2,"pe":42.2,"dividendYield":1.1,"roe":19.5}
+{"symbol":"ETN","currency":"USD","price":448.68,"fairValue":416,"mos":-7.9,"upside":-7.3,"pe":42.2,"dividendYield":1.1,"roe":19.5}
 </script>
 <script type="application/json" id="report-data">
 {
@@ -25,7 +25,6 @@
   },
   "chart": {
     "data": [
-      ["ส.ค.25", 349.14],
       ["ก.ย.25", 374.25],
       ["ต.ค.25", 381.56],
       ["พ.ย.25", 345.89],
@@ -36,19 +35,20 @@
       ["เม.ย.26", 433.01],
       ["พ.ค.26", 400.6],
       ["มิ.ย.26", 426.12],
-      ["ก.ค.26", 415.2]
+      ["ก.ค.26", 415.2],
+      ["ส.ค.26", 448.68]
     ],
     "min": 300,
-    "max": 450,
-    "grid": [350, 400],
+    "max": 500,
+    "grid": [350, 400, 450],
     "fairLine": 416,
     "currency": "$",
-    "highlight": [4, 8]
+    "highlight": [3, 11]
   },
   "gauge": {
     "min": 250,
     "max": 520,
-    "cur": 415.2,
+    "cur": 448.68,
     "fair": 416,
     "fairLabelTop": "-58px"
   },
@@ -72,12 +72,12 @@
     <div class="sub">บริษัทบริหารจัดการพลังงานอัจฉริยะ • Switchgear, Busway, UPS — โครงสร้างพื้นฐานไฟฟ้าสำหรับ Data Center / AI</div>
     <div class="price-row">
       <div>
-        <div class="px">$415.20<small>(ETN)</small></div>
+        <div class="px">$448.68<small>(ETN)</small></div>
       </div>
-      <div class="chg">▲ +18.9% (รอบปี)</div>
+      <div class="chg">▲ +19.9% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ≈ 31 ก.ค. 2026 (ปิดตลาด)<br>
-        ใกล้ All-time high $436.74<br>
+        ราคา ≈ 7 ส.ค. 2026 (ปิดตลาด)<br>
+        ใกล้ 52 สัปดาห์สูงสุด $457.78<br>
         ที่มา: StockAnalysis.com / MarketBeat / Yahoo Finance
       </div>
     </div>
@@ -100,7 +100,7 @@
       <div class="metric"><div class="k">Organic Growth Q2/26</div><div class="v pos">+14%</div><div class="d">รายได้สถิติ $8.5B (+21% YoY)</div></div>
       <div class="metric"><div class="k">Electrical Global Growth</div><div class="v pos">+44%</div><div class="d">organic +18% + Boyd acquisition +25%</div></div>
       <div class="metric"><div class="k">เงินปันผล</div><div class="v">~1.1%</div><div class="d">$4.40/ปี • Payout ~45%</div></div>
-      <div class="metric"><div class="k">ช่วง 52 สัปดาห์</div><div class="v" style="font-size:18px">$312 – $437</div><div class="d">All-time high $436.74</div></div>
+      <div class="metric"><div class="k">ช่วง 52 สัปดาห์</div><div class="v" style="font-size:18px">$312 – $458</div><div class="d">52 สัปดาห์สูงสุด $457.78</div></div>
     </div>
   </section>
 
@@ -117,7 +117,7 @@
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
-        หุ้นฟื้นแรง <b>+40% ในรอบปี</b> จากจุดต่ำ ~$312 (ก.ค. 2025) สู่จุดสูงสุดตลอดกาล <b>$436.74</b> (มิ.ย. 2026)
+        หุ้นฟื้นแรง <b>+44% ในรอบปี</b> จากจุดต่ำ ~$312 (ก.ค. 2025) สู่จุดสูงสุดตลอดกาล <b>$457.78</b> (ล่าสุด)
         แรงหนุนจาก <b>คลื่นการลงทุน AI Data Center</b> — คำสั่งซื้อ Electrical Americas พุ่ง +42% organic และ
         คำสั่งซื้อกลุ่ม data center เพิ่ม +240% YoY ดันให้ตลาด re-rate มูลค่าหุ้นขึ้นเป็นพรีเมียม
       </p>
@@ -157,20 +157,20 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $415</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $449</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $416</div></div>
         </div>
         <div class="scale">
           <span>$291<br><small>MOS 30%</small></span>
           <span>$333<br><small>MOS 20%</small></span>
           <span style="text-align:center">$416<br><small>Fair Value</small></span>
-          <span style="text-align:right">$456<br><small>เป้า Analyst</small></span>
+          <span style="text-align:right">$471<br><small>เป้า Analyst</small></span>
           <span style="text-align:right">$500<br><small>เป้าสูงสุด</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคา $415 อยู่ <b>ใกล้เคียงมูลค่าเหมาะสมพอดี</b> (แทบไม่มีส่วนต่าง) ในเชิงพื้นฐาน — และยังต่ำกว่าเป้าหมาย 12 เดือนของนักวิเคราะห์สายเติบโต
-        (consensus "Buy/Moderate Buy", เป้าเฉลี่ย ~$456, สูงสุด $500) สะท้อนความเห็น 2 ขั้ว:
+        ราคา $449 อยู่ <b>สูงกว่ามูลค่าเหมาะสมเล็กน้อย</b> (~7.9% premium) ในเชิงพื้นฐาน — แต่ยังต่ำกว่าเป้าหมาย 12 เดือนของนักวิเคราะห์สายเติบโต
+        (consensus "Buy/Moderate Buy", เป้าเฉลี่ย ~$471, สูงสุด $500) สะท้อนความเห็น 2 ขั้ว:
         สาย value มองว่าแพง, สาย growth มองว่าธีม AI Data Center ยังให้ upside
       </p>
     </div>
@@ -181,8 +181,8 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict bad">
-        <div class="big">+0.2%</div>
-        <div class="txt"><b>Margin of Safety แทบไม่มี</b><br>ราคาปัจจุบัน $415 ใกล้เคียงมูลค่าเหมาะสม $416 แทบไม่มีส่วนต่าง (~0.2%) → ตามเกณฑ์ value investor ถือว่าราคาสะท้อนมูลค่าพื้นฐานพอดีแล้ว ยังไม่ใช่จุดซื้อที่มีส่วนเผื่อความปลอดภัยเพียงพอ</div>
+        <div class="big">−8%</div>
+        <div class="txt"><b>Margin of Safety ติดลบ</b><br>ราคาปัจจุบัน $449 สูงกว่ามูลค่าเหมาะสม $416 อยู่ ~7.9% → ตามเกณฑ์ value investor ถือว่าราคาแพงกว่าพื้นฐานเล็กน้อย ยังไม่ใช่จุดซื้อที่มีส่วนเผื่อความปลอดภัย</div>
       </div>
       <div class="grid g3">
         <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$333</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
@@ -192,7 +192,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="415.2" step="1">
+          <input id="pxIn" class="mono" type="number" value="448.68" step="1">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -201,7 +201,7 @@
 
   <!-- ===== RETURN PROJECTION ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $415 • EPS ฐาน ~$13.5 (ปรับปรุง หลังไกด์ Q2 ใหม่)</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $449 • EPS ฐาน ~$13.5 (ปรับปรุง หลังไกด์ Q2 ใหม่)</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS +5%/ปี</span></div>
@@ -280,11 +280,11 @@
     <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
     <div class="verdict">
       <h2>ธุรกิจคุณภาพสูงในเมกะเทรนด์ AI แต่ราคา ณ ตอนนี้ "ไม่ถูก"</h2>
-      <p>Eaton เป็นผู้นำอุปกรณ์ไฟฟ้าที่ได้ประโยชน์โดยตรงจากการสร้าง Data Center สำหรับ AI — Q2/2026 ทำรายได้และคำสั่งซื้อสถิติใหม่ พร้อมปิดดีล M&A ใหญ่ (Boyd Thermal, Ultra PCS) ต่อยอด backlog ที่ราคา ~$415 (ขยับขึ้น +7.3% หลังงบ Q2) ใกล้เคียงมูลค่าเหมาะสมพอดี margin of safety แทบไม่เหลือ สำหรับสาย value จึงยังไม่ใช่จุดซื้อที่ปลอดภัย ส่วนสาย growth ยังพอเห็น upside ไปยังเป้านักวิเคราะห์ แต่ต้องระวังหนี้ที่พุ่งขึ้นชัดจากดีล M&A และความเสี่ยงด้านวัฏจักรที่ยังมีอยู่</p>
+      <p>Eaton เป็นผู้นำอุปกรณ์ไฟฟ้าที่ได้ประโยชน์โดยตรงจากการสร้าง Data Center สำหรับ AI — Q2/2026 ทำรายได้และคำสั่งซื้อสถิติใหม่ พร้อมปิดดีล M&A ใหญ่ (Boyd Thermal, Ultra PCS) ต่อยอด backlog ที่ราคา ~$449 (ขยับขึ้น +19.9% ในรอบปี) สูงกว่ามูลค่าเหมาะสมเล็กน้อย margin of safety ติดลบ สำหรับสาย value จึงยังไม่ใช่จุดซื้อที่ปลอดภัย ส่วนสาย growth ยังพอเห็น upside ไปยังเป้านักวิเคราะห์ แต่ต้องระวังหนี้ที่พุ่งขึ้นชัดจากดีล M&A และความเสี่ยงด้านวัฏจักรที่ยังมีอยู่</p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$416 <span style="font-size:12px;color:#a8b6cc">($378–$456)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#a5d6a7">ใกล้เคียง ~0.2%</div></div>
-        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">$456 (+9.8%)</div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ef9a9a">แพงกว่า ~7.9%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">$471 (+5.1%)</div></div>
       </div>
       <div class="zone">
         💡 <b>กลยุทธ์:</b> สาย value — รอย่อ/ทยอยสะสมเมื่อราคา <b>ต่ำกว่า ~$400</b> (น่าสนใจมากที่ &lt;$333) • สาย growth — เข้าได้แบบ DCA และยอมรับความผันผวน โดยติดตาม <b>backlog data center</b>, <b>การผสานดีล M&A</b> และ <b>ระดับหนี้/ดอกเบี้ย</b> เป็นตัวชี้วัดหลัก
@@ -298,7 +298,7 @@
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะสมมติฐานการเติบโตของ backlog data center, การรักษามาร์จิน และ P/E ที่ใช้ออก
     Eaton เป็นหุ้น cyclical ราคาผันผวนตามวัฏจักรอุตสาหกรรมและธีม AI ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • อ้างอิงงบจริงจาก SEC (10-K FY2025, 8-K Q2 2026)
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ 2 ส.ค. 2026 • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 9 ส.ค. 2026 • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
