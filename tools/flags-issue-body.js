@@ -63,11 +63,13 @@ const historyRows = [
   ...prevHistoryAll.filter((l) => !l.startsWith(`| ${today} `)),
 ].slice(0, HISTORY_ROUNDS);
 
+// escape ค่าใส่ช่องตาราง Markdown — กัน '|'/newline ทำตารางเพี้ยน (detail/บางฟิลด์มาจากข้อความที่ไม่ควรเชื่อ 100%)
+const cell = (v) => String(v ?? '-').replace(/\|/g, '\\|').replace(/\r?\n/g, ' ');
 const flagRows = flags.map(
   (x) =>
-    `| ${x.symbol} | ${x.reason} | ${x.reportPrice ?? '-'} | ${x.marketPrice ?? '-'} | ${
-      x.diffPct != null ? x.diffPct + '%' : '-'
-    } | ${x.flaggedAt} | ${detailOf(x)} |`
+    `| ${cell(x.symbol)} | ${cell(x.reason)} | ${cell(x.reportPrice ?? '-')} | ${cell(x.marketPrice ?? '-')} | ${
+      x.diffPct != null ? cell(x.diffPct + '%') : '-'
+    } | ${cell(x.flaggedAt)} | ${cell(detailOf(x))} |`
 );
 
 // ฟิลด์วินิจฉัยที่ตัวตรวจแต่ละแบบแนบมา — ถ้าไม่โชว์ ข้อมูลที่ช่วย triage จะหายไปเงียบ ๆ

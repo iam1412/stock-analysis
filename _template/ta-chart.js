@@ -41,7 +41,7 @@
 
     // มุมมองปัจจุบัน (เปลี่ยนตาม TF) — primitive/legend อ่านจาก view เสมอ
     var view = { tf: 'D', b: daily, ema7: dEma7, ema30: dEma30, ema200: dEma200, rsi: dRsi, idx: {}, showBand: true };
-    var hourly = null;                                               // แท่งรายชั่วโมง โหลดครั้งแรกที่กด 1H/4H
+    var hourly = null, tfSeq = 0;                                    // แท่งรายชั่วโมง โหลดครั้งแรกที่กด 1H/4H · tfSeq กัน race ตอนกดสลับ TF เร็ว
 
     // C2: สร้างนอกจอให้เสร็จ แล้ว swap ครั้งเดียว — SVG เดิมแค่ซ่อน (print/fallback ยังใช้ได้)
     var box = document.createElement('div');
@@ -60,7 +60,10 @@
       handleScale: { mouseWheel: false, pinch: true, axisPressedMouseMove: true },                            // C5
     };
     var LWC = window.LightweightCharts;
-    var chart = LWC.createChart(priceEl, base);
+    // สร้าง chart ทั้งหมดในบล็อก try เดียว — พังตรงไหน (สร้าง series/primitive หรือสลับ) ก็ dispose engine + คืน SVG เดิมได้ครบ (กัน leak)
+    var chart = null, rsiChart = null;
+    try {
+    chart = LWC.createChart(priceEl, base);
     // ลายน้ำ: ชื่อหุ้นตัวใหญ่ + โดเมนเว็บ ชิดบนกลางกราฟ — สีจางไม่บังแท่ง (v5 createTextWatermark)
     if (LWC.createTextWatermark && chart.panes) LWC.createTextWatermark(chart.panes()[0], {
       horzAlign: 'center', vertAlign: 'top',
@@ -180,7 +183,7 @@
     if (candles.attachPrimitive) candles.attachPrimitive(refPrim);
 
     // โลโก้ TradingView แสดงที่ price pane เดียวพอ (attribution ครบด้วย .ta-attr) — pane RSI ปิดไม่ให้ซ้ำ
-    var rsiChart = LWC.createChart(rsiEl, Object.assign({}, base, {
+    rsiChart = LWC.createChart(rsiEl, Object.assign({}, base, {
       layout: Object.assign({}, base.layout, { attributionLogo: false }),
       rightPriceScale: { borderColor: '#eef1f5' },
     }));
@@ -252,9 +255,11 @@
       if (tf === 'D') return done(daily);
       if (tf === 'W') return done(TA.resample(daily, 'W'));
       if (hourly) return done(tf === '4H' ? TA.resample(hourly, '4H') : hourly);
+      var seq = ++tfSeq;
       btn.disabled = true;
       fetchOhlc('H', 8000).then(function (d2) {
         hourly = d2.bars;
+        if (seq !== tfSeq) return;                                    // กด TF ใหม่แซงระหว่างโหลด → ทิ้งผลเก่า (กันกราฟโชว์ TF ไม่ตรงปุ่มที่กดล่าสุด)
         done(tf === '4H' ? TA.resample(hourly, '4H') : hourly);
       }).catch(function (e) {
         console.warn('[ta-chart] โหลดข้อมูลรายชั่วโมงไม่ได้ — คงมุมมองเดิม:', e.message);
@@ -384,8 +389,7 @@
 
     applyView();
 
-    // C2/C3: swap แล้วต้องกลับได้ — พังตรงไหนหลังจากนี้ = ถอน box คืน SVG เดิมเสมอ
-    try {
+    // C2/C3: swap แล้วต้องกลับได้ — พังตรงไหน (สร้าง/สลับ) = ถอน box + dispose chart คืน SVG เดิมเสมอ
       host.style.display = 'none';                                   // C8: ซ่อน ไม่ลบ (print โชว์กลับด้วย CSS)
       wrap.appendChild(box);
       // priceEl/rsiEl ยังไม่อยู่ใน DOM ตอน createChart() ด้านบน (สร้างนอกจอจริง ๆ = detached) →
@@ -398,9 +402,11 @@
         rsiChart.resize(rsiEl.clientWidth, rsiEl.clientHeight);
       }).observe(priceEl);
     } catch (e) {
-      box.remove();
+      try { if (chart) chart.remove(); } catch (_) {}                // dispose LWC engine กัน leak เมื่อพังกลางสร้าง/สลับ
+      try { if (rsiChart) rsiChart.remove(); } catch (_) {}
+      try { box.remove(); } catch (_) {}
       host.style.display = '';
-      console.warn('[ta-chart] fallback SVG (post-swap):', e.message);
+      console.warn('[ta-chart] fallback SVG:', e.message);
     }
   }
 })();

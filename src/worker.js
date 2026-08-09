@@ -24,7 +24,8 @@ import { toYahoo, transformChart, OHLC_CACHE_TTL } from './ohlc.js';
 
 const SYM_RE = /^[A-Z0-9.\-]{1,10}$/;
 const VOTES = new Set(['none', 'like', 'dislike']);
-let KNOWN = null; // cache รายชื่อ symbol ที่ถูกต้อง (ต่อ isolate) — กันสร้าง row ขยะ
+let KNOWN = null, KNOWN_AT = 0; // cache รายชื่อ symbol (ต่อ isolate) + เวลาโหลด — refresh ตาม TTL กัน symbol ใหม่ 404 จน isolate รีไซเคิล
+const KNOWN_TTL_MS = 300000;    // 5 นาที
 
 // ── กันบอต: นับ view/vote เฉพาะคำขอที่ "มาจากหน้าเว็บเราเอง + ไม่ใช่บอต" ──
 // บอตที่ไม่รัน JS จะไม่ยิง POST อยู่แล้ว; 2 ด่านนี้กันบอตที่ render JS + การยิง API ตรง (curl/script)
@@ -44,13 +45,14 @@ function countable(request, url) {
 }
 
 async function knownSymbols(env, url) {
-  if (KNOWN) return KNOWN;
+  if (KNOWN && Date.now() - KNOWN_AT < KNOWN_TTL_MS) return KNOWN;
+  KNOWN_AT = Date.now(); // throttle: ลองรีเฟรชครั้งเดียวต่อ TTL แม้ล้มเหลว
   try {
     const res = await env.ASSETS.fetch(new URL('/reports.json', url).toString());
     const list = await res.json();
     KNOWN = new Set(list.map((r) => String(r.symbol).toUpperCase()));
   } catch {
-    KNOWN = new Set(); // อ่านไม่ได้ → ไม่ตรวจ whitelist (ยังมี regex กันอยู่)
+    if (!KNOWN) KNOWN = new Set(); // อ่านไม่ได้ครั้งแรก → ไม่ตรวจ whitelist (regex ยังกันอยู่); มีของเก่า = ใช้ stale ต่อ
   }
   return KNOWN;
 }

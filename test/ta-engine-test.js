@@ -153,4 +153,10 @@ const close = (a, b, eps = 1e-6) => assert.ok(Math.abs(a - b) < eps, `${a} ≉ $
   assert.doesNotThrow(() => TA.rsi([1, 2], 14));
   assert.deepEqual(TA.findPivots([1, 2], [0, 1], 3), []);
 }
+// ── ta-chart.js: syntax-check (check-site ข้าม <script src> → bundle นี้ไม่ถูก parse ที่ไหนเลย; new Function แค่ parse ไม่รัน) ──
+{
+  const fs = require('node:fs'), path = require('node:path');
+  const src = fs.readFileSync(path.join(__dirname, '..', '_template', 'ta-chart.js'), 'utf8');
+  assert.doesNotThrow(() => new Function(src), 'ta-chart.js มี syntax error (bundle นี้ไม่ถูก syntax-check ที่อื่น)');
+}
 console.log('✅ ta-engine-test ผ่าน');
