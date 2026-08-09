@@ -82,7 +82,7 @@ description: วิเคราะห์หุ้นรายตัว (ไท�
    - วัดจริงเวฟ robotics 13 ก.ค. 2569: Write ครั้งเดียว = 1 turn + แก้ตามผล `npm test` อีก 1–2 turns ผ่าน gate 37/37 เท่ากัน · เส้นทาง cp+แทนค่าแบบเก่า ~20 turns — **โหมด NEW ห้ามใช้ `apply-edits.js`/Edit ไล่แทนค่าเป็นชุด** (`apply-edits.js` ยังบังคับตามเดิมใน STEP 5B/5C ซึ่งเป็นการแก้ไฟล์เดิมเฉพาะจุด)
 - **chart/ป้าย .chg/สี** → วางจากผลลัพธ์ fetch-facts ตรง ๆ (fairLine หลุดช่วง min/max → คำนวณ bounds ใหม่รวม FV)
 - **4 บล็อกบังคับ**:
-  1. `<meta name="ai-model" content="Claude <รุ่นที่รันจริง>">` (ขึ้นต้น "Claude " — build ใช้ทำเครดิต footer)
+  1. `<meta name="ai-model" content="Claude <รุ่นที่รันจริง>">` — **รุ่นที่รันจริง = อ่านจากบรรทัด "You are powered by the model named …" ใน system prompt ของตัวเอง** (เช่น `Claude Sonnet 5`, `Claude Opus 5`) · รูปแบบบังคับ `Claude <Fable|Mythos|Opus|Sonnet|Haiku> <เวอร์ชัน>` (E28) · ห้ามคง `{{AI_MODEL}}` จากโครง ห้ามคัดลอกจากรายงานตัวอื่น — build ใช้ทำเครดิต footer
   2. `<script type="application/json" id="stock-meta">` = `{symbol, currency, price, fairValue, mos, upside, pe, dividendYield, roe}` · **`currency` = ISO 3 ตัว `"USD"`/`"THB"` ไม่ใช่ `"$"`** · เลขต้องตรงกับที่โชว์ในรายงาน
   3. `<div class="sub">` ติดใต้ `</h1>` = **คำโปรยธุรกิจจริง** คั่นด้วย `•` (เช่น `iPhone • Mac • Services`) — ไม่ใช่ "วิเคราะห์หุ้น X" ซ้ำ
   4. ป้าย `.chg` = ผลตอบแทน **รอบปี** `▲ +X.X% (รอบปี)` / `▼ −X.X% (รอบปี)` / `≈ ทรงตัว (รอบปี)` · IPO <1 ปี ใช้ `(ตั้งแต่ IPO)` · % = ผลตอบแทนปลายกราฟ section 2 · สี ขึ้น=เขียว/ลง=แดง (fetch-facts ให้ครบแล้ว)

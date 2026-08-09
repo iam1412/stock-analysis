@@ -164,7 +164,7 @@ tripwire ชั้น 0.1 คือ **ตัวชี้ให้ไปสอบ
 | E25 | error | FV ในสรุป (verdict) = FV ในกล่อง | "มูลค่าเหมาะสม" ใน `.vgrid` = FV กล่อง ต่างได้ ≤2% |
 | E26 | error | gauge scale: เรียงขึ้น + MOS20/30 = FV×0.8/0.7 | ป้าย `.scale` ต้องเรียงน้อย→มาก + ป้าย MOS20/30 บนแกน = FV×0.8/0.7 ต่างได้ ≤2.5% |
 | E27 | error | ราคาไม่เก่า/ไม่อยู่อนาคต | เก่า >120 วัน (`STALE_ERROR_DAYS`) หรืออยู่อนาคต >7 วัน = error — รัน `update-prices --write --force <SYM>` |
-| E28 | error | ระบุโมเดล AI (meta ai-model) | `<meta name="ai-model">` ต้องขึ้นต้น "Claude " ห้ามว่าง/placeholder |
+| E28 | error | ระบุโมเดล AI (meta ai-model) | `<meta name="ai-model">` ต้องเป็น `Claude <Fable\|Mythos\|Opus\|Sonnet\|Haiku> <เวอร์ชัน>` (เช่น `Claude Sonnet 5`, `Claude Opus 4.8`) ห้ามว่าง/placeholder/เหลือ `{{AI_MODEL}}` · **gate ตรวจได้แค่รูปแบบ ไม่รู้ว่าตรงกับโมเดลที่รันจริงไหม** → worker อ่านรุ่นจากบรรทัด "You are powered by the model named …" ของตัวเอง + controller spot-check (CLAUDE.md §3.2) |
 | E29 | error | มีบล็อก stock-meta (JSON ครบ key) | `symbol` = ชื่อไฟล์ · `currency` = ISO 3 ตัว · price/fairValue/mos/upside = ตัวเลข · pe/dividendYield/roe = ตัวเลขหรือ null |
 | E30 | error | stock-meta = เลขที่โชว์ (ราคา/FV/MOS) | price ±2% ของ header · fairValue ±1% ของกล่อง · mos ±2 จุด% — แก้เลขที่โชว์แล้วต้องแก้ stock-meta ตามทุกครั้ง |
 | E31 | error | stock-meta สอดคล้องในตัว (mos/upside) | mos = (FV−price)/FV×100 ต่างได้ ±2 จุด% · upside = (FV−price)/price×100 ต่างได้ ±5% (ขั้นต่ำ 0.6) |

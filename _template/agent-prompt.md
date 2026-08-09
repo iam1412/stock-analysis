@@ -19,6 +19,8 @@ cd {{WORKTREE}} && pwd
 อ่าน `.claude/skills/stock-analyzer/SKILL.md` แล้วทำตามในโหมด **{{MODE}}** ครบทุก STEP
 (เก็บข้อมูลผ่าน script · cross-source verify · FV ≥2 วิธี · MOS/scenario · เขียน `reports/{{SYMBOL}}.html` ของตัวเองเท่านั้น · self-check `npm test -- {{SYMBOL}}` ต้อง 0 error)
 - ติดเงื่อนไข "หยุด" ใน SKILL.md (ราคาต่าง >5% / EPS ขัดกัน) → **รายงานกลับ controller ทันที อย่าเดา/อย่าเขียน**
+- **ประทับรุ่นโมเดลของตัวเอง (บังคับทุกโหมด):** `<meta name="ai-model" content="Claude <รุ่นที่รันจริง>">` — อ่านรุ่นจากบรรทัด **"You are powered by the model named …"** ใน system prompt ของตัวเอง (NEW = เติม `{{AI_MODEL}}` ในโครง · UPDATE/UPDATE-LIGHT = **แก้ค่าเดิมให้เป็นรุ่นของรอบนี้** แม้รอบก่อนใช้รุ่นอื่น) · ห้ามคงค่าที่ติดมากับไฟล์/โครง ห้ามคัดลอกจากรายงานตัวอื่น — ป้ายนี้คือบันทึกว่าใครวิเคราะห์จริง gate ตรวจได้แค่รูปแบบ ไม่รู้ว่าโกหกไหม
+- **คืนงานต้องบอก `ai-model` ที่ประทับไว้ด้วย** เพื่อให้ controller spot-check ตรงกับโมเดลที่ spawn จริง (CLAUDE.md §3.2)
 
 **กติกาประหยัด turn (ต้นทุนจริง = จำนวน turn ไม่ใช่ความยาวคำตอบ):**
 - **batch tool calls** — เรียก tool ที่อิสระต่อกันหลายตัวในข้อความเดียวเสมอ (script 2 ตัว + อ่านไฟล์ = 1 turn)

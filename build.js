@@ -29,7 +29,9 @@ const MANIFEST = path.join(ROOT, 'reports.json'); // committed — เก็บ 
 const CONTACT_EMAIL = 'somchai.s@de.co.th';
 const SITE_ORIGIN = 'https://stock-ai.dotent.workers.dev'; // ใช้สร้าง absolute URL ให้ og:url / og:image (social scraper ต้องการ URL เต็ม)
 const OG_IMAGE = SITE_ORIGIN + '/static/og.png'; // banner 1200×630 สำหรับการ์ดแชร์ (static/og.png — regenerate จาก static/og.svg)
-const AI_MODEL = 'Claude Opus 4.8'; // โมเดล AI ที่ใช้วิเคราะห์+จัดทำรายงาน — แสดงใน footer เพื่อความโปร่งใส/น่าเชื่อถือ (อัปเดตเมื่อเปลี่ยนรุ่น)
+// เครดิตโมเดลต่อรายงาน = meta ai-model ของไฟล์นั้นเสมอ (gate E28 บังคับให้มีทุกใบ)
+// ค่านี้เป็น fallback เผื่อไฟล์ไม่มี meta เท่านั้น — ห้ามใส่ชื่อรุ่นเจาะจง เพราะจะกลายเป็นเครดิตผิดรุ่นเงียบ ๆ
+const AI_MODEL = 'Claude (ไม่ระบุรุ่น)';
 const AI_MAKER = 'Anthropic';
 const ASSET_DIRS = new Set(['assets', 'public', 'static', 'img', 'images', 'css', 'js', 'fonts']);
 
@@ -734,6 +736,15 @@ const searchScript = reports.length ? `
 // แถบเลขหน้า (เฉพาะเมื่อมีรายงาน) — สคริปต์ด้านบนเติมปุ่มให้
 const pagerEl = reports.length ? `\n    <div class="pager" id="pager"></div>` : '';
 
+// เครดิตโมเดลหน้า index = รายชื่อรุ่นที่ใช้จริงในรายงานทั้งหมด (เรียงตามจำนวนมาก→น้อย)
+// derive จาก meta ai-model เสมอ ห้าม hardcode — ไม่งั้นหน้าแรกเครดิตผิดรุ่นเมื่อรายงานเปลี่ยนไปใช้รุ่นอื่น
+const indexModels = (() => {
+  const n = new Map();
+  for (const r of reports) if (r.aiModel) n.set(r.aiModel, (n.get(r.aiModel) || 0) + 1);
+  const names = [...n.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0])).map((e) => e[0]);
+  return names.length ? names.join(' · ') : AI_MODEL;
+})();
+
 const emptyState = `
       <div class="empty">
         <p>ยังไม่มีรายงานในโฟลเดอร์นี้</p>
@@ -844,7 +855,7 @@ ${reports.length ? cards : emptyState}
     </div>${noResult}${pagerEl}
     <footer>
       อัปเดตล่าสุด ${fmtDate(nowISO)} · สร้างด้วย build.js · ติดต่อ <a href="mailto:${CONTACT_EMAIL}">${CONTACT_EMAIL}</a><br>
-      🤖 วิเคราะห์และจัดทำด้วย AI · <b>${AI_MODEL}</b> · ${AI_MAKER}<br>
+      🤖 วิเคราะห์และจัดทำด้วย AI · <b>${indexModels}</b> · ${AI_MAKER} (รุ่นที่ใช้ระบุในแต่ละรายงาน)<br>
       ข้อมูลเพื่อการศึกษา ไม่ใช่คำแนะนำการลงทุน
     </footer>
   </div>${searchScript}

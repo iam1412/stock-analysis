@@ -41,6 +41,7 @@ function buildFill(b) {
     GDOTS: b.gdots, ACCENT: b.reportData.theme.accent,
     CHANGE: b.change, PRICE_DATE: b.priceDate, RANGE_52W: b.range52w, SOURCES: b.sources,
     FY: b.fy, FOOTER_DATE: b.footerDate,
+    AI_MODEL: 'Claude Sonnet 5',   // ในเทสเติมค่าตัวอย่าง — ของจริง worker เติมรุ่นที่รันจริงของตัวเอง (E28)
     // headline numbers (ใช้ซ้ำหลายที่ → คุมความสอดคล้องอัตโนมัติ)
     PRICE: String(b.price), FV: String(b.fv), MOS: String(b.mos), UPSIDE: String(b.upside),
     PE: String(b.pe), DIV_YIELD: String(b.divYield), ROE: String(b.roe),

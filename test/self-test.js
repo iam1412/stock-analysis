@@ -150,6 +150,12 @@ reject('W06', (h) => setDiffCell('MOS ~ 0% (เต็มมูลค่า)')(mu
 expect('W08', 'warn', mut3(/(ที่มา\s*:)([^<]*)(<)/, ' SET'), 'แหล่งข้อมูล < 3');
 expect('E28', 'error', (h) => h.replace(/<meta\s+name="ai-model"[^>]*>/i, ''), 'ลบ meta ai-model → ต้องบังคับให้ระบุโมเดล');
 expect('E28', 'error', (h) => h.replace(/content="Claude[^"]*"/i, 'content="GPT-4"'), 'ai-model ไม่ใช่ Claude → ค่าผิด');
+expect('E28', 'error', (h) => h.replace(/content="Claude[^"]*"/i, 'content="{{AI_MODEL}}"'), 'ai-model เหลือ token จาก skeleton → ต้องจับได้ (ไม่ปล่อยรุ่นปลอม)');
+expect('E28', 'error', (h) => h.replace(/content="Claude[^"]*"/i, 'content="Claude Sonnet"'), 'ai-model ไม่มีเลขเวอร์ชัน → ระบุรุ่นไม่ครบ');
+expect('E28', 'error', (h) => h.replace(/content="Claude[^"]*"/i, 'content="Claude 5"'), 'ai-model ไม่มีชื่อตระกูล (Opus/Sonnet/…) → ระบุรุ่นไม่ครบ');
+expect('E28', 'error', (h) => h.replace(/content="Claude[^"]*"/i, 'content="Claude Sonet 5"'), 'ai-model สะกดตระกูลผิด → ต้องจับได้');
+reject('E28', (h) => h.replace(/content="Claude[^"]*"/i, 'content="Claude Opus 5"'), 'ai-model = Claude Opus 5 (escalate หุ้นยาก) → ต้องไม่ฟ้อง');
+reject('E28', (h) => h.replace(/content="Claude[^"]*"/i, 'content="Claude Sonnet 4.6"'), 'ai-model = รุ่นเก่าที่เคยใช้จริง (Sonnet 4.6) → ต้องไม่ฟ้อง');
 // ── E32: คำโปรยธุรกิจใต้ <h1> (.sub → desc การ์ด index) ──
 expect('E32', 'error', (h) => h.replace(/<div class="sub">[\s\S]*?<\/div>/i, '<div class="sub"></div>'), 'ลบคำโปรยธุรกิจ (.sub) → ต้องบังคับให้มี desc');
 reject('E32', (h) => h.replace('<div class="sub">', '<div class="sub">ผู้ผลิตอุปกรณ์กึ่งตัวนำ '), 'คำโปรยธุรกิจปกติ (ยาวพอ) ต้องไม่ฟ้อง E32');
