@@ -92,11 +92,12 @@ const toYahooSymbol = (symbol, currency) => {
 };
 
 // ---------- Yahoo fetch ----------
+const REQ_TIMEOUT_MS = 20000; // undici default ~300 วิ — ยิงเดียวค้างกินงบ job (45 นาที); ตัดเองที่ 20 วิ (ค่าเดียวกับ dead-ticker-canary)
 async function fetchChart(ysym, attempt = 0, interval = '1mo') {
   const url = `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(ysym)}?range=1y&interval=${interval}`;
   let res;
   try {
-    res = await fetch(url, { headers: { 'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36' } });
+    res = await fetch(url, { headers: { 'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36' }, signal: AbortSignal.timeout(REQ_TIMEOUT_MS) });
   } catch (e) {
     if (attempt < 3) { await sleep(2000 * Math.pow(3, attempt)); return fetchChart(ysym, attempt + 1, interval); }
     throw new Error(`network: ${e.message}`);
@@ -175,6 +176,9 @@ function annualChg(data, suffix) {
   if (pct > 0) return { text: `▲ +${pct.toFixed(1)}% ${suffix}`, dir: 'up', pct };
   return { text: `▼ −${Math.abs(pct).toFixed(1)}% ${suffix}`, dir: 'down', pct };
 }
+
+// currency: Yahoo ไม่ส่ง currency = สงสัย → ไม่ผ่าน (freeze) · ไม่ fail-open (v8 chart ส่ง currency แทบทุกครั้งกับ ticker จริง)
+const currencyMatches = (qCur, smCur) => qCur === smCur;
 
 // ---------- ตัดสิน update / freeze ----------
 function decide(ctx) {
@@ -418,7 +422,7 @@ function patchReport(html, p) {
 
   // --- disclaimer: "ราคา ณ <วันที่>" (ถ้ามี) ---
   out = out.replace(/(<div class="disc">[\s\S]*?<\/div>)/i, (block) =>
-    block.replace(new RegExp(`(ราคา[^0-9<]{0,25})(\\d{1,2}(?:\\s*[–\\-]\\s*\\d{1,2})?\\s*(?:${MONTH_ALT})\\s*(20\\d\\d|25\\d\\d|26\\d\\d))`, 'g'),
+    block.replace(new RegExp(`(ราคา(?![^0-9<]{0,25}เป้า)[^0-9<]{0,25})(\\d{1,2}(?:\\s*[–\\-]\\s*\\d{1,2})?\\s*(?:${MONTH_ALT})\\s*(20\\d\\d|25\\d\\d|26\\d\\d))`, 'g'),
       (m, pre, tok, yr) => {
         const era = parseInt(yr, 10) >= 2400 ? dateParts.yearCE + 543 : dateParts.yearCE;
         return `${pre}${dateParts.day} ${THAI_MONTHS[dateParts.monIdx]} ${era}`;
@@ -533,10 +537,10 @@ async function main() {
 
     const d = decide({
       oldPrice: sm.price, newPrice: q.price, fv: sm.fairValue,
-      currencyOk: !q.currency || q.currency === sm.currency,
+      currencyOk: currencyMatches(q.currency, sm.currency),
       force: FORCE,
     });
-    const diffPct = round((q.price - sm.price) / sm.price * 100, 1);
+    const diffPct = sm.price > 0 ? round((q.price - sm.price) / sm.price * 100, 1) : null; // sm.price ≤ 0 (corrupt) → null ไม่ให้ Infinity/NaN ซ่อน magnitude ใน triage
     // เก็บก่อนแยกทาง freeze/patch — canary ต้องเห็นทุกตัวที่ fetch ได้ ไม่ใช่แค่ตัวที่ patch
     quotes.push({
       symbol, currency: q.currency || sm.currency, marketTime: q.marketTime, gmtoffset: q.gmtoffset,
@@ -653,6 +657,6 @@ async function main() {
   if (!WRITE) console.log('ใส่ --write เพื่อเขียนจริง');
 }
 
-module.exports = { fmtPrice, fmtLike, toYahooSymbol, fetchChart, buildChartData, niceBounds, annualChg, decide, detectStaleQuotes, missedSessions, probeCap, capByCohort, controlTickers, unverifiedCohorts, classifyStale, patchReport, mergeFlags, styledRD, commitBody, THAI_MONTHS };
+module.exports = { fmtPrice, fmtLike, toYahooSymbol, fetchChart, buildChartData, niceBounds, annualChg, decide, currencyMatches, detectStaleQuotes, missedSessions, probeCap, capByCohort, controlTickers, unverifiedCohorts, classifyStale, patchReport, mergeFlags, styledRD, commitBody, THAI_MONTHS };
 
 if (require.main === module) main().catch((e) => { console.error(e); process.exit(1); });

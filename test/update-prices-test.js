@@ -49,6 +49,12 @@ ok(U.decide({ ...base, oldPrice: 195, newPrice: 205, fv: 300, force: true }).upd
 ok(U.decide({ ...base, newPrice: 105, currencyOk: false, force: true }).freeze === 'currency-mismatch', 'force: currency ไม่ตรง ยัง freeze');
 ok(U.decide({ ...base, newPrice: NaN, force: true }).freeze === 'bad-price', 'force: ราคาเสีย ยัง freeze');
 
+// ---------- currencyMatches (Yahoo ไม่ส่ง currency = freeze, ไม่ fail-open) ----------
+ok(U.currencyMatches('USD', 'USD') === true, 'currencyMatches: สกุลตรง → true');
+ok(U.currencyMatches('THB', 'USD') === false, 'currencyMatches: คนละสกุล → false (freeze currency-mismatch)');
+ok(U.currencyMatches(undefined, 'USD') === false, '★ currencyMatches: Yahoo ไม่ส่ง currency → false (freeze, ไม่ patch ราคาผิดตลาด)');
+ok(U.currencyMatches('', 'THB') === false, 'currencyMatches: currency ว่าง → false');
+
 // ---------- buildChartData ----------
 const mkBars = (n, startY, startM, price0) => Array.from({ length: n }, (_, i) => {
   const y = startY + Math.floor((startM + i) / 12), m = (startM + i) % 12;
@@ -196,6 +202,17 @@ const hdrGap = patchDates(withPxMeta('ราคา ≈ 3 ส.ค. 2026 · ร่
   .html.match(/<header[\s\S]*?<\/header>/i)[0];
 ok(/ราคา ≈ 11 ก\.ค\. 2026 · ร่วง ~24% วันเดียว \(3 ส\.ค\. 2026\)/.test(hdrGap),
   '★ วันเดียวกันแต่มีร้อยแก้วคั่น = คงไว้ (ไม่ใช่การทวนซ้ำ)', (hdrGap.match(/ราคา ≈ [^<]*/) || [])[0]);
+
+// ---------- regression: disclaimer "ราคา ณ" อัปเดต แต่ "ราคาเป้านักวิเคราะห์" คงเดิม (เคส CREDIT) ----------
+// bug: regex prefix `ราคา` จับ "ราคาเป้านักวิเคราะห์" ด้วย → cron ทับวันที่ provenance ของราคาเป้า (ค่าที่ cron ไม่แตะ)
+const withDisc = (body) => aapl.replace(/<div class="disc">[\s\S]*?<\/div>/i, `<div class="disc">${body}</div>`);
+const discOut = U.patchReport(
+  withDisc('ราคา ณ 3 ส.ค. 2569 · ราคาเป้านักวิเคราะห์ 7 ส.ค. 2569 · ที่มา Yahoo Finance'),
+  { newPrice: 301.5, dateParts: { day: 11, monIdx: 6, yearCE: 2026 }, chartData }
+).html.match(/<div class="disc">[\s\S]*?<\/div>/i)[0];
+ok(/ราคา ณ 11 ก\.ค\. 2569/.test(discOut), 'disclaimer: "ราคา ณ" → วันใหม่ (ยังอัปเดตวันที่ราคา)');
+ok(/ราคาเป้านักวิเคราะห์ 7 ส\.ค\. 2569/.test(discOut), '★ disclaimer: วันที่ "ราคาเป้านักวิเคราะห์" คงเดิม (ไม่ถูก cron ทับ — เคส CREDIT)');
+ok(!/ราคาเป้านักวิเคราะห์ 11 ก\.ค\./.test(discOut), 'disclaimer: ราคาเป้า ไม่ถูกประทับวันรัน');
 
 // หาวันที่ราคาไม่เจอ (ไม่มีคำนำหน้า "ราคา") → throw ไป patch-failed ให้เห็นในคิว ดีกว่าเดาเขียนทับเงียบ ๆ
 let threwDate = false;
