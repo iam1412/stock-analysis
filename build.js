@@ -113,7 +113,7 @@ function validateReportData(d) {
   if (!Array.isArray(c.grid) || !c.grid.length) throw new Error('report-data.chart.grid ต้องเป็น array ของเส้นกริด');
   if (!Array.isArray(c.highlight) || !c.highlight.length) throw new Error('report-data.chart.highlight ต้องเป็น array ของดัชนีจุดที่ไฮไลต์ (เช่น [6,7])');
   for (const idx of c.highlight) if (!Number.isInteger(idx) || idx < 0 || idx >= c.data.length) throw new Error(`report-data.chart.highlight ดัชนีนอกช่วง: ${JSON.stringify(idx)} (ต้องเป็นจำนวนเต็ม 0..${c.data.length - 1})`);
-  if (c.currency != null && (typeof c.currency !== 'string' || !c.currency || c.currency.length > 3)) throw new Error(`report-data.chart.currency ต้องเป็นสัญลักษณ์สั้น (เช่น "$"/"฿") — พบ ${JSON.stringify(c.currency)}`);
+  if (c.currency != null && (typeof c.currency !== 'string' || !c.currency || c.currency.length > 3 || /[<>]/.test(c.currency))) throw new Error(`report-data.chart.currency ต้องเป็นสัญลักษณ์สั้นไม่มี '<'/'>' (เช่น "$"/"฿") — พบ ${JSON.stringify(c.currency)}`);
   // whitelist นิพจน์ format (กัน inject) — แยกตามตัวแปรใน scope จริงของ engine:
   //   gridFmt อยู่ใน grid.forEach(v=>…) → ต้องใช้ v เท่านั้น  •  dataFmt อยู่ใน data.forEach((d,i)=>…) → ต้องใช้ d[1] เท่านั้น
   //   (รวมเป็น regex เดียวเหมือนเดิมจะรับ v ให้ dataFmt ได้ → runtime ReferenceError: v is not defined → กราฟ/gauge/calc ดับเงียบ ๆ)
@@ -130,6 +130,8 @@ function validateReportData(d) {
   if (g.max <= g.min) throw new Error(`report-data.gauge.max (${g.max}) ต้อง > gauge.min (${g.min}) — gpos() หาร 0`);
   if (!(d.fv > 0)) throw new Error(`report-data.fv ต้อง > 0 (เครื่องคิดเลข MOS = (FV−price)/FV) — พบ ${JSON.stringify(d.fv)}`);
   for (const p of c.data) if (!Array.isArray(p) || typeof p[0] !== 'string' || typeof p[1] !== 'number' || !isFinite(p[1])) throw new Error(`report-data.chart.data ทุกจุดต้องเป็น [label:string, price:number(finite)] — พบ ${JSON.stringify(p)}`);
+  // label แกน x ถูกฝังใน innerHTML ของ SVG (engine.js) — ห้ามมี '<'/'>' กัน HTML/JS inject (engine.js escape ซ้ำที่ sink อีกชั้น)
+  for (const p of c.data) if (/[<>]/.test(p[0])) throw new Error(`report-data.chart.data label ห้ามมี '<'/'>' (กัน markup หลุดเข้า DOM ของกราฟ) — พบ ${JSON.stringify(p[0])}`);
   for (const v of c.grid) if (typeof v !== 'number' || !isFinite(v)) throw new Error(`report-data.chart.grid ต้องเป็นตัวเลขล้วน — พบ ${JSON.stringify(v)}`);
   // theme: ค่าสีต้องเป็น token สีที่ถูกต้อง — กัน CSS declaration breakout (เช่น "x;}") + สีพังเงียบ (เช่น hex 5 หลัก → เส้นกราฟล่องหน)
   const t = { ...THEME_DEFAULTS, ...(d.theme || {}) };
@@ -742,7 +744,7 @@ const indexModels = (() => {
   const n = new Map();
   for (const r of reports) if (r.aiModel) n.set(r.aiModel, (n.get(r.aiModel) || 0) + 1);
   const names = [...n.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0])).map((e) => e[0]);
-  return names.length ? names.join(' · ') : AI_MODEL;
+  return names.length ? esc(names.join(' · ')) : AI_MODEL;
 })();
 
 const emptyState = `

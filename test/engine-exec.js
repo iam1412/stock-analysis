@@ -118,6 +118,18 @@ function selfCheck() {
   const degen = renderEngine({ theme: { accent: '#0071e3' }, chart: { data: [['a', 2], ['b', 2], ['c', 2]], min: 2, max: 2, grid: [2], fairLine: 2, currency: '฿', highlight: [0, 2] }, gauge: { min: 2, max: 2, cur: 2, fair: 2 }, fv: 0 });
   const rDeg = runEngine(extractEngine(degen), 100);
   if (rDeg.ok && assertRendered(rDeg.doc).length === 0) fails.push('selfCheck: bounds degenerate (พิกัด NaN/Infinity) ไม่ถูกจับ — guard NaN ใน assertRendered หาย?');
+  // XSS: label ที่มี markup ต้องถูก escape ก่อนเข้า innerHTML (renderEngine ข้าม validate → ทดสอบ escape ที่ sink ของ engine)
+  const xss = renderEngine({ theme: { accent: '#0071e3' }, chart: { data: [['<img src=x onerror=alert(1)>', 1], ['b', 2], ['c', 3]], min: 1, max: 3, grid: [1, 2, 3], fairLine: 2, currency: '฿', highlight: [0, 2] }, gauge: { min: 1, max: 4, cur: 3, fair: 2 }, fv: 2 });
+  const rXss = runEngine(extractEngine(xss), 100);
+  if (!rXss.ok) fails.push('selfCheck: engine กับ label markup กลับ throw: ' + (rXss.error && rXss.error.message));
+  else {
+    const ih = String(rXss.doc.els.priceChart.innerHTML || '');
+    if (/<img src=x onerror/.test(ih)) fails.push('selfCheck: label <img onerror> หลุดเข้า innerHTML แบบไม่ escape (XSS sink ไม่ถูกปิด!)');
+    if (!/&lt;img src=x onerror/.test(ih)) fails.push('selfCheck: label ที่มี markup ควรถูก escape เป็น &lt;img ใน innerHTML');
+  }
+  // calc(): input ที่ parseFloat เป็น Infinity (เช่น "1e400") ต้องขึ้น placeholder ไม่ใช่ "MOS = -Infinity%" (guard !isFinite)
+  const rInf = runEngine(body, '1e400');
+  if (rInf.ok && /Infinity/.test(String((rInf.doc.els.mosOut || {}).innerHTML || ''))) fails.push('selfCheck: pxIn=1e400 (→Infinity) → MOS โชว์ "Infinity" (guard !isFinite ใน calc หาย?)');
   return fails;
 }
 

@@ -1,11 +1,13 @@
 (function(){
+  // escape label/สกุลเงินก่อนฝังใน innerHTML ของ SVG (ค่ามาจาก report-data — กัน <img onerror>/markup หลุดเข้า DOM)
+  const esc=s=>String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
   /* ---------- Price chart ---------- */
   // [label, price] approximate
   const data=__RD_DATA__;
   const W=920,H=300;
   const padL=48,padR=16,padT=18,padB=34;
   const min=__RD_MIN__,max=__RD_MAX__;
-  const cur="__RD_CURSYM__",HL=__RD_HL__;  // สัญลักษณ์สกุลเงิน ($/฿) + ดัชนีจุดที่ไฮไลต์ (ต่อหุ้น)
+  const cur="__RD_CURSYM__",HL=__RD_HL__;  // สัญลักษณ์สกุลเงิน ($/฿) + ดัชนีจุดที่ไฮไลต์ (ต่อหุ้น) — currency กัน '<'/'>' ที่ validateReportData แล้ว
   const xs=i=>padL+(W-padL-padR)*(i/(data.length-1));
   const ys=v=>padT+(H-padT-padB)*(1-(v-min)/(max-min));
   let path="",area="";
@@ -21,7 +23,7 @@
   // points + x labels (ไฮไลต์จุดตาม HL ; จุดสุดท้ายของกราฟ = accent, จุดไฮไลต์อื่น = แดง — กฎสากลทุกรายงาน)
   data.forEach((d,i)=>{const x=xs(i),y=ys(d[1]);const hi=HL.indexOf(i)>=0;
     svg+=`<circle cx="${x}" cy="${y}" r="${hi?5:3.2}" fill="${hi?'#ea4335':'__RD_ACCENT__'}" stroke="#fff" stroke-width="2"/>`;
-    svg+=`<text x="${x}" y="${H-12}" text-anchor="middle" font-size="11" fill="#6b7383">${d[0]}</text>`;
+    svg+=`<text x="${x}" y="${H-12}" text-anchor="middle" font-size="11" fill="#6b7383">${esc(d[0])}</text>`;
     if(hi)svg+=`<text x="${x}" y="${y-12}" text-anchor="middle" font-size="11" font-weight="700" fill="${i===data.length-1?'__RD_ACCENTD__':'#c5221f'}" font-family="IBM Plex Mono">${cur}${__RD_DATAVAL__}</text>`;
   });
   document.getElementById("priceChart").innerHTML=svg;
@@ -40,7 +42,7 @@
   const inp=document.getElementById("pxIn");
   function calc(){
     const p=parseFloat(inp.value);
-    if(isNaN(p)||p<=0){out.innerHTML="<span style='color:#6b7383'>กรอกราคา…</span>";return;}
+    if(!isFinite(p)||p<=0){out.innerHTML="<span style='color:#6b7383'>กรอกราคา…</span>";return;}
     const mos=(FV-p)/FV*100;
     let c,msg;
     if(mos<10){c="#c5221f";msg=mos<0?"แพงกว่ามูลค่า — ไม่ปลอดภัย":"ส่วนเผื่อบาง — ยังไม่น่าซื้อ";}

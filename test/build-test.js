@@ -164,6 +164,11 @@ ok(threw(() => b.expandReport(NEWDOC.replace('[["a",1],["b",2],["c",3]]', '[["a"
 ok(threw(() => b.expandReport(NEWDOC.replace('[["a",1],["b",2],["c",3]]', '[["a",1],["b","2"],["c",3]]'))), 'validateReportData: chart.data price เป็น string → throw');
 ok(threw(() => b.expandReport(NEWDOC.replace('"grid":[1,2,3]', '"grid":[1,"x",3]'))), 'validateReportData: chart.grid มีค่าไม่ใช่ตัวเลข → throw');
 
+// ── XSS guard: label แกน x + สกุลเงิน ถูกฝังใน innerHTML ของ SVG (engine.js) → ห้ามมี '<'/'>' (กัน markup inject) ──
+ok(threw(() => b.expandReport(NEWDOC.replace('["c",3]', '["<img src=x onerror=alert(1)>",3]'))), "validateReportData: chart.data label มี <img onerror> → throw (กัน stored XSS เข้า innerHTML กราฟ)");
+ok(threw(() => b.expandReport(NEWDOC.replace('"currency":"฿"', '"currency":"<b"'))), "validateReportData: chart.currency มี '<' → throw");
+ok(!threw(() => b.expandReport(NEWDOC.replace('["c",3]', '["Q1 68",3]'))), 'validateReportData: label ปกติ (ไม่มี <>) → ไม่ throw');
+
 // ── theme color tokens: กัน CSS declaration breakout + ค่าสีพังเงียบ (เช่น hex 5 หลัก → เส้นกราฟล่องหน) ──
 ok(threw(() => b.expandReport(NEWDOC.replace('"accent":"#0071e3"', '"accent":"red;}body{display:none"'))), 'validateReportData: theme.accent มี ;{} (CSS breakout/injection) → throw');
 ok(threw(() => b.expandReport(NEWDOC.replace('"accent":"#0071e3"', '"accent":"#1a73e"'))), 'validateReportData: theme.accent hex 5 หลัก (ไม่ใช่สี) → throw');
