@@ -6,7 +6,7 @@
 <title>วิเคราะห์หุ้น Canadian Imperial Bank of Commerce (CM) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Opus 5">
 <script type="application/json" id="stock-meta">
-{"symbol":"CM","currency":"USD","price":118.70,"fairValue":92.00,"mos":-29.0,"upside":-22.5,"pe":16.6,"dividendYield":2.56,"roe":15.39}
+{"symbol":"CM","currency":"USD","price":118.7,"fairValue":92,"mos":-29,"upside":-22.5,"pe":16.6,"dividendYield":2.56,"roe":15.39}
 </script>
 <script type="application/json" id="report-data">
 {
@@ -23,14 +23,34 @@
     "chgColor": "#137333"
   },
   "chart": {
-    "data": [["ก.ย.25", 79.89], ["ต.ค.25", 82.87], ["พ.ย.25", 86.13], ["ธ.ค.25", 90.61],
-             ["ม.ค.26", 92.39], ["ก.พ.26", 100.96], ["มี.ค.26", 94.75], ["เม.ย.26", 111.44],
-             ["พ.ค.26", 108.74], ["มิ.ย.26", 115], ["ก.ค.26", 118.55], ["ส.ค.26", 118.7]],
-    "min": 70, "max": 130, "grid": [80, 90, 100, 110, 120],
-    "fairLine": 92.00, "currency": "$", "highlight": [0, 11]
+    "data": [
+      ["ก.ย.25", 79.89],
+      ["ต.ค.25", 82.87],
+      ["พ.ย.25", 86.13],
+      ["ธ.ค.25", 90.61],
+      ["ม.ค.26", 92.39],
+      ["ก.พ.26", 100.96],
+      ["มี.ค.26", 94.75],
+      ["เม.ย.26", 111.44],
+      ["พ.ค.26", 108.74],
+      ["มิ.ย.26", 115],
+      ["ก.ค.26", 118.55],
+      ["ส.ค.26", 118.7]
+    ],
+    "min": 70,
+    "max": 130,
+    "grid": [80, 90, 100, 110, 120],
+    "fairLine": 92,
+    "currency": "$",
+    "highlight": [0, 11]
   },
-  "gauge": { "min": 55, "max": 130, "cur": 118.7, "fair": 92.00 },
-  "fv": 92.00
+  "gauge": {
+    "min": 55,
+    "max": 130,
+    "cur": 118.7,
+    "fair": 92
+  },
+  "fv": 92
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -177,7 +197,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict bad">
-        <div class="big">−29.0%</div>
+        <div class="big">−29%</div>
         <div class="txt"><b>แพงเมื่อเทียบกับประวัติของตัวเอง ไม่เหลือส่วนเผื่อความปลอดภัยที่ราคาปัจจุบัน</b><br>
         ราคา $118.70 สูงกว่ามูลค่าเหมาะสม $92.00 ประมาณ 29.0% ของ FV (หรือมี downside ~22.5% จากราคาปัจจุบันหากราคากลับสู่มูลค่าเหมาะสม)
         ตัวเลขนี้ไวต่อสมมติฐาน r (ที่ r 7.4% เป็น −19.1% · ที่ r 8.4% เป็น −38.0%) แต่ไม่พลิกข้อสรุปในกรอบใด ๆ —
@@ -191,7 +211,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="118.70" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="118.7" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>

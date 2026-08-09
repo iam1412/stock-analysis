@@ -6,7 +6,7 @@
 <title>วิเคราะห์หุ้น เอเชี่ยนซี คอร์ปอเรชั่น (ASIAN) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Sonnet 5">
 <script type="application/json" id="stock-meta">
-{"symbol":"ASIAN","currency":"THB","price":7.60,"fairValue":9.20,"mos":17.4,"upside":21.1,"pe":10.56,"dividendYield":8.87,"roe":9.7}
+{"symbol":"ASIAN","currency":"THB","price":7.6,"fairValue":9.2,"mos":17.4,"upside":21.1,"pe":10.56,"dividendYield":8.87,"roe":9.7}
 </script>
 <script type="application/json" id="report-data">
 {
@@ -23,14 +23,34 @@
     "chgColor": "#137333"
   },
   "chart": {
-    "data": [["ก.ย.25", 7.3], ["ต.ค.25", 7.3], ["พ.ย.25", 7.25], ["ธ.ค.25", 7.2],
-             ["ม.ค.26", 7.45], ["ก.พ.26", 7.6], ["มี.ค.26", 7], ["เม.ย.26", 7.15],
-             ["พ.ค.26", 6.95], ["มิ.ย.26", 7.2], ["ก.ค.26", 7.5], ["ส.ค.26", 7.6]],
-    "min": 6.5, "max": 9.5, "grid": [7, 7.5, 8, 8.5, 9],
-    "fairLine": 9.20, "currency": "฿", "highlight": [8, 11]
+    "data": [
+      ["ก.ย.25", 7.3],
+      ["ต.ค.25", 7.3],
+      ["พ.ย.25", 7.25],
+      ["ธ.ค.25", 7.2],
+      ["ม.ค.26", 7.45],
+      ["ก.พ.26", 7.6],
+      ["มี.ค.26", 7],
+      ["เม.ย.26", 7.15],
+      ["พ.ค.26", 6.95],
+      ["มิ.ย.26", 7.2],
+      ["ก.ค.26", 7.5],
+      ["ส.ค.26", 7.6]
+    ],
+    "min": 6,
+    "max": 10,
+    "grid": [7, 8, 9],
+    "fairLine": 9.2,
+    "currency": "฿",
+    "highlight": [5, 8]
   },
-  "gauge": { "min": 6, "max": 11, "cur": 7.60, "fair": 9.20 },
-  "fv": 9.20
+  "gauge": {
+    "min": 6,
+    "max": 11,
+    "cur": 7.6,
+    "fair": 9.2
+  },
+  "fv": 9.2
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -157,7 +177,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict ok">
-        <div class="big">+17.4%</div>
+        <div class="big">+17%</div>
         <div class="txt"><b>มี Margin of Safety ระดับปานกลาง</b><br>ราคาปัจจุบัน ฿7.60 ต่ำกว่ามูลค่าเหมาะสม ฿9.20 พอสมควรแต่ยังไม่เข้าโซนถูกมาก นักลงทุนระยะยาวที่เชื่อมั่นธุรกิจ pet food อาจเริ่มทยอยสะสม รอราคาย่อลงมาที่ ~฿7.36 (MOS20%) จะได้ส่วนเผื่อความปลอดภัยที่มากขึ้น</div>
       </div>
       <div class="grid g3">
@@ -168,7 +188,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="7.60" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="7.6" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
