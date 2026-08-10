@@ -55,6 +55,23 @@ ok(U.currencyMatches('THB', 'USD') === false, 'currencyMatches: คนละส�
 ok(U.currencyMatches(undefined, 'USD') === false, '★ currencyMatches: Yahoo ไม่ส่ง currency → false (freeze, ไม่ patch ราคาผิดตลาด)');
 ok(U.currencyMatches('', 'THB') === false, 'currencyMatches: currency ว่าง → false');
 
+// ---------- isIntradayQuote (guard: ตลาดยังเปิด = ราคาไม่ใช่ราคาปิด) ----------
+// ตัวเลขจริงจาก Yahoo v8 chart 11 ส.ค. 2569 — AAPL (NASDAQ, EDT) session 17:30–20:00 UTC
+const OPEN = { regularStart: 1786368600, regularEnd: 1786392000 };
+ok(U.isIntradayQuote({ ...OPEN, marketTime: 1786388373, nowSec: 1786388400 }) === true,
+  '★ isIntradayQuote: กลาง session (tick ในหน้าต่าง + ยังไม่ถึงเวลาปิด) → true = ข้าม patch');
+ok(U.isIntradayQuote({ ...OPEN, marketTime: 1786392000, nowSec: 1786395600 }) === false,
+  '★ isIntradayQuote: ปิดแล้วแต่ Yahoo ยังไม่เลื่อนหน้าต่าง → false = ราคาปิดจริง patch ได้');
+// IIG.BK จริง: ปิด 16:30 ICT (09:30 UTC) แล้ว regular เลื่อนไป session วันรุ่งขึ้น 03:00–09:30 UTC
+ok(U.isIntradayQuote({ regularStart: 1786417200, regularEnd: 1786440600, marketTime: 1786354575, nowSec: 1786388400 }) === false,
+  '★ isIntradayQuote: ปิดแล้วและเลื่อนหน้าต่างไป session ถัดไป → false');
+ok(U.isIntradayQuote({ ...OPEN, marketTime: 1786282200, nowSec: 1786369200 }) === false,
+  'isIntradayQuote: pre-market / หุ้นยังไม่มี tick วันนี้ (marketTime = ปิดครั้งก่อน) → false ไม่ false-skip');
+ok(U.isIntradayQuote({ marketTime: 1786388373, nowSec: 1786388400 }) === false,
+  '★ isIntradayQuote: ไม่มี currentTradingPeriod (Yahoo เปลี่ยนโครง) → fail-open ถือเป็นราคาปิด ไม่ให้ cron ตายทั้งกระดาน');
+ok(U.isIntradayQuote({ ...OPEN, marketTime: NaN, nowSec: 1786388400 }) === false,
+  'isIntradayQuote: marketTime ใช้ไม่ได้ → fail-open');
+
 // ---------- buildChartData ----------
 const mkBars = (n, startY, startM, price0) => Array.from({ length: n }, (_, i) => {
   const y = startY + Math.floor((startM + i) / 12), m = (startM + i) % 12;

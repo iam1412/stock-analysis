@@ -17,7 +17,12 @@
  *   ตัวที่ติด flag นี้อยู่แล้ว **หยุด patch** — ราคาเป็น no-op จริง แต่หน้าต่างกราฟ 1 ปีเลื่อน
  *   ทุกครั้งที่ข้ามเดือน ⇒ ป้าย % รอบปี/สี/chart.data จะถูกเขียนใหม่ทั้งที่หุ้นไม่ได้เทรด
  *
- * ใช้:  node tools/update-prices.js [--write] [--force] [SYMBOL ...]
+ * ข้าม (ไม่แตะไฟล์ ไม่เขียน flag) เมื่อ **ตลาดของตัวนั้นยังเปิดอยู่** — ราคาที่ได้เป็น intraday
+ *   ไม่ใช่ราคาปิด (isIntradayQuote) · cron ตั้งเวลาให้ได้ราคาปิดอยู่แล้ว แต่ workflow_dispatch/รันมือ
+ *   ตอนเย็นไทย = กลาง session US ⇒ เดิมจะ patch ราคากลางวันลงรายงานทั้งกระดาน (เคสจริง 11 ส.ค. 2569:
+ *   ยิงทดสอบ 13:38 ET → patch 899 ตัว + freeze 6 ตัวจากราคา intraday) · ข้าม --allow-intraday/--force/--alive
+ *
+ * ใช้:  node tools/update-prices.js [--write] [--force] [--allow-intraday] [SYMBOL ...]
  *   ไม่มี --write = dry-run · หลัง --write: npm run build → node tools/preserve-dates.js
  *   → npm run build → npm run verify (คงวันที่ "วิเคราะห์" เดิม — ราคา refresh ไม่ใช่ re-analysis)
  *   --force = ข้าม freeze drift/mos-flip/gauge/suspect (ใช้ตอน re-analysis UPDATE mode ที่ agent
@@ -27,6 +32,8 @@
  *   ประจำของ re-analysis ทุกครั้ง (STEP 1/5B/5C) ถ้าผูกกับ --force หุ้นตายจะถูก patch + ปลด flag เงียบ ๆ
  *   ทุกครั้งที่มีคนสั่ง "วิเคราะห์ X" = เปิดจุดบอด EA/BPP คืนทางประตูหลัง · ปลด flag เฉพาะตัวที่รอบนี้
  *   ไม่ได้ล้มแบบ plumbing (fetch/patch/meta) — ไม่งั้น net error ตอน --alive จะลดระดับ triage เงียบ ๆ
+ *   --allow-intraday = ยอมรับราคา intraday (ตลาดยังเปิด) · --force/--alive ข้าม guard นี้ให้เองอยู่แล้ว
+ *   เพราะ SKILL สั่ง `--force` ทุกรอบ re-analysis และเจ้าของรีโปทำงานตอนเย็นไทย = กลาง session US
  */
 const fs = require('fs');
 const path = require('path');
@@ -116,13 +123,35 @@ async function fetchChart(ysym, attempt = 0, interval = '1mo') {
   const bars = [];
   for (let i = 0; i < ts.length; i++) if (Number.isFinite(closes[i])) bars.push({ ts: ts[i], close: closes[i] });
   if (!Number.isFinite(meta.regularMarketPrice)) throw new Error('ไม่มี regularMarketPrice');
+  const reg = (meta.currentTradingPeriod && meta.currentTradingPeriod.regular) || {};
   return {
     price: meta.regularMarketPrice,
     currency: meta.currency,
     marketTime: meta.regularMarketTime,      // epoch วินาที ของราคาล่าสุด
     gmtoffset: meta.gmtoffset || 0,          // tz ตลาด — ใช้แปลงเป็น "วันที่ราคา"
+    regularStart: reg.start,                 // ขอบ session ปกติ (epoch วินาที) — ป้อน isIntradayQuote
+    regularEnd: reg.end,
     bars,
   };
+}
+
+// ---------- guard: ราคานี้เป็นราคาปิดจริง หรือ intraday? ----------
+// ★ v8 chart **ไม่มี field `marketState`** (วัดจริง 11 ส.ค. 2569: AAPL + IIG.BK ได้ undefined ทั้งคู่)
+// ⇒ ตัดสินจาก `currentTradingPeriod.regular` แทน · Yahoo **เลื่อนหน้าต่างไป session ถัดไปทันทีที่ปิด**
+// (วัดจริง: IIG.BK ปิด 16:30 ICT แล้ว regular = 10:00–16:30 ของ *วันรุ่งขึ้น* แต่ regularMarketTime
+// ยังเป็นราคาปิดวันนี้) — เลยต้องเช็คสองเงื่อนไขคู่กัน ไม่ใช่ข้อใดข้อเดียว:
+//   1) marketTime ≥ regularStart = tick ล่าสุดอยู่ในหน้าต่างที่ระบบชี้อยู่ (ยังไม่เลื่อน = session นี้)
+//   2) now < regularEnd        = หน้าต่างนั้นยังไม่จบ
+// ปิดแล้วแต่ยังไม่เลื่อนหน้าต่าง → (1) จริง (2) เท็จ = ราคาปิด ✓ · ปิดแล้วเลื่อนแล้ว → (1) เท็จ ✓
+// pre-market / หุ้นสภาพคล่องต่ำที่ยังไม่เทรดวันนี้ → marketTime = ปิดครั้งก่อน < start ⇒ (1) เท็จ
+// = patch ด้วยราคาปิดเดิมตามปกติ (ไม่ false-skip — บทเรียนเดียวกับ FP 99/248 วันของ stale-quote)
+// ★ ไม่มี currentTradingPeriod (Yahoo เปลี่ยนโครง) = **fail-open** ถือว่าเป็นราคาปิด — ตั้งใจต่างจาก
+// currencyMatches ที่ fail-closed: currency หายแปลว่า "ticker น่าสงสัย" (freeze ตัวเดียว) แต่ field นี้
+// หายแปลว่า "Yahoo เปลี่ยน schema" ⇒ fail-closed = cron ข้ามทั้งกระดานทุกวันเงียบ ๆ เสียหายกว่า
+function isIntradayQuote({ marketTime, regularStart, regularEnd, nowSec }) {
+  if (![marketTime, regularStart, regularEnd].every(Number.isFinite)) return false;
+  const now = Number.isFinite(nowSec) ? nowSec : Math.floor(Date.now() / 1000);
+  return marketTime >= regularStart && now < regularEnd;
 }
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -493,6 +522,10 @@ async function main() {
   const WRITE = process.argv.includes('--write');
   const FORCE = process.argv.includes('--force');
   const ALIVE = process.argv.includes('--alive');
+  // --force/--alive ข้าม guard ให้เองด้วย: SKILL สั่ง --force ทุกรอบ re-analysis (STEP 1/5B/5C) และ
+  // เจ้าของรีโปทำงานตอนเย็นไทย = กลาง session US ⇒ ถ้า guard คุมทางนั้นด้วย "วิเคราะห์ <US SYM>"
+  // ตอนเย็นจะเลิกประทับราคาเงียบ ๆ ทุกครั้ง · ทั้งสอง flag บังคับระบุ SYMBOL + มีคน/agent ยืนยันแล้ว
+  const ALLOW_INTRADAY = process.argv.includes('--allow-intraday') || FORCE || ALIVE;
   const ONLY = new Set(process.argv.slice(2).filter((a) => !a.startsWith('--')).map((s) => s.replace(/\.html$/i, '').toUpperCase()));
   if (FORCE && !ONLY.size) { console.error('✗ --force ต้องระบุ SYMBOL ชัด ๆ (กันข้าม freeze ทั้งรีโป)'); process.exit(1); }
   if (ALIVE && !ONLY.size) { console.error('✗ --alive ต้องระบุ SYMBOL ชัด ๆ (ปลด not-on-exchange ทั้งรีโปคือลบหลักฐานหุ้นตายทิ้ง)'); process.exit(1); }
@@ -500,7 +533,7 @@ async function main() {
   const files = fs.readdirSync(REPORTS).filter((f) => /\.html$/i.test(f)).sort()
     .filter((f) => !ONLY.size || ONLY.has(f.replace(/\.html$/i, '').toUpperCase()));
 
-  const updated = [], skipped = [], frozen = [], failed = [];
+  const updated = [], skipped = [], frozen = [], failed = [], intraday = [];
   const quotes = [];   // ทุกตัวที่ fetch สำเร็จ (รวมตัวที่ freeze) — ป้อน detectStaleQuotes หลังจบลูป
   // อ่าน flags ครั้งเดียวต่อรอบแล้วใช้ snapshot เดียวกันตลอด — เดิมอ่านสองครั้งคร่อมลูป fetch ~8 นาที
   // ถ้า canary/รันมือเขียนไฟล์คั่นกลาง สอง snapshot จะไม่ตรงกัน (ตัวหนึ่งข้าม patch อีกตัวไม่เห็น flag)
@@ -532,6 +565,17 @@ async function main() {
       fetchFails++;
       frozen.push({ symbol, reason: 'fetch-failed', detail: e.message, reportPrice: sm.price, marketPrice: null, diffPct: null });
       console.log(`⚠ ${symbol.padEnd(10)} fetch fail: ${e.message}`);
+      continue;
+    }
+
+    // ตลาดของตัวนี้ยังเปิด → ราคาเป็น intraday ไม่ใช่ราคาปิด: ข้ามทั้งตัว **ก่อน** quotes.push
+    // เจตนา 2 อย่างของการ push ทีหลัง: (1) ไม่เอา session ที่ยังเดินอยู่ไปเป็น cohort ให้ detectStaleQuotes
+    // — ตอนตลาดเปิด marketTime ของตัวที่เทรดจะนำหน้าตัวสภาพคล่องต่ำที่ยังไม่มี tick วันนี้ = FP ยกแผง
+    // (รันมือกลาง session cohort จะเหลือ < STALE_MIN_COHORT เอง → ไม่วัด = ถูกต้อง)
+    // (2) ไม่ freeze/ไม่เขียน flag เพราะยังไม่ได้ "ตัดสิน" อะไร — แค่เลื่อนไปรอบที่มีราคาปิดจริง
+    if (!ALLOW_INTRADAY && isIntradayQuote(q)) {
+      intraday.push(symbol);
+      console.log(`⏳ ${symbol.padEnd(10)} ข้าม — ตลาดยังเปิด (session ปิด ${new Date(q.regularEnd * 1000).toISOString().slice(11, 16)} UTC) ราคา ${round(q.price, 2)} เป็น intraday ไม่ใช่ราคาปิด · ต้องการจริงใช้ --allow-intraday`);
       continue;
     }
 
@@ -636,7 +680,11 @@ async function main() {
 
   // เขียน flags (เฉพาะ --write — dry-run ไม่ทิ้งร่องรอย) · flag ของรายงานที่ถูกลบแล้ว (หุ้นเพิกถอน) ตัดทิ้ง — ไม่งั้นค้างในคิวตลอด
   const reportExists = new Set(fs.readdirSync(REPORTS).filter((f) => /\.html$/i.test(f)).map((f) => f.replace(/\.html$/i, '').toUpperCase()));
-  const flags = mergeFlags(prevFlags, new Set(files.map((f) => f.replace(/\.html$/i, ''))), frozenAll.concat(failed.map((x) => ({ ...x, reportPrice: null, marketPrice: null, diffPct: null }))))
+  // ★ processed = ตัวที่ "ตัดสินแล้วรอบนี้" ต้อง **หักตัวที่ข้ามเพราะตลาดเปิด** ออก — mergeFlags เคลียร์
+  // flag ของทุก symbol ใน processed ที่ไม่มี freeze รอบนี้ ⇒ ถ้าใส่ตัว intraday เข้าไปด้วย การรันมือ
+  // กลาง session จะล้าง drift/mos-flip ที่ค้างคิวอยู่ทิ้งทั้งที่ยังไม่ได้ประเมินซ้ำเลย (คิวหายเงียบ)
+  const evaluated = new Set(files.map((f) => f.replace(/\.html$/i, '')).filter((s) => !intraday.includes(s)));
+  const flags = mergeFlags(prevFlags, evaluated, frozenAll.concat(failed.map((x) => ({ ...x, reportPrice: null, marketPrice: null, diffPct: null }))))
     .filter((f) => reportExists.has(String(f.symbol).toUpperCase()));
   if (WRITE) fs.writeFileSync(FLAGS, JSON.stringify(flags, null, 2) + '\n');
 
@@ -644,7 +692,7 @@ async function main() {
   if (WRITE && process.env.PRICE_COMMIT_BODY)
     fs.writeFileSync(process.env.PRICE_COMMIT_BODY, commitBody(updated, frozenAll) + '\n');
 
-  const line = `${WRITE ? 'เขียนแล้ว' : '[dry-run]'} อัปเดต ${updated.length} · ไม่เปลี่ยน ${skipped.length} · freeze ${frozenAll.length}${deadConfirmed.length ? ` (ในนั้น not-on-exchange ${deadConfirmed.length})` : ''} · error ${failed.length} (ทั้งหมด ${files.length})`;
+  const line = `${WRITE ? 'เขียนแล้ว' : '[dry-run]'} อัปเดต ${updated.length} · ไม่เปลี่ยน ${skipped.length}${intraday.length ? ` · ข้ามเพราะตลาดเปิด ${intraday.length}` : ''} · freeze ${frozenAll.length}${deadConfirmed.length ? ` (ในนั้น not-on-exchange ${deadConfirmed.length})` : ''} · error ${failed.length} (ทั้งหมด ${files.length})`;
   console.log('\n' + line);
   if (process.env.GITHUB_STEP_SUMMARY) {
     let mdOut = `## Price refresh\n${line}\n`;
@@ -657,6 +705,6 @@ async function main() {
   if (!WRITE) console.log('ใส่ --write เพื่อเขียนจริง');
 }
 
-module.exports = { fmtPrice, fmtLike, toYahooSymbol, fetchChart, buildChartData, niceBounds, annualChg, decide, currencyMatches, detectStaleQuotes, missedSessions, probeCap, capByCohort, controlTickers, unverifiedCohorts, classifyStale, patchReport, mergeFlags, styledRD, commitBody, THAI_MONTHS };
+module.exports = { fmtPrice, fmtLike, toYahooSymbol, fetchChart, buildChartData, niceBounds, annualChg, decide, currencyMatches, isIntradayQuote, detectStaleQuotes, missedSessions, probeCap, capByCohort, controlTickers, unverifiedCohorts, classifyStale, patchReport, mergeFlags, styledRD, commitBody, THAI_MONTHS };
 
 if (require.main === module) main().catch((e) => { console.error(e); process.exit(1); });
