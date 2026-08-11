@@ -626,9 +626,9 @@ const cards = reports.map((r) => {
   const c = escAttr(r.accent || THEME_DEFAULTS.accent), cd = escAttr(r.accentDark || THEME_DEFAULTS.accentDark);
   return `
       <a class="card" style="--c:${c};--cd:${cd}" data-search="${escAttr((r.symbol + ' ' + r.name + ' ' + r.title + ' ' + (r.desc || '')).toLowerCase())}"${metricAttrs(r.metrics)}${marketAttr(r.metrics)} href="./${encodeURIComponent(r.file)}">
-        <div class="ctop"><div class="badge">${esc(r.symbol)}</div>${marketFlag(r.metrics)}</div>
+        <div class="ctop"><div class="badge">${esc(r.symbol)}</div>${marketFlag(r.metrics)}${highlightChip(r.metrics)}</div>
         <div class="cbody">
-          <div class="cname">${esc(r.name)}</div>${highlightChip(r.metrics)}
+          <div class="cname">${esc(r.name)}</div>
           <div class="ctitle" title="${escAttr(blurb)}">${esc(blurb)}</div>${metricStrip(r.metrics)}
           <div class="cmeta"><span class="go">เปิดรายงาน →</span><span class="cviews" data-sym="${escAttr(r.symbol)}" hidden>👁 <b class="v">0</b> · 👍 <b class="l">0</b> · 👎 <b class="d">0</b></span><span class="cdate">${fmtDate(r.updated)}</span></div>
         </div>
@@ -679,7 +679,6 @@ const PAGE_SIZE = 12; // จำนวนหุ้นต่อหน้า — �
 const searchScript = reports.length ? `
   <script>
     (function () {
-      var PAGE = ${PAGE_SIZE};
       var q = document.getElementById('q');
       var grid = document.querySelector('.grid');
       var cards = [].slice.call(document.querySelectorAll('.card'));
@@ -688,6 +687,8 @@ const searchScript = reports.length ? `
       var pager = document.getElementById('pager');
       var sortbar = document.getElementById('sortbar');
       var marketbar = document.getElementById('marketbar');
+      var thead = document.getElementById('thead');
+      function pageSize() { return grid.classList.contains('is-table') ? 25 : ${PAGE_SIZE}; } // ตาราง 25 แถว/หน้า · ไทล์ ${PAGE_SIZE}/หน้า
       // market = 'all'|'TH'|'US' (ตัวกรองตลาด) · orderMode = updated|likes|views|composite · selected = metric ที่เลือก (multi)
       var page = 1, market = 'all', orderMode = 'updated', selected = [];
 
@@ -739,11 +740,12 @@ const searchScript = reports.length ? `
         filtered.forEach(function (c) { grid.appendChild(c); });
       }
 
-      function pages() { return Math.max(1, Math.ceil(filtered.length / PAGE)); }
+      function pages() { return Math.max(1, Math.ceil(filtered.length / pageSize())); }
       function render() {
         var tp = pages(); if (page > tp) page = tp;
         cards.forEach(function (c) { c.style.display = 'none'; });
-        filtered.slice((page - 1) * PAGE, page * PAGE).forEach(function (c) { c.style.display = ''; });
+        var ps = pageSize();
+        filtered.slice((page - 1) * ps, page * ps).forEach(function (c) { c.style.display = ''; });
         nr.hidden = !(q.value.trim() && filtered.length === 0);
         term.textContent = q.value;
         drawPager(tp);
@@ -783,6 +785,14 @@ const searchScript = reports.length ? `
           x.className = 'sortbtn' + (on ? ' on' : '');
         });
       }
+      function syncThead() {                                 // ซิงก์หัวตารางให้ตรงกับปุ่มเรียง (คอลัมน์ที่กำลังเรียง = .on)
+        if (!thead) return;
+        [].slice.call(thead.querySelectorAll('span[data-sort]')).forEach(function (s) {
+          var k = s.getAttribute('data-sort');
+          var on = isMetric(k) ? (selected.indexOf(k) !== -1) : (orderMode === k);
+          s.classList.toggle('on', on);
+        });
+      }
       if (marketbar) marketbar.addEventListener('click', function (e) {
         var b = e.target.closest('[data-market]'); if (!b) return;
         market = b.getAttribute('data-market');
@@ -797,8 +807,24 @@ const searchScript = reports.length ? `
           if (i === -1) selected.push(k); else selected.splice(i, 1);
           orderMode = selected.length ? 'composite' : 'updated';
         } else { orderMode = k; selected = []; }             // ล่าสุด/ไลก์/วิว = single-select + ล้าง metric
-        syncSortBtns(); highlightMetric();
+        syncSortBtns(); syncThead(); highlightMetric();
         recompute(); page = 1; render(); window.scrollTo(0, 0);
+      });
+      // หัวตาราง (โหมดตาราง) คลิกได้ = เรียงคอลัมน์นั้นแบบเดี่ยว (exclusive) — proxy ไปคลิกชิปเรียงจริง ไม่ fork ลอจิก
+      if (thead) thead.addEventListener('click', function (e) {
+        var s = e.target.closest('span[data-sort]'); if (!s || !sortbar) return;
+        var m = s.getAttribute('data-sort');
+        if (m === 'updated') {
+          var ub = sortbar.querySelector('[data-sort="updated"]'); if (ub) ub.click();
+        } else {
+          [].slice.call(sortbar.querySelectorAll('.sortbtn.on')).forEach(function (b) {
+            var bk = b.getAttribute('data-sort');
+            if (isMetric(bk) && bk !== m) b.click();          // ล้าง composite member อื่นออกก่อน (exclusive)
+          });
+          var mb = sortbar.querySelector('[data-sort="' + m + '"]');
+          if (mb) mb.click();                                 // toggle m เอง — คลิกซ้ำหัวเดิม = ปิด กลับไป "ล่าสุด"
+        }
+        syncThead();
       });
 
       // โหลดยอดวิว + likes ทั้งหมดครั้งเดียว (read-only ไม่นับเพิ่ม) เติมลงการ์ด แล้วจัดเรียงใหม่ถ้าเรียงตามไลก์/วิวอยู่
@@ -816,13 +842,15 @@ const searchScript = reports.length ? `
         if (orderMode === 'likes' || orderMode === 'views') { recompute(); render(); }
       }).catch(function () {});
 
-      // ── view toggle ไทล์ ⇄ ตาราง (spec §5.2) — <900px บังคับไทล์ (CSS จำกัดที่ media อยู่แล้ว) ──
+      // ── view toggle ไทล์ ⇄ ตาราง (spec §5.2) — ตารางใช้ได้ทุกความกว้าง (เลื่อนแนวนอนบนจอแคบ) ──
       var vt = document.getElementById('viewtoggle');
       if (vt) {
         var setView = function (v) {
           grid.classList.toggle('is-table', v === 'table');
           [].forEach.call(vt.querySelectorAll('.viewbtn'), function (b) { b.classList.toggle('on', b.getAttribute('data-view') === v); });
           try { localStorage.setItem('idxview', v); } catch (e) {}
+          var tp = pages(); if (page > tp) page = tp;         // จำนวนหน้าต่างกัน (ตาราง 25 / ไทล์ 12) → คลี่แพจเจอร์ใหม่ทันที
+          render();
         };
         vt.addEventListener('click', function (e) { var b = e.target.closest('.viewbtn'); if (b) setView(b.getAttribute('data-view')); });
         var saved = 'tiles';
@@ -830,6 +858,7 @@ const searchScript = reports.length ? `
         if (saved === 'table') setView('table');
       }
 
+      syncThead();
       recompute();
       render();
     })();
@@ -934,14 +963,15 @@ const indexHtml = `<!DOCTYPE html>
   #thead{display:none}
   .card{--c:#6b7280;--cd:#4b5563;display:flex;flex-direction:column;background:var(--card);border:0;border-radius:20px;padding:0;text-decoration:none;color:inherit;box-shadow:var(--shadow);position:relative;overflow:hidden;transition:transform .18s ease,box-shadow .18s ease}
   .card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
-  .ctop{display:flex;align-items:center;justify-content:space-between;gap:8px;background:var(--cd);padding:17px 20px 15px;position:relative;overflow:hidden}
+  .ctop{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;background:var(--cd);padding:17px 20px 15px;position:relative;overflow:hidden}
   .ctop::after{content:"";position:absolute;right:-38px;top:-58px;width:150px;height:150px;border-radius:50%;background:radial-gradient(circle,var(--c),transparent 68%);opacity:.75}
   .badge{font-family:var(--display);font-weight:600;font-size:23px;letter-spacing:-.6px;color:#fff;position:relative;z-index:2;line-height:1.15}
   .cflag{font-size:15px;line-height:1;flex:none;position:relative;z-index:2}
   .cbody{display:flex;flex-direction:column;padding:15px 20px 16px;flex:1}
   .cname{font-family:var(--display);font-size:16px;font-weight:500;line-height:1.35;letter-spacing:-.25px}
   .ctitle{font-size:12.5px;color:var(--muted);line-height:1.45;font-weight:300;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;overflow:hidden;min-height:calc(1.45em * 2);margin-top:7px}
-  .hl{display:inline-flex;align-items:center;gap:6px;align-self:flex-start;max-width:100%;margin-top:7px;padding:5px 12px;border-radius:99px;font-size:12px;font-weight:500;line-height:1.3;border:1px solid transparent}
+  .hl{display:inline-flex;align-items:center;gap:6px;align-self:flex-start;max-width:100%;padding:5px 12px;border-radius:99px;font-size:12px;font-weight:500;line-height:1.3;border:1px solid transparent}
+  .ctop .hl{flex-basis:100%;margin-top:10px;position:relative;z-index:2}
   .hl .hl-v{font-family:var(--monoff);font-weight:600;white-space:nowrap}
   .hl .hl-d{font-weight:300;opacity:.92;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   .hl-val{background:#e7f6ee;color:#066a41;border-color:#bde3ce}
@@ -956,25 +986,25 @@ const indexHtml = `<!DOCTYPE html>
   .go{font-family:var(--display);font-size:13px;font-weight:500;color:var(--cd)}
   .cdate,.cviews{font-family:var(--monoff);font-size:10.5px;color:var(--muted)}
   .cviews b{font-weight:600;color:var(--ink-2)}
-  /* ── โหมดตาราง (toggle · ≥901px เท่านั้น — spec §5.2) ── */
-  @media(min-width:901px){
-    .grid.is-table{--cols:104px minmax(190px,2.2fr) repeat(5,68px) 88px;display:block;background:var(--card);border:1px solid var(--line-2);border-radius:16px;overflow:hidden;box-shadow:var(--shadow)}
-    .grid.is-table #thead{display:grid;grid-template-columns:var(--cols);gap:0 14px;align-items:center;padding:11px 18px;background:#fafbfc;border-bottom:1px solid var(--line-2);position:sticky;top:0;z-index:5;font-family:var(--monoff);font-size:9.5px;letter-spacing:.11em;text-transform:uppercase;color:var(--muted)}
-    .grid.is-table #thead .num{text-align:right}
-    .grid.is-table .card{display:grid;grid-template-columns:var(--cols);gap:0 14px;align-items:center;border:0;border-bottom:1px solid var(--line);border-left:3px solid var(--c);border-radius:0;padding:10px 18px 10px 15px;box-shadow:none;overflow:visible}
-    .grid.is-table .card:hover{transform:none;box-shadow:none;background:#fafbfc}
-    .grid.is-table .ctop{display:flex;background:none;padding:0;overflow:visible}
-    .grid.is-table .ctop::after{display:none}
-    .grid.is-table .badge{font-family:var(--monoff);font-size:12px;color:var(--cd);letter-spacing:.02em}
-    .grid.is-table .cflag{font-size:12px;opacity:.8}
-    .grid.is-table .cbody{display:contents}
-    .grid.is-table .cname{font-size:13.5px;font-weight:400;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-    .grid.is-table .ctitle,.grid.is-table .hl,.grid.is-table .go,.grid.is-table .cviews{display:none}
-    .grid.is-table .cmetrics{display:contents}
-    .grid.is-table .cmetrics .cm{font-size:0;text-align:right;white-space:nowrap;overflow:hidden}
-    .grid.is-table .cmetrics .cm b{font-size:11.5px;font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums}
-    .grid.is-table .cmeta{display:flex;justify-content:flex-end;margin:0;padding:0;border:0}
-  }
+  /* ── โหมดตาราง (toggle · ทำงานทุกความกว้าง — จอแคบเลื่อนแนวนอน, spec §5.2) ── */
+  .grid.is-table{--cols:104px minmax(190px,2.2fr) repeat(5,68px) 88px;display:block;background:var(--card);border:1px solid var(--line-2);border-radius:16px;overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;box-shadow:var(--shadow)}
+  .grid.is-table #thead{display:grid;grid-template-columns:var(--cols);gap:0 14px;align-items:center;padding:11px 18px;background:#fafbfc;border-bottom:1px solid var(--line-2);min-width:856px;font-family:var(--monoff);font-size:9.5px;letter-spacing:.11em;text-transform:uppercase;color:var(--muted)}
+  .grid.is-table #thead .num{text-align:right}
+  #thead span[data-sort]{cursor:pointer}
+  #thead span.on{color:var(--ink);font-weight:600}
+  .grid.is-table .card{display:grid;grid-template-columns:var(--cols);gap:0 14px;align-items:center;border:0;border-bottom:1px solid var(--line);border-left:3px solid var(--c);border-radius:0;padding:10px 18px 10px 15px;box-shadow:none;overflow:visible;min-width:856px}
+  .grid.is-table .card:hover{transform:none;box-shadow:none;background:#fafbfc}
+  .grid.is-table .ctop{display:flex;background:none;padding:0;overflow:visible}
+  .grid.is-table .ctop::after{display:none}
+  .grid.is-table .badge{font-family:var(--monoff);font-size:12px;color:var(--cd);letter-spacing:.02em}
+  .grid.is-table .cflag{font-size:12px;opacity:.8}
+  .grid.is-table .cbody{display:contents}
+  .grid.is-table .cname{font-size:13.5px;font-weight:400;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .grid.is-table .ctitle,.grid.is-table .hl,.grid.is-table .go,.grid.is-table .cviews{display:none}
+  .grid.is-table .cmetrics{display:contents}
+  .grid.is-table .cmetrics .cm{font-size:0;text-align:right;white-space:nowrap;overflow:hidden}
+  .grid.is-table .cmetrics .cm b{font-size:11.5px;font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums}
+  .grid.is-table .cmeta{display:flex;justify-content:flex-end;margin:0;padding:0;border:0}
   .empty{grid-column:1/-1;text-align:center;padding:56px;background:var(--card);border-radius:20px;color:var(--muted);box-shadow:var(--shadow)}
   .empty .hint{font-size:13px;margin-top:6px}
   .empty code{font-family:var(--monoff);background:var(--bg);padding:2px 7px;border-radius:6px}
@@ -1020,7 +1050,7 @@ const indexHtml = `<!DOCTYPE html>
       </div>
     </div></header>${searchBox}${marketBar}${sortBar}
     <div class="grid">
-      <div id="thead" aria-hidden="true"><span></span><span>บริษัท</span><span class="num">MOS</span><span class="num">Upside</span><span class="num">P/E</span><span class="num">Yield</span><span class="num">ROE</span><span class="num">อัปเดต</span></div>
+      <div id="thead" aria-hidden="true"><span></span><span>บริษัท</span><span class="num" data-sort="mos">MOS</span><span class="num" data-sort="upside">Upside</span><span class="num" data-sort="pe">P/E</span><span class="num" data-sort="yield">Yield</span><span class="num" data-sort="roe">ROE</span><span class="num" data-sort="updated">อัปเดต</span></div>
 ${reports.length ? cards : emptyState}
     </div>${noResult}${pagerEl}
     <footer>
