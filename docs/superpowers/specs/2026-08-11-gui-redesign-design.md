@@ -51,7 +51,10 @@
 
 ### 3.2 ทางแก้ — derive ใน Node ตอน build
 
-`build.js` เพิ่ม `deriveTheme(theme)` คำนวณจาก `accent` (A) และ `accentDark` (AD) แล้วคาย **hex ตรง ๆ**:
+`build.js` เพิ่ม `deriveTheme(theme)` คำนวณจาก `accent` (A) และ `accentDark` (AD) แล้วคาย **hex ตรง ๆ**
+
+> **นิยาม `mix(สี, p%, ฐาน)`** = ผสมเชิงเส้นต่อช่อง sRGB: `round(สี×p + ฐาน×(1−p))` แล้วคายเป็น hex
+> (เท่ากับ `color-mix(in srgb, สี p%, ฐาน)` — แต่คำนวณใน Node ตอน build)
 
 | token ใหม่ | สูตร | ใช้ทำอะไร |
 |---|---|---|
