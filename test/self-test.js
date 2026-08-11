@@ -235,6 +235,9 @@ expect('E38', 'error', mutJson('report-data', (d) => { d.theme = d.theme || {}; 
 expect('E38', 'error', mutJson('report-data', (d) => { d.theme = d.theme || {}; d.theme.badge = '#f9ab00'; }), 'badge เหลืองสดเป็นพื้นตัวหนังสือขาว (เคส CAT) → ต้องจับ E38');
 expect('E38', 'error', mutJson('report-data', (d) => { d.theme = d.theme || {}; d.theme.headerMuted = 'rgba(255,255,255,0.12)'; }), 'headerMuted rgba alpha ต่ำ (แทบล่องหนบน gradient — เคส ORLY/MCD) → ต้องจับ E38 หลัง composite');
 reject('E38', mutJson('report-data', (d) => { d.theme = d.theme || {}; if (d.theme.subColor) d.theme.subColor = d.theme.subColor.toUpperCase(); }), 'ธีมจริงของฐาน (สีเดิม แค่เปลี่ยน case hex) → ต้องไม่ฟ้อง E38');
+// ── E38: คู่สีที่ derive ตอน build (GUI redesign ส.ค. 2026 — spec §3.4) ──
+expect('E38', 'error', mutJson('report-data', (d) => { d.theme = d.theme || {}; d.theme.accentDark = '#8aa5c8'; }), 'accentDark อ่อน (ฟ้าหม่น) — ขาวบน accentDark ~2.4:1 → ต้องจับ E38');
+reject('E38', mutJson('report-data', (d) => { d.theme = d.theme || {}; d.theme.accent = '#0a7a3d'; d.theme.accentDark = '#0a5c2e'; }), 'ธีมเขียวเข้มมาตรฐาน — ทุกคู่ derive ผ่าน → ต้องไม่ฟ้อง E38');
 // fix-contrast ต้อง idempotent (ธีมผ่านแล้วรันซ้ำ = 0 diff) และซ่อมธีมพังจนผ่านจริง
 {
   const { fixTheme } = require('../tools/fix-contrast.js');

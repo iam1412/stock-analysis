@@ -21,7 +21,7 @@ const fs = require('fs');
 const path = require('path');
 // expandReport: ขยายรายงานแบบ template (content-only) ให้เป็น HTML เต็มก่อนตรวจ — ไฟล์เก่า (ไม่มี marker) = identity
 // (require build.js ได้ exports เฉย ๆ ไม่รัน build เพราะ guard `if (require.main !== module) return;`)
-const { expandReport, THEME_DEFAULTS } = require('../build.js');
+const { expandReport, THEME_DEFAULTS, deriveTheme } = require('../build.js');
 // โมดูล contrast กลางชุดเดียวกับตัวสร้างธีม/ตัวซ่อม — E38 ต้องคิดเลขตรงกับ tools/fix-contrast.js เป๊ะ ไม่งั้นเถียงกันที่ขอบเกณฑ์
 const bt = require('../tools/brandtheme.js');
 // "วันที่ราคา" อยู่ตรงไหนในหัวรายงาน = ความรู้ก้อนเดียวกับที่ cron ใช้เขียน — อย่าทำสำเนา
@@ -318,7 +318,12 @@ const CHECKS = [
       chk('vcellLabel บน vcell', bt.effectiveHex(t.vcellLabel, ov), ov, bt.AA.text);
     }
     chk('accent (เส้นกราฟ) บนการ์ดขาว', bt.effectiveHex(t.accent, '#ffffff'), '#ffffff', bt.AA.graphic);
-    chk('accentDark บน blue-soft (.fv-box)', bt.effectiveHex(t.accentDark, '#e8f0fe'), '#e8f0fe', bt.AA.text);
+    // ── คู่สีที่ derive ตอน build (spec 2026-08-11 §3.4) — CSS ใหม่ย้อมพื้น/เส้น/ชิปด้วย accent ──
+    const dv = deriveTheme(t);
+    chk('ink บน tintBg (พื้นหน้า)', '#14161c', dv.tintBg, bt.AA.text);
+    chk('muted บน tintCard', '#5f6675', dv.tintCard, bt.AA.text);
+    chk('accentDark บน soft (.fv-box/ชิป)', bt.effectiveHex(t.accentDark, dv.soft), dv.soft, bt.AA.text);
+    chk('ขาวบน accentDark (ปุ่ม/ไทล์/ป้าย gauge)', '#ffffff', bt.effectiveHex(t.accentDark, '#ffffff'), bt.AA.text);
     chk('ขาวบน badge (เลข section)', '#ffffff', resolveColor(t.badge, t), bt.AA.text);
     chk('chgColor บน chgBg (ป้าย %)', resolveColor(t.chgColor, t), resolveColor(t.chgBg, t), bt.AA.text);
     return bad.length ? `${bad.join(' ; ')} — แก้อัตโนมัติ: node tools/fix-contrast.js <SYM> --write (ซ่อมเฉพาะ field ที่ตก คงโทนแบรนด์)` : null;
