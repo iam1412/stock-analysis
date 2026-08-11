@@ -1108,10 +1108,10 @@ ${FONT_LINKS}
   @media(max-width:820px){
     .wrap{padding:16px 15px 60px}
     .hd-in{padding:24px 22px 26px;display:block} h1{font-size:29px} header{border-radius:20px}
-    /* mobile: สถิติกลับไปเป็นแถวใต้เส้นคั่นแบบเดิม (เจ้าของ approve แล้ว) — แต่ยังกดกรองตลาดได้ */
-    .hd-stats{display:flex;flex-wrap:wrap;gap:4px 6px;margin-top:18px;padding:14px 0 0;background:none;border:0;border-top:1px solid rgba(255,255,255,.12);border-radius:0}
+    /* mobile: สถิติใต้เส้นคั่นแบบเดิม (เจ้าของ approve แล้ว) — grid 2×2 ตายตัวกันจอกว้างยัด 3 ช่องแถวบนแล้วสหรัฐตกไปอยู่ตัวเดียว */
+    .hd-stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));justify-items:start;gap:4px 6px;margin-top:18px;padding:14px 0 0;background:none;border:0;border-top:1px solid rgba(255,255,255,.12);border-radius:0}
     .hstat{padding:7px 10px;border-radius:11px}
-    .hstat:first-child{margin-left:-10px}
+    .hstat:nth-child(odd){margin-left:-10px}
     .hstat .n{font-size:21px}
     .grid{grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px}
     .badge{font-size:20px} .ctop{padding:15px 17px 13px} .cbody{padding:13px 17px 14px}
