@@ -507,6 +507,10 @@ if (fs.existsSync(REPORTS_DIR)) {
     // report-data/stock-meta ดิบ (จาก source ต้นฉบับ) → ให้ injectTA ประกอบ __TA_CFG__ ; รายงาน legacy (ไม่มี report-data) → rd=null → injectTA ข้าม
     const rd = parseJsonScript(content, 'report-data');
     const meta = parseJsonScript(content, 'stock-meta');
+    // สีแบรนด์ไปการ์ดหน้าแรก — in-memory เท่านั้น (spec §5.2.1: ห้ามลง reports.json)
+    const _th = { ...THEME_DEFAULTS, ...((rd && rd.theme) || {}) };
+    rec.accent = bt.effectiveHex(_th.accent, '#ffffff');
+    rec.accentDark = bt.effectiveHex(_th.accentDark, '#ffffff');
     // expandReport: source แบบ template (content-only) → inject โครงที่ใช้ร่วม ; source เก่า → identity (ไม่เปลี่ยน)
     // injectTA ครอบผลลัพธ์สุดท้าย เพิ่ม __TA_CFG__ + <script src="/assets/ta-*.js"> เฉพาะใน dist (เหมือน decorateReport)
     fs.writeFileSync(path.join(OUT, entry.name), injectTA(decorateReport(expandReport(content), rec), symbol, rd, meta, TA_ASSET)); // hash อิงต้นฉบับ, share meta+footer+ตัวนับ+TA ใส่เฉพาะใน dist
@@ -600,17 +604,20 @@ const leaders = computeLeaders(reports);
 const highlightChip = (m) => {
   const h = pickHighlight(m, leaders);
   return h ? `
-        <div class="hl hl-${h.cls}${h.lead ? ' lead' : ''}"><span class="hl-ic">${h.icon}</span><span class="hl-v">${esc(h.value)}</span><span class="hl-d">${esc(h.desc)}</span></div>` : '';
+        <div class="hl hl-${h.cls}${h.lead ? ' lead' : ''}"><span class="hl-v">${esc(h.value)}</span><span class="hl-d">${esc(h.desc)}</span></div>` : '';
 };
 
 const cards = reports.map((r) => {
-  const blurb = r.desc || r.title; // คำโปรยธุรกิจ (fallback ไป title ถ้ารายงานไม่มี <div class="sub">)
+  const blurb = r.desc || r.title;
+  const c = escAttr(r.accent || THEME_DEFAULTS.accent), cd = escAttr(r.accentDark || THEME_DEFAULTS.accentDark);
   return `
-      <a class="card" data-search="${escAttr((r.symbol + ' ' + r.name + ' ' + r.title + ' ' + (r.desc || '')).toLowerCase())}"${metricAttrs(r.metrics)}${marketAttr(r.metrics)} href="./${encodeURIComponent(r.file)}">
+      <a class="card" style="--c:${c};--cd:${cd}" data-search="${escAttr((r.symbol + ' ' + r.name + ' ' + r.title + ' ' + (r.desc || '')).toLowerCase())}"${metricAttrs(r.metrics)}${marketAttr(r.metrics)} href="./${encodeURIComponent(r.file)}">
         <div class="ctop"><div class="badge">${esc(r.symbol)}</div>${marketFlag(r.metrics)}</div>
-        <div class="cname">${esc(r.name)}</div>
-        <div class="ctitle" title="${escAttr(blurb)}">${esc(blurb)}</div>${highlightChip(r.metrics)}${metricStrip(r.metrics)}
-        <div class="cmeta"><span class="go">เปิดรายงาน →</span><span class="cviews" data-sym="${escAttr(r.symbol)}" hidden>👁 <b class="v">0</b> · 👍 <b class="l">0</b> · 👎 <b class="d">0</b></span><span class="cdate">${fmtDate(r.updated)}</span></div>
+        <div class="cbody">
+          <div class="cname">${esc(r.name)}</div>
+          <div class="ctitle" title="${escAttr(blurb)}">${esc(blurb)}</div>${highlightChip(r.metrics)}${metricStrip(r.metrics)}
+          <div class="cmeta"><span class="go">เปิดรายงาน →</span><span class="cviews" data-sym="${escAttr(r.symbol)}" hidden>👁 <b class="v">0</b> · 👍 <b class="l">0</b> · 👎 <b class="d">0</b></span><span class="cdate">${fmtDate(r.updated)}</span></div>
+        </div>
       </a>`;
 }).join('\n');
 
@@ -637,15 +644,17 @@ const marketBar = (reports.length > 1 && (mktCount.TH && mktCount.US)) ? `
 const sortBar = reports.length > 1 ? `
     <div class="sortbar" id="sortbar" role="group" aria-label="เรียงลำดับหุ้น">
       <span class="sortlab">เรียงโดย</span>
-      <button type="button" class="sortbtn on" data-sort="updated">🕒 ล่าสุด</button>
-      <button type="button" class="sortbtn" data-sort="likes">👍 ไลก์</button>
-      <button type="button" class="sortbtn" data-sort="views">👁 วิว</button>
+      <button type="button" class="sortbtn on" data-sort="updated">ล่าสุด</button>
+      <button type="button" class="sortbtn" data-sort="likes">ไลก์</button>
+      <button type="button" class="sortbtn" data-sort="views">วิว</button>
       <span class="sortsep" aria-hidden="true"></span>
-      <button type="button" class="sortbtn" data-sort="mos">🛡️ MOS</button>
-      <button type="button" class="sortbtn" data-sort="upside">📈 Upside</button>
-      <button type="button" class="sortbtn" data-sort="pe">⚖️ P/E</button>
-      <button type="button" class="sortbtn" data-sort="yield">💰 Yield</button>
-      <button type="button" class="sortbtn" data-sort="roe">📊 ROE</button>
+      <button type="button" class="sortbtn" data-sort="mos">MOS</button>
+      <button type="button" class="sortbtn" data-sort="upside">Upside</button>
+      <button type="button" class="sortbtn" data-sort="pe">P/E</button>
+      <button type="button" class="sortbtn" data-sort="yield">Yield</button>
+      <button type="button" class="sortbtn" data-sort="roe">ROE</button>
+      <span class="sortsep" aria-hidden="true"></span>
+      <span id="viewtoggle" role="group" aria-label="รูปแบบการแสดงผล"><button type="button" class="viewbtn on" data-view="tiles">ไทล์</button><button type="button" class="viewbtn" data-view="table">ตาราง</button></span>
     </div>` : '';
 
 const noResult = reports.length ? `
@@ -793,6 +802,20 @@ const searchScript = reports.length ? `
         if (orderMode === 'likes' || orderMode === 'views') { recompute(); render(); }
       }).catch(function () {});
 
+      // ── view toggle ไทล์ ⇄ ตาราง (spec §5.2) — <900px บังคับไทล์ (CSS จำกัดที่ media อยู่แล้ว) ──
+      var vt = document.getElementById('viewtoggle');
+      if (vt) {
+        var setView = function (v) {
+          grid.classList.toggle('is-table', v === 'table');
+          [].forEach.call(vt.querySelectorAll('.viewbtn'), function (b) { b.classList.toggle('on', b.getAttribute('data-view') === v); });
+          try { localStorage.setItem('idxview', v); } catch (e) {}
+        };
+        vt.addEventListener('click', function (e) { var b = e.target.closest('.viewbtn'); if (b) setView(b.getAttribute('data-view')); });
+        var saved = 'tiles';
+        try { saved = localStorage.getItem('idxview') || 'tiles'; } catch (e) {}
+        if (saved === 'table') setView('table');
+      }
+
       recompute();
       render();
     })();
@@ -815,6 +838,19 @@ const emptyState = `
         <p>ยังไม่มีรายงานในโฟลเดอร์นี้</p>
         <p class="hint">เพิ่มไฟล์ <code>reports/&lt;SYMBOL&gt;.html</code> แล้ว build ใหม่</p>
       </div>`;
+
+// สเปกตรัมหัวเว็บ = สีแบรนด์จริงของทุกหุ้น เรียงตาม hue (spec §5.1) — โมโนโครมทั้งหน้า สีมาจากหุ้นเท่านั้น
+const hueOf = (hex) => {
+  const [r, g, b] = bt.hexToRgb(hex).map((v) => v / 255);
+  const mx = Math.max(r, g, b), mn = Math.min(r, g, b);
+  if (mx === mn) return -1;
+  const d = mx - mn;
+  const h = mx === r ? (g - b) / d + (g < b ? 6 : 0) : mx === g ? (b - r) / d + 2 : (r - g) / d + 4;
+  return h * 60;
+};
+const _spectrumSrc = reports.map((r) => r.accent).filter(Boolean).filter((c) => hueOf(c) >= 0).sort((a, b) => hueOf(a) - hueOf(b));
+const spectrum = _spectrumSrc.filter((_, i, arr) => i % Math.max(1, Math.floor(arr.length / 96)) === 0).slice(0, 96);
+const spectrumHtml = spectrum.length ? `<div id="spectrum">${spectrum.map((c) => `<i style="background:${escAttr(c)}"></i>`).join('')}</div>` : '';
 
 // ---- 7) เขียน index.html ----
 const indexHtml = `<!DOCTYPE html>
@@ -843,79 +879,132 @@ const indexHtml = `<!DOCTYPE html>
 <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#eef1f5; --card:#fff; --ink:#1a1d23; --muted:#5f6675; --line:#e4e8ee;
-    --blue:#1a73e8; --blue-d:#1557b0;
-    --shadow:0 1px 3px rgba(16,24,40,.06),0 8px 24px rgba(16,24,40,.06);
+    --bg:#eef0f3; --card:#fff; --ink:#13151b; --ink-2:#3c424e; --muted:#5f6675;
+    --line:#e5e7eb; --line-2:#d4d8de;
+    --shadow:0 1px 2px rgba(16,24,40,.05),0 6px 18px rgba(16,24,40,.07);
+    --shadow-lg:0 3px 8px rgba(16,24,40,.09),0 20px 46px rgba(16,24,40,.16);
+    --display:'Kanit',system-ui,sans-serif; --monoff:'IBM Plex Mono',ui-monospace,monospace;
   }
   *{box-sizing:border-box;margin:0;padding:0}
-  body{font-family:'Sarabun','Noto Sans Thai',system-ui,-apple-system,Segoe UI,sans-serif;background:var(--bg);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased}
-  .mono{font-family:'IBM Plex Mono',ui-monospace,monospace}
-  .wrap{max-width:1080px;margin:0 auto;padding:24px 16px 64px}
-  header{background:linear-gradient(135deg,#202938 0%,#2c3a52 60%,#1557b0 140%);border-radius:20px;padding:32px 28px;color:#fff;position:relative;overflow:hidden;box-shadow:var(--shadow)}
-  header::after{content:"";position:absolute;right:-40px;top:-40px;width:240px;height:240px;border-radius:50%;background:radial-gradient(circle,rgba(66,133,244,.35),transparent 70%)}
-  .tag{display:inline-block;font-size:12px;font-weight:600;padding:3px 10px;border-radius:99px;background:rgba(255,255,255,.14);margin-bottom:12px}
-  h1{font-size:30px;font-weight:800;letter-spacing:-.5px}
-  .sub{color:#c7d2e4;font-size:14.5px;margin-top:4px}
-  .search{margin-top:18px}
-  .search input{width:100%;font-family:inherit;font-size:15px;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 16px;box-shadow:var(--shadow);outline:none;-webkit-appearance:none}
-  .search input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(26,115,232,.15)}
+  body{font-family:'Sarabun',system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.68;-webkit-font-smoothing:antialiased}
+  .mono{font-family:var(--monoff)}
+  .wrap{max-width:1280px;margin:0 auto;padding:22px 20px 72px}
+  /* header ดำ + สเปกตรัมสีแบรนด์จริง — หน้าแรกโมโนโครม สีทั้งหมดมาจากการ์ด (spec §5.1) */
+  header{background:#12141a;border-radius:26px;padding:0;color:#fff;position:relative;overflow:hidden;box-shadow:var(--shadow-lg)}
+  #spectrum{display:flex;height:8px;width:100%}
+  #spectrum i{flex:1;height:100%}
+  .hd-in{padding:30px 34px 32px}
+  .tag{display:inline-block;font-family:var(--monoff);font-size:10.5px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:12px}
+  h1{font-family:var(--display);font-size:38px;font-weight:600;letter-spacing:-1.1px;line-height:1.15}
+  .sub{color:rgba(255,255,255,.62);font-size:14.5px;margin-top:8px;font-weight:300;max-width:64ch}
+  .hd-stats{display:flex;flex-wrap:wrap;gap:26px;margin-top:22px;padding-top:20px;border-top:1px solid rgba(255,255,255,.12)}
+  .hd-stats div{display:flex;flex-direction:column;gap:2px}
+  .hd-stats .n{font-family:var(--display);font-size:25px;font-weight:600;letter-spacing:-.8px;line-height:1;font-variant-numeric:tabular-nums}
+  .hd-stats .l{font-family:var(--monoff);font-size:9.5px;letter-spacing:.13em;text-transform:uppercase;color:rgba(255,255,255,.45)}
+  .search{margin-top:20px;position:relative}
+  .search input{width:100%;font-family:'Sarabun',sans-serif;font-size:15.5px;color:var(--ink);background:var(--card);border:0;border-radius:16px;padding:15px 18px;box-shadow:var(--shadow);outline:none;-webkit-appearance:none;transition:box-shadow .14s}
+  .search input:focus{box-shadow:var(--shadow),0 0 0 3px rgba(19,21,27,.14)}
   .search input::placeholder{color:var(--muted)}
-  .noresult{text-align:center;color:var(--muted);padding:32px;font-size:14px}
-  .sortbar,.marketbar{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:14px}
-  .sortlab{font-size:13px;color:var(--muted);margin-right:2px}
-  .sortsep{width:1px;align-self:stretch;background:var(--line);margin:2px 2px}
-  .sortbtn,.mktbtn{font-family:inherit;font-size:13px;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:99px;padding:6px 14px;cursor:pointer;box-shadow:var(--shadow);transition:border-color .15s ease,color .15s ease,background .15s ease}
-  .sortbtn:hover:not(.on),.mktbtn:hover:not(.on){border-color:var(--blue);color:var(--blue)}
-  .sortbtn.on,.mktbtn.on{background:var(--blue);border-color:var(--blue);color:#fff;font-weight:600}
-  .mktbtn .mc{font-family:'IBM Plex Mono',monospace;font-size:11px;opacity:.7;margin-left:1px}
-  .mktbtn.on .mc{opacity:.9}
-  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;margin-top:24px}
-  .card{display:flex;flex-direction:column;gap:6px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px;text-decoration:none;color:inherit;box-shadow:var(--shadow);transition:transform .15s ease,box-shadow .15s ease}
-  .card:hover{transform:translateY(-3px);box-shadow:0 4px 12px rgba(16,24,40,.10),0 14px 32px rgba(16,24,40,.10)}
-  .ctop{display:flex;align-items:center;justify-content:space-between;gap:8px}
-  .cflag{font-size:15px;line-height:1;flex:none}
-  .badge{font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:13px;color:var(--blue-d);background:#e8f0fe;align-self:flex-start;padding:3px 10px;border-radius:8px}
-  .cname{font-size:18px;font-weight:700;margin-top:6px}
-  .ctitle{font-size:13px;color:var(--muted);line-height:1.35;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;overflow:hidden;min-height:calc(1.35em * 2)}
-  .hl{display:inline-flex;align-items:center;gap:6px;align-self:flex-start;max-width:100%;margin-top:9px;padding:5px 11px 5px 9px;border-radius:99px;font-size:12.5px;font-weight:600;line-height:1.3;border:1px solid transparent}
-  .hl .hl-ic{font-size:13.5px;line-height:1}
-  .hl .hl-v{font-family:'IBM Plex Mono',monospace;font-weight:700;white-space:nowrap}
-  .hl .hl-d{font-weight:500;opacity:.9;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-  .hl-val{background:#e7f5ec;color:#0b7a3b;border-color:#bfe6cd}
-  .hl-qual{background:#f1ebfb;color:#6a3da3;border-color:#ded0f2}
-  .hl-inc{background:#fff3e0;color:#a85d00;border-color:#ffe0b0}
-  .hl-cheap{background:#e3f3f7;color:#0b6e84;border-color:#bce4ee}
-  .hl.lead{border-color:#e6b315;box-shadow:0 0 0 2px rgba(230,179,21,.18)}
-  .cmetrics{display:flex;flex-wrap:wrap;gap:3px 10px;margin-top:8px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted);line-height:1.5}
-  .cmetrics .cm b{font-weight:600;color:var(--ink)}
-  .cmetrics .cm.on{color:var(--blue-d)}
-  .cmetrics .cm.on b{color:var(--blue-d)}
-  .cmeta{display:flex;align-items:center;justify-content:space-between;margin-top:auto;padding-top:8px}
-  .go{font-size:13.5px;font-weight:600;color:var(--blue)}
-  .cdate{font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:var(--muted)}
-  .cviews{font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:var(--muted)}
-  .cviews b{font-weight:600;color:var(--ink)}
-  .empty{grid-column:1/-1;text-align:center;padding:48px;background:var(--card);border:1px dashed var(--line);border-radius:16px;color:var(--muted)}
+  .noresult{text-align:center;color:var(--muted);padding:40px;font-size:14px}
+  .sortbar,.marketbar{display:flex;flex-wrap:wrap;align-items:center;gap:7px;margin-top:13px}
+  .sortlab{font-family:var(--monoff);font-size:9.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);margin-right:5px}
+  .sortsep{width:1px;align-self:stretch;background:var(--line-2);margin:3px 4px}
+  .sortbtn,.mktbtn,.viewbtn{font-family:'Sarabun',sans-serif;font-size:13px;color:var(--ink-2);background:var(--card);border:0;border-radius:99px;padding:7px 15px;cursor:pointer;box-shadow:var(--shadow);transition:all .14s}
+  .sortbtn:hover:not(.on),.mktbtn:hover:not(.on),.viewbtn:hover:not(.on){color:var(--ink);transform:translateY(-1px)}
+  .sortbtn.on,.mktbtn.on,.viewbtn.on{background:var(--ink);color:#fff;font-weight:500}
+  .mktbtn .mc{font-family:var(--monoff);font-size:10.5px;opacity:.55;margin-left:3px}
+  .mktbtn.on .mc{opacity:.75}
+  /* ── ไทล์ (default) ── */
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(276px,1fr));gap:18px;margin-top:26px}
+  #thead{display:none}
+  .card{--c:#6b7280;--cd:#4b5563;display:flex;flex-direction:column;background:var(--card);border:0;border-radius:20px;padding:0;text-decoration:none;color:inherit;box-shadow:var(--shadow);position:relative;overflow:hidden;transition:transform .18s ease,box-shadow .18s ease}
+  .card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
+  .ctop{display:flex;align-items:center;justify-content:space-between;gap:8px;background:var(--cd);padding:17px 20px 15px;position:relative;overflow:hidden}
+  .ctop::after{content:"";position:absolute;right:-38px;top:-58px;width:150px;height:150px;border-radius:50%;background:radial-gradient(circle,var(--c),transparent 68%);opacity:.75}
+  .badge{font-family:var(--display);font-weight:600;font-size:23px;letter-spacing:-.6px;color:#fff;position:relative;z-index:2;line-height:1.15}
+  .cflag{font-size:15px;line-height:1;flex:none;position:relative;z-index:2}
+  .cbody{display:flex;flex-direction:column;padding:15px 20px 16px;flex:1}
+  .cname{font-family:var(--display);font-size:16px;font-weight:500;line-height:1.35;letter-spacing:-.25px}
+  .ctitle{font-size:12.5px;color:var(--muted);line-height:1.45;font-weight:300;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;overflow:hidden;min-height:calc(1.45em * 2);margin-top:4px}
+  .hl{display:inline-flex;align-items:center;gap:6px;align-self:flex-start;max-width:100%;margin-top:11px;padding:5px 12px;border-radius:99px;font-size:12px;font-weight:500;line-height:1.3;border:1px solid transparent}
+  .hl .hl-v{font-family:var(--monoff);font-weight:600;white-space:nowrap}
+  .hl .hl-d{font-weight:300;opacity:.92;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .hl-val{background:#e7f6ee;color:#066a41;border-color:#bde3ce}
+  .hl-qual{background:#f2ecfb;color:#61369a;border-color:#ddd0f2}
+  .hl-inc{background:#fdf3e2;color:#9a5500;border-color:#f6dfb4}
+  .hl-cheap{background:#e4f3f7;color:#0a6579;border-color:#bfe3ec}
+  .hl.lead{box-shadow:0 0 0 2px rgba(230,179,21,.24)}
+  .cmetrics{display:flex;flex-wrap:wrap;gap:3px 12px;margin-top:11px;font-family:var(--monoff);font-size:10.5px;color:var(--muted);line-height:1.6}
+  .cmetrics .cm b{font-weight:600;color:var(--ink-2)}
+  .cmetrics .cm.on{color:var(--cd)} .cmetrics .cm.on b{color:var(--cd)}
+  .cmeta{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:auto;padding-top:12px;border-top:1px solid var(--line)}
+  .go{font-family:var(--display);font-size:13px;font-weight:500;color:var(--cd)}
+  .cdate,.cviews{font-family:var(--monoff);font-size:10.5px;color:var(--muted)}
+  .cviews b{font-weight:600;color:var(--ink-2)}
+  /* ── โหมดตาราง (toggle · ≥901px เท่านั้น — spec §5.2) ── */
+  @media(min-width:901px){
+    .grid.is-table{--cols:104px minmax(190px,2.2fr) repeat(5,68px) 88px;display:block;background:var(--card);border:1px solid var(--line-2);border-radius:16px;overflow:hidden;box-shadow:var(--shadow)}
+    .grid.is-table #thead{display:grid;grid-template-columns:var(--cols);gap:0 14px;align-items:center;padding:11px 18px;background:#fafbfc;border-bottom:1px solid var(--line-2);position:sticky;top:0;z-index:5;font-family:var(--monoff);font-size:9.5px;letter-spacing:.11em;text-transform:uppercase;color:var(--muted)}
+    .grid.is-table #thead .num{text-align:right}
+    .grid.is-table .card{display:grid;grid-template-columns:var(--cols);gap:0 14px;align-items:center;border:0;border-bottom:1px solid var(--line);border-left:3px solid var(--c);border-radius:0;padding:10px 18px 10px 15px;box-shadow:none;overflow:visible}
+    .grid.is-table .card:hover{transform:none;box-shadow:none;background:#fafbfc}
+    .grid.is-table .ctop{display:flex;background:none;padding:0;overflow:visible}
+    .grid.is-table .ctop::after{display:none}
+    .grid.is-table .badge{font-family:var(--monoff);font-size:12px;color:var(--cd);letter-spacing:.02em}
+    .grid.is-table .cflag{font-size:12px;opacity:.8}
+    .grid.is-table .cbody{display:contents}
+    .grid.is-table .cname{font-size:13.5px;font-weight:400;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .grid.is-table .ctitle,.grid.is-table .hl,.grid.is-table .go,.grid.is-table .cviews{display:none}
+    .grid.is-table .cmetrics{display:contents}
+    .grid.is-table .cmetrics .cm{font-size:0;text-align:right;white-space:nowrap;overflow:hidden}
+    .grid.is-table .cmetrics .cm b{font-size:11.5px;font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums}
+    .grid.is-table .cmeta{display:flex;justify-content:flex-end;margin:0;padding:0;border:0}
+  }
+  .empty{grid-column:1/-1;text-align:center;padding:56px;background:var(--card);border-radius:20px;color:var(--muted);box-shadow:var(--shadow)}
   .empty .hint{font-size:13px;margin-top:6px}
-  .empty code{font-family:'IBM Plex Mono',monospace;background:#eef1f5;padding:2px 6px;border-radius:6px}
-  .pager{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-top:28px}
-  .pg{font-family:inherit;font-size:13px;min-width:34px;height:34px;padding:0 9px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:9px;cursor:pointer;box-shadow:var(--shadow)}
-  .pg.on{background:var(--blue);border-color:var(--blue);color:#fff;font-weight:600}
-  .pg:disabled{opacity:.4;cursor:default}
-  .pg:hover:not(:disabled):not(.on){border-color:var(--blue);color:var(--blue)}
-  .pg-gap{display:flex;align-items:flex-end;min-width:20px;height:34px;color:var(--muted);font-size:13px;justify-content:center}
-  footer{margin-top:32px;text-align:center;color:var(--muted);font-size:12.5px}
-  footer a{color:var(--blue);text-decoration:none}
+  .empty code{font-family:var(--monoff);background:var(--bg);padding:2px 7px;border-radius:6px}
+  .pager{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-top:34px}
+  .pg{font-family:var(--monoff);font-size:12.5px;min-width:38px;height:38px;padding:0 11px;border:0;background:var(--card);color:var(--ink-2);border-radius:11px;cursor:pointer;box-shadow:var(--shadow);transition:all .14s}
+  .pg.on{background:var(--ink);color:#fff;font-weight:600}
+  .pg:disabled{opacity:.35;cursor:default}
+  .pg:hover:not(:disabled):not(.on){color:var(--ink);transform:translateY(-1px)}
+  .pg-gap{display:flex;align-items:flex-end;min-width:20px;height:38px;color:var(--muted);font-size:13px;justify-content:center}
+  footer{margin-top:40px;text-align:center;color:var(--muted);font-size:12px;line-height:1.9;font-weight:300}
+  footer a{color:var(--ink-2);text-decoration:none;border-bottom:1px solid var(--line-2)}
+  footer b{font-weight:500;color:var(--ink-2)}
+  /* ── มือถือ (spec §5.5: tap ≥44px · แถบกรองเลื่อนแถวเดียว) ── */
+  @media(max-width:820px){
+    .wrap{padding:16px 15px 60px}
+    .hd-in{padding:24px 22px 26px} h1{font-size:29px} header{border-radius:20px}
+    .hd-stats{gap:18px} .hd-stats .n{font-size:21px}
+    .grid{grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px}
+    .badge{font-size:20px} .ctop{padding:15px 17px 13px} .cbody{padding:13px 17px 14px}
+  }
+  @media(max-width:760px){
+    .sortbar,.marketbar{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;margin-left:-15px;margin-right:-15px;padding-left:15px;padding-right:15px}
+    .sortbar::-webkit-scrollbar,.marketbar::-webkit-scrollbar{display:none}
+    .sortbtn,.mktbtn,.viewbtn{min-height:44px;flex:none}
+    .pg{min-height:44px;min-width:44px}
+    .search input{min-height:48px}
+  }
+  @media(max-width:480px){ .grid{grid-template-columns:1fr} h1{font-size:25px} .hd-stats{gap:14px 20px} }
 </style>
 </head>
 <body>
   <div class="wrap">
-    <header>
-      <span class="tag">📊 Stock Analysis</span>
+    <header>${spectrumHtml}<div class="hd-in">
+      <span class="tag">Stock Analysis</span>
       <h1>รายงานวิเคราะห์หุ้น</h1>
-      <div class="sub">Fair Value · Margin of Safety · จุดเข้าซื้อ · ผลตอบแทนคาดการณ์ — รวม ${reports.length} รายงาน</div>
-    </header>${searchBox}${marketBar}${sortBar}
+      <div class="sub">Fair Value · Margin of Safety · จุดเข้าซื้อ · ผลตอบแทนคาดการณ์ 3 ปี</div>
+      <div class="hd-stats">
+        <div><span class="n">${reports.length}</span><span class="l">รายงาน</span></div>
+        <div><span class="n">${mktCount.TH}</span><span class="l">ตลาดไทย</span></div>
+        <div><span class="n">${mktCount.US}</span><span class="l">ตลาดสหรัฐ</span></div>
+        <div><span class="n">${fmtDate(nowISO)}</span><span class="l">อัปเดตล่าสุด</span></div>
+      </div>
+    </div></header>${searchBox}${marketBar}${sortBar}
     <div class="grid">
+      <div id="thead" aria-hidden="true"><span></span><span>บริษัท</span><span class="num">MOS</span><span class="num">Upside</span><span class="num">P/E</span><span class="num">Yield</span><span class="num">ROE</span><span class="num">อัปเดต</span></div>
 ${reports.length ? cards : emptyState}
     </div>${noResult}${pagerEl}
     <footer>
