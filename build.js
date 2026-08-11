@@ -626,7 +626,7 @@ const cards = reports.map((r) => {
   const c = escAttr(r.accent || THEME_DEFAULTS.accent), cd = escAttr(r.accentDark || THEME_DEFAULTS.accentDark);
   return `
       <a class="card" style="--c:${c};--cd:${cd}" data-search="${escAttr((r.symbol + ' ' + r.name + ' ' + r.title + ' ' + (r.desc || '')).toLowerCase())}"${metricAttrs(r.metrics)}${marketAttr(r.metrics)} href="./${encodeURIComponent(r.file)}">
-        <div class="ctop"><div class="badge">${esc(r.symbol)}</div>${marketFlag(r.metrics)}${highlightChip(r.metrics)}</div>
+        <div class="ctop"><div class="badge">${esc(r.symbol)}</div>${highlightChip(r.metrics)}${marketFlag(r.metrics)}</div>
         <div class="cbody">
           <div class="cname">${esc(r.name)}</div>
           <div class="ctitle" title="${escAttr(blurb)}">${esc(blurb)}</div>${metricStrip(r.metrics)}
@@ -963,17 +963,19 @@ const indexHtml = `<!DOCTYPE html>
   #thead{display:none}
   .card{--c:#6b7280;--cd:#4b5563;display:flex;flex-direction:column;background:var(--card);border:0;border-radius:20px;padding:0;text-decoration:none;color:inherit;box-shadow:var(--shadow);position:relative;overflow:hidden;transition:transform .18s ease,box-shadow .18s ease}
   .card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
-  .ctop{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;background:var(--cd);padding:17px 20px 15px;position:relative;overflow:hidden}
+  .ctop{display:flex;flex-wrap:nowrap;align-items:center;justify-content:space-between;gap:8px;background:var(--cd);padding:17px 20px 15px;position:relative;overflow:hidden}
   .ctop::after{content:"";position:absolute;right:-38px;top:-58px;width:150px;height:150px;border-radius:50%;background:radial-gradient(circle,var(--c),transparent 68%);opacity:.75}
-  .badge{font-family:var(--display);font-weight:600;font-size:23px;letter-spacing:-.6px;color:#fff;position:relative;z-index:2;line-height:1.15}
-  .cflag{font-size:15px;line-height:1;flex:none;position:relative;z-index:2}
+  .badge{font-family:var(--display);font-weight:600;font-size:23px;letter-spacing:-.6px;color:#fff;position:relative;z-index:2;line-height:1.15;flex:none}
+  .cflag{font-size:15px;line-height:1;flex:none;position:relative;z-index:2;margin-left:auto}
   .cbody{display:flex;flex-direction:column;padding:15px 20px 16px;flex:1}
   .cname{font-family:var(--display);font-size:16px;font-weight:500;line-height:1.35;letter-spacing:-.25px}
   .ctitle{font-size:12.5px;color:var(--muted);line-height:1.45;font-weight:300;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;overflow:hidden;min-height:calc(1.45em * 2);margin-top:7px}
   .hl{display:inline-flex;align-items:center;gap:6px;align-self:flex-start;max-width:100%;padding:5px 12px;border-radius:99px;font-size:12px;font-weight:500;line-height:1.3;border:1px solid transparent}
-  .ctop .hl{flex-basis:100%;margin-top:10px;position:relative;z-index:2}
+  .ctop .hl{flex:0 1 auto;min-width:0;margin:0 0 0 10px;position:relative;z-index:2;align-self:center}
   .hl .hl-v{font-family:var(--monoff);font-weight:600;white-space:nowrap}
   .hl .hl-d{font-weight:300;opacity:.92;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .ctop .hl .hl-v{flex:none}
+  .ctop .hl .hl-d{flex:0 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   .hl-val{background:#e7f6ee;color:#066a41;border-color:#bde3ce}
   .hl-qual{background:#f2ecfb;color:#61369a;border-color:#ddd0f2}
   .hl-inc{background:#fdf3e2;color:#9a5500;border-color:#f6dfb4}
