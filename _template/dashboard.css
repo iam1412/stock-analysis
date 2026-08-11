@@ -1,162 +1,210 @@
-  :root{
-    --bg:#eef1f5; --card:#ffffff; --ink:#1a1d23; --muted:#5f6675; --line:#e4e8ee;
-    --blue:__RD_ACCENT__; --blue-d:__RD_ACCENTD__; --red:#ea4335; --yellow:#f9ab00; --orange:#f57c00; --green:#137333;
-    --green-soft:#e6f4ea; --red-soft:#fce8e6; --amber-soft:#fef7e0; --blue-soft:#e8f0fe;
-    --dark-grad:__RD_DARKGRAD__; --glow:__RD_GLOW__; --sub-col:__RD_SUBCOL__; --header-muted:__RD_HMUTED__;
-    --chg-bg:__RD_CHGBG__; --chg-fg:__RD_CHGFG__; --badge:__RD_BADGE__;
-    --verdict-text:__RD_VTEXT__; --vcell-k:__RD_VCELLK__;
-    --shadow:0 1px 3px rgba(16,24,40,.06),0 8px 24px rgba(16,24,40,.06);
-  }
-  *{box-sizing:border-box;margin:0;padding:0}
-  body{font-family:'Sarabun','Noto Sans Thai',system-ui,-apple-system,Segoe UI,sans-serif;background:var(--bg);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased}
-  .mono{font-family:'IBM Plex Mono',ui-monospace,monospace;font-variant-numeric:tabular-nums}
-  .wrap{max-width:1080px;margin:0 auto;padding:20px 16px 64px}
+/* ══ BRAND-FORWARD (spec 2026-08-11) ══════════════════════════════════════
+   สีแบรนด์ต่อหุ้นเป็นตัวนำทั้งหน้า — พื้น/เส้น/เงา/ชิปย้อมด้วย accent (token derive ตอน build)
+   กฎเหล็ก: ตัวหนังสือขาวอยู่บน accentDark/--badge เท่านั้น (E38 §3.4) · ห้ามบน accent ดิบ
+   ป้าย gauge สูง ≤24px — คงการแยกชั้น fairLabelTop:-58px (spec §5.5)
+   ══════════════════════════════════════════════════════════════════════ */
+:root{
+  --bg:__RD_TINTBG__; --card:#ffffff; --card-2:__RD_TINTCARD__; --ink:#14161c; --muted:#5f6675;
+  --line:__RD_LINE__; --line-2:__RD_LINE2__;
+  --blue:__RD_ACCENT__; --blue-d:__RD_ACCENTD__; --red:#d92d20; --yellow:#b45309; --orange:#c2410c; --green:#067647;
+  --green-soft:#e7f6ee; --red-soft:#fdeceb; --amber-soft:#fdf3e2; --blue-soft:__RD_SOFT__;
+  --dark-grad:__RD_DARKGRAD__; --glow:__RD_GLOW__; --sub-col:__RD_SUBCOL__; --header-muted:__RD_HMUTED__;
+  --chg-bg:__RD_CHGBG__; --chg-fg:__RD_CHGFG__; --badge:__RD_BADGE__;
+  --verdict-text:__RD_VTEXT__; --vcell-k:__RD_VCELLK__;
+  --shadow:__RD_SHADOW__; --shadow-lg:__RD_SHADOWLG__;
+  --display:'Kanit',system-ui,sans-serif; --monoff:'IBM Plex Mono',ui-monospace,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Sarabun','Noto Sans Thai',system-ui,-apple-system,Segoe UI,sans-serif;background:var(--bg);color:var(--ink);line-height:1.68;-webkit-font-smoothing:antialiased}
+.mono{font-family:var(--monoff);font-variant-numeric:tabular-nums}
+.wrap{max-width:1120px;margin:0 auto;padding:20px 16px 72px}
 
-  /* Header */
-  header{background:var(--dark-grad);border-radius:20px;padding:28px 28px 24px;color:#fff;position:relative;overflow:hidden;box-shadow:var(--shadow)}
-  header::after{content:"";position:absolute;right:-40px;top:-40px;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,var(--glow),transparent 70%)}
-  .gdots{display:inline-flex;gap:5px;margin-bottom:14px}
-  .gdots span{width:11px;height:11px;border-radius:50%}
-  .tag{display:inline-block;font-size:12px;font-weight:600;padding:3px 10px;border-radius:99px;background:rgba(255,255,255,.14);backdrop-filter:blur(4px);margin-right:6px}
-  h1{font-size:30px;font-weight:800;letter-spacing:-.5px;margin:2px 0 2px}
-  .sub{color:var(--sub-col);font-size:14.5px}
-  .price-row{display:flex;align-items:flex-end;gap:18px;flex-wrap:wrap;margin-top:18px;position:relative;z-index:2}
-  .px{font-size:44px;font-weight:800;letter-spacing:-1px}
-  .px small{font-size:18px;font-weight:600;color:inherit;margin-left:4px}
-  .chg{font-weight:700;font-size:16px;padding:5px 12px;border-radius:10px;background:var(--chg-bg);color:var(--chg-fg)}
-  .px-meta{font-size:12.5px;color:var(--header-muted);margin-left:auto;text-align:right;line-height:1.5}
+/* ── Header: บล็อกสีแบรนด์ ราคาเป็นพระเอก ── */
+header{background:var(--dark-grad);border-radius:26px;padding:30px 32px 28px;color:#fff;position:relative;overflow:hidden;box-shadow:var(--shadow-lg)}
+header::after{content:"";position:absolute;right:-70px;top:-120px;width:380px;height:380px;border-radius:50%;background:radial-gradient(circle,var(--glow),transparent 66%)}
+.gdots{display:inline-flex;gap:6px;margin-bottom:14px;position:relative;z-index:2}
+.gdots span{width:12px;height:12px;border-radius:50%;box-shadow:0 0 0 3px rgba(255,255,255,.13)}
+.tag{display:inline-block;font-family:var(--display);font-size:11.5px;font-weight:500;padding:4px 12px;border-radius:99px;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.14);backdrop-filter:blur(6px);margin-right:6px;position:relative;z-index:2}
+h1{font-family:var(--display);font-size:36px;font-weight:600;letter-spacing:-.8px;line-height:1.2;margin:12px 0 5px;position:relative;z-index:2}
+.sub{color:var(--sub-col);font-size:14.5px;line-height:1.6;max-width:70ch;font-weight:300;position:relative;z-index:2}
+.price-row{display:flex;align-items:flex-end;gap:18px;flex-wrap:wrap;margin-top:24px;position:relative;z-index:2}
+.px{font-family:var(--display);font-size:62px;font-weight:600;letter-spacing:-2.5px;line-height:.95;font-variant-numeric:tabular-nums}
+.px small{font-family:var(--monoff);font-size:13px;font-weight:600;color:rgba(255,255,255,.62);margin-left:9px;letter-spacing:.04em}
+.chg{font-family:var(--display);font-weight:600;font-size:15px;padding:6px 14px;border-radius:99px;background:var(--chg-bg);color:var(--chg-fg);margin-bottom:4px}
+.px-meta{font-family:var(--monoff);font-size:11px;color:var(--header-muted);margin-left:auto;text-align:right;line-height:1.8}
 
-  /* Section */
-  section{margin-top:26px}
-  .s-head{display:flex;align-items:center;gap:10px;margin:0 4px 14px}
-  .s-head .n{width:26px;height:26px;border-radius:8px;background:var(--badge);color:#fff;display:grid;place-items:center;font-size:13px;font-weight:700;flex:none}
-  .s-head h2{font-size:19px;font-weight:700;letter-spacing:-.3px}
-  .s-head .hint{font-size:12.5px;color:var(--muted);margin-left:auto}
+/* ── Section nav (markup inject ใน decorateReport — Task 4) ── */
+#secnav{position:sticky;top:0;z-index:80;background:__RD_TINTBG__f2;background:color-mix(in srgb,__RD_TINTBG__ 92%,transparent);backdrop-filter:blur(14px);margin:14px -16px 0;padding:9px 16px;border-bottom:1px solid var(--line)}
+#secnav .sn-in{max-width:1120px;margin:0 auto;display:flex;gap:6px;overflow-x:auto;scrollbar-width:none}
+#secnav .sn-in::-webkit-scrollbar{display:none}
+#secnav a{display:flex;align-items:center;gap:7px;white-space:nowrap;padding:7px 14px;text-decoration:none;font-family:var(--display);font-size:12.5px;font-weight:400;border-radius:99px;color:var(--muted);border:1px solid transparent;transition:all .14s ease}
+#secnav a b{font-family:var(--monoff);font-weight:600;font-size:10.5px;opacity:.6}
+#secnav a:hover{background:var(--card);border-color:var(--line);color:var(--ink)}
+#secnav a.on{background:var(--blue-d);color:#fff;font-weight:500;border-color:var(--blue-d)}
+#secnav a.on b{opacity:.85}
+section{scroll-margin-top:62px}
 
-  /* Grid metrics */
-  .grid{display:grid;gap:12px}
-  .g4{grid-template-columns:repeat(4,1fr)}
-  .g3{grid-template-columns:repeat(3,1fr)}
-  .g2{grid-template-columns:repeat(2,1fr)}
-  .metric{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 15px;box-shadow:var(--shadow)}
-  .metric .k{font-size:12.5px;color:var(--muted);font-weight:500;display:flex;align-items:center;gap:5px}
-  .metric .v{font-size:23px;font-weight:700;margin-top:3px;letter-spacing:-.3px}
-  .metric .d{font-size:11.5px;color:var(--muted);margin-top:1px}
-  /* .neu ใช้เหลืองเข้ม (--yellow สดเกินไปเป็นตัวหนังสือบนพื้นขาว — 1.9:1) · .neg ใช้แดงเข้มพออ่าน */
-  .pos{color:var(--green)} .neg{color:#c5221f} .neu{color:#b06000}
-  .pill{font-size:10px;font-weight:700;padding:1px 7px;border-radius:99px;vertical-align:middle}
-  .pill.g{background:var(--green-soft);color:var(--green)} .pill.r{background:var(--red-soft);color:#c5221f} .pill.a{background:var(--amber-soft);color:#9a5f00}
+/* ── Section head: เลขในกล่องสี --badge (ขาวบน badge = คู่ที่ E38 ตรวจอยู่แล้ว) ── */
+section{margin-top:36px}
+.s-head{display:flex;align-items:center;gap:12px;margin:0 6px 15px}
+.s-head .n{width:31px;height:31px;border-radius:10px;background:var(--badge);color:#fff;display:grid;place-items:center;font-family:var(--display);font-size:15px;font-weight:600;flex:none}
+.s-head h2{font-family:var(--display);font-size:20px;font-weight:600;letter-spacing:-.4px}
+.s-head .hint{font-family:var(--monoff);font-size:11px;color:var(--muted);margin-left:auto;text-align:right}
 
-  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px;box-shadow:var(--shadow)}
+/* ── Metrics ── */
+.grid{display:grid;gap:12px}
+.g4{grid-template-columns:repeat(4,1fr)} .g3{grid-template-columns:repeat(3,1fr)} .g2{grid-template-columns:repeat(2,1fr)}
+.metric{background:var(--card);border:1px solid var(--line);border-radius:17px;padding:16px 17px;box-shadow:var(--shadow);position:relative;overflow:hidden;transition:transform .16s ease,box-shadow .16s ease}
+.metric::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--blue);opacity:0;transition:opacity .16s}
+.metric:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg)}
+.metric:hover::before{opacity:1}
+.metric .k{font-size:12px;color:var(--muted);font-weight:500;display:flex;align-items:center;gap:5px}
+.metric .v{font-family:var(--display);font-size:26px;font-weight:600;margin-top:4px;letter-spacing:-1px;line-height:1.2;font-variant-numeric:tabular-nums}
+.metric .d{font-size:11.5px;color:var(--muted);margin-top:4px;line-height:1.5;font-weight:300}
+.pos{color:var(--green)} .neg{color:var(--red)} .neu{color:var(--yellow)}
+.pill{font-family:var(--monoff);font-size:10px;font-weight:600;padding:2px 8px;border-radius:99px;vertical-align:middle}
+.pill.g{background:var(--green-soft);color:var(--green)} .pill.r{background:var(--red-soft);color:var(--red)} .pill.a{background:var(--amber-soft);color:var(--yellow)}
 
-  /* Chart */
-  .chart-wrap{padding:8px 4px 0}
-  .legend{display:flex;gap:18px;font-size:12px;color:var(--muted);margin-top:10px;flex-wrap:wrap}
-  .legend i{display:inline-block;width:11px;height:3px;border-radius:2px;vertical-align:middle;margin-right:5px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:22px;box-shadow:var(--shadow)}
 
-  /* Valuation gauge */
-  .gauge{margin:8px 0 4px}
-  .gbar{position:relative;height:48px;border-radius:12px;overflow:hidden;background:linear-gradient(90deg,#1e8e3e 0%,#34a853 22%,#f9ab00 46%,#ea4335 100%)}
-  /* ป้ายโซน gauge อยู่บน gradient เขียว→เหลือง→แดง — โซนเหลืองอ่านไม่ออกถ้าไม่มีพื้นรอง (ขาว/เหลือง = 1.9:1) */
-  .gbar .seg-label{position:absolute;top:50%;transform:translate(-50%,-50%);font-size:10.5px;font-weight:700;color:#fff;background:rgba(0,0,0,.4);padding:2px 8px;border-radius:99px;white-space:nowrap}
-  .marker{position:absolute;top:-6px;bottom:-6px;width:3px;background:#111;border-radius:2px}
-  .marker .lab{position:absolute;top:-34px;left:50%;transform:translateX(-50%);background:#111;color:#fff;font-size:11px;font-weight:700;padding:3px 8px;border-radius:7px;white-space:nowrap}
-  .marker .lab::after{content:"";position:absolute;bottom:-4px;left:50%;transform:translateX(-50%) rotate(45deg);width:8px;height:8px;background:#111}
-  /* เส้น marker = accent (กราฟิก) แต่ "ป้ายตัวหนังสือขาว" ต้องพื้นเข้มกว่า → ใช้ accentDark (การันตี ≥4.5 กับขาว) */
-  .marker.cur{background:var(--blue)} .marker.cur .lab{background:var(--blue-d)} .marker.cur .lab::after{background:var(--blue-d)}
-  .scale{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-top:14px}
+/* ── Chart ── */
+.chart-wrap{padding:8px 4px 0}
+.legend{display:flex;gap:20px;font-size:12px;color:var(--muted);margin-top:13px;flex-wrap:wrap}
+.legend i{display:inline-block;width:14px;height:4px;border-radius:99px;vertical-align:middle;margin-right:7px}
 
-  .vmethod{display:flex;align-items:center;justify-content:space-between;padding:13px 0;border-bottom:1px solid var(--line)}
-  .vmethod:last-child{border-bottom:none}
-  .vmethod .mname{font-weight:600;font-size:14.5px}
-  .vmethod .mdesc{font-size:12px;color:var(--muted)}
-  .vmethod .mval{font-size:20px;font-weight:700;text-align:right}
-  .fv-box{margin-top:14px;background:var(--blue-soft);border:1px solid #c6dafc;border-radius:14px;padding:16px 18px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
-  .fv-box .l{font-size:13.5px;color:var(--blue-d);font-weight:600}
-  .fv-box .r{font-size:30px;font-weight:800;color:var(--blue-d);letter-spacing:-.5px}
+/* ── Gauge — ★ ป้ายสูง ≤24px: font 11px + padding 3x9 (spec §5.5) ── */
+.gauge{margin:10px 0 4px}
+.gbar{position:relative;height:48px;border-radius:14px;overflow:hidden;background:linear-gradient(90deg,#067647 0%,#12a05f 22%,#e0a418 46%,#d92d20 100%)}
+.gbar .seg-label{position:absolute;top:50%;transform:translate(-50%,-50%);font-family:var(--display);font-size:10.5px;font-weight:500;color:#fff;background:rgba(0,0,0,.4);padding:2px 9px;border-radius:99px;white-space:nowrap}
+.marker{position:absolute;top:-6px;bottom:-6px;width:3px;background:#12141a;border-radius:99px}
+.marker .lab{position:absolute;top:-34px;left:50%;transform:translateX(-50%);background:#12141a;color:#fff;font-family:var(--monoff);font-size:11px;font-weight:600;padding:3px 9px;border-radius:7px;white-space:nowrap}
+.marker .lab::after{content:"";position:absolute;bottom:-4px;left:50%;transform:translateX(-50%) rotate(45deg);width:8px;height:8px;background:inherit}
+.marker.cur{background:var(--blue)} .marker.cur .lab{background:var(--blue-d)}
+.scale{display:flex;justify-content:space-between;font-family:var(--monoff);font-size:11px;color:var(--muted);margin-top:15px}
 
-  /* MOS */
-  .mos-verdict{border-radius:14px;padding:16px 18px;margin-bottom:14px;display:flex;align-items:center;gap:14px}
-  .mos-verdict.bad{background:var(--red-soft)} .mos-verdict.ok{background:var(--amber-soft)} .mos-verdict.good{background:var(--green-soft)}
-  .mos-verdict .big{font-size:34px;font-weight:800;letter-spacing:-1px;flex:none}
-  .mos-verdict.bad .big{color:#c5221f} .mos-verdict.ok .big{color:#b06000} .mos-verdict.good .big{color:var(--green)}
-  .mos-verdict .txt{font-size:13.5px}
-  .mos-verdict .txt b{font-size:15px}
-  .calc{margin-top:16px;border:1px dashed var(--line);border-radius:14px;padding:16px}
-  .calc label{font-size:12.5px;color:var(--muted);font-weight:600;display:block;margin-bottom:6px}
-  .calc-row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
-  .calc input{font-family:'IBM Plex Mono',monospace;font-size:18px;font-weight:600;border:1.5px solid var(--line);border-radius:10px;padding:9px 12px;width:140px;outline:none}
-  .calc input:focus{border-color:var(--blue)}
-  .calc-out{font-size:14px;font-weight:600}
+/* ── Valuation ── */
+.vmethod{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:15px 0;border-bottom:1px solid var(--line)}
+.vmethod:last-child{border-bottom:none}
+.vmethod .mname{font-family:var(--display);font-weight:500;font-size:15.5px}
+.vmethod .mdesc{font-size:12px;color:var(--muted);margin-top:2px;line-height:1.55;font-weight:300;max-width:64ch}
+.vmethod .mval{font-family:var(--display);font-size:22px;font-weight:600;text-align:right;letter-spacing:-.7px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.fv-box{margin-top:17px;background:var(--blue-soft);border:1px solid var(--line-2);border-radius:17px;padding:18px 20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.fv-box .l{font-family:var(--display);font-size:13.5px;color:var(--blue-d);font-weight:500}
+.fv-box .r{font-family:var(--display);font-size:36px;font-weight:600;color:var(--blue-d);letter-spacing:-1.5px;font-variant-numeric:tabular-nums;line-height:1}
 
-  /* Scenarios */
-  .scn{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-  .scn .col{border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--card)}
-  .scn .top{padding:12px 15px;color:#fff;font-weight:700;display:flex;justify-content:space-between;align-items:center}
-  .scn .bear .top{background:#c5221f} .scn .base .top{background:var(--blue-d)} .scn .bull .top{background:#137333}
-  .scn .body{padding:14px 15px}
-  .scn .tgt{font-size:26px;font-weight:800;letter-spacing:-.5px}
-  .scn .ret{font-size:13px;font-weight:600;margin-top:2px}
-  .scn ul{list-style:none;margin-top:10px;font-size:12px;color:var(--muted)}
-  .scn li{display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px dotted var(--line)}
-  .scn li:last-child{border:none}
-  .scn li span:last-child{font-weight:600;color:var(--ink)}
+/* ── MOS ── */
+.mos-verdict{border-radius:18px;padding:20px 22px;margin-bottom:15px;display:flex;align-items:center;gap:18px}
+.mos-verdict.bad{background:var(--red-soft)} .mos-verdict.ok{background:var(--amber-soft)} .mos-verdict.good{background:var(--green-soft)}
+.mos-verdict .big{font-family:var(--display);font-size:42px;font-weight:600;letter-spacing:-2px;flex:none;line-height:1;font-variant-numeric:tabular-nums}
+.mos-verdict.bad .big{color:var(--red)} .mos-verdict.ok .big{color:var(--yellow)} .mos-verdict.good .big{color:var(--green)}
+.mos-verdict .txt{font-size:13.5px;line-height:1.65;color:var(--ink);font-weight:300}
+.mos-verdict .txt b{font-family:var(--display);font-size:15px;font-weight:500}
+.calc{margin-top:17px;border:1.5px dashed var(--line-2);border-radius:17px;padding:17px 19px;background:var(--card-2)}
+.calc label{font-family:var(--display);font-size:13px;color:var(--ink);font-weight:500;display:block;margin-bottom:8px}
+.calc-row{display:flex;gap:13px;align-items:center;flex-wrap:wrap}
+.calc input{font-family:var(--display);font-size:19px;font-weight:600;border:2px solid var(--line-2);border-radius:13px;padding:8px 13px;width:150px;outline:none;background:#fff;color:var(--ink);font-variant-numeric:tabular-nums}
+.calc input:focus{border-color:var(--blue-d)}
+.calc-out{font-size:14px;font-weight:500;color:var(--ink)}
 
-  /* Catalyst / Risk */
-  .cr{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-  .cr .box{border-radius:16px;padding:18px 20px;border:1px solid var(--line);box-shadow:var(--shadow)}
-  .cr .box.cat{background:linear-gradient(180deg,#f3faf5,#ffffff)}
-  .cr .box.risk{background:linear-gradient(180deg,#fef4f3,#ffffff)}
-  .cr h3{font-size:15px;font-weight:700;display:flex;align-items:center;gap:8px;margin-bottom:12px}
-  .cr .ic{width:24px;height:24px;border-radius:7px;display:grid;place-items:center;font-size:14px;flex:none}
-  .cr .cat .ic{background:var(--green-soft);color:var(--green)} .cr .risk .ic{background:var(--red-soft);color:#c5221f}
-  .cr ul{list-style:none}
-  .cr li{font-size:13px;padding:8px 0;border-bottom:1px solid var(--line);display:flex;gap:9px}
-  .cr li:last-child{border:none}
-  .cr li::before{content:"";width:6px;height:6px;border-radius:50%;margin-top:8px;flex:none}
-  .cr .cat li::before{background:var(--green)} .cr .risk li::before{background:var(--red)}
-  .cr li b{font-weight:700}
+/* ── Scenarios (หัวสี: bear/bull ใช้สีสถานะ · base ใช้ accentDark — ขาวทับได้ทุกตัว) ── */
+.scn{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.scn .col{border:1px solid var(--line);border-radius:19px;overflow:hidden;background:var(--card);box-shadow:var(--shadow)}
+.scn .top{padding:12px 17px;color:#fff;font-family:var(--display);font-size:14px;font-weight:500;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.scn .bear .top{background:var(--red)} .scn .base .top{background:var(--blue-d)} .scn .bull .top{background:var(--green)}
+.scn .body{padding:17px}
+.scn .tgt{font-family:var(--display);font-size:30px;font-weight:600;letter-spacing:-1.3px;line-height:1.05;font-variant-numeric:tabular-nums}
+.scn .ret{font-family:var(--display);font-size:14px;font-weight:500;margin-top:3px}
+.scn ul{list-style:none;margin-top:13px;font-size:12px;color:var(--muted)}
+.scn li{display:flex;justify-content:space-between;gap:10px;padding:5px 0;border-bottom:1px solid var(--line)}
+.scn li:last-child{border:none}
+.scn li span:last-child{font-weight:600;color:var(--ink);text-align:right}
 
-  /* Verdict */
-  .verdict{background:var(--dark-grad);color:#fff;border-radius:18px;padding:24px 26px;box-shadow:var(--shadow)}
-  .verdict h2{font-size:20px;font-weight:700;margin-bottom:6px}
-  .verdict p{color:var(--verdict-text);font-size:14px;margin-bottom:14px}
-  .vgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:6px}
-  .vcell{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:13px 15px}
-  .vcell .k{font-size:11.5px;color:var(--vcell-k);font-weight:500}
-  .vcell .v{font-size:17px;font-weight:700;margin-top:3px}
-  .zone{margin-top:16px;font-size:13px;color:var(--verdict-text);background:rgba(255,255,255,.05);border-left:3px solid var(--yellow);border-radius:0 10px 10px 0;padding:11px 15px}
+/* ── Catalyst / Risk ── */
+.cr{display:grid;grid-template-columns:1fr 1fr;gap:15px}
+.cr .box{border-radius:20px;padding:20px 22px;border:1px solid var(--line);box-shadow:var(--shadow)}
+.cr .box.cat{background:linear-gradient(170deg,var(--green-soft),#fff 60%)}
+.cr .box.risk{background:linear-gradient(170deg,var(--red-soft),#fff 60%)}
+.cr h3{font-family:var(--display);font-size:16px;font-weight:600;display:flex;align-items:center;gap:10px;margin-bottom:13px}
+.cr .ic{width:27px;height:27px;border-radius:9px;display:grid;place-items:center;font-size:12px;flex:none;color:#fff}
+.cr .cat .ic{background:var(--green)} .cr .risk .ic{background:var(--red)}
+.cr ul{list-style:none}
+.cr li{font-size:13px;padding:9px 0;border-bottom:1px solid var(--line);display:flex;gap:10px;color:var(--ink);line-height:1.6;font-weight:300}
+.cr li:last-child{border:none}
+.cr li::before{content:"";width:7px;height:7px;border-radius:50%;margin-top:8px;flex:none}
+.cr .cat li::before{background:var(--green)} .cr .risk li::before{background:var(--red)}
+.cr li b{font-family:var(--display);font-weight:500}
 
-  .disc{margin-top:24px;font-size:12px;color:var(--muted);background:#fafbfc;border:1px solid var(--line);border-radius:12px;padding:14px 16px;line-height:1.7}
-  .disc b{color:var(--ink)}
-  footer{text-align:center;font-size:11.5px;color:var(--muted);margin-top:22px}
+/* ── Verdict ── */
+.verdict{background:var(--dark-grad);color:#fff;border-radius:24px;padding:30px 32px;box-shadow:var(--shadow-lg);position:relative;overflow:hidden}
+.verdict::after{content:"";position:absolute;right:-80px;bottom:-120px;width:320px;height:320px;border-radius:50%;background:radial-gradient(circle,var(--glow),transparent 68%)}
+.verdict h2{font-family:var(--display);font-size:24px;font-weight:600;margin-bottom:8px;letter-spacing:-.5px;position:relative;z-index:2}
+.verdict p{color:var(--verdict-text);font-size:14px;margin-bottom:18px;line-height:1.7;font-weight:300;max-width:70ch;position:relative;z-index:2}
+.vgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:6px;position:relative;z-index:2}
+.vcell{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:15px;padding:14px 16px}
+.vcell .k{font-size:12px;color:var(--vcell-k);font-weight:400;opacity:.85}
+.vcell .v{font-family:var(--display);font-size:18px;font-weight:600;margin-top:4px;font-variant-numeric:tabular-nums}
+.zone{margin-top:18px;font-size:13.5px;color:var(--verdict-text);background:rgba(255,255,255,.08);border-left:4px solid #ffd180;border-radius:0 13px 13px 0;padding:13px 17px;line-height:1.7;font-weight:300;position:relative;z-index:2}
+.zone b{color:#fff;font-family:var(--display);font-weight:500}
 
-  @media(max-width:760px){
-    .g4{grid-template-columns:repeat(2,1fr)} .g3{grid-template-columns:repeat(2,1fr)}
-    .scn{grid-template-columns:1fr} .cr{grid-template-columns:1fr} .vgrid{grid-template-columns:1fr}
-    .px{font-size:36px} h1{font-size:24px} .px-meta{margin-left:0;text-align:left;width:100%}
-  }
+.disc{margin-top:28px;font-size:12px;color:var(--muted);background:var(--card);border:1px solid var(--line);border-radius:17px;padding:17px 19px;line-height:1.75;font-weight:300}
+.disc b{color:var(--ink);font-weight:600}
+footer{text-align:center;font-size:11.5px;color:var(--muted);margin-top:24px}
+footer a{color:var(--blue-d)}
 
+/* ── มือถือ (spec §4.1 + §5.5 รวม feedback เจ้าของ 11 ส.ค.: แถวสองของเบียดกัน → ซ้อนแนวตั้ง) ── */
+@media(max-width:1024px){ .wrap{max-width:920px} }
+@media(max-width:760px){
+  .g4{grid-template-columns:repeat(2,1fr)} .g3{grid-template-columns:repeat(2,1fr)}
+  .scn{grid-template-columns:1fr} .cr{grid-template-columns:1fr} .vgrid{grid-template-columns:1fr}
+  .px{font-size:46px} h1{font-size:26px} .px-meta{margin-left:0;text-align:left;width:100%}
+  header{padding:24px 20px;border-radius:20px} .verdict{padding:24px 20px;border-radius:20px}
+  /* หัวข้อ section: ชื่อเต็มแถว · hint บรรทัดใหม่ของตัวเอง (spec §5.5 ข้อ 4) */
+  .s-head{flex-wrap:wrap;row-gap:3px}
+  .s-head h2{font-size:18px;flex:1 1 0;min-width:0}
+  .s-head .hint{flex-basis:100%;order:9;margin-left:43px;text-align:left;font-size:11.5px;line-height:1.55}
+  /* กล่อง MOS / valuation / fv-box: ซ้อนแนวตั้ง เลิกเบียดแนวนอน */
+  .mos-verdict{flex-direction:column;align-items:flex-start;gap:8px}
+  .vmethod{flex-direction:column;align-items:flex-start;gap:6px}
+  .vmethod .mdesc{max-width:none}
+  .vmethod .mval{text-align:left}
+  .fv-box{flex-direction:column;align-items:flex-start;gap:4px}
+  /* scale ใต้ gauge: grid 3 คอลัมน์ ชิดซ้าย (!important ทับ inline style ของ report) */
+  .scale{display:grid;grid-template-columns:repeat(3,1fr);gap:8px 12px;margin-top:18px}
+  .scale span{text-align:left!important}
+  /* ตัวหนังสือรอง: 300→400 บนจอเล็ก (Sarabun บางอ่านยาก) */
+  .sub,.metric .d,.vmethod .mdesc,.mos-verdict .txt,.scn ul,.cr li,.verdict p,.zone,.disc{font-weight:400}
+  .metric .d{font-size:12px} .metric .k{font-size:12.5px}
+  /* tap targets ≥44px */
+  .ta-btn,.ta-tog{min-height:44px}
+  .votebar .vbtn{min-height:44px;padding:6px 14px}
+  .calc input{min-height:44px}
+  #secnav a{min-height:44px}
+  footer a{display:inline-block;padding:12px 4px}
+}
+@media(max-width:480px){
+  .g4,.g3,.g2{grid-template-columns:1fr}
+  .px{font-size:40px} h1{font-size:23px}
+  .metric .v{font-size:23px}
+}
 
-  /* ── TA chart (inject เฉพาะ dist — spec C2/C8) ── */
-  .ta-box{margin-top:2px}
-  .ta-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;align-items:center}
-  .ta-chip{font-size:12px;font-family:"IBM Plex Mono",monospace;padding:3px 10px;border-radius:999px;border:1px solid #e3e7ee;color:#6b7383;background:#f7f8fa}
-  .ta-chip.pos{color:#137333;border-color:#cce5d4;background:var(--green-soft,#e6f4ea)}
-  .ta-chip.neg{color:#c5221f;border-color:#f0cbc9;background:var(--red-soft,#fce8e6)}
-  .ta-attr{font-size:11px;color:#9aa1ad;margin-left:auto}
-  .ta-attr a{color:inherit}
-  /* toolbar (TF/range/ซูม/รีเซ็ต/log/บันทึกรูป) + toggle indicator + OHLC legend */
-  .ta-toolbar{display:flex;flex-wrap:wrap;gap:6px 14px;margin-bottom:8px;align-items:center}
-  .ta-tgroup{display:inline-flex;gap:2px;background:#f1f3f7;border-radius:8px;padding:2px}
-  .ta-acts{margin-left:auto}
-  .ta-btn{font-size:11.5px;font-family:"IBM Plex Mono",monospace;border:0;background:transparent;color:#6b7383;padding:3px 9px;border-radius:6px;cursor:pointer;line-height:1.4}
-  .ta-btn:hover{background:#e6e9ef}
-  .ta-btn.on{background:#fff;color:#1f2530;box-shadow:0 1px 2px rgba(20,30,50,.12)}
-  .ta-btn:disabled{opacity:.45;cursor:wait}
-  .ta-legend{position:absolute;top:6px;left:8px;z-index:3;font-size:11px;font-family:"IBM Plex Mono",monospace;color:#6b7383;background:rgba(255,255,255,.75);border-radius:6px;padding:1px 6px;pointer-events:none;white-space:nowrap}
-  .ta-legend b{color:#1f2530;font-weight:600}
-  .ta-toggles{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
-  .ta-tog{font-size:11px;font-family:"IBM Plex Mono",monospace;border:1px solid #e3e7ee;background:#fff;color:#3c4453;padding:2px 9px;border-radius:999px;cursor:pointer}
-  .ta-tog.off{color:#aab1bd;background:#f7f8fa;text-decoration:line-through}
-  @media print{.ta-box{display:none}#priceChart{display:block!important}}
+/* ── TA chart (โทนเดียวกับหน้า — จอสว่าง) ── */
+.ta-box{margin-top:2px}
+.ta-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:13px;align-items:center}
+.ta-chip{font-size:11.5px;font-family:var(--monoff);padding:4px 11px;border-radius:99px;border:1px solid var(--line);color:var(--muted);background:var(--card-2)}
+.ta-chip.pos{color:var(--green);border-color:#b7e0ca;background:var(--green-soft)}
+.ta-chip.neg{color:var(--red);border-color:#f5c9c5;background:var(--red-soft)}
+.ta-attr{font-size:11px;color:var(--muted);margin-left:auto}
+.ta-attr a{color:inherit}
+.ta-toolbar{display:flex;flex-wrap:wrap;gap:6px 14px;margin-bottom:9px;align-items:center}
+.ta-tgroup{display:inline-flex;gap:2px;background:var(--card-2);border:1px solid var(--line);border-radius:99px;padding:3px}
+.ta-acts{margin-left:auto}
+.ta-btn{font-size:11.5px;font-family:var(--monoff);border:0;background:transparent;color:var(--muted);padding:4px 11px;border-radius:99px;cursor:pointer;line-height:1.4}
+.ta-btn:hover{background:var(--blue-soft);color:var(--blue-d)}
+.ta-btn.on{background:var(--blue-d);color:#fff;font-weight:600}  /* ★ ขาวบน accentDark — ห้าม var(--blue) (386/908 ตก AA) */
+.ta-btn:disabled{opacity:.45;cursor:wait}
+.ta-legend{position:absolute;top:6px;left:8px;z-index:3;font-size:11px;font-family:var(--monoff);color:var(--muted);background:rgba(255,255,255,.8);border-radius:7px;padding:1px 7px;pointer-events:none;white-space:nowrap}
+.ta-legend b{color:var(--ink);font-weight:600}
+.ta-toggles{display:flex;flex-wrap:wrap;gap:7px;margin-top:9px}
+.ta-tog{font-size:11px;font-family:var(--monoff);border:1px solid var(--line);background:#fff;color:var(--ink);padding:3px 11px;border-radius:99px;cursor:pointer}
+.ta-tog.off{color:var(--muted);background:var(--card-2);text-decoration:line-through}
+@media print{.ta-box{display:none}#priceChart{display:block!important}#secnav{display:none}}
