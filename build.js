@@ -917,6 +917,7 @@ const indexHtml = `<!DOCTYPE html>
   .sortbtn.on,.mktbtn.on,.viewbtn.on{background:var(--ink);color:#fff;font-weight:500}
   .mktbtn .mc{font-family:var(--monoff);font-size:10.5px;opacity:.55;margin-left:3px}
   .mktbtn.on .mc{opacity:.75}
+  #viewtoggle{display:inline-flex;gap:6px;flex:none}
   /* ── ไทล์ (default) ── */
   .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(276px,1fr));gap:18px;margin-top:26px}
   #thead{display:none}
@@ -989,6 +990,7 @@ const indexHtml = `<!DOCTYPE html>
     .sortbtn,.mktbtn,.viewbtn{min-height:44px;flex:none}
     .pg{min-height:44px;min-width:44px}
     .search input{min-height:48px}
+    footer a{display:inline-block;padding:12px 4px}
   }
   @media(max-width:480px){ .grid{grid-template-columns:1fr} h1{font-size:25px} .hd-stats{gap:14px 20px} }
 </style>
