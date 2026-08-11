@@ -927,8 +927,7 @@ const searchScript = reports.length ? `
 // แถบเลขหน้า (เฉพาะเมื่อมีรายงาน) — สคริปต์ด้านบนเติมปุ่มให้
 const pagerEl = reports.length ? `\n    <div class="pager" id="pager"></div>` : '';
 
-// footer หน้า index: ครบ 3 บรรทัดเหมือนเดิม แต่เครดิต AI เป็น "Claude" แบบ generic
-// (เจ้าของสั่ง 12 ส.ค. 69: เอาเฉพาะ "ชื่อรุ่นโมเดล" ออก — รุ่นจริงยังระบุใน footer ของแต่ละรายงาน)
+// footer หน้า index: ข้อความ 2 บรรทัดตามที่เจ้าของกำหนดเอง verbatim (12 ส.ค. 69) — ห้ามแต่งเพิ่ม
 
 const emptyState = `
       <div class="empty">
@@ -1129,9 +1128,8 @@ const indexHtml = `<!DOCTYPE html>
 ${reports.length ? cards : emptyState}
     </div>${noResult}${pagerEl}
     <footer>
-      อัปเดตล่าสุด ${fmtDate(nowISO)} · สร้างด้วย build.js · ติดต่อ <a href="mailto:${CONTACT_EMAIL}">${CONTACT_EMAIL}</a><br>
-      🤖 วิเคราะห์และจัดทำด้วย AI · <b>Claude</b> · ${AI_MAKER} (รุ่นที่ใช้ระบุในแต่ละรายงาน)<br>
-      ข้อมูลเพื่อการศึกษา ไม่ใช่คำแนะนำการลงทุน
+      🤖 วิเคราะห์และจัดทำด้วย AI · <b>Claude</b> · Anthropic · ติดต่อ <a href="mailto:${CONTACT_EMAIL}">${CONTACT_EMAIL}</a><br>
+      เพื่อการศึกษาและเป็นข้อมูลประกอบเท่านั้น มิใช่คำแนะนำการลงทุน — การลงทุนมีความเสี่ยง โปรดใช้วิจารณญาณ
     </footer>
   </div>${searchScript}
 </body>
