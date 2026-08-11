@@ -229,13 +229,14 @@ function injectHeaderStats(html, r) {
   const updCell = /^\d{4}-\d{2}-\d{2}$/.test(upd)
     ? `<div class="hstat"><span class="n" id="updRel" data-updated="${upd}" title="อัปเดต ${upd}">${upd}</span><span class="l">อัปเดต</span></div>`
     : '';
+  // ลำดับเซลล์ = แถวบนข้อมูล (ยอดดู·อัปเดต) แถวล่างปุ่มโหวตคู่กัน (👍👎 บรรทัดเดียว — feedback 12 ส.ค. 69)
   const card =
     `\n<div class="hstats" role="group" aria-label="สถิติรายงาน">` +
     `<div class="hstat" id="viewCount" hidden><span class="n">👁 <b id="viewNum">0</b></span><span class="l">ยอดดู</span></div>` +
-    `<span class="vb" id="voteBar" hidden>` +
+    `${updCell}<span class="vb" id="voteBar" hidden>` +
     `<button class="vbtn" id="likeBtn" type="button" title="ถูกใจรายงานนี้"><span class="n">👍 <b id="likeNum">0</b></span><span class="l">ถูกใจ</span></button>` +
     `<button class="vbtn" id="dislikeBtn" type="button" title="ไม่ถูกใจรายงานนี้"><span class="n">👎 <b id="dislikeNum">0</b></span><span class="l">ไม่ถูกใจ</span></button>` +
-    `</span>${updCell}</div>\n`;
+    `</span></div>\n`;
   return { html: html.slice(0, hi) + card + html.slice(hi), done: true };
 }
 
