@@ -123,7 +123,10 @@ function renderEngine(data) {
     __RD_GRIDVAL__: c.gridFmt || 'v',          // นิพจน์ format ป้ายแกน (v / v.toFixed(2) / Math.round(v))
     __RD_DATAVAL__: c.dataFmt || 'd[1]',       // นิพจน์ format ป้ายจุด (d[1] / d[1].toFixed(2) / Math.round(d[1]))
     __RD_GMIN__: String(g.min), __RD_GMAX__: String(g.max), __RD_CUR__: String(g.cur), __RD_FAIR__: String(g.fair),
-    __RD_FAIRTOP__: g.fairLabelTop || '-58px', __RD_FV__: String(data.fv),
+    // fairLabelTop ต้องเป็นสตริง "px" เท่านั้น — ข้อมูลจริง 317 ใบส่ง true (boolean) มา ⇒ style.top="true"
+    // เป็น CSS เสีย ป้าย fair หล่นมาทับป้ายปัจจุบันที่ -34px · ค่าอื่น (เช่น "0") ก็เพี้ยน ⇒ default -58px
+    __RD_FAIRTOP__: (typeof g.fairLabelTop === 'string' && /^-?\d+(\.\d+)?px$/.test(g.fairLabelTop)) ? g.fairLabelTop : '-58px',
+    __RD_FV__: String(data.fv),
   });
   return '<script>\n' + js + '</script>';
 }

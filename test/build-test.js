@@ -246,6 +246,15 @@ ok(b.injectTA(taBody, 'AAPL', null, { currency: 'USD' }, 'assets/ta-abc123.js') 
   ok(out.includes('&#128640; ในเนื้อความ'), 'stripDecorEmoji: &#128640; (entity ของ 🚀) ใน prose ห้ามหาย (ยิงเฉพาะ 5 ช่อง)');
 }
 
+// ── renderEngine: fairLabelTop ต้องกันค่าที่ไม่ใช่ px string (บั๊กจริง 317 ใบส่ง boolean — ป้าย gauge ทับกัน) ──
+{
+  const mk = (v) => b.renderEngine({ fv: 10, chart: { data: [['a',1],['b',2],['c',3]], min: 1, max: 3, grid: [1,2,3], fairLine: 2 }, gauge: { min: 1, max: 3, cur: 2, fair: 2, fairLabelTop: v } });
+  ok(mk(true).includes('style.top="-58px"') || mk(true).includes('.style.top="-58px"'), 'fairLabelTop=true (boolean) → default -58px ไม่ใช่ "true"');
+  ok(!mk(true).includes('"true"'), 'fairLabelTop=true → ไม่มีสตริง "true" หลุดลง engine');
+  ok(mk('0').includes('-58px'), 'fairLabelTop="0" (ไม่มีหน่วย) → default -58px');
+  ok(mk('-46px').includes('-46px'), 'fairLabelTop="-46px" (ถูกรูป) → ใช้ค่าที่ให้');
+}
+
 console.log('\n' + '─'.repeat(50));
 console.log(`build-test: ${n - fails}/${n} ผ่าน`);
 if (fails) { console.log('\n❌ build.js มีพฤติกรรมผิด — แก้ build.js ก่อน push\n'); process.exit(1); }
