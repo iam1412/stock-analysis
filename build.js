@@ -67,7 +67,7 @@ const TEMPLATE_DIR = path.join(ROOT, '_template');
 const FONT_LINKS =
   '<link rel="preconnect" href="https://fonts.googleapis.com">\n' +
   '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n' +
-  '<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&family=Sarabun:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">';
+  '<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">';
 // ธีมเริ่มต้น (โทนน้ำเงิน เหมือนหน้า index) — ใช้เมื่อ report-data.theme ไม่ระบุคีย์ใด
 // ทุกคู่ default ต้องผ่าน WCAG AA (gate E38 ตรวจ) — badge เป็นพื้นตัวหนังสือขาว 13px จึงใช้ --blue-d (accent สว่างเกิน)
 const THEME_DEFAULTS = {
@@ -217,9 +217,32 @@ function parseJsonScript(html, id) {
   try { return JSON.parse(m[1]); } catch { return null; }
 }
 
-// แทรกแถบติดต่อ + ลิงก์กลับหน้ารวม + ตัวนับยอดวิว + ปุ่ม Like/Dislike ในแต่ละหน้ารายงาน
+// การ์ดสถิติมุมขวาบน header รายงาน (feedback 12 ส.ค. 69): 👁 วิว · 👍/👎 (กดโหวตได้) · อัปเดตแบบ "1d ago"
+// ใช้ id ชุดเดิม (viewCount/voteBar/likeBtn/…) ให้ injectViewVoteScript ทำงานได้โดยไม่แก้ลอจิก
+// แทรกเฉพาะรายงานแบบ template (มี report-data) — legacy ใช้ votebar ใน footer แบบเดิม
+function injectHeaderStats(html, r) {
+  if (!/<script[^>]*\bid=["']report-data["']/i.test(html)) return { html, done: false };
+  const hi = html.toLowerCase().indexOf('</header>');
+  if (hi === -1) return { html, done: false };
+  // ห้ามใช้ fmtDate/escAttr — นิยามทีหลังจุดเรียก decorateReport (TDZ) · YYYY-MM-DD กรองเองพอ
+  const upd = String(r.updated || '').slice(0, 10).replace(/[^0-9-]/g, '');
+  const updCell = /^\d{4}-\d{2}-\d{2}$/.test(upd)
+    ? `<div class="hstat"><span class="n" id="updRel" data-updated="${upd}" title="อัปเดต ${upd}">${upd}</span><span class="l">อัปเดต</span></div>`
+    : '';
+  const card =
+    `\n<div class="hstats" role="group" aria-label="สถิติรายงาน">` +
+    `<div class="hstat" id="viewCount" hidden><span class="n">👁 <b id="viewNum">0</b></span><span class="l">ยอดดู</span></div>` +
+    `<span class="vb" id="voteBar" hidden>` +
+    `<button class="vbtn" id="likeBtn" type="button" title="ถูกใจรายงานนี้"><span class="n">👍 <b id="likeNum">0</b></span><span class="l">ถูกใจ</span></button>` +
+    `<button class="vbtn" id="dislikeBtn" type="button" title="ไม่ถูกใจรายงานนี้"><span class="n">👎 <b id="dislikeNum">0</b></span><span class="l">ไม่ถูกใจ</span></button>` +
+    `</span>${updCell}</div>\n`;
+  return { html: html.slice(0, hi) + card + html.slice(hi), done: true };
+}
+
+// แทรกแถบติดต่อ + ลิงก์กลับหน้ารวม ในแต่ละหน้ารายงาน — ตัวนับวิว/ปุ่มโหวตใส่เฉพาะเมื่อ
+// ไม่มีการ์ดสถิติบน header (statsInHeader=false, เคส legacy) กันแสดงซ้ำสองที่
 // ถ้ามี <footer> เดิมอยู่แล้ว → ต่อท้ายเข้าไปข้างใน (ขึ้นบรรทัดใหม่) ไม่สร้าง footer ซ้อน
-function injectContactFooter(html) {
+function injectContactFooter(html, statsInHeader) {
   const views = `<span class="views" id="viewCount" hidden> · 👁 <b id="viewNum">0</b> ครั้ง</span>`;
   const vote =
     `<span class="votebar" id="voteBar" hidden> · ` +
@@ -227,7 +250,8 @@ function injectContactFooter(html) {
     `<button class="vbtn" id="dislikeBtn" type="button">👎 <b id="dislikeNum">0</b></button></span>`;
   const link =
     `<a href="/" style="color:#1557b0;text-decoration:none">← ดูรายงานทั้งหมด</a> · ` +
-    `ติดต่อ <a href="mailto:${CONTACT_EMAIL}" style="color:#1557b0;text-decoration:none">${CONTACT_EMAIL}</a>${views}${vote}`;
+    `ติดต่อ <a href="mailto:${CONTACT_EMAIL}" style="color:#1557b0;text-decoration:none">${CONTACT_EMAIL}</a>` +
+    (statsInHeader ? '' : `${views}${vote}`);
 
   const fi = html.toLowerCase().lastIndexOf('</footer>');
   if (fi !== -1) {
@@ -297,6 +321,11 @@ function injectViewVoteScript(html, symbol) {
     `.catch(function(){}).then(function(){busy=false;});}` +
     `if(lb)lb.addEventListener("click",function(){send(vote==="like"?"none":"like")});` +
     `if(db)db.addEventListener("click",function(){send(vote==="dislike"?"none":"dislike")});` +
+    // วันที่อัปเดตบนการ์ด header → "1d ago" (นับวันปฏิทินฝั่งผู้ชม · no-JS เห็นวันจริง · title มีวันเต็ม)
+    `var du=gid("updRel");if(du){var p=(du.getAttribute("data-updated")||"").split("-");` +
+    `if(p.length===3){var nw=new Date(),t0=new Date(nw.getFullYear(),nw.getMonth(),nw.getDate()).getTime(),` +
+    `df=Math.round((t0-new Date(+p[0],+p[1]-1,+p[2]).getTime())/864e5);` +
+    `if(isFinite(df)&&df>=0)du.textContent=df===0?"today":df+"d ago";}}` +
     `})();</script>\n`;
   const bi = html.toLowerCase().lastIndexOf('</body>');
   return bi === -1 ? html + script : html.slice(0, bi) + script + html.slice(bi);
@@ -402,8 +431,9 @@ function decorateReport(html, r) {
   h = injectSectionNav(h);
   h = injectShareMeta(h, r);
   h = injectModelCredit(h, model);
-  h = injectContactFooter(h);
-  h = injectVoteStyle(h);
+  const hs = injectHeaderStats(h, r);           // การ์ดสถิติบน header (template เท่านั้น)
+  h = injectContactFooter(hs.html, hs.done);    // done → footer ไม่ใส่ views/vote ซ้ำ
+  if (!hs.done) h = injectVoteStyle(h);         // สไตล์ปุ่มโหวตแบบเก่า ใช้เฉพาะ legacy (กันชนกับ .hstats)
   h = injectViewVoteScript(h, r.symbol);
   return h;
 }
@@ -896,14 +926,8 @@ const searchScript = reports.length ? `
 // แถบเลขหน้า (เฉพาะเมื่อมีรายงาน) — สคริปต์ด้านบนเติมปุ่มให้
 const pagerEl = reports.length ? `\n    <div class="pager" id="pager"></div>` : '';
 
-// เครดิตโมเดลหน้า index = รายชื่อรุ่นที่ใช้จริงในรายงานทั้งหมด (เรียงตามจำนวนมาก→น้อย)
-// derive จาก meta ai-model เสมอ ห้าม hardcode — ไม่งั้นหน้าแรกเครดิตผิดรุ่นเมื่อรายงานเปลี่ยนไปใช้รุ่นอื่น
-const indexModels = (() => {
-  const n = new Map();
-  for (const r of reports) if (r.aiModel) n.set(r.aiModel, (n.get(r.aiModel) || 0) + 1);
-  const names = [...n.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0])).map((e) => e[0]);
-  return names.length ? esc(names.join(' · ')) : AI_MODEL;
-})();
+// footer หน้า index เหลือบรรทัดเดียวแบบ generic ตามคำสั่งเจ้าของ 12 ส.ค. 69
+// (เครดิตรุ่นละเอียด + disclaimer ยังอยู่ครบใน footer ของแต่ละรายงาน)
 
 const emptyState = `
       <div class="empty">
@@ -948,36 +972,36 @@ const indexHtml = `<!DOCTYPE html>
 <meta name="twitter:image" content="${OG_IMAGE}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@500;600&family=Sarabun:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
 <style>
   :root{
     --bg:#eef0f3; --card:#fff; --ink:#13151b; --ink-2:#3c424e; --muted:#5f6675;
     --line:#e5e7eb; --line-2:#d4d8de;
     --shadow:0 1px 2px rgba(16,24,40,.05),0 6px 18px rgba(16,24,40,.07);
     --shadow-lg:0 3px 8px rgba(16,24,40,.09),0 20px 46px rgba(16,24,40,.16);
-    --display:'Kanit',system-ui,sans-serif; --monoff:'IBM Plex Mono',ui-monospace,monospace;
+    --display:'Sarabun','Noto Sans Thai',system-ui,sans-serif; --monoff:'IBM Plex Mono',ui-monospace,monospace;
   }
   *{box-sizing:border-box;margin:0;padding:0}
   body{font-family:'Sarabun',system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.68;-webkit-font-smoothing:antialiased}
   .mono{font-family:var(--monoff)}
   .wrap{max-width:1280px;margin:0 auto;padding:22px 20px 72px}
-  /* header ดำ + สเปกตรัมสีแบรนด์จริง — หน้าแรกโมโนโครม สีทั้งหมดมาจากการ์ด (spec §5.1) */
-  header{background:#12141a;border-radius:26px;padding:0;color:#fff;position:relative;overflow:hidden;box-shadow:var(--shadow-lg)}
+  /* header ไล่โทนน้ำเงินเข้ม + glow มุม (feedback 12 ส.ค.: ดำสนิทจืด/อ่านยาก) + สเปกตรัมสีแบรนด์จริง */
+  header{background:linear-gradient(135deg,#12141a 0%,#1a2233 52%,#27354f 100%);border-radius:26px;padding:0;color:#fff;position:relative;overflow:hidden;box-shadow:var(--shadow-lg)}
   #spectrum{display:flex;height:8px;width:100%}
   #spectrum i{flex:1;height:100%}
-  .hd-in{padding:30px 34px 32px;display:flex;align-items:center;justify-content:space-between;gap:30px}
+  .hd-in{padding:30px 34px 32px;display:flex;align-items:center;justify-content:space-between;gap:30px;background:radial-gradient(560px 320px at 92% -10%,rgba(96,141,255,.20),transparent 65%),radial-gradient(430px 280px at 2% 115%,rgba(255,158,74,.13),transparent 62%)}
   .hd-left{flex:1 1 auto;min-width:0}
-  .tag{display:inline-block;font-family:var(--monoff);font-size:10.5px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:12px}
-  h1{font-family:var(--display);font-size:38px;font-weight:600;letter-spacing:-1.1px;line-height:1.15}
-  .sub{color:rgba(255,255,255,.62);font-size:14.5px;margin-top:8px;font-weight:300;max-width:64ch}
+  .tag{display:inline-block;font-family:var(--monoff);font-size:10.5px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.65);margin-bottom:12px}
+  h1{font-family:var(--display);font-size:38px;font-weight:800;letter-spacing:-.6px;line-height:1.15}
+  .sub{color:rgba(255,255,255,.78);font-size:14.5px;margin-top:8px;font-weight:300;max-width:64ch}
   /* การ์ดสถิติ = ปุ่มกรองตลาดในตัว (desktop ชิดขวา · mobile ตกลงใต้ข้อความเป็นแถวแบบเดิม) */
-  .hd-stats{flex:none;display:grid;grid-template-columns:auto auto;gap:6px;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.11);border-radius:20px;padding:12px;margin:0}
+  .hd-stats{flex:none;display:grid;grid-template-columns:auto auto;gap:6px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.16);border-radius:20px;padding:12px;margin:0}
   .hstat{display:flex;flex-direction:column;gap:3px;align-items:flex-start;background:none;border:0;border-radius:13px;padding:11px 18px;color:#fff;font:inherit;text-align:left}
   button.hstat{cursor:pointer;transition:background .14s}
   button.hstat:hover:not(.on){background:rgba(255,255,255,.06)}
   button.hstat.on{background:rgba(255,255,255,.14)}
-  .hstat .n{font-family:var(--display);font-size:25px;font-weight:600;letter-spacing:-.8px;line-height:1;font-variant-numeric:tabular-nums}
-  .hstat .l{font-family:var(--monoff);font-size:9.5px;letter-spacing:.13em;text-transform:uppercase;color:rgba(255,255,255,.45);white-space:nowrap}
+  .hstat .n{font-family:var(--display);font-size:25px;font-weight:700;letter-spacing:-.4px;line-height:1;font-variant-numeric:tabular-nums}
+  .hstat .l{font-family:var(--monoff);font-size:9.5px;letter-spacing:.13em;text-transform:uppercase;color:rgba(255,255,255,.6);white-space:nowrap}
   button.hstat.on .l{color:rgba(255,255,255,.8)}
   .search{margin-top:20px;position:relative}
   .search input{width:100%;font-family:'Sarabun',sans-serif;font-size:15.5px;color:var(--ink);background:var(--card);border:0;border-radius:16px;padding:15px 18px;box-shadow:var(--shadow);outline:none;-webkit-appearance:none;transition:box-shadow .14s}
@@ -998,10 +1022,10 @@ const indexHtml = `<!DOCTYPE html>
   .card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
   .ctop{display:flex;flex-wrap:nowrap;align-items:center;justify-content:space-between;gap:8px;background:var(--cd);padding:17px 20px 15px;position:relative;overflow:hidden}
   .ctop::after{content:"";position:absolute;right:-38px;top:-58px;width:150px;height:150px;border-radius:50%;background:radial-gradient(circle,var(--c),transparent 68%);opacity:.75}
-  .badge{font-family:var(--display);font-weight:600;font-size:23px;letter-spacing:-.6px;color:#fff;position:relative;z-index:2;line-height:1.15;flex:none}
+  .badge{font-family:var(--display);font-weight:700;font-size:23px;letter-spacing:-.3px;color:#fff;position:relative;z-index:2;line-height:1.15;flex:none}
   .cflag{font-size:15px;line-height:1;flex:none;position:relative;z-index:2;margin-left:auto}
   .cbody{display:flex;flex-direction:column;padding:15px 20px 16px;flex:1}
-  .cname{font-family:var(--display);font-size:16px;font-weight:500;line-height:1.35;letter-spacing:-.25px}
+  .cname{font-family:var(--display);font-size:16px;font-weight:600;line-height:1.35;letter-spacing:-.25px}
   .ctitle{font-size:12.5px;color:var(--muted);line-height:1.45;font-weight:300;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;overflow:hidden;min-height:calc(1.45em * 2);margin-top:7px}
   .hl{display:inline-flex;align-items:center;gap:6px;align-self:flex-start;max-width:100%;padding:5px 12px;border-radius:99px;font-size:12px;font-weight:500;line-height:1.3;border:1px solid transparent}
   .ctop .hl{flex:0 1 auto;min-width:0;margin:0 0 0 10px;position:relative;z-index:2;align-self:center}
@@ -1018,7 +1042,7 @@ const indexHtml = `<!DOCTYPE html>
   .cmetrics .cm b{font-weight:600;color:var(--ink-2)}
   .cmetrics .cm.on{color:var(--cd)} .cmetrics .cm.on b{color:var(--cd)}
   .cmeta{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:auto;padding-top:12px;border-top:1px solid var(--line);white-space:nowrap}
-  .go{font-family:var(--display);font-size:13px;font-weight:500;color:var(--cd);flex:none}
+  .go{font-family:var(--display);font-size:13px;font-weight:600;color:var(--cd);flex:none}
   .cdate,.cviews{font-family:var(--monoff);font-size:10.5px;color:var(--muted)}
   .cdate{flex:none}
   .cviews{min-width:0;overflow:hidden;text-overflow:ellipsis}
@@ -1029,7 +1053,7 @@ const indexHtml = `<!DOCTYPE html>
   .grid.is-table::-webkit-scrollbar{height:9px}
   .grid.is-table::-webkit-scrollbar-track{background:transparent}
   .grid.is-table::-webkit-scrollbar-thumb{background:var(--line-2);border-radius:99px}
-  .grid.is-table #thead{display:grid;grid-template-columns:var(--cols);gap:0 14px;align-items:center;padding:13px 18px;background:#171a21;min-width:856px;font-family:var(--monoff);font-size:9.5px;letter-spacing:.11em;text-transform:uppercase;color:rgba(255,255,255,.55)}
+  .grid.is-table #thead{display:grid;grid-template-columns:var(--cols);gap:0 14px;align-items:center;padding:13px 18px;background:linear-gradient(180deg,#232e47,#161c2a);min-width:856px;font-family:var(--monoff);font-size:9.5px;letter-spacing:.11em;text-transform:uppercase;color:rgba(255,255,255,.68)}
   .grid.is-table #thead .num{text-align:right}
   #thead span[data-sort]{cursor:pointer;transition:color .14s}
   #thead span[data-sort]:hover{color:#fff}
@@ -1104,9 +1128,7 @@ const indexHtml = `<!DOCTYPE html>
 ${reports.length ? cards : emptyState}
     </div>${noResult}${pagerEl}
     <footer>
-      อัปเดตล่าสุด ${fmtDate(nowISO)} · สร้างด้วย build.js · ติดต่อ <a href="mailto:${CONTACT_EMAIL}">${CONTACT_EMAIL}</a><br>
-      🤖 วิเคราะห์และจัดทำด้วย AI · <b>${indexModels}</b> · ${AI_MAKER} (รุ่นที่ใช้ระบุในแต่ละรายงาน)<br>
-      ข้อมูลเพื่อการศึกษา ไม่ใช่คำแนะนำการลงทุน
+      🤖 วิเคราะห์และจัดทำด้วย AI · <b>Claude</b> · Anthropic
     </footer>
   </div>${searchScript}
 </body>

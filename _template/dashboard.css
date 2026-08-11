@@ -12,7 +12,7 @@
   --chg-bg:__RD_CHGBG__; --chg-fg:__RD_CHGFG__; --badge:__RD_BADGE__;
   --verdict-text:__RD_VTEXT__; --vcell-k:__RD_VCELLK__;
   --shadow:__RD_SHADOW__; --shadow-lg:__RD_SHADOWLG__;
-  --display:'Kanit',system-ui,sans-serif; --monoff:'IBM Plex Mono',ui-monospace,monospace;
+  --display:'Sarabun','Noto Sans Thai',system-ui,sans-serif; --monoff:'IBM Plex Mono',ui-monospace,monospace;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Sarabun','Noto Sans Thai',system-ui,-apple-system,Segoe UI,sans-serif;background:var(--bg);color:var(--ink);line-height:1.68;-webkit-font-smoothing:antialiased}
@@ -24,14 +24,26 @@ header{background:var(--dark-grad);border-radius:26px;padding:30px 32px 28px;col
 header::after{content:"";position:absolute;right:-70px;top:-120px;width:380px;height:380px;border-radius:50%;background:radial-gradient(circle,var(--glow),transparent 66%)}
 .gdots{display:inline-flex;gap:6px;margin-bottom:14px;position:relative;z-index:2}
 .gdots span{width:12px;height:12px;border-radius:50%;box-shadow:0 0 0 3px rgba(255,255,255,.13)}
-.tag{display:inline-block;font-family:var(--display);font-size:11.5px;font-weight:500;padding:4px 12px;border-radius:99px;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.14);backdrop-filter:blur(6px);margin-right:6px;position:relative;z-index:2}
-h1{font-family:var(--display);font-size:36px;font-weight:600;letter-spacing:-.8px;line-height:1.2;margin:12px 0 5px;position:relative;z-index:2}
+.tag{display:inline-block;font-family:var(--display);font-size:11.5px;font-weight:600;padding:4px 12px;border-radius:99px;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.14);backdrop-filter:blur(6px);margin-right:6px;position:relative;z-index:2}
+h1{font-family:var(--display);font-size:36px;font-weight:800;letter-spacing:-.5px;line-height:1.2;margin:12px 0 5px;position:relative;z-index:2}
 .sub{color:var(--sub-col);font-size:14.5px;line-height:1.6;max-width:70ch;font-weight:300;position:relative;z-index:2}
 .price-row{display:flex;align-items:flex-end;gap:18px;flex-wrap:wrap;margin-top:24px;position:relative;z-index:2}
-.px{font-family:var(--display);font-size:62px;font-weight:600;letter-spacing:-2.5px;line-height:.95;font-variant-numeric:tabular-nums}
+.px{font-family:var(--display);font-size:62px;font-weight:800;letter-spacing:-1.2px;line-height:.95;font-variant-numeric:tabular-nums}
 .px small{font-family:var(--monoff);font-size:13px;font-weight:600;color:rgba(255,255,255,.62);margin-left:9px;letter-spacing:.04em}
-.chg{font-family:var(--display);font-weight:600;font-size:15px;padding:6px 14px;border-radius:99px;background:var(--chg-bg);color:var(--chg-fg);margin-bottom:4px}
+.chg{font-family:var(--display);font-weight:700;font-size:15px;padding:6px 14px;border-radius:99px;background:var(--chg-bg);color:var(--chg-fg);margin-bottom:4px}
 .px-meta{font-family:var(--monoff);font-size:11px;color:var(--header-muted);margin-left:auto;text-align:right;line-height:1.8}
+
+/* ── การ์ดสถิติมุมขวาบน header (วิว/โหวต/อัปเดต — inject ตอน build) ── */
+.hstats{position:absolute;top:24px;right:26px;z-index:3;display:grid;grid-template-columns:auto auto;gap:4px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:16px;padding:8px;backdrop-filter:blur(8px)}
+.hstats .vb{display:contents}
+.hstats [hidden]{display:none!important} /* display:contents ชนะ UA [hidden] — ต้องกดทับเอง */
+.hstats .hstat,.hstats .vbtn{display:flex;flex-direction:column;gap:2px;align-items:flex-start;background:none;border:0;border-radius:10px;padding:7px 13px;color:#fff;font:inherit;text-align:left}
+.hstats .vbtn{cursor:pointer;transition:background .14s}
+.hstats .vbtn:hover{background:rgba(255,255,255,.09)}
+.hstats .vbtn.on{background:rgba(255,255,255,.18)}
+.hstats .n{font-family:var(--display);font-size:15px;font-weight:700;line-height:1.2;font-variant-numeric:tabular-nums;white-space:nowrap}
+.hstats .l{font-family:var(--monoff);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--header-muted);white-space:nowrap}
+@media(min-width:901px){header h1,header .sub{padding-right:250px}} /* กันชื่อบริษัทยาวมุดใต้การ์ด */
 
 /* ── Section nav (markup inject ใน decorateReport — Task 4) ── */
 #secnav{position:sticky;top:0;z-index:80;background:__RD_TINTBG__f2;background:color-mix(in srgb,__RD_TINTBG__ 92%,transparent);backdrop-filter:blur(14px);margin:14px -16px 0;padding:9px 16px;border-bottom:1px solid var(--line)}
@@ -41,15 +53,15 @@ h1{font-family:var(--display);font-size:36px;font-weight:600;letter-spacing:-.8p
 #secnav a b{font-family:var(--monoff);font-weight:600;font-size:10.5px;opacity:.6}
 #secnav a span{max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 #secnav a:hover{background:var(--card);border-color:var(--line);color:var(--ink)}
-#secnav a.on{background:var(--blue-d);color:#fff;font-weight:500;border-color:var(--blue-d)}
+#secnav a.on{background:var(--blue-d);color:#fff;font-weight:600;border-color:var(--blue-d)}
 #secnav a.on b{opacity:.85}
 section{scroll-margin-top:62px}
 
 /* ── Section head: เลขในกล่องสี --badge (ขาวบน badge = คู่ที่ E38 ตรวจอยู่แล้ว) ── */
 section{margin-top:36px}
 .s-head{display:flex;align-items:center;gap:12px;margin:0 6px 15px}
-.s-head .n{width:31px;height:31px;border-radius:10px;background:var(--badge);color:#fff;display:grid;place-items:center;font-family:var(--display);font-size:15px;font-weight:600;flex:none}
-.s-head h2{font-family:var(--display);font-size:20px;font-weight:600;letter-spacing:-.4px}
+.s-head .n{width:31px;height:31px;border-radius:10px;background:var(--badge);color:#fff;display:grid;place-items:center;font-family:var(--display);font-size:15px;font-weight:700;flex:none}
+.s-head h2{font-family:var(--display);font-size:20px;font-weight:700;letter-spacing:-.4px}
 .s-head .hint{font-family:var(--monoff);font-size:11px;color:var(--muted);margin-left:auto;text-align:right}
 
 /* ── Metrics ── */
@@ -60,7 +72,7 @@ section{margin-top:36px}
 .metric:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg)}
 .metric:hover::before{opacity:1}
 .metric .k{font-size:12px;color:var(--muted);font-weight:500;display:flex;align-items:center;gap:5px}
-.metric .v{font-family:var(--display);font-size:26px;font-weight:600;margin-top:4px;letter-spacing:-1px;line-height:1.2;font-variant-numeric:tabular-nums}
+.metric .v{font-family:var(--display);font-size:26px;font-weight:700;margin-top:4px;letter-spacing:-1px;line-height:1.2;font-variant-numeric:tabular-nums}
 .metric .d{font-size:11.5px;color:var(--muted);margin-top:4px;line-height:1.5;font-weight:300}
 .pos{color:var(--green)} .neg{color:var(--red)} .neu{color:var(--yellow)}
 .pill{font-family:var(--monoff);font-size:10px;font-weight:600;padding:2px 8px;border-radius:99px;vertical-align:middle}
@@ -76,7 +88,7 @@ section{margin-top:36px}
 /* ── Gauge — ★ ป้ายสูง ≤24px: font 11px + padding 3x9 (spec §5.5) ── */
 .gauge{margin:10px 0 4px}
 .gbar{position:relative;height:48px;border-radius:14px;overflow:hidden;background:linear-gradient(90deg,#067647 0%,#12a05f 22%,#e0a418 46%,#d92d20 100%)}
-.gbar .seg-label{position:absolute;top:50%;transform:translate(-50%,-50%);font-family:var(--display);font-size:10.5px;font-weight:500;color:#fff;background:rgba(0,0,0,.4);padding:2px 9px;border-radius:99px;white-space:nowrap}
+.gbar .seg-label{position:absolute;top:50%;transform:translate(-50%,-50%);font-family:var(--display);font-size:10.5px;font-weight:600;color:#fff;background:rgba(0,0,0,.4);padding:2px 9px;border-radius:99px;white-space:nowrap}
 .marker{position:absolute;top:-6px;bottom:-6px;width:3px;background:#12141a;border-radius:99px}
 .marker .lab{position:absolute;top:-34px;left:50%;transform:translateX(-50%);background:#12141a;color:#fff;font-family:var(--monoff);font-size:11px;font-weight:600;line-height:1.4;padding:3px 9px;border-radius:7px;white-space:nowrap}
 .marker .lab::after{content:"";position:absolute;bottom:-4px;left:50%;transform:translateX(-50%) rotate(45deg);width:8px;height:8px;background:inherit}
@@ -86,35 +98,35 @@ section{margin-top:36px}
 /* ── Valuation ── */
 .vmethod{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:15px 0;border-bottom:1px solid var(--line)}
 .vmethod:last-child{border-bottom:none}
-.vmethod .mname{font-family:var(--display);font-weight:500;font-size:15.5px}
+.vmethod .mname{font-family:var(--display);font-weight:600;font-size:15.5px}
 .vmethod .mdesc{font-size:12px;color:var(--muted);margin-top:2px;line-height:1.55;font-weight:300;max-width:64ch}
-.vmethod .mval{font-family:var(--display);font-size:22px;font-weight:600;text-align:right;letter-spacing:-.7px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.vmethod .mval{font-family:var(--display);font-size:22px;font-weight:700;text-align:right;letter-spacing:-.7px;font-variant-numeric:tabular-nums;white-space:nowrap}
 .fv-box{margin-top:17px;background:var(--blue-soft);border:1px solid var(--line-2);border-radius:17px;padding:18px 20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
-.fv-box .l{font-family:var(--display);font-size:13.5px;color:var(--blue-d);font-weight:500}
-.fv-box .r{font-family:var(--display);font-size:36px;font-weight:600;color:var(--blue-d);letter-spacing:-1.5px;font-variant-numeric:tabular-nums;line-height:1}
+.fv-box .l{font-family:var(--display);font-size:13.5px;color:var(--blue-d);font-weight:600}
+.fv-box .r{font-family:var(--display);font-size:36px;font-weight:800;color:var(--blue-d);letter-spacing:-1px;font-variant-numeric:tabular-nums;line-height:1}
 
 /* ── MOS ── */
 .mos-verdict{border-radius:18px;padding:20px 22px;margin-bottom:15px;display:flex;align-items:center;gap:18px}
 .mos-verdict.bad{background:var(--red-soft)} .mos-verdict.ok{background:var(--amber-soft)} .mos-verdict.good{background:var(--green-soft)}
-.mos-verdict .big{font-family:var(--display);font-size:42px;font-weight:600;letter-spacing:-2px;flex:none;line-height:1;font-variant-numeric:tabular-nums}
+.mos-verdict .big{font-family:var(--display);font-size:42px;font-weight:800;letter-spacing:-1.2px;flex:none;line-height:1;font-variant-numeric:tabular-nums}
 .mos-verdict.bad .big{color:var(--red)} .mos-verdict.ok .big{color:var(--yellow)} .mos-verdict.good .big{color:var(--green)}
 .mos-verdict .txt{font-size:13.5px;line-height:1.65;color:var(--ink);font-weight:300}
-.mos-verdict .txt b{font-family:var(--display);font-size:15px;font-weight:500}
+.mos-verdict .txt b{font-family:var(--display);font-size:15px;font-weight:600}
 .calc{margin-top:17px;border:1.5px dashed var(--line-2);border-radius:17px;padding:17px 19px;background:var(--card-2)}
-.calc label{font-family:var(--display);font-size:13px;color:var(--ink);font-weight:500;display:block;margin-bottom:8px}
+.calc label{font-family:var(--display);font-size:13px;color:var(--ink);font-weight:600;display:block;margin-bottom:8px}
 .calc-row{display:flex;gap:13px;align-items:center;flex-wrap:wrap}
-.calc input{font-family:var(--display);font-size:19px;font-weight:600;border:2px solid var(--line-2);border-radius:13px;padding:8px 13px;width:150px;outline:none;background:#fff;color:var(--ink);font-variant-numeric:tabular-nums}
+.calc input{font-family:var(--display);font-size:19px;font-weight:700;border:2px solid var(--line-2);border-radius:13px;padding:8px 13px;width:150px;outline:none;background:#fff;color:var(--ink);font-variant-numeric:tabular-nums}
 .calc input:focus{border-color:var(--blue-d)}
 .calc-out{font-size:14px;font-weight:500;color:var(--ink)}
 
 /* ── Scenarios (หัวสี: bear/bull ใช้สีสถานะ · base ใช้ accentDark — ขาวทับได้ทุกตัว) ── */
 .scn{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
 .scn .col{border:1px solid var(--line);border-radius:19px;overflow:hidden;background:var(--card);box-shadow:var(--shadow)}
-.scn .top{padding:12px 17px;color:#fff;font-family:var(--display);font-size:14px;font-weight:500;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.scn .top{padding:12px 17px;color:#fff;font-family:var(--display);font-size:14px;font-weight:600;display:flex;justify-content:space-between;align-items:center;gap:8px}
 .scn .bear .top{background:var(--red)} .scn .base .top{background:var(--blue-d)} .scn .bull .top{background:var(--green)}
 .scn .body{padding:17px}
-.scn .tgt{font-family:var(--display);font-size:30px;font-weight:600;letter-spacing:-1.3px;line-height:1.05;font-variant-numeric:tabular-nums}
-.scn .ret{font-family:var(--display);font-size:14px;font-weight:500;margin-top:3px}
+.scn .tgt{font-family:var(--display);font-size:30px;font-weight:700;letter-spacing:-1px;line-height:1.05;font-variant-numeric:tabular-nums}
+.scn .ret{font-family:var(--display);font-size:14px;font-weight:600;margin-top:3px}
 .scn ul{list-style:none;margin-top:13px;font-size:12px;color:var(--muted)}
 .scn li{display:flex;justify-content:space-between;gap:10px;padding:5px 0;border-bottom:1px solid var(--line)}
 .scn li:last-child{border:none}
@@ -125,7 +137,7 @@ section{margin-top:36px}
 .cr .box{border-radius:20px;padding:20px 22px;border:1px solid var(--line);box-shadow:var(--shadow)}
 .cr .box.cat{background:linear-gradient(170deg,var(--green-soft),#fff 60%)}
 .cr .box.risk{background:linear-gradient(170deg,var(--red-soft),#fff 60%)}
-.cr h3{font-family:var(--display);font-size:16px;font-weight:600;display:flex;align-items:center;gap:10px;margin-bottom:13px}
+.cr h3{font-family:var(--display);font-size:16px;font-weight:700;display:flex;align-items:center;gap:10px;margin-bottom:13px}
 .cr .ic{width:27px;height:27px;border-radius:9px;display:grid;place-items:center;font-size:12px;flex:none;color:#fff}
 .cr .cat .ic{background:var(--green)} .cr .risk .ic{background:var(--red)}
 .cr ul{list-style:none}
@@ -133,19 +145,19 @@ section{margin-top:36px}
 .cr li:last-child{border:none}
 .cr li::before{content:"";width:7px;height:7px;border-radius:50%;margin-top:8px;flex:none}
 .cr .cat li::before{background:var(--green)} .cr .risk li::before{background:var(--red)}
-.cr li b{font-family:var(--display);font-weight:500}
+.cr li b{font-family:var(--display);font-weight:600}
 
 /* ── Verdict ── */
 .verdict{background:var(--dark-grad);color:#fff;border-radius:24px;padding:30px 32px;box-shadow:var(--shadow-lg);position:relative;overflow:hidden}
 .verdict::after{content:"";position:absolute;right:-80px;bottom:-120px;width:320px;height:320px;border-radius:50%;background:radial-gradient(circle,var(--glow),transparent 68%)}
-.verdict h2{font-family:var(--display);font-size:24px;font-weight:600;margin-bottom:8px;letter-spacing:-.5px;position:relative;z-index:2}
+.verdict h2{font-family:var(--display);font-size:24px;font-weight:700;margin-bottom:8px;letter-spacing:-.5px;position:relative;z-index:2}
 .verdict p{color:var(--verdict-text);font-size:14px;margin-bottom:18px;line-height:1.7;font-weight:300;max-width:70ch;position:relative;z-index:2}
 .vgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:6px;position:relative;z-index:2}
 .vcell{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:15px;padding:14px 16px}
 .vcell .k{font-size:12px;color:var(--vcell-k);font-weight:400;opacity:.85}
-.vcell .v{font-family:var(--display);font-size:18px;font-weight:600;margin-top:4px;font-variant-numeric:tabular-nums}
+.vcell .v{font-family:var(--display);font-size:18px;font-weight:700;margin-top:4px;font-variant-numeric:tabular-nums}
 .zone{margin-top:18px;font-size:13.5px;color:var(--verdict-text);background:rgba(255,255,255,.08);border-left:4px solid #ffd180;border-radius:0 13px 13px 0;padding:13px 17px;line-height:1.7;font-weight:300;position:relative;z-index:2}
-.zone b{color:#fff;font-family:var(--display);font-weight:500}
+.zone b{color:#fff;font-family:var(--display);font-weight:600}
 
 .disc{margin-top:28px;font-size:12px;color:var(--muted);background:var(--card);border:1px solid var(--line);border-radius:17px;padding:17px 19px;line-height:1.75;font-weight:300}
 .disc b{color:var(--ink);font-weight:600}
@@ -175,6 +187,10 @@ footer a{color:var(--blue-d)}
   /* ตัวหนังสือรอง: 300→400 บนจอเล็ก (Sarabun บางอ่านยาก) */
   .sub,.metric .d,.vmethod .mdesc,.mos-verdict .txt,.scn ul,.cr li,.verdict p,.zone,.disc{font-weight:400}
   .metric .d{font-size:12px} .metric .k{font-size:12.5px}
+  /* การ์ดสถิติ: จอแคบเลิกลอยมุมขวา → เป็นแถวท้าย header แบบหน้าแรก (เจ้าของ approve pattern นี้แล้ว) */
+  .hstats{position:static;display:flex;flex-wrap:wrap;gap:2px 4px;margin-top:16px;padding:12px 0 0;background:none;border:0;border-top:1px solid rgba(255,255,255,.14);border-radius:0;backdrop-filter:none}
+  .hstats .hstat,.hstats .vbtn{padding:7px 10px;min-height:44px}
+  .hstats .hstat:first-child{margin-left:-10px}
   /* tap targets ≥44px */
   .ta-btn,.ta-tog{min-height:44px}
   .votebar .vbtn{min-height:44px;padding:6px 14px}

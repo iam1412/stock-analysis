@@ -194,7 +194,7 @@ ok(!threw(() => b.expandReport(NEWDOC.replace('"accent":"#0071e3"', '"accent":"r
   ok(/^#[0-9a-f]{6}$/i.test(b.deriveTheme(undefined).tintBg), 'deriveTheme: ไม่มี theme → THEME_DEFAULTS ไม่ throw');
   const head = b.renderHead(t);
   ok(!head.includes('__RD_TINTBG__') && !head.includes('__RD_SOFT__'), 'renderHead: token ใหม่ถูกเติมหมด ไม่เหลือ __RD_*__ ค้าง');
-  ok(head.includes('Kanit'), 'FONT_LINKS มี Kanit');
+  ok(head.includes('Sarabun') && !head.includes('Kanit'), 'FONT_LINKS ใช้ font เดิม (Sarabun) ไม่มี Kanit — เจ้าของสั่งกลับ 12 ส.ค. 69');
 }
 
 // ── injectTA: config + <script> ก่อน </body> เฉพาะ dist (rd=null = รายงาน legacy → ข้าม) ──
