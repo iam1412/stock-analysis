@@ -64,10 +64,14 @@ const freshHash = (content) => hash(content
 // engine bake ค่าเป็น literal (const FV=, gpos(ราคา), const data=[…]) เพื่อให้ quality gate (E08/E15/E19,
 // check-site) ยัง regex เจอเลขจริงเหมือนรายงานที่เขียน HTML เต็ม
 const TEMPLATE_DIR = path.join(ROOT, '_template');
+// ฟอนต์ self-host (PageSpeed: ตัด render-blocking CSS ของ Google Fonts + chain ข้ามโดเมน 3 ชั้น ~2s บนมือถือ)
+//   ไฟล์ woff2 อยู่ใน fonts/ (ชื่อมีเวอร์ชัน → _headers ตั้ง immutable ได้) · @font-face + unicode-range คัดจาก css2 ของ Google
+//   preload เฉพาะ 4 ไฟล์วิกฤต: Sarabun 400 (เนื้อความ) + 800 (h1/LCP) × thai+latin — ★ preload ฟอนต์ต้องมี crossorigin เสมอ
+//   แม้ same-origin ไม่งั้น browser โหลดซ้ำ (credentials mode ไม่ตรง) = preload เสียเปล่า
 const FONT_LINKS =
-  '<link rel="preconnect" href="https://fonts.googleapis.com">\n' +
-  '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n' +
-  '<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">';
+  ['sarabun-v17-thai-400', 'sarabun-v17-latin-400', 'sarabun-v17-thai-800', 'sarabun-v17-latin-800']
+    .map((f) => `<link rel="preload" href="/fonts/${f}.woff2" as="font" type="font/woff2" crossorigin>`).join('\n') +
+  '\n<style>' + fs.readFileSync(path.join(TEMPLATE_DIR, 'fonts.css'), 'utf8').trim() + '</style>';
 // ธีมเริ่มต้น (โทนน้ำเงิน เหมือนหน้า index) — ใช้เมื่อ report-data.theme ไม่ระบุคีย์ใด
 // ทุกคู่ default ต้องผ่าน WCAG AA (gate E38 ตรวจ) — badge เป็นพื้นตัวหนังสือขาว 13px จึงใช้ --blue-d (accent สว่างเกิน)
 const THEME_DEFAULTS = {
@@ -654,7 +658,8 @@ const highlightChip = (m) => {
         <div class="hl hl-${h.cls}${h.lead ? ' lead' : ''}"><span class="hl-v">${esc(h.value)}</span><span class="hl-d">${esc(h.desc)}</span></div>` : '';
 };
 
-const cards = reports.map((r) => {
+const PAGE_SIZE = 12; // จำนวนหุ้นต่อหน้า (โหมดไทล์) — ปรับที่นี่จุดเดียว
+const cardHtml = reports.map((r) => {
   const blurb = r.desc || r.title;
   const c = escAttr(r.accent || THEME_DEFAULTS.accent), cd = escAttr(r.accentDark || THEME_DEFAULTS.accentDark);
   return `
@@ -666,7 +671,12 @@ const cards = reports.map((r) => {
           <div class="cmeta"><span class="go">รายงาน →</span><span class="cviews" data-sym="${escAttr(r.symbol)}" hidden>👁 <b class="v">0</b> · 👍 <b class="l">0</b></span><span class="cdate" data-updated="${escAttr(fmtDate(r.updated))}" title="อัปเดต ${escAttr(fmtDate(r.updated))}">${fmtDate(r.updated)}</span></div>
         </div>
       </a>`;
-}).join('\n');
+});
+// PageSpeed: การ์ดเกินหน้าแรกเก็บใน <template> (inert — ไม่สร้าง layout/style ตอนโหลด · DOM แรกเหลือ ${PAGE_SIZE}
+// การ์ดแทน 908) แล้วสคริปต์ค้นหา hydrate กลับเข้า .grid ก่อน querySelectorAll — ลำดับการ์ดคงเดิมทุกประการ
+// no-JS เห็นเฉพาะหน้าแรก (ยอมรับได้ — pager เองก็เป็น JS อยู่แล้ว และ sitemap ครอบทุกรายงาน)
+const cards = cardHtml.slice(0, PAGE_SIZE).join('\n') +
+  (cardHtml.length > PAGE_SIZE ? `\n<template id="cardstore">${cardHtml.slice(PAGE_SIZE).join('\n')}\n</template>` : '');
 
 // ช่องค้นหา + ข้อความ "ไม่พบ" + สคริปต์กรอง (เฉพาะเมื่อมีรายงาน)
 const searchBox = reports.length ? `
@@ -710,12 +720,14 @@ const noResult = reports.length ? `
     <div class="noresult" id="noresult" hidden>ไม่พบหุ้นที่ตรงกับ “<span id="qterm"></span>”</div>` : '';
 
 // สคริปต์หน้า index: ค้นหา + แบ่งหน้า (PAGE ตัว/หน้า) + เติมยอดวิวต่อการ์ด (batch ครั้งเดียว)
-const PAGE_SIZE = 12; // จำนวนหุ้นต่อหน้า — ปรับที่นี่จุดเดียว
 const searchScript = reports.length ? `
   <script>
     (function () {
       var q = document.getElementById('q');
       var grid = document.querySelector('.grid');
+      // hydrate การ์ดที่พักไว้ใน <template id="cardstore"> (การ์ดหน้า 2 เป็นต้นไป) กลับเข้า grid ก่อนอ่านรายการการ์ด
+      var store = document.getElementById('cardstore');
+      if (store) { grid.appendChild(store.content); store.remove(); }
       var cards = [].slice.call(document.querySelectorAll('.card'));
       var nr = document.getElementById('noresult');
       var term = document.getElementById('qterm');
@@ -970,9 +982,7 @@ const indexHtml = `<!DOCTYPE html>
 <meta name="twitter:title" content="Stock Analysis — รวมรายงานวิเคราะห์หุ้น">
 <meta name="twitter:description" content="รวมรายงานวิเคราะห์หุ้น (Fair Value, Margin of Safety, จุดเข้าซื้อ) — ${reports.length} รายงาน">
 <meta name="twitter:image" content="${OG_IMAGE}">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+${FONT_LINKS}
 <style>
   :root{
     --bg:#eef0f3; --card:#fff; --ink:#13151b; --ink-2:#3c424e; --muted:#5f6675;
