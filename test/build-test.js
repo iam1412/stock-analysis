@@ -238,6 +238,14 @@ ok(b.injectTA(taBody, 'AAPL', null, { currency: 'USD' }, 'assets/ta-abc123.js') 
   ok(b.injectSectionNav('<header>H</header><section><h2>เดียว</h2></section>') .includes('secnav') === false, 'injectSectionNav: <3 section (legacy) → ไม่แทรก');
 }
 
+// ── stripDecorEmoji: HTML entity form (บางรายงานเก่าเข้ารหัสอีโมจิเป็น &#dec;/&#xHEX; — browser ยัง render เป็นอีโมจิเหมือนเดิม) ──
+{
+  const entitySrc = '<div class="top"><span>&#128059; Bear</span></div><p>&#128640; ในเนื้อความ</p>';
+  const out = b.stripDecorEmoji(entitySrc);
+  ok(out.includes('<span>Bear</span>'), 'stripDecorEmoji: &#128059; (entity ของ 🐻) ออกจากป้ายฉาก');
+  ok(out.includes('&#128640; ในเนื้อความ'), 'stripDecorEmoji: &#128640; (entity ของ 🚀) ใน prose ห้ามหาย (ยิงเฉพาะ 5 ช่อง)');
+}
+
 console.log('\n' + '─'.repeat(50));
 console.log(`build-test: ${n - fails}/${n} ผ่าน`);
 if (fails) { console.log('\n❌ build.js มีพฤติกรรมผิด — แก้ build.js ก่อน push\n'); process.exit(1); }

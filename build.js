@@ -301,11 +301,14 @@ function injectViewVoteScript(html, symbol) {
 
 // ── ถอดอีโมจิประดับ (spec §4.3) — ยิงเฉพาะ 5 ช่องที่รู้จักจาก skeleton ห้ามกวาดทั้งเอกสาร ──
 // (build ไม่มี DOM parser — กวาดทั้งไฟล์จะกินอีโมจิที่ analyst ตั้งใจใช้ใน prose catalyst/risk ด้วย)
+// รองรับทั้งอักขระ Unicode ตรง และ HTML entity (decimal/hex, VS16 มี/ไม่มี) — รายงานเก่าบางไฟล์เข้ารหัสอีโมจิเป็น entity
+// (เช่น &#128059; / &#x1F43B; = 🐻) ซึ่ง browser ยัง render เป็นอีโมจิเหมือนเดิม จึงต้องจับคู่กับ anchor เดิม ไม่ใช่กวาดทั้งเอกสาร
+// เพิ่ม flag 'i' เพราะเลขฐาน 16 ใน entity อาจมาทั้งตัวพิมพ์เล็ก/ใหญ่ (&#x1f43b; vs &#x1F43B;) — ไม่กระทบ tag/class ที่เป็นตัวพิมพ์เล็กอยู่แล้ว
 const EMOJI_SLOTS = [
-  [/(<div class="top"><span>)\s*(?:🐻|⚖️|⚖|🚀)\s*/gu, '$1'],   // ป้ายฉาก Bear/Base/Bull
-  [/(<label>)\s*🧮\s*/gu, '$1'],                                  // calc label
-  [/(<div class="zone">)\s*💡\s*/gu, '$1'],                       // กลยุทธ์
-  [/(<b>)\s*⚠️?\s*(คำเตือน)/gu, '$1$2'],                          // disclaimer
+  [/(<div class="top"><span>)\s*(?:🐻|&#128059;|&#x1F43B;|⚖️|⚖|&#9878;(?:&#65039;|&#xFE0F;)?|&#x2696;(?:&#65039;|&#xFE0F;)?|🚀|&#128640;|&#x1F680;)\s*/giu, '$1'],   // ป้ายฉาก Bear/Base/Bull
+  [/(<label>)\s*(?:🧮|&#129518;|&#x1F9EE;)\s*/giu, '$1'],                                  // calc label
+  [/(<div class="zone">)\s*(?:💡|&#128161;|&#x1F4A1;)\s*/giu, '$1'],                       // กลยุทธ์
+  [/(<b>)\s*(?:⚠️?|&#9888;(?:&#65039;|&#xFE0F;)?|&#x26A0;(?:&#65039;|&#xFE0F;)?)\s*(คำเตือน)/giu, '$1$2'],                          // disclaimer
   [/(<h3><span class="ic">[▲▼]<\/span>)\s*[\u{1F300}-\u{1FAFF}]\s*/gu, '$1'], // cr h3 (กันเผื่อรายงานเก่าบางใบ)
 ];
 function stripDecorEmoji(html) {
