@@ -610,8 +610,10 @@ const MKT_FLAG = { TH: '🇹🇭', US: '🇺🇸' };
 const marketAttr = (m) => (m && m.market) ? ` data-market="${escAttr(m.market)}"` : '';
 const marketFlag = (m) => (m && m.market && MKT_FLAG[m.market]) ? `<span class="cflag" title="${m.market === 'TH' ? 'ตลาดไทย (SET)' : 'ตลาดสหรัฐ'}">${MKT_FLAG[m.market]}</span>` : '';
 // แถบ metric เล็ก ๆ ใต้ชื่อหุ้น (โชว์ทั้ง 5 ค่า — ตัวที่กำลังเรียงจะถูกไฮไลต์ด้วย JS)
+// MOS/Upside ติดคลาส pos/neg ตามเครื่องหมาย — โหมดตารางใช้แยกสีตัวเลขบวก/ลบ
+const signCls = (dk, v) => (dk === 'mos' || dk === 'upside') && v != null ? (v > 0 ? ' pos' : v < 0 ? ' neg' : '') : '';
 const metricStrip = (m) => !m ? '' : `
-        <div class="cmetrics">${METRIC_DEFS.map((d) => `<span class="cm" data-m="${d.dk}">${d.lab} <b>${esc(fmtMetric(m[d.k], d.suf))}</b></span>`).join('')}</div>`;
+        <div class="cmetrics">${METRIC_DEFS.map((d) => `<span class="cm${signCls(d.dk, m[d.k])}" data-m="${d.dk}">${d.lab} <b>${esc(fmtMetric(m[d.k], d.suf))}</b></span>`).join('')}</div>`;
 
 // ป้ายไฮไลต์ "จุดเด่น" ของหุ้นแต่ละตัว — คำนวณตอน build จาก stock-meta (static, ไม่พึ่ง JS)
 const leaders = computeLeaders(reports);
@@ -630,7 +632,7 @@ const cards = reports.map((r) => {
         <div class="cbody">
           <div class="cname">${esc(r.name)}</div>
           <div class="ctitle" title="${escAttr(blurb)}">${esc(blurb)}</div>${metricStrip(r.metrics)}
-          <div class="cmeta"><span class="go">เปิดรายงาน →</span><span class="cviews" data-sym="${escAttr(r.symbol)}" hidden>👁 <b class="v">0</b> · 👍 <b class="l">0</b> · 👎 <b class="d">0</b></span><span class="cdate">${fmtDate(r.updated)}</span></div>
+          <div class="cmeta"><span class="go">รายงาน →</span><span class="cviews" data-sym="${escAttr(r.symbol)}" hidden>👁 <b class="v">0</b> · 👍 <b class="l">0</b></span><span class="cdate" data-updated="${escAttr(fmtDate(r.updated))}" title="อัปเดต ${escAttr(fmtDate(r.updated))}">${fmtDate(r.updated)}</span></div>
         </div>
       </a>`;
 }).join('\n');
@@ -641,15 +643,18 @@ const searchBox = reports.length ? `
       <input id="q" type="search" placeholder="ค้นหาหุ้น… ชื่อย่อ หรือ ชื่อบริษัท" autocomplete="off" spellcheck="false" aria-label="ค้นหาหุ้น">
     </div>` : '';
 
-// แถบกรองตลาด — สลับเดียว ทั้งหมด/ไทย/สหรัฐ (filter จริง · AND กับช่องค้นหา · คงค่าข้ามการเปลี่ยน sort)
+// สถิติบน header = ปุ่มกรองตลาดในตัว (แทนแถบกรองเดิมที่แสดงตัวเลขซ้ำกับสถิติ — ลบตาม feedback 12 ส.ค. 69)
 const mktCount = reports.reduce((a, r) => { const mk = r.metrics && r.metrics.market; if (mk === 'TH') a.TH++; else if (mk === 'US') a.US++; return a; }, { TH: 0, US: 0 });
-const marketBar = (reports.length > 1 && (mktCount.TH && mktCount.US)) ? `
-    <div class="marketbar" id="marketbar" role="group" aria-label="กรองตามตลาด">
-      <span class="sortlab">ตลาด</span>
-      <button type="button" class="mktbtn on" data-market="all">ทั้งหมด <span class="mc">${reports.length}</span></button>
-      <button type="button" class="mktbtn" data-market="TH">🇹🇭 ไทย <span class="mc">${mktCount.TH}</span></button>
-      <button type="button" class="mktbtn" data-market="US">🇺🇸 สหรัฐ <span class="mc">${mktCount.US}</span></button>
-    </div>` : '';
+const canFilterMkt = reports.length > 1 && mktCount.TH > 0 && mktCount.US > 0;
+const hdStat = (mk, n, lab) => canFilterMkt
+  ? `<button type="button" class="hstat${mk === 'all' ? ' on' : ''}" data-market="${mk}" aria-pressed="${mk === 'all'}"><span class="n">${n}</span><span class="l">${lab}</span></button>`
+  : `<div class="hstat"><span class="n">${n}</span><span class="l">${lab}</span></div>`;
+const hdStats = `<div class="hd-stats" id="hdstats"${canFilterMkt ? ' role="group" aria-label="กรองตามตลาด"' : ''}>
+        ${hdStat('all', reports.length, 'รายงานทั้งหมด')}
+        ${hdStat('TH', mktCount.TH, '🇹🇭 ตลาดไทย')}
+        ${hdStat('US', mktCount.US, '🇺🇸 ตลาดสหรัฐ')}
+        <div class="hstat st"><span class="n">${fmtDate(nowISO)}</span><span class="l">อัปเดตล่าสุด</span></div>
+      </div>`;
 
 // แถบเรียงลำดับ — ค่าเริ่มต้น "ล่าสุด" (อัปเดตล่าสุดก่อน, เรียงฝั่ง server แล้ว);
 // "ไลก์/วิว" เรียงฝั่ง client หลังโหลดยอดจาก /api/views · metric (MOS/Upside/PE/Yield/ROE) เรียงจาก data-* บนการ์ด (0 request)
@@ -657,7 +662,6 @@ const marketBar = (reports.length > 1 && (mktCount.TH && mktCount.US)) ? `
 //   (มาก=ดี, P/E น้อย=ดี) · กดล่าสุด/ไลก์/วิว = ล้าง metric · deselect หมด = กลับเป็นล่าสุด
 const sortBar = reports.length > 1 ? `
     <div class="sortbar" id="sortbar" role="group" aria-label="เรียงลำดับหุ้น">
-      <span class="sortlab">เรียงโดย</span>
       <button type="button" class="sortbtn on" data-sort="updated">ล่าสุด</button>
       <button type="button" class="sortbtn" data-sort="likes">ไลก์</button>
       <button type="button" class="sortbtn" data-sort="views">วิว</button>
@@ -686,8 +690,9 @@ const searchScript = reports.length ? `
       var term = document.getElementById('qterm');
       var pager = document.getElementById('pager');
       var sortbar = document.getElementById('sortbar');
-      var marketbar = document.getElementById('marketbar');
+      var hdstats = document.getElementById('hdstats');
       var thead = document.getElementById('thead');
+      var tblhint = document.getElementById('tblhint');
       function pageSize() { return grid.classList.contains('is-table') ? 25 : ${PAGE_SIZE}; } // ตาราง 25 แถว/หน้า · ไทล์ ${PAGE_SIZE}/หน้า
       // market = 'all'|'TH'|'US' (ตัวกรองตลาด) · orderMode = updated|likes|views|composite · selected = metric ที่เลือก (multi)
       var page = 1, market = 'all', orderMode = 'updated', selected = [];
@@ -745,7 +750,8 @@ const searchScript = reports.length ? `
         var tp = pages(); if (page > tp) page = tp;
         cards.forEach(function (c) { c.style.display = 'none'; });
         var ps = pageSize();
-        filtered.slice((page - 1) * ps, page * ps).forEach(function (c) { c.style.display = ''; });
+        // zebra ตาราง = สลับสีตาม "แถวที่มองเห็น" (nth-child ใช้ไม่ได้ — นับการ์ดที่ถูกซ่อนด้วย)
+        filtered.slice((page - 1) * ps, page * ps).forEach(function (c, i) { c.style.display = ''; c.classList.toggle('alt', i % 2 === 1); });
         nr.hidden = !(q.value.trim() && filtered.length === 0);
         term.textContent = q.value;
         drawPager(tp);
@@ -774,7 +780,7 @@ const searchScript = reports.length ? `
 
       function highlightMetric() {                           // ไฮไลต์ค่า metric ทุกตัวที่เลือก (composite) บนทุกการ์ด
         [].slice.call(document.querySelectorAll('.cmetrics .cm')).forEach(function (s) {
-          s.className = 'cm' + (selected.indexOf(s.getAttribute('data-m')) !== -1 ? ' on' : '');
+          s.classList.toggle('on', selected.indexOf(s.getAttribute('data-m')) !== -1); // toggle ไม่เขียนทับ pos/neg
         });
       }
       function syncSortBtns() {                              // metric ใน selected = on · ล่าสุด/ไลก์/วิว = on เฉพาะตอน orderMode ตรง
@@ -793,11 +799,14 @@ const searchScript = reports.length ? `
           s.classList.toggle('on', on);
         });
       }
-      if (marketbar) marketbar.addEventListener('click', function (e) {
-        var b = e.target.closest('[data-market]'); if (!b) return;
+      // กรองตลาดจากการ์ดสถิติบน header (รายงานทั้งหมด/ไทย/สหรัฐ = ปุ่ม)
+      if (hdstats) hdstats.addEventListener('click', function (e) {
+        var b = e.target.closest('button[data-market]'); if (!b) return;
         market = b.getAttribute('data-market');
-        [].slice.call(marketbar.querySelectorAll('.mktbtn')).forEach(function (x) { x.className = 'mktbtn' + (x === b ? ' on' : ''); });
-        recompute(); page = 1; render(); window.scrollTo(0, 0);
+        [].slice.call(hdstats.querySelectorAll('button[data-market]')).forEach(function (x) {
+          var on = x === b; x.classList.toggle('on', on); x.setAttribute('aria-pressed', String(on));
+        });
+        recompute(); page = 1; render();
       });
       if (sortbar) sortbar.addEventListener('click', function (e) {
         var b = e.target.closest('[data-sort]'); if (!b) return;
@@ -833,14 +842,32 @@ const searchScript = reports.length ? `
           var s = c.querySelector('.cviews'); if (!s) return;
           var e = (map && map[s.getAttribute('data-sym')]) || {};
           c._views = e.c || 0; c._likes = e.l || 0;
-          var v = s.querySelector('.v'), l = s.querySelector('.l'), d = s.querySelector('.d');
+          var v = s.querySelector('.v'), l = s.querySelector('.l');
           if (v) v.textContent = (e.c || 0).toLocaleString();
           if (l) l.textContent = (e.l || 0).toLocaleString();
-          if (d) d.textContent = (e.d || 0).toLocaleString();
           s.hidden = false;
         });
         if (orderMode === 'likes' || orderMode === 'views') { recompute(); render(); }
       }).catch(function () {});
+
+      // วันที่บนการ์ด/ตาราง → แบบสัมพัทธ์ "1d ago" (นับวันปฏิทินฝั่งผู้ชม · no-JS เห็นวันที่จริง · hover ดูวันเต็มจาก title)
+      var _n = new Date(), _t0 = new Date(_n.getFullYear(), _n.getMonth(), _n.getDate()).getTime();
+      [].slice.call(document.querySelectorAll('.cdate[data-updated]')).forEach(function (s) {
+        var p = (s.getAttribute('data-updated') || '').split('-');
+        if (p.length !== 3) return;
+        var d = Math.round((_t0 - new Date(+p[0], +p[1] - 1, +p[2]).getTime()) / 864e5);
+        if (!isFinite(d) || d < 0) return;
+        s.textContent = d === 0 ? 'today' : d + 'd ago';
+      });
+
+      // ป้ายบอก "ตารางเลื่อนข้างได้" — โชว์เฉพาะโหมดตารางที่กว้างเกินจอ ซ่อนถาวรทันทีที่ผู้ใช้เลื่อนเอง
+      var hintDone = false;
+      function syncHint() {
+        if (!tblhint) return;
+        tblhint.hidden = hintDone || !(grid.classList.contains('is-table') && grid.scrollWidth > grid.clientWidth + 4);
+      }
+      grid.addEventListener('scroll', function () { if (!hintDone && grid.scrollLeft > 30) { hintDone = true; syncHint(); } });
+      window.addEventListener('resize', syncHint);
 
       // ── view toggle ไทล์ ⇄ ตาราง (spec §5.2) — ตารางใช้ได้ทุกความกว้าง (เลื่อนแนวนอนบนจอแคบ) ──
       var vt = document.getElementById('viewtoggle');
@@ -851,6 +878,7 @@ const searchScript = reports.length ? `
           try { localStorage.setItem('idxview', v); } catch (e) {}
           var tp = pages(); if (page > tp) page = tp;         // จำนวนหน้าต่างกัน (ตาราง 25 / ไทล์ 12) → คลี่แพจเจอร์ใหม่ทันที
           render();
+          syncHint();
         };
         vt.addEventListener('click', function (e) { var b = e.target.closest('.viewbtn'); if (b) setView(b.getAttribute('data-view')); });
         var saved = 'tiles';
@@ -861,6 +889,7 @@ const searchScript = reports.length ? `
       syncThead();
       recompute();
       render();
+      syncHint();
     })();
   </script>` : '';
 
@@ -936,28 +965,32 @@ const indexHtml = `<!DOCTYPE html>
   header{background:#12141a;border-radius:26px;padding:0;color:#fff;position:relative;overflow:hidden;box-shadow:var(--shadow-lg)}
   #spectrum{display:flex;height:8px;width:100%}
   #spectrum i{flex:1;height:100%}
-  .hd-in{padding:30px 34px 32px}
+  .hd-in{padding:30px 34px 32px;display:flex;align-items:center;justify-content:space-between;gap:30px}
+  .hd-left{flex:1 1 auto;min-width:0}
   .tag{display:inline-block;font-family:var(--monoff);font-size:10.5px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:12px}
   h1{font-family:var(--display);font-size:38px;font-weight:600;letter-spacing:-1.1px;line-height:1.15}
   .sub{color:rgba(255,255,255,.62);font-size:14.5px;margin-top:8px;font-weight:300;max-width:64ch}
-  .hd-stats{display:flex;flex-wrap:wrap;gap:26px;margin-top:22px;padding-top:20px;border-top:1px solid rgba(255,255,255,.12)}
-  .hd-stats div{display:flex;flex-direction:column;gap:2px}
-  .hd-stats .n{font-family:var(--display);font-size:25px;font-weight:600;letter-spacing:-.8px;line-height:1;font-variant-numeric:tabular-nums}
-  .hd-stats .l{font-family:var(--monoff);font-size:9.5px;letter-spacing:.13em;text-transform:uppercase;color:rgba(255,255,255,.45)}
+  /* การ์ดสถิติ = ปุ่มกรองตลาดในตัว (desktop ชิดขวา · mobile ตกลงใต้ข้อความเป็นแถวแบบเดิม) */
+  .hd-stats{flex:none;display:grid;grid-template-columns:auto auto;gap:6px;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.11);border-radius:20px;padding:12px;margin:0}
+  .hstat{display:flex;flex-direction:column;gap:3px;align-items:flex-start;background:none;border:0;border-radius:13px;padding:11px 18px;color:#fff;font:inherit;text-align:left}
+  button.hstat{cursor:pointer;transition:background .14s}
+  button.hstat:hover:not(.on){background:rgba(255,255,255,.06)}
+  button.hstat.on{background:rgba(255,255,255,.14)}
+  .hstat .n{font-family:var(--display);font-size:25px;font-weight:600;letter-spacing:-.8px;line-height:1;font-variant-numeric:tabular-nums}
+  .hstat .l{font-family:var(--monoff);font-size:9.5px;letter-spacing:.13em;text-transform:uppercase;color:rgba(255,255,255,.45);white-space:nowrap}
+  button.hstat.on .l{color:rgba(255,255,255,.8)}
   .search{margin-top:20px;position:relative}
   .search input{width:100%;font-family:'Sarabun',sans-serif;font-size:15.5px;color:var(--ink);background:var(--card);border:0;border-radius:16px;padding:15px 18px;box-shadow:var(--shadow);outline:none;-webkit-appearance:none;transition:box-shadow .14s}
   .search input:focus{box-shadow:var(--shadow),0 0 0 3px rgba(19,21,27,.14)}
   .search input::placeholder{color:var(--muted)}
   .noresult{text-align:center;color:var(--muted);padding:40px;font-size:14px}
-  .sortbar,.marketbar{display:flex;flex-wrap:wrap;align-items:center;gap:7px;margin-top:13px}
-  .sortlab{font-family:var(--monoff);font-size:9.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);margin-right:5px}
+  .sortbar{display:flex;flex-wrap:wrap;align-items:center;gap:7px;margin-top:13px}
   .sortsep{width:1px;align-self:stretch;background:var(--line-2);margin:3px 4px}
-  .sortbtn,.mktbtn,.viewbtn{font-family:'Sarabun',sans-serif;font-size:13px;color:var(--ink-2);background:var(--card);border:0;border-radius:99px;padding:7px 15px;cursor:pointer;box-shadow:var(--shadow);transition:all .14s}
-  .sortbtn:hover:not(.on),.mktbtn:hover:not(.on),.viewbtn:hover:not(.on){color:var(--ink);transform:translateY(-1px)}
-  .sortbtn.on,.mktbtn.on,.viewbtn.on{background:var(--ink);color:#fff;font-weight:500}
-  .mktbtn .mc{font-family:var(--monoff);font-size:10.5px;opacity:.55;margin-left:3px}
-  .mktbtn.on .mc{opacity:.75}
+  .sortbtn,.viewbtn{font-family:'Sarabun',sans-serif;font-size:13px;color:var(--ink-2);background:var(--card);border:0;border-radius:99px;padding:7px 15px;cursor:pointer;box-shadow:var(--shadow);transition:all .14s}
+  .sortbtn:hover:not(.on),.viewbtn:hover:not(.on){color:var(--ink);transform:translateY(-1px)}
+  .sortbtn.on,.viewbtn.on{background:var(--ink);color:#fff;font-weight:500}
   #viewtoggle{display:inline-flex;gap:6px;flex:none}
+  .tblhint{margin:16px 0 -12px;text-align:center;font-size:12px;color:var(--muted)}
   /* ── ไทล์ (default) ── */
   .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(276px,1fr));gap:18px;margin-top:26px}
   #thead{display:none}
@@ -984,21 +1017,31 @@ const indexHtml = `<!DOCTYPE html>
   .cmetrics{display:flex;flex-wrap:wrap;gap:3px 12px;margin-top:11px;font-family:var(--monoff);font-size:10.5px;color:var(--muted);line-height:1.6}
   .cmetrics .cm b{font-weight:600;color:var(--ink-2)}
   .cmetrics .cm.on{color:var(--cd)} .cmetrics .cm.on b{color:var(--cd)}
-  .cmeta{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:auto;padding-top:12px;border-top:1px solid var(--line)}
-  .go{font-family:var(--display);font-size:13px;font-weight:500;color:var(--cd)}
+  .cmeta{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:auto;padding-top:12px;border-top:1px solid var(--line);white-space:nowrap}
+  .go{font-family:var(--display);font-size:13px;font-weight:500;color:var(--cd);flex:none}
   .cdate,.cviews{font-family:var(--monoff);font-size:10.5px;color:var(--muted)}
+  .cdate{flex:none}
+  .cviews{min-width:0;overflow:hidden;text-overflow:ellipsis}
   .cviews b{font-weight:600;color:var(--ink-2)}
-  /* ── โหมดตาราง (toggle · ทำงานทุกความกว้าง — จอแคบเลื่อนแนวนอน, spec §5.2) ── */
-  .grid.is-table{--cols:104px minmax(190px,2.2fr) repeat(5,68px) 88px;display:block;background:var(--card);border:1px solid var(--line-2);border-radius:16px;overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;box-shadow:var(--shadow)}
-  .grid.is-table #thead{display:grid;grid-template-columns:var(--cols);gap:0 14px;align-items:center;padding:11px 18px;background:#fafbfc;border-bottom:1px solid var(--line-2);min-width:856px;font-family:var(--monoff);font-size:9.5px;letter-spacing:.11em;text-transform:uppercase;color:var(--muted)}
+  /* ── โหมดตาราง (toggle · ทำงานทุกความกว้าง — จอแคบเลื่อนแนวนอน, spec §5.2) ──
+     หัวตารางเข้ม · แถวสลับสี (zebra จาก JS ตามแถวที่มองเห็น) · MOS/Upside เขียว/แดงตามเครื่องหมาย */
+  .grid.is-table{--cols:118px minmax(190px,2.2fr) repeat(5,68px) 78px;display:block;background:var(--card);border:1px solid var(--line-2);border-radius:16px;overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;box-shadow:var(--shadow)}
+  .grid.is-table::-webkit-scrollbar{height:9px}
+  .grid.is-table::-webkit-scrollbar-track{background:transparent}
+  .grid.is-table::-webkit-scrollbar-thumb{background:var(--line-2);border-radius:99px}
+  .grid.is-table #thead{display:grid;grid-template-columns:var(--cols);gap:0 14px;align-items:center;padding:13px 18px;background:#171a21;min-width:856px;font-family:var(--monoff);font-size:9.5px;letter-spacing:.11em;text-transform:uppercase;color:rgba(255,255,255,.55)}
   .grid.is-table #thead .num{text-align:right}
-  #thead span[data-sort]{cursor:pointer}
-  #thead span.on{color:var(--ink);font-weight:600}
-  .grid.is-table .card{display:grid;grid-template-columns:var(--cols);gap:0 14px;align-items:center;border:0;border-bottom:1px solid var(--line);border-left:3px solid var(--c);border-radius:0;padding:10px 18px 10px 15px;box-shadow:none;overflow:visible;min-width:856px}
-  .grid.is-table .card:hover{transform:none;box-shadow:none;background:#fafbfc}
+  #thead span[data-sort]{cursor:pointer;transition:color .14s}
+  #thead span[data-sort]:hover{color:#fff}
+  #thead span.on{color:#fff;font-weight:600}
+  #thead span.on::after{content:"▾";margin-left:3px}
+  .grid.is-table .card{display:grid;grid-template-columns:var(--cols);gap:0 14px;align-items:center;border:0;border-left:3px solid var(--c);border-radius:0;padding:11px 18px 11px 15px;box-shadow:none;overflow:visible;min-width:856px}
+  .grid.is-table .card.alt{background:#f4f6f9}
+  .grid.is-table .card:hover{transform:none;box-shadow:none;background:#e9eef5}
   .grid.is-table .ctop{display:flex;background:none;padding:0;overflow:visible}
   .grid.is-table .ctop::after{display:none}
-  .grid.is-table .badge{font-family:var(--monoff);font-size:12px;color:var(--cd);letter-spacing:.02em}
+  .grid.is-table .badge{font-family:var(--monoff);font-size:12px;font-weight:600;color:var(--cd);letter-spacing:.02em;display:flex;align-items:center;gap:7px}
+  .grid.is-table .badge::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--c);flex:none}
   .grid.is-table .cflag{font-size:12px;opacity:.8}
   .grid.is-table .cbody{display:contents}
   .grid.is-table .cname{font-size:13.5px;font-weight:400;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -1006,7 +1049,10 @@ const indexHtml = `<!DOCTYPE html>
   .grid.is-table .cmetrics{display:contents}
   .grid.is-table .cmetrics .cm{font-size:0;text-align:right;white-space:nowrap;overflow:hidden}
   .grid.is-table .cmetrics .cm b{font-size:11.5px;font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums}
-  .grid.is-table .cmeta{display:flex;justify-content:flex-end;margin:0;padding:0;border:0}
+  .grid.is-table .cm.pos b{color:#067647}
+  .grid.is-table .cm.neg b{color:#b42318}
+  .grid.is-table .cmeta{display:flex;justify-content:flex-end;margin:0;padding:0;border:0;white-space:nowrap}
+  .grid.is-table .cdate{font-size:11px}
   .empty{grid-column:1/-1;text-align:center;padding:56px;background:var(--card);border-radius:20px;color:var(--muted);box-shadow:var(--shadow)}
   .empty .hint{font-size:13px;margin-top:6px}
   .empty code{font-family:var(--monoff);background:var(--bg);padding:2px 7px;border-radius:6px}
@@ -1022,8 +1068,12 @@ const indexHtml = `<!DOCTYPE html>
   /* ── มือถือ (spec §5.5: tap ≥44px · แถบกรองเลื่อนแถวเดียว) ── */
   @media(max-width:820px){
     .wrap{padding:16px 15px 60px}
-    .hd-in{padding:24px 22px 26px} h1{font-size:29px} header{border-radius:20px}
-    .hd-stats{gap:18px} .hd-stats .n{font-size:21px}
+    .hd-in{padding:24px 22px 26px;display:block} h1{font-size:29px} header{border-radius:20px}
+    /* mobile: สถิติกลับไปเป็นแถวใต้เส้นคั่นแบบเดิม (เจ้าของ approve แล้ว) — แต่ยังกดกรองตลาดได้ */
+    .hd-stats{display:flex;flex-wrap:wrap;gap:4px 6px;margin-top:18px;padding:14px 0 0;background:none;border:0;border-top:1px solid rgba(255,255,255,.12);border-radius:0}
+    .hstat{padding:7px 10px;border-radius:11px}
+    .hstat:first-child{margin-left:-10px}
+    .hstat .n{font-size:21px}
     .grid{grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px}
     .badge{font-size:20px} .ctop{padding:15px 17px 13px} .cbody{padding:13px 17px 14px}
   }
@@ -1035,22 +1085,20 @@ const indexHtml = `<!DOCTYPE html>
     .search input{min-height:48px}
     footer a{display:inline-block;padding:12px 4px}
   }
-  @media(max-width:480px){ .grid{grid-template-columns:1fr} h1{font-size:25px} .hd-stats{gap:14px 20px} }
+  @media(max-width:480px){ .grid{grid-template-columns:1fr} h1{font-size:25px} .hd-stats{gap:2px 4px} }
 </style>
 </head>
 <body>
   <div class="wrap">
     <header>${spectrumHtml}<div class="hd-in">
-      <span class="tag">Stock Analysis</span>
-      <h1>รายงานวิเคราะห์หุ้น</h1>
-      <div class="sub">Fair Value · Margin of Safety · จุดเข้าซื้อ · ผลตอบแทนคาดการณ์ 3 ปี</div>
-      <div class="hd-stats">
-        <div><span class="n">${reports.length}</span><span class="l">รายงาน</span></div>
-        <div><span class="n">${mktCount.TH}</span><span class="l">ตลาดไทย</span></div>
-        <div><span class="n">${mktCount.US}</span><span class="l">ตลาดสหรัฐ</span></div>
-        <div><span class="n">${fmtDate(nowISO)}</span><span class="l">อัปเดตล่าสุด</span></div>
+      <div class="hd-left">
+        <span class="tag">Stock Analysis</span>
+        <h1>รายงานวิเคราะห์หุ้น</h1>
+        <div class="sub">Fair Value · Margin of Safety · จุดเข้าซื้อ · ผลตอบแทนคาดการณ์ 3 ปี</div>
       </div>
-    </div></header>${searchBox}${marketBar}${sortBar}
+      ${hdStats}
+    </div></header>${searchBox}${sortBar}
+    <div class="tblhint" id="tblhint" hidden>← เลื่อนตารางไปด้านข้าง เพื่อดูครบทุกคอลัมน์ →</div>
     <div class="grid">
       <div id="thead" aria-hidden="true"><span></span><span>บริษัท</span><span class="num" data-sort="mos">MOS</span><span class="num" data-sort="upside">Upside</span><span class="num" data-sort="pe">P/E</span><span class="num" data-sort="yield">Yield</span><span class="num" data-sort="roe">ROE</span><span class="num" data-sort="updated">อัปเดต</span></div>
 ${reports.length ? cards : emptyState}
