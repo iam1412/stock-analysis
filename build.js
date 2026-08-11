@@ -692,9 +692,9 @@ const hdStat = (mk, n, lab) => canFilterMkt
   : `<div class="hstat"><span class="n">${n}</span><span class="l">${lab}</span></div>`;
 const hdStats = `<div class="hd-stats" id="hdstats"${canFilterMkt ? ' role="group" aria-label="กรองตามตลาด"' : ''}>
         ${hdStat('all', reports.length, 'รายงานทั้งหมด')}
+        <div class="hstat st"><span class="n">${fmtDate(nowISO)}</span><span class="l">อัปเดตล่าสุด</span></div>
         ${hdStat('TH', mktCount.TH, '🇹🇭 ตลาดไทย')}
         ${hdStat('US', mktCount.US, '🇺🇸 ตลาดสหรัฐ')}
-        <div class="hstat st"><span class="n">${fmtDate(nowISO)}</span><span class="l">อัปเดตล่าสุด</span></div>
       </div>`;
 
 // แถบเรียงลำดับ — ค่าเริ่มต้น "ล่าสุด" (อัปเดตล่าสุดก่อน, เรียงฝั่ง server แล้ว);
