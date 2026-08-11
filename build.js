@@ -319,20 +319,31 @@ function stripDecorEmoji(html) {
   return html;
 }
 
+// ป้ายย่อบน nav — ชื่อเต็มยาวรวม ~1,160px ล้นแม้จอ 1280 (feedback เจ้าของ 12 ส.ค.)
+const NAV_SHORT = {
+  'ราคาย้อนหลัง ~1 ปี': 'ราคา ~1 ปี',
+  'การประเมินมูลค่า': 'มูลค่า',
+  'ราคาปัจจุบัน vs โซนต่างๆ': 'โซนราคา',
+  'Margin of Safety': 'MOS',
+  'คาดการณ์ผลตอบแทน 3 ปี': 'ผลตอบแทน 3 ปี',
+  'ปัจจัยบวก & ความเสี่ยง': 'บวก & เสี่ยง',
+  'สรุปภาพรวม': 'สรุป',
+};
 // ── section nav แบบ static (spec §4.3) — สร้างตอน build: ใช้ได้แม้ JS ปิด · scroll-spy เป็น enhancement ──
 function injectSectionNav(html) {
   const secs = [];
   let i = 0;
   html = html.replace(/<section>(\s*<div class="s-head">[\s\S]*?<h2>([\s\S]*?)<\/h2>)/g, (m, rest, title) => {
     const id = 'sec' + (++i);
-    secs.push({ id, title: title.replace(/<[^>]*>/g, '').replace(/\s*\([^)]*\)\s*/g, ' ').trim() });
+    const stripped = title.replace(/<[^>]*>/g, '').replace(/\s*\([^)]*\)\s*/g, ' ').trim();
+    secs.push({ id, title: NAV_SHORT[stripped] || stripped });
     return `<section id="${id}">` + rest;
   });
   if (secs.length < 3) return html; // รายงาน legacy/โครงไม่ครบ → ไม่แทรก (อย่าเดา)
   const nav = `<nav id="secnav" aria-label="สารบัญรายงาน"><div class="sn-in">` +
-    secs.map((s, j) => `<a href="#${s.id}"><b>${j + 1}</b>${esc(s.title)}</a>`).join('') +
+    secs.map((s, j) => `<a href="#${s.id}"><b>${j + 1}</b><span>${esc(s.title)}</span></a>`).join('') +
     `</div></nav>`;
-  const spy = `<script>(function(){var L=[].slice.call(document.querySelectorAll('#secnav a')),S=L.map(function(a){return document.getElementById(a.getAttribute('href').slice(1))});if(!('IntersectionObserver'in window))return;var io=new IntersectionObserver(function(es){es.forEach(function(e){if(!e.isIntersecting)return;var i=S.indexOf(e.target);L.forEach(function(a,j){a.classList.toggle('on',i===j)})})},{rootMargin:'-62px 0px -70% 0px'});S.forEach(function(s){if(s)io.observe(s)})})();</script>`;
+  const spy = `<script>(function(){var L=[].slice.call(document.querySelectorAll('#secnav a')),S=L.map(function(a){return document.getElementById(a.getAttribute('href').slice(1))});if(!('IntersectionObserver'in window))return;var io=new IntersectionObserver(function(es){es.forEach(function(e){if(!e.isIntersecting)return;var i=S.indexOf(e.target);L.forEach(function(a,j){a.classList.toggle('on',i===j);if(i===j)a.scrollIntoView({block:'nearest',inline:'center'})})})},{rootMargin:'-62px 0px -70% 0px'});S.forEach(function(s){if(s)io.observe(s)})})();</script>`;
   const hi = html.indexOf('</header>');
   if (hi === -1) return html;
   html = html.slice(0, hi + 9) + '\n' + nav + html.slice(hi + 9);
@@ -617,8 +628,8 @@ const cards = reports.map((r) => {
       <a class="card" style="--c:${c};--cd:${cd}" data-search="${escAttr((r.symbol + ' ' + r.name + ' ' + r.title + ' ' + (r.desc || '')).toLowerCase())}"${metricAttrs(r.metrics)}${marketAttr(r.metrics)} href="./${encodeURIComponent(r.file)}">
         <div class="ctop"><div class="badge">${esc(r.symbol)}</div>${marketFlag(r.metrics)}</div>
         <div class="cbody">
-          <div class="cname">${esc(r.name)}</div>
-          <div class="ctitle" title="${escAttr(blurb)}">${esc(blurb)}</div>${highlightChip(r.metrics)}${metricStrip(r.metrics)}
+          <div class="cname">${esc(r.name)}</div>${highlightChip(r.metrics)}
+          <div class="ctitle" title="${escAttr(blurb)}">${esc(blurb)}</div>${metricStrip(r.metrics)}
           <div class="cmeta"><span class="go">เปิดรายงาน →</span><span class="cviews" data-sym="${escAttr(r.symbol)}" hidden>👁 <b class="v">0</b> · 👍 <b class="l">0</b> · 👎 <b class="d">0</b></span><span class="cdate">${fmtDate(r.updated)}</span></div>
         </div>
       </a>`;
@@ -929,8 +940,8 @@ const indexHtml = `<!DOCTYPE html>
   .cflag{font-size:15px;line-height:1;flex:none;position:relative;z-index:2}
   .cbody{display:flex;flex-direction:column;padding:15px 20px 16px;flex:1}
   .cname{font-family:var(--display);font-size:16px;font-weight:500;line-height:1.35;letter-spacing:-.25px}
-  .ctitle{font-size:12.5px;color:var(--muted);line-height:1.45;font-weight:300;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;overflow:hidden;min-height:calc(1.45em * 2);margin-top:4px}
-  .hl{display:inline-flex;align-items:center;gap:6px;align-self:flex-start;max-width:100%;margin-top:11px;padding:5px 12px;border-radius:99px;font-size:12px;font-weight:500;line-height:1.3;border:1px solid transparent}
+  .ctitle{font-size:12.5px;color:var(--muted);line-height:1.45;font-weight:300;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;overflow:hidden;min-height:calc(1.45em * 2);margin-top:7px}
+  .hl{display:inline-flex;align-items:center;gap:6px;align-self:flex-start;max-width:100%;margin-top:7px;padding:5px 12px;border-radius:99px;font-size:12px;font-weight:500;line-height:1.3;border:1px solid transparent}
   .hl .hl-v{font-family:var(--monoff);font-weight:600;white-space:nowrap}
   .hl .hl-d{font-weight:300;opacity:.92;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   .hl-val{background:#e7f6ee;color:#066a41;border-color:#bde3ce}

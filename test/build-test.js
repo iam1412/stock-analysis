@@ -229,12 +229,16 @@ ok(b.injectTA(taBody, 'AAPL', null, { currency: 'USD' }, 'assets/ta-abc123.js') 
     '<section><div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2></div></section>' +
     '<section><div class="s-head"><div class="n">2</div><h2>ราคา</h2></div></section>' +
     '<section><div class="s-head"><div class="n">3</div><h2>มูลค่า</h2></div></section>' +
+    '<section><div class="s-head"><div class="n">4</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2></div></section>' +
     '</div></body>';
   const nav = b.injectSectionNav(doc);
   ok(nav.includes('id="secnav"'), 'injectSectionNav: มี nav');
   ok(nav.indexOf('id="secnav"') > nav.indexOf('</header>'), 'injectSectionNav: nav อยู่หลัง header');
   ok(nav.includes('<section id="sec1">'), 'injectSectionNav: section ได้ id');
-  ok(nav.includes('>ข้อมูลสำคัญ</a>') || /<a[^>]*>(<b>1<\/b>)?ข้อมูลสำคัญ<\/a>/.test(nav), 'injectSectionNav: ตัดวงเล็บอังกฤษออกจากชื่อ');
+  ok(nav.includes('<span>ข้อมูลสำคัญ</span>'), 'injectSectionNav: ตัดวงเล็บอังกฤษออกจากชื่อ');
+  ok(nav.includes('<span>ข้อมูลสำคัญ</span>'), 'nav: ป้ายห่อ span (ellipsis ได้)');
+  // ป้ายย่อ: หัวข้อยาวถูก map เป็นชื่อสั้น
+  ok(nav.includes('<span>ผลตอบแทน 3 ปี</span>'), 'injectSectionNav: NAV_SHORT map "คาดการณ์ผลตอบแทน 3 ปี" → "ผลตอบแทน 3 ปี"');
   ok(b.injectSectionNav('<header>H</header><section><h2>เดียว</h2></section>') .includes('secnav') === false, 'injectSectionNav: <3 section (legacy) → ไม่แทรก');
 }
 
