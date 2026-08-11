@@ -1,0 +1,139 @@
+/* ══ MOCKUP หน้าแรก B — SCREENER ═══════════════════════════════════════
+   เหตุผล: 908 รายงาน · การ์ด 3 ใบ/แถว = ต้องเลื่อนราว 300 แถวกว่าจะดูครบ
+   ทางนี้เปลี่ยนเป็น "ตารางคัดกรอง" — เห็น ~20 ตัว/จอ ตัวเลขเรียงเป็นคอลัมน์
+   ⇒ เทียบข้ามหุ้นได้จริง (ของเดิมเทียบไม่ได้เพราะเลขลอยอยู่คนละที่)
+   สีแบรนด์ = เส้นซ้ายของแถว (ยังเห็นว่าแต่ละตัวไม่เหมือนกัน แต่ไม่รก)
+   ══════════════════════════════════════════════════════════════════════ */
+:root{
+  --bg:#f3f4f6; --card:#fff; --ink:#13151b; --ink-2:#3c424e; --muted:#6b7280;
+  --line:#e9ebef; --line-2:#d4d8de;
+  --blue:#13151b; --blue-d:#13151b;
+  --shadow:0 1px 2px rgba(16,24,40,.05),0 8px 24px rgba(16,24,40,.06);
+  --shadow-lg:0 2px 6px rgba(16,24,40,.07),0 18px 44px rgba(16,24,40,.12);
+  --display:'Kanit',system-ui,sans-serif;
+  --mono:'IBM Plex Mono',ui-monospace,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Sarabun',system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.68;
+  -webkit-font-smoothing:antialiased}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.wrap{max-width:1320px;margin:0 auto;padding:22px 20px 72px}
+
+/* ── Header (เหมือน A แต่เตี้ยกว่า — ให้ตารางขึ้นมาเร็ว) ─────────── */
+header{background:#12141a;border-radius:22px;padding:0;color:#fff;position:relative;overflow:hidden;box-shadow:var(--shadow-lg)}
+header::after{display:none}
+#spectrum{display:flex;height:6px;width:100%}
+#spectrum i{flex:1;height:100%}
+.hd-in{padding:24px 30px 26px}
+.tag{display:inline-block;font-family:var(--mono);font-size:10px;font-weight:500;letter-spacing:.14em;
+  text-transform:uppercase;background:transparent;color:rgba(255,255,255,.5);margin-bottom:10px}
+h1{font-family:var(--display);font-size:31px;font-weight:600;letter-spacing:-.9px;line-height:1.15}
+.sub{color:rgba(255,255,255,.6);font-size:13.5px;margin-top:6px;font-weight:300}
+.hd-stats{display:flex;flex-wrap:wrap;gap:22px;margin-top:18px;padding-top:16px;border-top:1px solid rgba(255,255,255,.12)}
+.hd-stats div{display:flex;flex-direction:column;gap:1px}
+.hd-stats .n{font-family:var(--display);font-size:21px;font-weight:600;letter-spacing:-.6px;line-height:1;
+  font-variant-numeric:tabular-nums}
+.hd-stats .l{font-family:var(--mono);font-size:9px;letter-spacing:.13em;text-transform:uppercase;color:rgba(255,255,255,.45)}
+
+/* ── Search + chips ───────────────────────────────────────────────── */
+.search{margin-top:18px;position:relative}
+.search::before{content:"";position:absolute;left:18px;top:50%;width:15px;height:15px;transform:translateY(-50%);
+  background:currentColor;color:var(--muted);pointer-events:none;
+  -webkit-mask:no-repeat center/contain url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.4' stroke-linecap='round'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='M20 20l-3.5-3.5'/%3E%3C/svg%3E");
+  mask:no-repeat center/contain url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.4' stroke-linecap='round'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='M20 20l-3.5-3.5'/%3E%3C/svg%3E")}
+.search input{width:100%;font-family:'Sarabun',sans-serif;font-size:15px;color:var(--ink);background:var(--card);
+  border:1.5px solid var(--line-2);border-radius:14px;padding:13px 16px 13px 44px;outline:none;-webkit-appearance:none;
+  transition:border-color .14s,box-shadow .14s}
+.search input:focus{border-color:var(--ink);box-shadow:0 0 0 4px rgba(19,21,27,.08)}
+.search input::placeholder{color:var(--muted)}
+.noresult{text-align:center;color:var(--muted);padding:40px;font-size:14px}
+.sortbar,.marketbar{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:12px}
+.sortlab{font-family:var(--mono);font-size:9.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);margin-right:4px}
+.sortsep{width:1px;align-self:stretch;background:var(--line-2);margin:3px 4px}
+.sortbtn,.mktbtn{font-family:'Sarabun',sans-serif;font-size:12.5px;color:var(--ink-2);background:var(--card);
+  border:1px solid var(--line-2);border-radius:99px;padding:6px 14px;cursor:pointer;transition:all .14s}
+.sortbtn:hover:not(.on),.mktbtn:hover:not(.on){border-color:var(--ink-2);color:var(--ink)}
+.sortbtn.on,.mktbtn.on{background:var(--ink);border-color:var(--ink);color:#fff;font-weight:500}
+.mktbtn .mc{font-family:var(--mono);font-size:10px;opacity:.55;margin-left:3px}
+.mktbtn.on .mc{opacity:.75}
+
+/* ══ ตาราง — .grid = ตัวตาราง, .card = แถว ══════════════════════════ */
+/* --cols อยู่บน .grid เพื่อให้ทั้งหัวตาราง (#thead) และแถว (.card) ใช้ค่าเดียวกัน — ไม่งั้นคอลัมน์ไม่ตรง */
+.grid{--cols:104px minmax(190px,2.2fr) repeat(5,68px) 88px;
+  display:block;margin-top:20px;background:var(--card);border:1px solid var(--line-2);border-radius:16px;
+  overflow:hidden;box-shadow:var(--shadow)}
+
+/* หัวคอลัมน์ (inject เข้ามา) — ต้องกว้างตรงกับแถว */
+#thead{display:grid;grid-template-columns:var(--cols);gap:0 14px;align-items:center;padding:11px 18px;
+  background:#fafbfc;border-bottom:1px solid var(--line-2);position:sticky;top:0;z-index:5;
+  font-family:var(--mono);font-size:9.5px;letter-spacing:.11em;text-transform:uppercase;color:var(--muted)}
+#thead .num{text-align:right}
+
+.card{--c:#6b7280;--cd:#4b5563;
+  display:grid;grid-template-columns:var(--cols);gap:0 14px;align-items:center;
+  background:var(--card);border:0;border-bottom:1px solid var(--line);border-left:3px solid var(--c);
+  border-radius:0;padding:10px 18px 10px 15px;text-decoration:none;color:inherit;box-shadow:none;
+  transition:background .12s ease}
+.card:last-child{border-bottom:0}
+.card:hover{transform:none;box-shadow:none;background:#fafbfc}
+.card::before{display:none}
+
+.ctop{grid-column:1;display:flex;align-items:center;gap:6px}
+.cflag{font-size:12px;line-height:1;flex:none;opacity:.8;order:2}
+.badge{font-family:var(--mono);font-weight:600;font-size:12px;letter-spacing:.02em;color:var(--cd);
+  background:transparent;border:0;padding:0;border-radius:0;order:1}
+.cname{grid-column:2;font-family:var(--display);font-size:13.5px;font-weight:400;margin:0;line-height:1.4;
+  letter-spacing:-.1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ctitle{display:none}
+.hl{display:none}
+
+/* display:contents ⇒ .cm 5 ตัวกลายเป็นคอลัมน์ของแถวโดยตรง (เลขตรงหัวตารางเป๊ะ) */
+.cmetrics{display:contents}
+.cmetrics .cm{font-family:var(--mono);font-size:11.5px;color:var(--muted);text-align:right;
+  font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden}
+.cmetrics .cm b{font-weight:600;color:var(--ink)}
+.cmetrics .cm.on b{color:var(--cd)}
+/* ป้ายชื่อ metric ซ้ำในทุกแถวไม่ต้องแสดง — มีที่หัวตารางแล้ว */
+.cmetrics .cm{font-size:0}
+.cmetrics .cm b{font-size:11.5px}
+
+.cmeta{grid-column:8;display:flex;align-items:center;justify-content:flex-end;gap:9px;margin:0;padding:0;border:0}
+.go{display:none}
+.cdate{font-family:var(--mono);font-size:10.5px;color:var(--muted)}
+.cviews{display:none}
+
+.empty{text-align:center;padding:56px;color:var(--muted)}
+.empty .hint{font-size:13px;margin-top:6px}
+.empty code{font-family:var(--mono);background:var(--bg);padding:2px 7px;border-radius:6px}
+
+.pager{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-top:26px}
+.pg{font-family:var(--mono);font-size:12.5px;min-width:38px;height:38px;padding:0 11px;border:1px solid var(--line-2);
+  background:var(--card);color:var(--ink-2);border-radius:11px;cursor:pointer;transition:all .14s}
+.pg.on{background:var(--ink);border-color:var(--ink);color:#fff;font-weight:600}
+.pg:disabled{opacity:.35;cursor:default}
+.pg:hover:not(:disabled):not(.on){border-color:var(--ink-2);color:var(--ink)}
+.pg-gap{display:flex;align-items:flex-end;min-width:20px;height:38px;color:var(--muted);font-size:13px;justify-content:center}
+
+footer{margin-top:36px;text-align:center;color:var(--muted);font-size:12px;line-height:1.9;font-weight:300}
+footer a{color:var(--ink-2);text-decoration:none;border-bottom:1px solid var(--line-2)}
+footer b{font-weight:500;color:var(--ink-2)}
+
+/* ── มือถือ: ตารางกว้างเกิน → กลับเป็นการ์ด ─────────────────────── */
+@media(max-width:900px){
+  #thead{display:none}
+  .grid{border-radius:14px}
+  .grid{--cols:none}
+  .card{display:flex;flex-direction:column;align-items:flex-start;gap:3px;padding:14px 16px 13px}
+  .ctop{width:100%;justify-content:space-between}
+  .badge{font-size:12.5px}
+  .cname{white-space:normal;font-size:15px;margin-top:3px}
+  .ctitle{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;overflow:hidden;
+    font-size:12px;color:var(--muted);font-weight:300;line-height:1.45;margin-top:2px}
+  .cmetrics{display:flex;flex-wrap:wrap;gap:2px 12px;margin-top:8px}
+  .cmetrics .cm{font-size:10.5px;text-align:left}
+  .cmeta{width:100%;justify-content:flex-start;margin-top:7px}
+}
+@media(max-width:480px){
+  .wrap{padding:16px 14px 60px} .hd-in{padding:20px 18px 22px} h1{font-size:25px}
+  .sortbtn,.mktbtn{padding:7px 13px}
+}

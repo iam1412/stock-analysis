@@ -332,16 +332,35 @@ section{margin-top:36px}
 footer{text-align:center;font-size:11.5px;color:var(--muted);margin-top:24px}
 footer a{color:var(--blue-d)}
 
-/* ── มือถือ (spec §4.1 + §5.5: 3 breakpoint · tap ≥44px) ── */
+/* ── มือถือ (spec §4.1 + §5.5 รวม feedback เจ้าของ 11 ส.ค.: แถวสองของเบียดกัน → ซ้อนแนวตั้ง) ── */
 @media(max-width:1024px){ .wrap{max-width:920px} }
 @media(max-width:760px){
   .g4{grid-template-columns:repeat(2,1fr)} .g3{grid-template-columns:repeat(2,1fr)}
   .scn{grid-template-columns:1fr} .cr{grid-template-columns:1fr} .vgrid{grid-template-columns:1fr}
   .px{font-size:46px} h1{font-size:26px} .px-meta{margin-left:0;text-align:left;width:100%}
   header{padding:24px 20px;border-radius:20px} .verdict{padding:24px 20px;border-radius:20px}
-  .ta-btn,.ta-tog,.votebar .vbtn{min-height:44px}
+  /* หัวข้อ section: ชื่อเต็มแถว · hint บรรทัดใหม่ของตัวเอง (spec §5.5 ข้อ 4) */
+  .s-head{flex-wrap:wrap;row-gap:3px}
+  .s-head h2{font-size:18px;flex:1 1 0;min-width:0}
+  .s-head .hint{flex-basis:100%;order:9;margin-left:43px;text-align:left;font-size:11.5px;line-height:1.55}
+  /* กล่อง MOS / valuation / fv-box: ซ้อนแนวตั้ง เลิกเบียดแนวนอน */
+  .mos-verdict{flex-direction:column;align-items:flex-start;gap:8px}
+  .vmethod{flex-direction:column;align-items:flex-start;gap:6px}
+  .vmethod .mdesc{max-width:none}
+  .vmethod .mval{text-align:left}
+  .fv-box{flex-direction:column;align-items:flex-start;gap:4px}
+  /* scale ใต้ gauge: grid 3 คอลัมน์ ชิดซ้าย (!important ทับ inline style ของ report) */
+  .scale{display:grid;grid-template-columns:repeat(3,1fr);gap:8px 12px;margin-top:18px}
+  .scale span{text-align:left!important}
+  /* ตัวหนังสือรอง: 300→400 บนจอเล็ก (Sarabun บางอ่านยาก) */
+  .sub,.metric .d,.vmethod .mdesc,.mos-verdict .txt,.scn ul,.cr li,.verdict p,.zone,.disc{font-weight:400}
+  .metric .d{font-size:12px} .metric .k{font-size:12.5px}
+  /* tap targets ≥44px */
+  .ta-btn,.ta-tog{min-height:44px}
+  .votebar .vbtn{min-height:44px;padding:6px 14px}
   .calc input{min-height:44px}
   #secnav a{min-height:44px}
+  footer a{display:inline-block;padding:12px 4px}
 }
 @media(max-width:480px){
   .g4,.g3,.g2{grid-template-columns:1fr}
@@ -788,6 +807,10 @@ JSON.stringify({overflow:out.length, smallTaps:taps.length});
 ```
 
 และวัดป้าย gauge ที่ใบ marker ชิดกัน (BH หรือ TER): rect เต็มของ `#mCur .lab` กับ `#mFair .lab` — ต้อง `hOverlap===0 || vOverlap===0`
+
+เพิ่มตามหลัก spec §5.5 ท้ายหมายเหตุ: ตรวจ **ทุกแถวที่มีของ 2 อย่างเบียดแนวนอน** ที่ 375px —
+`.s-head` (h2 = 1 บรรทัดยกเว้นชื่อยาวจริง + hint บรรทัดตัวเอง) · `.mos-verdict` (ซ้อนตั้ง) · `.vmethod` (ซ้อนตั้ง) ·
+`.fv-box` (ซ้อนตั้ง) · `.scale` (grid 88px เท่ากัน) — วัดด้วย getBoundingClientRect ไม่ใช่ดูด้วยตา
 
 - [ ] **Step 4: เกณฑ์เสร็จข้อ 4 ของ spec** — เปิดรายงานสีต่างกัน ≥5 ใบ (ZTS เขียว / CPN แดง / AAPL ฟ้า / CAT ทอง / FIVE บานเย็น) ดูว่าอ่านออกทุกใบ ไม่มีจุดสีตีกัน
 

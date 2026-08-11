@@ -1,0 +1,214 @@
+/* ══ MOCKUP A — TERMINAL ═════════════════════════════════════════════════
+   เทอร์มินัลเทรดมืออาชีพ: พื้นเข้ม เส้นบาง ตัวเลขนำ ไม่มีเงา ไม่มีอีโมจิ
+   ตัวเลข = พระเอก (IBM Plex Mono, tabular) · accent ใช้เป็น "ไฟสถานะ" ไม่ใช่พื้น
+   ══════════════════════════════════════════════════════════════════════ */
+:root{
+  --bg:#0b0e13; --panel:#12161e; --panel-2:#171c26; --line:#232a37; --line-2:#2e3646;
+  --ink:#e8ecf3; --ink-2:#aab4c5; --muted:#6f7b90;
+  --blue:__RD_ACCENT__; --blue-d:__RD_ACCENTD__;
+  --green:#3ddc84; --red:#ff5f56; --yellow:#ffc24b; --orange:#ff9f45;
+  --green-soft:rgba(61,220,132,.12); --red-soft:rgba(255,95,86,.12);
+  --amber-soft:rgba(255,194,75,.12); --blue-soft:rgba(255,255,255,.05);
+  --dark-grad:__RD_DARKGRAD__; --glow:__RD_GLOW__; --sub-col:__RD_SUBCOL__; --header-muted:__RD_HMUTED__;
+  --chg-bg:__RD_CHGBG__; --chg-fg:__RD_CHGFG__; --badge:__RD_BADGE__;
+  --verdict-text:__RD_VTEXT__; --vcell-k:__RD_VCELLK__;
+  --shadow:none;
+  --mono:'IBM Plex Mono',ui-monospace,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Chakra Petch','Sarabun',system-ui,sans-serif;background:var(--bg);color:var(--ink);
+  line-height:1.62;-webkit-font-smoothing:antialiased;
+  background-image:linear-gradient(rgba(255,255,255,.014) 1px,transparent 1px);background-size:100% 3px}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.wrap{max-width:1180px;margin:0 auto;padding:0 18px 72px}
+
+/* ── Header: แถบสถานะ ไม่ใช่การ์ดโค้ง ─────────────────────────────── */
+header{background:var(--panel);border:1px solid var(--line);border-top:2px solid var(--blue);
+  border-radius:0 0 3px 3px;padding:20px 24px 22px;color:var(--ink);position:relative;overflow:hidden}
+header::after{content:"";position:absolute;right:-60px;top:-90px;width:320px;height:320px;border-radius:50%;
+  background:radial-gradient(circle,var(--glow),transparent 68%);opacity:.5}
+.gdots{display:inline-flex;gap:4px;margin-bottom:13px}
+.gdots span{width:7px;height:7px;border-radius:1px}
+.tag{display:inline-block;font-family:var(--mono);font-size:10.5px;font-weight:500;letter-spacing:.08em;
+  text-transform:uppercase;padding:3px 8px;border-radius:3px;background:transparent;border:1px solid var(--line-2);
+  color:var(--ink-2);margin-right:5px}
+h1{font-size:27px;font-weight:600;letter-spacing:-.2px;margin:9px 0 3px;position:relative;z-index:2}
+.sub{color:var(--ink-2);font-size:13.5px;font-family:'Sarabun',sans-serif;max-width:78ch;position:relative;z-index:2}
+.price-row{display:flex;align-items:flex-end;gap:20px;flex-wrap:wrap;margin-top:20px;padding-top:18px;
+  border-top:1px solid var(--line);position:relative;z-index:2}
+.px{font-family:var(--mono);font-size:46px;font-weight:600;letter-spacing:-2px;line-height:1;font-variant-numeric:tabular-nums}
+.px small{font-family:'Chakra Petch',sans-serif;font-size:13px;font-weight:500;color:var(--muted);
+  margin-left:8px;letter-spacing:0}
+.chg{font-family:var(--mono);font-weight:600;font-size:14px;padding:5px 10px;border-radius:3px;
+  background:var(--chg-bg);color:var(--chg-fg)}
+.px-meta{font-family:var(--mono);font-size:11px;color:var(--muted);margin-left:auto;text-align:right;line-height:1.75}
+
+/* ── Section: หัวข้อเป็นป้ายเล็ก + เส้นยาว ───────────────────────── */
+section{margin-top:34px}
+.s-head{display:flex;align-items:center;gap:11px;margin:0 0 14px}
+.s-head .n{width:20px;height:20px;border-radius:2px;background:transparent;border:1px solid var(--blue);
+  color:var(--blue);display:grid;place-items:center;font-family:var(--mono);font-size:10.5px;font-weight:600;flex:none}
+.s-head h2{font-size:13px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--ink);white-space:nowrap}
+.s-head::after{content:"";flex:1;height:1px;background:var(--line)}
+.s-head .hint{font-family:var(--mono);font-size:10.5px;color:var(--muted);margin-left:0;order:9;white-space:nowrap}
+
+/* ── Metrics: ตารางเซลล์ชิดกัน ไม่ใช่การ์ดลอย ───────────────────── */
+.grid{display:grid;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:3px;overflow:hidden}
+.g4{grid-template-columns:repeat(4,1fr)} .g3{grid-template-columns:repeat(3,1fr)} .g2{grid-template-columns:repeat(2,1fr)}
+.metric{background:var(--panel);border:0;border-radius:0;padding:15px 16px 14px;position:relative;transition:background .12s}
+.metric:hover{background:var(--panel-2)}
+.metric .k{font-family:var(--mono);font-size:10px;font-weight:500;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--muted);display:flex;align-items:center;gap:5px}
+.metric .v{font-family:var(--mono);font-size:25px;font-weight:600;margin-top:6px;letter-spacing:-1px;
+  font-variant-numeric:tabular-nums;line-height:1.15}
+.metric .d{font-size:11.5px;color:var(--ink-2);margin-top:5px;font-family:'Sarabun',sans-serif;line-height:1.5}
+.pos{color:var(--green)} .neg{color:var(--red)} .neu{color:var(--yellow)}
+.pill{font-family:var(--mono);font-size:9.5px;font-weight:600;padding:1px 6px;border-radius:2px;vertical-align:middle}
+.pill.g{background:var(--green-soft);color:var(--green)} .pill.r{background:var(--red-soft);color:var(--red)}
+.pill.a{background:var(--amber-soft);color:var(--yellow)}
+
+.card{background:var(--panel);border:1px solid var(--line);border-radius:3px;padding:20px 22px}
+
+/* ── Chart: ครอบพื้นสว่าง เพราะ engine วาดด้วยสีโทนสว่าง (ไม่งั้นดูพัง) ── */
+.chart-wrap{padding:14px 12px 6px;background:#f4f6fa;border-radius:3px;margin:-2px 0 0}
+.legend{display:flex;gap:18px;font-family:var(--mono);font-size:10.5px;color:var(--muted);margin-top:13px;flex-wrap:wrap}
+.legend i{display:inline-block;width:12px;height:2px;border-radius:0;vertical-align:middle;margin-right:6px}
+
+/* ── Gauge ────────────────────────────────────────────────────────── */
+.gauge{margin:10px 0 4px}
+.gbar{position:relative;height:34px;border-radius:2px;overflow:hidden;
+  background:linear-gradient(90deg,#1e8e3e 0%,#34a853 22%,#f9ab00 46%,#ea4335 100%)}
+.gbar .seg-label{position:absolute;top:50%;transform:translate(-50%,-50%);font-family:var(--mono);font-size:9.5px;
+  font-weight:600;letter-spacing:.05em;color:#fff;background:rgba(0,0,0,.5);padding:2px 7px;border-radius:2px;white-space:nowrap}
+.marker{position:absolute;top:-5px;bottom:-5px;width:2px;background:#fff;border-radius:0}
+.marker .lab{position:absolute;top:-32px;left:50%;transform:translateX(-50%);background:#fff;color:#0b0e13;
+  font-family:var(--mono);font-size:10.5px;font-weight:600;padding:3px 8px;border-radius:2px;white-space:nowrap}
+.marker .lab::after{content:"";position:absolute;bottom:-3px;left:50%;transform:translateX(-50%) rotate(45deg);
+  width:7px;height:7px;background:#fff}
+.marker.cur{background:var(--blue)} .marker.cur .lab{background:var(--blue);color:#08130a}
+.marker.cur .lab::after{background:var(--blue)}
+.scale{display:flex;justify-content:space-between;font-family:var(--mono);font-size:10px;color:var(--muted);margin-top:16px}
+.scale small{color:var(--muted);opacity:.75}
+
+/* ── Valuation ────────────────────────────────────────────────────── */
+.vmethod{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 0;border-bottom:1px solid var(--line)}
+.vmethod:last-child{border-bottom:none}
+.vmethod .mname{font-size:13px;font-weight:600;letter-spacing:.02em}
+.vmethod .mdesc{font-family:'Sarabun',sans-serif;font-size:11.5px;color:var(--muted);margin-top:2px;line-height:1.55}
+.vmethod .mval{font-family:var(--mono);font-size:21px;font-weight:600;text-align:right;letter-spacing:-.5px;
+  font-variant-numeric:tabular-nums;white-space:nowrap}
+.fv-box{margin-top:16px;background:var(--panel-2);border:1px solid var(--line-2);border-left:2px solid var(--blue);
+  border-radius:2px;padding:16px 18px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.fv-box .l{font-family:var(--mono);font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-2);font-weight:500}
+.fv-box .l span{text-transform:none!important;letter-spacing:0!important;color:var(--muted)!important}
+.fv-box .r{font-family:var(--mono);font-size:31px;font-weight:600;color:var(--ink);letter-spacing:-1.5px;
+  font-variant-numeric:tabular-nums}
+
+/* ── MOS ──────────────────────────────────────────────────────────── */
+.mos-verdict{border-radius:2px;padding:17px 19px;margin-bottom:16px;display:flex;align-items:center;gap:17px;
+  border:1px solid var(--line-2);border-left-width:2px}
+.mos-verdict.bad{background:var(--red-soft);border-left-color:var(--red)}
+.mos-verdict.ok{background:var(--amber-soft);border-left-color:var(--yellow)}
+.mos-verdict.good{background:var(--green-soft);border-left-color:var(--green)}
+.mos-verdict .big{font-family:var(--mono);font-size:36px;font-weight:600;letter-spacing:-2px;flex:none;
+  font-variant-numeric:tabular-nums;line-height:1}
+.mos-verdict.bad .big{color:var(--red)} .mos-verdict.ok .big{color:var(--yellow)} .mos-verdict.good .big{color:var(--green)}
+.mos-verdict .txt{font-family:'Sarabun',sans-serif;font-size:12.5px;color:var(--ink-2);line-height:1.6}
+.mos-verdict .txt b{font-size:13.5px;color:var(--ink);font-weight:600}
+.calc{margin-top:18px;border:1px solid var(--line);border-radius:2px;padding:16px 18px;background:var(--panel-2)}
+.calc label{font-family:var(--mono);font-size:10px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);
+  font-weight:500;display:block;margin-bottom:9px}
+.calc-row{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.calc input{font-family:var(--mono);font-size:17px;font-weight:600;border:1px solid var(--line-2);background:var(--bg);
+  color:var(--ink);border-radius:2px;padding:9px 12px;width:150px;outline:none;font-variant-numeric:tabular-nums}
+.calc input:focus{border-color:var(--blue);box-shadow:0 0 0 2px var(--glow)}
+.calc-out{font-family:var(--mono);font-size:13px;font-weight:500;color:var(--ink-2)}
+
+/* ── Scenarios ────────────────────────────────────────────────────── */
+.scn{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:3px;overflow:hidden}
+.scn .col{border:0;border-radius:0;background:var(--panel)}
+.scn .top{padding:11px 16px;color:var(--ink);font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.08em;
+  text-transform:uppercase;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line)}
+.scn .bear .top{background:var(--red-soft);color:var(--red)}
+.scn .base .top{background:var(--blue-soft);color:var(--ink)}
+.scn .bull .top{background:var(--green-soft);color:var(--green)}
+.scn .body{padding:16px}
+.scn .tgt{font-family:var(--mono);font-size:27px;font-weight:600;letter-spacing:-1.2px;font-variant-numeric:tabular-nums;line-height:1.1}
+.scn .ret{font-family:var(--mono);font-size:12.5px;font-weight:600;margin-top:4px}
+.scn ul{list-style:none;margin-top:13px;font-size:11.5px;color:var(--muted)}
+.scn li{display:flex;justify-content:space-between;gap:10px;padding:5px 0;border-bottom:1px solid var(--line)}
+.scn li:last-child{border:none}
+.scn li span:first-child{font-family:var(--mono);font-size:10px;letter-spacing:.05em;text-transform:uppercase;flex:none}
+.scn li span:last-child{font-weight:500;color:var(--ink-2);text-align:right;font-family:'Sarabun',sans-serif;font-size:11.5px}
+
+/* ── Catalyst / Risk ──────────────────────────────────────────────── */
+.cr{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.cr .box{border-radius:3px;padding:18px 20px;border:1px solid var(--line);background:var(--panel)}
+.cr .box.cat{border-top:2px solid var(--green)} .cr .box.risk{border-top:2px solid var(--red)}
+.cr h3{font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
+  display:flex;align-items:center;gap:9px;margin-bottom:14px;color:var(--ink)}
+.cr .ic{width:18px;height:18px;border-radius:2px;display:grid;place-items:center;font-size:9px;flex:none}
+.cr .cat .ic{background:var(--green-soft);color:var(--green)} .cr .risk .ic{background:var(--red-soft);color:var(--red)}
+.cr ul{list-style:none}
+.cr li{font-family:'Sarabun',sans-serif;font-size:12.5px;padding:10px 0;border-bottom:1px solid var(--line);
+  display:flex;gap:10px;color:var(--ink-2);line-height:1.6}
+.cr li:last-child{border:none}
+.cr li::before{content:"";width:4px;height:4px;border-radius:0;margin-top:9px;flex:none}
+.cr .cat li::before{background:var(--green)} .cr .risk li::before{background:var(--red)}
+.cr li b{font-weight:600;color:var(--ink)}
+
+/* ── Verdict ──────────────────────────────────────────────────────── */
+.verdict{background:var(--panel);border:1px solid var(--line-2);border-top:2px solid var(--blue);color:var(--ink);
+  border-radius:3px;padding:24px 26px}
+.verdict h2{font-size:19px;font-weight:600;margin-bottom:8px;letter-spacing:-.2px}
+.verdict p{color:var(--ink-2);font-family:'Sarabun',sans-serif;font-size:13px;margin-bottom:16px;line-height:1.7;max-width:82ch}
+.vgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);
+  border-radius:2px;overflow:hidden;margin-top:6px}
+.vcell{background:var(--panel-2);border:0;border-radius:0;padding:14px 16px}
+.vcell .k{font-family:var(--mono);font-size:9.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);font-weight:500}
+.vcell .v{font-family:var(--mono);font-size:17px;font-weight:600;margin-top:5px;font-variant-numeric:tabular-nums}
+.zone{margin-top:18px;font-family:'Sarabun',sans-serif;font-size:12.5px;color:var(--ink-2);background:var(--blue-soft);
+  border-left:2px solid var(--yellow);border-radius:0 2px 2px 0;padding:13px 16px;line-height:1.7}
+.zone b{color:var(--ink);font-weight:600}
+
+.disc{margin-top:30px;font-family:'Sarabun',sans-serif;font-size:11.5px;color:var(--muted);background:var(--panel);
+  border:1px solid var(--line);border-radius:3px;padding:15px 17px;line-height:1.75}
+.disc b{color:var(--ink-2)}
+footer{text-align:center;font-family:var(--mono);font-size:10.5px;color:var(--muted);margin-top:24px;letter-spacing:.03em}
+footer a{color:var(--ink-2)}
+
+/* ── vote bar / TA (override ก้อน <style> ที่ build inject ทีหลัง) ── */
+.votebar .vbtn{background:var(--panel-2)!important;border-color:var(--line-2)!important;color:var(--ink-2)!important;border-radius:2px!important}
+.votebar .vbtn:hover{border-color:var(--blue)!important;color:var(--blue)!important}
+.votebar .vbtn.on{background:var(--blue-soft)!important;border-color:var(--blue)!important;color:var(--blue)!important}
+.ta-box{margin-top:2px}
+.ta-chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:13px;align-items:center}
+.ta-chip{font-size:10.5px;font-family:var(--mono);padding:3px 9px;border-radius:2px;border:1px solid var(--line-2);
+  color:var(--muted);background:var(--panel-2)}
+.ta-chip.pos{color:var(--green);border-color:rgba(61,220,132,.3);background:var(--green-soft)}
+.ta-chip.neg{color:var(--red);border-color:rgba(255,95,86,.3);background:var(--red-soft)}
+.ta-attr{font-size:10px;color:var(--muted);margin-left:auto}
+.ta-attr a{color:inherit}
+.ta-toolbar{display:flex;flex-wrap:wrap;gap:6px 14px;margin-bottom:10px;align-items:center}
+.ta-tgroup{display:inline-flex;gap:2px;background:var(--panel-2);border:1px solid var(--line);border-radius:3px;padding:2px}
+.ta-acts{margin-left:auto}
+.ta-btn{font-size:10.5px;font-family:var(--mono);border:0;background:transparent;color:var(--muted);padding:3px 9px;
+  border-radius:2px;cursor:pointer;line-height:1.5}
+.ta-btn:hover{background:var(--line);color:var(--ink-2)}
+.ta-btn.on{background:var(--blue);color:#08130a;font-weight:600;box-shadow:none}
+.ta-btn:disabled{opacity:.4;cursor:wait}
+.ta-legend{position:absolute;top:6px;left:8px;z-index:3;font-size:10.5px;font-family:var(--mono);color:#6b7383;
+  background:rgba(255,255,255,.82);border-radius:2px;padding:1px 6px;pointer-events:none;white-space:nowrap}
+.ta-legend b{color:#1f2530;font-weight:600}
+.ta-toggles{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.ta-tog{font-size:10.5px;font-family:var(--mono);border:1px solid var(--line-2);background:var(--panel-2);color:var(--ink-2);
+  padding:2px 9px;border-radius:2px;cursor:pointer}
+.ta-tog.off{color:var(--muted);background:transparent;text-decoration:line-through}
+
+@media(max-width:820px){
+  .g4{grid-template-columns:repeat(2,1fr)} .g3{grid-template-columns:repeat(2,1fr)}
+  .scn{grid-template-columns:1fr} .cr{grid-template-columns:1fr} .vgrid{grid-template-columns:1fr}
+  .px{font-size:38px} h1{font-size:22px} .px-meta{margin-left:0;text-align:left;width:100%}
+  .s-head h2{white-space:normal}
+}
+@media print{.ta-box{display:none}#priceChart{display:block!important}}
