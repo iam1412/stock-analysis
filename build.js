@@ -299,6 +299,41 @@ function injectViewVoteScript(html, symbol) {
   return bi === -1 ? html + script : html.slice(0, bi) + script + html.slice(bi);
 }
 
+// ── ถอดอีโมจิประดับ (spec §4.3) — ยิงเฉพาะ 5 ช่องที่รู้จักจาก skeleton ห้ามกวาดทั้งเอกสาร ──
+// (build ไม่มี DOM parser — กวาดทั้งไฟล์จะกินอีโมจิที่ analyst ตั้งใจใช้ใน prose catalyst/risk ด้วย)
+const EMOJI_SLOTS = [
+  [/(<div class="top"><span>)\s*(?:🐻|⚖️|⚖|🚀)\s*/gu, '$1'],   // ป้ายฉาก Bear/Base/Bull
+  [/(<label>)\s*🧮\s*/gu, '$1'],                                  // calc label
+  [/(<div class="zone">)\s*💡\s*/gu, '$1'],                       // กลยุทธ์
+  [/(<b>)\s*⚠️?\s*(คำเตือน)/gu, '$1$2'],                          // disclaimer
+  [/(<h3><span class="ic">[▲▼]<\/span>)\s*[\u{1F300}-\u{1FAFF}]\s*/gu, '$1'], // cr h3 (กันเผื่อรายงานเก่าบางใบ)
+];
+function stripDecorEmoji(html) {
+  for (const [re, rep] of EMOJI_SLOTS) html = html.replace(re, rep);
+  return html;
+}
+
+// ── section nav แบบ static (spec §4.3) — สร้างตอน build: ใช้ได้แม้ JS ปิด · scroll-spy เป็น enhancement ──
+function injectSectionNav(html) {
+  const secs = [];
+  let i = 0;
+  html = html.replace(/<section>(\s*<div class="s-head">[\s\S]*?<h2>([\s\S]*?)<\/h2>)/g, (m, rest, title) => {
+    const id = 'sec' + (++i);
+    secs.push({ id, title: title.replace(/<[^>]*>/g, '').replace(/\s*\([^)]*\)\s*/g, ' ').trim() });
+    return `<section id="${id}">` + rest;
+  });
+  if (secs.length < 3) return html; // รายงาน legacy/โครงไม่ครบ → ไม่แทรก (อย่าเดา)
+  const nav = `<nav id="secnav" aria-label="สารบัญรายงาน"><div class="sn-in">` +
+    secs.map((s, j) => `<a href="#${s.id}"><b>${j + 1}</b>${esc(s.title)}</a>`).join('') +
+    `</div></nav>`;
+  const spy = `<script>(function(){var L=[].slice.call(document.querySelectorAll('#secnav a')),S=L.map(function(a){return document.getElementById(a.getAttribute('href').slice(1))});if(!('IntersectionObserver'in window))return;var io=new IntersectionObserver(function(es){es.forEach(function(e){if(!e.isIntersecting)return;var i=S.indexOf(e.target);L.forEach(function(a,j){a.classList.toggle('on',i===j)})})},{rootMargin:'-62px 0px -70% 0px'});S.forEach(function(s){if(s)io.observe(s)})})();</script>`;
+  const hi = html.indexOf('</header>');
+  if (hi === -1) return html;
+  html = html.slice(0, hi + 9) + '\n' + nav + html.slice(hi + 9);
+  const bi = html.toLowerCase().lastIndexOf('</body>');
+  return bi === -1 ? html + spy : html.slice(0, bi) + spy + '\n' + html.slice(bi);
+}
+
 // แทรก meta สำหรับ Social share card (Open Graph + Twitter) + description + canonical เข้า <head>
 // — ฉีดเฉพาะใน dist/ (ต้นฉบับ reports/ ไม่แตะ) · ใช้ content="https://…" (gate สแกนเฉพาะ href/src จึงไม่โดนแฟลก)
 //   canonical ใช้ relative (/SYM) กัน gate เข้าใจผิดว่าเป็น external resource
@@ -346,7 +381,9 @@ function injectModelCredit(html, model) {
 // ตกแต่งไฟล์รายงานก่อนเขียนลง dist: share meta + เครดิตโมเดล + footer ติดต่อ + ตัวนับยอดวิว + ปุ่ม Like/Dislike
 function decorateReport(html, r) {
   const model = r.aiModel || AI_MODEL;
-  let h = injectShareMeta(html, r);
+  let h = stripDecorEmoji(html);
+  h = injectSectionNav(h);
+  h = injectShareMeta(h, r);
   h = injectModelCredit(h, model);
   h = injectContactFooter(h);
   h = injectVoteStyle(h);
@@ -420,7 +457,7 @@ function computeLeaders(reps) {
 }
 
 // export ฟังก์ชันให้ unit-test (test/build-test.js) — ต้องอยู่ก่อนโค้ดที่รัน build จริง
-module.exports = { extractMeta, extractMetrics, freshHash, injectModelCredit, injectContactFooter, injectTA, parseJsonScript, decorateReport, pickHighlight, computeLeaders, HL_DEFS, AI_MODEL, AI_MAKER, expandReport, renderHead, renderEngine, validateReportData, THEME_DEFAULTS, deriveTheme };
+module.exports = { extractMeta, extractMetrics, freshHash, injectModelCredit, injectContactFooter, injectTA, parseJsonScript, decorateReport, pickHighlight, computeLeaders, HL_DEFS, AI_MODEL, AI_MAKER, expandReport, renderHead, renderEngine, validateReportData, THEME_DEFAULTS, deriveTheme, stripDecorEmoji, injectSectionNav };
 // ถูก require เข้ามาเพื่อเทส → ส่งออกฟังก์ชันแล้วหยุด ไม่รัน build (top-level return ใช้ได้ใน CommonJS module)
 if (require.main !== module) return;
 

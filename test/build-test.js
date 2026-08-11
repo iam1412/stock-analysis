@@ -213,6 +213,31 @@ ok(b.injectTA(taBody, 'AAPL', null, { currency: 'USD' }, 'assets/ta-abc123.js') 
   ok(out.includes('\\u003cscript>alert'), 'injectTA: "<" ใน theme.accent ถูก escape เป็น \\u003c ใน __TA_CFG__ (">" ไม่ต้อง escape)');
 }
 
+// ── stripDecorEmoji + injectSectionNav (GUI redesign — spec §4.3) ──
+{
+  const src = '<div class="top"><span>🐻 Bear</span></div><label>🧮 ลองคำนวณ MOS</label>' +
+    '<div class="zone">💡 <b>กลยุทธ์:</b> x</div><div class="disc"><b>⚠️ คำเตือน:</b> y</div>' +
+    '<p>ปกติ 🚀 ในเนื้อความต้องอยู่</p>';
+  const out = b.stripDecorEmoji(src);
+  ok(out.includes('<span>Bear</span>'), 'stripDecorEmoji: 🐻 ออกจากป้ายฉาก');
+  ok(out.includes('<label>ลองคำนวณ MOS</label>'), 'stripDecorEmoji: 🧮 ออกจาก calc label');
+  ok(out.includes('<div class="zone"><b>กลยุทธ์:</b>'), 'stripDecorEmoji: 💡 ออกจาก zone');
+  ok(out.includes('<b>คำเตือน:</b>'), 'stripDecorEmoji: ⚠️ ออกจาก disc');
+  ok(out.includes('ปกติ 🚀 ในเนื้อความต้องอยู่'), 'stripDecorEmoji: อีโมจิใน prose ห้ามหาย (ยิงเฉพาะ 5 ช่อง)');
+
+  const doc = '<div class="wrap"><header>H</header>' +
+    '<section><div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2></div></section>' +
+    '<section><div class="s-head"><div class="n">2</div><h2>ราคา</h2></div></section>' +
+    '<section><div class="s-head"><div class="n">3</div><h2>มูลค่า</h2></div></section>' +
+    '</div></body>';
+  const nav = b.injectSectionNav(doc);
+  ok(nav.includes('id="secnav"'), 'injectSectionNav: มี nav');
+  ok(nav.indexOf('id="secnav"') > nav.indexOf('</header>'), 'injectSectionNav: nav อยู่หลัง header');
+  ok(nav.includes('<section id="sec1">'), 'injectSectionNav: section ได้ id');
+  ok(nav.includes('>ข้อมูลสำคัญ</a>') || /<a[^>]*>(<b>1<\/b>)?ข้อมูลสำคัญ<\/a>/.test(nav), 'injectSectionNav: ตัดวงเล็บอังกฤษออกจากชื่อ');
+  ok(b.injectSectionNav('<header>H</header><section><h2>เดียว</h2></section>') .includes('secnav') === false, 'injectSectionNav: <3 section (legacy) → ไม่แทรก');
+}
+
 console.log('\n' + '─'.repeat(50));
 console.log(`build-test: ${n - fails}/${n} ผ่าน`);
 if (fails) { console.log('\n❌ build.js มีพฤติกรรมผิด — แก้ build.js ก่อน push\n'); process.exit(1); }
