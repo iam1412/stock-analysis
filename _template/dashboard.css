@@ -44,6 +44,13 @@ h1{font-family:var(--display);font-size:36px;font-weight:800;letter-spacing:-.5p
 .hstats .n{font-family:var(--display);font-size:15px;font-weight:700;line-height:1.2;font-variant-numeric:tabular-nums;white-space:nowrap}
 .hstats .l{font-family:var(--monoff);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--header-muted);white-space:nowrap}
 @media(min-width:901px){header h1,header .sub{padding-right:250px}} /* กันชื่อบริษัทยาวมุดใต้การ์ด */
+/* ≤900px: เลิกลอยมุมขวา (padding guard มีแค่ ≥901 — ช่วง 761-900 เช่น iPad ชื่อยาวจะมุดใต้การ์ด)
+   → เป็นแถวท้าย header ใต้เส้นคั่น แบบเดียวกับหน้าแรกที่เจ้าของ approve แล้ว */
+@media(max-width:900px){
+  .hstats{position:static;display:flex;flex-wrap:wrap;gap:2px 4px;margin-top:16px;padding:12px 0 0;background:none;border:0;border-top:1px solid rgba(255,255,255,.14);border-radius:0;backdrop-filter:none}
+  .hstats .hstat,.hstats .vbtn{padding:7px 10px;min-height:44px}
+  .hstats .hstat:first-child{margin-left:-10px}
+}
 
 /* ── Section nav (markup inject ใน decorateReport — Task 4) ── */
 #secnav{position:sticky;top:0;z-index:80;background:__RD_TINTBG__f2;background:color-mix(in srgb,__RD_TINTBG__ 92%,transparent);backdrop-filter:blur(14px);margin:14px -16px 0;padding:9px 16px;border-bottom:1px solid var(--line)}
@@ -187,10 +194,6 @@ footer a{color:var(--blue-d)}
   /* ตัวหนังสือรอง: 300→400 บนจอเล็ก (Sarabun บางอ่านยาก) */
   .sub,.metric .d,.vmethod .mdesc,.mos-verdict .txt,.scn ul,.cr li,.verdict p,.zone,.disc{font-weight:400}
   .metric .d{font-size:12px} .metric .k{font-size:12.5px}
-  /* การ์ดสถิติ: จอแคบเลิกลอยมุมขวา → เป็นแถวท้าย header แบบหน้าแรก (เจ้าของ approve pattern นี้แล้ว) */
-  .hstats{position:static;display:flex;flex-wrap:wrap;gap:2px 4px;margin-top:16px;padding:12px 0 0;background:none;border:0;border-top:1px solid rgba(255,255,255,.14);border-radius:0;backdrop-filter:none}
-  .hstats .hstat,.hstats .vbtn{padding:7px 10px;min-height:44px}
-  .hstats .hstat:first-child{margin-left:-10px}
   /* tap targets ≥44px */
   .ta-btn,.ta-tog{min-height:44px}
   .votebar .vbtn{min-height:44px;padding:6px 14px}
