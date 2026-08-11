@@ -4,6 +4,7 @@
 เป็นเว็บ static (1 หุ้น = 1 ไฟล์ HTML) + **screener เรียง/คัดกรองด้วย MOS · P/E · Yield · ROE · Upside** (เรียงฝั่ง client, 0 request)
 \+ **ป้ายไฮไลต์ "จุดเด่น" อัตโนมัติต่อหุ้น** (เลือก metric ที่เด่นสุด + มงกุฎให้ตัวที่ดีสุดในกลุ่ม — คำนวณตอน build)
 \+ **รายงานแบบ content-only template** (โครง CSS/กราฟใช้ร่วมใน `_template/` inject ตอน build — เล็กลง ~45%) + **สีแบรนด์เฉพาะตัวทุกหุ้น** (เลือกตามลักษณะหุ้น)
+\+ **GUI แบบ brand-forward** (ส.ค. 2569 — ดู [DESIGN.md](DESIGN.md)): สีแบรนด์คุมทั้งหน้ารายงานผ่านโทเคนสีที่ derive ตอน build · หน้าแรกไทล์สี ⇄ ตาราง (สลับได้, เรียงจากหัวคอลัมน์ได้) · การ์ดสถิติบน header เป็นปุ่มกรองตลาดในตัว · การ์ดสถิติหน้ารายงาน (👁 วิว + 👍/👎 กดโหวตได้ + อัปเดตแบบ "1d ago") · section nav sticky + scroll-spy
 \+ **กราฟ TA แบบ TradingView** (แท่งเทียน + volume + EMA 7/30/200 + RSI + เส้น FV/MOS · toolbar เปลี่ยน TF/ซูม/log scale/บันทึกรูป — inject ตอน build ไม่แตะไฟล์รายงาน)
 \+ **ราคา + กราฟ + วันที่ราคา อัปเดตอัตโนมัติทุกวัน** (GitHub Actions cron — script deterministic ไม่มี LLM · ตัวที่ขยับแรงเข้าคิว re-analysis)
 \+ **ระบบนับยอดวิว / 👍👎 แบบนับเป๊ะทั่วโลกด้วย Durable Object** — deploy อัตโนมัติบน Cloudflare Workers
@@ -26,7 +27,8 @@ API/manifest รายชื่อหุ้นทั้งหมด: [`/reports.
 reports/<SYMBOL>.html   # ★ รายงานหุ้น content-only (เนื้อหา + report-data: ตัวเลขกราฟ/gauge + ธีมสีแบรนด์)
 _template/              # โครงใช้ร่วม: dashboard.css + engine.js + skeleton-{th,us}.html (จุดตั้งต้นรายงานใหม่) + agent-prompt.md
 _template/ta-*.js vendor/  # กราฟ TA: ta-engine.js (คำนวณล้วน) + ta-chart.js (glue) + lightweight-charts v5.2.0 (Apache-2.0, vendor ไม่พึ่ง CDN)
-build.js                # expandReport (ขยาย template) + injectTA + สร้าง index.html + reports.json → flatten ลง dist/
+build.js                # expandReport (ขยาย template) + injectTA + inject section nav/การ์ดสถิติ header + สร้าง index.html + reports.json → flatten ลง dist/
+DESIGN.md               # ระบบดีไซน์ GUI: ฟอนต์/สถาปัตยกรรมสี brand-forward/องค์ประกอบหน้าแรก-หน้ารายงาน/กติกา mobile
 reports.json            # manifest (auto-generated — track วันที่วิเคราะห์/hash) ห้ามแก้มือ
 price-flags.json        # คิวหุ้นรอ re-analysis จาก cron ราคา (snapshot ต่อรอบ — จัดการอัตโนมัติ)
 tools/                  # prep-stock.js (pre-fetch pack + CROSS-VERIFY) · fetch-facts.js · fetch-fundamentals.js · update-prices.js (cron ราคา)
@@ -175,7 +177,7 @@ npm run dev        # = wrangler dev — ต้องใช้ตัวนี้�
 npm test                 # ชั้น 1 อย่างเดียว    npm test -- BBL   # เฉพาะบางตัว
 npm run test:ohlc        # แปลง Yahoo OHLC (ชั้น 2)
 npm run test:ta          # นิยาม TA engine (ชั้น 3)
-npm run test:build       # unit-test build.js (expandReport/validate/injectTA — 69 เคส)
+npm run test:build       # unit-test build.js (expandReport/validate/injectTA/deriveTheme/section nav — 102 เคส)
 npm run test:engine      # รัน engine ใน mock DOM    test:engine -- BBL = เฉพาะตัว
 npm run test:skeleton    # โครงต้นแบบ TH/US เติมแล้วผ่าน gate
 npm run check:site       # ระดับเว็บไซต์ (ต้อง build ก่อน)
