@@ -177,6 +177,26 @@ ok(!threw(() => b.expandReport(NEWDOC.replace('"accent":"#0071e3"', '"accent":"#
 ok(!threw(() => b.expandReport(NEWDOC.replace('"accent":"#0071e3"', '"accent":"var(--blue)"'))), 'validateReportData: theme.accent = var(--blue) → ไม่ throw');
 ok(!threw(() => b.expandReport(NEWDOC.replace('"accent":"#0071e3"', '"accent":"rgba(20,30,40,.5)"'))), 'validateReportData: theme.accent = rgba() → ไม่ throw');
 
+// ── deriveTheme: token สีที่ derive ตอน build (GUI redesign ส.ค. 2026 — spec §3.2) ──
+{
+  const bt = require('../tools/brandtheme.js');
+  const t = { accent: '#31a60d', accentDark: '#23760a' };
+  const dv = b.deriveTheme(t);
+  ok(dv.tintBg === bt.mixHex('#f4f5f7', '#31a60d', 0.07), 'deriveTheme: tintBg = mix(accent 7%, #f4f5f7)');
+  ok(dv.tintBg === '#e6efe7', 'deriveTheme: tintBg ค่าจริงของ #31a60d = #e6efe7');
+  ok(dv.tintCard === bt.mixHex('#ffffff', '#31a60d', 0.04), 'deriveTheme: tintCard = mix(accent 4%, #fff)');
+  ok(dv.line === bt.mixHex('#e6e8ec', '#31a60d', 0.14), 'deriveTheme: line = mix(accent 14%, #e6e8ec)');
+  ok(dv.line2 === bt.mixHex('#d8dbe1', '#31a60d', 0.26), 'deriveTheme: line2 = mix(accent 26%, #d8dbe1)');
+  ok(dv.soft === bt.mixHex('#ffffff', '#31a60d', 0.10), 'deriveTheme: soft = mix(accent 10%, #fff) — 13% ตก AA (GNRC/HLI)');
+  ok(dv.shadow === '0 1px 2px rgba(49,166,13,.12),0 10px 30px rgba(49,166,13,.13)', 'deriveTheme: shadow = เงาย้อม rgb ของ accent');
+  ok(dv.shadowLg === '0 2px 4px rgba(49,166,13,.14),0 18px 46px rgba(49,166,13,.18)', 'deriveTheme: shadowLg');
+  ok(b.deriveTheme({ accent: 'rgb(49,166,13)' }).tintBg === dv.tintBg, 'deriveTheme: accent รูป rgb() เท่า hex (ผ่าน effectiveHex)');
+  ok(/^#[0-9a-f]{6}$/i.test(b.deriveTheme(undefined).tintBg), 'deriveTheme: ไม่มี theme → THEME_DEFAULTS ไม่ throw');
+  const head = b.renderHead(t);
+  ok(!head.includes('__RD_TINTBG__') && !head.includes('__RD_SOFT__'), 'renderHead: token ใหม่ถูกเติมหมด ไม่เหลือ __RD_*__ ค้าง');
+  ok(head.includes('Kanit'), 'FONT_LINKS มี Kanit');
+}
+
 // ── injectTA: config + <script> ก่อน </body> เฉพาะ dist (rd=null = รายงาน legacy → ข้าม) ──
 const taBody = '<body><h1>X</h1></body>';
 const rdBase = { fv: 120, gauge: { cur: 100 }, theme: { accent: '#0071e3', accentDark: '#0058b9' } };

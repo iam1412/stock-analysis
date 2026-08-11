@@ -20,6 +20,7 @@
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
+const bt = require('./tools/brandtheme.js');
 
 const ROOT = __dirname;
 const REPORTS_DIR = path.join(ROOT, 'reports');
@@ -66,7 +67,7 @@ const TEMPLATE_DIR = path.join(ROOT, '_template');
 const FONT_LINKS =
   '<link rel="preconnect" href="https://fonts.googleapis.com">\n' +
   '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n' +
-  '<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">';
+  '<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&family=Sarabun:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">';
 // ธีมเริ่มต้น (โทนน้ำเงิน เหมือนหน้า index) — ใช้เมื่อ report-data.theme ไม่ระบุคีย์ใด
 // ทุกคู่ default ต้องผ่าน WCAG AA (gate E38 ตรวจ) — badge เป็นพื้นตัวหนังสือขาว 13px จึงใช้ --blue-d (accent สว่างเกิน)
 const THEME_DEFAULTS = {
@@ -76,6 +77,25 @@ const THEME_DEFAULTS = {
   chgBg: 'var(--red-soft)', chgColor: '#c5221f', badge: 'var(--blue-d)',
   verdictText: '#d4dded', vcellLabel: '#c8d1df',
 };
+// ── โทนสีต่อหุ้นที่ "คำนวณตอน build" (spec 2026-08-11 §3.2) — คาย hex ตรง ๆ ไม่พึ่ง color-mix() ──
+// ทำใน Node เพื่อ (1) ไม่ผูกกับ browser support (2) ใช้ pattern fillTokens เดิม (3) gate ตรวจ contrast ได้ (E38)
+// ★ ค่าวัดจริงทั้ง 905 ธีม: soft ต้อง 10% (13% ทำ accentDark/soft ตก AA — GNRC 4.46, HLI 4.47)
+function deriveTheme(theme) {
+  const t = { ...THEME_DEFAULTS, ...(theme || {}) };
+  // รับ rgb()/hsl() ด้วย — validateReportData ปล่อยผ่านรูปพวกนี้ (+ var()/ชื่อสี ที่ effectiveHex parse ไม่ได้
+  // → คืน null; ตกกลับไปใช้ accent ของ THEME_DEFAULTS กัน hexToRgb(null) throw ทั้งหน้าเงียบ ๆ)
+  const A = bt.effectiveHex(t.accent, '#ffffff') || bt.effectiveHex(THEME_DEFAULTS.accent, '#ffffff');
+  const [r, g, b] = bt.hexToRgb(A);
+  return {
+    tintBg:   bt.mixHex('#f4f5f7', A, 0.07),
+    tintCard: bt.mixHex('#ffffff', A, 0.04),
+    line:     bt.mixHex('#e6e8ec', A, 0.14),
+    line2:    bt.mixHex('#d8dbe1', A, 0.26),
+    soft:     bt.mixHex('#ffffff', A, 0.10),
+    shadow:   `0 1px 2px rgba(${r},${g},${b},.12),0 10px 30px rgba(${r},${g},${b},.13)`,
+    shadowLg: `0 2px 4px rgba(${r},${g},${b},.14),0 18px 46px rgba(${r},${g},${b},.18)`,
+  };
+}
 const _partialCache = {};
 const readPartial = (name) => (_partialCache[name] || (_partialCache[name] = fs.readFileSync(path.join(TEMPLATE_DIR, name), 'utf8')));
 // แทน token ทุกตัว — ใช้ split/join (ไม่ใช่ .replace) เพื่อ "ไม่" ตีความ $$/$& ในค่าแทนที่ (engine มี $${v})
@@ -83,11 +103,14 @@ const fillTokens = (tmpl, map) => { let s = tmpl; for (const k in map) s = s.spl
 
 function renderHead(theme) {
   const t = { ...THEME_DEFAULTS, ...(theme || {}) };
+  const dv = deriveTheme(t);
   const css = fillTokens(readPartial('dashboard.css'), {
     __RD_ACCENT__: t.accent, __RD_ACCENTD__: t.accentDark, __RD_DARKGRAD__: t.darkGrad,
     __RD_GLOW__: t.glow, __RD_SUBCOL__: t.subColor, __RD_HMUTED__: t.headerMuted,
     __RD_CHGBG__: t.chgBg, __RD_CHGFG__: t.chgColor, __RD_BADGE__: t.badge,
     __RD_VTEXT__: t.verdictText, __RD_VCELLK__: t.vcellLabel,
+    __RD_TINTBG__: dv.tintBg, __RD_TINTCARD__: dv.tintCard, __RD_LINE__: dv.line,
+    __RD_LINE2__: dv.line2, __RD_SOFT__: dv.soft, __RD_SHADOW__: dv.shadow, __RD_SHADOWLG__: dv.shadowLg,
   });
   return FONT_LINKS + '\n<style>\n' + css + '</style>';
 }
@@ -397,7 +420,7 @@ function computeLeaders(reps) {
 }
 
 // export ฟังก์ชันให้ unit-test (test/build-test.js) — ต้องอยู่ก่อนโค้ดที่รัน build จริง
-module.exports = { extractMeta, extractMetrics, freshHash, injectModelCredit, injectContactFooter, injectTA, parseJsonScript, decorateReport, pickHighlight, computeLeaders, HL_DEFS, AI_MODEL, AI_MAKER, expandReport, renderHead, renderEngine, validateReportData, THEME_DEFAULTS };
+module.exports = { extractMeta, extractMetrics, freshHash, injectModelCredit, injectContactFooter, injectTA, parseJsonScript, decorateReport, pickHighlight, computeLeaders, HL_DEFS, AI_MODEL, AI_MAKER, expandReport, renderHead, renderEngine, validateReportData, THEME_DEFAULTS, deriveTheme };
 // ถูก require เข้ามาเพื่อเทส → ส่งออกฟังก์ชันแล้วหยุด ไม่รัน build (top-level return ใช้ได้ใน CommonJS module)
 if (require.main !== module) return;
 
