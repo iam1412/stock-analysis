@@ -679,10 +679,12 @@ const cards = cardHtml.slice(0, PAGE_SIZE).join('\n') +
   (cardHtml.length > PAGE_SIZE ? `\n<template id="cardstore">${cardHtml.slice(PAGE_SIZE).join('\n')}\n</template>` : '');
 
 // ช่องค้นหา + ข้อความ "ไม่พบ" + สคริปต์กรอง (เฉพาะเมื่อมีรายงาน)
+// อยู่แถวเดียวกับ sortbar ชิดขวา (toolbar) — มือถือเด้งขึ้นเป็นแถวเต็มความกว้างด้วย order:-1
 const searchBox = reports.length ? `
-    <div class="search">
-      <input id="q" type="search" placeholder="ค้นหาหุ้น… ชื่อย่อ หรือ ชื่อบริษัท" autocomplete="off" spellcheck="false" aria-label="ค้นหาหุ้น">
-    </div>` : '';
+      <div class="search">
+        <svg class="sic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.8-3.8"/></svg>
+        <input id="q" type="search" placeholder="ค้นหาหุ้น… ชื่อย่อ/บริษัท" autocomplete="off" spellcheck="false" aria-label="ค้นหาหุ้น ชื่อย่อ หรือ ชื่อบริษัท">
+      </div>` : '';
 
 // สถิติบน header = ปุ่มกรองตลาดในตัว (แทนแถบกรองเดิมที่แสดงตัวเลขซ้ำกับสถิติ — ลบตาม feedback 12 ส.ค. 69)
 const mktCount = reports.reduce((a, r) => { const mk = r.metrics && r.metrics.market; if (mk === 'TH') a.TH++; else if (mk === 'US') a.US++; return a; }, { TH: 0, US: 0 });
@@ -1013,12 +1015,15 @@ ${FONT_LINKS}
   .hstat .n{font-family:var(--display);font-size:25px;font-weight:700;letter-spacing:-.4px;line-height:1;font-variant-numeric:tabular-nums}
   .hstat .l{font-family:var(--monoff);font-size:9.5px;letter-spacing:.13em;text-transform:uppercase;color:rgba(255,255,255,.6);white-space:nowrap}
   button.hstat.on .l{color:rgba(255,255,255,.8)}
-  .search{margin-top:20px;position:relative}
-  .search input{width:100%;font-family:'Sarabun',sans-serif;font-size:15.5px;color:var(--ink);background:var(--card);border:0;border-radius:16px;padding:15px 18px;box-shadow:var(--shadow);outline:none;-webkit-appearance:none;transition:box-shadow .14s}
+  /* toolbar = sortbar (ซ้าย) + search (ชิดขวา) แถวเดียวกัน — จอแคบ search ตกบรรทัดใหม่ชิดขวา */
+  .toolbar{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;margin-top:18px}
+  .search{position:relative;flex:1 1 220px;min-width:190px;max-width:320px;margin-left:auto}
+  .search .sic{position:absolute;left:15px;top:50%;transform:translateY(-50%);width:15px;height:15px;color:var(--muted);pointer-events:none}
+  .search input{width:100%;font-family:'Sarabun',sans-serif;font-size:14px;color:var(--ink);background:var(--card);border:0;border-radius:99px;padding:9px 18px 10px 40px;box-shadow:var(--shadow);outline:none;-webkit-appearance:none;transition:box-shadow .14s}
   .search input:focus{box-shadow:var(--shadow),0 0 0 3px rgba(19,21,27,.14)}
   .search input::placeholder{color:var(--muted)}
   .noresult{text-align:center;color:var(--muted);padding:40px;font-size:14px}
-  .sortbar{display:flex;flex-wrap:wrap;align-items:center;gap:7px;margin-top:13px}
+  .sortbar{display:flex;flex-wrap:wrap;align-items:center;gap:7px;flex:0 1 auto;min-width:0}
   .sortsep{width:1px;align-self:stretch;background:var(--line-2);margin:3px 4px}
   .sortbtn,.viewbtn{font-family:'Sarabun',sans-serif;font-size:13px;color:var(--ink-2);background:var(--card);border:0;border-radius:99px;padding:7px 15px;cursor:pointer;box-shadow:var(--shadow);transition:all .14s}
   .sortbtn:hover:not(.on),.viewbtn:hover:not(.on){color:var(--ink);transform:translateY(-1px)}
@@ -1116,7 +1121,11 @@ ${FONT_LINKS}
     .sortbar::-webkit-scrollbar,.marketbar::-webkit-scrollbar{display:none}
     .sortbtn,.mktbtn,.viewbtn{min-height:44px;flex:none}
     .pg{min-height:44px;min-width:44px}
-    .search input{min-height:48px}
+    /* mobile: search เด้งขึ้นเป็นแถวเต็มความกว้างเหนือ sortbar (แตะง่าย ≥48px) */
+    .toolbar{gap:11px}
+    .search{order:-1;flex:1 1 100%;max-width:none;margin-left:0}
+    .search .sic{left:17px;width:16px;height:16px}
+    .search input{min-height:48px;font-size:15.5px;padding-left:44px}
     footer a{display:inline-block;padding:12px 4px}
   }
   @media(max-width:480px){ .grid{grid-template-columns:1fr} h1{font-size:25px} .hd-stats{gap:2px 4px} }
@@ -1131,7 +1140,7 @@ ${FONT_LINKS}
         <div class="sub">Fair Value · Margin of Safety · จุดเข้าซื้อ · ผลตอบแทนคาดการณ์ 3 ปี</div>
       </div>
       ${hdStats}
-    </div></header>${searchBox}${sortBar}
+    </div></header>${(sortBar || searchBox) ? `<div class="toolbar">${sortBar}${searchBox}</div>` : ''}
     <div class="tblhint" id="tblhint" hidden>← เลื่อนตารางไปด้านข้าง เพื่อดูครบทุกคอลัมน์ →</div>
     <div class="grid">
       <div id="thead" aria-hidden="true"><span></span><span>บริษัท</span><span class="num" data-sort="mos">MOS</span><span class="num" data-sort="upside">Upside</span><span class="num" data-sort="pe">P/E</span><span class="num" data-sort="yield">Yield</span><span class="num" data-sort="roe">ROE</span><span class="num" data-sort="updated">อัปเดต</span></div>
