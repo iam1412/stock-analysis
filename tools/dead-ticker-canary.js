@@ -39,12 +39,34 @@ const US_EXCHANGES = ['NASDAQ', 'NYSE', 'AMEX', 'OTC', 'CBOE'];
 const { entryFor } = require('./symbol-map.js');
 const { readStockMeta } = require('./report-meta.js');
 
-const loadJson = (p, fallback) => {
-  try { return JSON.parse(fs.readFileSync(p, 'utf8')); } catch (e) { return fallback; }
+// ไฟล์ไม่มี = รอบแรก → fallback · **มีไฟล์แต่ parse ไม่ผ่าน ต้องแยกตามว่าไฟล์นั้นสร้างใหม่ได้ไหม**
+// (ตัวอ่านนี้ใช้กับสองไฟล์ที่ราคาของการเดาผิดต่างกันคนละชั้น จึงไม่มีนโยบายเดียวที่ถูกทั้งคู่):
+//   cache (tv-tickers.json) = ผลลัพธ์ที่รอบนี้ยิงใหม่ได้เอง (alive ทุกตัวเขียนกลับอยู่แล้ว) → เตือนแล้วไปต่อ
+//     — ดับ canary ทั้งสัปดาห์เพราะ cache เสียคือเสียการตรวจโดยไม่จำเป็น
+//   flags (price-flags.json) = คิวสะสมที่สร้างใหม่จากศูนย์ไม่ได้ → คืน [] เท่ากับให้ mergeDeadFlags
+//     ทิ้งคิวทั้งใบแล้วเขียนทับตอน --write (รวม not-on-exchange ที่ถอนได้ 3 ทางเท่านั้น) ⇒ ล้มทั้งรอบดีกว่า
+// default = เข้มไว้ก่อน: ไฟล์ใหม่ที่มาใช้ตัวอ่านนี้ต้อง "เลือก" ที่จะยอมเสียข้อมูล ไม่ใช่ได้ฟรีเพราะลืมคิด
+const loadJson = (p, fallback, { rebuildable = false } = {}) => {
+  try { return JSON.parse(fs.readFileSync(p, 'utf8')); }
+  catch (e) {
+    if (e.code === 'ENOENT') return fallback;
+    if (!rebuildable) throw new Error(`อ่าน ${p} ไม่ได้ (${e.message}) — ไฟล์เสีย/เขียนค้าง ยกเลิกรอบนี้ ไม่เขียนทับคิวด้วยของว่าง`);
+    console.log(`⚠ ${p} เสีย (${e.message}) — สร้างใหม่จากผลรอบนี้`);
+    return fallback;
+  }
 };
 
+// เขียน state file แบบ atomic: temp ในโฟลเดอร์เดียวกันแล้ว rename ทับ (rename ข้าม filesystem ไม่ atomic
+// จึงต้องเป็น dir เดียวกัน · ใส่ pid กันสองรอบที่รันพร้อมกันเขียน temp ใบเดียวกันแล้ว rename ของครึ่งใบทับ)
+// เขียนตรง ๆ แล้วถูกตัดกลางคัน = เหลือ JSON ครึ่งใบ ซึ่งเป็น input ที่ทำให้ loadJson ล้มทั้งรอบถัดไปพอดี
+function writeJsonAtomic(file, text) {
+  const tmp = `${file}.tmp-${process.pid}`;
+  fs.writeFileSync(tmp, text);
+  fs.renameSync(tmp, file);
+}
+
 /** ticker ที่ resolve ได้รอบก่อน (tools/tv-tickers.json) — cron รายวันก็ใช้ร่วม ไม่ต้องยิงทุกกระดานซ้ำ */
-const loadTickerCache = () => loadJson(CACHE, {});
+const loadTickerCache = () => loadJson(CACHE, {}, { rebuildable: true });
 
 // ---------- pure helpers (ทดสอบใน test/dead-ticker-test.js) ----------
 
@@ -221,9 +243,9 @@ async function main() {
     .filter((f) => reportExists.has(String(f.symbol).toUpperCase()));
 
   if (WRITE) {
-    fs.writeFileSync(FLAGS, JSON.stringify(flags, null, 2) + '\n');
+    writeJsonAtomic(FLAGS, JSON.stringify(flags, null, 2) + '\n');
     cache._readme = 'ticker ที่ TradingView ใช้จริงต่อ symbol — dead-ticker-canary.js เขียนเอง (cache กันยิงหลายกระดานซ้ำ) ห้ามแก้มือ';
-    fs.writeFileSync(CACHE, JSON.stringify(cache, null, 2) + '\n');
+    writeJsonAtomic(CACHE, JSON.stringify(cache, null, 2) + '\n');
   }
 
   const line = `${WRITE ? 'เขียนแล้ว' : '[dry-run]'} ตรวจ ${probes.length} · อยู่บนกระดาน ${alive.size} · ต้องสงสัย ${dead.length}`;

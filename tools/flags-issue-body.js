@@ -63,8 +63,15 @@ const historyRows = [
   ...prevHistoryAll.filter((l) => !l.startsWith(`| ${today} `)),
 ].slice(0, HISTORY_ROUNDS);
 
-// escape ค่าใส่ช่องตาราง Markdown — กัน '|'/newline ทำตารางเพี้ยน (detail/บางฟิลด์มาจากข้อความที่ไม่ควรเชื่อ 100%)
-const cell = (v) => String(v ?? '-').replace(/\|/g, '\\|').replace(/\r?\n/g, ' ');
+// escape ค่าใส่ช่องตาราง Markdown — กัน '|'/newline ทำตารางเพี้ยน + กัน '<'/'>' ปลอมมาร์กเกอร์ <!--flags--> ฯลฯ
+// ที่ between() ข้างบนอ่านกลับด้วย indexOf ตรง ๆ (detail/บางฟิลด์มาจากข้อความบุคคลที่สามที่ไม่ควรเชื่อ 100%
+// เช่น error message จาก Yahoo — ห้ามมีทางให้ค่าฝัง <!--/flags--> ปลอมแล้วไปตัดรอบถัดไป)
+const cell = (v) =>
+  String(v ?? '-')
+    .replace(/\|/g, '\\|')
+    .replace(/\r?\n/g, ' ')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
 const flagRows = flags.map(
   (x) =>
     `| ${cell(x.symbol)} | ${cell(x.reason)} | ${cell(x.reportPrice ?? '-')} | ${cell(x.marketPrice ?? '-')} | ${

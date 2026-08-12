@@ -6,9 +6,11 @@ export const OHLC_CACHE_TTL = 21600; // edge cache 6 ชม. — สมดุล
 
 // THB = ตลาดไทย → Yahoo ใช้ suffix .BK · หุ้นเปลี่ยนชื่อ/ปรับโครงสร้างใช้ override จาก tools/symbol-map.json
 // (ตรรกะเดียวกับ toYahooSymbol ใน tools/update-prices.js — map ก่อน แล้วค่อย suffix)
+// คีย์ค้น map ต้องอัปเปอร์เคสเหมือน entryFor ใน tools/symbol-map.js — ไม่งั้น 'bki' หลุด override
+// ไปเป็น 'bki.BK' (ticker ที่เลิกเทรดแล้ว) เงียบ ๆ · suffix ยังใช้ sym ดิบ = พฤติกรรมเดียวกับ toYahooSymbol เป๊ะ
 export function toYahoo(sym, cur) {
-  const m = SYMBOL_MAP[sym];
-  if (m && m.yahoo) return m.yahoo;
+  const m = SYMBOL_MAP[String(sym).toUpperCase()] || {};
+  if (m.yahoo) return m.yahoo;
   return cur === 'THB' ? `${sym}.BK` : sym;
 }
 
