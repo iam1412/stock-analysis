@@ -823,21 +823,9 @@ const activeTagBar = reports.length ? `
 // ฝังฟังก์ชันเดียวกับที่เทสใน Node ลงหน้าเว็บ — ห้ามเขียนตรรกะจับคู่ซ้ำสองที่
 const matchTagQuerySrc = String(tagLib.matchTagQuery);
 
-// แถวแท็กยอดนิยม — 12 tag ที่มีสมาชิกมากที่สุด · เป็น <a> จริง (ไม่พึ่ง JS) ให้เดินสำรวจได้
-// จัดอันดับตอน build เพราะจำนวนสมาชิกไม่เปลี่ยนระหว่างที่ผู้ใช้เปิดหน้าอยู่
-// ใช้ tagPageSlugs (ที่กรองสมาชิกมีรายงานจริงแล้ว) เป็นฐานเดียวกับหน้า tag — กันลิงก์ตายเวลาแท็กเหลือสมาชิก 0
-const topTags = tagPageSlugs
-  .map((slug) => [slug, liveMembersOf(slug)])
-  .sort((a, b) => (b[1].length - a[1].length) || a[0].localeCompare(b[0]))
-  .slice(0, 12);
-const topTagBar = topTags.length ? `
-    <nav class="toptags" aria-label="แท็กยอดนิยม">
-      <span class="tt-lab">แท็กยอดนิยม</span>
-      ${topTags.map(([slug, syms]) =>
-        `<a class="tchip" href="/tag/${slug}">${esc(TAG_VOCAB.bySlug.get(slug).label)} <b>${syms.length}</b></a>`
-      ).join('\n      ')}
-    </nav>` : '';
-
+// ★ แถว "แท็กยอดนิยม" (12 tag ที่สมาชิกเยอะสุด) ถูกถอดออกจากหน้าแรกตามคำสั่งเจ้าของ (13 ส.ค. 69)
+// — ห้ามใส่กลับโดยไม่ถาม · หน้า /tag/<slug> ยังถูกลิงก์ถึงครบจากป้ายแท็กบนรายงานทั้ง 908 ใบ
+// และอยู่ใน sitemap.xml ทุกหน้า ⇒ การค้นพบ (คน + Google) ไม่ได้พึ่งแถวนี้
 // filterQueryString — ES5 ล้วน ไม่มี closure (เหมือน matchTagQuery) — ฝังลงสคริปต์หน้า index ด้วย String(fn)
 // ให้ recompute() ซิงก์ ?tag=/?market= กลับ URL โดยไม่ทับพารามิเตอร์อื่น/hash ที่มีอยู่แล้ว
 const filterQueryStringSrc = String(tagLib.filterQueryString);
@@ -1060,17 +1048,6 @@ const searchScript = reports.length ? `
       });
       q.addEventListener('input', function () { recompute(); page = 1; render(); });
 
-      // แถวแท็กยอดนิยม (สร้างตอน build เป็น <a> จริง) — ดักคลิกเพื่อกรองในหน้าโดยไม่โหลดใหม่ (มี JS)
-      // ไม่พึ่ง JS ก็คลิกได้ปกติ (ลิงก์จริงไปหน้า /tag/<slug> ที่กรองมาแล้วตั้งแต่ตอน build)
-      var toptags = document.querySelector('.toptags');
-      if (toptags) toptags.addEventListener('click', function (e) {
-        var a = e.target.closest('a[href^="/tag/"]');
-        if (!a) return;
-        e.preventDefault();
-        tag = a.getAttribute('href').slice(5);
-        q.value = ''; page = 1; recompute(); render();
-      });
-
       function highlightMetric() {                           // ไฮไลต์ค่า metric ทุกตัวที่เลือก (composite) บนทุกการ์ด
         [].slice.call(document.querySelectorAll('.cmetrics .cm')).forEach(function (s) {
           s.classList.toggle('on', selected.indexOf(s.getAttribute('data-m')) !== -1); // toggle ไม่เขียนทับ pos/neg
@@ -1256,17 +1233,22 @@ const INDEX_STYLE = `<style>
   .search input:focus{box-shadow:var(--shadow),0 0 0 3px rgba(19,21,27,.14)}
   .search input::placeholder{color:var(--muted)}
   .noresult{text-align:center;color:var(--muted);padding:40px;font-size:14px}
-  .toptags{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:0 0 14px}
-  .tt-lab{font-size:12.5px;font-weight:700;color:var(--muted)}
-  a.tchip{text-decoration:none}
+  .tt-lab{font-size:12.5px;font-weight:700;color:var(--muted)} /* ป้ายนำหน้าแถวชิป — เหลือที่เดียวคือ .related ท้ายหน้า tag */
   .tagbar{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 14px}
-  .related{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:14px} /* แท็กที่เกี่ยวข้องท้ายหน้า tag — เลย์เอาต์+ระยะห่างแบบเดียวกับ .toptags/.tagbar (14px) */
-  .tchip{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;padding:6px 12px;border-radius:99px;background:var(--card);box-shadow:var(--shadow);color:var(--ink)}
-  .tchip b{font-weight:700}
-  .tchip .tx{border:0;background:transparent;cursor:pointer;font-size:14px;line-height:1;color:var(--muted);padding:0 2px}
-  .tchip .tx:hover{color:var(--ink)}
-  button.tchip{border:0;cursor:pointer;font-family:'Sarabun',sans-serif}
-  button.tchip:hover{box-shadow:var(--shadow),0 0 0 2px rgba(19,21,27,.1)}
+  .related{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:14px} /* แท็กที่เกี่ยวข้องท้ายหน้า tag — เลย์เอาต์+ระยะห่างแบบเดียวกับ .tagbar (14px) */
+  /* ★ ชิปแท็ก — scope ใต้ที่ห่อทั้ง 2 ที่ที่ใช้จริง: .tagbar (ชิปตัวกรองบนหน้าแรก สร้างด้วย JS) และ
+     .related (แท็กที่เกี่ยวข้องท้ายหน้า tag) · เดิมเป็นกฎเปล่าไม่ scope ซึ่งปลอดภัยแค่เพราะทั้งสองหน้า
+     มี a.tchip รูปแบบเดียวกันจากแถวแท็กยอดนิยม — พอถอดแถวนั้นออก รูปแบบสองฝั่งก็ต่างกันทันที
+     (หน้าแรกเหลือ span/button, หน้า tag เป็น a) และ check-site ฟ้องว่ากฎรั่วข้ามหน้าได้ · scope ทุกกฎ
+     ใต้ ancestor เดียวกันหมด รวมถึง a./button. ด้วย เพื่อคง "ลำดับ specificity" เดิมไว้เป๊ะ
+     (ถ้า scope แค่กฎฐาน กฎฐานจะกลายเป็น 0,2,0 ชนะ button.tchip 0,1,1 ⇒ พลิกลำดับที่เคยถูกต้อง) */
+  :is(.tagbar,.related) .tchip{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;padding:6px 12px;border-radius:99px;background:var(--card);box-shadow:var(--shadow);color:var(--ink)}
+  :is(.tagbar,.related) .tchip b{font-weight:700}
+  :is(.tagbar,.related) .tchip .tx{border:0;background:transparent;cursor:pointer;font-size:14px;line-height:1;color:var(--muted);padding:0 2px}
+  :is(.tagbar,.related) .tchip .tx:hover{color:var(--ink)}
+  :is(.tagbar,.related) a.tchip{text-decoration:none}
+  :is(.tagbar,.related) button.tchip{border:0;cursor:pointer;font-family:'Sarabun',sans-serif}
+  :is(.tagbar,.related) button.tchip:hover{box-shadow:var(--shadow),0 0 0 2px rgba(19,21,27,.1)}
   .sortbar{display:flex;flex-wrap:wrap;align-items:center;gap:7px;flex:0 1 auto;min-width:0}
   .sortsep{width:1px;align-self:stretch;background:var(--line-2);margin:3px 4px}
   .sortbtn,.viewbtn{font-family:'Sarabun',sans-serif;font-size:13px;color:var(--ink-2);background:var(--card);border:0;border-radius:99px;padding:7px 15px;cursor:pointer;box-shadow:var(--shadow);transition:all .14s}
@@ -1408,7 +1390,7 @@ ${INDEX_STYLE}
         <div class="sub">Fair Value · Margin of Safety · จุดเข้าซื้อ · ผลตอบแทนคาดการณ์ 3 ปี</div>
       </div>
       ${hdStats}
-    </div></header>${(sortBar || searchBox) ? `<div class="toolbar">${sortBar}${searchBox}</div>` : ''}${topTagBar}${activeTagBar}
+    </div></header>${(sortBar || searchBox) ? `<div class="toolbar">${sortBar}${searchBox}</div>` : ''}${activeTagBar}
     <div class="tblhint" id="tblhint" hidden>← เลื่อนตารางไปด้านข้าง เพื่อดูครบทุกคอลัมน์ →</div>
     <div class="grid">
       <div id="thead" aria-hidden="true"><span></span><span>บริษัท</span><span class="num" data-sort="mos">MOS</span><span class="num" data-sort="upside">Upside</span><span class="num" data-sort="pe">P/E</span><span class="num" data-sort="yield">Yield</span><span class="num" data-sort="roe">ROE</span><span class="num" data-sort="updated">อัปเดต</span></div>
