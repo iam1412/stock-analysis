@@ -969,13 +969,15 @@ git add build.js test/build-test.js reports.json && git commit -m "$(printf 'fea
 }
 ```
 
-- [ ] **Step 2: รันเทสให้แน่ใจว่าล้มเหลว**
+- [ ] **Step 2: รันเทสเพื่อยืนยันพฤติกรรมฐาน**
+
+> ⚠️ ขั้นนี้**ไม่ใช่ red step ของ TDD** — `matchTagQuery` ถูกเขียนไปแล้วใน Task 1 เทสชุดนี้เป็น **regression guard** ที่ต้องมีอยู่ก่อนเอาฟังก์ชันไป embed ลงเบราว์เซอร์ (ถ้าใครแก้ตรรกะจับคู่ทีหลัง เทสนี้จะจับ) ⇒ คาดว่าผ่านทันที
 
 ```bash
 node test/build-test.js
 ```
 
-Expected: PASS ทุกข้อยกเว้นถ้ามีบั๊กใน `matchTagQuery` — ถ้าผ่านหมดแสดงว่า Task 1 ถูกต้องแล้ว ให้ไป Step 3 (เทสนี้เป็น regression guard ของฟังก์ชันที่กำลังจะถูก embed)
+Expected: PASS ทุกข้อ — **ถ้าข้อไหนไม่ผ่าน แปลว่า `matchTagQuery` ใน Task 1 มีบั๊ก ให้แก้ `tools/tag-lib.js` ก่อนไป Step 3** (ห้ามแก้เทสให้เข้ากับพฤติกรรมที่ผิด)
 
 - [ ] **Step 3: embed `matchTagQuery` + ชิปเสนอแท็กในสคริปต์ index**
 
