@@ -65,7 +65,20 @@ ok(eq(T.matchTagQuery('', FIX), []), 'สตริงว่าง → []');
 ok(eq(T.matchTagQuery(null, FIX), []), 'null → []');
 
 // เคสจริงที่เจอบั๊ก — ยิงกับ tags-vocab.json ของจริง (ไม่ใช่ fixture) เพื่อกันบั๊กนี้กลับมา
-ok(eq(T.matchTagQuery('ai', vocab.list), ['ai-datacenter']), '[regression] "ai" กับคลังจริง ต้องไม่ได้ thai-tourism ติดมาด้วย');
+// ★ สัญญาของเทสนี้คือ "ต้องไม่มี prefix noise ติดมา" ไม่ใช่ "ต้องได้ ai-datacenter ตัวเดียว" —
+//   คลังโตขึ้นแล้วมีธีม AI มากกว่าหนึ่ง (ai-datacenter, ai-compute-chip) การได้หลายตัวจึงถูกต้อง
+//   บั๊กจริงที่กันคือ tag ที่ติดมาเพราะ alias ขึ้นต้นด้วย "ai" เฉย ๆ (thai-tourism ← "airline")
+{
+  const hits = T.matchTagQuery('ai', vocab.list);
+  ok(hits.includes('ai-datacenter'), '[regression] "ai" กับคลังจริง → ต้องมี ai-datacenter');
+  ok(!hits.includes('thai-tourism'), '[regression] "ai" กับคลังจริง → ต้องไม่มี thai-tourism (prefix noise จาก "airline")');
+  // ทุกตัวที่ติดมาต้องมีคำเต็มว่า "ai" ใน label/alias จริง ไม่ใช่แค่ขึ้นต้นคำ
+  const noisy = hits.filter((s) => {
+    const e = vocab.bySlug.get(s);
+    return ![e.label, ...(e.aliases || [])].some((t) => /(^|[^a-z0-9])ai([^a-z0-9]|$)/i.test(String(t)));
+  });
+  ok(noisy.length === 0, `[regression] "ai" → ทุกผลลัพธ์มีคำเต็ม "ai" จริง (ปนมา: ${noisy.join(', ') || 'ไม่มี'})`);
+}
 
 // ขอบเขตคำ: "ai" ต้องไม่แมตช์กลางคำ "Thailand" / "retail" — แต่ยังขึ้นต้นคำได้ปกติ
 const BOUND = [E('boundary-test', 'Thailand Fund', ['retail', 'chain'])];
