@@ -21,6 +21,10 @@ const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 const bt = require('./tools/brandtheme.js');
+const tagLib = require('./tools/tag-lib.js');
+// โหลดครั้งเดียวต่อ process — ไฟล์หายก็ build ต่อได้ (ระบบ tag ยังไม่ติดตั้ง = ไม่มีชิป)
+const TAG_VOCAB = (() => { try { return tagLib.loadVocab(); } catch { return { version: 0, list: [], bySlug: new Map() }; } })();
+const TAG_DATA = (() => { try { return tagLib.loadTags(); } catch { return { vocabVersion: 0, tags: {}, requests: [] }; } })();
 
 const ROOT = __dirname;
 const REPORTS_DIR = path.join(ROOT, 'reports');
@@ -443,11 +447,36 @@ function injectModelCredit(html, model) {
   return fi === -1 ? html : html.slice(0, fi) + ` • ${credit}` + html.slice(fi);
 }
 
+// ── แถวป้ายบนหัวรายงาน: ป้ายตลาด (คงข้อความเดิม) + ชิป tag จาก tags.json ─────────
+// inject เฉพาะใน dist — ไฟล์ต้นฉบับใน reports/ ไม่ถูกแตะ เพราะ freshHash จะทำให้
+// updated ของทั้ง 908 ไฟล์เด้งพร้อมกัน (พังการเรียงหน้าแรก + dedup 7 วัน + staleness)
+const TAG_RUN_RE = /(?:<span class="tag">[^<]*<\/span>\s*)+/;
+const MARKET_HREF = { TH: '/?market=TH', US: '/?market=US' };
+function renderTagRow(html, { symbol, market, tagData, vocab }) {
+  const m = html.match(TAG_RUN_RE);
+  if (!m) return html;
+  const spans = [...m[0].matchAll(/<span class="tag">([^<]*)<\/span>/g)].map((x) => x[1]);
+  // 3 span = รายงานเดิม (ตลาด+sector+niche) · 1 span = skeleton ใหม่ (ตลาดอย่างเดียว)
+  // จำนวนอื่น = โครงที่ยังไม่รู้จัก → ไม่แตะ ปล่อยให้ gate เป็นตัวฟ้อง
+  if (spans.length !== 3 && spans.length !== 1) return html;
+  const slugs = tagData ? tagData.tags[symbol] || [] : [];
+  if (!slugs.length) return html;                       // ไม่มี tag → คงป้ายเดิม (gate E40 เป็นตัวบังคับ)
+  const href = MARKET_HREF[market];
+  const mkt = href
+    ? `<a class="tag" href="${href}">${esc(spans[0])}</a>`
+    : `<span class="tag">${esc(spans[0])}</span>`;
+  const chips = slugs
+    .filter((s) => vocab.bySlug.has(s))
+    .map((s) => `<a class="tag" href="/tag/${s}">${esc(vocab.bySlug.get(s).label)}</a>`);
+  return html.replace(TAG_RUN_RE, [mkt, ...chips].join('\n      ') + '\n    ');
+}
+
 // ตกแต่งไฟล์รายงานก่อนเขียนลง dist: share meta + เครดิตโมเดล + footer ติดต่อ + ตัวนับยอดวิว + ปุ่ม Like/Dislike
 function decorateReport(html, r) {
   const model = r.aiModel || AI_MODEL;
   let h = stripDecorEmoji(html);
   h = injectSectionNav(h);
+  h = renderTagRow(h, { symbol: r.symbol, market: (r.metrics && r.metrics.market) || null, tagData: TAG_DATA, vocab: TAG_VOCAB });
   h = injectShareMeta(h, r);
   h = injectModelCredit(h, model);
   const hs = injectHeaderStats(h, r);           // การ์ดสถิติบน header (template เท่านั้น)
@@ -523,7 +552,7 @@ function computeLeaders(reps) {
 }
 
 // export ฟังก์ชันให้ unit-test (test/build-test.js) — ต้องอยู่ก่อนโค้ดที่รัน build จริง
-module.exports = { extractMeta, extractMetrics, freshHash, injectModelCredit, injectContactFooter, injectTA, parseJsonScript, decorateReport, pickHighlight, computeLeaders, HL_DEFS, AI_MODEL, AI_MAKER, expandReport, renderHead, renderEngine, validateReportData, THEME_DEFAULTS, deriveTheme, stripDecorEmoji, injectSectionNav };
+module.exports = { extractMeta, extractMetrics, freshHash, injectModelCredit, injectContactFooter, injectTA, parseJsonScript, decorateReport, renderTagRow, pickHighlight, computeLeaders, HL_DEFS, AI_MODEL, AI_MAKER, expandReport, renderHead, renderEngine, validateReportData, THEME_DEFAULTS, deriveTheme, stripDecorEmoji, injectSectionNav };
 // ถูก require เข้ามาเพื่อเทส → ส่งออกฟังก์ชันแล้วหยุด ไม่รัน build (top-level return ใช้ได้ใน CommonJS module)
 if (require.main !== module) return;
 
