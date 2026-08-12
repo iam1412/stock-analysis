@@ -50,6 +50,8 @@ git commit -F …                    # title: price: refresh N symbols (YYYY-MM-
 | ~~`outside-gauge-range`~~ | ยกเลิก 2026-08-02 — ราคาหลุดขอบ gauge ไม่ freeze แล้ว patcher ขยาย `gauge.min/max` เป็น ราคา±5% เอง (ขอบเป็น display scaffolding, engine วาดจาก report-data — drift ใหญ่จริงโดนเกณฑ์ 15%/25% ก่อนเสมอ) |
 | `suspect-split-or-data` | ต่าง >25% — สงสัย split / เปลี่ยน ticker / ข้อมูลเพี้ยน |
 | `currency-mismatch` | Yahoo คืนสกุลเงินไม่ตรง stock-meta |
+| `bad-price` | ราคาที่ดึงมาไม่ใช่ตัวเลขบวก (ไม่มี `regularMarketPrice` / 0 / ติดลบ) |
+| `bad-report-price` | **ราคาเดิมใน `stock-meta` ของรายงานเองเสีย** (0 / ติดลบ / ไม่ใช่ตัวเลข) — `drift` หารด้วยค่านี้ ถ้าไม่กันไว้ ราคาติดลบจะให้ drift ติดลบ ซึ่งเทียบ `>` กับทุกเกณฑ์ freeze แล้วเป็นเท็จหมด ⇒ เล็ดลอดไป patch ทับโดยยามทุกตัวถูกข้าม · triage = **แก้ที่รายงาน ไม่ใช่ข้อมูลตลาด** |
 | `fetch-failed` / `patch-failed` | ดึงข้อมูลไม่ได้ (delisted?) / ไฟล์ผิดโครงจน regex ไม่ match |
 | `not-on-exchange` | **สองชั้น**: quote ค้างหลัง cohort เดียวกัน ≥3 session **และ** TradingView ไม่พบ ticker บนกระดานใดเลย (เพิ่ม 8 ส.ค. 2569 — ดู §canary) · เขียนได้ทั้งจาก cron รายวัน (ยืนยันสด) และ `tools/dead-ticker-canary.js` รายสัปดาห์ · ตัวที่ติด flag นี้ **หยุด patch** รอบถัดไป (ไม่ใช่แค่ freeze รอบนี้) |
 
@@ -75,7 +77,7 @@ node tools/update-prices.js --write --alive BKI  # ยืนยันด้ว�
 node tools/update-prices.js --allow-intraday AAPL # ยอมรับราคา intraday (ตลาดยังเปิด) — ปกติไม่ต้องใช้
 node tools/update-prices.js --write --force AAPL  # ข้าม freeze drift/mos-flip/suspect — ใช้เฉพาะตอน
                                          # re-analysis UPDATE mode ที่ agent ยืนยัน cross-source แล้ว
-                                         # (ต้องระบุ SYMBOL · currency-mismatch/bad-price ยัง freeze · หลุดขอบ gauge = patcher ขยายขอบให้เอง)
+                                         # (ต้องระบุ SYMBOL · currency-mismatch/bad-price/bad-report-price ยัง freeze · หลุดขอบ gauge = patcher ขยายขอบให้เอง)
 node tools/update-prices.js --write      # เต็มชุด ~763 ตัว (~7-8 นาที)
 node tools/fetch-facts.js AAPL           # พิมพ์ ราคา+วันที่+chart 13 จุด+ป้าย %+bounds พร้อมวาง (หุ้นใหม่ · ไทยเติม --th)
 npm run test:prices                      # unit test offline (fixture AAPL + mock Yahoo)

@@ -160,31 +160,33 @@ npm run dev        # = wrangler dev — ต้องใช้ตัวนี้�
 
 ## ✅ Quality gate (ตรวจก่อนเผยแพร่)
 
-`npm run verify` ตรวจ 10 ขั้นตามลำดับนี้ — มี error เมื่อไหร่ push ไม่ได้:
+`npm run verify` ตรวจ 11 ขั้นตามลำดับนี้ — มี error เมื่อไหร่ push ไม่ได้:
 
 1. **`update-prices-test.js`** (unit-test cron ราคา, offline): `decide` freeze/patch • `detectStaleQuotes`/`capByCohort`/`unverifiedCohorts` (ยืนยันหุ้นตายสองชั้น) • `mergeFlags` • `patchReport` • `commitBody`
 2. **`dead-ticker-test.js`** (unit-test canary หุ้นตาย, offline): `tvBaseName`/`tvCandidates` (symbol-map + หุ้นสองคลาส) • `parseRows`/`classify` • `mergeDeadFlags` • `shouldAbort` • retry ตอน scanner สะอึก
-3. **`check-reports.js`** (source ทีละไฟล์ — 38 error + 11 warning): โครงสร้างครบ (รวม meta `ai-model` ระบุโมเดล AI) • **ตัวเลขสอดคล้องกันเอง** (ค่า `FV` ในเครื่องคิดเลข = Fair Value = สรุป, `MOS=(FV−ราคา)/FV`, จุดซื้อ MOS = FV×0.8/0.7, คณิตแต่ละวิธี P/E & P/BV, scenario EPS ทบต้น) • **บล็อก `stock-meta` (screener) = เลขที่โชว์จริง** (E29–31) • **CSS var ครบ (E33)** • **ป้าย % รอบปี + กราฟ ~1 ปี** (header `.chg` = ผลตอบแทน "รอบปี" = ปลายกราฟ section 2 · สี↔ทิศ · กราฟ ≤13 จุด · E34–E37) • **contrast ธีมอ่านออกทุกคู่สี — WCAG AA** (ตัวหนังสือ ≥4.5 · เส้นกราฟ ≥3 · E38) • **ความสดของราคา** (เตือน >45 วัน, บล็อก >120 วัน) • ไม่มี placeholder/`{{token}}` ค้าง
-4. **`ohlc-test.js`**: `src/ohlc.js` แปลง Yahoo JSON → payload แท่งเทียนถูกต้อง (ตัดแท่ง null, ปัดทศนิยม)
-5. **`ta-engine-test.js`**: ตรึงนิยาม TA ด้วย fixture — `ema` · `rsi` · `findPivots` · `labelStructure` · `detectBreaks` (ห้าม look-ahead) · `detectDivergence` · `summarizeSignals`
-6. **`build`**: expand ทุก report + `injectTA` + สร้าง index/manifest ลง `dist/` ต้องไม่พัง
-7. **`build-test.js`** (unit-test build.js): `freshHash` • เครดิตโมเดล AI ต่อ report • `extractMetrics`/`pickHighlight`/`computeLeaders` • `injectTA` • **`validateReportData`** กัน render พังเงียบ (gridFmt/dataFmt ตรง scope, bounds ไม่ degenerate, fv>0, ค่าสี theme ถูกต้อง/ไม่ inject)
-8. **`engine-exec.js`** (รัน engine ทุกรายงานใน mock DOM): กราฟ (`<path>`+`<circle>`), เข็ม gauge, เครื่องคิดเลข MOS ต้อง render จริง **ไม่ throw + ไม่มีพิกัด NaN/Infinity** — ปิดช่อง "syntax ผ่านแต่ runtime พัง"
-9. **`skeleton-test.js`**: โครงต้นแบบ TH/US เติมข้อมูลจริง (ไทย = HMPRO) แล้วต้องผ่าน gate + engine รันได้
-10. **`check-site.js`** (หลัง build, ระดับเว็บไซต์): ทุก report อยู่ใน index/manifest ครบ • `<script>` JS ไม่พัง + id ครบ • โมเดลใน footer = meta `ai-model` • **การ์ด index `data-*` = บล็อก stock-meta** • **ความปลอดภัย: external resource = Google Fonts เท่านั้น ห้าม `<script src>` ภายนอก**
+3. **`check-reports.js`** (source ทีละไฟล์ — 39 error + 11 warning): โครงสร้างครบ (รวม meta `ai-model` ระบุโมเดล AI) • **ตัวเลขสอดคล้องกันเอง** (ค่า `FV` ในเครื่องคิดเลข = Fair Value = สรุป, `MOS=(FV−ราคา)/FV`, จุดซื้อ MOS = FV×0.8/0.7, คณิตแต่ละวิธี P/E & P/BV, scenario EPS ทบต้น) • **บล็อก `stock-meta` (screener) = เลขที่โชว์จริง** (E29–31) • **CSS var ครบ (E33)** • **ป้าย % รอบปี + กราฟ ~1 ปี** (header `.chg` = ผลตอบแทน "รอบปี" = ปลายกราฟ section 2 · สี↔ทิศ · กราฟ ≤13 จุด · E34–E37) • **contrast ธีมอ่านออกทุกคู่สี — WCAG AA** (ตัวหนังสือ ≥4.5 · เส้นกราฟ ≥3 · E38) • **ความสดของราคา** (เตือน >45 วัน, บล็อก >120 วัน) • ไม่มี placeholder/`{{token}}` ค้าง
+4. **`self-test.js`** (meta-test ของชั้น 3 — เข้า gate 12 ส.ค. 69): จงใจใส่ defect ลงรายงานจริงแล้วยืนยันว่า check ที่เกี่ยวข้อง "จับได้" + รายงานดีต้องไม่ false-positive · ปิดช่องที่ `check-reports` เสียจนเลิกยิงแล้วรายงาน "error 0" ซึ่งแยกไม่ออกจาก "สะอาดจริง"
+5. **`ohlc-test.js`**: `src/ohlc.js` แปลง Yahoo JSON → payload แท่งเทียนถูกต้อง (ตัดแท่ง null, ปัดทศนิยม)
+6. **`ta-engine-test.js`**: ตรึงนิยาม TA ด้วย fixture — `ema` · `rsi` · `findPivots` · `labelStructure` · `detectBreaks` (ห้าม look-ahead) · `detectDivergence` · `summarizeSignals` · **+ รัน `ta-chart.js` จริงใน mock DOM + stub LightweightCharts** (เดิม syntax-check เฉย ๆ)
+7. **`build`**: expand ทุก report + `injectTA` + สร้าง index/manifest ลง `dist/` ต้องไม่พัง
+8. **`build-test.js`** (unit-test build.js): `freshHash` • เครดิตโมเดล AI ต่อ report • `extractMetrics`/`pickHighlight`/`computeLeaders` • `injectTA` • **`validateReportData`** กัน render พังเงียบ (gridFmt/dataFmt ตรง scope, bounds ไม่ degenerate, fv>0, ค่าสี theme ถูกต้อง/ไม่ inject)
+9. **`engine-exec.js`** (รัน engine ทุกรายงานใน mock DOM): กราฟ (`<path>`+`<circle>`), เข็ม gauge, เครื่องคิดเลข MOS ต้อง render จริง **ไม่ throw + ไม่มีพิกัด NaN/Infinity** — ปิดช่อง "syntax ผ่านแต่ runtime พัง"
+10. **`skeleton-test.js`**: โครงต้นแบบ TH/US เติมข้อมูลจริง (ไทย = HMPRO) แล้วต้องผ่าน gate + engine รันได้
+11. **`check-site.js`** (หลัง build, ระดับเว็บไซต์): ทุก report อยู่ใน index/manifest ครบ • `<script>` JS ไม่พัง + id ครบ • โมเดลใน footer = meta `ai-model` • **การ์ด index `data-*` = บล็อก stock-meta** • **ความปลอดภัย: external resource = Google Fonts เท่านั้น ห้าม `<script src>` ภายนอก**
 
 ```bash
 npm test                 # ชั้น 1 อย่างเดียว    npm test -- BBL   # เฉพาะบางตัว
 npm run test:ohlc        # แปลง Yahoo OHLC (ชั้น 2)
 npm run test:ta          # นิยาม TA engine (ชั้น 3)
-npm run test:build       # unit-test build.js (expandReport/validate/injectTA/deriveTheme/section nav — 102 เคส)
+npm run test:build       # unit-test build.js (expandReport/validate/injectTA/deriveTheme/section nav — 106 เคส)
 npm run test:engine      # รัน engine ใน mock DOM    test:engine -- BBL = เฉพาะตัว
 npm run test:skeleton    # โครงต้นแบบ TH/US เติมแล้วผ่าน gate
 npm run check:site       # ระดับเว็บไซต์ (ต้อง build ก่อน)
+npm run test:prices      # unit test ตัวอัปเดตราคา (ชั้น 1, offline)
+npm run test:dead        # canary หุ้นตาย (ชั้น 2, offline)
+npm run test:self        # meta-test ของ check-reports (ชั้น 4 — อยู่ใน verify แล้ว)
 # --- นอก verify (รันเองเมื่อแตะส่วนนั้น) ---
-npm run test:prices      # unit test ตัวอัปเดตราคา (offline)
 npm run test:prep        # prep-stock: CROSS-VERIFY verdict + exit code
-npm run test:self        # พิสูจน์ว่า checker เองยังจับ bug ได้
 git config core.hooksPath .githooks   # เปิดใช้ pre-push hook (ครั้งเดียวต่อ clone)
 ```
 

@@ -3,10 +3,10 @@
 > สรุปย่อ + คำสั่งอยู่ใน `CLAUDE.md §8` — ไฟล์นี้คือรายละเอียดไล่ทีละชั้น/ทีละ error
 > **enforcement จริงอยู่ในโค้ด `test/*.js`** เอกสารนี้เป็นคำอธิบายประกอบเท่านั้น
 
-มี gate หลายชั้น ต้องผ่านทั้งหมด **ก่อน push เสมอ** (มี `pre-push` hook บังคับซ้ำ 10 ขั้น):
+มี gate หลายชั้น ต้องผ่านทั้งหมด **ก่อน push เสมอ** (มี `pre-push` hook บังคับซ้ำ 11 ขั้น):
 
 ```bash
-npm run verify           # ★ ครบชุด 10 ขั้น: update-prices-test → dead-ticker-test → check-reports → ohlc-test → ta-engine-test → build → build-test → engine-exec → skeleton-test → check-site
+npm run verify           # ★ ครบชุด 11 ขั้น: update-prices-test → dead-ticker-test → check-reports → self-test → ohlc-test → ta-engine-test → build → build-test → engine-exec → skeleton-test → check-site
 npm run test:prices      # ชั้น 1 (unit-test cron ราคา — offline: decide/detectStaleQuotes/capByCohort/unverifiedCohorts/mergeFlags/patchReport)
 npm run test:dead        # ชั้น 2 (unit-test canary หุ้นตาย — offline: tvBaseName/tvCandidates/classify/mergeDeadFlags/shouldAbort/retry)
 npm test                 # ชั้น 3 อย่างเดียว (= node test/check-reports.js)  •  npm test -- BBL  = เฉพาะบางตัว
