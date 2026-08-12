@@ -372,6 +372,17 @@ ok(b.injectTA(taBody, 'AAPL', null, { currency: 'USD' }, 'assets/ta-abc123.js') 
   ok(!lite || lite.tags.length >= 1, 'reports.json: LITE มี tag อย่างน้อย 1 ตัว');
 }
 
+// ── filterQueryString ต้องถูกฝัง (String(fn)) ลง dist/index.html จริง ไม่ใช่แค่มีอยู่ใน tag-lib.js ──
+{
+  const fs = require('fs'), path = require('path');
+  const idxPath = path.join(__dirname, '..', 'dist', 'index.html');
+  const indexHtml = fs.existsSync(idxPath) ? fs.readFileSync(idxPath, 'utf8') : '';
+  ok(indexHtml.includes('function filterQueryString(currentSearch, tag, market)'),
+     'dist/index.html: มีฟังก์ชัน filterQueryString ฝังอยู่ในสคริปต์หน้า index (ต้องรัน `node build.js` ก่อน)');
+  ok(indexHtml.includes('filterQueryString(location.search, tag, market)'),
+     'dist/index.html: recompute() เรียก filterQueryString ด้วย location.search/tag/market จริง');
+}
+
 console.log('\n' + '─'.repeat(50));
 console.log(`build-test: ${n - fails}/${n} ผ่าน`);
 if (fails) { console.log('\n❌ build.js มีพฤติกรรมผิด — แก้ build.js ก่อน push\n'); process.exit(1); }

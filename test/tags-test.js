@@ -86,6 +86,27 @@ ok(src.indexOf('=>') === -1, 'ES5-purity: ไม่มี arrow function');
 ok(src.indexOf('`') === -1, 'ES5-purity: ไม่มี backtick / template literal');
 ok(src.indexOf('...') === -1, 'ES5-purity: ไม่มี spread/rest');
 
+// ── C.2) filterQueryString — ซิงก์ ?tag=/?market= กลับ location.search โดยไม่ทับพารามิเตอร์อื่น ──
+ok(T.filterQueryString('', '', 'all') === '', 'filterQueryString: ไม่มีตัวกรองเลย + input ว่าง → ว่าง');
+ok(T.filterQueryString('', 'ai-datacenter', 'all') === '?tag=ai-datacenter', 'filterQueryString: ตั้ง tag → "?tag=ai-datacenter"');
+ok(T.filterQueryString('?market=TH', '', 'all') === '', 'filterQueryString: market="all" → ไม่เขียนพารามิเตอร์ market (ถูกลบ)');
+ok(T.filterQueryString('?utm_source=x&b=2', 'ai-datacenter', 'all') === '?utm_source=x&b=2&tag=ai-datacenter',
+   'filterQueryString: พารามิเตอร์อื่นที่ไม่รู้จักคงอยู่ครบและเรียงลำดับเดิม');
+ok(T.filterQueryString('?tag=old-slug&market=US', 'new-slug', 'US') === '?tag=new-slug&market=US',
+   'filterQueryString: tag/market เดิมใน input ถูกแทนที่ ไม่ซ้ำ (ไม่เกิด ?tag=old-slug&tag=new-slug)');
+ok(T.filterQueryString('?utm_source=x&tag=ai-datacenter&market=TH', '', 'TH') === '?utm_source=x&market=TH',
+   'filterQueryString: ล้าง tag ตัวเดียว → เหลือ utm_source + market เดิม');
+ok(T.filterQueryString('?utm_source=x&tag=ai-datacenter&market=TH', 'ai-datacenter', 'all') === '?utm_source=x&tag=ai-datacenter',
+   'filterQueryString: ล้าง market ตัวเดียว (กลับเป็น all) → เหลือ utm_source + tag เดิม');
+
+// ★ ES5-purity — เช็คว่า source text ของ filterQueryString ยังฝังลงสคริปต์เบราว์เซอร์ได้ปลอดภัย (เหมือน matchTagQuery)
+const fqsSrc = String(T.filterQueryString);
+ok(fqsSrc.indexOf('const ') === -1, 'filterQueryString ES5-purity: ไม่มี "const "');
+ok(fqsSrc.indexOf('let ') === -1, 'filterQueryString ES5-purity: ไม่มี "let "');
+ok(fqsSrc.indexOf('=>') === -1, 'filterQueryString ES5-purity: ไม่มี arrow function');
+ok(fqsSrc.indexOf('`') === -1, 'filterQueryString ES5-purity: ไม่มี backtick / template literal');
+ok(fqsSrc.indexOf('...') === -1, 'filterQueryString ES5-purity: ไม่มี spread/rest');
+
 // ── D) loadTags / tagsOf / membersOf ──
 const tmpFile1 = path.join(os.tmpdir(), `tags-test-fixture-${process.pid}-a.json`);
 fs.writeFileSync(tmpFile1, JSON.stringify({

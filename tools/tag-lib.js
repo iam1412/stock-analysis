@@ -119,7 +119,25 @@ function matchTagQuery(q, vocabList) {
   return tier1.length > 0 ? tier1 : tier2;
 }
 
+/**
+ * filterQueryString — คำนวณ location.search ใหม่หลัง set/ล้างตัวกรอง tag+market
+ * ★ ES5 ล้วน ไม่มี closure — build.js เอา String(filterQueryString) ไปฝังในสคริปต์หน้า index
+ *   ที่รันในเบราว์เซอร์ ⇒ ห้ามใช้ const/let/arrow/spread และห้ามอ้างตัวแปรนอกฟังก์ชัน (เหมือน matchTagQuery)
+ * ตั้งใจรับ/คืนเป็น string ล้วน ไม่แตะ location/history จริง — ทำให้เทสตรงในเทสได้โดยไม่ต้อง mock DOM
+ *   currentSearch = location.search เดิม (เช่น '', '?a=1') · คืน location.search ใหม่
+ *   (มี '?' นำหน้า หรือ '' ถ้าไม่เหลือพารามิเตอร์เลย)
+ *   tag: มีค่า → set, falsy → delete · market: มีค่าและ !== 'all' → set, ไม่งั้น → delete
+ *   พารามิเตอร์อื่นที่ไม่ใช่ tag/market คงเดิมทั้งค่าและลำดับสัมพัทธ์
+ */
+function filterQueryString(currentSearch, tag, market) {
+  var p = new URLSearchParams(currentSearch || '');
+  if (tag) { p.set('tag', tag); } else { p.delete('tag'); }
+  if (market && market !== 'all') { p.set('market', market); } else { p.delete('market'); }
+  var s = p.toString();
+  return s ? '?' + s : '';
+}
+
 module.exports = {
-  loadVocab, loadTags, validateVocab, validateAssignment, tagsOf, membersOf, matchTagQuery,
+  loadVocab, loadTags, validateVocab, validateAssignment, tagsOf, membersOf, matchTagQuery, filterQueryString,
   VOCAB_FILE, TAGS_FILE, SLUG_RE, MAX_TAGS, MIN_MEMBERS,
 };

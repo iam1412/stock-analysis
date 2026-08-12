@@ -785,8 +785,12 @@ const noResult = reports.length ? `
 
 // คลังคำศัพท์ที่หน้า index ต้องใช้ (slug/label/aliases เท่านั้น — ตัด desc ทิ้ง ลดขนาดหน้า)
 const tagVocabJson = JSON.stringify(TAG_VOCAB.list.map((e) => ({ slug: e.slug, label: e.label, aliases: e.aliases || [] })));
-const activeTagBar = `
-    <div class="tagbar" id="tagbar" hidden></div>`;
+const activeTagBar = reports.length ? `
+    <div class="tagbar" id="tagbar" hidden></div>` : '';
+
+// filterQueryString — ES5 ล้วน ไม่มี closure (เหมือน matchTagQuery) — ฝังลงสคริปต์หน้า index ด้วย String(fn)
+// ให้ recompute() ซิงก์ ?tag=/?market= กลับ URL โดยไม่ทับพารามิเตอร์อื่น/hash ที่มีอยู่แล้ว
+const filterQueryStringSrc = String(tagLib.filterQueryString);
 
 // สคริปต์หน้า index: ค้นหา + แบ่งหน้า (PAGE ตัว/หน้า) + เติมยอดวิวต่อการ์ด (batch ครั้งเดียว)
 const searchScript = reports.length ? `
@@ -829,7 +833,7 @@ const searchScript = reports.length ? `
       }
       tagbar.addEventListener('click', function (e) {
         if (!e.target.closest('[data-clear]')) return;
-        tag = ''; page = 1; recompute(); render(); drawTagBar();
+        tag = ''; page = 1; recompute(); render();          // render() วาด tagbar เอง (tag ว่างแล้ว → ซ่อน)
       });
 
       // ลำดับเดิมจาก server = อัปเดตล่าสุดก่อน (ดัชนีน้อย = ใหม่กว่า) + ค่ายอดเริ่มต้น 0 จนกว่า /api/views จะตอบ
@@ -874,6 +878,8 @@ const searchScript = reports.length ? `
         var v = c.getAttribute('data-tags');
         return !!v && (' ' + v + ' ').indexOf(' ' + tag + ' ') !== -1;
       }
+      // filterQueryString — ฝังจาก tools/tag-lib.js แบบเดียวกับ matchTagQuery (ES5 ล้วน ไม่มี closure)
+      ${filterQueryStringSrc}
       function recompute() {                                // กรอง (ตลาด+แท็ก+ค้นหา) → จัดอันดับ (composite หรือ CMP) → ย้าย DOM
         filtered = cards.filter(function (c) { return marketOK(c) && tagOK(c) && searchOK(c); });
         if (orderMode === 'composite' && selected.length) {
@@ -883,10 +889,13 @@ const searchScript = reports.length ? `
           filtered.sort(CMP[orderMode] || CMP.updated);
         }
         filtered.forEach(function (c) { grid.appendChild(c); });
-        var qs = [];
-        if (tag) qs.push('tag=' + tag);
-        if (market !== 'all') qs.push('market=' + market);
-        history.replaceState(null, '', qs.length ? '?' + qs.join('&') : location.pathname);
+        // ซิงก์ URL เฉพาะตอน query string เปลี่ยนจริง — recompute() ยิงทุกคีย์สโตรก/คลิกตลาด/ล้างแท็ก
+        // แต่คำค้นไม่ได้อยู่ใน URL เลย ⇒ ส่วนใหญ่เขียนสตริงเดิมซ้ำ ๆ · try/catch กัน throttle ของ
+        // History API (WebKit จำกัดจำนวนครั้งต่อโดเมน) ไม่ให้ throw แล้วตัดตอน render()/drawTagBar() ที่ตามมา
+        var newSearch = filterQueryString(location.search, tag, market);
+        if (newSearch !== location.search) {
+          try { history.replaceState(null, '', location.pathname + newSearch + location.hash); } catch (e) {}
+        }
       }
 
       function pages() { return Math.max(1, Math.ceil(filtered.length / pageSize())); }
@@ -896,9 +905,13 @@ const searchScript = reports.length ? `
         var ps = pageSize();
         // zebra ตาราง = สลับสีตาม "แถวที่มองเห็น" (nth-child ใช้ไม่ได้ — นับการ์ดที่ถูกซ่อนด้วย)
         filtered.slice((page - 1) * ps, page * ps).forEach(function (c, i) { c.style.display = ''; c.classList.toggle('alt', i % 2 === 1); });
-        nr.hidden = !(q.value.trim() && filtered.length === 0);
-        term.textContent = q.value;
+        // "ไม่พบ" โผล่ได้จากตัวกรอง 2 แบบ: คำค้น (โชว์คำค้น) หรือ tag ที่ไม่มีสมาชิกเหลือ (โชว์ชื่อ tag แทน)
+        var qv = q.value.trim();
+        var showNr = filtered.length === 0 && (qv || tag);
+        nr.hidden = !showNr;
+        if (showNr) term.textContent = qv || labelOf(tag);
         drawPager(tp);
+        drawTagBar();                                       // ให้ตัวเลขบนชิป tag ตรงกับที่เห็นจริงเสมอ (ค้นหา/ตลาดกรองซ้ำได้)
       }
       function drawPager(tp) {
         if (tp <= 1) { pager.innerHTML = ''; return; }
@@ -943,13 +956,19 @@ const searchScript = reports.length ? `
           s.classList.toggle('on', on);
         });
       }
+      // ซิงก์ปุ่มกรองตลาดบน header ให้ตรงกับตัวแปร market — ใช้ทั้งตอนคลิกและตอน init (มาจาก ?market=)
+      function syncMarketButtons() {
+        if (!hdstats) return;
+        [].slice.call(hdstats.querySelectorAll('button[data-market]')).forEach(function (x) {
+          var on = x.getAttribute('data-market') === market;
+          x.classList.toggle('on', on); x.setAttribute('aria-pressed', String(on));
+        });
+      }
       // กรองตลาดจากการ์ดสถิติบน header (รายงานทั้งหมด/ไทย/สหรัฐ = ปุ่ม)
       if (hdstats) hdstats.addEventListener('click', function (e) {
         var b = e.target.closest('button[data-market]'); if (!b) return;
         market = b.getAttribute('data-market');
-        [].slice.call(hdstats.querySelectorAll('button[data-market]')).forEach(function (x) {
-          var on = x === b; x.classList.toggle('on', on); x.setAttribute('aria-pressed', String(on));
-        });
+        syncMarketButtons();
         recompute(); page = 1; render();
       });
       if (sortbar) sortbar.addEventListener('click', function (e) {
@@ -1031,9 +1050,9 @@ const searchScript = reports.length ? `
       }
 
       syncThead();
+      syncMarketButtons();                                  // ?market= จาก URL ต้องสะท้อนบนปุ่ม header ตั้งแต่เฟรมแรก
       recompute();
-      render();
-      drawTagBar();
+      render();                                              // render() วาด tagbar เอง
       syncHint();
     })();
   </script>` : '';
