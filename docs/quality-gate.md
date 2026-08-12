@@ -129,9 +129,9 @@ tripwire ชั้น 0.1 คือ **ตัวชี้ให้ไปสอบ
 ---
 
 ## ชั้น 1 — `test/check-reports.js`
-ตรวจ source `reports/<SYMBOL>.html` ทีละไฟล์ — 38 error + 11 warning
+ตรวจ source `reports/<SYMBOL>.html` ทีละไฟล์ — 39 error + 11 warning
 
-### ตารางอ้างอิง code ครบชุด (E01–E38 · W01–W12)
+### ตารางอ้างอิง code ครบชุด (E01–E39 · W01–W12)
 
 > ดึงจาก field `id`/`level`/`label` ของ `CHECKS` ใน `test/check-reports.js` · คอลัมน์ "เกณฑ์+วิธีแก้" สรุปจากตัว `fn` และค่าคงที่ `TOL_*` ในไฟล์เดียวกัน — **gate ฟ้อง code ไหน เปิดตารางนี้แล้วแก้ได้เลย ไม่ต้องขุด test/ ไม่ต้อง survey รายงานตัวอื่น** · ไม่มี W11 (ยกระดับเป็น E36 แล้ว) · แก้/เพิ่ม check ในโค้ด → อัปเดตแถวในตารางนี้ด้วย
 
@@ -175,6 +175,7 @@ tripwire ชั้น 0.1 คือ **ตัวชี้ให้ไปสอบ
 | E36 | error | % รอบปี = ผลตอบแทนปลายกราฟ (จุดแรก→ท้าย) | % ใน `.chg` = (จุดท้าย−จุดแรก)/จุดแรก×100 ของ `chart.data` ต่างได้ ≤12 จุด% — ใช้ % จาก script ราคา ห้ามคิดเอง |
 | E37 | error | กราฟ ~1 ปี (ไม่เกิน ~13 จุด) | `chart.data` ≤13 จุด — เกินให้ตัดเหลือ ~12 เดือนล่าสุด (`tools/migrate-annual-chg.js`) |
 | E38 | error | contrast ธีมอ่านออก (WCAG AA) | ทุกคู่ตัวหนังสือ/พื้นหลังที่ theme คุม ≥4.5 (accent เส้นกราฟ ≥3): ขาว+สีอ่อน (subColor/headerMuted/verdictText/vcellLabel) บนจุดสว่างสุดของ `darkGrad` · ขาวบน badge · ขาวบน accentDark (ปุ่ม/ไทล์/ป้าย gauge) · chgColor บน chgBg · **คู่ derive ใหม่จาก `deriveTheme()`** (token พื้น/การ์ด/ชิปที่ย้อม accent — spec 2026-08-11 §3.4): ink `#14161c` บน tintBg (mix accent 7% ทับ `#f4f5f7`) · muted `#5f6675` บน tintCard (mix accent 4% ทับขาว) · accentDark บน soft (mix accent 10% ทับขาว — แทนคู่ "accentDark บน blue-soft" เดิมที่ถูกถอดออก) — **แก้อัตโนมัติ: `node tools/fix-contrast.js <SYM> --write`** (ซ่อมเฉพาะ field ที่ตก คงโทนแบรนด์) · ธีมใหม่จาก `pick-brand.js`/`makeTheme` ผ่านโดยอัตโนมัติ |
+| E39 | error | จุดกราฟเรียงเวลาเดินหน้า (ไม่ย้อนกลับ) | `chart.data` ต้องเรียงเก่า→ใหม่ — จุดใดย้อนเวลาจากจุดก่อนหน้า = error (ข้อความระบุคู่ที่สลับ) · **ข้ามทั้งรายงาน**เมื่อ <2 จุด หรือมี label ที่ `parseChartLabelKey` อ่านไม่ออกแม้จุดเดียว (อนุรักษนิยม — false error จะบล็อก cron ราคารายวันทั้งรีโป) · แก้โดยเรียง `chart.data` ตามเวลา ห้ามสลับจุดเอง |
 | W01 | warn | scenario: EPS×P/E ≈ ราคาเป้า | ราคาเป้า (tgt) = EPS ปี3 × P/E ออก ต่างได้ ≤7% ต่อคอลัมน์ |
 | W02 | warn | สกุลเงินปน | สกุลหลัก = สัญลักษณ์หน้า `.px` — รายงาน ฿ ไม่ควรมี $ ในเนื้อหา (และกลับกัน) |
 | W03 | warn | CSS เพี้ยน .seg-label | พบ `transform:transl(` — แก้เป็น `translate(` หรือลบ dead CSS |
