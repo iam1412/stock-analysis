@@ -1,18 +1,22 @@
 #!/usr/bin/env node
 'use strict';
 /**
- * tags-test.js — ความถูกต้องของข้อมูล tag (tags-vocab.json + tags.json)
- * ตรวจสิ่งที่ check-reports (per-file) มองไม่เห็น: bijection ทั้งสองทาง · dangling slug ·
- * alias ชนกัน · ขนาดกลุ่ม · ความสอดคล้องกับ symbol-map
+ * tags-test.js — เทสต์ tools/tag-lib.js
+ * ครอบคลุมวันนี้: schema ของคลัง (validateVocab) · validateAssignment · matchTagQuery
+ * (two-tier whole-word/prefix + ES5-purity ของ source text) · loadTags/tagsOf/membersOf —
+ * ส่วนใหญ่ใช้ fixture สังเคราะห์ ยกเว้นเคส "ai" ที่ยิงกับ tags-vocab.json จริง (regression ที่เจอจริง)
+ * ยังไม่มี bijection ทั้งสองทาง / dangling slug / ความสอดคล้องกับ symbol-map — งานนั้นเพิ่มทีหลัง
  * รัน: node test/tags-test.js  (npm run test:tags)
  */
 const fs = require('fs');
+const os = require('os');
 const path = require('path');
 const T = require('../tools/tag-lib.js');
 
 const ROOT = path.join(__dirname, '..');
 let n = 0, fails = 0;
 const ok = (cond, desc) => { n++; if (cond) console.log('  ✓ ' + desc); else { console.log('  ✗ ' + desc); fails++; } };
+const eq = (a, b) => JSON.stringify(a) === JSON.stringify(b);
 
 console.log('\n🏷  tags-test: ความถูกต้องของข้อมูล tag\n');
 
@@ -30,7 +34,7 @@ ok(T.validateVocab(mkVocab([E('A-B', 'A')])).some((m) => /รูปแบบ/.te
 ok(T.validateVocab(mkVocab([E('a b', 'A')])).some((m) => /รูปแบบ/.test(m)), 'จับ slug ที่มีช่องว่าง');
 ok(T.validateVocab(mkVocab([E('a-b', '')])).some((m) => /label/.test(m)), 'จับ label ว่าง');
 ok(T.validateVocab(mkVocab([E('a-b', 'A', ['x']), E('c-d', 'C', ['x'])])).some((m) => /alias/.test(m)),
-   'จับ alias ที่ชนกันข้าม slug');
+   'จับ alias ที่ชนกันข้ามslug');
 
 // ── B) validateAssignment ──
 const V = mkVocab([E('ai-datacenter', 'AI Data Center', ['ai']), E('power-grid', 'Power Grid', ['grid'])]);
@@ -40,6 +44,76 @@ ok(T.validateAssignment('LITE', [], V).some((m) => /อย่างน้อย 
 ok(T.validateAssignment('LITE', ['ai-datacenter', 'power-grid', 'ai-datacenter', 'power-grid'], V)
    .some((m) => /เกิน 3/.test(m)), 'จับเกิน 3 slug');
 ok(T.validateAssignment('LITE', ['ai-datacenter', 'ai-datacenter'], V).some((m) => /ซ้ำ/.test(m)), 'จับ slug ซ้ำกันเอง');
+
+// ── C) matchTagQuery — fixture สังเคราะห์ (กัน test พังตอน vocab จริงถูกเขียนใหม่) ──
+const FIX = [
+  E('ai-datacenter', 'AI Data Center', ['ai', 'เอไอ', 'data center']),
+  E('thai-tourism', 'ท่องเที่ยวไทย', ['tourism', 'airline']),
+  E('defense-rearm', 'Defense & Rearmament', ['defense', 'defence']),
+  E('optical-photonics', 'Optical & Photonics', ['optical', 'photonics', 'cpo']),
+];
+
+ok(eq(T.matchTagQuery('ai', FIX), ['ai-datacenter']), '"ai" → tier 1 คำเต็ม (ไม่ลาก thai-tourism ผ่าน "airline")');
+ok(eq(T.matchTagQuery('air', FIX), ['thai-tourism']), '"air" → tier 1 ว่าง ตกไป tier 2 ขึ้นต้นคำ ("airline")');
+ok(eq(T.matchTagQuery('data cen', FIX), ['ai-datacenter']), '"data cen" → tier 2 (cen ไม่ใช่คำเต็ม)');
+ok(eq(T.matchTagQuery('เอไอ', FIX), ['ai-datacenter']), '"เอไอ" → ไทย substring');
+ok(eq(T.matchTagQuery('defen', FIX), ['defense-rearm']), '"defen" → tier 2 ขึ้นต้นคำ');
+ok(eq(T.matchTagQuery('optical', FIX), ['optical-photonics']), '"optical" → tier 1 คำเต็ม');
+ok(eq(T.matchTagQuery('xyz', FIX), []), 'คำค้นไม่ตรงอะไรเลย → []');
+ok(eq(T.matchTagQuery('a', FIX), []), 'สั้นกว่า 2 ตัวอักษร → []');
+ok(eq(T.matchTagQuery('', FIX), []), 'สตริงว่าง → []');
+ok(eq(T.matchTagQuery(null, FIX), []), 'null → []');
+
+// เคสจริงที่เจอบั๊ก — ยิงกับ tags-vocab.json ของจริง (ไม่ใช่ fixture) เพื่อกันบั๊กนี้กลับมา
+ok(eq(T.matchTagQuery('ai', vocab.list), ['ai-datacenter']), '[regression] "ai" กับคลังจริง ต้องไม่ได้ thai-tourism ติดมาด้วย');
+
+// ขอบเขตคำ: "ai" ต้องไม่แมตช์กลางคำ "Thailand" / "retail" — แต่ยังขึ้นต้นคำได้ปกติ
+const BOUND = [E('boundary-test', 'Thailand Fund', ['retail', 'chain'])];
+ok(eq(T.matchTagQuery('ai', BOUND), []), '"ai" ไม่แมตช์กลางคำ "Thailand"/"retail"');
+ok(eq(T.matchTagQuery('thai', BOUND), ['boundary-test']), '"thai" แมตช์ขึ้นต้นคำ "Thailand" (tier 2)');
+ok(eq(T.matchTagQuery('chain', BOUND), ['boundary-test']), '"chain" แมตช์คำเต็ม (tier 1)');
+
+// multi-word AND ข้าม label + alias ในเอนทรีเดียวกัน
+ok(eq(T.matchTagQuery('photonics cpo', FIX), ['optical-photonics']),
+   'multi-word AND: คำหนึ่งมาจาก label อีกคำมาจาก alias ของเอนทรีเดียวกัน');
+ok(eq(T.matchTagQuery('photonics ai', FIX), []), 'multi-word AND: คนละเอนทรี → ไม่แมตช์เลย');
+
+// ★ ES5-purity — เช็คว่า source text ของ matchTagQuery ยังฝังลงสคริปต์เบราว์เซอร์ได้ปลอดภัย
+const src = String(T.matchTagQuery);
+ok(src.indexOf('const ') === -1, 'ES5-purity: ไม่มี "const "');
+ok(src.indexOf('let ') === -1, 'ES5-purity: ไม่มี "let "');
+ok(src.indexOf('=>') === -1, 'ES5-purity: ไม่มี arrow function');
+ok(src.indexOf('`') === -1, 'ES5-purity: ไม่มี backtick / template literal');
+ok(src.indexOf('...') === -1, 'ES5-purity: ไม่มี spread/rest');
+
+// ── D) loadTags / tagsOf / membersOf ──
+const tmpFile1 = path.join(os.tmpdir(), `tags-test-fixture-${process.pid}-a.json`);
+fs.writeFileSync(tmpFile1, JSON.stringify({
+  vocabVersion: 3,
+  tags: { AAA: ['ai-datacenter'], ZZZ: ['ai-datacenter', 'power-grid'], MMM: ['power-grid'] },
+  requests: [{ symbol: 'CCC' }],
+}));
+const td = T.loadTags(tmpFile1);
+fs.unlinkSync(tmpFile1);
+ok(td.vocabVersion === 3, 'loadTags: อ่าน vocabVersion ถูก');
+ok(eq(td.tags.AAA, ['ai-datacenter']), 'loadTags: อ่าน tags ต่อ symbol ถูก');
+ok(td.requests.length === 1, 'loadTags: อ่าน requests ถูก');
+
+const tmpFile2 = path.join(os.tmpdir(), `tags-test-fixture-${process.pid}-b.json`);
+fs.writeFileSync(tmpFile2, JSON.stringify({}));
+const td2 = T.loadTags(tmpFile2);
+fs.unlinkSync(tmpFile2);
+ok(td2.vocabVersion === 0 && eq(td2.tags, {}) && td2.requests.length === 0,
+   'loadTags: field หาย → ค่า default (0 / {} / [])');
+
+ok(eq(T.tagsOf('AAA', td), ['ai-datacenter']), 'tagsOf: คืน tag ของ symbol ที่มีจริง');
+ok(eq(T.tagsOf('NOPE', td), []), 'tagsOf: symbol ที่ไม่รู้จัก → []');
+ok(eq(T.tagsOf('AAA', null), []), 'tagsOf: tagData เป็น null → []');
+
+const m = T.membersOf(td);
+ok(eq(m.get('ai-datacenter'), ['AAA', 'ZZZ']), 'membersOf: map slug → รายชื่อหุ้นเรียงตามตัวอักษร');
+ok(eq(m.get('power-grid'), ['MMM', 'ZZZ']), 'membersOf: รวมสมาชิกจากหลาย symbol เข้า slug เดียวกัน');
+ok(m.get('no-such-slug') === undefined, 'membersOf: slug ที่ไม่มีสมาชิกเลย → undefined');
 
 console.log('\n' + '─'.repeat(50));
 console.log(`tags-test: ${n - fails}/${n} ผ่าน`);

@@ -75,35 +75,48 @@ function membersOf(tagData) {
  * matchTagQuery — จับคู่คำค้นกับ tag
  * ★ ES5 ล้วน ไม่มี closure — build.js เอา String(matchTagQuery) ไปฝังในสคริปต์หน้า index
  *   ที่รันในเบราว์เซอร์ ⇒ ห้ามใช้ const/let/arrow/spread และห้ามอ้างตัวแปรนอกฟังก์ชัน
- * ละติน = ต้องขึ้นต้นคำ (กัน "ai" ไปแมตช์ Thailand/retail/chain)
- * ไทย    = substring (ภาษาไทยไม่มีเว้นวรรคระหว่างคำ — alias ไทยต้องเป็นคำเฉพาะพอ)
+ * two-tier:
+ *   tier 1 (คำเต็ม)  — ละติน: needle ต้องเป็นคำเต็ม (ขอบซ้าย+ขวาไม่ใช่ [a-z0-9]) กัน "ai" ไปโดน
+ *                       "airline" (thai-tourism) แบบที่เคย false-positive · ไทย: substring
+ *   tier 2 (ขึ้นต้นคำ) — ของเดิม ไม่แตะ (ขอบซ้ายอย่างเดียว เช่น "defen" → "defense")
+ *   คืน tier 1 ถ้าไม่ว่าง ไม่งั้นคืน tier 2 — multi-word ต้อง AND ภายใน entry เดียวกัน (คนละ tier กันได้)
  */
 function matchTagQuery(q, vocabList) {
   var s = String(q == null ? '' : q).toLowerCase().replace(/\s+/g, ' ').trim();
   if (s.length < 2) return [];
-  var words = s.split(' '), out = [];
+  var words = s.split(' '), tier1 = [], tier2 = [];
   for (var i = 0; i < vocabList.length; i++) {
     var e = vocabList[i];
     var hay = [String(e.label)].concat(e.aliases || []);
-    var allOk = true;
+    var allOk1 = true, allOk2 = true;
     for (var w = 0; w < words.length; w++) {
-      var needle = words[w], hit = false;
-      for (var h = 0; h < hay.length && !hit; h++) {
+      var needle = words[w], hit1 = false, hit2 = false;
+      var isThai = /[฀-๿]/.test(needle);
+      for (var h = 0; h < hay.length && (!hit1 || !hit2); h++) {
         var t = String(hay[h]).toLowerCase();
-        if (/[฀-๿]/.test(needle)) { if (t.indexOf(needle) !== -1) hit = true; }
-        else {
+        if (isThai) {
+          if (t.indexOf(needle) !== -1) { hit1 = true; hit2 = true; }
+        } else {
           var at = t.indexOf(needle);
           while (at !== -1) {
-            if (at === 0 || /[^a-z0-9]/.test(t.charAt(at - 1))) { hit = true; break; }
+            if (at === 0 || /[^a-z0-9]/.test(t.charAt(at - 1))) {
+              hit2 = true;
+              var end = at + needle.length;
+              if (end === t.length || /[^a-z0-9]/.test(t.charAt(end))) hit1 = true;
+            }
+            if (hit1 && hit2) break;
             at = t.indexOf(needle, at + 1);
           }
         }
       }
-      if (!hit) { allOk = false; break; }
+      if (!hit1) allOk1 = false;
+      if (!hit2) allOk2 = false;
+      if (!allOk1 && !allOk2) break;
     }
-    if (allOk) out.push(e.slug);
+    if (allOk1) tier1.push(e.slug);
+    if (allOk2) tier2.push(e.slug);
   }
-  return out;
+  return tier1.length > 0 ? tier1 : tier2;
 }
 
 module.exports = {
