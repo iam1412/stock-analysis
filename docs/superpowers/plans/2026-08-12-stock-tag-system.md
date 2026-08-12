@@ -1352,7 +1352,40 @@ console.log(rel?'❌ ยังมี relative href '+rel+' จุด → คล�
 
 Expected: `✅ ลิงก์การ์ดเป็น absolute ครบ (N ใบ)`
 
-- [ ] **Step 5: Commit**
+- [ ] **Step 5: เปลี่ยนปลายทางแถวแท็กยอดนิยมเป็น `/tag/<slug>`**
+
+> รีวิว Task 5 ชี้ถูกว่า `/?tag=` **ใช้ไม่ได้จริงเมื่อปิด JS** — เว็บเป็น static asset ล้วน `/?tag=x` เสิร์ฟ `index.html` ไฟล์เดียวกับ `/` แล้วการกรองเกิดจากสคริปต์ที่อ่าน `location.search` ⇒ ไม่มี JS = เห็นหุ้นครบ 908 ใบเหมือนเดิม · ตอนนั้นชี้ `/?tag=` เพราะหน้า tag ยังไม่มี **ตอนนี้มีแล้ว จึงต้องเปลี่ยน**
+
+ใน `build.js` แก้ `topTagBar` ให้ `href="/tag/${slug}"` (จาก `/?tag=${slug}`) — ปลายทางเป็นหน้าจริงที่กรองมาแล้วโดยไม่พึ่ง JS ตรงกับชิปบนหน้ารายงาน
+
+ตัวดักคลิกในสคริปต์ต้องแก้ selector ให้ตรงกับ href ใหม่ และยังคงกรองในหน้าโดยไม่โหลดใหม่เมื่อมี JS:
+
+```js
+      var toptags = document.querySelector('.toptags');
+      if (toptags) toptags.addEventListener('click', function (e) {
+        var a = e.target.closest('a[href^="/tag/"]');
+        if (!a) return;
+        e.preventDefault();
+        tag = a.getAttribute('href').slice(5);
+        q.value = ''; page = 1; recompute(); render();
+      });
+```
+
+ตรวจว่าไม่มีลิงก์ตาย (หน้า tag ต้องถูกสร้างครบใน Step 3c แล้ว):
+
+```bash
+node build.js >/dev/null && node -e "
+const fs=require('fs');
+const h=fs.readFileSync('dist/index.html','utf8');
+const want=[...h.matchAll(/href=\"\/tag\/([a-z0-9-]+)\"/g)].map(m=>m[1]);
+const have=new Set(fs.readdirSync('dist/tag').map(f=>f.replace('.html','')));
+const dead=want.filter(s=>!have.has(s));
+console.log(dead.length?'❌ ลิงก์ตาย: '+dead.join(', '):'✅ ลิงก์แท็กยอดนิยม '+want.length+' เส้น มีปลายทางครบ');"
+```
+
+Expected: `✅ ลิงก์แท็กยอดนิยม N เส้น มีปลายทางครบ`
+
+- [ ] **Step 6: Commit**
 
 ```bash
 git add build.js test/check-site.js && git commit -m "$(printf 'feat: หน้า /tag/<slug> + เข้า sitemap + ตรวจลิงก์ตายใน check-site\n\nวางใน dist/tag/ ไม่ใช่รากของ dist — check-site.js:204 อ่านไฟล์ .html ในราก\nแล้วถือว่าเป็นรายงาน วางผิดที่จะถูกฟ้องว่าเป็นรายงานค้าง\n\nตรวจสามชั้น: หน้าครบทุก slug ที่มีสมาชิก · จำนวนการ์ดตรงกับจำนวนสมาชิกเป๊ะ ·\nลิงก์ /tag/ ทุกเส้นบนหน้ารายงานมีปลายทางจริง (908 หน้า x 2-3 ลิงก์)\n\nCo-Authored-By: Claude Opus 5 <noreply@anthropic.com>')"
