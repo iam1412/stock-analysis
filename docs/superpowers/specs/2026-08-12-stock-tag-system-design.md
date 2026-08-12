@@ -387,7 +387,7 @@ update-prices-test → dead-ticker-test → tag-apply-test → tags-test → che
 | 3 | market mapping | SET/MAI → `/?market=TH` · NYSE/NASDAQ/OTC/TSX → `/?market=US` · **derive จาก `metrics.market` ไม่ใช่ข้อความ** (เคส CCJ มี "TSX" ในข้อความแต่เป็นหุ้น US) |
 | 4 | label มี `&` `<` `"` | escape ถูกต้อง ไม่หลุดเป็น markup |
 | 5 | หุ้นไม่มี entry ใน `tags.json` | **คงป้ายเดิม 2 อันไว้ครบ + log** · ไม่ throw · ไม่ได้แถวว่าง (§5 — การบังคับอยู่ที่ E40/tags-test) |
-| 6 | รายงานที่มี tag span ≠ 3 | **throw** (กัน regex กินผิดตำแหน่ง) |
+| 6 | จำนวน tag span ในไฟล์ | **3 span** (รายงานเดิม) → เก็บอันแรก แทนอัน 2–3 · **1 span** (skeleton ใหม่หลังตัด `{{SECTOR_TAG}}/{{NICHE_TAG}}`) → เก็บอันแรก ต่อชิปท้าย · **จำนวนอื่น** → ไม่แตะ + log (ให้ gate จับ ไม่ throw) |
 | 7 | inject ซ้ำ 2 รอบ | ผลเท่ากัน (idempotent) |
 | 8 | **`freshHash` ไม่ขึ้นกับ tag** — คำนวณ hash ของ source เดิม แล้วเปลี่ยน `tags.json` แล้วคำนวณซ้ำ | **เท่ากันเป๊ะ** — พิสูจน์ว่า tag ไม่ทำให้ `updated` ขยับ (§2.1) · เสริมด้วยการตรวจครั้งเดียวตอนเฟส 2: `hash` ทั้ง 908 รายการใน `reports.json` ต้องไม่เปลี่ยนจากก่อนลงระบบ |
 | 9 | การ์ด index | มี `data-tags` ครบ · `reports.json` มีฟิลด์ `tags` |
