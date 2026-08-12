@@ -261,6 +261,28 @@ function checkTagPages(DIST) {
       if (!rootFiles.has(m[1] + '.html')) r.errors.push(`${file.rel}: ลิงก์การ์ด /${m[1]}.html ไม่มีรายงานปลายทางที่ราก dist/`);
     }
   }
+
+  // ---- SEO: canonical ชี้ URL ตัวเองถูกต้อง + og:title มี + ทุกหน้าอยู่ใน sitemap.xml (ไม่ซ้ำ) ----
+  // (spec §11.5 ข้อ 42–45 — Task 6 ใส่ canonical/og/sitemap ไว้ใน build.js แล้ว เทสนี้แค่ยืนยันไม่ให้หลุดย้อนหลัง)
+  const sitemap = fs.existsSync(path.join(DIST, 'sitemap.xml')) ? fs.readFileSync(path.join(DIST, 'sitemap.xml'), 'utf8') : '';
+  const inMap = new Set([...sitemap.matchAll(/<loc>[^<]*\/tag\/([a-z0-9-]+)<\/loc>/g)].map((m) => m[1]));
+  for (const s of have) {
+    const html = fs.readFileSync(path.join(tagDir, s + '.html'), 'utf8');
+    if (!new RegExp(`<link rel="canonical" href="https://[^"]+/tag/${s}">`).test(html)) r.errors.push(`tag/${s}: canonical ไม่ถูกต้อง`);
+    if (!/property="og:title"/.test(html)) r.errors.push(`tag/${s}: ไม่มี og:title`);
+    if (!inMap.has(s)) r.errors.push(`tag/${s}: ไม่อยู่ใน sitemap.xml`);
+  }
+  const dupMap = [...sitemap.matchAll(/<loc>[^<]*\/tag\/([a-z0-9-]+)<\/loc>/g)].map((m) => m[1]);
+  if (dupMap.length !== new Set(dupMap).size) r.errors.push('sitemap.xml: URL หน้า tag ซ้ำ');
+
+  // ★ ไฟล์ tag ต้องไม่หลุดมาที่รากของ dist — coverage check (main ข้อ 1) มองไฟล์ .html ระดับราก dist ทุกใบ
+  // ว่าเป็น "รายงาน" เทียบกับ reports/*.html ⇒ ถ้าวันหนึ่งหน้า tag ถูกเขียนผิดที่ไปอยู่ราก dist/ แทน dist/tag/
+  // coverage check จะฟ้อง "อยู่ใน dist/ แต่ไม่มีต้นฉบับใน reports/ (ไฟล์ค้าง)" ซึ่งอ่านไม่ออกว่าต้นเหตุคือหน้า tag
+  // หลุด — เทียบจำนวนตรงนี้ให้ชี้ต้นเหตุตรงจุดแทน
+  const rootHtml = fs.readdirSync(DIST).filter((f) => /\.html$/i.test(f) && f.toLowerCase() !== 'index.html').length;
+  const srcCount = fs.readdirSync(path.join(ROOT, 'reports')).filter((f) => /\.html$/i.test(f)).length;
+  if (rootHtml !== srcCount) r.errors.push(`ไฟล์ .html ในราก dist มี ${rootHtml} ไม่เท่ากับรายงาน ${srcCount} — มีไฟล์หลุดมาที่ราก?`);
+
   return r;
 }
 
