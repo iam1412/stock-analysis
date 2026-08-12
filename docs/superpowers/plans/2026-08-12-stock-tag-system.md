@@ -1073,10 +1073,67 @@ node build.js >/dev/null && node test/build-test.js && grep -c 'function matchTa
 
 Expected: PASS แล้วตามด้วย `1`
 
-- [ ] **Step 5: Commit**
+- [ ] **Step 5: แถว "แท็กยอดนิยม" บนหน้าแรก**
+
+> ⚠️ spec §6 สั่งไว้ และ check-site เทสข้อ 45 จะตรวจว่า "แถวแท็กยอดนิยมชี้ slug ที่มีจริง" — แต่ไม่มี task อื่นทำ ถ้าข้ามตรงนี้ Task 11 จะตกตอนตรวจสเปก
+
+สร้างตอน build (ไม่ใช่ตอน runtime) จาก `TAG_DATA` — ผู้ใช้ที่ปิด JS ก็ยังเห็นและคลิกได้:
+
+```js
+// แถวแท็กยอดนิยม — 12 tag ที่มีสมาชิกมากที่สุด · เป็น <a> จริง (ไม่พึ่ง JS) ให้เดินสำรวจได้
+// จัดอันดับตอน build เพราะจำนวนสมาชิกไม่เปลี่ยนระหว่างที่ผู้ใช้เปิดหน้าอยู่
+const topTags = [...tagLib.membersOf(TAG_DATA)]
+  .filter(([slug]) => TAG_VOCAB.bySlug.has(slug))
+  .sort((a, b) => (b[1].length - a[1].length) || a[0].localeCompare(b[0]))
+  .slice(0, 12);
+const topTagBar = topTags.length ? `
+    <nav class="toptags" aria-label="แท็กยอดนิยม">
+      <span class="tt-lab">แท็กยอดนิยม</span>
+      ${topTags.map(([slug, syms]) =>
+        `<a class="tchip" href="/?tag=${slug}">${esc(TAG_VOCAB.bySlug.get(slug).label)} <b>${syms.length}</b></a>`
+      ).join('\n      ')}
+    </nav>` : '';
+```
+
+วาง `${topTagBar}` ในเทมเพลตหน้า index **เหนือ** `${activeTagBar}` · เพิ่ม CSS:
+
+```css
+  .toptags{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:0 0 14px}
+  .tt-lab{font-size:12.5px;font-weight:700;color:var(--muted)}
+  a.tchip{text-decoration:none}
+```
+
+ให้สคริปต์ฝั่ง client จับคลิกบนแถวนี้แล้วกรองในหน้าเลย (ไม่ต้องโหลดหน้าใหม่) โดยไม่ทำลาย fallback ของ no-JS:
+
+```js
+      var toptags = document.querySelector('.toptags');
+      if (toptags) toptags.addEventListener('click', function (e) {
+        var a = e.target.closest('a[href^="/?tag="]');
+        if (!a) return;
+        e.preventDefault();
+        tag = a.getAttribute('href').slice(6);
+        q.value = ''; page = 1; recompute(); render();
+      });
+```
+
+ตรวจ:
 
 ```bash
-git add build.js test/build-test.js && git commit -m "$(printf 'feat: ค้นหาด้วย tag — ชิปเสนอแท็ก + union กับผลค้นหาชื่อ\n\nแยก data-tags ออกจาก data-search โดยตั้งใจ: data-search เป็น indexOf substring\nถ้ายัด tag ลงไปด้วย พิมพ์ "ai" จะแมตช์ Thailand/retail/chain/Dubai ทั้งหมด\ntag จึงแมตช์แบบขึ้นต้นคำ (ละติน) และ substring (ไทย ซึ่งไม่มีเว้นวรรค)\n\nembed matchTagQuery ตัวเดียวกับที่เทสใน Node ผ่าน String(fn) — ห้ามเขียน\nตรรกะจับคู่ซ้ำสองที่แล้วปล่อยให้ drift\n\nCo-Authored-By: Claude Opus 5 <noreply@anthropic.com>')"
+node build.js >/dev/null && grep -c 'class="toptags"' dist/index.html && grep -o 'href="/?tag=[a-z0-9-]*"' dist/index.html | sort -u | head
+```
+
+Expected: `1` แล้วตามด้วยรายการ slug ที่มีอยู่จริงในคลัง
+
+- [ ] **Step 6: งานพ่วง — ปิดช่องข้อมูลหายของ `--rename`**
+
+> รีวิว Task 2 ทิ้งไว้เป็น Minor: `--rename AAPL TYPO` สำเร็จได้ (เพราะ TYPO ยังไม่มี entry) แล้ว `--prune` รอบถัดไปจะลบทิ้งเพราะไม่มี `reports/TYPO.html` = ข้อมูลหายแบบสองจังหวะ · ต้องปิดก่อน Task 8 ซึ่งใช้ `--rename` กับ ticker ที่เปลี่ยนชื่อจริง (BKI→BKIH, LANC→MZTI)
+
+ใน `tools/tag-apply.js` เพิ่มเงื่อนไข reject ใน `renameSymbol`: **NEW ต้องมีไฟล์ `reports/<NEW>.html` อยู่จริง** (การเปลี่ยนชื่อ ticker จริงย่อมมีไฟล์ปลายทางแล้วเสมอ) · เพิ่มเทสใน `test/tag-apply-test.js` ทั้งระดับฟังก์ชันและระดับ CLI (byte-identical + exit 1)
+
+- [ ] **Step 7: Commit**
+
+```bash
+git add build.js tools/tag-apply.js test/build-test.js test/tag-apply-test.js && git commit -m "$(printf 'feat: ค้นหาด้วย tag + แถวแท็กยอดนิยม + ปิดช่อง --rename ทำข้อมูลหาย\n\nแยก data-tags ออกจาก data-search โดยตั้งใจ: data-search เป็น indexOf substring\nถ้ายัด tag ลงไปด้วย พิมพ์ "ai" จะแมตช์ Thailand/retail/chain/Dubai ทั้งหมด\n\nembed matchTagQuery ตัวเดียวกับที่เทสใน Node ผ่าน String(fn) — ห้ามเขียน\nตรรกะจับคู่ซ้ำสองที่แล้วปล่อยให้ drift\n\nแถวแท็กยอดนิยมสร้างตอน build เป็น <a> จริง (no-JS ก็คลิกได้) ตาม spec ss6\n--rename บังคับให้ NEW มีไฟล์รายงานจริง กันพิมพ์ผิดแล้ว --prune ลบทิ้งภายหลัง\n\nCo-Authored-By: Claude Opus 5 <noreply@anthropic.com>')"
 ```
 
 ---
@@ -1343,6 +1400,10 @@ Expected: `เขียน /tmp/tag-corpus.tsv — 908 บรรทัด`
 เขียนผลลงทับ `tags-vocab.json` ตาม schema เดิม (`version` คงเป็น `1`)
 
 - [ ] **Step 3: ตรวจคลังด้วยเครื่องมือ**
+
+> ⚠️ **คาดไว้ล่วงหน้า: `node test/tags-test.js` อาจแดงตรงนี้ และไม่ใช่เพราะคลังผิด** — Task 1 ผูกเทส regression ไว้กับ `tags-vocab.json` ตัวจริงบนดิสก์ (`matchTagQuery("ai")` ต้องได้ `["ai-datacenter"]`) พอคลัง seed 12 slug ถูกแทนด้วยของจริง ~100 slug ผลลัพธ์อาจเปลี่ยนโดยชอบธรรม (เช่นมี tag อื่นที่มีคำเต็มว่า "ai")
+> **แก้ที่สัญญาของเทส ไม่ใช่ที่คลัง** — เปลี่ยน assertion เป็น "ต้องมี `ai-datacenter` อยู่ในผล และต้องไม่มี tag ที่ติดมาเพราะ prefix noise อย่างเดียว" **ห้ามบิดคลังเพื่อให้เทสเขียว**
+> ตอนออกแบบ `aliases` ให้ระวังบันทึกใน ledger ด้วย: `matchTagQuery` คืน tier-1 (คำเต็ม) ถ้าไม่ว่าง ไม่งั้นคืน tier-2 (ขึ้นต้นคำ) — เป็นการตัดสินระดับทั้งคลัง ไม่ใช่ราย entry ⇒ alias สั้น ๆ ที่ขึ้นต้นเหมือนกันหลายตัวจะกลบกันเอง
 
 ```bash
 node test/tags-test.js && node -e "
