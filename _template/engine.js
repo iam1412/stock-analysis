@@ -33,8 +33,10 @@
   const gpos=v=>Math.max(2,Math.min(98,(v-gmin)/(gmax-gmin)*100));
   document.getElementById("mCur").style.left=gpos(__RD_CUR__)+"%";
   document.getElementById("mFair").style.left=gpos(__RD_FAIR__)+"%";
-  // nudge fair label up to avoid overlap
-  document.querySelector("#mFair .lab").style.top="__RD_FAIRTOP__";
+  // nudge fair label up to avoid overlap — ป้ายนี้เป็นแค่การตกแต่ง: ไม่มี .lab (skeleton เปลี่ยน/ลบ span)
+  // ต้องข้ามเฉพาะการเลื่อนป้าย ห้ามโยนทั้ง IIFE ทิ้ง ไม่งั้นเครื่องคิดเลข MOS ที่อยู่ถัดไปดับยกแผง (กราฟยังขึ้น = ดูเหมือนปกติ)
+  const fairLab=document.querySelector("#mFair .lab");
+  if(fairLab)fairLab.style.top="__RD_FAIRTOP__";
 
   /* ---------- MOS calculator ---------- */
   const FV=__RD_FV__;
