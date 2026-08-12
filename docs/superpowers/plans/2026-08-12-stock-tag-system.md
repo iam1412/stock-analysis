@@ -1420,10 +1420,12 @@ CPN thai-consumption retail-property
 BBL thai-banking dividend-income
 ```
 
-แล้ว apply ทีละแบตช์ (sequential — ห้ามรันขนาน ไฟล์ `tags.json` มี writer ได้ทีละตัว):
+แล้ว apply ทีละแบตช์ (sequential — ห้ามรันขนาน ไฟล์ `tags.json` มี writer ได้ทีละตัว)
+
+⚠️ **ต้องห่อด้วย `bash -c`** — เชลล์ของเครื่องนี้เป็น zsh ซึ่ง**ไม่ word-split ตัวแปรที่ไม่ได้ quote** ⇒ `$line` จะถูกส่งเป็นอาร์กิวเมนต์เดียว `"LITE ai-datacenter optical-photonics"` แล้ว `tag-apply.js` จะปฏิเสธทุกบรรทัด (เจอจริงตอนทำ Task 2)
 
 ```bash
-while read -r line; do [ -z "$line" ] && continue; node tools/tag-apply.js $line || echo "FAIL: $line"; done < /tmp/tagbatch/assign-b01.txt
+bash -c 'while read -r line; do [ -z "$line" ] && continue; node tools/tag-apply.js $line || echo "FAIL: $line"; done' < /tmp/tagbatch/assign-b01.txt
 ```
 
 Expected: บรรทัด `✅ <SYM>: …` ครบ 40 บรรทัด ไม่มี `FAIL:` — ถ้ามี `FAIL:` ให้แก้ slug ให้ตรงคลังแล้วรันเฉพาะบรรทัดนั้นซ้ำ
