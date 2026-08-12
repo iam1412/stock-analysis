@@ -21,7 +21,9 @@ const path = require('path');
 const T = require('./tag-lib.js');
 
 const ROOT = path.join(__dirname, '..');
-const REPORTS_DIR = path.join(ROOT, 'reports');
+// STOCK_REPORTS_DIR — override สำหรับเทสเท่านั้น (sandbox ใน os.tmpdir()) เหมือน STOCK_TAGS_FILE
+// ใน tag-lib.js · production/cron ไม่ตั้ง env นี้เลย จึง fallback ไปที่ reports/ จริงของรีโปเสมอ
+const REPORTS_DIR = process.env.STOCK_REPORTS_DIR || path.join(ROOT, 'reports');
 
 /** ติด tag — pure: คืน data ใหม่ ไม่แตะดิสก์ · input เสีย = data เดิมไม่ถูกแตะเลย */
 function applyTags({ symbol, slugs, vocab, data, reportsDir }) {

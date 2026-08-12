@@ -10,7 +10,6 @@ const os = require('os');
 const path = require('path');
 const { spawnSync } = require('child_process');
 const A = require('../tools/tag-apply.js');
-const TL = require('../tools/tag-lib.js');
 
 const ROOT = path.join(__dirname, '..');
 
@@ -129,52 +128,85 @@ const fresh = () => ({ vocabVersion: 1, tags: { AAA: ['ai-datacenter'] }, reques
   ok(fs.statSync(badTarget).isDirectory(), 'writeTags: ล้มกลางคัน → target เดิมไม่ถูกแตะ');
 }
 
-// ── CLI จริง (process แยก) ต่อ tags.json ตัวจริงของรีโป ──
-// ทดสอบเฉพาะ "เส้นทางปฏิเสธ" เท่านั้น — ตามนิยามต้องไม่เขียนไฟล์เลย จึงปลอดภัยที่จะยิงใส่
-// tags.json จริง (ไม่ทำ mutation) นี่คือเทสเดียวที่ยืนยัน wiring ใน main() ว่า
-// `if (!r.ok) die(...)` มาก่อน `writeTags` จริง ๆ — เทสข้างบนทั้งหมดเรียกฟังก์ชัน pure ในหน่วยความจำ
-// ไม่เคยรัน CLI เป็น process จริงเลย
+// ── CLI จริง (process แยก) ต่อ sandbox tags.json/tags-vocab.json/reports/ ใน os.tmpdir() ──
+// ★ ก่อนแก้ (finding 1) บล็อกนี้เคยยิงคำสั่ง CLI ใส่ tags.json จริงของรีโปตรง ๆ — อาศัยว่าทุกเคส
+// เป็น "เส้นทางปฏิเสธ" ที่นิยามว่าต้องไม่เขียนไฟล์เลย จึงดูปลอดภัย "ในทางทฤษฎี" แต่ตอนจับ RED
+// evidence ของ guard --rename จริง ๆ (ก่อน fix) ตัว CLI ดันเขียน rename ปลอมลง tags.json จริง
+// จนต้องกู้คืนด้วย git checkout เพราะพาธเป็น const ผูกตายตัวใน tag-lib.js/tag-apply.js ไม่มีทาง
+// รีไดเรกต์ได้เลย — นี่คือความเสียหายที่เกิดขึ้นจริง ไม่ใช่แค่ความเสี่ยงทางทฤษฎี
+// ตอนนี้พาธ override ได้ผ่าน env STOCK_TAGS_FILE/STOCK_VOCAB_FILE/STOCK_REPORTS_DIR (เทสเท่านั้น
+// — production/cron ไม่ตั้ง env พวกนี้เลย) จึงสร้าง sandbox แยกทั้งชุดได้ ปลอดภัยจาก tags.json จริง 100%
 {
+  const cliTmp = fs.mkdtempSync(path.join(os.tmpdir(), 'tagapply-cli-'));
+  const cliReportsDir = path.join(cliTmp, 'reports');
+  const cliVocabFile = path.join(cliTmp, 'tags-vocab.json');
+  const cliTagsFile = path.join(cliTmp, 'tags.json');
+  const cliTmpFile = cliTagsFile + '.tmp';
+  fs.mkdirSync(cliReportsDir);
+  // คลังจริงของรีโป — อ่านอย่างเดียว (CLI ไม่เคยเขียนไฟล์นี้) จึง copy มาใช้ตรง ๆ ได้ปลอดภัย
+  fs.copyFileSync(path.join(ROOT, 'tags-vocab.json'), cliVocabFile);
+
   const CLI = path.join(ROOT, 'tools', 'tag-apply.js');
-  const REAL_TAGS_FILE = path.join(ROOT, 'tags.json');
-  const REAL_TMP_FILE = REAL_TAGS_FILE + '.tmp';
-  const REAL_REPORTS_DIR = path.join(ROOT, 'reports');
+  const cliEnv = Object.assign({}, process.env, {
+    STOCK_TAGS_FILE: cliTagsFile,
+    STOCK_VOCAB_FILE: cliVocabFile,
+    STOCK_REPORTS_DIR: cliReportsDir,
+  });
+  const runCLI = (args) => spawnSync(process.execPath, [CLI, ...args], { encoding: 'utf8', env: cliEnv });
 
-  const real = TL.loadTags(REAL_TAGS_FILE);
-  const keys = Object.keys(real.tags).sort();
-  const existingSym = keys[0];   // มี entry ใน tags.json จริง + มีไฟล์ reports/ จริง
-  const existingSym2 = keys[1];  // อีกตัวที่มี entry อยู่แล้ว (ใช้เป็น NEW ที่ห้ามถูกทับ)
+  // symZ/symA มี entry อยู่แล้ว + มีไฟล์รายงานจริงใน sandbox — ตั้งชื่อ "Z ก่อน A" (ไม่เรียงตัวอักษร)
+  // ตอน seed ตั้งใจ เพื่อให้เทส "key เรียงตามตัวอักษร" ท้ายบล็อกยืนยันได้จริงว่า writeTags() เรียงใหม่
+  // ไม่ใช่บังเอิญเรียงอยู่แล้วตั้งแต่ seed
+  const symZ = 'ZZCLI1', symA = 'AACLI2';
+  // symMiss1/symMiss2 ไม่มี entry และไม่มีไฟล์รายงานเลย — ใช้แทน "missing" ในทุกเคสปฏิเสธ
+  const symMiss1 = 'NOPECLI1', symMiss2 = 'NOPECLI2';
+  fs.writeFileSync(path.join(cliReportsDir, symZ + '.html'), '<html></html>');
+  fs.writeFileSync(path.join(cliReportsDir, symA + '.html'), '<html></html>');
 
-  // สร้างชื่อ symbol ที่ไม่มีจริงแน่ ๆ ทั้งใน tags.json และใน reports/
-  const freshMissing = (seed) => {
-    let s = seed;
-    while (real.tags[s] || fs.existsSync(path.join(REAL_REPORTS_DIR, s + '.html'))) s += 'X';
-    return s;
+  const seedTags = () => {
+    const data = { vocabVersion: 1, tags: {}, requests: [] };
+    data.tags[symZ] = ['ai-datacenter'];
+    data.tags[symA] = ['power-grid'];
+    fs.writeFileSync(cliTagsFile, JSON.stringify(data, null, 2) + '\n');
   };
-  const missingSym = freshMissing('ZZZQNOPE1');
-  const missingSym2 = freshMissing('ZZZQNOPE2');
-
-  const runCLI = (args) => spawnSync(process.execPath, [CLI, ...args], { encoding: 'utf8' });
 
   const assertRejects = (args, desc) => {
-    const before = fs.readFileSync(REAL_TAGS_FILE);
+    seedTags(); // reseed ทุกเคส — แต่ละเคสอิสระจากกัน ไม่พึ่งผลจากเคสก่อนหน้า
+    const before = fs.readFileSync(cliTagsFile);
     const res = runCLI(args);
-    const after = fs.readFileSync(REAL_TAGS_FILE);
+    const after = fs.readFileSync(cliTagsFile);
     ok(res.status === 1, `[CLI] ${desc} → exit code 1`);
-    ok(before.equals(after), `[CLI] ${desc} → tags.json ไม่ถูกแตะเลย (byte-identical)`);
-    ok(!fs.existsSync(REAL_TMP_FILE), `[CLI] ${desc} → ไม่มี tags.json.tmp ค้าง`);
+    ok(before.equals(after), `[CLI] ${desc} → tags.json (sandbox) ไม่ถูกแตะเลย (byte-identical)`);
+    ok(!fs.existsSync(cliTmpFile), `[CLI] ${desc} → ไม่มี tags.json.tmp ค้าง (sandbox)`);
   };
 
-  assertRejects([existingSym, 'ไม่มีจริงแน่นอน'], 'slug ไม่อยู่ในคลัง');
-  assertRejects([existingSym, 'ai-datacenter', 'power-grid', 'nuclear-smr', 'glp-1'], 'เกิน 3 slug');
-  assertRejects([existingSym, 'ai-datacenter', 'ai-datacenter'], 'slug ซ้ำกันเอง');
-  assertRejects([missingSym, 'ai-datacenter'], `symbol ไม่มีไฟล์ reports/${missingSym}.html`);
-  assertRejects(['--rename', existingSym, existingSym2], `--rename ${existingSym} → ${existingSym2} (NEW มี entry อยู่แล้ว)`);
-  assertRejects(['--rename', missingSym, missingSym2], `--rename ${missingSym} → ${missingSym2} (OLD ไม่มี entry)`);
-  // งานพ่วง: ปิดช่องข้อมูลหายสองจังหวะ — OLD มีจริง (existingSym) แต่ NEW (missingSym) ไม่มีไฟล์
-  // reports/ เลย ก่อนแก้ตรงนี้ --rename แบบนี้จะ "สำเร็จ" เงียบ ๆ (เพราะ missingSym ยังไม่มี entry)
-  // แล้ว --prune รอบถัดไปจะเจอไม่มีไฟล์รายงาน → ลบ entry ทิ้ง = ข้อมูลหายแบบสองจังหวะ
-  assertRejects(['--rename', existingSym, missingSym], `--rename ${existingSym} → ${missingSym} (NEW ไม่มีไฟล์ reports/${missingSym}.html)`);
+  assertRejects([symZ, 'ไม่มีจริงแน่นอน'], 'slug ไม่อยู่ในคลัง');
+  assertRejects([symZ, 'ai-datacenter', 'power-grid', 'nuclear-smr', 'glp-1'], 'เกิน 3 slug');
+  assertRejects([symZ, 'ai-datacenter', 'ai-datacenter'], 'slug ซ้ำกันเอง');
+  assertRejects([symMiss1, 'ai-datacenter'], `symbol ไม่มีไฟล์ reports/${symMiss1}.html`);
+  assertRejects(['--rename', symZ, symA], `--rename ${symZ} → ${symA} (NEW มี entry อยู่แล้ว)`);
+  assertRejects(['--rename', symMiss1, symMiss2], `--rename ${symMiss1} → ${symMiss2} (OLD ไม่มี entry)`);
+  // งานพ่วง: ปิดช่องข้อมูลหายสองจังหวะ — OLD มีจริง (symZ) แต่ NEW (symMiss1) ไม่มีไฟล์ reports/ เลย
+  // ก่อนแก้ตรงนี้ --rename แบบนี้จะ "สำเร็จ" เงียบ ๆ (เพราะ symMiss1 ยังไม่มี entry) แล้ว --prune
+  // รอบถัดไปจะเจอไม่มีไฟล์รายงาน → ลบ entry ทิ้ง = ข้อมูลหายแบบสองจังหวะ
+  assertRejects(['--rename', symZ, symMiss1], `--rename ${symZ} → ${symMiss1} (NEW ไม่มีไฟล์ reports/${symMiss1}.html)`);
+
+  // ── success path — เดิมเป็นไปไม่ได้เพราะยิงใส่ tags.json จริงตรง ๆ (เขียนสำเร็จ = แก้ไฟล์จริง)
+  // ตอนนี้มี sandbox แยกแล้ว จึงยืนยัน "เส้นทางสำเร็จ" ของ CLI เป็น process จริงได้ครั้งแรก ──
+  {
+    seedTags();
+    const res = runCLI([symA, 'ai-datacenter', 'nuclear-smr']);
+    ok(res.status === 0, '[CLI] assign สำเร็จ → exit code 0');
+    const txt = fs.readFileSync(cliTagsFile, 'utf8');
+    const parsed = JSON.parse(txt);
+    ok(JSON.stringify(parsed.tags[symA]) === JSON.stringify(['ai-datacenter', 'nuclear-smr']),
+       '[CLI] assign สำเร็จ → sandbox tags.json มี entry ใหม่ (คงลำดับที่สั่ง)');
+    ok(txt.indexOf('"' + symA + '"') < txt.indexOf('"' + symZ + '"'), '[CLI] assign สำเร็จ → key เรียงตามตัวอักษร (A ก่อน Z)');
+    ok(txt.endsWith('\n'), '[CLI] assign สำเร็จ → ไฟล์ปิดท้ายด้วย newline');
+    ok(!fs.existsSync(cliTmpFile), '[CLI] assign สำเร็จ → ไม่มี .tmp ค้าง');
+  }
+
+  fs.rmSync(cliTmp, { recursive: true, force: true });
 }
 
 fs.rmSync(tmp, { recursive: true, force: true });

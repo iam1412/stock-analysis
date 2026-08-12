@@ -850,6 +850,9 @@ const searchScript = reports.length ? `
         for (var i = 0; i < TAG_VOCAB.length; i++) if (TAG_VOCAB[i].slug === slug) return TAG_VOCAB[i].label;
         return slug;
       }
+      // hasTag — idiom ตรวจว่า data-tags (คั่นด้วยช่องว่าง) มี slug นี้อยู่ไหม
+      // เดิมมี 3 จุด (tagOK/searchOK/drawTagBar) เขียน indexOf ซ้ำเอง — รวมไว้ที่เดียวกันหลุด
+      function hasTag(ct, slug) { return !!ct && (' ' + ct + ' ').indexOf(' ' + slug + ' ') !== -1; }
       function drawTagBar() {
         if (tag) {
           tagbar.hidden = false;
@@ -861,9 +864,9 @@ const searchScript = reports.length ? `
         var h = '';
         for (var i = 0; i < qTags.length && i < 4; i++) {
           var cnt = 0;
+          // นับเฉพาะการ์ดที่ผ่านตัวกรองตลาดปัจจุบันด้วย — ไม่งั้นเลขบนชิปจะสูงเกินจริงเมื่อกรองตลาดอยู่
           for (var j = 0; j < cards.length; j++) {
-            var ct = cards[j].getAttribute('data-tags');
-            if (ct && (' ' + ct + ' ').indexOf(' ' + qTags[i] + ' ') !== -1) cnt++;
+            if (marketOK(cards[j]) && hasTag(cards[j].getAttribute('data-tags'), qTags[i])) cnt++;
           }
           h += '<button type="button" class="tchip" data-pick="' + qTags[i] + '">\\uD83C\\uDFF7 แท็ก: ' +
                labelOf(qTags[i]) + ' <b>' + cnt + '</b> หุ้น</button>';
@@ -872,8 +875,8 @@ const searchScript = reports.length ? `
       }
       tagbar.addEventListener('click', function (e) {
         var pick = e.target.closest('[data-pick]');
-        if (pick) { tag = pick.getAttribute('data-pick'); q.value = ''; page = 1; recompute(); render(); drawTagBar(); return; }
-        if (e.target.closest('[data-clear]')) { tag = ''; page = 1; recompute(); render(); drawTagBar(); }
+        if (pick) { tag = pick.getAttribute('data-pick'); q.value = ''; page = 1; recompute(); render(); return; }
+        if (e.target.closest('[data-clear]')) { tag = ''; page = 1; recompute(); render(); }
       });
 
       // ลำดับเดิมจาก server = อัปเดตล่าสุดก่อน (ดัชนีน้อย = ใหม่กว่า) + ค่ายอดเริ่มต้น 0 จนกว่า /api/views จะตอบ
@@ -918,14 +921,12 @@ const searchScript = reports.length ? `
         if (c.getAttribute('data-search').indexOf(v) !== -1) return true;
         if (!qTags.length) return false;
         var ct = c.getAttribute('data-tags');
-        if (!ct) return false;
-        for (var i = 0; i < qTags.length; i++) if ((' ' + ct + ' ').indexOf(' ' + qTags[i] + ' ') !== -1) return true;
+        for (var i = 0; i < qTags.length; i++) if (hasTag(ct, qTags[i])) return true;
         return false;
       }
       function tagOK(c) {
         if (!tag) return true;
-        var v = c.getAttribute('data-tags');
-        return !!v && (' ' + v + ' ').indexOf(' ' + tag + ' ') !== -1;
+        return hasTag(c.getAttribute('data-tags'), tag);
       }
       // filterQueryString — ฝังจาก tools/tag-lib.js แบบเดียวกับ matchTagQuery (ES5 ล้วน ไม่มี closure)
       ${filterQueryStringSrc}
@@ -983,7 +984,7 @@ const searchScript = reports.length ? `
         page = g === 'prev' ? Math.max(1, page - 1) : g === 'next' ? Math.min(tp, page + 1) : parseInt(g, 10);
         render(); window.scrollTo(0, 0);
       });
-      q.addEventListener('input', function () { recompute(); page = 1; render(); drawTagBar(); });
+      q.addEventListener('input', function () { recompute(); page = 1; render(); });
 
       // แถวแท็กยอดนิยม (สร้างตอน build เป็น <a> จริง) — ดักคลิกเพื่อกรองในหน้าโดยไม่โหลดใหม่
       // ไม่พึ่ง JS ก็คลิกได้ปกติ (ลิงก์จริงไปหน้าที่กรองแล้วผ่าน ?tag=)

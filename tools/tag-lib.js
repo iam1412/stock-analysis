@@ -10,8 +10,10 @@ const fs = require('fs');
 const path = require('path');
 
 const ROOT = path.join(__dirname, '..');
-const VOCAB_FILE = path.join(ROOT, 'tags-vocab.json');
-const TAGS_FILE = path.join(ROOT, 'tags.json');
+// STOCK_VOCAB_FILE / STOCK_TAGS_FILE — override สำหรับเทสเท่านั้น (sandbox ใน os.tmpdir())
+// production/cron ไม่ตั้ง env สองตัวนี้เลย จึง fallback ไปที่พาธจริงของรีโปเสมอ
+const VOCAB_FILE = process.env.STOCK_VOCAB_FILE || path.join(ROOT, 'tags-vocab.json');
+const TAGS_FILE = process.env.STOCK_TAGS_FILE || path.join(ROOT, 'tags.json');
 
 const SLUG_RE = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const MAX_TAGS = 3;      // เพดาน tag ต่อหุ้น
