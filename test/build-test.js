@@ -275,9 +275,18 @@ ok(b.injectTA(taBody, 'AAPL', null, { currency: 'USD' }, 'assets/ta-abc123.js') 
     { slug: 'ai-datacenter', label: 'AI Data Center', aliases: ['ai', 'เอไอ'], desc: 'd' },
     { slug: 'optical-photonics', label: 'Optical & Photonics', aliases: ['optical'], desc: 'd' },
     { slug: 'thai-consumption', label: 'การบริโภคในประเทศไทย', aliases: ['ค้าปลีก'], desc: 'd' },
+    { slug: 'cash-flow', label: 'Cash $$ Flow', aliases: ['cash'], desc: 'd' }, // label มี $ — เคส regression ของ String.replace
   ];
   const vocab = { version: 1, list, bySlug: new Map(list.map((e) => [e.slug, e])) };
-  const tagData = { vocabVersion: 1, tags: { LITE: ['ai-datacenter', 'optical-photonics'], CPN: ['thai-consumption'] }, requests: [] };
+  const tagData = {
+    vocabVersion: 1,
+    tags: {
+      LITE: ['ai-datacenter', 'optical-photonics'], CPN: ['thai-consumption'],
+      DLR: ['cash-flow'],                          // symbol ทดสอบ label ที่มี $
+      GONE: ['renamed-slug-1', 'removed-slug-2'],  // slug ทั้งหมดหายจาก vocab (version drift)
+    },
+    requests: [],
+  };
   const row = (spans) => `<header><div class="gdots"></div>\n    <div>\n      ${spans.map((s) => `<span class="tag">${s}</span>`).join('\n      ')}\n    </div>\n    <h1>X</h1></header>`;
 
   const out = b.renderTagRow(row(['NASDAQ: LITE', 'Technology • Optical', 'AI DC • CPO']), { symbol: 'LITE', market: 'US', tagData, vocab });
@@ -314,6 +323,36 @@ ok(b.injectTA(taBody, 'AAPL', null, { currency: 'USD' }, 'assets/ta-abc123.js') 
   // idempotent
   const twice = b.renderTagRow(out, { symbol: 'LITE', market: 'US', tagData, vocab });
   ok(twice === out, 'renderTagRow: รันซ้ำได้ผลเท่าเดิม (idempotent)');
+
+  // idempotent ตอน market เป็น null — เดิมพังเพราะพึ่งผลข้างเคียงที่ป้ายตลาดกลายเป็น <a> (จริงแค่ตอน
+  // market เป็น TH/US) ตอน market เป็น null ป้ายตลาดยังเป็น <span> เดิม เรียกซ้ำเลยเข้าใจผิดว่าเป็น
+  // skeleton ใหม่ (1 span) แล้วต่อชิปซ้ำ
+  const onceNull = b.renderTagRow(row(['NASDAQ: LITE', 'Technology • Optical', 'AI DC • CPO']), { symbol: 'LITE', market: null, tagData, vocab });
+  const twiceNull = b.renderTagRow(onceNull, { symbol: 'LITE', market: null, tagData, vocab });
+  ok(twiceNull === onceNull, 'renderTagRow: market=null ก็ idempotent (branch ที่เคยพัง)');
+
+  // exchange text ที่มี entity ที่ escape ไว้แล้วในไฟล์ต้นฉบับ ต้องคงเดิม byte-for-byte — ห้าม esc(spans[0])
+  // ซ้ำ ไม่งั้น &amp; เดิมจะกลายเป็น &amp;amp; (double-escape)
+  const oAmpEx = b.renderTagRow(row(['NYSE: A&amp;B', 'a', 'b']), { symbol: 'LITE', market: 'US', tagData, vocab });
+  ok(oAmpEx.includes('NYSE: A&amp;B'), 'renderTagRow: exchange ที่มี entity อยู่แล้วคงเดิม byte-for-byte');
+  ok(!oAmpEx.includes('&amp;amp;'), 'renderTagRow: ไม่ double-escape entity เดิมของ exchange');
+
+  // chip label มี $ (label จาก tags-vocab.json เป็น plain text, esc() ไม่แตะ $) — ต้องไม่ผ่าน replace(re, string)
+  // ที่ตีความ $$/$&/$`/$' ให้เพี้ยน (ต้องใช้ function replacer)
+  const oDollarChip = b.renderTagRow(row(['NASDAQ: DLR', 'a', 'b']), { symbol: 'DLR', market: 'US', tagData, vocab });
+  ok(oDollarChip.includes('>Cash $$ Flow</a>'), 'renderTagRow: chip label มี $ ไม่ถูกตีความเป็น replacement pattern');
+
+  // exchange text มี $ ต้องคงเดิมเช่นกัน (คนละจุดจาก spans[0] แต่ผ่าน replacer เดียวกัน)
+  const oDollarEx = b.renderTagRow(row(['NASDAQ: FUND $$ ETF', 'a', 'b']), { symbol: 'LITE', market: 'US', tagData, vocab });
+  ok(oDollarEx.includes('>NASDAQ: FUND $$ ETF<'), 'renderTagRow: exchange text มี $ คงเดิม ไม่ถูกตีความเป็น replacement pattern');
+
+  // slug ทั้งหมดของ symbol หายจาก vocab (version drift/slug ถูกลบ-เปลี่ยนชื่อ) → ต่างจาก "ไม่มี entry"
+  // (ซึ่งไม่มี slugs เลย) ตรงที่นี่ "มี" slugs แต่ทุกตัว bySlug.has() เป็น false → ต้องคืน html เดิมทั้งก้อน
+  // ไม่ใช่แค่คงป้ายเดิมบางส่วน (build ผ่อนปรน ไม่ทำข้อมูลหาย ปล่อยให้ gate ฟ้อง)
+  const rowGone = row(['NYSE: GONE', 'Sector เดิม', 'Niche เดิม']);
+  const oGone = b.renderTagRow(rowGone, { symbol: 'GONE', market: 'US', tagData, vocab });
+  ok(oGone === rowGone, 'renderTagRow: slug ทั้งหมดหายจาก vocab → คืน html เดิมทั้งหมด');
+  ok(oGone.includes('Sector เดิม') && oGone.includes('Niche เดิม'), 'renderTagRow: slug หายจาก vocab → ป้าย free-text เดิมยังอยู่ครบ');
 }
 
 // ── freshHash ต้องไม่ขึ้นกับ tag — พิสูจน์ว่าไม่มี hash churn (spec §2.1) ──

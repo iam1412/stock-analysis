@@ -450,9 +450,14 @@ function injectModelCredit(html, model) {
 // ── แถวป้ายบนหัวรายงาน: ป้ายตลาด (คงข้อความเดิม) + ชิป tag จาก tags.json ─────────
 // inject เฉพาะใน dist — ไฟล์ต้นฉบับใน reports/ ไม่ถูกแตะ เพราะ freshHash จะทำให้
 // updated ของทั้ง 908 ไฟล์เด้งพร้อมกัน (พังการเรียงหน้าแรก + dedup 7 วัน + staleness)
+// idempotent ด้วย guard ท้ายนี้เอง (เช็คว่า render ไปแล้วหรือยัง) — ไม่ใช่ผลข้างเคียงจาก TAG_RUN_RE
+// ที่แมตช์เฉพาะ <span> ไม่แมตช์ <a> เพราะผลข้างเคียงนั้นจริงแค่ตอน market เป็น TH/US (ป้ายตลาดกลายเป็น
+// <a>) — ตอน market เป็น null ป้ายตลาดยังเป็น <span class="tag"> เดิม เรียกซ้ำจะเจอ 1 span แล้วเข้าใจผิด
+// ว่าเป็น skeleton ใหม่ ต่อชิปซ้ำ (บั๊กจริง ก่อนมี guard นี้)
 const TAG_RUN_RE = /(?:<span class="tag">[^<]*<\/span>\s*)+/;
 const MARKET_HREF = { TH: '/?market=TH', US: '/?market=US' };
 function renderTagRow(html, { symbol, market, tagData, vocab }) {
+  if (html.includes('<a class="tag" href="/tag/')) return html; // render ไปแล้ว → ไม่ทำซ้ำ (ครอบทุกค่า market)
   const m = html.match(TAG_RUN_RE);
   if (!m) return html;
   const spans = [...m[0].matchAll(/<span class="tag">([^<]*)<\/span>/g)].map((x) => x[1]);
@@ -460,15 +465,22 @@ function renderTagRow(html, { symbol, market, tagData, vocab }) {
   // จำนวนอื่น = โครงที่ยังไม่รู้จัก → ไม่แตะ ปล่อยให้ gate เป็นตัวฟ้อง
   if (spans.length !== 3 && spans.length !== 1) return html;
   const slugs = tagData ? tagData.tags[symbol] || [] : [];
-  if (!slugs.length) return html;                       // ไม่มี tag → คงป้ายเดิม (gate E40 เป็นตัวบังคับ)
-  const href = MARKET_HREF[market];
-  const mkt = href
-    ? `<a class="tag" href="${href}">${esc(spans[0])}</a>`
-    : `<span class="tag">${esc(spans[0])}</span>`;
+  // สร้างชิปก่อนตัดสินใจ — ถ้าไม่มี tag เลย "หรือ" slug ทุกตัวหายจาก vocab (version drift/slug ถูกลบ/เปลี่ยนชื่อ)
+  // ก็คืน html เดิมทั้งแถวเหมือนกัน (คงป้าย free-text เดิมไว้ ดีกว่าทำข้อมูลหาย) — gate E40 เป็นตัวฟ้องแทน
   const chips = slugs
     .filter((s) => vocab.bySlug.has(s))
     .map((s) => `<a class="tag" href="/tag/${s}">${esc(vocab.bySlug.get(s).label)}</a>`);
-  return html.replace(TAG_RUN_RE, [mkt, ...chips].join('\n      ') + '\n    ');
+  if (!chips.length) return html;
+  const href = MARKET_HREF[market];
+  // spans[0] เป็น HTML ที่ valid อยู่แล้ว (capture ด้วย [^<]* ตรงจาก source เดิม กัน '<' อยู่แล้ว) —
+  // ห้าม esc() ซ้ำ ไม่งั้น entity เดิม (เช่น &amp;) จะกลายเป็น &amp;amp; (double-escape เหมือนที่ decodeEntities
+  // กันไว้ตอนอ่าน) · ต่างจาก label ของชิปที่มาจาก tags-vocab.json เป็น plain text ซึ่งยังต้อง esc() ตามเดิม
+  const mkt = href
+    ? `<a class="tag" href="${href}">${spans[0]}</a>`
+    : `<span class="tag">${spans[0]}</span>`;
+  const row = [mkt, ...chips].join('\n      ') + '\n    ';
+  // function replacer → ไม่ตีความ $&/$$/$`/$'/$1 ใน row (ป้ายตลาดหรือ label ชิปอาจมี $)
+  return html.replace(TAG_RUN_RE, () => row);
 }
 
 // ตกแต่งไฟล์รายงานก่อนเขียนลง dist: share meta + เครดิตโมเดล + footer ติดต่อ + ตัวนับยอดวิว + ปุ่ม Like/Dislike
