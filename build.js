@@ -29,7 +29,11 @@ const MANIFEST = path.join(ROOT, 'reports.json'); // committed — เก็บ 
 
 const CONTACT_EMAIL = 'somchai.s@de.co.th';
 const SITE_ORIGIN = 'https://gaohoon.com'; // ใช้สร้าง absolute URL ให้ og:url / og:image (social scraper ต้องการ URL เต็ม)
-const OG_IMAGE = SITE_ORIGIN + '/static/og.png'; // banner 1200×630 สำหรับการ์ดแชร์ (static/og.png — regenerate จาก static/og.svg)
+const OG_IMAGE = SITE_ORIGIN + '/static/og.png'; // banner 1200×630 สำหรับการ์ดแชร์
+// regenerate og.png: og.svg เป็น 1200×1200 — PNG คือ crop แถบ y∈[300,930] (ไม่ใช่ทั้งใบ)
+//   วิธี (ไม่มี rsvg-convert/magick บนเครื่อง): เขียน HTML ครอบ <img src="og.svg"> width/height 1200×1200
+//   วางที่ top:-300px ใน viewport 1200×630 แล้ว headless Chrome:
+//   chrome --headless=new --window-size=1200,630 --force-device-scale-factor=1 --screenshot=og.png file://wrapper.html
 // เครดิตโมเดลต่อรายงาน = meta ai-model ของไฟล์นั้นเสมอ (gate E28 บังคับให้มีทุกใบ)
 // ค่านี้เป็น fallback เผื่อไฟล์ไม่มี meta เท่านั้น — ห้ามใส่ชื่อรุ่นเจาะจง เพราะจะกลายเป็นเครดิตผิดรุ่นเงียบ ๆ
 const AI_MODEL = 'Claude (ไม่ระบุรุ่น)';
