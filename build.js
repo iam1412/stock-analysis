@@ -649,8 +649,14 @@ fs.writeFileSync(
 
 // รายชื่อ tag ที่จะมีหน้าจริง — คำนวณตรงนี้เพราะ sitemap (ข้อ 4.5) ต้องใช้
 // ส่วนตัวหน้าถูกสร้างท้ายไฟล์ (ข้อ 7) เพราะต้องรอ cardHtml + INDEX_STYLE
+// bySymbol hoisted ขึ้นมาจากท้ายไฟล์ — ต้องใช้ตั้งแต่ตรงนี้เพื่อกรอง "สมาชิกที่มีรายงานจริง"
+const bySymbol = new Map(reports.map((r) => [r.symbol, r]));
 const tagMembers = tagLib.membersOf(TAG_DATA);
-const tagPageSlugs = [...tagMembers.keys()].filter((s) => TAG_VOCAB.bySlug.has(s)).sort();
+// สมาชิกที่ "มีรายงานจริง" เท่านั้น — tags.json อาจค้าง symbol ที่ถูกลบรายงานแล้ว (delisting ตาม CLAUDE.md §9
+// ไม่มีขั้นล้าง tags.json) ⇒ ทุกที่ที่อ้าง "สมาชิกของ tag" (หน้า tag, sitemap, related-nav, แถวแท็กยอดนิยม)
+// ต้องผ่านตัวกรองนี้เสมอ กันแท็กที่สมาชิกถูกลบหมดหลุดไปมีหน้า/ลิงก์เปล่า
+const liveMembersOf = (slug) => (tagMembers.get(slug) || []).filter((s) => bySymbol.has(s));
+const tagPageSlugs = [...tagMembers.keys()].filter((s) => TAG_VOCAB.bySlug.has(s) && liveMembersOf(s).length > 0).sort();
 
 // ---- 4.5) sitemap.xml + robots.txt (ส่ง Google Search Console — auto จากรายการหุ้น) ----
 // URL หุ้นใช้ clean URL /<SYM> (เดียวกับ og:url) · lastmod = วันที่อัปเดตของรายงานนั้น
@@ -801,8 +807,9 @@ const matchTagQuerySrc = String(tagLib.matchTagQuery);
 
 // แถวแท็กยอดนิยม — 12 tag ที่มีสมาชิกมากที่สุด · เป็น <a> จริง (ไม่พึ่ง JS) ให้เดินสำรวจได้
 // จัดอันดับตอน build เพราะจำนวนสมาชิกไม่เปลี่ยนระหว่างที่ผู้ใช้เปิดหน้าอยู่
-const topTags = [...tagLib.membersOf(TAG_DATA)]
-  .filter(([slug]) => TAG_VOCAB.bySlug.has(slug))
+// ใช้ tagPageSlugs (ที่กรองสมาชิกมีรายงานจริงแล้ว) เป็นฐานเดียวกับหน้า tag — กันลิงก์ตายเวลาแท็กเหลือสมาชิก 0
+const topTags = tagPageSlugs
+  .map((slug) => [slug, liveMembersOf(slug)])
   .sort((a, b) => (b[1].length - a[1].length) || a[0].localeCompare(b[0]))
   .slice(0, 12);
 const topTagBar = topTags.length ? `
@@ -1201,7 +1208,7 @@ const INDEX_STYLE = `<style>
   .tt-lab{font-size:12.5px;font-weight:700;color:var(--muted)}
   a.tchip{text-decoration:none}
   .tagbar{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 14px}
-  .related{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:28px} /* แท็กที่เกี่ยวข้องท้ายหน้า tag — เลย์เอาต์แบบเดียวกับ .toptags/.tagbar */
+  .related{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:14px} /* แท็กที่เกี่ยวข้องท้ายหน้า tag — เลย์เอาต์+ระยะห่างแบบเดียวกับ .toptags/.tagbar (14px) */
   .js-only{display:none} /* ลิงก์ "เปิดในหน้ารวม" ใช้ได้เฉพาะ JS (กรอง/เรียงฝั่ง client) — ซ่อนจนพิสูจน์ว่ามี JS จริง */
   html.js .js-only{display:block}
   .tchip{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;padding:6px 12px;border-radius:99px;background:var(--card);box-shadow:var(--shadow);color:var(--ink)}
@@ -1372,22 +1379,23 @@ fs.writeFileSync(path.join(OUT, 'index.html'), indexHtml, 'utf8');
 // ★ ต้องอยู่ dist/tag/ ไม่ใช่รากของ dist — check-site มองไฟล์ .html ในรากว่าเป็น "รายงาน"
 // ★ การ์ดหน้าแรกใช้ href="./<SYM>.html" (relative) — บนหน้าที่ลึก 1 ชั้นจะกลายเป็น
 //   /tag/<SYM>.html = 404 ทุกใบ ⇒ ต้องแปลงเป็น absolute ก่อนฝัง
-const bySymbol = new Map(reports.map((r) => [r.symbol, r]));
+// bySymbol ย้ายขึ้นไปประกาศพร้อม tagPageSlugs แล้ว (ข้อ 4) — ใช้ตัวเดียวกันทั้งไฟล์
 const idxOf = new Map(reports.map((r, i) => [r.symbol, i])); // hoisted ออกจาก loop ข้างล่าง — ค่าเดิมทุก slug ไม่ต้องสร้างใหม่ทุกรอบ
 if (tagPageSlugs.length) {
   fs.mkdirSync(path.join(OUT, 'tag'), { recursive: true });
-  // แท็กที่เกี่ยวข้อง = slug ที่มีสมาชิกทับซ้อนมากที่สุด (ลิงก์ภายในให้กราฟเชื่อมถึงกัน)
+  // แท็กที่เกี่ยวข้อง = slug ที่มีสมาชิก "ที่มีรายงานจริง" ทับซ้อนมากที่สุด (ลิงก์ภายในให้กราฟเชื่อมถึงกัน
+  // ต้องอิง live เท่านั้น ไม่งั้นสมาชิกที่ถูกลบรายงานไปแล้วจะยังไปดันคะแนน overlap ให้แท็กที่ไม่มีจริง)
   const relatedOf = (slug) => {
-    const mine = new Set(tagMembers.get(slug));
+    const mine = new Set(liveMembersOf(slug));
     return tagPageSlugs
       .filter((s) => s !== slug)
-      .map((s) => ({ s, n: tagMembers.get(s).filter((x) => mine.has(x)).length }))
+      .map((s) => ({ s, n: liveMembersOf(s).filter((x) => mine.has(x)).length }))
       .filter((x) => x.n > 0)
       .sort((a, b) => b.n - a.n).slice(0, 5).map((x) => x.s);
   };
   for (const slug of tagPageSlugs) {
     const ent = TAG_VOCAB.bySlug.get(slug);
-    const syms = tagMembers.get(slug).filter((s) => bySymbol.has(s));
+    const syms = liveMembersOf(slug);
     // href="./X.html" → href="/X.html" — หน้า tag ลึก 1 ชั้น relative link จะพังทุกใบ
     const cardsHtml = syms.slice().sort((a, b) => idxOf.get(a) - idxOf.get(b))
       .map((s) => cardHtml[idxOf.get(s)].replace(/href="\.\//g, 'href="/')).join('\n');

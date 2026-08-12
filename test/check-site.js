@@ -207,17 +207,22 @@ function checkTagPages(DIST) {
   // tags.json ยังเหลือ symbol ค้าง (orphan tag data เป็นปัญหาคนละชั้น รอ corpus-level check ในงานถัดไป)
   const liveCount = (s) => members.get(s).filter((sym) => fs.existsSync(path.join(DIST, sym + '.html'))).length;
   const tagDir = path.join(DIST, 'tag');
-  const want = [...members.keys()].filter((s) => vocab.bySlug.has(s)).sort();
+  // "ควรมีหน้า" = สมาชิกที่มีรายงานจริง ≥1 ตัวเท่านั้น (ตรงกับ tagPageSlugs ใน build.js) —
+  // แท็กที่สมาชิกถูกลบรายงานจนเหลือ 0 ไม่ควรมีหน้าเปล่าเข้ามาเลย ไม่ใช่แค่ "การ์ดตรงจำนวน"
+  const want = [...members.keys()].filter((s) => vocab.bySlug.has(s) && liveCount(s) > 0).sort();
   const have = fs.existsSync(tagDir)
     ? fs.readdirSync(tagDir).filter((f) => /\.html$/i.test(f)).map((f) => f.replace(/\.html$/i, '')).sort()
     : [];
 
-  for (const s of want) if (!have.includes(s)) r.errors.push(`ไม่มีหน้า dist/tag/${s}.html (มีสมาชิก ${members.get(s).length} ตัว)`);
+  for (const s of want) if (!have.includes(s)) r.errors.push(`ไม่มีหน้า dist/tag/${s}.html (มีสมาชิกที่มีรายงานจริง ${liveCount(s)} ตัว)`);
   for (const s of have) {
     if (!members.has(s)) { r.errors.push(`dist/tag/${s}.html ไม่มีสมาชิกเลย (หน้าเปล่าไม่ควรเข้า sitemap)`); continue; }
+    const live = liveCount(s);
+    // สมาชิกถูกลบรายงานจนเหลือ 0 = ห้ามมีหน้านี้เลย (Finding 1) — ต่างจาก "cards !== live" ข้างล่าง
+    // ที่ยังไม่ได้เช็คว่ามีการ์ดเลย ⇒ ต้องกันไว้ก่อนแยกต่างหาก ไม่งั้น 0 การ์ด/0 สมาชิกจะเงียบผ่านเป็น "ตรงกัน"
+    if (live === 0) { r.errors.push(`dist/tag/${s}.html มีสมาชิกใน tags.json แต่ไม่มีสักตัวที่มีรายงานจริง (หน้าเปล่าไม่ควรมีอยู่)`); continue; }
     const html = fs.readFileSync(path.join(tagDir, s + '.html'), 'utf8');
     const cards = (html.match(/class="card"/g) || []).length;
-    const live = liveCount(s);
     if (cards !== live) r.errors.push(`tag/${s}: การ์ด ${cards} ใบ แต่มีสมาชิกที่มีรายงานจริง ${live} ตัว`);
     if ((html.match(/<h1[^>]*>/gi) || []).length !== 1) r.errors.push(`tag/${s}: ต้องมี <h1> เดียว`);
     if (!/<title>[^<]+<\/title>/i.test(html)) r.errors.push(`tag/${s}: ไม่มี <title>`);
