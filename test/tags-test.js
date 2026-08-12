@@ -149,6 +149,42 @@ ok(eq(m.get('ai-datacenter'), ['AAA', 'ZZZ']), 'membersOf: map slug → รา�
 ok(eq(m.get('power-grid'), ['MMM', 'ZZZ']), 'membersOf: รวมสมาชิกจากหลาย symbol เข้า slug เดียวกัน');
 ok(m.get('no-such-slug') === undefined, 'membersOf: slug ที่ไม่มีสมาชิกเลย → undefined');
 
+// ── C) corpus: reports/ ↔ tags.json ↔ คลัง (ตรวจสองทาง) ──
+const data = T.loadTags();
+const syms = fs.readdirSync(path.join(ROOT, 'reports')).filter((f) => /\.html$/i.test(f)).map((f) => f.replace(/\.html$/i, ''));
+const symSet = new Set(syms);
+
+const missing = syms.filter((s) => !data.tags[s]);
+ok(missing.length === 0, `ทุกรายงานมี tag (ขาด ${missing.length}: ${missing.slice(0, 5).join(', ')})`);
+
+const orphans = Object.keys(data.tags).filter((s) => !symSet.has(s));
+ok(orphans.length === 0, `ไม่มี entry ค้างของหุ้นที่ลบไปแล้ว (พบ ${orphans.length}: ${orphans.slice(0, 5).join(', ')})`);
+
+const dangling = [];
+for (const s of Object.keys(data.tags)) for (const g of data.tags[s]) if (!vocab.bySlug.has(g)) dangling.push(`${s}→${g}`);
+ok(dangling.length === 0, `ไม่มี slug ที่หลุดจากคลัง (พบ ${dangling.length}: ${dangling.slice(0, 5).join(', ')})`);
+
+const assignErrs = [];
+for (const s of Object.keys(data.tags)) assignErrs.push(...T.validateAssignment(s, data.tags[s], vocab));
+ok(assignErrs.length === 0, `ทุกหุ้นมี 1–3 tag ไม่ซ้ำ (พบ ${assignErrs.length}: ${assignErrs[0] || ''})`);
+
+// key ต้องไม่เป็นชื่อเก่าที่ย้ายไปแล้วตาม symbol-map (จับ rename ที่ลืมย้าย key)
+{
+  let map = {};
+  try { map = JSON.parse(fs.readFileSync(path.join(ROOT, 'tools', 'symbol-map.json'), 'utf8')); } catch {}
+  const stale = Object.keys(data.tags).filter((s) => map[s] && !symSet.has(s));
+  ok(stale.length === 0, `ไม่มี key ที่เป็นชื่อเก่าใน symbol-map (พบ ${stale.join(', ')})`);
+}
+
+// ── D) warning ระดับคลัง ──
+const members = T.membersOf(data);
+const thin = [...members].filter(([, a]) => a.length < T.MIN_MEMBERS);
+if (thin.length) console.log(`  ⚠ tag ที่มีสมาชิก <${T.MIN_MEMBERS}: ${thin.map(([k, a]) => k + '(' + a.length + ')').join(', ')}`);
+const unused = vocab.list.filter((e) => !members.has(e.slug)).map((e) => e.slug);
+if (unused.length) console.log(`  ⚠ slug ในคลังที่ไม่มีใครใช้: ${unused.join(', ')}`);
+if (data.vocabVersion < vocab.version) console.log(`  ⚠ vocabVersion ${data.vocabVersion} < คลัง ${vocab.version} — ยังไม่ backfill slug ใหม่`);
+if (data.requests.length) console.log(`  ⚠ คิวขอคำศัพท์รอรีวิว ${data.requests.length} รายการ`);
+
 console.log('\n' + '─'.repeat(50));
 console.log(`tags-test: ${n - fails}/${n} ผ่าน`);
 if (fails) { console.log('\n❌ ข้อมูล tag มีปัญหา\n'); process.exit(1); }

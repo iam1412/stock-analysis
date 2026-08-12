@@ -199,7 +199,14 @@ for (const cs of CASES) {
 
   let expanded;
   try { expanded = expandReport(filled); } catch (e) { ok(false, `${cs.file}: expandReport throw: ${e.message}`); continue; }
-  const res = checkHtml(expanded, cs.base.symbol + '.html');
+  // E40/W13 อ่าน tag จาก tags.json จริงเป็นค่าเริ่มต้น — แต่ HMPRO/NWND ที่นี่เป็น fixture สังเคราะห์
+  // (NWND ไม่ใช่หุ้นจริง ไม่มีทางอยู่ใน tags.json — เพิ่มเข้าไปจะขัดกับ corpus check "ไม่มี entry ค้าง"
+  // ใน tags-test.js เพราะ NWND ไม่มีไฟล์ reports/) ⇒ ฉีด tagData/vocab ปลอมผ่าน opts เหมือน self-test.js
+  // แทนที่จะพึ่งว่า HMPRO บังเอิญมีอยู่ในคลังจริง (เปราะ — ถ้ารายงาน HMPRO จริงถูกลบ/เปลี่ยน tag เทสนี้จะพังตาม)
+  const fakeVocabList = [{ slug: 'skeleton-test-sector', label: 'Skeleton Test Sector', aliases: [], desc: 'd', kind: 'business' }];
+  const fakeVocab = { version: 1, list: fakeVocabList, bySlug: new Map(fakeVocabList.map((e) => [e.slug, e])) };
+  const fakeTagData = { vocabVersion: 1, tags: { [cs.base.symbol]: ['skeleton-test-sector'] }, requests: [] };
+  const res = checkHtml(expanded, cs.base.symbol + '.html', { tagData: fakeTagData, vocab: fakeVocab });
   ok(res.errors.length === 0, `${cs.file}: รายงานที่เติมแล้วผ่าน check-reports (0 error)` + (res.errors.length ? ' — ' + res.errors.map((e) => e.id + ':' + e.msg).join(' | ') : ''));
 
   const body = extractEngine(expanded);
