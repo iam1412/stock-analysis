@@ -228,6 +228,15 @@ expect('E37', 'error', mutJson('report-data', (d) => {
 }), 'กราฟ 14 จุด (>13 = เกิน ~1 ปีรายเดือน) → ต้องจับ E37');
 rejectBase('E37', `กราฟฐาน BBL (${C.rd.data.chart.data.length} จุด ~1 ปี) → ต้องไม่ฟ้อง E37`);
 expect('W12', 'warn', mutJson('report-data', (d) => { d.chart.data[0][0] = ''; }), 'จุดกราฟแรก label ว่าง (["",…]) → เตือน W12');
+// E39: จุดกราฟต้องเรียงเวลาเดินหน้า — สลับจุดสองจุดแรกของกราฟจริง (derive จากฐาน ไม่ hardcode label/ค่า)
+expect('E39', 'error', mutJson('report-data', (d) => { const arr = d.chart.data; const t = arr[0]; arr[0] = arr[1]; arr[1] = t; }), `สลับจุดกราฟสองจุดแรก ("${C.rd.data.chart.data[0][0]}" ↔ "${C.rd.data.chart.data[1][0]}") → ต้องจับ E39`);
+rejectBase('E39', `กราฟฐาน BBL (${C.rd.data.chart.data.length} จุด เรียงเวลาถูกต้อง) → ต้องไม่ฟ้อง E39`);
+// อนุรักษนิยม: ลำดับย้อนจริง แต่มี label รูปแบบไม่รู้จักปนอยู่ → ต้องข้าม ไม่เดา (กัน false error บล็อก cron)
+reject('E39', mutJson('report-data', (d) => {
+  const arr = d.chart.data;
+  arr[0] = [arr[0][0] + '?', arr[0][1]];   // ทำให้ label จุดแรกเป็นรูปแบบที่ parseChartLabelKey อ่านไม่ออก
+  const t = arr[0]; arr[0] = arr[1]; arr[1] = t;   // แล้วสลับให้ลำดับเวลาย้อนกลับจริง (parse ได้จะต้องโดน E39)
+}), 'จุดกราฟสลับลำดับจริง แต่มี label รูปแบบไม่รู้จักปนอยู่ → ต้องไม่เดา ไม่ฟ้อง E39');
 
 // ── E38: contrast ธีมอ่านออก — WCAG AA (ก.ค. 2026) ──
 // derive สีทดสอบจากธีมจริงของฐาน: verdictText = stop แรก (เข้มสุด) ของ gradient ตัวเอง → contrast ~1 แบบเคส ADP/DIS
