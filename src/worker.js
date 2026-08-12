@@ -44,6 +44,31 @@ function countable(request, url) {
   return fromOurPage(request, url) && !isBot(request);
 }
 
+// ── เพดานหยาบต่อ IP: จำกัด "จำนวนครั้งที่วิ่งไป DO" รวมทุกหุ้นทุกเส้นทาง ──
+// VOTE_LIMITER แยกโควตาราย (IP+หุ้น) → รายชื่อหุ้นเปิดสาธารณะ (/reports.json ~908 ตัว) ⇒ IP เดียวยิงถูกกติกาได้ ~4,540 ครั้ง/นาที
+//   เข้า DO ตัวเดียว (single-threaded) · คำขอที่ countable() ไม่ผ่านก็ยังเรียก getOne() ⇒ สคริปต์ยังกินรอบ DO อยู่ดี
+// ด่านนี้ปิดช่องนั้นก่อนแตะ DO ทุกเส้นทาง view/vote (ohlc ไม่แตะ DO + มี OHLC_LIMITER อยู่แล้ว → ไม่กินโควตานี้)
+// ⚠️ นับใน isolate (ต่อ isolate/colo) ไม่ใช่ทั่วโลกจริง ๆ — ลดการขยายผลได้มาก แต่ไม่ใช่เพดานเป๊ะ; อยากเป๊ะต้องเพิ่ม ratelimit binding ใน wrangler.toml (เรื่อง deploy/บิล เจ้าของตัดสิน)
+const DO_CAP = 60;              // แตะ DO ได้ 60 ครั้ง
+const DO_CAP_WINDOW_MS = 60000; // ต่อ 60 วิ ต่อ IP (ผู้อ่านจริง 1 หน้า = 1 ครั้ง · โหวต 1 ครั้ง = 1 ครั้ง)
+const DO_CAP_KEYS = 5000;       // เพดานจำนวน entry — isolate อยู่ยาว map ต้องไม่โตไม่จำกัด
+const doHits = new Map();       // ip → { n, exp }
+function doBudget(ip) {
+  const now = Date.now();
+  const e = doHits.get(ip);
+  if (e && now < e.exp) {
+    e.n++;
+    return e.n <= DO_CAP; // เกินแล้วยังนับต่อ (แค่ตัวเลข) — ไม่ต่ออายุหน้าต่าง
+  }
+  if (doHits.size >= DO_CAP_KEYS) {
+    for (const [k, v] of doHits) if (now >= v.exp) doHits.delete(k); // เก็บกวาดหน้าต่างที่หมดอายุก่อน
+    while (doHits.size >= DO_CAP_KEYS) doHits.delete(doHits.keys().next().value); // ยังเต็ม (สดทั้งกระดาน) → ทิ้งตัวเก่าสุด
+  }
+  doHits.delete(ip); // ต้องลบก่อน set — Map.set ทับคีย์เดิมไม่ขยับลำดับ ลำดับ insert = ลำดับหมดอายุ (ใช้ตอน evict ข้างบน)
+  doHits.set(ip, { n: 1, exp: now + DO_CAP_WINDOW_MS });
+  return true;
+}
+
 async function knownSymbols(env, url) {
   if (KNOWN && Date.now() - KNOWN_AT < KNOWN_TTL_MS) return KNOWN;
   KNOWN_AT = Date.now(); // throttle: ลองรีเฟรชครั้งเดียวต่อ TTL แม้ล้มเหลว
@@ -57,16 +82,26 @@ async function knownSymbols(env, url) {
   return KNOWN;
 }
 
+// nosniff ต้องใส่เอง — _headers ใช้ได้เฉพาะไฟล์ที่ออกจาก ASSETS ส่วน JSON ที่ Worker สร้างเองไม่ผ่านกฎนั้น
 function json(obj, { status = 200, cache = 'no-store' } = {}) {
   return new Response(JSON.stringify(obj), {
     status,
-    headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': cache },
+    headers: {
+      'content-type': 'application/json; charset=utf-8',
+      'cache-control': cache,
+      'x-content-type-options': 'nosniff',
+    },
   });
 }
 
 // ตรวจ symbol: รูปแบบถูก + อยู่ในรายชื่อจริง (ถ้าโหลดรายชื่อได้)
 async function validSym(raw, env, url) {
-  const sym = decodeURIComponent(raw).toUpperCase();
+  let sym;
+  try {
+    sym = decodeURIComponent(raw).toUpperCase();
+  } catch {
+    return { err: json({ error: 'bad symbol' }, { status: 400 }) }; // %xx พัง (เช่น /api/vote/%) → URIError → ตอบ 400 เหมือน symbol ผิดรูป ไม่ใช่ปล่อยให้ runtime พ่น error หน้าเปล่า
+  }
   if (!SYM_RE.test(sym)) return { err: json({ error: 'bad symbol' }, { status: 400 }) };
   const ok = await knownSymbols(env, url);
   if (ok.size && !ok.has(sym)) return { err: json({ error: 'unknown symbol' }, { status: 404 }) };
@@ -228,6 +263,8 @@ export default {
       const cache = caches.default;
       const hit = await cache.match(request);
       if (hit) return hit;
+      // cache miss เท่านั้นที่กินโควตา — all() สแกนทั้งตาราง แพงกว่า getOne() (และ query string มั่ว ๆ ทำให้ cache key หลุดได้)
+      if (!doBudget(request.headers.get('CF-Connecting-IP') || 'anon')) return json({ error: 'rate_limited' }, { status: 429 });
       let map;
       try {
         map = await stub.all();
@@ -247,6 +284,8 @@ export default {
       if (err) return err;
       // rate limit (edge, per-colo) — ด่านกัน spam ก่อนใช้โควต้า DO; ความเป๊ะของยอดมาจาก DO แล้ว
       const ip = request.headers.get('CF-Connecting-IP') || 'anon';
+      // เพดานรวมทุกหุ้นมาก่อน (sync ไม่มี I/O) — คีย์ของ VOTE_LIMITER แยกรายหุ้น จึงกันการไล่ยิงทีละ symbol ไม่ได้
+      if (!doBudget(ip)) return json({ error: 'rate_limited' }, { status: 429 });
       const { success } = await env.VOTE_LIMITER.limit({ key: `${ip}:${sym}` });
       if (!success) return json({ error: 'rate_limited' }, { status: 429 });
       const from = url.searchParams.get('from') || 'none';
@@ -274,10 +313,12 @@ export default {
     if (m) {
       const { sym, err } = await validSym(m[1], env, url);
       if (err) return err;
+      // เพดานรวมทุกหุ้น ครอบทั้ง GET/POST — GET เดิมไม่มีด่านเลยแต่ก็เรียก getOne() ทุกครั้ง
+      const ip = request.headers.get('CF-Connecting-IP') || 'anon';
+      if (!doBudget(ip)) return json({ error: 'rate_limited' }, { status: 429 });
       try {
         if (request.method === 'POST') {
           // rate limit (edge): 30 view-counts/60วิ ต่อ IP
-          const ip = request.headers.get('CF-Connecting-IP') || 'anon';
           const { success } = await env.VIEW_LIMITER.limit({ key: ip });
           if (!success) return json({ error: 'rate_limited' }, { status: 429 });
           // นับเฉพาะ view จากหน้าเว็บเราเอง (กันบอต/ยิง API ตรง) — บอตได้ค่าปัจจุบันแต่ไม่ +1
