@@ -1430,7 +1430,7 @@ Expected: `เขียน /tmp/tag-corpus.tsv — 908 บรรทัด`
 
 - **แกนเดียว = ธีม/เรื่องราวการลงทุน** ไม่ใช่ category (`Technology`/`Healthcare`/`Financials` ห้ามเป็น slug) และไม่ใช่ขนาด (`Large-cap`)
 - ธีมหนึ่งต้องมีสมาชิก **≥3 ตัว** — ธีมที่นึกออกแต่มีหุ้นตัวเดียวให้ยุบรวมกับธีมใกล้เคียง
-- ทุกหุ้นใน 908 ตัวต้องหาที่ลงได้อย่างน้อย 1 ธีมโดยไม่ต้องฝืน — ถ้าหุ้นกลุ่มไหนลงไม่ได้เลย แปลว่าคลังยังขาดธีมกว้าง (เช่น `thai-consumption`, `dividend-income`)
+- ทุกหุ้นใน 908 ตัวต้องหาที่ลงได้อย่างน้อย 1 ธีมโดยไม่ต้องฝืน — ถ้าหุ้นกลุ่มไหนลงไม่ได้เลย แปลว่าคลังยังขาดธีมกว้าง (เช่น `thai-consumption`, `retail-bigbox`)
 - `aliases` ต้องมีทั้งคำอังกฤษและไทยที่คนน่าจะพิมพ์ค้นหาจริง และ **ห้ามชนกันข้าม slug**
 
 เขียนผลลงทับ `tags-vocab.json` ตาม schema เดิม (`version` คงเป็น `1`)
@@ -1513,9 +1513,11 @@ Expected: `แบตช์ 23 ไฟล์ ที่ /tmp/tagbatch/`
 
 ```
 LITE ai-datacenter optical-photonics
-CPN thai-consumption retail-property
-BBL thai-banking dividend-income
+CPN retail-property thai-consumption
+BBL thai-bank thai-consumption
 ```
+
+> ⚠️ slug ต้องมีอยู่จริงใน `tags-vocab.json` ปัจจุบัน — คลังถูกแทนใน Task 7 แล้ว (109 ธีม) ตัวอย่างข้างบนอ้าง slug จริงทั้งหมด · `tag-apply.js` จะปฏิเสธ slug ที่ไม่มีในคลังโดยไม่เขียนไฟล์ ⇒ พิมพ์ผิดจะเห็นเป็น `FAIL:` ทันที ไม่ใช่ข้อมูลเสียเงียบ ๆ
 
 แล้ว apply ทีละแบตช์ (sequential — ห้ามรันขนาน ไฟล์ `tags.json` มี writer ได้ทีละตัว)
 
@@ -1600,19 +1602,19 @@ git add tags.json tags-vocab.json reports.json && git commit -m "$(printf 'feat:
   const T = require('../tools/tag-lib.js');
   const list = [
     { slug: 'thai-consumption', label: 'การบริโภคในประเทศไทย', aliases: ['ค้าปลีก'], desc: 'd' },
-    { slug: 'dividend-income', label: 'Dividend & Income', aliases: ['ปันผล'], desc: 'd' },
+    { slug: 'thai-bank', label: 'ธนาคารไทย', aliases: ['แบงก์ไทย'], desc: 'd' },
   ];
   const vocab = { version: 1, list, bySlug: new Map(list.map((e) => [e.slug, e])) };
   const mk = (slugs) => ({ vocabVersion: 1, tags: slugs ? { BBL: slugs } : {}, requests: [] });
   const run = (slugs) => checkHtml(BASE, 'BBL.html', { tagData: mk(slugs), vocab });
 
-  const good = run(['thai-consumption', 'dividend-income']);
+  const good = run(['thai-consumption', 'thai-bank']);
   ok(!errIds(good).has('E40'), 'E40: tag ถูกต้อง → ไม่ยิง');
   ok(!allIds(good).has('W13'), 'W13: มี 2 tag → ไม่ยิง');
 
   ok(errIds(run(null)).has('E40'), 'E40: ไม่มี entry ใน tags.json → ยิง');
   ok(errIds(run(['ไม่มีจริง'])).has('E40'), 'E40: slug นอกคลัง → ยิง');
-  ok(errIds(run(['thai-consumption', 'dividend-income', 'thai-consumption', 'dividend-income'])).has('E40'), 'E40: เกิน 3 slug → ยิง');
+  ok(errIds(run(['thai-consumption', 'thai-bank', 'thai-consumption', 'thai-bank'])).has('E40'), 'E40: เกิน 3 slug → ยิง');
   ok(errIds(run(['thai-consumption', 'thai-consumption'])).has('E40'), 'E40: slug ซ้ำกันเอง → ยิง');
 
   const one = run(['thai-consumption']);
