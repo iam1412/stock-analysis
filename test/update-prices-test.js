@@ -87,6 +87,59 @@ ok(/^(ม\.ค\.|ก\.พ\.|มี\.ค\.|เม\.ย\.|พ\.ค\.|มิ\.ย\.
 const dup = U.buildChartData([{ ts: Date.UTC(2026, 0, 1) / 1000, close: 10 }, { ts: Date.UTC(2026, 0, 15) / 1000, close: 11 }, { ts: Date.UTC(2026, 1, 1) / 1000, close: 12 }], 12, 0);
 ok(dup.length === 2, 'เดือนซ้ำถูก dedupe');
 
+// ---------- detectMixedBasis (ซีรีส์กราฟผสมสองฐาน — split ที่ Yahoo ยังไม่ปรับย้อนหลัง) ----------
+// fixture = ตัวเลขสังเคราะห์ (คัดลอกค่าที่วัดได้จริงจาก MNST 12 ส.ค. 2569 มาแช่ไว้) — **ห้าม fetch สด**
+// เพราะ Yahoo จะทยอยปรับ adjclose ให้ครบภายในไม่กี่วัน แล้วเคสนี้จะหายไปจากสายพานทดสอบเงียบ ๆ
+const NOW = Date.UTC(2026, 7, 12) / 1000;                       // 12 ส.ค. 2569 — ตรึงเวลาไม่ให้เทสต์แกว่งตามวันจริง
+const mkSeries = (rows) => rows.map(([y, m, close]) => ({ ts: Date.UTC(y, m, 1) / 1000, close }));
+
+// MNST: 52wk = 30.485–50.17 (ปรับ split 2:1 แล้ว) แต่ ก.ย.–ธ.ค. 25 ยังเป็นฐานก่อน split (67–77)
+const mnstBars = mkSeries([[2025, 8, 67.31], [2025, 9, 66.83], [2025, 10, 74.99], [2025, 11, 76.67],
+  [2026, 0, 40.38], [2026, 1, 42.65], [2026, 2, 36.23], [2026, 3, 38.53],
+  [2026, 4, 44.04], [2026, 5, 48.06], [2026, 6, 48.19], [2026, 7, 45.53]]);
+const mb = U.detectMixedBasis({ bars: mnstBars, low: 30.485, high: 50.17, nowSec: NOW });
+ok(mb.mixed === true, 'detectMixedBasis: จับซีรีส์ผสมสองฐาน (MNST split 2:1 ที่ยังไม่ปรับย้อนหลัง)');
+ok(mb.checked === true, 'detectMixedBasis: รายงานว่าตรวจจริง');
+ok(mb.bad.length === 4, 'detectMixedBasis: ชี้ครบทั้ง 4 จุดที่อยู่คนละฐาน', `ได้ ${mb.bad.length}`);
+ok(mb.worst && mb.worst.close === 76.67, 'detectMixedBasis: worst = จุดที่หลุดกรอบมากที่สุด', JSON.stringify(mb.worst));
+ok(/76\.67/.test(mb.text) && /50\.17/.test(mb.text) && /ธ\.ค\.25/.test(mb.text),
+  'detectMixedBasis: detail อ่านออก (เดือน+ค่า+กรอบ 52wk) — ลงคิว price-flags ให้คนไล่ต่อได้', mb.text);
+
+// close ดิบจาก JSON ของ Yahoo เป็น float มีหางลอย (วัดจริงตอน dry-run: 76.66999816894531)
+// — detail ลงไฟล์ price-flags.json ที่คนอ่าน จึงต้องปัด ไม่ใช่โยนค่าดิบลงไป
+const noisy = U.detectMixedBasis({ bars: mkSeries([[2025, 11, 76.66999816894531], [2026, 7, 45.53]]), low: 30.485, high: 50.17, nowSec: NOW });
+ok(/76\.67\b/.test(noisy.text) && !/76\.669/.test(noisy.text), 'detectMixedBasis: ปัดทศนิยมใน detail', noisy.text);
+
+// ฐานเดียวต้องผ่าน — AAPL วันเดียวกัน (52wk 223.78–344.57)
+const aaplBars = mkSeries([[2025, 8, 254.63], [2025, 9, 270.37], [2025, 10, 278.85], [2025, 11, 271.86],
+  [2026, 0, 259.48], [2026, 1, 264.18], [2026, 2, 253.79], [2026, 3, 271.35],
+  [2026, 4, 312.06], [2026, 5, 289.36], [2026, 6, 308.91], [2026, 7, 304.91]]);
+ok(U.detectMixedBasis({ bars: aaplBars, low: 223.78, high: 344.57, nowSec: NOW }).mixed === false,
+  'detectMixedBasis: ซีรีส์ฐานเดียวไม่ false-positive');
+
+// reverse split (ฐานเก่าต่ำกว่ากรอบ) ต้องจับได้เหมือนกัน — ไม่ใช่เช็คแค่ฝั่งสูง
+const revBars = mkSeries([[2025, 8, 4.2], [2025, 9, 4.4], [2026, 0, 42.65], [2026, 7, 45.53]]);
+ok(U.detectMixedBasis({ bars: revBars, low: 30.485, high: 50.17, nowSec: NOW }).mixed === true,
+  'detectMixedBasis: จับฝั่งต่ำกว่ากรอบด้วย (reverse split)');
+
+// bar ที่เก่ากว่า 52 สัปดาห์ — กรอบ 52wk ไม่ใช่ขอบเขตของมัน จึงห้ามนับ (ไม่งั้นหุ้นที่วิ่งแรงติด flag ยกแผง)
+const oldOutside = mkSeries([[2024, 6, 150], [2026, 5, 48.06], [2026, 7, 45.53]]);
+ok(U.detectMixedBasis({ bars: oldOutside, low: 30.485, high: 50.17, nowSec: NOW }).mixed === false,
+  'detectMixedBasis: bar เก่ากว่า 52 สัปดาห์ไม่นับ');
+
+// ราคาทำจุดสูงใหม่แล้ว field 52wk ของ Yahoo ตามไม่ทัน → หลุดขอบนิดเดียว ต้องไม่ freeze
+const nearHigh = mkSeries([[2026, 5, 48.06], [2026, 6, 50.9], [2026, 7, 52.0]]);
+ok(U.detectMixedBasis({ bars: nearHigh, low: 30.485, high: 50.17, nowSec: NOW }).mixed === false,
+  'detectMixedBasis: หลุดขอบเล็กน้อย (52wk field ตามไม่ทันจุดสูงใหม่) ไม่ใช่ผสมฐาน');
+
+// ไม่มี field 52wk (Yahoo เปลี่ยน schema) → **fail-open** เหมือน currentTradingPeriod
+// — fail-closed จะทำให้ cron หยุดทั้งกระดานเงียบ ๆ ทุกวัน ซึ่งเสียหายกว่าปล่อยผ่าน
+const noRange = U.detectMixedBasis({ bars: mnstBars, low: undefined, high: undefined, nowSec: NOW });
+ok(noRange.mixed === false, 'detectMixedBasis: ไม่มี 52wk ใน meta → fail-open (ไม่ freeze ทั้งกระดาน)');
+ok(noRange.checked === false, 'detectMixedBasis: บอกได้ว่า "ไม่ได้ตรวจ" ≠ "ตรวจแล้วผ่าน"');
+ok(U.detectMixedBasis({ bars: mnstBars, low: 0, high: 50.17, nowSec: NOW }).checked === false,
+  'detectMixedBasis: 52wk low = 0 (ค่าเสีย) → ไม่ตรวจ ไม่เดา');
+
 // ---------- niceBounds ----------
 const nb = U.niceBounds([200, 222, 245, 262, 297], 262);
 ok(nb.min < 200 && nb.max > 297, 'bounds ครอบข้อมูล');
@@ -138,6 +191,29 @@ ok(up ? /green/.test(rd.theme.chgBg) : /red/.test(rd.theme.chgBg), 'สีป้
 ok(!/\{\{|\}\}|undefined|NaN/.test(out.replace(/[\s\S]*<body/, '')), 'ไม่มี placeholder/undefined หลุด (E13/E14)');
 const oldLab = aapl.match(/id="mCur"><div class="lab">ปัจจุบัน \$([\d,.]+)/)[1];
 ok(out.match(/id="mCur"><div class="lab">ปัจจุบัน \$([\d,.]+)/)[1] === U.fmtLike(301.5, oldLab), 'gauge label คงสไตล์ทศนิยมเดิม');
+
+// ---------- price-only fallback (chartData = null) — คงกราฟเดิม แตะแค่จุดท้าย ----------
+// ทางนี้เดิมใช้เฉพาะตอน Yahoo ไม่มีประวัติพอ · ตั้งแต่มี bad-chart มันเป็นทางของ `--force` ด้วย:
+// ซีรีส์ต้นทางผสมสองฐาน แต่กราฟในไฟล์ถูกแก้ให้ถูกแล้ว ⇒ ประทับราคาได้โดยไม่ลากฐานที่สองกลับเข้ามา
+const rdIn = JSON.parse(aapl.match(/<script[^>]*id=["']report-data["'][^>]*>([\s\S]*?)<\/script>/i)[1]);
+const oldPts = rdIn.chart.data;
+const lastLab = oldPts[oldPts.length - 1][0];
+const labMon = U.THAI_MONTHS.findIndex((m) => lastLab.startsWith(m));
+const labYear = 2000 + parseInt(lastLab.slice(-2), 10);
+// เดือนเดียวกับจุดท้าย → แทนค่าจุดเดิม (ไม่ต่อจุดใหม่)
+const rSame = U.patchReport(aapl, { newPrice: 301.5, dateParts: { day: 11, monIdx: labMon, yearCE: labYear }, chartData: null });
+const ptsSame = JSON.parse(rSame.html.match(/<script[^>]*id=["']report-data["'][^>]*>([\s\S]*?)<\/script>/i)[1]).chart.data;
+ok(ptsSame.length === oldPts.length, 'fallback: เดือนเดิม → ไม่ต่อจุดใหม่', `${oldPts.length} → ${ptsSame.length}`);
+ok(ptsSame[ptsSame.length - 1][1] === 301.5, 'fallback: จุดท้าย = ราคาใหม่');
+ok(ptsSame.slice(0, -1).every((p, i) => p[0] === oldPts[i][0] && p[1] === oldPts[i][1]),
+  'fallback: จุดก่อนหน้าคงเดิมทุกจุด — ฐานราคาเดิมไม่ถูกแตะ (invariant ของ bad-chart + --force)');
+// เดือนถัดไป → ต่อจุดใหม่แล้วตัดหัวให้ ≤13
+const nextM = (labMon + 1) % 12, nextY = labYear + (labMon === 11 ? 1 : 0);
+const rNext = U.patchReport(aapl, { newPrice: 301.5, dateParts: { day: 1, monIdx: nextM, yearCE: nextY }, chartData: null });
+const ptsNext = JSON.parse(rNext.html.match(/<script[^>]*id=["']report-data["'][^>]*>([\s\S]*?)<\/script>/i)[1]).chart.data;
+ok(ptsNext.length <= 13, 'fallback: เดือนใหม่ → ต่อจุดแล้วยังคง ≤13 จุด (E37)', `ได้ ${ptsNext.length}`);
+ok(ptsNext[ptsNext.length - 1][0] === `${U.THAI_MONTHS[nextM]}${String(nextY).slice(-2)}` && ptsNext[ptsNext.length - 1][1] === 301.5,
+  'fallback: จุดใหม่ = เดือนของราคา + ราคาใหม่', JSON.stringify(ptsNext[ptsNext.length - 1]));
 
 // ---------- gauge auto-rescale (แทน freeze outside-gauge-range) ----------
 // ราคาทะลุ max → ขยาย max ให้ราคาอยู่ในขอบแบบ strict (check-site เตือนเมื่อ v >= gmax) · min คงเดิม

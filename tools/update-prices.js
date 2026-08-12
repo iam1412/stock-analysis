@@ -9,6 +9,14 @@
  * Freeze + flag (ไม่แตะไฟล์ เขียนลง price-flags.json รอ re-analysis) เมื่อ:
  *   ราคาต่างจากในรายงาน >15% · MOS พลิกเครื่องหมายเกิน dead-band ±3 จุด ·
  *   ต่าง >25% / currency ไม่ตรง (สงสัย split/ticker) · fetch/patch ไม่สำเร็จ
+ *   + `bad-chart`: ซีรีส์กราฟจาก Yahoo **ผสมสองฐาน** — split ที่ Yahoo ยังไม่ปรับย้อนหลังให้ครบ
+ *   (detectMixedBasis: มี bar ในหน้าต่าง 52 สัปดาห์หลุดกรอบ fiftyTwoWeekLow/High เกิน 10%)
+ *   เคสจริง MNST 12 ส.ค. 2569 split 2:1: ก.ย.–ธ.ค. 25 ยังไม่ปรับ ปนกับ ม.ค. 26 ที่ปรับแล้ว ⇒ กราฟมี
+ *   หน้าผา −50% ปลอม + ป้าย % รอบปี **พลิกเครื่องหมาย** (▼ −32.4% ทั้งที่จริง ▲ +35.3%) · drift ราคา ~0
+ *   ⇒ ไม่มีเกณฑ์ freeze ข้ออื่นจับได้ และ gate ก็จับไม่ได้ (E36 เทียบป้ายกับปลายกราฟ = ผิดพร้อมกันทั้งคู่)
+ *   ตัวที่ติด flag นี้ **ไม่ถูก patch** เพื่อกันเขียนทับกราฟที่คนแก้ถูกไว้แล้ว · flag หายเองเมื่อ Yahoo
+ *   ปรับ adjclose ครบ (รอบถัดไป detectMixedBasis ผ่าน) — ไม่ต้องถอนมือ · `--force` ยังประทับ
+ *   ราคา/วันที่ได้แต่คงกราฟเดิมในไฟล์ (price-only) เพราะ SKILL STEP 1 สั่ง --force ทุกรอบ re-analysis
  *   (MOS พลิกใน ±3 จุด = แกว่งรอบ FV → patch ผ่าน · ราคาหลุดขอบ gauge → ขยายขอบเอง ไม่ freeze)
  *   + `not-on-exchange`: quote ค้างหลัง cohort เดียวกัน ≥3 session (detectStaleQuotes)
  *   **และ** TradingView ยืนยันว่าไม่พบ ticker บนกระดานใด (confirmDead) — สองชั้นเพราะ
@@ -137,6 +145,11 @@ async function fetchChart(ysym, attempt = 0, interval = '1mo') {
     gmtoffset: meta.gmtoffset || 0,          // tz ตลาด — ใช้แปลงเป็น "วันที่ราคา"
     regularStart: reg.start,                 // ขอบ session ปกติ (epoch วินาที) — ป้อน isIntradayQuote
     regularEnd: reg.end,
+    // กรอบ 52 สัปดาห์จาก meta ชุดเดียวกัน — Yahoo ปรับ split ให้แล้ว **แม้ตอนที่ซีรีส์ close ยังไม่ปรับ**
+    // จึงใช้เป็นตัวชี้ขาดฐานราคาของ bars ได้ (ป้อน detectMixedBasis) · v8 chart ส่งมาให้อยู่แล้ว ไม่ต้องยิง
+    // endpoint quote แยก (ซึ่งต้องใช้ crumb/cookie และล้มบ่อย)
+    week52Low: meta.fiftyTwoWeekLow,
+    week52High: meta.fiftyTwoWeekHigh,
     bars,
   };
 }
@@ -176,6 +189,54 @@ function buildChartData(bars, currentPrice, gmtoffset) {
   const data = pts.map((p) => [`${THAI_MONTHS[p.m]}${String(p.y).slice(-2)}`, round(p.close, 2)]);
   data[data.length - 1][1] = round(currentPrice, 2); // จุดท้าย = ราคา header (check-site: จุดสุดท้าย≈ราคา)
   return data;
+}
+
+// ---------- guard: ซีรีส์กราฟ "ผสมสองฐาน" (split ที่ Yahoo ยังไม่ปรับย้อนหลัง) ----------
+// เคสจริง MNST 12 ส.ค. 2569 (split 2:1): v8 chart ส่ง close ที่ **ยังไม่ปรับ** สำหรับ ก.ย.–ธ.ค. 25
+// (67–77) ปนกับเดือนที่ปรับแล้วตั้งแต่ ม.ค. 26 (36–48) ในซีรีส์เดียวกัน · `close === adjclose` ทุกจุด
+// (ไม่มีสัญญาณว่าปรับแล้วหรือยัง) และ `events.splits` **หายไปแล้ว** ตอนวัด ⇒ เชื่อ metadata ไม่ได้เลย
+// ผลถ้าปล่อยผ่าน: กราฟมีหน้าผา −50% ปลอม + ป้าย % รอบปี **พลิกเครื่องหมาย** (▼ −32.4% ทั้งที่จริง ▲ +35.3%)
+// และ gate จับไม่ได้ (E36 เทียบป้ายกับปลายกราฟ — ผิดพร้อมกันทั้งคู่จึงผ่าน 39/39)
+//
+// ตัวชี้ขาดที่เชื่อได้ = `fiftyTwoWeekLow/High` ใน meta ชุดเดียวกัน ซึ่ง Yahoo ปรับ split แล้ว:
+// bar ที่อยู่ **ในหน้าต่าง 52 สัปดาห์** ต้องอยู่ในกรอบนี้เสมอโดยนิยาม (close รายเดือน = close รายวัน
+// ของวันสิ้นเดือน) ⇒ หลุดกรอบเกิน tol = ฐานคนละชุด ไม่ใช่ราคาแกว่ง
+// ★ ตรวจเฉพาะ bar ในหน้าต่าง 52 สัปดาห์: range=1y คืน bar เก่ากว่านั้นได้ ซึ่งกรอบนี้ไม่ใช่ขอบเขตของมัน
+//   (ts ของ bar รายเดือน = ต้นเดือน แต่ close = สิ้นเดือน ⇒ ใช้ ts ตัดเป็นการกันฝั่งปลอดภัย)
+// ★ tol = ระยะกันชนล้วน ๆ **ไม่ใช่ค่าที่จูนให้พอดีข้อมูล** — วัดจริง 12 ส.ค. 2569 (สุ่ม 227/908 ตัว
+//   ทั้ง USD/THB): **ทุกตัวมีจุดหลุดกรอบ = 0 แม้ตั้ง tol = 0** (ratio 1.0000 ยกแผง) ยืนยันว่า bar ใน
+//   หน้าต่าง 52 สัปดาห์ถูกกรอบนี้ครอบโดยนิยามจริง ๆ · dry-run เต็มรีโป 908 ตัว → trip ตัวเดียวคือ MNST
+//   ที่ 10% จึงเป็นกันชนสำหรับเคสที่ไม่ได้อยู่ในกลุ่มตัวอย่าง: **วันที่ราคา gap ทำจุดสูงใหม่แล้ว field
+//   52wk ของ Yahoo ยังตามไม่ทัน** (bar ล่าสุดจะโผล่เหนือ high ชั่วคราว) · split เล็กสุดที่พบจริง
+//   (5:4 = 1.25× · 3:2 = 1.5×) ยังสูงกว่า 1.10 ทุกตัว ⇒ กันชนนี้ไม่ได้แลกความไวมาเลย
+// ⚠ ข้อจำกัดที่รู้ตัว: split ที่ตัวคูณเล็กพอจะยังตกในกรอบ 52wk ที่กว้างมาก จะรอดสายตาเช็คนี้ —
+//   เป็น **ตัวชี้ให้ไปดู ไม่ใช่คำตัดสิน** (ปรัชญาเดียวกับ canary หุ้นตาย)
+const CHART_BASIS_TOL = 0.10;
+const WEEK52_SEC = 52 * 7 * 86400;
+
+function detectMixedBasis({ bars, low, high, nowSec, gmtoffset = 0, tol = CHART_BASIS_TOL }) {
+  const out = { checked: false, mixed: false, bad: [], worst: null, low, high, text: '' };
+  // ไม่มี/เสีย = **fail-open** (เหตุผลเดียวกับ currentTradingPeriod ที่ isIntradayQuote): field หาย
+  // แปลว่า "Yahoo เปลี่ยน schema" ⇒ fail-closed = cron freeze ทั้งกระดานทุกวันเงียบ ๆ เสียหายกว่า
+  if (![low, high].every(Number.isFinite) || low <= 0 || high < low) return out;
+  out.checked = true;
+  const now = Number.isFinite(nowSec) ? nowSec : Math.floor(Date.now() / 1000);
+  const from = now - WEEK52_SEC;
+  const hiLim = high * (1 + tol), loLim = low * (1 - tol);
+  for (const b of bars || []) {
+    if (!Number.isFinite(b.ts) || !Number.isFinite(b.close) || b.close <= 0 || b.ts < from) continue;
+    // ratio = "หลุดกรอบกี่เท่า" (>1 เสมอเมื่อหลุด) — เทียบขนาดได้ทั้งฝั่งสูง (split) และฝั่งต่ำ (reverse split)
+    const ratio = b.close > hiLim ? b.close / high : b.close < loLim ? low / b.close : 0;
+    if (ratio) out.bad.push({ ts: b.ts, close: b.close, ratio });
+  }
+  if (!out.bad.length) return out;
+  out.mixed = true;
+  out.worst = out.bad.reduce((a, b) => (b.ratio > a.ratio ? b : a));
+  const d = new Date((out.worst.ts + gmtoffset) * 1000);
+  const lab = `${THAI_MONTHS[d.getUTCMonth()]}${String(d.getUTCFullYear()).slice(-2)}`;
+  out.text = `${lab} ${round(out.worst.close, 2)} หลุดกรอบ 52 สัปดาห์ ${round(low, 2)}–${round(high, 2)} `
+    + `(${out.bad.length}/${bars.length} จุดคนละฐาน — สงสัย split ที่ Yahoo ยังไม่ปรับย้อนหลัง)`;
+  return out;
 }
 
 // ขอบเขต + gridline สวย ๆ ครอบข้อมูล + เส้น fair value
@@ -648,18 +709,38 @@ async function main() {
     const md = new Date((q.marketTime + q.gmtoffset) * 1000);
     const dateParts = { day: md.getUTCDate(), monIdx: md.getUTCMonth(), yearCE: md.getUTCFullYear() };
 
-    try {
-      // เดือนไม่พอจุด (ประวัติสั้น/Yahoo ล้างประวัติ — เคส BK) → ลองรายสัปดาห์ → ยังไม่ได้ = null ให้ patchReport ใช้กราฟเดิม+จุดท้ายใหม่
-      let chartData = null, chartSrc = '1mo';
-      try { chartData = buildChartData(q.bars, q.price, q.gmtoffset); }
-      catch (e1) {
-        try {
-          const qw = await fetchChart(toYahooSymbol(symbol, sm.currency), 0, '1wk');
-          await sleep(FETCH_DELAY_MS);
-          chartData = buildChartData(qw.bars, q.price, qw.gmtoffset);
-          chartSrc = '1wk';
-        } catch (e2) { chartSrc = 'old-chart'; }
+    // เดือนไม่พอจุด (ประวัติสั้น/Yahoo ล้างประวัติ — เคส BK) → ลองรายสัปดาห์ → ยังไม่ได้ = null ให้ patchReport ใช้กราฟเดิม+จุดท้ายใหม่
+    // (ย้ายออกมานอก try ของ patchReport: ต้องรู้ว่า "bars ชุดไหนสร้างกราฟนี้" เพื่อตรวจฐานราคาต่อ
+    //  และ freeze bad-chart ต้องเป็นเหตุผลของตัวเอง ไม่ใช่ patch-failed)
+    let chartData = null, chartSrc = '1mo', chartBars = q.bars, chartGmt = q.gmtoffset;
+    try { chartData = buildChartData(q.bars, q.price, q.gmtoffset); }
+    catch (e1) {
+      try {
+        const qw = await fetchChart(toYahooSymbol(symbol, sm.currency), 0, '1wk');
+        await sleep(FETCH_DELAY_MS);
+        chartData = buildChartData(qw.bars, q.price, qw.gmtoffset);
+        chartSrc = '1wk'; chartBars = qw.bars; chartGmt = qw.gmtoffset;
+      } catch (e2) { chartSrc = 'old-chart'; chartBars = []; }
+    }
+
+    // ซีรีส์ต้นทางผสมสองฐาน (split ที่ Yahoo ยังไม่ปรับย้อนหลัง) → **ห้ามเขียนกราฟนี้ลงไฟล์**
+    // ไม่ใช่เกณฑ์เชิงนโยบายแบบ drift/mos-flip แต่เป็น "ข้อมูลต้นทางไม่สมประกอบ" เหมือน bad-price
+    // ⇒ freeze ทั้งตัวเพื่อกันไม่ให้ patch ทับกราฟที่คนแก้ถูกไว้แล้ว (เคส MNST: drift ~0 ⇒ ไม่มียามตัวอื่นจับได้เลย)
+    const basis = detectMixedBasis({ bars: chartBars, low: q.week52Low, high: q.week52High, gmtoffset: chartGmt });
+    if (basis.mixed) {
+      // --force = re-analysis ที่ agent ยืนยัน cross-source แล้ว: ยอมให้ประทับ "ราคา/วันที่" ต่อได้
+      // แต่ยัง **ห้ามเขียนกราฟจากซีรีส์นี้** → chartData = null = ทาง price-only ที่คงกราฟเดิมในไฟล์
+      // (SKILL STEP 1 สั่ง `--write --force <SYM>` เป็นคำสั่งประจำ ถ้า hard-block ทางนี้ UPDATE จะทำต่อไม่ได้เลย)
+      if (!FORCE) {
+        frozen.push({ symbol, reason: 'bad-chart', detail: basis.text, reportPrice: sm.price, marketPrice: round(q.price, 2), diffPct });
+        console.log(`❄ ${symbol.padEnd(10)} freeze [bad-chart] ${basis.text}`);
+        continue;
       }
+      chartData = null; chartSrc = 'old-chart(bad-chart)';
+      console.log(`⚠ ${symbol.padEnd(10)} bad-chart + --force → ประทับเฉพาะราคา/วันที่ คงกราฟเดิมในไฟล์ · ${basis.text}`);
+    }
+
+    try {
       const r = patchReport(html, { newPrice: q.price, dateParts, chartData });
       if (!r.changed) { skipped.push(symbol); continue; }
       if (WRITE) fs.writeFileSync(fp, r.html);
@@ -738,6 +819,6 @@ async function main() {
   if (!WRITE) console.log('ใส่ --write เพื่อเขียนจริง');
 }
 
-module.exports = { fmtPrice, fmtLike, toYahooSymbol, fetchChart, buildChartData, niceBounds, annualChg, decide, currencyMatches, isIntradayQuote, detectStaleQuotes, missedSessions, probeCap, capByCohort, controlTickers, unverifiedCohorts, classifyStale, patchReport, mergeFlags, styledRD, commitBody, THAI_MONTHS };
+module.exports = { fmtPrice, fmtLike, toYahooSymbol, fetchChart, buildChartData, niceBounds, annualChg, decide, currencyMatches, isIntradayQuote, detectMixedBasis, detectStaleQuotes, missedSessions, probeCap, capByCohort, controlTickers, unverifiedCohorts, classifyStale, patchReport, mergeFlags, styledRD, commitBody, THAI_MONTHS };
 
 if (require.main === module) main().catch((e) => { console.error(e); process.exit(1); });

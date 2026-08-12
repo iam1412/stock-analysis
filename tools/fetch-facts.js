@@ -12,7 +12,7 @@
  *
  * ที่มาไม่ใช่ 2 แหล่ง: นี่คือแหล่ง Yahoo 1 แหล่ง — agent ยัง cross-verify ราคา/EPS กับแหล่งอิสระที่ 2 ตามกติกาเดิม
  */
-const { fetchChart, buildChartData, niceBounds, annualChg, toYahooSymbol, styledRD, THAI_MONTHS } = require('./update-prices.js');
+const { fetchChart, buildChartData, niceBounds, annualChg, toYahooSymbol, styledRD, detectMixedBasis, THAI_MONTHS } = require('./update-prices.js');
 
 const UP = { bg: 'var(--green-soft)', col: '#137333' };
 const DOWN = { bg: 'var(--red-soft)', col: '#c5221f' };
@@ -25,6 +25,19 @@ async function main() {
 
   const currency = th ? 'THB' : 'USD';
   const q = await fetchChart(toYahooSymbol(symbol, currency));
+
+  // ★ ซีรีส์ผสมสองฐาน (split ที่ Yahoo ยังไม่ปรับย้อนหลัง) → **หยุด ไม่พิมพ์กราฟเลย**
+  // ถ้าพิมพ์ออกไป agent จะคัดลอกลงรายงานตรง ๆ (นั่นคือหน้าที่ของบล็อกนี้) แล้วได้หน้าผาปลอม
+  // + ป้าย % รอบปีพลิกเครื่องหมาย ซึ่ง gate จับไม่ได้ (E36 เทียบป้ายกับปลายกราฟ = ผิดพร้อมกัน)
+  // exit 2 = เกณฑ์เดียวกับ prep-stock: ข้อมูลขัดกันจนห้ามเผยแพร่ ต้องมีคนตัดสินก่อน
+  const basis = detectMixedBasis({ bars: q.bars, low: q.week52Low, high: q.week52High, gmtoffset: q.gmtoffset });
+  if (basis.mixed) {
+    console.error(`🛑 BAD-CHART ${symbol}: ${basis.text}`);
+    console.error('   ซีรีส์กราฟจาก Yahoo ผสมสองฐาน — ห้ามคัดลอกจุดกราฟ/ป้าย % ไปใช้');
+    console.error('   ทำก่อน: ยืนยัน split จากแหล่งปฐมภูมิ (IR / SEC 8-K / ประกาศตลาด) แล้วคูณจุดก่อนวัน split เอง · ดู SKILL STEP 0 หัวข้อ bad-chart');
+    process.exit(2);
+  }
+
   const chartData = buildChartData(q.bars, q.price, q.gmtoffset);
   const prices = chartData.map((d) => d[1]);
   const b = niceBounds(prices, null);

@@ -105,8 +105,17 @@ async function main() {
   safeLog(`=== PREP ${a.symbol} (${a.update ? 'UPDATE' : 'NEW'}${a.th ? ' TH' : ''}) — วางทั้ง block ลง {{FUNDAMENTALS}} ===`);
   safeLog(v.text);
   if (fund.code === 0) safeLog('\n' + fund.out);
+  // fetch-facts ล้มเพราะ "ซีรีส์กราฟผสมสองฐาน" ≠ ล้มแบบ plumbing: สั่งให้ worker รันซ้ำเองไม่มีประโยชน์
+  // (มันจะชนกำแพงเดิม) และปล่อยให้ spawn ต่อ = ได้รายงานที่กราฟ/ป้าย % ผิดโดย gate จับไม่ได้
+  // ⇒ ยกระดับเป็น exit 2 เหมือนราคาขัดแหล่ง >5%: หยุด ให้คนตัดสินก่อน (CLAUDE.md §4 "exit 2 = ห้าม spawn")
+  let badChart = false;
   if (facts) {
     if (facts.code === 0) safeLog('\n=== FACTS (ราคา/กราฟ — worker ห้ามรัน fetch-facts ซ้ำ) ===\n' + facts.out);
+    else if (/BAD-CHART/.test(facts.err)) {
+      badChart = true;
+      // facts.err ขึ้นต้นด้วย 🛑 มาแล้วจาก fetch-facts — ไม่ต้องเติมซ้ำ
+      safeLog(`\n=== FACTS ===\n${facts.err}\n   → หยุด ห้าม spawn worker (exit 2): ยืนยัน split จากแหล่งปฐมภูมิก่อน แล้วแก้จุดกราฟด้วยมือตาม SKILL STEP 0 หัวข้อ bad-chart`);
+    }
     else safeLog(`\n=== FACTS === ✗ ล้ม (${facts.err || 'exit ' + facts.code}) — worker รัน node tools/fetch-facts.js ${a.symbol}${a.th ? ' --th' : ''} เองใน STEP 1`);
   }
 
@@ -116,7 +125,7 @@ async function main() {
     else safeLog(`\n=== BRAND === ✗ ${brand.err || 'exit ' + brand.code}`);
   }
 
-  process.exit(v.exitCode);
+  process.exit(Math.max(v.exitCode, badChart ? 2 : 0));
 }
 
 module.exports = { parseDeltas, verdict, parseArgs, PRICE_PASS_PCT, PRICE_STOP_PCT, EPS_PASS_PCT };
