@@ -163,10 +163,16 @@ function validateReportData(d) {
   // label แกน x ถูกฝังใน innerHTML ของ SVG (engine.js) — ห้ามมี '<'/'>' กัน HTML/JS inject (engine.js escape ซ้ำที่ sink อีกชั้น)
   for (const p of c.data) if (/[<>]/.test(p[0])) throw new Error(`report-data.chart.data label ห้ามมี '<'/'>' (กัน markup หลุดเข้า DOM ของกราฟ) — พบ ${JSON.stringify(p[0])}`);
   for (const v of c.grid) if (typeof v !== 'number' || !isFinite(v)) throw new Error(`report-data.chart.grid ต้องเป็นตัวเลขล้วน — พบ ${JSON.stringify(v)}`);
-  // theme: ค่าสีต้องเป็น token สีที่ถูกต้อง — กัน CSS declaration breakout (เช่น "x;}") + สีพังเงียบ (เช่น hex 5 หลัก → เส้นกราฟล่องหน)
+  // theme: ค่าสีต้องเป็น token สีที่ถูกต้อง — ★ allowlist ตายตัว (ไม่ใช่ denylist) เพราะค่าพวกนี้ถูก splice ดิบ ๆ
+  // ลงใน <style>…</style> / <script>…</script> ผ่าน fillTokens (split/join ไม่ escape) — สองแท็กนั้นเป็น raw-text
+  // element คือ "จบแท็กที่ '</style' / '</script' ตัวแรก" ⇒ HTML-escape ปลายทางไม่มีความหมาย ต้องกันที่ต้นทาง
+  // ⇒ ทุกชุดอักขระที่อนุญาตไม่มี '<' '>' ';' '{' '}' quote เลย ('/' มีได้เฉพาะในวงเล็บ rgb()/hsl() ตาม syntax
+  // ใหม่ rgb(0 0 0 / 50%) — ในเมื่อ '<' ไม่มีทางผ่าน จึงต่อเป็น '</style' ไม่ได้อยู่ดี)
+  // ยังคงกัน CSS declaration breakout (เช่น "x;}") + สีพังเงียบ (เช่น hex 5 หลัก → เส้นกราฟล่องหน) เหมือนเดิม
   const t = { ...THEME_DEFAULTS, ...(d.theme || {}) };
-  const HEX = /^#([0-9a-f]{3}|[0-9a-f]{6}|[0-9a-f]{8})$/i, FN = /^(rgb|rgba|hsl|hsla)\([^;{}]*\)$/i, VAR = /^var\(--[a-z0-9-]+(,[^;{}]*)?\)$/i, GRAD = /^(linear|radial)-gradient\([^;{}]*\)$/i, NAMED = /^[a-z]+$/i;
-  const colorOK = (v, grad) => { v = String(v).trim(); if (/[;{}]/.test(v)) return false; return HEX.test(v) || FN.test(v) || VAR.test(v) || NAMED.test(v) || (grad && GRAD.test(v)); };
+  const HEX = /^#([0-9a-f]{3,4}|[0-9a-f]{6}|[0-9a-f]{8})$/i, FN = /^(rgb|rgba|hsl|hsla)\([\d\s.,%/]+\)$/i,
+    VAR = /^var\(--[a-z0-9-]+(,[a-z0-9#%.,()\s-]+)?\)$/i, GRAD = /^(linear|radial)-gradient\([a-z0-9#%.,()\s-]+\)$/i, NAMED = /^[a-z]+$/i;
+  const colorOK = (v, grad) => { v = String(v).trim(); return HEX.test(v) || FN.test(v) || VAR.test(v) || NAMED.test(v) || (grad && GRAD.test(v)); };
   for (const k of ['accent', 'accentDark', 'glow', 'subColor', 'headerMuted', 'chgColor', 'verdictText', 'vcellLabel']) if (t[k] != null && !colorOK(t[k], false)) throw new Error(`report-data.theme.${k} ไม่ใช่ค่าสีที่ถูกต้อง (hex/rgb/hsl/var/named): ${JSON.stringify(t[k])}`);
   for (const k of ['darkGrad', 'chgBg', 'badge']) if (t[k] != null && !colorOK(t[k], true)) throw new Error(`report-data.theme.${k} ต้องเป็นสี/gradient/var(): ${JSON.stringify(t[k])}`);
 }
@@ -226,7 +232,9 @@ function parseJsonScript(html, id) {
 // แทรกเฉพาะรายงานแบบ template (มี report-data) — legacy ใช้ votebar ใน footer แบบเดิม
 function injectHeaderStats(html, r) {
   if (!/<script[^>]*\bid=["']report-data["']/i.test(html)) return { html, done: false };
-  const hi = html.toLowerCase().indexOf('</header>');
+  // ★ index ต้องหาจาก html ตัวจริงเสมอ ห้าม toLowerCase() ก่อน — ไม่รักษาความยาว ('İ' U+0130 → 2 code unit)
+  //   ⇒ index เลื่อน แล้ว slice ของเดิมตัดผิดที่ · แท็กในรีโปเป็นตัวพิมพ์เล็กทั้ง 910 ไฟล์ (reports/ + skeleton)
+  const hi = html.indexOf('</header>');
   if (hi === -1) return { html, done: false };
   // ห้ามใช้ fmtDate/escAttr — นิยามทีหลังจุดเรียก decorateReport (TDZ) · YYYY-MM-DD กรองเองพอ
   const upd = String(r.updated || '').slice(0, 10).replace(/[^0-9-]/g, '');
@@ -258,7 +266,7 @@ function injectContactFooter(html, statsInHeader) {
     `ติดต่อ <a href="mailto:${CONTACT_EMAIL}" style="color:#1557b0;text-decoration:none">${CONTACT_EMAIL}</a>` +
     (statsInHeader ? '' : `${views}${vote}`);
 
-  const fi = html.toLowerCase().lastIndexOf('</footer>');
+  const fi = html.lastIndexOf('</footer>');
   if (fi !== -1) {
     return html.slice(0, fi) + `<br>${link}` + html.slice(fi); // ต่อท้ายใน <footer> เดิม
   }
@@ -266,7 +274,7 @@ function injectContactFooter(html, statsInHeader) {
   const bar =
     `\n<footer style="max-width:1080px;margin:0 auto;padding:14px 16px 40px;text-align:center;` +
     `font-family:'Sarabun',system-ui,-apple-system,Segoe UI,sans-serif;font-size:12px;color:#5f6675">${link}</footer>\n`;
-  const bi = html.toLowerCase().lastIndexOf('</body>');
+  const bi = html.lastIndexOf('</body>');
   return bi === -1 ? html + bar : html.slice(0, bi) + bar + html.slice(bi);
 }
 
@@ -279,9 +287,11 @@ function injectTA(html, symbol, rd, meta, taAsset) {
   const dec = px && px < 1 ? 4 : 2;
   const t = { ...THEME_DEFAULTS, ...(rd.theme || {}) };
   const cfg = { sym: symbol, cur, fv: rd.fv, accent: t.accent, accentDark: t.accentDark, dec };
-  // escape '<' กัน </script>/<!-- breakout — ค่า theme accent มาจาก regex สีที่ปล่อยผ่าน </> ได้ ไม่ผ่าน HTML-escape
+  // escape '<' กัน </script>/<!-- breakout — เป็นชั้นสอง: allowlist ใน validateReportData กัน '<'/'>' ที่ต้นทางแล้ว
+  // แต่ injectTA รับ rd ดิบจาก parseJsonScript ซึ่ง "ไม่ผ่าน validate" ถ้าไฟล์ไม่มี marker TEMPLATE (expandReport = identity)
   const cfgJson = JSON.stringify(cfg).replace(/</g, '\\u003c');
-  return html.replace('</body>', `<script>window.__TA_CFG__=${cfgJson}</script>\n<script defer src="/${taAsset}"></script>\n</body>`);
+  // function replacer → ไม่ตีความ $&/$$/$`/$'/$1 ใน cfgJson (accent ต่อหุ้นเป็นค่าดิบ อาจมี $ ได้)
+  return html.replace('</body>', () => `<script>window.__TA_CFG__=${cfgJson}</script>\n<script defer src="/${taAsset}"></script>\n</body>`);
 }
 
 // แทรก <style> ของปุ่มโหวตเข้าไปใน <head>
@@ -291,7 +301,7 @@ function injectVoteStyle(html) {
     `border-radius:8px;padding:1px 8px;margin-left:4px;color:#5f6675;line-height:1.9}` +
     `.votebar .vbtn:hover{border-color:#1a73e8;color:#1a73e8}` +
     `.votebar .vbtn.on{border-color:#1a73e8;background:#e8f0fe;color:#1557b0;font-weight:600}</style>\n`;
-  const hi = html.toLowerCase().lastIndexOf('</head>');
+  const hi = html.lastIndexOf('</head>');
   return hi === -1 ? style + html : html.slice(0, hi) + style + html.slice(hi);
 }
 
@@ -332,7 +342,7 @@ function injectViewVoteScript(html, symbol) {
     `df=Math.round((t0-new Date(+p[0],+p[1]-1,+p[2]).getTime())/864e5);` +
     `if(isFinite(df)&&df>=0)du.textContent=df===0?"today":df+"d ago";}}` +
     `})();</script>\n`;
-  const bi = html.toLowerCase().lastIndexOf('</body>');
+  const bi = html.lastIndexOf('</body>');
   return bi === -1 ? html + script : html.slice(0, bi) + script + html.slice(bi);
 }
 
@@ -381,7 +391,7 @@ function injectSectionNav(html) {
   const hi = html.indexOf('</header>');
   if (hi === -1) return html;
   html = html.slice(0, hi + 9) + '\n' + nav + html.slice(hi + 9);
-  const bi = html.toLowerCase().lastIndexOf('</body>');
+  const bi = html.lastIndexOf('</body>');
   return bi === -1 ? html + spy : html.slice(0, bi) + spy + '\n' + html.slice(bi);
 }
 
@@ -412,9 +422,9 @@ function injectShareMeta(html, r) {
     `<meta name="twitter:description" content="${escAttr(desc)}">`,
     `<meta name="twitter:image" content="${escAttr(OG_IMAGE)}">`,
   ].join('\n');
-  const at = html.toLowerCase().indexOf('</title>');
+  const at = html.indexOf('</title>');
   if (at !== -1) { const i = at + '</title>'.length; return html.slice(0, i) + '\n' + tags + html.slice(i); }
-  const hi = html.toLowerCase().lastIndexOf('</head>');
+  const hi = html.lastIndexOf('</head>');
   return hi === -1 ? tags + '\n' + html : html.slice(0, hi) + tags + '\n' + html.slice(hi);
 }
 
@@ -423,9 +433,9 @@ function injectShareMeta(html, r) {
 function injectModelCredit(html, model) {
   const credit = `🤖 วิเคราะห์และจัดทำด้วย AI · <b>${escAttr(model)}</b> · ${AI_MAKER}`;
   const re = /สร้างด้วย\s*stock-analyzer\s*workflow/i;
-  if (re.test(html)) return html.replace(re, credit);
+  if (re.test(html)) return html.replace(re, () => credit); // function replacer → ไม่ตีความ $ ใน credit (ชื่อโมเดลมาจาก meta ของไฟล์)
   // ไม่พบข้อความเดิม → ผนวกเครดิตเข้าใน <footer> ท้ายสุด (กันรายงานที่ไม่มีบรรทัดนี้ ให้ยังมี attribution)
-  const fi = html.toLowerCase().lastIndexOf('</footer>');
+  const fi = html.lastIndexOf('</footer>');
   return fi === -1 ? html : html.slice(0, fi) + ` • ${credit}` + html.slice(fi);
 }
 
@@ -526,7 +536,12 @@ if (fs.existsSync(MANIFEST)) {
     log('⚠️  อ่าน reports.json เดิมไม่ได้ — สร้างใหม่');
   }
 }
-const nowISO = new Date().toISOString();
+// ประทับเวลา "ตอนนี้" ตามเวลาไทย (CLAUDE.md §7 — ทุกการคิด "วันนี้" ใช้ Asia/Bangkok เหมือน tools/ ตัวอื่น)
+//   toISOString() = UTC ⇒ build ตอน 18:00 UTC (= 01:00 น. วันถัดไปที่ไทย) จะโชว์ "อัปเดตล่าสุด" เป็นเมื่อวาน
+//   คง offset +07:00 ไว้ให้ยังเป็น ISO 8601 เต็ม (article:modified_time + reports.json ต้องการ instant จริง
+//   ไม่ใช่แค่ YYYY-MM-DD) แต่ .slice(0,10) ได้วันปฏิทินไทยตรง ๆ ทุกจุดที่ตัดวันจากค่านี้
+//   เรียงแบบ string ยังถูก: wall-clock ไทย = instant+7h จึงมากกว่าสตริง "…Z" ของ record เก่าทุกตัวเสมอ
+const nowISO = new Date().toLocaleString('sv-SE', { timeZone: 'Asia/Bangkok' }).replace(' ', 'T') + '+07:00';
 
 // ---- 2.5) TA chart bundle: vendor + engine + glue → ไฟล์ shared เดียว (immutable cache ข้ามทุกรายงาน) ----
 // ทำก่อน loop รายงาน (ข้อ 3) เพราะแต่ละรายงานต้อง inject <script src="/{TA_ASSET}"> ที่รู้ hash แล้ว

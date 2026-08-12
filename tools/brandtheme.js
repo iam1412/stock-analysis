@@ -58,14 +58,24 @@ function gradBrightest(grad) {
   return best;
 }
 
-// แปลงค่าสีทุกรูปแบบที่ theme ใช้จริง (hex / rgba / hsl / hsla) เป็น hex ทึบ "ตามที่ตาเห็น" บนพื้น bgHex
+// แปลงค่าสีทุกรูปแบบที่ theme ใช้จริง (hex 3/4/6/8 หลัก / rgba / hsl / hsla) เป็น hex ทึบ "ตามที่ตาเห็น" บนพื้น bgHex
 // — rgba/hsla ต้อง composite ทับพื้นก่อนวัด contrast ไม่งั้นค่า alpha ต่ำ (เช่น 0.12) หลุดการตรวจทั้งที่แทบล่องหน
 // คืน null ถ้า parse ไม่ได้ (เช่น var(--x) — ผู้เรียกจัดการเอง)
 function effectiveHex(value, bgHex) {
   const v = String(value || '').trim();
   if (/^#[0-9a-fA-F]{6}$/.test(v)) return v.toLowerCase();
   if (/^#[0-9a-fA-F]{3}$/.test(v)) return ('#' + v.slice(1).split('').map((c) => c + c).join('')).toLowerCase();
-  let m = v.match(/^rgba?\(\s*([\d.]+)\s*,\s*([\d.]+)\s*,\s*([\d.]+)\s*(?:,\s*([\d.]+)\s*)?\)$/);
+  // #rrggbbaa / #rgba — validateReportData ปล่อยผ่าน ถ้าคืน null ตรงนี้จะพังเงียบสองที่: deriveTheme() ตกกลับไป
+  // ใช้ accent ค่า default (พาเลตต์ tint ผิดทั้งหน้า) และ build.js ตั้ง rec.accent = null ⇒ การ์ดหน้าแรกเป็นน้ำเงิน
+  // default ขณะที่หน้ารายงานเป็นสีแบรนด์จริง — หุ้นตัวเดียวสองสีโดยไม่มี error ⇒ ผสม alpha ทับพื้นแบบเดียวกับ rgba()
+  let m = v.match(/^#([0-9a-fA-F]{4}|[0-9a-fA-F]{8})$/);
+  if (m) {
+    const h = m[1].length === 4 ? m[1].split('').map((c) => c + c).join('') : m[1];
+    const a = parseInt(h.slice(6, 8), 16) / 255;
+    const solid = ('#' + h.slice(0, 6)).toLowerCase();
+    return a >= 1 || !bgHex ? solid : mixHex(bgHex, solid, a);
+  }
+  m = v.match(/^rgba?\(\s*([\d.]+)\s*,\s*([\d.]+)\s*,\s*([\d.]+)\s*(?:,\s*([\d.]+)\s*)?\)$/);
   if (m) {
     const a = m[4] === undefined ? 1 : parseFloat(m[4]);
     const solid = rgbToHex([+m[1], +m[2], +m[3]]);
