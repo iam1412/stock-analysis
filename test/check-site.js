@@ -245,6 +245,27 @@ function checkTagPages(DIST) {
     if (cards !== live) r.errors.push(`tag/${s}: การ์ด ${cards} ใบ แต่มีสมาชิกที่มีรายงานจริง ${live} ตัว`);
     if ((html.match(/<h1[^>]*>/gi) || []).length !== 1) r.errors.push(`tag/${s}: ต้องมี <h1> เดียว`);
     if (!/<title>[^<]+<\/title>/i.test(html)) r.errors.push(`tag/${s}: ไม่มี <title>`);
+    // ★ `desc` ในคลังคำศัพท์เก็บกติกาการติดแท็ก (ถึงคนทำงาน) ต่อท้ายด้วย " — ★ …" ในสตริงเดียวกับคำอธิบายธีม
+    // build.js ต้องตัดท่อนนั้นทิ้งด้วย publicDesc() ก่อนเรนเดอร์ — เคยหลุดขึ้นจริงทั้งย่อหน้านำและ meta
+    // description (Google เอาไปแสดงในผลค้นหา) ทำให้ประโยคอ่านแล้วไม่รู้เรื่อง
+    // ★ ตรวจเฉพาะ 3 จุดที่มาจาก desc เท่านั้น ห้ามสแกนทั้งไฟล์ — การ์ดในหน้าฝัง desc ของรายงาน 908 ใบ
+    // ที่ผู้เขียนใส่ ★ เองได้ตามใจ (ใช้เป็นสัญลักษณ์เน้นทั่วไปในรีโปนี้) จะกลายเป็น false positive ทันที
+    // ★ ดึงค่าแล้วต้องยืนยันว่า "หาเจอจริง" ก่อนเทียบเสมอ — ถ้า markup เปลี่ยนจน regex ไม่แมตช์
+    // แล้วปล่อยเป็นสตริงว่าง เช็คจะกลายเป็น no-op เงียบ ๆ (ผ่านตลอดโดยไม่ได้ตรวจอะไร) ซึ่งเป็น
+    // โหมดพังเดียวกับที่ self-test.js เตือนไว้เรื่อง fixture mutation กลายเป็น no-op
+    const pick = (label, re) => {
+      const m = html.match(re);
+      if (!m) { r.errors.push(`tag/${s}: หา${label}ไม่เจอ (markup เปลี่ยน? เช็ค ★ จะกลายเป็น no-op)`); return null; }
+      return m[1];
+    };
+    const parts = [
+      ['ย่อหน้านำ', pick('ย่อหน้านำ <p class="lead">', /<p class="lead">([\s\S]*?)<\/p>/)],
+      ['meta description', pick('<meta name="description">', /<meta name="description" content="([^"]*)"/)],
+      ['og:description', pick('<meta property="og:description">', /<meta property="og:description" content="([^"]*)"/)],
+    ];
+    for (const [where, text] of parts) {
+      if (text !== null && text.includes('★')) r.errors.push(`tag/${s}: ${where} มีบันทึกภายใน (ท่อนหลัง ★) หลุดออกหน้าเว็บ`);
+    }
   }
 
   // ลิงก์ที่เกี่ยวกับหน้า tag ต้องไม่ตาย — สแกนทุกไฟล์ .html ใน dist **รวม dist/tag/ เอง**

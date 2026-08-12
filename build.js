@@ -842,6 +842,41 @@ const topTagBar = topTags.length ? `
 // ให้ recompute() ซิงก์ ?tag=/?market= กลับ URL โดยไม่ทับพารามิเตอร์อื่น/hash ที่มีอยู่แล้ว
 const filterQueryStringSrc = String(tagLib.filterQueryString);
 
+// ---- เติมข้อมูลสดลงการ์ด (ES5 ล้วน — ฝังทั้งหน้าแรกและหน้า /tag/<slug>) ----
+// ★ ต้องเป็นก้อนเดียวใช้ร่วมกัน เหตุผลเดียวกับ FOOTER_HTML: การ์ดทั้งสองหน้ามาจาก cardHtml ตัวเดียวกัน
+//   ⇒ ถ้าโค้ด hydrate อยู่แค่ในสคริปต์หน้าแรก หน้า tag จะเงียบ ๆ ล้าหลังทุกครั้งที่แก้ (เกิดขึ้นจริง:
+//   หน้า tag ไม่ขึ้นยอด 👁/👍 เลย และโชว์วันที่ดิบ "2026-08-12" แทน "1d ago" ต่างจากหน้าแรก)
+// ★ hydrateViews รับ "รายการการ์ด" เข้ามา ห้าม query เอง — หน้าแรกแบ่งหน้าโดยถอดการ์ดออกจาก DOM
+//   ระหว่างรอ fetch ⇒ query ตอน callback จะได้การ์ดไม่ครบ (หน้า tag ไม่แบ่งหน้า ส่ง querySelectorAll ตรง ๆ ได้)
+// ★ ห้ามมีสตริง class="card" ในก้อนนี้ — checkTagPages นับจำนวนการ์ดจากสตริงนั้นตรง ๆ ในไฟล์ HTML
+const CARD_HYDRATE_JS = `
+      // ยอดวิว + ไลก์ ทั้งชุดครั้งเดียว (read-only ไม่นับเพิ่ม) — done() ให้ผู้เรียกจัดเรียงใหม่เองถ้าจำเป็น
+      function hydrateViews(list, done) {
+        fetch('/api/views').then(function (r) { return r.json(); }).then(function (map) {
+          list.forEach(function (c) {
+            var s = c.querySelector('.cviews'); if (!s) return;
+            var e = (map && map[s.getAttribute('data-sym')]) || {};
+            c._views = e.c || 0; c._likes = e.l || 0;
+            var v = s.querySelector('.v'), l = s.querySelector('.l');
+            if (v) v.textContent = (e.c || 0).toLocaleString();
+            if (l) l.textContent = (e.l || 0).toLocaleString();
+            s.hidden = false;
+          });
+          if (done) done();
+        }).catch(function () {});
+      }
+      // วันที่บนการ์ด/ตาราง → แบบสัมพัทธ์ "1d ago" (นับวันปฏิทินฝั่งผู้ชม · no-JS เห็นวันที่จริง · hover ดูวันเต็มจาก title)
+      function hydrateDates() {
+        var n = new Date(), t0 = new Date(n.getFullYear(), n.getMonth(), n.getDate()).getTime();
+        [].slice.call(document.querySelectorAll('.cdate[data-updated]')).forEach(function (s) {
+          var p = (s.getAttribute('data-updated') || '').split('-');
+          if (p.length !== 3) return;
+          var d = Math.round((t0 - new Date(+p[0], +p[1] - 1, +p[2]).getTime()) / 864e5);
+          if (!isFinite(d) || d < 0) return;
+          s.textContent = d === 0 ? 'today' : d + 'd ago';
+        });
+      }`;
+
 // สคริปต์หน้า index: ค้นหา + แบ่งหน้า (PAGE ตัว/หน้า) + เติมยอดวิวต่อการ์ด (batch ครั้งเดียว)
 const searchScript = reports.length ? `
   <script>
@@ -1100,29 +1135,10 @@ const searchScript = reports.length ? `
         syncThead();
       });
 
-      // โหลดยอดวิว + likes ทั้งหมดครั้งเดียว (read-only ไม่นับเพิ่ม) เติมลงการ์ด แล้วจัดเรียงใหม่ถ้าเรียงตามไลก์/วิวอยู่
-      fetch('/api/views').then(function (r) { return r.json(); }).then(function (map) {
-        cards.forEach(function (c) {
-          var s = c.querySelector('.cviews'); if (!s) return;
-          var e = (map && map[s.getAttribute('data-sym')]) || {};
-          c._views = e.c || 0; c._likes = e.l || 0;
-          var v = s.querySelector('.v'), l = s.querySelector('.l');
-          if (v) v.textContent = (e.c || 0).toLocaleString();
-          if (l) l.textContent = (e.l || 0).toLocaleString();
-          s.hidden = false;
-        });
-        if (orderMode === 'likes' || orderMode === 'views') { recompute(); render(); }
-      }).catch(function () {});
-
-      // วันที่บนการ์ด/ตาราง → แบบสัมพัทธ์ "1d ago" (นับวันปฏิทินฝั่งผู้ชม · no-JS เห็นวันที่จริง · hover ดูวันเต็มจาก title)
-      var _n = new Date(), _t0 = new Date(_n.getFullYear(), _n.getMonth(), _n.getDate()).getTime();
-      [].slice.call(document.querySelectorAll('.cdate[data-updated]')).forEach(function (s) {
-        var p = (s.getAttribute('data-updated') || '').split('-');
-        if (p.length !== 3) return;
-        var d = Math.round((_t0 - new Date(+p[0], +p[1] - 1, +p[2]).getTime()) / 864e5);
-        if (!isFinite(d) || d < 0) return;
-        s.textContent = d === 0 ? 'today' : d + 'd ago';
-      });
+${CARD_HYDRATE_JS}
+      // ★ ส่ง cards (รายการที่จับไว้ตั้งแต่ต้น) ไม่ใช่ query ใหม่ — ระหว่างรอ fetch การ์ดหน้าอื่นถูกถอดออกจาก DOM แล้ว
+      hydrateViews(cards, function () { if (orderMode === 'likes' || orderMode === 'views') { recompute(); render(); } });
+      hydrateDates();
 
       // ป้ายบอก "ตารางเลื่อนข้างได้" — โชว์เฉพาะโหมดตารางที่กว้างเกินจอ ซ่อนถาวรทันทีที่ผู้ใช้เลื่อนเอง
       var hintDone = false;
@@ -1217,11 +1233,12 @@ const INDEX_STYLE = `<style>
      = มงกุฎ "สูงสุดในกลุ่ม" 4 ใบ) กฎ .lead เปล่าจะรั่วไปโดนชิปพาสเทลเล็ก ๆ เหล่านั้น
      ทั้งสีตัวหนังสือเกือบขาว (ผิด AA บนพื้นอ่อน) · ขนาด/น้ำหนักฟอนต์ · margin · max-width
      ⇒ ห้ามเพิ่มกฎ .lead แบบไม่ scope เด็ดขาด (check-site มี regression check คุมไว้) */
-  .hd .lead{color:rgba(255,255,255,.78);font-size:14.5px;margin-top:8px;font-weight:300;max-width:64ch} /* หน้า tag: ก็อปสไตล์ .sub มาใช้ */
-  .crumb{margin:0 0 12px;font-size:13.5px} /* หน้า tag: breadcrumb เหนือ/ใต้ h1 โทนเดียวกับ .sub */
+  /* text-wrap:balance = เกลี่ยความยาวบรรทัด กันบรรทัดสุดท้ายเหลือคำโดด ๆ (ภาษาไทยไม่มีช่องว่างระหว่างคำ
+     เบราว์เซอร์จึงตัดบรรทัดตามพจนานุกรม ICU — คุมจุดตัดตรง ๆ ไม่ได้ คุมได้แค่ให้บรรทัดสมดุลขึ้น) */
+  .hd .lead{color:rgba(255,255,255,.78);font-size:14.5px;margin-top:8px;font-weight:300;max-width:64ch;text-wrap:balance} /* หน้า tag: ก็อปสไตล์ .sub มาใช้ */
+  .crumb{margin:0 0 12px;font-size:13.5px} /* หน้า tag: breadcrumb เหนือ h1 โทนเดียวกับ .sub */
   .crumb a{color:rgba(255,255,255,.72);text-decoration:none;font-weight:500;transition:color .14s}
   .crumb a:hover{color:#fff;text-decoration:underline}
-  .hd .lead + .crumb{margin:14px 0 0}
   /* การ์ดสถิติ = ปุ่มกรองตลาดในตัว (desktop ชิดขวา · mobile ตกลงใต้ข้อความเป็นแถวแบบเดิม) */
   .hd-stats{flex:none;display:grid;grid-template-columns:auto auto;gap:6px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.16);border-radius:20px;padding:12px;margin:0}
   .hstat{display:flex;flex-direction:column;gap:3px;align-items:flex-start;background:none;border:0;border-radius:13px;padding:11px 18px;color:#fff;font:inherit;text-align:left}
@@ -1244,8 +1261,6 @@ const INDEX_STYLE = `<style>
   a.tchip{text-decoration:none}
   .tagbar{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 14px}
   .related{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:14px} /* แท็กที่เกี่ยวข้องท้ายหน้า tag — เลย์เอาต์+ระยะห่างแบบเดียวกับ .toptags/.tagbar (14px) */
-  .js-only{display:none} /* ลิงก์ "เปิดในหน้ารวม" ใช้ได้เฉพาะ JS (กรอง/เรียงฝั่ง client) — ซ่อนจนพิสูจน์ว่ามี JS จริง */
-  html.js .js-only{display:block}
   .tchip{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;padding:6px 12px;border-radius:99px;background:var(--card);box-shadow:var(--shadow);color:var(--ink)}
   .tchip b{font-weight:700}
   .tchip .tx{border:0;background:transparent;cursor:pointer;font-size:14px;line-height:1;color:var(--muted);padding:0 2px}
@@ -1413,6 +1428,11 @@ fs.writeFileSync(path.join(OUT, 'index.html'), indexHtml, 'utf8');
 //   /tag/<SYM>.html = 404 ทุกใบ ⇒ ต้องแปลงเป็น absolute ก่อนฝัง
 // bySymbol ย้ายขึ้นไปประกาศพร้อม tagPageSlugs แล้ว (ข้อ 4) — ใช้ตัวเดียวกันทั้งไฟล์
 const idxOf = new Map(reports.map((r, i) => [r.symbol, i])); // hoisted ออกจาก loop ข้างล่าง — ค่าเดิมทุก slug ไม่ต้องสร้างใหม่ทุกรอบ
+// ★ `desc` ในคลังคำศัพท์ทำหน้าที่ 2 อย่างในสตริงเดียว: ประโยคอธิบายธีม (ถึงผู้อ่าน) + กติกาการติดแท็ก
+// (ถึงคนติดแท็ก) ที่ต่อท้ายด้วย " — ★ …" เช่น "★ ติดได้เฉพาะเมื่อ AI เป็นตัวขับเคลื่อนหลัก…" ·
+// ท่อนหลัง ★ เป็นคำสั่งถึงคนทำงาน ไม่ใช่คำอธิบายถึงผู้อ่าน — หลุดขึ้นหน้าเว็บแล้วประโยคอ่านไม่รู้เรื่อง
+// (และไปโผล่ใน meta description ที่ Google เอาไปแสดงด้วย) ⇒ ตัดทิ้งทุกจุดที่เรนเดอร์ออกสู่สาธารณะ
+const publicDesc = (ent) => ent.desc.split('★')[0].replace(/[\s—·-]+$/, '');
 if (tagPageSlugs.length) {
   fs.mkdirSync(path.join(OUT, 'tag'), { recursive: true });
   // แท็กที่เกี่ยวข้อง = slug ที่มีสมาชิก "ที่มีรายงานจริง" ทับซ้อนมากที่สุด (ลิงก์ภายในให้กราฟเชื่อมถึงกัน
@@ -1432,21 +1452,21 @@ if (tagPageSlugs.length) {
     const cardsHtml = syms.slice().sort((a, b) => idxOf.get(a) - idxOf.get(b))
       .map((s) => cardHtml[idxOf.get(s)].replace(/href="\.\//g, 'href="/')).join('\n');
     const url = `${SITE_ORIGIN}/tag/${slug}`;
+    const desc = publicDesc(ent);
     const pageTitle = `หุ้นกลุ่ม ${ent.label} — รวม ${syms.length} ตัว | วิเคราะห์หุ้น`;
     const related = relatedOf(slug);
     fs.writeFileSync(path.join(OUT, 'tag', slug + '.html'), `<!DOCTYPE html>
 <html lang="th">
 <head>
 <meta charset="UTF-8">
-<script>document.documentElement.classList.add('js')</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>${esc(pageTitle)}</title>
-<meta name="description" content="${escAttr(ent.desc + ' — รวมรายงานวิเคราะห์ ' + syms.length + ' ตัว')}">
+<meta name="description" content="${escAttr(desc + ' — รวมรายงานวิเคราะห์ ' + syms.length + ' ตัว')}">
 <link rel="canonical" href="${url}">
 <meta property="og:type" content="website">
 <meta property="og:url" content="${url}">
 <meta property="og:title" content="${escAttr(pageTitle)}">
-<meta property="og:description" content="${escAttr(ent.desc)}">
+<meta property="og:description" content="${escAttr(desc)}">
 <meta property="og:image" content="${OG_IMAGE}">
 ${FONT_LINKS}
 ${INDEX_STYLE}
@@ -1456,8 +1476,7 @@ ${INDEX_STYLE}
     <header class="hd">
       <p class="crumb"><a href="/">← หน้าแรก</a></p>
       <h1>🏷 ${esc(ent.label)}</h1>
-      <p class="lead">${esc(ent.desc)} · <b>${syms.length}</b> รายงาน</p>
-      <p class="crumb js-only"><a href="/?tag=${slug}">เปิดในหน้ารวม (เรียง/กรองตาม MOS · P/E · ปันผล) →</a></p>
+      <p class="lead">${esc(desc)} · <b>${syms.length}</b>&nbsp;รายงาน</p>
     </header>
     <div class="grid">
 ${cardsHtml}
@@ -1465,6 +1484,12 @@ ${cardsHtml}
     ${related.length ? `<nav class="related"><span class="tt-lab">แท็กที่เกี่ยวข้อง:</span> ${related.map((s) => `<a class="tchip" href="/tag/${s}">${esc(TAG_VOCAB.bySlug.get(s).label)}</a>`).join(' ')}</nav>` : ''}
     ${FOOTER_HTML}
   </div>
+  <script>
+    (function () {${CARD_HYDRATE_JS}
+      hydrateViews([].slice.call(document.querySelectorAll('.card')));  // หน้า tag ไม่แบ่งหน้า การ์ดอยู่ใน DOM ครบตลอด
+      hydrateDates();
+    })();
+  </script>
 </body>
 </html>
 `);
