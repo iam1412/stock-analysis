@@ -1180,8 +1180,9 @@ function checkTagPages(DIST, ROOT) {
     if (!/<title>[^<]+<\/title>/i.test(html)) r.errors.push(`tag/${s}: ไม่มี <title>`);
   }
 
-  // ลิงก์ tag บนหน้ารายงานต้องไม่ตายสักเส้น
-  for (const f of fs.readdirSync(DIST).filter((f) => /\.html$/i.test(f) && f.toLowerCase() !== 'index.html')) {
+  // ลิงก์ tag ทุกเส้นใน dist ต้องไม่ตาย — **รวม index.html ด้วย** เพราะ Step 5 วางลิงก์
+  // /tag/<slug> ~11 เส้นไว้บนหน้าแรก (แถวแท็กยอดนิยม) ถ้ากรอง index.html ออกจะไม่มีอะไรคุมมัน
+  for (const f of fs.readdirSync(DIST).filter((f) => /\.html$/i.test(f))) {
     const html = fs.readFileSync(path.join(DIST, f), 'utf8');
     for (const m of html.matchAll(/href="\/tag\/([a-z0-9-]+)"/g)) {
       if (!have.includes(m[1])) r.errors.push(`${f}: ลิงก์ /tag/${m[1]} ไม่มีหน้าปลายทาง`);
@@ -1240,13 +1241,15 @@ const INDEX_STYLE = `<style>
 
 แล้วใน `indexHtml` แทนบล็อกเดิมด้วย `${INDEX_STYLE}`
 
-รันตรวจว่า CSS ไม่หาย:
+**ต้องพิสูจน์ว่าเป็น no-op จริงระดับ byte** — grep คำ keyword จับได้แค่ "CSS หายทั้งก้อน" แต่จับ **การเพี้ยนบางส่วน**ไม่ได้เลย: บล็อกนี้ยาว ~145 บรรทัดและกำลังถูกย้ายเข้าไปอยู่ใน template literal ⇒ ลำดับ `${` หรือ backtick ที่หลุดเข้าไปจะเปลี่ยน output เงียบ ๆ โดยไม่มี gate ไหนฟ้อง (check-site ตรวจโครงสร้าง ไม่ได้ตรวจ byte)
 
 ```bash
-node build.js >/dev/null && grep -c 'grid-template-columns' dist/index.html
+node build.js >/dev/null && cp dist/index.html /tmp/index-before.html
+# ... ทำการย้ายบล็อก <style> เป็นตัวแปร INDEX_STYLE ...
+node build.js >/dev/null && diff /tmp/index-before.html dist/index.html && echo "✅ ย้าย CSS แล้ว output เหมือนเดิมทุก byte"
 ```
 
-Expected: ≥1 (ถ้าเป็น 0 แปลว่าย้าย CSS พลาด)
+Expected: `diff` ไม่พิมพ์อะไรเลย แล้วตามด้วยบรรทัด ✅ — **ถ้า diff มี output แม้บรรทัดเดียว แปลว่าการย้ายไม่ใช่ no-op ให้แก้จนกว่าจะเงียบ**
 
 - [ ] **Step 3c: สร้างหน้า tag ท้ายไฟล์**
 
