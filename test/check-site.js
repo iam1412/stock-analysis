@@ -29,7 +29,22 @@ const grab = (re, h) => { const m = String(h).match(re); return m ? m[1] : null;
 const sym = (f) => f.replace(/\.html$/i, '');
 
 const FONT_ALLOW = /^https:\/\/fonts\.(googleapis|gstatic)\.com(?:\/|$)/; // อนุญาตทั้ง preconnect (origin เปล่า) และ css (มี path)
+// โดเมนของเว็บเอง (mirror ค่า SITE_ORIGIN ใน build.js — อย่า require('../build.js') มาดึงตรง ๆ เพราะไฟล์นั้นรัน build ทั้งก้อนทันทีที่ import)
+// หน้า tag ใช้ absolute URL ใน <link rel="canonical"> (index/รายงานใช้ relative "/" หรือ "/SYM") ต้องอนุญาตไว้ ไม่งั้น external-resource check จะฟ้องผิด
+const SITE_ALLOW = /^https:\/\/gaohoon\.com(?:\/|$)/;
 const CONTAINER_TAGS = ['html', 'head', 'body', 'script', 'style', 'footer', 'svg', 'header', 'section'];
+
+// ---- รายชื่อไฟล์ .html ทั้งหมดใน dist/ ระดับราก + dist/tag/ (ใช้เฉพาะสแกนที่ต้องมองทั้งเว็บ เช่น dead-link/security/structure) ----
+// ★ ไม่ใช่ตัวเดียวกับ coverage check (main ข้อ 1) ซึ่งต้องมองเฉพาะไฟล์ระดับรากเป็น "รายงาน" เท่านั้น —
+//   ห้ามเอาไปแทนที่ fs.readdirSync(DIST) ตรงนั้น ไม่งั้นหน้า tag จะถูกนับเป็นรายงานค้าง (คนละชั้นกับ scan นี้)
+function listDistHtmlFiles(distDir) {
+  const root = fs.readdirSync(distDir).filter((f) => /\.html$/i.test(f)).map((f) => ({ rel: f, abs: path.join(distDir, f) }));
+  const tagDir = path.join(distDir, 'tag');
+  const tag = fs.existsSync(tagDir)
+    ? fs.readdirSync(tagDir).filter((f) => /\.html$/i.test(f)).map((f) => ({ rel: 'tag/' + f, abs: path.join(tagDir, f) }))
+    : [];
+  return [...root, ...tag];
+}
 
 // ---- security + structure (รันกับทุกไฟล์ใน dist รวม index.html) ----
 function checkSecurityStructure(html, name, isReport) {
@@ -38,7 +53,7 @@ function checkSecurityStructure(html, name, isReport) {
   // external resources
   for (const m of html.matchAll(/(?:href|src)\s*=\s*["'](https?:\/\/[^"']+)["']/gi)) {
     const url = m[1];
-    if (!FONT_ALLOW.test(url)) errors.push(`external resource ไม่อนุญาต: ${url} (อนุญาตเฉพาะ Google Fonts https)`);
+    if (!FONT_ALLOW.test(url) && !SITE_ALLOW.test(url)) errors.push(`external resource ไม่อนุญาต: ${url} (อนุญาตเฉพาะ Google Fonts https และโดเมนตัวเอง)`);
   }
   // <script src=…> อนุญาตเฉพาะ bundle TA ของเราเอง (same-origin, ชื่อไฟล์มี hash) — อย่างอื่นถือเป็นความเสี่ยง supply-chain
   const TA_SCRIPT_SRC = /^\/assets\/ta-[0-9a-f]{8}\.js$/;
@@ -228,38 +243,102 @@ function checkTagPages(DIST) {
     if (!/<title>[^<]+<\/title>/i.test(html)) r.errors.push(`tag/${s}: ไม่มี <title>`);
   }
 
-  // ลิงก์ tag ทุกเส้นใน dist ต้องไม่ตาย — **รวม index.html ด้วย** เพราะ Step 5 วางลิงก์
-  // /tag/<slug> ~11 เส้นไว้บนหน้าแรก (แถวแท็กยอดนิยม) ถ้ากรอง index.html ออกจะไม่มีอะไรคุมมัน
-  for (const f of fs.readdirSync(DIST).filter((f) => /\.html$/i.test(f))) {
-    const html = fs.readFileSync(path.join(DIST, f), 'utf8');
+  // ลิงก์ที่เกี่ยวกับหน้า tag ต้องไม่ตาย — สแกนทุกไฟล์ .html ใน dist **รวม dist/tag/ เอง**
+  // (ของเดิมสแกนแค่ dist/*.html ระดับราก = index.html + 908 รายงาน เพราะ Step 5 วางลิงก์ /tag/<slug>
+  //  ไว้บนหน้าแรกด้วย — แต่ไม่เคยเปิดไฟล์ dist/tag/*.html มาอ่านเลย ⇒ ลิงก์ที่อยู่ *ภายใน* หน้า tag เอง
+  //  (related nav ท้ายหน้า, breadcrumb, การ์ดแต่ละใบที่ชี้กลับไปหารายงาน) ไม่เคยถูกตรวจ)
+  // ตรวจ 2 รูปแบบ: (1) href="/tag/<slug>" ต้องมีหน้า dist/tag/<slug>.html จริง
+  //                (2) href="/<SYM>.html" (การ์ดในหน้า tag ถูกแปลงเป็น absolute path ตอน build — ดู build.js "href="\.\/"→"/"")
+  //                    ต้องมีไฟล์รายงานจริงที่ราก dist/ — เทียบด้วย Set ชื่อไฟล์ตรง ๆ ไม่ใช้ fs.existsSync
+  //                    (macOS ไม่สนตัวพิมพ์เล็ก-ใหญ่ของชื่อไฟล์ ⇒ ลิงก์ผิดตัวพิมพ์จะหลุดผ่านในเครื่อง แต่ 404 จริงบน prod)
+  const rootFiles = new Set(fs.readdirSync(DIST).filter((f) => /\.html$/i.test(f)));
+  for (const file of listDistHtmlFiles(DIST)) {
+    const html = fs.readFileSync(file.abs, 'utf8');
     for (const m of html.matchAll(/href="\/tag\/([a-z0-9-]+)"/g)) {
-      if (!have.includes(m[1])) r.errors.push(`${f}: ลิงก์ /tag/${m[1]} ไม่มีหน้าปลายทาง`);
+      if (!have.includes(m[1])) r.errors.push(`${file.rel}: ลิงก์ /tag/${m[1]} ไม่มีหน้าปลายทาง`);
+    }
+    for (const m of html.matchAll(/href="\/([A-Za-z][\w.-]*)\.html"/g)) {
+      if (!rootFiles.has(m[1] + '.html')) r.errors.push(`${file.rel}: ลิงก์การ์ด /${m[1]}.html ไม่มีรายงานปลายทางที่ราก dist/`);
     }
   }
   return r;
 }
 
 // ---- กันกฎ CSS ของหน้า tag รั่วไปโดนหน้าแรก ----
-// หน้าแรกกับหน้า tag ใช้สไตล์ชีตก้อนเดียวกัน (INDEX_STYLE) และมีคลาสที่ "ชื่อชนกัน":
-//   `lead` — หน้า tag ใช้กับย่อหน้านำใต้ h1 · หน้าแรกใช้กับป้ายจุดเด่น `class="hl hl-* lead"`
-//   (มงกุฎ "สูงสุดในกลุ่ม") ⇒ กฎ `.lead` แบบไม่ scope จะรั่วไปทาสีตัวหนังสือเกือบขาวลงชิป
-//   พื้นพาสเทลเล็ก ๆ (ผิด WCAG AA) + เปลี่ยนขนาด/น้ำหนักฟอนต์/margin/max-width
-// เคยเกิดขึ้นจริงและ markup diff จับไม่ได้ (HTML หน้าแรกไม่เปลี่ยน เปลี่ยนแค่การเรนเดอร์)
-// ⇒ บังคับว่าคลาสที่ใช้ร่วมต้องมี ancestor นำหน้าเสมอ
-const SHARED_CLASS_MUST_SCOPE = ['lead']; // เพิ่มชื่อคลาสที่ทั้งสองหน้าใช้ร่วมกันที่นี่
+// หน้าแรกกับหน้า tag ใช้สไตล์ชีตก้อนเดียวกัน (INDEX_STYLE) — คลาสส่วนใหญ่ที่ใช้ร่วมกัน (card/badge/grid/ctop/...)
+// ตั้งใจแชร์กฎเดียวกันจริง ๆ เพราะเป็นการ์ด HTML ก้อนเดียวกัน (generate ครั้งเดียวใน build.js แล้วเอาไปแปะซ้ำ
+// ทั้งสองหน้า) ไม่ใช่บั๊ก — สิ่งที่เคยพังจริงคือ `lead`: หน้า tag เพิ่ม `<p class="lead">` (ย่อหน้านำใต้ h1)
+// ซึ่งเป็น "รูปแบบการใช้งานใหม่" ที่หน้าแรกไม่เคยมี (หน้าแรกมีแค่ `<div class="hl hl-* lead">` = ป้ายจุดเด่น
+// ในการ์ด "มงกุฎสูงสุดในกลุ่ม") กฎ `.lead{}` แบบไม่ scope เลยรั่วไปทาสีตัวหนังสือเกือบขาวลงชิปพื้นพาสเทลเล็ก ๆ
+// (ผิด WCAG AA) + เปลี่ยนขนาด/น้ำหนักฟอนต์/margin/max-width — เคยเกิดขึ้นจริงและ markup diff จับไม่ได้
+// (HTML หน้าแรกไม่เปลี่ยน เปลี่ยนแค่การเรนเดอร์)
+//
+// เดิมกันด้วยรายชื่อคลาสจดมือ (`['lead']`) แต่ไม่มีอะไรบังคับให้จดเพิ่ม — หน้า tag มีคลาสใหม่อีก 3 ตัว
+// (`crumb`/`related`/`js-only`) ที่ประกาศเป็น bare selector ในสไตล์ชีตเดียวกัน ปลอดภัยแค่เพราะหน้าแรก
+// บังเอิญไม่ใช้ชื่อชนกัน ⇒ วันที่หน้าแรกมี element ชื่อ crumb/related ขึ้นมา บั๊กแบบ `lead` จะเกิดซ้ำทันที
+// โดย regression check ตัวนี้ไม่รู้ตัว ⇒ เปลี่ยนมา **derive อัตโนมัติ** จาก "รูปแบบการใช้งาน" (tag+เซ็ตคลาส)
+// ของ element แต่ละตัวที่ถือคลาสนั้นแทน: ถ้าหน้า tag มีรูปแบบการใช้งานที่หน้าแรกไม่เคยมี = คลาสนี้เข้าข่าย
+// ชนกันแบบ `lead` จริง (การ์ดที่มาจากฟังก์ชัน generate เดียวกันจะมีรูปแบบตรงกันเป๊ะทั้งสองฝั่งเสมอ ⇒ ไม่ติด)
+function elementSignatures(html) {
+  const map = new Map(); // ชื่อคลาส → Set ของลายเซ็นการใช้งาน "tagName|class1,class2,..." (เรียงคลาสแล้ว)
+  for (const m of html.matchAll(/<(\w+)\b[^>]*\bclass="([^"]*)"[^>]*>/g)) {
+    const tagName = m[1].toLowerCase();
+    const classes = m[2].trim().split(/\s+/).filter(Boolean);
+    if (!classes.length) continue;
+    const sig = tagName + '|' + classes.slice().sort().join(',');
+    for (const c of classes) {
+      if (!map.has(c)) map.set(c, new Set());
+      map.get(c).add(sig);
+    }
+  }
+  return map;
+}
+// คลาสที่เคยพังจริงมาแล้ว (regression pin, ไม่ใช่รายการที่ต้องคอยเพิ่มมือ) — ต้องถูกตรวจต่อไปเสมอไม่มีเงื่อนไข
+// ต่อให้วันหนึ่ง derive ด้วยรูปแบบการใช้งานข้างบนหาไม่เจอ (เช่น หน้า tag ปรับ markup จนรูปแบบไปตรงกับหน้าแรก
+// พอดี) ก็ยังต้องกัน `.lead` แบบไม่ scope อยู่ดี เพราะแค่หน้าแรกใช้ `.lead` เป็นตัวปรับสีบนชิปอยู่แล้วก็เสี่ยงพอ
+const SHARED_CLASS_PIN = ['lead'];
 function checkSharedCssScope(DIST) {
   const r = { errors: [], warnings: [] };
   const idx = path.join(DIST, 'index.html');
   if (!fs.existsSync(idx)) return r;
-  const html = fs.readFileSync(idx, 'utf8');
-  const css = [...html.matchAll(/<style>([\s\S]*?)<\/style>/g)].map((m) => m[1]).join('\n');
-  for (const cls of SHARED_CLASS_MUST_SCOPE) {
-    const used = (html.match(new RegExp(`class="[^"]*\\b${cls}\\b[^"]*"`, 'g')) || []).length;
-    // selector `.cls` ที่ตัวนำหน้าไม่ใช่ตัวสะกดคลาส/ไอดี/`>`/`+` = ไม่ถูก scope
-    const unscoped = [...css.matchAll(new RegExp(`(^|[,{}\\n])\\s*\\.${cls}\\s*[,{]`, 'g'))].length;
-    if (unscoped && used) {
-      r.errors.push(`CSS: กฎ .${cls} ไม่ถูก scope (${unscoped} จุด) แต่หน้าแรกมี ${used} element ใช้คลาสนี้ — กฎของหน้า tag จะรั่วไปโดนหน้าแรก ให้ scope ใต้ .hd`);
+  const homeHtml = fs.readFileSync(idx, 'utf8');
+  const tagDir = path.join(DIST, 'tag');
+  const tagHtmls = fs.existsSync(tagDir)
+    ? fs.readdirSync(tagDir).filter((f) => /\.html$/i.test(f)).map((f) => fs.readFileSync(path.join(tagDir, f), 'utf8'))
+    : [];
+
+  const homeSig = elementSignatures(homeHtml);
+  const tagSig = new Map();
+  for (const html of tagHtmls) {
+    for (const [cls, sigs] of elementSignatures(html)) {
+      if (!tagSig.has(cls)) tagSig.set(cls, new Set());
+      for (const s of sigs) tagSig.get(cls).add(s);
     }
+  }
+
+  // คลาสเสี่ยง = คลาสที่ใช้ร่วมกันทั้งสองฝั่ง แล้วหน้า tag มีลายเซ็น (tag+เซ็ตคลาส) ที่หน้าแรกไม่เคยมี
+  const risky = new Set(SHARED_CLASS_PIN);
+  for (const [cls, sigs] of tagSig) {
+    if (!homeSig.has(cls)) continue; // ไม่ได้ใช้ร่วมกัน ไม่เข้าข่ายชนกัน
+    const homeSigs = homeSig.get(cls);
+    if ([...sigs].some((s) => !homeSigs.has(s))) risky.add(cls);
+  }
+
+  const css = [...homeHtml.matchAll(/<style>([\s\S]*?)<\/style>/g)].map((m) => m[1]).join('\n');
+  const escRe = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const countUsage = (html, cls) => (html.match(new RegExp(`class="[^"]*\\b${cls}\\b[^"]*"`, 'g')) || []).length;
+  for (const cls of [...risky].sort()) {
+    // selector `.cls` ที่ตัวนำหน้าไม่ใช่ตัวสะกดคลาส/ไอดี/`>`/`+` = ไม่ถูก scope — เดิม regex ดักได้แค่
+    // `.cls,`/`.cls{` เท่านั้น พลาด `.cls:hover{}`/`.cls.other{}`/`.cls>x{}`/`.cls x{}` (ก็ยังนับเป็น "ไม่ scope"
+    // เหมือนกันเพราะไม่มี ancestor นำหน้า) ⇒ เช็คแค่ว่า .cls เป็นตัวแรกของ selector พอ ไม่สนใจว่าต่อท้ายด้วยอะไร
+    // (กัน false-positive กับชื่อคลาสที่ยาวกว่า เช่น .leader ด้วย negative lookahead ท้าย)
+    const unscopedRe = new RegExp(`(^|[,{}\\n])\\s*\\.${escRe(cls)}(?![\\w-])`, 'g');
+    const unscoped = [...css.matchAll(unscopedRe)].length;
+    if (!unscoped) continue;
+    const homeUsed = countUsage(homeHtml, cls);
+    if (!homeUsed) continue; // หน้าแรกไม่ได้ใช้คลาสนี้เลย ไม่มีอะไรให้รั่วไปโดน
+    const tagUsed = tagHtmls.reduce((n, h) => n + countUsage(h, cls), 0);
+    r.errors.push(`CSS: กฎ .${cls} ไม่ถูก scope (${unscoped} จุด) — หน้าแรกใช้คลาสนี้ ${homeUsed} element, หน้า tag ใช้ ${tagUsed} element (คนละรูปแบบ/บริบทกัน) — กฎจะรั่วข้ามหน้า ให้ scope ใต้ ancestor (เช่น .hd หรือคลาสห่อของฝั่งที่เพิ่มมาใหม่)`);
   }
   return r;
 }
@@ -311,21 +390,26 @@ function main() {
   // 1.5) metric บนการ์ด index = stock-meta ของ report (build wiring ถูกต้อง)
   if (indexHtml) add('site (metric cards)', checkMetricsCards(indexHtml, DIST, distSyms));
 
-  // 2) ต่อไฟล์ใน dist
-  for (const f of fs.readdirSync(DIST).filter((f) => /\.html$/i.test(f)).sort()) {
-    const html = fs.readFileSync(path.join(DIST, f), 'utf8');
-    const isIndex = f.toLowerCase() === 'index.html';
-    const isReport = !isIndex;
-    const ss = checkSecurityStructure(html, f, isReport);
+  // 2) ต่อไฟล์ใน dist — รวมหน้า tag/ ด้วย (เดิมสแกนแค่ราก dist/ ⇒ หน้า tag ไม่เคยผ่าน security/structure check เลย)
+  // หน้า tag ไม่ใช่รายงาน (ไม่มี stock-meta/เครดิตโมเดล AI/กราฟ-gauge) ⇒ ให้ isReport=false เหมือน index.html —
+  // รันแค่ checkSecurityStructure ส่วนที่ universal จริง (external resource/script src ที่อนุญาต/script parse+DOM id/สมดุล tag)
+  // ข้าม check เฉพาะรายงาน (title/h1 นับ 1, h1 ไม่ว่าง, checkRender ราคา-กราฟ-gauge, checkModelCredit) —
+  // เรื่อง h1/title เดี่ยวของหน้า tag ถูกตรวจแยกอยู่แล้วใน checkTagPages ข้างบน
+  for (const file of listDistHtmlFiles(DIST).sort((a, b) => a.rel.localeCompare(b.rel))) {
+    const html = fs.readFileSync(file.abs, 'utf8');
+    const isIndex = file.rel.toLowerCase() === 'index.html';
+    const isTag = file.rel.toLowerCase().startsWith('tag/');
+    const isReport = !isIndex && !isTag;
+    const ss = checkSecurityStructure(html, file.rel, isReport);
     let rr = { errors: [], warnings: [] };
     if (isReport) {
-      rr = checkRender(html, f);
+      rr = checkRender(html, file.rel);
       const h1 = stripTags(grab(/<h1[^>]*>([\s\S]*?)<\/h1>/i, html) || '').trim();
       if (!h1) ss.errors.push('h1 (ชื่อบริษัท) ว่างเปล่า');
-      const mc = checkModelCredit(html, f);
+      const mc = checkModelCredit(html, file.rel);
       ss.errors.push(...mc.errors);
     }
-    add(f, { errors: [...ss.errors, ...rr.errors], warnings: [...ss.warnings, ...rr.warnings] });
+    add(file.rel, { errors: [...ss.errors, ...rr.errors], warnings: [...ss.warnings, ...rr.warnings] });
   }
 
   // ---- report ----
