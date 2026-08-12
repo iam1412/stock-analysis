@@ -29,7 +29,22 @@ const grab = (re, h) => { const m = String(h).match(re); return m ? m[1] : null;
 const sym = (f) => f.replace(/\.html$/i, '');
 
 const FONT_ALLOW = /^https:\/\/fonts\.(googleapis|gstatic)\.com(?:\/|$)/; // อนุญาตทั้ง preconnect (origin เปล่า) และ css (มี path)
+// โดเมนของเว็บเอง (mirror ค่า SITE_ORIGIN ใน build.js — อย่า require('../build.js') มาดึงตรง ๆ เพราะไฟล์นั้นรัน build ทั้งก้อนทันทีที่ import)
+// หน้า tag ใช้ absolute URL ใน <link rel="canonical"> (index/รายงานใช้ relative "/" หรือ "/SYM") ต้องอนุญาตไว้ ไม่งั้น external-resource check จะฟ้องผิด
+const SITE_ALLOW = /^https:\/\/gaohoon\.com(?:\/|$)/;
 const CONTAINER_TAGS = ['html', 'head', 'body', 'script', 'style', 'footer', 'svg', 'header', 'section'];
+
+// ---- รายชื่อไฟล์ .html ทั้งหมดใน dist/ ระดับราก + dist/tag/ (ใช้เฉพาะสแกนที่ต้องมองทั้งเว็บ เช่น dead-link/security/structure) ----
+// ★ ไม่ใช่ตัวเดียวกับ coverage check (main ข้อ 1) ซึ่งต้องมองเฉพาะไฟล์ระดับรากเป็น "รายงาน" เท่านั้น —
+//   ห้ามเอาไปแทนที่ fs.readdirSync(DIST) ตรงนั้น ไม่งั้นหน้า tag จะถูกนับเป็นรายงานค้าง (คนละชั้นกับ scan นี้)
+function listDistHtmlFiles(distDir) {
+  const root = fs.readdirSync(distDir).filter((f) => /\.html$/i.test(f)).map((f) => ({ rel: f, abs: path.join(distDir, f) }));
+  const tagDir = path.join(distDir, 'tag');
+  const tag = fs.existsSync(tagDir)
+    ? fs.readdirSync(tagDir).filter((f) => /\.html$/i.test(f)).map((f) => ({ rel: 'tag/' + f, abs: path.join(tagDir, f) }))
+    : [];
+  return [...root, ...tag];
+}
 
 // ---- security + structure (รันกับทุกไฟล์ใน dist รวม index.html) ----
 function checkSecurityStructure(html, name, isReport) {
@@ -38,7 +53,7 @@ function checkSecurityStructure(html, name, isReport) {
   // external resources
   for (const m of html.matchAll(/(?:href|src)\s*=\s*["'](https?:\/\/[^"']+)["']/gi)) {
     const url = m[1];
-    if (!FONT_ALLOW.test(url)) errors.push(`external resource ไม่อนุญาต: ${url} (อนุญาตเฉพาะ Google Fonts https)`);
+    if (!FONT_ALLOW.test(url) && !SITE_ALLOW.test(url)) errors.push(`external resource ไม่อนุญาต: ${url} (อนุญาตเฉพาะ Google Fonts https และโดเมนตัวเอง)`);
   }
   // <script src=…> อนุญาตเฉพาะ bundle TA ของเราเอง (same-origin, ชื่อไฟล์มี hash) — อย่างอื่นถือเป็นความเสี่ยง supply-chain
   const TA_SCRIPT_SRC = /^\/assets\/ta-[0-9a-f]{8}\.js$/;
@@ -191,6 +206,207 @@ function checkTaBundle(distDir, reportsDir, srcSyms) {
   return { errors, warnings };
 }
 
+// ---- หน้า tag (dist/tag/<slug>.html) ----
+// ★ ต้องอยู่ในโฟลเดอร์ย่อยเท่านั้น — coverage check ข้างบนมองไฟล์ .html ในราก dist
+//   ว่าเป็น "รายงาน" ⇒ วางที่รากจะถูกฟ้องว่าเป็นรายงานค้าง
+// 3 จุดบนหน้า tag ที่เอา `desc` ของธีมออกเผยแพร่ — [ป้ายชื่อจุด, regex ดึงค่า, ฟังก์ชัน escape ที่ build.js ใช้ตรงนั้น]
+// ป้ายชื่อมีชุดเดียวใช้ทั้งข้อความ "หาไม่เจอ" และ "เนื้อหาผิด" กันสองที่เรียกจุดเดียวกันคนละชื่อ
+// ★ ตรวจเฉพาะ 3 จุดนี้ ห้ามสแกนทั้งไฟล์ — การ์ดในหน้าฝัง desc ของรายงาน 908 ใบ ที่ผู้เขียนใส่ ★ เองได้
+// ตามใจ (ใช้เป็นสัญลักษณ์เน้นทั่วไปในรีโปนี้) จะกลายเป็น false positive ทันที
+const escH = (t) => String(t).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+const escA = (t) => escH(t).replace(/"/g, '&quot;');
+const DESC_SPOTS = [
+  ['ย่อหน้านำ <p class="lead">', /<p class="lead">([\s\S]*?)<\/p>/, escH],
+  ['<meta name="description">', /<meta name="description" content="([^"]*)"/, escA],
+  ['<meta property="og:description">', /<meta property="og:description" content="([^"]*)"/, escA],
+];
+// ★ ดึงค่าแล้วต้องยืนยันว่า "หาเจอจริง" ก่อนเทียบเสมอ — ถ้า markup เปลี่ยนจน regex ไม่แมตช์ แล้วปล่อยเป็น
+// สตริงว่าง เช็คจะกลายเป็น no-op เงียบ ๆ (ผ่านตลอดโดยไม่ได้ตรวจอะไร) ซึ่งเป็นโหมดพังเดียวกับที่
+// self-test.js เตือนไว้เรื่อง fixture mutation กลายเป็น no-op
+function pick(r, slug, html, where, re) {
+  const m = html.match(re);
+  if (!m) { r.errors.push(`tag/${slug}: หา ${where} ไม่เจอ (markup เปลี่ยน? เช็คคำอธิบายธีมจะกลายเป็น no-op)`); return null; }
+  return m[1];
+}
+
+function checkTagPages(DIST) {
+  const r = { errors: [], warnings: [] };
+  const T = require('../tools/tag-lib.js');
+  let vocab, data;
+  try { vocab = T.loadVocab(); data = T.loadTags(); }
+  catch (e) { r.errors.push(`อ่านไฟล์ tag ไม่ได้: ${e.message}`); return r; }
+
+  const members = T.membersOf(data);
+  // ชื่อไฟล์จริงที่ราก dist/ — เทียบด้วย Set ตรง ๆ ไม่ใช้ fs.existsSync (macOS ไม่สนตัวพิมพ์เล็ก-ใหญ่
+  // ของชื่อไฟล์ ⇒ existsSync('abc.html') จะเจอไฟล์ 'ABC.html' ด้วย ทำให้ symbol พิมพ์ผิดตัวพิมพ์หลุดผ่าน
+  // ในเครื่อง mac ทั้งที่ 404 จริงบน prod — hoist ขึ้นมาก่อน liveCount ให้ใช้ Set เดียวกันทั้งฟังก์ชัน)
+  const rootFiles = new Set(fs.readdirSync(DIST).filter((f) => /\.html$/i.test(f)));
+  // build.js เรนเดอร์การ์ดกรองด้วย bySymbol (เฉพาะ symbol ที่มีรายงานสร้างจริงใน dist/) —
+  // เทียบด้วยชุดกรองเดียวกัน กัน false-positive เวลาลบ reports/<SYM>.html (delisting) แล้ว
+  // tags.json ยังเหลือ symbol ค้าง (orphan tag data เป็นปัญหาคนละชั้น รอ corpus-level check ในงานถัดไป)
+  const liveCount = (s) => members.get(s).filter((sym) => rootFiles.has(sym + '.html')).length;
+  const tagDir = path.join(DIST, 'tag');
+  // "ควรมีหน้า" = สมาชิกที่มีรายงานจริง ≥1 ตัวเท่านั้น (ตรงกับ tagPageSlugs ใน build.js) —
+  // แท็กที่สมาชิกถูกลบรายงานจนเหลือ 0 ไม่ควรมีหน้าเปล่าเข้ามาเลย ไม่ใช่แค่ "การ์ดตรงจำนวน"
+  const want = [...members.keys()].filter((s) => vocab.bySlug.has(s) && liveCount(s) > 0).sort();
+  const have = fs.existsSync(tagDir)
+    ? fs.readdirSync(tagDir).filter((f) => /\.html$/i.test(f)).map((f) => f.replace(/\.html$/i, '')).sort()
+    : [];
+
+  for (const s of want) if (!have.includes(s)) r.errors.push(`ไม่มีหน้า dist/tag/${s}.html (มีสมาชิกที่มีรายงานจริง ${liveCount(s)} ตัว)`);
+  for (const s of have) {
+    if (!members.has(s)) { r.errors.push(`dist/tag/${s}.html ไม่มีสมาชิกเลย (หน้าเปล่าไม่ควรเข้า sitemap)`); continue; }
+    const live = liveCount(s);
+    // สมาชิกถูกลบรายงานจนเหลือ 0 = ห้ามมีหน้านี้เลย (Finding 1) — ต่างจาก "cards !== live" ข้างล่าง
+    // ที่ยังไม่ได้เช็คว่ามีการ์ดเลย ⇒ ต้องกันไว้ก่อนแยกต่างหาก ไม่งั้น 0 การ์ด/0 สมาชิกจะเงียบผ่านเป็น "ตรงกัน"
+    if (live === 0) { r.errors.push(`dist/tag/${s}.html มีสมาชิกใน tags.json แต่ไม่มีสักตัวที่มีรายงานจริง (หน้าเปล่าไม่ควรมีอยู่)`); continue; }
+    const html = fs.readFileSync(path.join(tagDir, s + '.html'), 'utf8');
+    const cards = (html.match(/class="card"/g) || []).length;
+    if (cards !== live) r.errors.push(`tag/${s}: การ์ด ${cards} ใบ แต่มีสมาชิกที่มีรายงานจริง ${live} ตัว`);
+    if ((html.match(/<h1[^>]*>/gi) || []).length !== 1) r.errors.push(`tag/${s}: ต้องมี <h1> เดียว`);
+    if (!/<title>[^<]+<\/title>/i.test(html)) r.errors.push(`tag/${s}: ไม่มี <title>`);
+    // คำอธิบายธีมต้องขึ้นครบและสะอาดทั้ง 3 จุดที่เผยแพร่ (ดู DESC_SPOTS)
+    const vdesc = String((vocab.bySlug.get(s) || {}).desc || '');
+    for (const [where, re, escFn] of DESC_SPOTS) {
+      const text = pick(r, s, html, where, re);
+      if (text === null) continue;
+      // เทียบกับ desc ในคลังตรง ๆ — ครอบทั้ง "ว่าง", "ถูกตัดหาย" และ "มีบันทึกภายในปนมา" ด้วยเงื่อนไขเดียว
+      // (เดิมตรวจแค่ว่ามี ★ ไหม ⇒ desc ที่กลายเป็นสตริงว่างจะผ่านฉลุย เพราะไม่มี ★ เหลืออยู่แล้ว)
+      if (!vdesc.trim()) r.errors.push(`tag/${s}: desc ในคลังว่าง — validateVocab ควรฟ้องก่อนถึงตรงนี้`);
+      else if (!text.includes(escFn(vdesc))) r.errors.push(`tag/${s}: ${where} ไม่ตรงกับ desc ในคลัง (ว่าง/ถูกตัด/ถูกแทน?) — ได้ ${JSON.stringify(text.slice(0, 80))}`);
+      if (text.includes('★')) r.errors.push(`tag/${s}: ${where} มีบันทึกภายใน (★) หลุดออกหน้าเว็บ — ต้องอยู่ในฟิลด์ note`);
+    }
+  }
+
+  // ลิงก์ที่เกี่ยวกับหน้า tag ต้องไม่ตาย — สแกนทุกไฟล์ .html ใน dist **รวม dist/tag/ เอง**
+  // (ของเดิมสแกนแค่ dist/*.html ระดับราก = index.html + 908 รายงาน เพราะ Step 5 วางลิงก์ /tag/<slug>
+  //  ไว้บนหน้าแรกด้วย — แต่ไม่เคยเปิดไฟล์ dist/tag/*.html มาอ่านเลย ⇒ ลิงก์ที่อยู่ *ภายใน* หน้า tag เอง
+  //  (related nav ท้ายหน้า, breadcrumb, การ์ดแต่ละใบที่ชี้กลับไปหารายงาน) ไม่เคยถูกตรวจ)
+  // ตรวจ 2 รูปแบบ: (1) href="/tag/<slug>" ต้องมีหน้า dist/tag/<slug>.html จริง
+  //                (2) href="/<SYM>.html" (การ์ดในหน้า tag ถูกแปลงเป็น absolute path ตอน build — ดู build.js "href="\.\/"→"/"")
+  //                    ต้องมีไฟล์รายงานจริงที่ราก dist/ — เทียบด้วย Set ชื่อไฟล์ตรง ๆ ไม่ใช้ fs.existsSync
+  //                    (macOS ไม่สนตัวพิมพ์เล็ก-ใหญ่ของชื่อไฟล์ ⇒ ลิงก์ผิดตัวพิมพ์จะหลุดผ่านในเครื่อง แต่ 404 จริงบน prod)
+  //                    — rootFiles ประกาศไว้ต้นฟังก์ชันแล้ว (liveCount ใช้ตัวเดียวกัน) ไม่ต้องสร้างซ้ำ
+  for (const file of listDistHtmlFiles(DIST)) {
+    const html = fs.readFileSync(file.abs, 'utf8');
+    for (const m of html.matchAll(/href="\/tag\/([a-z0-9-]+)"/g)) {
+      if (!have.includes(m[1])) r.errors.push(`${file.rel}: ลิงก์ /tag/${m[1]} ไม่มีหน้าปลายทาง`);
+    }
+    for (const m of html.matchAll(/href="\/([A-Za-z][\w.-]*)\.html"/g)) {
+      if (!rootFiles.has(m[1] + '.html')) r.errors.push(`${file.rel}: ลิงก์การ์ด /${m[1]}.html ไม่มีรายงานปลายทางที่ราก dist/`);
+    }
+  }
+
+  // ---- SEO: canonical ชี้ URL ตัวเองถูกต้อง + og:title มี + ทุกหน้าอยู่ใน sitemap.xml (ไม่ซ้ำ) ----
+  // (spec §11.5 ข้อ 42–45 — Task 6 ใส่ canonical/og/sitemap ไว้ใน build.js แล้ว เทสนี้แค่ยืนยันไม่ให้หลุดย้อนหลัง)
+  const sitemap = fs.existsSync(path.join(DIST, 'sitemap.xml')) ? fs.readFileSync(path.join(DIST, 'sitemap.xml'), 'utf8') : '';
+  const inMap = new Set([...sitemap.matchAll(/<loc>[^<]*\/tag\/([a-z0-9-]+)<\/loc>/g)].map((m) => m[1]));
+  for (const s of have) {
+    const html = fs.readFileSync(path.join(tagDir, s + '.html'), 'utf8');
+    if (!new RegExp(`<link rel="canonical" href="https://[^"]+/tag/${s}">`).test(html)) r.errors.push(`tag/${s}: canonical ไม่ถูกต้อง`);
+    if (!/property="og:title"/.test(html)) r.errors.push(`tag/${s}: ไม่มี og:title`);
+    if (!inMap.has(s)) r.errors.push(`tag/${s}: ไม่อยู่ใน sitemap.xml`);
+  }
+  const dupMap = [...sitemap.matchAll(/<loc>[^<]*\/tag\/([a-z0-9-]+)<\/loc>/g)].map((m) => m[1]);
+  if (dupMap.length !== new Set(dupMap).size) r.errors.push('sitemap.xml: URL หน้า tag ซ้ำ');
+
+  // ★ ไฟล์ tag ต้องไม่หลุดมาที่รากของ dist — coverage check (main ข้อ 1) มองไฟล์ .html ระดับราก dist ทุกใบ
+  // ว่าเป็น "รายงาน" เทียบกับ reports/*.html ⇒ ถ้าวันหนึ่งหน้า tag ถูกเขียนผิดที่ไปอยู่ราก dist/ แทน dist/tag/
+  // coverage check จะฟ้อง "อยู่ใน dist/ แต่ไม่มีต้นฉบับใน reports/ (ไฟล์ค้าง)" ซึ่งอ่านไม่ออกว่าต้นเหตุคือหน้า tag
+  // หลุด — เทียบจำนวนตรงนี้ให้ชี้ต้นเหตุตรงจุดแทน
+  const rootHtml = fs.readdirSync(DIST).filter((f) => /\.html$/i.test(f) && f.toLowerCase() !== 'index.html').length;
+  const srcCount = fs.readdirSync(path.join(ROOT, 'reports')).filter((f) => /\.html$/i.test(f)).length;
+  if (rootHtml !== srcCount) r.errors.push(`ไฟล์ .html ในราก dist มี ${rootHtml} ไม่เท่ากับรายงาน ${srcCount} — มีไฟล์หลุดมาที่ราก?`);
+
+  return r;
+}
+
+// ---- กันกฎ CSS ของหน้า tag รั่วไปโดนหน้าแรก ----
+// หน้าแรกกับหน้า tag ใช้สไตล์ชีตก้อนเดียวกัน (INDEX_STYLE) — คลาสส่วนใหญ่ที่ใช้ร่วมกัน (card/badge/grid/ctop/...)
+// ตั้งใจแชร์กฎเดียวกันจริง ๆ เพราะเป็นการ์ด HTML ก้อนเดียวกัน (generate ครั้งเดียวใน build.js แล้วเอาไปแปะซ้ำ
+// ทั้งสองหน้า) ไม่ใช่บั๊ก — สิ่งที่เคยพังจริงคือ `lead`: หน้า tag เพิ่ม `<p class="lead">` (ย่อหน้านำใต้ h1)
+// ซึ่งเป็น "รูปแบบการใช้งานใหม่" ที่หน้าแรกไม่เคยมี (หน้าแรกมีแค่ `<div class="hl hl-* lead">` = ป้ายจุดเด่น
+// ในการ์ด "มงกุฎสูงสุดในกลุ่ม") กฎ `.lead{}` แบบไม่ scope เลยรั่วไปทาสีตัวหนังสือเกือบขาวลงชิปพื้นพาสเทลเล็ก ๆ
+// (ผิด WCAG AA) + เปลี่ยนขนาด/น้ำหนักฟอนต์/margin/max-width — เคยเกิดขึ้นจริงและ markup diff จับไม่ได้
+// (HTML หน้าแรกไม่เปลี่ยน เปลี่ยนแค่การเรนเดอร์)
+//
+// เดิมกันด้วยรายชื่อคลาสจดมือ (`['lead']`) แต่ไม่มีอะไรบังคับให้จดเพิ่ม — หน้า tag มีคลาสใหม่อีก 3 ตัว
+// (`crumb`/`related`/`js-only`) ที่ประกาศเป็น bare selector ในสไตล์ชีตเดียวกัน ปลอดภัยแค่เพราะหน้าแรก
+// บังเอิญไม่ใช้ชื่อชนกัน ⇒ วันที่หน้าแรกมี element ชื่อ crumb/related ขึ้นมา บั๊กแบบ `lead` จะเกิดซ้ำทันที
+// โดย regression check ตัวนี้ไม่รู้ตัว ⇒ เปลี่ยนมา **derive อัตโนมัติ** จาก "รูปแบบการใช้งาน" (tag+เซ็ตคลาส)
+// ของ element แต่ละตัวที่ถือคลาสนั้นแทน: ถ้าหน้า tag มีรูปแบบการใช้งานที่หน้าแรกไม่เคยมี = คลาสนี้เข้าข่าย
+// ชนกันแบบ `lead` จริง (การ์ดที่มาจากฟังก์ชัน generate เดียวกันจะมีรูปแบบตรงกันเป๊ะทั้งสองฝั่งเสมอ ⇒ ไม่ติด)
+function elementSignatures(html) {
+  const map = new Map(); // ชื่อคลาส → Set ของลายเซ็นการใช้งาน "tagName|class1,class2,..." (เรียงคลาสแล้ว)
+  for (const m of html.matchAll(/<(\w+)\b[^>]*\bclass="([^"]*)"[^>]*>/g)) {
+    const tagName = m[1].toLowerCase();
+    const classes = m[2].trim().split(/\s+/).filter(Boolean);
+    if (!classes.length) continue;
+    const sig = tagName + '|' + classes.slice().sort().join(',');
+    for (const c of classes) {
+      if (!map.has(c)) map.set(c, new Set());
+      map.get(c).add(sig);
+    }
+  }
+  return map;
+}
+// คลาสที่เคยพังจริงมาแล้ว (regression pin, ไม่ใช่รายการที่ต้องคอยเพิ่มมือ) — ต้องถูกตรวจต่อไปเสมอไม่มีเงื่อนไข
+// ต่อให้วันหนึ่ง derive ด้วยรูปแบบการใช้งานข้างบนหาไม่เจอ (เช่น หน้า tag ปรับ markup จนรูปแบบไปตรงกับหน้าแรก
+// พอดี) ก็ยังต้องกัน `.lead` แบบไม่ scope อยู่ดี เพราะแค่หน้าแรกใช้ `.lead` เป็นตัวปรับสีบนชิปอยู่แล้วก็เสี่ยงพอ
+// ★ `tchip` เพิ่มเข้ามาเพราะหลังถอดแถวแท็กยอดนิยม หน้าแรกไม่มี class="tchip" ใน markup จริงอีกเลย —
+// เหลือแต่สตริงใน <script> ที่ JS เอาไปใส่ innerHTML ตอน runtime (ชิปตัวกรอง/ชิปเสนอแท็ก) ⇒ ทั้ง
+// elementSignatures และ countUsage กำลังอ่าน string literal ใน JS ราวกับเป็น HTML · วันที่โค้ดนั้นเปลี่ยน
+// ไปสร้าง element ด้วย createElement/textContent แทน homeUsed จะกลายเป็น 0 แล้วเช็คจะ `continue` ข้าม
+// `.tchip` เงียบ ๆ ทั้งที่หน้าแรกยังเรนเดอร์มันจริง ⇒ pin ไว้ + ให้คลาสที่ pin ข้ามเงื่อนไข homeUsed
+const SHARED_CLASS_PIN = ['lead', 'tchip'];
+function checkSharedCssScope(DIST) {
+  const r = { errors: [], warnings: [] };
+  const idx = path.join(DIST, 'index.html');
+  if (!fs.existsSync(idx)) return r;
+  const homeHtml = fs.readFileSync(idx, 'utf8');
+  const tagDir = path.join(DIST, 'tag');
+  const tagHtmls = fs.existsSync(tagDir)
+    ? fs.readdirSync(tagDir).filter((f) => /\.html$/i.test(f)).map((f) => fs.readFileSync(path.join(tagDir, f), 'utf8'))
+    : [];
+
+  const homeSig = elementSignatures(homeHtml);
+  const tagSig = new Map();
+  for (const html of tagHtmls) {
+    for (const [cls, sigs] of elementSignatures(html)) {
+      if (!tagSig.has(cls)) tagSig.set(cls, new Set());
+      for (const s of sigs) tagSig.get(cls).add(s);
+    }
+  }
+
+  // คลาสเสี่ยง = คลาสที่ใช้ร่วมกันทั้งสองฝั่ง แล้วหน้า tag มีลายเซ็น (tag+เซ็ตคลาส) ที่หน้าแรกไม่เคยมี
+  const risky = new Set(SHARED_CLASS_PIN);
+  for (const [cls, sigs] of tagSig) {
+    if (!homeSig.has(cls)) continue; // ไม่ได้ใช้ร่วมกัน ไม่เข้าข่ายชนกัน
+    const homeSigs = homeSig.get(cls);
+    if ([...sigs].some((s) => !homeSigs.has(s))) risky.add(cls);
+  }
+
+  const css = [...homeHtml.matchAll(/<style>([\s\S]*?)<\/style>/g)].map((m) => m[1]).join('\n');
+  const escRe = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const countUsage = (html, cls) => (html.match(new RegExp(`class="[^"]*\\b${cls}\\b[^"]*"`, 'g')) || []).length;
+  for (const cls of [...risky].sort()) {
+    // selector `.cls` ที่ตัวนำหน้าไม่ใช่ตัวสะกดคลาส/ไอดี/`>`/`+` = ไม่ถูก scope — เดิม regex ดักได้แค่
+    // `.cls,`/`.cls{` เท่านั้น พลาด `.cls:hover{}`/`.cls.other{}`/`.cls>x{}`/`.cls x{}` (ก็ยังนับเป็น "ไม่ scope"
+    // เหมือนกันเพราะไม่มี ancestor นำหน้า) ⇒ เช็คแค่ว่า .cls เป็นตัวแรกของ selector พอ ไม่สนใจว่าต่อท้ายด้วยอะไร
+    // (กัน false-positive กับชื่อคลาสที่ยาวกว่า เช่น .leader ด้วย negative lookahead ท้าย)
+    const unscopedRe = new RegExp(`(^|[,{}\\n])\\s*\\.${escRe(cls)}(?![\\w-])`, 'g');
+    const unscoped = [...css.matchAll(unscopedRe)].length;
+    if (!unscoped) continue;
+    const homeUsed = countUsage(homeHtml, cls);
+    // คลาสที่ pin ไว้ต้องฟ้องเสมอ ไม่ว่าจะนับเจอในหน้าแรกหรือไม่ — countUsage เห็นแค่ markup ในไฟล์
+    // มองไม่เห็น element ที่ JS สร้างตอน runtime ⇒ "นับได้ 0" ไม่ได้แปลว่า "หน้าแรกไม่ได้ใช้"
+    if (!homeUsed && !SHARED_CLASS_PIN.includes(cls)) continue; // หน้าแรกไม่ได้ใช้คลาสนี้เลย ไม่มีอะไรให้รั่วไปโดน
+    const tagUsed = tagHtmls.reduce((n, h) => n + countUsage(h, cls), 0);
+    r.errors.push(`CSS: กฎ .${cls} ไม่ถูก scope (${unscoped} จุด) — หน้าแรกใช้คลาสนี้ ${homeUsed} element, หน้า tag ใช้ ${tagUsed} element (คนละรูปแบบ/บริบทกัน) — กฎจะรั่วข้ามหน้า ให้ scope ใต้ ancestor (เช่น .hd หรือคลาสห่อของฝั่งที่เพิ่มมาใหม่)`);
+  }
+  return r;
+}
+
 function main() {
   if (!fs.existsSync(DIST)) { console.error('❌ ไม่พบ dist/ — รัน `node build.js` ก่อน'); process.exit(1); }
 
@@ -232,24 +448,32 @@ function main() {
   // 1.4) TA chart bundle: dist มี bundle เดียว + inject ถูกไฟล์ + ไม่รั่วเข้า source
   add('site (ta chart)', checkTaBundle(DIST, REPORTS_DIR, srcSyms));
 
+  add('site (tag pages)', checkTagPages(DIST));
+  add('site (shared css scope)', checkSharedCssScope(DIST));
+
   // 1.5) metric บนการ์ด index = stock-meta ของ report (build wiring ถูกต้อง)
   if (indexHtml) add('site (metric cards)', checkMetricsCards(indexHtml, DIST, distSyms));
 
-  // 2) ต่อไฟล์ใน dist
-  for (const f of fs.readdirSync(DIST).filter((f) => /\.html$/i.test(f)).sort()) {
-    const html = fs.readFileSync(path.join(DIST, f), 'utf8');
-    const isIndex = f.toLowerCase() === 'index.html';
-    const isReport = !isIndex;
-    const ss = checkSecurityStructure(html, f, isReport);
+  // 2) ต่อไฟล์ใน dist — รวมหน้า tag/ ด้วย (เดิมสแกนแค่ราก dist/ ⇒ หน้า tag ไม่เคยผ่าน security/structure check เลย)
+  // หน้า tag ไม่ใช่รายงาน (ไม่มี stock-meta/เครดิตโมเดล AI/กราฟ-gauge) ⇒ ให้ isReport=false เหมือน index.html —
+  // รันแค่ checkSecurityStructure ส่วนที่ universal จริง (external resource/script src ที่อนุญาต/script parse+DOM id/สมดุล tag)
+  // ข้าม check เฉพาะรายงาน (title/h1 นับ 1, h1 ไม่ว่าง, checkRender ราคา-กราฟ-gauge, checkModelCredit) —
+  // เรื่อง h1/title เดี่ยวของหน้า tag ถูกตรวจแยกอยู่แล้วใน checkTagPages ข้างบน
+  for (const file of listDistHtmlFiles(DIST).sort((a, b) => a.rel.localeCompare(b.rel))) {
+    const html = fs.readFileSync(file.abs, 'utf8');
+    const isIndex = file.rel.toLowerCase() === 'index.html';
+    const isTag = file.rel.toLowerCase().startsWith('tag/');
+    const isReport = !isIndex && !isTag;
+    const ss = checkSecurityStructure(html, file.rel, isReport);
     let rr = { errors: [], warnings: [] };
     if (isReport) {
-      rr = checkRender(html, f);
+      rr = checkRender(html, file.rel);
       const h1 = stripTags(grab(/<h1[^>]*>([\s\S]*?)<\/h1>/i, html) || '').trim();
       if (!h1) ss.errors.push('h1 (ชื่อบริษัท) ว่างเปล่า');
-      const mc = checkModelCredit(html, f);
+      const mc = checkModelCredit(html, file.rel);
       ss.errors.push(...mc.errors);
     }
-    add(f, { errors: [...ss.errors, ...rr.errors], warnings: [...ss.warnings, ...rr.warnings] });
+    add(file.rel, { errors: [...ss.errors, ...rr.errors], warnings: [...ss.warnings, ...rr.warnings] });
   }
 
   // ---- report ----
@@ -267,4 +491,4 @@ function main() {
 }
 
 if (require.main === module) main();
-module.exports = { checkSecurityStructure, checkRender, checkModelCredit, checkMetricsCards, checkTaBundle };
+module.exports = { checkSecurityStructure, checkRender, checkModelCredit, checkMetricsCards, checkTaBundle, checkTagPages };

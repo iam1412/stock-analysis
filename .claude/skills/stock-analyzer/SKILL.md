@@ -25,8 +25,8 @@ description: วิเคราะห์หุ้นรายตัว (ไท�
     - ★ `node tools/update-prices.js --write --force <SYM>` ยัง**ใช้ได้ตามปกติ** ตอน bad-chart — มันจะประทับราคา/วันที่/MOS ให้ แต่ **คงกราฟเดิมในไฟล์ไว้** (price-only) จึงไม่ลากฐานที่สองกลับเข้ามา · `fetch-facts.js` กับ `prep-stock.js` จะ **exit 2 หยุดให้เอง** ห้าม spawn worker ต่อจนกว่าจะแก้
   - `bad-price` / `bad-report-price` → ข้อมูลเสีย ไม่ใช่ตลาดขยับ: `bad-price` = quote ที่ดึงมาไม่ใช่ตัวเลขบวก · `bad-report-price` = `stock-meta.price` ในรายงานเองเสีย (0/ติดลบ/ไม่ใช่ตัวเลข) → **แก้ตัวเลขในรายงานให้ถูกก่อน** แล้วค่อย refresh ราคา — ห้าม re-analyze โดยเชื่อราคาเดิมในไฟล์ (`--force` ข้าม flag คู่นี้ไม่ได้โดยตั้งใจ)
   - `not-on-exchange` → **สงสัยหุ้นตาย ห้าม re-analyze ห้าม UPDATE-LIGHT** (วิเคราะห์หุ้นที่เลิกเทรดแล้วคือการเผยแพร่ข้อมูลผิด) — งานคือ **ยืนยันสถานะจากแหล่งปฐมภูมิ** (SEC Form 25/8-K · ประกาศตลาด/SET · IR) แล้ว:
-    - เพิกถอน/ควบบริษัท (ผู้ถือหุ้นได้เงินสดหรือหุ้นนิติบุคคลใหม่) → **ลบ `reports/<SYM>.html`** + บันทึกใน memory delisted-stocks · **ห้ามใส่ `symbol-map`** (ไม่ใช่การเปลี่ยนชื่อ — เคส BPP→BANPU ratio 0.80208:1 ถ้า map จะทำให้ cron patch ราคา NewCo ทับ = drift ปลอม)
-    - เปลี่ยนชื่อ/ticker แบบ 1:1 บริษัทเดิม → `tools/symbol-map.json` (แบบ BKI→BKIH, STEC→STECON, LANC→MZTI)
+    - เพิกถอน/ควบบริษัท (ผู้ถือหุ้นได้เงินสดหรือหุ้นนิติบุคคลใหม่) → **ลบ `reports/<SYM>.html`** + บันทึกใน memory delisted-stocks + **เก็บกวาด entry ค้างใน `tags.json`**: `node tools/tag-apply.js --prune` · **ห้ามใส่ `symbol-map`** (ไม่ใช่การเปลี่ยนชื่อ — เคส BPP→BANPU ratio 0.80208:1 ถ้า map จะทำให้ cron patch ราคา NewCo ทับ = drift ปลอม)
+    - เปลี่ยนชื่อ/ticker แบบ 1:1 บริษัทเดิม → `tools/symbol-map.json` (แบบ BKI→BKIH, STEC→STECON, LANC→MZTI) + ย้าย key เดิมใน `tags.json` ตาม: `node tools/tag-apply.js --rename <OLD> <NEW>`
     - ยังเทรดอยู่จริง (แค่ provider mapping เพี้ยน) → แจ้ง controller ปรับ candidate ใน `tools/dead-ticker-canary.js` (หรือเติม `tv`/`sa` ใน `tools/symbol-map.json`) แล้วปลด flag + refresh ราคาด้วย `node tools/update-prices.js --write --alive <SYM>` (`--alive` เท่านั้น — `--force` ที่ใช้ประจำใน re-analysis **ไม่ปลด** flag นี้โดยตั้งใจ) — **ห้ามลบรายงาน**
     - ยืนยันไม่ได้ (เอกสารตลาดเข้าไม่ถึง) → **หยุด ถาม user** ห้ามเดาทั้งสองทาง
 - ความสด: `reports.json` ฟิลด์ `updated` ≤7 วัน → ไม่วิเคราะห์ซ้ำ (กติกา dedup อยู่ CLAUDE.md §3.1)
@@ -84,7 +84,7 @@ description: วิเคราะห์หุ้นรายตัว (ไท�
      - **E21**: ตัวเลขวิธี P/E ต้องคูณลงตัว — `.mval` = EPS × P/E **ตามเลขที่พิมพ์ใน `.mdesc`** (คลาดได้ ≤3%) — กดเครื่องคิดเลขคูณก่อนเขียน อย่าปัดเศษ EPS/P/E ใน mdesc จนคูณแล้วไม่ตรง mval
    - ห้ามเหลือ `{{...}}` ค้าง (gate E13 บล็อก) · ครบ 8 section
    - **เลขเดียวกันต้องพิมพ์ตรงกันทุกจุดที่โผล่** (ราคา/FV/EPS/P/E ปรากฏหลายที่ — gate E21/E22 จับเลขเพี้ยนข้ามจุดให้) — คุมตอน compose ก่อน Write ไม่ใช่ไล่แก้ทีหลัง
-   - **เกณฑ์ความสอดคล้องของเลขทุกตัว (E21/E22 ±3% · โซน MOS W04 · W06 ฯลฯ) อ่านจากตาราง `docs/quality-gate.md` เท่านั้น — ห้ามเปิด/grep `test/check-reports.js` ทั้งก่อนและหลังเขียน** (วัดจริง 13 ก.ค. 2569: worker เผา 8 turns ขุด test/ หา threshold ก่อน Write — ตารางมีเกณฑ์+วิธีแก้ครบ 48 code แล้ว)
+   - **เกณฑ์ความสอดคล้องของเลขทุกตัว (E21/E22 ±3% · โซน MOS W04 · W06 ฯลฯ) อ่านจากตาราง `docs/quality-gate.md` เท่านั้น — ห้ามเปิด/grep `test/check-reports.js` ทั้งก่อนและหลังเขียน** (วัดจริง 13 ก.ค. 2569: worker เผา 8 turns ขุด test/ หา threshold ก่อน Write — ตารางมีเกณฑ์+วิธีแก้ครบ 52 code แล้ว)
    - วัดจริงเวฟ robotics 13 ก.ค. 2569: Write ครั้งเดียว = 1 turn + แก้ตามผล `npm test` อีก 1–2 turns ผ่าน gate 37/37 เท่ากัน · เส้นทาง cp+แทนค่าแบบเก่า ~20 turns — **โหมด NEW ห้ามใช้ `apply-edits.js`/Edit ไล่แทนค่าเป็นชุด** (`apply-edits.js` ยังบังคับตามเดิมใน STEP 5B/5C ซึ่งเป็นการแก้ไฟล์เดิมเฉพาะจุด)
 - **chart/ป้าย .chg/สี** → วางจากผลลัพธ์ fetch-facts ตรง ๆ (fairLine หลุดช่วง min/max → คำนวณ bounds ใหม่รวม FV)
 - **4 บล็อกบังคับ**:
@@ -94,6 +94,10 @@ description: วิเคราะห์หุ้นรายตัว (ไท�
   4. ป้าย `.chg` = ผลตอบแทน **รอบปี** `▲ +X.X% (รอบปี)` / `▼ −X.X% (รอบปี)` / `≈ ทรงตัว (รอบปี)` · IPO <1 ปี ใช้ `(ตั้งแต่ IPO)` · % = ผลตอบแทนปลายกราฟ section 2 · สี ขึ้น=เขียว/ลง=แดง (fetch-facts ให้ครบแล้ว)
 - **สีแบรนด์** ใน `report-data.theme` เลือกตามลักษณะหุ้น ห้ามปล่อยน้ำเงิน default — เลือก hex ตาม `tools/brand-colors.md` → รัน `node tools/pick-brand.js <SYM> "#hex" --auto` **ครั้งเดียวจบ** (ตรวจสีชน + ลง seeds.json + พิมพ์ theme 8 คีย์และบรรทัด `{{GDOTS}}` ให้ copy — **ชนแล้ว `--auto` สลับเป็นเฉดว่างใกล้แบรนด์สุดให้เองในคำสั่งเดียว** ห้ามเดาเฉดใหม่วนลูปเอง · แบรนด์ร่วมจริงเท่านั้นจึงใช้ `--force`) · ห้ามอ่าน brandtheme.js / ห้าม `node -e` ทดลองเอง / ห้ามแก้ seeds.json มือ
 - disclaimer "ไม่ใช่คำแนะนำการลงทุน" + "ราคา ณ วันที่ + แหล่งที่มา" (มีใน skeleton แล้ว — เติมให้ครบ)
+- **ติด tag ธีมการลงทุน (บังคับ)** — เลือก 2–3 slug จาก `tags-vocab.json` (ห้ามคิด slug ใหม่) แล้วรายงานท้ายงานเป็นบรรทัด
+  `TAGS: <slug> <slug>` — **ห้ามเขียน `tags.json` เอง** (ไฟล์เดียวหลาย writer = entry ทับหาย แบบเดียวกับ `pick-brand.js`)
+  controller เป็นคนรัน `node tools/tag-apply.js <SYM> <slug…>` ให้ · ไม่มีธีมไหนเข้ากันเลย → **หยุดถาม controller**
+  (ปล่อยไปจะทำ E40 ตกและ push ไม่ได้)
 
 ## STEP 5B — เขียนรายงาน โหมด UPDATE (แก้เฉพาะจุด)
 
@@ -104,6 +108,11 @@ description: วิเคราะห์หุ้นรายตัว (ไท�
    - วันที่วิเคราะห์ footer "ข้อมูล ณ …" = วันนี้ · `meta ai-model` = โมเดลที่รันจริง
    - gauge min/max: ราคาหลุดขอบ script ขยายให้เองแล้วใน STEP 1 — เหลือหน้าที่เดียวคือ **FV เปลี่ยน** → ปรับขอบ/โซน scale ให้สอดคล้อง FV ใหม่
 3. **ถ้าแก้ `stock-meta.fairValue`** → รัน `node tools/update-prices.js --write --force <SYMBOL>` ซ้ำ (MOS/upside/ป้าย MOS คำนวณใหม่จาก FV ใหม่ให้เอง — ห้ามแก้เลขพวกนี้มือ)
+4. **ทบทวน tag (บังคับทุกครั้ง):** ค่าตั้งต้นคือ **คงเดิม** — เปลี่ยนได้เฉพาะเมื่อธุรกิจเปลี่ยนธีมจริง
+   (ขาย/ซื้อกิจการ · เปลี่ยนธุรกิจหลัก · spinoff) ราคาขยับไม่นับ · รายงานท้ายงานบรรทัดเดียว:
+   - `TAGS: คงเดิม`
+   - `TAGS: เปลี่ยน — <เหตุผล + ธีมที่ควรเป็น>` (บอกเป็นคำอธิบายได้ ไม่ต้องรู้ slug)
+   ต้องการธีมที่ยังไม่มีในคลัง → บอก controller ให้เข้าคิวด้วย `tag-apply.js <SYM> --request "<ธีม>"`
 
 ## STEP 5C — โหมด UPDATE-LIGHT (refresh จากคิว price-flags — เป้า ≤10 turns)
 
@@ -131,6 +140,8 @@ description: วิเคราะห์หุ้นรายตัว (ไท�
    ⚠ **ห้ามใช้ Edit tool ทีละจุดทีละ turn** — วัดจริง 12 ก.ค. 2569: worker ยิงทีละ turn 12–16 ครั้ง = +~1M cache-read/ตัว กินเป้า ≤10 turns หมด (Edit tool = fallback เฉพาะเมื่อ apply-edits fail ซ้ำ และต้องยิงทุกจุดในข้อความเดียว)
    ⚠ ห้าม grep/สำรวจ `_template/` `build.js` `test/` — สงสัยความหมาย class/gauge → `docs/templates.md` ครั้งเดียวพอ · E/W code จาก gate → `docs/quality-gate.md` เฉพาะ code นั้น
 4. `npm test -- <SYM>` **ครั้งเดียว** → เขียว → คืนงาน (ไม่แตะ FV/EPS = ไม่ต้องรัน update-prices ซ้ำ)
+5. **ห้ามแตะ tag** — UPDATE-LIGHT คือ "ราคาขยับแรงแต่ไม่มีสัญญาณธุรกิจเปลี่ยน" และ tag เป็น
+   ฟังก์ชันของธุรกิจไม่ใช่ของราคา · ถ้ายกระดับเป็น UPDATE เต็ม (EPS เกิน ±2%) ให้ใช้กฎ STEP 5B
 
 ## STEP 6 — self-check ก่อนจบ
 

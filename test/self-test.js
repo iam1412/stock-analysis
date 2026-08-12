@@ -267,6 +267,37 @@ reject('E06', (h) => h.replace('<div class="n">1</div>', '<div class="n active">
 reject('E29', mutJson('stock-meta', (d) => { d.dividendYield = null; }), 'stock-meta: dividendYield = null (หุ้นไม่จ่ายปันผล) ยังถือว่าถูกต้อง');
 reject('W10', mutJson('stock-meta', (d) => { d.dividendYield = null; }), 'stock-meta: yield = null → ข้ามการเทียบ ไม่เตือน W10');
 
+// ── E40 / W13: ความถูกต้องของ tag ต่อหุ้น ──
+// E40/W13 อ่าน tag จากไฟล์บนดิสก์ ไม่ใช่จาก HTML ⇒ mutation แบบแก้สตริงฉีดไม่ได้
+// จึงต้องฉีดผ่าน opts.tagData (ช่องที่ออกแบบไว้ให้เทสโดยเฉพาะ)
+{
+  const T = require('../tools/tag-lib.js');
+  const list = [
+    { slug: 'thai-consumption', label: 'การบริโภคในประเทศไทย', aliases: ['ค้าปลีก'], desc: 'd', kind: 'driver' },
+    { slug: 'thai-bank', label: 'ธนาคารไทย', aliases: ['แบงก์ไทย'], desc: 'd', kind: 'business' },
+  ];
+  const vocab = { version: 1, list, bySlug: new Map(list.map((e) => [e.slug, e])) };
+  const mk = (slugs) => ({ vocabVersion: 1, tags: slugs ? { BBL: slugs } : {}, requests: [] });
+  const run = (slugs) => checkHtml(base, 'BBL.html', { tagData: mk(slugs), vocab });
+
+  const good = run(['thai-consumption', 'thai-bank']);
+  ok(!errIds(good).has('E40'), 'E40: tag ถูกต้อง → ไม่ยิง');
+  ok(!allIds(good).has('W13'), 'W13: มี 2 tag → ไม่ยิง');
+
+  ok(errIds(run(null)).has('E40'), 'E40: ไม่มี entry ใน tags.json → ยิง');
+  ok(errIds(run(['ไม่มีจริง'])).has('E40'), 'E40: slug นอกคลัง → ยิง');
+  ok(errIds(run(['thai-consumption', 'thai-bank', 'thai-consumption', 'thai-bank'])).has('E40'), 'E40: เกิน 3 slug → ยิง');
+  ok(errIds(run(['thai-consumption', 'thai-consumption'])).has('E40'), 'E40: slug ซ้ำกันเอง → ยิง');
+
+  // W13 ใหม่: เตือนเมื่อ "ไม่มีธีมธุรกิจเลย" ไม่ใช่ "มี tag เดียว"
+  const oneBiz = run(['thai-bank']);                    // ธีม business เดี่ยว = ถูกต้อง ต้องเงียบ
+  ok(!allIds(oneBiz).has('W13'), 'W13: ธีมธุรกิจเดี่ยว → ไม่ยิง (ไม่ใช่ข้อบกพร่อง)');
+  ok(!errIds(oneBiz).has('E40'), 'W13: ธีมธุรกิจเดี่ยว → E40 ไม่ยิงด้วย');
+  const driverOnly = run(['thai-consumption']);         // มีแต่ธีม driver = บอกไม่ได้ว่าทำอะไร
+  ok(allIds(driverOnly).has('W13'), 'W13: มีแต่ธีม driver → ยิง');
+  ok(!errIds(driverOnly).has('E40'), 'W13: มีแต่ธีม driver → เป็น warning ไม่ใช่ error');
+}
+
 console.log('\n' + '─'.repeat(50));
 console.log(`self-test: ${n - fails}/${n} ผ่าน`);
 if (fails) { console.log('\n❌ checker มีบั๊ก — แก้ check-reports.js ก่อนใช้งานเป็น gate\n'); process.exit(1); }

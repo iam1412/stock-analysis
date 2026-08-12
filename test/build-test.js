@@ -269,6 +269,140 @@ ok(b.injectTA(taBody, 'AAPL', null, { currency: 'USD' }, 'assets/ta-abc123.js') 
   ok(mk('-46px').includes('-46px'), 'fairLabelTop="-46px" (ถูกรูป) → ใช้ค่าที่ให้');
 }
 
+// ── renderTagRow: แทนป้าย 2-3 ด้วยชิปจาก tags.json (dist เท่านั้น) ──
+{
+  const list = [
+    { slug: 'ai-datacenter', label: 'AI Data Center', aliases: ['ai', 'เอไอ'], desc: 'd' },
+    { slug: 'optical-photonics', label: 'Optical & Photonics', aliases: ['optical'], desc: 'd' },
+    { slug: 'thai-consumption', label: 'การบริโภคในประเทศไทย', aliases: ['ค้าปลีก'], desc: 'd' },
+    { slug: 'cash-flow', label: 'Cash $$ Flow', aliases: ['cash'], desc: 'd' }, // label มี $ — เคส regression ของ String.replace
+  ];
+  const vocab = { version: 1, list, bySlug: new Map(list.map((e) => [e.slug, e])) };
+  const tagData = {
+    vocabVersion: 1,
+    tags: {
+      LITE: ['ai-datacenter', 'optical-photonics'], CPN: ['thai-consumption'],
+      DLR: ['cash-flow'],                          // symbol ทดสอบ label ที่มี $
+      GONE: ['renamed-slug-1', 'removed-slug-2'],  // slug ทั้งหมดหายจาก vocab (version drift)
+    },
+    requests: [],
+  };
+  const row = (spans) => `<header><div class="gdots"></div>\n    <div>\n      ${spans.map((s) => `<span class="tag">${s}</span>`).join('\n      ')}\n    </div>\n    <h1>X</h1></header>`;
+
+  const out = b.renderTagRow(row(['NASDAQ: LITE', 'Technology • Optical', 'AI DC • CPO']), { symbol: 'LITE', market: 'US', tagData, vocab });
+  ok(out.includes('<a class="tag" href="/tag/ai-datacenter">AI Data Center</a>'), 'renderTagRow: ชิป tag เป็นลิงก์ /tag/<slug>');
+  ok(out.includes('Optical &amp; Photonics'), 'renderTagRow: label ที่มี & ถูก escape');
+  ok(out.includes('href="/?market=US"') && out.includes('NASDAQ: LITE'), 'renderTagRow: ป้ายตลาดเป็นลิงก์ ข้อความเดิม');
+  ok(!out.includes('Technology • Optical') && !out.includes('AI DC • CPO'), 'renderTagRow: ป้าย free-text เดิมถูกแทนหมด');
+  ok((out.match(/class="tag"/g) || []).length === 3, 'renderTagRow: ได้ 3 ป้าย (ตลาด + 2 tag)');
+
+  // 17 เคส exchange พิเศษ — ข้อความต้องคงเป๊ะ ห้าม parse
+  ['NASDAQ: ASML (ADR)', 'NYSE: CCJ / TSX: CCO', 'OTC Markets: FANUY (ADR)', 'NASDAQ: LANC → MZTI'].forEach((ex) => {
+    const o = b.renderTagRow(row([ex, 'a', 'b']), { symbol: 'LITE', market: 'US', tagData, vocab });
+    ok(o.includes('>' + ex + '<'), `renderTagRow: exchange พิเศษคงข้อความเป๊ะ — ${ex}`);
+  });
+
+  // market mapping มาจาก metrics.market ไม่ใช่ข้อความ (CCJ มี "TSX" ในข้อความแต่เป็นหุ้น US)
+  const oCcj = b.renderTagRow(row(['NYSE: CCJ / TSX: CCO', 'a', 'b']), { symbol: 'LITE', market: 'US', tagData, vocab });
+  ok(oCcj.includes('href="/?market=US"'), 'renderTagRow: market มาจาก metrics.market ไม่ใช่ข้อความ exchange');
+  const oTh = b.renderTagRow(row(['SET: CPN', 'a', 'b']), { symbol: 'CPN', market: 'TH', tagData, vocab });
+  ok(oTh.includes('href="/?market=TH"') && oTh.includes('การบริโภคในประเทศไทย'), 'renderTagRow: หุ้นไทย → /?market=TH + label ไทย');
+
+  // skeleton ใหม่ (1 span) → ต่อชิปท้าย
+  const o1 = b.renderTagRow(row(['NASDAQ: LITE']), { symbol: 'LITE', market: 'US', tagData, vocab });
+  ok((o1.match(/class="tag"/g) || []).length === 3, 'renderTagRow: 1 span (skeleton ใหม่) → ต่อชิปเป็น 3 ป้าย');
+
+  // ไม่มี entry → คงป้ายเดิมครบ ไม่ throw (build ผ่อนปรน · gate บังคับ)
+  const oNone = b.renderTagRow(row(['NYSE: ZZZ', 'Sector เดิม', 'Niche เดิม']), { symbol: 'ZZZ', market: 'US', tagData, vocab });
+  ok(oNone.includes('Sector เดิม') && oNone.includes('Niche เดิม'), 'renderTagRow: ไม่มี entry → คงป้ายเดิม ไม่ throw');
+
+  // จำนวน span ผิดแบบ → ไม่แตะ
+  const o2 = b.renderTagRow(row(['NASDAQ: LITE', 'a']), { symbol: 'LITE', market: 'US', tagData, vocab });
+  ok(o2.includes('>a<'), 'renderTagRow: 2 span (โครงไม่รู้จัก) → ไม่แตะ');
+
+  // idempotent
+  const twice = b.renderTagRow(out, { symbol: 'LITE', market: 'US', tagData, vocab });
+  ok(twice === out, 'renderTagRow: รันซ้ำได้ผลเท่าเดิม (idempotent)');
+
+  // idempotent ตอน market เป็น null — เดิมพังเพราะพึ่งผลข้างเคียงที่ป้ายตลาดกลายเป็น <a> (จริงแค่ตอน
+  // market เป็น TH/US) ตอน market เป็น null ป้ายตลาดยังเป็น <span> เดิม เรียกซ้ำเลยเข้าใจผิดว่าเป็น
+  // skeleton ใหม่ (1 span) แล้วต่อชิปซ้ำ
+  const onceNull = b.renderTagRow(row(['NASDAQ: LITE', 'Technology • Optical', 'AI DC • CPO']), { symbol: 'LITE', market: null, tagData, vocab });
+  const twiceNull = b.renderTagRow(onceNull, { symbol: 'LITE', market: null, tagData, vocab });
+  ok(twiceNull === onceNull, 'renderTagRow: market=null ก็ idempotent (branch ที่เคยพัง)');
+
+  // exchange text ที่มี entity ที่ escape ไว้แล้วในไฟล์ต้นฉบับ ต้องคงเดิม byte-for-byte — ห้าม esc(spans[0])
+  // ซ้ำ ไม่งั้น &amp; เดิมจะกลายเป็น &amp;amp; (double-escape)
+  const oAmpEx = b.renderTagRow(row(['NYSE: A&amp;B', 'a', 'b']), { symbol: 'LITE', market: 'US', tagData, vocab });
+  ok(oAmpEx.includes('NYSE: A&amp;B'), 'renderTagRow: exchange ที่มี entity อยู่แล้วคงเดิม byte-for-byte');
+  ok(!oAmpEx.includes('&amp;amp;'), 'renderTagRow: ไม่ double-escape entity เดิมของ exchange');
+
+  // chip label มี $ (label จาก tags-vocab.json เป็น plain text, esc() ไม่แตะ $) — ต้องไม่ผ่าน replace(re, string)
+  // ที่ตีความ $$/$&/$`/$' ให้เพี้ยน (ต้องใช้ function replacer)
+  const oDollarChip = b.renderTagRow(row(['NASDAQ: DLR', 'a', 'b']), { symbol: 'DLR', market: 'US', tagData, vocab });
+  ok(oDollarChip.includes('>Cash $$ Flow</a>'), 'renderTagRow: chip label มี $ ไม่ถูกตีความเป็น replacement pattern');
+
+  // exchange text มี $ ต้องคงเดิมเช่นกัน (คนละจุดจาก spans[0] แต่ผ่าน replacer เดียวกัน)
+  const oDollarEx = b.renderTagRow(row(['NASDAQ: FUND $$ ETF', 'a', 'b']), { symbol: 'LITE', market: 'US', tagData, vocab });
+  ok(oDollarEx.includes('>NASDAQ: FUND $$ ETF<'), 'renderTagRow: exchange text มี $ คงเดิม ไม่ถูกตีความเป็น replacement pattern');
+
+  // slug ทั้งหมดของ symbol หายจาก vocab (version drift/slug ถูกลบ-เปลี่ยนชื่อ) → ต่างจาก "ไม่มี entry"
+  // (ซึ่งไม่มี slugs เลย) ตรงที่นี่ "มี" slugs แต่ทุกตัว bySlug.has() เป็น false → ต้องคืน html เดิมทั้งก้อน
+  // ไม่ใช่แค่คงป้ายเดิมบางส่วน (build ผ่อนปรน ไม่ทำข้อมูลหาย ปล่อยให้ gate ฟ้อง)
+  const rowGone = row(['NYSE: GONE', 'Sector เดิม', 'Niche เดิม']);
+  const oGone = b.renderTagRow(rowGone, { symbol: 'GONE', market: 'US', tagData, vocab });
+  ok(oGone === rowGone, 'renderTagRow: slug ทั้งหมดหายจาก vocab → คืน html เดิมทั้งหมด');
+  ok(oGone.includes('Sector เดิม') && oGone.includes('Niche เดิม'), 'renderTagRow: slug หายจาก vocab → ป้าย free-text เดิมยังอยู่ครบ');
+}
+
+// ── freshHash ต้องไม่ขึ้นกับ tag — พิสูจน์ว่าไม่มี hash churn (spec §2.1) ──
+{
+  const src = doc('Claude Sonnet 5', WF);
+  const h1 = b.freshHash(src);
+  const h2 = b.freshHash(src); // tags.json เปลี่ยนไม่มีผล — freshHash รับแค่เนื้อไฟล์ต้นฉบับ
+  ok(h1 === h2, 'freshHash: ขึ้นกับเนื้อไฟล์ต้นฉบับเท่านั้น');
+  ok(b.freshHash(src.replace('<h1>X</h1>', '<h1>Y</h1>')) !== h1, 'freshHash: เนื้อหาเปลี่ยนจริง → hash เปลี่ยน');
+}
+
+// ── manifest + การ์ด index ต้องพก tag ──
+{
+  const man = JSON.parse(require('fs').readFileSync(require('path').join(__dirname, '..', 'reports.json'), 'utf8'));
+  ok(man.every((r) => Array.isArray(r.tags)), 'reports.json: ทุก record มีฟิลด์ tags เป็น array');
+  const lite = man.find((r) => r.symbol === 'LITE');
+  ok(!lite || lite.tags.length >= 1, 'reports.json: LITE มี tag อย่างน้อย 1 ตัว');
+}
+
+// ── filterQueryString ต้องถูกฝัง (String(fn)) ลง dist/index.html จริง ไม่ใช่แค่มีอยู่ใน tag-lib.js ──
+{
+  const fs = require('fs'), path = require('path');
+  const idxPath = path.join(__dirname, '..', 'dist', 'index.html');
+  const indexHtml = fs.existsSync(idxPath) ? fs.readFileSync(idxPath, 'utf8') : '';
+  ok(indexHtml.includes('function filterQueryString(currentSearch, tag, market)'),
+     'dist/index.html: มีฟังก์ชัน filterQueryString ฝังอยู่ในสคริปต์หน้า index (ต้องรัน `node build.js` ก่อน)');
+  ok(indexHtml.includes('filterQueryString(location.search, tag, market)'),
+     'dist/index.html: recompute() เรียก filterQueryString ด้วย location.search/tag/market จริง');
+}
+
+// ── การ embed matchTagQuery ลงสคริปต์หน้า index ──
+// ตรรกะการจับคู่มีเทสครบใน test/tags-test.js แล้ว — ที่นี่ตรวจว่า "ข้อความฟังก์ชัน"
+// ที่ถูก String() ไปฝังในหน้าเว็บ ยังกินได้และให้ผลเท่ากับตัวจริงใน Node
+{
+  const T = require('../tools/tag-lib.js');
+  const src = String(T.matchTagQuery);
+  ok(/^function matchTagQuery\s*\(/.test(src.trim()), 'embed: serialize แล้วยังเป็น function declaration (ฝังใน <script> ได้ตรง ๆ)');
+
+  // ประกอบใหม่จากข้อความ เหมือนที่เบราว์เซอร์ทำ แล้วต้องได้ผลเท่ากับตัวจริง
+  const revived = new Function(src + '; return matchTagQuery;')();
+  const list = [
+    { slug: 'ai-datacenter', label: 'AI Data Center', aliases: ['ai', 'เอไอ', 'data center'] },
+    { slug: 'thai-tourism', label: 'ท่องเที่ยวไทย', aliases: ['airline', 'ท่องเที่ยว'] },
+  ];
+  ['ai', 'air', 'data cen', 'เอไอ', 'xyz', 'a'].forEach((q) => {
+    ok(JSON.stringify(revived(q, list)) === JSON.stringify(T.matchTagQuery(q, list)),
+       `embed: ผลจากข้อความที่ฝัง = ผลจากตัวจริง (q="${q}")`);
+  });
+}
+
 console.log('\n' + '─'.repeat(50));
 console.log(`build-test: ${n - fails}/${n} ผ่าน`);
 if (fails) { console.log('\n❌ build.js มีพฤติกรรมผิด — แก้ build.js ก่อน push\n'); process.exit(1); }

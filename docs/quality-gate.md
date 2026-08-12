@@ -3,12 +3,14 @@
 > สรุปย่อ + คำสั่งอยู่ใน `CLAUDE.md §8` — ไฟล์นี้คือรายละเอียดไล่ทีละชั้น/ทีละ error
 > **enforcement จริงอยู่ในโค้ด `test/*.js`** เอกสารนี้เป็นคำอธิบายประกอบเท่านั้น
 
-มี gate หลายชั้น ต้องผ่านทั้งหมด **ก่อน push เสมอ** (มี `pre-push` hook บังคับซ้ำ 11 ขั้น):
+มี gate หลายชั้น ต้องผ่านทั้งหมด **ก่อน push เสมอ** (มี `pre-push` hook บังคับซ้ำ 13 ขั้น):
 
 ```bash
-npm run verify           # ★ ครบชุด 11 ขั้น: update-prices-test → dead-ticker-test → check-reports → self-test → ohlc-test → ta-engine-test → build → build-test → engine-exec → skeleton-test → check-site
+npm run verify           # ★ ครบชุด 13 ขั้น: update-prices-test → dead-ticker-test → tag-apply-test → tags-test → check-reports → self-test → ohlc-test → ta-engine-test → build → build-test → engine-exec → skeleton-test → check-site
 npm run test:prices      # ชั้น 1 (unit-test cron ราคา — offline: decide/detectStaleQuotes/capByCohort/unverifiedCohorts/mergeFlags/patchReport)
 npm run test:dead        # ชั้น 2 (unit-test canary หุ้นตาย — offline: tvBaseName/tvCandidates/classify/mergeDeadFlags/shouldAbort/retry)
+npm run test:tagapply    # ชั้น tag 1 (unit-test CLI ที่เขียน tags.json — offline: applyTags/renameSymbol/pruneMissing all-or-nothing)
+npm run test:tags        # ชั้น tag 2 (schema คลัง + validateAssignment + matchTagQuery + corpus: ครบ 908/ไม่มี entry ค้าง/ไม่มี slug หลุดคลัง)
 npm test                 # ชั้น 3 อย่างเดียว (= node test/check-reports.js)  •  npm test -- BBL  = เฉพาะบางตัว
 npm run test:ohlc        # ชั้น TA อย่างเดียว (แปลง Yahoo OHLC → payload แท่งเทียน)
 npm run test:ta          # ชั้น TA อย่างเดียว (ตรึงนิยาม TA engine ด้วย fixture)
@@ -129,11 +131,11 @@ tripwire ชั้น 0.1 คือ **ตัวชี้ให้ไปสอบ
 ---
 
 ## ชั้น 1 — `test/check-reports.js`
-ตรวจ source `reports/<SYMBOL>.html` ทีละไฟล์ — 39 error + 11 warning
+ตรวจ source `reports/<SYMBOL>.html` ทีละไฟล์ — 40 error + 12 warning
 
-### ตารางอ้างอิง code ครบชุด (E01–E39 · W01–W12)
+### ตารางอ้างอิง code ครบชุด (E01–E40 · W01–W13)
 
-> ดึงจาก field `id`/`level`/`label` ของ `CHECKS` ใน `test/check-reports.js` · คอลัมน์ "เกณฑ์+วิธีแก้" สรุปจากตัว `fn` และค่าคงที่ `TOL_*` ในไฟล์เดียวกัน — **gate ฟ้อง code ไหน เปิดตารางนี้แล้วแก้ได้เลย ไม่ต้องขุด test/ ไม่ต้อง survey รายงานตัวอื่น** · ไม่มี W11 (ยกระดับเป็น E36 แล้ว) · แก้/เพิ่ม check ในโค้ด → อัปเดตแถวในตารางนี้ด้วย
+> ดึงจาก field `id`/`level`/`label` ของ `CHECKS` ใน `test/check-reports.js` · คอลัมน์ "เกณฑ์+วิธีแก้" สรุปจากตัว `fn` และค่าคงที่ `TOL_*` ในไฟล์เดียวกัน — **gate ฟ้อง code ไหน เปิดตารางนี้แล้วแก้ได้เลย ไม่ต้องขุด test/ ไม่ต้อง survey รายงานตัวอื่น** · ไม่มี W11 (ยกระดับเป็น E36 แล้ว) — นับรวมแล้วมี **12** รหัส warning จริงแม้เลข id สูงสุดจะเป็น W13 · แก้/เพิ่ม check ในโค้ด → อัปเดตแถวในตารางนี้ด้วย
 
 | code | level | ตรวจอะไร | เกณฑ์ + วิธีแก้ (ย่อ) |
 |------|-------|-----------|------------------------|
@@ -176,6 +178,7 @@ tripwire ชั้น 0.1 คือ **ตัวชี้ให้ไปสอบ
 | E37 | error | กราฟ ~1 ปี (ไม่เกิน ~13 จุด) | `chart.data` ≤13 จุด — เกินให้ตัดเหลือ ~12 เดือนล่าสุด (`tools/migrate-annual-chg.js`) |
 | E38 | error | contrast ธีมอ่านออก (WCAG AA) | ทุกคู่ตัวหนังสือ/พื้นหลังที่ theme คุม ≥4.5 (accent เส้นกราฟ ≥3): ขาว+สีอ่อน (subColor/headerMuted/verdictText/vcellLabel) บนจุดสว่างสุดของ `darkGrad` · ขาวบน badge · ขาวบน accentDark (ปุ่ม/ไทล์/ป้าย gauge) · chgColor บน chgBg · **คู่ derive ใหม่จาก `deriveTheme()`** (token พื้น/การ์ด/ชิปที่ย้อม accent — spec 2026-08-11 §3.4): ink `#14161c` บน tintBg (mix accent 7% ทับ `#f4f5f7`) · muted `#5f6675` บน tintCard (mix accent 4% ทับขาว) · accentDark บน soft (mix accent 10% ทับขาว — แทนคู่ "accentDark บน blue-soft" เดิมที่ถูกถอดออก) — **แก้อัตโนมัติ: `node tools/fix-contrast.js <SYM> --write`** (ซ่อมเฉพาะ field ที่ตก คงโทนแบรนด์) · ธีมใหม่จาก `pick-brand.js`/`makeTheme` ผ่านโดยอัตโนมัติ |
 | E39 | error | จุดกราฟเรียงเวลาเดินหน้า (ไม่ย้อนกลับ) | `chart.data` ต้องเรียงเก่า→ใหม่ — จุดใดย้อนเวลาจากจุดก่อนหน้า = error (ข้อความระบุคู่ที่สลับ) · **ข้ามทั้งรายงาน**เมื่อ <2 จุด หรือมี label ที่ `parseChartLabelKey` อ่านไม่ออกแม้จุดเดียว (อนุรักษนิยม — false error จะบล็อก cron ราคารายวันทั้งรีโป) · แก้โดยเรียง `chart.data` ตามเวลา ห้ามสลับจุดเอง |
+| E40 | error | tag ของหุ้นถูกต้อง (`tags.json`) | หุ้นต้องมี entry ใน `tags.json` + 1–3 slug ไม่ซ้ำกัน + ทุก slug อยู่ใน `tags-vocab.json` — ไม่มี entry เลย = `node tools/tag-apply.js <SYM> <slug…>` (ห้ามแก้ `tags.json` มือ) · ตรวจ**หลัง** expand เหมือน E01–E39 แต่ข้อมูลมาจาก sidecar ไม่ใช่ตัวไฟล์รายงาน (จึงไม่ทำให้ `updated`/`hash` ขยับเมื่อแก้ tag) |
 | W01 | warn | scenario: EPS×P/E ≈ ราคาเป้า | ราคาเป้า (tgt) = EPS ปี3 × P/E ออก ต่างได้ ≤7% ต่อคอลัมน์ |
 | W02 | warn | สกุลเงินปน | สกุลหลัก = สัญลักษณ์หน้า `.px` — รายงาน ฿ ไม่ควรมี $ ในเนื้อหา (และกลับกัน) |
 | W03 | warn | CSS เพี้ยน .seg-label | พบ `transform:transl(` — แก้เป็น `translate(` หรือลบ dead CSS |
@@ -187,6 +190,7 @@ tripwire ชั้น 0.1 คือ **ตัวชี้ให้ไปสอบ
 | W09 | warn | ความสดของราคา | อายุราคา >45 วัน (`STALE_WARN_DAYS`) แต่ ≤120 — ควรรัน update-prices ก่อน push |
 | W10 | warn | stock-meta P/E·Yield·ROE ≈ ที่โชว์ | เทียบเลขที่โชว์: pe ±5% (ขั้นต่ำ 0.1) · dividendYield ±10% (ขั้นต่ำ 0.15) · roe ±8% (ขั้นต่ำ 0.5) |
 | W12 | warn | label จุดกราฟไม่ว่าง | ทุกจุด `chart.data` = `["label", ตัวเลข]` — label ห้ามว่าง (กัน `["",v]`) |
+| W13 | warn | หุ้นต้องมีธีมธุรกิจอย่างน้อย 1 | tag ที่ติดอยู่มีแต่ธีม `kind: "driver"` (ai-datacenter/thai-consumption/thai-tourism) ไม่มีธีม `kind: "business"` เลย = บอกไม่ได้ว่าบริษัททำอะไร — เข้าคิวธีมใหม่ด้วย `tag-apply.js <SYM> --request "<ธีม>"` (ไม่ฟ้องเมื่อไม่มี entry เลย — กรณีนั้น E40 จัดการแทน) |
 
 ### คำอธิบายประกอบตามกลุ่ม
 

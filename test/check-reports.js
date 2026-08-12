@@ -27,6 +27,16 @@ const bt = require('../tools/brandtheme.js');
 // "วันที่ราคา" อยู่ตรงไหนในหัวรายงาน = ความรู้ก้อนเดียวกับที่ cron ใช้เขียน — อย่าทำสำเนา
 const { parsePriceDate, THAI_MONTHS } = require('../tools/price-date.js');
 const { resolveColor } = require('../tools/fix-contrast.js');
+const TAG = require('../tools/tag-lib.js');
+// โหลดครั้งเดียวต่อ process — self-test จะฉีดของปลอมผ่าน opts.tagData แทน
+let _tagCache = null;
+function tagDefaults() {
+  if (!_tagCache) {
+    try { _tagCache = { tagData: TAG.loadTags(), vocab: TAG.loadVocab() }; }
+    catch { _tagCache = { tagData: null, vocab: null }; }
+  }
+  return _tagCache;
+}
 
 const REPORTS_DIR = path.join(__dirname, '..', 'reports');
 const TOL_MOS_PP = 2.0;   // MOS แสดง vs คำนวณ — ต่างได้ ≤ 2 จุด %
@@ -95,7 +105,11 @@ function metricNum(html, labelRe) {
   return m ? firstNum(m[1]) : null;
 }
 
-function buildCtx(html, name) {
+function buildCtx(html, name, opts) {
+  const o = opts || {};
+  const d = tagDefaults();
+  const tagData = o.tagData !== undefined ? o.tagData : d.tagData;
+  const vocab = o.vocab !== undefined ? o.vocab : d.vocab;
   const text = visible(html);
   const headerM = html.match(/<header[\s\S]*?<\/header>/i);
   const fvIdx = html.indexOf('class="fv-box"');
@@ -103,6 +117,8 @@ function buildCtx(html, name) {
     html,
     name,
     symbol: name.replace(/\.html$/i, ''),
+    tagData,
+    vocab,
     text,
     header: headerM ? headerM[0] : '',
     aiModel: (() => { const m = html.match(/<meta\s+name=["']ai-model["']\s+content=["']([^"']*)["']/i); return m ? m[1].trim() : null; })(),
@@ -387,10 +403,38 @@ const CHECKS = [
     data.forEach((p, i) => { if (!Array.isArray(p) || typeof p[0] !== 'string' || !p[0].trim()) blanks.push(i); });
     return blanks.length ? `จุดกราฟมี label ว่างที่ดัชนี ${blanks.join(', ')} — แกน x จะโชว์ช่องว่าง` : null;
   } },
+
+  // ── E40: หุ้นต้องมี tag ที่ถูกต้องใน tags.json ──
+  // ระบบ tag เก็บแยกเป็น sidecar (ไม่ฝังในไฟล์รายงาน) เพราะเขียนลงไฟล์จะทำให้
+  // freshHash ของทั้ง 908 ไฟล์เปลี่ยนพร้อมกัน → updated เด้งยกชุด (spec §2.1)
+  // ⇒ ความถูกต้องจึงตรวจที่นี่แทน · build ตั้งใจให้ผ่อนปรน (คงป้ายเดิม) ตัวบังคับคือ check นี้
+  { id: 'E40', level: 'error', label: 'tag ของหุ้นถูกต้อง (tags.json)', fn: (c) => {
+    if (!c.tagData || !c.vocab) return null;              // ยังไม่ติดตั้งระบบ tag → ไม่ฟ้อง
+    const slugs = c.tagData.tags[c.symbol];
+    if (!slugs) return `ไม่มี ${c.symbol} ใน tags.json — ติดด้วย: node tools/tag-apply.js ${c.symbol} <slug…>`;
+    const errs = TAG.validateAssignment(c.symbol, slugs, c.vocab);
+    return errs.length ? errs.join(' ; ') : null;
+  } },
+
+  // ── W13: หุ้นต้องมีธีม "ธุรกิจ" อย่างน้อย 1 อัน ──
+  // คลังมีธีม 2 ชนิด (ฟิลด์ kind): business = ทำอะไร · driver = อะไรทำให้ราคาขยับ
+  // ★ เตือนที่ "ไม่มีธีมธุรกิจเลย" ไม่ใช่ "มี tag เดียว" — วัดจริงหลังติดครบ 908 ตัว: หุ้นที่มี
+  //   tag เดียวมี 567 ตัว ซึ่งส่วนใหญ่เป็นหุ้น US ที่ไม่มีธีม driver ในคลังนี้ (คลัง driver เป็น
+  //   แกนไทยเป็นหลัก) การเตือนทั้งหมดนั้นคือเสียงรบกวนที่กลบสัญญาณจริง ส่วน "มีแต่ธีม driver"
+  //   = บอกไม่ได้ว่าบริษัททำอะไร ซึ่งเป็นช่องว่างของคลังที่ควรเข้าคิว --request จริง ๆ
+  // fixture ที่ไม่ระบุ kind ถือเป็น business (เข้ากันได้กับเทสเดิมทุกเคส)
+  { id: 'W13', level: 'warn', label: 'หุ้นต้องมีธีมธุรกิจอย่างน้อย 1', fn: (c) => {
+    if (!c.tagData || !c.vocab) return null;
+    const slugs = c.tagData.tags[c.symbol];
+    if (!slugs || !slugs.length) return null;                 // ไม่มี entry เลย = E40 จัดการแล้ว
+    const isBiz = (s) => { const e = c.vocab.bySlug.get(s); return !e || e.kind !== 'driver'; };
+    return slugs.some(isBiz) ? null
+      : `มีแต่ธีมตัวขับเคลื่อน (${slugs.join(', ')}) ไม่มีธีมธุรกิจ — คลังยังขาดธีมที่บอกว่าบริษัททำอะไร ให้เข้าคิวด้วย tag-apply.js --request`;
+  } },
 ];
 
-function checkHtml(html, name) {
-  const ctx = buildCtx(html, name);
+function checkHtml(html, name, opts) {
+  const ctx = buildCtx(html, name, opts);
   const errors = [], warnings = [];
   for (const chk of CHECKS) {
     let res;

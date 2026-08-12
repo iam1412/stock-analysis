@@ -1,7 +1,7 @@
 # Per-stock agent prompt — wrapper (token-lean)
 
 Controller ใช้แม่แบบนี้ตั้ง prompt ให้ **worker agent 1 ตัว = 1 หุ้น** (CLAUDE.md §3.2 + docs/orchestration.md)
-แทน `{{SYMBOL}}`, `{{MARKET}}` (TH/US), `{{MODE}}` (**NEW** = ยังไม่มีรายงาน / **UPDATE** = มี `reports/<SYM>.html` แล้ว / **UPDATE-LIGHT** = refresh จากคิว price-flags), `{{WORKTREE}}` แล้วส่งเป็น `prompt` ของ `Agent` (หรือ args ของ workflow `analyze-wave`)
+แทน `{{SYMBOL}}`, `{{MARKET}}` (TH/US), `{{MODE}}` (**NEW** = ยังไม่มีรายงาน / **UPDATE** = มี `reports/<SYM>.html` แล้ว / **UPDATE-LIGHT** = refresh จากคิว price-flags), `{{WORKTREE}}`, `{{CURRENT_TAGS}}` (controller อ่าน `tags.json[<SYM>]` มาวาง — ว่าง = ยังไม่มี tag) แล้วส่งเป็น `prompt` ของ `Agent` (หรือ args ของ workflow `analyze-wave`)
 `{{FUNDAMENTALS}}` = controller **ควรรัน** `node tools/prep-stock.js <SYM> [--th] [--update]` เองแล้ววาง output ทั้ง block มาเสมอ (1 คำสั่ง = fundamentals + facts (NEW) + CROSS-VERIFY verdict — **exit 2 = ราคาขัดแหล่ง >5% ห้าม spawn worker หยุดถามผู้ใช้** · ตัดทั้ง turn รันซ้ำและ WebFetch หน้า financials 3-6 call ของ worker) · ไม่วางก็ปล่อยว่าง/ลบทิ้งได้ — บรรทัดกำกับใน wrapper สั่ง worker รันเองเมื่อ block ว่างอยู่แล้ว
 เนื้อหาขั้นตอนทั้งหมดอยู่ **`.claude/skills/stock-analyzer/SKILL.md`** (single source of truth) — wrapper นี้มีแค่สิ่งที่ skill ไม่รู้: ที่อยู่ worktree, โหมด, กติกาห้าม push
 
@@ -36,5 +36,12 @@ cd {{WORKTREE}} && pwd
 
 {{FUNDAMENTALS}}
 
-**STEP 2 — คืนงาน:** รายงานกลับ controller สั้น ๆ: เขียน `reports/{{SYMBOL}}.html` เสร็จ + ราคา/FV/MOS + แหล่งที่ใช้ (ไม่ต้องเล่าขั้นตอน)
+=== TAGS ปัจจุบัน ===
+{{CURRENT_TAGS}}
+
+> ว่างเปล่า = หุ้นใหม่ยังไม่มี tag (โหมด NEW — เลือก 2–3 slug จาก `tags-vocab.json`)
+> มีค่า = โหมด UPDATE ให้ **ทบทวนบังคับ** แต่ค่าตั้งต้นคือคงเดิม
+> ★ ห้ามเขียน `tags.json` เอง — คืนเป็นบรรทัด `TAGS: …` ให้ controller เขียนแทน
+
+**STEP 2 — คืนงาน:** รายงานกลับ controller สั้น ๆ: เขียน `reports/{{SYMBOL}}.html` เสร็จ + ราคา/FV/MOS + แหล่งที่ใช้ + บรรทัด `TAGS: …` (ไม่ต้องเล่าขั้นตอน)
 **ห้าม `git add/commit/push` เอง** — controller เป็นคน push (รายตัว หลังตรวจงานเสร็จ)

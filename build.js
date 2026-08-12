@@ -21,6 +21,24 @@ const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 const bt = require('./tools/brandtheme.js');
+const tagLib = require('./tools/tag-lib.js');
+// โหลดครั้งเดียวต่อ process — ไฟล์หายจริง (ยังไม่ติดตั้งระบบ tag) เท่านั้นที่ fallback เงียบ ๆ
+// ได้ · error อื่น (เช่น tags.json เขียนไม่ครบ/JSON พัง) ต้อง throw ต่อ ไม่งั้น build จะเขียน
+// reports.json ทับด้วย tags ว่างทั้ง 908 ตัวแบบไม่มี error ให้เห็น (เคยเกิดจริงตอน dev)
+const TAG_VOCAB = (() => {
+  try { return tagLib.loadVocab(); }
+  catch (err) {
+    if (err.code === 'ENOENT') return { version: 0, list: [], bySlug: new Map() };
+    throw new Error('อ่าน tags-vocab.json ไม่ได้: ' + err.message);
+  }
+})();
+const TAG_DATA = (() => {
+  try { return tagLib.loadTags(); }
+  catch (err) {
+    if (err.code === 'ENOENT') return { vocabVersion: 0, tags: {}, requests: [] };
+    throw new Error('อ่าน tags.json ไม่ได้: ' + err.message);
+  }
+})();
 
 const ROOT = __dirname;
 const REPORTS_DIR = path.join(ROOT, 'reports');
@@ -443,11 +461,52 @@ function injectModelCredit(html, model) {
   return fi === -1 ? html : html.slice(0, fi) + ` • ${credit}` + html.slice(fi);
 }
 
+// ── แถวป้ายบนหัวรายงาน: ป้ายตลาด (คงข้อความเดิม) + ชิป tag จาก tags.json ─────────
+// inject เฉพาะใน dist — ไฟล์ต้นฉบับใน reports/ ไม่ถูกแตะ เพราะ freshHash จะทำให้
+// updated ของทั้ง 908 ไฟล์เด้งพร้อมกัน (พังการเรียงหน้าแรก + dedup 7 วัน + staleness)
+// idempotent ด้วย guard ท้ายนี้เอง (เช็คว่า render ไปแล้วหรือยัง) — ไม่ใช่ผลข้างเคียงจาก TAG_RUN_RE
+// ที่แมตช์เฉพาะ <span> ไม่แมตช์ <a> เพราะผลข้างเคียงนั้นจริงแค่ตอน market เป็น TH/US (ป้ายตลาดกลายเป็น
+// <a>) — ตอน market เป็น null ป้ายตลาดยังเป็น <span class="tag"> เดิม เรียกซ้ำจะเจอ 1 span แล้วเข้าใจผิด
+// ว่าเป็น skeleton ใหม่ ต่อชิปซ้ำ (บั๊กจริง ก่อนมี guard นี้)
+const TAG_RUN_RE = /(?:<span class="tag">[^<]*<\/span>\s*)+/;
+const MARKET_HREF = { TH: '/?market=TH', US: '/?market=US' };
+function renderTagRow(html, { symbol, market, tagData, vocab }) {
+  if (html.includes('<a class="tag" href="/tag/')) return html; // render ไปแล้ว → ไม่ทำซ้ำ (ครอบทุกค่า market)
+  const m = html.match(TAG_RUN_RE);
+  if (!m) return html;
+  const spans = [...m[0].matchAll(/<span class="tag">([^<]*)<\/span>/g)].map((x) => x[1]);
+  // 3 span = รายงานเดิม (ตลาด+sector+niche) · 1 span = skeleton ใหม่ (ตลาดอย่างเดียว)
+  // จำนวนอื่น = โครงที่ยังไม่รู้จัก → ไม่แตะ แต่ต้อง log ไว้ ไม่งั้นรายงานที่ tag ถูกต้องแต่ไม่ขึ้นชิป
+  // จะเงียบหายไปโดยไม่มีอะไรจับได้เลย (gate ไม่ครอบเคสนี้)
+  if (spans.length !== 3 && spans.length !== 1) {
+    log(`renderTagRow: ${symbol} มี ${spans.length} span (ต้องการ 3 หรือ 1) — ข้าม ไม่ต่อชิป`);
+    return html;
+  }
+  const slugs = tagData ? tagData.tags[symbol] || [] : [];
+  // สร้างชิปก่อนตัดสินใจ — ถ้าไม่มี tag เลย "หรือ" slug ทุกตัวหายจาก vocab (version drift/slug ถูกลบ/เปลี่ยนชื่อ)
+  // ก็คืน html เดิมทั้งแถวเหมือนกัน (คงป้าย free-text เดิมไว้ ดีกว่าทำข้อมูลหาย) — gate E40 เป็นตัวฟ้องแทน
+  const chips = slugs
+    .filter((s) => vocab.bySlug.has(s))
+    .map((s) => `<a class="tag" href="/tag/${s}">${esc(vocab.bySlug.get(s).label)}</a>`);
+  if (!chips.length) return html;
+  const href = MARKET_HREF[market];
+  // spans[0] เป็น HTML ที่ valid อยู่แล้ว (capture ด้วย [^<]* ตรงจาก source เดิม กัน '<' อยู่แล้ว) —
+  // ห้าม esc() ซ้ำ ไม่งั้น entity เดิม (เช่น &amp;) จะกลายเป็น &amp;amp; (double-escape เหมือนที่ decodeEntities
+  // กันไว้ตอนอ่าน) · ต่างจาก label ของชิปที่มาจาก tags-vocab.json เป็น plain text ซึ่งยังต้อง esc() ตามเดิม
+  const mkt = href
+    ? `<a class="tag" href="${href}">${spans[0]}</a>`
+    : `<span class="tag">${spans[0]}</span>`;
+  const row = [mkt, ...chips].join('\n      ') + '\n    ';
+  // function replacer → ไม่ตีความ $&/$$/$`/$'/$1 ใน row (ป้ายตลาดหรือ label ชิปอาจมี $)
+  return html.replace(TAG_RUN_RE, () => row);
+}
+
 // ตกแต่งไฟล์รายงานก่อนเขียนลง dist: share meta + เครดิตโมเดล + footer ติดต่อ + ตัวนับยอดวิว + ปุ่ม Like/Dislike
 function decorateReport(html, r) {
   const model = r.aiModel || AI_MODEL;
   let h = stripDecorEmoji(html);
   h = injectSectionNav(h);
+  h = renderTagRow(h, { symbol: r.symbol, market: (r.metrics && r.metrics.market) || null, tagData: TAG_DATA, vocab: TAG_VOCAB });
   h = injectShareMeta(h, r);
   h = injectModelCredit(h, model);
   const hs = injectHeaderStats(h, r);           // การ์ดสถิติบน header (template เท่านั้น)
@@ -523,7 +582,7 @@ function computeLeaders(reps) {
 }
 
 // export ฟังก์ชันให้ unit-test (test/build-test.js) — ต้องอยู่ก่อนโค้ดที่รัน build จริง
-module.exports = { extractMeta, extractMetrics, freshHash, injectModelCredit, injectContactFooter, injectTA, parseJsonScript, decorateReport, pickHighlight, computeLeaders, HL_DEFS, AI_MODEL, AI_MAKER, expandReport, renderHead, renderEngine, validateReportData, THEME_DEFAULTS, deriveTheme, stripDecorEmoji, injectSectionNav };
+module.exports = { extractMeta, extractMetrics, freshHash, injectModelCredit, injectContactFooter, injectTA, parseJsonScript, decorateReport, renderTagRow, pickHighlight, computeLeaders, HL_DEFS, AI_MODEL, AI_MAKER, expandReport, renderHead, renderEngine, validateReportData, THEME_DEFAULTS, deriveTheme, stripDecorEmoji, injectSectionNav };
 // ถูก require เข้ามาเพื่อเทส → ส่งออกฟังก์ชันแล้วหยุด ไม่รัน build (top-level return ใช้ได้ใน CommonJS module)
 if (require.main !== module) return;
 
@@ -571,6 +630,7 @@ if (fs.existsSync(REPORTS_DIR)) {
     const updated = old && old.hash === h && old.updated ? old.updated : nowISO; // เปลี่ยน → ประทับเวลาใหม่
 
     const rec = { symbol, file: entry.name, ...extractMeta(content, symbol), metrics: extractMetrics(content), updated, hash: h };
+    rec.tags = tagLib.tagsOf(symbol, TAG_DATA);
     reports.push(rec);
     // report-data/stock-meta ดิบ (จาก source ต้นฉบับ) → ให้ injectTA ประกอบ __TA_CFG__ ; รายงาน legacy (ไม่มี report-data) → rd=null → injectTA ข้าม
     const rd = parseJsonScript(content, 'report-data');
@@ -597,13 +657,24 @@ reports.sort((a, b) =>
 // ตัวที่ root (committed): มี hash ไว้ตรวจการเปลี่ยนแปลงรอบหน้า
 fs.writeFileSync(
   MANIFEST,
-  JSON.stringify(reports.map(({ symbol, file, name, title, desc, updated, hash, metrics }) => ({ symbol, file, name, title, desc, updated, hash, metrics })), null, 2) + '\n'
+  JSON.stringify(reports.map(({ symbol, file, name, title, desc, updated, hash, metrics, tags }) => ({ symbol, file, name, title, desc, updated, hash, metrics, tags })), null, 2) + '\n'
 );
 // ตัว public ใน dist (เสิร์ฟที่ /reports.json) — ไม่ใส่ hash, เพิ่ม url + metrics (สำหรับเรียงฝั่ง client)
 fs.writeFileSync(
   path.join(OUT, 'reports.json'),
-  JSON.stringify(reports.map(({ symbol, file, name, title, desc, updated, metrics }) => ({ symbol, file, name, title, desc, updated, url: '/' + file, metrics })), null, 2) + '\n'
+  JSON.stringify(reports.map(({ symbol, file, name, title, desc, updated, metrics, tags }) => ({ symbol, file, name, title, desc, updated, url: '/' + file, metrics, tags })), null, 2) + '\n'
 );
+
+// รายชื่อ tag ที่จะมีหน้าจริง — คำนวณตรงนี้เพราะ sitemap (ข้อ 4.5) ต้องใช้
+// ส่วนตัวหน้าถูกสร้างท้ายไฟล์ (ข้อ 7) เพราะต้องรอ cardHtml + INDEX_STYLE
+// bySymbol hoisted ขึ้นมาจากท้ายไฟล์ — ต้องใช้ตั้งแต่ตรงนี้เพื่อกรอง "สมาชิกที่มีรายงานจริง"
+const bySymbol = new Map(reports.map((r) => [r.symbol, r]));
+const tagMembers = tagLib.membersOf(TAG_DATA);
+// สมาชิกที่ "มีรายงานจริง" เท่านั้น — tags.json อาจค้าง symbol ที่ถูกลบรายงานแล้ว (delisting ตาม CLAUDE.md §9
+// ไม่มีขั้นล้าง tags.json) ⇒ ทุกที่ที่อ้าง "สมาชิกของ tag" (หน้า tag, sitemap, related-nav, แถวแท็กยอดนิยม)
+// ต้องผ่านตัวกรองนี้เสมอ กันแท็กที่สมาชิกถูกลบหมดหลุดไปมีหน้า/ลิงก์เปล่า
+const liveMembersOf = (slug) => (tagMembers.get(slug) || []).filter((s) => bySymbol.has(s));
+const tagPageSlugs = [...tagMembers.keys()].filter((s) => TAG_VOCAB.bySlug.has(s) && liveMembersOf(s).length > 0).sort();
 
 // ---- 4.5) sitemap.xml + robots.txt (ส่ง Google Search Console — auto จากรายการหุ้น) ----
 // URL หุ้นใช้ clean URL /<SYM> (เดียวกับ og:url) · lastmod = วันที่อัปเดตของรายงานนั้น
@@ -613,6 +684,9 @@ const sitemapEntries = [
     `  <url><loc>${SITE_ORIGIN}/${encodeURIComponent(r.symbol)}</loc>` +
     `<lastmod>${(r.updated || '').slice(0, 10)}</lastmod>` +
     `<changefreq>weekly</changefreq><priority>0.8</priority></url>`
+  ),
+  ...tagPageSlugs.map((s) =>
+    `  <url><loc>${SITE_ORIGIN}/tag/${s}</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>`
   ),
 ];
 fs.writeFileSync(
@@ -625,7 +699,7 @@ fs.writeFileSync(
   path.join(OUT, 'robots.txt'),
   `User-agent: *\nAllow: /\n\nSitemap: ${SITE_ORIGIN}/sitemap.xml\n`
 );
-log('sitemap:', 'sitemap.xml (' + (reports.length + 1) + ' urls) + robots.txt');
+log('sitemap:', 'sitemap.xml (' + sitemapEntries.length + ' urls) + robots.txt'); // นับจริงจาก array — รวม url หุ้น + tag pages เสมอ ไม่มีวันหลุดเวลาเพิ่มหมวดใหม่
 
 // ---- 5) คัดลอก assets + ไฟล์พิเศษของ Cloudflare ----
 for (const nm of fs.readdirSync(ROOT)) {
@@ -681,8 +755,9 @@ const PAGE_SIZE = 12; // จำนวนหุ้นต่อหน้า (โ�
 const cardHtml = reports.map((r) => {
   const blurb = r.desc || r.title;
   const c = escAttr(r.accent || THEME_DEFAULTS.accent), cd = escAttr(r.accentDark || THEME_DEFAULTS.accentDark);
+  const tagAttr = (r.tags && r.tags.length) ? ` data-tags="${escAttr(r.tags.join(' '))}"` : '';
   return `
-      <a class="card" style="--c:${c};--cd:${cd}" data-search="${escAttr((r.symbol + ' ' + r.name + ' ' + r.title + ' ' + (r.desc || '')).toLowerCase())}"${metricAttrs(r.metrics)}${marketAttr(r.metrics)} href="./${encodeURIComponent(r.file)}">
+      <a class="card" style="--c:${c};--cd:${cd}" data-search="${escAttr((r.symbol + ' ' + r.name + ' ' + r.title + ' ' + (r.desc || '')).toLowerCase())}"${metricAttrs(r.metrics)}${marketAttr(r.metrics)}${tagAttr} href="./${encodeURIComponent(r.file)}">
         <div class="ctop"><div class="badge">${esc(r.symbol)}</div>${highlightChip(r.metrics)}${marketFlag(r.metrics)}</div>
         <div class="cbody">
           <div class="cname">${esc(r.name)}</div>
@@ -740,6 +815,60 @@ const sortBar = reports.length > 1 ? `
 const noResult = reports.length ? `
     <div class="noresult" id="noresult" hidden>ไม่พบหุ้นที่ตรงกับ “<span id="qterm"></span>”</div>` : '';
 
+// คลังคำศัพท์ที่หน้า index ต้องใช้ (slug/label/aliases เท่านั้น — ตัด desc ทิ้ง ลดขนาดหน้า)
+const tagVocabJson = JSON.stringify(TAG_VOCAB.list.map((e) => ({ slug: e.slug, label: e.label, aliases: e.aliases || [] })));
+const activeTagBar = reports.length ? `
+    <div class="tagbar" id="tagbar" hidden></div>` : '';
+
+// ฝังฟังก์ชันเดียวกับที่เทสใน Node ลงหน้าเว็บ — ห้ามเขียนตรรกะจับคู่ซ้ำสองที่
+const matchTagQuerySrc = String(tagLib.matchTagQuery);
+
+// ★ แถว "แท็กยอดนิยม" (12 tag ที่สมาชิกเยอะสุด) ถูกถอดออกจากหน้าแรกตามคำสั่งเจ้าของ (13 ส.ค. 69)
+// — ห้ามใส่กลับโดยไม่ถาม · หน้า /tag/<slug> ยังถูกลิงก์ถึงครบจากป้ายแท็กบนรายงานทั้ง 908 ใบ
+// และอยู่ใน sitemap.xml ทุกหน้า ⇒ การค้นพบ (คน + Google) ไม่ได้พึ่งแถวนี้
+// filterQueryString — ES5 ล้วน ไม่มี closure (เหมือน matchTagQuery) — ฝังลงสคริปต์หน้า index ด้วย String(fn)
+// ให้ recompute() ซิงก์ ?tag=/?market= กลับ URL โดยไม่ทับพารามิเตอร์อื่น/hash ที่มีอยู่แล้ว
+const filterQueryStringSrc = String(tagLib.filterQueryString);
+
+// ---- เติมข้อมูลสดลงการ์ด (ES5 ล้วน — ฝังทั้งหน้าแรกและหน้า /tag/<slug>) ----
+// ★ ต้องเป็นก้อนเดียวใช้ร่วมกัน เหตุผลเดียวกับ FOOTER_HTML: การ์ดทั้งสองหน้ามาจาก cardHtml ตัวเดียวกัน
+//   ⇒ ถ้าโค้ด hydrate อยู่แค่ในสคริปต์หน้าแรก หน้า tag จะเงียบ ๆ ล้าหลังทุกครั้งที่แก้ (เกิดขึ้นจริง:
+//   หน้า tag ไม่ขึ้นยอด 👁/👍 เลย และโชว์วันที่ดิบ "2026-08-12" แทน "1d ago" ต่างจากหน้าแรก)
+// ★ hydrateViews รับ "รายการการ์ด" เข้ามา ห้าม query เอง — หน้าแรกแบ่งหน้าโดยถอดการ์ดออกจาก DOM
+//   ระหว่างรอ fetch ⇒ query ตอน callback จะได้การ์ดไม่ครบ (หน้า tag ไม่แบ่งหน้า ส่ง querySelectorAll ตรง ๆ ได้)
+// ★ ห้ามมีสตริง class="card" ในก้อนนี้ — checkTagPages นับจำนวนการ์ดจากสตริงนั้นตรง ๆ ในไฟล์ HTML
+const CARD_HYDRATE_JS = `
+      // ยอดวิว + ไลก์ ทั้งชุดครั้งเดียว (read-only ไม่นับเพิ่ม) — done() ให้ผู้เรียกจัดเรียงใหม่เองถ้าจำเป็น
+      // ★ worker คืน error เป็น JSON ที่ parse ผ่าน ({error:"rate_limited"} 429 · {error:"do"} 500) ⇒ ถ้าไม่ตรวจ
+      //   รูปร่าง payload การ์ดทุกใบจะได้ {} แล้วโชว์ "👁 0 · 👍 0" เป็นเลขที่ดูเหมือนยอดจริง · ยอดพังต้อง
+      //   "ไม่ขึ้นเลย" ดีกว่า "ขึ้นเป็นศูนย์" — ปล่อย .cviews ซ่อนไว้ตามเดิม (no-JS ก็เห็นแบบนี้)
+      function hydrateViews(list, done) {
+        fetch('/api/views').then(function (r) { return r.json(); }).then(function (map) {
+          if (!map || typeof map !== 'object' || map.error) return;
+          list.forEach(function (c) {
+            var s = c.querySelector('.cviews'); if (!s) return;
+            var e = (map && map[s.getAttribute('data-sym')]) || {};
+            c._views = e.c || 0; c._likes = e.l || 0;
+            var v = s.querySelector('.v'), l = s.querySelector('.l');
+            if (v) v.textContent = (e.c || 0).toLocaleString();
+            if (l) l.textContent = (e.l || 0).toLocaleString();
+            s.hidden = false;
+          });
+          if (done) done();
+        }).catch(function () {});
+      }
+      // วันที่บนการ์ด/ตาราง → แบบสัมพัทธ์ "1d ago" (นับวันปฏิทินฝั่งผู้ชม · no-JS เห็นวันที่จริง · hover ดูวันเต็มจาก title)
+      function hydrateDates() {
+        var n = new Date(), t0 = new Date(n.getFullYear(), n.getMonth(), n.getDate()).getTime();
+        [].slice.call(document.querySelectorAll('.cdate[data-updated]')).forEach(function (s) {
+          var p = (s.getAttribute('data-updated') || '').split('-');
+          if (p.length !== 3) return;
+          var d = Math.round((t0 - new Date(+p[0], +p[1] - 1, +p[2]).getTime()) / 864e5);
+          if (!isFinite(d) || d < 0) return;
+          s.textContent = d === 0 ? 'today' : d + 'd ago';
+        });
+      }`;
+
 // สคริปต์หน้า index: ค้นหา + แบ่งหน้า (PAGE ตัว/หน้า) + เติมยอดวิวต่อการ์ด (batch ครั้งเดียว)
 const searchScript = reports.length ? `
   <script>
@@ -759,7 +888,62 @@ const searchScript = reports.length ? `
       var tblhint = document.getElementById('tblhint');
       function pageSize() { return grid.classList.contains('is-table') ? 25 : ${PAGE_SIZE}; } // ตาราง 25 แถว/หน้า · ไทล์ ${PAGE_SIZE}/หน้า
       // market = 'all'|'TH'|'US' (ตัวกรองตลาด) · orderMode = updated|likes|views|composite · selected = metric ที่เลือก (multi)
-      var page = 1, market = 'all', orderMode = 'updated', selected = [];
+      var page = 1, market = 'all', orderMode = 'updated', selected = [], tag = '';
+      // ตัวกรองเริ่มต้นจาก URL — ลิงก์ ?tag=/?market= จากหน้ารายงานและหน้า tag ต้องมาถึงพร้อมกรองแล้ว
+      (function () {
+        var p = new URLSearchParams(location.search);
+        var t = p.get('tag'); if (t && /^[a-z0-9-]+$/.test(t)) tag = t;
+        var mk = p.get('market'); if (mk === 'TH' || mk === 'US') market = mk;
+      })();
+
+      var TAG_VOCAB = ${tagVocabJson};
+      ${matchTagQuerySrc}
+      // ผลค้นหา = ชื่อ/คำโปรยที่มีคำค้น ∪ สมาชิกของแท็กที่คำค้นแมตช์
+      // (แยก data-tags ออกจาก data-search โดยตั้งใจ — ถ้ายัด tag ลง data-search
+      //  ซึ่งเป็น indexOf substring พิมพ์ "ai" จะแมตช์ Thailand/retail/chain ทั้งหมด)
+      var qTags = [];
+      function suggestTags() {
+        qTags = q.value.trim() ? matchTagQuery(q.value, TAG_VOCAB) : [];
+      }
+      var tagbar = document.getElementById('tagbar');
+      function labelOf(slug) {
+        for (var i = 0; i < TAG_VOCAB.length; i++) if (TAG_VOCAB[i].slug === slug) return TAG_VOCAB[i].label;
+        return slug;
+      }
+      // escHtml — labelOf() มาจากคลังคำศัพท์ (tags-vocab.json) เป็น plain text แต่ทุกจุดที่วางลง
+      // innerHTML ต้อง escape เหมือนฝั่ง server (esc() ใน build.js) ไม่งั้น label ที่มี & หรือ < จะพังชิป —
+      // ES5 ล้วน (ฝังเป็น text ลงหน้า ห้าม const/template literal)
+      function escHtml(s) {
+        return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+      }
+      // hasTag — idiom ตรวจว่า data-tags (คั่นด้วยช่องว่าง) มี slug นี้อยู่ไหม
+      // เดิมมี 3 จุด (tagOK/searchOK/drawTagBar) เขียน indexOf ซ้ำเอง — รวมไว้ที่เดียวกันหลุด
+      function hasTag(ct, slug) { return !!ct && (' ' + ct + ' ').indexOf(' ' + slug + ' ') !== -1; }
+      function drawTagBar() {
+        if (tag) {
+          tagbar.hidden = false;
+          tagbar.innerHTML = '<span class="tchip on">\\uD83C\\uDFF7 ' + escHtml(labelOf(tag)) +
+            ' <b>' + filtered.length + '</b> หุ้น <button type="button" class="tx" data-clear="1" aria-label="ล้างตัวกรองแท็ก">\\u2715</button></span>';
+          return;
+        }
+        if (!qTags.length) { tagbar.hidden = true; tagbar.innerHTML = ''; return; }
+        var h = '';
+        for (var i = 0; i < qTags.length && i < 4; i++) {
+          var cnt = 0;
+          // นับเฉพาะการ์ดที่ผ่านตัวกรองตลาดปัจจุบันด้วย — ไม่งั้นเลขบนชิปจะสูงเกินจริงเมื่อกรองตลาดอยู่
+          for (var j = 0; j < cards.length; j++) {
+            if (marketOK(cards[j]) && hasTag(cards[j].getAttribute('data-tags'), qTags[i])) cnt++;
+          }
+          h += '<button type="button" class="tchip" data-pick="' + qTags[i] + '">\\uD83C\\uDFF7 แท็ก: ' +
+               escHtml(labelOf(qTags[i])) + ' <b>' + cnt + '</b> หุ้น</button>';
+        }
+        tagbar.hidden = !h; tagbar.innerHTML = h;
+      }
+      tagbar.addEventListener('click', function (e) {
+        var pick = e.target.closest('[data-pick]');
+        if (pick) { tag = pick.getAttribute('data-pick'); q.value = ''; page = 1; recompute(); render(); return; }
+        if (e.target.closest('[data-clear]')) { tag = ''; page = 1; recompute(); render(); }
+      });
 
       // ลำดับเดิมจาก server = อัปเดตล่าสุดก่อน (ดัชนีน้อย = ใหม่กว่า) + ค่ายอดเริ่มต้น 0 จนกว่า /api/views จะตอบ
       cards.forEach(function (c, i) { c._ord = i; c._views = 0; c._likes = 0; });
@@ -797,9 +981,24 @@ const searchScript = reports.length ? `
       }
 
       function marketOK(c) { return market === 'all' || c.getAttribute('data-market') === market; }
-      function searchOK(c) { var v = q.value.toLowerCase().trim(); return !v || c.getAttribute('data-search').indexOf(v) !== -1; }
-      function recompute() {                                // กรอง (ตลาด+ค้นหา) → จัดอันดับ (composite หรือ CMP) → ย้าย DOM
-        filtered = cards.filter(function (c) { return marketOK(c) && searchOK(c); });
+      function searchOK(c) {
+        var v = q.value.toLowerCase().trim();
+        if (!v) return true;
+        if (c.getAttribute('data-search').indexOf(v) !== -1) return true;
+        if (!qTags.length) return false;
+        var ct = c.getAttribute('data-tags');
+        for (var i = 0; i < qTags.length; i++) if (hasTag(ct, qTags[i])) return true;
+        return false;
+      }
+      function tagOK(c) {
+        if (!tag) return true;
+        return hasTag(c.getAttribute('data-tags'), tag);
+      }
+      // filterQueryString — ฝังจาก tools/tag-lib.js แบบเดียวกับ matchTagQuery (ES5 ล้วน ไม่มี closure)
+      ${filterQueryStringSrc}
+      function recompute() {                                // กรอง (ตลาด+แท็ก+ค้นหา) → จัดอันดับ (composite หรือ CMP) → ย้าย DOM
+        suggestTags();
+        filtered = cards.filter(function (c) { return marketOK(c) && tagOK(c) && searchOK(c); });
         if (orderMode === 'composite' && selected.length) {
           scoreComposite(filtered);
           filtered.sort(function (a, b) { return (b._score - a._score) || (a._ord - b._ord); });
@@ -807,6 +1006,13 @@ const searchScript = reports.length ? `
           filtered.sort(CMP[orderMode] || CMP.updated);
         }
         filtered.forEach(function (c) { grid.appendChild(c); });
+        // ซิงก์ URL เฉพาะตอน query string เปลี่ยนจริง — recompute() ยิงทุกคีย์สโตรก/คลิกตลาด/ล้างแท็ก
+        // แต่คำค้นไม่ได้อยู่ใน URL เลย ⇒ ส่วนใหญ่เขียนสตริงเดิมซ้ำ ๆ · try/catch กัน throttle ของ
+        // History API (WebKit จำกัดจำนวนครั้งต่อโดเมน) ไม่ให้ throw แล้วตัดตอน render()/drawTagBar() ที่ตามมา
+        var newSearch = filterQueryString(location.search, tag, market);
+        if (newSearch !== location.search) {
+          try { history.replaceState(null, '', location.pathname + newSearch + location.hash); } catch (e) {}
+        }
       }
 
       function pages() { return Math.max(1, Math.ceil(filtered.length / pageSize())); }
@@ -816,9 +1022,13 @@ const searchScript = reports.length ? `
         var ps = pageSize();
         // zebra ตาราง = สลับสีตาม "แถวที่มองเห็น" (nth-child ใช้ไม่ได้ — นับการ์ดที่ถูกซ่อนด้วย)
         filtered.slice((page - 1) * ps, page * ps).forEach(function (c, i) { c.style.display = ''; c.classList.toggle('alt', i % 2 === 1); });
-        nr.hidden = !(q.value.trim() && filtered.length === 0);
-        term.textContent = q.value;
+        // "ไม่พบ" โผล่ได้จากตัวกรอง 2 แบบ: คำค้น (โชว์คำค้น) หรือ tag ที่ไม่มีสมาชิกเหลือ (โชว์ชื่อ tag แทน)
+        var qv = q.value.trim();
+        var showNr = filtered.length === 0 && (qv || tag);
+        nr.hidden = !showNr;
+        if (showNr) term.textContent = qv || labelOf(tag);
         drawPager(tp);
+        drawTagBar();                                       // ให้ตัวเลขบนชิป tag ตรงกับที่เห็นจริงเสมอ (ค้นหา/ตลาดกรองซ้ำได้)
       }
       function drawPager(tp) {
         if (tp <= 1) { pager.innerHTML = ''; return; }
@@ -863,13 +1073,19 @@ const searchScript = reports.length ? `
           s.classList.toggle('on', on);
         });
       }
+      // ซิงก์ปุ่มกรองตลาดบน header ให้ตรงกับตัวแปร market — ใช้ทั้งตอนคลิกและตอน init (มาจาก ?market=)
+      function syncMarketButtons() {
+        if (!hdstats) return;
+        [].slice.call(hdstats.querySelectorAll('button[data-market]')).forEach(function (x) {
+          var on = x.getAttribute('data-market') === market;
+          x.classList.toggle('on', on); x.setAttribute('aria-pressed', String(on));
+        });
+      }
       // กรองตลาดจากการ์ดสถิติบน header (รายงานทั้งหมด/ไทย/สหรัฐ = ปุ่ม)
       if (hdstats) hdstats.addEventListener('click', function (e) {
         var b = e.target.closest('button[data-market]'); if (!b) return;
         market = b.getAttribute('data-market');
-        [].slice.call(hdstats.querySelectorAll('button[data-market]')).forEach(function (x) {
-          var on = x === b; x.classList.toggle('on', on); x.setAttribute('aria-pressed', String(on));
-        });
+        syncMarketButtons();
         recompute(); page = 1; render();
       });
       if (sortbar) sortbar.addEventListener('click', function (e) {
@@ -900,29 +1116,10 @@ const searchScript = reports.length ? `
         syncThead();
       });
 
-      // โหลดยอดวิว + likes ทั้งหมดครั้งเดียว (read-only ไม่นับเพิ่ม) เติมลงการ์ด แล้วจัดเรียงใหม่ถ้าเรียงตามไลก์/วิวอยู่
-      fetch('/api/views').then(function (r) { return r.json(); }).then(function (map) {
-        cards.forEach(function (c) {
-          var s = c.querySelector('.cviews'); if (!s) return;
-          var e = (map && map[s.getAttribute('data-sym')]) || {};
-          c._views = e.c || 0; c._likes = e.l || 0;
-          var v = s.querySelector('.v'), l = s.querySelector('.l');
-          if (v) v.textContent = (e.c || 0).toLocaleString();
-          if (l) l.textContent = (e.l || 0).toLocaleString();
-          s.hidden = false;
-        });
-        if (orderMode === 'likes' || orderMode === 'views') { recompute(); render(); }
-      }).catch(function () {});
-
-      // วันที่บนการ์ด/ตาราง → แบบสัมพัทธ์ "1d ago" (นับวันปฏิทินฝั่งผู้ชม · no-JS เห็นวันที่จริง · hover ดูวันเต็มจาก title)
-      var _n = new Date(), _t0 = new Date(_n.getFullYear(), _n.getMonth(), _n.getDate()).getTime();
-      [].slice.call(document.querySelectorAll('.cdate[data-updated]')).forEach(function (s) {
-        var p = (s.getAttribute('data-updated') || '').split('-');
-        if (p.length !== 3) return;
-        var d = Math.round((_t0 - new Date(+p[0], +p[1] - 1, +p[2]).getTime()) / 864e5);
-        if (!isFinite(d) || d < 0) return;
-        s.textContent = d === 0 ? 'today' : d + 'd ago';
-      });
+${CARD_HYDRATE_JS}
+      // ★ ส่ง cards (รายการที่จับไว้ตั้งแต่ต้น) ไม่ใช่ query ใหม่ — ระหว่างรอ fetch การ์ดหน้าอื่นถูกถอดออกจาก DOM แล้ว
+      hydrateViews(cards, function () { if (orderMode === 'likes' || orderMode === 'views') { recompute(); render(); } });
+      hydrateDates();
 
       // ป้ายบอก "ตารางเลื่อนข้างได้" — โชว์เฉพาะโหมดตารางที่กว้างเกินจอ ซ่อนถาวรทันทีที่ผู้ใช้เลื่อนเอง
       var hintDone = false;
@@ -951,8 +1148,9 @@ const searchScript = reports.length ? `
       }
 
       syncThead();
+      syncMarketButtons();                                  // ?market= จาก URL ต้องสะท้อนบนปุ่ม header ตั้งแต่เฟรมแรก
       recompute();
-      render();
+      render();                                              // render() วาด tagbar เอง
       syncHint();
     })();
   </script>` : '';
@@ -961,6 +1159,13 @@ const searchScript = reports.length ? `
 const pagerEl = reports.length ? `\n    <div class="pager" id="pager"></div>` : '';
 
 // footer หน้า index: ข้อความ 2 บรรทัดตามที่เจ้าของกำหนดเอง verbatim (12 ส.ค. 69) — ห้ามแต่งเพิ่ม
+// ★ ดึงเป็นค่าคงที่ตัวเดียวให้หน้า /tag/<slug> ใช้ร่วมด้วย (Fix 2 รีวิว) — หน้า tag เป็นทางเข้าจาก
+// Google ตรง ๆ (canonical + sitemap) โชว์ MOS/Upside/P-E ทุกการ์ดเหมือนหน้าแรก จึงต้องมี disclaimer
+// เดียวกัน ไม่ใช่แค่หน้าแรก — ห้ามพิมพ์ข้อความซ้ำเอง ให้ใช้ตัวแปรนี้เท่านั้นกันข้อความสองที่ดริฟต์กัน
+const FOOTER_HTML = `<footer>
+      🤖 วิเคราะห์และจัดทำด้วย AI · <b>Claude</b> · Anthropic · ติดต่อ <a href="mailto:${CONTACT_EMAIL}">${CONTACT_EMAIL}</a><br>
+      เพื่อการศึกษาและเป็นข้อมูลประกอบเท่านั้น มิใช่คำแนะนำการลงทุน — การลงทุนมีความเสี่ยง โปรดใช้วิจารณญาณ
+    </footer>`;
 
 const emptyState = `
       <div class="empty">
@@ -982,29 +1187,8 @@ const spectrum = _spectrumSrc.filter((_, i, arr) => i % Math.max(1, Math.floor(a
 const spectrumHtml = spectrum.length ? `<div id="spectrum">${spectrum.map((c) => `<i style="background:${escAttr(c)}"></i>`).join('')}</div>` : '';
 
 // ---- 7) เขียน index.html ----
-const indexHtml = `<!DOCTYPE html>
-<html lang="th">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Stock Analysis — รวมรายงานวิเคราะห์หุ้น</title>
-<meta name="description" content="รวมรายงานวิเคราะห์หุ้น (Fair Value, Margin of Safety, จุดเข้าซื้อ)">
-<link rel="canonical" href="/">
-<meta property="og:type" content="website">
-<meta property="og:site_name" content="Stock Analysis">
-<meta property="og:locale" content="th_TH">
-<meta property="og:title" content="Stock Analysis — รวมรายงานวิเคราะห์หุ้น">
-<meta property="og:description" content="รวมรายงานวิเคราะห์หุ้น (Fair Value, Margin of Safety, จุดเข้าซื้อ) — ${reports.length} รายงาน">
-<meta property="og:url" content="${SITE_ORIGIN}/">
-<meta property="og:image" content="${OG_IMAGE}">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Stock Analysis — รวมรายงานวิเคราะห์หุ้น">
-<meta name="twitter:description" content="รวมรายงานวิเคราะห์หุ้น (Fair Value, Margin of Safety, จุดเข้าซื้อ) — ${reports.length} รายงาน">
-<meta name="twitter:image" content="${OG_IMAGE}">
-${FONT_LINKS}
-<style>
+// CSS หน้า index — แยกเป็นตัวแปรเพราะหน้า /tag/<slug> ใช้การ์ดชุดเดียวกัน
+const INDEX_STYLE = `<style>
   :root{
     --bg:#eef0f3; --card:#fff; --ink:#13151b; --ink-2:#3c424e; --muted:#5f6675;
     --line:#e5e7eb; --line-2:#d4d8de;
@@ -1021,10 +1205,21 @@ ${FONT_LINKS}
   #spectrum{display:flex;height:8px;width:100%}
   #spectrum i{flex:1;height:100%}
   .hd-in{padding:30px 34px 32px;display:flex;align-items:center;justify-content:space-between;gap:30px;background:radial-gradient(560px 320px at 92% -10%,rgba(96,141,255,.20),transparent 65%),radial-gradient(430px 280px at 2% 115%,rgba(255,158,74,.13),transparent 62%)}
+  header.hd{padding:30px 34px 32px} /* หน้า tag (.crumb/.lead) ไม่มี .hd-in ห่อ ให้ padding เท่ากันตรงนี้แทน */
   .hd-left{flex:1 1 auto;min-width:0}
   .tag{display:inline-block;font-family:var(--monoff);font-size:10.5px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.65);margin-bottom:12px}
   h1{font-family:var(--display);font-size:38px;font-weight:800;letter-spacing:-.6px;line-height:1.15}
   .sub{color:rgba(255,255,255,.78);font-size:14.5px;margin-top:8px;font-weight:300;max-width:64ch}
+  /* ★ ต้อง scope ใต้ .hd — คลาส "lead" ถูกใช้บนหน้าแรกด้วย (ป้ายจุดเด่น class="hl hl-* lead"
+     = มงกุฎ "สูงสุดในกลุ่ม" 4 ใบ) กฎ .lead เปล่าจะรั่วไปโดนชิปพาสเทลเล็ก ๆ เหล่านั้น
+     ทั้งสีตัวหนังสือเกือบขาว (ผิด AA บนพื้นอ่อน) · ขนาด/น้ำหนักฟอนต์ · margin · max-width
+     ⇒ ห้ามเพิ่มกฎ .lead แบบไม่ scope เด็ดขาด (check-site มี regression check คุมไว้) */
+  /* text-wrap:balance = เกลี่ยความยาวบรรทัด กันบรรทัดสุดท้ายเหลือคำโดด ๆ (ภาษาไทยไม่มีช่องว่างระหว่างคำ
+     เบราว์เซอร์จึงตัดบรรทัดตามพจนานุกรม ICU — คุมจุดตัดตรง ๆ ไม่ได้ คุมได้แค่ให้บรรทัดสมดุลขึ้น) */
+  .hd .lead{color:rgba(255,255,255,.78);font-size:14.5px;margin-top:8px;font-weight:300;max-width:64ch;text-wrap:balance} /* หน้า tag: ก็อปสไตล์ .sub มาใช้ */
+  .crumb{margin:0 0 12px;font-size:13.5px} /* หน้า tag: breadcrumb เหนือ h1 โทนเดียวกับ .sub */
+  .crumb a{color:rgba(255,255,255,.72);text-decoration:none;font-weight:500;transition:color .14s}
+  .crumb a:hover{color:#fff;text-decoration:underline}
   /* การ์ดสถิติ = ปุ่มกรองตลาดในตัว (desktop ชิดขวา · mobile ตกลงใต้ข้อความเป็นแถวแบบเดิม) */
   .hd-stats{flex:none;display:grid;grid-template-columns:auto auto;gap:6px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.16);border-radius:20px;padding:12px;margin:0}
   .hstat{display:flex;flex-direction:column;gap:3px;align-items:flex-start;background:none;border:0;border-radius:13px;padding:11px 18px;color:#fff;font:inherit;text-align:left}
@@ -1042,6 +1237,22 @@ ${FONT_LINKS}
   .search input:focus{box-shadow:var(--shadow),0 0 0 3px rgba(19,21,27,.14)}
   .search input::placeholder{color:var(--muted)}
   .noresult{text-align:center;color:var(--muted);padding:40px;font-size:14px}
+  .tt-lab{font-size:12.5px;font-weight:700;color:var(--muted)} /* ป้ายนำหน้าแถวชิป — เหลือที่เดียวคือ .related ท้ายหน้า tag */
+  .tagbar{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 14px}
+  .related{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:14px} /* แท็กที่เกี่ยวข้องท้ายหน้า tag — เลย์เอาต์+ระยะห่างแบบเดียวกับ .tagbar (14px) */
+  /* ★ ชิปแท็ก — scope ใต้ที่ห่อทั้ง 2 ที่ที่ใช้จริง: .tagbar (ชิปตัวกรองบนหน้าแรก สร้างด้วย JS) และ
+     .related (แท็กที่เกี่ยวข้องท้ายหน้า tag) · เดิมเป็นกฎเปล่าไม่ scope ซึ่งปลอดภัยแค่เพราะทั้งสองหน้า
+     มี a.tchip รูปแบบเดียวกันจากแถวแท็กยอดนิยม — พอถอดแถวนั้นออก รูปแบบสองฝั่งก็ต่างกันทันที
+     (หน้าแรกเหลือ span/button, หน้า tag เป็น a) และ check-site ฟ้องว่ากฎรั่วข้ามหน้าได้ · scope ทุกกฎ
+     ใต้ ancestor เดียวกันหมด รวมถึง a./button. ด้วย เพื่อคง "ลำดับ specificity" เดิมไว้เป๊ะ
+     (ถ้า scope แค่กฎฐาน กฎฐานจะกลายเป็น 0,2,0 ชนะ button.tchip 0,1,1 ⇒ พลิกลำดับที่เคยถูกต้อง) */
+  :is(.tagbar,.related) .tchip{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;padding:6px 12px;border-radius:99px;background:var(--card);box-shadow:var(--shadow);color:var(--ink)}
+  :is(.tagbar,.related) .tchip b{font-weight:700}
+  :is(.tagbar,.related) .tchip .tx{border:0;background:transparent;cursor:pointer;font-size:14px;line-height:1;color:var(--muted);padding:0 2px}
+  :is(.tagbar,.related) .tchip .tx:hover{color:var(--ink)}
+  :is(.tagbar,.related) a.tchip{text-decoration:none}
+  :is(.tagbar,.related) button.tchip{border:0;cursor:pointer;font-family:'Sarabun',sans-serif}
+  :is(.tagbar,.related) button.tchip:hover{box-shadow:var(--shadow),0 0 0 2px rgba(19,21,27,.1)}
   .sortbar{display:flex;flex-wrap:wrap;align-items:center;gap:7px;flex:0 1 auto;min-width:0}
   .sortsep{width:1px;align-self:stretch;background:var(--line-2);margin:3px 4px}
   .sortbtn,.viewbtn{font-family:'Sarabun',sans-serif;font-size:13px;color:var(--ink-2);background:var(--card);border:0;border-radius:99px;padding:7px 15px;cursor:pointer;box-shadow:var(--shadow);transition:all .14s}
@@ -1127,6 +1338,7 @@ ${FONT_LINKS}
   @media(max-width:820px){
     .wrap{padding:16px 15px 60px}
     .hd-in{padding:24px 22px 26px;display:block} h1{font-size:29px} header{border-radius:20px}
+    header.hd{padding:24px 22px 26px} /* หน้า tag (.crumb/.lead) มือถือ: padding เท่า .hd-in */
     /* mobile: สถิติใต้เส้นคั่นแบบเดิม (เจ้าของ approve แล้ว) — grid 2×2 ตายตัวกันจอกว้างยัด 3 ช่องแถวบนแล้วสหรัฐตกไปอยู่ตัวเดียว */
     .hd-stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));justify-items:start;gap:4px 6px;margin-top:18px;padding:14px 0 0;background:none;border:0;border-top:1px solid rgba(255,255,255,.12);border-radius:0}
     .hstat{padding:7px 10px;border-radius:11px}
@@ -1148,7 +1360,30 @@ ${FONT_LINKS}
     footer a{display:inline-block;padding:12px 4px}
   }
   @media(max-width:480px){ .grid{grid-template-columns:1fr} h1{font-size:25px} .hd-stats{gap:2px 4px} }
-</style>
+</style>`;
+const indexHtml = `<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stock Analysis — รวมรายงานวิเคราะห์หุ้น</title>
+<meta name="description" content="รวมรายงานวิเคราะห์หุ้น (Fair Value, Margin of Safety, จุดเข้าซื้อ)">
+<link rel="canonical" href="/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Stock Analysis">
+<meta property="og:locale" content="th_TH">
+<meta property="og:title" content="Stock Analysis — รวมรายงานวิเคราะห์หุ้น">
+<meta property="og:description" content="รวมรายงานวิเคราะห์หุ้น (Fair Value, Margin of Safety, จุดเข้าซื้อ) — ${reports.length} รายงาน">
+<meta property="og:url" content="${SITE_ORIGIN}/">
+<meta property="og:image" content="${OG_IMAGE}">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Stock Analysis — รวมรายงานวิเคราะห์หุ้น">
+<meta name="twitter:description" content="รวมรายงานวิเคราะห์หุ้น (Fair Value, Margin of Safety, จุดเข้าซื้อ) — ${reports.length} รายงาน">
+<meta name="twitter:image" content="${OG_IMAGE}">
+${FONT_LINKS}
+${INDEX_STYLE}
 </head>
 <body>
   <div class="wrap">
@@ -1159,20 +1394,92 @@ ${FONT_LINKS}
         <div class="sub">Fair Value · Margin of Safety · จุดเข้าซื้อ · ผลตอบแทนคาดการณ์ 3 ปี</div>
       </div>
       ${hdStats}
-    </div></header>${(sortBar || searchBox) ? `<div class="toolbar">${sortBar}${searchBox}</div>` : ''}
+    </div></header>${(sortBar || searchBox) ? `<div class="toolbar">${sortBar}${searchBox}</div>` : ''}${activeTagBar}
     <div class="tblhint" id="tblhint" hidden>← เลื่อนตารางไปด้านข้าง เพื่อดูครบทุกคอลัมน์ →</div>
     <div class="grid">
       <div id="thead" aria-hidden="true"><span></span><span>บริษัท</span><span class="num" data-sort="mos">MOS</span><span class="num" data-sort="upside">Upside</span><span class="num" data-sort="pe">P/E</span><span class="num" data-sort="yield">Yield</span><span class="num" data-sort="roe">ROE</span><span class="num" data-sort="updated">อัปเดต</span></div>
 ${reports.length ? cards : emptyState}
     </div>${noResult}${pagerEl}
-    <footer>
-      🤖 วิเคราะห์และจัดทำด้วย AI · <b>Claude</b> · Anthropic · ติดต่อ <a href="mailto:${CONTACT_EMAIL}">${CONTACT_EMAIL}</a><br>
-      เพื่อการศึกษาและเป็นข้อมูลประกอบเท่านั้น มิใช่คำแนะนำการลงทุน — การลงทุนมีความเสี่ยง โปรดใช้วิจารณญาณ
-    </footer>
+    ${FOOTER_HTML}
   </div>${searchScript}
 </body>
 </html>
 `;
 
 fs.writeFileSync(path.join(OUT, 'index.html'), indexHtml, 'utf8');
+
+// ---- 7) หน้า /tag/<slug> — ทางเข้าจาก Google + หน้ารวมหุ้นในธีมเดียวกัน ----
+// ★ ต้องอยู่ dist/tag/ ไม่ใช่รากของ dist — check-site มองไฟล์ .html ในรากว่าเป็น "รายงาน"
+// ★ การ์ดหน้าแรกใช้ href="./<SYM>.html" (relative) — บนหน้าที่ลึก 1 ชั้นจะกลายเป็น
+//   /tag/<SYM>.html = 404 ทุกใบ ⇒ ต้องแปลงเป็น absolute ก่อนฝัง
+// bySymbol ย้ายขึ้นไปประกาศพร้อม tagPageSlugs แล้ว (ข้อ 4) — ใช้ตัวเดียวกันทั้งไฟล์
+const idxOf = new Map(reports.map((r, i) => [r.symbol, i])); // hoisted ออกจาก loop ข้างล่าง — ค่าเดิมทุก slug ไม่ต้องสร้างใหม่ทุกรอบ
+// ★ `ent.desc` = ประโยคอธิบายธีมสำหรับผู้อ่านเท่านั้น — กติกาการติดแท็ก (ถึงคนทำงาน) อยู่ในฟิลด์ `note`
+// แยกต่างหากใน tags-vocab.json และ `validateVocab` บังคับว่า desc ต้องไม่ว่างและห้ามมี ★ (เดิมยัดสองอย่าง
+// ไว้ในสตริงเดียวคั่นด้วย " — ★ …" แล้วบันทึกภายในหลุดขึ้นทั้งย่อหน้านำและ meta description ที่ Google แสดง)
+// ⇒ ที่นี่ใช้ ent.desc ตรง ๆ ได้ ไม่ต้องตัดอะไร · check-site ยังตรวจซ้ำที่ output กันหลุดย้อนหลัง
+if (tagPageSlugs.length) {
+  fs.mkdirSync(path.join(OUT, 'tag'), { recursive: true });
+  // แท็กที่เกี่ยวข้อง = slug ที่มีสมาชิก "ที่มีรายงานจริง" ทับซ้อนมากที่สุด (ลิงก์ภายในให้กราฟเชื่อมถึงกัน
+  // ต้องอิง live เท่านั้น ไม่งั้นสมาชิกที่ถูกลบรายงานไปแล้วจะยังไปดันคะแนน overlap ให้แท็กที่ไม่มีจริง)
+  const relatedOf = (slug) => {
+    const mine = new Set(liveMembersOf(slug));
+    return tagPageSlugs
+      .filter((s) => s !== slug)
+      .map((s) => ({ s, n: liveMembersOf(s).filter((x) => mine.has(x)).length }))
+      .filter((x) => x.n > 0)
+      .sort((a, b) => b.n - a.n).slice(0, 5).map((x) => x.s);
+  };
+  for (const slug of tagPageSlugs) {
+    const ent = TAG_VOCAB.bySlug.get(slug);
+    const syms = liveMembersOf(slug);
+    // href="./X.html" → href="/X.html" — หน้า tag ลึก 1 ชั้น relative link จะพังทุกใบ
+    const cardsHtml = syms.slice().sort((a, b) => idxOf.get(a) - idxOf.get(b))
+      .map((s) => cardHtml[idxOf.get(s)].replace(/href="\.\//g, 'href="/')).join('\n');
+    const url = `${SITE_ORIGIN}/tag/${slug}`;
+    const desc = ent.desc;
+    const pageTitle = `หุ้นกลุ่ม ${ent.label} — รวม ${syms.length} ตัว | วิเคราะห์หุ้น`;
+    const related = relatedOf(slug);
+    fs.writeFileSync(path.join(OUT, 'tag', slug + '.html'), `<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>${esc(pageTitle)}</title>
+<meta name="description" content="${escAttr(desc + ' — รวมรายงานวิเคราะห์ ' + syms.length + ' ตัว')}">
+<link rel="canonical" href="${url}">
+<meta property="og:type" content="website">
+<meta property="og:url" content="${url}">
+<meta property="og:title" content="${escAttr(pageTitle)}">
+<meta property="og:description" content="${escAttr(desc)}">
+<meta property="og:image" content="${OG_IMAGE}">
+${FONT_LINKS}
+${INDEX_STYLE}
+</head>
+<body>
+  <div class="wrap">
+    <header class="hd">
+      <p class="crumb"><a href="/">← หน้าแรก</a></p>
+      <h1>🏷 ${esc(ent.label)}</h1>
+      <p class="lead">${esc(desc)} · <b>${syms.length}</b>&nbsp;รายงาน</p>
+    </header>
+    <div class="grid">
+${cardsHtml}
+    </div>
+    ${related.length ? `<nav class="related"><span class="tt-lab">แท็กที่เกี่ยวข้อง:</span> ${related.map((s) => `<a class="tchip" href="/tag/${s}">${esc(TAG_VOCAB.bySlug.get(s).label)}</a>`).join(' ')}</nav>` : ''}
+    ${FOOTER_HTML}
+  </div>
+  <script>
+    (function () {${CARD_HYDRATE_JS}
+      hydrateViews([].slice.call(document.querySelectorAll('.card')));  // หน้า tag ไม่แบ่งหน้า การ์ดอยู่ใน DOM ครบตลอด
+      hydrateDates();
+    })();
+  </script>
+</body>
+</html>
+`);
+  }
+  log('tag pages:', tagPageSlugs.length + ' หน้า → dist/tag/');
+}
+
 log(`✅ สร้าง dist/ เสร็จ — ${reports.length} รายงาน + index.html + reports.json`);
