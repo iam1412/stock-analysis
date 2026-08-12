@@ -34,11 +34,17 @@ function applyTags({ symbol, slugs, vocab, data, reportsDir }) {
   return { ok: true, errors: [], data: next };
 }
 
+/** ย้าย key — pure: คืน {ok,errors,data} เหมือน applyTags · input เสีย = data เดิมไม่ถูกแตะเลย
+ *  reject เมื่อ OLD ไม่มี entry / NEW มี entry อยู่แล้ว (กันทับหายเงียบ ๆ) / OLD กับ NEW ซ้ำกัน */
 function renameSymbol(data, oldSym, newSym) {
-  if (!data.tags[oldSym]) return data;
+  const errors = [];
+  if (oldSym === newSym) errors.push(`${oldSym}: OLD กับ NEW เป็นสัญลักษณ์เดียวกัน`);
+  if (!data.tags[oldSym]) errors.push(`${oldSym}: ไม่มี entry ใน tags.json ให้ย้าย`);
+  if (data.tags[newSym]) errors.push(`${newSym}: มี entry อยู่แล้ว — ย้ายทับจะทำ tag เดิมของ ${newSym} หาย`);
+  if (errors.length) return { ok: false, errors, data };
   const tags = { ...data.tags, [newSym]: data.tags[oldSym] };
   delete tags[oldSym];
-  return { ...data, tags };
+  return { ok: true, errors: [], data: { ...data, tags } };
 }
 
 function pruneMissing(data, reportsDir) {
@@ -62,8 +68,15 @@ function writeTags(data, file) {
   for (const k of Object.keys(data.tags).sort()) tags[k] = data.tags[k];
   const out = JSON.stringify({ vocabVersion: data.vocabVersion, tags, requests: data.requests }, null, 2) + '\n';
   const tmp = target + '.tmp';
-  fs.writeFileSync(tmp, out);
-  fs.renameSync(tmp, target);
+  try {
+    fs.writeFileSync(tmp, out);
+    fs.renameSync(tmp, target);
+  } catch (e) {
+    // ล้มกลางคัน (เขียน temp หรือ rename พัง) — ล้าง .tmp ทิ้งกันไฟล์ค้าง แล้ว rethrow
+    // ไฟล์เป้าหมายเดิมไม่ถูกแตะเลยไม่ว่ากรณีไหน (rename ยังไม่เกิดขึ้น)
+    try { fs.unlinkSync(tmp); } catch (_) { /* ไม่มี .tmp ให้ลบก็ไม่เป็นไร */ }
+    throw e;
+  }
 }
 
 module.exports = { applyTags, renameSymbol, pruneMissing, addRequest, writeTags };
@@ -73,18 +86,21 @@ function main() {
   const argv = process.argv.slice(2);
   const die = (msgs) => { for (const m of msgs) console.error('  ✗ ' + m); console.error('\n❌ ไม่เขียนไฟล์\n'); process.exit(1); };
   const vocab = T.loadVocab();
-  let data = T.loadTags();
+  const data = T.loadTags();
   const today = new Date().toLocaleString('sv-SE', { timeZone: 'Asia/Bangkok' }).slice(0, 10);
 
   if (argv[0] === '--prune') {
     const r = pruneMissing(data, REPORTS_DIR);
+    if (!r.removed.length) { console.log('✅ ไม่มี entry ค้าง (ไม่เขียนไฟล์)'); return; }
     writeTags(r.data, T.TAGS_FILE);
-    console.log(r.removed.length ? `✅ ลบ ${r.removed.length} entry: ${r.removed.join(', ')}` : '✅ ไม่มี entry ค้าง');
+    console.log(`✅ ลบ ${r.removed.length} entry: ${r.removed.join(', ')}`);
     return;
   }
   if (argv[0] === '--rename') {
     if (argv.length !== 3) die(['ใช้: --rename <OLD> <NEW>']);
-    writeTags(renameSymbol(data, argv[1], argv[2]), T.TAGS_FILE);
+    const r = renameSymbol(data, argv[1], argv[2]);
+    if (!r.ok) die(r.errors);
+    writeTags(r.data, T.TAGS_FILE);
     console.log(`✅ ย้าย ${argv[1]} → ${argv[2]}`);
     return;
   }

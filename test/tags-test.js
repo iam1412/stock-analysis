@@ -93,16 +93,16 @@ fs.writeFileSync(tmpFile1, JSON.stringify({
   tags: { AAA: ['ai-datacenter'], ZZZ: ['ai-datacenter', 'power-grid'], MMM: ['power-grid'] },
   requests: [{ symbol: 'CCC' }],
 }));
-const td = T.loadTags(tmpFile1);
-fs.unlinkSync(tmpFile1);
+let td;
+try { td = T.loadTags(tmpFile1); } finally { fs.unlinkSync(tmpFile1); }
 ok(td.vocabVersion === 3, 'loadTags: อ่าน vocabVersion ถูก');
 ok(eq(td.tags.AAA, ['ai-datacenter']), 'loadTags: อ่าน tags ต่อ symbol ถูก');
 ok(td.requests.length === 1, 'loadTags: อ่าน requests ถูก');
 
 const tmpFile2 = path.join(os.tmpdir(), `tags-test-fixture-${process.pid}-b.json`);
 fs.writeFileSync(tmpFile2, JSON.stringify({}));
-const td2 = T.loadTags(tmpFile2);
-fs.unlinkSync(tmpFile2);
+let td2;
+try { td2 = T.loadTags(tmpFile2); } finally { fs.unlinkSync(tmpFile2); }
 ok(td2.vocabVersion === 0 && eq(td2.tags, {}) && td2.requests.length === 0,
    'loadTags: field หาย → ค่า default (0 / {} / [])');
 

@@ -8,7 +8,11 @@
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
+const { spawnSync } = require('child_process');
 const A = require('../tools/tag-apply.js');
+const TL = require('../tools/tag-lib.js');
+
+const ROOT = path.join(__dirname, '..');
 
 let n = 0, fails = 0;
 const ok = (cond, desc) => { n++; if (cond) console.log('  ✓ ' + desc); else { console.log('  ✗ ' + desc); fails++; } };
@@ -54,8 +58,28 @@ const fresh = () => ({ vocabVersion: 1, tags: { AAA: ['ai-datacenter'] }, reques
 {
   const d = fresh();
   const r = A.renameSymbol(d, 'AAA', 'CCC');
-  ok(r.tags.CCC && !r.tags.AAA, '--rename ย้าย key');
-  ok(JSON.stringify(r.tags.CCC) === JSON.stringify(['ai-datacenter']), '--rename คงค่าเดิม');
+  ok(r.ok && r.data.tags.CCC && !r.data.tags.AAA, '--rename ย้าย key');
+  ok(JSON.stringify(r.data.tags.CCC) === JSON.stringify(['ai-datacenter']), '--rename คงค่าเดิม');
+}
+// ── rename: ปฏิเสธ — ต้องไม่แตะ data ──
+{
+  const d = fresh();
+  const r = A.renameSymbol(d, 'ไม่มีจริง', 'CCC');
+  ok(!r.ok && r.errors.some((m) => /ไม่มี entry/.test(m)), '--rename จาก OLD ที่ไม่มี entry → ปฏิเสธ');
+  ok(r.data === d, '--rename OLD ไม่มี entry → data เดิมไม่ถูกแตะ');
+}
+{
+  const d = fresh();
+  d.tags.BBB = ['power-grid'];
+  const r = A.renameSymbol(d, 'AAA', 'BBB');
+  ok(!r.ok && r.errors.some((m) => /มี entry อยู่แล้ว/.test(m)), '--rename ทับ NEW ที่มี entry อยู่แล้ว → ปฏิเสธ');
+  ok(JSON.stringify(r.data.tags) === JSON.stringify({ AAA: ['ai-datacenter'], BBB: ['power-grid'] }),
+     '--rename ทับ NEW → data เดิมไม่ถูกแตะ (BBB ไม่หาย)');
+}
+{
+  const d = fresh();
+  const r = A.renameSymbol(d, 'AAA', 'AAA');
+  ok(!r.ok && r.errors.some((m) => /สัญลักษณ์เดียวกัน/.test(m)), '--rename OLD กับ NEW ซ้ำกัน → ปฏิเสธ');
 }
 {
   const d = fresh();
@@ -81,6 +105,62 @@ const fresh = () => ({ vocabVersion: 1, tags: { AAA: ['ai-datacenter'] }, reques
   ok(txt.indexOf('"AAA"') < txt.indexOf('"ZZZ"'), 'key เรียงตามตัวอักษร (diff อ่านง่าย)');
   ok(JSON.parse(txt).tags.AAA.length === 1, 'JSON parse กลับได้');
   ok(!fs.existsSync(f + '.tmp'), 'ไม่มีไฟล์ .tmp ค้าง');
+}
+
+// ── เขียนไฟล์ล้มกลางคัน (rename พัง) — ต้องไม่ทิ้ง .tmp ค้าง + throw ต่อไม่กลืน error ──
+{
+  const badTarget = path.join(tmp, 'is-a-dir'); // rename ไฟล์ทับ dir ต้องพังเสมอ (EISDIR/ENOTEMPTY)
+  fs.mkdirSync(badTarget);
+  const d = { vocabVersion: 1, tags: { AAA: ['ai-datacenter'] }, requests: [] };
+  let threw = false;
+  try { A.writeTags(d, badTarget); } catch (e) { threw = true; }
+  ok(threw, 'writeTags: rename ล้มเหลว → throw ต่อ (ไม่กลืน error)');
+  ok(!fs.existsSync(badTarget + '.tmp'), 'writeTags: ล้มกลางคัน → ไม่มี .tmp ค้าง');
+  ok(fs.statSync(badTarget).isDirectory(), 'writeTags: ล้มกลางคัน → target เดิมไม่ถูกแตะ');
+}
+
+// ── CLI จริง (process แยก) ต่อ tags.json ตัวจริงของรีโป ──
+// ทดสอบเฉพาะ "เส้นทางปฏิเสธ" เท่านั้น — ตามนิยามต้องไม่เขียนไฟล์เลย จึงปลอดภัยที่จะยิงใส่
+// tags.json จริง (ไม่ทำ mutation) นี่คือเทสเดียวที่ยืนยัน wiring ใน main() ว่า
+// `if (!r.ok) die(...)` มาก่อน `writeTags` จริง ๆ — เทสข้างบนทั้งหมดเรียกฟังก์ชัน pure ในหน่วยความจำ
+// ไม่เคยรัน CLI เป็น process จริงเลย
+{
+  const CLI = path.join(ROOT, 'tools', 'tag-apply.js');
+  const REAL_TAGS_FILE = path.join(ROOT, 'tags.json');
+  const REAL_TMP_FILE = REAL_TAGS_FILE + '.tmp';
+  const REAL_REPORTS_DIR = path.join(ROOT, 'reports');
+
+  const real = TL.loadTags(REAL_TAGS_FILE);
+  const keys = Object.keys(real.tags).sort();
+  const existingSym = keys[0];   // มี entry ใน tags.json จริง + มีไฟล์ reports/ จริง
+  const existingSym2 = keys[1];  // อีกตัวที่มี entry อยู่แล้ว (ใช้เป็น NEW ที่ห้ามถูกทับ)
+
+  // สร้างชื่อ symbol ที่ไม่มีจริงแน่ ๆ ทั้งใน tags.json และใน reports/
+  const freshMissing = (seed) => {
+    let s = seed;
+    while (real.tags[s] || fs.existsSync(path.join(REAL_REPORTS_DIR, s + '.html'))) s += 'X';
+    return s;
+  };
+  const missingSym = freshMissing('ZZZQNOPE1');
+  const missingSym2 = freshMissing('ZZZQNOPE2');
+
+  const runCLI = (args) => spawnSync(process.execPath, [CLI, ...args], { encoding: 'utf8' });
+
+  const assertRejects = (args, desc) => {
+    const before = fs.readFileSync(REAL_TAGS_FILE);
+    const res = runCLI(args);
+    const after = fs.readFileSync(REAL_TAGS_FILE);
+    ok(res.status === 1, `[CLI] ${desc} → exit code 1`);
+    ok(before.equals(after), `[CLI] ${desc} → tags.json ไม่ถูกแตะเลย (byte-identical)`);
+    ok(!fs.existsSync(REAL_TMP_FILE), `[CLI] ${desc} → ไม่มี tags.json.tmp ค้าง`);
+  };
+
+  assertRejects([existingSym, 'ไม่มีจริงแน่นอน'], 'slug ไม่อยู่ในคลัง');
+  assertRejects([existingSym, 'ai-datacenter', 'power-grid', 'nuclear-smr', 'glp-1'], 'เกิน 3 slug');
+  assertRejects([existingSym, 'ai-datacenter', 'ai-datacenter'], 'slug ซ้ำกันเอง');
+  assertRejects([missingSym, 'ai-datacenter'], `symbol ไม่มีไฟล์ reports/${missingSym}.html`);
+  assertRejects(['--rename', existingSym, existingSym2], `--rename ${existingSym} → ${existingSym2} (NEW มี entry อยู่แล้ว)`);
+  assertRejects(['--rename', missingSym, missingSym2], `--rename ${missingSym} → ${missingSym2} (OLD ไม่มี entry)`);
 }
 
 fs.rmSync(tmp, { recursive: true, force: true });
