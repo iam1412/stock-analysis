@@ -27,7 +27,7 @@ const REPORTS_DIR = path.join(ROOT, 'reports');
 const OUT = path.join(ROOT, 'dist');
 const MANIFEST = path.join(ROOT, 'reports.json'); // committed — เก็บ hash/วันที่อัปเดตของแต่ละรายงาน
 
-const CONTACT_EMAIL = 'somchai.s@de.co.th';
+const CONTACT_EMAIL = 'talk@gaohoon.com';
 const SITE_ORIGIN = 'https://gaohoon.com'; // ใช้สร้าง absolute URL ให้ og:url / og:image (social scraper ต้องการ URL เต็ม)
 const OG_IMAGE = SITE_ORIGIN + '/static/og.png'; // banner 1200×630 สำหรับการ์ดแชร์
 // regenerate og.png: og.svg เป็น 1200×1200 — PNG คือ crop แถบ y∈[300,930] (ไม่ใช่ทั้งใบ)

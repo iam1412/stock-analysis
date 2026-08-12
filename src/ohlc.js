@@ -2,7 +2,7 @@
 // pure ESM ไม่ import cloudflare:* → unit test ใน node ได้ (test/ohlc-test.js)
 import SYMBOL_MAP from '../tools/symbol-map.json' with { type: 'json' };
 
-export const OHLC_CACHE_TTL = 21600; // edge cache 6 ชม. — สมดุลความสด vs กัน Yahoo ล่ม
+export const OHLC_CACHE_TTL = 3600; // edge cache 1 ชม. — สมดุลความสด vs กัน Yahoo ล่ม (ลดจาก 6 ชม. 12 ส.ค. 69 หลังผูก custom domain แล้วแคชทำงานจริง)
 
 // THB = ตลาดไทย → Yahoo ใช้ suffix .BK · หุ้นเปลี่ยนชื่อ/ปรับโครงสร้างใช้ override จาก tools/symbol-map.json
 // (ตรรกะเดียวกับ toYahooSymbol ใน tools/update-prices.js — map ก่อน แล้วค่อย suffix)

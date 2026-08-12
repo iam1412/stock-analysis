@@ -28,13 +28,13 @@ reports/<SYM>.html (source, content-only) ── build.js ──▶ dist/<SYM>.h
                                                               │
                                                               ▼ runtime (browser)
                                             GET /api/ohlc/<SYM>?cur=USD|THB  (src/worker.js)
-                                                              │ proxy + edge cache 6 ชม.
+                                                              │ proxy + edge cache 1 ชม.
                                                               ▼
                                             Yahoo Finance chart API (unofficial, range=3y&interval=1d)
 ```
 
 - **`src/ohlc.js`** — แปลง Yahoo JSON → payload กะทัดรัด `{sym,currency,bars:{t,o,h,l,c,v}}` (ตัดแท่ง null, ปัดทศนิยม 4 ตำแหน่ง) pure ESM ไม่ import `cloudflare:*` → เทสใน node ได้ (`test/ohlc-test.js`)
-- **`src/worker.js`** route `GET /api/ohlc/<SYM>` — validate symbol (`SYM_RE` + `knownSymbols()` จาก `reports.json`) → เช็ค Cache API ก่อน → cache miss ถึงกินโควตา `OHLC_LIMITER` (20 req/60s) → fetch Yahoo (timeout 8s) → `transformChart()` → JSON + `Cache-Control: s-maxage=21600` (6 ชม.) ที่ edge
+- **`src/worker.js`** route `GET /api/ohlc/<SYM>` — validate symbol (`SYM_RE` + `knownSymbols()` จาก `reports.json`) → เช็ค Cache API ก่อน → cache miss ถึงกินโควตา `OHLC_LIMITER` (20 req/60s) → fetch Yahoo (timeout 8s) → `transformChart()` → JSON + `Cache-Control: s-maxage=3600` (1 ชม.) ที่ edge
 - **`_template/ta-engine.js`** — pure functions ล้วน ๆ ไม่มี DOM/network: `ema, rsi, findPivots, labelStructure, detectBreaks, detectDivergence, summarizeSignals` (UMD: `window.TA` ใน browser, `module.exports` ใน node) — นิยามตรึงด้วย `test/ta-engine-test.js` **นิยาม TA ทั้งหมด (EMA/RSI/pivot/BOS/CHoCH/divergence) → ดู spec §"นิยาม TA (deterministic ทั้งหมด)"**
 - **`_template/ta-chart.js`** — glue ฝั่ง client: อ่าน `window.__TA_CFG__` → `IntersectionObserver` (rootMargin 400px, โหลดเมื่อใกล้จอเท่านั้น ไม่แย่ง bandwidth ตอน first paint) → `fetch('/api/ohlc/...')` (timeout 6s ผ่าน `AbortController`) → คำนวณด้วย `TA.*` → สร้าง DOM นอกจอ (lightweight-charts 2 pane: ราคา+volume, RSI) → **swap ครั้งเดียว** (`host.style.display='none'` แล้ว `wrap.appendChild(box)`) → `ResizeObserver` คง responsive
 - **`_template/vendor/lightweight-charts.standalone.production.js`** — TradingView Lightweight Charts™ v5.2.0 (Apache-2.0) vendor เก็บในรีโป ไม่พึ่ง CDN ตอน runtime + `LICENSE-lightweight-charts` + attribution link ใน legend ของกราฟ (เงื่อนไข NOTICE)
@@ -48,7 +48,7 @@ reports/<SYM>.html (source, content-only) ── build.js ──▶ dist/<SYM>.h
 - `cur` = `USD` (default) หรือ `THB` — ใช้เลือก suffix Yahoo (`.BK` สำหรับ THB, override จาก `tools/symbol-map.json` ถ้ามี)
 - `tf` = `D` (default, 3y/1d) หรือ `H` (1y/1h — สำหรับ TF 1H/4H ฝั่ง client ที่ resample 4H เอง) · cache แยก key ต่อ tf
 
-**Response 200** (`application/json`, `Cache-Control: public, max-age=3600, s-maxage=21600`)
+**Response 200** (`application/json`, `Cache-Control: public, max-age=3600, s-maxage=3600`)
 ```json
 {
   "sym": "AAPL",
@@ -93,8 +93,8 @@ HH/HL/LH/LL, BOS/CHoCH, regular divergence, chips สรุปสัญญาณ
 
 ## ข้อจำกัดที่ยอมรับ (risk accepted)
 
-- **Yahoo Finance เป็น unofficial API** — ไม่มี SLA, อาจเปลี่ยน response shape/บล็อก IP ได้ทุกเมื่อ โดยไม่แจ้งล่วงหน้า — บรรเทาด้วย edge cache 6 ชม. (`OHLC_CACHE_TTL`) + client fallback SVG ครบทุกทาง (เว็บไม่มีทางพังเพราะกราฟเดิมคือ baseline เสมอ — ดู C1–C10 ด้านล่าง)
-- **cache 6 ชม.** (`s-maxage=21600`) — กราฟ TA อาจไม่ใช่ราคาสดวินาทีต่อวินาที (ข้อมูล intraday ก็ไม่ใช่อยู่แล้ว เพราะ interval=1d) แต่ระหว่างเวลาที่ตลาดเปิด อาจเห็นแท่งวันปัจจุบันช้ากว่าราคาจริงได้ถึง 6 ชม. — ยอมรับได้เพราะ TA เป็นกราฟย้อนหลัง ไม่ใช่ real-time quote
+- **Yahoo Finance เป็น unofficial API** — ไม่มี SLA, อาจเปลี่ยน response shape/บล็อก IP ได้ทุกเมื่อ โดยไม่แจ้งล่วงหน้า — บรรเทาด้วย edge cache 1 ชม. (`OHLC_CACHE_TTL`) + client fallback SVG ครบทุกทาง (เว็บไม่มีทางพังเพราะกราฟเดิมคือ baseline เสมอ — ดู C1–C10 ด้านล่าง)
+- **cache 1 ชม.** (`s-maxage=3600`) — กราฟ TA อาจไม่ใช่ราคาสดวินาทีต่อวินาที (ข้อมูล intraday ก็ไม่ใช่อยู่แล้ว เพราะ interval=1d) แต่ระหว่างเวลาที่ตลาดเปิด อาจเห็นแท่งวันปัจจุบันช้ากว่าราคาจริงได้ถึง 1 ชม. — ยอมรับได้เพราะ TA เป็นกราฟย้อนหลัง ไม่ใช่ real-time quote
 - Annotation TA (BOS/CHoCH/divergence) มีธรรมชาติ subjective — ตรึงด้วยนิยาม deterministic + fixture test ใน `test/ta-engine-test.js` ให้ผลซ้ำได้เสมอ ไม่ repaint ย้อนหลัง
 - ตัดออกตั้งใจ (YAGNI เฟสหลัง): MACD, volume profile/order block, last-good cache ใน Durable Object, timeframe อื่น (W/M), dark mode
 

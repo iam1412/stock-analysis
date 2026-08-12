@@ -201,4 +201,4 @@ deploy อัตโนมัติเมื่อ push เข้า `main` (Clou
 
 ## ✉️ ติดต่อ
 
-somchai.s@de.co.th
+talk@gaohoon.com
