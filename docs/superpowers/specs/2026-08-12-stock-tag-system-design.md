@@ -167,7 +167,17 @@ validate ก่อนเขียนเสมอ: slug ∈ vocab · 1–3 ตั
 - span แรก: **ข้อความคงเดิมเป๊ะ** ห่อเป็น `<a>` · ปลายทางมาจาก `metrics.market` (TH/US) **ไม่ derive จากข้อความ** — กันเคส `NYSE: CCJ / TSX: CCO`
 - span 2–3: แทนด้วยชิปจาก `tags.json` (จำนวนตามที่ติดจริง 1–3 อัน)
 - `.tag` เป็น CSS pill อยู่แล้ว → เพิ่มแค่ `text-decoration:none;color:inherit` + hover ไม่แตะระบบดีไซน์
-- หุ้นไม่มี entry ใน `tags.json` → **throw ดังๆ ตอน build** ไม่ปล่อยแถวว่างเงียบ ๆ
+- URL เป็นแบบไม่มีนามสกุล `/tag/<slug>` — ยืนยันกับ `wrangler.toml` แล้วว่า `html_handling` เป็นค่าเริ่มต้น `auto-trailing-slash` ⇒ `/tag/<slug>` เสิร์ฟ `dist/tag/<slug>.html` ตรง ๆ ไม่มี redirect hop (สำคัญเพราะมีลิงก์ 908 หน้า × 2–3 เส้น)
+
+**หุ้นที่ยังไม่มี entry ใน `tags.json`** → build **คงป้ายเดิม 2 อันไว้ + log บรรทัดหนึ่ง ไม่ throw**
+
+เหตุผล: ถ้า build โยน error ระบบจะติดตั้งแบบค่อยเป็นค่อยไปไม่ได้เลย — เฟส 2 ที่ติด tag แค่ seed ~20 ตัว จะทำให้ `npm run verify` (มีขั้น `build`) พังจากหุ้นอีก 888 ตัวที่ยังไม่ได้ติด ⇒ ไม่มี checkpoint เขียวระหว่างเฟส 2→3
+
+การบังคับจึงอยู่ที่ **ชั้น gate ไม่ใช่ชั้น build** ซึ่งตรงกับที่รีโปทำอยู่แล้ว (build ผ่อนปรน — รายงาน legacy ที่ไม่มี marker คืน identity · gate เป็นตัวจับ):
+- **E40** (per-file) — หุ้นไม่มี tag = error ห้าม push
+- `tags-test.js` (corpus) — ตรวจครบทั้งคลัง
+
+หุ้นใหม่ที่ไม่ได้ติด tag จึง build ผ่านแต่ **push ไม่ได้** = "ดังพอ" โดยไม่บล็อกการติดตั้งเป็นเฟส
 
 ---
 
@@ -295,6 +305,18 @@ E01–E39 และ W01–W12 ถูกใช้แล้ว ⇒ code ใหม�
 
 per-file ⇒ `npm test -- <SYM>` ยังใช้ได้ตามปกติ
 
+**กลไกให้ self-test ฉีดข้อมูล tag ปลอมได้ (ต้องออกแบบตั้งแต่แรก):**
+E40/W13 อ่าน tag จาก **ไฟล์บนดิสก์** ไม่ใช่จากตัว HTML ⇒ mutation แบบที่ self-test ใช้อยู่ (แก้สตริง HTML) ฉีดไม่ได้ และจะกลายเป็น no-op เงียบ ซึ่งกติกา fixture ห้ามไว้
+
+⇒ ขยาย signature ให้รับ override:
+
+```js
+buildCtx(html, name, opts)      // opts.tagData = { tags, vocab } — ไม่ส่ง = โหลดจากดิสก์ (cache ต่อ process)
+checkHtml(html, name, opts)     // ส่งต่อ opts ให้ buildCtx
+```
+
+ค่าเริ่มต้นไม่เปลี่ยนพฤติกรรมเดิมเลย (CLI ยังเรียก 2 อาร์กิวเมนต์เหมือนเดิม) แต่ self-test ส่ง `tagData` ปลอมเข้าไปตรง ๆ ได้ และ mutation ที่ไม่ทำให้ผลเปลี่ยน = fail ตามกติกาเดิม
+
 ### 10.2 ระดับคลัง — ไฟล์ใหม่ `test/tags-test.js`
 
 แยกออกมาเพราะ §2.4 (`checkHtml` เป็น per-file · corpus check จะ false-fire ตอนกรองไฟล์เดียว)
@@ -336,7 +358,7 @@ update-prices-test → dead-ticker-test → tag-apply-test → tags-test → che
 | 2 | exchange พิเศษ 3 แบบ (`ASML (ADR)` · `CCJ / TSX: CCO` · `FANUY (ADR)`) | ข้อความคงเดิม **เป๊ะตัวอักษรต่อตัวอักษร** |
 | 3 | market mapping | SET/MAI → `/?market=TH` · NYSE/NASDAQ/OTC/TSX → `/?market=US` · **derive จาก `metrics.market` ไม่ใช่ข้อความ** (เคส CCJ มี "TSX" ในข้อความแต่เป็นหุ้น US) |
 | 4 | label มี `&` `<` `"` | escape ถูกต้อง ไม่หลุดเป็น markup |
-| 5 | หุ้นไม่มี entry ใน `tags.json` | **throw** พร้อมชื่อ symbol (ไม่เงียบ) |
+| 5 | หุ้นไม่มี entry ใน `tags.json` | **คงป้ายเดิม 2 อันไว้ครบ + log** · ไม่ throw · ไม่ได้แถวว่าง (§5 — การบังคับอยู่ที่ E40/tags-test) |
 | 6 | รายงานที่มี tag span ≠ 3 | **throw** (กัน regex กินผิดตำแหน่ง) |
 | 7 | inject ซ้ำ 2 รอบ | ผลเท่ากัน (idempotent) |
 | 8 | **`freshHash` ไม่ขึ้นกับ tag** — คำนวณ hash ของ source เดิม แล้วเปลี่ยน `tags.json` แล้วคำนวณซ้ำ | **เท่ากันเป๊ะ** — พิสูจน์ว่า tag ไม่ทำให้ `updated` ขยับ (§2.1) · เสริมด้วยการตรวจครั้งเดียวตอนเฟส 2: `hash` ทั้ง 908 รายการใน `reports.json` ต้องไม่เปลี่ยนจากก่อนลงระบบ |
@@ -416,6 +438,9 @@ update-prices-test → dead-ticker-test → tag-apply-test → tags-test → che
 
 > ⚠️ **ลำดับบังคับ:** ชิปบนหน้ารายงานชี้ `/tag/<slug>` (§5) ⇒ **หน้า tag ต้องเกิดพร้อมชิปในเฟส 2** ไม่ใช่เฟส 5 ไม่งั้นได้ลิงก์ตายทั้งเว็บระหว่างเฟส 2–4 · เฟส 5 เหลือเฉพาะงาน SEO ที่ต่อยอดบนหน้าที่มีอยู่แล้ว
 
+> ⚠️ **สถานะเว็บระหว่างเฟส 2–3:** หุ้นที่ยังไม่ติด tag จะโชว์ป้ายเดิม ส่วนที่ติดแล้วโชว์ชิปใหม่ = หน้าเว็บปนสองแบบชั่วคราว
+> **ค่าตั้งต้น: ไม่ push ระหว่างเฟส 2–3** ทำงานบน branch จนติด tag ครบ 908 ตัวแล้ว push ทีเดียว (E40 ก็ยังไม่เปิดจนเฟส 4 อยู่แล้ว) — ถ้าเจ้าของอยากเห็นของจริงเร็ว ๆ ระหว่างทาง สั่ง push ได้ ผลคือหน้าเว็บปนสองแบบจนเฟส 3 จบ
+
 **ต้นทุนเฟส 3 ต่ำ:** อ่านจาก `reports.json` ที่มี `desc` ครบอยู่แล้ว → ไม่เปิดไฟล์ HTML สักไฟล์ · ไม่ fetch ราคา/งบ · ไม่แตะเลขการเงิน
 
 ---
@@ -434,7 +459,7 @@ update-prices-test → dead-ticker-test → tag-apply-test → tags-test → che
 | `_template/dashboard.css` | `.tag` เป็นลิงก์ (`text-decoration:none` + hover) |
 | `.claude/skills/stock-analyzer/SKILL.md` | STEP 5A ติด tag · STEP 5B ทบทวนบังคับ · STEP 5C ห้ามแตะ · บรรทัด `TAGS:` ตอนคืนงาน |
 | `_template/agent-prompt.md` | บล็อก `=== TAGS ปัจจุบัน ===` · **ห้าม worker เขียน `tags.json`** |
-| `CLAUDE.md` | §8 verify **13 ขั้น** (+แก้ "11 warning" → 12 ให้ตรงของจริง) · §10 ระบบ tag |
+| `CLAUDE.md` | §8 verify **13 ขั้น** · จำนวน check เป็น **40 error + 13 warning** (ของเดิมในเอกสารเขียน "39 error + 11 warning" — ของจริงก่อนงานนี้คือ 39 E + 12 W) · §10 ระบบ tag |
 | `docs/templates.md` · `docs/quality-gate.md` | schema tag · E40/W13 |
 
 ---
@@ -459,3 +484,9 @@ update-prices-test → dead-ticker-test → tag-apply-test → tags-test → che
 3. แกน tag = **ธีม/เรื่องราวการลงทุน** อย่างเดียว (ไม่เอาสไตล์ลงทุน/ขนาด/อุตสาหกรรม)
 4. **UPDATE เต็มบังคับทบทวน tag**
 5. **เฟส 5 อยู่ในรอบนี้**
+
+### ข้อสมมติที่ผู้เขียน spec ตัดสินเอง (เจ้าของยังไม่ได้ชี้ขาด — ทักได้)
+
+6. **คิวขอเพิ่มคำศัพท์ = สะสมรอรีวิวเป็นรอบ ๆ ไม่หยุดถามทันที** (§9.1) — เพราะการหยุดถามกลางเวฟจะขัดจังหวะงานที่รันยาว
+   **ยกเว้นกรณีเดียว:** หุ้น NEW ที่ไม่มี slug ไหนในคลังเข้ากันเลย → หยุดถามทันที เพราะปล่อยไปจะทำ E40 ตกและ push ไม่ได้
+7. **ไม่ push ระหว่างเฟส 2–3** (§12) — กันหน้าเว็บปนป้ายสองแบบบนของจริง
