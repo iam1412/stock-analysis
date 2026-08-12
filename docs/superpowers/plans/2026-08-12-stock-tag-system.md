@@ -940,44 +940,41 @@ git add build.js test/build-test.js reports.json && git commit -m "$(printf 'fea
 - Consumes: `tagLib.matchTagQuery` (Task 1) · `TAG_VOCAB`
 - Produces: พิมพ์คำค้น → ผลลัพธ์ = ชื่อที่แมตช์ ∪ สมาชิกของ tag ที่แมตช์ · ชิป "แท็ก: X · N หุ้น" คลิกแล้วกรองเฉพาะ tag
 
-- [ ] **Step 1: เขียนเทสที่ยังไม่ผ่าน**
+- [ ] **Step 1: เขียนเทสที่ยังไม่ผ่าน — การ embed ฟังก์ชันลงหน้าเว็บ**
+
+> ℹ️ **พฤติกรรมการจับคู่ของ `matchTagQuery` ถูกเทสครบแล้วใน `test/tags-test.js` (Task 1 — 21 assertion รวม static check บังคับ ES5-purity) ห้ามเขียนซ้ำที่นี่** สิ่งที่ task นี้ต้องพิสูจน์คือ **ฟังก์ชันเดินทางไปถึงหน้าเว็บได้จริงและยังทำงานเหมือนเดิมหลังถูก serialize** ซึ่งเป็นคนละเรื่องกัน
 
 ต่อท้าย `test/build-test.js` ก่อนบล็อกสรุป:
 
 ```js
-// ── matchTagQuery: กับดัก substring "ai" ──
+// ── การ embed matchTagQuery ลงสคริปต์หน้า index ──
+// ตรรกะการจับคู่มีเทสครบใน test/tags-test.js แล้ว — ที่นี่ตรวจว่า "ข้อความฟังก์ชัน"
+// ที่ถูก String() ไปฝังในหน้าเว็บ ยังกินได้และให้ผลเท่ากับตัวจริงใน Node
 {
   const T = require('../tools/tag-lib.js');
+  const src = String(T.matchTagQuery);
+  ok(/^function matchTagQuery\s*\(/.test(src.trim()), 'embed: serialize แล้วยังเป็น function declaration (ฝังใน <script> ได้ตรง ๆ)');
+
+  // ประกอบใหม่จากข้อความ เหมือนที่เบราว์เซอร์ทำ แล้วต้องได้ผลเท่ากับตัวจริง
+  const revived = new Function(src + '; return matchTagQuery;')();
   const list = [
-    { slug: 'ai-datacenter', label: 'AI Data Center', aliases: ['ai', 'เอไอ', 'ดาต้าเซ็นเตอร์', 'data center'] },
-    { slug: 'thai-consumption', label: 'การบริโภคในประเทศไทย', aliases: ['thai consumption', 'retail'] },
-    { slug: 'defense-rearm', label: 'Defense & Rearmament', aliases: ['defense', 'aerospace'] },
+    { slug: 'ai-datacenter', label: 'AI Data Center', aliases: ['ai', 'เอไอ', 'data center'] },
+    { slug: 'thai-tourism', label: 'ท่องเที่ยวไทย', aliases: ['airline', 'ท่องเที่ยว'] },
   ];
-  const M = (q) => T.matchTagQuery(q, list);
-  ok(JSON.stringify(M('ai')) === JSON.stringify(['ai-datacenter']), 'matchTagQuery: "ai" → ai-datacenter เท่านั้น');
-  ok(M('ai').indexOf('thai-consumption') === -1, 'matchTagQuery: "ai" ไม่แมตช์ "Thai"/"retail" (ขึ้นต้นคำ)');
-  ok(M('AI').length === 1, 'matchTagQuery: ไม่สนตัวพิมพ์');
-  ok(M('  ai  ').length === 1, 'matchTagQuery: ตัดช่องว่างหัวท้าย');
-  ok(JSON.stringify(M('เอไอ')) === JSON.stringify(['ai-datacenter']), 'matchTagQuery: alias ภาษาไทย');
-  ok(JSON.stringify(M('ดาต้า')) === JSON.stringify(['ai-datacenter']), 'matchTagQuery: ไทยใช้ substring (ไม่มีเว้นวรรค)');
-  ok(JSON.stringify(M('data cen')) === JSON.stringify(['ai-datacenter']), 'matchTagQuery: หลายคำแบบ prefix');
-  ok(M('xyz').length === 0, 'matchTagQuery: ไม่แมตช์ → []');
-  ok(M('a').length === 0, 'matchTagQuery: สั้นกว่า 2 ตัวอักษร → []');
-  ok(M('').length === 0 && M(null).length === 0, 'matchTagQuery: ค่าว่าง/null → []');
-  ok(JSON.stringify(M('defen')) === JSON.stringify(['defense-rearm']), 'matchTagQuery: prefix กลางคำแรกของ label');
-  ok(M('rearmament').length === 1, 'matchTagQuery: ขึ้นต้นคำที่สองของ label ก็แมตช์');
+  ['ai', 'air', 'data cen', 'เอไอ', 'xyz', 'a'].forEach((q) => {
+    ok(JSON.stringify(revived(q, list)) === JSON.stringify(T.matchTagQuery(q, list)),
+       `embed: ผลจากข้อความที่ฝัง = ผลจากตัวจริง (q="${q}")`);
+  });
 }
 ```
 
-- [ ] **Step 2: รันเทสเพื่อยืนยันพฤติกรรมฐาน**
-
-> ⚠️ ขั้นนี้**ไม่ใช่ red step ของ TDD** — `matchTagQuery` ถูกเขียนไปแล้วใน Task 1 เทสชุดนี้เป็น **regression guard** ที่ต้องมีอยู่ก่อนเอาฟังก์ชันไป embed ลงเบราว์เซอร์ (ถ้าใครแก้ตรรกะจับคู่ทีหลัง เทสนี้จะจับ) ⇒ คาดว่าผ่านทันที
+- [ ] **Step 2: รันเทสให้แน่ใจว่าล้มเหลว**
 
 ```bash
 node test/build-test.js
 ```
 
-Expected: PASS ทุกข้อ — **ถ้าข้อไหนไม่ผ่าน แปลว่า `matchTagQuery` ใน Task 1 มีบั๊ก ให้แก้ `tools/tag-lib.js` ก่อนไป Step 3** (ห้ามแก้เทสให้เข้ากับพฤติกรรมที่ผิด)
+Expected: PASS — เทสชุดนี้ตรวจ `tag-lib.js` ที่มีอยู่แล้ว จึงผ่านทันที **ถ้าข้อไหนไม่ผ่าน แปลว่า `matchTagQuery` ไม่ปลอดภัยต่อการ embed ให้แก้ `tools/tag-lib.js` ก่อนไป Step 3** (ห้ามแก้เทสให้เข้ากับพฤติกรรมที่ผิด) · red step จริงของ task นี้อยู่ที่ Step 4 ซึ่งตรวจว่าฟังก์ชันไปโผล่ใน `dist/index.html`
 
 - [ ] **Step 3: embed `matchTagQuery` + ชิปเสนอแท็กในสคริปต์ index**
 
