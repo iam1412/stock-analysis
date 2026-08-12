@@ -194,7 +194,7 @@ function checkTaBundle(distDir, reportsDir, srcSyms) {
 // ---- หน้า tag (dist/tag/<slug>.html) ----
 // ★ ต้องอยู่ในโฟลเดอร์ย่อยเท่านั้น — coverage check ข้างบนมองไฟล์ .html ในราก dist
 //   ว่าเป็น "รายงาน" ⇒ วางที่รากจะถูกฟ้องว่าเป็นรายงานค้าง
-function checkTagPages(DIST, ROOT) {
+function checkTagPages(DIST) {
   const r = { errors: [], warnings: [] };
   const T = require('../tools/tag-lib.js');
   let vocab, data;
@@ -202,6 +202,10 @@ function checkTagPages(DIST, ROOT) {
   catch (e) { r.errors.push(`อ่านไฟล์ tag ไม่ได้: ${e.message}`); return r; }
 
   const members = T.membersOf(data);
+  // build.js เรนเดอร์การ์ดกรองด้วย bySymbol (เฉพาะ symbol ที่มีรายงานสร้างจริงใน dist/) —
+  // เทียบด้วยชุดกรองเดียวกัน กัน false-positive เวลาลบ reports/<SYM>.html (delisting) แล้ว
+  // tags.json ยังเหลือ symbol ค้าง (orphan tag data เป็นปัญหาคนละชั้น รอ corpus-level check ในงานถัดไป)
+  const liveCount = (s) => members.get(s).filter((sym) => fs.existsSync(path.join(DIST, sym + '.html'))).length;
   const tagDir = path.join(DIST, 'tag');
   const want = [...members.keys()].filter((s) => vocab.bySlug.has(s)).sort();
   const have = fs.existsSync(tagDir)
@@ -213,7 +217,8 @@ function checkTagPages(DIST, ROOT) {
     if (!members.has(s)) { r.errors.push(`dist/tag/${s}.html ไม่มีสมาชิกเลย (หน้าเปล่าไม่ควรเข้า sitemap)`); continue; }
     const html = fs.readFileSync(path.join(tagDir, s + '.html'), 'utf8');
     const cards = (html.match(/class="card"/g) || []).length;
-    if (cards !== members.get(s).length) r.errors.push(`tag/${s}: การ์ด ${cards} ใบ แต่มีสมาชิก ${members.get(s).length} ตัว`);
+    const live = liveCount(s);
+    if (cards !== live) r.errors.push(`tag/${s}: การ์ด ${cards} ใบ แต่มีสมาชิกที่มีรายงานจริง ${live} ตัว`);
     if ((html.match(/<h1[^>]*>/gi) || []).length !== 1) r.errors.push(`tag/${s}: ต้องมี <h1> เดียว`);
     if (!/<title>[^<]+<\/title>/i.test(html)) r.errors.push(`tag/${s}: ไม่มี <title>`);
   }
@@ -270,7 +275,7 @@ function main() {
   // 1.4) TA chart bundle: dist มี bundle เดียว + inject ถูกไฟล์ + ไม่รั่วเข้า source
   add('site (ta chart)', checkTaBundle(DIST, REPORTS_DIR, srcSyms));
 
-  add('site (tag pages)', checkTagPages(DIST, ROOT));
+  add('site (tag pages)', checkTagPages(DIST));
 
   // 1.5) metric บนการ์ด index = stock-meta ของ report (build wiring ถูกต้อง)
   if (indexHtml) add('site (metric cards)', checkMetricsCards(indexHtml, DIST, distSyms));

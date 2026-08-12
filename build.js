@@ -675,7 +675,7 @@ fs.writeFileSync(
   path.join(OUT, 'robots.txt'),
   `User-agent: *\nAllow: /\n\nSitemap: ${SITE_ORIGIN}/sitemap.xml\n`
 );
-log('sitemap:', 'sitemap.xml (' + (reports.length + 1) + ' urls) + robots.txt');
+log('sitemap:', 'sitemap.xml (' + sitemapEntries.length + ' urls) + robots.txt'); // นับจริงจาก array — รวม url หุ้น + tag pages เสมอ ไม่มีวันหลุดเวลาเพิ่มหมวดใหม่
 
 // ---- 5) คัดลอก assets + ไฟล์พิเศษของ Cloudflare ----
 for (const nm of fs.readdirSync(ROOT)) {
@@ -1170,10 +1170,16 @@ const INDEX_STYLE = `<style>
   #spectrum{display:flex;height:8px;width:100%}
   #spectrum i{flex:1;height:100%}
   .hd-in{padding:30px 34px 32px;display:flex;align-items:center;justify-content:space-between;gap:30px;background:radial-gradient(560px 320px at 92% -10%,rgba(96,141,255,.20),transparent 65%),radial-gradient(430px 280px at 2% 115%,rgba(255,158,74,.13),transparent 62%)}
+  header.hd{padding:30px 34px 32px} /* หน้า tag (.crumb/.lead) ไม่มี .hd-in ห่อ ให้ padding เท่ากันตรงนี้แทน */
   .hd-left{flex:1 1 auto;min-width:0}
   .tag{display:inline-block;font-family:var(--monoff);font-size:10.5px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.65);margin-bottom:12px}
   h1{font-family:var(--display);font-size:38px;font-weight:800;letter-spacing:-.6px;line-height:1.15}
   .sub{color:rgba(255,255,255,.78);font-size:14.5px;margin-top:8px;font-weight:300;max-width:64ch}
+  .lead{color:rgba(255,255,255,.78);font-size:14.5px;margin-top:8px;font-weight:300;max-width:64ch} /* หน้า tag: ก็อปสไตล์ .sub มาใช้ */
+  .crumb{margin:0 0 12px;font-size:13.5px} /* หน้า tag: breadcrumb เหนือ/ใต้ h1 โทนเดียวกับ .sub */
+  .crumb a{color:rgba(255,255,255,.72);text-decoration:none;font-weight:500;transition:color .14s}
+  .crumb a:hover{color:#fff;text-decoration:underline}
+  .lead + .crumb{margin:14px 0 0}
   /* การ์ดสถิติ = ปุ่มกรองตลาดในตัว (desktop ชิดขวา · mobile ตกลงใต้ข้อความเป็นแถวแบบเดิม) */
   .hd-stats{flex:none;display:grid;grid-template-columns:auto auto;gap:6px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.16);border-radius:20px;padding:12px;margin:0}
   .hstat{display:flex;flex-direction:column;gap:3px;align-items:flex-start;background:none;border:0;border-radius:13px;padding:11px 18px;color:#fff;font:inherit;text-align:left}
@@ -1195,6 +1201,9 @@ const INDEX_STYLE = `<style>
   .tt-lab{font-size:12.5px;font-weight:700;color:var(--muted)}
   a.tchip{text-decoration:none}
   .tagbar{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 14px}
+  .related{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:28px} /* แท็กที่เกี่ยวข้องท้ายหน้า tag — เลย์เอาต์แบบเดียวกับ .toptags/.tagbar */
+  .js-only{display:none} /* ลิงก์ "เปิดในหน้ารวม" ใช้ได้เฉพาะ JS (กรอง/เรียงฝั่ง client) — ซ่อนจนพิสูจน์ว่ามี JS จริง */
+  html.js .js-only{display:block}
   .tchip{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;padding:6px 12px;border-radius:99px;background:var(--card);box-shadow:var(--shadow);color:var(--ink)}
   .tchip b{font-weight:700}
   .tchip .tx{border:0;background:transparent;cursor:pointer;font-size:14px;line-height:1;color:var(--muted);padding:0 2px}
@@ -1286,6 +1295,7 @@ const INDEX_STYLE = `<style>
   @media(max-width:820px){
     .wrap{padding:16px 15px 60px}
     .hd-in{padding:24px 22px 26px;display:block} h1{font-size:29px} header{border-radius:20px}
+    header.hd{padding:24px 22px 26px} /* หน้า tag (.crumb/.lead) มือถือ: padding เท่า .hd-in */
     /* mobile: สถิติใต้เส้นคั่นแบบเดิม (เจ้าของ approve แล้ว) — grid 2×2 ตายตัวกันจอกว้างยัด 3 ช่องแถวบนแล้วสหรัฐตกไปอยู่ตัวเดียว */
     .hd-stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));justify-items:start;gap:4px 6px;margin-top:18px;padding:14px 0 0;background:none;border:0;border-top:1px solid rgba(255,255,255,.12);border-radius:0}
     .hstat{padding:7px 10px;border-radius:11px}
@@ -1363,6 +1373,7 @@ fs.writeFileSync(path.join(OUT, 'index.html'), indexHtml, 'utf8');
 // ★ การ์ดหน้าแรกใช้ href="./<SYM>.html" (relative) — บนหน้าที่ลึก 1 ชั้นจะกลายเป็น
 //   /tag/<SYM>.html = 404 ทุกใบ ⇒ ต้องแปลงเป็น absolute ก่อนฝัง
 const bySymbol = new Map(reports.map((r) => [r.symbol, r]));
+const idxOf = new Map(reports.map((r, i) => [r.symbol, i])); // hoisted ออกจาก loop ข้างล่าง — ค่าเดิมทุก slug ไม่ต้องสร้างใหม่ทุกรอบ
 if (tagPageSlugs.length) {
   fs.mkdirSync(path.join(OUT, 'tag'), { recursive: true });
   // แท็กที่เกี่ยวข้อง = slug ที่มีสมาชิกทับซ้อนมากที่สุด (ลิงก์ภายในให้กราฟเชื่อมถึงกัน)
@@ -1377,7 +1388,6 @@ if (tagPageSlugs.length) {
   for (const slug of tagPageSlugs) {
     const ent = TAG_VOCAB.bySlug.get(slug);
     const syms = tagMembers.get(slug).filter((s) => bySymbol.has(s));
-    const idxOf = new Map(reports.map((r, i) => [r.symbol, i]));
     // href="./X.html" → href="/X.html" — หน้า tag ลึก 1 ชั้น relative link จะพังทุกใบ
     const cardsHtml = syms.slice().sort((a, b) => idxOf.get(a) - idxOf.get(b))
       .map((s) => cardHtml[idxOf.get(s)].replace(/href="\.\//g, 'href="/')).join('\n');
@@ -1388,6 +1398,7 @@ if (tagPageSlugs.length) {
 <html lang="th">
 <head>
 <meta charset="UTF-8">
+<script>document.documentElement.classList.add('js')</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>${esc(pageTitle)}</title>
 <meta name="description" content="${escAttr(ent.desc + ' — รวมรายงานวิเคราะห์ ' + syms.length + ' ตัว')}">
@@ -1406,12 +1417,12 @@ ${INDEX_STYLE}
       <p class="crumb"><a href="/">← หน้าแรก</a></p>
       <h1>🏷 ${esc(ent.label)}</h1>
       <p class="lead">${esc(ent.desc)} · <b>${syms.length}</b> รายงาน</p>
-      <p class="crumb"><a href="/?tag=${slug}">เปิดในหน้ารวม (เรียง/กรองตาม MOS · P/E · ปันผล) →</a></p>
+      <p class="crumb js-only"><a href="/?tag=${slug}">เปิดในหน้ารวม (เรียง/กรองตาม MOS · P/E · ปันผล) →</a></p>
     </header>
     <div class="grid">
 ${cardsHtml}
     </div>
-    ${related.length ? `<nav class="related"><span>แท็กที่เกี่ยวข้อง:</span> ${related.map((s) => `<a class="tchip" href="/tag/${s}">${esc(TAG_VOCAB.bySlug.get(s).label)}</a>`).join(' ')}</nav>` : ''}
+    ${related.length ? `<nav class="related"><span class="tt-lab">แท็กที่เกี่ยวข้อง:</span> ${related.map((s) => `<a class="tchip" href="/tag/${s}">${esc(TAG_VOCAB.bySlug.get(s).label)}</a>`).join(' ')}</nav>` : ''}
   </div>
 </body>
 </html>
