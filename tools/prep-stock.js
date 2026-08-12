@@ -73,6 +73,13 @@ function runTool(script, args) {
   });
 }
 
+// ---------- print หลังรู้ v.exitCode แล้ว — กลืน error เงียบ ๆ (เช่น EPIPE ตอน stdout ถูกตัดกลางทาง) ----------
+// ห้ามให้ throw หลุดไปโดน main().catch() ท้ายไฟล์ เพราะ handler นั้น exit 1 เสมอ — จะกลืน exit 2
+// (invariant "หยุดเผยแพร่" ของ CLAUDE.md §2) กลายเป็น exit 1 ธรรมดาที่ controller ไม่รู้จัก
+function safeLog(s) {
+  try { console.log(s); } catch (_) {}
+}
+
 // ---------- main ----------
 async function main() {
   const a = parseArgs(process.argv.slice(2));
@@ -91,18 +98,22 @@ async function main() {
   const v = fund.code === 0 ? verdict(parseDeltas(fund.out))
     : { exitCode: 0, text: `⚠ CROSS-VERIFY: fetch-fundamentals ล้ม (${fund.err || 'exit ' + fund.code}) — worker ต้อง WebFetch targeted 2 แหล่งเอง` };
 
-  console.log(`=== PREP ${a.symbol} (${a.update ? 'UPDATE' : 'NEW'}${a.th ? ' TH' : ''}) — วางทั้ง block ลง {{FUNDAMENTALS}} ===`);
-  console.log(v.text);
-  if (fund.code === 0) console.log('\n' + fund.out);
+  // stdout เป็น pipe = write async — EPIPE โผล่เป็น 'error' event คนละ tick กับ console.log จึงไม่มีทาง
+  // ให้ try/catch ธรรมดาจับได้ ต้องดัก listener ตรงนี้ด้วย ไม่งั้น uncaught exception หลุดไป exit 1 ทับ v.exitCode
+  process.stdout.on('error', () => {});
+
+  safeLog(`=== PREP ${a.symbol} (${a.update ? 'UPDATE' : 'NEW'}${a.th ? ' TH' : ''}) — วางทั้ง block ลง {{FUNDAMENTALS}} ===`);
+  safeLog(v.text);
+  if (fund.code === 0) safeLog('\n' + fund.out);
   if (facts) {
-    if (facts.code === 0) console.log('\n=== FACTS (ราคา/กราฟ — worker ห้ามรัน fetch-facts ซ้ำ) ===\n' + facts.out);
-    else console.log(`\n=== FACTS === ✗ ล้ม (${facts.err || 'exit ' + facts.code}) — worker รัน node tools/fetch-facts.js ${a.symbol}${a.th ? ' --th' : ''} เองใน STEP 1`);
+    if (facts.code === 0) safeLog('\n=== FACTS (ราคา/กราฟ — worker ห้ามรัน fetch-facts ซ้ำ) ===\n' + facts.out);
+    else safeLog(`\n=== FACTS === ✗ ล้ม (${facts.err || 'exit ' + facts.code}) — worker รัน node tools/fetch-facts.js ${a.symbol}${a.th ? ' --th' : ''} เองใน STEP 1`);
   }
 
   if (a.brand) {
     const brand = await runTool('pick-brand.js', [a.symbol, a.brand, '--auto']);
-    if (brand.code === 0) console.log('\n=== BRAND (pick-brand --auto — ลง seeds.json แล้ว) ===\n' + brand.out);
-    else console.log(`\n=== BRAND === ✗ ${brand.err || 'exit ' + brand.code}`);
+    if (brand.code === 0) safeLog('\n=== BRAND (pick-brand --auto — ลง seeds.json แล้ว) ===\n' + brand.out);
+    else safeLog(`\n=== BRAND === ✗ ${brand.err || 'exit ' + brand.code}`);
   }
 
   process.exit(v.exitCode);

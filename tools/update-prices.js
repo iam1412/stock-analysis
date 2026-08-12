@@ -26,7 +26,7 @@
  *   ไม่มี --write = dry-run · หลัง --write: npm run build → node tools/preserve-dates.js
  *   → npm run build → npm run verify (คงวันที่ "วิเคราะห์" เดิม — ราคา refresh ไม่ใช่ re-analysis)
  *   --force = ข้าม freeze drift/mos-flip/gauge/suspect (ใช้ตอน re-analysis UPDATE mode ที่ agent
- *   ยืนยัน cross-source แล้ว) — บังคับระบุ SYMBOL ชัด ๆ ห้ามใช้กับ full run · currency/bad-price ยัง freeze
+ *   ยืนยัน cross-source แล้ว) — บังคับระบุ SYMBOL ชัด ๆ ห้ามใช้กับ full run · currency/bad-price/bad-report-price ยัง freeze
  *   --alive = ยืนยันด้วยมือว่า "ยังอยู่บนกระดานจริง" → ปลด `not-on-exchange` แล้ว patch ต่อ (เคส mapping
  *   เพี้ยนใน SKILL STEP 0 ที่ห้ามลบรายงาน) · **แยกจาก --force โดยตั้งใจ**: SKILL สั่ง `--force` เป็นคำสั่ง
  *   ประจำของ re-analysis ทุกครั้ง (STEP 1/5B/5C) ถ้าผูกกับ --force หุ้นตายจะถูก patch + ปลด flag เงียบ ๆ
@@ -56,6 +56,12 @@ const MOS_FLIP_DEADBAND_PP = 3; // MOS พลิกเครื่องหม�
                                 // (3 = dead-band เดียวกับ gate W06 — prose "ถูก/แพงเล็กน้อย" ไม่ขัด gate ในช่วงนี้)
 const GAUGE_PAD = 0.05;      // ราคาหลุดขอบ gauge → ขยายขอบเป็น ราคา±5% (ขอบเป็น display scaffolding — engine วาดจาก report-data.gauge)
 const FETCH_DELAY_MS = 450;  // throttle Yahoo (~2 req/s)
+const ABORT_CONSEC_FAILS = 11; // fetch พังติดกันครบ N ตัว = ต้นทางล่ม/โดนบล็อก ไม่ใช่ ticker รายตัวมีปัญหา → ยกเลิกทั้งรอบ
+                               // นับ "ติดกัน" ไม่ใช่ยอดรวม: ยิงผ่าน 1 ตัว = ต้นทางยังดี → รีเซ็ตตัวนับ ⇒ หุ้นที่ล้มประปราย
+                               // ทั้งรีโป (ticker เปลี่ยนชื่อ/ประวัติหาย) ไม่มีวันสะสมจนยกเลิกรอบ
+                               // 11 = ค่าต่ำสุดที่ไม่ไวกว่ายามเดิม ("พังเกิน 10 ใน 20 ตัวแรก" ⇒ ต้องพัง ≥11 ถึงยกเลิก)
+                               // แต่ยามเดิมเช็คครั้งเดียวที่ตัวที่ 21 ⇒ ต้นทางล่มหลังตัวที่ ~200 ไม่มีอะไรจับเลย
+                               // retry backoff กินงบ job 45 นาทีจนหมดแล้วตายโดยไม่ commit อะไรสักตัว
 const STALE_QUOTE_SESSIONS = 3; // ตลาดเดินหน้าไป ≥3 session แล้ว quote ตัวนี้ยังค้าง → flag stale-quote
                                 // (3 = ทนสุดสัปดาห์ + วันหยุดยาว/ไม่มีเทรด 1 วันได้ แต่จับ EA ได้ในวันที่ 4 หลังปิดดีล)
 const STALE_MIN_COHORT = 5;     // cohort เล็กกว่านี้ = คาลิเบรตไม่ได้ (รัน --only ไม่กี่ตัว) → ไม่ flag
@@ -214,8 +220,14 @@ function decide(ctx) {
   const { oldPrice, newPrice, fv, currencyOk, force } = ctx;
   if (!currencyOk) return { freeze: 'currency-mismatch' };
   if (!Number.isFinite(newPrice) || newPrice <= 0) return { freeze: 'bad-price' };
+  // ราคาเดิมมาจาก stock-meta ของรายงานเอง — เสียเมื่อไร drift เสียตาม: 0 → Infinity · ไม่ใช่ตัวเลข → NaN
+  // · **ติดลบ → drift ติดลบ** ซึ่งเทียบ `>` กับทุกเกณฑ์ freeze แล้วเป็นเท็จหมด ⇒ ตกไปทาง update
+  // = patch ราคาใหม่ทับโดยยามทุกตัวถูกข้ามพร้อมกัน (เคสที่เงียบที่สุดของสามแบบ)
+  // ต้องกันก่อนคิด drift และก่อน --force ด้วยเหตุผลเดียวกับ currency/bad-price: เป็นความไม่สมประกอบ
+  // ของข้อมูล ไม่ใช่เกณฑ์เชิงนโยบายที่ agent ยืนยัน cross-source แล้วข้ามได้
+  if (!Number.isFinite(oldPrice) || oldPrice <= 0) return { freeze: 'bad-report-price' };
   const drift = Math.abs(newPrice - oldPrice) / oldPrice;
-  if (force) return { update: true, drift }; // re-analysis ยืนยันแล้ว — ข้าม freeze เชิงนโยบาย (currency/bad-price กันไว้ก่อนถึงบรรทัดนี้)
+  if (force) return { update: true, drift }; // re-analysis ยืนยันแล้ว — ข้าม freeze เชิงนโยบาย (currency/bad-price/bad-report-price กันไว้ก่อนถึงบรรทัดนี้)
   if (drift > SUSPECT_FREEZE) return { freeze: 'suspect-split-or-data', drift };
   if (drift > DRIFT_FREEZE) return { freeze: `drift-gt-${Math.round(DRIFT_FREEZE * 100)}pct`, drift };
   if (Number.isFinite(fv) && fv > 0) {
@@ -478,8 +490,26 @@ function patchReport(html, p) {
 }
 
 // ---------- flags ----------
+// ไฟล์ไม่มี = รอบแรกจริง ๆ → คิวว่าง · **มีไฟล์แต่ parse ไม่ผ่าน = ล้มทั้งรอบ ห้ามคืน [] เงียบ ๆ**
+// เพราะ mergeFlags(prev=[]) จะเขียนทับคิวทั้งใบตอน --write ⇒ คิวหายยกชุด รวม not-on-exchange ที่
+// ถอนได้ 3 ทางเท่านั้น (TradingView เจอ ticker กลับมา · รายงานถูกลบ · --alive) — "ไฟล์เสีย/เขียนค้าง"
+// ไม่ใช่หนึ่งในนั้น · แยกด้วย e.code: ENOENT = ไม่มีไฟล์ · JSON เสีย/อ่านไม่ได้ = มีไฟล์แต่เชื่อไม่ได้
 function loadFlags() {
-  try { return JSON.parse(fs.readFileSync(FLAGS, 'utf8')); } catch (e) { return []; }
+  try { return JSON.parse(fs.readFileSync(FLAGS, 'utf8')); }
+  catch (e) {
+    if (e.code === 'ENOENT') return [];
+    throw new Error(`อ่าน ${FLAGS} ไม่ได้ (${e.message}) — ไฟล์เสีย/เขียนค้าง ยกเลิกรอบนี้ ไม่เขียนทับคิวด้วยของว่าง`);
+  }
+}
+
+// เขียน state file แบบ atomic: temp ในโฟลเดอร์เดียวกันแล้ว rename ทับ (rename ข้าม filesystem ไม่ atomic
+// จึงต้องเป็น dir เดียวกัน · ใส่ pid กันสองรอบที่รันพร้อมกันเขียน temp ใบเดียวกันแล้ว rename ของครึ่งใบทับ)
+// เขียนตรง ๆ แล้วถูกตัดกลางคัน (job timeout 45 นาที / เครื่องดับ) = เหลือ JSON ครึ่งใบ ซึ่งเป็น input
+// ที่ทำให้ loadFlags ล้มทั้งรอบถัดไปพอดี — คิวนี้สร้างใหม่จากศูนย์ไม่ได้
+function writeJsonAtomic(file, text) {
+  const tmp = `${file}.tmp-${process.pid}`;
+  fs.writeFileSync(tmp, text);
+  fs.renameSync(tmp, file);
 }
 // เหตุผลที่เครื่องมืออื่นเป็นเจ้าของ (tools/dead-ticker-canary.js รายสัปดาห์) — cron ราคารายวัน
 // ตรวจเรื่องนี้เองไม่ได้ ห้ามเคลียร์ทิ้งเวลาเห็นว่า "ตัวนี้ไม่มี freeze รอบนี้" ไม่งั้น canary เขียน
@@ -543,16 +573,12 @@ async function main() {
   // --alive = ผู้ใช้ยืนยันด้วยมือว่ายังอยู่บนกระดาน → patch ต่อได้ + ปลด flag (ทางออกของเคส "mapping
   // เพี้ยน" ที่เดิมไม่มีเลยนอกจากแก้ price-flags.json มือ) · ปลดจริงหลังจบลูปเฉพาะตัวที่ไม่ล้ม plumbing
   const aliveAsserted = new Set(ALIVE ? files.map((f) => f.replace(/\.html$/i, '')) : []);
-  let fetchFails = 0, done = 0;
+  let consecFails = 0;
 
   for (const f of files) {
     const symbol = f.replace(/\.html$/i, '');
     const fp = path.join(REPORTS, f);
     const html = fs.readFileSync(fp, 'utf8');
-    done++;
-
-    // abort ทั้งรอบถ้าโดนบล็อก (fetch พังเกินครึ่งใน 20 ตัวแรก) — กัน mass-flag ผิด ๆ
-    if (done === 21 && fetchFails > 10) { console.error('✗ fetch พังเกินครึ่งใน 20 ตัวแรก — น่าจะโดน rate-limit, ยกเลิกทั้งรอบ'); process.exit(2); }
 
     const sm = readStockMeta(html);
     if (!sm) { failed.push({ symbol, reason: 'no-stock-meta' }); continue; }
@@ -560,11 +586,18 @@ async function main() {
     let q;
     try {
       q = await fetchChart(toYahooSymbol(symbol, sm.currency));
+      consecFails = 0;   // ยิงผ่าน = ต้นทางยังดี → เริ่มนับใหม่ (ยามจับ "พังติดกัน" ไม่ใช่ยอดรวมทั้งรอบ)
       await sleep(FETCH_DELAY_MS);
     } catch (e) {
-      fetchFails++;
       frozen.push({ symbol, reason: 'fetch-failed', detail: e.message, reportPrice: sm.price, marketPrice: null, diffPct: null });
       console.log(`⚠ ${symbol.padEnd(10)} fetch fail: ${e.message}`);
+      // ยกเลิกทั้งรอบเมื่อพังติดกันครบเกณฑ์ — ยิงต่อได้แต่จะได้ flag fetch-failed ผิด ๆ ทั้งรีโป
+      // และ retry backoff ของ fetchChart กินงบ job จนหมดก่อนถึงตัวสุดท้าย (เช็คตรงนี้ = จับ outage
+      // ที่เริ่มตอนไหนของรอบก็ได้ ไม่ใช่แค่ 20 ตัวแรกแบบยามเดิม)
+      if (++consecFails >= ABORT_CONSEC_FAILS) {
+        console.error(`✗ fetch พังติดกัน ${consecFails} ตัว (ล่าสุด ${symbol}) — น่าจะโดน rate-limit/ต้นทางล่ม ยกเลิกทั้งรอบ`);
+        process.exit(2);
+      }
       continue;
     }
 
@@ -686,7 +719,7 @@ async function main() {
   const evaluated = new Set(files.map((f) => f.replace(/\.html$/i, '')).filter((s) => !intraday.includes(s)));
   const flags = mergeFlags(prevFlags, evaluated, frozenAll.concat(failed.map((x) => ({ ...x, reportPrice: null, marketPrice: null, diffPct: null }))))
     .filter((f) => reportExists.has(String(f.symbol).toUpperCase()));
-  if (WRITE) fs.writeFileSync(FLAGS, JSON.stringify(flags, null, 2) + '\n');
+  if (WRITE) writeJsonAtomic(FLAGS, JSON.stringify(flags, null, 2) + '\n');
 
   // log ต่อหุ้นสำหรับ commit body (ถาวรใน git history — Actions log หายใน ~90 วัน)
   if (WRITE && process.env.PRICE_COMMIT_BODY)
