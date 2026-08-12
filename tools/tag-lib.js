@@ -42,6 +42,13 @@ function validateVocab(vocab) {
     if (seenSlug.has(e.slug)) errs.push(`slug ซ้ำในคลัง: ${e.slug}`);
     seenSlug.add(e.slug);
     if (typeof e.label !== 'string' || !e.label.trim()) errs.push(`${e.slug}: label ว่าง`);
+    // ★ desc = ประโยคอธิบายธีม "ถึงผู้อ่านเว็บ" — ขึ้นหน้า /tag/<slug> และ meta description ที่ Google แสดง
+    //   note = กติกาการติดแท็ก "ถึงคนทำงาน" (ไม่เผยแพร่) · เดิมยัดสองอย่างไว้ใน desc เดียวคั่นด้วย " — ★ …"
+    //   แล้วบันทึกภายในหลุดขึ้นหน้าเว็บจริง ⇒ แยกฟิลด์แล้วบังคับตรงนี้ ไม่ใช่ไปตัดทิ้งตอนเรนเดอร์
+    //   (ตัดตอนเรนเดอร์ = ผู้บริโภค desc รายต่อไปต้องจำเองว่าต้องตัด ไม่มีอะไรบังคับ)
+    if (typeof e.desc !== 'string' || !e.desc.trim()) errs.push(`${e.slug}: desc ว่าง (ต้องมีประโยคอธิบายธีมสำหรับผู้อ่าน)`);
+    else if (e.desc.includes('★')) errs.push(`${e.slug}: desc มี ★ — บันทึกถึงคนติดแท็กต้องอยู่ในฟิลด์ note ไม่ใช่ desc`);
+    if ('note' in e && (typeof e.note !== 'string' || !e.note.trim())) errs.push(`${e.slug}: note ว่าง (มีฟิลด์แต่ไม่มีข้อความ — ลบฟิลด์ทิ้งไปเลยถ้าไม่มีกติกาพิเศษ)`);
     for (const a of (e.aliases || [])) {
       const k = String(a).toLowerCase().trim();
       if (!k) continue;

@@ -209,6 +209,26 @@ function checkTaBundle(distDir, reportsDir, srcSyms) {
 // ---- หน้า tag (dist/tag/<slug>.html) ----
 // ★ ต้องอยู่ในโฟลเดอร์ย่อยเท่านั้น — coverage check ข้างบนมองไฟล์ .html ในราก dist
 //   ว่าเป็น "รายงาน" ⇒ วางที่รากจะถูกฟ้องว่าเป็นรายงานค้าง
+// 3 จุดบนหน้า tag ที่เอา `desc` ของธีมออกเผยแพร่ — [ป้ายชื่อจุด, regex ดึงค่า, ฟังก์ชัน escape ที่ build.js ใช้ตรงนั้น]
+// ป้ายชื่อมีชุดเดียวใช้ทั้งข้อความ "หาไม่เจอ" และ "เนื้อหาผิด" กันสองที่เรียกจุดเดียวกันคนละชื่อ
+// ★ ตรวจเฉพาะ 3 จุดนี้ ห้ามสแกนทั้งไฟล์ — การ์ดในหน้าฝัง desc ของรายงาน 908 ใบ ที่ผู้เขียนใส่ ★ เองได้
+// ตามใจ (ใช้เป็นสัญลักษณ์เน้นทั่วไปในรีโปนี้) จะกลายเป็น false positive ทันที
+const escH = (t) => String(t).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+const escA = (t) => escH(t).replace(/"/g, '&quot;');
+const DESC_SPOTS = [
+  ['ย่อหน้านำ <p class="lead">', /<p class="lead">([\s\S]*?)<\/p>/, escH],
+  ['<meta name="description">', /<meta name="description" content="([^"]*)"/, escA],
+  ['<meta property="og:description">', /<meta property="og:description" content="([^"]*)"/, escA],
+];
+// ★ ดึงค่าแล้วต้องยืนยันว่า "หาเจอจริง" ก่อนเทียบเสมอ — ถ้า markup เปลี่ยนจน regex ไม่แมตช์ แล้วปล่อยเป็น
+// สตริงว่าง เช็คจะกลายเป็น no-op เงียบ ๆ (ผ่านตลอดโดยไม่ได้ตรวจอะไร) ซึ่งเป็นโหมดพังเดียวกับที่
+// self-test.js เตือนไว้เรื่อง fixture mutation กลายเป็น no-op
+function pick(r, slug, html, where, re) {
+  const m = html.match(re);
+  if (!m) { r.errors.push(`tag/${slug}: หา ${where} ไม่เจอ (markup เปลี่ยน? เช็คคำอธิบายธีมจะกลายเป็น no-op)`); return null; }
+  return m[1];
+}
+
 function checkTagPages(DIST) {
   const r = { errors: [], warnings: [] };
   const T = require('../tools/tag-lib.js');
@@ -245,26 +265,16 @@ function checkTagPages(DIST) {
     if (cards !== live) r.errors.push(`tag/${s}: การ์ด ${cards} ใบ แต่มีสมาชิกที่มีรายงานจริง ${live} ตัว`);
     if ((html.match(/<h1[^>]*>/gi) || []).length !== 1) r.errors.push(`tag/${s}: ต้องมี <h1> เดียว`);
     if (!/<title>[^<]+<\/title>/i.test(html)) r.errors.push(`tag/${s}: ไม่มี <title>`);
-    // ★ `desc` ในคลังคำศัพท์เก็บกติกาการติดแท็ก (ถึงคนทำงาน) ต่อท้ายด้วย " — ★ …" ในสตริงเดียวกับคำอธิบายธีม
-    // build.js ต้องตัดท่อนนั้นทิ้งด้วย publicDesc() ก่อนเรนเดอร์ — เคยหลุดขึ้นจริงทั้งย่อหน้านำและ meta
-    // description (Google เอาไปแสดงในผลค้นหา) ทำให้ประโยคอ่านแล้วไม่รู้เรื่อง
-    // ★ ตรวจเฉพาะ 3 จุดที่มาจาก desc เท่านั้น ห้ามสแกนทั้งไฟล์ — การ์ดในหน้าฝัง desc ของรายงาน 908 ใบ
-    // ที่ผู้เขียนใส่ ★ เองได้ตามใจ (ใช้เป็นสัญลักษณ์เน้นทั่วไปในรีโปนี้) จะกลายเป็น false positive ทันที
-    // ★ ดึงค่าแล้วต้องยืนยันว่า "หาเจอจริง" ก่อนเทียบเสมอ — ถ้า markup เปลี่ยนจน regex ไม่แมตช์
-    // แล้วปล่อยเป็นสตริงว่าง เช็คจะกลายเป็น no-op เงียบ ๆ (ผ่านตลอดโดยไม่ได้ตรวจอะไร) ซึ่งเป็น
-    // โหมดพังเดียวกับที่ self-test.js เตือนไว้เรื่อง fixture mutation กลายเป็น no-op
-    const pick = (label, re) => {
-      const m = html.match(re);
-      if (!m) { r.errors.push(`tag/${s}: หา${label}ไม่เจอ (markup เปลี่ยน? เช็ค ★ จะกลายเป็น no-op)`); return null; }
-      return m[1];
-    };
-    const parts = [
-      ['ย่อหน้านำ', pick('ย่อหน้านำ <p class="lead">', /<p class="lead">([\s\S]*?)<\/p>/)],
-      ['meta description', pick('<meta name="description">', /<meta name="description" content="([^"]*)"/)],
-      ['og:description', pick('<meta property="og:description">', /<meta property="og:description" content="([^"]*)"/)],
-    ];
-    for (const [where, text] of parts) {
-      if (text !== null && text.includes('★')) r.errors.push(`tag/${s}: ${where} มีบันทึกภายใน (ท่อนหลัง ★) หลุดออกหน้าเว็บ`);
+    // คำอธิบายธีมต้องขึ้นครบและสะอาดทั้ง 3 จุดที่เผยแพร่ (ดู DESC_SPOTS)
+    const vdesc = String((vocab.bySlug.get(s) || {}).desc || '');
+    for (const [where, re, escFn] of DESC_SPOTS) {
+      const text = pick(r, s, html, where, re);
+      if (text === null) continue;
+      // เทียบกับ desc ในคลังตรง ๆ — ครอบทั้ง "ว่าง", "ถูกตัดหาย" และ "มีบันทึกภายในปนมา" ด้วยเงื่อนไขเดียว
+      // (เดิมตรวจแค่ว่ามี ★ ไหม ⇒ desc ที่กลายเป็นสตริงว่างจะผ่านฉลุย เพราะไม่มี ★ เหลืออยู่แล้ว)
+      if (!vdesc.trim()) r.errors.push(`tag/${s}: desc ในคลังว่าง — validateVocab ควรฟ้องก่อนถึงตรงนี้`);
+      else if (!text.includes(escFn(vdesc))) r.errors.push(`tag/${s}: ${where} ไม่ตรงกับ desc ในคลัง (ว่าง/ถูกตัด/ถูกแทน?) — ได้ ${JSON.stringify(text.slice(0, 80))}`);
+      if (text.includes('★')) r.errors.push(`tag/${s}: ${where} มีบันทึกภายใน (★) หลุดออกหน้าเว็บ — ต้องอยู่ในฟิลด์ note`);
     }
   }
 
@@ -343,7 +353,12 @@ function elementSignatures(html) {
 // คลาสที่เคยพังจริงมาแล้ว (regression pin, ไม่ใช่รายการที่ต้องคอยเพิ่มมือ) — ต้องถูกตรวจต่อไปเสมอไม่มีเงื่อนไข
 // ต่อให้วันหนึ่ง derive ด้วยรูปแบบการใช้งานข้างบนหาไม่เจอ (เช่น หน้า tag ปรับ markup จนรูปแบบไปตรงกับหน้าแรก
 // พอดี) ก็ยังต้องกัน `.lead` แบบไม่ scope อยู่ดี เพราะแค่หน้าแรกใช้ `.lead` เป็นตัวปรับสีบนชิปอยู่แล้วก็เสี่ยงพอ
-const SHARED_CLASS_PIN = ['lead'];
+// ★ `tchip` เพิ่มเข้ามาเพราะหลังถอดแถวแท็กยอดนิยม หน้าแรกไม่มี class="tchip" ใน markup จริงอีกเลย —
+// เหลือแต่สตริงใน <script> ที่ JS เอาไปใส่ innerHTML ตอน runtime (ชิปตัวกรอง/ชิปเสนอแท็ก) ⇒ ทั้ง
+// elementSignatures และ countUsage กำลังอ่าน string literal ใน JS ราวกับเป็น HTML · วันที่โค้ดนั้นเปลี่ยน
+// ไปสร้าง element ด้วย createElement/textContent แทน homeUsed จะกลายเป็น 0 แล้วเช็คจะ `continue` ข้าม
+// `.tchip` เงียบ ๆ ทั้งที่หน้าแรกยังเรนเดอร์มันจริง ⇒ pin ไว้ + ให้คลาสที่ pin ข้ามเงื่อนไข homeUsed
+const SHARED_CLASS_PIN = ['lead', 'tchip'];
 function checkSharedCssScope(DIST) {
   const r = { errors: [], warnings: [] };
   const idx = path.join(DIST, 'index.html');
@@ -383,7 +398,9 @@ function checkSharedCssScope(DIST) {
     const unscoped = [...css.matchAll(unscopedRe)].length;
     if (!unscoped) continue;
     const homeUsed = countUsage(homeHtml, cls);
-    if (!homeUsed) continue; // หน้าแรกไม่ได้ใช้คลาสนี้เลย ไม่มีอะไรให้รั่วไปโดน
+    // คลาสที่ pin ไว้ต้องฟ้องเสมอ ไม่ว่าจะนับเจอในหน้าแรกหรือไม่ — countUsage เห็นแค่ markup ในไฟล์
+    // มองไม่เห็น element ที่ JS สร้างตอน runtime ⇒ "นับได้ 0" ไม่ได้แปลว่า "หน้าแรกไม่ได้ใช้"
+    if (!homeUsed && !SHARED_CLASS_PIN.includes(cls)) continue; // หน้าแรกไม่ได้ใช้คลาสนี้เลย ไม่มีอะไรให้รั่วไปโดน
     const tagUsed = tagHtmls.reduce((n, h) => n + countUsage(h, cls), 0);
     r.errors.push(`CSS: กฎ .${cls} ไม่ถูก scope (${unscoped} จุด) — หน้าแรกใช้คลาสนี้ ${homeUsed} element, หน้า tag ใช้ ${tagUsed} element (คนละรูปแบบ/บริบทกัน) — กฎจะรั่วข้ามหน้า ให้ scope ใต้ ancestor (เช่น .hd หรือคลาสห่อของฝั่งที่เพิ่มมาใหม่)`);
   }

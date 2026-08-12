@@ -217,7 +217,7 @@ validate ก่อนเขียนเสมอ: slug ∈ vocab · 1–3 ตั
 - เพิ่ม `tagOK(c)` เข้า `recompute()` — กรองฝั่ง client ทั้งหมด **ไม่ต้องแก้ Worker เลย**
 - อ่าน `?tag=` / `?market=` ตอนโหลด · `history.replaceState` ตอนเปลี่ยนตัวกรอง ⇒ ลิงก์แชร์ได้
 - ชิปตัวกรองที่ทำงานอยู่ `🏷 AI Data Center · 37 หุ้น ✕`
-- แถว "แท็กยอดนิยม" ~12 อันไว้ให้เดินสำรวจ
+- ~~แถว "แท็กยอดนิยม" ~12 อันไว้ให้เดินสำรวจ~~ — **ถอดออกแล้วตามคำสั่งเจ้าของ (13 ส.ค. 69) ห้ามใส่กลับโดยไม่ถาม** (ดูคอมเมนต์ใน `build.js` ที่ประกาศ `filterQueryStringSrc`)
 - `reports.json` (ทั้งตัวราก และตัว public ใน dist) ได้ฟิลด์ `tags: string[]` เพิ่ม — build เขียนเอง
 
 ---
@@ -266,7 +266,7 @@ union ไม่ทำให้ผลเดิมหาย — หุ้นที
 - เนื้อหา: `<h1>` = label · คำอธิบายจาก `desc` · การ์ดหุ้นสมาชิกทั้งหมด (ใช้ตัวสร้างการ์ดชุดเดียวกับหน้าแรก) · ลิงก์กลับหน้าแรก
 - `<title>` · `<meta name="description">` · `<link rel="canonical" href="<SITE_ORIGIN>/tag/<slug>">` · og tags
 - เข้า `sitemap.xml` ทุกหน้า
-- **ลิงก์ไขว้:** ชิปบนหน้ารายงาน → `/tag/<slug>` (§5) · หน้า tag มีปุ่ม "เปิดในหน้ารวม →" ชี้ `/?tag=<slug>` เพื่อใช้ตัวเรียง/ตัวกรอง metric ของหน้าแรก · หน้า tag แสดง tag อื่นที่เกี่ยวข้อง (slug ที่มีสมาชิกทับซ้อนมากที่สุด 5 อันดับ) เพื่อให้กราฟลิงก์ภายในเชื่อมถึงกัน
+- **ลิงก์ไขว้:** ชิปบนหน้ารายงาน → `/tag/<slug>` (§5) · ~~หน้า tag มีปุ่ม "เปิดในหน้ารวม →" ชี้ `/?tag=<slug>`~~ (**ถอดออกแล้ว 13 ส.ค. 69** — ทางเข้า `?tag=` เหลือทางเดียวคือพิมพ์ค้นหาชื่อธีมบนหน้าแรกแล้วคลิกชิปที่เสนอมา) · หน้า tag แสดง tag อื่นที่เกี่ยวข้อง (slug ที่มีสมาชิกทับซ้อนมากที่สุด 5 อันดับ) เพื่อให้กราฟลิงก์ภายในเชื่อมถึงกัน
 
 ---
 
@@ -453,7 +453,7 @@ update-prices-test → dead-ticker-test → tag-apply-test → tags-test → che
 | 42 | หน้า tag | มี `<title>` · `<h1>` เดียว · canonical ชี้ `<SITE_ORIGIN>/tag/<slug>` |
 | 43 | `sitemap.xml` | มีหน้า tag ครบ ไม่ซ้ำ |
 | 44 | **ไม่มีไฟล์ tag หลุดมาที่ราก `dist/`** | จำนวนไฟล์รากยังเท่ากับจำนวนรายงาน + index (§2.3) |
-| 45 | index.html | ทุกการ์ดมี `data-tags` · แถวแท็กยอดนิยมชี้ slug ที่มีจริง |
+| 45 | index.html | ทุกการ์ดมี `data-tags` · ~~แถวแท็กยอดนิยมชี้ slug ที่มีจริง~~ (แถวถูกถอดออก 13 ส.ค. 69 — ส่วนที่ยังตรวจคือ `data-tags`) |
 
 ---
 
@@ -480,7 +480,7 @@ update-prices-test → dead-ticker-test → tag-apply-test → tags-test → che
 
 | ไฟล์ | แก้อะไร |
 |---|---|
-| `build.js` | อ่าน 2 ไฟล์ tag · `renderTagRow()` ใน `decorateReport` · `data-tags` บนการ์ด · `tagOK`/URL param ในสคริปต์ index · `matchTagQuery` · แถวแท็กยอดนิยม · ฟิลด์ `tags` ใน manifest · สร้าง `dist/tag/*` + sitemap |
+| `build.js` | อ่าน 2 ไฟล์ tag · `renderTagRow()` ใน `decorateReport` · `data-tags` บนการ์ด · `tagOK`/URL param ในสคริปต์ index · `matchTagQuery` · ฟิลด์ `tags` ใน manifest · สร้าง `dist/tag/*` + sitemap |
 | `tools/tag-apply.js` | **ใหม่** — ทางเข้าเดียวที่เขียน `tags.json` |
 | `test/tags-test.js` · `test/tag-apply-test.js` | **ใหม่** |
 | `test/check-reports.js` | E40 · W13 |

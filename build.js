@@ -839,8 +839,12 @@ const filterQueryStringSrc = String(tagLib.filterQueryString);
 // ★ ห้ามมีสตริง class="card" ในก้อนนี้ — checkTagPages นับจำนวนการ์ดจากสตริงนั้นตรง ๆ ในไฟล์ HTML
 const CARD_HYDRATE_JS = `
       // ยอดวิว + ไลก์ ทั้งชุดครั้งเดียว (read-only ไม่นับเพิ่ม) — done() ให้ผู้เรียกจัดเรียงใหม่เองถ้าจำเป็น
+      // ★ worker คืน error เป็น JSON ที่ parse ผ่าน ({error:"rate_limited"} 429 · {error:"do"} 500) ⇒ ถ้าไม่ตรวจ
+      //   รูปร่าง payload การ์ดทุกใบจะได้ {} แล้วโชว์ "👁 0 · 👍 0" เป็นเลขที่ดูเหมือนยอดจริง · ยอดพังต้อง
+      //   "ไม่ขึ้นเลย" ดีกว่า "ขึ้นเป็นศูนย์" — ปล่อย .cviews ซ่อนไว้ตามเดิม (no-JS ก็เห็นแบบนี้)
       function hydrateViews(list, done) {
         fetch('/api/views').then(function (r) { return r.json(); }).then(function (map) {
+          if (!map || typeof map !== 'object' || map.error) return;
           list.forEach(function (c) {
             var s = c.querySelector('.cviews'); if (!s) return;
             var e = (map && map[s.getAttribute('data-sym')]) || {};
@@ -1410,11 +1414,10 @@ fs.writeFileSync(path.join(OUT, 'index.html'), indexHtml, 'utf8');
 //   /tag/<SYM>.html = 404 ทุกใบ ⇒ ต้องแปลงเป็น absolute ก่อนฝัง
 // bySymbol ย้ายขึ้นไปประกาศพร้อม tagPageSlugs แล้ว (ข้อ 4) — ใช้ตัวเดียวกันทั้งไฟล์
 const idxOf = new Map(reports.map((r, i) => [r.symbol, i])); // hoisted ออกจาก loop ข้างล่าง — ค่าเดิมทุก slug ไม่ต้องสร้างใหม่ทุกรอบ
-// ★ `desc` ในคลังคำศัพท์ทำหน้าที่ 2 อย่างในสตริงเดียว: ประโยคอธิบายธีม (ถึงผู้อ่าน) + กติกาการติดแท็ก
-// (ถึงคนติดแท็ก) ที่ต่อท้ายด้วย " — ★ …" เช่น "★ ติดได้เฉพาะเมื่อ AI เป็นตัวขับเคลื่อนหลัก…" ·
-// ท่อนหลัง ★ เป็นคำสั่งถึงคนทำงาน ไม่ใช่คำอธิบายถึงผู้อ่าน — หลุดขึ้นหน้าเว็บแล้วประโยคอ่านไม่รู้เรื่อง
-// (และไปโผล่ใน meta description ที่ Google เอาไปแสดงด้วย) ⇒ ตัดทิ้งทุกจุดที่เรนเดอร์ออกสู่สาธารณะ
-const publicDesc = (ent) => ent.desc.split('★')[0].replace(/[\s—·-]+$/, '');
+// ★ `ent.desc` = ประโยคอธิบายธีมสำหรับผู้อ่านเท่านั้น — กติกาการติดแท็ก (ถึงคนทำงาน) อยู่ในฟิลด์ `note`
+// แยกต่างหากใน tags-vocab.json และ `validateVocab` บังคับว่า desc ต้องไม่ว่างและห้ามมี ★ (เดิมยัดสองอย่าง
+// ไว้ในสตริงเดียวคั่นด้วย " — ★ …" แล้วบันทึกภายในหลุดขึ้นทั้งย่อหน้านำและ meta description ที่ Google แสดง)
+// ⇒ ที่นี่ใช้ ent.desc ตรง ๆ ได้ ไม่ต้องตัดอะไร · check-site ยังตรวจซ้ำที่ output กันหลุดย้อนหลัง
 if (tagPageSlugs.length) {
   fs.mkdirSync(path.join(OUT, 'tag'), { recursive: true });
   // แท็กที่เกี่ยวข้อง = slug ที่มีสมาชิก "ที่มีรายงานจริง" ทับซ้อนมากที่สุด (ลิงก์ภายในให้กราฟเชื่อมถึงกัน
@@ -1434,7 +1437,7 @@ if (tagPageSlugs.length) {
     const cardsHtml = syms.slice().sort((a, b) => idxOf.get(a) - idxOf.get(b))
       .map((s) => cardHtml[idxOf.get(s)].replace(/href="\.\//g, 'href="/')).join('\n');
     const url = `${SITE_ORIGIN}/tag/${slug}`;
-    const desc = publicDesc(ent);
+    const desc = ent.desc;
     const pageTitle = `หุ้นกลุ่ม ${ent.label} — รวม ${syms.length} ตัว | วิเคราะห์หุ้น`;
     const related = relatedOf(slug);
     fs.writeFileSync(path.join(OUT, 'tag', slug + '.html'), `<!DOCTYPE html>

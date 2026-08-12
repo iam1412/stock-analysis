@@ -36,6 +36,18 @@ ok(T.validateVocab(mkVocab([E('a-b', '')])).some((m) => /label/.test(m)), 'จ�
 ok(T.validateVocab(mkVocab([E('a-b', 'A', ['x']), E('c-d', 'C', ['x'])])).some((m) => /alias/.test(m)),
    'จับ alias ที่ชนกันข้ามslug');
 
+// desc/note — desc เป็นข้อความสำหรับผู้อ่านเว็บ (ขึ้น meta description ที่ Google แสดง) ต้องมีจริงและสะอาด
+// เดิม validateVocab ไม่แตะ desc เลย ⇒ entry ที่ลืมใส่จะผ่าน schema แต่ไป throw ตอน build (ทั้งรีโปล่ม)
+// และบันทึกถึงคนติดแท็กที่เคยยัดไว้ท้าย desc ด้วย " — ★ …" ก็หลุดขึ้นหน้าเว็บได้โดยไม่มีอะไรฟ้อง
+const noDesc = (slug, label) => ({ slug, label, aliases: [] });
+ok(T.validateVocab(mkVocab([noDesc('a-b', 'A')])).some((m) => /desc ว่าง/.test(m)), 'จับ entry ที่ไม่มีฟิลด์ desc เลย');
+ok(T.validateVocab(mkVocab([{ ...E('a-b', 'A'), desc: '   ' }])).some((m) => /desc ว่าง/.test(m)), 'จับ desc ที่มีแต่ช่องว่าง');
+ok(T.validateVocab(mkVocab([{ ...E('a-b', 'A'), desc: 'คำอธิบาย — ★ ติดได้เฉพาะเมื่อ…' }])).some((m) => /note/.test(m)),
+   'จับบันทึกภายใน (★) ที่ยัดอยู่ใน desc — ต้องย้ายไปฟิลด์ note');
+ok(T.validateVocab(mkVocab([{ ...E('a-b', 'A'), note: '' }])).some((m) => /note ว่าง/.test(m)), 'จับ note ที่มีฟิลด์แต่ไม่มีข้อความ');
+ok(T.validateVocab(mkVocab([{ ...E('a-b', 'A'), note: 'กติกาพิเศษ' }])).length === 0, 'note ที่มีข้อความจริง → ผ่าน');
+ok(vocab.list.every((e) => !e.desc.includes('★')), 'ทุก entry ในคลังจริง: desc ไม่มีบันทึกภายในปนมา');
+
 // ── B) validateAssignment ──
 const V = mkVocab([E('ai-datacenter', 'AI Data Center', ['ai']), E('power-grid', 'Power Grid', ['grid'])]);
 ok(T.validateAssignment('LITE', ['ai-datacenter'], V).length === 0, 'assignment ถูกต้อง → ไม่มี error');

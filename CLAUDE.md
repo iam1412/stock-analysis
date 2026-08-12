@@ -111,7 +111,7 @@ Co-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>
 - gate ตรวจ **ความสอดคล้อง/ความสด/การอ้างอิง** เท่านั้น — **ตรวจความจริงของราคา/EPS ไม่ได้** (ต้อง cross-source verify §2) และ **ตรวจไม่ได้ว่าสมมติฐาน valuation สมเหตุผลไหม**
 - ★ **ชั้น 0 — sanity gate ของ valuation (controller ตรวจเอง)**: cluster check (เซกเตอร์เดียวกัน ≥4 ตัว MOS ทางเดียวกัน |เฉลี่ย| >25% แต่ราคาห่าง consensus ≤15% = **พารามิเตอร์ร่วมพัง หยุด**) · |MOS| >40% ต้องมีวิธีที่ไม่ใช้ (r,g) ยืนยัน · **rf ต้องตรงสกุลกระแสเงินสด** · "2 วิธี" ที่ใช้ (r,g) ชุดเดียวกัน = วิธีเดียว → **`docs/quality-gate.md` ชั้น 0**
 - ★ **หุ้นวัฏจักร/โภคภัณฑ์ (ชั้น 0.4b)**: อัตราส่วนปรับฉาก anchor ที่**ราคาเฉลี่ยหน้าต่าง TTM ไม่ใช่ spot** (คิดรายบริษัท) · **ทุกขาของ FV ต้องเป็นฟังก์ชันของตัวแปรฉาก** — `P/B × BVPS` เป็นสมอตาย ใช้เป็นบริบทได้แต่ห้ามเป็นขา · ตัวคูณกับตัวตั้งต้องนิยามเดียวกัน · EV ต้องใช้ราคาสกุลเดียวกับงบ (แคนาดา = TSX/CAD) · **controller ต้อง pre-fetch ตัวคูณมัธยฐานให้ worker** (`stockanalysis.com/stocks/<SYM>/financials/ratios/`) ไม่งั้น worker จะประมาณเอง
-- แก้ check ต้องเพิ่มเคสใน `test/self-test.js` + `npm run test:self` ผ่าน
+- แก้ check ต้องเพิ่มเคสใน `test/self-test.js` + `npm run test:self` ผ่าน — **ขอบเขต = E-code/W-code ใน `test/check-reports.js` เท่านั้น** (self-test เป็น meta-test ของไฟล์นั้นไฟล์เดียว mutate รายงานจริงแล้วดูว่า check ยิงไหม) · **check ใน `test/check-site.js` ไม่เข้าข้อนี้** เพราะมันตรวจ `dist/` ที่ build แล้ว ไม่มี fixture ให้ mutate — กันตัวเองพังเงียบด้วยกฎ 2 ข้อแทน: (1) ทุก check ที่ดึงค่าด้วย regex ต้องฟ้องเมื่อ **หาไม่เจอ** ไม่ใช่ปล่อยเป็นค่าว่างแล้วผ่าน (2) คลาส CSS ที่เคยรั่วข้ามหน้าจริงต้องอยู่ใน `SHARED_CLASS_PIN`
 
 > **รายละเอียดทุกชั้น/ทุก E-code + เกณฑ์ → `docs/quality-gate.md`**
 
