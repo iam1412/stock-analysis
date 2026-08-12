@@ -599,7 +599,7 @@ git add tools/tag-apply.js test/tag-apply-test.js tags.json package.json && git 
   const list = [
     { slug: 'ai-datacenter', label: 'AI Data Center', aliases: ['ai', 'เอไอ'], desc: 'd' },
     { slug: 'optical-photonics', label: 'Optical & Photonics', aliases: ['optical'], desc: 'd' },
-    { slug: 'thai-consumption', label: 'การบริโภคในประเทศไทย', aliases: ['ค้าปลีก'], desc: 'd' },
+    { slug: 'thai-consumption', label: 'การบริโภคในประเทศไทย', aliases: ['ค้าปลีก'], desc: 'd', kind: 'driver' },
   ];
   const vocab = { version: 1, list, bySlug: new Map(list.map((e) => [e.slug, e])) };
   const tagData = { vocabVersion: 1, tags: { LITE: ['ai-datacenter', 'optical-photonics'], CPN: ['thai-consumption'] }, requests: [] };
@@ -1601,8 +1601,8 @@ git add tags.json tags-vocab.json reports.json && git commit -m "$(printf 'feat:
 {
   const T = require('../tools/tag-lib.js');
   const list = [
-    { slug: 'thai-consumption', label: 'การบริโภคในประเทศไทย', aliases: ['ค้าปลีก'], desc: 'd' },
-    { slug: 'thai-bank', label: 'ธนาคารไทย', aliases: ['แบงก์ไทย'], desc: 'd' },
+    { slug: 'thai-consumption', label: 'การบริโภคในประเทศไทย', aliases: ['ค้าปลีก'], desc: 'd', kind: 'driver' },
+    { slug: 'thai-bank', label: 'ธนาคารไทย', aliases: ['แบงก์ไทย'], desc: 'd', kind: 'business' },
   ];
   const vocab = { version: 1, list, bySlug: new Map(list.map((e) => [e.slug, e])) };
   const mk = (slugs) => ({ vocabVersion: 1, tags: slugs ? { BBL: slugs } : {}, requests: [] });
@@ -1617,9 +1617,13 @@ git add tags.json tags-vocab.json reports.json && git commit -m "$(printf 'feat:
   ok(errIds(run(['thai-consumption', 'thai-bank', 'thai-consumption', 'thai-bank'])).has('E40'), 'E40: เกิน 3 slug → ยิง');
   ok(errIds(run(['thai-consumption', 'thai-consumption'])).has('E40'), 'E40: slug ซ้ำกันเอง → ยิง');
 
-  const one = run(['thai-consumption']);
-  ok(allIds(one).has('W13'), 'W13: มี tag เดียว → ยิง');
-  ok(!errIds(one).has('E40'), 'W13: มี tag เดียว → E40 ไม่ยิง (เป็น warning ไม่ใช่ error)');
+  // W13 ใหม่: เตือนเมื่อ "ไม่มีธีมธุรกิจเลย" ไม่ใช่ "มี tag เดียว"
+  const oneBiz = run(['thai-bank']);                    // ธีม business เดี่ยว = ถูกต้อง ต้องเงียบ
+  ok(!allIds(oneBiz).has('W13'), 'W13: ธีมธุรกิจเดี่ยว → ไม่ยิง (ไม่ใช่ข้อบกพร่อง)');
+  ok(!errIds(oneBiz).has('E40'), 'W13: ธีมธุรกิจเดี่ยว → E40 ไม่ยิงด้วย');
+  const driverOnly = run(['thai-consumption']);         // มีแต่ธีม driver = บอกไม่ได้ว่าทำอะไร
+  ok(allIds(driverOnly).has('W13'), 'W13: มีแต่ธีม driver → ยิง');
+  ok(!errIds(driverOnly).has('E40'), 'W13: มีแต่ธีม driver → เป็น warning ไม่ใช่ error');
 }
 ```
 
@@ -1692,11 +1696,20 @@ function checkHtml(html, name, opts) {
     return errs.length ? errs.join(' ; ') : null;
   } },
 
-  // ── W13: หุ้นมี tag เดียว — อาจหาธีมที่สองได้ (ไม่บังคับ ห้ามยัด tag ขยะให้ครบ) ──
-  { id: 'W13', level: 'warn', label: 'หุ้นควรมี tag 2–3 ตัว', fn: (c) => {
+  // ── W13: หุ้นต้องมีธีม "ธุรกิจ" อย่างน้อย 1 อัน ──
+  // คลังมีธีม 2 ชนิด (ฟิลด์ kind): business = ทำอะไร · driver = อะไรทำให้ราคาขยับ
+  // ★ เตือนที่ "ไม่มีธีมธุรกิจเลย" ไม่ใช่ "มี tag เดียว" — วัดจริงหลังติดครบ 908 ตัว: หุ้นที่มี
+  //   tag เดียวมี 567 ตัว ซึ่งส่วนใหญ่เป็นหุ้น US ที่ไม่มีธีม driver ในคลังนี้ (คลัง driver เป็น
+  //   แกนไทยเป็นหลัก) การเตือนทั้งหมดนั้นคือเสียงรบกวนที่กลบสัญญาณจริง ส่วน "มีแต่ธีม driver"
+  //   = บอกไม่ได้ว่าบริษัททำอะไร ซึ่งเป็นช่องว่างของคลังที่ควรเข้าคิว --request จริง ๆ
+  // fixture ที่ไม่ระบุ kind ถือเป็น business (เข้ากันได้กับเทสเดิมทุกเคส)
+  { id: 'W13', level: 'warn', label: 'หุ้นต้องมีธีมธุรกิจอย่างน้อย 1', fn: (c) => {
     if (!c.tagData || !c.vocab) return null;
     const slugs = c.tagData.tags[c.symbol];
-    return (slugs && slugs.length === 1) ? `มี tag เดียว (${slugs[0]}) — ทบทวนว่ามีธีมที่สองไหม` : null;
+    if (!slugs || !slugs.length) return null;                 // ไม่มี entry เลย = E40 จัดการแล้ว
+    const isBiz = (s) => { const e = c.vocab.bySlug.get(s); return !e || e.kind !== 'driver'; };
+    return slugs.some(isBiz) ? null
+      : `มีแต่ธีมตัวขับเคลื่อน (${slugs.join(', ')}) ไม่มีธีมธุรกิจ — คลังยังขาดธีมที่บอกว่าบริษัททำอะไร ให้เข้าคิวด้วย tag-apply.js --request`;
   } },
 ```
 
