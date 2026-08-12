@@ -1182,11 +1182,15 @@ const INDEX_STYLE = `<style>
   .tag{display:inline-block;font-family:var(--monoff);font-size:10.5px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.65);margin-bottom:12px}
   h1{font-family:var(--display);font-size:38px;font-weight:800;letter-spacing:-.6px;line-height:1.15}
   .sub{color:rgba(255,255,255,.78);font-size:14.5px;margin-top:8px;font-weight:300;max-width:64ch}
-  .lead{color:rgba(255,255,255,.78);font-size:14.5px;margin-top:8px;font-weight:300;max-width:64ch} /* หน้า tag: ก็อปสไตล์ .sub มาใช้ */
+  /* ★ ต้อง scope ใต้ .hd — คลาส "lead" ถูกใช้บนหน้าแรกด้วย (ป้ายจุดเด่น class="hl hl-* lead"
+     = มงกุฎ "สูงสุดในกลุ่ม" 4 ใบ) กฎ .lead เปล่าจะรั่วไปโดนชิปพาสเทลเล็ก ๆ เหล่านั้น
+     ทั้งสีตัวหนังสือเกือบขาว (ผิด AA บนพื้นอ่อน) · ขนาด/น้ำหนักฟอนต์ · margin · max-width
+     ⇒ ห้ามเพิ่มกฎ .lead แบบไม่ scope เด็ดขาด (check-site มี regression check คุมไว้) */
+  .hd .lead{color:rgba(255,255,255,.78);font-size:14.5px;margin-top:8px;font-weight:300;max-width:64ch} /* หน้า tag: ก็อปสไตล์ .sub มาใช้ */
   .crumb{margin:0 0 12px;font-size:13.5px} /* หน้า tag: breadcrumb เหนือ/ใต้ h1 โทนเดียวกับ .sub */
   .crumb a{color:rgba(255,255,255,.72);text-decoration:none;font-weight:500;transition:color .14s}
   .crumb a:hover{color:#fff;text-decoration:underline}
-  .lead + .crumb{margin:14px 0 0}
+  .hd .lead + .crumb{margin:14px 0 0}
   /* การ์ดสถิติ = ปุ่มกรองตลาดในตัว (desktop ชิดขวา · mobile ตกลงใต้ข้อความเป็นแถวแบบเดิม) */
   .hd-stats{flex:none;display:grid;grid-template-columns:auto auto;gap:6px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.16);border-radius:20px;padding:12px;margin:0}
   .hstat{display:flex;flex-direction:column;gap:3px;align-items:flex-start;background:none;border:0;border-radius:13px;padding:11px 18px;color:#fff;font:inherit;text-align:left}

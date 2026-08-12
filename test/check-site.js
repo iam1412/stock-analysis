@@ -239,6 +239,31 @@ function checkTagPages(DIST) {
   return r;
 }
 
+// ---- กันกฎ CSS ของหน้า tag รั่วไปโดนหน้าแรก ----
+// หน้าแรกกับหน้า tag ใช้สไตล์ชีตก้อนเดียวกัน (INDEX_STYLE) และมีคลาสที่ "ชื่อชนกัน":
+//   `lead` — หน้า tag ใช้กับย่อหน้านำใต้ h1 · หน้าแรกใช้กับป้ายจุดเด่น `class="hl hl-* lead"`
+//   (มงกุฎ "สูงสุดในกลุ่ม") ⇒ กฎ `.lead` แบบไม่ scope จะรั่วไปทาสีตัวหนังสือเกือบขาวลงชิป
+//   พื้นพาสเทลเล็ก ๆ (ผิด WCAG AA) + เปลี่ยนขนาด/น้ำหนักฟอนต์/margin/max-width
+// เคยเกิดขึ้นจริงและ markup diff จับไม่ได้ (HTML หน้าแรกไม่เปลี่ยน เปลี่ยนแค่การเรนเดอร์)
+// ⇒ บังคับว่าคลาสที่ใช้ร่วมต้องมี ancestor นำหน้าเสมอ
+const SHARED_CLASS_MUST_SCOPE = ['lead']; // เพิ่มชื่อคลาสที่ทั้งสองหน้าใช้ร่วมกันที่นี่
+function checkSharedCssScope(DIST) {
+  const r = { errors: [], warnings: [] };
+  const idx = path.join(DIST, 'index.html');
+  if (!fs.existsSync(idx)) return r;
+  const html = fs.readFileSync(idx, 'utf8');
+  const css = [...html.matchAll(/<style>([\s\S]*?)<\/style>/g)].map((m) => m[1]).join('\n');
+  for (const cls of SHARED_CLASS_MUST_SCOPE) {
+    const used = (html.match(new RegExp(`class="[^"]*\\b${cls}\\b[^"]*"`, 'g')) || []).length;
+    // selector `.cls` ที่ตัวนำหน้าไม่ใช่ตัวสะกดคลาส/ไอดี/`>`/`+` = ไม่ถูก scope
+    const unscoped = [...css.matchAll(new RegExp(`(^|[,{}\\n])\\s*\\.${cls}\\s*[,{]`, 'g'))].length;
+    if (unscoped && used) {
+      r.errors.push(`CSS: กฎ .${cls} ไม่ถูก scope (${unscoped} จุด) แต่หน้าแรกมี ${used} element ใช้คลาสนี้ — กฎของหน้า tag จะรั่วไปโดนหน้าแรก ให้ scope ใต้ .hd`);
+    }
+  }
+  return r;
+}
+
 function main() {
   if (!fs.existsSync(DIST)) { console.error('❌ ไม่พบ dist/ — รัน `node build.js` ก่อน'); process.exit(1); }
 
@@ -281,6 +306,7 @@ function main() {
   add('site (ta chart)', checkTaBundle(DIST, REPORTS_DIR, srcSyms));
 
   add('site (tag pages)', checkTagPages(DIST));
+  add('site (shared css scope)', checkSharedCssScope(DIST));
 
   // 1.5) metric บนการ์ด index = stock-meta ของ report (build wiring ถูกต้อง)
   if (indexHtml) add('site (metric cards)', checkMetricsCards(indexHtml, DIST, distSyms));
