@@ -364,6 +364,14 @@ ok(b.injectTA(taBody, 'AAPL', null, { currency: 'USD' }, 'assets/ta-abc123.js') 
   ok(b.freshHash(src.replace('<h1>X</h1>', '<h1>Y</h1>')) !== h1, 'freshHash: เนื้อหาเปลี่ยนจริง → hash เปลี่ยน');
 }
 
+// ── manifest + การ์ด index ต้องพก tag ──
+{
+  const man = JSON.parse(require('fs').readFileSync(require('path').join(__dirname, '..', 'reports.json'), 'utf8'));
+  ok(man.every((r) => Array.isArray(r.tags)), 'reports.json: ทุก record มีฟิลด์ tags เป็น array');
+  const lite = man.find((r) => r.symbol === 'LITE');
+  ok(!lite || lite.tags.length >= 1, 'reports.json: LITE มี tag อย่างน้อย 1 ตัว');
+}
+
 console.log('\n' + '─'.repeat(50));
 console.log(`build-test: ${n - fails}/${n} ผ่าน`);
 if (fails) { console.log('\n❌ build.js มีพฤติกรรมผิด — แก้ build.js ก่อน push\n'); process.exit(1); }

@@ -612,6 +612,7 @@ if (fs.existsSync(REPORTS_DIR)) {
     const updated = old && old.hash === h && old.updated ? old.updated : nowISO; // เปลี่ยน → ประทับเวลาใหม่
 
     const rec = { symbol, file: entry.name, ...extractMeta(content, symbol), metrics: extractMetrics(content), updated, hash: h };
+    rec.tags = tagLib.tagsOf(symbol, TAG_DATA);
     reports.push(rec);
     // report-data/stock-meta ดิบ (จาก source ต้นฉบับ) → ให้ injectTA ประกอบ __TA_CFG__ ; รายงาน legacy (ไม่มี report-data) → rd=null → injectTA ข้าม
     const rd = parseJsonScript(content, 'report-data');
@@ -638,12 +639,12 @@ reports.sort((a, b) =>
 // ตัวที่ root (committed): มี hash ไว้ตรวจการเปลี่ยนแปลงรอบหน้า
 fs.writeFileSync(
   MANIFEST,
-  JSON.stringify(reports.map(({ symbol, file, name, title, desc, updated, hash, metrics }) => ({ symbol, file, name, title, desc, updated, hash, metrics })), null, 2) + '\n'
+  JSON.stringify(reports.map(({ symbol, file, name, title, desc, updated, hash, metrics, tags }) => ({ symbol, file, name, title, desc, updated, hash, metrics, tags })), null, 2) + '\n'
 );
 // ตัว public ใน dist (เสิร์ฟที่ /reports.json) — ไม่ใส่ hash, เพิ่ม url + metrics (สำหรับเรียงฝั่ง client)
 fs.writeFileSync(
   path.join(OUT, 'reports.json'),
-  JSON.stringify(reports.map(({ symbol, file, name, title, desc, updated, metrics }) => ({ symbol, file, name, title, desc, updated, url: '/' + file, metrics })), null, 2) + '\n'
+  JSON.stringify(reports.map(({ symbol, file, name, title, desc, updated, metrics, tags }) => ({ symbol, file, name, title, desc, updated, url: '/' + file, metrics, tags })), null, 2) + '\n'
 );
 
 // ---- 4.5) sitemap.xml + robots.txt (ส่ง Google Search Console — auto จากรายการหุ้น) ----
@@ -722,8 +723,9 @@ const PAGE_SIZE = 12; // จำนวนหุ้นต่อหน้า (โ�
 const cardHtml = reports.map((r) => {
   const blurb = r.desc || r.title;
   const c = escAttr(r.accent || THEME_DEFAULTS.accent), cd = escAttr(r.accentDark || THEME_DEFAULTS.accentDark);
+  const tagAttr = (r.tags && r.tags.length) ? ` data-tags="${escAttr(r.tags.join(' '))}"` : '';
   return `
-      <a class="card" style="--c:${c};--cd:${cd}" data-search="${escAttr((r.symbol + ' ' + r.name + ' ' + r.title + ' ' + (r.desc || '')).toLowerCase())}"${metricAttrs(r.metrics)}${marketAttr(r.metrics)} href="./${encodeURIComponent(r.file)}">
+      <a class="card" style="--c:${c};--cd:${cd}" data-search="${escAttr((r.symbol + ' ' + r.name + ' ' + r.title + ' ' + (r.desc || '')).toLowerCase())}"${metricAttrs(r.metrics)}${marketAttr(r.metrics)}${tagAttr} href="./${encodeURIComponent(r.file)}">
         <div class="ctop"><div class="badge">${esc(r.symbol)}</div>${highlightChip(r.metrics)}${marketFlag(r.metrics)}</div>
         <div class="cbody">
           <div class="cname">${esc(r.name)}</div>
@@ -781,6 +783,11 @@ const sortBar = reports.length > 1 ? `
 const noResult = reports.length ? `
     <div class="noresult" id="noresult" hidden>ไม่พบหุ้นที่ตรงกับ “<span id="qterm"></span>”</div>` : '';
 
+// คลังคำศัพท์ที่หน้า index ต้องใช้ (slug/label/aliases เท่านั้น — ตัด desc ทิ้ง ลดขนาดหน้า)
+const tagVocabJson = JSON.stringify(TAG_VOCAB.list.map((e) => ({ slug: e.slug, label: e.label, aliases: e.aliases || [] })));
+const activeTagBar = `
+    <div class="tagbar" id="tagbar" hidden></div>`;
+
 // สคริปต์หน้า index: ค้นหา + แบ่งหน้า (PAGE ตัว/หน้า) + เติมยอดวิวต่อการ์ด (batch ครั้งเดียว)
 const searchScript = reports.length ? `
   <script>
@@ -800,7 +807,30 @@ const searchScript = reports.length ? `
       var tblhint = document.getElementById('tblhint');
       function pageSize() { return grid.classList.contains('is-table') ? 25 : ${PAGE_SIZE}; } // ตาราง 25 แถว/หน้า · ไทล์ ${PAGE_SIZE}/หน้า
       // market = 'all'|'TH'|'US' (ตัวกรองตลาด) · orderMode = updated|likes|views|composite · selected = metric ที่เลือก (multi)
-      var page = 1, market = 'all', orderMode = 'updated', selected = [];
+      var page = 1, market = 'all', orderMode = 'updated', selected = [], tag = '';
+      // ตัวกรองเริ่มต้นจาก URL — ลิงก์ ?tag=/?market= จากหน้ารายงานและหน้า tag ต้องมาถึงพร้อมกรองแล้ว
+      (function () {
+        var p = new URLSearchParams(location.search);
+        var t = p.get('tag'); if (t && /^[a-z0-9-]+$/.test(t)) tag = t;
+        var mk = p.get('market'); if (mk === 'TH' || mk === 'US') market = mk;
+      })();
+
+      var TAG_VOCAB = ${tagVocabJson};
+      var tagbar = document.getElementById('tagbar');
+      function labelOf(slug) {
+        for (var i = 0; i < TAG_VOCAB.length; i++) if (TAG_VOCAB[i].slug === slug) return TAG_VOCAB[i].label;
+        return slug;
+      }
+      function drawTagBar() {
+        if (!tag) { tagbar.hidden = true; tagbar.innerHTML = ''; return; }
+        tagbar.hidden = false;
+        tagbar.innerHTML = '<span class="tchip on">\\uD83C\\uDFF7 ' + labelOf(tag) +
+          ' <b>' + filtered.length + '</b> หุ้น <button type="button" class="tx" data-clear="1" aria-label="ล้างตัวกรองแท็ก">\\u2715</button></span>';
+      }
+      tagbar.addEventListener('click', function (e) {
+        if (!e.target.closest('[data-clear]')) return;
+        tag = ''; page = 1; recompute(); render(); drawTagBar();
+      });
 
       // ลำดับเดิมจาก server = อัปเดตล่าสุดก่อน (ดัชนีน้อย = ใหม่กว่า) + ค่ายอดเริ่มต้น 0 จนกว่า /api/views จะตอบ
       cards.forEach(function (c, i) { c._ord = i; c._views = 0; c._likes = 0; });
@@ -839,8 +869,13 @@ const searchScript = reports.length ? `
 
       function marketOK(c) { return market === 'all' || c.getAttribute('data-market') === market; }
       function searchOK(c) { var v = q.value.toLowerCase().trim(); return !v || c.getAttribute('data-search').indexOf(v) !== -1; }
-      function recompute() {                                // กรอง (ตลาด+ค้นหา) → จัดอันดับ (composite หรือ CMP) → ย้าย DOM
-        filtered = cards.filter(function (c) { return marketOK(c) && searchOK(c); });
+      function tagOK(c) {
+        if (!tag) return true;
+        var v = c.getAttribute('data-tags');
+        return !!v && (' ' + v + ' ').indexOf(' ' + tag + ' ') !== -1;
+      }
+      function recompute() {                                // กรอง (ตลาด+แท็ก+ค้นหา) → จัดอันดับ (composite หรือ CMP) → ย้าย DOM
+        filtered = cards.filter(function (c) { return marketOK(c) && tagOK(c) && searchOK(c); });
         if (orderMode === 'composite' && selected.length) {
           scoreComposite(filtered);
           filtered.sort(function (a, b) { return (b._score - a._score) || (a._ord - b._ord); });
@@ -848,6 +883,10 @@ const searchScript = reports.length ? `
           filtered.sort(CMP[orderMode] || CMP.updated);
         }
         filtered.forEach(function (c) { grid.appendChild(c); });
+        var qs = [];
+        if (tag) qs.push('tag=' + tag);
+        if (market !== 'all') qs.push('market=' + market);
+        history.replaceState(null, '', qs.length ? '?' + qs.join('&') : location.pathname);
       }
 
       function pages() { return Math.max(1, Math.ceil(filtered.length / pageSize())); }
@@ -994,6 +1033,7 @@ const searchScript = reports.length ? `
       syncThead();
       recompute();
       render();
+      drawTagBar();
       syncHint();
     })();
   </script>` : '';
@@ -1083,6 +1123,11 @@ ${FONT_LINKS}
   .search input:focus{box-shadow:var(--shadow),0 0 0 3px rgba(19,21,27,.14)}
   .search input::placeholder{color:var(--muted)}
   .noresult{text-align:center;color:var(--muted);padding:40px;font-size:14px}
+  .tagbar{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 14px}
+  .tchip{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;padding:6px 12px;border-radius:99px;background:var(--card);box-shadow:var(--shadow);color:var(--ink)}
+  .tchip b{font-weight:700}
+  .tchip .tx{border:0;background:transparent;cursor:pointer;font-size:14px;line-height:1;color:var(--muted);padding:0 2px}
+  .tchip .tx:hover{color:var(--ink)}
   .sortbar{display:flex;flex-wrap:wrap;align-items:center;gap:7px;flex:0 1 auto;min-width:0}
   .sortsep{width:1px;align-self:stretch;background:var(--line-2);margin:3px 4px}
   .sortbtn,.viewbtn{font-family:'Sarabun',sans-serif;font-size:13px;color:var(--ink-2);background:var(--card);border:0;border-radius:99px;padding:7px 15px;cursor:pointer;box-shadow:var(--shadow);transition:all .14s}
@@ -1205,7 +1250,7 @@ ${FONT_LINKS}
     <div class="grid">
       <div id="thead" aria-hidden="true"><span></span><span>บริษัท</span><span class="num" data-sort="mos">MOS</span><span class="num" data-sort="upside">Upside</span><span class="num" data-sort="pe">P/E</span><span class="num" data-sort="yield">Yield</span><span class="num" data-sort="roe">ROE</span><span class="num" data-sort="updated">อัปเดต</span></div>
 ${reports.length ? cards : emptyState}
-    </div>${noResult}${pagerEl}
+    </div>${noResult}${activeTagBar}${pagerEl}
     <footer>
       🤖 วิเคราะห์และจัดทำด้วย AI · <b>Claude</b> · Anthropic · ติดต่อ <a href="mailto:${CONTACT_EMAIL}">${CONTACT_EMAIL}</a><br>
       เพื่อการศึกษาและเป็นข้อมูลประกอบเท่านั้น มิใช่คำแนะนำการลงทุน — การลงทุนมีความเสี่ยง โปรดใช้วิจารณญาณ
