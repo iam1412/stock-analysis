@@ -147,7 +147,7 @@
 </div>
 ```
 
-### 6) หัวรายงาน: บรรทัด `ai-model` + บล็อก `gdots`/tags (ตัวอย่างจริง `reports/KTOS.html`)
+### 6) หัวรายงาน: บรรทัด `ai-model` + บล็อก `gdots`/ป้ายตลาด
 
 ```html
 <meta name="ai-model" content="Claude Sonnet 5">
@@ -159,12 +159,11 @@
 <div class="gdots"><div style="width:8px;height:8px;border-radius:50%;background:#a0c841;display:inline-block;margin:0 3px"></div><div style="width:8px;height:8px;border-radius:50%;background:#77962c;display:inline-block;margin:0 3px"></div><div style="width:8px;height:8px;border-radius:50%;background:#4a5c1e;display:inline-block;margin:0 3px"></div></div>
 <div>
   <span class="tag">NASDAQ: KTOS</span>
-  <span class="tag">Aerospace & Defense</span>
-  <span class="tag">Unmanned Systems / Hypersonics</span>
 </div>
 ```
 
-- `{{GDOTS}}` = จุด 3 สีจากธีม (`accent` → `accentDark` → โทนเข้มกลางของ `darkGrad`) — **`pick-brand.js` (ข้อ 8) พิมพ์บรรทัดนี้ให้แล้ว copy วางตรง ๆ ห้าม derive เอง** · tags 3 ใบ = `ตลาด: SYMBOL` / เซกเตอร์ / niche ของหุ้น
+- `{{GDOTS}}` = จุด 3 สีจากธีม (`accent` → `accentDark` → โทนเข้มกลางของ `darkGrad`) — **`pick-brand.js` (ข้อ 8) พิมพ์บรรทัดนี้ให้แล้ว copy วางตรง ๆ ห้าม derive เอง**
+- ป้าย `<span class="tag">` มีแค่ **1 ใบเดียว** (`ตลาด: SYMBOL`) — เดิมเคยมีอีก 2 ใบ (sector/niche แบบ free-text พิมพ์เอง เช่นใน `reports/KTOS.html` ที่เขียนไว้ก่อนมีระบบ tag) แต่ skeleton ปัจจุบันตัดออกแล้ว **ห้ามเติม `<span class="tag">` เพิ่มเอง** — ธีมการลงทุนของหุ้นมาจาก `tags.json` ผ่าน `tools/tag-apply.js` แล้ว build จะแปลงเป็นชิปลิงก์ `/tag/<slug>` ต่อท้ายป้ายตลาดให้เองตอน build เข้า `dist/` เท่านั้น (ดู "ระบบ tag" ท้ายเอกสารนี้) — worker แค่รายงานบรรทัด `TAGS: <slug…>` กลับ controller
 
 ### 7) ท้ายรายงาน: ที่มาราคา + disclaimer + วันที่ "ข้อมูล ณ" (ตัวอย่างจริง `reports/KTOS.html`)
 
@@ -208,8 +207,61 @@
 อย่าเขียน `__TA_CFG__` หรือ `<script src="/assets/ta-...">` ลงไฟล์ source มือ (ไม่มีผลตอน build, จะถูกเขียนทับ/inject ซ้ำอยู่ดี) ·
 รายละเอียดสถาปัตยกรรม/contract `/api/ohlc`/นิยาม TA/debug → **`docs/ta-chart.md`**
 
+## ระบบ tag ธีมการลงทุน
+
+ป้ายธีมของหุ้น (เช่น "AI Data Center", "ห่วงโซ่การบินพาณิชย์") **ไม่ได้เขียนในไฟล์รายงาน** — เก็บแยกเป็น sidecar 2 ไฟล์ที่รากรีโป แล้ว inject เป็นชิปลิงก์ `/tag/<slug>` ต่อท้ายป้ายตลาดตอน build (ดูข้อ 6 ด้านบน) เหตุผลเดียวกับที่ TA config ไม่อยู่ใน source: เขียนลงไฟล์รายงานจะทำให้ `freshHash` ของทั้ง 908 ไฟล์เปลี่ยนพร้อมกัน → `updated` เด้งยกชุด พังการเรียงหน้าแรก/dedup 7 วัน/staleness
+
+**`tags-vocab.json`** — คลังคำศัพท์ที่อนุมัติแล้ว (108 ธีม) แก้ได้เฉพาะผ่านรีวิวเจ้าของ:
+```json
+{
+  "version": 1,
+  "_readme": "...", "_how_to_assign": "...",
+  "tags": [
+    { "slug": "ai-datacenter", "label": "AI Data Center", "aliases": ["ai", "เอไอ", "data center"],
+      "desc": "ผู้ได้ประโยชน์จากการสร้างคลัสเตอร์ AI และศูนย์ข้อมูล — ★ ติดได้เฉพาะเมื่อ AI/ดาต้าเซ็นเตอร์เป็นตัวขับเคลื่อนหลักที่ระบุชัด",
+      "kind": "driver" }
+  ]
+}
+```
+- `slug` ASCII kebab-case (`^[a-z0-9]+(-[a-z0-9]+)*$`) · `desc` บางอันมี **★ กติกาขอบเขต** กำกับว่าเมื่อไรติดได้/ติดไม่ได้ — อ่านก่อนเลือก slug ที่ desc มี ★
+- `kind`: **`business`** = "บริษัททำอะไร" (ธีมส่วนใหญ่ในคลัง — เกือบทุกหุ้นต้องมีอย่างน้อย 1 อัน, gate **W13** เตือนถ้าไม่มี) vs **`driver`** = "อะไรทำให้ราคาขยับ" (มีแค่ 3 slug ทั้งคลัง: `ai-datacenter`, `thai-consumption`, `thai-tourism` — ติดเมื่อใช้จริงเท่านั้น ไม่ใช่ทุกหุ้นต้องมี)
+- `_how_to_assign` อธิบายวิธีเลือกแบบเต็ม — อ่านก่อนติด tag ให้หุ้นตัวแรก
+
+**`tags.json`** — ข้อมูลต่อหุ้น เขียนผ่าน `tools/tag-apply.js` เท่านั้น:
+```json
+{
+  "vocabVersion": 1,
+  "tags": { "AAOI": ["optical-photonics", "ai-datacenter"] },
+  "requests": [{ "symbol": "BAM", "theme": "distressed-debt/AMC ...", "at": "2026-08-13", "mode": "NEW" }]
+}
+```
+- `tags[SYM]` = 1–3 slug ไม่ซ้ำกัน ทุกตัวต้องอยู่ในคลัง (`validateAssignment` ใน `tools/tag-lib.js` — บังคับด้วย gate **E40**)
+- `requests[]` = คิวรอทบทวนของเจ้าของ (worker/controller เปิดผ่าน `--request` เมื่อไม่มี slug ไหนเข้ากันจริง ๆ) — **ไม่ใช่ช่องทางเลี่ยงการเลือก slug ที่มีอยู่**
+
+**`tools/tag-apply.js`** — ทางเข้าเดียวที่เขียน `tags.json` (เหตุผลเดียวกับ lock ที่ `pick-brand.js` ขาด — read-modify-write ไม่มี lock, รันขนานสอง process = entry ทับหายเงียบ ๆ) validate ก่อนเขียนเสมอ, input เสีย = ไฟล์เดิมไม่ถูกแตะเลย, เขียนแบบ atomic (`.tmp` → rename):
+```bash
+node tools/tag-apply.js <SYM> <slug…>          # ติด/แทน tag (1–3 slug ใน tags-vocab.json)
+node tools/tag-apply.js <SYM> --keep           # ยืนยันคงเดิม (โหมด UPDATE ทบทวนแล้วไม่เปลี่ยน — ไม่เขียนไฟล์)
+node tools/tag-apply.js <SYM> --request "ธีม"  # เข้าคิว requests[] ขอคำศัพท์ใหม่
+node tools/tag-apply.js --rename <OLD> <NEW>   # ย้าย key ตาม tools/symbol-map.json (ปฏิเสธถ้า NEW ไม่มี reports/<NEW>.html จริง)
+node tools/tag-apply.js --prune                # ลบ entry ที่ไม่มีไฟล์ reports/ แล้ว (ใช้หลังลบรายงานหุ้นเพิกถอน)
+```
+**ห้ามแก้ `tags.json`/`tags-vocab.json` มือ ห้าม worker agent เขียนเอง** — worker คืนบรรทัด `TAGS: <slug…>` ให้ controller รันคำสั่งข้างต้นแบบ sequential (มี worker พร้อมกันหลายตัว = controller รันทีละตัว ห้ามขนาน)
+
+**กติกาแกนธีม (ไม่ใช่ category/ขนาด):** slug ใหม่ต้องตอบ "หุ้นตัวนี้เล่นเรื่องอะไร" — **ห้าม** เป็นหมวด GICS (Technology/Healthcare/Financials), ขนาดตลาด (Large-cap), หรือสไตล์การลงทุน (Dividend Aristocrat/Deep Value) เพราะข้อมูลพวกนี้มีอยู่แล้วในตัวรายงาน/screener ไม่ต้องการ tag ซ้ำ
+
+**ขั้นต่ำ 3 สมาชิก:** `MIN_MEMBERS = 3` ใน `tag-lib.js` เป็น **warning ระดับคลัง ไม่ใช่ error** — `npm run test:tags` พิมพ์แจ้งเฉย ๆ เมื่อ slug ไหนมีสมาชิก <3 (สัญญาณว่าอาจแคบเกินไป ควรยุบรวมธีมใกล้เคียง) ไม่บล็อก push · หน้าธีม `dist/tag/<slug>.html` ยังสร้างให้ **ทุก slug ที่มีสมาชิกที่ยังมีรายงานจริง (live) ≥1** โดยไม่รอถึง 3 — บาง slug ยอมรับ <3 สมาชิกโดยตั้งใจเมื่อไม่มีธีมใกล้เคียงให้ยุบ (ดู `desc` ของ `casino-resort`/`tobacco-nicotine` ใน `tags-vocab.json`)
+
+### เพิ่มธีมใหม่เข้าคลัง (backfill)
+1. เพิ่ม entry ใน `tags-vocab.json` แล้ว bump `version`
+2. `npm run test:tags` จะขึ้น warning ว่า `vocabVersion` ตามหลัง = ยังไม่ backfill
+3. หา "หุ้นที่ควรได้ธีมใหม่" จากคำโปรยใน `reports.json` แล้วรัน `tag-apply.js` ทีละตัว
+   (ไม่ต้องรอให้หุ้นถูก re-analyze ทีละตัวข้ามปี)
+4. bump `vocabVersion` ใน `tags.json` ให้เท่ากับ `version` ของคลัง → warning หาย
+
 ## เครื่องมือ (`tools/`)
 - `migrate.js <SYM…> [--write]` — แปลง HTML เต็ม → content-only + **round-trip faithful check** (resolve CSS var→สีจริง + body verbatim + stock-meta + brand/engine values ตรงเป๊ะจึงเขียน ไม่งั้น flag ปล่อย old-style)
 - `pick-brand.js <SYM> "#hex" [--auto] [--force]` — one-shot สีแบรนด์หุ้นใหม่: ตรวจชน (เทียบใน accent space หลัง makeTheme) → ชน+`--auto` = สลับเฉดว่างใกล้สุดให้เอง / ไม่ `--auto` = exit 1 พร้อมข้อเสนอเฉดว่าง → เพิ่ม `seeds.json` → พิมพ์ theme 8 คีย์ + บรรทัด GDOTS
 - `brandtheme.js` — `makeTheme(seed)` → ธีมเต็มชุด · `preserve-dates.js` — คงวันที่ `updated` หลัง migrate (source เปลี่ยน → freshHash ขยับ → ดึงวันเดิมจาก git HEAD)
+- `tag-lib.js` — schema/validate ระบบ tag ที่เดียว (ใช้ร่วมโดย build.js/check-reports.js/tag-apply.js/tags-test.js) · `tag-apply.js` — CLI ทางเข้าเดียวที่เขียน `tags.json` (ดู "ระบบ tag" ด้านบน)
 - gate ครอบคลุม template: `check-reports.js` ตรวจ **หลัง** expand · `build-test.js` ทดสอบ `expandReport`/validate · `engine-exec.js` รัน engine จริง · `skeleton-test.js` กำกับโครงต้นแบบ

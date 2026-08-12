@@ -43,10 +43,11 @@
   <!-- ===== HEADER ===== -->
   <header>
     <div class="gdots">{{GDOTS}}</div>
+    <!-- ป้ายธีมการลงทุนถูก inject ตอน build จาก tags.json (ห้ามเขียนป้ายเพิ่มในไฟล์นี้)
+         ติด tag ด้วย: node tools/tag-apply.js <SYMBOL> <slug…>  — slug ต้องมีใน tags-vocab.json
+         หุ้นที่ยังไม่ติด tag จะถูก E40 ฟ้องตอน npm run verify และ push ไม่ได้ -->
     <div>
       <span class="tag">{{EXCHANGE}}: {{SYMBOL}}</span>
-      <span class="tag">{{SECTOR_TAG}}</span>
-      <span class="tag">{{NICHE_TAG}}</span>
     </div>
     <!-- ★ คำโปรยธุรกิจ (gate E32) — .sub ต้องอยู่ติดใต้ </h1> (ห้ามมีคอมเมนต์/แท็กคั่น) : บริษัททำอะไร ใช้ • คั่นกลุ่ม -->
     <h1>{{COMPANY_H1}}</h1>

@@ -26,7 +26,7 @@ dist/                   # ⚠️ build output (gitignore) — ห้ามแก
 
 ## 2. วิเคราะห์หุ้นเดี่ยว (skill `stock-analyzer`)
 
-เมื่อสั่ง "วิเคราะห์ X" / re-analysis / เคลียร์คิว price-flags → เรียก skill **`stock-analyzer`** แล้ว**ทำตามทุกขั้น** → `npm run verify` ผ่าน 11 ขั้น → **Auto-push** (§5)
+เมื่อสั่ง "วิเคราะห์ X" / re-analysis / เคลียร์คิว price-flags → เรียก skill **`stock-analyzer`** แล้ว**ทำตามทุกขั้น** → `npm run verify` ผ่าน 13 ขั้น → **Auto-push** (§5)
 
 invariant ที่ห้ามหลุดไม่ว่ากรณีใด:
 - **cross-source verify ราคา+EPS ≥2 แหล่งก่อนเขียนตัวเลข** — ราคาต่าง >5% / EPS ขัดกัน → หยุด ถามผู้ใช้ อย่าเผยแพร่ (gate ตรวจความจริงไม่ได้)
@@ -66,7 +66,7 @@ invariant ที่ห้ามหลุดไม่ว่ากรณีใด:
 (commit **ก่อน** pull --rebase เสมอ ไม่งั้น rebase error "Please commit or stash")
 
 ```bash
-npm run verify                     # 0. quality gate 11 ขั้น — error = ห้าม push
+npm run verify                     # 0. quality gate 13 ขั้น — error = ห้าม push
 git add -A                         # 1.
 git commit -m "<message>"          # 2.
 git pull --rebase origin main      # 3. sync
@@ -102,8 +102,8 @@ Co-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>
 
 ## 8. Quality gate — ก่อนเผยแพร่ (`npm run verify`)
 
-11 ขั้น ต้องผ่านทั้งหมดก่อน push (pre-push hook บังคับซ้ำ):
-`update-prices-test` → `dead-ticker-test` → `check-reports` (39 error + 11 warning) → `self-test` → `ohlc-test` → `ta-engine-test` → `build` → `build-test` → `engine-exec` → `skeleton-test` → `check-site`
+13 ขั้น ต้องผ่านทั้งหมดก่อน push (pre-push hook บังคับซ้ำ):
+`update-prices-test` → `dead-ticker-test` → `tag-apply-test` → `tags-test` → `check-reports` (40 error + 12 warning) → `self-test` → `ohlc-test` → `ta-engine-test` → `build` → `build-test` → `engine-exec` → `skeleton-test` → `check-site`
 
 > `self-test` เข้า gate แล้ว (12 ส.ค. 69) — เดิมเป็น meta-test ที่ต้องรันมือ ⇒ ถ้า check ใน `check-reports` เสียจนไม่ยิงอีก gate จะรายงาน "error 0" แยกไม่ออกจาก "สะอาดจริง" (0.24 วิ ไม่กระทบเวลา)
 
@@ -120,10 +120,10 @@ Co-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>
 ## 9. Price refresh อัตโนมัติ (cron)
 
 GitHub Actions รัน `tools/update-prices.js` ทุกวัน 07:17 น. ไทย — patch **เฉพาะตัวเลขโครงสร้าง** (**ไม่แตะ prose/EPS/FV** · วันที่วิเคราะห์คงเดิมผ่าน preserve-dates) แล้ว verify + push เอง · freeze ลง `price-flags.json` เมื่อ: ต่าง >15% / MOS พลิกเกิน dead-band ±3 จุด / สงสัย split (flip ใน ±3 จุด = patch ผ่าน · หลุดขอบ gauge = ขยายขอบเอง)
-- **"เคลียร์คิว price-flags"** = **triage ตาม `reason` ก่อน** (เกณฑ์เต็มใน SKILL STEP 0: fetch/patch-failed = plumbing ไม่ใช้ agent · drift/mos-flip = **UPDATE-LIGHT** · suspect-split = UPDATE เต็ม · **not-on-exchange = ยืนยันเพิกถอนด้วยมือแล้วลบรายงาน ห้าม re-analyze**) แล้วรันตาม §3 — flag ราคาหายเองเมื่อรายงานสด/ไฟล์ถูกลบ · `not-on-exchange` ถอนได้แค่ตอน TradingView เจอ ticker กลับมา · ไฟล์ถูกลบ · หรือยืนยันด้วยมือว่ายังเทรดผ่าน `--alive <SYM>` (re-analysis ปกติ รวม `--force` ไม่เคลียร์ — ตั้งใจแยก flag เพราะ SKILL สั่ง `--force` ทุกรอบ)
+- **"เคลียร์คิว price-flags"** = **triage ตาม `reason` ก่อน** (เกณฑ์เต็มใน SKILL STEP 0: fetch/patch-failed = plumbing ไม่ใช้ agent · drift/mos-flip = **UPDATE-LIGHT** · suspect-split = UPDATE เต็ม · **not-on-exchange = ยืนยันเพิกถอนด้วยมือแล้วลบรายงาน + `node tools/tag-apply.js --prune` เก็บกวาด entry ค้างใน `tags.json` ห้าม re-analyze**) แล้วรันตาม §3 — flag ราคาหายเองเมื่อรายงานสด/ไฟล์ถูกลบ · `not-on-exchange` ถอนได้แค่ตอน TradingView เจอ ticker กลับมา · ไฟล์ถูกลบ · หรือยืนยันด้วยมือว่ายังเทรดผ่าน `--alive <SYM>` (re-analysis ปกติ รวม `--force` ไม่เคลียร์ — ตั้งใจแยก flag เพราะ SKILL สั่ง `--force` ทุกรอบ)
 - **canary หุ้นตาย (เพิ่ม 8 ส.ค. 2569)** — Yahoo ไม่ 404 เวลาหุ้นถูกเพิกถอน มัน serve ราคาค้าง ⇒ drift 0% ⇒ cron ไม่เคยจับได้ (เคส EA/BPP) · ปิดจุดบอดด้วย flag `not-on-exchange` แบบ **2 ชั้น**: quote ค้าง ≥3 session (pre-filter รายวัน) **และ** TradingView ไม่พบ ticker — ห้ามใช้ชั้นแรกเดี่ยว ๆ (วัดแล้ว: `regularMarketTime` ค้างที่ "วันซื้อขายล่าสุด" ⇒ หุ้นสภาพคล่องต่ำโดน false positive 99/248 วัน) · เสริมด้วย full sweep รายสัปดาห์ `.github/workflows/dead-ticker-canary.yml` · เป็น **ตัวชี้ให้ไปดู ไม่ใช่คำตัดสิน** — ยืนยันแหล่งปฐมภูมิ (SEC Form 25 / ประกาศตลาด) ก่อนลบเสมอ
 - **ตลาดยังเปิด = ข้ามตัวนั้น ไม่ patch ไม่ flag** (เพิ่ม 11 ส.ค. 2569 · `isIntradayQuote`) — ราคากลาง session เป็น intraday ไม่ใช่ราคาปิด · cron ตั้งเวลาไว้หลังตลาดปิดอยู่แล้วจึงไม่กระทบ แต่ **รันมือ/`workflow_dispatch` ตอนเย็นไทย = กลาง session US จะเห็น "ข้ามเพราะตลาดเปิด N"** (ไม่ใช่ของเสีย) · `--force`/`--alive`/`--allow-intraday` ข้าม guard นี้ ⇒ re-analysis ตาม SKILL ยังประทับราคาได้ตามปกติ · v8 chart ไม่มี `marketState` จริง — ใช้ `currentTradingPeriod` 2 เงื่อนไข → `docs/price-refresh.md`
-- ticker เปลี่ยนชื่อ (เช่น BKI→BKIH) → `tools/symbol-map.json` · canary โครงแหล่งข้อมูลรายสัปดาห์ = `.github/workflows/fundamentals-canary.yml` · รายละเอียด/debug → `docs/price-refresh.md`
+- ticker เปลี่ยนชื่อ (เช่น BKI→BKIH) → `tools/symbol-map.json` **+ ย้าย key เดิมใน `tags.json` ด้วย `node tools/tag-apply.js --rename <OLD> <NEW>`** (ไม่ทำ = tag เดิมค้างอยู่ใต้ ticker เก่าที่ไม่มีรายงานแล้ว → corpus check ใน `test/tags-test.js` ฟ้อง) · canary โครงแหล่งข้อมูลรายสัปดาห์ = `.github/workflows/fundamentals-canary.yml` · รายละเอียด/debug → `docs/price-refresh.md`
 
 ## 10. Template system + counters (สรุป)
 
@@ -132,3 +132,4 @@ GitHub Actions รัน `tools/update-prices.js` ทุกวัน 07:17 น. 
 - **GUI brand-forward (ส.ค. 69)** — ระบบดีไซน์ทั้งหมด → **`DESIGN.md`** · สาระที่ห้ามหลุด: **font = Sarabun + IBM Plex Mono เท่านั้น** (เจ้าของสั่งถอด Kanit กลับ 12 ส.ค. 69 — ห้ามเปลี่ยน typeface โดยไม่ถาม) · โทเคนสี derive จาก accent ตอน build (`deriveTheme()` ใน build.js — สูตร/คู่ contrast ที่ E38 คุมดู DESIGN.md) · **ตัวหนังสือขาวห้ามวางบน accent ดิบ ให้ใช้ accentDark/badge เท่านั้น** (386/908 ธีมตก AA) · การตกแต่งทุกอย่าง inject ตอน build — **ห้ามแก้ไฟล์รายงานเพื่อเรื่องดีไซน์** · สถิติ+โหวตของหน้ารายงานอยู่ในการ์ดบน header (`injectHeaderStats`) ไม่ใช่ footer แล้ว
 - **view/vote counters** = Worker + Durable Object (`src/worker.js`) inject ตอน build เฉพาะ `dist/` → **`docs/counters.md`** + `DEPLOY.md`
 - **กราฟ TA (TradingView-style)** = Worker route `/api/ohlc` proxy Yahoo + client engine (`_template/ta-engine.js`/`ta-chart.js`) + bundle inject ตอน build เฉพาะ `dist/` → **`docs/ta-chart.md`**
+- **ระบบ tag ธีมการลงทุน** — `tags-vocab.json` (คลังที่อนุมัติแล้ว) + `tags.json` (symbol → slug) inject ตอน build ลง `dist/` เท่านั้น · **ห้ามเขียน tag ลงไฟล์รายงาน** (freshHash จะทำให้ `updated` ของทั้ง 908 ไฟล์เด้งพร้อมกัน → พังการเรียงหน้าแรก + dedup 7 วัน + staleness) · **`tools/tag-apply.js` เป็นทางเข้าเดียวที่เขียน `tags.json`** ห้ามแก้มือ ห้าม worker เขียนเอง (race แบบ `pick-brand.js`) · lifecycle: NEW ติดใหม่ · UPDATE ทบทวนบังคับ (ค่าตั้งต้นคงเดิม) · UPDATE-LIGHT + cron ราคา **ไม่แตะ** · rename → `--rename` · ลบรายงาน → `--prune` → **`docs/templates.md`**
