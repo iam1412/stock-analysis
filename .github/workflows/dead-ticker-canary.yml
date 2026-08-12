@@ -16,7 +16,10 @@ permissions:
   issues: write   # อัปเดต issue คิว re-analysis เอง — ไม่รอ price-refresh เช้าวันถัดไป
 
 concurrency:
-  group: dead-ticker-canary
+  # กลุ่มเดียวกับ update-prices.yml (ไม่ใช่ชื่อ workflow ตัวเอง) — เหตุผลเต็มอยู่ที่นั่น: ทั้งคู่แก้ไข
+  # issue คิวใบเดียวกันแบบไม่มี lock ต้อง serialize ข้าม workflow กัน ⇒ canary เช้าวันจันทร์ต่อคิว
+  # รอ price-refresh รอบยาวจบก่อน (trade-off ที่ตั้งใจ ดีกว่า cancel-in-progress กลางคัน)
+  group: price-flags-issue
   cancel-in-progress: false
 
 jobs:
@@ -37,6 +40,7 @@ jobs:
         run: node tools/dead-ticker-canary.js --write
 
       - name: Commit + push (เฉพาะเมื่อ flag/cache เปลี่ยน)
+        id: commit_push
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -58,7 +62,9 @@ jobs:
       # (~22 ชม.) เหลือแค่ job summary ที่ไม่มีใครเปิดดู — จึงอัปเดต issue ใบเดียวกันเองตรงนี้
       # ตรรกะเดียวกับ update-prices.yml เป๊ะ (ใบเดียว หัวเรื่องเดียว body สร้างจาก flags-issue-body.js)
       - name: อัปเดต issue คิว re-analysis (price-flags)
-        if: always()
+        # อัปเดตเฉพาะตอน push จริงถึง main แล้ว (หรือไม่มีอะไรเปลี่ยน = tree ตรง main อยู่แล้ว) — เช็คจาก
+        # outcome ของ step commit_push เท่านั้น กัน issue โกหกว่าคิวเคลียร์ทั้งที่ commit ยัง skip/fail อยู่
+        if: always() && steps.commit_push.outcome == 'success'
         continue-on-error: true
         env:
           GH_TOKEN: ${{ github.token }}
