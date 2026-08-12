@@ -1,8 +1,9 @@
-# Dependabot — คอย bump GitHub Actions ที่ pin ไว้เป็น SHA ให้สดอยู่เสมอ
+# Dependabot — คอย bump GitHub Actions ที่ pin ไว้เป็น SHA + npm deps ให้สดอยู่เสมอ
 # workflow ทั้ง 3 ตัว (update-prices / dead-ticker-canary / fundamentals-canary)
 # pin actions/checkout + actions/setup-node เป็น commit SHA เป๊ะ ๆ เพื่อกัน
 # supply-chain — แต่ SHA ที่ pin แล้วจะไม่ขยับเองเวลามี security/bug fix ใหม่
 # ไฟล์นี้ให้ Dependabot เปิด PR รายสัปดาห์ อัปทั้ง SHA และคอมเมนต์ `# v4` ให้อัตโนมัติ
+# ecosystem npm เพิ่มมาคุม wrangler ใน package.json (เครื่องมือ deploy ขึ้น production จริง)
 version: 2
 updates:
   - package-ecosystem: "github-actions"
@@ -14,5 +15,17 @@ updates:
       prefix: "ci" # conventional-commit style เช่น "ci: bump actions/checkout"
     groups:
       github-actions: # รวมทุก action เป็น PR เดียวต่อสัปดาห์ ลด noise
+        patterns:
+          - "*"
+
+  - package-ecosystem: "npm"
+    directory: "/" # package.json อยู่ที่ root
+    schedule:
+      interval: "weekly"
+      timezone: "Asia/Bangkok" # ให้ตรงกับ TZ ที่ใช้ทั้งรีโป (cron/ความสด)
+    commit-message:
+      prefix: "ci" # conventional-commit style เช่น "ci: bump wrangler"
+    groups:
+      npm: # รวมทุก dependency เป็น PR เดียวต่อสัปดาห์ ลด noise
         patterns:
           - "*"

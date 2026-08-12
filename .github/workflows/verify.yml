@@ -1,0 +1,49 @@
+# CI gate: รัน `npm run verify` (quality gate เดียวกับที่ต้องผ่านก่อน push) อัตโนมัติทุก push เข้า main
+# + ทุก pull request — ก่อนหน้านี้ repo ไม่มี server-side enforcement เลย: 3 workflow เดิมทั้งหมด
+# (price-refresh / dead-ticker-canary / fundamentals-canary) มีแค่ schedule + workflow_dispatch เท่านั้น
+# ไม่มี on: push หรือ on: pull_request อยู่เลยสักที่ ⇒ โค้ดที่ verify ไม่ผ่านหลุดขึ้น main ได้อิสระ
+# (เดิมกันได้แค่ .githooks/pre-push ซึ่งต้องเปิดเองต่อ clone ด้วย `git config core.hooksPath .githooks`
+# และ bypass ได้ง่าย ๆ ด้วย `git push --no-verify`)
+#
+# ⚠️ ข้อจำกัดสำคัญที่ต้องเข้าใจ: workflow นี้ "ไม่ใช่" deploy gate — Cloudflare Workers Builds เฝ้าดู
+# repo แยกอิสระจาก GitHub Actions โดยสิ้นเชิง แล้ว deploy ทันทีที่มี push เข้า main ไม่ว่า check นี้
+# จะผ่านหรือ fail ก็ตาม (ไม่ได้ผูก/รอผลจาก Actions เลย) ตัว job นี้ให้แค่ "เห็นผลบน PR / commit status"
+# เท่านั้น จะให้กลายเป็น deploy gate จริงต้องทำเพิ่มฝั่งเจ้าของ repo (นอกเหนือขอบเขตของไฟล์นี้) อย่างใด
+# อย่างหนึ่ง: (1) เปิด branch protection บน main แล้วตั้ง job นี้เป็น required status check หรือ
+# (2) เพิ่ม `npm run verify &&` นำหน้า build command ใน Cloudflare dashboard
+name: ci-verify
+
+on:
+  push:
+    branches: [main]
+  pull_request: {}
+
+permissions:
+  contents: read # อ่านโค้ดอย่างเดียว ไม่ commit/push/แตะ issue — ไม่ต้องมี write ใด ๆ
+
+concurrency:
+  # กลุ่มของ workflow นี้เอง — ห้ามใช้ร่วมกับ price-flags-issue (กลุ่มที่ update-prices.yml กับ
+  # dead-ticker-canary.yml ใช้ serialize การอ่าน-แก้ issue คิว re-analysis ใบเดียวกัน) เพราะ CI run
+  # ของ push/PR ไม่เกี่ยวกับ issue นั้นเลย ถ้ามาแชร์กลุ่มจะกลายเป็นต่อคิวรอ cron ราคารอบยาว (สูงสุด
+  # 45 นาที) แบบไม่มีเหตุผล — ใช้กลุ่มแยกต่อ ref ของตัวเอง แล้วยกเลิก run เก่าที่ค้างอยู่บน ref เดียวกัน
+  # ทิ้งได้เมื่อมี push ใหม่ตามมา (เหมาะกับ CI ต่างจาก cron ที่ต้องรอให้จบรอบ)
+  group: ci-verify-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 20
+
+      # ตั้งใจไม่มี npm ci/install: devDependency เดียวของ repo (wrangler) ไม่ถูกเรียกใช้โดยสคริปต์ไหน
+      # ใน `npm run verify` เลย (ทุก require ในเชนเป็น node builtin อย่าง fs/path/crypto หรือ path
+      # สัมพัทธ์ในรีโปเอง เช่น ../build.js, ../tools/*) — update-prices.yml เองก็รัน `npm run verify`
+      # ตัวเดียวกันนี้ทุกวันโดยไม่มี install step มาก่อนอยู่แล้ว จึงพิสูจน์แล้วว่าไม่จำเป็นสำหรับ gate นี้
+      - name: Quality gate (npm run verify)
+        run: npm run verify

@@ -13,7 +13,12 @@ permissions:
   issues: write
 
 concurrency:
-  group: price-refresh
+  # กลุ่มร่วมกับ dead-ticker-canary.yml (ไม่ใช่ชื่อ workflow ตัวเอง) — ทั้งคู่ read-modify-write
+  # issue คิวใบเดียวกัน (gh issue view → คำนวณ → gh issue edit) ไม่มี lock กันชน ถ้าไม่ serialize
+  # ข้าม workflow กัน อีกฝั่งจะอ่าน body เก่าทับ history/ตัวเลขเข้า-ออกของอีกฝั่งหายเงียบ ๆ
+  # cancel-in-progress: false เสมอ (ยกเลิก price-refresh กลางคันหนักกว่ารอ) ⇒ trade-off ที่ตั้งใจ:
+  # canary เช้าวันจันทร์ต้องต่อคิวรอ price-refresh รอบยาวจบก่อนถึงจะเริ่มได้
+  group: price-flags-issue
   cancel-in-progress: false
 
 jobs:
@@ -45,6 +50,7 @@ jobs:
         run: npm run verify
 
       - name: Commit + push
+        id: commit_push
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -65,7 +71,10 @@ jobs:
           exit 1
 
       - name: อัปเดต issue คิว re-analysis (price-flags)
-        if: always()
+        # อัปเดตเฉพาะตอน price-flags.json ใหม่ "ไปถึง main" จริง — เช็ค outcome ของ step commit_push
+        # (success ครอบทั้งพุชจริงและ "ไม่มีอะไรเปลี่ยน" ที่ exit 0 ตั้งแต่ต้น เพราะ tree ตรง main อยู่แล้ว
+        # ส่วน quality gate fail = step ก่อนถูก skip และพุชล้มหลัง retry 3 รอบ = failure ⇒ ไม่เข้าเงื่อนไข)
+        if: always() && steps.commit_push.outcome == 'success'
         continue-on-error: true
         env:
           GH_TOKEN: ${{ github.token }}
