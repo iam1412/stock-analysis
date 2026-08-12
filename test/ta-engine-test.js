@@ -344,7 +344,7 @@ const close = (a, b, eps = 1e-6) => assert.ok(Math.abs(a - b) < eps, `${a} ≉ $
     // TA ส่งแยกเป็น parameter ด้วย: ta-chart เช็ค `window.TA` แต่เรียกใช้เป็น global เปล่า ๆ (`TA.ema(…)`) ซึ่งบนหน้าเว็บ
     // คือตัวเดียวกัน (ta-engine.js UMD ตั้ง root.TA) — แต่ body ของ new Function ไม่เห็น scope ของไฟล์เทสต์
     new Function('window', 'document', 'console', 'fetch', 'AbortController', 'IntersectionObserver', 'ResizeObserver', 'location', 'TA', o.src || TA_CHART_SRC)
-      (win, doc, cons, fetchStub, AC, IO, RO, { hostname: 'stock-ai.dotent.workers.dev' }, win.TA);
+      (win, doc, cons, fetchStub, AC, IO, RO, { hostname: 'gaohoon.com' }, win.TA);
     if (ioCb) ioCb([{ isIntersecting: true }]);                // section เข้าใกล้จอ → เริ่มโหลด (C1)
     await flush();
     const box = wrap.children.filter((c) => c.classList.contains('ta-box'))[0] || null;

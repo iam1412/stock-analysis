@@ -28,7 +28,7 @@ const OUT = path.join(ROOT, 'dist');
 const MANIFEST = path.join(ROOT, 'reports.json'); // committed — เก็บ hash/วันที่อัปเดตของแต่ละรายงาน
 
 const CONTACT_EMAIL = 'somchai.s@de.co.th';
-const SITE_ORIGIN = 'https://stock-ai.dotent.workers.dev'; // ใช้สร้าง absolute URL ให้ og:url / og:image (social scraper ต้องการ URL เต็ม)
+const SITE_ORIGIN = 'https://gaohoon.com'; // ใช้สร้าง absolute URL ให้ og:url / og:image (social scraper ต้องการ URL เต็ม)
 const OG_IMAGE = SITE_ORIGIN + '/static/og.png'; // banner 1200×630 สำหรับการ์ดแชร์ (static/og.png — regenerate จาก static/og.svg)
 // เครดิตโมเดลต่อรายงาน = meta ai-model ของไฟล์นั้นเสมอ (gate E28 บังคับให้มีทุกใบ)
 // ค่านี้เป็น fallback เผื่อไฟล์ไม่มี meta เท่านั้น — ห้ามใส่ชื่อรุ่นเจาะจง เพราะจะกลายเป็นเครดิตผิดรุ่นเงียบ ๆ

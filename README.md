@@ -14,9 +14,9 @@
 ## 🔗 เว็บไซต์
 
 ```
-https://stock-ai.dotent.workers.dev/          → หน้ารวมรายงาน
-https://stock-ai.dotent.workers.dev/GOOGL     → รายงาน GOOGL
-https://stock-ai.dotent.workers.dev/GOOGL.html
+https://gaohoon.com/          → หน้ารวมรายงาน
+https://gaohoon.com/GOOGL     → รายงาน GOOGL
+https://gaohoon.com/GOOGL.html
 ```
 
 API/manifest รายชื่อหุ้นทั้งหมด: [`/reports.json`](reports.json)

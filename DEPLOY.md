@@ -41,9 +41,9 @@ stock-analysis/
 ## URL หลัง deploy
 
 ```
-https://stock-ai.dotent.workers.dev/            → หน้ารวมรายงาน
-https://stock-ai.dotent.workers.dev/GOOGL.html  → รายงาน GOOGL
-https://stock-ai.dotent.workers.dev/GOOGL       → ได้เหมือนกัน (clean URL)
+https://gaohoon.com/            → หน้ารวมรายงาน
+https://gaohoon.com/GOOGL.html  → รายงาน GOOGL
+https://gaohoon.com/GOOGL       → ได้เหมือนกัน (clean URL)
 ```
 
 ## รัน build ในเครื่อง (ทดสอบ)

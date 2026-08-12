@@ -8,6 +8,15 @@ name = "stock-ai"
 main = "src/worker.js"
 compatibility_date = "2026-06-22"
 
+# ★ Custom domain (จด 12 ส.ค. 2569) — ผูก apex gaohoon.com เข้า Worker นี้
+#   custom_domain = true → Cloudflare สร้าง DNS record + cert ให้เอง (zone ต้องอยู่บน Cloudflare)
+#   เปิด workers_dev ไว้ด้วย — พอมี routes ค่า default จะพลิกเป็น false เงียบ ๆ
+#   ⇒ ต้องประกาศ true เอง ไม่งั้นลิงก์เก่า stock-ai.dotent.workers.dev ตายทั้งหมดหลัง deploy ถัดไป
+workers_dev = true
+routes = [
+  { pattern = "gaohoon.com", custom_domain = true }
+]
+
 [assets]
 directory = "./dist"
 binding = "ASSETS"
@@ -38,7 +47,7 @@ database_name = "stockai_d1"
 database_id = "e7cab704-7053-468d-94c9-41ed6b08f843"
 
 # Rate limiting ในตัว Worker — กันสแปม /api/vote และ /api/views
-# ทำงานบน workers.dev (ไม่ต้องมี custom domain/WAF) · period ได้แค่ 10 หรือ 60 วิ · ต้องใช้ Wrangler >= 4.36.0
+# ทำงานได้ทั้ง workers.dev และ custom domain (ไม่ต้องพึ่ง WAF) · period ได้แค่ 10 หรือ 60 วิ · ต้องใช้ Wrangler >= 4.36.0
 [[ratelimits]]
 name = "VOTE_LIMITER"
 namespace_id = "1001"

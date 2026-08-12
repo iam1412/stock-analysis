@@ -70,7 +70,7 @@
       lines: [
         { text: CFG.sym, color: 'rgba(107,115,131,.16)', fontSize: 44, fontStyle: 'bold', fontFamily: 'IBM Plex Mono, monospace' },
         // โดเมน auto-detect จาก URL ที่เปิดอยู่ — ย้าย/แมพโดเมนใหม่ในอนาคต ลายน้ำเปลี่ยนตามเอง ไม่ต้องแก้โค้ด
-        { text: (location.hostname || 'stock-ai.dotent.workers.dev'), color: 'rgba(107,115,131,.15)', fontSize: 13, fontFamily: 'IBM Plex Mono, monospace' },
+        { text: (location.hostname || 'gaohoon.com'), color: 'rgba(107,115,131,.15)', fontSize: 13, fontFamily: 'IBM Plex Mono, monospace' },
       ],
     });
     var candles = chart.addSeries(LWC.CandlestickSeries, {

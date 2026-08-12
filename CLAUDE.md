@@ -33,7 +33,7 @@ invariant ที่ห้ามหลุดไม่ว่ากรณีใด:
 - **หุ้นใหม่เริ่มจาก skeleton เท่านั้น · หุ้นเดิมห้าม rewrite** — กราฟ/ราคา/ป้าย % มาจาก script ห้ามแต่งเอง
 - ไฟล์ = `reports/<SYMBOL>.html` พิมพ์ใหญ่ · `stock-meta.currency` = ISO (`USD`/`THB`)
 
-> URL: `https://stock-ai.dotent.workers.dev/<SYMBOL>.html` (หรือ `/<SYMBOL>`)
+> URL: `https://gaohoon.com/<SYMBOL>.html` (หรือ `/<SYMBOL>`)
 
 ---
 
