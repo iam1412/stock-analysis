@@ -647,6 +647,11 @@ fs.writeFileSync(
   JSON.stringify(reports.map(({ symbol, file, name, title, desc, updated, metrics, tags }) => ({ symbol, file, name, title, desc, updated, url: '/' + file, metrics, tags })), null, 2) + '\n'
 );
 
+// รายชื่อ tag ที่จะมีหน้าจริง — คำนวณตรงนี้เพราะ sitemap (ข้อ 4.5) ต้องใช้
+// ส่วนตัวหน้าถูกสร้างท้ายไฟล์ (ข้อ 7) เพราะต้องรอ cardHtml + INDEX_STYLE
+const tagMembers = tagLib.membersOf(TAG_DATA);
+const tagPageSlugs = [...tagMembers.keys()].filter((s) => TAG_VOCAB.bySlug.has(s)).sort();
+
 // ---- 4.5) sitemap.xml + robots.txt (ส่ง Google Search Console — auto จากรายการหุ้น) ----
 // URL หุ้นใช้ clean URL /<SYM> (เดียวกับ og:url) · lastmod = วันที่อัปเดตของรายงานนั้น
 const sitemapEntries = [
@@ -655,6 +660,9 @@ const sitemapEntries = [
     `  <url><loc>${SITE_ORIGIN}/${encodeURIComponent(r.symbol)}</loc>` +
     `<lastmod>${(r.updated || '').slice(0, 10)}</lastmod>` +
     `<changefreq>weekly</changefreq><priority>0.8</priority></url>`
+  ),
+  ...tagPageSlugs.map((s) =>
+    `  <url><loc>${SITE_ORIGIN}/tag/${s}</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>`
   ),
 ];
 fs.writeFileSync(
@@ -801,7 +809,7 @@ const topTagBar = topTags.length ? `
     <nav class="toptags" aria-label="แท็กยอดนิยม">
       <span class="tt-lab">แท็กยอดนิยม</span>
       ${topTags.map(([slug, syms]) =>
-        `<a class="tchip" href="/?tag=${slug}">${esc(TAG_VOCAB.bySlug.get(slug).label)} <b>${syms.length}</b></a>`
+        `<a class="tchip" href="/tag/${slug}">${esc(TAG_VOCAB.bySlug.get(slug).label)} <b>${syms.length}</b></a>`
       ).join('\n      ')}
     </nav>` : '';
 
@@ -986,14 +994,14 @@ const searchScript = reports.length ? `
       });
       q.addEventListener('input', function () { recompute(); page = 1; render(); });
 
-      // แถวแท็กยอดนิยม (สร้างตอน build เป็น <a> จริง) — ดักคลิกเพื่อกรองในหน้าโดยไม่โหลดใหม่
-      // ไม่พึ่ง JS ก็คลิกได้ปกติ (ลิงก์จริงไปหน้าที่กรองแล้วผ่าน ?tag=)
+      // แถวแท็กยอดนิยม (สร้างตอน build เป็น <a> จริง) — ดักคลิกเพื่อกรองในหน้าโดยไม่โหลดใหม่ (มี JS)
+      // ไม่พึ่ง JS ก็คลิกได้ปกติ (ลิงก์จริงไปหน้า /tag/<slug> ที่กรองมาแล้วตั้งแต่ตอน build)
       var toptags = document.querySelector('.toptags');
       if (toptags) toptags.addEventListener('click', function (e) {
-        var a = e.target.closest('a[href^="/?tag="]');
+        var a = e.target.closest('a[href^="/tag/"]');
         if (!a) return;
         e.preventDefault();
-        tag = a.getAttribute('href').slice(6);
+        tag = a.getAttribute('href').slice(5);
         q.value = ''; page = 1; recompute(); render();
       });
 
@@ -1144,29 +1152,8 @@ const spectrum = _spectrumSrc.filter((_, i, arr) => i % Math.max(1, Math.floor(a
 const spectrumHtml = spectrum.length ? `<div id="spectrum">${spectrum.map((c) => `<i style="background:${escAttr(c)}"></i>`).join('')}</div>` : '';
 
 // ---- 7) เขียน index.html ----
-const indexHtml = `<!DOCTYPE html>
-<html lang="th">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Stock Analysis — รวมรายงานวิเคราะห์หุ้น</title>
-<meta name="description" content="รวมรายงานวิเคราะห์หุ้น (Fair Value, Margin of Safety, จุดเข้าซื้อ)">
-<link rel="canonical" href="/">
-<meta property="og:type" content="website">
-<meta property="og:site_name" content="Stock Analysis">
-<meta property="og:locale" content="th_TH">
-<meta property="og:title" content="Stock Analysis — รวมรายงานวิเคราะห์หุ้น">
-<meta property="og:description" content="รวมรายงานวิเคราะห์หุ้น (Fair Value, Margin of Safety, จุดเข้าซื้อ) — ${reports.length} รายงาน">
-<meta property="og:url" content="${SITE_ORIGIN}/">
-<meta property="og:image" content="${OG_IMAGE}">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Stock Analysis — รวมรายงานวิเคราะห์หุ้น">
-<meta name="twitter:description" content="รวมรายงานวิเคราะห์หุ้น (Fair Value, Margin of Safety, จุดเข้าซื้อ) — ${reports.length} รายงาน">
-<meta name="twitter:image" content="${OG_IMAGE}">
-${FONT_LINKS}
-<style>
+// CSS หน้า index — แยกเป็นตัวแปรเพราะหน้า /tag/<slug> ใช้การ์ดชุดเดียวกัน
+const INDEX_STYLE = `<style>
   :root{
     --bg:#eef0f3; --card:#fff; --ink:#13151b; --ink-2:#3c424e; --muted:#5f6675;
     --line:#e5e7eb; --line-2:#d4d8de;
@@ -1320,7 +1307,30 @@ ${FONT_LINKS}
     footer a{display:inline-block;padding:12px 4px}
   }
   @media(max-width:480px){ .grid{grid-template-columns:1fr} h1{font-size:25px} .hd-stats{gap:2px 4px} }
-</style>
+</style>`;
+const indexHtml = `<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stock Analysis — รวมรายงานวิเคราะห์หุ้น</title>
+<meta name="description" content="รวมรายงานวิเคราะห์หุ้น (Fair Value, Margin of Safety, จุดเข้าซื้อ)">
+<link rel="canonical" href="/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Stock Analysis">
+<meta property="og:locale" content="th_TH">
+<meta property="og:title" content="Stock Analysis — รวมรายงานวิเคราะห์หุ้น">
+<meta property="og:description" content="รวมรายงานวิเคราะห์หุ้น (Fair Value, Margin of Safety, จุดเข้าซื้อ) — ${reports.length} รายงาน">
+<meta property="og:url" content="${SITE_ORIGIN}/">
+<meta property="og:image" content="${OG_IMAGE}">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Stock Analysis — รวมรายงานวิเคราะห์หุ้น">
+<meta name="twitter:description" content="รวมรายงานวิเคราะห์หุ้น (Fair Value, Margin of Safety, จุดเข้าซื้อ) — ${reports.length} รายงาน">
+<meta name="twitter:image" content="${OG_IMAGE}">
+${FONT_LINKS}
+${INDEX_STYLE}
 </head>
 <body>
   <div class="wrap">
@@ -1347,4 +1357,67 @@ ${reports.length ? cards : emptyState}
 `;
 
 fs.writeFileSync(path.join(OUT, 'index.html'), indexHtml, 'utf8');
+
+// ---- 7) หน้า /tag/<slug> — ทางเข้าจาก Google + หน้ารวมหุ้นในธีมเดียวกัน ----
+// ★ ต้องอยู่ dist/tag/ ไม่ใช่รากของ dist — check-site มองไฟล์ .html ในรากว่าเป็น "รายงาน"
+// ★ การ์ดหน้าแรกใช้ href="./<SYM>.html" (relative) — บนหน้าที่ลึก 1 ชั้นจะกลายเป็น
+//   /tag/<SYM>.html = 404 ทุกใบ ⇒ ต้องแปลงเป็น absolute ก่อนฝัง
+const bySymbol = new Map(reports.map((r) => [r.symbol, r]));
+if (tagPageSlugs.length) {
+  fs.mkdirSync(path.join(OUT, 'tag'), { recursive: true });
+  // แท็กที่เกี่ยวข้อง = slug ที่มีสมาชิกทับซ้อนมากที่สุด (ลิงก์ภายในให้กราฟเชื่อมถึงกัน)
+  const relatedOf = (slug) => {
+    const mine = new Set(tagMembers.get(slug));
+    return tagPageSlugs
+      .filter((s) => s !== slug)
+      .map((s) => ({ s, n: tagMembers.get(s).filter((x) => mine.has(x)).length }))
+      .filter((x) => x.n > 0)
+      .sort((a, b) => b.n - a.n).slice(0, 5).map((x) => x.s);
+  };
+  for (const slug of tagPageSlugs) {
+    const ent = TAG_VOCAB.bySlug.get(slug);
+    const syms = tagMembers.get(slug).filter((s) => bySymbol.has(s));
+    const idxOf = new Map(reports.map((r, i) => [r.symbol, i]));
+    // href="./X.html" → href="/X.html" — หน้า tag ลึก 1 ชั้น relative link จะพังทุกใบ
+    const cardsHtml = syms.slice().sort((a, b) => idxOf.get(a) - idxOf.get(b))
+      .map((s) => cardHtml[idxOf.get(s)].replace(/href="\.\//g, 'href="/')).join('\n');
+    const url = `${SITE_ORIGIN}/tag/${slug}`;
+    const pageTitle = `หุ้นกลุ่ม ${ent.label} — รวม ${syms.length} ตัว | วิเคราะห์หุ้น`;
+    const related = relatedOf(slug);
+    fs.writeFileSync(path.join(OUT, 'tag', slug + '.html'), `<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>${esc(pageTitle)}</title>
+<meta name="description" content="${escAttr(ent.desc + ' — รวมรายงานวิเคราะห์ ' + syms.length + ' ตัว')}">
+<link rel="canonical" href="${url}">
+<meta property="og:type" content="website">
+<meta property="og:url" content="${url}">
+<meta property="og:title" content="${escAttr(pageTitle)}">
+<meta property="og:description" content="${escAttr(ent.desc)}">
+<meta property="og:image" content="${OG_IMAGE}">
+${FONT_LINKS}
+${INDEX_STYLE}
+</head>
+<body>
+  <div class="wrap">
+    <header class="hd">
+      <p class="crumb"><a href="/">← หน้าแรก</a></p>
+      <h1>🏷 ${esc(ent.label)}</h1>
+      <p class="lead">${esc(ent.desc)} · <b>${syms.length}</b> รายงาน</p>
+      <p class="crumb"><a href="/?tag=${slug}">เปิดในหน้ารวม (เรียง/กรองตาม MOS · P/E · ปันผล) →</a></p>
+    </header>
+    <div class="grid">
+${cardsHtml}
+    </div>
+    ${related.length ? `<nav class="related"><span>แท็กที่เกี่ยวข้อง:</span> ${related.map((s) => `<a class="tchip" href="/tag/${s}">${esc(TAG_VOCAB.bySlug.get(s).label)}</a>`).join(' ')}</nav>` : ''}
+  </div>
+</body>
+</html>
+`);
+  }
+  log('tag pages:', tagPageSlugs.length + ' หน้า → dist/tag/');
+}
+
 log(`✅ สร้าง dist/ เสร็จ — ${reports.length} รายงาน + index.html + reports.json`);

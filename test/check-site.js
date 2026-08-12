@@ -191,6 +191,44 @@ function checkTaBundle(distDir, reportsDir, srcSyms) {
   return { errors, warnings };
 }
 
+// ---- หน้า tag (dist/tag/<slug>.html) ----
+// ★ ต้องอยู่ในโฟลเดอร์ย่อยเท่านั้น — coverage check ข้างบนมองไฟล์ .html ในราก dist
+//   ว่าเป็น "รายงาน" ⇒ วางที่รากจะถูกฟ้องว่าเป็นรายงานค้าง
+function checkTagPages(DIST, ROOT) {
+  const r = { errors: [], warnings: [] };
+  const T = require('../tools/tag-lib.js');
+  let vocab, data;
+  try { vocab = T.loadVocab(); data = T.loadTags(); }
+  catch (e) { r.errors.push(`อ่านไฟล์ tag ไม่ได้: ${e.message}`); return r; }
+
+  const members = T.membersOf(data);
+  const tagDir = path.join(DIST, 'tag');
+  const want = [...members.keys()].filter((s) => vocab.bySlug.has(s)).sort();
+  const have = fs.existsSync(tagDir)
+    ? fs.readdirSync(tagDir).filter((f) => /\.html$/i.test(f)).map((f) => f.replace(/\.html$/i, '')).sort()
+    : [];
+
+  for (const s of want) if (!have.includes(s)) r.errors.push(`ไม่มีหน้า dist/tag/${s}.html (มีสมาชิก ${members.get(s).length} ตัว)`);
+  for (const s of have) {
+    if (!members.has(s)) { r.errors.push(`dist/tag/${s}.html ไม่มีสมาชิกเลย (หน้าเปล่าไม่ควรเข้า sitemap)`); continue; }
+    const html = fs.readFileSync(path.join(tagDir, s + '.html'), 'utf8');
+    const cards = (html.match(/class="card"/g) || []).length;
+    if (cards !== members.get(s).length) r.errors.push(`tag/${s}: การ์ด ${cards} ใบ แต่มีสมาชิก ${members.get(s).length} ตัว`);
+    if ((html.match(/<h1[^>]*>/gi) || []).length !== 1) r.errors.push(`tag/${s}: ต้องมี <h1> เดียว`);
+    if (!/<title>[^<]+<\/title>/i.test(html)) r.errors.push(`tag/${s}: ไม่มี <title>`);
+  }
+
+  // ลิงก์ tag ทุกเส้นใน dist ต้องไม่ตาย — **รวม index.html ด้วย** เพราะ Step 5 วางลิงก์
+  // /tag/<slug> ~11 เส้นไว้บนหน้าแรก (แถวแท็กยอดนิยม) ถ้ากรอง index.html ออกจะไม่มีอะไรคุมมัน
+  for (const f of fs.readdirSync(DIST).filter((f) => /\.html$/i.test(f))) {
+    const html = fs.readFileSync(path.join(DIST, f), 'utf8');
+    for (const m of html.matchAll(/href="\/tag\/([a-z0-9-]+)"/g)) {
+      if (!have.includes(m[1])) r.errors.push(`${f}: ลิงก์ /tag/${m[1]} ไม่มีหน้าปลายทาง`);
+    }
+  }
+  return r;
+}
+
 function main() {
   if (!fs.existsSync(DIST)) { console.error('❌ ไม่พบ dist/ — รัน `node build.js` ก่อน'); process.exit(1); }
 
@@ -232,6 +270,8 @@ function main() {
   // 1.4) TA chart bundle: dist มี bundle เดียว + inject ถูกไฟล์ + ไม่รั่วเข้า source
   add('site (ta chart)', checkTaBundle(DIST, REPORTS_DIR, srcSyms));
 
+  add('site (tag pages)', checkTagPages(DIST, ROOT));
+
   // 1.5) metric บนการ์ด index = stock-meta ของ report (build wiring ถูกต้อง)
   if (indexHtml) add('site (metric cards)', checkMetricsCards(indexHtml, DIST, distSyms));
 
@@ -267,4 +307,4 @@ function main() {
 }
 
 if (require.main === module) main();
-module.exports = { checkSecurityStructure, checkRender, checkModelCredit, checkMetricsCards, checkTaBundle };
+module.exports = { checkSecurityStructure, checkRender, checkModelCredit, checkMetricsCards, checkTaBundle, checkTagPages };
