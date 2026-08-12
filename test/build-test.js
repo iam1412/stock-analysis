@@ -383,6 +383,26 @@ ok(b.injectTA(taBody, 'AAPL', null, { currency: 'USD' }, 'assets/ta-abc123.js') 
      'dist/index.html: recompute() เรียก filterQueryString ด้วย location.search/tag/market จริง');
 }
 
+// ── การ embed matchTagQuery ลงสคริปต์หน้า index ──
+// ตรรกะการจับคู่มีเทสครบใน test/tags-test.js แล้ว — ที่นี่ตรวจว่า "ข้อความฟังก์ชัน"
+// ที่ถูก String() ไปฝังในหน้าเว็บ ยังกินได้และให้ผลเท่ากับตัวจริงใน Node
+{
+  const T = require('../tools/tag-lib.js');
+  const src = String(T.matchTagQuery);
+  ok(/^function matchTagQuery\s*\(/.test(src.trim()), 'embed: serialize แล้วยังเป็น function declaration (ฝังใน <script> ได้ตรง ๆ)');
+
+  // ประกอบใหม่จากข้อความ เหมือนที่เบราว์เซอร์ทำ แล้วต้องได้ผลเท่ากับตัวจริง
+  const revived = new Function(src + '; return matchTagQuery;')();
+  const list = [
+    { slug: 'ai-datacenter', label: 'AI Data Center', aliases: ['ai', 'เอไอ', 'data center'] },
+    { slug: 'thai-tourism', label: 'ท่องเที่ยวไทย', aliases: ['airline', 'ท่องเที่ยว'] },
+  ];
+  ['ai', 'air', 'data cen', 'เอไอ', 'xyz', 'a'].forEach((q) => {
+    ok(JSON.stringify(revived(q, list)) === JSON.stringify(T.matchTagQuery(q, list)),
+       `embed: ผลจากข้อความที่ฝัง = ผลจากตัวจริง (q="${q}")`);
+  });
+}
+
 console.log('\n' + '─'.repeat(50));
 console.log(`build-test: ${n - fails}/${n} ผ่าน`);
 if (fails) { console.log('\n❌ build.js มีพฤติกรรมผิด — แก้ build.js ก่อน push\n'); process.exit(1); }

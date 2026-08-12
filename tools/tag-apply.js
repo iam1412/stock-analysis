@@ -35,12 +35,17 @@ function applyTags({ symbol, slugs, vocab, data, reportsDir }) {
 }
 
 /** ย้าย key — pure: คืน {ok,errors,data} เหมือน applyTags · input เสีย = data เดิมไม่ถูกแตะเลย
- *  reject เมื่อ OLD ไม่มี entry / NEW มี entry อยู่แล้ว (กันทับหายเงียบ ๆ) / OLD กับ NEW ซ้ำกัน */
-function renameSymbol(data, oldSym, newSym) {
+ *  reject เมื่อ OLD ไม่มี entry / NEW มี entry อยู่แล้ว (กันทับหายเงียบ ๆ) / OLD กับ NEW ซ้ำกัน /
+ *  NEW ไม่มีไฟล์ reports/<NEW>.html จริง (กัน --rename พิมพ์ผิดสำเร็จเงียบ ๆ แล้ว --prune รอบถัดไปมาลบทิ้ง
+ *  ทีหลัง = ข้อมูลหายแบบสองจังหวะ — การเปลี่ยนชื่อ ticker จริงย่อมมีไฟล์ปลายทางอยู่แล้วเสมอ) */
+function renameSymbol(data, oldSym, newSym, reportsDir) {
   const errors = [];
   if (oldSym === newSym) errors.push(`${oldSym}: OLD กับ NEW เป็นสัญลักษณ์เดียวกัน`);
   if (!data.tags[oldSym]) errors.push(`${oldSym}: ไม่มี entry ใน tags.json ให้ย้าย`);
   if (data.tags[newSym]) errors.push(`${newSym}: มี entry อยู่แล้ว — ย้ายทับจะทำ tag เดิมของ ${newSym} หาย`);
+  if (!fs.existsSync(path.join(reportsDir || REPORTS_DIR, newSym + '.html'))) {
+    errors.push(`${newSym}: ไม่มีไฟล์ reports/${newSym}.html — เปลี่ยนชื่อ ticker จริงต้องมีไฟล์ปลายทางอยู่แล้วเสมอ`);
+  }
   if (errors.length) return { ok: false, errors, data };
   const tags = { ...data.tags, [newSym]: data.tags[oldSym] };
   delete tags[oldSym];
@@ -98,7 +103,7 @@ function main() {
   }
   if (argv[0] === '--rename') {
     if (argv.length !== 3) die(['ใช้: --rename <OLD> <NEW>']);
-    const r = renameSymbol(data, argv[1], argv[2]);
+    const r = renameSymbol(data, argv[1], argv[2], REPORTS_DIR);
     if (!r.ok) die(r.errors);
     writeTags(r.data, T.TAGS_FILE);
     console.log(`✅ ย้าย ${argv[1]} → ${argv[2]}`);

@@ -788,6 +788,23 @@ const tagVocabJson = JSON.stringify(TAG_VOCAB.list.map((e) => ({ slug: e.slug, l
 const activeTagBar = reports.length ? `
     <div class="tagbar" id="tagbar" hidden></div>` : '';
 
+// ฝังฟังก์ชันเดียวกับที่เทสใน Node ลงหน้าเว็บ — ห้ามเขียนตรรกะจับคู่ซ้ำสองที่
+const matchTagQuerySrc = String(tagLib.matchTagQuery);
+
+// แถวแท็กยอดนิยม — 12 tag ที่มีสมาชิกมากที่สุด · เป็น <a> จริง (ไม่พึ่ง JS) ให้เดินสำรวจได้
+// จัดอันดับตอน build เพราะจำนวนสมาชิกไม่เปลี่ยนระหว่างที่ผู้ใช้เปิดหน้าอยู่
+const topTags = [...tagLib.membersOf(TAG_DATA)]
+  .filter(([slug]) => TAG_VOCAB.bySlug.has(slug))
+  .sort((a, b) => (b[1].length - a[1].length) || a[0].localeCompare(b[0]))
+  .slice(0, 12);
+const topTagBar = topTags.length ? `
+    <nav class="toptags" aria-label="แท็กยอดนิยม">
+      <span class="tt-lab">แท็กยอดนิยม</span>
+      ${topTags.map(([slug, syms]) =>
+        `<a class="tchip" href="/?tag=${slug}">${esc(TAG_VOCAB.bySlug.get(slug).label)} <b>${syms.length}</b></a>`
+      ).join('\n      ')}
+    </nav>` : '';
+
 // filterQueryString — ES5 ล้วน ไม่มี closure (เหมือน matchTagQuery) — ฝังลงสคริปต์หน้า index ด้วย String(fn)
 // ให้ recompute() ซิงก์ ?tag=/?market= กลับ URL โดยไม่ทับพารามิเตอร์อื่น/hash ที่มีอยู่แล้ว
 const filterQueryStringSrc = String(tagLib.filterQueryString);
@@ -820,20 +837,43 @@ const searchScript = reports.length ? `
       })();
 
       var TAG_VOCAB = ${tagVocabJson};
+      ${matchTagQuerySrc}
+      // ผลค้นหา = ชื่อ/คำโปรยที่มีคำค้น ∪ สมาชิกของแท็กที่คำค้นแมตช์
+      // (แยก data-tags ออกจาก data-search โดยตั้งใจ — ถ้ายัด tag ลง data-search
+      //  ซึ่งเป็น indexOf substring พิมพ์ "ai" จะแมตช์ Thailand/retail/chain ทั้งหมด)
+      var qTags = [];
+      function suggestTags() {
+        qTags = q.value.trim() ? matchTagQuery(q.value, TAG_VOCAB) : [];
+      }
       var tagbar = document.getElementById('tagbar');
       function labelOf(slug) {
         for (var i = 0; i < TAG_VOCAB.length; i++) if (TAG_VOCAB[i].slug === slug) return TAG_VOCAB[i].label;
         return slug;
       }
       function drawTagBar() {
-        if (!tag) { tagbar.hidden = true; tagbar.innerHTML = ''; return; }
-        tagbar.hidden = false;
-        tagbar.innerHTML = '<span class="tchip on">\\uD83C\\uDFF7 ' + labelOf(tag) +
-          ' <b>' + filtered.length + '</b> หุ้น <button type="button" class="tx" data-clear="1" aria-label="ล้างตัวกรองแท็ก">\\u2715</button></span>';
+        if (tag) {
+          tagbar.hidden = false;
+          tagbar.innerHTML = '<span class="tchip on">\\uD83C\\uDFF7 ' + labelOf(tag) +
+            ' <b>' + filtered.length + '</b> หุ้น <button type="button" class="tx" data-clear="1" aria-label="ล้างตัวกรองแท็ก">\\u2715</button></span>';
+          return;
+        }
+        if (!qTags.length) { tagbar.hidden = true; tagbar.innerHTML = ''; return; }
+        var h = '';
+        for (var i = 0; i < qTags.length && i < 4; i++) {
+          var cnt = 0;
+          for (var j = 0; j < cards.length; j++) {
+            var ct = cards[j].getAttribute('data-tags');
+            if (ct && (' ' + ct + ' ').indexOf(' ' + qTags[i] + ' ') !== -1) cnt++;
+          }
+          h += '<button type="button" class="tchip" data-pick="' + qTags[i] + '">\\uD83C\\uDFF7 แท็ก: ' +
+               labelOf(qTags[i]) + ' <b>' + cnt + '</b> หุ้น</button>';
+        }
+        tagbar.hidden = !h; tagbar.innerHTML = h;
       }
       tagbar.addEventListener('click', function (e) {
-        if (!e.target.closest('[data-clear]')) return;
-        tag = ''; page = 1; recompute(); render();          // render() วาด tagbar เอง (tag ว่างแล้ว → ซ่อน)
+        var pick = e.target.closest('[data-pick]');
+        if (pick) { tag = pick.getAttribute('data-pick'); q.value = ''; page = 1; recompute(); render(); drawTagBar(); return; }
+        if (e.target.closest('[data-clear]')) { tag = ''; page = 1; recompute(); render(); drawTagBar(); }
       });
 
       // ลำดับเดิมจาก server = อัปเดตล่าสุดก่อน (ดัชนีน้อย = ใหม่กว่า) + ค่ายอดเริ่มต้น 0 จนกว่า /api/views จะตอบ
@@ -872,7 +912,16 @@ const searchScript = reports.length ? `
       }
 
       function marketOK(c) { return market === 'all' || c.getAttribute('data-market') === market; }
-      function searchOK(c) { var v = q.value.toLowerCase().trim(); return !v || c.getAttribute('data-search').indexOf(v) !== -1; }
+      function searchOK(c) {
+        var v = q.value.toLowerCase().trim();
+        if (!v) return true;
+        if (c.getAttribute('data-search').indexOf(v) !== -1) return true;
+        if (!qTags.length) return false;
+        var ct = c.getAttribute('data-tags');
+        if (!ct) return false;
+        for (var i = 0; i < qTags.length; i++) if ((' ' + ct + ' ').indexOf(' ' + qTags[i] + ' ') !== -1) return true;
+        return false;
+      }
       function tagOK(c) {
         if (!tag) return true;
         var v = c.getAttribute('data-tags');
@@ -881,6 +930,7 @@ const searchScript = reports.length ? `
       // filterQueryString — ฝังจาก tools/tag-lib.js แบบเดียวกับ matchTagQuery (ES5 ล้วน ไม่มี closure)
       ${filterQueryStringSrc}
       function recompute() {                                // กรอง (ตลาด+แท็ก+ค้นหา) → จัดอันดับ (composite หรือ CMP) → ย้าย DOM
+        suggestTags();
         filtered = cards.filter(function (c) { return marketOK(c) && tagOK(c) && searchOK(c); });
         if (orderMode === 'composite' && selected.length) {
           scoreComposite(filtered);
@@ -933,7 +983,18 @@ const searchScript = reports.length ? `
         page = g === 'prev' ? Math.max(1, page - 1) : g === 'next' ? Math.min(tp, page + 1) : parseInt(g, 10);
         render(); window.scrollTo(0, 0);
       });
-      q.addEventListener('input', function () { recompute(); page = 1; render(); });
+      q.addEventListener('input', function () { recompute(); page = 1; render(); drawTagBar(); });
+
+      // แถวแท็กยอดนิยม (สร้างตอน build เป็น <a> จริง) — ดักคลิกเพื่อกรองในหน้าโดยไม่โหลดใหม่
+      // ไม่พึ่ง JS ก็คลิกได้ปกติ (ลิงก์จริงไปหน้าที่กรองแล้วผ่าน ?tag=)
+      var toptags = document.querySelector('.toptags');
+      if (toptags) toptags.addEventListener('click', function (e) {
+        var a = e.target.closest('a[href^="/?tag="]');
+        if (!a) return;
+        e.preventDefault();
+        tag = a.getAttribute('href').slice(6);
+        q.value = ''; page = 1; recompute(); render();
+      });
 
       function highlightMetric() {                           // ไฮไลต์ค่า metric ทุกตัวที่เลือก (composite) บนทุกการ์ด
         [].slice.call(document.querySelectorAll('.cmetrics .cm')).forEach(function (s) {
@@ -1142,11 +1203,16 @@ ${FONT_LINKS}
   .search input:focus{box-shadow:var(--shadow),0 0 0 3px rgba(19,21,27,.14)}
   .search input::placeholder{color:var(--muted)}
   .noresult{text-align:center;color:var(--muted);padding:40px;font-size:14px}
+  .toptags{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:0 0 14px}
+  .tt-lab{font-size:12.5px;font-weight:700;color:var(--muted)}
+  a.tchip{text-decoration:none}
   .tagbar{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 14px}
   .tchip{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;padding:6px 12px;border-radius:99px;background:var(--card);box-shadow:var(--shadow);color:var(--ink)}
   .tchip b{font-weight:700}
   .tchip .tx{border:0;background:transparent;cursor:pointer;font-size:14px;line-height:1;color:var(--muted);padding:0 2px}
   .tchip .tx:hover{color:var(--ink)}
+  button.tchip{border:0;cursor:pointer;font-family:'Sarabun',sans-serif}
+  button.tchip:hover{box-shadow:var(--shadow),0 0 0 2px rgba(19,21,27,.1)}
   .sortbar{display:flex;flex-wrap:wrap;align-items:center;gap:7px;flex:0 1 auto;min-width:0}
   .sortsep{width:1px;align-self:stretch;background:var(--line-2);margin:3px 4px}
   .sortbtn,.viewbtn{font-family:'Sarabun',sans-serif;font-size:13px;color:var(--ink-2);background:var(--card);border:0;border-radius:99px;padding:7px 15px;cursor:pointer;box-shadow:var(--shadow);transition:all .14s}
@@ -1269,7 +1335,7 @@ ${FONT_LINKS}
     <div class="grid">
       <div id="thead" aria-hidden="true"><span></span><span>บริษัท</span><span class="num" data-sort="mos">MOS</span><span class="num" data-sort="upside">Upside</span><span class="num" data-sort="pe">P/E</span><span class="num" data-sort="yield">Yield</span><span class="num" data-sort="roe">ROE</span><span class="num" data-sort="updated">อัปเดต</span></div>
 ${reports.length ? cards : emptyState}
-    </div>${noResult}${activeTagBar}${pagerEl}
+    </div>${noResult}${topTagBar}${activeTagBar}${pagerEl}
     <footer>
       🤖 วิเคราะห์และจัดทำด้วย AI · <b>Claude</b> · Anthropic · ติดต่อ <a href="mailto:${CONTACT_EMAIL}">${CONTACT_EMAIL}</a><br>
       เพื่อการศึกษาและเป็นข้อมูลประกอบเท่านั้น มิใช่คำแนะนำการลงทุน — การลงทุนมีความเสี่ยง โปรดใช้วิจารณญาณ

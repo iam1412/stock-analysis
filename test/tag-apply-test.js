@@ -55,30 +55,40 @@ const fresh = () => ({ vocabVersion: 1, tags: { AAA: ['ai-datacenter'] }, reques
 }
 
 // ── rename / prune / request ──
+// NEW = 'BBB' เพราะมีไฟล์ reports/BBB.html อยู่จริงใน sandbox (repDir) และยังไม่มี entry ใน tags.json
+// (เปลี่ยนจาก 'CCC' เดิมที่ไม่มีไฟล์รายงาน — จะโดนเงื่อนไข reject ใหม่ด้านล่างปฏิเสธ)
 {
   const d = fresh();
-  const r = A.renameSymbol(d, 'AAA', 'CCC');
-  ok(r.ok && r.data.tags.CCC && !r.data.tags.AAA, '--rename ย้าย key');
-  ok(JSON.stringify(r.data.tags.CCC) === JSON.stringify(['ai-datacenter']), '--rename คงค่าเดิม');
+  const r = A.renameSymbol(d, 'AAA', 'BBB', repDir);
+  ok(r.ok && r.data.tags.BBB && !r.data.tags.AAA, '--rename ย้าย key');
+  ok(JSON.stringify(r.data.tags.BBB) === JSON.stringify(['ai-datacenter']), '--rename คงค่าเดิม');
+}
+// ── rename: NEW ไม่มีไฟล์รายงานจริง — ปฏิเสธ (ปิดช่องข้อมูลหายสองจังหวะ: --rename สำเร็จ
+// เพราะ NEW ยังไม่มี entry → --prune รอบถัดไปเจอไม่มี reports/NEW.html แล้วลบทิ้ง) ──
+{
+  const d = fresh();
+  const r = A.renameSymbol(d, 'AAA', 'CCC', repDir); // repDir มีแค่ AAA.html/BBB.html — ไม่มี CCC.html
+  ok(!r.ok && r.errors.some((m) => /ไม่มีไฟล์ reports\/CCC\.html/.test(m)), '--rename NEW ไม่มีไฟล์รายงานจริง → ปฏิเสธ');
+  ok(r.data === d, '--rename NEW ไม่มีไฟล์รายงาน → data เดิมไม่ถูกแตะ');
 }
 // ── rename: ปฏิเสธ — ต้องไม่แตะ data ──
 {
   const d = fresh();
-  const r = A.renameSymbol(d, 'ไม่มีจริง', 'CCC');
+  const r = A.renameSymbol(d, 'ไม่มีจริง', 'CCC', repDir);
   ok(!r.ok && r.errors.some((m) => /ไม่มี entry/.test(m)), '--rename จาก OLD ที่ไม่มี entry → ปฏิเสธ');
   ok(r.data === d, '--rename OLD ไม่มี entry → data เดิมไม่ถูกแตะ');
 }
 {
   const d = fresh();
   d.tags.BBB = ['power-grid'];
-  const r = A.renameSymbol(d, 'AAA', 'BBB');
+  const r = A.renameSymbol(d, 'AAA', 'BBB', repDir);
   ok(!r.ok && r.errors.some((m) => /มี entry อยู่แล้ว/.test(m)), '--rename ทับ NEW ที่มี entry อยู่แล้ว → ปฏิเสธ');
   ok(JSON.stringify(r.data.tags) === JSON.stringify({ AAA: ['ai-datacenter'], BBB: ['power-grid'] }),
      '--rename ทับ NEW → data เดิมไม่ถูกแตะ (BBB ไม่หาย)');
 }
 {
   const d = fresh();
-  const r = A.renameSymbol(d, 'AAA', 'AAA');
+  const r = A.renameSymbol(d, 'AAA', 'AAA', repDir);
   ok(!r.ok && r.errors.some((m) => /สัญลักษณ์เดียวกัน/.test(m)), '--rename OLD กับ NEW ซ้ำกัน → ปฏิเสธ');
 }
 {
@@ -161,6 +171,10 @@ const fresh = () => ({ vocabVersion: 1, tags: { AAA: ['ai-datacenter'] }, reques
   assertRejects([missingSym, 'ai-datacenter'], `symbol ไม่มีไฟล์ reports/${missingSym}.html`);
   assertRejects(['--rename', existingSym, existingSym2], `--rename ${existingSym} → ${existingSym2} (NEW มี entry อยู่แล้ว)`);
   assertRejects(['--rename', missingSym, missingSym2], `--rename ${missingSym} → ${missingSym2} (OLD ไม่มี entry)`);
+  // งานพ่วง: ปิดช่องข้อมูลหายสองจังหวะ — OLD มีจริง (existingSym) แต่ NEW (missingSym) ไม่มีไฟล์
+  // reports/ เลย ก่อนแก้ตรงนี้ --rename แบบนี้จะ "สำเร็จ" เงียบ ๆ (เพราะ missingSym ยังไม่มี entry)
+  // แล้ว --prune รอบถัดไปจะเจอไม่มีไฟล์รายงาน → ลบ entry ทิ้ง = ข้อมูลหายแบบสองจังหวะ
+  assertRejects(['--rename', existingSym, missingSym], `--rename ${existingSym} → ${missingSym} (NEW ไม่มีไฟล์ reports/${missingSym}.html)`);
 }
 
 fs.rmSync(tmp, { recursive: true, force: true });
