@@ -22,9 +22,23 @@ const path = require('path');
 const crypto = require('crypto');
 const bt = require('./tools/brandtheme.js');
 const tagLib = require('./tools/tag-lib.js');
-// โหลดครั้งเดียวต่อ process — ไฟล์หายก็ build ต่อได้ (ระบบ tag ยังไม่ติดตั้ง = ไม่มีชิป)
-const TAG_VOCAB = (() => { try { return tagLib.loadVocab(); } catch { return { version: 0, list: [], bySlug: new Map() }; } })();
-const TAG_DATA = (() => { try { return tagLib.loadTags(); } catch { return { vocabVersion: 0, tags: {}, requests: [] }; } })();
+// โหลดครั้งเดียวต่อ process — ไฟล์หายจริง (ยังไม่ติดตั้งระบบ tag) เท่านั้นที่ fallback เงียบ ๆ
+// ได้ · error อื่น (เช่น tags.json เขียนไม่ครบ/JSON พัง) ต้อง throw ต่อ ไม่งั้น build จะเขียน
+// reports.json ทับด้วย tags ว่างทั้ง 908 ตัวแบบไม่มี error ให้เห็น (เคยเกิดจริงตอน dev)
+const TAG_VOCAB = (() => {
+  try { return tagLib.loadVocab(); }
+  catch (err) {
+    if (err.code === 'ENOENT') return { version: 0, list: [], bySlug: new Map() };
+    throw new Error('อ่าน tags-vocab.json ไม่ได้: ' + err.message);
+  }
+})();
+const TAG_DATA = (() => {
+  try { return tagLib.loadTags(); }
+  catch (err) {
+    if (err.code === 'ENOENT') return { vocabVersion: 0, tags: {}, requests: [] };
+    throw new Error('อ่าน tags.json ไม่ได้: ' + err.message);
+  }
+})();
 
 const ROOT = __dirname;
 const REPORTS_DIR = path.join(ROOT, 'reports');
@@ -462,8 +476,12 @@ function renderTagRow(html, { symbol, market, tagData, vocab }) {
   if (!m) return html;
   const spans = [...m[0].matchAll(/<span class="tag">([^<]*)<\/span>/g)].map((x) => x[1]);
   // 3 span = รายงานเดิม (ตลาด+sector+niche) · 1 span = skeleton ใหม่ (ตลาดอย่างเดียว)
-  // จำนวนอื่น = โครงที่ยังไม่รู้จัก → ไม่แตะ ปล่อยให้ gate เป็นตัวฟ้อง
-  if (spans.length !== 3 && spans.length !== 1) return html;
+  // จำนวนอื่น = โครงที่ยังไม่รู้จัก → ไม่แตะ แต่ต้อง log ไว้ ไม่งั้นรายงานที่ tag ถูกต้องแต่ไม่ขึ้นชิป
+  // จะเงียบหายไปโดยไม่มีอะไรจับได้เลย (gate ไม่ครอบเคสนี้)
+  if (spans.length !== 3 && spans.length !== 1) {
+    log(`renderTagRow: ${symbol} มี ${spans.length} span (ต้องการ 3 หรือ 1) — ข้าม ไม่ต่อชิป`);
+    return html;
+  }
   const slugs = tagData ? tagData.tags[symbol] || [] : [];
   // สร้างชิปก่อนตัดสินใจ — ถ้าไม่มี tag เลย "หรือ" slug ทุกตัวหายจาก vocab (version drift/slug ถูกลบ/เปลี่ยนชื่อ)
   // ก็คืน html เดิมทั้งแถวเหมือนกัน (คงป้าย free-text เดิมไว้ ดีกว่าทำข้อมูลหาย) — gate E40 เป็นตัวฟ้องแทน
@@ -865,13 +883,19 @@ const searchScript = reports.length ? `
         for (var i = 0; i < TAG_VOCAB.length; i++) if (TAG_VOCAB[i].slug === slug) return TAG_VOCAB[i].label;
         return slug;
       }
+      // escHtml — labelOf() มาจากคลังคำศัพท์ (tags-vocab.json) เป็น plain text แต่ทุกจุดที่วางลง
+      // innerHTML ต้อง escape เหมือนฝั่ง server (esc() ใน build.js) ไม่งั้น label ที่มี & หรือ < จะพังชิป —
+      // ES5 ล้วน (ฝังเป็น text ลงหน้า ห้าม const/template literal)
+      function escHtml(s) {
+        return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+      }
       // hasTag — idiom ตรวจว่า data-tags (คั่นด้วยช่องว่าง) มี slug นี้อยู่ไหม
       // เดิมมี 3 จุด (tagOK/searchOK/drawTagBar) เขียน indexOf ซ้ำเอง — รวมไว้ที่เดียวกันหลุด
       function hasTag(ct, slug) { return !!ct && (' ' + ct + ' ').indexOf(' ' + slug + ' ') !== -1; }
       function drawTagBar() {
         if (tag) {
           tagbar.hidden = false;
-          tagbar.innerHTML = '<span class="tchip on">\\uD83C\\uDFF7 ' + labelOf(tag) +
+          tagbar.innerHTML = '<span class="tchip on">\\uD83C\\uDFF7 ' + escHtml(labelOf(tag)) +
             ' <b>' + filtered.length + '</b> หุ้น <button type="button" class="tx" data-clear="1" aria-label="ล้างตัวกรองแท็ก">\\u2715</button></span>';
           return;
         }
@@ -884,7 +908,7 @@ const searchScript = reports.length ? `
             if (marketOK(cards[j]) && hasTag(cards[j].getAttribute('data-tags'), qTags[i])) cnt++;
           }
           h += '<button type="button" class="tchip" data-pick="' + qTags[i] + '">\\uD83C\\uDFF7 แท็ก: ' +
-               labelOf(qTags[i]) + ' <b>' + cnt + '</b> หุ้น</button>';
+               escHtml(labelOf(qTags[i])) + ' <b>' + cnt + '</b> หุ้น</button>';
         }
         tagbar.hidden = !h; tagbar.innerHTML = h;
       }
@@ -1138,6 +1162,13 @@ const searchScript = reports.length ? `
 const pagerEl = reports.length ? `\n    <div class="pager" id="pager"></div>` : '';
 
 // footer หน้า index: ข้อความ 2 บรรทัดตามที่เจ้าของกำหนดเอง verbatim (12 ส.ค. 69) — ห้ามแต่งเพิ่ม
+// ★ ดึงเป็นค่าคงที่ตัวเดียวให้หน้า /tag/<slug> ใช้ร่วมด้วย (Fix 2 รีวิว) — หน้า tag เป็นทางเข้าจาก
+// Google ตรง ๆ (canonical + sitemap) โชว์ MOS/Upside/P-E ทุกการ์ดเหมือนหน้าแรก จึงต้องมี disclaimer
+// เดียวกัน ไม่ใช่แค่หน้าแรก — ห้ามพิมพ์ข้อความซ้ำเอง ให้ใช้ตัวแปรนี้เท่านั้นกันข้อความสองที่ดริฟต์กัน
+const FOOTER_HTML = `<footer>
+      🤖 วิเคราะห์และจัดทำด้วย AI · <b>Claude</b> · Anthropic · ติดต่อ <a href="mailto:${CONTACT_EMAIL}">${CONTACT_EMAIL}</a><br>
+      เพื่อการศึกษาและเป็นข้อมูลประกอบเท่านั้น มิใช่คำแนะนำการลงทุน — การลงทุนมีความเสี่ยง โปรดใช้วิจารณญาณ
+    </footer>`;
 
 const emptyState = `
       <div class="empty">
@@ -1362,16 +1393,13 @@ ${INDEX_STYLE}
         <div class="sub">Fair Value · Margin of Safety · จุดเข้าซื้อ · ผลตอบแทนคาดการณ์ 3 ปี</div>
       </div>
       ${hdStats}
-    </div></header>${(sortBar || searchBox) ? `<div class="toolbar">${sortBar}${searchBox}</div>` : ''}
+    </div></header>${(sortBar || searchBox) ? `<div class="toolbar">${sortBar}${searchBox}</div>` : ''}${topTagBar}${activeTagBar}
     <div class="tblhint" id="tblhint" hidden>← เลื่อนตารางไปด้านข้าง เพื่อดูครบทุกคอลัมน์ →</div>
     <div class="grid">
       <div id="thead" aria-hidden="true"><span></span><span>บริษัท</span><span class="num" data-sort="mos">MOS</span><span class="num" data-sort="upside">Upside</span><span class="num" data-sort="pe">P/E</span><span class="num" data-sort="yield">Yield</span><span class="num" data-sort="roe">ROE</span><span class="num" data-sort="updated">อัปเดต</span></div>
 ${reports.length ? cards : emptyState}
-    </div>${noResult}${topTagBar}${activeTagBar}${pagerEl}
-    <footer>
-      🤖 วิเคราะห์และจัดทำด้วย AI · <b>Claude</b> · Anthropic · ติดต่อ <a href="mailto:${CONTACT_EMAIL}">${CONTACT_EMAIL}</a><br>
-      เพื่อการศึกษาและเป็นข้อมูลประกอบเท่านั้น มิใช่คำแนะนำการลงทุน — การลงทุนมีความเสี่ยง โปรดใช้วิจารณญาณ
-    </footer>
+    </div>${noResult}${pagerEl}
+    ${FOOTER_HTML}
   </div>${searchScript}
 </body>
 </html>
@@ -1435,6 +1463,7 @@ ${INDEX_STYLE}
 ${cardsHtml}
     </div>
     ${related.length ? `<nav class="related"><span class="tt-lab">แท็กที่เกี่ยวข้อง:</span> ${related.map((s) => `<a class="tchip" href="/tag/${s}">${esc(TAG_VOCAB.bySlug.get(s).label)}</a>`).join(' ')}</nav>` : ''}
+    ${FOOTER_HTML}
   </div>
 </body>
 </html>

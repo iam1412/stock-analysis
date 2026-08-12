@@ -217,10 +217,14 @@ function checkTagPages(DIST) {
   catch (e) { r.errors.push(`อ่านไฟล์ tag ไม่ได้: ${e.message}`); return r; }
 
   const members = T.membersOf(data);
+  // ชื่อไฟล์จริงที่ราก dist/ — เทียบด้วย Set ตรง ๆ ไม่ใช้ fs.existsSync (macOS ไม่สนตัวพิมพ์เล็ก-ใหญ่
+  // ของชื่อไฟล์ ⇒ existsSync('abc.html') จะเจอไฟล์ 'ABC.html' ด้วย ทำให้ symbol พิมพ์ผิดตัวพิมพ์หลุดผ่าน
+  // ในเครื่อง mac ทั้งที่ 404 จริงบน prod — hoist ขึ้นมาก่อน liveCount ให้ใช้ Set เดียวกันทั้งฟังก์ชัน)
+  const rootFiles = new Set(fs.readdirSync(DIST).filter((f) => /\.html$/i.test(f)));
   // build.js เรนเดอร์การ์ดกรองด้วย bySymbol (เฉพาะ symbol ที่มีรายงานสร้างจริงใน dist/) —
   // เทียบด้วยชุดกรองเดียวกัน กัน false-positive เวลาลบ reports/<SYM>.html (delisting) แล้ว
   // tags.json ยังเหลือ symbol ค้าง (orphan tag data เป็นปัญหาคนละชั้น รอ corpus-level check ในงานถัดไป)
-  const liveCount = (s) => members.get(s).filter((sym) => fs.existsSync(path.join(DIST, sym + '.html'))).length;
+  const liveCount = (s) => members.get(s).filter((sym) => rootFiles.has(sym + '.html')).length;
   const tagDir = path.join(DIST, 'tag');
   // "ควรมีหน้า" = สมาชิกที่มีรายงานจริง ≥1 ตัวเท่านั้น (ตรงกับ tagPageSlugs ใน build.js) —
   // แท็กที่สมาชิกถูกลบรายงานจนเหลือ 0 ไม่ควรมีหน้าเปล่าเข้ามาเลย ไม่ใช่แค่ "การ์ดตรงจำนวน"
@@ -251,7 +255,7 @@ function checkTagPages(DIST) {
   //                (2) href="/<SYM>.html" (การ์ดในหน้า tag ถูกแปลงเป็น absolute path ตอน build — ดู build.js "href="\.\/"→"/"")
   //                    ต้องมีไฟล์รายงานจริงที่ราก dist/ — เทียบด้วย Set ชื่อไฟล์ตรง ๆ ไม่ใช้ fs.existsSync
   //                    (macOS ไม่สนตัวพิมพ์เล็ก-ใหญ่ของชื่อไฟล์ ⇒ ลิงก์ผิดตัวพิมพ์จะหลุดผ่านในเครื่อง แต่ 404 จริงบน prod)
-  const rootFiles = new Set(fs.readdirSync(DIST).filter((f) => /\.html$/i.test(f)));
+  //                    — rootFiles ประกาศไว้ต้นฟังก์ชันแล้ว (liveCount ใช้ตัวเดียวกัน) ไม่ต้องสร้างซ้ำ
   for (const file of listDistHtmlFiles(DIST)) {
     const html = fs.readFileSync(file.abs, 'utf8');
     for (const m of html.matchAll(/href="\/tag\/([a-z0-9-]+)"/g)) {

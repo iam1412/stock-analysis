@@ -250,7 +250,7 @@ node tools/tag-apply.js --prune                # ลบ entry ที่ไม่
 
 **กติกาแกนธีม (ไม่ใช่ category/ขนาด):** slug ใหม่ต้องตอบ "หุ้นตัวนี้เล่นเรื่องอะไร" — **ห้าม** เป็นหมวด GICS (Technology/Healthcare/Financials), ขนาดตลาด (Large-cap), หรือสไตล์การลงทุน (Dividend Aristocrat/Deep Value) เพราะข้อมูลพวกนี้มีอยู่แล้วในตัวรายงาน/screener ไม่ต้องการ tag ซ้ำ
 
-**ขั้นต่ำ 3 สมาชิก:** `MIN_MEMBERS = 3` ใน `tag-lib.js` เป็น **warning ระดับคลัง ไม่ใช่ error** — `npm run test:tags` พิมพ์แจ้งเฉย ๆ เมื่อ slug ไหนมีสมาชิก <3 (สัญญาณว่าอาจแคบเกินไป ควรยุบรวมธีมใกล้เคียง) ไม่บล็อก push · หน้าธีม `dist/tag/<slug>.html` ยังสร้างให้ **ทุก slug ที่มีสมาชิกที่ยังมีรายงานจริง (live) ≥1** โดยไม่รอถึง 3 — บาง slug ยอมรับ <3 สมาชิกโดยตั้งใจเมื่อไม่มีธีมใกล้เคียงให้ยุบ (ดู `desc` ของ `casino-resort`/`tobacco-nicotine` ใน `tags-vocab.json`)
+**ขั้นต่ำ 3 สมาชิก:** `MIN_MEMBERS = 3` ใน `tag-lib.js` เป็น **warning ระดับคลัง ไม่ใช่ error** — `npm run test:tags` พิมพ์แจ้งเฉย ๆ เมื่อ slug ไหนมีสมาชิก <3 (สัญญาณว่าอาจแคบเกินไป ควรยุบรวมธีมใกล้เคียง) ไม่บล็อก push · หน้าธีม `dist/tag/<slug>.html` ยังสร้างให้ **ทุก slug ที่มีสมาชิกที่ยังมีรายงานจริง (live) ≥1** โดยไม่รอถึง 3 — บาง slug ยอมรับ <3 สมาชิกโดยตั้งใจเมื่อไม่มีธีมใกล้เคียงให้ยุบ (ดู `desc` ของ `casino-gaming`/`tobacco-nicotine` ใน `tags-vocab.json`)
 
 ### เพิ่มธีมใหม่เข้าคลัง (backfill)
 1. เพิ่ม entry ใน `tags-vocab.json` แล้ว bump `version`

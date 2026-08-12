@@ -37,7 +37,7 @@ function buildFill(b) {
   return {
     // identity
     SYMBOL: b.symbol, COMPANY_TITLE: b.companyTitle, COMPANY_H1: b.companyH1,
-    EXCHANGE: b.exchange, SECTOR_TAG: b.sectorTag, NICHE_TAG: b.nicheTag, SUB: b.sub,
+    EXCHANGE: b.exchange, SUB: b.sub,
     GDOTS: b.gdots, ACCENT: b.reportData.theme.accent,
     CHANGE: b.change, PRICE_DATE: b.priceDate, RANGE_52W: b.range52w, SOURCES: b.sources,
     FY: b.fy, FOOTER_DATE: b.footerDate,
@@ -81,7 +81,7 @@ const tokensIn = (tpl) => [...new Set([...tpl.matchAll(/\{\{(\w+)\}\}/g)].map((m
 const li = (items) => items.map((t) => `<li><div>${t}</div></li>`).join('\n          ');
 const HMPRO = {
   symbol: 'HMPRO', companyTitle: 'โฮม โปรดักส์ เซ็นเตอร์', companyH1: 'โฮม โปรดักส์ เซ็นเตอร์ (HomePro)',
-  exchange: 'SET', sectorTag: 'Consumer • Home Improvement Retail', nicheTag: 'ค้าปลีกตกแต่ง/ปรับปรุงบ้าน เบอร์ 1 ไทย',
+  exchange: 'SET',
   sub: 'ค้าปลีกสินค้าตกแต่ง/ปรับปรุงบ้าน HomePro • Mega Home วัสดุก่อสร้าง/ค้าส่ง • เครื่องใช้ไฟฟ้า/เฟอร์นิเจอร์ • บริการติดตั้ง/รีโนเวท • สาขาในมาเลเซีย',
   gdots: '<span style="background:#ffb066"></span><span style="background:#f9923a"></span><span style="background:#f57c00"></span><span style="background:#c25e00"></span>',
   change: '▼ −5.4% (รอบปี)', priceDate: '23–24 มิ.ย. 2026', range52w: '฿5.70–฿8.00', sources: 'SET / stockanalysis.com / Investing.com',
@@ -121,7 +121,7 @@ const HMPRO = {
 // ต่างประเทศ ($/NASDAQ) = หุ้นตัวอย่างสมมติ (ตัวเลขสอดคล้องกันเอง) — พิสูจน์ว่าโครง US เติมแล้วผ่าน gate เช่นกัน
 const NWND = {
   symbol: 'NWND', companyTitle: 'Northwind Software', companyH1: 'Northwind Software (NWND)',
-  exchange: 'NASDAQ', sectorTag: 'Technology • Enterprise Software', nicheTag: 'แพลตฟอร์มซอฟต์แวร์องค์กร (ตัวอย่าง)',
+  exchange: 'NASDAQ',
   sub: 'แพลตฟอร์มซอฟต์แวร์บริหารองค์กร (ERP/CRM) • คลาวด์ซับสคริปชัน • โมดูล AI วิเคราะห์ข้อมูล (บริษัทตัวอย่างสำหรับโครงต้นแบบ)',
   gdots: '<span style="background:#7aa7ff"></span><span style="background:#4f86f7"></span><span style="background:#2f6bdf"></span><span style="background:#1f4fb0"></span>',
   change: '▲ +18.1% (รอบปี)', priceDate: '23–24 มิ.ย. 2026', range52w: '$118–$182', sources: 'stockanalysis.com / TradingView / Investing.com',
