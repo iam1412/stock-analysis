@@ -212,6 +212,16 @@ ok(b.injectTA(taBody, 'AAPL', null, { currency: 'USD' }, 'assets/ta-abc123.js') 
   ok(!out.includes('</script><script>alert'), 'injectTA: theme.accent มี </script><script> → ไม่หลุดออกจาก inline script เดิม (escape < กัน breakout)');
   ok(out.includes('\\u003cscript>alert'), 'injectTA: "<" ใน theme.accent ถูก escape เป็น \\u003c ใน __TA_CFG__ (">" ไม่ต้อง escape)');
 }
+// ── injectTA: $ ในค่าแทนที่ห้ามถูกตีความ (GetSubstitution) — เหตุผลเดียวกับที่ fillTokens ใช้ split/join ──
+//   ก่อนแก้: replace('</body>', `…${cfgJson}…`) ทำให้ $& กลายเป็น "</body>" และ $$ ยุบเป็น "$" → cfg เพี้ยนเงียบ ๆ
+{
+  const dollarRd = { ...rdBase, theme: { accent: '$&$$', accentDark: "$`$'$1" } };
+  const out = b.injectTA(taBody, 'AA$&P', dollarRd, { currency: 'USD' }, 'assets/ta-abc123.js');
+  ok(out.includes('"accent":"$&$$"'), 'injectTA: $&/$$ ใน theme.accent ออกมาตรงตัว (ไม่ถูกขยายเป็น "</body>"/"$")');
+  ok(out.includes(`"accentDark":"$\`$'$1"`), "injectTA: $`/$'/$1 ใน theme.accentDark ออกมาตรงตัว");
+  ok(out.includes('"sym":"AA$&P"'), 'injectTA: $& ใน symbol ออกมาตรงตัว');
+  ok(out.split('</body>').length === 2, 'injectTA: มี </body> เดียวใน output (ไม่มี $& ขยายเป็นแท็กปลอม)');
+}
 
 // ── stripDecorEmoji + injectSectionNav (GUI redesign — spec §4.3) ──
 {

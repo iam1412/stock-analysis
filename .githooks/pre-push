@@ -19,34 +19,39 @@ block() {
 
 # ขั้น 1-2 = unit test ของเครื่องมือ cron/canary — offline + เร็วที่สุด จึงวางไว้หน้าสุด (ล้มก่อนเสีย
 # เวลา build) · เพิ่ม 8 ส.ค. 2569 หลังพบว่า syntax error ในไฟล์เทสต์เองหลุด gate ไปได้ทั้งชุด
-echo "💰 pre-push 1/10: unit-test cron ราคา (update-prices-test)…"
+echo "💰 pre-push 1/11: unit-test cron ราคา (update-prices-test)…"
 node test/update-prices-test.js >/dev/null || block "update-prices unit gate"
 
-echo "☠  pre-push 2/10: unit-test canary หุ้นตาย (dead-ticker-test)…"
+echo "☠  pre-push 2/11: unit-test canary หุ้นตาย (dead-ticker-test)…"
 node test/dead-ticker-test.js >/dev/null || block "dead-ticker canary unit gate"
 
-echo "🔍 pre-push 3/10: ตรวจคุณภาพรายงาน (check-reports)…"
+echo "🔍 pre-push 3/11: ตรวจคุณภาพรายงาน (check-reports)…"
 node test/check-reports.js || block "report quality gate"
 
-echo "📊 pre-push 4/10: แปลง Yahoo OHLC (ohlc-test)…"
+# ขั้น 4 = meta-test ของขั้น 3: ฉีด defect ลงรายงานจริงแล้วยืนยันว่า check ตัวที่คู่กัน "ยิงจริง" — ถ้า check
+# ตัวไหนเลิกแมตช์เงียบ ๆ ขั้น 3 จะรายงาน "0 error" แล้วทั้ง gate ผ่านหมด · ไม่ >/dev/null เพราะพิมพ์ผลลง stdout
+echo "🧪 pre-push 4/11: meta-test ว่า check-reports ยังจับ defect ได้ (self-test)…"
+node test/self-test.js || block "checker self-test gate"
+
+echo "📊 pre-push 5/11: แปลง Yahoo OHLC (ohlc-test)…"
 node test/ohlc-test.js >/dev/null || block "ohlc transform gate"
 
-echo "📈 pre-push 5/10: นิยาม TA engine (ta-engine-test)…"
+echo "📈 pre-push 6/11: นิยาม TA engine + รัน ta-chart ใน mock DOM (ta-engine-test)…"
 node test/ta-engine-test.js >/dev/null || block "TA engine gate"
 
-echo "🔧 pre-push 6/10: build dist/ …"
+echo "🔧 pre-push 7/11: build dist/ …"
 node build.js >/dev/null || block "build"
 
-echo "🧪 pre-push 7/10: unit-test build.js (เครดิตโมเดล + freshHash + injectTA)…"
+echo "🧪 pre-push 8/11: unit-test build.js (เครดิตโมเดล + freshHash + injectTA)…"
 node test/build-test.js >/dev/null || block "build-test"
 
-echo "⚙️  pre-push 8/10: รัน engine ทุกรายงานใน mock DOM (engine-exec)…"
+echo "⚙️  pre-push 9/11: รัน engine ทุกรายงานใน mock DOM (engine-exec)…"
 node test/engine-exec.js >/dev/null || block "engine execution gate"
 
-echo "🧱 pre-push 9/10: โครงต้นแบบ TH/US เติมแล้วผ่าน gate (skeleton-test)…"
+echo "🧱 pre-push 10/11: โครงต้นแบบ TH/US เติมแล้วผ่าน gate (skeleton-test)…"
 node test/skeleton-test.js >/dev/null || block "skeleton template gate"
 
-echo "🌐 pre-push 10/10: ตรวจความสมบูรณ์เว็บไซต์ (check-site)…"
+echo "🌐 pre-push 11/11: ตรวจความสมบูรณ์เว็บไซต์ (check-site)…"
 node test/check-site.js || block "site integrity gate"
 
 exit 0

@@ -25,7 +25,7 @@ const { expandReport, THEME_DEFAULTS, deriveTheme } = require('../build.js');
 // โมดูล contrast กลางชุดเดียวกับตัวสร้างธีม/ตัวซ่อม — E38 ต้องคิดเลขตรงกับ tools/fix-contrast.js เป๊ะ ไม่งั้นเถียงกันที่ขอบเกณฑ์
 const bt = require('../tools/brandtheme.js');
 // "วันที่ราคา" อยู่ตรงไหนในหัวรายงาน = ความรู้ก้อนเดียวกับที่ cron ใช้เขียน — อย่าทำสำเนา
-const { parsePriceDate } = require('../tools/price-date.js');
+const { parsePriceDate, THAI_MONTHS } = require('../tools/price-date.js');
 const { resolveColor } = require('../tools/fix-contrast.js');
 
 const REPORTS_DIR = path.join(__dirname, '..', 'reports');
@@ -150,6 +150,28 @@ function buildCtx(html, name) {
 const SM_NUM_KEYS = ['price', 'fairValue', 'mos', 'upside', 'pe', 'dividendYield', 'roe']; // ต้องเป็นตัวเลข (price/fairValue/mos/upside) หรือตัวเลข|null (pe/yield/roe)
 const SM_REQ_NUM = ['price', 'fairValue', 'mos', 'upside'];                                 // ต้องมีค่าเสมอ (คำนวณได้จากราคา/FV)
 const isFiniteNum = (v) => typeof v === 'number' && isFinite(v);
+
+// รูปแบบ label แกน x ของกราฟราคา (report-data.chart.data[i][0]) — ใช้โดย E39 (ลำดับเวลาต้องเดินหน้า)
+// คนละที่กับ "วันที่ราคา" ใน header (price-date.js: เดือน+วัน+ปีเต็มในร้อยแก้ว, ต้อง anchor "ราคา") — ที่นี่ label สั้น ไม่มีวัน
+// รู้จัก: เดือนไทยย่อ+ปี 2 หลัก ("ก.ค.25" — รูปแบบจริงที่ generator ใช้ทุกไฟล์วันนี้), เดือนอังกฤษย่อ+ปี 2 หลัก ("Jan '25"),
+// ปีล้วน 4 หลัก (พ.ศ./ค.ศ. — แปลง พ.ศ.→ค.ศ. เกณฑ์เดียวกับ price-date.js: ≥2400 = พ.ศ.), ปีล้วน 2 หลัก มี ' นำหน้าได้ ("'68")
+// คืน "key" ตัวเลขเทียบลำดับเวลาได้ (ปี×12+เดือน) — รูปแบบไม่รู้จัก = null ⇒ caller ต้องข้ามทั้งรายงาน ไม่เดา
+const CHART_EN_MONTHS = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
+function parseChartLabelKey(label) {
+  const s = String(label).trim();
+  if (!s) return null;
+  const thM = THAI_MONTHS.findIndex((m) => s.startsWith(m));
+  if (thM >= 0) {
+    const rest = s.slice(THAI_MONTHS[thM].length).trim().replace(/^'/, '');
+    return /^\d{2}$/.test(rest) ? (2000 + parseInt(rest, 10)) * 12 + thM : null;
+  }
+  const en = s.match(/^([A-Za-z]{3})\s*'?(\d{2})$/);
+  if (en) { const enM = CHART_EN_MONTHS.indexOf(en[1].toLowerCase()); if (enM >= 0) return (2000 + parseInt(en[2], 10)) * 12 + enM; }
+  const y4 = s.match(/^(\d{4})$/);
+  if (y4) { let y = parseInt(y4[1], 10); if (y >= 2400) y -= 543; return y * 12; }
+  const y2 = s.match(/^'?(\d{2})$/);
+  return y2 ? (2000 + parseInt(y2[1], 10)) * 12 : null;
+}
 
 // ---------- checks ----------
 // level 'error' → block push ; level 'warn' → แจ้งเตือน ไม่ block
@@ -327,6 +349,21 @@ const CHECKS = [
     chk('ขาวบน badge (เลข section)', '#ffffff', resolveColor(t.badge, t), bt.AA.text);
     chk('chgColor บน chgBg (ป้าย %)', resolveColor(t.chgColor, t), resolveColor(t.chgBg, t), bt.AA.text);
     return bad.length ? `${bad.join(' ; ')} — แก้อัตโนมัติ: node tools/fix-contrast.js <SYM> --write (ซ่อมเฉพาะ field ที่ตก คงโทนแบรนด์)` : null;
+  } },
+
+  // ── E39: จุดกราฟ (report-data.chart.data) ต้องเรียงเวลาเดินหน้าเสมอ (เก่า→ใหม่) ──
+  // 2 จุดสลับตำแหน่งทำให้กราฟราคาเป็นซิกแซกไร้ความหมาย แต่ผ่านทุกขั้นเดิม — build.js ตรวจแค่รูปทรง [string,number],
+  // E36/E37 ตรวจแค่ % header กับจำนวนจุด ไม่มีอะไรตรวจลำดับเวลา
+  // ★ อนุรักษนิยม: label สักจุดที่ parseChartLabelKey อ่านไม่ออก → ข้ามทั้งรายงาน ไม่เดา (false error จะบล็อก cron ราคารายวันทั้งรีโป)
+  { id: 'E39', level: 'error', label: 'จุดกราฟเรียงเวลาเดินหน้า (ไม่ย้อนกลับ)', fn: (c) => {
+    const data = (c.rd && c.rd.ok && c.rd.data && c.rd.data.chart) ? c.rd.data.chart.data : null;
+    if (!Array.isArray(data) || data.length < 2) return null;
+    const keys = data.map((p) => (Array.isArray(p) ? parseChartLabelKey(p[0]) : null));
+    if (keys.some((k) => k == null)) return null;
+    for (let i = 1; i < keys.length; i++) {
+      if (keys[i] < keys[i - 1]) return `จุดกราฟย้อนเวลา: "${data[i - 1][0]}" (จุดที่ ${i}) → "${data[i][0]}" (จุดที่ ${i + 1}) ควรเรียงเก่า→ใหม่`;
+    }
+    return null;
   } },
 
   { id: 'W01', level: 'warn', label: 'scenario: EPS×P/E ≈ ราคาเป้า', fn: (c) => { const bad = []; const nm = ['Bear', 'Base', 'Bull']; c.scenarios.forEach((s, i) => { if (s.tgt == null || s.eps == null || s.pe == null) return; const calc = s.eps * s.pe; const d = Math.abs(calc - s.tgt) / s.tgt; if (d > TOL_SCN_REL) bad.push(`${nm[i] || ('#' + i)}: EPS ${s.eps}×P/E ${s.pe}=${calc.toFixed(0)} ≠ target ${s.tgt} (ต่าง ${(d * 100).toFixed(0)}%)`); }); return bad.length ? bad.join(' ; ') : null; } },
