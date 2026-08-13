@@ -8,7 +8,7 @@
 <meta name="ai-model" content="Claude Sonnet 4.6">
 <!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
 <script type="application/json" id="stock-meta">
-{"symbol":"DRI","currency":"USD","price":218.9,"fairValue":213.74,"mos":-2.4,"upside":-2.4,"pe":19.2,"dividendYield":3.17,"roe":53.72}
+{"symbol":"DRI","currency":"USD","price":227.68,"fairValue":213.74,"mos":-6.5,"upside":-6.1,"pe":19.2,"dividendYield":3.17,"roe":53.72}
 </script>
 <!--
   report-data: ธีมสี + ข้อมูลกราฟ/gauge ต่อหุ้น (build เอาไปวาด)  ดู schema เต็มใน CLAUDE.md ข้อ 9
@@ -47,11 +47,11 @@
       ["พ.ค.26", 203.91],
       ["มิ.ย.26", 206.01],
       ["ก.ค.26", 203.58],
-      ["ส.ค.26", 218.9]
+      ["ส.ค.26", 227.68]
     ],
-    "min": 170,
-    "max": 230,
-    "grid": [180, 190, 200, 210, 220],
+    "min": 160,
+    "max": 240,
+    "grid": [180, 200, 220],
     "fairLine": 213.74,
     "currency": "$",
     "highlight": [2, 11]
@@ -59,7 +59,7 @@
   "gauge": {
     "min": 145,
     "max": 235,
-    "cur": 218.9,
+    "cur": 227.68,
     "fair": 213.74,
     "fairLabelTop": false
   },
@@ -84,14 +84,14 @@
     <div class="sub">Olive Garden (breadสticks/สลัดไม่อั้น) • LongHorn Steakhouse • Fine Dining: The Capital Grille, Eddie V's • Cheddar's Scratch Kitchen • Yard House • Chuy's Tex Mex (ซื้อกิจการ 2568) • Seasons 52 • Bahama Breeze</div>
     <div class="price-row">
       <div>
-        <div class="px">$218.90<small>(DRI)</small></div>
+        <div class="px">$227.68<small>(DRI)</small></div>
       </div>
       <!-- ★ ป้าย % รอบปี (gate E35/E36) — ผลตอบแทน ~1 ปี (เทียบราคา ~1 ปีก่อน) = ผลตอบแทนปลายกราฟ section 2 (จุดแรก→ท้าย)
            รูปแบบ: "▲ +X.X% (รอบปี)" ขึ้น · "▼ −X.X% (รอบปี)" ลง · "≈ ทรงตัว (รอบปี)" · หุ้น IPO <1 ปี ใช้ "(ตั้งแต่ IPO)"
            ไม่ใช่ % รายวัน/YTD/52 สัปดาห์ · ตั้งสี theme.chgBg/chgColor ให้ตรงทิศ (ขึ้น=เขียว/ลง=แดง · E34) -->
-      <div class="chg">▲ +15.0% (รอบปี)</div>
+      <div class="chg">▲ +19.6% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 11 ส.ค. 2569 (Jul 2, 2026)<br>
+        ราคา ณ 12 ส.ค. 2569 (Jul 2, 2026)<br>
         กรอบ 52 สัปดาห์ $169.00 – $228.27<br>
         ที่มา: StockAnalysis.com, Yahoo Finance, SEC 8-K (Darden IR), MarketBeat
       </div>
@@ -177,7 +177,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $218.90</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $227.68</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $213.74</div></div>
         </div>
         <div class="scale">
@@ -201,7 +201,7 @@
     <div class="card">
       <!-- ✏️ class ของ mos-verdict: MOS<10 → "bad", 10–20 → "ok", ≥20 → "good" -->
       <div class="mos-verdict bad">
-        <div class="big">−2%</div>
+        <div class="big">−7%</div>
         <div class="txt">ส่วนเผื่อความปลอดภัยบาง — ราคาใกล้เคียงมูลค่าเหมาะสม ยังไม่ใช่จังหวะเข้าซื้อที่ดีที่สุด</div>
       </div>
       <div class="grid g3">
@@ -212,7 +212,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="218.9" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="227.68" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
