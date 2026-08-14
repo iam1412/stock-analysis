@@ -1158,12 +1158,13 @@ ${CARD_HYDRATE_JS}
 // แถบเลขหน้า (เฉพาะเมื่อมีรายงาน) — สคริปต์ด้านบนเติมปุ่มให้
 const pagerEl = reports.length ? `\n    <div class="pager" id="pager"></div>` : '';
 
-// footer หน้า index: ข้อความ 2 บรรทัดตามที่เจ้าของกำหนดเอง verbatim (12 ส.ค. 69) — ห้ามแต่งเพิ่ม
+// footer หน้า index: ข้อความ 2 บรรทัดตามที่เจ้าของกำหนดเอง verbatim (12 ส.ค. 69 · เติม Copyright
+// นำหน้าแถวแรกตามคำสั่งเจ้าของ 14 ส.ค. 69) — ห้ามแต่งเพิ่ม
 // ★ ดึงเป็นค่าคงที่ตัวเดียวให้หน้า /tag/<slug> ใช้ร่วมด้วย (Fix 2 รีวิว) — หน้า tag เป็นทางเข้าจาก
 // Google ตรง ๆ (canonical + sitemap) โชว์ MOS/Upside/P-E ทุกการ์ดเหมือนหน้าแรก จึงต้องมี disclaimer
 // เดียวกัน ไม่ใช่แค่หน้าแรก — ห้ามพิมพ์ข้อความซ้ำเอง ให้ใช้ตัวแปรนี้เท่านั้นกันข้อความสองที่ดริฟต์กัน
 const FOOTER_HTML = `<footer>
-      🤖 วิเคราะห์และจัดทำด้วย AI · <b>Claude</b> · Anthropic · ติดต่อ <a href="mailto:${CONTACT_EMAIL}">${CONTACT_EMAIL}</a><br>
+      Copyright © กาวหุ้น (gaohoon.com) · 🤖 วิเคราะห์และจัดทำด้วย AI · <b>Claude</b> · Anthropic · ติดต่อ <a href="mailto:${CONTACT_EMAIL}">${CONTACT_EMAIL}</a><br>
       เพื่อการศึกษาและเป็นข้อมูลประกอบเท่านั้น มิใช่คำแนะนำการลงทุน — การลงทุนมีความเสี่ยง โปรดใช้วิจารณญาณ
     </footer>`;
 
