@@ -58,10 +58,20 @@ ok(/Claude Opus 4\.8/.test(repl) && /Anthropic/.test(repl), 'injectModelCredit: 
 const fb = b.injectModelCredit(doc('Claude Opus 4.8', 'footer ธรรมดาไม่มี workflow text'), 'Claude Sonnet 4.6');
 ok(/Claude Sonnet 4\.6/.test(fb) && /<\/footer>/.test(fb), 'injectModelCredit: fallback ผนวกเครดิตเข้า <footer> เมื่อไม่มีข้อความเดิม');
 
+// ── injectFooterCopyright: นำหน้าแถวแรกของ footer, idempotent, ไม่มี footer = ไม่พัง ──
+const cpDoc = b.injectFooterCopyright(doc('Claude Opus 4.8', WF));
+ok(cpDoc.includes(`<footer>${b.COPYRIGHT} • Stock Analysis Dashboard`), 'injectFooterCopyright: แทรกนำหน้าข้อความแถวแรกใน <footer>');
+ok(b.injectFooterCopyright(cpDoc) === cpDoc, 'injectFooterCopyright: idempotent — เรียกซ้ำไม่ต่อข้อความซ้อน');
+const cpStyled = b.injectFooterCopyright(`<body><footer style="color:#5f6675">ติดต่อ</footer></body>`);
+ok(cpStyled.includes(`<footer style="color:#5f6675">${b.COPYRIGHT} • ติดต่อ`), 'injectFooterCopyright: <footer> ที่มี attribute → แทรกหลังปิดแท็กเปิด ไม่ทับ attribute');
+const cpNone = '<body><h1>X</h1></body>';
+ok(b.injectFooterCopyright(cpNone) === cpNone, 'injectFooterCopyright: ไม่มี <footer> → คืนค่าเดิม (ไม่พัง)');
+
 // ── decorateReport: per-report model end-to-end ──
 const rec = (html, s) => ({ symbol: s, file: s + '.html', ...b.extractMeta(html, s), updated: '2026-01-01T00:00:00Z', hash: 'x' });
 const decOpus = b.decorateReport(withOpus, rec(withOpus, 'X'));
 ok(/🤖[^<]*<b>Claude Opus 4\.8<\/b>\s*·\s*Anthropic/.test(decOpus), 'decorateReport: footer โชว์โมเดลของ report (Opus)');
+ok(decOpus.includes(`<footer>${b.COPYRIGHT} • `), 'decorateReport: footer หน้ารายงานขึ้นต้นด้วย copyright');
 ok(!/สร้างด้วย\s*stock-analyzer\s*workflow/.test(decOpus), 'decorateReport: ไม่เหลือ workflow text ใน output');
 ok(/<b>Claude Sonnet 4\.6<\/b>/.test(b.decorateReport(withSonnet, rec(withSonnet, 'Y'))), 'decorateReport: per-report — report tag=Sonnet → footer=Sonnet (ไม่ใช่ค่ากลาง)');
 ok(new RegExp('<b>' + reEsc(b.AI_MODEL) + '</b>').test(b.decorateReport(noTag, rec(noTag, 'Z'))), `decorateReport: ไม่มี tag → ใช้ค่ากลาง AI_MODEL (${b.AI_MODEL})`);

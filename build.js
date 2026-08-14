@@ -46,6 +46,10 @@ const OUT = path.join(ROOT, 'dist');
 const MANIFEST = path.join(ROOT, 'reports.json'); // committed — เก็บ hash/วันที่อัปเดตของแต่ละรายงาน
 
 const CONTACT_EMAIL = 'talk@gaohoon.com';
+// ข้อความ copyright ตามที่เจ้าของกำหนด (14 ส.ค. 69) — นำหน้าแถวแรกของ footer ทุกหน้า
+// ★ ค่าคงที่ตัวเดียวใช้ร่วม 3 ที่: หน้า index · หน้า /tag/<slug> (ผ่าน FOOTER_HTML) · หน้ารายงาน
+// (ผ่าน injectFooterCopyright ตอน build) — ห้ามพิมพ์ข้อความซ้ำเอง กันสองที่ดริฟต์กัน
+const COPYRIGHT = 'Copyright © กาวหุ้น (gaohoon.com)';
 const SITE_ORIGIN = 'https://gaohoon.com'; // ใช้สร้าง absolute URL ให้ og:url / og:image (social scraper ต้องการ URL เต็ม)
 const OG_IMAGE = SITE_ORIGIN + '/static/og.png'; // banner 1200×630 สำหรับการ์ดแชร์
 // regenerate og.png: og.svg เป็น 1200×1200 — PNG คือ crop แถบ y∈[300,930] (ไม่ใช่ทั้งใบ)
@@ -300,6 +304,18 @@ function injectContactFooter(html, statsInHeader) {
   return bi === -1 ? html + bar : html.slice(0, bi) + bar + html.slice(bi);
 }
 
+// เติม copyright นำหน้าข้อความแถวแรกของ <footer> ในหน้ารายงาน — ทำตอน build เฉพาะใน dist
+// (ไฟล์ต้นฉบับใน reports/ ห้ามแตะ: freshHash จะทำให้ updated ของทั้ง 908 ไฟล์เด้งพร้อมกัน)
+// ★ ต้องเรียก "หลัง" injectContactFooter เสมอ — รายงาน legacy ที่ไม่มี <footer> จะได้ footer จากตัวนั้น
+function injectFooterCopyright(html) {
+  if (html.includes(COPYRIGHT)) return html; // idempotent — เรียกซ้ำไม่ต่อข้อความซ้อน
+  const fi = html.lastIndexOf('<footer');
+  if (fi === -1) return html;
+  const gt = html.indexOf('>', fi);
+  if (gt === -1) return html;
+  return html.slice(0, gt + 1) + `${COPYRIGHT} • ` + html.slice(gt + 1); // • ตามตัวคั่นของแถวนี้ (index ใช้ ·)
+}
+
 // inject config + script TA เฉพาะรายงานแบบ template ใน dist (source ยัง content-only)
 // currency มาจาก stock-meta (ISO) · dec = ทศนิยมราคา (THB 2 ตำแหน่ง, ราคา<1 = 4)
 function injectTA(html, symbol, rd, meta, taAsset) {
@@ -511,6 +527,7 @@ function decorateReport(html, r) {
   h = injectModelCredit(h, model);
   const hs = injectHeaderStats(h, r);           // การ์ดสถิติบน header (template เท่านั้น)
   h = injectContactFooter(hs.html, hs.done);    // done → footer ไม่ใส่ views/vote ซ้ำ
+  h = injectFooterCopyright(h);                 // ต้องหลัง injectContactFooter (legacy เพิ่งได้ <footer> จากตัวนั้น)
   if (!hs.done) h = injectVoteStyle(h);         // สไตล์ปุ่มโหวตแบบเก่า ใช้เฉพาะ legacy (กันชนกับ .hstats)
   h = injectViewVoteScript(h, r.symbol);
   return h;
@@ -582,7 +599,7 @@ function computeLeaders(reps) {
 }
 
 // export ฟังก์ชันให้ unit-test (test/build-test.js) — ต้องอยู่ก่อนโค้ดที่รัน build จริง
-module.exports = { extractMeta, extractMetrics, freshHash, injectModelCredit, injectContactFooter, injectTA, parseJsonScript, decorateReport, renderTagRow, pickHighlight, computeLeaders, HL_DEFS, AI_MODEL, AI_MAKER, expandReport, renderHead, renderEngine, validateReportData, THEME_DEFAULTS, deriveTheme, stripDecorEmoji, injectSectionNav };
+module.exports = { extractMeta, extractMetrics, freshHash, injectModelCredit, injectContactFooter, injectFooterCopyright, COPYRIGHT, injectTA, parseJsonScript, decorateReport, renderTagRow, pickHighlight, computeLeaders, HL_DEFS, AI_MODEL, AI_MAKER, expandReport, renderHead, renderEngine, validateReportData, THEME_DEFAULTS, deriveTheme, stripDecorEmoji, injectSectionNav };
 // ถูก require เข้ามาเพื่อเทส → ส่งออกฟังก์ชันแล้วหยุด ไม่รัน build (top-level return ใช้ได้ใน CommonJS module)
 if (require.main !== module) return;
 
@@ -1164,7 +1181,7 @@ const pagerEl = reports.length ? `\n    <div class="pager" id="pager"></div>` : 
 // Google ตรง ๆ (canonical + sitemap) โชว์ MOS/Upside/P-E ทุกการ์ดเหมือนหน้าแรก จึงต้องมี disclaimer
 // เดียวกัน ไม่ใช่แค่หน้าแรก — ห้ามพิมพ์ข้อความซ้ำเอง ให้ใช้ตัวแปรนี้เท่านั้นกันข้อความสองที่ดริฟต์กัน
 const FOOTER_HTML = `<footer>
-      Copyright © กาวหุ้น (gaohoon.com) · 🤖 วิเคราะห์และจัดทำด้วย AI · <b>Claude</b> · Anthropic · ติดต่อ <a href="mailto:${CONTACT_EMAIL}">${CONTACT_EMAIL}</a><br>
+      ${COPYRIGHT} · 🤖 วิเคราะห์และจัดทำด้วย AI · <b>Claude</b> · Anthropic · ติดต่อ <a href="mailto:${CONTACT_EMAIL}">${CONTACT_EMAIL}</a><br>
       เพื่อการศึกษาและเป็นข้อมูลประกอบเท่านั้น มิใช่คำแนะนำการลงทุน — การลงทุนมีความเสี่ยง โปรดใช้วิจารณญาณ
     </footer>`;
 
