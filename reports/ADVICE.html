@@ -4,9 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>วิเคราะห์หุ้น แอดไวซ์ ไอที อินฟินิท (ADVICE) — Stock Analysis Dashboard</title>
-<meta name="ai-model" content="Claude Sonnet 4.6">
+<meta name="ai-model" content="Claude Opus 5">
 <script type="application/json" id="stock-meta">
-{"symbol":"ADVICE","currency":"THB","price":7.35,"fairValue":8.6,"mos":14.5,"upside":17,"pe":12.4,"dividendYield":5.43,"roe":26.9}
+{"symbol":"ADVICE","currency":"THB","price":7.35,"fairValue":8.13,"mos":9.6,"upside":10.6,"pe":12.4,"dividendYield":5.43,"roe":26.9}
 </script>
 <script type="application/json" id="report-data">
 {
@@ -41,7 +41,7 @@
     "min": 4,
     "max": 9,
     "grid": [5, 6, 7, 8],
-    "fairLine": 8.6,
+    "fairLine": 8.13,
     "currency": "฿",
     "highlight": [1, 10]
   },
@@ -49,10 +49,10 @@
     "min": 4.5,
     "max": 10,
     "cur": 7.35,
-    "fair": 8.6,
+    "fair": 8.13,
     "fairLabelTop": true
   },
-  "fv": 8.6
+  "fv": 8.13
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -113,14 +113,14 @@
       </div>
       <div class="legend">
         <span><i style="background:#1565c0"></i>ราคา ADVICE</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿8.60</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿8.13</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
-        ราคา ADVICE ในรอบ 1 ปีที่ผ่านมา (ก.พ. 2568–ก.พ. 2569) ปรับตัวขึ้น +16.2% จากระดับ ฿5.55 สู่ ฿6.45
-        โดยมีจุดต่ำสุดที่ ฿4.84 ในเดือน เม.ย. 2568 (ผลกระทบจากมาตรการภาษีนำเข้าสหรัฐฯ และความกังวล macro)
+        ราคา ADVICE ในรอบ 1 ปีที่ผ่านมา (ก.ย. 2568–ส.ค. 2569) ปรับตัวขึ้น +22.5% จากระดับ ฿6.00 สู่ ฿7.35
+        โดยมีจุดต่ำสุดที่ ฿4.84 ในเดือน ต.ค. 2568 (ผลกระทบจากมาตรการภาษีนำเข้าสหรัฐฯ และความกังวล macro)
         และฟื้นตัวแข็งแกร่งตั้งแต่ พ.ย. 2568 หลังประกาศกำไร FY2568 เติบโต 14.9% YoY
-        ราคาปัจจุบันยังต่ำกว่ามูลค่าเหมาะสม ฿8.60 อยู่ประมาณ 25%
+        ราคาปัจจุบันยังต่ำกว่ามูลค่าเหมาะสม ฿8.13 อยู่ประมาณ 11%
       </p>
     </div>
   </section>
@@ -143,13 +143,13 @@
       </div>
       <div class="fv-box">
         <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿6.76 – ฿9.80</span></div>
-        <div class="r">฿8.60</div>
+        <div class="r">฿8.13</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         วิธี P/E ให้ค่าต่ำสุด ฿6.76 เนื่องจากอิงเฉพาะกำไรปัจจุบัน (P/E 13x) ซึ่งยังไม่สะท้อนการเติบโตจากการขยายสาขา iStore และ CLMV
         DDM ฿9.20 สะท้อนความสม่ำเสมอของปันผล (yield สูง ~5.4%) บวกกับ terminal growth ที่อนุรักษ์นิยม 5%
         Justified P/BV ฿9.80 สะท้อน ROE สูง 26.9% ที่บ่งชี้คุณภาพธุรกิจดีเยี่ยม
-        มูลค่าเฉลี่ย ฿8.60 เป็นค่ากลางที่สมเหตุสมผล สะท้อนทั้งกำไรปัจจุบัน, ปันผล และคุณภาพสินทรัพย์
+        <b>วิธีถ่วงน้ำหนัก:</b> DDM (฿9.20) กับ Justified P/BV (฿9.80) ใช้สมมติฐาน (r 9%, g 5%) ชุดเดียวกัน จึงนับเป็น "เสียงเดียว" (เฉลี่ยกันได้ ฿9.50) แล้วจึงเฉลี่ยกับขา P/E ที่ยึดตลาด → FV = (฿6.76 + ฿9.50)/2 = ฿8.13 ไม่ใช่ค่าเฉลี่ยตรงของทั้งสามวิธี (฿8.60) ซึ่งจะทำให้สมมติฐาน r/g ชุดเดียวถ่วงน้ำหนัก 2 ต่อ 1 เหนือขาที่ยึดตลาด (กฎถ่วงตามตระกูลสมมติฐาน)
       </p>
     </div>
   </section>
@@ -161,19 +161,19 @@
       <div class="gauge">
         <div class="gbar" id="gbar">
           <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿7.35</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿8.60</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿8.13</div></div>
         </div>
         <div class="scale">
-          <span>฿6.02<br><small>MOS 30%</small></span>
-          <span>฿6.88<br><small>MOS 20%</small></span>
+          <span>฿5.69<br><small>MOS 30%</small></span>
+          <span>฿6.50<br><small>MOS 20%</small></span>
           <span style="text-align:center">฿7.22<br><small>เป้าเฉลี่ย Analyst</small></span>
-          <span style="text-align:right">฿8.60<br><small>Fair Value</small></span>
+          <span style="text-align:right">฿8.13<br><small>Fair Value</small></span>
           <span style="text-align:right">฿9.80<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคาปัจจุบัน ฿6.45 อยู่ในโซน MOS 20–30% (ระหว่าง ฿6.02–฿6.88) ถือว่าอยู่ในโซน "น่าสนใจสำหรับ Value Investor"
-        ต่ำกว่าเป้าเฉลี่ยนักวิเคราะห์ 8 บล. ที่ ฿7.22 อยู่ประมาณ 11.9% และต่ำกว่ามูลค่าเหมาะสม ฿8.60 อยู่ 25%
+        ราคาปัจจุบัน ฿7.35 อยู่เหนือโซน MOS 20% (฿6.50) แล้ว จึงยังไม่เข้าโซน "น่าสนใจสำหรับ Value Investor" เต็มตัว
+        สูงกว่าเป้าเฉลี่ยนักวิเคราะห์ 8 บล. ที่ ฿7.22 เล็กน้อย (~1.8%) และต่ำกว่ามูลค่าเหมาะสม ฿8.13 อยู่ ~11% คิดเป็น MOS ~9.6%
         แนะนำ "ซื้อ" เป็นเอกฉันท์จาก 8 บล. (Bangkok Bank Securities, Yuanta ฯลฯ) เป้าสูงสุด ฿7.80
       </p>
     </div>
@@ -183,14 +183,14 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict good">
-        <div class="big">+15%</div>
-        <div class="txt">โซนน่าซื้อ — MOS &gt; 20% เหมาะสำหรับ Value Investor ทยอยสะสม</div>
+      <div class="mos-verdict bad">
+        <div class="big">+10%</div>
+        <div class="txt">MOS แคบ — ราคาไล่ขึ้นมาใกล้ Fair Value แล้ว ส่วนเผื่อความปลอดภัยเหลือต่ำกว่า 10%</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿6.88</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿6.02</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿8.60</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿6.50</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿5.69</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿8.13</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
@@ -287,19 +287,19 @@
   <section>
     <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
     <div class="verdict">
-      <h2>น่าสนใจ — ปันผลสูง + โตจาก CLMV &amp; iStore แต่ Margin บาง</h2>
+      <h2>รอจังหวะ — ปันผลสูง + โตจาก CLMV &amp; iStore แต่ MOS แคบลงหลังราคาไล่ขึ้น</h2>
       <p>ADVICE เป็นผู้นำค้าปลีก IT แฟรนไชส์ไทยที่กำลังขยายตัวในตลาด CLMV และ Apple ecosystem ผ่าน iStore
-      ราคาปัจจุบัน ฿6.45 มี MOS ~25% จาก Fair Value ฿8.60 พร้อม dividend yield ~5.4% เป็น downside protection
-      นักวิเคราะห์ 8 บล. เป็นเอกฉันท์แนะนำ "ซื้อ" เป้าเฉลี่ย ฿7.22 (upside ~11.9% จากราคาปัจจุบัน)
+      ราคาปัจจุบัน ฿7.35 มี MOS ~9.6% จาก Fair Value ฿8.13 พร้อม dividend yield ~5.4% เป็น downside protection
+      นักวิเคราะห์ 8 บล. เป็นเอกฉันท์แนะนำ "ซื้อ" เป้าเฉลี่ย ฿7.22 ซึ่งราคาปัจจุบันไล่ขึ้นมาเหนือเป้าเฉลี่ยแล้วเล็กน้อย (~1.8%)
       อย่างไรก็ตาม net margin บาง (~1.9%) และการแข่งขันออนไลน์เป็นความเสี่ยงเชิงโครงสร้างที่ต้องติดตาม</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿8.60 <span style="font-size:12px;color:#cab9a8">(฿6.76–฿9.80)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +25.0%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿8.13 <span style="font-size:12px;color:#cab9a8">(฿6.76–฿9.80)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +9.6%</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿7.22 (Strong Buy × 8 บล.)</div></div>
       </div>
       <div class="zone">
-        💡 <b>กลยุทธ์:</b> ทยอยสะสมในโซน ฿6.00–฿6.88 (MOS 20–30%) เน้น dividend income ~5–7%/ปีเป็น buffer
-        หากราคาลงต่ำกว่า ฿6.02 (MOS 30%) ถือว่า deep value เหมาะเพิ่มน้ำหนัก
+        💡 <b>กลยุทธ์:</b> รอย่อลงโซน ฿5.69–฿6.50 (MOS 20–30%) จึงทยอยสะสม เน้น dividend income ~5–7%/ปีเป็น buffer
+        หากราคาลงต่ำกว่า ฿5.69 (MOS 30%) ถือว่า deep value เหมาะเพิ่มน้ำหนัก
         ตั้ง stop-loss หากพื้นฐานเปลี่ยน (margin ต่ำกว่า 9% ต่อเนื่อง หรือ CLMV expansion พลาด target)
       </div>
     </div>
@@ -312,7 +312,7 @@
     ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
     แหล่งข้อมูล: Yahoo Finance (ราคา/กราฟ), StockAnalysis.com (งบการเงิน), SET/SETTRADE (ข้อมูลบริษัท), AIO (ratios), SETTRADE Analyst Consensus (เป้าราคา)
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ 3 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 17 ส.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
