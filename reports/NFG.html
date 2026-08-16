@@ -4,9 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>วิเคราะห์หุ้น National Fuel Gas (NFG) — Stock Analysis Dashboard</title>
-<meta name="ai-model" content="Claude Sonnet 4.6">
+<meta name="ai-model" content="Claude Opus 5">
 <script type="application/json" id="stock-meta">
-{"symbol":"NFG","currency":"USD","price":81.92,"fairValue":91,"mos":10,"upside":11.1,"pe":10.5,"dividendYield":2.85,"roe":17}
+{"symbol":"NFG","currency":"USD","price":81.92,"fairValue":94.49,"mos":13.3,"upside":15.3,"pe":10.5,"dividendYield":2.85,"roe":17}
 </script>
 <script type="application/json" id="report-data">
 {
@@ -39,9 +39,9 @@
       ["ส.ค.26", 81.92]
     ],
     "min": 75,
-    "max": 95,
-    "grid": [80, 85, 90],
-    "fairLine": 91,
+    "max": 100,
+    "grid": [80, 85, 90, 95],
+    "fairLine": 94.49,
     "currency": "$",
     "highlight": [6, 9]
   },
@@ -49,10 +49,10 @@
     "min": 60,
     "max": 110,
     "cur": 81.92,
-    "fair": 91,
+    "fair": 94.49,
     "fairLabelTop": false
   },
-  "fv": 91
+  "fv": 94.49
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -113,14 +113,14 @@
       </div>
       <div class="legend">
         <span><i style="background:#E8820C"></i>ราคา NFG</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $91.00</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $94.49</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
         ราคา NFG เปิดต้นปี 2568 ที่ ~$86.79 ดีดขึ้นสูงสุดที่ ~$93.96 ใน ก.ย. 2568 จากรายงาน FY2025 (EPS $5.68) ที่แข็งแกร่ง
         ก่อนร่วงลงช่วงปลายปีตามราคาก๊าซธรรมชาติที่อ่อนตัวและแรงกดดันจากอัตราดอกเบี้ย
         ราคาปิด ม.ค. 2569 ที่ ~$77.70 ให้ผลตอบแทนรอบปี −10.5%
-        ส่วนต่างจาก Fair Value $91.00 ยังเป็นบวกชัดเจน ทำให้ valuation อยู่ในโซนน่าสะสม
+        ส่วนต่างจาก Fair Value $94.49 ยังเป็นบวกชัดเจน ทำให้ valuation อยู่ในโซนน่าสะสม
       </p>
     </div>
   </section>
@@ -143,14 +143,14 @@
       </div>
       <div class="fv-box">
         <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $81 – $104</span></div>
-        <div class="r">$91.00</div>
+        <div class="r">$94.49</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         P/E Valuation ให้ค่าสูงสุด ($103.88) สะท้อน earning power ปัจจุบันที่แข็งแกร่ง;
         DDM ($88.80) เหมาะสำหรับ utility dividend-grower;
         Justified P/BV ($81.41) ใช้ ROE conservative ซึ่งอนุรักษ์นิยมที่สุด
-        FV เฉลี่ย $91.00 สมเหตุสมผลสำหรับบริษัทที่มีทั้งกระแสเงินสดแน่นอนจาก utility/pipeline และ upside จาก E&amp;P
-        ราคาปัจจุบัน $78.00 ต่ำกว่า FV ประมาณ 14.3% นับว่าน่าสนใจสำหรับนักลงทุนระยะยาว
+        <b>วิธีถ่วงน้ำหนัก:</b> DDM ($88.80) กับ Justified P/BV ($81.41) ใช้สมมติฐาน (r 6.5%, g 4.0%) ชุดเดียวกัน จึงนับเป็น "เสียงเดียว" (เฉลี่ยกันได้ $85.11) แล้วจึงเฉลี่ยกับขา P/E ที่ยึดตลาด → FV = ($103.88 + $85.11)/2 = $94.49 ไม่ใช่ค่าเฉลี่ยตรงของทั้งสามวิธี ($91.00) ซึ่งจะทำให้สมมติฐาน r/g ชุดเดียวถ่วงน้ำหนัก 2 ต่อ 1 เหนือขาที่ยึดตลาด (กฎถ่วงตามตระกูลสมมติฐาน)
+        ราคาปัจจุบัน $81.92 ต่ำกว่า FV ประมาณ 15.3% นับว่าน่าสนใจสำหรับนักลงทุนระยะยาว
       </p>
     </div>
   </section>
@@ -162,20 +162,20 @@
       <div class="gauge">
         <div class="gbar" id="gbar">
           <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $81.92</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $91.00</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $94.49</div></div>
         </div>
         <div class="scale">
-          <span>$63.70<br><small>MOS 30%</small></span>
-          <span>$72.80<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$91.00<br><small>Fair Value</small></span>
+          <span>$66.14<br><small>MOS 30%</small></span>
+          <span>$75.59<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$94.49<br><small>Fair Value</small></span>
           <span style="text-align:right">$101.50<br><small>เป้าเฉลี่ย Analyst</small></span>
           <span style="text-align:right">$104.00<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคา $78.00 อยู่ระหว่าง MOS 20% ($72.80) และ Fair Value ($91.00) — อยู่ในโซน "น่าสนใจ ทยอยสะสม"
-        เป้าเฉลี่ยนักวิเคราะห์ $101.50 สูงกว่า FV ของเราเล็กน้อย สะท้อน upside ~30% จากราคาปัจจุบัน
-        หาก NFG ร่วงมาโซน MOS 20% (~$72.80) จะเป็นโอกาสซื้อที่น่าสนใจมาก
+        ราคา $81.92 อยู่ระหว่าง MOS 20% ($75.59) และ Fair Value ($94.49) — อยู่ในโซน "น่าสนใจ ทยอยสะสม"
+        เป้าเฉลี่ยนักวิเคราะห์ $101.50 สูงกว่า FV ของเราเล็กน้อย สะท้อน upside ~23.9% จากราคาปัจจุบัน
+        หาก NFG ร่วงมาโซน MOS 20% (~$75.59) จะเป็นโอกาสซื้อที่น่าสนใจมาก
       </p>
     </div>
   </section>
@@ -185,13 +185,13 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict ok">
-        <div class="big">+10%</div>
+        <div class="big">+13%</div>
         <div class="txt">MOS ปานกลาง — น่าสนใจ ทยอยสะสม</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$72.80</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$63.70</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $91.00</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$75.59</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$66.14</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $94.49</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
@@ -293,16 +293,16 @@
       <p>National Fuel Gas (NFG) เป็นหนึ่งในไม่กี่บริษัทที่รวม regulated utility + pipeline + E&amp;P ในองค์กรเดียว
       ให้กระแสเงินสดมั่นคงจาก utility/pipeline พร้อม upside จาก Marcellus/Utica E&amp;P
       56 ปีของการเพิ่มปันผลต่อเนื่องสะท้อนความแข็งแกร่งของ business model ที่หลากหลาย
-      ราคาปัจจุบัน $78.00 ต่ำกว่า Fair Value $91.00 ประมาณ 14.3% และต่ำกว่าเป้าเฉลี่ยนักวิเคราะห์ $101.50 ถึง 30%
+      ราคาปัจจุบัน $81.92 ต่ำกว่า Fair Value $94.49 ประมาณ 15.3% และต่ำกว่าเป้าเฉลี่ยนักวิเคราะห์ $101.50 ถึง 23.9%
       P/E 10.5x ถือว่า cheap สำหรับ Dividend Aristocrat ที่มีรายได้หลากหลาย
       ความเสี่ยงหลักคือราคาก๊าซผันผวนและ regulatory ใน NY แต่ regulated segment ช่วย buffer ได้ดี</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$91.00 <span style="font-size:12px;color:#cab9a8">($81–$104)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +14.3%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$94.49 <span style="font-size:12px;color:#cab9a8">($81–$104)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +13.3%</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$101.50 (Buy)</div></div>
       </div>
       <div class="zone">
-        💡 <b>กลยุทธ์:</b> ทยอยสะสมที่ราคาต่ำกว่า $82 (MOS ~10%+) · เพิ่มน้ำหนักหากร่วงมาโซน $72–$73 (MOS 20%) · ระวังถ้าราคาก๊าซ Henry Hub ต่ำกว่า $2.50/MMBtu ต่อเนื่อง · เหมาะสำหรับนักลงทุนที่ต้องการ dividend income + moderate growth
+        💡 <b>กลยุทธ์:</b> ทยอยสะสมที่ราคาต่ำกว่า $85 (MOS ~10%+) · เพิ่มน้ำหนักหากร่วงมาโซน $75–$76 (MOS 20%) · ระวังถ้าราคาก๊าซ Henry Hub ต่ำกว่า $2.50/MMBtu ต่อเนื่อง · เหมาะสำหรับนักลงทุนที่ต้องการ dividend income + moderate growth
       </div>
     </div>
   </section>
@@ -314,7 +314,7 @@
     ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
     ที่มาข้อมูล: Yahoo Finance (quote/chart), StockAnalysis.com (financials/balance sheet), National Fuel Gas Company IR — nfg.com (annual reports/dividend history)
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ 1 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 17 ส.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
