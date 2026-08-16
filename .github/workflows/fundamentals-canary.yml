@@ -38,7 +38,11 @@ jobs:
               node tools/fetch-fundamentals.js "$sym" $@ > "$out" 2>&1 || true
               local missing=""
               # แหล่ง [1]/[2] อย่างน้อยหนึ่งแหล่งต้องมีราคา + บรรทัด Δ + ตารางงบครบแถวหลัก
-              for pat in "price=" "Δ ราคา=" "Revenue" "EPS(dil)" "FCF" "Shares" "Cash" "Debt" "D/E" "ROE%"; do
+              # "Shares Outstanding=" + "Δ EPS(quote↔ตาราง[3])=" = จุดบอดที่ปิดไป 17 ส.ค. 2569 — ทั้งคู่ degrade เงียบได้
+              # ★ เครื่องหมาย = สำคัญ: บรรทัด ✗ ตอน /statistics/ ล่มก็มีคำว่า "Shares Outstanding" อยู่ในข้อความแนะนำ
+              #   ⇒ grep แบบไม่มี = จะผ่านทั้งที่แหล่งตายแล้ว (ตรงกับกรณีที่ canary นี้มีไว้จับพอดี) — test:prep pin ไว้แล้ว
+              # (หน้า /statistics/ ย้าย = หายไปทั้งบรรทัด · ไม่มีใครรู้จนไปคิด market cap จากหุ้นถัวเฉลี่ยผิดอีกรอบ)
+              for pat in "price=" "Δ ราคา=" "Revenue" "EPS(dil)" "FCF" "Shares" "Cash" "Debt" "D/E" "ROE%" "Shares Outstanding=" "Δ EPS(quote↔ตาราง[3])="; do
                 grep -qF "$pat" "$out" || missing="$missing '$pat'"
               done
               if [ -z "$missing" ]; then echo "✓ $sym ครบทุกแถว"; return 0; fi

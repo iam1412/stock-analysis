@@ -21,23 +21,50 @@ const { execFile } = require('child_process');
 const PRICE_PASS_PCT = 2;  // Δ ราคาสองแหล่ง ≤2% = ผ่าน (เกณฑ์เดียวกับบรรทัด Δ ของ fetch-fundamentals)
 const PRICE_STOP_PCT = 5;  // >5% = invariant CLAUDE.md §2 "หยุด ถามผู้ใช้ อย่าเผยแพร่"
 const EPS_PASS_PCT = 2;    // Δ EPS(TTM) ≤2% = ตรงกัน
+const EPS_TABLE_PASS_PCT = 2;   // Δ quote↔ตาราง [3] ≤2% = ฐานเดียวกัน (เกณฑ์เดียวกับ fetch-fundamentals)
+const EPS_TABLE_ABS_TOL = 0.03; // ★ ต้องเท่ากับ fetch-fundamentals: หุ้นขาดทุน −0.77 vs −0.79 = 2.5% แต่ต่างจริง 0.02
+                                // ไม่ใส่ = บรรทัดล่าง (fetch-fundamentals ✅) กับ verdict (⚠) ขัดกันเองบนเคสเดียวกัน
 
 // ---------- อ่าน Δ จาก output ของ fetch-fundamentals (format ของเราเอง — test คุมไม่ให้หลุด sync) ----------
+// dT = ทางที่ 3: EPS จาก quote เทียบ EPS ที่คำนวณย้อนกลับได้ในตาราง [3]
+// ★ ต้องอ่านก่อนเช็ค "ได้แหล่งเดียว" — แหล่ง quote เหลือเจ้าเดียวก็ยังเทียบกับตารางได้ (และยิ่งจำเป็น)
 function parseDeltas(text) {
-  if (/ได้แหล่งเดียว/.test(text)) return { dP: null, dE: null, single: true };
+  const mT = text.match(/Δ EPS\(quote↔ตาราง\[3\]\)=(?:([\d.]+)%|เทียบไม่ได้)(?: \(quote\[\w+\]=(-?[\d.]+) · ตาราง=(-?[\d.]+))?/);
+  const t = {
+    dT: mT && mT[1] != null ? parseFloat(mT[1]) : null,
+    hasT: !!mT,
+    epsQuote: mT && mT[2] != null ? parseFloat(mT[2]) : null,
+    epsTable: mT && mT[3] != null ? parseFloat(mT[3]) : null,
+  };
+  if (/ได้แหล่งเดียว/.test(text)) return { dP: null, dE: null, single: true, ...t };
   const mP = text.match(/Δ ราคา=([\d.]+)%/);
   const mE = text.match(/Δ EPS\(TTM\)=([\d.]+)%/);
   return {
     dP: mP ? parseFloat(mP[1]) : null,
     dE: mE ? parseFloat(mE[1]) : null,
     single: false,
+    ...t,
   };
 }
 
+// ---------- บรรทัดที่ 3 ของ verdict — WARN เท่านั้น ไม่แตะ exit code (สัญญา: 0 ok/warn · 1 usage/ตาย · 2 ราคาขัด >5%)
+function epsTableVerdictLine({ dT, hasT, epsQuote, epsTable }) {
+  const at = (epsQuote != null && epsTable != null) ? ` (quote ${epsQuote} vs ตาราง ${epsTable})` : '';
+  if (!hasT) return '⚠ ไม่มีบรรทัดเทียบ EPS กับตาราง [3] — คำนวณ NI÷Shares ในตาราง [3] เองแล้วเทียบก่อนเขียน EPS';
+  if (dT == null) return '⚠ EPS ตาราง [3] เทียบไม่ได้ — ✅ ข้างบนยืนยันได้แค่ว่า vendor 2 เจ้าพูดตรงกัน ยังไม่ใช่ใบรับรองว่าเลขถูก';
+  const nearZero = epsQuote != null && epsTable != null && Math.abs(epsQuote - epsTable) <= EPS_TABLE_ABS_TOL;
+  if (dT <= EPS_TABLE_PASS_PCT || nearZero)
+    return `✅ EPS quote ↔ ตาราง [3] ต่าง ${dT}%${nearZero && dT > EPS_TABLE_PASS_PCT ? ` (แต่ต่างจริงแค่ ${Math.abs(epsQuote - epsTable).toFixed(2)} — EPS ใกล้ 0 ไม่ใช่ conflict)` : ` (≤${EPS_TABLE_PASS_PCT}%)`} — ครบ 3 ทาง ฐานเดียวกัน`;
+  return `⚠ EPS quote ต่างจากตาราง [3] ${dT}%${at} (>${EPS_TABLE_PASS_PCT}%) — ★ ✅ ของ Δ EPS ข้างบนเป็น false pass ได้` +
+    ' (vendor 2 เจ้าดึงฟีดเดียวกัน เคส AMATA quote ฿4.48 ทั้งคู่ · ตาราง ฿3.22): ยึดค่าที่ย้อนกลับได้ + เช็ค epsFwd ว่านั่งบนฐานไหน' +
+    ' แล้วแยก "ตัดงวด" (ใช้ค่าใหม่) กับ "นิยามต่าง" (freeze + เปิดเผยทั้งสองค่า) ตาม SKILL STEP 2 ก่อนเขียน';
+}
+
 // ---------- verdict ----------
-function verdict({ dP, dE, single }) {
+function verdict({ dP, dE, single, dT = null, hasT = false, epsQuote = null, epsTable = null }) {
+  const tLine = epsTableVerdictLine({ dT, hasT, epsQuote, epsTable });
   if (single || dP == null)
-    return { exitCode: 0, text: '⚠ CROSS-VERIFY: ได้แหล่งเดียว — ต้องยืนยันราคา/EPS กับแหล่งอิสระที่ 2 เอง (WebFetch targeted) ก่อนเขียนตัวเลข' };
+    return { exitCode: 0, text: '⚠ CROSS-VERIFY: ได้แหล่งเดียว — ต้องยืนยันราคา/EPS กับแหล่งอิสระที่ 2 เอง (WebFetch targeted) ก่อนเขียนตัวเลข\n' + tLine };
   const lines = [];
   let exitCode = 0;
   if (dP <= PRICE_PASS_PCT) lines.push(`✅ ราคา 2 แหล่งต่าง ${dP}% (≤${PRICE_PASS_PCT}%) — ผ่าน`);
@@ -46,6 +73,7 @@ function verdict({ dP, dE, single }) {
   if (dE == null) lines.push('⚠ EPS(TTM) เทียบไม่ได้ — ยืนยัน EPS กับแหล่งที่ 2 เองก่อนเขียน');
   else if (dE <= EPS_PASS_PCT) lines.push(`✅ EPS(TTM) ต่าง ${dE}% (≤${EPS_PASS_PCT}%) — ตรงกัน`);
   else lines.push(`⚠ EPS(TTM) ต่าง ${dE}% (>${EPS_PASS_PCT}%) — ขัดกัน ตรวจ dil/basic/งวดตาม SKILL STEP 2 ก่อนเขียน (อย่าเดา)`);
+  lines.push(tLine);
   return { exitCode, text: lines.join('\n') };
 }
 
@@ -128,5 +156,5 @@ async function main() {
   process.exit(Math.max(v.exitCode, badChart ? 2 : 0));
 }
 
-module.exports = { parseDeltas, verdict, parseArgs, PRICE_PASS_PCT, PRICE_STOP_PCT, EPS_PASS_PCT };
+module.exports = { parseDeltas, verdict, parseArgs, epsTableVerdictLine, PRICE_PASS_PCT, PRICE_STOP_PCT, EPS_PASS_PCT, EPS_TABLE_PASS_PCT };
 if (require.main === module) main().catch((e) => { console.error('✗', e.message); process.exit(1); });
