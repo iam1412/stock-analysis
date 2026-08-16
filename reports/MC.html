@@ -4,9 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>วิเคราะห์หุ้น แม็คกรุ๊ป (MC) — Stock Analysis Dashboard</title>
-<meta name="ai-model" content="Claude Sonnet 5">
+<meta name="ai-model" content="Claude Opus 5">
 <script type="application/json" id="stock-meta">
-{"symbol":"MC","currency":"THB","price":11.8,"fairValue":13.13,"mos":10.1,"upside":11.3,"pe":12.8,"dividendYield":8.1,"roe":20.3}
+{"symbol":"MC","currency":"THB","price":11.8,"fairValue":12.84,"mos":8.1,"upside":8.8,"pe":12.8,"dividendYield":8.1,"roe":20.3}
 </script>
 <script type="application/json" id="report-data">
 {
@@ -38,9 +38,9 @@
       ["ส.ค.26", 11.8]
     ],
     "min": 10,
-    "max": 14,
-    "grid": [11, 12, 13],
-    "fairLine": 13.13,
+    "max": 13,
+    "grid": [11, 12],
+    "fairLine": 12.84,
     "currency": "฿",
     "highlight": [5, 6]
   },
@@ -48,9 +48,9 @@
     "min": 8.5,
     "max": 15,
     "cur": 11.8,
-    "fair": 13.13
+    "fair": 12.84
   },
-  "fv": 13.13
+  "fv": 12.84
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -111,7 +111,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#e52446"></i>ราคา MC</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿13.13</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿12.84</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -138,10 +138,10 @@
       </div>
       <div class="fv-box">
         <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿11.96 – ฿14.61</span></div>
-        <div class="r">฿13.13</div>
+        <div class="r">฿12.84</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
-        วิธี P/E อิงผลประกอบการปัจจุบันและ P/E เฉลี่ยย้อนหลัง ไม่ขึ้นกับสมมติฐาน r/g จึงเป็นขาที่เป็นอิสระจากอีกสองวิธี — DDM และ Justified P/BV ใช้ชุดสมมติฐาน r/g เดียวกัน (r 8.7% ประมาณการจาก rf+β×ERP, g 2.0%) จึงถือเป็นมุมมองเดียวกันทางคณิตศาสตร์ ไม่ใช่การยืนยันอิสระ 2 ครั้ง ช่วง FV ทั้งหมด (฿11.96–14.61 ห่างกัน ~1.2 เท่า) แคบพอที่จะเฉลี่ยได้ หาก r เปลี่ยน ±0.5pp มูลค่าจาก DDM จะอยู่ในช่วงประมาณ ฿13.60–15.80 · g 2.0% ค่อนข้างสูงกว่าอัตราการเติบโตที่ทำได้จากการกันกำไรไว้ลงทุนจริง (payout ~99% เหลือ retention น้อยมาก) ทำให้ DDM เป็นขาที่มองบวกที่สุดในสามวิธี
+        วิธี P/E อิงผลประกอบการปัจจุบันและ P/E เฉลี่ยย้อนหลัง ไม่ขึ้นกับสมมติฐาน r/g จึงเป็นขาที่เป็นอิสระจากอีกสองวิธี — DDM และ Justified P/BV ใช้ชุดสมมติฐาน r/g เดียวกัน (r 8.7% ประมาณการจาก rf+β×ERP, g 2.0%) จึงถือเป็นมุมมองเดียวกันทางคณิตศาสตร์ ไม่ใช่การยืนยันอิสระ 2 ครั้ง · <b>วิธีถ่วงน้ำหนัก:</b> ด้วยเหตุนี้ DDM (฿14.61) กับ Justified P/BV (฿12.81) จึงนับเป็น "เสียงเดียว" (เฉลี่ยกันได้ ฿13.71) แล้วจึงเฉลี่ยกับขา P/E ที่ยึดตลาด → FV = (฿11.96 + ฿13.71)/2 = ฿12.84 ไม่ใช่ค่าเฉลี่ยตรงของทั้งสามวิธี (฿13.13) ซึ่งจะทำให้สมมติฐาน r/g ชุดเดียวถ่วงน้ำหนัก 2 ต่อ 1 เหนือขาที่ยึดตลาด (กฎถ่วงตามตระกูลสมมติฐาน) ช่วง FV ทั้งหมด (฿11.96–14.61 ห่างกัน ~1.2 เท่า) แคบพอที่จะเฉลี่ยได้ หาก r เปลี่ยน ±0.5pp มูลค่าจาก DDM จะอยู่ในช่วงประมาณ ฿13.60–15.80 · g 2.0% ค่อนข้างสูงกว่าอัตราการเติบโตที่ทำได้จากการกันกำไรไว้ลงทุนจริง (payout ~99% เหลือ retention น้อยมาก) ทำให้ DDM เป็นขาที่มองบวกที่สุดในสามวิธี
       </p>
     </div>
   </section>
@@ -153,18 +153,18 @@
       <div class="gauge">
         <div class="gbar" id="gbar">
           <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿11.80</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿13.13</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿12.84</div></div>
         </div>
         <div class="scale">
-          <span>฿9.19<br><small>MOS 30%</small></span>
-          <span>฿10.50<br><small>MOS 20%</small></span>
+          <span>฿8.99<br><small>MOS 30%</small></span>
+          <span>฿10.27<br><small>MOS 20%</small></span>
           <span style="text-align:center">฿12.20<br><small>เป้าเฉลี่ย Analyst</small></span>
-          <span style="text-align:right">฿13.13<br><small>Fair Value</small></span>
+          <span style="text-align:right">฿12.84<br><small>Fair Value</small></span>
           <span style="text-align:right">฿14.61<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคาปัจจุบัน ฿11.80 อยู่ต่ำกว่ามูลค่าเหมาะสม ฿13.13 เล็กน้อย (MOS ~10%) และใกล้เคียงเป้าเฉลี่ยนักวิเคราะห์ ฿12.20 — สะท้อนว่าตลาดให้มูลค่าหุ้นค่อนข้างเต็มแล้ว ผู้ที่เน้นปันผลยังพอถือได้ แต่ผู้ที่เน้น capital gain ควรรอจังหวะราคาย่อ
+        ราคาปัจจุบัน ฿11.80 อยู่ต่ำกว่ามูลค่าเหมาะสม ฿12.84 เล็กน้อย (MOS ~8%) และใกล้เคียงเป้าเฉลี่ยนักวิเคราะห์ ฿12.20 — สะท้อนว่าตลาดให้มูลค่าหุ้นค่อนข้างเต็มแล้ว ผู้ที่เน้นปันผลยังพอถือได้ แต่ผู้ที่เน้น capital gain ควรรอจังหวะราคาย่อ
       </p>
     </div>
   </section>
@@ -173,14 +173,14 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict ok">
-        <div class="big">+10%</div>
-        <div class="txt"><b>MOS จำกัด — ราคายังไม่ถึงเขต deep value</b><br>ราคาต่ำกว่ามูลค่าเหมาะสมเล็กน้อยและใกล้เคียงเป้าหมายนักวิเคราะห์แล้ว นักลงทุนที่เน้นปันผลสม่ำเสมอ (~8%/ปี) ยังถือได้ ส่วนผู้ที่ต้องการ margin of safety สูงควรรอราคาลงมาที่โซน MOS20 (~฿10.50) ก่อนเพิ่มสถานะ</div>
+      <div class="mos-verdict bad">
+        <div class="big">+8%</div>
+        <div class="txt"><b>MOS จำกัด — ต่ำกว่า 10% ยังไม่ถึงเขต deep value</b><br>ราคาต่ำกว่ามูลค่าเหมาะสมเล็กน้อยและใกล้เคียงเป้าหมายนักวิเคราะห์แล้ว นักลงทุนที่เน้นปันผลสม่ำเสมอ (~8%/ปี) ยังถือได้ ส่วนผู้ที่ต้องการ margin of safety สูงควรรอราคาลงมาที่โซน MOS20 (~฿10.27) ก่อนเพิ่มสถานะ</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿10.50</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿9.19</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿13.13</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿10.27</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿8.99</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿12.84</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
@@ -273,14 +273,14 @@
     <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
     <div class="verdict">
       <h2>ปันผลเด่น พื้นฐานมั่นคง แต่ต้องจับตาการแข่งขันจากสินค้าจีน</h2>
-      <p>MC Group เป็นเจ้าของแบรนด์ยีนส์ Mc ที่ครองส่วนแบ่งอันดับต้นในตลาดไทย มีงบดุลแข็งแรงและจ่ายปันผลสูงสม่ำเสมอ (~8%/ปี) แต่ราคาปัจจุบันใกล้เคียงมูลค่าเหมาะสมและเป้าหมายนักวิเคราะห์แล้ว (MOS ~10%) ขณะที่อัตรากำไรเริ่มถูกกดดันจากสินค้าจีนราคาถูกผ่านแพลตฟอร์มออนไลน์และกำลังซื้อในประเทศที่อ่อนแอ ความยั่งยืนของปันผลยังต้องติดตาม FCF อย่างใกล้ชิดเนื่องจาก payout สูงเกือบเต็มกำไร</p>
+      <p>MC Group เป็นเจ้าของแบรนด์ยีนส์ Mc ที่ครองส่วนแบ่งอันดับต้นในตลาดไทย มีงบดุลแข็งแรงและจ่ายปันผลสูงสม่ำเสมอ (~8%/ปี) แต่ราคาปัจจุบันใกล้เคียงมูลค่าเหมาะสมและเป้าหมายนักวิเคราะห์แล้ว (MOS ~8%) ขณะที่อัตรากำไรเริ่มถูกกดดันจากสินค้าจีนราคาถูกผ่านแพลตฟอร์มออนไลน์และกำลังซื้อในประเทศที่อ่อนแอ ความยั่งยืนของปันผลยังต้องติดตาม FCF อย่างใกล้ชิดเนื่องจาก payout สูงเกือบเต็มกำไร</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿13.13 <span style="font-size:12px;color:#cab9a8">(฿11.96–฿14.61)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +10.1%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿12.84 <span style="font-size:12px;color:#cab9a8">(฿11.96–฿14.61)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +8.1%</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿12.20 (Buy)</div></div>
       </div>
       <div class="zone">
-        💡 <b>กลยุทธ์:</b> เหมาะกับนักลงทุนสาย income ที่ต้องการปันผลสม่ำเสมอ ~8%/ปี แต่ upside จำกัด (MOS ~10%) แนะนำทยอยสะสมเมื่อราคาลงมาใกล้โซน MOS20 (~฿10.50) และติดตามอัตรากำไร/กระแสเงินสดทุกไตรมาสเพื่อประเมินความยั่งยืนของปันผล
+        💡 <b>กลยุทธ์:</b> เหมาะกับนักลงทุนสาย income ที่ต้องการปันผลสม่ำเสมอ ~8%/ปี แต่ upside จำกัด (MOS ~8%) แนะนำทยอยสะสมเมื่อราคาลงมาใกล้โซน MOS20 (~฿10.27) และติดตามอัตรากำไร/กระแสเงินสดทุกไตรมาสเพื่อประเมินความยั่งยืนของปันผล
       </div>
     </div>
   </section>
@@ -291,7 +291,7 @@
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
     ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ราคา ณ 14 ส.ค. 2569 จาก Yahoo Finance และ StockAnalysis.com (ตรงกัน) • ข้อมูลงบการเงินจาก StockAnalysis.com (Financials/Ratios/Balance Sheet) • เป้าราคานักวิเคราะห์จาก Yahoo Finance/StockAnalysis.com
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ 8 ส.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 17 ส.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
