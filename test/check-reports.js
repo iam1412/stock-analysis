@@ -51,6 +51,18 @@ const stripTags = (h) => String(h).replace(/<[^>]+>/g, ' ');
 const visible = (h) => stripTags(stripCode(h));
 const norm = (s) => String(s).replace(/−/g, '-'); // unicode minus → ascii
 
+// การอ้างอิง "งวดงบ" ที่ W08 ยอมรับ — รวมทุกรูปแบบที่คลังรายงานใช้จริง (สำรวจ 908 ใบ 17 ส.ค. 69):
+//   FY25 · FY26E · FY'68 · FY2025 · FY2568        → ปีงบ 2 หรือ 4 หลัก ทั้ง ค.ศ./พ.ศ.
+//   FY พ.ย. 2568 · FY สิ้นสุด 30 ก.ย. 2568 · FYE 30 เม.ย. 2569 → ปีงบไม่ตรงปฏิทิน (ระบุเดือนสิ้นงวด)
+//   Q1/2569 · 4Q/2568 · ไตรมาส                      → ระดับไตรมาส
+// ⚠ ห้ามบีบเป็น `20\d\d` อีก — รายงานไทยเขียนปี พ.ศ. (เคส ADVICE/AAI) และ US เขียนย่อ 2 หลัก (เคส AME/ROP)
+const TH_MONTH = 'ม\\.ค\\.|ก\\.พ\\.|มี\\.ค\\.|เม\\.ย\\.|พ\\.ค\\.|มิ\\.ย\\.|ก\\.ค\\.|ส\\.ค\\.|ก\\.ย\\.|ต\\.ค\\.|พ\\.ย\\.|ธ\\.ค\\.'
+  + '|มกราคม|กุมภาพันธ์|มีนาคม|เมษายน|พฤษภาคม|มิถุนายน|กรกฎาคม|สิงหาคม|กันยายน|ตุลาคม|พฤศจิกายน|ธันวาคม';
+const FISCAL_REF_SRC = "FYE?\\s?'?\\d\\d(?:\\d\\d)?"                                        // FY25 / FY26E / FY2568
+  + `|FYE?\\s*(?:สิ้นสุด|สิ้น|ปิด)?\\s*(?:\\d{1,2}\\s*)?(?:${TH_MONTH})\\s*(?:20|25)\\d\\d`  // FY สิ้นสุด 30 ก.ย. 2568
+  + '|ไตรมาส|[1-4]Q\\s?/?\\s?(?:20|25)\\d\\d|Q[1-4]\\s?/?\\s?(?:20|25)\\d\\d';               // ไตรมาส / 4Q/2568 / Q1/2569
+const FISCAL_REF = new RegExp(FISCAL_REF_SRC, 'i');
+
 function firstNum(s) {
   if (s == null) return null;
   const t = norm(stripTags(String(s))).replace(/[฿$,]/g, '');
@@ -390,7 +402,7 @@ const CHECKS = [
   // ฟ้องเฉพาะ "ขัดทิศชัด" + MOS มีนัย (>3 จุด %) — โซนกลาง ±3% (เต็มมูลค่า/เหมาะสม/แฟร์) ไม่ฟ้อง (เคส MPWR: MOS −1% เขียน "เต็มมูลค่า" = ถูกต้อง)
   { id: 'W06', level: 'warn', label: 'สรุป "ส่วนต่างจากราคา" ตรงกับ MOS', fn: (c) => { const FV = c.fvBox != null ? c.fvBox : c.constFV; if (FV == null || c.px == null) return null; const i = c.html.indexOf('ส่วนต่างจากราคา'); if (i === -1) return null; const cell = norm(c.html).slice(i, i + 120); const mos = (FV - c.px) / FV * 100; const saysExpensive = /แพง|เต็มมูลค่า|overvalued|สูงกว่ามูลค่า/.test(cell); const saysCheap = /ถูก|MOS\s*~?\s*\+|undervalued|ต่ำกว่ามูลค่า/.test(cell); if (mos < -3 && saysCheap && !saysExpensive) return `สรุประบุ "ถูก/MOS+" แต่ MOS จริง = ${mos.toFixed(1)}% (ราคาแพงกว่ามูลค่า)`; if (mos > 3 && saysExpensive && !saysCheap) return `สรุประบุ "แพง/เต็มมูลค่า" แต่ MOS จริง = +${mos.toFixed(1)}% (ราคาถูกกว่ามูลค่า)`; const pct = firstNum(grab(/(-?[0-9.]+)\s*%/, cell)); if (pct != null && Math.abs(Math.abs(pct) - Math.abs(mos)) > 2.5) return `สรุประบุส่วนต่าง ~${pct}% แต่ MOS จริง = ${mos.toFixed(1)}%`; return null; } },
   { id: 'W07', level: 'warn', label: 'ตัวเลขพื้นฐานสมเหตุสมผล', fn: (c) => { const bad = []; if (c.px != null && c.px <= 0) bad.push(`ราคา ${c.px} ≤ 0`); const m = c.metrics; if (m.pe != null && (m.pe <= 0 || m.pe > 600)) bad.push(`P/E ${m.pe} ผิดวิสัย`); /* เพดาน 600: ในตลาด AI/แพงมัลติเพิล P/E สูงเป็นของจริง (ARM ~482, TSLA ~372, COHR ~177 ฟื้นจากขาดทุน) — ฟ้องเฉพาะที่ผิดวิสัยจริง ๆ */ if (m.pbv != null && (m.pbv <= 0 || m.pbv > 20)) bad.push(`P/BV ${m.pbv} ผิดวิสัย`); if (m.yield != null && (m.yield < 0 || m.yield > 20)) bad.push(`Div yield ${m.yield}% ผิดวิสัย`); if (m.roe != null && (m.roe < -100 || m.roe > 200)) bad.push(`ROE ${m.roe}% ผิดวิสัย`); return bad.length ? bad.join(' ; ') : null; } },
-  { id: 'W08', level: 'warn', label: 'แหล่งข้อมูล ≥3 + อ้างอิงครบ', fn: (c) => { const bad = []; const line = grab(/(?:ที่มา|แหล่ง|อ้างอิง|ข้อมูลจาก|source)\s*[:：]?\s*([^<\n][^\n]*)/i, stripTags(c.header)); if (line) { const srcs = line.split(/\s*[\/,]\s*|\s+•\s+|\s+และ\s+/).map((s) => s.trim()).filter((s) => s.length >= 2 && s.length <= 40); if (srcs.length < 3) bad.push(`ระบุแหล่งที่มาเพียง ${srcs.length} แหล่ง (ควร ≥3)`); } if (!/เป้า|นักวิเคราะห์|consensus/i.test(c.text)) bad.push('ไม่พบราคาเป้านักวิเคราะห์'); if (!/52\s*สัปดาห์|52-week/i.test(c.text)) bad.push('ไม่พบช่วง 52 สัปดาห์'); if (!/FY\s?(?:20|25)\d\d|ไตรมาส|[1-4]Q\s?\/?\s?(?:20|25)\d\d|Q[1-4]\s?\/?\s?(?:20|25)\d\d/i.test(c.text)) bad.push('ไม่พบการอ้างอิงงวดงบ (FY/ไตรมาส)'); return bad.length ? bad.join(' ; ') : null; } },
+  { id: 'W08', level: 'warn', label: 'แหล่งข้อมูล ≥3 + อ้างอิงครบ', fn: (c) => { const bad = []; const line = grab(/(?:ที่มา|แหล่ง|อ้างอิง|ข้อมูลจาก|source)\s*[:：]?\s*([^<\n][^\n]*)/i, stripTags(c.header)); if (line) { const srcs = line.split(/\s*[\/,]\s*|\s+•\s+|\s+และ\s+/).map((s) => s.trim()).filter((s) => s.length >= 2 && s.length <= 40); if (srcs.length < 3) bad.push(`ระบุแหล่งที่มาเพียง ${srcs.length} แหล่ง (ควร ≥3)`); } if (!/เป้า|นักวิเคราะห์|consensus/i.test(c.text)) bad.push('ไม่พบราคาเป้านักวิเคราะห์'); if (!/52\s*สัปดาห์|52-week/i.test(c.text)) bad.push('ไม่พบช่วง 52 สัปดาห์'); if (!FISCAL_REF.test(c.text)) bad.push('ไม่พบการอ้างอิงงวดงบ (FY/ไตรมาส)'); return bad.length ? bad.join(' ; ') : null; } },
   { id: 'W09', level: 'warn', label: 'ความสดของราคา', fn: (c) => { if (!c.priceAge) return null; const a = c.priceAge.ageDays; const warnDays = parseInt(process.env.STALE_WARN_DAYS || '45', 10); const errDays = parseInt(process.env.STALE_ERROR_DAYS || '120', 10); if (a > warnDays && a <= errDays) return `ราคาเริ่มเก่า: ${c.priceAge.iso} (${a} วันที่แล้ว) — ควรอัปเดตก่อนเผยแพร่`; return null; } },
   // stock-meta P/E·Yield·ROE เทียบค่าที่โชว์ — เตือนเท่านั้น (label P/E/ROE ในรายงานไม่ standard เสมอ → ดึงไม่ได้บางไฟล์)
   { id: 'W10', level: 'warn', label: 'stock-meta P/E·Yield·ROE ≈ ที่โชว์', fn: (c) => { const sm = c.sm; if (!sm.present || !sm.ok || !sm.data) return null; const d = sm.data, m = c.metrics, bad = []; if (m.pe != null && isFiniteNum(d.pe) && Math.abs(d.pe - m.pe) > Math.max(0.05 * Math.abs(m.pe), 0.1)) bad.push(`pe ${d.pe} ≠ P/E ที่โชว์ ${m.pe}`); if (m.yield != null && isFiniteNum(d.dividendYield) && Math.abs(d.dividendYield - m.yield) > Math.max(0.1 * Math.abs(m.yield), 0.15)) bad.push(`dividendYield ${d.dividendYield} ≠ ปันผลที่โชว์ ${m.yield}`); if (m.roe != null && isFiniteNum(d.roe) && Math.abs(d.roe - m.roe) > Math.max(0.08 * Math.abs(m.roe), 0.5)) bad.push(`roe ${d.roe} ≠ ROE ที่โชว์ ${m.roe}`); return bad.length ? bad.join(' ; ') : null; } },
@@ -445,7 +457,7 @@ function checkHtml(html, name, opts) {
   return { name, symbol: ctx.symbol, ctx, errors, warnings, errTotal, errPass: errTotal - errors.length };
 }
 
-module.exports = { checkHtml, buildCtx, parseScenarios, firstNum, CHECKS, REPORTS_DIR };
+module.exports = { checkHtml, buildCtx, parseScenarios, firstNum, CHECKS, REPORTS_DIR, FISCAL_REF_SRC };
 
 // ---------- CLI ----------
 function main() {

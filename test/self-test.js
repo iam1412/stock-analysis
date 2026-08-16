@@ -21,7 +21,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { checkHtml, buildCtx, firstNum } = require('./check-reports');
+const { checkHtml, buildCtx, firstNum, FISCAL_REF_SRC } = require('./check-reports');
 const { expandReport } = require('../build.js');  // BBL เป็น content-only template → expand เป็น HTML เต็มก่อน (เหมือน gate)
 
 // ใช้รายงานจริงที่ผ่าน gate เป็น "ของดี" ฐาน แล้ว mutate เพื่อทดสอบ
@@ -148,15 +148,25 @@ expect('W06', 'warn', (h) => setDiffCell('ถูกกว่ามูลค่�
 // โซนกลาง (เคส MPWR): ตั้ง FV = ราคา (MOS ~0) + เขียน "เต็มมูลค่า" → ไม่ขัดแย้ง ต้องไม่ฟ้อง
 reject('W06', (h) => setDiffCell('MOS ~ 0% (เต็มมูลค่า)')(mutSlice('class="fv-box"', /(class="r">\s*[฿$]?)([0-9.,]+)/, `$1${numStr(PX)}`)(h)), 'MOS ~0% เขียน "เต็มมูลค่า" (เคส MPWR) → ไม่ฟ้องว่าขัดแย้ง');
 expect('W08', 'warn', mut3(/(ที่มา\s*:)([^<]*)(<)/, ' SET'), 'แหล่งข้อมูล < 3');
-// ── W08 งวดงบ: ต้องรับปี พ.ศ. เท่ากับปี ค.ศ. (รายงานไทยเขียน FY2568 / Q1/2569 — เคส ADVICE/AAI 17 ส.ค. 69) ──
-// ลบ token งวดงบทุกรูปแบบ/ทุกศักราชออกจากฐาน แล้วค่อยฉีดรูปแบบที่ต้องการทดสอบกลับเข้าไปทีละอัน
-const stripFiscal = (h) => h.replace(/ไตรมาส|FY\s?(?:20|25)\d\d|[1-4]Q\s?\/?\s?(?:20|25)\d\d|Q[1-4]\s?\/?\s?(?:20|25)\d\d/gi, '—');
+// ── W08 งวดงบ: ต้องรับทุกรูปแบบที่รายงานจริงใช้ (สำรวจคลัง 17 ส.ค. 69 — เดิมรับแต่ FY ค.ศ. 4 หลัก) ──
+// วิธี: ลบการอ้างอิงงวดงบ "ทุกแบบที่ check ยอมรับ" ออกจากฐาน แล้วฉีดกลับทีละรูปแบบ
+//   - ตัวลบ derive จาก FISCAL_REF_SRC ของ check เอง → ลบได้ครบเสมอแม้เพิ่มรูปแบบใหม่ทีหลัง (ไม่ต้อง sync มือ)
+//   - ตัวฉีดเป็น literal → เป็นหลักฐานอิสระว่ารูปแบบนั้น "ผ่านจริง" ไม่ใช่แค่สะท้อน regex กลับมา
+const stripFiscal = (h) => h.replace(new RegExp(FISCAL_REF_SRC, 'gi'), '—');
 const withFiscal = (tok) => (h) => stripFiscal(h).replace(/<\/body>/i, `<div class="mdesc">อิงงบ ${tok}</div></body>`);
-expect('W08', 'warn', stripFiscal, 'ลบการอ้างอิงงวดงบทุกรูปแบบ (ทั้ง ค.ศ./พ.ศ.) → ต้องยังฟ้องว่าไม่พบงวดงบ');
-reject('W08', withFiscal('FY2568'), 'อ้างงวดงบเป็นปีงบ พ.ศ. (FY2568) → ต้องนับว่าอ้างงวดงบแล้ว');
-reject('W08', withFiscal('Q1/2569'), 'อ้างงวดงบเป็นไตรมาส พ.ศ. (Q1/2569) → ต้องนับว่าอ้างงวดงบแล้ว');
-reject('W08', withFiscal('4Q/2568'), 'อ้างงวดงบรูปแบบ 4Q/2568 (พ.ศ.) → ต้องนับว่าอ้างงวดงบแล้ว');
-reject('W08', withFiscal('FY2025'), 'อ้างงวดงบเป็นปี ค.ศ. (FY2025) → ยังต้องผ่านเหมือนเดิม (กันแก้แล้วพังของเก่า)');
+expect('W08', 'warn', stripFiscal, 'ลบการอ้างอิงงวดงบทุกรูปแบบ → ต้องยังฟ้องว่าไม่พบงวดงบ');
+reject('W08', withFiscal('FY2568'), 'ปีงบ พ.ศ. 4 หลัก (FY2568 — เคส ADVICE/AAI) → ต้องนับว่าอ้างงวดงบแล้ว');
+reject('W08', withFiscal('Q1/2569'), 'ไตรมาส พ.ศ. (Q1/2569) → ต้องนับว่าอ้างงวดงบแล้ว');
+reject('W08', withFiscal('4Q/2568'), 'ไตรมาสรูปแบบ 4Q/2568 (พ.ศ.) → ต้องนับว่าอ้างงวดงบแล้ว');
+reject('W08', withFiscal('FY25'), 'ปีงบย่อ 2 หลัก (FY25 — เคส AME/ODFL/ROP) → ต้องนับว่าอ้างงวดงบแล้ว');
+reject('W08', withFiscal('FY26E'), 'ปีงบย่อ + suffix ประมาณการ (FY26E) → ต้องนับ (กัน \\b ท้ายรูปแบบที่จะพังกับ E)');
+reject('W08', withFiscal("FY'68"), 'ปีงบย่อแบบมี apostrophe (FY\'68) → ต้องนับว่าอ้างงวดงบแล้ว');
+reject('W08', withFiscal('FY พ.ย. 2568'), 'ปีงบไม่ตรงปฏิทิน ระบุเดือนสิ้นงวด (FY พ.ย. 2568 — เคส MKC) → ต้องนับ');
+reject('W08', withFiscal('FY สิ้นสุด 30 ก.ย. 2568'), 'ปีงบแบบ "FY สิ้นสุด 30 ก.ย. 2568" → ต้องนับว่าอ้างงวดงบแล้ว');
+reject('W08', withFiscal('FYE 30 เม.ย. 2569'), 'ปีงบแบบ FYE 30 เม.ย. 2569 → ต้องนับว่าอ้างงวดงบแล้ว');
+reject('W08', withFiscal('FY2025'), 'ปีงบ ค.ศ. 4 หลัก (FY2025) → ยังต้องผ่านเหมือนเดิม (กัน regression ของเก่า)');
+// ไม่ใช่การอ้างงวดงบ: มีคำว่า FY ลอย ๆ หรือปีลอย ๆ แต่ไม่ผูกกับงวด → ต้องยังฟ้อง (กันขยายจนรับทุกอย่าง)
+expect('W08', 'warn', (h) => stripFiscal(h).replace(/<\/body>/i, '<div class="mdesc">ปีงบ FY ของบริษัทนี้ไม่ตรงปฏิทิน · ข้อมูล ณ 26 มิ.ย. 2569</div></body>'), 'FY ลอย + ปีลอย (ไม่ผูกงวด) → ต้องยังฟ้องว่าไม่พบงวดงบ');
 expect('E28', 'error', (h) => h.replace(/<meta\s+name="ai-model"[^>]*>/i, ''), 'ลบ meta ai-model → ต้องบังคับให้ระบุโมเดล');
 expect('E28', 'error', (h) => h.replace(/content="Claude[^"]*"/i, 'content="GPT-4"'), 'ai-model ไม่ใช่ Claude → ค่าผิด');
 expect('E28', 'error', (h) => h.replace(/content="Claude[^"]*"/i, 'content="{{AI_MODEL}}"'), 'ai-model เหลือ token จาก skeleton → ต้องจับได้ (ไม่ปล่อยรุ่นปลอม)');
