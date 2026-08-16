@@ -148,6 +148,15 @@ expect('W06', 'warn', (h) => setDiffCell('ถูกกว่ามูลค่�
 // โซนกลาง (เคส MPWR): ตั้ง FV = ราคา (MOS ~0) + เขียน "เต็มมูลค่า" → ไม่ขัดแย้ง ต้องไม่ฟ้อง
 reject('W06', (h) => setDiffCell('MOS ~ 0% (เต็มมูลค่า)')(mutSlice('class="fv-box"', /(class="r">\s*[฿$]?)([0-9.,]+)/, `$1${numStr(PX)}`)(h)), 'MOS ~0% เขียน "เต็มมูลค่า" (เคส MPWR) → ไม่ฟ้องว่าขัดแย้ง');
 expect('W08', 'warn', mut3(/(ที่มา\s*:)([^<]*)(<)/, ' SET'), 'แหล่งข้อมูล < 3');
+// ── W08 งวดงบ: ต้องรับปี พ.ศ. เท่ากับปี ค.ศ. (รายงานไทยเขียน FY2568 / Q1/2569 — เคส ADVICE/AAI 17 ส.ค. 69) ──
+// ลบ token งวดงบทุกรูปแบบ/ทุกศักราชออกจากฐาน แล้วค่อยฉีดรูปแบบที่ต้องการทดสอบกลับเข้าไปทีละอัน
+const stripFiscal = (h) => h.replace(/ไตรมาส|FY\s?(?:20|25)\d\d|[1-4]Q\s?\/?\s?(?:20|25)\d\d|Q[1-4]\s?\/?\s?(?:20|25)\d\d/gi, '—');
+const withFiscal = (tok) => (h) => stripFiscal(h).replace(/<\/body>/i, `<div class="mdesc">อิงงบ ${tok}</div></body>`);
+expect('W08', 'warn', stripFiscal, 'ลบการอ้างอิงงวดงบทุกรูปแบบ (ทั้ง ค.ศ./พ.ศ.) → ต้องยังฟ้องว่าไม่พบงวดงบ');
+reject('W08', withFiscal('FY2568'), 'อ้างงวดงบเป็นปีงบ พ.ศ. (FY2568) → ต้องนับว่าอ้างงวดงบแล้ว');
+reject('W08', withFiscal('Q1/2569'), 'อ้างงวดงบเป็นไตรมาส พ.ศ. (Q1/2569) → ต้องนับว่าอ้างงวดงบแล้ว');
+reject('W08', withFiscal('4Q/2568'), 'อ้างงวดงบรูปแบบ 4Q/2568 (พ.ศ.) → ต้องนับว่าอ้างงวดงบแล้ว');
+reject('W08', withFiscal('FY2025'), 'อ้างงวดงบเป็นปี ค.ศ. (FY2025) → ยังต้องผ่านเหมือนเดิม (กันแก้แล้วพังของเก่า)');
 expect('E28', 'error', (h) => h.replace(/<meta\s+name="ai-model"[^>]*>/i, ''), 'ลบ meta ai-model → ต้องบังคับให้ระบุโมเดล');
 expect('E28', 'error', (h) => h.replace(/content="Claude[^"]*"/i, 'content="GPT-4"'), 'ai-model ไม่ใช่ Claude → ค่าผิด');
 expect('E28', 'error', (h) => h.replace(/content="Claude[^"]*"/i, 'content="{{AI_MODEL}}"'), 'ai-model เหลือ token จาก skeleton → ต้องจับได้ (ไม่ปล่อยรุ่นปลอม)');
