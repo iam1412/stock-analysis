@@ -4,9 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>วิเคราะห์หุ้น ไทยเทพรส (SAUCE) — Stock Analysis Dashboard</title>
-<meta name="ai-model" content="Claude Sonnet 4.6">
+<meta name="ai-model" content="Claude Opus 5">
 <script type="application/json" id="stock-meta">
-{"symbol":"SAUCE","currency":"THB","price":41.5,"fairValue":48,"mos":13.5,"upside":15.7,"pe":18.71,"dividendYield":4.41,"roe":23}
+{"symbol":"SAUCE","currency":"THB","price":41.5,"fairValue":45.79,"mos":9.4,"upside":10.3,"pe":18.71,"dividendYield":4.41,"roe":23}
 </script>
 <script type="application/json" id="report-data">
 {
@@ -39,9 +39,9 @@
       ["ส.ค.26", 41.5]
     ],
     "min": 35,
-    "max": 50,
-    "grid": [40, 45],
-    "fairLine": 48,
+    "max": 47.5,
+    "grid": [37.5, 40, 42.5, 45],
+    "fairLine": 45.79,
     "currency": "฿",
     "highlight": [0, 5],
     "gridFmt": "v.toFixed(0)",
@@ -51,10 +51,10 @@
     "min": 30,
     "max": 58,
     "cur": 41.5,
-    "fair": 48,
+    "fair": 45.79,
     "fairLabelTop": true
   },
-  "fv": 48
+  "fv": 45.79
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -115,14 +115,14 @@
       </div>
       <div class="legend">
         <span><i style="background:#c8860a"></i>ราคา SAUCE</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿48.00</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿45.79</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
         ราคา SAUCE ปรับตัวขึ้นจาก ~฿37.75 ในเดือน ก.ค. 2568 สู่ ~฿41.00 ใน ก.ค. 2569 ให้ผลตอบแทนรอบปี +8.6%
         แตะจุดสูงสุด 52 สัปดาห์ที่ ฿42.00 ในช่วง พ.ย.–ธ.ค. 2568 โดยได้แรงหนุนจากผลประกอบการ Q4/2568 ที่แข็งแกร่ง
         (กำไรสุทธิ Q4 สูงสุดในปีที่ ฿220M) และการจ่ายเงินปันผล ฿1.81/หุ้น (XD เม.ย. 69)
-        ราคายังต่ำกว่า Fair Value ฿48.00 ประมาณ 14.6% สะท้อน Margin of Safety พอมีอยู่บ้าง
+        ราคายังต่ำกว่า Fair Value ฿45.79 ประมาณ 10.3% สะท้อน Margin of Safety ที่แคบลง
       </p>
     </div>
   </section>
@@ -145,13 +145,13 @@
       </div>
       <div class="fv-box">
         <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿39.42 – ฿54.30</span></div>
-        <div class="r">฿48.00</div>
+        <div class="r">฿45.79</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         วิธี P/E ให้ค่าต่ำสุด (฿39.42) เพราะ SAUCE มี P/E ใกล้ค่าเฉลี่ยอยู่แล้ว เหลือ Upside จำกัด
         ส่วนวิธี DDM และ Justified P/BV ให้ค่าสูงกว่า สะท้อนมูลค่าของกระแสเงินปันผลที่เติบโตต่อเนื่อง 9.3%/ปีตลอด 5 ปี
         และ ROE ที่สูงถึง 23% บ่งชี้ว่าบริษัทสร้างมูลค่าได้ดีเหนือต้นทุนทุน (r=8.5%)
-        FV เฉลี่ย ฿48.00 ถือเป็นกลางระหว่างทั้งสามวิธีและสะท้อนความเป็น "แบรนด์ที่แข็งแกร่ง" ของ SAUCE
+        <b>วิธีถ่วงน้ำหนัก:</b> DDM (฿54.30) กับ Justified P/BV (฿50.01) ใช้สมมติฐาน (r 8.5%, g 5.0%) ชุดเดียวกัน จึงนับเป็น "เสียงเดียว" (เฉลี่ยกันได้ ฿52.16) แล้วจึงเฉลี่ยกับขา P/E ที่ยึดตลาด → FV = (฿39.42 + ฿52.16)/2 = ฿45.79 ไม่ใช่ค่าเฉลี่ยตรงของทั้งสามวิธี (฿48.00) ซึ่งจะทำให้สมมติฐาน r/g ชุดเดียวถ่วงน้ำหนัก 2 ต่อ 1 เหนือขาที่ยึดตลาด (กฎถ่วงตามตระกูลสมมติฐาน)
       </p>
     </div>
   </section>
@@ -163,21 +163,21 @@
       <div class="gauge">
         <div class="gbar" id="gbar">
           <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿41.50</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿48.00</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿45.79</div></div>
         </div>
         <div class="scale">
-          <span>฿33.60<br><small>MOS 30%</small></span>
-          <span>฿38.40<br><small>MOS 20%</small></span>
+          <span>฿32.05<br><small>MOS 30%</small></span>
+          <span>฿36.63<br><small>MOS 20%</small></span>
           <span style="text-align:center">฿44.00<br><small>เป้า Analyst</small></span>
-          <span style="text-align:right">฿48.00<br><small>Fair Value</small></span>
+          <span style="text-align:right">฿45.79<br><small>Fair Value</small></span>
           <span style="text-align:right">฿54.30<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคาปัจจุบัน ฿41.00 อยู่ใน "โซนทยอยสะสม" — ต่ำกว่า Fair Value ฿48.00 ประมาณ 14.6% (MOS ~14.6%)
-        ยังไม่ถึงโซน MOS 20% ที่ ฿38.40 แต่ได้รับ Margin of Safety พอสมควรจากการที่ราคายังต่ำกว่ามูลค่าเหมาะสม
+        ราคาปัจจุบัน ฿41.50 ต่ำกว่า Fair Value ฿45.79 ประมาณ 10.3% (MOS ~9.4%)
+        ยังไม่ถึงโซน MOS 20% ที่ ฿36.63 และส่วนเผื่อความปลอดภัยลดลงมาต่ำกว่า 10% แล้ว
         นักวิเคราะห์ประเมินเป้าหมายเฉลี่ย ~฿44.00 (Upside ~7% จากราคาปัจจุบัน)
-        หาก SAUCE ซื้อขายที่ระดับ P/E สูงขึ้นตามคุณภาพธุรกิจ ราคาอาจเข้าสู่กรอบ ฿48–54 ได้
+        หาก SAUCE ซื้อขายที่ระดับ P/E สูงขึ้นตามคุณภาพธุรกิจ ราคาอาจเข้าสู่กรอบ ฿46–54 ได้
       </p>
     </div>
   </section>
@@ -186,14 +186,14 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict ok">
-        <div class="big">+14%</div>
-        <div class="txt">ราคาพอใช้ — ทยอยสะสมได้ในช่วง ฿38–41 รอโซน MOS 20%</div>
+      <div class="mos-verdict bad">
+        <div class="big">+9%</div>
+        <div class="txt">MOS แคบ — ส่วนเผื่อความปลอดภัยต่ำกว่า 10% ควรรอโซน MOS 20% ที่ ฿36.63</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿38.40</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿33.60</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿48.00</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿36.63</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿32.05</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿45.79</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
@@ -291,21 +291,21 @@
   <section>
     <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
     <div class="verdict">
-      <h2>แบรนด์ "ภูเขาทอง" ที่แข็งแกร่ง — MOS พอมี แต่รอโซน ≤฿38.40 จะดีกว่า</h2>
+      <h2>แบรนด์ "ภูเขาทอง" ที่แข็งแกร่ง — แต่ MOS แคบลงเหลือ ~9% ควรรอโซน ≤฿36.63</h2>
       <p>
         SAUCE (ไทยเทพรส) เป็น "Moat Business" ในกลุ่ม Consumer Staples ด้วยแบรนด์ภูเขาทองที่ครองตลาดมายาวนาน
         ROE สูงถึง 23% D/E ต่ำเพียง 0.11 และนโยบายปันผลสม่ำเสมอที่เติบโต 9.3%/ปี ทำให้เหมาะกับนักลงทุนระยะยาวที่เน้น
-        "คุณภาพ + ปันผล" อย่างไรก็ตาม ราคาปัจจุบัน ฿41.00 ซื้อขายที่ P/E ~18.7x ซึ่งสูงกว่าค่าเฉลี่ยกลุ่มอย่างมีนัยสำคัญ
-        และรายได้เติบโตช้า — MOS เพียง 14.6% ยังไม่สะดวกใจสำหรับ Value Investor เคร่งครัด
-        โซนที่น่าสนใจมากขึ้นคือ ฿38.40 (MOS 20%) หรือต่ำกว่า ซึ่งมักเกิดในช่วงก่อน XD เงินปันผล
+        "คุณภาพ + ปันผล" อย่างไรก็ตาม ราคาปัจจุบัน ฿41.50 ซื้อขายที่ P/E ~18.7x ซึ่งสูงกว่าค่าเฉลี่ยกลุ่มอย่างมีนัยสำคัญ
+        และรายได้เติบโตช้า — MOS เพียง ~9.4% ยังไม่สะดวกใจสำหรับ Value Investor เคร่งครัด
+        โซนที่น่าสนใจมากขึ้นคือ ฿36.63 (MOS 20%) หรือต่ำกว่า ซึ่งมักเกิดในช่วงก่อน XD เงินปันผล
       </p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿48.00 <span style="font-size:12px;color:#cab9a8">(฿39.42–฿54.30)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +14.6%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿45.79 <span style="font-size:12px;color:#cab9a8">(฿39.42–฿54.30)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +9.4%</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿44.00 (Neutral/Hold)</div></div>
       </div>
       <div class="zone">
-        💡 <b>กลยุทธ์:</b> ทยอยสะสมเมื่อราคาอยู่ใน ฿38–41 (MOS 10–20%) เพิ่มน้ำหนักอย่างจริงจังที่ &lt; ฿38.40 (MOS 20%) รับ Dividend Yield 4.4%+ ต่อปี ระหว่างรอ re-rating ด้าน P/E หลีกเลี่ยงซื้อสูงกว่า ฿48 (FV) เพราะ Upside จำกัด
+        💡 <b>กลยุทธ์:</b> ทยอยสะสมเมื่อราคาอยู่ใน ฿36.63–฿41.20 (MOS 10–20%) เพิ่มน้ำหนักอย่างจริงจังที่ &lt; ฿36.63 (MOS 20%) รับ Dividend Yield 4.4%+ ต่อปี ระหว่างรอ re-rating ด้าน P/E หลีกเลี่ยงซื้อสูงกว่า ฿45.79 (FV) เพราะ Upside จำกัด
       </div>
     </div>
   </section>
@@ -317,7 +317,7 @@
     ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
     แหล่งข้อมูล: SET (ตลาดหลักทรัพย์แห่งประเทศไทย), Investing.com, StockAnalysis.com, HoonStation, Yahoo Finance — ราคา ณ 14 ส.ค. 2569
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ 4 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 17 ส.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
