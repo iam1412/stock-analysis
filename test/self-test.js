@@ -131,7 +131,19 @@ expect('E18', 'error', mut3(/(จุดซื้อ[^<]*20\s*%<\/div>\s*<div cla
 expect('E19', 'error', mut3(/(getElementById\("mCur"\)\.style\.left\s*=\s*gpos\()([0-9.]+)(\))/, numStr(PX * 1.5)), 'gauge marker ปัจจุบันไม่ตรงราคา');
 expect('E20', 'error', mutSlice('class="fv-box"', /(กรอบ\s*[฿$]?\s*)([0-9.,]+)(\s*[–\-]\s*[฿$]?\s*)([0-9.,]+)/, `$1${numStr(FV * 1.5)}$3${numStr(FV * 1.6)}`), 'Fair Value อยู่นอกกรอบ');
 expect('W04', 'warn', (h) => mut3(/(class="mos-verdict )(bad|ok|good)(")/, 'bad')(mut3(/(<div class="big">)([\s\S]*?)(<\/div>)/, '+50%')(h)), 'สี verdict (bad) ขัดกับ MOS สูง (+50% = โซน good)');
-expect('W05', 'warn', mutMval(iPBV, numStr(FV * 4)), 'FV ไม่ใกล้ค่าเฉลี่ยวิธี');
+expect('W05', 'warn', mutMval(iPBV, numStr(FV * 1.5)), 'FV ไม่ใกล้ค่าเฉลี่ยวิธี (ขาห่างกัน ≤2× = ทางเฉลี่ยปกติ)');
+// ── W05 รู้จักกฎ 0.4c (18 ส.ค. 69) — การ์ด "บริบท" ไม่เข้าเฉลี่ย · dispersion >2×/คนละเครื่องหมาย ⇒ FV ต้อง = ขาเดียว หรือค่าเฉลี่ยกลุ่ม ≤2× ──
+{
+  const setMname = (idx, txt) => (h) => { let i = -1; return h.replace(/(<div class="mname">)([\s\S]*?)(<\/div>)/g, (m, a, v, b) => (++i === idx ? a + txt + b : m)); };
+  const iDDM0 = C.methods.findIndex((m) => /DDM|Gordon/i.test(m.name));
+  const nearFV = numStr(FV * 0.985);   // ขา P/E ของฐานอยู่ใน ±3% ของ FV อยู่แล้ว — ใช้ DDM เป็นตัวแปร
+  reject('W05', (h) => mutMval(iDDM0, numStr(FV / 3))(h), '0.4c: ขาห่าง >2× แต่ FV = ขาใดขาหนึ่ง (headline ขาเดียว) → ต้องเงียบ');
+  reject('W05', (h) => mutMval(iPBV, '−' + numStr(FV))(h), '0.4c: ขาคนละเครื่องหมาย (แบบ CRWV) แต่ FV = ขาบวก → ต้องเงียบ');
+  expect('W05', 'warn', (h) => mutMval(iPBV, numStr(FV * 3))(mutMval(iPE, numStr(FV * 3))(h)), '0.4c: ขาห่าง >2× แต่ FV ไม่ตรงขาไหนและไม่ใช่ค่าเฉลี่ยกลุ่ม ≤2× → ต้องยิง');
+  reject('W05', (h) => mutMval(iPE, numStr(FV * 1.08))(mutMval(iPBV, numStr(FV * 4))(h)), '0.4c ข้อ 3: FV = ค่าเฉลี่ยเฉพาะกลุ่มขาที่ห่างกัน ≤2× (ตัดขาโดด) → ต้องเงียบ');
+  reject('W05', (h) => mutMval(iDDM0, nearFV)(mutMval(iPBV, numStr(FV * 1.5))(setMname(iPBV, '3. Justified P/BV (บริบท — ไม่รวมในค่าเฉลี่ย)')(h))), 'การ์ดชื่อ "บริบท" ไม่เข้าเฉลี่ย: ขาที่เหลือเฉลี่ยตรง FV → ต้องเงียบ (ไม่ตัดออกจะยิงเพราะเฉลี่ยรวม 3 ขาห่าง ~17%)');
+  expect('W05', 'warn', (h) => mutMval(iDDM0, numStr(FV * 1.5))(setMname(iPBV, '3. Justified P/BV (บริบท)')(h)), 'การ์ด "บริบท" ไม่ใช่ใบผ่านทั้งใบ: ตัดออกแล้วขาที่เหลือ (≤2×) ยังไม่ตรงค่าเฉลี่ย → ต้องยิง');
+}
 // ── Tier 1/2: valuation-math, consistency, freshness, sourcing ──
 expect('E21', 'error', mutMval(iPE, numStr(C.methods[iPE].val * 1.5)), 'วิธี P/E: ค่าไม่ตรง EPS×P/E');
 expect('E22', 'error', mutMval(iPBV, numStr(C.methods[iPBV].val * 1.4)), 'วิธี P/BV: ค่าไม่ตรง ratio×BVPS');
