@@ -140,7 +140,9 @@ function metricNum(html, labelRe, opts) {
   // ⇒ ถ้าผู้เรียกบอกว่าค่าเป็น % ให้คว้าตัวเลขที่ "ตามด้วย %" ก่อน · ไม่มี % ค่อยถอยไป firstNum ตามเดิม
   if (opts && opts.pct) {
     const p = norm(m[1]).match(/(-?\d+(?:\.\d+)?)\s*%/);
-    if (p) return parseFloat(p[1]);
+    // ไม่มี % เลย = การ์ดนี้แสดง "จำนวนเงินต่อหุ้น" ไม่ใช่ yield (เช่น "เงินปันผล (รายปี) $3.25")
+    // ⇒ ไม่ใช่ค่าที่ควรเอาไปเทียบกับ dividendYield → คืน null ให้ check ข้าม ไม่ใช่เดา firstNum
+    return p ? parseFloat(p[1]) : null;
   }
   return firstNum(m[1]);
 }
