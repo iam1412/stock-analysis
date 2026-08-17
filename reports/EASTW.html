@@ -4,9 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>วิเคราะห์หุ้น East Water (EASTW) — Stock Analysis Dashboard</title>
-<meta name="ai-model" content="Claude Sonnet 4.6">
+<meta name="ai-model" content="Claude Sonnet 5">
 <script type="application/json" id="stock-meta">
-{"symbol":"EASTW","currency":"THB","price":5.55,"fairValue":4.42,"mos":-25.6,"upside":-20.4,"pe":124.4,"dividendYield":0.21,"roe":0.64}
+{"symbol":"EASTW","currency":"THB","price":5.55,"fairValue":5.46,"mos":-1.6,"upside":-1.6,"pe":124.4,"dividendYield":0.21,"roe":0.64}
 </script>
 <script type="application/json" id="report-data">
 {
@@ -41,7 +41,7 @@
     "min": 1,
     "max": 6,
     "grid": [2, 3, 4, 5],
-    "fairLine": 4.42,
+    "fairLine": 5.46,
     "currency": "฿",
     "highlight": [4, 11]
   },
@@ -49,10 +49,10 @@
     "min": 1.6,
     "max": 5.8,
     "cur": 5.55,
-    "fair": 4.42,
+    "fair": 5.46,
     "fairLabelTop": false
   },
-  "fv": 4.42
+  "fv": 5.46
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -113,7 +113,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#0369A1"></i>ราคา EASTW</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿4.42</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿5.46</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -127,7 +127,7 @@
 
   <!-- ===== 3. VALUATION (เฉลี่ย 3 วิธี) ===== -->
   <section>
-    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">สมอยึดตลาด 2 วิธี (Justified P/BV = บริบท — dispersion gate 0.4c)</div></div>
     <div class="card">
       <div class="vmethod">
         <div><div class="mname">1. P/E Valuation (EPS ปรับฐาน)</div><div class="mdesc">EPS ปรับฐาน ฿0.257 (เฉลี่ยกำไรสุทธิ 5 ปีย้อนหลัง 2564–2568 หารหุ้น) × P/E เป้าหมาย ~20x — สะท้อน utility ฟื้นตัวหลังคดีท่อส่งน้ำจบ</div></div>
@@ -138,18 +138,19 @@
         <div class="mval">฿5.78</div>
       </div>
       <div class="vmethod">
-        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 3.7% − g 1.5%)/(r 8.0% − g 1.5%) ≈ 0.338x × BVPS ฿6.90</div></div>
+        <div><div class="mname">3. Justified P/BV (บริบท — ห่างจากขายึดตลาด >2× ไม่รวมในกรอบ FV)</div><div class="mdesc">P/BV เหมาะสม = (ROE 3.7% − g 1.5%)/(r 8.0% − g 1.5%) ≈ 0.338x × BVPS ฿6.90</div></div>
         <div class="mval">฿2.34</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿2.34 – ฿5.78</span></div>
-        <div class="r">฿4.42</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿5.14 – ฿5.78</span></div>
+        <div class="r">฿5.46</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         ใช้ EPS/ROE "ปรับฐาน" (เฉลี่ย 5 ปีย้อนหลัง) แทน TTM ที่ทรุดจากคดีท่อส่งน้ำ EEC (กำไรสุทธิ 2568 เหลือ ฿9.5 ล้าน จาก ฿1,062 ล้านปี 2564)
         เพราะ P/E-TTM ที่ 124x ไม่มีความหมายในการประเมินมูลค่า — วิธี EV/EBITDA ให้ค่าสูงสุด (฿5.78) เพราะ EBITDA ยังทรงตัวได้ดีกว่ากำไรสุทธิมาก
         (ผลกระทบส่วนใหญ่อยู่ที่ระดับ D&A/ดอกเบี้ยจากทรัพย์สินท่อที่คืนให้รัฐ) ส่วน Justified P/BV ให้ค่าต่ำสุด (฿2.34) เพราะ ROE ปัจจุบันยังอ่อนแอมาก
-        FV เฉลี่ย ฿4.42 ใกล้เคียงราคาตลาด ฿4.68 สะท้อนว่าตลาดได้ปรับราคาไปข้างหน้า (price-in) สตอรี่ฟื้นตัว+ดาต้าเซ็นเตอร์ไปมากแล้ว
+        <b>dispersion gate 0.4c:</b> Justified P/BV (฿2.34) ห่างจากสมอยึดตลาด (฿5.46) ถึง 2.3 เท่า (>2.0×) จึงจัดเป็นบริบท ไม่รวมในค่าเฉลี่ย — FV ใหม่ = ถ่วงตระกูล = สมอยึดตลาด (เฉลี่ย P/E ฿5.14 + EV/EBITDA ฿5.78) = ฿5.46 ตระกูล r/g ไม่มีขาที่รวมได้ (มีแค่ Justified P/BV ซึ่งหลุดกรอบ) จึงไม่มีเสียงที่สอง FV = สมอล้วนๆ
+        ใกล้เคียงราคาตลาด ฿5.55 สะท้อนว่าตลาดได้ปรับราคาไปข้างหน้า (price-in) สตอรี่ฟื้นตัว+ดาต้าเซ็นเตอร์ไปมากแล้ว
       </p>
     </div>
   </section>
@@ -161,20 +162,20 @@
       <div class="gauge">
         <div class="gbar" id="gbar">
           <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿5.55</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿4.42</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿5.46</div></div>
         </div>
         <div class="scale">
-          <span>฿3.09<br><small>MOS 30%</small></span>
-          <span>฿3.54<br><small>MOS 20%</small></span>
-          <span style="text-align:center">฿4.42<br><small>Fair Value</small></span>
-          <span style="text-align:right">฿4.68<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span>฿3.82<br><small>MOS 30%</small></span>
+          <span>฿4.37<br><small>MOS 20%</small></span>
+          <span style="text-align:center">฿4.68<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">฿5.46<br><small>Fair Value</small></span>
           <span style="text-align:right">฿5.78<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคาปัจจุบัน ฿4.68 อยู่ "เหนือ" มูลค่าเหมาะสมโดยประมาณเล็กน้อย (FV ฿4.42) หลังรีเรตติ้งขึ้นแรง +107% ในรอบปี
+        ราคาปัจจุบัน ฿5.55 อยู่ "เหนือ" มูลค่าเหมาะสมโดยประมาณเล็กน้อย (FV ฿5.46) หลังรีเรตติ้งขึ้นแรง +107% ในรอบปี
         ไม่มีนักวิเคราะห์ปกคลุมหุ้นตัวนี้อย่างเป็นทางการ (SETTRADE consensus = 0 ราย) จึงใช้กรอบบน FV (฿5.78 จากวิธี EV/EBITDA) เป็นเพดานอ้างอิงแทนเป้า analyst
-        โซน MOS 20–30% (฿3.09–3.54) เป็นจุดที่น่าสนใจกว่าสำหรับการทยอยสะสมระยะยาว
+        โซน MOS 20–30% (฿3.82–4.37) เป็นจุดที่น่าสนใจกว่าสำหรับการทยอยสะสมระยะยาว
       </p>
     </div>
   </section>
@@ -184,13 +185,13 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict bad">
-        <div class="big">−26%</div>
+        <div class="big">−1.6%</div>
         <div class="txt">MOS ติดลบ — ราคาปัจจุบันสูงกว่ามูลค่าเหมาะสมเล็กน้อย ยังไม่มีส่วนเผื่อความปลอดภัยให้เข้าซื้อรอบนี้</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿3.54</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿3.09</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿4.42</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿4.37</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿3.82</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿5.46</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
@@ -289,18 +290,18 @@
       <p>
         EASTW เพิ่งผ่านจุดต่ำสุดของกำไรจากการแพ้คดีท่อส่งน้ำ EEC มูลค่าสัมปทานเดิมกว่า 2.5 หมื่นล้านบาท ทำให้กำไรสุทธิปี 2568 เหลือเพียง ฿9.5 ล้าน
         จากที่เคยทำได้ ฿1,062 ล้านในปี 2564 แต่ราคาหุ้นกลับวิ่งขึ้นแรง +107% ในรอบปีที่ผ่านมา นำโดยกระแสข่าวดีลน้ำอุตสาหกรรมป้อนดาต้าเซ็นเตอร์ (Bridge Data Center III ร่วมกับ STECON)
-        และความคาดหวังการฟื้นตัวปี 2569 (+12-15%) หลังปีฝนตกชุกผ่านไป จากการประเมินมูลค่า 3 วิธี (P/E ปรับฐาน, EV/EBITDA, Justified P/BV) ได้ Fair Value เฉลี่ย ฿4.42
-        ใกล้เคียงราคาตลาดปัจจุบัน ฿4.68 มาก — สะท้อนว่าตลาด "price-in" สตอรี่ฟื้นตัวไปมากแล้ว MOS ติดลบเล็กน้อย (-5.9%) หมายความว่ายังไม่มีส่วนเผื่อความปลอดภัยให้เข้าซื้อ ณ ราคานี้
+        และความคาดหวังการฟื้นตัวปี 2569 (+12-15%) หลังปีฝนตกชุกผ่านไป จากการประเมินมูลค่า — สมอยึดตลาด (P/E ปรับฐาน + EV/EBITDA เฉลี่ยกัน) ฿5.46 ส่วน Justified P/BV (฿2.34) ห่างเกิน 2 เท่าจึงเป็นบริบทนอกกรอบ (dispersion gate 0.4c) ได้ Fair Value ฿5.46
+        ใกล้เคียงราคาตลาดปัจจุบัน ฿5.55 มาก — สะท้อนว่าตลาด "price-in" สตอรี่ฟื้นตัวไปมากแล้ว MOS ติดลบเล็กน้อย (-1.6%) หมายความว่ายังไม่มีส่วนเผื่อความปลอดภัยให้เข้าซื้อ ณ ราคานี้
         โดยเฉพาะเมื่อการแข่งขันจาก WHAUP ในตลาดน้ำอุตสาหกรรม EEC ยังเป็นความเสี่ยงต่อมาร์จิ้นและส่วนแบ่งลูกค้ารายใหม่ในระยะข้างหน้า
       </p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿4.42 <span style="font-size:12px;color:#cab9a8">(฿2.34–฿5.78)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ -25.6%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿5.46 <span style="font-size:12px;color:#cab9a8">(฿5.14–฿5.78)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ -1.6%</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">ไม่มีนักวิเคราะห์ปกคลุม (0 ราย)</div></div>
       </div>
       <div class="zone">
-        💡 <b>กลยุทธ์:</b> รอสะสมในโซน MOS 20-30% (฿3.09–3.54) ซึ่งให้ส่วนเผื่อความปลอดภัยเพียงพอสำหรับหุ้นที่กำไรเพิ่งฟื้นตัวและยังมีความเสี่ยงจากการแข่งขัน
-        ไม่แนะนำไล่ราคาที่ระดับปัจจุบัน (฿4.68) ที่ใกล้ 52-week high เพราะ valuation อิง sentiment ดาต้าเซ็นเตอร์มากกว่ากำไรจริงที่ยังต้องพิสูจน์การฟื้นตัวอีกหลายไตรมาส
+        💡 <b>กลยุทธ์:</b> รอสะสมในโซน MOS 20-30% (฿3.82–4.37) ซึ่งให้ส่วนเผื่อความปลอดภัยเพียงพอสำหรับหุ้นที่กำไรเพิ่งฟื้นตัวและยังมีความเสี่ยงจากการแข่งขัน
+        ไม่แนะนำไล่ราคาที่ระดับปัจจุบัน (฿5.55) ที่ใกล้ 52-week high เพราะ valuation อิง sentiment ดาต้าเซ็นเตอร์มากกว่ากำไรจริงที่ยังต้องพิสูจน์การฟื้นตัวอีกหลายไตรมาส
       </div>
     </div>
   </section>
@@ -311,7 +312,7 @@
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
     ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ข้อมูล ณ ก.ค. 2569 จาก StockAnalysis.com, Yahoo Finance, ตลาดหลักทรัพย์แห่งประเทศไทย (SET) และข่าวสำนักต่างๆ (Isranews, Kaohoon, Green Network Thailand)
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ 5 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 18 ส.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
