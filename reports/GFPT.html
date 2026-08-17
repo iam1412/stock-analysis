@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>วิเคราะห์หุ้น GFPT Public Company Limited (GFPT) — Stock Analysis Dashboard</title>
 <!-- ★ ใส่รุ่นโมเดล AI ที่ใช้วิเคราะห์จริง -->
-<meta name="ai-model" content="Claude Sonnet 4.6">
+<meta name="ai-model" content="Claude Sonnet 5">
 <!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน -->
 <script type="application/json" id="stock-meta">
-{"symbol":"GFPT","currency":"THB","price":10.1,"fairValue":14,"mos":27.9,"upside":38.6,"pe":4.84,"dividendYield":2.23,"roe":11.02}
+{"symbol":"GFPT","currency":"THB","price":10.1,"fairValue":16.07,"mos":37.1,"upside":59.1,"pe":4.84,"dividendYield":2.23,"roe":11.02}
 </script>
 <script type="application/json" id="report-data">
 {
@@ -41,20 +41,20 @@
       ["ส.ค.26", 10.1]
     ],
     "min": 8,
-    "max": 16,
-    "fairLine": 14,
+    "max": 18,
+    "fairLine": 16.07,
     "currency": "฿",
     "highlight": [3, 8],
-    "grid": [10, 12, 14]
+    "grid": [10, 12, 14, 16]
   },
   "gauge": {
     "min": 7,
     "max": 20,
     "cur": 10.1,
-    "fair": 14,
+    "fair": 16.07,
     "fairLabelTop": false
   },
-  "fv": 14
+  "fv": 16.07
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -115,7 +115,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#e8a000"></i>ราคา GFPT</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿14.00</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿16.07</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -126,14 +126,14 @@
 
   <!-- ===== 3. VALUATION ===== -->
   <section>
-    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">ถ่วง 2 ตระกูล — P/E ยึดตลาด (สมอ) + Justified P/BV (r/g, DDM = บริบท — dispersion gate 0.4c)</div></div>
     <div class="card">
       <div class="vmethod">
         <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS (TTM) ฿1.85 × P/E เป้าหมาย ~6.5x — P/E เฉลี่ย ~5 ปีของ GFPT อยู่ในช่วง 6–8x; ใช้ 6.5x เป็นค่ากลางอนุรักษ์นิยม</div></div>
         <div class="mval">฿12.03</div>
       </div>
       <div class="vmethod">
-        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผลเฉลี่ย (normalized 30% payout) ฿0.555 × (1+g); g 3%, r 9% → FV = ฿0.572/(0.09−0.03) — อิง Normalized Payout เนื่องจาก GFPT จ่ายปันผลต่ำกว่าความสามารถทำกำไร</div></div>
+        <div><div class="mname">2. DDM / Gordon Growth <span style="font-weight:400;font-size:11px;color:var(--muted)">(บริบท — ห่างจากขาตระกูล r/g เดียวกัน Justified P/BV &gt;2× ไม่รวมในกรอบ FV)</span></div><div class="mdesc">D₁ = ปันผลเฉลี่ย (normalized 30% payout) ฿0.555 × (1+g); g 3%, r 9% → FV = ฿0.572/(0.09−0.03) — อิง Normalized Payout เนื่องจาก GFPT จ่ายปันผลต่ำกว่าความสามารถทำกำไร</div></div>
         <div class="mval">฿9.53</div>
       </div>
       <div class="vmethod">
@@ -141,11 +141,11 @@
         <div class="mval">฿20.11</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿9.53 – ฿20.11</span></div>
-        <div class="r">฿14.00</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿12.03 – ฿20.11</span></div>
+        <div class="r">฿16.07</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
-        วิธี P/E ให้ค่า ฿12.03 โดยใช้ P/E เป้าหมาย 6.5x ซึ่งอนุรักษ์นิยมกว่าค่าเฉลี่ยในอดีต · วิธี DDM ให้ค่าต่ำที่สุด ฿9.53 เพราะ GFPT มีนโยบายจ่ายปันผลต่ำกว่าศักยภาพ (Payout ~10% จากกำไร) จึง Normalize เป็น 30% · วิธี Justified P/BV ให้ค่าสูงสุด ฿20.11 เพราะ ROE 11% สูงกว่า Cost of Equity ซึ่งทำให้บริษัทควรซื้อขายเหนือ Book Value · ค่าเฉลี่ยสามวิธีที่ ฿14.00 ใกล้เคียงกับกรอบบนของเป้านักวิเคราะห์ (฿13.10 สูงสุด)
+        วิธี P/E ให้ค่า ฿12.03 โดยใช้ P/E เป้าหมาย 6.5x ซึ่งอนุรักษ์นิยมกว่าค่าเฉลี่ยในอดีต · วิธี DDM ให้ค่าต่ำที่สุด ฿9.53 เพราะ GFPT มีนโยบายจ่ายปันผลต่ำกว่าศักยภาพ (Payout ~10% จากกำไร) จึง Normalize เป็น 30% (สมมติฐานที่บริษัทยังไม่เคยทำได้จริง) · วิธี Justified P/BV ให้ค่าสูงสุด ฿20.11 เพราะ ROE 11% (วัดจริง TTM) สูงกว่า Cost of Equity ซึ่งทำให้บริษัทควรซื้อขายเหนือ Book Value<br><b>dispersion gate 0.4c:</b> P/E (฿12.03) เป็นขายึดตลาดขาเดียว → สมอ · DDM (฿9.53) ห่างจาก Justified P/BV (฿20.11) เกิน 2 เท่า (2.11×) จึงเป็นบริบทไม่รวมเฉลี่ย (DDM ใช้ payout ที่ Normalize สูงกว่าที่บริษัทเคยทำจริง ฐานอ่อนกว่า JPBV ที่ใช้ ROE วัดจริง) เหลือ Justified P/BV เป็นตระกูล r/g หนึ่งเดียว · FV = (สมอ + ตระกูล r/g)/2 = (฿12.03 + ฿20.11)/2 = <b>฿16.07</b>
       </p>
     </div>
   </section>
@@ -157,18 +157,18 @@
       <div class="gauge">
         <div class="gbar" id="gbar">
           <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿10.10</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿14.00</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿16.07</div></div>
         </div>
         <div class="scale">
-          <span>฿9.80<br><small>MOS 30%</small></span>
-          <span>฿11.20<br><small>MOS 20%</small></span>
+          <span>฿11.25<br><small>MOS 30%</small></span>
           <span style="text-align:center">฿11.51<br><small>เป้าเฉลี่ย Analyst</small></span>
-          <span style="text-align:right">฿14.00<br><small>Fair Value</small></span>
+          <span>฿12.86<br><small>MOS 20%</small></span>
+          <span style="text-align:right">฿16.07<br><small>Fair Value</small></span>
           <span style="text-align:right">฿20.11<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคาปัจจุบัน ฿8.95 ต่ำกว่า Fair Value เฉลี่ย ฿14.00 ถึง 36% และยังต่ำกว่าแม้แต่โซน MOS 30% ที่ ฿9.80 ซึ่งถือว่าเป็น "deep value zone" · ราคายังต่ำกว่าเป้าหมายเฉลี่ยนักวิเคราะห์ที่ ฿11.51 อีกด้วย · P/BV เพียง 0.51x แสดงว่าตลาดซื้อขายต่ำกว่ามูลค่าทรัพย์สินสุทธิ สะท้อน Pessimism เรื่องราคาสินค้าเกษตรและค่าเงิน
+        ราคาปัจจุบัน ฿10.10 ต่ำกว่า Fair Value เฉลี่ย ฿16.07 ถึง 37% และยังต่ำกว่าแม้แต่โซน MOS 30% ที่ ฿11.25 ซึ่งถือว่าเป็น "deep value zone" · ราคายังต่ำกว่าเป้าหมายเฉลี่ยนักวิเคราะห์ที่ ฿11.51 อีกด้วย · P/BV เพียง 0.51x แสดงว่าตลาดซื้อขายต่ำกว่ามูลค่าทรัพย์สินสุทธิ สะท้อน Pessimism เรื่องราคาสินค้าเกษตรและค่าเงิน
       </p>
     </div>
   </section>
@@ -178,13 +178,13 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict good">
-        <div class="big">+28%</div>
+        <div class="big">+37%</div>
         <div class="txt">MOS สูง — โซน Deep Value (ถูกมาก) ราคาต่ำกว่า Fair Value อย่างมีนัยสำคัญ</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿11.20</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿9.80</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿14.00</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿12.86</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿11.25</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿16.07</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
@@ -279,14 +279,14 @@
     <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
     <div class="verdict">
       <h2>Value Play — ราคาถูกกว่ามูลค่าเหมาะสมมาก แต่ต้องอดทนรอ Catalyst</h2>
-      <p>GFPT เป็นผู้ส่งออกไก่แปรรูปชั้นนำของไทย ด้วยห่วงโซ่ธุรกิจครบวงจรและสัญญา McDonald's ระยะยาวที่การันตีรายได้มั่นคง บริษัทสามารถทำกำไรสุทธิโต 23.6% ในปี 2568 จากต้นทุนวัตถุดิบที่ผ่อนคลาย · ราคาปัจจุบัน ฿8.95 ต่ำกว่า Fair Value เฉลี่ย ฿14.00 ถึง 36% และซื้อขายที่ P/E เพียง 4.84x ซึ่งเป็น Discount อย่างมีนัยสำคัญ · ความเสี่ยงหลักคือราคาไก่โลกผันผวน โรค AI และความเสี่ยงค่าเงิน · เหมาะสำหรับนักลงทุนเชิงคุณค่าที่มองระยะกลาง-ยาว 2–3 ปี</p>
+      <p>GFPT เป็นผู้ส่งออกไก่แปรรูปชั้นนำของไทย ด้วยห่วงโซ่ธุรกิจครบวงจรและสัญญา McDonald's ระยะยาวที่การันตีรายได้มั่นคง บริษัทสามารถทำกำไรสุทธิโต 23.6% ในปี 2568 จากต้นทุนวัตถุดิบที่ผ่อนคลาย · ราคาปัจจุบัน ฿10.10 ต่ำกว่า Fair Value เฉลี่ย ฿16.07 ถึง 37% และซื้อขายที่ P/E เพียง 4.84x ซึ่งเป็น Discount อย่างมีนัยสำคัญ · ความเสี่ยงหลักคือราคาไก่โลกผันผวน โรค AI และความเสี่ยงค่าเงิน · เหมาะสำหรับนักลงทุนเชิงคุณค่าที่มองระยะกลาง-ยาว 2–3 ปี</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿14.00 <span style="font-size:12px;color:#cab9a8">(฿9.53–฿20.11)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +27.9%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿16.07 <span style="font-size:12px;color:#cab9a8">(฿12.03–฿20.11)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +37.1%</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿11.51 (ซื้อ 6/7)</div></div>
       </div>
       <div class="zone">
-        💡 <b>กลยุทธ์:</b> ราคาปัจจุบัน ฿8.95 อยู่ต่ำกว่าโซน MOS 30% (฿9.80) แล้ว เหมาะกับการ "ทยอยสะสม" สำหรับนักลงทุนระยะยาว · ควรติดตาม: 1) ราคาส่งออกไก่โลก 2) ข้อมูลโรค AI 3) อัตราแลกเปลี่ยนบาท/เยน · หากกำไรรายไตรมาสแข็งแกร่งต่อเนื่อง P/E อาจขยายกลับสู่ค่าเฉลี่ย และ Upside จะสูงมาก
+        💡 <b>กลยุทธ์:</b> ราคาปัจจุบัน ฿10.10 อยู่ต่ำกว่าโซน MOS 30% (฿11.25) แล้ว เหมาะกับการ "ทยอยสะสม" สำหรับนักลงทุนระยะยาว · ควรติดตาม: 1) ราคาส่งออกไก่โลก 2) ข้อมูลโรค AI 3) อัตราแลกเปลี่ยนบาท/เยน · หากกำไรรายไตรมาสแข็งแกร่งต่อเนื่อง P/E อาจขยายกลับสู่ค่าเฉลี่ย และ Upside จะสูงมาก
       </div>
     </div>
   </section>
@@ -297,7 +297,7 @@
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
     ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ข้อมูลราคา ณ 17 ส.ค. 2569 จาก SET Factsheet และ Investing.com · ข้อมูลงบการเงิน FY2568 จาก SET/Investing.com/Kaohoon · เป้าหมายนักวิเคราะห์จาก Yahoo Finance/Investing.com (ครอสเช็ค ≥2 แหล่ง)
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ 24 มิ.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 18 ส.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
