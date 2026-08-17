@@ -192,6 +192,21 @@ ok(!/\{\{|\}\}|undefined|NaN/.test(out.replace(/[\s\S]*<body/, '')), 'ไม่�
 const oldLab = aapl.match(/id="mCur"><div class="lab">ปัจจุบัน \$([\d,.]+)/)[1];
 ok(out.match(/id="mCur"><div class="lab">ปัจจุบัน \$([\d,.]+)/)[1] === U.fmtLike(301.5, oldLab), 'gauge label คงสไตล์ทศนิยมเดิม');
 
+// ---------- ช่องสรุป "ส่วนต่างจากราคา": patch ตัวเลข แต่ห้ามแตะคำบอกทิศทาง (แก้ต้นเหตุ W06) ----------
+// ช่องนี้เป็น prose ที่คนเขียน แต่ตัวเลขในนั้นคือ MOS ที่คำนวณได้ ⇒ cron ต้อง sync ให้ ไม่งั้นเพี้ยนขึ้นเรื่อย ๆ
+// แต่ "คำ" (ถูก/แพง) เป็นการตัดสินเนื้อหา — cron ห้ามเขียนเอง (§9) จึงต้องข้ามเมื่อทิศไม่ตรงกับ MOS ใหม่
+const CELL_RE = /(ส่วนต่างจากราคา<\/div>\s*<div class="v"[^>]*>)([\s\S]*?)(<\/div>)/;
+const cellOf = (h) => (h.match(CELL_RE) || [, , ''])[2].replace(/<[^>]*>/g, '').trim();
+const setCell = (h, txt) => h.replace(CELL_RE, (m, a, c, z) => a + txt + z);
+const pxCellTest = Math.round(FV * 1.2 * 100) / 100;   // ราคาสูงกว่า FV 20% → MOS = −20% → ทิศ "แพง"
+const dp = { day: 11, monIdx: 6, yearCE: 2026 };
+const cellCase = (txt, price) => cellOf(U.patchReport(setCell(aapl, txt), { newPrice: price, dateParts: dp, chartData: null }).html);
+ok(cellCase('แพง ~13%', pxCellTest) === 'แพง ~20%', 'ช่องสรุป: ทิศตรงกัน → แทนตัวเลขด้วย |MOS| ใหม่ คงคำ/รูปแบบทศนิยมเดิม', cellCase('แพง ~13%', pxCellTest));
+ok(cellCase('MOS ~ −16.8%', pxCellTest) === 'MOS ~ −20.0%', 'ช่องสรุป: คงจำนวนทศนิยมเดิม (1 ตำแหน่ง) และเครื่องหมาย − เดิม', cellCase('MOS ~ −16.8%', pxCellTest));
+ok(cellCase('ถูกกว่ามูลค่า MOS ~ +8%', pxCellTest) === 'ถูกกว่ามูลค่า MOS ~ +8%', 'ช่องสรุป: ทิศขัดกับ MOS ใหม่ → **ไม่แตะ** (เป็นเรื่องเนื้อหา ปล่อยให้ W06 เตือนให้คนแก้)');
+ok(cellCase('แพงกว่ามูลค่าเหมาะสม', pxCellTest) === 'แพงกว่ามูลค่าเหมาะสม', 'ช่องสรุป: ไม่มีตัวเลข → ไม่แตะ');
+ok(cellCase('ส่วนต่าง 5%', pxCellTest) === 'ส่วนต่าง 5%', 'ช่องสรุป: ไม่มีคำบอกทิศ → ไม่เดา ไม่แตะ');
+
 // ---------- price-only fallback (chartData = null) — คงกราฟเดิม แตะแค่จุดท้าย ----------
 // ทางนี้เดิมใช้เฉพาะตอน Yahoo ไม่มีประวัติพอ · ตั้งแต่มี bad-chart มันเป็นทางของ `--force` ด้วย:
 // ซีรีส์ต้นทางผสมสองฐาน แต่กราฟในไฟล์ถูกแก้ให้ถูกแล้ว ⇒ ประทับราคาได้โดยไม่ลากฐานที่สองกลับเข้ามา

@@ -543,6 +543,30 @@ function patchReport(html, p) {
   const mosTxt = (mos < 0 ? '−' : '+') + (Math.abs(mos) >= 2 ? Math.abs(mos).toFixed(0) : Math.abs(mos).toFixed(1)) + '%';
   out = out.replace(/(<div class="big">)\s*[+\-−–]?\s*[\d.]+\s*%(<\/div>)/, (m, a, z) => a + mosTxt + z);
 
+  // --- ช่องสรุป "ส่วนต่างจากราคา" — patch เฉพาะ "ตัวเลข" ห้ามแตะคำบอกทิศทาง (แก้ต้นเหตุ W06) ---
+  // ช่องนี้เป็นข้อความที่คนเขียนตอนวิเคราะห์ แต่ตัวเลขในนั้นคือ MOS ซึ่งเป็นค่าที่คำนวณได้
+  // ⇒ ปล่อยไว้มันจะเพี้ยนขึ้นเรื่อย ๆ ตามราคาที่ patch ทุกวัน (วัดจริง 17 ส.ค. 2569: W06 ยิง 519/908 ใบ)
+  // ★ กฎความปลอดภัย — patch ได้ต่อเมื่อ "คำบอกทิศทาง" ในช่องยังตรงกับเครื่องหมายของ MOS ใหม่:
+  //   ถ้าขัดกัน (เขียน "ถูก" แต่ MOS ใหม่ติดลบ) = เรื่องของ **เนื้อหา** ไม่ใช่ตัวเลข → ไม่แตะ ปล่อยให้ W08/W06 เตือนต่อ
+  //   การสลับคำเองเท่ากับ cron เขียน prose ซึ่ง §9 ห้ามเด็ดขาด — ต้องให้คนตัดสิน
+  // ★ แทนที่เฉพาะใน text node (ข้ามเนื้อในแท็ก) กัน `width:50%` ใน inline style โดนแทนแทนตัวเลขจริง
+  out = out.replace(/(ส่วนต่างจากราคา<\/div>\s*<div class="v"[^>]*>)([\s\S]*?)(<\/div>)/, (m, a, cell, z) => {
+    const plain = cell.replace(/<[^>]*>/g, ' ');
+    // ทิศทางอ่านได้ 2 ทาง: จาก "คำ" (แพง/ถูก) หรือจาก "เครื่องหมายหน้าตัวเลข" — เครื่องหมายชัดกว่าคำด้วยซ้ำ
+    const sign = (plain.match(/([+\-−–])\s*[\d.]+\s*%/) || [, ''])[1];
+    const cheap = /ถูก|undervalued|ต่ำกว่ามูลค่า/.test(plain) || sign === '+';
+    const pricey = /แพง|เต็มมูลค่า|overvalued|สูงกว่ามูลค่า/.test(plain) || /[\-−–]/.test(sign);
+    if (cheap === pricey) return m;             // ไม่มีตัวบอกทิศเลย หรือขัดกันเอง → ไม่เดา
+    if ((mos >= 0) !== cheap) return m;         // ทิศขัดกับ MOS ใหม่ → เนื้อหา ไม่ใช่ตัวเลข
+    let done = false;
+    const patched = cell.replace(/(<[^>]*>)|([^<]+)/g, (seg, tag, text) => {
+      if (tag || done || !/-?[\d.]+\s*%/.test(text)) return seg;
+      done = true;
+      return text.replace(/(-?)([\d.]+)(\s*%)/, (mm, sg, old, pc) => sg + fmtLike(Math.abs(mos), old) + pc);
+    });
+    return done ? a + patched + z : m;          // ไม่มีตัวเลขให้ patch → ปล่อยไว้
+  });
+
   // --- เครื่องคิดเลข: ค่าตั้งต้น pxIn (E23) ---
   need(/(id="pxIn"[^>]*\bvalue=")[^"]*(")/, 'pxIn value');
   out = out.replace(/(id="pxIn"[^>]*\bvalue=")[^"]*(")/, (m, a, z) => a + String(round(newPrice, 2)) + z);
