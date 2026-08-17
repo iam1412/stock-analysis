@@ -305,6 +305,11 @@ reject('E12', (h) => h.replace(/(ราคา[^<]*?)(20\d\d)/, (m, a, y) => a + 
 reject('E06', (h) => h.replace('<div class="n">1</div>', '<div class="n active">1</div>'), 'section badge มี class เพิ่มก็ยังนับว่าครบ');
 reject('E29', mutJson('stock-meta', (d) => { d.dividendYield = null; }), 'stock-meta: dividendYield = null (หุ้นไม่จ่ายปันผล) ยังถือว่าถูกต้อง');
 reject('W10', mutJson('stock-meta', (d) => { d.dividendYield = null; }), 'stock-meta: yield = null → ข้ามการเทียบ ไม่เตือน W10');
+// ── W10 parser: การ์ดปันผลที่เขียน "จำนวนเงินต่อหุ้น" นำหน้า % — parser ต้องคว้าค่า % ไม่ใช่เลขตัวแรก (เคส O/STZ/TAP 17 ส.ค. 69) ──
+const setYieldCard = (txt) => (h) => h.replace(/(<div class="k">[^<]*เงินปันผล[^<]*<\/div>\s*<div class="v[^"]*">)([^<]*)(<)/, (m, a, v, z) => a + txt + z);
+const smYield = C.sm.data.dividendYield;
+reject('W10', setYieldCard(`~฿1.92 (~${smYield}%)`), 'การ์ดปันผลเขียนจำนวนเงินก่อน % (~฿1.92 (~6.3%)) → parser ต้องอ่านค่า % ไม่ใช่ 1.92 → ไม่เตือน W10');
+expect('W10', 'warn', setYieldCard(`~฿1.92 (~${(smYield * 3).toFixed(1)}%)`), 'รูปแบบเดียวกันแต่ค่า % ผิดจริง (×3) → ต้องยังเตือน W10 (parser ไม่ได้ปิดตา แค่อ่านให้ถูกตัว)');
 
 // ── E40 / W13: ความถูกต้องของ tag ต่อหุ้น ──
 // E40/W13 อ่าน tag จากไฟล์บนดิสก์ ไม่ใช่จาก HTML ⇒ mutation แบบแก้สตริงฉีดไม่ได้

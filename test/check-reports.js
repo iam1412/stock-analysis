@@ -132,9 +132,17 @@ function parsePriceAge(header) {
 }
 
 // ดึง key metric (ค่าในการ์ด .metric) ตามชื่อ label
-function metricNum(html, labelRe) {
+function metricNum(html, labelRe, opts) {
   const m = html.match(new RegExp(`<div class="k">[^<]*${labelRe}[^<]*</div>\\s*<div class="v[^"]*">([^<]*)<`));
-  return m ? firstNum(m[1]) : null;
+  if (!m) return null;
+  // การ์ดที่ค่าเป็น % (ปันผล/ROE) อาจเขียนจำนวนเงินนำหน้า เช่น "~$1.92 (~5.0%)" หรือ "$4.12 (~2.96%)"
+  // firstNum จะคว้า 1.92 ไปเทียบกับ dividendYield (%) → W10 ยิงปลอม (เคส O/STZ/TAP 17 ส.ค. 69)
+  // ⇒ ถ้าผู้เรียกบอกว่าค่าเป็น % ให้คว้าตัวเลขที่ "ตามด้วย %" ก่อน · ไม่มี % ค่อยถอยไป firstNum ตามเดิม
+  if (opts && opts.pct) {
+    const p = norm(m[1]).match(/(-?\d+(?:\.\d+)?)\s*%/);
+    if (p) return parseFloat(p[1]);
+  }
+  return firstNum(m[1]);
 }
 
 function buildCtx(html, name, opts) {
@@ -173,7 +181,7 @@ function buildCtx(html, name, opts) {
     metrics: {
       pe: metricNum(html, 'P/E \\(TTM\\)'),
       pbv: metricNum(html, 'P/BV'),
-      yield: metricNum(html, 'เงินปันผล'),
+      yield: metricNum(html, 'เงินปันผล', { pct: true }),   // ค่าที่ต้องการคือ % ไม่ใช่จำนวนเงินต่อหุ้นที่อาจนำหน้า
       roe: (() => { const m = norm(html).match(/ROE[^<]*<\/div>\s*<div class="v[^"]*">\s*~?\s*([0-9.]+)\s*%/); return m ? parseFloat(m[1]) : null; })(),
     },
     // บล็อก stock-meta (JSON ตัวเลขสำหรับเรียง index) — present/ok/data ใช้โดย E29–31, W10
