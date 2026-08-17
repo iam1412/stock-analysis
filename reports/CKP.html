@@ -4,9 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>วิเคราะห์หุ้น ซีเค พาวเวอร์ (CKP) — Stock Analysis Dashboard</title>
-<meta name="ai-model" content="Claude Sonnet 4.6">
+<meta name="ai-model" content="Claude Sonnet 5">
 <script type="application/json" id="stock-meta">
-{"symbol":"CKP","currency":"THB","price":2.46,"fairValue":3.36,"mos":26.8,"upside":36.6,"pe":6.97,"dividendYield":3.61,"roe":9.21}
+{"symbol":"CKP","currency":"THB","price":2.46,"fairValue":4.12,"mos":40.3,"upside":67.5,"pe":6.97,"dividendYield":3.61,"roe":9.21}
 </script>
 <script type="application/json" id="report-data">
 {
@@ -39,20 +39,20 @@
       ["ส.ค.26", 2.46]
     ],
     "min": 2,
-    "max": 3.5,
-    "grid": [2.5, 3],
-    "fairLine": 3.36,
+    "max": 4.5,
+    "grid": [2.5, 3, 3.5, 4],
+    "fairLine": 4.12,
     "currency": "฿",
     "highlight": [0, 2]
   },
   "gauge": {
     "min": 1.8,
-    "max": 4.2,
+    "max": 4.5,
     "cur": 2.46,
-    "fair": 3.36,
+    "fair": 4.12,
     "fairLabelTop": false
   },
-  "fv": 3.36
+  "fv": 4.12
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -113,11 +113,11 @@
       </div>
       <div class="legend">
         <span><i style="background:#0097a7"></i>ราคา CKP</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿3.36</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿4.12</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
-        ราคา CKP ในช่วง 1 ปีที่ผ่านมา (ก.ค. 2568 – ก.ค. 2569) แกว่งตัวในกรอบแคบ ฿2.12–฿2.54 ต่ำกว่า Fair Value ฿3.36 ตลอด
+        ราคา CKP ในช่วง 1 ปีที่ผ่านมา (ก.ค. 2568 – ก.ค. 2569) แกว่งตัวในกรอบแคบ ฿2.12–฿2.54 ต่ำกว่า Fair Value ฿4.12 ตลอด
         จุดต่ำสุดที่ ~฿2.12 ในช่วงเดือน เม.ย.–พ.ค. 2568 ก่อนจะฟื้นตัว ราคาลดลงเล็กน้อย −1.6% รอบปี แม้กำไรปี 2568 จะโตแรง +81%
         สะท้อน sentiment ตลาดที่ยังกังวลเรื่องราคา PPA ไฮโดรเพาเวอร์และภาระหนี้ระยะยาว
       </p>
@@ -126,14 +126,14 @@
 
   <!-- ===== 3. VALUATION ===== -->
   <section>
-    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">ถ่วงตระกูล 2 เสียง — ยึดตลาด + Justified P/BV</div></div>
     <div class="card">
       <div class="vmethod">
         <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS adj. ฿0.36 × P/E เป้าหมาย ~12x — อิง P/E กลางอุตสาหกรรมไฟฟ้าไทย (ค่าเฉลี่ย 5 ปี CKP = 15.7x แต่ใช้ conservative 12x สะท้อนภาระหนี้)</div></div>
         <div class="mval">฿4.32</div>
       </div>
       <div class="vmethod">
-        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล ฿0.088 × (1+g); g 4%, r 9% → DDM เหมาะสมสำหรับกิจการโรงไฟฟ้าที่มีกระแสเงินสดสม่ำเสมอ แต่ให้ค่าต่ำเพราะ payout ratio ต่ำ (24%)</div></div>
+        <div><div class="mname">2. DDM / Gordon Growth (บริบท — ห่างจากขายึดตลาด &gt;2× ไม่รวมในกรอบ FV)</div><div class="mdesc">D₁ = ปันผล ฿0.088 × (1+g); g 4%, r 9% → DDM เหมาะสมสำหรับกิจการโรงไฟฟ้าที่มีกระแสเงินสดสม่ำเสมอ แต่ให้ค่าต่ำเพราะ payout ratio ต่ำ (24%)</div></div>
         <div class="mval">฿1.83</div>
       </div>
       <div class="vmethod">
@@ -141,13 +141,13 @@
         <div class="mval">฿3.92</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿1.83 – ฿4.32</span></div>
-        <div class="r">฿3.36</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿3.92 – ฿4.32</span></div>
+        <div class="r">฿4.12</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
-        วิธี P/E (฿4.32) ให้ค่าสูงสุดเพราะ EPS พุ่งแรงในปี 2568 จากน้ำในเขื่อน Xayaburi สูง วิธี Justified P/BV (฿3.92) สอดคล้องกับเป้านักวิเคราะห์ที่ ฿3.58
-        วิธี DDM (฿1.83) ต่ำเพราะ payout ratio ต่ำเพียง 24% ทั้งที่ FCF สูง — หากปรับ payout ratio สูงขึ้น DDM จะให้ค่าใกล้เคียง P/BV มากขึ้น
-        Fair Value เฉลี่ย ฿3.36 อยู่ระหว่าง Justified P/BV และ P/E ซึ่งสมเหตุสมผลสำหรับกิจการ infrastructure ที่มีสินทรัพย์มั่นคง
+        วิธี P/E (฿4.32) เป็นขายึดตลาดเพียงขาเดียว (อิง P/E อุตสาหกรรม/ประวัติ 5 ปีของ CKP) จึงใช้เป็นสมอ วิธี Justified P/BV (฿3.92) อยู่ในกรอบ [สมอ/2, สมอ×2] จึงรวมเป็นตระกูล r/g ได้
+        <b>dispersion gate 0.4c:</b> วิธี DDM (฿1.83) ห่างจากขายึดตลาด P/E (฿4.32) ถึง 2.36 เท่า (&gt;2.0×) จึงเป็นบริบทไม่รวมเฉลี่ย
+        FV = (สมอ P/E ฿4.32 + ตระกูล r/g เฉลี่ย [Justified P/BV] ฿3.92)/2 = ฿4.12
       </p>
     </div>
   </section>
@@ -159,19 +159,19 @@
       <div class="gauge">
         <div class="gbar" id="gbar">
           <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿2.46</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿3.36</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿4.12</div></div>
         </div>
         <div class="scale">
-          <span>฿2.35<br><small>MOS 30%</small></span>
-          <span>฿2.69<br><small>MOS 20%</small></span>
-          <span style="text-align:center">฿3.36<br><small>Fair Value</small></span>
-          <span style="text-align:right">฿3.58<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span>฿2.88<br><small>MOS 30%</small></span>
+          <span>฿3.30<br><small>MOS 20%</small></span>
+          <span>฿3.58<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">฿4.12<br><small>Fair Value</small></span>
           <span style="text-align:right">฿4.32<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคา CKP ที่ ฿2.48 อยู่ในโซน MOS 26% — ระหว่างจุด MOS 20% (฿2.69) และ MOS 30% (฿2.35) ตามคำนิยาม Value Investor ถือว่า
-        <b>เข้าโซนน่าสะสม</b> เป้านักวิเคราะห์ 8 ราย (Consensus: Buy) ที่ ฿3.58 บ่งชี้ Upside ~44% จากราคาปัจจุบัน
+        ราคา CKP ที่ ฿2.46 อยู่ในโซน MOS 40% — ต่ำกว่าจุด MOS 30% (฿2.88) ตามคำนิยาม Value Investor ถือว่า
+        <b>เข้าโซน deep value</b> เป้านักวิเคราะห์ 8 ราย (Consensus: Buy) ที่ ฿3.58 บ่งชี้ Upside ~46% จากราคาปัจจุบัน
         ราคาต่ำกว่า BVPS ที่ ฿3.76 หมายความว่าตลาดให้ราคาต่ำกว่ามูลค่าทางบัญชีสินทรัพย์โรงไฟฟ้า
       </p>
     </div>
@@ -182,13 +182,13 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict good">
-        <div class="big">+27%</div>
+        <div class="big">+40%</div>
         <div class="txt">โซน Value — น่าทยอยสะสม (MOS 20–30%)</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿2.69</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿2.35</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿3.36</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿3.30</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿2.88</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿4.12</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
@@ -283,19 +283,19 @@
   <section>
     <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
     <div class="verdict">
-      <h2>CKP: Hydropower Defensive ราคาต่ำกว่ามูลค่า — MOS 26% น่าทยอยสะสม</h2>
+      <h2>CKP: Hydropower Defensive ราคาต่ำกว่ามูลค่า — MOS 40% น่าทยอยสะสม</h2>
       <p>CK Power เป็นกิจการโรงไฟฟ้าไฮโดรเพาเวอร์รายใหญ่ในอาเซียน ด้วยกำลังผลิต 3,640 MW (รวม Nam Ngum 2 + Xayaburi + Nam Lik 1 + โซลาร์) และ Luang Prabang 1,460 MW ที่กำลังก่อสร้าง
-      ราคาปัจจุบัน ฿2.48 ซื้อขายต่ำกว่า BVPS ฿3.76 (P/BV เพียง 0.47x) และต่ำกว่า Fair Value เฉลี่ย ฿3.36 ถึง 26% ขณะที่นักวิเคราะห์ 8 ราย (Consensus: Buy) ตั้งเป้า ฿3.58
+      ราคาปัจจุบัน ฿2.46 ซื้อขายต่ำกว่า BVPS ฿3.76 (P/BV เพียง 0.47x) และต่ำกว่า Fair Value เฉลี่ย ฿4.12 ถึง 40% ขณะที่นักวิเคราะห์ 8 ราย (Consensus: Buy) ตั้งเป้า ฿3.58
       ความเสี่ยงหลักคือ earnings จาก hydropower ที่ขึ้นกับปริมาณน้ำ (volatile) และภาระหนี้ที่สูง แต่สัญญา PPA ระยะยาวการัน cashflow ขั้นต่ำ
       เหมาะกับนักลงทุนที่ต้องการ defensive income stock พร้อม upside จาก P/E re-rating และ Luang Prabang long-term catalyst</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿3.36 <span style="font-size:12px;color:#cab9a8">(฿1.83–฿4.32)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +26.8%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿4.12 <span style="font-size:12px;color:#cab9a8">(฿3.92–฿4.32)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +40.3%</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿3.58 (Buy · 8 ราย)</div></div>
       </div>
       <div class="zone">
-        💡 <b>กลยุทธ์:</b> ทยอยสะสมในโซน MOS 20–30% (฿2.35–฿2.69) — ราคา ฿2.48 อยู่ในโซนนี้แล้ว ควรซื้อเป็น batch ขนาดเล็ก และเพิ่มหาก ลงไปถึง MOS 30% ที่ ฿2.35
-        เป้าหมายระยะกลาง ฿3.36–฿3.58 (1–2 ปี) · ถือระยะยาวรับ Luang Prabang upside 2573 + ปันผล ~3.6%/ปี
+        💡 <b>กลยุทธ์:</b> ทยอยสะสมในโซน MOS 20–30% (฿2.88–฿3.30) — ราคา ฿2.46 หลุดต่ำกว่า MOS 30% แล้ว (deep value) ควรซื้อเป็น batch ขนาดเล็ก และเพิ่มหาก ลงไปอีก
+        เป้าหมายระยะกลาง ฿4.12–฿3.58 (1–2 ปี) · ถือระยะยาวรับ Luang Prabang upside 2573 + ปันผล ~3.6%/ปี
       </div>
     </div>
   </section>
@@ -307,7 +307,7 @@
     ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
     แหล่งข้อมูล: StockAnalysis.com (BKK:CKP, ข้อมูล TTM สิ้นสุด Q1/2569) · Yahoo Finance (CKP.BK, ราคา ก.ค. 2569) · Nation Thailand / Kaohoon International (CKPower งบ FY2568 ปี 2568) · CKPower Investor Relations
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ 3 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 18 ส.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
