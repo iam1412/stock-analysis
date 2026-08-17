@@ -8,7 +8,7 @@
 <meta name="ai-model" content="Claude Sonnet 5">
 <!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
 <script type="application/json" id="stock-meta">
-{"symbol":"SAWAD","currency":"THB","price":24,"fairValue":27,"mos":11.1,"upside":12.5,"pe":7.28,"dividendYield":2.97,"roe":13.9}
+{"symbol":"SAWAD","currency":"THB","price":24,"fairValue":34.4,"mos":30.2,"upside":43.3,"pe":7.28,"dividendYield":2.97,"roe":13.9}
 </script>
 <script type="application/json" id="report-data">
 {
@@ -41,9 +41,9 @@
       ["ส.ค.26", 24]
     ],
     "min": 20,
-    "max": 32.5,
-    "grid": [22.5, 25, 27.5, 30],
-    "fairLine": 27,
+    "max": 40,
+    "grid": [25, 30, 35],
+    "fairLine": 34.4,
     "currency": "฿",
     "highlight": [0, 8]
   },
@@ -51,10 +51,10 @@
     "min": 15,
     "max": 40,
     "cur": 24,
-    "fair": 27,
+    "fair": 34.4,
     "fairLabelTop": true
   },
-  "fv": 27
+  "fv": 34.4
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -115,27 +115,27 @@
       </div>
       <div class="legend">
         <span><i style="background:#2e7d32"></i>ราคา SAWAD</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿27.00</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿34.40</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสูงสุดปี</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
         ราคา SAWAD เริ่มต้นรอบปีที่ ฿30.00 (ก.ย. 68) ซึ่งเป็นจุดสูงสุดของรอบปี จากนั้นทยอยปรับตัวลงต่อเนื่องจากแรงกดดันหนี้ด้อยคุณภาพและต้นทุนเงินที่ยังสูง
         จนแตะจุดต่ำสุดที่ ~฿21.90 ใน พ.ค. 69 ก่อนจะฟื้นตัวบางส่วน
-        ปัจจุบัน ฿23.60 (−21.3% รอบปี) ยังซื้อขายต่ำกว่า Fair Value ฿27.00 อยู่ราว 12.6%
+        ปัจจุบัน ฿24.00 (−21.3% รอบปี) ยังซื้อขายต่ำกว่า Fair Value ฿34.40 อยู่ราว 30.2%
       </p>
     </div>
   </section>
 
   <!-- ===== 3. VALUATION ===== -->
   <section>
-    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">ถ่วงตามตระกูล — สมอ P/E + ตระกูล r/g (dispersion gate 0.4c)</div></div>
     <div class="card">
       <div class="vmethod">
         <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS (TTM) ฿3.24 × P/E 10x — ค่าเฉลี่ยอุตสาหกรรม Non-Bank ไทย; ปัจจุบัน 7.28x discount สะท้อน NPL risk</div></div>
         <div class="mval">฿32.40</div>
       </div>
       <div class="vmethod">
-        <div><div class="mname">2. DDM (Gordon Growth Model)</div><div class="mdesc">D₁ = DPS ฿0.70 × (1+4%); g 4%, r 10% → ฿0.728 ÷ 0.06 — Payout ratio ต่ำ (~22%) ทำให้ DDM ให้ค่าอนุรักษ์นิยม</div></div>
+        <div><div class="mname">2. DDM (Gordon Growth Model) (บริบท — ห่างจากขายึดตลาด &gt;2× ไม่รวมในกรอบ FV)</div><div class="mdesc">D₁ = DPS ฿0.70 × (1+4%); g 4%, r 10% → ฿0.728 ÷ 0.06 — Payout ratio ต่ำ (~22%) ทำให้ DDM ให้ค่าอนุรักษ์นิยม</div></div>
         <div class="mval">฿12.13</div>
       </div>
       <div class="vmethod">
@@ -143,13 +143,13 @@
         <div class="mval">฿36.39</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿22.00 – ฿36.50</span></div>
-        <div class="r">฿27.00</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿32.40 – ฿36.39</span></div>
+        <div class="r">฿34.40</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
-        วิธี DDM ให้ค่าต่ำมาก (฿12) เนื่องจาก SAWAD ยังคง Payout ratio ต่ำเพื่อรักษาเงินทุนขยายสาขา (>5,700 สาขา) ดังนั้นจึงให้น้ำหนักหลักที่วิธี P/E และ Justified P/BV ซึ่งสะท้อนกำลังการสร้างรายได้จริงมากกว่า
-        ค่าเฉลี่ยสามวิธี (฿32.40+฿12.13+฿36.39)÷3 = ฿26.97 → ปัดขึ้น ฿27.00 เป็น Base Case
+        วิธี DDM ให้ค่าต่ำมาก (฿12.13) เนื่องจาก SAWAD ยังคง Payout ratio ต่ำเพื่อรักษาเงินทุนขยายสาขา (>5,700 สาขา) ดังนั้นจึงให้น้ำหนักหลักที่วิธี P/E และ Justified P/BV ซึ่งสะท้อนกำลังการสร้างรายได้จริงมากกว่า
         วิธี Justified P/BV ให้ค่าสูงสุด สะท้อนว่าถ้า ROE ฟื้นตัวกลับไปเหนือ 15% ศักยภาพราคา ฿36–40 เป็นไปได้ในระยะกลาง
+        <b>dispersion gate 0.4c:</b> ขา DDM (฿12.13) ห่างจากขายึดตลาด P/E (฿32.40) 2.67 เท่า (&gt;2.0×) จึงเป็นบริบทไม่รวมเฉลี่ย · FV = (สมอ P/E ฿32.40 + ตระกูล r/g Justified P/BV ฿36.39)/2 = ฿34.40
       </p>
     </div>
   </section>
@@ -161,19 +161,19 @@
       <div class="gauge">
         <div class="gbar" id="gbar">
           <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿24.00</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿27.00</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿34.40</div></div>
         </div>
         <div class="scale">
-          <span>฿18.90<br><small>MOS 30%</small></span>
-          <span>฿21.60<br><small>MOS 20%</small></span>
-          <span style="text-align:center">฿27.00<br><small>Fair Value</small></span>
-          <span style="text-align:right">฿30.48<br><small>เป้าเฉลี่ย Analyst</small></span>
-          <span style="text-align:right">฿36.50<br><small>กรอบบน FV</small></span>
+          <span>฿24.08<br><small>MOS 30%</small></span>
+          <span>฿27.52<br><small>MOS 20%</small></span>
+          <span style="text-align:center">฿30.48<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span style="text-align:right">฿34.40<br><small>Fair Value</small></span>
+          <span style="text-align:right">฿36.39<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคาปัจจุบัน ฿23.60 อยู่ระหว่าง MOS 20% (฿21.60) และ Fair Value (฿27.00) — อยู่ใน "โซนน่าสนใจ" สำหรับ Value Investor
-        ส่วนต่าง MOS ~12.6% หมายความว่าถ้าราคาลงไปแตะ ฿21.60 จะมี Margin of Safety 20% จาก Fair Value ฿27.00
+        ราคาปัจจุบัน ฿24.00 อยู่ต่ำกว่า MOS 30% (฿24.08) เกือบเท่าตัวและต่ำกว่า Fair Value (฿34.40) มาก — เข้าเขต "ถูกมาก" (deep value) สำหรับ Value Investor
+        ส่วนต่าง MOS ~30.2% หมายความว่าราคาปัจจุบันให้ Margin of Safety เกิน 30% จาก Fair Value ฿34.40 อยู่แล้ว
         เป้าหมายนักวิเคราะห์เฉลี่ยที่ ฿30.48 (16 โบรกเกอร์) สะท้อนว่ายังมี Upside ~29.2% จากราคาปัจจุบัน
       </p>
     </div>
@@ -183,14 +183,14 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict ok">
-        <div class="big">+11%</div>
-        <div class="txt">ราคาต่ำกว่า Fair Value พอควร — น่าสนใจแต่ยังไม่ถึง "ถูกมาก"</div>
+      <div class="mos-verdict good">
+        <div class="big">+30%</div>
+        <div class="txt">ราคาต่ำกว่า Fair Value มาก — เข้าเขต "ถูกมาก" (deep value) เต็มตัว</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿21.60</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿18.90</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿27.00</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿27.52</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿24.08</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿34.40</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
@@ -287,14 +287,14 @@
     <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
     <div class="verdict">
       <h2>น่าสนใจระดับกลาง — Non-Bank ชั้นนำ P/E ต่ำกว่าค่าเฉลี่ย 5 ปี อย่างมีนัย</h2>
-      <p>SAWAD เป็นบริษัทสินเชื่อ Non-Bank ที่มีความได้เปรียบเชิงแข่งขันจากเครือข่ายสาขาหนาแน่น >5,700 แห่งและฐานลูกค้า ~3 ล้านรายในกลุ่มเป้าหมายที่ธนาคารพาณิชย์ยังเข้าถึงได้ยาก ปัจจุบัน P/E 7.28x ต่ำกว่าค่าเฉลี่ย 5 ปี (~10-12x) อย่างมีนัยสำคัญ สะท้อนความกังวลเรื่อง NPL และสภาวะดอกเบี้ยสูง ซึ่งถ้าปัจจัยเหล่านี้ผ่อนคลาย โอกาส P/E Re-rating สูงมาก Fair Value ฿27.00 (เฉลี่ย 3 วิธี) ให้ MOS ~12.6% จากราคาปัจจุบัน ฿23.60 แหล่งข้อมูล: SET / Yahoo Finance / Google Finance (ยืนยัน 3 แหล่ง)</p>
+      <p>SAWAD เป็นบริษัทสินเชื่อ Non-Bank ที่มีความได้เปรียบเชิงแข่งขันจากเครือข่ายสาขาหนาแน่น >5,700 แห่งและฐานลูกค้า ~3 ล้านรายในกลุ่มเป้าหมายที่ธนาคารพาณิชย์ยังเข้าถึงได้ยาก ปัจจุบัน P/E 7.28x ต่ำกว่าค่าเฉลี่ย 5 ปี (~10-12x) อย่างมีนัยสำคัญ สะท้อนความกังวลเรื่อง NPL และสภาวะดอกเบี้ยสูง ซึ่งถ้าปัจจัยเหล่านี้ผ่อนคลาย โอกาส P/E Re-rating สูงมาก Fair Value ฿34.40 (สมอ P/E + ตระกูล r/g ตาม dispersion gate 0.4c) ให้ MOS ~30.2% จากราคาปัจจุบัน ฿24.00 แหล่งข้อมูล: SET / Yahoo Finance / Google Finance (ยืนยัน 3 แหล่ง)</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿27.00 <span style="font-size:12px;color:#cab9a8">(฿22.00–฿36.50)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +11.1%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿34.40 <span style="font-size:12px;color:#cab9a8">(฿32.40–฿36.39)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +30.2%</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿30.48 (Buy)</div></div>
       </div>
       <div class="zone">
-        💡 <b>กลยุทธ์:</b> ทยอยสะสมที่ระดับ ฿21.60–24 (MOS 10-20%) และเพิ่มน้ำหนักหากราคาลงทดสอบ ฿18.90–21.60 (MOS 20-30%) เป้าหมาย 12-18 เดือน ฿27-30 · ตัด Loss ถ้าราคาหลุด ฿16.50 (52-week low) อย่างมีนัยสำคัญ
+        💡 <b>กลยุทธ์:</b> ราคาปัจจุบัน ฿24.00 ต่ำกว่าจุดซื้อ MOS 30% (฿24.08) อยู่แล้ว ทยอยสะสมได้ถึงระดับ ฿27.52 (MOS 20%) เป้าหมาย 12-18 เดือน ฿32-36 · ตัด Loss ถ้าราคาหลุด ฿16.50 (52-week low) อย่างมีนัยสำคัญ
       </div>
     </div>
   </section>
@@ -306,7 +306,7 @@
     ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
     แหล่งข้อมูล: (1) SET Factsheet (set.or.th) — P/E 7.28x, P/BV 1.01x, Market Cap ฿39,212M, ราคา ฿23.60 ณ 14 ส.ค. 2569 · (2) Yahoo Finance (SAWAD.BK) — ราคา ฿23.60, EPS(TTM) ฿3.24, เป้านักวิเคราะห์ ฿30.48 (n=16), 52W ฿19.90–฿32.00 · (3) StockAnalysis.com (quote/bkk/SAWAD) — ราคา ฿23.60 ณ 14 ส.ค. 2569, EPS(TTM) ฿3.24, NI TTM ฿5,394M (ถึงไตรมาส Q2/2569), เงินปันผล ฿0.70/ปี (yield 2.97%) · (4) Google Finance (SAWAD:BKK) — ราคาปิดล่าสุด ฿23.60 (ยืนยันข้ามแหล่ง ≤5%)
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ 17 ส.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 18 ส.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
