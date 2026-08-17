@@ -16,10 +16,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>วิเคราะห์หุ้น United Rentals, Inc. (URI) — Stock Analysis Dashboard</title>
 <!-- ★ ใส่รุ่นโมเดล AI ที่ใช้วิเคราะห์จริง (Opus→"Claude Opus 4.8", Sonnet→"Claude Sonnet 4.6") — gate E28 บังคับ -->
-<meta name="ai-model" content="Claude Sonnet 4.6">
+<meta name="ai-model" content="Claude Sonnet 5">
 <!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
 <script type="application/json" id="stock-meta">
-{"symbol":"URI","currency":"USD","price":1153.83,"fairValue":829,"mos":-39.2,"upside":-28.2,"pe":27,"dividendYield":0.75,"roe":28.2}
+{"symbol":"URI","currency":"USD","price":1164.82,"fairValue":930,"mos":-25.2,"upside":-20.2,"pe":27,"dividendYield":0.75,"roe":28.2}
 </script>
 <!--
   report-data: ธีมสี + ข้อมูลกราฟ/gauge ต่อหุ้น (build เอาไปวาด)  ดู schema เต็มใน CLAUDE.md ข้อ 9
@@ -58,23 +58,23 @@
       ["พ.ค.26", 995.67],
       ["มิ.ย.26", 1132.89],
       ["ก.ค.26", 1079.26],
-      ["ส.ค.26", 1153.83]
+      ["ส.ค.26", 1164.82]
     ],
     "min": 600,
     "max": 1200,
     "grid": [800, 1000],
-    "fairLine": 829,
+    "fairLine": 930,
     "currency": "$",
     "highlight": [6, 11]
   },
   "gauge": {
     "min": 450,
     "max": 1200,
-    "cur": 1153.83,
-    "fair": 829,
+    "cur": 1164.82,
+    "fair": 930,
     "fairLabelTop": false
   },
-  "fv": 829
+  "fv": 930
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -95,14 +95,14 @@
     <div class="sub">ผู้นำตลาดเช่าอุปกรณ์ก่อสร้างรายใหญ่ที่สุดในโลก ~1,600 สาขาในสหรัฐฯ-แคนาดา • General Rentals (เครื่องจักรก่อสร้าง, Aerial Work Platforms, Material Handling) • Specialty (Trench Safety, Power &amp; HVAC, Fluid Solutions, Mobile Storage) • ลูกค้าก่อสร้าง, data center, อุตสาหกรรม, ภาครัฐ</div>
     <div class="price-row">
       <div>
-        <div class="px">$1,153.83<small>(URI)</small></div>
+        <div class="px">$1,164.82<small>(URI)</small></div>
       </div>
       <!-- ★ ป้าย % รอบปี (gate E35/E36) — ผลตอบแทน ~1 ปี (เทียบราคา ~1 ปีก่อน) = ผลตอบแทนปลายกราฟ section 2 (จุดแรก→ท้าย)
            รูปแบบ: "▲ +X.X% (รอบปี)" ขึ้น · "▼ −X.X% (รอบปี)" ลง · "≈ ทรงตัว (รอบปี)" · หุ้น IPO <1 ปี ใช้ "(ตั้งแต่ IPO)"
            ไม่ใช่ % รายวัน/YTD/52 สัปดาห์ · ตั้งสี theme.chgBg/chgColor ให้ตรงทิศ (ขึ้น=เขียว/ลง=แดง · E34) -->
-      <div class="chg">▲ +20.9% (รอบปี)</div>
+      <div class="chg">▲ +22.0% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 14 ส.ค. 2569 (7 Jul 2026, ตลาดปิด NYSE)<br>
+        ราคา ณ 17 ส.ค. 2569 (7 Jul 2026, ตลาดปิด NYSE)<br>
         กรอบ 52 สัปดาห์ $701.59 – $1,143.69<br>
         ที่มา: Yahoo Finance, StockAnalysis.com, United Rentals Investor Relations
       </div>
@@ -145,7 +145,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#ed8f1d"></i>ราคา URI</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $829</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $930</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -155,9 +155,9 @@
     </div>
   </section>
 
-  <!-- ===== 3. VALUATION (เฉลี่ย 3 วิธี) ===== -->
+  <!-- ===== 3. VALUATION (ถ่วงตระกูล: ยึดตลาด + r/g) ===== -->
   <section>
-    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">ถ่วงตระกูล: ยึดตลาด + r/g (dispersion gate 0.4c)</div></div>
     <div class="card">
       <!-- ✏️ เลือก ≥2 วิธีให้เหมาะกับหุ้น — gate เช็คคณิตเฉพาะวิธีชื่อ "P/E" (E21) และ "Justified P/BV" (E22) เมื่อมีวิธีนั้น
            ธนาคาร → เน้น P/BV / Residual income   • REIT → DDM / NAV   • หุ้นไม่ปันผล → ตัด DDM ออก ใช้ P/E + DCF/Justified P/BV -->
@@ -166,7 +166,7 @@
         <div class="mval">$859.40</div>
       </div>
       <div class="vmethod">
-        <div><div class="mname">2. DDM / Gordon Growth</div><div class="mdesc">D₁ = ปันผล $7.88 × (1+g); g 6%, r 9% → payout ratio ต่ำมาก (~18% ของ adjusted EPS) เพราะ URI คืนทุนหลักผ่าน buyback (~$2B/ปี) ไม่ใช่ปันผล — ใช้เป็นฐานล่างเท่านั้น น้ำหนักน้อยในค่าเฉลี่ย</div></div>
+        <div><div class="mname">2. DDM / Gordon Growth (บริบท — ห่างจากขายึดตลาด >2× ไม่รวมในกรอบ FV)</div><div class="mdesc">D₁ = ปันผล $7.88 × (1+g); g 6%, r 9% → payout ratio ต่ำมาก (~18% ของ adjusted EPS) เพราะ URI คืนทุนหลักผ่าน buyback (~$2B/ปี) ไม่ใช่ปันผล — ใช้เป็นบริบท/ฐานล่างเท่านั้น ไม่รวมในกรอบ FV (dispersion gate 0.4c)</div></div>
         <div class="mval">$278.43</div>
       </div>
       <div class="vmethod">
@@ -174,12 +174,12 @@
         <div class="mval">$1,000.72</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $278 – $1,001</span></div>
-        <div class="r">$829</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $859 – $1,001</span></div>
+        <div class="r">$930</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         <!-- ✏️ หมายเหตุ: วิธีไหนให้ค่าสูง/ต่ำเพราะอะไร, ทำไม FV กลางจึงสมเหตุสมผล -->
-        วิธี Justified P/BV (ROE 28%) ให้ค่าสูงสุด $1,000.72 สะท้อนความสามารถทำกำไรที่แท้จริงของธุรกิจ ส่วนวิธี DDM ให้ค่าต่ำสุดเพียง $278.43 เพราะ URI จ่ายปันผลในสัดส่วนต่ำมาก (payout ~18-20%) และคืนทุนหลักผ่าน buyback แทน — DDM จึงเป็นเพียง "ฐานล่าง" ให้น้ำหนักน้อย (15%) วิธี P/E (EPS adjusted × P/E normalized 20x เทียบค่าเฉลี่ย 5 ปี ~17x) ให้ $859.40 ถ่วงน้ำหนัก 45% P/E + 40% Justified P/BV + 15% DDM จึงได้ Fair Value เฉลี่ย ~$829 ต่ำกว่าราคาตลาดปัจจุบัน $1,056.02 ซึ่งเทรดบน P/E TTM สูงถึง 27x สะท้อนว่าตลาดให้ premium กับ earnings momentum ระยะสั้นมากกว่ามูลค่าฐานระยะยาว
+        วิธี P/E (EPS adjusted × P/E normalized 20x เทียบค่าเฉลี่ย 5 ปี ~17x) ให้ $859.40 เป็นขายึดตลาดเพียงขาเดียว → ใช้เป็นสมอ วิธี Justified P/BV (ROE 28%) ให้ $1,000.72 อยู่ในกรอบ ≤2× จากสมอ จึงรวมเป็นตระกูล r/g วิธี DDM ให้ค่าต่ำสุด $278.43 เพราะ URI จ่ายปันผลในสัดส่วนต่ำมาก (payout ~18-20%) และคืนทุนหลักผ่าน buyback แทน — <b>dispersion gate 0.4c:</b> DDM ห่างจากสมอ 3.09 เท่า (>2×) จึงเป็นบริบท ไม่รวมในกรอบ FV · FV = (สมอ $859.40 + ตระกูล r/g $1,000.72)/2 = $930 ต่ำกว่าราคาตลาดปัจจุบัน $1,164.82 ซึ่งเทรดบน P/E TTM สูงถึง 27x สะท้อนว่าตลาดให้ premium กับ earnings momentum ระยะสั้นมากกว่ามูลค่าฐานระยะยาว
       </p>
     </div>
   </section>
@@ -190,19 +190,19 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $1,153.83</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $829</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $1,164.82</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $930</div></div>
         </div>
         <div class="scale">
-          <span>$580.30<br><small>MOS 30%</small></span>
-          <span>$663.20<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$829<br><small>Fair Value</small></span>
+          <span>$651.00<br><small>MOS 30%</small></span>
+          <span>$744.00<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$930<br><small>Fair Value</small></span>
           <span style="text-align:right">$1,001<br><small>กรอบบน FV</small></span>
           <span style="text-align:right">$1,127<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคาปัจจุบัน ($1,056.02) อยู่ <b>สูงกว่ามูลค่าเหมาะสม</b> ($829) ค่อนข้างมาก และใกล้เคียงเป้าเฉลี่ยนักวิเคราะห์ 12 เดือน ($1,127) มากกว่า — บ่งชี้ตลาดให้น้ำหนักกับ earnings momentum/การเติบโตต่อเนื่องมากกว่ามูลค่าฐาน (normalized) จุดที่มี margin of safety จริงต้องรอราคาย่อกลับลงมาโซน $580–$663
+        ราคาปัจจุบัน ($1,164.82) อยู่ <b>สูงกว่ามูลค่าเหมาะสม</b> ($930) ค่อนข้างมาก และใกล้เคียงเป้าเฉลี่ยนักวิเคราะห์ 12 เดือน ($1,127) มากกว่า — บ่งชี้ตลาดให้น้ำหนักกับ earnings momentum/การเติบโตต่อเนื่องมากกว่ามูลค่าฐาน (normalized) จุดที่มี margin of safety จริงต้องรอราคาย่อกลับลงมาโซน $651–$744
       </p>
     </div>
   </section>
@@ -213,18 +213,18 @@
     <div class="card">
       <!-- ✏️ class ของ mos-verdict: MOS<10 → "bad", 10–20 → "ok", ≥20 → "good" -->
       <div class="mos-verdict bad">
-        <div class="big">−39%</div>
-        <div class="txt"><b>ไม่มี Margin of Safety</b><br>ราคาปัจจุบัน $1,056.02 สูงกว่ามูลค่าเหมาะสม $829 ราว 27% → หุ้นคุณภาพดีแต่ปัจจุบันเทรดแพงเชิงพื้นฐาน (P/E TTM ~27x เทียบค่าเฉลี่ย 5 ปี ~17x) ยังไม่ใช่จุดซื้อที่ปลอดภัยตามเกณฑ์ value investor</div>
+        <div class="big">−25%</div>
+        <div class="txt"><b>ไม่มี Margin of Safety</b><br>ราคาปัจจุบัน $1,164.82 สูงกว่ามูลค่าเหมาะสม $930 ราว 25% → หุ้นคุณภาพดีแต่ปัจจุบันเทรดแพงเชิงพื้นฐาน (P/E TTM ~27x เทียบค่าเฉลี่ย 5 ปี ~17x) ยังไม่ใช่จุดซื้อที่ปลอดภัยตามเกณฑ์ value investor</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$663.20</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$580.30</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $829</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$744.00</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$651.00</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $930</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="1153.83" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="1164.82" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -316,14 +316,14 @@
     <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
     <div class="verdict">
       <h2>ธุรกิจคุณภาพสูง แต่ราคาแพงกว่าพื้นฐาน — รอจังหวะสะสม</h2>
-      <p>United Rentals เป็นผู้นำตลาดเช่าอุปกรณ์ก่อสร้างที่ใหญ่ที่สุดในโลก ด้วย scale advantage จากฟลีตขนาดใหญ่ที่สุดในอุตสาหกรรมและกลยุทธ์ M&amp;A ต่อเนื่อง (Ahern, BlueLine) หนุนด้วยกระแส data center/AI capex supercycle และงบลงทุนโครงสร้างพื้นฐาน IIJA อย่างไรก็ตาม หลังราคาพุ่งขึ้นแรงจากจุดต่ำ $728.56 (มี.ค. 2569) มาที่ $1,056.02 ปัจจุบัน หุ้นเทรดที่ P/E TTM ~27x สูงกว่าค่าเฉลี่ย 5 ปี (~17x) มาก และไม่มี margin of safety เทียบกับมูลค่าเหมาะสมเชิงพื้นฐาน (normalized) ที่ $829 — เหมาะสำหรับนักลงทุนระยะยาวที่เชื่อมั่นในธุรกิจ แต่ควรรอราคาย่อกลับมาก่อนเข้าซื้อเพิ่ม</p>
+      <p>United Rentals เป็นผู้นำตลาดเช่าอุปกรณ์ก่อสร้างที่ใหญ่ที่สุดในโลก ด้วย scale advantage จากฟลีตขนาดใหญ่ที่สุดในอุตสาหกรรมและกลยุทธ์ M&amp;A ต่อเนื่อง (Ahern, BlueLine) หนุนด้วยกระแส data center/AI capex supercycle และงบลงทุนโครงสร้างพื้นฐาน IIJA อย่างไรก็ตาม หลังราคาพุ่งขึ้นแรงจากจุดต่ำ $728.56 (มี.ค. 2569) มาที่ $1,164.82 ปัจจุบัน หุ้นเทรดที่ P/E TTM ~27x สูงกว่าค่าเฉลี่ย 5 ปี (~17x) มาก และไม่มี margin of safety เทียบกับมูลค่าเหมาะสมเชิงพื้นฐาน (normalized) ที่ $930 — เหมาะสำหรับนักลงทุนระยะยาวที่เชื่อมั่นในธุรกิจ แต่ควรรอราคาย่อกลับมาก่อนเข้าซื้อเพิ่ม</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$829 <span style="font-size:12px;color:#cab9a8">($278–$1,001)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −39.2%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$930 <span style="font-size:12px;color:#cab9a8">($859–$1,001)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −25.2%</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$1,127 (Buy, 22 นักวิเคราะห์)</div></div>
       </div>
       <div class="zone">
-        💡 <b>กลยุทธ์:</b> รอสะสมในโซน MOS 20–30% ($580–$663) หรือเมื่อ P/E ย่อกลับใกล้ค่าเฉลี่ย 5 ปี (~17-18x); ผู้ถือครองอยู่แล้วอาจถือต่อรับปันผล+buyback ต่อเนื่อง แต่ไม่แนะนำไล่ซื้อเพิ่มที่ราคาปัจจุบันซึ่งไม่มี margin of safety
+        💡 <b>กลยุทธ์:</b> รอสะสมในโซน MOS 20–30% ($651–$744) หรือเมื่อ P/E ย่อกลับใกล้ค่าเฉลี่ย 5 ปี (~17-18x); ผู้ถือครองอยู่แล้วอาจถือต่อรับปันผล+buyback ต่อเนื่อง แต่ไม่แนะนำไล่ซื้อเพิ่มที่ราคาปัจจุบันซึ่งไม่มี margin of safety
       </div>
     </div>
   </section>
@@ -334,7 +334,7 @@
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
     ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ข้อมูล ณ 7 ก.ค. 2569 จาก Yahoo Finance, StockAnalysis.com, United Rentals Investor Relations (8-K FY2025 / Q1 2026) — EPS adjusted normalized และ P/E เป้าหมายเป็นการประมาณการของผู้จัดทำ ไม่ใช่ตัวเลขที่บริษัทเผยแพร่อย่างเป็นทางการ
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ 8 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 18 ส.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
