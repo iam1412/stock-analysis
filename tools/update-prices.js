@@ -79,6 +79,9 @@ const DOWN = { bg: 'var(--red-soft)', col: '#c5221f' };
 // ---------- utils ----------
 const round = (v, d) => { const k = Math.pow(10, d); return Math.round(v * k) / k; };
 const num4 = (v) => +v.toFixed(6); // ตัดเศษ float ก่อนลง JSON
+// โซนของกล่อง verdict จาก MOS (%) — **นิยามเดียวในรีโป**: cron ใช้ sync class · W04 ใน check-reports import ไปตรวจ
+// (เดิมกติกาซ้ำอยู่ 3 ที่: check-reports · agent-prompt · templates.md — ถ้าแก้ตัวเลขต้องแก้ที่นี่ที่เดียว)
+const mosBand = (mos) => (mos < 10 ? 'bad' : mos < 20 ? 'ok' : 'good');
 
 // format ราคาสำหรับโชว์: 2 ตำแหน่งเสมอ + comma เมื่อ ≥1000 (สไตล์เดิมของรายงาน)
 function fmtPrice(p) {
@@ -567,6 +570,12 @@ function patchReport(html, p) {
     return done ? a + patched + z : m;          // ไม่มีตัวเลขให้ patch → ปล่อยไว้
   });
 
+  // --- สีกล่อง verdict `class="mos-verdict bad|ok|good"` — sync ให้ตรงโซน MOS ใหม่ (แก้ต้นเหตุ W04) ---
+  // class นี้เป็นฟังก์ชันล้วนของ MOS ไม่มีดุลพินิจ (bad <10 / ok 10–20 / good ≥20 — กติกาเดียวกับ W04 และ agent-prompt)
+  // ต่างจากช่อง "ส่วนต่างจากราคา" ข้างบนที่มี "คำ" — ตรงนี้ไม่มีอะไรให้ cron ต้องเดา จึง sync ได้ทุกครั้ง
+  // ★ แตะเฉพาะ 3 ค่ามาตรฐานเท่านั้น — คลาสอื่น (ถ้ามีใครตั้งใจใช้) ปล่อยไว้ให้ gate ตัดสิน
+  out = out.replace(/class="mos-verdict (bad|ok|good)"/, () => `class="mos-verdict ${mosBand(mos)}"`);
+
   // --- เครื่องคิดเลข: ค่าตั้งต้น pxIn (E23) ---
   need(/(id="pxIn"[^>]*\bvalue=")[^"]*(")/, 'pxIn value');
   out = out.replace(/(id="pxIn"[^>]*\bvalue=")[^"]*(")/, (m, a, z) => a + String(round(newPrice, 2)) + z);
@@ -843,6 +852,6 @@ async function main() {
   if (!WRITE) console.log('ใส่ --write เพื่อเขียนจริง');
 }
 
-module.exports = { fmtPrice, fmtLike, toYahooSymbol, fetchChart, buildChartData, niceBounds, annualChg, decide, currencyMatches, isIntradayQuote, detectMixedBasis, detectStaleQuotes, missedSessions, probeCap, capByCohort, controlTickers, unverifiedCohorts, classifyStale, patchReport, mergeFlags, styledRD, commitBody, THAI_MONTHS };
+module.exports = { mosBand, fmtPrice, fmtLike, toYahooSymbol, fetchChart, buildChartData, niceBounds, annualChg, decide, currencyMatches, isIntradayQuote, detectMixedBasis, detectStaleQuotes, missedSessions, probeCap, capByCohort, controlTickers, unverifiedCohorts, classifyStale, patchReport, mergeFlags, styledRD, commitBody, THAI_MONTHS };
 
 if (require.main === module) main().catch((e) => { console.error(e); process.exit(1); });

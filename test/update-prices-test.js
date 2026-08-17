@@ -207,6 +207,17 @@ ok(cellCase('ถูกกว่ามูลค่า MOS ~ +8%', pxCellTest) ===
 ok(cellCase('แพงกว่ามูลค่าเหมาะสม', pxCellTest) === 'แพงกว่ามูลค่าเหมาะสม', 'ช่องสรุป: ไม่มีตัวเลข → ไม่แตะ');
 ok(cellCase('ส่วนต่าง 5%', pxCellTest) === 'ส่วนต่าง 5%', 'ช่องสรุป: ไม่มีคำบอกทิศ → ไม่เดา ไม่แตะ');
 
+// ---------- สีกล่อง verdict `mos-verdict bad|ok|good` — sync ให้ตรงโซน MOS ใหม่ (แก้ต้นเหตุ W04) ----------
+// class เป็นฟังก์ชันล้วนของ MOS (นิยามเดียว = U.mosBand ซึ่ง W04 ก็ import ไปใช้) ⇒ cron sync ได้ทุกครั้ง ไม่ต้องเดา
+ok(U.mosBand(9.9) === 'bad' && U.mosBand(10) === 'ok' && U.mosBand(19.9) === 'ok' && U.mosBand(20) === 'good' && U.mosBand(-50) === 'bad', 'mosBand: ขอบโซน 10/20 ถูกต้อง (bad <10 · ok 10–20 · good ≥20)');
+const setVerdict = (h, cls) => h.replace(/class="mos-verdict (?:bad|ok|good)"/, `class="mos-verdict ${cls}"`);
+const verdictOf = (h) => (h.match(/class="mos-verdict ([^"]+)"/) || [])[1];
+const pxBad = Math.round(FV * 0.95 * 100) / 100;      // MOS = +5% → โซน bad
+const pxGood = Math.round(FV * 0.70 * 100) / 100;     // MOS = +30% → โซน good
+ok(verdictOf(U.patchReport(setVerdict(aapl, 'good'), { newPrice: pxBad, dateParts: dp, chartData: null }).html) === 'bad', 'verdict: ราคาวิ่งขึ้นจน MOS เหลือ 5% → good กลายเป็น bad (เคส W04 15 ใบทั้งคลัง)');
+ok(verdictOf(U.patchReport(setVerdict(aapl, 'bad'), { newPrice: pxGood, dateParts: dp, chartData: null }).html) === 'good', 'verdict: ราคาร่วงจน MOS 30% → bad กลายเป็น good (ทางกลับ)');
+ok(verdictOf(U.patchReport(setVerdict(aapl, 'custom-zone'), { newPrice: pxBad, dateParts: dp, chartData: null }).html) === 'custom-zone', 'verdict: คลาสนอก 3 ค่ามาตรฐาน → ไม่แตะ (ปล่อยให้ gate ตัดสิน)');
+
 // ---------- price-only fallback (chartData = null) — คงกราฟเดิม แตะแค่จุดท้าย ----------
 // ทางนี้เดิมใช้เฉพาะตอน Yahoo ไม่มีประวัติพอ · ตั้งแต่มี bad-chart มันเป็นทางของ `--force` ด้วย:
 // ซีรีส์ต้นทางผสมสองฐาน แต่กราฟในไฟล์ถูกแก้ให้ถูกแล้ว ⇒ ประทับราคาได้โดยไม่ลากฐานที่สองกลับเข้ามา
