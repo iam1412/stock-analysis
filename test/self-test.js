@@ -314,6 +314,32 @@ reject('W10', setYieldCard('$3.25'), 'การ์ดปันผลแสดง
 // W07 ใช้ yield ตัวเดียวกัน — การ์ดจำนวนเงินล้วนต้องไม่ทำให้ W07 ฟ้อง "yield ผิดวิสัย" ด้วย
 reject('W07', setYieldCard('$45.00'), 'การ์ดปันผลจำนวนเงินล้วน $45 → parser คืน null → W07 ไม่ฟ้องว่า yield 45% ผิดวิสัย');
 
+// ── W14: recompute การ์ดวิธีที่ E21/E22 ไม่ครอบ (P/FCF · DDM · EV/EBITDA) จากสูตรใน mdesc (17 ส.ค. 69) ──
+// หลักเดียวกับ E21: ยิงเมื่อ mval ≠ สูตร · เงียบเมื่อสูตรตรง · **เงียบเมื่อ parse ไม่ได้** (ไม่ใช่ parser พังเงียบ — พิสูจน์ด้วยเคสคู่)
+// ฐาน BBL มีการ์ด DDM อยู่แล้ว (index iDDM) — mutate ค่า/desc ของการ์ดนั้น · ตระกูลอื่นฉีดการ์ดใหม่ต่อท้าย vgrid
+const iDDM = C.methods.findIndex((m) => /DDM|Gordon/i.test(m.name));
+const setMdesc = (idx, txt) => (h) => { let i = -1; return h.replace(/(<div class="mdesc">)([\s\S]*?)(<\/div>)/g, (m, a, v, b) => (++i === idx ? a + txt + b : m)); };
+const addCard = (name, desc, val) => (h) => h.replace(/(<div class="vmethod">[\s\S]*?<\/div>\s*<\/div>)(?![\s\S]*<div class="vmethod">)/, (m) => m + `<div class="vmethod"><div class="mname">${name}</div><div class="mval">$${val}</div><div class="mdesc">${desc}</div></div>`);
+if (iDDM >= 0) {
+  // DDM — ฐาน BBL: "D₁ = ปันผลยั่งยืน ~฿10.5 × (1+g); g 3%, r 9.5%" → 10.5×1.03/0.065 = 166.4 ≈ mval 162 (2.7% ผ่าน)
+  rejectBase('W14', 'ฐาน BBL: การ์ด DDM สูตร D₁×(1+g)/(r−g) ตรง mval ภายใน 5%');
+  expect('W14', 'warn', mutMval(iDDM, numStr(C.methods[iDDM].val * 1.3)), 'DDM: mval เพี้ยน +30% จากสูตร D₁/(r−g) ในคำอธิบาย → ต้องยิง W14');
+  reject('W14', setMdesc(iDDM, 'อิงปันผลยั่งยืนและอัตราคิดลดที่เหมาะสม (ไม่ระบุ r/g)'), 'DDM: คำอธิบายไม่มีสูตร (ไม่มี r/g) → parse ไม่ได้ → ต้องเงียบ ไม่เดา');
+  reject('W14', setMdesc(iDDM, 'D₁ = ปันผล C$3.46 × (1+g) = C$3.58; g 3.5%, r 7.6% → C$87.34 × CADUSD 0.717'), 'DDM: สูตรมีการแปลงสกุลเงินท้ายสุด (เคส TRP/PBA/FTS) → recompute เทียบ mval ไม่ได้ → ต้องเงียบ');
+  reject('W14', setMdesc(iDDM, `D₁ = ปันผลเฉลี่ย 5 ปี ฿${numStr(C.methods[iDDM].val * 0.065 / 1.03)} × (1+g); g 3%, r 9.5%`), 'DDM: คำบรรยายมีตัวเลขปน ("เฉลี่ย 5 ปี") แต่ D₁ มีสกุลเงินนำหน้า → ต้องคว้าถูกตัว → สูตรตรง → เงียบ (เคส PB)');
+}
+// P/FCF — ฉีดการ์ดใหม่: "$4.04/หุ้น × 30x" = 121.2
+reject('W14', addCard('4. P/FCF Valuation', 'FCF/share $4.04 × P/FCF เป้าหมาย 30x — สะท้อน recurring', '121.20'), 'P/FCF: mval = FCF/หุ้น × ตัวคูณ ตรงสูตร → เงียบ');
+expect('W14', 'warn', addCard('4. P/FCF Valuation', 'FCF/share $4.04 × P/FCF เป้าหมาย 30x — สะท้อน recurring', '150.00'), 'P/FCF: mval 150 แต่ 4.04×30 = 121.2 (คลาด 24%) → ต้องยิง W14');
+reject('W14', addCard('4. FCF Yield', 'FCF/share $13.10 ÷ FCF yield เป้า 6.0% = $218', '218.00'), 'FCF Yield: สูตร ÷ yield% เป็นคนละสูตร (ไม่ใช่ × ตัวคูณ) → ไม่ parse → เงียบ (เคส IQV)');
+reject('W14', addCard('4. P/FCF Valuation', 'FCF TTM $4,860M ÷ 610M หุ้น = $7.97/หุ้น × P/FCF 22x', '175.34'), 'P/FCF: desc มี FCF รวม $4,860M นำหน้า → ต้องคว้า $7.97/หุ้น ไม่ใช่ 4,860 → สูตรตรง → เงียบ (เคส ABNB)');
+// EV/EBITDA — 4 term: EBITDA × mult − net debt ÷ shares
+reject('W14', addCard('4. EV/EBITDA', 'EBITDA FY2025 $5.75B × 13.5x EV/EBITDA (peer median) - net debt $16.3B ÷ 224.6M หุ้น', '273.00'), 'EV/EBITDA: (5.75B×13.5 − 16.3B) ÷ 224.6M = 273 ตรง mval → เงียบ (เคส NSC · "/" ใน "EV/EBITDA" ต้องไม่ถูกมองเป็นตัวหาร)');
+expect('W14', 'warn', addCard('4. EV/EBITDA', 'EBITDA FY2026E ~$2.3B × 9x = EV ~$20.7B + เงินสดสุทธิ $1.5B ÷ 107.4M หุ้น', '240.00'), 'EV/EBITDA: (2.3B×9 + 1.5B) ÷ 107.4M = 206.7 แต่ mval 240 (คลาด 14%) → ต้องยิง (เคส FSLR ของจริง)');
+reject('W14', addCard('4. EV/EBITDA', 'TTM adj. EBITDA ~$4,208M × 13x EV/EBITDA — stable cash generation หักหนี้สุทธิ $13,500M ÷ 478M หุ้น', '86.17'), 'EV/EBITDA: คำว่า "cash generation" ลอยในประโยคต้องไม่ทำให้หนี้สุทธิกลายเป็นบวก → 86.17 ตรง → เงียบ (เคส SYY)');
+reject('W14', addCard('4. EV/EBITDA', 'VITAS EBITDA ~$301M × 14x + Roto-Rooter EBITDA ~$151M × 10x = EV $5,724M - net debt ~$255M ÷ 13.27M หุ้น', '412.00'), 'EV/EBITDA: sum-of-parts หลายก้อน → recompute จาก desc ไม่ได้ → ต้องเงียบ (เคส CHE)');
+reject('W14', addCard('4. EV/EBITDA', 'EBITDA $4.0B (mid-point FY2026 $3.6B guide และ FY2027 target $5.75B) × 7.5x = EV $30.0B - debt $9.0B ÷ 530M หุ้น', '39.62'), 'EV/EBITDA: วงเล็บหลัง EBITDA มีตัวเลขเงินอื่น → กำกวม → ต้องเงียบ (เคส IP)');
+
 // ── E40 / W13: ความถูกต้องของ tag ต่อหุ้น ──
 // E40/W13 อ่าน tag จากไฟล์บนดิสก์ ไม่ใช่จาก HTML ⇒ mutation แบบแก้สตริงฉีดไม่ได้
 // จึงต้องฉีดผ่าน opts.tagData (ช่องที่ออกแบบไว้ให้เทสโดยเฉพาะ)

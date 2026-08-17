@@ -117,6 +117,72 @@ function parseMethods(html) {
   }));
 }
 
+// ── W14: recompute การ์ดวิธี valuation ที่ E21/E22 ไม่ครอบ (P/FCF · DDM · EV/EBITDA) จากสูตรใน mdesc ──
+// หลักเดียวกับ E21: **เงียบเมื่อ parse ไม่ได้** (สูตรไม่ครบ / หน่วยกำกวม / sum-of-parts) — ตรวจเฉพาะที่ recompute ได้แน่
+// dry-run ทั้งคลัง 17 ส.ค. 69: parse ได้ 183 การ์ด ฟ้อง 4 (NNN CHG FSLR FANG) ยืนยันด้วยมือว่าเลขผิดจริงทั้ง 4 · false positive 0
+// ตั้งใจข้าม DCF (หลาย stage recompute จาก desc ไม่ได้) และ Analyst target (ไม่มีสูตร) — ดู docs/quality-gate.md
+const V_NUM = '([0-9]+(?:,[0-9]{3})*(?:\\.[0-9]+)?)';
+const V_UNIT = '(พันล้าน|ล้าน|B|M|bn|mn)';
+const vNum = (s) => (s == null ? null : parseFloat(String(s).replace(/,/g, '')));
+const vPct = (s) => { const v = vNum(s); return v == null ? null : v > 1 ? v / 100 : v; };
+const vToM = (s, u) => { const v = vNum(s); return v == null ? null : /พันล้าน|B|bn/i.test(u || '') ? v * 1000 : v; }; // normalize เป็น "ล้าน"
+// P/FCF · FCF Yield: "<เงิน>/หุ้น × <n>x" — ตัวตั้งกับตัวคูณต้องอยู่ติดกัน · สูตร ÷ yield% เป็นคนละสูตร ข้าม
+function calcPFCF(desc) {
+  if (/yield/i.test(desc) && /[÷/]\s*(?:FCF\s*)?(?:yield)?[^%]{0,20}[0-9.]+\s*%/i.test(desc)) return null;
+  if (!/(?:FCF|กระแสเงินสด)\s*(?:\/|ต่อ)\s*(?:share|หุ้น)|[$฿]\s*[0-9.,]+\s*(?:\/|ต่อ)\s*(?:share|หุ้น)/i.test(desc)) return null;
+  const pair = desc.match(new RegExp('[$฿]?\\s*' + V_NUM + '\\s*(?:/|ต่อ)?\\s*(?:share|หุ้น)?\\s*(?:×|x)\\s*(?:P/FCF|ตัวคูณ)?[^0-9]{0,15}([0-9]{1,3}(?:\\.[0-9]+)?)\\s*x\\b', 'i'));
+  return pair ? vNum(pair[1]) * vNum(pair[2]) : null;
+}
+// DDM: D₁ ÷ (r − g) — หา r/g ก่อน (ตัวที่ตามด้วย % และไม่อยู่ใน "(1+g)") แล้วหา D₁ 4 รูปแบบจากชัดสุดไปหลวมสุด
+// ทดสอบกับรูปแบบจริงจากคลัง 8 แบบ (scratchpad/ddm-parser.js): "× (1+g)" · "× (1+6%)" · "× 1.06" · "D₀ → D₁ = … = $Y" · "D₁ = $X (…)"
+function calcDDM(desc) {
+  const findRate = (k) => {
+    const re = new RegExp('(?:^|[;,·•(\\s])' + k + '\\s*(?:=|:|≈|~)?\\s*' + V_NUM + '\\s*%', 'ig');
+    let m, last = null; while ((m = re.exec(desc))) { last = m; }
+    return last ? vPct(vNum(last[1])) : null;
+  };
+  const R = findRate('r'), G = findRate('g');
+  if (R == null || G == null || R <= G) return null;
+  if (/CAD\s*USD|USD\s*\/\s*CAD|×\s*0\.7[0-9]|แปลง(?:เป็น|กลับ)/i.test(desc)) return null;   // สูตรมีการแปลงสกุลเงินหลังคำนวณ (TRP/PBA/FTS) — recompute เทียบ mval ไม่ได้
+  let d1 = null, m;
+  // "D₁ = [คำอธิบาย (อาจมีวงเล็บที่มีตัวเลข เช่น "(normalized 30% payout)")] $X" — ข้ามวงเล็บทั้งก้อนก่อนคว้าตัวเลข
+  // ★ D₁ ต้องเป็นตัวเลขที่มี "สกุลเงิน" นำหน้า ($ ฿ C$ CAD) — กันคว้าเลขจากคำบรรยาย ("ปันผลเฉลี่ย 5 ปี" → 5 · "90% ของ EPS" → 90)
+  //   ถ้ามีสูตรย่อยหลายชั้น ("90% ของ EPS ฿0.39 = ฿0.351") ให้เอาตัวที่ตามหลัง "=" ท้ายสุดก่อนเครื่องหมายคั่น
+  //   และนิพจน์ D₁ จบที่ ";" หรือ "→" ตัวแรก — ตัด desc ให้เหลือแค่ช่วงนั้นก่อน (กันไปคว้าเลขจาก "→ FV = …" ท้ายประโยค)
+  const d1seg = (desc.match(/D[₁1]\s*(?:=|:|≈|~)[^;→]*/i) || [''])[0];
+  const D1 = 'D[₁1]\\s*(?:=|:|≈|~)(?:.*?=\\s*)?.*?(?:[$฿]|C\\$|CAD\\s*)\\s*' + V_NUM;
+  if ((m = d1seg.match(new RegExp(D1 + '\\s*(?:×|x|\\*)\\s*\\(\\s*1\\s*\\+\\s*g\\s*\\)', 'i')))) d1 = vNum(m[1]) * (1 + G);                       // × (1+g) เชิงสัญลักษณ์
+  else if ((m = d1seg.match(new RegExp(D1 + '\\s*(?:×|x|\\*)\\s*\\(?\\s*(?:1\\s*\\+\\s*)?((?!1(?![.0-9]))[0-9]+(?:\\.[0-9]+)?)\\s*(%)?\\s*\\)?', 'i')))) {
+    const f = vNum(m[2]); d1 = vNum(m[1]) * (m[3] ? 1 + f / 100 : f >= 1 ? f : 1 + f);                                                          // × (1+6%) · × 1.06 · × (1+0.06)
+  }
+  else if ((m = desc.match(new RegExp('D[₁1]\\s*=\\s*D[₀0]\\s*(?:×|x)\\s*\\(1\\+g\\)\\s*=\\s*[$฿]?\\s*' + V_NUM + '\\s*(?:×|x)\\s*' + V_NUM + '\\s*=\\s*[$฿]?\\s*' + V_NUM, 'i')))) d1 = vNum(m[3]);  // D₀→D₁ = X×1.055 = Y
+  else if ((m = d1seg.match(new RegExp(D1 + '(?!\\s*(?:×|x|\\*))', 'i')))) d1 = vNum(m[1]);                                                       // D₁ = X ตรง ๆ
+  return d1 == null ? null : d1 / (R - G);
+}
+// EV/EBITDA: EBITDA <เงิน+หน่วย> × <n>x [− หนี้ | + เงินสด <เงิน+หน่วย>] ÷ <หุ้น> · sum-of-parts / วงเล็บกำกวม → เงียบ
+function calcEVEB(desc) {
+  if ((desc.match(/EBITDA/gi) || []).length >= 2 && /\+/.test(desc)) return null;
+  if ((desc.match(/\/\s*(?:share|หุ้น)/gi) || []).length >= 2) return null;
+  if (/[×x]\s*[0-9.]+x?[^÷/]*\+[^÷/]*[×x]\s*[0-9.]+/i.test(desc)) return null;
+  if (new RegExp('EBITDA[^×x(]{0,40}[$฿]?\\s*' + V_NUM + '\\s*' + V_UNIT + '\\s*\\([^)]*[$฿]?\\s*[0-9]', 'i').test(desc)) return null;
+  const eb = desc.match(new RegExp('EBITDA[^×x]{0,60}?[$฿]?\\s*' + V_NUM + '\\s*' + V_UNIT + '\\s*(?:\\([^)]*\\))?\\s*(?:×|x)\\s*(?:EV/EBITDA\\s*)?' + V_NUM + '\\s*x?', 'i'));
+  if (!eb) return null;
+  let ev = vToM(eb[1], eb[2]) * vNum(eb[3]);
+  const after = desc.slice(eb.index + eb[0].length);
+  const adj = after.match(new RegExp('^(?:(?!÷|/\\s*[0-9]).)*?(−|-|\\+|หัก|บวก)\\s*(Net\\s*Debt|Net\\s*Financial\\s*Debt|หนี้สินสุทธิ|หนี้สุทธิ|เงินสดสุทธิ|Net\\s*Cash)[^0-9$฿]{0,12}[$฿]?\\s*' + V_NUM + '\\s*' + V_UNIT, 'i'));
+  if (adj) { const isCash = /เงินสด|Cash/i.test(adj[2]); const plus = /\+|บวก/.test(adj[1]); ev += (isCash || plus ? 1 : -1) * vToM(adj[3], adj[4]); }
+  else if (/Net\s*Debt|หนี้|เงินสด|Cash/i.test(after.split(/÷|\/\s*[0-9]/)[0])) return null;
+  const sh = after.match(new RegExp('[÷/]\\s*' + V_NUM + '\\s*' + V_UNIT + '?\\s*(?:หุ้น|shares?)', 'i'));
+  if (!sh) return null;
+  const S = sh[2] ? vToM(sh[1], sh[2]) : vNum(sh[1]);
+  return S ? ev / S : null;
+}
+const W14_FAMILIES = [
+  { label: 'P/FCF', name: /P\/FCF|FCF\s*Yield/i, calc: calcPFCF, tol: 0.03 },
+  { label: 'DDM', name: /DDM|Gordon/i, calc: calcDDM, tol: 0.05 },        // (r−g) เล็ก ปัดเศษทบ → 5%
+  { label: 'EV/EBITDA', name: /EV\s*\/\s*EBITDA/i, calc: calcEVEB, tol: 0.05 }, // 4 term ปัดเศษทบ → 5%
+];
+
 // แปลง "ราคา ณ <วัน[–วัน]> <เดือนไทย> <ปี ค.ศ./พ.ศ.>" → อายุเป็นวันเทียบ "วันนี้"
 // ช่วงวัน (เช่น 14–18 มิ.ย.) ใช้ "วันท้าย" (ราคาที่สดสุด). พ.ศ.→ค.ศ. อัตโนมัติ.
 //
@@ -473,6 +539,20 @@ const CHECKS = [
     const isBiz = (s) => { const e = c.vocab.bySlug.get(s); return !e || e.kind !== 'driver'; };
     return slugs.some(isBiz) ? null
       : `มีแต่ธีมตัวขับเคลื่อน (${slugs.join(', ')}) ไม่มีธีมธุรกิจ — คลังยังขาดธีมที่บอกว่าบริษัททำอะไร ให้เข้าคิวด้วย tag-apply.js --request`;
+  } },
+  // W14: การ์ดวิธีที่ E21/E22 ไม่ครอบ — recompute จากสูตรใน mdesc แล้วเทียบ mval (เงียบเมื่อ parse ไม่ได้ ตามแบบ E21)
+  { id: 'W14', level: 'warn', label: 'วิธี P/FCF·DDM·EV/EBITDA: ค่า = สูตรในคำอธิบาย', fn: (c) => {
+    const bad = [];
+    for (const m of c.methods) {
+      if (m.val == null || !(m.val > 0)) continue;
+      const fam = W14_FAMILIES.find((f) => f.name.test(m.name));
+      if (!fam) continue;
+      const exp = fam.calc(m.desc);
+      if (exp == null || !isFinite(exp)) continue;
+      const dev = Math.abs(exp - m.val) / m.val;
+      if (dev > fam.tol) bad.push(`${fam.label}: การ์ดโชว์ ${m.val} แต่คำนวณจากสูตรในคำอธิบายได้ ${exp.toFixed(2)} (คลาด ${(dev * 100).toFixed(0)}%)`);
+    }
+    return bad.length ? bad.join(' ; ') : null;
   } },
 ];
 
