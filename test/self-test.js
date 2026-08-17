@@ -143,6 +143,9 @@ expect('W05', 'warn', mutMval(iPBV, numStr(FV * 1.5)), 'FV ไม่ใกล้
   reject('W05', (h) => mutMval(iPE, numStr(FV * 1.08))(mutMval(iPBV, numStr(FV * 4))(h)), '0.4c ข้อ 3: FV = ค่าเฉลี่ยเฉพาะกลุ่มขาที่ห่างกัน ≤2× (ตัดขาโดด) → ต้องเงียบ');
   reject('W05', (h) => mutMval(iDDM0, nearFV)(mutMval(iPBV, numStr(FV * 1.5))(setMname(iPBV, '3. Justified P/BV (บริบท — ไม่รวมในค่าเฉลี่ย)')(h))), 'การ์ดชื่อ "บริบท" ไม่เข้าเฉลี่ย: ขาที่เหลือเฉลี่ยตรง FV → ต้องเงียบ (ไม่ตัดออกจะยิงเพราะเฉลี่ยรวม 3 ขาห่าง ~17%)');
   expect('W05', 'warn', (h) => mutMval(iDDM0, numStr(FV * 1.5))(setMname(iPBV, '3. Justified P/BV (บริบท)')(h)), 'การ์ด "บริบท" ไม่ใช่ใบผ่านทั้งใบ: ตัดออกแล้วขาที่เหลือ (≤2×) ยังไม่ตรงค่าเฉลี่ย → ต้องยิง');
+  // 0.4c-bis (18 ส.ค. 69 รอบ 2): FV = (mean ตลาด + mean ตระกูล r/g)/2 — ตรงถ่วงตระกูลแต่คลาดเฉลี่ยตรง >7% ต้องเงียบ · คลาดทั้งสองแบบต้องยิง
+  reject('W05', (h) => mutMval(iPE, numStr(FV * 1.35))(mutMval(iDDM0, numStr(FV * 0.70))(mutMval(iPBV, numStr(FV * 0.70))(h))), '0.4c-bis: P/E 1.35FV + DDM/JPBV 0.70FV (ratio 1.93) → ถ่วงตระกูล = 1.025FV (ผ่าน) แม้เฉลี่ยตรง 0.917FV (8% คลาด) → ต้องเงียบ');
+  expect('W05', 'warn', (h) => mutMval(iPE, numStr(FV * 1.35))(h), '0.4c-bis: P/E 1.35FV ขาเดียวเลื่อน → เฉลี่ยตรง 11% และถ่วงตระกูล 17% ต่างทั้งคู่ → ต้องยิง');
 }
 // ── Tier 1/2: valuation-math, consistency, freshness, sourcing ──
 expect('E21', 'error', mutMval(iPE, numStr(C.methods[iPE].val * 1.5)), 'วิธี P/E: ค่าไม่ตรง EPS×P/E');
