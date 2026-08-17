@@ -4,9 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>วิเคราะห์หุ้น แคล-คอมพ์ อีเล็คโทรนิคส์ (CCET) — Stock Analysis Dashboard</title>
-<meta name="ai-model" content="Claude Sonnet 4.6">
+<meta name="ai-model" content="Claude Sonnet 5">
 <script type="application/json" id="stock-meta">
-{"symbol":"CCET","currency":"THB","price":9.2,"fairValue":4.9,"mos":-87.8,"upside":-46.7,"pe":47.41,"dividendYield":1.5,"roe":7.3}
+{"symbol":"CCET","currency":"THB","price":9.2,"fairValue":6.51,"mos":-41.3,"upside":-29.2,"pe":47.41,"dividendYield":1.5,"roe":7.3}
 </script>
 <script type="application/json" id="report-data">
 {
@@ -41,7 +41,7 @@
     "min": 4,
     "max": 10,
     "grid": [6, 8],
-    "fairLine": 4.9,
+    "fairLine": 6.51,
     "currency": "฿",
     "highlight": [3, 11],
     "gridFmt": "v.toFixed(2)",
@@ -51,10 +51,10 @@
     "min": 1.5,
     "max": 12,
     "cur": 9.2,
-    "fair": 4.9,
+    "fair": 6.51,
     "fairLabelTop": true
   },
-  "fv": 4.9
+  "fv": 6.51
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -115,7 +115,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#607d8b"></i>ราคา CCET</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿4.90</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿6.51</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -129,7 +129,7 @@
 
   <!-- ===== 3. VALUATION ===== -->
   <section>
-    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">ถ่วงตระกูล — สมอ P/E+EV/EBITDA</div></div>
     <div class="card">
       <div class="vmethod">
         <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS adj. ฿0.186 × P/E เป้าหมาย ~30x (EMS sector fair, ลด premium) — ประมาณค่า P/E สมเหตุสมผลในระยะยาว</div></div>
@@ -140,19 +140,18 @@
         <div class="mval">฿7.43</div>
       </div>
       <div class="vmethod">
-        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 7.3% − g 4%)/(r 9% − g 4%) ≈ 0.66x × BVPS ฿2.54 — สะท้อน ROE ต่ำของธุรกิจ EMS</div></div>
+        <div><div class="mname">3. Justified P/BV (บริบท — ห่างจากขายึดตลาด >2× ไม่รวมในกรอบ FV)</div><div class="mdesc">P/BV เหมาะสม = (ROE 7.3% − g 4%)/(r 9% − g 4%) ≈ 0.66x × BVPS ฿2.54 — สะท้อน ROE ต่ำของธุรกิจ EMS</div></div>
         <div class="mval">฿1.68</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿1.68 – ฿7.43</span></div>
-        <div class="r">฿4.90</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿5.58 – ฿7.43</span></div>
+        <div class="r">฿6.51</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
-        วิธี Justified P/BV ให้ค่าต่ำมาก (฿1.68) เพราะ ROE 7.3% ต่ำใกล้ cost of equity 9%
-        วิธี EV/EBITDA ให้ค่าสูงสุด (฿7.43) สะท้อน EBITDA ที่ยังดี แม้ net margin บาง
-        วิธี P/E ประเมิน ฿5.58 โดยใช้ P/E 30x ซึ่งเป็น premium เหนือ EMS peers
-        เฉลี่ย 3 วิธี = <b>฿4.90</b> [(5.58+7.43+1.68)÷3]
-        ราคาปัจจุบัน ฿8.80 สูงกว่า Fair Value ทุกวิธีอย่างมีนัยสำคัญ
+        <b>dispersion gate 0.4c:</b> P/E (฿5.58) และ EV/EBITDA (฿7.43) เป็นขายึดตลาด ห่างกัน 1.33× (≤2.0×) จึงเฉลี่ยกันเป็นสมอ
+        วิธี Justified P/BV (฿1.68) ห่างจากขายึดตลาด 3.9 เท่า (>2.0×) จึงเป็นบริบทไม่รวมเฉลี่ย — ตระกูล r/g จึงไม่มีขาที่รวมได้เลย
+        FV = สมอ = (5.58+7.43)/2 = <b>฿6.51</b> [ตระกูล r/g ไม่มีขารวมได้ จึงไม่ถัวเข้าสูตร]
+        ราคาปัจจุบัน ฿9.20 สูงกว่า Fair Value อย่างมีนัยสำคัญ
       </p>
     </div>
   </section>
@@ -164,20 +163,20 @@
       <div class="gauge">
         <div class="gbar" id="gbar">
           <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿9.20</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿4.90</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿6.51</div></div>
         </div>
         <div class="scale">
-          <span>฿3.43<br><small>MOS 30%</small></span>
-          <span>฿3.92<br><small>MOS 20%</small></span>
-          <span style="text-align:center">฿4.90<br><small>Fair Value</small></span>
+          <span>฿4.56<br><small>MOS 30%</small></span>
+          <span>฿5.21<br><small>MOS 20%</small></span>
           <span style="text-align:right">฿6.50<br><small>เป้า Analyst</small></span>
+          <span style="text-align:center">฿6.51<br><small>Fair Value</small></span>
           <span style="text-align:right">฿7.43<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคา ฿8.80 สูงกว่า Fair Value ฿4.90 ถึง <b>79.6%</b> ซึ่งถือว่าแพงเกินมูลค่าพื้นฐานมาก
+        ราคา ฿9.20 สูงกว่า Fair Value ฿6.51 ถึง <b>41.3%</b> ซึ่งถือว่าแพงเกินมูลค่าพื้นฐานมาก
         ราคาตลาดกำลังรับ sentiment บวกจากกระแส EMS/China+1/AI hardware เข้าไปอย่างเต็มที่
-        จุดน่าสนใจทาง fundamental คือ MOS 20% (฿3.92) และ MOS 30% (฿3.43)
+        จุดน่าสนใจทาง fundamental คือ MOS 20% (฿5.21) และ MOS 30% (฿4.56)
       </p>
     </div>
   </section>
@@ -187,13 +186,13 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict bad">
-        <div class="big">−88%</div>
+        <div class="big">−41%</div>
         <div class="txt">ราคาแพงเกิน Fair Value มาก — ไม่มี Margin of Safety</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿3.92</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿3.43</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มพิจารณา</div><div class="v neu">&lt; ฿4.90</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿5.21</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿4.56</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มพิจารณา</div><div class="v neu">&lt; ฿6.51</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
@@ -291,18 +290,18 @@
     <div class="verdict">
       <h2>CCET: ธุรกิจ EMS มีอนาคต แต่ราคาปัจจุบันแพงเกิน Fair Value มาก</h2>
       <p>Cal-Comp Electronics (Thailand) เป็นผู้นำ EMS ในไทย ได้ประโยชน์จากเทรนด์ China+1 และ AI hardware
-      แต่ราคาหุ้นปัจจุบัน ฿8.80 สูงกว่า Fair Value ฿4.90 ถึง <b>79.6%</b>
+      แต่ราคาหุ้นปัจจุบัน ฿9.20 สูงกว่า Fair Value ฿6.51 ถึง <b>41.3%</b>
       P/E 47x ซึ่งสูงมากสำหรับธุรกิจ EMS ที่ ROE เพียง 7.3% และมาร์จิ้นบาง 2–3%
       ในระยะสั้น sentiment บวกจาก AI hardware/China+1 อาจหนุนราคาต่อ
       แต่ในระยะยาว fundamental ยังไม่รองรับ valuation ระดับนี้
-      นักลงทุน value ควรรอโซน ฿3.92 (MOS 20%) หรือต่ำกว่าจึงจะน่าสนใจ</p>
+      นักลงทุน value ควรรอโซน ฿5.21 (MOS 20%) หรือต่ำกว่าจึงจะน่าสนใจ</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿4.90 <span style="font-size:12px;color:#cab9a8">(฿1.68–฿7.43)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ef9a9a">ราคาแพงกว่า FV ~ 87.8%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿6.51 <span style="font-size:12px;color:#cab9a8">(฿5.58–฿7.43)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ef9a9a">ราคาแพงกว่า FV ~ 41.3%</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿6.50 (ระวัง/Hold)</div></div>
       </div>
       <div class="zone">
-        💡 <b>กลยุทธ์:</b> รอซื้อโซน ฿3.92 (MOS 20%) เป็น entry แรก และ ฿3.43 (MOS 30%) สำหรับ deep value
+        💡 <b>กลยุทธ์:</b> รอซื้อโซน ฿5.21 (MOS 20%) เป็น entry แรก และ ฿4.56 (MOS 30%) สำหรับ deep value
         หลีกเลี่ยงซื้อในระดับราคาปัจจุบัน เพราะ risk/reward ไม่ดี — ถ้าถือแล้ว พิจารณา take profit บางส่วน
       </div>
     </div>
@@ -315,7 +314,7 @@
     ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
     ข้อมูลราคาและกราฟรายเดือน FY2025–2026: Yahoo Finance (CCET.BK) ณ 4 ก.ค. 2569; อัตราส่วนทางการเงิน (P/E 47.41x, P/BV 3.47x, Market Cap ฿91,960M, EBITDA ฿1,292M): SET factsheet Q1/2025 (ปรับปรุง 4 ก.ค. 2026); ข้อมูลธุรกิจและนโยบายปันผล (≥30% ของกำไรสุทธิ FY2025): Settrade.com / Cal-Comp Electronics Thailand
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ 4 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 18 ส.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
