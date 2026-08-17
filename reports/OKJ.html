@@ -4,9 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>วิเคราะห์หุ้น โอ้กะจู๋ (OKJ) — Stock Analysis Dashboard</title>
-<meta name="ai-model" content="Claude Sonnet 4.6">
+<meta name="ai-model" content="Claude Sonnet 5">
 <script type="application/json" id="stock-meta">
-{"symbol":"OKJ","currency":"THB","price":3.28,"fairValue":3.7,"mos":11.4,"upside":12.8,"pe":null,"dividendYield":1.85,"roe":4.1}
+{"symbol":"OKJ","currency":"THB","price":3.28,"fairValue":3.25,"mos":-0.9,"upside":-0.9,"pe":null,"dividendYield":1.85,"roe":4.1}
 </script>
 <script type="application/json" id="report-data">
 {
@@ -41,7 +41,7 @@
     "min": 2,
     "max": 6,
     "grid": [3, 4, 5],
-    "fairLine": 3.7,
+    "fairLine": 3.25,
     "currency": "฿",
     "highlight": [0, 8]
   },
@@ -49,10 +49,10 @@
     "min": 1.5,
     "max": 8,
     "cur": 3.28,
-    "fair": 3.7,
+    "fair": 3.25,
     "fairLabelTop": false
   },
-  "fv": 3.7
+  "fv": 3.25
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -113,7 +113,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#2e7d32"></i>ราคา OKJ</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿3.70</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿3.25</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -131,19 +131,19 @@
         <div class="mval">฿3.25</div>
       </div>
       <div class="vmethod">
-        <div><div class="mname">2. Forward P/E (Turnaround)</div><div class="mdesc">EPS ฟื้นตัว adj. ~฿0.23/หุ้น ปี 2570 × P/E กลุ่มร้านอาหาร SET 18x — สมมติ SSSG กลับบวกและ operating leverage ฟื้น</div></div>
+        <div><div class="mname">2. Forward P/E (Turnaround) (บริบท — EPS ฟื้นตัวที่บริษัทยังไม่เคยทำได้ ตามกฎ 0.4d ไม่รวมในกรอบ FV)</div><div class="mdesc">EPS ฟื้นตัว adj. ~฿0.23/หุ้น ปี 2570 × P/E กลุ่มร้านอาหาร SET 18x — สมมติ SSSG กลับบวกและ operating leverage ฟื้น</div></div>
         <div class="mval">฿4.14</div>
       </div>
       <div class="vmethod">
-        <div><div class="mname">3. Justified P/BV (Recovery)</div><div class="mdesc">P/BV เหมาะสม = (ROE 8% − g 3%)/(r 9.5% − g 3%) ≈ 0.77x × BVPS ฿2.76 — สมมติ ROE ฟื้นตัวบางส่วนในปี 2570–71</div></div>
+        <div><div class="mname">3. Justified P/BV (Recovery) (บริบท — ROE ฟื้นตัวที่บริษัทยังไม่เคยทำได้ ตามกฎ 0.4d ไม่รวมในกรอบ FV)</div><div class="mdesc">P/BV เหมาะสม = (ROE 8% − g 3%)/(r 9.5% − g 3%) ≈ 0.77x × BVPS ฿2.76 — สมมติ ROE ฟื้นตัวบางส่วนในปี 2570–71</div></div>
         <div class="mval">฿2.12</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿2.12 – ฿4.50</span></div>
-        <div class="r">฿3.70</div>
+        <div class="l">มูลค่าเหมาะสม (ยึดขา P/Sales ที่วัดจากตัวคูณ peer จริง — กฎ 0.4c/0.4d)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿2.12 (JPBV) – ฿4.14 (Fwd P/E) · ทั้งคู่เป็นบริบทฉากฟื้นตัว ไม่รวมเฉลี่ย</span></div>
+        <div class="r">฿3.25</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
-        P/Sales ให้ค่ากลาง ฿3.25 เหมาะที่สุดสำหรับช่วงกำไรต่ำ; Forward P/E ฿4.14 เป็นกรณีฟื้นตัว (optimistic); Justified P/BV ฿2.12 สมมติ ROE ฟื้นบางส่วน มูลค่าเฉลี่ย 3 วิธีที่ ฿3.17 ปัดเป็น ฿3.70 (ให้น้ำหนัก P/Sales + Forward P/E มากกว่า เพราะ P/BV ยังไม่นิ่ง) — สะท้อน upside จำกัดจากราคาปัจจุบัน ฿3.78 ที่มา: Yahoo Finance OKJ.BK, SET (set.or.th), OKJ IR (okjgroup.com), Brand Buffet, InfoQuest
+        <b>dispersion gate 0.4c/0.4d:</b> Forward P/E (Turnaround) ฿4.14 ใช้ EPS ฟื้นตัว ~฿0.23 ที่บริษัทยังไม่เคยทำได้ (สมมติ SSSG กลับบวก) และ Justified P/BV (Recovery) ฿2.12 ใช้ ROE 8% ที่ยังไม่เคยทำได้ (ROE จริงล่าสุด 4.1%) — ทั้งคู่เป็นบริบทถาวรตาม 0.4d แม้ห่างจากขายึดตลาดไม่เกิน 2 เท่า จึงไม่รวมเฉลี่ย · FV = ขายึดตลาดที่เหลือเพียงขาเดียว (P/Sales) = ฿3.25 (ไม่มีตระกูล r/g ที่รวมได้) ที่มา: Yahoo Finance OKJ.BK, SET (set.or.th), OKJ IR (okjgroup.com), Brand Buffet, InfoQuest
       </p>
     </div>
   </section>
@@ -155,18 +155,18 @@
       <div class="gauge">
         <div class="gbar" id="gbar">
           <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿3.28</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿3.70</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿3.25</div></div>
         </div>
         <div class="scale">
-          <span>฿2.59<br><small>MOS 30%</small></span>
-          <span>฿2.96<br><small>MOS 20%</small></span>
-          <span style="text-align:center">฿3.70<br><small>Fair Value</small></span>
+          <span>฿2.28<br><small>MOS 30%</small></span>
+          <span>฿2.60<br><small>MOS 20%</small></span>
+          <span style="text-align:center">฿3.25<br><small>Fair Value</small></span>
           <span style="text-align:right">฿4.00<br><small>เป้า Analyst</small></span>
-          <span style="text-align:right">฿4.50<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">฿4.14<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคาปัจจุบัน ฿3.78 ซื้อขายเหนือมูลค่าเหมาะสมเฉลี่ย ฿3.70 ประมาณ +2.2% ยังไม่มี Margin of Safety โซน MOS 20% (฿2.96) และ MOS 30% (฿2.59) ยังต่ำกว่าราคาตลาดอยู่ ความเสี่ยงยังมีมากกว่า upside ในระยะสั้น — Analyst บล.กรุงศรีตั้งเป้า ฿2 (Sell), บล.ดาโอ เป้าเดิม ฿8.20 (ก่อนงบแย่) สะท้อนความไม่แน่นอนสูงมาก
+        ราคาปัจจุบัน ฿3.28 ซื้อขายเหนือมูลค่าเหมาะสม ฿3.25 ประมาณ +0.9% ยังไม่มี Margin of Safety โซน MOS 20% (฿2.60) และ MOS 30% (฿2.28) ยังต่ำกว่าราคาตลาดอยู่ ความเสี่ยงยังมีมากกว่า upside ในระยะสั้น — Analyst บล.กรุงศรีตั้งเป้า ฿2 (Sell), บล.ดาโอ เป้าเดิม ฿8.20 (ก่อนงบแย่) สะท้อนความไม่แน่นอนสูงมาก
       </p>
     </div>
   </section>
@@ -175,14 +175,14 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict ok">
-        <div class="big">+11%</div>
+      <div class="mos-verdict bad">
+        <div class="big">−0.9%</div>
         <div class="txt">ราคาสูงกว่า Fair Value เล็กน้อย — ยังไม่มี Margin of Safety ไม่แนะนำซื้อที่ราคานี้</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿2.96</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿2.59</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿3.70</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿2.60</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿2.28</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿3.25</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
@@ -275,14 +275,14 @@
     <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
     <div class="verdict">
       <h2>OKJ: แบรนด์ Organic แข็งแกร่ง แต่ยังต้องพิสูจน์การฟื้นตัว — รอโซนที่ดีกว่าก่อนสะสม</h2>
-      <p>โอ้กะจู๋เป็นแบรนด์ Healthy Food ที่มีเอกลักษณ์ชัดเจนในตลาดไทยและมีพันธมิตรเชิงกลยุทธ์อย่าง OR เป็นแรงหนุน อย่างไรก็ตามผลประกอบการกำลังเผชิญแรงกดดันเชิงโครงสร้างรุนแรง ทั้ง SSSG ติดลบ −39.4% ใน Q1/2569 และขาดทุนครั้งแรกในประวัติศาสตร์ ราคาปัจจุบัน ฿3.78 ยังสูงกว่า Fair Value ฿3.70 เล็กน้อย และ asymmetry ของผลตอบแทนยังเอนไป downside ในทุก scenario ยกเว้น Bull ที่ต้องอาศัยการฟื้นตัวของ SSSG อย่างชัดเจน นักลงทุนที่เชื่อมั่นในศักยภาพระยะยาวควรรอสัญญาณ SSSG กลับเป็นบวก หรือราคาลงสู่โซน MOS 20% (฿2.96) ก่อนพิจารณาเข้าสะสม</p>
+      <p>โอ้กะจู๋เป็นแบรนด์ Healthy Food ที่มีเอกลักษณ์ชัดเจนในตลาดไทยและมีพันธมิตรเชิงกลยุทธ์อย่าง OR เป็นแรงหนุน อย่างไรก็ตามผลประกอบการกำลังเผชิญแรงกดดันเชิงโครงสร้างรุนแรง ทั้ง SSSG ติดลบ −39.4% ใน Q1/2569 และขาดทุนครั้งแรกในประวัติศาสตร์ ราคาปัจจุบัน ฿3.28 สูงกว่า Fair Value ฿3.25 เล็กน้อย และ asymmetry ของผลตอบแทนยังเอนไป downside ในทุก scenario ยกเว้น Bull ที่ต้องอาศัยการฟื้นตัวของ SSSG อย่างชัดเจน นักลงทุนที่เชื่อมั่นในศักยภาพระยะยาวควรรอสัญญาณ SSSG กลับเป็นบวก หรือราคาลงสู่โซน MOS 20% (฿2.60) ก่อนพิจารณาเข้าสะสม</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿3.70 <span style="font-size:12px;color:#cab9a8">(฿2.12–฿4.50)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −2.2% (เหนือ FV เล็กน้อย)</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿3.25 <span style="font-size:12px;color:#cab9a8">(฿2.12–฿4.14)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −0.9% (เหนือ FV เล็กน้อย)</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿4.00 (Mixed: Buy/Sell/Downgrade)</div></div>
       </div>
       <div class="zone">
-        💡 <b>กลยุทธ์:</b> รอ SSSG Q2/2569 กลับเป็นบวก หรือราคา &lt; ฿2.96 (MOS 20%) ก่อนสะสม ผู้ถือหุ้นเดิมพิจารณา Cut Loss หรือ Hold ตามระดับความเสี่ยงที่รับได้ — ไม่เพิ่มน้ำหนักจนกว่าผลประกอบการฟื้นชัดเจน
+        💡 <b>กลยุทธ์:</b> รอ SSSG Q2/2569 กลับเป็นบวก หรือราคา &lt; ฿2.60 (MOS 20%) ก่อนสะสม ผู้ถือหุ้นเดิมพิจารณา Cut Loss หรือ Hold ตามระดับความเสี่ยงที่รับได้ — ไม่เพิ่มน้ำหนักจนกว่าผลประกอบการฟื้นชัดเจน
       </div>
     </div>
   </section>
@@ -294,7 +294,7 @@
     ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
     แหล่งข้อมูล ≥3: SET (set.or.th) · AIO Panphol (aio.panphol.com) · Yahoo Finance (OKJ.BK) · OKJ Investor Relations (okjgroup.com) · Brand Buffet · InfoQuest · BrandInside
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ 3 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 18 ส.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
