@@ -13,6 +13,7 @@
  *   node tools/tag-apply.js <SYM> --keep           ยืนยันคงเดิม (ไม่เขียนไฟล์)
  *   node tools/tag-apply.js <SYM> --request "ธีม"  เข้าคิวขอคำศัพท์ใหม่
  *   node tools/tag-apply.js --rename <OLD> <NEW>   ย้าย key ตาม symbol-map
+ *   node tools/tag-apply.js --resolve <SYM…>       ปิดคำขอคำศัพท์ที่ทำเสร็จแล้ว (ต้องมีธีมธุรกิจแล้ว)
  *   node tools/tag-apply.js --prune                ลบ entry ที่ไม่มีไฟล์รายงานแล้ว
  * exit 0 = สำเร็จ, 1 = ปฏิเสธ (ไม่เขียนไฟล์เลย)
  */
@@ -68,6 +69,22 @@ function addRequest(data, symbol, theme, at, mode) {
   return { ...data, requests: data.requests.concat([{ symbol, theme, at, mode: mode || 'NEW' }]) };
 }
 
+/** ปิดคำขอคำศัพท์ที่ทำเสร็จแล้ว — pure: คืน {ok,errors,data,closed}
+ *  ปิดได้เฉพาะ symbol ที่ "มี tag ธีมธุรกิจแล้วจริง" (ไม่ใช่แค่ธีมตัวขับเคลื่อน) — กันปิดคิวทิ้งโดยที่ยังไม่ได้แก้อะไร
+ *  เหตุผลที่ต้องมี: เดิมคิวมีแต่ทางเข้า ไม่มีทางออก ⇒ คำขอที่ทำเสร็จแล้วค้างสะสม (52 รายการ 18 ส.ค. 69) จนแยกไม่ออกว่าอันไหนยังรอ */
+function resolveRequests(data, symbols, vocab) {
+  const want = new Set(symbols.map((x) => String(x).toUpperCase()));
+  const errors = [];
+  for (const sym of want) {
+    if (!(data.requests || []).some((q) => q.symbol.toUpperCase() === sym)) errors.push(`${sym}: ไม่มีคำขอในคิว`);
+    else if (!(data.tags[sym] || []).some((g) => { const e = vocab.bySlug.get(g); return e && (e.kind || 'business') === 'business'; })) errors.push(`${sym}: ยังไม่มีธีมธุรกิจใน tags.json — ปิดคำขอไม่ได้`);
+  }
+  if (errors.length) return { ok: false, errors, data, closed: [] };
+  const keep = [], closed = [];
+  for (const q of (data.requests || [])) (want.has(q.symbol.toUpperCase()) ? closed : keep).push(q);
+  return { ok: true, errors: [], data: { ...data, requests: keep }, closed };
+}
+
 /** เขียนแบบ atomic (temp → rename) + key เรียง — ล้มกลางคันแล้วไฟล์เดิมไม่เสียหาย */
 function writeTags(data, file) {
   const target = file || T.TAGS_FILE;
@@ -86,7 +103,7 @@ function writeTags(data, file) {
   }
 }
 
-module.exports = { applyTags, renameSymbol, pruneMissing, addRequest, writeTags };
+module.exports = { applyTags, renameSymbol, pruneMissing, addRequest, resolveRequests, writeTags };
 
 // ---------- CLI ----------
 function main() {
@@ -101,6 +118,14 @@ function main() {
     if (!r.removed.length) { console.log('✅ ไม่มี entry ค้าง (ไม่เขียนไฟล์)'); return; }
     writeTags(r.data, T.TAGS_FILE);
     console.log(`✅ ลบ ${r.removed.length} entry: ${r.removed.join(', ')}`);
+    return;
+  }
+  if (argv[0] === '--resolve') {
+    if (argv.length < 2) die(['ใช้: --resolve <SYM…>  (ปิดคำขอที่ทำเสร็จแล้ว)']);
+    const r = resolveRequests(data, argv.slice(1), vocab);
+    if (!r.ok) die(r.errors);
+    writeTags(r.data, T.TAGS_FILE);
+    console.log(`✅ ปิดคำขอ ${r.closed.length} รายการ: ${[...new Set(r.closed.map((q) => q.symbol))].join(', ')} · เหลือในคิว ${r.data.requests.length}`);
     return;
   }
   if (argv[0] === '--rename') {

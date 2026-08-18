@@ -10,6 +10,7 @@ const os = require('os');
 const path = require('path');
 const { spawnSync } = require('child_process');
 const A = require('../tools/tag-apply.js');
+const T = require('../tools/tag-lib.js');
 
 const ROOT = path.join(__dirname, '..');
 
@@ -102,6 +103,30 @@ const fresh = () => ({ vocabVersion: 1, tags: { AAA: ['ai-datacenter'] }, reques
   const r = A.addRequest(d, 'BBB', 'LiDAR ยานยนต์', '2026-08-14', 'UPDATE');
   ok(r.requests.length === 1 && r.requests[0].symbol === 'BBB', '--request ต่อท้ายคิว');
   ok(JSON.stringify(r.tags) === JSON.stringify({ AAA: ['ai-datacenter'] }), '--request ไม่แตะ tags');
+}
+// ── --resolve: ปิดคำขอที่ทำเสร็จแล้ว (18 ส.ค. 69 — เดิมคิวมีแต่ทางเข้า ไม่มีทางออก) ──
+{
+  const vocab = T.loadVocab();
+  const biz = vocab.list.find((e) => (e.kind || 'business') === 'business').slug;
+  const drv = (vocab.list.find((e) => e.kind === 'driver') || {}).slug;
+  const withReq = (tags) => ({ vocabVersion: 1, tags, requests: [{ symbol: 'AAA', theme: 'x', at: '2026-08-13', mode: 'NEW' }, { symbol: 'ZZZ', theme: 'y', at: '2026-08-13', mode: 'NEW' }] });
+  {
+    const r = A.resolveRequests(withReq({ AAA: [biz] }), ['AAA'], vocab);
+    ok(r.ok && r.closed.length === 1 && r.data.requests.length === 1 && r.data.requests[0].symbol === 'ZZZ', '--resolve ปิดเฉพาะตัวที่ระบุ เหลือคิวที่เหลือไว้');
+  }
+  {
+    const r = A.resolveRequests(withReq({ AAA: [biz] }), ['QQQ'], vocab);
+    ok(!r.ok && r.errors.some((m) => /ไม่มีคำขอในคิว/.test(m)), '--resolve ตัวที่ไม่มีคำขอ → ปฏิเสธ');
+  }
+  if (drv) {
+    const r = A.resolveRequests(withReq({ AAA: [drv] }), ['AAA'], vocab);
+    ok(!r.ok && r.errors.some((m) => /ยังไม่มีธีมธุรกิจ/.test(m)), '--resolve ตัวที่มีแต่ธีมตัวขับเคลื่อน → ปฏิเสธ (กันปิดคิวทิ้งโดยไม่ได้แก้)');
+  }
+  {
+    const before = withReq({ AAA: [biz] });
+    const r = A.resolveRequests(before, ['QQQ'], vocab);
+    ok(r.data === before || JSON.stringify(r.data.requests) === JSON.stringify(before.requests), '--resolve ที่ถูกปฏิเสธ ไม่แตะ data เดิม');
+  }
 }
 
 // ── เขียนไฟล์: atomic + key เรียง + ปิดท้าย newline ──
