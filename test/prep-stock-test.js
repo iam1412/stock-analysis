@@ -152,14 +152,17 @@ const lAmata = F.statsLines(F.statsFromPayload(makeStatsPayload([
 ])), null, 1149e6).join('\n');
 ok(/✅/.test(lAmata) && !/⚠/.test(lAmata) && /ฐานต่อหุ้น/.test(lAmata), 'statsLines: dilution ต่ำ → ✅', lAmata);
 
-// RDDT: หลายคลาส — SA คิด market cap จากคลาสที่จดทะเบียนเท่านั้น
+// RDDT: หลายคลาส — ★ SA คิด market cap จาก "หุ้นรวมทุกคลาส" (แก้ข้อความที่เคยเขียนกลับด้าน 18 ส.ค. 69)
 const lRddt = F.statsLines(F.statsFromPayload(makeStatsPayload([
   { id: 'sharesOutClass', title: 'Current Share Class', value: '146.10M', hover: '146,103,200' },
   { id: 'sharesout', title: 'Shares Outstanding', value: '192.40M', hover: '192,396,510' },
   { id: 'marketcap', title: 'Market Cap', value: '34.26B' },
 ])), null, 203e6).join('\n');
 ok(/หลายคลาสหุ้น/.test(lRddt) && /146\.10M/.test(lRddt) && /192,396,510/.test(lRddt),
-  '★ statsLines: dual-class → เตือนว่า Market Cap ของ SA คิดจากคลาสเดียว', lRddt);
+  '★ statsLines: dual-class → เตือนพร้อมบอกทั้งสองฐาน', lRddt);
+// ★ ข้อความต้องชี้ว่า market cap หารด้วย "หุ้นรวมทุกคลาส" — เคยเขียนกลับด้านจนเกือบทำให้ worker คิดมูลค่าต่อหุ้นผิด (เคส CBRS 18 ส.ค. 69)
+ok(/รวมทุกคลาส/.test(lRddt) && !/คิดจากคลาสที่จดทะเบียนเท่านั้น/.test(lRddt),
+  '★ statsLines: ต้องไม่บอกว่า Market Cap คิดจากคลาสจดทะเบียนเท่านั้น (ผิด — วัดจริง 31.65B ÷ 192.40M = ราคาจริง)', lRddt);
 
 // /statistics/ ล่ม → บอกทางออก ไม่ใช่เงียบ (silent degrade = จุดบอดเดิม)
 const lFail = F.statsLines(null, 'HTTP 403', 51e6).join('\n');

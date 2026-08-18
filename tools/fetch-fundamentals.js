@@ -311,7 +311,7 @@ function statsLines(stats, statsErr, tableShares) {
   out.push(l);
   const cls = stats.sharesOutClass;
   if (cls && Math.abs(cls.num - stats.sharesOut.num) / stats.sharesOut.num > 0.005)
-    out.push(`    ⚠ หลายคลาสหุ้น: คลาสที่จดทะเบียน=${cls.text} vs รวมทุกคลาส=${stats.sharesOut.text} — Market Cap ของ SA คิดจากคลาสที่จดทะเบียนเท่านั้น · ห้ามเอาราคาคลาสเดียวคูณหุ้นรวมทุกคลาส`);
+    out.push(`    ⚠ หลายคลาสหุ้น: คลาสที่จดทะเบียน=${cls.text} vs รวมทุกคลาส=${stats.sharesOut.text} — ★ Market Cap ของ SA = ราคา × **หุ้นรวมทุกคลาส** (วัดจริง 18 ส.ค. 69: RDDT 31.65B ÷ 192.40M = $164.50 = ราคาปัจจุบันเป๊ะ · GOOGL 4.21T ÷ 12.23B = $344 — ถ้าคิดจากคลาสจดทะเบียนจะได้ $216.6/$717 ซึ่งไม่ใช่ราคา) ⇒ มูลค่าต่อหุ้นให้หารด้วยหุ้นรวมทุกคลาส ไม่ใช่คลาสที่จดทะเบียน`);
   if (Number.isFinite(tableShares) && tableShares > 0) {
     const d = (stats.sharesOut.num - tableShares) / tableShares * 100;
     out.push(Math.abs(d) > SHARES_WARN_PCT
