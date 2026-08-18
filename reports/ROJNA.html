@@ -4,9 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>วิเคราะห์หุ้น โรจนะ อินดัสเตรียล พาร์ค (ROJNA) — Stock Analysis Dashboard</title>
-<meta name="ai-model" content="Claude Sonnet 4.6">
+<meta name="ai-model" content="Claude Opus 5">
 <script type="application/json" id="stock-meta">
-{"symbol":"ROJNA","currency":"THB","price":6.1,"fairValue":7.5,"mos":18.7,"upside":23,"pe":4.27,"dividendYield":9.01,"roe":11.07}
+{"symbol":"ROJNA","currency":"THB","price":6.1,"fairValue":6.86,"mos":11.1,"upside":12.5,"pe":7.92,"dividendYield":8.2,"roe":8.1}
 </script>
 <script type="application/json" id="report-data">
 {
@@ -41,7 +41,7 @@
     "min": 4,
     "max": 8,
     "grid": [5, 6, 7],
-    "fairLine": 7.5,
+    "fairLine": 6.86,
     "currency": "฿",
     "highlight": [2, 10],
     "gridFmt": "v.toFixed(2)"
@@ -50,10 +50,10 @@
     "min": 4,
     "max": 9,
     "cur": 6.1,
-    "fair": 7.5,
+    "fair": 6.86,
     "fairLabelTop": true
   },
-  "fv": 7.5
+  "fv": 6.86
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -78,79 +78,90 @@
       <div class="chg">▲ +26.0% (รอบปี)</div>
       <div class="px-meta">
         ราคา ณ 17 ส.ค. 2569<br>
-        กรอบ 52 สัปดาห์ ฿4.14 – ฿5.85<br>
-        ที่มา: Yahoo Finance, SET Thailand, Finnomena
+        กรอบ 52 สัปดาห์ ฿4.26 – ฿6.45<br>
+        ที่มา: Yahoo Finance, StockAnalysis, SET Thailand
       </div>
     </div>
   </header>
 
   <!-- ===== 1. KEY METRICS ===== -->
   <section>
-    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ก.ค. 2569 · ที่มา Yahoo Finance (ยืนยันข้าม SET Thailand)</div></div>
+    <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">งบถึงไตรมาส 1/2569 (Q2/2569 ประกาศ 21 ส.ค. 2569) · ที่มา Yahoo Finance + StockAnalysis</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">~฿11.2B</div><div class="d">~2.02 พันล้านหุ้น · SET Mid-cap</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~4.27x</div><div class="d">ต่ำสุดในกลุ่มนิคมฯ · ค่า avg 5 ปี ~8–12x</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">0.52x</div><div class="d">ซื้อขายต่ำกว่า Book Value มาก</div></div>
-      <div class="metric"><div class="k">EPS (TTM)</div><div class="v pos">~฿1.30</div><div class="d">ที่มา Yahoo Finance · P/E×EPS=5.55 ✓</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~฿12.3B</div><div class="d">2,020.5 ล้านหุ้น × ฿6.10 · ที่มา StockAnalysis</div></div>
+      <div class="metric"><div class="k">P/E (ฉากปกติ)</div><div class="v neu">~7.9x</div><div class="d">฿6.10 ÷ EPS ฉากปกติ ฿0.77 · ถ้าใช้ EPS TTM ฿1.30 จะได้ 4.7x</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">0.52x</div><div class="d">มัธยฐาน 5 ปีงบของตัวเอง 0.59x (กรอบจริง 0.41–0.71x)</div></div>
+      <div class="metric"><div class="k">EPS (TTM)</div><div class="v neu">~฿1.30</div><div class="d">= NI ฿2,617 ลบ. ÷ 2,020.5 ล้านหุ้น · 88% มาจากไตรมาสเดียว</div></div>
 
-      <div class="metric"><div class="k">BVPS</div><div class="v">~฿10.67</div><div class="d">คำนวณ: ราคา ÷ P/BV (5.55÷0.52)</div></div>
-      <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~11.1% / 2.4%</div><div class="d">ROE สม่ำเสมอ · ที่มา Yahoo Finance</div></div>
-      <div class="metric"><div class="k">กำไรสุทธิ TTM</div><div class="v">~฿2.62B</div><div class="d">Profit margin ~17.7%</div></div>
-      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">~฿14.8B</div><div class="d">รวมนิคมฯ + โรงไฟฟ้าในนิคม</div></div>
+      <div class="metric"><div class="k">EPS ฉากปกติ</div><div class="v">~฿0.77</div><div class="d">กำไรสุทธิเฉลี่ย FY2564–2568 ฿1,557 ลบ. ÷ หุ้น · ฐาน 3 ปีให้ ฿0.78</div></div>
+      <div class="metric"><div class="k">ROE (เฉลี่ย 5 ปี)</div><div class="v neu">~8.1%</div><div class="d">TTM 11.1% · แกว่ง −0.5% ถึง 18.5% ใน 5 ปีงบ</div></div>
+      <div class="metric"><div class="k">กำไรสุทธิ TTM</div><div class="v">~฿2.62B</div><div class="d">รวมกำไรมูลค่ายุติธรรมที่ยังไม่รับรู้ ฿2,024 ลบ. (Q1/2569)</div></div>
+      <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">~฿14.8B</div><div class="d">−24.6% YoY ต่อจาก FY2568 ที่ −23.7%</div></div>
 
-      <div class="metric"><div class="k">เงินปันผล</div><div class="v pos">~9.01%</div><div class="d">Forward div ฿0.50/หุ้น · Ex-div เม.ย. 69</div></div>
-      <div class="metric"><div class="k">เงินสดในมือ</div><div class="v">~฿9.97B</div><div class="d">Net cash position แข็งแกร่ง</div></div>
-      <div class="metric"><div class="k">D/E Ratio</div><div class="v">69.0%</div><div class="d">ระดับหนี้พอเหมาะ · ไม่เสี่ยงเกิน</div></div>
-      <div class="metric"><div class="k">Beta</div><div class="v">0.14</div><div class="d">ความผันผวนต่ำมาก vs ตลาด SET</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v pos">~8.20%</div><div class="d">฿0.50/หุ้น ÷ ฿6.10 · payout 65% ของ EPS ฉากปกติ</div></div>
+      <div class="metric"><div class="k">หนี้สินสุทธิ</div><div class="v neu">~฿13.9B</div><div class="d">หนี้ ฿16.77B − เงินสด ฿2.86B · ไม่ใช่ net cash</div></div>
+      <div class="metric"><div class="k">D/E Ratio</div><div class="v">0.69x</div><div class="d">ลดจาก 1.31x ใน FY2564 · ทยอยลดหนี้ต่อเนื่อง</div></div>
+      <div class="metric"><div class="k">FCF (TTM)</div><div class="v pos">~฿2.19B</div><div class="d">฿1.08/หุ้น · ครอบคลุมปันผลที่จ่ายจริง ฿1.01B</div></div>
     </div>
   </section>
 
   <!-- ===== 2. PRICE CHART ===== -->
   <section>
-    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ก.ค. 2568 – ก.ค. 2569 · รายเดือน</div></div>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ก.ย. 2568 – ส.ค. 2569 · รายเดือน</div></div>
     <div class="card">
       <div class="chart-wrap">
         <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
       </div>
       <div class="legend">
         <span><i style="background:#1a6fb5"></i>ราคา ROJNA</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿7.50</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿6.86</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
-        ROJNA เคลื่อนไหวในกรอบแคบ ฿4.68–฿5.65 ตลอดรอบปีที่ผ่านมา สะท้อน beta ต่ำมาก (0.14)
-        จุดต่ำสุดที่ ฿4.68 ในเดือน ก.ย. 2568 จากความกังวลภาพรวม SET ก่อนฟื้นตัวแข็งแกร่งปลายปีที่ ฿5.65
-        ราคาปัจจุบัน ฿5.55 ให้ผลตอบแทนรอบปี +6.7% ซึ่งยังต่ำกว่ามูลค่าเหมาะสม ฿7.50 อีกราว 35%
-        · Fair Value ยังอยู่เหนือกรอบกราฟ สะท้อน Upside ที่สำคัญที่ยังรอการรับรู้จากตลาด
+        ราคาไต่ขึ้นจากจุดต่ำ ฿4.40 ช่วงปลายปี 2568 มาที่ ฿6.10 ในเดือน ส.ค. 2569 = <b>+26.0% รอบปี</b>
+        แรงส่งหลักมาจากงบไตรมาส 1/2569 ที่พลิกเป็นกำไร ฿2,315 ล้านบาท (จากขาดทุน ฿427 ล้านบาทในไตรมาสเดียวกันปีก่อน)
+        แต่เกือบทั้งก้อนคือ <b>กำไรจากการเปลี่ยนแปลงมูลค่ายุติธรรมของสินทรัพย์ทางการเงินที่ยังไม่รับรู้ ฿2,024 ล้านบาท</b> ไม่ใช่เงินสดจากการขายที่ดิน
+        · ราคาปัจจุบัน ฿6.10 อยู่ใกล้ยอดกรอบ 52 สัปดาห์ (฿4.26–฿6.45) และเหลือส่วนต่างถึงมูลค่าเหมาะสม ฿6.86 เพียง ~11%
       </p>
     </div>
   </section>
 
   <!-- ===== 3. VALUATION ===== -->
   <section>
-    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 3 วิธี</div></div>
+    <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">4 ขา ถ่วงตามตระกูลสมมติฐาน (0.4c-bis)</div></div>
     <div class="card">
       <div class="vmethod">
-        <div><div class="mname">1. P/E Valuation</div><div class="mdesc">EPS adj. ฿1.30 × P/E เป้าหมาย ~12x — P/E กลุ่มนิคมอุตสาหกรรม SET เฉลี่ย 10–15x · ROJNA มี ROE 11% สม่ำเสมอ cash-rich และปันผลสูง สมควรได้ P/E ปกติ 12x</div></div>
-        <div class="mval">฿15.60</div>
+        <div><div class="mname">1. P/E Valuation (ขายึดตลาด)</div><div class="mdesc">EPS ฉากปกติ ฿0.77 × P/E 9.0x = ฿6.93 — ตัวคูณคือ <b>มัธยฐาน P/E 5 ปีงบของ ROJNA เอง 9.01x</b> (วัดจริงจาก StockAnalysis ไม่ใช่ค่าประมาณของกลุ่ม) · EPS ฐานคือกำไรสุทธิเฉลี่ย FY2564–2568 ฿1,557 ลบ. ÷ 2,020.5 ล้านหุ้น เพราะ EPS TTM ฿1.30 มาจากไตรมาสเดียว 88%</div></div>
+        <div class="mval">฿6.93</div>
       </div>
       <div class="vmethod">
-        <div><div class="mname">2. DDM (Gordon Growth)</div><div class="mdesc">D₁ = ฿0.50 × (1+0.03) = ฿0.515; g 3%, r 9% → P = D₁/(r−g) = 0.515/0.06 — อิงปันผลรับจริง ฿0.50/ปี payout ~38% ของ EPS · อนุรักษ์นิยมสำหรับธุรกิจที่ที่ดินขายแล้วต้องพัฒนาเฟสใหม่</div></div>
-        <div class="mval">฿8.58</div>
+        <div><div class="mname">2. P/BV มัธยฐานตัวเอง (ขายึดตลาด)</div><div class="mdesc">BVPS ฿11.70 × P/BV 0.59x = ฿6.90 — 0.59x คือมัธยฐาน 5 ปีงบของ ROJNA เอง และอยู่ในกรอบที่ตลาดเคยให้จริง 0.41–0.71x · BVPS ยืนยัน 2 ทาง: ราคา ฿6.10 ÷ P/BV 0.52x = ฿11.73 และ NI TTM ฿2,617 ลบ. ÷ ROE 11.07% ÷ 2,020.5 ล้านหุ้น = ฿11.70</div></div>
+        <div class="mval">฿6.90</div>
       </div>
       <div class="vmethod">
-        <div><div class="mname">3. Justified P/BV</div><div class="mdesc">P/BV เหมาะสม = (ROE 11.07% − g 3%)/(r 9% − g 3%) ≈ 1.35 × BVPS ฿10.67 — ROE เหนือ r → P/BV เหมาะสม &gt; 1.0x (ปัจจุบัน 0.52x ถูกมาก)</div></div>
-        <div class="mval">฿14.40</div>
+        <div><div class="mname">3. DDM (Gordon Growth) — ตระกูล r/g</div><div class="mdesc">D₁ = ฿0.50 × (1+2%) = ฿0.51; r 11%, g 2% → P = D₁/(r−g) = 0.51/0.09 — ปันผลจ่ายจริง ฿0.50/หุ้น คิดเป็น payout 65% ของ EPS ฉากปกติ ฿0.77 และ 46% ของ FCF ฿1.08/หุ้น จึงยืนได้</div></div>
+        <div class="mval">฿5.67</div>
+      </div>
+      <div class="vmethod">
+        <div><div class="mname">4. Justified P/BV — ตระกูล r/g</div><div class="mdesc">P/BV เหมาะสม = (ROE 8.1% − g 2%)/(r 11% − g 2%) ≈ 0.68 × BVPS ฿11.70 = ฿7.93 — ROE ใช้ค่าเฉลี่ย 5 ปีงบ 8.1% ไม่ใช่ TTM 11.1% ที่ถูกกำไรมูลค่ายุติธรรมดันขึ้น · ratio 0.68x ยังอยู่ในกรอบที่ตลาดเคยให้จริง 0.41–0.71x</div></div>
+        <div class="mval">฿7.93</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสม Conservative (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿7.50 – ฿15.60</span></div>
-        <div class="r">฿7.50</div>
+        <div class="l">มูลค่าเหมาะสม (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿5.67 – ฿7.93</span></div>
+        <div class="r">฿6.86</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
-        วิธี P/E (฿15.60) และ Justified P/BV (฿14.40) ให้ค่าสูงมาก เพราะ ROJNA ซื้อขายต่ำกว่า fair multiple ของกลุ่มอย่างมีนัย
-        DDM ให้ค่า ฿8.58 ซึ่งอนุรักษ์นิยมกว่า อิงปันผลที่จ่ายจริง
-        ใช้ Conservative Fair Value ฿7.50 (ใกล้ DDM และคำนึงถึงความไม่แน่นอนด้าน FDI flow)
-        ซึ่งยังให้ Upside ถึง 35% จากราคาปัจจุบัน ฿5.55 และตรงกับทิศทางเป้า analyst ฿6.95
+        <b>วิธีถ่วงน้ำหนัก (dispersion gate 0.4c / 0.4c-bis):</b> ขาที่ห่างกันมากสุด ฿7.93 ÷ ฿5.67 = 1.40 เท่า (น้อยกว่า 2.0) จึงเฉลี่ยได้
+        แต่ DDM กับ Justified P/BV ใช้ (r, g) ชุดเดียวกัน = <b>ตระกูลเดียว นับเป็นหนึ่งเสียง</b> ⇒
+        FV = (ค่าเฉลี่ยขายึดตลาด ฿6.92 + ค่าเฉลี่ยตระกูล r/g ฿6.80) ÷ 2 = <b>฿6.86</b> — เป็นเลขที่ derive จากขาที่แสดงทั้งหมด ไม่มีการหักด้วยดุลพินิจ
+        <br><b>ที่มาของ r:</b> rf 2.0% (พันธบัตรรัฐบาลไทย 10 ปี ส.ค. 2569) + β 1.0 × ERP ไทย 8.0% + ส่วนชดเชยสภาพคล่อง/ขนาด 1.0% = <b>11.0%</b> · g 2.0%
+        (ไม่ใช้ β 0.14 ของ Yahoo เพราะค่านั้นต่ำผิดจริงจากสภาพคล่องซื้อขายที่บาง ไม่ใช่เพราะความเสี่ยงธุรกิจต่ำ) · <b>sensitivity:</b> r ± 0.5pp → FV ฿6.68 – ฿7.06
+        <br><b>ขาบริบท (ไม่รวมในกรอบ FV):</b> P/S มัธยฐาน 0.65x × รายได้เฉลี่ย 5 ปี ฿8.29/หุ้น = ฿5.39 · P/FCF มัธยฐาน 3.33x × FCF เฉลี่ย 5 ปี ฿1.89/หุ้น = ฿6.30 — ทั้งคู่ต่ำกว่า FV ที่ใช้ จึงไม่ได้ถูกตัดออกเพื่อให้ภาพดูดีขึ้น
+        <br><b>implied-rate check (ชั้น 0.3):</b> อัตราที่ตลาดฝังอยู่ r* = g + (ROE − g)/(P/BV) = 2% + (8.1% − 2%)/0.52 = <b>13.7%</b> สูงกว่า r ที่ใช้ 2.7pp
+        ข้อเท็จจริงดิบที่อธิบายส่วนต่าง: ROJNA <b>ไม่เคยซื้อขายเกิน P/BV 0.71x เลยใน 5 ปีงบ</b> และกำไรคุณภาพต่ำ (78% ของกำไร TTM เป็นกำไรมูลค่ายุติธรรมที่ยังไม่รับรู้)
+        ⇒ ตลาดคิดส่วนลดเรื่องคุณภาพกำไร/สภาพคล่องมากกว่าที่โมเดลนี้ตั้งไว้ ผู้อ่านควรถือว่า ฿6.86 เป็นขอบบนของสิ่งที่ตลาดยอมจ่ายมาตลอด ไม่ใช่เป้าที่รับประกัน
+        <br><b>เป้านักวิเคราะห์:</b> ไม่มี consensus เผยแพร่ทั้งจาก Yahoo Finance และ StockAnalysis (coverage จำกัด) — รายงานรอบก่อนอ้างเป้า ฿6.95 ซึ่งไม่มีแหล่งยืนยัน จึงถอดออก · งบล่าสุดที่ใช้คือไตรมาส 1/2569 (Q2/2569 ประกาศ 21 ส.ค. 2569)
+        <br><b>EPS สองค่าที่ต้องรู้:</b> quote ของ vendor ทั้ง Yahoo และ StockAnalysis แสดง EPS TTM ฿1.79 ขณะที่ตารางงบให้ ฿1.30 (= NI ฿2,617 ลบ. ÷ 2,020.5 ล้านหุ้น) — รายงานนี้ยึด ฿1.30 เพราะย้อนกลับได้จากกำไร 4 ไตรมาสจริง (Q1/69 +2,315 · Q4/68 −10 · Q3/68 +681 · Q2/68 −369) ส่วน ฿1.79 ย้อนกลับจากงบที่เผยแพร่ไม่ได้
       </p>
     </div>
   </section>
@@ -162,20 +173,20 @@
       <div class="gauge">
         <div class="gbar" id="gbar">
           <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿6.10</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿7.50</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿6.86</div></div>
         </div>
         <div class="scale">
-          <span>฿5.25<br><small>MOS 30%</small></span>
-          <span>฿6.00<br><small>MOS 20%</small></span>
-          <span style="text-align:center">฿6.95<br><small>เป้า Analyst</small></span>
-          <span style="text-align:right">฿7.50<br><small>Fair Value</small></span>
-          <span style="text-align:right">฿8.00<br><small>กรอบบน FV</small></span>
+          <span>฿4.80<br><small>MOS 30%</small></span>
+          <span>฿5.49<br><small>MOS 20%</small></span>
+          <span style="text-align:center">฿6.86<br><small>Fair Value</small></span>
+          <span style="text-align:right">฿7.93<br><small>กรอบบน (JPBV)</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคาปัจจุบัน ฿5.55 อยู่ในโซน Deep Value — ต่ำกว่า MOS 30% (฿5.25) เพียงเล็กน้อย และต่ำกว่าเป้า analyst ฿6.95 ถึง 25%
-        Upside สู่ Fair Value ฿7.50 อีก 35% พร้อม dividend yield 9% ช่วยรองรับระหว่างรอการ re-rating
-        · ราคาปัจจุบัน ฿5.55 อยู่ใต้ MOS 20% zone (฿6.00) สะท้อนจุดเข้าที่น่าสนใจสำหรับนักลงทุน value
+        ราคาปัจจุบัน ฿6.10 อยู่ <b>เหนือ</b> ทั้งจุดซื้อ MOS 20% (฿5.49) และ MOS 30% (฿4.80) — กลับด้านจากรอบวิเคราะห์ก่อนที่ราคายังอยู่ใต้จุดซื้อทั้งสอง
+        เพราะราคาขึ้นมา +26.0% รอบปี พร้อมกับที่ฐาน EPS ถูกปรับจาก TTM ฿1.30 ลงมาเป็นฉากปกติ ฿0.77
+        เหลือส่วนต่างถึงมูลค่าเหมาะสม ฿6.86 เพียง ~11% ซึ่งบางเกินกว่าจะเรียกว่าโซน deep value
+        · ตัวรองรับที่ยังเหลือคือปันผล ~8.2% ต่อปี แต่ปันผลนั้นกินสัดส่วน 65% ของกำไรฉากปกติแล้ว
       </p>
     </div>
   </section>
@@ -185,13 +196,13 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict ok">
-        <div class="big">+19%</div>
-        <div class="txt">MOS ดี — ราคาต่ำกว่ามูลค่าเหมาะสม 26% · อยู่ในโซน Deep Value</div>
+        <div class="big">+11%</div>
+        <div class="txt">MOS พอใช้ — ราคาต่ำกว่ามูลค่าเหมาะสม ฿6.86 อยู่ 11.1% · ยังไม่ถึงจุดซื้อ MOS 20% ที่ ฿5.49</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿6.00</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿5.25</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿7.50</div><div class="d">ปัจจุบัน ฿5.55 ต่ำกว่า FV 26%</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v neu">฿5.49</div><div class="d">ราคายังอยู่เหนือจุดนี้ ฿0.61</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v neu">฿4.80</div><div class="d">ส่วนเผื่อกว้างพอกับกำไรที่ผันผวน</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿5.49</div><div class="d">ปัจจุบัน ฿6.10 ต่ำกว่า FV เพียง 11.1%</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
@@ -205,53 +216,54 @@
 
   <!-- ===== 6. RETURN PROJECTION ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿5.55 • EPS ฐาน ~฿1.30 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿6.10 • EPS ฐานฉากปกติ ~฿0.77 • รวมปันผล</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS −5%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿5.55</div>
-          <div class="ret neg">ราคาทรง · ปันผล +27.0%</div>
+          <div class="tgt">฿3.96</div>
+          <div class="ret neg">−20.3% รวมปันผล</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~฿1.11</span></li>
-            <li><span>P/E ออก</span><span>5x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿1.50</span></li>
-            <li><span>สถานการณ์</span><span>FDI ชะลอ · นักลงทุนจีนลด</span></li>
+            <li><span>EPS ปี 3</span><span>~฿0.66</span></li>
+            <li><span>P/E ออก</span><span>6x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.90</span></li>
+            <li><span>สถานการณ์</span><span>FDI ชะลอ · ตัดปันผลเหลือ ฿0.30</span></li>
           </ul>
         </div>
       </div>
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +5%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿9.06</div>
-          <div class="ret pos">+63.2% capital +฿1.65 div</div>
+          <div class="tgt">฿8.01</div>
+          <div class="ret pos">+55.9% รวมปันผล</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~฿1.51</span></li>
-            <li><span>P/E ออก</span><span>6x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿1.65</span></li>
-            <li><span>สถานการณ์</span><span>China+1 ดึง FDI นิคมฯ ต่อเนื่อง</span></li>
+            <li><span>EPS ปี 3</span><span>~฿0.89</span></li>
+            <li><span>P/E ออก</span><span>9x</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~฿1.50</span></li>
+            <li><span>สถานการณ์</span><span>ขายที่ดินฟื้น · P/E กลับมัธยฐานตัวเอง</span></li>
           </ul>
         </div>
       </div>
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +10%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿13.84</div>
-          <div class="ret pos">+149.4% capital +฿1.80 div</div>
+          <div class="tgt">฿11.22</div>
+          <div class="ret pos">+113.4% รวมปันผล</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~฿1.73</span></li>
-            <li><span>P/E ออก</span><span>8x</span></li>
+            <li><span>EPS ปี 3</span><span>~฿1.02</span></li>
+            <li><span>P/E ออก</span><span>11x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~฿1.80</span></li>
-            <li><span>สถานการณ์</span><span>Re-rating เต็ม · เปิดเฟสใหม่ นิคมฯ</span></li>
+            <li><span>สถานการณ์</span><span>China+1 เร่ง · re-rate ใกล้จุดสูง 5 ปี 12.1x</span></li>
           </ul>
         </div>
       </div>
     </div>
     <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
-      Bear: EPS −5%/ปี × P/E ทรง 5x = ราคาทรง ฿5.55 · ได้ปันผล ~฿0.50/ปี รวม 3 ปี = ฿1.50 (return รวม +27%)
-      Base: EPS +5%/ปี × P/E re-rate ที่ 6x = ฿9.06 · ปันผล ฿1.65 (total return ~93%)
-      Bull: EPS +10%/ปี × P/E full re-rate ที่ 8x = ฿13.84 · ปันผล ฿1.80 (total return ~149%)
-      · ตัวเลขอิงสมมติฐาน EPS base ฿1.30 (TTM) · ปันผลอิง ฿0.50/ปี (yield ~9%) · ไม่รับประกันผลตอบแทน
+      ทุกฉากใช้ <b>EPS ฐานฉากปกติ ฿0.77</b> (กำไรสุทธิเฉลี่ย FY2564–2568 ÷ 2,020.5 ล้านหุ้น) ไม่ใช่ EPS TTM ฿1.30 ที่ 88% มาจากไตรมาสเดียว
+      Bear: EPS −5%/ปี → ฿0.66 × P/E 6x = ฿3.96 · ปันผลถูกตัดเหลือ ฿0.30/ปี รวม ฿0.90 (ผลตอบแทนรวม −20.3%)
+      Base: EPS +5%/ปี → ฿0.89 × P/E 9x (มัธยฐานตัวเอง 9.01x) = ฿8.01 · ปันผล ฿1.50 (รวม +55.9%)
+      Bull: EPS +10%/ปี → ฿1.02 × P/E 11x (ใกล้จุดสูง 5 ปีที่ 12.1x) = ฿11.22 · ปันผล ฿1.80 (รวม +113.4%)
+      · จุดเข้าคิดจากราคาปัจจุบัน ฿6.10 · Yahoo ให้ forward EPS ฿0.50 ซึ่งต่ำกว่าฐานฉากปกติที่ใช้ ⇒ ฉาก Bear มีน้ำหนักจริง · ไม่รับประกันผลตอบแทน
     </p>
   </section>
 
@@ -263,11 +275,11 @@
         <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
         <ul>
           <li><b>China+1 Strategy:</b> สงครามการค้า US–China ดันโรงงานจีนย้ายฐานผลิตมาไทย — นิคมโรจนะอยุธยาอยู่ในทำเลเชื่อมกรุงเทพฯ ได้รับ FDI flow โดยตรง</li>
-          <li><b>Valuation ต่ำผิดปกติ:</b> P/E 4.27x และ P/BV 0.52x ต่ำที่สุดในกลุ่มนิคมฯ ไทย — ศักยภาพ re-rating สูงเมื่อนักลงทุนสถาบันรับรู้มูลค่าแท้จริง</li>
-          <li><b>Dividend yield สูง 9%:</b> ปันผลสูงที่สุดในกลุ่มนิคมฯ ที่ ฿0.50/หุ้น ช่วยรองรับความเสี่ยงขาลงและดึงนักลงทุนสาย income</li>
-          <li><b>Cash-rich Balance Sheet:</b> เงินสด ~฿9.97B ในมือ เทียบ market cap ฿11.2B — ความสามารถขยายนิคมเฟสใหม่หรือจ่ายปันผลพิเศษ</li>
+          <li><b>P/BV ยังต่ำกว่า 1 เท่า:</b> ซื้อขายที่ 0.52x เทียบมัธยฐานตัวเอง 0.59x — ถ้ากำไรจากการดำเนินงานฟื้นจนตลาดยอมให้กลับไปที่มัธยฐาน จะได้ upside จากตัวคูณล้วน ๆ ~13%</li>
+          <li><b>Dividend yield 8.2%:</b> ปันผล ฿0.50/หุ้น จ่ายจริง และถูกครอบคลุมด้วย FCF ฿1.08/หุ้น (payout 46% ของ FCF) ช่วยรองรับระหว่างรอ</li>
+          <li><b>ทยอยลดหนี้ต่อเนื่อง:</b> D/E ลดจาก 1.31x (FY2564) เหลือ 0.69x และหนี้รวมลดจาก ฿24.9B เหลือ ฿16.8B — ปิดจุดอ่อนงบดุลที่เคยกดตัวคูณ</li>
           <li><b>รายได้ recurring จากโรงไฟฟ้า:</b> ธุรกิจพลังงานในนิคมสร้าง revenue สม่ำเสมอ ลดความผันผวนจากรายได้ขายที่ดิน</li>
-          <li><b>Beta ต่ำ 0.14:</b> ไม่ผันผวนตามตลาด SET เหมาะสำหรับพอร์ต defensive ที่ต้องการ income + value</li>
+          <li><b>ฐานทุนรองรับ:</b> ส่วนของผู้ถือหุ้น ~฿23.6B (BVPS ฿11.70) เทียบมูลค่าตลาด ฿12.3B — ที่ดินในบัญชีส่วนใหญ่ยังบันทึกที่ราคาทุนเดิม</li>
         </ul>
       </div>
       <div class="box risk">
@@ -277,7 +289,10 @@
           <li><b>แข่งขันจาก WHA/AMATA:</b> WHA และ AMATA มีนิคมใน EEC ได้รับ BOI สูงกว่า — นักลงทุนต่างชาติบางส่วนเลือก EEC ก่อนอยุธยา</li>
           <li><b>สต็อกที่ดินลดลง:</b> เมื่อที่ดินสำรองหมด ต้องพัฒนาเฟสใหม่ ใช้เงินลงทุนและเวลา — อาจกระทบ EPS ระยะสั้น</li>
           <li><b>นโยบาย BOI เปลี่ยนแปลง:</b> การปรับสิทธิประโยชน์ส่งเสริมการลงทุนส่งผลต่อความน่าสนใจของนิคมฯ อยุธยาเทียบ EEC</li>
-          <li><b>ข้อมูลสาธารณะน้อย:</b> ROJNA มี analyst coverage จำกัด ขาดรายงานวิจัยสม่ำเสมอ ยากต่อการติดตามและประเมินโดยนักลงทุนสถาบันต่างประเทศ</li>
+          <li><b>★ คุณภาพกำไรต่ำ (ความเสี่ยงอันดับ 1):</b> กำไร TTM ฿2,617 ลบ. มาจากกำไรมูลค่ายุติธรรมของสินทรัพย์ทางการเงินที่ <u>ยังไม่รับรู้</u> ฿2,024 ลบ. ในไตรมาส 1/2569 — เป็นรายการทางบัญชีที่กลับทิศได้ (ไตรมาสเดียวกันปีก่อนเป็น <u>ขาดทุน</u> ฿1,079 ลบ.) และ FY2568 ทั้งปียังขาดทุนสุทธิ ฿125 ลบ.</li>
+          <li><b>หนี้สินสุทธิสูง ไม่ใช่ net cash:</b> หนี้ ฿16.77B เทียบเงินสด ฿2.86B = หนี้สุทธิ ~฿13.9B มากกว่ามูลค่าตลาด ฿12.3B — ดอกเบี้ยกินกำไรเมื่อรอบขายที่ดินชะลอ</li>
+          <li><b>รายได้หดตัวสองปีติด:</b> รายได้ TTM ฿14.8B ลดลง 24.6% YoY ต่อจาก FY2568 ที่ลดลง 23.7% — รอบขายที่ดินยังไม่ฟื้น</li>
+          <li><b>ข้อมูลสาธารณะน้อย:</b> ROJNA มี analyst coverage จำกัด ไม่มีเป้านักวิเคราะห์เผยแพร่ทั้งใน Yahoo Finance และ StockAnalysis ทำให้ราคาถูก re-rate ช้า</li>
         </ul>
       </div>
     </div>
@@ -287,22 +302,24 @@
   <section>
     <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
     <div class="verdict">
-      <h2>ROJNA — นิคมฯ Undervalued · Dividend 9% · China+1 Beneficiary</h2>
-      <p>โรจนะ อินดัสเตรียล พาร์ค เป็นหุ้นนิคมอุตสาหกรรมไทยที่ซื้อขายที่ valuation ต่ำผิดปกติอย่างมีนัย
-      (P/E 4.27x vs กลุ่ม 10–15x · P/BV 0.52x ต่ำกว่า Book Value) ขณะที่ให้ปันผล yield สูงถึง 9% ต่อปี
-      ที่ตั้งนิคมฯ อยุธยาได้รับประโยชน์ตรงจาก China+1 trend ที่ดันโรงงานจีนมาลงทุนไทยเพิ่มขึ้น
-      ประกอบกับ Balance Sheet แกร่ง (cash ฿9.97B) และรายได้จากโรงไฟฟ้าในนิคมที่เป็น recurring income
-      ราคาปัจจุบัน ฿5.55 ต่ำกว่า Conservative Fair Value ฿7.50 ถึง 26% และต่ำกว่าเป้า analyst ฿6.95 ถึง 25%
-      รวม dividend yield 9% ทำให้ risk/reward ดึงดูดมากสำหรับนักลงทุนสาย value และ income</p>
+      <h2>ROJNA — ปันผล 8.2% บนกำไรที่ยังพิสูจน์ไม่ได้ · ส่วนเผื่อบางลงหลังราคาขึ้น 26%</h2>
+      <p>สวนอุตสาหกรรมโรจนะ ยังเป็นหุ้นนิคมฯ ที่ซื้อขายต่ำกว่ามูลค่าทางบัญชี (P/BV 0.52x) และให้ปันผล 8.2% ต่อปี
+      แต่รอบวิเคราะห์นี้เปลี่ยนข้อสรุปจากรอบก่อนอย่างมีนัย: กำไร TTM ฿2,617 ล้านบาท (EPS ฿1.30) ไม่ใช่กำไรที่ทำซ้ำได้
+      เพราะ 88% มาจากไตรมาสเดียว และเกือบทั้งก้อนนั้นคือกำไรมูลค่ายุติธรรมของสินทรัพย์ทางการเงินที่ยังไม่รับรู้ ฿2,024 ล้านบาท
+      เมื่อวัดด้วยกำไรฉากปกติ (เฉลี่ย 5 ปีงบ = EPS ฿0.77) และตัวคูณที่ ROJNA เคยได้รับจริง (P/E มัธยฐาน 9.0x · P/BV 0.59x)
+      มูลค่าเหมาะสมออกมาที่ ฿6.86 เทียบราคา ฿6.10 = ส่วนเผื่อความปลอดภัยเพียง 11.1% ซึ่งบางเกินกว่าจะชดเชยความเสี่ยงเรื่องคุณภาพกำไร
+      เมื่อรวมกับรายได้ที่หดตัวสองปีติด (−23.7% แล้ว −24.6%) และหนี้สุทธิ ฿13.9B ที่มากกว่ามูลค่าตลาด
+      ⇒ เหมาะกับ “ถือรับปันผล / รอจุดซื้อ” มากกว่าไล่ราคาที่ระดับนี้</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿7.50 <span style="font-size:12px;color:#cab9a8">(฿7.50–฿15.60)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +18.7%</div></div>
-        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿6.95 (Outperform)</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿6.86 <span style="font-size:12px;color:#cab9a8">(฿5.67–฿7.93)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +11.1%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#cab9a8">ไม่มี consensus เผยแพร่</div></div>
       </div>
       <div class="zone">
-        💡 <b>กลยุทธ์:</b> ทยอยสะสมได้ที่ระดับ ฿5.55 หรือต่ำกว่า — รับ dividend yield 9% ระหว่างรอ re-rating
-        · Target ระยะกลาง 1 ปี: ฿6.95 (เป้า analyst, +25%) · Target ระยะยาว 3 ปี: ฿7.50 (Fair Value, +35%)
-        · Stop-loss แนะนำ ฿4.80 หาก FDI ชะลอต่อเนื่องและ EPS ลดลงกว่าคาด
+        💡 <b>กลยุทธ์:</b> ราคา ฿6.10 อยู่เหนือจุดซื้อ MOS 20% (฿5.49) แล้ว — ผู้ที่ถืออยู่รับปันผล ~8.2% ต่อไปได้ แต่ไม่ใช่ระดับที่มีส่วนเผื่อพอสำหรับเงินใหม่
+        · จุดทยอยสะสมที่มีส่วนเผื่อพอ = <b>ต่ำกว่า ฿5.49</b> (MOS 20%) และ ฿4.80 (MOS 30%)
+        · ตัวกระตุ้นที่จะเปลี่ยนภาพจริง ๆ คือ <b>กำไรจากการดำเนินงาน</b> (ไม่ใช่กำไรมูลค่ายุติธรรม) กลับมาโต — จับตางบไตรมาส 2/2569 วันที่ 21 ส.ค. 2569
+        · Stop-loss ที่ ฿5.20 หากรายได้ยังหดตัวเป็นไตรมาสที่สามติดกัน
       </div>
     </div>
   </section>
@@ -312,9 +329,9 @@
     <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
     ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
-    แหล่งข้อมูล: (1) Yahoo Finance — ราคา ฿5.55 · EPS TTM ฿1.30 · P/E 4.27x · P/BV 0.52x · ROE 11.07% · Dividend yield 9.01% (3 ก.ค. 2569 · งบ FY2568 Q4/TTM) · (2) SET Thailand — ราคา ฿5.65 ยืนยัน ±1.8% · (3) Finnomena — ราคา ฿5.65 · ผลตอบแทนรอบปี 26.13% (FY2568)
+    แหล่งข้อมูล: (1) Yahoo Finance — ราคา ฿6.10 · EPS TTM (quote) ฿1.79 · P/E 3.4x · Dividend yield 8.20% · กรอบ 52 สัปดาห์ ฿4.26–฿6.45 (17 ส.ค. 2569) · (2) StockAnalysis.com — ราคา ฿6.10 ยืนยันตรงกัน 0.0% · หุ้นคงเหลือ 2,020,461,863 หุ้น · มูลค่าตลาด ฿12.32B · ตัวคูณย้อนหลัง 5 ปีงบ (P/E 9.01x · P/BV 0.59x · P/S 0.65x · P/FCF 3.33x) · งบถึงไตรมาส 1/2569 · (3) ตลาดหลักทรัพย์แห่งประเทศไทย (SET) / Kaohoon — งบไตรมาส 1/2569 กำไรสุทธิ ฿2,314.89 ล้านบาท ซึ่งรวมกำไรมูลค่ายุติธรรมที่ยังไม่รับรู้ ฿2,024.37 ล้านบาท (ไตรมาสเดียวกันปีก่อนเป็นขาดทุน ฿1,079.46 ล้านบาท)
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ 3 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 18 ส.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
