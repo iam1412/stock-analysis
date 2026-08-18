@@ -200,6 +200,20 @@ function parsePriceAge(header) {
 }
 
 // ดึง key metric (ค่าในการ์ด .metric) ตามชื่อ label
+// เก็บ "ทุกตัวเลข" จากการ์ด metric ที่ป้ายตรง labelRe — รายงานหลายใบโชว์สองฐานโดยตั้งใจ
+// (เช่น "P/E (TTM) 8.4x" คู่กับ "P/E บน EPS Normalized 20.2x" · "ROE (TTM)/Normalized ~19.3% / ~14.1%")
+// ⇒ stock-meta ที่ถือฐาน normalized ก็ยังเป็น "เลขที่โชว์" จริง — W10 ต้องยอมรับค่าใดค่าหนึ่งที่โชว์ (18 ส.ค. 69)
+function metricNumsAll(html, labelRe) {
+  const out = [];
+  const re = new RegExp(`<div class="k">[^<]*${labelRe}[^<]*</div>\\s*<div class="v[^"]*">([^<]*)<`, 'g');
+  let m;
+  while ((m = re.exec(html))) {
+    const nums = norm(m[1]).match(/-?\d+(?:\.\d+)?/g);
+    if (nums) for (const n of nums) out.push(parseFloat(n));
+  }
+  return out;
+}
+
 function metricNum(html, labelRe, opts) {
   const m = html.match(new RegExp(`<div class="k">[^<]*${labelRe}[^<]*</div>\\s*<div class="v[^"]*">([^<]*)<`));
   if (!m) return null;
@@ -248,6 +262,8 @@ function buildCtx(html, name, opts) {
     vgridFV: (() => { const i = html.indexOf('class="vgrid"'); if (i === -1) return null; return firstNum(grab(/มูลค่าเหมาะสม<\/div>\s*<div class="v">([\s\S]*?)<\/div>/, html.slice(i))); })(),
     scaleNums: (() => { const seg = grab(/<div class="scale">([\s\S]*?)<\/div>\s*<\/div>/, html); if (!seg) return []; return seg.split('<span').slice(1).map((s) => firstNum(s)).filter((v) => v != null); })(),
     priceAge: parsePriceAge(headerM ? headerM[0] : ''),
+    // ทุกค่าที่โชว์ของ P/E และ ROE (ทุกการ์ดที่ป้ายมีคำนั้น) — ใช้โดย W10 เท่านั้น
+    metricsAll: { pe: metricNumsAll(html, 'P/E'), roe: metricNumsAll(html, 'ROE') },
     metrics: {
       pe: metricNum(html, 'P/E \\(TTM\\)'),
       pbv: metricNum(html, 'P/BV'),
@@ -507,7 +523,7 @@ const CHECKS = [
   { id: 'W08', level: 'warn', label: 'แหล่งข้อมูล ≥3 + อ้างอิงครบ', fn: (c) => { const bad = []; const line = grab(SOURCE_LINE, stripTags(c.header)); if (line) { const srcs = line.split(SOURCE_SEP).map((s) => s.trim()).filter((s) => s.length >= 2 && s.length <= SOURCE_MAX_LEN); if (srcs.length < 3) bad.push(`ระบุแหล่งที่มาเพียง ${srcs.length} แหล่ง (ควร ≥3)`); } if (!/เป้า|นักวิเคราะห์|consensus/i.test(c.text)) bad.push('ไม่พบราคาเป้านักวิเคราะห์'); if (!/52\s*สัปดาห์|52-week/i.test(c.text)) bad.push('ไม่พบช่วง 52 สัปดาห์'); if (!FISCAL_REF.test(c.text)) bad.push('ไม่พบการอ้างอิงงวดงบ (FY/ไตรมาส)'); return bad.length ? bad.join(' ; ') : null; } },
   { id: 'W09', level: 'warn', label: 'ความสดของราคา', fn: (c) => { if (!c.priceAge) return null; const a = c.priceAge.ageDays; const warnDays = parseInt(process.env.STALE_WARN_DAYS || '45', 10); const errDays = parseInt(process.env.STALE_ERROR_DAYS || '120', 10); if (a > warnDays && a <= errDays) return `ราคาเริ่มเก่า: ${c.priceAge.iso} (${a} วันที่แล้ว) — ควรอัปเดตก่อนเผยแพร่`; return null; } },
   // stock-meta P/E·Yield·ROE เทียบค่าที่โชว์ — เตือนเท่านั้น (label P/E/ROE ในรายงานไม่ standard เสมอ → ดึงไม่ได้บางไฟล์)
-  { id: 'W10', level: 'warn', label: 'stock-meta P/E·Yield·ROE ≈ ที่โชว์', fn: (c) => { const sm = c.sm; if (!sm.present || !sm.ok || !sm.data) return null; const d = sm.data, m = c.metrics, bad = []; if (m.pe != null && isFiniteNum(d.pe) && Math.abs(d.pe - m.pe) > Math.max(0.05 * Math.abs(m.pe), 0.1)) bad.push(`pe ${d.pe} ≠ P/E ที่โชว์ ${m.pe}`); if (m.yield != null && isFiniteNum(d.dividendYield) && Math.abs(d.dividendYield - m.yield) > Math.max(0.1 * Math.abs(m.yield), 0.15)) bad.push(`dividendYield ${d.dividendYield} ≠ ปันผลที่โชว์ ${m.yield}`); if (m.roe != null && isFiniteNum(d.roe) && Math.abs(d.roe - m.roe) > Math.max(0.08 * Math.abs(m.roe), 0.5)) bad.push(`roe ${d.roe} ≠ ROE ที่โชว์ ${m.roe}`); return bad.length ? bad.join(' ; ') : null; } },
+  { id: 'W10', level: 'warn', label: 'stock-meta P/E·Yield·ROE ≈ ที่โชว์', fn: (c) => { const sm = c.sm; if (!sm.present || !sm.ok || !sm.data) return null; const d = sm.data, m = c.metrics, bad = []; const near = (a, b, rel, abs) => Math.abs(a - b) <= Math.max(rel * Math.abs(b), abs); const shownPe = (c.metricsAll && c.metricsAll.pe) || []; if (m.pe != null && isFiniteNum(d.pe) && !shownPe.some((v) => near(d.pe, v, 0.05, 0.1))) bad.push(`pe ${d.pe} ≠ P/E ที่โชว์ ${shownPe.length > 1 ? shownPe.join('/') : m.pe}`); if (m.yield != null && isFiniteNum(d.dividendYield) && Math.abs(d.dividendYield - m.yield) > Math.max(0.1 * Math.abs(m.yield), 0.15)) bad.push(`dividendYield ${d.dividendYield} ≠ ปันผลที่โชว์ ${m.yield}`); const shownRoe = (c.metricsAll && c.metricsAll.roe) || []; if (m.roe != null && isFiniteNum(d.roe) && !shownRoe.some((v) => near(d.roe, v, 0.08, 0.5))) bad.push(`roe ${d.roe} ≠ ROE ที่โชว์ ${shownRoe.length > 1 ? shownRoe.join('/') : m.roe}`); return bad.length ? bad.join(' ; ') : null; } },
 
   // ── W12: ทุกจุดกราฟต้องมี label (แกน x) ไม่ว่าง — กัน ["",value] ที่ทำให้แกน x โชว์ช่องว่าง (พบ DDOG/WDC) ──
   { id: 'W12', level: 'warn', label: 'label จุดกราฟไม่ว่าง', fn: (c) => {

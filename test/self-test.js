@@ -326,6 +326,16 @@ const smYield = C.sm.data.dividendYield;
 reject('W10', setYieldCard(`~฿1.92 (~${smYield}%)`), 'การ์ดปันผลเขียนจำนวนเงินก่อน % (~฿1.92 (~6.3%)) → parser ต้องอ่านค่า % ไม่ใช่ 1.92 → ไม่เตือน W10');
 expect('W10', 'warn', setYieldCard(`~฿1.92 (~${(smYield * 3).toFixed(1)}%)`), 'รูปแบบเดียวกันแต่ค่า % ผิดจริง (×3) → ต้องยังเตือน W10 (parser ไม่ได้ปิดตา แค่อ่านให้ถูกตัว)');
 reject('W10', setYieldCard('$3.25'), 'การ์ดปันผลแสดงจำนวนเงินล้วน ไม่มี % (เคส O "เงินปันผล (รายปี) $3.25") → ไม่ใช่ yield ต้องข้าม ไม่เอา 3.25 ไปเทียบกับ %');
+// ── W10 รู้จัก "สองฐาน" (18 ส.ค. 69): รายงานหุ้นวัฏจักรโชว์ P/E ทั้ง TTM และ normalized โดยตั้งใจ (CF/TFG/TVO/SAIA/ADM)
+//     stock-meta ที่ถือฐาน normalized ก็ยังเป็น "เลขที่โชว์" → ต้องไม่ฟ้อง · แต่ค่าที่ไม่โผล่ที่ไหนเลย (เคส BX) ต้องยังฟ้อง ──
+{
+  const smPe = C.sm.data.pe;
+  // เพิ่มการ์ด P/E ใบที่สองที่ค่าตรง stock-meta แล้วทำให้การ์ด "P/E (TTM)" ค่าต่างออกไป
+  const addSecondPeCard = (ttmVal, secondVal) => (h) => h
+    .replace(/(<div class="k">[^<]*P\/E \(TTM\)[^<]*<\/div>\s*<div class="v[^"]*">)([^<]*)(<)/, (m, x, v, z) => x + '~' + ttmVal + 'x' + z + '/div><div class="k">P/E บน EPS Normalized</div><div class="v">~' + secondVal + 'x<');
+  reject('W10', addSecondPeCard((smPe * 2.4).toFixed(1), smPe), 'โชว์ P/E สองฐาน: การ์ด TTM ต่างจาก stock-meta แต่การ์ด normalized ตรง → ต้องเงียบ');
+  expect('W10', 'warn', addSecondPeCard((smPe * 2.4).toFixed(1), (smPe * 3.1).toFixed(1)), 'โชว์ P/E สองฐานแต่ stock-meta ไม่ตรงสักฐาน (เคส BX) → ต้องยังฟ้อง');
+}
 // W07 ใช้ yield ตัวเดียวกัน — การ์ดจำนวนเงินล้วนต้องไม่ทำให้ W07 ฟ้อง "yield ผิดวิสัย" ด้วย
 reject('W07', setYieldCard('$45.00'), 'การ์ดปันผลจำนวนเงินล้วน $45 → parser คืน null → W07 ไม่ฟ้องว่า yield 45% ผิดวิสัย');
 
