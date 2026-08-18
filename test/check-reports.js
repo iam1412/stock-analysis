@@ -103,6 +103,8 @@ function parseScenarios(html) {
       pe: firstNum(grab(/P\/E ออก<\/span>\s*<span>([\s\S]*?)<\/span>/, seg)),
       g: firstNum(grab(/EPS\s*([+\-−]?[0-9.]+)\s*%\s*\/\s*ปี/, norm(seg))),
       ret: firstNum(grab(/class="ret[^"]*">([\s\S]*?)<\/div>/, seg)),
+      // ปันผลรวม 3 ปีของฉากนั้น — การ์ด scenario ประกาศหัวข้อว่า "รวมปันผล" ⇒ ช่องราคาเป้าคือ EPS×P/E + ปันผลสะสม
+      div: firstNum(grab(/ปันผลรวม 3 ปี<\/span>\s*<span>([\s\S]*?)<\/span>/, seg)),
     });
   }
   return cols;
@@ -263,7 +265,7 @@ function buildCtx(html, name, opts) {
     scaleNums: (() => { const seg = grab(/<div class="scale">([\s\S]*?)<\/div>\s*<\/div>/, html); if (!seg) return []; return seg.split('<span').slice(1).map((s) => firstNum(s)).filter((v) => v != null); })(),
     priceAge: parsePriceAge(headerM ? headerM[0] : ''),
     // ทุกค่าที่โชว์ของ P/E และ ROE (ทุกการ์ดที่ป้ายมีคำนั้น) — ใช้โดย W10 เท่านั้น
-    metricsAll: { pe: metricNumsAll(html, 'P/E'), roe: metricNumsAll(html, 'ROE') },
+    metricsAll: { pe: metricNumsAll(html, 'P/(?:E|DE)'), roe: metricNumsAll(html, 'ROE') },   // P/DE = ตัวคูณต่อ Distributable Earnings ของ alternative asset manager (BX) — มาตรฐานอุตสาหกรรมที่รายงานประกาศไว้ว่าใช้แทน GAAP EPS
     metrics: {
       pe: metricNum(html, 'P/E \\(TTM\\)'),
       pbv: metricNum(html, 'P/BV'),
@@ -508,7 +510,7 @@ const CHECKS = [
     return null;
   } },
 
-  { id: 'W01', level: 'warn', label: 'scenario: EPS×P/E ≈ ราคาเป้า', fn: (c) => { const bad = []; const nm = ['Bear', 'Base', 'Bull']; c.scenarios.forEach((s, i) => { if (s.tgt == null || s.eps == null || s.pe == null) return; const calc = s.eps * s.pe; const d = Math.abs(calc - s.tgt) / s.tgt; if (d > TOL_SCN_REL) bad.push(`${nm[i] || ('#' + i)}: EPS ${s.eps}×P/E ${s.pe}=${calc.toFixed(0)} ≠ target ${s.tgt} (ต่าง ${(d * 100).toFixed(0)}%)`); }); return bad.length ? bad.join(' ; ') : null; } },
+  { id: 'W01', level: 'warn', label: 'scenario: EPS×P/E ≈ ราคาเป้า', fn: (c) => { const bad = []; const nm = ['Bear', 'Base', 'Bull']; c.scenarios.forEach((s, i) => { if (s.tgt == null || s.eps == null || s.pe == null) return; const calc = s.eps * s.pe; /* หัวการ์ดเขียน "รวมปันผล" ⇒ ช่องเป้าเป็นมูลค่ารวม = EPS×P/E + ปันผลสะสม 3 ปี (วัด 18 ส.ค. 69: 48/57 ฉากใน 22 ใบที่เคยฟ้องตรงเป๊ะด้วยสูตรนี้) — ยอมรับได้ทั้งสองนิยาม ที่เหลือคือผิดจริง */ const withDiv = calc + (isFiniteNum(s.div) ? s.div : 0); const d = Math.min(Math.abs(calc - s.tgt), Math.abs(withDiv - s.tgt)) / s.tgt; if (d > TOL_SCN_REL) bad.push(`${nm[i] || ('#' + i)}: EPS ${s.eps}×P/E ${s.pe}=${calc.toFixed(0)}${isFiniteNum(s.div) && s.div ? ` (+ปันผล ${s.div} = ${withDiv.toFixed(0)})` : ''} ≠ target ${s.tgt} (ต่าง ${(d * 100).toFixed(0)}%)`); }); return bad.length ? bad.join(' ; ') : null; } },
   { id: 'W02', level: 'warn', label: 'สกุลเงินปน', fn: (c) => { if (c.isTHB && /\$/.test(c.text)) { const n = (c.text.match(/\$/g) || []).length; return `รายงานสกุลบาท (฿) แต่พบ "$" ${n} จุดในเนื้อหา (ควรใช้ ฿)`; } if (!c.isTHB && /฿/.test(c.text)) { const n = (c.text.match(/฿/g) || []).length; return `รายงานสกุลดอลลาร์ ($) แต่พบ "฿" ${n} จุดในเนื้อหา`; } return null; } },
   { id: 'W03', level: 'warn', label: 'CSS เพี้ยน .seg-label', fn: (c) => /transform:transl\(/.test(c.html) ? 'พบ transform:transl( (ควรเป็น translate) — dead CSS .seg-label ใน template' : null },
   { id: 'W04', level: 'warn', label: 'สี verdict ตรงกับโซน MOS', fn: (c) => { if (c.mosBig == null) return null; const m = c.html.match(/class="mos-verdict (bad|ok|good)"/); if (!m) return null; const rank = { bad: 0, ok: 1, good: 2 }; const band = mosBand(c.mosBig); return Math.abs(rank[m[1]] - rank[band]) >= 2 ? `กล่อง verdict เป็น "${m[1]}" แต่ MOS ${c.mosBig}% ควรอยู่โซน "${band}"` : null; } },

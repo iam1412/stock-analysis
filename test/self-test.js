@@ -126,6 +126,17 @@ expect('E16', 'error', mut3(/(<div class="big">)([\s\S]*?)(<\/div>)/, fmtPct(MOS
 expect('E33', 'error', (h) => h.replace('var(--badge)', 'var(--orange-missing)'), 'อ้าง CSS var ที่ไม่ถูกนิยาม (เคส HMPRO badge → var(--orange) ก่อนเพิ่มในพาเลต)');
 reject('E33', (h) => h.replace('var(--badge)', 'var(--ghost, #000)'), 'var(--x, fallback) มี fallback = ตั้งใจ → ต้องไม่ฟ้อง E33');
 expect('W01', 'warn', mut3(/(<div class="tgt">\s*[฿$]?)([0-9.,]+)(<\/div>)/, numStr(C.scenarios[0].tgt * 4)), 'scenario target เพี้ยน (EPS×P/E ไม่ตรง)');
+// W01 รู้จัก "รวมปันผล" (18 ส.ค. 69): หัวการ์ด scenario เขียนว่ารวมปันผล ⇒ ช่องเป้า = EPS×P/E + ปันผลสะสม 3 ปี
+// (วัดจริง 48/57 ฉากใน 22 ใบที่เคยฟ้อง ตรงเป๊ะด้วยสูตรนี้ — เดิม checker บวกขาปันผลไม่เป็นเลยฟ้องยกชุด)
+{
+  const scn0 = C.scenarios[0];
+  if (scn0 && scn0.eps != null && scn0.pe != null && scn0.div) {
+    const setTgt = (v) => mut3(/(<div class="tgt">\s*[฿$]?)([0-9.,]+)(<\/div>)/, numStr(v));
+    reject('W01', setTgt(scn0.eps * scn0.pe + scn0.div), 'เป้า = EPS×P/E + ปันผลสะสม (นิยาม "รวมปันผล") → ต้องเงียบ');
+    reject('W01', setTgt(scn0.eps * scn0.pe), 'เป้า = EPS×P/E เปล่า ๆ (ไม่รวมปันผล) → ยังต้องเงียบ รับได้ทั้งสองนิยาม');
+    expect('W01', 'warn', setTgt(scn0.eps * scn0.pe + scn0.div * 6), 'บวกปันผลเกินจริง 6 เท่า → ต้องฟ้อง');
+  }
+}
 expect('W02', 'warn', (h) => h.replace('<div class="sub">', `<div class="sub">ราคา ${C.isTHB ? '$' : '฿'}999 `), 'แทรกสกุลเงินปน (คนละสกุลกับรายงาน)');
 expect('E18', 'error', mut3(/(จุดซื้อ[^<]*20\s*%<\/div>\s*<div class="v[^"]*">\s*[฿$]?)([0-9.,]+)()/, numStr(FV)), 'จุดซื้อ MOS20 ≠ FV×0.8');
 expect('E19', 'error', mut3(/(getElementById\("mCur"\)\.style\.left\s*=\s*gpos\()([0-9.]+)(\))/, numStr(PX * 1.5)), 'gauge marker ปัจจุบันไม่ตรงราคา');
@@ -341,6 +352,8 @@ reject('W10', setYieldCard('$3.25'), 'การ์ดปันผลแสดง
     .replace(/(<div class="k">[^<]*P\/E \(TTM\)[^<]*<\/div>\s*<div class="v[^"]*">)([^<]*)(<)/, (m, x, v, z) => x + '~' + ttmVal + 'x' + z + '/div><div class="k">P/E บน EPS Normalized</div><div class="v">~' + secondVal + 'x<');
   reject('W10', addSecondPeCard((smPe * 2.4).toFixed(1), smPe), 'โชว์ P/E สองฐาน: การ์ด TTM ต่างจาก stock-meta แต่การ์ด normalized ตรง → ต้องเงียบ');
   expect('W10', 'warn', addSecondPeCard((smPe * 2.4).toFixed(1), (smPe * 3.1).toFixed(1)), 'โชว์ P/E สองฐานแต่ stock-meta ไม่ตรงสักฐาน (เคส BX) → ต้องยังฟ้อง');
+  // P/DE (Distributable Earnings) = ฐานที่ alternative asset manager ใช้แทน GAAP EPS (เคส BX จริง)
+  reject('W10', (h) => addSecondPeCard((smPe * 2.4).toFixed(1), smPe)(h).replace('P/E บน EPS Normalized', 'P/DE (TTM)'), 'การ์ด P/DE ที่ค่าตรง stock-meta → ต้องเงียบ');
 }
 // W07 ใช้ yield ตัวเดียวกัน — การ์ดจำนวนเงินล้วนต้องไม่ทำให้ W07 ฟ้อง "yield ผิดวิสัย" ด้วย
 reject('W07', setYieldCard('$45.00'), 'การ์ดปันผลจำนวนเงินล้วน $45 → parser คืน null → W07 ไม่ฟ้องว่า yield 45% ผิดวิสัย');
