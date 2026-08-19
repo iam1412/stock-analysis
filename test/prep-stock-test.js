@@ -125,6 +125,53 @@ const vSingleT = P.verdict(dSingleT);
 ok(vSingleT.exitCode === 0 && /แหล่งเดียว/.test(vSingleT.text) && /ตาราง \[3\]/.test(vSingleT.text),
   'verdict: แหล่งเดียว → ยังโชว์ผลเทียบตาราง [3]', vSingleT.text);
 
+// ===== จุดบอด 3: คำอธิบายที่มาของ EPS ในตาราง [3] (บั๊ก COHR 19 ส.ค. 2569) =====
+// เดิมพิมพ์ "= NI 770 ÷ 195M หุ้น" ต่อท้าย EPS 4.12 ทั้งที่ 770÷195 = 3.95 — verdict (Δ 0.0%) ถูก แต่ "ที่มา" ผิด
+// อันตรายเพราะ SKILL ห้าม worker WebFetch ซ้ำ ⇒ ใครหารตามสูตรนั้นจะได้ 3.95 แล้วไล่แก้ EPS/FV/P-E ผิดฐานทั้งใบ
+// ตัวตั้งที่ถูก = กำไร**รวมก่อน**ปันผลบุริมสิทธิ (if-converted) 805 ÷ 195.4 = 4.12 — ยืนยันด้วย SEC XBRL EarningsPerShareDiluted
+const cohrT = F.tableEpsTTM(makeFinPage({ datekey: ['TTM'], epsDiluted: [4.12], netIncome: [769.9e6], sharesDiluted: [195.4e6] }));
+ok(cohrT.eps === 4.12 && cohrT.from === 'EPS(dil) TTM' && Math.abs(cohrT.derived - 3.94) < 0.01,
+  'tableEpsTTM: คืน derived (NI÷Shares) แยกจาก eps ที่แสดง', JSON.stringify(cohrT));
+const recCohr = F.epsReconcile(cohrT);
+ok(recCohr.show === false && Math.abs(recCohr.pct - 4.4) < 0.2, 'epsReconcile: COHR ย้อนกลับไม่ได้ (ต่าง 4.4%) → ห้ามพิมพ์สูตร', JSON.stringify(recCohr));
+
+const cohrLine = F.epsTableLine(4.12, 'SA', cohrT);
+ok(!/= NI [\d,.]+ ÷/.test(cohrLine), '★ COHR: ห้ามพิมพ์สูตร "= NI … ÷ … หุ้น" ที่คำนวณไม่ตรงกับ EPS ที่แสดง (บั๊กเดิม)', cohrLine);
+ok(!/ตาราง=4\.12 = NI/.test(cohrLine), '★ COHR: บรรทัดเดิม "ตาราง=4.12 = NI 770 ÷ 195M หุ้น" ต้องหายไป', cohrLine);
+ok(/✅ ฐานเดียวกัน/.test(cohrLine), '★ COHR: verdict เดิมต้องไม่เปลี่ยน — quote 4.12 ↔ ตาราง 4.12 ยังเป็น ✅', cohrLine);
+ok(/บุริมสิทธิแปลงสภาพ/.test(cohrLine) && /if-converted/.test(cohrLine) && /EarningsPerShareDiluted/.test(cohrLine),
+  '★ COHR: มีคำเตือนพร้อมสาเหตุ (บุริมสิทธิ/if-converted) + ทางยืนยัน (XBRL)', cohrLine);
+ok(/ห้ามหาร NI÷Shares เอง/.test(cohrLine) && /3\.94/.test(cohrLine),
+  'COHR: คำเตือนบอกทั้งค่าที่หารเองได้ (3.94) และคำสั่งห้ามใช้', cohrLine);
+
+// ★ สาเหตุไม่ได้มีแค่บุริมสิทธิ — CAMT (หุ้นกู้แปลงสภาพ) ตกกับดักเดียวกัน วัดจริง 19 ส.ค. 69: EPS(dil) 0.78 vs NI÷Shares 0.74
+// ถ้าคำเตือนพูดถึงแต่ "บุริมสิทธิ" worker ที่ดู CAMT (ไม่มีบุริมสิทธิ) จะปัดตกคำเตือนแล้วหารเองต่อ
+ok(/ดอกเบี้ย/.test(cohrLine) && /หุ้นกู้แปลงสภาพ/.test(cohrLine) && /CAMT/.test(cohrLine),
+  '★ คำเตือนต้องครอบคลุมหุ้นกู้แปลงสภาพ (ดอกเบี้ยหลังภาษีบวกกลับ) ไม่ใช่บุริมสิทธิอย่างเดียว', cohrLine);
+
+// round-trip — format contract ต้องไม่พัง: dT=0 · ตาราง=4.12 (ไม่ใช่ 3.95 ที่หารเอง)
+const dC = P.parseDeltas('Δ ราคา=0.00% · Δ EPS(TTM)=0.0% — เกณฑ์: ...\n' + cohrLine);
+ok(dC.hasT === true && dC.dT === 0 && dC.epsQuote === 4.12 && dC.epsTable === 4.12,
+  '★ round-trip: parseDeltas ยังอ่าน COHR ได้ครบ (dT=0 · ตาราง=4.12)', JSON.stringify(dC) + ' | ' + cohrLine);
+const vC = P.verdict({ dP: 0, dE: 0, single: false, ...dC });
+ok(vC.exitCode === 0 && /✅ EPS quote ↔ ตาราง/.test(vC.text), '★ COHR: verdict ยัง ✅ exit 0 (บั๊กอยู่ที่คำอธิบาย ไม่ใช่คำตัดสิน)', vC.text);
+
+// ตาราง [3] ไม่มีแถว EPS(dil) → ค่าที่แสดง = NI÷Shares จริง ๆ ⇒ ต้องพิมพ์สูตรตามเดิม + เตือนความเสี่ยง if-converted
+const derT = F.tableEpsTTM(makeFinPage({ datekey: ['TTM'], netIncome: [770e6], sharesDiluted: [195.4e6] }));
+ok(derT.from === 'NI÷Shares' && F.epsReconcile(derT).show === true, 'epsReconcile: ค่าที่แสดงคือผลหารเอง → พิมพ์สูตรได้', JSON.stringify(derT));
+const derLine = F.epsTableLine(4.12, 'SA', derT);
+ok(/= NI 770 ÷ 195M หุ้น/.test(derLine), 'epsTableLine: เส้นทาง NI÷Shares ยังพิมพ์สูตรเหมือนเดิม', derLine);
+ok(/ไม่มีแถว EPS\(dil\)/.test(derLine) && /ตราสารแปลงสภาพ/.test(derLine) && /COHR\/CAMT/.test(derLine),
+  '★ derived path: เตือนว่าอาจผิดฐานถ้ามีบุริมสิทธิแปลงสภาพ (ตัวหารเองต่ำกว่าจริง)', derLine);
+
+// ไม่ regress ของเดิม: AMATA/AAOI/first fixture ย้อนกลับได้ ⇒ สูตรต้องยังอยู่
+ok(/= NI 3,698 ÷ 1,149M หุ้น/.test(amataLine), 'ไม่ regress: AMATA (3698÷1149=3.22) ยังพิมพ์สูตร', amataLine);
+ok(/= NI -57\.0 ÷ 72\.9M หุ้น/.test(aaoiLine), 'ไม่ regress: AAOI (EPS ใกล้ 0, abs tol) ยังพิมพ์สูตร', aaoiLine);
+ok(/= NI 674 ÷ 557M หุ้น/.test(outBoth), 'ไม่ regress: fixture แรก (674÷557=1.21) ยังพิมพ์สูตร', outBoth);
+ok(F.epsBasisNote(cohrT, F.epsReconcile(cohrT)) != null && F.epsBasisNote(amataFin && t3, F.epsReconcile(t3)) === null,
+  'epsBasisNote: คืนบรรทัดเตือนเฉพาะเคสที่ไม่ตรง (COHR) · เคสที่ตรง (AMATA) = null');
+ok(F.epsBasisNote(F.tableEpsTTM(null), F.epsReconcile(F.tableEpsTTM(null))) === null, 'epsBasisNote: ไม่มีตาราง → null ไม่ throw');
+
 // ================= จุดบอด 1: หุ้นคงเหลือ ≠ แถว Shares ถัวเฉลี่ยปรับลด =================
 ok(F.statNum('46,044,477') === 46044477 && F.statNum('7.61B') === 7.61e9 && F.statNum('46.04M') === 46.04e6
   && F.statNum('1.15B') === 1.15e9 && F.statNum('-') === null && F.statNum(undefined) === null, 'statNum: คอมมา/K-M-B-T/ค่าเสีย');

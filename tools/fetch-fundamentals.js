@@ -280,7 +280,34 @@ function tableEpsTTM(fin) {
   const derived = (ni != null && shares) ? ni / shares : null;
   const val = eps != null ? eps : derived;
   if (val == null) return { err: 'ตาราง [3] ไม่มี EPS(dil)/NetIncome ของ TTM', shares };
-  return { eps: val, from: eps != null ? 'EPS(dil) TTM' : 'NI÷Shares', ni, shares };
+  return { eps: val, from: eps != null ? 'EPS(dil) TTM' : 'NI÷Shares', ni, shares, derived };
+}
+
+// ★ EPS ปรับลด "ย้อนกลับได้" จริงไหม — ตัวตั้งของมันไม่ใช่แถว NetIncome เสมอไป: แถว NetIncome ของ SA คือ
+// NetIncomeLossAvailableToCommonStockholdersBasic (กำไร**ส่วนผู้ถือหุ้นสามัญ** = หักปันผลบุริมสิทธิแล้ว) แต่ตราสารแปลงสภาพ
+// ทำให้ EPS ปรับลดใช้ฐาน if-converted = บวก**กลับ**ตัวตั้ง (ปันผลบุริมสิทธิ / ดอกเบี้ยหุ้นกู้แปลงสภาพหลังภาษี) ÷ หุ้นปรับลด
+// (COHR 19 ส.ค. 69 บุริมสิทธิแปลงสภาพ: 770 ÷ 195.4 = 3.95 แต่ EPS จริง = 4.12 = 805 ÷ 195.4 · CAMT หุ้นกู้แปลงสภาพ: 0.74 vs 0.78
+//  — ยืนยันด้วย SEC XBRL companyconcept EarningsPerShareDiluted)
+// ⇒ พิมพ์สูตร "= NI ÷ Shares" ได้เฉพาะตอนที่มันตรงกับค่าที่แสดงจริง ไม่งั้น worker ที่หารตามจะได้เลขผิดฐานทั้งใบ
+function epsReconcile(table) {
+  if (!table || !Number.isFinite(table.eps)) return { show: false };
+  const d = asNum(table.derived);
+  if (!Number.isFinite(d)) return { show: false };
+  if (table.from === 'NI÷Shares') return { show: true, derived: d, pct: 0 };  // ค่าที่แสดง = ผลหารนั้นเอง
+  const gap = Math.abs(table.eps - d);
+  const pct = Math.abs(table.eps) > 0 ? gap / Math.abs(table.eps) * 100 : Infinity;
+  // ใช้เกณฑ์เดียวกับ Δ quote↔ตาราง — ห้ามตั้งค่าคงที่ใหม่ (หุ้นขาดทุน/EPS ใกล้ 0 ต้องไม่ถูกฟ้องเพราะ %)
+  return (gap <= EPS_TABLE_ABS_TOL || pct <= EPS_TABLE_PASS_PCT) ? { show: true, derived: d, pct } : { show: false, derived: d, pct };
+}
+
+// บรรทัดเตือนเมื่อ EPS(dil) กับ NI÷Shares ไม่ตรงกัน (คืน null = ตรงกัน/เทียบไม่ได้)
+function epsBasisNote(table, rec) {
+  if (!rec || rec.show || !Number.isFinite(rec.derived)) return null;
+  return `    ★ ตัวตั้งของ EPS ปรับลด **ไม่ใช่** แถว NetIncome: NI ${fmtCell(table.ni, 'm')} ÷ ${fmtCell(table.shares, 'm')}M หุ้น = ${fmt(rec.derived)}`
+    + ` ต่าง ${rec.pct.toFixed(1)}% จาก EPS(dil) ที่แสดง (${fmt(table.eps)}) — แถว NetIncome ของ SA = กำไรส่วนผู้ถือหุ้นสามัญ (หักปันผลบุริมสิทธิแล้ว)`
+    + ` ขณะที่บริษัทที่มีตราสารแปลงสภาพคิด EPS ปรับลดบนฐาน if-converted = บวกกลับตัวตั้ง (ปันผลบุริมสิทธิ / ดอกเบี้ยหุ้นกู้แปลงสภาพหลังภาษี) ÷ หุ้นปรับลด`
+    + ` (เคส COHR 19 ส.ค. 69 บุริมสิทธิแปลงสภาพ: ตัวตั้งที่ถูกคือกำไรรวม 805 ไม่ใช่ 770 ⇒ EPS 4.12 ยืนยันด้วย XBRL · CAMT หุ้นกู้แปลงสภาพ: 0.74 vs 0.78)`
+    + ` ⇒ **ห้ามหาร NI÷Shares เอง** แล้วเอาไปคิด EPS/FV/P-E ทั้งใบ — ยึด EPS(dil) แถวนี้ หรือยืนยันด้วย SEC XBRL companyconcept EarningsPerShareDiluted`;
 }
 
 // บรรทัดนี้ prep-stock.js แกะด้วย regex (parseDeltas) — แก้ format ต้องแก้ทั้งคู่ + test:prep คุม round-trip ไว้
@@ -291,14 +318,22 @@ function epsTableLine(quoteEps, quoteSrc, table) {
   if (!table || !Number.isFinite(table.eps) || table.eps === 0)
     return `${pre}เทียบไม่ได้ (${(table && table.err) || 'ตาราง [3] ไม่มี EPS'})${tail}`;
   const d = Math.abs(quoteEps - table.eps) / Math.abs(table.eps) * 100;
-  const how = table.from === 'NI÷Shares' || (table.ni != null && table.shares)
-    ? ` = NI ${fmtCell(table.ni, 'm')} ÷ ${fmtCell(table.shares, 'm')}M หุ้น` : '';
+  const rec = epsReconcile(table);
+  // ★ พิมพ์สูตรที่มาได้เฉพาะตอน NI÷Shares ให้ค่าเดียวกับที่แสดงจริง — ไม่งั้นเป็นคำอธิบายที่มาที่ผิด (บั๊ก COHR 19 ส.ค. 69)
+  const how = rec.show && table.ni != null && table.shares
+    ? ` = NI ${fmtCell(table.ni, 'm')} ÷ ${fmtCell(table.shares, 'm')}M หุ้น`
+    : (Number.isFinite(rec.derived) ? ' [แถว EPS(dil) — ★ ห้ามหาร NI÷Shares เอง ดูบรรทัดล่าง]' : '');
+  const note = epsBasisNote(table, rec);
+  const suffix = note ? `\n${note}` : '';
   const head = `${pre}${d.toFixed(1)}% (quote[${quoteSrc}]=${fmt(quoteEps)} · ตาราง=${fmt(table.eps)}${how})`;
   if (Math.abs(quoteEps - table.eps) <= EPS_TABLE_ABS_TOL || d <= EPS_TABLE_PASS_PCT)
-    return `${head} — ✅ ฐานเดียวกัน (cross-verify ครบ 3 ทาง: Yahoo · StockAnalysis · ตาราง [3])`;
+    return `${head} — ✅ ฐานเดียวกัน (cross-verify ครบ 3 ทาง: Yahoo · StockAnalysis · ตาราง [3])${suffix}`;
   return `${head} — ⚠ ขัดกัน >${EPS_TABLE_PASS_PCT}% แม้ quote 2 เจ้าจะตรงกัน (vendor ดึงฟีดเดียวกันได้)` +
     ` · ตัวตัดสินรอง: epsFwd ของ vendor เองต้องอยู่บนฐานเดียวกับ TTM (AMATA epsFwd 3.27 นั่งบนฐาน ~3.2 ⇒ 3.22 คือฐานจริง ไม่ใช่ 4.48)` +
-    ` · แยกให้ออกว่า "ตัดงวด" (ใช้ค่าใหม่) หรือ "นิยามต่าง" (freeze + เปิดเผยทั้งสองค่า) ตาม SKILL STEP 2 ก่อนเขียน`;
+    (table.from === 'NI÷Shares'
+      ? ` · ★ ตาราง [3] ไม่มีแถว EPS(dil) — ค่าที่แสดงคือ NI÷Shares ที่คำนวณเอง ซึ่ง**ผิดฐาน**ถ้าบริษัทมีตราสารแปลงสภาพ (if-converted บวกกลับปันผลบุริมสิทธิ/ดอกเบี้ยหลังภาษีเข้าตัวตั้ง ⇒ ค่าที่หารเองจะต่ำกว่าจริง เคส COHR/CAMT) ⇒ ยืนยันด้วย SEC XBRL EarningsPerShareDiluted ก่อนตัดสิน`
+      : '') +
+    ` · แยกให้ออกว่า "ตัดงวด" (ใช้ค่าใหม่) หรือ "นิยามต่าง" (freeze + เปิดเผยทั้งสองค่า) ตาม SKILL STEP 2 ก่อนเขียน${suffix}`;
 }
 
 // [2b] — หุ้นคงเหลือจริง ≠ แถว Shares ใน [3] · คืน array บรรทัด (test เรียกตรงได้ ไม่ต้องยิงเน็ต)
@@ -371,6 +406,10 @@ function printFinancialTable(pages, finErr) {
   for (const [label, cells] of all)
     console.log('    ' + label.padEnd(labelW) + cells.map((v, c) => String(v).padStart(colW[c] + 2)).join(''));
   if (rows.some(([label]) => label === SHARES_LABEL)) console.log(SHARES_NOTE);
+  // ★ ตัวชี้สั้น ๆ ตรงจุดที่ worker อ่านจริง — เห็น 3 แถวนี้ติดกันแล้วหารเองคือกับดัก (คำอธิบายเต็มอยู่บรรทัด Δ EPS(quote↔ตาราง[3]))
+  const tEps = tableEpsTTM(fin), tRec = epsReconcile(tEps);
+  if (Number.isFinite(tRec.derived) && !tRec.show)
+    console.log(`    ★ EPS(dil) TTM (${fmt(tEps.eps)}) ≠ NetIncome ÷ ${SHARES_LABEL} (${fmt(tRec.derived)}) ต่าง ${tRec.pct.toFixed(1)}% — ตัวตั้งของ EPS ปรับลดไม่ใช่แถว NetIncome (ตราสารแปลงสภาพ/if-converted) ⇒ ห้ามหารเอง ยึดแถว EPS(dil) · เหตุผลเต็มอยู่บรรทัด Δ EPS(quote↔ตาราง[3]) ข้างบน`);
   console.log('    ↑ ใช้ตารางนี้เขียน section งบ/แนวโน้ม/scenario ได้เลย — ห้าม WebFetch หน้า financials/balance-sheet/ratios/cash-flow ซ้ำ');
 }
 
@@ -442,7 +481,7 @@ async function main() {
 }
 
 module.exports = {
-  statsFromPayload, statNum, tableEpsTTM, epsTableLine, statsLines, yieldLine,
+  statsFromPayload, statNum, tableEpsTTM, epsTableLine, epsReconcile, epsBasisNote, statsLines, yieldLine,
   SHARES_LABEL, SHARES_NOTE, EPS_TABLE_PASS_PCT, EPS_TABLE_ABS_TOL, SHARES_WARN_PCT, YIELD_WARN_PP,
 };
 // ★ ต้อง guard — test:prep require ไฟล์นี้เพื่อเทียบ format กับ prep-stock (offline) ถ้าไม่ guard จะยิงเน็ตจริง
