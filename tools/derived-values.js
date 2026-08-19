@@ -9,9 +9,11 @@
  *
  *   1) P/E ที่โชว์        = ราคา ÷ EPS ที่การ์ดนั้นพิมพ์ไว้ (+ `stock-meta.pe` ที่เป็นกระจกของมัน)
  *   2) % ของราคาเป้า      = (เป้า − ราคา) / ราคา
+ *   3) Market Cap        = ราคา × จำนวนหุ้นที่การ์ดนั้นพิมพ์ไว้ (บรรทัด .d)
+ *   4) P/S ที่โชว์        = Market Cap ÷ รายได้ที่การ์ดนั้นพิมพ์ไว้
  *
  * ใช้ร่วมกัน 2 ฝั่ง — ห้ามทำสำเนาความรู้ (บทเรียนเดียวกับ `price-date.js`):
- *   • ตัวตรวจ  `test/check-reports.js` → E41 (P/E) · E42 (% ในการ์ด) · W15 (% ในเนื้อความ)
+ *   • ตัวตรวจ  `test/check-reports.js` → E41 (P/E) · E42 (% ในการ์ด) · E43 (Market Cap) · W15 (% ในเนื้อความ) · W16 (P/S)
  *   • ตัวเขียน `tools/update-prices.js` → `patchDerived()` ทั้งใน cron รายวันและโหมด `--heal-derived`
  *
  * ★ หลักที่ห้ามหลุด: **เงียบเมื่ออ่านฐานไม่ได้** — การ์ดที่ไม่ประกาศ EPS ของตัวเอง หรือช่องค่าที่ไม่ใช่
@@ -23,6 +25,14 @@
 const TOL_PE_REL = 0.02;   // P/E: ต่างได้ ≤2%
 const TOL_PE_ABS = 1.5;    //      หรือ ≤1.5 เท่า แล้วแต่ค่าไหนมากกว่า (การ์ดปัดเป็นจำนวนเต็มบ่อย — "~80x")
 const TOL_TGT_PP = 2;      // % ของราคาเป้า: ต่างได้ ≤2 จุด %
+const TOL_MCAP_REL = 0.03; // Market Cap / P/S: ต่างได้ ≤3% (จำนวนหุ้น/รายได้ที่พิมพ์ถูกปัดมาแล้ว + basic vs diluted)
+// ★ บวก "ครึ่งหลักสุดท้ายของหน่วยที่เขียน" เสมอ — ค่าที่เขียนหยาบ ๆ ในหน่วยใหญ่ปัดทิ้งได้เยอะกว่า 3%
+//   ("$2T" ครึ่ง ulp = 0.5e12 = 25% ของตัวมันเอง) ⇒ ถ้าไม่บวก ตัวซ่อมจะเขียนเลขเดิมกลับ (ไม่มีอะไรให้เปลี่ยน)
+//   แต่ตัวตรวจยังฟ้องอยู่ = error ที่ heal ไม่มีวันเคลียร์ได้ → cron ตาย ต้องใช้สูตรเดียวกันทั้งสองฝั่ง
+const MCAP_ULP = 0.55;
+// ราคาที่ implied จากการ์ด (Market Cap ÷ หุ้น) ต้องอยู่ในย่านเดียวกับราคาปัจจุบัน — หลุดย่าน = คนละฐาน
+// (ADR/ADS · หุ้นบางคลาส · cap ของทั้งกลุ่มแต่หุ้นเฉพาะคลาส) ⇒ **ไม่ตรวจ ไม่เขียน** อย่าเดา
+const MCAP_BAND = [0.4, 2.5];
 
 // ป้ายการ์ด P/E ที่ **ไม่ใช่** ราคา÷EPS ปัจจุบัน — ตัวคูณอ้างอิงเชิงประวัติ/เพื่อน/วัฏจักร
 // (สำรวจ 908 ใบ 19 ส.ค. 69: "P/E เฉลี่ย ~5 ปี" 475 การ์ด · "P/E มัธยฐาน 5 ปีงบ" · "P/E Mid-Cycle (norm.)")
@@ -38,6 +48,92 @@ const PCT_NOT_VS_PRICE = /รอบปี|ตั้งแต่ต้นปี|Y
 // (เคส LII: "StockAnalysis.com — ราคา $418.10, EPS TTM $22.51, … เป้าเฉลี่ย $553.00 (+32.27%, Buy)")
 const QUOTE_CONTEXT = /\.com|StockAnalysis|TradingView|Yahoo|Finviz|Zacks|MarketBeat|Simply\s*Wall/i;
 
+// ป้ายการ์ด Market Cap / P/S (E43/W16) — ป้ายเชิงประวัติใช้ PE_LABEL_SKIP ชุดเดียวกัน ("P/S มัธยฐานของตัวเอง")
+const MCAP_LABEL = /market\s*cap|มูลค่าตลาด|มาร์เก็ตแคป/i;
+const PS_LABEL = /\bP\s*\/\s*S(?:ales)?\b/i;
+// หน่วยตัวเลขใหญ่ที่คลังใช้จริง (สำรวจ 908 ใบ 19 ส.ค. 69) — เรียงยาว→สั้น เพราะ "แสนล้าน" มีคำว่า "ล้าน" อยู่ข้างใน
+// ไทยเขียนได้ทั้ง "แสนล้าน" และ "แสนลบ." (= แสนล้านบาท) · "พัน ล." = พันล้าน · US ใช้ T/B/M
+const SCALES = [
+  [/ล้านล้าน|\btrillion\b|(?<![A-Za-z])T(?![A-Za-z])/i, 1e12],
+  [/แสนล้าน|แสนลบ\./, 1e11],
+  [/หมื่นล้าน|หมื่นลบ\./, 1e10],
+  [/พันล้าน|พันลบ\.|พัน\s*ลบ\.|พัน\s*ล\.|\bbillion\b|(?<![A-Za-z])B(?![A-Za-z])|\bbn\b/i, 1e9],
+  [/ล้าน|ลบ\.|\bmillion\b|(?<![A-Za-z])M(?![A-Za-z])|\bmn\b/i, 1e6],
+];
+const scaleOf = (s) => { for (const [re, v] of SCALES) if (re.test(String(s))) return v; return null; };
+
+/** "~$41.1B" · "฿3.69 แสนล้าน" → { value, num:"41.1", scale:1e9 } — หน่วยต้องตามหลังตัวเลข (หรือมีในสตริง) */
+function parseAmount(text) {
+  const t = clean(text);
+  const m = t.match(/([0-9][0-9,]*(?:\.[0-9]+)?)/);
+  if (!m) return null;
+  const after = t.slice(m.index + m[1].length, m.index + m[1].length + 16);
+  const scale = scaleOf(after) || scaleOf(t);
+  if (!scale) return null;
+  const value = parseFloat(m[1].replace(/,/g, '')) * scale;
+  return value > 0 ? { value, num: m[1], scale } : null;
+}
+
+/**
+ * จำนวนหุ้นที่การ์ดพิมพ์ไว้ในบรรทัด .d → ตัวคูณของ Market Cap
+ * ★ ADR/ADS = เงียบเสมอ — อัตราส่วน ADR:หุ้นสามัญ ทำให้ "จำนวนหน่วย" กับ "หุ้นที่คิด cap" คนละตัว
+ *   (BABA "ADR ≈ 8 หุ้นสามัญ" · ASML "~385 ล้าน ADR" · BIDU "ADR ~340 ล้านหน่วย") เดา = เขียน cap ผิดหลักเลข
+ * รับทั้ง "~304M shares" · "~150.3 ล้านหุ้น" · "หุ้น ~14.29 พันล้าน" (คำนำหน้าตัวเลข)
+ */
+function parseShares(text) {
+  const t = clean(text);
+  if (!t || /ADR|ADS/i.test(t)) return null;
+  const num = '([0-9][0-9,]*(?:\\.[0-9]+)?)';
+  const unit = '(ล้านล้าน|แสนล้าน|หมื่นล้าน|พันล้าน|ล้าน|[MB])';
+  const m = t.match(new RegExp(`${num}\\s*${unit}?\\s*(?:shares?|หุ้น)`, 'i'))          // 304M shares · 150.3 ล้านหุ้น
+    || t.match(new RegExp(`(?:shares?|หุ้น)[^0-9]{0,14}${num}\\s*${unit}?`, 'i'));        // หุ้น ~14.29 พันล้าน
+  if (!m) return null;
+  const n = parseFloat(m[1].replace(/,/g, ''));
+  const sc = m[2] ? scaleOf(m[2]) : null;
+  const v = sc ? n * sc : n;
+  return v >= 1e5 ? v : null;   // ต่ำกว่านี้ = ไม่ใช่จำนวนหุ้นทั้งบริษัท (เลขปนจากคำอธิบาย)
+}
+
+/** เกณฑ์ผ่านของ Market Cap/P/S: 3% หรือ "ครึ่งหลักสุดท้ายของหน่วยที่เขียน" แล้วแต่ค่าไหนมากกว่า */
+const nearMcap = (calc, shown, numStr, scale) =>
+  Math.abs(calc - shown) <= Math.max(TOL_MCAP_REL * Math.abs(shown), MCAP_ULP * Math.pow(10, -decOf(numStr)) * (scale || 1));
+
+/** การ์ด Market Cap ที่ "ตรวจได้" → { label, shown, num, scale, shares } (ข้ามเมื่ออ่านไม่ได้ / คนละฐาน) */
+function mcapCards(html, price) {
+  const out = [];
+  const re = cardRe();
+  let m;
+  while ((m = re.exec(html))) {
+    const label = clean(m[1]);
+    if (!MCAP_LABEL.test(label) || PE_LABEL_SKIP.test(label)) continue;
+    const a = parseAmount(m[3]);
+    const shares = parseShares(m[5]);
+    if (!a || !shares) continue;
+    const ratio = a.value / shares / price;
+    if (!(price > 0) || ratio < MCAP_BAND[0] || ratio > MCAP_BAND[1]) continue;   // คนละฐาน → เงียบ
+    out.push({ label, shown: a.value, num: a.num, scale: a.scale, shares });
+  }
+  return out;
+}
+
+/** การ์ด P/S ที่ "ตรวจได้" → { label, shown, revenue } — ต้องประกาศ "รายได้/revenue/sales" พร้อมจำนวนเงินในบรรทัด .d */
+function psCards(html) {
+  const out = [];
+  const re = cardRe();
+  let m;
+  while ((m = re.exec(html))) {
+    const label = clean(m[1]);
+    if (!PS_LABEL.test(label) || PE_LABEL_SKIP.test(label) || /EV/i.test(label)) continue;   // EV/Sales ต้องใช้หนี้สุทธิ — ไม่มีฐานให้อ่าน
+    const vm = clean(m[3]).match(/([0-9]+(?:\.[0-9]+)?)\s*x/i);
+    const d = clean(m[5]);
+    if (!vm || !/รายได้|revenue|sales/i.test(d)) continue;
+    const a = parseAmount(d.replace(/^[\s\S]*?(?:รายได้|revenue|sales)/i, ''));
+    if (!a) continue;
+    out.push({ label, shown: parseFloat(vm[1]), revenue: a.value });
+  }
+  return out;
+}
+
 // การ์ด k/v(/d) หนึ่งใบ (.metric ในตาราง key metric และ .vcell ในกล่องสรุป)
 // group: 1=k · 2=แท็กเปิด .v · 3=เนื้อ .v · 4=แท็กปิด + บล็อก .d ทั้งก้อน (อาจไม่มี) · 5=เนื้อ .d
 const CARD_SRC = '<div class="k">([\\s\\S]*?)<\\/div>(\\s*<div class="v(?:[^"]*)"[^>]*>)([\\s\\S]*?)(<\\/div>(?:\\s*<div class="d(?:[^"]*)"[^>]*>([\\s\\S]*?)<\\/div>)?)';
@@ -50,6 +146,13 @@ const nearPE = (a, b) => Math.abs(a - b) <= Math.max(TOL_PE_REL * Math.abs(b), T
 // จำนวนทศนิยมของ "ตัวเลขที่เขียนไว้เดิม" — เขียนกลับด้วยความละเอียดเท่าเดิมเสมอ ("~80x" ต้องไม่กลายเป็น "~79.65x")
 const decOf = (s) => { const m = String(s).match(/\.(\d+)/); return m ? m[1].length : 0; };
 const fixed = (v, d) => v.toFixed(d);
+// เขียนตัวเลขกลับ "หน้าตาเดิม" — ทศนิยมเท่าเดิม + คงคอมมาคั่นหลักถ้าของเดิมมี ("฿8,288 ล้าน" → "฿8,761 ล้าน")
+function fmtLikeNum(v, orig) {
+  const d = decOf(orig);
+  return /,/.test(String(orig))
+    ? Number(v.toFixed(d)).toLocaleString('en-US', { minimumFractionDigits: d, maximumFractionDigits: d })
+    : v.toFixed(d);
+}
 
 /**
  * เลข EPS ที่ "การ์ดนั้นพิมพ์ไว้เอง" (บรรทัด .d) → ฐานที่ใช้คิด P/E ของการ์ดนั้น
@@ -177,6 +280,48 @@ function patchDerived(html, price, opts) {
     return body === vBody ? m : `<div class="k">${k}</div>${vOpen}${body}${tail}`;
   });
 
+  // 5) Market Cap = ราคา × จำนวนหุ้นที่การ์ดนั้นพิมพ์ไว้ (บรรทัด .d)
+  //    จำนวนหุ้นเป็นข้อเท็จจริงที่รายงานพิมพ์เอง ⇒ เหลือแค่คูณราคาใหม่ ไม่มีอะไรให้เดา
+  //    ★ หลุด MCAP_BAND (ราคาที่ implied จากการ์ดห่างราคาปัจจุบันเกินย่าน) = คนละฐาน → ไม่แตะ
+  out = out.replace(cardRe(), (m, k, vOpen, vBody, tail, dBody) => {
+    const label = clean(k);
+    if (!MCAP_LABEL.test(label) || PE_LABEL_SKIP.test(label)) return m;
+    const a = parseAmount(vBody), shares = parseShares(dBody);
+    if (!a || !shares) return m;
+    const ratio = a.value / shares / price;
+    if (ratio < MCAP_BAND[0] || ratio > MCAP_BAND[1]) return m;
+    const want = fmtLikeNum(price * shares / a.scale, a.num);
+    if (want === a.num || !isFinite(parseFloat(want))) return m;
+    const body = vBody.replace(/([0-9][0-9,]*(?:\.[0-9]+)?)/, want);
+    if (body === vBody) return m;
+    changes.push(`Market Cap [${label}] ${a.num} → ${want} (ราคา ${price} × ${shares.toLocaleString('en-US')} หุ้น)`);
+    return `<div class="k">${k}</div>${vOpen}${body}${tail}`;
+  });
+
+  // 6) P/S = Market Cap ÷ รายได้ที่การ์ดนั้นพิมพ์ไว้
+  //    ★ เป็นการอ้างอิง "ข้ามการ์ด" (ตัวตั้งมาจากการ์ด Market Cap) — จึงคุมด้วย W16 ระดับ warn ไม่ใช่ error
+  //      ถ้าอ่านฐาน Market Cap ไม่ได้ (ADR/คนละฐาน) → ไม่มีตัวตั้ง → ไม่แตะ
+  {
+    const basis = mcapCards(out, price)[0];
+    if (basis) {
+      out = out.replace(cardRe(), (m, k, vOpen, vBody, tail, dBody) => {
+        const label = clean(k);
+        if (!PS_LABEL.test(label) || PE_LABEL_SKIP.test(label) || /EV/i.test(label)) return m;
+        const d = clean(dBody);
+        if (!/รายได้|revenue|sales/i.test(d)) return m;
+        const rev = parseAmount(d.replace(/^[\s\S]*?(?:รายได้|revenue|sales)/i, ''));
+        const vm = clean(vBody).match(/([0-9]+(?:\.[0-9]+)?)\s*x/i);
+        if (!rev || !vm || !(rev.value > 0)) return m;
+        const want = fixed(price * basis.shares / rev.value, decOf(vm[1]));
+        if (want === vm[1] || !isFinite(parseFloat(want))) return m;
+        const body = vBody.replace(/([0-9]+(?:\.[0-9]+)?)(\s*x)/i, (mm, n, x) => want + x);
+        if (body === vBody) return m;
+        changes.push(`P/S [${label}] ${vm[1]}x → ${want}x (Market Cap ÷ รายได้ ${rev.num})`);
+        return `<div class="k">${k}</div>${vOpen}${body}${tail}`;
+      });
+    }
+  }
+
   // 4) (opt-in) % ของราคาเป้าที่เขียนในเนื้อความ — cron ห้ามแตะ prose (§9) ⇒ ใช้เฉพาะ heal ที่คนสั่ง + รีวิว diff
   if (o.prose) {
     out = out.replace(new RegExp(MONEY_PCT_SRC, 'g'), (m, cur, numS, open, sign, pctS, pctEnd, idx, whole) => {
@@ -216,7 +361,8 @@ function rewritePct(s, price, where, changes) {
 }
 
 module.exports = {
-  TOL_PE_REL, TOL_PE_ABS, TOL_TGT_PP,
+  TOL_PE_REL, TOL_PE_ABS, TOL_TGT_PP, TOL_MCAP_REL, MCAP_ULP, MCAP_BAND,
   PE_LABEL_SKIP, TGT_LABEL_STRICT, PCT_NOT_VS_PRICE, QUOTE_CONTEXT, MONEY_PCT_SRC, CARD_SRC,
-  cardRe, epsBasesOf, peCards, targetCells, basisFor, nearPE, patchDerived,
+  MCAP_LABEL, PS_LABEL, SCALES, scaleOf, parseAmount, parseShares, mcapCards, psCards, nearMcap,
+  fmtLikeNum, cardRe, epsBasesOf, peCards, targetCells, basisFor, nearPE, patchDerived,
 };

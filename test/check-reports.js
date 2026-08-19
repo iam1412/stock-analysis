@@ -92,6 +92,8 @@ const SOURCE_SEP = /\s*[\/,·•]\s*|\s+และ\s+/;
 // 80 คือจุดที่ผลนิ่ง (60/80/120 ให้ผลเท่ากัน) — ยังกันคำโปรย/ย่อหน้าที่หลุดมาทั้งก้อนอยู่
 const SOURCE_MAX_LEN = 80;
 
+const decOfStr = (s) => { const m = String(s).match(/\.(\d+)/); return m ? m[1].length : 0; };
+
 function firstNum(s) {
   if (s == null) return null;
   const t = norm(stripTags(String(s))).replace(/[฿$,]/g, '');
@@ -629,6 +631,41 @@ const CHECKS = [
       const exp = (t.target - c.px) / c.px * 100;
       if (Math.abs(exp - t.shown) > DV.TOL_TGT_PP)
         bad.push(`[${t.label}] เป้า ${t.target} ระบุ ${t.shown}% แต่เทียบราคา ${c.px} = ${exp.toFixed(1)}%`);
+    }
+    return bad.length ? bad.join(' ; ') : null;
+  } },
+
+  // ── E43: Market Cap = ราคา × จำนวนหุ้นที่การ์ดนั้นพิมพ์ไว้ ──
+  // คลาสเดียวกับ E41: จำนวนหุ้นเป็นข้อเท็จจริงที่รายงานพิมพ์เอง ราคาคือตัวคูณที่ cron ขยับทุกวัน
+  // (วัด 19 ส.ค. 69 ก่อนแก้: 544/908 ใบ คลาดเกินเกณฑ์ — ACN 36% · ADSK 31% · AAON 22%)
+  // ★ เงียบเมื่อ: อ่านหน่วย/จำนวนหุ้นไม่ได้ · บรรทัดพูดถึง ADR/ADS (จำนวนหน่วย ≠ หุ้นที่คิด cap)
+  //   · ราคาที่ implied จากการ์ด (cap ÷ หุ้น) หลุดย่าน MCAP_BAND = คนละฐาน ไม่ใช่ของค้าง
+  // ★ เกณฑ์ต้องบวก "ครึ่งหลักสุดท้ายของหน่วยที่เขียน" — ค่าหยาบในหน่วยใหญ่ ("$2T") ปัดทิ้งเกิน 3% ได้เอง
+  //   ถ้าใช้ 3% เปล่า ๆ ตัวซ่อมจะเขียนเลขเดิมกลับแต่ตัวตรวจยังฟ้อง = error ที่ heal เคลียร์ไม่ได้ → cron ตาย
+  { id: 'E43', level: 'error', label: 'Market Cap = ราคา × จำนวนหุ้นที่พิมพ์', fn: (c) => {
+    if (!(c.px > 0)) return null;
+    const bad = [];
+    for (const m of DV.mcapCards(c.html, c.px)) {
+      const calc = c.px * m.shares;
+      if (!DV.nearMcap(calc, m.shown, m.num, m.scale))
+        bad.push(`[${m.label}] โชว์ ${m.num} (×${m.scale.toExponential(0)}) แต่ ราคา ${c.px} × ${m.shares.toLocaleString('en-US')} หุ้น = ${(calc / m.scale).toFixed(decOfStr(m.num))} (คลาด ${((calc - m.shown) / m.shown * 100).toFixed(0)}%)`);
+    }
+    return bad.length ? bad.join(' ; ') : null;
+  } },
+
+  // ── W16: P/S = Market Cap ÷ รายได้ที่การ์ดนั้นพิมพ์ไว้ ──
+  // **warn ไม่ใช่ error** เพราะเป็นค่าเดียวในชุดนี้ที่อ้างอิง "ข้ามการ์ด" (ตัวตั้งมาจากการ์ด Market Cap
+  // ไม่ใช่บรรทัด .d ของตัวเอง) ⇒ ถ้าวันหนึ่งมีรายงานที่ฐานรายได้/ฐานหุ้นคนละชุดกัน error จะบล็อก cron
+  // ทั้งที่ตัวซ่อมแก้ให้ไม่ได้ · คลังปัจจุบันมี 8 การ์ดที่ตรวจได้ ตรวจมือครบทั้ง 8 = ของค้างจากราคาจริงทุกใบ
+  { id: 'W16', level: 'warn', label: 'P/S = Market Cap ÷ รายได้ที่พิมพ์', fn: (c) => {
+    if (!(c.px > 0)) return null;
+    const basis = DV.mcapCards(c.html, c.px)[0];
+    if (!basis) return null;                       // อ่านฐาน Market Cap ไม่ได้ → ไม่มีตัวตั้ง ต้องเงียบ
+    const bad = [];
+    for (const p of DV.psCards(c.html)) {
+      const calc = c.px * basis.shares / p.revenue;
+      if (Math.abs(calc - p.shown) > Math.max(DV.TOL_MCAP_REL * p.shown, 0.05))
+        bad.push(`[${p.label}] โชว์ ${p.shown}x แต่ Market Cap (ราคา ${c.px} × ${basis.shares.toLocaleString('en-US')} หุ้น) ÷ รายได้ = ${calc.toFixed(2)}x`);
     }
     return bad.length ? bad.join(' ; ') : null;
   } },

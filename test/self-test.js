@@ -442,6 +442,47 @@ reject('W14', addCard('4. EV/EBITDA', 'EBITDA $4.0B (mid-point FY2026 $3.6B guid
   }
 }
 
+// ── E43 / W16: Market Cap = ราคา × หุ้น · P/S = Market Cap ÷ รายได้ (19 ส.ค. 69) ──
+// คลาสเดียวกับ E41/E42 — วัดก่อนแก้: Market Cap คลาด 544/908 ใบ (ACN 36% · ADSK 31%)
+{
+  const DVT = require('../tools/derived-values.js');
+  const setCard = (label, v, d) => (h) => h.replace(
+    new RegExp(`(<div class="k">${label.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}</div>\\s*<div class="v[^"]*"[^>]*>)([\\s\\S]*?)(</div>\\s*<div class="d[^"]*"[^>]*>)([\\s\\S]*?)(</div>)`),
+    (m, a, ov, b, od, z) => a + v + b + d + z);
+  const addCardKV = (label, v, d) => (h) => h.replace('<div class="metric">',
+    `<div class="metric"><div class="k">${label}</div><div class="v">${v}</div><div class="d">${d}</div></div><div class="metric">`);
+  const mc = DVT.mcapCards(base, PX)[0];
+  const cur = C.isTHB ? '฿' : '$';
+
+  if (!mc) {
+    ok(false, 'E43: ฐาน BBL อ่านการ์ด Market Cap ไม่ได้ (ต้องมีมูลค่า + จำนวนหุ้นในบรรทัด .d)');
+  } else {
+    const M = 1e6;
+    const shM = mc.shares / M;                                   // จำนวนหุ้นของฐาน (หน่วยล้านหุ้น)
+    const capOf = (mult) => numStr(Math.round(PX * mc.shares * mult / M * 10) / 10);   // มูลค่าตลาดในหน่วย "ล้าน"
+    rejectBase('E43', 'ฐาน BBL: Market Cap ตรงกับ ราคา × หุ้น ภายในเกณฑ์ → ต้องเงียบ');
+    reject('E43', setCard('Market Cap', `~${cur}${capOf(1)} ล้าน`, `~${numStr(shM)} ล้านหุ้น`), 'E43: มูลค่าตลาด = ราคา × หุ้น พอดี → เงียบ');
+    expect('E43', 'error', setCard('Market Cap', `~${cur}${capOf(0.7)} ล้าน`, `~${numStr(shM)} ล้านหุ้น`), 'E43: มูลค่าตลาดค้างที่ 70% ของ ราคา × หุ้น (ราคาวิ่งขึ้นแต่ cap ไม่ตาม) → ต้องจับ');
+    // ADR/ADS: จำนวน "หน่วย" ไม่ใช่หุ้นที่ใช้คิด cap — เดา = เขียนผิดหลักเลข (เคส BABA/ASML/BIDU)
+    reject('E43', setCard('Market Cap', `~${cur}${capOf(0.7)} ล้าน`, `~${numStr(shM)} ล้าน ADR`), 'E43: บรรทัดบอกจำนวน ADR ไม่ใช่หุ้นสามัญ → ต้องเงียบ (เคส BABA/ASML)');
+    // หลุดย่าน = คนละฐาน (cap ของทั้งกลุ่ม/หุ้นบางคลาส) ไม่ใช่ "ค้างจากราคา"
+    reject('E43', setCard('Market Cap', `~${cur}${capOf(0.1)} ล้าน`, `~${numStr(shM)} ล้านหุ้น`), 'E43: ราคาที่ implied จากการ์ดหลุดย่าน (คนละฐาน) → ต้องเงียบ ไม่เดา');
+    reject('E43', setCard('Market Cap', `~${cur}${capOf(0.7)} ล้าน`, 'หุ้นหมุนเวียนกระจายตัวดี'), 'E43: บรรทัด .d ไม่ประกาศจำนวนหุ้น → ตรวจไม่ได้ ต้องเงียบ');
+    // เกณฑ์ต้องรองรับค่าหยาบในหน่วยใหญ่ — "N ล้านล้าน" ทศนิยม 2 ตำแหน่ง ครึ่ง ulp = 5e9
+    ok(DVT.nearMcap(2.004e12, 2e12, '2.00', 1e12) && !DVT.nearMcap(2.4e12, 2e12, '2.00', 1e12),
+      'E43: เกณฑ์ = max(3%, ครึ่งหลักสุดท้ายของหน่วยที่เขียน) — กันเคส error ที่ตัวซ่อมเคลียร์ไม่ได้');
+
+    // W16: P/S ใช้ตัวตั้งจากการ์ด Market Cap (ข้ามการ์ด) จึงเป็น warn
+    const revM = PX * mc.shares / 4 / M;                          // รายได้ที่ทำให้ P/S = 4.0x พอดี
+    rejectBase('W16', 'ฐาน BBL: ไม่มีการ์ด P/S → ต้องเงียบ');
+    reject('W16', addCardKV('P/S (TTM)', '4.0x', `รายได้ TTM ${cur}${numStr(revM)} ล้าน`), 'W16: P/S = Market Cap ÷ รายได้ พอดี → เงียบ');
+    expect('W16', 'warn', addCardKV('P/S (TTM)', '2.5x', `รายได้ TTM ${cur}${numStr(revM)} ล้าน`), 'W16: P/S ค้าง (2.5x ทั้งที่ cap÷รายได้ = 4.0x) → ต้องเตือน');
+    reject('W16', addCardKV('P/S (TTM)', '2.5x', 'พรีเมียมเทียบกลุ่ม SaaS'), 'W16: การ์ดไม่ประกาศรายได้ → ตรวจไม่ได้ ต้องเงียบ');
+    reject('W16', addCardKV('P/S มัธยฐานของตัวเอง', '2.5x', `รายได้ TTM ${cur}${numStr(revM)} ล้าน`), 'W16: ป้ายเชิงประวัติ (มัธยฐาน) ไม่ใช่ P/S ปัจจุบัน → ต้องเงียบ (เคส PAAS)');
+    reject('W16', addCardKV('EV/Sales (TTM)', '2.5x', `รายได้ TTM ${cur}${numStr(revM)} ล้าน`), 'W16: EV/Sales ต้องใช้หนี้สุทธิ ไม่มีฐานให้อ่าน → ต้องเงียบ');
+  }
+}
+
 // ── E40 / W13: ความถูกต้องของ tag ต่อหุ้น ──
 // E40/W13 อ่าน tag จากไฟล์บนดิสก์ ไม่ใช่จาก HTML ⇒ mutation แบบแก้สตริงฉีดไม่ได้
 // จึงต้องฉีดผ่าน opts.tagData (ช่องที่ออกแบบไว้ให้เทสโดยเฉพาะ)

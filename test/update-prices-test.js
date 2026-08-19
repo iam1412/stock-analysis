@@ -195,6 +195,39 @@ ok(sm.roe === smIn.roe && sm.fairValue === FV && sm.symbol === 'AAPL', 'stock-me
   // % ของราคาเป้าในการ์ด = (เป้า − ราคาใหม่)/ราคาใหม่ (E42 · เคส AAOI)
   for (const c of DV.targetCells(out))
     ok(Math.abs((c.target - 301.5) / 301.5 * 100 - c.shown) <= DV.TOL_TGT_PP, `การ์ด [${c.label}]: % ของราคาเป้าตรงกับราคาใหม่`, `เป้า ${c.target} → ${c.shown}%`);
+  // ── Market Cap = ราคา × หุ้น · P/S = Market Cap ÷ รายได้ (19 ส.ค. 69 — E43/W16) ──
+  const dpMC = { day: 11, monIdx: 6, yearCE: 2026 };
+  const MC_RE = /(<div class="k">Market Cap<\/div>\s*<div class="v[^"]*"[^>]*>)([\s\S]*?)(<\/div>\s*<div class="d[^"]*"[^>]*>)([\s\S]*?)(<\/div>)/;
+  const mcIn = aapl.match(MC_RE);
+  ok(!!mcIn, 'AAPL fixture: มีการ์ด Market Cap พร้อมบรรทัดจำนวนหุ้น');
+  if (mcIn) {
+    const setMC = (h, v, d) => h.replace(MC_RE, (m, a, ov, b, od, z) => a + v + b + (d === undefined ? od : d) + z);
+    const mcOut = DV.mcapCards(out, 301.5)[0];
+    ok(mcOut && DV.nearMcap(301.5 * mcOut.shares, mcOut.shown, mcOut.num, mcOut.scale),
+      'การ์ด Market Cap = ราคาใหม่ × จำนวนหุ้นที่พิมพ์ไว้', mcOut && `${mcIn[2].trim()} → โชว์ ${mcOut.num}`);
+    // ค่าที่ค้างมาก ๆ ต้องถูกเขียนใหม่ (ไม่ใช่ปล่อยผ่านเพราะ "ไกลเกิน")
+    const staleMC = U.patchReport(setMC(aapl, `~$${(301.5 * DV.parseShares(mcIn[4]) * 0.75 / 1e9).toFixed(1)}B`),
+      { newPrice: 301.5, dateParts: dpMC, chartData: null }).html;
+    const sc = DV.mcapCards(staleMC, 301.5)[0];
+    ok(sc && DV.nearMcap(301.5 * sc.shares, sc.shown, sc.num, sc.scale), 'Market Cap ที่ค้าง 25% ถูกเขียนใหม่ตามราคา', sc && String(sc.num));
+    // ADR/ADS: จำนวนหน่วย ≠ หุ้นที่ใช้คิด cap → ห้ามแตะ (เคส BABA/ASML/BIDU)
+    const adr = setMC(aapl, '~$100B', '~385 ล้าน ADR');
+    ok(U.patchReport(adr, { newPrice: 301.5, dateParts: dpMC, chartData: null }).html.includes('~$100B'),
+      'บรรทัดเป็นจำนวน ADR → cron ไม่แตะ Market Cap (เดา = ผิดหลักเลข)');
+    // หลุดย่าน = คนละฐาน (cap ของทั้งกลุ่ม/หุ้นบางคลาส) → ห้ามแตะ
+    const oob = setMC(aapl, `~$${(301.5 * DV.parseShares(mcIn[4]) * 0.1 / 1e9).toFixed(1)}B`);
+    const oobV = oob.match(MC_RE)[2];
+    ok(U.patchReport(oob, { newPrice: 301.5, dateParts: dpMC, chartData: null }).html.includes(oobV),
+      'ราคาที่ implied หลุดย่าน (คนละฐาน) → cron ไม่แตะ', oobV.trim());
+    // P/S: ตัวตั้งมาจากการ์ด Market Cap (ข้ามการ์ด) — patch ได้เมื่ออ่านฐานได้
+    const shares = DV.parseShares(mcIn[4]);
+    const revB = 301.5 * shares / 4 / 1e9;   // รายได้ที่ทำให้ P/S = 4.00x
+    const withPS = aapl.replace('<div class="metric">',
+      `<div class="metric"><div class="k">P/S (TTM)</div><div class="v">2.5x</div><div class="d">รายได้ TTM $${revB.toFixed(2)}B</div></div><div class="metric">`);
+    const psOut = DV.psCards(U.patchReport(withPS, { newPrice: 301.5, dateParts: dpMC, chartData: null }).html)[0];
+    ok(psOut && Math.abs(psOut.shown - 4) <= 0.15, 'P/S ถูกเขียนใหม่ = Market Cap ÷ รายได้ที่พิมพ์', psOut && `${psOut.shown}x`);
+  }
+
   // ★ prose ไม่แตะ (§9): cron เรียก patchDerived โดยไม่เปิด opts.prose ⇒ % ของราคาเป้าในย่อหน้าต้องคงเดิม
   const proseLine = 'นักวิเคราะห์ 20 ราย ให้เป้าเฉลี่ย $999.00 (+1.0%)';
   const withProse = aapl.replace('<div class="sub">', `<div class="sub">${proseLine} `);
