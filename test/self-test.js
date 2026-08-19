@@ -477,6 +477,9 @@ reject('W14', addCard('4. EV/EBITDA', 'EBITDA $4.0B (mid-point FY2026 $3.6B guid
     rejectBase('W16', 'ฐาน BBL: ไม่มีการ์ด P/S → ต้องเงียบ');
     reject('W16', addCardKV('P/S (TTM)', '4.0x', `รายได้ TTM ${cur}${numStr(revM)} ล้าน`), 'W16: P/S = Market Cap ÷ รายได้ พอดี → เงียบ');
     expect('W16', 'warn', addCardKV('P/S (TTM)', '2.5x', `รายได้ TTM ${cur}${numStr(revM)} ล้าน`), 'W16: P/S ค้าง (2.5x ทั้งที่ cap÷รายได้ = 4.0x) → ต้องเตือน');
+    // การ์ดที่เขียนเป็นจำนวนเต็ม: ต่างได้ถึงครึ่งหลัก (ตัวซ่อมปัดแล้วได้เลขเดิม — ต้องไม่เตือนค้าง)
+    reject('W16', addCardKV('P/S (TTM)', '4x', `รายได้ TTM ${cur}${numStr(PX * mc.shares / 4.3 / M)} ล้าน`), 'W16: การ์ดเขียน "4x" (จำนวนเต็ม) ค่าจริง 4.3x → อยู่ในครึ่งหลักสุดท้าย ต้องเงียบ');
+    expect('W16', 'warn', addCardKV('P/S (TTM)', '4x', `รายได้ TTM ${cur}${numStr(PX * mc.shares / 5.2 / M)} ล้าน`), 'W16: การ์ดเขียน "4x" แต่ค่าจริง 5.2x (เกินครึ่งหลัก) → ต้องเตือน');
     reject('W16', addCardKV('P/S (TTM)', '2.5x', 'พรีเมียมเทียบกลุ่ม SaaS'), 'W16: การ์ดไม่ประกาศรายได้ → ตรวจไม่ได้ ต้องเงียบ');
     reject('W16', addCardKV('P/S มัธยฐานของตัวเอง', '2.5x', `รายได้ TTM ${cur}${numStr(revM)} ล้าน`), 'W16: ป้ายเชิงประวัติ (มัธยฐาน) ไม่ใช่ P/S ปัจจุบัน → ต้องเงียบ (เคส PAAS)');
     reject('W16', addCardKV('EV/Sales (TTM)', '2.5x', `รายได้ TTM ${cur}${numStr(revM)} ล้าน`), 'W16: EV/Sales ต้องใช้หนี้สุทธิ ไม่มีฐานให้อ่าน → ต้องเงียบ');

@@ -664,7 +664,9 @@ const CHECKS = [
     const bad = [];
     for (const p of DV.psCards(c.html)) {
       const calc = c.px * basis.shares / p.revenue;
-      if (Math.abs(calc - p.shown) > Math.max(DV.TOL_MCAP_REL * p.shown, 0.05))
+      // เกณฑ์ต้องบวก "ครึ่งหลักสุดท้ายที่เขียน" เหมือน E43 — การ์ดที่เขียนเป็นจำนวนเต็ม ("17x") ปัดทิ้งได้ถึง 0.5
+      // ถ้าไม่บวก ตัวซ่อมจะเขียนเลขเดิมกลับ (ปัดแล้วเท่าเดิม) แต่ตัวตรวจยังเตือน = warning ที่ heal เคลียร์ไม่ได้
+      if (Math.abs(calc - p.shown) > Math.max(DV.TOL_MCAP_REL * p.shown, 0.05, DV.MCAP_ULP * Math.pow(10, -decOfStr(String(p.shown)))))
         bad.push(`[${p.label}] โชว์ ${p.shown}x แต่ Market Cap (ราคา ${c.px} × ${basis.shares.toLocaleString('en-US')} หุ้น) ÷ รายได้ = ${calc.toFixed(2)}x`);
     }
     return bad.length ? bad.join(' ; ') : null;
