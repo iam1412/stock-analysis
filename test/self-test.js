@@ -386,6 +386,62 @@ reject('W14', addCard('4. EV/EBITDA', 'TTM adj. EBITDA ~$4,208M × 13x EV/EBITDA
 reject('W14', addCard('4. EV/EBITDA', 'VITAS EBITDA ~$301M × 14x + Roto-Rooter EBITDA ~$151M × 10x = EV $5,724M - net debt ~$255M ÷ 13.27M หุ้น', '412.00'), 'EV/EBITDA: sum-of-parts หลายก้อน → recompute จาก desc ไม่ได้ → ต้องเงียบ (เคส CHE)');
 reject('W14', addCard('4. EV/EBITDA', 'EBITDA $4.0B (mid-point FY2026 $3.6B guide และ FY2027 target $5.75B) × 7.5x = EV $30.0B - debt $9.0B ÷ 530M หุ้น', '39.62'), 'EV/EBITDA: วงเล็บหลัง EBITDA มีตัวเลขเงินอื่น → กำกวม → ต้องเงียบ (เคส IP)');
 
+// ── E41 / E42 / W15: ค่าที่ "derive จากราคา" ต้องไม่ค้าง (19 ส.ค. 69) ──
+// คลาสบั๊กที่ gate เคยมองไม่เห็นทั้งคลาส: cron ขยับราคาทุกวัน แต่ P/E และ % ของราคาเป้าไม่ขยับตาม
+// (วัดจริงก่อนแก้: P/E เพี้ยน 233/908 ใบ · % ในการ์ดเป้าเพี้ยน 81/109 ใบ ทั้งที่ npm test เขียวทุกใบ)
+{
+  const esc = (t) => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  // แก้บรรทัดคำอธิบาย (.d) ของการ์ดที่ป้ายตรงกับ label — anchor เชิงโครงสร้าง ไม่ยึดค่าใน BBL
+  const setCardD = (label, txt) => (h) => h.replace(
+    new RegExp(`(<div class="k">${esc(label)}</div>\\s*<div class="v[^"]*"[^>]*>[\\s\\S]*?</div>\\s*<div class="d[^"]*"[^>]*>)([\\s\\S]*?)(</div>)`),
+    (m, a, v, b) => a + txt + b);
+  // แก้ช่องค่า (.v) ของการ์ดที่ป้ายตรงกับ label
+  const setCardV = (label, txt) => (h) => h.replace(
+    new RegExp(`(<div class="k">${esc(label)}</div>\\s*<div class="v[^"]*"[^>]*>)([\\s\\S]*?)(</div>)`),
+    (m, a, v, b) => a + txt + b);
+  const addProse = (txt) => (h) => h.replace('<div class="sub">', `<div class="sub">${txt} `);
+  const PE_LABEL = (base.match(/<div class="k">(P\/E \([^<]*\))<\/div>/) || [])[1];
+  const PE_HIST = (base.match(/<div class="k">(P\/E (?:เฉลี่ย|มัธยฐาน)[^<]*)<\/div>/) || [])[1];
+  const TGT_LABEL = (base.match(/<div class="k">([^<]*เป้านักวิเคราะห์[^<]*)<\/div>/) || [])[1];
+  const peShown = PE_LABEL ? firstNum(grab(new RegExp(`<div class="k">${esc(PE_LABEL)}</div>\\s*<div class="v[^"]*"[^>]*>([^<]*)<`), base)) : null;
+  const cur = C.isTHB ? '฿' : '$';
+
+  if (!PE_LABEL || !PE_HIST || !TGT_LABEL || !(peShown > 0)) {
+    ok(false, `E41/E42: ฐาน BBL ขาดการ์ดที่ fixture ต้องใช้ (P/E="${PE_LABEL}" · P/E ประวัติ="${PE_HIST}" · เป้า="${TGT_LABEL}" · P/E ที่โชว์=${peShown})`);
+  } else {
+    const epsFor = (pe) => numStr(Math.round(PX / pe * 100) / 100);            // EPS ที่ทำให้ ราคา÷EPS = pe พอดี
+    const tgt = numStr(Math.round(PX * 1.33 * 100) / 100);                      // ราคาเป้าสมมติ ~+33% จากราคาจริง
+    const tgtPct = (PX ? (parseFloat(tgt) - PX) / PX * 100 : 0);
+
+    rejectBase('E41', 'ฐาน BBL: การ์ด P/E ไม่ประกาศ EPS ของตัวเอง → ตรวจไม่ได้ ต้องเงียบ (ไม่เดาฐานจากที่อื่น)');
+    reject('E41', setCardD(PE_LABEL, `EPS (TTM) ${cur}${epsFor(peShown)}`), 'E41: การ์ด P/E ประกาศ EPS ที่ทำให้ ราคา÷EPS = ค่าที่โชว์ → เงียบ');
+    expect('E41', 'error', setCardD(PE_LABEL, `EPS (TTM) ${cur}${epsFor(peShown * 1.5)}`), 'E41: EPS ในการ์ดทำให้ ราคา÷EPS ต่างจากที่โชว์ 50% (P/E ค้างจากราคาเก่า) → ต้องจับ');
+    // เคส PWR/ENTG/FORM: ใบเดียวมี EPS หลายฐานโดยตั้งใจ (GAAP/adjusted) — ตรงฐานใดฐานหนึ่ง = ผ่าน
+    reject('E41', setCardD(PE_LABEL, `EPS GAAP ${cur}${epsFor(peShown * 1.6)} • Adj. TTM ~${cur}${epsFor(peShown)}`), 'E41: การ์ดประกาศ 2 ฐาน (GAAP/Adj.) และค่าที่โชว์ตรงฐานหนึ่ง → เงียบ (เคส PWR)');
+    // ป้ายเชิงประวัติ ("P/E เฉลี่ย ~5 ปี" 475 การ์ดในคลัง) ไม่ใช่ ราคา÷EPS ปัจจุบัน — ห้ามฟ้อง
+    reject('E41', setCardD(PE_HIST, `EPS (TTM) ${cur}${epsFor(peShown * 3)}`), 'E41: การ์ด P/E เชิงประวัติ (เฉลี่ย/มัธยฐาน) → ไม่ใช่ ราคา÷EPS ต้องเงียบ');
+    // stock-meta.pe = กระจกของค่าที่โชว์ → ต้องยืนบนฐาน EPS ที่ไฟล์ประกาศ (เคส ARM/JBL/STX/FORM ที่การ์ดถูกแต่ sm ค้าง)
+    expect('E41', 'error', (h) => mutJson('stock-meta', (d) => { d.pe = peShown * 2; })(setCardD(PE_LABEL, `EPS (TTM) ${cur}${epsFor(peShown)}`)(h)),
+      'E41: stock-meta.pe ค้างเป็น 2 เท่าของฐานที่ไฟล์ประกาศ → ต้องจับ (เคส ARM/JBL/STX/FORM)');
+    reject('E41', (h) => mutJson('stock-meta', (d) => { d.pe = peShown; })(setCardD(PE_LABEL, `EPS (TTM) ${cur}${epsFor(peShown)}`)(h)),
+      'E41: stock-meta.pe ตรงฐานที่ประกาศ → เงียบ');
+
+    // E42 — % ในการ์ดราคาเป้า (เคส AAOI: ค้างที่ +8.7% ทั้งที่ราคาปัจจุบันให้ +24.3%)
+    rejectBase('E42', 'ฐาน BBL: การ์ดเป้าไม่ได้เขียน % ไว้ → ไม่มีอะไรให้เทียบ ต้องเงียบ');
+    reject('E42', setCardV(TGT_LABEL, `~${cur}${tgt} (+${tgtPct.toFixed(1)}%)`), 'E42: % ในการ์ดเป้าตรงกับ (เป้า−ราคา)/ราคา → เงียบ');
+    expect('E42', 'error', setCardV(TGT_LABEL, `~${cur}${tgt} (+${(tgtPct - 12).toFixed(1)}%)`), 'E42: % ในการ์ดเป้าค้าง 12 จุด% จากราคาปัจจุบัน → ต้องจับ (เคส AAOI)');
+
+    // W15 — % ของราคาเป้าที่เขียนในเนื้อความ (cron แตะ prose ไม่ได้ → เป็น warning)
+    rejectBase('W15', 'ฐาน BBL: ไม่มี % ของราคาเป้าในเนื้อความ → ต้องเงียบ');
+    expect('W15', 'warn', addProse(`นักวิเคราะห์ 12 ราย ให้เป้าเฉลี่ย ${cur}${tgt} (+${(tgtPct - 15).toFixed(1)}%)`), 'W15: % ของราคาเป้าในเนื้อความค้าง 15 จุด% → ต้องเตือน');
+    reject('W15', addProse(`นักวิเคราะห์ 12 ราย ให้เป้าเฉลี่ย ${cur}${tgt} (+${tgtPct.toFixed(1)}%)`), 'W15: % ในเนื้อความตรงกับราคาปัจจุบัน → เงียบ');
+    reject('W15', addProse(`ราคาฟื้นจาก ${cur}${numStr(PX * 0.6)} มาที่ ${cur}${tgt} (+${(tgtPct - 15).toFixed(1)}%)`), 'W15: ประโยคเล่าการวิ่งของราคา (ไม่มีบริบท "เป้า/นักวิเคราะห์") → ต้องเงียบ (เคส AEHR)');
+    reject('W15', addProse(`เป้าเฉลี่ย ${cur}${tgt} (+${(tgtPct - 15).toFixed(1)}% ต่อปี)`), 'W15: วงเล็บเป็นผลตอบแทนตามช่วงเวลา ไม่ใช่ส่วนต่างจากราคา → ต้องเงียบ');
+    reject('W15', addProse(`StockAnalysis.com — ราคา ${cur}${numStr(PX * 0.85)}, เป้าเฉลี่ย ${cur}${tgt} (+${(tgtPct - 15).toFixed(1)}%)`), 'W15: ตัวเลขยกมาจากแหล่งพร้อมราคาของแหล่งเอง → ต้องเงียบ (เคส LII)');
+    reject('W15', addProse(`เงินปันผลต่อหุ้น ${cur}${numStr(PX * 0.05)} (+${(tgtPct - 15).toFixed(1)}%)`), 'W15: เลขเงิน < ¼ ราคา = ปันผล/EPS ไม่ใช่ราคาเป้า → ต้องเงียบ');
+  }
+}
+
 // ── E40 / W13: ความถูกต้องของ tag ต่อหุ้น ──
 // E40/W13 อ่าน tag จากไฟล์บนดิสก์ ไม่ใช่จาก HTML ⇒ mutation แบบแก้สตริงฉีดไม่ได้
 // จึงต้องฉีดผ่าน opts.tagData (ช่องที่ออกแบบไว้ให้เทสโดยเฉพาะ)

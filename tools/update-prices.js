@@ -55,6 +55,8 @@ const REPORTS = path.join(__dirname, '..', 'reports');
 const FLAGS = path.join(__dirname, '..', 'price-flags.json');
 
 // ชื่อเดือน + ตัวหา "วันที่ราคา" มาจาก tools/price-date.js ที่เดียว (ใช้ร่วมกับ gate — อย่าทำสำเนา)
+// ค่าที่ derive จากราคา (P/E · % ของราคาเป้า) — กติกาเดียวกับที่ gate ใช้ตรวจ E41/E42/W15 (ห้ามทำสำเนาความรู้)
+const { patchDerived } = require('./derived-values.js');
 const { findPriceDate, findRestatedDate, renderThaiDate, THAI_MONTHS, MONTH_ALT } = require('./price-date.js');
 const MAX_PTS = 13;          // กราฟรายเดือน ~1 ปี (E37)
 const FLAT_PP = 0.75;        // |% รอบปี| < 0.75 → "ทรงตัว" (ตาม migrate-annual-chg)
@@ -580,7 +582,15 @@ function patchReport(html, p) {
   need(/(id="pxIn"[^>]*\bvalue=")[^"]*(")/, 'pxIn value');
   out = out.replace(/(id="pxIn"[^>]*\bvalue=")[^"]*(")/, (m, a, z) => a + String(round(newPrice, 2)) + z);
 
-  return { html: out, changed: out !== html, chg, mos: round(mos, 1) };
+  // --- ค่าที่ derive จากราคาล้วน ๆ: P/E (การ์ด + stock-meta.pe) + % ของราคาเป้าในการ์ด (E41/E42) ---
+  // เหตุผลเดียวกับช่อง "ส่วนต่างจากราคา" ข้างบน: ตัวตั้งคือราคาที่เพิ่ง patch ไป ส่วนตัวหาร/ตัวลบ
+  // (EPS · ราคาเป้า) เป็นข้อเท็จจริงที่รายงานพิมพ์ไว้เอง ⇒ ไม่ใช่ prose ไม่มีอะไรให้ cron เดา
+  // ปล่อยไว้ = ค้างสะสมทุกวันที่ราคาขยับ (วัด 19 ส.ค. 69 ก่อนแก้: P/E เพี้ยน 233/908 ใบ)
+  // ★ prose ไม่แตะ (§9) — % ของราคาเป้าที่เขียนในย่อหน้าเป็นหน้าที่ของคน (W15 เตือน · `--heal-derived --prose` ที่คนสั่งเอง)
+  const dv = patchDerived(out, newPrice);
+  out = dv.html;
+
+  return { html: out, changed: out !== html, chg, mos: round(mos, 1), derived: dv.changes };
 }
 
 // ---------- flags ----------
@@ -642,6 +652,38 @@ function commitBody(updated, frozen) {
 }
 
 // ---------- main ----------
+// ---------- โหมดซ่อมค่าที่ derive จากราคา (one-off / หลัง migrate) ----------
+// ใช้ "ราคาที่พิมพ์อยู่ในไฟล์แล้ว" เป็นตัวตั้ง — ไม่ยิง Yahoo เลย ⇒ รันกลาง session ได้ ไม่ชน intraday guard
+// และไม่เปลี่ยนราคา/วันที่/กราฟ (แตะเฉพาะค่าที่คำนวณจากของที่พิมพ์ไว้แล้ว: P/E · stock-meta.pe · % ของราคาเป้า)
+//   node tools/update-prices.js --heal-derived              # dry-run ทั้งคลัง
+//   node tools/update-prices.js --heal-derived --write      # เขียนจริง (การ์ด + stock-meta เท่านั้น)
+//   node tools/update-prices.js --heal-derived --prose --write   # + % ของราคาเป้าที่เขียนในย่อหน้า (ต้องรีวิว diff)
+// ★ หลังเขียน: npm run build → node tools/preserve-dates.js → npm run build (คืนวันที่ "อัปเดตล่าสุด" เดิม —
+//   ซ่อมค่า derive ไม่ใช่ re-analysis จึงห้ามดันทั้งคลังขึ้นหน้าแรก)
+function healDerived(opts) {
+  const files = fs.readdirSync(REPORTS).filter((f) => /\.html$/i.test(f)).sort()
+    .filter((f) => !opts.only.size || opts.only.has(f.replace(/\.html$/i, '').toUpperCase()));
+  let touched = 0, total = 0, noPrice = 0;
+  for (const f of files) {
+    const fp = path.join(REPORTS, f);
+    const html = fs.readFileSync(fp, 'utf8');
+    // ราคาที่ใช้เป็นตัวตั้ง = ราคาใน header (.px) — ตัวเดียวกับที่ gate ใช้เทียบ (E41/E42) ไม่ใช่ stock-meta
+    const m = html.match(/<div class="px">\s*[฿$]?\s*([\d.,]+)/);
+    const px = m ? parseFloat(m[1].replace(/,/g, '')) : null;
+    if (!(px > 0)) { noPrice++; continue; }
+    const r = patchDerived(html, px, { prose: opts.prose });
+    if (!r.changes.length || r.html === html) continue;
+    touched++; total += r.changes.length;
+    console.log(`${opts.write ? '✎' : '·'} ${f.replace(/\.html$/i, '').padEnd(10)} ราคา ${px}`);
+    for (const c of r.changes) console.log(`    ${c}`);
+    if (opts.write) fs.writeFileSync(fp, r.html);
+  }
+  console.log('\n' + '─'.repeat(50));
+  console.log(`heal-derived: ${touched}/${files.length} ไฟล์มีค่าค้าง • แก้ ${total} จุด${opts.prose ? ' (รวม prose)' : ''}${noPrice ? ` • ข้าม ${noPrice} ไฟล์ (อ่านราคาไม่ได้)` : ''}`);
+  if (!opts.write) console.log('(dry-run — ใส่ --write เพื่อเขียนจริง)');
+  console.log('');
+}
+
 async function main() {
   const WRITE = process.argv.includes('--write');
   const FORCE = process.argv.includes('--force');
@@ -651,6 +693,11 @@ async function main() {
   // ตอนเย็นจะเลิกประทับราคาเงียบ ๆ ทุกครั้ง · ทั้งสอง flag บังคับระบุ SYMBOL + มีคน/agent ยืนยันแล้ว
   const ALLOW_INTRADAY = process.argv.includes('--allow-intraday') || FORCE || ALIVE;
   const ONLY = new Set(process.argv.slice(2).filter((a) => !a.startsWith('--')).map((s) => s.replace(/\.html$/i, '').toUpperCase()));
+  // โหมดซ่อมค่าที่ derive จากราคา — คนละทางเดินกับ cron (ไม่ fetch ไม่แตะราคา/วันที่/กราฟ/คิว flags)
+  if (process.argv.includes('--heal-derived')) {
+    healDerived({ write: WRITE, prose: process.argv.includes('--prose'), only: ONLY });
+    return;
+  }
   if (FORCE && !ONLY.size) { console.error('✗ --force ต้องระบุ SYMBOL ชัด ๆ (กันข้าม freeze ทั้งรีโป)'); process.exit(1); }
   if (ALIVE && !ONLY.size) { console.error('✗ --alive ต้องระบุ SYMBOL ชัด ๆ (ปลด not-on-exchange ทั้งรีโปคือลบหลักฐานหุ้นตายทิ้ง)'); process.exit(1); }
 

@@ -51,6 +51,14 @@ const TOL_CHG_PP = 12;    // ป้าย % รอบปี (header) vs ผล�
 //   คงไว้ที่ 3 = dead-band ±3 จุดของ cron (CLAUDE.md §9) — ค่าเดียวที่มีที่มา ไม่ต้องหลวมกว่านี้เพราะดริฟต์สะสมไม่มีแล้ว
 const TOL_MOS_SUMMARY_PP = 3;
 
+// ── ค่าที่ "derive จากราคา" (E41 · E42 · W15) — คลาสบั๊กที่ gate เคยมองไม่เห็นทั้งคลาส ──
+// cron ราคา (§9) patch price/chart/gauge/mos/upside แต่เดิม **ไม่แตะ P/E และ % ของราคาเป้า**
+// ⇒ ทุกวันที่ราคาขยับ ตัวเลขสองชนิดนี้ค้างกับราคาเก่าโดยไม่มีใครฟ้อง
+// (วัดจริง 19 ส.ค. 69: P/E ไม่ตรง 233/908 ใบ · % เป้าในการ์ดไม่ตรง 81/109 ใบที่เขียน %)
+// ★ นิยาม/เกณฑ์/ตัวแยกฐาน EPS อยู่ที่ `tools/derived-values.js` ที่เดียว — ใช้ร่วมกับตัวเขียน
+//   (`update-prices.patchDerived`) เพราะ "ตรวจ" กับ "ซ่อม" ต้องใช้กติกาเดียวกันเป๊ะ ไม่งั้นเถียงกันที่ขอบเกณฑ์
+const DV = require('../tools/derived-values.js');
+
 // ---------- helpers ----------
 const stripCode = (h) =>
   h.replace(/<script[\s\S]*?<\/script>/gi, ' ').replace(/<style[\s\S]*?<\/style>/gi, ' ');
@@ -216,6 +224,18 @@ function metricNumsAll(html, labelRe) {
   return out;
 }
 
+// การ์ดคีย์-ค่า ทุกใบในไฟล์ (.metric ในตาราง key metric และ .vcell ในกล่องสรุป) → { k, v, d }
+// ใช้โดย E41 (การ์ด P/E) และ E42 (การ์ดราคาเป้า) — ตรวจ "ค่าที่โชว์" ตรง ๆ ไม่ผ่าน stock-meta
+// ★ ต้องเป็นโครง k→v (→d) ที่ติดกัน — ถ้าโครงการ์ดเปลี่ยน รายการจะว่าง ⇒ เช็คเงียบ (ไม่เดา)
+function parseKVCards(html) {
+  const out = [];
+  const re = DV.cardRe();
+  const clean = (s) => norm(stripTags(String(s || ''))).replace(/\s+/g, ' ').trim();
+  let m;   // group ของ CARD_SRC: 1=k · 3=เนื้อ .v · 5=เนื้อ .d
+  while ((m = re.exec(html))) out.push({ k: clean(m[1]), v: clean(m[3]), d: clean(m[5]) });
+  return out;
+}
+
 function metricNum(html, labelRe, opts) {
   const m = html.match(new RegExp(`<div class="k">[^<]*${labelRe}[^<]*</div>\\s*<div class="v[^"]*">([^<]*)<`));
   if (!m) return null;
@@ -264,6 +284,7 @@ function buildCtx(html, name, opts) {
     vgridFV: (() => { const i = html.indexOf('class="vgrid"'); if (i === -1) return null; return firstNum(grab(/มูลค่าเหมาะสม<\/div>\s*<div class="v">([\s\S]*?)<\/div>/, html.slice(i))); })(),
     scaleNums: (() => { const seg = grab(/<div class="scale">([\s\S]*?)<\/div>\s*<\/div>/, html); if (!seg) return []; return seg.split('<span').slice(1).map((s) => firstNum(s)).filter((v) => v != null); })(),
     priceAge: parsePriceAge(headerM ? headerM[0] : ''),
+    cards: parseKVCards(html),                                  // การ์ด k/v/d ทุกใบ — ใช้โดย E41, E42
     // ทุกค่าที่โชว์ของ P/E และ ROE (ทุกการ์ดที่ป้ายมีคำนั้น) — ใช้โดย W10 เท่านั้น
     metricsAll: { pe: metricNumsAll(html, 'P/(?:E|DE)'), roe: metricNumsAll(html, 'ROE') },   // P/DE = ตัวคูณต่อ Distributable Earnings ของ alternative asset manager (BX) — มาตรฐานอุตสาหกรรมที่รายงานประกาศไว้ว่าใช้แทน GAAP EPS
     metrics: {
@@ -576,6 +597,68 @@ const CHECKS = [
       if (dev > fam.tol) bad.push(`${fam.label}: การ์ดโชว์ ${m.val} แต่คำนวณจากสูตรในคำอธิบายได้ ${exp.toFixed(2)} (คลาด ${(dev * 100).toFixed(0)}%)`);
     }
     return bad.length ? bad.join(' ; ') : null;
+  } },
+  // ── E41: P/E ที่โชว์ = ราคาปัจจุบัน ÷ EPS ที่การ์ดนั้นพิมพ์ไว้เอง ──
+  // คลาสบั๊ก "ค่าที่ derive จากราคาแล้วค้าง": cron ขยับราคาทุกวัน แต่เดิม P/E ไม่ขยับตาม
+  // ⇒ หน้าเว็บโชว์ ราคา/EPS/P/E ที่ขัดกันเอง (วัด 19 ส.ค. 69: 233/908 ใบ) — ต้นเหตุแก้ที่ update-prices.patchDerived
+  // ★ เงียบเมื่อ "การ์ดไม่ประกาศฐาน EPS ของตัวเอง" (หลักเดียวกับ E21/W14) — ห้ามเดาฐานจากที่อื่นในไฟล์
+  //   เพราะรายงานหนึ่งใบมี EPS ได้หลายฐานโดยตั้งใจ (PWR: GAAP $8.74→80x คู่กับ Adj. $13.1→53x)
+  { id: 'E41', level: 'error', label: 'P/E = ราคา ÷ EPS ที่พิมพ์ (การ์ด + stock-meta)', fn: (c) => {
+    if (!(c.px > 0)) return null;
+    const bad = [], bases = [];
+    for (const card of DV.peCards(c.html)) {
+      card.eps.forEach((e) => bases.push({ pe: c.px / e, eps: e }));
+      if (!card.eps.some((e) => DV.nearPE(c.px / e, card.shown)))
+        bad.push(`[${card.label}] โชว์ ${card.shown}x แต่ ราคา ${c.px} ÷ EPS ${card.eps.join('/')} = ${card.eps.map((e) => (c.px / e).toFixed(1)).join('/')}x`);
+    }
+    // stock-meta.pe = "กระจก" ของค่าที่โชว์ → ต้องยืนบนฐาน EPS ใดฐานหนึ่งที่ไฟล์ประกาศไว้
+    // (W10 ตรวจว่าตรงกับ "ตัวเลขที่โชว์" — ตัวนี้ตรวจว่าตัวเลขนั้นยังผูกกับ "ราคาปัจจุบัน" อยู่)
+    const smPe = c.sm && c.sm.ok && c.sm.data ? c.sm.data.pe : null;
+    if (isFiniteNum(smPe) && bases.length && !bases.some((b) => DV.nearPE(b.pe, smPe)))
+      bad.push(`stock-meta.pe ${smPe} ไม่ตรงฐานใดที่ไฟล์ประกาศ (ราคา ${c.px} ÷ EPS ${bases.map((b) => b.eps).join('/')} = ${bases.map((b) => b.pe.toFixed(1)).join('/')})`);
+    return bad.length ? bad.join(' ; ') : null;
+  } },
+
+  // ── E42: % ในการ์ด "ราคาเป้านักวิเคราะห์" = (เป้า − ราคา) / ราคา ──
+  // ราคาเป้าเป็นข้อเท็จจริงจากแหล่ง (คงเดิม) แต่ % เป็นค่า derive จากราคา ⇒ ค้างทุกครั้งที่ราคาขยับ
+  // (วัด 19 ส.ค. 69: 81/109 ใบที่เขียน % ในการ์ดนี้คลาดเกิน 2 จุด — AAOI ค้างที่ +8.7% ทั้งที่จริง +24.3%)
+  { id: 'E42', level: 'error', label: '% ของราคาเป้าในการ์ด = (เป้า−ราคา)/ราคา', fn: (c) => {
+    if (!(c.px > 0)) return null;
+    const bad = [];
+    for (const t of DV.targetCells(c.html)) {
+      const exp = (t.target - c.px) / c.px * 100;
+      if (Math.abs(exp - t.shown) > DV.TOL_TGT_PP)
+        bad.push(`[${t.label}] เป้า ${t.target} ระบุ ${t.shown}% แต่เทียบราคา ${c.px} = ${exp.toFixed(1)}%`);
+    }
+    return bad.length ? bad.join(' ; ') : null;
+  } },
+
+  // ── W15: % ของราคาเป้าที่เขียนในเนื้อความ (นอกการ์ด) ──
+  // เป็น warning ไม่ใช่ error เพราะ **cron แตะ prose ไม่ได้** (§9) ⇒ ต้องรอคนแก้ (หรือ `--heal-derived --prose` ที่คนสั่งเอง)
+  // และมี false positive 2 ชนิดที่ตัดอัตโนมัติไม่ได้:
+  //   1) ประโยคเล่าการวิ่งของราคา ("จาก $81.05 มาที่ $123.25 (+52.1%)" ใน AEHR — ถูกอยู่แล้ว)
+  //   2) ตัวเลขที่ยกมาจากแหล่งพร้อมราคาของแหล่งเอง (LII: "StockAnalysis.com — ราคา $418.10 … เป้าเฉลี่ย $553.00 (+32.27%)")
+  // ⇒ กรอง 3 ชั้น: ต้องมีบริบท "เป้า/นักวิเคราะห์" นำหน้า · วงเล็บต้องไม่ใช่ผลตอบแทนตามช่วงเวลา · ไม่อยู่ในบล็อกอ้างแหล่ง
+  { id: 'W15', level: 'warn', label: '% ของราคาเป้าในเนื้อความ = (เป้า−ราคา)/ราคา', fn: (c) => {
+    if (!(c.px > 0)) return null;
+    // ตัดช่องค่าในการ์ด (.v) ออกก่อน — E42 คุมส่วนนั้นแล้ว ไม่ต้องเตือนซ้ำสองที่
+    const prose = norm(visible(c.html.replace(/<div class="v(?:[^"]*)"[^>]*>[\s\S]*?<\/div>/g, ' '))).replace(/\s+/g, ' ');
+    const re = new RegExp(DV.MONEY_PCT_SRC, 'g');
+    const bad = [];
+    let m;
+    while ((m = re.exec(prose))) {
+      const target = parseFloat(m[2].replace(/,/g, '')), shown = parseFloat(m[4] + m[5]);
+      if (!(target > 0) || target < 0.25 * c.px) continue;          // เลขเงิน < ¼ ราคา = EPS/ปันผล/ตัวเลขต่อหุ้น ไม่ใช่ราคาเป้า
+      const before = prose.slice(Math.max(0, m.index - 100), m.index);
+      if (!DV.TGT_LABEL_STRICT.test(before) || DV.QUOTE_CONTEXT.test(before)) continue;
+      const after = prose.slice(m.index, m.index + 120);
+      const close = after.indexOf(')');
+      if (DV.PCT_NOT_VS_PRICE.test(after.slice(0, close === -1 ? 60 : close))) continue;
+      const exp = (target - c.px) / c.px * 100;
+      if (Math.abs(exp - shown) > DV.TOL_TGT_PP)
+        bad.push(`ราคาเป้า ${target} ระบุ ${shown}% แต่เทียบราคา ${c.px} = ${exp.toFixed(1)}%`);
+    }
+    return bad.length ? [...new Set(bad)].join(' ; ') : null;
   } },
 ];
 

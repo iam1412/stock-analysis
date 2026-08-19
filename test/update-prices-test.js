@@ -168,7 +168,42 @@ ok(out.includes('<div class="px">$301.50<small>'), 'px header อัปเดต
 ok(sm.price === 301.5, 'stock-meta.price');
 ok(Math.abs(sm.mos - (FV - 301.5) / FV * 100) < 0.06, 'stock-meta.mos = (FV−p)/FV (E31)');
 ok(Math.abs(sm.upside - (FV - 301.5) / 301.5 * 100) < 0.06, 'stock-meta.upside (E31)');
-ok(sm.pe === smIn.pe && sm.roe === smIn.roe && sm.fairValue === FV && sm.symbol === 'AAPL', 'stock-meta คีย์อื่นคงเดิม');
+ok(sm.roe === smIn.roe && sm.fairValue === FV && sm.symbol === 'AAPL', 'stock-meta คีย์ที่ไม่ขึ้นกับราคาคงเดิม (roe/fairValue/symbol)');
+// ★ pe **ต้องขยับตามราคา** (19 ส.ค. 69): P/E = ราคา ÷ EPS ⇒ ปล่อยค้าง = ค่าที่ derive จากราคาเพี้ยนทั้งคลัง
+// (ก่อนแก้: 233/908 ใบมี P/E ไม่ตรงกับ ราคา÷EPS ที่ตัวเองพิมพ์ไว้ — E41 จับ · patchDerived ซ่อม)
+{
+  const DV = require('../tools/derived-values.js');
+  const bases = DV.peCards(out).flatMap((c) => c.eps);
+  ok(bases.length > 0, 'AAPL fixture: มีการ์ด P/E ที่ประกาศฐาน EPS ของตัวเอง (ถ้าไม่มี เทสด้านล่างพิสูจน์อะไรไม่ได้)');
+  ok(bases.some((e) => Math.abs(sm.pe - 301.5 / e) <= Math.max(0.02 * sm.pe, 0.1)),
+    'stock-meta.pe = ราคาใหม่ ÷ EPS ที่ไฟล์ประกาศ (กติกาเดียวกับ E41)', `pe ${smIn.pe} → ${sm.pe} · EPS ${bases.join('/')}`);
+  // ค่าที่ค้างจนหลุดฐานไปไกล ต้องถูกเขียนใหม่ ไม่ใช่ปล่อยผ่าน (เคส ARM/JBL/STX/FORM/CRDO)
+  const staleOut = U.patchReport(aapl.replace(/"pe":\s*[0-9.]+/, '"pe":999'),
+    { newPrice: 301.5, dateParts: { day: 11, monIdx: 6, yearCE: 2026 }, chartData: null }).html;
+  const staleSm = JSON.parse(staleOut.match(/<script[^>]*id=["']stock-meta["'][^>]*>([\s\S]*?)<\/script>/i)[1]);
+  ok(staleSm.pe !== 999 && bases.some((e) => Math.abs(staleSm.pe - 301.5 / e) <= Math.max(0.02 * staleSm.pe, 0.1)),
+    'stock-meta.pe ที่ค้างหลุดฐาน (999) ถูกเขียนใหม่ตามราคา', String(staleSm.pe));
+  // การ์ด P/E ที่โชว์บนหน้าเว็บก็ต้องขยับ — และต้องคงจำนวนทศนิยม/รูปแบบเดิม
+  for (const c of DV.peCards(out))
+    ok(c.eps.some((e) => DV.nearPE(301.5 / e, c.shown)), `การ์ด [${c.label}] = ราคาใหม่ ÷ EPS ที่การ์ดพิมพ์ไว้`, `โชว์ ${c.shown}x · EPS ${c.eps.join('/')}`);
+  // ป้ายเชิงประวัติ ("P/E เฉลี่ย ~5 ปี") ไม่ใช่ ราคา÷EPS — cron ห้ามแตะ แม้บรรทัดคำอธิบายจะมี EPS ปนอยู่
+  const histIn = aapl.match(/<div class="k">(P\/E (?:เฉลี่ย|มัธยฐาน)[^<]*)<\/div>\s*<div class="v[^"]*"[^>]*>([^<]*)</);
+  if (histIn) {
+    const histOut = out.match(new RegExp(`<div class="k">${histIn[1].replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}</div>\\s*<div class="v[^"]*"[^>]*>([^<]*)<`));
+    ok(histOut && histOut[1] === histIn[2], `การ์ด P/E เชิงประวัติ [${histIn[1]}] ไม่ถูกแตะ`, `${histIn[2]} → ${histOut && histOut[1]}`);
+  }
+  // % ของราคาเป้าในการ์ด = (เป้า − ราคาใหม่)/ราคาใหม่ (E42 · เคส AAOI)
+  for (const c of DV.targetCells(out))
+    ok(Math.abs((c.target - 301.5) / 301.5 * 100 - c.shown) <= DV.TOL_TGT_PP, `การ์ด [${c.label}]: % ของราคาเป้าตรงกับราคาใหม่`, `เป้า ${c.target} → ${c.shown}%`);
+  // ★ prose ไม่แตะ (§9): cron เรียก patchDerived โดยไม่เปิด opts.prose ⇒ % ของราคาเป้าในย่อหน้าต้องคงเดิม
+  const proseLine = 'นักวิเคราะห์ 20 ราย ให้เป้าเฉลี่ย $999.00 (+1.0%)';
+  const withProse = aapl.replace('<div class="sub">', `<div class="sub">${proseLine} `);
+  const proseOut = U.patchReport(withProse, { newPrice: 301.5, dateParts: { day: 11, monIdx: 6, yearCE: 2026 }, chartData: null }).html;
+  ok(proseOut.includes(proseLine), 'cron ไม่แตะ % ของราคาเป้าที่เขียนในเนื้อความ (§9 — เป็นงานของ W15 + --heal-derived --prose)');
+  // โหมด heal ที่คนสั่งเอง (opts.prose) ถึงจะแตะ
+  const healed = DV.patchDerived(withProse, 301.5, { prose: true }).html;
+  ok(!healed.includes(proseLine) && /เป้าเฉลี่ย \$999\.00 \(\+231/.test(healed), 'heal --prose: % ของราคาเป้าในเนื้อความถูกเขียนใหม่จากราคา', (healed.match(/เป้าเฉลี่ย[^<]*/) || [])[0]);
+}
 const mosBig = parseFloat((out.match(/class="big">\s*([+\-−]?\s*[\d.]+)\s*%/) || [])[1].replace('−', '-'));
 ok(Math.abs(mosBig - sm.mos) <= 2, 'MOS .big ↔ stock-meta ภายใน 2pp (E16/E30)', `big=${mosBig} sm=${sm.mos}`);
 ok(out.includes('11 ก.ค. 2026'), 'วันที่ราคาใน header อัปเดต (คง ค.ศ.)');
