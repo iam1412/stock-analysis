@@ -6,7 +6,7 @@
 <title>วิเคราะห์หุ้น เซ็นทรัล รีเทล (CRC) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Sonnet 5">
 <script type="application/json" id="stock-meta">
-{"symbol":"CRC","currency":"THB","price":29,"fairValue":23,"mos":-26.1,"upside":-20.7,"pe":17.9,"dividendYield":2.3,"roe":10}
+{"symbol":"CRC","currency":"THB","price":27.75,"fairValue":23,"mos":-20.7,"upside":-17.1,"pe":17.9,"dividendYield":2.3,"roe":10}
 </script>
 <script type="application/json" id="report-data">
 {
@@ -36,11 +36,11 @@
       ["พ.ค.26", 21.1],
       ["มิ.ย.26", 23.5],
       ["ก.ค.26", 26.75],
-      ["ส.ค.26", 29]
+      ["ส.ค.26", 27.75]
     ],
     "min": 15,
     "max": 30,
-    "grid": [20, 25],
+    "grid": [17.5, 20, 22.5, 25, 27.5],
     "fairLine": 23,
     "currency": "฿",
     "highlight": [3, 11],
@@ -50,7 +50,7 @@
   "gauge": {
     "min": 14,
     "max": 31,
-    "cur": 29,
+    "cur": 27.75,
     "fair": 23,
     "fairLabelTop": true
   },
@@ -74,11 +74,11 @@
     <div class="sub">ห้างสรรพสินค้า (Central, Robinson) • ฟู้ด (Tops, Central Food Hall) • วัสดุก่อสร้าง (ไทวัสดุ, go!) • เวียดนาม (GO!, Nguyen Kim) • อิตาลี (Rinascente)</div>
     <div class="price-row">
       <div>
-        <div class="px">฿29.00<small>(CRC)</small></div>
+        <div class="px">฿27.75<small>(CRC)</small></div>
       </div>
-      <div class="chg">▲ +32.4% (รอบปี)</div>
+      <div class="chg">▲ +26.7% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 18 ส.ค. 2569 (2026)<br>
+        ราคา ณ 19 ส.ค. 2569 (2026)<br>
         กรอบ 52 สัปดาห์ ฿16.50 – ฿25.25<br>
         ที่มา: StockAnalysis.com • TradingView • Yahoo Finance
       </div>
@@ -89,7 +89,7 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล TTM ถึง Q1/2569 • งบ FY2025</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">~฿174,870 ล้าน</div><div class="d">หุ้น ~6.03 พันล้าน</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~฿167,333 ล้าน</div><div class="d">หุ้น ~6.03 พันล้าน</div></div>
       <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~17.9x</div><div class="d">บนกำไรหลัก · รายงาน ~17–19x</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~18–22x</div><div class="d">ลดลงจากช่วง IPO ที่สูง</div></div>
       <div class="metric"><div class="k">P/BV</div><div class="v neu">~1.86x</div><div class="d">มีหนี้-ลีสจาก IFRS16 บิดเบือน</div></div>
@@ -158,7 +158,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿29.00</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿27.75</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿23.00</div></div>
         </div>
         <div class="scale">
@@ -181,7 +181,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict bad">
-        <div class="big">−26%</div>
+        <div class="big">−21%</div>
         <div class="txt">ส่วนเผื่อติดลบเล็กน้อย — ราคาปัจจุบันใกล้/สูงกว่ามูลค่าเหมาะสมเล็กน้อย หลังราคาฟื้นจากจุดต่ำมาแล้ว เหมาะ "รอย่อ" เพื่อ MOS ที่ปลอดภัยกว่า มากกว่าไล่ราคา</div>
       </div>
       <div class="grid g3">
@@ -192,7 +192,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="29" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="27.75" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -286,7 +286,7 @@
       จึงถือว่า "เต็มมูลค่า" ในระยะสั้น นักลงทุนเน้น value ควรรอย่อสู่โซน ฿18 หรือต่ำกว่า เพื่อ MOS ที่ปลอดภัยกว่า โดยจับตาการฟื้นตัวของกำลังซื้อไทยและเวียดนาม</p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿23.00 <span style="font-size:12px;color:#cab9a8">(฿20–฿26)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −26.1%</div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −20.7%</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿23.00 (Buy/Neutral)</div></div>
       </div>
       <div class="zone">

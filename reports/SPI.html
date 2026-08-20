@@ -6,7 +6,7 @@
 <title>วิเคราะห์หุ้น สหพัฒนาอินเตอร์โฮลดิ้ง (SPI) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Sonnet 5">
 <script type="application/json" id="stock-meta">
-{"symbol":"SPI","currency":"THB","price":33.75,"fairValue":31.16,"mos":-8.3,"upside":-7.7,"pe":27.6,"dividendYield":1.86,"roe":2.9}
+{"symbol":"SPI","currency":"THB","price":33.5,"fairValue":31.16,"mos":-7.5,"upside":-7,"pe":27.6,"dividendYield":1.86,"roe":2.9}
 </script>
 <script type="application/json" id="report-data">
 {
@@ -35,11 +35,11 @@
       ["พ.ค.26", 32.25],
       ["มิ.ย.26", 32.5],
       ["ก.ค.26", 32.25],
-      ["ส.ค.26", 33.75]
+      ["ส.ค.26", 33.5]
     ],
     "min": 26,
-    "max": 36,
-    "grid": [28, 30, 32, 34],
+    "max": 34,
+    "grid": [28, 30, 32],
     "fairLine": 31.16,
     "currency": "฿",
     "highlight": [3, 11]
@@ -47,7 +47,7 @@
   "gauge": {
     "min": 20,
     "max": 37,
-    "cur": 33.75,
+    "cur": 33.5,
     "fair": 31.16
   },
   "fv": 31.16
@@ -70,11 +70,11 @@
     <div class="sub">บริษัทลงทุนหลักเครือสหพัฒน์ • ถือหุ้น TFMAMA · ICC · SPC · PB · TNL · OCC • พัฒนานิคมอุตสาหกรรมบางปะกง-ศรีราชา + โครงการอสังหาฯ พระราม 3</div>
     <div class="price-row">
       <div>
-        <div class="px">฿33.75<small>(SPI)</small></div>
+        <div class="px">฿33.50<small>(SPI)</small></div>
       </div>
-      <div class="chg">▲ +16.4% (รอบปี)</div>
+      <div class="chg">▲ +15.5% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 18 ส.ค. 2569 (StockAnalysis.com, ตรงกับ Yahoo Finance ที่ ฿32.25)<br>
+        ราคา ณ 19 ส.ค. 2569 (StockAnalysis.com, ตรงกับ Yahoo Finance ที่ ฿32.25)<br>
         กรอบ 52 สัปดาห์ ฿26.17 – ฿40.00<br>
         ที่มา: StockAnalysis.com, Yahoo Finance, SET/aio.panphol.com (ข้อมูลผู้ถือหุ้นใหญ่บริษัทในเครือ), TradingView (ราคาบริษัทในเครือ)
       </div>
@@ -85,7 +85,7 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">TTM ถึงไตรมาส 2/2569 เว้นระบุเป็นอื่น</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">฿43,436 ล้านบาท</div><div class="d">~1,287 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">฿43,115 ล้านบาท</div><div class="d">~1,287 ล้านหุ้น</div></div>
       <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~27.6x</div><div class="d">EPS TTM ต่ำกว่าปกติ — ไม่ใช้เป็นตัวชี้วัดหลักของหุ้นโฮลดิ้ง (ดู NAV ส่วนที่ 3)</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">N/A</div><div class="d">กำไรผันผวนตามส่วนแบ่งกำไรบริษัทร่วม — ไม่สะท้อนมูลค่าที่แท้จริง</div></div>
       <div class="metric"><div class="k">P/BV</div><div class="v neu">0.83x</div><div class="d">ต่ำกว่ามูลค่าทางบัญชี (BVPS ฿38.97, Q2/2569)</div></div>
@@ -152,7 +152,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿33.75</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿33.50</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿31.16</div></div>
         </div>
         <div class="scale">
@@ -185,7 +185,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="33.75" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="33.5" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -277,7 +277,7 @@
       <p>SPI เป็นบริษัทลงทุนหลักของเครือสหพัฒน์ ถือหุ้นใน TFMAMA/ICC/SPC/PB/TNL/OCC (6 บริษัทจดทะเบียนที่ยืนยันได้ มูลค่าตลาดรวม ~฿31,002 ล้านบาท) บวกกับบริษัทย่อย/ร่วมอีก 41 แห่งที่ไม่ได้จดทะเบียนและที่ดินนิคมอุตสาหกรรมที่ยังตีมูลค่าตลาดแยกไม่ได้ NAV floor (BVPS หักส่วนลดโฮลดิ้ง 25%) อยู่ที่ ~฿29.2–33.1 เฉลี่ย ฿31.16 ใกล้เคียงราคาตลาดปัจจุบัน ฿32.25 มาก (MOS −3.5%) แปลว่าราคาวันนี้แทบไม่เผื่อส่วนลดเพิ่มจากที่ตลาดให้กับโฮลดิ้งอยู่แล้ว จุดเด่นคือ NAV จริง (รวมสินทรัพย์ที่ยังตีมูลค่าไม่ได้) น่าจะสูงกว่าตัวเลขนี้ แต่ investment thesis ต้องอาศัยการ unlock มูลค่าในอนาคต ไม่ใช่กระแสเงินสดปันผล (yield เพียง ~1.86%)</p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿31.16 <span style="font-size:12px;color:#cab9a8">(฿29.23–฿33.09)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −8.3%</div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −7.5%</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">N/A (ไม่มีนักวิเคราะห์ติดตาม)</div></div>
       </div>
       <div class="zone">
@@ -290,7 +290,7 @@
   <div class="disc">
     <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะส่วนลดโฮลดิ้งที่ใช้ (25%), อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และมูลค่าสินทรัพย์ที่ไม่ได้จดทะเบียนซึ่งไม่ได้รวมในการคำนวณ NAV นี้
-    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ราคา ณ 18 ส.ค. 2569 จาก StockAnalysis.com (ตรงกับ Yahoo Finance) • สัดส่วนถือหุ้นบริษัทในเครือจาก SET/aio.panphol.com (ข้อมูลผู้ถือหุ้นใหญ่ พ.ค.–มี.ค. 2569) • ราคาบริษัทในเครือ ณ 18 ส.ค. 2569 จาก TradingView • โครงสร้างกลุ่มบริษัทจาก spi.co.th (Business Group Structure) • ข่าวดีล TNL-EDTH จาก Kaohoon.com • 56-1 One Report ฉบับเต็ม (spi.listedcompany.com) เข้าถึงไม่ได้ (HTTP 403) จึงไม่ได้รวมมูลค่าบริษัทย่อย/ร่วมที่ไม่ได้จดทะเบียนและที่ดินนิคมอุตสาหกรรมในการคำนวณ NAV
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ราคา ณ 19 ส.ค. 2569 จาก StockAnalysis.com (ตรงกับ Yahoo Finance) • สัดส่วนถือหุ้นบริษัทในเครือจาก SET/aio.panphol.com (ข้อมูลผู้ถือหุ้นใหญ่ พ.ค.–มี.ค. 2569) • ราคาบริษัทในเครือ ณ 19 ส.ค. 2569 จาก TradingView • โครงสร้างกลุ่มบริษัทจาก spi.co.th (Business Group Structure) • ข่าวดีล TNL-EDTH จาก Kaohoon.com • 56-1 One Report ฉบับเต็ม (spi.listedcompany.com) เข้าถึงไม่ได้ (HTTP 403) จึงไม่ได้รวมมูลค่าบริษัทย่อย/ร่วมที่ไม่ได้จดทะเบียนและที่ดินนิคมอุตสาหกรรมในการคำนวณ NAV
   </div>
   <footer>Stock Analysis Dashboard • ข้อมูล ณ 8 ส.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 
