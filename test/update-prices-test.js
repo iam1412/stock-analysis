@@ -228,6 +228,97 @@ ok(sm.roe === smIn.roe && sm.fairValue === FV && sm.symbol === 'AAPL', 'stock-me
     ok(psOut && Math.abs(psOut.shown - 4) <= 0.15, 'P/S ถูกเขียนใหม่ = Market Cap ÷ รายได้ที่พิมพ์', psOut && `${psOut.shown}x`);
   }
 
+  // ── หมวด 6: ผลตอบแทนฉาก 3 ปี + ป้าย "จากจุดเข้า" (20 ส.ค. 69 — W17) ──
+  // ราคาเป้า (EPS ปี 3 × P/E ออก) เป็นสมมติฐานของนักวิเคราะห์ ⇒ ห้ามแตะ
+  // แต่ % ที่วัดจากจุดเข้า derive จากราคาล้วน ๆ ⇒ cron ต้องขยับ ไม่งั้นฉาก Bear โชว์กำไรตอนราคาขึ้น (เคส RGLD)
+  {
+    const scn = (h) => [...h.matchAll(/<div class="ret[^"]*">([^<]*)<\/div>/g)].map((m) => m[1].trim());
+    const n1 = (s) => parseFloat(String(s).replace(/−/g, '-').replace(/[^0-9.\-]/g, ' ').trim().split(/\s+/)[0]);
+    const tgts = [...aapl.matchAll(/<div class="tgt">\s*\$?\s*([\d.,]+)/g)].map((m) => parseFloat(m[1]));
+    const cagr = (v) => (Math.pow(1 + v / 100, 1 / 3) - 1) * 100;
+    ok(tgts.length === 3, 'AAPL fixture: มีฉาก 3 คอลัมน์พร้อมราคาเป้า (ไม่งั้นเทสด้านล่างพิสูจน์อะไรไม่ได้)', JSON.stringify(tgts));
+
+    // 1) เส้นทาง cron ปกติ (patchReport) — ผลตอบแทนรวมต้องเท่ากับ (เป้า − ราคาใหม่)/ราคาใหม่
+    const got = scn(out);
+    tgts.forEach((t, i) => {
+      const want = (t - 301.5) / 301.5 * 100;
+      ok(Math.abs(n1(got[i]) - want) <= 1, `cron: ฉากที่ ${i + 1} ผลตอบแทนรวม = (เป้า ${t} − 301.5)/301.5`, `${got[i]} · ควร ~${want.toFixed(1)}%`);
+    });
+    // ป้ายจุดเข้าคงรูปแบบตัวเลขเดิมของใบนั้น (AAPL เขียน "$297" เป็นจำนวนเต็ม ⇒ เขียนกลับเป็นจำนวนเต็ม)
+    const hintNum = (out.match(/จากจุดเข้า\s*\$\s*([\d.,]+)/) || [])[1];
+    ok(hintNum === DV.fmtLikeNum(301.5, (aapl.match(/จากจุดเข้า\s*\$\s*([\d.,]+)/) || [])[1]),
+      'cron: ป้าย "จากจุดเข้า" = ราคาใหม่ (คงรูปแบบตัวเลขเดิม)', (out.match(/จากจุดเข้า[^•<]*/) || [])[0]);
+    // ★ ราคาเป้าเป็นสมมติฐาน ไม่ใช่ค่าที่ derive จากราคา — ต้องไม่ถูกแตะเด็ดขาด
+    ok(JSON.stringify([...out.matchAll(/<div class="tgt">\s*\$?\s*([\d.,]+)/g)].map((m) => parseFloat(m[1]))) === JSON.stringify(tgts),
+      'cron: ราคาเป้าของทุกฉากคงเดิม (เป็นสมมติฐาน ไม่ใช่ค่าที่ derive จากราคา)');
+    // %/ปี ต้องสอดคล้องกับผลตอบแทนรวมที่เพิ่งเขียน (CAGR — สูตรที่คลังใช้ 795 จาก 814 คอลัมน์)
+    got.forEach((s, i) => {
+      const m = s.match(/([+\-−–]?\s*[\d.]+)\s*%\s*\/\s*ปี/);
+      if (!m) return;
+      ok(Math.abs(parseFloat(m[1].replace(/[−–]/g, '-').replace(/\s/g, '')) - cagr(n1(s))) <= 0.6,
+        `cron: ฉากที่ ${i + 1} %/ปี = CAGR ของผลตอบแทนรวมที่เขียนใหม่`, s);
+    });
+
+    // 2) idempotent — ซ่อมซ้ำต้องไม่มีอะไรเปลี่ยน (ไม่งั้น cron เขียนไฟล์ทั้งคลังทุกวันโดยไม่มีของค้างจริง)
+    ok(!DV.patchDerived(out, 301.5).changes.some((c) => /หมวด 6/.test(c)), 'ซ่อมหมวด 6 ซ้ำรอบสอง → ไม่มีอะไรให้แก้ (idempotent)');
+
+    // 3) โครง HTML ต้องไม่ขยับแม้แต่แท็กเดียว
+    //    (บั๊กจริงตอนพัฒนา: ตำแหน่งช่อง ret คิดพลาดไป ~22 ตัวอักษร ⇒ เขียนทับตัวแท็ก ไฟล์พัง
+    //     แล้วทุก check เงียบหมดเพราะ parse ไม่ผ่าน = "สะอาดปลอม" ที่แย่กว่าปล่อยค้างไว้)
+    const cnt = (h, re) => (h.match(re) || []).length;
+    ok([/<div\b/g, /<\/div>/g, /<div class="ret/g, /<div class="tgt">/g, /<div class="col /g, /<li>/g, /<span>/g]
+      .every((re) => cnt(aapl, re) === cnt(out, re)), 'ซ่อมแล้วจำนวนแท็กเท่าเดิมทุกตัว → ไม่ได้เขียนทับโครงสร้าง');
+
+    // 4) เติมเครื่องหมายลบให้ค่าที่เดิมไม่มีเครื่องหมาย (ฉากที่เคยบวกแล้วกลับเป็นลบ — หัวใจของเคส RGLD)
+    //    ★ ต้องสร้างฉากจาก "ไฟล์ที่สอดคล้องในตัวเองแล้ว" เสมอ ห้ามยัดค่าดิบลงคอลัมน์เดียว —
+    //      ยัดค่าเดียวเข้าไปจะทำให้คอลัมน์นั้นหลุดจากอีกสอง ⇒ อ่านไม่ออก ⇒ ตัวซ่อมไม่แตะ แล้วเทสจะ fail
+    //      โดยที่โค้ดไม่ได้ผิดอะไร (และจะ fail เฉพาะตอนคลังถูก --heal-derived มาแล้ว = เทสเปราะ)
+    const at250 = DV.patchDerived(aapl, 250).html;              // ฉาก base เป็นบวกที่ราคา 250
+    const unsigned = at250.replace(/(<div class="col base">[\s\S]*?<div class="ret[^"]*">)([^<]*)(<\/div>)/,
+      (m, a, v, b) => a + v.replace(/\+\s*/g, '') + b);          // ถอดเครื่องหมาย + ออก (ค่ายังเท่าเดิม)
+    ok(!/\+/.test(scn(unsigned)[1]), '(ตั้งฉากทดสอบ) ฉาก base ไม่มีเครื่องหมายนำหน้า', scn(unsigned)[1]);
+    const flipped = scn(DV.patchDerived(unsigned, 400).html)[1]; // ที่ราคา 400 ฉาก base ต้องกลับเป็นลบ
+    ok(/[−-]\s*\d/.test(flipped) && n1(flipped) < 0, 'ค่าที่เดิมไม่มีเครื่องหมาย เมื่อกลับเป็นติดลบต้องถูกเติมเครื่องหมายให้', flipped);
+
+    // 5) คงจำนวนทศนิยมเดิมของแต่ละช่อง (ใบที่เขียน 1 ตำแหน่งต้องไม่กลายเป็นจำนวนเต็ม และกลับกัน)
+    // จุดเข้าสมมติ — ใช้ค่าอะไรก็ได้ เพราะด้านล่างเขียนใหม่ทั้งสามคอลัมน์จากค่านี้พร้อมกัน
+    // (ไฟล์จึงสอดคล้องในตัวเองเสมอ ไม่ขึ้นกับว่าคลังถูก --heal-derived มาแล้วหรือยัง)
+    const e0 = 293.92;
+    const dec1 = tgts.reduce((h, t, i) => h.replace(
+      new RegExp(`(<div class="col ${['bear', 'base', 'bull'][i]}">[\\s\\S]*?<div class="ret[^"]*">)([^<]*)(</div>)`),
+      (m, a, v, b) => a + `รวม ~ ${((t - e0) / e0 * 100).toFixed(1)}% (≈ ${cagr((t - e0) / e0 * 100).toFixed(1)}%/ปี)` + b), aapl);
+    scn(DV.patchDerived(dec1, 301.5).html).forEach((s, i) => {
+      ok(/\d\.\d%/.test(s), `คงทศนิยม 1 ตำแหน่งของฉากที่ ${i + 1}`, s);
+      ok(Math.abs(n1(s) - (tgts[i] - 301.5) / 301.5 * 100) <= 0.1, `ฉากที่ ${i + 1} (ทศนิยม 1) ค่าตรงสูตร`, s);
+    });
+
+    // 6) รูป "ต่อปีล้วน" (ไม่มีผลตอบแทนรวมให้เทียบ) — คลังมี 19 ใบ ต้องซ่อมได้เหมือนกัน
+    const pyOnly = tgts.reduce((h, t, i) => h.replace(
+      new RegExp(`(<div class="col ${['bear', 'base', 'bull'][i]}">[\\s\\S]*?<div class="ret[^"]*">)([^<]*)(</div>)`),
+      (m, a, v, b) => a + `${cagr((t - e0) / e0 * 100).toFixed(1)}%/ปี` + b), aapl);
+    scn(DV.patchDerived(pyOnly, 301.5).html).forEach((s, i) => {
+      ok(Math.abs(n1(s) - cagr((tgts[i] - 301.5) / 301.5 * 100)) <= 0.15, `รูป "ต่อปีล้วน": ฉากที่ ${i + 1} = CAGR จากราคาใหม่`, s);
+    });
+
+    // 7) ★ รักษาสมมติฐานปันผลของใบนั้น — BBL ใช้ฐาน "รวมปันผล" ห้ามสลับเป็นฐานไม่รวมปันผล
+    //    (คำว่า "รวมปันผล" ใน hint ตัดสินไม่ได้ เพราะ skeleton พิมพ์ติดมาทุกใบ — ต้องถอดจากตัวเลขที่โชว์เอง)
+    const bbl = fs.readFileSync(path.join(__dirname, '..', 'reports', 'BBL.html'), 'utf8');
+    const bblPlan = DV.scenarioPlan(bbl, 189.5);
+    ok(bblPlan && bblPlan.conv === 'div', 'BBL อ่านได้ว่าใช้ฐาน "รวมปันผล"', bblPlan && bblPlan.conv);
+    if (bblPlan) {
+      const bt = bblPlan.items[0].col.tgt, bd = bblPlan.items[0].col.dps;
+      const healedBear = n1(scn(DV.patchDerived(bbl, 250).html)[0]);
+      ok(Math.abs(healedBear - (bt + bd - 250) / 250 * 100) <= 1,
+        'ซ่อมแล้ว BBL ยังคงฐาน "รวมปันผล" (ไม่สลับไปฐานไม่รวมปันผล)',
+        `${healedBear}% · รวมปันผล ${((bt + bd - 250) / 250 * 100).toFixed(1)}% · ไม่รวม ${((bt - 250) / 250 * 100).toFixed(1)}%`);
+    }
+
+    // 8) ใบที่ "ตัดสินไม่ได้" ต้องไม่ถูกแตะเลย — ขอบเขตตัวเขียนต้องเท่ากับตัวตรวจ (W17) เป๊ะ ๆ
+    const broken = aapl.replace(/(<div class="col bear">[\s\S]*?<div class="tgt">)([^<]*)(<\/div>)/, (m, a, v, b) => a + '$999' + b);
+    ok(!DV.scenarioPlan(broken, 301.5), 'คอลัมน์เดียวหลุดจากอีกสองคอลัมน์ → อ่านไม่ออก ตัดสินไม่ได้');
+    ok(!DV.patchDerived(broken, 301.5).changes.some((c) => /หมวด 6/.test(c)), 'ใบที่ตัดสินไม่ได้ → ตัวเขียนต้องไม่แตะหมวด 6 เลย (ไม่เดาแทนคน)');
+  }
+
   // ★ prose ไม่แตะ (§9): cron เรียก patchDerived โดยไม่เปิด opts.prose ⇒ % ของราคาเป้าในย่อหน้าต้องคงเดิม
   const proseLine = 'นักวิเคราะห์ 20 ราย ให้เป้าเฉลี่ย $999.00 (+1.0%)';
   const withProse = aapl.replace('<div class="sub">', `<div class="sub">${proseLine} `);

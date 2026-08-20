@@ -672,6 +672,44 @@ const CHECKS = [
     return bad.length ? bad.join(' ; ') : null;
   } },
 
+  // ── W17: ผลตอบแทนฉาก 3 ปี (หมวด 6) = วัดจากราคาปัจจุบัน ──
+  // คลาสเดียวกับ E41/E42/E43 แต่เป็นคลาสที่ **ไม่มีทั้งตัวตรวจและตัวซ่อม** มาก่อน
+  // (วัด 20 ส.ค. 69 ตอนเคลียร์คิว price-flags: ทั้ง 11 ใบในคิวมีผลตอบแทนฉากค้างจากจุดเข้าเก่า
+  //  ทั้งที่ `npm test` รายงาน 43/43 error 0 — RGLD ฉาก Bear โชว์ +8.7% ทั้งที่จริง −11.3%
+  //  คือ "กรณีเลวร้ายสุดยังกำไร" ซึ่งกลับด้านความหมายของฉากไปเลย)
+  // ราคาเป้า (EPS ปี 3 × P/E ออก) ไม่ขึ้นกับราคาปัจจุบัน → ห้ามแตะ · ที่ต้องขยับคือจุดเข้ากับ % ที่วัดจากจุดเข้า
+  //
+  // **warn ไม่ใช่ error** เพราะตอนเพิ่ม (20 ส.ค. 69) คลาดกันอยู่ 702/907 ใบ — ตั้งเป็น error
+  // = cron ล้มทั้งคลังตั้งแต่รอบแรก · เลื่อนเป็น error ได้เมื่อคลังถูก `--heal-derived --write` จนสะอาดแล้ว
+  //
+  // ★ ขอบเขตต้องเท่ากับตัวซ่อมเป๊ะ ๆ — ทั้งคู่ถาม `DV.scenarioPlan` ตัวเดียวกัน ตัดสินไม่ได้ = เงียบทั้งคู่
+  //   (126 ใบ: 84 ใบสามคอลัมน์ไม่สอดคล้องกันเอง = ของที่คนต้องดู · 27 ใบปันผลกำกวม · 15 ใบรูป % ไม่ชัด)
+  { id: 'W17', level: 'warn', label: 'ผลตอบแทนฉาก 3 ปี = วัดจากราคาปัจจุบัน', fn: (c) => {
+    if (!(c.px > 0)) return null;
+    const plan = DV.scenarioPlan(c.html, c.px);
+    if (!plan) return null;                        // อ่านไม่ชัด/ตัดสินสมมติฐานปันผลไม่ได้ → ตัวซ่อมก็ไม่แตะ ต้องเงียบ
+    const bad = [];
+    const div = plan.conv === 'div' ? ' (รวมปันผล)' : '';
+    for (const it of plan.items) {
+      if (it.total) {
+        const shown = DV.retShown(it.total.token);
+        if (DV.retOff(shown, it.total.want))
+          bad.push(`ฉาก ${it.col.kind}: เป้า ${it.col.tgt} โชว์ ${shown}% แต่เทียบราคา ${c.px}${div} = ${it.total.want.toFixed(1)}%`);
+      }
+      if (it.py) {
+        const shown = DV.retShown(it.py.token);
+        if (DV.pyOff(shown, it.py.want))
+          bad.push(`ฉาก ${it.col.kind} ต่อปี: โชว์ ${shown}%/ปี แต่ควรเป็น ${it.py.want.toFixed(1)}%/ปี`);
+      }
+    }
+    // ป้ายจุดเข้า — เกณฑ์ต้องเป็น "ตัวซ่อมเขียนแล้วได้ค่าต่างจากเดิมไหม" ตรง ๆ
+    // ไม่งั้นจะเกิด warning ที่ heal เคลียร์ไม่ได้ (บทเรียนเดียวกับ MCAP_ULP)
+    const h = plan.block.hint;
+    if (h && h.value > 0 && DV.fmtLikeNum(c.px, h.num) !== h.num)
+      bad.push(`ป้าย "จากจุดเข้า" = ${h.num} แต่ราคาปัจจุบัน ${c.px}`);
+    return bad.length ? bad.join(' ; ') : null;
+  } },
+
   // ── W15: % ของราคาเป้าที่เขียนในเนื้อความ (นอกการ์ด) ──
   // เป็น warning ไม่ใช่ error เพราะ **cron แตะ prose ไม่ได้** (§9) ⇒ ต้องรอคนแก้ (หรือ `--heal-derived --prose` ที่คนสั่งเอง)
   // และมี false positive 2 ชนิดที่ตัดอัตโนมัติไม่ได้:
