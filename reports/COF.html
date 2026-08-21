@@ -8,7 +8,7 @@
 <meta name="ai-model" content="Claude Opus 4.8">
 <!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
 <script type="application/json" id="stock-meta">
-{"symbol":"COF","currency":"USD","price":220.73,"fairValue":212,"mos":-4.1,"upside":-4,"pe":11.4,"dividendYield":1.56,"roe":15}
+{"symbol":"COF","currency":"USD","price":212.48,"fairValue":212,"mos":-0.2,"upside":-0.2,"pe":11,"dividendYield":1.56,"roe":15}
 </script>
 <script type="application/json" id="report-data">
 {
@@ -38,7 +38,7 @@
       ["พ.ค.26", 187.93],
       ["มิ.ย.26", 200.62],
       ["ก.ค.26", 209.01],
-      ["ส.ค.26", 220.73]
+      ["ส.ค.26", 212.48]
     ],
     "min": 160,
     "max": 260,
@@ -50,7 +50,7 @@
   "gauge": {
     "min": 140,
     "max": 260,
-    "cur": 220.73,
+    "cur": 212.48,
     "fair": 212,
     "fairLabelTop": true
   },
@@ -75,14 +75,14 @@
     <div class="sub">บัตรเครดิต Venture, Quicksilver, Savor • สินเชื่อรถยนต์ • ธนาคารรายย่อยดิจิทัล • เจ้าของเครือข่าย Discover Network (หลังควบรวม พ.ค. 2568)</div>
     <div class="price-row">
       <div>
-        <div class="px">$220.73<small>(COF)</small></div>
+        <div class="px">$212.48<small>(COF)</small></div>
       </div>
       <!-- ★ ป้าย % รอบปี (gate E35/E36) — ผลตอบแทน ~1 ปี (เทียบราคา ~1 ปีก่อน) = ผลตอบแทนปลายกราฟ section 2 (จุดแรก→ท้าย)
            รูปแบบ: "▲ +X.X% (รอบปี)" ขึ้น · "▼ −X.X% (รอบปี)" ลง · "≈ ทรงตัว (รอบปี)" · หุ้น IPO <1 ปี ใช้ "(ตั้งแต่ IPO)"
            ไม่ใช่ % รายวัน/YTD/52 สัปดาห์ · ตั้งสี theme.chgBg/chgColor ให้ตรงทิศ (ขึ้น=เขียว/ลง=แดง · E34) -->
-      <div class="chg">▲ +3.8% (รอบปี)</div>
+      <div class="chg">≈ ทรงตัว (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 19 ส.ค. 2569 (2 Jul 2026)<br>
+        ราคา ณ 20 ส.ค. 2569 (2 Jul 2026)<br>
         กรอบ 52 สัปดาห์ $174.24 – $259.64<br>
         ที่มา: StockAnalysis.com, Yahoo Finance, SEC 8-K (Q1 2026 earnings release)
       </div>
@@ -97,9 +97,9 @@
          • ธนาคาร → NIM / NPL / CASA / Loan growth / Cost-to-income   • REIT/กองอสังหา → Occupancy / DPU / NAV / Gearing   • ประกัน → Combined ratio / EV
          • หุ้นเติบโต-ขาดทุน → Revenue growth / Gross margin / FCF / Cash runway (ตัด P/E ออก) -->
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">$136.0B</div><div class="d">~616M หุ้น (เพิ่ม ~60% YoY จากดีล Discover)</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">$130.9B</div><div class="d">~616M หุ้น (เพิ่ม ~60% YoY จากดีล Discover)</div></div>
       <div class="metric"><div class="k">P/E (TTM, GAAP)</div><div class="v neu">~42x</div><div class="d">บิดเบือนจากต้นทุนควบรวม — ดู P/E adj. ด้านล่าง</div></div>
-      <div class="metric"><div class="k">P/E (Adjusted, normalized)</div><div class="v neu">~11.4x</div><div class="d">EPS adj. $19.30 (คาดการณ์ FY2026, ตัด one-time)</div></div>
+      <div class="metric"><div class="k">P/E (Adjusted, normalized)</div><div class="v neu">~11.0x</div><div class="d">EPS adj. $19.30 (คาดการณ์ FY2026, ตัด one-time)</div></div>
       <div class="metric"><div class="k">P/TBV</div><div class="v neu">1.9x</div><div class="d">TBVPS $107.76 (Q1 2569)</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ Q1 FY2026</div><div class="v">$2.2B</div><div class="d">+57% YoY (รวม Discover เต็มไตรมาสแรก)</div></div>
@@ -175,7 +175,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $220.73</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $212.48</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $212</div></div>
         </div>
         <div class="scale">
@@ -199,7 +199,7 @@
     <div class="card">
       <!-- ✏️ class ของ mos-verdict: MOS<10 → "bad", 10–20 → "ok", ≥20 → "good" -->
       <div class="mos-verdict bad">
-        <div class="big">−4%</div>
+        <div class="big">−0.2%</div>
         <div class="txt">Margin of Safety ต่ำมาก — ราคาปัจจุบันเกือบเท่ามูลค่าเหมาะสม ยังไม่ใช่จุดเข้าที่มี MOS สูงพอสำหรับ value investor แม้ downside risk จำกัดเพราะราคาปรับลงมามากแล้วในปีนี้</div>
       </div>
       <div class="grid g3">
@@ -210,7 +210,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="220.73" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="212.48" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -219,13 +219,13 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $220.73 • EPS ฐาน ~$19.30 (adjusted) • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $212.48 • EPS ฐาน ~$19.30 (adjusted) • รวมปันผล</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS +0%/ปี</span></div>
         <div class="body">
           <div class="tgt">$174</div>
-          <div class="ret neg">−17.3%</div>
+          <div class="ret neg">−14.0%</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$19.30</span></li>
             <li><span>P/E ออก</span><span>9x</span></li>
@@ -238,7 +238,7 @@
         <div class="top"><span>⚖️ Base</span><span>EPS +7%/ปี</span></div>
         <div class="body">
           <div class="tgt">$260</div>
-          <div class="ret pos">+22.6%</div>
+          <div class="ret pos">+27.3%</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$23.64</span></li>
             <li><span>P/E ออก</span><span>11x</span></li>
@@ -251,7 +251,7 @@
         <div class="top"><span>🚀 Bull</span><span>EPS +12%/ปี</span></div>
         <div class="body">
           <div class="tgt">$353</div>
-          <div class="ret pos">+65.1%</div>
+          <div class="ret pos">+71.6%</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$27.12</span></li>
             <li><span>P/E ออก</span><span>13x</span></li>
@@ -310,7 +310,7 @@
       คุณภาพสินเชื่อกำลังดีขึ้นต่อเนื่อง (charge-off ลดลง YoY) แต่ยังต้องจับตา integration risk และความไม่แน่นอนของ synergy timeline ปี 2570</p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$212 <span style="font-size:12px;color:#cab9a8">($84–$251)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">แพงกว่ามูลค่า MOS ~ −4.1%</div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">แพงกว่ามูลค่า MOS ~ −0.2%</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$250 (Buy consensus)</div></div>
       </div>
       <div class="zone">
