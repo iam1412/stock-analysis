@@ -92,6 +92,7 @@ Co-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>
 
 ## 7. ข้อห้าม / ข้อควรระวัง
 
+- ✅ **งานยากต้องปรึกษา advisor ก่อนลงมือทุกครั้ง** — งานยาก เช่น หุ้นยากตามเกณฑ์ §3.2 · แก้โครงสร้างระบบ (build.js / quality gate / cron / template / CLAUDE.md) · ตัดสิน publish/skip กำกวม · แนวทางใหม่ที่ไม่เคยทำ — controller เรียก `advisor` ตรง · worker/subagent ห้ามเรียกตรง ต้องผ่าน courier เท่านั้น (§3.2 · `docs/orchestration.md` §2) · advisor ใช้ไม่ได้/ล้มเหลว → หยุดถาม user ก่อนลุย
 - ⏰ **Time Zone = Asia/Bangkok (UTC+7)** — ทุกการคิด "วันนี้"/ความสด (header · dedup 7 วัน · staleness 45/120 วัน) ใช้เวลาไทย · วันที่ในรายงานใช้ปี พ.ศ.
 - ❌ โมเดลนอกกติกา §3.2: **Haiku ทุกขั้น** · **ปล่อย default ไม่ pin `model`** (กลายเป็น Opus โดยไม่ตั้งใจ) — Sonnet เป็น default, Opus escalate เฉพาะหุ้นยาก
 - ❌ อย่า commit `dist/`, `node_modules/`, `.DS_Store` · อย่าแก้ไฟล์ใน `dist/` ตรง ๆ (แก้ต้นฉบับ)
