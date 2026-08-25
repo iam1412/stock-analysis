@@ -8,7 +8,7 @@
 <meta name="ai-model" content="Claude Sonnet 5">
 <!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
 <script type="application/json" id="stock-meta">
-{"symbol":"MO","currency":"USD","price":66.94,"fairValue":73.34,"mos":8.7,"upside":9.6,"pe":12.35,"dividendYield":5.83,"roe":null}
+{"symbol":"MO","currency":"USD","price":68.47,"fairValue":73.34,"mos":6.6,"upside":7.1,"pe":12.63,"dividendYield":5.83,"roe":null}
 </script>
 <!-- report-data: ธีมสี + ข้อมูลกราฟ/gauge ของ MO -->
 <script type="application/json" id="report-data">
@@ -39,7 +39,7 @@
       ["พ.ค.26", 69.58],
       ["มิ.ย.26", 71.95],
       ["ก.ค.26", 68.33],
-      ["ส.ค.26", 66.94]
+      ["ส.ค.26", 68.47]
     ],
     "min": 55,
     "max": 75,
@@ -51,7 +51,7 @@
   "gauge": {
     "min": 48,
     "max": 82,
-    "cur": 66.94,
+    "cur": 68.47,
     "fair": 73.34,
     "fairLabelTop": true
   },
@@ -76,14 +76,14 @@
     <div class="sub">Marlboro (บุหรี่อันดับ 1 ในสหรัฐฯ ส่วนแบ่งตลาด ~40%) • Copenhagen/Skoal (ยาเส้นไร้ควัน) • on! (นิโคตินพัช) • NJOY (บุหรี่ไฟฟ้า) • ธุรกิจบุหรี่เฉพาะตลาดสหรัฐฯ เท่านั้น (แยกจาก Philip Morris International)</div>
     <div class="price-row">
       <div>
-        <div class="px">$66.94<small>(MO)</small></div>
+        <div class="px">$68.47<small>(MO)</small></div>
       </div>
       <!-- ★ ป้าย % รอบปี (gate E35/E36) — ผลตอบแทน ~1 ปี (เทียบราคา ~1 ปีก่อน) = ผลตอบแทนปลายกราฟ section 2 (จุดแรก→ท้าย)
            รูปแบบ: "▲ +X.X% (รอบปี)" ขึ้น · "▼ −X.X% (รอบปี)" ลง · "≈ ทรงตัว (รอบปี)" · หุ้น IPO <1 ปี ใช้ "(ตั้งแต่ IPO)"
            ไม่ใช่ % รายวัน/YTD/52 สัปดาห์ · ตั้งสี theme.chgBg/chgColor ให้ตรงทิศ (ขึ้น=เขียว/ลง=แดง · E34) -->
-      <div class="chg">▲ +1.3% (รอบปี)</div>
+      <div class="chg">▲ +3.6% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 20 ส.ค. 2569<br>
+        ราคา ณ 24 ส.ค. 2569<br>
         กรอบ 52 สัปดาห์ $54.70 – $75.28<br>
         ที่มา: StockAnalysis.com, Yahoo Finance, Altria Investor Relations (Q1 2026 8-K)
       </div>
@@ -95,8 +95,8 @@
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">Dividend King — ปันผลขึ้นต่อเนื่อง 60 ปี</div></div>
     <!-- ✏️ ROE ไม่มีความหมาย (ส่วนของผู้ถือหุ้นติดลบจาก buyback สะสม) → ตัดออก แทนด้วย Net Debt/EBITDA และ Payout ratio -->
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">$111.8B</div><div class="d">~1.67 พันล้านหุ้น</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~12.4x</div><div class="d">อิง adj. EPS FY2025 $5.42</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">$114.3B</div><div class="d">~1.67 พันล้านหุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~12.6x</div><div class="d">อิง adj. EPS FY2025 $5.42</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~10.5x</div><div class="d">กรอบ 8x–13.5x (rerate ขึ้นปี 2568-69)</div></div>
       <div class="metric"><div class="k">Net Debt / EBITDA</div><div class="v neu">~2.0x</div><div class="d">เป้าหมายบริษัท ~2.0x (คงที่)</div></div>
 
@@ -170,7 +170,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $66.94</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $68.47</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $73.34</div></div>
         </div>
         <div class="scale">
@@ -195,7 +195,7 @@
     <div class="card">
       <!-- ✏️ class ของ mos-verdict: MOS<10 → "bad", 10–20 → "ok", ≥20 → "good" -->
       <div class="mos-verdict bad">
-        <div class="big">+9%</div>
+        <div class="big">+7%</div>
         <div class="txt">แทบไม่มีส่วนเผื่อความปลอดภัย — ราคาปัจจุบันใกล้เคียงมูลค่าเหมาะสมมาก เหมาะกับการถือเพื่อรับปันผล มากกว่าเก็งกำไรส่วนต่างราคา</div>
       </div>
       <div class="grid g3">
@@ -206,7 +206,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="66.94" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="68.47" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -215,13 +215,13 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $66.94 • EPS ฐาน ~$5.64 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $68.47 • EPS ฐาน ~$5.64 • รวมปันผล</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS −2%/ปี</span></div>
         <div class="body">
           <div class="tgt">$58.39</div>
-          <div class="ret pos">+7.0%</div>
+          <div class="ret pos">+4.6%</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$5.31</span></li>
             <li><span>P/E ออก</span><span>11x</span></li>
@@ -234,7 +234,7 @@
         <div class="top"><span>⚖️ Base</span><span>EPS +3%/ปี</span></div>
         <div class="body">
           <div class="tgt">$83.20</div>
-          <div class="ret pos">+44.9%</div>
+          <div class="ret pos">+41.6%</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$6.16</span></li>
             <li><span>P/E ออก</span><span>13.5x</span></li>
@@ -247,7 +247,7 @@
         <div class="top"><span>🚀 Bull</span><span>EPS +6%/ปี</span></div>
         <div class="body">
           <div class="tgt">$104.12</div>
-          <div class="ret pos">+76.5%</div>
+          <div class="ret pos">+72.6%</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$6.72</span></li>
             <li><span>P/E ออก</span><span>15.5x</span></li>
@@ -300,7 +300,7 @@
       เหมาะสำหรับนักลงทุนที่ต้องการกระแสเงินสดจากปันผลสม่ำเสมอมากกว่าคาดหวังส่วนต่างราคาหุ้น ความเสี่ยงหลักคือการชะงักของแผน NJOY (ACE ถูกระงับนำเข้าจากข้อพิพาทสิทธิบัตร) และกฎระเบียบ FDA ที่ยังค้างอยู่</p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$73.34 <span style="font-size:12px;color:#cab9a8">($71.44–$76.14)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +8.7%</div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +6.6%</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$70.40 (Hold)</div></div>
       </div>
       <div class="zone">

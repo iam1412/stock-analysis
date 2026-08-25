@@ -6,7 +6,7 @@
 <title>วิเคราะห์หุ้น เงินติดล้อ (TIDLOR) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Opus 4.8">
 <script type="application/json" id="stock-meta">
-{"symbol":"TIDLOR","currency":"THB","price":20,"fairValue":22,"mos":9.1,"upside":10,"pe":10.2,"dividendYield":5,"roe":15.9}
+{"symbol":"TIDLOR","currency":"THB","price":19.3,"fairValue":22,"mos":12.3,"upside":14,"pe":10.2,"dividendYield":5,"roe":15.9}
 </script>
 <script type="application/json" id="report-data">
 {
@@ -20,8 +20,8 @@
     "verdictText": "#f1d9d0",
     "vcellLabel": "#edd7cf",
     "badge": "var(--blue-d)",
-    "chgBg": "var(--green-soft)",
-    "chgColor": "#137333"
+    "chgBg": "var(--red-soft)",
+    "chgColor": "#c5221f"
   },
   "chart": {
     "data": [
@@ -36,7 +36,7 @@
       ["พ.ค.26", 18.3],
       ["มิ.ย.26", 19.1],
       ["ก.ค.26", 19],
-      ["ส.ค.26", 20]
+      ["ส.ค.26", 19.3]
     ],
     "min": 14,
     "max": 24,
@@ -50,7 +50,7 @@
   "gauge": {
     "min": 13,
     "max": 25,
-    "cur": 20,
+    "cur": 19.3,
     "fair": 22,
     "fairLabelTop": true
   },
@@ -74,11 +74,11 @@
     <div class="sub">สินเชื่อทะเบียนรถ (มอเตอร์ไซค์ • รถยนต์ • รถบรรทุก) • สินเชื่อโฉนดที่ดิน • นายหน้าประกันภัยรายได้ค่าธรรมเนียม (แบรนด์ Shield Insurance Broker • Areegator • heygoody) • ROE สูง โมเดลกระจายความเสี่ยงกว่าผู้ปล่อยกู้ทะเบียนทั่วไป</div>
     <div class="price-row">
       <div>
-        <div class="px">฿20.00<small>(TIDLOR)</small></div>
+        <div class="px">฿19.30<small>(TIDLOR)</small></div>
       </div>
-      <div class="chg">▲ +1.5% (รอบปี)</div>
+      <div class="chg">▼ −2.0% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 20 ส.ค. 2026<br>
+        ราคา ณ 24 ส.ค. 2026<br>
         กรอบ 52 สัปดาห์ ฿13.40 – ฿22.50<br>
         ที่มา: SET • StockAnalysis.com • Investing.com • Tidlor IR
       </div>
@@ -89,7 +89,7 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">FY2025 / TTM</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">฿58.0 พันล้าน</div><div class="d">หุ้น 2.90 พันล้านหุ้น</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">฿56.0 พันล้าน</div><div class="d">หุ้น 2.90 พันล้านหุ้น</div></div>
       <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~10.2x</div><div class="d">ถูกกว่ากรอบในอดีต</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~3 ปี</div><div class="v">~13x</div><div class="d">กรอบ ~9–18x ตั้งแต่ลิสต์</div></div>
       <div class="metric"><div class="k">P/BV</div><div class="v neu">~1.5x</div><div class="d">ROE สูงรองรับ premium</div></div>
@@ -156,7 +156,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿20.00</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿19.30</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿22.00</div></div>
         </div>
         <div class="scale">
@@ -177,8 +177,8 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">+9%</div>
+      <div class="mos-verdict ok">
+        <div class="big">+12%</div>
         <div class="txt">ส่วนเผื่อปานกลาง — ราคาต่ำกว่ามูลค่าเหมาะสมพอควร แต่ยังไม่ถึงโซนถูกมาก เหมาะทยอยสะสม</div>
       </div>
       <div class="grid g3">
@@ -189,7 +189,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="20" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="19.3" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -198,13 +198,13 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿20.00 • EPS ฐาน ~฿1.85 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿19.30 • EPS ฐาน ~฿1.85 • รวมปันผล</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS +3%/ปี</span></div>
         <div class="body">
           <div class="tgt">฿17.18</div>
-          <div class="ret pos">-1.1%</div>
+          <div class="ret pos">+2.5%</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿2.02</span></li>
             <li><span>P/E ออก</span><span>8.5x</span></li>
@@ -217,7 +217,7 @@
         <div class="top"><span>⚖️ Base</span><span>EPS +9%/ปี</span></div>
         <div class="body">
           <div class="tgt">฿25.16</div>
-          <div class="ret pos">+41.3%</div>
+          <div class="ret pos">+46.4%</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿2.40</span></li>
             <li><span>P/E ออก</span><span>10.5x</span></li>
@@ -230,7 +230,7 @@
         <div class="top"><span>🚀 Bull</span><span>EPS +14%/ปี</span></div>
         <div class="body">
           <div class="tgt">฿32.89</div>
-          <div class="ret pos">+82.5%</div>
+          <div class="ret pos">+89.1%</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿2.74</span></li>
             <li><span>P/E ออก</span><span>12x</span></li>
@@ -282,7 +282,7 @@
       <p>TIDLOR (Tidlor Holdings) เป็นผู้นำสินเชื่อทะเบียนรถที่มีจุดเด่นต่างจากคู่แข่งคือรายได้ค่าธรรมเนียมนายหน้าประกันที่ recurring และความเสี่ยงเครดิตต่ำกว่า ด้วย ROE ~16% NPL ต่ำ ~1.47% และกำไร Q1/2026 ทำนิวไฮ +34.7% YoY ที่ราคา ฿19.00 ซื้อขายที่ P/E ~10x ต่ำกว่ากรอบในอดีต ต่ำกว่ามูลค่าเหมาะสม ฿22.00 (MOS ~14%) และต่ำกว่าเป้าเฉลี่ยนักวิเคราะห์ ฿22.23 (Strong Buy) — น่าสนใจสำหรับการทยอยสะสม แต่ควรเผื่อความเสี่ยงคุณภาพสินทรัพย์และต้นทุนเงินทุน</p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿22.00 <span style="font-size:12px;color:#cab9a8">(฿20.50–฿24.50)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +9.1%</div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +12.3%</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿22.23 (Strong Buy)</div></div>
       </div>
       <div class="zone">

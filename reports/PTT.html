@@ -6,7 +6,7 @@
 <title>วิเคราะห์หุ้น ปตท. (PTT) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Sonnet 5">
 <script type="application/json" id="stock-meta">
-{"symbol":"PTT","currency":"THB","price":40.75,"fairValue":37,"mos":-10.1,"upside":-9.2,"pe":11.7,"dividendYield":5.6,"roe":7}
+{"symbol":"PTT","currency":"THB","price":41,"fairValue":37,"mos":-10.8,"upside":-9.8,"pe":11.7,"dividendYield":5.6,"roe":7}
 </script>
 <script type="application/json" id="report-data">
 {
@@ -36,11 +36,11 @@
       ["พ.ค.26", 36.25],
       ["มิ.ย.26", 35.5],
       ["ก.ค.26", 38.5],
-      ["ส.ค.26", 40.75]
+      ["ส.ค.26", 41]
     ],
     "min": 30,
-    "max": 42.5,
-    "grid": [32.5, 35, 37.5, 40],
+    "max": 45,
+    "grid": [35, 40],
     "fairLine": 37,
     "currency": "฿",
     "highlight": [1, 11],
@@ -49,8 +49,8 @@
   },
   "gauge": {
     "min": 25,
-    "max": 41,
-    "cur": 40.75,
+    "max": 44,
+    "cur": 41,
     "fair": 37,
     "fairLabelTop": true
   },
@@ -74,11 +74,11 @@
     <div class="sub">ก๊าซธรรมชาติ (จัดหา-แยก-ท่อส่ง) • ปิโตรเคมี &amp; การกลั่น • ค้าน้ำมัน-ค้าปลีก (OR) • สำรวจ-ผลิต (PTTEP) • ไฟฟ้า-พลังงานใหม่ (GPSC)</div>
     <div class="price-row">
       <div>
-        <div class="px">฿40.75<small>(PTT)</small></div>
+        <div class="px">฿41.00<small>(PTT)</small></div>
       </div>
-      <div class="chg">▲ +22.6% (รอบปี)</div>
+      <div class="chg">▲ +23.3% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 20 ส.ค. 2569 (2026)<br>
+        ราคา ณ 24 ส.ค. 2569 (2026)<br>
         กรอบ 52 สัปดาห์ ฿29.75 – ฿38.00<br>
         ที่มา: SET, StockAnalysis.com, Yahoo Finance, Investing.com
       </div>
@@ -89,7 +89,7 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล TTM ถึง Q1/2569</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">~฿1.16 ล้านล้าน</div><div class="d">หุ้น ~28.5 พันล้าน</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~฿1.17 ล้านล้าน</div><div class="d">หุ้น ~28.5 พันล้าน</div></div>
       <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~11.7x</div><div class="d">ต่ำกว่าค่าเฉลี่ยอุตสาหกรรมโลก</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~11–12x</div><div class="d">กรอบ 9–14x</div></div>
       <div class="metric"><div class="k">P/BV</div><div class="v neu">0.63x</div><div class="d">ต่ำกว่า 1 เท่า มาหลายปี</div></div>
@@ -157,7 +157,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿40.75</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿41.00</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿37.00</div></div>
         </div>
         <div class="scale">
@@ -180,7 +180,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict bad">
-        <div class="big">−10%</div>
+        <div class="big">−11%</div>
         <div class="txt">ส่วนเผื่อบาง — ราคาปัจจุบันใกล้มูลค่าเหมาะสม เหมาะ "ถือกินปันผล" มากกว่าหวัง capital gain เร็ว รอย่อเพื่อ MOS ที่ดีกว่า</div>
       </div>
       <div class="grid g3">
@@ -191,7 +191,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="40.75" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="41" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -200,7 +200,7 @@
 
   <!-- ===== 6. RETURN PROJECTION ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿40.75 • EPS ฐาน ~฿3.20 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿41.00 • EPS ฐาน ~฿3.20 • รวมปันผล</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS −3%/ปี</span></div>
@@ -232,7 +232,7 @@
         <div class="top"><span>🚀 Bull</span><span>EPS +8%/ปี</span></div>
         <div class="body">
           <div class="tgt">฿52.39</div>
-          <div class="ret pos">+46% (รวมปันผล)</div>
+          <div class="ret pos">+45% (รวมปันผล)</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿4.03</span></li>
             <li><span>P/E ออก</span><span>13x</span></li>
@@ -285,7 +285,7 @@
       มากกว่าซื้อเพิ่มตอนนี้ ผู้เน้น value ควรรอย่อสู่โซน ฿29–30 เพื่อ MOS ที่ปลอดภัยกว่า</p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿37.00 <span style="font-size:12px;color:#cab9a8">(฿33–฿41)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ff8a65">MOS -10.1%</div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ff8a65">MOS -10.8%</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿39.50 (Outperform)</div></div>
       </div>
       <div class="zone">
