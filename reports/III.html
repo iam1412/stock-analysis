@@ -6,7 +6,7 @@
 <title>วิเคราะห์หุ้น Triple i Logistics (III) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Sonnet 5">
 <script type="application/json" id="stock-meta">
-{"symbol":"III","currency":"THB","price":4.7,"fairValue":7.17,"mos":34.4,"upside":52.6,"pe":8.08,"dividendYield":5.34,"roe":11.2}
+{"symbol":"III","currency":"THB","price":4.78,"fairValue":7.17,"mos":33.3,"upside":50,"pe":8.08,"dividendYield":5.34,"roe":11.2}
 </script>
 <script type="application/json" id="report-data">
 {
@@ -20,8 +20,8 @@
     "verdictText": "#e1f5fe",
     "vcellLabel": "#f8fcff",
     "badge": "var(--blue-d)",
-    "chgBg": "var(--red-soft)",
-    "chgColor": "#c5221f"
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#137333"
   },
   "chart": {
     "data": [
@@ -36,21 +36,21 @@
       ["พ.ค.26", 4.18],
       ["มิ.ย.26", 4.2],
       ["ก.ค.26", 4.58],
-      ["ส.ค.26", 4.7]
+      ["ส.ค.26", 4.78]
     ],
     "min": 3,
     "max": 8,
     "grid": [4, 5, 6, 7],
     "fairLine": 7.17,
     "currency": "฿",
-    "highlight": [0, 4],
+    "highlight": [4, 11],
     "gridFmt": "v.toFixed(2)",
     "dataFmt": "d[1].toFixed(2)"
   },
   "gauge": {
     "min": 3.5,
     "max": 8.5,
-    "cur": 4.7,
+    "cur": 4.78,
     "fair": 7.17,
     "fairLabelTop": true
   },
@@ -74,11 +74,11 @@
     <div class="sub">Air Freight • Sea Freight &amp; In-Land Freight • บริหารคลังสินค้า • Supply Chain Solutions • Charter Flight &amp; Aviation Ecosystem</div>
     <div class="price-row">
       <div>
-        <div class="px">฿4.70<small>(III)</small></div>
+        <div class="px">฿4.78<small>(III)</small></div>
       </div>
-      <div class="chg">≈ ทรงตัว (รอบปี)</div>
+      <div class="chg">▲ +1.7% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 24 ส.ค. 2569<br>
+        ราคา ณ 25 ส.ค. 2569<br>
         กรอบ 52 สัปดาห์ ฿3.72 – ฿5.15<br>
         ที่มา: StockAnalysis.com, Yahoo Finance, Google Finance
       </div>
@@ -89,7 +89,7 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ 17 ส.ค. 2569 / TTM ล่าสุด, ปีงบการเงิน 2568</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">฿3,611 ล้าน</div><div class="d">768.36 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">฿3,673 ล้าน</div><div class="d">768.36 ล้านหุ้น</div></div>
       <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~8.08x</div><div class="d">ต่ำกว่าเฉลี่ยกลุ่ม logistics ไทย</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~12x</div><div class="d">ช่วง 8x–18x (2564–2568)</div></div>
       <div class="metric"><div class="k">P/BV</div><div class="v neu">0.89x</div><div class="d">ต่ำกว่า BV — ซื้อได้ต่ำกว่ามูลค่าทางบัญชี</div></div>
@@ -166,7 +166,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿4.70</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿4.78</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿7.17</div></div>
         </div>
         <div class="scale">
@@ -191,7 +191,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict good">
-        <div class="big">+34%</div>
+        <div class="big">+33%</div>
         <div class="txt">โซน Deep Value — ราคาต่ำกว่ามูลค่าเหมาะสมอย่างมีนัยสำคัญ</div>
       </div>
       <div class="grid g3">
@@ -202,7 +202,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="4.7" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="4.78" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -211,13 +211,13 @@
 
   <!-- ===== 6. RETURN PROJECTION ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿4.70 • EPS ฐาน ~฿0.58 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿4.78 • EPS ฐาน ~฿0.58 • รวมปันผล</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS 0%/ปี</span></div>
         <div class="body">
           <div class="tgt">฿4.06</div>
-          <div class="ret neg">+2.3% (3 ปี) / ~0.8%/ปี</div>
+          <div class="ret neg">+0.6% (3 ปี) / ~0.2%/ปี</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿0.58</span></li>
             <li><span>P/E ออก</span><span>7x</span></li>
@@ -230,7 +230,7 @@
         <div class="top"><span>⚖️ Base</span><span>EPS +10%/ปี</span></div>
         <div class="body">
           <div class="tgt">฿9.26</div>
-          <div class="ret pos">+113.8% (3 ปี) / ~28.8%/ปี</div>
+          <div class="ret pos">+110.3% (3 ปี) / ~28.1%/ปี</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿0.77</span></li>
             <li><span>P/E ออก</span><span>12x</span></li>
@@ -243,7 +243,7 @@
         <div class="top"><span>🚀 Bull</span><span>EPS +15%/ปี</span></div>
         <div class="body">
           <div class="tgt">฿12.35</div>
-          <div class="ret pos">+180.0% (3 ปี) / ~40.9%/ปี</div>
+          <div class="ret pos">+175.3% (3 ปี) / ~40.2%/ปี</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿0.88</span></li>
             <li><span>P/E ออก</span><span>14x</span></li>
@@ -307,7 +307,7 @@
       </p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿7.17 <span style="font-size:12px;color:#cab9a8">(฿6.56–฿8.18)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +34.4%</div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +33.3%</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿5.50 (Strong Buy)</div></div>
       </div>
       <div class="zone">

@@ -6,7 +6,7 @@
 <title>วิเคราะห์หุ้น เอสพีซีจี (SPCG) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Sonnet 5">
 <script type="application/json" id="stock-meta">
-{"symbol":"SPCG","currency":"THB","price":11,"fairValue":9.34,"mos":-17.8,"upside":-15.1,"pe":26.6,"dividendYield":7.42,"roe":2.03}
+{"symbol":"SPCG","currency":"THB","price":10.8,"fairValue":9.34,"mos":-15.6,"upside":-13.5,"pe":26.6,"dividendYield":7.42,"roe":2.03}
 </script>
 <script type="application/json" id="report-data">
 {
@@ -36,11 +36,11 @@
       ["พ.ค.26", 8.85],
       ["มิ.ย.26", 8.9],
       ["ก.ค.26", 9.2],
-      ["ส.ค.26", 11]
+      ["ส.ค.26", 10.8]
     ],
     "min": 8,
-    "max": 12,
-    "grid": [9, 10, 11],
+    "max": 11,
+    "grid": [9, 10],
     "fairLine": 9.34,
     "currency": "฿",
     "highlight": [0, 11]
@@ -48,7 +48,7 @@
   "gauge": {
     "min": 6,
     "max": 12,
-    "cur": 11,
+    "cur": 10.8,
     "fair": 9.34,
     "fairLabelTop": true
   },
@@ -72,11 +72,11 @@
     <div class="sub">ผู้บุกเบิกโซลาร์ฟาร์มในไทย 260 MW (36 แห่ง) • โซลาร์รูฟท็อป 150 MW • RECs 370,000 ใบ/ปี • สัญญา SPP กับ EGAT</div>
     <div class="price-row">
       <div>
-        <div class="px">฿11.00<small>(SPCG)</small></div>
+        <div class="px">฿10.80<small>(SPCG)</small></div>
       </div>
-      <div class="chg">▲ +33.3% (รอบปี)</div>
+      <div class="chg">▲ +30.9% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 24 ส.ค. 2569 (FY2025/Q1 2026)<br>
+        ราคา ณ 25 ส.ค. 2569 (FY2025/Q1 2026)<br>
         กรอบ 52 สัปดาห์ ฿7.70 – ฿10.30<br>
         ที่มา: SET / StockAnalysis.com / Finnomena
       </div>
@@ -87,7 +87,7 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ กรกฎาคม 2569 · ที่มา SET, StockAnalysis.com</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">฿11,614 ล้าน</div><div class="d">1,055.79 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">฿11,403 ล้าน</div><div class="d">1,055.79 ล้านหุ้น</div></div>
       <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~26.6x</div><div class="d">EPS ถูกกดจากรายได้ที่ลดลง</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">12–20x</div><div class="d">ช่วง 2564–2568 (ปี EPS สูง)</div></div>
       <div class="metric"><div class="k">P/BV</div><div class="v neu">0.58x</div><div class="d">BVPS ฿15.32 · ต่ำกว่ามูลค่าทางบัญชี</div></div>
@@ -162,7 +162,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿11.00</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿10.80</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿9.34</div></div>
         </div>
         <div class="scale">
@@ -187,7 +187,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict bad">
-        <div class="big">−18%</div>
+        <div class="big">−16%</div>
         <div class="txt">MOS ต่ำ — ราคาใกล้เคียง Fair Value · เหมาะสำหรับนักลงทุนเน้นปันผลระยะยาว ไม่ใช่ Value Play ที่ถูกมาก</div>
       </div>
       <div class="grid g3">
@@ -198,7 +198,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="11" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="10.8" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -207,13 +207,13 @@
 
   <!-- ===== 6. RETURN PROJECTION ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿11.00 • EPS ฐาน ~฿0.34 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿10.80 • EPS ฐาน ~฿0.34 • รวมปันผล</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS −10%/ปี</span></div>
         <div class="body">
           <div class="tgt">฿4.50</div>
-          <div class="ret neg">−45.5%</div>
+          <div class="ret neg">−44.4%</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿0.25</span></li>
             <li><span>P/E ออก</span><span>18x</span></li>
@@ -226,7 +226,7 @@
         <div class="top"><span>⚖️ Base</span><span>EPS +0%/ปี</span></div>
         <div class="body">
           <div class="tgt">฿7.48</div>
-          <div class="ret pos">−14.0%</div>
+          <div class="ret pos">−12.4%</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿0.34</span></li>
             <li><span>P/E ออก</span><span>22x</span></li>
@@ -239,7 +239,7 @@
         <div class="top"><span>🚀 Bull</span><span>EPS +15%/ปี</span></div>
         <div class="body">
           <div class="tgt">฿13.00</div>
-          <div class="ret pos">+38.6%</div>
+          <div class="ret pos">+41.2%</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿0.52</span></li>
             <li><span>P/E ออก</span><span>25x</span></li>

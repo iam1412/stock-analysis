@@ -19,7 +19,7 @@
 <meta name="ai-model" content="Claude Sonnet 5">
 <!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
 <script type="application/json" id="stock-meta">
-{"symbol":"VLTO","currency":"USD","price":99.37,"fairValue":97.66,"mos":-1.8,"upside":-1.7,"pe":24,"dividendYield":0.55,"roe":31.8}
+{"symbol":"VLTO","currency":"USD","price":98.77,"fairValue":97.66,"mos":-1.1,"upside":-1.1,"pe":24,"dividendYield":0.55,"roe":31.8}
 </script>
 <!--
   report-data: ธีมสี + ข้อมูลกราฟ/gauge ต่อหุ้น (build เอาไปวาด)  ดู schema เต็มใน CLAUDE.md ข้อ 9
@@ -58,7 +58,7 @@
       ["พ.ค.26", 82.23],
       ["มิ.ย.26", 88.68],
       ["ก.ค.26", 94.17],
-      ["ส.ค.26", 99.37]
+      ["ส.ค.26", 98.77]
     ],
     "min": 80,
     "max": 110,
@@ -70,7 +70,7 @@
   "gauge": {
     "min": 60,
     "max": 125,
-    "cur": 99.37,
+    "cur": 98.77,
     "fair": 97.66,
     "fairLabelTop": false
   },
@@ -95,14 +95,14 @@
     <div class="sub">Hach, ChemTreat, Trojan Technologies, OTT HydroMet — เครื่องมือวัด/บำบัดคุณภาพน้ำ • Videojet, Esko, X-Rite, Pantone, Linx — ระบบพิมพ์บาร์โค้ด/ตรวจสอบคุณภาพบรรจุภัณฑ์ • แยกตัวจาก Danaher (DHR) ก.ย. 2566</div>
     <div class="price-row">
       <div>
-        <div class="px">$99.37<small>(VLTO)</small></div>
+        <div class="px">$98.77<small>(VLTO)</small></div>
       </div>
       <!-- ★ ป้าย % รอบปี (gate E35/E36) — ผลตอบแทน ~1 ปี (เทียบราคา ~1 ปีก่อน) = ผลตอบแทนปลายกราฟ section 2 (จุดแรก→ท้าย)
            รูปแบบ: "▲ +X.X% (รอบปี)" ขึ้น · "▼ −X.X% (รอบปี)" ลง · "≈ ทรงตัว (รอบปี)" · หุ้น IPO <1 ปี ใช้ "(ตั้งแต่ IPO)"
            ไม่ใช่ % รายวัน/YTD/52 สัปดาห์ · ตั้งสี theme.chgBg/chgColor ให้ตรงทิศ (ขึ้น=เขียว/ลง=แดง · E34) -->
-      <div class="chg">▼ −6.8% (รอบปี)</div>
+      <div class="chg">▼ −7.4% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 24 ส.ค. 2569 (30 Jul 2026, ตลาดสหรัฐฯ)<br>
+        ราคา ณ 25 ส.ค. 2569 (30 Jul 2026, ตลาดสหรัฐฯ)<br>
         กรอบ 52 สัปดาห์ $80.03 – $110.11<br>
         ที่มา: Yahoo Finance, StockAnalysis.com, TipRanks
       </div>
@@ -117,7 +117,7 @@
          • ธนาคาร → NIM / NPL / CASA / Loan growth / Cost-to-income   • REIT/กองอสังหา → Occupancy / DPU / NAV / Gearing   • ประกัน → Combined ratio / EV
          • หุ้นเติบโต-ขาดทุน → Revenue growth / Gross margin / FCF / Cash runway (ตัด P/E ออก) -->
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">$24.4B</div><div class="d">~245.6M หุ้น</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">$24.3B</div><div class="d">~245.6M หุ้น</div></div>
       <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~24.0x</div><div class="d">TTM; ใกล้ราคาตลาดหลังปรับฐาน 1 ปี</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~26x</div><div class="d">~22x (จุดต่ำปัจจุบัน) – ~34x (พีคปี 2567) — ข้อมูลตั้งแต่ spin-off ก.ย. 2566 ยังไม่ถึง 5 ปี</div></div>
       <div class="metric"><div class="k">P/BV</div><div class="v neu">7.6x</div><div class="d">BVPS $12.24 — สูงเพราะฐานทุนเบาหลัง spin-off จาก Danaher</div></div>
@@ -190,7 +190,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $99.37</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $98.77</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $97.66</div></div>
         </div>
         <div class="scale">
@@ -213,7 +213,7 @@
     <div class="card">
       <!-- ✏️ class ของ mos-verdict: MOS<10 → "bad", 10–20 → "ok", ≥20 → "good" -->
       <div class="mos-verdict bad">
-        <div class="big">−1.8%</div>
+        <div class="big">−1.1%</div>
         <div class="txt">ราคาปัจจุบัน ($94.71) ใกล้เคียงมูลค่าเหมาะสม ($97.66) มาก มี margin of safety เพียง ~3.0% ต่ำกว่าเกณฑ์ที่ถือว่าปลอดภัย (>20%) แม้ Q2/2569 บีตคาดและปรับเพิ่ม guidance แต่ราคาได้สะท้อนข่าวดีไปมากแล้ว ยังไม่ใช่จุดเข้าซื้อที่มีส่วนเผื่อความปลอดภัยสูง</div>
       </div>
       <div class="grid g3">
@@ -224,7 +224,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="99.37" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="98.77" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -233,13 +233,13 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $99.37 • EPS ฐาน ~$4.39 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $98.77 • EPS ฐาน ~$4.39 • รวมปันผล</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS 1%/ปี</span></div>
         <div class="body">
           <div class="tgt">$77</div>
-          <div class="ret neg">−20.9%</div>
+          <div class="ret neg">−20.4%</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$4.52</span></li>
             <li><span>P/E ออก</span><span>17x</span></li>
@@ -252,7 +252,7 @@
         <div class="top"><span>⚖️ Base</span><span>EPS +7%/ปี</span></div>
         <div class="body">
           <div class="tgt">$118</div>
-          <div class="ret pos">+20.6%</div>
+          <div class="ret pos">+21.3%</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$5.38</span></li>
             <li><span>P/E ออก</span><span>22x</span></li>
@@ -265,7 +265,7 @@
         <div class="top"><span>🚀 Bull</span><span>EPS +10%/ปี</span></div>
         <div class="body">
           <div class="tgt">$140</div>
-          <div class="ret pos">+42.8%</div>
+          <div class="ret pos">+43.7%</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$5.84</span></li>
             <li><span>P/E ออก</span><span>24x</span></li>
