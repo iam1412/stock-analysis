@@ -8,7 +8,7 @@
 <meta name="ai-model" content="Claude Opus 4.8">
 <!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
 <script type="application/json" id="stock-meta">
-{"symbol":"FISV","currency":"USD","price":52.45,"fairValue":67,"mos":21.7,"upside":27.7,"pe":6.2,"dividendYield":null,"roe":13}
+{"symbol":"FISV","currency":"USD","price":52.58,"fairValue":67,"mos":21.5,"upside":27.4,"pe":6.2,"dividendYield":null,"roe":13}
 </script>
 <!--
   report-data: ธีมสี + ข้อมูลกราฟ/gauge ต่อหุ้น (build เอาไปวาด)  ดู schema เต็มใน CLAUDE.md ข้อ 9
@@ -42,7 +42,7 @@
       ["พ.ค.26", 56.56],
       ["มิ.ย.26", 49.05],
       ["ก.ค.26", 53.94],
-      ["ส.ค.26", 52.45]
+      ["ส.ค.26", 52.58]
     ],
     "min": 40,
     "max": 140,
@@ -54,7 +54,7 @@
   "gauge": {
     "min": 40,
     "max": 85,
-    "cur": 52.45,
+    "cur": 52.58,
     "fair": 67,
     "fairLabelTop": true
   },
@@ -79,14 +79,14 @@
     <div class="sub">Clover POS & merchant acquiring • Core banking/processing สำหรับธนาคาร-สหกรณ์ • Card issuer processing • Digital payments & output solutions</div>
     <div class="price-row">
       <div>
-        <div class="px">$52.45<small>(FISV)</small></div>
+        <div class="px">$52.58<small>(FISV)</small></div>
       </div>
       <!-- ★ ป้าย % รอบปี (gate E35/E36) — ผลตอบแทน ~1 ปี (เทียบราคา ~1 ปีก่อน) = ผลตอบแทนปลายกราฟ section 2 (จุดแรก→ท้าย)
            รูปแบบ: "▲ +X.X% (รอบปี)" ขึ้น · "▼ −X.X% (รอบปี)" ลง · "≈ ทรงตัว (รอบปี)" · หุ้น IPO <1 ปี ใช้ "(ตั้งแต่ IPO)"
            ไม่ใช่ % รายวัน/YTD/52 สัปดาห์ · ตั้งสี theme.chgBg/chgColor ให้ตรงทิศ (ขึ้น=เขียว/ลง=แดง · E34) -->
-      <div class="chg">▼ −59.3% (รอบปี)</div>
+      <div class="chg">▼ −59.2% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 26 ส.ค. 2569<br>
+        ราคา ณ 27 ส.ค. 2569<br>
         กรอบ 52 สัปดาห์ $47.04 – $175.92<br>
         ที่มา: StockAnalysis.com, Yahoo Finance, Fiserv Investor Relations (Q4/FY2025 + Q1 2026 earnings release)
       </div>
@@ -182,7 +182,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $52.45</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $52.58</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $67</div></div>
         </div>
         <div class="scale">
@@ -218,7 +218,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="52.45" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="52.58" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -227,13 +227,13 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $52.45 • EPS ฐาน ~$8.44 • ไม่มีปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $52.58 • EPS ฐาน ~$8.44 • ไม่มีปันผล</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS −5%/ปี</span></div>
         <div class="body">
           <div class="tgt">$43.44</div>
-          <div class="ret neg">−17.2%</div>
+          <div class="ret neg">−17.4%</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$7.24</span></li>
             <li><span>P/E ออก</span><span>6x</span></li>
@@ -246,7 +246,7 @@
         <div class="top"><span>⚖️ Base</span><span>EPS +3%/ปี</span></div>
         <div class="body">
           <div class="tgt">$73.76</div>
-          <div class="ret pos">+40.6%</div>
+          <div class="ret pos">+40.3%</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$9.22</span></li>
             <li><span>P/E ออก</span><span>8x</span></li>
@@ -259,7 +259,7 @@
         <div class="top"><span>🚀 Bull</span><span>EPS +8%/ปี</span></div>
         <div class="body">
           <div class="tgt">$106.30</div>
-          <div class="ret pos">+102.7%</div>
+          <div class="ret pos">+102.2%</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$10.63</span></li>
             <li><span>P/E ออก</span><span>10x</span></li>
@@ -320,7 +320,7 @@
       </p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$67 <span style="font-size:12px;color:#cab9a8">($59–$72)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +21.7%</div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +21.5%</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$70 (Hold, 34 นักวิเคราะห์)</div></div>
       </div>
       <div class="zone">
