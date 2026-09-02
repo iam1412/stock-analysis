@@ -248,6 +248,7 @@ const TOL_PY_PP = 0.6;        // %/ปี: เลขเล็กกว่า เ
 const SCN_TIGHT = 0.015;      // ราคาเข้าที่ถอดกลับจาก 3 คอลัมน์ต้องเกาะกลุ่มกัน ≤1.5% ถึงจะเชื่อว่า "ใบนี้สอดคล้องในตัวเอง"
 const SCN_VOTE_RATIO = 3;     // เสียงจาก spread จะชี้ขาดได้ ต้องชนะขาด (ฝั่งแพ้กระจายกว่า ≥3 เท่า)
 const CONV_PP = 1.2;          // เกณฑ์ "จำแนก" cagr/linear — หลวมกว่าเกณฑ์ค้าง เพราะ total ที่ปัดเป็นจำนวนเต็มทำ %/ปี เคลื่อนได้ ~1 จุด
+const PY_VOTE_RATIO = 2;      // สูตร %/ปี ของทั้งใบ: ฝั่ง linear ต้องเด็ดขาดกว่าฝั่ง CAGR ≥2 เท่าถึงชนะ (ไม่งั้น = CAGR ตาม prior คลัง)
 
 const SCN_ANCHOR = 'class="scn"';
 const SCN_COL_RE = () => /<div class="col ([a-z]+)">([\s\S]*?)(?=<div class="col |$)/g;
@@ -402,6 +403,39 @@ function scenarioPlan(html, price, why) {
   }
 
   const entry = mean(conv === 'div' ? impD : impP);
+  const cagr = (v) => (Math.pow(1 + v / 100, 1 / b.years) - 1) * 100;
+
+  // ── สูตร %/ปี เป็นของ "ทั้งใบ" ไม่ใช่ของทีละคอลัมน์ ──
+  // ผู้เขียนคนเดียวเขียนทั้งสามช่องด้วยสูตรเดียว ⇒ จำแนกทีละคอลัมน์แล้วให้ช่องที่ "แยกออก" โหวตเป็นสูตรของใบ
+  // ★ เดิมเลือกทีละคอลัมน์แบบ "ใกล้ค่าที่โชว์กว่า" โดยอ้างว่าเสถียรเพราะพอเขียนแล้วระยะห่างเป็น 0
+  //   — **ไม่จริงเมื่อ %/ปี พิมพ์เป็นจำนวนเต็ม**: ผลตอบแทนน้อยพอที่สองสูตรปัดแล้วได้เลขเดียวกัน
+  //   ระยะห่างของทั้งคู่ไม่เป็น 0 และ linear มักชนะเฉียด ⇒ ใบ CAGR พลิกเป็น linear เงียบ ๆ ตามราคาวันนั้น
+  //   (เจอจริง 2 ก.ย. 69 ตอน cron ล้ม: AAPL @325.13 → Bull total +28% · CAGR 8.58 กับ linear 9.33
+  //    ปัดได้ "9%" เท่ากันทั้งคู่ ⇒ รอบถัดไปอ่าน (28, 9) แล้วเลือก linear · 38% ของช่วงราคาพลิกแบบนี้)
+  //   ⇒ ช่องที่สองสูตรปัดแล้วได้เลขเดียวกัน = **แยกไม่ออก ไม่มีสิทธิ์โหวต** ให้เดินตามสูตรของใบแทน
+  // ★★ นับเสียงข้างมากไม่พอ — ต้องชั่งด้วย "ความเด็ดขาด" (|dC − dL|) แล้วให้ฝั่งที่ชนะขาดเป็นผู้ตัดสิน:
+  //   ช่องที่ |ผลตอบแทน| น้อยคือช่องที่ถูกปัดจนหลอกได้ (และเป็นช่องที่ heuristic เดิมพลิกไปแล้ว)
+  //   ส่วนช่อง Bull/Bear ที่ตัวเลขใหญ่ สองสูตรห่างกันหลายจุด ⇒ เป็นพยานที่การปัดทำอะไรไม่ได้
+  //   วัดจริง 2 ก.ย. 69: WHAUP (−6.3 / +2.9 / +15.6 กับ total −18.9 / +9.1 / +46.7) เป็น linear แท้
+  //   ทุกทศนิยม แต่ช่อง Base เกือบเสมอ ⇒ กติกา "ต้องเป็น linear ทุกช่องถึงนับ" จะแปลงใบนี้เป็น CAGR ผิด ๆ
+  //   ขณะที่ LYB (เสียง 2L/1C) ช่อง Bull ชี้ CAGR ด้วยระยะห่าง 3.6 จุด = ชนะสองช่องเล็กที่ 1.0/0.4
+  //   ชนะไม่ขาด (< PY_VOTE_RATIO เท่า) → CAGR ตาม prior ของคลัง (795 จาก 814 คอลัมน์) — เคส ANET
+  const cls = b.cols.map((c, i) => {
+    const a = anchors[i];
+    if (!a.py || !a.tot) return null;                                   // ไม่มีคู่ให้เทียบ = ไม่ออกเสียง
+    const shownTotal = signedOf(a.tot), shownPy = signedOf(a.py);
+    const dC = Math.abs(cagr(shownTotal) - shownPy), dL = Math.abs(shownTotal / b.years - shownPy);
+    const lim = Math.max(CONV_PP, Math.abs(shownPy) * 0.05);
+    if (dC > lim && dL > lim) return 'bad';                             // คู่ที่โชว์ไม่เข้าสูตรไหนเลย = อ่านผิดรูป (เคส AWC สลับที่)
+    // ครึ่งช่วงการปัดของช่องนั้น — ทั้งสองสูตรตกในนี้ = ปัดแล้วพิมพ์ออกมาเป็นเลขเดียวกัน แยกไม่ได้
+    const halfQ = 0.5 * Math.pow(10, -decOf(a.py.num)) + 1e-9;
+    if (dC <= halfQ && dL <= halfQ) return null;
+    return { conv: dC <= dL ? 'cagr' : 'linear', sep: Math.abs(dC - dL) };
+  });
+  if (cls.includes('bad')) return no('คู่ (total, %/ปี) ไม่เข้าสูตรไหนเลย');   // อ่านผิดรูป → ไม่แตะทั้งใบ
+  const bestSep = (k) => Math.max(0, ...cls.filter((x) => x && x.conv === k).map((x) => x.sep));
+  const pyConv = bestSep('linear') > bestSep('cagr') * PY_VOTE_RATIO ? 'linear' : 'cagr';
+
   const items = [];
   b.cols.forEach((c, i) => {
     const d = conv === 'div' ? c.dps : 0;
@@ -410,27 +444,12 @@ function scenarioPlan(html, price, why) {
     // %/ปี: รักษาสูตรของใบนั้น (CAGR หรือ total/N) — ถอดจากคู่ที่โชว์อยู่ ซึ่งไม่ขึ้นกับราคา
     let py = null;
     if (a.py) {
-      const shownTotal = a.tot ? signedOf(a.tot) : null;
-      const cagr = (v) => (Math.pow(1 + v / 100, 1 / b.years) - 1) * 100;
       // ★ ตัวตั้งของ %/ปี = ค่า total **ที่จะถูกเขียนลงไปจริง** (ปัดตามทศนิยมของช่องนั้นแล้ว) ไม่ใช่ค่าดิบ
       //   ไม่งั้นรอบนี้คิด %/ปี จากค่าดิบ (−13.54%) แต่รอบหน้าอ่านค่าที่เขียนไป (−14%) ได้คนละคำตอบ
       //   ⇒ ไฟล์ถูกเขียนซ้ำอีกหนึ่งรอบเสมอ (เจอจริง 20 ส.ค. 69: SNOW/CEG/KLAC/NOW/PANW)
       //   และการอิงค่าที่แสดงจริงยังทำให้ผู้อ่านกดเครื่องคิดเลขตามแล้วได้เลขเดียวกันด้วย
       const base3 = a.tot ? parseFloat(fixed(total, decOf(a.tot.num))) : total;
-      if (shownTotal == null) {
-        py = { token: a.py, want: cagr(base3) };                        // รูป "ต่อปีล้วน" ไม่มี total ให้เทียบ → ใช้กฎ (CAGR)
-      } else {
-        const shownPy = signedOf(a.py);
-        const dC = Math.abs(cagr(shownTotal) - shownPy), dL = Math.abs(shownTotal / b.years - shownPy);
-        const lim = Math.max(CONV_PP, Math.abs(shownPy) * 0.05);
-        if (dC > lim && dL > lim) return;                               // คู่ที่โชว์ไม่เข้าสูตรไหนเลย = อ่านผิดรูป (เคส AWC สลับที่) → ทิ้งทั้งคอลัมน์
-        // ★ เลือกด้วย "ใกล้ค่าที่โชว์กว่า" ไม่ใช่ "เอา CAGR ไว้ก่อน" — ไม่งั้นสั่นระหว่างสองสูตร:
-        //   ผลตอบแทนน้อย ๆ CAGR กับ total/N ต่างกันไม่ถึงเกณฑ์จำแนก ⇒ เขียน linear ลงไปรอบนี้
-        //   รอบหน้ามันจะ "เข้าเกณฑ์ CAGR ด้วย" แล้วถูกเขียนทับเป็น CAGR ⇒ cron ขยับไฟล์ทุกวันทั้งที่ไม่มีอะไรค้าง
-        //   (เจอจริง 20 ส.ค. 69: GRMN +11.4%⇄+10.3% · SHANG −9.7%⇄−10.9%)
-        //   เลือกตัวที่ใกล้ที่สุด ⇒ พอเขียนแล้วระยะห่างของตัวนั้นเป็น 0 รอบถัดไปจึงเลือกตัวเดิมเสมอ
-        py = { token: a.py, want: dC <= dL ? cagr(base3) : base3 / b.years };
-      }
+      py = { token: a.py, want: pyConv === 'linear' ? base3 / b.years : cagr(base3) };
     }
     items.push({ col: c, total: a.tot ? { token: a.tot, want: total } : null, py });
   });
