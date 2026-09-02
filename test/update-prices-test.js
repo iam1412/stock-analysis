@@ -280,6 +280,27 @@ ok(sm.roe === smIn.roe && sm.fairValue === FV && sm.symbol === 'AAPL', 'stock-me
     const flipped = scn(DV.patchDerived(unsigned, 400).html)[1]; // ที่ราคา 400 ฉาก base ต้องกลับเป็นลบ
     ok(/[−-]\s*\d/.test(flipped) && n1(flipped) < 0, 'ค่าที่เดิมไม่มีเครื่องหมาย เมื่อกลับเป็นติดลบต้องถูกเติมเครื่องหมายให้', flipped);
 
+    // 4b) ★★ สูตร %/ปี ต้องไม่พลิกตามราคาของวันนั้น — เคสจริงที่ทำ cron ล้ม 2 ก.ย. 69 (run #54)
+    //     fixture คือ reports/AAPL.html จริง ซึ่งใน CI ถูก cron patch ด้วย "ราคาของวันนั้น" ก่อน verify
+    //     ⇒ สภาพ fixture เป็นตัวแปรที่เทสคุมไม่ได้ · @325.13: Bull total +28% → CAGR 8.58 / linear 9.33
+    //     ปัดเป็น "9%" เท่ากันทั้งคู่ ⇒ heuristic เดิม (เลือก "ใกล้ค่าที่โชว์กว่า" ทีละคอลัมน์) อ่าน (28, 9)
+    //     รอบถัดไปแล้วพลิกใบเป็น linear ถาวร → เขียน "+13%/ปี" ทับ "+11%/ปี" แล้วเทสข้อ 1 ตก
+    //     (วัดจริง: 114 จาก 301 ราคาในช่วง 250–400 ทำแบบนี้ = cron มีโอกาสล้ม ~38% ต่อวัน)
+    //     ⇒ จำลอง CI ตรง ๆ: patch fixture ด้วยราคาสมมติของวัน แล้วค่อยเข้าเส้นทางเทสปกติ
+    {
+      const bad = [];
+      for (let p = 250; p <= 400; p += 2.5) {
+        const day = U.patchReport(aapl, { newPrice: p, dateParts: dpMC, chartData: null }).html;
+        scn(U.patchReport(day, { newPrice: 301.5, dateParts: dpMC, chartData: null }).html).forEach((s, i) => {
+          const m = s.match(/([+\-−–]?\s*[\d.]+)\s*%\s*\/\s*ปี/);
+          if (!m) return;
+          const py = parseFloat(m[1].replace(/[−–]/g, '-').replace(/\s/g, ''));
+          if (Math.abs(py - cagr(n1(s))) > 0.6) bad.push(`@${p} ฉาก${i + 1} ${s}`);
+        });
+      }
+      ok(bad.length === 0, '★ สูตร %/ปี คงเดิมไม่ว่าราคาของวันจะเป็นเท่าไร (ไล่ราคา 250–400)', bad.slice(0, 3).join(' · '));
+    }
+
     // 5) คงจำนวนทศนิยมเดิมของแต่ละช่อง (ใบที่เขียน 1 ตำแหน่งต้องไม่กลายเป็นจำนวนเต็ม และกลับกัน)
     // จุดเข้าสมมติ — ใช้ค่าอะไรก็ได้ เพราะด้านล่างเขียนใหม่ทั้งสามคอลัมน์จากค่านี้พร้อมกัน
     // (ไฟล์จึงสอดคล้องในตัวเองเสมอ ไม่ขึ้นกับว่าคลังถูก --heal-derived มาแล้วหรือยัง)
