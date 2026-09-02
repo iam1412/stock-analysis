@@ -14,6 +14,10 @@
  *   - mutation ที่ apply แล้ว "ไม่เปลี่ยนอะไร" = fail ทันที (anchor เพี้ยน) ไม่ปล่อยผ่านเงียบ
  *   - เคสที่ขึ้นกับโซนค่าของฐาน (เช่น W06 โซน MOS) ต้อง "บังคับโซนเอง" ใน mutation
  *     ไม่พึ่งว่าฐานบังเอิญอยู่โซนไหน
+ *   - เคส reject ที่ set "ข้อความคงที่" ลงช่องที่ cron เขียนเองได้ (ป้าย .chg / ช่องส่วนต่างจากราคา)
+ *     ต้องบังคับฐานให้ต่างจากข้อความนั้นเสมอ (ส่ง `from` ให้ reject) — ไม่งั้นวันที่ราคาพา cron
+ *     ไปเขียน "ข้อความเดียวกันเป๊ะ" mutation จะกลายเป็น no-op แล้ว guard ฟ้องปลอม
+ *     (เจอจริง 2 ก.ย. 69: E36 + ป้าย "≈ ทรงตัว (รอบปี)" พังที่ ฿150 แต่ผ่านที่ ฿170/185/200/215/240)
  *
  * รัน: node test/self-test.js   (หรือ npm run test:self)
  * exit 0 = checker เชื่อถือได้, 1 = checker มีบั๊ก (หรือฐาน BBL เปลี่ยนโครงสร้างจน derive ไม่ได้)
@@ -286,7 +290,15 @@ expect('W10', 'warn', mutJson('stock-meta', (d) => { d.pe = (d.pe || 10) * 6; })
 // ── E34/E35/E36/E37/W12: ป้าย change รอบปี + กราฟ ~1 ปี (กฎ CLAUDE.md ข้อ 2 — มิ.ย. 2026) ──
 // E34: บังคับ theme เป็นเขียวใน mutation เอง (ไม่พึ่งว่าฐานปีนี้ขึ้นหรือลง) แล้วใส่ป้ายขาลง → ขัดสี
 expect('E34', 'error', (h) => setChg('▼ −31% ในรอบปี')(mutJson('report-data', (d) => { d.theme = d.theme || {}; d.theme.chgBg = 'var(--green-soft)'; d.theme.chgColor = '#1e8e3e'; })(h)), 'ป้าย change ขาลง (▼ −) แต่ theme เขียว (เคส HMPRO/CPF) → ต้องจับ E34');
-reject('E34', setChg('≈ ทรงตัว ในรอบปี'), 'ป้าย change "ทรงตัว" (ไม่มีทิศทาง) → ต้องไม่ฟ้อง E34');
+// ★ ฐานบังคับ (คลาสเดียวกับ E36 ข้างล่าง — ดูกฎ fixture หัวไฟล์): literal "≈ ทรงตัว (รอบปี)"
+//   คือสิ่งที่ cron เขียนเองเมื่อ |% รอบปี| < FLAT_PP ⇒ ถ้าราคาพาป้ายฐานไปตรงกับ literal นี้พอดี
+//   setChg จะเป็น no-op แล้ว guard "mutation ไม่เปลี่ยนอะไร" ฟ้องปลอม
+//   E34 ฟ้องแค่ 2 คู่ที่ขัดกัน (ลง+เขียว / ขึ้น+แดง) ⇒ บังคับ "ทิศทางป้าย" กับ "สีธีม" ให้เข้าคู่กันเอง
+//   (▲ + เขียว) = E34-clean แน่นอน โดยไม่พึ่งว่าปีนี้ BBL ขึ้นหรือลง และไม่พึ่งสีที่เก็บอยู่ในไฟล์
+const e34Base = setChg('▲ +12.3% (รอบปี)')(mutJson('report-data', (d) => {
+  d.theme = d.theme || {}; d.theme.chgBg = 'var(--green-soft)'; d.theme.chgColor = '#1e8e3e';
+})(base));
+reject('E34', setChg('≈ ทรงตัว (รอบปี)'), 'ป้าย change "ทรงตัว" (ไม่มีทิศทาง) → ต้องไม่ฟ้อง E34', e34Base);
 // E35: header % ต้องเป็นผลตอบแทน "รอบปี" ไม่ใช่ % รายวัน/ช่วงอื่น (ยกเว้น IPO)
 expect('E35', 'error', setChg('▲ +5.8% (22 มิ.ย.)'), 'ป้าย % รายวัน "(22 มิ.ย.)" (ไม่ใช่ "รอบปี") → ต้องจับ E35');
 expect('E35', 'error', setChg(''), 'header ไม่มีป้าย % (.chg ว่าง) → ต้องจับ E35');
@@ -299,8 +311,15 @@ rejectBase('E35', `ป้ายฐาน "${C.chg}" (รอบปี + ทิศ
   const far = chartPct + 50;
   const farChg = (far >= 0 ? '▲ +' + far.toFixed(1) : '▼ −' + Math.abs(far).toFixed(1)) + '% ในรอบปี';
   expect('E36', 'error', setChg(farChg), `headline "${farChg}" ขัดกับปลายกราฟ (~${chartPct.toFixed(1)}%) → ต้องจับ E36`);
+  // ★ ฐานบังคับ (บทเรียน 2 ก.ย. 69): cron เขียนป้าย `≈ ทรงตัว (รอบปี)` เองเมื่อ |% รอบปี| < FLAT_PP
+  //   (update-prices.js: annualChg + suffix ที่ fix เป็น "(รอบปี)") ⇒ พอราคา patch มาใกล้จุดแรกของกราฟ
+  //   (เจอจริงที่ ฿150) ป้ายฐานจะ "ตรงกับ literal ที่เคสนี้จะ set พอดี" → setChg เป็น no-op
+  //   → guard "mutation ไม่เปลี่ยนอะไร" ฟ้องปลอม ทั้งที่ checker ไม่ได้พัง
+  //   ⇒ บังคับฐานเป็นป้าย % ที่ตรงปลายกราฟก่อนเสมอ: E36-clean แน่ (diff ~0 vs tol 12)
+  //     และ "ไม่ใช่ทรงตัว" แน่ (มี ▲/▼ + ตัวเลขเสมอ) → เคสนี้ไม่ขึ้นกับราคาของ BBL อีกต่อไป
+  const exactChg = (chartPct >= 0 ? '▲ +' : '▼ −') + Math.abs(chartPct).toFixed(1) + '% (รอบปี)';
+  reject('E36', setChg('≈ ทรงตัว (รอบปี)'), 'ป้าย "ทรงตัว" (ไม่มี %) → ต้องไม่ฟ้อง E36', setChg(exactChg)(base));
 }
-reject('E36', setChg('≈ ทรงตัว (รอบปี)'), 'ป้าย "ทรงตัว" (ไม่มี %) → ต้องไม่ฟ้อง E36');
 // E37: กราฟต้อง ~1 ปี (ไม่เกิน ~13 จุด) — ขยายเป็น 14 จุดต้องโดนจับ
 expect('E37', 'error', mutJson('report-data', (d) => {
   while (d.chart.data.length <= 13) { const last = d.chart.data[d.chart.data.length - 1]; d.chart.data.push(['x' + d.chart.data.length, last[1]]); }
