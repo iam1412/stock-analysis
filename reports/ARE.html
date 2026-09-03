@@ -8,7 +8,7 @@
 <meta name="ai-model" content="Claude Sonnet 4.6">
 <!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
 <script type="application/json" id="stock-meta">
-{"symbol":"ARE","currency":"USD","price":51.63,"fairValue":68,"mos":24.1,"upside":31.7,"pe":null,"dividendYield":5.38,"roe":2.5}
+{"symbol":"ARE","currency":"USD","price":52.72,"fairValue":68,"mos":22.5,"upside":29,"pe":null,"dividendYield":5.38,"roe":2.5}
 </script>
 <script type="application/json" id="report-data">
 {
@@ -27,7 +27,6 @@
   },
   "chart": {
     "data": [
-      ["ก.ย.25", 83.34],
       ["ต.ค.25", 58.22],
       ["พ.ย.25", 53.67],
       ["ธ.ค.25", 48.94],
@@ -38,19 +37,20 @@
       ["พ.ค.26", 49.68],
       ["มิ.ย.26", 52.85],
       ["ก.ค.26", 51.45],
-      ["ส.ค.26", 51.63]
+      ["ส.ค.26", 51.29],
+      ["ก.ย.26", 52.72]
     ],
-    "min": 20,
-    "max": 100,
-    "grid": [40, 60, 80],
+    "min": 30,
+    "max": 70,
+    "grid": [40, 50, 60],
     "fairLine": 68,
     "currency": "$",
-    "highlight": [0, 7]
+    "highlight": [0, 6]
   },
   "gauge": {
     "min": 35,
     "max": 90,
-    "cur": 51.63,
+    "cur": 52.72,
     "fair": 68,
     "fairLabelTop": false
   },
@@ -74,11 +74,11 @@
     <div class="sub">Premier life science REIT • Lab/R&amp;D campuses ใน Boston/Cambridge (Kendall Square), San Francisco Bay Area, San Diego (Torrey Pines), RTP, NYC • ผู้เช่าหลัก: BMS, Moderna, Pfizer, Eli Lilly, Takeda • ~5.4% dividend yield (ปรับลดปันผล 45% ปี 2025) • Biotech funding headwind (2022-2025) → occupancy pressure • Lab assets เฉพาะทางที่แทนได้ยาก</div>
     <div class="price-row">
       <div>
-        <div class="px">$51.63<small>(ARE)</small></div>
+        <div class="px">$52.72<small>(ARE)</small></div>
       </div>
-      <div class="chg">▼ −38.0% (รอบปี)</div>
+      <div class="chg">▼ −9.4% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 1 ก.ย. 2569<br>
+        ราคา ณ 2 ก.ย. 2569<br>
         กรอบ 52 สัปดาห์ $39.41 – $88.24<br>
         ที่มา: StockAnalysis.com, MarketBeat, Yahoo Finance
       </div>
@@ -89,7 +89,7 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">Life Science REIT — ใช้ AFFO แทน EPS</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">$8.98B</div><div class="d">~174M หุ้น · NYSE: ARE</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">$9.17B</div><div class="d">~174M หุ้น · NYSE: ARE</div></div>
       <div class="metric"><div class="k">P/AFFO (TTM)</div><div class="v pos">~6.3x</div><div class="d">AFFO/sh ~$8.50 · ต่ำมากเทียบประวัติ</div></div>
       <div class="metric"><div class="k">P/AFFO เฉลี่ยประวัติ</div><div class="v neu">20–25x</div><div class="d">ช่วงปกติ (peak 30-35x ปี 2021)</div></div>
       <div class="metric"><div class="k">P/BV</div><div class="v pos">~0.48x</div><div class="d">BVPS ~$111 · ซื้อสินทรัพย์ต่ำกว่ามูลบัญชี</div></div>
@@ -156,7 +156,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $51.63</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $52.72</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $68</div></div>
         </div>
         <div class="scale">
@@ -178,7 +178,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict good">
-        <div class="big">+24%</div>
+        <div class="big">+22%</div>
         <div class="txt">ส่วนเผื่อน่าสนใจ — แต่ความเสี่ยง sector/leverage สูง</div>
       </div>
       <div class="grid g3">
@@ -189,7 +189,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="51.63" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="52.72" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -198,13 +198,13 @@
 
   <!-- ===== 6. RETURN PROJECTION ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $51.63 • AFFO ฐาน ~$8.50/หุ้น • รวมปันผล $2.88/ปี</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $52.72 • AFFO ฐาน ~$8.50/หุ้น • รวมปันผล $2.88/ปี</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>AFFO −5%/ปี</span></div>
         <div class="body">
           <div class="tgt">$55</div>
-          <div class="ret pos">+~7%</div>
+          <div class="ret pos">+~4%</div>
           <ul>
             <li><span>AFFO ปี 3</span><span>~$7.28/sh</span></li>
             <li><span>Exit P/AFFO</span><span>7x</span></li>
@@ -218,7 +218,7 @@
         <div class="top"><span>⚖️ Base</span><span>AFFO +2%/ปี</span></div>
         <div class="body">
           <div class="tgt">$99</div>
-          <div class="ret pos">+92%</div>
+          <div class="ret pos">+88%</div>
           <ul>
             <li><span>AFFO ปี 3</span><span>~$9.02/sh</span></li>
             <li><span>Exit P/AFFO</span><span>10x</span></li>
@@ -232,7 +232,7 @@
         <div class="top"><span>🚀 Bull</span><span>AFFO +5%/ปี</span></div>
         <div class="body">
           <div class="tgt">$136</div>
-          <div class="ret pos">+163%</div>
+          <div class="ret pos">+158%</div>
           <ul>
             <li><span>AFFO ปี 3</span><span>~$9.84/sh</span></li>
             <li><span>Exit P/AFFO</span><span>13x</span></li>
@@ -285,7 +285,7 @@
       <p>Alexandria Real Estate Equities (ARE) คือ REIT ชั้นนำด้าน life science ที่ตกอยู่ในวังวนของพายุ: biotech funding ดิ่งตั้งแต่ปี 2565, อัตราดอกเบี้ยสูง, lab space อุปทานล้น และการปรับลดปันผล 45% กดราคาลงถึง $40 จากเคยสูงสุด $200+ ในปี 2564 ที่ระดับ P/AFFO เพียง 6.3x เทียบประวัติ 20-25x ราคาดูน่าสนใจอย่างยิ่งในเชิงสถิติ แต่ตลาดกำลัง price in ความเสี่ยงจากหนี้สูง $12.4B และ NAV ที่อาจยังหดลงต่อ Fair Value เฉลี่ย 3 วิธีที่ $68 ให้ MOS ~21% เหมาะสำหรับนักลงทุนระยะยาว 3-5 ปีที่เชื่อใน lab demand cycle ฟื้นตัวและยอมรับ volatility สูง</p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$68 <span style="font-size:12px;color:#cab9a8">($52–$85)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +24%</div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +22%</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$51.62 (Hold · 16 คน)</div></div>
       </div>
       <div class="zone">

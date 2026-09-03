@@ -6,7 +6,7 @@
 <title>วิเคราะห์หุ้น Vistra (VST) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Opus 4.8">
 <script type="application/json" id="stock-meta">
-{"symbol":"VST","currency":"USD","price":138.08,"fairValue":201,"mos":31.3,"upside":45.6,"pe":23.3,"dividendYield":0.56,"roe":42.9}
+{"symbol":"VST","currency":"USD","price":143.46,"fairValue":201,"mos":28.6,"upside":40.1,"pe":24.2,"dividendYield":0.56,"roe":42.9}
 </script>
 <script type="application/json" id="report-data">
 {
@@ -25,7 +25,6 @@
   },
   "chart": {
     "data": [
-      ["ก.ย.25", 195.92],
       ["ต.ค.25", 188.3],
       ["พ.ย.25", 178.86],
       ["ธ.ค.25", 161.33],
@@ -36,19 +35,20 @@
       ["พ.ค.26", 160.23],
       ["มิ.ย.26", 158.63],
       ["ก.ค.26", 148.19],
-      ["ส.ค.26", 138.08]
+      ["ส.ค.26", 137.37],
+      ["ก.ย.26", 143.46]
     ],
     "min": 120,
     "max": 220,
     "grid": [140, 160, 180, 200],
     "fairLine": 201,
     "currency": "$",
-    "highlight": [0, 11]
+    "highlight": [0, 10]
   },
   "gauge": {
     "min": 130,
     "max": 310,
-    "cur": 138.08,
+    "cur": 143.46,
     "fair": 201,
     "fairLabelTop": "-58px"
   },
@@ -72,11 +72,11 @@
     <div class="sub">ผู้ผลิตไฟฟ้าอิสระรายใหญ่สุดของสหรัฐ • นิวเคลียร์ (Comanche Peak), ก๊าซธรรมชาติ, ค้าปลีกไฟฟ้า, แบตเตอรี่</div>
     <div class="price-row">
       <div>
-        <div class="px">$138.08<small>(VST)</small></div>
+        <div class="px">$143.46<small>(VST)</small></div>
       </div>
-      <div class="chg">▼ −29.5% (รอบปี)</div>
+      <div class="chg">▼ −23.8% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ ปิดตลาด 1 ก.ย. 2026<br>
+        ราคา ณ ปิดตลาด 2 ก.ย. 2026<br>
         ช่วงในวัน $162.91–$170.48 • ผันผวนสูง<br>
         ที่มา: StockAnalysis / MarketBeat / Yahoo Finance
       </div>
@@ -87,8 +87,8 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">งบ FY2025 + Q1/2026 (SEC 10-K/8-K)</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">~$46.6B</div><div class="d">337.2 ล้านหุ้น</div></div>
-      <div class="metric"><div class="k">P/E (TTM, GAAP)</div><div class="v">~23x</div><div class="d">EPS TTM $5.92 <span class="pill a">แกว่งจาก hedge</span></div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~$48.4B</div><div class="d">337.2 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM, GAAP)</div><div class="v">~24x</div><div class="d">EPS TTM $5.92 <span class="pill a">แกว่งจาก hedge</span></div></div>
       <div class="metric"><div class="k">P/E (Forward)</div><div class="v neu">~16x</div><div class="d">อิงกำไรหลัก ~$9–11/หุ้น</div></div>
       <div class="metric"><div class="k">ROE</div><div class="v">42.9%</div><div class="d">ROA 6.0% • leverage สูง</div></div>
 
@@ -156,7 +156,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $138</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $143</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $201</div></div>
         </div>
         <div class="scale">
@@ -179,7 +179,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict good">
-        <div class="big">+31%</div>
+        <div class="big">+29%</div>
         <div class="txt"><b>มี Margin of Safety พอควร</b><br>ราคาปัจจุบัน $167.26 ต่ำกว่ามูลค่าเหมาะสม $201 ราว 17% → ตามเกณฑ์ value investor ถือว่า <b>เริ่มน่าสนใจ ทยอยสะสมได้</b> แต่ยังไม่ถึงโซนถูกมาก</div>
       </div>
       <div class="grid g3">
@@ -190,7 +190,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="138.08" step="1">
+          <input id="pxIn" class="mono" type="number" value="143.46" step="1">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -199,13 +199,13 @@
 
   <!-- ===== RETURN PROJECTION ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $138.08 • EPS ฐาน ~$9.4</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $143.46 • EPS ฐาน ~$9.4</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS +5%/ปี</span></div>
         <div class="body">
           <div class="tgt">$152</div>
-          <div class="ret neg">รวม ~ +10% (≈ +3%/ปี)</div>
+          <div class="ret neg">รวม ~ +6% (≈ +2%/ปี)</div>
           <ul>
             <li><span>EPS ปี 3</span><span>$10.9</span></li>
             <li><span>P/E ออก</span><span>14x</span></li>
@@ -217,7 +217,7 @@
         <div class="top"><span>⚖️ Base</span><span>EPS +12%/ปี</span></div>
         <div class="body">
           <div class="tgt">$238</div>
-          <div class="ret pos">รวม ~ +72% (≈ +19.8%/ปี)</div>
+          <div class="ret pos">รวม ~ +66% (≈ +18.4%/ปี)</div>
           <ul>
             <li><span>EPS ปี 3</span><span>$13.2</span></li>
             <li><span>P/E ออก</span><span>18x</span></li>
@@ -229,7 +229,7 @@
         <div class="top"><span>🚀 Bull</span><span>EPS +18%/ปี</span></div>
         <div class="body">
           <div class="tgt">$340</div>
-          <div class="ret pos">รวม ~ +146% (≈ +35%/ปี)</div>
+          <div class="ret pos">รวม ~ +137% (≈ +33%/ปี)</div>
           <ul>
             <li><span>EPS ปี 3</span><span>$15.4</span></li>
             <li><span>P/E ออก</span><span>22x</span></li>
@@ -281,8 +281,8 @@
       <p>Vistra เป็นผู้ผลิตไฟฟ้าอิสระรายใหญ่สุดของสหรัฐ ที่ได้ประโยชน์ตรงจากดีมานด์ไฟฟ้า datacenter/AI ผ่านกองนิวเคลียร์–ก๊าซ และสัญญา PPA ระยะยาว หลังหุ้น derate จากจุดสูง $220 ลงมา ~$167 ทำให้เริ่มมี Margin of Safety ~17% เทียบมูลค่าเหมาะสม — แต่ต้องยอมรับว่ากำไร GAAP ผันผวนหนักและธีมยังขึ้นกับวัฏจักร AI/ราคาไฟ</p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$201 <span style="font-size:12px;color:#a8b6cc">($188–$210)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#a5d6a7">ถูก ~31%</div></div>
-        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">$223 (+62%)</div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#a5d6a7">ถูก ~29%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">$223 (+55%)</div></div>
       </div>
       <div class="zone">
         💡 <b>กลยุทธ์:</b> สาย value — ทยอยสะสมที่ระดับปัจจุบัน (น่าสนใจมากที่ &lt;$161 และถูกมากที่ &lt;$141) • สาย growth — เข้าได้แบบ DCA และติดตาม <b>การเซ็น PPA กับ hyperscaler</b>, <b>ราคาขายส่งไฟฟ้า</b> และ <b>Adj. EBITDA</b> เป็นตัวชี้วัดหลัก แทนการดู EPS GAAP รายไตรมาส

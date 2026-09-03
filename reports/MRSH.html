@@ -8,7 +8,7 @@
 <meta name="ai-model" content="Claude Sonnet 5">
 <!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
 <script type="application/json" id="stock-meta">
-{"symbol":"MRSH","currency":"USD","price":187.58,"fairValue":195,"mos":3.8,"upside":4,"pe":23.7,"dividendYield":2.13,"roe":27.2}
+{"symbol":"MRSH","currency":"USD","price":187.84,"fairValue":195,"mos":3.7,"upside":3.8,"pe":23.7,"dividendYield":2.13,"roe":27.2}
 </script>
 <script type="application/json" id="report-data">
 {
@@ -22,12 +22,11 @@
     "verdictText": "#d0e4f7",
     "vcellLabel": "#89b6d9",
     "badge": "#1d4f91",
-    "chgBg": "var(--red-soft)",
-    "chgColor": "#c5221f"
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#137333"
   },
   "chart": {
     "data": [
-      ["ก.ย.25", 201.53],
       ["ต.ค.25", 178.15],
       ["พ.ย.25", 183.45],
       ["ธ.ค.25", 185.52],
@@ -38,19 +37,20 @@
       ["พ.ค.26", 159.97],
       ["มิ.ย.26", 166.67],
       ["ก.ค.26", 189.69],
-      ["ส.ค.26", 187.58]
+      ["ส.ค.26", 189.8],
+      ["ก.ย.26", 187.84]
     ],
-    "min": 140,
-    "max": 220,
-    "grid": [160, 180, 200],
+    "min": 150,
+    "max": 200,
+    "grid": [160, 170, 180, 190],
     "fairLine": 195,
     "currency": "$",
-    "highlight": [0, 8]
+    "highlight": [7, 10]
   },
   "gauge": {
     "min": 136.5,
     "max": 220,
-    "cur": 187.58,
+    "cur": 187.84,
     "fair": 195,
     "fairLabelTop": true
   },
@@ -74,11 +74,11 @@
     <div class="sub">นายหน้าประกันภัย/บริหารความเสี่ยง (Marsh) • รับประกันภัยต่อ (Guy Carpenter) • ที่ปรึกษา HR/บำนาญ/สุขภาพ (Mercer) • ที่ปรึกษากลยุทธ์ (Oliver Wyman)</div>
     <div class="price-row">
       <div>
-        <div class="px">$187.58<small>(MRSH)</small></div>
+        <div class="px">$187.84<small>(MRSH)</small></div>
       </div>
-      <div class="chg">▼ −6.9% (รอบปี)</div>
+      <div class="chg">▲ +5.4% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 1 ก.ย. 2026<br>
+        ราคา ณ 2 ก.ย. 2026<br>
         กรอบ 52 สัปดาห์ $156.60–$219.71<br>
         ที่มา: StockAnalysis.com, Yahoo Finance, Marsh McLennan IR
       </div>
@@ -89,7 +89,7 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">เดิมใช้ชื่อย่อ MMC — เปลี่ยนเป็น MRSH ม.ค. 2026 (rebranding NYSE ticker ม.ค. 14, 2026)</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">$90.6B</div><div class="d">483 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">$90.7B</div><div class="d">483 ล้านหุ้น</div></div>
       <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~23.7x</div><div class="d">ต่ำกว่าค่าเฉลี่ยย้อนหลัง ~25–27x</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~25–27x</div><div class="d">ปัจจุบัน de-rated ~15% จากจุดสูง</div></div>
       <div class="metric"><div class="k">P/BV</div><div class="v neu">6.21x</div><div class="d">BVPS $30.57 — สูงเพราะ goodwill/M&amp;A</div></div>
@@ -162,7 +162,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $187.58</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $187.84</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $195</div></div>
         </div>
         <div class="scale">
@@ -197,7 +197,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="187.58" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="187.84" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -206,7 +206,7 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $187.58 • EPS ฐาน ~$8.50 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $187.84 • EPS ฐาน ~$8.50 • รวมปันผล</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS +3%/ปี</span></div>
@@ -296,7 +296,7 @@
       Fair Value ประเมิน ~$195 (เฉลี่ย 3 วิธี: P/E $192 · DDM $193 · DCF $201) → MOS ~13% ที่ราคาปัจจุบัน</p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$195 <span style="font-size:12px;color:#cab9a8">($185–$210)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +3.8%</div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +3.7%</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$199.57 (Buy)</div></div>
       </div>
       <div class="zone">

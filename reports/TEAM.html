@@ -6,7 +6,7 @@
 <title>วิเคราะห์หุ้น Atlassian (TEAM) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Sonnet 5">
 <script type="application/json" id="stock-meta">
-{"symbol":"TEAM","currency":"USD","price":187.03,"fairValue":133,"mos":-40.6,"upside":-28.9,"pe":27.7,"dividendYield":0,"roe":null}
+{"symbol":"TEAM","currency":"USD","price":186.44,"fairValue":133,"mos":-40.2,"upside":-28.7,"pe":27.6,"dividendYield":0,"roe":null}
 </script>
 <script type="application/json" id="report-data">
 {
@@ -25,7 +25,6 @@
   },
   "chart": {
     "data": [
-      ["ก.ย.25", 159.7],
       ["ต.ค.25", 169.42],
       ["พ.ย.25", 149.52],
       ["ธ.ค.25", 162.14],
@@ -36,19 +35,20 @@
       ["พ.ค.26", 107.61],
       ["มิ.ย.26", 77.79],
       ["ก.ค.26", 101.01],
-      ["ส.ค.26", 187.03]
+      ["ส.ค.26", 194.17],
+      ["ก.ย.26", 186.44]
     ],
     "min": 50,
-    "max": 200,
-    "grid": [100, 150],
+    "max": 250,
+    "grid": [100, 150, 200],
     "fairLine": 115,
     "currency": "$",
-    "highlight": [6, 11]
+    "highlight": [5, 10]
   },
   "gauge": {
     "min": 70,
     "max": 240,
-    "cur": 187.03,
+    "cur": 186.44,
     "fair": 133,
     "fairLabelTop": "-58px"
   },
@@ -72,11 +72,11 @@
     <div class="sub">เจ้าของ Jira, Confluence, Trello • แพลตฟอร์มทำงานร่วมกัน + AI agent "Rovo"</div>
     <div class="price-row">
       <div>
-        <div class="px">$187.03<small>(TEAM)</small></div>
+        <div class="px">$186.44<small>(TEAM)</small></div>
       </div>
-      <div class="chg">▲ +17.1% (รอบปี)</div>
+      <div class="chg">▲ +10.0% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ≈ 1 ก.ย. 2026 ($149.07, 16:00 EDT)<br>
+        ราคา ≈ 2 ก.ย. 2026 ($149.07, 16:00 EDT)<br>
         ฟื้นตัวแรงจากจุดต่ำสุดรอบปี $56.01 (+166%) แต่ยังต่ำกว่าจุดสูงสุด 52 สัปดาห์ $184.00 ราว 19%<br>
         ที่มา: StockAnalysis.com / Yahoo Finance / Google Finance
       </div>
@@ -87,10 +87,10 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">งบ FY2026 (สิ้นสุด มิ.ย. 2026) ประกาศ 6 ส.ค. 2569 (TTM)</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">~$48.6B</div><div class="d">~260 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~$48.5B</div><div class="d">~260 ล้านหุ้น</div></div>
       <div class="metric"><div class="k">P/E (TTM, GAAP)</div><div class="v neg">N/A</div><div class="d">ขาดทุน GAAP (EPS −$0.21) <span class="pill r">ติดลบ</span></div></div>
       <div class="metric"><div class="k">P/E Forward (non-GAAP, Yahoo)</div><div class="v neu">~28x</div><div class="d">EPS forward ~$6.75</div></div>
-      <div class="metric"><div class="k">P/E Forward (StockAnalysis)</div><div class="v neu">~35x</div><div class="d">EPS forward ~$5.42 (คำนวณย้อนจาก fwdPE) — 2 แหล่งประเมินต่างกัน</div></div>
+      <div class="metric"><div class="k">P/E Forward (StockAnalysis)</div><div class="v neu">~34x</div><div class="d">EPS forward ~$5.42 (คำนวณย้อนจาก fwdPE) — 2 แหล่งประเมินต่างกัน</div></div>
 
       <div class="metric"><div class="k">รายได้ TTM (FY2026)</div><div class="v">$6.57B</div><div class="d pos">▲ +26% YoY</div></div>
       <div class="metric"><div class="k">กำไรสุทธิ FY2026 (GAAP)</div><div class="v neg">−$53.8M</div><div class="d pos">ขาดทุนลดมากจาก −$256.7M (FY25)</div></div>
@@ -156,7 +156,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $187</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $186</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $133</div></div>
         </div>
         <div class="scale">
@@ -179,7 +179,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict bad">
-        <div class="big">−41%</div>
+        <div class="big">−40%</div>
         <div class="txt"><b>ไม่มี Margin of Safety</b><br>ราคาปัจจุบัน $149.07 สูงกว่ามูลค่าเหมาะสม $133 ราว 12% → หุ้นรีเรทแรงเกินมูลค่าพื้นฐานที่ประเมินได้ไปแล้วหลังงบ FY2026 แข็งแกร่ง ควรรอย่อกลับสู่โซน MOS ก่อนเข้าเพิ่ม</div>
       </div>
       <div class="grid g3">
@@ -190,7 +190,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="187.03" step="1">
+          <input id="pxIn" class="mono" type="number" value="186.44" step="1">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -199,7 +199,7 @@
 
   <!-- ===== RETURN PROJECTION ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $187.03 • EPS ฐาน forward ~$6.75 (non-GAAP, Yahoo)</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $186.44 • EPS ฐาน forward ~$6.75 (non-GAAP, Yahoo)</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS +8%/ปี</span></div>
@@ -229,7 +229,7 @@
         <div class="top"><span>🚀 Bull</span><span>EPS +25%/ปี</span></div>
         <div class="body">
           <div class="tgt">$290</div>
-          <div class="ret pos">รวม ~ +55% (≈ +16%/ปี)</div>
+          <div class="ret pos">รวม ~ +56% (≈ +16%/ปี)</div>
           <ul>
             <li><span>EPS ปี 3</span><span>$13.2</span></li>
             <li><span>P/E ออก</span><span>22x</span></li>
@@ -281,7 +281,7 @@
       <p>Atlassian เป็นผู้นำเครื่องมือทำงานร่วมกัน/devops ที่ฝังลึกในองค์กร โตต่อเนื่อง +26% YoY และ operating margin (GAAP) พลิกเป็นบวกครั้งแรกในงบ FY2026 (ประกาศ 6 ส.ค. 2569) ทำให้ราคาหุ้นรีบาวด์แรงกว่าเท่าตัวจากจุดต่ำสุด สู่ $149.07 — สูงกว่ามูลค่าเหมาะสมที่ประเมินได้ ($133) แล้วเล็กน้อย จึงยังไม่มี Margin of Safety สำหรับสาย value ความเสี่ยงเชิงโครงสร้าง (AI agent vs per-seat) ยังไม่หายไป และ SBC สูงยังกดดัน dilution ต่อเนื่อง</p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$133 <span style="font-size:12px;color:#a8b6cc">($115–$149)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ff8a80">แพง ~41% (ไม่มี MOS)</div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ff8a80">แพง ~40% (ไม่มี MOS)</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">$154–$183 (+3–22%)</div></div>
       </div>
       <div class="zone">

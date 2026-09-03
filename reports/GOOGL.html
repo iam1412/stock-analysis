@@ -6,7 +6,7 @@
 <title>วิเคราะห์หุ้น Alphabet (GOOGL) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Opus 4.8">
 <script type="application/json" id="stock-meta">
-{"symbol":"GOOGL","currency":"USD","price":335.02,"fairValue":311,"mos":-7.7,"upside":-7.2,"pe":25.3,"dividendYield":0.26,"roe":30}
+{"symbol":"GOOGL","currency":"USD","price":337.12,"fairValue":311,"mos":-8.4,"upside":-7.7,"pe":25.5,"dividendYield":0.26,"roe":30}
 </script>
 <script type="application/json" id="report-data">
 {
@@ -25,7 +25,6 @@
   },
   "chart": {
     "data": [
-      ["ก.ย.25", 243.1],
       ["ต.ค.25", 281.19],
       ["พ.ย.25", 320.18],
       ["ธ.ค.25", 313],
@@ -36,19 +35,20 @@
       ["พ.ค.26", 380.34],
       ["มิ.ย.26", 357.37],
       ["ก.ค.26", 356.13],
-      ["ส.ค.26", 335.02]
+      ["ส.ค.26", 339.35],
+      ["ก.ย.26", 337.12]
     ],
-    "min": 200,
+    "min": 250,
     "max": 400,
-    "grid": [250, 300, 350],
+    "grid": [300, 350],
     "fairLine": 311,
     "currency": "$",
-    "highlight": [0, 7]
+    "highlight": [0, 6]
   },
   "gauge": {
     "min": 200,
     "max": 530,
-    "cur": 335.02,
+    "cur": 337.12,
     "fair": 311,
     "fairLabelTop": "-58px"
   },
@@ -72,11 +72,11 @@
     <div class="sub">บริษัทแม่ของ Google • Search, YouTube, Cloud, Android, Waymo, DeepMind</div>
     <div class="price-row">
       <div>
-        <div class="px">$335.02<small>(GOOGL)</small></div>
+        <div class="px">$337.12<small>(GOOGL)</small></div>
       </div>
-      <div class="chg">▲ +37.8% (รอบปี)</div>
+      <div class="chg">▲ +19.9% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ≈ 1 ก.ย. 2026 (ผันผวนสูง)<br>
+        ราคา ≈ 2 ก.ย. 2026 (ผันผวนสูง)<br>
         ปิด 18 มิ.ย. ที่ $368.03 ก่อนร่วง ~7%<br>
         ที่มา: Google Finance / Robinhood / Yahoo
       </div>
@@ -89,7 +89,7 @@
     <div class="grid g4">
       <div class="metric"><div class="k">Market Cap</div><div class="v">~$4.1 ล้านล้าน</div><div class="d">12.2 พันล้านหุ้น</div></div>
       <div class="metric"><div class="k">P/E (TTM, GAAP)</div><div class="v">~25x</div><div class="d">EPS TTM $13.24 <span class="pill a">บวมจากกำไรพิเศษ</span></div></div>
-      <div class="metric"><div class="k">P/E (Normalized)</div><div class="v neu">~30x</div><div class="d">EPS หลัก ~$11/หุ้น</div></div>
+      <div class="metric"><div class="k">P/E (Normalized)</div><div class="v neu">~31x</div><div class="d">EPS หลัก ~$11/หุ้น</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย 5 ปี</div><div class="v">23.0x</div><div class="d">10 ปี = 27.4x</div></div>
 
       <div class="metric"><div class="k">รายได้ FY2025</div><div class="v">$402.8B</div><div class="d pos">▲ +15% YoY</div></div>
@@ -156,7 +156,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $335</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $337</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $311</div></div>
         </div>
         <div class="scale">
@@ -190,7 +190,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="335.02" step="1">
+          <input id="pxIn" class="mono" type="number" value="337.12" step="1">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -199,7 +199,7 @@
 
   <!-- ===== RETURN PROJECTION ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $335 • EPS หลักฐาน ~$12.5</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $337 • EPS หลักฐาน ~$12.5</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS +3%/ปี</span></div>
@@ -229,7 +229,7 @@
         <div class="top"><span>🚀 Bull</span><span>EPS +16%/ปี</span></div>
         <div class="body">
           <div class="tgt">$508</div>
-          <div class="ret pos">รวม ~ +52% (≈ +15%/ปี)</div>
+          <div class="ret pos">รวม ~ +51% (≈ +15%/ปี)</div>
           <ul>
             <li><span>EPS ปี 3</span><span>$19.5</span></li>
             <li><span>P/E ออก</span><span>26x</span></li>

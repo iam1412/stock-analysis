@@ -8,7 +8,7 @@
 <meta name="ai-model" content="Claude Sonnet 5">
 <!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
 <script type="application/json" id="stock-meta">
-{"symbol":"MO","currency":"USD","price":69.57,"fairValue":73.34,"mos":5.1,"upside":5.4,"pe":12.84,"dividendYield":5.83,"roe":null}
+{"symbol":"MO","currency":"USD","price":69.56,"fairValue":73.34,"mos":5.2,"upside":5.4,"pe":12.83,"dividendYield":5.83,"roe":null}
 </script>
 <!-- report-data: ธีมสี + ข้อมูลกราฟ/gauge ของ MO -->
 <script type="application/json" id="report-data">
@@ -28,7 +28,6 @@
   },
   "chart": {
     "data": [
-      ["ก.ย.25", 66.06],
       ["ต.ค.25", 56.38],
       ["พ.ย.25", 59.01],
       ["ธ.ค.25", 57.66],
@@ -39,19 +38,20 @@
       ["พ.ค.26", 69.58],
       ["มิ.ย.26", 71.95],
       ["ก.ค.26", 68.33],
-      ["ส.ค.26", 69.57]
+      ["ส.ค.26", 68.48],
+      ["ก.ย.26", 69.56]
     ],
     "min": 55,
     "max": 75,
     "grid": [60, 65, 70],
     "fairLine": 73.34,
     "currency": "$",
-    "highlight": [1, 7]
+    "highlight": [0, 6]
   },
   "gauge": {
     "min": 48,
     "max": 82,
-    "cur": 69.57,
+    "cur": 69.56,
     "fair": 73.34,
     "fairLabelTop": true
   },
@@ -76,14 +76,14 @@
     <div class="sub">Marlboro (บุหรี่อันดับ 1 ในสหรัฐฯ ส่วนแบ่งตลาด ~40%) • Copenhagen/Skoal (ยาเส้นไร้ควัน) • on! (นิโคตินพัช) • NJOY (บุหรี่ไฟฟ้า) • ธุรกิจบุหรี่เฉพาะตลาดสหรัฐฯ เท่านั้น (แยกจาก Philip Morris International)</div>
     <div class="price-row">
       <div>
-        <div class="px">$69.57<small>(MO)</small></div>
+        <div class="px">$69.56<small>(MO)</small></div>
       </div>
       <!-- ★ ป้าย % รอบปี (gate E35/E36) — ผลตอบแทน ~1 ปี (เทียบราคา ~1 ปีก่อน) = ผลตอบแทนปลายกราฟ section 2 (จุดแรก→ท้าย)
            รูปแบบ: "▲ +X.X% (รอบปี)" ขึ้น · "▼ −X.X% (รอบปี)" ลง · "≈ ทรงตัว (รอบปี)" · หุ้น IPO <1 ปี ใช้ "(ตั้งแต่ IPO)"
            ไม่ใช่ % รายวัน/YTD/52 สัปดาห์ · ตั้งสี theme.chgBg/chgColor ให้ตรงทิศ (ขึ้น=เขียว/ลง=แดง · E34) -->
-      <div class="chg">▲ +5.3% (รอบปี)</div>
+      <div class="chg">▲ +23.4% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 1 ก.ย. 2569<br>
+        ราคา ณ 2 ก.ย. 2569<br>
         กรอบ 52 สัปดาห์ $54.70 – $75.28<br>
         ที่มา: StockAnalysis.com, Yahoo Finance, Altria Investor Relations (Q1 2026 8-K)
       </div>
@@ -170,7 +170,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $69.57</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $69.56</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $73.34</div></div>
         </div>
         <div class="scale">
@@ -206,7 +206,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="69.57" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="69.56" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -215,7 +215,7 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $69.57 • EPS ฐาน ~$5.64 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $69.56 • EPS ฐาน ~$5.64 • รวมปันผล</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS −2%/ปี</span></div>
@@ -247,7 +247,7 @@
         <div class="top"><span>🚀 Bull</span><span>EPS +6%/ปี</span></div>
         <div class="body">
           <div class="tgt">$104.12</div>
-          <div class="ret pos">+69.8%</div>
+          <div class="ret pos">+69.9%</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$6.72</span></li>
             <li><span>P/E ออก</span><span>15.5x</span></li>
@@ -300,7 +300,7 @@
       เหมาะสำหรับนักลงทุนที่ต้องการกระแสเงินสดจากปันผลสม่ำเสมอมากกว่าคาดหวังส่วนต่างราคาหุ้น ความเสี่ยงหลักคือการชะงักของแผน NJOY (ACE ถูกระงับนำเข้าจากข้อพิพาทสิทธิบัตร) และกฎระเบียบ FDA ที่ยังค้างอยู่</p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$73.34 <span style="font-size:12px;color:#cab9a8">($71.44–$76.14)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +5.1%</div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +5.2%</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$70.40 (Hold)</div></div>
       </div>
       <div class="zone">

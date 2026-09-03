@@ -8,7 +8,7 @@
 <meta name="ai-model" content="Claude Sonnet 5">
 <!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
 <script type="application/json" id="stock-meta">
-{"symbol":"LYV","currency":"USD","price":177.2,"fairValue":180.95,"mos":2.1,"upside":2.1,"pe":null,"dividendYield":null,"roe":null}
+{"symbol":"LYV","currency":"USD","price":179.59,"fairValue":180.95,"mos":0.8,"upside":0.8,"pe":null,"dividendYield":null,"roe":null}
 </script>
 <script type="application/json" id="report-data">
 {
@@ -27,7 +27,6 @@
   },
   "chart": {
     "data": [
-      ["ก.ย.25", 163.4],
       ["ต.ค.25", 149.53],
       ["พ.ย.25", 131.45],
       ["ธ.ค.25", 142.5],
@@ -38,19 +37,20 @@
       ["พ.ค.26", 168.41],
       ["มิ.ย.26", 183.11],
       ["ก.ค.26", 174.13],
-      ["ส.ค.26", 177.2]
+      ["ส.ค.26", 179.89],
+      ["ก.ย.26", 179.59]
     ],
     "min": 120,
     "max": 200,
     "grid": [140, 160, 180],
     "fairLine": 180.95,
     "currency": "$",
-    "highlight": [2, 9]
+    "highlight": [1, 8]
   },
   "gauge": {
     "min": 110,
     "max": 210,
-    "cur": 177.2,
+    "cur": 179.59,
     "fair": 180.95,
     "fairLabelTop": true
   },
@@ -75,14 +75,14 @@
     <div class="sub">คอนเสิร์ตและเทศกาลดนตรีทั่วโลก (Live Nation Concerts) • Ticketmaster ระบบขายบัตรหลัก • Live Nation Sponsorship & Advertising • เจ้าของ/บริหารสถานที่จัดงาน (Venue Nation)</div>
     <div class="price-row">
       <div>
-        <div class="px">$177.20<small>(LYV)</small></div>
+        <div class="px">$179.59<small>(LYV)</small></div>
       </div>
       <!-- ★ ป้าย % รอบปี (gate E35/E36) — ผลตอบแทน ~1 ปี (เทียบราคา ~1 ปีก่อน) = ผลตอบแทนปลายกราฟ section 2 (จุดแรก→ท้าย)
            รูปแบบ: "▲ +X.X% (รอบปี)" ขึ้น · "▼ −X.X% (รอบปี)" ลง · "≈ ทรงตัว (รอบปี)" · หุ้น IPO <1 ปี ใช้ "(ตั้งแต่ IPO)"
            ไม่ใช่ % รายวัน/YTD/52 สัปดาห์ · ตั้งสี theme.chgBg/chgColor ให้ตรงทิศ (ขึ้น=เขียว/ลง=แดง · E34) -->
-      <div class="chg">▲ +8.4% (รอบปี)</div>
+      <div class="chg">▲ +20.1% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 1 ก.ย. 2569<br>
+        ราคา ณ 2 ก.ย. 2569<br>
         กรอบ 52 สัปดาห์ $125.34 – $187.64<br>
         ที่มา: StockAnalysis.com, Yahoo Finance, MarketBeat
       </div>
@@ -94,7 +94,7 @@
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">งบ FY2025 (10-K) + Q1 2026 (10-Q)</div></div>
     <!-- ✏️ หุ้นนี้ GAAP EPS/ROE/P/BV ไม่มีความหมาย (ขาดทุนจาก amortization/ค่าใช้จ่ายกฎหมาย + ส่วนของผู้ถือหุ้นบางมาก) — ใช้ AOI (Adjusted Operating Income) เป็นตัวชี้วัดหลักแทน P/E/ROE ตามที่บริษัทรายงานเอง -->
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">~$41.7B</div><div class="d">~235.4 ล้านหุ้น (diluted)</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~$42.3B</div><div class="d">~235.4 ล้านหุ้น (diluted)</div></div>
       <div class="metric"><div class="k">P/E (TTM)</div><div class="v neg">N/A</div><div class="d">ขาดทุนสุทธิ GAAP <span class="pill r">loss-making</span></div></div>
       <div class="metric"><div class="k">EV/AOI (TTM)</div><div class="v neu">~19.0x</div><div class="d">เทียบ 10Y median EV/EBITDA ~17.7x</div></div>
       <div class="metric"><div class="k">P/BV</div><div class="v neg">N/A</div><div class="d">ส่วนของผู้ถือหุ้นบางมาก (deferred-revenue model)</div></div>
@@ -167,7 +167,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $177.20</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $179.59</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $180.95</div></div>
         </div>
         <div class="scale">
@@ -190,7 +190,7 @@
     <div class="card">
       <!-- ✏️ class ของ mos-verdict: MOS<10 → "bad", 10–20 → "ok", ≥20 → "good" -->
       <div class="mos-verdict bad">
-        <div class="big">+2%</div>
+        <div class="big">+0.8%</div>
         <div class="txt">ราคาปัจจุบันต่ำกว่ามูลค่าเหมาะสมเล็กน้อย (~3.8%) หลังร่วงจากงบ Q2 (ตั้งสำรองคดี DOJ) — ยังไม่ถือว่ามี Margin of Safety ที่แท้จริง (เกณฑ์ ≥10%) รอย่อตัวก่อนเข้าซื้อเพิ่ม</div>
       </div>
       <div class="grid g3">
@@ -201,7 +201,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="177.2" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="179.59" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -210,13 +210,13 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $177.20 • AOI/หุ้น ฐาน ~$10.07 (FY2025) • ไม่มีปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $179.59 • AOI/หุ้น ฐาน ~$10.07 (FY2025) • ไม่มีปันผล</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>AOI −5%/ปี</span></div>
         <div class="body">
           <div class="tgt">$112.22</div>
-          <div class="ret neg">−36.7%</div>
+          <div class="ret neg">−37.5%</div>
           <ul>
             <li><span>AOI/หุ้น ปี 3</span><span>~$8.63</span></li>
             <li><span>EV/AOI ออก</span><span>13x</span></li>
@@ -229,7 +229,7 @@
         <div class="top"><span>⚖️ Base</span><span>AOI +9%/ปี</span></div>
         <div class="body">
           <div class="tgt">$208.61</div>
-          <div class="ret pos">+17.7%</div>
+          <div class="ret pos">+16.2%</div>
           <ul>
             <li><span>AOI/หุ้น ปี 3</span><span>~$13.04</span></li>
             <li><span>EV/AOI ออก</span><span>16x</span></li>
@@ -242,7 +242,7 @@
         <div class="top"><span>🚀 Bull</span><span>AOI +15%/ปี</span></div>
         <div class="body">
           <div class="tgt">$275.62</div>
-          <div class="ret pos">+55.5%</div>
+          <div class="ret pos">+53.5%</div>
           <ul>
             <li><span>AOI/หุ้น ปี 3</span><span>~$15.31</span></li>
             <li><span>EV/AOI ออก</span><span>18x</span></li>

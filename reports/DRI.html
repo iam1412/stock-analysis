@@ -8,7 +8,7 @@
 <meta name="ai-model" content="Claude Sonnet 4.6">
 <!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
 <script type="application/json" id="stock-meta">
-{"symbol":"DRI","currency":"USD","price":215.56,"fairValue":213.74,"mos":-0.9,"upside":-0.8,"pe":19.2,"dividendYield":3.17,"roe":53.72}
+{"symbol":"DRI","currency":"USD","price":220.03,"fairValue":213.74,"mos":-2.9,"upside":-2.9,"pe":19.2,"dividendYield":3.17,"roe":53.72}
 </script>
 <!--
   report-data: ธีมสี + ข้อมูลกราฟ/gauge ต่อหุ้น (build เอาไปวาด)  ดู schema เต็มใน CLAUDE.md ข้อ 9
@@ -36,7 +36,6 @@
   },
   "chart": {
     "data": [
-      ["ก.ย.25", 190.36],
       ["ต.ค.25", 180.15],
       ["พ.ย.25", 179.58],
       ["ธ.ค.25", 184.02],
@@ -47,19 +46,20 @@
       ["พ.ค.26", 203.91],
       ["มิ.ย.26", 206.01],
       ["ก.ค.26", 203.58],
-      ["ส.ค.26", 215.56]
+      ["ส.ค.26", 214.26],
+      ["ก.ย.26", 220.03]
     ],
-    "min": 170,
-    "max": 220,
-    "grid": [180, 190, 200, 210],
+    "min": 160,
+    "max": 240,
+    "grid": [180, 200, 220],
     "fairLine": 213.74,
     "currency": "$",
-    "highlight": [2, 11]
+    "highlight": [1, 11]
   },
   "gauge": {
     "min": 145,
     "max": 235,
-    "cur": 215.56,
+    "cur": 220.03,
     "fair": 213.74,
     "fairLabelTop": false
   },
@@ -84,14 +84,14 @@
     <div class="sub">Olive Garden (breadสticks/สลัดไม่อั้น) • LongHorn Steakhouse • Fine Dining: The Capital Grille, Eddie V's • Cheddar's Scratch Kitchen • Yard House • Chuy's Tex Mex (ซื้อกิจการ 2568) • Seasons 52 • Bahama Breeze</div>
     <div class="price-row">
       <div>
-        <div class="px">$215.56<small>(DRI)</small></div>
+        <div class="px">$220.03<small>(DRI)</small></div>
       </div>
       <!-- ★ ป้าย % รอบปี (gate E35/E36) — ผลตอบแทน ~1 ปี (เทียบราคา ~1 ปีก่อน) = ผลตอบแทนปลายกราฟ section 2 (จุดแรก→ท้าย)
            รูปแบบ: "▲ +X.X% (รอบปี)" ขึ้น · "▼ −X.X% (รอบปี)" ลง · "≈ ทรงตัว (รอบปี)" · หุ้น IPO <1 ปี ใช้ "(ตั้งแต่ IPO)"
            ไม่ใช่ % รายวัน/YTD/52 สัปดาห์ · ตั้งสี theme.chgBg/chgColor ให้ตรงทิศ (ขึ้น=เขียว/ลง=แดง · E34) -->
-      <div class="chg">▲ +13.2% (รอบปี)</div>
+      <div class="chg">▲ +22.1% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 1 ก.ย. 2569 (Jul 2, 2026)<br>
+        ราคา ณ 2 ก.ย. 2569 (Jul 2, 2026)<br>
         กรอบ 52 สัปดาห์ $169.00 – $228.27<br>
         ที่มา: StockAnalysis.com, Yahoo Finance, SEC 8-K (Darden IR), MarketBeat
       </div>
@@ -103,7 +103,7 @@
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">Dividend-growth compounder ปันผลสม่ำเสมอ + buyback หนัก</div></div>
     <!-- ✏️ ปรับการ์ด metric ให้เหมาะกับหุ้น/เซกเตอร์ได้อิสระ — gate ไม่บังคับชุด metric -->
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">$24.69B</div><div class="d">114.54M หุ้น</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">$25.20B</div><div class="d">114.54M หุ้น</div></div>
       <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~19.2x</div><div class="d">Forward P/E ~18.1x</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~19.5x</div><div class="d">กรอบ 17x–22x</div></div>
       <div class="metric"><div class="k">P/BV</div><div class="v neu">10.58x</div><div class="d">Equity เล็กจาก buyback หนัก</div></div>
@@ -177,7 +177,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $215.56</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $220.03</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $213.74</div></div>
         </div>
         <div class="scale">
@@ -201,7 +201,7 @@
     <div class="card">
       <!-- ✏️ class ของ mos-verdict: MOS<10 → "bad", 10–20 → "ok", ≥20 → "good" -->
       <div class="mos-verdict bad">
-        <div class="big">−0.9%</div>
+        <div class="big">−3%</div>
         <div class="txt">ส่วนเผื่อความปลอดภัยบาง — ราคาใกล้เคียงมูลค่าเหมาะสม ยังไม่ใช่จังหวะเข้าซื้อที่ดีที่สุด</div>
       </div>
       <div class="grid g3">
@@ -212,7 +212,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="215.56" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="220.03" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -221,13 +221,13 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $215.56 • EPS ฐาน ~$10.64 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $220.03 • EPS ฐาน ~$10.64 • รวมปันผล</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS 2%/ปี</span></div>
         <div class="body">
           <div class="tgt">$180.66</div>
-          <div class="ret neg">−6.6%</div>
+          <div class="ret neg">−8.5%</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$11.29</span></li>
             <li><span>P/E ออก</span><span>16x</span></li>
@@ -240,7 +240,7 @@
         <div class="top"><span>⚖️ Base</span><span>EPS +8%/ปี</span></div>
         <div class="body">
           <div class="tgt">$261.37</div>
-          <div class="ret pos">+31.6%</div>
+          <div class="ret pos">+28.9%</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$13.40</span></li>
             <li><span>P/E ออก</span><span>19.5x</span></li>
@@ -253,7 +253,7 @@
         <div class="top"><span>🚀 Bull</span><span>EPS +13%/ปี</span></div>
         <div class="body">
           <div class="tgt">$337.75</div>
-          <div class="ret pos">+67.4%</div>
+          <div class="ret pos">+64.0%</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$15.35</span></li>
             <li><span>P/E ออก</span><span>22x</span></li>
@@ -311,7 +311,7 @@
       </p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$213.74 <span style="font-size:12px;color:#cab9a8">($204.77–$228.96)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">แพงกว่ามูลค่า MOS ~ −0.9%</div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">แพงกว่ามูลค่า MOS ~ −2.9%</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$224.17 (Buy/Moderate Buy)</div></div>
       </div>
       <div class="zone">

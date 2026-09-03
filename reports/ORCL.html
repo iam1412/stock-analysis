@@ -6,7 +6,7 @@
 <title>วิเคราะห์หุ้น Oracle (ORCL) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Sonnet 5">
 <script type="application/json" id="stock-meta">
-{"symbol":"ORCL","currency":"USD","price":141.32,"fairValue":213,"mos":33.7,"upside":50.7,"pe":24.2,"dividendYield":1.56,"roe":40}
+{"symbol":"ORCL","currency":"USD","price":145.75,"fairValue":213,"mos":31.6,"upside":46.1,"pe":25,"dividendYield":1.56,"roe":40}
 </script>
 <script type="application/json" id="report-data">
 {
@@ -25,7 +25,6 @@
   },
   "chart": {
     "data": [
-      ["ก.ย.25", 281.24],
       ["ต.ค.25", 262.61],
       ["พ.ย.25", 201.95],
       ["ธ.ค.25", 194.91],
@@ -36,19 +35,20 @@
       ["พ.ค.26", 225.78],
       ["มิ.ย.26", 146.55],
       ["ก.ค.26", 129.87],
-      ["ส.ค.26", 141.32]
+      ["ส.ค.26", 149.12],
+      ["ก.ย.26", 145.75]
     ],
     "min": 100,
     "max": 300,
     "grid": [150, 200, 250],
     "fairLine": 213,
     "currency": "$",
-    "highlight": [0, 10]
+    "highlight": [0, 9]
   },
   "gauge": {
     "min": 100,
     "max": 410,
-    "cur": 141.32,
+    "cur": 145.75,
     "fair": 213,
     "fairLabelTop": "-58px"
   },
@@ -72,11 +72,11 @@
     <div class="sub">ฐานข้อมูล + แอปองค์กร (ERP/HCM) + Oracle Cloud Infrastructure (OCI) — คลาวด์เทรน AI ที่โต backlog แรงสุดในวงการ</div>
     <div class="price-row">
       <div>
-        <div class="px">$141.32<small>(ORCL)</small></div>
+        <div class="px">$145.75<small>(ORCL)</small></div>
       </div>
-      <div class="chg">▼ −49.8% (รอบปี)</div>
+      <div class="chg">▼ −44.5% (รอบปี)</div>
       <div class="px-meta">
-        ราคา $127.94 ปิด 1 ก.ย. 2026<br>
+        ราคา $127.94 ปิด 2 ก.ย. 2026<br>
         ลงจาก ATH $345.72 (ก.ย. 2025) ราว −63%<br>
         ที่มา: StockAnalysis / CNBC / Yahoo Finance
       </div>
@@ -87,8 +87,8 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">งบ FY2026 (สิ้นสุด พ.ค. 2026)</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">~$407B</div><div class="d">~2.88 พันล้านหุ้น</div></div>
-      <div class="metric"><div class="k">P/E (TTM, GAAP)</div><div class="v">~24x</div><div class="d">EPS TTM (GAAP) $5.83</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~$420B</div><div class="d">~2.88 พันล้านหุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM, GAAP)</div><div class="v">~25x</div><div class="d">EPS TTM (GAAP) $5.83</div></div>
       <div class="metric"><div class="k">P/E (Non-GAAP)</div><div class="v neu">~19x</div><div class="d">EPS non-GAAP $7.63</div></div>
       <div class="metric"><div class="k">Forward P/E</div><div class="v">~16x</div><div class="d">กำไรคาดโตเร่งจาก OCI</div></div>
 
@@ -160,7 +160,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $141</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $146</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $213</div></div>
         </div>
         <div class="scale">
@@ -183,7 +183,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict good">
-        <div class="big">+34%</div>
+        <div class="big">+32%</div>
         <div class="txt"><b>มี Margin of Safety สูง</b><br>ราคาปัจจุบัน $127.94 ต่ำกว่ามูลค่าเหมาะสม $213 ราว 40% → ตามเกณฑ์ value investor ถือว่า <b>เข้าเขตน่าสนใจมาก</b> หลุดต่ำกว่าโซน "ถูกมาก" (MOS 30% = $149) ไปแล้ว</div>
       </div>
       <div class="grid g3">
@@ -194,7 +194,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="141.32" step="1">
+          <input id="pxIn" class="mono" type="number" value="145.75" step="1">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -203,13 +203,13 @@
 
   <!-- ===== RETURN PROJECTION ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $141.32 • EPS ฐาน ~$7.63 (non-GAAP)</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $145.75 • EPS ฐาน ~$7.63 (non-GAAP)</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS +8%/ปี</span></div>
         <div class="body">
           <div class="tgt">$173</div>
-          <div class="ret pos">รวม ~ +22% (≈ +7%/ปี)</div>
+          <div class="ret pos">รวม ~ +19% (≈ +6%/ปี)</div>
           <ul>
             <li><span>EPS ปี 3</span><span>$9.6</span></li>
             <li><span>P/E ออก</span><span>18x</span></li>
@@ -221,7 +221,7 @@
         <div class="top"><span>⚖️ Base</span><span>EPS +16%/ปี</span></div>
         <div class="body">
           <div class="tgt">$262</div>
-          <div class="ret pos">รวม ~ +85% (≈ +23%/ปี)</div>
+          <div class="ret pos">รวม ~ +80% (≈ +22%/ปี)</div>
           <ul>
             <li><span>EPS ปี 3</span><span>$11.9</span></li>
             <li><span>P/E ออก</span><span>22x</span></li>
@@ -233,7 +233,7 @@
         <div class="top"><span>🚀 Bull</span><span>EPS +24%/ปี</span></div>
         <div class="body">
           <div class="tgt">$378</div>
-          <div class="ret pos">รวม ~ +167% (≈ +39%/ปี)</div>
+          <div class="ret pos">รวม ~ +159% (≈ +37%/ปี)</div>
           <ul>
             <li><span>EPS ปี 3</span><span>$14.5</span></li>
             <li><span>P/E ออก</span><span>26x</span></li>
@@ -285,8 +285,8 @@
       <p>Oracle พลิกจากบริษัทฐานข้อมูลโตช้า มาเป็นผู้เล่น AI cloud ที่มี backlog ใหญ่สุดในวงการ ($638B) หลังราคาร่วงจาก ATH ~63% มาที่ ~$127.94 valuation กลับมาน่าสนใจมาก มี Margin of Safety ~40% เทียบ fair value $213 และต่ำกว่าเป้านักวิเคราะห์มาก แต่นี่คือเดิมพันว่า OCI จะแปลง backlog เป็นกำไรจริงได้ ท่ามกลาง capex มหาศาลและหนี้สูง</p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$213 <span style="font-size:12px;color:#e0b9b9">($191–$234)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#a5d6a7">ถูก ~34%</div></div>
-        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">$253 (+79%)</div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#a5d6a7">ถูก ~32%</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">$253 (+74%)</div></div>
       </div>
       <div class="zone">
         💡 <b>กลยุทธ์:</b> สาย value ที่รับความเสี่ยง capex/หนี้ได้ — ทยอยสะสมในโซนนี้ (น่าสนใจมากที่ &lt; $170, ถูกมากที่ &lt; $149) • สาย growth — เข้าแบบ DCA และยอมรับความผันผวนสูง โดยติดตาม <b>การส่งมอบ OCI ตามโรดแมป</b>, <b>FCF</b> และ <b>ภาระหนี้</b> เป็นตัวชี้วัดหลัก

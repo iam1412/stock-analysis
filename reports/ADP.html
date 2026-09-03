@@ -19,7 +19,7 @@
 <meta name="ai-model" content="Claude Sonnet 5">
 <!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
 <script type="application/json" id="stock-meta">
-{"symbol":"ADP","currency":"USD","price":283.49,"fairValue":273.36,"mos":-3.7,"upside":-3.6,"pe":22.6,"dividendYield":2.81,"roe":71}
+{"symbol":"ADP","currency":"USD","price":281.16,"fairValue":273.36,"mos":-2.9,"upside":-2.8,"pe":22.6,"dividendYield":2.81,"roe":71}
 </script>
 <!--
   report-data: ธีมสี + ข้อมูลกราฟ/gauge ต่อหุ้น (build เอาไปวาด)  ดู schema เต็มใน CLAUDE.md ข้อ 9
@@ -42,12 +42,11 @@
     "verdictText": "#ffe0e0",
     "vcellLabel": "#ffecec",
     "badge": "#CC0000",
-    "chgBg": "var(--red-soft)",
-    "chgColor": "#c5221f"
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#137333"
   },
   "chart": {
     "data": [
-      ["ก.ย.25", 293.5],
       ["ต.ค.25", 260.3],
       ["พ.ย.25", 255.3],
       ["ธ.ค.25", 257.23],
@@ -58,19 +57,20 @@
       ["พ.ค.26", 221.84],
       ["มิ.ย.26", 223.95],
       ["ก.ค.26", 266.46],
-      ["ส.ค.26", 283.49]
+      ["ส.ค.26", 286.16],
+      ["ก.ย.26", 281.16]
     ],
     "min": 175,
     "max": 300,
     "grid": [200, 225, 250, 275],
     "fairLine": 273.36,
     "currency": "$",
-    "highlight": [0, 6]
+    "highlight": [5, 10]
   },
   "gauge": {
     "min": 160,
     "max": 320,
-    "cur": 283.49,
+    "cur": 281.16,
     "fair": 273.36,
     "fairLabelTop": true
   },
@@ -95,14 +95,14 @@
     <div class="sub">Payroll processing, HR software (Workforce Now, Vantage HQ), Tax Filing, Time &amp; Attendance • PEO (Employer Services + PEO Services) • ผู้นำตลาด Payroll/HCM ร่วมกับ Paychex</div>
     <div class="price-row">
       <div>
-        <div class="px">$283.49<small>(ADP)</small></div>
+        <div class="px">$281.16<small>(ADP)</small></div>
       </div>
       <!-- ★ ป้าย % รอบปี (gate E35/E36) — ผลตอบแทน ~1 ปี (เทียบราคา ~1 ปีก่อน) = ผลตอบแทนปลายกราฟ section 2 (จุดแรก→ท้าย)
            รูปแบบ: "▲ +X.X% (รอบปี)" ขึ้น · "▼ −X.X% (รอบปี)" ลง · "≈ ทรงตัว (รอบปี)" · หุ้น IPO <1 ปี ใช้ "(ตั้งแต่ IPO)"
            ไม่ใช่ % รายวัน/YTD/52 สัปดาห์ · ตั้งสี theme.chgBg/chgColor ให้ตรงทิศ (ขึ้น=เขียว/ลง=แดง · E34) -->
-      <div class="chg">▼ −3.4% (รอบปี)</div>
+      <div class="chg">▲ +8.0% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 1 ก.ย. 2569 (July 30, 2026)<br>
+        ราคา ณ 2 ก.ย. 2569 (July 30, 2026)<br>
         กรอบ 52 สัปดาห์ $188.16 – $315.98<br>
         ที่มา: Yahoo Finance, StockAnalysis.com, SEC 10-Q/8-K (Q3 FY2026)
       </div>
@@ -117,7 +117,7 @@
          • ธนาคาร → NIM / NPL / CASA / Loan growth / Cost-to-income   • REIT/กองอสังหา → Occupancy / DPU / NAV / Gearing   • ประกัน → Combined ratio / EV
          • หุ้นเติบโต-ขาดทุน → Revenue growth / Gross margin / FCF / Cash runway (ตัด P/E ออก) -->
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">$113.3B</div><div class="d">~399.7M หุ้น</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">$112.4B</div><div class="d">~399.7M หุ้น</div></div>
       <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~22.6x</div><div class="d">Forward P/E ~20.2x</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~30.3x</div><div class="d">เฉลี่ย 5 ปี — ปัจจุบันต่ำกว่าค่าเฉลี่ย</div></div>
       <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~71% / 13.5%</div><div class="d">ROE สูงจากฐานทุนต่ำ (buyback สะสม) ไม่ใช่ leverage ผิดปกติ</div></div>
@@ -186,7 +186,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $283.49</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $281.16</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $273.36</div></div>
         </div>
         <div class="scale">
@@ -209,7 +209,7 @@
     <div class="card">
       <!-- ✏️ class ของ mos-verdict: MOS<10 → "bad", 10–20 → "ok", ≥20 → "good" -->
       <div class="mos-verdict bad">
-        <div class="big">−4%</div>
+        <div class="big">−3%</div>
         <div class="txt">MOS ~4% อยู่ในระดับต่ำ — ราคาฟื้นตัวขึ้นมาใกล้เคียง Fair Value แล้วหลังรีบาวด์จากจุดต่ำ ยังไม่ใช่โซนน่าสนใจสำหรับสาย value เทียบ MOS 20-30%</div>
       </div>
       <div class="grid g3">
@@ -220,7 +220,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="283.49" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="281.16" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -229,13 +229,13 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $283.49 • EPS ฐาน ~$10.94 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $281.16 • EPS ฐาน ~$10.94 • รวมปันผล</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS 2%/ปี</span></div>
         <div class="body">
           <div class="tgt">$204.58</div>
-          <div class="ret neg">−20.2%</div>
+          <div class="ret neg">−19.5%</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$11.37</span></li>
             <li><span>P/E ออก</span><span>18x</span></li>
@@ -248,7 +248,7 @@
         <div class="top"><span>⚖️ Base</span><span>EPS +8%/ปี</span></div>
         <div class="body">
           <div class="tgt">$296.81</div>
-          <div class="ret pos">+12.9%</div>
+          <div class="ret pos">+13.9%</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$13.49</span></li>
             <li><span>P/E ออก</span><span>22x</span></li>
@@ -261,7 +261,7 @@
         <div class="top"><span>🚀 Bull</span><span>EPS +12%/ปี</span></div>
         <div class="body">
           <div class="tgt">$376.17</div>
-          <div class="ret pos">+41.3%</div>
+          <div class="ret pos">+42.4%</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$15.05</span></li>
             <li><span>P/E ออก</span><span>25x</span></li>

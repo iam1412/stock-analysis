@@ -6,7 +6,7 @@
 <title>วิเคราะห์หุ้น Prologis (PLD) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Sonnet 4.6">
 <script type="application/json" id="stock-meta">
-{"symbol":"PLD","currency":"USD","price":139.68,"fairValue":138,"mos":-1.2,"upside":-1.2,"pe":24.1,"dividendYield":3.06,"roe":6.84}
+{"symbol":"PLD","currency":"USD","price":136.59,"fairValue":138,"mos":1,"upside":1,"pe":24.1,"dividendYield":3.06,"roe":6.84}
 </script>
 <script type="application/json" id="report-data">
 {
@@ -25,7 +25,6 @@
   },
   "chart": {
     "data": [
-      ["ก.ย.25", 114.52],
       ["ต.ค.25", 124.09],
       ["พ.ย.25", 128.53],
       ["ธ.ค.25", 127.66],
@@ -36,19 +35,20 @@
       ["พ.ค.26", 143.47],
       ["มิ.ย.26", 135.47],
       ["ก.ค.26", 144.61],
-      ["ส.ค.26", 139.68]
+      ["ส.ค.26", 139.92],
+      ["ก.ย.26", 136.59]
     ],
-    "min": 110,
+    "min": 120,
     "max": 150,
-    "grid": [120, 130, 140],
+    "grid": [130, 140],
     "fairLine": 138,
     "currency": "$",
-    "highlight": [0, 10]
+    "highlight": [0, 9]
   },
   "gauge": {
     "min": 98,
     "max": 155,
-    "cur": 139.68,
+    "cur": 136.59,
     "fair": 138,
     "fairLabelTop": false
   },
@@ -72,11 +72,11 @@
     <div class="sub">REIT คลังสินค้า/โลจิสติกส์ใหญ่สุดในโลก • ~1.2B ตร.ฟุต ใน 19 ประเทศ • ทำเล last-mile ใกล้เมือง • ลูกค้า e-commerce/3PL • Data Center conversion + Solar</div>
     <div class="price-row">
       <div>
-        <div class="px">$139.68<small>(PLD)</small></div>
+        <div class="px">$136.59<small>(PLD)</small></div>
       </div>
-      <div class="chg">▲ +22.0% (รอบปี)</div>
+      <div class="chg">▲ +10.1% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 1 ก.ย. 2569<br>
+        ราคา ณ 2 ก.ย. 2569<br>
         กรอบ 52 สัปดาห์ $103.41 / $150.18<br>
         ที่มา: StockAnalysis.com / Yahoo Finance / Prologis Investor Relations / Macrotrends
       </div>
@@ -87,7 +87,7 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">REIT — อิง Core FFO/share, ไม่ใช้ GAAP EPS</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">~$114B</div><div class="d">หุ้นหมุนเวียน ~815M หุ้น</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~$111B</div><div class="d">หุ้นหมุนเวียน ~815M หุ้น</div></div>
       <div class="metric"><div class="k">Core FFO/Share (TTM)</div><div class="v pos">$5.81</div><div class="d">+4.5% YoY (FY2025)</div></div>
       <div class="metric"><div class="k">P/Core-FFO (TTM)</div><div class="v neu">24.1x</div><div class="d">สะท้อน premium REIT คุณภาพ</div></div>
       <div class="metric"><div class="k">AFFO/Share</div><div class="v">$4.34</div><div class="d">P/AFFO ~32x</div></div>
@@ -154,7 +154,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $139.68</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $136.59</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $138</div></div>
         </div>
         <div class="scale">
@@ -176,7 +176,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict bad">
-        <div class="big">−1.2%</div>
+        <div class="big">+1.0%</div>
         <div class="txt">ราคาตึงเล็กน้อย — เหนือ Fair Value $138 · คุณภาพสูงแต่รอจังหวะย่อ</div>
       </div>
       <div class="grid g3">
@@ -187,7 +187,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="139.68" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="136.59" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -196,13 +196,13 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $139.68 • Core FFO ฐาน ~$5.81 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $136.59 • Core FFO ฐาน ~$5.81 • รวมปันผล</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>FFO +4%/ปี</span></div>
         <div class="body">
           <div class="tgt">$137.34</div>
-          <div class="ret neg">−2% (ราคา) + ปันผล ~$13</div>
+          <div class="ret neg">+1% (ราคา) + ปันผล ~$13</div>
           <ul>
             <li><span>Core FFO ปี 3</span><span>~$6.54</span></li>
             <li><span>P/FFO ออก</span><span>21x</span></li>
@@ -215,7 +215,7 @@
         <div class="top"><span>⚖️ Base</span><span>FFO +6%/ปี</span></div>
         <div class="body">
           <div class="tgt">$159.16</div>
-          <div class="ret pos">+14% (ราคา) + ปันผล ~$14</div>
+          <div class="ret pos">+17% (ราคา) + ปันผล ~$14</div>
           <ul>
             <li><span>Core FFO ปี 3</span><span>~$6.92</span></li>
             <li><span>P/FFO ออก</span><span>23x</span></li>
@@ -228,7 +228,7 @@
         <div class="top"><span>🚀 Bull</span><span>FFO +8%/ปี</span></div>
         <div class="body">
           <div class="tgt">$175.68</div>
-          <div class="ret pos">+26% (ราคา) + ปันผล ~$15</div>
+          <div class="ret pos">+29% (ราคา) + ปันผล ~$15</div>
           <ul>
             <li><span>Core FFO ปี 3</span><span>~$7.32</span></li>
             <li><span>P/FFO ออก</span><span>24x</span></li>
