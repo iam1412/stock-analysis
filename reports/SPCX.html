@@ -4,9 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>วิเคราะห์หุ้น SpaceX (SPCX) — Stock Analysis Dashboard</title>
-<meta name="ai-model" content="Claude Fable 5">
+<meta name="ai-model" content="Claude Fable 5.1">
 <script type="application/json" id="stock-meta">
-{"symbol":"SPCX","currency":"USD","price":140.71,"fairValue":93,"mos":-51.3,"upside":-33.9,"pe":null,"dividendYield":0,"roe":null}
+{"symbol":"SPCX","currency":"USD","price":140.71,"fairValue":96.3,"mos":-46.1,"upside":-31.6,"pe":null,"dividendYield":0,"roe":null}
 </script>
 <script type="application/json" id="report-data">
 {
@@ -31,7 +31,7 @@
     "min": 80,
     "max": 160,
     "grid": [100, 120, 140],
-    "fairLine": 93,
+    "fairLine": 96.3,
     "currency": "$",
     "highlight": [0, 1]
   },
@@ -39,9 +39,9 @@
     "min": 60,
     "max": 240,
     "cur": 140.71,
-    "fair": 93
+    "fair": 96.3
   },
-  "fv": 93
+  "fv": 96.3
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -76,7 +76,7 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">งบ Q2 2569 — 10-Q ใบแรกหลัง IPO</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">~$1.85T</div><div class="d">หุ้น A+B รวม 13,182 ล้านหุ้น (ปก 10-Q ณ 28 ก.ค. 69)</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~$1.91T</div><div class="d">หุ้น A+B รวม 13,573 ล้านหุ้น (13,182M ปก 10-Q + 391M ออกให้ Cursor 14 ส.ค. 69)</div></div>
       <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$23.0B</div><div class="d">Q2/69 +92% YoY · H1/69 +54% YoY</div></div>
       <div class="metric"><div class="k">Adjusted EBITDA Q2</div><div class="v pos">$3.5B</div><div class="d">+191% YoY — พลิกบวกชัดเจนจาก AI ramp</div></div>
       <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">~51.9%</div><div class="d">TTM (FY2568 = 49.4%)</div></div>
@@ -84,7 +84,7 @@
       <div class="metric"><div class="k">ขาดทุนสุทธิ TTM</div><div class="v">−$8.2B</div><div class="d">Q2 เหลือ −$541M (ดีขึ้น 46% YoY)</div></div>
       <div class="metric"><div class="k">EPS (งบบริษัท)</div><div class="v">−$1.12</div><div class="d">H1 2569 · Q2 −$0.09 (basic=diluted)</div></div>
       <div class="metric"><div class="k">FCF TTM</div><div class="v">−$31.2B</div><div class="d">capex AI H1 $23.6B — เผาเงินจากลงทุนจริง</div></div>
-      <div class="metric"><div class="k">เงินสด+หลักทรัพย์</div><div class="v pos">$100.0B</div><div class="d">หนี้ $39.4B ⇒ เงินสดสุทธิ +$60.6B</div></div>
+      <div class="metric"><div class="k">เงินสด+หลักทรัพย์</div><div class="v pos">$100.0B</div><div class="d">หนี้ $39.4B ⇒ เงินสดสุทธิ +$60.6B (ดีล Cursor จ่ายหุ้นล้วน ไม่กระทบ)</div></div>
 
       <div class="metric"><div class="k">Starlink Subscribers</div><div class="v pos">12.0M</div><div class="d">×2 จากปีก่อน · ARPU $66/เดือน</div></div>
       <div class="metric"><div class="k">Backlog</div><div class="v neu">$47.5B</div><div class="d">Cloud Services Agreement ใหม่ Q2 $14.1B</div></div>
@@ -95,18 +95,18 @@
 
   <!-- ===== 2. PRICE CHART ===== -->
   <section>
-    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ตั้งแต่ IPO มิ.ย. 2569 — มีข้อมูลราคาปิดรายเดือนเพียง 2 จุด</div></div>
+    <div class="s-head"><div class="n">2</div><h2>ราคาย้อนหลัง ~1 ปี</h2><div class="hint">ตั้งแต่ IPO มิ.ย. 2569 — มีข้อมูลราคาปิดรายเดือนเพียง 3 จุด</div></div>
     <div class="card">
       <div class="chart-wrap">
         <svg id="priceChart" viewBox="0 0 920 300" style="width:100%;height:auto"></svg>
       </div>
       <div class="legend">
         <span><i style="background:#c841b1"></i>ราคา SPCX</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $93.00</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $96.30</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
-        SPCX เข้าตลาดด้วย IPO ใหญ่ที่สุดในประวัติศาสตร์ (12 มิ.ย. 2569 ราคาจอง $135 ระดมทุนสุทธิ ~$85.7B) เปิดเทรดแรกที่ $150 และพุ่งแตะจุดสูงสุดระหว่างวัน $225.64 ในช่วงสัปดาห์ IPO ก่อนแรงขายทำกำไรกดราคาลงต่ำสุด $104.83 ปลาย ก.ค. (ปิดเดือนที่ $108.37) จากนั้นฟื้นแรงรับงบ Q2 ใบแรก (4 ส.ค.) ที่รายได้โต 92% ดีกว่าคาดมาก แม้ย่อชั่วคราว ~10% เมื่อตลาดเห็นแผน capex AI มหาศาล (ขยาย 2→10 GW) แล้วกลับมายืน $138.74 (10 ส.ค.) — รวม +28.0% จากราคาปิดเดือนแรก · กราฟมีเพียง 2 จุดรายเดือนเพราะหุ้นเพิ่งเข้าตลาดได้ ~2 เดือน
+        SPCX เข้าตลาดด้วย IPO ใหญ่ที่สุดในประวัติศาสตร์ (12 มิ.ย. 2569 ราคาจอง $135 ระดมทุนสุทธิ ~$85.7B) เปิดเทรดแรกที่ $150 และพุ่งแตะจุดสูงสุดระหว่างวัน $225.64 ในช่วงสัปดาห์ IPO ก่อนแรงขายทำกำไรกดราคาลงต่ำสุด $104.83 ปลาย ก.ค. (ปิดเดือนที่ $108.37) จากนั้นฟื้นแรงรับงบ Q2 ใบแรก (4 ส.ค.) ที่รายได้โต 92% ดีกว่าคาดมาก แม้ย่อชั่วคราว ~10% เมื่อตลาดเห็นแผน capex AI มหาศาล (ขยาย 2→10 GW) แล้วกลับมาปิด ส.ค. ที่ $143.69 ก่อนย่อเล็กน้อยสู่ $140.71 (2 ก.ย.) หลังดีล Cursor ปิดแบบจ่ายหุ้นล้วน 14 ส.ค. และล็อกอัปทรานช์แรกทยอยหมดอายุ — รวม +29.8% จากราคาปิดเดือนแรก · กราฟมีเพียง 3 จุดรายเดือนเพราะหุ้นเพิ่งเข้าตลาดได้ ~3 เดือน
       </p>
     </div>
   </section>
@@ -116,19 +116,19 @@
     <div class="s-head"><div class="n">3</div><h2>การประเมินมูลค่า (Valuation)</h2><div class="hint">เฉลี่ย 2 วิธี (ตระกูลยึดตลาด)</div></div>
     <div class="card">
       <div class="vmethod">
-        <div><div class="mname">1. EV/Sales (FY2027E เทียบ comps)</div><div class="mdesc">รายได้ FY2027E $93.7B (consensus นักวิเคราะห์ 35 ราย) × EV/Sales เป้าหมาย ~12x ถ่วงตามส่วนธุรกิจ (AI ~13x อิง CoreWeave 13.0x · Connectivity ~8x พรีเมียมเหนือ T-Mobile 3.4x · Space ~20x ส่วนลดจาก Rocket Lab 59x) ⇒ EV ~$1,125B + เงินสดสุทธิ $60.6B ÷ 13,182 ล้านหุ้น</div></div>
-        <div class="mval">$89.90</div>
+        <div><div class="mname">1. EV/Sales (FY2027E เทียบ comps)</div><div class="mdesc">รายได้ FY2027E $105.9B (consensus นักวิเคราะห์ 35 ราย) × EV/Sales เป้าหมาย ~11.4x ถ่วงตามส่วนธุรกิจ (AI ~12x อิง CoreWeave 11.95x · Connectivity ~8x พรีเมียมเหนือ T-Mobile 3.46x · Space ~20x ส่วนลดจาก Rocket Lab 46x) ⇒ EV ~$1,207B + เงินสดสุทธิ $60.6B ÷ 13,573 ล้านหุ้น</div></div>
+        <div class="mval">$93.40</div>
       </div>
       <div class="vmethod">
-        <div><div class="mname">2. SOTP (Sum-of-the-Parts 2027E)</div><div class="mdesc">Connectivity: EBITDA 2027E ~$15.9B × EV/EBITDA 18x = $286B · AI: รายได้ 2027E ~$62.7B × EV/Sales 13x = $815B · Space: รายได้ ~$5B × 20x = $100B ⇒ EV รวม $1,201B + เงินสดสุทธิ $60.6B ÷ 13,182 ล้านหุ้น</div></div>
-        <div class="mval">$95.70</div>
+        <div><div class="mname">2. SOTP (Sum-of-the-Parts 2027E)</div><div class="mdesc">Connectivity: EBITDA 2027E ~$16.8B × EV/EBITDA 18x = $302B · AI (รวม Cursor): รายได้ 2027E ~$73.0B × EV/Sales 12x = $876B · Space: รายได้ ~$5.4B × 20x = $108B ⇒ EV รวม $1,286B + เงินสดสุทธิ $60.6B ÷ 13,573 ล้านหุ้น</div></div>
+        <div class="mval">$99.20</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $89.90 – $95.70</span></div>
-        <div class="r">$93.00</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $93.40 – $99.20</span></div>
+        <div class="r">$96.30</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
-        <b>เปิดเผยสมมติฐานเต็ม:</b> ทั้ง 2 ขาเป็นตระกูล "ยึดตลาด" เดียวกัน (ตัวคูณ comps ที่วัดจริง ณ 11 ส.ค. 2569 — ไม่มีขาไหนใช้ (r,g)) และใช้ประมาณการแบ่ง segment ปี 2027E ชุดเดียวกัน (AI $62.7B / Connectivity $26B / Space $5B) ซึ่งเป็น<b>ประมาณการของผู้วิเคราะห์เอง</b> — consensus ให้เฉพาะยอดรวม $93.7B · สองขาต่างกันเพียง 6.5% (&lt;2.0×) จึงเฉลี่ยได้ · <b>สาเหตุที่ MOS ติดลบลึก วัดได้ตรง ๆ:</b> ราคา $138.74 × หุ้น 13,182M = market cap ~$1.83T ⇒ EV ~$1.77T = <b>EV/Sales ~77x ของรายได้ TTM $23.0B และ ~18.9x ของรายได้ FY2027E</b> ขณะที่ comps ที่โตแรงที่สุดอย่าง CoreWeave ซื้อขายที่ 13.0x — ตลาดกำลังจ่ายล่วงหน้าให้ optionality ปี 2028+ (Starship + compute 10 GW) · <b>Sensitivity:</b> ขยับตัวคูณทุกขา ±25% ⇒ FV ~$70–117 ยังต่ำกว่าราคาปัจจุบันทุกกรณี · เงินสดสุทธิ $60.6B ที่บวกในสูตร<b>ยังไม่หักดีลซื้อ Cursor $60B</b> (คาดปิด Q3/69) — ถ้าจ่ายสดทั้งหมด FV ลดลง ~$4–5 ต่อหุ้น (โซน MOS ไม่เปลี่ยน) ถ้าจ่ายเป็นหุ้น = dilution เพิ่ม · DCF ถูกตัดออกเพราะ FCF TTM −$31.2B ยังติดลบหนัก (มูลค่าจะขึ้นกับ terminal value เกือบทั้งหมด = ไม่ใช่หลักฐานอิสระ) · เป้านักวิเคราะห์ $231.40 (median $200 · ช่วงกว้างมาก $62–800 · 35 ราย) ใช้เป็นบริบทเท่านั้น ไม่ใช่ขาของ FV · หมายเหตุ: market cap ที่ vendor บางเจ้าแสดง (~$540B) ใช้จำนวนหุ้นถัวเฉลี่ยก่อนแปลง preferred — สาเหตุเดียวกับที่ EPS TTM ของแต่ละแหล่งไม่ตรงกัน (ดูคำเตือนท้ายรายงาน)
+        <b>เปิดเผยสมมติฐานเต็ม:</b> ทั้ง 2 ขาเป็นตระกูล "ยึดตลาด" เดียวกัน (ตัวคูณ comps ที่วัดจริง ณ 2 ก.ย. 2569 — ไม่มีขาไหนใช้ (r,g)) และใช้ประมาณการแบ่ง segment ปี 2027E ชุดเดียวกัน (AI รวม Cursor $73.0B / Connectivity $27.5B / Space $5.4B) ซึ่งเป็น<b>ประมาณการของผู้วิเคราะห์เอง</b> — consensus ให้เฉพาะยอดรวม $105.9B (ปรับขึ้นจาก $93.7B เมื่อ ส.ค. หลังรวม Cursor เข้างบ) · สองขาต่างกันเพียง 6.2% (&lt;2.0×) จึงเฉลี่ยได้ · <b>สิ่งที่เปลี่ยนจากรอบก่อน (11 ส.ค.):</b> รายได้ 2027E สูงขึ้น 13% แต่จำนวนหุ้นเพิ่ม 3% จากการจ่ายหุ้น 391M ให้ Cursor (8-K 14 ส.ค.) และตัวคูณ CoreWeave ลดจาก 13.0x เหลือ 11.95x ⇒ FV ขยับจาก $93.00 เป็น $96.30 (+3.5%) โซน MOS ไม่เปลี่ยน · <b>สาเหตุที่ MOS ติดลบลึก วัดได้ตรง ๆ:</b> ราคา $140.71 × หุ้น 13,573M = market cap ~$1.91T ⇒ EV ~$1.85T = <b>EV/Sales ~80x ของรายได้ TTM $23.0B และ ~17.5x ของรายได้ FY2027E</b> ขณะที่ comps ที่โตแรงที่สุดอย่าง CoreWeave ซื้อขายที่ 11.95x — ตลาดกำลังจ่ายล่วงหน้าให้ optionality ปี 2028+ (Starship + compute 10 GW) · <b>Sensitivity:</b> ขยับตัวคูณทุกขา ±25% ⇒ FV ~$73–119 ยังต่ำกว่าราคาปัจจุบันทุกกรณี · ต้นทุนดีล Cursor $60B อยู่ในจำนวนหุ้นแล้ว (จ่ายหุ้นล้วน เงินสดสุทธิ $60.6B ไม่ถูกหัก) แต่ยังมี RSU/ออปชันที่รับโอนมาอีก ~73.5M หุ้น (+0.5%) เป็น dilution ค้างท่อ ไม่ได้รวมในฐาน · DCF ถูกตัดออกเพราะ FCF TTM −$31.2B ยังติดลบหนัก (มูลค่าจะขึ้นกับ terminal value เกือบทั้งหมด = ไม่ใช่หลักฐานอิสระ) · เป้านักวิเคราะห์ $219.22 (median $220 · ช่วงกว้างมาก $117–450 · 35 ราย) ใช้เป็นบริบทเท่านั้น ไม่ใช่ขาของ FV · หมายเหตุ: market cap ที่ vendor บางเจ้าแสดง (~$540B) ใช้จำนวนหุ้นถัวเฉลี่ยก่อนแปลง preferred — สาเหตุเดียวกับที่ EPS TTM ของแต่ละแหล่งไม่ตรงกัน (ดูคำเตือนท้ายรายงาน)
       </p>
     </div>
   </section>
@@ -140,18 +140,18 @@
       <div class="gauge">
         <div class="gbar" id="gbar">
           <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $140.71</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $93.00</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $96.30</div></div>
         </div>
         <div class="scale">
-          <span>$65.10<br><small>MOS 30%</small></span>
-          <span>$74.40<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$93.00<br><small>Fair Value</small></span>
-          <span style="text-align:right">$95.70<br><small>กรอบบน FV</small></span>
-          <span style="text-align:right">$231.40<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span>$67.40<br><small>MOS 30%</small></span>
+          <span>$77.00<br><small>MOS 20%</small></span>
+          <span style="text-align:center">$96.30<br><small>Fair Value</small></span>
+          <span style="text-align:right">$99.20<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">$219.22<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
-        ราคาปัจจุบัน $138.74 สูงกว่ามูลค่าเหมาะสม $93.00 ราว 49% (เทียบฐาน FV) และสูงกว่ากรอบบนของทุกวิธีที่ใช้ — ขณะที่เป้าเฉลี่ยนักวิเคราะห์ 12 เดือน $231.40 (Buy, 35 ราย) อยู่สูงกว่า FV ของเรามาก สะท้อนว่าตลาด/นักวิเคราะห์ให้มูลค่ากับ optionality ระยะยาว (Starship ลดต้นทุนสู่วงโคจร ~99% + ขยาย compute สู่ 10 GW) มากกว่าที่ตัวคูณ comps ปัจจุบันรองรับ — ช่วงเป้าที่กว้างผิดปกติ ($62–800) บอกว่าตลาดเองก็ยังหามูลค่า "ที่ถูกต้อง" ของบริษัทโครงสร้างนี้ไม่เจอ
+        ราคาปัจจุบัน $140.71 สูงกว่ามูลค่าเหมาะสม $96.30 ราว 46% (เทียบฐาน FV) และสูงกว่ากรอบบนของทุกวิธีที่ใช้ — ขณะที่เป้าเฉลี่ยนักวิเคราะห์ 12 เดือน $219.22 (Buy, 35 ราย) อยู่สูงกว่า FV ของเรามาก สะท้อนว่าตลาด/นักวิเคราะห์ให้มูลค่ากับ optionality ระยะยาว (Starship ลดต้นทุนสู่วงโคจร ~99% + ขยาย compute สู่ 10 GW) มากกว่าที่ตัวคูณ comps ปัจจุบันรองรับ — ช่วงเป้าที่ยังกว้างมาก ($117–450 แคบลงจาก $62–800 เมื่อเดือนก่อน) บอกว่าตลาดเองก็ยังหามูลค่า "ที่ถูกต้อง" ของบริษัทโครงสร้างนี้ไม่เจอ
       </p>
     </div>
   </section>
@@ -161,13 +161,13 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict bad">
-        <div class="big">−51%</div>
-        <div class="txt"><b>ไม่มี Margin of Safety — ราคาแพงกว่ามูลค่าเหมาะสมมาก</b><br>ราคาปัจจุบันสูงกว่า FV ราว 49% (ของฐาน FV) — เป็นการจ่ายล่วงหน้าให้การเติบโตปี 2028+ นักลงทุนแนว value ควรรอโซนต่ำกว่า $93.00 หรือรอหลักฐานว่า AI margin ทำได้จริงตามที่ CSA ramp บ่งชี้</div>
+        <div class="big">−46%</div>
+        <div class="txt"><b>ไม่มี Margin of Safety — ราคาแพงกว่ามูลค่าเหมาะสมมาก</b><br>ราคาปัจจุบันสูงกว่า FV ราว 46% (ของฐาน FV) — เป็นการจ่ายล่วงหน้าให้การเติบโตปี 2028+ นักลงทุนแนว value ควรรอโซนต่ำกว่า $96.30 หรือรอหลักฐานว่า AI margin ทำได้จริงตามที่ CSA ramp บ่งชี้</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$74.40</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$65.10</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $93.00</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$77.00</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$67.40</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $96.30</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
@@ -181,15 +181,15 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $140.71 • EPS ฐาน ~$1.85 (consensus FY2027E) • ไม่มีปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $140.71 • EPS ฐาน ~$1.60 (consensus FY2027E) • ไม่มีปันผล</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS +25%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$65.00</div>
-          <div class="ret neg">−53.8% (−22.7%/ปี)</div>
+          <div class="tgt">$56.30</div>
+          <div class="ret neg">−60.0% (−26.3%/ปี)</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~$3.61</span></li>
+            <li><span>EPS ปี 3</span><span>~$3.13</span></li>
             <li><span>P/E ออก</span><span>18x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~$0</span></li>
             <li><span>สถานการณ์</span><span>AI แข่งเดือด margin ไม่มา · Starship สะดุด · ตลาด de-rate สู่ P/E mega-cap ปกติ</span></li>
@@ -199,23 +199,23 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +45%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$135.40</div>
-          <div class="ret neg">−3.8% (−1.3%/ปี)</div>
+          <div class="tgt">$117.10</div>
+          <div class="ret neg">−16.8% (−5.9%/ปี)</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~$5.64</span></li>
+            <li><span>EPS ปี 3</span><span>~$4.88</span></li>
             <li><span>P/E ออก</span><span>24x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~$0</span></li>
-            <li><span>สถานการณ์</span><span>ทำได้ตาม consensus แต่ตัวคูณหดลงสู่ระดับ mega-cap — ราคาวันนี้ดูดซับการเติบโต 3 ปีไปหมดแล้ว</span></li>
+            <li><span>สถานการณ์</span><span>ทำได้ตาม consensus แต่ตัวคูณหดลงสู่ระดับ mega-cap — ราคาวันนี้ดูดซับการเติบโตเกิน 3 ปีไปแล้ว (EPS 2027E ถูกปรับลงจาก $1.85 เพราะหุ้นเพิ่มจากดีล Cursor)</span></li>
           </ul>
         </div>
       </div>
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +65%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$290.90</div>
-          <div class="ret pos">+106.7% (+27.4%/ปี)</div>
+          <div class="tgt">$251.60</div>
+          <div class="ret pos">+78.8% (+21.4%/ปี)</div>
           <ul>
-            <li><span>EPS ปี 3</span><span>~$8.31</span></li>
+            <li><span>EPS ปี 3</span><span>~$7.19</span></li>
             <li><span>P/E ออก</span><span>35x</span></li>
             <li><span>ปันผลรวม 3 ปี</span><span>~$0</span></li>
             <li><span>สถานการณ์</span><span>run-rate $100B ทำได้จริง · Starship ลดต้นทุนแรง · AI margin ขยายตาม CSA — ตลาดคงตัวคูณพรีเมียม</span></li>
@@ -224,7 +224,7 @@
       </div>
     </div>
     <p style="font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.6;padding:0 4px">
-      EPS ฐาน $1.85 = ประมาณการ consensus FY2027E (นักวิเคราะห์ 35 ราย ผ่าน StockAnalysis.com — ยืนยันงวดจากหน้า forecast แล้วว่าเป็นปี 2027 ไม่ใช่ 2026 ที่คาดเพียง $0.38) บนฐานหุ้นหลังแปลง preferred ~13,182 ล้านหุ้น จึงตั้งต้นจากปีแรกที่บริษัทคาดว่าจะมีกำไรเต็มปี แล้วทบการเติบโต 3 ปีจากจุดนั้น · Base case ให้ผลตอบแทน ≈ ทรงตัว สอดคล้องกับ FV $93.00 ที่ต่ำกว่าราคา: การเติบโตแรงถูกหักล้างด้วยตัวคูณที่ต้องหดลง · บริษัทไม่จ่ายปันผลทุก scenario
+      EPS ฐาน $1.60 = ประมาณการ consensus FY2027E (นักวิเคราะห์ 35 ราย ผ่าน StockAnalysis.com ณ 2 ก.ย. 2569 — ยืนยันงวดจากหน้า forecast แล้วว่าเป็นปี 2027 ไม่ใช่ 2026 ที่คาดเพียง $0.09 · ลดจาก $1.85 เมื่อเดือนก่อนเพราะฐานหุ้นเพิ่มหลังรวม Cursor แม้รายได้ถูกปรับขึ้น) บนฐานหุ้นหลังแปลง preferred ~13,573 ล้านหุ้น จึงตั้งต้นจากปีแรกที่บริษัทคาดว่าจะมีกำไรเต็มปี แล้วทบการเติบโต 3 ปีจากจุดนั้น · Base case ให้ผลตอบแทนติดลบราว −17% ไปในทิศเดียวกับ FV $96.30 ที่ต่ำกว่าราคา ~32%: การเติบโต 45%/ปี ยังไม่พอชดเชยตัวคูณที่ต้องหดลงจากระดับปัจจุบัน · บริษัทไม่จ่ายปันผลทุก scenario
     </p>
   </section>
 
@@ -235,23 +235,23 @@
       <div class="box cat">
         <h3><span class="ic">▲</span>Catalysts — ปัจจัยหนุน</h3>
         <ul>
-          <li><b>Starship V3 คืบหน้าเร็ว:</b> Flight 12 (พ.ค.) ลงจอดแม่นยำ + Flight 13 (ก.ค.) ปล่อยดาวเทียม V3 จริง 20 ดวง จุดเครื่อง Raptor ในอวกาศ heatshield รอดสมบูรณ์ — reusability เต็มรูปแบบจะลดต้นทุนสู่วงโคจร ~99%</li>
-          <li><b>AI ramp แรงจัด:</b> Cloud Services Agreements ใหม่ $14.1B · ซื้อ Cursor $60B (ปิด Q3/69) · Grok 4.5 เปิดตัว ก.ค. · compute 0.4→1.4 GW ใน 1 ปี เป้า ~10 GW ปลายปี 2570 — Q2 AI Adjusted EBITDA พลิกบวก $1.1B ครั้งแรก</li>
+          <li><b>Starship Flight 14 = เที่ยวบินโคจรจริงครั้งแรก:</b> ยื่น FCC แล้วเป็นโปรไฟล์ orbital เต็มรูปแบบ + พยายามจับยาน Ship ที่หอปล่อยครั้งแรก + ส่ง Starlink V3 ใช้งานจริง ~20 ดวง (Booster 21 static fire ครบ 33 เครื่อง 28 ส.ค. · เป้าปล่อยราว 15 ก.ย. ตามประกาศน่านฟ้า เลื่อนได้) — ต่อยอด Flight 12–13 ที่ลงจอดแม่นและปล่อย V3 ทดสอบสำเร็จ · reusability เต็มรูปแบบจะลดต้นทุนสู่วงโคจร ~99%</li>
+          <li><b>AI ramp แรงจัด:</b> Cloud Services Agreements ใหม่ $14.1B · ปิดดีล Cursor $60B แล้ว 14 ส.ค. 69 (จ่ายหุ้นล้วน 391M หุ้น — ไม่กระทบเงินสด) · Grok 4.5 เปิดตัว ก.ค. · compute 0.4→1.4 GW ใน 1 ปี เป้า ~10 GW ปลายปี 2570 — Q2 AI Adjusted EBITDA พลิกบวก $1.1B ครั้งแรก · consensus รายได้ FY2027 ขยับขึ้นจาก $93.7B เป็น $105.9B หลังรวม Cursor</li>
           <li><b>Starlink โตต่อเนื่อง:</b> ผู้ใช้ 12M (×2 YoY) · ARPU ทรงตัว $66 · ดีลสายการบิน (American, Southwest, Virgin Atlantic ฯลฯ) + spectrum EchoStar 65 MHz ผ่าน FCC แล้ว</li>
           <li><b>Starshield สัญญารัฐ &gt;$6B:</b> สัญญาหลายปีจาก Space Force (LEO communications + sensing) — รายได้ Enterprise &amp; Government โต 108% YoY</li>
-          <li><b>เป้า run-rate $100B ภายใน ธ.ค. 2569:</b> (คำแถลงบริษัท) ถ้าเข้าใกล้จริง consensus FY2027 ที่ $93.7B จะกลายเป็นตัวเลขที่ต่ำเกินไป</li>
+          <li><b>เป้า run-rate $100B ภายใน ธ.ค. 2569:</b> (คำแถลงบริษัท) consensus FY2027 ที่ $105.9B ไล่ทันเป้านี้แล้ว — จุดที่ต้องพิสูจน์คืองบ Q3 (ราว ต้น พ.ย.) ว่า run-rate ไต่จาก ~$50B ใน Q2 ได้เร็วตามที่บอก ถ้าทำได้ตัวเลข 2027 ยังมีพื้นที่ปรับขึ้น</li>
           <li><b>สภาพคล่องหนา:</b> เงินสด+หลักทรัพย์ $100B จาก IPO ($85.7B สุทธิ) + หุ้นกู้ IG $25B — ลงทุนหนักต่อได้โดยไม่ต้องรีบระดมทุนเพิ่มระยะสั้น</li>
         </ul>
       </div>
       <div class="box risk">
         <h3><span class="ic">▼</span>Risks — ความเสี่ยง</h3>
         <ul>
-          <li><b>Valuation ตึงสุดขีด:</b> EV/Sales ~77x ของรายได้ TTM / ~18.9x ของ FY2027E — แพงกว่า comps ที่โตแรงที่สุด (CoreWeave 13x) ทั้งที่ยังขาดทุนสุทธิ · ราคา "ซื้อความสมบูรณ์แบบ" ล่วงหน้าหลายปี</li>
+          <li><b>Valuation ตึงสุดขีด:</b> EV/Sales ~80x ของรายได้ TTM / ~17.5x ของ FY2027E — แพงกว่า comps ที่โตแรงที่สุด (CoreWeave ~12x) ทั้งที่ยังขาดทุนสุทธิ · ราคา "ซื้อความสมบูรณ์แบบ" ล่วงหน้าหลายปี</li>
           <li><b>เผาเงินสดหนักมาก:</b> FCF TTM −$31.2B จาก capex AI (Q2 ควอเตอร์เดียว $15.8B) — แผน 10 GW อาจต้องระดมทุนเพิ่ม (ออกหุ้นกู้ $25B ที่ดอกเบี้ยเฉลี่ย 5.855% ไปแล้ว)</li>
           <li><b>Key-man + dual-class:</b> อำนาจควบคุมอยู่ที่ Class B (Elon Musk) — ผู้ถือหุ้น Class A มีสิทธิ์ออกเสียงจำกัด · ความเสี่ยงบุคคลสำคัญและประเด็นการเมืองของ CEO กระทบราคาได้แรง</li>
           <li><b>การแข่งขัน AI ดุเดือด:</b> ชน hyperscalers/OpenAI/Anthropic ที่ทุนหนากว่า · พึ่งพา supply ชิปภายนอก · ARPU Starlink ลดจาก $85→$66 ใน 1 ปีตาม mix ต่างประเทศ — การโต subscriber ต้องชดเชยราคาต่อหัวที่ลดลง</li>
           <li><b>กำกับดูแล/สัญญารัฐ:</b> ITAR, FCC, การพึ่งพางบประมาณรัฐบาลสหรัฐ (Starshield/NASA) — การเมืองเปลี่ยน = ความเสี่ยงรายได้</li>
-          <li><b>Lock-up หมดอายุ ~ธ.ค. 2569:</b> supply หุ้นก้อนใหญ่จากผู้ถือเดิม + งบ conglomerate ซับซ้อน (รวม X/xAI · มีดอกเบี้ยจ่าย related party $327M/ไตรมาส) ทำให้เทียบ peers ตรง ๆ ยาก</li>
+          <li><b>Lock-up ทยอยปลดล็อก ก.ย.–ธ.ค. 2569:</b> ทรานช์ถัดไป 9 ก.ย. (~319M หุ้น) ตามด้วย 24 ก.ย. / 9 ต.ค. / 24 ต.ค. รวมราว 700M หุ้นต่อเดือนใน ก.ย. และ ต.ค. ก่อนหมดอายุเต็ม 8 ธ.ค. (หุ้นของ Elon Musk ~6.4B หุ้น ล็อกถึง มิ.ย. 2570) + หุ้น 391M ที่ออกให้ผู้ถือ Cursor — supply ก้อนใหญ่ต่อเนื่อง · งบ conglomerate ซับซ้อน (รวม X/xAI · มีดอกเบี้ยจ่าย related party $327M/ไตรมาส) ทำให้เทียบ peers ตรง ๆ ยาก</li>
         </ul>
       </div>
     </div>
@@ -262,14 +262,14 @@
     <div class="s-head"><div class="n">8</div><h2>สรุปภาพรวม</h2></div>
     <div class="verdict">
       <h2>ธุรกิจระดับประวัติศาสตร์ — แต่ราคาวันนี้จ่ายค่าความสมบูรณ์แบบล่วงหน้าไปแล้ว</h2>
-      <p>SpaceX คือ IPO ใหญ่ที่สุดในประวัติศาสตร์ ($85.7B สุทธิ มิ.ย. 2569) และเป็นบริษัทที่ผูกขาดการปล่อยจรวดเชิงพาณิชย์ (78 launches ใน H1) พร้อม Starlink ที่ทำกำไรจริง (Q2 op income $1.7B, +79% YoY) และธุรกิจ AI ที่กำลัง ramp แรง (รายได้ +247% YoY, EBITDA พลิกบวก) — คุณภาพธุรกิจไม่ใช่คำถาม คำถามเดียวคือราคา: market cap ~$1.83T = EV/Sales ~77x ของรายได้ TTM $23B ขณะยังขาดทุนสุทธิ −$8.2B และเผา FCF −$31.2B · FV จากตัวคูณ comps ปี 2027E อยู่ที่ $93.00 (กรอบ $89.90–95.70 · sensitivity ±25% ⇒ ~$70–117) ต่ำกว่าราคาตลาด ~33% · Base case 3 ปี ให้ผลตอบแทน ≈ ทรงตัว แม้กำไรโต 45%/ปี เพราะตัวคูณต้องหดลง — upside จริงอยู่ที่ optionality ปี 2028+ (Starship + 10 GW) ซึ่งยังพิสูจน์ไม่ได้ในงบวันนี้</p>
+      <p>SpaceX คือ IPO ใหญ่ที่สุดในประวัติศาสตร์ ($85.7B สุทธิ มิ.ย. 2569) และเป็นบริษัทที่ผูกขาดการปล่อยจรวดเชิงพาณิชย์ (78 launches ใน H1) พร้อม Starlink ที่ทำกำไรจริง (Q2 op income $1.7B, +79% YoY) และธุรกิจ AI ที่กำลัง ramp แรง (รายได้ +247% YoY, EBITDA พลิกบวก) — คุณภาพธุรกิจไม่ใช่คำถาม คำถามเดียวคือราคา: market cap ~$1.91T (หุ้น 13,573M หลังจ่ายหุ้นซื้อ Cursor) = EV/Sales ~80x ของรายได้ TTM $23B ขณะยังขาดทุนสุทธิ −$8.2B และเผา FCF −$31.2B · FV จากตัวคูณ comps ปี 2027E อยู่ที่ $96.30 (กรอบ $93.40–99.20 · sensitivity ±25% ⇒ ~$73–119) ต่ำกว่าราคาตลาด ~32% — ขยับขึ้นจาก $93.00 เพียงเล็กน้อยเพราะรายได้ 2027E ที่สูงขึ้นถูกหักด้วยหุ้นที่เพิ่มและตัวคูณ comps ที่ย่อลง · Base case 3 ปี ให้ผลตอบแทน −17% แม้กำไรโต 45%/ปี เพราะตัวคูณต้องหดลง — upside จริงอยู่ที่ optionality ปี 2028+ (Starship โคจรจริง Flight 14 + 10 GW) ซึ่งยังพิสูจน์ไม่ได้ในงบวันนี้</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$93.00 <span style="font-size:12px;color:#cab9a8">($89.90–$95.70)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −51.3% (แพงกว่า FV)</div></div>
-        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$231.40 (Buy · 35 ราย)</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$96.30 <span style="font-size:12px;color:#cab9a8">($93.40–$99.20)</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −46.1% (แพงกว่า FV)</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$219.22 (Buy · 35 ราย)</div></div>
       </div>
       <div class="zone">
-        💡 <b>กลยุทธ์:</b> ที่ $138.74 ไม่มีส่วนเผื่อความปลอดภัย — สายเติบโตที่ศรัทธา thesis ระยะ 5–10 ปี หากจะสะสมควรใช้ไม้เล็กแบบ DCA และรับความผันผวนสูงได้ · สาย value รอโซนต่ำกว่า $93.00 (เริ่มสะสม) / $74.40 (MOS 20%) หรือรอหลักฐาน AI margin ในงบ 2–3 ไตรมาสข้างหน้า · จับตา lock-up หมดอายุราว ธ.ค. 2569 ซึ่งอาจเปิดจังหวะราคาที่ดีกว่า
+        💡 <b>กลยุทธ์:</b> ที่ $140.71 ไม่มีส่วนเผื่อความปลอดภัย — สายเติบโตที่ศรัทธา thesis ระยะ 5–10 ปี หากจะสะสมควรใช้ไม้เล็กแบบ DCA และรับความผันผวนสูงได้ · สาย value รอโซนต่ำกว่า $96.30 (เริ่มสะสม) / $77.00 (MOS 20%) หรือรอหลักฐาน AI margin ในงบ Q3 (ต้น พ.ย.) และถัดไป · จับตา lock-up ที่ทยอยปลดล็อกทุก 2 สัปดาห์ตั้งแต่ 9 ก.ย. จนหมดอายุเต็ม 8 ธ.ค. 2569 (supply ~1.4B หุ้นใน ก.ย.–ต.ค.) ซึ่งอาจเปิดจังหวะราคาที่ดีกว่า
       </div>
     </div>
   </section>
@@ -278,9 +278,9 @@
   <div class="disc">
     <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะตัวคูณ EV/Sales–EV/EBITDA เป้าหมาย, สัดส่วนรายได้ราย segment ปี 2027E และอัตราเติบโตในอนาคต — หุ้น IPO ใหม่มีประวัติราคา/งบจำกัด ความไม่แน่นอนสูงกว่าหุ้นทั่วไปมาก
-    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ราคา ณ 2 ก.ย. 2569 จาก Yahoo Finance (cross-check StockAnalysis.com ตรงกัน 0.0%) • งบ Q2 2569 / จำนวนหุ้น 13,182M / รายละเอียด IPO จาก SEC Form 10-Q (CIK 1181412, ยื่น 4 ส.ค. 2569) + press release ของบริษัท • ประมาณการรายได้/EPS จาก StockAnalysis.com forecast (35 ราย — ยืนยันแล้วว่า EPS $1.85 เป็นงวด FY2027) • ตัวคูณ comps (CRWV/TMUS/RKLB) จาก StockAnalysis.com ณ 11 ส.ค. 2569 • บริบทข่าวจาก CNBC, NPR, The Globe and Mail • <b>หมายเหตุ EPS:</b> EPS TTM ของ vendor ต่างกันมาก (Yahoo −$1.10 / StockAnalysis −$2.27 / ผลรวมรายไตรมาส −$2.52) เพราะใช้ตัวหารจำนวนหุ้นคนละช่วงเวลา — จำนวนหุ้นกระโดดจาก ~3,900M เป็น 13,182M เมื่อ preferred แปลงเป็นหุ้นสามัญตอน IPO (มิ.ย. 2569) · รายงานนี้จึงยึด EPS ตามงบบริษัทเท่านั้น: Q2/69 −$0.09, H1/69 −$1.12, FY2568 −$1.69 · ตัวเลข FY2567 ที่ vendor แสดง EPS $0.00 บนหุ้น 9,956M เป็น artifact ของโครงสร้างหุ้นก่อน IPO ไม่ใช่ค่าจริง
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ราคา ณ 2 ก.ย. 2569 จาก Yahoo Finance (cross-check StockAnalysis.com ตรงกัน 0.0%) • งบ Q2 2569 / รายละเอียด IPO จาก SEC Form 10-Q (CIK 1181412, ยื่น 4 ส.ค. 2569) + press release ของบริษัท • จำนวนหุ้น 13,573M = 13,182M ตามปก 10-Q + 391,041,680 หุ้น Class A ที่ออกให้ผู้ถือ Cursor ตาม SEC Form 8-K ยื่น 14 ส.ค. 2569 (ตรงกับหุ้นรวมทุกคลาสที่ StockAnalysis.com แสดง) • ประมาณการรายได้/EPS จาก StockAnalysis.com forecast ณ 2 ก.ย. 2569 (35 ราย — ยืนยันแล้วว่า EPS $1.60 เป็นงวด FY2027) • ตัวคูณ comps (CRWV/TMUS/RKLB) จาก StockAnalysis.com ณ 2 ก.ย. 2569 • บริบทข่าว/ตาราง lock-up จาก CNBC, Space.com, Spaceflight Now, StockTitan • <b>หมายเหตุ EPS:</b> EPS TTM ของ vendor ต่างกันมาก (Yahoo −$1.08 / StockAnalysis −$2.27 / ผลรวมรายไตรมาส −$2.52) เพราะใช้ตัวหารจำนวนหุ้นคนละช่วงเวลา — จำนวนหุ้นกระโดดจาก ~3,900M เป็น 13,182M เมื่อ preferred แปลงเป็นหุ้นสามัญตอน IPO (มิ.ย. 2569) · รายงานนี้จึงยึด EPS ตามงบบริษัทเท่านั้น: Q2/69 −$0.09, H1/69 −$1.12, FY2568 −$1.69 · ตัวเลข FY2567 ที่ vendor แสดง EPS $0.00 บนหุ้น 9,956M เป็น artifact ของโครงสร้างหุ้นก่อน IPO ไม่ใช่ค่าจริง
   </div>
-  <footer>Stock Analysis Dashboard • ข้อมูล ณ 11 ส.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
+  <footer>Stock Analysis Dashboard • ข้อมูล ณ 3 ก.ย. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 
 </div>
 
