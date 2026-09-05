@@ -6,7 +6,7 @@
 <title>วิเคราะห์หุ้น เบอร์ลี่ ยุคเกอร์ (BJC) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Sonnet 4.6">
 <script type="application/json" id="stock-meta">
-{"symbol":"BJC","currency":"THB","price":15.7,"fairValue":19.3,"mos":18.7,"upside":22.9,"pe":15,"dividendYield":3.4,"roe":3.3}
+{"symbol":"BJC","currency":"THB","price":17,"fairValue":19.3,"mos":11.9,"upside":13.5,"pe":15,"dividendYield":3.4,"roe":3.3}
 </script>
 <script type="application/json" id="report-data">
 {
@@ -25,7 +25,6 @@
   },
   "chart": {
     "data": [
-      ["ก.ย.25", 20.5],
       ["ต.ค.25", 18.3],
       ["พ.ย.25", 15.2],
       ["ธ.ค.25", 14.4],
@@ -36,21 +35,22 @@
       ["พ.ค.26", 14.2],
       ["มิ.ย.26", 14.7],
       ["ก.ค.26", 16.2],
-      ["ส.ค.26", 15.7]
+      ["ส.ค.26", 15.5],
+      ["ก.ย.26", 17]
     ],
     "min": 12,
-    "max": 22,
-    "grid": [14, 16, 18, 20],
+    "max": 20,
+    "grid": [14, 16, 18],
     "fairLine": 19.3,
     "currency": "฿",
-    "highlight": [0, 7],
+    "highlight": [0, 6],
     "gridFmt": "v.toFixed(0)",
     "dataFmt": "d[1].toFixed(1)"
   },
   "gauge": {
     "min": 0,
     "max": 35,
-    "cur": 15.7,
+    "cur": 17,
     "fair": 19.3,
     "fairLabelTop": true
   },
@@ -74,11 +74,11 @@
     <div class="sub">Big C hypermarket • บรรจุภัณฑ์แก้ว-กระป๋อง • Healthcare &amp; Technical • ห่วงโซ่อุปทาน • ไทย+เวียดนาม (เครือ TCC)</div>
     <div class="price-row">
       <div>
-        <div class="px">฿15.70<small>(BJC)</small></div>
+        <div class="px">฿17.00<small>(BJC)</small></div>
       </div>
-      <div class="chg">▼ −23.4% (รอบปี)</div>
+      <div class="chg">▼ −7.1% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 28 ส.ค. 2569<br>
+        ราคา ณ 4 ก.ย. 2569<br>
         กรอบ 52 สัปดาห์ ฿12.80 – ฿21.10<br>
         ที่มา: Yahoo Finance, Investing.com, SET Factsheet
       </div>
@@ -89,7 +89,7 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ก.ค. 2569 · แหล่ง: StockAnalysis, Investing.com, SET</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">~฿62.9B</div><div class="d">หุ้น ~4,008 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~฿68.1B</div><div class="d">หุ้น ~4,008 ล้านหุ้น</div></div>
       <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~15.0x</div><div class="d">ต่ำกว่าค่าเฉลี่ย 5 ปี อย่างมีนัย</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~25.9x</div><div class="d">ช่วง 19.5x – 31.3x (2563–2567)</div></div>
       <div class="metric"><div class="k">P/BV</div><div class="v neu">0.49x</div><div class="d">ซื้อสินทรัพย์ต่ำกว่ามูลค่าบัญชี</div></div>
@@ -156,7 +156,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿15.70</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿17.00</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿19.3</div></div>
         </div>
         <div class="scale">
@@ -178,7 +178,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict ok">
-        <div class="big">+19%</div>
+        <div class="big">+12%</div>
         <div class="txt">โซน Value — น่าสนใจสำหรับนักลงทุนระยะยาว</div>
       </div>
       <div class="grid g3">
@@ -189,7 +189,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="15.7" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="17" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -198,13 +198,13 @@
 
   <!-- ===== 6. RETURN PROJECTION ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿15.70 • EPS ฐาน ~฿0.99 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿17.00 • EPS ฐาน ~฿0.99 • รวมปันผล</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS 0%/ปี</span></div>
         <div class="body">
           <div class="tgt">฿11.88</div>
-          <div class="ret neg">−14.6% รวม / −5.1%/ปี</div>
+          <div class="ret neg">−21.1% รวม / −7.6%/ปี</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿0.99</span></li>
             <li><span>P/E ออก</span><span>12x</span></li>
@@ -217,7 +217,7 @@
         <div class="top"><span>⚖️ Base</span><span>EPS +7%/ปี</span></div>
         <div class="body">
           <div class="tgt">฿20.57</div>
-          <div class="ret pos">+41.3% รวม / +12.2%/ปี</div>
+          <div class="ret pos">+30.5% รวม / +9.3%/ปี</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿1.21</span></li>
             <li><span>P/E ออก</span><span>17x</span></li>
@@ -230,7 +230,7 @@
         <div class="top"><span>🚀 Bull</span><span>EPS +12%/ปี</span></div>
         <div class="body">
           <div class="tgt">฿27.80</div>
-          <div class="ret pos">+87.6% รวม / +23.3%/ปี</div>
+          <div class="ret pos">+73.2% รวม / +20.1%/ปี</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿1.39</span></li>
             <li><span>P/E ออก</span><span>20x</span></li>
@@ -282,7 +282,7 @@
       <p>BJC ซื้อขายต่ำกว่า Book Value 50% และต่ำกว่า Fair Value ~22% สะท้อน pessimism ของตลาดต่อ earnings อ่อนแอในระยะสั้น อย่างไรก็ตาม BJC เป็น "ห่วงโซ่แห่งชีวิตประจำวัน" ของคนไทย — ตั้งแต่บรรจุภัณฑ์อาหาร ค้าปลีก ยาและวัสดุทางการแพทย์ ธุรกิจมีโครงสร้างที่แน่นหนาภายใต้เครือ TCC ความเสี่ยงหลักคือ <b>หนี้สูง + ROE ต่ำ</b> ซึ่งต้องจับตา; อย่างไรก็ตาม Catalyst สำคัญอย่าง Vietnam platform, Healthcare JV และ Big C expansion สามารถเร่ง ROE ได้ใน 2-3 ปีข้างหน้า</p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿19.3 <span style="font-size:12px;color:#cab9a8">(฿10.6–฿27.5)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +18.7%</div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +11.9%</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿16.0 (Neutral/Hold)</div></div>
       </div>
       <div class="zone">

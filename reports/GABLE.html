@@ -6,7 +6,7 @@
 <title>วิเคราะห์หุ้น จีเอเบิล (GABLE) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Opus 5">
 <script type="application/json" id="stock-meta">
-{"symbol":"GABLE","currency":"THB","price":4,"fairValue":4.72,"mos":15.3,"upside":18,"pe":7.2,"dividendYield":8,"roe":17.8}
+{"symbol":"GABLE","currency":"THB","price":3.88,"fairValue":4.72,"mos":17.8,"upside":21.6,"pe":7.2,"dividendYield":8,"roe":17.8}
 </script>
 <script type="application/json" id="report-data">
 {
@@ -25,7 +25,6 @@
   },
   "chart": {
     "data": [
-      ["ก.ย.25", 3],
       ["ต.ค.25", 2.88],
       ["พ.ย.25", 3.18],
       ["ธ.ค.25", 3.42],
@@ -36,21 +35,22 @@
       ["พ.ค.26", 4.24],
       ["มิ.ย.26", 3.92],
       ["ก.ค.26", 4.26],
-      ["ส.ค.26", 4]
+      ["ส.ค.26", 3.98],
+      ["ก.ย.26", 3.88]
     ],
     "min": 2.5,
     "max": 5,
     "grid": [3, 3.5, 4, 4.5],
     "fairLine": 4.72,
     "currency": "฿",
-    "highlight": [1, 10],
+    "highlight": [0, 9],
     "gridFmt": "v.toFixed(2)",
     "dataFmt": "d[1].toFixed(2)"
   },
   "gauge": {
     "min": 3.2,
     "max": 5.4,
-    "cur": 4,
+    "cur": 3.88,
     "fair": 4.72,
     "fairLabelTop": false
   },
@@ -74,11 +74,11 @@
     <div class="sub">IT Services ครบวงจร · SAP &amp; Oracle Implementation · Cybersecurity · Cloud &amp; Data Platform · AI/Digital Transformation สำหรับองค์กรขนาดใหญ่</div>
     <div class="price-row">
       <div>
-        <div class="px">฿4.00<small>(GABLE)</small></div>
+        <div class="px">฿3.88<small>(GABLE)</small></div>
       </div>
-      <div class="chg">▲ +33.3% (รอบปี)</div>
+      <div class="chg">▲ +34.7% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 28 ส.ค. 2569<br>
+        ราคา ณ 4 ก.ย. 2569<br>
         กรอบ 52 สัปดาห์ ฿2.88 – ฿4.44<br>
         ที่มา: SET Factsheet, StockAnalysis.com, Yahoo Finance, G-Able IR
       </div>
@@ -89,7 +89,7 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">งบ Q2/2569 (TTM ถึง 30 มิ.ย. 2569) · เทียบ FY2568</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">฿2,800 ล้าน</div><div class="d">700.0 ล้านหุ้น · free float 200.4 ล้านหุ้น (28.6%)</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">฿2,716 ล้าน</div><div class="d">700.0 ล้านหุ้น · free float 200.4 ล้านหุ้น (28.6%)</div></div>
       <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~7.2x</div><div class="d">กลุ่ม IT ไทย: MFEC 9.5x · ITNS 9.4x · BBIK 12.1x · NETBAY 12.6x</div></div>
       <div class="metric"><div class="k">P/E มัธยฐานปิดปี</div><div class="v">~8.9x</div><div class="d">มีแค่ 3 จุดตั้งแต่ IPO: FY2566 12.2x · FY2567 8.9x · FY2568 7.8x</div></div>
       <div class="metric"><div class="k">P/BV</div><div class="v neu">1.26x</div><div class="d">BVPS ฿3.15 (30 มิ.ย. 2569) · มัธยฐานปิดปีเอง 1.03x</div></div>
@@ -162,7 +162,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿4.00</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿3.88</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿4.72</div></div>
         </div>
         <div class="scale">
@@ -184,7 +184,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict ok">
-        <div class="big">+15%</div>
+        <div class="big">+18%</div>
         <div class="txt">ถูกกว่ามูลค่าพอสมควร แต่ยังไม่ถึงโซนส่วนเผื่อ 20% · ผลตอบแทนปันผล ~8% เป็นตัวหนุนหลักระหว่างรอ</div>
       </div>
       <div class="grid g3">
@@ -195,7 +195,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="4" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="3.88" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -204,13 +204,13 @@
 
   <!-- ===== 6. RETURN PROJECTION ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿4.00 • EPS ฐาน ~฿0.55 • ผลตอบแทนจากราคา ไม่รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿3.88 • EPS ฐาน ~฿0.55 • ผลตอบแทนจากราคา ไม่รวมปันผล</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS −8%/ปี</span></div>
         <div class="body">
           <div class="tgt">฿3.01</div>
-          <div class="ret neg">−9.0%/ปี</div>
+          <div class="ret neg">−8.1%/ปี</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿0.43</span></li>
             <li><span>P/E ออก</span><span>7.0x</span></li>
@@ -224,7 +224,7 @@
         <div class="top"><span>⚖️ Base</span><span>EPS +2%/ปี</span></div>
         <div class="body">
           <div class="tgt">฿5.51</div>
-          <div class="ret pos">+11.3%/ปี</div>
+          <div class="ret pos">+12.4%/ปี</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿0.58</span></li>
             <li><span>P/E ออก</span><span>9.5x</span></li>
@@ -238,7 +238,7 @@
         <div class="top"><span>🚀 Bull</span><span>EPS +10%/ปี</span></div>
         <div class="body">
           <div class="tgt">฿8.03</div>
-          <div class="ret pos">+26.1%/ปี</div>
+          <div class="ret pos">+27.4%/ปี</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿0.73</span></li>
             <li><span>P/E ออก</span><span>11.0x</span></li>
@@ -292,7 +292,7 @@
       <p>GABLE เป็นผู้ให้บริการไอทีองค์กรชั้นนำของไทย มี backlog นิวไฮ ฿7,318 ล้าน กำไรครึ่งปีแรกโต 94.8% YoY งบดุลเป็นเงินสดสุทธิ และจ่ายปันผลจากกำไรจริงที่ผลตอบแทนราว 8% ต่อปี ทั้งหมดนี้ยังจริงอยู่ แต่<b>การประเมินมูลค่ารอบนี้แก้จุดที่ฉบับก่อนพลาด</b>: P/E เป้าหมาย 12x ที่เคยใช้ไม่เคยเป็นตัวคูณที่ตลาดให้หุ้นตัวนี้จริง (มีข้อมูลปิดปีแค่ 3 จุดตั้งแต่ IPO และแนวโน้มลดลงทุกปี) เมื่อยึดตัวคูณที่วัดได้จริงร่วมกับต้นทุนส่วนทุนที่สมจริงขึ้นสำหรับหุ้นที่ free float เพียง 28.6% มูลค่าเหมาะสมลดจาก ฿7.45 เหลือ ฿4.72 และส่วนเผื่อความปลอดภัยหดจาก 46.6% เหลือระดับกลาง ๆ · สัญญาณเตือนใหม่ที่ต้องจับตาคืออัตรากำไรขั้นต้นไตรมาส 2 ที่เหลือ 17.3% ต่ำกว่าเป้าบริษัทเอง ทำให้กำไรไตรมาสหดตัว 21.5% YoY แม้รายได้ยังโต</p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿4.72 <span style="font-size:12px;color:#cab9a8">(฿4.16–฿5.23)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +15.3% (ถูกกว่ามูลค่า)</div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +17.8% (ถูกกว่ามูลค่า)</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿4.20 (n=1)</div></div>
       </div>
       <div class="zone">

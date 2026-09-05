@@ -6,7 +6,7 @@
 <title>วิเคราะห์หุ้น เอสเอ็นซี ฟอร์เมอร์ (SNC) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Sonnet 4.6">
 <script type="application/json" id="stock-meta">
-{"symbol":"SNC","currency":"THB","price":7.4,"fairValue":9.4,"mos":21.3,"upside":27,"pe":7.18,"dividendYield":null,"roe":7}
+{"symbol":"SNC","currency":"THB","price":7.2,"fairValue":9.4,"mos":23.4,"upside":30.6,"pe":6.99,"dividendYield":null,"roe":7}
 </script>
 <script type="application/json" id="report-data">
 {
@@ -25,7 +25,6 @@
   },
   "chart": {
     "data": [
-      ["ก.ย.25", 5.95],
       ["ต.ค.25", 6],
       ["พ.ย.25", 6],
       ["ธ.ค.25", 5.95],
@@ -36,20 +35,21 @@
       ["พ.ค.26", 6.8],
       ["มิ.ย.26", 7.85],
       ["ก.ค.26", 8.6],
-      ["ส.ค.26", 7.4]
+      ["ส.ค.26", 7.4],
+      ["ก.ย.26", 7.2]
     ],
     "min": 5,
     "max": 10,
     "grid": [6, 7, 8, 9],
     "fairLine": 9.4,
     "currency": "฿",
-    "highlight": [6, 10],
+    "highlight": [5, 9],
     "gridFmt": "v.toFixed(2)"
   },
   "gauge": {
     "min": 4,
     "max": 14,
-    "cur": 7.4,
+    "cur": 7.2,
     "fair": 9.4,
     "fairLabelTop": false
   },
@@ -73,11 +73,11 @@
     <div class="sub">ผลิตชิ้นส่วนแอร์ (Coil, Heat Exchanger) • OEM แอร์บ้าน/ยานยนต์ • ชิ้นส่วน EV & อิเล็กทรอนิกส์ • ส่งออก • นิคม Hermes • โรงไฟฟ้า Waste-to-Energy</div>
     <div class="price-row">
       <div>
-        <div class="px">฿7.40<small>(SNC)</small></div>
+        <div class="px">฿7.20<small>(SNC)</small></div>
       </div>
-      <div class="chg">▲ +24.4% (รอบปี)</div>
+      <div class="chg">▲ +20.0% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 28 ส.ค. 2569<br>
+        ราคา ณ 4 ก.ย. 2569<br>
         กรอบ 52 สัปดาห์ ฿5.50 – ฿8.25<br>
         ที่มา: Yahoo Finance API, StockAnalysis.com, Investing.com
       </div>
@@ -88,8 +88,8 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ต้น ม.ค. 2569 · ยืนยัน ≥2 แหล่ง</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">~฿2.68B</div><div class="d">362 ล้านหุ้น</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~7.18x</div><div class="d">EPS TTM ฿1.03 (รวมกำไรพิเศษ)</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~฿2.61B</div><div class="d">362 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~6.99x</div><div class="d">EPS TTM ฿1.03 (รวมกำไรพิเศษ)</div></div>
       <div class="metric"><div class="k">P/E ประเมิน ~5 ปี</div><div class="v">~10–12x</div><div class="d">อ้างอิงกลุ่มผู้ผลิตชิ้นส่วน SET</div></div>
       <div class="metric"><div class="k">P/BV</div><div class="v neu">~0.54x</div><div class="d">ต่ำกว่า book value (BVPS ฿15.27)</div></div>
 
@@ -155,7 +155,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿7.40</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿7.20</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿9.40</div></div>
         </div>
         <div class="scale">
@@ -177,7 +177,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict good">
-        <div class="big">+21%</div>
+        <div class="big">+23%</div>
         <div class="txt">ราคาพอใช้ — ทยอยสะสมได้ในโซนนี้</div>
       </div>
       <div class="grid g3">
@@ -188,7 +188,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="7.4" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="7.2" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -197,13 +197,13 @@
 
   <!-- ===== 6. RETURN PROJECTION ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿7.40 • EPS ฐาน ~฿1.03 • ไม่รวมปันผล (งด)</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿7.20 • EPS ฐาน ~฿1.03 • ไม่รวมปันผล (งด)</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS 0%/ปี</span></div>
         <div class="body">
           <div class="tgt">฿8.24</div>
-          <div class="ret neg">~11% (3 ปี)</div>
+          <div class="ret neg">~14% (3 ปี)</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿1.03</span></li>
             <li><span>P/E ออก</span><span>8x</span></li>
@@ -216,7 +216,7 @@
         <div class="top"><span>⚖️ Base</span><span>EPS +8%/ปี</span></div>
         <div class="body">
           <div class="tgt">฿13.00</div>
-          <div class="ret pos">+75.7% (20.7%/ปี)</div>
+          <div class="ret pos">+80.6% (21.8%/ปี)</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿1.30</span></li>
             <li><span>P/E ออก</span><span>10x</span></li>
@@ -229,7 +229,7 @@
         <div class="top"><span>🚀 Bull</span><span>EPS +15%/ปี</span></div>
         <div class="body">
           <div class="tgt">฿18.84</div>
-          <div class="ret pos">+154.6% (36.5%/ปี)</div>
+          <div class="ret pos">+161.7% (37.8%/ปี)</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿1.57</span></li>
             <li><span>P/E ออก</span><span>12x</span></li>
@@ -279,7 +279,7 @@
       <p>SNC เป็นหุ้นผู้ผลิตชิ้นส่วนที่ผ่านช่วงขาดทุน 2 ปีมาได้ (FY2566–2567) และกำลังปรับโครงสร้างธุรกิจสู่ EV และ diversification (นิคม, โรงไฟฟ้า) ราคาปัจจุบัน ฿8.25 ขึ้นแล้ว +39.8% จากต้นปี MOS เหลือ ~12.2% เท่านั้น ทำให้ risk/reward ไม่ดีเท่าช่วงกลางปี 2568 ที่ราคา ฿5.50–฿6.00 อย่างไรก็ดี กำไรปกติ (ไม่นับรายการพิเศษ) ยังฟื้นไม่เต็มที่ — นักลงทุนควรติดตาม Q2-Q3/2569 ว่ากำไรดำเนินงานสามารถยืนเหนือ ฿0.50/หุ้น/ปีได้หรือไม่ก่อนเพิ่ม position</p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿9.40 <span style="font-size:12px;color:#cab9a8">(฿8.25–฿11.33)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +21.3%</div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +23.4%</div></div>
         <div class="vcell"><div class="k">เป้าประเมิน 12 ด.</div><div class="v" style="color:#a5d6a7">~฿9.40 (ประเมิน — ไม่มีเป้า broker)</div></div>
       </div>
       <div class="zone">
@@ -293,7 +293,7 @@
     <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
     ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
-    แหล่งข้อมูล: Yahoo Finance API (SNC.BK ราคา/กราฟ 1 ปี · ยืนยันราคา ฿8.25 ตรงกัน 3 แหล่ง ≤0.1%) · StockAnalysis.com (EPS TTM ฿1.03 · P/E 8.02x · Market Cap · งบการเงิน FY2568 Q4/2568 รายได้ ฿9.61B กำไรสุทธิ ฿475.7M) · Investing.com (P/BV 0.52x · ROE 7% · ROA 2.6% · ราคา 28 ส.ค. 2569 · 52w range ฿5.50–฿8.25) · AIO.panphol.com (Q1/2568 Oppday รายได้ ฿4.67B กำไรสุทธิ ฿385M EBITDA ฿698M) · ราคา ณ 28 ส.ค. 2569
+    แหล่งข้อมูล: Yahoo Finance API (SNC.BK ราคา/กราฟ 1 ปี · ยืนยันราคา ฿8.25 ตรงกัน 3 แหล่ง ≤0.1%) · StockAnalysis.com (EPS TTM ฿1.03 · P/E 8.02x · Market Cap · งบการเงิน FY2568 Q4/2568 รายได้ ฿9.61B กำไรสุทธิ ฿475.7M) · Investing.com (P/BV 0.52x · ROE 7% · ROA 2.6% · ราคา 4 ก.ย. 2569 · 52w range ฿5.50–฿8.25) · AIO.panphol.com (Q1/2568 Oppday รายได้ ฿4.67B กำไรสุทธิ ฿385M EBITDA ฿698M) · ราคา ณ 4 ก.ย. 2569
   </div>
   <footer>Stock Analysis Dashboard • ข้อมูล ณ 3 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 

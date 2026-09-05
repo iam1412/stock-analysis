@@ -8,7 +8,7 @@
 <meta name="ai-model" content="Claude Sonnet 4.6">
 <!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
 <script type="application/json" id="stock-meta">
-{"symbol":"MEGA","currency":"THB","price":36.25,"fairValue":40,"mos":9.4,"upside":10.3,"pe":14.55,"dividendYield":4.12,"roe":19.7}
+{"symbol":"MEGA","currency":"THB","price":36,"fairValue":40,"mos":10,"upside":11.1,"pe":14.55,"dividendYield":4.12,"roe":19.7}
 </script>
 <script type="application/json" id="report-data">
 {
@@ -27,7 +27,6 @@
   },
   "chart": {
     "data": [
-      ["ก.ย.25", 31],
       ["ต.ค.25", 29.5],
       ["พ.ย.25", 31.5],
       ["ธ.ค.25", 33.5],
@@ -38,21 +37,22 @@
       ["พ.ค.26", 36],
       ["มิ.ย.26", 36.75],
       ["ก.ค.26", 38],
-      ["ส.ค.26", 36.25]
+      ["ส.ค.26", 36],
+      ["ก.ย.26", 36]
     ],
     "min": 25,
     "max": 45,
     "grid": [30, 35, 40],
     "fairLine": 40,
     "currency": "฿",
-    "highlight": [1, 5],
+    "highlight": [0, 4],
     "gridFmt": "v.toFixed(0)",
     "dataFmt": "d[1].toFixed(2)"
   },
   "gauge": {
     "min": 22,
     "max": 48,
-    "cur": 36.25,
+    "cur": 36,
     "fair": 40,
     "fairLabelTop": true
   },
@@ -76,11 +76,11 @@
     <div class="sub">จัดจำหน่ายยา OTC · ผลิตภัณฑ์สุขภาพ · FMCG ใน 30+ ประเทศ • เมียนมา · เวียดนาม · กัมพูชา · แอฟริกา · CIS • แบรนด์เป็ดแดง · Cenovis · Enervon · Mega We Care</div>
     <div class="price-row">
       <div>
-        <div class="px">฿36.25<small>(MEGA)</small></div>
+        <div class="px">฿36.00<small>(MEGA)</small></div>
       </div>
-      <div class="chg">▲ +16.9% (รอบปี)</div>
+      <div class="chg">▲ +22.0% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 28 ส.ค. 2569<br>
+        ราคา ณ 4 ก.ย. 2569<br>
         กรอบ 52 สัปดาห์ ฿25.00 – ฿40.00<br>
         ที่มา: SET Factsheet (set.or.th) • Yahoo Finance API • Kaohoon International
       </div>
@@ -91,7 +91,7 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">TTM / ปี 2567</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">~฿31,605 ล้าน</div><div class="d">~871.87 ล้านหุ้น (par ฿0.50)</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~฿31,387 ล้าน</div><div class="d">~871.87 ล้านหุ้น (par ฿0.50)</div></div>
       <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~14.55x</div><div class="d">ต่ำกว่าค่าเฉลี่ยกลุ่มยา ~16–20x</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~16–20x</div><div class="d">ช่วง 2561–2565 เทรด 15–22x</div></div>
       <div class="metric"><div class="k">P/BV</div><div class="v neu">~2.86x</div><div class="d">BVPS ~฿12.06 — ROE แข็งแกร่ง</div></div>
@@ -160,7 +160,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿36.25</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿36.00</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿40.00</div></div>
         </div>
         <div class="scale">
@@ -183,8 +183,8 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">+9%</div>
+      <div class="mos-verdict ok">
+        <div class="big">+10%</div>
         <div class="txt">ราคาปัจจุบันต่ำกว่ามูลค่าเหมาะสม ~13.8% — MOS พอประมาณ เหมาะทยอยสะสม (ยังไม่ถึงโซน deep value)</div>
       </div>
       <div class="grid g3">
@@ -195,7 +195,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="36.25" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="36" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -204,13 +204,13 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿36.25 • EPS ฐาน ~฿2.37 (TTM) • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿36.00 • EPS ฐาน ~฿2.37 (TTM) • รวมปันผล</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS −2%/ปี</span></div>
         <div class="body">
           <div class="tgt">฿26.76</div>
-          <div class="ret neg">−14.4%</div>
+          <div class="ret neg">−13.8%</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿2.23</span></li>
             <li><span>P/E ออก</span><span>12x</span></li>
@@ -223,7 +223,7 @@
         <div class="top"><span>⚖️ Base</span><span>EPS +6%/ปี</span></div>
         <div class="body">
           <div class="tgt">฿45.12</div>
-          <div class="ret pos">+36.2%</div>
+          <div class="ret pos">+37.2%</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿2.82</span></li>
             <li><span>P/E ออก</span><span>16x</span></li>
@@ -236,7 +236,7 @@
         <div class="top"><span>🚀 Bull</span><span>EPS +10%/ปี</span></div>
         <div class="body">
           <div class="tgt">฿56.88</div>
-          <div class="ret pos">+68.7%</div>
+          <div class="ret pos">+69.8%</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿3.16</span></li>
             <li><span>P/E ออก</span><span>18x</span></li>
@@ -294,7 +294,7 @@
       </p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿40.00 <span style="font-size:12px;color:#cab9a8">(฿37.00–฿44.00)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +9.4%</div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +10.0%</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿46.00 (ซื้อ)</div></div>
       </div>
       <div class="zone">

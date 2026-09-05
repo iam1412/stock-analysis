@@ -6,7 +6,7 @@
 <title>วิเคราะห์หุ้น Exotic Food PCL (XO) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Sonnet 4.6">
 <script type="application/json" id="stock-meta">
-{"symbol":"XO","currency":"THB","price":19.8,"fairValue":21.5,"mos":7.9,"upside":8.6,"pe":16.2,"dividendYield":3.5,"roe":27.3}
+{"symbol":"XO","currency":"THB","price":19.3,"fairValue":21.5,"mos":10.2,"upside":11.4,"pe":15.8,"dividendYield":3.5,"roe":27.3}
 </script>
 <script type="application/json" id="report-data">
 {
@@ -25,7 +25,6 @@
   },
   "chart": {
     "data": [
-      ["ก.ย.25", 16],
       ["ต.ค.25", 15.2],
       ["พ.ย.25", 14.9],
       ["ธ.ค.25", 14.7],
@@ -36,19 +35,20 @@
       ["พ.ค.26", 13],
       ["มิ.ย.26", 19],
       ["ก.ค.26", 19.9],
-      ["ส.ค.26", 19.8]
+      ["ส.ค.26", 20.2],
+      ["ก.ย.26", 19.3]
     ],
     "min": 10,
     "max": 22.5,
     "grid": [12.5, 15, 17.5, 20],
     "fairLine": 21.5,
     "currency": "฿",
-    "highlight": [8, 10]
+    "highlight": [7, 10]
   },
   "gauge": {
     "min": 12,
     "max": 26,
-    "cur": 19.8,
+    "cur": 19.3,
     "fair": 21.5,
     "fairLabelTop": false
   },
@@ -72,11 +72,11 @@
     <div class="sub">ซอสปรุงรส • น้ำพริกเผา • กะทิ • อาหารพร้อมปรุง • ส่งออกเอเชีย/ยุโรป/อเมริกา</div>
     <div class="price-row">
       <div>
-        <div class="px">฿19.80<small>(XO)</small></div>
+        <div class="px">฿19.30<small>(XO)</small></div>
       </div>
-      <div class="chg">▲ +23.8% (รอบปี)</div>
+      <div class="chg">▲ +27.0% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 28 ส.ค. 2569<br>
+        ราคา ณ 4 ก.ย. 2569<br>
         กรอบ 52 สัปดาห์ ฿12.70 – ฿20.20<br>
         ที่มา: Yahoo Finance API (XO.BK), StockAnalysis.com (งบ FY2025), SET Factsheet
       </div>
@@ -87,8 +87,8 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ก.ค. 2569 · FY2568 (สิ้นสุด ธ.ค. 2568)</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">~฿8,480 ล้าน</div><div class="d">428.26 ล้านหุ้น</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~16.2x</div><div class="d">EPS TTM ฿1.22 · ราคา ฿19.60</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~฿8,265 ล้าน</div><div class="d">428.26 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~15.8x</div><div class="d">EPS TTM ฿1.22 · ราคา ฿19.60</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~14–17x</div><div class="d">ช่วงผันผวนตามรายได้ส่งออก</div></div>
       <div class="metric"><div class="k">P/BV</div><div class="v neu">4.52x</div><div class="d">BVPS ฿4.34 · FY2568</div></div>
 
@@ -159,7 +159,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿19.80</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿19.30</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿21.50</div></div>
         </div>
         <div class="scale">
@@ -184,8 +184,8 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">+8%</div>
+      <div class="mos-verdict ok">
+        <div class="big">+10%</div>
         <div class="txt">MOS น้อย — ราคาต่ำกว่า FV แต่ยังไม่มาก · ควรรอโซน MOS 20%+ หรือมีหลักฐานฟื้นตัวรายได้ก่อน</div>
       </div>
       <div class="grid g3">
@@ -196,7 +196,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="19.8" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="19.3" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -205,13 +205,13 @@
 
   <!-- ===== 6. RETURN PROJECTION ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿19.80 • EPS ฐาน ~฿1.26 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿19.30 • EPS ฐาน ~฿1.26 • รวมปันผล</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS -2%/ปี</span></div>
         <div class="body">
           <div class="tgt">฿15.5</div>
-          <div class="ret neg">-12% รวมปันผล</div>
+          <div class="ret neg">-10% รวมปันผล</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿1.19</span></li>
             <li><span>P/E ออก</span><span>13x</span></li>
@@ -224,7 +224,7 @@
         <div class="top"><span>⚖️ Base</span><span>EPS +7%/ปี</span></div>
         <div class="body">
           <div class="tgt">฿24.6</div>
-          <div class="ret pos">+36% รวมปันผล</div>
+          <div class="ret pos">+39% รวมปันผล</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿1.54</span></li>
             <li><span>P/E ออก</span><span>16x</span></li>
@@ -237,7 +237,7 @@
         <div class="top"><span>🚀 Bull</span><span>EPS +13%/ปี</span></div>
         <div class="body">
           <div class="tgt">฿34.6</div>
-          <div class="ret pos">+87% รวมปันผล</div>
+          <div class="ret pos">+92% รวมปันผล</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿1.82</span></li>
             <li><span>P/E ออก</span><span>19x</span></li>
@@ -295,7 +295,7 @@
       นักลงทุนที่เชื่อในคุณภาพธุรกิจระยะยาวควรรอโซน ฿17–17.50 (MOS 20%) เพื่อ risk/reward ที่ดีขึ้น</p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿21.50 <span style="font-size:12px;color:#cab9a8">(฿20.30–฿24.20)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +7.9%</div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +10.2%</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿15.35 (Sell)</div></div>
       </div>
       <div class="zone">
@@ -309,7 +309,7 @@
     <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
     ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
-    แหล่งข้อมูล: (1) Yahoo Finance API (XO.BK, ราคา ณ 28 ส.ค. 2569, กราฟรายเดือน 12 เดือน), (2) StockAnalysis.com (งบการเงิน FY2568 สิ้นสุด ธ.ค. 2568, consensus EPS FY2569–70, analyst target), (3) SET Factsheet (P/E 15.67x, P/BV 4.46x, market cap ณ 2 ก.ค. 2569) — ราคาจาก Yahoo Finance API และ SET Factsheet ยืนยันตรงกัน ±2.6% (฿19.60 vs ฿19.10)
+    แหล่งข้อมูล: (1) Yahoo Finance API (XO.BK, ราคา ณ 4 ก.ย. 2569, กราฟรายเดือน 12 เดือน), (2) StockAnalysis.com (งบการเงิน FY2568 สิ้นสุด ธ.ค. 2568, consensus EPS FY2569–70, analyst target), (3) SET Factsheet (P/E 15.67x, P/BV 4.46x, market cap ณ 2 ก.ค. 2569) — ราคาจาก Yahoo Finance API และ SET Factsheet ยืนยันตรงกัน ±2.6% (฿19.60 vs ฿19.10)
   </div>
   <footer>Stock Analysis Dashboard • ข้อมูล ณ 3 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 

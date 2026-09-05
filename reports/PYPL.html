@@ -8,7 +8,7 @@
 <meta name="ai-model" content="Claude Sonnet 4.6">
 <!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
 <script type="application/json" id="stock-meta">
-{"symbol":"PYPL","currency":"USD","price":56.82,"fairValue":75,"mos":24.2,"upside":32,"pe":10.7,"dividendYield":1.23,"roe":25.1}
+{"symbol":"PYPL","currency":"USD","price":54.96,"fairValue":75,"mos":26.7,"upside":36.5,"pe":10.3,"dividendYield":1.23,"roe":25.1}
 </script>
 <!--
   report-data: ธีมสี + ข้อมูลกราฟ/gauge ต่อหุ้น (build เอาไปวาด)  ดู schema เต็มใน CLAUDE.md ข้อ 9
@@ -47,7 +47,7 @@
       ["มิ.ย.26", 43.18],
       ["ก.ค.26", 57.21],
       ["ส.ค.26", 52.67],
-      ["ก.ย.26", 56.82]
+      ["ก.ย.26", 54.96]
     ],
     "min": 40,
     "max": 80,
@@ -59,7 +59,7 @@
   "gauge": {
     "min": 38,
     "max": 90,
-    "cur": 56.82,
+    "cur": 54.96,
     "fair": 75,
     "fairLabelTop": true
   },
@@ -84,14 +84,14 @@
     <div class="sub">PayPal checkout (branded) • Venmo (P2P + social commerce) • Braintree (unbranded processing) • Zettle (POS) • Pay Later (BNPL) • PayPal Ads</div>
     <div class="price-row">
       <div>
-        <div class="px">$56.82<small>(PYPL)</small></div>
+        <div class="px">$54.96<small>(PYPL)</small></div>
       </div>
       <!-- ★ ป้าย % รอบปี (gate E35/E36) — ผลตอบแทน ~1 ปี (เทียบราคา ~1 ปีก่อน) = ผลตอบแทนปลายกราฟ section 2 (จุดแรก→ท้าย)
            รูปแบบ: "▲ +X.X% (รอบปี)" ขึ้น · "▼ −X.X% (รอบปี)" ลง · "≈ ทรงตัว (รอบปี)" · หุ้น IPO <1 ปี ใช้ "(ตั้งแต่ IPO)"
            ไม่ใช่ % รายวัน/YTD/52 สัปดาห์ · ตั้งสี theme.chgBg/chgColor ให้ตรงทิศ (ขึ้น=เขียว/ลง=แดง · E34) -->
-      <div class="chg">▼ −18.0% (รอบปี)</div>
+      <div class="chg">▼ −20.7% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 3 ก.ย. 2569 (Jul 15, 2026)<br>
+        ราคา ณ 4 ก.ย. 2569 (Jul 15, 2026)<br>
         กรอบ 52 สัปดาห์ $38.46 – $79.50<br>
         ที่มา: Yahoo Finance, StockAnalysis.com, WSJ/Reuters (ข่าวประมูล M&A)
       </div>
@@ -103,8 +103,8 @@
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">FCF ถูกมาก แต่คำถามคือ moat ยังอยู่ไหม</div></div>
     <!-- ✏️ ปรับการ์ด metric ให้เหมาะกับหุ้น/เซกเตอร์ได้อิสระ — เน้น TPV/Checkout growth + FCF แทน metric มาตรฐานบางส่วน -->
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">$50.1B</div><div class="d">~882M หุ้น</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~10.7x</div><div class="d">GAAP EPS $5.33 · non-GAAP ~8.5x เช่นกัน</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">$48.5B</div><div class="d">~882M หุ้น</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~10.3x</div><div class="d">GAAP EPS $5.33 · non-GAAP ~8.5x เช่นกัน</div></div>
       <div class="metric"><div class="k">P/FCF (TTM)</div><div class="v pos">~7.3x</div><div class="d">FCF/หุ้น ~$6.24 — ถูกกว่า P/E</div></div>
       <div class="metric"><div class="k">P/BV</div><div class="v neu">~2.06x</div><div class="d">BVPS ~$22.02</div></div>
 
@@ -180,7 +180,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $56.82</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $54.96</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $75</div></div>
         </div>
         <div class="scale">
@@ -203,7 +203,7 @@
     <div class="card">
       <!-- ✏️ class ของ mos-verdict: MOS<10 → "bad", 10–20 → "ok", ≥20 → "good" -->
       <div class="mos-verdict good">
-        <div class="big">+24%</div>
+        <div class="big">+27%</div>
         <div class="txt">MOS สูงมาก — เข้าเกณฑ์ "All-in zone" ตามตัวเลข แต่ควรตรวจสอบว่าไม่ใช่ value trap จาก moat erosion ก่อนตัดสินใจ</div>
       </div>
       <div class="grid g3">
@@ -214,7 +214,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="56.82" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="54.96" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -223,13 +223,13 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $56.82 • EPS ฐาน ~$5.36 (non-GAAP) • รวมปันผล (ไม่รวมสถานการณ์ M&A ปิดดีล)</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $54.96 • EPS ฐาน ~$5.36 (non-GAAP) • รวมปันผล (ไม่รวมสถานการณ์ M&A ปิดดีล)</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS +1%/ปี</span></div>
         <div class="body">
           <div class="tgt">$44.18</div>
-          <div class="ret neg">−6.9%/ปี (3 ปี รวม −19.3%)</div>
+          <div class="ret neg">−5.8%/ปี (3 ปี รวม −16.5%)</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$5.52</span></li>
             <li><span>P/E ออก</span><span>8x</span></li>
@@ -242,7 +242,7 @@
         <div class="top"><span>⚖️ Base</span><span>EPS +4%/ปี</span></div>
         <div class="body">
           <div class="tgt">$72.35</div>
-          <div class="ret pos">+9.2%/ปี (3 ปี รวม +30.3%)</div>
+          <div class="ret pos">+10.5%/ปี (3 ปี รวม +34.8%)</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$6.03</span></li>
             <li><span>P/E ออก</span><span>12x</span></li>
@@ -255,7 +255,7 @@
         <div class="top"><span>🚀 Bull</span><span>EPS +7%/ปี</span></div>
         <div class="body">
           <div class="tgt">$98.49</div>
-          <div class="ret pos">+20.8%/ปี (3 ปี รวม +76.4%)</div>
+          <div class="ret pos">+22.2%/ปี (3 ปี รวม +82.4%)</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$6.57</span></li>
             <li><span>P/E ออก</span><span>15x</span></li>
@@ -323,7 +323,7 @@
       </p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$75 <span style="font-size:12px;color:#cab9a8">($69–$80)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +24.2%</div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +26.7%</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$51.5 (Hold)</div></div>
       </div>
       <div class="zone">

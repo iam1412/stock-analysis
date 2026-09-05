@@ -6,7 +6,7 @@
 <title>วิเคราะห์หุ้น ทีทีดับบลิว (TTW) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Sonnet 4.6">
 <script type="application/json" id="stock-meta">
-{"symbol":"TTW","currency":"THB","price":10.5,"fairValue":11.3,"mos":7.1,"upside":7.6,"pe":11.96,"dividendYield":6.12,"roe":19.46}
+{"symbol":"TTW","currency":"THB","price":10.3,"fairValue":11.3,"mos":8.8,"upside":9.7,"pe":11.96,"dividendYield":6.12,"roe":19.46}
 </script>
 <script type="application/json" id="report-data">
 {
@@ -25,7 +25,6 @@
   },
   "chart": {
     "data": [
-      ["ก.ย.25", 9.1],
       ["ต.ค.25", 9.05],
       ["พ.ย.25", 9],
       ["ธ.ค.25", 9.05],
@@ -36,19 +35,20 @@
       ["พ.ค.26", 9.3],
       ["มิ.ย.26", 9.85],
       ["ก.ค.26", 10.4],
-      ["ส.ค.26", 10.5]
+      ["ส.ค.26", 10.5],
+      ["ก.ย.26", 10.3]
     ],
     "min": 8,
     "max": 12,
     "grid": [9, 10, 11],
     "fairLine": 11.3,
     "currency": "฿",
-    "highlight": [2, 11]
+    "highlight": [1, 10]
   },
   "gauge": {
     "min": 7,
     "max": 13,
-    "cur": 10.5,
+    "cur": 10.3,
     "fair": 11.3,
     "fairLabelTop": false
   },
@@ -72,11 +72,11 @@
     <div class="sub">ผลิตน้ำประปาสัมปทาน 30 ปี • ขายให้ PWA นครปฐม–สมุทรสาคร • รายได้แน่นอนตามสัญญา • ปันผลสม่ำเสมอ ≥6% ทุกปี</div>
     <div class="price-row">
       <div>
-        <div class="px">฿10.50<small>(TTW)</small></div>
+        <div class="px">฿10.30<small>(TTW)</small></div>
       </div>
-      <div class="chg">▲ +15.4% (รอบปี)</div>
+      <div class="chg">▲ +13.8% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 28 ส.ค. 2569<br>
+        ราคา ณ 4 ก.ย. 2569<br>
         กรอบ 52 สัปดาห์ ฿8.60 – ฿9.95<br>
         ที่มา: Investing.com, Yahoo Finance, th.Investing.com Financial Summary (FY2568)
       </div>
@@ -87,7 +87,7 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ กรกฎาคม 2569</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">฿41,895 ล้าน</div><div class="d">~3,990 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">฿41,097 ล้าน</div><div class="d">~3,990 ล้านหุ้น</div></div>
       <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~11.96x</div><div class="d">ต่ำกว่าค่าเฉลี่ยอุตสาหกรรม ~14x</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~12–14x</div><div class="d">ช่วงปี 2563–2568</div></div>
       <div class="metric"><div class="k">P/BV</div><div class="v neu">2.26x</div><div class="d">BVPS ฿4.33</div></div>
@@ -159,7 +159,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿10.50</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿10.30</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿11.30</div></div>
         </div>
         <div class="scale">
@@ -183,7 +183,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict bad">
-        <div class="big">+7%</div>
+        <div class="big">+9%</div>
         <div class="txt">MOS ระดับ "น่าสนใจ" — ราคาต่ำกว่า FV ~13% เหมาะทยอยสะสม</div>
       </div>
       <div class="grid g3">
@@ -194,7 +194,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="10.5" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="10.3" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -203,13 +203,13 @@
 
   <!-- ===== 6. RETURN PROJECTION ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿10.50 • EPS ฐาน ~฿0.82 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿10.30 • EPS ฐาน ~฿0.82 • รวมปันผล</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS −2%/ปี</span></div>
         <div class="body">
           <div class="tgt">฿7.70</div>
-          <div class="ret neg">−9.5%</div>
+          <div class="ret neg">−7.8%</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿0.77</span></li>
             <li><span>P/E ออก</span><span>10x</span></li>
@@ -222,7 +222,7 @@
         <div class="top"><span>⚖️ Base</span><span>EPS +3%/ปี</span></div>
         <div class="body">
           <div class="tgt">฿11.70</div>
-          <div class="ret pos">+28.6%</div>
+          <div class="ret pos">+31.1%</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿0.90</span></li>
             <li><span>P/E ออก</span><span>13x</span></li>
@@ -235,7 +235,7 @@
         <div class="top"><span>🚀 Bull</span><span>EPS +5%/ปี</span></div>
         <div class="body">
           <div class="tgt">฿14.25</div>
-          <div class="ret pos">+52.9%</div>
+          <div class="ret pos">+55.8%</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿0.95</span></li>
             <li><span>P/E ออก</span><span>15x</span></li>
@@ -294,7 +294,7 @@
       โดยมีจุดซื้อเพิ่มที่ MOS 20% (฿9.04) และ MOS 30% (฿7.91) หากตลาดปรับฐาน</p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿11.30 <span style="font-size:12px;color:#cab9a8">(฿10.25–฿12.24)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +7.1%</div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +8.8%</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿10.28 (Buy 3/4)</div></div>
       </div>
       <div class="zone">

@@ -6,7 +6,7 @@
 <title>วิเคราะห์หุ้น แอดวานซ์ อินโฟร์ เซอร์วิส (ADVANC) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Sonnet 5">
 <script type="application/json" id="stock-meta">
-{"symbol":"ADVANC","currency":"THB","price":352,"fairValue":369,"mos":4.6,"upside":4.8,"pe":21.84,"dividendYield":4.51,"roe":48.1}
+{"symbol":"ADVANC","currency":"THB","price":346,"fairValue":369,"mos":6.2,"upside":6.6,"pe":21.84,"dividendYield":4.51,"roe":48.1}
 </script>
 <script type="application/json" id="report-data">
 {
@@ -25,7 +25,6 @@
   },
   "chart": {
     "data": [
-      ["ก.ย.25", 291],
       ["ต.ค.25", 302],
       ["พ.ย.25", 307],
       ["ธ.ค.25", 313],
@@ -36,21 +35,22 @@
       ["พ.ค.26", 353],
       ["มิ.ย.26", 367],
       ["ก.ค.26", 380],
-      ["ส.ค.26", 352]
+      ["ส.ค.26", 355],
+      ["ก.ย.26", 346]
     ],
-    "min": 275,
+    "min": 280,
     "max": 400,
-    "grid": [300, 325, 350, 375],
+    "grid": [300, 320, 340, 360, 380],
     "fairLine": 369,
     "currency": "฿",
-    "highlight": [0, 5],
+    "highlight": [0, 4],
     "gridFmt": "v.toFixed(0)",
     "dataFmt": "d[1].toFixed(0)"
   },
   "gauge": {
     "min": 250,
     "max": 400,
-    "cur": 352,
+    "cur": 346,
     "fair": 369,
     "fairLabelTop": true
   },
@@ -74,11 +74,11 @@
     <div class="sub">ผู้ให้บริการมือถืออันดับ 1 ของไทย (5G 18.4 ล้านราย) • เน็ตบ้าน AIS Fibre • ลูกค้าองค์กร &amp; Data Center • กระแสเงินสดแกร่ง ปันผลสูงสม่ำเสมอ • ผู้ถือหุ้นใหญ่ Gulf/Intouch</div>
     <div class="price-row">
       <div>
-        <div class="px">฿352.00<small>(ADVANC)</small></div>
+        <div class="px">฿346.00<small>(ADVANC)</small></div>
       </div>
-      <div class="chg">▲ +21.0% (รอบปี)</div>
+      <div class="chg">▲ +14.6% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 28 ส.ค. 2026<br>
+        ราคา ณ 4 ก.ย. 2026<br>
         กรอบ 52 สัปดาห์ ฿282 – ฿410<br>
         ที่มา: StockAnalysis.com • TradingView • Yahoo Finance
       </div>
@@ -89,7 +89,7 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">TTM / FY2025 • Q1/2026</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">~฿1.05 ล้านล้าน</div><div class="d">~2.97 พันล้านหุ้น</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~฿1.03 ล้านล้าน</div><div class="d">~2.97 พันล้านหุ้น</div></div>
       <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~21.84x</div><div class="d">Forward P/E ~20.68x</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~22–23x</div><div class="d">ใกล้เคียงค่าเฉลี่ยแล้ว</div></div>
       <div class="metric"><div class="k">P/BV</div><div class="v neu">~9.21</div><div class="d">สูงตามธรรมชาติ (ROE สูง/ปันผลมาก)</div></div>
@@ -156,7 +156,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿352</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿346</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿369</div></div>
         </div>
         <div class="scale">
@@ -178,7 +178,7 @@
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
       <div class="mos-verdict bad">
-        <div class="big">+5%</div>
+        <div class="big">+6%</div>
         <div class="txt">ราคาแซงมูลค่าเหมาะสมไปเล็กน้อยแล้ว — แทบไม่เหลือส่วนเผื่อความปลอดภัย เหมาะ "ถือ" รับปันผล ~4.5% มากกว่าซื้อเพิ่ม ควรรอย่อก่อนเข้าใหม่</div>
       </div>
       <div class="grid g3">
@@ -189,7 +189,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="352" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="346" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -198,13 +198,13 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿352 • EPS ฐาน ~฿17.08 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿346 • EPS ฐาน ~฿17.08 • รวมปันผล</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS +2%/ปี</span></div>
         <div class="body">
           <div class="tgt">฿326</div>
-          <div class="ret neg">+6.8%</div>
+          <div class="ret neg">+8.7%</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿18.13</span></li>
             <li><span>P/E ออก</span><span>18x</span></li>
@@ -217,7 +217,7 @@
         <div class="top"><span>⚖️ Base</span><span>EPS +4%/ปี</span></div>
         <div class="body">
           <div class="tgt">฿403</div>
-          <div class="ret pos">+28.7%</div>
+          <div class="ret pos">+30.9%</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿19.21</span></li>
             <li><span>P/E ออก</span><span>21x</span></li>
@@ -230,7 +230,7 @@
         <div class="top"><span>🚀 Bull</span><span>EPS +7%/ปี</span></div>
         <div class="body">
           <div class="tgt">฿481</div>
-          <div class="ret pos">+50.9%</div>
+          <div class="ret pos">+53.5%</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿20.92</span></li>
             <li><span>P/E ออก</span><span>23x</span></li>

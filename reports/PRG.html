@@ -12,7 +12,7 @@
 <meta name="ai-model" content="Claude Sonnet 4.6">
 <!-- ตัวเลขสำหรับเรียง/คัดกรองหน้า index (screener) — ต้องตรงกับที่โชว์ในรายงาน (gate E29–31) -->
 <script type="application/json" id="stock-meta">
-{"symbol":"PRG","currency":"THB","price":10.9,"fairValue":8.88,"mos":-22.7,"upside":-18.5,"pe":11.76,"dividendYield":8.26,"roe":6.41}
+{"symbol":"PRG","currency":"THB","price":11,"fairValue":8.88,"mos":-23.9,"upside":-19.3,"pe":11.76,"dividendYield":8.26,"roe":6.41}
 </script>
 <!--
   report-data: ธีมสี + ข้อมูลกราฟ/gauge ต่อหุ้น (build เอาไปวาด) ดู schema เต็มใน CLAUDE.md ข้อ 9
@@ -36,7 +36,6 @@
   },
   "chart": {
     "data": [
-      ["ก.ย.25", 8.3],
       ["ต.ค.25", 8.4],
       ["พ.ย.25", 8.7],
       ["ธ.ค.25", 9],
@@ -47,19 +46,20 @@
       ["พ.ค.26", 9.2],
       ["มิ.ย.26", 9.15],
       ["ก.ค.26", 10.6],
-      ["ส.ค.26", 10.9]
+      ["ส.ค.26", 11],
+      ["ก.ย.26", 11]
     ],
     "min": 8,
     "max": 12,
     "grid": [9, 10, 11],
     "fairLine": 8.88,
     "currency": "฿",
-    "highlight": [0, 11]
+    "highlight": [0, 10]
   },
   "gauge": {
     "min": 6,
     "max": 11.8,
-    "cur": 10.9,
+    "cur": 11,
     "fair": 8.88,
     "fairLabelTop": true
   },
@@ -84,14 +84,14 @@
     <div class="sub">ผลิต-จำหน่ายข้าวสารบรรจุถุงแบรนด์ "มาบุญครอง" (Mah Boonkrong) และ Jasmine Gold • ธุรกิจ Food Center • ธุรกิจบริหารสินทรัพย์ • ปรับโครงสร้างขยายสู่อาหารพร้อมทาน-โลจิสติกส์</div>
     <div class="price-row">
       <div>
-        <div class="px">฿10.90<small>(PRG)</small></div>
+        <div class="px">฿11.00<small>(PRG)</small></div>
       </div>
       <!-- ★ ป้าย % รอบปี (gate E35/E36) — ผลตอบแทน ~1 ปี (เทียบราคา ~1 ปีก่อน) = ผลตอบแทนปลายกราฟ section 2 (จุดแรก→ท้าย)
            รูปแบบ: "▲ +X.X% (รอบปี)" ขึ้น · "▼ −X.X% (รอบปี)" ลง · "≈ ทรงตัว (รอบปี)" · หุ้น IPO <1 ปี ใช้ "(ตั้งแต่ IPO)"
            ไม่ใช่ % รายวัน/YTD/52 สัปดาห์ · ตั้งสี theme.chgBg/chgColor ให้ตรงทิศ (ขึ้น=เขียว/ลง=แดง · E34) -->
-      <div class="chg">▲ +31.3% (รอบปี)</div>
+      <div class="chg">▲ +31.0% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 28 ส.ค. 2569<br>
+        ราคา ณ 4 ก.ย. 2569<br>
         กรอบ 52 สัปดาห์ ฿7.00 – ฿9.50<br>
         ที่มา: StockAnalysis.com / Yahoo Finance (PRG.BK) / SET (set.or.th)
       </div>
@@ -106,7 +106,7 @@
          • ธนาคาร → NIM / NPL / CASA / Loan growth / Cost-to-income   • REIT/กองอสังหา → Occupancy / DPU / NAV / Gearing   • ประกัน → Combined ratio / EV
          • หุ้นเติบโต-ขาดทุน → Revenue growth / Gross margin / FCF / Cash runway (ตัด P/E ออก) -->
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">฿8,317 ล้าน</div><div class="d">~763 ล้านหุ้น</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">฿8,393 ล้าน</div><div class="d">~763 ล้านหุ้น</div></div>
       <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~11.76x</div><div class="d">SET 11.71x / Investing 11.76x</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~10–14x</div><div class="d">แกว่งตามวัฏจักรราคาข้าว-กำไร</div></div>
       <div class="metric"><div class="k">P/BV</div><div class="v neu">~0.75x</div><div class="d">ต่ำกว่ามูลค่าทางบัญชี (BVPS ฿12.35)</div></div>
@@ -183,7 +183,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿10.90</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿11.00</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿8.88</div></div>
         </div>
         <div class="scale">
@@ -208,7 +208,7 @@
     <div class="card">
       <!-- ✏️ class ของ mos-verdict: MOS<10 → "bad", 10–20 → "ok", ≥20 → "good" -->
       <div class="mos-verdict bad">
-        <div class="big">−23%</div>
+        <div class="big">−24%</div>
         <div class="txt"><b>ไม่มี Margin of Safety</b> — ราคาปัจจุบัน ฿9.20 อยู่ <b>สูงกว่า</b> Fair Value ฿8.88 ประมาณ 3.6% ใกล้เคียงมูลค่าพื้นฐานมาก แต่ยังไม่ใช่จุดเข้าซื้อที่มี margin ตามหลัก Value Investing</div>
       </div>
       <div class="grid g3">
@@ -219,7 +219,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="10.9" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="11" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -228,13 +228,13 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿10.90 • EPS ฐาน ~฿0.78 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿11.00 • EPS ฐาน ~฿0.78 • รวมปันผล</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS −10%/ปี</span></div>
         <div class="body">
           <div class="tgt">฿5.12</div>
-          <div class="ret neg">−38.3%</div>
+          <div class="ret neg">−38.9%</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿0.57</span></li>
             <li><span>P/E ออก</span><span>9.0x</span></li>
@@ -247,7 +247,7 @@
         <div class="top"><span>⚖️ Base</span><span>EPS +3%/ปี</span></div>
         <div class="body">
           <div class="tgt">฿9.80</div>
-          <div class="ret pos">+10.8%</div>
+          <div class="ret pos">+9.8%</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿0.85</span></li>
             <li><span>P/E ออก</span><span>11.5x</span></li>
@@ -260,7 +260,7 @@
         <div class="top"><span>🚀 Bull</span><span>EPS +8%/ปี</span></div>
         <div class="body">
           <div class="tgt">฿12.77</div>
-          <div class="ret pos">+39.2%</div>
+          <div class="ret pos">+37.9%</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿0.98</span></li>
             <li><span>P/E ออก</span><span>13.0x</span></li>
@@ -316,7 +316,7 @@
       แทบไม่เหลือ margin of safety สำหรับนักลงทุนใหม่ ธุรกิจหลักยัง margin บางและผันผวนตามวัฏจักรราคาข้าว ขณะที่แผนปรับโครงสร้างสู่ธุรกิจอาหาร-โลจิสติกส์ใหม่ยังต้องรอพิสูจน์ผลลัพธ์</p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿8.88 <span style="font-size:12px;color:#cab9a8">(฿8.11–฿9.55)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −22.7%</div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −23.9%</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿9.55 (ไม่มี consensus เป็นทางการ)</div></div>
       </div>
       <div class="zone">

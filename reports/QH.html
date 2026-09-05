@@ -6,7 +6,7 @@
 <title>วิเคราะห์หุ้น ควอลิตี้เฮ้าส์ (QH) — Stock Analysis Dashboard</title>
 <meta name="ai-model" content="Claude Sonnet 4.6">
 <script type="application/json" id="stock-meta">
-{"symbol":"QH","currency":"THB","price":1.42,"fairValue":1.57,"mos":9.6,"upside":10.6,"pe":8.26,"dividendYield":7.1,"roe":5.8}
+{"symbol":"QH","currency":"THB","price":1.4,"fairValue":1.57,"mos":10.8,"upside":12.1,"pe":8.26,"dividendYield":7.1,"roe":5.8}
 </script>
 <script type="application/json" id="report-data">
 {
@@ -25,7 +25,6 @@
   },
   "chart": {
     "data": [
-      ["ก.ย.25", 1.36],
       ["ต.ค.25", 1.32],
       ["พ.ย.25", 1.28],
       ["ธ.ค.25", 1.33],
@@ -36,19 +35,20 @@
       ["พ.ค.26", 1.35],
       ["มิ.ย.26", 1.36],
       ["ก.ค.26", 1.45],
-      ["ส.ค.26", 1.42]
+      ["ส.ค.26", 1.42],
+      ["ก.ย.26", 1.4]
     ],
     "min": 1.2,
     "max": 1.6,
     "grid": [1.3, 1.4, 1.5],
     "fairLine": 1.57,
     "currency": "฿",
-    "highlight": [2, 5]
+    "highlight": [1, 4]
   },
   "gauge": {
     "min": 1,
     "max": 2,
-    "cur": 1.42,
+    "cur": 1.4,
     "fair": 1.57,
     "fairLabelTop": true
   },
@@ -72,11 +72,11 @@
     <div class="sub">บ้านเดี่ยว PRUKPIROM &amp; LADDAROM · ทาวน์เฮาส์ THE TRUST &amp; GUSTO · คอนโด Q CONDO &amp; CASA CONDO · ถือหุ้น HMPRO ~20%</div>
     <div class="price-row">
       <div>
-        <div class="px">฿1.42<small>(QH)</small></div>
+        <div class="px">฿1.40<small>(QH)</small></div>
       </div>
-      <div class="chg">▲ +4.4% (รอบปี)</div>
+      <div class="chg">▲ +6.1% (รอบปี)</div>
       <div class="px-meta">
-        ราคา ณ 28 ส.ค. 2569<br>
+        ราคา ณ 4 ก.ย. 2569<br>
         กรอบ 52 สัปดาห์ ฿1.21 – ฿1.53<br>
         ที่มา: Investing.com, SET, QH Investor Relations
       </div>
@@ -87,7 +87,7 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล FY2025 (สิ้นสุด 31 ธ.ค. 2568)</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">~฿15,147 ล้าน</div><div class="d">~10,667 ล้านหุ้น (SET)</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~฿14,934 ล้าน</div><div class="d">~10,667 ล้านหุ้น (SET)</div></div>
       <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~8.26x</div><div class="d">ต่ำกว่าค่าเฉลี่ยกลุ่ม ~10x</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~10x</div><div class="d">ช่วงประวัติ 8–14x</div></div>
       <div class="metric"><div class="k">P/BV</div><div class="v neu">0.48x</div><div class="d">ต่ำกว่า Book มาก (BVPS ฿2.82)</div></div>
@@ -154,7 +154,7 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿1.42</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿1.40</div></div>
           <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿1.57</div></div>
         </div>
         <div class="scale">
@@ -175,8 +175,8 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">+10%</div>
+      <div class="mos-verdict ok">
+        <div class="big">+11%</div>
         <div class="txt">ราคาพอใช้ — ทยอยสะสมได้ในโซนนี้ หากเชื่อว่า EPS จะฟื้นตัวและ P/E จะ re-rate กลับ</div>
       </div>
       <div class="grid g3">
@@ -187,7 +187,7 @@
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="1.42" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="1.4" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -280,7 +280,7 @@
       <p>QH เป็นหนึ่งในผู้พัฒนาอสังหาริมทรัพย์ที่มีประวัติยาวนานและ Portfolio ครบวงจรของไทย ปัจจุบันซื้อขายที่ P/E 8.26x และ P/BV 0.48x ต่ำกว่าค่าเฉลี่ยอุตสาหกรรมอย่างมีนัยสำคัญ ด้วย dividend yield ~7.1% หุ้นนี้น่าสนใจสำหรับนักลงทุนที่ต้องการกระแสเงินสดสม่ำเสมอ แม้กำไรสุทธิจะลดลงต่อเนื่อง 3 ปี ปัจจัยที่จะ re-rate ราคาคือ การฟื้นตัวของยอดขายอสังหาฯ การลดดอกเบี้ย และการ re-rate P/E กลับสู่ค่าปกติ 10x มูลค่าเหมาะสมเฉลี่ย 3 วิธีอยู่ที่ ฿1.57 ให้ upside ~13.8% จากราคาปัจจุบัน</p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿1.57 <span style="font-size:12px;color:#cab9a8">(฿1.32–฿1.72)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +9.6%</div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +10.8%</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿1.40 (Neutral)</div></div>
       </div>
       <div class="zone">
