@@ -45,6 +45,27 @@ const med = (a) => { const s = [...a].sort((x, y) => x - y); const i = s.length 
 const asNum = (v) => (typeof v === 'number' && isFinite(v) ? v : (v && typeof v === 'object' && isFinite(+v.value) ? +v.value : null));
 
 // ราคาปิดรายเดือน 8 ปี — ต้องยาวกว่าหน้าต่างงบ (SA ให้ ~6 FY) เผื่อหน้าต่างแรกกินเดือนก่อนหน้า
+// สกุลเงินของ "งบ" ตามที่ StockAnalysis ประกาศเอง (node1.financial ถ้ามี ไม่งั้น node1.main)
+// หน้า financials ของบริษัทที่จดข้ามตลาดจะมี 2 ค่า: main = สกุลที่ quote · financial = สกุลที่ทำงบ
+async function statementCurrency(base) {
+  try {
+    const r = await fetch(`https://stockanalysis.com/${base}/financials/__data.json`, { headers: { 'user-agent': 'Mozilla/5.0' } });
+    if (!r.ok) return null;
+    const j = await r.json();
+    for (const n of j.nodes || []) {
+      if (!n || !Array.isArray(n.data)) continue;
+      for (const o of n.data) {
+        if (!o || typeof o !== 'object' || Array.isArray(o)) continue;
+        const pick = (k) => (typeof o[k] === 'number' ? n.data[o[k]] : null);
+        const fin = pick('financial'), main = pick('main');
+        if (typeof fin === 'string' && /^[A-Z]{3}$/.test(fin)) return fin;
+        if (typeof main === 'string' && /^[A-Z]{3}$/.test(main)) return main;
+      }
+    }
+  } catch (e) { /* ไม่รู้ = ไม่ฟันธง */ }
+  return null;
+}
+
 async function monthlyCloses(ticker) {
   const url = `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(ticker)}?range=8y&interval=1mo`;
   const r = await fetch(url, { headers: YH });
@@ -56,6 +77,7 @@ async function monthlyCloses(ticker) {
   const out = [];
   for (let i = 0; i < ts.length; i++) if (typeof cl[i] === 'number' && isFinite(cl[i])) out.push({ t: ts[i] * 1000, c: cl[i] });
   if (out.length < 12) throw new Error(`ราคารายเดือนสั้นเกินไป (${out.length} จุด · ${ticker})`);
+  out.currency = res.meta && res.meta.currency ? String(res.meta.currency).toUpperCase() : null;
   return out;
 }
 
@@ -75,6 +97,16 @@ async function oneSymbol(spec, th) {
   const dk = finRow(page, ['datekey']);
   if (!eps || !dk) throw new Error('อ่านแถว EPS(dil)/datekey จากงบไม่ได้');
   const closes = await monthlyCloses(priceTicker);
+  // ★★ กับดักผสมสกุลเงิน (CLAUDE.md §8 ชั้น 0.4b — "EV ต้องใช้ราคาสกุลเดียวกับงบ")
+  //   หุ้นที่จดข้ามตลาด (CPKC/CNI/แคนาดา · ADR) ทำงบสกุลหนึ่งแต่ราคากระดานที่ดึงมาเป็นอีกสกุล
+  //   ⇒ P/E = ราคา USD ÷ EPS CAD เพี้ยนไปเท่าอัตราแลกเปลี่ยน (~1.4x) **เงียบ ๆ**
+  //   เจอจริง 9 ก.ย. 69: CP ได้มัธยฐาน 18.3x ทั้งที่ฐานเดียวกันคือ ~25x — worker เอาไปตัด FV ผิด
+  const finCur = await statementCurrency(page.src);
+  const pxCur = closes.currency;
+  if (finCur && pxCur && finCur !== pxCur) {
+    return { sym, priceTicker, rows: [], used: [], dropped: [], median: null,
+      curErr: `งบเป็น ${finCur} แต่ราคา ${priceTicker} เป็น ${pxCur} — ตัวคูณจะเพี้ยนตามอัตราแลกเปลี่ยน` };
+  }
 
   const rows = [];
   for (let i = 0; i < dk.length; i++) {
@@ -113,6 +145,11 @@ function report(r) {
     if (row.pe == null) { L.push(`  ${row.key}  — ข้าม: ${row.skip}`); continue; }
     const line = `  ${row.key}  EPS ${row.eps.toFixed(2)}  ราคาเฉลี่ย ${row.avg.toFixed(2)} (${row.months} เดือน)  →  P/E ${row.pe.toFixed(1)}x`;
     L.push(row.outlier ? `${line}   ⛔ ตัดออก: ${row.outlier}` : line);
+  }
+  if (r.curErr) {
+    L.push(`  ⛔ **ผสมสกุลเงิน — ใช้ไม่ได้**: ${r.curErr}`);
+    L.push(`  ⇒ รันใหม่โดยระบุ ticker กระดานที่ใช้สกุลเดียวกับงบ เช่น \`${r.sym}:<ticker กระดานท้องถิ่น>\` (แคนาดา = .TO · ไต้หวัน = .TW)`);
+    return L.join('\n');
   }
   if (r.median == null) {
     // ★ ห้ามพิมพ์บรรทัด "★ มัธยฐาน" เมื่อสรุปไม่ได้ — worker หยิบบรรทัดดาวไปใช้โดยไม่อ่านคำเตือน
