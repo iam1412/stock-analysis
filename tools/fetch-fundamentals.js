@@ -482,6 +482,8 @@ async function main() {
 
 module.exports = {
   statsFromPayload, statNum, tableEpsTTM, epsTableLine, epsReconcile, epsBasisNote, statsLines, yieldLine,
+  // ตัวดึงงบรายปี — ใช้ร่วมกับ tools/median-multiples.js (ตัวคูณมัธยฐานย้อนหลัง · CLAUDE.md §8 ชั้น 0.4b)
+  fetchFinPage, finRow,
   SHARES_LABEL, SHARES_NOTE, EPS_TABLE_PASS_PCT, EPS_TABLE_ABS_TOL, SHARES_WARN_PCT, YIELD_WARN_PP,
 };
 // ★ ต้อง guard — test:prep require ไฟล์นี้เพื่อเทียบ format กับ prep-stock (offline) ถ้าไม่ guard จะยิงเน็ตจริง

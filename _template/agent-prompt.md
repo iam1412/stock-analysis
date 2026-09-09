@@ -2,6 +2,7 @@
 
 Controller ใช้แม่แบบนี้ตั้ง prompt ให้ **worker agent 1 ตัว = 1 หุ้น** (CLAUDE.md §3.2 + docs/orchestration.md)
 แทน `{{SYMBOL}}`, `{{MARKET}}` (TH/US), `{{MODE}}` (**NEW** = ยังไม่มีรายงาน / **UPDATE** = มี `reports/<SYM>.html` แล้ว / **UPDATE-LIGHT** = refresh จากคิว price-flags), `{{WORKTREE}}`, `{{CURRENT_TAGS}}` (controller อ่าน `tags.json[<SYM>]` มาวาง — ว่าง = ยังไม่มี tag) แล้วส่งเป็น `prompt` ของ `Agent` (หรือ args ของ workflow `analyze-wave`)
+`{{MEDIANS}}` = controller **ต้องรัน** `node tools/median-multiples.js <SYM> [--th]` เองแล้ววาง output ทั้ง block (ตัวคูณมัธยฐานย้อนหลังของหุ้นตัวเอง — CLAUDE.md §8 ชั้น 0.4b บังคับให้ controller เป็นคนวัด) · ไม่มีบล็อกนี้ = worker จะประมาณตัวคูณเอง แล้วลงเอยที่ **ตัวคูณปัจจุบัน** ⇒ ขา FV วนกลับหาราคาสปอต (สมอตาย · `W18` · วัดจริง 9 ก.ย. 69 เคส ODFL) · ประวัติสั้น/ขาดทุนจนวัดไม่ได้ → วางผลที่ตัวสคริปต์บอกว่า "ใช้ไม่ได้" ไปตรง ๆ อย่าปล่อยว่างเฉย ๆ
 `{{FUNDAMENTALS}}` = controller **ควรรัน** `node tools/prep-stock.js <SYM> [--th] [--update]` เองแล้ววาง output ทั้ง block มาเสมอ (1 คำสั่ง = fundamentals + facts (NEW) + CROSS-VERIFY verdict — **exit 2 = ราคาขัดแหล่ง >5% ห้าม spawn worker หยุดถามผู้ใช้** · ตัดทั้ง turn รันซ้ำและ WebFetch หน้า financials 3-6 call ของ worker) · ไม่วางก็ปล่อยว่าง/ลบทิ้งได้ — บรรทัดกำกับใน wrapper สั่ง worker รันเองเมื่อ block ว่างอยู่แล้ว
 เนื้อหาขั้นตอนทั้งหมดอยู่ **`.claude/skills/stock-analyzer/SKILL.md`** (single source of truth) — wrapper นี้มีแค่สิ่งที่ skill ไม่รู้: ที่อยู่ worktree, โหมด, กติกาห้าม push
 
@@ -19,6 +20,8 @@ cd {{WORKTREE}} && pwd
 อ่าน `.claude/skills/stock-analyzer/SKILL.md` แล้วทำตามในโหมด **{{MODE}}** ครบทุก STEP
 (เก็บข้อมูลผ่าน script · cross-source verify · FV ≥2 วิธี · MOS/scenario · เขียน `reports/{{SYMBOL}}.html` ของตัวเองเท่านั้น · self-check `npm test -- {{SYMBOL}}` ต้อง 0 error)
 - ติดเงื่อนไข "หยุด" ใน SKILL.md (ราคาต่าง >5% / EPS ขัดกัน) → **รายงานกลับ controller ทันที อย่าเดา/อย่าเขียน**
+- ❌ **ห้ามเรียก `advisor` เอง ทุกกรณี** — เจอประเด็นยาก*ใหม่*กลางทาง ให้ **คืนคำถามกลับมาให้ controller** แล้วรอ (controller จะจัด courier subagent ให้ตามกติกา CLAUDE.md §7) · นี่เป็น **ข้อห้ามเชิงนโยบาย ไม่ใช่ข้อจำกัดทางเทคนิค** — worker เรียกได้จริงและอาจสำเร็จด้วย (วัดจริง 9 ก.ย. 69: worker DASH เรียกตรงแล้วได้คำตอบ) แต่ทำให้ controller ไม่เห็นว่าใครใช้ข้อมูลอะไรตัดสิน และ transcript ที่ยาวทำให้คำแนะนำเพี้ยนจากที่ควรได้
+- ★★ **ตัวคูณเป้าหมายห้ามลอกมาจากตัวคูณปัจจุบัน** ("เป้า ~36x เพราะใกล้เคียง P/E ปัจจุบัน 36x" = ขาที่คืนราคาตลาดกลับมาโดยโครงสร้าง — `W18` จะฟ้อง) · มีบล็อก `=== ตัวคูณมัธยฐานย้อนหลัง ===` ให้แล้ว **ห้ามประมาณเอง** · ใช้ตัวคูณปัจจุบันเป็น *บริบทเปรียบเทียบ* ได้ แต่ห้ามเป็น *ที่มา* ของเป้า → SKILL STEP 3 + `docs/quality-gate.md` §0.4e
 - **ประทับรุ่นโมเดลของตัวเอง (บังคับทุกโหมด):** `<meta name="ai-model" content="Claude <รุ่นที่รันจริง>">` — อ่านรุ่นจากบรรทัด **"You are powered by the model named …"** ใน system prompt ของตัวเอง (NEW = เติม `{{AI_MODEL}}` ในโครง · UPDATE/UPDATE-LIGHT = **แก้ค่าเดิมให้เป็นรุ่นของรอบนี้** แม้รอบก่อนใช้รุ่นอื่น) · ห้ามคงค่าที่ติดมากับไฟล์/โครง ห้ามคัดลอกจากรายงานตัวอื่น — ป้ายนี้คือบันทึกว่าใครวิเคราะห์จริง gate ตรวจได้แค่รูปแบบ ไม่รู้ว่าโกหกไหม
 - **คืนงานต้องบอก `ai-model` ที่ประทับไว้ด้วย** เพื่อให้ controller spot-check ตรงกับโมเดลที่ spawn จริง (CLAUDE.md §3.2)
 
@@ -35,6 +38,12 @@ cd {{WORKTREE}} && pwd
 **FUNDAMENTALS:** ถ้าบล็อกด้านล่างมีข้อมูลแล้ว **ห้ามรัน fetch-fundamentals ซ้ำ** — ใช้ตัวเลขจาก block นี้เลย (controller cross-verify มาแล้ว · วัดจริง 13 ก.ค. 2569: worker 3/3 รันซ้ำทั้งที่ block ครบ = เสีย 1 turn/หุ้นเปล่า) · block มีตารางงบ 5 ปี [3] → ใช้เขียน section งบ/แนวโน้ม/scenario ได้เลย **ห้าม WebFetch หน้า financials/balance-sheet/ratios/cash-flow/statistics ของ stockanalysis ซ้ำ** · **block มี `=== FACTS ===` (ราคา/chart/ป้าย %) → ห้ามรัน fetch-facts ซ้ำด้วย** ใช้บล็อก chart นั้นเลย · **ถ้า block ว่าง/เหลือ placeholder/ไม่มีตัวเลขเท่านั้น**จึงรัน `node tools/prep-stock.js {{SYMBOL}}` (หุ้นไทยเติม `--th` · โหมด UPDATE เติม `--update`) เองใน batch แรกของ SKILL STEP 1
 
 {{FUNDAMENTALS}}
+
+=== ตัวคูณมัธยฐานย้อนหลัง (controller วัดมาแล้ว — ห้ามประมาณเอง ห้ามรันซ้ำ) ===
+{{MEDIANS}}
+
+> ว่าง/ไม่มีบล็อกนี้ = controller ยังไม่ได้วัด → **ห้ามเดาตัวคูณจากค่าปัจจุบัน** ให้ใช้ peer ที่วัดจริง หรือตระกูลอื่น (EV/Sales · DDM) เป็นขาแทน แล้วเขียนกำกับว่าทำไม
+> สคริปต์บอก "ใช้ไม่ได้ (<3 จุด)" = ประวัติสั้น/ปีขาดทุนเยอะ → เหมือนกรณีว่าง
 
 === TAGS ปัจจุบัน ===
 {{CURRENT_TAGS}}

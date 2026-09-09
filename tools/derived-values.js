@@ -637,6 +637,36 @@ function rewritePct(s, price, where, changes) {
   });
 }
 
+// ── สมอตายวนกลับ (dead anchor) — W18 · CLAUDE.md §8 ชั้น 0.4e ─────────────────────────
+// ขา FV ที่ **ตัวคูณเป้าหมายถูกนิยามจากตัวคูณปัจจุบัน** ("P/E เป้าหมาย ~36x — ใกล้เคียง P/E ปัจจุบัน")
+// ⇒ ขานั้นคืนราคาวันนี้กลับมาโดยโครงสร้าง อ่านแล้วเหมือนมี valuation แต่บอกไม่ได้ว่าถูกหรือแพง
+// (เจอ 9 ก.ย. 69 ตอนเคลียร์คิว price-flags: ODFL ขา P/E ห่างราคา 0.1% · EXPE สองขา ~5% · gate ผ่าน 43/43)
+//
+// ★ เกณฑ์เทียบ **ตัวคูณกับตัวคูณ** ไม่ใช่ mval กับราคา — ทั้งสองค่าเป็นข้อความคงที่ในไฟล์
+//   ⇒ cron ขยับราคาแล้วผลไม่กระพริบ (เกณฑ์ "mval ห่างราคา ≤3%" ยิง 225/908 และเปลี่ยนทุกวันตามราคา
+//    จึงใช้เป็นตัวชี้ค้นหาใน `tools/spotcheck.js` เท่านั้น ไม่เอาเข้า gate)
+const DA_GAP = 0.07;          // ตัวคูณเป้า ห่างตัวคูณปัจจุบัน ≤7% = นิยามจากค่าปัจจุบัน (วัดคลัง 9 ก.ย. 69: ยิง 23/908)
+const DA_NUMX = '(\\d+(?:\\.\\d+)?)\\s*(?:x|เท่า)';
+// ตัวคูณที่ "วัดจริง" มาจากประวัติ/peer = ขาที่มีสมอจริง แม้จะบังเอิญใกล้ค่าปัจจุบัน → ไม่ใช่สมอตาย
+const DA_ANCHORED = /มัธยฐาน|median|เฉลี่ย[^<]{0,14}ปี|ย้อนหลัง|historical|5-?yr|[35] ปี|10 ปี|เคยซื้อขาย|ปี 25\d\d|peer|กลุ่ม|sector|อุตสาหกรรม|คู่แข่ง/i;
+const DA_TGT_AFTER  = new RegExp('(?:เป้าหมาย|target)[^0-9]{0,20}~?\\s*' + DA_NUMX, 'i');
+const DA_TGT_BEFORE = new RegExp('×\\s*~?\\s*' + DA_NUMX + '[^.;·]{0,25}?(?:เป้าหมาย|target)', 'i');
+const DA_CUR = new RegExp('(?:ปัจจุบัน|current|วันนี้|spot)[^0-9]{0,28}~?\\s*' + DA_NUMX + '|' + DA_NUMX + '\\s*(?:ปัจจุบัน|current|วันนี้)', 'i');
+
+// desc ของการ์ดวิธี (.mdesc) → { target, current, gap } เมื่อเป็นสมอตาย · null เมื่อไม่ใช่/ตัดสินไม่ได้
+// **เงียบเมื่อ parse ไม่ได้** ตามแบบ E21/W14 — ตัวคูณอ่านไม่ครบ = ไม่ฟ้อง
+function deadAnchor(desc) {
+  const d = String(desc || '');
+  if (!d || DA_ANCHORED.test(d)) return null;         // มีสมอที่วัดจริง → ไม่ใช่คลาสนี้
+  const t = DA_TGT_BEFORE.exec(d) || DA_TGT_AFTER.exec(d);
+  const c = DA_CUR.exec(d);
+  if (!t || !c) return null;
+  const target = parseFloat(t[1]), current = parseFloat(c[1] || c[2]);
+  if (!(target > 0) || !(current > 0)) return null;
+  const gap = (target - current) / current;
+  return Math.abs(gap) <= DA_GAP ? { target, current, gap: gap * 100 } : null;
+}
+
 module.exports = {
   TOL_PE_REL, TOL_PE_ABS, TOL_TGT_PP, TOL_MCAP_REL, MCAP_ULP, MCAP_BAND,
   PE_LABEL_SKIP, TGT_LABEL_STRICT, PCT_NOT_VS_PRICE, QUOTE_CONTEXT, MONEY_PCT_SRC, CARD_SRC,
@@ -645,4 +675,6 @@ module.exports = {
   // หมวด 6 (ผลตอบแทนฉาก 3 ปี) — W17 + ตัวซ่อม
   TOL_RET_PP, TOL_RET_REL, TOL_PY_PP, SCN_TIGHT, SCN_VOTE_RATIO, CONV_PP,
   scenarioBlock, scenarioPlan, retTokens, retOff, pyOff, retWrite, retShown,
+  // สมอตายวนกลับ — W18 + tools/spotcheck.js
+  DA_GAP, DA_ANCHORED, deadAnchor,
 };
