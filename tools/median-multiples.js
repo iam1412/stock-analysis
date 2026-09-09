@@ -19,6 +19,11 @@
  *   node tools/median-multiples.js ODFL LULU EXPE
  *   node tools/median-multiples.js SCC --th            # หุ้นไทย (stockanalysis.com/quote/bkk/<SYM>)
  *   node tools/median-multiples.js UMC:2303.TW         # ADR: งบสกุลท้องถิ่น → ต้องใช้ราคากระดานท้องถิ่น
+ *   node tools/median-multiples.js BRK.B:BRK-B         # SA ใช้จุด (brk.b) แต่ Yahoo ใช้ขีด (BRK-B)
+ *
+ * ⚠️ **ตัวคูณที่ได้เป็น P/E บนกำไร GAAP diluted เสมอ** — บริษัทที่ GAAP ไม่ใช่เลนส์ที่ถูก
+ *   (BRK: กำไร GAAP รวมกำไร/ขาดทุนยังไม่เกิดจริงของพอร์ตลงทุน ⇒ ปีขาดทุน/ตัวคูณแกว่งไร้ความหมาย
+ *    · บริษัทที่กำไรพิเศษครอบงำ) ต้องใช้ดุลพินิจ ห้ามหยิบมัธยฐานไปคูณดื้อ ๆ
  *
  * ★ ADR/หุ้นสองกระดาน: งบของ SA เป็นสกุลท้องถิ่น (UMC = NT$) แต่ราคา ADR เป็น USD และ 1 ADR = N หุ้น
  *   ⇒ ต้องระบุ `SYM:<yahoo ticker กระดานท้องถิ่น>` ไม่งั้นได้ตัวคูณผสมสองฐาน (เคส UMC 9 ก.ย. 69:
@@ -27,6 +32,13 @@
 const { fetchFinPage, finRow } = require('./fetch-fundamentals.js');
 
 const MIN_POINTS = 3;          // < 3 จุด = ประวัติสั้นเกินสรุปมัธยฐาน (CRDO/GWRE/PATH 9 ก.ย. 69)
+// ★ ตัวคูณสุดขั้วต้อง **ตัดออกจากการคิดมัธยฐาน** ไม่ใช่แค่เตือน (แก้ 9 ก.ย. 69)
+//   กฎ §0.4b ข้ามเฉพาะ EPS ≤ 0 — แต่ EPS ที่ "เกือบศูนย์" ให้ผลเหมือนกันทุกประการ:
+//   AU ปีหนึ่ง EPS ~0.01 ⇒ P/E 2,074x ⇒ มัธยฐานดิบออกมา 47.1x ทั้งที่ปีปกติอยู่ 25–30x
+//   (VRANDA เจอแบบเดียวกันที่ 1,989x) · ตัวเลขพวกนี้อันตรายเป็นพิเศษเพราะ worker จะหยิบ
+//   บรรทัด "★ มัธยฐาน" ไปใช้แล้วข้ามบรรทัดเตือน — ต้องไม่ให้มีบรรทัดดาวตั้งแต่แรก
+const PE_ABS_CAP = 100;        // เกินนี้ = ปีที่กำไรเกือบศูนย์ ไม่ใช่ราคาที่ตลาดยอมจ่ายจริง
+const PE_REL_BAND = 3;         // ห่างมัธยฐานดิบเกิน 3 เท่า (ทั้งสูงและต่ำ) = ปีกำไรพิเศษ/ขาดทุนแฝง
 const YH = { 'user-agent': 'Mozilla/5.0', accept: 'application/json' };
 
 const med = (a) => { const s = [...a].sort((x, y) => x - y); const i = s.length >> 1; return s.length % 2 ? s[i] : (s[i - 1] + s[i]) / 2; };
@@ -75,8 +87,20 @@ async function oneSymbol(spec, th) {
     const skip = e == null ? 'ไม่มี EPS' : (e <= 0 ? 'EPS ≤ 0 (ปีขาดทุน — P/E ไร้ความหมาย)' : (!w ? 'ราคาไม่ครอบคลุมงวด' : null));
     rows.push({ key, eps: e, avg: w ? w.avg : null, months: w ? w.n : 0, pe: skip ? null : w.avg / e, skip });
   }
-  const used = rows.filter((r) => r.pe != null).map((r) => r.pe);
-  return { sym, priceTicker, rows, used, median: used.length ? med(used) : null };
+  // รอบ 1: มัธยฐานดิบ → รอบ 2: ตัดตัวคูณสุดขั้วแล้วคิดใหม่ (ตัดจากค่ากลาง ไม่ใช่ตัดหัวท้ายเสมอ
+  // เพื่อไม่ให้หุ้นที่ตัวคูณสูงจริงทั้งชุดโดนตัดผิด — ICLR อยู่ 32–37x ทั้งชุด ต้องเหลือครบ)
+  const raw = rows.filter((r) => r.pe != null);
+  if (raw.length) {
+    const m0 = med(raw.map((r) => r.pe));
+    for (const r of raw) {
+      if (r.pe > PE_ABS_CAP) r.outlier = `ตัวคูณสุดขั้ว ${r.pe.toFixed(0)}x (>${PE_ABS_CAP}x — กำไรเกือบศูนย์)`;
+      else if (r.pe > PE_REL_BAND * m0) r.outlier = `สูงกว่ามัธยฐานดิบ ${m0.toFixed(1)}x เกิน ${PE_REL_BAND} เท่า (กำไรทรุดชั่วคราว?)`;
+      else if (r.pe * PE_REL_BAND < m0) r.outlier = `ต่ำกว่ามัธยฐานดิบ ${m0.toFixed(1)}x เกิน ${PE_REL_BAND} เท่า (กำไรพิเศษ?)`;
+    }
+  }
+  const used = raw.filter((r) => !r.outlier).map((r) => r.pe);
+  const dropped = raw.filter((r) => r.outlier);
+  return { sym, priceTicker, rows, used, dropped, median: used.length >= MIN_POINTS ? med(used) : null };
 }
 
 function report(r) {
@@ -86,16 +110,18 @@ function report(r) {
   //   `_template/agent-prompt.md` และที่ SKILL.md STEP 3 อ้างถึง — worker หาบล็อกนี้ด้วยชื่อ
   L.push(`=== ตัวคูณมัธยฐานย้อนหลัง: ${r.sym}${tag} — P/E (ราคาเฉลี่ยของงวด ÷ EPS diluted ของงวดนั้น) ===`);
   for (const row of r.rows) {
-    if (row.pe != null) L.push(`  ${row.key}  EPS ${row.eps.toFixed(2)}  ราคาเฉลี่ย ${row.avg.toFixed(2)} (${row.months} เดือน)  →  P/E ${row.pe.toFixed(1)}x`);
-    else L.push(`  ${row.key}  — ข้าม: ${row.skip}`);
+    if (row.pe == null) { L.push(`  ${row.key}  — ข้าม: ${row.skip}`); continue; }
+    const line = `  ${row.key}  EPS ${row.eps.toFixed(2)}  ราคาเฉลี่ย ${row.avg.toFixed(2)} (${row.months} เดือน)  →  P/E ${row.pe.toFixed(1)}x`;
+    L.push(row.outlier ? `${line}   ⛔ ตัดออก: ${row.outlier}` : line);
   }
-  if (r.median == null || r.used.length < MIN_POINTS) {
-    L.push(`  ⚠️ ใช้ไม่ได้: มีจุดที่วัดได้ ${r.used.length} จุด (ต้อง ≥ ${MIN_POINTS})`);
-    L.push('  ⇒ **ห้ามตั้งตัวคูณเป้าหมายเอง** — ใช้ peer ที่วัดจริง หรือตระกูลอื่น (EV/Sales, DDM) เป็นขาแทน');
+  if (r.median == null) {
+    // ★ ห้ามพิมพ์บรรทัด "★ มัธยฐาน" เมื่อสรุปไม่ได้ — worker หยิบบรรทัดดาวไปใช้โดยไม่อ่านคำเตือน
+    L.push(`  ⚠️ **ใช้ไม่ได้** — เหลือจุดที่เชื่อได้ ${r.used.length} จุด (ต้อง ≥ ${MIN_POINTS})${r.dropped.length ? ` · ตัดออก ${r.dropped.length} จุด` : ''}`);
+    L.push('  ⇒ **ห้ามตั้งตัวคูณเป้าหมายเอง และห้ามใช้ตัวคูณปัจจุบัน** — ใช้ peer ที่วัดจริง หรือตระกูลอื่น (EV/Sales · DDM · P/BV) เป็นขาแทน แล้วเขียนกำกับว่าทำไม');
   } else {
     const lo = Math.min(...r.used), hi = Math.max(...r.used);
-    L.push(`  ★ มัธยฐาน ${r.median.toFixed(1)}x   (ช่วง ${lo.toFixed(1)}–${hi.toFixed(1)}x · ${r.used.length} จุด)`);
-    if (hi / lo > 3) L.push(`  ⚠️ ช่วงกว้าง ${(hi / lo).toFixed(1)} เท่า — มีปีผิดปกติ (กำไรก้อนเดียว/เปลี่ยนสเกล) ดูรายปีก่อนใช้มัธยฐาน`);
+    L.push(`  ★ มัธยฐาน ${r.median.toFixed(1)}x   (ช่วง ${lo.toFixed(1)}–${hi.toFixed(1)}x · ${r.used.length} จุดที่เชื่อได้${r.dropped.length ? ` · ตัดปีผิดปกติออก ${r.dropped.length}` : ''})`);
+    if (hi / lo > 2) L.push(`  ⚠️ ช่วงยังกว้าง ${(hi / lo).toFixed(1)} เท่า — อ่านรายปีก่อนใช้ อาจต้องเลือกช่วงที่ธุรกิจสเกลเดียวกับปัจจุบัน`);
   }
   return L.join('\n');
 }
