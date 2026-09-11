@@ -32,6 +32,8 @@ const usage = `ใช้: npm run queue -- <คำสั่ง> [ตัวเล
     case 'prep': if (!sym) throw new Error(usage); await require('./queue/prep.js').prep(sym, { mode: val('--mode'), model: val('--model'), brand: val('--brand'), medianSpec: val('--median-spec'), th: has('--th') }); break;
     case 'postcheck': if (!sym) throw new Error(usage); process.exitCode = require('./queue/postcheck.js').postcheck(sym, { model: val('--model') }).issues.length ? 1 : 0; break;
     case 'ship': {
+      // เช็คก่อน require — สองโหมดนี้คนละงานกัน (ใบเดียว vs ราคาทั้งชุด) ใส่คู่กันแปลว่าพิมพ์ผิด ห้ามเดาให้
+      if (has('--prepatch') && sym) throw new Error('ship: ระบุ <SYM> หรือ --prepatch อย่างใดอย่างหนึ่ง');
       const sh = require('./queue/ship.js');
       if (has('--prepatch')) sh.shipPrepatch();
       else if (sym) sh.shipStock(sym, { tags: val('--tags'), message: val('--message'), force: has('--force') });

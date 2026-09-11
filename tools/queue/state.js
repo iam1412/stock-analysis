@@ -2,7 +2,7 @@
 /**
  * state ของรอบเคลียร์คิว — `.queue/state.json` (gitignore · per-machine · อยู่ข้ามหลาย session ไม่หายเหมือน scratchpad)
  * stocks[SYM] = { reason, bucket, oldPrice, currency, footerAge, skip, flaggedAt, prePatched, mode, model, effort, prepAt,
- *                 epsScreen, snapDeltas, postcheck: 'pass'|'review', postcheckAt, shippedAt }
+ *                 escalated, prePatchRejected, prepatchShippedAt, epsScreen, snapDeltas, postcheck: 'pass'|'review', postcheckAt, shippedAt }
  * env QUEUE_DIR = override โฟลเดอร์ (เทสใช้)
  */
 const fs = require('fs');

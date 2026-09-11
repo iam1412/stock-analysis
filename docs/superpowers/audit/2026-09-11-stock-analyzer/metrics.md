@@ -132,3 +132,18 @@ node docs/superpowers/audit/2026-09-11-stock-analyzer/measure-analysis-age.js
 - ได้ `CLAUDE.md` โปรเจกต์ทั้งฉบับ (กรอบ: "These instructions OVERRIDE any default behavior and you MUST follow them exactly as written")
 - ได้ `MEMORY.md` index 27 บรรทัด · **ไม่ได้** เนื้อไฟล์ memory ย่อย · **ไม่ได้** SKILL.md · ได้ `~/.claude/CLAUDE.md` + `RTK.md`
 - เส้นทาง `analyze-wave` (Workflow `agent()`) **ยังไม่ได้ probe**
+
+## 9. ผลวัดเกณฑ์จบระยะ 0 — 12 ก.ย. 2569 (branch `claude/audit-p0-e-exit` @ `1503a899`)
+
+> รายละเอียด/คำสั่งเต็ม + การจำแนกทุกบรรทัด → `phase0-exit.md` (ไฟล์เดียวกับโฟลเดอร์นี้)
+
+| เกณฑ์ (spec §6 "0 · หยุดเลือด") | baseline 11 ก.ย. | วัดได้ 12 ก.ย. | คำสั่ง |
+|---|---|---|---|
+| cron ไม่ขึ้นกับราคาของวัน | cron ล้ม ~2 วัน/เดือน (3 ครั้งจาก fixture ผูกราคา) | **12/12 ราคา verify ผ่าน · fails=0 · error 0 ทุกครั้ง** (warning 149→150/151 = W-code ไม่บล็อก) | `sweep.sh` ไล่ ×0.5…×3.0 ผ่าน `patchReport()` ลง `reports/{AAPL,BBL}.html` จริง + `npm run verify` ทุกรอบ + `git checkout --` คืนไฟล์ (มี `trap … EXIT`) |
+| ขั้นที่ controller ต้องจำ | 24 (จำล้วน · metrics §7) | **preflight 2 · prep 2 · postcheck 2** (สูงสุดตามโค้ด 4/4/2) | `node -e "P.manualSteps(P.plan(P.loadFlags(), todayBangkok()))"` · prep/postcheck อ่านจาก `tools/queue/prep.js:230-235`, `postcheck.js:75-77` |
+| docs ขัดกัน | 17 คู่ | **0 ในวลีที่กวาด (11 วลี)** (raw 2 hit = false positive: `templates.md:249` "sequential" ของ tag-apply · vendor LICENSE "con*sequential*") · final review พบคู่ขัดกันนอกชุดวลี 1 คู่ (templates.md "ขาด lock" — แก้แล้ว) + จำนวน error/warning ใน README ล้าสมัย (แก้แล้ว) ⇒ ระยะ 1 ต้องเพิ่มแพทเทิร์นเชิงลบ/ตัวเลข (ไม่มี lock · \d+ error \+ \d+ warning · \d+ ขั้น) เข้า sweep หรือทำเป็นเทส | `grep -rn` 11 วลี ใน `CLAUDE.md docs README.md .claude _template .githooks .github tools/update-prices.js` ตัด `superpowers/` |
+| worker ไม่ได้รับคำสั่งขัดกัน | — (กฎ worker 46 ข้อ · ขัดกัน 17 คู่) | **11 บรรทัดเหลือ มีขอบเขตครบ** — 7 ใต้หัวข้อ `[controller]` · 1 วงเล็บกำกับในบรรทัด · 1 อนุญาต worker ชัดแจ้ง · 2 บรรยาย · **แก้ 1 วลี** (`CLAUDE.md:58` §4 ไม่ติดป้ายบทบาท) | `grep -n "push\|advisor\|pick-brand" CLAUDE.md` แล้วกรองวลีกำกับบทบาท |
+
+ตัวเลขอื่นที่ขยับในระยะ 0: ขั้น `npm run verify` **13 → 14** (+`queue-test`) · fixture ที่ผูกไฟล์รายงานจริง **2 → 0** (`test/fixtures/`) · รหัส E/W ใหม่ **0** (spec §8 ห้ามเพิ่ม E ก่อน quarantine ครบ) · `docs/open-items.md` เปิด **19** (รวม #22 #23 จาก final review) ปิดแล้ว **4** (#18 ปิดด้วย probe 12 ก.ย.)
+
+**เงื่อนไขก่อนระยะ 1:** W-code ที่ขึ้นกับราคายังขยับตามราคา (149→151 ระหว่าง sweep) — เลื่อน W→E เมื่อไรต้องรัน sweep ซ้ำเป็นเกณฑ์จบระยะ 1 · วัดแล้ว 12 ก.ย. (Task 20 เจ้าของสั่ง): เส้นทาง `analyze-wave` ได้ CLAUDE.md + MEMORY.md เหมือน Agent tool · model เมื่อไม่ส่ง = Sonnet 5 จาก script pin ไม่ใช่ default harness (open-items #18 ปิด) · ยังไม่ได้วัด: KPI รอบเคลียร์คิวจริง (ปัญหาที่คนจับ · re-dispatch · turn/หุ้น) ต้องรอรอบถัดไป

@@ -35,7 +35,6 @@ const { expandReport } = require('../build.js');  // BBL เป็น content-on
 
 // ฐาน = fixture แช่แข็ง (test/fixtures/BBL.html) — ไม่ใช่ไฟล์จริงที่ cron แก้ทุกวัน (บทเรียน 22–24 ส.ค. 69)
 const FX = require('./fixtures');
-const BASE_FILE = FX.PATH.BBL;
 const base = expandReport(FX.BBL());
 process.env.STALE_TODAY = FX.TODAY;   // E27/W09 วัดจากวันนี้ที่ตรึงไว้ — ทุกเคสที่เปลี่ยนค่านี้ต้องคืนเป็น FX.TODAY
 

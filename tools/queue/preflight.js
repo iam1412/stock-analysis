@@ -2,7 +2,8 @@
 /**
  * preflight — ขั้น A1–A9 ของรอบเคลียร์คิว (docs-audit §5) ที่ script ทำแทนได้:
  *   pull --rebase · อ่านคิว · triage ครบทุก reason · ความสดจาก footer · snapshot ราคาเดิมลง state (postcheck ใช้ grep ราคาค้าง)
- *   · pre-patch ราคา LIGHT/FULL ทั้งชุดใน process เดียว (ไม่ pre-patch ระหว่างตลาดเปิด) · พิมพ์ขั้นที่ยังต้องทำเอง
+ *   · pre-patch ราคา LIGHT/FULL ทั้งชุดใน process เดียว (ไม่ pre-patch ระหว่างตลาดเปิด) → ยิง gate ต่อทันที คืนไฟล์ใบที่ตก
+ *   (--force ข้าม quarantine ของ cron ⇒ preflight ต้องทำ quarantine เอง) · พิมพ์ขั้นที่ยังต้องทำเอง
  * ★ ไม่ทำแทน: probe โมเดล (ต้อง spawn subagent) · ยืนยันเพิกถอน · แก้ plumbing · ตัดสินใจกำกวม
  */
 const fs = require('fs');
@@ -51,6 +52,18 @@ function patchTargets(rows, m) {
   return out;
 }
 
+/** อ่านผล `node test/check-reports.js <syms>` → รายชื่อไฟล์ที่ "ตก" (ส่วนบริสุทธิ์ ไม่แตะดิสก์)
+ *  บรรทัดสรุปต่อไฟล์เริ่มต้นบรรทัดเสมอ (`✗ BBB.html 41/43 ผ่าน — 2 ปัญหา`) ส่วนรายละเอียด E-code ย่อหน้าเข้ามา
+ *  (`    ✗ [E15] …`) ⇒ anchor `^✗` แยกสองชั้นนี้ออกจากกัน */
+function parseGateFailures(out) {
+  const syms = [];
+  for (const line of String(out).split('\n')) {
+    const m = /^✗\s+(\S+)\.html\b/.exec(line);
+    if (m) syms.push(m[1]);
+  }
+  return syms;
+}
+
 function renderTable(rows) {
   const L = ['symbol     reason                  bucket    ใบ→ตลาด            ต่าง   ตั้งแต่     footer  การทำ'];
   for (const r of rows) {
@@ -67,8 +80,9 @@ function manualSteps(rows) {
   L.push(`${++n}. probe โมเดล: spawn subagent ไม่ใส่ model ให้ตอบบรรทัด "You are powered by the model named …" (CLAUDE.md §3.2) แล้ว pin ทุก call`);
   const d = rows.filter((r) => r.bucket === 'DELIST');
   if (d.length) L.push(`${++n}. DELIST ${d.map((r) => r.symbol).join(' ')}: ยืนยันแหล่งปฐมภูมิ (SEC Form 25/8-K · ประกาศตลาด) → ลบรายงาน + node tools/tag-apply.js --prune · ยังเทรด → node tools/update-prices.js --write --alive <SYM>`);
-  const p = rows.filter((r) => r.bucket === 'PLUMBING' || r.bucket === 'REJECTED' || r.bucket === 'UNKNOWN');
-  if (p.length) L.push(`${++n}. ${p.map((r) => `${r.symbol}[${r.reason}]`).join(' ')}: แก้ตามคอลัมน์ "การทำ" ไม่ spawn agent`);
+  // prePatchRejected ติดมากับแถวหลัง preflight เท่านั้น (pre-patch แล้ว gate ตก → คืนไฟล์) — คลาสเดียวกับ REJECTED ของ cron: แก้ใบเอง ไม่ spawn agent
+  const p = rows.filter((r) => r.bucket === 'PLUMBING' || r.bucket === 'REJECTED' || r.bucket === 'UNKNOWN' || r.prePatchRejected);
+  if (p.length) L.push(`${++n}. ${p.map((r) => `${r.symbol}[${r.prePatchRejected ? 'gate ตกหลัง pre-patch' : r.reason}]`).join(' ')}: แก้ตามคอลัมน์ "การทำ" ไม่ spawn agent`);
   L.push(`${++n}. ต่อไป: npm run queue -- ship --prepatch (push ราคาที่ patch ให้ tree สะอาด) แล้ว npm run queue -- prep <SYM> ทีละตัว (ตัวที่ไม่มี "สด" ในคอลัมน์การทำ)`);
   return L.join('\n');
 }
@@ -95,11 +109,29 @@ function preflight(opts) {
     const r = run('node', ['tools/update-prices.js', '--write', '--force', ...t.target]);
     process.stdout.write(r.out);
     if (r.code !== 0) throw new Error('pre-patch ล้ม: ' + (r.err || r.out).slice(-1000));
-    for (const sym of t.target) s.stocks[sym].prePatched = today;
+    // ★ --force ข้าม quarantine ของ cron (cron patch แล้ว gate ตก = ไม่เขียนไฟล์ + flag patch-rejected) ⇒ ต้องยิง gate เอง
+    //   ใบที่ตกต้องคืนไฟล์ ไม่งั้น `ship --prepatch` จะ verify ตกทั้งชุด และใบที่ดีก็ push ไม่ได้
+    console.log('\n▶ gate หลัง pre-patch: node test/check-reports.js ' + t.target.join(' '));
+    const g = run('node', ['test/check-reports.js', ...t.target]);
+    process.stdout.write(g.out);
+    const failed = parseGateFailures(g.out);
+    if (g.code !== 0 && !failed.length) throw new Error('check-reports หลัง pre-patch ล้มแต่แยกไฟล์ที่ตกไม่ได้ — ตรวจเอง (ราคาที่ patch ยังอยู่ในไฟล์):\n' + (g.err || g.out).trim().slice(-1000));
+    const fail = new Set(failed);
+    for (const sym of t.target) {
+      if (!fail.has(sym)) { s.stocks[sym].prePatched = today; continue; }
+      s.stocks[sym].prePatchRejected = today;
+      const row = rows.find((x) => x.symbol === sym);
+      if (row) row.prePatchRejected = today;
+    }
+    S.save(s);   // บันทึกก่อนคืนไฟล์ — checkout ล้มแล้ว throw ก็ยังเหลือสถานะให้ postcheck/status อ่าน
+    for (const sym of failed) {
+      must('git', ['checkout', '--', `reports/${sym}.html`], `คืนไฟล์ ${sym} หลัง gate ตก`);
+      console.log(`⛔ ${sym} gate ตกหลัง pre-patch → คืนไฟล์แล้ว (ต้องแก้ใบให้ผ่าน npm test -- ${sym} ก่อน · ดูรายละเอียดด้านบน)`);
+    }
   } else if (t.target.length) console.log(`\n(--no-patch) คำสั่งที่จะรัน: node tools/update-prices.js --write --force ${t.target.join(' ')}`);
   S.save(s);
   console.log(manualSteps(rows));
   return rows;
 }
 
-module.exports = { preflight, plan, patchTargets, renderTable, manualSteps, loadFlags };
+module.exports = { preflight, plan, patchTargets, renderTable, manualSteps, loadFlags, parseGateFailures };
