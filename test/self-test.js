@@ -760,6 +760,105 @@ reject('W14', addCard('4. EV/EBITDA', 'EBITDA $4.0B (mid-point FY2026 $3.6B guid
     'W18: มีเป้าแต่ไม่ประกาศตัวคูณปัจจุบัน → เทียบไม่ได้ → ต้องเงียบ (ครึ่งเดียวไม่ฟ้อง)');
 }
 
+// ── W19 / W20: ปันผล % = DPS ÷ ราคา · P/BV = ราคา ÷ BVPS (11 ก.ย. 69) ──
+// คลาสเดียวกับ E41/E43 — ตัวหาร (DPS/BVPS) เป็นข้อเท็จจริงที่การ์ดพิมพ์เอง ราคาคือตัวที่ cron ขยับทุกวัน
+// (เจอตอนเคลียร์คิว FDS/KLAC/LRCX: ปันผล 1.86% จริง 1.76% · P/BV 4.40x จริง 4.63x — W10 เงียบเพราะการ์ดกับ meta ค้างพร้อมกัน)
+// ★ ห้ามยืนบนสภาพ BBL บนดิสก์ (กฎ fixture): การ์ดปันผล "฿12/ปี" ลอยตามราคารายวัน · การ์ด P/BV ไม่ประกาศ BVPS
+//   ⇒ ตั้ง "ฉบับสด" จากราคาจริงเอง แล้ววัดทุกเคสจากตัวนั้น
+// ★ ทุกเคสยืนยันสองฝั่ง: ตัวตรวจฟ้อง ⇔ ตัวซ่อมเอื้อมถึง (ฟ้องแล้วซ่อมหาย + ซ่อมซ้ำไม่เปลี่ยน · เงียบแล้วตัวซ่อมไม่แตะ)
+// ★ เคสเงียบตั้งให้ "ถ้ารับตัวหารผิดตัว ค่าจะอยู่ในย่านและฟ้อง" — พิสูจน์กฎคัดตัวหาร ไม่ใช่พิสูจน์ย่าน
+{
+  const DVY = require('../tools/derived-values.js');
+  const esc = (t) => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const setKVD = (label, v, d) => (h) => h.replace(
+    new RegExp(`(<div class="k">${esc(label)}</div>\\s*<div class="v[^"]*"[^>]*>)([\\s\\S]*?)(</div>\\s*<div class="d[^"]*"[^>]*>)([\\s\\S]*?)(</div>)`),
+    (m, a, ov, b, od, z) => a + v + b + d + z);
+  const addKV = (label, v, d) => (h) => h.replace('<div class="metric">',
+    `<div class="metric"><div class="k">${label}</div><div class="v">${v}</div><div class="d">${d}</div></div><div class="metric">`);
+  const cur = C.isTHB ? '฿' : '$';
+  const r2 = (v) => (Math.round(v * 100) / 100).toFixed(2);
+  const dps = (pct) => r2(PX * pct / 100);          // DPS ที่ทำให้ yield = pct พอดีที่ราคาจริง
+  const bv = (x) => r2(PX / x);                     // BVPS ที่ทำให้ P/BV = x พอดี
+  const Y = 'เงินปันผล', B = 'P/BV', BB = 'P/BV / P/TBV';
+  const fresh = mutJson('stock-meta', (d) => { d.dividendYield = 5; })(
+    setKVD(B, '~1.50x', `BVPS ${cur}${bv(1.5)}`)(setKVD(Y, '~5.0%', `${cur}${dps(5)}/ปี • Payout ~50%`)(base)));
+  const fires = (id, h) => allIds(checkHtml(h, 'BBL.html')).has(id);
+  const YC = /^(?:ปันผล|stock-meta\.dividendYield)/, BC = /^P\/BV/;
+  const touches = (h, re) => DVY.patchDerived(h, PX).changes.some((c) => re.test(c));
+  const cardV = (h, label) => (h.match(new RegExp(`<div class="k">${esc(label)}</div>\\s*<div class="v[^"]*"[^>]*>([\\s\\S]*?)</div>`)) || [])[1];
+  const smOf = (h) => JSON.parse(h.match(/<script[^>]*id="stock-meta"[^>]*>([\s\S]*?)<\/script>/)[1]);
+  const cycle = (id, re, h, desc) => {
+    ok(h !== fresh && fires(id, h), `${desc} → ต้องเจอ ${id}`);
+    const once = DVY.patchDerived(h, PX).html;
+    ok(!fires(id, once) && !touches(once, re), `${desc} → ซ่อมแล้ว ${id} หาย + ซ่อมซ้ำไม่เปลี่ยน (idempotent)`);
+    return once;
+  };
+  const quiet = (id, re, h, desc) => ok(h !== fresh && !fires(id, h) && !touches(h, re), `${desc} → ${id} เงียบ + ตัวซ่อมไม่แตะ`);
+
+  ok(fresh !== base && !fires('W19', fresh) && !fires('W20', fresh) && !touches(fresh, YC) && !touches(fresh, BC),
+    'W19/W20: (ฐาน) ฉบับสด ปันผล 5.0% = DPS ÷ ราคา · P/BV 1.50x = ราคา ÷ BVPS → เงียบทั้งคู่ + ตัวซ่อมไม่มีอะไรให้แก้');
+
+  // W19 ฟ้อง + ซ่อมได้
+  let h = cycle('W19', YC, setKVD(Y, '~6.0%', `${cur}${dps(5)}/ปี • Payout ~50%`)(fresh), 'W19: การ์ดปันผลค้าง 6.0% ทั้งที่ DPS ÷ ราคา = 5.0% (เคส FDS 1.86→1.76)');
+  ok(cardV(h, Y) === '~5.0%', 'W19: ซ่อมแล้วคง "~" + ทศนิยม 1 ตำแหน่งเดิม', cardV(h, Y));
+  h = cycle('W19', YC, setKVD(Y, '5.30%', `${cur}${dps(5)}/ปี`)(fresh), 'W19: การ์ดทศนิยม 2 ตำแหน่งค้าง (เคส KLAC 0.49→0.52)');
+  ok(cardV(h, Y) === '5.00%', 'W19: ซ่อมแล้วคงทศนิยม 2 ตำแหน่ง ไม่เติม "~" ให้เอง', cardV(h, Y));
+  h = cycle('W19', YC, setKVD(Y, `${cur}${dps(5)} (6.0%)`, `${cur}${dps(5)}/ปี`)(fresh), 'W19: .v เขียนจำนวนเงินนำหน้า % (รูปแบบ TAP/O)');
+  ok(cardV(h, Y) === `${cur}${dps(5)} (5.0%)`, 'W19: แตะเฉพาะ % ไม่แตะจำนวนเงินใน .v', cardV(h, Y));
+  h = cycle('W19', YC, setKVD(Y, '~6.0%', `${cur}${dps(5)}/ปี (${cur}${dps(1.25)}/ไตรมาส)`)(fresh), 'W19: .d มีทั้ง DPS รายปีและรายไตรมาส (เคส AMAT/NXPI)');
+  ok(cardV(h, Y) === '~5.0%', 'W19: ใช้ DPS รายปี ไม่ใช่รายไตรมาส', cardV(h, Y));
+  h = cycle('W19', YC, setKVD(Y, '~6.0%', `${cur}${dps(5)}/ปี + พิเศษ ${cur}${dps(6)}`)(fresh), 'W19: .d มีปันผลปกติรายปี + ปันผลพิเศษ (เคส CME)');
+  ok(cardV(h, Y) === '~5.0%', 'W19: ข้ามปันผลพิเศษ ใช้ปันผลปกติรายปี', cardV(h, Y));
+  h = cycle('W19', YC, setKVD(Y, '~5%', `${cur}${dps(6)}/ปี`)(fresh), 'W19: การ์ดจำนวนเต็ม "~5%" แต่ DPS ÷ ราคา = 6% (เกินครึ่งหลักสุดท้าย)');
+  ok(cardV(h, Y) === '~6%', 'W19: ซ่อมแล้วคงรูปจำนวนเต็ม', cardV(h, Y));
+  // stock-meta ตั้งให้ตรง 5.4 ด้วย — meta เป็นกระจกทศนิยม ≥1 ตำแหน่ง (สูตรเดียวกับ pe) จึง "ละเอียดกว่าการ์ด" โดยตั้งใจ
+  quiet('W19', YC, mutJson('stock-meta', (d) => { d.dividendYield = 5.4; })(setKVD(Y, '~5%', `${cur}${dps(5.4)}/ปี`)(fresh)),
+    'W19: การ์ด "~5%" ค่าจริง 5.4% อยู่ในครึ่งหลักสุดท้าย (ตัวซ่อมปัดแล้วได้เลขเดิม)');
+  // ★ "แผน/เป้า" = ยอดที่ยังไม่มีผล — ห้ามเป็นฐาน แม้ราคาจะวิ่งจนใกล้กว่า (เคส TRGP: เขียนบน Forward $4.25
+  //   แต่ราคาขึ้นจนฐานใกล้สุดกลายเป็น "แผนขึ้นเป็น $5.00" ⇒ ตัวซ่อมสลับฐานเงียบ ๆ — จับได้ด้วยประวัติ git 11 ก.ย. 69)
+  h = cycle('W19', YC, setKVD(Y, '~5.3%', `${cur}${dps(5)}/ปี · แผนขึ้นเป็น ${cur}${dps(5.6)} ปีหน้า`)(fresh), 'W19: .d มี DPS ปัจจุบัน + ยอดตามแผน (เคส TRGP)');
+  ok(cardV(h, Y) === '~5.0%', 'W19: ใช้ DPS ที่มีผลแล้ว ไม่ใช่ยอดตามแผน แม้ยอดแผนจะใกล้ค่าที่โชว์กว่า', cardV(h, Y));
+  // ★ ตัวหารที่พิมพ์หยาบเกิน (หลักเดียว) — ความคลาดจากการปัดของตัวมันเองเกินเกณฑ์ตรวจ ⇒ คิดใหม่ = แย่ลง ไม่ใช่สดขึ้น
+  //   (เคส INSET "฿0.04": โชว์ 1.04% ที่คิดจาก ~฿0.044 → ถ้าคิดใหม่จาก ฿0.04 จะได้ 0.88% ทั้งที่จริง ~0.97%)
+  {
+    const raw = PX * 0.05, mag = Math.pow(10, Math.floor(Math.log10(raw)));
+    const one = (Math.min(9, Math.max(1, Math.round(raw / mag))) * mag).toFixed(Math.max(0, -Math.floor(Math.log10(mag))));
+    quiet('W19', YC, setKVD(Y, `~${(parseFloat(one) / PX * 110).toFixed(1)}%`, `${cur}${one}/ปี`)(fresh),
+      `W19: DPS พิมพ์หลักเดียว (${cur}${one} ปัดได้ถึง ±${(50 / parseFloat(one) * Math.pow(10, -(one.split('.')[1] || '').length)).toFixed(0)}%) → ตัดสินไม่ได้`);
+  }
+  h = cycle('W19', YC, mutJson('stock-meta', (d) => { d.dividendYield = 6; })(fresh), 'W19: stock-meta.dividendYield ค้าง ขณะการ์ดสด');
+  ok(smOf(h).dividendYield === 5, 'W19: ซ่อม stock-meta.dividendYield เป็นกระจกของ DPS ÷ ราคา', String(smOf(h).dividendYield));
+
+  // W19 เงียบ + ตัวซ่อมไม่แตะ
+  quiet('W19', YC, setKVD(Y, '~1.4%', `${cur}${dps(1.25)}/ไตรมาส`)(fresh), 'W19: .d มีแต่ DPS รายไตรมาส (เคส AIG/RL)');
+  quiet('W19', YC, setKVD(Y, '~1.4%', `ปันผลปกติรายไตรมาส ${cur}${dps(1.25)}/หุ้น`)(fresh), 'W19: "รายไตรมาส" นำหน้าจำนวนเงิน (เคส DPZ)');
+  quiet('W19', YC, setKVD(Y, '~3.3%', `${cur}${dps(2)} + ${cur}${dps(3)} รอบ 12 ด.`)(fresh), 'W19: .d เป็นผลบวกหลายงวดไม่มียอดรวม (เคส TIDLOR)');
+  quiet('W19', YC, setKVD(Y, '~6.0%', `${cur}${dps(5)} ล้าน/ปี`)(fresh), 'W19: จำนวนเงินมีหน่วยใหญ่ = ยอดรวมทั้งบริษัท (เคส TAP $358M)');
+  quiet('W19', YC, setKVD(Y, '~6.0%', `€${dps(5)}/หุ้น`)(fresh), 'W19: สกุลเงินต่างจากราคา (เคส SAP €)');
+  quiet('W19', YC, setKVD(Y, '~15.0%', `${cur}${dps(5)}/ปี`)(fresh), 'W19: ราคาที่ implied หลุดย่าน = คนละฐาน ไม่ใช่ค้างจากราคา');
+  quiet('W19', YC, setKVD(Y, '~6.0%', 'Payout ~50% • จ่ายปีละ 2 ครั้ง')(fresh), 'W19: .d ไม่ประกาศ DPS');
+  quiet('W19', YC, setKVD(Y, '5.9<small>%</small>', `${cur}${dps(5)}/ปี`)(fresh), 'W19: แท็กคั่นตัวเลขกับ % → ตัวซ่อมเขียนไม่ได้ ตัวตรวจต้องไม่เห็นด้วย');
+  quiet('W19', YC, addKV('FCF Yield', '~6.0%', `FCF ${cur}${dps(5)}/หุ้น`)(fresh), 'W19: ป้าย FCF Yield ไม่ใช่ปันผล (เคส JCI)');
+  quiet('W19', YC, addKV('เงินปันผลเฉลี่ย 5 ปี', '~6.0%', `${cur}${dps(5)}/ปี`)(fresh), 'W19: ป้ายเชิงประวัติ');
+
+  // W20 ฟ้อง + ซ่อมได้
+  h = cycle('W20', BC, setKVD(B, '~1.20x', `BVPS ${cur}${bv(1.5)}`)(fresh), 'W20: P/BV ค้าง 1.20x ทั้งที่ ราคา ÷ BVPS = 1.50x (เคส FDS 4.40→4.63)');
+  ok(cardV(h, B) === '~1.50x', 'W20: ซ่อมแล้วคง "~" + ทศนิยมเดิม', cardV(h, B));
+  h = cycle('W20', BC, setKVD(B, '~1.20x', `ราคา ${cur}${r2(PX)} ÷ BVPS ${cur}${bv(1.5)}`)(fresh), 'W20: .d เขียน "ราคา ÷ BVPS" (เคส BMO/PLUS)');
+  ok(cardV(h, B) === '~1.50x', 'W20: ใช้ BVPS ไม่ใช่ราคาในบรรทัด', cardV(h, B));
+  h = cycle('W20', BC, addKV(BB, '1.20x / 1.80x', `BVPS ${cur}${bv(1.5)} · TBVPS ${cur}${bv(2.25)}`)(fresh), 'W20: การ์ดสองตัวคูณ P/BV / P/TBV (เคสธนาคาร BNY/CFG/TFC)');
+  ok(cardV(h, BB) === '1.50x / 2.25x', 'W20: แต่ละตัวคูณจับคู่ฐานของตัวเอง', cardV(h, BB));
+
+  // W20 เงียบ + ตัวซ่อมไม่แตะ
+  quiet('W20', BC, setKVD(B, '~2.00x', `P/TBV 2.25x (TBVPS ${cur}${bv(2.25)})`)(fresh), 'W20: การ์ด P/BV ธรรมดาแต่ .d มีแค่ TBVPS (เคส MTB)');
+  quiet('W20', BC, setKVD(B, '~1.20x', `ส่วนของผู้ถือหุ้น ~${cur}${bv(1.5)} ล้าน`)(fresh), 'W20: .d เป็นส่วนทุนรวม (หน่วยใหญ่) ไม่ใช่ต่อหุ้น (เคส CPW/CACI)');
+  quiet('W20', BC, setKVD(B, '~1.20x', `BVPS −${cur}${bv(1.5)}`)(fresh), 'W20: BVPS ติดลบ');
+  quiet('W20', BC, setKVD(B, '~0.50x', `BVPS ${cur}${bv(1.5)}`)(fresh), 'W20: ราคาที่ implied หลุดย่าน = คนละฐาน');
+  quiet('W20', BC, setKVD(B, '~1.20x', 'ต่ำกว่ามูลค่าทางบัญชีมาก')(fresh), 'W20: .d ไม่ประกาศ BVPS (สภาพ BBL จริง)');
+  quiet('W20', BC, addKV('P/BV มัธยฐาน 5 ปี', '~1.20x', `BVPS ${cur}${bv(1.5)}`)(fresh), 'W20: ป้ายเชิงประวัติ');
+  quiet('W20', BC, addKV(BB, '1.20x / 1.80x', `BVPS ${cur}${bv(1.5)}`)(fresh), 'W20: สองตัวคูณแต่มีฐานเดียว → จับคู่ไม่ได้ ต้องไม่เดา');
+}
+
 console.log('\n' + '─'.repeat(50));
 console.log(`self-test: ${n - fails}/${n} ผ่าน`);
 if (fails) { console.log('\n❌ checker มีบั๊ก — แก้ check-reports.js ก่อนใช้งานเป็น gate\n'); process.exit(1); }

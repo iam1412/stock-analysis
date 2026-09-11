@@ -730,6 +730,38 @@ const CHECKS = [
     return bad.length ? bad.join(' ; ') : null;
   } },
 
+  // ── W19: ปันผล % = DPS ที่การ์ดพิมพ์ ÷ ราคา (+ stock-meta.dividendYield) ──
+  // คลาสเดียวกับ E41/E43 — DPS เป็นข้อเท็จจริงที่บรรทัด .d พิมพ์เอง ราคาคือตัวที่ cron ขยับทุกวัน
+  // (เจอ 11 ก.ย. 69 ตอนเคลียร์คิว FDS/KLAC/LRCX: cron ไม่มีโค้ดส่วนนี้เลย ⇒ ปันผลลอยตามราคาทั้งคลัง —
+  //  FDS 1.86% ทั้งที่ $4.64 ÷ $262.93 = 1.76% · W10 เงียบเพราะการ์ดกับ stock-meta ค้างพร้อมกัน: เทียบกันเองได้ แต่ไม่มีใครผูกกับราคา)
+  // **warn ไม่ใช่ error** — ของใหม่ที่ผูกกับค่าที่ cron ขยับเริ่มที่ warn เสมอ (บทเรียน W17: error = cron ล้มทั้งคลังตั้งแต่รอบแรก)
+  // ★ ขอบเขตเท่ากับตัวซ่อมเป๊ะ — ทั้งคู่ถาม `DV.yieldPlan` ตัวเดียวกัน ⇒ ไม่มี warning ที่ `--heal-derived` เคลียร์ไม่ได้
+  //   ตัดสินไม่ได้ (DPS รายไตรมาส/พิเศษ/ผลบวกหลายงวด/ยอดรวมทั้งบริษัท/สกุลอื่น/หลุดย่าน DENOM_BAND) = เงียบทั้งคู่
+  //   เกณฑ์ = max(3%, ครึ่งหลักสุดท้ายที่เขียน) — ไม่งั้นการ์ด "~5%" จะเตือนค้างขณะตัวซ่อมปัดแล้วเขียน "5" เดิมกลับ
+  { id: 'W19', level: 'warn', label: 'ปันผล % = DPS ที่พิมพ์ ÷ ราคา (การ์ด + stock-meta)', fn: (c) => {
+    if (!(c.px > 0)) return null;
+    const p = DV.yieldPlan(c.html, c.px);
+    const bad = [];
+    for (const it of p.cards)
+      if (DV.denomOff(it.want, it.shown, it.num)) bad.push(`[${it.label}] โชว์ ${it.shown}% แต่ DPS ${it.base} ÷ ราคา ${c.px} = ${it.want.toFixed(2)}%`);
+    if (p.meta && DV.denomOff(p.meta.want, p.meta.shown, String(p.meta.shown)))
+      bad.push(`stock-meta.dividendYield ${p.meta.shown} แต่ DPS ${p.meta.base} ÷ ราคา ${c.px} = ${p.meta.want.toFixed(2)}`);
+    return bad.length ? bad.join(' ; ') : null;
+  } },
+
+  // ── W20: P/BV = ราคา ÷ BVPS ที่การ์ดพิมพ์ ──
+  // คู่แฝดของ W19 (FDS 4.40x ทั้งที่ $262.93 ÷ BVPS $56.80 = 4.63x) — ขอบเขตเท่ากับตัวซ่อม (`DV.pbvPlan`)
+  // ★ การ์ด "P/BV / P/TBV" ของธนาคาร: จับคู่ตัวคูณ ↔ ฐานแบบไม่ซ้ำกันที่ระยะรวมน้อยสุด · ฐานไม่พอจับคู่ = เงียบ
+  // ★ เงียบเมื่อ: .d ไม่ประกาศ BVPS · มีแค่ TBVPS ในการ์ด P/BV ธรรมดา (MTB) · ส่วนทุนรวม (equity $4.19B) · ติดลบ · สกุลอื่น (¥) · หลุดย่าน
+  { id: 'W20', level: 'warn', label: 'P/BV = ราคา ÷ BVPS ที่พิมพ์', fn: (c) => {
+    if (!(c.px > 0)) return null;
+    const bad = [];
+    for (const card of DV.pbvPlan(c.html, c.px))
+      for (const it of card.items)
+        if (DV.denomOff(it.want, it.shown, it.num)) bad.push(`[${card.label}] โชว์ ${it.shown}x แต่ ราคา ${c.px} ÷ BVPS ${it.base} = ${it.want.toFixed(2)}x`);
+    return bad.length ? bad.join(' ; ') : null;
+  } },
+
   // ── W15: % ของราคาเป้าที่เขียนในเนื้อความ (นอกการ์ด) ──
   // เป็น warning ไม่ใช่ error เพราะ **cron แตะ prose ไม่ได้** (§9) ⇒ ต้องรอคนแก้ (หรือ `--heal-derived --prose` ที่คนสั่งเอง)
   // และมี false positive 2 ชนิดที่ตัดอัตโนมัติไม่ได้:

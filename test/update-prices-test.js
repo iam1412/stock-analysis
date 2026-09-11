@@ -228,6 +228,39 @@ ok(sm.roe === smIn.roe && sm.fairValue === FV && sm.symbol === 'AAPL', 'stock-me
     ok(psOut && Math.abs(psOut.shown - 4) <= 0.15, 'P/S ถูกเขียนใหม่ = Market Cap ÷ รายได้ที่พิมพ์', psOut && `${psOut.shown}x`);
   }
 
+  // ── ปันผล % + stock-meta.dividendYield + P/BV (11 ก.ย. 69 — W19/W20) ──
+  // ตัวหาร (DPS/BVPS) พิมพ์อยู่ในบรรทัด .d ของการ์ดเอง ⇒ cron คิดใหม่จากราคาที่เพิ่ง patch ไม่มีอะไรให้เดา
+  // (เคส FDS/KLAC/LRCX 11 ก.ย. 69: ปันผลลอยตามราคาทั้งคลัง เพราะ cron ไม่มีโค้ดส่วนนี้เลย)
+  {
+    const Y_RE = /(<div class="k">เงินปันผล<\/div>\s*<div class="v[^"]*">)([^<]*)(<\/div>\s*<div class="d[^"]*">)([^<]*)(<)/;
+    const yV = (h) => (h.match(Y_RE) || [])[2];
+    const smY = (h) => JSON.parse(h.match(/<script[^>]*id=["']stock-meta["'][^>]*>([\s\S]*?)<\/script>/i)[1]).dividendYield;
+    const yIn = aapl.match(Y_RE);
+    const dm = yIn && yIn[4].match(/\$\s*([\d.]+)\s*\/\s*ปี/);
+    ok(!!dm, 'AAPL fixture: มีการ์ดปันผลที่ประกาศ DPS รายปีในบรรทัด .d (ไม่งั้นเทสด้านล่างพิสูจน์อะไรไม่ได้)', yIn && yIn[4]);
+    if (dm) {
+      const dpsA = parseFloat(dm[1]);
+      const want = dpsA / 301.5 * 100;
+      const dec = (String(yIn[2]).match(/\.(\d+)\s*%/) || [, ''])[1].length;
+      const wantS = want.toFixed(dec) + '%';
+      // ★ เทียบ "ตรงตัว" ไม่ใช่ ±0.006 — AAPL บนดิสก์บังเอิญอยู่ใกล้ 301.5 (0.35 vs 0.345) ⇒ เกณฑ์หลวมผ่านได้โดยไม่มีโค้ดเลย
+      ok(yV(out).replace(/^~/, '') === wantS, 'cron: การ์ดปันผล = DPS ที่พิมพ์ ÷ ราคาใหม่ (W19)', `${yIn[2]} → ${yV(out)} · ควร ${wantS}`);
+      const setY = (v, d) => aapl.replace(Y_RE, (m, a, ov, b, od, z) => a + v + b + (d === undefined ? od : d) + z);
+      // ตั้งทั้งการ์ดและ stock-meta ให้ค้าง 30% (ในย่าน) เอง — ไม่ยืนบนสภาพไฟล์บนดิสก์ (CI patch ราคาของวันก่อน verify)
+      const staleIn = setY(`${(want * 1.3).toFixed(dec)}%`).replace(/("dividendYield":\s*)[0-9.]+/, `$1${(want * 1.3).toFixed(2)}`);
+      const staleY = U.patchReport(staleIn, { newPrice: 301.5, dateParts: dpMC, chartData: null }).html;
+      ok(yV(staleY) === wantS, 'cron: การ์ดปันผลที่ค้าง 30% ถูกเขียนใหม่ตามราคา', yV(staleY));
+      ok(smY(staleY) === parseFloat(want.toFixed(Math.max(dec, 1))), 'cron: stock-meta.dividendYield ที่ค้าง 30% = กระจกของ DPS ÷ ราคาใหม่', `${smY(staleIn)} → ${smY(staleY)}`);
+      // .d มีแต่ DPS รายไตรมาส → ห้ามแตะ (รับเป็นรายปี = yield ผิด 4 เท่า)
+      const qtr = setY('0.45%', `$${(dpsA / 4).toFixed(2)}/ไตรมาส`);
+      ok(yV(U.patchReport(qtr, { newPrice: 301.5, dateParts: dpMC, chartData: null }).html) === '0.45%', 'cron: .d มีแต่ DPS รายไตรมาส → ไม่แตะการ์ดปันผล');
+    }
+    // P/BV — ฉีดการ์ดที่ประกาศ BVPS (AAPL จริงไม่มีการ์ด P/BV)
+    const withPBV = aapl.replace('<div class="metric">', '<div class="metric"><div class="k">P/BV</div><div class="v">~40.0x</div><div class="d">BVPS ~$6.03</div></div><div class="metric">');
+    const pbvV = (U.patchReport(withPBV, { newPrice: 301.5, dateParts: dpMC, chartData: null }).html.match(/<div class="k">P\/BV<\/div>\s*<div class="v[^"]*">([^<]*)</) || [])[1];
+    ok(pbvV === `~${(301.5 / 6.03).toFixed(1)}x`, 'cron: P/BV = ราคาใหม่ ÷ BVPS ที่พิมพ์ (W20) — คง "~" + ทศนิยมเดิม', pbvV);
+  }
+
   // ── หมวด 6: ผลตอบแทนฉาก 3 ปี + ป้าย "จากจุดเข้า" (20 ส.ค. 69 — W17) ──
   // ราคาเป้า (EPS ปี 3 × P/E ออก) เป็นสมมติฐานของนักวิเคราะห์ ⇒ ห้ามแตะ
   // แต่ % ที่วัดจากจุดเข้า derive จากราคาล้วน ๆ ⇒ cron ต้องขยับ ไม่งั้นฉาก Bear โชว์กำไรตอนราคาขึ้น (เคส RGLD)
