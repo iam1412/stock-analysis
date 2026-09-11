@@ -1,7 +1,7 @@
 # ระบบนับยอดวิว + Like/Dislike (Worker + Durable Object)
 
 > โครงสร้าง infra — ไม่ใช้ตอนวิเคราะห์หุ้นปกติ · รายละเอียด deploy อยู่ใน `DEPLOY.md`
-> `CLAUDE.md §8` มีแค่ pointer มาที่นี่
+> `CLAUDE.md §10` มีแค่ pointer มาที่นี่
 
 นับ/แสดงยอดเข้าชม + 👍/👎 — footer ของแต่ละ report + ต่อการ์ดในหน้า index
 

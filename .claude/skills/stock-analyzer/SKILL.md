@@ -6,7 +6,7 @@ description: วิเคราะห์หุ้นรายตัว (ไท�
 # Stock Analyzer — วิเคราะห์หุ้น 1 ตัว → `reports/<SYMBOL>.html`
 
 **Single source of truth** ของขั้นตอนวิเคราะห์ต่อหุ้น — ใช้ทั้ง session หลักและ worker agent (agent อ่านไฟล์นี้ตรง ๆ ผ่าน `_template/agent-prompt.md`)
-กติกา orchestration (เวฟ ≤3 / sequential / push รายตัว / โมเดล / ห้าม Haiku) อยู่ `CLAUDE.md §3–5` + `docs/orchestration.md` — skill นี้คือ "ทำ 1 หุ้นให้ถูกและประหยัด token"
+กติกา orchestration (โมเดล / ห้าม Haiku / controller เป็นคน push) อยู่ `CLAUDE.md §3–5` + `docs/orchestration.md` — รอบเคลียร์คิวใช้ runbook `npm run queue` — skill นี้คือ "ทำ 1 หุ้นให้ถูกและประหยัด token"
 เวลา = Asia/Bangkok (UTC+7) · วันที่ในรายงานใช้ปี พ.ศ. · ชื่อไฟล์ = `<SYMBOL>.html` พิมพ์ใหญ่เสมอ (override ชื่อ default อื่นทุกแบบ)
 **★ batch tool calls:** เรียก tool ที่อิสระต่อกันหลายตัวใน**ข้อความเดียว**เสมอ (เช่น รัน script 2 ตัว + อ่านไฟล์พร้อมกัน) — ต้นทุนจริงอยู่ที่จำนวน turn (~70k cache-read/turn) ไม่ใช่ output
 
@@ -18,6 +18,7 @@ description: วิเคราะห์หุ้นรายตัว (ไท�
   - `drift-gt-*` / `mos-sign-flip` (ตลาดขยับ ไม่ใช่ธุรกิจเปลี่ยน — flip ใน dead-band ±3 จุด กับราคาหลุดขอบ gauge cron patch เองแล้ว ไม่เข้าคิว ตั้งแต่ 2 ส.ค. 2569) → เริ่มที่ **UPDATE-LIGHT** (STEP 5C)
   - `suspect-split-or-data` → **UPDATE เต็ม** + ตรวจ split/ticker ก่อนเขียนเลขใด ๆ
   - `fetch-failed` / `patch-failed` → ปัญหา plumbing (ticker เปลี่ยน/เพิกถอน/ประวัติกราฟ) — **ไม่ใช่งานวิเคราะห์** แจ้ง controller ไปแก้ `tools/symbol-map.json` หรือเช็คเพิกถอน
+  - `no-stock-meta` / `currency-mismatch` → plumbing เช่นกัน: บล็อก `stock-meta` หาย/JSON เสีย หรือ `currency` ไม่ตรง Yahoo (ADR/ticker ผิดกระดาน) — แก้ในไฟล์/`symbol-map` ไม่ใช้ agent
   - `bad-chart` → **ซีรีส์กราฟจาก Yahoo ผสมสองฐาน** (split ที่ Yahoo ยังไม่ปรับย้อนหลังให้ครบ — เคส MNST 12 ส.ค. 2569 split 2:1: ก.ย.–ธ.ค. 25 ยังไม่ปรับ ปนกับ ม.ค. 26 ที่ปรับแล้ว) · อาการถ้าปล่อยผ่าน = กราฟมีหน้าผา −50% ปลอม + **ป้าย % รอบปีพลิกเครื่องหมาย** และ **gate จับไม่ได้** (E36 เทียบป้ายกับปลายกราฟ = ผิดพร้อมกันทั้งคู่จึงผ่าน) · `detail` ในคิวบอกจุดที่หลุดกรอบ 52 สัปดาห์ให้แล้ว — ทำตามลำดับ:
     1. **ยืนยัน split จากแหล่งปฐมภูมิก่อน** (IR / SEC 8-K / ประกาศตลาด) — เอาอัตราส่วน + วันมีผลมาให้ชัด ห้ามอนุมานจากตัวเลขที่เห็น
     2. เปิด `reports/<SYM>.html` ดู `report-data.chart.data`: **ฐานเดียวอยู่แล้ว** (เคยแก้มือรอบก่อน) → **ไม่ต้องทำอะไร ห้าม re-analyze** — flag หายเองเมื่อ Yahoo ปรับ adjclose ครบ
@@ -30,13 +31,13 @@ description: วิเคราะห์หุ้นรายตัว (ไท�
     - เปลี่ยนชื่อ/ticker แบบ 1:1 บริษัทเดิม → `tools/symbol-map.json` (แบบ BKI→BKIH, STEC→STECON, LANC→MZTI) + ย้าย key เดิมใน `tags.json` ตาม: `node tools/tag-apply.js --rename <OLD> <NEW>`
     - ยังเทรดอยู่จริง (แค่ provider mapping เพี้ยน) → แจ้ง controller ปรับ candidate ใน `tools/dead-ticker-canary.js` (หรือเติม `tv`/`sa` ใน `tools/symbol-map.json`) แล้วปลด flag + refresh ราคาด้วย `node tools/update-prices.js --write --alive <SYM>` (`--alive` เท่านั้น — `--force` ที่ใช้ประจำใน re-analysis **ไม่ปลด** flag นี้โดยตั้งใจ) — **ห้ามลบรายงาน**
     - ยืนยันไม่ได้ (เอกสารตลาดเข้าไม่ถึง) → **หยุด ถาม user** ห้ามเดาทั้งสองทาง
-- ความสด: `reports.json` ฟิลด์ `updated` ≤7 วัน → ไม่วิเคราะห์ซ้ำ (กติกา dedup อยู่ CLAUDE.md §3.1)
+- ความสด: วันที่ footer "ข้อมูล ณ" ≤7 วัน → ไม่วิเคราะห์ซ้ำ (runbook preflight เช็คให้ · `reports.json.updated` ใช้ไม่ได้ — freshHash ชนกัน 9 ก.ย. 69 · กติกา dedup อยู่ CLAUDE.md §3.1)
 
 ## STEP 1 — เก็บข้อมูล (token-lean — จุดชี้ขาดค่าใช้จ่าย)
 
 - **ราคา + กราฟ ~1 ปี + ป้าย % รอบปี + สี** — ห้ามดึง Yahoo เอง / ห้ามคำนวณกราฟ-bounds เอง / ห้ามแต่งจุด:
   - NEW → **prompt มีบล็อก `=== FACTS ===` แล้ว = ห้ามรันซ้ำ ใช้เลย** (controller pre-fetch ผ่าน `prep-stock.js` มาแล้ว) · ไม่มีจึงรัน `node tools/fetch-facts.js <SYMBOL>` (หุ้นไทยเติม `--th` — ★ บังคับ กัน ticker ไทยชนหุ้น US เคส AIT/ORI) — ได้บล็อก chart+ป้าย+สี พร้อมวาง (= แหล่งราคาที่ 1)
-  - UPDATE → `node tools/update-prices.js --write --force <SYMBOL>` — patch ราคา header/วันที่ราคา/กราฟ/ป้าย %/gauge.cur/MOS/pxIn/stock-meta ลงไฟล์เดิมให้เลย (= แหล่งราคาที่ 1) · ราคาหลุดขอบ gauge script ขยาย `gauge.min/max` ให้เอง — แต่ถ้า **FV เปลี่ยน** ต้องแก้โซน scale (MOS 20/30 = FV×0.8/0.7) เองใน STEP 5B ตามเดิม
+  - UPDATE → ราคา/กราฟ/MOS ถูก patch มาแล้วโดย runbook (บล็อก "บันทึกจาก runbook" ใน prompt บอกไว้) — **รันซ้ำเฉพาะเมื่อบันทึกบอกว่ายังไม่ได้ patch**: `node tools/update-prices.js --write --force <SYMBOL>` (ปลอดภัยแล้ว — price-flags มี lock) — patch ราคา header/วันที่ราคา/กราฟ/ป้าย %/gauge.cur/MOS/pxIn/stock-meta ลงไฟล์เดิมให้เลย (= แหล่งราคาที่ 1) · ราคาหลุดขอบ gauge script ขยาย `gauge.min/max` ให้เอง — แต่ถ้า **FV เปลี่ยน** ต้องแก้โซน scale (MOS 20/30 = FV×0.8/0.7) เองใน STEP 5B ตามเดิม
 - **EPS(TTM)/forward / P/E / ปันผล / เป้านักวิเคราะห์ / 52wk + งบย้อนหลัง 5 ปี — แหล่งเดียวจบ**: `fetch-fundamentals`
   - **★ เช็คก่อนรัน: prompt มีบล็อก `FUNDAMENTALS` พร้อมตัวเลขจริงแล้ว → ห้ามรันซ้ำ** ใช้เลขนั้น cross-verify ได้เลย (controller รันมาแล้ว — รันซ้ำ = เสีย turn เปล่า วัดจริง 13 ก.ค. 2569: worker 3/3 รันซ้ำทั้งที่ block ครบ) · บล็อกว่าง/ไม่มีตัวเลขเท่านั้น → รันเอง: `node tools/fetch-fundamentals.js <SYMBOL> [--th]` ใน batch เดียวกับ script ราคาข้างบน
   - output = Yahoo quoteSummary + StockAnalysis พร้อมบรรทัด Δ เทียบสองแหล่ง **+ ตารางงบ 5 ปี + TTM [3]** (รายได้/margin/NI/EPS/FCF/shares/cash/debt/D-E/ROE) — ใช้เขียน section งบ/แนวโน้ม/scenario ได้เลย **ห้าม WebFetch หน้า financials/balance-sheet/ratios/cash-flow/statistics ของ stockanalysis ซ้ำ** (จูนรอบ 5: เดิม leak 3-6 call/หุ้นตรงนี้)
@@ -121,7 +122,7 @@ description: วิเคราะห์หุ้นรายตัว (ไท�
 
 ใช้เมื่อ STEP 0 ชี้ UPDATE-LIGHT (ราคาขยับแรงแต่ไม่มีสัญญาณธุรกิจเปลี่ยน) — ทำแค่นี้ **ห้ามรื้อรายงาน/ห้ามคิด FV ใหม่โดยไม่จำเป็น**:
 
-1. **batch เดียว**: `node tools/update-prices.js --write --force <SYM>` + `node tools/fetch-fundamentals.js <SYM> [--th]` (**ข้าม — ห้ามรันซ้ำ** ถ้า prompt มีบล็อก `FUNDAMENTALS` พร้อมตัวเลขแล้ว) + อ่าน `reports/<SYM>.html`
+1. **batch เดียว**: (ราคา patch แล้วโดย runbook — ห้ามรัน update-prices ซ้ำ เว้นแต่บันทึกใน prompt บอกว่ายังไม่ได้ patch) + `node tools/fetch-fundamentals.js <SYM> [--th]` (**ข้าม — ห้ามรันซ้ำ** ถ้า prompt มีบล็อก `FUNDAMENTALS` พร้อมตัวเลขแล้ว) + อ่าน `reports/<SYM>.html`
 2. **จุดตัดสิน**: EPS(TTM) จาก fundamentals ≈ EPS ในรายงานเดิม (±2%) และไม่มีสัญญาณงบใหม่/split
    → FV เดิมยังยืน ไปข้อ 3 · **เกินเกณฑ์ → ยกระดับเป็น UPDATE เต็ม** (STEP 2→5B ตามปกติ)
 3. **แก้ไฟล์ — 2 turns เท่านั้น**: turn แรก `grep -n` หา**ทุกจุด**ที่อ้างเลขเก่าในไฟล์ (จุดเข้า / "แพง~X%" / คำบรรยายทิศกราฟ / gauge ถ้า script เตือนหลุดช่วง / วันที่ footer / `meta ai-model`) **+ `sed -n 'X,Yp'` ดึงบรรทัดจริงของทุกจุดใน Bash เดียวกัน** → turn ถัดไป apply ทุกจุดใน **Bash call เดียว** ผ่าน `tools/apply-edits.js` (all-or-nothing — จุดไหนหาไม่เจอ/ไม่ unique = ไม่เขียนไฟล์เลย script บอกทุกจุดที่พัง แก้ block แล้วรันใหม่):
