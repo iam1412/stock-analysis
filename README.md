@@ -129,7 +129,7 @@ npm run verify && git add -A && git commit -m "analyze: add AAPL stock analysis"
 GitHub Actions ([`update-prices.yml`](.github/workflows/update-prices.yml)) รันทุกวัน **07:17 น. ไทย** — ดึงราคาจริงจาก Yahoo
 (ยิงเดียวต่อหุ้น: `?range=1y&interval=1mo`) แล้ว patch **เฉพาะตัวเลขโครงสร้าง** ลงทุกรายงาน:
 ราคา header + วันที่ราคา + กราฟ 13 จุด (~1 ปี) + ป้าย % รอบปี + เข็ม gauge + MOS + เครื่องคิดเลข + `stock-meta`
-→ ผ่าน `npm run verify` ครบทุกขั้นแล้วจึง commit + push เอง (Cloudflare deploy ต่อ)
+→ ผ่าน `npm run verify:cron` (ประตู cron 5 ขั้น) แล้วจึง commit + push เอง (Cloudflare deploy ต่อ)
 
 - **script deterministic ล้วน ไม่มี LLM ในลูป** ([`tools/update-prices.js`](tools/update-prices.js)) · **ไม่แตะ** prose วิเคราะห์ / EPS / Fair Value / วันที่วิเคราะห์ (ลำดับ index ยังเรียงตามวันวิเคราะห์ — `preserve-dates.js` คืนให้)
 - ตัวที่ขยับแรงจนคำวิเคราะห์เดิมผิดความหมาย (ต่าง **>15%** · **MOS พลิกเครื่องหมายเกิน dead-band ±3 จุด** · สงสัย split **>25%**) → **ไฟล์ไม่ถูกแตะ** แต่เข้าคิว [`price-flags.json`](price-flags.json) + GitHub Issue เดียวรอ **re-analysis** (flag หายเองเมื่อรายงานสดแล้ว)

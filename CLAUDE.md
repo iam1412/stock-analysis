@@ -105,7 +105,7 @@ Co-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>
 
 ## 8. Quality gate — ก่อนเผยแพร่ (`npm run verify`)
 
-14 ขั้น ต้องผ่านทั้งหมดก่อน push (pre-push hook บังคับซ้ำ):
+14 ขั้น ต้องผ่านทั้งหมดก่อน push (pre-push hook บังคับซ้ำ) · cron ใช้ชุดย่อย `verify:cron` 5 ขั้น (check-reports → build → build-test → engine-exec → check-site) เพราะ unit test ของเครื่องมือล้ม ≠ ราคาพัง:
 `update-prices-test` → `dead-ticker-test` → `tag-apply-test` → `queue-test` → `tags-test` → `check-reports` (43 error + 19 warning) → `self-test` → `ohlc-test` → `ta-engine-test` → `build` → `build-test` → `engine-exec` → `skeleton-test` → `check-site`
 
 > `self-test` เข้า gate แล้ว (12 ส.ค. 69) — เดิมเป็น meta-test ที่ต้องรันมือ ⇒ ถ้า check ใน `check-reports` เสียจนไม่ยิงอีก gate จะรายงาน "error 0" แยกไม่ออกจาก "สะอาดจริง" (0.24 วิ ไม่กระทบเวลา)
