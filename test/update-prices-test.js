@@ -3,11 +3,13 @@
 /**
  * update-prices-test.js — unit-test tools/update-prices.js แบบ offline (mock ข้อมูล Yahoo, ไม่ยิง network)
  * ตรวจว่า patch แล้ว "ตัวเลขสอดคล้องกันเอง" ตามที่ gate บังคับ (E16/E23/E30/E31/E34–E37)
- * + กติกา freeze ทำงานถูก + flags merge ถูก · fixture = reports/AAPL.html จริง
+ * + กติกา freeze ทำงานถูก + flags merge ถูก · fixture = test/fixtures/AAPL.html (แช่แข็ง — ดู test/fixtures/README.md)
  */
 const fs = require('fs');
 const path = require('path');
 const U = require('../tools/update-prices.js');
+const FX = require('./fixtures');
+process.env.STALE_TODAY = FX.TODAY;   // gate ที่ Task 7 เรียกผ่าน gateAfterPatch ต้องไม่เดินตามปฏิทินจริง
 
 let nOK = 0, nFail = 0;
 function ok(cond, label, detail) {
@@ -153,9 +155,8 @@ ok(U.annualChg([['a', 100], ['b', 92]], '(รอบปี)').text.startsWith('�
 ok(U.annualChg([['a', 100], ['b', 100.3]], '(รอบปี)').text.startsWith('≈ ทรงตัว'), 'ทรงตัว < 0.75%');
 
 // ---------- patchReport กับ AAPL จริง ----------
-// ⚠ ไฟล์ fixture ถูก cron แก้ทุกวัน — ห้าม assert ค่าปัจจุบันของไฟล์แบบ hard-code (ราคา/วันที่/FV)
-// ให้อ่านค่าตั้งต้นจาก stock-meta ของ input แล้วเทียบเชิงสัมพัทธ์แทน
-const aapl = fs.readFileSync(path.join(__dirname, '..', 'reports', 'AAPL.html'), 'utf8');
+// fixture แช่แข็ง (test/fixtures) — ยังคงกติกาเดิม: ห้าม hard-code ราคา/วันที่/FV อ่านจาก stock-meta ของ input แล้วเทียบเชิงสัมพัทธ์
+const aapl = FX.AAPL();
 const smIn = JSON.parse(aapl.match(/<script[^>]*id=["']stock-meta["'][^>]*>([\s\S]*?)<\/script>/i)[1]);
 const FV = smIn.fairValue;
 const chartData = U.buildChartData(mkBars(13, 2025, 6, 250), 301.5, 0);
@@ -356,7 +357,7 @@ ok(sm.roe === smIn.roe && sm.fairValue === FV && sm.symbol === 'AAPL', 'stock-me
 
     // 7) ★ รักษาสมมติฐานปันผลของใบนั้น — BBL ใช้ฐาน "รวมปันผล" ห้ามสลับเป็นฐานไม่รวมปันผล
     //    (คำว่า "รวมปันผล" ใน hint ตัดสินไม่ได้ เพราะ skeleton พิมพ์ติดมาทุกใบ — ต้องถอดจากตัวเลขที่โชว์เอง)
-    const bbl = fs.readFileSync(path.join(__dirname, '..', 'reports', 'BBL.html'), 'utf8');
+    const bbl = FX.BBL();
     const bblPlan = DV.scenarioPlan(bbl, 189.5);
     ok(bblPlan && bblPlan.conv === 'div', 'BBL อ่านได้ว่าใช้ฐาน "รวมปันผล"', bblPlan && bblPlan.conv);
     if (bblPlan) {

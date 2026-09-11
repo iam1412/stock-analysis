@@ -33,9 +33,11 @@ const path = require('path');
 const { checkHtml, buildCtx, firstNum, FISCAL_REF_SRC } = require('./check-reports');
 const { expandReport } = require('../build.js');  // BBL เป็น content-only template → expand เป็น HTML เต็มก่อน (เหมือน gate)
 
-// ใช้รายงานจริงที่ผ่าน gate เป็น "ของดี" ฐาน แล้ว mutate เพื่อทดสอบ
-const BASE_FILE = path.join(__dirname, '..', 'reports', 'BBL.html');
-const base = expandReport(fs.readFileSync(BASE_FILE, 'utf8'));
+// ฐาน = fixture แช่แข็ง (test/fixtures/BBL.html) — ไม่ใช่ไฟล์จริงที่ cron แก้ทุกวัน (บทเรียน 22–24 ส.ค. 69)
+const FX = require('./fixtures');
+const BASE_FILE = FX.PATH.BBL;
+const base = expandReport(FX.BBL());
+process.env.STALE_TODAY = FX.TODAY;   // E27/W09 วัดจากวันนี้ที่ตรึงไว้ — ทุกเคสที่เปลี่ยนค่านี้ต้องคืนเป็น FX.TODAY
 
 // ── derive ค่าจริงของฐาน (ตัวเลขทั้งหมดใน mutation คำนวณจากตรงนี้ — ไม่มี literal) ──
 const grab = (re, h) => { const m = String(h).match(re); return m ? m[1] : null; };
@@ -260,14 +262,14 @@ expect('W10', 'warn', mutJson('stock-meta', (d) => { d.pe = (d.pe || 10) * 6; })
   process.env.STALE_TODAY = today;
   const r = checkHtml(base, 'BBL.html');
   ok(errIds(r).has('E27'), `ราคาเก่า > 120 วัน (จำลองวันนี้ ${today} = วันที่ราคา +200 วัน) → ต้องเจอ E27` + (errIds(r).has('E27') ? '' : ' (เจอ: ' + [...errIds(r)].join(',') + ')'));
-  delete process.env.STALE_TODAY;
+  process.env.STALE_TODAY = FX.TODAY;
 }
 {
   const today = addDays(C.priceAge.iso, 60);
   process.env.STALE_TODAY = today;
   const r = checkHtml(base, 'BBL.html');
   ok(allIds(r).has('W09') && !errIds(r).has('E27'), `ราคาเก่า 45–120 วัน (จำลองวันนี้ ${today} = +60 วัน) → ต้องเตือน W09 (ไม่ block)` + (allIds(r).has('W09') ? '' : ' (เจอ: ' + [...allIds(r)].join(',') + ')'));
-  delete process.env.STALE_TODAY;
+  process.env.STALE_TODAY = FX.TODAY;
 }
 // ★ วันที่ราคา ≠ วันที่อื่นในหัวรายงาน (regression 9 ส.ค. 2569)
 // parsePriceAge เดิมอ่าน "token สุดท้ายใน 140 ตัวอักษรหลังคำว่า ราคา" ⇒ หัวรายงานที่มีวัน ATH /
