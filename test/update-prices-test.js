@@ -773,22 +773,22 @@ ok(U.commitBody([], []) === '', 'commitBody: ว่างเมื่อไม�
 }
 
 // ---------- pick-brand ขนาน: seeds.json ต้องได้ทั้ง 2 entry และสีต้องไม่ชนกัน (WS4 · CLAUDE.md §10 เคสสีซ้ำโดย gate มองไม่เห็น) ----------
+// hermetic: ชี้ STOCK_SEEDS_FILE ไปไฟล์ชั่วคราว — ห้ามแตะ tools/seeds.json จริงเด็ดขาด (verify อาจรันคาบเกี่ยว worker จริง)
 {
   const cp = require('child_process');
-  const seedsFile = path.join(__dirname, '..', 'tools', 'seeds.json');
-  const backup = fs.readFileSync(seedsFile, 'utf8');
-  try {
-    const script = path.join(__dirname, '..', 'tools', 'pick-brand.js');
-    // เทสไฟล์นี้ sync ทั้งไฟล์ (Atomics.wait จะบล็อก event loop จน 'exit' ของ child ไม่ทำงาน) — ให้ shell รัน 2 ตัวขนานแล้ว wait
-    // #1a73e8 (บริฟเดิม) ชนกับ seed จริงที่มีอยู่แล้วจนไม่เหลือเฉดว่างเลย (0/104 ใน seeds.json ปัจจุบัน 229 entries)
-    // → ทั้ง 2 process exit 1 โดยไม่เขียนอะไร ไม่ว่าจะมี lock หรือไม่ ทำให้เทสไม่ได้พิสูจน์อะไร — เปลี่ยนมาใช้ #64d22d
-    // (ตรวจแล้วว่าง่างว่างจริงต่อ seeds.json ปัจจุบัน: process แรกไม่ชน เขียนสีเดิม, process หลังเห็น entry แรกใต้ lock แล้วชน → auto สลับเฉด)
-    cp.spawnSync('sh', ['-c', `node "${script}" ZZTESTA "#64d22d" --auto >/dev/null 2>&1 & node "${script}" ZZTESTB "#64d22d" --auto >/dev/null 2>&1; wait`], { cwd: path.join(__dirname, '..') });
-    const seeds = JSON.parse(fs.readFileSync(seedsFile, 'utf8'));
-    ok(seeds.ZZTESTA && seeds.ZZTESTB, 'pick-brand ขนาน: ได้ทั้ง 2 entry (ไม่มี entry ทับหาย)');
-    ok(seeds.ZZTESTA && seeds.ZZTESTB && seeds.ZZTESTA !== seeds.ZZTESTB, 'pick-brand ขนาน: --auto สลับเฉดให้ตัวที่มาทีหลัง (เห็นสีของอีกตัวเพราะอ่านใต้ lock)');
-  } finally { fs.writeFileSync(seedsFile, backup); }
-  ok(fs.readFileSync(seedsFile, 'utf8') === backup, 'pick-brand ขนาน: คืน seeds.json เดิม');
+  const os = require('os');
+  const realSeeds = path.join(__dirname, '..', 'tools', 'seeds.json');
+  const before = fs.readFileSync(realSeeds, 'utf8');
+  const tmpSeeds = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'seeds-')), 'seeds.json');
+  fs.writeFileSync(tmpSeeds, '{}\n');
+  const script = path.join(__dirname, '..', 'tools', 'pick-brand.js');
+  const env = { ...process.env, STOCK_SEEDS_FILE: tmpSeeds };
+  // เทสไฟล์นี้ sync ทั้งไฟล์ — ให้ shell รัน 2 ตัวขนานแล้ว wait · seeds ของจริงห้ามแตะ (STOCK_SEEDS_FILE ชี้ไฟล์ชั่วคราว)
+  const r = cp.spawnSync('sh', ['-c', `"${process.execPath}" "${script}" ZZTESTA "#1a73e8" --auto 2>&1 & "${process.execPath}" "${script}" ZZTESTB "#1a73e8" --auto 2>&1; wait`], { cwd: path.join(__dirname, '..'), env, encoding: 'utf8' });
+  const seeds = JSON.parse(fs.readFileSync(tmpSeeds, 'utf8'));
+  ok(seeds.ZZTESTA && seeds.ZZTESTB, 'pick-brand ขนาน: ได้ทั้ง 2 entry (ไม่มี entry ทับหาย)', (r.stdout || '').slice(-400));
+  ok(seeds.ZZTESTA && seeds.ZZTESTB && seeds.ZZTESTA !== seeds.ZZTESTB, 'pick-brand ขนาน: --auto สลับเฉดให้ตัวที่มาทีหลัง (เห็นสีของอีกตัวเพราะอ่านใต้ lock)', (r.stdout || '').slice(-400));
+  ok(fs.readFileSync(realSeeds, 'utf8') === before, 'pick-brand ขนาน: seeds.json จริงไม่ถูกแตะ');
 }
 
 console.log(nFail ? `\n✗ update-prices-test: ${nFail} failed / ${nOK} passed` : `\n✓ update-prices-test: ${nOK} passed`);

@@ -27,7 +27,8 @@ if (!symRaw || !hexRaw || !/^#[0-9a-fA-F]{6}$/.test(hexRaw)) {
 }
 const sym = symRaw.toUpperCase();
 let hex = hexRaw.toLowerCase();
-const seedsFile = path.join(__dirname, 'seeds.json');
+// STOCK_SEEDS_FILE = override สำหรับเทส (เหมือน STOCK_TAGS_FILE ใน tag-lib.js) — เทสขนานต้องไม่แตะ seeds.json จริง
+const seedsFile = process.env.STOCK_SEEDS_FILE || path.join(__dirname, 'seeds.json');
 // ★ WS4: อ่าน→ตรวจชน→เขียน ต้องอยู่ใต้ lock เดียวกัน ไม่งั้น 2 worker ขนานมองไม่เห็นสีของกันและกัน
 //   (เดิมเป็นกฎ "controller pre-assign สีเอง" ใน CLAUDE.md §3.3/§10 — ตอนนี้โค้ดกันเอง กฎนั้นถูกถอดใน Task 17)
 withLock(seedsFile, () => {
