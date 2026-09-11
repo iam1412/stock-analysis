@@ -745,6 +745,15 @@ ok(U.commitBody([], []) === '', 'commitBody: ว่างเมื่อไม�
   ok(thrown && !fs.existsSync(f + '.lock'), 'withLock: fn throw → ปล่อย lock เสมอ');
   L.writeJsonAtomic(f, '{"a":1}\n');
   ok(fs.readFileSync(f, 'utf8') === '{"a":1}\n' && !fs.readdirSync(path.dirname(f)).some((x) => x.includes('.tmp-')), 'writeJsonAtomic: เขียนผ่าน temp+rename ไม่ทิ้ง .tmp');
+
+  // process.exit() ข้างใน fn ต้องปล่อย lock ด้วย (finally ไม่รันตอน exit — พึ่ง process.on('exit') ของโมดูล)
+  {
+    const cp = require('child_process');
+    const f2 = path.join(path.dirname(f), 'exit.json');
+    const script = `const L=require(${JSON.stringify(path.join(__dirname, '..', 'tools', 'lockfile.js'))});L.withLock(${JSON.stringify(f2)},()=>{process.exit(7)})`;
+    const r = cp.spawnSync(process.execPath, ['-e', script]);
+    ok(r.status === 7 && !fs.existsSync(f2 + '.lock'), 'withLock: process.exit ใน fn → ปล่อย lock ผ่าน exit handler', `status=${r.status} lock=${fs.existsSync(f2 + '.lock')}`);
+  }
 }
 
 console.log(nFail ? `\n✗ update-prices-test: ${nFail} failed / ${nOK} passed` : `\n✓ update-prices-test: ${nOK} passed`);

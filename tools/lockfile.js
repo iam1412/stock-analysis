@@ -21,22 +21,43 @@ process.on('exit', () => { for (const d of held) { try { fs.rmSync(d, { recursiv
 function sleepSync(ms) { Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, ms); }
 function readPid(dir) { try { return fs.readFileSync(path.join(dir, 'pid'), 'utf8').trim(); } catch (_) { return '?'; } }
 
+/** ยึด lock ที่ค้าง — ต้องทำใต้ lock ที่สอง (`<dir>.reclaim`) แล้ว stat ซ้ำ ไม่งั้น 2 waiter เห็น "ค้าง" พร้อมกัน
+ *  rm+mkdir ทั้งคู่ = ถือ lock ซ้อน (reviewer จำลองได้ 2/6 รอบ) · .reclaim เองก็มี staleness กันคนตายคาไว้ */
+function reclaimStale(dir) {
+  const rdir = `${dir}.reclaim`;
+  try { fs.mkdirSync(rdir); }
+  catch (e) {
+    if (e.code !== 'EEXIST') throw e;
+    try { if (Date.now() - fs.statSync(rdir).mtimeMs > STALE_MS) fs.rmSync(rdir, { recursive: true, force: true }); } catch (_) {}
+    return false;   // คนอื่นกำลังยึดอยู่ — กลับไป poll
+  }
+  held.add(rdir);
+  try {
+    let st;
+    try { st = fs.statSync(dir); } catch (_) { return false; }          // หายไปแล้ว = ปล่อยแล้ว → poll รอบถัดไปได้เอง
+    if (Date.now() - st.mtimeMs <= STALE_MS) return false;               // สดขึ้นมาใหม่ = มีคนยึดไปก่อนแล้ว
+    fs.rmSync(dir, { recursive: true, force: true });
+    try { fs.mkdirSync(dir); fs.writeFileSync(path.join(dir, 'pid'), String(process.pid)); return true; }
+    catch (e) { if (e.code === 'EEXIST') return false; throw e; }
+  } finally { held.delete(rdir); fs.rmSync(rdir, { recursive: true, force: true }); }
+}
+
 function tryAcquire(dir) {
   try { fs.mkdirSync(dir); fs.writeFileSync(path.join(dir, 'pid'), String(process.pid)); return true; }
   catch (e) { if (e.code !== 'EEXIST') throw e; }
-  try {
-    if (Date.now() - fs.statSync(dir).mtimeMs > STALE_MS) { fs.rmSync(dir, { recursive: true, force: true }); return tryAcquire(dir); }
-  } catch (_) { /* หายไประหว่างเช็ค = อีกฝั่งปล่อยแล้ว รอบถัดไปได้เอง */ }
-  return false;
+  let st;
+  try { st = fs.statSync(dir); } catch (_) { return false; }
+  if (Date.now() - st.mtimeMs <= STALE_MS) return false;
+  return reclaimStale(dir);
 }
 
 /** รัน fn ใต้ lock ของ file (sync) · คืนค่าของ fn · รอเกิน waitMs → throw */
 function withLock(file, fn, opts) {
-  const waitMs = (opts && opts.waitMs) || WAIT_MS;
+  const waitMs = (opts && opts.waitMs != null) ? opts.waitMs : WAIT_MS;
   const dir = `${file}.lock`;
   const t0 = Date.now();
   while (!tryAcquire(dir)) {
-    if (Date.now() - t0 > waitMs) throw new Error(`รอ lock ${path.basename(dir)} เกิน ${Math.round(waitMs / 1000)} วิ — process อื่นถืออยู่ (pid ${readPid(dir)}) ยกเลิก ไม่เขียนทับ`);
+    if (Date.now() - t0 > waitMs) throw new Error(`รอ lock ${path.basename(dir)} เกิน ${waitMs >= 1000 ? Math.round(waitMs / 1000) + ' วิ' : waitMs + ' ms'} — process อื่นถืออยู่ (pid ${readPid(dir)}) ยกเลิก ไม่เขียนทับ`);
     sleepSync(POLL_MS);
   }
   held.add(dir);
@@ -49,7 +70,7 @@ function withLock(file, fn, opts) {
 function writeJsonAtomic(file, text) {
   const tmp = `${file}.tmp-${process.pid}`;
   fs.writeFileSync(tmp, text);
-  fs.renameSync(tmp, file);
+  try { fs.renameSync(tmp, file); } catch (e) { try { fs.unlinkSync(tmp); } catch (_) {} throw e; }
 }
 
 module.exports = { withLock, writeJsonAtomic, STALE_MS, WAIT_MS };
