@@ -50,6 +50,7 @@ const path = require('path');
 const { tvCandidates, scan: scanTickers, classify: classifyTickers, loadTickerCache } = require('./dead-ticker-canary.js');
 const { entryFor } = require('./symbol-map.js');
 const { readStockMeta, STOCK_META_PARTS_RE } = require('./report-meta.js');
+const { withLock, writeJsonAtomic } = require('./lockfile.js');   // WS4: price-flags.json มีหลาย writer
 
 const REPORTS = path.join(__dirname, '..', 'reports');
 const FLAGS = path.join(__dirname, '..', 'price-flags.json');
@@ -599,23 +600,14 @@ function patchReport(html, p) {
 // เพราะ mergeFlags(prev=[]) จะเขียนทับคิวทั้งใบตอน --write ⇒ คิวหายยกชุด รวม not-on-exchange ที่
 // ถอนได้ 3 ทางเท่านั้น (TradingView เจอ ticker กลับมา · รายงานถูกลบ · --alive) — "ไฟล์เสีย/เขียนค้าง"
 // ไม่ใช่หนึ่งในนั้น · แยกด้วย e.code: ENOENT = ไม่มีไฟล์ · JSON เสีย/อ่านไม่ได้ = มีไฟล์แต่เชื่อไม่ได้
-function loadFlags() {
-  try { return JSON.parse(fs.readFileSync(FLAGS, 'utf8')); }
+function loadFlags(file = FLAGS) {
+  try { return JSON.parse(fs.readFileSync(file, 'utf8')); }
   catch (e) {
     if (e.code === 'ENOENT') return [];
-    throw new Error(`อ่าน ${FLAGS} ไม่ได้ (${e.message}) — ไฟล์เสีย/เขียนค้าง ยกเลิกรอบนี้ ไม่เขียนทับคิวด้วยของว่าง`);
+    throw new Error(`อ่าน ${file} ไม่ได้ (${e.message}) — ไฟล์เสีย/เขียนค้าง ยกเลิกรอบนี้ ไม่เขียนทับคิวด้วยของว่าง`);
   }
 }
 
-// เขียน state file แบบ atomic: temp ในโฟลเดอร์เดียวกันแล้ว rename ทับ (rename ข้าม filesystem ไม่ atomic
-// จึงต้องเป็น dir เดียวกัน · ใส่ pid กันสองรอบที่รันพร้อมกันเขียน temp ใบเดียวกันแล้ว rename ของครึ่งใบทับ)
-// เขียนตรง ๆ แล้วถูกตัดกลางคัน (job timeout 45 นาที / เครื่องดับ) = เหลือ JSON ครึ่งใบ ซึ่งเป็น input
-// ที่ทำให้ loadFlags ล้มทั้งรอบถัดไปพอดี — คิวนี้สร้างใหม่จากศูนย์ไม่ได้
-function writeJsonAtomic(file, text) {
-  const tmp = `${file}.tmp-${process.pid}`;
-  fs.writeFileSync(tmp, text);
-  fs.renameSync(tmp, file);
-}
 // เหตุผลที่เครื่องมืออื่นเป็นเจ้าของ (tools/dead-ticker-canary.js รายสัปดาห์) — cron ราคารายวัน
 // ตรวจเรื่องนี้เองไม่ได้ ห้ามเคลียร์ทิ้งเวลาเห็นว่า "ตัวนี้ไม่มี freeze รอบนี้" ไม่งั้น canary เขียน
 // flag คืนวันจันทร์ แล้วเช้าวันอังคารหายเกลี้ยง (หุ้นตายกลับไปเงียบเหมือนเดิม)
@@ -638,6 +630,22 @@ function mergeFlags(prev, processed, newFlags) {
     return { ...f, flaggedAt: old && old.reason === f.reason ? old.flaggedAt : today };
   });
   return kept.concat(external, fresh).sort((a, b) => a.symbol.localeCompare(b.symbol));
+}
+
+// ★ RMW ของคิวใต้ lock — อ่าน "ไฟล์ล่าสุด" ก่อน merge ไม่ใช่ snapshot ตอนเริ่มรอบ (prevAll ใช้แค่ตัดสิน deadAlready
+//   ระหว่าง loop) ⇒ flag ที่ canary/controller/worker --force เขียนระหว่าง loop fetch ~8 นาทีไม่ถูกทับหาย
+//   (เคสจริง 12 ส.ค. 69: worker ขนานรัน --force แล้ว flag ที่เคลียร์แล้วฟื้น — เดิมแก้ด้วยกฎ "controller pre-patch
+//   ทั้งชุด process เดียว + ห้าม worker รัน" ซึ่งอยู่ใน memory เท่านั้น · ตอนนี้โค้ดกันเอง)
+function commitFlags(p) {
+  const file = p.file || FLAGS;
+  return withLock(file, () => {
+    const latest = loadFlags(file);   // dry-run ก็อ่านล่าสุด — ให้ preview ตรงกับที่ --write จะเขียนจริง
+    const prevFlags = latest.filter((f) => !((p.quietSyms.has(f.symbol) || p.aliveConfirmed.has(f.symbol)) && f.reason === 'not-on-exchange'));
+    const merged = mergeFlags(prevFlags, p.evaluated, p.frozenAll.concat(p.failed.map((x) => ({ ...x, reportPrice: null, marketPrice: null, diffPct: null }))))
+      .filter((f) => p.reportExists.has(String(f.symbol).toUpperCase()));
+    if (p.write) writeJsonAtomic(file, JSON.stringify(merged, null, 2) + '\n');
+    return merged;
+  });
 }
 
 // ---------- commit body (log ถาวรต่อหุ้นใน git history) ----------
@@ -870,7 +878,6 @@ async function main() {
     ...frozen.filter((f) => f.reason === 'fetch-failed' || f.reason === 'patch-failed').map((f) => f.symbol)]);
   const aliveConfirmed = new Set([...aliveAsserted].filter((s) => !plumbingFail.has(s)));
   for (const s of aliveAsserted) if (plumbingFail.has(s)) console.log(`⚠ ${s.padEnd(10)} --alive แต่รอบนี้ล้มแบบ plumbing — คง flag not-on-exchange ไว้ก่อน (ยังไม่มีหลักฐานว่ายังเทรด)`);
-  const prevFlags = prevAll.filter((f) => !((quietSyms.has(f.symbol) || aliveConfirmed.has(f.symbol)) && f.reason === 'not-on-exchange'));
   const deadSyms = new Set(deadConfirmed.map((f) => f.symbol));
   const frozenAll = frozen.filter((f) => !deadSyms.has(f.symbol)).concat(deadConfirmed);
 
@@ -880,9 +887,7 @@ async function main() {
   // flag ของทุก symbol ใน processed ที่ไม่มี freeze รอบนี้ ⇒ ถ้าใส่ตัว intraday เข้าไปด้วย การรันมือ
   // กลาง session จะล้าง drift/mos-flip ที่ค้างคิวอยู่ทิ้งทั้งที่ยังไม่ได้ประเมินซ้ำเลย (คิวหายเงียบ)
   const evaluated = new Set(files.map((f) => f.replace(/\.html$/i, '')).filter((s) => !intraday.includes(s)));
-  const flags = mergeFlags(prevFlags, evaluated, frozenAll.concat(failed.map((x) => ({ ...x, reportPrice: null, marketPrice: null, diffPct: null }))))
-    .filter((f) => reportExists.has(String(f.symbol).toUpperCase()));
-  if (WRITE) writeJsonAtomic(FLAGS, JSON.stringify(flags, null, 2) + '\n');
+  const flags = commitFlags({ write: WRITE, evaluated, frozenAll, failed, quietSyms, aliveConfirmed, reportExists });
 
   // log ต่อหุ้นสำหรับ commit body (ถาวรใน git history — Actions log หายใน ~90 วัน)
   if (WRITE && process.env.PRICE_COMMIT_BODY)
@@ -901,6 +906,6 @@ async function main() {
   if (!WRITE) console.log('ใส่ --write เพื่อเขียนจริง');
 }
 
-module.exports = { mosBand, fmtPrice, fmtLike, toYahooSymbol, fetchChart, buildChartData, niceBounds, annualChg, decide, currencyMatches, isIntradayQuote, detectMixedBasis, detectStaleQuotes, missedSessions, probeCap, capByCohort, controlTickers, unverifiedCohorts, classifyStale, patchReport, mergeFlags, styledRD, commitBody, THAI_MONTHS };
+module.exports = { mosBand, fmtPrice, fmtLike, toYahooSymbol, fetchChart, buildChartData, niceBounds, annualChg, decide, currencyMatches, isIntradayQuote, detectMixedBasis, detectStaleQuotes, missedSessions, probeCap, capByCohort, controlTickers, unverifiedCohorts, classifyStale, patchReport, mergeFlags, commitFlags, styledRD, commitBody, THAI_MONTHS };
 
 if (require.main === module) main().catch((e) => { console.error(e); process.exit(1); });

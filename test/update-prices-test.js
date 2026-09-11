@@ -756,5 +756,21 @@ ok(U.commitBody([], []) === '', 'commitBody: ว่างเมื่อไม�
   }
 }
 
+// ---------- commitFlags: merge บนไฟล์ "ล่าสุด" ใต้ lock ไม่ใช่ snapshot ตอนเริ่มรอบ (WS4 · เคส flag ฟื้น/หาย 12 ส.ค. 69) ----------
+{
+  const os = require('os');
+  const file = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'flags-')), 'price-flags.json');
+  const snapshot = [{ symbol: 'AAA', reason: 'mos-sign-flip', flaggedAt: '2026-09-01' }];
+  // ระหว่าง loop: canary เขียน not-on-exchange ของ ZZZ ลงไฟล์ (snapshot ตอนเริ่มรอบไม่มี)
+  fs.writeFileSync(file, JSON.stringify(snapshot.concat([{ symbol: 'ZZZ', reason: 'not-on-exchange', flaggedAt: '2026-09-10' }])));
+  const args = { file, evaluated: new Set(['AAA']), frozenAll: [], failed: [], quietSyms: new Set(), aliveConfirmed: new Set(), reportExists: new Set(['AAA', 'ZZZ']) };
+  const flags = U.commitFlags({ ...args, write: true });
+  ok(!flags.some((f) => f.symbol === 'AAA'), 'commitFlags: AAA ประเมินรอบนี้ไม่ freeze → หลุดคิว');
+  ok(flags.some((f) => f.symbol === 'ZZZ' && f.reason === 'not-on-exchange'), 'commitFlags: flag ที่ canary เขียนระหว่าง loop ยังอยู่ (merge บนไฟล์ล่าสุด)');
+  ok(JSON.parse(fs.readFileSync(file, 'utf8')).length === 1 && !fs.existsSync(file + '.lock'), 'commitFlags: เขียนไฟล์ + ปล่อย lock');
+  const before = fs.readFileSync(file, 'utf8');
+  ok(Array.isArray(U.commitFlags({ ...args, write: false })) && fs.readFileSync(file, 'utf8') === before, 'commitFlags: dry-run ไม่เขียนไฟล์');
+}
+
 console.log(nFail ? `\n✗ update-prices-test: ${nFail} failed / ${nOK} passed` : `\n✓ update-prices-test: ${nOK} passed`);
 process.exit(nFail ? 1 : 0);
