@@ -65,37 +65,52 @@ function shipStock(sym, opts) {
   closeIssueIfEmpty();
 }
 
+/** parse `git status --porcelain` (ส่วนบริสุทธิ์ — ไม่แตะ git) → [{ path, isNew }]
+ *  rename (`R  old -> new` / `RM …`) ใช้ path ปลายทาง (หลัง ' -> ') · isNew = untracked (`??`) หรือเพิ่งถูก `git add` (`A`)
+ *  → เข้าเงื่อนไข "ไฟล์ใหม่ทั้งใบ" เสมอ ไม่ว่าจะ stage แล้วหรือยัง */
+function parsePorcelain(text) {
+  return String(text).split('\n').filter(Boolean).map((line) => {
+    const status = line.slice(0, 2);
+    let p = line.slice(3).trim();
+    if (p.includes(' -> ')) p = p.split(' -> ').pop().trim();
+    return { path: p, isNew: /[A?]/.test(status) };
+  });
+}
+
 /** ปฏิเสธไฟล์ใน reports/ ที่ worker วิเคราะห์ใหม่แล้ว (ไม่ใช่แค่ pre-patch ราคาที่ preflight ทำ) — `ship --prepatch`
  *  ต้องไม่กวาดไปเป็น commit "price: …" ทั้งที่ยังไม่ผ่าน postcheck/รีวิว
- *  entries = [{ path, untracked, headFooterISO, workFooterISO }] → คืนรายชื่อ SYMBOL ที่ต้องกัน (ส่วนบริสุทธิ์ ไม่แตะ git) */
+ *  entries = [{ path, untracked, headFooterISO, workFooterISO }] → คืน { blocked, unreadable } (ส่วนบริสุทธิ์ ไม่แตะ git)
+ *  ★ อ่าน footer ได้ข้างเดียว (เช่น HEAD parse ไม่ออก) = สงสัย → กันไว้ก่อน · อ่านไม่ได้ทั้งสองข้าง = ไม่รู้จริง ๆ → ไม่กัน แต่ขึ้น unreadable ให้คนตรวจเอง */
 function prepatchBlockers(entries) {
-  const out = [];
+  const blocked = [], unreadable = [];
   for (const e of entries) {
     const m = /^reports\/(.+)\.html$/.exec(e.path);
     if (!m) continue;
     const sym = m[1];
-    if (e.untracked) { out.push(sym); continue; }   // ไฟล์ใหม่ทั้งใบ = worker เขียน ไม่ใช่ pre-patch ราคา
-    if (e.headFooterISO && e.workFooterISO && e.headFooterISO !== e.workFooterISO) out.push(sym);   // footer ขยับ = วิเคราะห์ใหม่แล้ว
+    if (e.untracked) { blocked.push(sym); continue; }   // ไฟล์ใหม่ทั้งใบ = worker เขียน ไม่ใช่ pre-patch ราคา
+    const h = e.headFooterISO, w = e.workFooterISO;
+    if (h == null && w == null) { unreadable.push(sym); continue; }
+    if (h == null || w == null) { blocked.push(sym); continue; }   // อ่านได้ข้างเดียว = สงสัย
+    if (h !== w) blocked.push(sym);   // footer ขยับ = วิเคราะห์ใหม่แล้ว
   }
-  return out;
+  return { blocked, unreadable };
 }
 
 function shipPrepatch() {
-  const porcelain = run('git', ['status', '--porcelain', '--', 'reports']).out.split('\n').filter(Boolean);
-  const changed = porcelain.map((l) => l.slice(3).trim());
-  if (!changed.length) { console.log('ไม่มีไฟล์ใน reports/ ที่เปลี่ยน — ไม่มีอะไรจะ ship'); return; }
-  const entries = porcelain.map((line) => {
-    const status = line.slice(0, 2);
-    const p = line.slice(3).trim();
-    const untracked = status.includes('?');
-    const head = untracked ? null : run('git', ['show', `HEAD:${p}`]);
+  const porcelain = parsePorcelain(run('git', ['status', '--porcelain', '--', 'reports']).out);
+  if (!porcelain.length) { console.log('ไม่มีไฟล์ใน reports/ ที่เปลี่ยน — ไม่มีอะไรจะ ship'); return; }
+  const changed = porcelain.map((e) => e.path);
+  const entries = porcelain.map((e) => {
+    const untracked = e.isNew;
+    const head = untracked ? null : run('git', ['show', `HEAD:${e.path}`]);
     const headFooterISO = head && head.code === 0 ? ((footerDate(head.out) || {}).iso || null) : null;
-    const fp = path.join(ROOT, p);
+    const fp = path.join(ROOT, e.path);
     const workFooterISO = fs.existsSync(fp) ? ((footerDate(fs.readFileSync(fp, 'utf8')) || {}).iso || null) : null;
-    return { path: p, untracked, headFooterISO, workFooterISO };
+    return { path: e.path, untracked, headFooterISO, workFooterISO };
   });
-  const blockers = prepatchBlockers(entries);
-  if (blockers.length) throw new Error(blockers.map((sym) => `ship --prepatch: ${sym} ถูกวิเคราะห์ใหม่แล้ว (footer ขยับ/ไฟล์ใหม่) — ใช้ npm run queue -- ship ${sym} แทน`).join('\n'));
+  const { blocked, unreadable } = prepatchBlockers(entries);
+  if (blocked.length) throw new Error(blocked.map((sym) => `ship --prepatch: ${sym} ถูกวิเคราะห์ใหม่แล้ว (footer ขยับ/ไฟล์ใหม่) — ใช้ npm run queue -- ship ${sym} แทน`).join('\n'));
+  if (unreadable.length) console.log('⚠ อ่าน footer ไม่ได้ทั้ง HEAD และ working tree — ตรวจเองว่าไม่ใช่งาน worker: ' + unreadable.join(' '));
   must('npm', ['run', 'build'], 'build');
   keepDates();
   verify();
@@ -134,4 +149,4 @@ function status() {
   console.log(`pre-patch push แล้ว ${prepatchShipped.length}: ${prepatchShipped.join(' ') || '-'}`);
 }
 
-module.exports = { shipStock, shipPrepatch, status, commitMessage, trailer, closeIssueIfEmpty, prepatchBlockers, STOCK_FILES, TITLE };
+module.exports = { shipStock, shipPrepatch, status, commitMessage, trailer, closeIssueIfEmpty, prepatchBlockers, parsePorcelain, STOCK_FILES, TITLE };

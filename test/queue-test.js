@@ -38,6 +38,8 @@ process.env.QUEUE_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'queue-'));   // s
   ok(F.footerDate(wrap('10 ก.ย. 2569')).iso === '2026-09-10' && F.footerDate(wrap('10 ก.ย. 2569')).era === 'BE', 'footerDate: พ.ศ. ย่อ');
   ok(F.footerDate(wrap('1 มกราคม 2026')).iso === '2026-01-01' && F.footerDate(wrap('1 มกราคม 2026')).era === 'CE', 'footerDate: ค.ศ. เต็ม');
   ok(F.footerDate(wrap('วันที่ 5 มิ.ย. 2569')).iso === '2026-06-05', 'footerDate: มีคำว่า "วันที่"');
+  ok(F.footerDate(wrap('22–23 มิ.ย. 2569')).iso === '2026-06-22' && F.footerDate(wrap('22–23 มิ.ย. 2569')).era === 'BE', 'footerDate: ช่วงวัน (en dash) ใช้วันแรก (31 ใบในคลัง)');
+  ok(F.footerDate(wrap('22-23 มิ.ย. 2026')).iso === '2026-06-22' && F.footerDate(wrap('22-23 มิ.ย. 2026')).era === 'CE', 'footerDate: ช่วงวัน (ASCII hyphen) ใช้วันแรก');
   ok(F.footerDate('<footer>ไม่มีวันที่</footer>') === null && F.footerDate('<p>ข้อมูล ณ 1 ม.ค. 2569</p>') === null, 'footerDate: ไม่มี footer/ไม่มีวันที่ใน footer → null (ไม่หยิบจากเนื้อหา)');
   ok(F.ageDays('2026-09-01', '2026-09-11') === 10, 'ageDays: 10 วัน');
   ok(/^\d{4}-\d{2}-\d{2}$/.test(F.todayBangkok()), 'todayBangkok: รูป ISO');
@@ -256,15 +258,35 @@ process.env.QUEUE_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'queue-'));   // s
 // ── 11) ship: prepatchBlockers (ส่วนบริสุทธิ์) — กัน `ship --prepatch` กวาดงานที่ worker วิเคราะห์ใหม่แล้วไปเป็น commit "price: …" ──
 {
   const Sh = require('../tools/queue/ship.js');
-  const blocked = Sh.prepatchBlockers([
+  const { blocked, unreadable } = Sh.prepatchBlockers([
     { path: 'reports/NEWCO.html', untracked: true, headFooterISO: null, workFooterISO: '2026-09-12' },
     { path: 'reports/AAPL.html', untracked: false, headFooterISO: '2026-09-01', workFooterISO: '2026-09-12' },
     { path: 'reports/KLAC.html', untracked: false, headFooterISO: '2026-09-10', workFooterISO: '2026-09-10' },
+    { path: 'reports/ASYM.html', untracked: false, headFooterISO: null, workFooterISO: '2026-09-12' },
+    { path: 'reports/DARK.html', untracked: false, headFooterISO: null, workFooterISO: null },
   ]);
   ok(blocked.includes('NEWCO'), 'prepatchBlockers: ไฟล์ใหม่ (untracked) = worker เขียนใหม่ → กัน', blocked.join(','));
   ok(blocked.includes('AAPL'), 'prepatchBlockers: footer ขยับจาก HEAD = วิเคราะห์ใหม่แล้ว → กัน', blocked.join(','));
   ok(!blocked.includes('KLAC'), 'prepatchBlockers: footer เดิม + tracked = pre-patch ราคาล้วน → ผ่าน', blocked.join(','));
-  ok(blocked.length === 2, 'prepatchBlockers: กันเฉพาะ 2 ตัวที่เข้าเงื่อนไข ไม่กวาดตัวที่ไม่เข้าข่าย', blocked.join(','));
+  ok(blocked.includes('ASYM'), 'prepatchBlockers: อ่าน footer ได้ข้างเดียว (HEAD parse ไม่ออก) = สงสัย → กัน', blocked.join(','));
+  ok(!blocked.includes('DARK') && unreadable.includes('DARK'), 'prepatchBlockers: อ่าน footer ไม่ได้ทั้งสองข้าง = ไม่กัน แต่ขึ้น unreadable ให้คนตรวจเอง', JSON.stringify({ blocked, unreadable }));
+  ok(blocked.length === 3, 'prepatchBlockers: กันเฉพาะ 3 ตัวที่เข้าเงื่อนไข ไม่กวาดตัวที่ไม่เข้าข่าย', blocked.join(','));
+}
+
+// ── 11b) ship: parsePorcelain (ส่วนบริสุทธิ์) — path ปลายทางของ rename · A/?? = ไฟล์ใหม่ (เข้า prepatchBlockers เป็น untracked) ──
+{
+  const Sh = require('../tools/queue/ship.js');
+  const rows = Sh.parsePorcelain([
+    ' M reports/A.html',
+    '?? reports/B.html',
+    'A  reports/C.html',
+    'R  reports/OLD.html -> reports/NEW.html',
+  ].join('\n'));
+  ok(rows.length === 4, 'parsePorcelain: 4 แถว', JSON.stringify(rows));
+  ok(rows[0].path === 'reports/A.html' && rows[0].isNew === false, 'parsePorcelain: " M" = แก้ไข tracked ไม่ใช่ไฟล์ใหม่', JSON.stringify(rows[0]));
+  ok(rows[1].path === 'reports/B.html' && rows[1].isNew === true, 'parsePorcelain: "??" = untracked → ไฟล์ใหม่', JSON.stringify(rows[1]));
+  ok(rows[2].path === 'reports/C.html' && rows[2].isNew === true, 'parsePorcelain: "A " = เพิ่งถูก add → ไฟล์ใหม่', JSON.stringify(rows[2]));
+  ok(rows[3].path === 'reports/NEW.html' && rows[3].isNew === false, 'parsePorcelain: rename ใช้ path ปลายทาง (หลัง " -> ")', JSON.stringify(rows[3]));
 }
 
 // ── 12) ship: status — bucket ไม่ซ้อนกัน (postcheck:'review' ไม่มี bucket ต้องขึ้นบรรทัดเดียว ไม่ใช่ทั้ง review และ other[undefined]) ──
