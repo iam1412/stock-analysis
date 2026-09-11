@@ -294,6 +294,7 @@ process.env.QUEUE_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'queue-'));   // s
   const S3 = require('../tools/queue/state.js');
   const Sh3 = require('../tools/queue/ship.js');
   S3.update('REVIEWME', { postcheck: 'review' });   // ไม่มี bucket เลย — ก่อนแก้เคยขึ้นทั้ง "postcheck ต้องดู" และ "ไม่ใช้ agent/ข้าม" พร้อมกัน
+  S3.update('GATEFAIL', { bucket: 'LIGHT', prePatchRejected: '2026-09-12' });   // pre-patch แล้ว gate ตก คืนไฟล์แล้ว — ก่อนแก้ตกไปอยู่ "ยังไม่เริ่ม" เหมือนรอ spawn worker
   const lines = [];
   const orig = console.log;
   console.log = (s) => lines.push(String(s));
@@ -303,6 +304,19 @@ process.env.QUEUE_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'queue-'));   // s
   ok(lines.filter((l) => l.includes('REVIEWME')).length === 1, 'status: postcheck review ไม่มี bucket → ขึ้นบรรทัดเดียว (bucket ไม่ซ้อน)', out);
   ok(lines.length === 8, 'status: พิมพ์ 8 บรรทัด (เพิ่มบรรทัด "pre-patch push แล้ว")', String(lines.length));
   ok(/^pre-patch push แล้ว/.test(lines[7]), 'status: บรรทัดสุดท้าย = pre-patch push แล้ว', lines[7]);
+  ok(lines.filter((l) => l.includes('GATEFAIL')).length === 1, 'status: prePatchRejected ขึ้นบรรทัดเดียว (ไม่ซ้อนกับ "ยังไม่เริ่ม")', out);
+  const otherLine = lines.find((l) => /^ไม่ใช้ agent\/ข้าม/.test(l)) || '';
+  ok(/GATEFAIL\[gate ตกหลัง pre-patch\]/.test(otherLine), 'status: prePatchRejected อยู่ใต้ "ไม่ใช้ agent/ข้าม" พร้อมป้ายเหตุผล', otherLine);
+  ok(!(lines.find((l) => /^ยังไม่เริ่ม/.test(l)) || '').includes('GATEFAIL'), 'status: ใบที่ gate ตกหลัง pre-patch ไม่ถูกนับว่ารอ spawn worker', lines.find((l) => /^ยังไม่เริ่ม/.test(l)));
+}
+
+// ── 12b) ship: commitArgs — commit ต้องจำกัดด้วย pathspec ไม่งั้น deletion ที่ stage ไว้ (git rm ตอน DELIST) หลุดเข้า commit (re-review) ──
+{
+  const Sh = require('../tools/queue/ship.js');
+  const a = Sh.commitArgs('price: x', ['reports/A.html', 'reports.json']);
+  ok(a.join(' ') === ['commit', '-q', '-m', 'price: x', '--', 'reports/A.html', 'reports.json'].join(' '), 'commitArgs: commit -q -m <msg> -- <ไฟล์…>', JSON.stringify(a));
+  ok(a[4] === '--' && a.slice(5).join(',') === 'reports/A.html,reports.json', 'commitArgs: มี "--" คั่นก่อนรายชื่อไฟล์เสมอ (ข้อความขึ้นต้นด้วย - ก็ไม่กลายเป็น flag)', JSON.stringify(a));
+  ok(Sh.commitArgs('m', []).slice(-1)[0] === '--', 'commitArgs: ไม่มีไฟล์เลย → ยังมี "--" ปิดท้าย (commit จะไม่กวาด index)', JSON.stringify(Sh.commitArgs('m', [])));
 }
 
 // ── 13) preflight: parseGateFailures — --force ข้าม quarantine ของ cron ⇒ ต้องยิง gate เองแล้วคืนไฟล์ใบที่ตก (final review 1) ──

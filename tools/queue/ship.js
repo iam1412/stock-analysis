@@ -52,11 +52,16 @@ function pendingCommitFor(sym, logText) {
   const esc = String(sym).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   return new RegExp(`^analyze: (add|update) ${esc}\\b`, 'm').test(String(logText || ''));
 }
-/** commit ที่ยังไม่ push ของรอบนี้ (upstream ไม่มี → เทียบ origin/main) */
+/** commit ที่ยังไม่ push ของรอบนี้ — เทียบ `origin/main` ก่อนเสมอเพราะปลายทางของ push คือ `HEAD:main` ตายตัว
+ *  (worktree มี `@{u}` เป็น branch ฟีเจอร์ของตัวเอง ⇒ commit ที่ยังไม่ถึง main จะไม่โผล่) · ไม่รู้จัก origin/main จึง fallback `@{u}` */
 function unpushedSubjects() {
-  const up = run('git', ['log', '@{u}..HEAD', '--format=%s']);
-  return up.code === 0 ? up.out : run('git', ['log', 'origin/main..HEAD', '--format=%s']).out;
+  const om = run('git', ['log', 'origin/main..HEAD', '--format=%s']);
+  return om.code === 0 ? om.out : run('git', ['log', '@{u}..HEAD', '--format=%s']).out;
 }
+/** args ของ `git commit` ที่จำกัดขอบเขตด้วย pathspec (ส่วนบริสุทธิ์)
+ *  ★ `git commit -m …` เปล่า ๆ commit **index ทั้งก้อน** ⇒ การลบรายงานที่ `git rm` ค้างไว้ (DELIST) หลุดเข้า commit
+ *    "price: …"/"analyze: …" โดยไม่มี `tag-apply --prune` ไปด้วย → tags-test ตกบน main · ใส่ `--` + รายชื่อไฟล์กันไว้ */
+const commitArgs = (msg, files) => ['commit', '-q', '-m', msg, '--', ...files];
 /** push แล้วล้ม = commit ยังอยู่ในเครื่อง — บอกให้ชัดว่ารัน ship <SYM> ซ้ำจะ push ต่อ ไม่ใช่ให้ worker เขียนใหม่ */
 function pushOrExplain(sym) {
   try { pushWithRebase(); }
@@ -88,7 +93,7 @@ function shipStock(sym, opts) {
   }
   const sm = readStockMeta(fs.readFileSync(path.join(ROOT, 'reports', sym + '.html'), 'utf8'));
   const msg = o.message || commitMessage(sym, rec, sm);
-  must('git', ['commit', '-q', '-m', `${msg}\n\n${trailer(rec.model)}`], 'git commit');
+  must('git', commitArgs(`${msg}\n\n${trailer(rec.model)}`, files), 'git commit');
   pushOrExplain(sym);
   S.update(sym, { shippedAt: todayBangkok() });
   console.log(`✅ ${sym} push แล้ว: ${msg}`);
@@ -155,16 +160,16 @@ function shipPrepatch() {
     return { path: e.path, untracked, headFooterISO, workFooterISO };
   });
   const { blocked, unreadable } = prepatchBlockers(entries);
+  if (deleted.length) delNote();   // พิมพ์ก่อน throw — รอบที่ถูกบล็อกก็ยังต้องรู้ว่ามีไฟล์ที่ลบรออยู่
   if (blocked.length) throw new Error(blocked.map((sym) => `ship --prepatch: ${sym} ถูกวิเคราะห์ใหม่แล้ว (footer ขยับ/ไฟล์ใหม่) — ใช้ npm run queue -- ship ${sym} แทน`).join('\n'));
   if (unreadable.length) console.log('⚠ อ่าน footer ไม่ได้ทั้ง HEAD และ working tree — ตรวจเองว่าไม่ใช่งาน worker: ' + unreadable.join(' '));
-  if (deleted.length) delNote();
   must('npm', ['run', 'build'], 'build');
   keepDates();
   verify();
   // ระบุไฟล์ทีละใบ ไม่ `git add -- reports` — ไม่งั้นการลบรายงานหุ้นเพิกถอนถูกกวาดเข้า commit "price: …" ทั้งที่ต้องไปคู่กับ tag-apply --prune
   const addFiles = [...changed, 'reports.json', 'price-flags.json'].filter((f) => fs.existsSync(path.join(ROOT, f)));
   must('git', ['add', '--', ...addFiles], 'git add');
-  must('git', ['commit', '-q', '-m', `price: pre-patch ${changed.length} symbols (manual queue run ${todayBangkok()})\n\nCo-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>`], 'git commit');
+  must('git', commitArgs(`price: pre-patch ${changed.length} symbols (manual queue run ${todayBangkok()})\n\nCo-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>`, addFiles), 'git commit');
   pushWithRebase();
   const today = todayBangkok();
   for (const p of changed) {
@@ -185,8 +190,9 @@ function status() {
   const waiting = rows.filter(([, r]) => !r.shippedAt && r.postcheck === 'pass').map(([k]) => k);
   const review = rows.filter(([, r]) => !r.shippedAt && r.postcheck === 'review').map(([k]) => k);
   const prepped = rows.filter(([, r]) => !r.shippedAt && !r.postcheck && r.prepAt).map(([k]) => k);
-  const idle = rows.filter(([, r]) => !r.shippedAt && !r.postcheck && !r.prepAt && !r.skip && ['LIGHT', 'FULL'].includes(r.bucket)).map(([k]) => k);
-  const other = rows.filter(([, r]) => !r.shippedAt && !r.postcheck && !r.prepAt && (r.skip || !['LIGHT', 'FULL'].includes(r.bucket))).map(([k, r]) => `${k}[${r.skip ? 'สด' : (r.bucket || '-')}]`);
+  const idle = rows.filter(([, r]) => !r.shippedAt && !r.postcheck && !r.prepAt && !r.skip && !r.prePatchRejected && ['LIGHT', 'FULL'].includes(r.bucket)).map(([k]) => k);
+  // prePatchRejected = pre-patch แล้ว gate ตก คืนไฟล์ไปแล้ว ⇒ ต้องแก้ใบเอง ไม่ใช่ "ยังไม่เริ่ม" ที่รอ spawn worker (re-review)
+  const other = rows.filter(([, r]) => !r.shippedAt && !r.postcheck && !r.prepAt && (r.skip || r.prePatchRejected || !['LIGHT', 'FULL'].includes(r.bucket))).map(([k, r]) => `${k}[${r.prePatchRejected ? 'gate ตกหลัง pre-patch' : r.skip ? 'สด' : (r.bucket || '-')}]`);
   const prepatchShipped = rows.filter(([, r]) => r.prepatchShippedAt).map(([k]) => k);
   console.log(`รอบเริ่ม ${s.startedAt || '-'} · ${pushed.length}/${rows.length}`);
   console.log(`push แล้ว ${pushed.length}: ${pushed.join(' ') || '-'}`);
@@ -198,4 +204,4 @@ function status() {
   console.log(`pre-patch push แล้ว ${prepatchShipped.length}: ${prepatchShipped.join(' ') || '-'}`);
 }
 
-module.exports = { shipStock, shipPrepatch, status, commitMessage, trailer, closeIssueIfEmpty, prepatchBlockers, prepatchCandidates, parsePorcelain, pendingCommitFor, STOCK_FILES, TITLE };
+module.exports = { shipStock, shipPrepatch, status, commitMessage, commitArgs, trailer, closeIssueIfEmpty, prepatchBlockers, prepatchCandidates, parsePorcelain, pendingCommitFor, STOCK_FILES, TITLE };
