@@ -1,6 +1,6 @@
 # Price refresh — cron อัปเดตราคาอัตโนมัติ
 
-> สรุปย่ออยู่ใน `CLAUDE.md §10` — ไฟล์นี้คือรายละเอียดกลไก/กติกา/วิธีแก้ปัญหา
+> สรุปย่ออยู่ใน `CLAUDE.md §9` — ไฟล์นี้คือรายละเอียดกลไก/กติกา/วิธีแก้ปัญหา
 > enforcement จริง: `tools/update-prices.js` (+ unit test `test/update-prices-test.js` = `npm run test:prices`)
 
 ## ภาพรวม

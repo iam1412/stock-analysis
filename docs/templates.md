@@ -1,6 +1,6 @@
 # Template system (รายงาน content-only) + สีแบรนด์ต่อหุ้น
 
-> `CLAUDE.md §9` มีแค่หลักการสั้น ๆ + pointer มาที่นี่ · ไฟล์นี้คือรายละเอียดเต็ม
+> `CLAUDE.md §10` มีแค่หลักการสั้น ๆ + pointer มาที่นี่ · ไฟล์นี้คือรายละเอียดเต็ม
 
 รายงานใน `reports/` เป็นแบบ **content-only template** — โครงที่ซ้ำทุกไฟล์ (CSS + engine วาดกราฟ/gauge/เครื่องคิดเลข)
 อยู่ใน `_template/` (`dashboard.css`, `engine.js`) แล้ว `build.js` **`expandReport()` inject ตอน build/ตรวจ**
