@@ -14,6 +14,7 @@
 const fs = require('fs');
 const path = require('path');
 const { makeTheme, hexToHsl, hslToHex } = require('./brandtheme.js');
+const { withLock, writeJsonAtomic } = require('./lockfile.js');
 
 const args = process.argv.slice(2);
 const force = args.includes('--force');
@@ -27,6 +28,9 @@ if (!symRaw || !hexRaw || !/^#[0-9a-fA-F]{6}$/.test(hexRaw)) {
 const sym = symRaw.toUpperCase();
 let hex = hexRaw.toLowerCase();
 const seedsFile = path.join(__dirname, 'seeds.json');
+// ★ WS4: อ่าน→ตรวจชน→เขียน ต้องอยู่ใต้ lock เดียวกัน ไม่งั้น 2 worker ขนานมองไม่เห็นสีของกันและกัน
+//   (เดิมเป็นกฎ "controller pre-assign สีเอง" ใน CLAUDE.md §3.3/§10 — ตอนนี้โค้ดกันเอง กฎนั้นถูกถอดใน Task 17)
+withLock(seedsFile, () => {
 const seeds = JSON.parse(fs.readFileSync(seedsFile, 'utf8'));
 
 // ชน = seed เดียวกันเป๊ะ หรือ accent ที่ generate แล้ว "แยกไม่ออก" — เทียบใน accent space
@@ -108,7 +112,7 @@ if (seeds[sym] && seeds[sym].toLowerCase() !== hex && !force) {
 
 seeds[sym] = hex;
 const sorted = Object.fromEntries(Object.keys(seeds).sort().map((k) => [k, seeds[k]]));
-fs.writeFileSync(seedsFile, JSON.stringify(sorted, null, 2) + '\n');
+writeJsonAtomic(seedsFile, JSON.stringify(sorted, null, 2) + '\n');
 
 const t = makeTheme(hex);
 const gradMid = (t.darkGrad.match(/,(#[0-9a-fA-F]{6}) 58%/) || [])[1] || t.accentDark;
@@ -119,3 +123,4 @@ console.log('\n— 8 คีย์วางลง report-data.theme (แล้ว
 console.log(JSON.stringify(t, null, 2));
 console.log('\n— วางแทน {{GDOTS}} (จุด 3 สี: accent → accentDark → โทนเข้มกลาง darkGrad) —');
 console.log(dot(t.accent) + dot(t.accentDark) + dot(gradMid));
+});   // withLock — process.exit(1) ข้างในปล่อย lock ผ่าน process.on('exit') ของ lockfile.js

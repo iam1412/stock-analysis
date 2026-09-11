@@ -772,5 +772,24 @@ ok(U.commitBody([], []) === '', 'commitBody: ว่างเมื่อไม�
   ok(Array.isArray(U.commitFlags({ ...args, write: false })) && fs.readFileSync(file, 'utf8') === before, 'commitFlags: dry-run ไม่เขียนไฟล์');
 }
 
+// ---------- pick-brand ขนาน: seeds.json ต้องได้ทั้ง 2 entry และสีต้องไม่ชนกัน (WS4 · CLAUDE.md §10 เคสสีซ้ำโดย gate มองไม่เห็น) ----------
+{
+  const cp = require('child_process');
+  const seedsFile = path.join(__dirname, '..', 'tools', 'seeds.json');
+  const backup = fs.readFileSync(seedsFile, 'utf8');
+  try {
+    const script = path.join(__dirname, '..', 'tools', 'pick-brand.js');
+    // เทสไฟล์นี้ sync ทั้งไฟล์ (Atomics.wait จะบล็อก event loop จน 'exit' ของ child ไม่ทำงาน) — ให้ shell รัน 2 ตัวขนานแล้ว wait
+    // #1a73e8 (บริฟเดิม) ชนกับ seed จริงที่มีอยู่แล้วจนไม่เหลือเฉดว่างเลย (0/104 ใน seeds.json ปัจจุบัน 229 entries)
+    // → ทั้ง 2 process exit 1 โดยไม่เขียนอะไร ไม่ว่าจะมี lock หรือไม่ ทำให้เทสไม่ได้พิสูจน์อะไร — เปลี่ยนมาใช้ #64d22d
+    // (ตรวจแล้วว่าง่างว่างจริงต่อ seeds.json ปัจจุบัน: process แรกไม่ชน เขียนสีเดิม, process หลังเห็น entry แรกใต้ lock แล้วชน → auto สลับเฉด)
+    cp.spawnSync('sh', ['-c', `node "${script}" ZZTESTA "#64d22d" --auto >/dev/null 2>&1 & node "${script}" ZZTESTB "#64d22d" --auto >/dev/null 2>&1; wait`], { cwd: path.join(__dirname, '..') });
+    const seeds = JSON.parse(fs.readFileSync(seedsFile, 'utf8'));
+    ok(seeds.ZZTESTA && seeds.ZZTESTB, 'pick-brand ขนาน: ได้ทั้ง 2 entry (ไม่มี entry ทับหาย)');
+    ok(seeds.ZZTESTA && seeds.ZZTESTB && seeds.ZZTESTA !== seeds.ZZTESTB, 'pick-brand ขนาน: --auto สลับเฉดให้ตัวที่มาทีหลัง (เห็นสีของอีกตัวเพราะอ่านใต้ lock)');
+  } finally { fs.writeFileSync(seedsFile, backup); }
+  ok(fs.readFileSync(seedsFile, 'utf8') === backup, 'pick-brand ขนาน: คืน seeds.json เดิม');
+}
+
 console.log(nFail ? `\n✗ update-prices-test: ${nFail} failed / ${nOK} passed` : `\n✓ update-prices-test: ${nOK} passed`);
 process.exit(nFail ? 1 : 0);

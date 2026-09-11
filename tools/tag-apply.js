@@ -151,4 +151,4 @@ function main() {
   console.log(`✅ ${symbol}: ${argv.slice(1).join(' · ')}`);
 }
 
-if (require.main === module) main();
+if (require.main === module) require('./lockfile.js').withLock(T.TAGS_FILE, main);   // WS4: 2 controller ship พร้อมกันได้
