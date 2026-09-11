@@ -26,18 +26,54 @@ const num = (s) => { if (s == null) return null; const n = parseFloat(String(s).
 const asPct = (v) => (v != null && v < 0.3 ? v * 100 : v);   // vendor บางเจ้าส่ง yield เป็นสัดส่วน (0.0035) บางเจ้าเป็น % (0.35) — yield จริง <0.3% จะถูกอ่านเป็น ×100 ผิด: ยอมรับได้เพราะเป็นรายการให้คนอ่าน ไม่ใช่ gate
 const pctDiff = (a, b) => (a != null && b ? Math.abs(a - b) / Math.abs(b) * 100 : null);
 
+/**
+ * ค่าของ `key=` บนบรรทัดเดียว — กินไปจนถึง ` <key ถัดไป>=` หรือท้ายบรรทัด
+ * ★ ต้องกินทั้งช่วง (ไม่ใช่ `\S+`) เพราะ `fmt()` ของ fetch-fundamentals ปล่อยค่าที่ไม่ใช่ตัวเลข
+ *   ผ่านมาดิบ ๆ (บรรทัด 31) ⇒ ค่าจริงมีช่องว่าง/วงเล็บ: `$0.92 (0.51%)` · `233.77 (+28.52%) (Buy)` ·
+ *   `181.9 (ณ Sep 11, 2026, 1:14 PM EDT)` — regex ตำแหน่งตายตัวแบบเดิมไม่แมตช์เลย แล้วถอยไป Yahoo เงียบ ๆ
+ * lookahead เป็น `\s+[A-Za-z0-9_]+=` จึงไม่ตัดที่ ` (yield=…)` (ขึ้นต้นด้วยวงเล็บ) — รูปแบบเก่ายังอ่านได้
+ */
+const field = (line, key) => {
+  const m = line && line.match(new RegExp(`(?:^|\\s)${key}=(.*?)(?=\\s+[A-Za-z0-9_]+=|$)`));
+  return m ? m[1].trim() : null;
+};
+/** ตัวเลขตัวแรกในช่วง — `$0.92 (0.51%)` → 0.92 · `233.77 (+28.52%) (Buy)` → 233.77 · `-` → null */
+const firstNum = (seg) => {
+  if (seg == null) return null;
+  const m = String(seg).replace(/,/g, '').match(/-?\d+(?:\.\d+)?/);
+  return m ? parseFloat(m[0]) : null;
+};
+/** `93.75–307.37` (en dash) หรือ `95.5-307.37` → [lo, hi] · ไม่มีตัวเลข (`-–-`) → [null, null] */
+const range52 = (seg) => {
+  const m = seg && String(seg).replace(/,/g, '').match(/(-?\d+(?:\.\d+)?)\s*[–—-]\s*(-?\d+(?:\.\d+)?)/);
+  return m ? [parseFloat(m[1]), parseFloat(m[2])] : [null, null];
+};
+
 /** ถอดค่าจาก stdout ของ prep-stock (บรรทัด [1] Yahoo / [2] StockAnalysis ของ fetch-fundamentals) — SA ก่อน Yahoo */
 function parseVendor(text) {
   const y = text.match(/\[1\] Yahoo[^\n]*\n\s*price=(\S+) epsTTM=(\S+) epsFwd=(\S+) PE=(\S+) fwdPE=(\S+) divYield=(\S+) target=(\S+)(?: \(n=(\d+)\))? 52wk=(\S+)–(\S+)/);
-  const s = text.match(/\[2\] StockAnalysis[^\n]*\n\s*price=(\S+)(?: \(ณ [^)]*\))? epsTTM=(\S+) PE=(\S+) fwdPE=(\S+) div=(\S+)(?: \(yield=(\S+)\))? target=(\S+)(?: \((\d+)\))? 52wk=(\S+)–(\S+)/);
+  // SA: อ่านทีละ key ตามที่ fetch-fundamentals.js พิมพ์จริง (บรรทัด 443–447) — ทนค่าที่มีสัญลักษณ์สกุล/วงเล็บต่อท้าย
+  const sLine = (text.match(/\[2\] StockAnalysis[^\n]*\n\s*(price=[^\n]*)/) || [])[1] || null;
+  const sDiv = field(sLine, 'div');
+  const sTgt = field(sLine, 'target');
+  const [sLo, sHi] = range52(field(sLine, '52wk'));
+  // yield: รูปแบบเดิม `div=1.04 (yield=0.35)` · รูปแบบปัจจุบัน `div=$0.92 (0.51%)` (yield ติดมากับสตริง dps)
+  const sYield = sDiv ? firstNum((sDiv.match(/\(yield=([^)]*)\)/) || sDiv.match(/\(\s*([\d.]+\s*%)\s*\)/) || [])[1]) : null;
+  // จำนวนนักวิเคราะห์ = วงเล็บที่เป็น "จำนวนเต็มล้วน" เท่านั้น — `(+28.52%)` คือส่วนต่างเป้า และ `(Buy)` คือเรตติ้ง
+  // (ตอนนี้ SA ส่ง i.analysts เป็นเรตติ้ง ⇒ ค่านี้มัก null แล้วถอยไปใช้ n= ของ Yahoo ซึ่งเป็นจำนวนจริง)
+  const sAnalysts = sTgt ? firstNum((sTgt.match(/\((\d+)\)/) || [])[1]) : null;
+  const s = sLine ? {
+    epsTTM: firstNum(field(sLine, 'epsTTM')), target: firstNum(sTgt), analysts: sAnalysts,
+    lo52: sLo, hi52: sHi, divYieldPct: asPct(sYield),
+  } : null;
   const pick = (a, b) => (a != null ? a : b);
   return {
-    epsTTM: pick(s && num(s[2]), y && num(y[2])),
-    target: pick(s && num(s[7]), y && num(y[7])),
-    analysts: pick(s && num(s[8]), y && num(y[8])),
-    lo52: pick(s && num(s[9]), y && num(y[9])),
-    hi52: pick(s && num(s[10]), y && num(y[10])),
-    divYieldPct: pick(s && asPct(num(s[6])), y && asPct(num(y[6]))),
+    epsTTM: pick(s && s.epsTTM, y && num(y[2])),
+    target: pick(s && s.target, y && num(y[7])),
+    analysts: pick(s && s.analysts, y && num(y[8])),
+    lo52: pick(s && s.lo52, y && num(y[9])),
+    hi52: pick(s && s.hi52, y && num(y[10])),
+    divYieldPct: pick(s && s.divYieldPct, y && asPct(num(y[6]))),
     priceStop: /🛑/.test(text),
     priceWarn: /⚠ ราคา 2 แหล่งต่าง/.test(text),
   };
@@ -46,7 +82,9 @@ function parseVendor(text) {
 /** snapshot vendor ที่พิมพ์ในใบ vs vendor ตอนนี้ — คืนรายการที่ต่างเกินเกณฑ์ (ให้ worker อัปเดตพร้อมกัน) */
 function snapshotDiff(html, ctx, v) {
   const out = [];
-  const m52 = html.match(/กรอบ 52 สัปดาห์\s*(?:[฿$]|C\$)?\s*([0-9][0-9.,]*)\s*[–\-]\s*(?:[฿$]|C\$)?\s*([0-9][0-9.,]*)/);
+  // ตัวคั่นในคลังมีหลายแบบ (วัด 908 ใบ 12 ก.ย. 69): en dash 719 · `/` 70 · `&ndash;`/วงเล็บครอบ 7 · ไม่มีป้าย "กรอบ" 112
+  // (112 ใบนั้นใช้ถ้อยคำการ์ด "ช่วง 52 สัปดาห์" → ตกไปบรรทัด "อ่านไม่ได้" ให้คนเทียบเอง)
+  const m52 = html.match(/กรอบ 52 สัปดาห์\s*\(?\s*(?:[฿$]|C\$)?\s*([0-9][0-9.,]*)\s*(?:&[a-z]+;|[–—\-/])\s*(?:[฿$]|C\$)?\s*([0-9][0-9.,]*)/);
   if (!m52) out.push('อ่านกรอบ 52 สัปดาห์ในใบไม่ได้ — เทียบกับ FUNDAMENTALS เอง');
   else if (v.lo52 != null && v.hi52 != null) {
     const lo = num(m52[1]), hi = num(m52[2]);
@@ -57,8 +95,11 @@ function snapshotDiff(html, ctx, v) {
   const px = ctx && ctx.px;
   const yp = px > 0 ? DV.yieldPlan(html, px) : null;
   if (yp && yp.cards.length && v.divYieldPct != null && Math.abs(yp.cards[0].shown - v.divYieldPct) > 0.3) out.push(`ปันผล % ใบ ${yp.cards[0].shown} · vendor ${v.divYieldPct}`);
+  // ★ pbvPlan คืน [{label, items:[{shown,…}]}] — ค่าที่โชว์อยู่ใน items ไม่ใช่บนตัวการ์ด
+  //   (yieldPlan().cards[] ต่างหากที่มี .shown ตรง ๆ) ⇒ อ่าน pb[0].shown ได้ `undefined` แล้วพิมพ์ "P/BV ใบ undefinedx" ลง prompt
   const pb = px > 0 ? DV.pbvPlan(html, px) : [];
-  if (pb.length) out.push(`P/BV ใบ ${pb[0].shown}x — ตรวจกับ BVPS/ราคาใน FUNDAMENTALS เอง (vendor ไม่ส่งค่านี้ในบล็อก)`);
+  const pbShown = pb.length && pb[0].items && pb[0].items.length ? pb[0].items[0].shown : null;
+  if (pbShown != null) out.push(`P/BV ใบ ${pbShown}x — ตรวจกับ BVPS/ราคาใน FUNDAMENTALS เอง (vendor ไม่ส่งค่านี้ในบล็อก)`);
   return out;
 }
 
@@ -72,9 +113,16 @@ function hardStock(rec, ctx, v) {
 }
 
 function assemblePrompt(template, vals, extra) {
-  const found = new Set((template.match(/\{\{([A-Z_]+)\}\}/g) || []).map((t) => t.slice(2, -2)));
+  // ส่วนเหนือ --- เป็นคำอธิบายให้ controller (พิมพ์ token ใน backtick) — ไม่ใช่ prompt ของ worker
+  // ⇒ ต้องตัดทิ้ง**ก่อน**แทน ไม่งั้น split().join() เอาบล็อก FUNDAMENTALS/MEDIANS ไปแปะในย่อหน้านั้นด้วย
+  //   = prompt ทุกใบแบกบล็อกใหญ่ที่สุดสองรอบ + คำสั่งที่พูดกับ controller (ต้นทุน = turn × cache-read)
+  const lines = String(template).split('\n');
+  const sep = lines.findIndex((l) => l.trim() === '---');
+  if (sep < 0) throw new Error('template ไม่มีเส้นคั่น --- แยกส่วน controller/worker');
+  const body = lines.slice(sep + 1).join('\n').replace(/^\n+/, '');
+  const found = new Set((body.match(/\{\{([A-Z_]+)\}\}/g) || []).map((t) => t.slice(2, -2)));
   for (const k of found) if (!TOKENS.includes(k) && !VERBATIM.has(k)) throw new Error(`template มี token ที่ runbook ไม่รู้จัก: {{${k}}} — เพิ่มใน TOKENS หรือ VERBATIM ของ tools/queue/prep.js`);
-  let out = template;
+  let out = body;
   for (const k of TOKENS) {
     if (vals[k] == null) throw new Error(`ขาดค่า {{${k}}}`);
     out = out.split(`{{${k}}}`).join(String(vals[k]));

@@ -131,6 +131,20 @@ process.env.QUEUE_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'queue-'));   // s
   ok(Math.abs(v.divYieldPct - 0.35) < 1e-9 && v.priceWarn === false && v.priceStop === false, 'parseVendor: yield เป็น % · ธง ราคาขัด');
   const vy = Pp.parseVendor(PREP_OUT.replace(/\[2\] StockAnalysis[^\n]*\n[^\n]*\n/, ''));
   ok(vy.epsTTM === 7.12 && vy.analysts === 38 && Math.abs(vy.divYieldPct - 0.35) < 1e-9, 'parseVendor: ไม่มี SA → ถอยไป Yahoo');
+  // ★ บล็อกจริงจาก `node tools/prep-stock.js KLAC --update` (12 ก.ย. 69) — คัดลอกมาทั้งบรรทัด:
+  //   `fmt()` ของ fetch-fundamentals ปล่อยค่าที่ไม่ใช่ตัวเลขผ่านมาดิบ ๆ ⇒ SA ส่งสตริงแสดงผลรวม
+  //   (`$0.92 (0.51%)` · `233.77 (+28.52%) (Buy)`) ไม่ใช่ตัวเลขล้วนอย่างที่ brief เดาไว้
+  const REAL = `[1] Yahoo quoteSummary (KLAC):
+    price=181.87 epsTTM=3.67 epsFwd=6.71 PE=49.6 fwdPE=27.1 divYield=0.52% target=233.77 (n=26) 52wk=95.5–307.37 ROE=87.5%
+[2] StockAnalysis (stocks/KLAC):
+    price=181.9 (ณ Sep 11, 2026, 1:14 PM EDT) epsTTM=3.66 PE=48.41 fwdPE=32.48 div=$0.92 (0.51%) target=233.77 (+28.52%) (Buy) 52wk=93.75–307.37 earnings=Oct 28, 2026
+    ปันผล reconcile: dps 0.92 ÷ ราคา 181.9 = 0.51% (vendor: Yahoo=0.52%) — ✅ ตรงกับ vendor`;
+  const vr = Pp.parseVendor(REAL);
+  ok(vr.epsTTM === 3.66 && vr.target === 233.77 && vr.lo52 === 93.75 && vr.hi52 === 307.37 && Math.abs(vr.divYieldPct - 0.51) < 1e-9,
+    'parseVendor: รูปแบบ SA จริง (สัญลักษณ์สกุล + วงเล็บต่อท้าย) → ค่ามาจาก SA ไม่ใช่ Yahoo (Yahoo = 3.67/95.5/0.52)', JSON.stringify(vr));
+  ok(vr.analysts === 26, 'parseVendor: SA ส่ง (Buy) ไม่ใช่จำนวนนักวิเคราะห์ → analysts ถอยไป n= ของ Yahoo');
+  ok(Pp.parseVendor(REAL.replace(/\[1\] Yahoo[^\n]*\n[^\n]*\n/, '')).analysts === null,
+    'parseVendor: มีแต่ SA → analysts = null (ห้ามอ่าน (+28.52%) หรือ (Buy) เป็นจำนวน)');
 
   const html = FX.AAPL();
   const ctx = buildCtx(expandReport(html), 'AAPL.html');
@@ -138,6 +152,20 @@ process.env.QUEUE_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'queue-'));   // s
   ok(same.every((s) => !/·\s*vendor/.test(s)), 'snapshotDiff: vendor ไม่มีค่า → ไม่ฟ้องส่วนต่าง');
   const far = Pp.snapshotDiff(html, ctx, { lo52: 1, hi52: 2, target: 1, analysts: 9, divYieldPct: 9 });
   ok(far.some((s) => /กรอบ 52 สัปดาห์/.test(s)) && far.some((s) => /เป้านักวิเคราะห์|อ่านกรอบ/.test(s)), 'snapshotDiff: ค่าต่างมาก → ฟ้อง 52wk/เป้า (คลาสที่ 4 price-derived-staleness)', far.join(' | '));
+
+  // ตัวคั่นของ "กรอบ 52 สัปดาห์" ในคลังมีหลายแบบ — regex เดิมรับแค่ en dash (719/908 ใบ) แล้วอีก 77 ใบ
+  // ตกไปบรรทัด "อ่านไม่ได้" ทั้งที่มีเลขให้เทียบ · ทุกเคสข้างล่างคัดจากรายงานจริง (A · EOG · CPF)
+  const V52 = { lo52: 1, hi52: 2, target: null, divYieldPct: null };
+  for (const [why, frag] of [
+    ['en dash', 'กรอบ 52 สัปดาห์ $68.42 – $94.66<br>'],
+    ['สแลช', 'กรอบ 52 สัปดาห์ $108.35 / $160.27<br>'],
+    ['&ndash;', 'กรอบ 52 สัปดาห์ $101.59 &ndash; $151.87<br>'],
+    ['วงเล็บครอบ + บาท', 'กรอบ 52 สัปดาห์ (฿18.10–24.70)<br>'],
+  ]) ok(Pp.snapshotDiff(frag, { px: 0 }, V52).some((s) => /·\s*vendor/.test(s)), `snapshotDiff: อ่านกรอบ 52 สัปดาห์ได้ (${why})`, Pp.snapshotDiff(frag, { px: 0 }, V52).join(' | '));
+
+  // pbvPlan คืน [{label, items:[{shown}]}] — ถ้าอ่าน pb[0].shown จะได้ undefined แล้วพิมพ์ "P/BV ใบ undefinedx" ใส่ prompt worker
+  const noPbv = Pp.snapshotDiff(FX.AAPL(), ctx, { lo52: null, hi52: null, target: null, divYieldPct: null });
+  ok(!noPbv.some((s) => /undefined/.test(s)), 'snapshotDiff: ไม่มีคำว่า undefined หลุดเข้า prompt', noPbv.join(' | '));
 
   const tpl = fs.readFileSync(path.join(ROOT, '_template', 'agent-prompt.md'), 'utf8');
   const p = Pp.assemblePrompt(tpl, { SYMBOL: 'AAPL', MARKET: 'US', MODE: 'UPDATE-LIGHT', WORKTREE: '/wt', CURRENT_TAGS: 'consumer-tech', MEDIANS: '=== ตัวคูณมัธยฐานย้อนหลัง: AAPL ===\n  ★ มัธยฐาน 28.0x', FUNDAMENTALS: PREP_OUT }, Pp.extraBlock({ sym: 'AAPL', mode: 'UPDATE-LIGHT', prePatched: '2026-09-11', oldPrice: 297.21, price: 301.5, baseEPS: 7.1, epsTTM: 7.36, epsScreen: 3.66, snap: ['เป้า ใบ 300 · vendor 312'], medWarn: [], hard: false, hardWhy: '' }));
@@ -148,8 +176,17 @@ process.env.QUEUE_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'queue-'));   // s
   const pOutside = p.split(PREP_OUT).join('');
   ok(!/\{\{(SYMBOL|MARKET|MODE|WORKTREE|CURRENT_TAGS|MEDIANS|FUNDAMENTALS)\}\}/.test(pOutside) && /\{\{AI_MODEL\}\}/.test(p), 'assemblePrompt: แทนครบ 7 token · คง {{AI_MODEL}} ให้ worker เติม');
   ok(/บันทึกจาก runbook/.test(p) && /ห้ามรัน update-prices ซ้ำ/.test(p) && /ยกระดับเป็น UPDATE เต็ม/.test(p) && /เป้า ใบ 300/.test(p) && /ห้ามเรียก advisor ตรง/.test(p), 'assemblePrompt: บล็อกท้าย = ราคา patch แล้ว · EPS screen · snapshot · ข้อห้าม');
+  // ★ ส่วนเหนือเส้น --- ของ template พูดกับ controller และพิมพ์ token ใน backtick ⇒ ถ้าไม่ตัดก่อนแทน
+  //   บล็อกใหญ่สุดสองก้อนจะถูกแปะซ้ำในย่อหน้านั้นด้วย (วัดจริง: FUNDAMENTALS ×2 · MEDIANS ×2 · 144 บรรทัด)
+  ok(p.split('=== FUNDAMENTALS').length === 2, 'assemblePrompt: บล็อก FUNDAMENTALS อยู่ในใบเดียว 1 ครั้ง (ไม่ซ้ำในย่อหน้า intro)', `พบ ${p.split('=== FUNDAMENTALS').length - 1} ครั้ง`);
+  // MEDIANS วัดจาก "ค่าที่แทนเข้าไป" ไม่ใช่ชื่อบล็อกดิบ ๆ — ตัว template เองมีคำว่า `=== ตัวคูณมัธยฐานย้อนหลัง`
+  // อยู่แล้ว 2 ที่โดยตั้งใจ (บรรทัด 24 อ้างถึงในข้อห้ามสมอตาย · บรรทัด 42 เป็นหัว section ที่ครอบ {{MEDIANS}})
+  ok(p.split('★ มัธยฐาน 28.0x').length === 2, 'assemblePrompt: ค่า MEDIANS ถูกแทนที่เดียว (ไม่ซ้ำในย่อหน้า intro)', `พบ ${p.split('★ มัธยฐาน 28.0x').length - 1} ครั้ง`);
+  ok(!/Controller ใช้แม่แบบนี้/.test(p) && /^วิเคราะห์หุ้น \*\*AAPL\*\*/.test(p), 'assemblePrompt: ตัดคำอธิบายสำหรับ controller ออก — prompt เริ่มที่ "วิเคราะห์หุ้น"');
   let threw = false; try { Pp.assemblePrompt(tpl, { SYMBOL: 'X' }, ''); } catch (_) { threw = true; }
   ok(threw, 'assemblePrompt: ขาด token → throw (ไม่ส่ง prompt ที่มี {{…}} ค้าง)');
+  let noSep = false; try { Pp.assemblePrompt('ไม่มีเส้นคั่น {{SYMBOL}}', { SYMBOL: 'X', MARKET: 'US', MODE: 'UPDATE', WORKTREE: '/w', CURRENT_TAGS: '', MEDIANS: 'm', FUNDAMENTALS: 'f' }, ''); } catch (e) { noSep = /ไม่มีเส้นคั่น ---/.test(e.message); }
+  ok(noSep, 'assemblePrompt: template ไม่มีเส้น --- → throw (ไม่เดาว่าส่วนไหนเป็นของ worker)');
 
   ok(Pp.hardStock({ bucket: 'FULL' }, ctx, v).hard === true, 'hardStock: suspect-split/bad-chart = ยาก');
   ok(Pp.hardStock({ bucket: 'LIGHT' }, { baseEPS: -1.2 }, v).hard === true && /pre-profit/.test(Pp.hardStock({ bucket: 'LIGHT' }, { baseEPS: -1.2 }, v).why), 'hardStock: EPS ฐาน ≤ 0 = pre-profit = ยาก');
