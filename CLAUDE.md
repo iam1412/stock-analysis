@@ -56,7 +56,7 @@ invariant ที่ห้ามหลุดไม่ว่ากรณีใด:
 ต้นทุนจริง = **จำนวน turn × cache-read** ไม่ใช่ output — กติกา token-lean ต่อหุ้นอยู่ใน **SKILL.md** · เป้า+ตัวเลขวัดจริง → `docs/orchestration.md` §7 + memory `token-usage-benchmarks` · ที่ controller คุมเองเพิ่ม:
 
 - **รันยาวได้ ไม่ต้องหยุดรอ user เปิด session ใหม่** (ยกเลิก chunk/session — 13 ก.ค. 69, auto-compact จัดการเอง) · คุมตัวเอง: รวม verify+push เป็น Bash เดียว · ไม่อ่านรายงานทั้งไฟล์ · สรุประหว่างเวฟให้สั้น
-- pull --rebase + อ่าน `reports.json` ก่อน — ข้ามหุ้นสด ≤7 วัน
+- pull --rebase + อ่านวันที่ footer "ข้อมูล ณ" ก่อน (`npm run queue -- preflight` ทำให้) — ข้ามหุ้นสด ≤7 วัน
 - งาน mechanical → effort medium ผ่าน `analyze-wave` · หุ้นยาก → effort high
 - controller **pre-fetch ผ่าน `npm run queue -- prep <SYM>` เสมอ** (รัน prep-stock + median-multiples + EPS screen + snapshot vendor แล้วประกอบ prompt ให้ที่ `.queue/prep/<SYM>.md`) — บรรทัดแรกคือ CROSS-VERIFY verdict, **exit 2 = ราคาขัดแหล่ง >5% ห้าม spawn หยุดถาม user (§2)** · worker ห้ามรัน fetch ซ้ำ/ห้าม WebFetch หน้า financials เอง
 
@@ -96,7 +96,7 @@ Co-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>
 
 - ✅ **งานยากต้องปรึกษา advisor ก่อนลงมือทุกครั้ง** — งานยาก เช่น หุ้นยากตามเกณฑ์ §3.2 · แก้โครงสร้างระบบ (build.js / quality gate / cron / template / CLAUDE.md) · ตัดสิน publish/skip กำกวม · แนวทางใหม่ที่ไม่เคยทำ — controller เรียก `advisor` ตรง · **worker/subagent ห้ามเรียกตรง ต้องผ่าน courier เท่านั้น** (§3.2 · `docs/orchestration.md` §2) — ★ เป็นข้อห้าม **เชิงนโยบาย** ต้องเขียนกำกับใน prompt worker ทุกใบ เพราะ harness **ไม่ได้บล็อกให้** (9 ก.ย. 69: worker DASH เรียกตรงสำเร็จทั้งที่กติกาห้าม) · advisor ใช้ไม่ได้/ล้มเหลว → หยุดถาม user ก่อนลุย
 - ⏰ **Time Zone = Asia/Bangkok (UTC+7)** — ทุกการคิด "วันนี้"/ความสด (header · dedup 7 วัน · staleness 45/120 วัน) ใช้เวลาไทย · วันที่ในรายงานใช้ปี พ.ศ.
-- ❌ โมเดลนอกกติกา §3.2: **Haiku ทุกขั้น** · **ปล่อย default ไม่ pin `model`** (กลายเป็น Opus โดยไม่ตั้งใจ) — Sonnet เป็น default, Opus escalate เฉพาะหุ้นยาก
+- ❌ โมเดลนอกกติกา §3.2: **Haiku ทุกขั้น** · **ปล่อย default ไม่ pin `model`** (default ไม่แน่นอน — วัด 8 ส.ค. 69 = Opus · 11 ก.ย. 69 = Sonnet) — Sonnet เป็น default, Opus escalate เฉพาะหุ้นยาก
 - ❌ อย่า commit `dist/`, `node_modules/`, `.DS_Store` · อย่าแก้ไฟล์ใน `dist/` ตรง ๆ (แก้ต้นฉบับ)
 - ❌ ชื่อไฟล์รายงาน = `<SYMBOL>.html` พิมพ์ใหญ่ ไม่มีเว้นวรรค
 - ✅ ทุกรายงานมี disclaimer "ไม่ใช่คำแนะนำการลงทุน" + "ราคา ณ วันที่ + แหล่งที่มา"
