@@ -595,6 +595,23 @@ function patchReport(html, p) {
   return { html: out, changed: out !== html, chg, mos: round(mos, 1), derived: dv.changes };
 }
 
+// ---------- quarantine รายไฟล์ (WS2 ข้อ 1) ----------
+// เดิม: patch 908 ไฟล์ → npm run verify ทั้งรีโป → ไฟล์เดียวตก = ทิ้ง patch ดีทั้งวัน (cron ล้ม 22–24 ส.ค. · 2 ก.ย. 69)
+// ใหม่: ตรวจ gate ต่อไฟล์ทันทีหลัง patch — ตก = ไม่เขียนไฟล์นั้น + flag `patch-rejected` (คนอ่าน detail แล้วแก้) push ที่เหลือ
+// ★ lazy require: test/check-reports.js require ไฟล์นี้ตอนโหลด (mosBand) — require กลับที่หัวไฟล์จะเป็น cycle
+//   ที่ module.exports ของเรายังว่าง ⇒ mosBand undefined ใน gate
+function gateAfterPatch(html, name) {
+  const { checkHtml } = require('../test/check-reports.js');
+  const { expandReport } = require('../build.js');
+  let expanded;
+  try { expanded = expandReport(html); }
+  catch (e) { return { ok: false, codes: ['EXPAND'], detail: `EXPAND expandReport: ${e.message}`.slice(0, 400) }; }
+  const r = checkHtml(expanded, name);
+  if (!r.errors.length) return { ok: true, codes: [], detail: '' };
+  const codes = [...new Set(r.errors.map((e) => e.id))];
+  return { ok: false, codes, detail: r.errors.map((e) => `${e.id} ${e.msg}`).join(' ; ').slice(0, 400) };
+}
+
 // ---------- flags ----------
 // ไฟล์ไม่มี = รอบแรกจริง ๆ → คิวว่าง · **มีไฟล์แต่ parse ไม่ผ่าน = ล้มทั้งรอบ ห้ามคืน [] เงียบ ๆ**
 // เพราะ mergeFlags(prev=[]) จะเขียนทับคิวทั้งใบตอน --write ⇒ คิวหายยกชุด รวม not-on-exchange ที่
@@ -688,7 +705,11 @@ function healDerived(opts) {
     touched++; total += r.changes.length;
     console.log(`${opts.write ? '✎' : '·'} ${f.replace(/\.html$/i, '').padEnd(10)} ราคา ${px}`);
     for (const c of r.changes) console.log(`    ${c}`);
-    if (opts.write) fs.writeFileSync(fp, r.html);
+    if (opts.write) {
+      const g = gateAfterPatch(r.html, f);
+      if (!g.ok) { console.log(`    ⛔ ไม่เขียน — gate ตก ${g.codes.join(',')} (${g.detail.slice(0, 120)})`); continue; }
+      fs.writeFileSync(fp, r.html);
+    }
   }
   console.log('\n' + '─'.repeat(50));
   console.log(`heal-derived: ${touched}/${files.length} ไฟล์มีค่าค้าง • แก้ ${total} จุด${opts.prose ? ' (รวม prose)' : ''}${noPrice ? ` • ข้าม ${noPrice} ไฟล์ (อ่านราคาไม่ได้)` : ''}`);
@@ -836,6 +857,20 @@ async function main() {
     try {
       const r = patchReport(html, { newPrice: q.price, dateParts, chartData });
       if (!r.changed) { skipped.push(symbol); continue; }
+      const g = gateAfterPatch(r.html, f);
+      if (!g.ok) {
+        // ค้างอยู่ก่อน patch ไหม (รหัสเดียวกันยิงบนไฟล์เดิม) — บอกคนอ่านว่าเป็นหนี้เก่า ไม่ใช่ patch ทำพัง
+        const pre = gateAfterPatch(html, f);
+        const preExisting = !pre.ok && g.codes.every((c) => pre.codes.includes(c));
+        if (FORCE) {
+          // re-analysis/controller สั่งเอง: เขียนต่อ (verify ก่อน push จะจับ) แต่ต้องเห็นชัด ๆ ไม่ใช่เงียบ
+          console.log(`⚠ ${symbol.padEnd(10)} gate ตก ${g.codes.join(',')}${preExisting ? ' (ค้างอยู่ก่อน patch)' : ''} — --force เขียนต่อ แต่ npm run verify จะไม่ผ่านจนกว่าจะแก้`);
+        } else {
+          frozen.push({ symbol, reason: 'patch-rejected', detail: `${g.codes.join(',')}${preExisting ? ' (ค้างก่อน patch)' : ' (patch ทำให้ตก)'} — ${g.detail}`, reportPrice: sm.price, marketPrice: round(q.price, 2), diffPct });
+          console.log(`❄ ${symbol.padEnd(10)} freeze [patch-rejected] ${g.codes.join(',')}${preExisting ? ' (ค้างอยู่ก่อนแล้ว)' : ''} — ไม่เขียนไฟล์`);
+          continue;
+        }
+      }
       if (WRITE) fs.writeFileSync(fp, r.html);
       updated.push({ symbol, old: sm.price, new: round(q.price, 2), diffPct });
       console.log(`${WRITE ? '✓' : '·'} ${symbol.padEnd(10)} ${sm.price} → ${round(q.price, 2)} (${diffPct > 0 ? '+' : ''}${diffPct}%) · ${r.chg.text} · MOS ${r.mos}%${chartSrc !== '1mo' ? ` · chart:${chartSrc}` : ''}`);
@@ -909,6 +944,6 @@ async function main() {
   if (!WRITE) console.log('ใส่ --write เพื่อเขียนจริง');
 }
 
-module.exports = { mosBand, fmtPrice, fmtLike, toYahooSymbol, fetchChart, buildChartData, niceBounds, annualChg, decide, currencyMatches, isIntradayQuote, detectMixedBasis, detectStaleQuotes, missedSessions, probeCap, capByCohort, controlTickers, unverifiedCohorts, classifyStale, patchReport, mergeFlags, commitFlags, styledRD, commitBody, THAI_MONTHS };
+module.exports = { mosBand, fmtPrice, fmtLike, toYahooSymbol, fetchChart, buildChartData, niceBounds, annualChg, decide, currencyMatches, isIntradayQuote, detectMixedBasis, detectStaleQuotes, missedSessions, probeCap, capByCohort, controlTickers, unverifiedCohorts, classifyStale, patchReport, gateAfterPatch, mergeFlags, commitFlags, styledRD, commitBody, THAI_MONTHS };
 
 if (require.main === module) main().catch((e) => { console.error(e); process.exit(1); });

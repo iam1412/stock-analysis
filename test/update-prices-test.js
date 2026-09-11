@@ -791,5 +791,20 @@ ok(U.commitBody([], []) === '', 'commitBody: ว่างเมื่อไม�
   ok(fs.readFileSync(realSeeds, 'utf8') === before, 'pick-brand ขนาน: seeds.json จริงไม่ถูกแตะ');
 }
 
+// ---------- quarantine: patch แล้ว gate ตก = ไม่เขียนไฟล์ + flag patch-rejected (WS2 ข้อ 1 · code-audit §6.A) ----------
+{
+  const good = U.gateAfterPatch(aapl, 'AAPL.html');
+  ok(good.ok && good.codes.length === 0, 'gateAfterPatch: fixture ดี → ok', good.detail);
+  // ทำ .fv-box ไม่ตรง report-data.fv → E15 (ไม่ขึ้นกับราคา) — patchReport ยังทำงานได้ (ไม่แตะ fv-box)
+  const bad = aapl.replace(/(class="fv-box"[\s\S]*?class="r">\s*\$?)([0-9][0-9.,]*)/, (m, a, v) => a + (parseFloat(v.replace(/,/g, '')) * 2).toFixed(0));
+  ok(bad !== aapl, '(ตั้งฉาก) แก้ .fv-box ได้จริง');
+  const patched = U.patchReport(bad, { newPrice: 301.5, dateParts: { day: 11, monIdx: 6, yearCE: 2026 }, chartData: null });
+  const g = U.gateAfterPatch(patched.html, 'AAPL.html');
+  ok(!g.ok && g.codes.includes('E15'), 'gateAfterPatch: ไฟล์ที่ patch แล้ว gate ตก → ok=false + รหัส', g.codes.join(','));
+  ok(/E15/.test(g.detail) && g.detail.length <= 400, 'gateAfterPatch: detail มีรหัส + สั้นพอลง price-flags.json');
+  const broken = U.gateAfterPatch('<!DOCTYPE html><html><head><!--TEMPLATE:STYLE--></head><body></body></html>', 'X.html');
+  ok(!broken.ok && broken.codes[0] === 'EXPAND', 'gateAfterPatch: expandReport ระเบิด → EXPAND ไม่ throw');
+}
+
 console.log(nFail ? `\n✗ update-prices-test: ${nFail} failed / ${nOK} passed` : `\n✓ update-prices-test: ${nOK} passed`);
 process.exit(nFail ? 1 : 0);
