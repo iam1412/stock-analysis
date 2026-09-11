@@ -31,8 +31,8 @@
 | ไฟล์ | หน้าที่ | Task |
 |---|---|---|
 | `package.json` (`verify:cron` · verify 16 ขั้น) · `.github/workflows/update-prices.yml` · `.githooks/pre-push` | ประตู cron แยกจากประตู push · ขั้นใหม่ docs-test / prep-stock-test | 1, 19, 23 |
-| `test/check-reports.js` (ฟิลด์ `healer` · level ของ W16/W17/W19/W20 · coverage · W21/W22 · W06 ใหม่ · import จาก report-meta/derived-values) | gate | 2, 3, 6, 7, 9, 10, 11 |
-| `test/self-test.js` (E-policy · convergence registry · เคส parser หมวด 6 · W21/W22 · W06) | meta-test ของ gate | 2, 3, 6, 7, 8, 9, 11 |
+| `test/check-reports.js` (ฟิลด์ `healer` · level ของ W16/W17/W19/W20 · coverage · W21/W22/W23 · W06 ใหม่ · import จาก report-meta/derived-values) | gate | 2, 3, 6, 7, 9, 10, 11 |
+| `test/self-test.js` (E-policy · convergence registry · เคส parser หมวด 6 · W21/W22/W23 · W06) | meta-test ของ gate | 2, 3, 6, 7, 8, 9, 11 |
 | `tools/lockfile.js` | heartbeat · signal release · pid ownership | 4 |
 | `docs/superpowers/audit/2026-09-11-stock-analyzer/sweep.sh` | sweep ราคาสังเคราะห์ (จาก phase0-exit §1) เก็บถาวร | 5 |
 | `tools/report-meta.js` (+`readReportData` · `readHeaderPrice` · `PX_RE` · `RANGE52_RE`) · `test/parser-lint.js` | เจ้าของ regex stock-meta / report-data / .px ที่เดียว | 6 |
@@ -51,7 +51,7 @@
 
 # ส่วน A — WS2 สัญญา cron↔gate (ข้อ 2/3/4) + WS4 lock heartbeat (PR #A)
 
-สาขา: `claude/audit-p1-a-cron-gate` (base = `main` @ `421d1799`)
+สาขา: `claude/audit-p1-a-cron-gate` (base = `claude/audit-p1-plan` @ `d9d70d5d` = main `421d1799` + commit แผนนี้ — PR #A พาแผนขึ้น main แบบเดียวกับ PR #26 ระยะ 0 · PR base = main)
 
 ### Task 1: `verify:cron` — ประตู cron ตรวจเฉพาะสิ่งที่ cron แตะ (WS2 ข้อ 2)
 
@@ -269,7 +269,7 @@ Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>"
     fs.rmSync(dir, { recursive: true, force: true });
     // (3) signal handler มีอยู่จริง (ไม่ยิงสัญญาณจริงในเทส — แค่ตรวจว่าลงทะเบียน)
     ok(process.listeners('SIGINT').some((l) => /release|held/.test(String(l))) && process.listeners('SIGTERM').some((l) => /release|held/.test(String(l))), 'lockfile: ลงทะเบียน SIGINT/SIGTERM เพื่อปล่อย lock');
-    ok(typeof L.HEALTHBEAT_MS === 'undefined' && L.HEARTBEAT_MS === 60000, 'export HEARTBEAT_MS = 60000');
+    ok(L.HEARTBEAT_MS === 60000, 'export HEARTBEAT_MS = 60000');
   });
 }
 ```
@@ -362,7 +362,8 @@ for p in $PRICES; do
   node -e "
 const U=require('./tools/update-prices.js');const fs=require('fs');const {readStockMeta}=require('./tools/report-meta.js');
 for(const s of ['AAPL','BBL']){const h=fs.readFileSync('reports/'+s+'.html','utf8');const px=readStockMeta(h).price*$p;
-fs.writeFileSync('reports/'+s+'.html',U.patchReport(h,{newPrice:+px.toFixed(2),dateParts:{day:12,monIdx:8,yearCE:2026},chartData:null}).html)}"
+const t=new Date();const dateParts={day:t.getUTCDate(),monIdx:t.getUTCMonth(),yearCE:t.getUTCFullYear()};   // วันนี้เสมอ — รันซ้ำอีกหลายสัปดาห์ต้องไม่ล้มด้วย E27 (ราคาเก่า >120 วัน)
+fs.writeFileSync('reports/'+s+'.html',U.patchReport(h,{newPrice:+px.toFixed(2),dateParts,chartData:null}).html)}"
   if npm run verify >"$SWEEP_DIR/sweep-$p.log" 2>&1; then echo "×$p ok  $(grep -o 'error [0-9]* • warning [0-9]*' "$SWEEP_DIR/sweep-$p.log" | head -1)"; else echo "×$p FAIL (ดู $SWEEP_DIR/sweep-$p.log)"; fails=$((fails+1)); fi
   git checkout -- reports/AAPL.html reports/BBL.html reports.json
 done
@@ -434,9 +435,11 @@ const path = require('path');
 const ROOT = path.join(__dirname, '..');
 const OWNER = 'tools/report-meta.js';
 const FILES = ['build.js', ...['tools', 'test'].flatMap((d) => fs.readdirSync(path.join(ROOT, d)).filter((f) => f.endsWith('.js')).map((f) => `${d}/${f}`))];
+// จับเฉพาะ "รูป regex" — id=["'] (character class) หรือ id="…"[^>] (ตามด้วย class ของ regex) · ข้อความ HTML/throw message ที่เขียน id="stock-meta" เฉย ๆ ไม่นับ
+// (build.js:209 throw · test/build-test.js:132 fixture HTML · test/skeleton-test.js:177 เป็น regex จริง → อยู่ในตารางแทนที่)
 const PATTERNS = [
-  [/id=\[?["'\\]+stock-meta/, 'regex บล็อก stock-meta'],
-  [/id=\[?["'\\]+report-data/, 'regex บล็อก report-data'],
+  [/id=\["'\]stock-meta|id="stock-meta"\[\^>\]/, 'regex บล็อก stock-meta'],
+  [/id=\["'\]report-data|id="report-data"\[\^>\]/, 'regex บล็อก report-data'],
   [/class="px">\s*[\\(\[]/, 'regex ราคา header .px'],
 ];
 function scan() {
@@ -525,12 +528,13 @@ module.exports = { readStockMeta, readStockMetaState, readReportData, readHeader
 | `test/check-site.js:139` | stock-meta match บน dist | `RM.readStockMetaState(fs.readFileSync(…))` แล้วแยก `present/ok` เป็น error สองข้อความเดิม |
 | `test/check-site.js:186` | `.test` report-data | `RM.REPORT_DATA_RE.test(…)` |
 | `test/update-prices-test.js` 11 จุด | `JSON.parse(x.match(/<script…/i)[1])` | `RM.readStockMeta(x)` / `RM.readReportData(x).data` |
+| `test/skeleton-test.js:177` | `/id=["']stock-meta["']/.test(tpl) && /id=["']report-data["']/.test(tpl)` | `RM.STOCK_META_RE.test(tpl) && RM.REPORT_DATA_RE.test(tpl)` |
 | `test/skeleton-test.js:196-197` | match + parse | `RM.readStockMetaState(filled).ok` / `RM.readReportData(filled).ok` |
 | `tools/queue/prep.js:90` | regex `m52` | `html.match(RM.RANGE52_RE)` |
 
 ทุกไฟล์เพิ่ม `const RM = require('<path>/report-meta.js');` (ใน test/ = `'../tools/report-meta.js'` · ใน tools/ = `'./report-meta.js'` · build.js = `'./tools/report-meta.js'`) · **ห้าม require วน**: `report-meta.js` ไม่ require ใครในรีโป
 
-- [ ] **Step 4: รันให้ผ่าน** — `node test/self-test.js` (parser-lint ผ่าน + 283 เคสเดิม) · `npm run verify` ทั้ง 14 ขั้น · `node build.js` แล้ว `git diff --stat reports.json` ต้องว่าง (freshHash ไม่เปลี่ยน — ถ้าเปลี่ยนแปลว่า `stripStockMeta` ตัดไม่เหมือนเดิม ห้าม commit reports.json)
+- [ ] **Step 4: รันให้ผ่าน + เทียบผล gate ก่อน/หลัง** — ก่อนแก้: `rtk proxy node test/check-reports.js > /tmp/gate-before.txt` (ทำใน Step 0 ก่อนแตะไฟล์ใด) · หลังแก้: `rtk proxy node test/check-reports.js > /tmp/gate-after.txt; diff /tmp/gate-before.txt /tmp/gate-after.txt` **ต้องว่าง** — `PX_RE` ใหม่บังคับสัญลักษณ์สกุลเงินติดหลัง `<div class="px">` ขณะที่ของเดิมใน check-reports (`[\s\S]*?` + firstNum) ไม่บังคับ ⇒ ใบไหน `px` กลายเป็น null จะทำให้ E12/E23/E30 เงียบ/ยิงต่างจากเดิม (diff จะโชว์) · `node test/self-test.js` (parser-lint ผ่าน + 283 เคสเดิม) · `npm run verify` ทั้ง 14 ขั้น · `node build.js` แล้ว `git diff --stat reports.json` ต้องว่าง (freshHash ไม่เปลี่ยน — ถ้าเปลี่ยนแปลว่า `stripStockMeta` ตัดไม่เหมือนเดิม ห้าม commit reports.json)
 
 - [ ] **Step 5: Commit**
 
@@ -739,7 +743,7 @@ const FIELDS = [
   F('f38', 'หมวด 6 class ret pos/neg', { cadence: 'never', owner: 'worker', gate: [], healer: null, binding: 'presence', required: false, extract: (h) => { const m = h.match(/class="ret (pos|neg)"/g); return R(m ? m.length : null); } }),
   F('f39', 'หมวด 6 ปันผลรวม 3 ปี', { cadence: 'write-once', owner: 'worker', gate: [], healer: null, binding: 'presence', required: false, extract: (h, c) => R(c.scenarios.some((s) => s.div != null) ? c.scenarios.map((s) => s.div) : null) }),
   F('f40', 'หมวด 6 EPS ฐาน', { cadence: 'write-once', owner: 'worker', gate: ['E24'], healer: null, binding: 'gate', extract: (h, c) => R(c.baseEPS) }),
-  F('f41', 'กรอบ 52 สัปดาห์', { cadence: 'stale-daily', owner: 'worker', gate: ['W08'], healer: null, binding: 'pair', pair: { with: 'f01', how: 'contains' }, extract: (h) => { const m = h.match(RM.RANGE52_RE); return R(m ? [num(m[1]), num(m[2])] : null); } }),
+  F('f41', 'กรอบ 52 สัปดาห์', { cadence: 'stale-daily', owner: 'worker', gate: ['W08'], healer: null, binding: 'pair', pair: { with: 'f01', how: 'contains', stale: true }, extract: (h) => { const m = h.match(RM.RANGE52_RE); return R(m ? [num(m[1]), num(m[2])] : null); } }),
   F('f42', 'บรรทัดที่มา', { cadence: 'write-once', owner: 'worker', gate: ['W08'], healer: null, binding: 'gate', extract: (h) => R(grab(/ที่มา:\s*([^<]{3,})/, head(h))) }),
   F('f43', '.fv-box .r FV', { cadence: 'write-once', owner: 'worker', gate: ['E15', 'E25', 'E30'], healer: null, binding: 'gate', extract: (h, c) => R(c.fvBox) }),
   F('f44', 'report-data.fv (const FV)', { cadence: 'write-once', owner: 'worker', gate: ['E15'], healer: null, binding: 'gate', extract: (h, c) => R(c.constFV) }),
@@ -753,7 +757,7 @@ const FIELDS = [
   F('f52', 'การ์ดจุดซื้อ MOS20/MOS30', { cadence: 'write-once', owner: 'worker', gate: ['E18'], healer: null, binding: 'gate', extract: (h, c) => { const a = cardNum(c, /จุดซื้อ MOS 20/), b = cardNum(c, /จุดซื้อ MOS 30/); return R(a != null && b != null ? [a, b] : null); } }),
   F('f53', 'gauge scale กรอบบน FV', { cadence: 'write-once', owner: 'worker', gate: ['E26'], healer: null, binding: 'gate', extract: (h) => R(num(grab(new RegExp(CUR + '?\\s*([\\d.,]+)\\s*<br><small>กรอบบน'), h))) }),
   F('f54', 'vcell กรอบ (FV_LOW–FV_HIGH)', { cadence: 'write-once', owner: 'worker', gate: [], healer: null, binding: 'pair', pair: { with: 'f43', how: 'range' }, extract: (h) => { const v = vcell(h, 'มูลค่าเหมาะสม') || ''; const m = v.match(new RegExp('\\(\\s*' + CUR + '?\\s*([\\d.,]+)\\s*[–\\-]\\s*' + CUR + '?\\s*([\\d.,]+)\\s*\\)')); return R(m ? [num(m[1]), num(m[2])] : null); } }),
-  F('f55', 'การ์ด "P/E เฉลี่ย ~N ปี"', { cadence: 'write-once', owner: 'worker', gate: [], healer: null, binding: 'pair', pair: { with: 'f04', how: 'years' }, required: false, extract: (h, c) => { const k = card(c, /P\/E เฉลี่ย/); return R(k ? num(grab(/~?\s*(\d+)\s*ปี/, k.k)) : null); } }),
+  F('f55', 'การ์ด "P/E เฉลี่ย ~N ปี"', { cadence: 'write-once', owner: 'worker', gate: [], healer: null, binding: 'pair', pair: { with: 'f04', how: 'years', stale: true }, required: false, extract: (h, c) => { const k = card(c, /P\/E เฉลี่ย/); return R(k ? num(grab(/~?\s*(\d+)\s*ปี/, k.k)) : null); } }),
   F('f56', 'การ์ด ROE / ROA', { cadence: 'write-once', owner: 'worker', gate: ['W07', 'W10'], healer: null, binding: 'gate', required: false, extract: (h, c) => R(c.metrics.roe) }),
   F('f57', 'stock-meta.roe', { cadence: 'write-once', owner: 'worker', gate: ['E29', 'W10'], healer: null, binding: 'gate', required: false, extract: (h, c) => R(sm(c) && sm(c).roe) }),
   F('f58', 'การ์ดกำไรสุทธิ / YoY', { cadence: 'write-once', owner: 'worker', gate: [], healer: null, binding: 'presence', required: false, extract: (h, c) => R(cardNum(c, /กำไรสุทธิ|net (?:profit|income)/i)) }),
@@ -867,18 +871,18 @@ Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>"
 
 ---
 
-### Task 9: coverage ต่อไฟล์ใน gate + W21 (ช่อง required อ่านไม่ได้) + W22 (ค่าเดียวกันคนละที่ไม่ตรง) + `need()`-log ของ 3 ช่อง UNVERIFIED WRITE + spotcheck/postcheck อ่าน manifest (WS1 ข้อ 2 · WS2 ข้อ 6)
+### Task 9: coverage ต่อไฟล์ใน gate + W21 (ช่อง required อ่านไม่ได้) + W22 (ค่าเดียวกันคนละที่ไม่ตรง) + W23 (คู่ที่ค้างตามเวลา — แยกจาก W22) + `need()`-log ของ 3 ช่อง UNVERIFIED WRITE + spotcheck/postcheck อ่าน manifest (WS1 ข้อ 2 · WS2 ข้อ 6)
 
 **Files:**
 - Modify: `tools/field-manifest.js` (ตั้ง `required` จาก census · เพิ่ม `checkPairs`)
-- Modify: `test/check-reports.js` (`buildCtx` เพิ่ม `mf` · CHECKS เพิ่ม W21/W22 · `main()` พิมพ์ coverage · `checkHtml` คืน `coverage`)
+- Modify: `test/check-reports.js` (`buildCtx` เพิ่ม `mf` · CHECKS เพิ่ม W21/W22/W23 · `main()` พิมพ์ coverage · `checkHtml` คืน `coverage`)
 - Modify: `tools/update-prices.js:531-536` (disclaimer) · `:522-528` (restated) — log `found:false` แทนเงียบ · `gateAfterPatch` ไม่เปลี่ยน
 - Modify: `tools/spotcheck.js:34-71` (พิมพ์ช่องที่ข้าม) · `tools/queue/postcheck.js:60-70` (แนบ coverage ใน issues เมื่อ missingRequired > 0)
-- Test: `test/self-test.js` (W21/W22 · coverage) · `test/update-prices-test.js` (log found:false)
+- Test: `test/self-test.js` (W21/W22/W23 · coverage) · `test/update-prices-test.js` (log found:false)
 
 **Interfaces:**
-- Produces: `MF.checkPairs(values, ctx)` → `[{ id, with, msg }]` · `MF.PAIR_TOL = { money: (a, b, shown) => DV.fmtLikeNum(a, String(shown)) === String(shown) || Math.abs(a - b) <= 0.01 * Math.abs(b), date: iso ตรงกัน, contains: lo ≤ px ≤ hi, range: [lo,hi] ตรง fv-box กรอบ ±1%, years: N ≤ ปีในกราฟ + 1 }` · `checkHtml()` คืนเพิ่ม `coverage:{ n, found, missingRequired, skippedOptional }` · บรรทัดต่อไฟล์ `✓ AAPL.html 47/47 ผ่าน · ช่อง 61/68 (ข้าม 7)` · บรรทัดสรุป `สรุป: … • ช่องต่ำสุด 55/68 (SYM)`
-- W21 `level:'warn'` label `'ช่องที่ต้องมีอ่านไม่ได้ (manifest)'` · W22 `level:'warn'` label `'ค่าเดียวกันคนละที่ไม่ตรงกัน (manifest pair)'` — ทั้งคู่ไม่มี healer (W ไม่ต้อง) · **ห้ามเป็น E ในระยะนี้** (spec §8 — จะยกเมื่อมี healer ระยะ 2)
+- Produces: `MF.checkPairs(values, ctx)` → `[{ id, with, msg, stale }]` (`stale` = `pair.stale` ของช่อง — f41/f55 · roe-rule = false) · `MF.PAIR_HOW = { money: (a, b, shown) => DV.fmtLikeNum(a, String(shown)) === String(shown) || Math.abs(a - b) <= 0.01 * Math.abs(b), date: iso ตรงกัน, contains: lo ≤ px ≤ hi, range: [lo,hi] ตรง fv-box กรอบ ±1%, years: N ≤ ปีในกราฟ + 1 }` · `checkHtml()` คืนเพิ่ม `coverage:{ n, found, missingRequired, skippedOptional }` · บรรทัดต่อไฟล์ `✓ AAPL.html 47/47 ผ่าน · ช่อง 61/68 (ข้าม 7)` · บรรทัดสรุป `สรุป: … • ช่องต่ำสุด 55/68 (SYM)`
+- W21 `level:'warn'` label `'ช่องที่ต้องมีอ่านไม่ได้ (manifest)'` · W22 `level:'warn'` label `'ค่าเดียวกันคนละที่ไม่ตรงกัน (manifest pair)'` = คู่ **consistency** (fairLine/legend/mFair/vcell ↔ FV · mCur ↔ .px · วันที่ disclaimer/วงเล็บ ↔ วันที่ราคา · roe null เมื่อขาดทุน) — ยิงบนใบสุขภาพดี = บั๊กจริง · W23 `level:'warn'` label `'ค่าที่ค้างตามเวลา (manifest stale pair)'` = คู่ **staleness** (`pair.stale:true`: f41 ราคาหลุดกรอบ 52 สัปดาห์ที่พิมพ์ · f55 ป้าย "P/E เฉลี่ย ~N ปี" > ปีในกราฟ) — ค้างเป็นเรื่องคาดหมายได้หลายร้อยใบ fix-on-touch · **แยกเพราะ** (advisor) ถ้ารวมกัน f41 จะกลบคู่บั๊กจริงจน W22 ไม่มีความหมาย · f63b ("จาก ATH −X%") **ไม่เข้า W23** — ในไฟล์ไม่มีตัวเลข ATH ให้เทียบ จึงคง `binding:'presence'` ตามเดิม (ไม่แต่ง check ที่ตรวจไม่ได้) · ทั้งสามไม่มี healer (W ไม่ต้อง) · **ห้ามเป็น E ในระยะนี้** (spec §8 — จะยกเมื่อมี healer ระยะ 2)
 
 - [ ] **Step 1: ตั้ง `required` จาก census** — แก้ค่า `required` ใน `FIELDS` ตาม `manifest-census.md`: อัตรา ≥99% → `true` (ลบ `required:false` ที่ใส่ไว้) · <99% → `false` · บันทึกอัตราจริงในคอมเมนต์ท้าย entry ที่เปลี่ยน (`// census 12 ก.ย. 69: 100%`) · ช่องที่ `extractor error` > 0 ต้องแก้ extractor ก่อนตั้ง required
 
@@ -900,11 +904,11 @@ function checkPairs(values, ctx) {
     const v = values[f.id], w = values[f.pair.with];
     if (v == null || w == null) continue;                       // ช่องใดหาย = เรื่องของ W21/coverage ไม่ใช่ pair
     const msg = PAIR_HOW[f.pair.how](v, w, ctx);
-    if (msg) out.push({ id: f.id, with: f.pair.with, msg: `${f.name} ↔ ${FIELDS.find((g) => g.id === f.pair.with).name}: ${msg}` });
+    if (msg) out.push({ id: f.id, with: f.pair.with, stale: !!f.pair.stale, msg: `${f.name} ↔ ${FIELDS.find((g) => g.id === f.pair.with).name}: ${msg}` });
   }
   // stock-meta.roe ต้อง null เมื่อขาดทุน (open-item #14) — กฎเดี่ยว ไม่ใช่ pair แต่เป็นความสอดคล้องระหว่างช่อง
   const s = sm(ctx);
-  if (s && ctx.baseEPS != null && ctx.baseEPS <= 0 && typeof s.roe === 'number' && s.roe > 0) out.push({ id: 'f57', with: 'f40', msg: `stock-meta.roe = ${s.roe} แต่ EPS ฐาน ${ctx.baseEPS} ≤ 0 (ขาดทุน → roe ต้อง null — เคส OKJ)` });
+  if (s && ctx.baseEPS != null && ctx.baseEPS <= 0 && typeof s.roe === 'number' && s.roe > 0) out.push({ id: 'f57', with: 'f40', stale: false, msg: `stock-meta.roe = ${s.roe} แต่ EPS ฐาน ${ctx.baseEPS} ≤ 0 (ขาดทุน → roe ต้อง null — เคส OKJ)` });
   return out;
 }
 ```
@@ -920,16 +924,23 @@ function checkPairs(values, ctx) {
   ok(r0.coverage && r0.coverage.n === 68 && r0.coverage.found >= 50 && r0.coverage.missingRequired.length === 0, `coverage: BBL fixture found ${r0.coverage && r0.coverage.found}/68 · required ครบ`, JSON.stringify(r0.coverage));
   rejectBase('W21', 'ฐาน BBL: ช่อง required ครบ → W21 เงียบ');
   rejectBase('W22', 'ฐาน BBL: ทุกคู่ตรงกัน → W22 เงียบ');
+  rejectBase('W23', 'ฐาน BBL: ไม่มีคู่ค้าง → W23 เงียบ (fixture ไม่มี "กรอบ 52 สัปดาห์ (…)" — f41 optional ไม่พบ = เงียบ ไม่ใช่ผ่าน)');
   expect('W21', 'warn', (h) => h.replace(/id="mCur"><div class="lab">ปัจจุบัน\s*฿?[\d.,]+/, 'id="mCur"><div class="lab">ปัจจุบัน'), 'ลบตัวเลขป้าย mCur (f50 required) → W21');
   expect('W22', 'warn', (h) => h.replace(/(id="mFair"><div class="lab"[^>]*>เหมาะสม\s*฿?)([\d.,]+)/, (m, a, v) => a + (parseFloat(v.replace(/,/g, '')) * 1.5).toFixed(2)), 'ป้าย mFair ≠ FV → W22');
   expect('W22', 'warn', (h) => h.replace(/"fairLine"\s*:\s*[\d.]+/, '"fairLine":1'), 'chart.fairLine ≠ FV → W22');
   expect('W22', 'warn', (h) => h.replace(/(id="mCur"><div class="lab">ปัจจุบัน\s*฿?)([\d.,]+)/, (m, a, v) => a + (parseFloat(v.replace(/,/g, '')) * 2).toFixed(2)), 'ป้าย mCur ≠ .px (UNVERIFIED WRITE #50) → W22');
   expect('W22', 'warn', (h) => h.replace(/(<div class="disc">[\s\S]*?ราคา[^0-9<]{0,25})(\d{1,2})(\s*[ก-๙.]+\s*\d{4})/, (m, a, d, z) => a + (d === '1' ? '2' : '1') + z), 'วันที่ disclaimer ≠ วันที่ราคา (UNVERIFIED WRITE #12) → W22');
-  expect('W22', 'warn', (h) => h.replace(/(<div class="k">P\/E เฉลี่ย ~)(\d+)(\s*ปี)/, '$19$3'), 'ป้าย "P/E เฉลี่ย ~9 ปี" บนกราฟ 2 ปี → W22 (เคส GABLE)');
+  // W23 = คู่ค้างตามเวลา (stale:true) — ต้องไม่ปนใน W22
+  const addRange = (lo, hi) => (h) => h.replace('<div class="disc">', `<p>กรอบ 52 สัปดาห์ (฿${lo}–฿${hi})</p><div class="disc">`);
+  expect('W23', 'warn', addRange((PX * 0.1).toFixed(2), (PX * 0.2).toFixed(2)), 'ราคา .px หลุดกรอบ 52 สัปดาห์ที่พิมพ์ → W23 (f41 stale)');
+  reject('W22', addRange((PX * 0.1).toFixed(2), (PX * 0.2).toFixed(2)), 'กรอบค้างต้องไม่ยิง W22 (แยกชั้น staleness ออกจาก consistency)');
+  reject('W23', addRange((PX * 0.5).toFixed(2), (PX * 1.5).toFixed(2)), 'ราคาอยู่ในกรอบ → W23 เงียบ');
+  expect('W23', 'warn', (h) => addCardKV('P/E เฉลี่ย ~9 ปี', '20x', 'ช่วง 15–25x')(h), 'ป้าย "P/E เฉลี่ย ~9 ปี" บนกราฟ ≤2 ปี → W23 (เคส GABLE · f55 stale)');
+  reject('W22', (h) => addCardKV('P/E เฉลี่ย ~9 ปี', '20x', 'ช่วง 15–25x')(h), 'ป้ายปีเกินกราฟต้องไม่ยิง W22');
 }
 ```
 
-(เคส disclaimer ต้องตรวจก่อนว่า BBL fixture มี "ราคา ณ <วัน> <เดือน> <ปี>" ใน `.disc` — ถ้าไม่มีให้ใช้ `expect` บนใบที่เติมประโยคเข้าไปเอง · เคส P/E เฉลี่ยเช่นกัน — ไม่มีการ์ดใน BBL ให้ `addCardKV('P/E เฉลี่ย ~9 ปี', '20x', 'ช่วง 15–25x')`)
+(เคส disclaimer ต้องตรวจก่อนว่า BBL fixture มี "ราคา ณ <วัน> <เดือน> <ปี>" ใน `.disc` — ถ้าไม่มีให้ใช้ `expect` บนใบที่เติมประโยคเข้าไปเอง · `addCardKV` = helper ที่มีอยู่ `test/self-test.js:485` (อยู่ในบล็อกอื่น — ถ้า scope ไม่ถึงให้ยกขึ้นเป็น top-level const) · BBL fixture (ตรวจ 12 ก.ย. 69) ไม่มี "กรอบ 52 สัปดาห์ (…)" (มีแต่ "นิวไฮรอบ 52 สัปดาห์ (฿139.5–฿197)" ซึ่ง `RANGE52_RE` ไม่จับ) — เคส W23 จึงเติมบรรทัดเองด้วย `addRange` · กราฟ BBL มีข้อมูล ≤2 ปี → ป้าย ~9 ปีเกินแน่ (ถ้า fixture เปลี่ยนให้ปรับ 9 → `yearsInChart + 5`))
 
 - [ ] **Step 4: โค้ด gate** — `test/check-reports.js`:
   - บนสุด: `const MF = require('../tools/field-manifest.js');`
@@ -939,7 +950,8 @@ function checkPairs(values, ctx) {
 ```js
   // ── W21/W22 (ระยะ 1 WS1): coverage ของ manifest — "เงียบ" ไม่ใช่ "สะอาด" อีกต่อไป ──
   { id: 'W21', level: 'warn', label: 'ช่องที่ต้องมีอ่านไม่ได้ (manifest)', fn: (c) => c.mf.missing.length ? `อ่านไม่ได้ ${c.mf.missing.length} ช่อง: ${c.mf.missing.map((id) => `${id} ${MF.FIELDS.find((f) => f.id === id).name}`).join(' · ')}` : null },
-  { id: 'W22', level: 'warn', label: 'ค่าเดียวกันคนละที่ไม่ตรงกัน (manifest pair)', fn: (c) => { const bad = MF.checkPairs(c.mf.values, c); return bad.length ? bad.map((b) => b.msg).join(' ; ') : null; } },
+  { id: 'W22', level: 'warn', label: 'ค่าเดียวกันคนละที่ไม่ตรงกัน (manifest pair)', fn: (c) => { const bad = MF.checkPairs(c.mf.values, c).filter((b) => !b.stale); return bad.length ? bad.map((b) => b.msg).join(' ; ') : null; } },
+  { id: 'W23', level: 'warn', label: 'ค่าที่ค้างตามเวลา (manifest stale pair)', fn: (c) => { const bad = MF.checkPairs(c.mf.values, c).filter((b) => b.stale); return bad.length ? bad.map((b) => b.msg).join(' ; ') + ' — fix-on-touch (ระยะ 3)' : null; } },
 ```
 
   - `checkHtml` คืนเพิ่ม `coverage: { n: MF.FIELDS.length, found: ctx.mf.found.size, missingRequired: ctx.mf.missing, skippedOptional: ctx.mf.skipped }`
@@ -958,21 +970,23 @@ function checkPairs(values, ctx) {
 
 - [ ] **Step 6: spotcheck + postcheck อ่าน manifest** — `tools/spotcheck.js` ใน `spotcheck()` เพิ่มบรรทัดแรก: `const cov = c.mf; if (cov.skipped.length) out.push(`▸ ช่องที่ manifest ข้าม (optional ไม่พบ) ${cov.skipped.length}: ${cov.skipped.join(' ')}`);` (ใช้ `c` = buildCtx ที่มีอยู่) · `tools/queue/postcheck.js` หลัง `issues.push(...checkMeta(…))`: `if (ctx.mf.missing.length) issues.push(`manifest: ช่อง required อ่านไม่ได้ ${ctx.mf.missing.join(' ')} (W21 — worker เขียนโครงไม่ครบ)`);`
 
-- [ ] **Step 7: รันให้ผ่าน + วัด** — `node test/self-test.js` · `rtk proxy node test/check-reports.js | tail -3` → บันทึกจำนวน W21/W22 ที่ยิงทั้งคลัง (คาด W22 หลายสิบใบ: กรอบ 52 สัปดาห์ค้าง · legend/ป้าย FV ไม่ตรง — เป็นหนี้เก่าที่ gate เพิ่งเห็น **ไม่ต้องแก้ในระยะนี้** จดลง `manifest-census.md` §"ผลหลังเปิด W21/W22") · `npm run verify` ผ่าน (W ไม่บล็อก)
+- [ ] **Step 7: รันให้ผ่าน + วัด** — `node test/self-test.js` · `rtk proxy node test/check-reports.js | tail -3` → บันทึกจำนวน W21 / W22 / W23 **แยกกัน** ที่ยิงทั้งคลัง (คาด W23 หลายร้อยใบ = กรอบ 52 สัปดาห์ค้าง · คาด W22 หลักสิบหรือน้อยกว่า = legend/ป้าย FV/mCur/วันที่ไม่ตรง — ถ้า W22 ยิงหลายร้อยแปลว่ามีคู่ staleness ปนอยู่ ต้องย้ายไป `stale:true` ก่อน commit · ทั้งหมดเป็นหนี้เก่าที่ gate เพิ่งเห็น **ไม่ต้องแก้ในระยะนี้** จดลง `manifest-census.md` §"ผลหลังเปิด W21/W22/W23") · `npm run verify` ผ่าน (W ไม่บล็อก)
+
+- [ ] **Step 7b: ตัวเลขในเอกสาร (ชั่วคราวจนกว่า Task 18 จะ generate — Part D มาทีหลัง Part B/C)** — `CLAUDE.md:109` `(47 error + 15 warning)` → `(47 error + 18 warning)` · `docs/quality-gate.md:167` เช่นกัน · `:171` "**15** รหัส warning" → "**18** รหัส warning (W21/W22/W23 = manifest ระยะ 1)" · ท้ายตาราง `:236` เพิ่ม 3 แถว `| W21 | warn | ช่องที่ต้องมีอ่านไม่ได้ (manifest) | required ตาม census ≥99% |` · `| W22 | warn | ค่าเดียวกันคนละที่ไม่ตรงกัน (manifest pair) | คู่ consistency: FV/px/วันที่/roe |` · `| W23 | warn | ค่าที่ค้างตามเวลา (manifest stale pair) | f41 กรอบ 52wk · f55 ปีป้าย > ปีกราฟ — fix-on-touch |` · `rtk proxy grep -rn "15 warning\|15 รหัส" CLAUDE.md docs README.md | grep -v superpowers/` ต้องว่าง
 
 - [ ] **Step 8: Commit + เปิด PR #B**
 
 ```bash
-git add tools/field-manifest.js test/check-reports.js test/self-test.js tools/update-prices.js test/update-prices-test.js tools/spotcheck.js tools/queue/postcheck.js docs/superpowers/audit/2026-09-11-stock-analyzer/manifest-census.md
-git commit -m "gate: coverage ต่อไฟล์จาก manifest · W21 ช่อง required อ่านไม่ได้ · W22 คู่ค่าเดียวกันไม่ตรง (NEITHER 18 → 0 · UNVERIFIED WRITE 3 → 0) · cron log found:false แทนเงียบ
+git add tools/field-manifest.js test/check-reports.js test/self-test.js tools/update-prices.js test/update-prices-test.js tools/spotcheck.js tools/queue/postcheck.js docs/superpowers/audit/2026-09-11-stock-analyzer/manifest-census.md CLAUDE.md docs/quality-gate.md
+git commit -m "gate: coverage ต่อไฟล์จาก manifest · W21 ช่อง required อ่านไม่ได้ · W22 คู่ค่าเดียวกันไม่ตรง · W23 คู่ค้างตามเวลา (NEITHER 18 → 0 · UNVERIFIED WRITE 3 → 0) · cron log found:false แทนเงียบ
 
 Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>" && git push -u origin claude/audit-p1-b-manifest
-gh pr create --base claude/audit-p1-a-cron-gate --title "audit ระยะ 1 ส่วน B: field manifest 68 ช่อง · regex เจ้าของเดียว · parser หมวด 6 เดียว · coverage + W21/W22 (WS1)" --body-file - <<'PRBODY'
+gh pr create --base claude/audit-p1-a-cron-gate --title "audit ระยะ 1 ส่วน B: field manifest 68 ช่อง · regex เจ้าของเดียว · parser หมวด 6 เดียว · coverage + W21/W22/W23 (WS1)" --body-file - <<'PRBODY'
 ## สรุป
 - `tools/report-meta.js` เจ้าของเดียวของ regex stock-meta/report-data/.px (ลบสำเนา ~20 จุด · `test/parser-lint.js` กันกลับ) · `DV.scenarioColumns` parser หมวด 6 ชุดเดียว (census (a)–(d) = <ตัวเลข>)
 - `tools/field-manifest.js` 68 ช่องบน extractor เดิม · census ทั้งคลัง (`manifest-census.md`) · required จากอัตราจริง
-- gate พิมพ์ `ช่อง x/68` ทุกไฟล์ · W21 (required อ่านไม่ได้) · W22 (pair ไม่ตรง: fairLine/legend/mFair/vcell = FV · mCur = .px · วันที่ disclaimer/วงเล็บ = วันที่ราคา · ราคาในกรอบ 52wk · "P/E เฉลี่ย ~N ปี" ≤ ปีในกราฟ · roe null เมื่อขาดทุน) — NEITHER 18 → 0 · UNVERIFIED WRITE 3 → 0 (binding ต่อแถวใน census)
-- W21/W22 ยิงทั้งคลัง <N>/<N> ใบ = หนี้เก่าที่เพิ่งมองเห็น (W ไม่บล็อก · ระยะ 3)
+- gate พิมพ์ `ช่อง x/68` ทุกไฟล์ · W21 (required อ่านไม่ได้) · W22 (คู่ consistency ไม่ตรง: fairLine/legend/mFair/vcell = FV · mCur = .px · วันที่ disclaimer/วงเล็บ = วันที่ราคา · roe null เมื่อขาดทุน) · W23 (คู่ staleness: ราคาในกรอบ 52wk · "P/E เฉลี่ย ~N ปี" ≤ ปีในกราฟ — fix-on-touch) — NEITHER 18 → 0 · UNVERIFIED WRITE 3 → 0 (binding ต่อแถวใน census)
+- ยิงทั้งคลัง: W21 <N> · W22 <N> · W23 <N> ใบ = หนี้เก่าที่เพิ่งมองเห็น (W ไม่บล็อก · ระยะ 3) · docs นับ 47 error + 18 warning
 
 ## ทดสอบ
 - `npm run verify` 14/14 · self-test +<N> เคส · `reports.json` ไม่เปลี่ยน (freshHash เดิม)
@@ -1021,7 +1035,9 @@ const MOS_FLIP_DEADBAND_PP = 5; // MOS พลิกเครื่องหม�
 
 `:10` และ `:20` คำว่า "±3" → "±5" · `test/check-reports.js:47-50` คอมเมนต์ 3 บรรทัด → เหลือบรรทัดเดียว `// W06 (ระยะ 1): ช่องสรุปเป็นคลังคำคงที่ที่ cron เขียนทั้งช่อง — ตรวจรูปแบบ+ตัวเลขผ่าน DV.summaryPlan ไม่ผูก dead-band อีก (ลบใน Task 11)` (ตัว `TOL_MOS_SUMMARY_PP` ลบใน Task 11) · `:543` "โซนกลาง ±3%" → "±5%"
 
-- [ ] **Step 3: docs 5 จุด (grep ยืนยันครบ: `rtk proxy grep -rn "±3" CLAUDE.md docs README.md .claude tools test | grep -v superpowers/` ต้อง 0 หลังแก้)** — `CLAUDE.md:127` "MOS พลิกเกิน dead-band ±3 จุด" → "±5 จุด (ระยะ 1 ข้อ D — flip ในย่านไม่ส่ง LLM · ช่องสรุป cron เขียนเอง)" และ "(flip ใน ±3 จุด = patch ผ่าน" → "(flip ใน ±5 จุด = patch ผ่าน" · `docs/quality-gate.md:223` แถว W06 คอลัมน์เกณฑ์ → "ช่องต้องเป็น `MOS ~ ±X%` (คลังคำคงที่ · cron เขียน) และ X = MOS ปัดเหมือน `.big`" (Task 18 จะ generate ทับ) · `docs/price-refresh.md:128` "±3 จุด" → "±5 จุด (ระยะ 1)" · `README.md:135-136` เช่นกัน · `SKILL.md:18` "dead-band ±3 จุด" → "±5 จุด"
+- [ ] **Step 3: docs 5 จุด (grep ยืนยันครบ: `rtk proxy grep -rn "±3" CLAUDE.md docs README.md .claude tools test | grep -v superpowers/` ต้อง 0 หลังแก้)** — `CLAUDE.md:127` "MOS พลิกเกิน dead-band ±3 จุด" → "±5 จุด (ระยะ 1 ข้อ D — flip ในย่านไม่ส่ง LLM · ช่องสรุป cron เขียนเอง)" และ "(flip ใน ±3 จุด = patch ผ่าน" → "(flip ใน ±5 จุด = patch ผ่าน" · `docs/quality-gate.md:223` แถว W06 คอลัมน์เกณฑ์ → "ช่องต้องเป็น `MOS ~ ±X%` (คลังคำคงที่ · cron เขียน) และ X = ตัวเลขเดียวกับ `.big` ตามที่พิมพ์ (อ่านจาก `.big` ตรง ๆ ไม่คำนวณจาก FV)" (Task 18 จะ generate ทับ) · `docs/price-refresh.md:128` "±3 จุด" → "±5 จุด (ระยะ 1)" · `README.md:135-136` เช่นกัน · `SKILL.md:18` "dead-band ±3 จุด" → "±5 จุด"
+
+- [ ] **Step 3b: memory นอกรีโป (docs-test ไม่กวาด memory)** — `/Users/somchai.s/.claude/projects/-Users-somchai-s-Downloads-stock/memory/price-refresh-cron.md` วลี "MOS dead-band ±3pp" → "±5pp (ระยะ 1 ข้อ D · flip ไม่ส่ง LLM)" + บรรทัดใน `MEMORY.md` ที่อ้าง ±3 — แบบเดียวกับ Task 19 ระยะ 0 (ไม่ commit · บันทึกใน PR body ว่าแก้แล้ว)
 
 - [ ] **Step 4: รันให้ผ่าน + Commit** — `node test/update-prices-test.js` · `npm run verify`
 
@@ -1037,93 +1053,111 @@ Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>"
 ### Task 11: ช่องสรุป "ส่วนต่างจากราคา" เป็นโครงสร้างที่ cron เป็นเจ้าของ — `summaryPlan` (healer #11) + W06 ตรวจคลังคำคงที่ (ข้อ D · open-items #13 #19)
 
 **Files:**
-- Modify: `tools/derived-values.js` — ต่อยอด `readSummaryCell` (Task 8) เป็น `summaryPlan` · `fmtMos` · pass #11 ใน `patchDerived` (ก่อน `return`) · export
+- Modify: `tools/derived-values.js` — ต่อยอด `readSummaryCell` (Task 8) เป็น `summaryPlan` · `readMosBig` · `fmtMos` · pass #11 ใน `patchDerived` (ก่อน `return`) · export
 - Modify: `tools/update-prices.js:549` (`mosTxt` → `fmtMos`) · **ลบ** `:552-574` (patch ช่องสรุปแบบมีเงื่อนไข — สองตัวเขียนคือบั๊กที่กำลังแก้) · import `fmtMos`
 - Modify: `test/check-reports.js:544` (W06 ใหม่ + `healer`) · `:29,50` (ลบ `TOL_MOS_SUMMARY_PP` และ import `MOS_FLIP_DEADBAND_PP`)
 - Modify: `test/self-test.js:181-204` (บล็อก W06 เดิม → ชุดใหม่ + convergence)
 - Modify: `.claude/skills/stock-analyzer/SKILL.md` STEP 5A/5B (1 บรรทัด) · `docs/templates.md` (ถ้ามีคำอธิบาย vcell)
 
 **Interfaces:**
-- Produces: `DV.fmtMos(mos)` = `(mos < 0 ? '−' : '+') + (|mos| ≥ 2 ? toFixed(0) : toFixed(1)) + '%'` (ย้ายจาก `update-prices.js:549` — รูปเดียวกับ `.big`) · `DV.SUMMARY_CANON_RE = /^MOS ~ ([+\-])(\d+(?:\.\d+)?)%$/` (หลัง `norm` แปลง − เป็น -) · `DV.summaryPlan(html, price)` → `{ at, len, text, want, mos, canonical, ok } | null` (null = ไม่มีช่อง หรือไม่มี `stock-meta.fairValue` — เงียบทั้งตัวตรวจและตัวเขียน) · pass #11 เขียน `want` ทับเนื้อช่อง (คง attribute ของ `<div class="v" style=…>` ไว้เพราะแทนเฉพาะกลุ่ม 2 ของ `SUMMARY_RE`)
+- Produces: `DV.fmtMos(mos)` = `(mos < 0 ? '−' : '+') + (|mos| ≥ 2 ? toFixed(0) : toFixed(1)) + '%'` (ย้ายจาก `update-prices.js:549` — cron ใช้เขียน `.big` · เจ้าของเดียว) · `DV.MOS_BIG_RE = /<div class="big">\s*([+\-−–]?)\s*([\d.]+)\s*%\s*<\/div>/` (regex เดียวกับที่ cron `need()` ที่ `update-prices.js:548` — ย้ายมาเป็นเจ้าของเดียว) · `DV.readMosBig(html)` → `{ sign: '+'|'−', num: '12' | '0.8', value: -12 }` (`num` = ตามที่ `.big` พิมพ์ **ไม่ปัดใหม่** · sign normalize `-`/`–` → `−`) · `DV.SUMMARY_CANON_RE = /^MOS ~ ([+\-])(\d+(?:\.\d+)?)%$/` (หลัง `norm` แปลง − เป็น -) · `DV.summaryPlan(html)` → `{ at, len, text, want, mos, canonical, ok } | null` — **`want = 'MOS ~ ' + sign + num + '%' ของ `.big` ตรง ๆ`** (advisor: ห้ามคำนวณจาก `stock-meta.fairValue` — `.big` ถูก cron เขียนจาก `mos` ของตัวเองและ E16 เทียบกับ `fvBox` ส่วน E30/E15 ยอมให้สำเนา FV ต่างกันได้ ≤1% ⇒ คำนวณจาก FV แล้วอาจปัดคนละจำนวนเต็มกับ `.big` ("+12%" กับ "MOS ~ +13%") ทั้งที่ W06 และ healer ต่างพอใจ · อ่านจาก `.big` = ช่อง == `.big` โดยโครงสร้าง ไม่มีคำถามเรื่อง FV) · null = ไม่มีช่อง หรือไม่มี `.big` — เงียบทั้งตัวตรวจและตัวเขียน · `mos` = `readMosBig().value` · pass #11 เขียน `want` ทับเนื้อช่อง (คง attribute ของ `<div class="v" style=…>` ไว้เพราะแทนเฉพาะกลุ่ม 2 ของ `SUMMARY_RE`) · **ลำดับใน cron ถูกอยู่แล้ว**: `patchReport` เขียน `.big` ที่ `:550` ก่อนเรียก `patchDerived` ที่ `:592` ⇒ pass #11 เห็น `.big` ใหม่เสมอ
 - W06 `healer: 'patchDerived#11'` · level ยัง `warn` (ยกเป็น E ได้ในระยะ 2 เมื่อ sweep พิสูจน์แล้ว)
 - คลังคำคงที่ = `MOS ~ +X%` / `MOS ~ −X%` เท่านั้น (สำรวจ 12 ก.ย. 69: 656/908 ใบเป็นรูปนี้อยู่แล้ว · อีก 252 ใบมี 79 รูปแบบคำ) — คำบอกทิศ = เครื่องหมาย · คำเชิงคุณภาพ (ถูก/แพง) อยู่ใน `.txt` ของ verdict และกลยุทธ์ ซึ่งเป็น prose ของคน
 
 - [ ] **Step 1: self-test ใหม่ (ล้มก่อน)** — แทนบล็อก `test/self-test.js:181-204` ทั้งหมดด้วย:
 
 ```js
-// ── W06 (ระยะ 1 ข้อ D): ช่องสรุป "ส่วนต่างจากราคา" = คลังคำคงที่ "MOS ~ ±X%" ที่ cron เขียนทั้งช่อง ──
+// ── W06 (ระยะ 1 ข้อ D): ช่องสรุป "ส่วนต่างจากราคา" = คลังคำคงที่ "MOS ~ ±X%" ที่ cron เขียนทั้งช่อง · X อ่านจาก .big ตรง ๆ ──
 {
   const DVs = require('../tools/derived-values.js');
-  const p0 = DVs.summaryPlan(base, PX);
-  ok(p0 && p0.canonical && p0.ok, 'summaryPlan: BBL fixture อยู่ในรูปคลังคำและตัวเลขตรง MOS', JSON.stringify(p0));
+  const big0 = DVs.readMosBig(base);
+  ok(big0 && big0.sign === '+' && big0.num === '0.8' && big0.value === 0.8, 'readMosBig: BBL fixture .big = +0.8%', JSON.stringify(big0));
+  const p0 = DVs.summaryPlan(base);
+  ok(p0 && p0.canonical && p0.ok && p0.want === 'MOS ~ +0.8%', 'summaryPlan: BBL fixture อยู่ในรูปคลังคำและตัวเลขตรง .big', JSON.stringify(p0));
   rejectBase('W06', 'ฐาน BBL: ช่องสรุปถูกต้อง → W06 เงียบ');
   expect('W06', 'warn', setDiffCell('ถูกกว่ามูลค่า ~8%'), 'ข้อความนอกคลังคำ → W06');
-  expect('W06', 'warn', setDiffCell(`MOS ~ ${DVs.fmtMos(p0.mos + 6)}`), 'รูปถูกแต่ตัวเลขห่าง 6 จุด → W06');
+  expect('W06', 'warn', setDiffCell(`MOS ~ ${DVs.fmtMos(p0.mos + 6)}`), 'รูปถูกแต่ตัวเลขไม่เท่า .big (ห่าง 6 จุด) → W06');
   expect('W06', 'warn', setDiffCell(`MOS ~ ${DVs.fmtMos(-p0.mos)}`), 'เครื่องหมายกลับ → W06 (ไม่มีโซน dead-band ใน checker อีก — cron เขียนเอง)');
-  reject('W06', setDiffCell(`MOS ~ ${DVs.fmtMos(p0.mos)}`), 'รูปถูก ตัวเลขปัดเหมือน .big → เงียบ');
+  expect('W06', 'warn', setDiffCell('MOS ~ +1%'), 'ปัดเป็นจำนวนเต็มเองทั้งที่ .big พิมพ์ทศนิยม → W06 (ต้องเท่ากับ .big ตามที่พิมพ์ ไม่ใช่ "ใกล้เคียง")');
+  reject('W06', setDiffCell(p0.want), 'รูปถูก ตัวเลขเท่ากับ .big → เงียบ');
+  reject('W06', setDiffCell('MOS ~ +0.8 %'), 'ช่องว่างก่อน % → norm แล้วเท่ากัน → เงียบ (healer จะจัดรูปให้ตรงเป๊ะในรอบถัดไป)');
+  // .big พิมพ์เครื่องหมาย ASCII/เว้นวรรค (ใบเก่า) → want normalize เป็น − แบบ fmtMos · ช่องต้องตามรูปนั้น
+  const bigAscii = base.replace(/<div class="big">[^<]*<\/div>/, '<div class="big"> - 12 %</div>');
+  const pA = DVs.summaryPlan(bigAscii);
+  ok(pA && pA.want === 'MOS ~ −12%' && pA.mos === -12, '.big แบบ " - 12 %" → want "MOS ~ −12%" (normalize เครื่องหมาย ไม่ปัดตัวเลขใหม่)', JSON.stringify(pA));
   // convergence: ทุกเคสข้างบน healer ต้องเขียนกลับเป็น want แล้วเงียบ + idempotent · attribute style ของ .v ต้องคงอยู่
-  for (const [h, why] of [[setDiffCell('ถูกกว่ามูลค่า ~8%')(base), 'คำ'], [setDiffCell(`MOS ~ ${DVs.fmtMos(p0.mos + 6)}`)(base), 'ตัวเลข']]) {
+  for (const [h, why] of [[setDiffCell('ถูกกว่ามูลค่า ~8%')(base), 'คำ'], [setDiffCell(`MOS ~ ${DVs.fmtMos(p0.mos + 6)}`)(base), 'ตัวเลข'], [setDiffCell('MOS ~ +0.8 %')(base), 'ช่องว่าง']]) {
     const once = DVs.patchDerived(h, PX).html;
     ok(!allIds(checkHtml(once, 'BBL.html')).has('W06') && DVs.patchDerived(once, PX).html === once, `W06 convergence (${why}): healer #11 → เงียบ + idempotent`);
-    ok(/ส่วนต่างจากราคา<\/div>\s*<div class="v" style="color:#ffd180">MOS ~ [+−]/.test(once), `healer #11 คง style ของ <div class="v"> (${why})`);
+    ok(/ส่วนต่างจากราคา<\/div>\s*<div class="v" style="color:#ffd180">MOS ~ \+0\.8%</.test(once), `healer #11 คง style ของ <div class="v"> และเขียนเท่ากับ .big (${why})`);
   }
   CONVERGED.add('W06');
-  // ไม่มี stock-meta.fairValue → ทั้งคู่เงียบ
-  const noFV = mutJson('stock-meta', (d) => { delete d.fairValue; })(base);
-  ok(DVs.summaryPlan(noFV, PX) == null && !DVs.patchDerived(noFV, PX).changes.some((c) => /ช่องสรุป/.test(c)), 'ไม่มี fairValue → summaryPlan null · healer ไม่แตะ');
+  // ไม่มี .big → ทั้งคู่เงียบ (cron จะ freeze ใบนี้ก่อนถึง patchDerived อยู่แล้วเพราะ need('MOS .big') throw — แต่ตัวตรวจต้องไม่ยิง W06 ซ้อน E16/E30)
+  const noBig = base.replace(/<div class="big">[^<]*<\/div>/, '');
+  ok(DVs.summaryPlan(noBig) == null && !DVs.patchDerived(noBig, PX).changes.some((c) => /ช่องสรุป/.test(c)), 'ไม่มี .big → summaryPlan null · healer ไม่แตะ');
 }
 ```
 
-(`setDiffCell` · `mutJson` · `PX` = helper/ค่าที่ไฟล์มีอยู่แล้ว — `setDiffCell(txt)` แทนเนื้อในช่อง `.v` ของ vcell "ส่วนต่างจากราคา") · รัน → ✗ (ยังไม่มี `summaryPlan`)
+(`setDiffCell` (`test/self-test.js:91`) · `PX` (`:44`) = helper/ค่าที่ไฟล์มีอยู่แล้ว — `setDiffCell(txt)` แทนเนื้อในช่อง `.v` ของ vcell "ส่วนต่างจากราคา" · fixture BBL มี `<div class="big">+0.8%</div>` ตรวจแล้ว 12 ก.ย. 69 — ถ้า fixture เปลี่ยนให้แก้ค่าคาดหวัง `+0.8%` ทั้งบล็อกตาม `readMosBig(base)` ไม่ใช่ hard-code) · รัน → ✗ (ยังไม่มี `summaryPlan`)
 
 - [ ] **Step 2: `tools/derived-values.js`** — ใต้ `readSummaryCell`:
 
 ```js
-/** รูป MOS แบบเดียวกับ .big ของ header (เดิมอยู่ใน update-prices.js:549 — ย้ายมาเป็นเจ้าของเดียว) */
+/** รูป MOS แบบเดียวกับ .big ของ header (เดิมอยู่ใน update-prices.js:549 — ย้ายมาเป็นเจ้าของเดียว · cron ใช้เขียน .big) */
 const fmtMos = (mos) => (mos < 0 ? '−' : '+') + (Math.abs(mos) >= 2 ? Math.abs(mos).toFixed(0) : Math.abs(mos).toFixed(1)) + '%';
+/** regex เดียวกับที่ cron need() ที่ update-prices.js:548 — ย้ายมาที่นี่ แล้วให้ update-prices import (เจ้าของเดียว) */
+const MOS_BIG_RE = /<div class="big">\s*([+\-−–]?)\s*([\d.]+)\s*%\s*<\/div>/;
+/** อ่าน .big ตามที่พิมพ์ — num ไม่ปัดใหม่ · sign normalize เป็น +/− · null = ไม่มี .big */
+function readMosBig(html) {
+  const m = html.match(MOS_BIG_RE);
+  if (!m) return null;
+  const sign = /[\-−–]/.test(m[1]) ? '−' : '+';
+  const num = m[2].replace(/^\.+|\.+$/g, '');
+  if (!/^\d+(?:\.\d+)?$/.test(num)) return null;
+  return { sign, num, value: (sign === '−' ? -1 : 1) * parseFloat(num) };
+}
 const SUMMARY_CANON_RE = /^MOS ~ ([+\-])(\d+(?:\.\d+)?)%$/;
 /**
  * ช่องสรุป "ส่วนต่างจากราคา" — ระยะ 1 ข้อ D: cron เป็นเจ้าของทั้งช่อง (เดิม patch เฉพาะตัวเลขแบบมีเงื่อนไข update-prices.js:552-574
  * แล้วเว้นเมื่อคำขัด ⇒ W06 ค้าง 51 ใบ + flip ทุกตัวต้องส่ง LLM) · คลังคำคงที่ = "MOS ~ ±X%" · ตัวตรวจ (W06) กับตัวเขียน (#11) ถามฟังก์ชันนี้ตัวเดียว
- * คืน null = ไม่มีช่อง หรือไม่มี stock-meta.fairValue → เงียบทั้งคู่
+ * X = ตัวเลขของ .big ตามที่พิมพ์ (ไม่คำนวณจาก FV — สำเนา FV ต่างกันได้ ≤1% ตาม E30/E15 จะปัดคนละจำนวนเต็มกับ .big) ⇒ ช่อง == .big โดยโครงสร้าง · E16 ดูแล .big ↔ FV
+ * คืน null = ไม่มีช่อง หรือไม่มี .big → เงียบทั้งคู่
  */
-function summaryPlan(html, price) {
+function summaryPlan(html) {
   const cell = readSummaryCell(html);
-  if (!cell || !(price > 0)) return null;
-  const smd = RM.readStockMeta(html);
-  const fv = smd && Number.isFinite(smd.fairValue) && smd.fairValue > 0 ? smd.fairValue : null;
-  if (!fv) return null;
-  const mos = (fv - price) / fv * 100;
-  const want = 'MOS ~ ' + fmtMos(mos);
-  const m = norm(cell.text).match(SUMMARY_CANON_RE);
-  const shown = m ? parseFloat(m[1] + m[2]) : null;
-  const tol = m ? 0.5 * Math.pow(10, -decOf(m[2])) + 1e-9 : 0;   // ครึ่งหลักสุดท้ายที่พิมพ์ (บทเรียน MCAP_ULP)
-  const ok = !!m && Math.abs(shown - mos) <= tol;
-  return { at: cell.at, len: cell.len, text: cell.text, want, mos, canonical: !!m, ok };
+  if (!cell) return null;
+  const big = readMosBig(html);
+  if (!big) return null;
+  const want = 'MOS ~ ' + big.sign + big.num + '%';
+  const m = norm(cell.text).match(SUMMARY_CANON_RE);      // norm: − → - · ยุบช่องว่าง (ช่อง "MOS ~ +0.8 %" จึงถือว่าตรง แล้ว healer จัดรูปให้เป๊ะ)
+  const canonical = !!m;
+  const ok = canonical && (m[1] === '-' ? '−' : '+') === big.sign && m[2] === big.num;   // เทียบข้อความ ไม่เทียบตัวเลข — "+1%" ≠ ".big +0.8%"
+  return { at: cell.at, len: cell.len, text: cell.text, want, mos: big.value, canonical, ok };
 }
 ```
+
+`norm` = helper ที่มีอยู่แล้วใน `tools/derived-values.js` (ยุบช่องว่าง + แปลง −/– เป็น -) — ถ้าชื่อต่างให้ใช้ตัวที่ `readSummaryCell` (Task 8) ใช้อยู่ · **หมายเหตุ idempotent**: healer เขียน `want` ที่มี `−` (U+2212) แต่ตัวตรวจ `norm` ก่อนเทียบ ⇒ เขียนแล้วอ่านกลับต้อง `ok === true` (เคส convergence ใน Step 1 พิสูจน์)
 
 ใน `patchDerived` ก่อน `return { html: out, changes }` (หลัง pass #10):
 
 ```js
   // 11) ช่องสรุป "ส่วนต่างจากราคา" — cron เขียนทั้งช่องเป็นคลังคำคงที่ (ระยะ 1 ข้อ D) · เงียบเมื่อ summaryPlan คืน null
   {
-    const p = summaryPlan(out, price);
+    const p = summaryPlan(out);                 // อ่าน .big ที่ patchReport เขียนไปแล้ว (:550) — ไม่ใช้ price
     if (p && !p.ok) { out = out.slice(0, p.at) + p.want + out.slice(p.at + p.len); changes.push(`ช่องสรุป: "${p.text}" → "${p.want}"`); }
   }
 ```
 
-export เพิ่ม `fmtMos, SUMMARY_CANON_RE, summaryPlan` · `tools/update-prices.js`: `:549` → `const mosTxt = fmtMos(mos);` (import `{ patchDerived, fmtMos }`) · **ลบ `:552-574` ทั้งบล็อก** (คอมเมนต์ + `out = out.replace(/(ส่วนต่างจากราคา…` ) — pass #11 ทำแทนผ่าน `patchDerived(out, newPrice)` ที่ `:592` เรียกอยู่แล้ว
+export เพิ่ม `fmtMos, MOS_BIG_RE, readMosBig, SUMMARY_CANON_RE, summaryPlan` · `tools/update-prices.js`: `:548,:550` regex `.big` สองจุด → `DV.MOS_BIG_RE` (need + replace ใช้ตัวเดียวกัน — `replace` ต้องคง `<div class="big">`/`</div>` จึงเขียน `out.replace(DV.MOS_BIG_RE, '<div class="big">' + mosTxt + '</div>')`) · `:549` → `const mosTxt = fmtMos(mos);` (import `{ patchDerived, fmtMos, MOS_BIG_RE }`) · **ลบ `:552-574` ทั้งบล็อก** (คอมเมนต์ + `out = out.replace(/(ส่วนต่างจากราคา…` ) — pass #11 ทำแทนผ่าน `patchDerived(out, newPrice)` ที่ `:592` เรียกอยู่แล้ว
 
 - [ ] **Step 3: W06 ใหม่** — `test/check-reports.js:544` แทนด้วย:
 
 ```js
-  { id: 'W06', level: 'warn', healer: 'patchDerived#11', label: 'ช่อง "ส่วนต่างจากราคา" = คลังคำคงที่ "MOS ~ ±X%" ตรง MOS', fn: (c) => {
-    if (!(c.px > 0)) return null;
-    const p = DV.summaryPlan(c.html, c.px);
-    if (!p) return null;                        // ไม่มีช่อง/ไม่มี stock-meta.fairValue → ตัวซ่อมก็ไม่แตะ (เงียบคู่)
+  { id: 'W06', level: 'warn', healer: 'patchDerived#11', label: 'ช่อง "ส่วนต่างจากราคา" = คลังคำคงที่ "MOS ~ ±X%" เท่ากับ .big', fn: (c) => {
+    const p = DV.summaryPlan(c.html);
+    if (!p) return null;                        // ไม่มีช่อง/ไม่มี .big → ตัวซ่อมก็ไม่แตะ (เงียบคู่ · .big หาย = E16/E30 ฟ้องอยู่แล้ว)
     if (!p.canonical) return `ข้อความ "${p.text}" ไม่ใช่รูปคลังคำคงที่ — ต้องเป็น "${p.want}" (cron เขียนช่องนี้ทั้งช่องตั้งแต่ระยะ 1 ข้อ D)`;
-    if (!p.ok) return `โชว์ "${p.text}" แต่ MOS จริง = ${p.mos.toFixed(1)}% → "${p.want}"`;
+    if (!p.ok) return `โชว์ "${p.text}" แต่ .big = ${p.mos}% → "${p.want}"`;
     return null;
   } },
 ```
@@ -1285,6 +1319,7 @@ module.exports = { BUCKET, ACTION, FRESH_DAYS, STALE_DAYS, bucketOf, triage, pre
   - `:86` บรรทัดสุดท้ายของ `manualSteps` → `` `${++n}. ต่อไป: npm run queue -- ship --prepatch (push ราคาที่ patch · PREPATCH ${rows.filter((r) => r.bucket === 'PREPATCH').length} ตัวจบตรงนี้) แล้ว npm run queue -- prep <SYM> ทีละตัวเฉพาะ ${llmList(rows).length} ตัวที่ต้องส่ง LLM: ${llmList(rows).join(' ') || '-'}` ``
   - `tools/queue/ship.js` `status()`: เพิ่ม `const prepatchOnly = rows.filter(([, r]) => r.bucket === 'PREPATCH');` · `idle`/`other` ใช้ `['LIGHT', 'FULL']` เดิม แต่ `other` เพิ่มเงื่อนไข `r.bucket !== 'PREPATCH'` · พิมพ์บรรทัดใหม่ `` `pre-patch อย่างเดียว (ไม่ส่ง LLM) ${prepatchOnly.length}: ${prepatchOnly.map(([k, r]) => k + (r.prepatchShippedAt ? '✓' : '')).join(' ') || '-'}` `` · ตัวนับหัว `X/Y` = `pushed.length + prepatchOnly.filter(([, r]) => r.prepatchShippedAt).length` / `rows.length`
   - `shipPrepatch()` ท้ายฟังก์ชัน (แทนคอมเมนต์ "ไม่ปิด issue ที่นี่"): `const st = S.load(); if (!Object.values(st.stocks).some((r) => !r.skip && ['LIGHT', 'FULL'].includes(r.bucket) && !r.shippedAt)) closeIssueIfEmpty();   // รอบที่มีแต่ PREPATCH: ไม่มี ship <SYM> ตามมา ⇒ ต้องปิด issue ตรงนี้` · queue-test: เคส `shipPrepatch` ที่มีอยู่ (ค้นหา `shipPrepatch`) เพิ่ม assertion ว่าเรียก `closeIssueIfEmpty` เมื่อ state มีแต่ PREPATCH (stub `gh` ผ่าน `PATH` ตามวิธีที่ไฟล์ใช้อยู่)
+  - `tools/flags-issue-body.js` (ข้อความ issue คิว re-analysis ที่ cron/canary เขียน — ยังบอกว่า flip = UPDATE-LIGHT): แก้บรรทัดของ `mos-sign-flip` เป็น "pre-patch อย่างเดียว (runbook) — ไม่ต้องวิเคราะห์" · ก่อนปิด task: `rtk proxy grep -rn mos-sign-flip tools docs .claude README.md CLAUDE.md | grep -v superpowers/` ทุกบรรทัดต้องสอดคล้องกับ PREPATCH
   - `SKILL.md:18` → `- \`mos-sign-flip\` → **ไม่ส่ง worker** (ระยะ 1 ข้อ D): runbook pre-patch ราคา + \`ship --prepatch\` จบ — cron เป็นเจ้าของช่องสรุป · preflight ยกเป็น UPDATE-LIGHT เองเมื่ออายุ >90 วัน หรือมีงบออกหลังวันวิเคราะห์ (แล้ว prep ยกเป็น UPDATE ถ้า EPS ต่าง >2%) · \`drift-gt-*\` → UPDATE-LIGHT` · `CLAUDE.md:128` bullet "เคลียร์คิว" เติมหลัง `ship --prepatch`: `(flip = จบตรงนี้ ไม่ spawn — ข้อ D)` · `docs/price-refresh.md:128` แถว `mos-sign-flip` คอลัมน์ "ทำอะไรต่อ" → "pre-patch อย่างเดียว (PREPATCH) · ยกเป็น UPDATE-LIGHT เมื่ออายุ >90 วัน/งบออก"
 
 - [ ] **Step 4: รันให้ผ่าน + Commit** — `node test/queue-test.js` · `npm run verify`
@@ -1592,7 +1627,7 @@ if (require.main === module) main().catch((e) => { console.error('✗', e.messag
 
 - [ ] **Step 4: รันจริงครั้งแรก (network) + ตัดสิน fallback** — `rtk proxy node tools/earnings-calendar.js` (dry-run · ~5 นาที) → อ่านบรรทัด stats: `nodate/total ≤ 0.20` → `--write` แล้ว commit `earnings-calendar.json` + workflow (Step 5) · `> 0.20` → ไม่ commit json/yml · เพิ่ม open-item · Step 3 ยังคงอยู่ (calendar ไม่มี = null ทั้งหมด = อายุอย่างเดียว) · บันทึกตัวเลขจริงใน PR body
 
-- [ ] **Step 5: workflow (เฉพาะเมื่อผ่าน fallback)** — `.github/workflows/earnings-calendar.yml` (โครงเดียวกับ `fundamentals-canary.yml`: จันทร์ 02:40 UTC · `permissions: contents: write` · `concurrency: group: earnings-calendar` · steps: checkout → setup-node 20 → `node tools/earnings-calendar.js --write` → commit `earnings-calendar.json` ด้วย identity bot แบบ `update-prices.yml:52-71` (scoped `git add earnings-calendar.json` · retry pull --rebase 3 ครั้ง)) · `docs/price-refresh.md` หัวข้อใหม่ 6 บรรทัดใต้ Canary: ไฟล์ · แหล่ง · roll · preflight ใช้อย่างไร · fallback
+- [ ] **Step 5: workflow (เฉพาะเมื่อผ่าน fallback)** — `.github/workflows/earnings-calendar.yml` (โครงเดียวกับ `fundamentals-canary.yml` แต่ `timeout-minutes: 45` — 908 call × (300 ms + latency) ≈ 20–40 นาที · canary เดิม 15 นาทีไม่พอ · จันทร์ 02:40 UTC · `permissions: contents: write` · `concurrency: group: earnings-calendar` · steps: checkout → setup-node 20 → `node tools/earnings-calendar.js --write` → commit `earnings-calendar.json` ด้วย identity bot แบบ `update-prices.yml:52-71` (scoped `git add earnings-calendar.json` · retry pull --rebase 3 ครั้ง)) · `docs/price-refresh.md` หัวข้อใหม่ 6 บรรทัดใต้ Canary: ไฟล์ · แหล่ง · roll · preflight ใช้อย่างไร · fallback
 
 - [ ] **Step 6: รันให้ผ่าน + Commit + เปิด PR #C**
 
@@ -1635,7 +1670,7 @@ PRBODY
 - Produces: `node tools/gen-docs.js` (เขียน) · `node tools/gen-docs.js --check` (exit 1 + รายชื่อไฟล์ที่ไม่ตรง) · export `{ render(), check() → [{ file, why }] , TARGETS }`
 - marker 5 ชนิด (HTML comment — มองไม่เห็นตอน render markdown · ใน shell script ใช้ `# gen:` ):
   - `<!-- gen:checks-table -->…<!-- /gen:checks-table -->` — ตาราง `| code | level | healer | ตรวจอะไร | เกณฑ์ + วิธีแก้ (ย่อ) |` — 4 คอลัมน์แรกจาก `CHECKS` (`id` · `level` · `healer || '—'` · `label`) เรียงตาม id (E ก่อน W) · **คอลัมน์ที่ 5 = prose ของคน** gen-docs อ่านค่าเดิมจากตารางที่มีอยู่ตาม `code` แล้วคงไว้ (รหัสใหม่ → ช่องว่าง `_(เติม)_` · รหัสที่หายจากโค้ด → แถวหาย)
-  - `<!-- gen:counts -->47 error + 15 warning<!-- /gen:counts -->` (นับจาก `CHECKS`)
+  - `<!-- gen:counts -->47 error + 18 warning<!-- /gen:counts -->` (นับจาก `CHECKS` — ณ Part D: 47 E หลัง Task 3 · 18 W หลัง Task 9 เพิ่ม W21/W22/W23 · Task 11 แทน W06 ใน id เดิม)
   - `<!-- gen:verify-steps -->14<!-- /gen:verify-steps -->` (นับจาก `package.json` `verify`) · `<!-- gen:verify-cron-steps -->5<!-- /gen:verify-cron-steps -->`
   - `<!-- gen:verify-chain -->\`update-prices-test\` → … → \`check-site\`<!-- /gen:verify-chain -->` (ชื่อขั้นจาก basename ตัดนามสกุล · `build.js` → `build`)
   - pre-push: `# gen:steps` … `# /gen:steps` — บล็อก `echo "<emoji> pre-push i/N: <label>…"` + `node <step> >/dev/null || block "<label>"` ต่อขั้น · `STEP_LABELS` ใน gen-docs = `{ 'test/update-prices-test.js': ['💰', 'unit-test cron ราคา (update-prices-test)', 'update-prices unit gate'], … }` ครบทุกขั้นปัจจุบัน 14 ขั้น (คัดจาก hook เดิม `:20-67` ตรง ๆ) · ขั้นใหม่ที่ไม่มี label → `check()` ล้มพร้อมบอกให้เติม
@@ -1686,7 +1721,8 @@ const sortId = (a, b) => (a.id[0] === b.id[0] ? a.id.localeCompare(b.id) : (a.id
 function checksTable(existing) {
   // คอลัมน์ที่ 5 (prose ของคน) อ่านจากตารางเดิมตาม code
   const prose = {};
-  for (const line of String(existing || '').split('\n')) { const m = line.match(/^\|\s*([EW]\d\d)\s*\|(?:[^|]*\|){3}\s*(.*?)\s*\|\s*$/); if (m) prose[m[1]] = m[2]; }
+  // ตารางเดิมมี 4 คอลัมน์ (ก่อน gen-docs) หรือ 5 (หลัง) — เอาคอลัมน์สุดท้ายเสมอ ไม่ผูกจำนวนคอลัมน์
+  for (const line of String(existing || '').split('\n')) { const c = line.split('|').map((x) => x.trim()); if (c.length >= 4 && /^[EW]\d\d$/.test(c[1])) prose[c[1]] = c[c.length - 2]; }
   const rows = [...CHECKS].sort(sortId).map((c) => `| ${c.id} | ${c.level} | ${c.healer || '—'} | ${c.label} | ${prose[c.id] || '_(เติม)_'} |`);
   return ['| code | level | healer | ตรวจอะไร | เกณฑ์ + วิธีแก้ (ย่อ) |', '|---|---|---|---|---|', ...rows].join('\n');
 }
@@ -1737,8 +1773,8 @@ if (require.main === module) {
 ```
 
 - [ ] **Step 2: ใส่ marker** —
-  - `docs/quality-gate.md:167` → `ตรวจ source reports/<SYMBOL>.html ทีละไฟล์ — <!-- gen:counts -->47 error + 15 warning<!-- /gen:counts --> (W16/W17/W19/W20 เป็น error ตั้งแต่ระยะ 1 — คงชื่อ W)` · `:169` หัวข้อ "### ตารางอ้างอิง code ครบชุด" คงไว้ · แทนบรรทัด `:172-236` (ตารางเดิม) ด้วย `<!-- gen:checks-table -->` + ตารางเดิม + `<!-- /gen:checks-table -->` (gen-docs จะแปลงเป็น 5 คอลัมน์และคง prose) · `:171` ประโยคอธิบาย 19 → ลบ (ตารางบอก level แล้ว) · `:6,9` "14 ขั้น" → `<!-- gen:verify-steps -->14<!-- /gen:verify-steps --> ขั้น`
-  - `CLAUDE.md:108` → `<!-- gen:verify-steps -->14<!-- /gen:verify-steps --> ขั้น ต้องผ่านทั้งหมดก่อน push (pre-push hook บังคับซ้ำ) · cron ใช้ชุดย่อย \`verify:cron\` <!-- gen:verify-cron-steps -->5<!-- /gen:verify-cron-steps --> ขั้น …` · `:109` → `<!-- gen:verify-chain -->…<!-- /gen:verify-chain --> (check-reports = <!-- gen:counts -->47 error + 15 warning<!-- /gen:counts -->)` (ย้ายวงเล็บออกจากกลาง chain เพราะ chain ทั้งเส้น generate)
+  - `docs/quality-gate.md:167` → `ตรวจ source reports/<SYMBOL>.html ทีละไฟล์ — <!-- gen:counts -->47 error + 18 warning<!-- /gen:counts --> (W16/W17/W19/W20 เป็น error ตั้งแต่ระยะ 1 — คงชื่อ W)` · `:169` หัวข้อ "### ตารางอ้างอิง code ครบชุด" คงไว้ · แทนบรรทัด `:172-236` (ตารางเดิม) ด้วย `<!-- gen:checks-table -->` + ตารางเดิม + `<!-- /gen:checks-table -->` (gen-docs จะแปลงเป็น 5 คอลัมน์และคง prose) · `:171` ประโยคอธิบาย 19 → ลบ (ตารางบอก level แล้ว) · `:6,9` "14 ขั้น" → `<!-- gen:verify-steps -->14<!-- /gen:verify-steps --> ขั้น`
+  - `CLAUDE.md:108` → `<!-- gen:verify-steps -->14<!-- /gen:verify-steps --> ขั้น ต้องผ่านทั้งหมดก่อน push (pre-push hook บังคับซ้ำ) · cron ใช้ชุดย่อย \`verify:cron\` <!-- gen:verify-cron-steps -->5<!-- /gen:verify-cron-steps --> ขั้น …` · `:109` → `<!-- gen:verify-chain -->…<!-- /gen:verify-chain --> (check-reports = <!-- gen:counts -->47 error + 18 warning<!-- /gen:counts -->)` (ย้ายวงเล็บออกจากกลาง chain เพราะ chain ทั้งเส้น generate)
   - `README.md` / `docs/price-refresh.md:14`: ทุกที่ที่มี "N ขั้น" ของ verify → marker `verify-steps` · "5 ขั้น" ของ verify:cron → marker `verify-cron-steps`
   - `.githooks/pre-push`: บรรทัด 20-67 ครอบด้วย `# gen:steps` / `# /gen:steps` (คอมเมนต์ 2 บรรทัดเหนือขั้น 1 ย้ายขึ้นไปเหนือ marker) · คอมเมนต์ `:4` → `# ★ บล็อกขั้นข้างล่าง generate จาก package.json ด้วย node tools/gen-docs.js — ห้ามแก้มือ`
 
@@ -1853,7 +1889,7 @@ git commit -m "docs: orchestration.md เหลือกลไก courier/analyz
 Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>" && git push -u origin claude/audit-p1-d-docs-gen
 gh pr create --base claude/audit-p1-c-queue-policy --title "audit ระยะ 1 ส่วน D: ตาราง/ตัวเลข gate generate จากโค้ด · docs-test เป็น verify ขั้น 15 · orchestration.md ลดซ้ำ (WS8 ข้อ 3/4)" --body-file - <<'PRBODY'
 ## สรุป
-- `tools/gen-docs.js`: ตาราง E/W (คง prose ของคน) · 47/15 · จำนวนขั้น verify/verify:cron · บล็อกขั้นใน pre-push — generate จาก CHECKS + package.json (marker ใน 5 ไฟล์)
+- `tools/gen-docs.js`: ตาราง E/W (คง prose ของคน) · 47/18 · จำนวนขั้น verify/verify:cron · บล็อกขั้นใน pre-push — generate จาก CHECKS + package.json (marker ใน 5 ไฟล์)
 - `test/docs-test.js` = verify ขั้น 15: gen-docs ตรงโค้ด · วลีที่ยกเลิก 17 แพทเทิร์น = 0 · ตัวเลขพิมพ์มือนอก marker = 0
 - `docs/orchestration.md` เหลือกลไก (courier · analyze-wave · ต้นทุน) — กฎอยู่ CLAUDE.md ที่เดียว (−<N> บรรทัด)
 
@@ -2152,7 +2188,7 @@ Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>"
 ### Task 26: open-items + spec/plan status + เปิด PR #F
 
 **Files:**
-- Modify: `docs/open-items.md` (ตาราง "ปิดแล้ว (ระยะ 1)" ครบ: #2 (f49 W22) · #4 · #7 · #8 · #9 (f41 W22) · #10 · #13 · #14 (roe rule) · #19 · #22 · #23 · ข้อใหม่จาก fallback ถ้ามี) · `docs/superpowers/specs/2026-09-11-stock-analyzer-audit-design.md` (หัวไฟล์: ระยะ 1 ผ่าน/ไม่ผ่าน + ลิงก์ phase1-exit)
+- Modify: `docs/open-items.md` (ตาราง "ปิดแล้ว (ระยะ 1)" ครบ: #2 (f49 W22) · #4 · #7 · #8 · #9 (f41 W23) · #10 · #13 · #14 (roe rule) · #19 · #22 · #23 · ข้อใหม่จาก fallback ถ้ามี) · `docs/superpowers/specs/2026-09-11-stock-analyzer-audit-design.md` (หัวไฟล์: ระยะ 1 ผ่าน/ไม่ผ่าน + ลิงก์ phase1-exit)
 - Modify: `.superpowers/sdd/progress.md` (ledger — git-excluded)
 
 - [ ] **Step 1: อัปเดต open-items** — ย้ายแถวที่ปิดพร้อม "ปิดโดย Task N (PR #x)" · ที่เหลือ (#1 #5 #6 #11 #15 #16 #17 #20) คอลัมน์ "ปิดใน" ยังถูกต้องไหม (ระยะ 2/3/เจ้าของ) · W22 หนี้ที่เพิ่งเห็น = ข้อใหม่ "W22 ยิง N ใบ (กรอบ 52wk ค้าง · ป้าย FV) — ระยะ 3 fix-on-touch"
@@ -2185,7 +2221,8 @@ PRBODY
 ## Self-review (ทำแล้วก่อน commit แผน)
 
 - **Spec coverage ระยะ 1 (§6 แถว "1 · ปิดวงจรค้นพบ"):** WS1 manifest + coverage + parser เดียว → Task 6–9 ✓ · WS2 (2) ประตู cron → Task 1 ✓ · (3) E-policy เป็น check → Task 2 ✓ · (4) W→E → Task 3 + sweep Task 5/25 ✓ · (6) UNVERIFIED WRITE → Task 9 (W22 pair + log found:false — **ไม่ใช่ hard need() ตาม advisor**) ✓ · WS9(a) → Task 21–24 (6O · SA cap · Δ SA/Yahoo มีอยู่แล้วใน CROSS-VERIFY · fwd EPS FY · EPS ≤0 ในมัธยฐาน (เทส Task 23) · fixture prep/medians) ✓ · WS6 trigger ตามปฏิทิน + dead-band → Task 10, 13, 14, 17 ✓ · WS6 (1) cron เป็นเจ้าของช่องสรุป → Task 11–12 ✓ · WS8 (3) generate → Task 18–19 ✓ · (4) เจ้าของเดียว → Task 20 ✓ · (7) test:prep → Task 23 ✓ · WS4 #23 → Task 4 ✓ · #22 → Task 15 ✓ · เกณฑ์จบ 5 ข้อ → Task 25 ✓
-- **ไม่ได้ทำในระยะ 1 (ตั้งใจ · อยู่ตารางแผนถัดไป):** f64 ราคาใน prose (ระยะ 2 token) · W21/W22 → E (ระยะ 2 เมื่อมี healer) · WS9(b) · WS7 · open-items #1 #5 #6 #11 #20
+- **ไม่ได้ทำในระยะ 1 (ตั้งใจ · อยู่ตารางแผนถัดไป):** f64 ราคาใน prose (ระยะ 2 token) · W21/W22/W23 → E (ระยะ 2 เมื่อมี healer) · WS9(b) · WS7 · open-items #1 #5 #6 #11 #20
 - **Placeholder scan:** ไม่มี TBD/TODO · ค่าที่ต้องวัดตอนรัน (census · จำนวนใบที่กวาด · ครอบคลุมปฏิทิน · % ลดของคิว) ระบุคำสั่งวัด + ที่บันทึก + เกณฑ์ตัดสิน · Task 22 มี fallback ชัดเมื่อ probe ไม่เจอโครง
+- **รอบ advisor หลังเขียน (12 ก.ย. 69 · แก้แล้วในไฟล์นี้):** T11 `summaryPlan` อ่าน `.big` ตรง ๆ ไม่คำนวณจาก FV (สำเนา FV ต่างได้ ≤1% ⇒ ปัดคนละจำนวนเต็ม) · T9 แยก W23 (คู่ staleness f41/f55) ออกจาก W22 (คู่ consistency) กัน f41 กลบบั๊กจริง + Step 7b นับ 47/18 · T6 parser-lint จับเฉพาะรูป regex (ไม่จับ HTML/throw string) + skeleton-test:177 เข้าตาราง + diff ผล gate ก่อน/หลัง (PX_RE บังคับสกุลเงิน) · T18 อ่านคอลัมน์ prose ด้วย split ไม่ผูก 4/5 คอลัมน์ · T17 workflow `timeout-minutes: 45` · Part A base = สาขาแผน · T5 sweep คำนวณ dateParts จากวันนี้ · T13 ripple `tools/flags-issue-body.js` + grep · T10 แก้ memory `price-refresh-cron.md` · T4 ตัด assertion typo
 - **ชื่อ/ลายเซ็นข้าม task:** `healer` field (T2) ← T3, T11, T18 · `RM.readStockMetaState/readReportData/readHeaderPrice/PX_PARTS_RE/RANGE52_RE/CUR_SRC` (T6) ← T8, T9, T11 · `DV.scenarioColumns/SCN_COL_OPEN` (T7) ← T8 (f37/f39 ผ่าน ctx.scenarios) · `DV.readSummaryCell` (T8) → `summaryPlan/fmtMos` (T11) ← W06, pass #11, f17/f18 · `MF.FIELDS/extractAll/coverage/checkPairs` (T8/T9) ← W21/W22, spotcheck, postcheck (T9, T24 f55) · `T.llmList/STALE_DAYS/escalated` (T13) ← T14, T17, replay (T25) · `plan(flags, today, opts)` (T14) ← T17 · `resolveQueueDir` (T15) · `parseArgs` (T16) ← T14 `--age` · `EC.load/build/roll` (T17) ← preflight · `gen-docs check()/STEP_LABELS` (T18) ← T19, T23 · `F.entityMismatchLine/capLine/fromForecast/forecastLine/yahooSession` (T17, T21, T22) · `oneSymbol(spec, th, deps)` (T23) — ตรงกันทุกจุดที่อ้าง
 - **จำนวนขั้น verify:** 14 (เริ่ม) → 15 (T19 docs-test) → 16 (T23 prep-stock-test) — ทั้งสองครั้งแก้ package.json + gen-docs (pre-push) + queue-test ยืนยัน
