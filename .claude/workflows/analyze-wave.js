@@ -1,15 +1,18 @@
 export const meta = {
   name: 'analyze-wave',
-  description: 'รันเวฟวิเคราะห์หุ้น: worker 1 ตัว/หุ้น แบบ sequential พร้อมคุม effort ต่อ worker (default medium)',
+  description: 'รันวิเคราะห์หุ้น 1 ตัว/run (บังคับในโค้ด) พร้อมคุม effort/model ของ worker — รันหลาย run ขนานได้',
   whenToUse: 'controller ใช้แทน Agent tool เมื่อต้องการตั้ง effort ให้ worker (งาน mechanical เช่น UPDATE-LIGHT) — args = { stocks: [{label, prompt, model?, effort?}], effort?, model? } · prompt เตรียมจาก _template/agent-prompt.md · ★ `stocks[]` ต้องมี **1 ตัวเสมอ** — ข้อห้ามจริงคือ "หลายหุ้นใน 1 run" ไม่ใช่ "หลาย run" · **รันหลาย run ขนานกันได้** (1 หุ้น/run) แต่จำนวนที่ขนานเป็นดุลพินิจ เจอ rate limit ให้หาร N ครึ่ง · ก่อนขนานต้อง: controller pre-assign สีแบรนด์เอง (seeds.json race) + verify/push รายแบตช์ (docs/orchestration.md §4–5)',
   phases: [{ title: 'Analyze' }],
 }
 
-// sequential ตามกติกา CLAUDE.md §3 — ห้าม parallel (เคยพัง rate limit ทั้งเวฟใน W19–W21)
 // args อาจมาเป็น JSON string (เรียกผ่าน Skill tool / controller stringify) — เกิดจริง 12 ก.ค. ล้มทั้ง 3 call จน fallback ไป Agent tool แบบไม่มี effort control
 let a = args
 if (typeof a === 'string') { try { a = JSON.parse(a) } catch (e) { a = null } }
 const stocks = (a && a.stocks) || []
+// ★ ข้อห้ามจริง = "หลายหุ้นใน 1 run" (เลขปนข้ามหุ้น — ตัวร้าย #1) — เดิมเป็นแค่ข้อความใน whenToUse (docs-audit S13) ตอนนี้บังคับ
+if (Array.isArray(stocks) && stocks.length > 1) {
+  return { error: `stocks[] ต้องมี 1 ตัวเสมอ (ได้ ${stocks.length}) — spawn หลาย run ขนานแทน (CLAUDE.md §3.3)` }
+}
 if (!Array.isArray(stocks) || !stocks.length) {
   return { error: 'ต้องส่ง args.stocks = [{label, prompt, model?, effort?}] (object หรือ JSON string ก็ได้) — prompt เต็มจาก _template/agent-prompt.md' }
 }

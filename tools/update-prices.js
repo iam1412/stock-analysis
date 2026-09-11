@@ -628,7 +628,7 @@ function loadFlags(file = FLAGS) {
 // เหตุผลที่เครื่องมืออื่นเป็นเจ้าของ (tools/dead-ticker-canary.js รายสัปดาห์) — cron ราคารายวัน
 // ตรวจเรื่องนี้เองไม่ได้ ห้ามเคลียร์ทิ้งเวลาเห็นว่า "ตัวนี้ไม่มี freeze รอบนี้" ไม่งั้น canary เขียน
 // flag คืนวันจันทร์ แล้วเช้าวันอังคารหายเกลี้ยง (หุ้นตายกลับไปเงียบเหมือนเดิม)
-// ถอนได้ 3 ทาง: TradingView เจอ ticker กลับมา · รายงานถูกลบ · `--force <SYM>` (ยืนยันด้วยมือ)
+// ถอนได้ 3 ทาง: TradingView เจอ ticker กลับมา · รายงานถูกลบ · `--alive <SYM>` (ยืนยันด้วยมือ — ไม่ใช่ --force: SKILL สั่ง --force ทุก re-analysis)
 // — ทั้งสามทางถอนที่ตัวเรียก (prevFlags) ก่อนถึง mergeFlags ตัวนี้จึงกันแค่การเคลียร์แบบเงียบ ๆ
 const EXTERNAL_REASONS = new Set(['not-on-exchange']);
 
