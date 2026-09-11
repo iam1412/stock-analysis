@@ -305,6 +305,81 @@ process.env.QUEUE_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'queue-'));   // s
   ok(/^pre-patch push แล้ว/.test(lines[7]), 'status: บรรทัดสุดท้าย = pre-patch push แล้ว', lines[7]);
 }
 
+// ── 13) preflight: parseGateFailures — --force ข้าม quarantine ของ cron ⇒ ต้องยิง gate เองแล้วคืนไฟล์ใบที่ตก (final review 1) ──
+{
+  const P = require('../tools/queue/preflight.js');
+  const OUT = [
+    '🔍 ตรวจคุณภาพรายงาน 2 ไฟล์ (reports/)',
+    '',
+    '✓ AAA.html      43/43 ผ่าน',
+    '✗ BBB.html      41/43 ผ่าน — 2 ปัญหา',
+    '    ✗ [E15] ราคา: ราคาในใบไม่ตรง stock-meta',
+    '    ✗ [E41] การ์ด P/E: ค้าง',
+    '',
+    'สรุป: 1/2 ไฟล์ผ่าน • error 2 • warning 0',
+  ].join('\n');
+  const f = P.parseGateFailures(OUT);
+  ok(f.join(',') === 'BBB', 'parseGateFailures: เอาเฉพาะบรรทัดสรุปต่อไฟล์ ไม่นับบรรทัดรายละเอียด E-code ที่ย่อหน้า', f.join(','));
+  ok(P.parseGateFailures('✓ AAA.html      43/43 ผ่าน').length === 0, 'parseGateFailures: ผ่านหมด → ไม่มีใบที่ต้องคืนไฟล์');
+  // แถวที่โดนคืนไฟล์ต้องโผล่ในขั้นที่ต้องทำเอง (คลาสเดียวกับ REJECTED — แก้ใบเอง ไม่ spawn agent) โดยยังคุมเพดาน ≤5
+  const rows = [
+    { symbol: 'US1', reason: 'mos-sign-flip', bucket: 'LIGHT', currency: 'USD', action: 'x', skip: null, prePatchRejected: '2026-09-12' },
+    { symbol: 'US4', reason: 'fetch-failed', bucket: 'PLUMBING', currency: 'USD', action: 'x', skip: null },
+    { symbol: 'US2', reason: 'not-on-exchange', bucket: 'DELIST', currency: 'USD', action: 'x', skip: null },
+  ];
+  const man = P.manualSteps(rows);
+  ok(/US1\[gate ตกหลัง pre-patch\]/.test(man), 'manualSteps: แถวที่ pre-patch แล้ว gate ตก ขึ้นป้าย [gate ตกหลัง pre-patch]', man);
+  ok(/US4\[fetch-failed\]/.test(man), 'manualSteps: PLUMBING ยังใช้ reason เดิมเป็นป้าย', man);
+  ok(man.split('\n').filter((l) => /^\d+\./.test(l)).length <= 5, 'manualSteps: รวม prePatchRejected แล้วยัง ≤5 ขั้น (KPI ระยะ 0)', man);
+}
+
+// ── 14) ship: ไฟล์ที่ลบ (DELIST) ต้องไม่ถูกกวาดเข้า commit "price: …" (final review 3) ──
+{
+  const Sh = require('../tools/queue/ship.js');
+  const rows = Sh.parsePorcelain([' D reports/X.html', 'D  reports/Y.html', ' M reports/A.html', '?? reports/B.html'].join('\n'));
+  ok(rows[0].path === 'reports/X.html' && rows[0].isNew === false && rows[0].deleted === true, 'parsePorcelain: " D" = ลบไฟล์ (unstaged)', JSON.stringify(rows[0]));
+  ok(rows[1].deleted === true, 'parsePorcelain: "D " = ลบไฟล์ (staged)', JSON.stringify(rows[1]));
+  ok(rows[2].deleted === false && rows[3].deleted === false, 'parsePorcelain: แก้ไข/ไฟล์ใหม่ ไม่ใช่ไฟล์ที่ลบ', JSON.stringify(rows.slice(2)));
+  const { candidates, deleted } = Sh.prepatchCandidates(rows);
+  ok(deleted.map((e) => e.path).join(',') === 'reports/X.html,reports/Y.html', 'prepatchCandidates: แยกไฟล์ที่ลบออกมา', JSON.stringify(deleted));
+  ok(candidates.map((e) => e.path).join(',') === 'reports/A.html,reports/B.html', 'prepatchCandidates: เหลือเฉพาะใบที่ยังมีไฟล์ (เข้า changed/git add)', JSON.stringify(candidates));
+  // ไฟล์ที่ลบเข้า prepatchBlockers ไม่ได้ — อ่าน footer ทั้งสองข้างไม่ได้ จะกลายเป็น unreadable ปลอมทุกใบ
+  const b = Sh.prepatchBlockers(candidates.map((e) => ({ path: e.path, untracked: e.isNew, headFooterISO: '2026-09-10', workFooterISO: '2026-09-10' })));
+  ok(!b.unreadable.length && b.blocked.join(',') === 'B', 'prepatchBlockers: ไม่เคยได้รับไฟล์ที่ลบ (ไม่มี unreadable ปลอม)', JSON.stringify(b));
+}
+
+// ── 14b) ship: pendingCommitFor — stage ว่างเพราะ commit ไปแล้วแต่ push ล้ม ≠ worker ไม่ได้เขียนไฟล์ (final review 5) ──
+{
+  const Sh = require('../tools/queue/ship.js');
+  const log = 'analyze: update KLAC — UPDATE-LIGHT (MOS +3.2%)\nchore: อื่น ๆ';
+  ok(Sh.pendingCommitFor('KLAC', log) === true, 'pendingCommitFor: เจอ commit ของหุ้นตัวนี้ที่ยังไม่ push → รันซ้ำ = push ต่อ');
+  ok(Sh.pendingCommitFor('LRCX', log) === false, 'pendingCommitFor: หุ้นตัวอื่นใน log ไม่นับ');
+  ok(Sh.pendingCommitFor('KLA', log) === false, 'pendingCommitFor: \\b กัน prefix ชนกัน (KLA ≠ KLAC)');
+  ok(Sh.pendingCommitFor('NEWCO', 'analyze: add NEWCO — NEW (MOS −12%)') === true, 'pendingCommitFor: โหมด NEW ใช้ "add"');
+  ok(Sh.pendingCommitFor('BRK.B', 'analyze: update BRK.B — UPDATE') === true && Sh.pendingCommitFor('BRKXB', 'analyze: update BRK.B — UPDATE') === false, 'pendingCommitFor: escape จุดใน ticker (BRK.B ไม่ใช่ wildcard)');
+  ok(Sh.pendingCommitFor('KLAC', '') === false && Sh.pendingCommitFor('KLAC', null) === false, 'pendingCommitFor: log ว่าง/null → false');
+}
+
+// ── 15) dispatcher: ship <SYM> + --prepatch พร้อมกัน = พิมพ์ผิด ห้ามเดาให้ (final review · ต้องตกก่อนเข้า ship.js) ──
+{
+  const sh = require('../tools/queue/sh.js');
+  const r = sh.run('node', ['tools/queue.js', 'ship', 'AAA', '--prepatch']);
+  ok(r.code === 1 && /อย่างใดอย่างหนึ่ง/.test(r.err), 'queue.js ship: <SYM> + --prepatch → exit 1 + บอกให้เลือกอย่างเดียว', (r.err || r.out).slice(0, 200));
+  ok(!/verify|git add/.test(r.out), 'queue.js ship: ตกก่อนเข้า ship path จริง (ไม่มีร่องรอย verify/git add)', r.out.slice(0, 200));
+}
+
+// ── 16) prep extraBlock: ยังไม่ pre-patch ต้องบอกด้วยว่าตลาดเปิดอยู่ไหม (--force ข้าม guard intraday เอง) ──
+{
+  const Pp = require('../tools/queue/prep.js');
+  const base = { sym: 'AAA', mode: 'UPDATE', escalated: false, oldPrice: 10, price: 11, baseEPS: 1, epsTTM: 1, epsScreen: 0, snap: [], medWarn: [], hard: false };
+  const openTxt = Pp.extraBlock({ ...base, prePatched: null, marketOpen: true });
+  ok(/intraday/.test(openTxt) && /update-prices.js --write --force AAA/.test(openTxt), 'extraBlock: ยังไม่ patch + ตลาดเปิด → เตือน intraday', openTxt.split('\n')[1]);
+  const closedTxt = Pp.extraBlock({ ...base, prePatched: null, marketOpen: false });
+  ok(/ตลาดปิดแล้ว รันได้/.test(closedTxt) && !/intraday/.test(closedTxt), 'extraBlock: ยังไม่ patch + ตลาดปิด → รันได้', closedTxt.split('\n')[1]);
+  const patched = Pp.extraBlock({ ...base, prePatched: '2026-09-12', marketOpen: true });
+  ok(/ห้ามรัน update-prices ซ้ำ/.test(patched) && !/intraday/.test(patched), 'extraBlock: patch แล้ว → ห้ามรันซ้ำ ไม่ต้องพูดถึงตลาด', patched.split('\n')[1]);
+}
+
 // ─────────────────────────── (Task 10–14 แทรกเทสเหนือบรรทัดนี้) ───────────────────────────
 console.log(`queue-test: ${nOK}/${nOK + nFail} ผ่าน`);
 if (nFail) { console.log('❌ runbook มีบั๊ก'); process.exit(1); }

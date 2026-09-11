@@ -13,6 +13,7 @@ const { run, ROOT } = require('./sh.js');
 const S = require('./state.js');
 const { todayBangkok } = require('./footer-date.js');
 const { readStockMeta } = require('../report-meta.js');
+const { usSessionOpen, setSessionOpen } = require('./market.js');
 const DV = require('../derived-values.js');
 const T = require('../tag-lib.js');
 
@@ -138,7 +139,7 @@ function extraBlock(i) {
   const L = ['=== บันทึกจาก runbook (controller) — อ่านก่อนเริ่ม ==='];
   L.push(`- โหมด **${i.mode}** · ${i.prePatched
     ? `ราคาในไฟล์ patch แล้ว ${i.prePatched} (${i.oldPrice ?? '?'} → ${i.price ?? '?'}) ⇒ **ห้ามรัน update-prices ซ้ำ** ยกเว้น SKILL 5B ข้อ 3 (แก้ fairValue — ปลอดภัยแล้วเพราะ lock)`
-    : `ราคายังไม่ได้ pre-patch (ตลาดเปิด/ข้าม) — โหมด UPDATE รัน \`node tools/update-prices.js --write --force ${i.sym}\` ตาม SKILL STEP 1 ได้`}`);
+    : `ราคายังไม่ได้ pre-patch — โหมด UPDATE รัน \`node tools/update-prices.js --write --force ${i.sym}\` ตาม SKILL STEP 1 ได้ · ตลาด${i.marketOpen ? 'เปิดอยู่ — ราคาจะเป็น intraday รอปิดตลาดก่อนรัน' : 'ปิดแล้ว รันได้'}`}`);
   if (i.epsScreen != null) L.push(`- EPS ในใบ ${i.baseEPS} vs vendor ${i.epsTTM} = ต่าง ${i.epsScreen.toFixed(1)}% → ${i.epsScreen <= EPS_SCREEN_PCT
     ? 'FV เดิมยืนได้ (UPDATE-LIGHT ตาม 5C ข้อ 2)'
     : i.escalated
@@ -216,7 +217,8 @@ async function prep(sym, opts) {
   // 7. ประกอบ prompt
   const prompt = assemblePrompt(fs.readFileSync(TEMPLATE, 'utf8'),
     { SYMBOL: sym, MARKET: th ? 'TH' : 'US', MODE: mode, WORKTREE: ROOT, CURRENT_TAGS: tags, MEDIANS: med.text, FUNDAMENTALS: ps.out },
-    extraBlock({ sym, mode, escalated, prePatched: rec.prePatched, oldPrice: rec.oldPrice, price: sm && sm.price, baseEPS: ctx && ctx.baseEPS, epsTTM: vend.epsTTM, epsScreen, snap, medWarn: med.warn, hard: hs.hard, hardWhy: hs.why }));
+    // ยังไม่ pre-patch = worker ต้องรัน update-prices เอง ⇒ ต้องบอกด้วยว่าตลาดเปิดอยู่ไหม (--force ข้าม guard intraday เอง)
+    extraBlock({ sym, mode, escalated, prePatched: rec.prePatched, marketOpen: th ? setSessionOpen() : usSessionOpen(), oldPrice: rec.oldPrice, price: sm && sm.price, baseEPS: ctx && ctx.baseEPS, epsTTM: vend.epsTTM, epsScreen, snap, medWarn: med.warn, hard: hs.hard, hardWhy: hs.why }));
   fs.mkdirSync(S.PREP_DIR, { recursive: true });
   const file = path.join(S.PREP_DIR, sym + '.md');
   fs.writeFileSync(file, prompt);

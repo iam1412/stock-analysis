@@ -46,6 +46,25 @@ function closeIssueIfEmpty() {
   console.log(c.code === 0 ? `✅ ปิด issue #${num}` : `⚠ ปิด issue #${num} ไม่สำเร็จ: ${c.err.slice(0, 200)}`);
 }
 
+/** commit ของหุ้นตัวนี้มีอยู่ใน log ที่ยังไม่ push ไหม (ส่วนบริสุทธิ์ — รับข้อความ `git log --format=%s` มาตรง ๆ)
+ *  ใช้ตอน `ship <SYM>` รอบสองหลัง push ล้ม: stage ว่างเพราะ commit ไปแล้ว ไม่ใช่เพราะ worker ไม่ได้เขียนไฟล์ */
+function pendingCommitFor(sym, logText) {
+  const esc = String(sym).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  return new RegExp(`^analyze: (add|update) ${esc}\\b`, 'm').test(String(logText || ''));
+}
+/** commit ที่ยังไม่ push ของรอบนี้ (upstream ไม่มี → เทียบ origin/main) */
+function unpushedSubjects() {
+  const up = run('git', ['log', '@{u}..HEAD', '--format=%s']);
+  return up.code === 0 ? up.out : run('git', ['log', 'origin/main..HEAD', '--format=%s']).out;
+}
+/** push แล้วล้ม = commit ยังอยู่ในเครื่อง — บอกให้ชัดว่ารัน ship <SYM> ซ้ำจะ push ต่อ ไม่ใช่ให้ worker เขียนใหม่ */
+function pushOrExplain(sym) {
+  try { pushWithRebase(); }
+  catch (e) {
+    throw new Error(`${e.message}\n⇒ commit ของ ${sym} เขียนลงเครื่องแล้ว (ยังไม่ push) — แก้เหตุข้างบนแล้วรัน npm run queue -- ship ${sym} ซ้ำ จะ push commit เดิมต่อให้เลย (ห้ามสั่ง worker เขียนใหม่)`);
+  }
+}
+
 function shipStock(sym, opts) {
   const o = opts || {};
   const rec = S.load().stocks[sym] || {};
@@ -55,26 +74,47 @@ function shipStock(sym, opts) {
   keepDates();
   const files = STOCK_FILES(sym).filter((f) => fs.existsSync(path.join(ROOT, f)));
   must('git', ['add', '--', ...files], 'git add');
-  if (run('git', ['diff', '--cached', '--quiet']).code === 0) throw new Error(`ไม่มีอะไรให้ commit — worker ยังไม่ได้เขียน reports/${sym}.html? (เช็ค cwd-stray)`);
+  if (run('git', ['diff', '--cached', '--quiet']).code === 0) {
+    // stage ว่างมีสองสาเหตุ แยกให้ออก: commit ไปแล้วแต่ push ล้ม (รันซ้ำ = push ต่อ) vs worker ไม่ได้เขียนไฟล์จริง
+    if (pendingCommitFor(sym, unpushedSubjects())) {
+      console.log(`ℹ commit ของ ${sym} มีอยู่แล้ว (ยังไม่ push) — push ต่อ`);
+      pushOrExplain(sym);
+      S.update(sym, { shippedAt: todayBangkok() });
+      console.log(`✅ ${sym} push แล้ว (commit เดิม)`);
+      closeIssueIfEmpty();
+      return;
+    }
+    throw new Error(`ไม่มีอะไรให้ commit — worker ยังไม่ได้เขียน reports/${sym}.html? (เช็ค cwd-stray)`);
+  }
   const sm = readStockMeta(fs.readFileSync(path.join(ROOT, 'reports', sym + '.html'), 'utf8'));
   const msg = o.message || commitMessage(sym, rec, sm);
   must('git', ['commit', '-q', '-m', `${msg}\n\n${trailer(rec.model)}`], 'git commit');
-  pushWithRebase();
+  pushOrExplain(sym);
   S.update(sym, { shippedAt: todayBangkok() });
   console.log(`✅ ${sym} push แล้ว: ${msg}`);
   closeIssueIfEmpty();
 }
 
-/** parse `git status --porcelain` (ส่วนบริสุทธิ์ — ไม่แตะ git) → [{ path, isNew }]
+/** parse `git status --porcelain` (ส่วนบริสุทธิ์ — ไม่แตะ git) → [{ path, isNew, deleted }]
  *  rename (`R  old -> new` / `RM …`) ใช้ path ปลายทาง (หลัง ' -> ') · isNew = untracked (`??`) หรือเพิ่งถูก `git add` (`A`)
- *  → เข้าเงื่อนไข "ไฟล์ใหม่ทั้งใบ" เสมอ ไม่ว่าจะ stage แล้วหรือยัง */
+ *  → เข้าเงื่อนไข "ไฟล์ใหม่ทั้งใบ" เสมอ ไม่ว่าจะ stage แล้วหรือยัง
+ *  deleted = ` D`/`D ` (ลบรายงานหุ้นเพิกถอน) — ไม่มีไฟล์ให้อ่าน footer และไม่ใช่ pre-patch ราคา ⇒ คัดออกทุกทาง */
 function parsePorcelain(text) {
   return String(text).split('\n').filter(Boolean).map((line) => {
     const status = line.slice(0, 2);
     let p = line.slice(3).trim();
     if (p.includes(' -> ')) p = p.split(' -> ').pop().trim();
-    return { path: p, isNew: /[A?]/.test(status) };
+    return { path: p, isNew: /[A?]/.test(status), deleted: status.includes('D') };
   });
+}
+
+/** แยกไฟล์ที่ลบออกจากตัวเลือกของ `ship --prepatch` (ส่วนบริสุทธิ์)
+ *  ไฟล์ที่ลบต้องไม่เข้า prepatchBlockers (อ่าน footer ไม่ได้ → ขึ้น unreadable ปลอม), ไม่เข้า changed, ไม่เข้า git add
+ *  — DELIST เป็น commit คนละใบ (ต้องมี tags.json --prune ไปด้วย) */
+function prepatchCandidates(entries) {
+  const candidates = [], deleted = [];
+  for (const e of entries) (e.deleted ? deleted : candidates).push(e);
+  return { candidates, deleted };
 }
 
 /** ปฏิเสธไฟล์ใน reports/ ที่ worker วิเคราะห์ใหม่แล้ว (ไม่ใช่แค่ pre-patch ราคาที่ preflight ทำ) — `ship --prepatch`
@@ -99,8 +139,14 @@ function prepatchBlockers(entries) {
 function shipPrepatch() {
   const porcelain = parsePorcelain(run('git', ['status', '--porcelain', '--', 'reports']).out);
   if (!porcelain.length) { console.log('ไม่มีไฟล์ใน reports/ ที่เปลี่ยน — ไม่มีอะไรจะ ship'); return; }
-  const changed = porcelain.map((e) => e.path);
-  const entries = porcelain.map((e) => {
+  const { candidates, deleted } = prepatchCandidates(porcelain);
+  const delNote = () => {
+    const syms = deleted.map((e) => (/^reports\/(.+)\.html$/.exec(e.path) || [, e.path])[1]).join(' ');
+    console.log(`ℹ ไฟล์ที่ลบ (DELIST) ไม่รวมใน pre-patch commit — commit แยก: git add -- ${deleted.map((e) => e.path).join(' ')} tags.json && git commit -m "chore: ลบ ${syms} (เพิกถอน)"`);
+  };
+  if (!candidates.length) { delNote(); console.log('ไม่มีไฟล์ pre-patch ที่ต้อง ship (เหลือแต่ไฟล์ที่ลบ)'); return; }
+  const changed = candidates.map((e) => e.path);
+  const entries = candidates.map((e) => {
     const untracked = e.isNew;
     const head = untracked ? null : run('git', ['show', `HEAD:${e.path}`]);
     const headFooterISO = head && head.code === 0 ? ((footerDate(head.out) || {}).iso || null) : null;
@@ -111,10 +157,13 @@ function shipPrepatch() {
   const { blocked, unreadable } = prepatchBlockers(entries);
   if (blocked.length) throw new Error(blocked.map((sym) => `ship --prepatch: ${sym} ถูกวิเคราะห์ใหม่แล้ว (footer ขยับ/ไฟล์ใหม่) — ใช้ npm run queue -- ship ${sym} แทน`).join('\n'));
   if (unreadable.length) console.log('⚠ อ่าน footer ไม่ได้ทั้ง HEAD และ working tree — ตรวจเองว่าไม่ใช่งาน worker: ' + unreadable.join(' '));
+  if (deleted.length) delNote();
   must('npm', ['run', 'build'], 'build');
   keepDates();
   verify();
-  must('git', ['add', '--', 'reports', 'reports.json', 'price-flags.json'], 'git add');
+  // ระบุไฟล์ทีละใบ ไม่ `git add -- reports` — ไม่งั้นการลบรายงานหุ้นเพิกถอนถูกกวาดเข้า commit "price: …" ทั้งที่ต้องไปคู่กับ tag-apply --prune
+  const addFiles = [...changed, 'reports.json', 'price-flags.json'].filter((f) => fs.existsSync(path.join(ROOT, f)));
+  must('git', ['add', '--', ...addFiles], 'git add');
   must('git', ['commit', '-q', '-m', `price: pre-patch ${changed.length} symbols (manual queue run ${todayBangkok()})\n\nCo-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>`], 'git commit');
   pushWithRebase();
   const today = todayBangkok();
@@ -123,7 +172,7 @@ function shipPrepatch() {
     if (m) S.update(m[1], { prepatchShippedAt: today });
   }
   console.log(`✅ pre-patch ${changed.length} ใบ push แล้ว (วันที่วิเคราะห์คงเดิมผ่าน preserve-dates)`);
-  closeIssueIfEmpty();
+  // ไม่ปิด issue ที่นี่ — pre-patch ล้าง flag ใน price-flags.json ทั้งที่ยังไม่ได้วิเคราะห์ (snapshot semantics) · issue ปิดเมื่อ ship <SYM> ตัวสุดท้าย
 }
 
 /** X/Y ตาม memory feedback-progress-counter: push แล้ว / รอ push / ยังไม่เริ่ม
@@ -149,4 +198,4 @@ function status() {
   console.log(`pre-patch push แล้ว ${prepatchShipped.length}: ${prepatchShipped.join(' ') || '-'}`);
 }
 
-module.exports = { shipStock, shipPrepatch, status, commitMessage, trailer, closeIssueIfEmpty, prepatchBlockers, parsePorcelain, STOCK_FILES, TITLE };
+module.exports = { shipStock, shipPrepatch, status, commitMessage, trailer, closeIssueIfEmpty, prepatchBlockers, prepatchCandidates, parsePorcelain, pendingCommitFor, STOCK_FILES, TITLE };
