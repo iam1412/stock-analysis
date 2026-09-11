@@ -464,7 +464,7 @@ Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>"
 
 **Interfaces:**
 - Consumes: `withLock`, `writeJsonAtomic` จาก `tools/lockfile.js`
-- Produces: `commitFlags({ file?, write, prevAll, evaluated, frozenAll, failed, quietSyms, aliveConfirmed, reportExists }) → flags[]` (export จาก update-prices) — อ่าน flags **ล่าสุด** ใต้ lock แล้วค่อย merge ⇒ flag ที่ canary/controller เขียนระหว่าง loop fetch 8 นาทีไม่หาย
+- Produces: `commitFlags({ file?, write, evaluated, frozenAll, failed, quietSyms, aliveConfirmed, reportExists }) → flags[]` (export จาก update-prices) — อ่าน flags **ล่าสุด** ใต้ lock แล้วค่อย merge (ทั้ง dry-run และ --write) ⇒ flag ที่ canary/controller เขียนระหว่าง loop fetch 8 นาทีไม่หาย
 
 - [ ] **Step 1: เขียนเทสที่ต้องตก** — ต่อท้าย `test/update-prices-test.js` (หลังบล็อก lockfile)
 
@@ -476,7 +476,7 @@ Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>"
   const snapshot = [{ symbol: 'AAA', reason: 'mos-sign-flip', flaggedAt: '2026-09-01' }];
   // ระหว่าง loop: canary เขียน not-on-exchange ของ ZZZ ลงไฟล์ (snapshot ตอนเริ่มรอบไม่มี)
   fs.writeFileSync(file, JSON.stringify(snapshot.concat([{ symbol: 'ZZZ', reason: 'not-on-exchange', flaggedAt: '2026-09-10' }])));
-  const args = { file, prevAll: snapshot, evaluated: new Set(['AAA']), frozenAll: [], failed: [], quietSyms: new Set(), aliveConfirmed: new Set(), reportExists: new Set(['AAA', 'ZZZ']) };
+  const args = { file, evaluated: new Set(['AAA']), frozenAll: [], failed: [], quietSyms: new Set(), aliveConfirmed: new Set(), reportExists: new Set(['AAA', 'ZZZ']) };
   const flags = U.commitFlags({ ...args, write: true });
   ok(!flags.some((f) => f.symbol === 'AAA'), 'commitFlags: AAA ประเมินรอบนี้ไม่ freeze → หลุดคิว');
   ok(flags.some((f) => f.symbol === 'ZZZ' && f.reason === 'not-on-exchange'), 'commitFlags: flag ที่ canary เขียนระหว่าง loop ยังอยู่ (merge บนไฟล์ล่าสุด)');
@@ -517,7 +517,7 @@ function loadFlags(file = FLAGS) {
 function commitFlags(p) {
   const file = p.file || FLAGS;
   return withLock(file, () => {
-    const latest = p.write ? loadFlags(file) : p.prevAll;
+    const latest = loadFlags(file);   // dry-run ก็อ่านล่าสุด — ให้ preview ตรงกับที่ --write จะเขียนจริง
     const prevFlags = latest.filter((f) => !((p.quietSyms.has(f.symbol) || p.aliveConfirmed.has(f.symbol)) && f.reason === 'not-on-exchange'));
     const merged = mergeFlags(prevFlags, p.evaluated, p.frozenAll.concat(p.failed.map((x) => ({ ...x, reportPrice: null, marketPrice: null, diffPct: null }))))
       .filter((f) => p.reportExists.has(String(f.symbol).toUpperCase()));
@@ -535,7 +535,7 @@ function commitFlags(p) {
 ```
 ด้วย
 ```js
-  const flags = commitFlags({ write: WRITE, prevAll, evaluated, frozenAll, failed, quietSyms, aliveConfirmed, reportExists });
+  const flags = commitFlags({ write: WRITE, evaluated, frozenAll, failed, quietSyms, aliveConfirmed, reportExists });
 ```
 (คง `deadSyms` · `frozenAll` · `reportExists` · `evaluated` ไว้ตามเดิม)
 
@@ -589,14 +589,8 @@ Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>"
   const backup = fs.readFileSync(seedsFile, 'utf8');
   try {
     const script = path.join(__dirname, '..', 'tools', 'pick-brand.js');
-    const a = cp.spawn(process.execPath, [script, 'ZZTESTA', '#1a73e8', '--auto'], { stdio: 'ignore' });
-    const b = cp.spawn(process.execPath, [script, 'ZZTESTB', '#1a73e8', '--auto'], { stdio: 'ignore' });
-    // เทสไฟล์นี้เป็น sync ทั้งไฟล์ — รอสองตัวจบด้วย Atomics.wait
-    const done = new Int32Array(new SharedArrayBuffer(4));
-    let left = 2;
-    for (const c of [a, b]) c.on('exit', () => { if (--left === 0) { Atomics.store(done, 0, 1); Atomics.notify(done, 0); } });
-    const t0 = Date.now();
-    while (Atomics.load(done, 0) === 0 && Date.now() - t0 < 20000) Atomics.wait(done, 0, 0, 100);
+    // เทสไฟล์นี้ sync ทั้งไฟล์ (Atomics.wait จะบล็อก event loop จน 'exit' ของ child ไม่ทำงาน) — ให้ shell รัน 2 ตัวขนานแล้ว wait
+    cp.spawnSync('sh', ['-c', `node "${script}" ZZTESTA "#1a73e8" --auto >/dev/null 2>&1 & node "${script}" ZZTESTB "#1a73e8" --auto >/dev/null 2>&1; wait`], { cwd: path.join(__dirname, '..') });
     const seeds = JSON.parse(fs.readFileSync(seedsFile, 'utf8'));
     ok(seeds.ZZTESTA && seeds.ZZTESTB, 'pick-brand ขนาน: ได้ทั้ง 2 entry (ไม่มี entry ทับหาย)');
     ok(seeds.ZZTESTA && seeds.ZZTESTB && seeds.ZZTESTA !== seeds.ZZTESTB, 'pick-brand ขนาน: --auto สลับเฉดให้ตัวที่มาทีหลัง (เห็นสีของอีกตัวเพราะอ่านใต้ lock)');
@@ -610,7 +604,7 @@ Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>"
 ```bash
 for i in 1 2 3; do node test/update-prices-test.js 2>&1 | grep "pick-brand ขนาน"; done
 ```
-Expected: มีอย่างน้อย 1 บรรทัด `✗` ใน 3 รอบ (race เดิม — entry หาย หรือสีเท่ากัน)
+Expected: มักมีบรรทัด `✗` (race เดิม — entry หาย หรือสีเท่ากัน) · race ไม่ deterministic — ถ้า 3 รอบผ่านหมดให้ไปต่อ (assertion คือสิ่งที่คุมหลังแก้)
 
 - [ ] **Step 3: แก้ `tools/pick-brand.js`** — ครอบส่วนที่อ่าน→ตัดสิน→เขียน ด้วย lock
 
@@ -794,6 +788,8 @@ Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>"
 // W06 จะยิงทุก flip ที่ cron ปล่อยผ่าน (เดิมพิมพ์ 3 แยกกัน 2 ไฟล์ — code-audit §3.1 · ข้อ D ของ spec จะขยับเป็น ±5 ที่เดียว)
 const TOL_MOS_SUMMARY_PP = MOS_FLIP_DEADBAND_PP;
 ```
+
+- [ ] **Step 2b: W06 เช็คทิศยังใช้ literal** — ในบรรทัด W06 (`check-reports.js:546`) แทน `if (mos < -3 && saysCheap` ด้วย `if (mos < -TOL_MOS_SUMMARY_PP && saysCheap` และ `if (mos > 3 && saysExpensive` ด้วย `if (mos > TOL_MOS_SUMMARY_PP && saysExpensive` · ยืนยัน: `rtk proxy grep -c "mos < -3\|mos > 3" test/check-reports.js` → `0`
 
 - [ ] **Step 3: verify + Commit + เปิด PR #B**
 
@@ -1370,6 +1366,8 @@ Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>"
 - Consumes: `prep-stock.js` (child process · exit 2 = หยุด) · `median-multiples.oneSymbol(spec, th)` + `report(r)` · `derived-values.{targetCells,yieldPlan,pbvPlan}` · `check-reports.buildCtx` · `build.expandReport` · `tag-lib.{loadTags,tagsOf}` · `_template/agent-prompt.md`
 - Produces: `prep(sym, opts) → { file, mode, model, effort, hard }` · pure: `parseVendor(text)` · `snapshotDiff(html, ctx, vend) → string[]` · `assemblePrompt(template, vals, extra) → string` · `extraBlock(info) → string` · `hardStock(rec, ctx, vend) → { hard, why }` · ไฟล์ `.queue/prep/<SYM>.md` = prompt พร้อมส่ง Agent/analyze-wave · state: `{mode, model, effort, prepAt, epsScreen, snapDeltas}`
 
+- [ ] **Step 0: ดู token ทั้งหมดใน template ก่อน** — `grep -o '{{[A-Z_]*}}' _template/agent-prompt.md | sort -u` → ต้องได้ 8 ตัว = 7 token ของ controller + `{{AI_MODEL}}` (worker เติมเอง — อยู่ใน VERBATIM) · เจอตัวอื่น = template เปลี่ยน ต้องเพิ่มใน TOKENS/VERBATIM ก่อน
+
 - [ ] **Step 1: export `report` จาก median-multiples** — บรรทัด 180: `module.exports = { oneSymbol, avgWindow, monthlyCloses, report, MIN_POINTS };` (หัวบล็อก `=== ตัวคูณมัธยฐานย้อนหลัง` ต้องออกจากฟังก์ชันเดิม — worker หาบล็อกด้วยชื่อนี้)
 
 - [ ] **Step 2: เขียนเทสที่ต้องตก**
@@ -1406,7 +1404,7 @@ Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>"
 
   const tpl = fs.readFileSync(path.join(ROOT, '_template', 'agent-prompt.md'), 'utf8');
   const p = Pp.assemblePrompt(tpl, { SYMBOL: 'AAPL', MARKET: 'US', MODE: 'UPDATE-LIGHT', WORKTREE: '/wt', CURRENT_TAGS: 'consumer-tech', MEDIANS: '=== ตัวคูณมัธยฐานย้อนหลัง: AAPL ===\n  ★ มัธยฐาน 28.0x', FUNDAMENTALS: PREP_OUT }, Pp.extraBlock({ sym: 'AAPL', mode: 'UPDATE-LIGHT', prePatched: '2026-09-11', oldPrice: 297.21, price: 301.5, baseEPS: 7.1, epsTTM: 7.36, epsScreen: 3.66, snap: ['เป้า ใบ 300 · vendor 312'], medWarn: [], hard: false, hardWhy: '' }));
-  ok(!/\{\{(SYMBOL|MARKET|MODE|WORKTREE|CURRENT_TAGS|MEDIANS|FUNDAMENTALS)\}\}/.test(p), 'assemblePrompt: แทนครบ 7 token');
+  ok(!/\{\{(SYMBOL|MARKET|MODE|WORKTREE|CURRENT_TAGS|MEDIANS|FUNDAMENTALS)\}\}/.test(p) && /\{\{AI_MODEL\}\}/.test(p), 'assemblePrompt: แทนครบ 7 token · คง {{AI_MODEL}} ให้ worker เติม');
   ok(/บันทึกจาก runbook/.test(p) && /ห้ามรัน update-prices ซ้ำ/.test(p) && /ยกระดับเป็น UPDATE เต็ม/.test(p) && /เป้า ใบ 300/.test(p) && /ห้ามเรียก advisor ตรง/.test(p), 'assemblePrompt: บล็อกท้าย = ราคา patch แล้ว · EPS screen · snapshot · ข้อห้าม');
   let threw = false; try { Pp.assemblePrompt(tpl, { SYMBOL: 'X' }, ''); } catch (_) { threw = true; }
   ok(threw, 'assemblePrompt: ขาด token → throw (ไม่ส่ง prompt ที่มี {{…}} ค้าง)');
@@ -1448,10 +1446,11 @@ const T = require('../tag-lib.js');
 const REPORTS = path.join(ROOT, 'reports');
 const TEMPLATE = path.join(ROOT, '_template', 'agent-prompt.md');
 const TOKENS = ['SYMBOL', 'MARKET', 'MODE', 'WORKTREE', 'CURRENT_TAGS', 'MEDIANS', 'FUNDAMENTALS'];
+const VERBATIM = new Set(['AI_MODEL']);   // token ที่ template ตั้งใจส่งต่อให้ worker เติมเอง (ป้าย ai-model) — ห้ามแทน ห้ามฟ้อง
 const EPS_SCREEN_PCT = 2;   // SKILL 5C ข้อ 2
 
 const num = (s) => { if (s == null) return null; const n = parseFloat(String(s).replace(/[,%]/g, '')); return Number.isFinite(n) ? n : null; };
-const asPct = (v) => (v != null && v < 0.3 ? v * 100 : v);   // vendor บางเจ้าส่ง yield เป็นสัดส่วน (0.0035) บางเจ้าเป็น % (0.35)
+const asPct = (v) => (v != null && v < 0.3 ? v * 100 : v);   // vendor บางเจ้าส่ง yield เป็นสัดส่วน (0.0035) บางเจ้าเป็น % (0.35) — yield จริง <0.3% จะถูกอ่านเป็น ×100 ผิด: ยอมรับได้เพราะเป็นรายการให้คนอ่าน ไม่ใช่ gate
 const pctDiff = (a, b) => (a != null && b ? Math.abs(a - b) / Math.abs(b) * 100 : null);
 
 /** ถอดค่าจาก stdout ของ prep-stock (บรรทัด [1] Yahoo / [2] StockAnalysis ของ fetch-fundamentals) — SA ก่อน Yahoo */
@@ -1501,7 +1500,7 @@ function hardStock(rec, ctx, v) {
 
 function assemblePrompt(template, vals, extra) {
   const found = new Set((template.match(/\{\{([A-Z_]+)\}\}/g) || []).map((t) => t.slice(2, -2)));
-  for (const k of found) if (!TOKENS.includes(k)) throw new Error(`template มี token ที่ runbook ไม่รู้จัก: {{${k}}} — เพิ่มใน tools/queue/prep.js`);
+  for (const k of found) if (!TOKENS.includes(k) && !VERBATIM.has(k)) throw new Error(`template มี token ที่ runbook ไม่รู้จัก: {{${k}}} — เพิ่มใน TOKENS หรือ VERBATIM ของ tools/queue/prep.js`);
   let out = template;
   for (const k of TOKENS) {
     if (vals[k] == null) throw new Error(`ขาดค่า {{${k}}}`);
@@ -1605,10 +1604,10 @@ async function prep(sym, opts) {
 module.exports = { prep, parseVendor, snapshotDiff, assemblePrompt, extraBlock, hardStock, medianBlock, TOKENS, EPS_SCREEN_PCT };
 ```
 
-- [ ] **Step 5: รันให้ผ่าน + ลองกับหุ้นจริง 1 ตัวจากคิว (ยิง network — ครั้งเดียว)**
+- [ ] **Step 5: รันให้ผ่าน + ลองกับหุ้นจริง 1 ตัวจากคิว (ยิง network — ครั้งเดียว · dispatcher `tools/queue.js` มาใน Task 14 จึงเรียกโมดูลตรง)**
 
 ```bash
-node test/queue-test.js && rtk proxy node tools/queue.js prep KLAC 2>/dev/null || rtk proxy node -e "require('./tools/queue/prep.js').prep('KLAC',{}).then(r=>console.log(r))" && head -5 .queue/prep/KLAC.md && rtk proxy grep -c "บันทึกจาก runbook" .queue/prep/KLAC.md
+node test/queue-test.js && rtk proxy node -e "require('./tools/queue/prep.js').prep('KLAC',{}).then(r=>console.log(r))" && head -5 .queue/prep/KLAC.md && rtk proxy grep -c "บันทึกจาก runbook" .queue/prep/KLAC.md
 ```
 Expected: เทสผ่าน · ไฟล์ prompt เกิด · มีบล็อกบันทึก 1 ครั้ง · ไม่มี `{{` ค้างนอกบล็อก FUNDAMENTALS/BRAND
 
@@ -2222,7 +2221,8 @@ PRBODY
 - [ ] **Step 1: เกณฑ์ 1 — cron ไม่ขึ้นกับราคาของวัน (ไล่ราคา 0 fail)** — เขียนราคาสุ่ม 12 ค่าลง AAPL/BBL จริงแล้ว verify ทุกครั้ง คืนไฟล์ด้วย `git checkout --` (ห้าม stash)
 
 ```bash
-cat > /tmp/sweep.sh <<'SH'
+SCR=${CLAUDE_SCRATCHPAD:-$(mktemp -d)}   # scratchpad ของ session (กติกา: ห้ามใช้ /tmp เว้นแต่สั่ง)
+cat > "$SCR/sweep.sh" <<'SH'
 set -e
 fails=0
 for p in 0.5 0.7 0.85 0.95 1.0 1.05 1.15 1.3 1.5 1.8 2.2 3.0; do
@@ -2230,12 +2230,12 @@ for p in 0.5 0.7 0.85 0.95 1.0 1.05 1.15 1.3 1.5 1.8 2.2 3.0; do
 const U=require('./tools/update-prices.js');const fs=require('fs');const {readStockMeta}=require('./tools/report-meta.js');
 for(const s of ['AAPL','BBL']){const h=fs.readFileSync('reports/'+s+'.html','utf8');const px=readStockMeta(h).price*$p;
 fs.writeFileSync('reports/'+s+'.html',U.patchReport(h,{newPrice:+px.toFixed(2),dateParts:{day:11,monIdx:8,yearCE:2026},chartData:null}).html)}"
-  if npm run verify >/tmp/sweep-$p.log 2>&1; then echo "×$p ok"; else echo "×$p FAIL (ดู /tmp/sweep-$p.log)"; fails=$((fails+1)); fi
+  if npm run verify >"$SWEEP_DIR/sweep-$p.log" 2>&1; then echo "×$p ok"; else echo "×$p FAIL (ดู $SWEEP_DIR/sweep-$p.log)"; fails=$((fails+1)); fi
   git checkout -- reports/AAPL.html reports/BBL.html reports.json
 done
 echo "sweep fails=$fails"
 SH
-sh /tmp/sweep.sh 2>&1 | tail -13 && git status --short | wc -l
+SWEEP_DIR="$SCR" sh "$SCR/sweep.sh" 2>&1 | tail -13 && git status --short | wc -l
 ```
 Expected: 12 บรรทัด `ok` · `sweep fails=0` · `git status` = 0 (ไม่มีไฟล์ค้าง)
 
