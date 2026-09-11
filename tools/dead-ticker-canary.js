@@ -38,6 +38,7 @@ const US_EXCHANGES = ['NASDAQ', 'NYSE', 'AMEX', 'OTC', 'CBOE'];
 
 const { entryFor } = require('./symbol-map.js');
 const { readStockMeta } = require('./report-meta.js');
+const { withLock, writeJsonAtomic } = require('./lockfile.js');   // WS4: price-flags.json มีหลาย writer
 
 // ไฟล์ไม่มี = รอบแรก → fallback · **มีไฟล์แต่ parse ไม่ผ่าน ต้องแยกตามว่าไฟล์นั้นสร้างใหม่ได้ไหม**
 // (ตัวอ่านนี้ใช้กับสองไฟล์ที่ราคาของการเดาผิดต่างกันคนละชั้น จึงไม่มีนโยบายเดียวที่ถูกทั้งคู่):
@@ -55,15 +56,6 @@ const loadJson = (p, fallback, { rebuildable = false } = {}) => {
     return fallback;
   }
 };
-
-// เขียน state file แบบ atomic: temp ในโฟลเดอร์เดียวกันแล้ว rename ทับ (rename ข้าม filesystem ไม่ atomic
-// จึงต้องเป็น dir เดียวกัน · ใส่ pid กันสองรอบที่รันพร้อมกันเขียน temp ใบเดียวกันแล้ว rename ของครึ่งใบทับ)
-// เขียนตรง ๆ แล้วถูกตัดกลางคัน = เหลือ JSON ครึ่งใบ ซึ่งเป็น input ที่ทำให้ loadJson ล้มทั้งรอบถัดไปพอดี
-function writeJsonAtomic(file, text) {
-  const tmp = `${file}.tmp-${process.pid}`;
-  fs.writeFileSync(tmp, text);
-  fs.renameSync(tmp, file);
-}
 
 /** ticker ที่ resolve ได้รอบก่อน (tools/tv-tickers.json) — cron รายวันก็ใช้ร่วม ไม่ต้องยิงทุกกระดานซ้ำ */
 const loadTickerCache = () => loadJson(CACHE, {}, { rebuildable: true });
@@ -239,11 +231,13 @@ async function main() {
   // update-prices.js ทำ — mergeDeadFlags พา flag เดิมมาทุกตัวโดยไม่รู้ว่าไฟล์ยังอยู่ไหม ⇒ ถ้ารัน
   // canary หลังลบรายงานแต่ก่อน cron รอบถัดไป flag ที่เคลียร์ไปแล้วจะถูก commit กลับเข้าคิว
   const reportExists = new Set(files.map((f) => f.replace(/\.html$/i, '').toUpperCase()));
-  const flags = mergeDeadFlags(loadJson(FLAGS, []), newFlags, [...alive.keys()], today)
-    .filter((f) => reportExists.has(String(f.symbol).toUpperCase()));
-
+  const flags = withLock(FLAGS, () => {   // WS4: อ่านล่าสุดใต้ lock — cron รายวัน/รันมืออาจเขียนคั่นระหว่าง scan
+    const merged = mergeDeadFlags(loadJson(FLAGS, []), newFlags, [...alive.keys()], today)
+      .filter((f) => reportExists.has(String(f.symbol).toUpperCase()));
+    if (WRITE) writeJsonAtomic(FLAGS, JSON.stringify(merged, null, 2) + '\n');
+    return merged;
+  });
   if (WRITE) {
-    writeJsonAtomic(FLAGS, JSON.stringify(flags, null, 2) + '\n');
     cache._readme = 'ticker ที่ TradingView ใช้จริงต่อ symbol — dead-ticker-canary.js เขียนเอง (cache กันยิงหลายกระดานซ้ำ) ห้ามแก้มือ';
     writeJsonAtomic(CACHE, JSON.stringify(cache, null, 2) + '\n');
   }

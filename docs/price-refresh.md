@@ -133,6 +133,7 @@ npm run build && node tools/preserve-dates.js && npm run build   # ★ ซ่อ
 | `bad-report-price` | **ราคาเดิมใน `stock-meta` ของรายงานเองเสีย** (0 / ติดลบ / ไม่ใช่ตัวเลข) — `drift` หารด้วยค่านี้ ถ้าไม่กันไว้ ราคาติดลบจะให้ drift ติดลบ ซึ่งเทียบ `>` กับทุกเกณฑ์ freeze แล้วเป็นเท็จหมด ⇒ เล็ดลอดไป patch ทับโดยยามทุกตัวถูกข้าม · triage = **แก้ที่รายงาน ไม่ใช่ข้อมูลตลาด** |
 | `fetch-failed` / `patch-failed` | ดึงข้อมูลไม่ได้ (delisted?) / ไฟล์ผิดโครงจน regex ไม่ match |
 | `bad-chart` | **ซีรีส์กราฟผสมสองฐาน** — split ที่ Yahoo ยังไม่ปรับย้อนหลังให้ครบ (เพิ่ม 12 ส.ค. 2569 · `detectMixedBasis`) · เงื่อนไข: มี bar **ในหน้าต่าง 52 สัปดาห์** หลุดกรอบ `fiftyTwoWeekLow/High` เกิน 10% · `detail` บอกเดือน/ค่า/กรอบที่หลุด — triage เต็มใน SKILL STEP 0 |
+| `patch-rejected` | **patch แล้ว gate ตก** (เพิ่ม ระยะ 0 audit ก.ย. 2569 · `gateAfterPatch`) — ไม่เขียนไฟล์นั้น รอบนั้น push ที่เหลือตามปกติ · `detail` = รหัส E ที่ยิง + `(ค้างก่อน patch)` ถ้าไฟล์เดิมก็ตกอยู่แล้ว · triage = **แก้ไฟล์ให้ผ่าน `npm test -- <SYM>`** ไม่ใช่ re-analyze · `--force` ไม่ freeze แต่พิมพ์เตือน |
 | `not-on-exchange` | **สองชั้น**: quote ค้างหลัง cohort เดียวกัน ≥3 session **และ** TradingView ไม่พบ ticker บนกระดานใดเลย (เพิ่ม 8 ส.ค. 2569 — ดู §canary) · เขียนได้ทั้งจาก cron รายวัน (ยืนยันสด) และ `tools/dead-ticker-canary.js` รายสัปดาห์ · ตัวที่ติด flag นี้ **หยุด patch** รอบถัดไป (ไม่ใช่แค่ freeze รอบนี้) |
 
 - flags เป็น **snapshot ต่อรอบ**: symbol ที่กลับมาปกติ (re-analyze แล้ว / ราคาย่อกลับเข้าเกณฑ์) หายจากไฟล์เอง ไม่ต้องลบมือ · `flaggedAt` คงวันแรกที่โดนไว้ (ถ้าเหตุผลเดิม)

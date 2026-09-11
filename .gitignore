@@ -13,3 +13,8 @@ node_modules/
 
 # Claude Code local settings (personal, per-machine)
 .claude/settings.local.json
+
+# lock ของ tools/lockfile.js + temp ของ writeJsonAtomic — หลุด commit ใน CI = lock ค้างถาวร (checkout ประทับ mtime ใหม่ทุกรอบ)
+*.lock/
+*.lock.reclaim/
+*.tmp-*

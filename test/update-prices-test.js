@@ -728,5 +728,83 @@ ok(body.includes('HMPRO 6.15 → 6.05 (-1.6%)'), 'commitBody: ขาลงไม
 ok(body.includes('freeze XYZ [drift-gt-10pct] 100 → 115 (+15%)'), 'commitBody: บรรทัด freeze พร้อมเหตุผล');
 ok(U.commitBody([], []) === '', 'commitBody: ว่างเมื่อไม่มีอะไรเปลี่ยน');
 
+// ---------- lockfile (WS4: seeds.json / price-flags.json / tags.json มีหลาย writer ไม่มี lock) ----------
+{
+  const L = require('../tools/lockfile.js');
+  const os = require('os');
+  const f = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'lock-')), 'state.json');
+  let inside = 0;
+  const r = L.withLock(f, () => { inside++; ok(fs.existsSync(f + '.lock'), 'withLock: ถือ lock ระหว่าง fn'); return 42; });
+  ok(r === 42 && inside === 1 && !fs.existsSync(f + '.lock'), 'withLock: คืนค่าของ fn + ปล่อย lock หลังจบ');
+  fs.mkdirSync(f + '.lock');                                   // จำลองอีก process ถืออยู่
+  let threw = null; try { L.withLock(f, () => {}, { waitMs: 300 }); } catch (e) { threw = e; }
+  ok(threw && /รอ lock/.test(threw.message), 'withLock: lock ถูกถือ → รอครบแล้ว throw (ห้ามข้ามเงียบ = คิวเพี้ยน)');
+  const old = Date.now() / 1000 - 3600; fs.utimesSync(f + '.lock', old, old);   // lock ค้าง 1 ชม. = process ตาย
+  ok(L.withLock(f, () => 'ok', { waitMs: 300 }) === 'ok' && !fs.existsSync(f + '.lock'), 'withLock: lock ค้างเกิน 10 นาที → ยึดได้แล้วปล่อย');
+  let thrown = false; try { L.withLock(f, () => { throw new Error('x'); }); } catch (_) { thrown = true; }
+  ok(thrown && !fs.existsSync(f + '.lock'), 'withLock: fn throw → ปล่อย lock เสมอ');
+  L.writeJsonAtomic(f, '{"a":1}\n');
+  ok(fs.readFileSync(f, 'utf8') === '{"a":1}\n' && !fs.readdirSync(path.dirname(f)).some((x) => x.includes('.tmp-')), 'writeJsonAtomic: เขียนผ่าน temp+rename ไม่ทิ้ง .tmp');
+
+  // process.exit() ข้างใน fn ต้องปล่อย lock ด้วย (finally ไม่รันตอน exit — พึ่ง process.on('exit') ของโมดูล)
+  {
+    const cp = require('child_process');
+    const f2 = path.join(path.dirname(f), 'exit.json');
+    const script = `const L=require(${JSON.stringify(path.join(__dirname, '..', 'tools', 'lockfile.js'))});L.withLock(${JSON.stringify(f2)},()=>{process.exit(7)})`;
+    const r = cp.spawnSync(process.execPath, ['-e', script]);
+    ok(r.status === 7 && !fs.existsSync(f2 + '.lock'), 'withLock: process.exit ใน fn → ปล่อย lock ผ่าน exit handler', `status=${r.status} lock=${fs.existsSync(f2 + '.lock')}`);
+  }
+}
+
+// ---------- commitFlags: merge บนไฟล์ "ล่าสุด" ใต้ lock ไม่ใช่ snapshot ตอนเริ่มรอบ (WS4 · เคส flag ฟื้น/หาย 12 ส.ค. 69) ----------
+{
+  const os = require('os');
+  const file = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'flags-')), 'price-flags.json');
+  const snapshot = [{ symbol: 'AAA', reason: 'mos-sign-flip', flaggedAt: '2026-09-01' }];
+  // ระหว่าง loop: canary เขียน not-on-exchange ของ ZZZ ลงไฟล์ (snapshot ตอนเริ่มรอบไม่มี)
+  fs.writeFileSync(file, JSON.stringify(snapshot.concat([{ symbol: 'ZZZ', reason: 'not-on-exchange', flaggedAt: '2026-09-10' }])));
+  const args = { file, evaluated: new Set(['AAA']), frozenAll: [], failed: [], quietSyms: new Set(), aliveConfirmed: new Set(), reportExists: new Set(['AAA', 'ZZZ']) };
+  const flags = U.commitFlags({ ...args, write: true });
+  ok(!flags.some((f) => f.symbol === 'AAA'), 'commitFlags: AAA ประเมินรอบนี้ไม่ freeze → หลุดคิว');
+  ok(flags.some((f) => f.symbol === 'ZZZ' && f.reason === 'not-on-exchange'), 'commitFlags: flag ที่ canary เขียนระหว่าง loop ยังอยู่ (merge บนไฟล์ล่าสุด)');
+  ok(JSON.parse(fs.readFileSync(file, 'utf8')).length === 1 && !fs.existsSync(file + '.lock'), 'commitFlags: เขียนไฟล์ + ปล่อย lock');
+  const before = fs.readFileSync(file, 'utf8');
+  ok(Array.isArray(U.commitFlags({ ...args, write: false })) && fs.readFileSync(file, 'utf8') === before, 'commitFlags: dry-run ไม่เขียนไฟล์');
+}
+
+// ---------- pick-brand ขนาน: seeds.json ต้องได้ทั้ง 2 entry และสีต้องไม่ชนกัน (WS4 · CLAUDE.md §10 เคสสีซ้ำโดย gate มองไม่เห็น) ----------
+// hermetic: ชี้ STOCK_SEEDS_FILE ไปไฟล์ชั่วคราว — ห้ามแตะ tools/seeds.json จริงเด็ดขาด (verify อาจรันคาบเกี่ยว worker จริง)
+{
+  const cp = require('child_process');
+  const os = require('os');
+  const realSeeds = path.join(__dirname, '..', 'tools', 'seeds.json');
+  const before = fs.readFileSync(realSeeds, 'utf8');
+  const tmpSeeds = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'seeds-')), 'seeds.json');
+  fs.writeFileSync(tmpSeeds, '{}\n');
+  const script = path.join(__dirname, '..', 'tools', 'pick-brand.js');
+  const env = { ...process.env, STOCK_SEEDS_FILE: tmpSeeds };
+  // เทสไฟล์นี้ sync ทั้งไฟล์ — ให้ shell รัน 2 ตัวขนานแล้ว wait · seeds ของจริงห้ามแตะ (STOCK_SEEDS_FILE ชี้ไฟล์ชั่วคราว)
+  const r = cp.spawnSync('sh', ['-c', `"${process.execPath}" "${script}" ZZTESTA "#1a73e8" --auto 2>&1 & "${process.execPath}" "${script}" ZZTESTB "#1a73e8" --auto 2>&1; wait`], { cwd: path.join(__dirname, '..'), env, encoding: 'utf8' });
+  const seeds = JSON.parse(fs.readFileSync(tmpSeeds, 'utf8'));
+  ok(seeds.ZZTESTA && seeds.ZZTESTB, 'pick-brand ขนาน: ได้ทั้ง 2 entry (ไม่มี entry ทับหาย)', (r.stdout || '').slice(-400));
+  ok(seeds.ZZTESTA && seeds.ZZTESTB && seeds.ZZTESTA !== seeds.ZZTESTB, 'pick-brand ขนาน: --auto สลับเฉดให้ตัวที่มาทีหลัง (เห็นสีของอีกตัวเพราะอ่านใต้ lock)', (r.stdout || '').slice(-400));
+  ok(fs.readFileSync(realSeeds, 'utf8') === before, 'pick-brand ขนาน: seeds.json จริงไม่ถูกแตะ');
+}
+
+// ---------- quarantine: patch แล้ว gate ตก = ไม่เขียนไฟล์ + flag patch-rejected (WS2 ข้อ 1 · code-audit §6.A) ----------
+{
+  const good = U.gateAfterPatch(aapl, 'AAPL.html');
+  ok(good.ok && good.codes.length === 0, 'gateAfterPatch: fixture ดี → ok', good.detail);
+  // ทำ .fv-box ไม่ตรง report-data.fv → E15 (ไม่ขึ้นกับราคา) — patchReport ยังทำงานได้ (ไม่แตะ fv-box)
+  const bad = aapl.replace(/(class="fv-box"[\s\S]*?class="r">\s*\$?)([0-9][0-9.,]*)/, (m, a, v) => a + (parseFloat(v.replace(/,/g, '')) * 2).toFixed(0));
+  ok(bad !== aapl, '(ตั้งฉาก) แก้ .fv-box ได้จริง');
+  const patched = U.patchReport(bad, { newPrice: 301.5, dateParts: { day: 11, monIdx: 6, yearCE: 2026 }, chartData: null });
+  const g = U.gateAfterPatch(patched.html, 'AAPL.html');
+  ok(!g.ok && g.codes.includes('E15'), 'gateAfterPatch: ไฟล์ที่ patch แล้ว gate ตก → ok=false + รหัส', g.codes.join(','));
+  ok(/E15/.test(g.detail) && g.detail.length <= 400, 'gateAfterPatch: detail มีรหัส + สั้นพอลง price-flags.json');
+  const broken = U.gateAfterPatch('<!DOCTYPE html><html><head><!--TEMPLATE:STYLE--></head><body></body></html>', 'X.html');
+  ok(!broken.ok && broken.codes[0] === 'EXPAND', 'gateAfterPatch: expandReport ระเบิด → EXPAND ไม่ throw');
+}
+
 console.log(nFail ? `\n✗ update-prices-test: ${nFail} failed / ${nOK} passed` : `\n✓ update-prices-test: ${nOK} passed`);
 process.exit(nFail ? 1 : 0);
