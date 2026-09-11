@@ -635,7 +635,9 @@ function mergeFlags(prev, processed, newFlags) {
 // ★ RMW ของคิวใต้ lock — อ่าน "ไฟล์ล่าสุด" ก่อน merge ไม่ใช่ snapshot ตอนเริ่มรอบ (prevAll ใช้แค่ตัดสิน deadAlready
 //   ระหว่าง loop) ⇒ flag ที่ canary/controller/worker --force เขียนระหว่าง loop fetch ~8 นาทีไม่ถูกทับหาย
 //   (เคสจริง 12 ส.ค. 69: worker ขนานรัน --force แล้ว flag ที่เคลียร์แล้วฟื้น — เดิมแก้ด้วยกฎ "controller pre-patch
-//   ทั้งชุด process เดียว + ห้าม worker รัน" ซึ่งอยู่ใน memory เท่านั้น · ตอนนี้โค้ดกันเอง)
+//   ทั้งชุด process เดียว + ห้าม worker รัน" ซึ่งอยู่ใน memory เท่านั้น · ตอนนี้โค้ดกัน lost-update ของ symbol
+//   ที่รอบนี้ไม่ได้ประเมินเอง · symbol ที่รอบนี้ประเมินยังใช้ผลรอบนี้ตามนิยาม mergeFlags (worker --force
+//   ระหว่าง cron sweep ยังถูกผลของ cron ทับได้))
 function commitFlags(p) {
   const file = p.file || FLAGS;
   return withLock(file, () => {
@@ -716,8 +718,9 @@ async function main() {
 
   const updated = [], skipped = [], frozen = [], failed = [], intraday = [];
   const quotes = [];   // ทุกตัวที่ fetch สำเร็จ (รวมตัวที่ freeze) — ป้อน detectStaleQuotes หลังจบลูป
-  // อ่าน flags ครั้งเดียวต่อรอบแล้วใช้ snapshot เดียวกันตลอด — เดิมอ่านสองครั้งคร่อมลูป fetch ~8 นาที
-  // ถ้า canary/รันมือเขียนไฟล์คั่นกลาง สอง snapshot จะไม่ตรงกัน (ตัวหนึ่งข้าม patch อีกตัวไม่เห็น flag)
+  // อ่าน flags 2 ครั้งโดยตั้งใจ (WS4): snapshot นี้ใช้แค่ตัดสิน deadAlready ระหว่าง loop fetch ~8 นาที —
+  // ส่วนที่ merge/เขียนคิวจริงอ่าน "ไฟล์ล่าสุด" ใต้ lock ใน commitFlags ท้ายรอบ ⇒ flag ที่ canary/controller
+  // เขียนคั่นกลางไม่ถูก snapshot เก่าทับ (ห้ามเปลี่ยน commitFlags กลับมาใช้ prevAll)
   const prevAll = loadFlags();
   // หุ้นที่รอบก่อน (cron หรือ canary รายสัปดาห์) ยืนยันแล้วว่าไม่อยู่บนกระดาน → ไม่ patch อีก
   const deadAlready = new Set(prevAll.filter((f) => f.reason === 'not-on-exchange').map((f) => f.symbol));
