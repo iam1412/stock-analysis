@@ -110,6 +110,52 @@ process.env.QUEUE_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'queue-'));   // s
   ok(man.split('\n').filter((l) => /^\d+\./.test(l)).length <= 5, 'manualSteps: ขั้นที่ต้องทำเอง ≤5 (KPI ระยะ 0)');
 }
 
+// ── 7) prep (ส่วนบริสุทธิ์): parseVendor · snapshotDiff · assemblePrompt · hardStock ──
+{
+  const Pp = require('../tools/queue/prep.js');
+  const FX = require('./fixtures');
+  const { expandReport } = require('../build.js');
+  const { buildCtx } = require('./check-reports.js');
+  const PREP_OUT = `=== PREP AAPL (UPDATE) — วางทั้ง block ลง {{FUNDAMENTALS}} ===
+✅ ราคา 2 แหล่งต่าง 0.12% (≤2%) — ผ่าน
+⚠ EPS(TTM) ต่าง 3.4% (>2%) — ขัดกัน
+
+=== FUNDAMENTALS AAPL (US) — 2 แหล่งอิสระสำหรับ cross-verify (SKILL STEP 2) ===
+[1] Yahoo quoteSummary (AAPL):
+    price=301.5 epsTTM=7.12 epsFwd=8.01 PE=42.3 fwdPE=37.6 divYield=0.35% target=310.5 (n=38) 52wk=223.78–344.57 ROE=150.2%
+[2] StockAnalysis (quote/aapl):
+    price=301.5 (ณ Sep 10) epsTTM=7.36 PE=41 fwdPE=37.6 div=1.04 (yield=0.35) target=312 (41) 52wk=224–344.6 earnings=Oct 30
+Δ ราคา=0.12% · Δ EPS(TTM)=3.4% — เกณฑ์`;
+  const v = Pp.parseVendor(PREP_OUT);
+  ok(v.epsTTM === 7.36 && v.target === 312 && v.analysts === 41 && v.lo52 === 224 && v.hi52 === 344.6, 'parseVendor: ใช้ StockAnalysis ก่อน', JSON.stringify(v));
+  ok(Math.abs(v.divYieldPct - 0.35) < 1e-9 && v.priceWarn === false && v.priceStop === false, 'parseVendor: yield เป็น % · ธง ราคาขัด');
+  const vy = Pp.parseVendor(PREP_OUT.replace(/\[2\] StockAnalysis[^\n]*\n[^\n]*\n/, ''));
+  ok(vy.epsTTM === 7.12 && vy.analysts === 38 && Math.abs(vy.divYieldPct - 0.35) < 1e-9, 'parseVendor: ไม่มี SA → ถอยไป Yahoo');
+
+  const html = FX.AAPL();
+  const ctx = buildCtx(expandReport(html), 'AAPL.html');
+  const same = Pp.snapshotDiff(html, ctx, { lo52: null, hi52: null, target: null, divYieldPct: null });
+  ok(same.every((s) => !/·\s*vendor/.test(s)), 'snapshotDiff: vendor ไม่มีค่า → ไม่ฟ้องส่วนต่าง');
+  const far = Pp.snapshotDiff(html, ctx, { lo52: 1, hi52: 2, target: 1, analysts: 9, divYieldPct: 9 });
+  ok(far.some((s) => /กรอบ 52 สัปดาห์/.test(s)) && far.some((s) => /เป้านักวิเคราะห์|อ่านกรอบ/.test(s)), 'snapshotDiff: ค่าต่างมาก → ฟ้อง 52wk/เป้า (คลาสที่ 4 price-derived-staleness)', far.join(' | '));
+
+  const tpl = fs.readFileSync(path.join(ROOT, '_template', 'agent-prompt.md'), 'utf8');
+  const p = Pp.assemblePrompt(tpl, { SYMBOL: 'AAPL', MARKET: 'US', MODE: 'UPDATE-LIGHT', WORKTREE: '/wt', CURRENT_TAGS: 'consumer-tech', MEDIANS: '=== ตัวคูณมัธยฐานย้อนหลัง: AAPL ===\n  ★ มัธยฐาน 28.0x', FUNDAMENTALS: PREP_OUT }, Pp.extraBlock({ sym: 'AAPL', mode: 'UPDATE-LIGHT', prePatched: '2026-09-11', oldPrice: 297.21, price: 301.5, baseEPS: 7.1, epsTTM: 7.36, epsScreen: 3.66, snap: ['เป้า ใบ 300 · vendor 312'], medWarn: [], hard: false, hardWhy: '' }));
+  // ★ ตรวจ token ค้างบน prompt ที่ "ถอดบล็อก FUNDAMENTALS ออกแล้ว" — ตัว prep-stock เองพิมพ์คำว่า
+  //   `{{FUNDAMENTALS}}` ในหัวบล็อก ("วางทั้ง block ลง {{FUNDAMENTALS}}") ⇒ ข้อความที่ถูกแทน *เข้าไป*
+  //   มี `{{…}}` ติดมาโดยชอบธรรม · assemblePrompt จึงตรวจ token กับ template ไม่ใช่ผลลัพธ์ (Step 5 ก็ว่า
+  //   "ไม่มี {{ ค้าง *นอก* บล็อก FUNDAMENTALS/BRAND")
+  const pOutside = p.split(PREP_OUT).join('');
+  ok(!/\{\{(SYMBOL|MARKET|MODE|WORKTREE|CURRENT_TAGS|MEDIANS|FUNDAMENTALS)\}\}/.test(pOutside) && /\{\{AI_MODEL\}\}/.test(p), 'assemblePrompt: แทนครบ 7 token · คง {{AI_MODEL}} ให้ worker เติม');
+  ok(/บันทึกจาก runbook/.test(p) && /ห้ามรัน update-prices ซ้ำ/.test(p) && /ยกระดับเป็น UPDATE เต็ม/.test(p) && /เป้า ใบ 300/.test(p) && /ห้ามเรียก advisor ตรง/.test(p), 'assemblePrompt: บล็อกท้าย = ราคา patch แล้ว · EPS screen · snapshot · ข้อห้าม');
+  let threw = false; try { Pp.assemblePrompt(tpl, { SYMBOL: 'X' }, ''); } catch (_) { threw = true; }
+  ok(threw, 'assemblePrompt: ขาด token → throw (ไม่ส่ง prompt ที่มี {{…}} ค้าง)');
+
+  ok(Pp.hardStock({ bucket: 'FULL' }, ctx, v).hard === true, 'hardStock: suspect-split/bad-chart = ยาก');
+  ok(Pp.hardStock({ bucket: 'LIGHT' }, { baseEPS: -1.2 }, v).hard === true && /pre-profit/.test(Pp.hardStock({ bucket: 'LIGHT' }, { baseEPS: -1.2 }, v).why), 'hardStock: EPS ฐาน ≤ 0 = pre-profit = ยาก');
+  ok(Pp.hardStock({ bucket: 'LIGHT' }, ctx, v).hard === false, 'hardStock: LIGHT ปกติ = ไม่ยาก (Sonnet/medium)');
+}
+
 // ─────────────────────────── (Task 10–14 แทรกเทสเหนือบรรทัดนี้) ───────────────────────────
 console.log(`queue-test: ${nOK}/${nOK + nFail} ผ่าน`);
 if (nFail) { console.log('❌ runbook มีบั๊ก'); process.exit(1); }
