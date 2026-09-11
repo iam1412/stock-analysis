@@ -77,7 +77,10 @@ function withLock(file, fn, opts) {
   try { out = fn(); }
   catch (e) { release(dir); throw e; }
   if (!out || typeof out.then !== 'function') { release(dir); return out; }
-  const hb = setInterval(() => { try { const t = new Date(); fs.utimesSync(dir, t, t); } catch (_) {} }, hbMs);
+  const hb = setInterval(() => {
+    if (readPid(dir) !== String(process.pid)) { clearInterval(hb); return; }   // ถูก reclaim ไปแล้ว (stale) — เลิก touch ไม่งั้นทำให้ lock ของเจ้าของใหม่ดูสดตลอด reclaim ไม่ได้
+    try { const t = new Date(); fs.utimesSync(dir, t, t); } catch (_) {}
+  }, hbMs);
   hb.unref();
   return out.finally(() => { clearInterval(hb); release(dir); });
 }

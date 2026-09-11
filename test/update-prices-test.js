@@ -771,7 +771,7 @@ ok(U.commitBody([], []) === '', 'commitBody: ว่างเมื่อไม�
   }, { heartbeatMs: 20 });
   ok(p && typeof p.then === 'function', 'withLock: fn async → คืน promise (ไม่ปล่อย lock ก่อน settle)');
   ok(fs.existsSync(dir), 'withLock: ระหว่าง await ยังถือ lock อยู่');
-  pending = p.then((dt) => {
+  const chain1 = p.then((dt) => {
     ok(dt > 0, `heartbeat: mtime ขยับระหว่างถือ (Δ ${dt.toFixed(0)} ms)`);
     ok(!fs.existsSync(dir), 'withLock async: settle แล้วปล่อย lock');
     // (2) ปล่อยเฉพาะของตัวเอง: จำลองว่าถูก reclaim (pid ในโฟลเดอร์ไม่ใช่ของเรา)
@@ -782,6 +782,24 @@ ok(U.commitBody([], []) === '', 'commitBody: ว่างเมื่อไม�
     ok(process.listeners('SIGINT').some((l) => /release|held/.test(String(l))) && process.listeners('SIGTERM').some((l) => /release|held/.test(String(l))), 'lockfile: ลงทะเบียน SIGINT/SIGTERM เพื่อปล่อย lock');
     ok(L.HEARTBEAT_MS === 60000, 'export HEARTBEAT_MS = 60000');
   });
+
+  // (4) fix round 1: heartbeat ต้องเช็ค pid ก่อน touch — ถูก reclaim ระหว่างถือ (async holder ค้างเกิน STALE_MS) ต้องเลิก touch
+  //     ไม่งั้น interval เก่ายังทำให้ lock ของเจ้าของใหม่ "ดูสดตลอด" จน reclaim ซ้ำไม่ได้แม้เจ้าของใหม่ตายไปแล้ว
+  const f4 = path.join(tmp, 'y.json'), dir4 = f4 + '.lock';
+  const p4 = L.withLock(f4, async () => {
+    await new Promise((r) => setTimeout(r, 30));            // ให้ heartbeat ติ๊กตามปกติก่อนอย่างน้อย 1 รอบ (pid ยังเป็นของเรา)
+    fs.writeFileSync(path.join(dir4, 'pid'), '77777777');   // จำลอง reclaim ระหว่างถือ: pid ในโฟลเดอร์ไม่ใช่ของเราอีกต่อไป
+    const t0 = fs.statSync(dir4).mtimeMs;
+    await new Promise((r) => setTimeout(r, 75));            // รอหลายรอบ heartbeat (heartbeatMs=15) หลัง pid ถูกแทนที่
+    return fs.statSync(dir4).mtimeMs - t0;
+  }, { heartbeatMs: 15 });
+  const chain2 = p4.then((dt4) => {
+    ok(dt4 === 0, `heartbeat: เช็ค pid ก่อน touch — เลิก touch ทันทีที่ pid ไม่ใช่ของเรา (Δ ${dt4} ms)`);
+    ok(fs.existsSync(dir4) && fs.readFileSync(path.join(dir4, 'pid'), 'utf8') === '77777777', 'heartbeat: settle แล้ว lock ของเจ้าของใหม่ยังอยู่ครบ (ไม่ถูกลบ + ไม่ถูกทำให้สดปลอม)');
+    fs.rmSync(dir4, { recursive: true, force: true });
+  });
+
+  pending = Promise.all([chain1, chain2]);
 }
 
 // ---------- commitFlags: merge บนไฟล์ "ล่าสุด" ใต้ lock ไม่ใช่ snapshot ตอนเริ่มรอบ (WS4 · เคส flag ฟื้น/หาย 12 ส.ค. 69) ----------
