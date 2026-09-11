@@ -5,11 +5,8 @@
 
 ## 1. ก่อนเริ่ม — กันซ้ำ + ความสด
 
-1. **`git pull --rebase origin main` ก่อนเสมอ** → อ่าน `reports.json` (ได้ของ session อื่นที่เพิ่ง push มาด้วย)
-2. เทียบแต่ละตัว (ฟิลด์ `updated`) — **เกณฑ์ความสด = 7 วัน** (คนละตัวกับ staleness gate 45/120 วัน):
-   - สด ≤7 วัน → **ไม่วิเคราะห์ซ้ำ** · ธีม/โควตา → หาตัวใหม่ในธีมมาแทน · ระบุชื่อชัด → ข้าม (แจ้ง)
-   - เกิน 7 วัน → วิเคราะห์ซ้ำ = **UPDATE mode** · ยังไม่มี → NEW (skeleton) · จากคิว price-flags → triage ตาม SKILL STEP 0 (UPDATE-LIGHT / UPDATE เต็ม / plumbing)
-3. กันซ้ำข้าม session = push รายตัว (pull --rebase มากับลำดับ push ของทุกตัวอยู่แล้ว — ตัวที่คนอื่น push แล้วโผล่ใน `reports.json` → ถูกคัดออก session อื่นเห็นเร็วสุด)
+`npm run queue -- preflight` ทำให้: `git pull --rebase origin main` · อ่านคิว · **ความสดอ่านจากวันที่ footer "ข้อมูล ณ" ของแต่ละใบ** (ไม่ใช่ `reports.json.updated` — bulk freshHash ชนกันได้ 13 ใบ 9 ก.ย. 2569) · สด ≤7 วัน = ข้าม (ธีม/โควตา → หาตัวใหม่ · ระบุชื่อ → ข้ามพร้อมแจ้ง) · เกิน 7 วัน = UPDATE · ยังไม่มี = NEW · จากคิว price-flags → triage ตาม `tools/queue/triage.js` (LIGHT / FULL / PLUMBING / REJECTED / DELIST)
+กันซ้ำข้าม session = push รายตัวผ่าน `npm run queue -- ship <SYM>` (pull --rebase มากับลำดับ push ของทุกตัวอยู่แล้ว)
 
 ## 2. โมเดล (บังคับ)
 
