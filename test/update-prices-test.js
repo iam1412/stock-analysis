@@ -728,5 +728,24 @@ ok(body.includes('HMPRO 6.15 → 6.05 (-1.6%)'), 'commitBody: ขาลงไม
 ok(body.includes('freeze XYZ [drift-gt-10pct] 100 → 115 (+15%)'), 'commitBody: บรรทัด freeze พร้อมเหตุผล');
 ok(U.commitBody([], []) === '', 'commitBody: ว่างเมื่อไม่มีอะไรเปลี่ยน');
 
+// ---------- lockfile (WS4: seeds.json / price-flags.json / tags.json มีหลาย writer ไม่มี lock) ----------
+{
+  const L = require('../tools/lockfile.js');
+  const os = require('os');
+  const f = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'lock-')), 'state.json');
+  let inside = 0;
+  const r = L.withLock(f, () => { inside++; ok(fs.existsSync(f + '.lock'), 'withLock: ถือ lock ระหว่าง fn'); return 42; });
+  ok(r === 42 && inside === 1 && !fs.existsSync(f + '.lock'), 'withLock: คืนค่าของ fn + ปล่อย lock หลังจบ');
+  fs.mkdirSync(f + '.lock');                                   // จำลองอีก process ถืออยู่
+  let threw = null; try { L.withLock(f, () => {}, { waitMs: 300 }); } catch (e) { threw = e; }
+  ok(threw && /รอ lock/.test(threw.message), 'withLock: lock ถูกถือ → รอครบแล้ว throw (ห้ามข้ามเงียบ = คิวเพี้ยน)');
+  const old = Date.now() / 1000 - 3600; fs.utimesSync(f + '.lock', old, old);   // lock ค้าง 1 ชม. = process ตาย
+  ok(L.withLock(f, () => 'ok', { waitMs: 300 }) === 'ok' && !fs.existsSync(f + '.lock'), 'withLock: lock ค้างเกิน 10 นาที → ยึดได้แล้วปล่อย');
+  let thrown = false; try { L.withLock(f, () => { throw new Error('x'); }); } catch (_) { thrown = true; }
+  ok(thrown && !fs.existsSync(f + '.lock'), 'withLock: fn throw → ปล่อย lock เสมอ');
+  L.writeJsonAtomic(f, '{"a":1}\n');
+  ok(fs.readFileSync(f, 'utf8') === '{"a":1}\n' && !fs.readdirSync(path.dirname(f)).some((x) => x.includes('.tmp-')), 'writeJsonAtomic: เขียนผ่าน temp+rename ไม่ทิ้ง .tmp');
+}
+
 console.log(nFail ? `\n✗ update-prices-test: ${nFail} failed / ${nOK} passed` : `\n✓ update-prices-test: ${nOK} passed`);
 process.exit(nFail ? 1 : 0);
