@@ -9,7 +9,7 @@
 |---|---|---|---|
 | 1 | cron ไม่ขึ้นกับราคาของวัน (สุ่มไล่ราคา 0 fail) | 12/12 ราคา `verify` ผ่าน · **fails=0** · error 0 ทุกครั้ง | ✅ |
 | 2 | ขั้นที่ controller ต้องจำ ≤5 | preflight **2** (สูงสุด 4) · prep **2** (สูงสุด 4) · postcheck **2** | ✅ |
-| 3 | docs ขัดกัน 0 คู่ | ขัดกันจริง **0** (raw 2 hit = false positive ทั้งคู่) | ✅ |
+| 3 | docs ขัดกัน 0 คู่ | **0 ในวลีที่กวาด (11 วลี)** — raw 2 hit = false positive ทั้งคู่ · นอกชุดวลีเจออีก 1 คู่ (§3) | ✅ |
 | 4 | worker ไม่ได้รับคำสั่งขัดกัน | 11 บรรทัดที่เหลือมีขอบเขตชัดทุกบรรทัด (**แก้ 1 บรรทัดใน task นี้**) | ✅ |
 
 ---
@@ -102,7 +102,9 @@ rtk proxy grep -rn "sequential\|เวฟ ≤3\|Sonnet เป็น default ท�
 | `docs/templates.md:249` | "…ให้ controller รันคำสั่งข้างต้นแบบ sequential (มี worker พร้อมกันหลายตัว = controller รันทีละตัว ห้ามขนาน)" | **ยอมรับ** — คนละเรื่องกับกฎ "spawn worker แบบ sequential" ที่ถูกยกเลิก · อันนี้คือการเขียน `tags.json` ทีละคำสั่ง (Task 18 review ตัดสินให้คงไว้) |
 | `_template/vendor/LICENSE-lightweight-charts:163` | "…incidental, or con**sequential** damages…" | **ยอมรับ** — คำว่า `consequential` ในไฟล์ license ของ vendor · ไม่ใช่กฎของโปรเจกต์ |
 
-baseline = **17 คู่ที่ขัดกัน** (docs-audit / metrics §7) → **0**
+baseline = **17 คู่ที่ขัดกัน** (docs-audit / metrics §7) → **0 ในวลีที่กวาด (11 วลี)**
+
+final review พบคู่ขัดกันนอกชุดวลี 1 คู่ (templates.md "ขาด lock" — แก้แล้ว) + จำนวน error/warning ใน README ล้าสมัย (แก้แล้ว) ⇒ ระยะ 1 ต้องเพิ่มแพทเทิร์นเชิงลบ/ตัวเลข (ไม่มี lock · \d+ error \+ \d+ warning · \d+ ขั้น) เข้า sweep หรือทำเป็นเทส
 
 ---
 
@@ -133,7 +135,7 @@ rtk proxy grep -n "push\|advisor\|pick-brand" CLAUDE.md \
 | KPI | baseline (11 ก.ย. 69) | หลังระยะ 0 (12 ก.ย. 69) | เป้า spec |
 |---|---|---|---|
 | ขั้นที่ controller ต้องจำ | 24 | **≤2 ต่อขั้นตอน** (สูงสุด 4) | ≤5 ✅ |
-| docs ขัดกัน | 17 คู่ | **0** (raw 2 = false positive) | 0 ✅ |
+| docs ขัดกัน | 17 คู่ | **0 ในวลีที่กวาด (11 วลี)** (raw 2 = false positive · นอกชุดวลี 1 คู่ แก้ใน final review) | 0 ✅ |
 | fixture ผูกไฟล์รายงานจริง | 2 (`self-test` · `update-prices-test`) | **0** (`test/fixtures/{AAPL,BBL}.html` แช่แข็ง) | 0 ✅ |
 | วันที่ cron ล้ม/เดือน | ~2 | **0 ใน 12 ราคาสังเคราะห์** (ยังต้องดูของจริงต่อไป) | 0 |
 | ขั้น `npm run verify` | 13 | **14** (+`queue-test`) | — |

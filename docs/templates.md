@@ -238,7 +238,7 @@
 - `tags[SYM]` = 1–3 slug ไม่ซ้ำกัน ทุกตัวต้องอยู่ในคลัง (`validateAssignment` ใน `tools/tag-lib.js` — บังคับด้วย gate **E40**)
 - `requests[]` = คิวรอทบทวนของเจ้าของ (worker/controller เปิดผ่าน `--request` เมื่อไม่มี slug ไหนเข้ากันจริง ๆ) — **ไม่ใช่ช่องทางเลี่ยงการเลือก slug ที่มีอยู่**
 
-**`tools/tag-apply.js`** — ทางเข้าเดียวที่เขียน `tags.json` (เหตุผลเดียวกับ lock ที่ `pick-brand.js` ขาด — read-modify-write ไม่มี lock, รันขนานสอง process = entry ทับหายเงียบ ๆ) validate ก่อนเขียนเสมอ, input เสีย = ไฟล์เดิมไม่ถูกแตะเลย, เขียนแบบ atomic (`.tmp` → rename):
+**`tools/tag-apply.js`** — ทางเข้าเดียวที่เขียน `tags.json` (เขียนใต้ `tools/lockfile.js` แล้วเหมือน `pick-brand.js` — read-modify-write ของสองไฟล์นี้ปลอดภัยกับการรันขนานแล้ว) validate ก่อนเขียนเสมอ, input เสีย = ไฟล์เดิมไม่ถูกแตะเลย, เขียนแบบ atomic (`.tmp` → rename):
 ```bash
 node tools/tag-apply.js <SYM> <slug…>          # ติด/แทน tag (1–3 slug ใน tags-vocab.json)
 node tools/tag-apply.js <SYM> --keep           # ยืนยันคงเดิม (โหมด UPDATE ทบทวนแล้วไม่เปลี่ยน — ไม่เขียนไฟล์)
@@ -246,7 +246,7 @@ node tools/tag-apply.js <SYM> --request "ธีม"  # เข้าคิว req
 node tools/tag-apply.js --rename <OLD> <NEW>   # ย้าย key ตาม tools/symbol-map.json (ปฏิเสธถ้า NEW ไม่มี reports/<NEW>.html จริง)
 node tools/tag-apply.js --prune                # ลบ entry ที่ไม่มีไฟล์ reports/ แล้ว (ใช้หลังลบรายงานหุ้นเพิกถอน)
 ```
-**ห้ามแก้ `tags.json`/`tags-vocab.json` มือ ห้าม worker agent เขียนเอง** — worker คืนบรรทัด `TAGS: <slug…>` ให้ controller รันคำสั่งข้างต้นแบบ sequential (มี worker พร้อมกันหลายตัว = controller รันทีละตัว ห้ามขนาน)
+**ห้ามแก้ `tags.json`/`tags-vocab.json` มือ ห้าม worker agent เขียนเอง** — worker คืนบรรทัด `TAGS: <slug…>` ให้ controller รันคำสั่งข้างต้นเอง — เหตุผลคือ **ให้ controller รีวิว slug ก่อนเขียน** ไม่ใช่เรื่อง race (ไฟล์มี lock แล้ว) ⇒ รันพร้อมกันหลาย worker ได้
 
 **กติกาแกนธีม (ไม่ใช่ category/ขนาด):** slug ใหม่ต้องตอบ "หุ้นตัวนี้เล่นเรื่องอะไร" — **ห้าม** เป็นหมวด GICS (Technology/Healthcare/Financials), ขนาดตลาด (Large-cap), หรือสไตล์การลงทุน (Dividend Aristocrat/Deep Value) เพราะข้อมูลพวกนี้มีอยู่แล้วในตัวรายงาน/screener ไม่ต้องการ tag ซ้ำ
 
