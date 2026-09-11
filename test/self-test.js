@@ -861,6 +861,18 @@ reject('W14', addCard('4. EV/EBITDA', 'EBITDA $4.0B (mid-point FY2026 $3.6B guid
   quiet('W20', BC, addKV(BB, '1.20x / 1.80x', `BVPS ${cur}${bv(1.5)}`)(fresh), 'W20: สองตัวคูณแต่มีฐานเดียว → จับคู่ไม่ได้ ต้องไม่เดา');
 }
 
+// ── runner: ไฟล์ที่ expandReport ระเบิดต้องนับเป็น error ของไฟล์นั้น ไม่ล้มทั้งรอบ (code-audit §6.A ข้อ 2) ──
+{
+  const { checkFile } = require('./check-reports');
+  const os = require('os');
+  const tmp = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'cr-')), 'BROKEN.html');
+  fs.writeFileSync(tmp, '<!DOCTYPE html><html lang="th"><head><!--TEMPLATE:STYLE--></head><body></body></html>');
+  let r = null, threw = false;
+  try { r = checkFile(tmp); } catch (_) { threw = true; }
+  ok(!threw && r && r.errors.length === 1 && r.errors[0].id === 'EXPAND', 'checkFile: expandReport throw → error EXPAND ของไฟล์นั้น ไม่ throw ออกมา' + (r ? ` (ได้ ${r.errors.map((e) => e.id).join(',')})` : ' (throw)'));
+  ok(checkFile(FX.PATH.BBL).errors.length === 0, 'checkFile: fixture ดีผ่าน (เส้นทางปกติ = checkHtml)');
+}
+
 // ── fixture-lint: เทสใน verify ห้ามอ่าน reports/*.html เป็น fixture (บทเรียน 22–24 ส.ค. · 2 ก.ย. 69) ──
 require('./fixture-lint.js')(ok);
 

@@ -803,7 +803,20 @@ function checkHtml(html, name, opts) {
   return { name, symbol: ctx.symbol, ctx, errors, warnings, errTotal, errPass: errTotal - errors.length };
 }
 
-module.exports = { checkHtml, buildCtx, parseScenarios, firstNum, CHECKS, REPORTS_DIR, FISCAL_REF_SRC };
+/** ตรวจ 1 ไฟล์จาก path — expandReport ระเบิด = error ของไฟล์นั้น (id EXPAND) ไม่ใช่ crash ของทั้งรอบ
+ *  (เดิม expandReport อยู่นอก try ของ main ⇒ ไฟล์เดียวที่ report-data เสียทำ cron ทั้งวันล้ม — code-audit §6.A) */
+function checkFile(fp) {
+  const name = path.basename(fp);
+  let expanded;
+  try { expanded = expandReport(fs.readFileSync(fp, 'utf8')); }
+  catch (e) {
+    const errTotal = CHECKS.filter((c) => c.level === 'error').length;
+    return { name, symbol: name.replace(/\.html$/i, ''), ctx: null, errors: [{ id: 'EXPAND', label: 'expandReport', msg: e.message }], warnings: [], errTotal, errPass: errTotal - 1 };
+  }
+  return checkHtml(expanded, name);
+}
+
+module.exports = { checkHtml, checkFile, buildCtx, parseScenarios, firstNum, CHECKS, REPORTS_DIR, FISCAL_REF_SRC };
 
 // ---------- CLI ----------
 function main() {
@@ -816,7 +829,7 @@ function main() {
   console.log(`\n🔍 ตรวจคุณภาพรายงาน ${files.length} ไฟล์ (reports/)\n`);
   let totErr = 0, totWarn = 0, failFiles = 0;
   for (const f of files) {
-    const r = checkHtml(expandReport(fs.readFileSync(path.join(REPORTS_DIR, f), 'utf8')), f);
+    const r = checkFile(path.join(REPORTS_DIR, f));
     totErr += r.errors.length; totWarn += r.warnings.length;
     if (r.errors.length) { failFiles++; console.log(`✗ ${f.padEnd(13)} ${r.errPass}/${r.errTotal} ผ่าน — ${r.errors.length} ปัญหา`); }
     else console.log(`✓ ${f.padEnd(13)} ${r.errTotal}/${r.errTotal} ผ่าน${r.warnings.length ? `   (⚠ ${r.warnings.length})` : ''}`);
