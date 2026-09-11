@@ -12,6 +12,7 @@ const FX = require('./fixtures');
 process.env.STALE_TODAY = FX.TODAY;   // gate ที่ Task 7 เรียกผ่าน gateAfterPatch ต้องไม่เดินตามปฏิทินจริง
 
 let nOK = 0, nFail = 0;
+let pending = null;   // lockfile ระยะ 1: promise ของเคส async — tally ต้องรอก่อนพิมพ์ (ดูท้ายไฟล์)
 function ok(cond, label, detail) {
   if (cond) { nOK++; return; }
   nFail++;
@@ -756,6 +757,33 @@ ok(U.commitBody([], []) === '', 'commitBody: ว่างเมื่อไม�
   }
 }
 
+// ── lockfile ระยะ 1: heartbeat (async holder) · release เฉพาะของตัวเอง · signal ──
+{
+  const L = require('../tools/lockfile.js');
+  const os = require('os');
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'lock-'));
+  const f = path.join(tmp, 'x.json'), dir = f + '.lock';
+  // (1) async holder: mtime ของ lock ต้องขยับระหว่างถือ
+  const p = L.withLock(f, async () => {
+    const t0 = fs.statSync(dir).mtimeMs;
+    await new Promise((r) => setTimeout(r, 120));
+    return fs.statSync(dir).mtimeMs - t0;
+  }, { heartbeatMs: 20 });
+  ok(p && typeof p.then === 'function', 'withLock: fn async → คืน promise (ไม่ปล่อย lock ก่อน settle)');
+  ok(fs.existsSync(dir), 'withLock: ระหว่าง await ยังถือ lock อยู่');
+  pending = p.then((dt) => {
+    ok(dt > 0, `heartbeat: mtime ขยับระหว่างถือ (Δ ${dt.toFixed(0)} ms)`);
+    ok(!fs.existsSync(dir), 'withLock async: settle แล้วปล่อย lock');
+    // (2) ปล่อยเฉพาะของตัวเอง: จำลองว่าถูก reclaim (pid ในโฟลเดอร์ไม่ใช่ของเรา)
+    L.withLock(f, () => { fs.writeFileSync(path.join(dir, 'pid'), '99999999'); });
+    ok(fs.existsSync(dir) && fs.readFileSync(path.join(dir, 'pid'), 'utf8') === '99999999', 'release: pid ไม่ใช่ของเรา → ไม่ลบ lock ของคนใหม่');
+    fs.rmSync(dir, { recursive: true, force: true });
+    // (3) signal handler มีอยู่จริง (ไม่ยิงสัญญาณจริงในเทส — แค่ตรวจว่าลงทะเบียน)
+    ok(process.listeners('SIGINT').some((l) => /release|held/.test(String(l))) && process.listeners('SIGTERM').some((l) => /release|held/.test(String(l))), 'lockfile: ลงทะเบียน SIGINT/SIGTERM เพื่อปล่อย lock');
+    ok(L.HEARTBEAT_MS === 60000, 'export HEARTBEAT_MS = 60000');
+  });
+}
+
 // ---------- commitFlags: merge บนไฟล์ "ล่าสุด" ใต้ lock ไม่ใช่ snapshot ตอนเริ่มรอบ (WS4 · เคส flag ฟื้น/หาย 12 ส.ค. 69) ----------
 {
   const os = require('os');
@@ -818,5 +846,7 @@ ok(U.commitBody([], []) === '', 'commitBody: ว่างเมื่อไม�
   ok(!gw.ok && gw.codes.includes('W17'), 'gateAfterPatch: W17 (ยกเป็น error) ที่ตกหลัง patch → ok=false + patch-rejected ไม่ throw', gw.codes.join(','));
 }
 
-console.log(nFail ? `\n✗ update-prices-test: ${nFail} failed / ${nOK} passed` : `\n✓ update-prices-test: ${nOK} passed`);
-process.exit(nFail ? 1 : 0);
+Promise.resolve(pending).then(() => {
+  console.log(nFail ? `\n✗ update-prices-test: ${nFail} failed / ${nOK} passed` : `\n✓ update-prices-test: ${nOK} passed`);
+  process.exit(nFail ? 1 : 0);
+});
