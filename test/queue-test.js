@@ -220,6 +220,21 @@ process.env.QUEUE_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'queue-'));   // s
   ok(Pp.hardStock({ bucket: 'LIGHT' }, ctx, v).hard === false, 'hardStock: LIGHT ปกติ = ไม่ยาก (Sonnet/medium)');
 }
 
+// ── 8) postcheck (ส่วนบริสุทธิ์): ราคาเก่าค้างในเนื้อความ · ai-model · pe null เมื่อขาดทุน · footer วันนี้/พ.ศ. ──
+{
+  const Pc = require('../tools/queue/postcheck.js');
+  const html = '<p>ราคาปัจจุบัน $297.21 ยังถูก</p>\n<script id="stock-meta">{"price":297.21}</script>\n<p>เป้า $320</p>\n<p>จากจุดเข้า $297</p>';
+  const hits = Pc.findOldPrice(html, 297.21);
+  ok(hits.length === 2 && hits[0].line === 1 && hits[1].line === 4, 'findOldPrice: จับทั้งทศนิยมและจำนวนเต็ม · ข้ามบล็อก stock-meta', JSON.stringify(hits));
+  ok(Pc.findOldPrice(html, null).length === 0, 'findOldPrice: ไม่มีราคาเดิม → ว่าง');
+  const ctxLoss = { aiModel: 'Claude Sonnet 5', baseEPS: -0.5, sm: { ok: true, data: { pe: 12, roe: 4.1 } } };
+  const m1 = Pc.checkMeta(ctxLoss, 'sonnet', { iso: '2026-09-11', era: 'BE' }, '2026-09-11');
+  ok(m1.some((s) => /stock-meta\.pe/.test(s)) && !m1.some((s) => /ai-model/.test(s)), 'checkMeta: EPS ≤ 0 แต่ pe ไม่ null → issue · ai-model ตรง → ไม่ฟ้อง', m1.join('|'));
+  const m2 = Pc.checkMeta({ aiModel: 'Claude Sonnet 5', baseEPS: 5, sm: { ok: true, data: { pe: 20, roe: 10 } } }, 'opus', { iso: '2026-09-10', era: 'CE' }, '2026-09-11');
+  ok(m2.some((s) => /ai-model/.test(s)) && m2.some((s) => /footer.*ไม่ใช่วันนี้/.test(s)) && m2.some((s) => /ค\.ศ\./.test(s)), 'checkMeta: ai-model ไม่ตรง spawn · footer ไม่ใช่วันนี้ · ค.ศ.', m2.join('|'));
+  ok(Pc.checkMeta({ aiModel: 'Claude Opus 5', baseEPS: 5, sm: { ok: true, data: { pe: 20, roe: 10 } } }, 'opus', { iso: '2026-09-11', era: 'BE' }, '2026-09-11').length === 0, 'checkMeta: ทุกอย่างตรง → ว่าง');
+}
+
 // ─────────────────────────── (Task 10–14 แทรกเทสเหนือบรรทัดนี้) ───────────────────────────
 console.log(`queue-test: ${nOK}/${nOK + nFail} ผ่าน`);
 if (nFail) { console.log('❌ runbook มีบั๊ก'); process.exit(1); }
