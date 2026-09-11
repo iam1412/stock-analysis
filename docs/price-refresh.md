@@ -12,7 +12,7 @@ tools/update-prices.js --write     # ดึงราคา Yahoo → patch repor
 npm run build                      # dist + reports.json (วันที่ขยับเป็นวันนี้)
 node tools/preserve-dates.js       # คืนวันที่ "วิเคราะห์" เดิม (refresh ราคา ≠ re-analysis)
 npm run build                      # build อีกรอบให้ dist ตรงวันที่เดิม
-npm run verify                     # gate 8 ขั้นเดิม — แดง = ไม่ push
+npm run verify                     # gate 14 ขั้น (รายการใน CLAUDE.md §8) — แดง = ไม่ push
 git commit -F …                    # title: price: refresh N symbols (YYYY-MM-DD)
                                    # body:  log ต่อหุ้น "AAPL 297.21 → 315.32 (+6.1%)" + บรรทัด freeze — ถาวรใน git history
 ```
@@ -154,7 +154,7 @@ npm run build && node tools/preserve-dates.js && npm run build   # ★ ซ่อ
 - workflow เปิด/อัปเดต GitHub Issue "Price-refresh flags" ใบเดียว (ปิดเองเมื่อคิวว่าง) + สรุปใน job summary
   - body สร้างโดย `tools/flags-issue-body.js` — **เขียนทับทั้งใบทุกรอบ** จึงอ่าน body เดิมกลับเข้ามาก่อน เพื่อเทียบว่าตัวไหนเข้า/ออกคิว และสะสม **ตารางประวัติจำนวนคิว 14 รอบล่าสุด** (issue เก็บ state ตัวเอง ไม่ต้องมีไฟล์ history) · ประวัติจะเริ่มนับใหม่เมื่อคิวว่างจนปิด issue แล้วเปิดใบใหม่
   - marker `<!--flags-->` / `<!--history-->` ในตัว body คือจุดที่สคริปต์อ่านกลับ — **ห้ามแก้ body ด้วยมือจนคู่ marker หาย** (หายแล้วประวัติจะรีเซ็ต) · ทดสอบแห้ง: `PREV_BODY="$(gh issue view N --json body --jq .body)" TODAY=$(date +%F) node tools/flags-issue-body.js`
-- **เคลียร์คิว:** เปิด session สั่ง "เคลียร์คิว price-flags" → อ่าน `price-flags.json` → re-analysis ตาม bulk workflow (§3) ทุกกติกาเดิม (ตัว suspect-split เข้าข่าย "หุ้นยาก" → controller ปรึกษา `advisor` ผ่าน courier subagent ก่อน spawn (ห้ามเรียกตรง — orchestration §2) + effort high — ไม่มี Opus แล้ว) · ปล่อยค้าง = วันที่ราคาเก่าลงจนโดน staleness gate เดิม (warn 45 / error 120 วัน) กดดันตามปกติ
+- **เคลียร์คิว:** `npm run queue -- preflight` → `ship --prepatch` (push ราคาที่ patch ทันที ให้ tree สะอาดก่อน worker เริ่ม — ไม่งั้น commit รายหุ้นจะพา reports.json ของใบข้างเคียงที่ยังไม่ commit ไปด้วย) แล้วทำตามที่ script พิมพ์ (CLAUDE.md §9) · หุ้นยาก (suspect-split/bad-chart/pre-profit/ราคาขัด 2–5%) prep จะแนะนำ `model:"opus"` + effort high และเตือนให้ controller ปรึกษา `advisor` ก่อน spawn (CLAUDE.md §3.2/§7) · ปล่อยค้าง = วันที่ราคาเก่าลงจนโดน staleness gate (warn 45 / error 120 วัน)
 
 ## รันมือ / debug
 

@@ -177,5 +177,5 @@ async function main() {
   process.exit(bad === specs.length ? 1 : 0);
 }
 
-module.exports = { oneSymbol, avgWindow, monthlyCloses, MIN_POINTS };
+module.exports = { oneSymbol, avgWindow, monthlyCloses, report, MIN_POINTS };
 if (require.main === module) main().catch((e) => { console.error('✗', e.message); process.exit(1); });

@@ -3,13 +3,14 @@
 > สรุปย่อ + คำสั่งอยู่ใน `CLAUDE.md §8` — ไฟล์นี้คือรายละเอียดไล่ทีละชั้น/ทีละ error
 > **enforcement จริงอยู่ในโค้ด `test/*.js`** เอกสารนี้เป็นคำอธิบายประกอบเท่านั้น
 
-มี gate หลายชั้น ต้องผ่านทั้งหมด **ก่อน push เสมอ** (มี `pre-push` hook บังคับซ้ำ 13 ขั้น):
+มี gate หลายชั้น ต้องผ่านทั้งหมด **ก่อน push เสมอ** (มี `pre-push` hook บังคับซ้ำ 14 ขั้น):
 
 ```bash
-npm run verify           # ★ ครบชุด 13 ขั้น: update-prices-test → dead-ticker-test → tag-apply-test → tags-test → check-reports → self-test → ohlc-test → ta-engine-test → build → build-test → engine-exec → skeleton-test → check-site
+npm run verify           # ★ ครบชุด 14 ขั้น: update-prices-test → dead-ticker-test → tag-apply-test → queue-test → tags-test → check-reports → self-test → ohlc-test → ta-engine-test → build → build-test → engine-exec → skeleton-test → check-site
 npm run test:prices      # ชั้น 1 (unit-test cron ราคา — offline: decide/detectStaleQuotes/capByCohort/unverifiedCohorts/mergeFlags/patchReport)
 npm run test:dead        # ชั้น 2 (unit-test canary หุ้นตาย — offline: tvBaseName/tvCandidates/classify/mergeDeadFlags/shouldAbort/retry)
 npm run test:tagapply    # ชั้น tag 1 (unit-test CLI ที่เขียน tags.json — offline: applyTags/renameSymbol/pruneMissing all-or-nothing)
+npm run test:queue       # ชั้น runbook (unit-test tools/queue — offline: triage/footer-date/market/prompt/ship helpers + ลำดับขั้น verify ↔ pre-push)
 npm run test:tags        # ชั้น tag 2 (schema คลัง + validateAssignment + matchTagQuery + corpus: ครบ 908/ไม่มี entry ค้าง/ไม่มี slug หลุดคลัง)
 npm test                 # ชั้น 3 อย่างเดียว (= node test/check-reports.js)  •  npm test -- BBL  = เฉพาะบางตัว
 npm run test:ohlc        # ชั้น TA อย่างเดียว (แปลง Yahoo OHLC → payload แท่งเทียน)
