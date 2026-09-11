@@ -21,7 +21,7 @@
 | 15 | คำขอคำศัพท์ 49 รายการใน `tags.json.requests` รอเจ้าของ | tag-system-2026-08:19 | เจ้าของรีวิว |
 | 16 | `stock-ai.dotent.workers.dev` ยังเปิด (`workers_dev=true` ห้ามลบ) traffic ไม่ cache | workers-dev-cache-inert:21 | ไม่ทำ (บันทึกไว้) |
 | 17 | ไม่มี `x-cache` header — วินิจฉัย cache จากเวลาอย่างเดียว | workers-dev-cache-inert:20 | ไม่ทำ (บันทึกไว้) |
-| 18 | เส้นทาง `analyze-wave` (Workflow) inject CLAUDE.md ไหม · default model ทางนี้ | ai-model-stamping:20 | **Task 20** |
+| 18 | เส้นทาง `analyze-wave` (Workflow) inject CLAUDE.md ไหม · default model ทางนี้ | ai-model-stamping:20 | **Task 20** — รอเจ้าของสั่ง "รัน workflow analyze-wave probe" (Workflow tool ต้องได้รับคำสั่งตรง · ยังไม่ได้รัน 12 ก.ย. 2569) |
 | 19 | W06 ยิง 553/908 (61%) ก่อน 17 ส.ค. — คำบอกทิศต้องคน · ตอนนี้เหลือ 51 | data-source-traps:166 | ระยะ 1 WS6 (D) |
 | 20 | ~23 ใบ EPS ค้าง >2% (HSY SNNP COP NUE CF …) | data-source-traps:153 | ระยะ 3 WS7 ตามปฏิทินงบ (WS6 trigger) |
 
