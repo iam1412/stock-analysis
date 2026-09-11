@@ -804,6 +804,18 @@ ok(U.commitBody([], []) === '', 'commitBody: ว่างเมื่อไม�
   ok(/E15/.test(g.detail) && g.detail.length <= 400, 'gateAfterPatch: detail มีรหัส + สั้นพอลง price-flags.json');
   const broken = U.gateAfterPatch('<!DOCTYPE html><html><head><!--TEMPLATE:STYLE--></head><body></body></html>', 'X.html');
   ok(!broken.ok && broken.codes[0] === 'EXPAND', 'gateAfterPatch: expandReport ระเบิด → EXPAND ไม่ throw');
+
+  // W17 ยกเป็น error (audit phase 1 ข้อ C(ค) — 12 ก.ย. 69): ต้องเข้า quarantine เป็น patch-rejected เหมือน error ตัวอื่น ไม่ใช่ throw
+  // ★ ห้ามยืนบนราคาที่ patchReport แก้ (301.5 ใช้ทั่วไฟล์นี้) — อ่านราคาจากฐานฉบับสดเอง แล้วซ่อมหมวด 6 ไปที่จุดเข้าคนละราคา (0.7×px)
+  //   ⇒ header/stock-meta ยังโชว์ px เดิม แต่หมวด 6 ถูกซ่อมให้สอดคล้องกับ 0.7×px → scenarioPlan ตัดสินได้แต่ค่าค้าง → W17 ต้องฟ้อง
+  const DVq = require('../tools/derived-values.js');
+  const freshAapl = FX.AAPL();
+  const smQ = JSON.parse(freshAapl.match(/<script[^>]*id=["']stock-meta["'][^>]*>([\s\S]*?)<\/script>/i)[1]);
+  const px = smQ.price;
+  const staleScn = DVq.patchDerived(freshAapl, px * 0.7).html;
+  ok(staleScn !== freshAapl, '(ตั้งฉาก) patchDerived ที่จุดเข้า 0.7×px ทำให้หมวด 6 เปลี่ยนจริง');
+  const gw = U.gateAfterPatch(staleScn, 'AAPL.html');
+  ok(!gw.ok && gw.codes.includes('W17'), 'gateAfterPatch: W17 (ยกเป็น error) ที่ตกหลัง patch → ok=false + patch-rejected ไม่ throw', gw.codes.join(','));
 }
 
 console.log(nFail ? `\n✗ update-prices-test: ${nFail} failed / ${nOK} passed` : `\n✓ update-prices-test: ${nOK} passed`);

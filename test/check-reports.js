@@ -655,7 +655,8 @@ const CHECKS = [
   // **warn ไม่ใช่ error** เพราะเป็นค่าเดียวในชุดนี้ที่อ้างอิง "ข้ามการ์ด" (ตัวตั้งมาจากการ์ด Market Cap
   // ไม่ใช่บรรทัด .d ของตัวเอง) ⇒ ถ้าวันหนึ่งมีรายงานที่ฐานรายได้/ฐานหุ้นคนละชุดกัน error จะบล็อก cron
   // ทั้งที่ตัวซ่อมแก้ให้ไม่ได้ · คลังปัจจุบันมี 8 การ์ดที่ตรวจได้ ตรวจมือครบทั้ง 8 = ของค้างจากราคาจริงทุกใบ
-  { id: 'W16', level: 'warn', healer: 'patchDerived#6', label: 'P/S = Market Cap ÷ รายได้ที่พิมพ์', fn: (c) => {
+  // (ยกเป็น error ระยะ 1 — ข้อ C(ค) หลัง quarantine + heal = 0)
+  { id: 'W16', level: 'error', healer: 'patchDerived#6', label: 'P/S = Market Cap ÷ รายได้ที่พิมพ์', fn: (c) => {
     if (!(c.px > 0)) return null;
     const basis = DV.mcapCards(c.html, c.px)[0];
     if (!basis) return null;                       // อ่านฐาน Market Cap ไม่ได้ → ไม่มีตัวตั้ง ต้องเงียบ
@@ -682,7 +683,7 @@ const CHECKS = [
   //
   // ★ ขอบเขตต้องเท่ากับตัวซ่อมเป๊ะ ๆ — ทั้งคู่ถาม `DV.scenarioPlan` ตัวเดียวกัน ตัดสินไม่ได้ = เงียบทั้งคู่
   //   (126 ใบ: 84 ใบสามคอลัมน์ไม่สอดคล้องกันเอง = ของที่คนต้องดู · 27 ใบปันผลกำกวม · 15 ใบรูป % ไม่ชัด)
-  { id: 'W17', level: 'warn', healer: 'patchDerived#7', label: 'ผลตอบแทนฉาก 3 ปี = วัดจากราคาปัจจุบัน', fn: (c) => {
+  { id: 'W17', level: 'error', healer: 'patchDerived#7', label: 'ผลตอบแทนฉาก 3 ปี = วัดจากราคาปัจจุบัน', fn: (c) => {
     if (!(c.px > 0)) return null;
     const plan = DV.scenarioPlan(c.html, c.px);
     if (!plan) return null;                        // อ่านไม่ชัด/ตัดสินสมมติฐานปันผลไม่ได้ → ตัวซ่อมก็ไม่แตะ ต้องเงียบ
@@ -736,7 +737,7 @@ const CHECKS = [
   // ★ ขอบเขตเท่ากับตัวซ่อมเป๊ะ — ทั้งคู่ถาม `DV.yieldPlan` ตัวเดียวกัน ⇒ ไม่มี warning ที่ `--heal-derived` เคลียร์ไม่ได้
   //   ตัดสินไม่ได้ (DPS รายไตรมาส/พิเศษ/ผลบวกหลายงวด/ยอดรวมทั้งบริษัท/สกุลอื่น/หลุดย่าน DENOM_BAND) = เงียบทั้งคู่
   //   เกณฑ์ = max(3%, ครึ่งหลักสุดท้ายที่เขียน) — ไม่งั้นการ์ด "~5%" จะเตือนค้างขณะตัวซ่อมปัดแล้วเขียน "5" เดิมกลับ
-  { id: 'W19', level: 'warn', healer: 'patchDerived#8', label: 'ปันผล % = DPS ที่พิมพ์ ÷ ราคา (การ์ด + stock-meta)', fn: (c) => {
+  { id: 'W19', level: 'error', healer: 'patchDerived#8', label: 'ปันผล % = DPS ที่พิมพ์ ÷ ราคา (การ์ด + stock-meta)', fn: (c) => {
     if (!(c.px > 0)) return null;
     const p = DV.yieldPlan(c.html, c.px);
     const bad = [];
@@ -751,7 +752,7 @@ const CHECKS = [
   // คู่แฝดของ W19 (FDS 4.40x ทั้งที่ $262.93 ÷ BVPS $56.80 = 4.63x) — ขอบเขตเท่ากับตัวซ่อม (`DV.pbvPlan`)
   // ★ การ์ด "P/BV / P/TBV" ของธนาคาร: จับคู่ตัวคูณ ↔ ฐานแบบไม่ซ้ำกันที่ระยะรวมน้อยสุด · ฐานไม่พอจับคู่ = เงียบ
   // ★ เงียบเมื่อ: .d ไม่ประกาศ BVPS · มีแค่ TBVPS ในการ์ด P/BV ธรรมดา (MTB) · ส่วนทุนรวม (equity $4.19B) · ติดลบ · สกุลอื่น (¥) · หลุดย่าน
-  { id: 'W20', level: 'warn', healer: 'patchDerived#10', label: 'P/BV = ราคา ÷ BVPS ที่พิมพ์', fn: (c) => {
+  { id: 'W20', level: 'error', healer: 'patchDerived#10', label: 'P/BV = ราคา ÷ BVPS ที่พิมพ์', fn: (c) => {
     if (!(c.px > 0)) return null;
     const bad = [];
     for (const card of DV.pbvPlan(c.html, c.px))
