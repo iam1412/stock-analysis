@@ -861,6 +861,9 @@ reject('W14', addCard('4. EV/EBITDA', 'EBITDA $4.0B (mid-point FY2026 $3.6B guid
   quiet('W20', BC, addKV(BB, '1.20x / 1.80x', `BVPS ${cur}${bv(1.5)}`)(fresh), 'W20: สองตัวคูณแต่มีฐานเดียว → จับคู่ไม่ได้ ต้องไม่เดา');
 }
 
+// ── fixture-lint: เทสใน verify ห้ามอ่าน reports/*.html เป็น fixture (บทเรียน 22–24 ส.ค. · 2 ก.ย. 69) ──
+require('./fixture-lint.js')(ok);
+
 console.log('\n' + '─'.repeat(50));
 console.log(`self-test: ${n - fails}/${n} ผ่าน`);
 if (fails) { console.log('\n❌ checker มีบั๊ก — แก้ check-reports.js ก่อนใช้งานเป็น gate\n'); process.exit(1); }
