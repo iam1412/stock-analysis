@@ -582,7 +582,8 @@ function patchReport(html, p) {
   need(/(id="pxIn"[^>]*\bvalue=")[^"]*(")/, 'pxIn value');
   out = out.replace(/(id="pxIn"[^>]*\bvalue=")[^"]*(")/, (m, a, z) => a + String(round(newPrice, 2)) + z);
 
-  // --- ค่าที่ derive จากราคาล้วน ๆ: P/E (การ์ด + stock-meta.pe) + % ของราคาเป้าในการ์ด (E41/E42) ---
+  // --- ค่าที่ derive จากราคาล้วน ๆ: P/E (การ์ด + stock-meta.pe) + % ของราคาเป้าในการ์ด (E41/E42) + Market Cap/P/S
+  //     + หมวด 6 + ปันผล % (การ์ด + stock-meta.dividendYield) + P/BV (W19/W20 · 11 ก.ย. 69) ---
   // เหตุผลเดียวกับช่อง "ส่วนต่างจากราคา" ข้างบน: ตัวตั้งคือราคาที่เพิ่ง patch ไป ส่วนตัวหาร/ตัวลบ
   // (EPS · ราคาเป้า) เป็นข้อเท็จจริงที่รายงานพิมพ์ไว้เอง ⇒ ไม่ใช่ prose ไม่มีอะไรให้ cron เดา
   // ปล่อยไว้ = ค้างสะสมทุกวันที่ราคาขยับ (วัด 19 ส.ค. 69 ก่อนแก้: P/E เพี้ยน 233/908 ใบ)
@@ -654,7 +655,8 @@ function commitBody(updated, frozen) {
 // ---------- main ----------
 // ---------- โหมดซ่อมค่าที่ derive จากราคา (one-off / หลัง migrate) ----------
 // ใช้ "ราคาที่พิมพ์อยู่ในไฟล์แล้ว" เป็นตัวตั้ง — ไม่ยิง Yahoo เลย ⇒ รันกลาง session ได้ ไม่ชน intraday guard
-// และไม่เปลี่ยนราคา/วันที่/กราฟ (แตะเฉพาะค่าที่คำนวณจากของที่พิมพ์ไว้แล้ว: P/E · stock-meta.pe · % ของราคาเป้า)
+// และไม่เปลี่ยนราคา/วันที่/กราฟ (แตะเฉพาะค่าที่คำนวณจากของที่พิมพ์ไว้แล้ว: P/E · stock-meta.pe · % ของราคาเป้า · Market Cap/P/S · หมวด 6
+// · ปันผล % + stock-meta.dividendYield · P/BV)
 //   node tools/update-prices.js --heal-derived              # dry-run ทั้งคลัง
 //   node tools/update-prices.js --heal-derived --write      # เขียนจริง (การ์ด + stock-meta เท่านั้น)
 //   node tools/update-prices.js --heal-derived --prose --write   # + % ของราคาเป้าที่เขียนในย่อหน้า (ต้องรีวิว diff)

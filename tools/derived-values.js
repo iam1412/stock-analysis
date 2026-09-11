@@ -11,9 +11,13 @@
  *   2) % ของราคาเป้า      = (เป้า − ราคา) / ราคา
  *   3) Market Cap        = ราคา × จำนวนหุ้นที่การ์ดนั้นพิมพ์ไว้ (บรรทัด .d)
  *   4) P/S ที่โชว์        = Market Cap ÷ รายได้ที่การ์ดนั้นพิมพ์ไว้
+ *   5) ปันผล %           = DPS ที่การ์ดนั้นพิมพ์ไว้ ÷ ราคา (+ `stock-meta.dividendYield` ที่เป็นกระจกของมัน)
+ *   6) P/BV ที่โชว์       = ราคา ÷ BVPS ที่การ์ดนั้นพิมพ์ไว้
+ *   (+ ผลตอบแทนฉาก 3 ปีในหมวด 6 — `scenarioPlan`)
  *
  * ใช้ร่วมกัน 2 ฝั่ง — ห้ามทำสำเนาความรู้ (บทเรียนเดียวกับ `price-date.js`):
  *   • ตัวตรวจ  `test/check-reports.js` → E41 (P/E) · E42 (% ในการ์ด) · E43 (Market Cap) · W15 (% ในเนื้อความ) · W16 (P/S)
+ *              · W17 (หมวด 6) · W19 (ปันผล % + stock-meta.dividendYield) · W20 (P/BV)
  *   • ตัวเขียน `tools/update-prices.js` → `patchDerived()` ทั้งใน cron รายวันและโหมด `--heal-derived`
  *
  * ★ หลักที่ห้ามหลุด: **เงียบเมื่ออ่านฐานไม่ได้** — การ์ดที่ไม่ประกาศ EPS ของตัวเอง หรือช่องค่าที่ไม่ใช่
@@ -470,6 +474,186 @@ function retWrite(token, want, negChar) {
   return { text: sign + digits + '%', from: norm(token.sign) + token.num + '%', to: norm(sign) + digits + '%' };
 }
 
+// ── ปันผล % + P/BV — ตัวหารที่การ์ดพิมพ์เอง (W19/W20 · 11 ก.ย. 69) ─────────────────────
+//
+// ปันผล % = DPS ÷ ราคา · P/BV = ราคา ÷ BVPS — ตัวหารเป็นข้อเท็จจริงที่บรรทัด .d ของการ์ดพิมพ์เอง
+// ⇒ หลักเดียวกับ P/E (E41): ราคาคือตัวที่เพิ่ง patch ส่วนตัวหารรายงานพิมพ์ไว้เอง ไม่มีอะไรให้ cron เดา
+// (เจอ 11 ก.ย. 69 ตอนเคลียร์คิว FDS/KLAC/LRCX: cron ไม่มีโค้ดส่วนนี้เลย ⇒ ปันผลลอยตามราคาทั้งคลัง
+//  FDS 1.86% จริง 1.76% · P/BV 4.40x จริง 4.63x — W10 เงียบเพราะการ์ดกับ stock-meta ค้างพร้อมกัน)
+//
+// ★ ต่างจาก EPS ตรงที่บรรทัด .d "พูดหลายอย่างในบรรทัดเดียว" จริง (สำรวจ 897 การ์ดปันผล · 693 การ์ด P/BV):
+//   ปันผล: รายปี · รายไตรมาส ($0.50/ไตรมาส) · รายเดือน · ระหว่างกาล/พิเศษ · ผลบวกหลายงวด (฿0.34 + ฿0.69)
+//          · ยอดรวมทั้งบริษัท ($358M/ปี) · สกุลอื่น (€2.50) · ตัวชี้อื่น (FCF/หุ้น ฿0.148)
+//   P/BV : ส่วนทุนรวม (equity $4.19B) · TBVPS ในการ์ด P/BV ธรรมดา (MTB) · "ราคา $X ÷ BVPS $Y" · ¥13,574
+//   ⇒ คัดทีละ token ก่อน (`denomTokens`) แล้วค่อยเลือกฐานที่ค่าที่โชว์ "ยืนอยู่" (ใกล้สุดเชิงอัตราส่วน แบบ basisFor)
+// ★ ย่าน DENOM_BAND: ค่าที่คิดจากตัวหาร ÷ ค่าที่โชว์ ต้องอยู่ใน [0.6, 1.67] ไม่งั้น = คนละฐาน ไม่ตรวจ ไม่เขียน
+//   วัดด้วยประวัติ git 11 ก.ย. 69 (ราคา ณ commit ที่เขียนค่านั้น): การ์ดที่ "ถูกตอนเขียน แล้วราคาวิ่งหนี" อยู่ที่
+//   0.62–1.54 (MPC/PSX/VLO/ACN/BCP/AMAT/WDC/STM) · คนละฐานที่หลุดกฎคัด token มาได้อยู่ที่ ≤0.52
+//   (PCAR: ตัดปันผลพิเศษทิ้งแล้วเหลือปันผลปกติ) และปันผลครึ่งปี ~0.5 ⇒ ขอบล่าง 0.6 กันไว้ทั้งคู่
+//   ผิดทางเดียวที่ย่านนี้ยอม = ค้างต่อ (ปลอดภัย) ไม่ใช่เขียนผิด
+const DENOM_BAND = [0.6, 1 / 0.6];
+const TOL_DENOM_REL = 0.03;   // ปันผล %/P/BV: ต่างได้ ≤3% หรือครึ่งหลักสุดท้ายที่เขียน แล้วแต่ค่าไหนมากกว่า (บทเรียน MCAP_ULP)
+
+const YIELD_LABEL = /ปันผล|dividend|distribution/i;
+// ป้ายที่มีคำว่าปันผลแต่ค่าไม่ใช่ yield (สำรวจคลัง): FCF Yield · Coverage · Payout · Growth · NIM
+const YIELD_LABEL_SKIP = /FCF|coverage|payout|growth|เติบโต|CAGR|NIM|loan|ROE|ต่อเนื่อง/i;
+const PBV_LABEL = /\bP\s*\/\s*B(?:V|ook)?\b|price.?to.?book/i;
+
+// entity ที่พบใน .d ของคลัง — ถอดเฉพาะตอนอ่าน (ไม่เคยเขียน .d กลับ)
+const decodeEnt = (s) => String(s == null ? '' : s)
+  .replace(/&middot;|&#183;/g, '·').replace(/&times;|&#215;/g, '×').replace(/&bull;|&#8226;/g, '•')
+  .replace(/&minus;|&#8722;/g, '−').replace(/&nbsp;/g, ' ').replace(/&amp;/g, '&');
+// สัญลักษณ์เงิน + ตัวเลข — ต้องตรงกับสกุลของราคา (.px) เท่านั้น
+const DENOM_MONEY = () => /(C\$|US\$|HK\$|S\$|A\$|NT\$|R\$|[฿$€£¥])\s*([0-9][0-9,]*(?:\.[0-9]+)?)/g;
+// ตัวคั่นประโยค — คำนำหน้าของอีกประโยคห้ามข้ามมาติด token ("$0.80/ไตรมาส = $3.20/ปี" · "ราคา $X ÷ BVPS $Y")
+const CLAUSE_SEP = /[·•;|()=÷→]/;
+// หน่วยใหญ่ตามหลังตัวเลข = ยอดรวมทั้งบริษัท ไม่ใช่ต่อหุ้น
+const SCALE_AFTER = /^\s*(?:ล้านล้าน|แสนล้าน|หมื่นล้าน|พัน\s*ล้าน|พัน\s*ลบ\.|พัน\s*ล\.|ล้าน|ลบ\.|(?:mn|bn|million|billion|trillion)\b|[KMBT](?![A-Za-z]))/i;
+const UNIT = '(?:\\s*\\/\\s*(?:หุ้น|share|sh|ADR|ADS|หน่วย|unit))?';
+const ANNUAL_AFTER = new RegExp(`^${UNIT}\\s*(?:\\/\\s*|ต่อ\\s*)?(?:ปี|yr\\b|year\\b|annum\\b)|^${UNIT}\\s*(?:per\\s*year|annual)`, 'i');
+const SUB_AFTER = new RegExp(`^${UNIT}\\s*(?:\\/\\s*|ต่อ\\s*|ราย)?(?:ไตรมาส|quarter(?:ly)?\\b|qtr\\b|Q\\b|เดือน|month(?:ly)?\\b|mo\\b|งวด|ครึ่งปี|half\\b|semi)`, 'i');
+// คำนำหน้าในประโยคเดียวกันที่บอกว่า token นี้ "ไม่ใช่ DPS รายปีปกติ" (งวดย่อย/พิเศษ/ตัวชี้อื่น)
+// + ยอด "ตามแผน/เป้า" ที่ยังไม่มีผล — ห้ามเป็นฐานแม้ราคาวิ่งจนมันใกล้ค่าที่โชว์กว่า (เคส TRGP: เขียนบน Forward $4.25
+//   แต่ราคาขึ้นจนฐานใกล้สุดกลายเป็น "แผนขึ้นเป็น $5.00" ⇒ ตัวซ่อมสลับฐานเงียบ ๆ — จับได้ด้วยประวัติ git 11 ก.ย. 69)
+const YIELD_PRE_SKIP = /รายไตรมาส|ไตรมาสละ|quarterly|รายเดือน|monthly|ระหว่างกาล|interim|final|ปลายปี|ครึ่งปี|semi|Q[1-4]\b|พิเศษ|special|supplemental|แผน|plan|จะขึ้น|ประกาศขึ้น|guidance|เป้า|target|EPS|FCF|FFO|กำไร|ราคา|price|buyback|ซื้อหุ้นคืน|NAV|BVPS|book|หนี้|debt|equity|รายได้|revenue/i;
+// ตัวหารที่พิมพ์หยาบเกิน: ครึ่งหลักสุดท้ายของมันเอง >5% ของค่า (หลักเดียว เช่น "฿0.04" = ±12.5% · "฿5" = ±10%)
+// ⇒ ความคลาดจากการปัดของตัวหารเกินเกณฑ์ตรวจ (3%) — ผู้เขียนคิด % จากเลขละเอียดแล้วพิมพ์ตัวหารแบบปัด
+//   (INSET: โชว์ 1.04% ที่คิดจาก ~฿0.044 → คิดใหม่จาก ฿0.04 ได้ 0.88% ทั้งที่จริง ~0.97% = แย่ลง ไม่ใช่สดขึ้น)
+//   วัดคลัง 11 ก.ย. 69: 24 การ์ด (หุ้นไทยปันผล ฿0.0x เกือบทั้งหมด + BAX $0.04 + BH ฿5) · "฿12"/"฿14" (±4%) ยังรับ
+const DENOM_MIN_PREC = 0.05;
+// ชิ้นส่วนของผลบวก ("฿0.34 + ฿0.69" · "$0.75×2") — เว้นแต่ token ประกาศว่าเป็นรายปีเอง ("$5.20/ปี + Special …")
+const COMP_AFTER = /^\s*(?:[+×*]|x\s*\d)/i;
+const COMP_BEFORE = /[+×]\s*$/;
+const BV_KW = /(?<!T)BVPS|(?<!T)BV\s*\/\s*(?:หุ้น|share|sh|S)\b|book\s*value|มูลค่า(?:ทาง|ตาม)บัญชี|ส่วน(?:ของ)?ผู้ถือหุ้น|ส่วนทุน|\bequity\b/i;
+const TBV_KW = /TBV|tangible/i;
+
+/** สกุลของราคา = สัญลักษณ์หน้า .px (ตัวเดียวกับที่ gate/heal ใช้เป็นตัวตั้ง) — ไม่มี = ไม่ตรวจ ไม่เขียน */
+const currencyOf = (html) => (String(html).match(/<div class="px">\s*(C\$|[฿$])/) || [])[1] || null;
+
+/** ข้อความในประโยคเดียวกันก่อน token (ตัดที่ตัวคั่นล่าสุด) */
+function clauseBefore(t, at) {
+  const s = t.slice(Math.max(0, at - 32), at);
+  for (let i = s.length - 1; i >= 0; i--) if (CLAUSE_SEP.test(s[i])) return s.slice(i + 1);
+  return s;
+}
+
+/**
+ * ตัวหารที่ "รับได้" ในบรรทัด .d — kind: 'yield' (DPS รายปี) · 'pbv' (BVPS) · 'pbv+tbv' (การ์ดที่ประกาศ P/TBV ด้วย)
+ * คัดทิ้งทุกอย่างที่อ่านแล้วต้องเดา — ตัวหารหายหมด = การ์ดนั้นเงียบทั้งตัวตรวจและตัวเขียน
+ */
+function denomTokens(dBody, cur, kind) {
+  const t = clean(decodeEnt(dBody));
+  const out = [];
+  const re = DENOM_MONEY();
+  let m;
+  while ((m = re.exec(t))) {
+    if (!cur || m[1] !== cur) continue;                                  // สกุลอื่น (€/¥/C$) ≠ สกุลของราคา
+    const at = m.index, end = at + m[0].length;
+    if (/-\s*$/.test(t.slice(Math.max(0, at - 2), at))) continue;       // ติดลบ (ส่วนทุนติดลบ) → ไม่ใช่ตัวหาร
+    const post = t.slice(end, end + 30);
+    if (SCALE_AFTER.test(post)) continue;                              // ยอดรวมทั้งบริษัท ($358M · ฿872 ล้าน)
+    const value = parseFloat(m[2].replace(/,/g, ''));
+    if (!(value > 0)) continue;
+    if (0.5 * Math.pow(10, -decOf(m[2])) / value > DENOM_MIN_PREC) continue;   // พิมพ์หยาบเกิน (฿0.04) → คิดใหม่แล้วแย่ลง
+    const pre = clauseBefore(t, at);
+    if (kind === 'yield') {
+      if (YIELD_PRE_SKIP.test(pre) || SUB_AFTER.test(post)) continue;
+      if (!ANNUAL_AFTER.test(post) && (COMP_AFTER.test(post) || COMP_BEFORE.test(pre))) continue;
+    } else {
+      const bv = BV_KW.test(pre), tbv = TBV_KW.test(pre);
+      if (kind === 'pbv' ? (!bv || tbv) : !(bv || tbv)) continue;     // ต้องประกาศว่าเป็น BVPS ในประโยคเดียวกัน
+    }
+    out.push(value);
+  }
+  return [...new Set(out)];
+}
+
+/** จับคู่ค่าที่ implied ↔ ฐาน แบบไม่ซ้ำกันที่ระยะ log รวมน้อยสุด (ตัวคูณเดียว = ฐานที่ใกล้สุด แบบ basisFor) */
+function assignBases(implied, bases) {
+  if (!implied.length || implied.length > bases.length || bases.length > 8) return null;
+  let best = null, bestD = Infinity;
+  const rec = (i, used, acc, d) => {
+    if (d >= bestD) return;
+    if (i === implied.length) { bestD = d; best = acc.slice(); return; }
+    bases.forEach((b, j) => {
+      if (used & (1 << j)) return;
+      acc.push(b); rec(i + 1, used | (1 << j), acc, d + Math.abs(Math.log(implied[i] / b))); acc.pop();
+    });
+  };
+  rec(0, 0, [], 0);
+  return best;
+}
+const inBand = (r) => r >= DENOM_BAND[0] && r <= DENOM_BAND[1];
+/** เกณฑ์ตัวตรวจ: ห่างเกิน max(3%, ครึ่งหลักสุดท้ายที่เขียน) — ครึ่งหลักทำให้ "ฟ้อง ⇒ ตัวซ่อมเขียนเลขใหม่ได้เสมอ" */
+const denomOff = (want, shown, numStr) =>
+  Math.abs(want - shown) > Math.max(TOL_DENOM_REL * Math.abs(shown), MCAP_ULP * Math.pow(10, -decOf(numStr)));
+
+/** การ์ดปันผล % หนึ่งใบ → { label, num, shown, idx, base, want } · null = ตัดสินไม่ได้ (ตัวตรวจเงียบ = ตัวเขียนไม่แตะ) */
+function yieldCardPlan(k, vBody, dBody, price, cur) {
+  const label = clean(k);
+  if (!(price > 0) || !YIELD_LABEL.test(label) || YIELD_LABEL_SKIP.test(label) || PE_LABEL_SKIP.test(label)) return null;
+  // อ่านจาก "ข้อความดิบ" ของ .v — แท็กคั่นตัวเลขกับ % = ตัวเขียนแทนที่ไม่ได้ ⇒ ตัวตรวจต้องไม่เห็นด้วย
+  const hits = [...String(vBody).matchAll(/([0-9]+(?:\.[0-9]+)?)(\s*%)/g)];
+  if (hits.length !== 1) return null;
+  const shown = parseFloat(hits[0][1]);
+  if (!(shown > 0)) return null;
+  const pick = assignBases([shown / 100 * price], denomTokens(dBody, cur, 'yield'));
+  if (!pick) return null;
+  const want = pick[0] / price * 100;
+  return inBand(want / shown) ? { label, num: hits[0][1], shown, idx: hits[0].index, base: pick[0], want } : null;
+}
+
+/** การ์ด P/BV หนึ่งใบ → { label, items: [{ num, shown, idx, base, want }] } · null = ตัดสินไม่ได้ */
+function pbvCardPlan(k, vBody, dBody, price, cur) {
+  const label = clean(k);
+  if (!(price > 0) || !PBV_LABEL.test(label) || PE_LABEL_SKIP.test(label)) return null;
+  const hits = [...String(vBody).matchAll(/([0-9]+(?:\.[0-9]+)?)(\s*x)/gi)];
+  if (!hits.length || hits.length > 3) return null;
+  const shown = hits.map((h) => parseFloat(h[1]));
+  if (!shown.every((v) => v > 0)) return null;
+  // การ์ด "P/BV / P/TBV": จับคู่ตัวคูณ ↔ ฐานแบบไม่ซ้ำกัน · ฐานไม่พอจับคู่ (สองตัวคูณ ฐานเดียว) = ไม่เดา
+  const pick = assignBases(shown.map((s) => price / s), denomTokens(dBody, cur, TBV_KW.test(label) ? 'pbv+tbv' : 'pbv'));
+  if (!pick) return null;
+  const items = hits.map((h, i) => ({ num: h[1], shown: shown[i], idx: h.index, base: pick[i], want: price / pick[i] }));
+  return items.every((it) => inBand(it.want / it.shown)) ? { label, items } : null;
+}
+
+/** stock-meta.dividendYield = กระจกของการ์ดปันผล (เหมือน stock-meta.pe) — ฐาน = DPS ของการ์ดที่ตัดสินได้เท่านั้น */
+function yieldMetaPlan(html, price, cards) {
+  if (!cards.length) return null;
+  const m = String(html).match(/<script[^>]*\bid=["']stock-meta["'][^>]*>([\s\S]*?)<\/script>/i);
+  if (!m) return null;
+  let d;
+  try { d = JSON.parse(m[1]); } catch { return null; }
+  const shown = d.dividendYield;
+  if (!(typeof shown === 'number' && isFinite(shown) && shown > 0)) return null;   // null/0 = ไม่จ่าย/ไม่ประกาศ → ไม่แตะ
+  const pick = assignBases([shown / 100 * price], [...new Set(cards.map((c) => c.base))]);
+  if (!pick) return null;
+  const want = pick[0] / price * 100;
+  if (!inBand(want / shown)) return null;
+  // ทศนิยม: ตามการ์ดที่เป็นฐาน (นิ่ง — ไม่หดตาม JSON ที่ตัด 0 ท้ายทิ้ง) · อย่างน้อย 1 · ไม่เกิน 2 (สูตรเดียวกับ pe)
+  const card = cards.find((c) => c.base === pick[0]);
+  return { shown, want, base: pick[0], dec: Math.min(2, Math.max(decOf(String(shown)), decOf(card.num), 1)) };
+}
+
+/** ทุกการ์ดปันผลที่ตัดสินได้ + แผนของ stock-meta.dividendYield — ใช้ร่วมทั้ง W19 และ patchDerived */
+function yieldPlan(html, price) {
+  const cur = currencyOf(html), cards = [];
+  const re = cardRe();
+  let m;
+  while ((m = re.exec(html))) { const p = yieldCardPlan(m[1], m[3], m[5], price, cur); if (p) cards.push(p); }
+  return { cards, meta: yieldMetaPlan(html, price, cards) };
+}
+
+/** ทุกการ์ด P/BV ที่ตัดสินได้ — ใช้ร่วมทั้ง W20 และ patchDerived */
+function pbvPlan(html, price) {
+  const cur = currencyOf(html), out = [];
+  const re = cardRe();
+  let m;
+  while ((m = re.exec(html))) { const p = pbvCardPlan(m[1], m[3], m[5], price, cur); if (p) out.push(p); }
+  return out;
+}
+
 function patchDerived(html, price, opts) {
   const o = opts || {};
   const changes = [];
@@ -566,6 +750,49 @@ function patchDerived(html, price, opts) {
         return `<div class="k">${k}</div>${vOpen}${body}${tail}`;
       });
     }
+  }
+
+  // 8) ปันผล % = DPS ÷ ราคา · 9) stock-meta.dividendYield · 10) P/BV = ราคา ÷ BVPS  (W19/W20 · 11 ก.ย. 69)
+  //    ตัวหารพิมพ์อยู่ในบรรทัด .d ของการ์ดเอง ⇒ เหตุผลเดียวกับ P/E · ตัดสินไม่ได้ = ไม่แตะ (ขอบเขตเท่ากับตัวตรวจเป๊ะ
+  //    เพราะทั้งคู่ถาม yieldCardPlan/pbvCardPlan ตัวเดียวกัน) · แตะเฉพาะตัวเลขใน .v — ไม่แตะ .d แม้จะมีตัวเลขค้างในนั้น
+  {
+    const cur = currencyOf(out);
+    const yCards = [];
+    out = out.replace(cardRe(), (m, k, vOpen, vBody, tail, dBody) => {
+      const p = yieldCardPlan(k, vBody, dBody, price, cur);
+      if (!p) return m;
+      yCards.push(p);
+      const w = fixed(p.want, decOf(p.num));
+      if (w === p.num || !isFinite(parseFloat(w))) return m;
+      changes.push(`ปันผล [${p.label}] ${p.num}% → ${w}% (DPS ${p.base} ÷ ราคา ${price})`);
+      return `<div class="k">${k}</div>${vOpen}${vBody.slice(0, p.idx)}${w}${vBody.slice(p.idx + p.num.length)}${tail}`;
+    });
+    // stock-meta.dividendYield — กระจกของการ์ด (freshHash ไม่นับบล็อกนี้ ⇒ ไม่ดันวันที่ "อัปเดตล่าสุด")
+    const mp = yieldMetaPlan(out, price, yCards);
+    const mw = mp ? parseFloat(fixed(mp.want, mp.dec)) : null;
+    if (mp && isFinite(mw) && mw !== mp.shown) {
+      out = out.replace(/(<script[^>]*\bid=["']stock-meta["'][^>]*>)([\s\S]*?)(<\/script>)/i, (m, a, json, b) => {
+        let d;
+        try { d = JSON.parse(json); } catch { return m; }
+        d.dividendYield = mw;
+        const lead = (json.match(/^\s*/) || [''])[0], trail = (json.match(/\s*$/) || [''])[0];   // คง \n คร่อมไว้ (idempotency ของ cron)
+        return a + lead + JSON.stringify(d) + trail + b;
+      });
+      changes.push(`stock-meta.dividendYield ${mp.shown} → ${mw} (DPS ${mp.base} ÷ ราคา ${price})`);
+    }
+    // P/BV — การ์ด "P/BV / P/TBV" เขียนทีละตัวคูณจากท้ายไปหน้า (ตำแหน่งที่ถอดไว้จะได้ไม่เลื่อน)
+    out = out.replace(cardRe(), (m, k, vOpen, vBody, tail, dBody) => {
+      const p = pbvCardPlan(k, vBody, dBody, price, cur);
+      if (!p) return m;
+      let body = vBody;
+      for (const it of [...p.items].sort((a, b) => b.idx - a.idx)) {
+        const w = fixed(it.want, decOf(it.num));
+        if (w === it.num || !isFinite(parseFloat(w))) continue;
+        body = body.slice(0, it.idx) + w + body.slice(it.idx + it.num.length);
+        changes.push(`P/BV [${p.label}] ${it.num}x → ${w}x (ราคา ${price} ÷ BVPS ${it.base})`);
+      }
+      return body === vBody ? m : `<div class="k">${k}</div>${vOpen}${body}${tail}`;
+    });
   }
 
   // 7) หมวด 6 — ผลตอบแทนฉาก Bear/Base/Bull + ราคา "จากจุดเข้า"
@@ -677,4 +904,7 @@ module.exports = {
   scenarioBlock, scenarioPlan, retTokens, retOff, pyOff, retWrite, retShown,
   // สมอตายวนกลับ — W18 + tools/spotcheck.js
   DA_GAP, DA_ANCHORED, deadAnchor,
+  // ปันผล % + P/BV — W19/W20 + ตัวซ่อม
+  DENOM_BAND, TOL_DENOM_REL, DENOM_MIN_PREC, YIELD_LABEL, PBV_LABEL, currencyOf, denomTokens, assignBases, denomOff,
+  yieldCardPlan, pbvCardPlan, yieldMetaPlan, yieldPlan, pbvPlan,
 };
