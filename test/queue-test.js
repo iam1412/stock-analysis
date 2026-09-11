@@ -253,6 +253,36 @@ process.env.QUEUE_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'queue-'));   // s
   ok(r2.code === 0 && /ยังไม่เริ่ม|push แล้ว/.test(r2.out), 'queue.js status: รันได้บน state ว่าง');
 }
 
+// ── 11) ship: prepatchBlockers (ส่วนบริสุทธิ์) — กัน `ship --prepatch` กวาดงานที่ worker วิเคราะห์ใหม่แล้วไปเป็น commit "price: …" ──
+{
+  const Sh = require('../tools/queue/ship.js');
+  const blocked = Sh.prepatchBlockers([
+    { path: 'reports/NEWCO.html', untracked: true, headFooterISO: null, workFooterISO: '2026-09-12' },
+    { path: 'reports/AAPL.html', untracked: false, headFooterISO: '2026-09-01', workFooterISO: '2026-09-12' },
+    { path: 'reports/KLAC.html', untracked: false, headFooterISO: '2026-09-10', workFooterISO: '2026-09-10' },
+  ]);
+  ok(blocked.includes('NEWCO'), 'prepatchBlockers: ไฟล์ใหม่ (untracked) = worker เขียนใหม่ → กัน', blocked.join(','));
+  ok(blocked.includes('AAPL'), 'prepatchBlockers: footer ขยับจาก HEAD = วิเคราะห์ใหม่แล้ว → กัน', blocked.join(','));
+  ok(!blocked.includes('KLAC'), 'prepatchBlockers: footer เดิม + tracked = pre-patch ราคาล้วน → ผ่าน', blocked.join(','));
+  ok(blocked.length === 2, 'prepatchBlockers: กันเฉพาะ 2 ตัวที่เข้าเงื่อนไข ไม่กวาดตัวที่ไม่เข้าข่าย', blocked.join(','));
+}
+
+// ── 12) ship: status — bucket ไม่ซ้อนกัน (postcheck:'review' ไม่มี bucket ต้องขึ้นบรรทัดเดียว ไม่ใช่ทั้ง review และ other[undefined]) ──
+{
+  const S3 = require('../tools/queue/state.js');
+  const Sh3 = require('../tools/queue/ship.js');
+  S3.update('REVIEWME', { postcheck: 'review' });   // ไม่มี bucket เลย — ก่อนแก้เคยขึ้นทั้ง "postcheck ต้องดู" และ "ไม่ใช้ agent/ข้าม" พร้อมกัน
+  const lines = [];
+  const orig = console.log;
+  console.log = (s) => lines.push(String(s));
+  try { Sh3.status(); } finally { console.log = orig; }
+  const out = lines.join('\n');
+  ok(!/\[undefined\]/.test(out), 'status: ไม่มี [undefined] หลุดมาในบรรทัดไหน', out);
+  ok(lines.filter((l) => l.includes('REVIEWME')).length === 1, 'status: postcheck review ไม่มี bucket → ขึ้นบรรทัดเดียว (bucket ไม่ซ้อน)', out);
+  ok(lines.length === 8, 'status: พิมพ์ 8 บรรทัด (เพิ่มบรรทัด "pre-patch push แล้ว")', String(lines.length));
+  ok(/^pre-patch push แล้ว/.test(lines[7]), 'status: บรรทัดสุดท้าย = pre-patch push แล้ว', lines[7]);
+}
+
 // ─────────────────────────── (Task 10–14 แทรกเทสเหนือบรรทัดนี้) ───────────────────────────
 console.log(`queue-test: ${nOK}/${nOK + nFail} ผ่าน`);
 if (nFail) { console.log('❌ runbook มีบั๊ก'); process.exit(1); }

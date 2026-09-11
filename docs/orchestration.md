@@ -5,7 +5,7 @@
 
 ## 1. ก่อนเริ่ม — กันซ้ำ + ความสด
 
-`npm run queue -- preflight` ทำให้: `git pull --rebase origin main` · อ่านคิว · **ความสดอ่านจากวันที่ footer "ข้อมูล ณ" ของแต่ละใบ** (ไม่ใช่ `reports.json.updated` — bulk freshHash ชนกันได้ 13 ใบ 9 ก.ย. 2569) · สด ≤7 วัน = ข้าม (ธีม/โควตา → หาตัวใหม่ · ระบุชื่อ → ข้ามพร้อมแจ้ง) · เกิน 7 วัน = UPDATE · ยังไม่มี = NEW · จากคิว price-flags → triage ตาม `tools/queue/triage.js` (LIGHT / FULL / PLUMBING / REJECTED / DELIST)
+`npm run queue -- preflight` → `ship --prepatch` ทันที ทำให้: `git pull --rebase origin main` · อ่านคิว · **ความสดอ่านจากวันที่ footer "ข้อมูล ณ" ของแต่ละใบ** (ไม่ใช่ `reports.json.updated` — bulk freshHash ชนกันได้ 13 ใบ 9 ก.ย. 2569) · สด ≤7 วัน = ข้าม (ธีม/โควตา → หาตัวใหม่ · ระบุชื่อ → ข้ามพร้อมแจ้ง) · เกิน 7 วัน = UPDATE · ยังไม่มี = NEW · จากคิว price-flags → triage ตาม `tools/queue/triage.js` (LIGHT / FULL / PLUMBING / REJECTED / DELIST)
 กันซ้ำข้าม session = push รายตัวผ่าน `npm run queue -- ship <SYM>` (pull --rebase มากับลำดับ push ของทุกตัวอยู่แล้ว)
 
 ## 2. โมเดล (บังคับ)

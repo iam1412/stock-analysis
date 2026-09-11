@@ -69,7 +69,7 @@ function manualSteps(rows) {
   if (d.length) L.push(`${++n}. DELIST ${d.map((r) => r.symbol).join(' ')}: ยืนยันแหล่งปฐมภูมิ (SEC Form 25/8-K · ประกาศตลาด) → ลบรายงาน + node tools/tag-apply.js --prune · ยังเทรด → node tools/update-prices.js --write --alive <SYM>`);
   const p = rows.filter((r) => r.bucket === 'PLUMBING' || r.bucket === 'REJECTED' || r.bucket === 'UNKNOWN');
   if (p.length) L.push(`${++n}. ${p.map((r) => `${r.symbol}[${r.reason}]`).join(' ')}: แก้ตามคอลัมน์ "การทำ" ไม่ spawn agent`);
-  L.push(`${++n}. ต่อไป: npm run queue -- prep <SYM> ทีละตัว (ตัวที่ไม่มี "สด" ในคอลัมน์การทำ)`);
+  L.push(`${++n}. ต่อไป: npm run queue -- ship --prepatch (push ราคาที่ patch ให้ tree สะอาด) แล้ว npm run queue -- prep <SYM> ทีละตัว (ตัวที่ไม่มี "สด" ในคอลัมน์การทำ)`);
   return L.join('\n');
 }
 

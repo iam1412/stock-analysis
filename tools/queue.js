@@ -3,10 +3,11 @@
 /**
  * queue.js — runbook รอบ "เคลียร์คิว price-flags" (WS5 · แทนขั้นความจำ 24 ขั้นใน docs-audit §5)
  *   npm run queue -- preflight              pull --rebase · triage · snapshot ราคาเดิม · pre-patch ทั้งชุด · พิมพ์ขั้นที่ต้องทำเอง
+ *   npm run queue -- ship --prepatch        รันทันทีหลัง preflight (ก่อน spawn worker ตัวแรก) — push ราคาที่ patch ให้ tree สะอาด
+ *                                            → build/preserve-dates/build → push · กันตัวที่ worker วิเคราะห์ใหม่แล้ว (footer ขยับ/ไฟล์ใหม่)
  *   npm run queue -- prep <SYM>             prep-stock + มัธยฐาน + EPS screen + snapshot diff → .queue/prep/<SYM>.md (prompt)
  *   npm run queue -- postcheck <SYM>        gate + spotcheck + ราคาค้าง + ai-model + pe/roe + footer
  *   npm run queue -- ship <SYM> [--tags …]  verify → commit 1 หุ้น → push · ปิด issue เมื่อคิวว่าง
- *   npm run queue -- ship --prepatch        ใบที่ pre-patch ล้วน → build/preserve-dates/build → push
  *   npm run queue -- status                 X/Y push แล้ว / รอ push / ยังไม่เริ่ม
  * สิ่งที่ยังต้องทำเอง (script พิมพ์บอกทุกครั้ง): probe โมเดล · courier/advisor หุ้นยาก · spawn worker (pin model) · ยืนยันเพิกถอน · ชั้น 0 valuation · publish/skip
  */
@@ -19,9 +20,10 @@ const positional = argv.slice(1).filter((a, i, arr) => !a.startsWith('--') && !V
 const sym = (positional[0] || '').toUpperCase();
 const usage = `ใช้: npm run queue -- <คำสั่ง> [ตัวเลือก]
   preflight [--no-patch] [--allow-intraday] [--allow-dirty]
+  ship --prepatch
   prep <SYM> [--mode NEW|UPDATE|UPDATE-LIGHT] [--model sonnet|opus] [--brand "#hex"] [--median-spec SYM:TICKER] [--th]
   postcheck <SYM> [--model sonnet|opus]
-  ship <SYM> [--tags "slug slug"] [--message "…"] [--force]   |   ship --prepatch
+  ship <SYM> [--tags "slug slug"] [--message "…"] [--force]
   status`;
 
 (async () => {

@@ -3,14 +3,15 @@
  * ship — ขั้น D1–D4 + ปิด issue + build/preserve-dates สำหรับ pre-patch ล้วน (docs-audit §5: preserve-dates อยู่แค่ใน cron)
  *   ship <SYM>: tag-apply (ถ้ามี) → verify → preserve-dates+build (กัน `updated` ของใบที่แค่ pre-patch เด้ง) → add ไฟล์ที่ระบุ
  *               → commit 1 หุ้น (CLAUDE.md §5) → pull --rebase → push HEAD:main → ปิด issue ถ้าคิวว่าง
- *   ship --prepatch: ใบที่ pre-patch แล้วไม่ได้วิเคราะห์ใหม่ → build → preserve-dates → build → verify → commit "price: …" → push
+ *   ship --prepatch: รันทันทีหลัง preflight (ก่อน worker เริ่ม — ดู note ข้าง prepatchBlockers) → build → preserve-dates
+ *               → build → verify → commit "price: …" → push · กันตัวที่ worker วิเคราะห์ใหม่แล้วโดนกวาดไปด้วย
  * ★ ไม่ทำแทน: ตัดสิน publish/skip (postcheck ต้อง pass หรือ --force หลังรีวิวเอง)
  */
 const fs = require('fs');
 const path = require('path');
 const { run, must, ROOT } = require('./sh.js');
 const S = require('./state.js');
-const { todayBangkok } = require('./footer-date.js');
+const { todayBangkok, footerDate } = require('./footer-date.js');
 const { readStockMeta } = require('../report-meta.js');
 
 const FLAGS = path.join(ROOT, 'price-flags.json');
@@ -32,8 +33,11 @@ function pushWithRebase() {
 }
 function closeIssueIfEmpty() {
   let n = 0;
-  try { n = JSON.parse(fs.readFileSync(FLAGS, 'utf8')).length; }
-  catch (e) { if (e.code !== 'ENOENT') { console.log('⚠ อ่าน price-flags.json ไม่ได้ — ไม่แตะ issue'); return; } }
+  try {
+    const parsed = JSON.parse(fs.readFileSync(FLAGS, 'utf8'));
+    if (!Array.isArray(parsed)) { console.log('⚠ price-flags.json ไม่ใช่ array — ไม่แตะ issue'); return; }
+    n = parsed.length;
+  } catch (e) { if (e.code !== 'ENOENT') { console.log('⚠ อ่าน price-flags.json ไม่ได้ — ไม่แตะ issue'); return; } }
   if (n) { console.log(`คิวเหลือ ${n} — issue คงเปิด`); return; }
   const q = run('gh', ['issue', 'list', '--state', 'open', '--search', `in:title "${TITLE}"`, '--json', 'number', '--jq', '.[0].number']);
   const num = q.out.trim();
@@ -61,20 +65,55 @@ function shipStock(sym, opts) {
   closeIssueIfEmpty();
 }
 
+/** ปฏิเสธไฟล์ใน reports/ ที่ worker วิเคราะห์ใหม่แล้ว (ไม่ใช่แค่ pre-patch ราคาที่ preflight ทำ) — `ship --prepatch`
+ *  ต้องไม่กวาดไปเป็น commit "price: …" ทั้งที่ยังไม่ผ่าน postcheck/รีวิว
+ *  entries = [{ path, untracked, headFooterISO, workFooterISO }] → คืนรายชื่อ SYMBOL ที่ต้องกัน (ส่วนบริสุทธิ์ ไม่แตะ git) */
+function prepatchBlockers(entries) {
+  const out = [];
+  for (const e of entries) {
+    const m = /^reports\/(.+)\.html$/.exec(e.path);
+    if (!m) continue;
+    const sym = m[1];
+    if (e.untracked) { out.push(sym); continue; }   // ไฟล์ใหม่ทั้งใบ = worker เขียน ไม่ใช่ pre-patch ราคา
+    if (e.headFooterISO && e.workFooterISO && e.headFooterISO !== e.workFooterISO) out.push(sym);   // footer ขยับ = วิเคราะห์ใหม่แล้ว
+  }
+  return out;
+}
+
 function shipPrepatch() {
-  const changed = run('git', ['diff', '--name-only', '--', 'reports']).out.trim().split('\n').filter(Boolean);
+  const porcelain = run('git', ['status', '--porcelain', '--', 'reports']).out.split('\n').filter(Boolean);
+  const changed = porcelain.map((l) => l.slice(3).trim());
   if (!changed.length) { console.log('ไม่มีไฟล์ใน reports/ ที่เปลี่ยน — ไม่มีอะไรจะ ship'); return; }
+  const entries = porcelain.map((line) => {
+    const status = line.slice(0, 2);
+    const p = line.slice(3).trim();
+    const untracked = status.includes('?');
+    const head = untracked ? null : run('git', ['show', `HEAD:${p}`]);
+    const headFooterISO = head && head.code === 0 ? ((footerDate(head.out) || {}).iso || null) : null;
+    const fp = path.join(ROOT, p);
+    const workFooterISO = fs.existsSync(fp) ? ((footerDate(fs.readFileSync(fp, 'utf8')) || {}).iso || null) : null;
+    return { path: p, untracked, headFooterISO, workFooterISO };
+  });
+  const blockers = prepatchBlockers(entries);
+  if (blockers.length) throw new Error(blockers.map((sym) => `ship --prepatch: ${sym} ถูกวิเคราะห์ใหม่แล้ว (footer ขยับ/ไฟล์ใหม่) — ใช้ npm run queue -- ship ${sym} แทน`).join('\n'));
   must('npm', ['run', 'build'], 'build');
   keepDates();
   verify();
   must('git', ['add', '--', 'reports', 'reports.json', 'price-flags.json'], 'git add');
   must('git', ['commit', '-q', '-m', `price: pre-patch ${changed.length} symbols (manual queue run ${todayBangkok()})\n\nCo-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>`], 'git commit');
   pushWithRebase();
+  const today = todayBangkok();
+  for (const p of changed) {
+    const m = /^reports\/(.+)\.html$/.exec(p);
+    if (m) S.update(m[1], { prepatchShippedAt: today });
+  }
   console.log(`✅ pre-patch ${changed.length} ใบ push แล้ว (วันที่วิเคราะห์คงเดิมผ่าน preserve-dates)`);
   closeIssueIfEmpty();
 }
 
-/** X/Y ตาม memory feedback-progress-counter: push แล้ว / รอ push / ยังไม่เริ่ม */
+/** X/Y ตาม memory feedback-progress-counter: push แล้ว / รอ push / ยังไม่เริ่ม
+ *  ★ bucket ต้องไม่ซ้อนกัน — idle/other แบ่งกันตาม (skip || bucket ไม่ใช่ LIGHT/FULL) ภายใต้เงื่อนไขเดียวกันทุกตัว
+ *    (เดิม `other` ไม่เช็ค !postcheck/!prepAt ⇒ แถวที่มี postcheck:'review' แต่ไม่มี bucket ขึ้นซ้ำทั้ง review และ other) */
 function status() {
   const s = S.load();
   const rows = Object.entries(s.stocks);
@@ -83,7 +122,8 @@ function status() {
   const review = rows.filter(([, r]) => !r.shippedAt && r.postcheck === 'review').map(([k]) => k);
   const prepped = rows.filter(([, r]) => !r.shippedAt && !r.postcheck && r.prepAt).map(([k]) => k);
   const idle = rows.filter(([, r]) => !r.shippedAt && !r.postcheck && !r.prepAt && !r.skip && ['LIGHT', 'FULL'].includes(r.bucket)).map(([k]) => k);
-  const other = rows.filter(([, r]) => !r.shippedAt && (r.skip || !['LIGHT', 'FULL'].includes(r.bucket))).map(([k, r]) => `${k}[${r.skip ? 'สด' : r.bucket}]`);
+  const other = rows.filter(([, r]) => !r.shippedAt && !r.postcheck && !r.prepAt && (r.skip || !['LIGHT', 'FULL'].includes(r.bucket))).map(([k, r]) => `${k}[${r.skip ? 'สด' : (r.bucket || '-')}]`);
+  const prepatchShipped = rows.filter(([, r]) => r.prepatchShippedAt).map(([k]) => k);
   console.log(`รอบเริ่ม ${s.startedAt || '-'} · ${pushed.length}/${rows.length}`);
   console.log(`push แล้ว ${pushed.length}: ${pushed.join(' ') || '-'}`);
   console.log(`รอ push ${waiting.length}: ${waiting.join(' ') || '-'}`);
@@ -91,6 +131,7 @@ function status() {
   console.log(`prep แล้วรอ worker ${prepped.length}: ${prepped.join(' ') || '-'}`);
   console.log(`ยังไม่เริ่ม ${idle.length}: ${idle.join(' ') || '-'}`);
   console.log(`ไม่ใช้ agent/ข้าม ${other.length}: ${other.join(' ') || '-'}`);
+  console.log(`pre-patch push แล้ว ${prepatchShipped.length}: ${prepatchShipped.join(' ') || '-'}`);
 }
 
-module.exports = { shipStock, shipPrepatch, status, commitMessage, trailer, closeIssueIfEmpty, STOCK_FILES, TITLE };
+module.exports = { shipStock, shipPrepatch, status, commitMessage, trailer, closeIssueIfEmpty, prepatchBlockers, STOCK_FILES, TITLE };
