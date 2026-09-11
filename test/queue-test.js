@@ -145,13 +145,28 @@ process.env.QUEUE_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'queue-'));   // s
   ok(vr.analysts === 26, 'parseVendor: SA ส่ง (Buy) ไม่ใช่จำนวนนักวิเคราะห์ → analysts ถอยไป n= ของ Yahoo');
   ok(Pp.parseVendor(REAL.replace(/\[1\] Yahoo[^\n]*\n[^\n]*\n/, '')).analysts === null,
     'parseVendor: มีแต่ SA → analysts = null (ห้ามอ่าน (+28.52%) หรือ (Buy) เป็นจำนวน)');
+  // ★ yield ที่ต่ำกว่า 0.3% เป็นค่าจริง ไม่ใช่สัดส่วนที่ต้องคูณ 100 — ไม่มีแหล่งไหนส่งสัดส่วนเลย
+  //   (Yahoo ผ่าน pct() = `N%` · SA พิมพ์ `(N%)`) · 20/908 ใบมีการ์ดปันผลที่ตัดสินได้และต่ำกว่า 0.3
+  const LOWY = REAL.replace('divYield=0.52%', 'divYield=0.26%').replace('(0.51%)', '(0.26%)');
+  ok(Pp.parseVendor(LOWY).divYieldPct === 0.26, 'parseVendor: yield 0.26% คงค่า 0.26 (ห้ามคูณ 100)', String(Pp.parseVendor(LOWY).divYieldPct));
+  ok(Pp.parseVendor(LOWY.replace(/\[2\] StockAnalysis[^\n]*\n[^\n]*\n/, '')).divYieldPct === 0.26, 'parseVendor: yield 0.26% ทาง Yahoo ก็คงค่า');
 
   const html = FX.AAPL();
   const ctx = buildCtx(expandReport(html), 'AAPL.html');
   const same = Pp.snapshotDiff(html, ctx, { lo52: null, hi52: null, target: null, divYieldPct: null });
   ok(same.every((s) => !/·\s*vendor/.test(s)), 'snapshotDiff: vendor ไม่มีค่า → ไม่ฟ้องส่วนต่าง');
+  // ★ เดิมเทสนี้ผ่านแบบว่างเปล่า: fixture AAPL ใช้ถ้อยคำ "ช่วง 52 สัปดาห์" ⇒ บรรทัด "อ่านกรอบ …"
+  //   ตอบได้ทั้งสองเงื่อนไขโดยที่เส้นทางเทียบตัวเลขไม่เคยถูกรันเลย — แยกเป็นข้อ ๆ ที่ยืนยันของจริง
   const far = Pp.snapshotDiff(html, ctx, { lo52: 1, hi52: 2, target: 1, analysts: 9, divYieldPct: 9 });
-  ok(far.some((s) => /กรอบ 52 สัปดาห์/.test(s)) && far.some((s) => /เป้านักวิเคราะห์|อ่านกรอบ/.test(s)), 'snapshotDiff: ค่าต่างมาก → ฟ้อง 52wk/เป้า (คลาสที่ 4 price-derived-staleness)', far.join(' | '));
+  ok(far.some((s) => /^เป้านักวิเคราะห์/.test(s)), 'snapshotDiff: เป้าในใบต่างจาก vendor → ฟ้อง (คลาสที่ 4 price-derived-staleness)', far.join(' | '));
+  ok(far.some((s) => /^ปันผล %/.test(s)), 'snapshotDiff: ปันผล % ในใบต่างจาก vendor → ฟ้อง', far.join(' | '));
+  ok(!far.some((s) => /^P\/BV/.test(s)), 'snapshotDiff: fixture AAPL ไม่มีการ์ด P/BV → ไม่มีแถว P/BV', far.join(' | '));
+  // เส้นทางเทียบตัวเลข 52wk ต้องมี html ที่ใช้ถ้อยคำ "กรอบ" จริง (fixture ไม่มี)
+  const H52 = 'กรอบ 52 สัปดาห์ $100 – $200<br>';
+  ok(Pp.snapshotDiff(H52, { px: 0 }, { lo52: 90, hi52: 220 }).some((s) => /^กรอบ 52 สัปดาห์ ใบ 100–200 · vendor 90–220$/.test(s)),
+    'snapshotDiff: 52wk ต่างเกิน 3% → ฟ้องพร้อมตัวเลขทั้งสองฝั่ง', Pp.snapshotDiff(H52, { px: 0 }, { lo52: 90, hi52: 220 }).join(' | '));
+  ok(!Pp.snapshotDiff(H52, { px: 0 }, { lo52: 100.5, hi52: 199 }).some((s) => /52 สัปดาห์/.test(s)),
+    'snapshotDiff: 52wk ต่าง ≤3% → ไม่ฟ้อง (ไม่กวน worker)', Pp.snapshotDiff(H52, { px: 0 }, { lo52: 100.5, hi52: 199 }).join(' | '));
 
   // ตัวคั่นของ "กรอบ 52 สัปดาห์" ในคลังมีหลายแบบ — regex เดิมรับแค่ en dash (719/908 ใบ) แล้วอีก 77 ใบ
   // ตกไปบรรทัด "อ่านไม่ได้" ทั้งที่มีเลขให้เทียบ · ทุกเคสข้างล่างคัดจากรายงานจริง (A · EOG · CPF)
@@ -185,8 +200,20 @@ process.env.QUEUE_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'queue-'));   // s
   ok(!/Controller ใช้แม่แบบนี้/.test(p) && /^วิเคราะห์หุ้น \*\*AAPL\*\*/.test(p), 'assemblePrompt: ตัดคำอธิบายสำหรับ controller ออก — prompt เริ่มที่ "วิเคราะห์หุ้น"');
   let threw = false; try { Pp.assemblePrompt(tpl, { SYMBOL: 'X' }, ''); } catch (_) { threw = true; }
   ok(threw, 'assemblePrompt: ขาด token → throw (ไม่ส่ง prompt ที่มี {{…}} ค้าง)');
-  let noSep = false; try { Pp.assemblePrompt('ไม่มีเส้นคั่น {{SYMBOL}}', { SYMBOL: 'X', MARKET: 'US', MODE: 'UPDATE', WORKTREE: '/w', CURRENT_TAGS: '', MEDIANS: 'm', FUNDAMENTALS: 'f' }, ''); } catch (e) { noSep = /ไม่มีเส้นคั่น ---/.test(e.message); }
+  const ALLV = { SYMBOL: 'X', MARKET: 'US', MODE: 'UPDATE', WORKTREE: '/w', CURRENT_TAGS: '', MEDIANS: 'm', FUNDAMENTALS: 'f' };
+  let noSep = false; try { Pp.assemblePrompt('ไม่มีเส้นคั่น {{SYMBOL}}', ALLV, ''); } catch (e) { noSep = /ไม่มีเส้นคั่น ---/.test(e.message); }
   ok(noSep, 'assemblePrompt: template ไม่มีเส้น --- → throw (ไม่เดาว่าส่วนไหนเป็นของ worker)');
+  // token ที่หายไปใต้ --- = ค่าที่เตรียมมาถูกทิ้งเงียบ ๆ (เช่นมีแต่ในย่อหน้า intro ที่เพิ่งตัดทิ้ง)
+  let miss = false;
+  try { Pp.assemblePrompt('intro\n---\n{{SYMBOL}} {{MARKET}} {{MODE}} {{CURRENT_TAGS}} {{MEDIANS}} {{FUNDAMENTALS}}', ALLV, ''); }
+  catch (e) { miss = /ไม่มี \{\{WORKTREE\}\} ในส่วน worker/.test(e.message); }
+  ok(miss, 'assemblePrompt: ส่วน worker ขาด {{WORKTREE}} → throw (ค่าที่เตรียมไว้ห้ามหายเงียบ)');
+
+  // EPS screen > 2% ต้องเปลี่ยนโหมดจริง ไม่ใช่เตือนอย่างเดียว — ไม่งั้นหัว prompt ({{MODE}}) กับบล็อกท้ายขัดกัน
+  const esc = Pp.extraBlock({ sym: 'A', mode: 'UPDATE', escalated: true, prePatched: null, baseEPS: 7.1, epsTTM: 7.36, epsScreen: 3.66, snap: [], medWarn: [], hard: false, hardWhy: '' });
+  ok(/ยกระดับจาก UPDATE-LIGHT เป็น UPDATE เต็ม/.test(esc) && /โหมดในหัว prompt เปลี่ยนแล้ว/.test(esc), 'extraBlock: escalated → บอกว่าโหมดในหัว prompt เปลี่ยนแล้ว', esc);
+  const noEsc = Pp.extraBlock({ sym: 'A', mode: 'UPDATE-LIGHT', escalated: false, prePatched: null, baseEPS: 7.3, epsTTM: 7.36, epsScreen: 0.8, snap: [], medWarn: [], hard: false, hardWhy: '' });
+  ok(!/ยกระดับ/.test(noEsc) && /FV เดิมยืนได้/.test(noEsc), 'extraBlock: EPS screen ≤2% → ไม่มีคำว่ายกระดับ', noEsc);
 
   ok(Pp.hardStock({ bucket: 'FULL' }, ctx, v).hard === true, 'hardStock: suspect-split/bad-chart = ยาก');
   ok(Pp.hardStock({ bucket: 'LIGHT' }, { baseEPS: -1.2 }, v).hard === true && /pre-profit/.test(Pp.hardStock({ bucket: 'LIGHT' }, { baseEPS: -1.2 }, v).why), 'hardStock: EPS ฐาน ≤ 0 = pre-profit = ยาก');

@@ -23,7 +23,9 @@ const VERBATIM = new Set(['AI_MODEL']);   // token ที่ template ตั้�
 const EPS_SCREEN_PCT = 2;   // SKILL 5C ข้อ 2
 
 const num = (s) => { if (s == null) return null; const n = parseFloat(String(s).replace(/[,%]/g, '')); return Number.isFinite(n) ? n : null; };
-const asPct = (v) => (v != null && v < 0.3 ? v * 100 : v);   // vendor บางเจ้าส่ง yield เป็นสัดส่วน (0.0035) บางเจ้าเป็น % (0.35) — yield จริง <0.3% จะถูกอ่านเป็น ×100 ผิด: ยอมรับได้เพราะเป็นรายการให้คนอ่าน ไม่ใช่ gate
+// ★ ไม่มีการแปลงสัดส่วน→% อีกแล้ว: ทั้งสองแหล่งพิมพ์เป็น % อยู่แล้ว (Yahoo ผ่าน pct() = `N%` ·
+//   SA พิมพ์ `(0.51%)`) ⇒ ตัวแปลงเดิมคูณ 100 ใส่ yield ที่ต่ำกว่า 0.3% จริง ๆ (20/908 ใบมีการ์ดแบบนั้น)
+//   แล้ว snapshotDiff ก็สั่ง worker ว่า "ปันผล % ใบ 0.26 · vendor 26" — ผิดและเป็นคำสั่งให้แก้ตามด้วย
 const pctDiff = (a, b) => (a != null && b ? Math.abs(a - b) / Math.abs(b) * 100 : null);
 
 /**
@@ -64,7 +66,7 @@ function parseVendor(text) {
   const sAnalysts = sTgt ? firstNum((sTgt.match(/\((\d+)\)/) || [])[1]) : null;
   const s = sLine ? {
     epsTTM: firstNum(field(sLine, 'epsTTM')), target: firstNum(sTgt), analysts: sAnalysts,
-    lo52: sLo, hi52: sHi, divYieldPct: asPct(sYield),
+    lo52: sLo, hi52: sHi, divYieldPct: sYield,
   } : null;
   const pick = (a, b) => (a != null ? a : b);
   return {
@@ -73,7 +75,7 @@ function parseVendor(text) {
     analysts: pick(s && s.analysts, y && num(y[8])),
     lo52: pick(s && s.lo52, y && num(y[9])),
     hi52: pick(s && s.hi52, y && num(y[10])),
-    divYieldPct: pick(s && s.divYieldPct, y && asPct(num(y[6]))),
+    divYieldPct: pick(s && s.divYieldPct, y && num(y[6])),
     priceStop: /🛑/.test(text),
     priceWarn: /⚠ ราคา 2 แหล่งต่าง/.test(text),
   };
@@ -122,6 +124,8 @@ function assemblePrompt(template, vals, extra) {
   const body = lines.slice(sep + 1).join('\n').replace(/^\n+/, '');
   const found = new Set((body.match(/\{\{([A-Z_]+)\}\}/g) || []).map((t) => t.slice(2, -2)));
   for (const k of found) if (!TOKENS.includes(k) && !VERBATIM.has(k)) throw new Error(`template มี token ที่ runbook ไม่รู้จัก: {{${k}}} — เพิ่มใน TOKENS หรือ VERBATIM ของ tools/queue/prep.js`);
+  // token ที่หายไปจากส่วน worker = ค่าที่เตรียมไว้ถูกทิ้งเงียบ ๆ (เช่นย้าย {{MEDIANS}} ขึ้นไปอยู่เหนือ ---)
+  for (const k of TOKENS) if (!found.has(k)) throw new Error(`template ไม่มี {{${k}}} ในส่วน worker (ใต้ ---)`);
   let out = body;
   for (const k of TOKENS) {
     if (vals[k] == null) throw new Error(`ขาดค่า {{${k}}}`);
@@ -135,7 +139,11 @@ function extraBlock(i) {
   L.push(`- โหมด **${i.mode}** · ${i.prePatched
     ? `ราคาในไฟล์ patch แล้ว ${i.prePatched} (${i.oldPrice ?? '?'} → ${i.price ?? '?'}) ⇒ **ห้ามรัน update-prices ซ้ำ** ยกเว้น SKILL 5B ข้อ 3 (แก้ fairValue — ปลอดภัยแล้วเพราะ lock)`
     : `ราคายังไม่ได้ pre-patch (ตลาดเปิด/ข้าม) — โหมด UPDATE รัน \`node tools/update-prices.js --write --force ${i.sym}\` ตาม SKILL STEP 1 ได้`}`);
-  if (i.epsScreen != null) L.push(`- EPS ในใบ ${i.baseEPS} vs vendor ${i.epsTTM} = ต่าง ${i.epsScreen.toFixed(1)}% → ${i.epsScreen <= EPS_SCREEN_PCT ? 'FV เดิมยืนได้ (UPDATE-LIGHT ตาม 5C ข้อ 2)' : '**ยกระดับเป็น UPDATE เต็ม** (5C ข้อ 2) — ตรวจ dil/basic/งวดตาม STEP 2 ก่อน'}`);
+  if (i.epsScreen != null) L.push(`- EPS ในใบ ${i.baseEPS} vs vendor ${i.epsTTM} = ต่าง ${i.epsScreen.toFixed(1)}% → ${i.epsScreen <= EPS_SCREEN_PCT
+    ? 'FV เดิมยืนได้ (UPDATE-LIGHT ตาม 5C ข้อ 2)'
+    : i.escalated
+      ? '**ยกระดับจาก UPDATE-LIGHT เป็น UPDATE เต็ม** (5C ข้อ 2) — โหมดในหัว prompt เปลี่ยนแล้ว · ตรวจ dil/basic/งวดตาม STEP 2 ก่อน'
+      : '**ยกระดับเป็น UPDATE เต็ม** (5C ข้อ 2) — ตรวจ dil/basic/งวดตาม STEP 2 ก่อน'}`);
   else L.push('- EPS screen: เทียบไม่ได้ (อ่าน EPS ฐานในใบหรือ vendor ไม่ได้) — ตรวจเองตาม STEP 2');
   L.push(i.snap.length
     ? `- snapshot vendor ที่ค้างในใบ (อัปเดตพร้อมกัน — คลาสที่ 4 ของ price-derived-staleness):\n${i.snap.map((s) => '    · ' + s).join('\n')}`
@@ -171,7 +179,8 @@ async function prep(sym, opts) {
   const sm = exists ? readStockMeta(html) : null;
   const th = exists ? (sm && sm.currency === 'THB') : !!o.th;
   const rec = S.load().stocks[sym] || {};
-  const mode = o.mode || (!exists ? 'NEW' : rec.bucket === 'LIGHT' ? 'UPDATE-LIGHT' : 'UPDATE');
+  let mode = o.mode || (!exists ? 'NEW' : rec.bucket === 'LIGHT' ? 'UPDATE-LIGHT' : 'UPDATE');
+  let escalated = false;
 
   // 1. prep-stock ครั้งเดียว (มัน spawn fetch-fundamentals + fetch-facts ให้แล้ว — ห้ามดึงซ้ำ)
   const ps = run('node', ['tools/prep-stock.js', sym, ...(th ? ['--th'] : []), ...(mode !== 'NEW' ? ['--update'] : []), ...(o.brand ? ['--brand', o.brand] : [])]);
@@ -191,6 +200,11 @@ async function prep(sym, opts) {
     ctx = buildCtx(expandReport(html), sym + '.html');
     epsScreen = pctDiff(ctx.baseEPS, vend.epsTTM);
     snap = snapshotDiff(html, ctx, vend);
+    // EPS ห่างเกินเกณฑ์ = FV เดิมยืนไม่ได้ ⇒ **เปลี่ยนโหมดจริง** ไม่ใช่เขียนเตือนอย่างเดียว
+    // (ไม่งั้นหัว prompt บอก UPDATE-LIGHT แต่บล็อกท้ายบอกให้ทำ UPDATE เต็ม = สองสัญญาณขัดกัน
+    //  และ state ก็บันทึกโหมดที่ยังไม่ยกระดับ) · prep-stock รันไปแล้วด้วย `--update` ซึ่งเหมือนกัน
+    // ทั้งสองโหมด (ต่างกันแค่ NEW/ไม่ NEW) ⇒ ไม่ต้องรันซ้ำ
+    if (!o.mode && mode === 'UPDATE-LIGHT' && epsScreen != null && epsScreen > EPS_SCREEN_PCT) { mode = 'UPDATE'; escalated = true; }
   }
 
   // 5. tags · 6. ยาก/โมเดล/effort
@@ -202,14 +216,14 @@ async function prep(sym, opts) {
   // 7. ประกอบ prompt
   const prompt = assemblePrompt(fs.readFileSync(TEMPLATE, 'utf8'),
     { SYMBOL: sym, MARKET: th ? 'TH' : 'US', MODE: mode, WORKTREE: ROOT, CURRENT_TAGS: tags, MEDIANS: med.text, FUNDAMENTALS: ps.out },
-    extraBlock({ sym, mode, prePatched: rec.prePatched, oldPrice: rec.oldPrice, price: sm && sm.price, baseEPS: ctx && ctx.baseEPS, epsTTM: vend.epsTTM, epsScreen, snap, medWarn: med.warn, hard: hs.hard, hardWhy: hs.why }));
+    extraBlock({ sym, mode, escalated, prePatched: rec.prePatched, oldPrice: rec.oldPrice, price: sm && sm.price, baseEPS: ctx && ctx.baseEPS, epsTTM: vend.epsTTM, epsScreen, snap, medWarn: med.warn, hard: hs.hard, hardWhy: hs.why }));
   fs.mkdirSync(S.PREP_DIR, { recursive: true });
   const file = path.join(S.PREP_DIR, sym + '.md');
   fs.writeFileSync(file, prompt);
-  S.update(sym, { mode, model, effort, prepAt: todayBangkok(), epsScreen, snapDeltas: snap.length, currency: th ? 'THB' : 'USD' });
+  S.update(sym, { mode, escalated, model, effort, prepAt: todayBangkok(), epsScreen, snapDeltas: snap.length, currency: th ? 'THB' : 'USD' });
 
   console.log(`\n=== prep ${sym} เสร็จ → ${path.relative(ROOT, file)} ===`);
-  console.log(`โหมด ${mode} · model **${model}** · effort ${effort}${hs.hard ? ` · หุ้นยาก: ${hs.why}` : ''}`);
+  console.log(`โหมด ${mode}${escalated ? ' (ยกระดับจาก UPDATE-LIGHT เพราะ EPS screen)' : ''} · model **${model}** · effort ${effort}${hs.hard ? ` · หุ้นยาก: ${hs.why}` : ''}`);
   if (epsScreen != null) console.log(`EPS screen: ${epsScreen.toFixed(1)}% ${epsScreen > EPS_SCREEN_PCT ? '⇒ UPDATE เต็ม' : '(ผ่าน)'}`);
   if (snap.length) console.log(`snapshot vendor ค้าง ${snap.length} จุด (อยู่ใน prompt แล้ว)`);
   if (med.warn.length) console.log(`⚠ มัธยฐาน: ${med.warn.join(' · ')}`);
