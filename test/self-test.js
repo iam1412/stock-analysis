@@ -291,7 +291,7 @@ expect('W10', 'warn', mutJson('stock-meta', (d) => { d.pe = (d.pe || 10) * 6; })
   ok(!errIds(rA).has('E27') && !allIds(rA).has('W09'),
     'ราคาสดแต่มีวันที่เก่าในหัวรายงาน → ต้องไม่ฟ้อง staleness ปลอม (E27/W09)',
     [...allIds(rA)].join(','));
-  delete process.env.STALE_TODAY;
+  process.env.STALE_TODAY = FX.TODAY;
 }
 
 // ── E34/E35/E36/E37/W12: ป้าย change รอบปี + กราฟ ~1 ปี (กฎ CLAUDE.md ข้อ 2 — มิ.ย. 2026) ──
