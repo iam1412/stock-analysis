@@ -150,7 +150,7 @@ KPI ที่ยัง**วัดไม่ได้จนกว่าจะเ�
 
 - **★ เงื่อนไขก่อนระยะ 1 (WS2 ข้อ 4 เลื่อน W17/W19/W20/W16 → E):** sweep ราคาข้างบนผ่านเพราะ check ที่ขึ้นกับราคายังเป็นระดับ W (warning ขยับ 149→150/151 ระหว่างไล่ราคา) — **ต้องรัน `sweep.sh` ซ้ำหลังเลื่อนเป็น E และผูกเป็นเกณฑ์จบระยะ 1** ไม่งั้นได้ cron ที่ล้มตามราคาอีกรอบ (คลาสเดียวกับ 22–24 ส.ค. / run #54)
 
-- **Task 20 — probe เส้นทาง `analyze-wave` (Workflow) ยังไม่ได้รัน** (`docs/open-items.md` #18): Workflow tool ต้องได้รับคำสั่งจากเจ้าของโดยตรง ⇒ ยังไม่รู้ว่าเส้นทางนี้ inject `CLAUDE.md` ไหม + default model คืออะไร · ผลกระทบ: กฎ "pin `model` ทุก call" ยังต้องถือไว้ (ซึ่งก็ถือแล้ว) — **ขอเจ้าของสั่ง "รัน workflow analyze-wave probe"**
-- **`docs/open-items.md`: เปิดอยู่ 18 รายการ · ปิดในระยะ 0 แล้ว 3 รายการ** (#3 diff vendor snapshot · #12 memory ผิด · #21 fixture ผูกไฟล์จริง) — ที่เหลือถูกจ่ายให้ระยะ 1–3 ในคอลัมน์ "ปิดใน" ครบทุกแถว
+- **Task 20 — probe เส้นทาง `analyze-wave` (Workflow) รันแล้ว 12 ก.ย. 2569** (เจ้าของสั่งเอง · `docs/open-items.md` #18 ปิด): worker ทางนี้ **ได้ `CLAUDE.md` + MEMORY.md** เหมือนทาง Agent tool ⇒ role-scope `[controller]` คุมครบทั้งสองเส้นทาง · model เมื่อไม่ส่ง = Sonnet 5 แต่มาจาก script pin `'sonnet'` (`analyze-wave.js:20`) ไม่ใช่ default harness ⇒ ทาง workflow "แน่นอน" · ทาง Agent tool ยัง "ไม่แน่นอน" ⇒ กฎ "pin `model` ทุก call" คงไว้
+- **`docs/open-items.md`: เปิดอยู่ 19 รายการ (#1–#23 หัก 4 ที่ปิด) · ปิดในระยะ 0 แล้ว 4 รายการ** (#3 diff vendor snapshot · #12 memory ผิด · #18 probe analyze-wave · #21 fixture ผูกไฟล์จริง) — ที่เหลือถูกจ่ายให้ระยะ 1–3 ในคอลัมน์ "ปิดใน" ครบทุกแถว
 - **minor ที่เลื่อนโดยตั้งใจ** จาก code review ทั้ง 19 task บันทึกอยู่ใน `.superpowers/sdd/progress.md` (ท้ายบรรทัดของแต่ละ task) — ไม่มีข้อไหนเป็น Critical/Important ที่ค้าง
 - เกณฑ์ 1 วัดด้วย**ราคาสังเคราะห์**บนหุ้น 2 ตัว — พิสูจน์ว่า gate ไม่ผูกกับราคาของวัน แต่ไม่ได้พิสูจน์ว่า cron จะไม่ล้มด้วยเหตุอื่น (network · vendor เปลี่ยนรูปแบบ) · ตัวจริงต้องดู 30 วันข้างหน้า
