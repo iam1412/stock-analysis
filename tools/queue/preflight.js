@@ -35,12 +35,15 @@ function plan(flags, today) {
   return rows;
 }
 
-/** เลือกตัวที่ pre-patch ได้ตอนนี้ — ตลาดของสกุลนั้นเปิดอยู่ = ข้าม (--force ของ update-prices ข้าม guard intraday เอง) */
+/** เลือกตัวที่ pre-patch ได้ตอนนี้ — ตลาดของสกุลนั้นเปิดอยู่ = ข้าม (--force ของ update-prices ข้าม guard intraday เอง)
+ *  currency == null (ไม่มีไฟล์รายงาน/ไม่มี stock-meta) → ข้ามออกจาก batch เสมอ ไม่เดาว่าเป็น US */
 function patchTargets(rows, m) {
   const cur = new Map(rows.map((r) => [r.symbol, r.currency]));
-  const out = { target: [], skippedUS: [], skippedTH: [] };
+  const out = { target: [], skippedUS: [], skippedTH: [], skippedNoReport: [] };
   for (const sym of prePatchList(rows)) {
-    const th = cur.get(sym) === 'THB';
+    const c = cur.get(sym);
+    if (c == null) { out.skippedNoReport.push(sym); continue; }
+    const th = c === 'THB';
     if (!m.allowIntraday && !th && m.usOpen) { out.skippedUS.push(sym); continue; }
     if (!m.allowIntraday && th && m.setOpen) { out.skippedTH.push(sym); continue; }
     out.target.push(sym);
@@ -82,9 +85,11 @@ function preflight(opts) {
   const s = S.load();
   s.startedAt = s.startedAt || today;
   for (const r of rows) s.stocks[r.symbol] = { ...(s.stocks[r.symbol] || {}), reason: r.reason, bucket: r.bucket, oldPrice: r.oldPrice, currency: r.currency, footerAge: r.footerAge, skip: r.skip, flaggedAt: r.flaggedAt || null };
+  S.save(s);   // บันทึก snapshot ก่อน pre-patch — patch ล้มก็ต้องเหลือราคาเดิมให้ postcheck ใช้
   const t = patchTargets(rows, { usOpen: usSessionOpen(), setOpen: setSessionOpen(), allowIntraday: !!o.allowIntraday });
   if (t.skippedUS.length) console.log(`\n⏳ ตลาด US เปิดอยู่ — ไม่ pre-patch ${t.skippedUS.join(' ')} (ราคา intraday · --force ข้าม guard ของ update-prices เอง — บทเรียน 9 ก.ย. 69) · ต้องการจริงใส่ --allow-intraday`);
   if (t.skippedTH.length) console.log(`\n⏳ SET เปิดอยู่ — ไม่ pre-patch ${t.skippedTH.join(' ')} · --allow-intraday ถ้าจงใจ`);
+  if (t.skippedNoReport.length) console.log(`\n⚠ ไม่มีไฟล์รายงาน — ไม่ pre-patch ${t.skippedNoReport.join(' ')} (ลบไปแล้ว? รัน node tools/tag-apply.js --prune แล้วปล่อยให้ cron ตัด flag ทิ้ง)`);
   if (t.target.length && !o.noPatch) {
     console.log(`\n▶ pre-patch ราคา ${t.target.length} ตัวใน process เดียว (lock กันคิวเพี้ยนแล้ว — WS4)`);
     const r = run('node', ['tools/update-prices.js', '--write', '--force', ...t.target]);

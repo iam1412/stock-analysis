@@ -101,6 +101,8 @@ process.env.QUEUE_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'queue-'));   // s
   ok(t2.target.join(',') === 'TH1' && t2.skippedUS.join(',') === 'US1', 'patchTargets: US เปิด → ข้าม US (--force ข้าม guard intraday เอง)');
   const t3 = P.patchTargets(rows, { usOpen: true, setOpen: true, allowIntraday: true });
   ok(t3.target.join(',') === 'US1,TH1', 'patchTargets: --allow-intraday → ไม่ข้าม');
+  const t4 = P.patchTargets(rows.concat([{ symbol: 'GONE', reason: 'mos-sign-flip', bucket: 'LIGHT', currency: null, action: 'x', skip: null }]), { usOpen: false, setOpen: false, allowIntraday: false });
+  ok(t4.skippedNoReport.join(',') === 'GONE' && !t4.target.includes('GONE'), 'patchTargets: ไม่มีไฟล์รายงาน (currency null) → ไม่เข้า batch pre-patch');
   const table = P.renderTable(rows);
   ok(/US1/.test(table) && /10→11/.test(table) && /30d/.test(table) && table.split('\n').length === rows.length + 1, 'renderTable: 1 แถว/flag + หัวตาราง');
   const man = P.manualSteps(rows);
