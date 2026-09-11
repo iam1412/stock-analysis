@@ -146,4 +146,4 @@ node docs/superpowers/audit/2026-09-11-stock-analyzer/measure-analysis-age.js
 
 ตัวเลขอื่นที่ขยับในระยะ 0: ขั้น `npm run verify` **13 → 14** (+`queue-test`) · fixture ที่ผูกไฟล์รายงานจริง **2 → 0** (`test/fixtures/`) · รหัส E/W ใหม่ **0** (spec §8 ห้ามเพิ่ม E ก่อน quarantine ครบ) · `docs/open-items.md` เปิด **18** ปิดแล้ว **3**
 
-ยังไม่ได้วัด: เส้นทาง `analyze-wave` (Workflow) — Task 20 รอเจ้าของสั่ง (open-items #18) · KPI รอบเคลียร์คิวจริง (ปัญหาที่คนจับ · re-dispatch · turn/หุ้น) ต้องรอรอบถัดไป
+**เงื่อนไขก่อนระยะ 1:** W-code ที่ขึ้นกับราคายังขยับตามราคา (149→151 ระหว่าง sweep) — เลื่อน W→E เมื่อไรต้องรัน sweep ซ้ำเป็นเกณฑ์จบระยะ 1 · ยังไม่ได้วัด: เส้นทาง `analyze-wave` (Workflow) — Task 20 รอเจ้าของสั่ง (open-items #18) · KPI รอบเคลียร์คิวจริง (ปัญหาที่คนจับ · re-dispatch · turn/หุ้น) ต้องรอรอบถัดไป
