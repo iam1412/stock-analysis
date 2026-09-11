@@ -944,6 +944,6 @@ async function main() {
   if (!WRITE) console.log('ใส่ --write เพื่อเขียนจริง');
 }
 
-module.exports = { mosBand, fmtPrice, fmtLike, toYahooSymbol, fetchChart, buildChartData, niceBounds, annualChg, decide, currencyMatches, isIntradayQuote, detectMixedBasis, detectStaleQuotes, missedSessions, probeCap, capByCohort, controlTickers, unverifiedCohorts, classifyStale, patchReport, gateAfterPatch, mergeFlags, commitFlags, styledRD, commitBody, THAI_MONTHS };
+module.exports = { mosBand, fmtPrice, fmtLike, toYahooSymbol, fetchChart, buildChartData, niceBounds, annualChg, decide, currencyMatches, isIntradayQuote, detectMixedBasis, detectStaleQuotes, missedSessions, probeCap, capByCohort, controlTickers, unverifiedCohorts, classifyStale, patchReport, gateAfterPatch, mergeFlags, commitFlags, styledRD, commitBody, THAI_MONTHS, MOS_FLIP_DEADBAND_PP };
 
 if (require.main === module) main().catch((e) => { console.error(e); process.exit(1); });
