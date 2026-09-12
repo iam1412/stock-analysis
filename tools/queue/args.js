@@ -5,7 +5,9 @@ function parseArgs(argv) {
   const a = argv.flatMap((x) => (/^--[a-z-]+=/.test(x) ? [x.slice(0, x.indexOf('=')), x.slice(x.indexOf('=') + 1)] : [x]));
   const cmd = a[0];
   const has = (f) => a.includes(f);
-  const val = (f) => { const i = a.indexOf(f); if (i < 0) return null; const v = a[i + 1]; if (v == null || v.startsWith('--')) throw new Error(`${f} ต้องมีค่า`); return v; };
+  // v === '' = พิมพ์ `--flag=` ค้างไว้ (flatMap ข้างบนแตกเป็น ['--flag','']) — ต้องล้มเหมือนไม่ใส่ค่าเลย
+  // ไม่งั้นได้ mode/model/tags เป็นสตริงว่างเงียบ ๆ แล้วไปพังไกลจากจุดพิมพ์ผิด (C2 · รีวิว Task 15/16)
+  const val = (f) => { const i = a.indexOf(f); if (i < 0) return null; const v = a[i + 1]; if (v == null || v === '' || v.startsWith('--')) throw new Error(`${f} ต้องมีค่า`); return v; };
   const positional = a.slice(1).filter((x, i, arr) => !x.startsWith('--') && !VALUE_FLAGS.has(arr[i - 1]));
   return { cmd, has, val, positional, sym: (positional[0] || '').toUpperCase() };
 }

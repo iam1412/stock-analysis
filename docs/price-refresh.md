@@ -125,7 +125,7 @@ npm run build && node tools/preserve-dates.js && npm run build   # ★ ซ่อ
 | reason | เงื่อนไข |
 |---|---|
 | `drift-gt-15pct` | ราคาใหม่ต่างจากในรายงาน >15% (เดิม 10% — ขยับ 2026-07-11 ลดภาระ re-analysis) — prose ("จากจุดเข้า $X", "แพง ~Y%") จะผิดความหมาย |
-| `mos-sign-flip` | MOS พลิกเครื่องหมาย **เกิน dead-band ±5 จุด (ระยะ 1)** (2026-08-02: flip ที่ทั้งเก่า-ใหม่อยู่ใน ±5 จุด = แกว่งรอบ FV → patch ผ่าน patcher เขียนเครื่องหมายใหม่เอง — ±5 ตรง dead-band ของ gate W06 ดังนั้น prose "ถูก/แพงเล็กน้อย" ไม่ขัด gate) · **ทำอะไรต่อ: pre-patch ราคาอย่างเดียว (bucket `PREPATCH` — ระยะ 1 ข้อ D, 12 ก.ย. 2569)** `npm run queue -- ship --prepatch` แล้วจบ **ไม่ส่ง LLM** (cron เขียนช่องสรุปทั้งช่องเองแล้ว ไม่มี prose ให้ขัด) · preflight **ยกเป็น UPDATE-LIGHT** เมื่ออายุ footer >90 วัน (`triage.STALE_DAYS`) หรือมีงบออกหลังวันวิเคราะห์ |
+| `mos-sign-flip` | MOS พลิกเครื่องหมาย **เกิน dead-band ±5 จุด (ระยะ 1)** (2026-08-02: flip ที่ทั้งเก่า-ใหม่อยู่ใน ±5 จุด = แกว่งรอบ FV → patch ผ่าน patcher เขียนเครื่องหมายใหม่เอง — ±5 ตรง dead-band ของ gate W06 ดังนั้น prose "ถูก/แพงเล็กน้อย" ไม่ขัด gate) · **ทำอะไรต่อ: pre-patch ราคาอย่างเดียว (bucket `PREPATCH` — ระยะ 1 ข้อ D, 12 ก.ย. 2569)** `npm run queue -- ship --prepatch` แล้วจบ **ไม่ส่ง LLM** (cron เขียนช่องสรุปทั้งช่องเองแล้ว ไม่มี prose ให้ขัด) · preflight **ยกเป็น UPDATE-LIGHT** เมื่ออายุ footer >90 วัน (`triage.STALE_DAYS`) หรือมีงบออกหลังวันวิเคราะห์ (ต้องมี `earnings-calendar.json` — ยังไม่เปิดใช้ ดูหัวข้อ "ปฏิทินงบรายสัปดาห์" ท้ายไฟล์) |
 | ~~`outside-gauge-range`~~ | ยกเลิก 2026-08-02 — ราคาหลุดขอบ gauge ไม่ freeze แล้ว patcher ขยาย `gauge.min/max` เป็น ราคา±5% เอง (ขอบเป็น display scaffolding, engine วาดจาก report-data — drift ใหญ่จริงโดนเกณฑ์ 15%/25% ก่อนเสมอ) |
 | `suspect-split-or-data` | ต่าง >25% — สงสัย split / เปลี่ยน ticker / ข้อมูลเพี้ยน |
 | `currency-mismatch` | Yahoo คืนสกุลเงินไม่ตรง stock-meta |
@@ -282,3 +282,30 @@ POST https://scanner.tradingview.com/global/scan
 
 **ข้อจำกัดที่ตั้งใจรับ:** endpoint นี้ไม่มี doc ทางการ — ความเสี่ยงระดับเดียวกับ Yahoo chart API ที่ cron
 ใช้อยู่แล้ว · ทั้งสองสัญญาณเป็น **ตัวชี้ให้ไปดู ไม่ใช่คำตัดสิน**: ต้องยืนยันจากแหล่งปฐมภูมิก่อนลบรายงานเสมอ
+
+## ปฏิทินงบรายสัปดาห์ (WS6 ข้อ 2 — **ยังไม่เปิดใช้** 12 ก.ย. 2569)
+
+trigger รอบวิเคราะห์ด้วย **เหตุการณ์ธุรกิจ** ไม่ใช่ราคา: `mos-sign-flip` ที่ไม่ส่ง LLM (PREPATCH) ควรถูกยกเป็น
+UPDATE-LIGHT ถ้า **งบออกหลังวันที่วิเคราะห์** — ตัวเลขในใบเก่ากว่างบงวดล่าสุดไปแล้ว
+
+- **ไฟล์:** `earnings-calendar.json` ที่ราก — `{ updatedAt, symbols: { SYM: { last, next, src } }, stats }`
+  (เรียง symbol เสมอ ให้ diff รายสัปดาห์อ่านรู้เรื่อง) · **ยังไม่มีในรีโป** (ดู "ผลวัดจริง" ท้ายหัวข้อ)
+- **ตัวสร้าง:** `tools/earnings-calendar.js` — Yahoo `quoteSummary?modules=calendarEvents` ผ่าน crumb flow
+  เดียวกับ `fetch-fundamentals.js` (`yahooSession()` ที่แยกออกมาใช้ร่วมกัน · ขอ cookie/crumb ครั้งเดียวต่อรอบ)
+  · `node tools/earnings-calendar.js --write` (มี `--out <path>` / `--limit N` / `--delay ms` ไว้ลองมือ)
+  · 404 = ไม่รู้จัก ticker → ไม่มีวันที่ (ไม่ retry) · ล้มติดกัน 10 ตัว = หยุดทั้งรอบ ไม่เขียนไฟล์ (session ตาย/โดนบล็อก)
+- **roll `next` → `last`:** Yahoo ให้แต่ "วันประกาศ**ถัดไป**" — ไม่มีแหล่งไหนให้ "ครั้งล่าสุด" ตรง ๆ ⇒ รอบรายสัปดาห์
+  เลื่อน `next` ที่ถึง/เลยวันแล้วมาเป็น `last` เอง ⇒ ★ **ไฟล์รอบแรก `last` เป็น null ทั้งไฟล์** preflight ยังไม่ได้อะไร
+  จนกว่าจะมีงบงวดแรกเดินผ่าน (หลายสัปดาห์) — เป็นดีไซน์ ไม่ใช่บั๊ก
+- **preflight ใช้ยังไง:** `earningsAfterOfWith(cal, readReport)` (`tools/queue/preflight.js`) → footer "ข้อมูล ณ"
+  < `last` ⇒ `true` ⇒ `triage` ยก flip จาก PREPATCH เป็น LIGHT ป้าย `escalated:'earnings'` · `last` ว่าง /
+  ไม่มีไฟล์ปฏิทิน / อ่าน footer ไม่ได้ ⇒ `null` = **นโยบายอายุอย่างเดียว** (footer > `STALE_DAYS` 90 วัน) ตามเดิม
+  — ระบบต้องเดินได้เหมือนไม่มีปฏิทิน และตอนนี้มันเดินแบบนั้นอยู่จริง
+- **ผลวัดจริง + fallback (12 ก.ย. 2569, รอบเต็ม 908 ใบ 6:41 นาที ที่หน่วง 200 ms):** มีวันที่ **719/908 = 79.2%**
+  — **TH `.BK` 51/238 (21.4%)** · US 668/670 (99.7%) · ยิงล้ม 0 ⇒ ไม่มีวันที่ **20.8% เกินเกณฑ์ 20%**
+  ⇒ ตามกติกา fallback: **ไม่ commit `earnings-calendar.json` และไม่เปิด workflow รายสัปดาห์**
+  (โค้ด + เทส offline + สาย preflight อยู่ในรีโปแล้ว พร้อมใช้ทันทีที่ปฏิทินมา) → `docs/open-items.md` #24
+  · เปิดใช้เมื่อไร: หาแหล่งวันงบของหุ้นไทยมาเสริม (ปฏิทินหลักทรัพย์ SET / StockAnalysis) → รัน `--write`
+  → commit json + workflow จันทร์ (`timeout-minutes: 45` · รูปแบบ bot commit เดียวกับ `update-prices.yml`)
+- **ข้อจำกัดที่ตั้งใจรับ:** วันที่ของ Yahoo อาจเป็น "ประมาณการ" (`isEarningsDateEstimate` — ไม่ได้เก็บแยก) ⇒
+  ปฏิทินนี้เป็น **ตัวชี้ให้ไปดู ไม่ใช่คำตัดสิน** (คลาสเดียวกับ canary) · มันทำได้แค่ยก flip เป็น LIGHT ไม่เคยลดชั้น

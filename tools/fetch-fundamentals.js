@@ -32,13 +32,19 @@ const fmt = (v, d = 2) => Number.isFinite(v) ? +v.toFixed(d) : (v == null || v =
 const pct = (v) => Number.isFinite(v) ? +(v * 100).toFixed(2) + '%' : '-';
 
 // ---------- แหล่ง 1: Yahoo quoteSummary (crumb flow) ----------
-async function fromYahoo(ysym) {
+/** cookie+crumb ของ Yahoo — quoteSummary ทุก module ต้องใช้คู่นี้ · ใช้ซ้ำได้ทั้งรอบ ไม่ต้องขอใหม่ต่อ symbol
+ *  (tools/earnings-calendar.js ขอครั้งเดียวแล้วยิง 908 ตัว — Task 17) */
+async function yahooSession() {
   const r1 = await fetch('https://fc.yahoo.com', { headers: H, redirect: 'manual' });
   const cookie = (r1.headers.get('set-cookie') || '').split(';')[0];
   if (!cookie) throw new Error('ไม่ได้ cookie จาก fc.yahoo.com');
   const r2 = await fetch('https://query1.finance.yahoo.com/v1/test/getcrumb', { headers: { ...H, cookie } });
   const crumb = await r2.text();
   if (!r2.ok || !crumb || crumb.includes('<')) throw new Error('ไม่ได้ crumb (HTTP ' + r2.status + ')');
+  return { cookie, crumb };
+}
+async function fromYahoo(ysym) {
+  const { cookie, crumb } = await yahooSession();
   const url = `https://query1.finance.yahoo.com/v10/finance/quoteSummary/${encodeURIComponent(ysym)}` +
     `?modules=defaultKeyStatistics,financialData,summaryDetail&crumb=${encodeURIComponent(crumb)}`;
   const r3 = await fetch(url, { headers: { ...H, cookie } });
@@ -482,6 +488,8 @@ async function main() {
 
 module.exports = {
   statsFromPayload, statNum, tableEpsTTM, epsTableLine, epsReconcile, epsBasisNote, statsLines, yieldLine,
+  // cookie/crumb ของ Yahoo — tools/earnings-calendar.js ใช้ต่อ (ขอครั้งเดียวต่อรอบ)
+  yahooSession,
   // ตัวดึงงบรายปี — ใช้ร่วมกับ tools/median-multiples.js (ตัวคูณมัธยฐานย้อนหลัง · CLAUDE.md §8 ชั้น 0.4b)
   fetchFinPage, finRow,
   SHARES_LABEL, SHARES_NOTE, EPS_TABLE_PASS_PCT, EPS_TABLE_ABS_TOL, SHARES_WARN_PCT, YIELD_WARN_PP,

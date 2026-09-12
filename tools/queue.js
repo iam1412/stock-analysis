@@ -17,7 +17,7 @@ const usage = `ใช้: npm run queue -- <คำสั่ง> [ตัวเล
   ship --prepatch
   prep <SYM> [--mode NEW|UPDATE|UPDATE-LIGHT] [--model sonnet|opus] [--brand "#hex"] [--median-spec SYM:TICKER] [--th]
   postcheck <SYM> [--model sonnet|opus]
-  ship <SYM> [--tags "slug slug"] [--message "…"] [--force]
+  ship <SYM> [--tags "slug slug"] [--message "…"] [--model sonnet|opus] [--force]
   status`;
 
 (async () => {
@@ -30,7 +30,8 @@ const usage = `ใช้: npm run queue -- <คำสั่ง> [ตัวเล
       if (has('--prepatch') && sym) throw new Error('ship: ระบุ <SYM> หรือ --prepatch อย่างใดอย่างหนึ่ง');
       const sh = require('./queue/ship.js');
       if (has('--prepatch')) sh.shipPrepatch();
-      else if (sym) sh.shipStock(sym, { tags: has('--tags') ? val('--tags') : null, message: val('--message'), force: has('--force') });
+      // --model = ทางออกเมื่อ state ไม่มี record (prep คนละเครื่อง/ถูกล้าง) — ต้องตรงกับโมเดลที่รันจริง (ป้าย Co-Authored-By)
+      else if (sym) sh.shipStock(sym, { tags: has('--tags') ? val('--tags') : null, message: val('--message'), model: val('--model'), force: has('--force') });
       else throw new Error(usage);
       break;
     }

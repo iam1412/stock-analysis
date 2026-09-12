@@ -4,6 +4,7 @@
  *   pull --rebase · อ่านคิว · triage ครบทุก reason · ความสดจาก footer · snapshot ราคาเดิมลง state (postcheck ใช้ grep ราคาค้าง)
  *   · pre-patch ราคา LIGHT/FULL ทั้งชุดใน process เดียว (ไม่ pre-patch ระหว่างตลาดเปิด) → ยิง gate ต่อทันที คืนไฟล์ใบที่ตก
  *   (--force ข้าม quarantine ของ cron ⇒ preflight ต้องทำ quarantine เอง) · พิมพ์ขั้นที่ยังต้องทำเอง
+ *   · ปฏิทินงบ (WS6 ข้อ 2): flip ที่ "งบออกหลังวันวิเคราะห์" ยกเป็น LIGHT — earnings-calendar.json (ยังไม่เปิดใช้ · docs/price-refresh.md)
  *   · คิวตามอายุ (WS6 ข้อ 3): ใบเกิน STALE_DAYS เข้าคิวเองแม้ราคาไม่ขยับ — ทยอย ageLimit ตัว/รอบ แก่สุดก่อน (--age N / --no-age)
  * ★ ไม่ทำแทน: probe โมเดล (ต้อง spawn subagent) · ยืนยันเพิกถอน · แก้ plumbing · ตัดสินใจกำกวม
  */
@@ -15,6 +16,7 @@ const { footerDate, ageDays, todayBangkok } = require('./footer-date.js');
 const { usSessionOpen, setSessionOpen } = require('./market.js');
 const { triage, prePatchList, llmList, STALE_DAYS } = require('./triage.js');
 const { readStockMeta } = require('../report-meta.js');
+const EC = require('../earnings-calendar.js');
 
 const REPORTS = path.join(ROOT, 'reports');
 const FLAGS = path.join(ROOT, 'price-flags.json');
@@ -28,6 +30,21 @@ function loadFlags() {
 
 const listReportsFS = () => fs.readdirSync(REPORTS).filter((f) => /\.html$/i.test(f)).map((f) => f.replace(/\.html$/i, '')).sort();
 const footerAgeFS = (today) => (sym) => { const h = readReport(sym); const d = h && footerDate(h); return d ? ageDays(d.iso, today) : null; };
+
+/** งบออกหลังวันวิเคราะห์ไหม (WS6 ข้อ 2 · ส่วนบริสุทธิ์: รับปฏิทิน + ตัวอ่านรายงานมาเลย ไม่แตะดิสก์เอง)
+ *  → (sym) → true = footer "ข้อมูล ณ" เก่ากว่าวันประกาศงบครั้งล่าสุด ⇒ triage ยก mos-sign-flip เป็น LIGHT
+ *  → null = ตัดสินไม่ได้ (ไม่มีปฏิทิน/ยังไม่มี `last`/อ่าน footer ไม่ได้) ⇒ ใช้นโยบายอายุอย่างเดียวตามเดิม
+ *  ★ ปฏิทินรอบแรก `last` เป็น null ทั้งไฟล์ (roll สะสมทีละสัปดาห์) — ไม่ผิด ค่อย ๆ มีผลเอง */
+function earningsAfterOfWith(cal, read) {
+  const syms = (cal && cal.symbols) || {};
+  return (sym) => {
+    const e = syms[sym];
+    if (!e || !e.last) return null;
+    const h = read(sym);
+    const d = h && footerDate(h);
+    return d ? d.iso < e.last : null;
+  };
+}
 
 /** ใบที่อายุเกิน STALE_DAYS ทั้งหมด (แก่สุดก่อน ไม่ตัด) — WS6 ข้อ 3: trigger ตามเวลา ไม่ใช่ราคา
  *  opts.listReports () → [SYM] · opts.footerAgeOf(sym) → number|null — ให้เทสสับ FS ได้ (ส่วนบริสุทธิ์เมื่อใส่ opts ครบ) */
@@ -127,8 +144,15 @@ function preflight(opts) {
   const today = todayBangkok();
   const flags = loadFlags();
   const ageLimit = o.noAge ? 0 : (o.age == null ? AGE_LIMIT_DEFAULT : o.age);
-  const rows = plan(flags, today, { ...o, ageLimit });
+  // ปฏิทินงบ (Task 17) — อ่านที่นี่ ไม่ใช่ใน plan() เพราะ plan เป็นส่วนที่ queue-test ยิงแบบ offline (ห้ามแตะ reports/)
+  const cal = EC.load();
+  const withLast = Object.values(cal.symbols || {}).filter((e) => e && e.last).length;
+  const rows = plan(flags, today, { ...o, ageLimit, earningsAfterOf: o.earningsAfterOf || earningsAfterOfWith(cal, readReport) });
   console.log(`\n=== คิว price-flags ${flags.length} รายการ · ${today} ===\n${renderTable(rows)}`);
+  const nCal = Object.keys(cal.symbols || {}).length;
+  console.log(nCal
+    ? `ปฏิทินงบ: ${nCal} symbol · รู้วันประกาศครั้งล่าสุดแล้ว ${withLast} ใบ (flip ของใบที่งบออกหลังวิเคราะห์ถูกยกเป็น LIGHT)`
+    : 'ปฏิทินงบ: ไม่มี earnings-calendar.json — flip ยกเป็น LIGHT ด้วยอายุ footer อย่างเดียว (docs/price-refresh.md)');
   const aq = ageQueue(today);
   if (aq.length) console.log(`อายุเกิน ${STALE_DAYS} วัน ${aq.length} ใบ (รอบนี้เอา ${rows.filter((r) => r.synthetic).length} แก่สุด · --age N ปรับได้): ${aq.slice(0, 10).map((r) => `${r.symbol}(${r.footerAge}d)`).join(' ')}${aq.length > 10 ? ' …' : ''}`);
   const s = S.load();
@@ -169,4 +193,4 @@ function preflight(opts) {
   return rows;
 }
 
-module.exports = { preflight, plan, ageQueue, patchTargets, renderTable, manualSteps, loadFlags, parseGateFailures };
+module.exports = { preflight, plan, ageQueue, earningsAfterOfWith, patchTargets, renderTable, manualSteps, loadFlags, parseGateFailures };

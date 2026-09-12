@@ -536,7 +536,69 @@ process.env.QUEUE_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'queue-'));   // s
   ok(a.has('--allow-dirty') === true && a.has('--no-patch') === true, 'parseArgs: boolean flag หลายตัวพร้อมกัน (--allow-dirty · --no-patch)');
 }
 
+// ── 19c) preflight: earningsAfterOf จากปฏิทินงบ (Task 17 · WS6 ข้อ 2)
+//   ★ ส่วนบริสุทธิ์ — ฉีดปฏิทิน + ตัวอ่านรายงานเอง (ห้ามแตะ reports/ จริงตามหัวไฟล์นี้) ──
+{
+  const P = require('../tools/queue/preflight.js');
+  // ★ ใช้ชื่อที่ไม่มีใน reports/ (แบบเดียวกับบล็อก 6b) — plan() อ่าน stock-meta จากดิสก์ถ้าไฟล์มีจริง
+  const cal = { symbols: { XAAA: { last: '2026-07-30', next: '2026-10-29' }, XBBB: { last: '2026-07-30', next: null }, XCCC: { last: null, next: null } } };
+  const html = {
+    XAAA: '<footer>ข้อมูล ณ 1 ก.ค. 2569</footer>',      // วิเคราะห์ก่อนงบออก
+    XBBB: '<footer>ข้อมูล ณ 5 ส.ค. 2569</footer>',      // วิเคราะห์หลังงบออก
+    XCCC: '<footer>ข้อมูล ณ 1 ม.ค. 2569</footer>',
+    NOFOOT: '<footer>ไม่มีวันที่ในฟุตเตอร์</footer>',
+  };
+  const f = P.earningsAfterOfWith(cal, (s) => html[s] || null);
+  ok(f('XAAA') === true, 'earningsAfterOf: footer เก่ากว่าวันงบล่าสุด → true (ยก flip เป็น LIGHT)');
+  ok(f('XBBB') === false, 'earningsAfterOf: footer ใหม่กว่าวันงบล่าสุด → false');
+  ok(f('XCCC') === null, 'earningsAfterOf: ยังไม่มี last (ปฏิทินรอบแรก) → null = นโยบายอายุอย่างเดียว');
+  ok(f('NOPE') === null, 'earningsAfterOf: ไม่มีใน symbols → null');
+  ok(P.earningsAfterOfWith({ symbols: {} }, () => null)('XAAA') === null && P.earningsAfterOfWith(null, () => null)('XAAA') === null, 'earningsAfterOf: ไม่มีปฏิทินเลย → null ทุกตัว (ระบบเดินได้เหมือนเดิม)');
+  ok(P.earningsAfterOfWith(cal, () => null)('XAAA') === null, 'earningsAfterOf: อ่านรายงานไม่ได้ → null ไม่ใช่ false');
+  ok(P.earningsAfterOfWith({ symbols: { NOFOOT: { last: '2026-07-30' } } }, (s) => html[s])('NOFOOT') === null, 'earningsAfterOf: footer ไม่มีวันที่ → null');
+  // ต่อกับ triage จริง: flip + งบออกหลังวิเคราะห์ → LIGHT/earnings (plan ส่งตัวนี้เข้า triage ตรง ๆ)
+  const rows = P.plan([{ symbol: 'XAAA', reason: 'mos-sign-flip' }], '2026-09-12',
+    { ageLimit: 0, footerAgeOf: () => 3, earningsAfterOf: f });
+  ok(rows[0].bucket === 'LIGHT' && rows[0].escalated === 'earnings', 'plan: ส่ง earningsAfterOf เข้า triage แล้ว flip ถูกยกเป็น LIGHT');
+}
+
+// ── 19d) ship: model ต้องมีก่อนลงมือ (C1 · carried จากรีวิว Task 15/16)
+//   เดิม trailer(rec.model) ระเบิดท้ายสุด — หลัง verify (นาที ๆ) + preserve-dates + build ⇒ เสียเวลาฟรีแล้วค่อยบอก ──
+{
+  const Q = require('../tools/queue/ship.js');
+  ok(Q.resolveModel('AAPL', { model: 'sonnet' }) === 'sonnet', 'resolveModel: อ่านจาก state');
+  ok(Q.resolveModel('AAPL', { model: 'sonnet' }, 'opus') === 'opus', 'resolveModel: --model ชนะค่าใน state');
+  ok(Q.resolveModel('AAPL', {}, 'opus') === 'opus', 'resolveModel: ไม่มีใน state แต่ใส่ --model → ผ่าน');
+  for (const [rec, over, label] of [[{}, null, 'ไม่มี model ใน state'], [{ model: 'haiku' }, null, 'model ที่ไม่รู้จัก'], [{ model: 'sonnet' }, 'haiku', '--model ที่ไม่รู้จัก']]) {
+    let threw = null;
+    try { Q.resolveModel('AAPL', rec, over); } catch (e) { threw = e.message; }
+    ok(/^AAPL: ไม่มี model ใน state/.test(threw || '') && /npm run queue -- prep AAPL/.test(threw || '') && /--model sonnet\|opus/.test(threw || ''), `resolveModel: ${label} → ปฏิเสธพร้อมวิธีแก้`, String(threw));
+  }
+}
+
+// ── 19e) parseArgs: --flag= (ค่าว่าง) ต้องล้มเหมือนไม่ใส่ค่า (C2 · carried) ──
+{
+  const A = require('../tools/queue/args.js');
+  for (const argv of [['ship', 'AAPL', '--tags='], ['prep', 'AAPL', '--mode=']]) {
+    const flag = argv[2].slice(0, -1);
+    let threw = null;
+    try { A.parseArgs(argv).val(flag); } catch (e) { threw = e.message; }
+    ok(threw === `${flag} ต้องมีค่า`, `parseArgs: ${flag}= (ค่าว่าง) → error เดียวกับไม่ใส่ค่า`, String(threw));
+  }
+  ok(A.parseArgs(['ship', 'AAPL', '--message= ']).val('--message') === ' ', 'parseArgs: ค่าที่เป็นช่องว่างจริง ๆ ยังผ่าน (ไม่ trim ให้)');
+}
+
+// ── 20) ปฏิทินงบ (Task 17 · WS6 ข้อ 2) — เทส offline อยู่ไฟล์แยก คืน Promise ⇒ tally ต้องรอก่อนนับ ──
+//   require แล้ว throw ตั้งแต่ sync (ยังไม่มีไฟล์/ไวยากรณ์พัง) ก็นับเป็น fail ไม่ใช่ปล่อยให้ทั้งชุดระเบิดเงียบ
+let pending = null;
+try { pending = require('./earnings-calendar-test.js')(ok); }
+catch (e) { nFail++; console.error('✗ earnings-calendar-test ระเบิด (sync) — ' + e.message); }
+
 // ─────────────────────────── (Task 10–14 แทรกเทสเหนือบรรทัดนี้) ───────────────────────────
-console.log(`queue-test: ${nOK}/${nOK + nFail} ผ่าน`);
-if (nFail) { console.log('❌ runbook มีบั๊ก'); process.exit(1); }
-process.exit(0);
+Promise.resolve(pending)
+  .catch((e) => { nFail++; console.error('✗ earnings-calendar-test ระเบิด (async) — ' + (e && e.message)); })
+  .then(() => {
+    console.log(`queue-test: ${nOK}/${nOK + nFail} ผ่าน`);
+    if (nFail) { console.log('❌ runbook มีบั๊ก'); process.exit(1); }
+    process.exit(0);
+  });

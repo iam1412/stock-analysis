@@ -7,6 +7,7 @@
  *               → build → verify → commit "price: …" → push · กันตัวที่ worker วิเคราะห์ใหม่แล้วโดนกวาดไปด้วย
  *               · รอบที่มีแต่ PREPATCH (flip ในย่าน — ระยะ 1 ข้อ D) ปิด issue ตรงนี้ด้วย เพราะไม่มี `ship <SYM>` ตามมา
  * ★ ไม่ทำแทน: ตัดสิน publish/skip (postcheck ต้อง pass หรือ --force หลังรีวิวเอง)
+ * ★ โมเดลของรอบมาจาก state (ตอน prep) หรือ --model — ตรวจก่อนลงมือทุกครั้ง (ป้าย Co-Authored-By ต้องตรงกับที่รันจริง)
  */
 const fs = require('fs');
 const path = require('path');
@@ -21,6 +22,14 @@ const MODEL_NAME = { sonnet: 'Sonnet 5', opus: 'Opus 5' };
 const STOCK_FILES = (sym) => [`reports/${sym}.html`, 'tags.json', 'tools/seeds.json', 'price-flags.json', 'reports.json'];
 
 const trailer = (model) => { const n = MODEL_NAME[model]; if (!n) throw new Error(`โมเดล "${model}" ไม่รู้จัก — ป้าย Co-Authored-By ต้องตรงกับที่รันจริง (sonnet|opus)`); return `Co-Authored-By: Claude ${n} <noreply@anthropic.com>`; };
+/** โมเดลของรอบนี้ (--model ชนะ state) — ★ ต้องเช็ค **ก่อน** verify/keepDates: เดิม trailer() ระเบิดตอนจะ commit
+ *  คือหลัง npm run verify (นาที ๆ) + preserve-dates + build ⇒ ผู้ใช้เสียเวลาฟรีแล้วค่อยรู้ว่า state ไม่มี model
+ *  (state หายได้จริง: .queue อยู่ที่ checkout หลัก ถ้า prep คนละเครื่อง/ถูกล้าง ก็ไม่มี record — C1 รีวิว Task 15/16) */
+function resolveModel(sym, rec, override) {
+  const m = override || (rec && rec.model);
+  if (!MODEL_NAME[m]) throw new Error(`${sym}: ไม่มี model ใน state — รัน npm run queue -- prep ${sym} ก่อน หรือใส่ --model sonnet|opus`);
+  return m;
+}
 function commitMessage(sym, rec, sm) {
   const mode = (rec && rec.mode) || 'UPDATE';
   const mos = sm && Number.isFinite(sm.mos) ? ` (MOS ${sm.mos < 0 ? '−' : '+'}${Math.abs(sm.mos)}%)` : '';
@@ -75,6 +84,7 @@ function shipStock(sym, opts) {
   const o = opts || {};
   const rec = S.load().stocks[sym] || {};
   if (rec.postcheck !== 'pass' && !o.force) throw new Error(`${sym}: postcheck ยังไม่ผ่าน (${rec.postcheck || 'ยังไม่รัน'}) — รัน npm run queue -- postcheck ${sym} ก่อน หรือ --force ถ้ารีวิวเองแล้ว`);
+  const model = resolveModel(sym, rec, o.model);   // ก่อน verify/keepDates เสมอ — ล้มตรงนี้ราคาถูกที่สุด (C1)
   if (o.tags) must('node', ['tools/tag-apply.js', sym, ...o.tags.split(/\s+/).filter(Boolean)], 'tag-apply');
   verify();
   keepDates();
@@ -94,7 +104,7 @@ function shipStock(sym, opts) {
   }
   const sm = readStockMeta(fs.readFileSync(path.join(ROOT, 'reports', sym + '.html'), 'utf8'));
   const msg = o.message || commitMessage(sym, rec, sm);
-  must('git', commitArgs(`${msg}\n\n${trailer(rec.model)}`, files), 'git commit');
+  must('git', commitArgs(`${msg}\n\n${trailer(model)}`, files), 'git commit');
   pushOrExplain(sym);
   S.update(sym, { shippedAt: todayBangkok() });
   console.log(`✅ ${sym} push แล้ว: ${msg}`);
@@ -226,4 +236,4 @@ function status() {
   console.log(`pre-patch push แล้ว ${prepatchShipped.length}: ${prepatchShipped.join(' ') || '-'}`);
 }
 
-module.exports = { shipStock, shipPrepatch, status, commitMessage, commitArgs, trailer, closeIssueIfEmpty, closeIssueIfNoLlmRows, prepatchBlockers, prepatchCandidates, parsePorcelain, pendingCommitFor, STOCK_FILES, TITLE };
+module.exports = { shipStock, shipPrepatch, status, commitMessage, commitArgs, trailer, resolveModel, closeIssueIfEmpty, closeIssueIfNoLlmRows, prepatchBlockers, prepatchCandidates, parsePorcelain, pendingCommitFor, STOCK_FILES, TITLE };
