@@ -342,6 +342,40 @@ function epsTableLine(quoteEps, quoteSrc, table) {
     ` · แยกให้ออกว่า "ตัดงวด" (ใช้ค่าใหม่) หรือ "นิยามต่าง" (freeze + เปิดเผยทั้งสองค่า) ตาม SKILL STEP 2 ก่อนเขียน${suffix}`;
 }
 
+// ---------- 6O (data-source-traps) + "SA cap ล้าหลัง": กับดัก vendor เชิงกล (WS9(a)) ----------
+const ENTITY_MISMATCH_PCT = 40;   // NI[3]÷Shares[2b] vs EPS(dil): ถัวเฉลี่ย↔คงเหลือต่างได้ −30..+11% (POET/AAOI) · VMRK ต่าง >70%
+const CAP_WARN_PCT = 5;
+// ตัวเลขเงินแบบ string ของ vendor ("5.0B" / "$4.2B" / ตัวเลขล้วน) → จำนวนเต็ม · ไม่ใช่ตัวเลข/parse ไม่ออก → null
+const amount = (v) => {
+  if (v == null) return null;
+  if (typeof v === 'number') return Number.isFinite(v) ? v : null;
+  const m = String(v).replace(/,/g, '').match(/^\s*\$?([0-9.]+)\s*([TBMK])?/i);
+  if (!m) return null;
+  const k = { T: 1e12, B: 1e9, M: 1e6, K: 1e3 }[(m[2] || '').toUpperCase()] || 1;
+  return parseFloat(m[1]) * k;
+};
+// stats.sharesOut มาได้ 2 รูป: ตัวเลขล้วน (fixture ทดสอบ) หรือ { num, text } ของจริงจาก fromStatistics/statsFromPayload
+const sharesOf = (v) => (v && typeof v === 'object' ? v.num : v);
+/** 6O (data-source-traps): EPS ของ vendor หลังควบรวม = กำไรบริษัทเก่า ÷ หุ้นบริษัทใหม่ — จับด้วย NI[3] ÷ Shares[2b] vs EPS(dil) */
+function entityMismatchLine(table, stats) {
+  const so = sharesOf(stats && stats.sharesOut);
+  if (!table || !Number.isFinite(table.eps) || table.eps === 0 || !Number.isFinite(table.ni) || !(so > 0)) return null;
+  const eps2 = table.ni / so;
+  const d = Math.abs(eps2 - table.eps) / Math.abs(table.eps) * 100;
+  if (d <= ENTITY_MISMATCH_PCT) return null;
+  return `⚠ entity mismatch? NI[3] ÷ Shares[2b] = ${fmt(eps2)} แต่ EPS(dil)[3] = ${fmt(table.eps)} (ต่าง ${d.toFixed(0)}%) — กำไรบริษัทเก่า ÷ หุ้นบริษัทใหม่ (เคส VMRK 23 ส.ค. 69) ⇒ ห้ามมีขา P/E จนยืนยัน XBRL EarningsPerShareDiluted`;
+}
+/** SA market cap ล้าหลัง quote ของตัวเอง (memory data-source-traps) — เทียบกับ หุ้นคงเหลือ [2b] × ราคา */
+function capLine(stats, price, info) {
+  const so = sharesOf(stats && stats.sharesOut);
+  const cap = amount(info && info.marketCap);
+  if (!(so > 0) || !(price > 0) || !(cap > 0)) return null;
+  const calc = so * price;
+  const d = Math.abs(calc - cap) / cap * 100;
+  if (d <= CAP_WARN_PCT) return null;
+  return `⚠ SA market cap ${fmtCell(cap, 'm')} ≠ หุ้น ${fmtCell(so, 'm')}M × ราคา ${fmt(price)} = ${fmtCell(calc, 'm')} (ต่าง ${d.toFixed(0)}%) — SA cap ล้าหลัง quote ของตัวเอง ใช้ หุ้น×ราคา (memory: SA market cap ล้าหลัง)`;
+}
+
 // [2b] — หุ้นคงเหลือจริง ≠ แถว Shares ใน [3] · คืน array บรรทัด (test เรียกตรงได้ ไม่ต้องยิงเน็ต)
 function statsLines(stats, statsErr, tableShares) {
   if (!stats || !stats.sharesOut)
@@ -467,6 +501,8 @@ async function main() {
   // [2b] หุ้นคงเหลือ — ต้องมาก่อนบรรทัด Δ เพื่อให้ controller เห็นฐานที่ถูกก่อนตัดสินใจ
   const table = tableEpsTTM(finPages[0]);
   for (const line of statsLines(stats, statsErr, table.shares)) console.log(line);
+  // กับดักเชิงกล (WS9(a)) — entity mismatch (6O) + SA market cap ล้าหลัง quote ของตัวเอง — WARN เท่านั้น ไม่เปลี่ยน exit code
+  for (const l of [entityMismatchLine(table, stats), capLine(stats, sPrice || (y && y.price), s && s.info)]) if (l) console.log(l);
 
   if (y && s && Number.isFinite(y.price) && sPrice) {
     const dP = Math.abs(y.price - sPrice) / sPrice * 100;
@@ -493,6 +529,8 @@ module.exports = {
   // ตัวดึงงบรายปี — ใช้ร่วมกับ tools/median-multiples.js (ตัวคูณมัธยฐานย้อนหลัง · CLAUDE.md §8 ชั้น 0.4b)
   fetchFinPage, finRow,
   SHARES_LABEL, SHARES_NOTE, EPS_TABLE_PASS_PCT, EPS_TABLE_ABS_TOL, SHARES_WARN_PCT, YIELD_WARN_PP,
+  // WS9(a) — กับดัก vendor เชิงกล: entity mismatch (6O) + SA market cap ล้าหลัง quote ของตัวเอง (Task 21)
+  amount, entityMismatchLine, capLine, ENTITY_MISMATCH_PCT, CAP_WARN_PCT,
 };
 // ★ ต้อง guard — test:prep require ไฟล์นี้เพื่อเทียบ format กับ prep-stock (offline) ถ้าไม่ guard จะยิงเน็ตจริง
 if (require.main === module) main().catch((e) => { console.error('✗', e.message); process.exit(1); });

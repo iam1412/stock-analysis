@@ -243,5 +243,33 @@ ok(P.parseArgs([]).error != null, 'parseArgs: ไม่มี symbol → error')
 ok(P.parseArgs(['CGNX', '--brand', 'ffcc00']).error != null, 'parseArgs: brand ไม่ใช่ #rrggbb → error');
 ok(P.parseArgs(['CGNX', '--brand']).error != null, 'parseArgs: --brand ไม่มีค่า → error');
 
+// ---------- WS9(a) ระยะ 1: entity mismatch (6O) + SA cap vs หุ้น×ราคา ----------
+{
+  const vmrkFin = F.tableEpsTTM(makeFinPage({ datekey: ['TTM'], epsDiluted: [3.10], netIncome: [310e6], sharesDiluted: [100e6] }));   // EPS จริงของบริษัทเก่า
+  const statsNew = { sharesOut: 400e6 };                                                                                                   // หุ้นบริษัทใหม่หลังควบรวม
+  const l1 = F.entityMismatchLine(vmrkFin, statsNew);
+  ok(l1 && /entity mismatch/.test(l1) && /VMRK/.test(l1) && /ห้ามมีขา P\/E/.test(l1), 'entityMismatchLine: NI÷Shares[2b] ต่างจาก EPS(dil) 75% → เตือน', l1);
+  ok(F.entityMismatchLine(vmrkFin, { sharesOut: 110e6 }) == null, 'entityMismatchLine: ต่าง 10% (ถัวเฉลี่ย vs คงเหลือ) → เงียบ');
+  ok(F.entityMismatchLine(vmrkFin, null) == null && F.entityMismatchLine({ eps: null }, statsNew) == null, 'entityMismatchLine: ข้อมูลไม่ครบ → null ไม่ throw');
+  ok(F.ENTITY_MISMATCH_PCT === 40, 'ENTITY_MISMATCH_PCT = 40 (กว้างกว่าช่วงถัวเฉลี่ย/คงเหลือ −30..+11%)');
+  const l2 = F.capLine({ sharesOut: 100e6 }, 50, { marketCap: 4.2e9 });
+  ok(l2 && /SA market cap/.test(l2) && /หุ้น×ราคา|× ราคา/.test(l2), 'capLine: SA cap 4.2B vs 100M×50 = 5.0B (ต่าง 16%) → เตือน', l2);
+  ok(F.capLine({ sharesOut: 100e6 }, 50, { marketCap: 5.1e9 }) == null, 'capLine: ต่าง 2% → เงียบ');
+  ok(F.capLine({ sharesOut: 100e6 }, 50, {}) == null && F.capLine(null, 50, { marketCap: 1 }) == null, 'capLine: ไม่มี cap/ไม่มี stats → null');
+  // marketCap เป็น string suffix (SA ส่งมาแบบนี้จริง — ต้องผ่าน amount() แล้วยังเตือนเหมือนตัวเลขล้วน)
+  const l3 = F.capLine({ sharesOut: 100e6 }, 50, { marketCap: '4.2B' });
+  ok(l3 && /SA market cap/.test(l3), 'capLine: marketCap เป็น string "4.2B" → amount() parse suffix ได้ ยังเตือนเหมือนตัวเลข', l3);
+  // stats.sharesOut รูปจริงจาก fromStatistics/statsFromPayload = { num, text } ไม่ใช่ตัวเลขล้วน — ต้องอ่าน .num ได้เหมือนกัน
+  const statsWrapped = { sharesOut: { num: 400e6, text: '400.00M' } };
+  ok(F.entityMismatchLine(vmrkFin, statsWrapped) != null, 'entityMismatchLine: stats.sharesOut รูป { num, text } จริงจาก fromStatistics → อ่าน .num ได้', JSON.stringify(statsWrapped));
+  ok(F.capLine({ sharesOut: { num: 100e6, text: '100.00M' } }, 50, { marketCap: 4.2e9 }) != null,
+    'capLine: stats.sharesOut รูป { num, text } จริง → อ่าน .num ได้เหมือนกัน');
+  // amount(): parse suffix T/B/M/K + comma + $ + ตัวเลขผ่านตรง ๆ + ค่าเสีย → null (ไม่ throw)
+  ok(F.amount('5.0B') === 5.0e9 && F.amount('$4.2B') === 4.2e9 && F.amount('1,234M') === 1234e6
+    && F.amount(4.2e9) === 4.2e9 && F.amount(null) == null && F.amount(undefined) == null && F.amount('abc') == null,
+    'amount: suffix B/M/K/T + comma + $ + number passthrough + ค่าเสีย → null', JSON.stringify([F.amount('5.0B'), F.amount('$4.2B'), F.amount('1,234M')]));
+  ok(F.CAP_WARN_PCT === 5, 'CAP_WARN_PCT = 5');
+}
+
 console.log(nFail ? `\n✗ prep-stock-test: ${nFail} failed / ${nOK} passed` : `\n✓ prep-stock-test: ${nOK} passed`);
 process.exit(nFail ? 1 : 0);
