@@ -7,7 +7,7 @@
  * + gauge.cur + MOS + เครื่องคิดเลข + stock-meta) — **ไม่แตะ prose วิเคราะห์ / EPS / Fair Value**
  *
  * Freeze + flag (ไม่แตะไฟล์ เขียนลง price-flags.json รอ re-analysis) เมื่อ:
- *   ราคาต่างจากในรายงาน >15% · MOS พลิกเครื่องหมายเกิน dead-band ±3 จุด ·
+ *   ราคาต่างจากในรายงาน >15% · MOS พลิกเครื่องหมายเกิน dead-band ±5 จุด ·
  *   ต่าง >25% / currency ไม่ตรง (สงสัย split/ticker) · fetch/patch ไม่สำเร็จ
  *   + `bad-chart`: ซีรีส์กราฟจาก Yahoo **ผสมสองฐาน** — split ที่ Yahoo ยังไม่ปรับย้อนหลังให้ครบ
  *   (detectMixedBasis: มี bar ในหน้าต่าง 52 สัปดาห์หลุดกรอบ fiftyTwoWeekLow/High เกิน 10%)
@@ -17,7 +17,7 @@
  *   ตัวที่ติด flag นี้ **ไม่ถูก patch** เพื่อกันเขียนทับกราฟที่คนแก้ถูกไว้แล้ว · flag หายเองเมื่อ Yahoo
  *   ปรับ adjclose ครบ (รอบถัดไป detectMixedBasis ผ่าน) — ไม่ต้องถอนมือ · `--force` ยังประทับ
  *   ราคา/วันที่ได้แต่คงกราฟเดิมในไฟล์ (price-only) เพราะ SKILL STEP 1 สั่ง --force ทุกรอบ re-analysis
- *   (MOS พลิกใน ±3 จุด = แกว่งรอบ FV → patch ผ่าน · ราคาหลุดขอบ gauge → ขยายขอบเอง ไม่ freeze)
+ *   (MOS พลิกใน ±5 จุด = แกว่งรอบ FV → patch ผ่าน · ราคาหลุดขอบ gauge → ขยายขอบเอง ไม่ freeze)
  *   + `not-on-exchange`: quote ค้างหลัง cohort เดียวกัน ≥3 session (detectStaleQuotes)
  *   **และ** TradingView ยืนยันว่าไม่พบ ticker บนกระดานใด (confirmDead) — สองชั้นเพราะ
  *   regularMarketTime ค้างที่ "วันซื้อขายล่าสุด" ไม่ใช่ "session ล่าสุด" ⇒ หุ้นสภาพคล่องต่ำ
@@ -57,14 +57,15 @@ const FLAGS = path.join(__dirname, '..', 'price-flags.json');
 
 // ชื่อเดือน + ตัวหา "วันที่ราคา" มาจาก tools/price-date.js ที่เดียว (ใช้ร่วมกับ gate — อย่าทำสำเนา)
 // ค่าที่ derive จากราคา (P/E · % ของราคาเป้า) — กติกาเดียวกับที่ gate ใช้ตรวจ E41/E42/W15 (ห้ามทำสำเนาความรู้)
-const { patchDerived } = require('./derived-values.js');
+// fmtMos + MOS_BIG_RE = รูป/ที่อยู่ของ .big — เจ้าของเดียวอยู่ที่ derived-values.js เพราะ W06 และ patchDerived#11 ใช้ตัวเดียวกัน
+const { patchDerived, fmtMos, MOS_BIG_RE } = require('./derived-values.js');
 const { findPriceDate, findRestatedDate, findDiscPriceDate, renderThaiDate, THAI_MONTHS } = require('./price-date.js');
 const MAX_PTS = 13;          // กราฟรายเดือน ~1 ปี (E37)
 const FLAT_PP = 0.75;        // |% รอบปี| < 0.75 → "ทรงตัว" (ตาม migrate-annual-chg)
 const DRIFT_FREEZE = 0.15;   // ราคาใหม่ต่างจากในรายงาน > 15% → freeze (prose จะผิดความหมาย · เดิม 10% — ขยับขึ้นลดภาระ re-analysis)
 const SUSPECT_FREEZE = 0.25; // ต่าง > 25% → สงสัย split/ticker เปลี่ยน/ข้อมูลเพี้ยน
-const MOS_FLIP_DEADBAND_PP = 3; // MOS พลิกเครื่องหมายแต่ทั้งเก่า-ใหม่อยู่ใน ±3 จุด = แกว่งรอบ FV → patch ผ่าน ไม่ freeze
-                                // (3 = dead-band เดียวกับ gate W06 — prose "ถูก/แพงเล็กน้อย" ไม่ขัด gate ในช่วงนี้)
+const MOS_FLIP_DEADBAND_PP = 5; // MOS พลิกเครื่องหมายแต่ทั้งเก่า-ใหม่อยู่ใน ±5 จุด = แกว่งรอบ FV → patch ผ่าน ไม่ freeze
+                                // (3 → 5 ระยะ 1 ข้อ D: flip ในย่านนี้ไม่มีข้อมูลใหม่ · ช่องสรุป "ส่วนต่างจากราคา" cron เขียนเองทั้งช่อง จึงไม่มี prose ให้ขัด)
 const GAUGE_PAD = 0.05;      // ราคาหลุดขอบ gauge → ขยายขอบเป็น ราคา±5% (ขอบเป็น display scaffolding — engine วาดจาก report-data.gauge)
 const FETCH_DELAY_MS = 450;  // throttle Yahoo (~2 req/s)
 const ABORT_CONSEC_FAILS = 11; // fetch พังติดกันครบ N ตัว = ต้นทางล่ม/โดนบล็อก ไม่ใช่ ticker รายตัวมีปัญหา → ยกเลิกทั้งรอบ
@@ -429,7 +430,7 @@ function classifyStale(candidates, rows, probeMap) {
 }
 
 /** ทุกจุด "ราคา ณ <วันที่>" ในบล็อก .disc (ตัวอ่านเดียวกับ f12 — วนจนหมดบล็อกเพราะบางใบเขียนซ้ำ 2 จุด
- *  เช่น "ราคา ณ …" + "ราคาปิดรายเดือน ณ …" · วัด 12 ก.ย. 69: 15/908 ใบมี ≥2 จุด) */
+ *  เช่น "ราคา ณ …" + "ราคาปิดรายเดือน ณ …" · วัด 12 ก.ย. 69: 13/908 ใบมี ≥2 จุด) */
 function allDiscDates(discHtml) {
   const out = [];
   for (let from = 0, h; (h = findDiscPriceDate(discHtml, from)); from = h.index + h.length) out.push(h);
@@ -579,33 +580,17 @@ function patchReport(html, p) {
   out = out.replace(RM.MCUR_LABEL_PARTS_RE, (m, a, old) => a + fmtLike(newPrice, old));
 
   // --- MOS .big (เครื่องหมายเดิม −/+ · sign flip ถูก freeze ก่อนถึงจุดนี้) ---
-  need(/(<div class="big">)\s*[+\-−–]?\s*[\d.]+\s*%(<\/div>)/, 'MOS .big');
-  const mosTxt = (mos < 0 ? '−' : '+') + (Math.abs(mos) >= 2 ? Math.abs(mos).toFixed(0) : Math.abs(mos).toFixed(1)) + '%';
-  out = out.replace(/(<div class="big">)\s*[+\-−–]?\s*[\d.]+\s*%(<\/div>)/, (m, a, z) => a + mosTxt + z);
+  // ★ regex + รูปตัวเลข = ของ derived-values.js (MOS_BIG_RE/fmtMos) เจ้าของเดียว — W06 และ patchDerived#11
+  //   อ่านช่องนี้ด้วยความรู้ก้อนเดียวกัน ⇒ ย้ายสำเนาที่เคยฝังไว้ตรงนี้ออกไปแล้ว
+  need(MOS_BIG_RE, 'MOS .big');
+  const mosTxt = fmtMos(mos);
+  out = out.replace(MOS_BIG_RE, () => '<div class="big">' + mosTxt + '</div>');
 
-  // --- ช่องสรุป "ส่วนต่างจากราคา" — patch เฉพาะ "ตัวเลข" ห้ามแตะคำบอกทิศทาง (แก้ต้นเหตุ W06) ---
-  // ช่องนี้เป็นข้อความที่คนเขียนตอนวิเคราะห์ แต่ตัวเลขในนั้นคือ MOS ซึ่งเป็นค่าที่คำนวณได้
-  // ⇒ ปล่อยไว้มันจะเพี้ยนขึ้นเรื่อย ๆ ตามราคาที่ patch ทุกวัน (วัดจริง 17 ส.ค. 2569: W06 ยิง 519/908 ใบ)
-  // ★ กฎความปลอดภัย — patch ได้ต่อเมื่อ "คำบอกทิศทาง" ในช่องยังตรงกับเครื่องหมายของ MOS ใหม่:
-  //   ถ้าขัดกัน (เขียน "ถูก" แต่ MOS ใหม่ติดลบ) = เรื่องของ **เนื้อหา** ไม่ใช่ตัวเลข → ไม่แตะ ปล่อยให้ W08/W06 เตือนต่อ
-  //   การสลับคำเองเท่ากับ cron เขียน prose ซึ่ง §9 ห้ามเด็ดขาด — ต้องให้คนตัดสิน
-  // ★ แทนที่เฉพาะใน text node (ข้ามเนื้อในแท็ก) กัน `width:50%` ใน inline style โดนแทนแทนตัวเลขจริง
-  out = out.replace(/(ส่วนต่างจากราคา<\/div>\s*<div class="v"[^>]*>)([\s\S]*?)(<\/div>)/, (m, a, cell, z) => {
-    const plain = cell.replace(/<[^>]*>/g, ' ');
-    // ทิศทางอ่านได้ 2 ทาง: จาก "คำ" (แพง/ถูก) หรือจาก "เครื่องหมายหน้าตัวเลข" — เครื่องหมายชัดกว่าคำด้วยซ้ำ
-    const sign = (plain.match(/([+\-−–])\s*[\d.]+\s*%/) || [, ''])[1];
-    const cheap = /ถูก|undervalued|ต่ำกว่ามูลค่า/.test(plain) || sign === '+';
-    const pricey = /แพง|เต็มมูลค่า|overvalued|สูงกว่ามูลค่า/.test(plain) || /[\-−–]/.test(sign);
-    if (cheap === pricey) return m;             // ไม่มีตัวบอกทิศเลย หรือขัดกันเอง → ไม่เดา
-    if ((mos >= 0) !== cheap) return m;         // ทิศขัดกับ MOS ใหม่ → เนื้อหา ไม่ใช่ตัวเลข
-    let done = false;
-    const patched = cell.replace(/(<[^>]*>)|([^<]+)/g, (seg, tag, text) => {
-      if (tag || done || !/-?[\d.]+\s*%/.test(text)) return seg;
-      done = true;
-      return text.replace(/(-?)([\d.]+)(\s*%)/, (mm, sg, old, pc) => sg + fmtLike(Math.abs(mos), old) + pc);
-    });
-    return done ? a + patched + z : m;          // ไม่มีตัวเลขให้ patch → ปล่อยไว้
-  });
+  // --- ช่องสรุป "ส่วนต่างจากราคา" — ตัวเขียนอยู่ที่ patchDerived#11 (ระยะ 1 ข้อ D) ---
+  // เดิมตรงนี้ patch เฉพาะ "ตัวเลข" แบบมีเงื่อนไข (คำบอกทิศต้องตรงกับ MOS ใหม่ ไม่งั้นไม่แตะ)
+  // ⇒ ใบที่คำกับเครื่องหมายขัดกันเองไม่เคยถูก patch เลย (BBL "+2.1% (เกือบเต็มมูลค่า)" — open-items #13)
+  // ตอนนี้ทั้งช่องเป็นคลังคำคงที่ "MOS ~ ±X%" ที่ derive จาก .big ⇒ ไม่มีคำให้ cron ต้องเดาอีก (§9 ยังไม่ถูกละเมิด)
+  // และมี **ตัวเขียนเดียว** คือ `patchDerived(out, newPrice)` ข้างล่าง (เรียกหลังเขียน .big ⇒ เห็นค่าใหม่เสมอ)
 
   // --- สีกล่อง verdict `class="mos-verdict bad|ok|good"` — sync ให้ตรงโซน MOS ใหม่ (แก้ต้นเหตุ W04) ---
   // class นี้เป็นฟังก์ชันล้วนของ MOS ไม่มีดุลพินิจ (bad <10 / ok 10–20 / good ≥20 — กติกาเดียวกับ W04 และ agent-prompt)

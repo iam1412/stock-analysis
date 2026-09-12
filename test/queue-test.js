@@ -70,17 +70,23 @@ process.env.QUEUE_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'queue-'));   // s
   ok(M.setSessionOpen(new Date('2026-09-10T04:00:00Z')) === true && M.setSessionOpen(new Date('2026-09-10T10:00:00Z')) === false, 'set: 11:00 ICT เปิด · 17:00 ปิด');
 }
 
-// ── 3) triage: ครบทุก reason ที่ cron/canary เขียนได้ (C14 — เดิม 2 reason ไม่มีกฎที่ไหนเลย) ──
+// ── 3) triage: ครบทุก reason ที่ cron/canary/preflight เขียนได้ · flip = PREPATCH ไม่ส่ง LLM (ข้อ D) ──
 {
   const T = require('../tools/queue/triage.js');
-  const want = { 'mos-sign-flip': 'LIGHT', 'drift-gt-15pct': 'LIGHT', 'suspect-split-or-data': 'FULL', 'bad-chart': 'FULL', 'fetch-failed': 'PLUMBING', 'patch-failed': 'PLUMBING', 'no-stock-meta': 'PLUMBING', 'currency-mismatch': 'PLUMBING', 'bad-price': 'PLUMBING', 'bad-report-price': 'PLUMBING', 'patch-rejected': 'REJECTED', 'not-on-exchange': 'DELIST' };
+  const want = { 'mos-sign-flip': 'PREPATCH', 'drift-gt-15pct': 'LIGHT', 'age-gt-90d': 'LIGHT', 'earnings-after-analysis': 'LIGHT', 'suspect-split-or-data': 'FULL', 'bad-chart': 'FULL', 'fetch-failed': 'PLUMBING', 'patch-failed': 'PLUMBING', 'no-stock-meta': 'PLUMBING', 'currency-mismatch': 'PLUMBING', 'bad-price': 'PLUMBING', 'bad-report-price': 'PLUMBING', 'patch-rejected': 'REJECTED', 'not-on-exchange': 'DELIST' };
   for (const [r, b] of Object.entries(want)) ok(T.bucketOf(r) === b, `bucketOf(${r}) = ${b}`, T.bucketOf(r));
   ok(T.bucketOf('drift-gt-10pct') === 'LIGHT' && T.bucketOf('อะไรก็ไม่รู้') === 'UNKNOWN', 'bucketOf: drift เกณฑ์อื่น = LIGHT · ไม่รู้จัก = UNKNOWN');
-  const flags = [{ symbol: 'A', reason: 'mos-sign-flip' }, { symbol: 'B', reason: 'mos-sign-flip' }, { symbol: 'C', reason: 'not-on-exchange' }, { symbol: 'D', reason: 'suspect-split-or-data' }];
-  const rows = T.triage(flags, { footerAgeOf: (s) => ({ A: 3, B: 40, C: 10, D: null })[s] });
-  ok(rows[0].skip && /สด/.test(rows[0].skip) && !rows[1].skip, 'triage: LIGHT ที่ footer ≤7 วัน = ข้าม (ไม่วิเคราะห์ซ้ำ) · เกิน 7 = ทำ');
+  const flags = [{ symbol: 'A', reason: 'mos-sign-flip' }, { symbol: 'B', reason: 'mos-sign-flip' }, { symbol: 'C', reason: 'not-on-exchange' }, { symbol: 'D', reason: 'suspect-split-or-data' }, { symbol: 'E', reason: 'mos-sign-flip' }, { symbol: 'F', reason: 'mos-sign-flip' }, { symbol: 'G', reason: 'drift-gt-15pct' }];
+  const rows = T.triage(flags, { footerAgeOf: (s) => ({ A: 3, B: 40, C: 10, D: null, E: 120, F: 30, G: 3 })[s], earningsAfterOf: (s) => s === 'F' });
+  const by = Object.fromEntries(rows.map((r) => [r.symbol, r]));
+  ok(by.A.bucket === 'PREPATCH' && !by.A.skip && by.A.escalated === null && by.B.bucket === 'PREPATCH', 'flip อายุปกติ → PREPATCH (ไม่ skip — patch ราคาไม่มีโทษ)');
+  ok(by.E.bucket === 'LIGHT' && by.E.escalated === 'age' && /90/.test(by.E.action), 'flip อายุ 120 วัน → ยกเป็น LIGHT (age)');
+  ok(by.F.bucket === 'LIGHT' && by.F.escalated === 'earnings', 'flip + งบออกหลังวิเคราะห์ → ยกเป็น LIGHT (earnings)');
+  ok(by.G.skip && /สด/.test(by.G.skip), 'LIGHT ที่ footer ≤7 วัน = ข้าม (เดิม)');
   ok(rows.every((r) => r.action && r.bucket), 'triage: ทุกแถวมี bucket + action');
-  ok(T.prePatchList(rows).join(',') === 'B,D', 'prePatchList: เฉพาะ LIGHT/FULL ที่ไม่ข้าม (ไม่ pre-patch DELIST/PLUMBING)');
+  ok(T.prePatchList(rows).join(',') === 'A,B,D,E,F', 'prePatchList: PREPATCH ทุกแถว (ไม่สน skip — patch ราคาไม่มีโทษ) + LIGHT/FULL ที่ไม่ skip · ไม่รวม DELIST', T.prePatchList(rows).join(','));
+  ok(T.llmList(rows).join(',') === 'D,E,F', 'llmList: เฉพาะ LIGHT/FULL ที่ไม่ skip (flip ธรรมดาไม่อยู่)', T.llmList(rows).join(','));
+  ok(T.STALE_DAYS === 90, 'STALE_DAYS = 90 (WS6 ข้อ 3: >1 ไตรมาส)');
 }
 
 // ── 4) state: อ่าน/เขียน/update ใต้ QUEUE_DIR ชั่วคราว ──
@@ -125,6 +131,37 @@ process.env.QUEUE_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'queue-'));   // s
   const man = P.manualSteps(rows);
   ok(/probe โมเดล/.test(man) && /US2/.test(man) && /US4\[fetch-failed\]/.test(man) && /prep <SYM>/.test(man), 'manualSteps: probe · DELIST · PLUMBING · ขั้นถัดไป');
   ok(man.split('\n').filter((l) => /^\d+\./.test(l)).length <= 5, 'manualSteps: ขั้นที่ต้องทำเอง ≤5 (KPI ระยะ 0)');
+
+  // renderTable: คอลัมน์ "ที่มา" ใหม่ — synthetic (age-gt-90d) = "อายุ" · escalated (flip ยกจาก PREPATCH) = ป้าย escalated · ปกติ = "flag"
+  const table2 = P.renderTable([
+    { symbol: 'AGE1', reason: 'age-gt-90d', synthetic: true, bucket: 'LIGHT', action: 'x', skip: null },
+    { symbol: 'ESC1', reason: 'mos-sign-flip', escalated: 'age', bucket: 'LIGHT', action: 'x', skip: null },
+    { symbol: 'FLG1', reason: 'drift-gt-15pct', bucket: 'LIGHT', action: 'x', skip: null },
+  ]);
+  const l2 = table2.split('\n');
+  ok(/อายุ/.test(l2.find((l) => l.startsWith('AGE1'))), 'renderTable: คอลัมน์ที่มา = "อายุ" สำหรับแถวสังเคราะห์ age-gt-90d', table2);
+  ok(/\bage\b/.test(l2.find((l) => l.startsWith('ESC1'))), 'renderTable: คอลัมน์ที่มา = escalated label สำหรับแถวที่ยกจาก PREPATCH', table2);
+  ok(/\bflag\b/.test(l2.find((l) => l.startsWith('FLG1'))), 'renderTable: คอลัมน์ที่มา = "flag" สำหรับแถวปกติ', table2);
+}
+
+// ── 6b) preflight: plan/ageQueue — คิวตามอายุ (WS6 ข้อ 3): ใบเกิน 90 วันเข้าคิวเองแม้ราคาไม่ขยับ · ทยอย ageLimit ตัว แก่สุดก่อน · ไม่ซ้ำกับที่ flag อยู่ ──
+{
+  const P = require('../tools/queue/preflight.js');
+  // 6 ใบเกิน 90 วัน (FLAGGED OLD1 OLD2 OLD4 OLD5 OLD3) — ต้องมากกว่า 5 ถึงจะพิสูจน์ว่า default ageLimit ตัดจริง
+  const ages = { OLD1: 200, OLD2: 150, OLD3: 95, OLD4: 120, OLD5: 110, MID: 60, FLAGGED: 300 };
+  const rows = P.plan([{ symbol: 'FLAGGED', reason: 'drift-gt-15pct' }], '2026-09-12', { ageLimit: 2, listReports: () => Object.keys(ages), footerAgeOf: (s) => ages[s] });
+  const syn = rows.filter((r) => r.synthetic);
+  ok(syn.map((r) => r.symbol).join(',') === 'OLD1,OLD2' && syn.every((r) => r.reason === 'age-gt-90d' && r.bucket === 'LIGHT'), 'plan: แถวอายุสังเคราะห์ 2 ตัวแก่สุด (ไม่รวม FLAGGED ที่มี flag อยู่แล้ว · MID ไม่ถึง 90)', syn.map((r) => r.symbol).join(','));
+  ok(P.ageQueue('2026-09-12', { listReports: () => Object.keys(ages), footerAgeOf: (s) => ages[s] }).length === 6, 'ageQueue: นับทุกใบเกิน 90 วัน (6) ก่อนตัด');
+  ok(P.plan([], '2026-09-12', { ageLimit: 0, listReports: () => Object.keys(ages), footerAgeOf: (s) => ages[s] }).length === 0, 'plan: --no-age (ageLimit 0) ไม่เพิ่มแถว');
+  // ageQueue: แก่สุดก่อนเสมอ (sort desc) — ยืนยันลำดับตรง ไม่ใช่แค่จำนวน
+  const aqAll = P.ageQueue('2026-09-12', { listReports: () => Object.keys(ages), footerAgeOf: (s) => ages[s] });
+  ok(aqAll.map((r) => r.symbol).join(',') === 'FLAGGED,OLD1,OLD2,OLD4,OLD5,OLD3', 'ageQueue: เรียงแก่สุดก่อน (ไม่ตัดที่ ageLimit)', aqAll.map((r) => r.symbol).join(','));
+  // plan: ageLimit default (ไม่ใส่ opts.ageLimit) = 5 — มี 6 ใบเข้าเกณฑ์ ⇒ ต้องเห็น "ตัด" จริง (OLD3 อ่อนสุดหลุด)
+  const rowsDefault = P.plan([], '2026-09-12', { listReports: () => Object.keys(ages), footerAgeOf: (s) => ages[s] });
+  const synDefault = rowsDefault.filter((r) => r.synthetic).map((r) => r.symbol);
+  ok(synDefault.length === 5, 'plan: ไม่ใส่ ageLimit → default 5 (มี 6 ใบเข้าเกณฑ์ จึงตัดเหลือ 5)', synDefault.join(','));
+  ok(synDefault.join(',') === 'FLAGGED,OLD1,OLD2,OLD4,OLD5' && !synDefault.includes('OLD3'), 'plan: ตัวที่ถูกตัดคือใบอ่อนสุด (OLD3 95d)', synDefault.join(','));
 }
 
 // ── 7) prep (ส่วนบริสุทธิ์): parseVendor · snapshotDiff · assemblePrompt · hardStock ──
@@ -258,7 +295,10 @@ process.env.QUEUE_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'queue-'));   // s
   ok(Sh.commitMessage('AAPL', { mode: 'UPDATE-LIGHT' }, { mos: 3.9 }) === 'analyze: update AAPL — UPDATE-LIGHT (MOS +3.9%)', 'commitMessage: update + MOS');
   ok(Sh.commitMessage('NEWCO', { mode: 'NEW' }, { mos: -12 }) === 'analyze: add NEWCO — NEW (MOS −12%)', 'commitMessage: NEW = add · เครื่องหมายลบ');
   ok(Sh.commitMessage('X', {}, null) === 'analyze: update X — UPDATE', 'commitMessage: ไม่มี mos/mode → ค่าตั้งต้น');
-  ok(Sh.trailer('opus') === 'Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>' && Sh.trailer(undefined) === 'Co-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>', 'trailer: ตามโมเดล worker · ค่าตั้งต้น Sonnet 5 (CLAUDE.md §5)');
+  ok(Sh.trailer('opus') === 'Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>' && Sh.trailer('sonnet') === 'Co-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>', 'trailer: ตามโมเดล worker (CLAUDE.md §5)');
+  // ★ (Task 16 nits) model undefined/ไม่รู้จัก ต้อง throw เหมือนกัน — เดิมเงียบเป็น Sonnet (แก้แล้ว)
+  let undefThrew = null; try { Sh.trailer(undefined); } catch (e) { undefThrew = e.message; }
+  ok(/ไม่รู้จัก/.test(undefThrew || ''), 'trailer: model undefined (ยังไม่ได้ตั้ง) → throw ไม่เงียบเป็น Sonnet', undefThrew);
   ok(/analyze: update|analyze: add/.test(Sh.commitMessage('A', { mode: 'UPDATE' }, {})) && Sh.STOCK_FILES('A').includes('reports/A.html') && !Sh.STOCK_FILES('A').includes('-A'), 'STOCK_FILES: รายการไฟล์ที่ add ชัดเจน (ไม่ใช่ git add -A)');
 }
 // ── 10) dispatcher: usage เมื่อไม่มีคำสั่ง · exit 1 ──
@@ -310,6 +350,9 @@ process.env.QUEUE_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'queue-'));   // s
   const Sh3 = require('../tools/queue/ship.js');
   S3.update('REVIEWME', { postcheck: 'review' });   // ไม่มี bucket เลย — ก่อนแก้เคยขึ้นทั้ง "postcheck ต้องดู" และ "ไม่ใช้ agent/ข้าม" พร้อมกัน
   S3.update('GATEFAIL', { bucket: 'LIGHT', prePatchRejected: '2026-09-12' });   // pre-patch แล้ว gate ตก คืนไฟล์แล้ว — ก่อนแก้ตกไปอยู่ "ยังไม่เริ่ม" เหมือนรอ spawn worker
+  S3.update('FLIPONLY', { bucket: 'PREPATCH' });                                   // flip ในย่าน (ข้อ D) — ไม่มี worker ให้รอ และไม่ใช่ "ข้าม" ⇒ บรรทัดของตัวเอง
+  S3.update('FLIPDONE', { bucket: 'PREPATCH', prepatchShippedAt: '2026-09-12' });   // PREPATCH ที่ push แล้ว = จบงานของมัน ต้องนับใน X/Y
+  S3.update('FLIPFAIL', { bucket: 'PREPATCH', prePatchRejected: '2026-09-12' });    // PREPATCH ที่ gate ตก ต้องคงป้ายเหตุผลไว้ ไม่หายเข้าไปในบรรทัด PREPATCH
   const lines = [];
   const orig = console.log;
   console.log = (s) => lines.push(String(s));
@@ -317,12 +360,36 @@ process.env.QUEUE_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'queue-'));   // s
   const out = lines.join('\n');
   ok(!/\[undefined\]/.test(out), 'status: ไม่มี [undefined] หลุดมาในบรรทัดไหน', out);
   ok(lines.filter((l) => l.includes('REVIEWME')).length === 1, 'status: postcheck review ไม่มี bucket → ขึ้นบรรทัดเดียว (bucket ไม่ซ้อน)', out);
-  ok(lines.length === 8, 'status: พิมพ์ 8 บรรทัด (เพิ่มบรรทัด "pre-patch push แล้ว")', String(lines.length));
-  ok(/^pre-patch push แล้ว/.test(lines[7]), 'status: บรรทัดสุดท้าย = pre-patch push แล้ว', lines[7]);
+  ok(lines.length === 9, 'status: พิมพ์ 9 บรรทัด (เพิ่มบรรทัด "pre-patch อย่างเดียว" — ข้อ D)', String(lines.length));
+  ok(/^pre-patch อย่างเดียว \(ไม่ส่ง LLM\)/.test(lines[7]) && /^pre-patch push แล้ว/.test(lines[8]), 'status: บรรทัด PREPATCH อยู่ก่อนบรรทัดสุดท้าย (pre-patch push แล้ว)', lines.slice(7).join(' | '));
+  const flipLine = lines[7];
+  ok(/FLIPONLY/.test(flipLine) && /FLIPDONE✓/.test(flipLine) && !/FLIPFAIL/.test(flipLine), 'status: PREPATCH ขึ้นบรรทัดตัวเอง · push แล้วติด ✓ · gate ตกไม่อยู่บรรทัดนี้', flipLine);
+  ok(lines.filter((l) => l.includes('FLIPONLY')).length === 1, 'status: PREPATCH ไม่ซ้อนกับ "ยังไม่เริ่ม"/"ไม่ใช้ agent/ข้าม"', out);
+  ok(/· 1\/\d+$/.test(lines[0]), 'status: ตัวนับ X/Y นับ PREPATCH ที่ push แล้วด้วย (FLIPDONE)', lines[0]);
   ok(lines.filter((l) => l.includes('GATEFAIL')).length === 1, 'status: prePatchRejected ขึ้นบรรทัดเดียว (ไม่ซ้อนกับ "ยังไม่เริ่ม")', out);
   const otherLine = lines.find((l) => /^ไม่ใช้ agent\/ข้าม/.test(l)) || '';
   ok(/GATEFAIL\[gate ตกหลัง pre-patch\]/.test(otherLine), 'status: prePatchRejected อยู่ใต้ "ไม่ใช้ agent/ข้าม" พร้อมป้ายเหตุผล', otherLine);
+  ok(/FLIPFAIL\[gate ตกหลัง pre-patch\]/.test(otherLine) && lines.filter((l) => l.includes('FLIPFAIL')).length === 1, 'status: PREPATCH ที่ gate ตกหลัง pre-patch คงป้ายเหตุผลใต้ "ไม่ใช้ agent/ข้าม" บรรทัดเดียว', otherLine);
   ok(!(lines.find((l) => /^ยังไม่เริ่ม/.test(l)) || '').includes('GATEFAIL'), 'status: ใบที่ gate ตกหลัง pre-patch ไม่ถูกนับว่ารอ spawn worker', lines.find((l) => /^ยังไม่เริ่ม/.test(l)));
+}
+
+// ── 12c) ship: `ship --prepatch` ต้องปิด issue เองเมื่อรอบนั้นไม่มีแถวต้องส่ง LLM (ข้อ D — flip ล้วนไม่มี ship <SYM> ตามมา) ──
+//   ยิงเฉพาะส่วนตัดสินใจ: shipPrepatch() เต็มใบเรียก npm run build / preserve-dates / npm run verify / git push จึงรันในเทสไม่ได้
+{
+  const Sh = require('../tools/queue/ship.js');
+  let n = 0;
+  const spy = () => { n++; };
+  const quiet = (fn) => { const orig = console.log; console.log = () => {}; try { return fn(); } finally { console.log = orig; } };
+  const onlyFlip = quiet(() => Sh.closeIssueIfNoLlmRows({ A: { bucket: 'PREPATCH' }, B: { bucket: 'PREPATCH', prepatchShippedAt: '2026-09-12' } }, spy));
+  ok(onlyFlip === true && n === 1, 'closeIssueIfNoLlmRows: รอบที่มีแต่ PREPATCH → ปิด issue ตรงนี้', String(n));
+  const withLight = quiet(() => Sh.closeIssueIfNoLlmRows({ A: { bucket: 'PREPATCH' }, C: { bucket: 'LIGHT' } }, spy));
+  ok(withLight === false && n === 1, 'closeIssueIfNoLlmRows: ยังมี LIGHT ที่ยังไม่ ship → ไม่ปิด (ปิดตอน ship <SYM> ตัวสุดท้าย)', String(n));
+  const doneOrSkipped = quiet(() => Sh.closeIssueIfNoLlmRows({ C: { bucket: 'LIGHT', shippedAt: '2026-09-12' }, D: { bucket: 'FULL', skip: 'สด ≤7 วัน (footer)' }, E: { bucket: 'DELIST' } }, spy));
+  ok(doneOrSkipped === true && n === 2, 'closeIssueIfNoLlmRows: LIGHT ที่ ship แล้ว · FULL ที่ข้าม · DELIST ไม่นับเป็นงานค้าง → ปิด', String(n));
+  ok(quiet(() => Sh.closeIssueIfNoLlmRows({}, spy)) === true && n === 3, 'closeIssueIfNoLlmRows: state ว่าง → ปิด', String(n));
+  // C1 (carried จาก Task 13 review): PREPATCH ที่ gate ตกหลัง pre-patch (prePatchRejected) ยังต้องแก้เอง — ห้ามปิด issue ทั้งที่แถวนี้ยังค้าง
+  const flipGateFail = quiet(() => Sh.closeIssueIfNoLlmRows({ A: { bucket: 'PREPATCH', prePatchRejected: '2026-09-12' } }, spy));
+  ok(flipGateFail === false && n === 3, 'closeIssueIfNoLlmRows: PREPATCH row ที่ prePatchRejected → นับเป็นงานค้าง ไม่ปิด issue (C1)', String(n));
 }
 
 // ── 12b) ship: commitArgs — commit ต้องจำกัดด้วย pathspec ไม่งั้น deletion ที่ stage ไว้ (git rm ตอน DELIST) หลุดเข้า commit (re-review) ──
@@ -409,7 +476,188 @@ process.env.QUEUE_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'queue-'));   // s
   ok(/ห้ามรัน update-prices ซ้ำ/.test(patched) && !/intraday/.test(patched), 'extraBlock: patch แล้ว → ห้ามรันซ้ำ ไม่ต้องพูดถึงตลาด', patched.split('\n')[1]);
 }
 
+// ── 17) prep: checkNotPrepatch (ส่วนบริสุทธิ์) — C2 (carried จาก Task 13 review): ปฏิเสธ prep <SYM> บนแถว PREPATCH
+//   ก่อนยิง network ใด ๆ (flip ในย่าน ไม่ต้องส่ง LLM — ship --prepatch จบแล้ว) ──
+{
+  const Pp = require('../tools/queue/prep.js');
+  let threw = null;
+  try { Pp.checkNotPrepatch('FLIP1', { bucket: 'PREPATCH' }); } catch (e) { threw = e; }
+  ok(threw && /FLIP1 เป็น PREPATCH/.test(threw.message) && /ship --prepatch/.test(threw.message), 'checkNotPrepatch: แถว PREPATCH → throw ข้อความชัดเจน (C2)', threw && threw.message);
+  let noThrow = true;
+  try { Pp.checkNotPrepatch('LIGHT1', { bucket: 'LIGHT' }); } catch (e) { noThrow = false; }
+  ok(noThrow, 'checkNotPrepatch: แถว LIGHT ไม่ถูกปฏิเสธ');
+  let noThrowEmpty = true;
+  try { Pp.checkNotPrepatch('NEWCO', {}); } catch (e) { noThrowEmpty = false; }
+  ok(noThrowEmpty, 'checkNotPrepatch: ไม่มี record เลย (หุ้นใหม่) → ไม่ถูกปฏิเสธ');
+}
+
+// ── 18) state: .queue อยู่ที่ checkout หลัก (open-item #22 — worktree ใหม่ทุก session ทำให้รอบหาย) ──
+{
+  const S = require('../tools/queue/state.js');
+  ok(S.resolveQueueDir({ QUEUE_DIR: '/x/q' }, '/a/b/.git') === '/x/q', 'resolveQueueDir: QUEUE_DIR ชนะ');
+  ok(S.resolveQueueDir({}, '/a/b/.git') === path.join('/a/b', '.queue'), 'resolveQueueDir: git-common-dir absolute → <หลัก>/.queue');
+  ok(S.resolveQueueDir({}, '.git') === path.join(ROOT, '.queue'), 'resolveQueueDir: checkout หลักเอง (.git relative) → ROOT/.queue');
+  ok(S.resolveQueueDir({}, '') === path.join(ROOT, '.queue') && S.resolveQueueDir({}, null) === path.join(ROOT, '.queue'), 'resolveQueueDir: ไม่มี git → ROOT/.queue');
+}
+
+// ── 19) CLI nits (ledger ระยะ 0): --flag=value · --tags ต้องมีค่า · trailer ไม่เดา ──
+{
+  const sh = require('../tools/queue/sh.js');
+  const r1 = sh.run('node', ['tools/queue.js', 'prep']);                     // ไม่มี SYM → usage
+  ok(r1.code !== 0 && /ใช้: npm run queue/.test(r1.out + r1.err), 'queue.js: prep ไม่มี SYM → usage');
+  const r2 = sh.run('node', ['tools/queue.js', 'ship', 'AAPL', '--tags']);
+  ok(r2.code !== 0 && /--tags ต้องมีค่า/.test(r2.out + r2.err), 'queue.js: --tags ไม่มีค่า → error ชัด (ไม่ใช่ garbage)');
+  const r3 = sh.run('node', ['tools/queue.js', 'ship', 'AAPL', '--tags', '--force']);
+  ok(r3.code !== 0 && /--tags ต้องมีค่า/.test(r3.out + r3.err), 'queue.js: --tags ตามด้วย flag → error');
+  const Q = require('../tools/queue/ship.js');
+  let threw = null; try { Q.trailer('haiku'); } catch (e) { threw = e.message; }
+  ok(/ไม่รู้จัก/.test(threw || ''), 'trailer: โมเดลไม่รู้จัก → throw (ไม่เงียบเป็น Sonnet)');
+  ok(/Sonnet 5/.test(Q.trailer('sonnet')) && /Opus 5/.test(Q.trailer('opus')), 'trailer: sonnet/opus ถูก');
+
+  const A = require('../tools/queue/args.js');
+  const p1 = A.parseArgs(['prep', 'AAPL', '--mode=UPDATE', '--tags', 'a b']);
+  ok(p1.val('--mode') === 'UPDATE', 'parseArgs: --flag=value รองรับ');
+  ok(p1.val('--tags') === 'a b', 'parseArgs: --flag value (เว้นวรรค 2 ตัว) รองรับ');
+  ok(p1.cmd === 'prep' && p1.sym === 'AAPL', 'parseArgs: cmd/sym ถูก');
+  let valThrew = null; try { A.parseArgs(['ship', 'AAPL', '--tags']).val('--tags'); } catch (e) { valThrew = e.message; }
+  ok(/--tags ต้องมีค่า/.test(valThrew || ''), 'parseArgs: val() ไม่มีค่าตามหลัง → throw');
+  let valThrew2 = null; try { A.parseArgs(['ship', 'AAPL', '--tags', '--force']).val('--tags'); } catch (e) { valThrew2 = e.message; }
+  ok(/--tags ต้องมีค่า/.test(valThrew2 || ''), 'parseArgs: val() ตามด้วย flag อื่น → throw');
+}
+
+// ── 19b) dispatcher: --age N / --age=N / --no-age ยังใช้ได้หลังย้ายไป args.js (Task 14 ไม่พัง)
+//   ทดสอบ parseArgs ตรง ๆ (ไม่ผ่าน CLI จริง) — `preflight` ยิง git pull เสมอ ทดสอบผ่าน sh.run ไม่ได้ (ดู brief Task 16) ──
+{
+  const A = require('../tools/queue/args.js');
+  let a = A.parseArgs(['preflight', '--age', '5']);
+  ok((a.val('--age') != null ? +a.val('--age') : null) === 5, 'parseArgs: --age N (เว้นวรรค)');
+  a = A.parseArgs(['preflight', '--age=5']);
+  ok((a.val('--age') != null ? +a.val('--age') : null) === 5, 'parseArgs: --age=5 (เท่ากับ)');
+  a = A.parseArgs(['preflight', '--no-age']);
+  ok(a.has('--no-age') === true, 'parseArgs: --no-age (boolean flag)');
+  a = A.parseArgs(['preflight', '--allow-dirty', '--no-patch']);
+  ok(a.has('--allow-dirty') === true && a.has('--no-patch') === true, 'parseArgs: boolean flag หลายตัวพร้อมกัน (--allow-dirty · --no-patch)');
+}
+
+// ── 19c) preflight: earningsAfterOf จากปฏิทินงบ (Task 17 · WS6 ข้อ 2)
+//   ★ ส่วนบริสุทธิ์ — ฉีดปฏิทิน + ตัวอ่านรายงานเอง (ห้ามแตะ reports/ จริงตามหัวไฟล์นี้) ──
+{
+  const P = require('../tools/queue/preflight.js');
+  // ★ ใช้ชื่อที่ไม่มีใน reports/ (แบบเดียวกับบล็อก 6b) — plan() อ่าน stock-meta จากดิสก์ถ้าไฟล์มีจริง
+  const cal = { symbols: { XAAA: { last: '2026-07-30', next: '2026-10-29' }, XBBB: { last: '2026-07-30', next: null }, XCCC: { last: null, next: null } } };
+  const html = {
+    XAAA: '<footer>ข้อมูล ณ 1 ก.ค. 2569</footer>',      // วิเคราะห์ก่อนงบออก
+    XBBB: '<footer>ข้อมูล ณ 5 ส.ค. 2569</footer>',      // วิเคราะห์หลังงบออก
+    XCCC: '<footer>ข้อมูล ณ 1 ม.ค. 2569</footer>',
+    NOFOOT: '<footer>ไม่มีวันที่ในฟุตเตอร์</footer>',
+  };
+  const f = P.earningsAfterOfWith(cal, (s) => html[s] || null);
+  ok(f('XAAA') === true, 'earningsAfterOf: footer เก่ากว่าวันงบล่าสุด → true (ยก flip เป็น LIGHT)');
+  ok(f('XBBB') === false, 'earningsAfterOf: footer ใหม่กว่าวันงบล่าสุด → false');
+  ok(f('XCCC') === null, 'earningsAfterOf: ยังไม่มี last (ปฏิทินรอบแรก) → null = นโยบายอายุอย่างเดียว');
+  ok(f('NOPE') === null, 'earningsAfterOf: ไม่มีใน symbols → null');
+  ok(P.earningsAfterOfWith({ symbols: {} }, () => null)('XAAA') === null && P.earningsAfterOfWith(null, () => null)('XAAA') === null, 'earningsAfterOf: ไม่มีปฏิทินเลย → null ทุกตัว (ระบบเดินได้เหมือนเดิม)');
+  ok(P.earningsAfterOfWith(cal, () => null)('XAAA') === null, 'earningsAfterOf: อ่านรายงานไม่ได้ → null ไม่ใช่ false');
+  ok(P.earningsAfterOfWith({ symbols: { NOFOOT: { last: '2026-07-30' } } }, (s) => html[s])('NOFOOT') === null, 'earningsAfterOf: footer ไม่มีวันที่ → null');
+  // ต่อกับ triage จริง: flip + งบออกหลังวิเคราะห์ → LIGHT/earnings (plan ส่งตัวนี้เข้า triage ตรง ๆ)
+  const rows = P.plan([{ symbol: 'XAAA', reason: 'mos-sign-flip' }], '2026-09-12',
+    { ageLimit: 0, footerAgeOf: () => 3, earningsAfterOf: f });
+  ok(rows[0].bucket === 'LIGHT' && rows[0].escalated === 'earnings', 'plan: ส่ง earningsAfterOf เข้า triage แล้ว flip ถูกยกเป็น LIGHT');
+}
+
+// ── 19d) ship: model ต้องมีก่อนลงมือ (C1 · carried จากรีวิว Task 15/16)
+//   เดิม trailer(rec.model) ระเบิดท้ายสุด — หลัง verify (นาที ๆ) + preserve-dates + build ⇒ เสียเวลาฟรีแล้วค่อยบอก ──
+{
+  const Q = require('../tools/queue/ship.js');
+  ok(Q.resolveModel('AAPL', { model: 'sonnet' }) === 'sonnet', 'resolveModel: อ่านจาก state');
+  ok(Q.resolveModel('AAPL', { model: 'sonnet' }, 'opus') === 'opus', 'resolveModel: --model ชนะค่าใน state');
+  ok(Q.resolveModel('AAPL', {}, 'opus') === 'opus', 'resolveModel: ไม่มีใน state แต่ใส่ --model → ผ่าน');
+  for (const [rec, over, label] of [[{}, null, 'ไม่มี model ใน state'], [{ model: 'haiku' }, null, 'model ที่ไม่รู้จัก'], [{ model: 'sonnet' }, 'haiku', '--model ที่ไม่รู้จัก']]) {
+    let threw = null;
+    try { Q.resolveModel('AAPL', rec, over); } catch (e) { threw = e.message; }
+    ok(/^AAPL: ไม่มี model ใน state/.test(threw || '') && /npm run queue -- prep AAPL/.test(threw || '') && /--model sonnet\|opus/.test(threw || ''), `resolveModel: ${label} → ปฏิเสธพร้อมวิธีแก้`, String(threw));
+  }
+}
+
+// ── 19e) parseArgs: --flag= (ค่าว่าง) ต้องล้มเหมือนไม่ใส่ค่า (C2 · carried) ──
+{
+  const A = require('../tools/queue/args.js');
+  for (const argv of [['ship', 'AAPL', '--tags='], ['prep', 'AAPL', '--mode=']]) {
+    const flag = argv[2].slice(0, -1);
+    let threw = null;
+    try { A.parseArgs(argv).val(flag); } catch (e) { threw = e.message; }
+    ok(threw === `${flag} ต้องมีค่า`, `parseArgs: ${flag}= (ค่าว่าง) → error เดียวกับไม่ใส่ค่า`, String(threw));
+  }
+  ok(A.parseArgs(['ship', 'AAPL', '--message= ']).val('--message') === ' ', 'parseArgs: ค่าที่เป็นช่องว่างจริง ๆ ยังผ่าน (ไม่ trim ให้)');
+  // boolean flag ที่พิมพ์มาพร้อมค่า: เดิมแตกเป็น ['--force','true'] แล้ว 'true' กลายเป็น positional ตัวแรก ⇒ ship หุ้นชื่อ "TRUE"
+  let boolThrew = null, parsedBool = null;
+  try { parsedBool = A.parseArgs(['ship', '--force=true', 'AAPL']); } catch (e) { boolThrew = e.message; }
+  ok(boolThrew === '--force ไม่รับค่า' && parsedBool === null, "parseArgs: ship --force=true AAPL → throw '--force ไม่รับค่า' (ไม่ใช่ sym = 'TRUE')", String(boolThrew) + ' · sym=' + (parsedBool && parsedBool.sym));
+  const okForce = A.parseArgs(['ship', 'AAPL', '--force']);
+  ok(okForce.has('--force') === true && okForce.sym === 'AAPL', 'parseArgs: --force แบบ boolean ปกติยังใช้ได้เหมือนเดิม', okForce.sym);
+}
+
+// ── 19f) รอบของคิว (Task 21) — state อยู่ข้ามรอบ (Task 15) ⇒ ฟิลด์ "ของรอบ" ต้องไม่ข้ามรอบไปด้วย ──
+//   นิยามรอบใหม่อยู่ในหัว roundStart() ของ tools/queue/preflight.js
+{
+  const P = require('../tools/queue/preflight.js');
+  const Sh = require('../tools/queue/ship.js');
+
+  // roundStart — flag จริงที่ใหม่กว่า startedAt เดิม = รอบใหม่ · เอา flaggedAt ที่เก่าสุดในกลุ่มนั้น
+  ok(P.roundStart([{ flaggedAt: '2026-09-12' }, { flaggedAt: '2026-09-11' }], '2026-09-05', '2026-09-12') === '2026-09-11', 'roundStart: flag ใหม่หลายวัน → startedAt = วันเก่าสุดในกลุ่มที่ใหม่กว่าเดิม', String(P.roundStart([{ flaggedAt: '2026-09-12' }, { flaggedAt: '2026-09-11' }], '2026-09-05', '2026-09-12')));
+  ok(P.roundStart([{ flaggedAt: '2026-09-01' }, { flaggedAt: '2026-09-05' }], '2026-09-05', '2026-09-12') === '2026-09-05', 'roundStart: ไม่มี flag ใหม่กว่า startedAt → รอบเดิม');
+  ok(P.roundStart([{ flaggedAt: '2026-09-12', synthetic: true }], '2026-09-05', '2026-09-12') === '2026-09-05', 'roundStart: แถวอายุ (synthetic) ไม่ใช่ flag → ไม่เปิดรอบใหม่ (ไม่งั้นรอบรีเซ็ตเองทุกวัน)');
+  ok(P.roundStart([], null, '2026-09-12') === '2026-09-12', 'roundStart: ยังไม่เคยมีรอบและไม่มี flag → วันนี้');
+
+  // (i) LIGHT ที่ ship ไปแล้วรอบก่อน แล้วโดน flag ใหม่ → กลับมาเป็นงานค้าง (ไม่งั้น ship --prepatch ปิด issue · status นับว่า push แล้ว · ship <SYM> ผ่าน guard)
+  const shipped = { reason: 'drift-gt-15pct', bucket: 'LIGHT', flaggedAt: '2026-09-01', oldPrice: 10, currency: 'USD', prePatched: '2026-09-01', prepAt: '2026-09-01', mode: 'UPDATE-LIGHT', model: 'sonnet', postcheck: 'pass', postcheckAt: '2026-09-02', shippedAt: '2026-09-02' };
+  const again = P.upsertRow(shipped, { symbol: 'X', reason: 'drift-gt-15pct', bucket: 'LIGHT', flaggedAt: '2026-09-12', oldPrice: 12, currency: 'USD', footerAge: 40, skip: null });
+  ok(!again.shippedAt && !again.postcheck && !again.postcheckAt && !again.prepAt && !again.mode && !again.model && !again.prePatched && !again.prepatchShippedAt && !again.prePatchRejected, 'upsertRow: flag ใหม่บนแถวที่ ship แล้ว → ล้างฟิลด์ของรอบก่อนครบชุด (กลับเป็นงานค้าง)', JSON.stringify(again));
+  ok(again.flaggedAt === '2026-09-12' && again.oldPrice === 12 && again.bucket === 'LIGHT' && again.reason === 'drift-gt-15pct', 'upsertRow: ค่าที่ preflight เป็นเจ้าของถูกเขียนทับด้วยของรอบใหม่', JSON.stringify(again));
+
+  // flag เดิม = preflight รันซ้ำในรอบเดียวกัน → ห้ามล้าง (ไม่งั้น ship <SYM> ตายที่ guard postcheck/resolveModel)
+  const inflight = { reason: 'drift-gt-15pct', bucket: 'LIGHT', flaggedAt: '2026-09-12', prepAt: '2026-09-12', mode: 'UPDATE-LIGHT', model: 'sonnet', postcheck: 'pass' };
+  const same = P.upsertRow(inflight, { symbol: 'X', reason: 'drift-gt-15pct', bucket: 'LIGHT', flaggedAt: '2026-09-12', oldPrice: 10, currency: 'USD', footerAge: 40, skip: null });
+  ok(same.postcheck === 'pass' && same.model === 'sonnet' && same.prepAt === '2026-09-12', 'upsertRow: flag เดิม (รัน preflight ซ้ำในรอบเดียวกัน) → คงงานที่ทำไปแล้ว', JSON.stringify(same));
+  const synSame = P.upsertRow({ reason: 'age-gt-90d', bucket: 'LIGHT', flaggedAt: '2026-09-12', prepAt: '2026-09-12', model: 'sonnet' }, { symbol: 'A', reason: 'age-gt-90d', synthetic: true, bucket: 'LIGHT', flaggedAt: '2026-09-12', oldPrice: null, currency: null, footerAge: 200, skip: null });
+  ok(synSame.prepAt === '2026-09-12' && synSame.model === 'sonnet', 'upsertRow: แถวอายุของวันเดียวกัน → ไม่ล้าง prepAt/model', JSON.stringify(synSame));
+  const synNew = P.upsertRow({ reason: 'age-gt-90d', bucket: 'LIGHT', flaggedAt: '2026-09-11', prepAt: '2026-09-11', model: 'sonnet' }, { symbol: 'A', reason: 'age-gt-90d', synthetic: true, bucket: 'LIGHT', flaggedAt: '2026-09-12', oldPrice: null, currency: null, footerAge: 200, skip: null });
+  ok(!synNew.prepAt && !synNew.model, 'upsertRow: แถวอายุของวันใหม่ → ล้างของรอบก่อน', JSON.stringify(synNew));
+  // ship ไปแล้วแต่ flag เดิมยังอยู่ใน price-flags.json (cron ยังไม่รันใหม่) — preflight ซ้ำในรอบเดิมห้ามล้าง shippedAt ไม่งั้นตัวนับ X/Y ถอยหลัง
+  const shippedSameRound = P.upsertRow({ reason: 'drift-gt-15pct', bucket: 'LIGHT', flaggedAt: '2026-09-12', model: 'sonnet', postcheck: 'pass', shippedAt: '2026-09-12' }, { symbol: 'X', reason: 'drift-gt-15pct', bucket: 'LIGHT', flaggedAt: '2026-09-12', oldPrice: 10, currency: 'USD', footerAge: 0, skip: 'สด ≤7 วัน (footer)' });
+  ok(shippedSameRound.shippedAt === '2026-09-12' && shippedSameRound.model === 'sonnet', 'upsertRow: ship แล้วแต่ flag เดิม (รอบเดียวกัน) → คง shippedAt ไว้', JSON.stringify(shippedSameRound));
+
+  // (ii) prePatchRejected ของรอบก่อน — pre-patch รอบนี้ผ่าน gate ต้องถูกลบ ไม่ใช่ค้างบล็อกการปิด issue ตลอดไป
+  const st = { OKSYM: { bucket: 'LIGHT', prePatchRejected: '2026-09-01' }, BADSYM: { bucket: 'LIGHT' } };
+  P.applyGateResult(st, ['OKSYM', 'BADSYM'], ['BADSYM'], '2026-09-12');
+  ok(st.OKSYM.prePatchRejected === undefined && st.OKSYM.prePatched === '2026-09-12', 'applyGateResult: ผ่าน gate → ประทับ prePatched + ล้าง prePatchRejected ของรอบก่อน', JSON.stringify(st.OKSYM));
+  ok(st.BADSYM.prePatchRejected === '2026-09-12' && !st.BADSYM.prePatched, 'applyGateResult: ตก gate → ประทับ prePatchRejected อย่างเดียว', JSON.stringify(st.BADSYM));
+
+  // (iii) closeIssueIfNoLlmRows มองเฉพาะแถวของรอบนี้
+  let n = 0;
+  const spy = () => { n++; };
+  const quiet = (fn) => { const orig = console.log; console.log = () => {}; try { return fn(); } finally { console.log = orig; } };
+  const oldRound = quiet(() => Sh.closeIssueIfNoLlmRows({ OLDLIGHT: { bucket: 'LIGHT', flaggedAt: '2026-09-01' }, FLIP: { bucket: 'PREPATCH', flaggedAt: '2026-09-12' } }, spy, '2026-09-10'));
+  ok(oldRound === true && n === 1, 'closeIssueIfNoLlmRows: LIGHT ค้างจากรอบก่อน (flaggedAt < startedAt) ไม่บล็อก issue ของรอบนี้', String(n));
+  const thisRound = quiet(() => Sh.closeIssueIfNoLlmRows({ NEWLIGHT: { bucket: 'LIGHT', flaggedAt: '2026-09-12' } }, spy, '2026-09-10'));
+  ok(thisRound === false && n === 1, 'closeIssueIfNoLlmRows: LIGHT ของรอบนี้ยังบล็อกตามเดิม', String(n));
+  const noStart = quiet(() => Sh.closeIssueIfNoLlmRows({ OLDLIGHT: { bucket: 'LIGHT', flaggedAt: '2026-09-01' } }, spy, null));
+  ok(noStart === false && n === 1, 'closeIssueIfNoLlmRows: ไม่รู้ startedAt (state เก่า/เทส) → นับทุกแถวเหมือนเดิม', String(n));
+  const S4 = require('../tools/queue/state.js');
+  ok(S4.inRound({ flaggedAt: '2026-09-01' }, '2026-09-10') === false && S4.inRound({ flaggedAt: '2026-09-12' }, '2026-09-10') === true && S4.inRound({}, '2026-09-10') === true, 'inRound: เทียบ flaggedAt กับ startedAt · แถวไม่มี flaggedAt = นับด้วยเสมอ');
+}
+
+// ── 20) ปฏิทินงบ (Task 17 · WS6 ข้อ 2) — เทส offline อยู่ไฟล์แยก คืน Promise ⇒ tally ต้องรอก่อนนับ ──
+//   require แล้ว throw ตั้งแต่ sync (ยังไม่มีไฟล์/ไวยากรณ์พัง) ก็นับเป็น fail ไม่ใช่ปล่อยให้ทั้งชุดระเบิดเงียบ
+let pending = null;
+try { pending = require('./earnings-calendar-test.js')(ok); }
+catch (e) { nFail++; console.error('✗ earnings-calendar-test ระเบิด (sync) — ' + e.message); }
+
 // ─────────────────────────── (Task 10–14 แทรกเทสเหนือบรรทัดนี้) ───────────────────────────
-console.log(`queue-test: ${nOK}/${nOK + nFail} ผ่าน`);
-if (nFail) { console.log('❌ runbook มีบั๊ก'); process.exit(1); }
-process.exit(0);
+Promise.resolve(pending)
+  .catch((e) => { nFail++; console.error('✗ earnings-calendar-test ระเบิด (async) — ' + (e && e.message)); })
+  .then(() => {
+    console.log(`queue-test: ${nOK}/${nOK + nFail} ผ่าน`);
+    if (nFail) { console.log('❌ runbook มีบั๊ก'); process.exit(1); }
+    process.exit(0);
+  });

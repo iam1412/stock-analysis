@@ -176,9 +176,10 @@ function epsBasesOf(text) {
     .map((x) => parseFloat(x[1])).filter((v) => v > 0 && isFinite(v));
 }
 
-// ── ช่องสรุป "ส่วนต่างจากราคา" (vcell หมวด 8) — **อ่านอย่างเดียว** ──
-// ตัวเขียน (summaryPlan + patchDerived#11) มาระยะ 1 ส่วน C — ที่นี่คือตัวอ่านที่ field-manifest (f17/f18) ห่อ
-// at/len เก็บไว้ตั้งแต่ตอนนี้ เพื่อให้ตัวเขียนใช้ตำแหน่งเดียวกัน (กัน "อ่านที่หนึ่ง เขียนอีกที่หนึ่ง")
+// ── ช่องสรุป "ส่วนต่างจากราคา" (vcell หมวด 8) — ตัวอ่าน + ตัวเขียน (ระยะ 1 ข้อ D) ──
+// `readSummaryCell` คือตัวอ่านที่ field-manifest (f17/f18) ห่อ · at/len ให้ตัวเขียนใช้ตำแหน่งเดียวกัน
+// (กัน "อ่านที่หนึ่ง เขียนอีกที่หนึ่ง") — ★ at/len เป็น offset ของ **สตริงที่ส่งเข้ามา** ⇒ ตัวเขียนต้อง
+// เรียก summaryPlan บนสตริงเดียวกับที่มันจะ splice
 const SUMMARY_RE = /(<div class="k">ส่วนต่างจากราคา<\/div>\s*<div class="v"[^>]*>)([\s\S]*?)(<\/div>)/;
 function readSummaryCell(html) {
   const m = String(html).match(SUMMARY_RE);
@@ -186,6 +187,44 @@ function readSummaryCell(html) {
   const text = clean(m[2]);
   const pm = norm(text).match(/([+\-]?)\s*([0-9]+(?:\.[0-9]+)?)\s*%/);
   return { at: m.index + m[1].length, len: m[2].length, raw: m[2], text, shown: pm ? parseFloat(pm[1] + pm[2]) : null };
+}
+
+/** รูป MOS แบบเดียวกับ .big ของ header (เดิมอยู่ใน update-prices.js — ย้ายมาเป็นเจ้าของเดียว · cron ใช้เขียน .big) */
+const fmtMos = (mos) => (mos < 0 ? '−' : '+') + (Math.abs(mos) >= 2 ? Math.abs(mos).toFixed(0) : Math.abs(mos).toFixed(1)) + '%';
+/** regex เดียวกับที่ cron ใช้ทั้ง need() และ replace ของ .big — ย้ายมาที่นี่แล้วให้ update-prices import (เจ้าของเดียว) */
+const MOS_BIG_RE = /<div class="big">\s*([+\-−–]?)\s*([\d.]+)\s*%\s*<\/div>/;
+/** อ่าน .big ตามที่พิมพ์ — num ไม่ปัดใหม่ · sign normalize เป็น +/− · null = ไม่มี .big หรืออ่านตัวเลขไม่ออก */
+function readMosBig(html) {
+  const m = String(html).match(MOS_BIG_RE);
+  if (!m) return null;
+  const sign = /[\-−–]/.test(m[1]) ? '−' : '+';
+  const num = m[2].replace(/^\.+|\.+$/g, '');
+  if (!/^\d+(?:\.\d+)?$/.test(num)) return null;
+  return { sign, num, value: (sign === '−' ? -1 : 1) * parseFloat(num) };
+}
+/** คลังคำคงที่ของช่องสรุป — เทียบหลัง `norm` (− ถูกแปลงเป็น - แล้ว) · ช่องว่างก่อน % = นอกคลังคำ */
+const SUMMARY_CANON_RE = /^MOS ~ ([+\-])(\d+(?:\.\d+)?)%$/;
+/**
+ * ช่องสรุป "ส่วนต่างจากราคา" — ระยะ 1 ข้อ D: cron เป็นเจ้าของทั้งช่อง
+ * เดิม cron patch เฉพาะ "ตัวเลข" แบบมีเงื่อนไข แล้วเว้นเมื่อคำบอกทิศขัดกับ MOS ใหม่ ⇒ ช่องค้างถาวรในใบพวกนั้น
+ * (BBL "+2.1% (เกือบเต็มมูลค่า)" ไม่เคยถูก patch เลย — open-items #13) และ W06 ต้องผ่อนเกณฑ์ด้วย dead-band
+ * ตอนนี้คลังคำคงที่ = "MOS ~ ±X%" เท่านั้น · ตัวตรวจ (W06) กับตัวเขียน (patchDerived#11) ถามฟังก์ชันนี้ตัวเดียว
+ * ★ X = ตัวเลขของ .big **ตามที่พิมพ์** ไม่คำนวณจาก FV — สำเนา FV ต่างกันได้ ≤1% ตาม E30/E15 จึงอาจปัดคนละ
+ *   จำนวนเต็มกับ .big ("+12%" กับ "MOS ~ +13%") ทั้งที่ทั้งตัวตรวจและตัวซ่อมต่างพอใจ ⇒ อ่านจาก .big =
+ *   ช่อง == .big โดยโครงสร้าง ส่วนความถูกของ .big เทียบ FV เป็นงานของ E16
+ * ★ คำเชิงคุณภาพ (ถูก/แพง/เต็มมูลค่า) ย้ายไปอยู่ใน .txt ของกล่อง verdict ซึ่งเป็น prose ของคน — cron ไม่แตะ
+ * คืน null = ไม่มีช่อง หรือไม่มี .big → เงียบทั้งตัวตรวจและตัวเขียน
+ */
+function summaryPlan(html) {
+  const cell = readSummaryCell(html);
+  if (!cell) return null;
+  const big = readMosBig(html);
+  if (!big) return null;
+  const want = 'MOS ~ ' + big.sign + big.num + '%';
+  const m = norm(cell.text).match(SUMMARY_CANON_RE);
+  const canonical = !!m;
+  const ok = canonical && (m[1] === '-' ? '−' : '+') === big.sign && m[2] === big.num;   // เทียบ "ข้อความ" ไม่ใช่ "ค่า" — "+1%" ≠ .big "+0.8%"
+  return { at: cell.at, len: cell.len, text: cell.text, want, mos: big.value, canonical, ok };
 }
 
 /** การ์ด P/E ที่ "ตรวจได้" → { label, shown, eps[] } (ข้ามป้ายเชิงประวัติ / ค่าที่ไม่ใช่ตัวคูณ / ไม่ประกาศ EPS) */
@@ -905,6 +944,15 @@ function patchDerived(html, price, opts) {
       return cur + numS + open + wantSign + want + pctEnd;
     });
   }
+
+  // 11) ช่องสรุป "ส่วนต่างจากราคา" — cron เขียนทั้งช่องเป็นคลังคำคงที่ "MOS ~ ±X%" (ระยะ 1 ข้อ D)
+  //     ★ อ่าน .big จาก `out` ตัวเดียวกับที่จะ splice — patchReport เขียน .big เสร็จก่อนเรียก patchDerived
+  //       ⇒ พาสนี้เห็น .big ใหม่เสมอ · ไม่ใช้ `price` เลย (ช่องนี้ผูกกับ .big ไม่ใช่ราคา)
+  //     ★ แทนเฉพาะเนื้อใน (กลุ่ม 2 ของ SUMMARY_RE) ⇒ attribute ของ <div class="v" style=…> คงอยู่
+  {
+    const p = summaryPlan(out);
+    if (p && !p.ok) { out = out.slice(0, p.at) + p.want + out.slice(p.at + p.len); changes.push(`ช่องสรุป: "${p.text}" → "${p.want}"`); }
+  }
   return { html: out, changes };
 }
 
@@ -957,8 +1005,8 @@ module.exports = {
   PE_LABEL_SKIP, TGT_LABEL_STRICT, PCT_NOT_VS_PRICE, QUOTE_CONTEXT, MONEY_PCT_SRC, CARD_SRC,
   MCAP_LABEL, PS_LABEL, SCALES, scaleOf, parseAmount, parseShares, mcapCards, psCards, nearMcap,
   fmtLikeNum, cardRe, epsBasesOf, peCards, targetCells, basisFor, nearPE, patchDerived,
-  // ช่องสรุป "ส่วนต่างจากราคา" — อ่านอย่างเดียว (f17/f18 ของ field-manifest · ตัวเขียน = summaryPlan ระยะ 1 ส่วน C)
-  SUMMARY_RE, readSummaryCell,
+  // ช่องสรุป "ส่วนต่างจากราคา" — f17/f18 ของ field-manifest · W06 + ตัวเขียน patchDerived#11 (ระยะ 1 ข้อ D)
+  SUMMARY_RE, readSummaryCell, fmtMos, MOS_BIG_RE, readMosBig, SUMMARY_CANON_RE, summaryPlan,
   // หมวด 6 (ผลตอบแทนฉาก 3 ปี) — W17 + ตัวซ่อม
   TOL_RET_PP, TOL_RET_REL, TOL_PY_PP, SCN_TIGHT, SCN_VOTE_RATIO, CONV_PP,
   SCN_COL_OPEN, scenarioColumns, scenarioBlock, scenarioPlan, retTokens, retOff, pyOff, retWrite, retShown,

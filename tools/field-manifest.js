@@ -53,7 +53,7 @@ const FIELDS = [
   // ★ ต้องเป็น `findDiscPriceDate` (เจ้าของเดียวของ "วันที่ราคาในบล็อก .disc") ไม่ใช่ตัวสแกนหัวรายงาน —
   //   ตัวอ่านตัวนี้กับตัวเขียนของ cron เป็นตัวเดียวกันแล้ว (12 ก.ย. 69) ⇒ ที่นี่อ่านเจอ = ที่นั่นเขียนได้เสมอ
   //   (snapshot ของแหล่ง "(ราคา $79.39 · 2 ก.ค. 2569 …)" ไม่ใช่วันที่ราคา ⇒ คืน null โดยตั้งใจ)
-  F('f12', 'disclaimer "ราคา ณ"', { cadence: 'daily', owner: 'cron', gate: [], healer: 'patchReport', binding: 'pair', pair: { with: 'f10', how: 'date' }, required: false, extract: (h) => R(PD.findDiscPriceDate(disc(h))) }),  // census 12 ก.ย. 69: 47.8% <99% → optional
+  F('f12', 'disclaimer "ราคา ณ"', { cadence: 'daily', owner: 'cron', gate: [], healer: 'patchReport', binding: 'pair', pair: { with: 'f10', how: 'date' }, required: false, extract: (h) => R(PD.findDiscPriceDate(disc(h))) }),  // census 12 ก.ย. 69: 46.4% <99% → optional (421/908 ใบ)
   F('f13', 'footer "ข้อมูล ณ"', { cadence: 'write-once', owner: 'worker', gate: [], healer: null, binding: 'presence', required: false, extract: (h) => { const f = footerDate(h); return R(f && f.iso); } }),  // census 12 ก.ย. 69: 98.7% <99% → optional
   F('f14', 'pxIn value', { cadence: 'daily', owner: 'cron', gate: ['E23'], healer: 'patchReport', binding: 'cron', required: true, extract: (h, c) => R(c.pxInput) }),  // census 12 ก.ย. 69: 100.0%
   F('f15', 'MOS .big', { cadence: 'daily', owner: 'cron', gate: ['E16', 'E30'], healer: 'patchReport', binding: 'cron', required: true, extract: (h, c) => R(c.mosBig) }),  // census 12 ก.ย. 69: 100.0%
@@ -144,7 +144,17 @@ const moneyEq = (a, b) => a != null && b != null && (DV.fmtLikeNum(b, String(a))
 const isoOf = (v) => (v && typeof v === 'object' ? v.iso : v);
 const PAIR_HOW = {
   money: (v, w) => (moneyEq(v, w) ? null : `${v} ≠ ${w}`),
-  date: (v, w) => { const a = isoOf(v), b = isoOf(w); return a && b && a === b ? null : `${a} ≠ ${b}`; },
+  // f12 (และ f11 ในทางทฤษฎี) เป็น "วัตถุวันที่" ที่มี hasDay — เดือนล้วน (hasDay===false) ปักวันที่ 01 เสมอ (mk() ใน
+  // price-date.js) แต่ f10 (คู่เทียบ) พาวันรันจริงมาด้วย ⇒ เทียบ ISO เต็มจะขัดกันทุกวันยกเว้นวันที่ 1 ของเดือน
+  // (9 ใบ disclaimer เดือนล้วน "ราคา ณ ก.ค. 2569" — code-audit C1) ⇒ เดือนล้วนเทียบแค่ปี-เดือน (7 ตัวแรกของ iso)
+  // ทั้งสองฝั่ง ส่วนวันที่มีวัน (hasDay!==false) ยังเทียบ ISO เต็มเป๊ะเหมือนเดิม
+  date: (v, w) => {
+    const a = isoOf(v), b = isoOf(w);
+    if (!a || !b) return `${a} ≠ ${b}`;
+    const monthOnly = v && typeof v === 'object' && v.hasDay === false;
+    const ok = monthOnly ? a.slice(0, 7) === b.slice(0, 7) : a === b;
+    return ok ? null : `${a} ≠ ${b}`;
+  },
   contains: (v, w) => (Array.isArray(v) && w != null && v[0] <= w && w <= v[1] ? null : `ราคา ${w} อยู่นอกกรอบ ${v && v.join('–')} ที่พิมพ์ (กรอบค้าง — fix-on-touch)`),
   // ★ ต้อง anchor ที่กล่อง .fv-box เหมือน E20 เป๊ะ — คำว่า "กรอบ" มีในการ์ด metric ด้วย (กรอบ P/E, กรอบบน)
   //   วัด 12 ก.ย. 69: ไม่ anchor = ฟ้องปลอม 168 ใบ (AAPL: vcell 222–315 ไปเทียบกับ "กรอบ 24–37" ของ P/E) · anchor แล้วเหลือ 2

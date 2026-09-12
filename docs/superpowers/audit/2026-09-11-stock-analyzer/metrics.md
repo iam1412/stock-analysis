@@ -102,8 +102,9 @@ node tools/spotcheck.js $(node -e "console.log(require('fs').readdirSync('report
 ## 6. อายุการวิเคราะห์ (footer "ข้อมูล ณ")
 
 ```bash
-node docs/superpowers/audit/2026-09-11-stock-analyzer/measure-analysis-age.js
+node tools/analysis-age.js
 ```
+(ย้ายจาก `measure-analysis-age.js` ในโฟลเดอร์นี้ → เครื่องมือถาวร Task 14 — ใช้ `footerDate`/`ageDays` ของ `tools/queue/footer-date.js` แทน parser ของตัวเอง)
 | ช่วงอายุ | ใบ |
 |---|---|
 | ≤7 วัน | 43 |

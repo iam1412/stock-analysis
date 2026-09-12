@@ -102,7 +102,8 @@ const setDiffCell = (txt) => (h) => h.replace(/(ส่วนต่างจา�
 const addDays = (iso, d) => new Date(Date.parse(iso) + d * 86400000).toISOString().slice(0, 10);
 
 let n = 0, fails = 0;
-const ok = (cond, desc) => { n++; if (cond) console.log('  ✓ ' + desc); else { console.log('  ✗ ' + desc); fails++; } };
+// detail = ค่าที่วัดได้จริง ณ ตอนรัน — พิมพ์เฉพาะตอนตก (ผู้เรียกหลายสิบจุดส่งมาอยู่แล้ว แต่เดิมถูกทิ้งเงียบ)
+const ok = (cond, desc, detail) => { n++; if (cond) console.log('  ✓ ' + desc); else { console.log('  ✗ ' + desc + (detail == null ? '' : '  — ' + detail)); fails++; } };
 const errIds = (r) => new Set(r.errors.map((x) => x.id));
 const allIds = (r) => new Set([...r.errors, ...r.warnings].map((x) => x.id));
 // E-policy (ท้ายไฟล์): id ที่มีเคส convergence (mutate → check ยิง → healer → check เงียบ) ที่พิสูจน์แล้วในไฟล์นี้
@@ -129,9 +130,11 @@ ok(pristine.errors.length === 0, 'รายงานจริง (BBL) ผ่า
 
 // 2) จงใจทำพัง — check ที่เกี่ยวข้องต้องจับได้ (ไม่ false-negative)
 //    guard: mutate แล้วไฟล์ต้อง "เปลี่ยนจริง" — ไม่งั้น = anchor หาไม่เจอ (โครง BBL เปลี่ยน) ให้ fail ดัง ๆ
-const expect = (id, level, mutate, desc) => {
-  const mutated = mutate(base);
-  if (mutated === base) { ok(false, `${desc} → mutation ไม่เปลี่ยนอะไร (anchor ไม่ match — โครง BBL เปลี่ยน? แก้ pattern ใน self-test)`); return; }
+//    (from = ฐานอื่นที่ "บังคับโซนเอง" มาแล้ว — คู่กับพารามิเตอร์ชื่อเดียวกันของ reject() ข้างล่าง · ดูเคส W06)
+const expect = (id, level, mutate, desc, from) => {
+  const src = from || base;
+  const mutated = mutate(src);
+  if (mutated === src) { ok(false, `${desc} → mutation ไม่เปลี่ยนอะไร (anchor ไม่ match — โครง BBL เปลี่ยน? แก้ pattern ใน self-test)`); return; }
   const r = checkHtml(mutated, 'BBL.html');
   const set = level === 'warn' ? allIds(r) : errIds(r);
   ok(set.has(id), `${desc} → ต้องเจอ ${id}` + (set.has(id) ? '' : ' (เจอ: ' + [...set].join(',') + ')'));
@@ -202,18 +205,50 @@ expect('E23', 'error', mut3(/(id="pxIn"[^>]*value=")([0-9.]+)(")/, numStr(PX * 3
 expect('E24', 'error', mut3(/(EPS ปี 3<\/span>\s*<span>~?\s*[฿$]?)([0-9.,]+)(<\/span>)/, numStr(C.scenarios[0].eps * 2)), 'EPS ปี3 ไม่ตรงการทบต้น (1+g)³');
 expect('E25', 'error', mutSlice('class="vgrid"', /(มูลค่าเหมาะสม<\/div>\s*<div class="v">\s*[฿$]?)([0-9.,]+)/, `$1${numStr(FV * 1.3)}`), 'FV ในสรุป ≠ FV ในกล่อง');
 expect('E26', 'error', mut3(/([฿$])([0-9.,]+)(<br>\s*<small>MOS 20%)/, numStr(FV)), 'gauge scale MOS20 ≠ FV×0.8');
-// W06: ตัวเลขส่วนต่างในสรุปต้องใกล้ MOS จริง — เขียนให้เพี้ยน 9 จุด% (เกิน tol 3)
-expect('W06', 'warn', setDiffCell(`MOS ~ ${fmtPct((MOS < 0 ? -1 : 1) * (Math.abs(MOS) + 9))}`), 'สรุประบุส่วนต่างเพี้ยน ~9 จุด% จาก MOS จริง');
-// ── ขอบเกณฑ์ W06 (ขยับ 2.5 → 3 จุด% เมื่อ 17 ส.ค. 69) — คุมทั้งสองฝั่งของเส้น ──
-// ช่องนี้เป็น prose แช่แข็ง ขณะที่ MOS เคลื่อนตามราคาที่ cron patch ทุกวัน ⇒ ดริฟต์ ≤3 จุด% ถือเป็นปกติของระบบ
-const offMos = (pp) => setDiffCell(`MOS ~ ${fmtPct((MOS < 0 ? -1 : 1) * (Math.abs(MOS) + pp))}`);
-// ★ ฐานของ reject W06 ต้อง "บังคับโซนเอง" — ช่องสรุปของ BBL เขียน "+2.1% (เกือบเต็มมูลค่า)" คือมีทั้ง
-//   เครื่องหมาย + (=ถูก) และคำว่า "เต็มมูลค่า" (=แพง) ⇒ update-prices เข้าเงื่อนไข "ทิศกำกวม → ไม่เดา"
-//   เลย **ไม่เคย patch ตัวเลขในช่องนี้** ⇒ พอราคาวิ่งจน |MOS − 2.1| > 3 จุด% ฐานจะติด W06 เอง
-//   แล้ว reject() ตกทั้งที่ checker ไม่ผิดเลย (วัดจริง: ราคา ฿178 และ ฿215 ตกทั้งคู่ · ช่องปลอดภัยแค่ ~฿185–197)
-const w06Base = setDiffCell(`MOS ~ ${fmtPct(MOS)}`)(base);
-reject('W06', offMos(2.8), 'ส่วนต่างเพี้ยน 2.8 จุด% (ใต้เกณฑ์ใหม่ 3) → ต้องไม่เตือน — เคสที่เปลี่ยนพฤติกรรมจากเกณฑ์เดิม 2.5', w06Base);
-expect('W06', 'warn', offMos(3.5), 'ส่วนต่างเพี้ยน 3.5 จุด% (เหนือเกณฑ์ใหม่) → ต้องยังเตือน');
+// ── W06 (ระยะ 1 ข้อ D): ช่องสรุป "ส่วนต่างจากราคา" = คลังคำคงที่ "MOS ~ ±X%" ที่ cron เขียนทั้งช่อง · X อ่านจาก .big ตรง ๆ ──
+// เดิมเป็น prose ของคนที่ cron patch **เฉพาะตัวเลข** แบบมีเงื่อนไข (ทิศกำกวม/ขัดกัน → ไม่แตะ) แล้วผูกเกณฑ์ไว้กับ
+// dead-band ของ MOS flip (ค่าคงที่ตัวนั้นถูกลบทิ้งแล้ว) ⇒ ช่องค้างถาวรในใบที่คำกับเครื่องหมายขัดกันเอง
+// ตอนนี้ **ตัวตรวจ (W06) กับตัวเขียน (patchDerived#11) ถาม `DV.summaryPlan` ตัวเดียวกัน** — ไม่มีโซนผ่อนผันอีก
+// ★ ฐานของเคส W06 ต้อง "บังคับโซนเอง" (กติกาข้อ 3 หัวไฟล์): fixture BBL ยังเขียนช่องนี้เป็นข้อความเก่า
+//   "MOS ~ +2.1% (เกือบเต็มมูลค่า)" และ **ห้ามแก้ตัวเลขในไฟล์ fixture ด้วยมือ** (test/fixtures/README.md)
+//   ⇒ สร้าง `w06Base` เองจาก want ที่อ่านจาก .big · เมื่อ Task 12 กวาดคลังแล้วแช่แข็ง fixture ใหม่
+//   `w06Base` จะเท่ากับ `base` เอง แล้วถอดอาร์กิวเมนต์ `from` ออกได้
+// ★ setDiffCell (มิวเทชัน) กับ DV.SUMMARY_RE (ตัวเขียนใช้ at/len ของมัน) ต้องชี้ช่องเดียวกัน — BBL มี "ส่วนต่างจากราคา" ช่องเดียว
+{
+  const big0 = DVc.readMosBig(base);
+  ok(big0 && big0.sign === '+' && big0.num === '0.8' && big0.value === 0.8, 'readMosBig: ฐาน BBL .big = +0.8% (num ตามที่พิมพ์ ไม่ปัดใหม่)', JSON.stringify(big0));
+  const pRaw = DVc.summaryPlan(base);
+  ok(pRaw && !pRaw.canonical && !pRaw.ok && pRaw.want === 'MOS ~ +0.8%',
+    'summaryPlan: ช่องเก่าของ fixture ไม่ใช่คลังคำ · want มาจาก .big ไม่ใช่คำนวณจาก FV', JSON.stringify(pRaw));
+  const w06Base = setDiffCell(pRaw.want)(base);
+  const p0 = DVc.summaryPlan(w06Base);
+  ok(p0 && p0.canonical && p0.ok && p0.want === pRaw.want && p0.mos === big0.value, 'summaryPlan: ช่องที่จัดรูปแล้ว = canonical + ok', JSON.stringify(p0));
+  ok(!allIds(checkHtml(w06Base, 'BBL.html')).has('W06'), 'ช่อง = "MOS ~ ±X%" เท่ากับ .big เป๊ะ → W06 เงียบ');
+  expect('W06', 'warn', setDiffCell('ถูกกว่ามูลค่า ~8%'), 'ข้อความนอกคลังคำ → W06', w06Base);
+  expect('W06', 'warn', setDiffCell(`MOS ~ ${DVc.fmtMos(p0.mos + 6)}`), 'รูปถูกแต่ตัวเลขไม่เท่า .big (ห่าง 6 จุด) → W06', w06Base);
+  expect('W06', 'warn', setDiffCell(`MOS ~ ${DVc.fmtMos(-p0.mos)}`), 'เครื่องหมายกลับ → W06 (ไม่มีโซน dead-band ใน checker อีก — cron เขียนเอง)', w06Base);
+  expect('W06', 'warn', setDiffCell('MOS ~ +1%'), 'ปัดเป็นจำนวนเต็มเองทั้งที่ .big พิมพ์ทศนิยม → W06 (ต้องเท่ากับ .big ตามที่พิมพ์ ไม่ใช่ "ใกล้เคียง")', w06Base);
+  // ★ เว้นวรรคก่อน % = **นอกคลังคำ** ไม่ใช่ "ตรงแบบผ่อนผัน": `norm` แปลงแค่ − → - (ไม่ยุบช่องว่าง) และ SUMMARY_CANON_RE บังคับ \d%$
+  //   ⇒ ตัวตรวจกับตัวเขียนใช้ predicate เดียวกัน (p.ok) — ถ้าตัวตรวจยอมแต่ตัวเขียนแก้ จะกลับไปเป็นสองเจ้าของเหมือนเดิม
+  expect('W06', 'warn', setDiffCell('MOS ~ +0.8 %'), 'เว้นวรรคก่อน % → นอกคลังคำ → W06 (healer จัดรูปให้เป๊ะรอบถัดไป)', w06Base);
+  // .big พิมพ์เครื่องหมาย ASCII/เว้นวรรค (ใบเก่า) → want normalize เครื่องหมายเป็น − แต่ **ไม่ปัดตัวเลขใหม่**
+  const bigAscii = base.replace(/<div class="big">[^<]*<\/div>/, '<div class="big"> - 12 %</div>');
+  const pA = DVc.summaryPlan(bigAscii);
+  ok(pA && pA.want === 'MOS ~ −12%' && pA.mos === -12, '.big แบบ " - 12 %" → want "MOS ~ −12%" (normalize เครื่องหมาย ไม่ปัดตัวเลขใหม่)', JSON.stringify(pA));
+  // convergence: ทุกเคสข้างบน healer ต้องเขียนกลับเป็น want แล้วเงียบ + idempotent · attribute ของ <div class="v"> ต้องคงอยู่
+  const vOpen = base.match(DVc.SUMMARY_RE)[1];       // ไม่ hardcode style — อ่านแท็กเปิดจริงของฐาน
+  for (const [h, why] of [[setDiffCell('ถูกกว่ามูลค่า ~8%')(base), 'คำ'], [setDiffCell(`MOS ~ ${DVc.fmtMos(p0.mos + 6)}`)(base), 'ตัวเลข'], [setDiffCell('MOS ~ +0.8 %')(base), 'ช่องว่าง']]) {
+    const once = healed(h);
+    ok(!allIds(checkHtml(once, 'BBL.html')).has('W06') && healed(once) === once, `W06 convergence (${why}): healer #11 → เงียบ + idempotent`);
+    ok(once.includes(vOpen + pRaw.want + '</div>'), `healer #11 คง attribute ของ <div class="v"> และเขียนเท่ากับ .big (${why})`, JSON.stringify(DVc.readSummaryCell(once)));
+  }
+  CONVERGED.add('W06');
+  // ไม่มี .big → เงียบทั้งคู่ (cron freeze ใบนี้ก่อนถึง patchDerived อยู่แล้วเพราะ need('MOS .big') throw
+  //  — แต่ตัวตรวจต้องไม่ยิง W06 ซ้อน E16/E30 ที่ดูแล .big อยู่)
+  const noBig = base.replace(/<div class="big">[^<]*<\/div>/, '');
+  ok(DVc.summaryPlan(noBig) == null && !DVc.patchDerived(noBig, PX).changes.some((c) => /ช่องสรุป/.test(c)), 'ไม่มี .big → summaryPlan null · healer ไม่แตะ');
+  ok(!allIds(checkHtml(noBig, 'BBL.html')).has('W06'), 'ไม่มี .big → W06 เงียบ (ปล่อยให้ E16/E30 ฟ้อง .big ที่หายไป)');
+}
 expect('W07', 'warn', mut3(/(P\/E \(TTM\)<\/div>\s*<div class="v[^"]*">\s*~?)([0-9.,]+)(x)/, '750'), 'P/E ผิดวิสัย (750x)');
 reject('W07', mut3(/(P\/E \(TTM\)<\/div>\s*<div class="v[^"]*">\s*~?)([0-9.,]+)(x)/, '480'), 'P/E ~480x (มัลติเพิลสูงจริงในตลาด AI เช่น ARM) → ไม่ใช่ค่าผิดวิสัย');
 // P/BV: เพดานขยับ 20 → 200 (18 ส.ค. 69) — ซื้อหุ้นคืนจนส่วนทุนเกือบหมด = P/BV สูงจริง (วัดจริง CL 127x · MA 88x · DELTA 32.8x)
@@ -222,10 +257,8 @@ reject('W07', mut3(/(P\/E \(TTM\)<\/div>\s*<div class="v[^"]*">\s*~?)([0-9.,]+)(
   reject('W07', setPbvCard('152'), 'P/BV 152x (เคส CL — ส่วนทุนเล็กจากการซื้อหุ้นคืน) ไม่ควรฟ้อง');
   expect('W07', 'warn', setPbvCard('1520'), 'P/BV 1520x = คลาดหลัก (พิมพ์ผิด) → ต้องฟ้อง');
 }
-// W06 ทิศทาง: บังคับโซนเอง (ไม่พึ่งว่าฐานอยู่โซนไหน) — กด FV ให้ MOS จริง ~−15% แล้วเขียน "ถูก/MOS+" = พลิกขั้ว
-expect('W06', 'warn', (h) => setDiffCell('ถูกกว่ามูลค่า MOS ~ +8%')(mutSlice('class="fv-box"', /(class="r">\s*[฿$]?)([0-9.,]+)/, `$1${numStr(PX / 1.15)}`)(h)), 'หุ้นแพง (MOS ~−15%) แต่เขียน "ถูก/MOS+" → พลิกขั้ว');
-// โซนกลาง (เคส MPWR): ตั้ง FV = ราคา (MOS ~0) + เขียน "เต็มมูลค่า" → ไม่ขัดแย้ง ต้องไม่ฟ้อง
-reject('W06', (h) => setDiffCell('MOS ~ 0% (เต็มมูลค่า)')(mutSlice('class="fv-box"', /(class="r">\s*[฿$]?)([0-9.,]+)/, `$1${numStr(PX)}`)(h)), 'MOS ~0% เขียน "เต็มมูลค่า" (เคส MPWR) → ไม่ฟ้องว่าขัดแย้ง', w06Base);
+// (เคสทิศทาง/โซนกลางของ W06 เดิม — คำว่า "ถูก/แพง/เต็มมูลค่า" ไม่อยู่ในช่องนี้แล้วตั้งแต่ข้อ D
+//  ⇒ ย้ายไปรวมเป็นเคส "ข้อความนอกคลังคำ" + "เครื่องหมายกลับ" ในบล็อก W06 ข้างบน)
 expect('W08', 'warn', mut3(/(ที่มา\s*:)([^<]*)(<)/, ' SET'), 'แหล่งข้อมูล < 3');
 // ── W08 การนับแหล่งข้อมูล: ต้องอ่าน "บรรทัดที่มา" ให้ถูกบรรทัด (17 ส.ค. 69) ──
 // เดิมคำคีย์ /source/ ไม่บังคับคำเต็ม/ไม่บังคับ ":" → แมตช์กลางชื่อบริษัทแล้วนับคำโปรยธุรกิจเป็นแหล่ง
@@ -1012,6 +1045,22 @@ require('./parser-lint.js')(ok);
     return h.replace(m[0], moved);
   };
   expect('W22', 'warn', shiftDiscDate, 'วันที่ disclaimer ≠ วันที่ราคา (UNVERIFIED WRITE #12) → W22');
+
+  // ── C1 (code-audit Task 10): disclaimer เดือนล้วน (hasDay:false) ต้องเทียบ PAIR_HOW.date แค่ระดับเดือน ──
+  // เดือนล้วนปักวันที่ 01 เสมอใน mk() (price-date.js) ⇒ เทียบ ISO เต็มจะชนกับวันจริงของ f10 ทุกวันยกเว้นวันที่ 1
+  // ของเดือน (เคสจริง 9 ใบ disclaimer เดือนล้วน เช่น "ราคา ณ ก.ค. 2569" — วัด 12 ก.ย. 69, manifest-census.md)
+  const monthOnlyDisc = (monIdx) => (h) => {
+    const m = h.match(/<div class="disc">[\s\S]*?<\/div>/i);
+    if (!m) return h;
+    const hit = PDt.findDiscPriceDate(m[0]);
+    if (!hit) return h;
+    const text = PDt.renderThaiDate(hit.day, monIdx, hit.yearCE, hit.isBE, false);   // hasDay:false → "เดือน ปี" ไม่มีวัน
+    const moved = m[0].slice(0, hit.index) + text + m[0].slice(hit.index + hit.length);
+    return h.replace(m[0], moved);
+  };
+  const baseDiscHit = PDt.findDiscPriceDate(base.match(/<div class="disc">[\s\S]*?<\/div>/i)[0]);
+  reject('W22', monthOnlyDisc(baseDiscHit.monIdx), 'disclaimer เดือนล้วนตรงเดือน/ปีเดียวกับวันที่ราคา (hasDay:false) → W22 ต้องเงียบ (เทียบแค่ระดับเดือน)');
+  expect('W22', 'warn', monthOnlyDisc((baseDiscHit.monIdx + 1) % 12), 'disclaimer เดือนล้วนคนละเดือนกับวันที่ราคา (hasDay:false) → ยังต้องเจอ W22');
 
   // f48 การ์ด "โซนเริ่มทยอยสะสม < $FV" = **เพดาน** ไม่ใช่ค่าเดียวกับ FV (how:'below')
   // คลังจริง 103 ใบตั้งจุดเริ่มสะสมต่ำกว่า FV ตามส่วนเผื่อ MOS 5–20% โดยตั้งใจ ⇒ ต้องไม่ฟ้อง
