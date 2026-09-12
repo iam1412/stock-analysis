@@ -14,6 +14,9 @@
  * + **Δ EPS(quote↔ตาราง[3])** — verdict "2 vendor ตรงกัน" ไม่ใช่ใบรับรอง (AMATA: quote ทั้งคู่ ฿4.48
  * แต่ตาราง = ฿3.22 = NI 3,698 ÷ 1,149M หุ้น ต่าง 39%) ⇒ เทียบทางที่ 3 ที่ย้อนกลับได้เสมอ
  *
+ * + **[2c] ปีงบของ epsFwd** (/forecast/) — Yahoo forwardEps เป็นปีงบถัดไป *อีกปี* ได้ (vendor เรียก "forward"
+ * เหมือนกันแต่คนละงวด) ⇒ เทียบกับ EPS ประมาณการรายปีของ SA แล้วบอกงวด + เตือนเมื่อไม่ใช่ปีงบถัดไป
+ *
  * ใช้:  node tools/fetch-fundamentals.js SYMBOL [--th]
  *   --th = หุ้นไทย (Yahoo = SYMBOL.BK · StockAnalysis = quote/bkk/SYMBOL) — ★ ต้องระบุเอง กัน ticker ชนกัน
  *
@@ -453,6 +456,84 @@ function printFinancialTable(pages, finErr) {
   console.log('    ↑ ใช้ตารางนี้เขียน section งบ/แนวโน้ม/scenario ได้เลย — ห้าม WebFetch หน้า financials/balance-sheet/ratios/cash-flow ซ้ำ');
 }
 
+// ---------- แหล่งเสริม 3: /forecast/ = ปีงบของ EPS ประมาณการ (WS9(a) — กับดัก "fwd EPS คนละปีงบ") ----------
+// vendor เรียก "forward EPS" เหมือนกันแต่คนละงวด: Yahoo forwardEps เป็นปีงบ **ถัดไปอีกปี** ได้
+// ⇒ เอาไปหารราคาเป็น fwd P/E หรือใช้เป็นขา FV = ผิดงวดเงียบ ๆ (memory: data-source-traps)
+// โครง payload — probe จริง 12 ก.ย. 2569 (https://stockanalysis.com/stocks/aapl/forecast/__data.json · 14,000 B · 3 nodes):
+//   nodes[2].data[0].estimates
+//     → .stats.annual.epsThis.this = EPS ประมาณการ "ปีงบปัจจุบัน" · .epsNext.this = "ปีงบถัดไป" (ฐาน adjusted)
+//     → .table.annual.fiscalYear[] = ป้ายปีงบ · .lastDate = index ของปีงบสุดท้ายที่ **ปิดแล้ว**
+//   AAPL: lastDate=4 ⇒ fiscalYear[4]='2025' ปิดแล้ว · [5]='2026' (epsThis 8.82876) · [6]='2027' (epsNext 9.57372)
+//   ★ ช่อง eps/adjustedEps ของปีที่ยังไม่ถึงเป็นสตริง "[PRO]" (ต้องจ่ายเงินถึงเห็น) ⇒ ค่าประมาณการต้องอ่านจาก
+//     stats เท่านั้น — ตารางให้ได้แค่ "ป้ายปีงบ" (ของฟรี) ซึ่งก็คือสิ่งที่เราต้องการจริง ๆ
+const FWD_FY_TOL_PCT = 3;   // epsFwd ห่างจาก EPS ประมาณการของปีงบไหน ≤3% = ถือว่าเป็นงวดนั้น
+
+function forecastFromPayload(j) {
+  const found = findObj(j && j.nodes, ['estimates', 'targets']);
+  if (!found) return null;
+  const arr = found.arr;
+  const deref = (i) => (typeof i === 'number' && i >= 0 && i < arr.length) ? arr[i] : undefined;
+  const obj = (i) => { const v = deref(i); return (v && typeof v === 'object' && !Array.isArray(v)) ? v : null; };
+  const est = obj(found.obj.estimates);
+  const stats = est && obj(est.stats), table = est && obj(est.table);
+  const sAnn = stats && obj(stats.annual), tAnn = table && obj(table.annual);
+  if (!sAnn || !tAnn) return null;
+  const fyList = deref(tAnn.fiscalYear), lastIdx = deref(tAnn.lastDate);
+  if (!Array.isArray(fyList) || !Number.isFinite(lastIdx)) return null;
+  const fyAt = (k) => { const v = deref(fyList[k]); return /^\d{4}$/.test(String(v)) ? String(v) : null; };
+  const epsOf = (k) => { const o = obj(sAnn[k]); const v = o ? asNum(deref(o.this)) : null; return Number.isFinite(v) ? v : null; };
+  // เรียง **ใหม่→เก่า** เหมือนคอลัมน์ datekey ของตาราง [3] ⇒ years[0] = ปีงบไกลสุดที่มีประมาณการ
+  const years = [
+    { fy: fyAt(lastIdx + 2), eps: epsOf('epsNext') },
+    { fy: fyAt(lastIdx + 1), eps: epsOf('epsThis') },
+  ].filter((r) => r.fy && Number.isFinite(r.eps));
+  return years.length ? { years, lastClosedFY: fyAt(lastIdx) } : null;
+}
+async function fromForecast(symbol, th, fetchImpl) {
+  const doFetch = fetchImpl || fetch;
+  for (const base of saBases(symbol, th)) {
+    try {
+      const r = await doFetch(`https://stockanalysis.com/${base}/forecast/__data.json`, { headers: H });
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      const fc = forecastFromPayload(await r.json());
+      if (fc) return fc;
+    } catch (e) { /* หน้าเสริม: ล่ม/โครงเปลี่ยน → ลอง base ถัดไป แล้วคืน null ห้ามล้มทั้ง script */ }
+  }
+  return null;
+}
+// ปีงบล่าสุดที่ "ปิดแล้ว" จากตาราง [3] = คอลัมน์แรกที่ไม่ใช่ TTM (คอลัมน์เรียงใหม่→เก่าอยู่แล้ว)
+function closedFYFromTable(page) {
+  const dk = finRow(page, ['datekey']) || [], fy = finRow(page, ['fiscalYear']) || [];
+  for (let i = 0; i < dk.length; i++) {
+    if (dk[i] == null || dk[i] === 'TTM') continue;
+    const v = fy[i] != null ? String(fy[i]) : String(dk[i]).slice(0, 4);
+    if (/^\d{4}$/.test(v)) return v;
+  }
+  return null;
+}
+// sa (ผลของ fromStockAnalysis) รับไว้ให้ครบสัญญาแต่ยังไม่ใช้ตัดสิน — fwdPE ของ SA เป็นตัวคูณที่นิยามจากราคา spot
+// การถอด EPS กลับมาจากมัน (ราคา ÷ fwdPE) คือ "สมอตายวนกลับ" (CLAUDE.md §8 ชั้น 0.4e) ⇒ ห้ามใช้เป็นตัวเทียบงวด
+function forecastLine(y, sa, fc, currentFY) {
+  if (!fc || !Array.isArray(fc.years) || !fc.years.length) return null;
+  // พิมพ์เก่า→ใหม่ให้อ่านเป็นไทม์ไลน์ (fc.years เก็บใหม่→เก่าตามแบบตาราง [3])
+  const head = '[2c] forecast (SA /forecast/): ' + fc.years.slice().reverse().map((r) => `FY${r.fy}e EPS ${fmt(r.eps)}`).join(' · ');
+  const v = asNum(y && y.epsFwd);
+  if (!Number.isFinite(v) || v === 0) return `${head} — ไม่มี epsFwd จาก Yahoo ให้เทียบงวด (ตรวจเองว่าตัวเลข forward ที่จะใช้เป็นปีงบไหน)`;
+  let best = null;
+  for (const r of fc.years) {
+    const d = Math.abs(r.eps - v) / Math.abs(v);
+    if (d <= FWD_FY_TOL_PCT / 100 && (!best || d < best.d)) best = { fy: r.fy, d };
+  }
+  if (!best)
+    return `${head} — epsFwd ${fmt(v)} ไม่ตรง FY ไหน (≤${FWD_FY_TOL_PCT}%) — ตรวจงวดเองจาก /forecast/ ก่อนใช้เป็น fwd P/E หรือขา FV`;
+  // ปีงบที่ปิดแล้ว: จากตาราง [3] ก่อน (แหล่งเดียวกับที่ worker อ่าน) · ไม่มีค่อยใช้ lastDate ของ vendor เอง
+  const cur = /^\d{4}$/.test(String(currentFY == null ? '' : currentFY)) ? String(currentFY) : fc.lastClosedFY;
+  const warn = (cur && best.fy !== String(+cur + 1))
+    ? ` ⚠ ไม่ใช่ปีงบถัดไป (ปีงบที่ปิดแล้ว = FY${cur} ⇒ ถัดไป = FY${+cur + 1}) — vendor "forward" เป็น FY ถัดไปอีกปีได้ ตรวจงวดก่อนใช้ใน FV/fwd P/E`
+    : '';
+  return `${head} — epsFwd ${fmt(v)} ตรง FY${best.fy}e${warn}`;
+}
+
 // ---------- main ----------
 async function main() {
   const args = process.argv.slice(2);
@@ -462,11 +543,13 @@ async function main() {
   const ysym = toYahooSymbol(symbol, th ? 'THB' : 'USD');
 
   let y = null, yErr = null, s = null, sErr = null, stats = null, statsErr = null;
+  let fc = null;   // [2c] /forecast/ — หน้าเสริม ล่มแล้วข้ามได้
   const finPages = [null, null, null]; let finErr = null;
   await Promise.all([
     fromYahoo(ysym).then((v) => { y = v; }).catch((e) => { yErr = e.message; }),
     fromStockAnalysis(symbol, th).then((v) => { s = v; }).catch((e) => { sErr = e.message; }),
     fromStatistics(symbol, th).then((v) => { stats = v; }).catch((e) => { statsErr = e.message; }),
+    fromForecast(symbol, th).then((v) => { fc = v; }).catch(() => { /* หน้าเสริม — เงียบ */ }),
     ...FIN_SUBS.map((sub, i) =>
       fetchFinPage(symbol, th, sub).then((v) => { finPages[i] = v; }).catch((e) => { finErr = finErr || e.message; })),
   ]);
@@ -503,6 +586,12 @@ async function main() {
   for (const line of statsLines(stats, statsErr, table.shares)) console.log(line);
   // กับดักเชิงกล (WS9(a)) — entity mismatch (6O) + SA market cap ล้าหลัง quote ของตัวเอง — WARN เท่านั้น ไม่เปลี่ยน exit code
   for (const l of [entityMismatchLine(table, stats), capLine(stats, sPrice || (y && y.price), s && s.info)]) if (l) console.log(l);
+  // [2c] epsFwd ของ Yahoo อยู่ปีงบไหน — currentFY = ปีงบที่ปิดแล้วจากตาราง [3] (แหล่งเดียวกับที่ worker อ่าน)
+  const fcLine = forecastLine(y, s, fc, closedFYFromTable(finPages[0]));
+  if (fcLine) console.log(fcLine);
+  // ดึงไม่ได้/โครงเปลี่ยน = เงียบไม่ได้ (บทเรียนเดียวกับ [2b]) — บอกว่า "ยังไม่รู้งวด" เฉพาะตอนมี epsFwd ให้ใช้จริง
+  else if (y && Number.isFinite(y.epsFwd))
+    console.log(`[2c] forecast: ✗ ดึงหน้า /forecast/ ไม่ได้ (หรือโครง payload เปลี่ยน) — epsFwd ${fmt(y.epsFwd)} ยังไม่รู้ว่าเป็นปีงบไหน (vendor "forward" เป็น FY ถัดไปอีกปีได้) ⇒ ตรวจงวดเองก่อนใช้เป็น fwd P/E หรือขา FV`);
 
   if (y && s && Number.isFinite(y.price) && sPrice) {
     const dP = Math.abs(y.price - sPrice) / sPrice * 100;
@@ -531,6 +620,8 @@ module.exports = {
   SHARES_LABEL, SHARES_NOTE, EPS_TABLE_PASS_PCT, EPS_TABLE_ABS_TOL, SHARES_WARN_PCT, YIELD_WARN_PP,
   // WS9(a) — กับดัก vendor เชิงกล: entity mismatch (6O) + SA market cap ล้าหลัง quote ของตัวเอง (Task 21)
   amount, entityMismatchLine, capLine, ENTITY_MISMATCH_PCT, CAP_WARN_PCT,
+  // WS9(a) — ปีงบของ epsFwd จากหน้า /forecast/ (Task 22)
+  fromForecast, forecastFromPayload, forecastLine, closedFYFromTable, FWD_FY_TOL_PCT,
 };
 // ★ ต้อง guard — test:prep require ไฟล์นี้เพื่อเทียบ format กับ prep-stock (offline) ถ้าไม่ guard จะยิงเน็ตจริง
 if (require.main === module) main().catch((e) => { console.error('✗', e.message); process.exit(1); });

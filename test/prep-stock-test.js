@@ -18,6 +18,8 @@ function ok(cond, label, detail) {
   nFail++;
   console.error(`✗ ${label}${detail ? ' — ' + detail : ''}`);
 }
+// เคสแบบ async (fromForecast คืน promise) — tally ท้ายไฟล์ต้องรอก่อนพิมพ์ (แบบเดียวกับ test/update-prices-test.js)
+let pending = null;
 
 // ---------- fixture builders (โครง devalue: object เก็บ index ชี้กลับเข้า array เดียวกัน) ----------
 function makeFinPage(rows) {
@@ -271,5 +273,44 @@ ok(P.parseArgs(['CGNX', '--brand']).error != null, 'parseArgs: --brand ไม่
   ok(F.CAP_WARN_PCT === 5, 'CAP_WARN_PCT = 5');
 }
 
-console.log(nFail ? `\n✗ prep-stock-test: ${nFail} failed / ${nOK} passed` : `\n✓ prep-stock-test: ${nOK} passed`);
-process.exit(nFail ? 1 : 0);
+
+// ---------- WS9(a): /forecast/ — ปีงบของ epsFwd (fixture แช่แข็ง test/fixtures/vendor/AAPL-forecast.json) ----------
+// กับดัก: vendor เรียก "forward EPS" เหมือนกันแต่คนละงวด — Yahoo forwardEps อาจเป็นปีงบถัดไป *อีกปี*
+// (fixture = payload จริงของ AAPL ตัดเหลือ node เดียว ⇒ ตัวเลขในเคสมาจาก payload ทั้งหมด ไม่มี hard-code)
+{
+  const payload = require('./fixtures/vendor/AAPL-forecast.json');
+  const fetchOK = async () => ({ ok: true, json: async () => payload });
+  pending = F.fromForecast('AAPL', false, fetchOK).then(async (fc) => {
+    ok(fc && Array.isArray(fc.years) && fc.years.length >= 2 && fc.years.every((r) => /^\d{4}$/.test(r.fy) && Number.isFinite(r.eps)),
+      'fromForecast: อ่าน FY+EPS estimate ≥2 ปี จาก fixture', JSON.stringify(fc));
+    const [a, b] = fc.years;
+    // สัญญาลำดับ: ใหม่→เก่า (เหมือนคอลัมน์ datekey ของตาราง [3]) และต้องต่อจากปีงบที่ปิดแล้วพอดี
+    ok(+a.fy === +b.fy + 1 && +b.fy === +fc.lastClosedFY + 1,
+      'fromForecast: years เรียงใหม่→เก่า + ต่อจาก lastClosedFY (ผูกกับ lastDate ใน payload ไม่ใช่ค่าคงที่)',
+      JSON.stringify({ years: fc.years.map((r) => r.fy), lastClosedFY: fc.lastClosedFY }));
+    const lWarn = F.forecastLine({ epsFwd: b.eps }, null, fc, a.fy);
+    ok(/FY\d{4}e/.test(F.forecastLine({ epsFwd: b.eps }, null, fc)) && /⚠/.test(lWarn),
+      'forecastLine: epsFwd ตรง FY ถัดไปอีกปี → ⚠ ไม่ใช่ปีงบถัดไป', lWarn);
+    const lOK = F.forecastLine({ epsFwd: a.eps }, null, fc, String(+a.fy - 1));
+    ok(!/⚠/.test(lOK) && new RegExp(`ตรง FY${a.fy}e`).test(lOK), 'forecastLine: epsFwd ตรง FY ถัดไป → ไม่เตือน', lOK);
+    const lMiss = F.forecastLine({ epsFwd: a.eps * 1.5 }, null, fc);
+    ok(/ไม่ตรง FY ไหน/.test(lMiss), 'forecastLine: ไม่ตรงปีไหน → บอกให้ตรวจเอง', lMiss);
+    // หน้าเสริม: ล่ม/โครงเปลี่ยน → null เงียบ ๆ ห้าม throw (ไม่งั้น fetch-fundamentals ล้มทั้ง script เพราะหน้าเสริม)
+    ok(await F.fromForecast('AAPL', false, async () => ({ ok: false, status: 404 })) === null, 'fromForecast: หน้าล่ม → null ไม่ throw');
+    ok(await F.fromForecast('AAPL', false, async () => ({ ok: true, json: async () => ({ nodes: [{ data: [{ x: 1 }] }] }) })) === null,
+      'fromForecast: โครง payload เปลี่ยน (ไม่เจอ estimates) → null ไม่เดา');
+    ok(F.forecastLine({ epsFwd: 1 }, null, null, '2025') === null, 'forecastLine: ไม่มี fc → null (ไม่พิมพ์บรรทัด [2c])');
+    ok(/ไม่มี epsFwd/.test(F.forecastLine(null, null, fc, '2025')), 'forecastLine: Yahoo ล่ม/ไม่มี epsFwd → พิมพ์ปีงบไว้ให้ worker เทียบเอง');
+  });
+}
+// currentFY ของบรรทัด [2c] = ปีงบล่าสุดที่ปิดแล้วจากตาราง [3] (คอลัมน์แรกที่ไม่ใช่ TTM)
+ok(F.closedFYFromTable(makeFinPage({ datekey: ['TTM', '2025-09-27', '2024-09-28'], fiscalYear: [null, '2025', '2024'] })) === '2025',
+  'closedFYFromTable: ข้าม TTM → ปีงบที่ปิดแล้วปีล่าสุด');
+ok(F.closedFYFromTable(makeFinPage({ datekey: ['TTM', '2025-12-31'] })) === '2025', 'closedFYFromTable: ไม่มีแถว fiscalYear → ใช้ปีจาก datekey');
+ok(F.closedFYFromTable(null) === null && F.closedFYFromTable(makeFinPage({ datekey: ['TTM'] })) === null, 'closedFYFromTable: ไม่มีคอลัมน์ปิดงวด → null');
+
+function tally() {
+  console.log(nFail ? `\n✗ prep-stock-test: ${nFail} failed / ${nOK} passed` : `\n✓ prep-stock-test: ${nOK} passed`);
+  process.exit(nFail ? 1 : 0);
+}
+Promise.resolve(pending).then(tally, (e) => { nFail++; console.error('✗ เคส async โยน error —', (e && e.message) || e); tally(); });
