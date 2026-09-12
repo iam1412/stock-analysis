@@ -8,11 +8,9 @@
 |---|---|---|---|
 | 1 | `%/ปี` ในประโยคสรุปหมวด 6 เป็น prose — ไม่มี warning/ตัวซ่อม | price-derived-staleness:113 | ระยะ 1 WS1 manifest (ช่อง #35b) · ระยะ 2 token |
 | 2 | ป้าย marker gauge "เหมาะสม" ไม่มี gate (ICLR) | price-derived-staleness:175 | ระยะ 1 WS1 (NEITHER #49) |
-| 4 | median-multiples ส่งค่าผิด 2 คลาส (สุดขั้ว · ผสมสกุล) — sanity ใน runbook แล้ว **แต่ยังไม่มี fixture test ของตัวมันเอง** | price-derived-staleness:163 | ระยะ 1 WS9 |
 | 5 | W05 มองไม่เห็น "สองขาตระกูลเดียว" (WWD) | price-derived-staleness:174 | ระยะ 1 WS1/WS9 |
 | 6 | การ์ด EV/Sales · EV/EBITDA · DCF ไม่มี checker | data-source-traps:258 | ระยะ 1 WS1 (NEITHER #62) |
 | 7 | E41 ข้ามป้าย "P/E เฉลี่ย ~N ปี" — ป้ายอ้างช่วงยาวกว่าอายุหุ้น (GABLE) | data-source-traps:271 | ระยะ 1 WS9(a) นับคอลัมน์ FY จริง |
-| 8 | `test:prep` ไม่อยู่ใน verify | data-source-traps:230 | ระยะ 1 WS8(7) |
 | 9 | bad-chart ผสมฐาน gate มองไม่เห็น (E36 ผิดพร้อมกัน) | data-source-traps:69 | ระยะ 1 WS1 (52wk เป็นช่องที่ตรวจ) |
 | 10 | ห้ามวาง shares ถัวเฉลี่ยลง prompt (CAMT) | data-source-traps:120 | ระยะ 1 WS9(a) ให้ prep-stock ติดป้ายแถว |
 | 11 | 6 ใบสองขาตระกูลเดียว ยังไม่แก้ | fv-family-weighting:22 | ระยะ 3 WS7 fix-on-touch (ลิสต์ในไฟล์ memory) |
@@ -40,3 +38,5 @@
 | 13 | BBL ช่องสรุป "+2.1% (เกือบเต็มมูลค่า)" เครื่องหมาย/คำขัดกัน | ปิดเชิงกลไก (Task 11) · คลังกวาดแล้ว (Task 12 · 861 ใบ · W06 = 0) |
 | 19 | W06 ยิง 553/908 ก่อน 17 ส.ค. — เดิมต้องให้คนแก้เพราะ cron ไม่แตะคำ | ปิดเชิงกลไก (Task 11) · คลังกวาดแล้ว (Task 12 · 861 ใบ · W06 = 0) |
 | 22 | คิว price-flags เป็น snapshot — pre-patch ด้วย --force ล้าง flag ก่อนวิเคราะห์ ทำให้สถานะรอบอยู่แค่ใน .queue/state.json (per-machine) — ต้องการคิวถาวรใน repo | Task 15: state ย้ายไป `<checkout หลัก>/.queue` (`resolveQueueDir` ใน `tools/queue/state.js` ใช้ `git rev-parse --git-common-dir`) — ข้าม worktree ✓ ข้ามเครื่อง ✗ (ถ้าใช้หลายเครื่องต้องย้าย state เข้า repo) |
+| 4 | median-multiples ส่งค่าผิด 2 คลาส (สุดขั้ว · ผสมสกุล) — sanity ใน runbook แล้ว แต่ยังไม่มี fixture test ของตัวมันเอง | Task 23: `oneSymbol(spec, th, deps)` ฉีด `fetchFinPage`/`monthlyCloses`/`statementCurrency`/`finRow` ผ่าน `deps` (default = ของจริง) + `test/median-multiples-test.js` (offline, เรียกจาก `test/prep-stock-test.js`) ครอบ TTM/EPS≤0/outlier สุดขั้ว (เคส AU 2,074x)/ผสมสกุล (เคส CP)/MIN_POINTS |
+| 8 | `test:prep` ไม่อยู่ใน verify | Task 23: แทรก `node test/prep-stock-test.js` เป็นขั้นที่ 16 ของ `npm run verify` (หลัง `docs-test`) + `STEP_LABELS`/`.githooks/pre-push`/docs ผ่าน `tools/gen-docs.js` |

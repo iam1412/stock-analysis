@@ -88,20 +88,22 @@ function avgWindow(closes, end) {
   return win.length >= 6 ? { avg: win.reduce((s, p) => s + p.c, 0) / win.length, n: win.length } : null;
 }
 
-async function oneSymbol(spec, th) {
+async function oneSymbol(spec, th, deps) {
+  // ฉีด fetcher ได้ (open-item #4) — default = ของจริง · เทสฉีด fixture แทน (offline)
+  const D = { fetchFinPage, monthlyCloses, statementCurrency, finRow, ...(deps || {}) };
   const [sym, priceTickerRaw] = spec.split(':');
   // หุ้นไทย: Yahoo ใช้ `SYMBOL.BK` (เหมือน fetch-facts/update-prices) · ระบุกระดานเองแล้วใช้ตามนั้น
   const priceTicker = priceTickerRaw || (th ? `${sym}.BK` : sym);
-  const page = await fetchFinPage(sym, th, ['income-statement/', '']);
-  const eps = finRow(page, ['epsDiluted', 'epsdil']);
-  const dk = finRow(page, ['datekey']);
+  const page = await D.fetchFinPage(sym, th, ['income-statement/', '']);
+  const eps = D.finRow(page, ['epsDiluted', 'epsdil']);
+  const dk = D.finRow(page, ['datekey']);
   if (!eps || !dk) throw new Error('อ่านแถว EPS(dil)/datekey จากงบไม่ได้');
-  const closes = await monthlyCloses(priceTicker);
+  const closes = await D.monthlyCloses(priceTicker);
   // ★★ กับดักผสมสกุลเงิน (CLAUDE.md §8 ชั้น 0.4b — "EV ต้องใช้ราคาสกุลเดียวกับงบ")
   //   หุ้นที่จดข้ามตลาด (CPKC/CNI/แคนาดา · ADR) ทำงบสกุลหนึ่งแต่ราคากระดานที่ดึงมาเป็นอีกสกุล
   //   ⇒ P/E = ราคา USD ÷ EPS CAD เพี้ยนไปเท่าอัตราแลกเปลี่ยน (~1.4x) **เงียบ ๆ**
   //   เจอจริง 9 ก.ย. 69: CP ได้มัธยฐาน 18.3x ทั้งที่ฐานเดียวกันคือ ~25x — worker เอาไปตัด FV ผิด
-  const finCur = await statementCurrency(page.src);
+  const finCur = await D.statementCurrency(page.src);
   const pxCur = closes.currency;
   if (finCur && pxCur && finCur !== pxCur) {
     return { sym, priceTicker, rows: [], used: [], dropped: [], median: null,

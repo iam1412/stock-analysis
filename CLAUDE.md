@@ -28,7 +28,7 @@ dist/                   # ⚠️ build output (gitignore) — ห้ามแก
 
 ## 2. วิเคราะห์หุ้นเดี่ยว (skill `stock-analyzer`)
 
-เมื่อสั่ง "วิเคราะห์ X" / re-analysis / เคลียร์คิว price-flags → เรียก skill **`stock-analyzer`** แล้ว**ทำตามทุกขั้น** → `npm run verify` ผ่าน <!-- gen:verify-steps -->15<!-- /gen:verify-steps --> ขั้น → **Auto-push** (§5 — controller/session หลักเท่านั้น · worker คืนงานให้ controller push)
+เมื่อสั่ง "วิเคราะห์ X" / re-analysis / เคลียร์คิว price-flags → เรียก skill **`stock-analyzer`** แล้ว**ทำตามทุกขั้น** → `npm run verify` ผ่าน <!-- gen:verify-steps -->16<!-- /gen:verify-steps --> ขั้น → **Auto-push** (§5 — controller/session หลักเท่านั้น · worker คืนงานให้ controller push)
 
 invariant ที่ห้ามหลุดไม่ว่ากรณีใด:
 - **cross-source verify ราคา+EPS ≥2 แหล่งก่อนเขียนตัวเลข** — ราคาต่าง >5% / EPS ขัดกัน → หยุด ถามผู้ใช้ อย่าเผยแพร่ (gate ตรวจความจริงไม่ได้)
@@ -68,7 +68,7 @@ invariant ที่ห้ามหลุดไม่ว่ากรณีใด:
 (commit **ก่อน** pull --rebase เสมอ ไม่งั้น rebase error "Please commit or stash")
 
 ```bash
-npm run verify                     # 0. quality gate <!-- gen:verify-steps -->15<!-- /gen:verify-steps --> ขั้น — error = ห้าม push
+npm run verify                     # 0. quality gate <!-- gen:verify-steps -->16<!-- /gen:verify-steps --> ขั้น — error = ห้าม push
 git add -A                         # 1.
 git commit -m "<message>"          # 2.
 git pull --rebase origin main      # 3. sync
@@ -105,8 +105,8 @@ Co-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>
 
 ## 8. Quality gate — ก่อนเผยแพร่ (`npm run verify`)
 
-<!-- gen:verify-steps -->15<!-- /gen:verify-steps --> ขั้น ต้องผ่านทั้งหมดก่อน push (pre-push hook บังคับซ้ำ) · cron ใช้ชุดย่อย `verify:cron` <!-- gen:verify-cron-steps -->5<!-- /gen:verify-cron-steps --> ขั้น (<!-- gen:verify-cron-chain -->`check-reports` → `build` → `build-test` → `engine-exec` → `check-site`<!-- /gen:verify-cron-chain -->) เพราะ unit test ของเครื่องมือล้ม ≠ ราคาพัง:
-<!-- gen:verify-chain -->`update-prices-test` → `dead-ticker-test` → `tag-apply-test` → `queue-test` → `docs-test` → `tags-test` → `check-reports` → `self-test` → `ohlc-test` → `ta-engine-test` → `build` → `build-test` → `engine-exec` → `skeleton-test` → `check-site`<!-- /gen:verify-chain --> (check-reports = <!-- gen:counts -->47 error + 18 warning<!-- /gen:counts -->)
+<!-- gen:verify-steps -->16<!-- /gen:verify-steps --> ขั้น ต้องผ่านทั้งหมดก่อน push (pre-push hook บังคับซ้ำ) · cron ใช้ชุดย่อย `verify:cron` <!-- gen:verify-cron-steps -->5<!-- /gen:verify-cron-steps --> ขั้น (<!-- gen:verify-cron-chain -->`check-reports` → `build` → `build-test` → `engine-exec` → `check-site`<!-- /gen:verify-cron-chain -->) เพราะ unit test ของเครื่องมือล้ม ≠ ราคาพัง:
+<!-- gen:verify-chain -->`update-prices-test` → `dead-ticker-test` → `tag-apply-test` → `queue-test` → `docs-test` → `prep-stock-test` → `tags-test` → `check-reports` → `self-test` → `ohlc-test` → `ta-engine-test` → `build` → `build-test` → `engine-exec` → `skeleton-test` → `check-site`<!-- /gen:verify-chain --> (check-reports = <!-- gen:counts -->47 error + 18 warning<!-- /gen:counts -->)
 
 > ตัวเลข/ลำดับขั้นในบล็อกนี้ generate ด้วย `node tools/gen-docs.js` จาก `package.json` + `CHECKS` — แก้มือแล้วจะถูกเขียนทับ (`--check` ฟ้องใน gate)
 

@@ -309,8 +309,12 @@ ok(F.closedFYFromTable(makeFinPage({ datekey: ['TTM', '2025-09-27', '2024-09-28'
 ok(F.closedFYFromTable(makeFinPage({ datekey: ['TTM', '2025-12-31'] })) === '2025', 'closedFYFromTable: ไม่มีแถว fiscalYear → ใช้ปีจาก datekey');
 ok(F.closedFYFromTable(null) === null && F.closedFYFromTable(makeFinPage({ datekey: ['TTM'] })) === null, 'closedFYFromTable: ไม่มีคอลัมน์ปิดงวด → null');
 
+// ===== open-item #4: tools/median-multiples.js ก็ต้องมี fixture test ของตัวมันเอง (offline) =====
+// รวมเข้ามาที่นี่แทนเพิ่มขั้น verify แยก (`test:prep` ครอบทั้งคู่) — ดู test/median-multiples-test.js
+const pendingMM = require('./median-multiples-test.js')(ok);
+
 function tally() {
   console.log(nFail ? `\n✗ prep-stock-test: ${nFail} failed / ${nOK} passed` : `\n✓ prep-stock-test: ${nOK} passed`);
   process.exit(nFail ? 1 : 0);
 }
-Promise.resolve(pending).then(tally, (e) => { nFail++; console.error('✗ เคส async โยน error —', (e && e.message) || e); tally(); });
+Promise.all([pending, pendingMM]).then(tally, (e) => { nFail++; console.error('✗ เคส async โยน error —', (e && e.message) || e); tally(); });
