@@ -147,7 +147,7 @@ const RV = require('../tools/report-values.js');
 const sm = { symbol: 'BBL', currency: 'THB', price: 188, fairValue: 195, mos: 3.6, upside: 3.7, pe: 8.67, dividendYield: 6.4, roe: 7.3 };
 const rd = () => ({
   v: 2, fv: 195,
-  values: { px: 188, priceDate: '2026-09-11', chgSuffix: 'รอบปี', fvLow: 180, fvHigh: 210, analystTgt: 205, eps: 21.7,
+  values: { px: 188, priceDate: '2026-09-11', dateEra: 'BE', chgSuffix: 'รอบปี', fvLow: 180, fvHigh: 210, analystTgt: 205, eps: 21.7,
     shares: 1909000000, revenue: 140e9, dps: 12, bvps: 260, baseEps: 21.7,
     scenarios: [{ tgt: 160, div: 36 }, { tgt: 230, div: 36 }, { tgt: 300, div: 36 }], scnBasis: { years: 3, divIncluded: true, perYear: 'cagr' } },
   theme: { accent: '#1a73e8', chgBg: 'var(--green-soft)', chgColor: '#137333' },
@@ -187,7 +187,7 @@ const rd = () => ({
     + '~{{rd:baseEps}}{{rd:scnNote}} {{rd:sc1tgt}} <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div> ~{{rd:sc1div}} {{rd:upside}}';
   const out = RV.renderValues(html, rd(), sm);
   assert(out.includes('<div class="px">฿188.00</div>'), 'px render: ' + out.slice(0, 40));
-  assert(out.includes('<div class="big">+3.6%</div>') && out.includes('mos-verdict bad"'), 'mos/mosClass');
+  assert(out.includes('<div class="big">+4%</div>') && out.includes('mos-verdict bad"'), 'mos/mosClass');
   assert(out.includes('value="188"') && out.includes('ราคา ณ 11 ก.ย. 2569'), 'pxNum/priceDate');
   assert(out.includes('▲ +25.3% (รอบปี)'), 'chg');
   assert(out.includes('฿195.00 ฿180.00–฿210.00 ฿156.00 ฿136.50 ฿205.00 (+9%)'), 'fv/กรอบ/mos20/30/analyst: ' + out);
@@ -421,12 +421,12 @@ git commit -m "feat(data-layer): tools/report-values.js — schema values v2 · 
 // ── ระยะ 2: expandReport v2 render token จาก values ──
 {
   const { expandReport } = require('../build.js');
-  const rdV2 = JSON.stringify({ v: 2, fv: 195, values: { px: 188, priceDate: '2026-09-11', chgSuffix: 'รอบปี' },
+  const rdV2 = JSON.stringify({ v: 2, fv: 195, values: { px: 188, priceDate: '2026-09-11', dateEra: 'BE', chgSuffix: 'รอบปี' },
     theme: { accent: '#1a73e8', chgBg: 'var(--green-soft)', chgColor: '#137333' },
     chart: { data: [['ก.ย.25', 150], ['ก.ย.26', 188]], min: 120, max: 240, grid: [150, 200], currency: '฿', highlight: [0, 1] }, gauge: { min: 120, max: 240 } });
   const src = (rd, body) => `<html><head><script type="application/json" id="stock-meta">{"symbol":"X","currency":"THB","price":188,"fairValue":195,"mos":3.6,"upside":3.7,"pe":null,"dividendYield":null,"roe":null}</script>\n<script type="application/json" id="report-data">${rd}</script><!--TEMPLATE:STYLE--></head><body>${body}<!--TEMPLATE:ENGINE--></body></html>`;
   const out = expandReport(src(rdV2, '<div class="px">{{rd:px}}</div><div class="big">{{rd:mos}}</div>'));
-  ok(out.includes('<div class="px">฿188.00</div>') && out.includes('<div class="big">+3.6%</div>'), 'v2: token ใน body ถูก render จาก values');
+  ok(out.includes('<div class="px">฿188.00</div>') && out.includes('<div class="big">+4%</div>'), 'v2: token ใน body ถูก render จาก values');
   ok(/gpos\(188\)/.test(out) && /gpos\(195\)/.test(out) && /const FV=195\b/.test(out), 'v2: engine bake gauge cur/fair/FV จาก values.px/fv (ไม่มี gauge.cur ใน JSON)');
   ok(/const fy=ys\(195\)/.test(out), 'v2: fairLine ของกราฟ = fv');
   let t = ''; try { expandReport(src(rdV2, '<p>{{rd:nope}}</p>')); } catch (e) { t = e.message; }
