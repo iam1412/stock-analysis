@@ -279,6 +279,36 @@ process.env.QUEUE_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'queue-'));   // s
   const noPbv = Pp.snapshotDiff(FX.AAPL(), ctx, { lo52: null, hi52: null, target: null, divYieldPct: null });
   ok(!noPbv.some((s) => /undefined/.test(s)), 'snapshotDiff: ไม่มีคำว่า undefined หลุดเข้า prompt', noPbv.join(' | '));
 
+  // ★ ระยะ 2 ส่วน B (Task 6): บนใบ v2 ตัวเลข (เป้า/ปันผล/P-BV) ไม่อยู่ใน HTML แล้ว — อยู่ใน report-data.values —
+  //   snapshotDiff ต้องแยกทางด้วย RV.isV2() แล้วอ่าน values ตรง ๆ แทน DV.targetCells/yieldPlan/pbvPlan ·
+  //   ข้อความฟ้องต้องขึ้นต้น "values.<key>" ให้ worker รู้ว่าต้องแก้ด้วย apply-edits --set — brief ให้ตัวอย่างไว้เป๊ะ:
+  //   values.analystTgt 205 vs vendor 220 → ต้องได้บรรทัด "values.analystTgt 205 → 220"
+  const V2_SNAP_HTML = `<!DOCTYPE html>
+<html><head>
+<script type="application/json" id="stock-meta">
+{"symbol":"TST2","currency":"USD","price":100,"fairValue":120,"mos":16.7,"upside":20,"pe":10,"dividendYield":2,"roe":8}
+</script>
+<script type="application/json" id="report-data">
+{
+  "v": 2,
+  "fv": 120,
+  "values": { "px": 100, "priceDate": "2026-09-01", "dateEra": "BE", "chgSuffix": "รอบปี", "analystTgt": 205, "dps": 1, "bvps": 40 },
+  "theme": { "accent": "#000000" },
+  "chart": { "data": [["ม.ค.26", 90], ["ก.ย.26", 100]], "min": 80, "max": 140, "grid": [100, 120], "currency": "$", "highlight": [0, 1] },
+  "gauge": { "min": 80, "max": 140 }
+}
+</script>
+</head><body></body></html>
+`;
+  const v2Far = Pp.snapshotDiff(V2_SNAP_HTML, null, { lo52: null, hi52: null, target: 220, divYieldPct: 9, analysts: null });
+  ok(v2Far.includes('values.analystTgt 205 → 220'), '★ snapshotDiff v2: values.analystTgt ต่างจาก vendor → ฟ้องด้วยชื่อคีย์ "values.<key>" (ตัวอย่างตาม brief เป๊ะ)', v2Far.join(' | '));
+  ok(v2Far.some((s) => /^values\.dps 1 →/.test(s)), 'snapshotDiff v2: ปันผล % จาก values.dps/px ต่างจาก vendor → ฟ้องด้วย values.dps (แทน yieldPlan)', v2Far.join(' | '));
+  ok(v2Far.some((s) => /^values\.bvps 40 →/.test(s)), 'snapshotDiff v2: มี values.bvps → เตือนให้ตรวจ P/BV เอง (vendor ไม่ส่งค่านี้ในบล็อก แทน pbvPlan)', v2Far.join(' | '));
+  ok(v2Far.every((s) => !/^เป้านักวิเคราะห์/.test(s) && !/^ปันผล %/.test(s) && !/^P\/BV ใบ/.test(s)), 'snapshotDiff v2: ไม่ใช้ข้อความรูปแบบ v1 (targetCells/yieldPlan/pbvPlan อ่าน HTML) อีกต่อไป', v2Far.join(' | '));
+
+  const v2Same = Pp.snapshotDiff(V2_SNAP_HTML, null, { lo52: null, hi52: null, target: 205, divYieldPct: 1, analysts: null });
+  ok(!v2Same.some((s) => /^values\.analystTgt/.test(s)) && !v2Same.some((s) => /^values\.dps/.test(s)), 'snapshotDiff v2: values ตรงกับ vendor (ในเกณฑ์) → ไม่ฟ้อง analystTgt/dps', v2Same.join(' | '));
+
   const tpl = fs.readFileSync(path.join(ROOT, '_template', 'agent-prompt.md'), 'utf8');
   const p = Pp.assemblePrompt(tpl, { SYMBOL: 'AAPL', MARKET: 'US', MODE: 'UPDATE-LIGHT', WORKTREE: '/wt', CURRENT_TAGS: 'consumer-tech', MEDIANS: '=== ตัวคูณมัธยฐานย้อนหลัง: AAPL ===\n  ★ มัธยฐาน 28.0x', FUNDAMENTALS: PREP_OUT }, Pp.extraBlock({ sym: 'AAPL', mode: 'UPDATE-LIGHT', prePatched: '2026-09-11', oldPrice: 297.21, price: 301.5, baseEPS: 7.1, epsTTM: 7.36, epsScreen: 3.66, snap: ['เป้า ใบ 300 · vendor 312'], medWarn: [], hard: false, hardWhy: '' }));
   // ★ ตรวจ token ค้างบน prompt ที่ "ถอดบล็อก FUNDAMENTALS ออกแล้ว" — ตัว prep-stock เองพิมพ์คำว่า
@@ -939,7 +969,10 @@ function testApplyEditsStdin(ok) {
 </head><body></body></html>
 `;
   const AT_BLOCK = '@@\n"accent": "#000000"\n@@=\n"accent": "#111111"\n@@end\n';
-  const N = 20, DELAY_MS = 800; // > 500ms เดิม (STDIN_GRACE_MS ของ fix1 ที่ถูกถอดออกแล้ว) — พิสูจน์ว่าไม่มี window อีกต่อไป
+  // ★ ระยะ 2 ส่วน B (banked จากรีวิวก่อนหน้า): N เดิม = 20 ตอนบั๊กยังเป็น timeout scheme ที่ probabilistic —
+  //   ตอนนี้กลไกเป็น --stdin + blocking read รอ EOF จริง (deterministic ต่อรอบ) เทสนี้เลยคุ้มครอง "การออกแบบ"
+  //   (ห้ามถอยกลับไปใช้ timeout) ไม่ใช่ล่าจังหวะสุ่ม ⇒ 3 รอบจับได้เท่ากับ 20 · ตัดเวลาจาก ~15s เหลือ ~2.4s (N × DELAY_MS)
+  const N = 3, DELAY_MS = 800; // > 500ms เดิม (STDIN_GRACE_MS ของ fix1 ที่ถูกถอดออกแล้ว) — พิสูจน์ว่าไม่มี window อีกต่อไป
 
   // (a) --stdin + producer หน่วง 800ms (จุดที่ fix1 พังแน่นอน 6/6) ต้องไม่ทำให้บล็อก @@ หายไป — วนซ้ำ N รอบ
   const oneDelayedRun = (i) => new Promise((resolve) => {
