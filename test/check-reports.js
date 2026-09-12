@@ -101,22 +101,11 @@ function firstNum(s) {
 }
 function grab(re, h) { const m = String(h).match(re); return m ? m[1] : null; }
 
+// parser หมวด 6 ชุดเดียวทั้งรีโป (code-audit §2.5) — ตัวตรวจ (นี่) กับตัวเขียน (`DV.scenarioBlock`)
+// ต้องเห็นคอลัมน์ชุดเดียวกัน ⇒ ย้าย regex ไปอยู่ที่ `tools/derived-values.js` ที่เดียว (`DV.scenarioColumns`)
+// คง `parseScenarios` ไว้เป็น wrapper เพื่อ export เดิม (`tools/spotcheck.js` + เทสที่มีอยู่เรียกชื่อนี้)
 function parseScenarios(html) {
-  const parts = html.split(/<div class="col\s+(?:bear|base|bull)"/);
-  const cols = [];
-  for (let i = 1; i < parts.length && cols.length < 3; i++) {
-    const seg = parts[i];
-    cols.push({
-      tgt: firstNum(grab(/<div class="tgt">([\s\S]*?)<\/div>/, seg)),
-      eps: firstNum(grab(/EPS ปี 3<\/span>\s*<span>([\s\S]*?)<\/span>/, seg)),
-      pe: firstNum(grab(/P\/E ออก<\/span>\s*<span>([\s\S]*?)<\/span>/, seg)),
-      g: firstNum(grab(/EPS\s*([+\-−]?[0-9.]+)\s*%\s*\/\s*ปี/, norm(seg))),
-      ret: firstNum(grab(/class="ret[^"]*">([\s\S]*?)<\/div>/, seg)),
-      // ปันผลรวม 3 ปีของฉากนั้น — การ์ด scenario ประกาศหัวข้อว่า "รวมปันผล" ⇒ ช่องราคาเป้าคือ EPS×P/E + ปันผลสะสม
-      div: firstNum(grab(/ปันผลรวม 3 ปี<\/span>\s*<span>([\s\S]*?)<\/span>/, seg)),
-    });
-  }
-  return cols;
+  return DV.scenarioColumns(html);
 }
 
 // แต่ละวิธีประเมินมูลค่า (.vmethod) → { name, desc, val }

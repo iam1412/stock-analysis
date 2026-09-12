@@ -596,6 +596,26 @@ reject('W14', addCard('4. EV/EBITDA', 'EBITDA $4.0B (mid-point FY2026 $3.6B guid
   // ทำให้ทั้งหมวด 6 สอดคล้องกับราคา p — จำลอง "ใบที่ค้างจากจุดเข้า p" (ค้างพร้อมกันทั้ง 3 คอลัมน์ เหมือนของจริง)
   // patchDerived ไม่แตะราคาใน header ⇒ at(130) = ไฟล์ที่ header ยัง ฿189.50 แต่ฉากคิดจากจุดเข้า ฿130
   const at = (p) => DV.patchDerived(base, p).html;
+  // ── parser หมวด 6 ชุดเดียว (code-audit §2.5): ตัวตรวจกับตัวเขียนต้องเห็นคอลัมน์ชุดเดียวกัน ──
+  {
+    const cols = DV.scenarioColumns(base);
+    ok(cols.length === 3 && cols.map((c) => c.kind).join() === 'bear,base,bull' && cols.every((c) => c.tgt > 0), 'scenarioColumns: BBL 3 คอลัมน์ bear/base/bull มีเป้า');
+    ok(JSON.stringify(cols.map(({ tgt, eps, pe, g, ret, div }) => ({ tgt, eps, pe, g, ret, div }))) === JSON.stringify(C.scenarios.map(({ tgt, eps, pe, g, ret, div }) => ({ tgt, eps, pe, g, ret, div }))), 'scenarioColumns = ctx.scenarios (gate ใช้ parser เดียวกัน)');
+    // (a) ช่องว่าง 2 ตัวใน class — ทั้งคู่ต้องเห็นเหมือนกัน (เห็นทั้งคู่ หรือไม่เห็นทั้งคู่)
+    const dbl = base.replace('<div class="col bear">', '<div class="col  bear">');
+    ok((DV.scenarioColumns(dbl).length === 3) === (DV.scenarioBlock(dbl) != null), '(a) class="col  bear": ตัวตรวจ/ตัวเขียนเห็นตรงกัน');
+    // (b) attribute หลัง kind
+    const attr = base.replace('<div class="col bear">', '<div class="col bear" id="x">');
+    ok((DV.scenarioColumns(attr).length === 3) === (DV.scenarioBlock(attr) != null), '(b) <div class="col bear" id=…>: เห็นตรงกัน');
+    // (c) col หลงอยู่นอก section scn — ต้องไม่นับ
+    const stray = base.replace('<footer>', '<div class="col bear"><div class="tgt">$1</div></div><footer>');
+    ok(DV.scenarioColumns(stray).length === 3, '(c) col นอก section scn ไม่ถูกนับ');
+    // (d) 4 คอลัมน์ — ตัวเขียนต้องเงียบ (null) ตัวตรวจต้องยังอ่านได้ 4 (E24/W01 ตรวจต่อ)
+    // ★ ต่อคอลัมน์ bull ที่ 4 หลัง 3 </div> ปิดตัว (body/col/scn wrapper) — ปรับจาก brief เพราะ
+    //   fixture จริงมี <p> คั่นก่อน </section> (ไม่ใช่ 3 </div> ตามด้วย </section> ทันที)
+    const four = base.replace(/(<div class="col bull">[\s\S]*?<\/div>\s*<\/div>\s*<\/div>)/, (m, a) => a + '<div class="col bull"><div class="tgt">$9</div></div>');
+    ok(four !== base && DV.scenarioBlock(four) == null && DV.scenarioColumns(four).length === 4, '(d) 4 คอลัมน์: ตัวเขียนเงียบ · ตัวตรวจอ่านได้ 4');
+  }
   const fresh = at(PX);
   const retOf = (h, kind) => (h.match(new RegExp(`<div class="col ${kind}">[\\s\\S]*?<div class="ret[^"]*">([^<]*)<`)) || [])[1] || '';
   const setIn = (kind, cls, txt) => (h) => h.replace(

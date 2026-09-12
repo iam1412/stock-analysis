@@ -261,7 +261,10 @@ const CONV_PP = 1.2;          // เกณฑ์ "จำแนก" cagr/linear �
 const PY_VOTE_RATIO = 2;      // สูตร %/ปี ของทั้งใบ: ฝั่ง linear ต้องเด็ดขาดกว่าฝั่ง CAGR ≥2 เท่าถึงชนะ (ไม่งั้น = CAGR ตาม prior คลัง)
 
 const SCN_ANCHOR = 'class="scn"';
-const SCN_COL_RE = () => /<div class="col ([a-z]+)">([\s\S]*?)(?=<div class="col |$)/g;
+// ★ regex เปิดคอลัมน์ตัวเดียวทั้งรีโป (ตัวตรวจ E24/W01/W17 + ตัวเขียน #7) — census 12 ก.ย. 69 (908 ใบ): notThree=0 dblSpace=0 attrs=0 stray=0
+//   ⇒ รวมเป็น regex เดียวได้โดยไม่เปลี่ยนผลของ E24/W01/W17 กับใบใดเลย (ดู task-7-report.md)
+const SCN_COL_OPEN = () => /<div class="col\s+(bear|base|bull)\b[^>]*>/g;
+const SCN_COL_RE = () => /<div class="col\s+([a-z]+)\b[^>]*>([\s\S]*?)(?=<div class="col\s|$)/g;
 const SCN_RET_RE = /(<div class="ret[^"]*">)([^<]*)(<\/div>)/;
 const SCN_TGT_RE = /<div class="tgt">\s*(?:[฿$]|C\$)?\s*([\d.,]+)/;
 // แถว "ปันผลรวม 3 ปี" ในคอลัมน์ — ค่าเงิน ไม่ใช่ %
@@ -339,6 +342,34 @@ function scenarioBlock(html) {
   if (!cols.every((c) => html.slice(c.at, c.at + c.text.length) === c.text)) return null;
   if (hint && html.slice(hint.at, hint.at + hint.num.length) !== hint.num) return null;
   return { a, z, sec, years, hint, cols };
+}
+
+/** คอลัมน์หมวด 6 สำหรับ **ตัวตรวจ** (E24/W01/`ctx.scenarios`) — อ่านทุกคอลัมน์ในส่วน scn ไม่จำกัด 3 (ตัวเขียนใช้ scenarioBlock ที่บังคับ 3) */
+function scenarioColumns(html) {
+  const h = String(html);
+  const i = h.indexOf(SCN_ANCHOR);
+  if (i < 0) return [];
+  const a = h.lastIndexOf('<section', i), z = h.indexOf('</section>', i);
+  const sec = a < 0 || z < 0 ? h.slice(i) : h.slice(a, z);
+  const grab = (re, s) => { const m = s.match(re); return m ? m[1] : null; };
+  const firstNum = (s) => { if (s == null) return null; const m = norm(s).replace(/,/g, '').match(/-?\d+(?:\.\d+)?/); return m ? parseFloat(m[0]) : null; };
+  const out = [];
+  let m;
+  const re = SCN_COL_RE();
+  while ((m = re.exec(sec))) {
+    if (!/^(bear|base|bull)$/.test(m[1])) continue;
+    const seg = m[2];
+    out.push({
+      kind: m[1],
+      tgt: firstNum(grab(/<div class="tgt">([\s\S]*?)<\/div>/, seg)),
+      eps: firstNum(grab(/EPS ปี 3<\/span>\s*<span>([\s\S]*?)<\/span>/, seg)),
+      pe: firstNum(grab(/P\/E ออก<\/span>\s*<span>([\s\S]*?)<\/span>/, seg)),
+      g: firstNum(grab(/EPS\s*([+\-−]?[0-9.]+)\s*%\s*\/\s*ปี/, norm(seg))),
+      ret: firstNum(grab(/class="ret[^"]*">([\s\S]*?)<\/div>/, seg)),
+      div: firstNum(grab(/ปันผลรวม 3 ปี<\/span>\s*<span>([\s\S]*?)<\/span>/, seg)),
+    });
+  }
+  return out;
 }
 
 /** ผลตอบแทนรวมที่ "คอลัมน์นี้กำลังพูด" — คืน null ถ้าอ่านไม่ชัด (โทเคนเกิน/ขาด) */
@@ -906,7 +937,7 @@ module.exports = {
   fmtLikeNum, cardRe, epsBasesOf, peCards, targetCells, basisFor, nearPE, patchDerived,
   // หมวด 6 (ผลตอบแทนฉาก 3 ปี) — W17 + ตัวซ่อม
   TOL_RET_PP, TOL_RET_REL, TOL_PY_PP, SCN_TIGHT, SCN_VOTE_RATIO, CONV_PP,
-  scenarioBlock, scenarioPlan, retTokens, retOff, pyOff, retWrite, retShown,
+  SCN_COL_OPEN, scenarioColumns, scenarioBlock, scenarioPlan, retTokens, retOff, pyOff, retWrite, retShown,
   // สมอตายวนกลับ — W18 + tools/spotcheck.js
   DA_GAP, DA_ANCHORED, deadAnchor,
   // ปันผล % + P/BV — W19/W20 + ตัวซ่อม
