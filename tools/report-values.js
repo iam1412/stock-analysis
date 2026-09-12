@@ -92,7 +92,9 @@ function derive(rd, sm) {
   return {
     cur, px, fv, mos, mosText, mosShown: parseFloat(mosText.replace('−', '-')), mosClass: mosBand(mos), upside,
     mos20: round(fv * 0.8, 2), mos30: round(fv * 0.7, 2),
-    chg: annualChg(rd.chart.data, v.chgSuffix),
+    // cron (tools/update-prices.js) ส่ง suffix แบบมีวงเล็บเสมอ ("(รอบปี)"/"(ตั้งแต่ IPO)") — E35 (test/check-reports.js)
+    // ก็ตรวจป้ายในรูปนั้น (ตัวอย่างในข้อความ error คือ "▲ +72.1% (รอบปี)") ⇒ ต้องห่อวงเล็บที่นี่ด้วย ให้ .chg ตรงรูปเดียวกับที่ cron เขียน
+    chg: annualChg(rd.chart.data, '(' + v.chgSuffix + ')'),
     priceDate: { ...pd, iso: v.priceDate, text: PD.renderThaiDate(pd.day, pd.monIdx, pd.yearCE, true) },
     pe: isNum(v.eps) && v.eps > 0 ? px / v.eps : null,
     mcap: isNum(v.shares) ? px * v.shares : null,

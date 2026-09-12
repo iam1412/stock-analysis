@@ -17,7 +17,8 @@ const rd = () => ({
 // ── derive ──
 // หมายเหตุ: mosText/upside ใช้ DV.fmtMos ของจริง (abs>=2% → ปัดเป็นจำนวนเต็ม) ⇒ 3.59%/3.72% ปัดเป็น "+4%" ทั้งคู่
 // (ไม่ใช่ "+3.6%"/"+3.7%" ตามค่า sm.mos/sm.upside ที่เป็นแค่ fixture คนละที่มา) — แก้ค่าคาดหวังให้ตรงกติกาจริงของ DV.fmtMos
-// เช่นเดียวกับ chg.text: annualChg ของจริง (ย้ายมาเป๊ะจาก update-prices.js) ไม่ใส่วงเล็บรอบ suffix
+// chg.text: derive() ห่อ v.chgSuffix ด้วยวงเล็บก่อนส่งเข้า annualChg (cron ส่ง '(รอบปี)'/'(ตั้งแต่ IPO)' เสมอ — E35 ตรวจรูปนี้)
+// ⇒ "▲ +25.3% (รอบปี)" มีวงเล็บ · ส่วน RV.annualChg ที่เรียกตรง (ท้ายไฟล์นี้) รับ suffix ดิบตามที่ผู้เรียกส่งมา ไม่ได้ห่อเอง
 {
   const d = RV.derive(rd(), sm);
   assert(d.cur === '฿', 'cur จาก stock-meta.currency');
@@ -25,7 +26,7 @@ const rd = () => ({
   assert(d.mosClass === 'bad', 'mosClass bad (<10)');
   assert(d.mos20 === 156 && d.mos30 === 136.5, 'mos20/30');
   assert(Math.abs(d.upside - 3.7234) < 0.01, 'upside numeric: ' + d.upside);
-  assert(d.chg.text === '▲ +25.3% รอบปี' && d.chg.dir === 'up', 'chg จาก chart.data: ' + d.chg.text);
+  assert(d.chg.text === '▲ +25.3% (รอบปี)' && d.chg.dir === 'up', 'chg จาก chart.data: ' + d.chg.text);
   assert(d.priceDate.text === '11 ก.ย. 2569', 'priceDate พ.ศ.: ' + d.priceDate.text);
   assert(Math.abs(d.pe - 188 / 21.7) < 1e-9 && Math.abs(d.mcap - 188 * 1909e6) < 1 && Math.abs(d.yield - 12 / 188 * 100) < 1e-9 && Math.abs(d.pbv - 188 / 260) < 1e-9, 'pe/mcap/yield/pbv');
   assert(Math.abs(d.ps - 188 * 1909e6 / 140e9) < 1e-9, 'ps');
@@ -52,7 +53,7 @@ const rd = () => ({
   assert(out.includes('<div class="px">฿188.00</div>'), 'px render: ' + out.slice(0, 40));
   assert(out.includes('<div class="big">+4%</div>') && out.includes('mos-verdict bad"'), 'mos/mosClass');
   assert(out.includes('value="188"') && out.includes('ราคา ณ 11 ก.ย. 2569'), 'pxNum/priceDate');
-  assert(out.includes('▲ +25.3% รอบปี'), 'chg');
+  assert(out.includes('▲ +25.3% (รอบปี)'), 'chg');
   assert(out.includes('฿195.00 ฿180.00–฿210.00 ฿156.00 ฿136.50 ฿205.00 (+9%)'), 'fv/กรอบ/mos20/30/analyst: ' + out);
   assert(out.includes(' 8.7x ') && out.includes('฿3.59 แสนล้าน') && out.includes(' 2.6x ') && out.includes(' 6.4% ') && out.includes(' 0.72x '), 'การ์ด derive: ' + out);
   assert(out.includes('~฿21.70 • รวมปันผล ฿160.00'), 'baseEps + scnNote + sc1tgt');
