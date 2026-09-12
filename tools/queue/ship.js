@@ -217,6 +217,12 @@ function closeIssueIfNoLlmRows(stocks, close, startedAt) {
 function status() {
   const s = S.load();
   const rows = Object.entries(s.stocks).filter(([, r]) => S.inRound(r, s.startedAt));   // (Task 21) แถวรอบเก่าไม่ใช่งานของรอบนี้
+  // ★ (รีวิว C) แถวที่ค้างจาก**รอบก่อน** ไม่ได้อยู่ใน X/Y และไม่บล็อกการปิด issue — ถ้าไม่พิมพ์ก็หายเงียบไปเลย
+  //   (เกิดได้ปกติ: flag ใหม่ของวันถัดมาเปิดรอบใหม่ ทิ้งงานที่ยังไม่ได้ทำของรอบก่อนไว้ข้างหลัง) · ไม่มี = ไม่พิมพ์บรรทัด
+  const stale = Object.entries(s.stocks)
+    .filter(([, r]) => !S.inRound(r, s.startedAt))
+    .filter(([, r]) => !r.skip && !r.shippedAt && ['LIGHT', 'FULL'].includes(r.bucket))
+    .map(([k]) => k);
   const pushed = rows.filter(([, r]) => r.shippedAt).map(([k]) => k);
   const waiting = rows.filter(([, r]) => !r.shippedAt && r.postcheck === 'pass').map(([k]) => k);
   const review = rows.filter(([, r]) => !r.shippedAt && r.postcheck === 'review').map(([k]) => k);
@@ -237,6 +243,7 @@ function status() {
   console.log(`ไม่ใช้ agent/ข้าม ${other.length}: ${other.join(' ') || '-'}`);
   console.log(`pre-patch อย่างเดียว (ไม่ส่ง LLM) ${prepatchOnly.length}: ${prepatchOnly.map(([k, r]) => k + (r.prepatchShippedAt ? '✓' : '')).join(' ') || '-'}`);
   console.log(`pre-patch push แล้ว ${prepatchShipped.length}: ${prepatchShipped.join(' ') || '-'}`);
+  if (stale.length) console.log(`ค้างจากรอบก่อน ${stale.length}: ${stale.join(' ')}`);
 }
 
 module.exports = { shipStock, shipPrepatch, status, commitMessage, commitArgs, trailer, resolveModel, closeIssueIfEmpty, closeIssueIfNoLlmRows, prepatchBlockers, prepatchCandidates, parsePorcelain, pendingCommitFor, STOCK_FILES, TITLE };

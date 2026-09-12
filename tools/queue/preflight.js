@@ -128,16 +128,29 @@ function renderTable(rows) {
  * ใบที่ ship แล้วแล้วโดน flag ใหม่จะถูกนับว่า push แล้ว · `ship <SYM>` ผ่าน guard postcheck ของรอบก่อน ·
  * `ship --prepatch` ปิด issue ทั้งที่ใบนั้นยังต้องส่ง LLM
  *
- * นิยาม: **รอบใหม่ = มี flag จริงอย่างน้อย 1 ตัวที่ `flaggedAt` ใหม่กว่า `s.startedAt` ที่เก็บไว้**
- *        `startedAt` ใหม่ = `flaggedAt` ที่ **เก่าสุด** ในกลุ่มที่ใหม่กว่านั้น (ไม่ใช่ `today` ไม่ใช่ค่ามากสุด —
+ * นิยาม: **รอบใหม่ = มี flag จริงอย่างน้อย 1 ตัวที่ "ใหม่จริง" คือ `isNewFlag(แถวที่ state จำไว้, แถวรอบนี้)`**
+ *        (= `flaggedAt` ไม่เท่ากับที่ state บันทึกไว้ — เกณฑ์เดียวกับที่ `upsertRow` ใช้ล้าง `ROUND_FIELDS`)
+ *        `startedAt` ใหม่ = `flaggedAt` ที่ **เก่าสุด** ในกลุ่มนั้น (ไม่ใช่ `today` ไม่ใช่ค่ามากสุด —
  *        ไม่งั้น flag ที่ cron เขียนคนละวันแต่ยังเป็นรอบเดียวกันจะตกขอบทันทีที่เขียนแถวแรก)
+ * ★ **ไม่มี flag ใหม่ถูกเขียน = `startedAt` ห้ามขยับ** (รีวิว C) — เดิมใช้เกณฑ์ "`flaggedAt` > `prev`" ล้วน ซึ่งพังทันที
+ *   ที่คิวถือ flag จาก ≥2 วันต่างกัน: A 09-01 + B 09-03 ไม่เปลี่ยนเลย → รัน 1 ได้ `startedAt` 09-01 (เข้ารอบทั้งคู่)
+ *   → รัน 2 ขยับเป็น 09-03 เพราะ B ยัง "> prev" อยู่ ⇒ A หลุดรอบทั้งที่ยังค้าง (หายจาก `status()` + ไม่บล็อก
+ *   `closeIssueIfNoLlmRows` ⇒ `ship --prepatch` ปิด issue ทับงานที่ยังไม่ได้ทำ) · `flaggedAt` ของ reason เดิมอยู่ข้ามวัน
+ *   ที่ cron รัน จึงเป็นสภาพปกติ ไม่ใช่เคสประหลาด
+ * ★ เงื่อนไข `flaggedAt > prev` ยังคงไว้เป็นตัวประกบ (flag ที่ cron เขียนจริงมี `flaggedAt` = วันนั้นเสมอ ⇒ ≥ `prev`
+ *   อยู่แล้ว ⇒ ไม่เปลี่ยนพฤติกรรมจริง) — กันรอบเปิดถอยหลังเมื่อ state/flag ไม่สอดคล้องกัน และคง semantics ของเทส
+ *   3-argument เดิมไว้ (ไม่ส่ง `stocks` = "ยังไม่เคยจำแถวไหน" ⇒ ทุกแถวถือว่าใหม่)
  * ★ **แถวสังเคราะห์จากคิวอายุไม่นับ** — ไม่ใช่ flag (ไม่ได้อยู่ใน `price-flags.json`) และ preflight สร้างใหม่ด้วย
  *   `flaggedAt = วันนี้` ทุกครั้ง ⇒ ถ้านับ รอบจะรีเซ็ตเองทุกวันที่รัน preflight แม้คิวไม่เปลี่ยนเลย แล้วงานที่ยัง
  *   ค้างจากรอบก่อน (flag ถูก --force ล้างไปตอน pre-patch แล้ว) จะหลุดออกนอกรอบกลางคัน
  * ★ ไม่มี flag ใหม่เลย = รอบเดิม (คง `startedAt`) · ยังไม่เคยมีรอบและไม่มี flag = วันนี้
+ * @param {object} [stocks] แถวที่ state จำไว้ (`s.stocks`) — ต้องส่ง**ก่อน** loop `upsertRow` ไม่งั้นทุกแถวจะดูเหมือนเดิมหมด
  */
-function roundStart(rows, prev, today) {
-  const fresh = (rows || []).filter((r) => !r.synthetic && r.flaggedAt && (!prev || r.flaggedAt > prev)).map((r) => r.flaggedAt);
+function roundStart(rows, prev, today, stocks) {
+  const known = stocks || {};
+  const fresh = (rows || [])
+    .filter((r) => !r.synthetic && r.flaggedAt && isNewFlag(known[r.symbol], r) && (!prev || r.flaggedAt > prev))
+    .map((r) => r.flaggedAt);
   return fresh.length ? fresh.reduce((a, b) => (a < b ? a : b)) : (prev || today || null);
 }
 
@@ -213,7 +226,7 @@ function preflight(opts) {
     console.log('   (แถวอายุเป็นงานเสริม ไม่ได้อยู่ใน price-flags.json — ship --prepatch จะรายงานว่ายังเหลือแถวต้องส่ง LLM จนกว่าจะทำจบ หรือตัดออกด้วย --no-age)');
   }
   const s = S.load();
-  s.startedAt = roundStart(rows, s.startedAt || null, today);
+  s.startedAt = roundStart(rows, s.startedAt || null, today, s.stocks);   // ★ ก่อน upsertRow — ต้องเทียบกับแถวที่ state จำไว้
   for (const r of rows) s.stocks[r.symbol] = upsertRow(s.stocks[r.symbol], r);
   S.save(s);   // บันทึก snapshot ก่อน pre-patch — patch ล้มก็ต้องเหลือราคาเดิมให้ postcheck ใช้
   const t = patchTargets(rows, { usOpen: usSessionOpen(), setOpen: setSessionOpen(), allowIntraday: !!o.allowIntraday });
