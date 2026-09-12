@@ -85,7 +85,8 @@ function validateValues(rd, sm) {
   if (rd.gauge && rd.gauge.cur != null) throw new Error('v2 ห้ามมี gauge.cur — engine ใช้ values.px (สำเนาเดียว)');
   if (rd.gauge && rd.gauge.fair != null) throw new Error('v2 ห้ามมี gauge.fair — engine ใช้ fv (สำเนาเดียว)');
   if (rd.chart && rd.chart.fairLine != null) throw new Error('v2 ห้ามมี chart.fairLine — engine ใช้ fv (สำเนาเดียว)');
-  if (!sm || !CUR_SYMBOL[sm.currency]) throw new Error(`stock-meta.currency ต้องเป็น USD/THB (สัญลักษณ์หน้าราคา render จากตรงนี้) — พบ ${JSON.stringify(sm && sm.currency)}`);
+  if (!sm) throw new Error('ไม่มีบล็อก stock-meta หรือ JSON เสีย — v2 ต้องใช้ stock-meta.currency ในการ render');
+  if (!CUR_SYMBOL[sm.currency]) throw new Error(`stock-meta.currency ต้องเป็น USD/THB (สัญลักษณ์หน้าราคา render จากตรงนี้) — พบ ${JSON.stringify(sm.currency)}`);
   return v;
 }
 function derive(rd, sm) {

@@ -169,8 +169,12 @@ function validateReportData(d) {
   const need = (v, p) => { if (typeof v !== 'number' || !isFinite(v)) throw new Error(`report-data.${p} ต้องเป็นตัวเลข — พบ ${JSON.stringify(v)}`); };
   if (!d || typeof d !== 'object' || Array.isArray(d)) throw new Error('report-data ต้องเป็น JSON object');
   // ── ระยะ 2: v2 = strict keys + values (validateValues ตรวจ values/fv/ห้าม gauge.cur ฯลฯ — ตรงนี้ตรวจแค่ "โครง") ──
+  // ★ ที่นี่คือด่านตรวจแรกที่ build path เจอ (expandReport → validateReportData) — tools/report-values.js
+  //   validateValues() (เรียกจากภายใน RV.renderValues ก่อน derive) เป็นด่านที่สอง ระดับโมดูล ตรวจ values ลึกกว่านี้
+  //   (schema รายคีย์/fv>0/ห้าม gauge.cur ฯลฯ)
   const V2 = RV.isV2(d);
   if (V2) {
+    if (!d.values || typeof d.values !== 'object') throw new Error('report-data v2 ต้องมี values (object)');
     const TOP = ['v', 'fv', 'values', 'theme', 'chart', 'gauge'];
     for (const k of Object.keys(d)) if (!TOP.includes(k)) throw new Error(`report-data.${k} ไม่อยู่ใน schema v2 (คีย์ระดับบนที่รู้จัก: ${TOP.join(', ')})`);
     const CH = ['data', 'min', 'max', 'grid', 'currency', 'highlight', 'gridFmt', 'dataFmt'], GA = ['min', 'max', 'fairLabelTop'];
@@ -227,14 +231,13 @@ function expandReport(html) {
   try { data = JSON.parse(m[1]); } catch (e) { throw new Error('expandReport: report-data JSON ไม่ถูกต้อง: ' + e.message); }
   validateReportData(data);
   // ── ระยะ 2: v2 render ตัวเลขทุกสำเนาจาก values ก่อนแทน marker (decorateReport/injectTA ทำงานบนผลลัพธ์นี้) ──
-  let body = html;
+  let doc = html;
   if (RV.isV2(data)) {
     const sm = RM.readStockMeta(html);
-    RV.validateValues(data, sm);
-    body = RV.renderValues(html, data, sm);
+    doc = RV.renderValues(html, data, sm);   // renderValues ตรวจ validateValues(data, sm) เองแล้วก่อน derive — ไม่ต้องเรียกซ้ำตรงนี้
   }
   // function replacer → ไม่ตีความ $ ในค่าแทนที่ (engine/CSS มี $)
-  return body
+  return doc
     .replace('<!--TEMPLATE:STYLE-->', () => renderHead(data.theme))
     .replace('<!--TEMPLATE:ENGINE-->', () => renderEngine(data));
 }
@@ -345,7 +348,10 @@ function injectFooterCopyright(html) {
 function injectTA(html, symbol, rd, meta, taAsset) {
   if (!rd) return html;                       // รายงาน legacy (ไม่มี report-data) → ข้าม
   const cur = meta && meta.currency === 'THB' ? 'THB' : 'USD';
-  const px = rd.gauge && rd.gauge.cur || 0;
+  // rd ที่นี่เป็น report-data ดิบจาก parseJsonScript (ไม่ผ่าน validateReportData เสมอ) — v2 ไม่มี gauge.cur
+  // (สำเนาราคาเดียวอยู่ที่ values.px) ⇒ ต้องแยกอ่านตาม v2/v1 ไม่งั้นราคา <1 ของ v2 (เช่น HENG/NRF/RS/S/VGI)
+  // จะอ่านได้ 0 แล้ว dec ตกเป็น 2 ตำแหน่งผิด (ควรเป็น 4)
+  const px = (RV.isV2(rd) ? (rd.values && rd.values.px) : (rd.gauge && rd.gauge.cur)) || 0;
   const dec = px && px < 1 ? 4 : 2;
   const t = { ...THEME_DEFAULTS, ...(rd.theme || {}) };
   const cfg = { sym: symbol, cur, fv: rd.fv, accent: t.accent, accentDark: t.accentDark, dec };

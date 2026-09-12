@@ -110,6 +110,12 @@ const rd = () => ({
   try { RV.renderValues('{{rd:pe}}', r, sm); } catch (e) { threw = e.message; }
   assert(/eps ≤ 0/.test(threw) && /pe/.test(threw), 'eps ≤ 0 → {{rd:pe}} throw ข้อความเจาะจง: ' + threw);
 }
+// ── validateValues: ไม่มี sm (ไม่มีบล็อก stock-meta / JSON เสีย) ต้อง throw ข้อความเจาะจง แยกจาก currency นอก USD/THB ──
+{
+  let threw = '';
+  try { RV.validateValues(rd(), null); } catch (e) { threw = e.message; }
+  assert(/stock-meta/.test(threw), 'sm ไม่มี (null) → throw กล่าวถึง stock-meta: ' + threw);
+}
 // ── validateValues ──
 {
   const bad = (mut, re, label) => { const r = rd(); mut(r); let t = ''; try { RV.validateValues(r, sm); } catch (e) { t = e.message; } assert(re.test(t), label + ': ' + t); };
