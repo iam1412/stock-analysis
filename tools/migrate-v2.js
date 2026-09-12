@@ -5,8 +5,11 @@
  * ระยะ 2 ส่วน C/E · spec A(ข) · manifest ระยะ 1 = สเปกของตัวนี้ (COPY_FIELDS)
  *
  * ต่อไฟล์: gate ต้องผ่านก่อน → สกัด values จาก extractor เจ้าของเดิม → แทนทุกจุดสำเนาด้วย {{rd:…}} → เขียน JSON v2
- *   → round-trip 2 ชั้น: (1) manifest บน expand(v1) เทียบ expand(v2) ทุกช่องใน COPY_FIELDS ตาม TOLERANCE
- *                         (2) ข้อความที่มองเห็น mask ตัวเลขแล้วต้องเท่ากัน (ต่างได้เฉพาะรูปตัวเลข)
+ *   → round-trip 2 ชั้น: (1) manifest บน expand(v1) เทียบ expand(v2) ทุกช่องใน COPY_FIELDS ตาม TOLERANCE — ชั้นนี้คุม "ค่า"
+ *                         (2) ข้อความที่มองเห็น mask "ทุกหลักตัวเลข" แล้วต้องเท่ากันเป๊ะ — คุมแค่ "รูปคำ/โครงสร้าง" เท่านั้น
+ *                             ★ mask ทุกหลัก ⇒ แยกรูปกับค่าไม่ได้ด้วยตัวเอง (ไม่ใช่ "ต่างได้เฉพาะรูปตัวเลข" อย่างที่เคยเขียน) —
+ *                             ค่าเป็นหน้าที่ของชั้น 1 ข้างบน (TOLERANCE ต่อ COPY_FIELDS) + สำมะโน (--census) ที่เปิดเผยผลต่างเล็กน้อย
+ *                             ที่ยอมรับแล้วแต่ชั้น 1/2 มองไม่เห็น เช่น %/ปี ของหมวด 6 (ดู maskText/stripVolatile/scnPyDiffs ด้านล่าง)
  *   → gate บน expand(v2) error 0 → footer/stock-meta ไม่เปลี่ยน → จึงเขียน
  * ตัดสินไม่ได้ (ฐานการ์ดหลายตัว/หมวด 6 อ่านไม่ชัด) = การ์ดนั้นคง literal (สถานะเดิม) · ช่องบังคับหาย/ไม่ตรง = ไม่ย้ายทั้งใบ (residue)
  *
@@ -170,6 +173,36 @@ const SCN_DPS_RE = new RegExp(`(ปันผล[^<]*<\\/span>\\s*<span>\\s*)[~�
 const HEADER_RE = /<header[\s\S]*?<\/header>/i;
 const DISC_RE = /<div class="disc">[\s\S]*?<\/div>/i;
 const FOOTER_RE = /<footer[\s\S]*<\/footer>/;
+
+// ── การเปิดเผย %/ปี ของหมวด 6 (review รอบ final F2) — ตัวหาข้อความ "%/ปี" ในช่อง .ret เพื่อสำมะโนเท่านั้น
+//   ไม่ใช่ตัวตัดสินย้าย/ไม่ย้าย (นั้นเป็นหน้าที่ TOLERANCE.f34/f35 อยู่แล้ว) — แค่ให้คนอ่านเห็นว่าใบไหนตัวเลขที่คนเห็นขยับ
+const SCN_RET_TEXT_RE = /<div class="ret[^"]*">([\s\S]*?)<\/div>/g;
+const PY_CELL_RE = /([+\-−]\s*[\d][\d.,]*%\/ปี)/;
+/**
+ * เทียบข้อความ "%/ปี" ต่อคอลัมน์ (bear/base/bull) ระหว่างหน้า expand v1 (exp0) กับ v2 (exp1)
+ * @returns {{col:string, before:string, after:string, kind:'form'|'value'}[]} เฉพาะคอลัมน์ที่ข้อความเปลี่ยนจริง
+ *   kind='form' เมื่อค่าก่อนย้ายปัดตามความละเอียดที่ v2 โชว์แล้วเท่ากับค่าหลังย้ายเป๊ะ (ต่างแค่ทศนิยมที่พิมพ์)
+ *   kind='value' เมื่อปัดแล้วยังไม่เท่ากัน (ค่าที่คนเห็นขยับจริง — ที่ยอมรับได้ตาม TOLERANCE.f34/f35 แต่ต้องเปิดเผย)
+ */
+function scnPyDiffs(exp0, exp1) {
+  const before = [...exp0.matchAll(SCN_RET_TEXT_RE)].map((m) => m[1]);
+  const after = [...exp1.matchAll(SCN_RET_TEXT_RE)].map((m) => m[1]);
+  if (before.length !== 3 || after.length !== 3) return [];      // รูปไม่ครบ 3 คอลัมน์ = ไม่ใช่ของที่ฟังก์ชันนี้ตัดสิน (ปล่อยให้ชั้นอื่นจับ)
+  const labels = ['bear', 'base', 'bull'];
+  const out = [];
+  for (let i = 0; i < 3; i++) {
+    const b = (before[i].match(PY_CELL_RE) || [])[0] || null;
+    const a = (after[i].match(PY_CELL_RE) || [])[0] || null;
+    if (b === a) continue;                                       // ทั้งคู่ null (ไม่มี %/ปี) หรือข้อความเท่ากันเป๊ะ = ไม่เปลี่ยน
+    let kind = 'value';
+    if (b != null && a != null) {
+      const bn = numOf(b), an = numOf(a), dec = decOf(an);
+      if (bn != null && an != null && parseFloat(bn.toFixed(dec)) === an) kind = 'form';
+    }
+    out.push({ col: labels[i], before: b, after: a, kind });
+  }
+  return out;
+}
 
 // ── ชั้น 1: สกัดค่า ────────────────────────────────────────────────────────────
 /**
@@ -573,7 +606,9 @@ function tokeniseCards(t, values, info) {
 const V_ORDER = ['px', 'priceDate', 'dateEra', 'chgSuffix', 'fvLow', 'fvHigh', 'analystTgt', 'eps', 'shares', 'revenue', 'dps', 'bvps', 'baseEps', 'scenarios', 'scnBasis'];
 const CHART_KEYS = ['data', 'min', 'max', 'grid', 'currency', 'highlight', 'gridFmt', 'dataFmt'];
 const GAUGE_KEYS = ['min', 'max', 'fairLabelTop'];
-function writeJson(html, rd0, values, fv, notes) {
+// ★ ชื่อเดิม writeJson ทำให้อ่านผิดว่ามี I/O — ฟังก์ชันนี้ **ไม่เขียนไฟล์** เป็นแค่ string builder (คืน html ใหม่ใน memory)
+//   ผู้เขียนไฟล์จริงมีที่เดียวคือ main()/runFixture() ที่ `fs.writeFileSync` ตรง ๆ (ดู Q1 ของ review: ไฟล์นี้ไม่มี write อื่นแอบซ่อน)
+function buildRd(html, rd0, values, fv, notes) {
   const dropped = [];
   const pick = (o, keys, where) => {
     const out = {};
@@ -676,7 +711,10 @@ function verifyPair(src, out, name, exp0, ctx0, values, notes) {
     : bad.length ? 'ค่าไม่ตรงชั้น 1: ' + bad.map((c) => `${c.field} ${JSON.stringify(c.a)}→${JSON.stringify(c.b)}`).join(' ; ')
       : !masked ? 'ข้อความที่มองเห็นเปลี่ยน (ชั้น 2): ' + maskedDiff
         : !footerOk ? 'footer เปลี่ยน' : !smOk ? 'stock-meta เปลี่ยน' : strippedBad;
-  return { compare, masked, maskedDiff, gateOk, footerOk, smOk, reason, exp1 };
+  // ★ เปิดเผยผลต่าง %/ปี ที่คนเห็น (review final item 2) — คำนวณเสมอ (ไม่ผูกกับ gateOk/bad/masked) เพราะเป็นการ
+  //   "เปิดเผย" ไม่ใช่เกณฑ์ผ่าน/ตก ผู้เรียก (census) เป็นคนเลือกว่าจะรายงานเฉพาะใบที่ ok เท่านั้น
+  const pyChanges = scnPyDiffs(exp0, exp1);
+  return { compare, masked, maskedDiff, gateOk, footerOk, smOk, reason, exp1, pyChanges };
 }
 
 // ── API หลัก ──────────────────────────────────────────────────────────────────
@@ -685,8 +723,10 @@ function verifyPair(src, out, name, exp0, ctx0, values, notes) {
  * @param {string} name  ชื่อไฟล์ เช่น "AAPL.html"
  * @param {{today?:string}} [opts]  today = ตรึง "วันนี้" ให้ E27/W09 (เทส/คลังแช่แข็ง)
  * @returns {{ok:boolean, reason?:string, out?:string, values?:object, sites:{tokenised:string[],literal:string[]},
- *            compare:{field:string,a:*,b:*,ok:boolean}[], notes:string[], masked:boolean, maskedDiff:string}}
+ *            compare:{field:string,a:*,b:*,ok:boolean}[], notes:string[], masked:boolean, maskedDiff:string,
+ *            pyChanges:{col:string,before:string,after:string,kind:'form'|'value'}[]}}
  *   ★ `masked`/`maskedDiff` เป็นสมาชิกของสัญญา — ชั้น 2 คือคุณสมบัติความปลอดภัยหลักของการย้าย ผู้เรียกต้องเห็นได้
+ *   ★ `pyChanges` = การเปิดเผย %/ปี ของหมวด 6 ที่คนเห็นเปลี่ยน (review final item 2) — ไม่ใช่เกณฑ์ผ่าน/ตก แค่ให้ census บันทึก
  */
 function migrateOne(src, name, opts) {
   const o = opts || {};
@@ -714,7 +754,7 @@ function migrateOne(src, name, opts) {
 function runOnce(src, name, noScn, st) {
   const notes = [];
   const sites = { tokenised: [], literal: [] };
-  const fail = (reason) => ({ ok: false, reason, sites, compare: [], notes, masked: false, maskedDiff: '' });
+  const fail = (reason) => ({ ok: false, reason, sites, compare: [], notes, masked: false, maskedDiff: '', pyChanges: [] });
   try {
     const rdS = RM.readReportData(src);
     if (rdS.ok && RV.isV2(rdS.data)) return fail('เป็น v2 แล้ว — ข้าม');
@@ -733,10 +773,10 @@ function runOnce(src, name, noScn, st) {
     if (tk.reason) return fail(tk.reason);
     for (const s of REQUIRED_SITES) if (!sites.tokenised.includes(s)) return fail(`site บังคับ ${s} ไม่ได้แทน`);
 
-    const out = writeJson(tk.out, ex.info.rd, ex.values, ex.fv, notes);
+    const out = buildRd(tk.out, ex.info.rd, ex.values, ex.fv, notes);
     const v = verifyPair(src, out, name, exp0, ctx0, ex.values, notes);
-    if (v.reason && !v.compare) return { ok: false, reason: v.reason, sites, compare: [], notes, masked: false, maskedDiff: '' };
-    const res = { ok: !v.reason, reason: v.reason || undefined, out, values: ex.values, sites, compare: v.compare, notes, masked: v.masked, maskedDiff: v.maskedDiff };
+    if (v.reason && !v.compare) return { ok: false, reason: v.reason, sites, compare: [], notes, masked: false, maskedDiff: '', pyChanges: [] };
+    const res = { ok: !v.reason, reason: v.reason || undefined, out, values: ex.values, sites, compare: v.compare, notes, masked: v.masked, maskedDiff: v.maskedDiff, pyChanges: v.pyChanges };
     if (!res.ok) delete res.out;
     return res;
   } catch (e) {
@@ -748,6 +788,8 @@ function runOnce(src, name, noScn, st) {
 function renderCensusMd(entries) {
   const byReason = new Map(), byLiteral = new Map(), eraFiles = [];
   let ok = 0;
+  let pyFormCells = 0;
+  const pyValueBySym = new Map();                    // sym → [{col,before,after}] เฉพาะ kind='value'
   for (const f of entries) {
     if (f.ok) ok++;
     else { const r = shortReason(f.reason); const e = byReason.get(r) || []; e.push(f.sym); byReason.set(r, e); }
@@ -757,9 +799,15 @@ function renderCensusMd(entries) {
     for (const n of f.notes || []) { const m = /^literal ([A-Za-z0-9]+): ([\s\S]*)$/.exec(n); if (m) whyOf.set(m[1], m[2].replace(/-?[0-9][0-9.,]*/g, 'N').slice(0, 60)); }
     for (const l of new Set(f.literal || [])) { const k = l + (whyOf.has(l) ? ' — ' + whyOf.get(l) : ''); const e = byLiteral.get(k) || []; e.push(f.sym); byLiteral.set(k, e); }
     if ((f.notes || []).some((n) => n.startsWith('dateEra normalize'))) eraFiles.push(f.sym);
+    // ★ item 2 (review final): เปิดเผยผลต่าง %/ปี ของหมวด 6 ที่คนเห็นเปลี่ยน — เฉพาะใบที่ย้ายได้ (f.ok)
+    if (f.ok) for (const c of f.pyChanges || []) {
+      if (c.kind === 'form') pyFormCells++;
+      else { const e = pyValueBySym.get(f.sym) || []; e.push(c); pyValueBySym.set(f.sym, e); }
+    }
   }
   const rows = (m) => [...m.entries()].sort((a, b) => b[1].length - a[1].length)
     .map(([k, v]) => `| ${k} | ${v.length} | ${v.slice(0, 10).join(' ')}${v.length > 10 ? ' …' : ''} |`).join('\n');
+  const pyValueCells = [...pyValueBySym.values()].reduce((n, v) => n + v.length, 0);
   return [
     '# census การย้าย v1 → v2 (ระยะ 2 ส่วน C)',
     '',
@@ -771,6 +819,18 @@ function renderCensusMd(entries) {
     '', '## ใบที่ศักราชของ .disc ต่างจากหัวรายงาน (note `dateEra normalize`)', '',
     eraFiles.length ? eraFiles.map((s) => `- ${s}`).join('\n') : '- (ไม่มี)',
     '',
+    '## ผลตอบแทนฉาก %/ปี ที่ข้อความเปลี่ยนหลังย้าย (หมวด 6 · เปิดเผยเท่านั้น ไม่ใช่เกณฑ์ผ่าน/ตกใหม่ — ดู TOLERANCE.f34/f35)',
+    '',
+    `| ชนิด | จุด (คอลัมน์) | ใบ |`, `|---|---|---|`,
+    `| รูปเลขเปลี่ยนแต่ค่าเท่าเดิม (form) | ${pyFormCells} | — |`,
+    `| ค่าจริงขยับ (value) | ${pyValueCells} | ${pyValueBySym.size} |`,
+    '',
+    pyValueBySym.size ? '### ใบที่ %/ปี ขยับค่าจริง (ก่อน → หลัง ต่อคอลัมน์)' : '### ใบที่ %/ปี ขยับค่าจริง',
+    '',
+    pyValueBySym.size
+      ? [...pyValueBySym.entries()].map(([sym, cs]) => `- ${sym}: ` + cs.map((c) => `${c.col} ${c.before} → ${c.after}`).join(' · ')).join('\n')
+      : '- (ไม่มี)',
+    '',
   ].join('\n');
 }
 // รวมเหตุผลชนิดเดียวกันเป็นแถวเดียว — ตัดตัวเลข/ชื่อช่องทิ้งก่อนนับ ("legend แสดง 53 แต่ FV = 56" กับ
@@ -779,21 +839,39 @@ const shortReason = (r) => String(r || '').split(/[:(]/)[0].replace(/-?[0-9][0-9
 
 // ── --fixture: แช่แข็ง v2 ของ fixture v1 (test/fixtures/{AAPL,BBL}.html) — ไม่แตะ reports/ ไม่แตะ v1 fixture ──
 // ★ migrator เขียนไฟล์เองแทนการ copy/แก้มือ (Task 9) — อ่านจาก test/fixtures/{AAPL,BBL}.html เขียน `-v2.html` ข้าง ๆ
+// ★ all-or-nothing จริง (review F-อะตอมมิก): สร้างทั้งคู่ใน memory ก่อน เขียนไฟล์ก็ต่อเมื่อ **ทั้งคู่** ผ่าน
+//   เดิมเขียน AAPL-v2 เสร็จก่อนจะลองย้าย BBL — ถ้า BBL ตก ข้อความ "ไม่เขียนไฟล์ที่เหลือ" จะโกหก (AAPL-v2 เขียนไปแล้ว)
 function runFixture() {
   const FX = require('../test/fixtures');
   const syms = ['AAPL', 'BBL'];
-  let ok = 0;
-  for (const sym of syms) {
-    const src = FX[sym]();
-    const r = migrateOne(src, sym + '.html', { today: FX.TODAY });
-    if (!r.ok) { console.log(`✗ ${sym}: ${r.reason}`); continue; }
+  const results = syms.map((sym) => ({ sym, r: migrateOne(FX[sym](), sym + '.html', { today: FX.TODAY }) }));
+  const bad = results.filter((x) => !x.r.ok);
+  if (bad.length) {
+    for (const { sym, r } of results) console.log(r.ok ? `✓ ${sym} (ยังไม่เขียน — all-or-nothing)` : `✗ ${sym}: ${r.reason}`);
+    console.log(`\nfixture: ${results.length - bad.length}/${syms.length} — ไม่ครบ ไม่ได้เขียนไฟล์ไหนเลย (all-or-nothing)`);
+    return 1;
+  }
+  for (const { sym, r } of results) {
     const outPath = FX.PATH[sym].replace(/\.html$/i, '-v2.html');
     fs.writeFileSync(outPath, r.out);
     console.log(`✓ ${sym} → ${path.basename(outPath)}`);
-    ok++;
   }
-  console.log(`\nfixture: ${ok}/${syms.length}${ok === syms.length ? '' : ' — ไม่ครบ ไม่เขียนไฟล์ที่เหลือ'}`);
-  return ok === syms.length ? 0 : 1;
+  console.log(`\nfixture: ${syms.length}/${syms.length}`);
+  return 0;
+}
+
+// ★ item 1 (review final): สำมะโนต้องทนต่อการรันซ้ำ — Part E รีทราย batch เดิมเป็นปกติ (แก้ไฟล์แล้วรันใหม่)
+//   เดิม `prev.push(...)` ล้วน ๆ ⇒ แบตช์เดิมถูกนับซ้ำทุกครั้งที่รีรัน (วัดจริง: AEM ขึ้นสองครั้ง "รวม 948")
+//   คีย์ด้วย symbol เสมอ (last write wins) — ไม่สนว่ามาจากแบตช์ไหน ⇒ "รวม" ใน .md สะท้อนไฟล์ที่ต่างกันจริงเท่านั้น
+//   `batches` เป็นแค่ log การรัน (สำหรับ debug) จึงดีดูปทิ้งตาม batch number ซ้ำด้วยเหตุผลเดียวกัน
+function mergeCensus(prevRaw, batch, entries, at) {
+  // schema เดิม (ก่อน fix นี้) เป็นอาร์เรย์ของแบตช์ — ไม่มี consumer อื่นอ่านไฟล์นี้ (เช็คแล้ว) จึงเริ่มสะสมใหม่ได้ปลอดภัย
+  const prev = prevRaw && !Array.isArray(prevRaw) ? prevRaw : { bySym: {}, batches: [] };
+  const bySym = Object.assign({}, prev.bySym);
+  for (const e of entries) bySym[e.sym] = Object.assign({}, e, { batch, at });
+  const batches = (prev.batches || []).filter((b) => b.batch !== batch);
+  batches.push({ batch, at, syms: entries.map((e) => e.sym) });
+  return { bySym, batches };
 }
 
 function main(argv) {
@@ -815,7 +893,7 @@ function main(argv) {
     const src = fs.readFileSync(p, 'utf8');
     const r = migrateOne(src, f);
     const sym = f.replace(/\.html$/i, '');
-    entries.push({ sym, ok: r.ok, reason: r.reason || null, tokenised: r.sites.tokenised, literal: r.sites.literal, notes: r.notes });
+    entries.push({ sym, ok: r.ok, reason: r.reason || null, tokenised: r.sites.tokenised, literal: r.sites.literal, notes: r.notes, pyChanges: r.pyChanges || [] });
     if (r.ok) {
       ok++;
       console.log(`✓ ${sym} (tokenised ${r.sites.tokenised.length}${r.sites.literal.length ? ' · literal ' + r.sites.literal.length + ': ' + [...new Set(r.sites.literal)].join(',') : ''})`);
@@ -826,14 +904,17 @@ function main(argv) {
   if (census) {
     fs.mkdirSync(census, { recursive: true });
     const jf = path.join(census, 'migration-v2-census.json');
-    const prev = fs.existsSync(jf) ? JSON.parse(fs.readFileSync(jf, 'utf8')) : [];
-    prev.push({ batch: batch == null ? null : batch, files: entries, at: new Date().toISOString() });
-    fs.writeFileSync(jf, JSON.stringify(prev, null, 1));
-    fs.writeFileSync(path.join(census, 'migration-v2-census.md'), renderCensusMd(prev.flatMap((b) => b.files)));
-    console.log(`census → ${jf}`);
+    const prevRaw = fs.existsSync(jf) ? JSON.parse(fs.readFileSync(jf, 'utf8')) : null;
+    const merged = mergeCensus(prevRaw, batch == null ? null : batch, entries, new Date().toISOString());
+    fs.writeFileSync(jf, JSON.stringify(merged, null, 1));
+    fs.writeFileSync(path.join(census, 'migration-v2-census.md'), renderCensusMd(Object.values(merged.bySym)));
+    console.log(`census → ${jf} (${Object.keys(merged.bySym).length} ใบสะสม — idempotent ต่อ symbol)`);
   }
   return ok === files.length ? 0 : 1;
 }
 
-module.exports = { migrateOne, extractValues, tokenise, writeJson, verifyPair, checkStripped, sameMoney, COPY_FIELDS, REQUIRED_SITES, TOLERANCE, GAP_REL, renderCensusMd };
+module.exports = {
+  migrateOne, extractValues, tokenise, buildRd, verifyPair, checkStripped, sameMoney, scnPyDiffs,
+  COPY_FIELDS, REQUIRED_SITES, TOLERANCE, GAP_REL, renderCensusMd, mergeCensus,
+};
 if (require.main === module) process.exit(main(process.argv.slice(2)));

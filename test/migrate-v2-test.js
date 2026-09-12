@@ -269,5 +269,54 @@ const cmp = (r, f) => r.compare.find((c) => c.field === f);
   ok(g2.errors.length === 0, 'Task 9: BBL-v2 expand แล้ว gate error 0', g2.errors.map((e) => e.id + ' ' + e.msg).join(' | '));
 }
 
+// ══════════════════════════════════════════════════════════════════════════════
+// Fix wave (part-c-final-review.md) · item 4 — AAPL-v2/BBL-v2 ต้องตรงกับ migrateOne(v1) เป๊ะไบต์
+// เดิมมีแค่ BBL ถูกยืนยันขนาดนี้ (AAPL-v2 ไม่มีอะไร assert เลย) ⇒ สองฝั่ง (fixture v1/v2) ดริฟท์กันเงียบได้
+// ══════════════════════════════════════════════════════════════════════════════
+{
+  const rAAPL = migrateOne(FX.AAPL(), 'AAPL.html', { today: FX.TODAY });
+  ok(rAAPL.ok && rAAPL.out === FX.AAPL_V2(), 'item4: migrateOne(AAPL v1).out === AAPL-v2.html เป๊ะไบต์ต่อไบต์', rAAPL.ok ? '(ไม่เท่ากัน)' : rAAPL.reason);
+  const rBBL = migrateOne(FX.BBL(), 'BBL.html', { today: FX.TODAY });
+  ok(rBBL.ok && rBBL.out === FX.BBL_V2(), 'item4: migrateOne(BBL v1).out === BBL-v2.html เป๊ะไบต์ต่อไบต์', rBBL.ok ? '(ไม่เท่ากัน)' : rBBL.reason);
+}
+
+// ══════════════════════════════════════════════════════════════════════════════
+// Fix wave · item 1 — สำมะโนต้องทนรีรัน (mergeCensus คีย์ด้วย sym, last write wins, ไม่ append ซ้ำ)
+// ══════════════════════════════════════════════════════════════════════════════
+{
+  const { mergeCensus, renderCensusMd: renderMd } = require('../tools/migrate-v2.js');
+  const batch0 = [
+    { sym: 'AEM', ok: true, reason: null, tokenised: ['px'], literal: [], notes: [], pyChanges: [] },
+    { sym: 'BTG', ok: false, reason: 'gate ตกก่อนย้าย: E01 x', tokenised: [], literal: [], notes: [], pyChanges: [] },
+  ];
+  const m1 = mergeCensus(null, 0, batch0, '2026-09-13T00:00:00.000Z');
+  ok(Object.keys(m1.bySym).length === 2, 'item1: แบตช์แรก (2 ใบ) → bySym มี 2 sym');
+  const m2 = mergeCensus(m1, 0, batch0, '2026-09-13T00:05:00.000Z');           // รีรันแบตช์ 0 ซ้ำ (retry ของ Part E)
+  ok(Object.keys(m2.bySym).length === 2, 'item1: รีรันแบตช์เดิม (retry) ไม่เพิ่มจำนวน sym — idempotent');
+  ok(m2.batches.length === 1, 'item1: log ของแบตช์ก็ไม่โตซ้ำเมื่อ batch number เดิม');
+  const md = renderMd(Object.values(m2.bySym));
+  ok(/\| รวม \| 2 \|/.test(md), 'item1: ตัวเลข "รวม" ใน .md = 2 ไม่ใช่ 4 หลังรีรันแบตช์เดิม', md.split('\n').find((l) => l.includes('รวม')));
+  ok(!/AEM[\s\S]*AEM/.test(md.split('##')[0]), 'item1: หัวตาราง "ผล" ไม่มีชื่อ AEM ซ้ำ (เคสจริงที่รีวิวเจอ)');
+  // แบตช์ถัดไปแตะ sym เดิม (เช่นวิเคราะห์ใหม่/ย้ายสำเร็จเพิ่ม) — last write wins ตาม sym ไม่ใช่ตาม batch
+  const m3 = mergeCensus(m2, 1, [{ sym: 'AEM', ok: true, reason: null, tokenised: ['px', 'chg'], literal: [], notes: [], pyChanges: [] }], '2026-09-13T01:00:00.000Z');
+  ok(Object.keys(m3.bySym).length === 2, 'item1: sym ซ้ำข้ามแบตช์ (AEM ในแบตช์ 1) ไม่เพิ่มจำนวนรวม');
+  ok(m3.bySym.AEM.batch === 1 && m3.bySym.AEM.tokenised.length === 2, 'item1: ค่า AEM ล่าสุด (แบตช์ 1) ชนะค่าเดิม (แบตช์ 0)', JSON.stringify(m3.bySym.AEM));
+}
+
+// ══════════════════════════════════════════════════════════════════════════════
+// Fix wave · item 2 — census ต้องเปิดเผยผลต่าง %/ปี ของหมวด 6 ที่คนเห็นเปลี่ยน (form-only vs value จริง)
+// ══════════════════════════════════════════════════════════════════════════════
+{
+  const { scnPyDiffs } = require('../tools/migrate-v2.js');
+  const mkRet = (a, b, c) => `<div class="ret neg">รวม ~ ${a}</div><div class="ret pos">รวม ~ ${b}</div><div class="ret pos">รวม ~ ${c}</div>`;
+  const before = mkRet('−9% (≈ −3.1%/ปี)', '+29% (≈ +8.9%/ปี)', '+59% (≈ +16.6%/ปี)');
+  const after = mkRet('−9% (−3%/ปี)', '+29% (+8.9%/ปี)', '+59% (+16%/ปี)');   // เคสจริงในรีวิว: AEHR +16.6 → +16 (ห่างสุด 0.6pp)
+  const diffs = scnPyDiffs(before, after);
+  ok(diffs.length === 2, 'item2: base (+8.9%/ปี เท่าเดิม) ไม่ถูกนับ — เหลือแค่ bear/bull ที่ข้อความเปลี่ยน', JSON.stringify(diffs));
+  const bear = diffs.find((d) => d.col === 'bear'), bull = diffs.find((d) => d.col === 'bull');
+  ok(!!bear && bear.kind === 'form' && bear.before === '−3.1%/ปี' && bear.after === '−3%/ปี', 'item2: bear −3.1→−3 = form-only (ปัดตามความละเอียดที่ v2 โชว์แล้วเท่ากันเป๊ะ)', JSON.stringify(bear));
+  ok(!!bull && bull.kind === 'value' && bull.before === '+16.6%/ปี' && bull.after === '+16%/ปี', 'item2: bull +16.6→+16 = value จริง (ปัดแล้วยังไม่เท่ากัน — เคส AEHR ของรีวิว)', JSON.stringify(bull));
+}
+
 console.log(`migrate-v2-test: ${n - fails}/${n} ผ่าน`);
 process.exit(fails ? 1 : 0);
