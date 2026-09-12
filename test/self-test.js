@@ -981,11 +981,11 @@ require('./fixture-lint.js')(ok);
 require('./parser-lint.js')(ok);
 
 // ── field manifest (ระยะ 1 WS1): ทุกช่องตัวเลข · ห่อ extractor เดิม · บน BBL fixture ต้องพบช่อง cron ครบ ──
-// ★ จำนวนช่อง = **70** ไม่ใช่ 68: code-audit §1.1 เดินเลขแถว #1–#68 แล้วแทรก #25b/#63b
+// ★ จำนวนช่อง = **71** (70 แถวของ code-audit §1.1 + f69 stock-meta.fairValue ระยะ 2 ส่วน D) ไม่ใช่ 68: §1.1 เดินเลขแถว #1–#68 แล้วแทรก #25b/#63b
 //   (นับแถวในตารางจริง 12 ก.ย. 69 = 70) ⇒ "68 ช่อง" ในสเปคคือเลขแถวสูงสุด ห้ามตัดช่องทิ้งให้ครบ 68
 {
   const MF = require('../tools/field-manifest.js');
-  ok(MF.FIELDS.length === 70 && new Set(MF.FIELDS.map((f) => f.id)).size === 70, `manifest: 70 ช่อง id ไม่ซ้ำ (ได้ ${MF.FIELDS.length})`);
+  ok(MF.FIELDS.length === 71 && new Set(MF.FIELDS.map((f) => f.id)).size === 71, `manifest: 71 ช่อง id ไม่ซ้ำ (ได้ ${MF.FIELDS.length})`);
   ok(MF.FIELDS.every((f) => typeof f.extract === 'function' && ['cron', 'gate', 'pair', 'presence', 'tool', 'deferred'].includes(f.binding)), 'manifest: ทุกช่องมี extract + binding ที่รู้จัก');
   ok(MF.FIELDS.filter((f) => f.pair).every((f) => MF.FIELDS.some((g) => g.id === f.pair.with)), 'manifest: pair.with ชี้ไป id ที่มีจริง');
   // NEITHER 18 แถว (code-audit §1.1) ต้องมีทุกแถวใน manifest และต้องได้ binding ที่ผูกกับของจริง (เกณฑ์จบ "NEITHER 18 → 0")
@@ -1009,7 +1009,7 @@ require('./parser-lint.js')(ok);
   for (const f of MF.FIELDS) { try { f.extract('<!DOCTYPE html><html><body></body></html>', bareCtx); } catch (e) { threw = `${f.id}: ${e.message}`; break; } }
   ok(threw === null, 'manifest: ไฟล์เปล่า — ไม่มี extractor ไหน throw' + (threw ? ` (${threw})` : ''));
   const cov = MF.coverage(base, C);
-  ok(cov.n === 70 && cov.found === r.found.size, `manifest: coverage() สอดคล้องกับ extractAll() (พบ ${cov.found}/${cov.n})`);
+  ok(cov.n === 71 && cov.found === r.found.size, `manifest: coverage() สอดคล้องกับ extractAll() (พบ ${cov.found}/${cov.n})`);
 }
 
 // ── W21/W22/W23 + coverage (ระยะ 1 WS1 ข้อ 2): gate ต้องรู้ว่าตัวเองอ่านอะไรไม่ได้ ──
@@ -1114,7 +1114,7 @@ require('./parser-lint.js')(ok);
     const w21e = [...rEx.errors, ...rEx.warnings].find((x) => x.id === 'W21');
     ok(!!w21e && /extractor ระเบิด/.test(w21e.msg) && /fZZ/.test(w21e.msg),
       'W21: extractor ราย field ระเบิด → W21 บอกชื่อช่อง (เดิม extractAll กลืนเป็น found:false เงียบ)', w21e && w21e.msg);
-    ok(MF.FIELDS.length === 70 && MF.FIELDS[MF.FIELDS.length - 1].id !== 'fZZ', 'W21: ถอดช่องจำลองออกครบ (manifest กลับเป็น 70 ช่อง)');
+    ok(MF.FIELDS.length === 71 && MF.FIELDS[MF.FIELDS.length - 1].id !== 'fZZ', 'W21: ถอดช่องจำลองออกครบ (manifest กลับเป็น 71 ช่อง)');
   }
 
   // W21/W22/W23 ต้องเป็น warn และไม่มี healer (ระยะ 1 — จะยกเป็น E เมื่อมีตัวซ่อมในระยะ 2)
@@ -1140,6 +1140,43 @@ require('./parser-lint.js')(ok);
   }
   for (const c of CHECKS.filter((c) => c.healer != null))
     ok(HEALERS.has(c.healer), `healer ของ ${c.id} = ${c.healer} ต้องอยู่ในรายการที่รู้จัก`);
+}
+
+// ── ระยะ 2: gate ทาง v2 ──
+// buildCtx บนไฟล์ v2 อ่านสำเนา (px/fvBox/mosBig/pxInput/chg/priceAge) จาก report-data.values ผ่าน RV.derive
+// ไม่ใช่จาก HTML — mutate JSON แล้ว check ต้องยิง เป็นหลักฐานว่าอ่าน JSON จริง
+{
+  const RV = require('../tools/report-values.js');
+  const MF = require('../tools/field-manifest.js');
+  const base2 = expandReport(FX.BBL_V2());
+  const c = buildCtx(base2, 'BBL.html');
+  ok(c.v2 === true && c.dv && c.px === c.dv.px && c.fvBox === c.dv.fv && c.mosBig === c.dv.mosShown && c.pxInput === c.dv.px, 'v2: ctx.px/fvBox/mosBig/pxInput มาจาก values (derive)');
+  ok(c.priceAge && c.priceAge.iso === RM.readReportData(FX.BBL_V2()).data.values.priceDate, 'v2: ctx.priceAge จาก values.priceDate');
+  ok(c.chg === c.dv.chg.text, 'v2: ctx.chg จาก chart.data');
+  const r = checkHtml(base2, 'BBL.html');
+  ok(r.errors.length === 0, 'v2 fixture ผ่าน gate', r.errors.map((e) => e.id).join(','));
+  ok(r.coverage.n === 71 - MF.FIELDS.filter((f) => f.v2 === null).length, 'v2: coverage denominator ตัดแถวที่ไม่มีใน v2');
+  // mutate JSON แล้ว check ต้องยิง (พิสูจน์ว่าอ่าน JSON ไม่ใช่ HTML): ราคา stock-meta ≠ values.px → E30
+  const m1 = expandReport(mutJson('stock-meta', (d) => { d.price = d.price * 1.5; })(FX.BBL_V2()));
+  ok(errIds(checkHtml(m1, 'BBL.html')).has('E30'), 'v2: stock-meta.price ≠ values.px → E30');
+  const m2 = expandReport(mutJson('report-data', (d) => { d.values.px = d.values.px * 0.5; })(FX.BBL_V2()));
+  const r2 = checkHtml(m2, 'BBL.html');
+  ok(errIds(r2).has('E30') && !errIds(r2).has('E16') && !errIds(r2).has('E23'), 'v2: เปลี่ยน values.px → E30 (กระจก) ยิง แต่ E16/E23 (สำเนา) เงียบเพราะ render จากค่าเดียวกัน');
+  ok(!allIds(r2).has('W04') && !allIds(r2).has('W06'), 'v2: W04/W06 เงียบเสมอ (class/ช่องสรุป render จาก MOS เดียวกัน)');
+  // W21 บนไฟล์ v2: แถว `v2: null` (gauge.fair/chart.fairLine/วันที่ในวงเล็บ) ไม่มีในไฟล์โดยสคีมา → ไม่นับว่า "หาย"
+  const nullRows = MF.FIELDS.filter((f) => f.v2 === null).map((f) => f.id);
+  ok(nullRows.length > 0 && nullRows.every((id) => !r.ctx.mf.missing.includes(id) && !r.ctx.mf.skipped.includes(id) && !r.ctx.mf.found.has(id)) && !allIds(r).has('W21'),
+    `v2: แถว v2:null (${nullRows.join(' ')}) ไม่อยู่ใน found/missing/skipped + W21 เงียบ`, r.warnings.map((w) => w.id + ' ' + w.msg).join(' | '));
+  ok(r.ctx.mf.omitted === nullRows.length, `v2: extractAll นับแถวที่ข้ามใน omitted (${r.ctx.mf.omitted})`);
+  // v1 ต้องไม่แตะทาง v2 เลย
+  const c1 = buildCtx(base, 'BBL.html');
+  ok(c1.v2 === false && c1.dv === null && c1.mf.omitted === 0, 'v1: ctx.v2=false · dv=null · ไม่ข้ามแถวใด');
+  // derive ระเบิดบนไฟล์ที่อ้างว่า v2 → ถอยไปอ่าน HTML (ไม่ crash)
+  const m3 = mutJson('report-data', (d) => { delete d.values.scnBasis; })(base2);   // scenarios มีแต่ scnBasis หาย → derive อ่าน b.divIncluded ระเบิด
+  let c3 = null, threw3 = null; try { c3 = buildCtx(m3, 'BBL.html'); } catch (e) { threw3 = e.message; }
+  ok(threw3 === null && c3 && c3.v2 === false && c3.dv === null, 'v2: derive ระเบิด → ถือเป็น v1 อ่าน HTML (ไม่ throw)', threw3 || (c3 && `v2=${c3.v2}`));
+  // ctx.source: checkHtml ส่ง opts.source ต่อ · ไม่ส่ง = html เดียวกัน
+  ok(c.source === base2 && buildCtx(base2, 'BBL.html', { source: FX.BBL_V2() }).source === FX.BBL_V2(), 'ctx.source = opts.source หรือ html เดิม');
 }
 
 console.log('\n' + '─'.repeat(50));

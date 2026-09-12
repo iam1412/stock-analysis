@@ -1,6 +1,6 @@
 'use strict';
 /**
- * field-manifest.js — ทุกช่องตัวเลขในรายงาน (code-audit §1.1 — **70 แถว** เลขแถว #1–#68 + #25b/#63b)
+ * field-manifest.js — ทุกช่องตัวเลขในรายงาน (code-audit §1.1 — **70 แถว** เลขแถว #1–#68 + #25b/#63b · + f69 ระยะ 2 = 71)
  * ในไฟล์เดียวที่โค้ดใช้จริง (spec WS1)
  * แต่ละช่อง: ใครเขียน (cron/worker) · ใครตรวจ (gate code) · healer · cadence · extractor ที่คืน {found, value}
  * ★ extractor **ห่อ** ของที่มีอยู่ (report-meta · derived-values · buildCtx) — ห้ามเขียน regex ซ้ำ (parser-lint)
@@ -8,7 +8,7 @@
  * required: ตัดสินแล้วทุกช่อง (Task 9 · census 12 ก.ย. 69 — `manifest-census.md`): พบ ≥99% ของคลัง = `true`
  *   (ขาด = ของเสีย → W21) · <99% = `false` (ไม่มีก็ปกติ → นับเป็น "ข้าม" ไม่ใช่ "หาย")
  *   **ยกเว้น 3 ช่องที่อัตรา ≥99% แต่คง `false`** (f36/f38/f68 — opt-in / ของตกแต่ง / sidecar นอกไฟล์ · เหตุผลกำกับท้าย entry)
- *   ⇒ `true` 32 ช่อง · `false` 38 ช่อง · ไม่มี `null` เหลือ
+ *   ⇒ `true` 33 ช่อง (รวม f69 ระยะ 2) · `false` 38 ช่อง · ไม่มี `null` เหลือ
  *
  * ★ ctx = ผลของ buildCtx (test/check-reports.js) — manifest **ไม่** parse ซ้ำสิ่งที่ ctx มีแล้ว
  *   (f11/f42 ใช้ ctx.header แทนที่จะ match <header> เอง · f68 ใช้ ctx.tagData แทน loadTags() ต่อไฟล์)
@@ -36,20 +36,25 @@ const head = (ctx) => (ctx && ctx.header) || '';
 const ATH_PCT_RE = /([+\-−–]?\s*[\d.]+)\s*%\s*จาก\s*ATH|(?:จาก|ต่ำกว่า)\s*ATH\s*~?\s*([+\-−–]?\s*[\d.]+)\s*%/;
 
 const F = (id, name, o) => ({ id, name, cadence: o.cadence, owner: o.owner, gate: o.gate || [], healer: o.healer || null,
-  required: o.required === undefined ? null : o.required, binding: o.binding, pair: o.pair || null, extract: o.extract });
+  required: o.required === undefined ? null : o.required, binding: o.binding, pair: o.pair || null, extract: o.extract, v2: o.v2 });
+// ★ `v2` (ระยะ 2 ส่วน D) — พฤติกรรมของแถวบนไฟล์ v2 (ctx.v2 === true):
+//   undefined = ใช้ `extract` เดิม (อ่าน HTML ที่ build render แล้ว — ส่วนใหญ่ของแถว)
+//   null      = ช่องนี้ **ไม่มีในไฟล์ v2 โดยสคีมา** (สำเนาที่ถูกยุบเข้า values) → extractAll ข้าม นับใน `omitted` ไม่ใช่ missing/skipped
+//   fn(h, c)  = ตัวอ่านทาง v2 ใช้แทน `extract`
+//   ไฟล์ v1 ไม่แตะฟิลด์นี้เลย
 
 const FIELDS = [
   F('f01', '.px ราคา header', { cadence: 'daily', owner: 'cron', gate: ['E30', 'E23'], healer: 'patchReport', binding: 'cron', required: true, extract: (h, c) => R(c.px) }),  // census 12 ก.ย. 69: 100.0%
   F('f02', 'stock-meta.price', { cadence: 'daily', owner: 'cron', gate: ['E29', 'E30', 'E31'], healer: 'patchReport', binding: 'cron', required: true, extract: (h, c) => R(sm(c) && sm(c).price) }),  // census 12 ก.ย. 69: 100.0%
-  F('f03', 'report-data.gauge.cur', { cadence: 'daily', owner: 'cron', gate: ['E19'], healer: 'patchReport', binding: 'cron', required: true, extract: (h, c) => R(rd(c) && rd(c).gauge && rd(c).gauge.cur) }),  // census 12 ก.ย. 69: 100.0%
+  F('f03', 'report-data.gauge.cur', { cadence: 'daily', owner: 'cron', gate: ['E19'], healer: 'patchReport', binding: 'cron', required: true, extract: (h, c) => R(rd(c) && rd(c).gauge && rd(c).gauge.cur), v2: (h, c) => R(c.dv.px) }),  // census 12 ก.ย. 69: 100.0% · v2: gauge.cur ถูกห้าม — engine ใช้ values.px
   F('f04', 'report-data.chart.data[]', { cadence: 'daily', owner: 'cron', gate: ['E36', 'E37', 'E39', 'W12'], healer: 'patchReport', binding: 'cron', required: true, extract: (h, c) => { const d = rd(c) && rd(c).chart && rd(c).chart.data; return { found: Array.isArray(d) && d.length > 0, value: Array.isArray(d) ? d.length : null }; } }),  // census 12 ก.ย. 69: 100.0%
   F('f05', 'chart.min/max/grid', { cadence: 'daily', owner: 'cron', gate: [], healer: 'patchReport', binding: 'cron', required: true, extract: (h, c) => { const ch = rd(c) && rd(c).chart; return R(ch && has(ch.min) && has(ch.max) ? [ch.min, ch.max] : null); } }),  // census 12 ก.ย. 69: 100.0%
   F('f06', 'chart.highlight', { cadence: 'daily', owner: 'cron', gate: [], healer: 'patchReport', binding: 'cron', required: true, extract: (h, c) => R(rd(c) && rd(c).chart && rd(c).chart.highlight) }),  // census 12 ก.ย. 69: 100.0%
   F('f07', 'gauge.min/max', { cadence: 'daily', owner: 'cron', gate: [], healer: 'patchReport', binding: 'cron', required: true, extract: (h, c) => { const g = rd(c) && rd(c).gauge; return R(g && has(g.min) && has(g.max) ? [g.min, g.max] : null); } }),  // census 12 ก.ย. 69: 100.0%
   F('f08', 'theme.chgBg/chgColor', { cadence: 'daily', owner: 'cron', gate: ['E34'], healer: 'patchReport', binding: 'cron', required: true, extract: (h, c) => { const t = rd(c) && rd(c).theme; return R(t && t.chgBg && t.chgColor ? [t.chgBg, t.chgColor] : null); } }),  // census 12 ก.ย. 69: 100.0%
   F('f09', '.chg ป้าย % รอบปี', { cadence: 'daily', owner: 'cron', gate: ['E35', 'E36'], healer: 'patchReport', binding: 'cron', required: true, extract: (h, c) => R(c.chg) }),  // census 12 ก.ย. 69: 100.0%
-  F('f10', 'วันที่ราคา (px-meta)', { cadence: 'daily', owner: 'cron', gate: ['E27', 'W09'], healer: 'patchReport', binding: 'cron', required: true, extract: (h, c) => R(c.priceAge && c.priceAge.iso) }),  // census 12 ก.ย. 69: 100.0%
-  F('f11', 'วันที่ทวนในวงเล็บ (คนละศักราช)', { cadence: 'daily', owner: 'cron', gate: [], healer: 'patchReport', binding: 'pair', pair: { with: 'f10', how: 'date' }, required: false, extract: (h, c) => { const hd = head(c); const hit = PD.findPriceDate(hd); const r = hit ? PD.findRestatedDate(hd, hit) : null; return R(PD.dateIso(r)); } }),
+  F('f10', 'วันที่ราคา (px-meta)', { cadence: 'daily', owner: 'cron', gate: ['E27', 'W09'], healer: 'patchReport', binding: 'cron', required: true, extract: (h, c) => R(c.priceAge && c.priceAge.iso), v2: (h, c) => R(c.priceAge && c.priceAge.iso) }),  // census 12 ก.ย. 69: 100.0% · v2: ctx.priceAge มาจาก values.priceDate แล้ว (buildCtx)
+  F('f11', 'วันที่ทวนในวงเล็บ (คนละศักราช)', { cadence: 'daily', owner: 'cron', gate: [], healer: 'patchReport', binding: 'pair', pair: { with: 'f10', how: 'date' }, required: false, v2: null, extract: (h, c) => { const hd = head(c); const hit = PD.findPriceDate(hd); const r = hit ? PD.findRestatedDate(hd, hit) : null; return R(PD.dateIso(r)); } }),
   // ★ ต้องเป็น `findDiscPriceDate` (เจ้าของเดียวของ "วันที่ราคาในบล็อก .disc") ไม่ใช่ตัวสแกนหัวรายงาน —
   //   ตัวอ่านตัวนี้กับตัวเขียนของ cron เป็นตัวเดียวกันแล้ว (12 ก.ย. 69) ⇒ ที่นี่อ่านเจอ = ที่นั่นเขียนได้เสมอ
   //   (snapshot ของแหล่ง "(ราคา $79.39 · 2 ก.ค. 2569 …)" ไม่ใช่วันที่ราคา ⇒ คืน null โดยตั้งใจ)
@@ -89,8 +94,8 @@ const FIELDS = [
   F('f42', 'บรรทัดที่มา', { cadence: 'write-once', owner: 'worker', gate: ['W08'], healer: null, binding: 'gate', required: true, extract: (h, c) => R(c.sourceLine) }),  // census 12 ก.ย. 69: 100.0%
   F('f43', '.fv-box .r FV', { cadence: 'write-once', owner: 'worker', gate: ['E15', 'E25', 'E30'], healer: null, binding: 'gate', required: true, extract: (h, c) => R(c.fvBox) }),  // census 12 ก.ย. 69: 100.0%
   F('f44', 'report-data.fv (const FV)', { cadence: 'write-once', owner: 'worker', gate: ['E15'], healer: null, binding: 'gate', required: true, extract: (h, c) => R(c.constFV) }),  // census 12 ก.ย. 69: 100.0%
-  F('f45', 'report-data.gauge.fair', { cadence: 'write-once', owner: 'worker', gate: ['E19'], healer: null, binding: 'pair', pair: { with: 'f44', how: 'money' }, required: true, extract: (h, c) => R(rd(c) && rd(c).gauge && rd(c).gauge.fair) }),  // census 12 ก.ย. 69: 100.0%
-  F('f46', 'report-data.chart.fairLine', { cadence: 'write-once', owner: 'worker', gate: [], healer: null, binding: 'pair', pair: { with: 'f44', how: 'money' }, required: true, extract: (h, c) => R(rd(c) && rd(c).chart && rd(c).chart.fairLine) }),  // census 12 ก.ย. 69: 100.0%
+  F('f45', 'report-data.gauge.fair', { cadence: 'write-once', owner: 'worker', gate: ['E19'], healer: null, binding: 'pair', pair: { with: 'f44', how: 'money' }, required: true, v2: null, extract: (h, c) => R(rd(c) && rd(c).gauge && rd(c).gauge.fair) }),  // census 12 ก.ย. 69: 100.0%
+  F('f46', 'report-data.chart.fairLine', { cadence: 'write-once', owner: 'worker', gate: [], healer: null, binding: 'pair', pair: { with: 'f44', how: 'money' }, required: true, v2: null, extract: (h, c) => R(rd(c) && rd(c).chart && rd(c).chart.fairLine) }),  // census 12 ก.ย. 69: 100.0%
   F('f47', 'legend "มูลค่าเหมาะสม $FV"', { cadence: 'write-once', owner: 'worker', gate: [], healer: null, binding: 'pair', pair: { with: 'f44', how: 'money' }, required: true, extract: (h) => R(num(grab(new RegExp('มูลค่าเหมาะสม\\s*' + CUR + '?\\s*([\\d.,]+)\\s*</span>'), grab(/<div class="legend">([\s\S]*?)<\/div>/, h) || ''))) }),  // census 12 ก.ย. 69: 99.7%
   F('f48', 'การ์ด "โซนเริ่มทยอยสะสม < $FV"', { cadence: 'write-once', owner: 'worker', gate: [], healer: null, binding: 'pair', pair: { with: 'f44', how: 'below' }, required: false, extract: (h, c) => { const k = card(c, /โซนเริ่มทยอยสะสม/); return R(k ? num(k.v.replace(/^[^0-9]*(?:<|&lt;)/, '')) : null); } }),  // census 12 ก.ย. 69: 98.9% <99% → optional
   F('f49', 'ป้าย gauge mFair "เหมาะสม $FV"', { cadence: 'write-once', owner: 'worker', gate: [], healer: null, binding: 'pair', pair: { with: 'f44', how: 'money' }, required: true, extract: (h) => R(num(grab(new RegExp('id="mFair"><div class="lab"[^>]*>เหมาะสม\\s*' + CUR + '?\\s*([\\d.,]+)'), h))) }),  // census 12 ก.ย. 69: 99.8%
@@ -114,11 +119,13 @@ const FIELDS = [
   F('f66', 'meta ai-model', { cadence: 'write-once', owner: 'worker', gate: ['E28'], healer: null, binding: 'gate', required: true, extract: (h, c) => R(c.aiModel) }),  // census 12 ก.ย. 69: 100.0%
   F('f67', '.sub คำโปรย', { cadence: 'write-once', owner: 'worker', gate: ['E32'], healer: null, binding: 'gate', required: true, extract: (h, c) => R(c.sub || null) }),  // census 12 ก.ย. 69: 100.0%
   F('f68', 'tags (sidecar)', { cadence: 'out-of-band', owner: 'sidecar', gate: ['E40', 'W13'], healer: null, binding: 'gate', required: false, extract: (h, c) => { const T = require('./tag-lib.js'); const t = T.tagsOf(c.symbol, c.tagData !== undefined && c.tagData !== null ? c.tagData : T.loadTags()); return R(t.length ? t : null); } }),  // census 12 ก.ย. 69: 100.0% แต่คง false — tag อยู่ sidecar (out-of-band) ไม่ได้อยู่ในไฟล์รายงาน — ใบที่ยังไม่ติดแท็กไม่ใช่ของเสีย
+  // f69 (ระยะ 2 ส่วน D): กระจก stock-meta.fairValue — E30 ตรวจอยู่แล้ว แต่ manifest ไม่มีแถว ⇒ v2 ที่ FV มีที่เดียวใน report-data.fv ต้องเห็นคู่นี้
+  F('f69', 'stock-meta.fairValue', { cadence: 'write-once', owner: 'worker', gate: ['E30'], healer: null, binding: 'pair', pair: { with: 'f44', how: 'money' }, required: true, extract: (h, c) => R(sm(c) && sm(c).fairValue) }),
 ];
 // ★ code-audit §1.1 มี **70 แถว** — เลขแถวเดินถึง #68 แต่มี #25b/#63b แทรก ⇒ คำว่า "68 ช่อง" ในสเปค/แผน
 //   คือ "เลขแถวสูงสุด" ไม่ใช่จำนวนแถว (นับแถวในตารางจริง 12 ก.ย. 69 = 70 แถว)
 //   ★ ห้ามตัดช่องทิ้งให้เหลือ 68 — ใน 70 แถวมี NEITHER 18 แถวที่เป็นเกณฑ์จบของงานนี้ (รวม f25b/f63b)
-const N_FIELDS = 70;
+const N_FIELDS = 71;   // 70 แถว code-audit §1.1 + f69 (ระยะ 2 ส่วน D)
 if (FIELDS.length !== N_FIELDS) throw new Error(`field-manifest: ต้องมี ${N_FIELDS} ช่อง (ได้ ${FIELDS.length})`);
 if (new Set(FIELDS.map((f) => f.id)).size !== N_FIELDS) throw new Error('field-manifest: id ซ้ำ');
 
@@ -199,20 +206,24 @@ function checkPairs(values, ctx) {
  *  ⇒ คืน `errors: [{id, err}]` ให้ W21 พูดถึงด้วย (ระยะ 1 — ทบทวนทั้งสาขา 12 ก.ย. 2569) */
 function extractAll(html, ctx) {
   const values = {}, found = new Set(), missing = [], skipped = [], errors = [];
+  let omitted = 0;
+  const isV2 = !!(ctx && ctx.v2);
   for (const f of FIELDS) {
+    if (isV2 && f.v2 === null) { omitted++; continue; }   // ไม่มีในไฟล์ v2 โดยสคีมา — ไม่ใช่ "หาย" และไม่ใช่ "ข้าม"
+    const ex = isV2 && typeof f.v2 === 'function' ? f.v2 : f.extract;
     let r;
-    try { r = f.extract(html, ctx) || { found: false, value: null }; } catch (e) { r = { found: false, value: null, err: e.message }; }
+    try { r = ex(html, ctx) || { found: false, value: null }; } catch (e) { r = { found: false, value: null, err: e.message }; }
     if (r.err) errors.push({ id: f.id, err: r.err });
     values[f.id] = r.value;
     if (r.found) found.add(f.id);
     else if (f.required === false) skipped.push(f.id);
     else missing.push(f.id);
   }
-  return { values, found, missing, skipped, errors };
+  return { values, found, missing, skipped, errors, omitted };
 }
 function coverage(html, ctx) {
   const r = extractAll(html, ctx);
-  return { n: FIELDS.length, found: r.found.size, missingRequired: r.missing, skippedOptional: r.skipped };
+  return { n: FIELDS.length - r.omitted, found: r.found.size, missingRequired: r.missing, skippedOptional: r.skipped };
 }
 /** census ทั้งคลัง — อัตราที่พบต่อช่อง (ใช้ตัดสิน required · ต้องรันกับ ctx จริงของ gate) */
 function census(dir, buildCtx, expandReport) {
