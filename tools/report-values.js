@@ -62,6 +62,17 @@ function parseIso(iso) {
   return { yearCE: y, monIdx: mo - 1, day: d };
 }
 
+// serialize report-data สไตล์เดิม (จุดกราฟ [label, num] / array ตัวเลขล้วนบรรทัดเดียว) — ย้ายจาก
+// tools/update-prices.js (เจ้าของเดียว, ระยะ 2 ส่วน B) · migrate-annual-chg.js เดิมมีสำเนาซ้ำ — ยุบมาที่นี่แล้ว
+// · tools/apply-edits.js (--set/--del) ใช้ตัวนี้ตอนเขียนกลับ report-data JSON เช่นกัน
+function styledRD(rd) {
+  let s = JSON.stringify(rd, null, 2);
+  s = s.replace(/\[\n\s*("(?:[^"\\]|\\.)*"),\n\s*(-?\d+(?:\.\d+)?)\n\s*\]/g, '[$1, $2]');
+  s = s.replace(/\[\n\s*((?:-?\d+(?:\.\d+)?,\n\s*)*-?\d+(?:\.\d+)?)\n\s*\]/g,
+    (m, body) => '[' + body.replace(/,\n\s*/g, ', ') + ']');
+  return s;
+}
+
 const isV2 = (rd) => !!(rd && typeof rd === 'object' && rd.v === 2);
 const isNum = (v) => typeof v === 'number' && Number.isFinite(v);
 const CHG_SUFFIX = ['รอบปี', 'ตั้งแต่ IPO'];
@@ -177,4 +188,4 @@ function renderValues(html, rd, sm) {
   return out;
 }
 module.exports = { CUR_SYMBOL, FLAT_PP, VALUE_KEYS, CHG_SUFFIX, isV2, validateValues, derive, TOKENS, COPY_TOKENS: Object.keys(TOKENS), renderValues,
-  fmtPrice, fmtBig, annualChg, mosBand, isoOf, parseIso };
+  fmtPrice, fmtBig, annualChg, mosBand, isoOf, parseIso, styledRD };

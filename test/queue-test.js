@@ -765,6 +765,119 @@ let pending = null;
 try { pending = require('./earnings-calendar-test.js')(ok); }
 catch (e) { nFail++; console.error('✗ earnings-calendar-test ระเบิด (sync) — ' + e.message); }
 
+// ── 21) apply-edits: --set/--del/--set-meta บน report-data/stock-meta v2 (Task 5 — สัญญา worker v2) ──
+//   ★ ไฟล์ชั่วคราวเขียนใต้ os.tmpdir() เอง (ไม่แตะ reports/ ตามหัวไฟล์นี้) · ยิงจริงผ่าน sh.run (spawnSync
+//   ให้ pipe ว่างที่ EOF ทันทีเมื่อไม่มี stdin — จำลอง "รัน --set แบบ one-liner ไม่มี heredoc" ของ SKILL 5B ได้ตรง ๆ)
+{
+  const sh = require('../tools/queue/sh.js');
+  const AE_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'apply-edits-'));
+  const readBlock = (html, id) => JSON.parse(html.match(new RegExp(`<script[^>]*id="${id}"[^>]*>([\\s\\S]*?)<\\/script>`))[1]);
+  const V2_HTML = `<!DOCTYPE html>
+<html><head>
+<script type="application/json" id="stock-meta">
+{"symbol":"TST","currency":"USD","price":100,"fairValue":120,"mos":16.7,"upside":20,"pe":10,"dividendYield":2,"roe":8}
+</script>
+<script type="application/json" id="report-data">
+{
+  "v": 2,
+  "fv": 120,
+  "values": {
+    "px": 100,
+    "priceDate": "2026-09-01",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "eps": 9,
+    "analystTgt": 130,
+    "scenarios": [{"tgt": 80, "div": null}, {"tgt": 120, "div": null}, {"tgt": 160, "div": null}],
+    "scnBasis": {"years": 3, "divIncluded": false, "perYear": "cagr"}
+  },
+  "theme": { "accent": "#000000" },
+  "chart": { "data": [["ม.ค.26", 90], ["ก.ย.26", 100]], "min": 80, "max": 140, "grid": [100, 120], "currency": "$", "highlight": [0, 1] },
+  "gauge": { "min": 80, "max": 140 }
+}
+</script>
+</head><body></body></html>
+`;
+  const V1_HTML = `<!DOCTYPE html>
+<html><head>
+<script type="application/json" id="stock-meta">
+{"symbol":"TST1","currency":"USD","price":100,"fairValue":120,"mos":16.7,"upside":20,"pe":10,"dividendYield":2,"roe":8}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": { "accent": "#000000" },
+  "chart": { "data": [["ม.ค.26", 90], ["ก.ย.26", 100]], "min": 80, "max": 140, "grid": [100, 120], "fairLine": 120, "currency": "$", "highlight": [0, 1] },
+  "gauge": { "min": 80, "max": 140, "cur": 100, "fair": 120 },
+  "fv": 120
+}
+</script>
+</head><body></body></html>
+`;
+  const writeTmp = (name, content) => { const p = path.join(AE_DIR, name); fs.writeFileSync(p, content); return p; };
+
+  // (a) success path ตาม brief Step 1 เป๊ะ: --set × 2 + --del × 1 บนไฟล์ v2
+  {
+    const tmp = writeTmp('ok.html', V2_HTML);
+    const r = sh.run('node', ['tools/apply-edits.js', tmp, '--set', 'values.eps=9.57', '--set', 'fv=210', '--del', 'values.analystTgt']);
+    ok(r.code === 0, 'apply-edits --set×2/--del×1: exit 0', r.err || r.out);
+    const out = fs.readFileSync(tmp, 'utf8');
+    const rd = readBlock(out, 'report-data');
+    ok(rd.values.eps === 9.57, 'apply-edits --set: values.eps เปลี่ยนจริง', String(rd.values.eps));
+    ok(rd.fv === 210, 'apply-edits --set: fv (top-level) เปลี่ยนจริง', String(rd.fv));
+    ok(!('analystTgt' in rd.values), 'apply-edits --del: values.analystTgt หายจริง', JSON.stringify(rd.values));
+    ok(out.includes('["ม.ค.26", 90]'), 'apply-edits: เขียนกลับด้วย styledRD (จุดกราฟบรรทัดเดียว)', out);
+  }
+
+  // (a2) path แบบ a.b.c รองรับ array index เป็นเลขล้วน (scenarios.N.field) ตามที่ Step 2 ระบุไว้
+  {
+    const tmp = writeTmp('arr.html', V2_HTML);
+    const r = sh.run('node', ['tools/apply-edits.js', tmp, '--set', 'values.scenarios.1.tgt=999']);
+    ok(r.code === 0, 'apply-edits --set values.scenarios.1.tgt: exit 0', r.err || r.out);
+    const rd = readBlock(fs.readFileSync(tmp, 'utf8'), 'report-data');
+    ok(rd.values.scenarios[1].tgt === 999 && rd.values.scenarios[0].tgt === 80, 'apply-edits --set: array index ตาม path (scenarios.1.tgt) แก้เฉพาะตัวที่ระบุ', JSON.stringify(rd.values.scenarios));
+  }
+
+  // (b) --set values.px=abc → parse ไม่ผ่านทั้ง JSON/number/boolean/null → exit 1 ไม่เขียนไฟล์
+  {
+    const tmp = writeTmp('badval.html', V2_HTML);
+    const r = sh.run('node', ['tools/apply-edits.js', tmp, '--set', 'values.px=abc']);
+    ok(r.code !== 0, 'apply-edits --set values.px=abc: exit ≠ 0', r.out + r.err);
+    ok(fs.readFileSync(tmp, 'utf8') === V2_HTML, 'apply-edits --set ค่าพัง: ไม่เขียนไฟล์เลย (all-or-nothing)');
+  }
+
+  // (c) --set nope.x=1 → path ไม่มีแม่ (ห้ามสร้างคีย์ใหม่ตามใจ — strict) → exit 1 ไม่เขียนไฟล์
+  {
+    const tmp = writeTmp('nopath.html', V2_HTML);
+    const r = sh.run('node', ['tools/apply-edits.js', tmp, '--set', 'nope.x=1']);
+    ok(r.code !== 0, 'apply-edits --set nope.x=1: exit ≠ 0 (path ไม่มีแม่)', r.out + r.err);
+    ok(fs.readFileSync(tmp, 'utf8') === V2_HTML, 'apply-edits --set path ไม่มีแม่: ไม่เขียนไฟล์เลย');
+  }
+
+  // (d) --set บนไฟล์ v1 (ไม่มี values) → exit 1 ข้อความ "ไฟล์ v1" ไม่เขียนไฟล์ (v1 safety — ห้าม half-write)
+  {
+    const tmp = writeTmp('v1.html', V1_HTML);
+    const r = sh.run('node', ['tools/apply-edits.js', tmp, '--set', 'fv=210']);
+    ok(r.code !== 0 && /ไฟล์ v1/.test(r.out + r.err), 'apply-edits --set บนไฟล์ v1: exit ≠ 0 + ข้อความ "ไฟล์ v1"', r.out + r.err);
+    ok(fs.readFileSync(tmp, 'utf8') === V1_HTML, 'apply-edits --set บนไฟล์ v1: ไม่เขียนไฟล์เลย (v1 ยังแก้ด้วยบล็อก @@ เท่านั้น)');
+  }
+
+  // (e) --set-meta fairValue=<ใหม่> — บล็อก stock-meta ใช้ได้ทั้ง v1/v2 (ไม่ผูกกับ schema v2)
+  {
+    const tmp = writeTmp('setmeta.html', V2_HTML);
+    const r = sh.run('node', ['tools/apply-edits.js', tmp, '--set-meta', 'fairValue=250']);
+    ok(r.code === 0, 'apply-edits --set-meta: exit 0', r.err || r.out);
+    const sm = readBlock(fs.readFileSync(tmp, 'utf8'), 'stock-meta');
+    ok(sm.fairValue === 250, 'apply-edits --set-meta: stock-meta.fairValue เปลี่ยนจริง', String(sm.fairValue));
+  }
+
+  // (f) ไม่มีทั้งบล็อก @@ และ --set/--del/--set-meta → ยัง exit ≠ 0 เหมือนของเดิม (STEP 5C ยังใช้ได้ปกติ)
+  {
+    const tmp = writeTmp('empty.html', V2_HTML);
+    const r = sh.run('node', ['tools/apply-edits.js', tmp]);
+    ok(r.code !== 0, 'apply-edits: ไม่มีทั้ง @@ block และ --set/--del/--set-meta → ยัง exit ≠ 0', r.out + r.err);
+  }
+}
+
 // ─────────────────────────── (Task 10–14 แทรกเทสเหนือบรรทัดนี้) ───────────────────────────
 Promise.resolve(pending)
   .catch((e) => { nFail++; console.error('✗ earnings-calendar-test ระเบิด (async) — ' + (e && e.message)); })

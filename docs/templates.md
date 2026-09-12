@@ -25,57 +25,13 @@
 
 ## ตัวอย่าง filled (NEW) — worker อ่านตรงนี้จบ **ห้าม Read/grep/sed ไฟล์ใน `reports/` ตัวอื่นทุกกรณี** / ไม่ต้องทดลอง `node -e` หา format
 
-> ตัวอย่างจริงจาก `reports/CGNX.html` (US · ราคา $66.80 · FV $50.00) · ข้อ 2 (วิธีที่ 2)/4 (ตัวปกติ)/6–7 จาก `reports/KTOS.html` (US · ราคา $48.19 · FV $50.00) — โหมด NEW compose เนื้อหาครบทุก STEP แล้ว **Write ทั้งไฟล์ครั้งเดียว** (SKILL STEP 5A)
+> ตัวอย่างจริงจาก `reports/BBL.html` (TH · ราคา ฿188.00 · FV ฿195.00) · ข้อ 2 (วิธีที่ 2)/4 (ตัวปกติ)/6–7 จาก `reports/KTOS.html` (US · ราคา $48.19 · FV $50.00) — โหมด NEW compose เนื้อหาครบทุก STEP แล้ว **Write ทั้งไฟล์ครั้งเดียว** (SKILL STEP 5A)
 > บล็อกไหนหาไม่เจอในหน้านี้ = ใส่ตามแบบตัวอย่างที่ใกล้สุดที่มี แล้วให้ gate (`npm test -- <SYM>`) จับ — ถูกกว่าไปขุดรายงานตัวอื่น (วัดจริง 13 ก.ค. 2569: HON เผา 5–6 turns grep/Read/sed รายงาน sibling ทั้งที่ทุกบล็อกอยู่ในนี้แล้ว)
+> **ใบ v1 (ก่อนย้ายคลัง) ยังใช้กติกาเดิม** — คลัง `reports/` ปัจจุบันเกือบทั้งหมดยังเป็น v1 (ราคา/FV กระจายซ้ำหลายจุด ไม่มี `values`/`{{rd:…}}`) ย้ายทั้งคลังเป็น v2 เป็นงานส่วน E ของแผน (ยังไม่ทำ) · **โหมด NEW ทุกใบใหม่เริ่มจาก skeleton v2 แล้ว** (ระยะ 2 ส่วน B) — ตัวอย่างข้างล่างนี้จึงเป็น v2 ตามที่ skeleton ใช้จริง · โหมด UPDATE บนไฟล์ v1 เดิม อ่านรูปแบบจากไฟล์จริงตรง ๆ (SKILL STEP 5B ข้อ 1) ไม่ต้องอิงตัวอย่างนี้
 
-### 1) บล็อก `report-data` ทั้งก้อน
+### 1) บล็อก `report-data` ทั้งก้อน (schema v2 — เจ้าของ `tools/report-values.js`)
 
-```html
-<script type="application/json" id="report-data">
-{
-  "theme": {
-    "accent": "#20ead1",
-    "accentDark": "#11b19e",
-    "darkGrad": "linear-gradient(135deg,#043e37 0%,#077366 58%,#0cb6a2 140%)",
-    "glow": "rgba(22,233,208,.35)",
-    "subColor": "#c2ebe6",
-    "headerMuted": "#a5d4ce",
-    "verdictText": "#d0f1ed",
-    "vcellLabel": "#a6ddd7",
-    "chgBg": "var(--green-soft)",
-    "chgColor": "#1e8e3e"
-  },
-  "chart": {
-    "data": [["ส.ค.25", 43.94], ["ก.ย.25", 45.3], ["ต.ค.25", 41.39], ["พ.ย.25", 38.1],
-             ["ธ.ค.25", 35.98], ["ม.ค.26", 38.74], ["ก.พ.26", 54.4], ["มี.ค.26", 48.99],
-             ["เม.ย.26", 55.51], ["พ.ค.26", 65.85], ["มิ.ย.26", 72.42], ["ก.ค.26", 66.8]],
-    "min": 30, "max": 80, "grid": [40, 50, 60, 70],
-    "fairLine": 50, "currency": "$", "highlight": [4, 9]
-  },
-  "gauge": { "min": 30, "max": 80, "cur": 66.8, "fair": 50 },
-  "fv": 50
-}
-</script>
-```
-
-ใครให้ค่าอะไร — **ห้ามคิดเอง field ที่ script ให้**:
-
-| field | ที่มา |
-|---|---|
-| `chart.data / min / max / grid / currency` + ป้าย `.chg` + `theme.chgBg/chgColor` | `node tools/fetch-facts.js <SYM> [--th]` พิมพ์พร้อมวาง (ขึ้น=เขียว `var(--green-soft)`/`#1e8e3e` · ลง=แดง `var(--red-soft)`/`#c5221f`) |
-| `chart.fairLine` = `gauge.fair` = `fv` | FV ที่คำนวณ STEP 3 (ค่าเดียวกันทั้ง 3 จุด) · fairLine หลุดช่วง min/max → คำนวณ bounds ใหม่รวม FV |
-| `chart.highlight` | `[ดัชนีจุดต่ำสุด, ดัชนีจุดสูงสุด]` ของ chart.data เรียงน้อย→มาก (กติกาเดียวกับ update-prices.js — cron จะ normalize ให้ทุกวันอยู่แล้ว) |
-| `gauge.min/max` | ช่วงที่ครอบทั้งราคาปัจจุบัน + FV + จุดซื้อ MOS30 (ใช้เลขเดียวกับ chart.min/max ได้ถ้าครอบ) |
-| `gauge.cur` | ราคาปัจจุบัน (เลขเดียวกับ header/stock-meta.price) |
-| `theme` 8 คีย์แรก | `makeTheme()` — สูตร 3 บรรทัด ข้อ 6 |
-
-### schema `report-data` v2 (ระยะ 2 — ยังไม่เปิดใช้กับคลังจนกว่าส่วน E)
-
-> คลัง `reports/` ทั้งหมดยังเป็น v1 (บล็อกข้างบน) — ห้ามใครเขียน `"v":2` ลงไฟล์จริงก่อนส่วน E ของแผน
-> `docs/superpowers/plans/2026-09-12-stock-analyzer-audit-phase2-data-layer.md` (schema/token ชุดจริงอยู่ที่นั่น — สรุปย่อไว้ที่นี่เพื่อให้เจองานเร็ว)
-> เจ้าของ schema/validate/derive/render = `tools/report-values.js` · เจ้าของการ render token ตอน build = `build.js expandReport()`
-
-ต่างจาก v1: ราคา/FV มี**สำเนาเดียว** (`values.px` / `fv`) แทนที่จะกระจายซ้ำในหลายจุด (header/gauge/chart/hint) — ส่วนอื่นที่ต้องโชว์ตัวเลขพวกนี้ใช้ token `{{rd:…}}` แทนการพิมพ์ค่าดิบ · `chart.fairLine` และ `gauge.cur`/`gauge.fair` **ห้ามมี** ใน v2 (engine bake จาก `values.px`/`fv` ให้เอง)
+ต่างจาก v1: ราคา/FV มี**สำเนาเดียว** (`values.px` / `fv`) แทนที่จะกระจายซ้ำในหลายจุด (header/gauge/chart/hint) — ส่วนอื่นที่ต้องโชว์ตัวเลขพวกนี้ใช้ token `{{rd:…}}` แทนการพิมพ์ค่าดิบ (ตารางท้ายข้อนี้) · `chart.fairLine` และ `gauge.cur`/`gauge.fair` **ห้ามมี** ใน v2 (engine bake จาก `values.px`/`fv` ให้เอง)
 
 ```jsonc
 <script type="application/json" id="report-data">
@@ -97,12 +53,40 @@
     "scenarios": [ { "tgt": 160, "div": 36 }, { "tgt": 230, "div": 36 }, { "tgt": 300, "div": 36 } ],  // bear/base/bull · div = ปันผลรวม N ปี (null = ไม่มีแถว)
     "scnBasis": { "years": 3, "divIncluded": true, "perYear": "cagr" }   // perYear: "cagr" | "linear" | null (ไม่โชว์ %/ปี)
   },
-  "theme": { … 11 คีย์เดิม … },
-  "chart": { "data": [...], "min": 120, "max": 240, "grid": [...], "currency": "฿", "highlight": [3, 9] },   // ★ ไม่มี fairLine
+  "theme": {
+    "accent": "#0071e3",
+    "accentDark": "#0058b9",
+    "darkGrad": "linear-gradient(135deg,#0a2540 0%,#123a63 55%,#1a4f86 140%)",
+    "glow": "rgba(110,160,220,.35)",
+    "subColor": "#c7cbd4",
+    "headerMuted": "#b3b8c2",
+    "chgBg": "var(--green-soft)",
+    "chgColor": "#137333",
+    "badge": "var(--blue)",
+    "verdictText": "#d4d6dd",
+    "vcellLabel": "#c4c7cf"
+  },
+  "chart": {
+    "data": [["ต.ค.25", 158.5], ["พ.ย.25", 158], ["ธ.ค.25", 169.5], ["ม.ค.26", 158], ["ก.พ.26", 177.5],
+             ["มี.ค.26", 166.5], ["เม.ย.26", 162.5], ["พ.ค.26", 173], ["มิ.ย.26", 179.5], ["ก.ค.26", 191.5],
+             ["ส.ค.26", 191], ["ก.ย.26", 188]],
+    "min": 150, "max": 200, "grid": [160, 170, 180, 190],
+    "currency": "฿", "highlight": [1, 9]                                                                   // ★ ไม่มี fairLine
+  },
   "gauge": { "min": 120, "max": 240, "fairLabelTop": "-58px" }                                             // ★ ไม่มี cur/fair
 }
 </script>
 ```
+
+ใครให้ค่าอะไร — **ห้ามคิดเอง field ที่ script ให้** (คีย์ใน `values` มีคอมเมนต์กำกับในบล็อกข้างบนแล้ว — ตารางนี้เสริมเฉพาะที่ไม่ได้อยู่ใน `values`):
+
+| field | ที่มา |
+|---|---|
+| `values.px` / `values.priceDate` + ป้าย `.chg` + `theme.chgBg/chgColor` | `node tools/fetch-facts.js <SYM> [--th]` พิมพ์พร้อมวาง (ขึ้น=เขียว `var(--green-soft)`/`#1e8e3e` · ลง=แดง `var(--red-soft)`/`#c5221f`) |
+| `chart.data / min / max / grid / currency / highlight` | fetch-facts พิมพ์ให้เหมือนกัน — `highlight` = `[ดัชนีจุดต่ำสุด, ดัชนีจุดสูงสุด]` ของ chart.data เรียงน้อย→มาก (ไม่มี `chart.fairLine` แล้วใน v2) |
+| `fv` (เจ้าของเดียวของ FV) | FV ที่คำนวณ STEP 3 |
+| `gauge.min` / `gauge.max` (+ `fairLabelTop` ถ้าต้อง) | ช่วงที่ครอบทั้งราคาปัจจุบัน + FV + จุดซื้อ MOS30 (ไม่มี `cur`/`fair` แล้ว — engine bake จาก `values.px`/`fv`) |
+| `theme` 11 คีย์ | `makeTheme()` — สูตร 3 บรรทัด ข้อ 6 |
 
 token ที่ renderer รู้จัก (`tools/report-values.js` `TOKENS`) — ตัวไหน derive จากอะไร:
 

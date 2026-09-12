@@ -68,7 +68,7 @@ const FORBIDDEN = [
   // ⇒ จำกัดเฉพาะบริบทสีแบรนด์/price-flags/seeds/tags.json (WS8 review Important 12)
   /(สีแบรนด์|price-flags|seeds|tags\.json)[^\n]{0,40}ไม่มี lock/,
   /dead-band ±3/, /±3 จุด/, /flip ใน ±3/, /controller ต้อง pre-patch ทั้งชุด/, /worker ห้ามรัน update-prices/,
-  /dead-band ของ gate W06/,
+  /dead-band ของ gate W06/, /เลขเดียวกันต้องพิมพ์ตรงกันทุกจุด/,
 ];
 for (const f of DOCS) {
   const lines = fs.readFileSync(path.join(ROOT, f), 'utf8').split('\n');
