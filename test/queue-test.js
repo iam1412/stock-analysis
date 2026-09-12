@@ -292,7 +292,10 @@ process.env.QUEUE_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'queue-'));   // s
   ok(Sh.commitMessage('AAPL', { mode: 'UPDATE-LIGHT' }, { mos: 3.9 }) === 'analyze: update AAPL — UPDATE-LIGHT (MOS +3.9%)', 'commitMessage: update + MOS');
   ok(Sh.commitMessage('NEWCO', { mode: 'NEW' }, { mos: -12 }) === 'analyze: add NEWCO — NEW (MOS −12%)', 'commitMessage: NEW = add · เครื่องหมายลบ');
   ok(Sh.commitMessage('X', {}, null) === 'analyze: update X — UPDATE', 'commitMessage: ไม่มี mos/mode → ค่าตั้งต้น');
-  ok(Sh.trailer('opus') === 'Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>' && Sh.trailer(undefined) === 'Co-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>', 'trailer: ตามโมเดล worker · ค่าตั้งต้น Sonnet 5 (CLAUDE.md §5)');
+  ok(Sh.trailer('opus') === 'Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>' && Sh.trailer('sonnet') === 'Co-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>', 'trailer: ตามโมเดล worker (CLAUDE.md §5)');
+  // ★ (Task 16 nits) model undefined/ไม่รู้จัก ต้อง throw เหมือนกัน — เดิมเงียบเป็น Sonnet (แก้แล้ว)
+  let undefThrew = null; try { Sh.trailer(undefined); } catch (e) { undefThrew = e.message; }
+  ok(/ไม่รู้จัก/.test(undefThrew || ''), 'trailer: model undefined (ยังไม่ได้ตั้ง) → throw ไม่เงียบเป็น Sonnet', undefThrew);
   ok(/analyze: update|analyze: add/.test(Sh.commitMessage('A', { mode: 'UPDATE' }, {})) && Sh.STOCK_FILES('A').includes('reports/A.html') && !Sh.STOCK_FILES('A').includes('-A'), 'STOCK_FILES: รายการไฟล์ที่ add ชัดเจน (ไม่ใช่ git add -A)');
 }
 // ── 10) dispatcher: usage เมื่อไม่มีคำสั่ง · exit 1 ──
@@ -492,6 +495,45 @@ process.env.QUEUE_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'queue-'));   // s
   ok(S.resolveQueueDir({}, '/a/b/.git') === path.join('/a/b', '.queue'), 'resolveQueueDir: git-common-dir absolute → <หลัก>/.queue');
   ok(S.resolveQueueDir({}, '.git') === path.join(ROOT, '.queue'), 'resolveQueueDir: checkout หลักเอง (.git relative) → ROOT/.queue');
   ok(S.resolveQueueDir({}, '') === path.join(ROOT, '.queue') && S.resolveQueueDir({}, null) === path.join(ROOT, '.queue'), 'resolveQueueDir: ไม่มี git → ROOT/.queue');
+}
+
+// ── 19) CLI nits (ledger ระยะ 0): --flag=value · --tags ต้องมีค่า · trailer ไม่เดา ──
+{
+  const sh = require('../tools/queue/sh.js');
+  const r1 = sh.run('node', ['tools/queue.js', 'prep']);                     // ไม่มี SYM → usage
+  ok(r1.code !== 0 && /ใช้: npm run queue/.test(r1.out + r1.err), 'queue.js: prep ไม่มี SYM → usage');
+  const r2 = sh.run('node', ['tools/queue.js', 'ship', 'AAPL', '--tags']);
+  ok(r2.code !== 0 && /--tags ต้องมีค่า/.test(r2.out + r2.err), 'queue.js: --tags ไม่มีค่า → error ชัด (ไม่ใช่ garbage)');
+  const r3 = sh.run('node', ['tools/queue.js', 'ship', 'AAPL', '--tags', '--force']);
+  ok(r3.code !== 0 && /--tags ต้องมีค่า/.test(r3.out + r3.err), 'queue.js: --tags ตามด้วย flag → error');
+  const Q = require('../tools/queue/ship.js');
+  let threw = null; try { Q.trailer('haiku'); } catch (e) { threw = e.message; }
+  ok(/ไม่รู้จัก/.test(threw || ''), 'trailer: โมเดลไม่รู้จัก → throw (ไม่เงียบเป็น Sonnet)');
+  ok(/Sonnet 5/.test(Q.trailer('sonnet')) && /Opus 5/.test(Q.trailer('opus')), 'trailer: sonnet/opus ถูก');
+
+  const A = require('../tools/queue/args.js');
+  const p1 = A.parseArgs(['prep', 'AAPL', '--mode=UPDATE', '--tags', 'a b']);
+  ok(p1.val('--mode') === 'UPDATE', 'parseArgs: --flag=value รองรับ');
+  ok(p1.val('--tags') === 'a b', 'parseArgs: --flag value (เว้นวรรค 2 ตัว) รองรับ');
+  ok(p1.cmd === 'prep' && p1.sym === 'AAPL', 'parseArgs: cmd/sym ถูก');
+  let valThrew = null; try { A.parseArgs(['ship', 'AAPL', '--tags']).val('--tags'); } catch (e) { valThrew = e.message; }
+  ok(/--tags ต้องมีค่า/.test(valThrew || ''), 'parseArgs: val() ไม่มีค่าตามหลัง → throw');
+  let valThrew2 = null; try { A.parseArgs(['ship', 'AAPL', '--tags', '--force']).val('--tags'); } catch (e) { valThrew2 = e.message; }
+  ok(/--tags ต้องมีค่า/.test(valThrew2 || ''), 'parseArgs: val() ตามด้วย flag อื่น → throw');
+}
+
+// ── 19b) dispatcher: --age N / --age=N / --no-age ยังใช้ได้หลังย้ายไป args.js (Task 14 ไม่พัง)
+//   ทดสอบ parseArgs ตรง ๆ (ไม่ผ่าน CLI จริง) — `preflight` ยิง git pull เสมอ ทดสอบผ่าน sh.run ไม่ได้ (ดู brief Task 16) ──
+{
+  const A = require('../tools/queue/args.js');
+  let a = A.parseArgs(['preflight', '--age', '5']);
+  ok((a.val('--age') != null ? +a.val('--age') : null) === 5, 'parseArgs: --age N (เว้นวรรค)');
+  a = A.parseArgs(['preflight', '--age=5']);
+  ok((a.val('--age') != null ? +a.val('--age') : null) === 5, 'parseArgs: --age=5 (เท่ากับ)');
+  a = A.parseArgs(['preflight', '--no-age']);
+  ok(a.has('--no-age') === true, 'parseArgs: --no-age (boolean flag)');
+  a = A.parseArgs(['preflight', '--allow-dirty', '--no-patch']);
+  ok(a.has('--allow-dirty') === true && a.has('--no-patch') === true, 'parseArgs: boolean flag หลายตัวพร้อมกัน (--allow-dirty · --no-patch)');
 }
 
 // ─────────────────────────── (Task 10–14 แทรกเทสเหนือบรรทัดนี้) ───────────────────────────

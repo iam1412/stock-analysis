@@ -20,7 +20,7 @@ const TITLE = 'Price-refresh flags — หุ้นรอ re-analysis';   // ต
 const MODEL_NAME = { sonnet: 'Sonnet 5', opus: 'Opus 5' };
 const STOCK_FILES = (sym) => [`reports/${sym}.html`, 'tags.json', 'tools/seeds.json', 'price-flags.json', 'reports.json'];
 
-const trailer = (model) => `Co-Authored-By: Claude ${MODEL_NAME[model] || 'Sonnet 5'} <noreply@anthropic.com>`;
+const trailer = (model) => { const n = MODEL_NAME[model]; if (!n) throw new Error(`โมเดล "${model}" ไม่รู้จัก — ป้าย Co-Authored-By ต้องตรงกับที่รันจริง (sonnet|opus)`); return `Co-Authored-By: Claude ${n} <noreply@anthropic.com>`; };
 function commitMessage(sym, rec, sm) {
   const mode = (rec && rec.mode) || 'UPDATE';
   const mos = sm && Number.isFinite(sm.mos) ? ` (MOS ${sm.mos < 0 ? '−' : '+'}${Math.abs(sm.mos)}%)` : '';
@@ -67,7 +67,7 @@ const commitArgs = (msg, files) => ['commit', '-q', '-m', msg, '--', ...files];
 function pushOrExplain(sym) {
   try { pushWithRebase(); }
   catch (e) {
-    throw new Error(`${e.message}\n⇒ commit ของ ${sym} เขียนลงเครื่องแล้ว (ยังไม่ push) — แก้เหตุข้างบนแล้วรัน npm run queue -- ship ${sym} ซ้ำ จะ push commit เดิมต่อให้เลย (ห้ามสั่ง worker เขียนใหม่)`);
+    throw new Error(`${e.message}\n⇒ push ล้ม — commit อยู่แล้ว: แก้ conflict (ถ้ามี) แล้วรัน npm run queue -- ship ${sym} ซ้ำ (จะข้าม commit ไปทำ pull --rebase + push)`);
   }
 }
 

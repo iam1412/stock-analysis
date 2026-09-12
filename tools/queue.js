@@ -11,13 +11,7 @@
  *   npm run queue -- status                 X/Y push แล้ว / รอ push / ยังไม่เริ่ม
  * สิ่งที่ยังต้องทำเอง (script พิมพ์บอกทุกครั้ง): probe โมเดล · courier/advisor หุ้นยาก · spawn worker (pin model) · ยืนยันเพิกถอน · ชั้น 0 valuation · publish/skip
  */
-const argv = process.argv.slice(2);
-const cmd = argv[0];
-const has = (f) => argv.includes(f);
-const val = (f) => { const i = argv.indexOf(f); return i >= 0 ? argv[i + 1] : null; };
-const VALUE_FLAGS = new Set(['--mode', '--model', '--brand', '--median-spec', '--tags', '--message', '--age']);
-const positional = argv.slice(1).filter((a, i, arr) => !a.startsWith('--') && !VALUE_FLAGS.has(arr[i - 1]));
-const sym = (positional[0] || '').toUpperCase();
+const { cmd, has, val, sym } = require('./queue/args.js').parseArgs(process.argv.slice(2));
 const usage = `ใช้: npm run queue -- <คำสั่ง> [ตัวเลือก]
   preflight [--no-patch] [--allow-intraday] [--allow-dirty] [--age N] [--no-age]
   ship --prepatch
@@ -36,7 +30,7 @@ const usage = `ใช้: npm run queue -- <คำสั่ง> [ตัวเล
       if (has('--prepatch') && sym) throw new Error('ship: ระบุ <SYM> หรือ --prepatch อย่างใดอย่างหนึ่ง');
       const sh = require('./queue/ship.js');
       if (has('--prepatch')) sh.shipPrepatch();
-      else if (sym) sh.shipStock(sym, { tags: val('--tags'), message: val('--message'), force: has('--force') });
+      else if (sym) sh.shipStock(sym, { tags: has('--tags') ? val('--tags') : null, message: val('--message'), force: has('--force') });
       else throw new Error(usage);
       break;
     }
