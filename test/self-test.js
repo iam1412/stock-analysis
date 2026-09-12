@@ -248,6 +248,11 @@ expect('E26', 'error', mut3(/([฿$])([0-9.,]+)(<br>\s*<small>MOS 20%)/, numStr(
   const noBig = base.replace(/<div class="big">[^<]*<\/div>/, '');
   ok(DVc.summaryPlan(noBig) == null && !DVc.patchDerived(noBig, PX).changes.some((c) => /ช่องสรุป/.test(c)), 'ไม่มี .big → summaryPlan null · healer ไม่แตะ');
   ok(!allIds(checkHtml(noBig, 'BBL.html')).has('W06'), 'ไม่มี .big → W06 เงียบ (ปล่อยให้ E16/E30 ฟ้อง .big ที่หายไป)');
+  // C1 (carried fix): ".big" เขียนเลขนำหน้าเป็นจุดล้วน ("+.8%") — เดิม readMosBig ตัดจุดนำหน้าทิ้งแล้วอ่านเป็น 8 (ผิดสิบเท่าจาก 0.8)
+  //   ต้อง null เงียบ (ปลอดภัย) ไม่ throw — ปล่อยให้ E16/E30 ฟ้อง .big ผิดรูปแทน
+  const dotBig = base.replace(/<div class="big">[^<]*<\/div>/, '<div class="big">+.8%</div>');
+  ok(DVc.readMosBig(dotBig) === null, '★ C1: readMosBig(".big"="+.8%" จุดนำหน้า) → null (เดิมอ่านผิดเป็น 8 แทน 0.8 — ผิดสิบเท่า)', JSON.stringify(DVc.readMosBig(dotBig)));
+  ok(DVc.summaryPlan(dotBig) === null, '★ C1: summaryPlan(".big" ผิดรูปจุดนำหน้า) → null (healer no-op ไม่ throw)', JSON.stringify(DVc.summaryPlan(dotBig)));
 }
 expect('W07', 'warn', mut3(/(P\/E \(TTM\)<\/div>\s*<div class="v[^"]*">\s*~?)([0-9.,]+)(x)/, '750'), 'P/E ผิดวิสัย (750x)');
 reject('W07', mut3(/(P\/E \(TTM\)<\/div>\s*<div class="v[^"]*">\s*~?)([0-9.,]+)(x)/, '480'), 'P/E ~480x (มัลติเพิลสูงจริงในตลาด AI เช่น ARM) → ไม่ใช่ค่าผิดวิสัย');

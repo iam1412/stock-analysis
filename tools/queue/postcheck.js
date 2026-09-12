@@ -27,6 +27,16 @@ function findOldPrice(html, oldPrice) {
   return hits;
 }
 
+/** #7 (GABLE — data-source-traps 6N): การ์ด "P/E เฉลี่ย ~N ปี" (manifest f55) ห้ามอ้างเกินจำนวน FY ที่มี EPS(dil)
+ *  จริงในตาราง [3] (`rec.fyYears` ที่ prep บันทึกไว้) — ส่วนบริสุทธิ์ ไม่แตะ fs/state เอง
+ *  ★ ไม่ใช่ manifest pair f55↔f04 ("years" — เทียบกับจำนวนปีในกราฟ) ซึ่งยังไม่ยิงใบไหนเลย (latent — กราฟไม่มีป้ายปี
+ *  4 หลัก) เก็บไว้เป็นข้อมูลเสริมเฉย ๆ · เช็คนี้คือทางปิด #7 จริง เทียบกับ "จำนวนคอลัมน์ EPS(dil) ที่มีเลขจริง" แทน */
+function checkFyYears(f55, fyYears) {
+  if (f55 == null || fyYears == null) return null;
+  if (f55 > fyYears) return `การ์ด "P/E เฉลี่ย ~${f55} ปี" แต่ตาราง [3] มี EPS จริง ${fyYears} ปี (เคส GABLE — นับคอลัมน์ก่อนเชื่อป้าย)`;
+  return null;
+}
+
 /** ตรวจ meta ที่ gate ไม่รู้: ai-model vs โมเดลที่ spawn · pe/roe เมื่อขาดทุน · footer */
 function checkMeta(ctx, model, fd, today) {
   const issues = [];
@@ -66,6 +76,8 @@ function postcheck(sym, opts) {
   const { expandReport } = require('../../build.js');
   const ctx = buildCtx(expandReport(html), sym + '.html');
   issues.push(...checkMeta(ctx, o.model || rec.model, footerDate(html), todayBangkok()));
+  const fyIssue = checkFyYears(ctx.mf && ctx.mf.values ? ctx.mf.values.f55 : null, rec.fyYears);
+  if (fyIssue) issues.push(fyIssue);
   // ช่อง required ที่ manifest อ่านไม่ได้ = โครงที่ worker เขียนไม่ครบ (W21 ใน gate เป็น warn จึงไม่บล็อก push เอง)
   // ⇒ ต้องขึ้นเป็น issue ตรงนี้ เพราะ postcheck คือจุดที่ controller ตัดสินว่าจะรับงาน worker ไหม
   if (ctx.mf && ctx.mf.missing.length)
@@ -82,4 +94,4 @@ function postcheck(sym, opts) {
   return { issues, notes };
 }
 
-module.exports = { postcheck, findOldPrice, checkMeta };
+module.exports = { postcheck, findOldPrice, checkMeta, checkFyYears };

@@ -198,7 +198,9 @@ function readMosBig(html) {
   const m = String(html).match(MOS_BIG_RE);
   if (!m) return null;
   const sign = /[\-−–]/.test(m[1]) ? '−' : '+';
-  const num = m[2].replace(/^\.+|\.+$/g, '');
+  // ★ ตัดเฉพาะจุดต่อท้าย ("8." → "8") — ห้ามตัดจุดนำหน้า: ".8" ที่ตัดจุดทิ้งจะกลายเป็น "8" (ผิดสิบเท่า จาก 0.8%)
+  //   ปล่อยให้ regex ข้างล่างปฏิเสธ ".8" เอง (ไม่มีเลขนำหน้าจุด) → null = ปลอดภัย (E16/E30 ดูแล .big ผิดรูปอยู่แล้ว)
+  const num = m[2].replace(/\.+$/, '');
   if (!/^\d+(?:\.\d+)?$/.test(num)) return null;
   return { sign, num, value: (sign === '−' ? -1 : 1) * parseFloat(num) };
 }

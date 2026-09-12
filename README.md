@@ -33,8 +33,8 @@ reports.json            # manifest (auto-generated — track วันที่�
 price-flags.json        # คิวหุ้นรอ re-analysis จาก cron ราคา (snapshot ต่อรอบ — จัดการอัตโนมัติ)
 tools/                  # prep-stock.js (pre-fetch pack + CROSS-VERIFY) · fetch-facts.js · fetch-fundamentals.js · update-prices.js (cron ราคา)
                         #   · pick-brand.js + brandtheme.js + seeds.json + brand-colors.md · preserve-dates.js · migrate.js · symbol-map.json (ticker เปลี่ยนชื่อ)
-test/                   # quality gate ทุกชั้น: update-prices-test · dead-ticker-test · check-reports · ohlc-test · ta-engine-test · build-test · engine-exec · skeleton-test · check-site
-                        #   + นอก gate: self-test · prep-stock-test
+test/                   # quality gate ทุกชั้น: update-prices-test · dead-ticker-test · check-reports · ohlc-test · ta-engine-test · build-test · engine-exec · skeleton-test · check-site · prep-stock-test
+                        #   + self-test (meta-test ของ check-reports — เข้า gate ตั้งแต่ 12 ส.ค. 69 เหมือนกัน)
 docs/                   # รายละเอียดเชิงลึก: quality-gate.md · templates.md · counters.md · price-refresh.md · ta-chart.md · orchestration.md
 .github/workflows/update-prices.yml        # cron อัปเดตราคาทุกวัน 07:17 น. ไทย
 .github/workflows/fundamentals-canary.yml  # canary รายสัปดาห์ (จันทร์ 09:00 น. ไทย) — จับแหล่งข้อมูลเปลี่ยนโครง
@@ -160,7 +160,7 @@ npm run dev        # = wrangler dev — ต้องใช้ตัวนี้�
 
 ## ✅ Quality gate (ตรวจก่อนเผยแพร่)
 
-`npm run verify` ตรวจ <!-- gen:verify-steps -->15<!-- /gen:verify-steps --> ขั้นตามลำดับนี้ — มี error เมื่อไหร่ push ไม่ได้:
+`npm run verify` ตรวจ <!-- gen:verify-steps -->16<!-- /gen:verify-steps --> ขั้นตามลำดับนี้ — มี error เมื่อไหร่ push ไม่ได้:
 
 <!-- gen:verify-list -->
 1. **`update-prices-test`** (unit-test cron ราคา, offline): `decide` freeze/patch • `detectStaleQuotes`/`capByCohort`/`unverifiedCohorts` (ยืนยันหุ้นตายสองชั้น) • `mergeFlags` • `patchReport` • `commitBody`
@@ -168,16 +168,17 @@ npm run dev        # = wrangler dev — ต้องใช้ตัวนี้�
 3. **`tag-apply-test`** (unit-test CLI ที่เขียน `tags.json`, offline): `applyTags`/`renameSymbol`/`pruneMissing` แบบ all-or-nothing
 4. **`queue-test`** (unit-test runbook เคลียร์คิว, offline): triage/footer-date/market/prompt/ship helpers + ลำดับขั้น `verify` ↔ `.githooks/pre-push` ต้องตรงกัน
 5. **`docs-test`** (docs ↔ code, offline): `gen-docs.check()` ต้องว่าง (ตาราง/ตัวเลขใน docs ตรงกับ `CHECKS`/`package.json`) • วลีที่ยกเลิกแล้วต้องไม่กลับมา (สแกน DOCS ทั้งชุด) • ตัวเลข "N ขั้น"/"N error + M warning" ห้ามพิมพ์มือนอก marker • ตาราง checks-table ต้องไม่มีช่อง `_(เติม)_` ค้าง
-6. **`tags-test`** (ตรวจความสอดคล้อง `tags.json` ทั้งคลัง — corpus check จริง ไม่ใช่แค่ unit test): schema คลัง + `validateAssignment`/`matchTagQuery` + ครบ 908 ไฟล์/ไม่มี entry ค้าง/ไม่มี slug หลุดคลัง
-7. **`check-reports`** (source ทีละไฟล์ — <!-- gen:counts -->47 error + 18 warning<!-- /gen:counts -->): โครงสร้างครบ (รวม meta `ai-model` ระบุโมเดล AI) • **ตัวเลขสอดคล้องกันเอง** (ค่า `FV` ในเครื่องคิดเลข = Fair Value = สรุป, `MOS=(FV−ราคา)/FV`, จุดซื้อ MOS = FV×0.8/0.7, คณิตแต่ละวิธี P/E & P/BV, scenario EPS ทบต้น) • **บล็อก `stock-meta` (screener) = เลขที่โชว์จริง** (E29–31) • **CSS var ครบ (E33)** • **ป้าย % รอบปี + กราฟ ~1 ปี** (header `.chg` = ผลตอบแทน "รอบปี" = ปลายกราฟ section 2 · สี↔ทิศ · กราฟ ≤13 จุด · E34–E37) • **contrast ธีมอ่านออกทุกคู่สี — WCAG AA** (ตัวหนังสือ ≥4.5 · เส้นกราฟ ≥3 · E38) • **ความสดของราคา** (เตือน >45 วัน, บล็อก >120 วัน) • ไม่มี placeholder/`{{token}}` ค้าง
-8. **`self-test`** (meta-test ของ `check-reports` ก่อนหน้า — เข้า gate 12 ส.ค. 69): จงใจใส่ defect ลงรายงานจริงแล้วยืนยันว่า check ที่เกี่ยวข้อง "จับได้" + รายงานดีต้องไม่ false-positive · ปิดช่องที่ `check-reports` เสียจนเลิกยิงแล้วรายงาน "error 0" ซึ่งแยกไม่ออกจาก "สะอาดจริง"
-9. **`ohlc-test`**: `src/ohlc.js` แปลง Yahoo JSON → payload แท่งเทียนถูกต้อง (ตัดแท่ง null, ปัดทศนิยม)
-10. **`ta-engine-test`**: ตรึงนิยาม TA ด้วย fixture — `ema` · `rsi` · `findPivots` · `labelStructure` · `detectBreaks` (ห้าม look-ahead) · `detectDivergence` · `summarizeSignals` · **+ รัน `ta-chart.js` จริงใน mock DOM + stub LightweightCharts** (เดิม syntax-check เฉย ๆ)
-11. **`build`**: expand ทุก report + `injectTA` + สร้าง index/manifest ลง `dist/` ต้องไม่พัง
-12. **`build-test`** (unit-test build.js): `freshHash` • เครดิตโมเดล AI ต่อ report • `extractMetrics`/`pickHighlight`/`computeLeaders` • `injectTA` • **`validateReportData`** กัน render พังเงียบ (gridFmt/dataFmt ตรง scope, bounds ไม่ degenerate, fv>0, ค่าสี theme ถูกต้อง/ไม่ inject)
-13. **`engine-exec`** (รัน engine ทุกรายงานใน mock DOM): กราฟ (`<path>`+`<circle>`), เข็ม gauge, เครื่องคิดเลข MOS ต้อง render จริง **ไม่ throw + ไม่มีพิกัด NaN/Infinity** — ปิดช่อง "syntax ผ่านแต่ runtime พัง"
-14. **`skeleton-test`**: โครงต้นแบบ TH/US เติมข้อมูลจริง (ไทย = HMPRO) แล้วต้องผ่าน gate + engine รันได้
-15. **`check-site`** (หลัง build, ระดับเว็บไซต์): ทุก report อยู่ใน index/manifest ครบ • `<script>` JS ไม่พัง + id ครบ • โมเดลใน footer = meta `ai-model` • **การ์ด index `data-*` = บล็อก stock-meta** • **ความปลอดภัย: external resource = Google Fonts เท่านั้น ห้าม `<script src>` ภายนอก**
+6. **`prep-stock-test`** (unit-test `prep-stock.js`/`fetch-fundamentals.js`, offline): `parseDeltas`/`verdict`/`parseArgs` • `tableEpsTTM`/`epsTableLine`/`epsReconcile` (entity mismatch/if-converted) • `statsFromPayload`/`statsLines` (dual-class) • `fromForecast`/`forecastLine` • **+ `median-multiples-test`**: `oneSymbol` ฉีด fetcher ผ่าน `deps` ได้ครบ 4 จุด (ข้าม TTM · EPS≤0 · outlier สุดขั้ว · ผสมสกุลเงิน · MIN_POINTS) — open-item #4/#8
+7. **`tags-test`** (ตรวจความสอดคล้อง `tags.json` ทั้งคลัง — corpus check จริง ไม่ใช่แค่ unit test): schema คลัง + `validateAssignment`/`matchTagQuery` + ครบ 908 ไฟล์/ไม่มี entry ค้าง/ไม่มี slug หลุดคลัง
+8. **`check-reports`** (source ทีละไฟล์ — <!-- gen:counts -->47 error + 18 warning<!-- /gen:counts -->): โครงสร้างครบ (รวม meta `ai-model` ระบุโมเดล AI) • **ตัวเลขสอดคล้องกันเอง** (ค่า `FV` ในเครื่องคิดเลข = Fair Value = สรุป, `MOS=(FV−ราคา)/FV`, จุดซื้อ MOS = FV×0.8/0.7, คณิตแต่ละวิธี P/E & P/BV, scenario EPS ทบต้น) • **บล็อก `stock-meta` (screener) = เลขที่โชว์จริง** (E29–31) • **CSS var ครบ (E33)** • **ป้าย % รอบปี + กราฟ ~1 ปี** (header `.chg` = ผลตอบแทน "รอบปี" = ปลายกราฟ section 2 · สี↔ทิศ · กราฟ ≤13 จุด · E34–E37) • **contrast ธีมอ่านออกทุกคู่สี — WCAG AA** (ตัวหนังสือ ≥4.5 · เส้นกราฟ ≥3 · E38) • **ความสดของราคา** (เตือน >45 วัน, บล็อก >120 วัน) • ไม่มี placeholder/`{{token}}` ค้าง
+9. **`self-test`** (meta-test ของ `check-reports` ก่อนหน้า — เข้า gate 12 ส.ค. 69): จงใจใส่ defect ลงรายงานจริงแล้วยืนยันว่า check ที่เกี่ยวข้อง "จับได้" + รายงานดีต้องไม่ false-positive · ปิดช่องที่ `check-reports` เสียจนเลิกยิงแล้วรายงาน "error 0" ซึ่งแยกไม่ออกจาก "สะอาดจริง"
+10. **`ohlc-test`**: `src/ohlc.js` แปลง Yahoo JSON → payload แท่งเทียนถูกต้อง (ตัดแท่ง null, ปัดทศนิยม)
+11. **`ta-engine-test`**: ตรึงนิยาม TA ด้วย fixture — `ema` · `rsi` · `findPivots` · `labelStructure` · `detectBreaks` (ห้าม look-ahead) · `detectDivergence` · `summarizeSignals` · **+ รัน `ta-chart.js` จริงใน mock DOM + stub LightweightCharts** (เดิม syntax-check เฉย ๆ)
+12. **`build`**: expand ทุก report + `injectTA` + สร้าง index/manifest ลง `dist/` ต้องไม่พัง
+13. **`build-test`** (unit-test build.js): `freshHash` • เครดิตโมเดล AI ต่อ report • `extractMetrics`/`pickHighlight`/`computeLeaders` • `injectTA` • **`validateReportData`** กัน render พังเงียบ (gridFmt/dataFmt ตรง scope, bounds ไม่ degenerate, fv>0, ค่าสี theme ถูกต้อง/ไม่ inject)
+14. **`engine-exec`** (รัน engine ทุกรายงานใน mock DOM): กราฟ (`<path>`+`<circle>`), เข็ม gauge, เครื่องคิดเลข MOS ต้อง render จริง **ไม่ throw + ไม่มีพิกัด NaN/Infinity** — ปิดช่อง "syntax ผ่านแต่ runtime พัง"
+15. **`skeleton-test`**: โครงต้นแบบ TH/US เติมข้อมูลจริง (ไทย = HMPRO) แล้วต้องผ่าน gate + engine รันได้
+16. **`check-site`** (หลัง build, ระดับเว็บไซต์): ทุก report อยู่ใน index/manifest ครบ • `<script>` JS ไม่พัง + id ครบ • โมเดลใน footer = meta `ai-model` • **การ์ด index `data-*` = บล็อก stock-meta** • **ความปลอดภัย: external resource = Google Fonts เท่านั้น ห้าม `<script src>` ภายนอก**
 <!-- /gen:verify-list -->
 
 ```bash

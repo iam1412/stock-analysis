@@ -58,6 +58,7 @@ const STEP_LABELS = {
   'test/skeleton-test.js': ['🧱', 'โครงต้นแบบ TH/US เติมแล้วผ่าน gate (skeleton-test)', 'skeleton template gate', { quiet: true }],
   'test/check-site.js': ['🌐', 'ตรวจความสมบูรณ์เว็บไซต์ (check-site)', 'site integrity gate', {}],
   'test/docs-test.js': ['📚', 'docs ↔ code (docs-test)', 'docs gate'],
+  'test/prep-stock-test.js': ['🧮', 'unit-test prep-stock/medians (prep-stock-test)', 'prep-stock unit gate'],
 };
 
 const errs = CHECKS.filter((c) => c.level === 'error'), warns = CHECKS.filter((c) => c.level === 'warn');

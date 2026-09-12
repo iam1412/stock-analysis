@@ -3,10 +3,10 @@
 > สรุปย่อ + คำสั่งอยู่ใน `CLAUDE.md §8` — ไฟล์นี้คือรายละเอียดไล่ทีละชั้น/ทีละ error
 > **enforcement จริงอยู่ในโค้ด `test/*.js`** เอกสารนี้เป็นคำอธิบายประกอบเท่านั้น
 
-มี gate หลายชั้น ต้องผ่านทั้งหมด **ก่อน push เสมอ** (มี `pre-push` hook บังคับซ้ำ <!-- gen:verify-steps -->15<!-- /gen:verify-steps --> ขั้น):
+มี gate หลายชั้น ต้องผ่านทั้งหมด **ก่อน push เสมอ** (มี `pre-push` hook บังคับซ้ำ <!-- gen:verify-steps -->16<!-- /gen:verify-steps --> ขั้น):
 
 ```bash
-npm run verify           # ★ ครบชุด <!-- gen:verify-steps -->15<!-- /gen:verify-steps --> ขั้น: <!-- gen:verify-chain-plain -->update-prices-test → dead-ticker-test → tag-apply-test → queue-test → docs-test → tags-test → check-reports → self-test → ohlc-test → ta-engine-test → build → build-test → engine-exec → skeleton-test → check-site<!-- /gen:verify-chain-plain -->
+npm run verify           # ★ ครบชุด <!-- gen:verify-steps -->16<!-- /gen:verify-steps --> ขั้น: <!-- gen:verify-chain-plain -->update-prices-test → dead-ticker-test → tag-apply-test → queue-test → docs-test → prep-stock-test → tags-test → check-reports → self-test → ohlc-test → ta-engine-test → build → build-test → engine-exec → skeleton-test → check-site<!-- /gen:verify-chain-plain -->
 npm run test:prices      # ชั้น 1 (unit-test cron ราคา — offline: decide/detectStaleQuotes/capByCohort/unverifiedCohorts/mergeFlags/patchReport)
 npm run test:dead        # ชั้น 2 (unit-test canary หุ้นตาย — offline: tvBaseName/tvCandidates/classify/mergeDeadFlags/shouldAbort/retry)
 npm run test:tagapply    # ชั้น tag 1 (unit-test CLI ที่เขียน tags.json — offline: applyTags/renameSymbol/pruneMissing all-or-nothing)
