@@ -35,6 +35,7 @@ const { expandReport } = require('../build.js');  // BBL เป็น content-on
 
 // ฐาน = fixture แช่แข็ง (test/fixtures/BBL.html) — ไม่ใช่ไฟล์จริงที่ cron แก้ทุกวัน (บทเรียน 22–24 ส.ค. 69)
 const FX = require('./fixtures');
+const RM = require('../tools/report-meta.js');   // เจ้าของเดียวของ regex stock-meta/report-data/.px
 const base = expandReport(FX.BBL());
 process.env.STALE_TODAY = FX.TODAY;   // E27/W09 วัดจากวันนี้ที่ตรึงไว้ — ทุกเคสที่เปลี่ยนค่านี้ต้องคืนเป็น FX.TODAY
 
@@ -88,6 +89,10 @@ const mutSlice = (marker, re, repl) => (h) => { const i = h.indexOf(marker); ret
 const setKVD = (label, v, d) => (h) => h.replace(
   new RegExp(`(<div class="k">${label.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}</div>\\s*<div class="v[^"]*"[^>]*>)([\\s\\S]*?)(</div>\\s*<div class="d[^"]*"[^>]*>)([\\s\\S]*?)(</div>)`),
   (m, a, ov, b, od, z) => a + v + b + d + z);
+// แทรกการ์ด k/v/d ใบใหม่เป็นใบแรกของแถบ metric — ใช้ตั้งฉากที่ฐานไม่มีการ์ดนั้น (E43/W16 · W22/W23)
+// (ยกขึ้นมาระดับไฟล์ — เดิมประกาศในบล็อก E43/W16 บล็อกเดียว)
+const addCardKV = (label, v, d) => (h) => h.replace('<div class="metric">',
+  `<div class="metric"><div class="k">${label}</div><div class="v">${v}</div><div class="d">${d}</div></div><div class="metric">`);
 // แทน .mval ตัวที่ idx (ลำดับเดียวกับ C.methods)
 const mutMval = (idx, val) => (h) => { let i = -1; return h.replace(/(<div class="mval">\s*[฿$]?)([0-9.,]+)(<\/div>)/g, (m, a, v, b) => (++i === idx ? a + val + b : m)); };
 // เปลี่ยนข้อความป้าย change ใน header
@@ -268,7 +273,7 @@ reject('E28', (h) => h.replace(/content="Claude[^"]*"/i, 'content="Claude Sonnet
 expect('E32', 'error', (h) => h.replace(/<div class="sub">[\s\S]*?<\/div>/i, '<div class="sub"></div>'), 'ลบคำโปรยธุรกิจ (.sub) → ต้องบังคับให้มี desc');
 reject('E32', (h) => h.replace('<div class="sub">', '<div class="sub">ผู้ผลิตอุปกรณ์กึ่งตัวนำ '), 'คำโปรยธุรกิจปกติ (ยาวพอ) ต้องไม่ฟ้อง E32');
 // ── stock-meta (E29–31, W10) — แก้ผ่าน JSON parse→stringify ไม่ยึด literal ตัวเลขในไฟล์ ──
-expect('E29', 'error', (h) => h.replace(/<script[^>]*id="stock-meta"[\s\S]*?<\/script>/i, ''), 'ลบบล็อก stock-meta → ต้องบังคับให้มี');
+expect('E29', 'error', (h) => RM.stripStockMeta(h), 'ลบบล็อก stock-meta → ต้องบังคับให้มี');
 expect('E29', 'error', mutJson('stock-meta', (d) => { delete d.roe; }), 'stock-meta ขาดคีย์ roe');
 expect('E29', 'error', mutJson('stock-meta', (d) => { d.price = String(d.price); }), 'stock-meta.price เป็น string ไม่ใช่ตัวเลข');
 expect('E30', 'error', mutJson('stock-meta', (d) => { d.price = d.price * 5; }), 'stock-meta.price ≠ ราคาที่โชว์ → ตรวจข้ามแหล่งในไฟล์');
@@ -509,8 +514,6 @@ reject('W14', addCard('4. EV/EBITDA', 'EBITDA $4.0B (mid-point FY2026 $3.6B guid
   const setCard = (label, v, d) => (h) => h.replace(
     new RegExp(`(<div class="k">${label.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}</div>\\s*<div class="v[^"]*"[^>]*>)([\\s\\S]*?)(</div>\\s*<div class="d[^"]*"[^>]*>)([\\s\\S]*?)(</div>)`),
     (m, a, ov, b, od, z) => a + v + b + d + z);
-  const addCardKV = (label, v, d) => (h) => h.replace('<div class="metric">',
-    `<div class="metric"><div class="k">${label}</div><div class="v">${v}</div><div class="d">${d}</div></div><div class="metric">`);
   const mc = DVT.mcapCards(base, PX)[0];
   const cur = C.isTHB ? '฿' : '$';
 
@@ -595,6 +598,36 @@ reject('W14', addCard('4. EV/EBITDA', 'EBITDA $4.0B (mid-point FY2026 $3.6B guid
   // ทำให้ทั้งหมวด 6 สอดคล้องกับราคา p — จำลอง "ใบที่ค้างจากจุดเข้า p" (ค้างพร้อมกันทั้ง 3 คอลัมน์ เหมือนของจริง)
   // patchDerived ไม่แตะราคาใน header ⇒ at(130) = ไฟล์ที่ header ยัง ฿189.50 แต่ฉากคิดจากจุดเข้า ฿130
   const at = (p) => DV.patchDerived(base, p).html;
+  // ── parser หมวด 6 ชุดเดียว (code-audit §2.5): ตัวตรวจกับตัวเขียนต้องเห็นคอลัมน์ชุดเดียวกัน ──
+  {
+    const cols = DV.scenarioColumns(base);
+    ok(cols.length === 3 && cols.map((c) => c.kind).join() === 'bear,base,bull' && cols.every((c) => c.tgt > 0), 'scenarioColumns: BBL 3 คอลัมน์ bear/base/bull มีเป้า');
+    ok(JSON.stringify(cols.map(({ tgt, eps, pe, g, ret, div }) => ({ tgt, eps, pe, g, ret, div }))) === JSON.stringify(C.scenarios.map(({ tgt, eps, pe, g, ret, div }) => ({ tgt, eps, pe, g, ret, div }))), 'scenarioColumns = ctx.scenarios (gate ใช้ parser เดียวกัน)');
+    // (a) ช่องว่าง 2 ตัวใน class — ทั้งคู่ต้องเห็นเหมือนกัน (เห็นทั้งคู่ หรือไม่เห็นทั้งคู่)
+    const dbl = base.replace('<div class="col bear">', '<div class="col  bear">');
+    ok((DV.scenarioColumns(dbl).length === 3) === (DV.scenarioBlock(dbl) != null), '(a) class="col  bear": ตัวตรวจ/ตัวเขียนเห็นตรงกัน');
+    // (b) attribute หลัง kind
+    const attr = base.replace('<div class="col bear">', '<div class="col bear" id="x">');
+    ok((DV.scenarioColumns(attr).length === 3) === (DV.scenarioBlock(attr) != null), '(b) <div class="col bear" id=…>: เห็นตรงกัน');
+    // (c) col หลงอยู่นอก section scn — ต้องไม่นับ
+    const stray = base.replace('<footer>', '<div class="col bear"><div class="tgt">$1</div></div><footer>');
+    // ★ กติกา fixture ข้อ 2: มิวเทชันที่ "ไม่เปลี่ยนอะไร" = anchor เพี้ยน ต้อง fail ไม่ใช่ผ่านเงียบ
+    //   (ถ้า <footer> หายไปจาก skeleton เมื่อไร เคสนี้จะกลายเป็นการนับคอลัมน์ของ base เฉย ๆ)
+    ok(stray !== base && DV.scenarioColumns(stray).length === 3, '(c) col นอก section scn ไม่ถูกนับ');
+    // (d) 4 คอลัมน์ — ตัวเขียนต้องเงียบ (null) ตัวตรวจต้องยังอ่านได้ 4 (E24/W01 ตรวจต่อ)
+    // ★ ต่อคอลัมน์ bull ที่ 4 หลัง 3 </div> ปิดตัว (body/col/scn wrapper) — ปรับจาก brief เพราะ
+    //   fixture จริงมี <p> คั่นก่อน </section> (ไม่ใช่ 3 </div> ตามด้วย </section> ทันที)
+    const four = base.replace(/(<div class="col bull">[\s\S]*?<\/div>\s*<\/div>\s*<\/div>)/, (m, a) => a + '<div class="col bull"><div class="tgt">$9</div></div>');
+    ok(four !== base && DV.scenarioBlock(four) == null && DV.scenarioColumns(four).length === 4, '(d) 4 คอลัมน์: ตัวเขียนเงียบ · ตัวตรวจอ่านได้ 4');
+    // fix round 1 (reviewer finding #1): EPS ติดลบที่มี "$"/"฿" คั่นระหว่างเครื่องหมายกับตัวเลข (เช่น "~−$2.33")
+    // ต้อง strip tag + สกุลเงินก่อนจับตัวเลข (เหมือน firstNum เดิมของ gate) ไม่งั้น "-" จะเริ่มจับไม่ได้ → เห็นเป็นบวก
+    const epsNeg = base.replace(
+      /(<div class="col bear">[\s\S]*?EPS ปี 3<\/span>\s*<span>)([\s\S]*?)(<\/span>)/,
+      (m, a, v, b) => a + '~−$2.33' + b,
+    );
+    ok(epsNeg !== base && DV.scenarioColumns(epsNeg)[0].eps === -2.33,
+      'fix#1: EPS ฉาก Bear "~−$2.33" ($ คั่นกลางเครื่องหมาย/ตัวเลข) → scenarioColumns ต้องได้ -2.33 ไม่ใช่ 2.33');
+  }
   const fresh = at(PX);
   const retOf = (h, kind) => (h.match(new RegExp(`<div class="col ${kind}">[\\s\\S]*?<div class="ret[^"]*">([^<]*)<`)) || [])[1] || '';
   const setIn = (kind, cls, txt) => (h) => h.replace(
@@ -817,7 +850,7 @@ reject('W14', addCard('4. EV/EBITDA', 'EBITDA $4.0B (mid-point FY2026 $3.6B guid
   const YC = /^(?:ปันผล|stock-meta\.dividendYield)/, BC = /^P\/BV/;
   const touches = (h, re) => DVY.patchDerived(h, PX).changes.some((c) => re.test(c));
   const cardV = (h, label) => (h.match(new RegExp(`<div class="k">${esc(label)}</div>\\s*<div class="v[^"]*"[^>]*>([\\s\\S]*?)</div>`)) || [])[1];
-  const smOf = (h) => JSON.parse(h.match(/<script[^>]*id="stock-meta"[^>]*>([\s\S]*?)<\/script>/)[1]);
+  const smOf = (h) => RM.readStockMeta(h);
   const cycle = (id, re, h, desc) => {
     ok(h !== fresh && fires(id, h), `${desc} → ต้องเจอ ${id}`);
     const once = DVY.patchDerived(h, PX).html;
@@ -905,6 +938,137 @@ reject('W14', addCard('4. EV/EBITDA', 'EBITDA $4.0B (mid-point FY2026 $3.6B guid
 
 // ── fixture-lint: เทสใน verify ห้ามอ่าน reports/*.html เป็น fixture (บทเรียน 22–24 ส.ค. · 2 ก.ย. 69) ──
 require('./fixture-lint.js')(ok);
+
+// ── parser-lint: regex stock-meta/report-data/.px มีเจ้าของเดียว = tools/report-meta.js (ระยะ 1 WS1 ข้อ 3) ──
+require('./parser-lint.js')(ok);
+
+// ── field manifest (ระยะ 1 WS1): ทุกช่องตัวเลข · ห่อ extractor เดิม · บน BBL fixture ต้องพบช่อง cron ครบ ──
+// ★ จำนวนช่อง = **70** ไม่ใช่ 68: code-audit §1.1 เดินเลขแถว #1–#68 แล้วแทรก #25b/#63b
+//   (นับแถวในตารางจริง 12 ก.ย. 69 = 70) ⇒ "68 ช่อง" ในสเปคคือเลขแถวสูงสุด ห้ามตัดช่องทิ้งให้ครบ 68
+{
+  const MF = require('../tools/field-manifest.js');
+  ok(MF.FIELDS.length === 70 && new Set(MF.FIELDS.map((f) => f.id)).size === 70, `manifest: 70 ช่อง id ไม่ซ้ำ (ได้ ${MF.FIELDS.length})`);
+  ok(MF.FIELDS.every((f) => typeof f.extract === 'function' && ['cron', 'gate', 'pair', 'presence', 'tool', 'deferred'].includes(f.binding)), 'manifest: ทุกช่องมี extract + binding ที่รู้จัก');
+  ok(MF.FIELDS.filter((f) => f.pair).every((f) => MF.FIELDS.some((g) => g.id === f.pair.with)), 'manifest: pair.with ชี้ไป id ที่มีจริง');
+  // NEITHER 18 แถว (code-audit §1.1) ต้องมีทุกแถวใน manifest และต้องได้ binding ที่ผูกกับของจริง (เกณฑ์จบ "NEITHER 18 → 0")
+  const NEITHER = ['f13', 'f23', 'f24', 'f25', 'f25b', 'f32', 'f33', 'f41', 'f46', 'f47', 'f48', 'f49', 'f54', 'f55', 'f58', 'f60', 'f61', 'f63b'];
+  ok(NEITHER.every((id) => MF.FIELDS.some((f) => f.id === id && ['pair', 'presence'].includes(f.binding))), 'manifest: NEITHER 18 แถวมีครบ + ได้ binding pair/presence');
+  const r = MF.extractAll(base, C);
+  for (const id of ['f01', 'f02', 'f03', 'f04', 'f09', 'f10', 'f13', 'f14', 'f15', 'f16', 'f17', 'f19', 'f43', 'f44', 'f45', 'f46', 'f47', 'f49', 'f50', 'f51', 'f52', 'f54', 'f62', 'f66', 'f67'])
+    ok(r.found.has(id), `manifest: BBL fixture พบ ${id} (${MF.FIELDS.find((f) => f.id === id).name}) = ${JSON.stringify(r.values[id])}`);
+  ok(r.values.f01 === C.px && r.values.f44 === C.constFV, 'manifest: f01 = ctx.px · f44 = const FV');
+  // f50 (ป้าย gauge mCur) ไม่เท่าราคาเป๊ะ — cron เขียนด้วย fmtLike จึงคงทศนิยมเดิมของป้าย
+  // (BBL: ป้าย ฿194 ขณะที่ .px = 193.5) ⇒ ความสัมพันธ์จริงคือ pair how:'money' (ใกล้เคียง) ไม่ใช่เท่ากัน — Task 9 จะตั้ง checkPairs ตามนี้
+  ok(r.values.f50 != null && Math.abs(r.values.f50 - C.px) <= 1, `manifest: f50 (ป้าย mCur ${r.values.f50}) ใกล้ราคา ${C.px} (ปัดตามทศนิยมเดิม)`);
+  ok(r.values.f47 === C.constFV && r.values.f49 === C.constFV && r.values.f46 === C.constFV, 'manifest: legend/mFair/fairLine = FV บน fixture สะอาด');
+  // extractor ต้องคืน found:false ไม่ throw เมื่อไม่มีช่อง
+  const gone = base.replace(/id="mFair"><div class="lab"[^>]*>เหมาะสม/, 'id="mFair"><div class="lab">xx');
+  const r2 = MF.extractAll(gone, C);
+  ok(!r2.found.has('f49') && r2.values.f49 == null, 'manifest: ลบป้าย mFair → f49 found:false (ไม่ throw)');
+  // ไฟล์ที่ไม่มีอะไรเลย: ทุก extractor ต้องไม่ throw (census ต้องได้ error 0 ทุกช่อง)
+  const bareCtx = buildCtx('<!DOCTYPE html><html><body></body></html>', 'NONE.html');
+  let threw = null;
+  for (const f of MF.FIELDS) { try { f.extract('<!DOCTYPE html><html><body></body></html>', bareCtx); } catch (e) { threw = `${f.id}: ${e.message}`; break; } }
+  ok(threw === null, 'manifest: ไฟล์เปล่า — ไม่มี extractor ไหน throw' + (threw ? ` (${threw})` : ''));
+  const cov = MF.coverage(base, C);
+  ok(cov.n === 70 && cov.found === r.found.size, `manifest: coverage() สอดคล้องกับ extractAll() (พบ ${cov.found}/${cov.n})`);
+}
+
+// ── W21/W22/W23 + coverage (ระยะ 1 WS1 ข้อ 2): gate ต้องรู้ว่าตัวเองอ่านอะไรไม่ได้ ──
+// W21 = ช่อง required (census ≥99%) อ่านไม่ได้ · W22 = คู่ **consistency** ไม่ตรง (ยิงบนใบสุขภาพดี = บั๊กจริง)
+// W23 = คู่ **ค้างตามเวลา** (`pair.stale`) — แยกออกมาเพราะ f41 (กรอบ 52 สัปดาห์) ค้างเป็นร้อยใบตามปกติ ถ้าปนกันจะกลบ W22 จนไร้ความหมาย
+{
+  const MF = require('../tools/field-manifest.js');
+  const PDt = require('../tools/price-date.js');
+  const cur = C.isTHB ? '฿' : '$';
+
+  const r0 = checkHtml(base, 'BBL.html');
+  ok(r0.coverage && r0.coverage.n === MF.FIELDS.length && r0.coverage.found >= 50 && r0.coverage.missingRequired.length === 0,
+    `coverage: checkHtml คืน coverage — BBL fixture พบ ${r0.coverage && r0.coverage.found}/${MF.FIELDS.length} · required ครบ (หาย: ${r0.coverage ? JSON.stringify(r0.coverage.missingRequired) : '—'})`);
+  ok(r0.coverage && r0.coverage.found + r0.coverage.missingRequired.length + r0.coverage.skippedOptional.length === MF.FIELDS.length,
+    'coverage: พบ + required ที่หาย + optional ที่ข้าม = จำนวนช่องทั้งหมด (ไม่มีช่องตกสำรวจ)');
+
+  rejectBase('W21', 'ฐาน BBL: ช่อง required ครบ → W21 เงียบ');
+  rejectBase('W22', 'ฐาน BBL: ทุกคู่ consistency ตรงกัน → W22 เงียบ');
+  rejectBase('W23', 'ฐาน BBL: ไม่มีคู่ค้าง → W23 เงียบ (fixture ไม่มี "กรอบ 52 สัปดาห์ (…)" — f41 optional ไม่พบ = เงียบ ไม่ใช่ผ่าน)');
+
+  // W21 — ลบตัวเลขออกจากป้าย gauge mCur (f50 = required true · census 100%)
+  const killMCur = (h) => h.replace(new RegExp('(id="mCur"><div class="lab">ปัจจุบัน\\s*(?:C\\$|[฿$])?\\s*)[\\d.,]+'), '$1');
+  expect('W21', 'warn', killMCur, 'ลบตัวเลขป้าย mCur (f50 required) → W21');
+
+  // W22 — คู่ consistency 4 แบบ (money ×2 · date ×1 · money ผ่าน JSON ×1)
+  expect('W22', 'warn', (h) => h.replace(new RegExp('(id="mFair"><div class="lab"[^>]*>เหมาะสม\\s*(?:C\\$|[฿$])?\\s*)([\\d.,]+)'),
+    (m, a, v) => a + numStr(parseFloat(v.replace(/,/g, '')) * 1.5)), 'ป้าย gauge mFair ≠ FV → W22');
+  expect('W22', 'warn', mutJson('report-data', (d) => { d.chart.fairLine = 1; }), 'chart.fairLine ≠ FV → W22');
+  expect('W22', 'warn', (h) => h.replace(new RegExp('(id="mCur"><div class="lab">ปัจจุบัน\\s*(?:C\\$|[฿$])?\\s*)([\\d.,]+)'),
+    (m, a, v) => a + numStr(parseFloat(v.replace(/,/g, '')) * 2)), 'ป้าย gauge mCur ≠ .px (UNVERIFIED WRITE #50) → W22');
+  // วันที่ใน disclaimer ≠ วันที่ราคา — เลื่อนวันจาก "วันที่ที่ fixture เขียนไว้จริง" ไม่ใช่ literal
+  const shiftDiscDate = (h) => {
+    const m = h.match(/<div class="disc">[\s\S]*?<\/div>/i);
+    if (!m) return h;
+    const hit = PDt.findDiscPriceDate(m[0]);   // ตัวเดียวกับ f12/cron (เจ้าของเดียวของวันที่ราคาใน .disc)
+    if (!hit) return h;
+    const moved = m[0].slice(0, hit.index) + hit.text.replace(/^\d{1,2}/, String(hit.day === 1 ? 2 : 1)) + m[0].slice(hit.index + hit.length);
+    return h.replace(m[0], moved);
+  };
+  expect('W22', 'warn', shiftDiscDate, 'วันที่ disclaimer ≠ วันที่ราคา (UNVERIFIED WRITE #12) → W22');
+
+  // f48 การ์ด "โซนเริ่มทยอยสะสม < $FV" = **เพดาน** ไม่ใช่ค่าเดียวกับ FV (how:'below')
+  // คลังจริง 103 ใบตั้งจุดเริ่มสะสมต่ำกว่า FV ตามส่วนเผื่อ MOS 5–20% โดยตั้งใจ ⇒ ต้องไม่ฟ้อง
+  const setZone = (v) => (h) => h.replace(
+    /(<div class="k">โซนเริ่มทยอยสะสม<\/div>\s*<div class="v[^"]*"[^>]*>)([\s\S]*?)(<\/div>)/,
+    (m, a, old, z) => a + old.replace(/[0-9][0-9,.]*/, numStr(v)) + z);
+  reject('W22', setZone(FV * 0.9), 'การ์ดโซนสะสม = 0.9×FV (ธรรมเนียมเผื่อ MOS 10%) → W22 ต้องเงียบ');
+  expect('W22', 'warn', setZone(FV * 0.5), 'การ์ดโซนสะสม = 0.5×FV (ต่ำกว่าจุดซื้อ MOS 30%) → W22');
+  expect('W22', 'warn', setZone(FV * 1.2), 'การ์ดโซนสะสม = 1.2×FV (ชวนสะสมเหนือมูลค่าเหมาะสม) → W22');
+
+  // W23 = คู่ค้างตามเวลา (stale:true) — ต้องไม่ปนใน W22
+  const addRange = (lo, hi) => (h) => h.replace('<div class="disc">', `<p>กรอบ 52 สัปดาห์ (${cur}${lo}–${cur}${hi})</p><div class="disc">`);
+  const outOfBand = addRange((PX * 0.1).toFixed(2), (PX * 0.2).toFixed(2));
+  expect('W23', 'warn', outOfBand, 'ราคา .px หลุดกรอบ 52 สัปดาห์ที่พิมพ์ → W23 (f41 stale)');
+  reject('W22', outOfBand, 'กรอบค้างต้องไม่ยิง W22 (แยกชั้น staleness ออกจาก consistency)');
+  reject('W23', addRange((PX * 0.5).toFixed(2), (PX * 1.5).toFixed(2)), 'ราคาอยู่ในกรอบ → W23 เงียบ');
+
+  // f55 "P/E เฉลี่ย ~N ปี" — ตัวหารคือปีที่อ่านได้จาก label กราฟ (ปี 4 หลักเท่านั้น)
+  // ★ ฐาน BBL (และทั้งคลัง 908 ใบ) ใช้ label "เดือนไทย+ปี 2 หลัก" ⇒ อ่านปีไม่ได้ = เงียบ ⇒ เคสนี้ต้อง**เปลี่ยน label เป็นปี**เองก่อน
+  //   ไม่งั้นจะเป็นเคสที่ "ผ่าน" เพราะ check ไม่ได้ทำงาน (ดู census §ผลหลังเปิด — ขานี้ latent ทั้งคลังโดยตั้งใจ)
+  const yearLabels = mutJson('report-data', (d) => { d.chart.data.forEach((p, i) => { p[0] = String(2025 + (i < d.chart.data.length / 2 ? 0 : 1)); }); });
+  const gable = (h) => addCardKV('P/E เฉลี่ย ~9 ปี', '20x', 'ช่วง 15–25x')(yearLabels(h));
+  expect('W23', 'warn', gable, 'ป้าย "P/E เฉลี่ย ~9 ปี" บนกราฟที่มีข้อมูล 2 ปี → W23 (เคส GABLE · f55 stale)');
+  reject('W22', gable, 'ป้ายปีเกินกราฟต้องไม่ยิง W22');
+  expect('W23', 'warn', yearLabels, 'เปลี่ยนแค่ label กราฟเป็นปี 4 หลัก (ป้าย "P/E เฉลี่ย ~N ปี" เดิมของ fixture ยังอยู่) → W23 (พิสูจน์ว่าตัวหาร = ปีในกราฟจริง)');
+
+  // ★ W21 ต้องดังเมื่อ manifest **ระเบิด** ไม่ใช่แค่ "ช่องหาย" — buildCtx เรียก extractAll/checkPairs อยู่นอก
+  //   try ของ checkHtml ⇒ exception เดียว = `node test/check-reports.js` ตาย = verify/cron ล้มทั้งวัน
+  //   (คลาสเดียวกับ expandReport ที่ code-audit §6.A ปิดไปแล้ว) · ที่นี่จำลองทั้งสองทาง แล้วคืนของเดิมเสมอ
+  {
+    const hadMoney = MF.PAIR_HOW.money;
+    MF.PAIR_HOW.money = () => { throw new Error('ระเบิดจำลอง-pair'); };
+    let rPair;
+    try { rPair = checkHtml(base, 'BBL.html'); } finally { MF.PAIR_HOW.money = hadMoney; }
+    const w21p = [...rPair.errors, ...rPair.warnings].find((x) => x.id === 'W21');
+    ok(!!w21p && /ตรวจไม่สำเร็จ/.test(w21p.msg) && /ระเบิดจำลอง-pair/.test(w21p.msg),
+      'W21: checkPairs ระเบิด → ได้ W21 "ตรวจไม่สำเร็จ" (ไม่ใช่ทั้งรอบตาย)', w21p && w21p.msg);
+    ok(MF.PAIR_HOW.money === hadMoney && checkHtml(base, 'BBL.html').warnings.every((w) => w.id !== 'W21'),
+      'W21: คืน PAIR_HOW เดิมแล้ว ฐาน BBL กลับมาเงียบ');
+
+    const boom = { id: 'fZZ', name: 'ช่องระเบิดจำลอง', cadence: 'daily', owner: 'cron', gate: [], healer: null,
+      required: false, binding: 'presence', pair: null, extract: () => { throw new Error('ระเบิดจำลอง-extractor'); } };
+    MF.FIELDS.push(boom);
+    let rEx;
+    try { rEx = checkHtml(base, 'BBL.html'); } finally { MF.FIELDS.pop(); }
+    const w21e = [...rEx.errors, ...rEx.warnings].find((x) => x.id === 'W21');
+    ok(!!w21e && /extractor ระเบิด/.test(w21e.msg) && /fZZ/.test(w21e.msg),
+      'W21: extractor ราย field ระเบิด → W21 บอกชื่อช่อง (เดิม extractAll กลืนเป็น found:false เงียบ)', w21e && w21e.msg);
+    ok(MF.FIELDS.length === 70 && MF.FIELDS[MF.FIELDS.length - 1].id !== 'fZZ', 'W21: ถอดช่องจำลองออกครบ (manifest กลับเป็น 70 ช่อง)');
+  }
+
+  // W21/W22/W23 ต้องเป็น warn และไม่มี healer (ระยะ 1 — จะยกเป็น E เมื่อมีตัวซ่อมในระยะ 2)
+  for (const id of ['W21', 'W22', 'W23']) {
+    const c = CHECKS.find((x) => x.id === id);
+    ok(c && c.level === 'warn' && c.healer == null, `${id} ต้องเป็น warn + ยังไม่มี healer (ระยะ 1)`);
+  }
+}
 
 // ── E-policy (spec WS2 ข้อ 3 · แผนระยะ 1 Global Constraints): error ที่ไม่อยู่ในรายการ grandfather ต้อง
 //    (ก) ประกาศ healer ที่รู้จัก และ (ข) มีเคส convergence ในไฟล์นี้ (mutate → check ยิง → healer → check เงียบ)

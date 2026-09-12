@@ -19,6 +19,7 @@
 const fs = require('fs');
 const path = require('path');
 const { firstNum } = require('./check-reports');
+const RM = require('../tools/report-meta.js');   // เจ้าของเดียวของ regex stock-meta/report-data/.px
 
 const ROOT = path.join(__dirname, '..');
 const REPORTS_DIR = path.join(ROOT, 'reports');
@@ -107,7 +108,8 @@ function checkModelCredit(html, name) {
 // ---- chart/gauge plausibility (เฉพาะไฟล์รายงาน) ----
 function checkRender(html, name) {
   const errors = [], warnings = [];
-  const px = firstNum(grab(/<div class="px">([\s\S]*?)<\/div>/, html));
+  const hp = RM.readHeaderPrice(html);
+  const px = hp ? hp.price : null;
 
   const dataM = html.match(/const data=\[([\s\S]*?)\];/);
   if (dataM) {
@@ -136,9 +138,10 @@ const SM_CARD_MAP = [['mos', 'mos'], ['upside', 'upside'], ['pe', 'pe'], ['yield
 function checkMetricsCards(indexHtml, distDir, distSyms) {
   const errors = [], warnings = [];
   for (const s of distSyms) {
-    const blk = fs.readFileSync(path.join(distDir, s + '.html'), 'utf8').match(/<script[^>]*\bid=["']stock-meta["'][^>]*>([\s\S]*?)<\/script>/i);
-    if (!blk) { errors.push(`${s}: dist ไม่มีบล็อก stock-meta`); continue; }
-    let data; try { data = JSON.parse(blk[1]); } catch (e) { errors.push(`${s}: stock-meta ใน dist parse ไม่ได้: ${e.message}`); continue; }
+    const sm = RM.readStockMetaState(fs.readFileSync(path.join(distDir, s + '.html'), 'utf8'));
+    if (!sm.present) { errors.push(`${s}: dist ไม่มีบล็อก stock-meta`); continue; }
+    if (!sm.ok) { errors.push(`${s}: stock-meta ใน dist parse ไม่ได้: ${sm.err}`); continue; }
+    const data = sm.data;
     const tagM = indexHtml.match(new RegExp(`<a class="card"[^>]*href="\\./${s}\\.html"[^>]*>`));
     if (!tagM) { errors.push(`${s}: ไม่พบการ์ดในหน้า index`); continue; }
     const tag = tagM[0];
@@ -183,7 +186,7 @@ function checkTaBundle(distDir, reportsDir, srcSyms) {
     // สุ่มรายงาน template 1 ไฟล์ (มีบล็อก report-data = ผ่าน expandReport แล้วยังเหลือ marker script เดิม)
     const templateSym = srcSyms.find((s) => {
       const p = path.join(distDir, s + '.html');
-      return fs.existsSync(p) && /<script[^>]*\bid=["']report-data["']/i.test(fs.readFileSync(p, 'utf8'));
+      return fs.existsSync(p) && RM.REPORT_DATA_RE.test(fs.readFileSync(p, 'utf8'));
     });
     if (!templateSym) {
       warnings.push('ไม่พบรายงานแบบ template (report-data) ใน dist เพื่อสุ่มตรวจ __TA_CFG__');

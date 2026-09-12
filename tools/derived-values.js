@@ -29,6 +29,8 @@
  *   โดยตั้งใจ (PWR: GAAP $8.74 → 80x คู่กับ Adj. $13.1 → 53x) — เดาฐานผิด = เขียนเลขผิดทั้งใบ
  */
 
+const RM = require('./report-meta.js');   // เจ้าของเดียวของ regex stock-meta/report-data/.px
+
 // ── เกณฑ์ความคลาด (ตัวตรวจใช้) ──
 const TOL_PE_REL = 0.02;   // P/E: ต่างได้ ≤2%
 const TOL_PE_ABS = 1.5;    //      หรือ ≤1.5 เท่า แล้วแต่ค่าไหนมากกว่า (การ์ดปัดเป็นจำนวนเต็มบ่อย — "~80x")
@@ -174,6 +176,18 @@ function epsBasesOf(text) {
     .map((x) => parseFloat(x[1])).filter((v) => v > 0 && isFinite(v));
 }
 
+// ── ช่องสรุป "ส่วนต่างจากราคา" (vcell หมวด 8) — **อ่านอย่างเดียว** ──
+// ตัวเขียน (summaryPlan + patchDerived#11) มาระยะ 1 ส่วน C — ที่นี่คือตัวอ่านที่ field-manifest (f17/f18) ห่อ
+// at/len เก็บไว้ตั้งแต่ตอนนี้ เพื่อให้ตัวเขียนใช้ตำแหน่งเดียวกัน (กัน "อ่านที่หนึ่ง เขียนอีกที่หนึ่ง")
+const SUMMARY_RE = /(<div class="k">ส่วนต่างจากราคา<\/div>\s*<div class="v"[^>]*>)([\s\S]*?)(<\/div>)/;
+function readSummaryCell(html) {
+  const m = String(html).match(SUMMARY_RE);
+  if (!m) return null;
+  const text = clean(m[2]);
+  const pm = norm(text).match(/([+\-]?)\s*([0-9]+(?:\.[0-9]+)?)\s*%/);
+  return { at: m.index + m[1].length, len: m[2].length, raw: m[2], text, shown: pm ? parseFloat(pm[1] + pm[2]) : null };
+}
+
 /** การ์ด P/E ที่ "ตรวจได้" → { label, shown, eps[] } (ข้ามป้ายเชิงประวัติ / ค่าที่ไม่ใช่ตัวคูณ / ไม่ประกาศ EPS) */
 function peCards(html) {
   const out = [];
@@ -259,7 +273,14 @@ const CONV_PP = 1.2;          // เกณฑ์ "จำแนก" cagr/linear �
 const PY_VOTE_RATIO = 2;      // สูตร %/ปี ของทั้งใบ: ฝั่ง linear ต้องเด็ดขาดกว่าฝั่ง CAGR ≥2 เท่าถึงชนะ (ไม่งั้น = CAGR ตาม prior คลัง)
 
 const SCN_ANCHOR = 'class="scn"';
-const SCN_COL_RE = () => /<div class="col ([a-z]+)">([\s\S]*?)(?=<div class="col |$)/g;
+// ★ regex เปิดคอลัมน์ตัวเดียวทั้งรีโป (ตัวตรวจ E24/W01/W17 + ตัวเขียน #7) — census 12 ก.ย. 69 (908 ใบ): notThree=0 dblSpace=0 attrs=0 stray=0
+//   ⇒ รวมเป็น regex เดียวได้โดยไม่เปลี่ยนผลของ E24/W01/W17 กับใบใดเลย (ดู task-7-report.md)
+// fix round 1 (reviewer finding #2): SCN_COL_OPEN เดิม export ไว้เฉย ๆ ไม่มีใครใช้จริง (scenarioBlock/scenarioColumns
+// เรียก SCN_COL_RE ที่เป็นคนละ pattern — ([a-z]+) vs (bear|base|bull)) ⇒ รวมเป็นแหล่งเดียว (SCN_COL_OPEN_SRC) แล้วให้
+// ทั้ง SCN_COL_OPEN และ SCN_COL_RE ประกอบจากมันเสมอ
+const SCN_COL_OPEN_SRC = '<div class="col\\s+(bear|base|bull)\\b[^>]*>';
+const SCN_COL_OPEN = () => new RegExp(SCN_COL_OPEN_SRC, 'g');
+const SCN_COL_RE = () => new RegExp(SCN_COL_OPEN_SRC + '([\\s\\S]*?)(?=<div class="col\\s|$)', 'g');
 const SCN_RET_RE = /(<div class="ret[^"]*">)([^<]*)(<\/div>)/;
 const SCN_TGT_RE = /<div class="tgt">\s*(?:[฿$]|C\$)?\s*([\d.,]+)/;
 // แถว "ปันผลรวม 3 ปี" ในคอลัมน์ — ค่าเงิน ไม่ใช่ %
@@ -337,6 +358,38 @@ function scenarioBlock(html) {
   if (!cols.every((c) => html.slice(c.at, c.at + c.text.length) === c.text)) return null;
   if (hint && html.slice(hint.at, hint.at + hint.num.length) !== hint.num) return null;
   return { a, z, sec, years, hint, cols };
+}
+
+/** คอลัมน์หมวด 6 สำหรับ **ตัวตรวจ** (E24/W01/`ctx.scenarios`) — อ่านทุกคอลัมน์ในส่วน scn ไม่จำกัด 3 (ตัวเขียนใช้ scenarioBlock ที่บังคับ 3) */
+function scenarioColumns(html) {
+  const h = String(html);
+  const i = h.indexOf(SCN_ANCHOR);
+  if (i < 0) return [];
+  const a = h.lastIndexOf('<section', i), z = h.indexOf('</section>', i);
+  const sec = a < 0 || z < 0 ? h.slice(i) : h.slice(a, z);
+  const grab = (re, s) => { const m = s.match(re); return m ? m[1] : null; };
+  // ★ fix round 1 (reviewer finding #1): ต้องมี semantics เดียวกับ firstNum เดิมของ gate
+  //   (strip tag → norm(−→-) → strip ฿$, → จับตัวเลข) — เดิมไม่ strip tag/฿$ ⇒ เซลล์ "~−$2.33" กิน "$"
+  //   คั่นกลางระหว่างเครื่องหมายลบกับตัวเลข ทำให้ /-?\d+/ เริ่มที่ "-" ไม่ได้ (พลาด eps ติดลบ 11 คอลัมน์/5 ใบ)
+  const firstNum = (s) => { if (s == null) return null; const t = norm(String(s).replace(/<[^>]+>/g, ' ')).replace(/[฿$,]/g, ''); const m = t.match(/-?\d+(?:\.\d+)?/); return m ? parseFloat(m[0]) : null; };
+  const out = [];
+  let m;
+  const re = SCN_COL_RE();
+  while ((m = re.exec(sec))) {
+    // ★ fix round 1 (reviewer finding #2): filter เดิมตายแล้ว — kind group ของ SCN_COL_RE มาจาก
+    //   SCN_COL_OPEN_SRC ซึ่งบังคับ (bear|base|bull) อยู่แล้ว ไม่มีทางได้ค่าอื่น
+    const seg = m[2];
+    out.push({
+      kind: m[1],
+      tgt: firstNum(grab(/<div class="tgt">([\s\S]*?)<\/div>/, seg)),
+      eps: firstNum(grab(/EPS ปี 3<\/span>\s*<span>([\s\S]*?)<\/span>/, seg)),
+      pe: firstNum(grab(/P\/E ออก<\/span>\s*<span>([\s\S]*?)<\/span>/, seg)),
+      g: firstNum(grab(/EPS\s*([+\-−]?[0-9.]+)\s*%\s*\/\s*ปี/, norm(seg))),
+      ret: firstNum(grab(/class="ret[^"]*">([\s\S]*?)<\/div>/, seg)),
+      div: firstNum(grab(/ปันผลรวม 3 ปี<\/span>\s*<span>([\s\S]*?)<\/span>/, seg)),
+    });
+  }
+  return out;
 }
 
 /** ผลตอบแทนรวมที่ "คอลัมน์นี้กำลังพูด" — คืน null ถ้าอ่านไม่ชัด (โทเคนเกิน/ขาด) */
@@ -532,7 +585,9 @@ const BV_KW = /(?<!T)BVPS|(?<!T)BV\s*\/\s*(?:หุ้น|share|sh|S)\b|book\s*v
 const TBV_KW = /TBV|tangible/i;
 
 /** สกุลของราคา = สัญลักษณ์หน้า .px (ตัวเดียวกับที่ gate/heal ใช้เป็นตัวตั้ง) — ไม่มี = ไม่ตรวจ ไม่เขียน */
-const currencyOf = (html) => (String(html).match(/<div class="px">\s*(C\$|[฿$])/) || [])[1] || null;
+// ★ ตั้งแต่ย้ายมาใช้ `RM.readHeaderPrice` ตัวนี้ต้องการ "ราคาที่ parse เป็นตัวเลขได้" ต่อจากสัญลักษณ์ด้วย —
+//   `.px` ที่เขียน "$—" (ยังไม่มีราคา) จึงคืน null ⇒ ใบนั้นหลุดออกจาก W19/W20 และจากตัวซ่อม (ตั้งใจ: ไม่มีราคา = คำนวณ yield/P-BV ไม่ได้)
+const currencyOf = (html) => { const p = RM.readHeaderPrice(html); return p ? p.currency : null; };
 
 /** ข้อความในประโยคเดียวกันก่อน token (ตัดที่ตัวคั่นล่าสุด) */
 function clauseBefore(t, at) {
@@ -625,10 +680,9 @@ function pbvCardPlan(k, vBody, dBody, price, cur) {
 /** stock-meta.dividendYield = กระจกของการ์ดปันผล (เหมือน stock-meta.pe) — ฐาน = DPS ของการ์ดที่ตัดสินได้เท่านั้น */
 function yieldMetaPlan(html, price, cards) {
   if (!cards.length) return null;
-  const m = String(html).match(/<script[^>]*\bid=["']stock-meta["'][^>]*>([\s\S]*?)<\/script>/i);
-  if (!m) return null;
-  let d;
-  try { d = JSON.parse(m[1]); } catch { return null; }
+  const s = RM.readStockMetaState(html);
+  if (!s.ok) return null;
+  const d = s.data;
   const shown = d.dividendYield;
   if (!(typeof shown === 'number' && isFinite(shown) && shown > 0)) return null;   // null/0 = ไม่จ่าย/ไม่ประกาศ → ไม่แตะ
   const pick = assignBases([shown / 100 * price], [...new Set(cards.map((c) => c.base))]);
@@ -690,7 +744,7 @@ function patchDerived(html, price, opts) {
 
   // 2) stock-meta.pe — กระจกของค่าที่โชว์ (freshHash ไม่นับบล็อกนี้ ⇒ ไม่ดันวันที่ "อัปเดตล่าสุด")
   if (allEps.length) {
-    out = out.replace(/(<script[^>]*\bid=["']stock-meta["'][^>]*>)([\s\S]*?)(<\/script>)/i, (m, a, json, b) => {
+    out = out.replace(RM.STOCK_META_PARTS_RE, (m, a, json, b) => {
       let d;
       try { d = JSON.parse(json); } catch { return m; }
       if (!(typeof d.pe === 'number' && isFinite(d.pe) && d.pe > 0)) return m;
@@ -775,7 +829,7 @@ function patchDerived(html, price, opts) {
     const mp = yieldMetaPlan(out, price, yCards);
     const mw = mp ? parseFloat(fixed(mp.want, mp.dec)) : null;
     if (mp && isFinite(mw) && mw !== mp.shown) {
-      out = out.replace(/(<script[^>]*\bid=["']stock-meta["'][^>]*>)([\s\S]*?)(<\/script>)/i, (m, a, json, b) => {
+      out = out.replace(RM.STOCK_META_PARTS_RE, (m, a, json, b) => {
         let d;
         try { d = JSON.parse(json); } catch { return m; }
         d.dividendYield = mw;
@@ -903,9 +957,11 @@ module.exports = {
   PE_LABEL_SKIP, TGT_LABEL_STRICT, PCT_NOT_VS_PRICE, QUOTE_CONTEXT, MONEY_PCT_SRC, CARD_SRC,
   MCAP_LABEL, PS_LABEL, SCALES, scaleOf, parseAmount, parseShares, mcapCards, psCards, nearMcap,
   fmtLikeNum, cardRe, epsBasesOf, peCards, targetCells, basisFor, nearPE, patchDerived,
+  // ช่องสรุป "ส่วนต่างจากราคา" — อ่านอย่างเดียว (f17/f18 ของ field-manifest · ตัวเขียน = summaryPlan ระยะ 1 ส่วน C)
+  SUMMARY_RE, readSummaryCell,
   // หมวด 6 (ผลตอบแทนฉาก 3 ปี) — W17 + ตัวซ่อม
   TOL_RET_PP, TOL_RET_REL, TOL_PY_PP, SCN_TIGHT, SCN_VOTE_RATIO, CONV_PP,
-  scenarioBlock, scenarioPlan, retTokens, retOff, pyOff, retWrite, retShown,
+  SCN_COL_OPEN, scenarioColumns, scenarioBlock, scenarioPlan, retTokens, retOff, pyOff, retWrite, retShown,
   // สมอตายวนกลับ — W18 + tools/spotcheck.js
   DA_GAP, DA_ANCHORED, deadAnchor,
   // ปันผล % + P/BV — W19/W20 + ตัวซ่อม

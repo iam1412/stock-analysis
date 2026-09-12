@@ -9,6 +9,8 @@ const fs = require('fs');
 const path = require('path');
 const U = require('../tools/update-prices.js');
 const FX = require('./fixtures');
+const RM = require('../tools/report-meta.js');   // เจ้าของเดียวของ regex stock-meta/report-data/.px
+const PD = require('../tools/price-date.js');    // ตัวหา token วันที่ราคา/วันที่ทวนซ้ำ — ใช้ตัวเดียวกับ cron ไม่เขียน regex วันที่ในเทส
 process.env.STALE_TODAY = FX.TODAY;   // gate ที่ Task 7 เรียกผ่าน gateAfterPatch ต้องไม่เดินตามปฏิทินจริง
 
 let nOK = 0, nFail = 0;
@@ -158,14 +160,14 @@ ok(U.annualChg([['a', 100], ['b', 100.3]], '(รอบปี)').text.startsWith(
 // ---------- patchReport กับ AAPL จริง ----------
 // fixture แช่แข็ง (test/fixtures) — ยังคงกติกาเดิม: ห้าม hard-code ราคา/วันที่/FV อ่านจาก stock-meta ของ input แล้วเทียบเชิงสัมพัทธ์
 const aapl = FX.AAPL();
-const smIn = JSON.parse(aapl.match(/<script[^>]*id=["']stock-meta["'][^>]*>([\s\S]*?)<\/script>/i)[1]);
+const smIn = RM.readStockMeta(aapl);
 const FV = smIn.fairValue;
 const chartData = U.buildChartData(mkBars(13, 2025, 6, 250), 301.5, 0);
 const r = U.patchReport(aapl, { newPrice: 301.5, dateParts: { day: 11, monIdx: 6, yearCE: 2026 }, chartData });
 const out = r.html;
 
-const sm = JSON.parse(out.match(/<script[^>]*id=["']stock-meta["'][^>]*>([\s\S]*?)<\/script>/i)[1]);
-const rd = JSON.parse(out.match(/<script[^>]*id=["']report-data["'][^>]*>([\s\S]*?)<\/script>/i)[1]);
+const sm = RM.readStockMeta(out);
+const rd = RM.readReportData(out).data;
 ok(out.includes('<div class="px">$301.50<small>'), 'px header อัปเดต');
 ok(sm.price === 301.5, 'stock-meta.price');
 ok(Math.abs(sm.mos - (FV - 301.5) / FV * 100) < 0.06, 'stock-meta.mos = (FV−p)/FV (E31)');
@@ -182,7 +184,7 @@ ok(sm.roe === smIn.roe && sm.fairValue === FV && sm.symbol === 'AAPL', 'stock-me
   // ค่าที่ค้างจนหลุดฐานไปไกล ต้องถูกเขียนใหม่ ไม่ใช่ปล่อยผ่าน (เคส ARM/JBL/STX/FORM/CRDO)
   const staleOut = U.patchReport(aapl.replace(/"pe":\s*[0-9.]+/, '"pe":999'),
     { newPrice: 301.5, dateParts: { day: 11, monIdx: 6, yearCE: 2026 }, chartData: null }).html;
-  const staleSm = JSON.parse(staleOut.match(/<script[^>]*id=["']stock-meta["'][^>]*>([\s\S]*?)<\/script>/i)[1]);
+  const staleSm = RM.readStockMeta(staleOut);
   ok(staleSm.pe !== 999 && bases.some((e) => Math.abs(staleSm.pe - 301.5 / e) <= Math.max(0.02 * staleSm.pe, 0.1)),
     'stock-meta.pe ที่ค้างหลุดฐาน (999) ถูกเขียนใหม่ตามราคา', String(staleSm.pe));
   // การ์ด P/E ที่โชว์บนหน้าเว็บก็ต้องขยับ — และต้องคงจำนวนทศนิยม/รูปแบบเดิม
@@ -236,7 +238,7 @@ ok(sm.roe === smIn.roe && sm.fairValue === FV && sm.symbol === 'AAPL', 'stock-me
   {
     const Y_RE = /(<div class="k">เงินปันผล<\/div>\s*<div class="v[^"]*">)([^<]*)(<\/div>\s*<div class="d[^"]*">)([^<]*)(<)/;
     const yV = (h) => (h.match(Y_RE) || [])[2];
-    const smY = (h) => JSON.parse(h.match(/<script[^>]*id=["']stock-meta["'][^>]*>([\s\S]*?)<\/script>/i)[1]).dividendYield;
+    const smY = (h) => RM.readStockMeta(h).dividendYield;
     const yIn = aapl.match(Y_RE);
     const dm = yIn && yIn[4].match(/\$\s*([\d.]+)\s*\/\s*ปี/);
     ok(!!dm, 'AAPL fixture: มีการ์ดปันผลที่ประกาศ DPS รายปีในบรรทัด .d (ไม่งั้นเทสด้านล่างพิสูจน์อะไรไม่ได้)', yIn && yIn[4]);
@@ -436,14 +438,14 @@ ok(verdictOf(U.patchReport(setVerdict(aapl, 'custom-zone'), { newPrice: pxBad, d
 // ---------- price-only fallback (chartData = null) — คงกราฟเดิม แตะแค่จุดท้าย ----------
 // ทางนี้เดิมใช้เฉพาะตอน Yahoo ไม่มีประวัติพอ · ตั้งแต่มี bad-chart มันเป็นทางของ `--force` ด้วย:
 // ซีรีส์ต้นทางผสมสองฐาน แต่กราฟในไฟล์ถูกแก้ให้ถูกแล้ว ⇒ ประทับราคาได้โดยไม่ลากฐานที่สองกลับเข้ามา
-const rdIn = JSON.parse(aapl.match(/<script[^>]*id=["']report-data["'][^>]*>([\s\S]*?)<\/script>/i)[1]);
+const rdIn = RM.readReportData(aapl).data;
 const oldPts = rdIn.chart.data;
 const lastLab = oldPts[oldPts.length - 1][0];
 const labMon = U.THAI_MONTHS.findIndex((m) => lastLab.startsWith(m));
 const labYear = 2000 + parseInt(lastLab.slice(-2), 10);
 // เดือนเดียวกับจุดท้าย → แทนค่าจุดเดิม (ไม่ต่อจุดใหม่)
 const rSame = U.patchReport(aapl, { newPrice: 301.5, dateParts: { day: 11, monIdx: labMon, yearCE: labYear }, chartData: null });
-const ptsSame = JSON.parse(rSame.html.match(/<script[^>]*id=["']report-data["'][^>]*>([\s\S]*?)<\/script>/i)[1]).chart.data;
+const ptsSame = RM.readReportData(rSame.html).data.chart.data;
 ok(ptsSame.length === oldPts.length, 'fallback: เดือนเดิม → ไม่ต่อจุดใหม่', `${oldPts.length} → ${ptsSame.length}`);
 ok(ptsSame[ptsSame.length - 1][1] === 301.5, 'fallback: จุดท้าย = ราคาใหม่');
 ok(ptsSame.slice(0, -1).every((p, i) => p[0] === oldPts[i][0] && p[1] === oldPts[i][1]),
@@ -451,17 +453,103 @@ ok(ptsSame.slice(0, -1).every((p, i) => p[0] === oldPts[i][0] && p[1] === oldPts
 // เดือนถัดไป → ต่อจุดใหม่แล้วตัดหัวให้ ≤13
 const nextM = (labMon + 1) % 12, nextY = labYear + (labMon === 11 ? 1 : 0);
 const rNext = U.patchReport(aapl, { newPrice: 301.5, dateParts: { day: 1, monIdx: nextM, yearCE: nextY }, chartData: null });
-const ptsNext = JSON.parse(rNext.html.match(/<script[^>]*id=["']report-data["'][^>]*>([\s\S]*?)<\/script>/i)[1]).chart.data;
+const ptsNext = RM.readReportData(rNext.html).data.chart.data;
 ok(ptsNext.length <= 13, 'fallback: เดือนใหม่ → ต่อจุดแล้วยังคง ≤13 จุด (E37)', `ได้ ${ptsNext.length}`);
 ok(ptsNext[ptsNext.length - 1][0] === `${U.THAI_MONTHS[nextM]}${String(nextY).slice(-2)}` && ptsNext[ptsNext.length - 1][1] === 301.5,
   'fallback: จุดใหม่ = เดือนของราคา + ราคาใหม่', JSON.stringify(ptsNext[ptsNext.length - 1]));
 
+// ---------- notes: จุดเขียนที่ "ไม่พบ = ไม่ throw" ต้องรายงาน ไม่เงียบ (ระยะ 1 WS2 ข้อ 6) ----------
+// UNVERIFIED WRITE: เดิม 2 จุดนี้ replace ไม่โดนแล้วผ่านเงียบ ⇒ cron ขึ้น ✓ ทั้งที่ไม่ได้เขียนอะไร
+// แล้ววันที่ใน disclaimer ค้างไปเรื่อย ๆ โดยไม่มีใครเห็น (W22 ตรวจ "ผล" · notes ตรวจ "การเขียน")
+{
+  const dpN = { day: 11, monIdx: 6, yearCE: 2026 };
+  ok(Array.isArray(r.notes), 'patchReport คืน notes[] เสมอ');
+  ok(r.notes.length === 0, '(c) AAPL fixture ปกติ (ตัวเขียนจับ "ราคา ณ" ได้ · header ไม่มีวงเล็บทวนวันที่) → notes ว่าง', JSON.stringify(r.notes));
+
+  // ★ ตัวอ่าน = ตัวเขียน (12 ก.ย. 2569): ทั้ง gate (f12) และ cron เรียก `findDiscPriceDate` ตัวเดียวกัน
+  //   ⇒ "อ่านออกแต่เขียนไม่ได้" 65 ใบเดิมแยกเป็นสองกอง: 55 ใบเป็น **snapshot ของแหล่ง** ที่ต้องไม่ถูกเขียนทับ
+  //   และไม่ใช่ของเสีย (อ่านก็ต้องไม่อ่าน) · 10 ใบเป็นวันที่ระดับเดือนที่ตัวเขียนพลาดจริง (ตอนนี้เขียนได้แล้ว)
+  const DISCB = /<div class="disc">[\s\S]*?<\/div>/i;
+  const discOf = (h) => (h.match(DISCB) || [''])[0];
+  const discM = aapl.match(DISCB);
+  ok(!!discM, 'AAPL fixture: มีบล็อก .disc ให้ทดสอบ');
+  const discHit = PD.findDiscPriceDate(discM[0]);
+  ok(!!discHit && discHit.hasDay, 'AAPL fixture: findDiscPriceDate (เจ้าของเดียว) อ่าน "ราคา ณ <วันที่>" ใน .disc ออก');
+  ok(/ราคา ณ 11 ก\.ค\. 2026/.test(discOf(r.html)), '.disc ของ fixture ถูกเขียนวันใหม่จริง (ถ้าไม่ ถือว่าเทสข้างล่างพิสูจน์อะไรไม่ได้)');
+
+  // (a) snapshot ของแหล่ง — "(ราคา $79.39 · <วันที่> …)" คือวันที่ของ **ราคาที่ยกมา** ไม่ใช่วันที่ราคาในรายงาน
+  //     รูปเดียวกับ 55 ใบจริง (AIG · AIT · ALL …) ⇒ ต้อง **ไม่เขียนทับ** และ **ไม่เตือน** (เดิมเตือนทุกวัน)
+  const blocked = discM[0].slice(0, discHit.index) + '$79.39 · ' + discM[0].slice(discHit.index);
+  ok(!PD.findDiscPriceDate(blocked) && !!PD.findPriceDate(blocked),
+    '(a) มิวเทชันได้สภาพที่ต้องการ: ตัวสแกนหัวรายงานยังอ่านออก แต่กฎของ .disc ถือเป็น snapshot (คืน null)');
+  const rBlocked = U.patchReport(aapl.replace(discM[0], blocked), { newPrice: 301.5, dateParts: dpN, chartData: null });
+  ok(discOf(rBlocked.html) === blocked, '(a) .disc ที่เป็น snapshot ของแหล่ง — ไม่ถูกเขียนทับแม้แต่ไบต์เดียว');
+  ok(rBlocked.notes.length === 0, '(a) snapshot ของแหล่ง → notes ว่าง (ไม่ใช่ของเสีย — เดิมเตือนปลอม 55 ใบทุกวัน)', JSON.stringify(rBlocked.notes));
+
+  // (b) วันที่ระดับเดือน "ราคา ณ ก.ย. 2026" — ต้องเขียนได้ (เดิมตัวเขียนบังคับต้องมีวัน ⇒ 10 ใบค้างถาวร)
+  //     และต้อง **คงรูประดับเดือน** ไม่ใช่เติมวันเข้าไปเอง (ต่างจากหัวรายงานที่ต้องมีวันเพื่อให้ parsePriceAge อ่านออก)
+  const monthOnly = aapl.replace(discM[0], discM[0].slice(0, discHit.index) + 'ส.ค. 2026' + discM[0].slice(discHit.index + discHit.length));
+  ok(monthOnly !== aapl && /ราคา ณ ส\.ค\. 2026/.test(discOf(monthOnly)), '(b) มิวเทชันทำให้ .disc เป็นวันที่ระดับเดือนจริง');
+  const rMonth = U.patchReport(monthOnly, { newPrice: 301.5, dateParts: dpN, chartData: null });
+  ok(/ราคา ณ ก\.ค\. 2026/.test(discOf(rMonth.html)) && !/ราคา ณ \d+ ก\.ค\. 2026/.test(discOf(rMonth.html)),
+    '(b) วันที่ระดับเดือน → เขียนวันใหม่แบบระดับเดือน (ไม่เติมวัน)', (discOf(rMonth.html).match(/ราคา ณ [^<·]*/) || [])[0]);
+  ok(rMonth.notes.length === 0, '(b) วันที่ระดับเดือน → notes ว่าง (เขียนลงแล้ว)', JSON.stringify(rMonth.notes));
+
+  // (c) ลบประโยค "ราคา ณ <วันที่>" ทิ้งทั้งประโยค → ไม่มีอะไรให้เขียน = ต้องเงียบ (ไม่ใช่ของเสีย)
+  const noDate = aapl.replace(discM[0], discM[0].slice(0, discHit.index) + 'ตามที่ระบุในหัวรายงาน' + discM[0].slice(discHit.index + discHit.length));
+  ok(noDate !== aapl && !PD.findDiscPriceDate(discOf(noDate)), '(c) มิวเทชันลบวันที่ออกจาก .disc ได้จริง');
+  ok(U.patchReport(noDate, { newPrice: 301.5, dateParts: dpN, chartData: null }).notes.length === 0,
+    '(c) .disc ไม่มีวันที่เลย → notes ว่าง (431/908 ใบของคลังเป็นแบบนี้ — ไม่ใช่ของเสีย)');
+
+  // (d) "อ่านเจอแต่เขียนไม่ลง" → notes — สาขา found:false ที่เหลืออยู่ **สร้างเคสจริงไม่ได้ด้วยตัวเรนเดอร์ปัจจุบัน**:
+  //     ตัวเขียน splice ที่ index ของตัวอ่านเอง แล้วอ่านกลับด้วยตัวเดียวกัน (canonical: เดือนตัวย่อ · คงรูปวัน/เดือน
+  //     · คงศักราช) ⇒ อ่านกลับได้เสมอ ทุกจุด · เก็บสาขานี้ไว้เป็น canary ถ้ามีใครแก้ตัวเรนเดอร์/ตัวอ่านฝั่งเดียว
+  //     ที่นี่จึงพิสูจน์ **invariant ที่ทำให้มันไม่เกิด** แทน: หลัง patch ทุกจุดใน .disc ต้องอ่านกลับเป็นวันที่ที่เพิ่งเขียน
+  const readBack = (h) => { const out = []; const d = discOf(h); for (let from = 0, x; (x = PD.findDiscPriceDate(d, from)); from = x.index + x.length) out.push(x); return out; };
+  for (const [lab, html] of [['ปกติ', r.html], ['ระดับเดือน', rMonth.html]]) {
+    const back = readBack(html);
+    ok(back.length > 0 && back.every((b) => b.yearCE === 2026 && b.monIdx === 6 && (!b.hasDay || b.day === 11)),
+      `(d) อ่านกลับ .disc (${lab}) ได้วันที่ที่เพิ่งเขียนครบทุกจุด ⇒ สาขา "เขียนไม่ลง" ไม่เกิด`, JSON.stringify(back.map((b) => b.text)));
+  }
+
+  // (e) "ต้นช่วง" ของกราฟย้อนหลัง — เคส TLI "Yahoo Finance (กราฟราคา ก.ค. 2568–ก.ค. 2569)" และ AEONTS
+  //     anchor "ราคา" เป็นท้ายคำ ("กราฟราคา") แล้วตามด้วยเดือนพอดี ⇒ ถ้าไม่มีกฎ "ต้นช่วง" cron จะประทับวันรัน
+  //     ทับช่วงกราฟ = บั๊กเดิม 9 ส.ค. 69 (ประทับวันรันทับข้อเท็จจริงในอดีต)
+  const rangeDisc = aapl.replace(discM[0], discM[0].slice(0, discHit.index) + 'ก.ค. 2568–ก.ค. 2569' + discM[0].slice(discHit.index + discHit.length));
+  ok(rangeDisc !== aapl && !PD.findDiscPriceDate(discOf(rangeDisc)), '(e) วันที่ที่เป็น "ต้นช่วง" (…2568–…2569) ไม่ใช่วันที่ราคา → ตัวอ่านคืน null');
+  const rRange = U.patchReport(rangeDisc, { newPrice: 301.5, dateParts: dpN, chartData: null });
+  ok(discOf(rRange.html) === discOf(rangeDisc) && rRange.notes.length === 0,
+    '(e) ช่วงกราฟใน .disc ไม่ถูกเขียนทับ · notes ว่าง', discOf(rRange.html).slice(-90));
+
+  // ใบที่เขียนวันที่ราคาไว้ 2 จุด (วัด 12 ก.ย. 69: 15/908 เช่น AEM "ราคา ณ …" + "ราคาปิดรายเดือน ณ …")
+  // ตัวเขียนเดิมเป็น regex /g จึงเขียนครบทุกจุด — ตัวใหม่ต้องวนเก็บให้ครบเหมือนกัน ไม่ใช่เขียนจุดแรกจุดเดียว
+  const twice = aapl.replace(discM[0], discM[0].replace('</div>', ' • ราคาปิดรายเดือน ณ 3 ส.ค. 2026</div>'));
+  const rTwice = U.patchReport(twice, { newPrice: 301.5, dateParts: dpN, chartData: null });
+  ok((discOf(rTwice.html).match(/11 ก\.ค\. 2026/g) || []).length === 2 && rTwice.notes.length === 0,
+    'สองจุดในบล็อกเดียว → เขียนครบทั้งคู่ · notes ว่าง', discOf(rTwice.html).slice(-120));
+
+  // ช่องวันที่ทวนซ้ำ (วงเล็บติดกับ token ราคา) มีวันที่อยู่ แต่คนละวันกับวันที่ราคา ⇒ findRestatedDate ปฏิเสธ = เขียนไม่ครบ
+  const hm = aapl.match(/<header[\s\S]*?<\/header>/i);
+  const hitN = PD.findPriceDate(hm[0]);
+  ok(!!hitN, 'AAPL fixture: หา token วันที่ราคาใน header ได้');
+  const mismatched = hm[0].slice(0, hitN.index + hitN.length)
+    + ` (${hitN.day === 1 ? 2 : 1} ${U.THAI_MONTHS[hitN.monIdx]} ${hitN.year})` + hm[0].slice(hitN.index + hitN.length);
+  const rParen = U.patchReport(aapl.replace(hm[0], mismatched), { newPrice: 301.5, dateParts: dpN, chartData: null });
+  ok(rParen.notes.some((s) => /วงเล็บ/.test(s) && /found:false/.test(s)),
+    'header มีวงเล็บวันที่ต่อท้ายวันที่ราคาแต่คนละวัน → notes บอก found:false', JSON.stringify(rParen.notes));
+  // ...และวงเล็บวันที่ที่ **ไม่ติด** กับวันที่ราคา (ข้อเท็จจริงคนละตัว — เคส AMKR) ต้องไม่เตือน
+  const farParen = aapl.replace(hm[0], hm[0].replace('</header>', ` <span>ร่วงแรงวันเดียว (1 ${U.THAI_MONTHS[hitN.monIdx]} ${hitN.year})</span></header>`));
+  ok(farParen !== aapl, 'มิวเทชันวงเล็บไกล เปลี่ยนไฟล์จริง');
+  ok(U.patchReport(farParen, { newPrice: 301.5, dateParts: dpN, chartData: null }).notes.length === 0,
+    'วงเล็บวันที่ที่ไม่ติดกับวันที่ราคา = ข้อเท็จจริงคนละตัว (เคส AMKR/AEHR) → ต้องไม่เตือน');
+}
+
 // ---------- gauge auto-rescale (แทน freeze outside-gauge-range) ----------
 // ราคาทะลุ max → ขยาย max ให้ราคาอยู่ในขอบแบบ strict (check-site เตือนเมื่อ v >= gmax) · min คงเดิม
-const gaugeIn = JSON.parse(aapl.match(/<script[^>]*id=["']report-data["'][^>]*>([\s\S]*?)<\/script>/i)[1]).gauge;
+const gaugeIn = RM.readReportData(aapl).data.gauge;
 const pxHigh = Math.round(gaugeIn.max * 1.02 * 100) / 100;
 const rHigh = U.patchReport(aapl, { newPrice: pxHigh, dateParts: { day: 11, monIdx: 6, yearCE: 2026 }, chartData: U.buildChartData(mkBars(13, 2025, 6, 250), pxHigh, 0) });
-const rdHigh = JSON.parse(rHigh.html.match(/<script[^>]*id=["']report-data["'][^>]*>([\s\S]*?)<\/script>/i)[1]);
+const rdHigh = RM.readReportData(rHigh.html).data;
 ok(rdHigh.gauge.cur === pxHigh, 'gauge rescale: cur = ราคาใหม่');
 ok(rdHigh.gauge.max > pxHigh, 'gauge rescale: ราคาทะลุ max → max ใหม่ > ราคา (strict)', `max=${rdHigh.gauge.max} px=${pxHigh}`);
 ok(rdHigh.gauge.max >= pxHigh * 1.05 - 0.01, 'gauge rescale: max ใหม่ ≥ ราคา×1.05', `max=${rdHigh.gauge.max}`);
@@ -469,14 +557,14 @@ ok(rdHigh.gauge.min === gaugeIn.min && rdHigh.gauge.fair === gaugeIn.fair, 'gaug
 // ราคาหลุด min → ขยาย min ลง · max คงเดิม
 const pxLow = Math.round(gaugeIn.min * 0.98 * 100) / 100;
 const rLow = U.patchReport(aapl, { newPrice: pxLow, dateParts: { day: 11, monIdx: 6, yearCE: 2026 }, chartData: U.buildChartData(mkBars(13, 2025, 6, 250), pxLow, 0) });
-const rdLow = JSON.parse(rLow.html.match(/<script[^>]*id=["']report-data["'][^>]*>([\s\S]*?)<\/script>/i)[1]);
+const rdLow = RM.readReportData(rLow.html).data;
 ok(rdLow.gauge.min < pxLow, 'gauge rescale: ราคาหลุด min → min ใหม่ < ราคา (strict)', `min=${rdLow.gauge.min} px=${pxLow}`);
 ok(rdLow.gauge.min <= pxLow * 0.95 + 0.01 && rdLow.gauge.min >= 0, 'gauge rescale: min ใหม่ ≤ ราคา×0.95 และไม่ติดลบ');
 ok(rdLow.gauge.max === gaugeIn.max, 'gauge rescale: max ไม่แตะเมื่อหลุด min');
 // ราคาอยู่ในขอบ → bounds ไม่ขยับ
 const pxMid = Math.round((gaugeIn.min + gaugeIn.max) / 2 * 100) / 100;
 const rMid = U.patchReport(aapl, { newPrice: pxMid, dateParts: { day: 11, monIdx: 6, yearCE: 2026 }, chartData: U.buildChartData(mkBars(13, 2025, 6, 250), pxMid, 0) });
-const rdMid = JSON.parse(rMid.html.match(/<script[^>]*id=["']report-data["'][^>]*>([\s\S]*?)<\/script>/i)[1]);
+const rdMid = RM.readReportData(rMid.html).data;
 ok(rdMid.gauge.min === gaugeIn.min && rdMid.gauge.max === gaugeIn.max, 'gauge rescale: ราคาในขอบ → bounds คงเดิม');
 
 // ---------- MOS .big พลิกเครื่องหมายตามค่าจริง (dead-band flip ถูก patch ผ่านแล้ว) ----------
@@ -868,7 +956,7 @@ ok(U.commitBody([], []) === '', 'commitBody: ว่างเมื่อไม�
   //   ⇒ header/stock-meta ยังโชว์ px เดิม แต่หมวด 6 ถูกซ่อมให้สอดคล้องกับ 0.7×px → scenarioPlan ตัดสินได้แต่ค่าค้าง → W17 ต้องฟ้อง
   const DVq = require('../tools/derived-values.js');
   const freshAapl = FX.AAPL();
-  const smQ = JSON.parse(freshAapl.match(/<script[^>]*id=["']stock-meta["'][^>]*>([\s\S]*?)<\/script>/i)[1]);
+  const smQ = RM.readStockMeta(freshAapl);
   const px = smQ.price;
   const staleScn = DVq.patchDerived(freshAapl, px * 0.7).html;
   ok(staleScn !== freshAapl, '(ตั้งฉาก) patchDerived ที่จุดเข้า 0.7×px ทำให้หมวด 6 เปลี่ยนจริง');

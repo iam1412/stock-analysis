@@ -12,7 +12,7 @@ const path = require('path');
 const { run, ROOT } = require('./sh.js');
 const S = require('./state.js');
 const { todayBangkok } = require('./footer-date.js');
-const { readStockMeta } = require('../report-meta.js');
+const RM = require('../report-meta.js');   // เจ้าของเดียวของ regex stock-meta/report-data/.px + กรอบ 52 สัปดาห์
 const { usSessionOpen, setSessionOpen } = require('./market.js');
 const DV = require('../derived-values.js');
 const T = require('../tag-lib.js');
@@ -87,7 +87,7 @@ function snapshotDiff(html, ctx, v) {
   const out = [];
   // ตัวคั่นในคลังมีหลายแบบ (วัด 908 ใบ 12 ก.ย. 69): en dash 719 · `/` 70 · `&ndash;`/วงเล็บครอบ 7 · ไม่มีป้าย "กรอบ" 112
   // (112 ใบนั้นใช้ถ้อยคำการ์ด "ช่วง 52 สัปดาห์" → ตกไปบรรทัด "อ่านไม่ได้" ให้คนเทียบเอง)
-  const m52 = html.match(/กรอบ 52 สัปดาห์\s*\(?\s*(?:[฿$]|C\$)?\s*([0-9][0-9.,]*)\s*(?:&[a-z]+;|[–—\-/])\s*(?:[฿$]|C\$)?\s*([0-9][0-9.,]*)/);
+  const m52 = html.match(RM.RANGE52_RE);
   if (!m52) out.push('อ่านกรอบ 52 สัปดาห์ในใบไม่ได้ — เทียบกับ FUNDAMENTALS เอง');
   else if (v.lo52 != null && v.hi52 != null) {
     const lo = num(m52[1]), hi = num(m52[2]);
@@ -177,7 +177,7 @@ async function prep(sym, opts) {
   const fp = path.join(REPORTS, sym + '.html');
   const exists = fs.existsSync(fp);
   const html = exists ? fs.readFileSync(fp, 'utf8') : '';
-  const sm = exists ? readStockMeta(html) : null;
+  const sm = exists ? RM.readStockMeta(html) : null;
   const th = exists ? (sm && sm.currency === 'THB') : !!o.th;
   const rec = S.load().stocks[sym] || {};
   let mode = o.mode || (!exists ? 'NEW' : rec.bucket === 'LIGHT' ? 'UPDATE-LIGHT' : 'UPDATE');

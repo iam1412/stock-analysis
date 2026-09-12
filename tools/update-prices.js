@@ -49,7 +49,7 @@ const path = require('path');
 // dead-ticker-canary ไม่ได้ require ไฟล์นี้ · main() ของมันรันเฉพาะเมื่อถูกเรียกเป็น entry point)
 const { tvCandidates, scan: scanTickers, classify: classifyTickers, loadTickerCache } = require('./dead-ticker-canary.js');
 const { entryFor } = require('./symbol-map.js');
-const { readStockMeta, STOCK_META_PARTS_RE } = require('./report-meta.js');
+const RM = require('./report-meta.js');   // เจ้าของเดียวของ regex stock-meta/report-data/.px
 const { withLock, writeJsonAtomic } = require('./lockfile.js');   // WS4: price-flags.json มีหลาย writer
 
 const REPORTS = path.join(__dirname, '..', 'reports');
@@ -58,7 +58,7 @@ const FLAGS = path.join(__dirname, '..', 'price-flags.json');
 // ชื่อเดือน + ตัวหา "วันที่ราคา" มาจาก tools/price-date.js ที่เดียว (ใช้ร่วมกับ gate — อย่าทำสำเนา)
 // ค่าที่ derive จากราคา (P/E · % ของราคาเป้า) — กติกาเดียวกับที่ gate ใช้ตรวจ E41/E42/W15 (ห้ามทำสำเนาความรู้)
 const { patchDerived } = require('./derived-values.js');
-const { findPriceDate, findRestatedDate, renderThaiDate, THAI_MONTHS, MONTH_ALT } = require('./price-date.js');
+const { findPriceDate, findRestatedDate, findDiscPriceDate, renderThaiDate, THAI_MONTHS } = require('./price-date.js');
 const MAX_PTS = 13;          // กราฟรายเดือน ~1 ปี (E37)
 const FLAT_PP = 0.75;        // |% รอบปี| < 0.75 → "ทรงตัว" (ตาม migrate-annual-chg)
 const DRIFT_FREEZE = 0.15;   // ราคาใหม่ต่างจากในรายงาน > 15% → freeze (prose จะผิดความหมาย · เดิม 10% — ขยับขึ้นลดภาระ re-analysis)
@@ -428,15 +428,27 @@ function classifyStale(candidates, rows, probeMap) {
   return { dead, quiet };
 }
 
+/** ทุกจุด "ราคา ณ <วันที่>" ในบล็อก .disc (ตัวอ่านเดียวกับ f12 — วนจนหมดบล็อกเพราะบางใบเขียนซ้ำ 2 จุด
+ *  เช่น "ราคา ณ …" + "ราคาปิดรายเดือน ณ …" · วัด 12 ก.ย. 69: 15/908 ใบมี ≥2 จุด) */
+function allDiscDates(discHtml) {
+  const out = [];
+  for (let from = 0, h; (h = findDiscPriceDate(discHtml, from)); from = h.index + h.length) out.push(h);
+  return out;
+}
+
 // ---------- patch รายงานหนึ่งไฟล์ ----------
 // คืน { html, changed } — ทุก pattern ต้อง match ไม่งั้น throw (ไป flag เป็น patch-failed)
 function patchReport(html, p) {
   const { newPrice, dateParts /* {day, monIdx, yearCE} */ } = p;
   let { chartData } = p;
   const need = (re, where) => { if (!re.test(html)) throw new Error(`patch ไม่เจอ pattern: ${where}`); };
+  // ★ 2 จุดเขียนที่ "ไม่พบ = ไม่ throw" โดยตั้งใจ (ใบเก่าบางใบไม่มีประโยคนั้นจริง ๆ) — แต่ห้ามเงียบ
+  //   เงียบ = UNVERIFIED WRITE: cron รายงานว่า ✓ ทั้งที่ไม่ได้เขียนอะไรเลย แล้ววันที่ค้างไปเรื่อย ๆ โดยไม่มีใครรู้
+  //   (W22 ตรวจ "ผล" อีกชั้น — วันที่ disclaimer/วงเล็บต้องตรงกับวันที่ราคา · บรรทัดนี้ตรวจ "การเขียน")
+  const notes = [];
 
   // --- stock-meta (FV เป็น source of truth ของการคำนวณ mos/upside) ---
-  const smM = html.match(STOCK_META_PARTS_RE);
+  const smM = html.match(RM.STOCK_META_PARTS_RE);
   if (!smM) throw new Error('ไม่มีบล็อก stock-meta');
   const sm = JSON.parse(smM[2]);
   const fv = sm.fairValue;
@@ -445,7 +457,7 @@ function patchReport(html, p) {
   const upside = (fv - newPrice) / newPrice * 100;
 
   // --- report-data: กราฟใหม่ทั้งเส้น + bounds + highlight + gauge.cur + สีป้ายตามทิศ ---
-  const rdM = html.match(/(<script[^>]*\bid=["']report-data["'][^>]*>)([\s\S]*?)(<\/script>)/i);
+  const rdM = html.match(RM.REPORT_DATA_PARTS_RE);
   if (!rdM) throw new Error('ไม่มีบล็อก report-data');
   const rd = JSON.parse(rdM[2]);
   if (!rd.chart || !Array.isArray(rd.chart.data)) throw new Error('report-data.chart ใช้ไม่ได้');
@@ -490,21 +502,21 @@ function patchReport(html, p) {
   const theme = chg.dir === 'up' ? UP : chg.dir === 'down' ? DOWN : null;
   if (theme && rd.theme) { rd.theme.chgBg = theme.bg; rd.theme.chgColor = theme.col; }
 
-  let out = html.replace(/(<script[^>]*\bid=["']report-data["'][^>]*>)[\s\S]*?(<\/script>)/i,
-    (m, a, z) => a + '\n' + styledRD(rd) + '\n' + z);
+  let out = html.replace(RM.REPORT_DATA_PARTS_RE,
+    (m, a, body, z) => a + '\n' + styledRD(rd) + '\n' + z);   // 3 กลุ่ม: หัว/เนื้อ/ท้าย
 
   // --- stock-meta: price/mos/upside (คีย์อื่นคงเดิม — freshHash ไม่นับบล็อกนี้อยู่แล้ว) ---
   sm.price = round(newPrice, 2); sm.mos = round(mos, 1); sm.upside = round(upside, 1);
   // ใช้ regex ตัวเดียวกับตอนอ่าน (report-meta.js) — เดิมเป็นสำเนาแยกที่ไม่มี need() คุม ⇒ ถ้า skeleton
   // เปลี่ยนวิธีฝัง แล้วมีคนแก้แค่ฝั่งอ่าน ตัวเขียนจะ replace ไม่โดนแล้ว "สำเร็จ" เงียบ ๆ = ราคา/กราฟถูก
   // patch แต่ stock-meta.price/mos/upside ค้างค่าเก่า (self-inconsistency ที่ gate มีไว้จับพอดี)
-  need(STOCK_META_PARTS_RE, 'stock-meta (เขียนกลับ)');   // ไม่มี guard = replace ไม่โดนแล้วผ่านเงียบ ๆ
-  out = out.replace(STOCK_META_PARTS_RE,
+  need(RM.STOCK_META_PARTS_RE, 'stock-meta (เขียนกลับ)');   // ไม่มี guard = replace ไม่โดนแล้วผ่านเงียบ ๆ
+  out = out.replace(RM.STOCK_META_PARTS_RE,
     (m, a, b, z) => a + '\n' + JSON.stringify(sm) + '\n' + z);   // 3 กลุ่ม: หัว/เนื้อ/ท้าย
 
   // --- header: ราคา .px ---
-  need(/(<div class="px">\s*[฿$])([\d.,]+)/, 'ราคา header (.px)');
-  out = out.replace(/(<div class="px">\s*[฿$])([\d.,]+)/, (m, a) => a + fmtPrice(newPrice));
+  need(RM.PX_PARTS_RE, 'ราคา header (.px)');
+  out = out.replace(RM.PX_PARTS_RE, (m, a) => a + fmtPrice(newPrice));
 
   // --- header: วันที่ราคา (แทน **เฉพาะ token ของราคา** ตัวเดียว — คงรูปแบบ พ.ศ./ค.ศ. เดิม) ---
   // เดิมแทน date-token *ทุกตัว* ใน <header> ⇒ วันที่ที่เป็นข้อเท็จจริงในอดีต (จุดสูงสุดตลอดกาล ·
@@ -521,6 +533,12 @@ function patchReport(html, p) {
   // + วันที่ที่ "ทวนซ้ำ" ในวงเล็บติดกัน (คนละศักราช) ต้องขยับตามด้วย ไม่งั้นหัวรายงานขัดกันเอง
   // เขียนจากขวาไปซ้าย — index ของตัวซ้ายจะได้ไม่ขยับตามความยาวที่เปลี่ยนของตัวขวา
   const restate = findRestatedDate(headM[0], hit);
+  // "ช่องของวันที่ทวนซ้ำ" (วงเล็บที่ **ติดกับ token ราคาเลย**) มีวันที่อยู่ แต่ findRestatedDate ปฏิเสธ = เขียนไม่ครบโดยเงียบ
+  // ★ ต้องเช็คที่ตำแหน่งติดกันเท่านั้น — วัด 12 ก.ย. 69: ถ้าเช็ค "มีวงเล็บวันที่ที่ไหนก็ได้ใน header"
+  //   จะเตือนปลอมทุกวันบน 13 ใบที่วงเล็บเป็น**ข้อเท็จจริงคนละตัว** (AMKR "ร่วง ~24% วันเดียว (7 ส.ค. 2026)" · AEHR · ADVICE · AVY)
+  //   ซึ่ง price-date.js ตั้งใจไม่ถือเป็นการทวนซ้ำอยู่แล้ว · แบบติดกัน = 0/908 ใบวันนี้ (ทุกใบที่มีช่องนี้อ่านออกครบ 7 ใบ)
+  if (!restate && /^(?:\s|<[^>]*>)*\(\s*\d{1,2}\s*[ก-๙.]+\s*\d{4}/.test(headM[0].slice(hit.index + hit.length)))
+    notes.push('วันที่ทวนในวงเล็บ: มีวงเล็บวันที่ต่อท้ายวันที่ราคา แต่อ่านไม่ออก — ไม่ได้เขียน (found:false)');
   for (const t of [restate, hit].filter(Boolean)) {
     const abs = headM.index + t.index;
     out = out.slice(0, abs)
@@ -528,21 +546,37 @@ function patchReport(html, p) {
       + out.slice(abs + t.length);
   }
 
-  // --- disclaimer: "ราคา ณ <วันที่>" (ถ้ามี) ---
-  out = out.replace(/(<div class="disc">[\s\S]*?<\/div>)/i, (block) =>
-    block.replace(new RegExp(`(ราคา(?![^0-9<]{0,25}เป้า)[^0-9<]{0,25})(\\d{1,2}(?:\\s*[–\\-]\\s*\\d{1,2})?\\s*(?:${MONTH_ALT})\\s*(20\\d\\d|25\\d\\d|26\\d\\d))`, 'g'),
-      (m, pre, tok, yr) => {
-        const era = parseInt(yr, 10) >= 2400 ? dateParts.yearCE + 543 : dateParts.yearCE;
-        return `${pre}${dateParts.day} ${THAI_MONTHS[dateParts.monIdx]} ${era}`;
-      }));
+  // --- disclaimer: "ราคา ณ <วันที่>" (ถ้ามี — ไม่พบ = ไม่เขียน ไม่ throw แต่ต้องบอก **เฉพาะเมื่ออ่านออก**) ---
+  // ★ ตัวอ่าน = ตัวเขียน: ทั้ง gate (f12) และที่นี่เรียก `findDiscPriceDate` ตัวเดียวกัน (tools/price-date.js)
+  //   เดิมที่นี่เป็น regex ฝังในไฟล์นี้ที่ห้ามตัวเลขคั่นและบังคับต้องมี "วัน" ส่วน f12 ห่อตัวสแกน**หัวรายงาน**
+  //   ⇒ คนละกฎกัน: 65 ใบอ่านออกแต่เขียนไม่ได้ (55 ใบเป็น snapshot ของแหล่งที่**ห้ามเขียนทับ** · 10 ใบเป็น
+  //   วันที่ระดับเดือนที่ตัวเขียนพลาดจริง) — เหตุผลของกฎใหม่ทั้งหมดอยู่ที่ price-date.js
+  const discM = out.match(/<div class="disc">[\s\S]*?<\/div>/i);
+  const discHits = discM ? allDiscDates(discM[0]) : [];
+  if (discHits.length) {
+    // เขียนจากขวาไปซ้าย — index ของตัวซ้ายจะได้ไม่ขยับตามความยาวที่เปลี่ยนของตัวขวา (กติกาเดียวกับหัวรายงาน)
+    // รูปเดิมคงไว้: ระดับเดือนยังเป็นระดับเดือน · มีวันยังมีวัน · ศักราชตามของเดิมทีละ token
+    let block = discM[0];
+    for (const t of discHits.slice().reverse())
+      block = block.slice(0, t.index)
+        + renderThaiDate(dateParts.day, dateParts.monIdx, dateParts.yearCE, t.isBE, t.hasDay)
+        + block.slice(t.index + t.length);
+    // อ่านกลับด้วยตัวเดียวกัน — ต้องได้ครบทุกจุดและเป็นวันที่เพิ่งเขียน ไม่งั้นถือว่า "เขียนไม่ลง" แล้วไม่แตะไฟล์
+    // (ด้วยตัวเรนเดอร์ปัจจุบันเงื่อนไขนี้เป็นจริงเสมอ — เก็บไว้เป็น canary ของคู่ อ่าน/เขียน ถ้าฝั่งใดฝั่งหนึ่งถูกแก้)
+    const back = allDiscDates(block);
+    const landed = back.length === discHits.length && back.every((b, i) =>
+      b.yearCE === dateParts.yearCE && b.monIdx === dateParts.monIdx && (!discHits[i].hasDay || b.day === dateParts.day));
+    if (landed) out = out.slice(0, discM.index) + block + out.slice(discM.index + discM[0].length);
+    else notes.push('disclaimer: อ่านวันที่ใน .disc ออกแต่เขียนกลับไม่ลง — ไม่ได้เขียน (found:false)');
+  }
 
   // --- ป้าย .chg ---
   need(/<div class="chg"[^>]*>[\s\S]*?<\/div>/i, 'ป้าย .chg');
   out = out.replace(/<div class="chg"[^>]*>[\s\S]*?<\/div>/i, `<div class="chg">${chg.text}</div>`);
 
   // --- gauge label "ปัจจุบัน $X" (เฉพาะ marker #mCur) ---
-  need(/(id="mCur"><div class="lab">ปัจจุบัน\s*[฿$]?)([\d.,]+)/, 'gauge label ปัจจุบัน');
-  out = out.replace(/(id="mCur"><div class="lab">ปัจจุบัน\s*[฿$]?)([\d.,]+)/, (m, a, old) => a + fmtLike(newPrice, old));
+  need(RM.MCUR_LABEL_PARTS_RE, 'gauge label ปัจจุบัน');
+  out = out.replace(RM.MCUR_LABEL_PARTS_RE, (m, a, old) => a + fmtLike(newPrice, old));
 
   // --- MOS .big (เครื่องหมายเดิม −/+ · sign flip ถูก freeze ก่อนถึงจุดนี้) ---
   need(/(<div class="big">)\s*[+\-−–]?\s*[\d.]+\s*%(<\/div>)/, 'MOS .big');
@@ -577,7 +611,7 @@ function patchReport(html, p) {
   // class นี้เป็นฟังก์ชันล้วนของ MOS ไม่มีดุลพินิจ (bad <10 / ok 10–20 / good ≥20 — กติกาเดียวกับ W04 และ agent-prompt)
   // ต่างจากช่อง "ส่วนต่างจากราคา" ข้างบนที่มี "คำ" — ตรงนี้ไม่มีอะไรให้ cron ต้องเดา จึง sync ได้ทุกครั้ง
   // ★ แตะเฉพาะ 3 ค่ามาตรฐานเท่านั้น — คลาสอื่น (ถ้ามีใครตั้งใจใช้) ปล่อยไว้ให้ gate ตัดสิน
-  out = out.replace(/class="mos-verdict (bad|ok|good)"/, () => `class="mos-verdict ${mosBand(mos)}"`);
+  out = out.replace(RM.VERDICT_CLASS_RE, () => `class="mos-verdict ${mosBand(mos)}"`);
 
   // --- เครื่องคิดเลข: ค่าตั้งต้น pxIn (E23) ---
   need(/(id="pxIn"[^>]*\bvalue=")[^"]*(")/, 'pxIn value');
@@ -592,7 +626,7 @@ function patchReport(html, p) {
   const dv = patchDerived(out, newPrice);
   out = dv.html;
 
-  return { html: out, changed: out !== html, chg, mos: round(mos, 1), derived: dv.changes };
+  return { html: out, changed: out !== html, chg, mos: round(mos, 1), derived: dv.changes, notes };
 }
 
 // ---------- quarantine รายไฟล์ (WS2 ข้อ 1) ----------
@@ -697,8 +731,8 @@ function healDerived(opts) {
     const fp = path.join(REPORTS, f);
     const html = fs.readFileSync(fp, 'utf8');
     // ราคาที่ใช้เป็นตัวตั้ง = ราคาใน header (.px) — ตัวเดียวกับที่ gate ใช้เทียบ (E41/E42) ไม่ใช่ stock-meta
-    const m = html.match(/<div class="px">\s*[฿$]?\s*([\d.,]+)/);
-    const px = m ? parseFloat(m[1].replace(/,/g, '')) : null;
+    const hp = RM.readHeaderPrice(html);
+    const px = hp ? hp.price : null;
     if (!(px > 0)) { noPrice++; continue; }
     const r = patchDerived(html, px, { prose: opts.prose });
     if (!r.changes.length || r.html === html) continue;
@@ -755,7 +789,7 @@ async function main() {
     const fp = path.join(REPORTS, f);
     const html = fs.readFileSync(fp, 'utf8');
 
-    const sm = readStockMeta(html);
+    const sm = RM.readStockMeta(html);
     if (!sm) { failed.push({ symbol, reason: 'no-stock-meta' }); continue; }
 
     let q;
@@ -873,7 +907,7 @@ async function main() {
       }
       if (WRITE) fs.writeFileSync(fp, r.html);
       updated.push({ symbol, old: sm.price, new: round(q.price, 2), diffPct });
-      console.log(`${WRITE ? '✓' : '·'} ${symbol.padEnd(10)} ${sm.price} → ${round(q.price, 2)} (${diffPct > 0 ? '+' : ''}${diffPct}%) · ${r.chg.text} · MOS ${r.mos}%${chartSrc !== '1mo' ? ` · chart:${chartSrc}` : ''}`);
+      console.log(`${WRITE ? '✓' : '·'} ${symbol.padEnd(10)} ${sm.price} → ${round(q.price, 2)} (${diffPct > 0 ? '+' : ''}${diffPct}%) · ${r.chg.text} · MOS ${r.mos}%${chartSrc !== '1mo' ? ` · chart:${chartSrc}` : ''}${r.notes && r.notes.length ? ` · ⚠ ${r.notes.join(' · ')}` : ''}`);
     } catch (e) {
       frozen.push({ symbol, reason: 'patch-failed', detail: e.message, reportPrice: sm.price, marketPrice: round(q.price, 2), diffPct });
       console.log(`⚠ ${symbol.padEnd(10)} patch fail: ${e.message}`);

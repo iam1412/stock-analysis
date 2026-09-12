@@ -11,6 +11,7 @@
  */
 const fs = require('fs');
 const path = require('path');
+const RM = require('./report-meta.js');   // เจ้าของเดียวของ regex stock-meta/report-data/.px
 
 // ── color math ──
 function hexToHsl(hex) {
@@ -143,7 +144,7 @@ if (require.main === module) {
     const f = path.join(__dirname, '..', 'reports', sym.toUpperCase() + '.html');
     if (!fs.existsSync(f)) { console.log(`✗ ${sym}: ไม่พบไฟล์`); fail++; continue; }
     let h = fs.readFileSync(f, 'utf8');
-    const blkRe = /(<script[^>]*\bid="report-data"[^>]*>)([\s\S]*?)(<\/script>)/i;
+    const blkRe = RM.REPORT_DATA_PARTS_RE;
     const m = h.match(blkRe);
     if (!m) { console.log(`✗ ${sym}: ไม่ใช่ template (ไม่มี report-data) — migrate ก่อน`); fail++; continue; }
     const t = makeTheme(seed);

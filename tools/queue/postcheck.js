@@ -66,6 +66,10 @@ function postcheck(sym, opts) {
   const { expandReport } = require('../../build.js');
   const ctx = buildCtx(expandReport(html), sym + '.html');
   issues.push(...checkMeta(ctx, o.model || rec.model, footerDate(html), todayBangkok()));
+  // ช่อง required ที่ manifest อ่านไม่ได้ = โครงที่ worker เขียนไม่ครบ (W21 ใน gate เป็น warn จึงไม่บล็อก push เอง)
+  // ⇒ ต้องขึ้นเป็น issue ตรงนี้ เพราะ postcheck คือจุดที่ controller ตัดสินว่าจะรับงาน worker ไหม
+  if (ctx.mf && ctx.mf.missing.length)
+    issues.push(`manifest: ช่อง required อ่านไม่ได้ ${ctx.mf.missing.join(' ')} (W21 — worker เขียนโครงไม่ครบ)`);
 
   const verdict = issues.length ? 'review' : 'pass';
   S.update(sym, { postcheck: verdict, postcheckAt: todayBangkok() });

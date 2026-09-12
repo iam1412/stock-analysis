@@ -23,6 +23,7 @@ process.env.STALE_TODAY = process.env.STALE_TODAY || '2026-06-24'; // ตรึ�
 const { expandReport } = require('../build.js');
 const { checkHtml } = require('./check-reports');
 const { extractEngine, runEngine, assertRendered, seedFromHtml } = require('./engine-exec');
+const RM = require('../tools/report-meta.js');   // เจ้าของเดียวของ regex stock-meta/report-data/.px
 
 const TPL = path.join(__dirname, '..', '_template');
 let n = 0, fails = 0;
@@ -174,7 +175,7 @@ for (const cs of CASES) {
 
   // 1) โครงครบ
   ok(tpl.includes('<!--TEMPLATE:STYLE-->') && tpl.includes('<!--TEMPLATE:ENGINE-->'), `${cs.file}: มี marker STYLE+ENGINE`);
-  ok(/id=["']stock-meta["']/.test(tpl) && /id=["']report-data["']/.test(tpl), `${cs.file}: มีบล็อก stock-meta + report-data`);
+  ok(RM.STOCK_META_RE.test(tpl) && RM.REPORT_DATA_RE.test(tpl), `${cs.file}: มีบล็อก stock-meta + report-data`);
   ok(/<meta\s+name=["']ai-model["']/.test(tpl), `${cs.file}: มี meta ai-model`);
   ok(/<div class="sub">/.test(tpl), `${cs.file}: มีคำโปรยธุรกิจ .sub`);
   ok([1, 2, 3, 4, 5, 6, 7, 8].every((nn) => new RegExp(`<div class="n">${nn}</div>`).test(tpl)), `${cs.file}: ครบ 8 section`);
@@ -192,9 +193,7 @@ for (const cs of CASES) {
   // 3) เติมแล้วผ่าน gate
   const filled = fill(tpl, map);
   ok(!/\{\{\w+\}\}/.test(filled), `${cs.file}: เติมครบ ไม่เหลือ {{token}}`);
-  let smOk = false, rdOk = false;
-  try { JSON.parse(filled.match(/id=["']stock-meta["'][^>]*>([\s\S]*?)<\/script>/)[1]); smOk = true; } catch (e) { /* */ }
-  try { JSON.parse(filled.match(/id=["']report-data["'][^>]*>([\s\S]*?)<\/script>/)[1]); rdOk = true; } catch (e) { /* */ }
+  const smOk = RM.readStockMetaState(filled).ok === true, rdOk = RM.readReportData(filled).ok === true;
   ok(smOk && rdOk, `${cs.file}: บล็อก stock-meta + report-data เป็น JSON ที่ parse ได้หลังเติม`);
 
   let expanded;
