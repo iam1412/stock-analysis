@@ -24,6 +24,7 @@ const { expandReport } = require('../build.js');
 const { checkHtml } = require('./check-reports');
 const { extractEngine, runEngine, assertRendered, seedFromHtml } = require('./engine-exec');
 const RM = require('../tools/report-meta.js');   // เจ้าของเดียวของ regex stock-meta/report-data/.px
+const DV = require('../tools/derived-values.js');   // เจ้าของเดียวของรูป .big (MOS_BIG_RE/fmtMos) + ช่องสรุป (summaryPlan)
 
 const TPL = path.join(__dirname, '..', '_template');
 let n = 0, fails = 0;
@@ -45,6 +46,9 @@ function buildFill(b) {
     AI_MODEL: 'Claude Sonnet 5',   // ในเทสเติมค่าตัวอย่าง — ของจริง worker เติมรุ่นที่รันจริงของตัวเอง (E28)
     // headline numbers (ใช้ซ้ำหลายที่ → คุมความสอดคล้องอัตโนมัติ)
     PRICE: String(b.price), FV: String(b.fv), MOS: String(b.mos), UPSIDE: String(b.upside),
+    // {{MOS}} = ตัวเลขล้วน (JSON stock-meta มีเครื่องหมาย "+" ไม่ได้) · {{MOS_SIGNED}} = เลขเดียวกัน + เครื่องหมายชัด
+    // ตามรูปของ DV.fmtMos (− = U+2212) — .big กับช่องสรุปหมวด 8 ใช้ตัวนี้ ห้าม hard-code "+" ในโครง
+    MOS_SIGNED: (b.mos < 0 ? '−' : '+') + Math.abs(b.mos),
     PE: String(b.pe), DIV_YIELD: String(b.divYield), ROE: String(b.roe),
     FV_LOW: String(b.fvLow), FV_HIGH: String(b.fvHigh), MOS20: mos20, MOS30: mos30,
     ANALYST_TGT: String(b.analystTgt), ANALYST_RATING: b.analystRating, BASE_EPS: String(b.baseEps),
@@ -211,6 +215,18 @@ for (const cs of CASES) {
   const body = extractEngine(expanded);
   const r = body ? runEngine(body, seedFromHtml(expanded)) : { ok: false, error: { message: 'ไม่พบ engine' } };
   ok(r.ok && body && assertRendered(r.doc).length === 0, `${cs.file}: engine รันได้ (กราฟ/gauge/calc)` + (r.ok ? '' : ' — ' + (r.error && r.error.message)));
+
+  // 4) เคส MOS ติดลบ (หุ้นแพงกว่า FV) — เดิมโครง hard-code "+" หน้า {{MOS}} ทั้งสองจุด ⇒ ได้ "+-12%"
+  //    ⇒ .big หลุด DV.MOS_BIG_RE ⇒ cron อ่านไม่ออก ประทับไม่ได้ แล้ว flag patch-failed ตั้งแต่ใบแรกที่ MOS ติดลบ
+  //    (ชุดเติมด้านบนเป็นบวกทั้งคู่ จึงไม่เคยเจอ) · ที่นี่ยิงแค่ 2 ข้อที่พังจริง ไม่ใช่ gate ทั้งใบ —
+  //    ใบ MOS ติดลบต้องแก้ MOS_CLASS/MOS_TEXT/verdict ให้สอดคล้องด้วย ซึ่งเป็นงานของ worker ไม่ใช่ของโครง
+  const negFilled = fill(tpl, buildFill({ ...cs.base, mos: -12, upside: -11 }));
+  const big = DV.readMosBig(negFilled);
+  ok(DV.MOS_BIG_RE.test(negFilled) && !!big && big.sign === '−' && big.num === '12',
+    `${cs.file}: MOS ติดลบ → .big อ่านได้ด้วย DV.MOS_BIG_RE เป็น "−12%"` + (big ? ` (ได้ ${big.sign}${big.num}%)` : ' (อ่านไม่ออก)'));
+  const sp = DV.summaryPlan(negFilled);
+  ok(!!sp && sp.ok === true,
+    `${cs.file}: MOS ติดลบ → ช่องสรุปหมวด 8 = คลังคำคงที่ตรงกับ .big (W06 เงียบ)` + (sp ? ` — "${sp.text}" vs "${sp.want}"` : ' — ไม่มีช่อง/ไม่มี .big'));
   console.log('');
 }
 

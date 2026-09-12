@@ -7,6 +7,9 @@
   วิธีใช้:  cp _template/skeleton-us.html reports/<SYMBOL>.html  แล้วแทนทุก {{...}} ด้วยข้อมูลจริง
   • ทุกช่องที่ต้องแก้คือ {{...}}  — ห้ามเหลือค้าง (gate E13 จะ error ถ้าเจอ {{ }} ในรายงาน)
   • ตัวเลขต้องสอดคล้องกันตามกฎใน docs/quality-gate.md — เช่น MOS20={{FV}}×0.8, MOS=(FV−price)/FV
+  • {{MOS}} = ตัวเลขล้วน (ใช้ใน JSON stock-meta เท่านั้น จึงมีเครื่องหมายไม่ได้) · {{MOS_SIGNED}} = เลขเดียวกัน
+    แต่ **มีเครื่องหมายมาเอง** (+12 / −12 ใช้ − U+2212 ตามรูปของ cron) สำหรับ .big และช่องสรุปหมวด 8
+    ⇒ MOS ติดลบห้ามพิมพ์ "+" นำหน้า ไม่งั้น .big อ่านไม่ออก (cron ฟ้อง patch-failed)
   • เลือกสีแบรนด์ใน theme (ห้ามปล่อย default) — ดู tools/brand-colors.md + tools/seeds.json
   • โครง CSS/engine ถูก inject ตอน build (marker STYLE/ENGINE) — ไม่ต้องแตะ
   ════════════════════════════════════════════════════════════════════════════
@@ -172,7 +175,7 @@
     <div class="card">
       <!-- ✏️ class ของ mos-verdict: MOS<10 → "bad", 10–20 → "ok", ≥20 → "good" -->
       <div class="mos-verdict {{MOS_CLASS}}">
-        <div class="big">+{{MOS}}%</div>
+        <div class="big">{{MOS_SIGNED}}%</div>
         <div class="txt">{{MOS_TEXT}}</div>
       </div>
       <div class="grid g3">
@@ -268,7 +271,7 @@
       <p>{{VERDICT_BODY}}</p>
       <div class="vgrid">
         <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">${{FV}} <span style="font-size:12px;color:#cab9a8">(${{FV_LOW}}–${{FV_HIGH}})</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +{{MOS}}%</div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{MOS_SIGNED}}%</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~${{ANALYST_TGT}} ({{ANALYST_RATING}})</div></div>
       </div>
       <div class="zone">

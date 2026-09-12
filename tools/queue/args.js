@@ -1,8 +1,16 @@
 'use strict';
 const VALUE_FLAGS = new Set(['--mode', '--model', '--brand', '--median-spec', '--tags', '--message', '--age']);
-/** แยก argv ของ runbook: รับทั้ง --flag value และ --flag=value · flag ที่ต้องมีค่าแล้วไม่มี = error ชัด ไม่ใช่ garbage */
+/** แยก argv ของ runbook: รับทั้ง --flag value และ --flag=value · flag ที่ต้องมีค่าแล้วไม่มี = error ชัด ไม่ใช่ garbage
+ *  ★ แตก `--flag=value` **เฉพาะ flag ใน VALUE_FLAGS** — boolean flag ที่พิมพ์ `--force=true` เคยถูกแตกเป็น
+ *    ['--force','true'] แล้ว 'true' กลายเป็น positional ตัวแรก ⇒ `ship --force=true AAPL` ไป ship หุ้นชื่อ "TRUE"
+ *    (AAPL ตกไปเป็น positional ที่สอง) · ตอนนี้ล้มทันทีพร้อมบอกว่า flag นี้ไม่รับค่า */
 function parseArgs(argv) {
-  const a = argv.flatMap((x) => (/^--[a-z-]+=/.test(x) ? [x.slice(0, x.indexOf('=')), x.slice(x.indexOf('=') + 1)] : [x]));
+  const a = argv.flatMap((x) => {
+    const m = /^(--[a-z-]+)=/.exec(x);
+    if (!m) return [x];
+    if (!VALUE_FLAGS.has(m[1])) throw new Error(`${m[1]} ไม่รับค่า`);
+    return [m[1], x.slice(m[1].length + 1)];
+  });
   const cmd = a[0];
   const has = (f) => a.includes(f);
   // v === '' = พิมพ์ `--flag=` ค้างไว้ (flatMap ข้างบนแตกเป็น ['--flag','']) — ต้องล้มเหมือนไม่ใส่ค่าเลย

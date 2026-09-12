@@ -147,18 +147,21 @@ process.env.QUEUE_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'queue-'));   // s
 // ── 6b) preflight: plan/ageQueue — คิวตามอายุ (WS6 ข้อ 3): ใบเกิน 90 วันเข้าคิวเองแม้ราคาไม่ขยับ · ทยอย ageLimit ตัว แก่สุดก่อน · ไม่ซ้ำกับที่ flag อยู่ ──
 {
   const P = require('../tools/queue/preflight.js');
-  const ages = { OLD1: 200, OLD2: 150, OLD3: 95, MID: 60, FLAGGED: 300 };
+  // 6 ใบเกิน 90 วัน (FLAGGED OLD1 OLD2 OLD4 OLD5 OLD3) — ต้องมากกว่า 5 ถึงจะพิสูจน์ว่า default ageLimit ตัดจริง
+  const ages = { OLD1: 200, OLD2: 150, OLD3: 95, OLD4: 120, OLD5: 110, MID: 60, FLAGGED: 300 };
   const rows = P.plan([{ symbol: 'FLAGGED', reason: 'drift-gt-15pct' }], '2026-09-12', { ageLimit: 2, listReports: () => Object.keys(ages), footerAgeOf: (s) => ages[s] });
   const syn = rows.filter((r) => r.synthetic);
   ok(syn.map((r) => r.symbol).join(',') === 'OLD1,OLD2' && syn.every((r) => r.reason === 'age-gt-90d' && r.bucket === 'LIGHT'), 'plan: แถวอายุสังเคราะห์ 2 ตัวแก่สุด (ไม่รวม FLAGGED ที่มี flag อยู่แล้ว · MID ไม่ถึง 90)', syn.map((r) => r.symbol).join(','));
-  ok(P.ageQueue('2026-09-12', { listReports: () => Object.keys(ages), footerAgeOf: (s) => ages[s] }).length === 4, 'ageQueue: นับทุกใบเกิน 90 วัน (4) ก่อนตัด');
+  ok(P.ageQueue('2026-09-12', { listReports: () => Object.keys(ages), footerAgeOf: (s) => ages[s] }).length === 6, 'ageQueue: นับทุกใบเกิน 90 วัน (6) ก่อนตัด');
   ok(P.plan([], '2026-09-12', { ageLimit: 0, listReports: () => Object.keys(ages), footerAgeOf: (s) => ages[s] }).length === 0, 'plan: --no-age (ageLimit 0) ไม่เพิ่มแถว');
   // ageQueue: แก่สุดก่อนเสมอ (sort desc) — ยืนยันลำดับตรง ไม่ใช่แค่จำนวน
   const aqAll = P.ageQueue('2026-09-12', { listReports: () => Object.keys(ages), footerAgeOf: (s) => ages[s] });
-  ok(aqAll.map((r) => r.symbol).join(',') === 'FLAGGED,OLD1,OLD2,OLD3', 'ageQueue: เรียงแก่สุดก่อน (ไม่ตัดที่ ageLimit)', aqAll.map((r) => r.symbol).join(','));
-  // plan: ageLimit default (ไม่ใส่ opts.ageLimit) = 5
+  ok(aqAll.map((r) => r.symbol).join(',') === 'FLAGGED,OLD1,OLD2,OLD4,OLD5,OLD3', 'ageQueue: เรียงแก่สุดก่อน (ไม่ตัดที่ ageLimit)', aqAll.map((r) => r.symbol).join(','));
+  // plan: ageLimit default (ไม่ใส่ opts.ageLimit) = 5 — มี 6 ใบเข้าเกณฑ์ ⇒ ต้องเห็น "ตัด" จริง (OLD3 อ่อนสุดหลุด)
   const rowsDefault = P.plan([], '2026-09-12', { listReports: () => Object.keys(ages), footerAgeOf: (s) => ages[s] });
-  ok(rowsDefault.filter((r) => r.synthetic).length === 4, 'plan: ไม่ใส่ ageLimit → default 5 (มีแค่ 4 ใบเกิน 90 วันอยู่แล้วเลยได้ครบ)', String(rowsDefault.length));
+  const synDefault = rowsDefault.filter((r) => r.synthetic).map((r) => r.symbol);
+  ok(synDefault.length === 5, 'plan: ไม่ใส่ ageLimit → default 5 (มี 6 ใบเข้าเกณฑ์ จึงตัดเหลือ 5)', synDefault.join(','));
+  ok(synDefault.join(',') === 'FLAGGED,OLD1,OLD2,OLD4,OLD5' && !synDefault.includes('OLD3'), 'plan: ตัวที่ถูกตัดคือใบอ่อนสุด (OLD3 95d)', synDefault.join(','));
 }
 
 // ── 7) prep (ส่วนบริสุทธิ์): parseVendor · snapshotDiff · assemblePrompt · hardStock ──
@@ -586,6 +589,62 @@ process.env.QUEUE_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'queue-'));   // s
     ok(threw === `${flag} ต้องมีค่า`, `parseArgs: ${flag}= (ค่าว่าง) → error เดียวกับไม่ใส่ค่า`, String(threw));
   }
   ok(A.parseArgs(['ship', 'AAPL', '--message= ']).val('--message') === ' ', 'parseArgs: ค่าที่เป็นช่องว่างจริง ๆ ยังผ่าน (ไม่ trim ให้)');
+  // boolean flag ที่พิมพ์มาพร้อมค่า: เดิมแตกเป็น ['--force','true'] แล้ว 'true' กลายเป็น positional ตัวแรก ⇒ ship หุ้นชื่อ "TRUE"
+  let boolThrew = null, parsedBool = null;
+  try { parsedBool = A.parseArgs(['ship', '--force=true', 'AAPL']); } catch (e) { boolThrew = e.message; }
+  ok(boolThrew === '--force ไม่รับค่า' && parsedBool === null, "parseArgs: ship --force=true AAPL → throw '--force ไม่รับค่า' (ไม่ใช่ sym = 'TRUE')", String(boolThrew) + ' · sym=' + (parsedBool && parsedBool.sym));
+  const okForce = A.parseArgs(['ship', 'AAPL', '--force']);
+  ok(okForce.has('--force') === true && okForce.sym === 'AAPL', 'parseArgs: --force แบบ boolean ปกติยังใช้ได้เหมือนเดิม', okForce.sym);
+}
+
+// ── 19f) รอบของคิว (Task 21) — state อยู่ข้ามรอบ (Task 15) ⇒ ฟิลด์ "ของรอบ" ต้องไม่ข้ามรอบไปด้วย ──
+//   นิยามรอบใหม่อยู่ในหัว roundStart() ของ tools/queue/preflight.js
+{
+  const P = require('../tools/queue/preflight.js');
+  const Sh = require('../tools/queue/ship.js');
+
+  // roundStart — flag จริงที่ใหม่กว่า startedAt เดิม = รอบใหม่ · เอา flaggedAt ที่เก่าสุดในกลุ่มนั้น
+  ok(P.roundStart([{ flaggedAt: '2026-09-12' }, { flaggedAt: '2026-09-11' }], '2026-09-05', '2026-09-12') === '2026-09-11', 'roundStart: flag ใหม่หลายวัน → startedAt = วันเก่าสุดในกลุ่มที่ใหม่กว่าเดิม', String(P.roundStart([{ flaggedAt: '2026-09-12' }, { flaggedAt: '2026-09-11' }], '2026-09-05', '2026-09-12')));
+  ok(P.roundStart([{ flaggedAt: '2026-09-01' }, { flaggedAt: '2026-09-05' }], '2026-09-05', '2026-09-12') === '2026-09-05', 'roundStart: ไม่มี flag ใหม่กว่า startedAt → รอบเดิม');
+  ok(P.roundStart([{ flaggedAt: '2026-09-12', synthetic: true }], '2026-09-05', '2026-09-12') === '2026-09-05', 'roundStart: แถวอายุ (synthetic) ไม่ใช่ flag → ไม่เปิดรอบใหม่ (ไม่งั้นรอบรีเซ็ตเองทุกวัน)');
+  ok(P.roundStart([], null, '2026-09-12') === '2026-09-12', 'roundStart: ยังไม่เคยมีรอบและไม่มี flag → วันนี้');
+
+  // (i) LIGHT ที่ ship ไปแล้วรอบก่อน แล้วโดน flag ใหม่ → กลับมาเป็นงานค้าง (ไม่งั้น ship --prepatch ปิด issue · status นับว่า push แล้ว · ship <SYM> ผ่าน guard)
+  const shipped = { reason: 'drift-gt-15pct', bucket: 'LIGHT', flaggedAt: '2026-09-01', oldPrice: 10, currency: 'USD', prePatched: '2026-09-01', prepAt: '2026-09-01', mode: 'UPDATE-LIGHT', model: 'sonnet', postcheck: 'pass', postcheckAt: '2026-09-02', shippedAt: '2026-09-02' };
+  const again = P.upsertRow(shipped, { symbol: 'X', reason: 'drift-gt-15pct', bucket: 'LIGHT', flaggedAt: '2026-09-12', oldPrice: 12, currency: 'USD', footerAge: 40, skip: null });
+  ok(!again.shippedAt && !again.postcheck && !again.postcheckAt && !again.prepAt && !again.mode && !again.model && !again.prePatched && !again.prepatchShippedAt && !again.prePatchRejected, 'upsertRow: flag ใหม่บนแถวที่ ship แล้ว → ล้างฟิลด์ของรอบก่อนครบชุด (กลับเป็นงานค้าง)', JSON.stringify(again));
+  ok(again.flaggedAt === '2026-09-12' && again.oldPrice === 12 && again.bucket === 'LIGHT' && again.reason === 'drift-gt-15pct', 'upsertRow: ค่าที่ preflight เป็นเจ้าของถูกเขียนทับด้วยของรอบใหม่', JSON.stringify(again));
+
+  // flag เดิม = preflight รันซ้ำในรอบเดียวกัน → ห้ามล้าง (ไม่งั้น ship <SYM> ตายที่ guard postcheck/resolveModel)
+  const inflight = { reason: 'drift-gt-15pct', bucket: 'LIGHT', flaggedAt: '2026-09-12', prepAt: '2026-09-12', mode: 'UPDATE-LIGHT', model: 'sonnet', postcheck: 'pass' };
+  const same = P.upsertRow(inflight, { symbol: 'X', reason: 'drift-gt-15pct', bucket: 'LIGHT', flaggedAt: '2026-09-12', oldPrice: 10, currency: 'USD', footerAge: 40, skip: null });
+  ok(same.postcheck === 'pass' && same.model === 'sonnet' && same.prepAt === '2026-09-12', 'upsertRow: flag เดิม (รัน preflight ซ้ำในรอบเดียวกัน) → คงงานที่ทำไปแล้ว', JSON.stringify(same));
+  const synSame = P.upsertRow({ reason: 'age-gt-90d', bucket: 'LIGHT', flaggedAt: '2026-09-12', prepAt: '2026-09-12', model: 'sonnet' }, { symbol: 'A', reason: 'age-gt-90d', synthetic: true, bucket: 'LIGHT', flaggedAt: '2026-09-12', oldPrice: null, currency: null, footerAge: 200, skip: null });
+  ok(synSame.prepAt === '2026-09-12' && synSame.model === 'sonnet', 'upsertRow: แถวอายุของวันเดียวกัน → ไม่ล้าง prepAt/model', JSON.stringify(synSame));
+  const synNew = P.upsertRow({ reason: 'age-gt-90d', bucket: 'LIGHT', flaggedAt: '2026-09-11', prepAt: '2026-09-11', model: 'sonnet' }, { symbol: 'A', reason: 'age-gt-90d', synthetic: true, bucket: 'LIGHT', flaggedAt: '2026-09-12', oldPrice: null, currency: null, footerAge: 200, skip: null });
+  ok(!synNew.prepAt && !synNew.model, 'upsertRow: แถวอายุของวันใหม่ → ล้างของรอบก่อน', JSON.stringify(synNew));
+  // ship ไปแล้วแต่ flag เดิมยังอยู่ใน price-flags.json (cron ยังไม่รันใหม่) — preflight ซ้ำในรอบเดิมห้ามล้าง shippedAt ไม่งั้นตัวนับ X/Y ถอยหลัง
+  const shippedSameRound = P.upsertRow({ reason: 'drift-gt-15pct', bucket: 'LIGHT', flaggedAt: '2026-09-12', model: 'sonnet', postcheck: 'pass', shippedAt: '2026-09-12' }, { symbol: 'X', reason: 'drift-gt-15pct', bucket: 'LIGHT', flaggedAt: '2026-09-12', oldPrice: 10, currency: 'USD', footerAge: 0, skip: 'สด ≤7 วัน (footer)' });
+  ok(shippedSameRound.shippedAt === '2026-09-12' && shippedSameRound.model === 'sonnet', 'upsertRow: ship แล้วแต่ flag เดิม (รอบเดียวกัน) → คง shippedAt ไว้', JSON.stringify(shippedSameRound));
+
+  // (ii) prePatchRejected ของรอบก่อน — pre-patch รอบนี้ผ่าน gate ต้องถูกลบ ไม่ใช่ค้างบล็อกการปิด issue ตลอดไป
+  const st = { OKSYM: { bucket: 'LIGHT', prePatchRejected: '2026-09-01' }, BADSYM: { bucket: 'LIGHT' } };
+  P.applyGateResult(st, ['OKSYM', 'BADSYM'], ['BADSYM'], '2026-09-12');
+  ok(st.OKSYM.prePatchRejected === undefined && st.OKSYM.prePatched === '2026-09-12', 'applyGateResult: ผ่าน gate → ประทับ prePatched + ล้าง prePatchRejected ของรอบก่อน', JSON.stringify(st.OKSYM));
+  ok(st.BADSYM.prePatchRejected === '2026-09-12' && !st.BADSYM.prePatched, 'applyGateResult: ตก gate → ประทับ prePatchRejected อย่างเดียว', JSON.stringify(st.BADSYM));
+
+  // (iii) closeIssueIfNoLlmRows มองเฉพาะแถวของรอบนี้
+  let n = 0;
+  const spy = () => { n++; };
+  const quiet = (fn) => { const orig = console.log; console.log = () => {}; try { return fn(); } finally { console.log = orig; } };
+  const oldRound = quiet(() => Sh.closeIssueIfNoLlmRows({ OLDLIGHT: { bucket: 'LIGHT', flaggedAt: '2026-09-01' }, FLIP: { bucket: 'PREPATCH', flaggedAt: '2026-09-12' } }, spy, '2026-09-10'));
+  ok(oldRound === true && n === 1, 'closeIssueIfNoLlmRows: LIGHT ค้างจากรอบก่อน (flaggedAt < startedAt) ไม่บล็อก issue ของรอบนี้', String(n));
+  const thisRound = quiet(() => Sh.closeIssueIfNoLlmRows({ NEWLIGHT: { bucket: 'LIGHT', flaggedAt: '2026-09-12' } }, spy, '2026-09-10'));
+  ok(thisRound === false && n === 1, 'closeIssueIfNoLlmRows: LIGHT ของรอบนี้ยังบล็อกตามเดิม', String(n));
+  const noStart = quiet(() => Sh.closeIssueIfNoLlmRows({ OLDLIGHT: { bucket: 'LIGHT', flaggedAt: '2026-09-01' } }, spy, null));
+  ok(noStart === false && n === 1, 'closeIssueIfNoLlmRows: ไม่รู้ startedAt (state เก่า/เทส) → นับทุกแถวเหมือนเดิม', String(n));
+  const S4 = require('../tools/queue/state.js');
+  ok(S4.inRound({ flaggedAt: '2026-09-01' }, '2026-09-10') === false && S4.inRound({ flaggedAt: '2026-09-12' }, '2026-09-10') === true && S4.inRound({}, '2026-09-10') === true, 'inRound: เทียบ flaggedAt กับ startedAt · แถวไม่มี flaggedAt = นับด้วยเสมอ');
 }
 
 // ── 20) ปฏิทินงบ (Task 17 · WS6 ข้อ 2) — เทส offline อยู่ไฟล์แยก คืน Promise ⇒ tally ต้องรอก่อนนับ ──

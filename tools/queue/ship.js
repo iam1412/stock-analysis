@@ -190,16 +190,19 @@ function shipPrepatch() {
   console.log(`✅ pre-patch ${changed.length} ใบ push แล้ว (วันที่วิเคราะห์คงเดิมผ่าน preserve-dates)`);
   // ปกติไม่ปิด issue ที่นี่ (pre-patch ล้าง flag ทั้งที่ยังไม่ได้วิเคราะห์ — snapshot semantics · issue ปิดเมื่อ ship <SYM> ตัวสุดท้าย)
   // แต่รอบที่มีแต่ PREPATCH (flip ในย่าน — ระยะ 1 ข้อ D) ไม่มี `ship <SYM>` ตามมาเลย ⇒ ต้องปิดตรงนี้ ไม่งั้น issue ค้างเปิดทั้งที่คิวว่าง
-  closeIssueIfNoLlmRows(S.load().stocks);
+  const st = S.load();
+  closeIssueIfNoLlmRows(st.stocks, null, st.startedAt);
 }
 
 /** ยังมีแถวที่ต้องส่ง LLM ค้างอยู่ไหม (LIGHT/FULL ที่ไม่ skip และยังไม่ ship) — ไม่มี = `ship --prepatch` ปิด issue เอง
  *  ★ แยกเป็นฟังก์ชันที่รับตัวปิดเป็น argument เพื่อให้ queue-test ยิงได้จริง: `shipPrepatch()` เต็มใบรันในเทสไม่ได้
  *    (มันเรียก npm run build / preserve-dates / npm run verify / git push) · คืน true = สั่งปิดแล้ว
  *  ★ (C1 · carried จาก Task 13 review) PREPATCH ที่ prePatchRejected (pre-patch แล้ว gate ตก — ยังต้องแก้ไฟล์ให้ผ่านเอง)
- *    ก็นับเป็นงานค้างเหมือนกัน — ห้ามปิด issue ทั้งที่แถวนี้ยังรอคนแก้ (คลาสเดียวกับ REJECTED ของ cron) */
-function closeIssueIfNoLlmRows(stocks, close) {
-  const pending = Object.values(stocks || {}).filter((r) =>
+ *    ก็นับเป็นงานค้างเหมือนกัน — ห้ามปิด issue ทั้งที่แถวนี้ยังรอคนแก้ (คลาสเดียวกับ REJECTED ของ cron)
+ *  ★ (Task 21) นับเฉพาะแถว**ของรอบนี้** (`S.inRound` · `startedAt` จาก state) — state อยู่ข้ามรอบแล้ว (Task 15)
+ *    แถวที่ผู้ใช้ข้ามไปตั้งแต่รอบก่อนจึงจะค้างเปิด issue ตลอดกาลถ้าไม่กรอง · ไม่ส่ง `startedAt` = นับทุกแถว (ของเดิม) */
+function closeIssueIfNoLlmRows(stocks, close, startedAt) {
+  const pending = Object.values(stocks || {}).filter((r) => S.inRound(r, startedAt)).filter((r) =>
     (!r.skip && ['LIGHT', 'FULL'].includes(r.bucket) && !r.shippedAt) || (r.bucket === 'PREPATCH' && r.prePatchRejected));
   if (pending.length) { console.log(`ยังเหลือ ${pending.length} ตัวที่ต้องส่ง LLM — issue คงเปิด (ปิดตอน ship <SYM> ตัวสุดท้าย)`); return false; }
   (close || closeIssueIfEmpty)();
@@ -213,7 +216,7 @@ function closeIssueIfNoLlmRows(stocks, close) {
  *    (มันมีงานจริงคือ pre-patch + ship --prepatch) · ยกเว้นใบที่ gate ตกหลัง pre-patch — อันนั้นต้องคงป้ายเหตุผลไว้ที่ "ไม่ใช้ agent/ข้าม" */
 function status() {
   const s = S.load();
-  const rows = Object.entries(s.stocks);
+  const rows = Object.entries(s.stocks).filter(([, r]) => S.inRound(r, s.startedAt));   // (Task 21) แถวรอบเก่าไม่ใช่งานของรอบนี้
   const pushed = rows.filter(([, r]) => r.shippedAt).map(([k]) => k);
   const waiting = rows.filter(([, r]) => !r.shippedAt && r.postcheck === 'pass').map(([k]) => k);
   const review = rows.filter(([, r]) => !r.shippedAt && r.postcheck === 'review').map(([k]) => k);

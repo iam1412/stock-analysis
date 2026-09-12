@@ -1,8 +1,15 @@
 'use strict';
 /**
- * state ของรอบเคลียร์คิว — `.queue/state.json` (gitignore · per-machine · อยู่ข้ามหลาย session ไม่หายเหมือน scratchpad)
- * stocks[SYM] = { reason, bucket, oldPrice, currency, footerAge, skip, flaggedAt, prePatched, mode, model, effort, prepAt,
- *                 escalated, prePatchRejected, prepatchShippedAt, epsScreen, snapDeltas, postcheck: 'pass'|'review', postcheckAt, shippedAt }
+ * state ของรอบเคลียร์คิว — `.queue/state.json` (gitignore · อยู่ข้ามหลาย session ไม่หายเหมือน scratchpad)
+ * ★ โฟลเดอร์อยู่ที่ **checkout หลัก** (`resolveQueueDir` ใช้ `git rev-parse --git-common-dir`) ⇒ **ใช้ร่วมกันทุก worktree
+ *   บนเครื่องเดียวกัน** — คนละเครื่องยังแยกกันอยู่ (open-item #22)
+ * stocks[SYM] = { reason, bucket, oldPrice, currency, footerAge, skip, flaggedAt   ← preflight (ทุกรอบ)
+ *                 · prePatched | prePatchRejected                                  ← preflight หลังยิง gate ตามผล pre-patch
+ *                 · mode, model, effort, prepAt, escalated, epsScreen, snapDeltas  ← prep (`escalated` ที่นี่ = **boolean** ของ EPS screen)
+ *                 · postcheck: 'pass'|'review', postcheckAt                        ← postcheck
+ *                 · shippedAt | prepatchShippedAt }                                ← ship <SYM> / ship --prepatch
+ * ★ `escalated` ของ triage (สตริง `'age'`|`'earnings'` = ยก PREPATCH→LIGHT) และ `synthetic` (แถวคิวอายุ) เป็นของ **แถวในรอบนั้น
+ *   ไม่ถูกบันทึกลงไฟล์นี้** — ชื่อชนกับ `escalated` ของ prep แต่คนละความหมาย
  * env QUEUE_DIR = override โฟลเดอร์ (เทสใช้)
  */
 const fs = require('fs');
@@ -34,10 +41,19 @@ function save(s) {
   fs.renameSync(tmp, FILE);
   return s;
 }
+/** ฟิลด์ที่เป็นของ "รอบ" ไม่ใช่ของ symbol — flag ใหม่มา = ล้างทิ้ง ไม่งั้นคำสั่งของรอบก่อนสั่งงานรอบนี้ (Task 21)
+ *  รายการบังคับจากรีวิว: shippedAt/postcheck/postcheckAt/prepAt/prePatchRejected/prepatchShippedAt/mode/model
+ *  + `prePatched` ที่เพิ่มเอง — `prep.js` อ่านค่านี้ไปบอก worker ว่า "ราคา patch มาแล้ว" ค้าง = สั่งงาน worker ผิด
+ *  (`escalated`/`effort`/`epsScreen`/`snapDeltas` ไม่ล้าง — เป็นข้อมูลประกอบ ไม่มีใครอ่านไปตัดสินใจ และ prep เขียนทับทุกครั้ง) */
+const ROUND_FIELDS = ['shippedAt', 'postcheck', 'postcheckAt', 'prepAt', 'prePatchRejected', 'prepatchShippedAt', 'mode', 'model', 'prePatched'];
+/** แถวนี้เป็นของรอบปัจจุบันไหม — ใช้กรองก่อนนับ/ก่อนปิด issue (แถวรอบเก่าไม่ใช่งานของรอบนี้)
+ *  ★ ไม่มี `startedAt` (state เก่า/เทส) หรือแถวไม่มี `flaggedAt` = นับด้วยเสมอ — กันของเดิมหายเงียบ */
+const inRound = (rec, startedAt) => !startedAt || !rec || !rec.flaggedAt || rec.flaggedAt >= startedAt;
+
 function update(sym, patch) {
   const s = load();
   s.stocks[sym] = { ...(s.stocks[sym] || {}), ...patch };
   save(s);
   return s.stocks[sym];
 }
-module.exports = { DIR, FILE, PREP_DIR, load, save, update, resolveQueueDir };
+module.exports = { DIR, FILE, PREP_DIR, load, save, update, resolveQueueDir, ROUND_FIELDS, inRound };

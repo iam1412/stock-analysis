@@ -11,7 +11,11 @@
  *   npm run queue -- status                 X/Y push แล้ว / รอ push / ยังไม่เริ่ม
  * สิ่งที่ยังต้องทำเอง (script พิมพ์บอกทุกครั้ง): probe โมเดล · courier/advisor หุ้นยาก · spawn worker (pin model) · ยืนยันเพิกถอน · ชั้น 0 valuation · publish/skip
  */
-const { cmd, has, val, sym } = require('./queue/args.js').parseArgs(process.argv.slice(2));
+// parseArgs อยู่นอก IIFE ข้างล่าง ⇒ error ของมัน (`--force=true` = flag ที่ไม่รับค่า) จะไม่ผ่าน .catch ท้ายไฟล์
+// ต้องดักเองให้ได้ข้อความเดียวกัน ("✗ …" + exit 1) ไม่ใช่ stack ดิบ
+let cmd, has, val, sym;
+try { ({ cmd, has, val, sym } = require('./queue/args.js').parseArgs(process.argv.slice(2))); }
+catch (e) { console.error('✗ ' + e.message); process.exit(1); }
 const usage = `ใช้: npm run queue -- <คำสั่ง> [ตัวเลือก]
   preflight [--no-patch] [--allow-intraday] [--allow-dirty] [--age N] [--no-age]
   ship --prepatch
