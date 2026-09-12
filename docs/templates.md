@@ -8,7 +8,8 @@
 
 - **`<script type="application/json" id="report-data">`** ใน `<head>` — ตัวเลขกราฟ/gauge + **ธีมสี** ต่อหุ้น:
   `{ theme:{accent, accentDark, darkGrad, glow, subColor, headerMuted, verdictText, vcellLabel, badge, chgBg, chgColor},
-     chart:{data, min, max, grid, fairLine, currency, highlight, gridFmt?, dataFmt?}, gauge:{min,max,cur,fair,fairLabelTop}, fv }`
+     chart:{data, min, max, grid, currency, highlight, gridFmt?, dataFmt?}, gauge:{min,max,fairLabelTop?}, fv }`
+  (ใบใหม่ทุกใบเป็น **v2** — โครงข้างบนคือ v2 · `chart.fairLine` และ `gauge.cur`/`gauge.fair` **ห้ามมี** ตาม §"schema v2" ข้อ 1 ด้านล่าง engine bake จาก `values.px`/`fv` ให้เอง · ใบ v1 เดิมในคลังยังมี `chart.fairLine`/`gauge.cur`/`gauge.fair` เป็นสำเนาดิบตามรูปแบบเก่า)
   · `highlight` = ดัชนีจุดที่ไฮไลต์บนกราฟ (เช่น `[6,7]`) · `currency` = สัญลักษณ์ (`$`/`฿`) · `gridFmt`/`dataFmt` = นิพจน์ format ป้าย (เช่น `v.toFixed(2)` หุ้นราคาต่ำ)
 - marker `<!--TEMPLATE:STYLE-->` (ใน head) + `<!--TEMPLATE:ENGINE-->` (ก่อน `</body>`) = จุดที่ build inject โครง
 - **★ ตัวย่อหุ้นใน header (`.px small` = `({{SYMBOL}})` ข้างราคา) ใช้สีเดียวกับราคา** (`color:inherit` = ขาว) ใน `_template/dashboard.css` — **อย่าเปลี่ยนกลับไปใช้ `var(--header-muted)`** (alpha ต่ำ ทำให้ตัวย่อกลืนพื้นหลัง อ่านไม่ออก — แก้ มิ.ย. 2569 ตาม user) · แก้ที่ dashboard.css ที่เดียว → ทุกรายงาน content-only ได้สีใหม่อัตโนมัติตอน build
@@ -126,7 +127,9 @@
 | field | ที่มา |
 |---|---|
 | `values.px` / `values.priceDate` + ป้าย `.chg` + `theme.chgBg/chgColor` | `node tools/fetch-facts.js <SYM> [--th]` พิมพ์พร้อมวาง (ขึ้น=เขียว `var(--green-soft)`/`#1e8e3e` · ลง=แดง `var(--red-soft)`/`#c5221f`) |
-| `chart.data / min / max / grid / currency / highlight` | fetch-facts พิมพ์ให้เหมือนกัน — `highlight` = `[ดัชนีจุดต่ำสุด, ดัชนีจุดสูงสุด]` ของ chart.data เรียงน้อย→มาก (ไม่มี `chart.fairLine` แล้วใน v2) |
+| `chart.data / min / max / grid` | `node tools/fetch-facts.js <SYM> [--th]` พิมพ์ให้ **เฉพาะ 4 คีย์นี้** (`styledRD({data,min,max,grid})` ที่ `tools/fetch-facts.js:63`) |
+| `chart.highlight` (**ไม่ได้มาจาก fetch-facts — worker เติมเอง**) | `[ดัชนีจุดต่ำสุด, ดัชนีจุดสูงสุด]` ของ `chart.data` เรียงน้อย→มาก · ไม่มี = `build.js` **throw** ที่ `chart.highlight` (ไม่มี `chart.fairLine` แล้วใน v2) |
+| `chart.currency` (**ไม่ได้มาจาก fetch-facts — worker เติมเอง**) | `"$"`/`"฿"` ตามตลาด — ไม่มี = **ไม่ throw** แต่สัญลักษณ์สกุลเงินหายจากแกนกราฟเงียบ ๆ (`build.js` validate เฉพาะเมื่อ `!= null`) |
 | `fv` (เจ้าของเดียวของ FV — เดิม v1 มี 9 สำเนา) | FV ที่คำนวณ STEP 3 |
 | `values.dateEra` | worker: `"BE"` เสมอสำหรับใบใหม่ (`"11 ก.ย. 2569"`) · migrator เท่านั้นที่เขียน `"CE"` (เก็บศักราชเดิมของไฟล์ที่ย้ายมา) |
 | `values.chgSuffix` | `"รอบปี"` ปกติ · `"ตั้งแต่ IPO"` เมื่อหุ้น IPO <1 ปี — ตัวเลข % คิดจาก `chart.data` ตอน render |

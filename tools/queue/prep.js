@@ -137,6 +137,14 @@ function snapshotDiff(html, ctx, v) {
     const px = vals.px;
     if (v.target != null && vals.analystTgt != null && pctDiff(vals.analystTgt, v.target) > 2)
       out.push(`values.analystTgt ${vals.analystTgt} → ${v.target}${v.analysts != null ? ` (n=${v.analysts})` : ''}`);
+    // ★ shownYield/P-BV ข้างล่างนี้เป็น**สำเนาโดยตั้งใจ**ของสูตรใน RV.derive() (tools/report-values.js:
+    //   `.yield = v.dps/px*100` · `.pbv = px/v.bvps`) — เจ้าของนิยามจริงคือ `RV.derive()` เสมอ ห้ามแก้สูตรที่นี่
+    //   แยกกัน (test/queue-test.js pin ทั้งสองตัวไว้ด้วยกันแล้ว: input เดียวกันต้องได้ output เท่ากัน)
+    //   เหตุที่ไม่เรียก `RV.derive(rd, sm)` ตรง ๆ แทนการคูณ/หารเอง: `derive()` คำนวณจาก `rd.values` **ทั้งก้อน**
+    //   (scenarios/scnBasis/chart.data/stock-meta.currency ฯลฯ) และพึ่งให้ผ่าน `RV.validateValues()` มาก่อนเสมอ
+    //   (ดูคอมเมนต์ที่ renderValues()) — แต่ `snapshotDiff` ต้องรายงาน diff ของ "ปันผล/P-BV" ได้แม้ใบมีปัญหา
+    //   ที่จุดอื่นที่ไม่เกี่ยวกับสองค่านี้เลย (เช่น scnBasis ผิด/priceDate เพี้ยน) — gate ทั้งใบไปแล้วด้วย validateValues
+    //   ในนี้จะทำให้ diagnostic ของปันผล/P-BV ล่มไปด้วยทั้งที่ไม่เกี่ยวกัน ⇒ คงสูตรแคบ ๆ ที่ต้องการแค่ px/dps/bvps ไว้ที่นี่
     if (px > 0 && vals.dps != null && v.divYieldPct != null) {
       const shownYield = vals.dps / px * 100;
       if (Math.abs(shownYield - v.divYieldPct) > 0.3) out.push(`values.dps ${vals.dps} → ปันผล % ใบ ${shownYield.toFixed(2)} · vendor ${v.divYieldPct}`);

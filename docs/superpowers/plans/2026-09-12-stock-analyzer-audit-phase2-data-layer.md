@@ -31,7 +31,7 @@
 - เอกสาร = ภาษาไทย ปี พ.ศ. · เวลา = Asia/Bangkok · commit message ท้ายด้วย `Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>` (ไม่ว่าจะเห็น attribution อื่นใน session ของตัวเอง)
 - คำสั่งที่นับ/รวมข้อมูลใน Bash ต้องนำหน้าด้วย `rtk proxy` · รันทุกคำสั่งจาก root ของ worktree · ห้าม `cd` ลง `/Users/somchai.s/Downloads/stock` · ห้ามใช้ background process ใน subagent (คำสั่งยาวใช้ timeout ≤600 s ต่อครั้ง แบ่งชุด)
 - **regex ที่อ่านบล็อกฝัง/ช่องสำเนาต้องมีเจ้าของเดียว** (`tools/report-meta.js` · `tools/derived-values.js` · parser-lint บังคับ) — migrator (Task 7) **ห่อ** regex เจ้าของเดิมสำหรับจุดที่มีตัวเขียนอยู่แล้ว · regex ใหม่เขียนได้เฉพาะจุดที่วันนี้มีแต่ตัวอ่าน (legend/mFair/scale/การ์ดจุดซื้อ/โซน/vcell) และต้องอยู่ใน `tools/migrate-v2.js` ที่เดียว (ใช้ครั้งเดียวแล้วเลิก)
-- ทุกครั้งที่จำนวนขั้น `npm run verify` เปลี่ยน (Task 12: 16→17) ต้องแก้ `package.json` + `.githooks/pre-push` (ผ่าน `node tools/gen-docs.js`) + assertion ใน `test/queue-test.js` พร้อมกัน · `docs-test` ต้องผ่าน
+- ทุกครั้งที่จำนวนขั้น `npm run verify` เปลี่ยน (Task 12: 17→18 — ★ แก้ 12 ก.ย. 2569 หลัง Part B final review: `report-values-test.js` ถูกย้ายเข้า verify ไปแล้วตั้งแต่ Task 5 จริง (ไม่ใช่ Task 12 ตามแผนเดิม) ⇒ verify วันนี้ = 17 ไม่ใช่ 16 · Task 12 จึงเหลือแค่เพิ่ม `v2-path-test.js` เป็นขั้นใหม่ 1 ขั้น ไม่ใช่พับ `report-values-test.js` เข้าไปด้วย ดู Task 12) ต้องแก้ `package.json` + `.githooks/pre-push` (ผ่าน `node tools/gen-docs.js`) + assertion ใน `test/queue-test.js` พร้อมกัน · `docs-test` ต้องผ่าน
 - network ห้ามใช้ในทุก task (ไม่มี task ไหนต้อง fetch) — เทสทุกตัว offline
 
 ## โครงไฟล์ที่เกิด/แก้ในระยะ 2
@@ -48,7 +48,7 @@
 | `test/fixtures/AAPL-v2.html` · `BBL-v2.html` · `index.js` · `README.md` | fixture v2 (ผลของ migrator บน fixture แช่แข็ง) | 9 |
 | `test/check-reports.js` (`buildCtx` v2 · `V1_READ` · `ctx.source` · manifest v2) · `tools/field-manifest.js` (ฟิลด์ `v2` · f69 · N_FIELDS 71) · `test/self-test.js` (บล็อก v2 · HEALERS) | gate dual-mode | 10, 13 |
 | `tools/update-prices.js` (`patchReport` ทาง v2 · `healDerived` ข้าม v2) · `test/update-prices-test.js` | cron dual-mode | 11 |
-| `test/v2-path-test.js` (ใหม่) · `test/parser-lint.js` · `package.json` · `.githooks/pre-push` · `test/queue-test.js` | พิสูจน์ "ทาง v2 ไม่ใช้ regex สำเนา" · verify 17 ขั้น | 12 |
+| `test/v2-path-test.js` (ใหม่) · `test/parser-lint.js` · `package.json` · `.githooks/pre-push` · `test/queue-test.js` | พิสูจน์ "ทาง v2 ไม่ใช้ regex สำเนา" · verify 18 ขั้น | 12 |
 | `reports/*.html` (908) · `reports.json` · `docs/superpowers/audit/2026-09-11-stock-analyzer/migration-v2-census.md` (+`.json`) | ย้ายคลัง | 14, 15 |
 | `test/check-reports.js` (W21/W22 → E ถ้า v1 = 0) · `test/self-test.js` · `docs/open-items.md` | promotion ตามเงื่อนไข | 16 |
 | `test/check-reports.js` (E44) · `tools/derived-values.js` (`proseTokens`) · `tools/update-prices.js` · `test/self-test.js` · `docs/quality-gate.md` | นโยบาย prose B(ข) | 17 |
@@ -503,14 +503,16 @@ git commit -m "feat(build): expandReport v2 — validate strict · render {{rd:�
 - Modify: `test/check-reports.js` (`buildCtx`: บรรทัดที่อ่าน `constFV` — คง regex เดิม (bake แล้วเหมือนกัน) · **ไม่มีอย่างอื่น** — dual-mode เต็มทำใน Task 10)
 - Modify: `docs/templates.md` (หัวข้อใหม่สั้น ๆ "schema v2 (ระยะ 2 — ยังไม่เปิดใช้กับคลังจนกว่าส่วน E)" ชี้ตาราง token ในแผนนี้ · ห้ามใส่ตัวเลข gate ที่ gen-docs เป็นเจ้าของ)
 
-- [ ] **Step 1: ตรวจว่า gate อ่านไฟล์ v2 ที่ render แล้วได้โดยไม่ crash** — สร้างไฟล์ชั่วคราวใน scratchpad (ไม่ใช่ใน `reports/`) จาก `test/fixtures/BBL.html` แก้มือให้เป็น v2 ขั้นต่ำ: เพิ่ม `"v":2,"values":{"px":<sm.price>,"priceDate":"2026-09-10","chgSuffix":"รอบปี"}` · ลบ `gauge.cur/gauge.fair/chart.fairLine` · แทน `<div class="px">฿…` ด้วย `{{rd:px}}` ตาม PX_PARTS_RE → รัน:
+> ★ **Task 3 นี้ทำเสร็จแล้ว (merge เข้า main พร้อม Part A)** — Step 1 ด้านล่างคือ**บันทึกสิ่งที่ทำไปแล้ว** ไม่ใช่สูตรให้รันซ้ำ: สนิปเป็ต v2 ขั้นต่ำในนี้เขียนก่อนที่ `values.dateEra` จะถูกบังคับเป็น `req: true` (ดู Task 1 — คอมมิต `e63a4e57` แก้ตามหลัง) ⇒ **ขาด `dateEra`** และวันนี้จะ throw จาก `validateValues` ถ้ามีใครก๊อปไปรันตรง ๆ · ใส่ `"dateEra":"BE"` เพิ่มในบล็อก `values` ก่อนรัน (ตัวอย่างที่แก้แล้วอยู่ในบรรทัดถัดไป) — Task 10 ที่อ้างผลลัพธ์นี้เป็น baseline ก็ต้องใส่ `dateEra` เช่นกัน
+
+- [x] **Step 1 (ทำแล้ว): ตรวจว่า gate อ่านไฟล์ v2 ที่ render แล้วได้โดยไม่ crash** — สร้างไฟล์ชั่วคราวใน scratchpad (ไม่ใช่ใน `reports/`) จาก `test/fixtures/BBL.html` แก้มือให้เป็น v2 ขั้นต่ำ: เพิ่ม `"v":2,"values":{"px":<sm.price>,"priceDate":"2026-09-10","dateEra":"BE","chgSuffix":"รอบปี"}` (★ ต้องมี `dateEra` — ดูหมายเหตุด้านบน) · ลบ `gauge.cur/gauge.fair/chart.fairLine` · แทน `<div class="px">฿…` ด้วย `{{rd:px}}` ตาม PX_PARTS_RE → รัน:
 
 ```bash
 node -e "const {expandReport}=require('./build.js');const {checkHtml}=require('./test/check-reports.js');const h=require('fs').readFileSync(process.argv[1],'utf8');const r=checkHtml(expandReport(h),'BBL.html');console.log(r.errors.map(e=>e.id+' '+e.msg).join('\n')||'errors 0')" <scratch>/BBL-v2min.html
 ```
 คาดหวัง: error 0 หรือเฉพาะรหัสที่อธิบายได้ (เช่น E30 ถ้าราคา header ที่ render ต่างจาก stock-meta) — จดผลลง report (Task 10 ใช้เป็น baseline)
 
-- [ ] **Step 2: `npm run verify` ผ่าน 16 ขั้น** (คลังยังเป็น v1 ทั้งหมด)
+- [x] **Step 2 (ทำแล้ว): `npm run verify` ผ่าน 16 ขั้น** (คลังยังเป็น v1 ทั้งหมด — ตอนนั้น `report-values-test.js` ยังไม่เข้า verify ตามแผน Task 1 เดิม จึงถูกต้อง ณ เวลานั้น; verify วันนี้ = 17 ขั้นแล้ว ดูหมายเหตุ §"Global Constraints")
 
 - [ ] **Step 3: Commit + PR**
 
@@ -635,16 +637,13 @@ git commit -m "feat(worker): สัญญา v2 — apply-edits --set/--del/--se
 
 - [ ] **Step 1: เทสก่อน → ตก → แก้ → ผ่าน** (รูปแบบเดียวกับ Task 5)
 - [ ] **Step 2: `npm run verify`** ผ่าน
-- [ ] **Step 3: Commit + PR ส่วน B**
+- [ ] **Step 3: Commit** — worker/task จบที่ commit **ห้าม push ห้ามเปิด PR เอง** (controller เท่านั้นที่ push/เปิด PR — CLAUDE.md §5/§7)
 
 ```bash
 git add tools/queue/prep.js test/queue-test.js
 git commit -m "feat(prep): snapshotDiff เทียบ values↔vendor บนใบ v2 (ระยะ 2 ส่วน B)"
-gh pr create --base claude/audit-p2-a-renderer --head claude/audit-p2-b-skeleton --title "audit ระยะ 2 ส่วน B — skeleton v2 + สัญญา worker (apply-edits --set · SKILL · templates)" --body "…
-
-🤖 Generated with [Claude Code](https://claude.com/claude-code)"
 ```
-(หลัง A merge เข้า main ให้ retarget PR B เป็น main ก่อน merge)
+**controller** เปิด PR ส่วน B เอง (หลัง Task 5–6 ทุก commit ของสาขานี้เสร็จ): `gh pr create --base main --head claude/audit-p2-b-skeleton --title "audit ระยะ 2 ส่วน B — skeleton v2 + สัญญา worker (apply-edits --set · SKILL · templates)" --body "…" ` — ★ base = `main` ตรง ๆ (ไม่ใช่ `claude/audit-p2-a-renderer` แล้ว เพราะส่วน A merge เข้า main ไปแล้วตอนที่สาขา B branch ออกมา — เดิมข้อความ "หลัง A merge เข้า main ให้ retarget PR B เป็น main ก่อน merge" คือ note ไว้กันเผื่อ merge ไม่ทัน ตอนนี้ A merge แล้วจริงจึงใช้ main ได้เลยไม่ต้อง retarget)
 
 
 ---
@@ -859,16 +858,14 @@ git commit -m "feat(migrate-v2): migrator v1→v2 — สกัด values จา
 
 - [ ] **Step 1**: `node tools/migrate-v2.js --fixture` → 2 ไฟล์ · `git diff --stat` ต้องแสดงแค่ไฟล์ใหม่
 - [ ] **Step 2**: เทส sanity ใน `test/migrate-v2-test.js`: `FX.BBL_V2()` expand แล้ว gate error 0 · `RV.isV2` · ค่า `values.px === RM.readStockMeta(FX.BBL()).price`
-- [ ] **Step 3**: `npm run verify` (ยัง 16 ขั้น · migrate-v2-test เข้า verify ใน Task 12)
-- [ ] **Step 4: Commit + PR ส่วน C**
+- [ ] **Step 3**: `npm run verify` (ยัง 17 ขั้น — `report-values-test.js` เข้า verify ไปแล้วตั้งแต่ Task 5 จริง (ไม่ใช่ 16 ตามแผนเดิม) · `migrate-v2-test`/`v2-path-test` เข้า verify ใน Task 12 → 17→18)
+- [ ] **Step 4: Commit** — worker/task จบที่ commit **ห้าม push ห้ามเปิด PR เอง** (controller เท่านั้นที่ push/เปิด PR — CLAUDE.md §5/§7)
 
 ```bash
 git add test/fixtures tools/migrate-v2.js test/migrate-v2-test.js
 git commit -m "test(fixtures): AAPL-v2/BBL-v2 จาก migrator (--fixture) — ฐานของ self-test/update-prices-test ทาง v2 (ระยะ 2 ส่วน C)"
-gh pr create --base claude/audit-p2-b-skeleton --head claude/audit-p2-c-migrator --title "audit ระยะ 2 ส่วน C — migrator v1→v2 (dry-run · round-trip 2 ชั้น · census) + fixture v2" --body "…dry-run ทั้งคลัง N/908 · residue ตามชนิด … · **ยังไม่เขียนคลัง**
-
-🤖 Generated with [Claude Code](https://claude.com/claude-code)"
 ```
+**controller** เปิด PR ส่วน C เอง: `gh pr create --base main --head claude/audit-p2-c-migrator --title "audit ระยะ 2 ส่วน C — migrator v1→v2 (dry-run · round-trip 2 ชั้น · census) + fixture v2" --body "…dry-run ทั้งคลัง N/908 · residue ตามชนิด … · **ยังไม่เขียนคลัง**"` — ★ base = `main` (ไม่ใช่ `claude/audit-p2-b-skeleton`) เพราะส่วน B merge เข้า main แล้วก่อนสาขา C จะ branch ออก (ระยะ 2 merge ทีละส่วนเข้า main ไม่ได้ stack กันเป็นสาขาซ้อนสาขาอีกต่อไป — ดู CONTEXT ของ fix wave นี้)
 
 ---
 
@@ -1028,11 +1025,19 @@ git add tools/update-prices.js test/update-prices-test.js
 git commit -m "feat(cron): patchReport dual-mode — v2 เขียน values.px/priceDate + กระจก stock-meta เท่านั้น (ไม่แตะ HTML · ไม่มี pass derived) · healDerived ข้าม v2 (ระยะ 2 ส่วน D)"
 ```
 
-### Task 12: `test/v2-path-test.js` — พิสูจน์ regex สำเนา = 0 บนทาง v2 · verify 17 ขั้น
+### Task 12: `test/v2-path-test.js` — พิสูจน์ regex สำเนา = 0 บนทาง v2 · verify 17→18 ขั้น
+
+> ★ **แก้ 12 ก.ย. 2569 (Part B final review, fix wave):** ย่อหน้า Files เดิมของ Task นี้สมมติว่า verify วันนี้ยังเป็น 16
+> ขั้นและ `report-values-test.js` ยังไม่เข้า chain — ทั้งสองข้อไม่จริงแล้ว: `report-values-test.js` ถูกย้ายเข้า
+> `package.json`'s `verify` ไปแล้วจริงตั้งแต่ Task 5 (นอกแผนเดิม) ⇒ verify วันนี้ = **17** ขั้น และ `report-values-test.js`
+> เป็นขั้นของตัวเองอยู่แล้ว **ห้ามพับเข้า `v2-path-test.js`** อีก (พับซ้ำ = รันซ้ำสองรอบ หรือแย่กว่านั้นถ้าลบขั้นเดิมของ Part B
+> ทิ้งเพื่อให้เลขขั้นลงตัว) — เหลือแค่ `migrate-v2-test.js` (Task 7–9 ของ Part C) ที่ยังไม่เข้า chain จริง ดังนั้น
+> `test/v2-path-test.js` เป็น **ขั้นใหม่ 1 ขั้นเดียว** (require แค่ `migrate-v2-test.js` เข้ามา ไม่ require
+> `report-values-test.js`) ⇒ verify **17 → 18** ขั้น (ไม่ใช่ 16→17)
 
 **Files:**
 - Create: `test/v2-path-test.js`
-- Modify: `package.json` (verify: แทรก `node test/report-values-test.js && node test/migrate-v2-test.js && node test/v2-path-test.js` **ต่อจาก `node test/prep-stock-test.js`** — ★ นับเป็น **1 ขั้นใหม่** ชื่อ `v2-path-test` โดยรวม 3 ไฟล์เป็นขั้นเดียว? **ไม่** — gen-docs นับต่อไฟล์: ใส่ 3 ไฟล์ = 19 ขั้น · **ตัดสิน: รวม 3 เทสเป็นไฟล์เดียว `test/v2-path-test.js` ที่ `require` อีกสองไฟล์** (ให้ `report-values-test.js`/`migrate-v2-test.js` export ฟังก์ชัน `run()` และรันเองเมื่อ `require.main === module`) ⇒ verify 16 → **17** ขั้น) · `tools/gen-docs.js` (`STEP_LABELS['test/v2-path-test.js'] = ['🧬', 'ทาง v2 ไม่ใช้ regex สำเนา + values/migrator unit (v2-path-test)', 'v2 data-layer gate', {}]`) · `.githooks/pre-push` (regen) · `test/queue-test.js` (assertion จำนวนขั้น 16 → 17) · docs ผ่าน `node tools/gen-docs.js`
+- Modify: `package.json` (verify: แทรก `node test/v2-path-test.js` **ต่อจาก `node test/report-values-test.js`** (ขั้นเดิมของ Part B — คงไว้ที่เดิม ไม่แตะ) — `v2-path-test.js` เอง `require` เฉพาะ `migrate-v2-test.js` เข้ามารัน (ให้ `migrate-v2-test.js` export ฟังก์ชัน `run()` และรันเองเมื่อ `require.main === module` — `report-values-test.js` **ไม่ต้องแก้** เพราะไม่ถูก require ซ้ำจากที่นี่) ⇒ verify 17 → **18** ขั้น) · `tools/gen-docs.js` (`STEP_LABELS['test/v2-path-test.js'] = ['🧬', 'ทาง v2 ไม่ใช้ regex สำเนา + migrator unit (v2-path-test)', 'v2 data-layer gate', {}]`) · `.githooks/pre-push` (regen) · `test/queue-test.js` (assertion จำนวนขั้น 17 → 18) · docs ผ่าน `node tools/gen-docs.js`
 
 - [ ] **Step 1: เขียน `test/v2-path-test.js`**
 
@@ -1045,7 +1050,8 @@ git commit -m "feat(cron): patchReport dual-mode — v2 เขียน values.p
  */
 let n = 0, fails = 0;
 const ok = (c, m, d) => { n++; if (c) return; fails++; console.error('✗ ' + m + (d ? ' — ' + d : '')); };
-require('./report-values-test.js').run(ok);
+// ★ ไม่ require('./report-values-test.js') ที่นี่ — มันเป็นขั้นของตัวเองใน verify อยู่แล้ว (Part B/Task 5)
+//   require ซ้ำจะรันเคสเดิมสองรอบใน verify เดียว (เปลืองเวลาเฉย ๆ ไม่ใช่บั๊กที่ทำให้ตก แต่ผิดเจตนา "1 เทส 1 ขั้น")
 require('./migrate-v2-test.js').run(ok);
 const FX = require('./fixtures');
 const CR = require('./check-reports.js');
@@ -1098,13 +1104,13 @@ process.exit(fails ? 1 : 0);
 ```
 ★ ข้อควรระวัง: ถ้า `update-prices.js`/`check-reports.js` destructure `const { PX_RE } = RM` ตอนโหลด การแทน `RM.PX_RE` ภายหลังจะไม่มีผล ⇒ ต้องอ้างผ่าน `RM.PX_RE` ณ จุดใช้ (แก้จุด destructure ให้เป็น `RM.x` — ค้น `= require('./report-meta.js')`/`require('../tools/report-meta.js')` ทุกไฟล์ที่เกี่ยว) · เช่นเดียวกับ `MOS_BIG_RE`/`fmtMos` ที่ cron `const { MOS_BIG_RE, fmtMos } = DV`? → เปลี่ยนเป็น `DV.MOS_BIG_RE` ณ จุดใช้ · sanity 2 เคสท้ายพิสูจน์ว่าการแทนมีผลจริง
 
-- [ ] **Step 2: ปรับ `report-values-test.js`/`migrate-v2-test.js`** ให้ `module.exports = { run }` + `if (require.main === module) { … }` (ผลรวม n/fails คืนผ่าน `ok` ที่รับเข้ามา)
-- [ ] **Step 3: verify 17 ขั้น** — `package.json` · `node tools/gen-docs.js` (เขียน pre-push + docs) · `test/queue-test.js` 16→17 · `node test/docs-test.js` · `npm run verify` ผ่าน 17/17
+- [ ] **Step 2: ปรับ `migrate-v2-test.js`** ให้ `module.exports = { run }` + `if (require.main === module) { … }` (ผลรวม n/fails คืนผ่าน `ok` ที่รับเข้ามา) — **`report-values-test.js` ไม่ต้องแก้** (ไม่ถูก require จาก `v2-path-test.js` แล้ว ดูหมายเหตุแก้ 12 ก.ย. 2569 ด้านบน)
+- [ ] **Step 3: verify 18 ขั้น** — `package.json` · `node tools/gen-docs.js` (เขียน pre-push + docs) · `test/queue-test.js` 17→18 · `node test/docs-test.js` · `npm run verify` ผ่าน 18/18
 - [ ] **Step 4: Commit**
 
 ```bash
-git add test/v2-path-test.js test/report-values-test.js test/migrate-v2-test.js package.json tools/gen-docs.js .githooks/pre-push test/queue-test.js CLAUDE.md README.md docs/quality-gate.md docs/price-refresh.md
-git commit -m "test(v2-path): พิสูจน์ทาง v2 ไม่ใช้ regex สำเนา (gate+cron บน fixture v2 โดยตัวอ่านสำเนาถูกแทนด้วย throw) · verify 17 ขั้น (ระยะ 2 ส่วน D)"
+git add test/v2-path-test.js test/migrate-v2-test.js package.json tools/gen-docs.js .githooks/pre-push test/queue-test.js CLAUDE.md README.md docs/quality-gate.md docs/price-refresh.md
+git commit -m "test(v2-path): พิสูจน์ทาง v2 ไม่ใช้ regex สำเนา (gate+cron บน fixture v2 โดยตัวอ่านสำเนาถูกแทนด้วย throw) · verify 18 ขั้น (ระยะ 2 ส่วน D)"
 ```
 
 ### Task 13: E-policy v2 — healer `build` · เคส convergence ผ่าน render · PR ส่วน D
@@ -1233,5 +1239,5 @@ gh pr create --base main --head claude/audit-p2-f-prose --title "audit ระย
 - **Spec coverage ระยะ 2 (§6 แถว "2 · แก้ต้นตอ"):** migrate ตัวเลขเข้า data layer → Task 1 (schema) + 7–9 (migrator) + 14 (คลัง) ✓ · skeleton/engine render → Task 2 (expandReport/engine) + 4 (skeleton) ✓ · cron/gate เทียบ JSON → Task 10–12 ✓ · prose ใช้ token → Task 4/5 (skeleton/SKILL) + 17 (E44 + healer) ✓ · เกณฑ์จบ 3 ข้อ → Task 18 (วัดซ้ำได้) ✓ · B(ข) date-gated E → Task 17 ✓ · WS2 ข้อ 3 E-policy (healer + convergence) → Task 13/17 ✓ · WS1 ข้อ (4) "manifest = สเปกของ migrator" → COPY_FIELDS/TOLERANCE ใน Task 7 ✓ · spec §8 "ห้ามดันวันที่ทั้งคลัง" → Task 14 assert updated ✓
 - **ตั้งใจไม่ทำในระยะ 2 (อยู่ตารางแผนถัดไป):** ลบโค้ดทาง v1 · prose เก่าที่ค่าไม่ตรงปัจจุบัน · การ์ด/หมวด 6 ที่ตัดสินไม่ได้ · W21 → E (healer เป็นคน) · ย้ายช่อง worker ที่มีสำเนาเดียว (EPS/BVPS/…) เข้า values (ไม่ใช่สำเนา — YAGNI)
 - **Placeholder scan:** ไม่มี TBD/TODO · ทุก step ที่เป็นโค้ดมีโค้ด · จุดที่ต้องอ่านลายเซ็นจริงระบุ "ค้นด้วยข้อความ …"/"ดูฟิลด์จริง" พร้อมชื่อฟังก์ชัน (scenarioPlan return · parsePriceAge shape · checkHtml opts · reports.json shape) — implementer ตัดสินจากโค้ด ไม่ใช่เดา
-- **Type consistency:** `RV.isV2/validateValues/derive/renderValues/TOKENS/fmtPrice/fmtBig/annualChg/mosBand/isoOf/parseIso/styledRD(หลัง Task 5)/proseTokens/proseBoundHits/PROSE_TOKEN_SINCE` ใช้ชื่อเดียวกันใน Task 1/2/4/5/7/10/11/12/17 ✓ · `derive().mosShown` ใช้ที่ Task 10 ctx.mosBig และ Task 1 เทส ✓ · `V1_READ` (Task 10) = ที่ Task 12 แทน ✓ · `COPY_FIELDS/TOLERANCE/REQUIRED_SITES/migrateOne/--fixture/--census/--batch` (Task 7) = ที่ Task 8/9/14 ใช้ ✓ · `ctx.source` (Task 10) = ที่ E44 (Task 17) ใช้ ✓ · fixture `FX.AAPL_V2()/BBL_V2()` (Task 9) = Task 10–13/17 ✓ · verify 16→17 ที่ Task 12 เท่านั้น ✓
+- **Type consistency:** `RV.isV2/validateValues/derive/renderValues/TOKENS/fmtPrice/fmtBig/annualChg/mosBand/isoOf/parseIso/styledRD(หลัง Task 5)/proseTokens/proseBoundHits/PROSE_TOKEN_SINCE` ใช้ชื่อเดียวกันใน Task 1/2/4/5/7/10/11/12/17 ✓ · `derive().mosShown` ใช้ที่ Task 10 ctx.mosBig และ Task 1 เทส ✓ · `V1_READ` (Task 10) = ที่ Task 12 แทน ✓ · `COPY_FIELDS/TOLERANCE/REQUIRED_SITES/migrateOne/--fixture/--census/--batch` (Task 7) = ที่ Task 8/9/14 ใช้ ✓ · `ctx.source` (Task 10) = ที่ E44 (Task 17) ใช้ ✓ · fixture `FX.AAPL_V2()/BBL_V2()` (Task 9) = Task 10–13/17 ✓ · verify 17→18 ที่ Task 12 เท่านั้น (17 ขั้นวันนี้มาจาก `report-values-test.js` ที่ Task 5 เพิ่มไปแล้วนอกแผนเดิม — แก้ 12 ก.ย. 2569 ดู Task 12) ✓
 - **ลำดับ/ความเสี่ยงที่ตรวจแล้ว:** D merge ก่อน E (cron รู้จัก v2 ก่อนมีใบ v2 บน main) ✓ · cron หยุดระหว่าง E + เปิดคืนหลัง merge ✓ · E13 ไม่จับ `rd:` → renderer throw เอง (Task 1 เทส) ✓ · gauge.cur/fair/fairLine ห้ามมีใน v2 (validator + migrator ลบ + cron ไม่สร้างกลับ — เทส Task 11) ✓ · freshHash ยังรวม report-data → build→preserve-dates→build ต่อแบตช์ + assert updated ✓ · `checkHtml` ทำงานบน expanded — E44 ใช้ `ctx.source` ✓ · การแทน `RM.X`/`DV.X` ใน v2-path-test ต้องไม่ถูก destructure ตอนโหลด (Task 12 ระบุ + sanity 2 เคส) ✓

@@ -170,6 +170,8 @@ process.env.QUEUE_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'queue-'));   // s
   const FX = require('./fixtures');
   const { expandReport } = require('../build.js');
   const { buildCtx } = require('./check-reports.js');
+  const RM = require('../tools/report-meta.js');
+  const RV = require('../tools/report-values.js');   // item 5 (fix wave part-b): pin prep.js's ยอด/P-BV กับ RV.derive()
   const PREP_OUT = `=== PREP AAPL (UPDATE) — วางทั้ง block ลง {{FUNDAMENTALS}} ===
 ✅ ราคา 2 แหล่งต่าง 0.12% (≤2%) — ผ่าน
 ⚠ EPS(TTM) ต่าง 3.4% (>2%) — ขัดกัน
@@ -308,6 +310,41 @@ process.env.QUEUE_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'queue-'));   // s
 
   const v2Same = Pp.snapshotDiff(V2_SNAP_HTML, null, { lo52: null, hi52: null, target: 205, divYieldPct: 1, analysts: null });
   ok(!v2Same.some((s) => /^values\.analystTgt/.test(s)) && !v2Same.some((s) => /^values\.dps/.test(s)), 'snapshotDiff v2: values ตรงกับ vendor (ในเกณฑ์) → ไม่ฟ้อง analystTgt/dps', v2Same.join(' | '));
+
+  // ★★ ข้อ 5 (Part B fix wave, 12 ก.ย. 2569): snapshotDiff() จงใจคัดลอกสูตรปันผล%/P-BV ของ RV.derive()
+  //   (tools/queue/prep.js:140-145 · เหตุผลอยู่ในคอมเมนต์ตรงนั้น) แทนการเรียก RV.derive() ตรง ๆ — pin ทั้งสองตัวไว้
+  //   ด้วยกันที่นี่ (2 ชุดข้อมูลอิสระ) กัน derive() เปลี่ยนสูตร/ปัดเศษแล้ว prep.js หลุดตามไม่ทันแบบเงียบ ๆ
+  //   (บทเรียนเดียวกับ median-multiples.js ที่ 26 ใบเคยได้ค่าผิดจาก controller-tool เอง — memory data-source-traps)
+  {
+    const rd2 = RM.readReportData(V2_SNAP_HTML).data, sm2 = RM.readStockMeta(V2_SNAP_HTML);
+    const d2 = RV.derive(rd2, sm2);
+    ok(v2Far.some((s) => s === `values.dps 1 → ปันผล % ใบ ${d2.yield.toFixed(2)} · vendor 9`), '★ pin: ปันผล % ที่ snapshotDiff พิมพ์ (px=100/dps=1) ตรงกับ RV.derive().yield เป๊ะ', v2Far.join(' | '));
+    ok(v2Far.some((s) => s === `values.bvps 40 → P/BV ${d2.pbv.toFixed(2)}x — ตรวจกับ BVPS/ราคาใน FUNDAMENTALS เอง (vendor ไม่ส่งค่านี้ในบล็อก)`), '★ pin: P/BV ที่ snapshotDiff พิมพ์ (px=100/bvps=40) ตรงกับ RV.derive().pbv เป๊ะ', v2Far.join(' | '));
+
+    // ชุดข้อมูลที่สอง (px/dps/bvps ต่างชุด) — กันบังเอิญตรงกันแค่คู่เดียว
+    const V2_SNAP_HTML2 = `<!DOCTYPE html>
+<html><head>
+<script type="application/json" id="stock-meta">
+{"symbol":"TST3","currency":"USD","price":250,"fairValue":300,"mos":16.7,"upside":20,"pe":10,"dividendYield":1.5,"roe":8}
+</script>
+<script type="application/json" id="report-data">
+{
+  "v": 2,
+  "fv": 300,
+  "values": { "px": 250, "priceDate": "2026-09-01", "dateEra": "BE", "chgSuffix": "รอบปี", "analystTgt": 280, "dps": 3.75, "bvps": 61.2 },
+  "theme": { "accent": "#000000" },
+  "chart": { "data": [["ม.ค.26", 230], ["ก.ย.26", 250]], "min": 200, "max": 320, "grid": [250, 280], "currency": "$", "highlight": [0, 1] },
+  "gauge": { "min": 200, "max": 320 }
+}
+</script>
+</head><body></body></html>
+`;
+    const v2Far2 = Pp.snapshotDiff(V2_SNAP_HTML2, null, { lo52: null, hi52: null, target: null, divYieldPct: 9, analysts: null });
+    const rd3 = RM.readReportData(V2_SNAP_HTML2).data, sm3 = RM.readStockMeta(V2_SNAP_HTML2);
+    const d3 = RV.derive(rd3, sm3);
+    ok(v2Far2.some((s) => s === `values.dps 3.75 → ปันผล % ใบ ${d3.yield.toFixed(2)} · vendor 9`), '★ pin (ชุดที่ 2): ปันผล % ที่ snapshotDiff พิมพ์ (px=250/dps=3.75) ตรงกับ RV.derive().yield เป๊ะ', v2Far2.join(' | '));
+    ok(v2Far2.some((s) => s === `values.bvps 61.2 → P/BV ${d3.pbv.toFixed(2)}x — ตรวจกับ BVPS/ราคาใน FUNDAMENTALS เอง (vendor ไม่ส่งค่านี้ในบล็อก)`), '★ pin (ชุดที่ 2): P/BV ที่ snapshotDiff พิมพ์ (px=250/bvps=61.2) ตรงกับ RV.derive().pbv เป๊ะ', v2Far2.join(' | '));
+  }
 
   const tpl = fs.readFileSync(path.join(ROOT, '_template', 'agent-prompt.md'), 'utf8');
   const p = Pp.assemblePrompt(tpl, { SYMBOL: 'AAPL', MARKET: 'US', MODE: 'UPDATE-LIGHT', WORKTREE: '/wt', CURRENT_TAGS: 'consumer-tech', MEDIANS: '=== ตัวคูณมัธยฐานย้อนหลัง: AAPL ===\n  ★ มัธยฐาน 28.0x', FUNDAMENTALS: PREP_OUT }, Pp.extraBlock({ sym: 'AAPL', mode: 'UPDATE-LIGHT', prePatched: '2026-09-11', oldPrice: 297.21, price: 301.5, baseEPS: 7.1, epsTTM: 7.36, epsScreen: 3.66, snap: ['เป้า ใบ 300 · vendor 312'], medWarn: [], hard: false, hardWhy: '' }));
