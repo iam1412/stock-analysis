@@ -1,7 +1,8 @@
 #!/bin/sh
 # pre-push hook — บล็อกการ push ถ้ารายงานใน reports/ ไม่ผ่าน quality gate
 # เปิดใช้ครั้งเดียวต่อ clone:  git config core.hooksPath .githooks
-# ★ ต้องมีขั้นตอนตรงกับ `npm run verify` ใน package.json เสมอ — เพิ่มชั้นใหม่ที่นั่นแล้วเติมที่นี่ด้วย
+# ★ บล็อกขั้นข้างล่าง (ระหว่าง `# gen:steps` … `# /gen:steps`) generate จาก `npm run verify` ใน package.json
+#   ด้วย `node tools/gen-docs.js` — ห้ามแก้มือ · เพิ่มขั้นใหม่ที่ package.json + ป้ายใน STEP_LABELS ของ gen-docs.js แล้วรันใหม่
 # ดู: test/check-reports.js, CLAUDE.md ข้อ 8
 
 repo_root=$(git rev-parse --show-toplevel 2>/dev/null) || exit 0
@@ -17,6 +18,7 @@ block() {
   exit 1
 }
 
+# gen:steps
 # ขั้น 1-2 = unit test ของเครื่องมือ cron/canary — offline + เร็วที่สุด จึงวางไว้หน้าสุด (ล้มก่อนเสีย
 # เวลา build) · เพิ่ม 8 ส.ค. 2569 หลังพบว่า syntax error ในไฟล์เทสต์เองหลุด gate ไปได้ทั้งชุด
 echo "💰 pre-push 1/14: unit-test cron ราคา (update-prices-test)…"
@@ -65,5 +67,6 @@ node test/skeleton-test.js >/dev/null || block "skeleton template gate"
 
 echo "🌐 pre-push 14/14: ตรวจความสมบูรณ์เว็บไซต์ (check-site)…"
 node test/check-site.js || block "site integrity gate"
+# /gen:steps
 
 exit 0

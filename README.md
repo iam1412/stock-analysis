@@ -129,7 +129,7 @@ npm run verify && git add -A && git commit -m "analyze: add AAPL stock analysis"
 GitHub Actions ([`update-prices.yml`](.github/workflows/update-prices.yml)) รันทุกวัน **07:17 น. ไทย** — ดึงราคาจริงจาก Yahoo
 (ยิงเดียวต่อหุ้น: `?range=1y&interval=1mo`) แล้ว patch **เฉพาะตัวเลขโครงสร้าง** ลงทุกรายงาน:
 ราคา header + วันที่ราคา + กราฟ 13 จุด (~1 ปี) + ป้าย % รอบปี + เข็ม gauge + MOS + เครื่องคิดเลข + `stock-meta`
-→ ผ่าน `npm run verify:cron` (ประตู cron 5 ขั้น) แล้วจึง commit + push เอง (Cloudflare deploy ต่อ)
+→ ผ่าน `npm run verify:cron` (ประตู cron <!-- gen:verify-cron-steps -->5<!-- /gen:verify-cron-steps --> ขั้น) แล้วจึง commit + push เอง (Cloudflare deploy ต่อ)
 
 - **script deterministic ล้วน ไม่มี LLM ในลูป** ([`tools/update-prices.js`](tools/update-prices.js)) · **ไม่แตะ** prose วิเคราะห์ / EPS / Fair Value / วันที่วิเคราะห์ (ลำดับ index ยังเรียงตามวันวิเคราะห์ — `preserve-dates.js` คืนให้)
 - ตัวที่ขยับแรงจนคำวิเคราะห์เดิมผิดความหมาย (ต่าง **>15%** · **MOS พลิกเครื่องหมายเกิน dead-band ±5 จุด** · สงสัย split **>25%**) → **ไฟล์ไม่ถูกแตะ** แต่เข้าคิว [`price-flags.json`](price-flags.json) + GitHub Issue เดียวรอ **re-analysis** (flag หายเองเมื่อรายงานสดแล้ว)
@@ -160,14 +160,14 @@ npm run dev        # = wrangler dev — ต้องใช้ตัวนี้�
 
 ## ✅ Quality gate (ตรวจก่อนเผยแพร่)
 
-`npm run verify` ตรวจ 14 ขั้นตามลำดับนี้ — มี error เมื่อไหร่ push ไม่ได้:
+`npm run verify` ตรวจ <!-- gen:verify-steps -->14<!-- /gen:verify-steps --> ขั้นตามลำดับนี้ — มี error เมื่อไหร่ push ไม่ได้:
 
 1. **`update-prices-test.js`** (unit-test cron ราคา, offline): `decide` freeze/patch • `detectStaleQuotes`/`capByCohort`/`unverifiedCohorts` (ยืนยันหุ้นตายสองชั้น) • `mergeFlags` • `patchReport` • `commitBody`
 2. **`dead-ticker-test.js`** (unit-test canary หุ้นตาย, offline): `tvBaseName`/`tvCandidates` (symbol-map + หุ้นสองคลาส) • `parseRows`/`classify` • `mergeDeadFlags` • `shouldAbort` • retry ตอน scanner สะอึก
 3. **`tag-apply-test.js`** (unit-test CLI ที่เขียน `tags.json`, offline): `applyTags`/`renameSymbol`/`pruneMissing` แบบ all-or-nothing
 4. **`queue-test.js`** (unit-test runbook เคลียร์คิว, offline): triage/footer-date/market/prompt/ship helpers + ลำดับขั้น `verify` ↔ `.githooks/pre-push` ต้องตรงกัน
 5. **`tags-test.js`** (ตรวจความสอดคล้อง `tags.json` ทั้งคลัง — corpus check จริง ไม่ใช่แค่ unit test): schema คลัง + `validateAssignment`/`matchTagQuery` + ครบ 908 ไฟล์/ไม่มี entry ค้าง/ไม่มี slug หลุดคลัง
-6. **`check-reports.js`** (source ทีละไฟล์ — 47 error + 18 warning): โครงสร้างครบ (รวม meta `ai-model` ระบุโมเดล AI) • **ตัวเลขสอดคล้องกันเอง** (ค่า `FV` ในเครื่องคิดเลข = Fair Value = สรุป, `MOS=(FV−ราคา)/FV`, จุดซื้อ MOS = FV×0.8/0.7, คณิตแต่ละวิธี P/E & P/BV, scenario EPS ทบต้น) • **บล็อก `stock-meta` (screener) = เลขที่โชว์จริง** (E29–31) • **CSS var ครบ (E33)** • **ป้าย % รอบปี + กราฟ ~1 ปี** (header `.chg` = ผลตอบแทน "รอบปี" = ปลายกราฟ section 2 · สี↔ทิศ · กราฟ ≤13 จุด · E34–E37) • **contrast ธีมอ่านออกทุกคู่สี — WCAG AA** (ตัวหนังสือ ≥4.5 · เส้นกราฟ ≥3 · E38) • **ความสดของราคา** (เตือน >45 วัน, บล็อก >120 วัน) • ไม่มี placeholder/`{{token}}` ค้าง
+6. **`check-reports.js`** (source ทีละไฟล์ — <!-- gen:counts -->47 error + 18 warning<!-- /gen:counts -->): โครงสร้างครบ (รวม meta `ai-model` ระบุโมเดล AI) • **ตัวเลขสอดคล้องกันเอง** (ค่า `FV` ในเครื่องคิดเลข = Fair Value = สรุป, `MOS=(FV−ราคา)/FV`, จุดซื้อ MOS = FV×0.8/0.7, คณิตแต่ละวิธี P/E & P/BV, scenario EPS ทบต้น) • **บล็อก `stock-meta` (screener) = เลขที่โชว์จริง** (E29–31) • **CSS var ครบ (E33)** • **ป้าย % รอบปี + กราฟ ~1 ปี** (header `.chg` = ผลตอบแทน "รอบปี" = ปลายกราฟ section 2 · สี↔ทิศ · กราฟ ≤13 จุด · E34–E37) • **contrast ธีมอ่านออกทุกคู่สี — WCAG AA** (ตัวหนังสือ ≥4.5 · เส้นกราฟ ≥3 · E38) • **ความสดของราคา** (เตือน >45 วัน, บล็อก >120 วัน) • ไม่มี placeholder/`{{token}}` ค้าง
 7. **`self-test.js`** (meta-test ของชั้น 6 — เข้า gate 12 ส.ค. 69): จงใจใส่ defect ลงรายงานจริงแล้วยืนยันว่า check ที่เกี่ยวข้อง "จับได้" + รายงานดีต้องไม่ false-positive · ปิดช่องที่ `check-reports` เสียจนเลิกยิงแล้วรายงาน "error 0" ซึ่งแยกไม่ออกจาก "สะอาดจริง"
 8. **`ohlc-test.js`**: `src/ohlc.js` แปลง Yahoo JSON → payload แท่งเทียนถูกต้อง (ตัดแท่ง null, ปัดทศนิยม)
 9. **`ta-engine-test.js`**: ตรึงนิยาม TA ด้วย fixture — `ema` · `rsi` · `findPivots` · `labelStructure` · `detectBreaks` (ห้าม look-ahead) · `detectDivergence` · `summarizeSignals` · **+ รัน `ta-chart.js` จริงใน mock DOM + stub LightweightCharts** (เดิม syntax-check เฉย ๆ)
