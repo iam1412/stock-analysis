@@ -123,7 +123,7 @@ token ที่ renderer รู้จัก (Task 1 `TOKENS`) — ตัวไ�
 - Create: `tools/report-values.js`
 - Create: `test/report-values-test.js`
 - Modify: `tools/update-prices.js` (ย้าย `FLAT_PP` · `mosBand` · `fmtPrice` · `annualChg` ไปไฟล์ใหม่ แล้ว import กลับ — **ชื่อ export เดิมของ update-prices ต้องยังอยู่ครบ** เพราะ `test/check-reports.js`/เทสอื่น import `mosBand`/`fmtPrice`/`annualChg` จากที่นั่น)
-- Modify: `package.json` (`"test:values": "node test/report-values-test.js"` — ยังไม่เข้า verify · Task 12 ใส่)
+- Modify: `package.json` (`"test:values": "node test/report-values-test.js"` — เข้า verify แล้วที่ Task 5 (Ruling B) ไม่ใช่ Task 12 · verify = 17 ขั้น)
 
 **Interfaces:**
 - Consumes: `DV.fmtMos` · `PD.renderThaiDate(day, monIdx, yearCE, isBE, hasDay)` · `PD.THAI_MONTHS` · `RM` ไม่ต้อง
