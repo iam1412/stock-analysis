@@ -52,17 +52,28 @@ const range52 = (seg) => {
   return m ? [parseFloat(m[1]), parseFloat(m[2])] : [null, null];
 };
 
-/** #7 (GABLE — data-source-traps 6N): จำนวน FY ที่มี EPS(dil) จริงในตาราง [3] ของ fetch-fundamentals
+/** #7 (GABLE — data-source-traps 6N) · #2 (ระยะ 1 review): จำนวน FY ที่มี EPS(dil) จริง
+ *  ★ ทางหลัก — บรรทัด `FY ที่มี EPS(dil) จริง: N` ที่ fetch-fundamentals.js printFinancialTable พิมพ์เอง
+ *  (นับจาก**แถวเต็ม**ของ epsDiluted ไม่ถูกตัดด้วยเพดานพิมพ์ nCol=6 เหมือน parseFyYears ข้างล่าง) — ต้องใช้ก่อนเสมอ
+ *  ทางสำรอง (parseFyYears) เหลือไว้เผื่อบล็อกเก่า/ข้อความจำลองในเทสที่ไม่มีบรรทัดนี้ (เช่น output รุ่นก่อน Task 25)
+ */
+function parseFyYearsLine(text) {
+  const m = String(text).match(/FY ที่มี EPS\(dil\) จริง:\s*(\d+)/);
+  return m ? parseInt(m[1], 10) : null;
+}
+/** ทางสำรอง (ใช้เมื่อไม่มีบรรทัด `FY ที่มี EPS(dil) จริง:` — บล็อกเก่า/ทดสอบด้วยข้อความจำลอง):
  *  นับ token ตัวเลขบนบรรทัด `EPS(dil)` — "-" (ไม่มีข้อมูล/ก่อน IPO) ไม่นับ · คอลัมน์ TTM (คอลัมน์แรกเสมอเมื่อมี
- *  — printFinancialTable: "คอลัมน์เรียงใหม่→เก่า") ไม่นับเป็น FY — ตรวจจากบรรทัดหัวตาราง "TTM  FYxxxx …" ก่อนหักออก
- *  ⇒ ป้าย "P/E เฉลี่ย ~N ปี" ที่ worker เขียนห้ามอ้างเกินค่านี้ (เคส GABLE: IPO ส.ค. 66 แต่เขียน "~5 ปี" ทั้งที่มีจริง 3 จุด)
- *  ไม่มีบรรทัด EPS(dil) เลย (fetch-fundamentals ดึงตาราง [3] ไม่ได้) → null (เทียบไม่ได้ ไม่ใช่ 0)
+ *  — printFinancialTable: "คอลัมน์เรียงใหม่→เก่า") ไม่นับเป็น FY — ★ ตรวจว่าหัวตารางมี TTM ด้วย `/^\s*TTM\b/`
+ *  (ไม่ใช่ `TTM(?:\s+FY\d{4})+` แบบเดิม) เพื่อทนป้ายปีงบที่เพี้ยน (เช่น "FYFY2025" จาก payload ผิดปกติ) — เดิม regex
+ *  เข้มจนไม่ยอมรับป้ายที่ไม่ตรงแพตเทิร์น FY\d{4} เป๊ะ ๆ ก็จะไม่หักคอลัมน์ TTM ออกทั้งที่หัวตารางมี TTM จริง
+ *  ★ ค่านี้ถูกจำกัดที่เพดานพิมพ์ nCol=6 ของ printFinancialTable (TTM+5 ปี) — บริษัทที่มีงบ >5 ปีจริงจะได้ค่าต่ำกว่าจริง
+ *  (ทางปิดคือบรรทัด `FY ที่มี EPS(dil) จริง:` ข้างบนซึ่งนับจากแถวเต็ม ไม่ใช่ทางนี้)
  */
 function parseFyYears(text) {
   const m = String(text).match(/^[ \t]*EPS\(dil\)[ \t]+(.+)$/m);
   if (!m) return null;
   let tokens = m[1].trim().split(/\s+/);
-  const hasTTMHeader = /^[ \t]*TTM(?:[ \t]+FY\d{4})+[ \t]*$/m.test(text);
+  const hasTTMHeader = /^[ \t]*TTM\b/m.test(text);
   if (hasTTMHeader) tokens = tokens.slice(1);   // คอลัมน์แรก = TTM เสมอเมื่อหัวตารางมี TTM
   return tokens.filter((t) => /^-?\d+(?:\.\d+)?$/.test(t)).length;
 }
@@ -94,7 +105,11 @@ function parseVendor(text) {
     divYieldPct: pick(s && s.divYieldPct, y && num(y[6])),
     priceStop: /🛑/.test(text),
     priceWarn: /⚠ ราคา 2 แหล่งต่าง/.test(text),
-    fyYears: parseFyYears(text),
+    fyYears: pick(parseFyYearsLine(text), parseFyYears(text)),
+    // ★ ข้อ 1 (plan gap — Task 21 Step 2): กับดักเชิงกลของ fetch-fundamentals (entity mismatch/SA market cap/
+    //   [2c] forecast ที่ ⇒ ไม่ตรงงวด) ต้องถูกเก็บมาลง prompt เอง — เดิมพิมพ์อยู่ใน FUNDAMENTALS ก็จริง แต่จมอยู่
+    //   กลางบล็อกยาวที่ worker มักข้าม ⇒ ยกขึ้นเป็นหัวข้อแยกใน extraBlock (บันทึกจาก runbook)
+    traps: text.split('\n').filter((l) => /^\s*⚠ (entity mismatch|SA market cap)|^\[2c\].*⚠/.test(l)).map((l) => l.trim()),
   };
 }
 
@@ -169,6 +184,8 @@ function extraBlock(i) {
       : '**ยกระดับเป็น UPDATE เต็ม** (5C ข้อ 2) — ตรวจ dil/basic/งวดตาม STEP 2 ก่อน'}`);
   else L.push('- EPS screen: เทียบไม่ได้ (อ่าน EPS ฐานในใบหรือ vendor ไม่ได้) — ตรวจเองตาม STEP 2');
   if (i.fyYears != null) L.push(`- FY ที่มี EPS จริง: ${i.fyYears} ปี — ป้าย "P/E เฉลี่ย ~M ปี" ห้ามเกิน ${i.fyYears}`);
+  // ข้อ 1 (plan gap — Task 21 Step 2): กับดักเชิงกลจาก fetch-fundamentals ต้องขึ้นเป็นหัวข้อแยก ไม่จมอยู่กลางบล็อก FUNDAMENTALS
+  if (i.traps && i.traps.length) L.push(`- **กับดักที่ prep พบ (ต้องจัดการก่อนเขียนเลข)**:\n${i.traps.map((t) => '    · ' + t).join('\n')}`);
   L.push(i.snap.length
     ? `- snapshot vendor ที่ค้างในใบ (อัปเดตพร้อมกัน — คลาสที่ 4 ของ price-derived-staleness):\n${i.snap.map((s) => '    · ' + s).join('\n')}`
     : '- snapshot vendor (เป้า/52wk/ปันผล) ตรงกับใบแล้ว');
@@ -242,7 +259,7 @@ async function prep(sym, opts) {
   const prompt = assemblePrompt(fs.readFileSync(TEMPLATE, 'utf8'),
     { SYMBOL: sym, MARKET: th ? 'TH' : 'US', MODE: mode, WORKTREE: ROOT, CURRENT_TAGS: tags, MEDIANS: med.text, FUNDAMENTALS: ps.out },
     // ยังไม่ pre-patch = worker ต้องรัน update-prices เอง ⇒ ต้องบอกด้วยว่าตลาดเปิดอยู่ไหม (--force ข้าม guard intraday เอง)
-    extraBlock({ sym, mode, escalated, prePatched: rec.prePatched, marketOpen: th ? setSessionOpen() : usSessionOpen(), oldPrice: rec.oldPrice, price: sm && sm.price, baseEPS: ctx && ctx.baseEPS, epsTTM: vend.epsTTM, epsScreen, snap, medWarn: med.warn, hard: hs.hard, hardWhy: hs.why, fyYears: vend.fyYears }));
+    extraBlock({ sym, mode, escalated, prePatched: rec.prePatched, marketOpen: th ? setSessionOpen() : usSessionOpen(), oldPrice: rec.oldPrice, price: sm && sm.price, baseEPS: ctx && ctx.baseEPS, epsTTM: vend.epsTTM, epsScreen, snap, medWarn: med.warn, hard: hs.hard, hardWhy: hs.why, fyYears: vend.fyYears, traps: vend.traps }));
   fs.mkdirSync(S.PREP_DIR, { recursive: true });
   const file = path.join(S.PREP_DIR, sym + '.md');
   fs.writeFileSync(file, prompt);

@@ -213,6 +213,18 @@ ok(/หลายคลาสหุ้น/.test(lRddt) && /146\.10M/.test(lRddt) 
 ok(/รวมทุกคลาส/.test(lRddt) && !/คิดจากคลาสที่จดทะเบียนเท่านั้น/.test(lRddt),
   '★ statsLines: ต้องไม่บอกว่า Market Cap คิดจากคลาสจดทะเบียนเท่านั้น (ผิด — วัดจริง 31.65B ÷ 192.40M = ราคาจริง)', lRddt);
 
+// ★ ระยะ 1 review ข้อ 3: เมื่อ capLine(...) จะยิง ⚠ ตามหลัง บรรทัด Market Cap ของ statsLines ต้องไม่ขัดกันเอง
+// (เดิมสั่ง "ห้ามคิดเองจากฐานอื่น" พร้อมกับ ⚠ ที่บอกให้ใช้ หุ้น×ราคา แทน — ขัดกันตรง ๆ)
+const statsForCap = { sharesOut: { num: 100e6, text: '100.00M' }, marketCap: { text: '4,200M' } };
+const lCapFires = F.statsLines(statsForCap, null, null, true).join('\n');
+ok(!/ห้ามคิดเองจากฐานอื่น/.test(lCapFires) && /SA ล้าหลัง — ดูบรรทัด ⚠ ถัดไป/.test(lCapFires),
+  '★ statsLines: capFires=true → Market Cap ไม่พูด "ห้ามคิดเอง" แล้วชี้ไปบรรทัด ⚠ แทน', lCapFires);
+const lCapQuiet = F.statsLines(statsForCap, null, null, false).join('\n');
+ok(/ห้ามคิดเองจากฐานอื่น/.test(lCapQuiet) && !/SA ล้าหลัง/.test(lCapQuiet),
+  'statsLines: capFires=false (หรือไม่ส่งพารามิเตอร์) → suffix เดิมคงอยู่ (back-compat)', lCapQuiet);
+const lCapDefault = F.statsLines(statsForCap, null, null).join('\n');
+ok(/ห้ามคิดเองจากฐานอื่น/.test(lCapDefault), 'statsLines: ไม่ส่ง capFires เลย → default = เดิม (back-compat กับ call site เก่า)', lCapDefault);
+
 // /statistics/ ล่ม → บอกทางออก ไม่ใช่เงียบ (silent degrade = จุดบอดเดิม)
 const lFail = F.statsLines(null, 'HTTP 403', 51e6).join('\n');
 ok(/✗/.test(lFail) && /403/.test(lFail) && /statistics/.test(lFail) && /ห้ามใช้แถว Shares ใน \[3\]/.test(lFail),
@@ -243,6 +255,20 @@ const noSharesFin = makeFinPage({ datekey: ['TTM', '2025-12-31'], epsDiluted: [3
 const tableNoShares = captureLog(() => F.printFinancialTable([noSharesFin, null, null], null));
 ok(!tableNoShares.includes(F.SHARES_NOTE), 'printFinancialTable: ไม่มีแถว Shares ในตาราง [3] → ไม่พิมพ์ SHARES_NOTE (ไม่ฟ้องเดา)', tableNoShares);
 
+// ★ ระยะ 1 review ข้อ 2: "FY ที่มี EPS(dil) จริง: N" ต้องนับจาก**แถวเต็ม** ไม่ใช่คอลัมน์ที่ถูกตัดด้วยเพดานพิมพ์ nCol=6
+// (TTM+5 ปี) — เดิม tools/queue/prep.js ต้องพึ่ง parseFyYears นับ token บนตารางที่พิมพ์จริงเท่านั้น ⇒ บริษัทที่มีงบ
+// >5 ปีจริงจะถูกรายงานว่ามี FY น้อยกว่าจริง (ปนกับเพดานพิมพ์)
+ok(/FY ที่มี EPS\(dil\) จริง: 1/.test(tableWithShares), 'printFinancialTable: พิมพ์ "FY ที่มี EPS(dil) จริง: N" (fixture amataFin มี TTM+1 FY)', tableWithShares);
+const eightFY = makeFinPage({
+  datekey: ['TTM', '2025-12-31', '2024-12-31', '2023-12-31', '2022-12-31', '2021-12-31', '2020-12-31', '2019-12-31', '2018-12-31'],
+  epsDiluted: [5.0, 4.8, 4.6, 4.4, 4.2, 4.0, 3.8, 3.6, 3.4],
+});
+const eightOut = captureLog(() => F.printFinancialTable([eightFY, null, null], null));
+ok(/FY ที่มี EPS\(dil\) จริง: 8/.test(eightOut), '★ printFinancialTable: บริษัทมีงบ 8 ปีจริง (TTM+8) → นับจากแถวเต็ม ได้ 8 (ไม่ใช่เพดานพิมพ์)', eightOut);
+const headerLine = eightOut.split('\n').find((l) => /FY2025/.test(l));
+ok(!!headerLine && (headerLine.match(/FY\d{4}/g) || []).length === 5,
+  '★ printFinancialTable: ตารางที่พิมพ์จริงยังคุมเพดาน TTM+5 ปี (5 คอลัมน์ FY) แม้บริษัทมีงบ 8 ปีจริง', headerLine);
+
 // ---------- ปันผล: yield ที่ย้อนกลับได้ (dps ÷ ราคา) ----------
 const yA = F.yieldLine(1.10, 31.25, 0.0432, 3.52); // AMATA: Yahoo 4.32% ย้อนกลับไม่ลงตัว · SA 3.52% ลงตัว
 ok(/= 3\.52%/.test(yA) && /⚠/.test(yA) && /Yahoo/.test(yA) && !/⚠ SA/.test(yA), 'yieldLine: Yahoo ไม่ลงตัว → ⚠ ยึด dps÷ราคา', yA);
@@ -267,11 +293,25 @@ ok(P.parseArgs(['CGNX', '--brand']).error != null, 'parseArgs: --brand ไม่
   const statsNew = { sharesOut: 400e6 };                                                                                                   // หุ้นบริษัทใหม่หลังควบรวม
   const l1 = F.entityMismatchLine(vmrkFin, statsNew);
   ok(l1 && /entity mismatch/.test(l1) && /VMRK/.test(l1) && /ห้ามมีขา P\/E/.test(l1), 'entityMismatchLine: NI÷Shares[2b] ต่างจาก EPS(dil) 75% → เตือน', l1);
+  // ระยะ 1 review ข้อ 5: ข้อความต้องครอบคลุม IPO/dilution ไม่ใช่ฟันธงว่าเป็นควบรวมอย่างเดียว
+  ok(/\(ควบรวม\)/.test(l1) && /IPO\/dilution ใน TTM/.test(l1) && /ตรวจงวดก่อนใช้ P\/E/.test(l1),
+    '★ entityMismatchLine: ข้อความใหม่ครอบคลุม IPO/dilution ในงวด TTM ด้วย ไม่ใช่แค่ควบรวม', l1);
+  ok(/EPS\(dil\)\[3\] = 3\.1\b/.test(l1), 'entityMismatchLine: มีแถว EPS(dil) จริง → ฝั่งขวาอ้าง EPS(dil)[3]', l1);
   ok(F.entityMismatchLine(vmrkFin, { sharesOut: 110e6 }) == null, 'entityMismatchLine: ต่าง 10% (ถัวเฉลี่ย vs คงเหลือ) → เงียบ');
   ok(F.entityMismatchLine(vmrkFin, null) == null && F.entityMismatchLine({ eps: null }, statsNew) == null, 'entityMismatchLine: ข้อมูลไม่ครบ → null ไม่ throw');
   ok(F.ENTITY_MISMATCH_PCT === 40, 'ENTITY_MISMATCH_PCT = 40 (กว้างกว่าช่วงถัวเฉลี่ย/คงเหลือ −30..+11%)');
+  // ระยะ 1 review ข้อ 5: ตาราง [3] ไม่มีแถว EPS(dil) เอง (from === 'NI÷Shares') → ฝั่งขวาต้องพูดว่า NI[3]÷Shares[3]
+  // ไม่ใช่ EPS(dil)[3] (ไม่มีแถวนั้นให้อ้างจริง)
+  const vmrkFinDerived = F.tableEpsTTM(makeFinPage({ datekey: ['TTM'], netIncome: [310e6], sharesDiluted: [100e6] }));
+  ok(vmrkFinDerived.from === 'NI÷Shares', 'fixture ควบคุม: ไม่มีแถว EPS(dil) → tableEpsTTM.from = NI÷Shares');
+  const l1d = F.entityMismatchLine(vmrkFinDerived, statsNew);
+  ok(l1d && /NI\[3\]÷Shares\[3\] = 3\.1\b/.test(l1d) && !/EPS\(dil\)\[3\]/.test(l1d),
+    '★ entityMismatchLine: table.from===NI÷Shares → ฝั่งขวาพูด NI[3]÷Shares[3] ไม่ใช่ EPS(dil)[3] ที่ไม่มีจริง', l1d);
   const l2 = F.capLine({ sharesOut: 100e6 }, 50, { marketCap: 4.2e9 });
-  ok(l2 && /SA market cap/.test(l2) && /หุ้น×ราคา|× ราคา/.test(l2), 'capLine: SA cap 4.2B vs 100M×50 = 5.0B (ต่าง 16%) → เตือน', l2);
+  ok(l2 && /SA market cap/.test(l2) && /หุ้น×ราคา|× ราคา/.test(l2), 'capLine: SA cap 4.2B vs 100M×50 = 5.0B (ต่าง ~19% (|calc−cap|/cap)) → เตือน', l2);
+  // ระยะ 1 review ข้อ 4: cap/calc ต้องมีหน่วย M ต่อท้าย (เดิม fmtCell('m') ไม่ใส่หน่วยเอง — หุ้นมี M แต่ cap/calc ไม่มี)
+  ok(/SA market cap 4,200M ≠/.test(l2) && /= 5,000M \(ต่าง/.test(l2),
+    '★ capLine: cap (4,200M) และ calc (5,000M) มีหน่วย M ต่อท้ายทั้งคู่ (ระยะ 1 review ข้อ 4)', l2);
   ok(F.capLine({ sharesOut: 100e6 }, 50, { marketCap: 5.1e9 }) == null, 'capLine: ต่าง 2% → เงียบ');
   ok(F.capLine({ sharesOut: 100e6 }, 50, {}) == null && F.capLine(null, 50, { marketCap: 1 }) == null, 'capLine: ไม่มี cap/ไม่มี stats → null');
   // marketCap เป็น string suffix (SA ส่งมาแบบนี้จริง — ต้องผ่าน amount() แล้วยังเตือนเหมือนตัวเลขล้วน)
@@ -282,10 +322,11 @@ ok(P.parseArgs(['CGNX', '--brand']).error != null, 'parseArgs: --brand ไม่
   ok(F.entityMismatchLine(vmrkFin, statsWrapped) != null, 'entityMismatchLine: stats.sharesOut รูป { num, text } จริงจาก fromStatistics → อ่าน .num ได้', JSON.stringify(statsWrapped));
   ok(F.capLine({ sharesOut: { num: 100e6, text: '100.00M' } }, 50, { marketCap: 4.2e9 }) != null,
     'capLine: stats.sharesOut รูป { num, text } จริง → อ่าน .num ได้เหมือนกัน');
-  // amount(): parse suffix T/B/M/K + comma + $ + ตัวเลขผ่านตรง ๆ + ค่าเสีย → null (ไม่ throw)
+  // amount(): parse suffix T/B/M/K + comma + $ + ตัวเลขผ่านตรง ๆ + ค่าเสีย → null (ไม่ throw) · end-anchored + negatives (ระยะ 1 review ข้อ 8)
   ok(F.amount('5.0B') === 5.0e9 && F.amount('$4.2B') === 4.2e9 && F.amount('1,234M') === 1234e6
     && F.amount(4.2e9) === 4.2e9 && F.amount(null) == null && F.amount(undefined) == null && F.amount('abc') == null,
     'amount: suffix B/M/K/T + comma + $ + number passthrough + ค่าเสีย → null', JSON.stringify([F.amount('5.0B'), F.amount('$4.2B'), F.amount('1,234M')]));
+  ok(F.amount('-5.0B') === -5.0e9, '★ amount: ค่าติดลบ (end-anchored, negatives ผ่าน statNum) → parse ได้', String(F.amount('-5.0B')));
   ok(F.CAP_WARN_PCT === 5, 'CAP_WARN_PCT = 5');
 }
 

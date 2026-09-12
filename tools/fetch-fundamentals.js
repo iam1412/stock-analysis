@@ -349,24 +349,24 @@ function epsTableLine(quoteEps, quoteSrc, table) {
 const ENTITY_MISMATCH_PCT = 40;   // NI[3]÷Shares[2b] vs EPS(dil): ถัวเฉลี่ย↔คงเหลือต่างได้ −30..+11% (POET/AAOI) · VMRK ต่าง >70%
 const CAP_WARN_PCT = 5;
 // ตัวเลขเงินแบบ string ของ vendor ("5.0B" / "$4.2B" / ตัวเลขล้วน) → จำนวนเต็ม · ไม่ใช่ตัวเลข/parse ไม่ออก → null
-const amount = (v) => {
-  if (v == null) return null;
-  if (typeof v === 'number') return Number.isFinite(v) ? v : null;
-  const m = String(v).replace(/,/g, '').match(/^\s*\$?([0-9.]+)\s*([TBMK])?/i);
-  if (!m) return null;
-  const k = { T: 1e12, B: 1e9, M: 1e6, K: 1e3 }[(m[2] || '').toUpperCase()] || 1;
-  return parseFloat(m[1]) * k;
-};
+// ★ ใช้ statNum() ตัวเดียวกับ [2b] แทนการ parse เอง — statNum end-anchored (`^...$`) จึงไม่รับข้อความหาง
+//   ที่ parse ไม่ครบ (เดิม regex ไม่มี `$` ปล่อยผ่านตัวเลขนำหน้าขยะต่อท้ายได้) และรองรับเครื่องหมายลบอยู่แล้ว
+const amount = (v) => (typeof v === 'number' ? v : statNum(String(v).replace(/^\s*\$/, '')));
 // stats.sharesOut มาได้ 2 รูป: ตัวเลขล้วน (fixture ทดสอบ) หรือ { num, text } ของจริงจาก fromStatistics/statsFromPayload
 const sharesOf = (v) => (v && typeof v === 'object' ? v.num : v);
-/** 6O (data-source-traps): EPS ของ vendor หลังควบรวม = กำไรบริษัทเก่า ÷ หุ้นบริษัทใหม่ — จับด้วย NI[3] ÷ Shares[2b] vs EPS(dil) */
+/** 6O (data-source-traps): EPS ของ vendor หลังควบรวม = กำไรบริษัทเก่า ÷ หุ้นบริษัทใหม่ — จับด้วย NI[3] ÷ Shares[2b] vs EPS(dil)
+ *  ★ สาเหตุไม่ได้มีแค่ควบรวม — IPO/dilution ระหว่างงวด TTM ก็ทำให้หุ้นคงเหลือ [2b] (ปัจจุบัน) กับหุ้นถัวเฉลี่ยที่ EPS(dil)
+ *  ยืนอยู่ (ทั้งปี) ต่างกันมากได้เหมือนกัน ⇒ ข้อความห้ามฟันธงว่าเป็นควบรวมอย่างเดียว ต้องบอกให้ตรวจงวดก่อนเสมอ */
 function entityMismatchLine(table, stats) {
   const so = sharesOf(stats && stats.sharesOut);
   if (!table || !Number.isFinite(table.eps) || table.eps === 0 || !Number.isFinite(table.ni) || !(so > 0)) return null;
   const eps2 = table.ni / so;
   const d = Math.abs(eps2 - table.eps) / Math.abs(table.eps) * 100;
   if (d <= ENTITY_MISMATCH_PCT) return null;
-  return `⚠ entity mismatch? NI[3] ÷ Shares[2b] = ${fmt(eps2)} แต่ EPS(dil)[3] = ${fmt(table.eps)} (ต่าง ${d.toFixed(0)}%) — กำไรบริษัทเก่า ÷ หุ้นบริษัทใหม่ (เคส VMRK 23 ส.ค. 69) ⇒ ห้ามมีขา P/E จนยืนยัน XBRL EarningsPerShareDiluted`;
+  // ตาราง [3] ไม่มีแถว EPS(dil) เอง (table.from === 'NI÷Shares') → ฝั่งขวาคือ NI[3]÷Shares[3] ไม่ใช่ EPS(dil)[3]
+  // (ไม่มีแถว EPS(dil) ให้อ้างจริง — พิมพ์ผิดจะทำให้ worker ไปหาแถวที่ไม่มีอยู่ในตาราง)
+  const rightSide = table.from === 'NI÷Shares' ? `NI[3]÷Shares[3] = ${fmt(table.eps)}` : `EPS(dil)[3] = ${fmt(table.eps)}`;
+  return `⚠ entity mismatch? NI[3] ÷ Shares[2b] = ${fmt(eps2)} แต่ ${rightSide} (ต่าง ${d.toFixed(0)}%) — กำไรบริษัทเก่า ÷ หุ้นบริษัทใหม่ (ควบรวม) หรือ IPO/dilution ใน TTM — ตรวจงวดก่อนใช้ P/E (เคส VMRK 23 ส.ค. 69) ⇒ ห้ามมีขา P/E จนยืนยัน XBRL EarningsPerShareDiluted`;
 }
 /** SA market cap ล้าหลัง quote ของตัวเอง (memory data-source-traps) — เทียบกับ หุ้นคงเหลือ [2b] × ราคา */
 function capLine(stats, price, info) {
@@ -376,16 +376,20 @@ function capLine(stats, price, info) {
   const calc = so * price;
   const d = Math.abs(calc - cap) / cap * 100;
   if (d <= CAP_WARN_PCT) return null;
-  return `⚠ SA market cap ${fmtCell(cap, 'm')} ≠ หุ้น ${fmtCell(so, 'm')}M × ราคา ${fmt(price)} = ${fmtCell(calc, 'm')} (ต่าง ${d.toFixed(0)}%) — SA cap ล้าหลัง quote ของตัวเอง ใช้ หุ้น×ราคา (memory: SA market cap ล้าหลัง)`;
+  return `⚠ SA market cap ${fmtCell(cap, 'm')}M ≠ หุ้น ${fmtCell(so, 'm')}M × ราคา ${fmt(price)} = ${fmtCell(calc, 'm')}M (ต่าง ${d.toFixed(0)}%) — SA cap ล้าหลัง quote ของตัวเอง ใช้ หุ้น×ราคา (memory: SA market cap ล้าหลัง)`;
 }
 
 // [2b] — หุ้นคงเหลือจริง ≠ แถว Shares ใน [3] · คืน array บรรทัด (test เรียกตรงได้ ไม่ต้องยิงเน็ต)
-function statsLines(stats, statsErr, tableShares) {
+// capFires: true เมื่อ capLine(...) ของบล็อกนี้จะยิง ⚠ ตามหลัง — ต้องรู้ล่วงหน้าเพื่อไม่ให้สองบรรทัดขัดกันเอง
+// (เดิมบรรทัดนี้สั่ง "ห้ามคิดเองจากฐานอื่น" พร้อมกับบรรทัด ⚠ ที่บอกว่าเลข SA ล้าหลังให้ใช้ หุ้น×ราคา แทน — ขัดกันเอง)
+function statsLines(stats, statsErr, tableShares, capFires) {
   if (!stats || !stats.sharesOut)
     return [`[2b] หุ้นคงเหลือ/มูลค่าตลาด: ✗ ${statsErr || 'ดึงไม่ได้'} — WebFetch stockanalysis.com/.../statistics/ เอา Shares Outstanding ก่อนคิด Market Cap/มูลค่าต่อหุ้น (ห้ามใช้แถว Shares ใน [3] แทน)`];
   const out = ['[2b] หุ้นคงเหลือ/มูลค่าตลาด (StockAnalysis /statistics/) — ★ ใช้ค่านี้เป็นฐาน Market Cap/มูลค่าต่อหุ้น:'];
   let l = `    Shares Outstanding=${Math.round(stats.sharesOut.num).toLocaleString('en-US')} (${stats.sharesOut.text})`;
-  if (stats.marketCap) l += ` · Market Cap=${stats.marketCap.text} (ตามที่ SA แสดง — ห้ามคิดเองจากฐานอื่น)`;
+  if (stats.marketCap) l += capFires
+    ? ` · Market Cap=${stats.marketCap.text} (SA ล้าหลัง — ดูบรรทัด ⚠ ถัดไป)`
+    : ` · Market Cap=${stats.marketCap.text} (ตามที่ SA แสดง — ห้ามคิดเองจากฐานอื่น)`;
   out.push(l);
   const cls = stats.sharesOutClass;
   if (cls && Math.abs(cls.num - stats.sharesOut.num) / stats.sharesOut.num > 0.005)
@@ -415,6 +419,23 @@ function yieldLine(dps, price, yDivYieldRaw, saYield) {
     : `${head} — ✅ ตรงกับ vendor`;
 }
 
+/** #7/#2 (GABLE — data-source-traps 6N, ระยะ 1 review): จำนวน FY ที่มี EPS(dil) จริง นับจาก**แถวเต็ม**ของ
+ *  epsDiluted/epsdil (ไม่ใช่คอลัมน์ที่ตัดเหลือ nCol=6 ของตารางที่พิมพ์) — ตาราง [3] พิมพ์ได้สูงสุด TTM+5 ปี
+ *  แต่บริษัทอาจมีงบ 8+ ปี ⇒ ต้องนับจากอาร์เรย์เต็มเสมอ ไม่งั้น `checkFyYears` จะเทียบกับเพดานพิมพ์ ไม่ใช่ความจริง
+ *  TTM ไม่นับเป็น FY (ใช้ datekey ตัดออก — แนวเดียวกับ tableEpsTTM) · ไม่มีแถว EPS(dil) เลย → null (เทียบไม่ได้)
+ */
+function fyEpsCount(fin) {
+  if (!fin) return null;
+  const dk = finRow(fin, ['datekey']);
+  const eps = finRow(fin, ['epsDiluted', 'epsdil']);
+  if (!dk || !eps) return null;
+  let n = 0;
+  for (let i = 0; i < eps.length; i++) {
+    if (dk[i] === 'TTM') continue;
+    if (Number.isFinite(asNum(eps[i]))) n++;
+  }
+  return n;
+}
 function printFinancialTable(pages, finErr) {
   const [fin, bs, ratio] = pages;
   const master = fin || bs || ratio;
@@ -448,6 +469,10 @@ function printFinancialTable(pages, finErr) {
   const colW = heads.map((_, c) => Math.max(...all.map((r) => String(r[1][c]).length)));
   for (const [label, cells] of all)
     console.log('    ' + label.padEnd(labelW) + cells.map((v, c) => String(v).padStart(colW[c] + 2)).join(''));
+  // ★ นับจากแถวเต็ม ไม่ใช่คอลัมน์ที่พิมพ์ (nCol คุมไว้ที่ TTM+5) — tools/queue/prep.js parseFyYears อ่านบรรทัดนี้
+  //   เป็นหลัก (regex `FY ที่มี EPS\(dil\) จริง:`) แล้วถอยไปนับคอลัมน์ที่พิมพ์เองเฉพาะตอนไม่มีบรรทัดนี้ (fallback)
+  const fyCount = fyEpsCount(fin);
+  if (fyCount != null) console.log(`    FY ที่มี EPS(dil) จริง: ${fyCount}`);
   if (rows.some(([label]) => label === SHARES_LABEL)) console.log(SHARES_NOTE);
   // ★ ตัวชี้สั้น ๆ ตรงจุดที่ worker อ่านจริง — เห็น 3 แถวนี้ติดกันแล้วหารเองคือกับดัก (คำอธิบายเต็มอยู่บรรทัด Δ EPS(quote↔ตาราง[3]))
   const tEps = tableEpsTTM(fin), tRec = epsReconcile(tEps);
@@ -467,6 +492,13 @@ function printFinancialTable(pages, finErr) {
 //   ★ ช่อง eps/adjustedEps ของปีที่ยังไม่ถึงเป็นสตริง "[PRO]" (ต้องจ่ายเงินถึงเห็น) ⇒ ค่าประมาณการต้องอ่านจาก
 //     stats เท่านั้น — ตารางให้ได้แค่ "ป้ายปีงบ" (ของฟรี) ซึ่งก็คือสิ่งที่เราต้องการจริง ๆ
 const FWD_FY_TOL_PCT = 3;   // epsFwd ห่างจาก EPS ประมาณการของปีงบไหน ≤3% = ถือว่าเป็นงวดนั้น
+// ★ 3% นี้เทียบกับ epsFwd ของ **Yahoo** เท่านั้น (fc.years มาจาก SA /forecast/ — คนละ vendor) ไม่ใช่เกณฑ์ทั่วไป
+//   ระหว่าง vendor · เสมอกันสองปีงบ (ระยะห่าง d เท่ากันพอดี) เลือกปีที่เจอ**ก่อน**ในลำดับ fc.years (ใหม่→เก่า)
+//   เพราะเงื่อนไขเลือกเป็น `d < best.d` (strict less-than) ไม่ใช่ `<=`
+// ★ ช่วงเปลี่ยนผ่าน (transient): ตอน SA ปิดงบปีใหม่ (lastDate ของ /forecast/ เลื่อน) แต่ /financials/ (ตาราง [3])
+//   ยังไม่มีคอลัมน์ปีนั้น (รอ SA sync ข้ามหน้า) ⇒ currentFY ที่ใช้ตัดสิน "ปีงบถัดไป" (มาจากตาราง [3] ผ่าน
+//   closedFYFromTable) จะตามหลัง lastClosedFY ของ /forecast/ ไปชั่วคราวไม่กี่สัปดาห์ ⇒ warn "⚠ ไม่ใช่ปีงบถัดไป"
+//   ยิงเท็จได้ในช่วงนั้น — บรรทัด head พิมพ์ทั้งสองปีงบ (FYนี้/FYถัดไป) เสมอ ให้ตรวจเองว่าเป็นช่วงเปลี่ยนผ่านไหม
 
 function forecastFromPayload(j) {
   const found = findObj(j && j.nodes, ['estimates', 'targets']);
@@ -583,15 +615,17 @@ async function main() {
 
   // [2b] หุ้นคงเหลือ — ต้องมาก่อนบรรทัด Δ เพื่อให้ controller เห็นฐานที่ถูกก่อนตัดสินใจ
   const table = tableEpsTTM(finPages[0]);
-  for (const line of statsLines(stats, statsErr, table.shares)) console.log(line);
+  // ★ ต้องคำนวณ capLine ก่อนพิมพ์บรรทัด Market Cap ของ statsLines — ไม่งั้นสองบรรทัดสั่งขัดกันเอง (ข้อ 3)
+  const capMsg = capLine(stats, sPrice || (y && y.price), s && s.info);
+  for (const line of statsLines(stats, statsErr, table.shares, !!capMsg)) console.log(line);
   // กับดักเชิงกล (WS9(a)) — entity mismatch (6O) + SA market cap ล้าหลัง quote ของตัวเอง — WARN เท่านั้น ไม่เปลี่ยน exit code
-  for (const l of [entityMismatchLine(table, stats), capLine(stats, sPrice || (y && y.price), s && s.info)]) if (l) console.log(l);
+  for (const l of [entityMismatchLine(table, stats), capMsg]) if (l) console.log(l);
   // [2c] epsFwd ของ Yahoo อยู่ปีงบไหน — currentFY = ปีงบที่ปิดแล้วจากตาราง [3] (แหล่งเดียวกับที่ worker อ่าน)
   const fcLine = forecastLine(y, s, fc, closedFYFromTable(finPages[0]));
   if (fcLine) console.log(fcLine);
   // ดึงไม่ได้/โครงเปลี่ยน = เงียบไม่ได้ (บทเรียนเดียวกับ [2b]) — บอกว่า "ยังไม่รู้งวด" เฉพาะตอนมี epsFwd ให้ใช้จริง
   else if (y && Number.isFinite(y.epsFwd))
-    console.log(`[2c] forecast: ✗ ดึงหน้า /forecast/ ไม่ได้ (หรือโครง payload เปลี่ยน) — epsFwd ${fmt(y.epsFwd)} ยังไม่รู้ว่าเป็นปีงบไหน (vendor "forward" เป็น FY ถัดไปอีกปีได้) ⇒ ตรวจงวดเองก่อนใช้เป็น fwd P/E หรือขา FV`);
+    console.log(`[2c] forecast (SA /forecast/): ✗ ดึงหน้า /forecast/ ไม่ได้ (หรือโครง payload เปลี่ยน) — epsFwd ${fmt(y.epsFwd)} ยังไม่รู้ว่าเป็นปีงบไหน (vendor "forward" เป็น FY ถัดไปอีกปีได้) ⇒ ตรวจงวดเองก่อนใช้เป็น fwd P/E หรือขา FV`);
 
   if (y && s && Number.isFinite(y.price) && sPrice) {
     const dP = Math.abs(y.price - sPrice) / sPrice * 100;

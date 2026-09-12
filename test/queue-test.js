@@ -220,6 +220,34 @@ process.env.QUEUE_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'queue-'));   // s
     String(Pp.parseVendor(GABLE_TABLE).fyYears));
   ok(Pp.parseVendor('ไม่มีตาราง [3] เลย').fyYears == null, 'parseVendor: ไม่มีแถว EPS(dil) → fyYears null (เทียบไม่ได้ ไม่ใช่ 0)');
 
+  // ★ ระยะ 1 review ข้อ 2: ทางหลักคือบรรทัด "FY ที่มี EPS(dil) จริง: N" ที่ fetch-fundamentals.js พิมพ์เอง (นับจาก
+  //   แถวเต็ม ไม่ใช่คอลัมน์ที่ตัดด้วยเพดานพิมพ์ nCol=6) — ต้องชนะทางสำรอง (นับ token บนตารางที่พิมพ์จริง) เสมอ
+  const NEW_LINE_TABLE = GABLE_TABLE + '\n    FY ที่มี EPS(dil) จริง: 8';
+  ok(Pp.parseVendor(NEW_LINE_TABLE).fyYears === 8,
+    '★ parseVendor: มีบรรทัด "FY ที่มี EPS(dil) จริง:" → ใช้ค่านั้น (8) แทนการนับคอลัมน์ที่พิมพ์ (ซึ่งจะได้ 3)',
+    String(Pp.parseVendor(NEW_LINE_TABLE).fyYears));
+  ok(Pp.parseVendor('ไม่มีบรรทัดใหม่ ไม่มีตาราง').fyYears == null, 'parseVendor: ไม่มีทั้งบรรทัดใหม่และแถว EPS(dil) → null');
+
+  // ★ ระยะ 1 review ข้อ 6: ทางสำรอง (ไม่มีบรรทัดใหม่) ต้องทนหัวตารางที่ป้ายปีงบเพี้ยน (เช่น "FYFY2025" จาก payload
+  //   ผิดปกติ) — เดิม regex เข้ม `TTM(?:\s+FY\d{4})+` ไม่แมตช์ป้ายเพี้ยน จึงไม่หักคอลัมน์ TTM ออกทั้งที่หัวตารางมี TTM จริง
+  const MANGLED_HEADER = '                TTM  FYFY2025  FYFY2024\n    EPS(dil)     5.10    4.80    4.20';
+  ok(Pp.parseVendor(MANGLED_HEADER).fyYears === 2,
+    '★ parseVendor: fyYears ทนหัวตารางป้ายเพี้ยน (FYFY2025) — ตรวจแค่ /^\\s*TTM\\b/ ไม่ใช่ทั้งแพตเทิร์น FY\\d{4}',
+    String(Pp.parseVendor(MANGLED_HEADER).fyYears));
+
+  // ★ ระยะ 1 review ข้อ 1 (plan gap — Task 21 Step 2): เก็บบรรทัด ⚠ entity mismatch / ⚠ SA market cap /
+  //   [2c] ⚠ ลง traps[] — เดิมพิมพ์อยู่ใน FUNDAMENTALS แต่ไม่เคยถูกยกขึ้นเป็นหัวข้อแยกให้ worker เห็นชัด
+  const TRAP_TEXT = `[2b] หุ้นคงเหลือ/มูลค่าตลาด (StockAnalysis /statistics/):
+    Shares Outstanding=100,000,000 (100.00M)
+⚠ entity mismatch? NI[3] ÷ Shares[2b] = 5.00 แต่ EPS(dil)[3] = 3.10 (ต่าง 61%) — กำไรบริษัทเก่า ÷ หุ้นบริษัทใหม่ (ควบรวม) หรือ IPO/dilution ใน TTM — ตรวจงวดก่อนใช้ P/E
+⚠ SA market cap 4,200M ≠ หุ้น 100M × ราคา 50 = 5,000M (ต่าง 19%) — SA cap ล้าหลัง quote ของตัวเอง
+[2c] forecast (SA /forecast/): FY2026e EPS 5.10 · FY2027e EPS 5.60 — epsFwd 5.62 ตรง FY2027e ⚠ ไม่ใช่ปีงบถัดไป (ปีงบที่ปิดแล้ว = FY2025 ⇒ ถัดไป = FY2026)`;
+  const trapVend = Pp.parseVendor(TRAP_TEXT);
+  ok(trapVend.traps.length === 3, '★ parseVendor: traps[] เก็บครบ 3 บรรทัด (entity mismatch · SA market cap · [2c] ⚠)', JSON.stringify(trapVend.traps));
+  ok(trapVend.traps.every((t) => /^⚠/.test(t) || /^\[2c\]/.test(t)), 'parseVendor: ทุกบรรทัดใน traps[] ขึ้นต้นด้วย ⚠ หรือ [2c]', JSON.stringify(trapVend.traps));
+  const cleanVend = Pp.parseVendor(PREP_OUT);
+  ok(cleanVend.traps.length === 0, 'parseVendor: ข้อความสะอาด (ไม่มี ⚠ กับดัก) → traps[] ว่าง', JSON.stringify(cleanVend.traps));
+
   const html = FX.AAPL();
   const ctx = buildCtx(expandReport(html), 'AAPL.html');
   const same = Pp.snapshotDiff(html, ctx, { lo52: null, hi52: null, target: null, divYieldPct: null });
@@ -289,6 +317,15 @@ process.env.QUEUE_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'queue-'));   // s
   ok(/FY ที่มี EPS จริง: 3 ปี — ป้าย "P\/E เฉลี่ย ~M ปี" ห้ามเกิน 3/.test(fy3), 'extraBlock: fyYears=3 → บรรทัดเตือนป้าย P/E เฉลี่ย', fy3);
   const fyNone = Pp.extraBlock({ sym: 'A', mode: 'UPDATE', prePatched: null, baseEPS: 7.1, epsTTM: 7.36, epsScreen: 0.8, snap: [], medWarn: [], hard: false, hardWhy: '', fyYears: null });
   ok(!/FY ที่มี EPS จริง/.test(fyNone), 'extraBlock: fyYears ไม่รู้ (null) → ไม่พิมพ์บรรทัดเดา', fyNone);
+
+  // ★ ระยะ 1 review ข้อ 1 (plan gap): extraBlock ต้องพิมพ์หัวข้อ "กับดักที่ prep พบ" + bullet ต่อกับดัก เมื่อมี traps
+  const withTraps = Pp.extraBlock({ sym: 'A', mode: 'UPDATE', prePatched: null, baseEPS: 7.1, epsTTM: 7.36, epsScreen: 0.8, snap: [], medWarn: [], hard: false, hardWhy: '', traps: ['⚠ entity mismatch? …', '⚠ SA market cap …'] });
+  ok(/กับดักที่ prep พบ \(ต้องจัดการก่อนเขียนเลข\)/.test(withTraps) && withTraps.includes('⚠ entity mismatch? …') && withTraps.includes('⚠ SA market cap …'),
+    '★ extraBlock: traps ไม่ว่าง → พิมพ์หัวข้อ + bullet ต่อกับดักครบ', withTraps);
+  const noTraps = Pp.extraBlock({ sym: 'A', mode: 'UPDATE', prePatched: null, baseEPS: 7.1, epsTTM: 7.36, epsScreen: 0.8, snap: [], medWarn: [], hard: false, hardWhy: '', traps: [] });
+  ok(!/กับดักที่ prep พบ/.test(noTraps), 'extraBlock: traps ว่าง → ไม่พิมพ์หัวข้อ', noTraps);
+  const untraps = Pp.extraBlock({ sym: 'A', mode: 'UPDATE', prePatched: null, baseEPS: 7.1, epsTTM: 7.36, epsScreen: 0.8, snap: [], medWarn: [], hard: false, hardWhy: '' });
+  ok(!/กับดักที่ prep พบ/.test(untraps), 'extraBlock: ไม่ส่ง traps เลย → ไม่พิมพ์หัวข้อ (back-compat กับ call site เก่า)', untraps);
 
   ok(Pp.hardStock({ bucket: 'FULL' }, ctx, v).hard === true, 'hardStock: suspect-split/bad-chart = ยาก');
   ok(Pp.hardStock({ bucket: 'LIGHT' }, { baseEPS: -1.2 }, v).hard === true && /pre-profit/.test(Pp.hardStock({ bucket: 'LIGHT' }, { baseEPS: -1.2 }, v).why), 'hardStock: EPS ฐาน ≤ 0 = pre-profit = ยาก');
