@@ -135,12 +135,21 @@ function renderThaiDate(day, monIdx, yearCE, isBE) {
   return `${day} ${THAI_MONTHS[monIdx]} ${isBE ? yearCE + 543 : yearCE}`;
 }
 
-/** วันที่ราคาเป็น ค.ศ. + iso — ใช้โดย gate (staleness E27/W09) */
-function parsePriceDate(headerHtml) {
-  const hit = findPriceDate(headerHtml);
+/**
+ * hit จาก findPriceDate/findRestatedDate → เติม yearCE + iso (ค.ศ. เสมอ)
+ * ★ แยกออกมาเพราะ parsePriceDate รับ "HTML ที่ต้องสแกนหา anchor ราคา" ไม่ใช่ "สตริงวันที่"
+ *   ⇒ ผู้เรียกที่มี hit อยู่แล้ว (เช่น findRestatedDate) ต้องใช้ตัวนี้ ห้าม slice ข้อความแล้วส่งกลับเข้า parsePriceDate
+ *   (สตริงวันที่เปล่า ๆ ไม่มี anchor ⇒ คืน null เงียบ — เคส f11/f12 ของ tools/field-manifest.js)
+ */
+function dateIso(hit) {
   if (!hit || hit.monIdx < 0) return null;
   const year = hit.isBE ? hit.year - 543 : hit.year;
   return { ...hit, yearCE: year, iso: `${year}-${String(hit.monIdx + 1).padStart(2, '0')}-${String(hit.day).padStart(2, '0')}` };
 }
 
-module.exports = { findPriceDate, findRestatedDate, parsePriceDate, renderThaiDate, THAI_MONTHS, THAI_MONTHS_FULL, MONTH_ALT };
+/** วันที่ราคาเป็น ค.ศ. + iso — ใช้โดย gate (staleness E27/W09) · รับ **HTML ที่มี anchor "ราคา"** ไม่ใช่สตริงวันที่เปล่า */
+function parsePriceDate(headerHtml) {
+  return dateIso(findPriceDate(headerHtml));
+}
+
+module.exports = { findPriceDate, findRestatedDate, parsePriceDate, dateIso, renderThaiDate, THAI_MONTHS, THAI_MONTHS_FULL, MONTH_ALT };

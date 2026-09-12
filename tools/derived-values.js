@@ -176,6 +176,18 @@ function epsBasesOf(text) {
     .map((x) => parseFloat(x[1])).filter((v) => v > 0 && isFinite(v));
 }
 
+// ── ช่องสรุป "ส่วนต่างจากราคา" (vcell หมวด 8) — **อ่านอย่างเดียว** ──
+// ตัวเขียน (summaryPlan + patchDerived#11) มาระยะ 1 ส่วน C — ที่นี่คือตัวอ่านที่ field-manifest (f17/f18) ห่อ
+// at/len เก็บไว้ตั้งแต่ตอนนี้ เพื่อให้ตัวเขียนใช้ตำแหน่งเดียวกัน (กัน "อ่านที่หนึ่ง เขียนอีกที่หนึ่ง")
+const SUMMARY_RE = /(<div class="k">ส่วนต่างจากราคา<\/div>\s*<div class="v"[^>]*>)([\s\S]*?)(<\/div>)/;
+function readSummaryCell(html) {
+  const m = String(html).match(SUMMARY_RE);
+  if (!m) return null;
+  const text = clean(m[2]);
+  const pm = norm(text).match(/([+\-]?)\s*([0-9]+(?:\.[0-9]+)?)\s*%/);
+  return { at: m.index + m[1].length, len: m[2].length, raw: m[2], text, shown: pm ? parseFloat(pm[1] + pm[2]) : null };
+}
+
 /** การ์ด P/E ที่ "ตรวจได้" → { label, shown, eps[] } (ข้ามป้ายเชิงประวัติ / ค่าที่ไม่ใช่ตัวคูณ / ไม่ประกาศ EPS) */
 function peCards(html) {
   const out = [];
@@ -943,6 +955,8 @@ module.exports = {
   PE_LABEL_SKIP, TGT_LABEL_STRICT, PCT_NOT_VS_PRICE, QUOTE_CONTEXT, MONEY_PCT_SRC, CARD_SRC,
   MCAP_LABEL, PS_LABEL, SCALES, scaleOf, parseAmount, parseShares, mcapCards, psCards, nearMcap,
   fmtLikeNum, cardRe, epsBasesOf, peCards, targetCells, basisFor, nearPE, patchDerived,
+  // ช่องสรุป "ส่วนต่างจากราคา" — อ่านอย่างเดียว (f17/f18 ของ field-manifest · ตัวเขียน = summaryPlan ระยะ 1 ส่วน C)
+  SUMMARY_RE, readSummaryCell,
   // หมวด 6 (ผลตอบแทนฉาก 3 ปี) — W17 + ตัวซ่อม
   TOL_RET_PP, TOL_RET_REL, TOL_PY_PP, SCN_TIGHT, SCN_VOTE_RATIO, CONV_PP,
   SCN_COL_OPEN, scenarioColumns, scenarioBlock, scenarioPlan, retTokens, retOff, pyOff, retWrite, retShown,

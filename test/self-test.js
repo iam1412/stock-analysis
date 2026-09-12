@@ -938,6 +938,38 @@ require('./fixture-lint.js')(ok);
 // ── parser-lint: regex stock-meta/report-data/.px มีเจ้าของเดียว = tools/report-meta.js (ระยะ 1 WS1 ข้อ 3) ──
 require('./parser-lint.js')(ok);
 
+// ── field manifest (ระยะ 1 WS1): ทุกช่องตัวเลข · ห่อ extractor เดิม · บน BBL fixture ต้องพบช่อง cron ครบ ──
+// ★ จำนวนช่อง = **70** ไม่ใช่ 68: code-audit §1.1 เดินเลขแถว #1–#68 แล้วแทรก #25b/#63b
+//   (นับแถวในตารางจริง 12 ก.ย. 69 = 70) ⇒ "68 ช่อง" ในสเปคคือเลขแถวสูงสุด ห้ามตัดช่องทิ้งให้ครบ 68
+{
+  const MF = require('../tools/field-manifest.js');
+  ok(MF.FIELDS.length === 70 && new Set(MF.FIELDS.map((f) => f.id)).size === 70, `manifest: 70 ช่อง id ไม่ซ้ำ (ได้ ${MF.FIELDS.length})`);
+  ok(MF.FIELDS.every((f) => typeof f.extract === 'function' && ['cron', 'gate', 'pair', 'presence', 'tool', 'deferred'].includes(f.binding)), 'manifest: ทุกช่องมี extract + binding ที่รู้จัก');
+  ok(MF.FIELDS.filter((f) => f.pair).every((f) => MF.FIELDS.some((g) => g.id === f.pair.with)), 'manifest: pair.with ชี้ไป id ที่มีจริง');
+  // NEITHER 18 แถว (code-audit §1.1) ต้องมีทุกแถวใน manifest และต้องได้ binding ที่ผูกกับของจริง (เกณฑ์จบ "NEITHER 18 → 0")
+  const NEITHER = ['f13', 'f23', 'f24', 'f25', 'f25b', 'f32', 'f33', 'f41', 'f46', 'f47', 'f48', 'f49', 'f54', 'f55', 'f58', 'f60', 'f61', 'f63b'];
+  ok(NEITHER.every((id) => MF.FIELDS.some((f) => f.id === id && ['pair', 'presence'].includes(f.binding))), 'manifest: NEITHER 18 แถวมีครบ + ได้ binding pair/presence');
+  const r = MF.extractAll(base, C);
+  for (const id of ['f01', 'f02', 'f03', 'f04', 'f09', 'f10', 'f13', 'f14', 'f15', 'f16', 'f17', 'f19', 'f43', 'f44', 'f45', 'f46', 'f47', 'f49', 'f50', 'f51', 'f52', 'f54', 'f62', 'f66', 'f67'])
+    ok(r.found.has(id), `manifest: BBL fixture พบ ${id} (${MF.FIELDS.find((f) => f.id === id).name}) = ${JSON.stringify(r.values[id])}`);
+  ok(r.values.f01 === C.px && r.values.f44 === C.constFV, 'manifest: f01 = ctx.px · f44 = const FV');
+  // f50 (ป้าย gauge mCur) ไม่เท่าราคาเป๊ะ — cron เขียนด้วย fmtLike จึงคงทศนิยมเดิมของป้าย
+  // (BBL: ป้าย ฿194 ขณะที่ .px = 193.5) ⇒ ความสัมพันธ์จริงคือ pair how:'money' (ใกล้เคียง) ไม่ใช่เท่ากัน — Task 9 จะตั้ง checkPairs ตามนี้
+  ok(r.values.f50 != null && Math.abs(r.values.f50 - C.px) <= 1, `manifest: f50 (ป้าย mCur ${r.values.f50}) ใกล้ราคา ${C.px} (ปัดตามทศนิยมเดิม)`);
+  ok(r.values.f47 === C.constFV && r.values.f49 === C.constFV && r.values.f46 === C.constFV, 'manifest: legend/mFair/fairLine = FV บน fixture สะอาด');
+  // extractor ต้องคืน found:false ไม่ throw เมื่อไม่มีช่อง
+  const gone = base.replace(/id="mFair"><div class="lab"[^>]*>เหมาะสม/, 'id="mFair"><div class="lab">xx');
+  const r2 = MF.extractAll(gone, C);
+  ok(!r2.found.has('f49') && r2.values.f49 == null, 'manifest: ลบป้าย mFair → f49 found:false (ไม่ throw)');
+  // ไฟล์ที่ไม่มีอะไรเลย: ทุก extractor ต้องไม่ throw (census ต้องได้ error 0 ทุกช่อง)
+  const bareCtx = buildCtx('<!DOCTYPE html><html><body></body></html>', 'NONE.html');
+  let threw = null;
+  for (const f of MF.FIELDS) { try { f.extract('<!DOCTYPE html><html><body></body></html>', bareCtx); } catch (e) { threw = `${f.id}: ${e.message}`; break; } }
+  ok(threw === null, 'manifest: ไฟล์เปล่า — ไม่มี extractor ไหน throw' + (threw ? ` (${threw})` : ''));
+  const cov = MF.coverage(base, C);
+  ok(cov.n === 70 && cov.found === r.found.size, `manifest: coverage() สอดคล้องกับ extractAll() (พบ ${cov.found}/${cov.n})`);
+}
+
 // ── E-policy (spec WS2 ข้อ 3 · แผนระยะ 1 Global Constraints): error ที่ไม่อยู่ในรายการ grandfather ต้อง
 //    (ก) ประกาศ healer ที่รู้จัก และ (ข) มีเคส convergence ในไฟล์นี้ (mutate → check ยิง → healer → check เงียบ)
 //    ไม่งั้น E ใหม่ = cron ล้มทั้งวันแบบเคลียร์ไม่ได้ (บทเรียน 22–24 ส.ค. 69 / run #54) ──
