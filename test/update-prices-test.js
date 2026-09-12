@@ -10,6 +10,7 @@ const path = require('path');
 const U = require('../tools/update-prices.js');
 const FX = require('./fixtures');
 const RM = require('../tools/report-meta.js');   // เจ้าของเดียวของ regex stock-meta/report-data/.px
+const PD = require('../tools/price-date.js');    // ตัวหา token วันที่ราคา/วันที่ทวนซ้ำ — ใช้ตัวเดียวกับ cron ไม่เขียน regex วันที่ในเทส
 process.env.STALE_TODAY = FX.TODAY;   // gate ที่ Task 7 เรียกผ่าน gateAfterPatch ต้องไม่เดินตามปฏิทินจริง
 
 let nOK = 0, nFail = 0;
@@ -456,6 +457,42 @@ const ptsNext = RM.readReportData(rNext.html).data.chart.data;
 ok(ptsNext.length <= 13, 'fallback: เดือนใหม่ → ต่อจุดแล้วยังคง ≤13 จุด (E37)', `ได้ ${ptsNext.length}`);
 ok(ptsNext[ptsNext.length - 1][0] === `${U.THAI_MONTHS[nextM]}${String(nextY).slice(-2)}` && ptsNext[ptsNext.length - 1][1] === 301.5,
   'fallback: จุดใหม่ = เดือนของราคา + ราคาใหม่', JSON.stringify(ptsNext[ptsNext.length - 1]));
+
+// ---------- notes: จุดเขียนที่ "ไม่พบ = ไม่ throw" ต้องรายงาน ไม่เงียบ (ระยะ 1 WS2 ข้อ 6) ----------
+// UNVERIFIED WRITE: เดิม 2 จุดนี้ replace ไม่โดนแล้วผ่านเงียบ ⇒ cron ขึ้น ✓ ทั้งที่ไม่ได้เขียนอะไร
+// แล้ววันที่ใน disclaimer ค้างไปเรื่อย ๆ โดยไม่มีใครเห็น (W22 ตรวจ "ผล" · notes ตรวจ "การเขียน")
+{
+  const dpN = { day: 11, monIdx: 6, yearCE: 2026 };
+  ok(Array.isArray(r.notes), 'patchReport คืน notes[] เสมอ');
+  ok(r.notes.length === 0, 'AAPL fixture ปกติ (มี "ราคา ณ" ใน .disc · header ไม่มีวงเล็บทวนวันที่) → notes ว่าง', JSON.stringify(r.notes));
+
+  // ลบ **ทั้งประโยค** "ราคา ณ <วันที่>" ออกจาก .disc — ตัดที่ token ที่ไฟล์เขียนไว้จริง ไม่ hardcode วันที่
+  const discM = aapl.match(/<div class="disc">[\s\S]*?<\/div>/i);
+  ok(!!discM, 'AAPL fixture: มีบล็อก .disc ให้ทดสอบ');
+  const tokRe = /ราคา(?![^0-9<]{0,25}เป้า)[^0-9<]{0,25}\d{1,2}(?:\s*[–-]\s*\d{1,2})?\s*[ก-๙.]+\s*(?:20|25|26)\d\d/;
+  const hadTok = tokRe.test(discM[0]);
+  ok(hadTok, 'AAPL fixture: .disc มีประโยค "ราคา ณ <วันที่>" อยู่ก่อน (ถ้าไม่มี เทสข้างล่างพิสูจน์อะไรไม่ได้)');
+  const noDisc = aapl.replace(discM[0], discM[0].replace(tokRe, 'ราคาอ้างอิงตามที่ระบุในหัวรายงาน'));
+  ok(noDisc !== aapl, 'มิวเทชัน .disc เปลี่ยนไฟล์จริง (ไม่ใช่ no-op)');
+  const rNoDisc = U.patchReport(noDisc, { newPrice: 301.5, dateParts: dpN, chartData: null });
+  ok(rNoDisc.notes.some((s) => /disclaimer/.test(s) && /found:false/.test(s)),
+    'ใบที่ไม่มีประโยค "ราคา ณ" ใน .disc → notes บอก found:false (ไม่เขียนเงียบ ๆ)', JSON.stringify(rNoDisc.notes));
+
+  // ช่องวันที่ทวนซ้ำ (วงเล็บติดกับ token ราคา) มีวันที่อยู่ แต่คนละวันกับวันที่ราคา ⇒ findRestatedDate ปฏิเสธ = เขียนไม่ครบ
+  const hm = aapl.match(/<header[\s\S]*?<\/header>/i);
+  const hitN = PD.findPriceDate(hm[0]);
+  ok(!!hitN, 'AAPL fixture: หา token วันที่ราคาใน header ได้');
+  const mismatched = hm[0].slice(0, hitN.index + hitN.length)
+    + ` (${hitN.day === 1 ? 2 : 1} ${U.THAI_MONTHS[hitN.monIdx]} ${hitN.year})` + hm[0].slice(hitN.index + hitN.length);
+  const rParen = U.patchReport(aapl.replace(hm[0], mismatched), { newPrice: 301.5, dateParts: dpN, chartData: null });
+  ok(rParen.notes.some((s) => /วงเล็บ/.test(s) && /found:false/.test(s)),
+    'header มีวงเล็บวันที่ต่อท้ายวันที่ราคาแต่คนละวัน → notes บอก found:false', JSON.stringify(rParen.notes));
+  // ...และวงเล็บวันที่ที่ **ไม่ติด** กับวันที่ราคา (ข้อเท็จจริงคนละตัว — เคส AMKR) ต้องไม่เตือน
+  const farParen = aapl.replace(hm[0], hm[0].replace('</header>', ` <span>ร่วงแรงวันเดียว (1 ${U.THAI_MONTHS[hitN.monIdx]} ${hitN.year})</span></header>`));
+  ok(farParen !== aapl, 'มิวเทชันวงเล็บไกล เปลี่ยนไฟล์จริง');
+  ok(U.patchReport(farParen, { newPrice: 301.5, dateParts: dpN, chartData: null }).notes.length === 0,
+    'วงเล็บวันที่ที่ไม่ติดกับวันที่ราคา = ข้อเท็จจริงคนละตัว (เคส AMKR/AEHR) → ต้องไม่เตือน');
+}
 
 // ---------- gauge auto-rescale (แทน freeze outside-gauge-range) ----------
 // ราคาทะลุ max → ขยาย max ให้ราคาอยู่ในขอบแบบ strict (check-site เตือนเมื่อ v >= gmax) · min คงเดิม

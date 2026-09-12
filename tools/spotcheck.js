@@ -19,6 +19,7 @@ const path = require('path');
 const { buildCtx, REPORTS_DIR } = require('../test/check-reports.js');
 const { expandReport } = require('../build.js');
 const DV = require('./derived-values.js');
+const MF = require('./field-manifest.js');   // ทะเบียนช่องตัวเลข — ใช้ชื่อ/จำนวนช่องชุดเดียวกับ gate (W21)
 
 const NEAR_PRICE = 0.03;       // ขา FV ห่างราคา ≤3% = สงสัยสมอตาย (ตัวชี้ค้นหา — W18 คือตัวที่ตัดสินได้)
 const PROSE_TOL = 0.005;       // ราคาในเนื้อความต่างจากราคาจริง >0.5% = น่าจะค้างจากรอบก่อน
@@ -35,6 +36,16 @@ function spotcheck(html, name, deep) {
   const c = buildCtx(html, name);
   const px = c.px;
   const out = [];
+
+  // 0. ช่องที่ manifest อ่านไม่ได้ (ระยะ 1 WS1) — "ช่อง optional ที่ไม่พบ" ไม่ใช่ของเสีย จึงไม่เข้า gate
+  //    แต่คนต้องเห็นว่าใบนี้ **ไม่มี** อะไรบ้าง ก่อนสรุปว่า "gate เขียว = ครบ" (ช่อง required ที่หาย = W21 ใน gate แล้ว)
+  //    พิมพ์เฉพาะโหมดต่อหุ้น — กวาดทั้งคลังจะได้รายการนี้ทุกใบจนกลบของจริง
+  if (deep && c.mf) {
+    out.push(`ช่อง manifest: อ่านได้ ${c.mf.found.size}/${MF.FIELDS.length}` +
+      (c.mf.missing.length ? ` · required ที่หาย ${c.mf.missing.length}: ${c.mf.missing.join(' ')} (W21)` : ' · required ครบ') +
+      (c.mf.skipped.length ? ` · optional ที่ข้าม ${c.mf.skipped.length}: ${c.mf.skipped.join(' ')}` : ''));
+  }
+
   if (!(px > 0)) return out;
 
   // 1. ขา FV ที่ค่าออกมาใกล้ราคาวันนี้ — **ตัวชี้ ไม่ใช่คำตัดสิน** ต้องอ่าน mdesc ว่าตัวคูณมาจากไหน

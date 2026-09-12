@@ -89,6 +89,10 @@ const mutSlice = (marker, re, repl) => (h) => { const i = h.indexOf(marker); ret
 const setKVD = (label, v, d) => (h) => h.replace(
   new RegExp(`(<div class="k">${label.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}</div>\\s*<div class="v[^"]*"[^>]*>)([\\s\\S]*?)(</div>\\s*<div class="d[^"]*"[^>]*>)([\\s\\S]*?)(</div>)`),
   (m, a, ov, b, od, z) => a + v + b + d + z);
+// แทรกการ์ด k/v/d ใบใหม่เป็นใบแรกของแถบ metric — ใช้ตั้งฉากที่ฐานไม่มีการ์ดนั้น (E43/W16 · W22/W23)
+// (ยกขึ้นมาระดับไฟล์ — เดิมประกาศในบล็อก E43/W16 บล็อกเดียว)
+const addCardKV = (label, v, d) => (h) => h.replace('<div class="metric">',
+  `<div class="metric"><div class="k">${label}</div><div class="v">${v}</div><div class="d">${d}</div></div><div class="metric">`);
 // แทน .mval ตัวที่ idx (ลำดับเดียวกับ C.methods)
 const mutMval = (idx, val) => (h) => { let i = -1; return h.replace(/(<div class="mval">\s*[฿$]?)([0-9.,]+)(<\/div>)/g, (m, a, v, b) => (++i === idx ? a + val + b : m)); };
 // เปลี่ยนข้อความป้าย change ใน header
@@ -510,8 +514,6 @@ reject('W14', addCard('4. EV/EBITDA', 'EBITDA $4.0B (mid-point FY2026 $3.6B guid
   const setCard = (label, v, d) => (h) => h.replace(
     new RegExp(`(<div class="k">${label.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}</div>\\s*<div class="v[^"]*"[^>]*>)([\\s\\S]*?)(</div>\\s*<div class="d[^"]*"[^>]*>)([\\s\\S]*?)(</div>)`),
     (m, a, ov, b, od, z) => a + v + b + d + z);
-  const addCardKV = (label, v, d) => (h) => h.replace('<div class="metric">',
-    `<div class="metric"><div class="k">${label}</div><div class="v">${v}</div><div class="d">${d}</div></div><div class="metric">`);
   const mc = DVT.mcapCards(base, PX)[0];
   const cur = C.isTHB ? '฿' : '$';
 
@@ -968,6 +970,68 @@ require('./parser-lint.js')(ok);
   ok(threw === null, 'manifest: ไฟล์เปล่า — ไม่มี extractor ไหน throw' + (threw ? ` (${threw})` : ''));
   const cov = MF.coverage(base, C);
   ok(cov.n === 70 && cov.found === r.found.size, `manifest: coverage() สอดคล้องกับ extractAll() (พบ ${cov.found}/${cov.n})`);
+}
+
+// ── W21/W22/W23 + coverage (ระยะ 1 WS1 ข้อ 2): gate ต้องรู้ว่าตัวเองอ่านอะไรไม่ได้ ──
+// W21 = ช่อง required (census ≥99%) อ่านไม่ได้ · W22 = คู่ **consistency** ไม่ตรง (ยิงบนใบสุขภาพดี = บั๊กจริง)
+// W23 = คู่ **ค้างตามเวลา** (`pair.stale`) — แยกออกมาเพราะ f41 (กรอบ 52 สัปดาห์) ค้างเป็นร้อยใบตามปกติ ถ้าปนกันจะกลบ W22 จนไร้ความหมาย
+{
+  const MF = require('../tools/field-manifest.js');
+  const PDt = require('../tools/price-date.js');
+  const cur = C.isTHB ? '฿' : '$';
+
+  const r0 = checkHtml(base, 'BBL.html');
+  ok(r0.coverage && r0.coverage.n === MF.FIELDS.length && r0.coverage.found >= 50 && r0.coverage.missingRequired.length === 0,
+    `coverage: checkHtml คืน coverage — BBL fixture พบ ${r0.coverage && r0.coverage.found}/${MF.FIELDS.length} · required ครบ (หาย: ${r0.coverage ? JSON.stringify(r0.coverage.missingRequired) : '—'})`);
+  ok(r0.coverage && r0.coverage.found + r0.coverage.missingRequired.length + r0.coverage.skippedOptional.length === MF.FIELDS.length,
+    'coverage: พบ + required ที่หาย + optional ที่ข้าม = จำนวนช่องทั้งหมด (ไม่มีช่องตกสำรวจ)');
+
+  rejectBase('W21', 'ฐาน BBL: ช่อง required ครบ → W21 เงียบ');
+  rejectBase('W22', 'ฐาน BBL: ทุกคู่ consistency ตรงกัน → W22 เงียบ');
+  rejectBase('W23', 'ฐาน BBL: ไม่มีคู่ค้าง → W23 เงียบ (fixture ไม่มี "กรอบ 52 สัปดาห์ (…)" — f41 optional ไม่พบ = เงียบ ไม่ใช่ผ่าน)');
+
+  // W21 — ลบตัวเลขออกจากป้าย gauge mCur (f50 = required true · census 100%)
+  const killMCur = (h) => h.replace(new RegExp('(id="mCur"><div class="lab">ปัจจุบัน\\s*(?:C\\$|[฿$])?\\s*)[\\d.,]+'), '$1');
+  expect('W21', 'warn', killMCur, 'ลบตัวเลขป้าย mCur (f50 required) → W21');
+
+  // W22 — คู่ consistency 4 แบบ (money ×2 · date ×1 · money ผ่าน JSON ×1)
+  expect('W22', 'warn', (h) => h.replace(new RegExp('(id="mFair"><div class="lab"[^>]*>เหมาะสม\\s*(?:C\\$|[฿$])?\\s*)([\\d.,]+)'),
+    (m, a, v) => a + numStr(parseFloat(v.replace(/,/g, '')) * 1.5)), 'ป้าย gauge mFair ≠ FV → W22');
+  expect('W22', 'warn', mutJson('report-data', (d) => { d.chart.fairLine = 1; }), 'chart.fairLine ≠ FV → W22');
+  expect('W22', 'warn', (h) => h.replace(new RegExp('(id="mCur"><div class="lab">ปัจจุบัน\\s*(?:C\\$|[฿$])?\\s*)([\\d.,]+)'),
+    (m, a, v) => a + numStr(parseFloat(v.replace(/,/g, '')) * 2)), 'ป้าย gauge mCur ≠ .px (UNVERIFIED WRITE #50) → W22');
+  // วันที่ใน disclaimer ≠ วันที่ราคา — เลื่อนวันจาก "วันที่ที่ fixture เขียนไว้จริง" ไม่ใช่ literal
+  const shiftDiscDate = (h) => {
+    const m = h.match(/<div class="disc">[\s\S]*?<\/div>/i);
+    if (!m) return h;
+    const hit = PDt.parsePriceDate(m[0]);
+    if (!hit) return h;
+    const moved = m[0].slice(0, hit.index) + hit.text.replace(/^\d{1,2}/, String(hit.day === 1 ? 2 : 1)) + m[0].slice(hit.index + hit.length);
+    return h.replace(m[0], moved);
+  };
+  expect('W22', 'warn', shiftDiscDate, 'วันที่ disclaimer ≠ วันที่ราคา (UNVERIFIED WRITE #12) → W22');
+
+  // W23 = คู่ค้างตามเวลา (stale:true) — ต้องไม่ปนใน W22
+  const addRange = (lo, hi) => (h) => h.replace('<div class="disc">', `<p>กรอบ 52 สัปดาห์ (${cur}${lo}–${cur}${hi})</p><div class="disc">`);
+  const outOfBand = addRange((PX * 0.1).toFixed(2), (PX * 0.2).toFixed(2));
+  expect('W23', 'warn', outOfBand, 'ราคา .px หลุดกรอบ 52 สัปดาห์ที่พิมพ์ → W23 (f41 stale)');
+  reject('W22', outOfBand, 'กรอบค้างต้องไม่ยิง W22 (แยกชั้น staleness ออกจาก consistency)');
+  reject('W23', addRange((PX * 0.5).toFixed(2), (PX * 1.5).toFixed(2)), 'ราคาอยู่ในกรอบ → W23 เงียบ');
+
+  // f55 "P/E เฉลี่ย ~N ปี" — ตัวหารคือปีที่อ่านได้จาก label กราฟ (ปี 4 หลักเท่านั้น)
+  // ★ ฐาน BBL (และทั้งคลัง 908 ใบ) ใช้ label "เดือนไทย+ปี 2 หลัก" ⇒ อ่านปีไม่ได้ = เงียบ ⇒ เคสนี้ต้อง**เปลี่ยน label เป็นปี**เองก่อน
+  //   ไม่งั้นจะเป็นเคสที่ "ผ่าน" เพราะ check ไม่ได้ทำงาน (ดู census §ผลหลังเปิด — ขานี้ latent ทั้งคลังโดยตั้งใจ)
+  const yearLabels = mutJson('report-data', (d) => { d.chart.data.forEach((p, i) => { p[0] = String(2025 + (i < d.chart.data.length / 2 ? 0 : 1)); }); });
+  const gable = (h) => addCardKV('P/E เฉลี่ย ~9 ปี', '20x', 'ช่วง 15–25x')(yearLabels(h));
+  expect('W23', 'warn', gable, 'ป้าย "P/E เฉลี่ย ~9 ปี" บนกราฟที่มีข้อมูล 2 ปี → W23 (เคส GABLE · f55 stale)');
+  reject('W22', gable, 'ป้ายปีเกินกราฟต้องไม่ยิง W22');
+  expect('W23', 'warn', yearLabels, 'เปลี่ยนแค่ label กราฟเป็นปี 4 หลัก (ป้าย "P/E เฉลี่ย ~N ปี" เดิมของ fixture ยังอยู่) → W23 (พิสูจน์ว่าตัวหาร = ปีในกราฟจริง)');
+
+  // W21/W22/W23 ต้องเป็น warn และไม่มี healer (ระยะ 1 — จะยกเป็น E เมื่อมีตัวซ่อมในระยะ 2)
+  for (const id of ['W21', 'W22', 'W23']) {
+    const c = CHECKS.find((x) => x.id === id);
+    ok(c && c.level === 'warn' && c.healer == null, `${id} ต้องเป็น warn + ยังไม่มี healer (ระยะ 1)`);
+  }
 }
 
 // ── E-policy (spec WS2 ข้อ 3 · แผนระยะ 1 Global Constraints): error ที่ไม่อยู่ในรายการ grandfather ต้อง

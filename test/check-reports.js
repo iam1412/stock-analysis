@@ -30,6 +30,8 @@ const { mosBand, MOS_FLIP_DEADBAND_PP } = require('../tools/update-prices.js'); 
 const { resolveColor } = require('../tools/fix-contrast.js');
 const TAG = require('../tools/tag-lib.js');
 const RM = require('../tools/report-meta.js');   // เจ้าของเดียวของ regex stock-meta/report-data/.px
+// ทะเบียนช่องตัวเลขทุกช่องในรายงาน (ระยะ 1 WS1) — gate ใช้เพื่อรู้ว่า "ตัวเองอ่านอะไรไม่ได้" (W21) และคู่ไหนไม่ตรงกัน (W22/W23)
+const MF = require('../tools/field-manifest.js');
 // โหลดครั้งเดียวต่อ process — self-test จะฉีดของปลอมผ่าน opts.tagData แทน
 let _tagCache = null;
 function tagDefaults() {
@@ -249,7 +251,7 @@ function buildCtx(html, name, opts) {
   const text = visible(html);
   const headerM = html.match(/<header[\s\S]*?<\/header>/i);
   const fvIdx = html.indexOf('class="fv-box"');
-  return {
+  const ctx = {
     html,
     name,
     symbol: name.replace(/\.html$/i, ''),
@@ -290,6 +292,11 @@ function buildCtx(html, name, opts) {
     // บล็อก report-data (chart/gauge/theme ต่อหุ้น) — ใช้โดย E34 (theme.chgBg/chgColor), E36 (chart.data↔headline), E37 (≤13 จุด), W12 (label ว่าง)
     rd: RM.readReportData(html),
   };
+  // ★ manifest ต้องได้ ctx ที่ "ครบทุกฟิลด์แล้ว" (f41 ใช้ px · f50 ใช้ cards · f68 ใช้ tagData) ⇒ ต่อท้ายสุดเสมอ
+  //   คิดคู่ที่ไม่ตรงกันไว้ที่นี่ครั้งเดียว แล้ว W22/W23 แค่กรองด้วย stale (ไม่ต้องเดินช่องซ้ำสองรอบ)
+  ctx.mf = MF.extractAll(html, ctx);
+  ctx.mf.pairs = MF.checkPairs(ctx.mf.values, ctx);
+  return ctx;
 }
 
 const SM_NUM_KEYS = ['price', 'fairValue', 'mos', 'upside', 'pe', 'dividendYield', 'roe']; // ต้องเป็นตัวเลข (price/fairValue/mos/upside) หรือตัวเลข|null (pe/yield/roe)
@@ -770,6 +777,18 @@ const CHECKS = [
     }
     return bad.length ? [...new Set(bad)].join(' ; ') : null;
   } },
+
+  // ── W21/W22/W23 (ระยะ 1 WS1 ข้อ 2): manifest ทำให้ "เงียบ" ไม่เท่ากับ "สะอาด" อีกต่อไป ──
+  // เดิม gate ตรวจเฉพาะสิ่งที่ตัวเองอ่านเจอ ⇒ ไฟล์ที่โครงหายทั้งช่องจะ "ผ่าน 47/47" อย่างเงียบ ๆ
+  // W21 = ช่องที่ census บอกว่าคลัง ≥99% มี แต่ใบนี้อ่านไม่ได้ · W22/W23 = ค่าเดียวกันที่เขียนไว้หลายที่แล้วไม่ตรง
+  // ทั้งสามเป็น warn และ **ยังไม่มี healer** โดยตั้งใจ (spec §8) — จะยกเป็น E เมื่อมีตัวซ่อมในระยะ 2
+  { id: 'W21', level: 'warn', label: 'ช่องที่ต้องมีอ่านไม่ได้ (manifest)', fn: (c) => c.mf.missing.length ? `อ่านไม่ได้ ${c.mf.missing.length} ช่อง: ${c.mf.missing.map((id) => `${id} ${MF.FIELDS.find((f) => f.id === id).name}`).join(' · ')}` : null },
+  // W22 = คู่ **consistency** (fairLine/legend/mFair/vcell ↔ FV · mCur ↔ .px · วันที่ disclaimer/วงเล็บ ↔ วันที่ราคา · roe null เมื่อขาดทุน)
+  //       ยิงบนใบสุขภาพดี = บั๊กจริง ไม่ใช่ของค้าง
+  { id: 'W22', level: 'warn', label: 'ค่าเดียวกันคนละที่ไม่ตรงกัน (manifest pair)', fn: (c) => { const bad = c.mf.pairs.filter((b) => !b.stale); return bad.length ? bad.map((b) => b.msg).join(' ; ') : null; } },
+  // W23 = คู่ **ค้างตามเวลา** (`pair.stale`) — ราคาวิ่งออกจากกรอบที่พิมพ์ไว้เป็นเรื่องคาดหมายได้หลายร้อยใบ
+  //       แยกจาก W22 เพราะถ้าปนกัน f41 จะกลบคู่บั๊กจริงจน W22 ไม่มีความหมาย
+  { id: 'W23', level: 'warn', label: 'ค่าที่ค้างตามเวลา (manifest stale pair)', fn: (c) => { const bad = c.mf.pairs.filter((b) => b.stale); return bad.length ? bad.map((b) => b.msg).join(' ; ') + ' — fix-on-touch (ระยะ 3)' : null; } },
 ];
 
 function checkHtml(html, name, opts) {
@@ -781,7 +800,9 @@ function checkHtml(html, name, opts) {
     if (res) (chk.level === 'error' ? errors : warnings).push({ id: chk.id, label: chk.label, msg: res });
   }
   const errTotal = CHECKS.filter((c) => c.level === 'error').length;
-  return { name, symbol: ctx.symbol, ctx, errors, warnings, errTotal, errPass: errTotal - errors.length };
+  // coverage = "gate อ่านช่องไหนได้/ไม่ได้ในใบนี้" — ตัวเลขคู่กับผล error/warning เสมอ (ระยะ 1 WS1 ข้อ 2)
+  const coverage = { n: MF.FIELDS.length, found: ctx.mf.found.size, missingRequired: ctx.mf.missing, skippedOptional: ctx.mf.skipped };
+  return { name, symbol: ctx.symbol, ctx, errors, warnings, errTotal, errPass: errTotal - errors.length, coverage };
 }
 
 /** ตรวจ 1 ไฟล์จาก path — expandReport ระเบิด = error ของไฟล์นั้น (id EXPAND) ไม่ใช่ crash ของทั้งรอบ
@@ -808,17 +829,20 @@ function main() {
   if (!files.length) { console.error('❌ ไม่พบไฟล์รายงานให้ตรวจ'); process.exit(1); }
 
   console.log(`\n🔍 ตรวจคุณภาพรายงาน ${files.length} ไฟล์ (reports/)\n`);
-  let totErr = 0, totWarn = 0, failFiles = 0;
+  let totErr = 0, totWarn = 0, failFiles = 0, minCov = null;
   for (const f of files) {
     const r = checkFile(path.join(REPORTS_DIR, f));
     totErr += r.errors.length; totWarn += r.warnings.length;
-    if (r.errors.length) { failFiles++; console.log(`✗ ${f.padEnd(13)} ${r.errPass}/${r.errTotal} ผ่าน — ${r.errors.length} ปัญหา`); }
-    else console.log(`✓ ${f.padEnd(13)} ${r.errTotal}/${r.errTotal} ผ่าน${r.warnings.length ? `   (⚠ ${r.warnings.length})` : ''}`);
+    // ★ coverage ต่อไฟล์ — ไฟล์ที่ expandReport ระเบิด (id EXPAND) ไม่มี ctx จึงไม่มี coverage ⇒ เว้นไว้ ไม่ใช่ 0
+    const cov = r.coverage ? ` · ช่อง ${r.coverage.found}/${r.coverage.n}${r.coverage.skippedOptional.length ? ` (ข้าม ${r.coverage.skippedOptional.length})` : ''}` : '';
+    if (r.coverage && (!minCov || r.coverage.found < minCov.found)) minCov = { found: r.coverage.found, n: r.coverage.n, name: r.symbol };
+    if (r.errors.length) { failFiles++; console.log(`✗ ${f.padEnd(13)} ${r.errPass}/${r.errTotal} ผ่าน — ${r.errors.length} ปัญหา${cov}`); }
+    else console.log(`✓ ${f.padEnd(13)} ${r.errTotal}/${r.errTotal} ผ่าน${r.warnings.length ? `   (⚠ ${r.warnings.length})` : ''}${cov}`);
     for (const e of r.errors) console.log(`    ✗ [${e.id}] ${e.label}: ${e.msg}`);
     for (const w of r.warnings) console.log(`    ⚠ [${w.id}] ${w.label}: ${w.msg}`);
   }
   console.log('\n' + '─'.repeat(50));
-  console.log(`สรุป: ${files.length - failFiles}/${files.length} ไฟล์ผ่าน • error ${totErr} • warning ${totWarn}`);
+  console.log(`สรุป: ${files.length - failFiles}/${files.length} ไฟล์ผ่าน • error ${totErr} • warning ${totWarn}${minCov ? ` • ช่องต่ำสุด ${minCov.found}/${minCov.n} (${minCov.name})` : ''}`);
   if (totErr) { console.log('\n❌ มี error — ห้าม push (แก้รายงานให้ผ่านก่อน)\n'); process.exit(1); }
   console.log(`\n✅ ผ่าน quality gate — พร้อม build & push${totWarn ? ` (มี ${totWarn} warning ที่ควรดู)` : ''}\n`); process.exit(0);
 }

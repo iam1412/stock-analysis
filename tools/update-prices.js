@@ -434,6 +434,10 @@ function patchReport(html, p) {
   const { newPrice, dateParts /* {day, monIdx, yearCE} */ } = p;
   let { chartData } = p;
   const need = (re, where) => { if (!re.test(html)) throw new Error(`patch ไม่เจอ pattern: ${where}`); };
+  // ★ 2 จุดเขียนที่ "ไม่พบ = ไม่ throw" โดยตั้งใจ (ใบเก่าบางใบไม่มีประโยคนั้นจริง ๆ) — แต่ห้ามเงียบ
+  //   เงียบ = UNVERIFIED WRITE: cron รายงานว่า ✓ ทั้งที่ไม่ได้เขียนอะไรเลย แล้ววันที่ค้างไปเรื่อย ๆ โดยไม่มีใครรู้
+  //   (W22 ตรวจ "ผล" อีกชั้น — วันที่ disclaimer/วงเล็บต้องตรงกับวันที่ราคา · บรรทัดนี้ตรวจ "การเขียน")
+  const notes = [];
 
   // --- stock-meta (FV เป็น source of truth ของการคำนวณ mos/upside) ---
   const smM = html.match(RM.STOCK_META_PARTS_RE);
@@ -521,6 +525,12 @@ function patchReport(html, p) {
   // + วันที่ที่ "ทวนซ้ำ" ในวงเล็บติดกัน (คนละศักราช) ต้องขยับตามด้วย ไม่งั้นหัวรายงานขัดกันเอง
   // เขียนจากขวาไปซ้าย — index ของตัวซ้ายจะได้ไม่ขยับตามความยาวที่เปลี่ยนของตัวขวา
   const restate = findRestatedDate(headM[0], hit);
+  // "ช่องของวันที่ทวนซ้ำ" (วงเล็บที่ **ติดกับ token ราคาเลย**) มีวันที่อยู่ แต่ findRestatedDate ปฏิเสธ = เขียนไม่ครบโดยเงียบ
+  // ★ ต้องเช็คที่ตำแหน่งติดกันเท่านั้น — วัด 12 ก.ย. 69: ถ้าเช็ค "มีวงเล็บวันที่ที่ไหนก็ได้ใน header"
+  //   จะเตือนปลอมทุกวันบน 13 ใบที่วงเล็บเป็น**ข้อเท็จจริงคนละตัว** (AMKR "ร่วง ~24% วันเดียว (7 ส.ค. 2026)" · AEHR · ADVICE · AVY)
+  //   ซึ่ง price-date.js ตั้งใจไม่ถือเป็นการทวนซ้ำอยู่แล้ว · แบบติดกัน = 0/908 ใบวันนี้ (ทุกใบที่มีช่องนี้อ่านออกครบ 7 ใบ)
+  if (!restate && /^(?:\s|<[^>]*>)*\(\s*\d{1,2}\s*[ก-๙.]+\s*\d{4}/.test(headM[0].slice(hit.index + hit.length)))
+    notes.push('วันที่ทวนในวงเล็บ: มีวงเล็บวันที่ต่อท้ายวันที่ราคา แต่อ่านไม่ออก — ไม่ได้เขียน (found:false)');
   for (const t of [restate, hit].filter(Boolean)) {
     const abs = headM.index + t.index;
     out = out.slice(0, abs)
@@ -528,13 +538,16 @@ function patchReport(html, p) {
       + out.slice(abs + t.length);
   }
 
-  // --- disclaimer: "ราคา ณ <วันที่>" (ถ้ามี) ---
+  // --- disclaimer: "ราคา ณ <วันที่>" (ถ้ามี — ไม่พบ = ไม่เขียน ไม่ throw แต่ต้องบอก) ---
+  let discHits = 0;
   out = out.replace(/(<div class="disc">[\s\S]*?<\/div>)/i, (block) =>
     block.replace(new RegExp(`(ราคา(?![^0-9<]{0,25}เป้า)[^0-9<]{0,25})(\\d{1,2}(?:\\s*[–\\-]\\s*\\d{1,2})?\\s*(?:${MONTH_ALT})\\s*(20\\d\\d|25\\d\\d|26\\d\\d))`, 'g'),
       (m, pre, tok, yr) => {
+        discHits++;
         const era = parseInt(yr, 10) >= 2400 ? dateParts.yearCE + 543 : dateParts.yearCE;
         return `${pre}${dateParts.day} ${THAI_MONTHS[dateParts.monIdx]} ${era}`;
       }));
+  if (!discHits) notes.push('disclaimer: ไม่พบ "ราคา ณ <วันที่>" — ไม่ได้เขียน (found:false)');
 
   // --- ป้าย .chg ---
   need(/<div class="chg"[^>]*>[\s\S]*?<\/div>/i, 'ป้าย .chg');
@@ -592,7 +605,7 @@ function patchReport(html, p) {
   const dv = patchDerived(out, newPrice);
   out = dv.html;
 
-  return { html: out, changed: out !== html, chg, mos: round(mos, 1), derived: dv.changes };
+  return { html: out, changed: out !== html, chg, mos: round(mos, 1), derived: dv.changes, notes };
 }
 
 // ---------- quarantine รายไฟล์ (WS2 ข้อ 1) ----------
@@ -873,7 +886,7 @@ async function main() {
       }
       if (WRITE) fs.writeFileSync(fp, r.html);
       updated.push({ symbol, old: sm.price, new: round(q.price, 2), diffPct });
-      console.log(`${WRITE ? '✓' : '·'} ${symbol.padEnd(10)} ${sm.price} → ${round(q.price, 2)} (${diffPct > 0 ? '+' : ''}${diffPct}%) · ${r.chg.text} · MOS ${r.mos}%${chartSrc !== '1mo' ? ` · chart:${chartSrc}` : ''}`);
+      console.log(`${WRITE ? '✓' : '·'} ${symbol.padEnd(10)} ${sm.price} → ${round(q.price, 2)} (${diffPct > 0 ? '+' : ''}${diffPct}%) · ${r.chg.text} · MOS ${r.mos}%${chartSrc !== '1mo' ? ` · chart:${chartSrc}` : ''}${r.notes && r.notes.length ? ` · ⚠ ${r.notes.join(' · ')}` : ''}`);
     } catch (e) {
       frozen.push({ symbol, reason: 'patch-failed', detail: e.message, reportPrice: sm.price, marketPrice: round(q.price, 2), diffPct });
       console.log(`⚠ ${symbol.padEnd(10)} patch fail: ${e.message}`);
