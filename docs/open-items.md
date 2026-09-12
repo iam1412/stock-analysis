@@ -6,19 +6,27 @@
 
 | # | รายการ | ที่มา | ปิดใน |
 |---|---|---|---|
-| 1 | `%/ปี` ในประโยคสรุปหมวด 6 เป็น prose — ไม่มี warning/ตัวซ่อม | price-derived-staleness:113 | ระยะ 1 WS1 manifest (ช่อง #35b) · ระยะ 2 token |
-| 2 | ป้าย marker gauge "เหมาะสม" ไม่มี gate (ICLR) | price-derived-staleness:175 | ระยะ 1 WS1 (NEITHER #49) |
-| 5 | W05 มองไม่เห็น "สองขาตระกูลเดียว" (WWD) | price-derived-staleness:174 | ระยะ 1 WS1/WS9 |
-| 6 | การ์ด EV/Sales · EV/EBITDA · DCF ไม่มี checker | data-source-traps:258 | ระยะ 1 WS1 (NEITHER #62) |
-| 9 | bad-chart ผสมฐาน gate มองไม่เห็น (E36 ผิดพร้อมกัน) | data-source-traps:69 | ระยะ 1 WS1 (52wk เป็นช่องที่ตรวจ) |
+| 1 | `%/ปี` ในประโยคสรุปหมวด 6 เป็น prose — ไม่มี warning/ตัวซ่อม | price-derived-staleness:113 | ระยะ 2 token (คู่กับ `f64` ที่ deferred ตามข้อ A/B — ระยะ 1 ปิด manifest แล้วแต่ไม่ได้แตะช่องนี้ ดู phase1-exit §7) |
+| 5 | W05 มองไม่เห็น "สองขาตระกูลเดียว" (WWD) | price-derived-staleness:174 | ระยะ 3 WS7 fix-on-touch — ไม่ได้แก้ในระยะ 1 (manifest/WS9(a) ที่ปิดแล้วไม่ครอบคลุมเคสนี้ ดู phase1-exit §7) |
+| 6 | การ์ด EV/Sales · EV/EBITDA · DCF ไม่มี checker | data-source-traps:258 | ระยะ 3 WS7 fix-on-touch — ไม่อยู่ใน 18 แถว NEITHER ที่ปิดระยะ 1 (ดู phase1-exit §2/§7) |
 | 11 | 6 ใบสองขาตระกูลเดียว ยังไม่แก้ | fv-family-weighting:22 | ระยะ 3 WS7 fix-on-touch (ลิสต์ในไฟล์ memory) |
-| 14 | `stock-meta.roe` ต้อง null เมื่อขาดทุน (OKJ) — postcheck เตือนแล้ว ยังไม่มี gate | bulk-stock-analysis-workflow:81 | ระยะ 1 WS1 |
+| 14 | `stock-meta.roe` ต้อง null เมื่อขาดทุน (OKJ) — postcheck เตือนแล้ว ยังไม่มี gate | bulk-stock-analysis-workflow:81 | ระยะ 2 — ให้ baseEPS อ่านเครื่องหมายลบ หรือใช้ `stock-meta.pe === null` เป็นตัวชี้ (กฎ checkPairs มีแล้วตั้งแต่ Task 9 PR #32 แต่ยิงไม่ได้) |
 | 15 | คำขอคำศัพท์ 49 รายการใน `tags.json.requests` รอเจ้าของ | tag-system-2026-08:19 | เจ้าของรีวิว |
 | 16 | `stock-ai.dotent.workers.dev` ยังเปิด (`workers_dev=true` ห้ามลบ) traffic ไม่ cache | workers-dev-cache-inert:21 | ไม่ทำ (บันทึกไว้) |
 | 17 | ไม่มี `x-cache` header — วินิจฉัย cache จากเวลาอย่างเดียว | workers-dev-cache-inert:20 | ไม่ทำ (บันทึกไว้) |
-| 20 | ~23 ใบ EPS ค้าง >2% (HSY SNNP COP NUE CF …) | data-source-traps:153 | ระยะ 3 WS7 ตามปฏิทินงบ (WS6 trigger) |
-| 23 | lockfile ไม่มี heartbeat — holder ที่ทำงานเกิน 10 นาทีจะถูกยึด lock และตอนปล่อยจะลบ lock ของคนใหม่ (ยังไม่เกิดเพราะไม่มี holder ทำงานยาวใต้ lock) | final review ระยะ 0 | ระยะ 1 WS4 |
+| 20 | ~23 ใบ EPS ค้าง >2% (HSY SNNP COP NUE CF …) | data-source-traps:153 | ระยะ 3 WS7 ตามปฏิทินงบ (WS6 trigger — ปฏิทินงบยังเป็น fallback จนกว่า #24 ปิด) |
 | 24 | **ปฏิทินงบ: Yahoo ให้วันที่ <80%** — วัดจริง 12 ก.ย. 2569 รอบเต็ม 908 ใบ: มีวันที่ 719 (79.2%) · **TH `.BK` แค่ 51/238 (21%)** · US 668/670 ⇒ ไม่มีวันที่ 20.8% เกินเกณฑ์ 20% ⇒ ไม่ commit `earnings-calendar.json` / ไม่เปิด workflow (ตัวสร้าง `tools/earnings-calendar.js` + สาย `earningsAfterOf` ใน preflight อยู่ในรีโปแล้ว ใช้นโยบายอายุอย่างเดียวไปก่อน) — ต้องหาแหล่งวันงบหุ้นไทย (ปฏิทินหลักทรัพย์ SET / StockAnalysis earnings date) มาเสริมก่อนเปิด · **ตอนเปิดใช้ให้รู้ไว้:** ตัวสร้างมีกติกา carry-forward แล้ว (รอบที่ยิงล้ม = "ถามไม่ได้" → ยก `next` เดิมมาต่อ ไม่ล้างทิ้ง · ยิงสำเร็จแต่ไม่มีวันที่ = "คำตอบจริง" → ล้าง) และเกณฑ์ 20% คิดจาก `ไม่มีวันที่ / (ทั้งหมด − ยิงล้ม)` (`EC.nodateRatio`) | Task 17 (WS6 ข้อ 2) | ระยะ 3 WS7 (คู่กับ #20 EPS ค้างตามปฏิทินงบ) |
+| 25 | **หนี้ที่ระยะ 1 ทำให้ "มองเห็น" แล้ว** — W22 ยิง 24 ใบ (f47 legend↔FV 16 · f24 เป้า gauge↔การ์ด 4 · f46 fairLine↔FV 2 · f49 mFair↔FV 1 · f54 vcell↔.fv-box 1) · W23 ยิง 109 ใบ (ราคาหลุดกรอบ 52 สัปดาห์ที่พิมพ์ไว้ — ขยับตามราคาทุกวัน ห้ามเลื่อนเป็น E โดยไม่รัน sweep ซ้ำ) | phase1-exit §7 | ระยะ 3 fix-on-touch (WS7) |
+| 26 | queue: แถวอายุสังเคราะห์ (synthetic age) เสีย `model`/`prepAt`/`postcheck` เมื่อรัน `preflight` ข้ามวันซ้ำภายในรอบเดียว — กู้คืนได้ด้วย `prep <SYM>`/`--model` มือ | phase1-exit §7 | ระยะ 2 / เจ้าของ |
+| 27 | queue: guard `postcheck` ของ `shipStock` ไม่ผูกขอบเขตรอบ — `postcheck:'pass'` ค้างจากรอบก่อนทำให้ `ship <SYM>` commit ได้โดยไม่ต้องสั่ง `ship <SYM>` ชัดเจนใหม่ | phase1-exit §7 | ระยะ 2 |
+| 28 | queue: `roundStart` ยังผูก `flaggedAt > prev` — flag ใหม่จริงที่ลงวันที่ก่อนรอบเริ่ม (เช่นค้างจากรอบก่อน) จะไม่เปิดรอบใหม่ (ตั้งใจแบบระวังไว้ก่อน สังเกตผ่านข้อความ "ค้างจากรอบก่อน") | phase1-exit §7 | เจ้าของ / ระยะ 2 |
+| 29 | `earnings-calendar.js --out` ข้าม gate `--write` และ guard `--limit` ได้ (สงบนิ่งอยู่ตราบที่ปฏิทินงบยังปิดใช้งาน — คู่กับ #24) | phase1-exit §7 | งานเปิดใช้ปฏิทินงบ (ตอนปิด #24) |
+| 30 | `gen-docs.js` เขียน 5 เป้าหมายแบบไม่ atomic · marker ที่อยู่ใน code fence ของเอกสาร render ออกมาเป็น HTML comment ที่มองเห็นได้ (รับสภาพ) | phase1-exit §7 | ระยะ 2 docs |
+| 31 | เส้นทาง `--th` ของ `/forecast/` ยังไม่เคยทดสอบกับของจริง — ต้อง probe `quote/bkk/<SYM>/forecast/` สักครั้ง | phase1-exit §7 | ระยะ 3 / WS9(b) |
+| 32 | `tools/median-multiples.js` นับทุกคอลัมน์ FY ส่วน `fyYears` (Task 24) นับเฉพาะ FY ที่มี EPS(dil) จริง — สองเครื่องมือขัดกันได้บนหุ้นตัวเดียวกัน | phase1-exit §7 | ระยะ 2 |
+| 33 | cron schedule เขียน `17 0 * * *` UTC (07:17 น. ไทย) แต่ workflow ถูก GitHub สร้างจริงเวลา 04:40–04:48 UTC ทุกวัน (5/5 วัน · รันเอง ~8 นาที) ⇒ ลงเวลา ~11:45 น. ไทย ซึ่งอยู่**ในช่วง SET เปิดตลาด** ⇒ guard `isIntradayQuote` ข้ามหุ้นไทยทั้งช่วง (ล็อกรอบ 11 ก.ย. มี **230 ครั้ง** "ข้าม — ตลาดยังเปิด") · จำนวนใบ refresh สำเร็จวันธรรมดา **653/674/674** (≈908 − 238 หุ้นไทย) เทียบกับ **897 ใบ** ในรอบวันเสาร์ ⇒ **หุ้นไทย refresh ได้จริงเฉพาะรอบวันเสาร์** เท่านั้น flag ของหุ้นไทยจึงโผล่แค่ snapshot วันเสาร์ ⇒ replay รายสัปดาห์ของเกณฑ์ 5 **นับปริมาณ flag หุ้นไทยของวันธรรมดาต่ำกว่าจริง** | phase1-exit §4(ง)/§7 | เจ้าของ — ต้องตามต่อทันที: เลื่อน cron ไปราว 20:30 UTC (แม้หน่วง 4.5 ชม. ก็ยังก่อน SET เปิด) แล้ววัดใหม่ · "รับสภาพ" ไม่ได้ |
+| 34 | รอบ cron แรกที่ถือโค้ดครบทุกส่วน A–E (summary-cell pass #11 · PREPATCH triage · earnings fallback) คือรอบ 13 ก.ย. 2569 — ต้องตรวจ `price-flags.json` + บรรทัด `✓`/`notes`/`patch-rejected` ของรอบนั้น · PONY เข้า quarantine แล้ว 12 ก.ย. ด้วย `W17 (patch ทำให้ตก)` — healer #7 งดออกความเห็นเมื่อสามคอลัมน์ฉาก (Bear/Base/Bull) ขัดกันเอง ⇒ ไฟล์แบบนี้จะตก `patch-rejected` ทุกวันจนกว่าคนจะแก้ (ออกแบบไว้แบบนี้ แต่ต้องมีคนไล่ดูทุกใบ) | phase1-exit §7 | ระยะ 3 / runbook REJECTED bucket |
+| 35 | `forecastLine` มองว่า `epsFwd === 0` = ไม่มีค่า (`tools/fetch-fundamentals.js`) — เป็นตัวกันหารด้วยศูนย์ (benign) แต่ถ้า forward estimate จริงเป็น 0 จะพิมพ์ผิดว่า "ไม่มี epsFwd" | รีวิว ระยะ 1 (Task 22) | ระยะ 3 / WS9(b) |
 
 ## ปิดแล้ว (ระยะ 0)
 
@@ -33,10 +41,13 @@
 
 | # | รายการ | ปิดโดย |
 |---|---|---|
+| 2 | ป้าย marker gauge "เหมาะสม" ไม่มี gate (ICLR) | Task 9 (PR #32): field `f49` (ป้าย gauge mFair) ได้ binding `pair` → f44 (money) ⇒ ยิงเป็น **W22** เมื่อไม่ตรง |
 | 4 | median-multiples ส่งค่าผิด 2 คลาส (สุดขั้ว · ผสมสกุล) — sanity ใน runbook แล้ว แต่ยังไม่มี fixture test ของตัวมันเอง | Task 23: `oneSymbol(spec, th, deps)` ฉีด `fetchFinPage`/`monthlyCloses`/`statementCurrency`/`finRow` ผ่าน `deps` (default = ของจริง) + `test/median-multiples-test.js` (offline, เรียกจาก `test/prep-stock-test.js`) ครอบ TTM/EPS≤0/outlier สุดขั้ว (เคส AU 2,074x)/ผสมสกุล (เคส CP)/MIN_POINTS |
 | 7 | E41 ข้ามป้าย "P/E เฉลี่ย ~N ปี" — ป้ายอ้างช่วงยาวกว่าอายุหุ้น (GABLE) | Task 24: `parseVendor` นับ `fyYears` จากคอลัมน์ตัวเลขจริงบนแถว `EPS(dil)` ของตาราง [3] (หัก TTM เมื่อหัวตารางมี) → `prep()` บันทึกลง state + เติมบรรทัดเตือนใน prompt worker · `postcheck.checkFyYears(f55, fyYears)` ฟ้องเมื่อป้ายการ์ดเกินจริง — ★ นี่คือทางปิด #7 จริง แยกจาก manifest pair `f55↔f04` (`how:'years'`) ซึ่ง**ยังไม่ยิงใบไหนเลย (latent)** เพราะกราฟราคาไม่มีป้ายปี 4 หลักให้เทียบ — ขา manifest นั้นปล่อยไว้เป็นข้อมูลเสริมเฉย ๆ ไม่ใช่ตัวตัดสิน |
 | 8 | `test:prep` ไม่อยู่ใน verify | Task 23: แทรก `node test/prep-stock-test.js` เป็นขั้นที่ 16 ของ `npm run verify` (หลัง `docs-test`) + `STEP_LABELS`/`.githooks/pre-push`/docs ผ่าน `tools/gen-docs.js` |
+| 9 | bad-chart ผสมฐาน gate มองไม่เห็น (E36 ผิดพร้อมกัน) | Task 9 (PR #32): field `f41` (กรอบ 52 สัปดาห์) ได้ binding `pair` → f01 (contains · stale) ⇒ ยิงเป็น **W23** |
 | 10 | ห้ามวาง shares ถัวเฉลี่ยลง prompt (CAMT) | Task 24: โค้ด (`SHARES_LABEL`/`SHARES_NOTE` ใน `printFinancialTable`) มีอยู่แล้วตั้งแต่ 17 ส.ค. 69 แต่ไม่มีเทสคุม — เพิ่ม `test/prep-stock-test.js` ยืนยัน `F.SHARES_LABEL === 'Shares(wAvgDil)'` และจับ stdout ของ `printFinancialTable` (export เพิ่มจาก `tools/fetch-fundamentals.js`) ว่าพิมพ์ `SHARES_NOTE` จริงเมื่อตาราง [3] มีแถว shares (fixture `amataFin`) และไม่พิมพ์เมื่อไม่มี |
 | 13 | BBL ช่องสรุป "+2.1% (เกือบเต็มมูลค่า)" เครื่องหมาย/คำขัดกัน | ปิดเชิงกลไก (Task 11) · คลังกวาดแล้ว (Task 12 · 861 ใบ · W06 = 0) |
 | 19 | W06 ยิง 553/908 ก่อน 17 ส.ค. — เดิมต้องให้คนแก้เพราะ cron ไม่แตะคำ | ปิดเชิงกลไก (Task 11) · คลังกวาดแล้ว (Task 12 · 861 ใบ · W06 = 0) |
 | 22 | คิว price-flags เป็น snapshot — pre-patch ด้วย --force ล้าง flag ก่อนวิเคราะห์ ทำให้สถานะรอบอยู่แค่ใน .queue/state.json (per-machine) — ต้องการคิวถาวรใน repo | Task 15: state ย้ายไป `<checkout หลัก>/.queue` (`resolveQueueDir` ใน `tools/queue/state.js` ใช้ `git rev-parse --git-common-dir`) — ข้าม worktree ✓ ข้ามเครื่อง ✗ (ถ้าใช้หลายเครื่องต้องย้าย state เข้า repo) |
+| 23 | lockfile ไม่มี heartbeat — holder ที่ทำงานเกิน 10 นาทีจะถูกยึด lock และตอนปล่อยจะลบ lock ของคนใหม่ (ยังไม่เกิดเพราะไม่มี holder ทำงานยาวใต้ lock) | Task 4 (PR #31): `tools/lockfile.js` — holder async ได้ heartbeat จน settle แล้วค่อยปล่อย lock (holder sync ยังห้ามยาวตามเดิม) |

@@ -148,3 +148,27 @@ node tools/analysis-age.js
 ตัวเลขอื่นที่ขยับในระยะ 0: ขั้น `npm run verify` **13 → 14** (+`queue-test`) · fixture ที่ผูกไฟล์รายงานจริง **2 → 0** (`test/fixtures/`) · รหัส E/W ใหม่ **0** (spec §8 ห้ามเพิ่ม E ก่อน quarantine ครบ) · `docs/open-items.md` เปิด **19** (รวม #22 #23 จาก final review) ปิดแล้ว **4** (#18 ปิดด้วย probe 12 ก.ย.)
 
 **เงื่อนไขก่อนระยะ 1:** W-code ที่ขึ้นกับราคายังขยับตามราคา (149→151 ระหว่าง sweep) — เลื่อน W→E เมื่อไรต้องรัน sweep ซ้ำเป็นเกณฑ์จบระยะ 1 · วัดแล้ว 12 ก.ย. (Task 20 เจ้าของสั่ง): เส้นทาง `analyze-wave` ได้ CLAUDE.md + MEMORY.md เหมือน Agent tool · model เมื่อไม่ส่ง = Sonnet 5 จาก script pin ไม่ใช่ default harness (open-items #18 ปิด) · ยังไม่ได้วัด: KPI รอบเคลียร์คิวจริง (ปัญหาที่คนจับ · re-dispatch · turn/หุ้น) ต้องรอรอบถัดไป
+
+## 10. ผลวัดเกณฑ์จบระยะ 1 — 12 ก.ย. 2569 (branch `claude/audit-p1-f-exit` @ `ee3de05c` · PR #31–#34 merge main แล้ว · #35 merged `3d028b75`)
+
+> รายละเอียด/คำสั่งเต็ม + ตารางทุกแถว → `phase1-exit.md` (โฟลเดอร์เดียวกัน) · ทุกตัวเลขวัดใหม่บนสาขานี้ ไม่ได้ลอกจาก ledger
+
+| เกณฑ์ (spec §6 แถว "1") | baseline | วัดได้ 12 ก.ย. | คำสั่ง |
+|---|---|---|---|
+| gate พิมพ์ coverage ทุกไฟล์ | ไม่มี (ช่อง 68/70 ไม่มีใครนับ) | **908/908 บรรทัดมี `· ช่อง x/70`** · สรุปมี `ช่องต่ำสุด 46/70 (FANG)` · ต่ำสุด **46** · มัธยฐาน **58** · เฉลี่ย 57.45 · สูงสุด 64 | `rtk proxy node test/check-reports.js \| grep -c 'ช่อง [0-9]*/70'` · การกระจาย: `grep -o 'ช่อง [0-9]*/70' \| sort -n -k2 \| uniq -c` |
+| NEITHER 18 → 0 | 18 (code-audit §1.1) | **0** — เหลือ `f64` ตัวเดียว (deferred ระยะ 2 ตามข้อ A/B) · 18 แถวเดิม = `pair` 8 · `presence` 10 · binding ทั้ง manifest: cron 27 · gate 17 · presence 13 · pair 12 · deferred 1 | `node -e "…FIELDS.filter(f=>f.binding==='deferred'\|\|(!f.gate.length&&…))"` (เต็มใน `phase1-exit.md` §2) |
+| UNVERIFIED WRITE 3 → 0 | 3 (f11 f12 f50) | **0** — ทั้งสามเป็น `pair` (f11→f10 date · f12→f10 date · f50→f01 money) · cron `notes` "found:false" = **0/908** | `node -e "…FIELDS.find(id)"` + เดิน `patchReport()` ทุกใบแบบ offline นับ `r.notes` |
+| W16/W17/W19/W20 → E โดย cron ไม่ล้ม | ระยะ 0: warning ขยับ 149→151 ตามราคา (W ยังไม่บล็อก) | **sweep 12/12 ราคา fails=0 · error 0 · warning 241 ทุกราคา (นิ่ง ไม่ขยับตามราคาแล้ว)** · quarantine: `gateAfterPatch` W17 → `patch-rejected` ไม่ throw · **★ cron จริง `b17b70c1` (12 ก.ย. 04:48Z) รันบน main ที่ยกเป็น E แล้ว (`824ff8a7` = merge PR #32) สำเร็จ 897 ใบ · PONY เข้า quarantine 1 ใบ (`W17 (patch ทำให้ตก)`)** — ยังไม่มีรอบที่ถือส่วน C/D/E | `PRICES="…" SWEEP_DIR=… sh docs/superpowers/audit/2026-09-11-stock-analyzer/sweep.sh` (2 แบตช์ × 6 ราคา) · `git merge-base --is-ancestor a4b91756 b17b70c1` |
+| คิว LLM ต่อรอบลด ≥50% | 57/65 = **88%** ของ flag ส่ง LLM | **16/65 = 24.6%** · **ลด 72%** (กฎเก่า 57 → กฎใหม่ 16) · exit 0 | `rtk proxy node docs/superpowers/audit/2026-09-11-stock-analyzer/replay-queue.js` (replay 8 snapshot จาก git history · มีของจริง 6 · 2 snapshot คิวว่าง) |
+
+**replay ต่อ snapshot** (flags · LLM เก่า · LLM ใหม่ · ลด):
+```
+09-12 b17b70c1  9  7 1  86%   09-11 c963b78d  3  1 0 100%   09-10 abca6132  4  3 0 100%
+09-09 3428cf2b  1  1 1   0%   09-09 96ab5bbe 27 27 8  70%   09-05 4fe8536e 21 18 6  67%
+รวม: กฎเก่า 57 · กฎใหม่ 16 · ลด 72% (เกณฑ์ ≥50%)
+```
+★ ตัวเลขนี้สะท้อน **flip→PREPATCH + การยกตามอายุ >90 วัน เท่านั้น** — ปฏิทินงบยังเป็น fallback (open-item #24: มีวันที่ 719/908 = 79.2% · TH `.BK` 51/238 = 21%) ⇒ ขา "งบออกหลังวิเคราะห์" ยังไม่ทำงาน · เปิดเมื่อไรตัวเลขจะลดลง (คิว LLM เพิ่ม) ตามใบที่มีงบใหม่จริง
+
+**ตัวเลขอื่นที่ขยับในระยะ 1:** ขั้น `npm run verify` **14 → 16** (+`docs-test` +`prep-stock-test` · 9.13 วิ) · `verify:cron` = ประตูของ cron แยกออกมา **5 ขั้น** · รหัส gate **62 → 65** (error **47** = E01–E43 + W16 W17 W19 W20 ที่เลื่อนระดับ · warn **18**) · รหัสใหม่ในระยะ = **W21 W22 W23 (3 · ทั้งหมด warn)** + W06 เขียนใหม่ใช้รหัสเดิม · warning **149 → 303 (ตอนเปิด W21–W23) → 241** (W23 109 · W15 96 · W22 24 · W21 11 · W05 1 · W06 0) · `docs/open-items.md` Task 25 วัดตอนนั้น: **เปิด 13 · ปิด 11** (ปิดในระยะ 1: #4 #7 #8 #10 #13 #19 #22 · เพิ่ม #24 ปฏิทินงบ) → **Task 26 (รีวิวจบระยะ 1) เปิด 19 · ปิด 15** (ปิดเพิ่ม #2 #9 #23 · เพิ่มใหม่ #25–#34) → **final review Part F: เปิด 21 · ปิด 14** (คืน #14 เป็นเปิด — `checkPairs` ยิงไม่ได้จริง ไม่ใช่ปิดบางส่วน · เพิ่ม #35 เศษ Part E) — รายละเอียด `phase1-exit.md` §6/§7
+
+**ต่างจาก ledger (วัดใหม่):** W21 13→**11** · W22 33→**24** · W23 108→**109** · warning 303→**241** · self-test 403→**404** — เหตุ: คลังผ่าน `bea4bc2d` (กวาดช่องสรุป W06 861→0) และ price refresh จริง `b17b70c1` ⇒ ขา f12↔f10 (9 ใบ disclaimer ระดับเดือน) เหลือ **0** เพราะ cron ประทับ `.disc` ใหม่ให้ตรงวันที่ราคา (ตัวอย่าง CKP `4 ก.ย.` → `11 ก.ย.`) · W23 เป็นขาที่**ขยับตามราคา** จึง +1 หลัง refresh — ยืนยันกฎที่ phase0-exit §6 ตั้งไว้ว่าต้องรัน sweep ซ้ำก่อน/หลังเลื่อนระดับทุกครั้ง
