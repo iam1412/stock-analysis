@@ -6,7 +6,7 @@ const RV = require('../tools/report-values.js');
 const sm = { symbol: 'BBL', currency: 'THB', price: 188, fairValue: 195, mos: 3.6, upside: 3.7, pe: 8.67, dividendYield: 6.4, roe: 7.3 };
 const rd = () => ({
   v: 2, fv: 195,
-  values: { px: 188, priceDate: '2026-09-11', chgSuffix: 'รอบปี', fvLow: 180, fvHigh: 210, analystTgt: 205, eps: 21.7,
+  values: { px: 188, priceDate: '2026-09-11', dateEra: 'BE', chgSuffix: 'รอบปี', fvLow: 180, fvHigh: 210, analystTgt: 205, eps: 21.7,
     shares: 1909000000, revenue: 140e9, dps: 12, bvps: 260, baseEps: 21.7,
     scenarios: [{ tgt: 160, div: 36 }, { tgt: 230, div: 36 }, { tgt: 300, div: 36 }], scnBasis: { years: 3, divIncluded: true, perYear: 'cagr' } },
   theme: { accent: '#1a73e8', chgBg: 'var(--green-soft)', chgColor: '#137333' },
@@ -34,6 +34,15 @@ const rd = () => ({
   const s = d.scenarios;
   assert(s.length === 3 && Math.abs(s[0].total - ((160 + 36 - 188) / 188 * 100)) < 1e-9 && s[0].cls === 'pos', 'scenario total รวมปันผล: ' + s[0].total);
   assert(Math.abs(s[0].perYear - ((Math.pow(1 + s[0].total / 100, 1 / 3) - 1) * 100)) < 1e-9, 'perYear cagr');
+}
+// ── ศักราชวันที่ราคา (dateEra) — ต้อง render ตาม "ของเดิมในไฟล์" ไม่ใช่บังคับ พ.ศ. เสมอ ──
+// คลัง 12 ก.ย. 69 ปนกันจริง (หัวรายงาน BE 737 / CE 171) ⇒ ถ้า hard-code พ.ศ. migration จะเขียนวันที่ที่คนเห็นใหม่ 171 ใบ
+{
+  const be = rd(), ce = rd(); ce.values.dateEra = 'CE';
+  assert(RV.derive(be, sm).priceDate.text === '11 ก.ย. 2569', 'dateEra BE → พ.ศ.: ' + RV.derive(be, sm).priceDate.text);
+  assert(RV.derive(ce, sm).priceDate.text === '11 ก.ย. 2026', 'dateEra CE → ค.ศ.: ' + RV.derive(ce, sm).priceDate.text);
+  assert(RV.derive(ce, sm).priceDate.era === 'CE' && RV.derive(be, sm).priceDate.iso === '2026-09-11', 'derive คืน era + iso (ตัวเก็บเป็น ค.ศ. เสมอ)');
+  assert(RV.renderValues('ราคา ณ {{rd:priceDate}}', ce, sm) === 'ราคา ณ 11 ก.ย. 2026', 'renderValues ตาม dateEra CE');
 }
 // ── perYear linear / ไม่รวมปันผล / ไม่มี %/ปี ──
 {
@@ -124,6 +133,8 @@ const rd = () => ({
   bad((r) => { r.values.px = '188'; }, /px/, 'px ไม่ใช่ number');
   bad((r) => { r.values.priceDate = '11 ก.ย. 2569'; }, /priceDate/, 'priceDate ไม่ใช่ ISO');
   bad((r) => { r.values.chgSuffix = 'YTD'; }, /chgSuffix/, 'chgSuffix นอกรายการ');
+  bad((r) => { delete r.values.dateEra; }, /dateEra/, 'dateEra หาย (req — ห้ามเดาศักราชแทนไฟล์)');
+  bad((r) => { r.values.dateEra = 'AD'; }, /dateEra/, 'dateEra นอกรายการ (BE/CE)');
   bad((r) => { r.gauge.cur = 188; }, /gauge\.cur/, 'v2 ห้ามมี gauge.cur');
   bad((r) => { r.gauge.fair = 195; }, /gauge\.fair/, 'v2 ห้ามมี gauge.fair');
   bad((r) => { r.chart.fairLine = 195; }, /fairLine/, 'v2 ห้ามมี chart.fairLine');

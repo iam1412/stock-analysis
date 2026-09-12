@@ -84,7 +84,8 @@
   "fv": 195,                       // เจ้าของเดียวของ FV (เดิมมี 9 สำเนา)
   "values": {
     "px": 188,                     // cron · ราคาปิดล่าสุด (2 ตำแหน่ง)
-    "priceDate": "2026-09-11",     // cron · ISO ค.ศ. เสมอ · render เป็น "11 ก.ย. 2569"
+    "priceDate": "2026-09-11",     // cron · ISO ค.ศ. เสมอ (ตัวเก็บ) · render ตาม dateEra
+    "dateEra": "BE",               // worker/migrator · "BE" → "11 ก.ย. 2569" · "CE" → "11 ก.ย. 2026" — ศักราชเดิมของไฟล์ (ใบใหม่ = BE)
     "chgSuffix": "รอบปี",          // worker · "รอบปี" | "ตั้งแต่ IPO" — ตัวเลข % คิดจาก chart.data ตอน render
     "fvLow": 180, "fvHigh": 210,   // worker · กรอบ FV (null = ไม่มี)
     "analystTgt": 205,             // worker · เป้านักวิเคราะห์ (null = ไม่มี)
@@ -109,7 +110,7 @@ token ที่ renderer รู้จัก (`tools/report-values.js` `TOKENS`) 
 |---|---|---|
 | `{{rd:px}}` | `฿188.00` (สกุลจาก `stock-meta.currency`) | px |
 | `{{rd:pxNum}}` | `188` (ค่าตั้งต้น `pxIn`) | px |
-| `{{rd:priceDate}}` | `11 ก.ย. 2569` | priceDate |
+| `{{rd:priceDate}}` | `11 ก.ย. 2569` (BE) · `11 ก.ย. 2026` (CE) — ศักราชตาม `dateEra` ไม่ใช่ค่าคงที่ของระบบ | priceDate · dateEra |
 | `{{rd:chg}}` | `▲ +12.3% (รอบปี)` — `annualChg(chart.data, '(' + chgSuffix + ')')` | chgSuffix |
 | `{{rd:fv}}` `{{rd:fvLow}}` `{{rd:fvHigh}}` | `฿195.00` … | fv · fvLow · fvHigh |
 | `{{rd:mos}}` | `+4%` (`fmtMos((fv−px)/fv×100)`) | — |

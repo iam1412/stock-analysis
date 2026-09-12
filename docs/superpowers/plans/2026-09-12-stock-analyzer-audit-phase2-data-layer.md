@@ -63,7 +63,8 @@
   "fv": 195,                       // เจ้าของเดียวของ FV (เดิมมี 9 สำเนา)
   "values": {
     "px": 188,                     // cron · ราคาปิดล่าสุด (2 ตำแหน่ง)
-    "priceDate": "2026-09-11",     // cron · ISO ค.ศ. เสมอ · render เป็น "11 ก.ย. 2569"
+    "priceDate": "2026-09-11",     // cron · ISO ค.ศ. เสมอ (ตัวเก็บ) · render ตาม dateEra
+    "dateEra": "BE",               // worker/migrator · "BE" → "11 ก.ย. 2569" · "CE" → "11 ก.ย. 2026" — ศักราชเดิมของไฟล์ (ใบใหม่ = BE)
     "chgSuffix": "รอบปี",          // worker · "รอบปี" | "ตั้งแต่ IPO" — ตัวเลข % คิดจาก chart.data ตอน render
     "fvLow": 180, "fvHigh": 210,   // worker · กรอบ FV (null = ไม่มี)
     "analystTgt": 205,             // worker · เป้านักวิเคราะห์ (null = ไม่มี)
@@ -88,7 +89,7 @@ token ที่ renderer รู้จัก (Task 1 `TOKENS`) — ตัวไ�
 |---|---|---|
 | `{{rd:px}}` | `฿188.00` (สกุลจาก `stock-meta.currency`) | px |
 | `{{rd:pxNum}}` | `188` (ค่าตั้งต้น `pxIn`) | px |
-| `{{rd:priceDate}}` | `11 ก.ย. 2569` | priceDate |
+| `{{rd:priceDate}}` | `11 ก.ย. 2569` (BE) · `11 ก.ย. 2026` (CE) — ศักราชตาม `dateEra` ไม่ใช่ค่าคงที่ของระบบ | priceDate · dateEra |
 | `{{rd:chg}}` | `▲ +12.3% (รอบปี)` — `annualChg(chart.data, '(' + chgSuffix + ')')` | chgSuffix |
 | `{{rd:fv}}` `{{rd:fvLow}}` `{{rd:fvHigh}}` | `฿195.00` … | fv · fvLow · fvHigh |
 | `{{rd:mos}}` | `+4%` (`fmtMos((fv−px)/fv×100)`) | — |
@@ -535,7 +536,7 @@ gh pr create --base main --head claude/audit-p2-a-renderer --title "audit ระ
 
 **Interfaces:**
 - Consumes: token ใน `RV.TOKENS`
-- Produces: skeleton ที่ worker กรอกเฉพาะ `{{UPPER}}` · ทุกช่องสำเนาเป็น `{{rd:…}}` · token worker ที่**หายไป**: `PRICE_DATE` · `CHANGE` · `MOS_SIGNED` · `MOS_CLASS` · `MOS20` · `MOS30` · `SC1_RET`…`SC3_RET` · `ACCENT` (legend ใช้ `theme.accent` ผ่าน CSS var `var(--blue)` แทน) · token worker ที่**เพิ่ม**: `PRICE_DATE_ISO` · `CHG_SUFFIX` · `SHARES_N` · `REVENUE_N` · `DPS` · `EPS_NUM` · `BVPS_NUM` · `SCN_DIV_INCLUDED` · `SCN_PER_YEAR` · `GAUGE_MIN` · `GAUGE_MAX` · `THEME_JSON` · `CHART_JSON`
+- Produces: skeleton ที่ worker กรอกเฉพาะ `{{UPPER}}` · ทุกช่องสำเนาเป็น `{{rd:…}}` · token worker ที่**หายไป**: `PRICE_DATE` · `CHANGE` · `MOS_SIGNED` · `MOS_CLASS` · `MOS20` · `MOS30` · `SC1_RET`…`SC3_RET` · `ACCENT` (legend ใช้ `theme.accent` ผ่าน CSS var `var(--blue)` แทน) · token worker ที่**เพิ่ม**: `PRICE_DATE_ISO` · `DATE_ERA` · `CHG_SUFFIX` · `SHARES_N` · `REVENUE_N` · `DPS` · `EPS_NUM` · `BVPS_NUM` · `SCN_DIV_INCLUDED` · `SCN_PER_YEAR` · `GAUGE_MIN` · `GAUGE_MAX` · `THEME_JSON` · `CHART_JSON`
 
 - [ ] **Step 1: แก้ skeleton ทั้งสองไฟล์** (US แสดง · TH ต่างเฉพาะ ฿ / SET / `"currency":"THB"` / step ของ input) — จุดที่เปลี่ยน (เลขบรรทัดอ้าง `skeleton-us.html` ปัจจุบัน · หาโดยข้อความ):
 
@@ -572,7 +573,7 @@ gh pr create --base main --head claude/audit-p2-a-renderer --title "audit ระ
   "v": 2,
   "fv": {{FV}},
   "values": {
-    "px": {{PRICE}}, "priceDate": "{{PRICE_DATE_ISO}}", "chgSuffix": "{{CHG_SUFFIX}}",
+    "px": {{PRICE}}, "priceDate": "{{PRICE_DATE_ISO}}", "dateEra": "{{DATE_ERA}}", "chgSuffix": "{{CHG_SUFFIX}}",
     "fvLow": {{FV_LOW}}, "fvHigh": {{FV_HIGH}}, "analystTgt": {{ANALYST_TGT}},
     "eps": {{EPS_NUM}}, "shares": {{SHARES_N}}, "revenue": {{REVENUE_N}}, "dps": {{DPS}}, "bvps": {{BVPS_NUM}},
     "baseEps": {{BASE_EPS}},
@@ -585,7 +586,7 @@ gh pr create --base main --head claude/audit-p2-a-renderer --title "audit ระ
 }
 </script>
 ```
-comment เหนือบล็อก: `PRICE_DATE_ISO` = วันที่ราคาแบบ ค.ศ. `YYYY-MM-DD` (จาก fetch-facts) · `CHG_SUFFIX` = `รอบปี` หรือ `ตั้งแต่ IPO` · `SHARES_N` = จำนวนหุ้นทั้งหมดเป็น "หุ้น" (1.91 พันล้าน → `1910000000`) · `REVENUE_N` = รายได้ TTM หน่วยเต็มสกุลรายงาน · `EPS_NUM/BVPS_NUM/DPS` = ตัวเลขล้วน (null ถ้าไม่มี → ตัดการ์ดนั้น) · `SCN_DIV_INCLUDED` = `true` เมื่อผลตอบแทนฉากรวมปันผล · `SCN_PER_YEAR` = `cagr` (ค่าตั้งต้น) — ★ **ห้ามมี `chart.fairLine`/`gauge.cur`/`gauge.fair`** (build throw)
+comment เหนือบล็อก: `PRICE_DATE_ISO` = วันที่ราคาแบบ ค.ศ. `YYYY-MM-DD` (จาก fetch-facts) · `DATE_ERA` = ศักราชที่ **แสดง** วันที่นั้น — ใบใหม่ใส่ `BE` เสมอ (CLAUDE.md §7 วันที่ในรายงานใช้ปี พ.ศ.) · `CE` มีไว้ให้ migrator รักษาหน้าตาเดิมของใบที่เขียน ค.ศ. เท่านั้น · `CHG_SUFFIX` = `รอบปี` หรือ `ตั้งแต่ IPO` · `SHARES_N` = จำนวนหุ้นทั้งหมดเป็น "หุ้น" (1.91 พันล้าน → `1910000000`) · `REVENUE_N` = รายได้ TTM หน่วยเต็มสกุลรายงาน · `EPS_NUM/BVPS_NUM/DPS` = ตัวเลขล้วน (null ถ้าไม่มี → ตัดการ์ดนั้น) · `SCN_DIV_INCLUDED` = `true` เมื่อผลตอบแทนฉากรวมปันผล · `SCN_PER_YEAR` = `cagr` (ค่าตั้งต้น) — ★ **ห้ามมี `chart.fairLine`/`gauge.cur`/`gauge.fair`** (build throw)
 
 - [ ] **Step 2: แก้ `test/skeleton-test.js`** — (1) ตัวกรอก (`fill`/case object ใกล้บรรทัด 49–51) กรอก token worker ชุดใหม่ (`PRICE_DATE_ISO: '2026-09-11'` · `CHG_SUFFIX: 'รอบปี'` · `SHARES_N: 1910000000` · `REVENUE_N: 4e11` · `EPS_NUM` · `BVPS_NUM` · `DPS` · `SCN_DIV_INCLUDED: true` · `SCN_PER_YEAR: 'cagr'` · `THEME_JSON` = JSON ของ theme ตัวอย่างใน `docs/templates.md` · `CHART_JSON` = chart ตัวอย่าง **ไม่มี fairLine** · `GAUGE_MIN/MAX`) และลบ token ที่หายไป (2) assertion `tpl.includes(`>${cs.cur}{{PRICE}}<`)` (บรรทัด 188) → `tpl.includes('<div class="px">{{rd:px}}<')` (3) เพิ่ม: หลัง `expandReport(filled)` → `ok(expanded.includes(cs.cur + RV.fmtPrice(b.price)), 'ราคา header render จาก values')` · `ok(!/\{\{rd:/.test(expanded), 'ไม่เหลือ {{rd:}}')` · เคส MOS ติดลบ (บรรทัด 219) ยังต้องผ่าน: `.big` render เป็น `−12%` (4) เคสใหม่: filled ที่ `analystTgt: null` แต่ยังมี `{{rd:analystTgt}}` → `expandReport` throw (พิสูจน์ว่ายาม null ทำงานบน skeleton จริง) (5) `tokensIn(tpl)` ต้องนับเฉพาะ `\{\{([A-Z_0-9]+)\}\}` (token worker) — `{{rd:…}}` ไม่ใช่ของ worker
 
@@ -660,7 +661,7 @@ gh pr create --base claude/audit-p2-a-renderer --head claude/audit-p2-b-skeleton
 
 **Interfaces:**
 - Consumes: `expandReport` (build.js) · `checkHtml`/`buildCtx` (check-reports) · `MF.FIELDS/extractAll` · `RM.*_PARTS_RE` · `DV.peCards/mcapCards/psCards/yieldPlan/pbvPlan/scenarioPlan/scenarioBlock/SUMMARY_RE/MOS_BIG_RE/targetCells/cardRe` · `PD.findPriceDate/findRestatedDate/findDiscPriceDate/dateIso` · `RV.*` · `footerDate` (queue/footer-date) · `styledRD` (report-values หลัง Task 5)
-- Produces: `migrateOne(src, name, opts)` → `{ ok: boolean, reason?: string, out?: string, values?, sites: { tokenised: string[], literal: string[] }, compare: { field, a, b, ok }[], notes: string[] }` · `COPY_FIELDS` (array id) · `TOLERANCE` (map id → fn(a,b) → bool) · CLI `node tools/migrate-v2.js [SYM…] [--write] [--batch i --size N] [--census <dir>]`
+- Produces: `migrateOne(src, name, opts)` → `{ ok: boolean, reason?: string, out?: string, values?, sites: { tokenised: string[], literal: string[] }, compare: { field, a, b, ok }[], notes: string[] }` · `COPY_FIELDS` (array id) · `TOLERANCE` (map id → fn(a,b) → bool) · `values.dateEra` = ศักราชเดิมของไฟล์ (`'BE'`/`'CE'`) — migrator ต้องเก็บ ไม่ใช่บังคับ พ.ศ. · CLI `node tools/migrate-v2.js [SYM…] [--write] [--batch i --size N] [--census <dir>]`
 
 - [ ] **Step 1: เทสก่อน** — `test/migrate-v2-test.js` บน `test/fixtures/{AAPL,BBL}.html` (v1 แช่แข็ง):
 
@@ -765,6 +766,7 @@ const TOLERANCE = {
 `extractValues(src, ctx)` → `{ values, fv, sites }`:
 - `px = ctx.px` (ต้องมี · ต้องใกล้ `sm.price` ≤0.02 ไม่งั้น reason `ราคา header ≠ stock-meta`)
 - `priceDate`: `hit = PD.findPriceDate(header)` ต้องมีวัน (`hit.day`) → `RV.isoOf({day, monIdx, yearCE: hit.isBE ? hit.year-543 : hit.year})` (ดู `PD.dateIso(hit)` ว่าให้ ISO ตรง ๆ ไหม — ใช้ตัวนั้นถ้ามี) · ไม่มีวัน → reason `วันที่ราคาระดับเดือน`
+- `dateEra`: `PD.findPriceDate(header).isBE ? 'BE' : 'CE'` — ★ **ห้าม hard-code `'BE'`** (คลัง 12 ก.ย. 69: หัวรายงาน BE 737 / CE 171 · บล็อก disc BE 364 / CE 57) ไม่งั้น migration เขียนวันที่ที่คนเห็นใหม่ 171 ใบ โดย masked text diff จับไม่ได้ (ตัวเลขถูก mask) · **7 ใบที่ศักราชของ disc ต่างจากหัวรายงาน** ถูก normalize เป็นศักราชของหัวรายงาน (site `disc` กับ `priceDate` render จาก `{{rd:priceDate}}` ตัวเดียวกัน จึงเป็นศักราชเดียวกันเสมอหลังย้าย) — ต้องลงรายชื่อใน census เป็น note `dateEra normalize`
 - `chgSuffix`: `/IPO/.test(ctx.chg) ? 'ตั้งแต่ IPO' : 'รอบปี'`
 - `fv = rd.fv` — ต้องใกล้ `ctx.fvBox` และ `sm.fairValue` และ `rd.gauge.fair` และ `rd.chart.fairLine` (สัมพัทธ์ 1%) ไม่งั้น reason `FV ไม่ตรงกันเอง`
 - `fvLow/fvHigh` จาก `ctx.mf.values.f54` (คู่ [low, high]) · ถ้า f54 ไม่มีแต่ fv-box มี "กรอบ X – Y" ให้อ่านจากตรงนั้น (regex `FVBOX_RANGE_RE` ด้านล่าง) · ทั้งสองแหล่งต้องตรงกัน (0.6%) ไม่งั้น reason
@@ -819,7 +821,7 @@ const masked = mask(strip(exp0)) === mask(strip(exp1));
 ```
 (`visibleText` = ตัดแท็ก/script/style เหมือน `visible()` ของ check-reports — export ตัวนั้นถ้ายังไม่ export) · gate: `checkHtml(exp1).errors.length === 0` · `footerDate` เท่า + `<footer>` ก้อนเดิม byte-equal · `readStockMeta` เท่า · ผลรวม: `ok = compare.every(ok) && masked && gateOk && footerOk && smOk`
 
-CLI: รายชื่อไฟล์ `reports/*.html` เรียงชื่อ · `--batch i --size N` = slice · ต่อไฟล์พิมพ์ `✓ SYM (tokenised 19 · literal 2: peCard,yieldCard)` หรือ `✗ SYM: <reason>` · `--write` เขียนเฉพาะ ok · `--census <dir>` เขียน `migration-v2-census.json` (append ต่อแบตช์: `{ batch, files: [{sym, ok, reason, tokenised, literal, notes}], at }`) และ render `migration-v2-census.md` (ตารางสรุป: ย้ายแล้ว/ยัง · เหตุผล residue นับต่อชนิด · site literal นับต่อชนิด · 10 ใบตัวอย่างต่อชนิด)
+CLI: รายชื่อไฟล์ `reports/*.html` เรียงชื่อ · `--batch i --size N` = slice · ต่อไฟล์พิมพ์ `✓ SYM (tokenised 19 · literal 2: peCard,yieldCard)` หรือ `✗ SYM: <reason>` · `--write` เขียนเฉพาะ ok · `--census <dir>` เขียน `migration-v2-census.json` (append ต่อแบตช์: `{ batch, files: [{sym, ok, reason, tokenised, literal, notes}], at }`) และ render `migration-v2-census.md` (ตารางสรุป: ย้ายแล้ว/ยัง · เหตุผล residue นับต่อชนิด · site literal นับต่อชนิด · 10 ใบตัวอย่างต่อชนิด · **รายชื่อใบที่ note `dateEra normalize`** — 7 ใบที่ศักราช disc ≠ หัวรายงาน ต้องอยู่ครบในตารางนี้ให้คนไล่ดูได้)
 
 - [ ] **Step 4: รันเทสให้ผ่าน** — `node test/migrate-v2-test.js` · แล้ว dry-run ทั้งคลัง (ไม่เขียน):
 

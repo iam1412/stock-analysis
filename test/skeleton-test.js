@@ -44,7 +44,9 @@ function buildFill(b) {
   const m1val = f2(b.m1eps * b.m1pe);                        // วิธี P/E (E21)
   const m3val = f2(b.m3ratio * b.m3bvps);                    // วิธี Justified P/BV (E22)
   // ── ค่าที่ derive จากราคา/FV: v2 ไม่มีใครพิมพ์ลง HTML อีกแล้ว ({{rd:…}} render ให้) เหลือที่ stock-meta
-  //    ซึ่งเป็น "กระจก" ⇒ คำนวณที่นี่ชุดเดียวด้วยสูตรเดียวกับ tools/report-values.js (E30/E31/E41/W10/W19)
+  //    ซึ่งเป็น "กระจก" ⇒ คำนวณที่นี่ชุดเดียว **ให้ตรงกับที่ cron เขียนลง stock-meta** คือปัด 1 ตำแหน่ง (round(x,1))
+  //    ★ ไม่ใช่รูปเดียวกับ "ข้อความที่โชว์": .big/ช่องสรุปใช้ DV.fmtMos (ปัดจำนวนเต็มเมื่อ |x| ≥ 2) ⇒ สองรูปนี้ต่างกัน
+  //    ได้โดยตั้งใจ — E30 ยอมให้ stock-meta ห่างจาก .big ≤ TOL_MOS_PP · E31 เทียบ stock-meta กับตัวมันเอง
   const mos = (b.fv - b.price) / b.fv * 100;
   const upside = (b.fv - b.price) / b.price * 100;
   return {
@@ -57,12 +59,12 @@ function buildFill(b) {
     AI_MODEL: 'Claude Sonnet 5',   // ในเทสเติมค่าตัวอย่าง — ของจริง worker เติมรุ่นที่รันจริงของตัวเอง (E28)
     // ── stock-meta (กระจกของ values — JSON ตัวเลขล้วน ห้ามมีเครื่องหมาย/สัญลักษณ์) ──
     PRICE: String(b.price), FV: String(b.fv),
-    MOS: String(Math.round(mos)), UPSIDE: String(Math.round(upside)),
+    MOS: String(Math.round(mos * 10) / 10), UPSIDE: String(Math.round(upside * 10) / 10),
     PE: b.eps > 0 ? f1(b.price / b.eps) : 'null',
     DIV_YIELD: b.dps != null ? f1(b.dps / b.price * 100) : 'null',
     ROE: String(b.roe),
     // ── report-data v2: worker กรอกทีละค่า (ไม่เขียน JSON เอง) ──
-    PRICE_DATE_ISO: b.priceDateIso, CHG_SUFFIX: b.chgSuffix,
+    PRICE_DATE_ISO: b.priceDateIso, DATE_ERA: b.dateEra, CHG_SUFFIX: b.chgSuffix,
     FV_LOW: jnum(b.fvLow), FV_HIGH: jnum(b.fvHigh), ANALYST_TGT: jnum(b.analystTgt),
     EPS_NUM: jnum(b.eps), SHARES_N: jnum(b.sharesN), REVENUE_N: jnum(b.revenueN),
     DPS: jnum(b.dps), BVPS_NUM: jnum(b.bvps), BASE_EPS: jnum(b.baseEps),
@@ -103,6 +105,9 @@ function buildFill(b) {
 const WORKER_TOKEN_RE = () => /\{\{([A-Z_0-9]+)\}\}/g;
 function fill(tpl, map) { return tpl.replace(WORKER_TOKEN_RE(), (m, k) => (k in map ? map[k] : m)); }
 const tokensIn = (tpl) => [...new Set([...tpl.matchAll(WORKER_TOKEN_RE())].map((m) => m[1]))];
+// hint ของหมวด 6 = ที่เดียวที่ {{rd:scnNote}} ไป render — ต้องเจาะเฉพาะช่องนี้ ไม่ใช่ grep ทั้งไฟล์
+// (คำว่า "รวมปันผล" โผล่ในร้อยแก้วอื่นได้โดยชอบธรรม เช่น CHART_NARRATIVE "ลง ~−5% ในรอบปี (รวมปันผล ~ทรงตัว)")
+const scnHintOf = (html) => { const m = String(html).match(/คาดการณ์ผลตอบแทน 3 ปี<\/h2><div class="hint">([\s\S]*?)<\/div>/); return m ? m[1] : null; };
 
 // ---------- ชุดข้อมูลจริงสำหรับเติม ----------
 // ไทย = HMPRO จริง (= "ลองใช้งานกับ HMPRO") — ตัวเลขชุดเดียวกับ reports/HMPRO.html ที่ผ่าน gate อยู่แล้ว
@@ -112,8 +117,8 @@ const HMPRO = {
   exchange: 'SET',
   sub: 'ค้าปลีกสินค้าตกแต่ง/ปรับปรุงบ้าน HomePro • Mega Home วัสดุก่อสร้าง/ค้าส่ง • เครื่องใช้ไฟฟ้า/เฟอร์นิเจอร์ • บริการติดตั้ง/รีโนเวท • สาขาในมาเลเซีย',
   gdots: '<span style="background:#ffb066"></span><span style="background:#f9923a"></span><span style="background:#f57c00"></span><span style="background:#c25e00"></span>',
-  priceDateIso: '2026-06-23', chgSuffix: 'รอบปี', range52w: '฿5.70–฿8.00', sources: 'SET / stockanalysis.com / Investing.com',
-  fy: '2025', footerDate: '24 มิ.ย. 2026',
+  priceDateIso: '2026-06-23', dateEra: 'BE', chgSuffix: 'รอบปี', range52w: '฿5.70–฿8.00', sources: 'SET / stockanalysis.com / Investing.com',
+  fy: '2025', footerDate: '24 มิ.ย. 2569',
   price: 6.15, fv: 6.9, roe: 20.4,
   fvLow: 6.15, fvHigh: 7.92, analystTgt: 7.15, analystRating: 'Buy', baseEps: 0.44,
   eps: 0.44, dps: 0.38, bvps: 2.12, sharesN: 12930000000, revenueN: 69100000000,
@@ -152,8 +157,8 @@ const NWND = {
   exchange: 'NASDAQ',
   sub: 'แพลตฟอร์มซอฟต์แวร์บริหารองค์กร (ERP/CRM) • คลาวด์ซับสคริปชัน • โมดูล AI วิเคราะห์ข้อมูล (บริษัทตัวอย่างสำหรับโครงต้นแบบ)',
   gdots: '<span style="background:#7aa7ff"></span><span style="background:#4f86f7"></span><span style="background:#2f6bdf"></span><span style="background:#1f4fb0"></span>',
-  priceDateIso: '2026-06-23', chgSuffix: 'รอบปี', range52w: '$118–$182', sources: 'stockanalysis.com / TradingView / Investing.com',
-  fy: '2025', footerDate: '24 มิ.ย. 2026',
+  priceDateIso: '2026-06-23', dateEra: 'BE', chgSuffix: 'รอบปี', range52w: '$118–$182', sources: 'stockanalysis.com / TradingView / Investing.com',
+  fy: '2025', footerDate: '24 มิ.ย. 2569',
   price: 150, fv: 168, roe: 22,
   fvLow: 156, fvHigh: 180, analystTgt: 176, analystRating: 'Buy', baseEps: 7.5,
   eps: 7.5, dps: 1.80, bvps: 18.75, sharesN: 613000000, revenueN: 18500000000,
@@ -222,14 +227,16 @@ for (const cs of CASES) {
 
   // 3) เติมแล้วผ่าน gate
   const filled = fill(tpl, map);
-  ok(!/\{\{[A-Z_0-9]+\}\}/.test(filled), `${cs.file}: เติมครบ ไม่เหลือ {{TOKEN}} ของ worker`);
+  ok(!/\{\{\s*\w+\s*\}\}/.test(filled), `${cs.file}: เติมครบ ไม่เหลือ {{TOKEN}} ของ worker`);
   ok(/\{\{rd:/.test(filled), `${cs.file}: ยังมี {{rd:…}} ก่อน expand (build เป็นคนเติม ไม่ใช่ worker)`);
   const smOk = RM.readStockMetaState(filled).ok === true, rdOk = RM.readReportData(filled).ok === true;
   ok(smOk && rdOk, `${cs.file}: บล็อก stock-meta + report-data เป็น JSON ที่ parse ได้หลังเติม`);
 
   let expanded;
   try { expanded = expandReport(filled); } catch (e) { ok(false, `${cs.file}: expandReport throw: ${e.message}`); continue; }
-  ok(expanded.includes(cs.cur + RV.fmtPrice(b.price)), `${cs.file}: ราคา header render จาก values (${cs.cur}${RV.fmtPrice(b.price)})`);
+  ok(expanded.includes('<div class="px">' + cs.cur + RV.fmtPrice(b.price)), `${cs.file}: ราคา header render จาก values ที่ .px จริง (${cs.cur}${RV.fmtPrice(b.price)})`);
+  ok(expanded.includes('ราคา ณ 23 มิ.ย. 2569'), `${cs.file}: dateEra BE → วันที่ราคา render เป็น พ.ศ. ("23 มิ.ย. 2569")`);
+  ok((scnHintOf(expanded) || '').includes(' • รวมปันผล'), `${cs.file}: divIncluded=true → {{rd:scnNote}} เติม " • รวมปันผล" ใน hint ให้เอง — "${scnHintOf(expanded)}"`);
   ok(!/\{\{rd:/.test(expanded), `${cs.file}: expand แล้วไม่เหลือ {{rd:…}}`);
   // E40/W13 อ่าน tag จาก tags.json จริงเป็นค่าเริ่มต้น — แต่ HMPRO/NWND ที่นี่เป็น fixture สังเคราะห์
   // (NWND ไม่ใช่หุ้นจริง ไม่มีทางอยู่ใน tags.json — เพิ่มเข้าไปจะขัดกับ corpus check "ไม่มี entry ค้าง"
@@ -265,8 +272,31 @@ for (const cs of CASES) {
   //    (พิสูจน์บนโครงจริง ไม่ใช่ fixture สังเคราะห์ — โครงมี {{rd:analystTgt}} อยู่ 2 จุด: scale ของ gauge + ช่องสรุปหมวด 8)
   let nullErr = null;
   try { expandReport(fill(tpl, buildFill({ ...b, analystTgt: null }))); } catch (e) { nullErr = e; }
-  ok(!!nullErr && /analystTgt/.test(nullErr.message),
-    `${cs.file}: values.analystTgt = null แต่ยังมี {{rd:analystTgt}} → expandReport throw` + (nullErr ? '' : ' (ไม่ throw)'));
+  ok(!!nullErr && /analystTgt/.test(nullErr.message) && /ต้องมีค่าเมื่อใช้ token/.test(nullErr.message),
+    `${cs.file}: values.analystTgt = null แต่ยังมี {{rd:analystTgt}} → expandReport throw ด้วยข้อความของยาม null`
+    + (nullErr ? ` — "${nullErr.message}"` : ' (ไม่ throw)'));
+
+  // 6) ฉากที่คอมเมนต์ในโครง "สอนไว้" แต่ไม่มีอะไรรันจริง: ไม่รวมปันผล + %/ปี แบบ linear + ค่าที่ไม่มี (dps = null)
+  //    ที่ต้อง **ตัดการ์ดที่อ้างค่านั้นทิ้งด้วย** — ถ้าเส้นทางนี้พัง โครงจะสอนวิธีที่ทำแล้วเจ๊งโดยไม่มี gate ไหนรู้
+  //    ยิงบนเคสไทยพอ (โครง TH/US เหมือนกันทุกจุดที่เกี่ยวข้อง — ต่างแค่สัญลักษณ์สกุลเงิน/ตลาด)
+  if (cs.file === 'skeleton-th.html') {
+    const leanTpl = tpl.replace(/\n\s*<div class="metric"><div class="k">เงินปันผล<\/div>[\s\S]*?<\/div><\/div>/, '');
+    ok(!/\{\{rd:yield\}\}/.test(leanTpl) && leanTpl.length < tpl.length, `${cs.file}: lean — ตัดการ์ดเงินปันผล (ช่อง {{rd:yield}}) ออกจากโครงแล้ว`);
+    let leanExp = null;
+    try { leanExp = expandReport(fill(leanTpl, buildFill({ ...b, dps: null, scnDivIncluded: false, scnPerYear: 'linear' }))); }
+    catch (e) { ok(false, `${cs.file}: lean — expandReport throw: ${e.message}`); }
+    if (leanExp) {
+      ok(!/\{\{rd:/.test(leanExp) && !/\{\{\s*\w+\s*\}\}/.test(leanExp), `${cs.file}: lean — expand ครบ ไม่เหลือ token (dps=null + ตัดการ์ด = ไม่ throw)`);
+      ok(!(scnHintOf(leanExp) || '').includes('รวมปันผล'), `${cs.file}: lean — divIncluded=false → {{rd:scnNote}} ว่าง — hint = "${scnHintOf(leanExp)}"`);
+      // %/ปี ต้องเป็น total/N (linear) และ total ต้องไม่รวมปันผล — คำนวณซ้ำในเทสเอง ไม่ลอกค่าจาก RV
+      const tot = (b.sc[0].tgt - b.price) / b.price * 100;
+      const want = DV.fmtMos(tot) + ' (' + DV.fmtMos(tot / 3) + '/ปี)';
+      ok(leanExp.includes(want), `${cs.file}: lean — ฉาก Bear = linear ไม่รวมปันผล → "${want}"`);
+      const leanRes = checkHtml(leanExp, b.symbol + '.html', { tagData: fakeTagData, vocab: fakeVocab });
+      ok(leanRes.errors.length === 0, `${cs.file}: lean — ผ่าน check-reports (0 error)`
+        + (leanRes.errors.length ? ' — ' + leanRes.errors.map((e) => e.id + ':' + e.msg).join(' | ') : ''));
+    }
+  }
   console.log('');
 }
 

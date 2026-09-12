@@ -38,7 +38,9 @@
   • THEME_JSON = ทั้งก้อนจาก node tools/pick-brand.js <SYMBOL> (สีแบรนด์ — accent ห้ามเป็นน้ำเงิน default)
   • CHART_JSON = ทั้งก้อนจาก node tools/fetch-facts.js <SYMBOL> --th (ราคาย้อนหลัง ~1 ปี ไม่เกิน 13 จุด · E37
     · จุดท้าย = ราคาปัจจุบัน — ห้ามแต่งจุดเอง) · dataFmt อ้าง d[1] เท่านั้น, gridFmt อ้าง v เท่านั้น (ผิด scope = กราฟดับ)
-  • PRICE_DATE_ISO = วันที่ราคาแบบ **ค.ศ. "YYYY-MM-DD"** (จาก fetch-facts) — หน้าเว็บ render เป็น พ.ศ. ให้เอง
+  • PRICE_DATE_ISO = วันที่ราคาแบบ **ค.ศ. "YYYY-MM-DD"** (จาก fetch-facts) — เป็น "ตัวเก็บ" เสมอ ไม่ใช่รูปที่โชว์
+  • DATE_ERA = ศักราชที่ **แสดง** วันที่นั้น — ใบใหม่ใส่ `BE` เสมอ (CLAUDE.md §7 วันที่ในรายงานใช้ปี พ.ศ. → "23 มิ.ย. 2569")
+    `CE` (→ "23 มิ.ย. 2026") มีไว้ให้ migrator **รักษาหน้าตาเดิม** ของใบเก่าที่เขียน ค.ศ. เท่านั้น — ห้ามใช้กับใบใหม่
   • CHG_SUFFIX = "รอบปี" หรือ "ตั้งแต่ IPO" (หุ้น IPO <1 ปี) — ตัว % คิดจาก chart.data ตอน render (E35/E36 จึงตรงเสมอ)
   • SHARES_N = จำนวนหุ้นทั้งบริษัทเป็น "หุ้น" (1.91 พันล้านหุ้น → 1910000000) → Market Cap
     REVENUE_N = รายได้ TTM หน่วยเต็มสกุลรายงาน (18.5 พันล้าน → 18500000000) → P/S
@@ -55,7 +57,7 @@
   "v": 2,
   "fv": {{FV}},
   "values": {
-    "px": {{PRICE}}, "priceDate": "{{PRICE_DATE_ISO}}", "chgSuffix": "{{CHG_SUFFIX}}",
+    "px": {{PRICE}}, "priceDate": "{{PRICE_DATE_ISO}}", "dateEra": "{{DATE_ERA}}", "chgSuffix": "{{CHG_SUFFIX}}",
     "fvLow": {{FV_LOW}}, "fvHigh": {{FV_HIGH}}, "analystTgt": {{ANALYST_TGT}},
     "eps": {{EPS_NUM}}, "shares": {{SHARES_N}}, "revenue": {{REVENUE_N}}, "dps": {{DPS}}, "bvps": {{BVPS_NUM}},
     "baseEps": {{BASE_EPS}},
