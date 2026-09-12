@@ -60,8 +60,9 @@ const FLAGS = path.join(__dirname, '..', 'price-flags.json');
 // fmtMos + MOS_BIG_RE = รูป/ที่อยู่ของ .big — เจ้าของเดียวอยู่ที่ derived-values.js เพราะ W06 และ patchDerived#11 ใช้ตัวเดียวกัน
 const { patchDerived, fmtMos, MOS_BIG_RE } = require('./derived-values.js');
 const { findPriceDate, findRestatedDate, findDiscPriceDate, renderThaiDate, THAI_MONTHS } = require('./price-date.js');
+const RV = require('./report-values.js');   // ระยะ 2: format/derive มาตรฐานอยู่ที่นี่ (เจ้าของเดียว) — cron ใช้ร่วมกับ build/gate
+const { FLAT_PP, mosBand, fmtPrice, annualChg } = RV;
 const MAX_PTS = 13;          // กราฟรายเดือน ~1 ปี (E37)
-const FLAT_PP = 0.75;        // |% รอบปี| < 0.75 → "ทรงตัว" (ตาม migrate-annual-chg)
 const DRIFT_FREEZE = 0.15;   // ราคาใหม่ต่างจากในรายงาน > 15% → freeze (prose จะผิดความหมาย · เดิม 10% — ขยับขึ้นลดภาระ re-analysis)
 const SUSPECT_FREEZE = 0.25; // ต่าง > 25% → สงสัย split/ticker เปลี่ยน/ข้อมูลเพี้ยน
 const MOS_FLIP_DEADBAND_PP = 5; // MOS พลิกเครื่องหมายแต่ทั้งเก่า-ใหม่อยู่ใน ±5 จุด = แกว่งรอบ FV → patch ผ่าน ไม่ freeze
@@ -83,16 +84,7 @@ const DOWN = { bg: 'var(--red-soft)', col: '#c5221f' };
 // ---------- utils ----------
 const round = (v, d) => { const k = Math.pow(10, d); return Math.round(v * k) / k; };
 const num4 = (v) => +v.toFixed(6); // ตัดเศษ float ก่อนลง JSON
-// โซนของกล่อง verdict จาก MOS (%) — **นิยามเดียวในรีโป**: cron ใช้ sync class · W04 ใน check-reports import ไปตรวจ
-// (เดิมกติกาซ้ำอยู่ 3 ที่: check-reports · agent-prompt · templates.md — ถ้าแก้ตัวเลขต้องแก้ที่นี่ที่เดียว)
-const mosBand = (mos) => (mos < 10 ? 'bad' : mos < 20 ? 'ok' : 'good');
-
-// format ราคาสำหรับโชว์: 2 ตำแหน่งเสมอ + comma เมื่อ ≥1000 (สไตล์เดิมของรายงาน)
-function fmtPrice(p) {
-  const s = round(p, 2).toFixed(2);
-  const [i, d] = s.split('.');
-  return (Math.abs(p) >= 1000 ? Number(i).toLocaleString('en-US') : i) + '.' + d;
-}
+// mosBand/fmtPrice — ย้ายไป tools/report-values.js (เจ้าของเดียว, ระยะ 2) แล้ว import กลับด้านบน
 
 // format ตัวเลขตามสไตล์เดิม (นับตำแหน่งทศนิยมจากข้อความเก่า)
 function fmtLike(p, oldText) {
@@ -271,14 +263,7 @@ function niceBounds(values, fairLine) {
   return { min: num4(min), max: num4(max), grid };
 }
 
-// ป้าย % รอบปี + ทิศทาง (logic เดียวกับ tools/migrate-annual-chg.js)
-function annualChg(data, suffix) {
-  const first = data[0][1], last = data[data.length - 1][1];
-  let pct = first > 0 ? (last - first) / first * 100 : null;
-  if (pct == null || Math.abs(pct) < FLAT_PP) return { text: `≈ ทรงตัว ${suffix}`, dir: 'flat', pct };
-  if (pct > 0) return { text: `▲ +${pct.toFixed(1)}% ${suffix}`, dir: 'up', pct };
-  return { text: `▼ −${Math.abs(pct).toFixed(1)}% ${suffix}`, dir: 'down', pct };
-}
+// annualChg — ย้ายไป tools/report-values.js (เจ้าของเดียว, ระยะ 2) แล้ว import กลับด้านบน
 
 // currency: Yahoo ไม่ส่ง currency = สงสัย → ไม่ผ่าน (freeze) · ไม่ fail-open (v8 chart ส่ง currency แทบทุกครั้งกับ ticker จริง)
 const currencyMatches = (qCur, smCur) => qCur === smCur;
