@@ -132,8 +132,8 @@ GitHub Actions ([`update-prices.yml`](.github/workflows/update-prices.yml)) ร�
 → ผ่าน `npm run verify:cron` (ประตู cron 5 ขั้น) แล้วจึง commit + push เอง (Cloudflare deploy ต่อ)
 
 - **script deterministic ล้วน ไม่มี LLM ในลูป** ([`tools/update-prices.js`](tools/update-prices.js)) · **ไม่แตะ** prose วิเคราะห์ / EPS / Fair Value / วันที่วิเคราะห์ (ลำดับ index ยังเรียงตามวันวิเคราะห์ — `preserve-dates.js` คืนให้)
-- ตัวที่ขยับแรงจนคำวิเคราะห์เดิมผิดความหมาย (ต่าง **>15%** · **MOS พลิกเครื่องหมายเกิน dead-band ±3 จุด** · สงสัย split **>25%**) → **ไฟล์ไม่ถูกแตะ** แต่เข้าคิว [`price-flags.json`](price-flags.json) + GitHub Issue เดียวรอ **re-analysis** (flag หายเองเมื่อรายงานสดแล้ว)
-- ตรงข้าม — เคสที่ **ไม่** freeze แล้ว: MOS พลิกอยู่ใน ±3 จุด = patch ผ่านปกติ · ราคาหลุดขอบ gauge = **ขยายขอบให้เอง** (auto-rescale) — สองข้อนี้ตัด noise ในคิวไป ~80%
+- ตัวที่ขยับแรงจนคำวิเคราะห์เดิมผิดความหมาย (ต่าง **>15%** · **MOS พลิกเครื่องหมายเกิน dead-band ±5 จุด** · สงสัย split **>25%**) → **ไฟล์ไม่ถูกแตะ** แต่เข้าคิว [`price-flags.json`](price-flags.json) + GitHub Issue เดียวรอ **re-analysis** (flag หายเองเมื่อรายงานสดแล้ว)
+- ตรงข้าม — เคสที่ **ไม่** freeze แล้ว: MOS พลิกอยู่ใน ±5 จุด = patch ผ่านปกติ · ราคาหลุดขอบ gauge = **ขยายขอบให้เอง** (auto-rescale) — สองข้อนี้ตัด noise ในคิวไป ~80%
 - ticker เปลี่ยนชื่อ (เช่น BKI→BKIH) ประกาศใน [`tools/symbol-map.json`](tools/symbol-map.json) — ใช้ร่วมกันทั้ง cron ราคาและ `/api/ohlc`
 - log ต่อหุ้น (`AAPL 297.21 → 315.32 (+6.1%)` + บรรทัด freeze) เก็บถาวรใน commit body — ดูย้อนหลัง: `git log --grep "price: refresh"`
 

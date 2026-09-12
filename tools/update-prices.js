@@ -7,7 +7,7 @@
  * + gauge.cur + MOS + เครื่องคิดเลข + stock-meta) — **ไม่แตะ prose วิเคราะห์ / EPS / Fair Value**
  *
  * Freeze + flag (ไม่แตะไฟล์ เขียนลง price-flags.json รอ re-analysis) เมื่อ:
- *   ราคาต่างจากในรายงาน >15% · MOS พลิกเครื่องหมายเกิน dead-band ±3 จุด ·
+ *   ราคาต่างจากในรายงาน >15% · MOS พลิกเครื่องหมายเกิน dead-band ±5 จุด ·
  *   ต่าง >25% / currency ไม่ตรง (สงสัย split/ticker) · fetch/patch ไม่สำเร็จ
  *   + `bad-chart`: ซีรีส์กราฟจาก Yahoo **ผสมสองฐาน** — split ที่ Yahoo ยังไม่ปรับย้อนหลังให้ครบ
  *   (detectMixedBasis: มี bar ในหน้าต่าง 52 สัปดาห์หลุดกรอบ fiftyTwoWeekLow/High เกิน 10%)
@@ -17,7 +17,7 @@
  *   ตัวที่ติด flag นี้ **ไม่ถูก patch** เพื่อกันเขียนทับกราฟที่คนแก้ถูกไว้แล้ว · flag หายเองเมื่อ Yahoo
  *   ปรับ adjclose ครบ (รอบถัดไป detectMixedBasis ผ่าน) — ไม่ต้องถอนมือ · `--force` ยังประทับ
  *   ราคา/วันที่ได้แต่คงกราฟเดิมในไฟล์ (price-only) เพราะ SKILL STEP 1 สั่ง --force ทุกรอบ re-analysis
- *   (MOS พลิกใน ±3 จุด = แกว่งรอบ FV → patch ผ่าน · ราคาหลุดขอบ gauge → ขยายขอบเอง ไม่ freeze)
+ *   (MOS พลิกใน ±5 จุด = แกว่งรอบ FV → patch ผ่าน · ราคาหลุดขอบ gauge → ขยายขอบเอง ไม่ freeze)
  *   + `not-on-exchange`: quote ค้างหลัง cohort เดียวกัน ≥3 session (detectStaleQuotes)
  *   **และ** TradingView ยืนยันว่าไม่พบ ticker บนกระดานใด (confirmDead) — สองชั้นเพราะ
  *   regularMarketTime ค้างที่ "วันซื้อขายล่าสุด" ไม่ใช่ "session ล่าสุด" ⇒ หุ้นสภาพคล่องต่ำ
@@ -63,8 +63,8 @@ const MAX_PTS = 13;          // กราฟรายเดือน ~1 ปี (
 const FLAT_PP = 0.75;        // |% รอบปี| < 0.75 → "ทรงตัว" (ตาม migrate-annual-chg)
 const DRIFT_FREEZE = 0.15;   // ราคาใหม่ต่างจากในรายงาน > 15% → freeze (prose จะผิดความหมาย · เดิม 10% — ขยับขึ้นลดภาระ re-analysis)
 const SUSPECT_FREEZE = 0.25; // ต่าง > 25% → สงสัย split/ticker เปลี่ยน/ข้อมูลเพี้ยน
-const MOS_FLIP_DEADBAND_PP = 3; // MOS พลิกเครื่องหมายแต่ทั้งเก่า-ใหม่อยู่ใน ±3 จุด = แกว่งรอบ FV → patch ผ่าน ไม่ freeze
-                                // (3 = dead-band เดียวกับ gate W06 — prose "ถูก/แพงเล็กน้อย" ไม่ขัด gate ในช่วงนี้)
+const MOS_FLIP_DEADBAND_PP = 5; // MOS พลิกเครื่องหมายแต่ทั้งเก่า-ใหม่อยู่ใน ±5 จุด = แกว่งรอบ FV → patch ผ่าน ไม่ freeze
+                                // (3 → 5 ระยะ 1 ข้อ D: flip ในย่านนี้ไม่มีข้อมูลใหม่ · ช่องสรุป "ส่วนต่างจากราคา" cron เขียนเองทั้งช่อง จึงไม่มี prose ให้ขัด)
 const GAUGE_PAD = 0.05;      // ราคาหลุดขอบ gauge → ขยายขอบเป็น ราคา±5% (ขอบเป็น display scaffolding — engine วาดจาก report-data.gauge)
 const FETCH_DELAY_MS = 450;  // throttle Yahoo (~2 req/s)
 const ABORT_CONSEC_FAILS = 11; // fetch พังติดกันครบ N ตัว = ต้นทางล่ม/โดนบล็อก ไม่ใช่ ticker รายตัวมีปัญหา → ยกเลิกทั้งรอบ
@@ -429,7 +429,7 @@ function classifyStale(candidates, rows, probeMap) {
 }
 
 /** ทุกจุด "ราคา ณ <วันที่>" ในบล็อก .disc (ตัวอ่านเดียวกับ f12 — วนจนหมดบล็อกเพราะบางใบเขียนซ้ำ 2 จุด
- *  เช่น "ราคา ณ …" + "ราคาปิดรายเดือน ณ …" · วัด 12 ก.ย. 69: 15/908 ใบมี ≥2 จุด) */
+ *  เช่น "ราคา ณ …" + "ราคาปิดรายเดือน ณ …" · วัด 12 ก.ย. 69: 13/908 ใบมี ≥2 จุด) */
 function allDiscDates(discHtml) {
   const out = [];
   for (let from = 0, h; (h = findDiscPriceDate(discHtml, from)); from = h.index + h.length) out.push(h);

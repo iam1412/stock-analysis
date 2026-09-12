@@ -15,7 +15,7 @@ description: วิเคราะห์หุ้นรายตัว (ไท�
 - มี `reports/<SYMBOL>.html` อยู่แล้ว → **UPDATE** (แก้เฉพาะจุด **ห้าม rewrite/ห้ามเริ่ม skeleton ใหม่**)
 - ยังไม่มี → **NEW** (เริ่มจาก skeleton เท่านั้น — ห้ามก๊อปรายงานหุ้นอื่น เลขเดิมจะติดมา)
 - **มาจากคิว price-flags** — triage ตามเหตุผลใน `price-flags.json`:
-  - `drift-gt-*` / `mos-sign-flip` (ตลาดขยับ ไม่ใช่ธุรกิจเปลี่ยน — flip ใน dead-band ±3 จุด กับราคาหลุดขอบ gauge cron patch เองแล้ว ไม่เข้าคิว ตั้งแต่ 2 ส.ค. 2569) → เริ่มที่ **UPDATE-LIGHT** (STEP 5C)
+  - `drift-gt-*` / `mos-sign-flip` (ตลาดขยับ ไม่ใช่ธุรกิจเปลี่ยน — flip ใน dead-band ±5 จุด กับราคาหลุดขอบ gauge cron patch เองแล้ว ไม่เข้าคิว ตั้งแต่ 2 ส.ค. 2569) → เริ่มที่ **UPDATE-LIGHT** (STEP 5C)
   - `suspect-split-or-data` → **UPDATE เต็ม** + ตรวจ split/ticker ก่อนเขียนเลขใด ๆ
   - `fetch-failed` / `patch-failed` → ปัญหา plumbing (ticker เปลี่ยน/เพิกถอน/ประวัติกราฟ) — **ไม่ใช่งานวิเคราะห์** แจ้ง controller ไปแก้ `tools/symbol-map.json` หรือเช็คเพิกถอน
   - `no-stock-meta` / `currency-mismatch` → plumbing เช่นกัน: บล็อก `stock-meta` หาย/JSON เสีย หรือ `currency` ไม่ตรง Yahoo (ADR/ticker ผิดกระดาน) — แก้ในไฟล์/`symbol-map` ไม่ใช้ agent

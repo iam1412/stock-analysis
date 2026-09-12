@@ -202,18 +202,18 @@ expect('E23', 'error', mut3(/(id="pxIn"[^>]*value=")([0-9.]+)(")/, numStr(PX * 3
 expect('E24', 'error', mut3(/(EPS ปี 3<\/span>\s*<span>~?\s*[฿$]?)([0-9.,]+)(<\/span>)/, numStr(C.scenarios[0].eps * 2)), 'EPS ปี3 ไม่ตรงการทบต้น (1+g)³');
 expect('E25', 'error', mutSlice('class="vgrid"', /(มูลค่าเหมาะสม<\/div>\s*<div class="v">\s*[฿$]?)([0-9.,]+)/, `$1${numStr(FV * 1.3)}`), 'FV ในสรุป ≠ FV ในกล่อง');
 expect('E26', 'error', mut3(/([฿$])([0-9.,]+)(<br>\s*<small>MOS 20%)/, numStr(FV)), 'gauge scale MOS20 ≠ FV×0.8');
-// W06: ตัวเลขส่วนต่างในสรุปต้องใกล้ MOS จริง — เขียนให้เพี้ยน 9 จุด% (เกิน tol 3)
+// W06: ตัวเลขส่วนต่างในสรุปต้องใกล้ MOS จริง — เขียนให้เพี้ยน 9 จุด% (เกิน tol 5)
 expect('W06', 'warn', setDiffCell(`MOS ~ ${fmtPct((MOS < 0 ? -1 : 1) * (Math.abs(MOS) + 9))}`), 'สรุประบุส่วนต่างเพี้ยน ~9 จุด% จาก MOS จริง');
-// ── ขอบเกณฑ์ W06 (ขยับ 2.5 → 3 จุด% เมื่อ 17 ส.ค. 69) — คุมทั้งสองฝั่งของเส้น ──
-// ช่องนี้เป็น prose แช่แข็ง ขณะที่ MOS เคลื่อนตามราคาที่ cron patch ทุกวัน ⇒ ดริฟต์ ≤3 จุด% ถือเป็นปกติของระบบ
+// ── ขอบเกณฑ์ W06 (ขยับ 2.5 → 3 จุด% เมื่อ 17 ส.ค. 69 · 3 → 5 จุด% เมื่อ 12 ก.ย. 69 ข้อ D — ผูกกับ MOS_FLIP_DEADBAND_PP ผ่าน TOL_MOS_SUMMARY_PP) — คุมทั้งสองฝั่งของเส้น ──
+// ช่องนี้เป็น prose แช่แข็ง ขณะที่ MOS เคลื่อนตามราคาที่ cron patch ทุกวัน ⇒ ดริฟต์ ≤5 จุด% ถือเป็นปกติของระบบ
 const offMos = (pp) => setDiffCell(`MOS ~ ${fmtPct((MOS < 0 ? -1 : 1) * (Math.abs(MOS) + pp))}`);
 // ★ ฐานของ reject W06 ต้อง "บังคับโซนเอง" — ช่องสรุปของ BBL เขียน "+2.1% (เกือบเต็มมูลค่า)" คือมีทั้ง
 //   เครื่องหมาย + (=ถูก) และคำว่า "เต็มมูลค่า" (=แพง) ⇒ update-prices เข้าเงื่อนไข "ทิศกำกวม → ไม่เดา"
-//   เลย **ไม่เคย patch ตัวเลขในช่องนี้** ⇒ พอราคาวิ่งจน |MOS − 2.1| > 3 จุด% ฐานจะติด W06 เอง
-//   แล้ว reject() ตกทั้งที่ checker ไม่ผิดเลย (วัดจริง: ราคา ฿178 และ ฿215 ตกทั้งคู่ · ช่องปลอดภัยแค่ ~฿185–197)
+//   เลย **ไม่เคย patch ตัวเลขในช่องนี้** ⇒ พอราคาวิ่งจน |MOS − 2.1| > 5 จุด% ฐานจะติด W06 เอง
+//   แล้ว reject() ตกทั้งที่ checker ไม่ผิดเลย (วัดจริงตอนเกณฑ์ยังเป็น 3: ราคา ฿178 และ ฿215 ตกทั้งคู่ · ช่องปลอดภัยกว้างขึ้นหลังขยับเป็น 5)
 const w06Base = setDiffCell(`MOS ~ ${fmtPct(MOS)}`)(base);
-reject('W06', offMos(2.8), 'ส่วนต่างเพี้ยน 2.8 จุด% (ใต้เกณฑ์ใหม่ 3) → ต้องไม่เตือน — เคสที่เปลี่ยนพฤติกรรมจากเกณฑ์เดิม 2.5', w06Base);
-expect('W06', 'warn', offMos(3.5), 'ส่วนต่างเพี้ยน 3.5 จุด% (เหนือเกณฑ์ใหม่) → ต้องยังเตือน');
+reject('W06', offMos(4.8), 'ส่วนต่างเพี้ยน 4.8 จุด% (ใต้เกณฑ์ใหม่ 5) → ต้องไม่เตือน — เคสที่เปลี่ยนพฤติกรรมจากเกณฑ์เดิม 3 (ข้อ D 12 ก.ย. 69)', w06Base);
+expect('W06', 'warn', offMos(5.5), 'ส่วนต่างเพี้ยน 5.5 จุด% (เหนือเกณฑ์ใหม่ 5) → ต้องยังเตือน');
 expect('W07', 'warn', mut3(/(P\/E \(TTM\)<\/div>\s*<div class="v[^"]*">\s*~?)([0-9.,]+)(x)/, '750'), 'P/E ผิดวิสัย (750x)');
 reject('W07', mut3(/(P\/E \(TTM\)<\/div>\s*<div class="v[^"]*">\s*~?)([0-9.,]+)(x)/, '480'), 'P/E ~480x (มัลติเพิลสูงจริงในตลาด AI เช่น ARM) → ไม่ใช่ค่าผิดวิสัย');
 // P/BV: เพดานขยับ 20 → 200 (18 ส.ค. 69) — ซื้อหุ้นคืนจนส่วนทุนเกือบหมด = P/BV สูงจริง (วัดจริง CL 127x · MA 88x · DELTA 32.8x)
@@ -1012,6 +1012,22 @@ require('./parser-lint.js')(ok);
     return h.replace(m[0], moved);
   };
   expect('W22', 'warn', shiftDiscDate, 'วันที่ disclaimer ≠ วันที่ราคา (UNVERIFIED WRITE #12) → W22');
+
+  // ── C1 (code-audit Task 10): disclaimer เดือนล้วน (hasDay:false) ต้องเทียบ PAIR_HOW.date แค่ระดับเดือน ──
+  // เดือนล้วนปักวันที่ 01 เสมอใน mk() (price-date.js) ⇒ เทียบ ISO เต็มจะชนกับวันจริงของ f10 ทุกวันยกเว้นวันที่ 1
+  // ของเดือน (เคสจริง 9 ใบ disclaimer เดือนล้วน เช่น "ราคา ณ ก.ค. 2569" — วัด 12 ก.ย. 69, manifest-census.md)
+  const monthOnlyDisc = (monIdx) => (h) => {
+    const m = h.match(/<div class="disc">[\s\S]*?<\/div>/i);
+    if (!m) return h;
+    const hit = PDt.findDiscPriceDate(m[0]);
+    if (!hit) return h;
+    const text = PDt.renderThaiDate(hit.day, monIdx, hit.yearCE, hit.isBE, false);   // hasDay:false → "เดือน ปี" ไม่มีวัน
+    const moved = m[0].slice(0, hit.index) + text + m[0].slice(hit.index + hit.length);
+    return h.replace(m[0], moved);
+  };
+  const baseDiscHit = PDt.findDiscPriceDate(base.match(/<div class="disc">[\s\S]*?<\/div>/i)[0]);
+  reject('W22', monthOnlyDisc(baseDiscHit.monIdx), 'disclaimer เดือนล้วนตรงเดือน/ปีเดียวกับวันที่ราคา (hasDay:false) → W22 ต้องเงียบ (เทียบแค่ระดับเดือน)');
+  expect('W22', 'warn', monthOnlyDisc((baseDiscHit.monIdx + 1) % 12), 'disclaimer เดือนล้วนคนละเดือนกับวันที่ราคา (hasDay:false) → ยังต้องเจอ W22');
 
   // f48 การ์ด "โซนเริ่มทยอยสะสม < $FV" = **เพดาน** ไม่ใช่ค่าเดียวกับ FV (how:'below')
   // คลังจริง 103 ใบตั้งจุดเริ่มสะสมต่ำกว่า FV ตามส่วนเผื่อ MOS 5–20% โดยตั้งใจ ⇒ ต้องไม่ฟ้อง

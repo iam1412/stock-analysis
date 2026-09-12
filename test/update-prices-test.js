@@ -38,11 +38,12 @@ ok(U.decide({ ...base, newPrice: 105 }).update === true, 'decide: drift เล�
 ok(U.decide({ ...base, newPrice: 112 }).update === true, 'decide: 12% ≤ เกณฑ์ 15% → update');
 ok(U.decide({ ...base, newPrice: 82 }).freeze === 'drift-gt-15pct', 'decide: >15% → freeze');
 ok(U.decide({ ...base, newPrice: 130 }).freeze === 'suspect-split-or-data', 'decide: >25% → suspect');
-ok(U.decide({ ...base, oldPrice: 112, newPrice: 126 }).freeze === 'mos-sign-flip', 'decide: MOS พลิกเกิน dead-band ทั้งสองฝั่ง (+6.7→−5) → freeze');
-ok(U.decide({ ...base, oldPrice: 112, newPrice: 121 }).freeze === 'mos-sign-flip', 'decide: ฝั่งเก่าเกิน dead-band (+6.7→−0.8) → freeze');
-ok(U.decide({ ...base, oldPrice: 118, newPrice: 126 }).freeze === 'mos-sign-flip', 'decide: ฝั่งใหม่เกิน dead-band (+1.7→−5) → freeze');
-ok(U.decide({ ...base, oldPrice: 118, newPrice: 121 }).update === true, 'decide: flip ใน dead-band ±3 (+1.7→−0.8) → update (noise รอบ FV)');
-ok(U.decide({ ...base, oldPrice: 118.5, newPrice: 123.6 }).update === true, 'decide: flip ขอบเขต 3.0 จุดพอดี (+1.25→−3.0) → update');
+const fv = base.fv;
+ok(U.decide({ ...base, oldPrice: fv * 0.93, newPrice: fv * 1.06 }).freeze === 'mos-sign-flip', 'decide: MOS พลิกเกิน dead-band ทั้งสองฝั่ง (+7→−6) → freeze');
+ok(U.decide({ ...base, oldPrice: fv * 0.93, newPrice: fv * 1.01 }).freeze === 'mos-sign-flip', 'decide: ฝั่งเก่าเกิน dead-band (+7→−1) → freeze');
+ok(U.decide({ ...base, oldPrice: fv * 0.983, newPrice: fv * 1.06 }).freeze === 'mos-sign-flip', 'decide: ฝั่งใหม่เกิน dead-band (+1.7→−6) → freeze');
+ok(U.decide({ ...base, oldPrice: fv * 0.96, newPrice: fv * 1.04 }).update === true, 'decide: flip ใน dead-band ±5 (+4→−4) → update (noise รอบ FV — ข้อ D ระยะ 1)');
+ok(U.MOS_FLIP_DEADBAND_PP === 5, 'MOS_FLIP_DEADBAND_PP = 5 (ข้อ D)');
 ok(U.decide({ ...base, oldPrice: 195, newPrice: 205, fv: 300 }).update === true, 'decide: หลุด gauge → ไม่ freeze แล้ว (patchReport ขยายขอบเอง)');
 ok(U.decide({ ...base, newPrice: 105, currencyOk: false }).freeze === 'currency-mismatch', 'decide: currency ไม่ตรง → freeze');
 
@@ -521,7 +522,7 @@ ok(ptsNext[ptsNext.length - 1][0] === `${U.THAI_MONTHS[nextM]}${String(nextY).sl
   ok(discOf(rRange.html) === discOf(rangeDisc) && rRange.notes.length === 0,
     '(e) ช่วงกราฟใน .disc ไม่ถูกเขียนทับ · notes ว่าง', discOf(rRange.html).slice(-90));
 
-  // ใบที่เขียนวันที่ราคาไว้ 2 จุด (วัด 12 ก.ย. 69: 15/908 เช่น AEM "ราคา ณ …" + "ราคาปิดรายเดือน ณ …")
+  // ใบที่เขียนวันที่ราคาไว้ 2 จุด (วัด 12 ก.ย. 69: 13/908 เช่น AEM "ราคา ณ …" + "ราคาปิดรายเดือน ณ …")
   // ตัวเขียนเดิมเป็น regex /g จึงเขียนครบทุกจุด — ตัวใหม่ต้องวนเก็บให้ครบเหมือนกัน ไม่ใช่เขียนจุดแรกจุดเดียว
   const twice = aapl.replace(discM[0], discM[0].replace('</div>', ' • ราคาปิดรายเดือน ณ 3 ส.ค. 2026</div>'));
   const rTwice = U.patchReport(twice, { newPrice: 301.5, dateParts: dpN, chartData: null });
