@@ -223,9 +223,21 @@ function discWide(s, from) {
   return null;
 }
 
+/** ทุกจุด "ราคา ณ <วันที่>" ในบล็อก .disc (ตัวอ่านเดียวกับ f12 — วนจนหมดบล็อกเพราะบางใบเขียนซ้ำ 2 จุด
+ *  เช่น "ราคา ณ …" + "ราคาปิดรายเดือน ณ …" · วัด 12 ก.ย. 69: 13/908 ใบมี ≥2 จุด)
+ *  ★ ย้ายมาจาก `tools/update-prices.js` (ระยะ 2 ส่วน C) — **ย้ายเฉย ๆ ไม่แก้พฤติกรรม**: cron import กลับไปใช้ตัวนี้
+ *  ตัวเดียว และ migrator (tools/migrate-v2.js) ใช้ตัวเดียวกันหา "จุดที่ต้องแทนด้วย {{rd:priceDate}}"
+ *  ⇒ ที่ cron เคยเขียนวันที่ตรงไหน token ก็ไปลงตรงนั้นเป๊ะ (พิสูจน์ความเท่าเดิมด้วย equivalence check
+ *  บนคลังจริง 100 ใบคร่อมทั้ง พ.ศ./ค.ศ. และมี/ไม่มีวันที่ใน .disc — ดู task-7-report.md) */
+function allDiscDates(discHtml) {
+  const out = [];
+  for (let from = 0, h; (h = findDiscPriceDate(discHtml, from)); from = h.index + h.length) out.push(h);
+  return out;
+}
+
 /** วันที่ราคาเป็น ค.ศ. + iso — ใช้โดย gate (staleness E27/W09) · รับ **HTML ที่มี anchor "ราคา"** ไม่ใช่สตริงวันที่เปล่า */
 function parsePriceDate(headerHtml) {
   return dateIso(findPriceDate(headerHtml));
 }
 
-module.exports = { findPriceDate, findRestatedDate, findDiscPriceDate, parsePriceDate, dateIso, renderThaiDate, THAI_MONTHS, THAI_MONTHS_FULL, MONTH_ALT };
+module.exports = { findPriceDate, findRestatedDate, findDiscPriceDate, allDiscDates, parsePriceDate, dateIso, renderThaiDate, THAI_MONTHS, THAI_MONTHS_FULL, MONTH_ALT };
