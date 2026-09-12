@@ -204,13 +204,19 @@ function checkPairs(values, ctx) {
 /** ทุกช่องของไฟล์เดียว — extractor ที่ระเบิดไม่ล้มทั้งรอบ แต่ **ต้องไม่หายเงียบ**:
  *  เดิม exception ถูกกลืนเป็น "found:false" เฉย ๆ ⇒ ช่อง optional ที่พังจะนับเป็น "ข้าม" อย่างสงบ
  *  ⇒ คืน `errors: [{id, err}]` ให้ W21 พูดถึงด้วย (ระยะ 1 — ทบทวนทั้งสาขา 12 ก.ย. 2569) */
+/** ตัวอ่านของแถวนี้สำหรับ ctx นี้ — `null` = แถวไม่มีในไฟล์ v2 โดยสคีมา (ข้าม ไม่นับ) · ไฟล์ v1 ได้ `extract` เสมอ
+ *  ★ ใช้ร่วม extractAll กับ census — สองทางต้องตัดสิน "แถวไหนใช้กับใบไหน" ด้วยกติกาเดียว (review Task 10 ข้อ 3) */
+function extractorFor(f, ctx) {
+  if (!(ctx && ctx.v2)) return f.extract;
+  if (f.v2 === null) return null;
+  return typeof f.v2 === 'function' ? f.v2 : f.extract;
+}
 function extractAll(html, ctx) {
   const values = {}, found = new Set(), missing = [], skipped = [], errors = [];
   let omitted = 0;
-  const isV2 = !!(ctx && ctx.v2);
   for (const f of FIELDS) {
-    if (isV2 && f.v2 === null) { omitted++; continue; }   // ไม่มีในไฟล์ v2 โดยสคีมา — ไม่ใช่ "หาย" และไม่ใช่ "ข้าม"
-    const ex = isV2 && typeof f.v2 === 'function' ? f.v2 : f.extract;
+    const ex = extractorFor(f, ctx);
+    if (!ex) { omitted++; continue; }   // ไม่มีในไฟล์ v2 โดยสคีมา — ไม่ใช่ "หาย" และไม่ใช่ "ข้าม"
     let r;
     try { r = ex(html, ctx) || { found: false, value: null }; } catch (e) { r = { found: false, value: null, err: e.message }; }
     if (r.err) errors.push({ id: f.id, err: r.err });
@@ -232,22 +238,27 @@ function census(dir, buildCtx, expandReport) {
   const hit = Object.fromEntries(FIELDS.map((f) => [f.id, 0]));
   const errs = Object.fromEntries(FIELDS.map((f) => [f.id, 0]));
   const why = Object.fromEntries(FIELDS.map((f) => [f.id, null]));   // ตัวอย่างแรกของ exception (ไฟล์ + ข้อความ) — ใช้แก้ extractor
+  // ตัวหารต่อแถว = ใบที่แถวนี้ "ใช้ได้" — แถว v2:null บนใบ v2 ไม่นับ (ไม่งั้นคลังที่ migrate แล้วจะโชว์ f45/f46/f11 ~0.5% แล้วชวนถอด required ผิด ๆ)
+  const applicable = Object.fromEntries(FIELDS.map((f) => [f.id, 0]));
   for (const f of files) {
     const html = expandReport(fs.readFileSync(path.join(dir, f), 'utf8'));
     const ctx = buildCtx(html, f);
     for (const fd of FIELDS) {
-      let r; try { r = fd.extract(html, ctx); } catch (e) { errs[fd.id]++; if (!why[fd.id]) why[fd.id] = `${f}: ${e.message}`; continue; }
+      const ex = extractorFor(fd, ctx);
+      if (!ex) continue;
+      applicable[fd.id]++;
+      let r; try { r = ex(html, ctx); } catch (e) { errs[fd.id]++; if (!why[fd.id]) why[fd.id] = `${f}: ${e.message}`; continue; }
       if (r && r.found) hit[fd.id]++;
     }
   }
-  return { files: files.length, rows: FIELDS.map((f) => ({ id: f.id, name: f.name, binding: f.binding, found: hit[f.id], rate: hit[f.id] / files.length, errors: errs[f.id], firstErr: why[f.id], required: f.required })) };
+  return { files: files.length, rows: FIELDS.map((f) => ({ id: f.id, name: f.name, binding: f.binding, found: hit[f.id], applicable: applicable[f.id], rate: applicable[f.id] ? hit[f.id] / applicable[f.id] : null, errors: errs[f.id], firstErr: why[f.id], required: f.required })) };
 }
-module.exports = { FIELDS, N_FIELDS, extractAll, coverage, census, checkPairs, PAIR_HOW };
+module.exports = { FIELDS, N_FIELDS, extractAll, extractorFor, coverage, census, checkPairs, PAIR_HOW };
 
 if (require.main === module && process.argv.includes('--census')) {
   const { buildCtx, REPORTS_DIR } = require('../test/check-reports.js');
   const { expandReport } = require('../build.js');
   const c = census(REPORTS_DIR, buildCtx, expandReport);
   console.log(`| id | ช่อง | binding | พบ | อัตรา | extractor error | required |\n|---|---|---|---|---|---|---|`);
-  for (const r of c.rows) console.log(`| ${r.id} | ${r.name} | ${r.binding} | ${r.found}/${c.files} | ${(r.rate * 100).toFixed(1)}% | ${r.errors}${r.firstErr ? ' — ' + r.firstErr : ''} | ${r.required} |`);
+  for (const r of c.rows) console.log(`| ${r.id} | ${r.name} | ${r.binding} | ${r.found}/${r.applicable} | ${r.rate == null ? '—' : (r.rate * 100).toFixed(1) + '%'} | ${r.errors}${r.firstErr ? ' — ' + r.firstErr : ''} | ${r.required} |`);
 }

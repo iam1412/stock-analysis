@@ -41,7 +41,8 @@ function spotcheck(html, name, deep) {
   //    แต่คนต้องเห็นว่าใบนี้ **ไม่มี** อะไรบ้าง ก่อนสรุปว่า "gate เขียว = ครบ" (ช่อง required ที่หาย = W21 ใน gate แล้ว)
   //    พิมพ์เฉพาะโหมดต่อหุ้น — กวาดทั้งคลังจะได้รายการนี้ทุกใบจนกลบของจริง
   if (deep && c.mf) {
-    out.push(`ช่อง manifest: อ่านได้ ${c.mf.found.size}/${MF.FIELDS.length}` +
+    // ตัวหาร = coverage ของ gate — ใบ v2 ไม่นับแถว v2:null (ไม่มีในไฟล์โดยสคีมา)
+    out.push(`ช่อง manifest: อ่านได้ ${c.mf.found.size}/${MF.FIELDS.length - (c.mf.omitted || 0)}` +
       (c.mf.missing.length ? ` · required ที่หาย ${c.mf.missing.length}: ${c.mf.missing.join(' ')} (W21)` : ' · required ครบ') +
       (c.mf.skipped.length ? ` · optional ที่ข้าม ${c.mf.skipped.length}: ${c.mf.skipped.join(' ')}` : ''));
   }

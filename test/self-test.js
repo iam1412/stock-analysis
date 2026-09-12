@@ -1149,6 +1149,7 @@ require('./parser-lint.js')(ok);
   const RV = require('../tools/report-values.js');
   const MF = require('../tools/field-manifest.js');
   const base2 = expandReport(FX.BBL_V2());
+  const FX_V2_PX = RM.readReportData(FX.BBL_V2()).data.values.px;
   const c = buildCtx(base2, 'BBL.html');
   ok(c.v2 === true && c.dv && c.px === c.dv.px && c.fvBox === c.dv.fv && c.mosBig === c.dv.mosShown && c.pxInput === c.dv.px, 'v2: ctx.px/fvBox/mosBig/pxInput มาจาก values (derive)');
   ok(c.priceAge && c.priceAge.iso === RM.readReportData(FX.BBL_V2()).data.values.priceDate, 'v2: ctx.priceAge จาก values.priceDate');
@@ -1156,13 +1157,22 @@ require('./parser-lint.js')(ok);
   const r = checkHtml(base2, 'BBL.html');
   ok(r.errors.length === 0, 'v2 fixture ผ่าน gate', r.errors.map((e) => e.id).join(','));
   ok(r.coverage.n === 71 - MF.FIELDS.filter((f) => f.v2 === null).length, 'v2: coverage denominator ตัดแถวที่ไม่มีใน v2');
-  // mutate JSON แล้ว check ต้องยิง (พิสูจน์ว่าอ่าน JSON ไม่ใช่ HTML): ราคา stock-meta ≠ values.px → E30
-  const m1 = expandReport(mutJson('stock-meta', (d) => { d.price = d.price * 1.5; })(FX.BBL_V2()));
-  ok(errIds(checkHtml(m1, 'BBL.html')).has('E30'), 'v2: stock-meta.price ≠ values.px → E30');
-  const m2 = expandReport(mutJson('report-data', (d) => { d.values.px = d.values.px * 0.5; })(FX.BBL_V2()));
+  // ★ mutate JSON **หลัง** expand (review Task 10 ข้อ 2) — HTML ที่ render แล้วยังถือค่าเดิม ขณะที่ values เปลี่ยน
+  //   ⇒ gate ที่อ่าน JSON ต้องเห็นความต่าง · gate ที่อ่าน HTML (โค้ดก่อนระยะ 2 ส่วน D) จะเงียบ — เทสจึงแยกสองแบบออกจริง
+  //   (mutate ก่อน expand = HTML render จากค่าที่ mutate แล้ว สองทางได้ค่าเท่ากัน เทสผ่านทั้งโค้ดเก่าและใหม่ ⇒ พิสูจน์อะไรไม่ได้)
+  const m1 = mutJson('report-data', (d) => { d.values.px = d.values.px * 1.5; })(base2);
+  const r1 = checkHtml(m1, 'BBL.html');
+  ok(r1.ctx.px === FX_V2_PX * 1.5 && errIds(r1).has('E30'), 'v2: values.px ×1.5 หลัง render → ctx.px ตาม JSON + E30 (stock-meta ≠ values.px)', [...errIds(r1)].join(','));
+  const m2 = mutJson('report-data', (d) => { d.values.px = d.values.px * 0.5; })(base2);
   const r2 = checkHtml(m2, 'BBL.html');
-  ok(errIds(r2).has('E30') && !errIds(r2).has('E16') && !errIds(r2).has('E23'), 'v2: เปลี่ยน values.px → E30 (กระจก) ยิง แต่ E16/E23 (สำเนา) เงียบเพราะ render จากค่าเดียวกัน');
-  ok(!allIds(r2).has('W04') && !allIds(r2).has('W06'), 'v2: W04/W06 เงียบเสมอ (class/ช่องสรุป render จาก MOS เดียวกัน)');
+  ok(['E19', 'E30', 'E43'].every((id) => errIds(r2).has(id)) && !errIds(r2).has('E16') && !errIds(r2).has('E23'),
+    'v2: values.px ×0.5 หลัง render → E19/E30/E43 ยิง (อ่าน JSON) · E16/E23 เงียบ (.big/pxIn ใน ctx มาจาก derive ค่าเดียวกัน)', [...errIds(r2)].join(','));
+  const m4 = mutJson('report-data', (d) => { d.values.priceDate = '2026-01-01'; })(base2);
+  const r4 = checkHtml(m4, 'BBL.html');
+  ok(r4.ctx.priceAge.iso === '2026-01-01' && errIds(r4).has('E27'), 'v2: values.priceDate เก่า หลัง render → ctx.priceAge ตาม JSON + E27', [...errIds(r4)].join(','));
+  // render invariant (ไม่ใช่หลักฐานอ่าน JSON): ไฟล์ที่ render จาก values เดียวกัน W04/W06 เงียบเสมอ
+  const mR = expandReport(mutJson('report-data', (d) => { d.values.px = d.values.px * 0.5; })(FX.BBL_V2()));
+  ok(!allIds(checkHtml(mR, 'BBL.html')).has('W04') && !allIds(checkHtml(mR, 'BBL.html')).has('W06'), 'v2 render: W04/W06 เงียบ (class/ช่องสรุป render จาก MOS เดียวกัน)');
   // W21 บนไฟล์ v2: แถว `v2: null` (gauge.fair/chart.fairLine/วันที่ในวงเล็บ) ไม่มีในไฟล์โดยสคีมา → ไม่นับว่า "หาย"
   const nullRows = MF.FIELDS.filter((f) => f.v2 === null).map((f) => f.id);
   ok(nullRows.length > 0 && nullRows.every((id) => !r.ctx.mf.missing.includes(id) && !r.ctx.mf.skipped.includes(id) && !r.ctx.mf.found.has(id)) && !allIds(r).has('W21'),
@@ -1171,10 +1181,41 @@ require('./parser-lint.js')(ok);
   // v1 ต้องไม่แตะทาง v2 เลย
   const c1 = buildCtx(base, 'BBL.html');
   ok(c1.v2 === false && c1.dv === null && c1.mf.omitted === 0, 'v1: ctx.v2=false · dv=null · ไม่ข้ามแถวใด');
-  // derive ระเบิดบนไฟล์ที่อ้างว่า v2 → ถอยไปอ่าน HTML (ไม่ crash)
-  const m3 = mutJson('report-data', (d) => { delete d.values.scnBasis; })(base2);   // scenarios มีแต่ scnBasis หาย → derive อ่าน b.divIncluded ระเบิด
-  let c3 = null, threw3 = null; try { c3 = buildCtx(m3, 'BBL.html'); } catch (e) { threw3 = e.message; }
-  ok(threw3 === null && c3 && c3.v2 === false && c3.dv === null, 'v2: derive ระเบิด → ถือเป็น v1 อ่าน HTML (ไม่ throw)', threw3 || (c3 && `v2=${c3.v2}`));
+  // ★ ไฟล์ประกาศ v:2 แต่สคีมาเสีย → error V2SCHEMA (review Task 10 ข้อ 1) — ห้ามถอยเป็น v1 เงียบ ๆ
+  //   ไฟล์ที่ไม่มี template marker: expandReport คืนเดิมโดยไม่ validate ⇒ gate ต้องตรวจเอง
+  {
+    const os = require('os');
+    const bad = mutJson('report-data', (d) => { d.values.bogus = 1; d.gauge = { ...(d.gauge || {}), cur: 1, fair: 1 }; })(base2);
+    ok(expandReport(bad) === bad, 'V2SCHEMA: fixture ไม่มี template marker (expandReport = identity ไม่ validate)');
+    const tmp = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'cr-v2-')), 'BBL.html');
+    fs.writeFileSync(tmp, bad);
+    const rb = require('./check-reports').checkFile(tmp);
+    ok(errIds(rb).has('V2SCHEMA') && /bogus/.test(rb.errors.find((e) => e.id === 'V2SCHEMA').msg), 'V2SCHEMA: v2 ไร้ marker + คีย์นอกสคีมา/gauge.cur → checkFile ได้ error (เดิมผ่าน 0 error)', rb.errors.map((e) => e.id + ' ' + e.msg).join(' | '));
+    const m3 = mutJson('report-data', (d) => { delete d.values.scnBasis; })(base2);   // scenarios มีแต่ scnBasis หาย
+    let c3 = null, threw3 = null; try { c3 = buildCtx(m3, 'BBL.html'); } catch (e) { threw3 = e.message; }
+    ok(threw3 === null && c3 && c3.v2 === false && c3.dv === null && /scnBasis/.test(c3.v2Err || '') && errIds(checkHtml(m3, 'BBL.html')).has('V2SCHEMA'),
+      'V2SCHEMA: scnBasis หาย → ไม่ throw · อ่าน HTML ต่อ · แต่ยก error', threw3 || (c3 && `v2=${c3.v2} v2Err=${c3.v2Err}`));
+    const realDerive = RV.derive;
+    RV.derive = () => { throw new Error('derive ระเบิดจำลอง'); };
+    let rd3; try { rd3 = checkHtml(base2, 'BBL.html'); } finally { RV.derive = realDerive; }
+    ok(errIds(rd3).has('V2SCHEMA') && rd3.ctx.v2 === false, 'V2SCHEMA: validateValues ผ่านแต่ derive throw → error (ไม่ถอยเป็น v1 เงียบ)', rd3.errors.map((e) => e.id).join(','));
+    ok(checkHtml(base2, 'BBL.html').errors.length === 0 && !buildCtx(base, 'BBL.html').v2Err, 'V2SCHEMA: คืน derive แล้ว v2 ดีผ่าน · v1 ไม่มี v2Err');
+  }
+  // census (review ข้อ 3) + spotcheck (ข้อ 4): แถว v2:null บนใบ v2 ไม่อยู่ในตัวหาร · v2 fn ถูกใช้แทน extract
+  {
+    const os = require('os');
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'census-v2-'));
+    fs.writeFileSync(path.join(dir, 'BBL.html'), FX.BBL());
+    fs.writeFileSync(path.join(dir, 'BBLV.html'), FX.BBL_V2());
+    const cs = MF.census(dir, buildCtx, expandReport);
+    const row = (id) => cs.rows.find((x) => x.id === id);
+    ok(row('f45').applicable === 1 && row('f45').rate === 1 && row('f46').applicable === 1 && row('f46').rate === 1,
+      `census: f45/f46 บนคลังผสม v1+v2 ตัวหาร 1 อัตรา 100% (ได้ ${JSON.stringify([row('f45'), row('f46')].map((x) => [x.found, x.applicable]))})`);
+    ok(row('f03').applicable === 2 && row('f03').found === 2 && row('f10').found === 2, `census: f03 (v2 fn → values.px) พบทั้ง 2 ใบ (ได้ ${row('f03').found}/${row('f03').applicable})`);
+    const { spotcheck } = require('../tools/spotcheck.js');
+    const line = spotcheck(base2, 'BBL.html', true)[0];
+    ok(new RegExp(`/${71 - nullRows.length} `).test(line), `spotcheck: ตัวหารช่อง manifest บน v2 = ${71 - nullRows.length}`, line);
+  }
   // ctx.source: checkHtml ส่ง opts.source ต่อ · ไม่ส่ง = html เดียวกัน
   ok(c.source === base2 && buildCtx(base2, 'BBL.html', { source: FX.BBL_V2() }).source === FX.BBL_V2(), 'ctx.source = opts.source หรือ html เดิม');
 }

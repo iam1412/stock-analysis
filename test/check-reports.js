@@ -271,10 +271,17 @@ function buildCtx(html, name, opts) {
   const text = visible(html);
   const headerM = html.match(/<header[\s\S]*?<\/header>/i);
   const rdS = RM.readReportData(html), smS = RM.readStockMetaState(html);
-  const v2 = rdS.ok && RV.isV2(rdS.data) && smS.ok && !!smS.data;
-  let dv = null;
-  if (v2) { try { dv = RV.derive(rdS.data, smS.data); } catch (e) { dv = null; } }   // derive ระเบิด = ถือเป็น v1 อ่านจาก HTML (E29/EXPAND จะพูดเอง)
-  const V2 = !!(v2 && dv);
+  // ไฟล์ที่ประกาศ v2 (report-data.v === 2) ต้องผ่าน validateValues + derive **ที่นี่เอง** — ห้ามพึ่งว่า expandReport
+  //   ตรวจให้แล้ว: ไฟล์ที่ไม่มี template marker (render แล้ว/เขียนมือ) expandReport คืนเดิมโดยไม่ validate
+  //   ⇒ เดิมสคีมาเสียจะถอยไปอ่านเป็น v1 เงียบ ๆ (หรือข้าม f45/f46 จน W21/W22 หาย) แล้วผ่าน 0 error (review Task 10 ข้อ 1)
+  //   ⇒ ตอนนี้ throw = `v2Err` → checkHtml ยก error `V2SCHEMA` (pseudo-id แบบเดียวกับ EXPAND ไม่อยู่ใน CHECKS) · ตัวอ่านถอยไป HTML เพื่อให้ check อื่นยังพูดได้
+  //   ไฟล์ v1 (ไม่มี v:2) ไม่เข้ากิ่งนี้เลย
+  let dv = null, v2Err = null;
+  if (rdS.ok && RV.isV2(rdS.data)) {
+    try { RV.validateValues(rdS.data, smS.ok ? smS.data : null); dv = RV.derive(rdS.data, smS.data); }
+    catch (e) { dv = null; v2Err = e.message; }
+  }
+  const V2 = !!dv;
   const ctx = {
     html,
     name,
@@ -322,6 +329,7 @@ function buildCtx(html, name, opts) {
     // source = HTML ก่อน expandReport (checkFile ส่ง raw มา) — ไม่ส่ง = html เดียวกัน
     v2: V2,
     dv: V2 ? dv : null,
+    v2Err,
     source: (o.source != null ? o.source : html),
   };
   // ★ manifest ต้องได้ ctx ที่ "ครบทุกฟิลด์แล้ว" (f41 ใช้ px · f50 ใช้ cards · f68 ใช้ tagData) ⇒ ต่อท้ายสุดเสมอ
@@ -855,6 +863,7 @@ function checkHtml(html, name, opts) {
     try { res = chk.fn(ctx); } catch (e) { res = 'ตรวจไม่สำเร็จ: ' + e.message; }
     if (res) (chk.level === 'error' ? errors : warnings).push({ id: chk.id, label: chk.label, msg: res });
   }
+  if (ctx.v2Err) errors.unshift({ id: 'V2SCHEMA', label: 'report-data v2 (validateValues/derive)', msg: `ไฟล์ประกาศ v:2 แต่สคีมาใช้ไม่ได้: ${ctx.v2Err}` });
   const errTotal = CHECKS.filter((c) => c.level === 'error').length;
   // coverage = "gate อ่านช่องไหนได้/ไม่ได้ในใบนี้" — ตัวเลขคู่กับผล error/warning เสมอ (ระยะ 1 WS1 ข้อ 2)
   const coverage = { n: MF.FIELDS.length - (ctx.mf.omitted || 0), found: ctx.mf.found.size, missingRequired: ctx.mf.missing, skippedOptional: ctx.mf.skipped };
