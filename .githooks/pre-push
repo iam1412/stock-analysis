@@ -45,8 +45,8 @@ node test/tags-test.js || block "tags corpus gate"
 echo "🔍 pre-push 7/15: ตรวจคุณภาพรายงาน (check-reports)…"
 node test/check-reports.js || block "report quality gate"
 
-# ขั้น 7 = meta-test ของขั้น 6: ฉีด defect ลงรายงานจริงแล้วยืนยันว่า check ตัวที่คู่กัน "ยิงจริง" — ถ้า check
-# ตัวไหนเลิกแมตช์เงียบ ๆ ขั้น 6 จะรายงาน "0 error" แล้วทั้ง gate ผ่านหมด · ไม่ >/dev/null เพราะพิมพ์ผลลง stdout
+# ขั้น 8 = meta-test ของขั้น 7: ฉีด defect ลงรายงานจริงแล้วยืนยันว่า check ตัวที่คู่กัน "ยิงจริง" — ถ้า check
+# ตัวไหนเลิกแมตช์เงียบ ๆ ขั้น 7 จะรายงาน "0 error" แล้วทั้ง gate ผ่านหมด · ไม่ >/dev/null เพราะพิมพ์ผลลง stdout
 echo "🧪 pre-push 8/15: meta-test ว่า check-reports ยังจับ defect ได้ (self-test)…"
 node test/self-test.js || block "checker self-test gate"
 

@@ -572,10 +572,16 @@ process.env.QUEUE_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'queue-'));   // s
   ok(Q.resolveModel('AAPL', { model: 'sonnet' }) === 'sonnet', 'resolveModel: อ่านจาก state');
   ok(Q.resolveModel('AAPL', { model: 'sonnet' }, 'opus') === 'opus', 'resolveModel: --model ชนะค่าใน state');
   ok(Q.resolveModel('AAPL', {}, 'opus') === 'opus', 'resolveModel: ไม่มีใน state แต่ใส่ --model → ผ่าน');
-  for (const [rec, over, label] of [[{}, null, 'ไม่มี model ใน state'], [{ model: 'haiku' }, null, 'model ที่ไม่รู้จัก'], [{ model: 'sonnet' }, 'haiku', '--model ที่ไม่รู้จัก']]) {
+  {
+    let threw = null;
+    try { Q.resolveModel('AAPL', {}, null); } catch (e) { threw = e.message; }
+    ok(/^AAPL: ไม่มี model ใน state/.test(threw || '') && /npm run queue -- prep AAPL/.test(threw || '') && /--model sonnet\|opus/.test(threw || ''), 'resolveModel: ไม่มี model ใน state → ปฏิเสธพร้อมวิธีแก้', String(threw));
+  }
+  // model ถูกส่งมาแล้ว (state หรือ --model) แต่ไม่รู้จัก → ข้อความต้องต่างจากกรณี "ไม่มี" (ชี้ชื่อโมเดลที่พิมพ์ผิด ไม่ใช่บอกให้ไปรัน prep)
+  for (const [rec, over, label] of [[{ model: 'haiku' }, null, 'model ที่ไม่รู้จักใน state'], [{ model: 'sonnet' }, 'haiku', '--model ที่ไม่รู้จัก']]) {
     let threw = null;
     try { Q.resolveModel('AAPL', rec, over); } catch (e) { threw = e.message; }
-    ok(/^AAPL: ไม่มี model ใน state/.test(threw || '') && /npm run queue -- prep AAPL/.test(threw || '') && /--model sonnet\|opus/.test(threw || ''), `resolveModel: ${label} → ปฏิเสธพร้อมวิธีแก้`, String(threw));
+    ok(/^AAPL: โมเดล "haiku" ไม่รู้จัก \(ใช้ sonnet\|opus\)$/.test(threw || ''), `resolveModel: ${label} → ปฏิเสธด้วยชื่อโมเดลที่พิมพ์ผิด (ไม่ใช่ "ไม่มี model ใน state")`, String(threw));
   }
 }
 

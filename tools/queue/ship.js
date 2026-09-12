@@ -27,7 +27,8 @@ const trailer = (model) => { const n = MODEL_NAME[model]; if (!n) throw new Erro
  *  (state หายได้จริง: .queue อยู่ที่ checkout หลัก ถ้า prep คนละเครื่อง/ถูกล้าง ก็ไม่มี record — C1 รีวิว Task 15/16) */
 function resolveModel(sym, rec, override) {
   const m = override || (rec && rec.model);
-  if (!MODEL_NAME[m]) throw new Error(`${sym}: ไม่มี model ใน state — รัน npm run queue -- prep ${sym} ก่อน หรือใส่ --model sonnet|opus`);
+  if (!m) throw new Error(`${sym}: ไม่มี model ใน state — รัน npm run queue -- prep ${sym} ก่อน หรือใส่ --model sonnet|opus`);
+  if (!MODEL_NAME[m]) throw new Error(`${sym}: โมเดล "${m}" ไม่รู้จัก (ใช้ sonnet|opus)`);
   return m;
 }
 function commitMessage(sym, rec, sm) {

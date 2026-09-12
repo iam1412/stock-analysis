@@ -14,7 +14,7 @@ permissions:
 
 concurrency:
   # กลุ่มร่วมกับ dead-ticker-canary.yml (ไม่ใช่ชื่อ workflow ตัวเอง) — ทั้งคู่ read-modify-write
-  # issue คิวใบเดียวกัน (gh issue view → คำนวณ → gh issue edit) ไม่ได้ทำ lock กันชน ถ้าไม่ serialize
+  # issue คิวใบเดียวกัน (gh issue view → คำนวณ → gh issue edit) ไม่มี lock กันชน ถ้าไม่ serialize
   # ข้าม workflow กัน อีกฝั่งจะอ่าน body เก่าทับ history/ตัวเลขเข้า-ออกของอีกฝั่งหายเงียบ ๆ
   # cancel-in-progress: false เสมอ (ยกเลิก price-refresh กลางคันหนักกว่ารอ) ⇒ trade-off ที่ตั้งใจ:
   # canary เช้าวันจันทร์ต้องต่อคิวรอ price-refresh รอบยาวจบก่อนถึงจะเริ่มได้

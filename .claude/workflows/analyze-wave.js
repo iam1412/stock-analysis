@@ -1,7 +1,7 @@
 export const meta = {
   name: 'analyze-wave',
   description: 'รันวิเคราะห์หุ้น 1 ตัว/run (บังคับในโค้ด) พร้อมคุม effort/model ของ worker — รันหลาย run ขนานได้',
-  whenToUse: 'controller ใช้แทน Agent tool เมื่อต้องการตั้ง effort ให้ worker (งาน mechanical เช่น UPDATE-LIGHT) — args = { stocks: [{label, prompt, model?, effort?}], effort?, model? } · prompt เตรียมจาก _template/agent-prompt.md · ★ `stocks[]` ต้องมี **1 ตัวเสมอ** — ข้อห้ามจริงคือ "หลายหุ้นใน 1 run" ไม่ใช่ "หลาย run" · **รันหลาย run ขนานกันได้** (1 หุ้น/run) แต่จำนวนที่ขนานเป็นดุลพินิจ เจอ rate limit ให้หาร N ครึ่ง · ก่อนขนานต้อง: verify/push รายแบตช์ (docs/orchestration.md §4–5 · สีแบรนด์/price-flags/tags มี lock แล้ว worker รัน pick-brand เองได้)',
+  whenToUse: 'controller ใช้แทน Agent tool เมื่อต้องการตั้ง effort ให้ worker (งาน mechanical เช่น UPDATE-LIGHT) — args = { stocks: [{label, prompt, model?, effort?}], effort?, model? } · prompt เตรียมจาก _template/agent-prompt.md · ★ `stocks[]` ต้องมี **1 ตัวเสมอ** — ข้อห้ามจริงคือ "หลายหุ้นใน 1 run" ไม่ใช่ "หลาย run" · **รันหลาย run ขนานกันได้** (1 หุ้น/run) แต่จำนวนที่ขนานเป็นดุลพินิจ เจอ rate limit ให้หาร N ครึ่ง · ก่อนขนานต้อง: verify/push รายแบตช์ (CLAUDE.md §3.3 · docs/orchestration.md §5 · สีแบรนด์/price-flags/tags มี lock แล้ว worker รัน pick-brand เองได้)',
   phases: [{ title: 'Analyze' }],
 }
 

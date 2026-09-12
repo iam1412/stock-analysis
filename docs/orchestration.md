@@ -36,7 +36,7 @@
 2. เรียก `Workflow` tool:
    ```
    Workflow { name: "analyze-wave",
-              args: { stocks: [ {label:"AAPL", prompt:"<prompt เต็ม>"} ],
+              args: { stocks: [ {label:"AAPL", prompt:"<prompt เต็ม>", model:"sonnet"} ],
                       effort: "medium" } }
    ```
    - **เรียก 1 หุ้น/call** (คงพุชรายตัว — workflow คืนผลตอนจบทั้งชุด ส่งหลายตัวใน call เดียวจะพุชคั่นระหว่างตัวไม่ได้) · override รายตัว: `stocks[0].effort` / `stocks[0].model`
