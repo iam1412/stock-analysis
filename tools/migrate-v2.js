@@ -204,6 +204,24 @@ function scnPyDiffs(exp0, exp1) {
   return out;
 }
 
+// ── ยามโครงสร้าง %/ปี ของหมวด 6 (review final wave 2 — จุดบอดที่การขุด item 2 เจอ) ─────────
+// ★ นับ "หน่วย" %/ปี เท่านั้น (ไม่ใช่รูปเลขมีเครื่องหมายแบบ PY_CELL_RE ข้างบน) — สโคปเฉพาะหมวด 6 (DV.scenarioBlock.sec)
+//   เพราะ "%/ปี" โผล่ในบล็อกนี้ได้หลายที่ที่ไม่ใช่ .ret (เช่น "EPS +10%/ปี" ในสมมติฐานต่อคอลัมน์ · "~-2.2%/ปี" มี "~"
+//   นำหน้าไม่ใช่เครื่องหมาย +/-) — เดิม (item 2) ใช้ PY_CELL_RE ซึ่งพลาดรูปพวกนี้ไปเงียบ ๆ (พิสูจน์: AMATA "~-2.2%/ปี")
+//   ⇒ ถ้านับด้วยรูปเลขมีเครื่องหมาย จะไม่เห็นว่า 5 ใบ "งอก/หาย" ตัวเลขทั้งจุด (JMT 4→7 · RS 0→3 ฯลฯ) เพราะ noise เท่ากับ signal
+const PY_UNIT_RE = /%\s*\/\s*ปี/g;
+/**
+ * เทียบ "จำนวน" หน่วย %/ปี ในหมวด 6 ระหว่าง expand(v1) กับ expand(v2) — เป็นยามปฏิเสธ ไม่ใช่ tolerance ของค่า
+ * @returns {string|null} เหตุผลปฏิเสธ (เมื่อจำนวนต่างกัน) หรือ null (เท่ากัน/อ่านหมวด 6 ไม่ได้ฝั่งใดฝั่งหนึ่ง — ไม่ตัดสิน)
+ */
+function scnPyCountGuard(exp0, exp1) {
+  const b0 = DV.scenarioBlock(exp0), b1 = DV.scenarioBlock(exp1);
+  if (!b0 || !b1) return null;                    // อ่านไม่ได้ = ไม่ประดิษฐ์การเทียบ ปล่อยพฤติกรรมเดิม (ให้ชั้นอื่นตัดสิน)
+  const c0 = (b0.sec.match(PY_UNIT_RE) || []).length;
+  const c1 = (b1.sec.match(PY_UNIT_RE) || []).length;
+  return c0 === c1 ? null : `จำนวนช่อง %/ปี ไม่เท่าเดิม (v1 ${c0} → v2 ${c1})`;
+}
+
 // ── ชั้น 1: สกัดค่า ────────────────────────────────────────────────────────────
 /**
  * @returns {{values, fv, info}|{reason:string}} — ใช้ extractor **เจ้าของเดิม** ทุกตัว (ไม่ parse ซ้ำ)
@@ -707,14 +725,23 @@ function verifyPair(src, out, name, exp0, ctx0, values, notes) {
   const gateOk = gate1.errors.length === 0;
   const strippedBad = checkStripped(exp0, exp1, values, notes);
   const bad = compare.filter((c) => !c.ok);
+  // ★ ยามโครงสร้าง (review final wave 2) — "จำนวน" หน่วย %/ปี ในหมวด 6 ต้องเท่าเดิม คนละเรื่องกับ "ค่า" ที่ชั้น 1
+  //   ตรวจอยู่แล้ว (COPY_FIELDS/f34/f35) และชั้น 2 มองไม่เห็น (mask เลขทุกตัว + blank .ret) — จุดบอดที่ item 2
+  //   เปิดออก: บางใบ v2 "งอก"/"หาย" ตัวเลข %/ปี ทั้งจุด ไม่ใช่แค่ปัดรูป (วัดจริง 5 ใบ: JMT 4→7 · SCGD 3→6 ·
+  //   SNNP 3→6 · RS 0→3 · ACN 4→3) — ห้ามย้ายใบพวกนี้ ให้ตกเป็น residue ในสำมะโนแทน
+  const pyCountBad = scnPyCountGuard(exp0, exp1);
+  // ★ ต้องรู้ว่า "ยามนี้เป็นคนตัดสิน" จริงไหม (ไม่ใช่แค่คำนวณไว้เฉย ๆ) — ใบที่ gate/ค่า/มาสก์ตกอยู่ก่อนแล้ว
+  //   ไม่นับว่าถูกยามนี้ปฏิเสธ แม้ pyCountBad จะไม่ null ก็ตาม (เงื่อนไขเดียวกับที่ ternary ข้างล่างจะเลือก pyCountBad)
+  const pyCountRefused = gateOk && !bad.length && masked && !!pyCountBad;
   const reason = !gateOk ? 'gate หลัง migrate: ' + gate1.errors.map((e) => e.id + ' ' + e.msg).join(' | ')
     : bad.length ? 'ค่าไม่ตรงชั้น 1: ' + bad.map((c) => `${c.field} ${JSON.stringify(c.a)}→${JSON.stringify(c.b)}`).join(' ; ')
       : !masked ? 'ข้อความที่มองเห็นเปลี่ยน (ชั้น 2): ' + maskedDiff
-        : !footerOk ? 'footer เปลี่ยน' : !smOk ? 'stock-meta เปลี่ยน' : strippedBad;
+        : pyCountBad ? pyCountBad
+          : !footerOk ? 'footer เปลี่ยน' : !smOk ? 'stock-meta เปลี่ยน' : strippedBad;
   // ★ เปิดเผยผลต่าง %/ปี ที่คนเห็น (review final item 2) — คำนวณเสมอ (ไม่ผูกกับ gateOk/bad/masked) เพราะเป็นการ
   //   "เปิดเผย" ไม่ใช่เกณฑ์ผ่าน/ตก ผู้เรียก (census) เป็นคนเลือกว่าจะรายงานเฉพาะใบที่ ok เท่านั้น
   const pyChanges = scnPyDiffs(exp0, exp1);
-  return { compare, masked, maskedDiff, gateOk, footerOk, smOk, reason, exp1, pyChanges };
+  return { compare, masked, maskedDiff, gateOk, footerOk, smOk, reason, exp1, pyChanges, pyCountRefused };
 }
 
 // ── API หลัก ──────────────────────────────────────────────────────────────────
@@ -724,9 +751,11 @@ function verifyPair(src, out, name, exp0, ctx0, values, notes) {
  * @param {{today?:string}} [opts]  today = ตรึง "วันนี้" ให้ E27/W09 (เทส/คลังแช่แข็ง)
  * @returns {{ok:boolean, reason?:string, out?:string, values?:object, sites:{tokenised:string[],literal:string[]},
  *            compare:{field:string,a:*,b:*,ok:boolean}[], notes:string[], masked:boolean, maskedDiff:string,
- *            pyChanges:{col:string,before:string,after:string,kind:'form'|'value'}[]}}
+ *            pyChanges:{col:string,before:string,after:string,kind:'form'|'value'}[], pyCountRefused:boolean}}
  *   ★ `masked`/`maskedDiff` เป็นสมาชิกของสัญญา — ชั้น 2 คือคุณสมบัติความปลอดภัยหลักของการย้าย ผู้เรียกต้องเห็นได้
  *   ★ `pyChanges` = การเปิดเผย %/ปี ของหมวด 6 ที่คนเห็นเปลี่ยน (review final item 2) — ไม่ใช่เกณฑ์ผ่าน/ตก แค่ให้ census บันทึก
+ *   ★ `pyCountRefused` = true เมื่อ `ok:false` เพราะยามโครงสร้าง %/ปี (review final wave 2) — ไม่ผ่าน retry-คง-literal
+ *      ด้านล่าง (ตั้งใจ: ต้องเป็น residue ให้คนตรวจ ไม่ใช่ถูกดูดกลืนไปเงียบ ๆ เหมือนความล้มเหลวอื่นในหมวด 6)
  */
 function migrateOne(src, name, opts) {
   const o = opts || {};
@@ -741,7 +770,11 @@ function migrateOne(src, name, opts) {
     // ★ F1 (review รอบ 1): เดิมเช็ค `sites.tokenised.includes('scn')` ซึ่ง **ตั้งค่าเมื่อสำเร็จเท่านั้น**
     //   ⇒ ความล้มเหลวที่เกิด **ข้างใน** tokeniseScn (คลาสที่ retry มีไว้เพื่อมันโดยตรง) ไม่เคยยิง retry เลย
     //   วัดจริง: AER/WDAY ถูกนับเป็น residue ทั้งที่ย้ายผ่านเมื่อคงหมวด 6 เป็น literal
-    if (!r.ok && st.scnTried) {
+    // ★ ยามโครงสร้าง %/ปี (review final wave 2) ต้อง "ปฏิเสธจริง" — ห้ามให้ retry-คง-literal ข้างล่างนี้ดูดกลืนไป
+    //   เงียบ ๆ (มันจะรอด retry เสมอ เพราะคงหมวด 6 literal ทั้งสองฝั่ง = จำนวนเท่ากันโดยอัตโนมัติ) ไม่งั้นใบที่ v2
+    //   "งอก/หาย" ตัวเลข %/ปี จะไม่โผล่เป็น residue ให้คนตรวจตามที่ตกลงกันไว้ — คนละกรณีกับความล้มเหลวอื่นในหมวด 6
+    //   ที่ retry มีไว้เพื่อมันโดยตรง (ตัวเลขปัดเกินเกณฑ์/EPS ฐาน ฯลฯ)
+    if (!r.ok && st.scnTried && !r.pyCountRefused) {
       const r2 = runOnce(src, name, true, { scnTried: false });
       if (r2.ok) { r2.notes.push('หมวด 6 คง literal — ลองย้ายแล้วไม่ผ่าน: ' + r.reason); return r2; }
     }
@@ -754,7 +787,7 @@ function migrateOne(src, name, opts) {
 function runOnce(src, name, noScn, st) {
   const notes = [];
   const sites = { tokenised: [], literal: [] };
-  const fail = (reason) => ({ ok: false, reason, sites, compare: [], notes, masked: false, maskedDiff: '', pyChanges: [] });
+  const fail = (reason) => ({ ok: false, reason, sites, compare: [], notes, masked: false, maskedDiff: '', pyChanges: [], pyCountRefused: false });
   try {
     const rdS = RM.readReportData(src);
     if (rdS.ok && RV.isV2(rdS.data)) return fail('เป็น v2 แล้ว — ข้าม');
@@ -775,8 +808,8 @@ function runOnce(src, name, noScn, st) {
 
     const out = buildRd(tk.out, ex.info.rd, ex.values, ex.fv, notes);
     const v = verifyPair(src, out, name, exp0, ctx0, ex.values, notes);
-    if (v.reason && !v.compare) return { ok: false, reason: v.reason, sites, compare: [], notes, masked: false, maskedDiff: '', pyChanges: [] };
-    const res = { ok: !v.reason, reason: v.reason || undefined, out, values: ex.values, sites, compare: v.compare, notes, masked: v.masked, maskedDiff: v.maskedDiff, pyChanges: v.pyChanges };
+    if (v.reason && !v.compare) return { ok: false, reason: v.reason, sites, compare: [], notes, masked: false, maskedDiff: '', pyChanges: [], pyCountRefused: false };
+    const res = { ok: !v.reason, reason: v.reason || undefined, out, values: ex.values, sites, compare: v.compare, notes, masked: v.masked, maskedDiff: v.maskedDiff, pyChanges: v.pyChanges, pyCountRefused: !!v.pyCountRefused };
     if (!res.ok) delete res.out;
     return res;
   } catch (e) {
@@ -914,7 +947,7 @@ function main(argv) {
 }
 
 module.exports = {
-  migrateOne, extractValues, tokenise, buildRd, verifyPair, checkStripped, sameMoney, scnPyDiffs,
+  migrateOne, extractValues, tokenise, buildRd, verifyPair, checkStripped, sameMoney, scnPyDiffs, scnPyCountGuard,
   COPY_FIELDS, REQUIRED_SITES, TOLERANCE, GAP_REL, renderCensusMd, mergeCensus,
 };
 if (require.main === module) process.exit(main(process.argv.slice(2)));
