@@ -12,7 +12,7 @@ const { run, must, ROOT } = require('./sh.js');
 const S = require('./state.js');
 const { footerDate, ageDays, todayBangkok } = require('./footer-date.js');
 const { usSessionOpen, setSessionOpen } = require('./market.js');
-const { triage, prePatchList } = require('./triage.js');
+const { triage, prePatchList, llmList } = require('./triage.js');
 const { readStockMeta } = require('../report-meta.js');
 
 const REPORTS = path.join(ROOT, 'reports');
@@ -24,9 +24,15 @@ function loadFlags() {
   catch (e) { if (e.code === 'ENOENT') return []; throw new Error(`อ่าน price-flags.json ไม่ได้ (${e.message})`); }
 }
 
-/** triage + เติมราคาเดิม/สกุลจาก stock-meta ของไฟล์ (อ่านดิสก์ — ส่วนที่เทสไม่ครอบ) */
-function plan(flags, today) {
-  const rows = triage(flags, { footerAgeOf: (sym) => { const h = readReport(sym); const d = h && footerDate(h); return d ? ageDays(d.iso, today) : null; } });
+/** triage + เติมราคาเดิม/สกุลจาก stock-meta ของไฟล์ (อ่านดิสก์ — ส่วนที่เทสไม่ครอบ)
+ *  opts.earningsAfterOf(sym) → boolean|null = งบออกหลังวันวิเคราะห์ไหม (Task 17 ใส่ของจริงจาก earnings-calendar.json)
+ *  ยังไม่มี = null ⇒ flip ยกเป็น LIGHT ด้วยอายุ footer อย่างเดียว (triage.STALE_DAYS) */
+function plan(flags, today, opts) {
+  const o = opts || {};
+  const rows = triage(flags, {
+    footerAgeOf: (sym) => { const h = readReport(sym); const d = h && footerDate(h); return d ? ageDays(d.iso, today) : null; },
+    earningsAfterOf: o.earningsAfterOf || null,
+  });
   for (const r of rows) {
     const h = readReport(r.symbol);
     const sm = h && readStockMeta(h);
@@ -83,7 +89,7 @@ function manualSteps(rows) {
   // prePatchRejected ติดมากับแถวหลัง preflight เท่านั้น (pre-patch แล้ว gate ตก → คืนไฟล์) — คลาสเดียวกับ REJECTED ของ cron: แก้ใบเอง ไม่ spawn agent
   const p = rows.filter((r) => r.bucket === 'PLUMBING' || r.bucket === 'REJECTED' || r.bucket === 'UNKNOWN' || r.prePatchRejected);
   if (p.length) L.push(`${++n}. ${p.map((r) => `${r.symbol}[${r.prePatchRejected ? 'gate ตกหลัง pre-patch' : r.reason}]`).join(' ')}: แก้ตามคอลัมน์ "การทำ" ไม่ spawn agent`);
-  L.push(`${++n}. ต่อไป: npm run queue -- ship --prepatch (push ราคาที่ patch ให้ tree สะอาด) แล้ว npm run queue -- prep <SYM> ทีละตัว (ตัวที่ไม่มี "สด" ในคอลัมน์การทำ)`);
+  L.push(`${++n}. ต่อไป: npm run queue -- ship --prepatch (push ราคาที่ patch · PREPATCH ${rows.filter((r) => r.bucket === 'PREPATCH').length} ตัวจบตรงนี้) แล้ว npm run queue -- prep <SYM> ทีละตัวเฉพาะ ${llmList(rows).length} ตัวที่ต้องส่ง LLM: ${llmList(rows).join(' ') || '-'}`);
   return L.join('\n');
 }
 
@@ -94,7 +100,7 @@ function preflight(opts) {
   must('git', ['pull', '--rebase', 'origin', 'main'], 'git pull --rebase');
   const today = todayBangkok();
   const flags = loadFlags();
-  const rows = plan(flags, today);
+  const rows = plan(flags, today, o);
   console.log(`\n=== คิว price-flags ${flags.length} รายการ · ${today} ===\n${renderTable(rows)}`);
   const s = S.load();
   s.startedAt = s.startedAt || today;

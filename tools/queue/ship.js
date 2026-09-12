@@ -5,6 +5,7 @@
  *               → commit 1 หุ้น (CLAUDE.md §5) → pull --rebase → push HEAD:main → ปิด issue ถ้าคิวว่าง
  *   ship --prepatch: รันทันทีหลัง preflight (ก่อน worker เริ่ม — ดู note ข้าง prepatchBlockers) → build → preserve-dates
  *               → build → verify → commit "price: …" → push · กันตัวที่ worker วิเคราะห์ใหม่แล้วโดนกวาดไปด้วย
+ *               · รอบที่มีแต่ PREPATCH (flip ในย่าน — ระยะ 1 ข้อ D) ปิด issue ตรงนี้ด้วย เพราะไม่มี `ship <SYM>` ตามมา
  * ★ ไม่ทำแทน: ตัดสิน publish/skip (postcheck ต้อง pass หรือ --force หลังรีวิวเอง)
  */
 const fs = require('fs');
@@ -177,12 +178,26 @@ function shipPrepatch() {
     if (m) S.update(m[1], { prepatchShippedAt: today });
   }
   console.log(`✅ pre-patch ${changed.length} ใบ push แล้ว (วันที่วิเคราะห์คงเดิมผ่าน preserve-dates)`);
-  // ไม่ปิด issue ที่นี่ — pre-patch ล้าง flag ใน price-flags.json ทั้งที่ยังไม่ได้วิเคราะห์ (snapshot semantics) · issue ปิดเมื่อ ship <SYM> ตัวสุดท้าย
+  // ปกติไม่ปิด issue ที่นี่ (pre-patch ล้าง flag ทั้งที่ยังไม่ได้วิเคราะห์ — snapshot semantics · issue ปิดเมื่อ ship <SYM> ตัวสุดท้าย)
+  // แต่รอบที่มีแต่ PREPATCH (flip ในย่าน — ระยะ 1 ข้อ D) ไม่มี `ship <SYM>` ตามมาเลย ⇒ ต้องปิดตรงนี้ ไม่งั้น issue ค้างเปิดทั้งที่คิวว่าง
+  closeIssueIfNoLlmRows(S.load().stocks);
+}
+
+/** ยังมีแถวที่ต้องส่ง LLM ค้างอยู่ไหม (LIGHT/FULL ที่ไม่ skip และยังไม่ ship) — ไม่มี = `ship --prepatch` ปิด issue เอง
+ *  ★ แยกเป็นฟังก์ชันที่รับตัวปิดเป็น argument เพื่อให้ queue-test ยิงได้จริง: `shipPrepatch()` เต็มใบรันในเทสไม่ได้
+ *    (มันเรียก npm run build / preserve-dates / npm run verify / git push) · คืน true = สั่งปิดแล้ว */
+function closeIssueIfNoLlmRows(stocks, close) {
+  const pending = Object.values(stocks || {}).filter((r) => !r.skip && ['LIGHT', 'FULL'].includes(r.bucket) && !r.shippedAt);
+  if (pending.length) { console.log(`ยังเหลือ ${pending.length} ตัวที่ต้องส่ง LLM — issue คงเปิด (ปิดตอน ship <SYM> ตัวสุดท้าย)`); return false; }
+  (close || closeIssueIfEmpty)();
+  return true;
 }
 
 /** X/Y ตาม memory feedback-progress-counter: push แล้ว / รอ push / ยังไม่เริ่ม
  *  ★ bucket ต้องไม่ซ้อนกัน — idle/other แบ่งกันตาม (skip || bucket ไม่ใช่ LIGHT/FULL) ภายใต้เงื่อนไขเดียวกันทุกตัว
- *    (เดิม `other` ไม่เช็ค !postcheck/!prepAt ⇒ แถวที่มี postcheck:'review' แต่ไม่มี bucket ขึ้นซ้ำทั้ง review และ other) */
+ *    (เดิม `other` ไม่เช็ค !postcheck/!prepAt ⇒ แถวที่มี postcheck:'review' แต่ไม่มี bucket ขึ้นซ้ำทั้ง review และ other)
+ *  ★ PREPATCH (flip ในย่าน — ระยะ 1 ข้อ D) มีบรรทัดของตัวเอง: ไม่ใช่ "ยังไม่เริ่ม" (ไม่มี worker ให้รอ) และไม่ใช่ "ไม่ใช้ agent/ข้าม"
+ *    (มันมีงานจริงคือ pre-patch + ship --prepatch) · ยกเว้นใบที่ gate ตกหลัง pre-patch — อันนั้นต้องคงป้ายเหตุผลไว้ที่ "ไม่ใช้ agent/ข้าม" */
 function status() {
   const s = S.load();
   const rows = Object.entries(s.stocks);
@@ -192,16 +207,20 @@ function status() {
   const prepped = rows.filter(([, r]) => !r.shippedAt && !r.postcheck && r.prepAt).map(([k]) => k);
   const idle = rows.filter(([, r]) => !r.shippedAt && !r.postcheck && !r.prepAt && !r.skip && !r.prePatchRejected && ['LIGHT', 'FULL'].includes(r.bucket)).map(([k]) => k);
   // prePatchRejected = pre-patch แล้ว gate ตก คืนไฟล์ไปแล้ว ⇒ ต้องแก้ใบเอง ไม่ใช่ "ยังไม่เริ่ม" ที่รอ spawn worker (re-review)
-  const other = rows.filter(([, r]) => !r.shippedAt && !r.postcheck && !r.prepAt && (r.skip || r.prePatchRejected || !['LIGHT', 'FULL'].includes(r.bucket))).map(([k, r]) => `${k}[${r.prePatchRejected ? 'gate ตกหลัง pre-patch' : r.skip ? 'สด' : (r.bucket || '-')}]`);
+  const prepatchOnlyRow = (r) => r.bucket === 'PREPATCH' && !r.prePatchRejected;
+  const prepatchOnly = rows.filter(([, r]) => prepatchOnlyRow(r));
+  const other = rows.filter(([, r]) => !r.shippedAt && !r.postcheck && !r.prepAt && !prepatchOnlyRow(r) && (r.skip || r.prePatchRejected || !['LIGHT', 'FULL'].includes(r.bucket))).map(([k, r]) => `${k}[${r.prePatchRejected ? 'gate ตกหลัง pre-patch' : r.skip ? 'สด' : (r.bucket || '-')}]`);
   const prepatchShipped = rows.filter(([, r]) => r.prepatchShippedAt).map(([k]) => k);
-  console.log(`รอบเริ่ม ${s.startedAt || '-'} · ${pushed.length}/${rows.length}`);
+  const prepatchDone = prepatchOnly.filter(([, r]) => r.prepatchShippedAt && !r.shippedAt).length;   // PREPATCH ที่ push แล้ว = เสร็จเหมือนกัน (`!shippedAt` กันนับซ้ำกับ pushed)
+  console.log(`รอบเริ่ม ${s.startedAt || '-'} · ${pushed.length + prepatchDone}/${rows.length}`);
   console.log(`push แล้ว ${pushed.length}: ${pushed.join(' ') || '-'}`);
   console.log(`รอ push ${waiting.length}: ${waiting.join(' ') || '-'}`);
   console.log(`postcheck ต้องดู ${review.length}: ${review.join(' ') || '-'}`);
   console.log(`prep แล้วรอ worker ${prepped.length}: ${prepped.join(' ') || '-'}`);
   console.log(`ยังไม่เริ่ม ${idle.length}: ${idle.join(' ') || '-'}`);
   console.log(`ไม่ใช้ agent/ข้าม ${other.length}: ${other.join(' ') || '-'}`);
+  console.log(`pre-patch อย่างเดียว (ไม่ส่ง LLM) ${prepatchOnly.length}: ${prepatchOnly.map(([k, r]) => k + (r.prepatchShippedAt ? '✓' : '')).join(' ') || '-'}`);
   console.log(`pre-patch push แล้ว ${prepatchShipped.length}: ${prepatchShipped.join(' ') || '-'}`);
 }
 
-module.exports = { shipStock, shipPrepatch, status, commitMessage, commitArgs, trailer, closeIssueIfEmpty, prepatchBlockers, prepatchCandidates, parsePorcelain, pendingCommitFor, STOCK_FILES, TITLE };
+module.exports = { shipStock, shipPrepatch, status, commitMessage, commitArgs, trailer, closeIssueIfEmpty, closeIssueIfNoLlmRows, prepatchBlockers, prepatchCandidates, parsePorcelain, pendingCommitFor, STOCK_FILES, TITLE };

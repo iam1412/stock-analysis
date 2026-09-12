@@ -70,17 +70,23 @@ process.env.QUEUE_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'queue-'));   // s
   ok(M.setSessionOpen(new Date('2026-09-10T04:00:00Z')) === true && M.setSessionOpen(new Date('2026-09-10T10:00:00Z')) === false, 'set: 11:00 ICT เปิด · 17:00 ปิด');
 }
 
-// ── 3) triage: ครบทุก reason ที่ cron/canary เขียนได้ (C14 — เดิม 2 reason ไม่มีกฎที่ไหนเลย) ──
+// ── 3) triage: ครบทุก reason ที่ cron/canary/preflight เขียนได้ · flip = PREPATCH ไม่ส่ง LLM (ข้อ D) ──
 {
   const T = require('../tools/queue/triage.js');
-  const want = { 'mos-sign-flip': 'LIGHT', 'drift-gt-15pct': 'LIGHT', 'suspect-split-or-data': 'FULL', 'bad-chart': 'FULL', 'fetch-failed': 'PLUMBING', 'patch-failed': 'PLUMBING', 'no-stock-meta': 'PLUMBING', 'currency-mismatch': 'PLUMBING', 'bad-price': 'PLUMBING', 'bad-report-price': 'PLUMBING', 'patch-rejected': 'REJECTED', 'not-on-exchange': 'DELIST' };
+  const want = { 'mos-sign-flip': 'PREPATCH', 'drift-gt-15pct': 'LIGHT', 'age-gt-90d': 'LIGHT', 'earnings-after-analysis': 'LIGHT', 'suspect-split-or-data': 'FULL', 'bad-chart': 'FULL', 'fetch-failed': 'PLUMBING', 'patch-failed': 'PLUMBING', 'no-stock-meta': 'PLUMBING', 'currency-mismatch': 'PLUMBING', 'bad-price': 'PLUMBING', 'bad-report-price': 'PLUMBING', 'patch-rejected': 'REJECTED', 'not-on-exchange': 'DELIST' };
   for (const [r, b] of Object.entries(want)) ok(T.bucketOf(r) === b, `bucketOf(${r}) = ${b}`, T.bucketOf(r));
   ok(T.bucketOf('drift-gt-10pct') === 'LIGHT' && T.bucketOf('อะไรก็ไม่รู้') === 'UNKNOWN', 'bucketOf: drift เกณฑ์อื่น = LIGHT · ไม่รู้จัก = UNKNOWN');
-  const flags = [{ symbol: 'A', reason: 'mos-sign-flip' }, { symbol: 'B', reason: 'mos-sign-flip' }, { symbol: 'C', reason: 'not-on-exchange' }, { symbol: 'D', reason: 'suspect-split-or-data' }];
-  const rows = T.triage(flags, { footerAgeOf: (s) => ({ A: 3, B: 40, C: 10, D: null })[s] });
-  ok(rows[0].skip && /สด/.test(rows[0].skip) && !rows[1].skip, 'triage: LIGHT ที่ footer ≤7 วัน = ข้าม (ไม่วิเคราะห์ซ้ำ) · เกิน 7 = ทำ');
+  const flags = [{ symbol: 'A', reason: 'mos-sign-flip' }, { symbol: 'B', reason: 'mos-sign-flip' }, { symbol: 'C', reason: 'not-on-exchange' }, { symbol: 'D', reason: 'suspect-split-or-data' }, { symbol: 'E', reason: 'mos-sign-flip' }, { symbol: 'F', reason: 'mos-sign-flip' }, { symbol: 'G', reason: 'drift-gt-15pct' }];
+  const rows = T.triage(flags, { footerAgeOf: (s) => ({ A: 3, B: 40, C: 10, D: null, E: 120, F: 30, G: 3 })[s], earningsAfterOf: (s) => s === 'F' });
+  const by = Object.fromEntries(rows.map((r) => [r.symbol, r]));
+  ok(by.A.bucket === 'PREPATCH' && !by.A.skip && by.A.escalated === null && by.B.bucket === 'PREPATCH', 'flip อายุปกติ → PREPATCH (ไม่ skip — patch ราคาไม่มีโทษ)');
+  ok(by.E.bucket === 'LIGHT' && by.E.escalated === 'age' && /90/.test(by.E.action), 'flip อายุ 120 วัน → ยกเป็น LIGHT (age)');
+  ok(by.F.bucket === 'LIGHT' && by.F.escalated === 'earnings', 'flip + งบออกหลังวิเคราะห์ → ยกเป็น LIGHT (earnings)');
+  ok(by.G.skip && /สด/.test(by.G.skip), 'LIGHT ที่ footer ≤7 วัน = ข้าม (เดิม)');
   ok(rows.every((r) => r.action && r.bucket), 'triage: ทุกแถวมี bucket + action');
-  ok(T.prePatchList(rows).join(',') === 'B,D', 'prePatchList: เฉพาะ LIGHT/FULL ที่ไม่ข้าม (ไม่ pre-patch DELIST/PLUMBING)');
+  ok(T.prePatchList(rows).join(',') === 'A,B,D,E,F', 'prePatchList: PREPATCH ทุกแถว (ไม่สน skip — patch ราคาไม่มีโทษ) + LIGHT/FULL ที่ไม่ skip · ไม่รวม DELIST', T.prePatchList(rows).join(','));
+  ok(T.llmList(rows).join(',') === 'D,E,F', 'llmList: เฉพาะ LIGHT/FULL ที่ไม่ skip (flip ธรรมดาไม่อยู่)', T.llmList(rows).join(','));
+  ok(T.STALE_DAYS === 90, 'STALE_DAYS = 90 (WS6 ข้อ 3: >1 ไตรมาส)');
 }
 
 // ── 4) state: อ่าน/เขียน/update ใต้ QUEUE_DIR ชั่วคราว ──
@@ -310,6 +316,9 @@ process.env.QUEUE_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'queue-'));   // s
   const Sh3 = require('../tools/queue/ship.js');
   S3.update('REVIEWME', { postcheck: 'review' });   // ไม่มี bucket เลย — ก่อนแก้เคยขึ้นทั้ง "postcheck ต้องดู" และ "ไม่ใช้ agent/ข้าม" พร้อมกัน
   S3.update('GATEFAIL', { bucket: 'LIGHT', prePatchRejected: '2026-09-12' });   // pre-patch แล้ว gate ตก คืนไฟล์แล้ว — ก่อนแก้ตกไปอยู่ "ยังไม่เริ่ม" เหมือนรอ spawn worker
+  S3.update('FLIPONLY', { bucket: 'PREPATCH' });                                   // flip ในย่าน (ข้อ D) — ไม่มี worker ให้รอ และไม่ใช่ "ข้าม" ⇒ บรรทัดของตัวเอง
+  S3.update('FLIPDONE', { bucket: 'PREPATCH', prepatchShippedAt: '2026-09-12' });   // PREPATCH ที่ push แล้ว = จบงานของมัน ต้องนับใน X/Y
+  S3.update('FLIPFAIL', { bucket: 'PREPATCH', prePatchRejected: '2026-09-12' });    // PREPATCH ที่ gate ตก ต้องคงป้ายเหตุผลไว้ ไม่หายเข้าไปในบรรทัด PREPATCH
   const lines = [];
   const orig = console.log;
   console.log = (s) => lines.push(String(s));
@@ -317,12 +326,33 @@ process.env.QUEUE_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'queue-'));   // s
   const out = lines.join('\n');
   ok(!/\[undefined\]/.test(out), 'status: ไม่มี [undefined] หลุดมาในบรรทัดไหน', out);
   ok(lines.filter((l) => l.includes('REVIEWME')).length === 1, 'status: postcheck review ไม่มี bucket → ขึ้นบรรทัดเดียว (bucket ไม่ซ้อน)', out);
-  ok(lines.length === 8, 'status: พิมพ์ 8 บรรทัด (เพิ่มบรรทัด "pre-patch push แล้ว")', String(lines.length));
-  ok(/^pre-patch push แล้ว/.test(lines[7]), 'status: บรรทัดสุดท้าย = pre-patch push แล้ว', lines[7]);
+  ok(lines.length === 9, 'status: พิมพ์ 9 บรรทัด (เพิ่มบรรทัด "pre-patch อย่างเดียว" — ข้อ D)', String(lines.length));
+  ok(/^pre-patch อย่างเดียว \(ไม่ส่ง LLM\)/.test(lines[7]) && /^pre-patch push แล้ว/.test(lines[8]), 'status: บรรทัด PREPATCH อยู่ก่อนบรรทัดสุดท้าย (pre-patch push แล้ว)', lines.slice(7).join(' | '));
+  const flipLine = lines[7];
+  ok(/FLIPONLY/.test(flipLine) && /FLIPDONE✓/.test(flipLine) && !/FLIPFAIL/.test(flipLine), 'status: PREPATCH ขึ้นบรรทัดตัวเอง · push แล้วติด ✓ · gate ตกไม่อยู่บรรทัดนี้', flipLine);
+  ok(lines.filter((l) => l.includes('FLIPONLY')).length === 1, 'status: PREPATCH ไม่ซ้อนกับ "ยังไม่เริ่ม"/"ไม่ใช้ agent/ข้าม"', out);
+  ok(/· 1\/\d+$/.test(lines[0]), 'status: ตัวนับ X/Y นับ PREPATCH ที่ push แล้วด้วย (FLIPDONE)', lines[0]);
   ok(lines.filter((l) => l.includes('GATEFAIL')).length === 1, 'status: prePatchRejected ขึ้นบรรทัดเดียว (ไม่ซ้อนกับ "ยังไม่เริ่ม")', out);
   const otherLine = lines.find((l) => /^ไม่ใช้ agent\/ข้าม/.test(l)) || '';
   ok(/GATEFAIL\[gate ตกหลัง pre-patch\]/.test(otherLine), 'status: prePatchRejected อยู่ใต้ "ไม่ใช้ agent/ข้าม" พร้อมป้ายเหตุผล', otherLine);
+  ok(/FLIPFAIL\[gate ตกหลัง pre-patch\]/.test(otherLine) && lines.filter((l) => l.includes('FLIPFAIL')).length === 1, 'status: PREPATCH ที่ gate ตกหลัง pre-patch คงป้ายเหตุผลใต้ "ไม่ใช้ agent/ข้าม" บรรทัดเดียว', otherLine);
   ok(!(lines.find((l) => /^ยังไม่เริ่ม/.test(l)) || '').includes('GATEFAIL'), 'status: ใบที่ gate ตกหลัง pre-patch ไม่ถูกนับว่ารอ spawn worker', lines.find((l) => /^ยังไม่เริ่ม/.test(l)));
+}
+
+// ── 12c) ship: `ship --prepatch` ต้องปิด issue เองเมื่อรอบนั้นไม่มีแถวต้องส่ง LLM (ข้อ D — flip ล้วนไม่มี ship <SYM> ตามมา) ──
+//   ยิงเฉพาะส่วนตัดสินใจ: shipPrepatch() เต็มใบเรียก npm run build / preserve-dates / npm run verify / git push จึงรันในเทสไม่ได้
+{
+  const Sh = require('../tools/queue/ship.js');
+  let n = 0;
+  const spy = () => { n++; };
+  const quiet = (fn) => { const orig = console.log; console.log = () => {}; try { return fn(); } finally { console.log = orig; } };
+  const onlyFlip = quiet(() => Sh.closeIssueIfNoLlmRows({ A: { bucket: 'PREPATCH' }, B: { bucket: 'PREPATCH', prepatchShippedAt: '2026-09-12' } }, spy));
+  ok(onlyFlip === true && n === 1, 'closeIssueIfNoLlmRows: รอบที่มีแต่ PREPATCH → ปิด issue ตรงนี้', String(n));
+  const withLight = quiet(() => Sh.closeIssueIfNoLlmRows({ A: { bucket: 'PREPATCH' }, C: { bucket: 'LIGHT' } }, spy));
+  ok(withLight === false && n === 1, 'closeIssueIfNoLlmRows: ยังมี LIGHT ที่ยังไม่ ship → ไม่ปิด (ปิดตอน ship <SYM> ตัวสุดท้าย)', String(n));
+  const doneOrSkipped = quiet(() => Sh.closeIssueIfNoLlmRows({ C: { bucket: 'LIGHT', shippedAt: '2026-09-12' }, D: { bucket: 'FULL', skip: 'สด ≤7 วัน (footer)' }, E: { bucket: 'DELIST' } }, spy));
+  ok(doneOrSkipped === true && n === 2, 'closeIssueIfNoLlmRows: LIGHT ที่ ship แล้ว · FULL ที่ข้าม · DELIST ไม่นับเป็นงานค้าง → ปิด', String(n));
+  ok(quiet(() => Sh.closeIssueIfNoLlmRows({}, spy)) === true && n === 3, 'closeIssueIfNoLlmRows: state ว่าง → ปิด', String(n));
 }
 
 // ── 12b) ship: commitArgs — commit ต้องจำกัดด้วย pathspec ไม่งั้น deletion ที่ stage ไว้ (git rm ตอน DELIST) หลุดเข้า commit (re-review) ──

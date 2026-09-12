@@ -134,7 +134,7 @@ console.log(
     ...historyRows,
     '<!--/history-->',
     '',
-    'เคลียร์คิว: เปิด session แล้วสั่ง "เคลียร์คิว price-flags" — flag ราคา (drift/mos-flip/suspect) หายเองเมื่อรายงานถูก re-analyze แล้ว' +
+    'เคลียร์คิว: เปิด session แล้วสั่ง "เคลียร์คิว price-flags" — `mos-sign-flip` = **pre-patch ราคาอย่างเดียว** (runbook `npm run queue -- ship --prepatch`) ไม่ต้องวิเคราะห์ · flag ราคาอื่น (drift/suspect) หายเองเมื่อรายงานถูก re-analyze แล้ว' +
       (hasDead ? ' · `not-on-exchange` ต้องยืนยันแล้วลบไฟล์ (ดูกล่องเตือนด้านบน)' : '') + '',
     '_(อัปเดตอัตโนมัติโดย workflow price-refresh ทุกวัน + dead-ticker-canary ทุกวันจันทร์)_',
   ].join('\n')
