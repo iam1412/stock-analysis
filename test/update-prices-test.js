@@ -43,6 +43,9 @@ ok(U.decide({ ...base, oldPrice: fv * 0.93, newPrice: fv * 1.06 }).freeze === 'm
 ok(U.decide({ ...base, oldPrice: fv * 0.93, newPrice: fv * 1.01 }).freeze === 'mos-sign-flip', 'decide: ฝั่งเก่าเกิน dead-band (+7→−1) → freeze');
 ok(U.decide({ ...base, oldPrice: fv * 0.983, newPrice: fv * 1.06 }).freeze === 'mos-sign-flip', 'decide: ฝั่งใหม่เกิน dead-band (+1.7→−6) → freeze');
 ok(U.decide({ ...base, oldPrice: fv * 0.96, newPrice: fv * 1.04 }).update === true, 'decide: flip ใน dead-band ±5 (+4→−4) → update (noise รอบ FV — ข้อ D ระยะ 1)');
+// ★ ขอบเส้นพอดี: |MOS ใหม่| = 5.0 เป๊ะ (ราคา = FV×1.05) — ตรึงว่าเกณฑ์เป็น `<=` ไม่ใช่ `<`
+//   (ทั้งสองฝั่งอยู่ในแบนด์ ⇒ patch ผ่าน ไม่ freeze · ถ้าใครเปลี่ยนเป็น `<` เคสนี้จะกลายเป็น mos-sign-flip ทันที)
+ok(U.decide({ ...base, oldPrice: fv * 0.96, newPrice: fv * 1.05 }).update === true, 'decide: flip ที่ |MOS ใหม่| = 5.0 พอดี (+4→−5) → update (เกณฑ์เป็น ≤ ไม่ใช่ <)', JSON.stringify(U.decide({ ...base, oldPrice: fv * 0.96, newPrice: fv * 1.05 })));
 ok(U.MOS_FLIP_DEADBAND_PP === 5, 'MOS_FLIP_DEADBAND_PP = 5 (ข้อ D)');
 ok(U.decide({ ...base, oldPrice: 195, newPrice: 205, fv: 300 }).update === true, 'decide: หลุด gauge → ไม่ freeze แล้ว (patchReport ขยายขอบเอง)');
 ok(U.decide({ ...base, newPrice: 105, currencyOk: false }).freeze === 'currency-mismatch', 'decide: currency ไม่ตรง → freeze');
@@ -410,20 +413,37 @@ ok(!/\{\{|\}\}|undefined|NaN/.test(out.replace(/[\s\S]*<body/, '')), 'ไม่�
 const oldLab = aapl.match(/id="mCur"><div class="lab">ปัจจุบัน \$([\d,.]+)/)[1];
 ok(out.match(/id="mCur"><div class="lab">ปัจจุบัน \$([\d,.]+)/)[1] === U.fmtLike(301.5, oldLab), 'gauge label คงสไตล์ทศนิยมเดิม');
 
-// ---------- ช่องสรุป "ส่วนต่างจากราคา": patch ตัวเลข แต่ห้ามแตะคำบอกทิศทาง (แก้ต้นเหตุ W06) ----------
-// ช่องนี้เป็น prose ที่คนเขียน แต่ตัวเลขในนั้นคือ MOS ที่คำนวณได้ ⇒ cron ต้อง sync ให้ ไม่งั้นเพี้ยนขึ้นเรื่อย ๆ
-// แต่ "คำ" (ถูก/แพง) เป็นการตัดสินเนื้อหา — cron ห้ามเขียนเอง (§9) จึงต้องข้ามเมื่อทิศไม่ตรงกับ MOS ใหม่
+// ---------- ช่องสรุป "ส่วนต่างจากราคา": cron เขียน **ทั้งช่อง** เป็นคลังคำคงที่ "MOS ~ ±X%" (ระยะ 1 ข้อ D) ----------
+// เดิม cron patch เฉพาะ "ตัวเลข" แล้วเว้นเมื่อคำบอกทิศขัดกับ MOS ใหม่ ⇒ ใบที่คำกับเครื่องหมายขัดกันเอง
+// ไม่เคยถูกแตะเลย (BBL "+2.1% (เกือบเต็มมูลค่า)" — open-items #13) และ W06 ต้องผ่อนเกณฑ์ตามไปด้วย
+// ตอนนี้คำเชิงคุณภาพอยู่ใน .txt ของกล่อง verdict ล้วน ๆ ⇒ ช่องนี้ไม่มีอะไรให้ cron เดา เขียนทับได้ทุกรูป
+// ★ ตัวเขียน = patchDerived#11 (ไม่ใช่โค้ดในไฟล์นี้แล้ว) · ค่าที่คาดหวังอ่านจาก .big ที่เพิ่งเขียน ไม่ hardcode
+const DVcell = require('../tools/derived-values.js');
 const CELL_RE = /(ส่วนต่างจากราคา<\/div>\s*<div class="v"[^>]*>)([\s\S]*?)(<\/div>)/;
 const cellOf = (h) => (h.match(CELL_RE) || [, , ''])[2].replace(/<[^>]*>/g, '').trim();
 const setCell = (h, txt) => h.replace(CELL_RE, (m, a, c, z) => a + txt + z);
-const pxCellTest = Math.round(FV * 1.2 * 100) / 100;   // ราคาสูงกว่า FV 20% → MOS = −20% → ทิศ "แพง"
+const pxCellTest = Math.round(FV * 1.2 * 100) / 100;   // ราคาสูงกว่า FV 20% → MOS = −20%
 const dp = { day: 11, monIdx: 6, yearCE: 2026 };
-const cellCase = (txt, price) => cellOf(U.patchReport(setCell(aapl, txt), { newPrice: price, dateParts: dp, chartData: null }).html);
-ok(cellCase('แพง ~13%', pxCellTest) === 'แพง ~20%', 'ช่องสรุป: ทิศตรงกัน → แทนตัวเลขด้วย |MOS| ใหม่ คงคำ/รูปแบบทศนิยมเดิม', cellCase('แพง ~13%', pxCellTest));
-ok(cellCase('MOS ~ −16.8%', pxCellTest) === 'MOS ~ −20.0%', 'ช่องสรุป: คงจำนวนทศนิยมเดิม (1 ตำแหน่ง) และเครื่องหมาย − เดิม', cellCase('MOS ~ −16.8%', pxCellTest));
-ok(cellCase('ถูกกว่ามูลค่า MOS ~ +8%', pxCellTest) === 'ถูกกว่ามูลค่า MOS ~ +8%', 'ช่องสรุป: ทิศขัดกับ MOS ใหม่ → **ไม่แตะ** (เป็นเรื่องเนื้อหา ปล่อยให้ W06 เตือนให้คนแก้)');
-ok(cellCase('แพงกว่ามูลค่าเหมาะสม', pxCellTest) === 'แพงกว่ามูลค่าเหมาะสม', 'ช่องสรุป: ไม่มีตัวเลข → ไม่แตะ');
-ok(cellCase('ส่วนต่าง 5%', pxCellTest) === 'ส่วนต่าง 5%', 'ช่องสรุป: ไม่มีคำบอกทิศ → ไม่เดา ไม่แตะ');
+const cellRun = (txt, price) => U.patchReport(setCell(aapl, txt), { newPrice: price, dateParts: dp, chartData: null }).html;
+{
+  // ทุกรูปเดิม (คำ+ตัวเลข · คลังคำที่ตัวเลขเก่า · ทิศขัดกับ MOS ใหม่ · ไม่มีตัวเลข · ไม่มีคำบอกทิศ) ต้องลู่เข้าข้อความเดียวกัน
+  for (const txt of ['แพง ~13%', 'MOS ~ −16.8%', 'ถูกกว่ามูลค่า MOS ~ +8%', 'แพงกว่ามูลค่าเหมาะสม', 'ส่วนต่าง 5%']) {
+    const out1 = cellRun(txt, pxCellTest);
+    const big = DVcell.readMosBig(out1);
+    const want = 'MOS ~ ' + big.sign + big.num + '%';
+    ok(cellOf(out1) === want, `ช่องสรุป: "${txt}" → คลังคำคงที่เท่ากับ .big`, `${cellOf(out1)} (want ${want})`);
+    // idempotent: รันซ้ำที่ราคาเดิมต้องไม่ขยับช่องอีก (ตัวตรวจกับตัวเขียนใช้ predicate เดียวกัน)
+    ok(cellOf(U.patchReport(out1, { newPrice: pxCellTest, dateParts: dp, chartData: null }).html) === want, `ช่องสรุป: "${txt}" → idempotent`);
+  }
+  // เขียนแล้วต้องรายงานใน derived[] (ไม่ใช่เขียนเงียบ) และไม่รายงานเมื่อไม่ได้เขียน
+  const rCell = U.patchReport(setCell(aapl, 'แพง ~13%'), { newPrice: pxCellTest, dateParts: dp, chartData: null });
+  ok(rCell.derived.some((c) => /^ช่องสรุป:/.test(c)), 'ช่องสรุป: การเขียนถูกรายงานใน derived[]', JSON.stringify(rCell.derived.filter((c) => /ช่องสรุป/.test(c))));
+  const rAgain = U.patchReport(rCell.html, { newPrice: pxCellTest, dateParts: dp, chartData: null });
+  ok(!rAgain.derived.some((c) => /^ช่องสรุป:/.test(c)), 'ช่องสรุป: ช่องที่ตรงอยู่แล้ว → ไม่มีรายการใน derived[]');
+  // attribute ของ <div class="v" style=…> ต้องคงอยู่ (ตัวเขียนแทนเฉพาะกลุ่ม 2 ของ SUMMARY_RE)
+  const vOpenA = aapl.match(DVcell.SUMMARY_RE)[1];
+  ok(rCell.html.includes(vOpenA), 'ช่องสรุป: คง attribute ของแท็กเปิด <div class="v"> ไว้ครบ');
+}
 
 // ---------- สีกล่อง verdict `mos-verdict bad|ok|good` — sync ให้ตรงโซน MOS ใหม่ (แก้ต้นเหตุ W04) ----------
 // class เป็นฟังก์ชันล้วนของ MOS (นิยามเดียว = U.mosBand ซึ่ง W04 ก็ import ไปใช้) ⇒ cron sync ได้ทุกครั้ง ไม่ต้องเดา
