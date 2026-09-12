@@ -232,6 +232,12 @@ ok(b.injectTA(taBody, 'AAPL', null, { currency: 'USD' }, 'assets/ta-abc123.js') 
   ok(out.includes('"sym":"AA$&P"'), 'injectTA: $& ใน symbol ออกมาตรงตัว');
   ok(out.split('</body>').length === 2, 'injectTA: มี </body> เดียวใน output (ไม่มี $& ขยายเป็นแท็กปลอม)');
 }
+// ── injectTA v2: อ่านราคาจาก values.px (ไม่ใช่ gauge.cur ที่ v2 ไม่มี) — rd ดิบจาก parseJsonScript ไม่ผ่าน validate ──
+{
+  const rdV2Sub1 = { v: 2, fv: 0.6, values: { px: 0.5 }, theme: { accent: '#0071e3', accentDark: '#0058b9' } };
+  const out = b.injectTA(taBody, 'NRF', rdV2Sub1, { currency: 'THB' }, 'assets/ta-abc123.js');
+  ok(/"dec":4/.test(out), 'injectTA v2: values.px=0.5 (<1) → dec:4 อ่านจาก values.px ไม่ใช่ gauge.cur ที่ไม่มีใน v2: ' + out.match(/__TA_CFG__=(\{[^}]*\})/)[1]);
+}
 
 // ── stripDecorEmoji + injectSectionNav (GUI redesign — spec §4.3) ──
 {
@@ -411,6 +417,47 @@ ok(b.injectTA(taBody, 'AAPL', null, { currency: 'USD' }, 'assets/ta-abc123.js') 
     ok(JSON.stringify(revived(q, list)) === JSON.stringify(T.matchTagQuery(q, list)),
        `embed: ผลจากข้อความที่ฝัง = ผลจากตัวจริง (q="${q}")`);
   });
+}
+
+// ── ระยะ 2: expandReport v2 render token จาก values ──
+{
+  const { expandReport } = require('../build.js');
+  const rdV2 = JSON.stringify({ v: 2, fv: 195, values: { px: 188, priceDate: '2026-09-11', chgSuffix: 'รอบปี' },
+    theme: { accent: '#1a73e8', chgBg: 'var(--green-soft)', chgColor: '#137333' },
+    chart: { data: [['ก.ย.25', 150], ['ก.ย.26', 188]], min: 120, max: 240, grid: [150, 200], currency: '฿', highlight: [0, 1] }, gauge: { min: 120, max: 240 } });
+  const src = (rd, body) => `<html><head><script type="application/json" id="stock-meta">{"symbol":"X","currency":"THB","price":188,"fairValue":195,"mos":3.6,"upside":3.7,"pe":null,"dividendYield":null,"roe":null}</script>\n<script type="application/json" id="report-data">${rd}</script><!--TEMPLATE:STYLE--></head><body>${body}<!--TEMPLATE:ENGINE--></body></html>`;
+  const out = expandReport(src(rdV2, '<div class="px">{{rd:px}}</div><div class="big">{{rd:mos}}</div>'));
+  ok(out.includes('<div class="px">฿188.00</div>') && out.includes('<div class="big">+4%</div>'), 'v2: token ใน body ถูก render จาก values');
+  ok(/gpos\(188\)/.test(out) && /gpos\(195\)/.test(out) && /const FV=195\b/.test(out), 'v2: engine bake gauge cur/fair/FV จาก values.px/fv (ไม่มี gauge.cur ใน JSON)');
+  ok(/const fy=ys\(195\)/.test(out), 'v2: fairLine ของกราฟ = fv');
+  let t = ''; try { expandReport(src(rdV2, '<p>{{rd:nope}}</p>')); } catch (e) { t = e.message; }
+  ok(/ไม่รู้จัก/.test(t), 'v2: token ไม่รู้จัก → throw: ' + t);
+  t = ''; try { expandReport(src(rdV2.replace('"v":2', '"v":2,"bogus":1'), '')); } catch (e) { t = e.message; }
+  ok(/bogus/.test(t), 'v2: คีย์แปลกระดับบนของ report-data → throw');
+  t = ''; try { expandReport(src(rdV2.replace('"gauge":{"min":120,"max":240}', '"gauge":{"min":120,"max":240,"cur":188}'), '')); } catch (e) { t = e.message; }
+  ok(/gauge\.cur/.test(t), 'v2: gauge.cur มี → throw');
+  // ── ระยะ 2 (fix round 1): branch strict-key ที่ยังไม่มีเทสครอบ ──
+  const rdV2Obj = JSON.parse(rdV2);
+  const mkV2 = (mut) => { const o = JSON.parse(JSON.stringify(rdV2Obj)); mut(o); return JSON.stringify(o); };
+  t = ''; try { expandReport(src(mkV2((o) => { o.chart.bogus = 1; }), '')); } catch (e) { t = e.message; }
+  ok(/chart\.bogus/.test(t), 'v2: chart.bogus (คีย์แปลกใน chart) → throw: ' + t);
+  t = ''; try { expandReport(src(mkV2((o) => { o.theme.accentLight = '#fff'; }), '')); } catch (e) { t = e.message; }
+  ok(/theme\.accentLight/.test(t), 'v2: theme.accentLight (คีย์แปลกใน theme) → throw: ' + t);
+  t = ''; try { expandReport(src(mkV2((o) => { o.chart.fairLine = 195; }), '')); } catch (e) { t = e.message; }
+  ok(/fairLine/.test(t), 'v2: chart.fairLine มี → throw: ' + t);
+  t = ''; try { expandReport(src(mkV2((o) => { delete o.values; }), '')); } catch (e) { t = e.message; }
+  ok(/values/.test(t), 'v2: values หาย → throw: ' + t);
+  const srcNoSM = (rd, body) => `<html><head><script type="application/json" id="report-data">${rd}</script><!--TEMPLATE:STYLE--></head><body>${body}<!--TEMPLATE:ENGINE--></body></html>`;
+  t = ''; try { expandReport(srcNoSM(rdV2, '')); } catch (e) { t = e.message; }
+  ok(/stock-meta/.test(t), 'v2: ไม่มีบล็อก stock-meta → throw: ' + t);
+  // v1: มี token {{rd:…}} หลุดในไฟล์ที่ไม่ใช่ v2 (ไม่มี values ให้ render) → ต้อง throw กัน token รั่วเข้า dist/
+  const rdV1 = JSON.stringify({ fv: 195, theme: { accent: '#1a73e8', chgBg: 'var(--green-soft)', chgColor: '#137333' },
+    chart: { data: [['ก.ย.25', 150], ['ก.ย.26', 188]], min: 120, max: 240, grid: [150, 200], fairLine: 195, currency: '฿', highlight: [0, 1] }, gauge: { min: 120, max: 240, cur: 188, fair: 195 } });
+  t = ''; try { expandReport(src(rdV1, '<div class="px">฿188.00</div>{{rd:px}}')); } catch (e) { t = e.message; }
+  ok(/rd:/.test(t), 'v1: มี {{rd:…}} หลุดในไฟล์ที่ไม่ใช่ v2 → throw กันไม่ให้เข้า dist/: ' + t);
+  // v1 ไม่มี token เลย → identity ของ body เหมือนเดิม (ไม่กระทบไฟล์ v1 อีก 908 ใบ) + engine bake เดิม
+  const o1 = expandReport(src(rdV1, '<div class="px">฿188.00</div>'));
+  ok(o1.includes('<div class="px">฿188.00</div>') && /gpos\(188\)/.test(o1), 'v1: identity ของ body (ไม่มี token) + engine เดิม');
 }
 
 console.log('\n' + '─'.repeat(50));

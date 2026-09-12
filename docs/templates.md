@@ -68,6 +68,68 @@
 | `gauge.cur` | ราคาปัจจุบัน (เลขเดียวกับ header/stock-meta.price) |
 | `theme` 8 คีย์แรก | `makeTheme()` — สูตร 3 บรรทัด ข้อ 6 |
 
+### schema `report-data` v2 (ระยะ 2 — ยังไม่เปิดใช้กับคลังจนกว่าส่วน E)
+
+> คลัง `reports/` ทั้งหมดยังเป็น v1 (บล็อกข้างบน) — ห้ามใครเขียน `"v":2` ลงไฟล์จริงก่อนส่วน E ของแผน
+> `docs/superpowers/plans/2026-09-12-stock-analyzer-audit-phase2-data-layer.md` (schema/token ชุดจริงอยู่ที่นั่น — สรุปย่อไว้ที่นี่เพื่อให้เจองานเร็ว)
+> เจ้าของ schema/validate/derive/render = `tools/report-values.js` · เจ้าของการ render token ตอน build = `build.js expandReport()`
+
+ต่างจาก v1: ราคา/FV มี**สำเนาเดียว** (`values.px` / `fv`) แทนที่จะกระจายซ้ำในหลายจุด (header/gauge/chart/hint) — ส่วนอื่นที่ต้องโชว์ตัวเลขพวกนี้ใช้ token `{{rd:…}}` แทนการพิมพ์ค่าดิบ · `chart.fairLine` และ `gauge.cur`/`gauge.fair` **ห้ามมี** ใน v2 (engine bake จาก `values.px`/`fv` ให้เอง)
+
+```jsonc
+<script type="application/json" id="report-data">
+{
+  "v": 2,
+  "fv": 195,                       // เจ้าของเดียวของ FV (เดิมมี 9 สำเนา)
+  "values": {
+    "px": 188,                     // cron · ราคาปิดล่าสุด (2 ตำแหน่ง)
+    "priceDate": "2026-09-11",     // cron · ISO ค.ศ. เสมอ · render เป็น "11 ก.ย. 2569"
+    "chgSuffix": "รอบปี",          // worker · "รอบปี" | "ตั้งแต่ IPO" — ตัวเลข % คิดจาก chart.data ตอน render
+    "fvLow": 180, "fvHigh": 210,   // worker · กรอบ FV (null = ไม่มี)
+    "analystTgt": 205,             // worker · เป้านักวิเคราะห์ (null = ไม่มี)
+    "eps": 21.7,                   // worker · ฐาน EPS ของการ์ด P/E ที่ใช้ token (null = การ์ดเป็น literal)
+    "shares": 1909000000,          // worker · จำนวนหุ้นทั้งหมด (หุ้น ไม่ใช่ล้าน) → Market Cap
+    "revenue": 140000000000,       // worker · รายได้ TTM หน่วยเต็ม สกุลรายงาน → P/S
+    "dps": 12, "bvps": 260,        // worker · → ปันผล % · P/BV
+    "baseEps": 21.7,               // worker · EPS ฐานหมวด 6 (hint)
+    "scenarios": [ { "tgt": 160, "div": 36 }, { "tgt": 230, "div": 36 }, { "tgt": 300, "div": 36 } ],  // bear/base/bull · div = ปันผลรวม N ปี (null = ไม่มีแถว)
+    "scnBasis": { "years": 3, "divIncluded": true, "perYear": "cagr" }   // perYear: "cagr" | "linear" | null (ไม่โชว์ %/ปี)
+  },
+  "theme": { … 11 คีย์เดิม … },
+  "chart": { "data": [...], "min": 120, "max": 240, "grid": [...], "currency": "฿", "highlight": [3, 9] },   // ★ ไม่มี fairLine
+  "gauge": { "min": 120, "max": 240, "fairLabelTop": "-58px" }                                             // ★ ไม่มี cur/fair
+}
+</script>
+```
+
+token ที่ renderer รู้จัก (`tools/report-values.js` `TOKENS`) — ตัวไหน derive จากอะไร:
+
+| token | render | ต้องมีใน values |
+|---|---|---|
+| `{{rd:px}}` | `฿188.00` (สกุลจาก `stock-meta.currency`) | px |
+| `{{rd:pxNum}}` | `188` (ค่าตั้งต้น `pxIn`) | px |
+| `{{rd:priceDate}}` | `11 ก.ย. 2569` | priceDate |
+| `{{rd:chg}}` | `▲ +12.3% (รอบปี)` — `annualChg(chart.data, '(' + chgSuffix + ')')` | chgSuffix |
+| `{{rd:fv}}` `{{rd:fvLow}}` `{{rd:fvHigh}}` | `฿195.00` … | fv · fvLow · fvHigh |
+| `{{rd:mos}}` | `+4%` (`fmtMos((fv−px)/fv×100)`) | — |
+| `{{rd:mosClass}}` | `bad` / `ok` / `good` (`mosBand`) | — |
+| `{{rd:mos20}}` `{{rd:mos30}}` | `฿156.00` / `฿136.50` (fv×0.8 / ×0.7) | — |
+| `{{rd:upside}}` | `+4%` | — |
+| `{{rd:analystTgt}}` `{{rd:analystPct}}` | `฿205.00` / `+9%` ((tgt−px)/px) | analystTgt |
+| `{{rd:pe}}` | `8.7` (px/eps · 1 ตำแหน่ง · ไม่มี x) | eps |
+| `{{rd:mcap}}` | `฿3.59 แสนล้าน` / `$3.21T` (`fmtBig`) | shares |
+| `{{rd:ps}}` | `2.6` (px×shares/revenue · 1 ตำแหน่ง) | shares · revenue |
+| `{{rd:yield}}` | `6.4%` (dps/px×100 · 1 ตำแหน่ง) | dps |
+| `{{rd:pbv}}` | `0.72` (px/bvps · 2 ตำแหน่ง) | bvps |
+| `{{rd:baseEps}}` | `฿21.70` | baseEps |
+| `{{rd:scnNote}}` | ` • รวมปันผล` เมื่อ `scnBasis.divIncluded` ไม่งั้น `` | scnBasis |
+| `{{rd:sc1tgt}}` … `sc3tgt` | `฿160.00` | scenarios |
+| `{{rd:sc1div}}` … | `฿36.00` | scenarios[i].div |
+| `{{rd:sc1ret}}` … | `+4% (+1.4%/ปี)` — total = (tgt + div·[divIncluded] − px)/px · %/ปี ตาม perYear | scenarios · scnBasis |
+| `{{rd:sc1retClass}}` … | `pos` / `neg` | scenarios |
+
+★ ตัวอย่างในตาราง = ค่าที่ `fmtMos` ปัด (≥2% → 0 ตำแหน่ง)
+
 ### 2) การ์ดวิธี valuation (`vmethod`) + กล่องสรุป FV
 
 ```html
