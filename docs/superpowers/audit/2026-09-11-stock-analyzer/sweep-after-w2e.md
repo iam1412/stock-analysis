@@ -46,7 +46,7 @@ sweep fails=0
 
 **รวม: 12/12 ราคาผ่าน · sweep fails=0 ทั้งสองแบตช์**
 
-หลังจบทั้งสองแบตช์ — `git status --short` มีแค่ไฟล์ใหม่สองไฟล์ของ task นี้ (`sweep.sh` ที่ commit ไปก่อนหน้า + `sweep-after-w2e.md` นี้เอง) ไม่มีไฟล์ใน `reports/` หรือ `reports.json` ค้าง และ `git diff --stat reports.json` ว่าง — ไฟล์ถูก `git checkout --` คืนครบทุกรอบ (24 รอบ: 12 ราคา × คืนไฟล์ท้าย loop + trap EXIT ของแต่ละแบตช์)
+หลังจบทั้งสองแบตช์ — `git status --short` มีแค่ไฟล์ใหม่สองไฟล์ของ task นี้ (`sweep.sh` ที่ commit ไปก่อนหน้า + `sweep-after-w2e.md` นี้เอง) ไม่มีไฟล์ใน `reports/` หรือ `reports.json` ค้าง และ `git diff --stat reports.json` ว่าง — ไฟล์ถูก `git checkout --` คืนครบทุกรอบ (14 รอบ: 12 ครั้งท้าย loop + trap EXIT 1 ครั้งต่อแบตช์ (2 แบตช์))
 
 ## สถานะ gate ต่อราคา (บรรทัดสรุปของ `check-reports` ในแต่ละ log — บรรทัดแรกที่ตรงแพทเทิร์น `error N • warning N`)
 

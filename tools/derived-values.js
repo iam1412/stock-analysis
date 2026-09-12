@@ -15,6 +15,10 @@
  *   6) P/BV ที่โชว์       = ราคา ÷ BVPS ที่การ์ดนั้นพิมพ์ไว้
  *   (+ ผลตอบแทนฉาก 3 ปีในหมวด 6 — `scenarioPlan`)
  *
+ * แผนที่พาส 1–10 ของ `patchDerived()` ↔ `healer:'patchDerived#N'` ใน test/check-reports.js (คนละเลขกับลิสต์ข้างบน):
+ *   1 การ์ด P/E · 2 stock-meta.pe · 3 % ราคาเป้า · 4 prose (opt-in `{prose:true}` — cron ไม่รัน) ·
+ *   5 Market Cap · 6 P/S · 7 หมวด 6 · 8 ปันผล % · 9 stock-meta.dividendYield · 10 P/BV
+ *
  * ใช้ร่วมกัน 2 ฝั่ง — ห้ามทำสำเนาความรู้ (บทเรียนเดียวกับ `price-date.js`):
  *   • ตัวตรวจ  `test/check-reports.js` → E41 (P/E) · E42 (% ในการ์ด) · E43 (Market Cap) · W15 (% ในเนื้อความ) · W16 (P/S)
  *              · W17 (หมวด 6) · W19 (ปันผล % + stock-meta.dividendYield) · W20 (P/BV)
@@ -729,7 +733,7 @@ function patchDerived(html, price, opts) {
   });
 
   // 6) P/S = Market Cap ÷ รายได้ที่การ์ดนั้นพิมพ์ไว้
-  //    ★ เป็นการอ้างอิง "ข้ามการ์ด" (ตัวตั้งมาจากการ์ด Market Cap) — จึงคุมด้วย W16 ระดับ warn ไม่ใช่ error
+  //    ★ เป็นการอ้างอิง "ข้ามการ์ด" (ตัวตั้งมาจากการ์ด Market Cap) — เดิม warn (เหตุผลเดิม อ้างข้ามการ์ด) — ยกเป็น error ระยะ 1 (12 ก.ย. 2569) หลัง quarantine + heal = 0 (คุมด้วย W16)
   //      ถ้าอ่านฐาน Market Cap ไม่ได้ (ADR/คนละฐาน) → ไม่มีตัวตั้ง → ไม่แตะ
   {
     const basis = mcapCards(out, price)[0];

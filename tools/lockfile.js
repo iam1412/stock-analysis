@@ -8,6 +8,9 @@
  *   (ข้ามเงียบ = เขียน state ครึ่งเดียว = คิวเพี้ยน — แย่กว่าล้มดัง ๆ) · lock ที่ mtime เก่ากว่า STALE_MS = process ตายทิ้งไว้ ยึดได้
  * ★ ห้ามถือ lock คร่อมงานยาว (loop fetch 8 นาทีของ cron) — ถือเฉพาะช่วง read→merge→write (มิลลิวินาที)
  * · holder async ได้ heartbeat (ระยะ 1) · holder sync ห้ามยาว
+ * · มี handler SIGINT/SIGTERM ติดตั้งไว้ (ปล่อย lock ที่ถืออยู่ก่อน exit) แต่ระหว่าง loop รอ lock แบบ sync
+ *   (sleepSync/Atomics.wait) Ctrl-C จะถูกดีเลย์จนกว่า loop จะ yield (≤ WAIT_MS) — event loop ไม่หมุนระหว่างนั้น
+ *   จากนั้น process จึงปล่อย lock ที่ถืออยู่แล้ว exit 130 (SIGINT) หรือ 143 (SIGTERM)
  */
 const fs = require('fs');
 const path = require('path');
@@ -82,7 +85,7 @@ function withLock(file, fn, opts) {
     try { const t = new Date(); fs.utimesSync(dir, t, t); } catch (_) {}
   }, hbMs);
   hb.unref();
-  return out.finally(() => { clearInterval(hb); release(dir); });
+  return Promise.resolve(out).finally(() => { clearInterval(hb); release(dir); });
 }
 
 /** เขียน state file แบบ atomic: temp ในโฟลเดอร์เดียวกัน (rename ข้าม filesystem ไม่ atomic) แล้ว rename ทับ

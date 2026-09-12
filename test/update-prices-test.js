@@ -799,7 +799,19 @@ ok(U.commitBody([], []) === '', 'commitBody: ว่างเมื่อไม�
     fs.rmSync(dir4, { recursive: true, force: true });
   });
 
-  pending = Promise.all([chain1, chain2]);
+  // (5) release-on-reject: async fn ที่ reject ต้อง reject ด้วย error เดิม + ไม่เหลือ `<file>.lock` ค้าง
+  //     (out.finally ตรง ๆ พังกับ thenable เปล่า ๆ ที่ไม่มี .finally — withLock ต้องผ่าน Promise.resolve(out) ก่อนเสมอ)
+  const f5 = path.join(tmp, 'z.json'), dir5 = f5 + '.lock';
+  const p5 = L.withLock(f5, async () => { throw new Error('boom'); });
+  const chain3 = p5.then(
+    () => { ok(false, 'withLock: async fn reject → ต้อง reject (ไม่ใช่ resolve)'); },
+    (e) => {
+      ok(!!e && e.message === 'boom', `withLock: async fn reject → reject ด้วย error เดิม (ได้ ${e && e.message})`);
+      ok(!fs.existsSync(dir5), 'withLock: async fn reject → ปล่อย lock ด้วย (ไม่เหลือ .lock ค้าง)');
+    }
+  );
+
+  pending = Promise.all([chain1, chain2, chain3]);
 }
 
 // ---------- commitFlags: merge บนไฟล์ "ล่าสุด" ใต้ lock ไม่ใช่ snapshot ตอนเริ่มรอบ (WS4 · เคส flag ฟื้น/หาย 12 ส.ค. 69) ----------

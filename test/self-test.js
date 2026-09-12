@@ -104,6 +104,17 @@ const allIds = (r) => new Set([...r.errors, ...r.warnings].map((x) => x.id));
 // ต้องประกาศก่อนทุกบล็อกที่ลงทะเบียน (cycle helper · บล็อก W17 · conv() ของ E41/E42/E43/W16)
 const CONVERGED = new Set();
 
+// convergence helper (E-policy): ค้าง → healer → เงียบ + idempotent — ใช้ร่วมกันทุกบล็อก
+// (ยกขึ้นมาระดับไฟล์ — เดิมประกาศซ้ำ 2 จุด: บล็อก E41/E42 และบล็อก E43/W16)
+const DVc = require('../tools/derived-values.js');
+const healed = (h) => DVc.patchDerived(h, PX).html;
+const conv = (id, h, desc) => {
+  ok(allIds(checkHtml(h, 'BBL.html')).has(id), `${desc} → ${id} ยิง`);
+  const once = healed(h);
+  ok(!allIds(checkHtml(once, 'BBL.html')).has(id) && healed(once) === once, `${desc} → healer ทำให้ ${id} เงียบ + idempotent`);
+  CONVERGED.add(id);
+};
+
 console.log('\n🧪 self-test: ความถูกต้องของ check-reports.js\n');
 
 // 1) ของดีต้องผ่าน (ไม่ false-positive)
@@ -472,15 +483,7 @@ reject('W14', addCard('4. EV/EBITDA', 'EBITDA $4.0B (mid-point FY2026 $3.6B guid
     reject('E42', setCardV(TGT_LABEL, `~${cur}${tgt} (+${tgtPct.toFixed(1)}%)`), 'E42: % ในการ์ดเป้าตรงกับ (เป้า−ราคา)/ราคา → เงียบ');
     expect('E42', 'error', setCardV(TGT_LABEL, `~${cur}${tgt} (+${(tgtPct - 12).toFixed(1)}%)`), 'E42: % ในการ์ดเป้าค้าง 12 จุด% จากราคาปัจจุบัน → ต้องจับ (เคส AAOI)');
 
-    // convergence (E-policy): ค้าง → healer → เงียบ + idempotent — ลงทะเบียนให้ E41/E42
-    const DVc = require('../tools/derived-values.js');
-    const healed = (h) => DVc.patchDerived(h, PX).html;
-    const conv = (id, h, desc) => {
-      ok(allIds(checkHtml(h, 'BBL.html')).has(id), `${desc} → ${id} ยิง`);
-      const once = healed(h);
-      ok(!allIds(checkHtml(once, 'BBL.html')).has(id) && healed(once) === once, `${desc} → healer ทำให้ ${id} เงียบ + idempotent`);
-      CONVERGED.add(id);
-    };
+    // convergence (E-policy): ค้าง → healer → เงียบ + idempotent — ลงทะเบียนให้ E41/E42 (conv() = ตัวช่วยระดับไฟล์)
     // E41: การ์ด P/E (TTM) ค้างที่ 1.5 เท่าของค่าจริง ขณะ EPS ที่พิมพ์ไว้ (.d) คงที่ทำให้ควรเป็นอีกค่า — healer เขียน .v ใหม่จาก ราคา÷EPS
     conv('E41', setCardV(PE_LABEL, `~${(peShown * 1.5).toFixed(1)}x`)(setCardD(PE_LABEL, `EPS (TTM) ${cur}${epsFor(peShown)}`)(base)),
       'E41 convergence: การ์ด P/E ค้างที่ 1.5 เท่าของค่าจริง (EPS ที่พิมพ์คงที่)');
@@ -541,15 +544,7 @@ reject('W14', addCard('4. EV/EBITDA', 'EBITDA $4.0B (mid-point FY2026 $3.6B guid
     reject('W16', addCardKV('P/S มัธยฐานของตัวเอง', '2.5x', `รายได้ TTM ${cur}${numStr(revM)} ล้าน`), 'W16: ป้ายเชิงประวัติ (มัธยฐาน) ไม่ใช่ P/S ปัจจุบัน → ต้องเงียบ (เคส PAAS)');
     reject('W16', addCardKV('EV/Sales (TTM)', '2.5x', `รายได้ TTM ${cur}${numStr(revM)} ล้าน`), 'W16: EV/Sales ต้องใช้หนี้สุทธิ ไม่มีฐานให้อ่าน → ต้องเงียบ');
 
-    // convergence (E-policy): ค้าง → healer → เงียบ + idempotent — ลงทะเบียนให้ E41/E42/E43/W16
-    const DVc = require('../tools/derived-values.js');
-    const healed = (h) => DVc.patchDerived(h, PX).html;
-    const conv = (id, h, desc) => {
-      ok(allIds(checkHtml(h, 'BBL.html')).has(id), `${desc} → ${id} ยิง`);
-      const once = healed(h);
-      ok(!allIds(checkHtml(once, 'BBL.html')).has(id) && healed(once) === once, `${desc} → healer ทำให้ ${id} เงียบ + idempotent`);
-      CONVERGED.add(id);
-    };
+    // convergence (E-policy): ค้าง → healer → เงียบ + idempotent — ลงทะเบียนให้ E41/E42/E43/W16 (conv() = ตัวช่วยระดับไฟล์)
     conv('W16', addCardKV('P/S (TTM)', '2.5x', `รายได้ TTM ${cur}${numStr(revM)} ล้าน`)(base), 'W16 convergence: P/S ค้าง');
     conv('E43', setKVD('Market Cap', `${cur}${numStr(PX * mc.shares * 0.8 / M)} ล้าน`, `${numStr(mc.shares / M)} ล้านหุ้น`)(base), 'E43 convergence: Market Cap ค้าง');
   }
@@ -621,7 +616,8 @@ reject('W14', addCard('4. EV/EBITDA', 'EBITDA $4.0B (mid-point FY2026 $3.6B guid
   // ★★ คุณสมบัติที่สำคัญที่สุด: ขอบเขตตัวตรวจ = ขอบเขตตัวซ่อม
   //    ฟ้องในที่ที่ heal เอื้อมไม่ถึง = warning ที่เคลียร์ไม่ได้ (และถ้าวันหนึ่งเลื่อนเป็น error = cron ตาย)
   ok(!fires(fresh), 'W17: ซ่อมด้วย patchDerived แล้ว → ต้องเงียบ (ตัวตรวจฟ้องเฉพาะที่ตัวซ่อมเอื้อมถึง)');
-  CONVERGED.add('W17');
+  // convergence (E-policy) ผ่าน conv() ระดับไฟล์ — reuse มิวเทชัน at(PX*0.8) ที่พิสูจน์แล้วว่ายิง W17 (บรรทัดล่างนี้)
+  conv('W17', at(PX * 0.8), 'W17 convergence: หมวด 6 ค้าง');
   ok(!DV.patchDerived(fresh, PX).changes.some((c) => /หมวด 6/.test(c)),
     'W17: ซ่อมซ้ำรอบสอง → ไม่มีอะไรให้แก้ (idempotent — กัน cron เขียนไฟล์ทุกวันโดยไม่มีของค้างจริง)');
 
@@ -915,7 +911,9 @@ require('./fixture-lint.js')(ok);
 //    ไม่งั้น E ใหม่ = cron ล้มทั้งวันแบบเคลียร์ไม่ได้ (บทเรียน 22–24 ส.ค. 69 / run #54) ──
 {
   const E_GRANDFATHERED = new Set(Array.from({ length: 43 }, (_, i) => 'E' + String(i + 1).padStart(2, '0')));   // E01–E43 ที่มีก่อนระยะ 1 — ห้ามเพิ่มชื่อในนี้
-  const HEALERS = new Set(['patchReport', ...Array.from({ length: 11 }, (_, i) => 'patchDerived#' + (i + 1))]);
+  // patchDerived#4 = พาสเขียน prose (opt-in `{prose:true}`) — cron ไม่รันพาสนี้เอง จึงไม่นับเป็น healer มาตรฐานที่ E-policy ยอมรับ
+  const HEALERS = new Set(['patchReport', ...[1, 2, 3, 5, 6, 7, 8, 9, 10, 11].map((n) => 'patchDerived#' + n)]);
+  for (const id of ['W16', 'W17', 'W19', 'W20']) ok(CHECKS.find((c) => c.id === id).level === 'error', `ระยะ 1: ${id} ต้องเป็น error (ยกจาก warn 12 ก.ย. 2569 — คงชื่อ)`);
   const errs = CHECKS.filter((c) => c.level === 'error');
   ok(errs.length >= 43, `E-policy: มี error ≥43 ตัว (ได้ ${errs.length})`);
   for (const c of errs.filter((c) => !E_GRANDFATHERED.has(c.id))) {

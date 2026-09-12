@@ -3,6 +3,8 @@
 # ใช้: PRICES="0.5 1.0 3.0" SWEEP_DIR=/tmp/sweep sh docs/superpowers/audit/2026-09-11-stock-analyzer/sweep.sh
 # เขียน reports/AAPL.html + BBL.html จริงผ่าน patchReport (เส้นทางเดียวกับ cron) แล้ว npm run verify ทุกราคา · คืนไฟล์ด้วย git checkout -- (ห้าม stash)
 set -eu
+# กัน trap ท้าย script ทับไฟล์ที่แก้ค้างอยู่จริง (ต้อง commit/คืนไฟล์ก่อนรัน sweep)
+git diff --quiet -- reports/AAPL.html reports/BBL.html reports.json || { echo "reports/AAPL.html · reports/BBL.html · reports.json มีการแก้ค้างอยู่ — commit หรือคืนไฟล์ก่อนรัน sweep (trap จะ checkout ทับ)"; exit 1; }
 PRICES="${PRICES:-0.5 0.7 0.85 0.95 1.0 1.05 1.15 1.3 1.5 1.8 2.2 3.0}"
 SWEEP_DIR="${SWEEP_DIR:-/tmp/sweep-$$}"
 mkdir -p "$SWEEP_DIR"
