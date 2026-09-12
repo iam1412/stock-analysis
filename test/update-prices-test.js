@@ -466,30 +466,67 @@ ok(ptsNext[ptsNext.length - 1][0] === `${U.THAI_MONTHS[nextM]}${String(nextY).sl
   ok(Array.isArray(r.notes), 'patchReport คืน notes[] เสมอ');
   ok(r.notes.length === 0, '(c) AAPL fixture ปกติ (ตัวเขียนจับ "ราคา ณ" ได้ · header ไม่มีวงเล็บทวนวันที่) → notes ว่าง', JSON.stringify(r.notes));
 
-  // ★ เตือนเฉพาะ "อ่านวันที่ออกแต่เขียนไม่ได้" — ใบที่ .disc ไม่มีวันที่เลย (431/908) ไม่มีอะไรให้เขียน ต้องเงียบ
-  const discM = aapl.match(/<div class="disc">[\s\S]*?<\/div>/i);
+  // ★ ตัวอ่าน = ตัวเขียน (12 ก.ย. 2569): ทั้ง gate (f12) และ cron เรียก `findDiscPriceDate` ตัวเดียวกัน
+  //   ⇒ "อ่านออกแต่เขียนไม่ได้" 65 ใบเดิมแยกเป็นสองกอง: 55 ใบเป็น **snapshot ของแหล่ง** ที่ต้องไม่ถูกเขียนทับ
+  //   และไม่ใช่ของเสีย (อ่านก็ต้องไม่อ่าน) · 10 ใบเป็นวันที่ระดับเดือนที่ตัวเขียนพลาดจริง (ตอนนี้เขียนได้แล้ว)
+  const DISCB = /<div class="disc">[\s\S]*?<\/div>/i;
+  const discOf = (h) => (h.match(DISCB) || [''])[0];
+  const discM = aapl.match(DISCB);
   ok(!!discM, 'AAPL fixture: มีบล็อก .disc ให้ทดสอบ');
-  const tokRe = /ราคา(?![^0-9<]{0,25}เป้า)[^0-9<]{0,25}\d{1,2}(?:\s*[–-]\s*\d{1,2})?\s*[ก-๙.]+\s*(?:20|25|26)\d\d/;
-  ok(tokRe.test(discM[0]), 'AAPL fixture: .disc มีประโยค "ราคา ณ <วันที่>" ที่ตัวเขียนจับได้อยู่ก่อน (ถ้าไม่มี เทสข้างล่างพิสูจน์อะไรไม่ได้)');
-  const discHit = PD.findPriceDate(discM[0]);
-  ok(!!discHit, 'AAPL fixture: price-date อ่านวันที่ใน .disc ออก');
+  const discHit = PD.findDiscPriceDate(discM[0]);
+  ok(!!discHit && discHit.hasDay, 'AAPL fixture: findDiscPriceDate (เจ้าของเดียว) อ่าน "ราคา ณ <วันที่>" ใน .disc ออก');
+  ok(/ราคา ณ 11 ก\.ค\. 2026/.test(discOf(r.html)), '.disc ของ fixture ถูกเขียนวันใหม่จริง (ถ้าไม่ ถือว่าเทสข้างล่างพิสูจน์อะไรไม่ได้)');
 
-  // (a) อ่านออกแต่เขียนไม่ได้ — แทรกเลขเงินคั่นระหว่าง anchor "ราคา" กับวันที่ (รูปเดียวกับ 65 ใบจริง เช่น
-  //     AIG "แหล่งข้อมูล: StockAnalysis.com (ราคา $79.39 · 2 ก.ค. 2569 …)"): findPriceDate ข้ามก้อนเงินได้
-  //     แต่ regex ตัวเขียนที่ห้ามมีตัวเลขคั่น ([^0-9<]) จับไม่ได้
+  // (a) snapshot ของแหล่ง — "(ราคา $79.39 · <วันที่> …)" คือวันที่ของ **ราคาที่ยกมา** ไม่ใช่วันที่ราคาในรายงาน
+  //     รูปเดียวกับ 55 ใบจริง (AIG · AIT · ALL …) ⇒ ต้อง **ไม่เขียนทับ** และ **ไม่เตือน** (เดิมเตือนทุกวัน)
   const blocked = discM[0].slice(0, discHit.index) + '$79.39 · ' + discM[0].slice(discHit.index);
+  ok(!PD.findDiscPriceDate(blocked) && !!PD.findPriceDate(blocked),
+    '(a) มิวเทชันได้สภาพที่ต้องการ: ตัวสแกนหัวรายงานยังอ่านออก แต่กฎของ .disc ถือเป็น snapshot (คืน null)');
   const rBlocked = U.patchReport(aapl.replace(discM[0], blocked), { newPrice: 301.5, dateParts: dpN, chartData: null });
-  ok(!tokRe.test(blocked) && !!PD.findPriceDate(blocked), '(a) มิวเทชันได้สภาพที่ต้องการจริง: อ่านออก แต่ตัวเขียนจับไม่ได้');
-  ok(rBlocked.notes.some((s) => /disclaimer/.test(s) && /found:false/.test(s)),
-    '(a) .disc มีวันที่ที่อ่านออกแต่รูปแบบไม่ตรงตัวเขียน → notes บอก found:false (UNVERIFIED WRITE ตัวจริง)', JSON.stringify(rBlocked.notes));
+  ok(discOf(rBlocked.html) === blocked, '(a) .disc ที่เป็น snapshot ของแหล่ง — ไม่ถูกเขียนทับแม้แต่ไบต์เดียว');
+  ok(rBlocked.notes.length === 0, '(a) snapshot ของแหล่ง → notes ว่าง (ไม่ใช่ของเสีย — เดิมเตือนปลอม 55 ใบทุกวัน)', JSON.stringify(rBlocked.notes));
 
-  // (b) ลบประโยค "ราคา ณ <วันที่>" ทิ้งทั้งประโยค → ไม่มีอะไรให้เขียน = ต้องเงียบ (ไม่ใช่ของเสีย)
-  const noDate = aapl.replace(discM[0], discM[0].replace(tokRe, 'ราคาอ้างอิงตามที่ระบุในหัวรายงาน'));
-  ok(noDate !== aapl, '(b) มิวเทชัน .disc เปลี่ยนไฟล์จริง (ไม่ใช่ no-op)');
-  const noDateDisc = noDate.match(/<div class="disc">[\s\S]*?<\/div>/i)[0];
-  ok(!PD.findPriceDate(noDateDisc), '(b) มิวเทชันลบวันที่ออกจาก .disc ได้จริง (ไม่เหลือวันที่อื่นให้อ่าน)');
+  // (b) วันที่ระดับเดือน "ราคา ณ ก.ย. 2026" — ต้องเขียนได้ (เดิมตัวเขียนบังคับต้องมีวัน ⇒ 10 ใบค้างถาวร)
+  //     และต้อง **คงรูประดับเดือน** ไม่ใช่เติมวันเข้าไปเอง (ต่างจากหัวรายงานที่ต้องมีวันเพื่อให้ parsePriceAge อ่านออก)
+  const monthOnly = aapl.replace(discM[0], discM[0].slice(0, discHit.index) + 'ส.ค. 2026' + discM[0].slice(discHit.index + discHit.length));
+  ok(monthOnly !== aapl && /ราคา ณ ส\.ค\. 2026/.test(discOf(monthOnly)), '(b) มิวเทชันทำให้ .disc เป็นวันที่ระดับเดือนจริง');
+  const rMonth = U.patchReport(monthOnly, { newPrice: 301.5, dateParts: dpN, chartData: null });
+  ok(/ราคา ณ ก\.ค\. 2026/.test(discOf(rMonth.html)) && !/ราคา ณ \d+ ก\.ค\. 2026/.test(discOf(rMonth.html)),
+    '(b) วันที่ระดับเดือน → เขียนวันใหม่แบบระดับเดือน (ไม่เติมวัน)', (discOf(rMonth.html).match(/ราคา ณ [^<·]*/) || [])[0]);
+  ok(rMonth.notes.length === 0, '(b) วันที่ระดับเดือน → notes ว่าง (เขียนลงแล้ว)', JSON.stringify(rMonth.notes));
+
+  // (c) ลบประโยค "ราคา ณ <วันที่>" ทิ้งทั้งประโยค → ไม่มีอะไรให้เขียน = ต้องเงียบ (ไม่ใช่ของเสีย)
+  const noDate = aapl.replace(discM[0], discM[0].slice(0, discHit.index) + 'ตามที่ระบุในหัวรายงาน' + discM[0].slice(discHit.index + discHit.length));
+  ok(noDate !== aapl && !PD.findDiscPriceDate(discOf(noDate)), '(c) มิวเทชันลบวันที่ออกจาก .disc ได้จริง');
   ok(U.patchReport(noDate, { newPrice: 301.5, dateParts: dpN, chartData: null }).notes.length === 0,
-    '(b) .disc ไม่มีวันที่เลย → notes ว่าง (431/908 ใบของคลังเป็นแบบนี้ — ไม่ใช่ของเสีย)');
+    '(c) .disc ไม่มีวันที่เลย → notes ว่าง (431/908 ใบของคลังเป็นแบบนี้ — ไม่ใช่ของเสีย)');
+
+  // (d) "อ่านเจอแต่เขียนไม่ลง" → notes — สาขา found:false ที่เหลืออยู่ **สร้างเคสจริงไม่ได้ด้วยตัวเรนเดอร์ปัจจุบัน**:
+  //     ตัวเขียน splice ที่ index ของตัวอ่านเอง แล้วอ่านกลับด้วยตัวเดียวกัน (canonical: เดือนตัวย่อ · คงรูปวัน/เดือน
+  //     · คงศักราช) ⇒ อ่านกลับได้เสมอ ทุกจุด · เก็บสาขานี้ไว้เป็น canary ถ้ามีใครแก้ตัวเรนเดอร์/ตัวอ่านฝั่งเดียว
+  //     ที่นี่จึงพิสูจน์ **invariant ที่ทำให้มันไม่เกิด** แทน: หลัง patch ทุกจุดใน .disc ต้องอ่านกลับเป็นวันที่ที่เพิ่งเขียน
+  const readBack = (h) => { const out = []; const d = discOf(h); for (let from = 0, x; (x = PD.findDiscPriceDate(d, from)); from = x.index + x.length) out.push(x); return out; };
+  for (const [lab, html] of [['ปกติ', r.html], ['ระดับเดือน', rMonth.html]]) {
+    const back = readBack(html);
+    ok(back.length > 0 && back.every((b) => b.yearCE === 2026 && b.monIdx === 6 && (!b.hasDay || b.day === 11)),
+      `(d) อ่านกลับ .disc (${lab}) ได้วันที่ที่เพิ่งเขียนครบทุกจุด ⇒ สาขา "เขียนไม่ลง" ไม่เกิด`, JSON.stringify(back.map((b) => b.text)));
+  }
+
+  // (e) "ต้นช่วง" ของกราฟย้อนหลัง — เคส TLI "Yahoo Finance (กราฟราคา ก.ค. 2568–ก.ค. 2569)" และ AEONTS
+  //     anchor "ราคา" เป็นท้ายคำ ("กราฟราคา") แล้วตามด้วยเดือนพอดี ⇒ ถ้าไม่มีกฎ "ต้นช่วง" cron จะประทับวันรัน
+  //     ทับช่วงกราฟ = บั๊กเดิม 9 ส.ค. 69 (ประทับวันรันทับข้อเท็จจริงในอดีต)
+  const rangeDisc = aapl.replace(discM[0], discM[0].slice(0, discHit.index) + 'ก.ค. 2568–ก.ค. 2569' + discM[0].slice(discHit.index + discHit.length));
+  ok(rangeDisc !== aapl && !PD.findDiscPriceDate(discOf(rangeDisc)), '(e) วันที่ที่เป็น "ต้นช่วง" (…2568–…2569) ไม่ใช่วันที่ราคา → ตัวอ่านคืน null');
+  const rRange = U.patchReport(rangeDisc, { newPrice: 301.5, dateParts: dpN, chartData: null });
+  ok(discOf(rRange.html) === discOf(rangeDisc) && rRange.notes.length === 0,
+    '(e) ช่วงกราฟใน .disc ไม่ถูกเขียนทับ · notes ว่าง', discOf(rRange.html).slice(-90));
+
+  // ใบที่เขียนวันที่ราคาไว้ 2 จุด (วัด 12 ก.ย. 69: 15/908 เช่น AEM "ราคา ณ …" + "ราคาปิดรายเดือน ณ …")
+  // ตัวเขียนเดิมเป็น regex /g จึงเขียนครบทุกจุด — ตัวใหม่ต้องวนเก็บให้ครบเหมือนกัน ไม่ใช่เขียนจุดแรกจุดเดียว
+  const twice = aapl.replace(discM[0], discM[0].replace('</div>', ' • ราคาปิดรายเดือน ณ 3 ส.ค. 2026</div>'));
+  const rTwice = U.patchReport(twice, { newPrice: 301.5, dateParts: dpN, chartData: null });
+  ok((discOf(rTwice.html).match(/11 ก\.ค\. 2026/g) || []).length === 2 && rTwice.notes.length === 0,
+    'สองจุดในบล็อกเดียว → เขียนครบทั้งคู่ · notes ว่าง', discOf(rTwice.html).slice(-120));
 
   // ช่องวันที่ทวนซ้ำ (วงเล็บติดกับ token ราคา) มีวันที่อยู่ แต่คนละวันกับวันที่ราคา ⇒ findRestatedDate ปฏิเสธ = เขียนไม่ครบ
   const hm = aapl.match(/<header[\s\S]*?<\/header>/i);

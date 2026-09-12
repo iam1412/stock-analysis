@@ -50,14 +50,17 @@ const FIELDS = [
   F('f09', '.chg ป้าย % รอบปี', { cadence: 'daily', owner: 'cron', gate: ['E35', 'E36'], healer: 'patchReport', binding: 'cron', required: true, extract: (h, c) => R(c.chg) }),  // census 12 ก.ย. 69: 100.0%
   F('f10', 'วันที่ราคา (px-meta)', { cadence: 'daily', owner: 'cron', gate: ['E27', 'W09'], healer: 'patchReport', binding: 'cron', required: true, extract: (h, c) => R(c.priceAge && c.priceAge.iso) }),  // census 12 ก.ย. 69: 100.0%
   F('f11', 'วันที่ทวนในวงเล็บ (คนละศักราช)', { cadence: 'daily', owner: 'cron', gate: [], healer: 'patchReport', binding: 'pair', pair: { with: 'f10', how: 'date' }, required: false, extract: (h, c) => { const hd = head(c); const hit = PD.findPriceDate(hd); const r = hit ? PD.findRestatedDate(hd, hit) : null; return R(PD.dateIso(r)); } }),
-  F('f12', 'disclaimer "ราคา ณ"', { cadence: 'daily', owner: 'cron', gate: [], healer: 'patchReport', binding: 'pair', pair: { with: 'f10', how: 'date' }, required: false, extract: (h) => R(PD.parsePriceDate(disc(h))) }),  // census 12 ก.ย. 69: 48.9% <99% → optional
+  // ★ ต้องเป็น `findDiscPriceDate` (เจ้าของเดียวของ "วันที่ราคาในบล็อก .disc") ไม่ใช่ตัวสแกนหัวรายงาน —
+  //   ตัวอ่านตัวนี้กับตัวเขียนของ cron เป็นตัวเดียวกันแล้ว (12 ก.ย. 69) ⇒ ที่นี่อ่านเจอ = ที่นั่นเขียนได้เสมอ
+  //   (snapshot ของแหล่ง "(ราคา $79.39 · 2 ก.ค. 2569 …)" ไม่ใช่วันที่ราคา ⇒ คืน null โดยตั้งใจ)
+  F('f12', 'disclaimer "ราคา ณ"', { cadence: 'daily', owner: 'cron', gate: [], healer: 'patchReport', binding: 'pair', pair: { with: 'f10', how: 'date' }, required: false, extract: (h) => R(PD.findDiscPriceDate(disc(h))) }),  // census 12 ก.ย. 69: 47.8% <99% → optional
   F('f13', 'footer "ข้อมูล ณ"', { cadence: 'write-once', owner: 'worker', gate: [], healer: null, binding: 'presence', required: false, extract: (h) => { const f = footerDate(h); return R(f && f.iso); } }),  // census 12 ก.ย. 69: 98.7% <99% → optional
   F('f14', 'pxIn value', { cadence: 'daily', owner: 'cron', gate: ['E23'], healer: 'patchReport', binding: 'cron', required: true, extract: (h, c) => R(c.pxInput) }),  // census 12 ก.ย. 69: 100.0%
   F('f15', 'MOS .big', { cadence: 'daily', owner: 'cron', gate: ['E16', 'E30'], healer: 'patchReport', binding: 'cron', required: true, extract: (h, c) => R(c.mosBig) }),  // census 12 ก.ย. 69: 100.0%
   F('f16', 'stock-meta.mos/upside', { cadence: 'daily', owner: 'cron', gate: ['E30', 'E31'], healer: 'patchReport', binding: 'cron', required: true, extract: (h, c) => R(sm(c) && has(sm(c).mos) && has(sm(c).upside) ? [sm(c).mos, sm(c).upside] : null) }),  // census 12 ก.ย. 69: 100.0%
   F('f17', 'vcell ส่วนต่างจากราคา — ตัวเลข', { cadence: 'daily', owner: 'cron', gate: ['W06'], healer: 'patchDerived#11', binding: 'cron', required: true, extract: (h) => { const s = DV.readSummaryCell(h); return R(s ? s.shown : null); } }),  // census 12 ก.ย. 69: 99.7%
   F('f18', 'vcell ส่วนต่างจากราคา — ข้อความ', { cadence: 'daily', owner: 'cron', gate: ['W06'], healer: 'patchDerived#11', binding: 'cron', required: true, extract: (h) => { const s = DV.readSummaryCell(h); return R(s ? s.text : null); } }),  // census 12 ก.ย. 69: 99.9%
-  F('f19', 'class mos-verdict', { cadence: 'daily', owner: 'cron', gate: ['W04'], healer: 'patchReport', binding: 'cron', required: true, extract: (h) => R(grab(/class="mos-verdict (bad|ok|good)"/, h)) }),  // census 12 ก.ย. 69: 100.0%
+  F('f19', 'class mos-verdict', { cadence: 'daily', owner: 'cron', gate: ['W04'], healer: 'patchReport', binding: 'cron', required: true, extract: (h) => R(grab(RM.VERDICT_CLASS_RE, h)) }),  // census 12 ก.ย. 69: 100.0%
   F('f20', 'การ์ด P/E', { cadence: 'daily', owner: 'cron', gate: ['E41'], healer: 'patchDerived#1', binding: 'cron', required: false, extract: (h) => { const p = DV.peCards(h)[0]; return R(p ? p.shown : null); } }),
   F('f21', 'stock-meta.pe', { cadence: 'daily', owner: 'cron', gate: ['E41', 'W10'], healer: 'patchDerived#2', binding: 'cron', required: false, extract: (h, c) => R(sm(c) && sm(c).pe) }),
   F('f22', 'การ์ดเป้านักวิเคราะห์ — %', { cadence: 'daily', owner: 'cron', gate: ['E42'], healer: 'patchDerived#3', binding: 'cron', required: false, extract: (h) => { const t = DV.targetCells(h)[0]; return R(t ? t.shown : null); } }),
@@ -81,7 +84,9 @@ const FIELDS = [
   F('f39', 'หมวด 6 ปันผลรวม 3 ปี', { cadence: 'write-once', owner: 'worker', gate: [], healer: null, binding: 'presence', required: false, extract: (h, c) => R(c.scenarios.some((s) => s.div != null) ? c.scenarios.map((s) => s.div) : null) }),
   F('f40', 'หมวด 6 EPS ฐาน', { cadence: 'write-once', owner: 'worker', gate: ['E24'], healer: null, binding: 'gate', required: false, extract: (h, c) => R(c.baseEPS) }),  // census 12 ก.ย. 69: 85.4% <99% → optional
   F('f41', 'กรอบ 52 สัปดาห์', { cadence: 'stale-daily', owner: 'worker', gate: ['W08'], healer: null, binding: 'pair', pair: { with: 'f01', how: 'contains', stale: true }, required: false, extract: (h) => { const m = h.match(RM.RANGE52_RE); return R(m ? [num(m[1]), num(m[2])] : null); } }),  // census 12 ก.ย. 69: 87.2% <99% → optional
-  F('f42', 'บรรทัดที่มา', { cadence: 'write-once', owner: 'worker', gate: ['W08'], healer: null, binding: 'gate', required: true, extract: (h, c) => R(grab(/ที่มา:\s*([^<]{3,})/, head(c))) }),  // census 12 ก.ย. 69: 100.0%
+  // ★ ห่อ **บรรทัดเดียวกับที่ W08 นับแหล่ง** (ctx.sourceLine = SOURCE_LINE บน stripTags(header)) ไม่ใช่สำเนาที่แคบกว่า
+  //   — เดิมที่นี่รับเฉพาะคำว่า "ที่มา:" ⇒ ใบที่เขียน "แหล่งข้อมูล:" ก็ยังนับว่าพบ (คนละบรรทัดกับที่ gate ตรวจ)
+  F('f42', 'บรรทัดที่มา', { cadence: 'write-once', owner: 'worker', gate: ['W08'], healer: null, binding: 'gate', required: true, extract: (h, c) => R(c.sourceLine) }),  // census 12 ก.ย. 69: 100.0%
   F('f43', '.fv-box .r FV', { cadence: 'write-once', owner: 'worker', gate: ['E15', 'E25', 'E30'], healer: null, binding: 'gate', required: true, extract: (h, c) => R(c.fvBox) }),  // census 12 ก.ย. 69: 100.0%
   F('f44', 'report-data.fv (const FV)', { cadence: 'write-once', owner: 'worker', gate: ['E15'], healer: null, binding: 'gate', required: true, extract: (h, c) => R(c.constFV) }),  // census 12 ก.ย. 69: 100.0%
   F('f45', 'report-data.gauge.fair', { cadence: 'write-once', owner: 'worker', gate: ['E19'], healer: null, binding: 'pair', pair: { with: 'f44', how: 'money' }, required: true, extract: (h, c) => R(rd(c) && rd(c).gauge && rd(c).gauge.fair) }),  // census 12 ก.ย. 69: 100.0%
@@ -89,7 +94,7 @@ const FIELDS = [
   F('f47', 'legend "มูลค่าเหมาะสม $FV"', { cadence: 'write-once', owner: 'worker', gate: [], healer: null, binding: 'pair', pair: { with: 'f44', how: 'money' }, required: true, extract: (h) => R(num(grab(new RegExp('มูลค่าเหมาะสม\\s*' + CUR + '?\\s*([\\d.,]+)\\s*</span>'), grab(/<div class="legend">([\s\S]*?)<\/div>/, h) || ''))) }),  // census 12 ก.ย. 69: 99.7%
   F('f48', 'การ์ด "โซนเริ่มทยอยสะสม < $FV"', { cadence: 'write-once', owner: 'worker', gate: [], healer: null, binding: 'pair', pair: { with: 'f44', how: 'below' }, required: false, extract: (h, c) => { const k = card(c, /โซนเริ่มทยอยสะสม/); return R(k ? num(k.v.replace(/^[^0-9]*(?:<|&lt;)/, '')) : null); } }),  // census 12 ก.ย. 69: 98.9% <99% → optional
   F('f49', 'ป้าย gauge mFair "เหมาะสม $FV"', { cadence: 'write-once', owner: 'worker', gate: [], healer: null, binding: 'pair', pair: { with: 'f44', how: 'money' }, required: true, extract: (h) => R(num(grab(new RegExp('id="mFair"><div class="lab"[^>]*>เหมาะสม\\s*' + CUR + '?\\s*([\\d.,]+)'), h))) }),  // census 12 ก.ย. 69: 99.8%
-  F('f50', 'ป้าย gauge mCur "ปัจจุบัน $px"', { cadence: 'daily', owner: 'cron', gate: [], healer: 'patchReport', binding: 'pair', pair: { with: 'f01', how: 'money' }, required: true, extract: (h) => R(num(grab(new RegExp('id="mCur"><div class="lab">ปัจจุบัน\\s*' + CUR + '?\\s*([\\d.,]+)'), h))) }),  // census 12 ก.ย. 69: 100.0%
+  F('f50', 'ป้าย gauge mCur "ปัจจุบัน $px"', { cadence: 'daily', owner: 'cron', gate: [], healer: 'patchReport', binding: 'pair', pair: { with: 'f01', how: 'money' }, required: true, extract: (h) => R(num(grab(RM.MCUR_LABEL_RE, h))) }),  // census 12 ก.ย. 69: 100.0%
   F('f51', 'gauge scale MOS20/MOS30', { cadence: 'write-once', owner: 'worker', gate: ['E26'], healer: null, binding: 'gate', required: true, extract: (h, c) => R(c.scaleNums.length >= 4 ? c.scaleNums : null) }),  // census 12 ก.ย. 69: 100.0%
   F('f52', 'การ์ดจุดซื้อ MOS20/MOS30', { cadence: 'write-once', owner: 'worker', gate: ['E18'], healer: null, binding: 'gate', required: true, extract: (h, c) => { const a = cardNum(c, /จุดซื้อ MOS 20/), b = cardNum(c, /จุดซื้อ MOS 30/); return R(a != null && b != null ? [a, b] : null); } }),  // census 12 ก.ย. 69: 100.0%
   F('f53', 'gauge scale กรอบบน FV', { cadence: 'write-once', owner: 'worker', gate: ['E26'], healer: null, binding: 'gate', required: false, extract: (h) => R(num(grab(new RegExp(CUR + '?\\s*([\\d.,]+)\\s*<br><small>กรอบบน'), h))) }),  // census 12 ก.ย. 69: 85.2% <99% → optional
@@ -179,17 +184,21 @@ function checkPairs(values, ctx) {
   return out;
 }
 
+/** ทุกช่องของไฟล์เดียว — extractor ที่ระเบิดไม่ล้มทั้งรอบ แต่ **ต้องไม่หายเงียบ**:
+ *  เดิม exception ถูกกลืนเป็น "found:false" เฉย ๆ ⇒ ช่อง optional ที่พังจะนับเป็น "ข้าม" อย่างสงบ
+ *  ⇒ คืน `errors: [{id, err}]` ให้ W21 พูดถึงด้วย (ระยะ 1 — ทบทวนทั้งสาขา 12 ก.ย. 2569) */
 function extractAll(html, ctx) {
-  const values = {}, found = new Set(), missing = [], skipped = [];
+  const values = {}, found = new Set(), missing = [], skipped = [], errors = [];
   for (const f of FIELDS) {
     let r;
     try { r = f.extract(html, ctx) || { found: false, value: null }; } catch (e) { r = { found: false, value: null, err: e.message }; }
+    if (r.err) errors.push({ id: f.id, err: r.err });
     values[f.id] = r.value;
     if (r.found) found.add(f.id);
     else if (f.required === false) skipped.push(f.id);
     else missing.push(f.id);
   }
-  return { values, found, missing, skipped };
+  return { values, found, missing, skipped, errors };
 }
 function coverage(html, ctx) {
   const r = extractAll(html, ctx);

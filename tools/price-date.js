@@ -58,6 +58,21 @@ const GAP_CHUNKS = [
 ];
 const GAP_MAX = 48;             // ระยะ anchor→วันที่ ที่ยาวสุดในรีโปจริง ~19 ตัวอักษร
 
+// "ก้อนเงิน" ที่ยกมาอ้างอิง — คำศัพท์เดียวกับสกุลเงินหน้าราคา header (report-meta.CUR_SRC) แต่เขียนไว้ที่นี่
+// เพราะไฟล์นี้ห้าม require อะไรในรีโป (กัน cycle เหมือน report-meta.js)
+const MONEY_TOK = /(?:C\$|[฿$])\s*[\d.,]+/;
+// วันที่ที่ **ตามด้วยตัวคั่นช่วงแล้ววันที่อีกตัว** คือ "ต้นช่วง" (ช่วงกราฟย้อนหลัง/งวดข้อมูล) ไม่ใช่จุดเวลาของราคา
+// — เขียนทับ = ประทับวันรันลงบนข้อเท็จจริงในอดีต · วัดจริง 12 ก.ย. 69: TLI "กราฟราคา ก.ค. 2568–ก.ค. 2569" ·
+// AEONTS "(ราคา + กราฟย้อนหลัง ก.ค.2568–ก.ค.2569)" (ช่วงวันภายในเดือนเดียว "14–18 มิ.ย. 2569" ไม่เข้าข่าย —
+// DAY_DATE_RE จับเป็น token เดียวอยู่แล้ว)
+const RANGE_SEP_RE = /^\s*(?:&[a-zA-Z#0-9]{1,8};|[–—\-~]|ถึง)\s*/;
+const isRangeStart = (s, after) => {
+  const m = RANGE_SEP_RE.exec(s.slice(after));
+  if (!m) return false;
+  const rest = s.slice(after + m[0].length);
+  return DAY_DATE_RE.test(rest) || MONTH_DATE_RE.test(rest);
+};
+
 /**
  * หา "วันที่ราคา" ในหัวรายงาน
  * @param {string} headerHtml  HTML ของ <header> (หรือทั้งไฟล์ก็ได้ — จะเจาะ .px-meta ให้เอง)
@@ -77,8 +92,11 @@ function findPriceDate(headerHtml) {
   return scan(s);
 }
 
-function scan(s) {
-  ANCHOR_RE.lastIndex = 0;
+/** @param {{from?:number, rejectMoney?:boolean}} [opts] — from = เริ่มหา anchor ที่ตำแหน่งนี้ (วนหาหลายจุด)
+ *  rejectMoney = ถ้ามี "ก้อนเงิน" คั่นระหว่าง anchor กับวันที่ ให้ข้าม anchor นั้น (ดู findDiscPriceDate) */
+function scan(s, opts) {
+  const o = opts || {};
+  ANCHOR_RE.lastIndex = o.from || 0;
   let a;
   while ((a = ANCHOR_RE.exec(s))) {
     const start = a.index + a[0].length;
@@ -86,9 +104,12 @@ function scan(s) {
     while (i - start <= GAP_MAX) {
       const rest = s.slice(i);
       const d = DAY_DATE_RE.exec(rest);
-      if (d) return mk(i, d[0], parseInt(d[2] || d[1], 10), d[3], d[4], true);
-      const mo = MONTH_DATE_RE.exec(rest);
-      if (mo) return mk(i, mo[0], 1, mo[1], mo[2], false);
+      const mo = d ? null : MONTH_DATE_RE.exec(rest);
+      if (d || mo) {
+        // ราคาที่ "ยกมาอ้างอิง" คั่นอยู่ = วันที่นี้เป็นวันของ snapshot แหล่งข้อมูล ไม่ใช่วันที่ของราคาในรายงาน
+        if (o.rejectMoney && (MONEY_TOK.test(s.slice(start, i)) || isRangeStart(s, i + (d || mo)[0].length))) break;   // ข้าม anchor นี้ ไปตัวถัดไป
+        return d ? mk(i, d[0], parseInt(d[2] || d[1], 10), d[3], d[4], true) : mk(i, mo[0], 1, mo[1], mo[2], false);
+      }
       const chunk = GAP_CHUNKS.find((re) => re.test(rest));
       if (!chunk) break;                       // เจอร้อยแก้ว = anchor นี้ไม่ได้พูดถึงวันที่ราคา
       i += chunk.exec(rest)[0].length;
@@ -130,9 +151,12 @@ function findRestatedDate(headerHtml, hit) {
   return { ...h2, index: hit.index + hit.length + pre[0].length };
 }
 
-/** เขียนวันที่แบบ canonical (เดือนตัวย่อ) — คง พ.ศ./ค.ศ. ตามของเดิมที่ถูกแทน */
-function renderThaiDate(day, monIdx, yearCE, isBE) {
-  return `${day} ${THAI_MONTHS[monIdx]} ${isBE ? yearCE + 543 : yearCE}`;
+/** เขียนวันที่แบบ canonical (เดือนตัวย่อ) — คง พ.ศ./ค.ศ. ตามของเดิมที่ถูกแทน
+ *  hasDay=false → เขียนกลับเป็น "เดือน ปี" (ไม่เติมวัน) — ใช้กับ .disc ที่ต้นฉบับลงวันที่ระดับเดือน
+ *  ("ราคา ณ ม.ค. 2569") · หัวรายงานยังเติมวันเสมอเพราะ parsePriceAge อ่านเฉพาะรูปที่มีวัน */
+function renderThaiDate(day, monIdx, yearCE, isBE, hasDay) {
+  const y = isBE ? yearCE + 543 : yearCE;
+  return `${hasDay === false ? '' : day + ' '}${THAI_MONTHS[monIdx]} ${y}`;
 }
 
 /**
@@ -147,9 +171,61 @@ function dateIso(hit) {
   return { ...hit, yearCE: year, iso: `${year}-${String(hit.monIdx + 1).padStart(2, '0')}-${String(hit.day).padStart(2, '0')}` };
 }
 
+/**
+ * ── วันที่ราคาใน **บล็อก .disc** (เจ้าของเดียว: ตัวอ่านของ gate/f12 กับตัวเขียนของ cron ใช้ตัวนี้ตัวเดียว) ──
+ *
+ * ที่มา (ทบทวนทั้งสาขา 12 ก.ย. 2569): f12 เคยห่อ `parsePriceDate` (ตัวสแกน**หัวรายงาน**) ส่วนตัวเขียนเป็น
+ * regex ฝังใน `tools/update-prices.js` ที่ห้ามมีตัวเลขคั่น ⇒ อ่านกับเขียนคนละกฎ: 65 ใบ "อ่านออกแต่เขียนไม่ได้"
+ * (55 ใบเป็น snapshot ของแหล่ง "(ราคา $79.39 · 2 ก.ค. 2569 · P/E …)" ที่ **ห้ามเขียนทับ** · 10 ใบเป็นวันที่
+ * ระดับเดือน "ราคา ณ ม.ค. 2569" ที่ตัวเขียนพลาดจริง) — และอีกทางหนึ่ง 33 ใบที่ตัวเขียนเขียนอยู่ทุกวัน
+ * ("ราคา/chart ณ …", "ราคาและงบการเงิน ณ …") ตัวสแกนหัวรายงานอ่านไม่ออกเลย
+ *
+ * กฎที่นี่จึงเป็น **สองชั้นรวมกัน** (เลือกจุดที่มาก่อนในบล็อก):
+ *   ก) ชั้นกว้าง — วันที่ที่ **ระบุวัน** + คำเชื่อมสั้น ≤25 ตัวอักษรที่ไม่มีตัวเลข/แท็ก/"เป้า" คั่น
+ *      = กฎเดิมของตัวเขียน (วัด 12 ก.ย. 69: ครอบคลุมทุกจุดที่ cron เขียนอยู่แล้ว 412 ใบ ไม่หายสักใบ)
+ *   ข) ชั้นแคบ — คำศัพท์ตัวเชื่อมชุดเดียวกับหัวรายงาน (GAP_CHUNKS) รับวันที่**ระดับเดือน**ด้วย
+ *      ★ วันที่ระดับเดือนต้องใช้ชั้นแคบเท่านั้น เพราะในบล็อก .disc เดือนลอย ๆ มักเป็น "ช่วงกราฟย้อนหลัง"
+ *        หรือ "งวดงบ" ไม่ใช่วันที่ราคา — วัดจริง: AEONTS "(ราคา + กราฟย้อนหลัง ก.ค.2568–ก.ค.2569)" ·
+ *        LPH "(Factsheet ราคา P/E P/BV EV/EBITDA · ณ ก.ค. 2569 / FY2568)" ⇒ ถ้าปล่อยชั้นกว้างรับเดือนด้วย
+ *        cron จะประทับวันรันทับข้อเท็จจริงในอดีต = บั๊กเดิม 9 ส.ค. 69 ที่ไฟล์นี้ตั้งขึ้นมาเพื่อกัน
+ *   ทั้งสองชั้นปฏิเสธ "ก้อนเงินคั่น" (MONEY_TOK) เหมือนกัน = snapshot ของแหล่ง ไม่ใช่วันที่ของราคา
+ *
+ * @param {string} discHtml  HTML ของบล็อก `<div class="disc">…</div>`
+ * @param {number} [from]    เริ่มหา anchor ที่ตำแหน่งนี้ (ตัวเขียนวนเก็บทุกจุดในบล็อก)
+ * @returns {{index:number,length:number,iso:string,yearCE:number,hasDay:boolean,isBE:boolean}|null}
+ */
+function findDiscPriceDate(discHtml, from) {
+  const s = String(discHtml);
+  const at = from || 0;
+  const wide = discWide(s, at);
+  const narrow = scan(s, { from: at, rejectMoney: true });
+  const hit = !wide ? narrow : !narrow ? wide : (wide.index <= narrow.index ? wide : narrow);
+  return dateIso(hit);
+}
+
+const DISC_ANCHOR_RE = /ราคา/g;
+const DISC_GAP_MAX = 25;          // เท่ากับกฎเดิมของตัวเขียน (`[^0-9<]{0,25}`) — เปลี่ยนตัวเลขนี้ = เปลี่ยนขอบเขตที่ cron เขียน
+/** ชั้นกว้าง — เฉพาะวันที่ที่ระบุวัน (ดูเหตุผลใน findDiscPriceDate) */
+function discWide(s, from) {
+  DISC_ANCHOR_RE.lastIndex = from || 0;
+  let a;
+  while ((a = DISC_ANCHOR_RE.exec(s))) {
+    const start = a.index + a[0].length;
+    for (let j = 0; j <= DISC_GAP_MAX; j++) {
+      const gap = s.slice(start, start + j);
+      // ตัวเลขคั่น = ราคา/ตัวคูณที่ยกมา (MONEY_TOK เป็นรูปที่เจอจริง) · "เป้า" = วันที่ของราคาเป้านักวิเคราะห์
+      // (เคส CREDIT) · "<" = ข้ามแท็กออกนอกประโยค — ทั้งสามอย่างแปลว่า anchor นี้ไม่ได้พูดถึงวันที่ของราคา
+      if (/[<0-9]/.test(gap) || gap.includes('เป้า') || MONEY_TOK.test(gap)) break;
+      const d = DAY_DATE_RE.exec(s.slice(start + j));
+      if (d) { if (isRangeStart(s, start + j + d[0].length)) break; return mk(start + j, d[0], parseInt(d[2] || d[1], 10), d[3], d[4], true); }
+    }
+  }
+  return null;
+}
+
 /** วันที่ราคาเป็น ค.ศ. + iso — ใช้โดย gate (staleness E27/W09) · รับ **HTML ที่มี anchor "ราคา"** ไม่ใช่สตริงวันที่เปล่า */
 function parsePriceDate(headerHtml) {
   return dateIso(findPriceDate(headerHtml));
 }
 
-module.exports = { findPriceDate, findRestatedDate, parsePriceDate, dateIso, renderThaiDate, THAI_MONTHS, THAI_MONTHS_FULL, MONTH_ALT };
+module.exports = { findPriceDate, findRestatedDate, findDiscPriceDate, parsePriceDate, dateIso, renderThaiDate, THAI_MONTHS, THAI_MONTHS_FULL, MONTH_ALT };

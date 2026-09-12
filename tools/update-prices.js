@@ -58,7 +58,7 @@ const FLAGS = path.join(__dirname, '..', 'price-flags.json');
 // ชื่อเดือน + ตัวหา "วันที่ราคา" มาจาก tools/price-date.js ที่เดียว (ใช้ร่วมกับ gate — อย่าทำสำเนา)
 // ค่าที่ derive จากราคา (P/E · % ของราคาเป้า) — กติกาเดียวกับที่ gate ใช้ตรวจ E41/E42/W15 (ห้ามทำสำเนาความรู้)
 const { patchDerived } = require('./derived-values.js');
-const { findPriceDate, findRestatedDate, renderThaiDate, THAI_MONTHS, MONTH_ALT } = require('./price-date.js');
+const { findPriceDate, findRestatedDate, findDiscPriceDate, renderThaiDate, THAI_MONTHS } = require('./price-date.js');
 const MAX_PTS = 13;          // กราฟรายเดือน ~1 ปี (E37)
 const FLAT_PP = 0.75;        // |% รอบปี| < 0.75 → "ทรงตัว" (ตาม migrate-annual-chg)
 const DRIFT_FREEZE = 0.15;   // ราคาใหม่ต่างจากในรายงาน > 15% → freeze (prose จะผิดความหมาย · เดิม 10% — ขยับขึ้นลดภาระ re-analysis)
@@ -428,6 +428,14 @@ function classifyStale(candidates, rows, probeMap) {
   return { dead, quiet };
 }
 
+/** ทุกจุด "ราคา ณ <วันที่>" ในบล็อก .disc (ตัวอ่านเดียวกับ f12 — วนจนหมดบล็อกเพราะบางใบเขียนซ้ำ 2 จุด
+ *  เช่น "ราคา ณ …" + "ราคาปิดรายเดือน ณ …" · วัด 12 ก.ย. 69: 15/908 ใบมี ≥2 จุด) */
+function allDiscDates(discHtml) {
+  const out = [];
+  for (let from = 0, h; (h = findDiscPriceDate(discHtml, from)); from = h.index + h.length) out.push(h);
+  return out;
+}
+
 // ---------- patch รายงานหนึ่งไฟล์ ----------
 // คืน { html, changed } — ทุก pattern ต้อง match ไม่งั้น throw (ไป flag เป็น patch-failed)
 function patchReport(html, p) {
@@ -539,29 +547,36 @@ function patchReport(html, p) {
   }
 
   // --- disclaimer: "ราคา ณ <วันที่>" (ถ้ามี — ไม่พบ = ไม่เขียน ไม่ throw แต่ต้องบอก **เฉพาะเมื่ออ่านออก**) ---
-  const discBlock = (out.match(/<div class="disc">[\s\S]*?<\/div>/i) || [''])[0];
-  let discHits = 0;
-  out = out.replace(/(<div class="disc">[\s\S]*?<\/div>)/i, (block) =>
-    block.replace(new RegExp(`(ราคา(?![^0-9<]{0,25}เป้า)[^0-9<]{0,25})(\\d{1,2}(?:\\s*[–\\-]\\s*\\d{1,2})?\\s*(?:${MONTH_ALT})\\s*(20\\d\\d|25\\d\\d|26\\d\\d))`, 'g'),
-      (m, pre, tok, yr) => {
-        discHits++;
-        const era = parseInt(yr, 10) >= 2400 ? dateParts.yearCE + 543 : dateParts.yearCE;
-        return `${pre}${dateParts.day} ${THAI_MONTHS[dateParts.monIdx]} ${era}`;
-      }));
-  // ★ เตือนเฉพาะ "อ่านวันที่ในนั้นออก แต่ regex ตัวเขียนจับไม่ได้" — นั่นคือ UNVERIFIED WRITE ตัวจริง
-  //   ใบที่ **ไม่มีวันที่ใน .disc เลย** (วัด 12 ก.ย. 69: 431/908) ไม่มีอะไรให้เขียน = ปกติ (f12 เป็น optional ตาม census 48.9%)
-  //   ⇒ เงื่อนไขนี้ทำให้ note เหลือ 65 ใบ (จาก 496) และ 63 ใบในนั้นมี W22 คู่ f12↔f10 รับรองว่าไม่ตรงจริง
-  //   ใช้ตัวสแกนเดียวกับที่ gate/f12 ใช้ (findPriceDate) — ไม่เขียน regex วันที่ซ้ำ
-  if (!discHits && findPriceDate(discBlock))
-    notes.push('disclaimer: อ่านวันที่ใน .disc ออกแต่รูปแบบไม่ตรงตัวเขียน — ไม่ได้เขียน (found:false)');
+  // ★ ตัวอ่าน = ตัวเขียน: ทั้ง gate (f12) และที่นี่เรียก `findDiscPriceDate` ตัวเดียวกัน (tools/price-date.js)
+  //   เดิมที่นี่เป็น regex ฝังในไฟล์นี้ที่ห้ามตัวเลขคั่นและบังคับต้องมี "วัน" ส่วน f12 ห่อตัวสแกน**หัวรายงาน**
+  //   ⇒ คนละกฎกัน: 65 ใบอ่านออกแต่เขียนไม่ได้ (55 ใบเป็น snapshot ของแหล่งที่**ห้ามเขียนทับ** · 10 ใบเป็น
+  //   วันที่ระดับเดือนที่ตัวเขียนพลาดจริง) — เหตุผลของกฎใหม่ทั้งหมดอยู่ที่ price-date.js
+  const discM = out.match(/<div class="disc">[\s\S]*?<\/div>/i);
+  const discHits = discM ? allDiscDates(discM[0]) : [];
+  if (discHits.length) {
+    // เขียนจากขวาไปซ้าย — index ของตัวซ้ายจะได้ไม่ขยับตามความยาวที่เปลี่ยนของตัวขวา (กติกาเดียวกับหัวรายงาน)
+    // รูปเดิมคงไว้: ระดับเดือนยังเป็นระดับเดือน · มีวันยังมีวัน · ศักราชตามของเดิมทีละ token
+    let block = discM[0];
+    for (const t of discHits.slice().reverse())
+      block = block.slice(0, t.index)
+        + renderThaiDate(dateParts.day, dateParts.monIdx, dateParts.yearCE, t.isBE, t.hasDay)
+        + block.slice(t.index + t.length);
+    // อ่านกลับด้วยตัวเดียวกัน — ต้องได้ครบทุกจุดและเป็นวันที่เพิ่งเขียน ไม่งั้นถือว่า "เขียนไม่ลง" แล้วไม่แตะไฟล์
+    // (ด้วยตัวเรนเดอร์ปัจจุบันเงื่อนไขนี้เป็นจริงเสมอ — เก็บไว้เป็น canary ของคู่ อ่าน/เขียน ถ้าฝั่งใดฝั่งหนึ่งถูกแก้)
+    const back = allDiscDates(block);
+    const landed = back.length === discHits.length && back.every((b, i) =>
+      b.yearCE === dateParts.yearCE && b.monIdx === dateParts.monIdx && (!discHits[i].hasDay || b.day === dateParts.day));
+    if (landed) out = out.slice(0, discM.index) + block + out.slice(discM.index + discM[0].length);
+    else notes.push('disclaimer: อ่านวันที่ใน .disc ออกแต่เขียนกลับไม่ลง — ไม่ได้เขียน (found:false)');
+  }
 
   // --- ป้าย .chg ---
   need(/<div class="chg"[^>]*>[\s\S]*?<\/div>/i, 'ป้าย .chg');
   out = out.replace(/<div class="chg"[^>]*>[\s\S]*?<\/div>/i, `<div class="chg">${chg.text}</div>`);
 
   // --- gauge label "ปัจจุบัน $X" (เฉพาะ marker #mCur) ---
-  need(/(id="mCur"><div class="lab">ปัจจุบัน\s*[฿$]?)([\d.,]+)/, 'gauge label ปัจจุบัน');
-  out = out.replace(/(id="mCur"><div class="lab">ปัจจุบัน\s*[฿$]?)([\d.,]+)/, (m, a, old) => a + fmtLike(newPrice, old));
+  need(RM.MCUR_LABEL_PARTS_RE, 'gauge label ปัจจุบัน');
+  out = out.replace(RM.MCUR_LABEL_PARTS_RE, (m, a, old) => a + fmtLike(newPrice, old));
 
   // --- MOS .big (เครื่องหมายเดิม −/+ · sign flip ถูก freeze ก่อนถึงจุดนี้) ---
   need(/(<div class="big">)\s*[+\-−–]?\s*[\d.]+\s*%(<\/div>)/, 'MOS .big');
@@ -596,7 +611,7 @@ function patchReport(html, p) {
   // class นี้เป็นฟังก์ชันล้วนของ MOS ไม่มีดุลพินิจ (bad <10 / ok 10–20 / good ≥20 — กติกาเดียวกับ W04 และ agent-prompt)
   // ต่างจากช่อง "ส่วนต่างจากราคา" ข้างบนที่มี "คำ" — ตรงนี้ไม่มีอะไรให้ cron ต้องเดา จึง sync ได้ทุกครั้ง
   // ★ แตะเฉพาะ 3 ค่ามาตรฐานเท่านั้น — คลาสอื่น (ถ้ามีใครตั้งใจใช้) ปล่อยไว้ให้ gate ตัดสิน
-  out = out.replace(/class="mos-verdict (bad|ok|good)"/, () => `class="mos-verdict ${mosBand(mos)}"`);
+  out = out.replace(RM.VERDICT_CLASS_RE, () => `class="mos-verdict ${mosBand(mos)}"`);
 
   // --- เครื่องคิดเลข: ค่าตั้งต้น pxIn (E23) ---
   need(/(id="pxIn"[^>]*\bvalue=")[^"]*(")/, 'pxIn value');

@@ -19,8 +19,20 @@ const REPORT_DATA_PARTS_RE = /(<script[^>]*\bid=["']report-data["'][^>]*>)([\s\S
 // สกุลเงินหน้าราคา header — คำศัพท์เดียวทั้งรีโป (เดิม update-prices รับ [฿$] · derived-values รับ C$ ด้วย)
 // census 12 ก.ย. 69: 908/908 ใบให้ผลเท่าเดิมทุกตัวแปร (ไม่มีใบไหนขึ้นต้น C$) ⇒ รวมคำศัพท์ไม่เปลี่ยนพฤติกรรม
 const CUR_SRC = '(?:C\\$|[฿$])';
+// ★ ความไม่สมมาตรของคู่นี้เป็นของ **ตั้งใจ**: ตัวอ่าน (PX_RE) ยอมให้มีช่องว่างหลังสัญลักษณ์สกุลเงิน
+//   (`\s*([\d.,]+)`) แต่ตัวเขียน (PX_PARTS_RE) ไม่ยอม — ช่องว่างไม่ได้อยู่ในกลุ่มหัวที่ประกอบคืน
+//   ⇒ ใบที่เขียน "$ 193.50" gate อ่านออกแต่ cron เขียนไม่ได้ และจะโผล่เป็น **patch-failed** ในคิว
+//   (ดังตั้งใจ: เห็นเป็นงานให้คนแก้ ดีกว่าตัวเขียน "สำเร็จ" โดยกินช่องว่างหายไปเงียบ ๆ)
+//   ห้ามเติม `\s*` ให้ตัวเขียนโดยไม่ทบทวนพร้อมกันทั้งคู่ — ตัวเขียนที่กว้างกว่าตัวอ่านคือด้านที่อันตราย
 const PX_RE = new RegExp('<div class="px">\\s*(' + CUR_SRC + ')\\s*([\\d.,]+)');
 const PX_PARTS_RE = new RegExp('(<div class="px">\\s*' + CUR_SRC + ')([\\d.,]+)');
+// ป้าย gauge marker #mCur ("ปัจจุบัน $193.50") — ตัวอ่าน (gate f50) กับตัวเขียน (cron) ต้องชี้ token เดียวกัน
+// ★ ตัวเขียนต้องเก็บช่องว่างหลังสกุลเงินไว้ใน **กลุ่มหัว** (ต่างจาก .px ข้างบน) — วัด 12 ก.ย. 69:
+//   คลัง 908 ใบให้ผลเท่ากันทั้งสองรูป (ไม่มีใบไหนเว้นวรรคหลังสัญลักษณ์) ⇒ รวมคำศัพท์ไม่เปลี่ยนพฤติกรรม
+const MCUR_LABEL_RE = new RegExp('id="mCur"><div class="lab">ปัจจุบัน\\s*' + CUR_SRC + '?\\s*([\\d.,]+)');
+const MCUR_LABEL_PARTS_RE = new RegExp('(id="mCur"><div class="lab">ปัจจุบัน\\s*' + CUR_SRC + '?\\s*)([\\d.,]+)');
+// คลาสกล่อง verdict — ฟังก์ชันล้วนของ MOS (cron เขียน · W04 ตรวจ · manifest f19 อ่าน)
+const VERDICT_CLASS_RE = /class="mos-verdict (bad|ok|good)"/;
 // กรอบ 52 สัปดาห์ในหัวรายงาน (ตัวคั่น – / &ndash; วงเล็บ — วัด 908 ใบ 12 ก.ย. 69 · ย้ายจาก tools/queue/prep.js)
 const RANGE52_RE = new RegExp('กรอบ 52 สัปดาห์\\s*\\(?\\s*' + CUR_SRC + '?\\s*([0-9][0-9.,]*)\\s*(?:&[a-z]+;|[–—\\-/])\\s*' + CUR_SRC + '?\\s*([0-9][0-9.,]*)');
 
@@ -49,4 +61,5 @@ function readHeaderPrice(html) {
 const stripStockMeta = (html) => String(html).replace(new RegExp('\\n?' + STOCK_META_RE.source, 'i'), '');
 
 module.exports = { readStockMeta, readStockMetaState, readReportData, readHeaderPrice, stripStockMeta,
-  STOCK_META_RE, STOCK_META_PARTS_RE, REPORT_DATA_RE, REPORT_DATA_PARTS_RE, CUR_SRC, PX_RE, PX_PARTS_RE, RANGE52_RE };
+  STOCK_META_RE, STOCK_META_PARTS_RE, REPORT_DATA_RE, REPORT_DATA_PARTS_RE, CUR_SRC, PX_RE, PX_PARTS_RE, RANGE52_RE,
+  MCUR_LABEL_RE, MCUR_LABEL_PARTS_RE, VERDICT_CLASS_RE };

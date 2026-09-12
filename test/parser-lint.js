@@ -9,8 +9,13 @@ const path = require('path');
 const ROOT = path.join(__dirname, '..');
 // เจ้าของ regex + ตัวลินต์เอง (PATTERNS ข้างล่างเป็น "รูปของรูป" ไม่ใช่ตัวแยกวิเคราะห์จริง)
 const SKIP = new Set(['tools/report-meta.js', 'test/parser-lint.js']);
-const DIRS = ['tools', 'tools/queue', 'test'];
-const FILES = ['build.js', ...DIRS.flatMap((d) => fs.readdirSync(path.join(ROOT, d)).filter((f) => f.endsWith('.js')).map((f) => `${d}/${f}`))];
+// ★ กวาด **ทุกชั้นย่อย** ของ tools/ กับ test/ — เดิมเป็นรายการมือ ['tools','tools/queue','test'] ⇒ โฟลเดอร์ใหม่
+//   (เช่น test/fixtures/ หรือ tools/<ใหม่>/) จะหลุดการกวาดเงียบ ๆ แล้วสำเนา regex ในนั้นไม่มีใครฟ้อง
+const DIRS = ['tools', 'test'];
+const walk = (d) => fs.readdirSync(path.join(ROOT, d), { withFileTypes: true }).flatMap((e) =>
+  e.isDirectory() ? (e.name === 'node_modules' ? [] : walk(`${d}/${e.name}`))
+    : (e.name.endsWith('.js') ? [`${d}/${e.name}`] : []));
+const FILES = ['build.js', ...DIRS.flatMap(walk)].sort();
 // จับเฉพาะ "รูป regex" — id=["'] (character class) หรือ id="…"[^>] (ตามด้วย class ของ regex) · ข้อความ HTML/throw message ที่เขียน id="stock-meta" เฉย ๆ ไม่นับ
 // (build.js throw · test/build-test.js fixture HTML ไม่นับ · test/skeleton-test.js เป็น regex จริง → อยู่ในตารางแทนที่)
 const PATTERNS = [

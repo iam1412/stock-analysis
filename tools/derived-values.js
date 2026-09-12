@@ -585,6 +585,8 @@ const BV_KW = /(?<!T)BVPS|(?<!T)BV\s*\/\s*(?:หุ้น|share|sh|S)\b|book\s*v
 const TBV_KW = /TBV|tangible/i;
 
 /** สกุลของราคา = สัญลักษณ์หน้า .px (ตัวเดียวกับที่ gate/heal ใช้เป็นตัวตั้ง) — ไม่มี = ไม่ตรวจ ไม่เขียน */
+// ★ ตั้งแต่ย้ายมาใช้ `RM.readHeaderPrice` ตัวนี้ต้องการ "ราคาที่ parse เป็นตัวเลขได้" ต่อจากสัญลักษณ์ด้วย —
+//   `.px` ที่เขียน "$—" (ยังไม่มีราคา) จึงคืน null ⇒ ใบนั้นหลุดออกจาก W19/W20 และจากตัวซ่อม (ตั้งใจ: ไม่มีราคา = คำนวณ yield/P-BV ไม่ได้)
 const currencyOf = (html) => { const p = RM.readHeaderPrice(html); return p ? p.currency : null; };
 
 /** ข้อความในประโยคเดียวกันก่อน token (ตัดที่ตัวคั่นล่าสุด) */

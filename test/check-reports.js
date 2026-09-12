@@ -105,7 +105,8 @@ function grab(re, h) { const m = String(h).match(re); return m ? m[1] : null; }
 
 // parser หมวด 6 ชุดเดียวทั้งรีโป (code-audit §2.5) — ตัวตรวจ (นี่) กับตัวเขียน (`DV.scenarioBlock`)
 // ต้องเห็นคอลัมน์ชุดเดียวกัน ⇒ ย้าย regex ไปอยู่ที่ `tools/derived-values.js` ที่เดียว (`DV.scenarioColumns`)
-// คง `parseScenarios` ไว้เป็น wrapper เพื่อ export เดิม (`tools/spotcheck.js` + เทสที่มีอยู่เรียกชื่อนี้)
+// คง `parseScenarios` ไว้เป็น wrapper เพื่อ export เดิม (ผู้เรียกภายนอก/เทสที่อ้างชื่อนี้ — ในรีโปวันนี้
+// ไม่มีไฟล์ production ไหน import แล้ว: `tools/spotcheck.js` เรียก `checkHtml` ไม่ใช่ parser ตัวนี้)
 function parseScenarios(html) {
   return DV.scenarioColumns(html);
 }
@@ -259,6 +260,9 @@ function buildCtx(html, name, opts) {
     vocab,
     text,
     header: headerM ? headerM[0] : '',
+    // บรรทัด "ที่มา:/แหล่งข้อมูล:…" ในหัวรายงาน — คิดครั้งเดียวที่นี่ แล้ว W08 (นับแหล่ง) กับ manifest f42
+    // (ช่อง "บรรทัดที่มา") อ่านค่าตัวเดียวกัน ไม่ใช่ regex คนละตัวที่กว้างไม่เท่ากัน
+    sourceLine: grab(SOURCE_LINE, stripTags(headerM ? headerM[0] : '')),
     aiModel: (() => { const m = html.match(/<meta\s+name=["']ai-model["']\s+content=["']([^"']*)["']/i); return m ? m[1].trim() : null; })(),
     // คำโปรยธุรกิจใต้ <h1> = <div class="sub"> — build.js ดึงไปเป็น desc โชว์บนการ์ดหน้า index (สรุปว่าบริษัททำธุรกิจอะไร)
     sub: (() => { const m = html.match(/<h1[^>]*>[\s\S]*?<\/h1>\s*<div[^>]*\bclass=["'][^"']*\bsub\b[^"']*["'][^>]*>([\s\S]*?)<\/div>/i); return m ? stripTags(m[1]).trim() : ''; })(),
@@ -294,8 +298,16 @@ function buildCtx(html, name, opts) {
   };
   // ★ manifest ต้องได้ ctx ที่ "ครบทุกฟิลด์แล้ว" (f41 ใช้ px · f50 ใช้ cards · f68 ใช้ tagData) ⇒ ต่อท้ายสุดเสมอ
   //   คิดคู่ที่ไม่ตรงกันไว้ที่นี่ครั้งเดียว แล้ว W22/W23 แค่กรองด้วย stale (ไม่ต้องเดินช่องซ้ำสองรอบ)
-  ctx.mf = MF.extractAll(html, ctx);
-  ctx.mf.pairs = MF.checkPairs(ctx.mf.values, ctx);
+  // ★★ ทั้งก้อนอยู่ใน try — `extractAll` กัน exception ราย extractor ให้แล้ว แต่ตัวมันเอง/`checkPairs`
+  //   (PAIR_HOW · กฎ roe) ยังระเบิดได้ และ buildCtx ถูกเรียกนอก try ของ checkHtml ⇒ ข้อผิดพลาดเดียว
+  //   = `node test/check-reports.js` ตาย = verify/verify:cron ล้มทั้งวัน (คลาสเดียวกับ expandReport ใน
+  //   checkFile ที่ code-audit §6.A เคยปิดไปแล้ว) ⇒ ที่นี่แปลงเป็น "ใบนี้ตรวจ manifest ไม่สำเร็จ" แล้วให้ W21 พูด
+  try {
+    ctx.mf = MF.extractAll(html, ctx);
+    ctx.mf.pairs = MF.checkPairs(ctx.mf.values, ctx);
+  } catch (e) {
+    ctx.mf = { values: {}, found: new Set(), missing: [], skipped: [], pairs: [], errors: [], err: e.message };
+  }
   return ctx;
 }
 
@@ -521,7 +533,7 @@ const CHECKS = [
   { id: 'W01', level: 'warn', label: 'scenario: EPS×P/E ≈ ราคาเป้า', fn: (c) => { const bad = []; const nm = ['Bear', 'Base', 'Bull']; c.scenarios.forEach((s, i) => { if (s.tgt == null || s.eps == null || s.pe == null) return; const calc = s.eps * s.pe; /* หัวการ์ดเขียน "รวมปันผล" ⇒ ช่องเป้าเป็นมูลค่ารวม = EPS×P/E + ปันผลสะสม 3 ปี (วัด 18 ส.ค. 69: 48/57 ฉากใน 22 ใบที่เคยฟ้องตรงเป๊ะด้วยสูตรนี้) — ยอมรับได้ทั้งสองนิยาม ที่เหลือคือผิดจริง */ const withDiv = calc + (isFiniteNum(s.div) ? s.div : 0); const d = Math.min(Math.abs(calc - s.tgt), Math.abs(withDiv - s.tgt)) / s.tgt; if (d > TOL_SCN_REL) bad.push(`${nm[i] || ('#' + i)}: EPS ${s.eps}×P/E ${s.pe}=${calc.toFixed(0)}${isFiniteNum(s.div) && s.div ? ` (+ปันผล ${s.div} = ${withDiv.toFixed(0)})` : ''} ≠ target ${s.tgt} (ต่าง ${(d * 100).toFixed(0)}%)`); }); return bad.length ? bad.join(' ; ') : null; } },
   { id: 'W02', level: 'warn', label: 'สกุลเงินปน', fn: (c) => { if (c.isTHB && /\$/.test(c.text)) { const n = (c.text.match(/\$/g) || []).length; return `รายงานสกุลบาท (฿) แต่พบ "$" ${n} จุดในเนื้อหา (ควรใช้ ฿)`; } if (!c.isTHB && /฿/.test(c.text)) { const n = (c.text.match(/฿/g) || []).length; return `รายงานสกุลดอลลาร์ ($) แต่พบ "฿" ${n} จุดในเนื้อหา`; } return null; } },
   { id: 'W03', level: 'warn', label: 'CSS เพี้ยน .seg-label', fn: (c) => /transform:transl\(/.test(c.html) ? 'พบ transform:transl( (ควรเป็น translate) — dead CSS .seg-label ใน template' : null },
-  { id: 'W04', level: 'warn', label: 'สี verdict ตรงกับโซน MOS', fn: (c) => { if (c.mosBig == null) return null; const m = c.html.match(/class="mos-verdict (bad|ok|good)"/); if (!m) return null; const rank = { bad: 0, ok: 1, good: 2 }; const band = mosBand(c.mosBig); return Math.abs(rank[m[1]] - rank[band]) >= 2 ? `กล่อง verdict เป็น "${m[1]}" แต่ MOS ${c.mosBig}% ควรอยู่โซน "${band}"` : null; } },
+  { id: 'W04', level: 'warn', label: 'สี verdict ตรงกับโซน MOS', fn: (c) => { if (c.mosBig == null) return null; const m = c.html.match(RM.VERDICT_CLASS_RE); if (!m) return null; const rank = { bad: 0, ok: 1, good: 2 }; const band = mosBand(c.mosBig); return Math.abs(rank[m[1]] - rank[band]) >= 2 ? `กล่อง verdict เป็น "${m[1]}" แต่ MOS ${c.mosBig}% ควรอยู่โซน "${band}"` : null; } },
   // W05 รู้จักกฎ 0.4c (18 ส.ค. 69): (1) การ์ดที่ mname ประกาศ "บริบท/ไม่รวม" ไม่เข้าค่าเฉลี่ย (แบบ SPC/CRWV)
   // (2) ขาที่เหลือ dispersion >2.0 เท่า หรือคนละเครื่องหมาย = ห้ามเฉลี่ยตามกฎ ⇒ ผ่านก็ต่อเมื่อ FV = ขาใดขาหนึ่ง (headline ขาเดียว ±3%) — FV = ค่าเฉลี่ยทั้งที่ห้ามเฉลี่ย ยังฟ้อง
   // (3) ขา ≤2.0 เท่า เครื่องหมายเดียวกัน = เฉลี่ยตรง ±7% **หรือ** ค่าถ่วงตามตระกูล 0.4c-bis ±7% (18 ส.ค. 69 รอบ 2): ตระกูล r/g = DDM/Gordon/Justified P/BV/DCF/NPV/Residual (จำแนกจาก mname)
@@ -530,7 +542,7 @@ const CHECKS = [
   // ฟ้องเฉพาะ "ขัดทิศชัด" + MOS มีนัย (>3 จุด %) — โซนกลาง ±3% (เต็มมูลค่า/เหมาะสม/แฟร์) ไม่ฟ้อง (เคส MPWR: MOS −1% เขียน "เต็มมูลค่า" = ถูกต้อง)
   { id: 'W06', level: 'warn', label: 'สรุป "ส่วนต่างจากราคา" ตรงกับ MOS', fn: (c) => { const FV = c.fvBox != null ? c.fvBox : c.constFV; if (FV == null || c.px == null) return null; const i = c.html.indexOf('ส่วนต่างจากราคา'); if (i === -1) return null; const cell = norm(c.html).slice(i, i + 120); const mos = (FV - c.px) / FV * 100; const saysExpensive = /แพง|เต็มมูลค่า|overvalued|สูงกว่ามูลค่า/.test(cell); const saysCheap = /ถูก|MOS\s*~?\s*\+|undervalued|ต่ำกว่ามูลค่า/.test(cell); if (mos < -TOL_MOS_SUMMARY_PP && saysCheap && !saysExpensive) return `สรุประบุ "ถูก/MOS+" แต่ MOS จริง = ${mos.toFixed(1)}% (ราคาแพงกว่ามูลค่า)`; if (mos > TOL_MOS_SUMMARY_PP && saysExpensive && !saysCheap) return `สรุประบุ "แพง/เต็มมูลค่า" แต่ MOS จริง = +${mos.toFixed(1)}% (ราคาถูกกว่ามูลค่า)`; const pct = firstNum(grab(/(-?[0-9.]+)\s*%/, cell)); if (pct != null && Math.abs(Math.abs(pct) - Math.abs(mos)) > TOL_MOS_SUMMARY_PP) return `สรุประบุส่วนต่าง ~${pct}% แต่ MOS จริง = ${mos.toFixed(1)}%`; return null; } },
   { id: 'W07', level: 'warn', label: 'ตัวเลขพื้นฐานสมเหตุสมผล', fn: (c) => { const bad = []; if (c.px != null && c.px <= 0) bad.push(`ราคา ${c.px} ≤ 0`); const m = c.metrics; if (m.pe != null && (m.pe <= 0 || m.pe > 600)) bad.push(`P/E ${m.pe} ผิดวิสัย`); /* เพดาน 600: ในตลาด AI/แพงมัลติเพิล P/E สูงเป็นของจริง (ARM ~482, TSLA ~372, COHR ~177 ฟื้นจากขาดทุน) — ฟ้องเฉพาะที่ผิดวิสัยจริง ๆ */ /* เพดาน P/BV 200 (ขยับจาก 20 เมื่อ 18 ส.ค. 69): บริษัทที่ซื้อหุ้นคืนหนักจนส่วนทุนเกือบหมดมี P/BV สูงจริง — วัดจาก StockAnalysis: CL 127x · MA 87.9x · DELTA(BKK) 32.8x · MANH/TPR/LLY 30–50x (เดิมฟ้อง 14 ใบพร้อมกันทั้งที่ตัวเลขถูกหมด) · ยังฟ้อง ≤0 (ส่วนทุนติดลบต้องใส่ null ไม่ใช่มัลติเพิลติดลบ) และ >200 ที่มักเป็นพิมพ์ผิดคลาดหลักไปเลย */ if (m.pbv != null && (m.pbv <= 0 || m.pbv > 200)) bad.push(`P/BV ${m.pbv} ผิดวิสัย`); if (m.yield != null && (m.yield < 0 || m.yield > 20)) bad.push(`Div yield ${m.yield}% ผิดวิสัย`); if (m.roe != null && (m.roe < -100 || m.roe > 200)) bad.push(`ROE ${m.roe}% ผิดวิสัย`); return bad.length ? bad.join(' ; ') : null; } },
-  { id: 'W08', level: 'warn', label: 'แหล่งข้อมูล ≥3 + อ้างอิงครบ', fn: (c) => { const bad = []; const line = grab(SOURCE_LINE, stripTags(c.header)); if (line) { const srcs = line.split(SOURCE_SEP).map((s) => s.trim()).filter((s) => s.length >= 2 && s.length <= SOURCE_MAX_LEN); if (srcs.length < 3) bad.push(`ระบุแหล่งที่มาเพียง ${srcs.length} แหล่ง (ควร ≥3)`); } if (!/เป้า|นักวิเคราะห์|consensus/i.test(c.text)) bad.push('ไม่พบราคาเป้านักวิเคราะห์'); if (!/52\s*สัปดาห์|52-week/i.test(c.text)) bad.push('ไม่พบช่วง 52 สัปดาห์'); if (!FISCAL_REF.test(c.text)) bad.push('ไม่พบการอ้างอิงงวดงบ (FY/ไตรมาส)'); return bad.length ? bad.join(' ; ') : null; } },
+  { id: 'W08', level: 'warn', label: 'แหล่งข้อมูล ≥3 + อ้างอิงครบ', fn: (c) => { const bad = []; const line = c.sourceLine; if (line) { const srcs = line.split(SOURCE_SEP).map((s) => s.trim()).filter((s) => s.length >= 2 && s.length <= SOURCE_MAX_LEN); if (srcs.length < 3) bad.push(`ระบุแหล่งที่มาเพียง ${srcs.length} แหล่ง (ควร ≥3)`); } if (!/เป้า|นักวิเคราะห์|consensus/i.test(c.text)) bad.push('ไม่พบราคาเป้านักวิเคราะห์'); if (!/52\s*สัปดาห์|52-week/i.test(c.text)) bad.push('ไม่พบช่วง 52 สัปดาห์'); if (!FISCAL_REF.test(c.text)) bad.push('ไม่พบการอ้างอิงงวดงบ (FY/ไตรมาส)'); return bad.length ? bad.join(' ; ') : null; } },
   { id: 'W09', level: 'warn', label: 'ความสดของราคา', fn: (c) => { if (!c.priceAge) return null; const a = c.priceAge.ageDays; const warnDays = parseInt(process.env.STALE_WARN_DAYS || '45', 10); const errDays = parseInt(process.env.STALE_ERROR_DAYS || '120', 10); if (a > warnDays && a <= errDays) return `ราคาเริ่มเก่า: ${c.priceAge.iso} (${a} วันที่แล้ว) — ควรอัปเดตก่อนเผยแพร่`; return null; } },
   // stock-meta P/E·Yield·ROE เทียบค่าที่โชว์ — เตือนเท่านั้น (label P/E/ROE ในรายงานไม่ standard เสมอ → ดึงไม่ได้บางไฟล์)
   { id: 'W10', level: 'warn', label: 'stock-meta P/E·Yield·ROE ≈ ที่โชว์', fn: (c) => { const sm = c.sm; if (!sm.present || !sm.ok || !sm.data) return null; const d = sm.data, m = c.metrics, bad = []; const near = (a, b, rel, abs) => Math.abs(a - b) <= Math.max(rel * Math.abs(b), abs); const shownPe = (c.metricsAll && c.metricsAll.pe) || []; if (m.pe != null && isFiniteNum(d.pe) && !shownPe.some((v) => near(d.pe, v, 0.05, 0.1))) bad.push(`pe ${d.pe} ≠ P/E ที่โชว์ ${shownPe.length > 1 ? shownPe.join('/') : m.pe}`); if (m.yield != null && isFiniteNum(d.dividendYield) && Math.abs(d.dividendYield - m.yield) > Math.max(0.1 * Math.abs(m.yield), 0.15)) bad.push(`dividendYield ${d.dividendYield} ≠ ปันผลที่โชว์ ${m.yield}`); const shownRoe = (c.metricsAll && c.metricsAll.roe) || []; if (m.roe != null && isFiniteNum(d.roe) && !shownRoe.some((v) => near(d.roe, v, 0.08, 0.5))) bad.push(`roe ${d.roe} ≠ ROE ที่โชว์ ${shownRoe.length > 1 ? shownRoe.join('/') : m.roe}`); return bad.length ? bad.join(' ; ') : null; } },
@@ -782,13 +794,21 @@ const CHECKS = [
   // เดิม gate ตรวจเฉพาะสิ่งที่ตัวเองอ่านเจอ ⇒ ไฟล์ที่โครงหายทั้งช่องจะ "ผ่าน 47/47" อย่างเงียบ ๆ
   // W21 = ช่องที่ census บอกว่าคลัง ≥99% มี แต่ใบนี้อ่านไม่ได้ · W22/W23 = ค่าเดียวกันที่เขียนไว้หลายที่แล้วไม่ตรง
   // ทั้งสามเป็น warn และ **ยังไม่มี healer** โดยตั้งใจ (spec §8) — จะยกเป็น E เมื่อมีตัวซ่อมในระยะ 2
-  { id: 'W21', level: 'warn', label: 'ช่องที่ต้องมีอ่านไม่ได้ (manifest)', fn: (c) => c.mf.missing.length ? `อ่านไม่ได้ ${c.mf.missing.length} ช่อง: ${c.mf.missing.map((id) => `${id} ${MF.FIELDS.find((f) => f.id === id).name}`).join(' · ')}` : null },
+  { id: 'W21', level: 'warn', healer: null, label: 'ช่องที่ต้องมีอ่านไม่ได้ (manifest)', fn: (c) => {
+    const bad = [];
+    // manifest/pairs ระเบิดทั้งก้อน (buildCtx จับไว้) — ต้องดังกว่า "ไม่มีช่องหาย" ไม่ใช่เงียบเพราะ missing ว่าง
+    if (c.mf.err) bad.push(`ตรวจไม่สำเร็จ: ${c.mf.err}`);
+    if (c.mf.missing.length) bad.push(`อ่านไม่ได้ ${c.mf.missing.length} ช่อง: ${c.mf.missing.map((id) => `${id} ${MF.FIELDS.find((f) => f.id === id).name}`).join(' · ')}`);
+    // extractor ราย field ที่ throw — เดิม extractAll กลืนเป็น found:false ⇒ ช่อง optional ที่พังหายเงียบ
+    if (c.mf.errors && c.mf.errors.length) bad.push(`extractor ระเบิด ${c.mf.errors.length} ช่อง: ${c.mf.errors.map((e) => `${e.id} (${e.err})`).join(' · ')}`);
+    return bad.length ? bad.join(' ; ') : null;
+  } },
   // W22 = คู่ **consistency** (fairLine/legend/mFair/vcell ↔ FV · mCur ↔ .px · วันที่ disclaimer/วงเล็บ ↔ วันที่ราคา · roe null เมื่อขาดทุน)
   //       ยิงบนใบสุขภาพดี = บั๊กจริง ไม่ใช่ของค้าง
-  { id: 'W22', level: 'warn', label: 'ค่าเดียวกันคนละที่ไม่ตรงกัน (manifest pair)', fn: (c) => { const bad = c.mf.pairs.filter((b) => !b.stale); return bad.length ? bad.map((b) => b.msg).join(' ; ') : null; } },
+  { id: 'W22', level: 'warn', healer: null, label: 'ค่าเดียวกันคนละที่ไม่ตรงกัน (manifest pair)', fn: (c) => { const bad = c.mf.pairs.filter((b) => !b.stale); return bad.length ? bad.map((b) => b.msg).join(' ; ') : null; } },
   // W23 = คู่ **ค้างตามเวลา** (`pair.stale`) — ราคาวิ่งออกจากกรอบที่พิมพ์ไว้เป็นเรื่องคาดหมายได้หลายร้อยใบ
   //       แยกจาก W22 เพราะถ้าปนกัน f41 จะกลบคู่บั๊กจริงจน W22 ไม่มีความหมาย
-  { id: 'W23', level: 'warn', label: 'ค่าที่ค้างตามเวลา (manifest stale pair)', fn: (c) => { const bad = c.mf.pairs.filter((b) => b.stale); return bad.length ? bad.map((b) => b.msg).join(' ; ') + ' — fix-on-touch (ระยะ 3)' : null; } },
+  { id: 'W23', level: 'warn', healer: null, label: 'ค่าที่ค้างตามเวลา (manifest stale pair)', fn: (c) => { const bad = c.mf.pairs.filter((b) => b.stale); return bad.length ? bad.map((b) => b.msg).join(' ; ') + ' — fix-on-touch (ระยะ 3)' : null; } },
 ];
 
 function checkHtml(html, name, opts) {

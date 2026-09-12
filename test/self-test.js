@@ -611,7 +611,9 @@ reject('W14', addCard('4. EV/EBITDA', 'EBITDA $4.0B (mid-point FY2026 $3.6B guid
     ok((DV.scenarioColumns(attr).length === 3) === (DV.scenarioBlock(attr) != null), '(b) <div class="col bear" id=…>: เห็นตรงกัน');
     // (c) col หลงอยู่นอก section scn — ต้องไม่นับ
     const stray = base.replace('<footer>', '<div class="col bear"><div class="tgt">$1</div></div><footer>');
-    ok(DV.scenarioColumns(stray).length === 3, '(c) col นอก section scn ไม่ถูกนับ');
+    // ★ กติกา fixture ข้อ 2: มิวเทชันที่ "ไม่เปลี่ยนอะไร" = anchor เพี้ยน ต้อง fail ไม่ใช่ผ่านเงียบ
+    //   (ถ้า <footer> หายไปจาก skeleton เมื่อไร เคสนี้จะกลายเป็นการนับคอลัมน์ของ base เฉย ๆ)
+    ok(stray !== base && DV.scenarioColumns(stray).length === 3, '(c) col นอก section scn ไม่ถูกนับ');
     // (d) 4 คอลัมน์ — ตัวเขียนต้องเงียบ (null) ตัวตรวจต้องยังอ่านได้ 4 (E24/W01 ตรวจต่อ)
     // ★ ต่อคอลัมน์ bull ที่ 4 หลัง 3 </div> ปิดตัว (body/col/scn wrapper) — ปรับจาก brief เพราะ
     //   fixture จริงมี <p> คั่นก่อน </section> (ไม่ใช่ 3 </div> ตามด้วย </section> ทันที)
@@ -1004,7 +1006,7 @@ require('./parser-lint.js')(ok);
   const shiftDiscDate = (h) => {
     const m = h.match(/<div class="disc">[\s\S]*?<\/div>/i);
     if (!m) return h;
-    const hit = PDt.parsePriceDate(m[0]);
+    const hit = PDt.findDiscPriceDate(m[0]);   // ตัวเดียวกับ f12/cron (เจ้าของเดียวของวันที่ราคาใน .disc)
     if (!hit) return h;
     const moved = m[0].slice(0, hit.index) + hit.text.replace(/^\d{1,2}/, String(hit.day === 1 ? 2 : 1)) + m[0].slice(hit.index + hit.length);
     return h.replace(m[0], moved);
@@ -1035,6 +1037,31 @@ require('./parser-lint.js')(ok);
   expect('W23', 'warn', gable, 'ป้าย "P/E เฉลี่ย ~9 ปี" บนกราฟที่มีข้อมูล 2 ปี → W23 (เคส GABLE · f55 stale)');
   reject('W22', gable, 'ป้ายปีเกินกราฟต้องไม่ยิง W22');
   expect('W23', 'warn', yearLabels, 'เปลี่ยนแค่ label กราฟเป็นปี 4 หลัก (ป้าย "P/E เฉลี่ย ~N ปี" เดิมของ fixture ยังอยู่) → W23 (พิสูจน์ว่าตัวหาร = ปีในกราฟจริง)');
+
+  // ★ W21 ต้องดังเมื่อ manifest **ระเบิด** ไม่ใช่แค่ "ช่องหาย" — buildCtx เรียก extractAll/checkPairs อยู่นอก
+  //   try ของ checkHtml ⇒ exception เดียว = `node test/check-reports.js` ตาย = verify/cron ล้มทั้งวัน
+  //   (คลาสเดียวกับ expandReport ที่ code-audit §6.A ปิดไปแล้ว) · ที่นี่จำลองทั้งสองทาง แล้วคืนของเดิมเสมอ
+  {
+    const hadMoney = MF.PAIR_HOW.money;
+    MF.PAIR_HOW.money = () => { throw new Error('ระเบิดจำลอง-pair'); };
+    let rPair;
+    try { rPair = checkHtml(base, 'BBL.html'); } finally { MF.PAIR_HOW.money = hadMoney; }
+    const w21p = [...rPair.errors, ...rPair.warnings].find((x) => x.id === 'W21');
+    ok(!!w21p && /ตรวจไม่สำเร็จ/.test(w21p.msg) && /ระเบิดจำลอง-pair/.test(w21p.msg),
+      'W21: checkPairs ระเบิด → ได้ W21 "ตรวจไม่สำเร็จ" (ไม่ใช่ทั้งรอบตาย)', w21p && w21p.msg);
+    ok(MF.PAIR_HOW.money === hadMoney && checkHtml(base, 'BBL.html').warnings.every((w) => w.id !== 'W21'),
+      'W21: คืน PAIR_HOW เดิมแล้ว ฐาน BBL กลับมาเงียบ');
+
+    const boom = { id: 'fZZ', name: 'ช่องระเบิดจำลอง', cadence: 'daily', owner: 'cron', gate: [], healer: null,
+      required: false, binding: 'presence', pair: null, extract: () => { throw new Error('ระเบิดจำลอง-extractor'); } };
+    MF.FIELDS.push(boom);
+    let rEx;
+    try { rEx = checkHtml(base, 'BBL.html'); } finally { MF.FIELDS.pop(); }
+    const w21e = [...rEx.errors, ...rEx.warnings].find((x) => x.id === 'W21');
+    ok(!!w21e && /extractor ระเบิด/.test(w21e.msg) && /fZZ/.test(w21e.msg),
+      'W21: extractor ราย field ระเบิด → W21 บอกชื่อช่อง (เดิม extractAll กลืนเป็น found:false เงียบ)', w21e && w21e.msg);
+    ok(MF.FIELDS.length === 70 && MF.FIELDS[MF.FIELDS.length - 1].id !== 'fZZ', 'W21: ถอดช่องจำลองออกครบ (manifest กลับเป็น 70 ช่อง)');
+  }
 
   // W21/W22/W23 ต้องเป็น warn และไม่มี healer (ระยะ 1 — จะยกเป็น E เมื่อมีตัวซ่อมในระยะ 2)
   for (const id of ['W21', 'W22', 'W23']) {
