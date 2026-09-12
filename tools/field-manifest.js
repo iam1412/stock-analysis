@@ -87,7 +87,7 @@ const FIELDS = [
   F('f45', 'report-data.gauge.fair', { cadence: 'write-once', owner: 'worker', gate: ['E19'], healer: null, binding: 'pair', pair: { with: 'f44', how: 'money' }, required: true, extract: (h, c) => R(rd(c) && rd(c).gauge && rd(c).gauge.fair) }),  // census 12 ก.ย. 69: 100.0%
   F('f46', 'report-data.chart.fairLine', { cadence: 'write-once', owner: 'worker', gate: [], healer: null, binding: 'pair', pair: { with: 'f44', how: 'money' }, required: true, extract: (h, c) => R(rd(c) && rd(c).chart && rd(c).chart.fairLine) }),  // census 12 ก.ย. 69: 100.0%
   F('f47', 'legend "มูลค่าเหมาะสม $FV"', { cadence: 'write-once', owner: 'worker', gate: [], healer: null, binding: 'pair', pair: { with: 'f44', how: 'money' }, required: true, extract: (h) => R(num(grab(new RegExp('มูลค่าเหมาะสม\\s*' + CUR + '?\\s*([\\d.,]+)\\s*</span>'), grab(/<div class="legend">([\s\S]*?)<\/div>/, h) || ''))) }),  // census 12 ก.ย. 69: 99.7%
-  F('f48', 'การ์ด "โซนเริ่มทยอยสะสม < $FV"', { cadence: 'write-once', owner: 'worker', gate: [], healer: null, binding: 'pair', pair: { with: 'f44', how: 'money' }, required: false, extract: (h, c) => { const k = card(c, /โซนเริ่มทยอยสะสม/); return R(k ? num(k.v.replace(/^[^0-9]*(?:<|&lt;)/, '')) : null); } }),  // census 12 ก.ย. 69: 98.9% <99% → optional
+  F('f48', 'การ์ด "โซนเริ่มทยอยสะสม < $FV"', { cadence: 'write-once', owner: 'worker', gate: [], healer: null, binding: 'pair', pair: { with: 'f44', how: 'below' }, required: false, extract: (h, c) => { const k = card(c, /โซนเริ่มทยอยสะสม/); return R(k ? num(k.v.replace(/^[^0-9]*(?:<|&lt;)/, '')) : null); } }),  // census 12 ก.ย. 69: 98.9% <99% → optional
   F('f49', 'ป้าย gauge mFair "เหมาะสม $FV"', { cadence: 'write-once', owner: 'worker', gate: [], healer: null, binding: 'pair', pair: { with: 'f44', how: 'money' }, required: true, extract: (h) => R(num(grab(new RegExp('id="mFair"><div class="lab"[^>]*>เหมาะสม\\s*' + CUR + '?\\s*([\\d.,]+)'), h))) }),  // census 12 ก.ย. 69: 99.8%
   F('f50', 'ป้าย gauge mCur "ปัจจุบัน $px"', { cadence: 'daily', owner: 'cron', gate: [], healer: 'patchReport', binding: 'pair', pair: { with: 'f01', how: 'money' }, required: true, extract: (h) => R(num(grab(new RegExp('id="mCur"><div class="lab">ปัจจุบัน\\s*' + CUR + '?\\s*([\\d.,]+)'), h))) }),  // census 12 ก.ย. 69: 100.0%
   F('f51', 'gauge scale MOS20/MOS30', { cadence: 'write-once', owner: 'worker', gate: ['E26'], healer: null, binding: 'gate', required: true, extract: (h, c) => R(c.scaleNums.length >= 4 ? c.scaleNums : null) }),  // census 12 ก.ย. 69: 100.0%
@@ -152,6 +152,12 @@ const PAIR_HOW = {
     const lo = num(fb[1]), hi = num(fb[2]);
     return moneyEq(v[0], lo) && moneyEq(v[1], hi) ? null : `vcell (${v.join('–')}) ≠ กรอบ .fv-box (${lo}–${hi})`;
   },
+  // f48 "โซนเริ่มทยอยสะสม < $FV" — **ไม่ใช่ค่าเดียวกับ FV** แต่เป็นเพดานที่ต้องไม่เกิน FV
+  //   ★ วัด 12 ก.ย. 69: 103 ใบเขียนต่ำกว่า FV โดยตั้งใจ สัดส่วนกระจุกที่ 0.95/0.90/0.85/0.80 (ธรรมเนียมเผื่อ MOS 5–20%)
+  //     ⇒ บังคับให้ "เท่า FV" = ฟ้องใบสุขภาพดี 103 ใบ · เกณฑ์จริงคือ **อยู่ในช่วง 0.7×FV ถึง FV**
+  //     (สูงกว่า FV = ชวนสะสมเหนือมูลค่าเหมาะสม · ต่ำกว่าจุดซื้อ MOS 30% = ไม่ใช่ "เริ่มทยอย" แล้ว)
+  below: (v, w) => (v > 0 && w > 0 && (v <= w || moneyEq(v, w)) && v >= w * 0.7 - 1e-9
+    ? null : `การ์ด ${v} ต้องอยู่ในช่วง 0.7×FV–FV (FV ${w} ⇒ ${(w * 0.7).toFixed(2)}–${w})`),
   years: (v, w, ctx) => { const y = yearsInChart(ctx); return y == null || v == null || v <= y + 1 ? null : `ป้าย ~${v} ปี แต่กราฟมีข้อมูล ${y} ปี (IPO ใหม่กว่าป้าย — เคส GABLE)`; },
 };
 for (const f of FIELDS.filter((f) => f.pair))

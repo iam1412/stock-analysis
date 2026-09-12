@@ -1011,6 +1011,15 @@ require('./parser-lint.js')(ok);
   };
   expect('W22', 'warn', shiftDiscDate, 'วันที่ disclaimer ≠ วันที่ราคา (UNVERIFIED WRITE #12) → W22');
 
+  // f48 การ์ด "โซนเริ่มทยอยสะสม < $FV" = **เพดาน** ไม่ใช่ค่าเดียวกับ FV (how:'below')
+  // คลังจริง 103 ใบตั้งจุดเริ่มสะสมต่ำกว่า FV ตามส่วนเผื่อ MOS 5–20% โดยตั้งใจ ⇒ ต้องไม่ฟ้อง
+  const setZone = (v) => (h) => h.replace(
+    /(<div class="k">โซนเริ่มทยอยสะสม<\/div>\s*<div class="v[^"]*"[^>]*>)([\s\S]*?)(<\/div>)/,
+    (m, a, old, z) => a + old.replace(/[0-9][0-9,.]*/, numStr(v)) + z);
+  reject('W22', setZone(FV * 0.9), 'การ์ดโซนสะสม = 0.9×FV (ธรรมเนียมเผื่อ MOS 10%) → W22 ต้องเงียบ');
+  expect('W22', 'warn', setZone(FV * 0.5), 'การ์ดโซนสะสม = 0.5×FV (ต่ำกว่าจุดซื้อ MOS 30%) → W22');
+  expect('W22', 'warn', setZone(FV * 1.2), 'การ์ดโซนสะสม = 1.2×FV (ชวนสะสมเหนือมูลค่าเหมาะสม) → W22');
+
   // W23 = คู่ค้างตามเวลา (stale:true) — ต้องไม่ปนใน W22
   const addRange = (lo, hi) => (h) => h.replace('<div class="disc">', `<p>กรอบ 52 สัปดาห์ (${cur}${lo}–${cur}${hi})</p><div class="disc">`);
   const outOfBand = addRange((PX * 0.1).toFixed(2), (PX * 0.2).toFixed(2));

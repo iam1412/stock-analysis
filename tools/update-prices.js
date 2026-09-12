@@ -538,7 +538,8 @@ function patchReport(html, p) {
       + out.slice(abs + t.length);
   }
 
-  // --- disclaimer: "ราคา ณ <วันที่>" (ถ้ามี — ไม่พบ = ไม่เขียน ไม่ throw แต่ต้องบอก) ---
+  // --- disclaimer: "ราคา ณ <วันที่>" (ถ้ามี — ไม่พบ = ไม่เขียน ไม่ throw แต่ต้องบอก **เฉพาะเมื่ออ่านออก**) ---
+  const discBlock = (out.match(/<div class="disc">[\s\S]*?<\/div>/i) || [''])[0];
   let discHits = 0;
   out = out.replace(/(<div class="disc">[\s\S]*?<\/div>)/i, (block) =>
     block.replace(new RegExp(`(ราคา(?![^0-9<]{0,25}เป้า)[^0-9<]{0,25})(\\d{1,2}(?:\\s*[–\\-]\\s*\\d{1,2})?\\s*(?:${MONTH_ALT})\\s*(20\\d\\d|25\\d\\d|26\\d\\d))`, 'g'),
@@ -547,7 +548,12 @@ function patchReport(html, p) {
         const era = parseInt(yr, 10) >= 2400 ? dateParts.yearCE + 543 : dateParts.yearCE;
         return `${pre}${dateParts.day} ${THAI_MONTHS[dateParts.monIdx]} ${era}`;
       }));
-  if (!discHits) notes.push('disclaimer: ไม่พบ "ราคา ณ <วันที่>" — ไม่ได้เขียน (found:false)');
+  // ★ เตือนเฉพาะ "อ่านวันที่ในนั้นออก แต่ regex ตัวเขียนจับไม่ได้" — นั่นคือ UNVERIFIED WRITE ตัวจริง
+  //   ใบที่ **ไม่มีวันที่ใน .disc เลย** (วัด 12 ก.ย. 69: 431/908) ไม่มีอะไรให้เขียน = ปกติ (f12 เป็น optional ตาม census 48.9%)
+  //   ⇒ เงื่อนไขนี้ทำให้ note เหลือ 65 ใบ (จาก 496) และ 63 ใบในนั้นมี W22 คู่ f12↔f10 รับรองว่าไม่ตรงจริง
+  //   ใช้ตัวสแกนเดียวกับที่ gate/f12 ใช้ (findPriceDate) — ไม่เขียน regex วันที่ซ้ำ
+  if (!discHits && findPriceDate(discBlock))
+    notes.push('disclaimer: อ่านวันที่ใน .disc ออกแต่รูปแบบไม่ตรงตัวเขียน — ไม่ได้เขียน (found:false)');
 
   // --- ป้าย .chg ---
   need(/<div class="chg"[^>]*>[\s\S]*?<\/div>/i, 'ป้าย .chg');

@@ -464,19 +464,32 @@ ok(ptsNext[ptsNext.length - 1][0] === `${U.THAI_MONTHS[nextM]}${String(nextY).sl
 {
   const dpN = { day: 11, monIdx: 6, yearCE: 2026 };
   ok(Array.isArray(r.notes), 'patchReport คืน notes[] เสมอ');
-  ok(r.notes.length === 0, 'AAPL fixture ปกติ (มี "ราคา ณ" ใน .disc · header ไม่มีวงเล็บทวนวันที่) → notes ว่าง', JSON.stringify(r.notes));
+  ok(r.notes.length === 0, '(c) AAPL fixture ปกติ (ตัวเขียนจับ "ราคา ณ" ได้ · header ไม่มีวงเล็บทวนวันที่) → notes ว่าง', JSON.stringify(r.notes));
 
-  // ลบ **ทั้งประโยค** "ราคา ณ <วันที่>" ออกจาก .disc — ตัดที่ token ที่ไฟล์เขียนไว้จริง ไม่ hardcode วันที่
+  // ★ เตือนเฉพาะ "อ่านวันที่ออกแต่เขียนไม่ได้" — ใบที่ .disc ไม่มีวันที่เลย (431/908) ไม่มีอะไรให้เขียน ต้องเงียบ
   const discM = aapl.match(/<div class="disc">[\s\S]*?<\/div>/i);
   ok(!!discM, 'AAPL fixture: มีบล็อก .disc ให้ทดสอบ');
   const tokRe = /ราคา(?![^0-9<]{0,25}เป้า)[^0-9<]{0,25}\d{1,2}(?:\s*[–-]\s*\d{1,2})?\s*[ก-๙.]+\s*(?:20|25|26)\d\d/;
-  const hadTok = tokRe.test(discM[0]);
-  ok(hadTok, 'AAPL fixture: .disc มีประโยค "ราคา ณ <วันที่>" อยู่ก่อน (ถ้าไม่มี เทสข้างล่างพิสูจน์อะไรไม่ได้)');
-  const noDisc = aapl.replace(discM[0], discM[0].replace(tokRe, 'ราคาอ้างอิงตามที่ระบุในหัวรายงาน'));
-  ok(noDisc !== aapl, 'มิวเทชัน .disc เปลี่ยนไฟล์จริง (ไม่ใช่ no-op)');
-  const rNoDisc = U.patchReport(noDisc, { newPrice: 301.5, dateParts: dpN, chartData: null });
-  ok(rNoDisc.notes.some((s) => /disclaimer/.test(s) && /found:false/.test(s)),
-    'ใบที่ไม่มีประโยค "ราคา ณ" ใน .disc → notes บอก found:false (ไม่เขียนเงียบ ๆ)', JSON.stringify(rNoDisc.notes));
+  ok(tokRe.test(discM[0]), 'AAPL fixture: .disc มีประโยค "ราคา ณ <วันที่>" ที่ตัวเขียนจับได้อยู่ก่อน (ถ้าไม่มี เทสข้างล่างพิสูจน์อะไรไม่ได้)');
+  const discHit = PD.findPriceDate(discM[0]);
+  ok(!!discHit, 'AAPL fixture: price-date อ่านวันที่ใน .disc ออก');
+
+  // (a) อ่านออกแต่เขียนไม่ได้ — แทรกเลขเงินคั่นระหว่าง anchor "ราคา" กับวันที่ (รูปเดียวกับ 65 ใบจริง เช่น
+  //     AIG "แหล่งข้อมูล: StockAnalysis.com (ราคา $79.39 · 2 ก.ค. 2569 …)"): findPriceDate ข้ามก้อนเงินได้
+  //     แต่ regex ตัวเขียนที่ห้ามมีตัวเลขคั่น ([^0-9<]) จับไม่ได้
+  const blocked = discM[0].slice(0, discHit.index) + '$79.39 · ' + discM[0].slice(discHit.index);
+  const rBlocked = U.patchReport(aapl.replace(discM[0], blocked), { newPrice: 301.5, dateParts: dpN, chartData: null });
+  ok(!tokRe.test(blocked) && !!PD.findPriceDate(blocked), '(a) มิวเทชันได้สภาพที่ต้องการจริง: อ่านออก แต่ตัวเขียนจับไม่ได้');
+  ok(rBlocked.notes.some((s) => /disclaimer/.test(s) && /found:false/.test(s)),
+    '(a) .disc มีวันที่ที่อ่านออกแต่รูปแบบไม่ตรงตัวเขียน → notes บอก found:false (UNVERIFIED WRITE ตัวจริง)', JSON.stringify(rBlocked.notes));
+
+  // (b) ลบประโยค "ราคา ณ <วันที่>" ทิ้งทั้งประโยค → ไม่มีอะไรให้เขียน = ต้องเงียบ (ไม่ใช่ของเสีย)
+  const noDate = aapl.replace(discM[0], discM[0].replace(tokRe, 'ราคาอ้างอิงตามที่ระบุในหัวรายงาน'));
+  ok(noDate !== aapl, '(b) มิวเทชัน .disc เปลี่ยนไฟล์จริง (ไม่ใช่ no-op)');
+  const noDateDisc = noDate.match(/<div class="disc">[\s\S]*?<\/div>/i)[0];
+  ok(!PD.findPriceDate(noDateDisc), '(b) มิวเทชันลบวันที่ออกจาก .disc ได้จริง (ไม่เหลือวันที่อื่นให้อ่าน)');
+  ok(U.patchReport(noDate, { newPrice: 301.5, dateParts: dpN, chartData: null }).notes.length === 0,
+    '(b) .disc ไม่มีวันที่เลย → notes ว่าง (431/908 ใบของคลังเป็นแบบนี้ — ไม่ใช่ของเสีย)');
 
   // ช่องวันที่ทวนซ้ำ (วงเล็บติดกับ token ราคา) มีวันที่อยู่ แต่คนละวันกับวันที่ราคา ⇒ findRestatedDate ปฏิเสธ = เขียนไม่ครบ
   const hm = aapl.match(/<header[\s\S]*?<\/header>/i);
