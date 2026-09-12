@@ -106,6 +106,12 @@ function snapshotDiff(html, ctx, v) {
   return out;
 }
 
+/** ปฏิเสธ prep <SYM> บนแถว PREPATCH (C2 · carried จาก Task 13 review) — flip ในย่าน (ข้อ D) ไม่ส่ง LLM เลย
+ *  `ship --prepatch` จบงานให้แล้ว ⇒ เช็คก่อนยิง network ใด ๆ (ส่วนบริสุทธิ์ — รับ rec ที่โหลดมาแล้วตรง ๆ ไม่แตะ state/fs เอง) */
+function checkNotPrepatch(sym, rec) {
+  if (rec && rec.bucket === 'PREPATCH') throw new Error(`${sym} เป็น PREPATCH — ไม่ต้องส่ง LLM · ใช้ ship --prepatch`);
+}
+
 /** หุ้นยากตามเกณฑ์ CLAUDE.md §3.2 ที่ตัดสินจากข้อมูลที่มี — IPO/spinoff/cyclical ยังต้องคนดู */
 function hardStock(rec, ctx, v) {
   const why = [];
@@ -180,6 +186,7 @@ async function prep(sym, opts) {
   const sm = exists ? RM.readStockMeta(html) : null;
   const th = exists ? (sm && sm.currency === 'THB') : !!o.th;
   const rec = S.load().stocks[sym] || {};
+  checkNotPrepatch(sym, rec);   // C2: PREPATCH ไม่ส่ง LLM — ปฏิเสธก่อนยิง network ใด ๆ ข้างล่าง
   let mode = o.mode || (!exists ? 'NEW' : rec.bucket === 'LIGHT' ? 'UPDATE-LIGHT' : 'UPDATE');
   let escalated = false;
 
@@ -238,4 +245,4 @@ async function prep(sym, opts) {
   return { file, mode, model, effort, hard: hs.hard };
 }
 
-module.exports = { prep, parseVendor, snapshotDiff, assemblePrompt, extraBlock, hardStock, medianBlock, TOKENS, EPS_SCREEN_PCT };
+module.exports = { prep, parseVendor, snapshotDiff, assemblePrompt, extraBlock, hardStock, checkNotPrepatch, medianBlock, TOKENS, EPS_SCREEN_PCT };

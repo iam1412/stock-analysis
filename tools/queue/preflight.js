@@ -4,6 +4,7 @@
  *   pull --rebase · อ่านคิว · triage ครบทุก reason · ความสดจาก footer · snapshot ราคาเดิมลง state (postcheck ใช้ grep ราคาค้าง)
  *   · pre-patch ราคา LIGHT/FULL ทั้งชุดใน process เดียว (ไม่ pre-patch ระหว่างตลาดเปิด) → ยิง gate ต่อทันที คืนไฟล์ใบที่ตก
  *   (--force ข้าม quarantine ของ cron ⇒ preflight ต้องทำ quarantine เอง) · พิมพ์ขั้นที่ยังต้องทำเอง
+ *   · คิวตามอายุ (WS6 ข้อ 3): ใบเกิน STALE_DAYS เข้าคิวเองแม้ราคาไม่ขยับ — ทยอย ageLimit ตัว/รอบ แก่สุดก่อน (--age N / --no-age)
  * ★ ไม่ทำแทน: probe โมเดล (ต้อง spawn subagent) · ยืนยันเพิกถอน · แก้ plumbing · ตัดสินใจกำกวม
  */
 const fs = require('fs');
@@ -12,11 +13,12 @@ const { run, must, ROOT } = require('./sh.js');
 const S = require('./state.js');
 const { footerDate, ageDays, todayBangkok } = require('./footer-date.js');
 const { usSessionOpen, setSessionOpen } = require('./market.js');
-const { triage, prePatchList, llmList } = require('./triage.js');
+const { triage, prePatchList, llmList, STALE_DAYS } = require('./triage.js');
 const { readStockMeta } = require('../report-meta.js');
 
 const REPORTS = path.join(ROOT, 'reports');
 const FLAGS = path.join(ROOT, 'price-flags.json');
+const AGE_LIMIT_DEFAULT = 5;   // WS6 ข้อ 3: ทยอยกี่ใบ/รอบ (ปรับด้วย --age N · 0 = --no-age)
 
 const readReport = (sym) => { const fp = path.join(REPORTS, sym + '.html'); return fs.existsSync(fp) ? fs.readFileSync(fp, 'utf8') : null; };
 function loadFlags() {
@@ -24,13 +26,35 @@ function loadFlags() {
   catch (e) { if (e.code === 'ENOENT') return []; throw new Error(`อ่าน price-flags.json ไม่ได้ (${e.message})`); }
 }
 
+const listReportsFS = () => fs.readdirSync(REPORTS).filter((f) => /\.html$/i.test(f)).map((f) => f.replace(/\.html$/i, '')).sort();
+const footerAgeFS = (today) => (sym) => { const h = readReport(sym); const d = h && footerDate(h); return d ? ageDays(d.iso, today) : null; };
+
+/** ใบที่อายุเกิน STALE_DAYS ทั้งหมด (แก่สุดก่อน ไม่ตัด) — WS6 ข้อ 3: trigger ตามเวลา ไม่ใช่ราคา
+ *  opts.listReports () → [SYM] · opts.footerAgeOf(sym) → number|null — ให้เทสสับ FS ได้ (ส่วนบริสุทธิ์เมื่อใส่ opts ครบ) */
+function ageQueue(today, opts) {
+  const o = opts || {};
+  const ageOf = o.footerAgeOf || footerAgeFS(today);
+  return (o.listReports || listReportsFS)().map((symbol) => ({ symbol, footerAge: ageOf(symbol) }))
+    .filter((r) => r.footerAge != null && r.footerAge > STALE_DAYS).sort((a, b) => b.footerAge - a.footerAge);
+}
+
 /** triage + เติมราคาเดิม/สกุลจาก stock-meta ของไฟล์ (อ่านดิสก์ — ส่วนที่เทสไม่ครอบ)
  *  opts.earningsAfterOf(sym) → boolean|null = งบออกหลังวันวิเคราะห์ไหม (Task 17 ใส่ของจริงจาก earnings-calendar.json)
- *  ยังไม่มี = null ⇒ flip ยกเป็น LIGHT ด้วยอายุ footer อย่างเดียว (triage.STALE_DAYS) */
+ *  ยังไม่มี = null ⇒ flip ยกเป็น LIGHT ด้วยอายุ footer อย่างเดียว (triage.STALE_DAYS)
+ *  opts.ageLimit (default 5) · opts.listReports/opts.footerAgeOf — คิวตามอายุ (WS6 ข้อ 3): เติมแถวสังเคราะห์
+ *  reason:'age-gt-90d' synthetic:true ให้ใบที่อายุเกิน STALE_DAYS และยังไม่มี flag อยู่แล้ว แก่สุดก่อน ตัดที่ ageLimit
+ *  (0 = --no-age ไม่เติมเลย) — ผ่าน triage() เหมือนแถวจริงทุกอย่าง (ได้ bucket LIGHT/action/skip ตามกติกาเดียวกัน) */
 function plan(flags, today, opts) {
   const o = opts || {};
-  const rows = triage(flags, {
-    footerAgeOf: (sym) => { const h = readReport(sym); const d = h && footerDate(h); return d ? ageDays(d.iso, today) : null; },
+  const ageOf = o.footerAgeOf || footerAgeFS(today);
+  const limit = o.ageLimit == null ? AGE_LIMIT_DEFAULT : o.ageLimit;
+  const have = new Set(flags.map((f) => f.symbol));
+  const extra = limit > 0
+    ? ageQueue(today, { ...o, footerAgeOf: ageOf }).filter((r) => !have.has(r.symbol)).slice(0, limit)
+      .map((r) => ({ symbol: r.symbol, reason: 'age-gt-90d', synthetic: true, flaggedAt: today }))
+    : [];
+  const rows = triage([...flags, ...extra], {
+    footerAgeOf: ageOf,
     earningsAfterOf: o.earningsAfterOf || null,
   });
   for (const r of rows) {
@@ -70,11 +94,13 @@ function parseGateFailures(out) {
   return syms;
 }
 
+/** ที่มาของแถว: แถวสังเคราะห์จากคิวอายุ (WS6 ข้อ 3) = "อายุ" · flip ที่ยกจาก PREPATCH (triage.escalated) = ป้าย escalated นั้น · ปกติ = "flag" */
+const rowSource = (r) => (r.synthetic ? 'อายุ' : r.escalated || 'flag');
 function renderTable(rows) {
-  const L = ['symbol     reason                  bucket    ใบ→ตลาด            ต่าง   ตั้งแต่     footer  การทำ'];
+  const L = ['symbol     reason                  bucket    ใบ→ตลาด            ต่าง   ตั้งแต่     footer  ที่มา  การทำ'];
   for (const r of rows) {
     const px = `${r.reportPrice ?? '-'}→${r.marketPrice ?? '-'}`;
-    L.push(`${r.symbol.padEnd(10)} ${String(r.reason).padEnd(23)} ${String(r.bucket).padEnd(9)} ${px.padEnd(18)} ${String(r.diffPct != null ? r.diffPct + '%' : '').padStart(6)} ${String(r.flaggedAt || '').padEnd(11)} ${String(r.footerAge != null ? r.footerAge + 'd' : '?').padStart(5)}  ${r.skip || r.action}`);
+    L.push(`${r.symbol.padEnd(10)} ${String(r.reason).padEnd(23)} ${String(r.bucket).padEnd(9)} ${px.padEnd(18)} ${String(r.diffPct != null ? r.diffPct + '%' : '').padStart(6)} ${String(r.flaggedAt || '').padEnd(11)} ${String(r.footerAge != null ? r.footerAge + 'd' : '?').padStart(5)}  ${String(rowSource(r)).padEnd(5)} ${r.skip || r.action}`);
   }
   return L.join('\n');
 }
@@ -100,8 +126,11 @@ function preflight(opts) {
   must('git', ['pull', '--rebase', 'origin', 'main'], 'git pull --rebase');
   const today = todayBangkok();
   const flags = loadFlags();
-  const rows = plan(flags, today, o);
+  const ageLimit = o.noAge ? 0 : (o.age == null ? AGE_LIMIT_DEFAULT : o.age);
+  const rows = plan(flags, today, { ...o, ageLimit });
   console.log(`\n=== คิว price-flags ${flags.length} รายการ · ${today} ===\n${renderTable(rows)}`);
+  const aq = ageQueue(today);
+  if (aq.length) console.log(`อายุเกิน ${STALE_DAYS} วัน ${aq.length} ใบ (รอบนี้เอา ${rows.filter((r) => r.synthetic).length} แก่สุด · --age N ปรับได้): ${aq.slice(0, 10).map((r) => `${r.symbol}(${r.footerAge}d)`).join(' ')}${aq.length > 10 ? ' …' : ''}`);
   const s = S.load();
   s.startedAt = s.startedAt || today;
   for (const r of rows) s.stocks[r.symbol] = { ...(s.stocks[r.symbol] || {}), reason: r.reason, bucket: r.bucket, oldPrice: r.oldPrice, currency: r.currency, footerAge: r.footerAge, skip: r.skip, flaggedAt: r.flaggedAt || null };
@@ -140,4 +169,4 @@ function preflight(opts) {
   return rows;
 }
 
-module.exports = { preflight, plan, patchTargets, renderTable, manualSteps, loadFlags, parseGateFailures };
+module.exports = { preflight, plan, ageQueue, patchTargets, renderTable, manualSteps, loadFlags, parseGateFailures };

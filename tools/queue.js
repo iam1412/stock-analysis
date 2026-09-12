@@ -15,11 +15,11 @@ const argv = process.argv.slice(2);
 const cmd = argv[0];
 const has = (f) => argv.includes(f);
 const val = (f) => { const i = argv.indexOf(f); return i >= 0 ? argv[i + 1] : null; };
-const VALUE_FLAGS = new Set(['--mode', '--model', '--brand', '--median-spec', '--tags', '--message']);
+const VALUE_FLAGS = new Set(['--mode', '--model', '--brand', '--median-spec', '--tags', '--message', '--age']);
 const positional = argv.slice(1).filter((a, i, arr) => !a.startsWith('--') && !VALUE_FLAGS.has(arr[i - 1]));
 const sym = (positional[0] || '').toUpperCase();
 const usage = `ใช้: npm run queue -- <คำสั่ง> [ตัวเลือก]
-  preflight [--no-patch] [--allow-intraday] [--allow-dirty]
+  preflight [--no-patch] [--allow-intraday] [--allow-dirty] [--age N] [--no-age]
   ship --prepatch
   prep <SYM> [--mode NEW|UPDATE|UPDATE-LIGHT] [--model sonnet|opus] [--brand "#hex"] [--median-spec SYM:TICKER] [--th]
   postcheck <SYM> [--model sonnet|opus]
@@ -28,7 +28,7 @@ const usage = `ใช้: npm run queue -- <คำสั่ง> [ตัวเล
 
 (async () => {
   switch (cmd) {
-    case 'preflight': require('./queue/preflight.js').preflight({ noPatch: has('--no-patch'), allowIntraday: has('--allow-intraday'), allowDirty: has('--allow-dirty') }); break;
+    case 'preflight': require('./queue/preflight.js').preflight({ noPatch: has('--no-patch'), allowIntraday: has('--allow-intraday'), allowDirty: has('--allow-dirty'), age: val('--age') != null ? +val('--age') : null, noAge: has('--no-age') }); break;
     case 'prep': if (!sym) throw new Error(usage); await require('./queue/prep.js').prep(sym, { mode: val('--mode'), model: val('--model'), brand: val('--brand'), medianSpec: val('--median-spec'), th: has('--th') }); break;
     case 'postcheck': if (!sym) throw new Error(usage); process.exitCode = require('./queue/postcheck.js').postcheck(sym, { model: val('--model') }).issues.length ? 1 : 0; break;
     case 'ship': {

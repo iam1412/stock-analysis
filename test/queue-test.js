@@ -131,6 +131,34 @@ process.env.QUEUE_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'queue-'));   // s
   const man = P.manualSteps(rows);
   ok(/probe โมเดล/.test(man) && /US2/.test(man) && /US4\[fetch-failed\]/.test(man) && /prep <SYM>/.test(man), 'manualSteps: probe · DELIST · PLUMBING · ขั้นถัดไป');
   ok(man.split('\n').filter((l) => /^\d+\./.test(l)).length <= 5, 'manualSteps: ขั้นที่ต้องทำเอง ≤5 (KPI ระยะ 0)');
+
+  // renderTable: คอลัมน์ "ที่มา" ใหม่ — synthetic (age-gt-90d) = "อายุ" · escalated (flip ยกจาก PREPATCH) = ป้าย escalated · ปกติ = "flag"
+  const table2 = P.renderTable([
+    { symbol: 'AGE1', reason: 'age-gt-90d', synthetic: true, bucket: 'LIGHT', action: 'x', skip: null },
+    { symbol: 'ESC1', reason: 'mos-sign-flip', escalated: 'age', bucket: 'LIGHT', action: 'x', skip: null },
+    { symbol: 'FLG1', reason: 'drift-gt-15pct', bucket: 'LIGHT', action: 'x', skip: null },
+  ]);
+  const l2 = table2.split('\n');
+  ok(/อายุ/.test(l2.find((l) => l.startsWith('AGE1'))), 'renderTable: คอลัมน์ที่มา = "อายุ" สำหรับแถวสังเคราะห์ age-gt-90d', table2);
+  ok(/\bage\b/.test(l2.find((l) => l.startsWith('ESC1'))), 'renderTable: คอลัมน์ที่มา = escalated label สำหรับแถวที่ยกจาก PREPATCH', table2);
+  ok(/\bflag\b/.test(l2.find((l) => l.startsWith('FLG1'))), 'renderTable: คอลัมน์ที่มา = "flag" สำหรับแถวปกติ', table2);
+}
+
+// ── 6b) preflight: plan/ageQueue — คิวตามอายุ (WS6 ข้อ 3): ใบเกิน 90 วันเข้าคิวเองแม้ราคาไม่ขยับ · ทยอย ageLimit ตัว แก่สุดก่อน · ไม่ซ้ำกับที่ flag อยู่ ──
+{
+  const P = require('../tools/queue/preflight.js');
+  const ages = { OLD1: 200, OLD2: 150, OLD3: 95, MID: 60, FLAGGED: 300 };
+  const rows = P.plan([{ symbol: 'FLAGGED', reason: 'drift-gt-15pct' }], '2026-09-12', { ageLimit: 2, listReports: () => Object.keys(ages), footerAgeOf: (s) => ages[s] });
+  const syn = rows.filter((r) => r.synthetic);
+  ok(syn.map((r) => r.symbol).join(',') === 'OLD1,OLD2' && syn.every((r) => r.reason === 'age-gt-90d' && r.bucket === 'LIGHT'), 'plan: แถวอายุสังเคราะห์ 2 ตัวแก่สุด (ไม่รวม FLAGGED ที่มี flag อยู่แล้ว · MID ไม่ถึง 90)', syn.map((r) => r.symbol).join(','));
+  ok(P.ageQueue('2026-09-12', { listReports: () => Object.keys(ages), footerAgeOf: (s) => ages[s] }).length === 4, 'ageQueue: นับทุกใบเกิน 90 วัน (4) ก่อนตัด');
+  ok(P.plan([], '2026-09-12', { ageLimit: 0, listReports: () => Object.keys(ages), footerAgeOf: (s) => ages[s] }).length === 0, 'plan: --no-age (ageLimit 0) ไม่เพิ่มแถว');
+  // ageQueue: แก่สุดก่อนเสมอ (sort desc) — ยืนยันลำดับตรง ไม่ใช่แค่จำนวน
+  const aqAll = P.ageQueue('2026-09-12', { listReports: () => Object.keys(ages), footerAgeOf: (s) => ages[s] });
+  ok(aqAll.map((r) => r.symbol).join(',') === 'FLAGGED,OLD1,OLD2,OLD3', 'ageQueue: เรียงแก่สุดก่อน (ไม่ตัดที่ ageLimit)', aqAll.map((r) => r.symbol).join(','));
+  // plan: ageLimit default (ไม่ใส่ opts.ageLimit) = 5
+  const rowsDefault = P.plan([], '2026-09-12', { listReports: () => Object.keys(ages), footerAgeOf: (s) => ages[s] });
+  ok(rowsDefault.filter((r) => r.synthetic).length === 4, 'plan: ไม่ใส่ ageLimit → default 5 (มีแค่ 4 ใบเกิน 90 วันอยู่แล้วเลยได้ครบ)', String(rowsDefault.length));
 }
 
 // ── 7) prep (ส่วนบริสุทธิ์): parseVendor · snapshotDiff · assemblePrompt · hardStock ──
@@ -353,6 +381,9 @@ process.env.QUEUE_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'queue-'));   // s
   const doneOrSkipped = quiet(() => Sh.closeIssueIfNoLlmRows({ C: { bucket: 'LIGHT', shippedAt: '2026-09-12' }, D: { bucket: 'FULL', skip: 'สด ≤7 วัน (footer)' }, E: { bucket: 'DELIST' } }, spy));
   ok(doneOrSkipped === true && n === 2, 'closeIssueIfNoLlmRows: LIGHT ที่ ship แล้ว · FULL ที่ข้าม · DELIST ไม่นับเป็นงานค้าง → ปิด', String(n));
   ok(quiet(() => Sh.closeIssueIfNoLlmRows({}, spy)) === true && n === 3, 'closeIssueIfNoLlmRows: state ว่าง → ปิด', String(n));
+  // C1 (carried จาก Task 13 review): PREPATCH ที่ gate ตกหลัง pre-patch (prePatchRejected) ยังต้องแก้เอง — ห้ามปิด issue ทั้งที่แถวนี้ยังค้าง
+  const flipGateFail = quiet(() => Sh.closeIssueIfNoLlmRows({ A: { bucket: 'PREPATCH', prePatchRejected: '2026-09-12' } }, spy));
+  ok(flipGateFail === false && n === 3, 'closeIssueIfNoLlmRows: PREPATCH row ที่ prePatchRejected → นับเป็นงานค้าง ไม่ปิด issue (C1)', String(n));
 }
 
 // ── 12b) ship: commitArgs — commit ต้องจำกัดด้วย pathspec ไม่งั้น deletion ที่ stage ไว้ (git rm ตอน DELIST) หลุดเข้า commit (re-review) ──
@@ -437,6 +468,21 @@ process.env.QUEUE_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'queue-'));   // s
   ok(/ตลาดปิดแล้ว รันได้/.test(closedTxt) && !/intraday/.test(closedTxt), 'extraBlock: ยังไม่ patch + ตลาดปิด → รันได้', closedTxt.split('\n')[1]);
   const patched = Pp.extraBlock({ ...base, prePatched: '2026-09-12', marketOpen: true });
   ok(/ห้ามรัน update-prices ซ้ำ/.test(patched) && !/intraday/.test(patched), 'extraBlock: patch แล้ว → ห้ามรันซ้ำ ไม่ต้องพูดถึงตลาด', patched.split('\n')[1]);
+}
+
+// ── 17) prep: checkNotPrepatch (ส่วนบริสุทธิ์) — C2 (carried จาก Task 13 review): ปฏิเสธ prep <SYM> บนแถว PREPATCH
+//   ก่อนยิง network ใด ๆ (flip ในย่าน ไม่ต้องส่ง LLM — ship --prepatch จบแล้ว) ──
+{
+  const Pp = require('../tools/queue/prep.js');
+  let threw = null;
+  try { Pp.checkNotPrepatch('FLIP1', { bucket: 'PREPATCH' }); } catch (e) { threw = e; }
+  ok(threw && /FLIP1 เป็น PREPATCH/.test(threw.message) && /ship --prepatch/.test(threw.message), 'checkNotPrepatch: แถว PREPATCH → throw ข้อความชัดเจน (C2)', threw && threw.message);
+  let noThrow = true;
+  try { Pp.checkNotPrepatch('LIGHT1', { bucket: 'LIGHT' }); } catch (e) { noThrow = false; }
+  ok(noThrow, 'checkNotPrepatch: แถว LIGHT ไม่ถูกปฏิเสธ');
+  let noThrowEmpty = true;
+  try { Pp.checkNotPrepatch('NEWCO', {}); } catch (e) { noThrowEmpty = false; }
+  ok(noThrowEmpty, 'checkNotPrepatch: ไม่มี record เลย (หุ้นใหม่) → ไม่ถูกปฏิเสธ');
 }
 
 // ─────────────────────────── (Task 10–14 แทรกเทสเหนือบรรทัดนี้) ───────────────────────────

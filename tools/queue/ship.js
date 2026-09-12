@@ -185,9 +185,12 @@ function shipPrepatch() {
 
 /** ยังมีแถวที่ต้องส่ง LLM ค้างอยู่ไหม (LIGHT/FULL ที่ไม่ skip และยังไม่ ship) — ไม่มี = `ship --prepatch` ปิด issue เอง
  *  ★ แยกเป็นฟังก์ชันที่รับตัวปิดเป็น argument เพื่อให้ queue-test ยิงได้จริง: `shipPrepatch()` เต็มใบรันในเทสไม่ได้
- *    (มันเรียก npm run build / preserve-dates / npm run verify / git push) · คืน true = สั่งปิดแล้ว */
+ *    (มันเรียก npm run build / preserve-dates / npm run verify / git push) · คืน true = สั่งปิดแล้ว
+ *  ★ (C1 · carried จาก Task 13 review) PREPATCH ที่ prePatchRejected (pre-patch แล้ว gate ตก — ยังต้องแก้ไฟล์ให้ผ่านเอง)
+ *    ก็นับเป็นงานค้างเหมือนกัน — ห้ามปิด issue ทั้งที่แถวนี้ยังรอคนแก้ (คลาสเดียวกับ REJECTED ของ cron) */
 function closeIssueIfNoLlmRows(stocks, close) {
-  const pending = Object.values(stocks || {}).filter((r) => !r.skip && ['LIGHT', 'FULL'].includes(r.bucket) && !r.shippedAt);
+  const pending = Object.values(stocks || {}).filter((r) =>
+    (!r.skip && ['LIGHT', 'FULL'].includes(r.bucket) && !r.shippedAt) || (r.bucket === 'PREPATCH' && r.prePatchRejected));
   if (pending.length) { console.log(`ยังเหลือ ${pending.length} ตัวที่ต้องส่ง LLM — issue คงเปิด (ปิดตอน ship <SYM> ตัวสุดท้าย)`); return false; }
   (close || closeIssueIfEmpty)();
   return true;
