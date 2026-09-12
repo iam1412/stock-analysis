@@ -168,5 +168,88 @@ const cmp = (r, f) => r.compare.find((c) => c.field === f);
   ok(TOLERANCE.f11('2026-09-11', null) === true, 'F6: วงเล็บที่มีแต่วันที่ ลบได้');
 }
 
+// ══════════════════════════════════════════════════════════════════════════════
+// Task 8 · เคสขอบที่ต้องปฏิเสธ/คง literal ให้ถูก (task-8-brief.md) — ยืนบน FX.BBL()/FX.AAPL()
+// string-replace เท่านั้น ห้ามแก้ fixture บนดิสก์ · ค่าทุกตัวใน mutation derive จาก fixture ตอนรัน
+// ══════════════════════════════════════════════════════════════════════════════
+
+// ── T1 · หมวด 6 ตัดสินไม่ได้ (ทำ .ret คอลัมน์ bear เป็นข้อความว่าง) → ทั้งใบยังย้ายได้ หมวด 6 คง literal ทั้งก้อน ──
+{
+  const mutated = BBL.replace(/(<div class="col bear">[\s\S]*?<div class="ret neg">)[^<]*(<\/div>)/, '$1$2');
+  ok(mutated !== BBL, 'T1: mutation (ทำ .ret คอลัมน์ bear เป็นข้อความว่าง) ไม่เป็น no-op');
+  const r = mg(mutated);
+  ok(r.ok, 'T1: หมวด 6 ตัดสินไม่ได้ (รูป % ในช่อง ret ไม่ชัด) → ใบยังย้ายได้ทั้งใบ (ไม่ใช่ residue)', r.reason);
+  ok(r.ok && r.values.scenarios === undefined, 'T1: values.scenarios ไม่ถูกตั้ง (หมวด 6 ตัดสินไม่ได้)');
+  ok(r.ok && !/\{\{rd:sc[123]|\{\{rd:baseEps\}\}/.test(r.out), 'T1: ไม่มี token หมวด 6/EPS ฐานหลุดเข้าไปในผลลัพธ์');
+  ok(r.ok && r.out.includes('จากจุดเข้า ฿' + HINT_PX), 'T1: hint "จากจุดเข้า" ในกล่อง .hint ยังเป็นข้อความเดิม (literal — tokeniseScn ไม่ถูกเรียกเลยเมื่อหมวด 6 ตัดสินไม่ได้)');
+  ok(r.ok && r.out.includes('<div class="ret neg"></div>'), 'T1: .ret ที่ทำให้ว่างไว้ยังว่างเหมือนเดิม (literal)');
+  ok(r.ok && r.notes.some((x) => /หมวด 6/.test(x) && /literal/.test(x)), 'T1: มี note บันทึกว่าหมวด 6 คง literal', (r.notes || []).join(' | '));
+  ok(r.ok && r.out.includes('<div class="px">{{rd:px}}'), 'T1: site บังคับ .px ยังสำเร็จตามปกติ แม้หมวด 6 ตัดสินไม่ได้ (ความล้มเหลวไม่ลามข้ามหมวด)');
+}
+
+// ── T2 · การ์ด P/E สองฐาน (EPS GAAP/Adj.) → ตัดสินฐานไม่ได้ การ์ดคง literal ทั้งใบยังย้ายได้ ──
+{
+  const AAPL = FX.AAPL();
+  const mgA = (html) => migrateOne(html, 'AAPL.html', { today: FX.TODAY });
+  const dBefore = 'EPS TTM $8.26 <span class="pill a">สูงกว่าปกติ</span>';
+  ok(AAPL.includes(dBefore), 'T2: AAPL fixture มีบรรทัด .d เดิมของการ์ด P/E (TTM) ให้แก้ (mutation ไม่เป็น no-op)');
+  // คงฐานเดิม $8.26 ไว้ (P/E ~40x ที่การ์ดโชว์ยึดฐานนี้อยู่ — gate E41/stock-meta.pe ยังผ่าน) แล้วเติมฐานที่สอง
+  // (Adj.) ให้ eps.length = 2 — ตรงกับสเปก "รับหลายฐานได้ตั้งใจ" ของ epsBasesOf แต่ migrate-v2 ต้องการ eps.length===1
+  const dAfter = 'EPS GAAP $8.26 • Adj. $13.1';
+  const r = mgA(AAPL.replace(dBefore, dAfter));
+  ok(r.ok, 'T2: การ์ด P/E สองฐาน (GAAP/Adj.) → ใบยังย้ายได้', r.reason);
+  ok(r.ok && r.values.eps === undefined, 'T2: values.eps ไม่ถูกตั้ง (การ์ด P/E ตัดสินฐานไม่ได้ — eps.length ≠ 1)');
+  ok(r.ok && r.sites.literal.includes('peCard'), 'T2: site peCard ถูกบันทึกเป็น literal', r.ok ? r.sites.literal.join(',') : '');
+  ok(r.ok && r.out.includes(dAfter) && !/\{\{rd:pe\}\}/.test(r.out), 'T2: การ์ด P/E คงข้อความ .d เดิม ("EPS GAAP $8.26 • Adj. $13.1") ไม่ถูกแทน token');
+}
+
+// ── T3 · วันที่ราคา + วงเล็บทวนล้วน (ต่างแค่ศักราช) ในหัวรายงาน ──────────────────
+// ★ finding (ต่างจากที่ brief คาด — "ผลลัพธ์ header ไม่มีวงเล็บ" หมายถึงใบย้ายสำเร็จ): ชั้น 1 (compare f11) +
+//   site 'restate' ทำงานถูกตามสเปก (ลบได้เพราะเป็นการทวนล้วน) แต่ stripVolatile/maskText มีกติกาตัด "ราคา ณ…"
+//   เฉพาะในบล็อก .disc เท่านั้น ไม่ครอบคลุมวงเล็บทวนวันที่ **ในหัวรายงาน** (ที่นี่ขึ้นต้น "ราคา ≈" ไม่ใช่ "ราคา ณ")
+//   ⇒ ชั้น 2 เห็นข้อความ "(…)" หายไปจริง → migrate ทั้งใบไม่ผ่าน แม้ทั้งชั้น token และชั้น compare จะถูกต้อง
+//   รายงานเป็น concern ใน task-8-report.md — ไม่แก้ migrate-v2.js เพราะเป็นงานทดสอบ (Part C dry-run เท่านั้น)
+{
+  const AAPL = FX.AAPL();
+  const mgA = (html) => migrateOne(html, 'AAPL.html', { today: FX.TODAY });
+  const HEAD_A = AAPL.match(/<header[\s\S]*?<\/header>/i)[0];
+  const hitA = PD.findPriceDate(HEAD_A);
+  ok(!PD.findRestatedDate(HEAD_A, hitA), 'T3: AAPL fixture header ยังไม่มีวงเล็บทวนวันที่ (mutation ไม่เป็น no-op)');
+  const restText = PD.renderThaiDate(hitA.day, hitA.monIdx, hitA.year, true, true);   // ศักราช พ.ศ. ของวันเดียวกัน
+  const insertAt = AAPL.indexOf(HEAD_A) + hitA.index + hitA.length;
+  const withParen = AAPL.slice(0, insertAt) + ' (' + restText + ')' + AAPL.slice(insertAt);
+  const r = mgA(withParen);
+  ok(r.sites.tokenised.includes('restate'), 'T3: วงเล็บทวนวันที่ล้วน ถูกลบที่ชั้น token (site restate สำเร็จ)', r.sites.tokenised.join(','));
+  const f11 = r.compare.find((c) => c.field === 'f11');
+  ok(!!f11 && f11.ok === true && f11.b == null, 'T3: f11 ใน compare = ok (v2 ไม่มีวงเล็บ — TOLERANCE.f11 ยอมให้หายได้)', JSON.stringify(f11));
+  ok(!r.ok && /ข้อความที่มองเห็นเปลี่ยน/.test(r.reason), 'T3 (finding): ทั้งใบยังไม่ย้าย เพราะ stripVolatile ไม่ตัดวงเล็บทวนวันที่ในหัวรายงานทิ้ง (ต่างจาก .disc "ราคา ณ") — ชั้น 2 จึงเห็นข้อความหาย', r.reason);
+}
+
+// ── T4 · stock-meta.price ≠ ราคา header (ต่างเกิน 0.02 แต่ยังอยู่ในเกณฑ์ gate E30 ~2%) → migrator ปฏิเสธเอง ──
+{
+  const sm0 = RM.readStockMeta(BBL);
+  const delta = Math.max(0.5, sm0.price * 0.005);
+  ok(delta > 0.02 && delta < 0.02 * sm0.price, 'T4: delta อยู่ระหว่างเกณฑ์ migrator (0.02 บาท) กับเกณฑ์ gate E30 (~2%) พอดี');
+  const newPrice = sm0.price + delta;
+  const mutated = BBL.replace(new RegExp('("price":)' + String(sm0.price).replace('.', '\\.') + '\\b'), (m, p1) => p1 + newPrice);
+  ok(mutated !== BBL, 'T4: mutation แก้ stock-meta.price สำเร็จ (ไม่เป็น no-op)');
+  const r = mg(mutated);
+  ok(!r.ok && /ราคา header ≠ stock-meta/.test(r.reason), 'T4: ราคา header ≠ stock-meta (ต่างเกิน 0.02 แต่ gate E30 ยังผ่านเพราะ ≤2%) → migrator ปฏิเสธเอง', r.reason);
+}
+
+// ── T5 · ".px" มีช่องว่างหลังสัญลักษณ์สกุลเงิน ("฿ 193.50") → PX_PARTS_RE (ตัวเขียน) match 0 ──────
+// ★ ใช้ RM.readHeaderPrice() + string replace ล้วน (ไม่เขียน regex ของตัวเองที่หน้าตาเหมือน .px) — เจตนา
+//   เดียวกับที่ migrate-v2.js ต้องทำ: parser-lint ห้ามมีสำเนา regex บล็อก .px นอก tools/report-meta.js
+{
+  const hp = RM.readHeaderPrice(BBL);
+  ok(!!hp, 'T5: อ่านราคา header ของ BBL ได้ (RM.readHeaderPrice)');
+  const before = `<div class="px">${hp.currency}${hp.raw}<small>`;
+  ok(BBL.includes(before), 'T5: พบรูป .px เดิมของ BBL ให้แก้ (mutation ไม่เป็น no-op)');
+  const mutated = BBL.replace(before, `<div class="px">${hp.currency} ${hp.raw}<small>`);
+  ok(mutated !== BBL, 'T5: mutation เติมช่องว่างใน .px สำเร็จ');
+  const r = mg(mutated);
+  ok(!r.ok && /site px match ≠ 1/.test(r.reason), 'T5: ".px" มีช่องว่างหลังสัญลักษณ์สกุลเงิน → PX_PARTS_RE (ตัวเขียน) match 0 ครั้ง = ไม่ย้าย (ตรงกับที่ cron เขียนเลขนี้ไม่ได้เช่นกัน — report-meta.js เจตนา)', r.reason);
+}
+
 console.log(`migrate-v2-test: ${n - fails}/${n} ผ่าน`);
 process.exit(fails ? 1 : 0);
