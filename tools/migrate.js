@@ -14,6 +14,7 @@
 const fs = require('fs');
 const path = require('path');
 const { expandReport } = require('../build.js');
+const RM = require('./report-meta.js');   // เจ้าของเดียวของ regex stock-meta/report-data/.px
 
 const REPORTS = path.join(__dirname, '..', 'reports');
 const grab = (re, h) => { const m = String(h).match(re); return m ? m[1] : null; };
@@ -88,7 +89,7 @@ function toReportData(rd) {
 function rebuild(h, rd) {
   let out = h;
   // 1) แทรก report-data หลังบล็อก stock-meta
-  out = out.replace(/(<script[^>]*\bid=["']stock-meta["'][^>]*>[\s\S]*?<\/script>)/i, `$1\n${toReportData(rd)}`);
+  out = out.replace(RM.STOCK_META_PARTS_RE, `$1$2$3\n${toReportData(rd)}`);
   // 2) font links + <style> → marker STYLE
   out = out.replace(/<link rel="preconnect"[\s\S]*?<\/style>/i, '<!--TEMPLATE:STYLE-->');
   // 3) engine <script> → marker ENGINE
@@ -118,7 +119,7 @@ function renderVals(h) {
     gridFmt: grab(/forEach\(v=>\{[\s\S]*?Mono">(?:[฿$€£]|\$\{cur\})\$\{([^}]+)\}<\/text>/, h),
     dataFmt: grab(/if\(hi\)svg\+=`<text[\s\S]*?Mono">(?:[฿$€£]|\$\{cur\})\$\{([^}]+)\}<\/text>/, h),
     // stock-meta (ตัวเลขที่ป้อนป้าย/มงกุฎ + เรียงหน้า index) — ต้องคงเป๊ะ ห้าม migration แตะ
-    sm: (() => { const m = grab(/<script[^>]*\bid="stock-meta"[^>]*>([\s\S]*?)<\/script>/i, h); try { return m ? JSON.stringify(JSON.parse(m)) : null; } catch { return m; } })(),
+    sm: (() => { const m = grab(RM.STOCK_META_RE, h); try { return m ? JSON.stringify(JSON.parse(m)) : null; } catch { return m; } })(),
   };
 }
 

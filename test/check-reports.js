@@ -29,6 +29,7 @@ const { parsePriceDate, THAI_MONTHS } = require('../tools/price-date.js');
 const { mosBand, MOS_FLIP_DEADBAND_PP } = require('../tools/update-prices.js'); // โซน verdict (bad/ok/good) — นิยามเดียวกับที่ cron ใช้ sync class
 const { resolveColor } = require('../tools/fix-contrast.js');
 const TAG = require('../tools/tag-lib.js');
+const RM = require('../tools/report-meta.js');   // เจ้าของเดียวของ regex stock-meta/report-data/.px
 // โหลดครั้งเดียวต่อ process — self-test จะฉีดของปลอมผ่าน opts.tagData แทน
 let _tagCache = null;
 function tagDefaults() {
@@ -270,13 +271,13 @@ function buildCtx(html, name, opts) {
     aiModel: (() => { const m = html.match(/<meta\s+name=["']ai-model["']\s+content=["']([^"']*)["']/i); return m ? m[1].trim() : null; })(),
     // คำโปรยธุรกิจใต้ <h1> = <div class="sub"> — build.js ดึงไปเป็น desc โชว์บนการ์ดหน้า index (สรุปว่าบริษัททำธุรกิจอะไร)
     sub: (() => { const m = html.match(/<h1[^>]*>[\s\S]*?<\/h1>\s*<div[^>]*\bclass=["'][^"']*\bsub\b[^"']*["'][^>]*>([\s\S]*?)<\/div>/i); return m ? stripTags(m[1]).trim() : ''; })(),
-    px: firstNum(grab(/<div class="px">([\s\S]*?)<\/div>/, html)),
+    px: (() => { const p = RM.readHeaderPrice(html); return p ? p.price : null; })(),
     constFV: (() => { const m = html.match(/const\s+FV\s*=\s*([0-9]+(?:\.[0-9]+)?)/); return m ? parseFloat(m[1]) : null; })(),
     fvBox: fvIdx === -1 ? null : firstNum(grab(/class="r">([\s\S]*?)<\/div>/, html.slice(fvIdx))),
     mosBig: firstNum(grab(/class="big">([\s\S]*?)<\/div>/, html)),
     // สกุลเงินหลัก = สัญลักษณ์หน้าราคาใน header (.px) — ไม่ใช่แค่ "มี ฿ ที่ไหนสักแห่ง"
     // (กัน USD report ที่อ้างอิงค่าเงินบาทในข้อความ ไม่ให้ถูกตีว่าเป็นรายงานบาท)
-    isTHB: (() => { const m = html.match(/<div class="px">\s*([฿$])/); return m ? m[1] === '฿' : (text.includes('฿') && !text.includes('$')); })(),
+    isTHB: (() => { const p = RM.readHeaderPrice(html); return p ? p.currency === '฿' : (text.includes('฿') && !text.includes('$')); })(),
     scenarios: parseScenarios(html),
     methods: parseMethods(html),
     pxInput: firstNum(grab(/id="pxIn"[^>]*value="([^"]*)"/, html)),
@@ -294,21 +295,11 @@ function buildCtx(html, name, opts) {
       roe: (() => { const m = norm(html).match(/ROE[^<]*<\/div>\s*<div class="v[^"]*">\s*~?\s*([0-9.]+)\s*%/); return m ? parseFloat(m[1]) : null; })(),
     },
     // บล็อก stock-meta (JSON ตัวเลขสำหรับเรียง index) — present/ok/data ใช้โดย E29–31, W10
-    sm: (() => {
-      const m = html.match(/<script[^>]*\bid=["']stock-meta["'][^>]*>([\s\S]*?)<\/script>/i);
-      if (!m) return { present: false };
-      try { return { present: true, ok: true, data: JSON.parse(m[1]) }; }
-      catch (e) { return { present: true, ok: false, err: e.message }; }
-    })(),
+    sm: RM.readStockMetaState(html),
     // ป้าย change ใน header (.chg) — เช่น "▲ +72.1% (รอบปี)" / "▼ −5% (รอบปี)" (ทิศทาง + %) — ใช้โดย E34 (สี↔ทิศทาง), E35 (รูปแบบรอบปี), E36 (กราฟ↔headline)
     chg: (() => { const m = html.match(/<div class="chg"[^>]*>([\s\S]*?)<\/div>/i); return m ? stripTags(m[1]).replace(/\s+/g, ' ').trim() : null; })(),
     // บล็อก report-data (chart/gauge/theme ต่อหุ้น) — ใช้โดย E34 (theme.chgBg/chgColor), E36 (chart.data↔headline), E37 (≤13 จุด), W12 (label ว่าง)
-    rd: (() => {
-      const m = html.match(/<script[^>]*\bid=["']report-data["'][^>]*>([\s\S]*?)<\/script>/i);
-      if (!m) return { present: false };
-      try { return { present: true, ok: true, data: JSON.parse(m[1]) }; }
-      catch (e) { return { present: true, ok: false, err: e.message }; }
-    })(),
+    rd: RM.readReportData(html),
   };
 }
 

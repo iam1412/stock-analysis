@@ -22,6 +22,7 @@ const path = require('path');
 const crypto = require('crypto');
 const bt = require('./tools/brandtheme.js');
 const tagLib = require('./tools/tag-lib.js');
+const RM = require('./tools/report-meta.js');   // เจ้าของเดียวของ regex stock-meta/report-data/.px
 // โหลดครั้งเดียวต่อ process — ไฟล์หายจริง (ยังไม่ติดตั้งระบบ tag) เท่านั้นที่ fallback เงียบ ๆ
 // ได้ · error อื่น (เช่น tags.json เขียนไม่ครบ/JSON พัง) ต้อง throw ต่อ ไม่งั้น build จะเขียน
 // reports.json ทับด้วย tags ว่างทั้ง 908 ตัวแบบไม่มี error ให้เห็น (เคยเกิดจริงตอน dev)
@@ -78,9 +79,8 @@ const hash = (s) => crypto.createHash('sha256').update(s).digest('hex').slice(0,
 // hash สำหรับ track "อัปเดตล่าสุด": ตัด metadata ที่ไม่ใช่เนื้อหาวิเคราะห์ออกก่อน —
 //  • meta ai-model (ประทับโมเดล)  • บล็อก stock-meta (ตัวเลขสรุปสำหรับเรียง index — เป็น "กระจก" ของเลขที่โชว์อยู่แล้ว)
 // การเพิ่ม/แก้สองอย่างนี้จึงไม่ควรดันวันที่ให้ดูสดใหม่ (ราคาจริงเปลี่ยน → เนื้อรายงานเปลี่ยน → hash ขยับเองอยู่แล้ว)
-const freshHash = (content) => hash(content
-  .replace(/\n?<meta\s+name=["']ai-model["'][^>]*>/i, '')
-  .replace(/\n?<script[^>]*\bid=["']stock-meta["'][^>]*>[\s\S]*?<\/script>/i, ''));
+const freshHash = (content) => hash(RM.stripStockMeta(content
+  .replace(/\n?<meta\s+name=["']ai-model["'][^>]*>/i, '')));
 
 // ── Template system (build-time injection) ───────────────────────────────────
 // รายงานแบบใหม่ (content-only) เก็บเฉพาะ "เนื้อหา + ข้อมูลต่อหุ้น" ส่วนโครงที่ซ้ำทุกไฟล์
@@ -205,7 +205,7 @@ function validateReportData(d) {
 // คืน HTML เต็ม: source เก่า (ไม่มี marker) = identity ; source ใหม่ = แทน marker ด้วย <style>/engine ที่ inject ค่าต่อหุ้น
 function expandReport(html) {
   if (typeof html !== 'string' || !html.includes('<!--TEMPLATE:STYLE-->')) return html;
-  const m = html.match(/<script[^>]*\bid=["']report-data["'][^>]*>([\s\S]*?)<\/script>/i);
+  const m = html.match(RM.REPORT_DATA_RE);
   if (!m) throw new Error('expandReport: มี <!--TEMPLATE:STYLE--> แต่ไม่มีบล็อก <script id="report-data">');
   if (!html.includes('<!--TEMPLATE:ENGINE-->')) throw new Error('expandReport: ขาด marker <!--TEMPLATE:ENGINE--> (ต้องมีคู่กับ STYLE)');
   let data;
@@ -236,10 +236,8 @@ function extractMeta(html, symbol) {
 // market = ตลาดของหุ้น (TH/US) derive จาก currency (THB→TH · รหัสสกุลอื่นที่ถูกต้อง→US เพราะรีโปนี้มีแค่ THB/USD) —
 //   ใช้กรองหน้า index แยกไทย/สหรัฐ · gate E29 บังคับ currency เป็นรหัส 3 ตัวอยู่แล้ว → ไม่ต้องเขียนเพิ่มในรายงาน
 function extractMetrics(html) {
-  const m = html.match(/<script[^>]*\bid=["']stock-meta["'][^>]*>([\s\S]*?)<\/script>/i);
-  if (!m) return null;
-  let o;
-  try { o = JSON.parse(m[1]); } catch { return null; }
+  const o = RM.readStockMeta(html);
+  if (!o) return null;
   const num = (v) => (typeof v === 'number' && isFinite(v)) ? v : null;
   const market = o.currency === 'THB' ? 'TH' : (typeof o.currency === 'string' && /^[A-Z]{3}$/.test(o.currency) ? 'US' : null);
   return { mos: num(o.mos), upside: num(o.upside), pe: num(o.pe), dividendYield: num(o.dividendYield), roe: num(o.roe), market };
@@ -247,17 +245,21 @@ function extractMetrics(html) {
 
 // อ่าน JSON block ตาม id แบบดิบ (ไม่กรอง field) — ใช้เตรียมข้อมูลให้ injectTA (ต้องการ currency ดิบจาก
 // stock-meta และทั้งก้อน report-data ที่ extractMetrics/expandReport ไม่ได้ return ออกมา)
+// ★ regex ไม่ได้ประกอบเองแล้ว — บล็อกฝังมีแค่สองตัวและเจ้าของคือ tools/report-meta.js (parser-lint บังคับ)
+//   เดิมสร้าง `id=["']${id}["']` ตอนรัน ⇒ เป็นสำเนาที่ parser-lint มองไม่เห็น (interpolate)
+const JSON_SCRIPT_READERS = { 'stock-meta': RM.readStockMetaState, 'report-data': RM.readReportData };
 function parseJsonScript(html, id) {
-  const m = html.match(new RegExp(`<script[^>]*\\bid=["']${id}["'][^>]*>([\\s\\S]*?)<\\/script>`, 'i'));
-  if (!m) return null;
-  try { return JSON.parse(m[1]); } catch { return null; }
+  const read = JSON_SCRIPT_READERS[id];
+  if (!read) throw new Error(`parseJsonScript: บล็อกฝังมีแค่ stock-meta/report-data — พบ ${JSON.stringify(id)}`);
+  const s = read(html);
+  return s.ok ? s.data : null;
 }
 
 // การ์ดสถิติมุมขวาบน header รายงาน (feedback 12 ส.ค. 69): 👁 วิว · 👍/👎 (กดโหวตได้) · อัปเดตแบบ "1d ago"
 // ใช้ id ชุดเดิม (viewCount/voteBar/likeBtn/…) ให้ injectViewVoteScript ทำงานได้โดยไม่แก้ลอจิก
 // แทรกเฉพาะรายงานแบบ template (มี report-data) — legacy ใช้ votebar ใน footer แบบเดิม
 function injectHeaderStats(html, r) {
-  if (!/<script[^>]*\bid=["']report-data["']/i.test(html)) return { html, done: false };
+  if (!RM.REPORT_DATA_RE.test(html)) return { html, done: false };
   // ★ index ต้องหาจาก html ตัวจริงเสมอ ห้าม toLowerCase() ก่อน — ไม่รักษาความยาว ('İ' U+0130 → 2 code unit)
   //   ⇒ index เลื่อน แล้ว slice ของเดิมตัดผิดที่ · แท็กในรีโปเป็นตัวพิมพ์เล็กทั้ง 910 ไฟล์ (reports/ + skeleton)
   const hi = html.indexOf('</header>');

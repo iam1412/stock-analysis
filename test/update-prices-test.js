@@ -9,6 +9,7 @@ const fs = require('fs');
 const path = require('path');
 const U = require('../tools/update-prices.js');
 const FX = require('./fixtures');
+const RM = require('../tools/report-meta.js');   // เจ้าของเดียวของ regex stock-meta/report-data/.px
 process.env.STALE_TODAY = FX.TODAY;   // gate ที่ Task 7 เรียกผ่าน gateAfterPatch ต้องไม่เดินตามปฏิทินจริง
 
 let nOK = 0, nFail = 0;
@@ -158,14 +159,14 @@ ok(U.annualChg([['a', 100], ['b', 100.3]], '(รอบปี)').text.startsWith(
 // ---------- patchReport กับ AAPL จริง ----------
 // fixture แช่แข็ง (test/fixtures) — ยังคงกติกาเดิม: ห้าม hard-code ราคา/วันที่/FV อ่านจาก stock-meta ของ input แล้วเทียบเชิงสัมพัทธ์
 const aapl = FX.AAPL();
-const smIn = JSON.parse(aapl.match(/<script[^>]*id=["']stock-meta["'][^>]*>([\s\S]*?)<\/script>/i)[1]);
+const smIn = RM.readStockMeta(aapl);
 const FV = smIn.fairValue;
 const chartData = U.buildChartData(mkBars(13, 2025, 6, 250), 301.5, 0);
 const r = U.patchReport(aapl, { newPrice: 301.5, dateParts: { day: 11, monIdx: 6, yearCE: 2026 }, chartData });
 const out = r.html;
 
-const sm = JSON.parse(out.match(/<script[^>]*id=["']stock-meta["'][^>]*>([\s\S]*?)<\/script>/i)[1]);
-const rd = JSON.parse(out.match(/<script[^>]*id=["']report-data["'][^>]*>([\s\S]*?)<\/script>/i)[1]);
+const sm = RM.readStockMeta(out);
+const rd = RM.readReportData(out).data;
 ok(out.includes('<div class="px">$301.50<small>'), 'px header อัปเดต');
 ok(sm.price === 301.5, 'stock-meta.price');
 ok(Math.abs(sm.mos - (FV - 301.5) / FV * 100) < 0.06, 'stock-meta.mos = (FV−p)/FV (E31)');
@@ -182,7 +183,7 @@ ok(sm.roe === smIn.roe && sm.fairValue === FV && sm.symbol === 'AAPL', 'stock-me
   // ค่าที่ค้างจนหลุดฐานไปไกล ต้องถูกเขียนใหม่ ไม่ใช่ปล่อยผ่าน (เคส ARM/JBL/STX/FORM/CRDO)
   const staleOut = U.patchReport(aapl.replace(/"pe":\s*[0-9.]+/, '"pe":999'),
     { newPrice: 301.5, dateParts: { day: 11, monIdx: 6, yearCE: 2026 }, chartData: null }).html;
-  const staleSm = JSON.parse(staleOut.match(/<script[^>]*id=["']stock-meta["'][^>]*>([\s\S]*?)<\/script>/i)[1]);
+  const staleSm = RM.readStockMeta(staleOut);
   ok(staleSm.pe !== 999 && bases.some((e) => Math.abs(staleSm.pe - 301.5 / e) <= Math.max(0.02 * staleSm.pe, 0.1)),
     'stock-meta.pe ที่ค้างหลุดฐาน (999) ถูกเขียนใหม่ตามราคา', String(staleSm.pe));
   // การ์ด P/E ที่โชว์บนหน้าเว็บก็ต้องขยับ — และต้องคงจำนวนทศนิยม/รูปแบบเดิม
@@ -236,7 +237,7 @@ ok(sm.roe === smIn.roe && sm.fairValue === FV && sm.symbol === 'AAPL', 'stock-me
   {
     const Y_RE = /(<div class="k">เงินปันผล<\/div>\s*<div class="v[^"]*">)([^<]*)(<\/div>\s*<div class="d[^"]*">)([^<]*)(<)/;
     const yV = (h) => (h.match(Y_RE) || [])[2];
-    const smY = (h) => JSON.parse(h.match(/<script[^>]*id=["']stock-meta["'][^>]*>([\s\S]*?)<\/script>/i)[1]).dividendYield;
+    const smY = (h) => RM.readStockMeta(h).dividendYield;
     const yIn = aapl.match(Y_RE);
     const dm = yIn && yIn[4].match(/\$\s*([\d.]+)\s*\/\s*ปี/);
     ok(!!dm, 'AAPL fixture: มีการ์ดปันผลที่ประกาศ DPS รายปีในบรรทัด .d (ไม่งั้นเทสด้านล่างพิสูจน์อะไรไม่ได้)', yIn && yIn[4]);
@@ -436,14 +437,14 @@ ok(verdictOf(U.patchReport(setVerdict(aapl, 'custom-zone'), { newPrice: pxBad, d
 // ---------- price-only fallback (chartData = null) — คงกราฟเดิม แตะแค่จุดท้าย ----------
 // ทางนี้เดิมใช้เฉพาะตอน Yahoo ไม่มีประวัติพอ · ตั้งแต่มี bad-chart มันเป็นทางของ `--force` ด้วย:
 // ซีรีส์ต้นทางผสมสองฐาน แต่กราฟในไฟล์ถูกแก้ให้ถูกแล้ว ⇒ ประทับราคาได้โดยไม่ลากฐานที่สองกลับเข้ามา
-const rdIn = JSON.parse(aapl.match(/<script[^>]*id=["']report-data["'][^>]*>([\s\S]*?)<\/script>/i)[1]);
+const rdIn = RM.readReportData(aapl).data;
 const oldPts = rdIn.chart.data;
 const lastLab = oldPts[oldPts.length - 1][0];
 const labMon = U.THAI_MONTHS.findIndex((m) => lastLab.startsWith(m));
 const labYear = 2000 + parseInt(lastLab.slice(-2), 10);
 // เดือนเดียวกับจุดท้าย → แทนค่าจุดเดิม (ไม่ต่อจุดใหม่)
 const rSame = U.patchReport(aapl, { newPrice: 301.5, dateParts: { day: 11, monIdx: labMon, yearCE: labYear }, chartData: null });
-const ptsSame = JSON.parse(rSame.html.match(/<script[^>]*id=["']report-data["'][^>]*>([\s\S]*?)<\/script>/i)[1]).chart.data;
+const ptsSame = RM.readReportData(rSame.html).data.chart.data;
 ok(ptsSame.length === oldPts.length, 'fallback: เดือนเดิม → ไม่ต่อจุดใหม่', `${oldPts.length} → ${ptsSame.length}`);
 ok(ptsSame[ptsSame.length - 1][1] === 301.5, 'fallback: จุดท้าย = ราคาใหม่');
 ok(ptsSame.slice(0, -1).every((p, i) => p[0] === oldPts[i][0] && p[1] === oldPts[i][1]),
@@ -451,17 +452,17 @@ ok(ptsSame.slice(0, -1).every((p, i) => p[0] === oldPts[i][0] && p[1] === oldPts
 // เดือนถัดไป → ต่อจุดใหม่แล้วตัดหัวให้ ≤13
 const nextM = (labMon + 1) % 12, nextY = labYear + (labMon === 11 ? 1 : 0);
 const rNext = U.patchReport(aapl, { newPrice: 301.5, dateParts: { day: 1, monIdx: nextM, yearCE: nextY }, chartData: null });
-const ptsNext = JSON.parse(rNext.html.match(/<script[^>]*id=["']report-data["'][^>]*>([\s\S]*?)<\/script>/i)[1]).chart.data;
+const ptsNext = RM.readReportData(rNext.html).data.chart.data;
 ok(ptsNext.length <= 13, 'fallback: เดือนใหม่ → ต่อจุดแล้วยังคง ≤13 จุด (E37)', `ได้ ${ptsNext.length}`);
 ok(ptsNext[ptsNext.length - 1][0] === `${U.THAI_MONTHS[nextM]}${String(nextY).slice(-2)}` && ptsNext[ptsNext.length - 1][1] === 301.5,
   'fallback: จุดใหม่ = เดือนของราคา + ราคาใหม่', JSON.stringify(ptsNext[ptsNext.length - 1]));
 
 // ---------- gauge auto-rescale (แทน freeze outside-gauge-range) ----------
 // ราคาทะลุ max → ขยาย max ให้ราคาอยู่ในขอบแบบ strict (check-site เตือนเมื่อ v >= gmax) · min คงเดิม
-const gaugeIn = JSON.parse(aapl.match(/<script[^>]*id=["']report-data["'][^>]*>([\s\S]*?)<\/script>/i)[1]).gauge;
+const gaugeIn = RM.readReportData(aapl).data.gauge;
 const pxHigh = Math.round(gaugeIn.max * 1.02 * 100) / 100;
 const rHigh = U.patchReport(aapl, { newPrice: pxHigh, dateParts: { day: 11, monIdx: 6, yearCE: 2026 }, chartData: U.buildChartData(mkBars(13, 2025, 6, 250), pxHigh, 0) });
-const rdHigh = JSON.parse(rHigh.html.match(/<script[^>]*id=["']report-data["'][^>]*>([\s\S]*?)<\/script>/i)[1]);
+const rdHigh = RM.readReportData(rHigh.html).data;
 ok(rdHigh.gauge.cur === pxHigh, 'gauge rescale: cur = ราคาใหม่');
 ok(rdHigh.gauge.max > pxHigh, 'gauge rescale: ราคาทะลุ max → max ใหม่ > ราคา (strict)', `max=${rdHigh.gauge.max} px=${pxHigh}`);
 ok(rdHigh.gauge.max >= pxHigh * 1.05 - 0.01, 'gauge rescale: max ใหม่ ≥ ราคา×1.05', `max=${rdHigh.gauge.max}`);
@@ -469,14 +470,14 @@ ok(rdHigh.gauge.min === gaugeIn.min && rdHigh.gauge.fair === gaugeIn.fair, 'gaug
 // ราคาหลุด min → ขยาย min ลง · max คงเดิม
 const pxLow = Math.round(gaugeIn.min * 0.98 * 100) / 100;
 const rLow = U.patchReport(aapl, { newPrice: pxLow, dateParts: { day: 11, monIdx: 6, yearCE: 2026 }, chartData: U.buildChartData(mkBars(13, 2025, 6, 250), pxLow, 0) });
-const rdLow = JSON.parse(rLow.html.match(/<script[^>]*id=["']report-data["'][^>]*>([\s\S]*?)<\/script>/i)[1]);
+const rdLow = RM.readReportData(rLow.html).data;
 ok(rdLow.gauge.min < pxLow, 'gauge rescale: ราคาหลุด min → min ใหม่ < ราคา (strict)', `min=${rdLow.gauge.min} px=${pxLow}`);
 ok(rdLow.gauge.min <= pxLow * 0.95 + 0.01 && rdLow.gauge.min >= 0, 'gauge rescale: min ใหม่ ≤ ราคา×0.95 และไม่ติดลบ');
 ok(rdLow.gauge.max === gaugeIn.max, 'gauge rescale: max ไม่แตะเมื่อหลุด min');
 // ราคาอยู่ในขอบ → bounds ไม่ขยับ
 const pxMid = Math.round((gaugeIn.min + gaugeIn.max) / 2 * 100) / 100;
 const rMid = U.patchReport(aapl, { newPrice: pxMid, dateParts: { day: 11, monIdx: 6, yearCE: 2026 }, chartData: U.buildChartData(mkBars(13, 2025, 6, 250), pxMid, 0) });
-const rdMid = JSON.parse(rMid.html.match(/<script[^>]*id=["']report-data["'][^>]*>([\s\S]*?)<\/script>/i)[1]);
+const rdMid = RM.readReportData(rMid.html).data;
 ok(rdMid.gauge.min === gaugeIn.min && rdMid.gauge.max === gaugeIn.max, 'gauge rescale: ราคาในขอบ → bounds คงเดิม');
 
 // ---------- MOS .big พลิกเครื่องหมายตามค่าจริง (dead-band flip ถูก patch ผ่านแล้ว) ----------
@@ -868,7 +869,7 @@ ok(U.commitBody([], []) === '', 'commitBody: ว่างเมื่อไม�
   //   ⇒ header/stock-meta ยังโชว์ px เดิม แต่หมวด 6 ถูกซ่อมให้สอดคล้องกับ 0.7×px → scenarioPlan ตัดสินได้แต่ค่าค้าง → W17 ต้องฟ้อง
   const DVq = require('../tools/derived-values.js');
   const freshAapl = FX.AAPL();
-  const smQ = JSON.parse(freshAapl.match(/<script[^>]*id=["']stock-meta["'][^>]*>([\s\S]*?)<\/script>/i)[1]);
+  const smQ = RM.readStockMeta(freshAapl);
   const px = smQ.price;
   const staleScn = DVq.patchDerived(freshAapl, px * 0.7).html;
   ok(staleScn !== freshAapl, '(ตั้งฉาก) patchDerived ที่จุดเข้า 0.7×px ทำให้หมวด 6 เปลี่ยนจริง');

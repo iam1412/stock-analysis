@@ -29,6 +29,8 @@
  *   โดยตั้งใจ (PWR: GAAP $8.74 → 80x คู่กับ Adj. $13.1 → 53x) — เดาฐานผิด = เขียนเลขผิดทั้งใบ
  */
 
+const RM = require('./report-meta.js');   // เจ้าของเดียวของ regex stock-meta/report-data/.px
+
 // ── เกณฑ์ความคลาด (ตัวตรวจใช้) ──
 const TOL_PE_REL = 0.02;   // P/E: ต่างได้ ≤2%
 const TOL_PE_ABS = 1.5;    //      หรือ ≤1.5 เท่า แล้วแต่ค่าไหนมากกว่า (การ์ดปัดเป็นจำนวนเต็มบ่อย — "~80x")
@@ -532,7 +534,7 @@ const BV_KW = /(?<!T)BVPS|(?<!T)BV\s*\/\s*(?:หุ้น|share|sh|S)\b|book\s*v
 const TBV_KW = /TBV|tangible/i;
 
 /** สกุลของราคา = สัญลักษณ์หน้า .px (ตัวเดียวกับที่ gate/heal ใช้เป็นตัวตั้ง) — ไม่มี = ไม่ตรวจ ไม่เขียน */
-const currencyOf = (html) => (String(html).match(/<div class="px">\s*(C\$|[฿$])/) || [])[1] || null;
+const currencyOf = (html) => { const p = RM.readHeaderPrice(html); return p ? p.currency : null; };
 
 /** ข้อความในประโยคเดียวกันก่อน token (ตัดที่ตัวคั่นล่าสุด) */
 function clauseBefore(t, at) {
@@ -625,10 +627,9 @@ function pbvCardPlan(k, vBody, dBody, price, cur) {
 /** stock-meta.dividendYield = กระจกของการ์ดปันผล (เหมือน stock-meta.pe) — ฐาน = DPS ของการ์ดที่ตัดสินได้เท่านั้น */
 function yieldMetaPlan(html, price, cards) {
   if (!cards.length) return null;
-  const m = String(html).match(/<script[^>]*\bid=["']stock-meta["'][^>]*>([\s\S]*?)<\/script>/i);
-  if (!m) return null;
-  let d;
-  try { d = JSON.parse(m[1]); } catch { return null; }
+  const s = RM.readStockMetaState(html);
+  if (!s.ok) return null;
+  const d = s.data;
   const shown = d.dividendYield;
   if (!(typeof shown === 'number' && isFinite(shown) && shown > 0)) return null;   // null/0 = ไม่จ่าย/ไม่ประกาศ → ไม่แตะ
   const pick = assignBases([shown / 100 * price], [...new Set(cards.map((c) => c.base))]);
@@ -690,7 +691,7 @@ function patchDerived(html, price, opts) {
 
   // 2) stock-meta.pe — กระจกของค่าที่โชว์ (freshHash ไม่นับบล็อกนี้ ⇒ ไม่ดันวันที่ "อัปเดตล่าสุด")
   if (allEps.length) {
-    out = out.replace(/(<script[^>]*\bid=["']stock-meta["'][^>]*>)([\s\S]*?)(<\/script>)/i, (m, a, json, b) => {
+    out = out.replace(RM.STOCK_META_PARTS_RE, (m, a, json, b) => {
       let d;
       try { d = JSON.parse(json); } catch { return m; }
       if (!(typeof d.pe === 'number' && isFinite(d.pe) && d.pe > 0)) return m;
@@ -775,7 +776,7 @@ function patchDerived(html, price, opts) {
     const mp = yieldMetaPlan(out, price, yCards);
     const mw = mp ? parseFloat(fixed(mp.want, mp.dec)) : null;
     if (mp && isFinite(mw) && mw !== mp.shown) {
-      out = out.replace(/(<script[^>]*\bid=["']stock-meta["'][^>]*>)([\s\S]*?)(<\/script>)/i, (m, a, json, b) => {
+      out = out.replace(RM.STOCK_META_PARTS_RE, (m, a, json, b) => {
         let d;
         try { d = JSON.parse(json); } catch { return m; }
         d.dividendYield = mw;

@@ -17,6 +17,7 @@
 const fs = require('fs');
 const path = require('path');
 const bt = require('./brandtheme.js');
+const RM = require('./report-meta.js');   // เจ้าของเดียวของ regex stock-meta/report-data/.px
 // ตรวจที่เกณฑ์ gate (AA) แต่ซ่อมไปที่ AA_MARGIN — ค่าที่ผ่าน gate อยู่แล้วไม่แตะเลย (minimal patch + กัน flap ที่ขอบ)
 const { AA, AA_MARGIN } = bt;
 
@@ -93,7 +94,7 @@ if (require.main === module) {
   for (const f of files.sort()) {
     const fp = path.join(dir, f);
     let html = fs.readFileSync(fp, 'utf8');
-    const blkRe = /(<script[^>]*\bid="report-data"[^>]*>)([\s\S]*?)(<\/script>)/i;
+    const blkRe = RM.REPORT_DATA_PARTS_RE;
     const m = html.match(blkRe);
     if (!m) { skip++; continue; }
     let data; try { data = JSON.parse(m[2]); } catch { console.log(`✗ ${f}: report-data parse ไม่ได้`); skip++; continue; }

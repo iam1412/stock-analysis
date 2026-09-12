@@ -49,7 +49,7 @@ const path = require('path');
 // dead-ticker-canary ไม่ได้ require ไฟล์นี้ · main() ของมันรันเฉพาะเมื่อถูกเรียกเป็น entry point)
 const { tvCandidates, scan: scanTickers, classify: classifyTickers, loadTickerCache } = require('./dead-ticker-canary.js');
 const { entryFor } = require('./symbol-map.js');
-const { readStockMeta, STOCK_META_PARTS_RE } = require('./report-meta.js');
+const RM = require('./report-meta.js');   // เจ้าของเดียวของ regex stock-meta/report-data/.px
 const { withLock, writeJsonAtomic } = require('./lockfile.js');   // WS4: price-flags.json มีหลาย writer
 
 const REPORTS = path.join(__dirname, '..', 'reports');
@@ -436,7 +436,7 @@ function patchReport(html, p) {
   const need = (re, where) => { if (!re.test(html)) throw new Error(`patch ไม่เจอ pattern: ${where}`); };
 
   // --- stock-meta (FV เป็น source of truth ของการคำนวณ mos/upside) ---
-  const smM = html.match(STOCK_META_PARTS_RE);
+  const smM = html.match(RM.STOCK_META_PARTS_RE);
   if (!smM) throw new Error('ไม่มีบล็อก stock-meta');
   const sm = JSON.parse(smM[2]);
   const fv = sm.fairValue;
@@ -445,7 +445,7 @@ function patchReport(html, p) {
   const upside = (fv - newPrice) / newPrice * 100;
 
   // --- report-data: กราฟใหม่ทั้งเส้น + bounds + highlight + gauge.cur + สีป้ายตามทิศ ---
-  const rdM = html.match(/(<script[^>]*\bid=["']report-data["'][^>]*>)([\s\S]*?)(<\/script>)/i);
+  const rdM = html.match(RM.REPORT_DATA_PARTS_RE);
   if (!rdM) throw new Error('ไม่มีบล็อก report-data');
   const rd = JSON.parse(rdM[2]);
   if (!rd.chart || !Array.isArray(rd.chart.data)) throw new Error('report-data.chart ใช้ไม่ได้');
@@ -490,21 +490,21 @@ function patchReport(html, p) {
   const theme = chg.dir === 'up' ? UP : chg.dir === 'down' ? DOWN : null;
   if (theme && rd.theme) { rd.theme.chgBg = theme.bg; rd.theme.chgColor = theme.col; }
 
-  let out = html.replace(/(<script[^>]*\bid=["']report-data["'][^>]*>)[\s\S]*?(<\/script>)/i,
-    (m, a, z) => a + '\n' + styledRD(rd) + '\n' + z);
+  let out = html.replace(RM.REPORT_DATA_PARTS_RE,
+    (m, a, body, z) => a + '\n' + styledRD(rd) + '\n' + z);   // 3 กลุ่ม: หัว/เนื้อ/ท้าย
 
   // --- stock-meta: price/mos/upside (คีย์อื่นคงเดิม — freshHash ไม่นับบล็อกนี้อยู่แล้ว) ---
   sm.price = round(newPrice, 2); sm.mos = round(mos, 1); sm.upside = round(upside, 1);
   // ใช้ regex ตัวเดียวกับตอนอ่าน (report-meta.js) — เดิมเป็นสำเนาแยกที่ไม่มี need() คุม ⇒ ถ้า skeleton
   // เปลี่ยนวิธีฝัง แล้วมีคนแก้แค่ฝั่งอ่าน ตัวเขียนจะ replace ไม่โดนแล้ว "สำเร็จ" เงียบ ๆ = ราคา/กราฟถูก
   // patch แต่ stock-meta.price/mos/upside ค้างค่าเก่า (self-inconsistency ที่ gate มีไว้จับพอดี)
-  need(STOCK_META_PARTS_RE, 'stock-meta (เขียนกลับ)');   // ไม่มี guard = replace ไม่โดนแล้วผ่านเงียบ ๆ
-  out = out.replace(STOCK_META_PARTS_RE,
+  need(RM.STOCK_META_PARTS_RE, 'stock-meta (เขียนกลับ)');   // ไม่มี guard = replace ไม่โดนแล้วผ่านเงียบ ๆ
+  out = out.replace(RM.STOCK_META_PARTS_RE,
     (m, a, b, z) => a + '\n' + JSON.stringify(sm) + '\n' + z);   // 3 กลุ่ม: หัว/เนื้อ/ท้าย
 
   // --- header: ราคา .px ---
-  need(/(<div class="px">\s*[฿$])([\d.,]+)/, 'ราคา header (.px)');
-  out = out.replace(/(<div class="px">\s*[฿$])([\d.,]+)/, (m, a) => a + fmtPrice(newPrice));
+  need(RM.PX_PARTS_RE, 'ราคา header (.px)');
+  out = out.replace(RM.PX_PARTS_RE, (m, a) => a + fmtPrice(newPrice));
 
   // --- header: วันที่ราคา (แทน **เฉพาะ token ของราคา** ตัวเดียว — คงรูปแบบ พ.ศ./ค.ศ. เดิม) ---
   // เดิมแทน date-token *ทุกตัว* ใน <header> ⇒ วันที่ที่เป็นข้อเท็จจริงในอดีต (จุดสูงสุดตลอดกาล ·
@@ -697,8 +697,8 @@ function healDerived(opts) {
     const fp = path.join(REPORTS, f);
     const html = fs.readFileSync(fp, 'utf8');
     // ราคาที่ใช้เป็นตัวตั้ง = ราคาใน header (.px) — ตัวเดียวกับที่ gate ใช้เทียบ (E41/E42) ไม่ใช่ stock-meta
-    const m = html.match(/<div class="px">\s*[฿$]?\s*([\d.,]+)/);
-    const px = m ? parseFloat(m[1].replace(/,/g, '')) : null;
+    const hp = RM.readHeaderPrice(html);
+    const px = hp ? hp.price : null;
     if (!(px > 0)) { noPrice++; continue; }
     const r = patchDerived(html, px, { prose: opts.prose });
     if (!r.changes.length || r.html === html) continue;
@@ -755,7 +755,7 @@ async function main() {
     const fp = path.join(REPORTS, f);
     const html = fs.readFileSync(fp, 'utf8');
 
-    const sm = readStockMeta(html);
+    const sm = RM.readStockMeta(html);
     if (!sm) { failed.push({ symbol, reason: 'no-stock-meta' }); continue; }
 
     let q;

@@ -14,6 +14,7 @@
  */
 const fs = require('fs');
 const path = require('path');
+const RM = require('./report-meta.js');   // เจ้าของเดียวของ regex stock-meta/report-data/.px
 
 const REPORTS = path.join(__dirname, '..', 'reports');
 const WRITE = process.argv.includes('--write');
@@ -34,7 +35,7 @@ function styledRD(rd) {
 }
 
 function migrate(html, sym) {
-  const rdM = html.match(/(<script[^>]*\bid=["']report-data["'][^>]*>)([\s\S]*?)(<\/script>)/i);
+  const rdM = html.match(RM.REPORT_DATA_PARTS_RE);
   if (!rdM) return { skip: 'ไม่มีบล็อก report-data' };
   let rd;
   try { rd = JSON.parse(rdM[2]); } catch (e) { return { skip: 'report-data JSON พัง: ' + e.message }; }
@@ -71,11 +72,11 @@ function migrate(html, sym) {
     prices.forEach((v, i) => { if (v < prices[iMin]) iMin = i; if (v > prices[iMax]) iMax = i; });
     rd.chart.highlight = [...new Set([iMin, iMax])].sort((a, b) => a - b);
     if (theme) { rd.theme.chgBg = theme.bg; rd.theme.chgColor = theme.col; }
-    out = out.replace(/(<script[^>]*\bid=["']report-data["'][^>]*>)([\s\S]*?)(<\/script>)/i, (m, a, body, b) => a + '\n' + styledRD(rd) + '\n' + b);
+    out = out.replace(RM.REPORT_DATA_PARTS_RE, (m, a, body, b) => a + '\n' + styledRD(rd) + '\n' + b);
     out = out.replace(/(<div class="n">2<\/div><h2>)([\s\S]*?)(<\/h2>)/, (m, a, t, b) => a + t.replace(/ราคาย้อนหลัง[^<]*/, 'ราคาย้อนหลัง ~1 ปี') + b);
   } else if (theme) {
     // (c) ไม่ตัด: แก้เฉพาะสี theme.chgBg/chgColor ในบล็อก report-data (diff น้อย)
-    out = out.replace(/(<script[^>]*\bid=["']report-data["'][^>]*>)([\s\S]*?)(<\/script>)/i, (m, a, body, b) => {
+    out = out.replace(RM.REPORT_DATA_PARTS_RE, (m, a, body, b) => {
       body = body.replace(/("chgBg"\s*:\s*")[^"]*(")/, `$1${theme.bg}$2`).replace(/("chgColor"\s*:\s*")[^"]*(")/, `$1${theme.col}$2`);
       return a + body + b;
     });

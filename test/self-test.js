@@ -35,6 +35,7 @@ const { expandReport } = require('../build.js');  // BBL เป็น content-on
 
 // ฐาน = fixture แช่แข็ง (test/fixtures/BBL.html) — ไม่ใช่ไฟล์จริงที่ cron แก้ทุกวัน (บทเรียน 22–24 ส.ค. 69)
 const FX = require('./fixtures');
+const RM = require('../tools/report-meta.js');   // เจ้าของเดียวของ regex stock-meta/report-data/.px
 const base = expandReport(FX.BBL());
 process.env.STALE_TODAY = FX.TODAY;   // E27/W09 วัดจากวันนี้ที่ตรึงไว้ — ทุกเคสที่เปลี่ยนค่านี้ต้องคืนเป็น FX.TODAY
 
@@ -268,7 +269,7 @@ reject('E28', (h) => h.replace(/content="Claude[^"]*"/i, 'content="Claude Sonnet
 expect('E32', 'error', (h) => h.replace(/<div class="sub">[\s\S]*?<\/div>/i, '<div class="sub"></div>'), 'ลบคำโปรยธุรกิจ (.sub) → ต้องบังคับให้มี desc');
 reject('E32', (h) => h.replace('<div class="sub">', '<div class="sub">ผู้ผลิตอุปกรณ์กึ่งตัวนำ '), 'คำโปรยธุรกิจปกติ (ยาวพอ) ต้องไม่ฟ้อง E32');
 // ── stock-meta (E29–31, W10) — แก้ผ่าน JSON parse→stringify ไม่ยึด literal ตัวเลขในไฟล์ ──
-expect('E29', 'error', (h) => h.replace(/<script[^>]*id="stock-meta"[\s\S]*?<\/script>/i, ''), 'ลบบล็อก stock-meta → ต้องบังคับให้มี');
+expect('E29', 'error', (h) => RM.stripStockMeta(h), 'ลบบล็อก stock-meta → ต้องบังคับให้มี');
 expect('E29', 'error', mutJson('stock-meta', (d) => { delete d.roe; }), 'stock-meta ขาดคีย์ roe');
 expect('E29', 'error', mutJson('stock-meta', (d) => { d.price = String(d.price); }), 'stock-meta.price เป็น string ไม่ใช่ตัวเลข');
 expect('E30', 'error', mutJson('stock-meta', (d) => { d.price = d.price * 5; }), 'stock-meta.price ≠ ราคาที่โชว์ → ตรวจข้ามแหล่งในไฟล์');
@@ -817,7 +818,7 @@ reject('W14', addCard('4. EV/EBITDA', 'EBITDA $4.0B (mid-point FY2026 $3.6B guid
   const YC = /^(?:ปันผล|stock-meta\.dividendYield)/, BC = /^P\/BV/;
   const touches = (h, re) => DVY.patchDerived(h, PX).changes.some((c) => re.test(c));
   const cardV = (h, label) => (h.match(new RegExp(`<div class="k">${esc(label)}</div>\\s*<div class="v[^"]*"[^>]*>([\\s\\S]*?)</div>`)) || [])[1];
-  const smOf = (h) => JSON.parse(h.match(/<script[^>]*id="stock-meta"[^>]*>([\s\S]*?)<\/script>/)[1]);
+  const smOf = (h) => RM.readStockMeta(h);
   const cycle = (id, re, h, desc) => {
     ok(h !== fresh && fires(id, h), `${desc} → ต้องเจอ ${id}`);
     const once = DVY.patchDerived(h, PX).html;
@@ -905,6 +906,9 @@ reject('W14', addCard('4. EV/EBITDA', 'EBITDA $4.0B (mid-point FY2026 $3.6B guid
 
 // ── fixture-lint: เทสใน verify ห้ามอ่าน reports/*.html เป็น fixture (บทเรียน 22–24 ส.ค. · 2 ก.ย. 69) ──
 require('./fixture-lint.js')(ok);
+
+// ── parser-lint: regex stock-meta/report-data/.px มีเจ้าของเดียว = tools/report-meta.js (ระยะ 1 WS1 ข้อ 3) ──
+require('./parser-lint.js')(ok);
 
 // ── E-policy (spec WS2 ข้อ 3 · แผนระยะ 1 Global Constraints): error ที่ไม่อยู่ในรายการ grandfather ต้อง
 //    (ก) ประกาศ healer ที่รู้จัก และ (ข) มีเคส convergence ในไฟล์นี้ (mutate → check ยิง → healer → check เงียบ)
