@@ -2,6 +2,7 @@
 const assert = (c, m) => { n++; if (c) return; fails++; console.error('✗ ' + m); };
 let n = 0, fails = 0;
 const RV = require('../tools/report-values.js');
+const DV = require('../tools/derived-values.js');
 
 const sm = { symbol: 'BBL', currency: 'THB', price: 188, fairValue: 195, mos: 3.6, upside: 3.7, pe: 8.67, dividendYield: 6.4, roe: 7.3 };
 const rd = () => ({
@@ -33,7 +34,10 @@ const rd = () => ({
   assert(Math.abs(d.analystPct - (205 - 188) / 188 * 100) < 1e-9, 'analystPct');
   const s = d.scenarios;
   assert(s.length === 3 && Math.abs(s[0].total - ((160 + 36 - 188) / 188 * 100)) < 1e-9 && s[0].cls === 'pos', 'scenario total รวมปันผล: ' + s[0].total);
-  assert(Math.abs(s[0].perYear - ((Math.pow(1 + s[0].total / 100, 1 / 3) - 1) * 100)) < 1e-9, 'perYear cagr');
+  // ★ Task 9 fix1: perYear คิดจาก total ที่ "ปัดตามที่จะโชว์จริง" (round-trip ผ่าน DV.fmtMos) ไม่ใช่ total ดิบ —
+  //   ให้ฐานเดียวกับ derived-values.js:scenarioPlan() (เดิมทั้งสองไฟล์ไม่ตรงกัน — ดู pin block ท้ายไฟล์นี้)
+  const total0Shown = parseFloat(DV.fmtMos(s[0].total).replace('−', '-').replace('%', ''));
+  assert(Math.abs(s[0].perYear - ((Math.pow(1 + total0Shown / 100, 1 / 3) - 1) * 100)) < 1e-9, 'perYear cagr (ฐาน total ที่ปัดผ่าน fmtMos): ' + s[0].perYear);
 }
 // ── ศักราชวันที่ราคา (dateEra) — ต้อง render ตาม "ของเดิมในไฟล์" ไม่ใช่บังคับ พ.ศ. เสมอ ──
 // คลัง 12 ก.ย. 69 ปนกันจริง (หัวรายงาน BE 737 / CE 171) ⇒ ถ้า hard-code พ.ศ. migration จะเขียนวันที่ที่คนเห็นใหม่ 171 ใบ
@@ -48,9 +52,35 @@ const rd = () => ({
 {
   const r = rd(); r.values.scnBasis = { years: 3, divIncluded: false, perYear: 'linear' };
   const s = RV.derive(r, sm).scenarios[0];
-  assert(Math.abs(s.total - (160 - 188) / 188 * 100) < 1e-9 && s.cls === 'neg' && Math.abs(s.perYear - s.total / 3) < 1e-9, 'ไม่รวมปันผล + linear');
+  // ★ Task 9 fix1: perYear (linear) คิดจาก total ที่ปัดผ่าน fmtMos ไม่ใช่ total ดิบ (ดู pin block ท้ายไฟล์นี้)
+  const totalShownLin = parseFloat(DV.fmtMos(s.total).replace('−', '-').replace('%', ''));
+  assert(Math.abs(s.total - (160 - 188) / 188 * 100) < 1e-9 && s.cls === 'neg' && Math.abs(s.perYear - totalShownLin / 3) < 1e-9, 'ไม่รวมปันผล + linear (ฐาน total ที่ปัดผ่าน fmtMos): ' + s.perYear);
   r.values.scnBasis.perYear = null;
   assert(RV.derive(r, sm).scenarios[0].perYear === null, 'perYear null');
+}
+// ── Task 9 fix1 pin: perYear (cagr/linear) ต้องคิดจาก total ที่ปัดผ่าน DV.fmtMos ไม่ใช่ total ดิบ ──────────────
+// บั๊กเดิม (report-values.js:122): derive() คิด %/ปี จาก total ดิบ ขณะ derived-values.js:scenarioPlan() (ที่ cron
+// healer/W17 ใช้) คิดจาก total ที่ปัดตามความละเอียดที่จะโชว์จริง — ต่างกันได้ถึง 0.17pp พอพลิกเลขที่คนเห็น
+// (พบจริงตอน freeze fixture AAPL-v2: Bull +9%→+8% ก่อนแก้) เทสนี้ต้อง "ล้ม" ถ้า derive() ถูก revert กลับไปใช้ total ดิบ
+{
+  // tgt เลือกให้ total ดิบมีเศษทศนิยมชัด (188 → 196.4 ไม่มีปันผล: total ดิบ ≈ 4.468% ปัด fmtMos ได้ 4% พอดี)
+  const rC = rd(); rC.values.scenarios[0] = { tgt: 196.4, div: null }; rC.values.scnBasis = { years: 3, divIncluded: false, perYear: 'cagr' };
+  const s0 = RV.derive(rC, sm).scenarios[0];
+  const totalRaw = s0.total;
+  const totalRounded = parseFloat(DV.fmtMos(totalRaw).replace('−', '-').replace('%', ''));
+  assert(Math.abs(totalRaw - totalRounded) > 0.1, 'pin: mutation ให้ total ดิบต่างจาก total ที่ปัดแล้วชัดเจน (ไม่งั้นเทสนี้ผ่านลอย ๆ ไม่ว่า derive() ใช้ฐานไหน): ' + totalRaw + ' vs ' + totalRounded);
+  const pyFromRounded = (Math.pow(1 + totalRounded / 100, 1 / 3) - 1) * 100;
+  const pyFromRaw = (Math.pow(1 + totalRaw / 100, 1 / 3) - 1) * 100;
+  assert(Math.abs(pyFromRounded - pyFromRaw) > 0.01, 'pin: สองฐาน (ดิบ/ปัดแล้ว) ต้องให้ CAGR ต่างกันเกินพอจะจับได้: ' + Math.abs(pyFromRounded - pyFromRaw));
+  assert(Math.abs(s0.perYear - pyFromRounded) < 1e-9, 'pin(cagr): derive().perYear = CAGR(total ที่ปัดผ่าน fmtMos) — ฐานเดียวกับ scenarioPlan(): ' + s0.perYear);
+  assert(Math.abs(s0.perYear - pyFromRaw) > 0.01, 'pin(cagr): derive().perYear ต้อง "ไม่" เท่ากับ CAGR(total ดิบ) — เท่ากัน = โค้ดถูก revert กลับไปใช้ฐานดิบ (บั๊กเดิม)');
+
+  // linear ต้องได้รับการปัดฐานเดียวกัน ไม่ใช่แค่ cagr
+  const rL = rd(); rL.values.scenarios[0] = { tgt: 196.4, div: null }; rL.values.scnBasis = { years: 3, divIncluded: false, perYear: 'linear' };
+  const s0L = RV.derive(rL, sm).scenarios[0];
+  const totalRoundedL = parseFloat(DV.fmtMos(s0L.total).replace('−', '-').replace('%', ''));
+  assert(Math.abs(s0L.perYear - totalRoundedL / 3) < 1e-9, 'pin(linear): perYear = total ที่ปัดผ่าน fmtMos / years: ' + s0L.perYear);
+  assert(Math.abs(s0L.perYear - s0L.total / 3) > 0.01, 'pin(linear): perYear ต้อง "ไม่" เท่ากับ total ดิบ / years — เท่ากัน = โค้ดถูก revert กลับไปใช้ฐานดิบ');
 }
 // ── TOKENS / renderValues ──
 {
@@ -66,7 +96,8 @@ const rd = () => ({
   assert(out.includes('฿195.00 ฿180.00–฿210.00 ฿156.00 ฿136.50 ฿205.00 (+9%)'), 'fv/กรอบ/mos20/30/analyst: ' + out);
   assert(out.includes(' 8.7x ') && out.includes('฿3.59 แสนล้าน') && out.includes(' 2.6x ') && out.includes(' 6.4% ') && out.includes(' 0.72x '), 'การ์ด derive: ' + out);
   assert(out.includes('~฿21.70 • รวมปันผล ฿160.00'), 'baseEps + scnNote + sc1tgt');
-  assert(/class="ret pos">\+4% \(\+1\.4%\/ปี\)<\/div> ~฿36\.00/.test(out), 'sc1ret/class/div: ' + out);
+  // ★ Task 9 fix1: +1.3%/ปี = CAGR(total ที่ปัดผ่าน fmtMos = +4%) — เดิม (บั๊ก) ได้ +1.4%/ปี จาก CAGR(total ดิบ 4.2553%)
+  assert(/class="ret pos">\+4% \(\+1\.3%\/ปี\)<\/div> ~฿36\.00/.test(out), 'sc1ret/class/div: ' + out);
   assert(out.trimEnd().endsWith('+4%'), 'upside (token ท้ายสุด): ' + out.slice(-20));
   assert(!/\{\{rd:/.test(out), 'ไม่เหลือ token');
 }

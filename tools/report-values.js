@@ -119,7 +119,14 @@ function derive(rd, sm) {
   const b = v.scnBasis;
   const scenarios = (v.scenarios || []).map((s) => {
     const total = (s.tgt + (b.divIncluded && s.div ? s.div : 0) - px) / px * 100;
-    const perYear = b.perYear === 'cagr' ? (Math.pow(1 + total / 100, 1 / b.years) - 1) * 100 : b.perYear === 'linear' ? total / b.years : null;
+    // ★ scenarioPlan() (derived-values.js:549-554) คำนวณ %/ปี จากค่า total **ที่จะถูกเขียน/โชว์จริง** (ปัดแล้ว)
+    //   ไม่ใช่ค่าดิบ — ไม่งั้นรอบนี้คิดจากดิบ แต่รอบถัดไป (cron healer/W17) อ่านค่าที่ render ไปแล้วกลับมา ได้
+    //   คนละคำตอบ ⇒ ไฟล์ถูกเขียนซ้ำทุกรอบ (เจอจริง 20 ส.ค. 69: SNOW/CEG/KLAC/NOW/PANW · เอี่ยวกับ cron ล้ม 2 ก.ย. 69)
+    //   v2 ต้องยึดฐานเดียวกับ scenarioPlan ไม่งั้นตัวเลขที่คนเห็นเพี้ยนจากที่ cron/W17 อ้างอิง (พบจริงใน fixture
+    //   นี้เอง: AAPL Bull +9%→+8%) — ปัดด้วยการ **round-trip ผ่าน fmtMos เอง** (ไม่ก๊อปกติ 0dp/1dp ซ้ำ) กัน
+    //   fmtMos เปลี่ยนกติกาการปัดในอนาคตแล้วช่องว่างนี้เปิดใหม่แบบเงียบ ๆ
+    const totalShown = parseFloat(DV.fmtMos(total).replace('−', '-').replace('%', ''));
+    const perYear = b.perYear === 'cagr' ? (Math.pow(1 + totalShown / 100, 1 / b.years) - 1) * 100 : b.perYear === 'linear' ? totalShown / b.years : null;
     return { tgt: s.tgt, div: s.div == null ? null : s.div, total, perYear, cls: total >= 0 ? 'pos' : 'neg' };
   });
   return {
