@@ -184,6 +184,9 @@ const cmp = (r, f) => r.compare.find((c) => c.field === f);
   ok(r.ok && r.out.includes('จากจุดเข้า ฿' + HINT_PX), 'T1: hint "จากจุดเข้า" ในกล่อง .hint ยังเป็นข้อความเดิม (literal — tokeniseScn ไม่ถูกเรียกเลยเมื่อหมวด 6 ตัดสินไม่ได้)');
   ok(r.ok && r.out.includes('<div class="ret neg"></div>'), 'T1: .ret ที่ทำให้ว่างไว้ยังว่างเหมือนเดิม (literal)');
   ok(r.ok && r.notes.some((x) => /หมวด 6/.test(x) && /literal/.test(x)), 'T1: มี note บันทึกว่าหมวด 6 คง literal', (r.notes || []).join(' | '));
+  // task-8-report.md carried item (แก้ใน Task 9): ทั้งหมวดถูกปล่อย literal ต้องลง sites.literal('scn') ด้วย
+  // ไม่ใช่แค่ note — ไม่งั้นสำมะโน Part E นับ site literal ต่ำกว่าจริง (เดิมมีแค่ scn{k}div ต่อคอลัมน์)
+  ok(r.ok && r.sites.literal.includes('scn'), 'T1: หมวด 6 ทั้งหมวดถูกบันทึกลง sites.literal (\'scn\') — task 8 review item', (r.sites.literal || []).join(','));
   ok(r.ok && r.out.includes('<div class="px">{{rd:px}}'), 'T1: site บังคับ .px ยังสำเร็จตามปกติ แม้หมวด 6 ตัดสินไม่ได้ (ความล้มเหลวไม่ลามข้ามหมวด)');
 }
 
@@ -249,6 +252,21 @@ const cmp = (r, f) => r.compare.find((c) => c.field === f);
   ok(mutated !== BBL, 'T5: mutation เติมช่องว่างใน .px สำเร็จ');
   const r = mg(mutated);
   ok(!r.ok && /site px match ≠ 1/.test(r.reason), 'T5: ".px" มีช่องว่างหลังสัญลักษณ์สกุลเงิน → PX_PARTS_RE (ตัวเขียน) match 0 ครั้ง = ไม่ย้าย (ตรงกับที่ cron เขียนเลขนี้ไม่ได้เช่นกัน — report-meta.js เจตนา)', r.reason);
+}
+
+// ══════════════════════════════════════════════════════════════════════════════
+// Task 9 · fixture v2 แช่แข็ง (test/fixtures/{AAPL,BBL}-v2.html) — sanity บนไฟล์ที่ freeze ไว้แล้ว
+// ★ เทียบ values.px กับ stock-meta ของ fixture **v1** (FX.BBL()) — ตัวเลขต้องรอดการย้ายมาเป๊ะ
+// ══════════════════════════════════════════════════════════════════════════════
+{
+  const v2 = FX.BBL_V2();
+  const rd2 = RM.readReportData(v2).data;
+  ok(RV.isV2(rd2), 'Task 9: BBL-v2.html เป็น schema v2 (RV.isV2)');
+  ok(rd2.values.px === RM.readStockMeta(FX.BBL()).price, 'Task 9: values.px ของ BBL-v2 = stock-meta.price ของ BBL v1 เดิม (ตัวเลขรอดการย้าย)', String(rd2.values.px));
+  const exp2 = expandReport(v2);
+  ok(!/\{\{rd:/.test(exp2), 'Task 9: BBL-v2 expand แล้วไม่เหลือ token');
+  const g2 = checkHtml(exp2, 'BBL.html', { today: FX.TODAY });
+  ok(g2.errors.length === 0, 'Task 9: BBL-v2 expand แล้ว gate error 0', g2.errors.map((e) => e.id + ' ' + e.msg).join(' | '));
 }
 
 console.log(`migrate-v2-test: ${n - fails}/${n} ผ่าน`);

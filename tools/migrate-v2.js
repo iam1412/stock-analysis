@@ -367,9 +367,15 @@ function tokenise(src, values, info, sites, notes) {
     const r = tokeniseScn(src.slice(b.a, b.z), values, info, sites, notes);
     if (r.reason) return r;
     edits.push({ what: 'scn', start: b.a, end: b.z, text: r.out });
-  } else if (values.baseEps != null) {
-    notes.push('หมวด 6 literal — ไม่แตะ EPS ฐาน/จุดเข้า');
-    delete values.baseEps;
+  } else {
+    // ★ Task 8 review (แก้ใน Task 9): หมวด 6 ทั้งหมวดถูกปล่อย literal ที่นี่ (ตัดสินไม่ได้/ปิดรอบด้วย noScn)
+    //   แต่เดิมไม่มีการบันทึกลง sites.literal (มีแต่ต่อคอลัมน์ scn{k}div) ⇒ สำมะโน Part E นับ site literal
+    //   ต่ำกว่าจริง — บันทึกเป็น bookkeeping เท่านั้น ไม่เปลี่ยนว่าไฟล์ไหนย้ายได้/ไม่ได้ (ไม่มีใน REQUIRED_SITES)
+    sites.literal.push('scn');
+    if (values.baseEps != null) {
+      notes.push('หมวด 6 literal — ไม่แตะ EPS ฐาน/จุดเข้า');
+      delete values.baseEps;
+    }
   }
 
   let html;
@@ -771,7 +777,27 @@ function renderCensusMd(entries) {
 // "legend แสดง 74 แต่ FV = 80" คือเหตุผลเดียวกัน) ไม่งั้นตารางกลายเป็นรายชื่อไฟล์ที่นับอะไรไม่ได้
 const shortReason = (r) => String(r || '').split(/[:(]/)[0].replace(/-?[0-9][0-9.,]*/g, 'N').trim().slice(0, 80);
 
+// ── --fixture: แช่แข็ง v2 ของ fixture v1 (test/fixtures/{AAPL,BBL}.html) — ไม่แตะ reports/ ไม่แตะ v1 fixture ──
+// ★ migrator เขียนไฟล์เองแทนการ copy/แก้มือ (Task 9) — อ่านจาก test/fixtures/{AAPL,BBL}.html เขียน `-v2.html` ข้าง ๆ
+function runFixture() {
+  const FX = require('../test/fixtures');
+  const syms = ['AAPL', 'BBL'];
+  let ok = 0;
+  for (const sym of syms) {
+    const src = FX[sym]();
+    const r = migrateOne(src, sym + '.html', { today: FX.TODAY });
+    if (!r.ok) { console.log(`✗ ${sym}: ${r.reason}`); continue; }
+    const outPath = FX.PATH[sym].replace(/\.html$/i, '-v2.html');
+    fs.writeFileSync(outPath, r.out);
+    console.log(`✓ ${sym} → ${path.basename(outPath)}`);
+    ok++;
+  }
+  console.log(`\nfixture: ${ok}/${syms.length}${ok === syms.length ? '' : ' — ไม่ครบ ไม่เขียนไฟล์ที่เหลือ'}`);
+  return ok === syms.length ? 0 : 1;
+}
+
 function main(argv) {
+  if (argv.includes('--fixture')) return runFixture();
   const write = argv.includes('--write');
   const idx = (k) => { const i = argv.indexOf(k); return i < 0 ? null : argv[i + 1]; };
   const batch = idx('--batch') != null ? parseInt(idx('--batch'), 10) : null;

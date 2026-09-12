@@ -11,6 +11,23 @@
 
 ---
 
+## `*-v2.html` — สำเนา v2 ของ fixture ด้านบน (ระยะ 2 ส่วน C · Task 9)
+
+| ไฟล์ | ที่มา | แช่แข็งเมื่อ |
+|---|---|---|
+| AAPL-v2.html | `migrateOne(AAPL.html)` ผ่าน `tools/migrate-v2.js --fixture` | 13 ก.ย. 2569 |
+| BBL-v2.html | `migrateOne(BBL.html)` ผ่าน `tools/migrate-v2.js --fixture` | 13 ก.ย. 2569 |
+
+- ที่มา: **migrator สร้างไฟล์เอง** ไม่ใช่ copy/แก้มือ — คำสั่งที่ใช้จริง:
+  ```bash
+  node tools/migrate-v2.js --fixture
+  ```
+  อ่าน `test/fixtures/{AAPL,BBL}.html` (v1 ด้านบน — **ไม่ถูกแตะ**) → เขียน `test/fixtures/{AAPL,BBL}-v2.html` ข้าง ๆ
+- แช่แข็งใหม่ = รันคำสั่งเดิมซ้ำ (v1 fixture เปลี่ยนเมื่อไหร่ ต้องรันคำสั่งนี้ใหม่ให้ v2 ตามทัน)
+- ห้ามแก้ตัวเลขในไฟล์เหล่านี้ด้วยมือ (กติกาเดียวกับ v1 ด้านบน) — ใช้เป็นฐานของ self-test/update-prices-test ทาง v2 ในระยะ 2 ส่วน D
+
+---
+
 ## `vendor/` — payload ดิบของแหล่งข้อมูล (ให้เทส parser รันแบบ offline)
 
 | ไฟล์ | ที่มา (URL) | probe เมื่อ | ตัดเหลือ |
