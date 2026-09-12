@@ -7,9 +7,16 @@
  */
 const fs = require('fs');
 const path = require('path');
-const { ROOT } = require('./sh.js');
+const { run, ROOT } = require('./sh.js');
 
-const DIR = process.env.QUEUE_DIR || path.join(ROOT, '.queue');
+/** โฟลเดอร์ state: env QUEUE_DIR (เทส) > <git-common-dir>/../.queue (checkout หลัก — ใช้ร่วมทุก worktree บนเครื่อง · open-item #22) > ROOT/.queue */
+function resolveQueueDir(env, gitCommonDir) {
+  if (env && env.QUEUE_DIR) return env.QUEUE_DIR;
+  const common = gitCommonDir && String(gitCommonDir).trim();
+  if (common) return path.join(path.resolve(ROOT, common), '..', '.queue');
+  return path.join(ROOT, '.queue');
+}
+const DIR = resolveQueueDir(process.env, (() => { try { return run('git', ['rev-parse', '--git-common-dir']).out; } catch (_) { return ''; } })());
 const FILE = path.join(DIR, 'state.json');
 const PREP_DIR = path.join(DIR, 'prep');
 
@@ -33,4 +40,4 @@ function update(sym, patch) {
   save(s);
   return s.stocks[sym];
 }
-module.exports = { DIR, FILE, PREP_DIR, load, save, update };
+module.exports = { DIR, FILE, PREP_DIR, load, save, update, resolveQueueDir };

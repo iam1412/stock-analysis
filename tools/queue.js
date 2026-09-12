@@ -5,7 +5,7 @@
  *   npm run queue -- preflight              pull --rebase · triage · snapshot ราคาเดิม · pre-patch ทั้งชุด · พิมพ์ขั้นที่ต้องทำเอง
  *   npm run queue -- ship --prepatch        รันทันทีหลัง preflight (ก่อน spawn worker ตัวแรก) — push ราคาที่ patch ให้ tree สะอาด
  *                                            → build/preserve-dates/build → push · กันตัวที่ worker วิเคราะห์ใหม่แล้ว (footer ขยับ/ไฟล์ใหม่)
- *   npm run queue -- prep <SYM>             prep-stock + มัธยฐาน + EPS screen + snapshot diff → .queue/prep/<SYM>.md (prompt)
+ *   npm run queue -- prep <SYM>             prep-stock + มัธยฐาน + EPS screen + snapshot diff → .queue/prep/<SYM>.md ของ checkout หลัก (ใช้ร่วมทุก worktree) (prompt)
  *   npm run queue -- postcheck <SYM>        gate + spotcheck + ราคาค้าง + ai-model + pe/roe + footer
  *   npm run queue -- ship <SYM> [--tags …]  verify → commit 1 หุ้น → push · ปิด issue เมื่อคิวว่าง
  *   npm run queue -- status                 X/Y push แล้ว / รอ push / ยังไม่เริ่ม

@@ -485,6 +485,15 @@ process.env.QUEUE_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'queue-'));   // s
   ok(noThrowEmpty, 'checkNotPrepatch: ไม่มี record เลย (หุ้นใหม่) → ไม่ถูกปฏิเสธ');
 }
 
+// ── 18) state: .queue อยู่ที่ checkout หลัก (open-item #22 — worktree ใหม่ทุก session ทำให้รอบหาย) ──
+{
+  const S = require('../tools/queue/state.js');
+  ok(S.resolveQueueDir({ QUEUE_DIR: '/x/q' }, '/a/b/.git') === '/x/q', 'resolveQueueDir: QUEUE_DIR ชนะ');
+  ok(S.resolveQueueDir({}, '/a/b/.git') === path.join('/a/b', '.queue'), 'resolveQueueDir: git-common-dir absolute → <หลัก>/.queue');
+  ok(S.resolveQueueDir({}, '.git') === path.join(ROOT, '.queue'), 'resolveQueueDir: checkout หลักเอง (.git relative) → ROOT/.queue');
+  ok(S.resolveQueueDir({}, '') === path.join(ROOT, '.queue') && S.resolveQueueDir({}, null) === path.join(ROOT, '.queue'), 'resolveQueueDir: ไม่มี git → ROOT/.queue');
+}
+
 // ─────────────────────────── (Task 10–14 แทรกเทสเหนือบรรทัดนี้) ───────────────────────────
 console.log(`queue-test: ${nOK}/${nOK + nFail} ผ่าน`);
 if (nFail) { console.log('❌ runbook มีบั๊ก'); process.exit(1); }

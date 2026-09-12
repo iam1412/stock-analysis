@@ -21,7 +21,6 @@
 | 16 | `stock-ai.dotent.workers.dev` ยังเปิด (`workers_dev=true` ห้ามลบ) traffic ไม่ cache | workers-dev-cache-inert:21 | ไม่ทำ (บันทึกไว้) |
 | 17 | ไม่มี `x-cache` header — วินิจฉัย cache จากเวลาอย่างเดียว | workers-dev-cache-inert:20 | ไม่ทำ (บันทึกไว้) |
 | 20 | ~23 ใบ EPS ค้าง >2% (HSY SNNP COP NUE CF …) | data-source-traps:153 | ระยะ 3 WS7 ตามปฏิทินงบ (WS6 trigger) |
-| 22 | คิว price-flags เป็น snapshot — pre-patch ด้วย --force ล้าง flag ก่อนวิเคราะห์ ทำให้สถานะรอบอยู่แค่ใน .queue/state.json (per-machine) — ต้องการคิวถาวรใน repo | final review ระยะ 0 | ระยะ 1 WS6 |
 | 23 | lockfile ไม่มี heartbeat — holder ที่ทำงานเกิน 10 นาทีจะถูกยึด lock และตอนปล่อยจะลบ lock ของคนใหม่ (ยังไม่เกิดเพราะไม่มี holder ทำงานยาวใต้ lock) | final review ระยะ 0 | ระยะ 1 WS4 |
 
 ## ปิดแล้ว (ระยะ 0)
@@ -34,3 +33,9 @@
 | 13 | BBL ช่องสรุป "+2.1% (เกือบเต็มมูลค่า)" เครื่องหมาย/คำขัดกัน | Task 11 (ระยะ 1 ข้อ D) — cron เขียนช่องสรุปทั้งช่องเป็นคลังคำคงที่ `MOS ~ ±X%` ตรงกับ `.big` (`summaryPlan` = healer #11) ⇒ ใบที่เครื่องหมายกับคำขัดกันเองไม่มีอีก · **กวาดคลัง 861 ใบใน Task 12** |
 | 19 | W06 ยิง 553/908 ก่อน 17 ส.ค. — เดิมต้องให้คนแก้เพราะ cron ไม่แตะคำ | Task 11 (ระยะ 1 ข้อ D) — W06 ถาม `DV.summaryPlan` ตัวเดียวกับตัวซ่อม ไม่ผูก dead-band อีก ⇒ ทุกเคสที่ยิงเป็นเคสที่ healer ซ่อมได้เชิงกล (ยิง 861 ใบหลังเปลี่ยนกติกา — Task 12 กวาด) |
 | 21 | fixture ของ self-test/update-prices-test ผูกกับ BBL/AAPL จริง | Task 1–2 (PR #A) |
+
+## ปิดแล้ว (ระยะ 1)
+
+| # | รายการ | ปิดโดย |
+|---|---|---|
+| 22 | คิว price-flags เป็น snapshot — pre-patch ด้วย --force ล้าง flag ก่อนวิเคราะห์ ทำให้สถานะรอบอยู่แค่ใน .queue/state.json (per-machine) — ต้องการคิวถาวรใน repo | Task 15: state ย้ายไป `<checkout หลัก>/.queue` (`resolveQueueDir` ใน `tools/queue/state.js` ใช้ `git rev-parse --git-common-dir`) — ข้าม worktree ✓ ข้ามเครื่อง ✗ (ถ้าใช้หลายเครื่องต้องย้าย state เข้า repo) |
