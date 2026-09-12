@@ -34,14 +34,28 @@
  *   --set/--del ใช้ได้เฉพาะรายงาน **v2** (`report-data.v === 2` มี `values`) — ไฟล์ v1 ต้อง error "ไฟล์ v1" ทันที
  *   ไม่แตะไฟล์เลย (ใบ v1 แก้เลขผูกราคาด้วยบล็อก `@@` ตามเดิม) · `--set-meta` ใช้ได้ทั้ง v1/v2 (บล็อก stock-meta
  *   ไม่ขึ้นกับ schema v2) · หลังแก้เสร็จ validate ด้วย `RV.validateValues` (เมื่อเป็น v2) ก่อนเขียนไฟล์จริงเสมอ
- *   · ไม่ใส่ stdin เลย (เทอร์มินัลจริง ไม่ใช่ heredoc/pipe) ก็ใช้ `--set`/`--del`/`--set-meta` ได้ตามปกติ
- *   — ตัวสคริปต์เช็ค `tty.isatty(0)` ก่อน (ไม่ค้างรอ Ctrl-D) แล้วอ่าน stdin แบบ non-blocking + retry จนครบ
- *   `STDIN_GRACE_MS` (ต้องมีบล็อก `@@` อย่างน้อย 1 ชุด **เฉพาะ**ตอนไม่มี --set/--del/--set-meta เลย)
- *   ★★ อ่านฟังก์ชัน `readStdin()` ก่อนแก้จุดนี้อีก — สองทางที่เคยลองแล้วพังทั้งคู่ (ประวัติเต็มอยู่ในคอมเมนต์
- *   เหนือ `readStdin()`): เช็คด้วย `process.stdin.isTTY` เฉย ๆ = ดรอปบล็อก `@@` เงียบเมื่อฝั่งเขียนช้ากว่าปกติ
- *   เล็กน้อย (CRITICAL) · เปลี่ยนไปเช็คด้วย `tty.isatty(0)` เฉย ๆ (ไม่แตะ non-blocking เลย) = ค้างตลอดไปเมื่อรัน
- *   คำสั่งเดี่ยวไม่มี heredoc/redirect และฝั่งเรียกไม่เคยปิด stdin ให้ (regression ที่แย่กว่าเดิม) — ทางที่ถูกคือ
- *   บังคับ non-blocking **แล้ว retry-with-timeout** ไม่ใช่ยอมแพ้ตั้งแต่ EAGAIN ครั้งแรก
+ *
+ * ★★★ stdin: ผู้เรียก**ประกาศ**ว่าจะส่ง stdin มาไหม แทนที่จะให้สคริปต์เดาจากจังหวะ — ห้ามย้อนกลับไปสองทางที่
+ *   เคยลองแล้วพังทั้งคู่ (เก็บไว้เป็นบทเรียน):
+ *   1) `process.stdin.isTTY ? '' : fs.readFileSync(0)` (เวอร์ชันแรก) — การอ่าน `.isTTY` แตะ (instantiate) stream
+ *      ของ Node ซึ่งตั้ง fd 0 เป็น non-blocking เป็นผลข้างเคียง ⇒ `readFileSync(0)` กลายเป็น non-blocking read
+ *      ตามไปด้วย แล้วโยน EAGAIN ทันทีที่ฝั่งเขียน (แม้ heredoc/pipe จริง) ยังส่งข้อมูลไม่ถึงทัน — โค้ดตีความ EAGAIN
+ *      **ครั้งแรก** เป็น "ไม่มี stdin" ผิด ๆ แล้วเขียนไฟล์เงียบ ๆ ด้วย 0 @@ edits (วัดจริง: race กับ producer ที่
+ *      ช้ากว่าปกติเล็กน้อย ดรอปทุกบล็อกทิ้ง 4/20 รอบ exit 0 — CRITICAL เพราะเป็น silent partial write)
+ *   2) `tty.isatty(0) ? '' : fs.readFileSync(0)` + retry-with-timeout (`STDIN_GRACE_MS`) บน EAGAIN (เวอร์ชันสอง)
+ *      — ดูเหมือนแก้ข้อ 1 ได้ (ไม่ยอมแพ้ตั้งแต่ EAGAIN แรก) แต่ **timeout แยก "ไม่มีใครจะเขียน" ออกจาก "ฝั่งเขียนช้า"
+ *      ไม่ได้เลยไม่ว่าตั้งเลขเท่าไร** — วัดจริง: producer หน่วง 800ms (เกิน `STDIN_GRACE_MS`=500 ที่ตั้งไว้) ดรอป
+ *      บล็อก `@@` ทิ้ง **6/6 รอบ เขียนไฟล์ด้วย 0 @@ edits ทุกครั้ง exit 0** — จากบั๊กที่สุ่มเป็นบางครั้ง (4/20)
+ *      กลายเป็นดรอปแน่นอนทุกครั้งที่ผ่านหน้าต่างเวลาไป (deterministic silent data loss) — **แย่กว่าเดิม ไม่ใช่ดีขึ้น**
+ *      ⇒ ห้ามใช้ timeout ใด ๆ ในการตัดสินว่า "มี stdin ไหม" อีกต่อไป (ไม่ใช่เรื่องจูน constant ให้พอดี — เป็นไปไม่ได้
+ *      โดยหลักการ เพราะจากมุมมองของ process ที่ยังไม่เห็น byte แรก "ไม่มีใครเขียนเลย" กับ "เขียนช้า" indistinguishable)
+ *   ⇒ ทางที่ถูก (เวอร์ชันสาม — ปัจจุบัน): **ผู้เรียกต้องประกาศเจตนาเอง** ด้วย flag `--stdin` แทนการเดา —
+ *   อ่าน stdin ก็ต่อเมื่อ (ก) ไม่มี JSON ops เลย (เส้นทางเดิม pure-`@@`) **หรือ** (ข) ใส่ `--stdin` มาเอง — พอจะอ่าน
+ *   จริงใช้ `fs.readFileSync(0)` **แบบ blocking ธรรมดา ไม่มี retry ไม่มี deadline ไม่มี `Atomics.wait`** (บล็อกรอ EOF
+ *   จริงถูกต้องอยู่แล้วสำหรับ producer ช้าแค่ไหนก็ได้) · **ห้ามแตะ `process.stdin.isTTY` เด็ดขาด** (คือต้นตอ side-effect
+ *   ที่ทำให้เกิดบั๊กทั้งตระกูลนี้) — ใช้ `require('tty').isatty(0)` เท่านั้นเพื่อลัดเทอร์มินัลแบบ interactive ให้เป็น
+ *   `''` ทันที (เส้นทาง pure-`@@` เดิมจะได้ไม่ค้างรอ Ctrl-D) · one-liner `--set` ของ SKILL 5B (ไม่มี `--stdin`, มี
+ *   JSON ops) ไม่แตะ fd 0 เลยแม้แต่นิดเดียว ⇒ ค้าง/ดรอปไม่ได้อีกต่อไปเพราะไม่มีจังหวะให้ชนเลย ไม่ใช่เพราะจับจังหวะเก่ง
  */
 
 const fs = require('fs');
@@ -52,10 +66,10 @@ const RV = require('./report-values.js');   // เจ้าของเดีย
 function die(msg) { console.error(msg); process.exit(1); }
 
 const file = process.argv[2];
-if (!file) die('ใช้: node tools/apply-edits.js <file> [--set path=json] [--del path] [--set-meta path=json] <<\'EOF\' ... EOF (อ่านบล็อก @@ จาก stdin ถ้ามี)');
+if (!file) die('ใช้: node tools/apply-edits.js <file> [--stdin] [--set path=json] [--del path] [--set-meta path=json] <<\'EOF\' ... EOF (อ่านบล็อก @@ จาก stdin ถ้ามี — ใส่ --stdin เสมอเมื่อ compose กับ --set/--del/--set-meta)');
 if (!fs.existsSync(file)) die(`✗ ไม่พบไฟล์ ${file}`);
 
-// ---- parse --set/--del/--set-meta จาก argv (หลังชื่อไฟล์) ----
+// ---- parse --stdin/--set/--del/--set-meta จาก argv (หลังชื่อไฟล์) ----
 function parseValue(raw, flagLabel) {
   try { return JSON.parse(raw); } catch (_) { /* ลองทางสำรองข้างล่าง */ }
   if (raw === 'true') return true;
@@ -64,11 +78,14 @@ function parseValue(raw, flagLabel) {
   if (/^-?\d+(?:\.\d+)?$/.test(raw)) return Number(raw);
   die(`✗ ${flagLabel} ค่า ${JSON.stringify(raw)} ไม่ใช่ JSON/number/boolean/null ที่ถูกต้อง`);
 }
-function parseOps(argv) {
+function parseArgs(argv) {
   const ops = [];
+  let wantStdin = false;
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
-    if (a === '--set' || a === '--set-meta') {
+    if (a === '--stdin') {
+      wantStdin = true;
+    } else if (a === '--set' || a === '--set-meta') {
       const raw = argv[++i];
       if (raw === undefined) die(`✗ ${a} ต้องมีค่าตามหลังรูป path=value`);
       const eq = raw.indexOf('=');
@@ -80,58 +97,25 @@ function parseOps(argv) {
       if (path === undefined) die('✗ --del ต้องมี path ตามหลัง');
       ops.push({ kind: 'del', path });
     } else {
-      die(`✗ argument ไม่รู้จัก: ${JSON.stringify(a)} (รองรับ --set path=json · --del path · --set-meta path=json)`);
+      die(`✗ argument ไม่รู้จัก: ${JSON.stringify(a)} (รองรับ --stdin · --set path=json · --del path · --set-meta path=json)`);
     }
   }
-  return ops;
+  return { ops, wantStdin };
 }
-const ops = parseOps(process.argv.slice(3));
+const { ops, wantStdin } = parseArgs(process.argv.slice(3));
 const setOps = ops.filter((o) => o.kind === 'set');
 const delOps = ops.filter((o) => o.kind === 'del');
 const setMetaOps = ops.filter((o) => o.kind === 'setMeta');
 
-// ---- อ่าน stdin เฉพาะตอนไม่ใช่เทอร์มินัลจริง (กัน readFileSync(0) ค้างรอ Ctrl-D ที่เทอร์มินัลแบบ interactive) ----
-// ★★★ ประวัติของบรรทัดนี้ (สำคัญ — อย่าย้อนกลับไปสองทางที่เคยลองแล้วพังทั้งคู่):
-//   1) `process.stdin.isTTY ? '' : fs.readFileSync(0)` (เวอร์ชันแรก) — การอ่าน `.isTTY` แตะ (instantiate)
-//      stream ของ Node ซึ่งตั้ง fd 0 เป็น non-blocking เป็นผลข้างเคียง ⇒ `readFileSync(0)` เป็น non-blocking
-//      read ตามไปด้วย แล้วโยน EAGAIN ทันทีที่ฝั่งเขียน (แม้ heredoc/pipe จริง) ยังส่งข้อมูลไม่ถึงทัน — โค้ดเดิม
-//      ตีความ EAGAIN **ครั้งแรก** เป็น "ไม่มี stdin" ผิด ๆ แล้วเขียนไฟล์เงียบ ๆ ด้วย 0 @@ edits (วัดจริง: race กับ
-//      producer ที่ช้ากว่าปกติเล็กน้อย ดรอปทุกบล็อกทิ้ง 4/20 รอบ exit 0 — bug ระดับ CRITICAL เพราะเป็น partial write เงียบ)
-//   2) `tty.isatty(0) ? '' : fs.readFileSync(0)` (ลองแก้ข้อ 1 ด้วยการเลี่ยง side-effect ของ `.isTTY`) — ดูเหมือน
-//      ถูกในทางทฤษฎี (fd ไม่ถูกบังคับ non-blocking) แต่วัดจริงพบว่า **ค้างตลอดไป** เมื่อรันเป็นคำสั่งเดี่ยวไม่มี
-//      heredoc/redirect เลย (เคสเดียวกับ one-liner `--set` ที่ SKILL 5B สั่ง) — fd 0 ที่ไม่ถูกแตะเลยยังเป็น
-//      blocking mode ของมันเอง และถ้าฝั่งที่เรียกไม่เคยเขียน/ปิด stdin ให้ (พบจริงใน harness ของ Bash tool เอง
-//      ตอนรันคำสั่งเดี่ยวไม่มี redirect) `readFileSync(0)` แบบ blocking จะรอเฉย ๆ ไม่มีวันจบ — regression ที่แย่กว่าเดิม
-//   ⇒ ทางที่ถูก: **ต้อง**บังคับ fd 0 เป็น non-blocking (แตะ `process.stdin.isTTY` เพื่อผลข้างเคียงนี้โดยตั้งใจ —
-//   ใช้ `tty.isatty(0)` เป็นตัวตัดสิน "เป็นเทอร์มินัลจริงไหม" เพราะเชื่อถือได้กว่า ไม่ใช้ค่าที่ `.isTTY` คืนมา)
-//   **แล้ว retry บน EAGAIN แทนที่จะยอมแพ้ครั้งแรก**: วน `fs.readSync` จนกว่า (ก) เจอ byte แรก → มีคนเขียนจริง
-//   รอจน EOF ต่อแบบไม่จำกัดเวลาอีกแล้ว หรือ (ข) ครบ `STDIN_GRACE_MS` โดยไม่มี byte เข้ามาเลย → ไม่มีคนเขียนจริง
-//   ถือเป็น "ไม่มี stdin" (heredoc/pipe จริงมีข้อมูล buffer ไว้ก่อน exec แล้วเสมอ ⇒ ได้ byte แรกในหลัก ms ไม่ใช่ 100 ms)
-const STDIN_GRACE_MS = 500;
+// ---- อ่าน stdin เฉพาะตอนผู้เรียก**ประกาศ**ว่าจะส่งมาจริง — ไม่ใช่เดาจากจังหวะ (ดูประวัติเต็มในคอมเมนต์หัวไฟล์) ----
+// อ่านก็ต่อเมื่อ (ก) ไม่มี JSON ops เลย = เส้นทางเดิม pure-`@@` (มี ops.length===0 อยู่แล้วเป็นค่าตั้งต้นของการใช้
+// เครื่องมือนี้มาตั้งแต่แรก) หรือ (ข) ผู้เรียกใส่ `--stdin` มาเอง — ไม่งั้น**ไม่แตะ fd 0 เลยแม้แต่นิดเดียว**
+// (one-liner `--set` ของ SKILL 5B ไม่มี `--stdin` ⇒ เข้าเงื่อนไขนี้พอดี ไม่มีจังหวะให้ค้าง/ดรอปได้อีกต่อไป)
 function readStdin() {
-  if (tty.isatty(0)) return '';
-  void process.stdin.isTTY; // แตะเพื่อผลข้างเคียงเท่านั้น (บังคับ fd 0 non-blocking) — ไม่ใช้ค่าที่คืนมา
-  const chunks = [];
-  const buf = Buffer.alloc(65536);
-  let gotByte = false;
-  const deadline = Date.now() + STDIN_GRACE_MS;
-  const sleeper = new Int32Array(new SharedArrayBuffer(4));
-  for (;;) {
-    let n;
-    try { n = fs.readSync(0, buf, 0, buf.length, null); }
-    catch (e) {
-      if (e.code !== 'EAGAIN') throw e;
-      if (!gotByte && Date.now() > deadline) return ''; // ไม่มีใครเขียนจริงภายในเวลาที่ให้ — ถือว่าไม่มี stdin
-      Atomics.wait(sleeper, 0, 0, 5); // synchronous sleep สั้น ๆ แล้ว retry (ไม่ใช่ยอมแพ้ตั้งแต่ EAGAIN แรก)
-      continue;
-    }
-    if (n === 0) break; // EOF จริง
-    gotByte = true;
-    chunks.push(Buffer.from(buf.subarray(0, n)));
-  }
-  return Buffer.concat(chunks).toString('utf8');
+  if (tty.isatty(0)) return ''; // เทอร์มินัลจริง (เส้นทาง pure-@@ เดิม) → อย่าค้างรอ Ctrl-D
+  return fs.readFileSync(0, 'utf8'); // blocking ธรรมดา — รอ EOF จริง ไม่มี retry ไม่มี deadline (producer ช้าแค่ไหนก็ปลอดภัย)
 }
-const stdin = readStdin();
+const stdin = (!ops.length || wantStdin) ? readStdin() : '';
 
 // ---- parse edit blocks ----
 const edits = []; // {old, new, all, line}
@@ -160,7 +144,7 @@ for (let i = 0; i < lines.length; i++) {
   }
 }
 if (state !== 'out') die(`✗ บล็อกที่เริ่มบรรทัด ${cur.line} ไม่ปิดด้วย @@end`);
-// บล็อก @@ บังคับอย่างน้อย 1 ชุด **เฉพาะ** ตอนไม่มี --set/--del/--set-meta เลย (มี flag แล้ว stdin ว่างได้ — Ruling A)
+// บล็อก @@ บังคับอย่างน้อย 1 ชุด **เฉพาะ** ตอนไม่มี --set/--del/--set-meta เลย (มี flag แล้ว stdin ว่างได้ตามปกติ)
 if (!edits.length && !ops.length) die('✗ ไม่มีบล็อกแก้ไขใน stdin (ต้องมี @@ ... @@= ... @@end อย่างน้อย 1 ชุด) และไม่มี --set/--del/--set-meta');
 
 // ---- near-match hint: หา window ในไฟล์ที่คล้ายข้อความเดิมสุด แล้วพิมพ์บรรทัดจริงให้ copy ----

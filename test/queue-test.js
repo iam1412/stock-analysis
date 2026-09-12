@@ -916,14 +916,15 @@ catch (e) { nFail++; console.error('✗ earnings-calendar-test ระเบิ�
   }
 }
 
-// ── 22) apply-edits: stdin race (fix1 review — CRITICAL) ── ต้องเป็น async จริง (spawn + delayed write)
+// ── 22) apply-edits: stdin — explicit --stdin แทนการเดาจังหวะ (fix2 review) ── ต้องเป็น async จริง (spawn + delayed write)
 //   spawnSync/sh.run เขียน stdin ให้เสร็จก่อนหรือพร้อมกับที่ child เริ่มทำงานเสมอ ⇒ ไม่มีวันชนจังหวะที่ผู้เขียน
 //   (producer) ส่งข้อมูลมาช้ากว่าที่ child เริ่มอ่าน — ต้อง child_process.spawn จริงแล้วหน่วงเขียนด้วย setTimeout
-//   ถึงจะบังคับให้จังหวะนั้นเกิดซ้ำได้แน่นอน (พิสูจน์บั๊กเดิม: เช็คด้วย process.stdin.isTTY เฉย ๆ ดรอปบล็อก @@
-//   ทิ้งเงียบ ๆ 4/20 รอบวัดจริงโดยผู้รีวิว — เปลี่ยนมาใช้ tty.isatty(0) + retry-with-timeout ใน readStdin())
-function testApplyEditsStdinRace(ok) {
+//   ถึงจะบังคับให้จังหวะนั้นเกิดซ้ำได้แน่นอน · ★ เวอร์ชัน timeout (fix1) พังเมื่อ producer ช้ากว่า grace ที่ตั้งไว้
+//   (วัดจริงโดยผู้รีวิว: หน่วง 800ms ดรอปทุกบล็อก 6/6 รอบ) — เวอร์ชันนี้ (fix2) ไม่มี timeout อีกต่อไป ผู้เรียก
+//   ต้องประกาศ `--stdin` เอง แล้วอ่านแบบ blocking ธรรมดา (รอ EOF จริง) ⇒ ทดสอบด้วยดีเลย์ 800ms เดิมที่เคยพังแน่นอน
+function testApplyEditsStdin(ok) {
   const cp = require('child_process');
-  const RACE_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'apply-edits-race-'));
+  const RACE_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'apply-edits-stdin-'));
   const FIXTURE = `<!DOCTYPE html>
 <html><head>
 <script type="application/json" id="stock-meta">
@@ -938,13 +939,13 @@ function testApplyEditsStdinRace(ok) {
 </head><body></body></html>
 `;
   const AT_BLOCK = '@@\n"accent": "#000000"\n@@=\n"accent": "#111111"\n@@end\n';
-  const N = 20, DELAY_MS = 150;
+  const N = 20, DELAY_MS = 800; // > 500ms เดิม (STDIN_GRACE_MS ของ fix1 ที่ถูกถอดออกแล้ว) — พิสูจน์ว่าไม่มี window อีกต่อไป
 
-  // (a) producer ที่ "ช้ากว่าปกติเล็กน้อย" (150ms) ต้องไม่ทำให้บล็อก @@ หายไป — วนซ้ำ N รอบ (ครบทุกรอบ = ผ่าน)
-  const oneRacedRun = (i) => new Promise((resolve) => {
+  // (a) --stdin + producer หน่วง 800ms (จุดที่ fix1 พังแน่นอน 6/6) ต้องไม่ทำให้บล็อก @@ หายไป — วนซ้ำ N รอบ
+  const oneDelayedRun = (i) => new Promise((resolve) => {
     const file = path.join(RACE_DIR, `race${i}.html`);
     fs.writeFileSync(file, FIXTURE);
-    const child = cp.spawn('node', ['tools/apply-edits.js', file, '--set', 'fv=210'], { cwd: ROOT, stdio: ['pipe', 'pipe', 'pipe'] });
+    const child = cp.spawn('node', ['tools/apply-edits.js', file, '--stdin', '--set', 'fv=210'], { cwd: ROOT, stdio: ['pipe', 'pipe', 'pipe'] });
     let out = '', err = '';
     child.stdout.on('data', (d) => { out += d; });
     child.stderr.on('data', (d) => { err += d; });
@@ -954,37 +955,39 @@ function testApplyEditsStdinRace(ok) {
   });
   let chain = Promise.resolve();
   for (let i = 0; i < N; i++) {
-    chain = chain.then(() => oneRacedRun(i)).then((r) => {
+    chain = chain.then(() => oneDelayedRun(i)).then((r) => {
       const applied = r.code === 0 && fs.existsSync(r.file) && fs.readFileSync(r.file, 'utf8').includes('"accent": "#111111"');
-      ok(applied, `apply-edits: stdin race #${i + 1}/${N} (producer ส่งบล็อก @@ ช้า ${DELAY_MS}ms) → ต้อง apply ได้เสมอ ไม่ดรอปเงียบ (CRITICAL fix1)`,
+      ok(applied, `apply-edits --stdin: producer ส่งบล็อก @@ ช้า ${DELAY_MS}ms (#${i + 1}/${N}) → ต้อง apply ได้เสมอ (blocking read รอ EOF จริง ไม่มี timeout อีกแล้ว)`,
         `exit=${r.code} out=${(r.out || '').trim()} err=${(r.err || '').trim().slice(0, 200)}`);
     });
   }
 
-  // (b) ไม่มีใครเขียน/ปิด stdin ให้เลย (จำลอง fd ที่ไม่มีวันมีข้อมูล) → ต้อง exit ภายใน grace period ที่จำกัด
-  //   ไม่ใช่ค้างตลอดไป (ถ้า regression กลับไปเป็น blocking read เฉย ๆ จะค้าง — ตั้ง hard-kill กันทั้งชุดเทสค้างตามไปด้วย)
+  // (b) one-liner --set เปล่า ๆ (ไม่มี --stdin, ไม่มีใครเขียน/ปิด stdin เลย) — ต้องจบเร็วเสมอ เพราะไม่แตะ fd 0 เลย
+  //   (ไม่ใช่เพราะจับจังหวะเก่งหรือ timeout พอดี — ไม่มีจังหวะให้ชนตั้งแต่ต้น) + เขียนค่าตาม JSON op ที่สั่งเป๊ะ
   chain = chain.then(() => new Promise((resolve) => {
-    const file = path.join(RACE_DIR, 'nohang.html');
+    const file = path.join(RACE_DIR, 'oneliner.html');
     fs.writeFileSync(file, FIXTURE);
     const t0 = Date.now();
     const child = cp.spawn('node', ['tools/apply-edits.js', file, '--set', 'fv=210'], { cwd: ROOT, stdio: ['pipe', 'pipe', 'pipe'] });
     let done = false;
+    // hard-kill กันเทสทั้งชุดค้างถ้า regression กลับไปแตะ fd 0 โดยไม่ตั้งใจ — ไม่ใช่ค่า timeout ที่ระบบพึ่งพา
     const hardTimer = setTimeout(() => {
       if (done) return; done = true;
       try { child.kill('SIGKILL'); } catch (_) {}
-      ok(false, 'apply-edits: ไม่มีใครเขียน/ปิด stdin เลย → ต้อง exit ภายใน grace period ที่จำกัด (ไม่ค้างตลอดไป)', 'เกิน 3000ms ยัง hang');
+      ok(false, 'apply-edits: one-liner --set (ไม่มี --stdin) ต้องไม่แตะ stdin เลย → จบเร็วเสมอ', 'เกิน 3000ms ยัง hang (regression: กลับไปแตะ fd 0)');
       resolve();
     }, 3000);
     child.on('close', (code) => {
       if (done) return; done = true; clearTimeout(hardTimer);
       const ms = Date.now() - t0;
-      ok(code === 0 && ms < 2000, 'apply-edits: ไม่มีใครเขียน/ปิด stdin เลย → exit ภายใน grace period (ไม่ค้างตลอดไป)', `code=${code} ms=${ms}`);
+      const fv = code === 0 && fs.existsSync(file) ? require('../tools/report-meta.js').readReportData(fs.readFileSync(file, 'utf8')).data.fv : null;
+      ok(code === 0 && ms < 2000 && fv === 210, 'apply-edits: one-liner --set (ไม่มี --stdin, ไม่มีใครเขียน stdin เลย) → จบเร็ว + เขียนค่าตาม JSON op เป๊ะ', `code=${code} ms=${ms} fv=${fv}`);
       resolve();
     });
   }));
   return chain;
 }
-const applyEditsRacePromise = testApplyEditsStdinRace(ok);
+const applyEditsRacePromise = testApplyEditsStdin(ok);
 
 // ─────────────────────────── (Task 10–14 แทรกเทสเหนือบรรทัดนี้) ───────────────────────────
 Promise.all([Promise.resolve(pending), applyEditsRacePromise])

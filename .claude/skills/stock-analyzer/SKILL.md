@@ -110,7 +110,7 @@ description: วิเคราะห์หุ้นรายตัว (ไท�
 1. อ่าน `reports/<SYMBOL>.html` (ราคา/กราฟ/วันที่ราคา สดแล้วจาก STEP 1) → ประเมิน EPS/FV/มุมมอง เปลี่ยนไหม
 2. **แก้เฉพาะจุดที่เปลี่ยนจริง** (หลายจุด → รวมยิงใน Bash เดียวผ่าน `tools/apply-edits.js` แบบ STEP 5C ข้อ 3):
    - EPS / FV ทุกวิธี / จุดซื้อ MOS20-30 / scenario + `stock-meta` (fairValue, pe, eps, dividendYield, roe — **ยกเว้น price/mos/upside script คำนวณให้**)
-   - **v2:** แก้ตัวเลขผูกราคา = `node tools/apply-edits.js reports/<SYM>.html --set fv=<ใหม่> --set values.eps=<ใหม่> …` (บล็อก `@@` ใช้กับ prose/การ์ดที่เป็น literal เหมือนเดิม) · หลังแก้ `fv` **ไม่ต้อง**รัน update-prices ซ้ำ (MOS/upside/ป้าย render เอง) — แต่ `stock-meta.fairValue/mos/upside` ต้อง set ให้ตรง: `--set-meta fairValue=<ใหม่>`
+   - **v2:** แก้ตัวเลขผูกราคา = `node tools/apply-edits.js reports/<SYM>.html --set fv=<ใหม่> --set values.eps=<ใหม่> …` (ยิงเดี่ยว ๆ ไม่ต้องมี stdin) · **compose กับบล็อก `@@` (prose/การ์ดที่เป็น literal) ในคำสั่งเดียว → ต้องเติมแฟล็ก `--stdin` เสมอ**: `node tools/apply-edits.js reports/<SYM>.html --stdin --set fv=<ใหม่> <<'EOF' … EOF` (ลืม `--stdin` = สคริปต์ไม่อ่าน stdin เลย บล็อก `@@` หายเงียบ ไม่ error — ตั้งใจ กันเดาจังหวะแล้วค้าง/ดรอปข้อมูล) · หลังแก้ `fv` **ไม่ต้อง**รัน update-prices ซ้ำ (MOS/upside/ป้าย render เอง) — แต่ `stock-meta.fairValue/mos/upside` ต้อง set ให้ตรง: `--set-meta fairValue=<ใหม่>`
    - **prose ทุกประโยคที่อ้างเลขเก่า** (จุดเข้า / "แพง~X%" / เป้า / คำบรรยายกราฟ-ทิศทาง) + มุมมอง/catalyst ที่เปลี่ยน
    - **ช่อง "ส่วนต่างจากราคา" (vcell หมวด 8) ห้ามแก้มือ** — รูปเดียวคือ `MOS ~ ±X%` เท่ากับ `.big` และ cron เขียนทับทั้งช่องทุกวัน (ระยะ 1 ข้อ D) · คำว่าถูก/แพงอยู่ใน `.txt` ของกล่อง verdict
    - วันที่วิเคราะห์ footer "ข้อมูล ณ …" = วันนี้ · `meta ai-model` = โมเดลที่รันจริง
