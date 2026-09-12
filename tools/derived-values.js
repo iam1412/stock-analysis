@@ -263,8 +263,12 @@ const PY_VOTE_RATIO = 2;      // สูตร %/ปี ของทั้งใ�
 const SCN_ANCHOR = 'class="scn"';
 // ★ regex เปิดคอลัมน์ตัวเดียวทั้งรีโป (ตัวตรวจ E24/W01/W17 + ตัวเขียน #7) — census 12 ก.ย. 69 (908 ใบ): notThree=0 dblSpace=0 attrs=0 stray=0
 //   ⇒ รวมเป็น regex เดียวได้โดยไม่เปลี่ยนผลของ E24/W01/W17 กับใบใดเลย (ดู task-7-report.md)
-const SCN_COL_OPEN = () => /<div class="col\s+(bear|base|bull)\b[^>]*>/g;
-const SCN_COL_RE = () => /<div class="col\s+([a-z]+)\b[^>]*>([\s\S]*?)(?=<div class="col\s|$)/g;
+// fix round 1 (reviewer finding #2): SCN_COL_OPEN เดิม export ไว้เฉย ๆ ไม่มีใครใช้จริง (scenarioBlock/scenarioColumns
+// เรียก SCN_COL_RE ที่เป็นคนละ pattern — ([a-z]+) vs (bear|base|bull)) ⇒ รวมเป็นแหล่งเดียว (SCN_COL_OPEN_SRC) แล้วให้
+// ทั้ง SCN_COL_OPEN และ SCN_COL_RE ประกอบจากมันเสมอ
+const SCN_COL_OPEN_SRC = '<div class="col\\s+(bear|base|bull)\\b[^>]*>';
+const SCN_COL_OPEN = () => new RegExp(SCN_COL_OPEN_SRC, 'g');
+const SCN_COL_RE = () => new RegExp(SCN_COL_OPEN_SRC + '([\\s\\S]*?)(?=<div class="col\\s|$)', 'g');
 const SCN_RET_RE = /(<div class="ret[^"]*">)([^<]*)(<\/div>)/;
 const SCN_TGT_RE = /<div class="tgt">\s*(?:[฿$]|C\$)?\s*([\d.,]+)/;
 // แถว "ปันผลรวม 3 ปี" ในคอลัมน์ — ค่าเงิน ไม่ใช่ %
@@ -352,12 +356,16 @@ function scenarioColumns(html) {
   const a = h.lastIndexOf('<section', i), z = h.indexOf('</section>', i);
   const sec = a < 0 || z < 0 ? h.slice(i) : h.slice(a, z);
   const grab = (re, s) => { const m = s.match(re); return m ? m[1] : null; };
-  const firstNum = (s) => { if (s == null) return null; const m = norm(s).replace(/,/g, '').match(/-?\d+(?:\.\d+)?/); return m ? parseFloat(m[0]) : null; };
+  // ★ fix round 1 (reviewer finding #1): ต้องมี semantics เดียวกับ firstNum เดิมของ gate
+  //   (strip tag → norm(−→-) → strip ฿$, → จับตัวเลข) — เดิมไม่ strip tag/฿$ ⇒ เซลล์ "~−$2.33" กิน "$"
+  //   คั่นกลางระหว่างเครื่องหมายลบกับตัวเลข ทำให้ /-?\d+/ เริ่มที่ "-" ไม่ได้ (พลาด eps ติดลบ 11 คอลัมน์/5 ใบ)
+  const firstNum = (s) => { if (s == null) return null; const t = norm(String(s).replace(/<[^>]+>/g, ' ')).replace(/[฿$,]/g, ''); const m = t.match(/-?\d+(?:\.\d+)?/); return m ? parseFloat(m[0]) : null; };
   const out = [];
   let m;
   const re = SCN_COL_RE();
   while ((m = re.exec(sec))) {
-    if (!/^(bear|base|bull)$/.test(m[1])) continue;
+    // ★ fix round 1 (reviewer finding #2): filter เดิมตายแล้ว — kind group ของ SCN_COL_RE มาจาก
+    //   SCN_COL_OPEN_SRC ซึ่งบังคับ (bear|base|bull) อยู่แล้ว ไม่มีทางได้ค่าอื่น
     const seg = m[2];
     out.push({
       kind: m[1],

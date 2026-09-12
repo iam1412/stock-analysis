@@ -615,6 +615,14 @@ reject('W14', addCard('4. EV/EBITDA', 'EBITDA $4.0B (mid-point FY2026 $3.6B guid
     //   fixture จริงมี <p> คั่นก่อน </section> (ไม่ใช่ 3 </div> ตามด้วย </section> ทันที)
     const four = base.replace(/(<div class="col bull">[\s\S]*?<\/div>\s*<\/div>\s*<\/div>)/, (m, a) => a + '<div class="col bull"><div class="tgt">$9</div></div>');
     ok(four !== base && DV.scenarioBlock(four) == null && DV.scenarioColumns(four).length === 4, '(d) 4 คอลัมน์: ตัวเขียนเงียบ · ตัวตรวจอ่านได้ 4');
+    // fix round 1 (reviewer finding #1): EPS ติดลบที่มี "$"/"฿" คั่นระหว่างเครื่องหมายกับตัวเลข (เช่น "~−$2.33")
+    // ต้อง strip tag + สกุลเงินก่อนจับตัวเลข (เหมือน firstNum เดิมของ gate) ไม่งั้น "-" จะเริ่มจับไม่ได้ → เห็นเป็นบวก
+    const epsNeg = base.replace(
+      /(<div class="col bear">[\s\S]*?EPS ปี 3<\/span>\s*<span>)([\s\S]*?)(<\/span>)/,
+      (m, a, v, b) => a + '~−$2.33' + b,
+    );
+    ok(epsNeg !== base && DV.scenarioColumns(epsNeg)[0].eps === -2.33,
+      'fix#1: EPS ฉาก Bear "~−$2.33" ($ คั่นกลางเครื่องหมาย/ตัวเลข) → scenarioColumns ต้องได้ -2.33 ไม่ใช่ 2.33');
   }
   const fresh = at(PX);
   const retOf = (h, kind) => (h.match(new RegExp(`<div class="col ${kind}">[\\s\\S]*?<div class="ret[^"]*">([^<]*)<`)) || [])[1] || '';
