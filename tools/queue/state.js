@@ -6,6 +6,7 @@
  * stocks[SYM] = { reason, bucket, oldPrice, currency, footerAge, skip, flaggedAt   ← preflight (ทุกรอบ)
  *                 · prePatched | prePatchRejected                                  ← preflight หลังยิง gate ตามผล pre-patch
  *                 · mode, model, effort, prepAt, escalated, epsScreen, snapDeltas  ← prep (`escalated` ที่นี่ = **boolean** ของ EPS screen)
+ *                 · fyYears                                                        ← prep (Task 24 · #7 GABLE — จำนวน FY ที่มี EPS(dil) จริงในตาราง [3] · postcheck เทียบกับ f55)
  *                 · postcheck: 'pass'|'review', postcheckAt                        ← postcheck
  *                 · shippedAt | prepatchShippedAt }                                ← ship <SYM> / ship --prepatch
  * ★ `escalated` ของ triage (สตริง `'age'`|`'earnings'` = ยก PREPATCH→LIGHT) และ `synthetic` (แถวคิวอายุ) เป็นของ **แถวในรอบนั้น

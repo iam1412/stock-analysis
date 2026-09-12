@@ -205,6 +205,21 @@ process.env.QUEUE_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'queue-'));   // s
   ok(Pp.parseVendor(LOWY).divYieldPct === 0.26, 'parseVendor: yield 0.26% คงค่า 0.26 (ห้ามคูณ 100)', String(Pp.parseVendor(LOWY).divYieldPct));
   ok(Pp.parseVendor(LOWY.replace(/\[2\] StockAnalysis[^\n]*\n[^\n]*\n/, '')).divYieldPct === 0.26, 'parseVendor: yield 0.26% ทาง Yahoo ก็คงค่า');
 
+  // ★ #7 (GABLE — data-source-traps 6N): fyYears = จำนวนคอลัมน์ตัวเลขจริงในแถว EPS(dil) ของตาราง [3]
+  //   ไม่นับ TTM · "-" ไม่ใช่ตัวเลข · ใช้ตัดสินป้าย "P/E เฉลี่ย ~N ปี" ไม่ให้อ้างยาวกว่าอายุหุ้นในตลาด
+  ok(Pp.parseVendor('EPS(dil)   5.10  4.80  4.20  -  -').fyYears === 3,
+    'parseVendor: fyYears นับตัวเลขในแถว EPS(dil) (ไม่มีหัวตาราง TTM ในข้อความ → ไม่มีคอลัมน์ให้หัก)',
+    String(Pp.parseVendor('EPS(dil)   5.10  4.80  4.20  -  -').fyYears));
+  // เคสจริง: มีหัวตาราง TTM+FY นำหน้า → คอลัมน์แรกของแถว EPS(dil) เป็น TTM เสมอ (fetch-fundamentals.js:
+  // "คอลัมน์เรียงใหม่→เก่า") ⇒ ต้องหักออกก่อนนับ FY — GABLE จริง: TTM + 3 ปีจริง + 2 ปีก่อน IPO (dash)
+  const GABLE_TABLE = '[3] งบย้อนหลัง (StockAnalysis /financials) — Revenue/NI/FCF/Shares/Cash/Debt หน่วยล้าน · margin/ROE = %:\n'
+    + '                TTM  FY2025  FY2024  FY2023  FY2022  FY2021\n'
+    + '    EPS(dil)          5.10    4.80    4.20    3.90       -       -';
+  ok(Pp.parseVendor(GABLE_TABLE).fyYears === 3,
+    'parseVendor: fyYears หักคอลัมน์ TTM เมื่อหัวตารางมี TTM (เคส GABLE: มีจริง 3 ปี ไม่ใช่ 5)',
+    String(Pp.parseVendor(GABLE_TABLE).fyYears));
+  ok(Pp.parseVendor('ไม่มีตาราง [3] เลย').fyYears == null, 'parseVendor: ไม่มีแถว EPS(dil) → fyYears null (เทียบไม่ได้ ไม่ใช่ 0)');
+
   const html = FX.AAPL();
   const ctx = buildCtx(expandReport(html), 'AAPL.html');
   const same = Pp.snapshotDiff(html, ctx, { lo52: null, hi52: null, target: null, divYieldPct: null });
@@ -269,6 +284,12 @@ process.env.QUEUE_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'queue-'));   // s
   const noEsc = Pp.extraBlock({ sym: 'A', mode: 'UPDATE-LIGHT', escalated: false, prePatched: null, baseEPS: 7.3, epsTTM: 7.36, epsScreen: 0.8, snap: [], medWarn: [], hard: false, hardWhy: '' });
   ok(!/ยกระดับ/.test(noEsc) && /FV เดิมยืนได้/.test(noEsc), 'extraBlock: EPS screen ≤2% → ไม่มีคำว่ายกระดับ', noEsc);
 
+  // #7: prompt ต้องบอก worker ว่ามี EPS จริงกี่ปี ก่อนเขียนป้าย "P/E เฉลี่ย ~N ปี"
+  const fy3 = Pp.extraBlock({ sym: 'A', mode: 'UPDATE', prePatched: null, baseEPS: 7.1, epsTTM: 7.36, epsScreen: 0.8, snap: [], medWarn: [], hard: false, hardWhy: '', fyYears: 3 });
+  ok(/FY ที่มี EPS จริง: 3 ปี — ป้าย "P\/E เฉลี่ย ~M ปี" ห้ามเกิน 3/.test(fy3), 'extraBlock: fyYears=3 → บรรทัดเตือนป้าย P/E เฉลี่ย', fy3);
+  const fyNone = Pp.extraBlock({ sym: 'A', mode: 'UPDATE', prePatched: null, baseEPS: 7.1, epsTTM: 7.36, epsScreen: 0.8, snap: [], medWarn: [], hard: false, hardWhy: '', fyYears: null });
+  ok(!/FY ที่มี EPS จริง/.test(fyNone), 'extraBlock: fyYears ไม่รู้ (null) → ไม่พิมพ์บรรทัดเดา', fyNone);
+
   ok(Pp.hardStock({ bucket: 'FULL' }, ctx, v).hard === true, 'hardStock: suspect-split/bad-chart = ยาก');
   ok(Pp.hardStock({ bucket: 'LIGHT' }, { baseEPS: -1.2 }, v).hard === true && /pre-profit/.test(Pp.hardStock({ bucket: 'LIGHT' }, { baseEPS: -1.2 }, v).why), 'hardStock: EPS ฐาน ≤ 0 = pre-profit = ยาก');
   ok(Pp.hardStock({ bucket: 'LIGHT' }, ctx, v).hard === false, 'hardStock: LIGHT ปกติ = ไม่ยาก (Sonnet/medium)');
@@ -287,6 +308,13 @@ process.env.QUEUE_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'queue-'));   // s
   const m2 = Pc.checkMeta({ aiModel: 'Claude Sonnet 5', baseEPS: 5, sm: { ok: true, data: { pe: 20, roe: 10 } } }, 'opus', { iso: '2026-09-10', era: 'CE' }, '2026-09-11');
   ok(m2.some((s) => /ai-model/.test(s)) && m2.some((s) => /footer.*ไม่ใช่วันนี้/.test(s)) && m2.some((s) => /ค\.ศ\./.test(s)), 'checkMeta: ai-model ไม่ตรง spawn · footer ไม่ใช่วันนี้ · ค.ศ.', m2.join('|'));
   ok(Pc.checkMeta({ aiModel: 'Claude Opus 5', baseEPS: 5, sm: { ok: true, data: { pe: 20, roe: 10 } } }, 'opus', { iso: '2026-09-11', era: 'BE' }, '2026-09-11').length === 0, 'checkMeta: ทุกอย่างตรง → ว่าง');
+
+  // #7 (GABLE): checkFyYears — ป้าย "P/E เฉลี่ย ~N ปี" (f55 ของ manifest) ต้องไม่เกินจำนวน FY ที่มี EPS จริง
+  ok(/P\/E เฉลี่ย ~5 ปี.*GABLE/.test(Pc.checkFyYears(5, 3)), 'checkFyYears: f55=5 > fyYears=3 → ฟ้อง (เคส GABLE)', Pc.checkFyYears(5, 3));
+  ok(Pc.checkFyYears(3, 3) === null, 'checkFyYears: f55=3 == fyYears=3 → ไม่ฟ้อง (พอดี ไม่ใช่เกิน)');
+  ok(Pc.checkFyYears(2, 3) === null, 'checkFyYears: f55=2 < fyYears=3 → ไม่ฟ้อง');
+  ok(Pc.checkFyYears(null, 3) === null, 'checkFyYears: ไม่มีการ์ด (f55 null) → เทียบไม่ได้ ไม่ฟ้อง');
+  ok(Pc.checkFyYears(5, null) === null, 'checkFyYears: ไม่รู้ fyYears (prep ยังไม่ได้บันทึก) → เทียบไม่ได้ ไม่ฟ้อง');
 }
 
 // ── 9) ship (ส่วนบริสุทธิ์): commit message ตาม CLAUDE.md §5 (1 commit = 1 หุ้น · add/update · trailer ตามโมเดล worker) ──

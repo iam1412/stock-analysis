@@ -617,6 +617,8 @@ module.exports = {
   yahooSession,
   // ตัวดึงงบรายปี — ใช้ร่วมกับ tools/median-multiples.js (ตัวคูณมัธยฐานย้อนหลัง · CLAUDE.md §8 ชั้น 0.4b)
   fetchFinPage, finRow,
+  // ตัวพิมพ์ตาราง [3] — export ให้ test/prep-stock-test.js ยืนยันว่า SHARES_NOTE ถูกพิมพ์จริงเมื่อมีแถว shares (Task 24 · open-item #10)
+  printFinancialTable,
   SHARES_LABEL, SHARES_NOTE, EPS_TABLE_PASS_PCT, EPS_TABLE_ABS_TOL, SHARES_WARN_PCT, YIELD_WARN_PP,
   // WS9(a) — กับดัก vendor เชิงกล: entity mismatch (6O) + SA market cap ล้าหลัง quote ของตัวเอง (Task 21)
   amount, entityMismatchLine, capLine, ENTITY_MISMATCH_PCT, CAP_WARN_PCT,

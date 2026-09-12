@@ -227,6 +227,22 @@ ok(F.SHARES_LABEL === 'Shares(wAvgDil)' && /Shares/.test(F.SHARES_LABEL), 'SHARE
 ok(F.SHARES_NOTE.includes('หุ้นถัวเฉลี่ยถ่วงน้ำหนักปรับลด (TTM) — ห้ามใช้เป็นหุ้นคงเหลือ') && F.SHARES_NOTE.includes(F.SHARES_LABEL),
   '★ SHARES_NOTE: ถ้อยคำเตือนครบตามที่กำหนด', F.SHARES_NOTE);
 
+// #10 (open-items — CAMT/POET/AAOI): SHARES_NOTE มีข้อความอยู่แล้วตั้งแต่ 17 ส.ค. 69 แต่ไม่เคยมีเทสยืนยันว่า
+// printFinancialTable *พิมพ์จริง* เมื่อตาราง [3] มีแถว Shares(wAvgDil) — จับ console.log แทน (ฟังก์ชันพิมพ์ตรง ไม่คืนสตริง)
+function captureLog(fn) {
+  const lines = [];
+  const orig = console.log;
+  console.log = (s) => lines.push(String(s));
+  try { fn(); } finally { console.log = orig; }
+  return lines.join('\n');
+}
+const tableWithShares = captureLog(() => F.printFinancialTable([amataFin, null, null], null));
+ok(tableWithShares.includes(F.SHARES_NOTE), 'printFinancialTable: พิมพ์ SHARES_NOTE เมื่อตาราง [3] มีแถว Shares(wAvgDil) (fixture amataFin)', tableWithShares);
+ok(tableWithShares.includes(F.SHARES_LABEL), 'printFinancialTable: หัวแถวใช้ป้าย SHARES_LABEL จริง (ไม่ใช่ "Shares" เฉย ๆ)', tableWithShares);
+const noSharesFin = makeFinPage({ datekey: ['TTM', '2025-12-31'], epsDiluted: [3.22, 2.74] });
+const tableNoShares = captureLog(() => F.printFinancialTable([noSharesFin, null, null], null));
+ok(!tableNoShares.includes(F.SHARES_NOTE), 'printFinancialTable: ไม่มีแถว Shares ในตาราง [3] → ไม่พิมพ์ SHARES_NOTE (ไม่ฟ้องเดา)', tableNoShares);
+
 // ---------- ปันผล: yield ที่ย้อนกลับได้ (dps ÷ ราคา) ----------
 const yA = F.yieldLine(1.10, 31.25, 0.0432, 3.52); // AMATA: Yahoo 4.32% ย้อนกลับไม่ลงตัว · SA 3.52% ลงตัว
 ok(/= 3\.52%/.test(yA) && /⚠/.test(yA) && /Yahoo/.test(yA) && !/⚠ SA/.test(yA), 'yieldLine: Yahoo ไม่ลงตัว → ⚠ ยึด dps÷ราคา', yA);

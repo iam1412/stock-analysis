@@ -34,7 +34,7 @@ price-flags.json        # คิวหุ้นรอ re-analysis จาก cron
 tools/                  # prep-stock.js (pre-fetch pack + CROSS-VERIFY) · fetch-facts.js · fetch-fundamentals.js · update-prices.js (cron ราคา)
                         #   · pick-brand.js + brandtheme.js + seeds.json + brand-colors.md · preserve-dates.js · migrate.js · symbol-map.json (ticker เปลี่ยนชื่อ)
 test/                   # quality gate ทุกชั้น: update-prices-test · dead-ticker-test · check-reports · ohlc-test · ta-engine-test · build-test · engine-exec · skeleton-test · check-site · prep-stock-test
-                        #   + นอก gate: self-test
+                        #   + self-test (meta-test ของ check-reports — เข้า gate ตั้งแต่ 12 ส.ค. 69 เหมือนกัน)
 docs/                   # รายละเอียดเชิงลึก: quality-gate.md · templates.md · counters.md · price-refresh.md · ta-chart.md · orchestration.md
 .github/workflows/update-prices.yml        # cron อัปเดตราคาทุกวัน 07:17 น. ไทย
 .github/workflows/fundamentals-canary.yml  # canary รายสัปดาห์ (จันทร์ 09:00 น. ไทย) — จับแหล่งข้อมูลเปลี่ยนโครง
