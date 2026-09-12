@@ -3,10 +3,10 @@
 > สรุปย่อ + คำสั่งอยู่ใน `CLAUDE.md §8` — ไฟล์นี้คือรายละเอียดไล่ทีละชั้น/ทีละ error
 > **enforcement จริงอยู่ในโค้ด `test/*.js`** เอกสารนี้เป็นคำอธิบายประกอบเท่านั้น
 
-มี gate หลายชั้น ต้องผ่านทั้งหมด **ก่อน push เสมอ** (มี `pre-push` hook บังคับซ้ำ <!-- gen:verify-steps -->14<!-- /gen:verify-steps --> ขั้น):
+มี gate หลายชั้น ต้องผ่านทั้งหมด **ก่อน push เสมอ** (มี `pre-push` hook บังคับซ้ำ <!-- gen:verify-steps -->15<!-- /gen:verify-steps --> ขั้น):
 
 ```bash
-npm run verify           # ★ ครบชุด <!-- gen:verify-steps -->14<!-- /gen:verify-steps --> ขั้น: update-prices-test → dead-ticker-test → tag-apply-test → queue-test → tags-test → check-reports → self-test → ohlc-test → ta-engine-test → build → build-test → engine-exec → skeleton-test → check-site
+npm run verify           # ★ ครบชุด <!-- gen:verify-steps -->15<!-- /gen:verify-steps --> ขั้น: <!-- gen:verify-chain-plain -->update-prices-test → dead-ticker-test → tag-apply-test → queue-test → docs-test → tags-test → check-reports → self-test → ohlc-test → ta-engine-test → build → build-test → engine-exec → skeleton-test → check-site<!-- /gen:verify-chain-plain -->
 npm run test:prices      # ชั้น 1 (unit-test cron ราคา — offline: decide/detectStaleQuotes/capByCohort/unverifiedCohorts/mergeFlags/patchReport)
 npm run test:dead        # ชั้น 2 (unit-test canary หุ้นตาย — offline: tvBaseName/tvCandidates/classify/mergeDeadFlags/shouldAbort/retry)
 npm run test:tagapply    # ชั้น tag 1 (unit-test CLI ที่เขียน tags.json — offline: applyTags/renameSymbol/pruneMissing all-or-nothing)
@@ -166,7 +166,7 @@ tripwire ชั้น 0.1 คือ **ตัวชี้ให้ไปสอบ
 ## ชั้น 1 — `test/check-reports.js`
 ตรวจ source `reports/<SYMBOL>.html` ทีละไฟล์ — <!-- gen:counts -->47 error + 18 warning<!-- /gen:counts --> (W16/W17/W19/W20 เป็น error ตั้งแต่ระยะ 1 — คงชื่อ W)
 
-### ตารางอ้างอิง code ครบชุด (E01–E43 · W01–W23)
+### ตารางอ้างอิง code ครบชุด (<!-- gen:code-range -->E01–E43 · W01–W23<!-- /gen:code-range -->)
 
 > ★ **สี่คอลัมน์แรก generate จากโค้ด** — `node tools/gen-docs.js` อ่าน field `id`/`level`/`healer`/`label` ของ `CHECKS` ใน `test/check-reports.js` มาเขียนทับระหว่าง marker `gen:checks-table` (ห้ามแก้มือ · `--check` เป็นตัวฟ้องใน gate) · **คอลัมน์สุดท้าย "เกณฑ์ + วิธีแก้" เป็นของคน** สรุปจากตัว `fn` และค่าคงที่ `TOL_*` ในไฟล์เดียวกัน — gen-docs คงค่าเดิมไว้ตาม code ⇒ **เพิ่ม check ใหม่ในโค้ด → รัน gen-docs แล้วเติมช่องที่ขึ้นว่า `_(เติม)_`** · `healer` = ตัวซ่อมใน `tools/derived-values.js` ที่ `--heal-derived` เรียก (`—` = ยังไม่มี ต้องแก้ใบเอง) · ไม่มี W11 (ยกระดับเป็น E36 แล้ว) · W21/W22/W23 = manifest ระยะ 1 · W16/W17/W19/W20 ยกเป็น error 12 ก.ย. 2569 — คงชื่อ W เพราะถูกอ้างในเอกสาร/memory มาก — **gate ฟ้อง code ไหน เปิดตารางนี้แล้วแก้ได้เลย ไม่ต้องขุด test/ ไม่ต้อง survey รายงานตัวอื่น**
 

@@ -11,7 +11,10 @@
  *   <!-- gen:counts -->…<!-- /gen:counts -->               "N error + M warning"
  *   <!-- gen:verify-steps -->…<!-- /gen:verify-steps -->   จำนวนขั้นของ `npm run verify`
  *   <!-- gen:verify-cron-steps -->…<!-- /gen:verify-cron-steps -->   จำนวนขั้นของ `npm run verify:cron`
- *   <!-- gen:verify-chain -->…<!-- /gen:verify-chain -->   ลำดับขั้นทั้งเส้น
+ *   <!-- gen:verify-chain -->…<!-- /gen:verify-chain -->   ลำดับขั้นทั้งเส้น (มี backtick ต่อขั้น)
+ *   <!-- gen:verify-chain-plain -->…<!-- /gen:verify-chain-plain -->  ลำดับขั้นทั้งเส้นแบบไม่มี backtick (ใช้ในบล็อกโค้ด/คอมเมนต์)
+ *   <!-- gen:code-range -->…<!-- /gen:code-range -->        ช่วง code E/W ปัจจุบัน เช่น "E01–E43 · W01–W23" (จาก id ต่ำสุด/สูงสุดของแต่ละ prefix ใน CHECKS)
+ *   <!-- gen:verify-list -->…<!-- /gen:verify-list -->      รายการขั้น verify แบบมีเลขลำดับ 1..N + คำอธิบายต่อขั้น (คำอธิบายเป็นของคน คงไว้ตามชื่อไฟล์ขั้น เหมือน checks-table)
  *   # gen:steps … # /gen:steps                             บล็อก echo+node ของ `.githooks/pre-push`
  * ★ ตัวเลขพวกนี้ที่พิมพ์ไว้ **นอก** marker จะ drift เงียบ — docs-test (Task 19) เป็นตัวฟ้อง
  */
@@ -48,6 +51,7 @@ const STEP_LABELS = {
   'test/engine-exec.js': ['⚙️', 'รัน engine ทุกรายงานใน mock DOM (engine-exec)', 'engine execution gate', { quiet: true, pad: true }],
   'test/skeleton-test.js': ['🧱', 'โครงต้นแบบ TH/US เติมแล้วผ่าน gate (skeleton-test)', 'skeleton template gate', { quiet: true }],
   'test/check-site.js': ['🌐', 'ตรวจความสมบูรณ์เว็บไซต์ (check-site)', 'site integrity gate', {}],
+  'test/docs-test.js': ['📚', 'docs ↔ code (docs-test)', 'docs gate'],
 };
 
 const errs = CHECKS.filter((c) => c.level === 'error'), warns = CHECKS.filter((c) => c.level === 'warn');
@@ -93,6 +97,40 @@ function checksTable(existing) {
   return ['| code | level | healer | ตรวจอะไร | เกณฑ์ + วิธีแก้ (ย่อ) |', '|---|---|---|---|---|', ...rows].join('\n');
 }
 
+/** ช่วง code ปัจจุบันต่อ prefix (E/W) จาก id ต่ำสุด/สูงสุดจริงใน CHECKS — เช่น "E01–E43 · W01–W23"
+ *  ★ เป็นช่วง (min–max) ไม่ใช่รายการครบ — id ที่ถูกถอนออกกลางช่วง (เช่น W11 ยกไป E36) ไม่ทำให้ช่วงเปลี่ยน ตรงกับที่เอกสารเคยพิมพ์มือ */
+function codeRange() {
+  const nums = (prefix) => CHECKS.filter((c) => c.id[0] === prefix).map((c) => parseInt(c.id.slice(1), 10));
+  const fmt = (prefix) => {
+    const ns = nums(prefix);
+    if (!ns.length) return null;
+    const pad = (n) => String(n).padStart(2, '0');
+    return `${prefix}${pad(Math.min(...ns))}–${prefix}${pad(Math.max(...ns))}`;
+  };
+  return ['E', 'W'].map(fmt).filter(Boolean).join(' · ');
+}
+
+/** เหมือน verify-chain แต่ไม่มี backtick ต่อขั้น — ใช้ในบรรทัดคอมเมนต์ bash ที่ backtick จะโดน shell ตีความ */
+function verifyChainPlain() {
+  return VERIFY.map(stepName).join(' → ');
+}
+
+/** รายการขั้น verify แบบมีเลขลำดับ "N. **`file.js`** คำอธิบาย" — เลขลำดับ/รายชื่อไฟล์/จำนวนขั้น generate จาก VERIFY
+ *  คำอธิบายท้ายบรรทัดเป็นของคน (เหมือน checksTable) — salvage จากเนื้อเดิมโดย key ด้วยชื่อไฟล์ ไม่ใช่เลขลำดับ (เลขขยับได้เมื่อแทรกขั้นใหม่ตรงกลาง)
+ *  ขั้นใหม่ที่ยังไม่เคยมีคำอธิบายในไฟล์ → ขึ้น `_(เติม)_` ให้คนเติม (แพตเทิร์นเดียวกับ checksTable) */
+function verifyList(existing) {
+  const prose = {};
+  for (const line of String(existing || '').split('\n')) {
+    const m = /^\d+\.\s+\*\*`([^`]+)`\*\*(.*)$/.exec(line);   // ไม่กิน whitespace ต่อท้าย ** เอง — เก็บตัวคั่นเดิม (": " หรือ " (") ไว้ใน prose ตรง ๆ
+    if (m) prose[m[1].replace(/\.js$/, '')] = m[2];   // .replace: ของเดิมพิมพ์ผสม ("build" ไม่มี .js แต่ตัวอื่นมี) — normalize คีย์ให้ตรง stepName() เสมอ
+  }
+  return VERIFY.map((s, i) => {
+    const key = stepName(s);
+    const p = prose[key];
+    return `${i + 1}. **\`${key}\`**${p != null ? p : ' _(เติม)_'}`;
+  }).join('\n');
+}
+
 function prepushBlock() {
   const n = VERIFY.length;
   return VERIFY.map((s, i) => {
@@ -109,8 +147,13 @@ const GEN = {
   'verify-steps': () => String(VERIFY.length),
   'verify-cron-steps': () => String(CRON.length),
   'verify-chain': () => VERIFY.map((s) => `\`${stepName(s)}\``).join(' → '),
+  'verify-chain-plain': () => verifyChainPlain(),
+  'code-range': () => codeRange(),
+  'verify-list': (old) => verifyList(old),
   'steps': () => prepushBlock(),
 };
+/** ชื่อ marker ที่ render เป็นหลายบรรทัด — ต้องขึ้นบรรทัดใหม่คั่นจาก tag เปิด/ปิด ไม่งั้น markdown/list จะติดกับ comment tag */
+const MULTILINE = new Set(['checks-table', 'verify-list']);
 const TARGETS = ['docs/quality-gate.md', 'CLAUDE.md', 'README.md', 'docs/price-refresh.md', '.githooks/pre-push'];
 const MARK = (name, sh) => sh
   ? new RegExp(`(# gen:${name}\\n)([\\s\\S]*?)(\\n# /gen:${name})`, 'g')
@@ -125,7 +168,7 @@ function render(file) {
     text = text.replace(MARK(name, sh), (m, a, old, z) => {
       used++;
       const body = fn(old);
-      return sh ? `${a}${body}${z}` : (name === 'checks-table' ? `${a}\n${body}\n${z}` : `${a}${body}${z}`);
+      return sh ? `${a}${body}${z}` : (MULTILINE.has(name) ? `${a}\n${body}\n${z}` : `${a}${body}${z}`);
     });
   }
   return { text, used };
@@ -135,17 +178,18 @@ function render(file) {
 function check() {
   const out = [];
   for (const f of TARGETS) {
-    const cur = fs.readFileSync(path.join(ROOT, f), 'utf8');
-    let r;
-    try { r = render(f); }
-    catch (e) { out.push({ file: f, why: e.message }); continue; }
+    let cur, r;
+    try {
+      cur = fs.readFileSync(path.join(ROOT, f), 'utf8');
+      r = render(f);
+    } catch (e) { out.push({ file: f, why: e.message }); continue; }
     if (!r.used) out.push({ file: f, why: 'ไม่มี marker gen: เลย — ใส่ marker ครอบส่วนที่ generate (ดูหัวไฟล์ tools/gen-docs.js)' });
     else if (r.text !== cur) out.push({ file: f, why: 'เนื้อในระหว่าง marker ไม่ตรงโค้ด — รัน node tools/gen-docs.js' });
   }
   return out;
 }
 
-module.exports = { render, check, TARGETS, GEN, STEP_LABELS, VERIFY, CRON, checksTable, prepushBlock, proseOf, headerCols, mdCell };
+module.exports = { render, check, TARGETS, GEN, STEP_LABELS, VERIFY, CRON, checksTable, prepushBlock, proseOf, headerCols, mdCell, codeRange, verifyChainPlain, verifyList };
 
 if (require.main === module) {
   if (process.argv.includes('--check')) {

@@ -17,7 +17,7 @@ permissions:
 
 concurrency:
   # กลุ่มเดียวกับ update-prices.yml (ไม่ใช่ชื่อ workflow ตัวเอง) — เหตุผลเต็มอยู่ที่นั่น: ทั้งคู่แก้ไข
-  # issue คิวใบเดียวกันแบบไม่มี lock ต้อง serialize ข้าม workflow กัน ⇒ canary เช้าวันจันทร์ต่อคิว
+  # issue คิวใบเดียวกันไม่ได้ทำ lock กันชน ต้อง serialize ข้าม workflow กัน ⇒ canary เช้าวันจันทร์ต่อคิว
   # รอ price-refresh รอบยาวจบก่อน (trade-off ที่ตั้งใจ ดีกว่า cancel-in-progress กลางคัน)
   group: price-flags-issue
   cancel-in-progress: false
