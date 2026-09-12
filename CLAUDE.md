@@ -28,7 +28,7 @@ dist/                   # ⚠️ build output (gitignore) — ห้ามแก
 
 ## 2. วิเคราะห์หุ้นเดี่ยว (skill `stock-analyzer`)
 
-เมื่อสั่ง "วิเคราะห์ X" / re-analysis / เคลียร์คิว price-flags → เรียก skill **`stock-analyzer`** แล้ว**ทำตามทุกขั้น** → `npm run verify` ผ่าน 14 ขั้น → **Auto-push** (§5 — controller/session หลักเท่านั้น · worker คืนงานให้ controller push)
+เมื่อสั่ง "วิเคราะห์ X" / re-analysis / เคลียร์คิว price-flags → เรียก skill **`stock-analyzer`** แล้ว**ทำตามทุกขั้น** → `npm run verify` ผ่าน <!-- gen:verify-steps -->15<!-- /gen:verify-steps --> ขั้น → **Auto-push** (§5 — controller/session หลักเท่านั้น · worker คืนงานให้ controller push)
 
 invariant ที่ห้ามหลุดไม่ว่ากรณีใด:
 - **cross-source verify ราคา+EPS ≥2 แหล่งก่อนเขียนตัวเลข** — ราคาต่าง >5% / EPS ขัดกัน → หยุด ถามผู้ใช้ อย่าเผยแพร่ (gate ตรวจความจริงไม่ได้)
@@ -41,7 +41,7 @@ invariant ที่ห้ามหลุดไม่ว่ากรณีใด:
 
 ## 3. [controller] วิเคราะห์หลายตัว / เป็นกลุ่ม (parallel agents)
 
-ใช้เมื่อสั่งหลายตัวหรือธีม · **รายละเอียด+เหตุผลทั้งหมด → `docs/orchestration.md`** · invariant ที่ห้ามหลุด:
+ใช้เมื่อสั่งหลายตัวหรือธีม · **กลไก courier/analyze-wave/ต้นทุน → `docs/orchestration.md` (กฎอยู่ที่นี่ที่เดียว)** · invariant ที่ห้ามหลุด:
 
 1. **ก่อนเริ่ม**: `git pull --rebase origin main` → อ่านวันที่ footer "ข้อมูล ณ" ของแต่ละใบ (runbook `preflight` ทำให้ · `reports.json.updated` ใช้ตัดสินไม่ได้ — freshHash ชนกัน 13 ใบ 9 ก.ย. 69) — สด ≤7 วัน **ไม่ทำซ้ำ** (ธีม→หาตัวแทน · ระบุชื่อ→ข้ามพร้อมแจ้ง) · เกิน 7 วัน = UPDATE · ยังไม่มี = NEW
 2. **โมเดล**: ❌ Haiku ทุกขั้น · **Sonnet = default ของหุ้นส่วนใหญ่** · **Opus = escalate เฉพาะ "หุ้นยาก"** (เกณฑ์เดียวกับ effort high ท้ายข้อนี้ — IPO <1 ปี/spinoff/split/cyclical/pre-profit/ราคา cross-source ต่าง >5%) ส่ง `model:"opus"` เฉพาะตัวนั้นใน `stocks[]` (แก้กติกาเดิม "Sonnet ทุกชั้น" 9 ส.ค. 69 — `analyze-wave` รองรับ escalate รายตัวอยู่แล้ว) · ★★ **บังคับ pin `model` ทุก `analyze-wave`/`Agent` call เสมอ ("sonnet" หรือ "opus" ตามที่ตั้งใจ) — ห้ามพึ่ง env var** เพราะ `CLAUDE_CODE_SUBAGENT_MODEL` **ตั้งผ่าน `settings.json` ไม่ได้** (harness กรองตัวแปรนี้ทิ้งเป็นการเฉพาะ ทั้งชั้น project และ local — วัดแบบ controlled 8 ส.ค. 69: ตัวแปรอื่นใน `env` block เดียวกันติดหมด ตัวนี้ตัวเดียวหาย) ⇒ default ที่ไม่ pin **ไม่แน่นอน** (วัดจริง 8 ส.ค. 69 = Opus 5 · 11 ก.ย. 69 = Sonnet 5 — ผลต่างกันคนละวัน · เส้นทาง `analyze-wave` ไม่ส่ง `model` = Sonnet 5 วัด 12 ก.ย. 69 แต่เป็นเพราะ script pin `'sonnet'` เองที่ `analyze-wave.js:20` ไม่ใช่ default harness ⇒ ทางนี้แน่นอน ทาง Agent tool ไม่แน่นอน) ⇒ ผิดกติกาเพราะ "ไม่รู้ว่าได้อะไร" (ค่าใช้จ่าย + ป้าย `ai-model` ไม่ตรงแผน) ไม่ใช่เพราะ Opus ต้องห้าม · **เช็คก่อนเริ่มเวฟด้วย probe subagent จริง** (spawn ไม่ใส่ `model` แล้วให้ตอบบรรทัด "You are powered by the model named …") — `echo $CLAUDE_CODE_SUBAGENT_MODEL` **ใช้ไม่ได้** มันเห็นแค่ env ของ Bash ไม่ใช่ของ spawner · ป้าย `ai-model` ในรายงานต้องตรงกับโมเดลที่รันจริง → controller spot-check ทุกใบ · หุ้นยาก (IPO <1 ปี/spinoff/split/cyclical/pre-profit/ราคา cross-source ต่าง >5%) → worker effort **high** + ปรึกษา `advisor` **ผ่าน courier subagent เท่านั้น** ก่อน spawn แล้วฝังแนวทางลง prompt (**worker เรียกตรง = ห้ามเชิงนโยบาย** ไม่ใช่ "ทำไม่ได้" — แก้ข้อความเดิมที่เขียนว่า "unavailable เสมอ" ซึ่งพิสูจน์แล้วว่าไม่จริง 9 ก.ย. 69: worker DASH เรียกตรงแล้วสำเร็จ · วิธี/เหตุผล `docs/orchestration.md` §2 · courier ล้มเหลว → หยุดถาม user) · ตัดสิน publish/skip กำกวม → advisor ก่อน (เรียกตรง · courier เมื่อ context ใหญ่จน unavailable) ยังกำกวม → หยุด ping user
@@ -53,7 +53,7 @@ invariant ที่ห้ามหลุดไม่ว่ากรณีใด:
 
 ## 4. Token discipline
 
-ต้นทุนจริง = **จำนวน turn × cache-read** ไม่ใช่ output — กติกา token-lean ต่อหุ้นอยู่ใน **SKILL.md** · เป้า+ตัวเลขวัดจริง → `docs/orchestration.md` §7 + memory `token-usage-benchmarks` · ที่ controller คุมเองเพิ่ม:
+ต้นทุนจริง = **จำนวน turn × cache-read** ไม่ใช่ output — กติกา token-lean ต่อหุ้นอยู่ใน **SKILL.md** · เป้า+ตัวเลขวัดจริง → `docs/orchestration.md` §6 + memory `token-usage-benchmarks` · ที่ controller คุมเองเพิ่ม:
 
 - **รันยาวได้ ไม่ต้องหยุดรอ user เปิด session ใหม่** (ยกเลิก chunk/session — 13 ก.ค. 69, auto-compact จัดการเอง) · คุมตัวเอง (controller · worker ห้าม push §5): รวม verify+push เป็น Bash เดียว · ไม่อ่านรายงานทั้งไฟล์ · สรุประหว่างเวฟให้สั้น
 - pull --rebase + อ่านวันที่ footer "ข้อมูล ณ" ก่อน (`npm run queue -- preflight` ทำให้) — ข้ามหุ้นสด ≤7 วัน
@@ -68,7 +68,7 @@ invariant ที่ห้ามหลุดไม่ว่ากรณีใด:
 (commit **ก่อน** pull --rebase เสมอ ไม่งั้น rebase error "Please commit or stash")
 
 ```bash
-npm run verify                     # 0. quality gate 14 ขั้น — error = ห้าม push
+npm run verify                     # 0. quality gate <!-- gen:verify-steps -->15<!-- /gen:verify-steps --> ขั้น — error = ห้าม push
 git add -A                         # 1.
 git commit -m "<message>"          # 2.
 git pull --rebase origin main      # 3. sync
@@ -105,10 +105,12 @@ Co-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>
 
 ## 8. Quality gate — ก่อนเผยแพร่ (`npm run verify`)
 
-14 ขั้น ต้องผ่านทั้งหมดก่อน push (pre-push hook บังคับซ้ำ) · cron ใช้ชุดย่อย `verify:cron` 5 ขั้น (check-reports → build → build-test → engine-exec → check-site) เพราะ unit test ของเครื่องมือล้ม ≠ ราคาพัง:
-`update-prices-test` → `dead-ticker-test` → `tag-apply-test` → `queue-test` → `tags-test` → `check-reports` (47 error + 18 warning) → `self-test` → `ohlc-test` → `ta-engine-test` → `build` → `build-test` → `engine-exec` → `skeleton-test` → `check-site`
+<!-- gen:verify-steps -->15<!-- /gen:verify-steps --> ขั้น ต้องผ่านทั้งหมดก่อน push (pre-push hook บังคับซ้ำ) · cron ใช้ชุดย่อย `verify:cron` <!-- gen:verify-cron-steps -->5<!-- /gen:verify-cron-steps --> ขั้น (<!-- gen:verify-cron-chain -->`check-reports` → `build` → `build-test` → `engine-exec` → `check-site`<!-- /gen:verify-cron-chain -->) เพราะ unit test ของเครื่องมือล้ม ≠ ราคาพัง:
+<!-- gen:verify-chain -->`update-prices-test` → `dead-ticker-test` → `tag-apply-test` → `queue-test` → `docs-test` → `tags-test` → `check-reports` → `self-test` → `ohlc-test` → `ta-engine-test` → `build` → `build-test` → `engine-exec` → `skeleton-test` → `check-site`<!-- /gen:verify-chain --> (check-reports = <!-- gen:counts -->47 error + 18 warning<!-- /gen:counts -->)
 
-> `self-test` เข้า gate แล้ว (12 ส.ค. 69) — เดิมเป็น meta-test ที่ต้องรันมือ ⇒ ถ้า check ใน `check-reports` เสียจนไม่ยิงอีก gate จะรายงาน "error 0" แยกไม่ออกจาก "สะอาดจริง" (0.24 วิ ไม่กระทบเวลา)
+> ตัวเลข/ลำดับขั้นในบล็อกนี้ generate ด้วย `node tools/gen-docs.js` จาก `package.json` + `CHECKS` — แก้มือแล้วจะถูกเขียนทับ (`--check` ฟ้องใน gate)
+
+> `self-test` เข้า gate แล้ว (12 ส.ค. 69) — เดิมเป็น meta-test ที่ต้องรันมือ ⇒ ถ้า check ใน `check-reports` เสียจนไม่ยิงอีก gate จะรายงาน "error 0" แยกไม่ออกจาก "สะอาดจริง" (0.24 วิ ไม่กระทบเวลา) · `docs-test` เข้า gate (ระยะ 1 — ตัวเลข/ตารางใน docs generate จาก `tools/gen-docs.js` แก้มือแล้ว verify ตก)
 
 - เร็ว: `npm test -- <SYM>` = check-reports เฉพาะตัวนั้น (ใช้ตอน self-check ก่อนคืนงาน)
 - gate ตรวจ **ความสอดคล้อง/ความสด/การอ้างอิง** เท่านั้น — **ตรวจความจริงของราคา/EPS ไม่ได้** (ต้อง cross-source verify §2) และ **ตรวจไม่ได้ว่าสมมติฐาน valuation สมเหตุผลไหม**

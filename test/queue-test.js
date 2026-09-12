@@ -572,10 +572,16 @@ process.env.QUEUE_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'queue-'));   // s
   ok(Q.resolveModel('AAPL', { model: 'sonnet' }) === 'sonnet', 'resolveModel: อ่านจาก state');
   ok(Q.resolveModel('AAPL', { model: 'sonnet' }, 'opus') === 'opus', 'resolveModel: --model ชนะค่าใน state');
   ok(Q.resolveModel('AAPL', {}, 'opus') === 'opus', 'resolveModel: ไม่มีใน state แต่ใส่ --model → ผ่าน');
-  for (const [rec, over, label] of [[{}, null, 'ไม่มี model ใน state'], [{ model: 'haiku' }, null, 'model ที่ไม่รู้จัก'], [{ model: 'sonnet' }, 'haiku', '--model ที่ไม่รู้จัก']]) {
+  {
+    let threw = null;
+    try { Q.resolveModel('AAPL', {}, null); } catch (e) { threw = e.message; }
+    ok(/^AAPL: ไม่มี model ใน state/.test(threw || '') && /npm run queue -- prep AAPL/.test(threw || '') && /--model sonnet\|opus/.test(threw || ''), 'resolveModel: ไม่มี model ใน state → ปฏิเสธพร้อมวิธีแก้', String(threw));
+  }
+  // model ถูกส่งมาแล้ว (state หรือ --model) แต่ไม่รู้จัก → ข้อความต้องต่างจากกรณี "ไม่มี" (ชี้ชื่อโมเดลที่พิมพ์ผิด ไม่ใช่บอกให้ไปรัน prep)
+  for (const [rec, over, label] of [[{ model: 'haiku' }, null, 'model ที่ไม่รู้จักใน state'], [{ model: 'sonnet' }, 'haiku', '--model ที่ไม่รู้จัก']]) {
     let threw = null;
     try { Q.resolveModel('AAPL', rec, over); } catch (e) { threw = e.message; }
-    ok(/^AAPL: ไม่มี model ใน state/.test(threw || '') && /npm run queue -- prep AAPL/.test(threw || '') && /--model sonnet\|opus/.test(threw || ''), `resolveModel: ${label} → ปฏิเสธพร้อมวิธีแก้`, String(threw));
+    ok(/^AAPL: โมเดล "haiku" ไม่รู้จัก \(ใช้ sonnet\|opus\)$/.test(threw || ''), `resolveModel: ${label} → ปฏิเสธด้วยชื่อโมเดลที่พิมพ์ผิด (ไม่ใช่ "ไม่มี model ใน state")`, String(threw));
   }
 }
 
@@ -645,6 +651,47 @@ process.env.QUEUE_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'queue-'));   // s
   ok(noStart === false && n === 1, 'closeIssueIfNoLlmRows: ไม่รู้ startedAt (state เก่า/เทส) → นับทุกแถวเหมือนเดิม', String(n));
   const S4 = require('../tools/queue/state.js');
   ok(S4.inRound({ flaggedAt: '2026-09-01' }, '2026-09-10') === false && S4.inRound({ flaggedAt: '2026-09-12' }, '2026-09-10') === true && S4.inRound({}, '2026-09-10') === true, 'inRound: เทียบ flaggedAt กับ startedAt · แถวไม่มี flaggedAt = นับด้วยเสมอ');
+
+  // (iv) ★ (รีวิว C) คิวที่ถือ flag จาก 2 วันต่างกันโดยไม่มีอะไรเปลี่ยน — preflight รันซ้ำห้ามเลื่อน startedAt
+  //      เกณฑ์เดิม ("flaggedAt > prev" ล้วน) เลื่อนรอบทุกครั้งที่รันซ้ำ ⇒ แถวเก่าสุดหลุดรอบทั้งที่ยังค้าง
+  //      ไล่ลำดับเหมือน preflight จริง: roundStart(ก่อน) → upsertRow(หลัง)
+  const mk = (symbol, flaggedAt) => ({ symbol, reason: 'drift-gt-15pct', bucket: 'LIGHT', flaggedAt, oldPrice: 10, currency: 'USD', footerAge: 40, skip: null });
+  const rowsAB = [mk('A', '2026-09-01'), mk('B', '2026-09-03')];
+  const st1 = { startedAt: null, stocks: {} };
+  const runPreflight = (rows, today) => {
+    st1.startedAt = P.roundStart(rows, st1.startedAt || null, today, st1.stocks);
+    for (const r of rows) st1.stocks[r.symbol] = P.upsertRow(st1.stocks[r.symbol], r);
+    return st1.startedAt;
+  };
+  ok(runPreflight(rowsAB, '2026-09-12') === '2026-09-01', 'roundStart: รันแรก → startedAt = flaggedAt เก่าสุดของ flag ที่ state ยังไม่เคยจำ', String(st1.startedAt));
+  ok(runPreflight(rowsAB, '2026-09-13') === '2026-09-01', 'roundStart: preflight รันซ้ำ คิวเดิม (flag คนละวัน) → ไม่มี flag ใหม่ ⇒ startedAt ไม่ขยับ (รีวิว C)', String(st1.startedAt));
+  ok(S4.inRound(st1.stocks.A, st1.startedAt) === true && S4.inRound(st1.stocks.B, st1.startedAt) === true, 'roundStart: รันซ้ำแล้วทั้งสองแถวยังอยู่ในรอบ (A ไม่หลุดไปซ่อนจาก status/ปิด issue)', `${st1.startedAt} A=${st1.stocks.A.flaggedAt} B=${st1.stocks.B.flaggedAt}`);
+  ok(runPreflight([...rowsAB, mk('C', '2026-09-13')], '2026-09-13') === '2026-09-13', 'roundStart: มี flag ใหม่จริง (C) → เปิดรอบใหม่ที่วันของ flag นั้น', String(st1.startedAt));
+  ok(runPreflight([mk('A', '2026-09-14'), mk('B', '2026-09-03')], '2026-09-14') === '2026-09-14', 'roundStart: cron เขียน flag เดิมด้วยวันใหม่ → นับเป็น flag ใหม่ (flaggedAt ต่างจากที่ state จำ)', String(st1.startedAt));
+}
+
+// ── 19g) ship: status — แถวที่ค้างจากรอบก่อนต้องไม่หายเงียบ (รีวิว C · คู่กับ roundStart ข้อ (iv)) ──
+{
+  const S5 = require('../tools/queue/state.js');
+  const Sh5 = require('../tools/queue/ship.js');
+  const backup = S5.load();
+  const cap = (fn) => { const lines = []; const orig = console.log; console.log = (s) => lines.push(String(s)); try { fn(); } finally { console.log = orig; } return lines; };
+  S5.save({ startedAt: '2026-09-10', stocks: {
+    INROUND: { bucket: 'LIGHT', flaggedAt: '2026-09-12' },                            // งานของรอบนี้ที่ยังไม่เริ่ม
+    OLDPEND: { bucket: 'LIGHT', flaggedAt: '2026-09-01' },                            // ค้างจากรอบก่อน — ต้องขึ้นบรรทัดใหม่
+    OLDDONE: { bucket: 'LIGHT', flaggedAt: '2026-09-01', shippedAt: '2026-09-02' },    // รอบก่อนแต่จบแล้ว = ไม่ค้าง
+    OLDSKIP: { bucket: 'FULL', flaggedAt: '2026-09-01', skip: 'สด ≤7 วัน (footer)' },   // รอบก่อนแต่ข้ามไปแล้ว = ไม่ค้าง
+    OLDFLIP: { bucket: 'PREPATCH', flaggedAt: '2026-09-01' },                         // ไม่ต้องส่ง LLM = ไม่นับว่าค้าง
+  } });
+  const lines = cap(() => Sh5.status());
+  ok(lines.length === 10, 'status: มีแถวค้างจากรอบก่อน → เพิ่มอีก 1 บรรทัด (รวม 10)', String(lines.length));
+  ok(/^ค้างจากรอบก่อน 1: OLDPEND$/.test(lines[9]), 'status: นับเฉพาะ LIGHT/FULL ของรอบก่อนที่ยังไม่ ship และไม่ skip', lines[9]);
+  ok(/· 0\/1$/.test(lines[0]), 'status: X/Y ยังนับเฉพาะแถวของรอบนี้ (แถวรอบก่อนไม่เข้าตัวหาร)', lines[0]);
+  ok(!lines.slice(0, 9).some((l) => /OLDPEND|OLDDONE|OLDSKIP|OLDFLIP/.test(l)), 'status: แถวรอบก่อนไม่ปนเข้าบรรทัดของรอบนี้', lines.slice(0, 9).join(' | '));
+  ok((lines.find((l) => /^ยังไม่เริ่ม/.test(l)) || '').includes('INROUND'), 'status: แถวของรอบนี้ยังขึ้นตามเดิม', lines.find((l) => /^ยังไม่เริ่ม/.test(l)));
+  S5.save({ startedAt: '2026-09-10', stocks: { INROUND: { bucket: 'LIGHT', flaggedAt: '2026-09-12' } } });
+  ok(cap(() => Sh5.status()).length === 9, 'status: ไม่มีแถวค้างจากรอบก่อน → ไม่พิมพ์บรรทัดนั้นเลย (9 บรรทัดเท่าเดิม)');
+  S5.save(backup);
 }
 
 // ── 20) ปฏิทินงบ (Task 17 · WS6 ข้อ 2) — เทส offline อยู่ไฟล์แยก คืน Promise ⇒ tally ต้องรอก่อนนับ ──
