@@ -32,7 +32,9 @@ const CUR = '(?:C\\$|[฿$])';       // คำศัพท์เดียวก�
 
 // ── ช่องที่ต้อง "เท่าเดิม" หลังย้าย (ผูกราคา/FV ล้วน) — f33 (การ์ด EPS) ไม่อยู่ในนี้: worker พิมพ์เอง ไม่ derive จากราคา
 const COPY_FIELDS = ['f01', 'f02', 'f09', 'f10', 'f11', 'f12', 'f14', 'f15', 'f16', 'f17', 'f18', 'f19', 'f20', 'f21', 'f22', 'f26', 'f28', 'f29', 'f30', 'f31',
-  'f34', 'f35', 'f36', 'f43', 'f44', 'f45', 'f46', 'f47', 'f48', 'f49', 'f50', 'f51', 'f52', 'f53', 'f54'];
+  'f34', 'f35', 'f36', 'f38', 'f43', 'f44', 'f45', 'f46', 'f47', 'f48', 'f49', 'f50', 'f51', 'f52', 'f53', 'f54'];
+// f38 (จำนวนช่อง ret ที่มีคลาส pos/neg) เพิ่มจาก review รอบ 1: ช่อง .ret ถูก strip ในชั้น 2 ⇒ ต้องมีช่องในชั้น 1
+// คุมว่า "คลาสไม่หาย/ไม่งอก" · การ **สลับ** pos↔neg ไม่เปลี่ยนจำนวน ⇒ จับด้วย note `ret class flip` แทน (เปิดเผยในสำมะโน)
 const REQUIRED_SITES = ['px', 'chg', 'priceDate', 'pxIn', 'big', 'summary', 'verdict', 'fvBox', 'legend', 'mFair', 'mCur', 'mos20card', 'mos30card', 'vcellFv'];
 // ★ f45/f46 (gauge.fair · chart.fairLine) **ถูกลบโดยตั้งใจ** ใน v2 — ยุบเข้า `fv` สำเนาเดียว
 //   ⇒ เทียบค่าเดิมกับ fv ของ v2 แทนการเทียบช่องที่ไม่มีแล้ว (ไม่งั้นทุกใบตกชั้น 1 โดยไม่มีความหมาย)
@@ -55,8 +57,12 @@ const roundsTo = (a, b) => Math.abs(a - b) <= 0.5 * Math.pow(10, -decOf(a)) + 1e
 const arrRounds = (a, b) => (a == null && b == null)
   || (Array.isArray(a) && Array.isArray(b) && a.length === b.length
     && a.every((x, i) => (x == null && b[i] == null) || (x != null && b[i] != null && (Math.abs(x - b[i]) <= 0.006 || roundsTo(x, b[i])))));
-const arrNear25 = (a, b) => Array.isArray(a) && Array.isArray(b) && a.length === b.length
-  && a.every((x, i) => x != null && b[i] != null && Math.abs(x - b[i]) <= Math.max(0.025 * Math.abs(b[i]), 0.01));
+// ★ F7 (review รอบ 1): เดิมใช้ 2.5% ตามที่ E18/E26 ยอม — แต่ 2.5% คือเกณฑ์ที่ยอมให้ "ผู้เขียน" เขียนคลาด
+//   ไม่ใช่ใบอนุญาตให้ migrator ขยับราคาที่ผู้อ่านใช้ตัดสินใจ · instrument ทั้งคลัง: 45 instance ตกมาถึงชั้นนี้
+//   ช่องว่างจริงที่มากสุดคือ 0.99% (CHAYO 1.99→2.00 · ANI 2.56→2.55) ⇒ ตั้ง 1.2% = ค่ากลม ๆ ที่เล็กที่สุดที่ยังรับข้อมูลจริงได้
+const GAP_REL = 0.012;
+const arrNearGap = (a, b) => Array.isArray(a) && Array.isArray(b) && a.length === b.length
+  && a.every((x, i) => x != null && b[i] != null && Math.abs(x - b[i]) <= Math.max(GAP_REL * Math.abs(b[i]), 0.01));
 // เกณฑ์ "ค่าเท่ากัน" ต่อช่อง (a = v1, b = v2 หลัง render) — ค่าตั้งต้น: สัมพัทธ์ 0.5% หรือครึ่งหน่วยของทศนิยมที่หยาบกว่า
 const near = (a, b, rel, abs) => Math.abs(a - b) <= Math.max(rel * Math.abs(a), abs);
 const arrNear = (a, b, abs) => (a == null && b == null)
@@ -65,7 +71,11 @@ const arrNear = (a, b, abs) => (a == null && b == null)
 const TOLERANCE = {
   default: (a, b) => near(a, b, 0.005, 0.005),
   f09: (a, b) => a === b || near(numOf(a), numOf(b), 0, 0.15),          // ป้าย .chg: ข้อความ (ทิศ+suffix เท่ากัน) ตัวเลขต่างได้ 0.1 (คิดใหม่จาก chart.data)
-  f10: (a, b) => a === b, f11: (a, b) => true, f12: (a, b) => a == null || b == null || a.slice(0, 7) === b.slice(0, 7),   // f11 หายได้ (v2 ไม่ทวนวงเล็บ) · f12 ระดับเดือน → ระดับวัน
+  f10: (a, b) => a === b,
+  // f11 หายได้ (v2 ไม่ทวนวงเล็บ) แต่ **ห้ามเปลี่ยนเป็นวันอื่น** — เดิมเป็น `() => true` ซึ่งตกไม่ได้เลย (review รอบ 1 F6)
+  // การ "หาย" ถูกล้อมด้วยเงื่อนไขเชิงโครงสร้างที่ tokenise: ลบวงเล็บได้เฉพาะเมื่อข้างในมีแต่วันที่
+  f11: (a, b) => (a == null ? b == null : (b == null || a === b)),
+  f12: (a, b) => a == null || b == null || a.slice(0, 7) === b.slice(0, 7),   // f12 ระดับเดือน → ระดับวัน
   f15: (a, b) => near(a, b, 0, 0.55), f17: (a, b) => near(a, b, 0, 0.55),  // MOS โชว์ 0/1 ตำแหน่ง
   f16: (a, b) => JSON.stringify(a) === JSON.stringify(b), f18: (a, b) => a === b, f19: (a, b) => a === b,
   f20: (a, b) => near(a, b, 0.01, 0.06), f21: (a, b) => a == null ? b == null : near(a, b, 0.01, 0.06),
@@ -74,9 +84,30 @@ const TOLERANCE = {
   f34: (a, b) => arrNear(a, b, 1.0), f35: (a, b) => arrNear(a, b, 1.0), f36: (a, b) => near(a, b, 0.005, 0.005),
   // f51 (ป้าย scale) / f52 (การ์ดจุดซื้อ MOS20/30) = FV×0.8/0.7 ที่ v1 พิมพ์ปัดเลขเองได้ (74.59 vs 74.585 · 741.37 vs 741.30)
   // ⇒ ยอมได้ในช่วงเดียวกับ **gate เจ้าของช่องนี้เอง** (E18/E26 = 2.5%) — v2 ทำให้ค่าตรงสูตรเป๊ะ (ดู roundsTo/หมายเหตุ census)
-  f51: (a, b) => arrNear(a, b, 0.006) || arrRounds(a, b) || arrNear25(a, b), f52: (a, b) => arrNear(a, b, 0.006) || arrRounds(a, b) || arrNear25(a, b),
+  f51: (a, b) => arrNear(a, b, 0.006) || arrRounds(a, b) || arrNearGap(a, b), f52: (a, b) => arrNear(a, b, 0.006) || arrRounds(a, b) || arrNearGap(a, b),
   f54: (a, b) => arrNear(a, b, 0.006),
 };
+
+// ── F3 (review รอบ 1): token เงินต้องไม่ "ปัดเลขที่คนเห็น" เงียบ ๆ ────────────────
+// `money()` ของ v2 ตรึงไว้ 2 ตำแหน่งเสมอ ⇒ ค่าที่พิมพ์ละเอียดกว่านั้นจะถูกปัดทิ้ง
+//   วัดจริง 13 ก.ย. 69: DOHOME ปันผลฉาก ฿0.013 → ฿0.01 (−23%) · SONIC/QH ฿0.167 → ฿0.17 · CKP ฿0.264 → ฿0.26
+//   ชั้น 1 ไม่จับ (f39/f40 ไม่อยู่ใน COPY_FIELDS) · ชั้น 2 ไม่จับ (mask() เปลี่ยนทุกเลขเป็น '#')
+// ⇒ ก่อนแทน token เงิน **ทุกจุดที่เคยข้าม** ต้องเทียบ "รูปที่จะ render" กับ "รูปที่ไฟล์โชว์อยู่" ก่อน
+// ★ ข้อยกเว้นเดียว (ALLOW_ZERO_PAD): ต่างกันแค่เติมศูนย์ท้าย/คอมมาหลักพัน โดย **ค่าเท่ากันเป๊ะ** ("฿27" → "฿27.00")
+//   = การ normalize เดียวกับที่ token เงินตัวอื่นทั้งใบทำอยู่แล้ว (.px/fv/mos20/scn tgt) และเป็นรูปของ skeleton v2 เอง
+//   ปิดข้อยกเว้นนี้ = เข้มสุด (รูปต้องเท่าเป๊ะ) แต่จะคง literal เพิ่มอีก 1,384 แถวปันผล + 78 EPS ฐาน (วัดทั้งคลัง)
+const ALLOW_ZERO_PAD = true;
+const sameSpace = (a, b) => String(a).replace(/\s+/g, ' ').trim() === String(b).replace(/\s+/g, ' ').trim();
+const bare = (s) => String(s).replace(/[,\s]/g, '');
+/** shown = ข้อความเงินที่ไฟล์โชว์ (รวมสัญลักษณ์สกุล) · want = ข้อความที่ token จะ render */
+function sameMoney(shown, want) {
+  if (sameSpace(shown, want)) return true;
+  if (!ALLOW_ZERO_PAD) return false;
+  const a = bare(shown), b = bare(want);
+  const na = parseFloat(a.replace(/[^0-9.\-]/g, '')), nb = parseFloat(b.replace(/[^0-9.\-]/g, ''));
+  // ค่าต้องเท่ากัน **เป๊ะ** และสัญลักษณ์สกุลเงินต้องตัวเดียวกัน — ต่างได้แค่ศูนย์ท้าย/คอมมา
+  return Number.isFinite(na) && na === nb && a.replace(/[0-9.]/g, '') === b.replace(/[0-9.]/g, '');
+}
 
 // ── helper การแทนที่ ────────────────────────────────────────────────────────────
 /** ใส่ flag g ให้ regex เดิมโดยไม่แตะของเจ้าของ */
@@ -300,10 +331,19 @@ function tokenise(src, values, info, sites, notes) {
     const open = pre ? hit.index + hit.length + pre[0].lastIndexOf('(') : -1;
     const close = info.header.indexOf(')', restate.index + restate.length);
     if (open < 0 || close < 0) return { reason: 'วงเล็บทวนวันที่: หาขอบเขตไม่ได้' };
-    let s = headerStart + open;
-    if (src[s - 1] === ' ') s--;                       // กินช่องว่างหน้าวงเล็บด้วย ไม่งั้นเหลือเว้นวรรคลอย
-    edits.push({ what: 'restate', start: s, end: headerStart + close + 1, text: '' });
-    sites.tokenised.push('restate');
+    // ★ F6 (review รอบ 1): ชั้น 2 blank ข้อความช่วง "ราคา ณ…" ทั้งก้อน และ TOLERANCE.f11 ยอมให้ช่องนี้หายได้
+    //   ⇒ ถ้าลบทั้งวงเล็บโดยไม่ดูข้างใน คำขยายจะหายไปเงียบ ๆ (DPZ "(11 ก.ย. 2569 ตลาดปิด)" · HIG "… เวลาไทย")
+    //   ลบได้เฉพาะเมื่อข้างในวงเล็บ **มีแต่วันที่** (= สำเนาซ้ำล้วน ๆ) ไม่งั้นคงทั้งวงเล็บไว้เป็น literal
+    const inner = info.header.slice(open + 1, close);
+    if (inner.trim() !== restate.text.trim()) {
+      notes.push(`literal restate: ในวงเล็บมีคำขยาย ("${inner.trim().slice(0, 40)}")`);
+      sites.literal.push('restate');
+    } else {
+      let s = headerStart + open;
+      if (src[s - 1] === ' ') s--;                     // กินช่องว่างหน้าวงเล็บด้วย ไม่งั้นเหลือเว้นวรรคลอย
+      edits.push({ what: 'restate', start: s, end: headerStart + close + 1, text: '' });
+      sites.tokenised.push('restate');
+    }
   }
 
   // disclaimer "ราคา ณ <วันที่>" — ตัวหาเดียวกับที่ cron ใช้เขียน (PD.allDiscDates)
@@ -324,7 +364,7 @@ function tokenise(src, values, info, sites, notes) {
   // หมวด 6 — แก้ทั้งก้อนใน section เดียว (index ของ scenarioBlock อ้างอิง src ตรง ๆ)
   if (info.plan) {
     const b = info.plan.block;
-    const r = tokeniseScn(src.slice(b.a, b.z), values, sites, notes);
+    const r = tokeniseScn(src.slice(b.a, b.z), values, info, sites, notes);
     if (r.reason) return r;
     edits.push({ what: 'scn', start: b.a, end: b.z, text: r.out });
   } else if (values.baseEps != null) {
@@ -375,14 +415,22 @@ function tokenise(src, values, info, sites, notes) {
 }
 
 /** หมวด 6 ในก้อน section เดียว (sec) — คืน HTML ใหม่ของ section */
-function tokeniseScn(sec, values, sites, notes) {
+function tokeniseScn(sec, values, info, sites, notes) {
   // ★ hint (จุดเข้า/EPS ฐาน/รวมปันผล) ต้องทำ **ในกล่อง .hint เท่านั้น** — คำเดียวกันโผล่ในคอลัมน์ด้วย
   //   ("EPS ฐาน $5.59 (FY25) · P/E ออก…") ⇒ กวาดทั้ง section จะ match 2 ครั้ง (91 ใบ) แล้วตกไปทั้งใบโดยไม่จำเป็น
   const hm = HINT_DIV_RE.exec(sec);
   if (!hm) return { reason: 'หมวด 6: ไม่มีกล่อง .hint' };
   const ht = new Tok(hm[0], sites, notes);
-  ht.sub('hint', HINT_PX_RE, (m) => m[1] + '{{rd:px}}', { required: true });
-  if (values.baseEps != null) ht.sub('hintEps', HINT_EPS_RE, (m) => m[1] + '~{{rd:baseEps}}', { required: true });
+  // ★ F2: ถ้อยคำของ hint เป็นของผู้เขียน ("จากราคาปัจจุบัน" · "EPS ฐาน (normalized)") — ไม่ใช่ site บังคับ
+  //   ⇒ ไม่ตรงรูป = คง literal (สถานะเดิม) ไม่ใช่ปัดตกทั้งใบ (เคส AER/MPC/WDAY)
+  ht.sub('hint', HINT_PX_RE, (m) => m[1] + '{{rd:px}}');
+  if (values.baseEps != null) {
+    const em = HINT_EPS_RE.exec(hm[0]);
+    const shown = em ? (em[0].match(new RegExp(`${CUR}\\s*[\\d.,]+$`)) || [''])[0] : '';
+    const want = info.cur + RV.fmtPrice(values.baseEps);
+    if (em && sameMoney(shown, want)) ht.sub('hintEps', HINT_EPS_RE, (m) => m[1] + '~{{rd:baseEps}}');
+    else { ht.literal('hintEps', em ? `รูปเงินต่าง ("${shown}" ≠ "${want}")` : 'ไม่พบ'); delete values.baseEps; }
+  }
   ht.sub('scnNote', HINT_NOTE_RE, () => '{{rd:scnNote}}');
   if (ht.err) return { reason: 'หมวด 6: ' + ht.err };
   const t = new Tok(sec.slice(0, hm.index) + ht.html + sec.slice(hm.index + hm[0].length), sites, notes);
@@ -406,9 +454,15 @@ function tokeniseScn(sec, values, sites, notes) {
     if (e2) return { reason: e2 };
     if (values.scenarios[i].div != null) {
       const hits = [...col.matchAll(glob(SCN_DPS_RE))];
-      if (hits.length === 1) edits.push({ what: `scn${k}div`, start: a + hits[0].index, end: a + hits[0].index + hits[0][0].length, text: hits[0][1] + `~{{rd:sc${k}div}}` });
-      else if (hits.length > 1) return { reason: `หมวด 6 คอลัมน์ ${k}: แถวปันผล match ≠ 1 (${hits.length})` };
-      else notes.push(`หมวด 6 คอลัมน์ ${k}: ไม่มีแถวปันผล`);
+      if (hits.length > 1) return { reason: `หมวด 6 คอลัมน์ ${k}: แถวปันผล match ≠ 1 (${hits.length})` };
+      if (!hits.length) notes.push(`หมวด 6 คอลัมน์ ${k}: ไม่มีแถวปันผล`);
+      else {
+        // ★ F3: ปันผลฉากเป็นตัวเลขที่คนเห็น และไม่มีช่องไหนในชั้น 1 ตรวจ (f39 ไม่อยู่ใน COPY_FIELDS)
+        const shown = (hits[0][0].match(new RegExp(`${CUR}\\s*[\\d.,]+$`)) || [''])[0];
+        const want = info.cur + RV.fmtPrice(values.scenarios[i].div);
+        if (sameMoney(shown, want)) edits.push({ what: `scn${k}div`, start: a + hits[0].index, end: a + hits[0].index + hits[0][0].length, text: hits[0][1] + `~{{rd:sc${k}div}}` });
+        else { sites.literal.push(`scn${k}div`); notes.push(`literal scn${k}div: รูปเงินต่าง ("${shown}" ≠ "${want}")`); }
+      }
     }
   }
   sites.tokenised.push('scn');
@@ -536,7 +590,24 @@ const stripVolatile = (h) => h.replace(/<div class="ret[^"]*">[\s\S]*?<\/div>/g,
   .replace(glob(DV.SUMMARY_RE), (m, a, body, z) => a + z)
   .replace(/ราคา ณ[^<]*/g, 'ราคา ณ').replace(/ • รวมปันผล/g, '');
 
-function verifyPair(src, out, name, exp0, ctx0) {
+/** สิ่งที่ `stripVolatile` blank ทิ้งในชั้น 2 แต่ไม่มีช่องไหนในชั้น 1 ครอบคลุม — ยืนยันตรงนี้แทน (review รอบ 1 F4/F5) */
+function checkStripped(exp0, exp1, values, notes) {
+  // (ก) " • รวมปันผล" — หายได้เฉพาะเมื่อ "ตัวเลขของใบนั้นบอกเองว่าไม่รวมปันผล" (scnBasis.divIncluded = false) · ห้ามงอกใหม่เด็ดขาด
+  const cnt = (h) => (h.match(/ • รวมปันผล/g) || []).length;
+  const c0 = cnt(exp0), c1 = cnt(exp1);
+  if (c1 > c0) return 'ข้อความ " • รวมปันผล" งอกขึ้นมาเอง';
+  if (c1 < c0) {
+    const b = values.scnBasis;
+    if (!b || b.divIncluded) return 'ข้อความ " • รวมปันผล" หายไปทั้งที่ผลตอบแทนยังรวมปันผล';
+    notes.push(`ตัด " • รวมปันผล" ${c0 - c1} จุด — ตัวเลขฉากของใบนี้ไม่ได้รวมปันผล (scenarioPlan conv=plain)`);
+  }
+  // (ข) คลาสของช่อง ret (f38 นับจำนวนให้แล้ว) — การ "สลับ" pos↔neg ไม่เปลี่ยนจำนวน จึงเปิดเผยเป็น note
+  const cls = (h) => (h.match(/class="ret (?:pos|neg)"/g) || []).join(',');
+  if (cls(exp0) !== cls(exp1)) notes.push(`ret class flip: ${cls(exp0) || '-'} → ${cls(exp1) || '-'} (v2 คิดสีจากตัวเลขเดียวกับที่พิมพ์)`);
+  return null;
+}
+
+function verifyPair(src, out, name, exp0, ctx0, values, notes) {
   let exp1;
   try { exp1 = expandReport(out); } catch (e) { return { reason: 'expand v2 ไม่ได้: ' + e.message }; }
   const gate1 = checkHtml(exp1, name);
@@ -567,7 +638,11 @@ function verifyPair(src, out, name, exp0, ctx0) {
     let ok;
     if (DROPPED_TO_FV.has(f)) ok = (a == null && b == null) || (a != null && b == null && fv2 != null && near(a, fv2, 0.01, 0.005));   // ยุบเข้า fv (สำเนาเดียว)
     // ช่องสรุปที่ cron เป็นเจ้าของ: ต้องตรงกับ .big **ของ v2 เอง** (f15) ไม่ใช่ตรงกับสำเนาเดิมที่อาจค้างอยู่
-    else if (CRON_CANON.has(f)) ok = f === 'f17'
+    // ★ review รอบ 1: ช่องสรุปที่ "ค้าง" (v1 ไม่ตรง .big) ไม่ได้ถูกซ่อมเงียบ — ต้องนับไว้ใน census ให้คนเห็น
+    else if (f === 'f17' && a != null && b != null && Math.abs(a - b) > 0.55) {
+      notes.push(`summary ค้าง: v1 ${a}% ≠ .big ${b}% (cron เขียนช่องนี้เองอยู่แล้ว — ระยะ 1 ข้อ D)`);
+      ok = v2.f15 != null && near(b, v2.f15, 0, 0.55);
+    } else if (CRON_CANON.has(f)) ok = f === 'f17'
       ? b != null && v2.f15 != null && near(b, v2.f15, 0, 0.55)
       : typeof b === 'string' && DV.SUMMARY_CANON_RE.test(b.replace(/−/g, '-')) && numOf(b) != null && v2.f15 != null && near(numOf(b), v2.f15, 0, 0.55);
     else if ((f === 'f34' || f === 'f35') && b == null && dv2) ok = !!fn(a, scnOf(f === 'f34' ? 'total' : 'perYear'));
@@ -589,11 +664,12 @@ function verifyPair(src, out, name, exp0, ctx0) {
     && (FOOTER_RE.exec(src) || [''])[0] === (FOOTER_RE.exec(out) || [''])[0];
   const smOk = JSON.stringify(RM.readStockMeta(src)) === JSON.stringify(RM.readStockMeta(out));
   const gateOk = gate1.errors.length === 0;
+  const strippedBad = checkStripped(exp0, exp1, values, notes);
   const bad = compare.filter((c) => !c.ok);
   const reason = !gateOk ? 'gate หลัง migrate: ' + gate1.errors.map((e) => e.id + ' ' + e.msg).join(' | ')
     : bad.length ? 'ค่าไม่ตรงชั้น 1: ' + bad.map((c) => `${c.field} ${JSON.stringify(c.a)}→${JSON.stringify(c.b)}`).join(' ; ')
       : !masked ? 'ข้อความที่มองเห็นเปลี่ยน (ชั้น 2): ' + maskedDiff
-        : !footerOk ? 'footer เปลี่ยน' : !smOk ? 'stock-meta เปลี่ยน' : null;
+        : !footerOk ? 'footer เปลี่ยน' : !smOk ? 'stock-meta เปลี่ยน' : strippedBad;
   return { compare, masked, maskedDiff, gateOk, footerOk, smOk, reason, exp1 };
 }
 
@@ -611,12 +687,16 @@ function migrateOne(src, name, opts) {
   const prevToday = process.env.STALE_TODAY;
   if (o.today) process.env.STALE_TODAY = o.today;
   try {
-    const r = runOnce(src, name, false);
+    const st = { scnTried: false };
+    const r = runOnce(src, name, false, st);
     // ★ หมวด 6 เป็นส่วนที่ "ย้ายแล้วอาจไม่ผ่าน" ได้หลายทาง (W17 คิด %/ปี จากค่าที่โชว์ซึ่งปัดแล้ว ส่วน
     //   RV.derive คิดจากค่าดิบ ⇒ ต่างกันเกินเกณฑ์ในบางใบ · E24 EPS ฐาน · f34/f35) — ใบทั้งใบไม่ควรตกเพราะหมวดเดียว
     //   ⇒ ลองใหม่โดยคงหมวด 6 เป็น literal (สถานะเดิมเป๊ะ) แล้วให้ **gate เป็นคนตัดสิน** ว่ารอบสองผ่านไหม
-    if (!r.ok && r.sites.tokenised.includes('scn')) {
-      const r2 = runOnce(src, name, true);
+    // ★ F1 (review รอบ 1): เดิมเช็ค `sites.tokenised.includes('scn')` ซึ่ง **ตั้งค่าเมื่อสำเร็จเท่านั้น**
+    //   ⇒ ความล้มเหลวที่เกิด **ข้างใน** tokeniseScn (คลาสที่ retry มีไว้เพื่อมันโดยตรง) ไม่เคยยิง retry เลย
+    //   วัดจริง: AER/WDAY ถูกนับเป็น residue ทั้งที่ย้ายผ่านเมื่อคงหมวด 6 เป็น literal
+    if (!r.ok && st.scnTried) {
+      const r2 = runOnce(src, name, true, { scnTried: false });
       if (r2.ok) { r2.notes.push('หมวด 6 คง literal — ลองย้ายแล้วไม่ผ่าน: ' + r.reason); return r2; }
     }
     return r;
@@ -625,7 +705,7 @@ function migrateOne(src, name, opts) {
   }
 }
 
-function runOnce(src, name, noScn) {
+function runOnce(src, name, noScn, st) {
   const notes = [];
   const sites = { tokenised: [], literal: [] };
   const fail = (reason) => ({ ok: false, reason, sites, compare: [], notes, masked: false, maskedDiff: '' });
@@ -639,6 +719,7 @@ function runOnce(src, name, noScn) {
     const ctx0 = gate0.ctx;
 
     const ex = extractValues(src, ctx0, notes, noScn);
+    if (ex.values && ex.values.scenarios && st) st.scnTried = true;   // "พยายามย้ายหมวด 6" — ตั้งก่อน tokenise เสมอ
     if (ex.reason) return fail(ex.reason);
     ex.values._fv = ex.fv;                                    // ให้ tokeniseScale คิด MOS20/30 จาก FV ตัวเดียวกัน
     const tk = tokenise(src, ex.values, ex.info, sites, notes);
@@ -647,7 +728,7 @@ function runOnce(src, name, noScn) {
     for (const s of REQUIRED_SITES) if (!sites.tokenised.includes(s)) return fail(`site บังคับ ${s} ไม่ได้แทน`);
 
     const out = writeJson(tk.out, ex.info.rd, ex.values, ex.fv, notes);
-    const v = verifyPair(src, out, name, exp0, ctx0);
+    const v = verifyPair(src, out, name, exp0, ctx0, ex.values, notes);
     if (v.reason && !v.compare) return { ok: false, reason: v.reason, sites, compare: [], notes, masked: false, maskedDiff: '' };
     const res = { ok: !v.reason, reason: v.reason || undefined, out, values: ex.values, sites, compare: v.compare, notes, masked: v.masked, maskedDiff: v.maskedDiff };
     if (!res.ok) delete res.out;
@@ -728,5 +809,5 @@ function main(argv) {
   return ok === files.length ? 0 : 1;
 }
 
-module.exports = { migrateOne, extractValues, tokenise, writeJson, verifyPair, COPY_FIELDS, REQUIRED_SITES, TOLERANCE, renderCensusMd };
+module.exports = { migrateOne, extractValues, tokenise, writeJson, verifyPair, checkStripped, sameMoney, COPY_FIELDS, REQUIRED_SITES, TOLERANCE, GAP_REL, renderCensusMd };
 if (require.main === module) process.exit(main(process.argv.slice(2)));
