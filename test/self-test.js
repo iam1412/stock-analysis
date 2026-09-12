@@ -30,7 +30,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { checkHtml, buildCtx, firstNum, FISCAL_REF_SRC } = require('./check-reports');
+const { checkHtml, buildCtx, firstNum, FISCAL_REF_SRC, CHECKS } = require('./check-reports');
 const { expandReport } = require('../build.js');  // BBL เป็น content-only template → expand เป็น HTML เต็มก่อน (เหมือน gate)
 
 // ฐาน = fixture แช่แข็ง (test/fixtures/BBL.html) — ไม่ใช่ไฟล์จริงที่ cron แก้ทุกวัน (บทเรียน 22–24 ส.ค. 69)
@@ -83,6 +83,11 @@ const mutJson = (id, fn) => (h) => h.replace(
   (m, a, json, b) => { const d = JSON.parse(json); fn(d); return a + JSON.stringify(d) + b; });
 // replace เฉพาะช่วงหลัง marker (กัน pattern เดียวกันไป match ที่อื่นก่อน เช่น "กรอบ" ของ P/E ในตาราง metric)
 const mutSlice = (marker, re, repl) => (h) => { const i = h.indexOf(marker); return i === -1 ? h : h.slice(0, i) + h.slice(i).replace(re, repl); };
+// แก้ทั้งช่องค่า (.v) และคำอธิบาย (.d) ของการ์ดที่ป้ายตรงกับ label — ใช้ร่วมหลายบล็อก (E43/W16 conv() · W19/W20)
+// (ยกขึ้นมาระดับไฟล์ — เดิมประกาศซ้ำเฉพาะในบล็อก W19/W20 เท่านั้น)
+const setKVD = (label, v, d) => (h) => h.replace(
+  new RegExp(`(<div class="k">${label.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}</div>\\s*<div class="v[^"]*"[^>]*>)([\\s\\S]*?)(</div>\\s*<div class="d[^"]*"[^>]*>)([\\s\\S]*?)(</div>)`),
+  (m, a, ov, b, od, z) => a + v + b + d + z);
 // แทน .mval ตัวที่ idx (ลำดับเดียวกับ C.methods)
 const mutMval = (idx, val) => (h) => { let i = -1; return h.replace(/(<div class="mval">\s*[฿$]?)([0-9.,]+)(<\/div>)/g, (m, a, v, b) => (++i === idx ? a + val + b : m)); };
 // เปลี่ยนข้อความป้าย change ใน header
@@ -95,6 +100,20 @@ let n = 0, fails = 0;
 const ok = (cond, desc) => { n++; if (cond) console.log('  ✓ ' + desc); else { console.log('  ✗ ' + desc); fails++; } };
 const errIds = (r) => new Set(r.errors.map((x) => x.id));
 const allIds = (r) => new Set([...r.errors, ...r.warnings].map((x) => x.id));
+// E-policy (ท้ายไฟล์): id ที่มีเคส convergence (mutate → check ยิง → healer → check เงียบ) ที่พิสูจน์แล้วในไฟล์นี้
+// ต้องประกาศก่อนทุกบล็อกที่ลงทะเบียน (cycle helper · บล็อก W17 · conv() ของ E41/E42/E43/W16)
+const CONVERGED = new Set();
+
+// convergence helper (E-policy): ค้าง → healer → เงียบ + idempotent — ใช้ร่วมกันทุกบล็อก
+// (ยกขึ้นมาระดับไฟล์ — เดิมประกาศซ้ำ 2 จุด: บล็อก E41/E42 และบล็อก E43/W16)
+const DVc = require('../tools/derived-values.js');
+const healed = (h) => DVc.patchDerived(h, PX).html;
+const conv = (id, h, desc) => {
+  ok(allIds(checkHtml(h, 'BBL.html')).has(id), `${desc} → ${id} ยิง`);
+  const once = healed(h);
+  ok(!allIds(checkHtml(once, 'BBL.html')).has(id) && healed(once) === once, `${desc} → healer ทำให้ ${id} เงียบ + idempotent`);
+  CONVERGED.add(id);
+};
 
 console.log('\n🧪 self-test: ความถูกต้องของ check-reports.js\n');
 
@@ -464,6 +483,14 @@ reject('W14', addCard('4. EV/EBITDA', 'EBITDA $4.0B (mid-point FY2026 $3.6B guid
     reject('E42', setCardV(TGT_LABEL, `~${cur}${tgt} (+${tgtPct.toFixed(1)}%)`), 'E42: % ในการ์ดเป้าตรงกับ (เป้า−ราคา)/ราคา → เงียบ');
     expect('E42', 'error', setCardV(TGT_LABEL, `~${cur}${tgt} (+${(tgtPct - 12).toFixed(1)}%)`), 'E42: % ในการ์ดเป้าค้าง 12 จุด% จากราคาปัจจุบัน → ต้องจับ (เคส AAOI)');
 
+    // convergence (E-policy): ค้าง → healer → เงียบ + idempotent — ลงทะเบียนให้ E41/E42 (conv() = ตัวช่วยระดับไฟล์)
+    // E41: การ์ด P/E (TTM) ค้างที่ 1.5 เท่าของค่าจริง ขณะ EPS ที่พิมพ์ไว้ (.d) คงที่ทำให้ควรเป็นอีกค่า — healer เขียน .v ใหม่จาก ราคา÷EPS
+    conv('E41', setCardV(PE_LABEL, `~${(peShown * 1.5).toFixed(1)}x`)(setCardD(PE_LABEL, `EPS (TTM) ${cur}${epsFor(peShown)}`)(base)),
+      'E41 convergence: การ์ด P/E ค้างที่ 1.5 เท่าของค่าจริง (EPS ที่พิมพ์คงที่)');
+    // E42: % ในการ์ดเป้าค้าง 12 จุด% จากราคาปัจจุบัน — healer เขียน % ใหม่จาก (เป้า−ราคา)/ราคา (เป้าเป็นสมมติฐาน ไม่ถูกแตะ)
+    conv('E42', setCardV(TGT_LABEL, `~${cur}${tgt} (+${(tgtPct - 12).toFixed(1)}%)`)(base),
+      'E42 convergence: % ในการ์ดเป้าค้าง 12 จุด% จากราคาปัจจุบัน');
+
     // W15 — % ของราคาเป้าที่เขียนในเนื้อความ (cron แตะ prose ไม่ได้ → เป็น warning)
     rejectBase('W15', 'ฐาน BBL: ไม่มี % ของราคาเป้าในเนื้อความ → ต้องเงียบ');
     expect('W15', 'warn', addProse(`นักวิเคราะห์ 12 ราย ให้เป้าเฉลี่ย ${cur}${tgt} (+${(tgtPct - 15).toFixed(1)}%)`), 'W15: % ของราคาเป้าในเนื้อความค้าง 15 จุด% → ต้องเตือน');
@@ -505,17 +532,21 @@ reject('W14', addCard('4. EV/EBITDA', 'EBITDA $4.0B (mid-point FY2026 $3.6B guid
     ok(DVT.nearMcap(2.004e12, 2e12, '2.00', 1e12) && !DVT.nearMcap(2.4e12, 2e12, '2.00', 1e12),
       'E43: เกณฑ์ = max(3%, ครึ่งหลักสุดท้ายของหน่วยที่เขียน) — กันเคส error ที่ตัวซ่อมเคลียร์ไม่ได้');
 
-    // W16: P/S ใช้ตัวตั้งจากการ์ด Market Cap (ข้ามการ์ด) จึงเป็น warn
+    // W16: P/S ใช้ตัวตั้งจากการ์ด Market Cap (ข้ามการ์ด) จึงเป็น warn (ยกเป็น error ระยะ 1 — ข้อ C(ค) หลัง quarantine + heal = 0)
     const revM = PX * mc.shares / 4 / M;                          // รายได้ที่ทำให้ P/S = 4.0x พอดี
     rejectBase('W16', 'ฐาน BBL: ไม่มีการ์ด P/S → ต้องเงียบ');
     reject('W16', addCardKV('P/S (TTM)', '4.0x', `รายได้ TTM ${cur}${numStr(revM)} ล้าน`), 'W16: P/S = Market Cap ÷ รายได้ พอดี → เงียบ');
-    expect('W16', 'warn', addCardKV('P/S (TTM)', '2.5x', `รายได้ TTM ${cur}${numStr(revM)} ล้าน`), 'W16: P/S ค้าง (2.5x ทั้งที่ cap÷รายได้ = 4.0x) → ต้องเตือน');
+    expect('W16', 'error', addCardKV('P/S (TTM)', '2.5x', `รายได้ TTM ${cur}${numStr(revM)} ล้าน`), 'W16: P/S ค้าง (2.5x ทั้งที่ cap÷รายได้ = 4.0x) → ต้องเตือน');
     // การ์ดที่เขียนเป็นจำนวนเต็ม: ต่างได้ถึงครึ่งหลัก (ตัวซ่อมปัดแล้วได้เลขเดิม — ต้องไม่เตือนค้าง)
     reject('W16', addCardKV('P/S (TTM)', '4x', `รายได้ TTM ${cur}${numStr(PX * mc.shares / 4.3 / M)} ล้าน`), 'W16: การ์ดเขียน "4x" (จำนวนเต็ม) ค่าจริง 4.3x → อยู่ในครึ่งหลักสุดท้าย ต้องเงียบ');
-    expect('W16', 'warn', addCardKV('P/S (TTM)', '4x', `รายได้ TTM ${cur}${numStr(PX * mc.shares / 5.2 / M)} ล้าน`), 'W16: การ์ดเขียน "4x" แต่ค่าจริง 5.2x (เกินครึ่งหลัก) → ต้องเตือน');
+    expect('W16', 'error', addCardKV('P/S (TTM)', '4x', `รายได้ TTM ${cur}${numStr(PX * mc.shares / 5.2 / M)} ล้าน`), 'W16: การ์ดเขียน "4x" แต่ค่าจริง 5.2x (เกินครึ่งหลัก) → ต้องเตือน');
     reject('W16', addCardKV('P/S (TTM)', '2.5x', 'พรีเมียมเทียบกลุ่ม SaaS'), 'W16: การ์ดไม่ประกาศรายได้ → ตรวจไม่ได้ ต้องเงียบ');
     reject('W16', addCardKV('P/S มัธยฐานของตัวเอง', '2.5x', `รายได้ TTM ${cur}${numStr(revM)} ล้าน`), 'W16: ป้ายเชิงประวัติ (มัธยฐาน) ไม่ใช่ P/S ปัจจุบัน → ต้องเงียบ (เคส PAAS)');
     reject('W16', addCardKV('EV/Sales (TTM)', '2.5x', `รายได้ TTM ${cur}${numStr(revM)} ล้าน`), 'W16: EV/Sales ต้องใช้หนี้สุทธิ ไม่มีฐานให้อ่าน → ต้องเงียบ');
+
+    // convergence (E-policy): ค้าง → healer → เงียบ + idempotent — ลงทะเบียนให้ E41/E42/E43/W16 (conv() = ตัวช่วยระดับไฟล์)
+    conv('W16', addCardKV('P/S (TTM)', '2.5x', `รายได้ TTM ${cur}${numStr(revM)} ล้าน`)(base), 'W16 convergence: P/S ค้าง');
+    conv('E43', setKVD('Market Cap', `${cur}${numStr(PX * mc.shares * 0.8 / M)} ล้าน`, `${numStr(mc.shares / M)} ล้านหุ้น`)(base), 'E43 convergence: Market Cap ค้าง');
   }
 }
 
@@ -560,7 +591,7 @@ reject('W14', addCard('4. EV/EBITDA', 'EBITDA $4.0B (mid-point FY2026 $3.6B guid
   const DV = require('../tools/derived-values.js');
   const res = (h) => checkHtml(h, 'BBL.html');
   const fires = (h) => allIds(res(h)).has('W17');
-  const msgOf = (h) => (res(h).warnings.find((w) => w.id === 'W17') || {}).msg || '';
+  const msgOf = (h) => ([...res(h).errors, ...res(h).warnings].find((w) => w.id === 'W17') || {}).msg || '';
   // ทำให้ทั้งหมวด 6 สอดคล้องกับราคา p — จำลอง "ใบที่ค้างจากจุดเข้า p" (ค้างพร้อมกันทั้ง 3 คอลัมน์ เหมือนของจริง)
   // patchDerived ไม่แตะราคาใน header ⇒ at(130) = ไฟล์ที่ header ยัง ฿189.50 แต่ฉากคิดจากจุดเข้า ฿130
   const at = (p) => DV.patchDerived(base, p).html;
@@ -585,6 +616,8 @@ reject('W14', addCard('4. EV/EBITDA', 'EBITDA $4.0B (mid-point FY2026 $3.6B guid
   // ★★ คุณสมบัติที่สำคัญที่สุด: ขอบเขตตัวตรวจ = ขอบเขตตัวซ่อม
   //    ฟ้องในที่ที่ heal เอื้อมไม่ถึง = warning ที่เคลียร์ไม่ได้ (และถ้าวันหนึ่งเลื่อนเป็น error = cron ตาย)
   ok(!fires(fresh), 'W17: ซ่อมด้วย patchDerived แล้ว → ต้องเงียบ (ตัวตรวจฟ้องเฉพาะที่ตัวซ่อมเอื้อมถึง)');
+  // convergence (E-policy) ผ่าน conv() ระดับไฟล์ — reuse มิวเทชัน at(PX*0.8) ที่พิสูจน์แล้วว่ายิง W17 (บรรทัดล่างนี้)
+  conv('W17', at(PX * 0.8), 'W17 convergence: หมวด 6 ค้าง');
   ok(!DV.patchDerived(fresh, PX).changes.some((c) => /หมวด 6/.test(c)),
     'W17: ซ่อมซ้ำรอบสอง → ไม่มีอะไรให้แก้ (idempotent — กัน cron เขียนไฟล์ทุกวันโดยไม่มีของค้างจริง)');
 
@@ -771,9 +804,6 @@ reject('W14', addCard('4. EV/EBITDA', 'EBITDA $4.0B (mid-point FY2026 $3.6B guid
 {
   const DVY = require('../tools/derived-values.js');
   const esc = (t) => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  const setKVD = (label, v, d) => (h) => h.replace(
-    new RegExp(`(<div class="k">${esc(label)}</div>\\s*<div class="v[^"]*"[^>]*>)([\\s\\S]*?)(</div>\\s*<div class="d[^"]*"[^>]*>)([\\s\\S]*?)(</div>)`),
-    (m, a, ov, b, od, z) => a + v + b + d + z);
   const addKV = (label, v, d) => (h) => h.replace('<div class="metric">',
     `<div class="metric"><div class="k">${label}</div><div class="v">${v}</div><div class="d">${d}</div></div><div class="metric">`);
   const cur = C.isTHB ? '฿' : '$';
@@ -792,6 +822,7 @@ reject('W14', addCard('4. EV/EBITDA', 'EBITDA $4.0B (mid-point FY2026 $3.6B guid
     ok(h !== fresh && fires(id, h), `${desc} → ต้องเจอ ${id}`);
     const once = DVY.patchDerived(h, PX).html;
     ok(!fires(id, once) && !touches(once, re), `${desc} → ซ่อมแล้ว ${id} หาย + ซ่อมซ้ำไม่เปลี่ยน (idempotent)`);
+    CONVERGED.add(id);
     return once;
   };
   const quiet = (id, re, h, desc) => ok(h !== fresh && !fires(id, h) && !touches(h, re), `${desc} → ${id} เงียบ + ตัวซ่อมไม่แตะ`);
@@ -874,6 +905,24 @@ reject('W14', addCard('4. EV/EBITDA', 'EBITDA $4.0B (mid-point FY2026 $3.6B guid
 
 // ── fixture-lint: เทสใน verify ห้ามอ่าน reports/*.html เป็น fixture (บทเรียน 22–24 ส.ค. · 2 ก.ย. 69) ──
 require('./fixture-lint.js')(ok);
+
+// ── E-policy (spec WS2 ข้อ 3 · แผนระยะ 1 Global Constraints): error ที่ไม่อยู่ในรายการ grandfather ต้อง
+//    (ก) ประกาศ healer ที่รู้จัก และ (ข) มีเคส convergence ในไฟล์นี้ (mutate → check ยิง → healer → check เงียบ)
+//    ไม่งั้น E ใหม่ = cron ล้มทั้งวันแบบเคลียร์ไม่ได้ (บทเรียน 22–24 ส.ค. 69 / run #54) ──
+{
+  const E_GRANDFATHERED = new Set(Array.from({ length: 43 }, (_, i) => 'E' + String(i + 1).padStart(2, '0')));   // E01–E43 ที่มีก่อนระยะ 1 — ห้ามเพิ่มชื่อในนี้
+  // patchDerived#4 = พาสเขียน prose (opt-in `{prose:true}`) — cron ไม่รันพาสนี้เอง จึงไม่นับเป็น healer มาตรฐานที่ E-policy ยอมรับ
+  const HEALERS = new Set(['patchReport', ...[1, 2, 3, 5, 6, 7, 8, 9, 10, 11].map((n) => 'patchDerived#' + n)]);
+  for (const id of ['W16', 'W17', 'W19', 'W20']) ok(CHECKS.find((c) => c.id === id).level === 'error', `ระยะ 1: ${id} ต้องเป็น error (ยกจาก warn 12 ก.ย. 2569 — คงชื่อ)`);
+  const errs = CHECKS.filter((c) => c.level === 'error');
+  ok(errs.length >= 43, `E-policy: มี error ≥43 ตัว (ได้ ${errs.length})`);
+  for (const c of errs.filter((c) => !E_GRANDFATHERED.has(c.id))) {
+    ok(HEALERS.has(c.healer), `E-policy: ${c.id} เป็น error นอก grandfather ต้องประกาศ healer ที่รู้จัก (ได้ ${c.healer})`);
+    ok(CONVERGED.has(c.id), `E-policy: ${c.id} ต้องมีเคส convergence ในไฟล์นี้ (cycle()/CONVERGED.add)`);
+  }
+  for (const c of CHECKS.filter((c) => c.healer != null))
+    ok(HEALERS.has(c.healer), `healer ของ ${c.id} = ${c.healer} ต้องอยู่ในรายการที่รู้จัก`);
+}
 
 console.log('\n' + '─'.repeat(50));
 console.log(`self-test: ${n - fails}/${n} ผ่าน`);

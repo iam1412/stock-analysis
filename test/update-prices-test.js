@@ -12,6 +12,7 @@ const FX = require('./fixtures');
 process.env.STALE_TODAY = FX.TODAY;   // gate ที่ Task 7 เรียกผ่าน gateAfterPatch ต้องไม่เดินตามปฏิทินจริง
 
 let nOK = 0, nFail = 0;
+let pending = null;   // lockfile ระยะ 1: promise ของเคส async — tally ต้องรอก่อนพิมพ์ (ดูท้ายไฟล์)
 function ok(cond, label, detail) {
   if (cond) { nOK++; return; }
   nFail++;
@@ -756,6 +757,63 @@ ok(U.commitBody([], []) === '', 'commitBody: ว่างเมื่อไม�
   }
 }
 
+// ── lockfile ระยะ 1: heartbeat (async holder) · release เฉพาะของตัวเอง · signal ──
+{
+  const L = require('../tools/lockfile.js');
+  const os = require('os');
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'lock-'));
+  const f = path.join(tmp, 'x.json'), dir = f + '.lock';
+  // (1) async holder: mtime ของ lock ต้องขยับระหว่างถือ
+  const p = L.withLock(f, async () => {
+    const t0 = fs.statSync(dir).mtimeMs;
+    await new Promise((r) => setTimeout(r, 120));
+    return fs.statSync(dir).mtimeMs - t0;
+  }, { heartbeatMs: 20 });
+  ok(p && typeof p.then === 'function', 'withLock: fn async → คืน promise (ไม่ปล่อย lock ก่อน settle)');
+  ok(fs.existsSync(dir), 'withLock: ระหว่าง await ยังถือ lock อยู่');
+  const chain1 = p.then((dt) => {
+    ok(dt > 0, `heartbeat: mtime ขยับระหว่างถือ (Δ ${dt.toFixed(0)} ms)`);
+    ok(!fs.existsSync(dir), 'withLock async: settle แล้วปล่อย lock');
+    // (2) ปล่อยเฉพาะของตัวเอง: จำลองว่าถูก reclaim (pid ในโฟลเดอร์ไม่ใช่ของเรา)
+    L.withLock(f, () => { fs.writeFileSync(path.join(dir, 'pid'), '99999999'); });
+    ok(fs.existsSync(dir) && fs.readFileSync(path.join(dir, 'pid'), 'utf8') === '99999999', 'release: pid ไม่ใช่ของเรา → ไม่ลบ lock ของคนใหม่');
+    fs.rmSync(dir, { recursive: true, force: true });
+    // (3) signal handler มีอยู่จริง (ไม่ยิงสัญญาณจริงในเทส — แค่ตรวจว่าลงทะเบียน)
+    ok(process.listeners('SIGINT').some((l) => /release|held/.test(String(l))) && process.listeners('SIGTERM').some((l) => /release|held/.test(String(l))), 'lockfile: ลงทะเบียน SIGINT/SIGTERM เพื่อปล่อย lock');
+    ok(L.HEARTBEAT_MS === 60000, 'export HEARTBEAT_MS = 60000');
+  });
+
+  // (4) fix round 1: heartbeat ต้องเช็ค pid ก่อน touch — ถูก reclaim ระหว่างถือ (async holder ค้างเกิน STALE_MS) ต้องเลิก touch
+  //     ไม่งั้น interval เก่ายังทำให้ lock ของเจ้าของใหม่ "ดูสดตลอด" จน reclaim ซ้ำไม่ได้แม้เจ้าของใหม่ตายไปแล้ว
+  const f4 = path.join(tmp, 'y.json'), dir4 = f4 + '.lock';
+  const p4 = L.withLock(f4, async () => {
+    await new Promise((r) => setTimeout(r, 30));            // ให้ heartbeat ติ๊กตามปกติก่อนอย่างน้อย 1 รอบ (pid ยังเป็นของเรา)
+    fs.writeFileSync(path.join(dir4, 'pid'), '77777777');   // จำลอง reclaim ระหว่างถือ: pid ในโฟลเดอร์ไม่ใช่ของเราอีกต่อไป
+    const t0 = fs.statSync(dir4).mtimeMs;
+    await new Promise((r) => setTimeout(r, 75));            // รอหลายรอบ heartbeat (heartbeatMs=15) หลัง pid ถูกแทนที่
+    return fs.statSync(dir4).mtimeMs - t0;
+  }, { heartbeatMs: 15 });
+  const chain2 = p4.then((dt4) => {
+    ok(dt4 === 0, `heartbeat: เช็ค pid ก่อน touch — เลิก touch ทันทีที่ pid ไม่ใช่ของเรา (Δ ${dt4} ms)`);
+    ok(fs.existsSync(dir4) && fs.readFileSync(path.join(dir4, 'pid'), 'utf8') === '77777777', 'heartbeat: settle แล้ว lock ของเจ้าของใหม่ยังอยู่ครบ (ไม่ถูกลบ + ไม่ถูกทำให้สดปลอม)');
+    fs.rmSync(dir4, { recursive: true, force: true });
+  });
+
+  // (5) release-on-reject: async fn ที่ reject ต้อง reject ด้วย error เดิม + ไม่เหลือ `<file>.lock` ค้าง
+  //     (out.finally ตรง ๆ พังกับ thenable เปล่า ๆ ที่ไม่มี .finally — withLock ต้องผ่าน Promise.resolve(out) ก่อนเสมอ)
+  const f5 = path.join(tmp, 'z.json'), dir5 = f5 + '.lock';
+  const p5 = L.withLock(f5, async () => { throw new Error('boom'); });
+  const chain3 = p5.then(
+    () => { ok(false, 'withLock: async fn reject → ต้อง reject (ไม่ใช่ resolve)'); },
+    (e) => {
+      ok(!!e && e.message === 'boom', `withLock: async fn reject → reject ด้วย error เดิม (ได้ ${e && e.message})`);
+      ok(!fs.existsSync(dir5), 'withLock: async fn reject → ปล่อย lock ด้วย (ไม่เหลือ .lock ค้าง)');
+    }
+  );
+
+  pending = Promise.all([chain1, chain2, chain3]);
+}
+
 // ---------- commitFlags: merge บนไฟล์ "ล่าสุด" ใต้ lock ไม่ใช่ snapshot ตอนเริ่มรอบ (WS4 · เคส flag ฟื้น/หาย 12 ส.ค. 69) ----------
 {
   const os = require('os');
@@ -804,7 +862,21 @@ ok(U.commitBody([], []) === '', 'commitBody: ว่างเมื่อไม�
   ok(/E15/.test(g.detail) && g.detail.length <= 400, 'gateAfterPatch: detail มีรหัส + สั้นพอลง price-flags.json');
   const broken = U.gateAfterPatch('<!DOCTYPE html><html><head><!--TEMPLATE:STYLE--></head><body></body></html>', 'X.html');
   ok(!broken.ok && broken.codes[0] === 'EXPAND', 'gateAfterPatch: expandReport ระเบิด → EXPAND ไม่ throw');
+
+  // W17 ยกเป็น error (audit phase 1 ข้อ C(ค) — 12 ก.ย. 69): ต้องเข้า quarantine เป็น patch-rejected เหมือน error ตัวอื่น ไม่ใช่ throw
+  // ★ ห้ามยืนบนราคาที่ patchReport แก้ (301.5 ใช้ทั่วไฟล์นี้) — อ่านราคาจากฐานฉบับสดเอง แล้วซ่อมหมวด 6 ไปที่จุดเข้าคนละราคา (0.7×px)
+  //   ⇒ header/stock-meta ยังโชว์ px เดิม แต่หมวด 6 ถูกซ่อมให้สอดคล้องกับ 0.7×px → scenarioPlan ตัดสินได้แต่ค่าค้าง → W17 ต้องฟ้อง
+  const DVq = require('../tools/derived-values.js');
+  const freshAapl = FX.AAPL();
+  const smQ = JSON.parse(freshAapl.match(/<script[^>]*id=["']stock-meta["'][^>]*>([\s\S]*?)<\/script>/i)[1]);
+  const px = smQ.price;
+  const staleScn = DVq.patchDerived(freshAapl, px * 0.7).html;
+  ok(staleScn !== freshAapl, '(ตั้งฉาก) patchDerived ที่จุดเข้า 0.7×px ทำให้หมวด 6 เปลี่ยนจริง');
+  const gw = U.gateAfterPatch(staleScn, 'AAPL.html');
+  ok(!gw.ok && gw.codes.includes('W17'), 'gateAfterPatch: W17 (ยกเป็น error) ที่ตกหลัง patch → ok=false + patch-rejected ไม่ throw', gw.codes.join(','));
 }
 
-console.log(nFail ? `\n✗ update-prices-test: ${nFail} failed / ${nOK} passed` : `\n✓ update-prices-test: ${nOK} passed`);
-process.exit(nFail ? 1 : 0);
+Promise.resolve(pending).then(() => {
+  console.log(nFail ? `\n✗ update-prices-test: ${nFail} failed / ${nOK} passed` : `\n✓ update-prices-test: ${nOK} passed`);
+  process.exit(nFail ? 1 : 0);
+});

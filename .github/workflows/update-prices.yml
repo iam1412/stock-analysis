@@ -46,8 +46,8 @@ jobs:
           node tools/preserve-dates.js
           npm run build
 
-      - name: Quality gate 14 ขั้น
-        run: npm run verify
+      - name: Quality gate ประตู cron (verify:cron — เฉพาะสิ่งที่ cron แตะ · verify เต็มรันใน ci-verify หลัง push)
+        run: npm run verify:cron
 
       - name: Commit + push
         id: commit_push

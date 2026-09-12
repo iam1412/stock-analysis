@@ -7,6 +7,10 @@
  * กลไก: mkdir `<file>.lock` (atomic บน POSIX/macOS/Linux) · EEXIST = มีคนถือ · รอแล้ว **throw** ไม่ข้ามเงียบ
  *   (ข้ามเงียบ = เขียน state ครึ่งเดียว = คิวเพี้ยน — แย่กว่าล้มดัง ๆ) · lock ที่ mtime เก่ากว่า STALE_MS = process ตายทิ้งไว้ ยึดได้
  * ★ ห้ามถือ lock คร่อมงานยาว (loop fetch 8 นาทีของ cron) — ถือเฉพาะช่วง read→merge→write (มิลลิวินาที)
+ * · holder async ได้ heartbeat (ระยะ 1) · holder sync ห้ามยาว
+ * · มี handler SIGINT/SIGTERM ติดตั้งไว้ (ปล่อย lock ที่ถืออยู่ก่อน exit) แต่ระหว่าง loop รอ lock แบบ sync
+ *   (sleepSync/Atomics.wait) Ctrl-C จะถูกดีเลย์จนกว่า loop จะ yield (≤ WAIT_MS) — event loop ไม่หมุนระหว่างนั้น
+ *   จากนั้น process จึงปล่อย lock ที่ถืออยู่แล้ว exit 130 (SIGINT) หรือ 143 (SIGTERM)
  */
 const fs = require('fs');
 const path = require('path');
@@ -14,9 +18,19 @@ const path = require('path');
 const STALE_MS = 10 * 60 * 1000;   // cron รอบเต็ม ~8 นาที ยังไม่ถึง — เกินนี้ถือว่าค้าง
 const WAIT_MS = 60 * 1000;
 const POLL_MS = 200;
+const HEARTBEAT_MS = 60 * 1000;    // holder แบบ async touch mtime ทุก 1 นาที — holder sync ทำไม่ได้ (event loop ไม่หมุน) ⇒ กฎ "ถือสั้น" ยังอยู่
 const held = new Set();
 
-process.on('exit', () => { for (const d of held) { try { fs.rmSync(d, { recursive: true, force: true }); } catch (_) {} } });
+/** ปล่อย lock — เฉพาะเมื่อ pid ในโฟลเดอร์ยังเป็นของเรา (ถูกยึดไปแล้วเพราะ stale = ของคนใหม่ ห้ามลบ) */
+function release(dir) {
+  held.delete(dir);
+  if (readPid(dir) !== String(process.pid)) return false;
+  try { fs.rmSync(dir, { recursive: true, force: true }); } catch (_) {}
+  return true;
+}
+process.on('exit', () => { for (const d of [...held]) release(d); });
+for (const sig of ['SIGINT', 'SIGTERM'])
+  process.on(sig, () => { for (const d of [...held]) release(d); process.exit(sig === 'SIGINT' ? 130 : 143); });
 
 function sleepSync(ms) { Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, ms); }
 function readPid(dir) { try { return fs.readFileSync(path.join(dir, 'pid'), 'utf8').trim(); } catch (_) { return '?'; } }
@@ -51,9 +65,10 @@ function tryAcquire(dir) {
   return reclaimStale(dir);
 }
 
-/** รัน fn ใต้ lock ของ file (sync) · คืนค่าของ fn · รอเกิน waitMs → throw */
+/** รัน fn ใต้ lock ของ file · sync: คืนค่าของ fn แล้วปล่อย · async (fn คืน thenable): ถือต่อ + heartbeat จน settle แล้วคืน promise · รอเกิน waitMs → throw */
 function withLock(file, fn, opts) {
   const waitMs = (opts && opts.waitMs != null) ? opts.waitMs : WAIT_MS;
+  const hbMs = (opts && opts.heartbeatMs != null) ? opts.heartbeatMs : HEARTBEAT_MS;
   const dir = `${file}.lock`;
   const t0 = Date.now();
   while (!tryAcquire(dir)) {
@@ -61,8 +76,16 @@ function withLock(file, fn, opts) {
     sleepSync(POLL_MS);
   }
   held.add(dir);
-  try { return fn(); }
-  finally { held.delete(dir); fs.rmSync(dir, { recursive: true, force: true }); }
+  let out;
+  try { out = fn(); }
+  catch (e) { release(dir); throw e; }
+  if (!out || typeof out.then !== 'function') { release(dir); return out; }
+  const hb = setInterval(() => {
+    if (readPid(dir) !== String(process.pid)) { clearInterval(hb); return; }   // ถูก reclaim ไปแล้ว (stale) — เลิก touch ไม่งั้นทำให้ lock ของเจ้าของใหม่ดูสดตลอด reclaim ไม่ได้
+    try { const t = new Date(); fs.utimesSync(dir, t, t); } catch (_) {}
+  }, hbMs);
+  hb.unref();
+  return Promise.resolve(out).finally(() => { clearInterval(hb); release(dir); });
 }
 
 /** เขียน state file แบบ atomic: temp ในโฟลเดอร์เดียวกัน (rename ข้าม filesystem ไม่ atomic) แล้ว rename ทับ
@@ -73,4 +96,4 @@ function writeJsonAtomic(file, text) {
   try { fs.renameSync(tmp, file); } catch (e) { try { fs.unlinkSync(tmp); } catch (_) {} throw e; }
 }
 
-module.exports = { withLock, writeJsonAtomic, STALE_MS, WAIT_MS };
+module.exports = { withLock, release, writeJsonAtomic, STALE_MS, WAIT_MS, HEARTBEAT_MS };
