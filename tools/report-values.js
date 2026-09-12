@@ -62,6 +62,17 @@ function parseIso(iso) {
   return { yearCE: y, monIdx: mo - 1, day: d };
 }
 
+// serialize report-data สไตล์เดิม (จุดกราฟ [label, num] / array ตัวเลขล้วนบรรทัดเดียว) — ย้ายจาก
+// tools/update-prices.js (เจ้าของเดียว, ระยะ 2 ส่วน B) · migrate-annual-chg.js เดิมมีสำเนาซ้ำ — ยุบมาที่นี่แล้ว
+// · tools/apply-edits.js (--set/--del) ใช้ตัวนี้ตอนเขียนกลับ report-data JSON เช่นกัน
+function styledRD(rd) {
+  let s = JSON.stringify(rd, null, 2);
+  s = s.replace(/\[\n\s*("(?:[^"\\]|\\.)*"),\n\s*(-?\d+(?:\.\d+)?)\n\s*\]/g, '[$1, $2]');
+  s = s.replace(/\[\n\s*((?:-?\d+(?:\.\d+)?,\n\s*)*-?\d+(?:\.\d+)?)\n\s*\]/g,
+    (m, body) => '[' + body.replace(/,\n\s*/g, ', ') + ']');
+  return s;
+}
+
 const isV2 = (rd) => !!(rd && typeof rd === 'object' && rd.v === 2);
 const isNum = (v) => typeof v === 'number' && Number.isFinite(v);
 const CHG_SUFFIX = ['รอบปี', 'ตั้งแต่ IPO'];
@@ -70,6 +81,7 @@ const PER_YEAR = ['cagr', 'linear', null];
 const VALUE_KEYS = {
   px: { req: true, check: (v) => isNum(v) && v > 0, why: 'ต้องเป็นตัวเลข > 0' },
   priceDate: { req: true, check: (v) => !!parseIso(v), why: 'ต้องเป็น ISO "YYYY-MM-DD" (ค.ศ.)' },
+  dateEra: { req: true, check: (v) => v === 'BE' || v === 'CE', why: "ต้องเป็น 'BE' (พ.ศ.) หรือ 'CE' (ค.ศ.) — migrator เก็บศักราชเดิมของไฟล์ ใบใหม่ใช้ BE" },
   chgSuffix: { req: true, check: (v) => CHG_SUFFIX.includes(v), why: `ต้องเป็นหนึ่งใน ${JSON.stringify(CHG_SUFFIX)}` },
   fvLow: { check: (v) => isNum(v) && v > 0 }, fvHigh: { check: (v) => isNum(v) && v > 0 },
   analystTgt: { check: (v) => isNum(v) && v > 0 },
@@ -118,7 +130,10 @@ function derive(rd, sm) {
     // กับคลัง v1 ทั้ง 908 ใบ) — ★ ไม่ใช่เพราะ E35 บังคับรูปนี้: E35 (test/check-reports.js) ตรวจแค่ว่ามีคำ
     // "รอบปี"/"IPO" เป็น substring ของ .chg เท่านั้น (`/รอบปี/.test(c.chg)` ไม่สนวงเล็บ)
     chg: annualChg(rd.chart.data, '(' + v.chgSuffix + ')'),
-    priceDate: { ...pd, iso: v.priceDate, text: PD.renderThaiDate(pd.day, pd.monIdx, pd.yearCE, true) },
+    // ★ ศักราชเป็น "ข้อมูลของไฟล์" ไม่ใช่ค่าคงที่ของระบบ (คลัง 12 ก.ย. 69: วันที่ราคาหัวรายงาน BE 737 / CE 171)
+    //   ⇒ render ตาม values.dateEra — migration จึงไม่พลิกหน้าตาใบไหน · hard-code พ.ศ. = เขียนวันที่ที่คนเห็นใหม่
+    //   ให้ 171 ใบเงียบ ๆ โดย masked text diff ของ migrator จับไม่ได้ (ตัวเลขถูก mask)
+    priceDate: { ...pd, iso: v.priceDate, era: v.dateEra, text: PD.renderThaiDate(pd.day, pd.monIdx, pd.yearCE, v.dateEra === 'BE') },
     pe: isNum(v.eps) && v.eps > 0 ? px / v.eps : null,
     mcap: isNum(v.shares) ? px * v.shares : null,
     ps: isNum(v.shares) && isNum(v.revenue) ? px * v.shares / v.revenue : null,
@@ -173,4 +188,4 @@ function renderValues(html, rd, sm) {
   return out;
 }
 module.exports = { CUR_SYMBOL, FLAT_PP, VALUE_KEYS, CHG_SUFFIX, isV2, validateValues, derive, TOKENS, COPY_TOKENS: Object.keys(TOKENS), renderValues,
-  fmtPrice, fmtBig, annualChg, mosBand, isoOf, parseIso };
+  fmtPrice, fmtBig, annualChg, mosBand, isoOf, parseIso, styledRD };

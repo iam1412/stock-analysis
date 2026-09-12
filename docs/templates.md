@@ -8,7 +8,8 @@
 
 - **`<script type="application/json" id="report-data">`** ใน `<head>` — ตัวเลขกราฟ/gauge + **ธีมสี** ต่อหุ้น:
   `{ theme:{accent, accentDark, darkGrad, glow, subColor, headerMuted, verdictText, vcellLabel, badge, chgBg, chgColor},
-     chart:{data, min, max, grid, fairLine, currency, highlight, gridFmt?, dataFmt?}, gauge:{min,max,cur,fair,fairLabelTop}, fv }`
+     chart:{data, min, max, grid, currency, highlight, gridFmt?, dataFmt?}, gauge:{min,max,fairLabelTop?}, fv }`
+  (ใบใหม่ทุกใบเป็น **v2** — โครงข้างบนคือ v2 · `chart.fairLine` และ `gauge.cur`/`gauge.fair` **ห้ามมี** ตาม §"schema v2" ข้อ 1 ด้านล่าง engine bake จาก `values.px`/`fv` ให้เอง · ใบ v1 เดิมในคลังยังมี `chart.fairLine`/`gauge.cur`/`gauge.fair` เป็นสำเนาดิบตามรูปแบบเก่า)
   · `highlight` = ดัชนีจุดที่ไฮไลต์บนกราฟ (เช่น `[6,7]`) · `currency` = สัญลักษณ์ (`$`/`฿`) · `gridFmt`/`dataFmt` = นิพจน์ format ป้าย (เช่น `v.toFixed(2)` หุ้นราคาต่ำ)
 - marker `<!--TEMPLATE:STYLE-->` (ใน head) + `<!--TEMPLATE:ENGINE-->` (ก่อน `</body>`) = จุดที่ build inject โครง
 - **★ ตัวย่อหุ้นใน header (`.px small` = `({{SYMBOL}})` ข้างราคา) ใช้สีเดียวกับราคา** (`color:inherit` = ขาว) ใน `_template/dashboard.css` — **อย่าเปลี่ยนกลับไปใช้ `var(--header-muted)`** (alpha ต่ำ ทำให้ตัวย่อกลืนพื้นหลัง อ่านไม่ออก — แก้ มิ.ย. 2569 ตาม user) · แก้ที่ dashboard.css ที่เดียว → ทุกรายงาน content-only ได้สีใหม่อัตโนมัติตอน build
@@ -18,41 +19,105 @@
 ## โครงต้นแบบ (skeleton) — จุดตั้งต้นของรายงานใหม่
 - `_template/skeleton-th.html` (หุ้นไทย ฿/SET) · `_template/skeleton-us.html` (หุ้นต่างประเทศ $/NASDAQ·NYSE) — โครง content-only เปล่า ๆ มีครบ 8 section + marker + บล็อก `stock-meta`/`report-data` + comment กำกับทุกช่อง
 - **ทุกค่าต่อหุ้นเป็น `{{TOKEN}}`** (ไม่มีตัวเลขหุ้นเก่าติดมา ต่างจากการก๊อปรายงานเดิม) — **อ่าน skeleton เป็นโครง → compose เนื้อหาครบ → Write ไฟล์เต็มใบครั้งเดียว** (SKILL STEP 5A · เลิกวิธี `cp`+ไล่แทน token แล้ว 13 ก.ค. 2569 — เปลือง ~20 turns) · เหลือ `{{...}}` ค้าง = **gate E13 บล็อก**
-- **`{{MOS}}` กับ `{{MOS_SIGNED}}` คนละตัว** — `{{MOS}}` = **ตัวเลขล้วน** ใช้ที่เดียวคือ JSON ใน `stock-meta` (`"mos":{{MOS}}` — JSON มีเครื่องหมาย `+` ไม่ได้) · `{{MOS_SIGNED}}` = เลขเดียวกันแต่ **มีเครื่องหมายมาเอง** (`+12` / `−12` — ลบใช้ U+2212 ตามรูปที่ cron เขียน `.big` ผ่าน `DV.fmtMos`) ใช้ที่ `.big` ของกล่อง MOS (หมวด 5) และช่องสรุป "ส่วนต่างจากราคา" (หมวด 8) · **โครงไม่พิมพ์ `+` นำให้แล้ว** (เดิม hard-code `+{{MOS}}%` ⇒ หุ้นที่ MOS ติดลบได้ `+-12%` แล้ว cron อ่าน `.big` ไม่ออก = `patch-failed` ตั้งแต่ใบแรก — แก้ 12 ก.ย. 2569 · `test/skeleton-test.js` มีเคส MOS ติดลบกำกับแล้ว)
+- **โครงเป็น v2 แล้ว (ระยะ 2 ส่วน B)** — token 2 ชนิดคนละเจ้าของ: `{{UPPER}}` = **worker กรอก** (เนื้อหา + ตัวเลขดิบใน `report-data`) · `{{rd:…}}` = **build render จาก `values`** ตอน `expandReport` (ราคา/FV/MOS/จุดซื้อ/ผลตอบแทนฉาก — worker ห้ามกรอก) ⇒ token เดิม `{{MOS_SIGNED}}` `{{CHANGE}}` `{{PRICE_DATE}}` `{{MOS20}}` `{{MOS30}}` `{{SCn_RET}}` `{{MOS_CLASS}}` `{{ACCENT}}` `{{MKT_CAP}}` `{{PBV}}` `{{REPORT_DATA}}` **ไม่มีแล้ว**
+- `{{MOS}}` (ตัวเลขล้วน — JSON มีเครื่องหมาย `+` ไม่ได้) เหลือใช้ที่เดียวคือ `stock-meta` · `.big` ของกล่อง MOS (หมวด 5) กับช่องสรุป "ส่วนต่างจากราคา" (หมวด 8) ใช้ `{{rd:mos}}` ซึ่งมีเครื่องหมายมาเองตาม `DV.fmtMos` (ลบ = U+2212) — เดิม hard-code `+{{MOS}}%` ⇒ ใบที่ MOS ติดลบได้ `+-12%` แล้ว cron อ่าน `.big` ไม่ออก = `patch-failed` (`test/skeleton-test.js` มีเคส MOS ติดลบกำกับ)
 - อยู่ใน `_template/` (ไม่ใช่ `reports/`) → ไม่ถูก build เป็นหน้า/ไม่ถูก gate ตรวจเป็นรายงานจริง · ทั้งสองไฟล์ต่างกันแค่สัญลักษณ์สกุลเงิน/ตลาด (โครงเดียวกัน)
 - `test/skeleton-test.js` กำกับ: เติม token ด้วยข้อมูลจริง (ไทย = HMPRO จริง) แล้ว **ต้องผ่าน check-reports (0 error) + engine รันได้** + token coverage (เพิ่ม token แล้วลืมอัปเดต = เทส fail)
 
 ## ตัวอย่าง filled (NEW) — worker อ่านตรงนี้จบ **ห้าม Read/grep/sed ไฟล์ใน `reports/` ตัวอื่นทุกกรณี** / ไม่ต้องทดลอง `node -e` หา format
 
-> ตัวอย่างจริงจาก `reports/CGNX.html` (US · ราคา $66.80 · FV $50.00) · ข้อ 2 (วิธีที่ 2)/4 (ตัวปกติ)/6–7 จาก `reports/KTOS.html` (US · ราคา $48.19 · FV $50.00) — โหมด NEW compose เนื้อหาครบทุก STEP แล้ว **Write ทั้งไฟล์ครั้งเดียว** (SKILL STEP 5A)
+> ตัวอย่างจริงจาก `reports/BBL.html` (TH · ราคา ฿188.00 · FV ฿195.00) · ข้อ 2 (วิธีที่ 2)/4 (ตัวปกติ)/6–7 จาก `reports/KTOS.html` (US · ราคา $48.19 · FV $50.00) — โหมด NEW compose เนื้อหาครบทุก STEP แล้ว **Write ทั้งไฟล์ครั้งเดียว** (SKILL STEP 5A)
 > บล็อกไหนหาไม่เจอในหน้านี้ = ใส่ตามแบบตัวอย่างที่ใกล้สุดที่มี แล้วให้ gate (`npm test -- <SYM>`) จับ — ถูกกว่าไปขุดรายงานตัวอื่น (วัดจริง 13 ก.ค. 2569: HON เผา 5–6 turns grep/Read/sed รายงาน sibling ทั้งที่ทุกบล็อกอยู่ในนี้แล้ว)
+> **ใบ v1 (ก่อนย้ายคลัง) ยังใช้กติกาเดิม** — คลัง `reports/` ปัจจุบันเกือบทั้งหมดยังเป็น v1 (ราคา/FV กระจายซ้ำหลายจุด ไม่มี `values`/`{{rd:…}}`) ย้ายทั้งคลังเป็น v2 เป็นงานส่วน E ของแผน (ยังไม่ทำ) · **โหมด NEW ทุกใบใหม่เริ่มจาก skeleton v2 แล้ว** (ระยะ 2 ส่วน B) — ตัวอย่างข้างล่างนี้จึงเป็น v2 ตามที่ skeleton ใช้จริง · โหมด UPDATE บนไฟล์ v1 เดิม อ่านรูปแบบจากไฟล์จริงตรง ๆ (SKILL STEP 5B ข้อ 1) ไม่ต้องอิงตัวอย่างนี้
 
-### 1) บล็อก `report-data` ทั้งก้อน
+### 1) บล็อก `report-data` ทั้งก้อน (schema v2 — เจ้าของ `tools/report-values.js`)
 
-```html
+ต่างจาก v1: ราคา/FV มี**สำเนาเดียว** (`values.px` / `fv`) แทนที่จะกระจายซ้ำในหลายจุด (header/gauge/chart/hint) — ส่วนอื่นที่ต้องโชว์ตัวเลขพวกนี้ใช้ token `{{rd:…}}` แทนการพิมพ์ค่าดิบ (ตารางท้ายข้อนี้) · `chart.fairLine` และ `gauge.cur`/`gauge.fair` **ห้ามมี** ใน v2 (engine bake จาก `values.px`/`fv` ให้เอง)
+
+> ★ บล็อกข้างล่างนี้คือผล `tools/report-values.js` → `styledRD(rd)` **เป๊ะไบต์ต่อไบต์** (ไม่มีคอมเมนต์แทรก — ตั้งใจ)
+> เพราะ `apply-edits.js --set/--del` และ cron เขียนกลับด้วย `styledRD` ตัวเดียวกันเสมอ · ถ้าไฟล์จริงจัดบรรทัด
+> ต่างจากนี้ (เช่น รวมหลายคีย์ไว้บรรทัดเดียว) การแก้ครั้งแรกผ่าน `apply-edits`/cron จะ reformat ทั้งบล็อกจนเห็น diff
+> ใหญ่ทั้งที่ตัวเลขเปลี่ยนแค่จุดเดียว — เรื่องนี้สำคัญเกินความสวยงาม: การย้ายทั้งคลัง 908 ไฟล์เป็น v2 (ส่วน E ของแผน)
+> จะรีวิวผ่าน diff แบบนี้เป๊ะ ๆ — ที่มาของค่าดู "ใครให้ค่าอะไร" ท้ายบล็อกนี้ ไม่ใช่คอมเมนต์ในตัว JSON
+
+```json
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 195,
+  "values": {
+    "px": 188,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 180,
+    "fvHigh": 210,
+    "analystTgt": 205,
+    "eps": 21.7,
+    "shares": 1909000000,
+    "revenue": 140000000000,
+    "dps": 12,
+    "bvps": 260,
+    "baseEps": 21.7,
+    "scenarios": [
+      {
+        "tgt": 160,
+        "div": 36
+      },
+      {
+        "tgt": 230,
+        "div": 36
+      },
+      {
+        "tgt": 300,
+        "div": 36
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": true,
+      "perYear": "cagr"
+    }
+  },
   "theme": {
-    "accent": "#20ead1",
-    "accentDark": "#11b19e",
-    "darkGrad": "linear-gradient(135deg,#043e37 0%,#077366 58%,#0cb6a2 140%)",
-    "glow": "rgba(22,233,208,.35)",
-    "subColor": "#c2ebe6",
-    "headerMuted": "#a5d4ce",
-    "verdictText": "#d0f1ed",
-    "vcellLabel": "#a6ddd7",
+    "accent": "#0071e3",
+    "accentDark": "#0058b9",
+    "darkGrad": "linear-gradient(135deg,#0a2540 0%,#123a63 55%,#1a4f86 140%)",
+    "glow": "rgba(110,160,220,.35)",
+    "subColor": "#c7cbd4",
+    "headerMuted": "#b3b8c2",
     "chgBg": "var(--green-soft)",
-    "chgColor": "#1e8e3e"
+    "chgColor": "#137333",
+    "badge": "var(--blue)",
+    "verdictText": "#d4d6dd",
+    "vcellLabel": "#c4c7cf"
   },
   "chart": {
-    "data": [["ส.ค.25", 43.94], ["ก.ย.25", 45.3], ["ต.ค.25", 41.39], ["พ.ย.25", 38.1],
-             ["ธ.ค.25", 35.98], ["ม.ค.26", 38.74], ["ก.พ.26", 54.4], ["มี.ค.26", 48.99],
-             ["เม.ย.26", 55.51], ["พ.ค.26", 65.85], ["มิ.ย.26", 72.42], ["ก.ค.26", 66.8]],
-    "min": 30, "max": 80, "grid": [40, 50, 60, 70],
-    "fairLine": 50, "currency": "$", "highlight": [4, 9]
+    "data": [
+      ["ต.ค.25", 158.5],
+      ["พ.ย.25", 158],
+      ["ธ.ค.25", 169.5],
+      ["ม.ค.26", 158],
+      ["ก.พ.26", 177.5],
+      ["มี.ค.26", 166.5],
+      ["เม.ย.26", 162.5],
+      ["พ.ค.26", 173],
+      ["มิ.ย.26", 179.5],
+      ["ก.ค.26", 191.5],
+      ["ส.ค.26", 191],
+      ["ก.ย.26", 188]
+    ],
+    "min": 150,
+    "max": 200,
+    "grid": [160, 170, 180, 190],
+    "currency": "฿",
+    "highlight": [1, 9]
   },
-  "gauge": { "min": 30, "max": 80, "cur": 66.8, "fair": 50 },
-  "fv": 50
+  "gauge": {
+    "min": 120,
+    "max": 240,
+    "fairLabelTop": "-58px"
+  }
 }
 </script>
 ```
@@ -61,46 +126,23 @@
 
 | field | ที่มา |
 |---|---|
-| `chart.data / min / max / grid / currency` + ป้าย `.chg` + `theme.chgBg/chgColor` | `node tools/fetch-facts.js <SYM> [--th]` พิมพ์พร้อมวาง (ขึ้น=เขียว `var(--green-soft)`/`#1e8e3e` · ลง=แดง `var(--red-soft)`/`#c5221f`) |
-| `chart.fairLine` = `gauge.fair` = `fv` | FV ที่คำนวณ STEP 3 (ค่าเดียวกันทั้ง 3 จุด) · fairLine หลุดช่วง min/max → คำนวณ bounds ใหม่รวม FV |
-| `chart.highlight` | `[ดัชนีจุดต่ำสุด, ดัชนีจุดสูงสุด]` ของ chart.data เรียงน้อย→มาก (กติกาเดียวกับ update-prices.js — cron จะ normalize ให้ทุกวันอยู่แล้ว) |
-| `gauge.min/max` | ช่วงที่ครอบทั้งราคาปัจจุบัน + FV + จุดซื้อ MOS30 (ใช้เลขเดียวกับ chart.min/max ได้ถ้าครอบ) |
-| `gauge.cur` | ราคาปัจจุบัน (เลขเดียวกับ header/stock-meta.price) |
-| `theme` 8 คีย์แรก | `makeTheme()` — สูตร 3 บรรทัด ข้อ 6 |
-
-### schema `report-data` v2 (ระยะ 2 — ยังไม่เปิดใช้กับคลังจนกว่าส่วน E)
-
-> คลัง `reports/` ทั้งหมดยังเป็น v1 (บล็อกข้างบน) — ห้ามใครเขียน `"v":2` ลงไฟล์จริงก่อนส่วน E ของแผน
-> `docs/superpowers/plans/2026-09-12-stock-analyzer-audit-phase2-data-layer.md` (schema/token ชุดจริงอยู่ที่นั่น — สรุปย่อไว้ที่นี่เพื่อให้เจองานเร็ว)
-> เจ้าของ schema/validate/derive/render = `tools/report-values.js` · เจ้าของการ render token ตอน build = `build.js expandReport()`
-
-ต่างจาก v1: ราคา/FV มี**สำเนาเดียว** (`values.px` / `fv`) แทนที่จะกระจายซ้ำในหลายจุด (header/gauge/chart/hint) — ส่วนอื่นที่ต้องโชว์ตัวเลขพวกนี้ใช้ token `{{rd:…}}` แทนการพิมพ์ค่าดิบ · `chart.fairLine` และ `gauge.cur`/`gauge.fair` **ห้ามมี** ใน v2 (engine bake จาก `values.px`/`fv` ให้เอง)
-
-```jsonc
-<script type="application/json" id="report-data">
-{
-  "v": 2,
-  "fv": 195,                       // เจ้าของเดียวของ FV (เดิมมี 9 สำเนา)
-  "values": {
-    "px": 188,                     // cron · ราคาปิดล่าสุด (2 ตำแหน่ง)
-    "priceDate": "2026-09-11",     // cron · ISO ค.ศ. เสมอ · render เป็น "11 ก.ย. 2569"
-    "chgSuffix": "รอบปี",          // worker · "รอบปี" | "ตั้งแต่ IPO" — ตัวเลข % คิดจาก chart.data ตอน render
-    "fvLow": 180, "fvHigh": 210,   // worker · กรอบ FV (null = ไม่มี)
-    "analystTgt": 205,             // worker · เป้านักวิเคราะห์ (null = ไม่มี)
-    "eps": 21.7,                   // worker · ฐาน EPS ของการ์ด P/E ที่ใช้ token (null = การ์ดเป็น literal)
-    "shares": 1909000000,          // worker · จำนวนหุ้นทั้งหมด (หุ้น ไม่ใช่ล้าน) → Market Cap
-    "revenue": 140000000000,       // worker · รายได้ TTM หน่วยเต็ม สกุลรายงาน → P/S
-    "dps": 12, "bvps": 260,        // worker · → ปันผล % · P/BV
-    "baseEps": 21.7,               // worker · EPS ฐานหมวด 6 (hint)
-    "scenarios": [ { "tgt": 160, "div": 36 }, { "tgt": 230, "div": 36 }, { "tgt": 300, "div": 36 } ],  // bear/base/bull · div = ปันผลรวม N ปี (null = ไม่มีแถว)
-    "scnBasis": { "years": 3, "divIncluded": true, "perYear": "cagr" }   // perYear: "cagr" | "linear" | null (ไม่โชว์ %/ปี)
-  },
-  "theme": { … 11 คีย์เดิม … },
-  "chart": { "data": [...], "min": 120, "max": 240, "grid": [...], "currency": "฿", "highlight": [3, 9] },   // ★ ไม่มี fairLine
-  "gauge": { "min": 120, "max": 240, "fairLabelTop": "-58px" }                                             // ★ ไม่มี cur/fair
-}
-</script>
-```
+| `values.px` / `values.priceDate` + ป้าย `.chg` + `theme.chgBg/chgColor` | `node tools/fetch-facts.js <SYM> [--th]` พิมพ์พร้อมวาง (ขึ้น=เขียว `var(--green-soft)`/`#1e8e3e` · ลง=แดง `var(--red-soft)`/`#c5221f`) |
+| `chart.data / min / max / grid` | `node tools/fetch-facts.js <SYM> [--th]` พิมพ์ให้ **เฉพาะ 4 คีย์นี้** (`styledRD({data,min,max,grid})` ที่ `tools/fetch-facts.js:63`) |
+| `chart.highlight` (**ไม่ได้มาจาก fetch-facts — worker เติมเอง**) | `[ดัชนีจุดต่ำสุด, ดัชนีจุดสูงสุด]` ของ `chart.data` เรียงน้อย→มาก · ไม่มี = `build.js` **throw** ที่ `chart.highlight` (ไม่มี `chart.fairLine` แล้วใน v2) |
+| `chart.currency` (**ไม่ได้มาจาก fetch-facts — worker เติมเอง**) | `"$"`/`"฿"` ตามตลาด — ไม่มี = **ไม่ throw** แต่สัญลักษณ์สกุลเงินหายจากแกนกราฟเงียบ ๆ (`build.js` validate เฉพาะเมื่อ `!= null`) |
+| `fv` (เจ้าของเดียวของ FV — เดิม v1 มี 9 สำเนา) | FV ที่คำนวณ STEP 3 |
+| `values.dateEra` | worker: `"BE"` เสมอสำหรับใบใหม่ (`"11 ก.ย. 2569"`) · migrator เท่านั้นที่เขียน `"CE"` (เก็บศักราชเดิมของไฟล์ที่ย้ายมา) |
+| `values.chgSuffix` | `"รอบปี"` ปกติ · `"ตั้งแต่ IPO"` เมื่อหุ้น IPO <1 ปี — ตัวเลข % คิดจาก `chart.data` ตอน render |
+| `values.fvLow` / `values.fvHigh` | กรอบ FV จาก STEP 3 (ไม่มี = `null`) |
+| `values.analystTgt` | เป้านักวิเคราะห์เฉลี่ยจาก STEP 2 (ไม่มี = `null`) |
+| `values.eps` | ฐาน EPS ของการ์ด P/E ที่ใช้ token `{{rd:pe}}` (ไม่มี = การ์ดเป็น literal ห้ามใช้ token) |
+| `values.shares` | จำนวนหุ้นทั้งหมด (หุ้น ไม่ใช่ล้านหุ้น) → `{{rd:mcap}}` |
+| `values.revenue` | รายได้ TTM หน่วยเต็ม สกุลรายงาน → `{{rd:ps}}` |
+| `values.dps` / `values.bvps` | → ปันผล % (`{{rd:yield}}`) / P/BV (`{{rd:pbv}}`) |
+| `values.baseEps` | EPS ฐานหมวด 6 (hint `{{rd:baseEps}}`) |
+| `values.scenarios` / `values.scnBasis` | scenario STEP 4 — bear/base/bull ต้องมี **3 ฉากเป๊ะ** + `years`/`divIncluded`/`perYear` (มาคู่กันเสมอ ขาดตัวใดตัวหนึ่งไม่ได้) |
+| `gauge.min` / `gauge.max` (+ `fairLabelTop` ถ้าต้อง) | ช่วงที่ครอบทั้งราคาปัจจุบัน + FV + จุดซื้อ MOS30 (ไม่มี `cur`/`fair` แล้ว — engine bake จาก `values.px`/`fv`) |
+| `theme` 11 คีย์ | `makeTheme()` — สูตร 3 บรรทัด ข้อ 6 |
 
 token ที่ renderer รู้จัก (`tools/report-values.js` `TOKENS`) — ตัวไหน derive จากอะไร:
 
@@ -108,7 +150,7 @@ token ที่ renderer รู้จัก (`tools/report-values.js` `TOKENS`) 
 |---|---|---|
 | `{{rd:px}}` | `฿188.00` (สกุลจาก `stock-meta.currency`) | px |
 | `{{rd:pxNum}}` | `188` (ค่าตั้งต้น `pxIn`) | px |
-| `{{rd:priceDate}}` | `11 ก.ย. 2569` | priceDate |
+| `{{rd:priceDate}}` | `11 ก.ย. 2569` (BE) · `11 ก.ย. 2026` (CE) — ศักราชตาม `dateEra` ไม่ใช่ค่าคงที่ของระบบ | priceDate · dateEra |
 | `{{rd:chg}}` | `▲ +12.3% (รอบปี)` — `annualChg(chart.data, '(' + chgSuffix + ')')` | chgSuffix |
 | `{{rd:fv}}` `{{rd:fvLow}}` `{{rd:fvHigh}}` | `฿195.00` … | fv · fvLow · fvHigh |
 | `{{rd:mos}}` | `+4%` (`fmtMos((fv−px)/fv×100)`) | — |
@@ -210,10 +252,8 @@ token ที่ renderer รู้จัก (`tools/report-values.js` `TOKENS`) 
 </div>
 ```
 
-- `.big` + `class` ของกล่อง = ค่าที่ cron คำนวณจาก MOS ⇒ **ห้ามแก้มือ** · `.txt` เป็น prose ของคน (คำว่าถูก/แพง/เต็มมูลค่าอยู่ที่นี่ที่เดียว)
-- โหมด NEW: ทั้ง `.big` และช่องสรุปหมวด 8 เติมจาก **`{{MOS_SIGNED}}`** (เครื่องหมายมากับ token แล้ว — ตัวอย่างข้างบนคือ MOS ติดลบ `−33.6%`) **ห้ามพิมพ์ `+`/`−` เพิ่มเอง** และห้ามใช้ `{{MOS}}` ที่นี่ (มันเป็นตัวเลขล้วนสำหรับ JSON)
-- ★ ช่อง `vcell` **"ส่วนต่างจากราคา"** ในกล่องสรุปหมวด 8 เป็นคลังคำคงที่รูปเดียว — `MOS ~ ±X%` โดย X ต้องเท่ากับตัวเลขใน `.big` ตามที่พิมพ์
-  (ระยะ 1 ข้อ D: cron เขียนทับ **ทั้งช่อง** ทุกวันผ่าน `patchDerived#11` · W06 ตรวจรูป+ตัวเลข) — ห้ามเขียนคำบรรยายลงช่องนี้
+- โครงจริงใน skeleton (v2): `<div class="mos-verdict {{rd:mosClass}}"><div class="big">{{rd:mos}}</div><div class="txt">{{MOS_TEXT}}</div></div>` — `{{rd:mosClass}}` (`bad`/`ok`/`good`) และ `{{rd:mos}}` (เครื่องหมายมากับ token แล้วตาม `DV.fmtMos` — ตัวอย่างข้างบนคือ MOS ติดลบ `−33.6%`) **build render ให้ทั้งคู่จาก `report-data.values.px`/`fv`** ตอน `expandReport` ⇒ **worker กรอกแค่ `{{MOS_TEXT}}`** (prose คำว่าถูก/แพง/เต็มมูลค่าอยู่ที่นี่ที่เดียว) **ห้ามแตะ class ห้ามพิมพ์ตัวเลข/เครื่องหมาย `+`/`−` เอง**
+- ★ ช่อง `vcell` **"ส่วนต่างจากราคา"** ในกล่องสรุปหมวด 8 ใช้ `{{rd:mos}}` เดียวกัน (`MOS ~ {{rd:mos}}`) — build render ค่าเดียวกับ `.big` เสมอโดยอัตโนมัติ (สำเนาเดียวกัน ไม่มีทางเพี้ยนกันเอง) — ห้ามเขียนคำบรรยายลงช่องนี้
 
 ### 6) หัวรายงาน: บรรทัด `ai-model` + บล็อก `gdots`/ป้ายตลาด
 

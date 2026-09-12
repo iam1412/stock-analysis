@@ -15,6 +15,7 @@ const { todayBangkok } = require('./footer-date.js');
 const RM = require('../report-meta.js');   // เจ้าของเดียวของ regex stock-meta/report-data/.px + กรอบ 52 สัปดาห์
 const { usSessionOpen, setSessionOpen } = require('./market.js');
 const DV = require('../derived-values.js');
+const RV = require('../report-values.js');   // ระยะ 2: isV2() + schema values — snapshotDiff อ่านตัวเลขจาก values แทน HTML บนใบ v2
 const T = require('../tag-lib.js');
 
 const REPORTS = path.join(ROOT, 'reports');
@@ -113,7 +114,11 @@ function parseVendor(text) {
   };
 }
 
-/** snapshot vendor ที่พิมพ์ในใบ vs vendor ตอนนี้ — คืนรายการที่ต่างเกินเกณฑ์ (ให้ worker อัปเดตพร้อมกัน) */
+/** snapshot vendor ที่พิมพ์ในใบ vs vendor ตอนนี้ — คืนรายการที่ต่างเกินเกณฑ์ (ให้ worker อัปเดตพร้อมกัน)
+ *  ★ ระยะ 2 ส่วน B: บนใบ v2 ตัวเลข (เป้า/ปันผล/P-BV) ไม่ได้อยู่ใน HTML แล้ว (อยู่ใน report-data.values) —
+ *  RANGE52_RE (f41) ยังอ่านจาก HTML เหมือนเดิมทั้งสองสคีมา (ยัง literal ในใบ) ส่วนอีกสามจุดแยกเส้นทางด้วย
+ *  RV.isV2() แล้วอ่าน values ตรง ๆ แทน DV.targetCells/yieldPlan/pbvPlan — ข้อความฟ้องขึ้นต้นด้วย "values.<key>"
+ *  เสมอให้ worker รู้ว่าต้องแก้ด้วย `apply-edits --set` ไม่ใช่แก้ HTML */
 function snapshotDiff(html, ctx, v) {
   const out = [];
   // ตัวคั่นในคลังมีหลายแบบ (วัด 908 ใบ 12 ก.ย. 69): en dash 719 · `/` 70 · `&ndash;`/วงเล็บครอบ 7 · ไม่มีป้าย "กรอบ" 112
@@ -124,16 +129,40 @@ function snapshotDiff(html, ctx, v) {
     const lo = num(m52[1]), hi = num(m52[2]);
     if (pctDiff(lo, v.lo52) > 3 || pctDiff(hi, v.hi52) > 3) out.push(`กรอบ 52 สัปดาห์ ใบ ${lo}–${hi} · vendor ${v.lo52}–${v.hi52}`);
   }
-  for (const t of DV.targetCells(html))
-    if (v.target != null && pctDiff(t.target, v.target) > 2) out.push(`เป้านักวิเคราะห์ (${t.label}) ใบ ${t.target} · vendor ${v.target}${v.analysts != null ? ` (n=${v.analysts})` : ''}`);
-  const px = ctx && ctx.px;
-  const yp = px > 0 ? DV.yieldPlan(html, px) : null;
-  if (yp && yp.cards.length && v.divYieldPct != null && Math.abs(yp.cards[0].shown - v.divYieldPct) > 0.3) out.push(`ปันผล % ใบ ${yp.cards[0].shown} · vendor ${v.divYieldPct}`);
-  // ★ pbvPlan คืน [{label, items:[{shown,…}]}] — ค่าที่โชว์อยู่ใน items ไม่ใช่บนตัวการ์ด
-  //   (yieldPlan().cards[] ต่างหากที่มี .shown ตรง ๆ) ⇒ อ่าน pb[0].shown ได้ `undefined` แล้วพิมพ์ "P/BV ใบ undefinedx" ลง prompt
-  const pb = px > 0 ? DV.pbvPlan(html, px) : [];
-  const pbShown = pb.length && pb[0].items && pb[0].items.length ? pb[0].items[0].shown : null;
-  if (pbShown != null) out.push(`P/BV ใบ ${pbShown}x — ตรวจกับ BVPS/ราคาใน FUNDAMENTALS เอง (vendor ไม่ส่งค่านี้ในบล็อก)`);
+
+  const rdState = RM.readReportData(html);
+  const rd = (rdState.present && rdState.ok) ? rdState.data : null;
+  if (RV.isV2(rd)) {
+    const vals = rd.values || {};
+    const px = vals.px;
+    if (v.target != null && vals.analystTgt != null && pctDiff(vals.analystTgt, v.target) > 2)
+      out.push(`values.analystTgt ${vals.analystTgt} → ${v.target}${v.analysts != null ? ` (n=${v.analysts})` : ''}`);
+    // ★ shownYield/P-BV ข้างล่างนี้เป็น**สำเนาโดยตั้งใจ**ของสูตรใน RV.derive() (tools/report-values.js:
+    //   `.yield = v.dps/px*100` · `.pbv = px/v.bvps`) — เจ้าของนิยามจริงคือ `RV.derive()` เสมอ ห้ามแก้สูตรที่นี่
+    //   แยกกัน (test/queue-test.js pin ทั้งสองตัวไว้ด้วยกันแล้ว: input เดียวกันต้องได้ output เท่ากัน)
+    //   เหตุที่ไม่เรียก `RV.derive(rd, sm)` ตรง ๆ แทนการคูณ/หารเอง: `derive()` คำนวณจาก `rd.values` **ทั้งก้อน**
+    //   (scenarios/scnBasis/chart.data/stock-meta.currency ฯลฯ) และพึ่งให้ผ่าน `RV.validateValues()` มาก่อนเสมอ
+    //   (ดูคอมเมนต์ที่ renderValues()) — แต่ `snapshotDiff` ต้องรายงาน diff ของ "ปันผล/P-BV" ได้แม้ใบมีปัญหา
+    //   ที่จุดอื่นที่ไม่เกี่ยวกับสองค่านี้เลย (เช่น scnBasis ผิด/priceDate เพี้ยน) — gate ทั้งใบไปแล้วด้วย validateValues
+    //   ในนี้จะทำให้ diagnostic ของปันผล/P-BV ล่มไปด้วยทั้งที่ไม่เกี่ยวกัน ⇒ คงสูตรแคบ ๆ ที่ต้องการแค่ px/dps/bvps ไว้ที่นี่
+    if (px > 0 && vals.dps != null && v.divYieldPct != null) {
+      const shownYield = vals.dps / px * 100;
+      if (Math.abs(shownYield - v.divYieldPct) > 0.3) out.push(`values.dps ${vals.dps} → ปันผล % ใบ ${shownYield.toFixed(2)} · vendor ${v.divYieldPct}`);
+    }
+    // vendor ไม่ส่ง BVPS/P-BV มาในบล็อกเลย (เหมือน v1) — พิมพ์ให้คนตรวจเองเสมอเมื่อใบมีค่านี้ ไม่ใช่ diff จริง
+    if (px > 0 && vals.bvps != null) out.push(`values.bvps ${vals.bvps} → P/BV ${(px / vals.bvps).toFixed(2)}x — ตรวจกับ BVPS/ราคาใน FUNDAMENTALS เอง (vendor ไม่ส่งค่านี้ในบล็อก)`);
+  } else {
+    for (const t of DV.targetCells(html))
+      if (v.target != null && pctDiff(t.target, v.target) > 2) out.push(`เป้านักวิเคราะห์ (${t.label}) ใบ ${t.target} · vendor ${v.target}${v.analysts != null ? ` (n=${v.analysts})` : ''}`);
+    const px = ctx && ctx.px;
+    const yp = px > 0 ? DV.yieldPlan(html, px) : null;
+    if (yp && yp.cards.length && v.divYieldPct != null && Math.abs(yp.cards[0].shown - v.divYieldPct) > 0.3) out.push(`ปันผล % ใบ ${yp.cards[0].shown} · vendor ${v.divYieldPct}`);
+    // ★ pbvPlan คืน [{label, items:[{shown,…}]}] — ค่าที่โชว์อยู่ใน items ไม่ใช่บนตัวการ์ด
+    //   (yieldPlan().cards[] ต่างหากที่มี .shown ตรง ๆ) ⇒ อ่าน pb[0].shown ได้ `undefined` แล้วพิมพ์ "P/BV ใบ undefinedx" ลง prompt
+    const pb = px > 0 ? DV.pbvPlan(html, px) : [];
+    const pbShown = pb.length && pb[0].items && pb[0].items.length ? pb[0].items[0].shown : null;
+    if (pbShown != null) out.push(`P/BV ใบ ${pbShown}x — ตรวจกับ BVPS/ราคาใน FUNDAMENTALS เอง (vendor ไม่ส่งค่านี้ในบล็อก)`);
+  }
   return out;
 }
 

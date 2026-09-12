@@ -18,7 +18,7 @@ description: วิเคราะห์หุ้นรายตัว (ไท�
   - `mos-sign-flip` → **ไม่ส่ง worker** (ระยะ 1 ข้อ D · 12 ก.ย. 2569): runbook pre-patch ราคา + `ship --prepatch` จบ — cron เป็นเจ้าของช่องสรุปแล้ว ไม่มี prose ให้ขัด · preflight ยกเป็น **UPDATE-LIGHT** เองเมื่ออายุ footer >90 วัน หรือมีงบออกหลังวันวิเคราะห์ (แล้ว `prep` ยกเป็น UPDATE เต็มถ้า EPS ต่าง >2%)
   - `drift-gt-*` (ตลาดขยับ ไม่ใช่ธุรกิจเปลี่ยน — flip ใน dead-band ±5 จุด กับราคาหลุดขอบ gauge cron patch เองแล้ว ไม่เข้าคิว ตั้งแต่ 2 ส.ค. 2569) → เริ่มที่ **UPDATE-LIGHT** (STEP 5C)
   - `suspect-split-or-data` → **UPDATE เต็ม** + ตรวจ split/ticker ก่อนเขียนเลขใด ๆ
-  - `fetch-failed` / `patch-failed` → ปัญหา plumbing (ticker เปลี่ยน/เพิกถอน/ประวัติกราฟ) — **ไม่ใช่งานวิเคราะห์** แจ้ง controller ไปแก้ `tools/symbol-map.json` หรือเช็คเพิกถอน
+  - `fetch-failed` / `patch-failed` → **เช็คก่อน: ใบนี้เป็น v2 ไหม** (`report-data.v === 2`) — cron ยัง patch ใบ v2 ไม่ได้จนกว่าระยะ 2 ส่วน D จะ merge (วัดจริง: `patchReport` throw `ไม่เจอ pattern: ราคา header (.px)` เพราะ v2 ใช้ `{{rd:px}}` ไม่ใช่ตัวเลขดิบ) ⇒ **ชั่วคราว ไม่ต้อง triage หุ้นตาย** ปล่อยไว้รอส่วน D เข้า main แล้ว cron จะ patch เองรอบถัดไป · ใบ v1 (ไม่มี `"v":2`) → ปัญหา plumbing ตามเดิม (ticker เปลี่ยน/เพิกถอน/ประวัติกราฟ) — **ไม่ใช่งานวิเคราะห์** แจ้ง controller ไปแก้ `tools/symbol-map.json` หรือเช็คเพิกถอน
   - `no-stock-meta` / `currency-mismatch` → plumbing เช่นกัน: บล็อก `stock-meta` หาย/JSON เสีย หรือ `currency` ไม่ตรง Yahoo (ADR/ticker ผิดกระดาน) — แก้ในไฟล์/`symbol-map` ไม่ใช้ agent
   - `bad-chart` → **ซีรีส์กราฟจาก Yahoo ผสมสองฐาน** (split ที่ Yahoo ยังไม่ปรับย้อนหลังให้ครบ — เคส MNST 12 ส.ค. 2569 split 2:1: ก.ย.–ธ.ค. 25 ยังไม่ปรับ ปนกับ ม.ค. 26 ที่ปรับแล้ว) · อาการถ้าปล่อยผ่าน = กราฟมีหน้าผา −50% ปลอม + **ป้าย % รอบปีพลิกเครื่องหมาย** และ **gate จับไม่ได้** (E36 เทียบป้ายกับปลายกราฟ = ผิดพร้อมกันทั้งคู่จึงผ่าน) · `detail` ในคิวบอกจุดที่หลุดกรอบ 52 สัปดาห์ให้แล้ว — ทำตามลำดับ:
     1. **ยืนยัน split จากแหล่งปฐมภูมิก่อน** (IR / SEC 8-K / ประกาศตลาด) — เอาอัตราส่วน + วันมีผลมาให้ชัด ห้ามอนุมานจากตัวเลขที่เห็น
@@ -89,11 +89,10 @@ description: วิเคราะห์หุ้นรายตัว (ไท�
      - **E21**: ตัวเลขวิธี P/E ต้องคูณลงตัว — `.mval` = EPS × P/E **ตามเลขที่พิมพ์ใน `.mdesc`** (คลาดได้ ≤3%) — กดเครื่องคิดเลขคูณก่อนเขียน อย่าปัดเศษ EPS/P/E ใน mdesc จนคูณแล้วไม่ตรง mval
    - ห้ามเหลือ `{{...}}` ค้าง (gate E13 บล็อก) · ครบ 8 section
   - **ช่อง "ส่วนต่างจากราคา" (vcell หมวด 8) เขียนได้รูปเดียว: `MOS ~ ±X%` เท่ากับ `.big`** — cron เขียนทับทั้งช่องทุกวัน (ระยะ 1 ข้อ D) · คำว่าถูก/แพง/เต็มมูลค่าอยู่ใน `.txt` ของกล่อง verdict
-   - **`{{MOS}}` = ตัวเลขล้วน (ใช้ที่เดียวคือ JSON `stock-meta`) · `{{MOS_SIGNED}}` = เลขเดียวกันแต่มีเครื่องหมายมาเอง (`+12` / `−12` ลบใช้ U+2212)** — `.big` (หมวด 5) กับช่องสรุป (หมวด 8) ใช้ `{{MOS_SIGNED}}` **ห้ามเติม `+` เอง** (MOS ติดลบจะได้ `+-12%` แล้ว cron อ่าน `.big` ไม่ออก → flag `patch-failed`)
-   - **เลขเดียวกันต้องพิมพ์ตรงกันทุกจุดที่โผล่** (ราคา/FV/EPS/P/E ปรากฏหลายที่ — gate E21/E22 จับเลขเพี้ยนข้ามจุดให้) — คุมตอน compose ก่อน Write ไม่ใช่ไล่แก้ทีหลัง
+   - **v2:** ตัวเลขผูกราคา/FV กรอก**ครั้งเดียว**ใน `report-data.values` (+`fv`) · ช่องที่เป็น `{{rd:…}}` ห้ามกรอก build render ให้ · prose ที่ต้องอ้างราคา/FV/MOS/เป้า ใช้ token (`{{rd:px}} {{rd:fv}} {{rd:mos}} {{rd:mos20}} {{rd:mos30}} {{rd:analystTgt}} {{rd:analystPct}} {{rd:upside}}`) — E44 บล็อกใบใหม่ที่พิมพ์เลขผูกราคาใน prose · `stock-meta` ยังเป็นกระจก กรอกให้ตรง values (E30)
    - **เกณฑ์ความสอดคล้องของเลขทุกตัว (E21/E22 ±3% · โซน MOS W04 · W06 ฯลฯ) อ่านจากตาราง `docs/quality-gate.md` เท่านั้น — ห้ามเปิด/grep `test/check-reports.js` ทั้งก่อนและหลังเขียน** (วัดจริง 13 ก.ค. 2569: worker เผา 8 turns ขุด test/ หา threshold ก่อน Write — ตารางมีเกณฑ์+วิธีแก้ครบทุก code แล้ว)
    - วัดจริงเวฟ robotics 13 ก.ค. 2569: Write ครั้งเดียว = 1 turn + แก้ตามผล `npm test` อีก 1–2 turns ผ่าน gate 37/37 เท่ากัน · เส้นทาง cp+แทนค่าแบบเก่า ~20 turns — **โหมด NEW ห้ามใช้ `apply-edits.js`/Edit ไล่แทนค่าเป็นชุด** (`apply-edits.js` ยังบังคับตามเดิมใน STEP 5B/5C ซึ่งเป็นการแก้ไฟล์เดิมเฉพาะจุด)
-- **chart/ป้าย .chg/สี** → วางจากผลลัพธ์ fetch-facts ตรง ๆ (fairLine หลุดช่วง min/max → คำนวณ bounds ใหม่รวม FV)
+- **chart/ป้าย .chg/สี** → วางจากผลลัพธ์ fetch-facts ตรง ๆ (`gauge.min/max` หลุดช่วง `values.px`/`fv` → คำนวณ bounds ใหม่รวม FV — v2 ไม่มี `chart.fairLine` แล้ว engine bake เส้น FV จาก `values.px`/`fv` เอง)
 - **4 บล็อกบังคับ**:
   1. `<meta name="ai-model" content="Claude <รุ่นที่รันจริง>">` — **รุ่นที่รันจริง = อ่านจากบรรทัด "You are powered by the model named …" ใน system prompt ของตัวเอง** (เช่น `Claude Sonnet 5`, `Claude Opus 5`) · รูปแบบบังคับ `Claude <Fable|Mythos|Opus|Sonnet|Haiku> <เวอร์ชัน>` (E28) · ห้ามคง `{{AI_MODEL}}` จากโครง ห้ามคัดลอกจากรายงานตัวอื่น — build ใช้ทำเครดิต footer
   2. `<script type="application/json" id="stock-meta">` = `{symbol, currency, price, fairValue, mos, upside, pe, dividendYield, roe}` · **`currency` = ISO 3 ตัว `"USD"`/`"THB"` ไม่ใช่ `"$"`** · เลขต้องตรงกับที่โชว์ในรายงาน
@@ -110,12 +109,13 @@ description: วิเคราะห์หุ้นรายตัว (ไท�
 
 1. อ่าน `reports/<SYMBOL>.html` (ราคา/กราฟ/วันที่ราคา สดแล้วจาก STEP 1) → ประเมิน EPS/FV/มุมมอง เปลี่ยนไหม
 2. **แก้เฉพาะจุดที่เปลี่ยนจริง** (หลายจุด → รวมยิงใน Bash เดียวผ่าน `tools/apply-edits.js` แบบ STEP 5C ข้อ 3):
-   - EPS / FV ทุกวิธี / จุดซื้อ MOS20-30 / scenario + `stock-meta` (fairValue, pe, eps, dividendYield, roe — **ยกเว้น price/mos/upside script คำนวณให้**)
+   - EPS / FV ทุกวิธี / จุดซื้อ MOS20-30 / scenario + `stock-meta` (fairValue, pe, eps, dividendYield, roe — **(v1) ยกเว้น price/mos/upside ที่ `update-prices.js --write --force` คำนวณให้อัตโนมัติตอนรันซ้ำ** — v2 ดูข้อถัดไป ไม่มีสคริปต์คำนวณ stock-meta ให้)
+   - **v2:** แก้ตัวเลขผูกราคา = `node tools/apply-edits.js reports/<SYM>.html --set fv=<ใหม่> --set values.eps=<ใหม่> …` (ยิงเดี่ยว ๆ ไม่ต้องมี stdin) · **compose กับบล็อก `@@` (prose/การ์ดที่เป็น literal) ในคำสั่งเดียว → ต้องเติมแฟล็ก `--stdin` เสมอ**: `node tools/apply-edits.js reports/<SYM>.html --stdin --set fv=<ใหม่> <<'EOF' … EOF` (ลืม `--stdin` = สคริปต์ไม่อ่าน stdin เลย บล็อก `@@` หายเงียบ ไม่ error — ตั้งใจ กันเดาจังหวะแล้วค้าง/ดรอปข้อมูล) · หลังแก้ `fv` **ไม่ต้อง**รัน update-prices ซ้ำ (`{{rd:…}}` ในเนื้อหา render เอง) — แต่ `stock-meta` เป็นกระจกแยกต่างหาก **ไม่มีอะไรคำนวณให้อัตโนมัติบน v2** ⇒ worker ต้องคิดเลขเองแล้ว set ให้ครบทั้งสามคีย์ให้ตรงสูตร (E31 ตรวจ `mos=(FV−price)/FV×100`, `upside=(FV−price)/price×100` เทียบกับ `stock-meta.price/fairValue` เอง — ไม่ได้ตรวจกับ `values`): `--set-meta fairValue=<ใหม่> --set-meta mos=<คำนวณเอง> --set-meta upside=<คำนวณเอง>`
    - **prose ทุกประโยคที่อ้างเลขเก่า** (จุดเข้า / "แพง~X%" / เป้า / คำบรรยายกราฟ-ทิศทาง) + มุมมอง/catalyst ที่เปลี่ยน
    - **ช่อง "ส่วนต่างจากราคา" (vcell หมวด 8) ห้ามแก้มือ** — รูปเดียวคือ `MOS ~ ±X%` เท่ากับ `.big` และ cron เขียนทับทั้งช่องทุกวัน (ระยะ 1 ข้อ D) · คำว่าถูก/แพงอยู่ใน `.txt` ของกล่อง verdict
    - วันที่วิเคราะห์ footer "ข้อมูล ณ …" = วันนี้ · `meta ai-model` = โมเดลที่รันจริง
    - gauge min/max: ราคาหลุดขอบ script ขยายให้เองแล้วใน STEP 1 — เหลือหน้าที่เดียวคือ **FV เปลี่ยน** → ปรับขอบ/โซน scale ให้สอดคล้อง FV ใหม่
-3. **ถ้าแก้ `stock-meta.fairValue`** → รัน `node tools/update-prices.js --write --force <SYMBOL>` ซ้ำ (MOS/upside/ป้าย MOS คำนวณใหม่จาก FV ใหม่ให้เอง — ห้ามแก้เลขพวกนี้มือ)
+3. **v1: ถ้าแก้ `stock-meta.fairValue`** → รัน `node tools/update-prices.js --write --force <SYMBOL>` ซ้ำ (MOS/upside/ป้าย MOS คำนวณใหม่จาก FV ใหม่ให้เอง — ห้ามแก้เลขพวกนี้มือ) · **v2: ไม่ต้องรันซ้ำ** — ดูข้อ 2 (`--set fv=…` + `--set-meta fairValue=…` จบในคำสั่งเดียว)
 4. **ทบทวน tag (บังคับทุกครั้ง):** ค่าตั้งต้นคือ **คงเดิม** — เปลี่ยนได้เฉพาะเมื่อธุรกิจเปลี่ยนธีมจริง
    (ขาย/ซื้อกิจการ · เปลี่ยนธุรกิจหลัก · spinoff) ราคาขยับไม่นับ · รายงานท้ายงานบรรทัดเดียว:
    - `TAGS: คงเดิม`

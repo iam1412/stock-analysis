@@ -422,7 +422,7 @@ ok(b.injectTA(taBody, 'AAPL', null, { currency: 'USD' }, 'assets/ta-abc123.js') 
 // ── ระยะ 2: expandReport v2 render token จาก values ──
 {
   const { expandReport } = require('../build.js');
-  const rdV2 = JSON.stringify({ v: 2, fv: 195, values: { px: 188, priceDate: '2026-09-11', chgSuffix: 'รอบปี' },
+  const rdV2 = JSON.stringify({ v: 2, fv: 195, values: { px: 188, priceDate: '2026-09-11', dateEra: 'BE', chgSuffix: 'รอบปี' },
     theme: { accent: '#1a73e8', chgBg: 'var(--green-soft)', chgColor: '#137333' },
     chart: { data: [['ก.ย.25', 150], ['ก.ย.26', 188]], min: 120, max: 240, grid: [150, 200], currency: '฿', highlight: [0, 1] }, gauge: { min: 120, max: 240 } });
   const src = (rd, body) => `<html><head><script type="application/json" id="stock-meta">{"symbol":"X","currency":"THB","price":188,"fairValue":195,"mos":3.6,"upside":3.7,"pe":null,"dividendYield":null,"roe":null}</script>\n<script type="application/json" id="report-data">${rd}</script><!--TEMPLATE:STYLE--></head><body>${body}<!--TEMPLATE:ENGINE--></body></html>`;

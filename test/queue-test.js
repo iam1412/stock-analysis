@@ -170,6 +170,8 @@ process.env.QUEUE_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'queue-'));   // s
   const FX = require('./fixtures');
   const { expandReport } = require('../build.js');
   const { buildCtx } = require('./check-reports.js');
+  const RM = require('../tools/report-meta.js');
+  const RV = require('../tools/report-values.js');   // item 5 (fix wave part-b): pin prep.js's ยอด/P-BV กับ RV.derive()
   const PREP_OUT = `=== PREP AAPL (UPDATE) — วางทั้ง block ลง {{FUNDAMENTALS}} ===
 ✅ ราคา 2 แหล่งต่าง 0.12% (≤2%) — ผ่าน
 ⚠ EPS(TTM) ต่าง 3.4% (>2%) — ขัดกัน
@@ -278,6 +280,71 @@ process.env.QUEUE_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'queue-'));   // s
   // pbvPlan คืน [{label, items:[{shown}]}] — ถ้าอ่าน pb[0].shown จะได้ undefined แล้วพิมพ์ "P/BV ใบ undefinedx" ใส่ prompt worker
   const noPbv = Pp.snapshotDiff(FX.AAPL(), ctx, { lo52: null, hi52: null, target: null, divYieldPct: null });
   ok(!noPbv.some((s) => /undefined/.test(s)), 'snapshotDiff: ไม่มีคำว่า undefined หลุดเข้า prompt', noPbv.join(' | '));
+
+  // ★ ระยะ 2 ส่วน B (Task 6): บนใบ v2 ตัวเลข (เป้า/ปันผล/P-BV) ไม่อยู่ใน HTML แล้ว — อยู่ใน report-data.values —
+  //   snapshotDiff ต้องแยกทางด้วย RV.isV2() แล้วอ่าน values ตรง ๆ แทน DV.targetCells/yieldPlan/pbvPlan ·
+  //   ข้อความฟ้องต้องขึ้นต้น "values.<key>" ให้ worker รู้ว่าต้องแก้ด้วย apply-edits --set — brief ให้ตัวอย่างไว้เป๊ะ:
+  //   values.analystTgt 205 vs vendor 220 → ต้องได้บรรทัด "values.analystTgt 205 → 220"
+  const V2_SNAP_HTML = `<!DOCTYPE html>
+<html><head>
+<script type="application/json" id="stock-meta">
+{"symbol":"TST2","currency":"USD","price":100,"fairValue":120,"mos":16.7,"upside":20,"pe":10,"dividendYield":2,"roe":8}
+</script>
+<script type="application/json" id="report-data">
+{
+  "v": 2,
+  "fv": 120,
+  "values": { "px": 100, "priceDate": "2026-09-01", "dateEra": "BE", "chgSuffix": "รอบปี", "analystTgt": 205, "dps": 1, "bvps": 40 },
+  "theme": { "accent": "#000000" },
+  "chart": { "data": [["ม.ค.26", 90], ["ก.ย.26", 100]], "min": 80, "max": 140, "grid": [100, 120], "currency": "$", "highlight": [0, 1] },
+  "gauge": { "min": 80, "max": 140 }
+}
+</script>
+</head><body></body></html>
+`;
+  const v2Far = Pp.snapshotDiff(V2_SNAP_HTML, null, { lo52: null, hi52: null, target: 220, divYieldPct: 9, analysts: null });
+  ok(v2Far.includes('values.analystTgt 205 → 220'), '★ snapshotDiff v2: values.analystTgt ต่างจาก vendor → ฟ้องด้วยชื่อคีย์ "values.<key>" (ตัวอย่างตาม brief เป๊ะ)', v2Far.join(' | '));
+  ok(v2Far.some((s) => /^values\.dps 1 →/.test(s)), 'snapshotDiff v2: ปันผล % จาก values.dps/px ต่างจาก vendor → ฟ้องด้วย values.dps (แทน yieldPlan)', v2Far.join(' | '));
+  ok(v2Far.some((s) => /^values\.bvps 40 →/.test(s)), 'snapshotDiff v2: มี values.bvps → เตือนให้ตรวจ P/BV เอง (vendor ไม่ส่งค่านี้ในบล็อก แทน pbvPlan)', v2Far.join(' | '));
+  ok(v2Far.every((s) => !/^เป้านักวิเคราะห์/.test(s) && !/^ปันผล %/.test(s) && !/^P\/BV ใบ/.test(s)), 'snapshotDiff v2: ไม่ใช้ข้อความรูปแบบ v1 (targetCells/yieldPlan/pbvPlan อ่าน HTML) อีกต่อไป', v2Far.join(' | '));
+
+  const v2Same = Pp.snapshotDiff(V2_SNAP_HTML, null, { lo52: null, hi52: null, target: 205, divYieldPct: 1, analysts: null });
+  ok(!v2Same.some((s) => /^values\.analystTgt/.test(s)) && !v2Same.some((s) => /^values\.dps/.test(s)), 'snapshotDiff v2: values ตรงกับ vendor (ในเกณฑ์) → ไม่ฟ้อง analystTgt/dps', v2Same.join(' | '));
+
+  // ★★ ข้อ 5 (Part B fix wave, 12 ก.ย. 2569): snapshotDiff() จงใจคัดลอกสูตรปันผล%/P-BV ของ RV.derive()
+  //   (tools/queue/prep.js:140-145 · เหตุผลอยู่ในคอมเมนต์ตรงนั้น) แทนการเรียก RV.derive() ตรง ๆ — pin ทั้งสองตัวไว้
+  //   ด้วยกันที่นี่ (2 ชุดข้อมูลอิสระ) กัน derive() เปลี่ยนสูตร/ปัดเศษแล้ว prep.js หลุดตามไม่ทันแบบเงียบ ๆ
+  //   (บทเรียนเดียวกับ median-multiples.js ที่ 26 ใบเคยได้ค่าผิดจาก controller-tool เอง — memory data-source-traps)
+  {
+    const rd2 = RM.readReportData(V2_SNAP_HTML).data, sm2 = RM.readStockMeta(V2_SNAP_HTML);
+    const d2 = RV.derive(rd2, sm2);
+    ok(v2Far.some((s) => s === `values.dps 1 → ปันผล % ใบ ${d2.yield.toFixed(2)} · vendor 9`), '★ pin: ปันผล % ที่ snapshotDiff พิมพ์ (px=100/dps=1) ตรงกับ RV.derive().yield เป๊ะ', v2Far.join(' | '));
+    ok(v2Far.some((s) => s === `values.bvps 40 → P/BV ${d2.pbv.toFixed(2)}x — ตรวจกับ BVPS/ราคาใน FUNDAMENTALS เอง (vendor ไม่ส่งค่านี้ในบล็อก)`), '★ pin: P/BV ที่ snapshotDiff พิมพ์ (px=100/bvps=40) ตรงกับ RV.derive().pbv เป๊ะ', v2Far.join(' | '));
+
+    // ชุดข้อมูลที่สอง (px/dps/bvps ต่างชุด) — กันบังเอิญตรงกันแค่คู่เดียว
+    const V2_SNAP_HTML2 = `<!DOCTYPE html>
+<html><head>
+<script type="application/json" id="stock-meta">
+{"symbol":"TST3","currency":"USD","price":250,"fairValue":300,"mos":16.7,"upside":20,"pe":10,"dividendYield":1.5,"roe":8}
+</script>
+<script type="application/json" id="report-data">
+{
+  "v": 2,
+  "fv": 300,
+  "values": { "px": 250, "priceDate": "2026-09-01", "dateEra": "BE", "chgSuffix": "รอบปี", "analystTgt": 280, "dps": 3.75, "bvps": 61.2 },
+  "theme": { "accent": "#000000" },
+  "chart": { "data": [["ม.ค.26", 230], ["ก.ย.26", 250]], "min": 200, "max": 320, "grid": [250, 280], "currency": "$", "highlight": [0, 1] },
+  "gauge": { "min": 200, "max": 320 }
+}
+</script>
+</head><body></body></html>
+`;
+    const v2Far2 = Pp.snapshotDiff(V2_SNAP_HTML2, null, { lo52: null, hi52: null, target: null, divYieldPct: 9, analysts: null });
+    const rd3 = RM.readReportData(V2_SNAP_HTML2).data, sm3 = RM.readStockMeta(V2_SNAP_HTML2);
+    const d3 = RV.derive(rd3, sm3);
+    ok(v2Far2.some((s) => s === `values.dps 3.75 → ปันผล % ใบ ${d3.yield.toFixed(2)} · vendor 9`), '★ pin (ชุดที่ 2): ปันผล % ที่ snapshotDiff พิมพ์ (px=250/dps=3.75) ตรงกับ RV.derive().yield เป๊ะ', v2Far2.join(' | '));
+    ok(v2Far2.some((s) => s === `values.bvps 61.2 → P/BV ${d3.pbv.toFixed(2)}x — ตรวจกับ BVPS/ราคาใน FUNDAMENTALS เอง (vendor ไม่ส่งค่านี้ในบล็อก)`), '★ pin (ชุดที่ 2): P/BV ที่ snapshotDiff พิมพ์ (px=250/bvps=61.2) ตรงกับ RV.derive().pbv เป๊ะ', v2Far2.join(' | '));
+  }
 
   const tpl = fs.readFileSync(path.join(ROOT, '_template', 'agent-prompt.md'), 'utf8');
   const p = Pp.assemblePrompt(tpl, { SYMBOL: 'AAPL', MARKET: 'US', MODE: 'UPDATE-LIGHT', WORKTREE: '/wt', CURRENT_TAGS: 'consumer-tech', MEDIANS: '=== ตัวคูณมัธยฐานย้อนหลัง: AAPL ===\n  ★ มัธยฐาน 28.0x', FUNDAMENTALS: PREP_OUT }, Pp.extraBlock({ sym: 'AAPL', mode: 'UPDATE-LIGHT', prePatched: '2026-09-11', oldPrice: 297.21, price: 301.5, baseEPS: 7.1, epsTTM: 7.36, epsScreen: 3.66, snap: ['เป้า ใบ 300 · vendor 312'], medWarn: [], hard: false, hardWhy: '' }));
@@ -765,9 +832,236 @@ let pending = null;
 try { pending = require('./earnings-calendar-test.js')(ok); }
 catch (e) { nFail++; console.error('✗ earnings-calendar-test ระเบิด (sync) — ' + e.message); }
 
+// ── 21) apply-edits: --set/--del/--set-meta บน report-data/stock-meta v2 (Task 5 — สัญญา worker v2) ──
+//   ★ ไฟล์ชั่วคราวเขียนใต้ os.tmpdir() เอง (ไม่แตะ reports/ ตามหัวไฟล์นี้) · ยิงจริงผ่าน sh.run (spawnSync
+//   ให้ pipe ว่างที่ EOF ทันทีเมื่อไม่มี stdin — จำลอง "รัน --set แบบ one-liner ไม่มี heredoc" ของ SKILL 5B ได้ตรง ๆ)
+{
+  const sh = require('../tools/queue/sh.js');
+  const AE_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'apply-edits-'));
+  const readBlock = (html, id) => JSON.parse(html.match(new RegExp(`<script[^>]*id="${id}"[^>]*>([\\s\\S]*?)<\\/script>`))[1]);
+  const V2_HTML = `<!DOCTYPE html>
+<html><head>
+<script type="application/json" id="stock-meta">
+{"symbol":"TST","currency":"USD","price":100,"fairValue":120,"mos":16.7,"upside":20,"pe":10,"dividendYield":2,"roe":8}
+</script>
+<script type="application/json" id="report-data">
+{
+  "v": 2,
+  "fv": 120,
+  "values": {
+    "px": 100,
+    "priceDate": "2026-09-01",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "eps": 9,
+    "analystTgt": 130,
+    "scenarios": [{"tgt": 80, "div": null}, {"tgt": 120, "div": null}, {"tgt": 160, "div": null}],
+    "scnBasis": {"years": 3, "divIncluded": false, "perYear": "cagr"}
+  },
+  "theme": { "accent": "#000000" },
+  "chart": { "data": [["ม.ค.26", 90], ["ก.ย.26", 100]], "min": 80, "max": 140, "grid": [100, 120], "currency": "$", "highlight": [0, 1] },
+  "gauge": { "min": 80, "max": 140 }
+}
+</script>
+</head><body></body></html>
+`;
+  const V1_HTML = `<!DOCTYPE html>
+<html><head>
+<script type="application/json" id="stock-meta">
+{"symbol":"TST1","currency":"USD","price":100,"fairValue":120,"mos":16.7,"upside":20,"pe":10,"dividendYield":2,"roe":8}
+</script>
+<script type="application/json" id="report-data">
+{
+  "theme": { "accent": "#000000" },
+  "chart": { "data": [["ม.ค.26", 90], ["ก.ย.26", 100]], "min": 80, "max": 140, "grid": [100, 120], "fairLine": 120, "currency": "$", "highlight": [0, 1] },
+  "gauge": { "min": 80, "max": 140, "cur": 100, "fair": 120 },
+  "fv": 120
+}
+</script>
+</head><body></body></html>
+`;
+  const writeTmp = (name, content) => { const p = path.join(AE_DIR, name); fs.writeFileSync(p, content); return p; };
+
+  // (a) success path ตาม brief Step 1 เป๊ะ: --set × 2 + --del × 1 บนไฟล์ v2
+  {
+    const tmp = writeTmp('ok.html', V2_HTML);
+    const r = sh.run('node', ['tools/apply-edits.js', tmp, '--set', 'values.eps=9.57', '--set', 'fv=210', '--del', 'values.analystTgt']);
+    ok(r.code === 0, 'apply-edits --set×2/--del×1: exit 0', r.err || r.out);
+    const out = fs.readFileSync(tmp, 'utf8');
+    const rd = readBlock(out, 'report-data');
+    ok(rd.values.eps === 9.57, 'apply-edits --set: values.eps เปลี่ยนจริง', String(rd.values.eps));
+    ok(rd.fv === 210, 'apply-edits --set: fv (top-level) เปลี่ยนจริง', String(rd.fv));
+    ok(!('analystTgt' in rd.values), 'apply-edits --del: values.analystTgt หายจริง', JSON.stringify(rd.values));
+    ok(out.includes('["ม.ค.26", 90]'), 'apply-edits: เขียนกลับด้วย styledRD (จุดกราฟบรรทัดเดียว)', out);
+  }
+
+  // (a2) path แบบ a.b.c รองรับ array index เป็นเลขล้วน (scenarios.N.field) ตามที่ Step 2 ระบุไว้
+  {
+    const tmp = writeTmp('arr.html', V2_HTML);
+    const r = sh.run('node', ['tools/apply-edits.js', tmp, '--set', 'values.scenarios.1.tgt=999']);
+    ok(r.code === 0, 'apply-edits --set values.scenarios.1.tgt: exit 0', r.err || r.out);
+    const rd = readBlock(fs.readFileSync(tmp, 'utf8'), 'report-data');
+    ok(rd.values.scenarios[1].tgt === 999 && rd.values.scenarios[0].tgt === 80, 'apply-edits --set: array index ตาม path (scenarios.1.tgt) แก้เฉพาะตัวที่ระบุ', JSON.stringify(rd.values.scenarios));
+  }
+
+  // (b) --set values.px=abc → parse ไม่ผ่านทั้ง JSON/number/boolean/null → exit 1 ไม่เขียนไฟล์
+  {
+    const tmp = writeTmp('badval.html', V2_HTML);
+    const r = sh.run('node', ['tools/apply-edits.js', tmp, '--set', 'values.px=abc']);
+    ok(r.code !== 0, 'apply-edits --set values.px=abc: exit ≠ 0', r.out + r.err);
+    ok(fs.readFileSync(tmp, 'utf8') === V2_HTML, 'apply-edits --set ค่าพัง: ไม่เขียนไฟล์เลย (all-or-nothing)');
+  }
+
+  // (c) --set nope.x=1 → path ไม่มีแม่ (ห้ามสร้างคีย์ใหม่ตามใจ — strict) → exit 1 ไม่เขียนไฟล์
+  {
+    const tmp = writeTmp('nopath.html', V2_HTML);
+    const r = sh.run('node', ['tools/apply-edits.js', tmp, '--set', 'nope.x=1']);
+    ok(r.code !== 0, 'apply-edits --set nope.x=1: exit ≠ 0 (path ไม่มีแม่)', r.out + r.err);
+    ok(fs.readFileSync(tmp, 'utf8') === V2_HTML, 'apply-edits --set path ไม่มีแม่: ไม่เขียนไฟล์เลย');
+  }
+
+  // (d) --set บนไฟล์ v1 (ไม่มี values) → exit 1 ข้อความ "ไฟล์ v1" ไม่เขียนไฟล์ (v1 safety — ห้าม half-write)
+  {
+    const tmp = writeTmp('v1.html', V1_HTML);
+    const r = sh.run('node', ['tools/apply-edits.js', tmp, '--set', 'fv=210']);
+    ok(r.code !== 0 && /ไฟล์ v1/.test(r.out + r.err), 'apply-edits --set บนไฟล์ v1: exit ≠ 0 + ข้อความ "ไฟล์ v1"', r.out + r.err);
+    ok(fs.readFileSync(tmp, 'utf8') === V1_HTML, 'apply-edits --set บนไฟล์ v1: ไม่เขียนไฟล์เลย (v1 ยังแก้ด้วยบล็อก @@ เท่านั้น)');
+  }
+
+  // (e) --set-meta fairValue=<ใหม่> — บล็อก stock-meta ใช้ได้ทั้ง v1/v2 (ไม่ผูกกับ schema v2)
+  {
+    const tmp = writeTmp('setmeta.html', V2_HTML);
+    const r = sh.run('node', ['tools/apply-edits.js', tmp, '--set-meta', 'fairValue=250']);
+    ok(r.code === 0, 'apply-edits --set-meta: exit 0', r.err || r.out);
+    const sm = readBlock(fs.readFileSync(tmp, 'utf8'), 'stock-meta');
+    ok(sm.fairValue === 250, 'apply-edits --set-meta: stock-meta.fairValue เปลี่ยนจริง', String(sm.fairValue));
+  }
+
+  // (f) ไม่มีทั้งบล็อก @@ และ --set/--del/--set-meta → ยัง exit ≠ 0 เหมือนของเดิม (STEP 5C ยังใช้ได้ปกติ)
+  {
+    const tmp = writeTmp('empty.html', V2_HTML);
+    const r = sh.run('node', ['tools/apply-edits.js', tmp]);
+    ok(r.code !== 0, 'apply-edits: ไม่มีทั้ง @@ block และ --set/--del/--set-meta → ยัง exit ≠ 0', r.out + r.err);
+  }
+
+  // (g) fix1 — code review: --del array index ต้อง splice ให้สั้นลงจริง ไม่ใช่เหลือ "หลุม" (delete เฉย ๆ ไม่ลด
+  //   .length — Array.prototype.every "ข้าม" หลุมไปเงียบ ๆ (สเปก JS) ⇒ validateValues ผ่านหลอก ๆ ตอนนี้ (length
+  //   ยังคง 3 ทั้งที่มีหลุม) แต่ JSON.stringify เขียนหลุมเป็น null จริงลงไฟล์ ⇒ รอบถัดไปที่ parse ใหม่ null ไม่ผ่าน
+  //   schema (ไม่ใช่หลุมอีกแล้ว) — ไฟล์ที่ certify ว่า valid วันนี้ (เพราะเช็คไม่เจอหลุม) กลับ invalid วันถัดไป
+  //   ★ `values.scenarios` มีกติกา "ต้องมี 3 ฉากเป๊ะ" (bear/base/bull) ⇒ เอาออก 1 ตัวจะเหลือ 2 ฉาก ซึ่ง**ผิด schema
+  //   เสมอไม่ว่า splice หรือปล่อยหลุม** — พฤติกรรมที่ถูกต้องคือ apply-edits ต้อง **ปฏิเสธทันทีแบบดัง ๆ** (exit ≠ 0
+  //   ไม่เขียนไฟล์) แทนที่จะ "ผ่านตอนนี้แล้วพังเงียบ ๆ รอบหน้า" — นี่คือคุณค่าจริงของ fix: เปลี่ยนบั๊กจาก silent
+  //   corruption เป็น loud rejection ทันทีที่จุดเดียวกัน (ก่อนเขียนไฟล์)
+  {
+    const before = V2_HTML;
+    const tmp = writeTmp('delarr.html', before);
+    const r = sh.run('node', ['tools/apply-edits.js', tmp, '--del', 'values.scenarios.1']);
+    ok(r.code !== 0 && /3 ฉาก/.test(r.out + r.err), 'apply-edits --del values.scenarios.1: ปฏิเสธทันทีแบบดัง ๆ (schema ต้อง 3 ฉากเป๊ะ) ไม่ใช่ผ่านตอนนี้แล้วพังเงียบรอบหน้า', r.out + r.err);
+    ok(fs.readFileSync(tmp, 'utf8') === before, 'apply-edits --del values.scenarios.1: ไม่เขียนไฟล์เลยเมื่อผลลัพธ์ invalid (all-or-nothing)');
+  }
+
+  // (g2) fix1 — ยืนยันกลไก splice เองตรง ๆ ด้วย array ที่ไม่ผูกความยาวตายตัว (report-data.chart.grid — ไม่อยู่ใน
+  //   schema ของ values จึงไม่ติดกติกา "ต้อง 3 ฉาก" ข้างบน): --del ต้องได้ array สั้นลงจริง ไม่มี null คั่นกลาง
+  //   และ JSON ที่ได้ต้อง parse ได้ปกติ (พิสูจน์ splice ทำงานถูกต้อง แยกจากคำถามว่า schema อนุญาตให้สั้นลงไหม)
+  {
+    const tmp = writeTmp('delgrid.html', V2_HTML);
+    const r = sh.run('node', ['tools/apply-edits.js', tmp, '--del', 'chart.grid.1']);
+    ok(r.code === 0, 'apply-edits --del chart.grid.1 (array ที่ไม่ผูกความยาวตายตัว): exit 0', r.err || r.out);
+    const rd = readBlock(fs.readFileSync(tmp, 'utf8'), 'report-data');
+    ok(Array.isArray(rd.chart.grid) && rd.chart.grid.length === 1 && rd.chart.grid[0] === 100 && !rd.chart.grid.includes(null),
+      'apply-edits --del array index: splice ให้ array สั้นลงจริง (ไม่เหลือ null คั่นกลาง)', JSON.stringify(rd.chart.grid));
+  }
+
+  // (h) fix2 — code review: apply ops ตามลำดับที่พิมพ์ใน argv จริง — `--del X --set X=555` ต้องจบที่ X=555
+  //   ไม่ใช่ X ถูกลบ (เดิมจัดกลุ่ม set-ทั้งหมด-ก่อน-del-ทั้งหมดโดยไม่สนลำดับที่พิมพ์ — ขัดกับคำสั่งที่ผู้ใช้พิมพ์เงียบ ๆ)
+  {
+    const tmp = writeTmp('order.html', V2_HTML);
+    const r = sh.run('node', ['tools/apply-edits.js', tmp, '--del', 'values.analystTgt', '--set', 'values.analystTgt=555']);
+    ok(r.code === 0, 'apply-edits --del X --set X=...: exit 0', r.err || r.out);
+    const rd = readBlock(fs.readFileSync(tmp, 'utf8'), 'report-data');
+    ok(rd.values.analystTgt === 555, 'apply-edits: ops apply ตามลำดับ argv จริง (--del ก่อน --set ทีหลัง → ค่าสุดท้าย = --set ตามที่พิมพ์)', String(rd.values.analystTgt));
+  }
+}
+
+// ── 22) apply-edits: stdin — explicit --stdin แทนการเดาจังหวะ (fix2 review) ── ต้องเป็น async จริง (spawn + delayed write)
+//   spawnSync/sh.run เขียน stdin ให้เสร็จก่อนหรือพร้อมกับที่ child เริ่มทำงานเสมอ ⇒ ไม่มีวันชนจังหวะที่ผู้เขียน
+//   (producer) ส่งข้อมูลมาช้ากว่าที่ child เริ่มอ่าน — ต้อง child_process.spawn จริงแล้วหน่วงเขียนด้วย setTimeout
+//   ถึงจะบังคับให้จังหวะนั้นเกิดซ้ำได้แน่นอน · ★ เวอร์ชัน timeout (fix1) พังเมื่อ producer ช้ากว่า grace ที่ตั้งไว้
+//   (วัดจริงโดยผู้รีวิว: หน่วง 800ms ดรอปทุกบล็อก 6/6 รอบ) — เวอร์ชันนี้ (fix2) ไม่มี timeout อีกต่อไป ผู้เรียก
+//   ต้องประกาศ `--stdin` เอง แล้วอ่านแบบ blocking ธรรมดา (รอ EOF จริง) ⇒ ทดสอบด้วยดีเลย์ 800ms เดิมที่เคยพังแน่นอน
+function testApplyEditsStdin(ok) {
+  const cp = require('child_process');
+  const RACE_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'apply-edits-stdin-'));
+  const FIXTURE = `<!DOCTYPE html>
+<html><head>
+<script type="application/json" id="stock-meta">
+{"symbol":"TST","currency":"USD","price":100,"fairValue":120,"mos":16.7,"upside":20,"pe":10,"dividendYield":2,"roe":8}
+</script>
+<script type="application/json" id="report-data">
+{ "v": 2, "fv": 120, "values": { "px": 100, "priceDate": "2026-09-01", "dateEra": "BE", "chgSuffix": "รอบปี" },
+  "theme": { "accent": "#000000" },
+  "chart": { "data": [["ม.ค.26", 90], ["ก.ย.26", 100]], "min": 80, "max": 140, "grid": [100, 120], "currency": "$", "highlight": [0, 1] },
+  "gauge": { "min": 80, "max": 140 } }
+</script>
+</head><body></body></html>
+`;
+  const AT_BLOCK = '@@\n"accent": "#000000"\n@@=\n"accent": "#111111"\n@@end\n';
+  // ★ ระยะ 2 ส่วน B (banked จากรีวิวก่อนหน้า): N เดิม = 20 ตอนบั๊กยังเป็น timeout scheme ที่ probabilistic —
+  //   ตอนนี้กลไกเป็น --stdin + blocking read รอ EOF จริง (deterministic ต่อรอบ) เทสนี้เลยคุ้มครอง "การออกแบบ"
+  //   (ห้ามถอยกลับไปใช้ timeout) ไม่ใช่ล่าจังหวะสุ่ม ⇒ 3 รอบจับได้เท่ากับ 20 · ตัดเวลาจาก ~15s เหลือ ~2.4s (N × DELAY_MS)
+  const N = 3, DELAY_MS = 800; // > 500ms เดิม (STDIN_GRACE_MS ของ fix1 ที่ถูกถอดออกแล้ว) — พิสูจน์ว่าไม่มี window อีกต่อไป
+
+  // (a) --stdin + producer หน่วง 800ms (จุดที่ fix1 พังแน่นอน 6/6) ต้องไม่ทำให้บล็อก @@ หายไป — วนซ้ำ N รอบ
+  const oneDelayedRun = (i) => new Promise((resolve) => {
+    const file = path.join(RACE_DIR, `race${i}.html`);
+    fs.writeFileSync(file, FIXTURE);
+    const child = cp.spawn('node', ['tools/apply-edits.js', file, '--stdin', '--set', 'fv=210'], { cwd: ROOT, stdio: ['pipe', 'pipe', 'pipe'] });
+    let out = '', err = '';
+    child.stdout.on('data', (d) => { out += d; });
+    child.stderr.on('data', (d) => { err += d; });
+    child.on('error', (e) => resolve({ code: -1, out, err: String(e) }));
+    child.on('close', (code) => resolve({ code, out, err, file }));
+    setTimeout(() => { try { child.stdin.write(AT_BLOCK); child.stdin.end(); } catch (_) { /* child ตายไปก่อนแล้วก็ปล่อย close handler รายงานเอง */ } }, DELAY_MS);
+  });
+  let chain = Promise.resolve();
+  for (let i = 0; i < N; i++) {
+    chain = chain.then(() => oneDelayedRun(i)).then((r) => {
+      const applied = r.code === 0 && fs.existsSync(r.file) && fs.readFileSync(r.file, 'utf8').includes('"accent": "#111111"');
+      ok(applied, `apply-edits --stdin: producer ส่งบล็อก @@ ช้า ${DELAY_MS}ms (#${i + 1}/${N}) → ต้อง apply ได้เสมอ (blocking read รอ EOF จริง ไม่มี timeout อีกแล้ว)`,
+        `exit=${r.code} out=${(r.out || '').trim()} err=${(r.err || '').trim().slice(0, 200)}`);
+    });
+  }
+
+  // (b) one-liner --set เปล่า ๆ (ไม่มี --stdin, ไม่มีใครเขียน/ปิด stdin เลย) — ต้องจบเร็วเสมอ เพราะไม่แตะ fd 0 เลย
+  //   (ไม่ใช่เพราะจับจังหวะเก่งหรือ timeout พอดี — ไม่มีจังหวะให้ชนตั้งแต่ต้น) + เขียนค่าตาม JSON op ที่สั่งเป๊ะ
+  chain = chain.then(() => new Promise((resolve) => {
+    const file = path.join(RACE_DIR, 'oneliner.html');
+    fs.writeFileSync(file, FIXTURE);
+    const t0 = Date.now();
+    const child = cp.spawn('node', ['tools/apply-edits.js', file, '--set', 'fv=210'], { cwd: ROOT, stdio: ['pipe', 'pipe', 'pipe'] });
+    let done = false;
+    // hard-kill กันเทสทั้งชุดค้างถ้า regression กลับไปแตะ fd 0 โดยไม่ตั้งใจ — ไม่ใช่ค่า timeout ที่ระบบพึ่งพา
+    const hardTimer = setTimeout(() => {
+      if (done) return; done = true;
+      try { child.kill('SIGKILL'); } catch (_) {}
+      ok(false, 'apply-edits: one-liner --set (ไม่มี --stdin) ต้องไม่แตะ stdin เลย → จบเร็วเสมอ', 'เกิน 3000ms ยัง hang (regression: กลับไปแตะ fd 0)');
+      resolve();
+    }, 3000);
+    child.on('close', (code) => {
+      if (done) return; done = true; clearTimeout(hardTimer);
+      const ms = Date.now() - t0;
+      const fv = code === 0 && fs.existsSync(file) ? require('../tools/report-meta.js').readReportData(fs.readFileSync(file, 'utf8')).data.fv : null;
+      ok(code === 0 && ms < 2000 && fv === 210, 'apply-edits: one-liner --set (ไม่มี --stdin, ไม่มีใครเขียน stdin เลย) → จบเร็ว + เขียนค่าตาม JSON op เป๊ะ', `code=${code} ms=${ms} fv=${fv}`);
+      resolve();
+    });
+  }));
+  return chain;
+}
+const applyEditsRacePromise = testApplyEditsStdin(ok);
+
 // ─────────────────────────── (Task 10–14 แทรกเทสเหนือบรรทัดนี้) ───────────────────────────
-Promise.resolve(pending)
-  .catch((e) => { nFail++; console.error('✗ earnings-calendar-test ระเบิด (async) — ' + (e && e.message)); })
+Promise.all([Promise.resolve(pending), applyEditsRacePromise])
+  .catch((e) => { nFail++; console.error('✗ earnings-calendar-test/apply-edits-race ระเบิด (async) — ' + (e && e.message)); })
   .then(() => {
     console.log(`queue-test: ${nOK}/${nOK + nFail} ผ่าน`);
     if (nFail) { console.log('❌ runbook มีบั๊ก'); process.exit(1); }

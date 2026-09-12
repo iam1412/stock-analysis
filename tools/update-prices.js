@@ -61,7 +61,7 @@ const FLAGS = path.join(__dirname, '..', 'price-flags.json');
 const { patchDerived, fmtMos, MOS_BIG_RE } = require('./derived-values.js');
 const { findPriceDate, findRestatedDate, findDiscPriceDate, renderThaiDate, THAI_MONTHS } = require('./price-date.js');
 const RV = require('./report-values.js');   // ระยะ 2: format/derive มาตรฐานอยู่ที่นี่ (เจ้าของเดียว) — cron ใช้ร่วมกับ build/gate
-const { mosBand, fmtPrice, annualChg } = RV;
+const { mosBand, fmtPrice, annualChg, styledRD } = RV;
 const MAX_PTS = 13;          // กราฟรายเดือน ~1 ปี (E37)
 const DRIFT_FREEZE = 0.15;   // ราคาใหม่ต่างจากในรายงาน > 15% → freeze (prose จะผิดความหมาย · เดิม 10% — ขยับขึ้นลดภาระ re-analysis)
 const SUSPECT_FREEZE = 0.25; // ต่าง > 25% → สงสัย split/ticker เปลี่ยน/ข้อมูลเพี้ยน
@@ -95,14 +95,8 @@ function fmtLike(p, oldText) {
   return (Math.abs(p) >= 1000 ? Number(i).toLocaleString('en-US') : i) + (dec ? '.' + dec : '');
 }
 
-// serialize report-data สไตล์เดิม (จุดกราฟ/array ตัวเลขบรรทัดเดียว) — ตาม migrate-annual-chg.js
-function styledRD(rd) {
-  let s = JSON.stringify(rd, null, 2);
-  s = s.replace(/\[\n\s*("(?:[^"\\]|\\.)*"),\n\s*(-?\d+(?:\.\d+)?)\n\s*\]/g, '[$1, $2]');
-  s = s.replace(/\[\n\s*((?:-?\d+(?:\.\d+)?,\n\s*)*-?\d+(?:\.\d+)?)\n\s*\]/g,
-    (m, body) => '[' + body.replace(/,\n\s*/g, ', ') + ']');
-  return s;
-}
+// styledRD — ย้ายไป tools/report-values.js (เจ้าของเดียว, ระยะ 2 ส่วน B) แล้ว import กลับด้านบน
+// (export ของไฟล์นี้ยังชื่อ styledRD เหมือนเดิม — tools/fetch-facts.js import จากที่นี่อยู่ ห้ามลบ)
 
 // ticker ที่ Yahoo ใช้คนละชื่อกับชื่อไฟล์รายงาน (บริษัทปรับโครงสร้าง/เปลี่ยนชื่อ) — override ที่ tools/symbol-map.json
 const toYahooSymbol = (symbol, currency) => {

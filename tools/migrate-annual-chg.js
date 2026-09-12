@@ -15,6 +15,7 @@
 const fs = require('fs');
 const path = require('path');
 const RM = require('./report-meta.js');   // เจ้าของเดียวของ regex stock-meta/report-data/.px
+const { styledRD } = require('./report-values.js');   // ระยะ 2 ส่วน B: เจ้าของเดียวย้ายมาที่นี่แล้ว (เดิมมีสำเนาซ้ำในไฟล์นี้ — Part A review ชี้แล้ว)
 
 const REPORTS = path.join(__dirname, '..', 'reports');
 const WRITE = process.argv.includes('--write');
@@ -24,15 +25,6 @@ const MAX_PTS = 13;       // กราฟรายเดือน ~1 ปี = �
 const FLAT_PP = 0.75;     // |%| < 0.75 → "ทรงตัว"
 const UP = { bg: 'var(--green-soft)', col: '#137333' };
 const DOWN = { bg: 'var(--red-soft)', col: '#c5221f' };
-
-// serialize report-data ให้สไตล์เหมือนต้นฉบับ (จุดกราฟ [label, num] บรรทัดเดียว, array ตัวเลขล้วนบรรทัดเดียว)
-function styledRD(rd) {
-  let s = JSON.stringify(rd, null, 2);
-  s = s.replace(/\[\n\s*("(?:[^"\\]|\\.)*"),\n\s*(-?\d+(?:\.\d+)?)\n\s*\]/g, '[$1, $2]');         // ["label", num]
-  s = s.replace(/\[\n\s*((?:-?\d+(?:\.\d+)?,\n\s*)*-?\d+(?:\.\d+)?)\n\s*\]/g,                       // [num, num, ...]
-    (m, body) => '[' + body.replace(/,\n\s*/g, ', ') + ']');
-  return s;
-}
 
 function migrate(html, sym) {
   const rdM = html.match(RM.REPORT_DATA_PARTS_RE);
