@@ -74,6 +74,42 @@ const rd = () => ({
   try { RV.renderValues('{{rd:sc1 tgt}}', rd(), sm); } catch (e) { threw = e.message; }
   assert(/เหลือ/.test(threw), 'token รูปผิด (เหลือ {{rd:) throw: ' + threw);
 }
+// ── renderValues ต้อง validateValues ก่อน derive (fix จาก review Task 1) ──
+// fv:0/priceDate เพี้ยน ต้อง throw ข้อความเจาะจง แทนที่จะปล่อยให้ derive() คำนวณ −Infinity%/NaN เงียบ ๆ
+{
+  let threw = '';
+  const r1 = rd(); r1.fv = 0;
+  try { RV.renderValues('{{rd:px}}', r1, sm); } catch (e) { threw = e.message; }
+  assert(/fv/.test(threw), 'fv:0 → renderValues throw: ' + threw);
+  threw = '';
+  const r2 = rd(); r2.values.priceDate = 'bad';
+  try { RV.renderValues('{{rd:px}}', r2, sm); } catch (e) { threw = e.message; }
+  assert(/priceDate/.test(threw), 'priceDate ผิดรูป → renderValues throw: ' + threw);
+}
+// ── ฉาก MOS ติดลบ/กราฟขาลง (fv < px) + กราฟทรงตัว ──
+{
+  const r = rd();
+  r.fv = 150; r.values.px = 188;
+  r.chart.data = [['ก.ย.25', 200], ['ต.ค.25', 195], ['ก.ย.26', 188]];   // ขาลง: จุดแรก 200 → จุดท้าย 188
+  const d = RV.derive(r, sm);
+  assert(d.mosText.startsWith('−'), 'mosText ติดลบขึ้นต้นด้วย U+2212: ' + d.mosText);
+  assert(d.mosShown < 0 && !isNaN(d.mosShown), 'mosShown เป็นจำนวนลบแบบ ASCII: ' + d.mosShown);
+  assert(d.mosClass === 'bad', 'mosClass bad เมื่อ fv < px');
+  assert(/^▼ −\d+\.\d% \(รอบปี\)$/.test(d.chg.text), 'chg.text ขาลง: ' + d.chg.text);
+  const upsideToken = RV.TOKENS.upside(d);
+  assert(upsideToken.startsWith('−'), 'upside token render ด้วย −: ' + upsideToken);
+
+  const flat = rd();
+  flat.chart.data = [['ก.ย.25', 100], ['ก.ย.26', 100.5]];
+  assert(RV.derive(flat, sm).chg.text === '≈ ทรงตัว (รอบปี)', 'chg.text ทรงตัวผ่าน derive: ' + RV.derive(flat, sm).chg.text);
+}
+// ── eps ≤ 0: {{rd:pe}} ต้อง throw ข้อความเจาะจง แยกจากเคส "ไม่มี eps" ──
+{
+  const r = rd(); r.values.eps = -1.5;
+  let threw = '';
+  try { RV.renderValues('{{rd:pe}}', r, sm); } catch (e) { threw = e.message; }
+  assert(/eps ≤ 0/.test(threw) && /pe/.test(threw), 'eps ≤ 0 → {{rd:pe}} throw ข้อความเจาะจง: ' + threw);
+}
 // ── validateValues ──
 {
   const bad = (mut, re, label) => { const r = rd(); mut(r); let t = ''; try { RV.validateValues(r, sm); } catch (e) { t = e.message; } assert(re.test(t), label + ': ' + t); };
@@ -97,6 +133,9 @@ const rd = () => ({
   assert(RV.fmtPrice(1234.5) === '1,234.50' && RV.fmtPrice(0.85) === '0.85', 'fmtPrice');
   assert(RV.fmtBig(3.21e12, '$') === '$3.21T' && RV.fmtBig(4.52e10, '$') === '$45.2B' && RV.fmtBig(8.5e8, '$') === '$850M', 'fmtBig USD: ' + RV.fmtBig(4.52e10, '$'));
   assert(RV.fmtBig(3.59e11, '฿') === '฿3.59 แสนล้าน' && RV.fmtBig(8.288e9, '฿') === '฿8.29 พันล้าน' && RV.fmtBig(1.2e12, '฿') === '฿1.20 ล้านล้าน', 'fmtBig THB: ' + RV.fmtBig(8.288e9, '฿'));
+  // เลือกหน่วยใหม่ "หลัง" ปัดเศษ — 9.996e11 ปัดแตะ 1000/10 ของหน่วยเดิมพอดี ต้องขยับขึ้นหน่วยใหญ่กว่า ไม่ใช่โชว์ "1000B"/"10.00 แสนล้าน"
+  assert(RV.fmtBig(9.996e11, '$') === '$1.00T', 'fmtBig USD boundary (999.6B ปัดขึ้น T): ' + RV.fmtBig(9.996e11, '$'));
+  assert(RV.fmtBig(9.996e11, '฿') === '฿1.00 ล้านล้าน', 'fmtBig THB boundary (9.996 แสนล้าน ปัดขึ้นล้านล้าน): ' + RV.fmtBig(9.996e11, '฿'));
   assert(RV.isoOf({ day: 3, monIdx: 0, yearCE: 2026 }) === '2026-01-03', 'isoOf');
   const p = RV.parseIso('2026-09-11'); assert(p.day === 11 && p.monIdx === 8 && p.yearCE === 2026, 'parseIso');
   assert(RV.annualChg([['a', 100], ['b', 100.5]], 'รอบปี').text === '≈ ทรงตัว รอบปี', 'annualChg flat (FLAT_PP 0.75)');

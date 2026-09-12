@@ -35,10 +35,20 @@ const BIG_UNITS = {
 };
 function fmtBig(v, cur) {
   const units = BIG_UNITS[cur] || BIG_UNITS['$'];
-  const [u, sc] = units.find(([, s]) => v >= s) || units[units.length - 1];
-  const n = v / sc;
-  const s = n >= 100 ? n.toFixed(0) : n >= 10 ? n.toFixed(1) : n.toFixed(2);
-  return cur + s + u;
+  let idx = units.findIndex(([, s]) => v >= s);
+  if (idx < 0) idx = units.length - 1;
+  for (;;) {
+    const [u, sc] = units[idx];
+    const n = v / sc;
+    const s = n >= 100 ? n.toFixed(0) : n >= 10 ? n.toFixed(1) : n.toFixed(2);
+    // ปัดแล้วแตะ/เกินอัตราส่วนไปหน่วยที่ใหญ่กว่าถัดไป (1000 ปกติ · 10 สำหรับช่วงแสนล้าน→ล้านล้าน)
+    // ⇒ เลือกหน่วยใหม่ "หลัง" ปัดเศษ ไม่ใช่ก่อน (9.996e11 ต้องได้ "$1.00T" ไม่ใช่ "$1000B")
+    if (idx > 0) {
+      const ratio = units[idx - 1][1] / sc;
+      if (parseFloat(s) >= ratio) { idx--; continue; }
+    }
+    return cur + s + u;
+  }
 }
 const pad2 = (n) => String(n).padStart(2, '0');
 const isoOf = ({ day, monIdx, yearCE }) => `${yearCE}-${pad2(monIdx + 1)}-${pad2(day)}`;
@@ -92,8 +102,10 @@ function derive(rd, sm) {
   return {
     cur, px, fv, mos, mosText, mosShown: parseFloat(mosText.replace('−', '-')), mosClass: mosBand(mos), upside,
     mos20: round(fv * 0.8, 2), mos30: round(fv * 0.7, 2),
-    // cron (tools/update-prices.js) ส่ง suffix แบบมีวงเล็บเสมอ ("(รอบปี)"/"(ตั้งแต่ IPO)") — E35 (test/check-reports.js)
-    // ก็ตรวจป้ายในรูปนั้น (ตัวอย่างในข้อความ error คือ "▲ +72.1% (รอบปี)") ⇒ ต้องห่อวงเล็บที่นี่ด้วย ให้ .chg ตรงรูปเดียวกับที่ cron เขียน
+    // cron (tools/update-prices.js:464) เรียก annualChg ด้วย suffix ที่ห่อวงเล็บไว้แล้วเสมอ
+    // ("(รอบปี)"/"(ตั้งแต่ IPO)") ⇒ ห่อวงเล็บที่นี่ด้วยให้ .chg ของ v2 ตรงรูปเดียวกับที่ cron เขียน (byte-identical
+    // กับคลัง v1 ทั้ง 908 ใบ) — ★ ไม่ใช่เพราะ E35 บังคับรูปนี้: E35 (test/check-reports.js) ตรวจแค่ว่ามีคำ
+    // "รอบปี"/"IPO" เป็น substring ของ .chg เท่านั้น (`/รอบปี/.test(c.chg)` ไม่สนวงเล็บ)
     chg: annualChg(rd.chart.data, '(' + v.chgSuffix + ')'),
     priceDate: { ...pd, iso: v.priceDate, text: PD.renderThaiDate(pd.day, pd.monIdx, pd.yearCE, true) },
     pe: isNum(v.eps) && v.eps > 0 ? px / v.eps : null,
@@ -115,7 +127,18 @@ const TOKENS = {
   mos: (d) => d.mosText, mosClass: (d) => d.mosClass, mos20: (d) => money(d, d.mos20, 'mos20'), mos30: (d) => money(d, d.mos30, 'mos30'),
   upside: (d) => DV.fmtMos(d.upside),
   analystTgt: (d) => money(d, d.values.analystTgt, 'analystTgt'), analystPct: (d) => DV.fmtMos(need(d.analystPct, 'analystTgt')),
-  pe: (d) => need(d.pe, 'eps').toFixed(1), mcap: (d) => fmtBig(need(d.mcap, 'shares'), d.cur), ps: (d) => need(d.ps, 'shares/revenue').toFixed(1),
+  pe: (d) => {
+    // eps มีค่า (ผ่าน validateValues แล้ว) แต่ ≤0 → d.pe เป็น null ตามสูตร derive() — แยกข้อความจากเคส "ไม่มี eps เลย"
+    if (d.values.eps != null && !(d.values.eps > 0)) throw new Error('report-data.values.eps ≤ 0 — ไม่มี P/E ห้ามใช้ token {{rd:pe}}');
+    return need(d.pe, 'eps').toFixed(1);
+  },
+  mcap: (d) => fmtBig(need(d.mcap, 'shares'), d.cur),
+  ps: (d) => {
+    // เช็คคู่กับ pe ข้างบน — ปัจจุบัน validateValues บังคับ shares≥1e5 และ revenue>0 เสมอ จึงยังไม่มีทางเข้าเคสนี้จริง
+    // (ไว้กันโครงพัง/เปลี่ยนเกณฑ์ในอนาคตแบบเงียบ ๆ ไม่ใช่เคสที่ทดสอบได้วันนี้)
+    if (d.values.shares != null && d.values.revenue != null && !(d.ps > 0)) throw new Error('report-data.values.revenue ≤ 0 — ไม่มี P/S ห้ามใช้ token {{rd:ps}}');
+    return need(d.ps, 'shares/revenue').toFixed(1);
+  },
   yield: (d) => need(d.yield, 'dps').toFixed(1) + '%', pbv: (d) => need(d.pbv, 'bvps').toFixed(2),
   baseEps: (d) => money(d, d.values.baseEps, 'baseEps'), scnNote: (d) => (d.scnBasis && d.scnBasis.divIncluded ? ' • รวมปันผล' : ''),
 };
@@ -127,6 +150,7 @@ for (const i of [0, 1, 2]) {
 }
 const TOKEN_RE = /\{\{rd:([A-Za-z0-9]+)\}\}/g;
 function renderValues(html, rd, sm) {
+  validateValues(rd, sm);   // ก่อน derive เสมอ — กัน fv:0/priceDate เพี้ยน ทำให้ derive() คำนวณ −Infinity%/NaN เงียบ ๆ
   const d = derive(rd, sm);
   const out = String(html).replace(TOKEN_RE, (m, k) => {
     const f = TOKENS[k];
