@@ -52,7 +52,15 @@ function fmtBig(v, cur) {
 }
 const pad2 = (n) => String(n).padStart(2, '0');
 const isoOf = ({ day, monIdx, yearCE }) => `${yearCE}-${pad2(monIdx + 1)}-${pad2(day)}`;
-function parseIso(iso) { const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(iso)); if (!m) return null; return { yearCE: +m[1], monIdx: +m[2] - 1, day: +m[3] }; }
+function parseIso(iso) {
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(iso));
+  if (!m) return null;
+  const y = +m[1], mo = +m[2], d = +m[3];
+  const t = Date.UTC(y, mo - 1, d);
+  const dt = new Date(t);
+  if (dt.getUTCFullYear() !== y || dt.getUTCMonth() !== mo - 1 || dt.getUTCDate() !== d) return null; // กันวันที่เป็นไปไม่ได้ เช่น 2026-02-29 / 2026-13-01 (Date.UTC ไหลเดือน/วันเงียบ ๆ)
+  return { yearCE: y, monIdx: mo - 1, day: d };
+}
 
 const isV2 = (rd) => !!(rd && typeof rd === 'object' && rd.v === 2);
 const isNum = (v) => typeof v === 'number' && Number.isFinite(v);
@@ -81,6 +89,8 @@ function validateValues(rd, sm) {
     if (spec.req && !has) throw new Error(`report-data.values.${k} ต้องมี (v2)`);
     if (has && !spec.check(v[k])) throw new Error(`report-data.values.${k} ${spec.why || 'ค่าไม่ถูกต้อง'} — พบ ${JSON.stringify(v[k])}`);
   }
+  if ((v.scenarios != null) !== (v.scnBasis != null)) throw new Error('report-data.values.scenarios กับ scnBasis ต้องมาคู่กัน (มีทั้งคู่หรือไม่มีเลย)');
+  if (v.scnBasis && v.scnBasis.divIncluded && v.scenarios.some((s) => s.div == null)) throw new Error('report-data.values.scnBasis.divIncluded = true แต่ scenarios[i].div เป็น null — ผลตอบแทน "รวมปันผล" ต้องมีปันผลครบ 3 ฉาก');
   if (!isNum(rd.fv) || rd.fv <= 0) throw new Error('report-data.fv ต้องเป็นตัวเลข > 0');
   if (rd.gauge && rd.gauge.cur != null) throw new Error('v2 ห้ามมี gauge.cur — engine ใช้ values.px (สำเนาเดียว)');
   if (rd.gauge && rd.gauge.fair != null) throw new Error('v2 ห้ามมี gauge.fair — engine ใช้ fv (สำเนาเดียว)');
@@ -94,7 +104,7 @@ function derive(rd, sm) {
   const mos = (fv - px) / fv * 100, upside = (fv - px) / px * 100;
   const mosText = DV.fmtMos(mos);
   const pd = parseIso(v.priceDate);
-  const b = v.scnBasis || { years: 3, divIncluded: false, perYear: null };
+  const b = v.scnBasis;
   const scenarios = (v.scenarios || []).map((s) => {
     const total = (s.tgt + (b.divIncluded && s.div ? s.div : 0) - px) / px * 100;
     const perYear = b.perYear === 'cagr' ? (Math.pow(1 + total / 100, 1 / b.years) - 1) * 100 : b.perYear === 'linear' ? total / b.years : null;

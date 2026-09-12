@@ -235,6 +235,9 @@ function expandReport(html) {
   if (RV.isV2(data)) {
     const sm = RM.readStockMeta(html);
     doc = RV.renderValues(html, data, sm);   // renderValues ตรวจ validateValues(data, sm) เองแล้วก่อน derive — ไม่ต้องเรียกซ้ำตรงนี้
+  } else if (html.includes('{{rd:')) {
+    // ไฟล์ v1 ห้ามมี token {{rd:…}} หลุดเข้า dist/ — gate checkFile จะพันเป็น EXPAND ต่อไฟล์, cron gateAfterPatch พันเป็น patch-rejected กักกันไว้ ไม่ปล่อยเข้าเว็บจริง
+    throw new Error('มี token {{rd:…}} ในไฟล์ที่ไม่ใช่ report-data v2 — ต้องใส่ "v": 2 + values ก่อน build');
   }
   // function replacer → ไม่ตีความ $ ในค่าแทนที่ (engine/CSS มี $)
   return doc

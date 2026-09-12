@@ -109,12 +109,12 @@ token ที่ renderer รู้จัก (`tools/report-values.js` `TOKENS`) 
 | `{{rd:px}}` | `฿188.00` (สกุลจาก `stock-meta.currency`) | px |
 | `{{rd:pxNum}}` | `188` (ค่าตั้งต้น `pxIn`) | px |
 | `{{rd:priceDate}}` | `11 ก.ย. 2569` | priceDate |
-| `{{rd:chg}}` | `▲ +12.3% (รอบปี)` — `annualChg(chart.data, chgSuffix)` | chgSuffix |
+| `{{rd:chg}}` | `▲ +12.3% (รอบปี)` — `annualChg(chart.data, '(' + chgSuffix + ')')` | chgSuffix |
 | `{{rd:fv}}` `{{rd:fvLow}}` `{{rd:fvHigh}}` | `฿195.00` … | fv · fvLow · fvHigh |
-| `{{rd:mos}}` | `+3.6%` (`fmtMos((fv−px)/fv×100)`) | — |
+| `{{rd:mos}}` | `+4%` (`fmtMos((fv−px)/fv×100)`) | — |
 | `{{rd:mosClass}}` | `bad` / `ok` / `good` (`mosBand`) | — |
 | `{{rd:mos20}}` `{{rd:mos30}}` | `฿156.00` / `฿136.50` (fv×0.8 / ×0.7) | — |
-| `{{rd:upside}}` | `+3.7%` | — |
+| `{{rd:upside}}` | `+4%` | — |
 | `{{rd:analystTgt}}` `{{rd:analystPct}}` | `฿205.00` / `+9%` ((tgt−px)/px) | analystTgt |
 | `{{rd:pe}}` | `8.7` (px/eps · 1 ตำแหน่ง · ไม่มี x) | eps |
 | `{{rd:mcap}}` | `฿3.59 แสนล้าน` / `$3.21T` (`fmtBig`) | shares |
@@ -125,8 +125,10 @@ token ที่ renderer รู้จัก (`tools/report-values.js` `TOKENS`) 
 | `{{rd:scnNote}}` | ` • รวมปันผล` เมื่อ `scnBasis.divIncluded` ไม่งั้น `` | scnBasis |
 | `{{rd:sc1tgt}}` … `sc3tgt` | `฿160.00` | scenarios |
 | `{{rd:sc1div}}` … | `฿36.00` | scenarios[i].div |
-| `{{rd:sc1ret}}` … | `−4% (−1.4%/ปี)` — total = (tgt + div·[divIncluded] − px)/px · %/ปี ตาม perYear | scenarios · scnBasis |
+| `{{rd:sc1ret}}` … | `+4% (+1.4%/ปี)` — total = (tgt + div·[divIncluded] − px)/px · %/ปี ตาม perYear | scenarios · scnBasis |
 | `{{rd:sc1retClass}}` … | `pos` / `neg` | scenarios |
+
+★ ตัวอย่างในตาราง = ค่าที่ `fmtMos` ปัด (≥2% → 0 ตำแหน่ง)
 
 ### 2) การ์ดวิธี valuation (`vmethod`) + กล่องสรุป FV
 

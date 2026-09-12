@@ -450,11 +450,14 @@ ok(b.injectTA(taBody, 'AAPL', null, { currency: 'USD' }, 'assets/ta-abc123.js') 
   const srcNoSM = (rd, body) => `<html><head><script type="application/json" id="report-data">${rd}</script><!--TEMPLATE:STYLE--></head><body>${body}<!--TEMPLATE:ENGINE--></body></html>`;
   t = ''; try { expandReport(srcNoSM(rdV2, '')); } catch (e) { t = e.message; }
   ok(/stock-meta/.test(t), 'v2: ไม่มีบล็อก stock-meta → throw: ' + t);
-  // v1 ยังเหมือนเดิม: token {{rd:…}} ในไฟล์ v1 ไม่ถูกแตะ (ไม่มี values ให้ render) และไม่ throw
+  // v1: มี token {{rd:…}} หลุดในไฟล์ที่ไม่ใช่ v2 (ไม่มี values ให้ render) → ต้อง throw กัน token รั่วเข้า dist/
   const rdV1 = JSON.stringify({ fv: 195, theme: { accent: '#1a73e8', chgBg: 'var(--green-soft)', chgColor: '#137333' },
     chart: { data: [['ก.ย.25', 150], ['ก.ย.26', 188]], min: 120, max: 240, grid: [150, 200], fairLine: 195, currency: '฿', highlight: [0, 1] }, gauge: { min: 120, max: 240, cur: 188, fair: 195 } });
-  const o1 = expandReport(src(rdV1, '<div class="px">฿188.00</div>{{rd:px}}'));
-  ok(o1.includes('{{rd:px}}') && /gpos\(188\)/.test(o1), 'v1: identity ของ body (token ไม่ถูก render) + engine เดิม');
+  t = ''; try { expandReport(src(rdV1, '<div class="px">฿188.00</div>{{rd:px}}')); } catch (e) { t = e.message; }
+  ok(/rd:/.test(t), 'v1: มี {{rd:…}} หลุดในไฟล์ที่ไม่ใช่ v2 → throw กันไม่ให้เข้า dist/: ' + t);
+  // v1 ไม่มี token เลย → identity ของ body เหมือนเดิม (ไม่กระทบไฟล์ v1 อีก 908 ใบ) + engine bake เดิม
+  const o1 = expandReport(src(rdV1, '<div class="px">฿188.00</div>'));
+  ok(o1.includes('<div class="px">฿188.00</div>') && /gpos\(188\)/.test(o1), 'v1: identity ของ body (ไม่มี token) + engine เดิม');
 }
 
 console.log('\n' + '─'.repeat(50));

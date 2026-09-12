@@ -130,6 +130,9 @@ const rd = () => ({
   bad((r) => { r.values.scenarios = [{ tgt: 1 }]; }, /scenarios/, 'scenarios ต้อง 3 ฉาก');
   bad((r) => { r.values.scnBasis.perYear = 'x'; }, /perYear/, 'perYear นอกรายการ');
   bad((r) => { r.values.shares = 12; }, /shares/, 'shares ต้อง ≥ 1e5 (หุ้นทั้งบริษัท ไม่ใช่ล้านหุ้น)');
+  bad((r) => { delete r.values.scnBasis; }, /scnBasis/, 'scenarios มีแต่ scnBasis หาย → ต้องมาคู่กัน');
+  bad((r) => { delete r.values.scenarios; }, /scnBasis/, 'scnBasis มีแต่ scenarios หาย → ต้องมาคู่กัน');
+  bad((r) => { r.values.scnBasis.divIncluded = true; r.values.scenarios[1].div = null; }, /divIncluded/, 'divIncluded=true แต่ scenarios[i].div เป็น null');
   let t = ''; try { RV.validateValues(rd(), { ...sm, currency: 'CAD' }); } catch (e) { t = e.message; }
   assert(/currency/.test(t), 'currency นอก USD/THB: ' + t);
   assert(RV.isV2(rd()) && !RV.isV2({ fv: 1 }) && !RV.isV2(null), 'isV2');
@@ -144,6 +147,9 @@ const rd = () => ({
   assert(RV.fmtBig(9.996e11, '฿') === '฿1.00 ล้านล้าน', 'fmtBig THB boundary (9.996 แสนล้าน ปัดขึ้นล้านล้าน): ' + RV.fmtBig(9.996e11, '฿'));
   assert(RV.isoOf({ day: 3, monIdx: 0, yearCE: 2026 }) === '2026-01-03', 'isoOf');
   const p = RV.parseIso('2026-09-11'); assert(p.day === 11 && p.monIdx === 8 && p.yearCE === 2026, 'parseIso');
+  assert(RV.parseIso('2026-02-29') === null, 'parseIso: 2569 ไม่ใช่ปีอธิกสุรทิน → 29 ก.พ. ไม่มีจริง → null');
+  assert(RV.parseIso('2026-13-01') === null, 'parseIso: เดือน 13 ไม่มีจริง → null');
+  { let t = ''; const r = rd(); r.values.priceDate = '2026-02-29'; try { RV.validateValues(r, sm); } catch (e) { t = e.message; } assert(/priceDate/.test(t), 'validateValues: priceDate = 2026-02-29 (วันที่ไม่มีจริง) → throw: ' + t); }
   assert(RV.annualChg([['a', 100], ['b', 100.5]], 'รอบปี').text === '≈ ทรงตัว รอบปี', 'annualChg flat (FLAT_PP 0.75)');
   assert(RV.mosBand(9.9) === 'bad' && RV.mosBand(10) === 'ok' && RV.mosBand(20) === 'good', 'mosBand');
 }
