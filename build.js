@@ -23,6 +23,7 @@ const crypto = require('crypto');
 const bt = require('./tools/brandtheme.js');
 const tagLib = require('./tools/tag-lib.js');
 const RM = require('./tools/report-meta.js');   // เจ้าของเดียวของ regex stock-meta/report-data/.px
+const RV = require('./tools/report-values.js');  // ระยะ 2: schema/validator/derive/render ของ report-data.values (v2)
 // โหลดครั้งเดียวต่อ process — ไฟล์หายจริง (ยังไม่ติดตั้งระบบ tag) เท่านั้นที่ fallback เงียบ ๆ
 // ได้ · error อื่น (เช่น tags.json เขียนไม่ครบ/JSON พัง) ต้อง throw ต่อ ไม่งั้น build จะเขียน
 // reports.json ทับด้วย tags ว่างทั้ง 908 ตัวแบบไม่มี error ให้เห็น (เคยเกิดจริงตอน dev)
@@ -146,13 +147,16 @@ function renderHead(theme) {
 }
 function renderEngine(data) {
   const c = data.chart, g = data.gauge, t = { ...THEME_DEFAULTS, ...(data.theme || {}) };
+  // v2: ราคา/FV มีสำเนาเดียว (values.px / fv) — engine bake จากตรงนั้น · v1: จาก gauge.cur/fair/chart.fairLine เหมือนเดิม
+  const V2 = RV.isV2(data);
+  const curPx = V2 ? data.values.px : g.cur, fairPx = V2 ? data.fv : g.fair, fairLine = V2 ? data.fv : c.fairLine;
   const js = fillTokens(readPartial('engine.js'), {
     __RD_DATA__: JSON.stringify(c.data), __RD_MIN__: String(c.min), __RD_MAX__: String(c.max),
-    __RD_GRID__: c.grid.join(','), __RD_FAIRLINE__: String(c.fairLine), __RD_ACCENT__: t.accent, __RD_ACCENTD__: t.accentDark,
+    __RD_GRID__: c.grid.join(','), __RD_FAIRLINE__: String(fairLine), __RD_ACCENT__: t.accent, __RD_ACCENTD__: t.accentDark,
     __RD_CURSYM__: c.currency || '$', __RD_HL__: JSON.stringify(c.highlight),
     __RD_GRIDVAL__: c.gridFmt || 'v',          // นิพจน์ format ป้ายแกน (v / v.toFixed(2) / Math.round(v))
     __RD_DATAVAL__: c.dataFmt || 'd[1]',       // นิพจน์ format ป้ายจุด (d[1] / d[1].toFixed(2) / Math.round(d[1]))
-    __RD_GMIN__: String(g.min), __RD_GMAX__: String(g.max), __RD_CUR__: String(g.cur), __RD_FAIR__: String(g.fair),
+    __RD_GMIN__: String(g.min), __RD_GMAX__: String(g.max), __RD_CUR__: String(curPx), __RD_FAIR__: String(fairPx),
     // fairLabelTop ต้องเป็นสตริง "px" เท่านั้น — ข้อมูลจริง 317 ใบส่ง true (boolean) มา ⇒ style.top="true"
     // เป็น CSS เสีย ป้าย fair หล่นมาทับป้ายปัจจุบันที่ -34px · ค่าอื่น (เช่น "0") ก็เพี้ยน ⇒ default -58px
     __RD_FAIRTOP__: (typeof g.fairLabelTop === 'string' && /^-?\d+(\.\d+)?px$/.test(g.fairLabelTop)) ? g.fairLabelTop : '-58px',
@@ -164,6 +168,17 @@ function renderEngine(data) {
 function validateReportData(d) {
   const need = (v, p) => { if (typeof v !== 'number' || !isFinite(v)) throw new Error(`report-data.${p} ต้องเป็นตัวเลข — พบ ${JSON.stringify(v)}`); };
   if (!d || typeof d !== 'object' || Array.isArray(d)) throw new Error('report-data ต้องเป็น JSON object');
+  // ── ระยะ 2: v2 = strict keys + values (validateValues ตรวจ values/fv/ห้าม gauge.cur ฯลฯ — ตรงนี้ตรวจแค่ "โครง") ──
+  const V2 = RV.isV2(d);
+  if (V2) {
+    const TOP = ['v', 'fv', 'values', 'theme', 'chart', 'gauge'];
+    for (const k of Object.keys(d)) if (!TOP.includes(k)) throw new Error(`report-data.${k} ไม่อยู่ใน schema v2 (คีย์ระดับบนที่รู้จัก: ${TOP.join(', ')})`);
+    const CH = ['data', 'min', 'max', 'grid', 'currency', 'highlight', 'gridFmt', 'dataFmt'], GA = ['min', 'max', 'fairLabelTop'];
+    for (const k of Object.keys(d.chart || {})) if (!CH.includes(k)) throw new Error(`report-data.chart.${k} ไม่อยู่ใน schema v2`);
+    for (const k of Object.keys(d.gauge || {})) if (!GA.includes(k)) throw new Error(`report-data.gauge.${k} ไม่อยู่ใน schema v2 (cur/fair ย้ายไป values.px/fv)`);
+    const TH = Object.keys(THEME_DEFAULTS);
+    for (const k of Object.keys(d.theme || {})) if (!TH.includes(k)) throw new Error(`report-data.theme.${k} ไม่อยู่ใน schema v2`);
+  }
   const c = d.chart, g = d.gauge;
   if (!c || !Array.isArray(c.data) || c.data.length < 2) throw new Error('report-data.chart.data ต้องเป็น array ≥ 2 จุด');
   if (!Array.isArray(c.grid) || !c.grid.length) throw new Error('report-data.chart.grid ต้องเป็น array ของเส้นกริด');
@@ -177,9 +192,9 @@ function validateReportData(d) {
   const DATA_FMT_OK = /^d\[1\](\.toFixed\([0-4]\))?$|^Math\.round\(d\[1\]\)$/;
   if (c.gridFmt != null && !GRID_FMT_OK.test(c.gridFmt)) throw new Error(`report-data.chart.gridFmt ต้องอ้างตัวแปร v เท่านั้น: v / v.toFixed(n) / Math.round(v) — พบ ${JSON.stringify(c.gridFmt)}`);
   if (c.dataFmt != null && !DATA_FMT_OK.test(c.dataFmt)) throw new Error(`report-data.chart.dataFmt ต้องอ้างตัวแปร d[1] เท่านั้น: d[1] / d[1].toFixed(n) / Math.round(d[1]) — พบ ${JSON.stringify(c.dataFmt)}`);
-  need(c.min, 'chart.min'); need(c.max, 'chart.max'); need(c.fairLine, 'chart.fairLine');
+  need(c.min, 'chart.min'); need(c.max, 'chart.max'); if (!V2) need(c.fairLine, 'chart.fairLine');
   if (!g || typeof g !== 'object') throw new Error('report-data.gauge ต้องเป็น object');
-  need(g.min, 'gauge.min'); need(g.max, 'gauge.max'); need(g.cur, 'gauge.cur'); need(g.fair, 'gauge.fair');
+  need(g.min, 'gauge.min'); need(g.max, 'gauge.max'); if (!V2) { need(g.cur, 'gauge.cur'); need(g.fair, 'gauge.fair'); }
   need(d.fv, 'fv');
   // bounds ห้าม degenerate — engine ys()/gpos() หารด้วย (max−min); ถ้า =0/ติดลบ → NaN/Infinity → กราฟล่องหน/เข็มเพี้ยน "เงียบ ๆ"
   if (c.max <= c.min) throw new Error(`report-data.chart.max (${c.max}) ต้อง > chart.min (${c.min}) — ไม่งั้นแกน y หาร 0 → พิกัด NaN`);
@@ -211,8 +226,15 @@ function expandReport(html) {
   let data;
   try { data = JSON.parse(m[1]); } catch (e) { throw new Error('expandReport: report-data JSON ไม่ถูกต้อง: ' + e.message); }
   validateReportData(data);
+  // ── ระยะ 2: v2 render ตัวเลขทุกสำเนาจาก values ก่อนแทน marker (decorateReport/injectTA ทำงานบนผลลัพธ์นี้) ──
+  let body = html;
+  if (RV.isV2(data)) {
+    const sm = RM.readStockMeta(html);
+    RV.validateValues(data, sm);
+    body = RV.renderValues(html, data, sm);
+  }
   // function replacer → ไม่ตีความ $ ในค่าแทนที่ (engine/CSS มี $)
-  return html
+  return body
     .replace('<!--TEMPLATE:STYLE-->', () => renderHead(data.theme))
     .replace('<!--TEMPLATE:ENGINE-->', () => renderEngine(data));
 }

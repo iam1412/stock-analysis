@@ -413,6 +413,30 @@ ok(b.injectTA(taBody, 'AAPL', null, { currency: 'USD' }, 'assets/ta-abc123.js') 
   });
 }
 
+// ── ระยะ 2: expandReport v2 render token จาก values ──
+{
+  const { expandReport } = require('../build.js');
+  const rdV2 = JSON.stringify({ v: 2, fv: 195, values: { px: 188, priceDate: '2026-09-11', chgSuffix: 'รอบปี' },
+    theme: { accent: '#1a73e8', chgBg: 'var(--green-soft)', chgColor: '#137333' },
+    chart: { data: [['ก.ย.25', 150], ['ก.ย.26', 188]], min: 120, max: 240, grid: [150, 200], currency: '฿', highlight: [0, 1] }, gauge: { min: 120, max: 240 } });
+  const src = (rd, body) => `<html><head><script type="application/json" id="stock-meta">{"symbol":"X","currency":"THB","price":188,"fairValue":195,"mos":3.6,"upside":3.7,"pe":null,"dividendYield":null,"roe":null}</script>\n<script type="application/json" id="report-data">${rd}</script><!--TEMPLATE:STYLE--></head><body>${body}<!--TEMPLATE:ENGINE--></body></html>`;
+  const out = expandReport(src(rdV2, '<div class="px">{{rd:px}}</div><div class="big">{{rd:mos}}</div>'));
+  ok(out.includes('<div class="px">฿188.00</div>') && out.includes('<div class="big">+4%</div>'), 'v2: token ใน body ถูก render จาก values');
+  ok(/gpos\(188\)/.test(out) && /gpos\(195\)/.test(out) && /const FV=195\b/.test(out), 'v2: engine bake gauge cur/fair/FV จาก values.px/fv (ไม่มี gauge.cur ใน JSON)');
+  ok(/const fy=ys\(195\)/.test(out), 'v2: fairLine ของกราฟ = fv');
+  let t = ''; try { expandReport(src(rdV2, '<p>{{rd:nope}}</p>')); } catch (e) { t = e.message; }
+  ok(/ไม่รู้จัก/.test(t), 'v2: token ไม่รู้จัก → throw: ' + t);
+  t = ''; try { expandReport(src(rdV2.replace('"v":2', '"v":2,"bogus":1'), '')); } catch (e) { t = e.message; }
+  ok(/bogus/.test(t), 'v2: คีย์แปลกระดับบนของ report-data → throw');
+  t = ''; try { expandReport(src(rdV2.replace('"gauge":{"min":120,"max":240}', '"gauge":{"min":120,"max":240,"cur":188}'), '')); } catch (e) { t = e.message; }
+  ok(/gauge\.cur/.test(t), 'v2: gauge.cur มี → throw');
+  // v1 ยังเหมือนเดิม: token {{rd:…}} ในไฟล์ v1 ไม่ถูกแตะ (ไม่มี values ให้ render) และไม่ throw
+  const rdV1 = JSON.stringify({ fv: 195, theme: { accent: '#1a73e8', chgBg: 'var(--green-soft)', chgColor: '#137333' },
+    chart: { data: [['ก.ย.25', 150], ['ก.ย.26', 188]], min: 120, max: 240, grid: [150, 200], fairLine: 195, currency: '฿', highlight: [0, 1] }, gauge: { min: 120, max: 240, cur: 188, fair: 195 } });
+  const o1 = expandReport(src(rdV1, '<div class="px">฿188.00</div>{{rd:px}}'));
+  ok(o1.includes('{{rd:px}}') && /gpos\(188\)/.test(o1), 'v1: identity ของ body (token ไม่ถูก render) + engine เดิม');
+}
+
 console.log('\n' + '─'.repeat(50));
 console.log(`build-test: ${n - fails}/${n} ผ่าน`);
 if (fails) { console.log('\n❌ build.js มีพฤติกรรมผิด — แก้ build.js ก่อน push\n'); process.exit(1); }
