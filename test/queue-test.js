@@ -876,11 +876,119 @@ catch (e) { nFail++; console.error('✗ earnings-calendar-test ระเบิ�
     const r = sh.run('node', ['tools/apply-edits.js', tmp]);
     ok(r.code !== 0, 'apply-edits: ไม่มีทั้ง @@ block และ --set/--del/--set-meta → ยัง exit ≠ 0', r.out + r.err);
   }
+
+  // (g) fix1 — code review: --del array index ต้อง splice ให้สั้นลงจริง ไม่ใช่เหลือ "หลุม" (delete เฉย ๆ ไม่ลด
+  //   .length — Array.prototype.every "ข้าม" หลุมไปเงียบ ๆ (สเปก JS) ⇒ validateValues ผ่านหลอก ๆ ตอนนี้ (length
+  //   ยังคง 3 ทั้งที่มีหลุม) แต่ JSON.stringify เขียนหลุมเป็น null จริงลงไฟล์ ⇒ รอบถัดไปที่ parse ใหม่ null ไม่ผ่าน
+  //   schema (ไม่ใช่หลุมอีกแล้ว) — ไฟล์ที่ certify ว่า valid วันนี้ (เพราะเช็คไม่เจอหลุม) กลับ invalid วันถัดไป
+  //   ★ `values.scenarios` มีกติกา "ต้องมี 3 ฉากเป๊ะ" (bear/base/bull) ⇒ เอาออก 1 ตัวจะเหลือ 2 ฉาก ซึ่ง**ผิด schema
+  //   เสมอไม่ว่า splice หรือปล่อยหลุม** — พฤติกรรมที่ถูกต้องคือ apply-edits ต้อง **ปฏิเสธทันทีแบบดัง ๆ** (exit ≠ 0
+  //   ไม่เขียนไฟล์) แทนที่จะ "ผ่านตอนนี้แล้วพังเงียบ ๆ รอบหน้า" — นี่คือคุณค่าจริงของ fix: เปลี่ยนบั๊กจาก silent
+  //   corruption เป็น loud rejection ทันทีที่จุดเดียวกัน (ก่อนเขียนไฟล์)
+  {
+    const before = V2_HTML;
+    const tmp = writeTmp('delarr.html', before);
+    const r = sh.run('node', ['tools/apply-edits.js', tmp, '--del', 'values.scenarios.1']);
+    ok(r.code !== 0 && /3 ฉาก/.test(r.out + r.err), 'apply-edits --del values.scenarios.1: ปฏิเสธทันทีแบบดัง ๆ (schema ต้อง 3 ฉากเป๊ะ) ไม่ใช่ผ่านตอนนี้แล้วพังเงียบรอบหน้า', r.out + r.err);
+    ok(fs.readFileSync(tmp, 'utf8') === before, 'apply-edits --del values.scenarios.1: ไม่เขียนไฟล์เลยเมื่อผลลัพธ์ invalid (all-or-nothing)');
+  }
+
+  // (g2) fix1 — ยืนยันกลไก splice เองตรง ๆ ด้วย array ที่ไม่ผูกความยาวตายตัว (report-data.chart.grid — ไม่อยู่ใน
+  //   schema ของ values จึงไม่ติดกติกา "ต้อง 3 ฉาก" ข้างบน): --del ต้องได้ array สั้นลงจริง ไม่มี null คั่นกลาง
+  //   และ JSON ที่ได้ต้อง parse ได้ปกติ (พิสูจน์ splice ทำงานถูกต้อง แยกจากคำถามว่า schema อนุญาตให้สั้นลงไหม)
+  {
+    const tmp = writeTmp('delgrid.html', V2_HTML);
+    const r = sh.run('node', ['tools/apply-edits.js', tmp, '--del', 'chart.grid.1']);
+    ok(r.code === 0, 'apply-edits --del chart.grid.1 (array ที่ไม่ผูกความยาวตายตัว): exit 0', r.err || r.out);
+    const rd = readBlock(fs.readFileSync(tmp, 'utf8'), 'report-data');
+    ok(Array.isArray(rd.chart.grid) && rd.chart.grid.length === 1 && rd.chart.grid[0] === 100 && !rd.chart.grid.includes(null),
+      'apply-edits --del array index: splice ให้ array สั้นลงจริง (ไม่เหลือ null คั่นกลาง)', JSON.stringify(rd.chart.grid));
+  }
+
+  // (h) fix2 — code review: apply ops ตามลำดับที่พิมพ์ใน argv จริง — `--del X --set X=555` ต้องจบที่ X=555
+  //   ไม่ใช่ X ถูกลบ (เดิมจัดกลุ่ม set-ทั้งหมด-ก่อน-del-ทั้งหมดโดยไม่สนลำดับที่พิมพ์ — ขัดกับคำสั่งที่ผู้ใช้พิมพ์เงียบ ๆ)
+  {
+    const tmp = writeTmp('order.html', V2_HTML);
+    const r = sh.run('node', ['tools/apply-edits.js', tmp, '--del', 'values.analystTgt', '--set', 'values.analystTgt=555']);
+    ok(r.code === 0, 'apply-edits --del X --set X=...: exit 0', r.err || r.out);
+    const rd = readBlock(fs.readFileSync(tmp, 'utf8'), 'report-data');
+    ok(rd.values.analystTgt === 555, 'apply-edits: ops apply ตามลำดับ argv จริง (--del ก่อน --set ทีหลัง → ค่าสุดท้าย = --set ตามที่พิมพ์)', String(rd.values.analystTgt));
+  }
 }
 
+// ── 22) apply-edits: stdin race (fix1 review — CRITICAL) ── ต้องเป็น async จริง (spawn + delayed write)
+//   spawnSync/sh.run เขียน stdin ให้เสร็จก่อนหรือพร้อมกับที่ child เริ่มทำงานเสมอ ⇒ ไม่มีวันชนจังหวะที่ผู้เขียน
+//   (producer) ส่งข้อมูลมาช้ากว่าที่ child เริ่มอ่าน — ต้อง child_process.spawn จริงแล้วหน่วงเขียนด้วย setTimeout
+//   ถึงจะบังคับให้จังหวะนั้นเกิดซ้ำได้แน่นอน (พิสูจน์บั๊กเดิม: เช็คด้วย process.stdin.isTTY เฉย ๆ ดรอปบล็อก @@
+//   ทิ้งเงียบ ๆ 4/20 รอบวัดจริงโดยผู้รีวิว — เปลี่ยนมาใช้ tty.isatty(0) + retry-with-timeout ใน readStdin())
+function testApplyEditsStdinRace(ok) {
+  const cp = require('child_process');
+  const RACE_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'apply-edits-race-'));
+  const FIXTURE = `<!DOCTYPE html>
+<html><head>
+<script type="application/json" id="stock-meta">
+{"symbol":"TST","currency":"USD","price":100,"fairValue":120,"mos":16.7,"upside":20,"pe":10,"dividendYield":2,"roe":8}
+</script>
+<script type="application/json" id="report-data">
+{ "v": 2, "fv": 120, "values": { "px": 100, "priceDate": "2026-09-01", "dateEra": "BE", "chgSuffix": "รอบปี" },
+  "theme": { "accent": "#000000" },
+  "chart": { "data": [["ม.ค.26", 90], ["ก.ย.26", 100]], "min": 80, "max": 140, "grid": [100, 120], "currency": "$", "highlight": [0, 1] },
+  "gauge": { "min": 80, "max": 140 } }
+</script>
+</head><body></body></html>
+`;
+  const AT_BLOCK = '@@\n"accent": "#000000"\n@@=\n"accent": "#111111"\n@@end\n';
+  const N = 20, DELAY_MS = 150;
+
+  // (a) producer ที่ "ช้ากว่าปกติเล็กน้อย" (150ms) ต้องไม่ทำให้บล็อก @@ หายไป — วนซ้ำ N รอบ (ครบทุกรอบ = ผ่าน)
+  const oneRacedRun = (i) => new Promise((resolve) => {
+    const file = path.join(RACE_DIR, `race${i}.html`);
+    fs.writeFileSync(file, FIXTURE);
+    const child = cp.spawn('node', ['tools/apply-edits.js', file, '--set', 'fv=210'], { cwd: ROOT, stdio: ['pipe', 'pipe', 'pipe'] });
+    let out = '', err = '';
+    child.stdout.on('data', (d) => { out += d; });
+    child.stderr.on('data', (d) => { err += d; });
+    child.on('error', (e) => resolve({ code: -1, out, err: String(e) }));
+    child.on('close', (code) => resolve({ code, out, err, file }));
+    setTimeout(() => { try { child.stdin.write(AT_BLOCK); child.stdin.end(); } catch (_) { /* child ตายไปก่อนแล้วก็ปล่อย close handler รายงานเอง */ } }, DELAY_MS);
+  });
+  let chain = Promise.resolve();
+  for (let i = 0; i < N; i++) {
+    chain = chain.then(() => oneRacedRun(i)).then((r) => {
+      const applied = r.code === 0 && fs.existsSync(r.file) && fs.readFileSync(r.file, 'utf8').includes('"accent": "#111111"');
+      ok(applied, `apply-edits: stdin race #${i + 1}/${N} (producer ส่งบล็อก @@ ช้า ${DELAY_MS}ms) → ต้อง apply ได้เสมอ ไม่ดรอปเงียบ (CRITICAL fix1)`,
+        `exit=${r.code} out=${(r.out || '').trim()} err=${(r.err || '').trim().slice(0, 200)}`);
+    });
+  }
+
+  // (b) ไม่มีใครเขียน/ปิด stdin ให้เลย (จำลอง fd ที่ไม่มีวันมีข้อมูล) → ต้อง exit ภายใน grace period ที่จำกัด
+  //   ไม่ใช่ค้างตลอดไป (ถ้า regression กลับไปเป็น blocking read เฉย ๆ จะค้าง — ตั้ง hard-kill กันทั้งชุดเทสค้างตามไปด้วย)
+  chain = chain.then(() => new Promise((resolve) => {
+    const file = path.join(RACE_DIR, 'nohang.html');
+    fs.writeFileSync(file, FIXTURE);
+    const t0 = Date.now();
+    const child = cp.spawn('node', ['tools/apply-edits.js', file, '--set', 'fv=210'], { cwd: ROOT, stdio: ['pipe', 'pipe', 'pipe'] });
+    let done = false;
+    const hardTimer = setTimeout(() => {
+      if (done) return; done = true;
+      try { child.kill('SIGKILL'); } catch (_) {}
+      ok(false, 'apply-edits: ไม่มีใครเขียน/ปิด stdin เลย → ต้อง exit ภายใน grace period ที่จำกัด (ไม่ค้างตลอดไป)', 'เกิน 3000ms ยัง hang');
+      resolve();
+    }, 3000);
+    child.on('close', (code) => {
+      if (done) return; done = true; clearTimeout(hardTimer);
+      const ms = Date.now() - t0;
+      ok(code === 0 && ms < 2000, 'apply-edits: ไม่มีใครเขียน/ปิด stdin เลย → exit ภายใน grace period (ไม่ค้างตลอดไป)', `code=${code} ms=${ms}`);
+      resolve();
+    });
+  }));
+  return chain;
+}
+const applyEditsRacePromise = testApplyEditsStdinRace(ok);
+
 // ─────────────────────────── (Task 10–14 แทรกเทสเหนือบรรทัดนี้) ───────────────────────────
-Promise.resolve(pending)
-  .catch((e) => { nFail++; console.error('✗ earnings-calendar-test ระเบิด (async) — ' + (e && e.message)); })
+Promise.all([Promise.resolve(pending), applyEditsRacePromise])
+  .catch((e) => { nFail++; console.error('✗ earnings-calendar-test/apply-edits-race ระเบิด (async) — ' + (e && e.message)); })
   .then(() => {
     console.log(`queue-test: ${nOK}/${nOK + nFail} ผ่าน`);
     if (nFail) { console.log('❌ runbook มีบั๊ก'); process.exit(1); }

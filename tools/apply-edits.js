@@ -35,11 +35,17 @@
  *   ไม่แตะไฟล์เลย (ใบ v1 แก้เลขผูกราคาด้วยบล็อก `@@` ตามเดิม) · `--set-meta` ใช้ได้ทั้ง v1/v2 (บล็อก stock-meta
  *   ไม่ขึ้นกับ schema v2) · หลังแก้เสร็จ validate ด้วย `RV.validateValues` (เมื่อเป็น v2) ก่อนเขียนไฟล์จริงเสมอ
  *   · ไม่ใส่ stdin เลย (เทอร์มินัลจริง ไม่ใช่ heredoc/pipe) ก็ใช้ `--set`/`--del`/`--set-meta` ได้ตามปกติ
- *   — ตัวสคริปต์เช็ค `process.stdin.isTTY` เอง ไม่ค้างรอ Ctrl-D (ต้องมีบล็อก `@@` อย่างน้อย 1 ชุด **เฉพาะ**
- *   ตอนไม่มี --set/--del/--set-meta เลย)
+ *   — ตัวสคริปต์เช็ค `tty.isatty(0)` ก่อน (ไม่ค้างรอ Ctrl-D) แล้วอ่าน stdin แบบ non-blocking + retry จนครบ
+ *   `STDIN_GRACE_MS` (ต้องมีบล็อก `@@` อย่างน้อย 1 ชุด **เฉพาะ**ตอนไม่มี --set/--del/--set-meta เลย)
+ *   ★★ อ่านฟังก์ชัน `readStdin()` ก่อนแก้จุดนี้อีก — สองทางที่เคยลองแล้วพังทั้งคู่ (ประวัติเต็มอยู่ในคอมเมนต์
+ *   เหนือ `readStdin()`): เช็คด้วย `process.stdin.isTTY` เฉย ๆ = ดรอปบล็อก `@@` เงียบเมื่อฝั่งเขียนช้ากว่าปกติ
+ *   เล็กน้อย (CRITICAL) · เปลี่ยนไปเช็คด้วย `tty.isatty(0)` เฉย ๆ (ไม่แตะ non-blocking เลย) = ค้างตลอดไปเมื่อรัน
+ *   คำสั่งเดี่ยวไม่มี heredoc/redirect และฝั่งเรียกไม่เคยปิด stdin ให้ (regression ที่แย่กว่าเดิม) — ทางที่ถูกคือ
+ *   บังคับ non-blocking **แล้ว retry-with-timeout** ไม่ใช่ยอมแพ้ตั้งแต่ EAGAIN ครั้งแรก
  */
 
 const fs = require('fs');
+const tty = require('tty');
 const RM = require('./report-meta.js');     // เจ้าของเดียวของ regex stock-meta/report-data
 const RV = require('./report-values.js');   // เจ้าของเดียวของ schema v2 (validateValues) + styledRD
 
@@ -85,13 +91,47 @@ const delOps = ops.filter((o) => o.kind === 'del');
 const setMetaOps = ops.filter((o) => o.kind === 'setMeta');
 
 // ---- อ่าน stdin เฉพาะตอนไม่ใช่เทอร์มินัลจริง (กัน readFileSync(0) ค้างรอ Ctrl-D ที่เทอร์มินัลแบบ interactive) ----
-// ★ fd 0 ที่เป็น pipe/pty แบบ non-blocking (พบจริงใน harness บางตัวที่รันคำสั่งเดียวไม่มี heredoc/redirect —
-//   เคสเดียวกับ one-liner `--set` ที่ SKILL 5B สั่ง) โยน EAGAIN แทนที่จะคืนค่าว่างเฉย ๆ — ตีความเหมือน "ไม่มี stdin"
-let stdin = '';
-if (!process.stdin.isTTY) {
-  try { stdin = fs.readFileSync(0, 'utf8'); }
-  catch (e) { if (e.code !== 'EAGAIN') throw e; }
+// ★★★ ประวัติของบรรทัดนี้ (สำคัญ — อย่าย้อนกลับไปสองทางที่เคยลองแล้วพังทั้งคู่):
+//   1) `process.stdin.isTTY ? '' : fs.readFileSync(0)` (เวอร์ชันแรก) — การอ่าน `.isTTY` แตะ (instantiate)
+//      stream ของ Node ซึ่งตั้ง fd 0 เป็น non-blocking เป็นผลข้างเคียง ⇒ `readFileSync(0)` เป็น non-blocking
+//      read ตามไปด้วย แล้วโยน EAGAIN ทันทีที่ฝั่งเขียน (แม้ heredoc/pipe จริง) ยังส่งข้อมูลไม่ถึงทัน — โค้ดเดิม
+//      ตีความ EAGAIN **ครั้งแรก** เป็น "ไม่มี stdin" ผิด ๆ แล้วเขียนไฟล์เงียบ ๆ ด้วย 0 @@ edits (วัดจริง: race กับ
+//      producer ที่ช้ากว่าปกติเล็กน้อย ดรอปทุกบล็อกทิ้ง 4/20 รอบ exit 0 — bug ระดับ CRITICAL เพราะเป็น partial write เงียบ)
+//   2) `tty.isatty(0) ? '' : fs.readFileSync(0)` (ลองแก้ข้อ 1 ด้วยการเลี่ยง side-effect ของ `.isTTY`) — ดูเหมือน
+//      ถูกในทางทฤษฎี (fd ไม่ถูกบังคับ non-blocking) แต่วัดจริงพบว่า **ค้างตลอดไป** เมื่อรันเป็นคำสั่งเดี่ยวไม่มี
+//      heredoc/redirect เลย (เคสเดียวกับ one-liner `--set` ที่ SKILL 5B สั่ง) — fd 0 ที่ไม่ถูกแตะเลยยังเป็น
+//      blocking mode ของมันเอง และถ้าฝั่งที่เรียกไม่เคยเขียน/ปิด stdin ให้ (พบจริงใน harness ของ Bash tool เอง
+//      ตอนรันคำสั่งเดี่ยวไม่มี redirect) `readFileSync(0)` แบบ blocking จะรอเฉย ๆ ไม่มีวันจบ — regression ที่แย่กว่าเดิม
+//   ⇒ ทางที่ถูก: **ต้อง**บังคับ fd 0 เป็น non-blocking (แตะ `process.stdin.isTTY` เพื่อผลข้างเคียงนี้โดยตั้งใจ —
+//   ใช้ `tty.isatty(0)` เป็นตัวตัดสิน "เป็นเทอร์มินัลจริงไหม" เพราะเชื่อถือได้กว่า ไม่ใช้ค่าที่ `.isTTY` คืนมา)
+//   **แล้ว retry บน EAGAIN แทนที่จะยอมแพ้ครั้งแรก**: วน `fs.readSync` จนกว่า (ก) เจอ byte แรก → มีคนเขียนจริง
+//   รอจน EOF ต่อแบบไม่จำกัดเวลาอีกแล้ว หรือ (ข) ครบ `STDIN_GRACE_MS` โดยไม่มี byte เข้ามาเลย → ไม่มีคนเขียนจริง
+//   ถือเป็น "ไม่มี stdin" (heredoc/pipe จริงมีข้อมูล buffer ไว้ก่อน exec แล้วเสมอ ⇒ ได้ byte แรกในหลัก ms ไม่ใช่ 100 ms)
+const STDIN_GRACE_MS = 500;
+function readStdin() {
+  if (tty.isatty(0)) return '';
+  void process.stdin.isTTY; // แตะเพื่อผลข้างเคียงเท่านั้น (บังคับ fd 0 non-blocking) — ไม่ใช้ค่าที่คืนมา
+  const chunks = [];
+  const buf = Buffer.alloc(65536);
+  let gotByte = false;
+  const deadline = Date.now() + STDIN_GRACE_MS;
+  const sleeper = new Int32Array(new SharedArrayBuffer(4));
+  for (;;) {
+    let n;
+    try { n = fs.readSync(0, buf, 0, buf.length, null); }
+    catch (e) {
+      if (e.code !== 'EAGAIN') throw e;
+      if (!gotByte && Date.now() > deadline) return ''; // ไม่มีใครเขียนจริงภายในเวลาที่ให้ — ถือว่าไม่มี stdin
+      Atomics.wait(sleeper, 0, 0, 5); // synchronous sleep สั้น ๆ แล้ว retry (ไม่ใช่ยอมแพ้ตั้งแต่ EAGAIN แรก)
+      continue;
+    }
+    if (n === 0) break; // EOF จริง
+    gotByte = true;
+    chunks.push(Buffer.from(buf.subarray(0, n)));
+  }
+  return Buffer.concat(chunks).toString('utf8');
 }
+const stdin = readStdin();
 
 // ---- parse edit blocks ----
 const edits = []; // {old, new, all, line}
@@ -214,20 +254,26 @@ if (ops.length) {
     return { parent: curNode, key: keyOf(segs[segs.length - 1]) };
   }
 
-  for (const op of setOps) {
-    const nav = parentOf(rd, op.path);
-    if (!nav) die(`✗ --set ${op.path} ไม่พบ path (ส่วนแม่ไม่มีอยู่จริงใน report-data)`);
-    nav.parent[nav.key] = op.value;
-  }
-  for (const op of delOps) {
-    const nav = parentOf(rd, op.path);
-    if (!nav) die(`✗ --del ${op.path} ไม่พบ path (ส่วนแม่ไม่มีอยู่จริงใน report-data)`);
-    delete nav.parent[nav.key];
-  }
-  for (const op of setMetaOps) {
-    const nav = parentOf(sm, op.path);
-    if (!nav) die(`✗ --set-meta ${op.path} ไม่พบ path (ส่วนแม่ไม่มีอยู่จริงใน stock-meta)`);
-    nav.parent[nav.key] = op.value;
+  // ★ apply ตามลำดับที่พิมพ์ใน argv จริง (ไม่ใช่จัดกลุ่ม set-ทั้งหมด-ก่อน-del-ทั้งหมด) — บรีฟไม่ได้ระบุลำดับ
+  //   แต่ least-surprise คือทำตามที่พิมพ์: `--del X --set X=555` ต้องจบที่ X=555 ไม่ใช่ X ถูกลบ
+  for (const op of ops) {
+    if (op.kind === 'set') {
+      const nav = parentOf(rd, op.path);
+      if (!nav) die(`✗ --set ${op.path} ไม่พบ path (ส่วนแม่ไม่มีอยู่จริงใน report-data)`);
+      nav.parent[nav.key] = op.value;
+    } else if (op.kind === 'del') {
+      const nav = parentOf(rd, op.path);
+      if (!nav) die(`✗ --del ${op.path} ไม่พบ path (ส่วนแม่ไม่มีอยู่จริงใน report-data)`);
+      // ★ ลบ index ใน array ด้วย delete จะเหลือ "หลุม" (Array.prototype.every ข้ามหลุมไป ⇒ validateValues
+      //   ผ่านหลอก ๆ แต่ JSON.stringify เขียนหลุมเป็น null ⇒ รอบถัดไป validate ตกเพราะ null ไม่ผ่าน schema)
+      //   ต้อง splice ให้ array สั้นลงจริง ไฟล์ที่ certify ว่า valid วันนี้ต้องยัง valid วันถัดไปด้วย
+      if (Array.isArray(nav.parent) && typeof nav.key === 'number') nav.parent.splice(nav.key, 1);
+      else delete nav.parent[nav.key];
+    } else { // setMeta
+      const nav = parentOf(sm, op.path);
+      if (!nav) die(`✗ --set-meta ${op.path} ไม่พบ path (ส่วนแม่ไม่มีอยู่จริงใน stock-meta)`);
+      nav.parent[nav.key] = op.value;
+    }
   }
 
   // validate เฉพาะไฟล์ v2 — ต้องผ่านก่อนเขียนเสมอ (fv:0/priceDate เพี้ยน/คีย์แปลกใน values ฯลฯ ต้องจับที่นี่ ไม่ใช่ตอน build)

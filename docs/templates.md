@@ -33,25 +33,50 @@
 
 ต่างจาก v1: ราคา/FV มี**สำเนาเดียว** (`values.px` / `fv`) แทนที่จะกระจายซ้ำในหลายจุด (header/gauge/chart/hint) — ส่วนอื่นที่ต้องโชว์ตัวเลขพวกนี้ใช้ token `{{rd:…}}` แทนการพิมพ์ค่าดิบ (ตารางท้ายข้อนี้) · `chart.fairLine` และ `gauge.cur`/`gauge.fair` **ห้ามมี** ใน v2 (engine bake จาก `values.px`/`fv` ให้เอง)
 
-```jsonc
+> ★ บล็อกข้างล่างนี้คือผล `tools/report-values.js` → `styledRD(rd)` **เป๊ะไบต์ต่อไบต์** (ไม่มีคอมเมนต์แทรก — ตั้งใจ)
+> เพราะ `apply-edits.js --set/--del` และ cron เขียนกลับด้วย `styledRD` ตัวเดียวกันเสมอ · ถ้าไฟล์จริงจัดบรรทัด
+> ต่างจากนี้ (เช่น รวมหลายคีย์ไว้บรรทัดเดียว) การแก้ครั้งแรกผ่าน `apply-edits`/cron จะ reformat ทั้งบล็อกจนเห็น diff
+> ใหญ่ทั้งที่ตัวเลขเปลี่ยนแค่จุดเดียว — เรื่องนี้สำคัญเกินความสวยงาม: การย้ายทั้งคลัง 908 ไฟล์เป็น v2 (ส่วน E ของแผน)
+> จะรีวิวผ่าน diff แบบนี้เป๊ะ ๆ — ที่มาของค่าดู "ใครให้ค่าอะไร" ท้ายบล็อกนี้ ไม่ใช่คอมเมนต์ในตัว JSON
+
+```json
 <script type="application/json" id="report-data">
 {
   "v": 2,
-  "fv": 195,                       // เจ้าของเดียวของ FV (เดิมมี 9 สำเนา)
+  "fv": 195,
   "values": {
-    "px": 188,                     // cron · ราคาปิดล่าสุด (2 ตำแหน่ง)
-    "priceDate": "2026-09-11",     // cron · ISO ค.ศ. เสมอ (ตัวเก็บ) · render ตาม dateEra
-    "dateEra": "BE",               // worker/migrator · "BE" → "11 ก.ย. 2569" · "CE" → "11 ก.ย. 2026" — ศักราชเดิมของไฟล์ (ใบใหม่ = BE)
-    "chgSuffix": "รอบปี",          // worker · "รอบปี" | "ตั้งแต่ IPO" — ตัวเลข % คิดจาก chart.data ตอน render
-    "fvLow": 180, "fvHigh": 210,   // worker · กรอบ FV (null = ไม่มี)
-    "analystTgt": 205,             // worker · เป้านักวิเคราะห์ (null = ไม่มี)
-    "eps": 21.7,                   // worker · ฐาน EPS ของการ์ด P/E ที่ใช้ token (null = การ์ดเป็น literal)
-    "shares": 1909000000,          // worker · จำนวนหุ้นทั้งหมด (หุ้น ไม่ใช่ล้าน) → Market Cap
-    "revenue": 140000000000,       // worker · รายได้ TTM หน่วยเต็ม สกุลรายงาน → P/S
-    "dps": 12, "bvps": 260,        // worker · → ปันผล % · P/BV
-    "baseEps": 21.7,               // worker · EPS ฐานหมวด 6 (hint)
-    "scenarios": [ { "tgt": 160, "div": 36 }, { "tgt": 230, "div": 36 }, { "tgt": 300, "div": 36 } ],  // bear/base/bull · div = ปันผลรวม N ปี (null = ไม่มีแถว)
-    "scnBasis": { "years": 3, "divIncluded": true, "perYear": "cagr" }   // perYear: "cagr" | "linear" | null (ไม่โชว์ %/ปี)
+    "px": 188,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 180,
+    "fvHigh": 210,
+    "analystTgt": 205,
+    "eps": 21.7,
+    "shares": 1909000000,
+    "revenue": 140000000000,
+    "dps": 12,
+    "bvps": 260,
+    "baseEps": 21.7,
+    "scenarios": [
+      {
+        "tgt": 160,
+        "div": 36
+      },
+      {
+        "tgt": 230,
+        "div": 36
+      },
+      {
+        "tgt": 300,
+        "div": 36
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": true,
+      "perYear": "cagr"
+    }
   },
   "theme": {
     "accent": "#0071e3",
@@ -67,24 +92,52 @@
     "vcellLabel": "#c4c7cf"
   },
   "chart": {
-    "data": [["ต.ค.25", 158.5], ["พ.ย.25", 158], ["ธ.ค.25", 169.5], ["ม.ค.26", 158], ["ก.พ.26", 177.5],
-             ["มี.ค.26", 166.5], ["เม.ย.26", 162.5], ["พ.ค.26", 173], ["มิ.ย.26", 179.5], ["ก.ค.26", 191.5],
-             ["ส.ค.26", 191], ["ก.ย.26", 188]],
-    "min": 150, "max": 200, "grid": [160, 170, 180, 190],
-    "currency": "฿", "highlight": [1, 9]                                                                   // ★ ไม่มี fairLine
+    "data": [
+      ["ต.ค.25", 158.5],
+      ["พ.ย.25", 158],
+      ["ธ.ค.25", 169.5],
+      ["ม.ค.26", 158],
+      ["ก.พ.26", 177.5],
+      ["มี.ค.26", 166.5],
+      ["เม.ย.26", 162.5],
+      ["พ.ค.26", 173],
+      ["มิ.ย.26", 179.5],
+      ["ก.ค.26", 191.5],
+      ["ส.ค.26", 191],
+      ["ก.ย.26", 188]
+    ],
+    "min": 150,
+    "max": 200,
+    "grid": [160, 170, 180, 190],
+    "currency": "฿",
+    "highlight": [1, 9]
   },
-  "gauge": { "min": 120, "max": 240, "fairLabelTop": "-58px" }                                             // ★ ไม่มี cur/fair
+  "gauge": {
+    "min": 120,
+    "max": 240,
+    "fairLabelTop": "-58px"
+  }
 }
 </script>
 ```
 
-ใครให้ค่าอะไร — **ห้ามคิดเอง field ที่ script ให้** (คีย์ใน `values` มีคอมเมนต์กำกับในบล็อกข้างบนแล้ว — ตารางนี้เสริมเฉพาะที่ไม่ได้อยู่ใน `values`):
+ใครให้ค่าอะไร — **ห้ามคิดเอง field ที่ script ให้**:
 
 | field | ที่มา |
 |---|---|
 | `values.px` / `values.priceDate` + ป้าย `.chg` + `theme.chgBg/chgColor` | `node tools/fetch-facts.js <SYM> [--th]` พิมพ์พร้อมวาง (ขึ้น=เขียว `var(--green-soft)`/`#1e8e3e` · ลง=แดง `var(--red-soft)`/`#c5221f`) |
 | `chart.data / min / max / grid / currency / highlight` | fetch-facts พิมพ์ให้เหมือนกัน — `highlight` = `[ดัชนีจุดต่ำสุด, ดัชนีจุดสูงสุด]` ของ chart.data เรียงน้อย→มาก (ไม่มี `chart.fairLine` แล้วใน v2) |
-| `fv` (เจ้าของเดียวของ FV) | FV ที่คำนวณ STEP 3 |
+| `fv` (เจ้าของเดียวของ FV — เดิม v1 มี 9 สำเนา) | FV ที่คำนวณ STEP 3 |
+| `values.dateEra` | worker: `"BE"` เสมอสำหรับใบใหม่ (`"11 ก.ย. 2569"`) · migrator เท่านั้นที่เขียน `"CE"` (เก็บศักราชเดิมของไฟล์ที่ย้ายมา) |
+| `values.chgSuffix` | `"รอบปี"` ปกติ · `"ตั้งแต่ IPO"` เมื่อหุ้น IPO <1 ปี — ตัวเลข % คิดจาก `chart.data` ตอน render |
+| `values.fvLow` / `values.fvHigh` | กรอบ FV จาก STEP 3 (ไม่มี = `null`) |
+| `values.analystTgt` | เป้านักวิเคราะห์เฉลี่ยจาก STEP 2 (ไม่มี = `null`) |
+| `values.eps` | ฐาน EPS ของการ์ด P/E ที่ใช้ token `{{rd:pe}}` (ไม่มี = การ์ดเป็น literal ห้ามใช้ token) |
+| `values.shares` | จำนวนหุ้นทั้งหมด (หุ้น ไม่ใช่ล้านหุ้น) → `{{rd:mcap}}` |
+| `values.revenue` | รายได้ TTM หน่วยเต็ม สกุลรายงาน → `{{rd:ps}}` |
+| `values.dps` / `values.bvps` | → ปันผล % (`{{rd:yield}}`) / P/BV (`{{rd:pbv}}`) |
+| `values.baseEps` | EPS ฐานหมวด 6 (hint `{{rd:baseEps}}`) |
+| `values.scenarios` / `values.scnBasis` | scenario STEP 4 — bear/base/bull ต้องมี **3 ฉากเป๊ะ** + `years`/`divIncluded`/`perYear` (มาคู่กันเสมอ ขาดตัวใดตัวหนึ่งไม่ได้) |
 | `gauge.min` / `gauge.max` (+ `fairLabelTop` ถ้าต้อง) | ช่วงที่ครอบทั้งราคาปัจจุบัน + FV + จุดซื้อ MOS30 (ไม่มี `cur`/`fair` แล้ว — engine bake จาก `values.px`/`fv`) |
 | `theme` 11 คีย์ | `makeTheme()` — สูตร 3 บรรทัด ข้อ 6 |
 
