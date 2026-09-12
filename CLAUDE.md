@@ -41,7 +41,7 @@ invariant ที่ห้ามหลุดไม่ว่ากรณีใด:
 
 ## 3. [controller] วิเคราะห์หลายตัว / เป็นกลุ่ม (parallel agents)
 
-ใช้เมื่อสั่งหลายตัวหรือธีม · **รายละเอียด+เหตุผลทั้งหมด → `docs/orchestration.md`** · invariant ที่ห้ามหลุด:
+ใช้เมื่อสั่งหลายตัวหรือธีม · **กลไก courier/analyze-wave/ต้นทุน → `docs/orchestration.md` (กฎอยู่ที่นี่ที่เดียว)** · invariant ที่ห้ามหลุด:
 
 1. **ก่อนเริ่ม**: `git pull --rebase origin main` → อ่านวันที่ footer "ข้อมูล ณ" ของแต่ละใบ (runbook `preflight` ทำให้ · `reports.json.updated` ใช้ตัดสินไม่ได้ — freshHash ชนกัน 13 ใบ 9 ก.ย. 69) — สด ≤7 วัน **ไม่ทำซ้ำ** (ธีม→หาตัวแทน · ระบุชื่อ→ข้ามพร้อมแจ้ง) · เกิน 7 วัน = UPDATE · ยังไม่มี = NEW
 2. **โมเดล**: ❌ Haiku ทุกขั้น · **Sonnet = default ของหุ้นส่วนใหญ่** · **Opus = escalate เฉพาะ "หุ้นยาก"** (เกณฑ์เดียวกับ effort high ท้ายข้อนี้ — IPO <1 ปี/spinoff/split/cyclical/pre-profit/ราคา cross-source ต่าง >5%) ส่ง `model:"opus"` เฉพาะตัวนั้นใน `stocks[]` (แก้กติกาเดิม "Sonnet ทุกชั้น" 9 ส.ค. 69 — `analyze-wave` รองรับ escalate รายตัวอยู่แล้ว) · ★★ **บังคับ pin `model` ทุก `analyze-wave`/`Agent` call เสมอ ("sonnet" หรือ "opus" ตามที่ตั้งใจ) — ห้ามพึ่ง env var** เพราะ `CLAUDE_CODE_SUBAGENT_MODEL` **ตั้งผ่าน `settings.json` ไม่ได้** (harness กรองตัวแปรนี้ทิ้งเป็นการเฉพาะ ทั้งชั้น project และ local — วัดแบบ controlled 8 ส.ค. 69: ตัวแปรอื่นใน `env` block เดียวกันติดหมด ตัวนี้ตัวเดียวหาย) ⇒ default ที่ไม่ pin **ไม่แน่นอน** (วัดจริง 8 ส.ค. 69 = Opus 5 · 11 ก.ย. 69 = Sonnet 5 — ผลต่างกันคนละวัน · เส้นทาง `analyze-wave` ไม่ส่ง `model` = Sonnet 5 วัด 12 ก.ย. 69 แต่เป็นเพราะ script pin `'sonnet'` เองที่ `analyze-wave.js:20` ไม่ใช่ default harness ⇒ ทางนี้แน่นอน ทาง Agent tool ไม่แน่นอน) ⇒ ผิดกติกาเพราะ "ไม่รู้ว่าได้อะไร" (ค่าใช้จ่าย + ป้าย `ai-model` ไม่ตรงแผน) ไม่ใช่เพราะ Opus ต้องห้าม · **เช็คก่อนเริ่มเวฟด้วย probe subagent จริง** (spawn ไม่ใส่ `model` แล้วให้ตอบบรรทัด "You are powered by the model named …") — `echo $CLAUDE_CODE_SUBAGENT_MODEL` **ใช้ไม่ได้** มันเห็นแค่ env ของ Bash ไม่ใช่ของ spawner · ป้าย `ai-model` ในรายงานต้องตรงกับโมเดลที่รันจริง → controller spot-check ทุกใบ · หุ้นยาก (IPO <1 ปี/spinoff/split/cyclical/pre-profit/ราคา cross-source ต่าง >5%) → worker effort **high** + ปรึกษา `advisor` **ผ่าน courier subagent เท่านั้น** ก่อน spawn แล้วฝังแนวทางลง prompt (**worker เรียกตรง = ห้ามเชิงนโยบาย** ไม่ใช่ "ทำไม่ได้" — แก้ข้อความเดิมที่เขียนว่า "unavailable เสมอ" ซึ่งพิสูจน์แล้วว่าไม่จริง 9 ก.ย. 69: worker DASH เรียกตรงแล้วสำเร็จ · วิธี/เหตุผล `docs/orchestration.md` §2 · courier ล้มเหลว → หยุดถาม user) · ตัดสิน publish/skip กำกวม → advisor ก่อน (เรียกตรง · courier เมื่อ context ใหญ่จน unavailable) ยังกำกวม → หยุด ping user
@@ -53,7 +53,7 @@ invariant ที่ห้ามหลุดไม่ว่ากรณีใด:
 
 ## 4. Token discipline
 
-ต้นทุนจริง = **จำนวน turn × cache-read** ไม่ใช่ output — กติกา token-lean ต่อหุ้นอยู่ใน **SKILL.md** · เป้า+ตัวเลขวัดจริง → `docs/orchestration.md` §7 + memory `token-usage-benchmarks` · ที่ controller คุมเองเพิ่ม:
+ต้นทุนจริง = **จำนวน turn × cache-read** ไม่ใช่ output — กติกา token-lean ต่อหุ้นอยู่ใน **SKILL.md** · เป้า+ตัวเลขวัดจริง → `docs/orchestration.md` §6 + memory `token-usage-benchmarks` · ที่ controller คุมเองเพิ่ม:
 
 - **รันยาวได้ ไม่ต้องหยุดรอ user เปิด session ใหม่** (ยกเลิก chunk/session — 13 ก.ค. 69, auto-compact จัดการเอง) · คุมตัวเอง (controller · worker ห้าม push §5): รวม verify+push เป็น Bash เดียว · ไม่อ่านรายงานทั้งไฟล์ · สรุประหว่างเวฟให้สั้น
 - pull --rebase + อ่านวันที่ footer "ข้อมูล ณ" ก่อน (`npm run queue -- preflight` ทำให้) — ข้ามหุ้นสด ≤7 วัน

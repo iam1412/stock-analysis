@@ -14,6 +14,9 @@ const DOCS = ['CLAUDE.md', 'README.md', ...list('docs', /\.md$/), '.claude/skill
 // docs-test.js เอง exclude — ต้นฉบับของมันมีวลี/แพตเทิร์นต้องห้ามอยู่ตรง ๆ (นิยาม regex ที่ใช้ตรวจ ไม่ใช่ของที่หลุดมาในโค้ดจริง)
 const CODE = [...list('tools', /\.js$/), ...list('test', /\.js$/)].filter((f) => f !== 'test/docs-test.js');
 
+// sanity: DOCS/CODE ต้องไม่ว่าง — กัน rule (ข) เงียบผ่านบน corpus ว่างเปล่า (นับจริง 12 ก.ย. 69: DOCS=15, CODE=44 — เผื่อ margin ไว้ไม่ให้ flaky ตามไฟล์ที่เพิ่ม/ลบเล็กน้อย)
+ok(DOCS.length > 10 && CODE.length > 30, 'DOCS/CODE corpus ไม่ว่าง', `${DOCS.length}/${CODE.length}`);
+
 // (ก) gen-docs
 const bad = require('../tools/gen-docs.js').check();
 ok(bad.length === 0, 'gen-docs --check: ทุกไฟล์ตรงโค้ด', bad.map((b) => `${b.file}: ${b.why}`).join(' · '));
@@ -43,6 +46,8 @@ for (const f of CODE) {
 }
 
 // (ค) ตัวเลขที่ต้อง generate: "N ขั้น" ของ verify · "N error + M warning" — นอก marker = พิมพ์มือ
+// near-miss ที่ตรวจแล้วว่าไม่ชน regex ด้านล่างโดยตั้งใจ (Task 19 review): CLAUDE.md §5 "รวมทั้ง 5 ขั้นเป็นคำสั่งเดียว" (นับขั้นตอน git ไม่ใช่ขั้น verify) ·
+// docs/quality-gate.md "check-reports (0 error)" (เกณฑ์ผ่านของ 1 check ไม่ใช่รูปแบบ "N error + M warning")
 const stripGen = (t) => t.replace(/<!-- gen:[a-z-]+ -->[\s\S]*?<!-- \/gen:[a-z-]+ -->/g, '').replace(/# gen:steps[\s\S]*?# \/gen:steps/g, '');
 for (const f of DOCS) {
   const t = stripGen(fs.readFileSync(path.join(ROOT, f), 'utf8'));
