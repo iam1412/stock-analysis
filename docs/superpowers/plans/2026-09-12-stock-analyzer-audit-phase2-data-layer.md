@@ -17,6 +17,7 @@
 
 ## Global Constraints
 
+- **PR ทุกส่วนเปิดโดย controller เท่านั้น · base = `main` เสมอ** — worker/implementer จบงานที่ commit ห้ามรัน `gh pr create` ห้าม push (CLAUDE.md §5 · ระยะ 2 merge ทีละส่วนเข้า main ไม่ stack สาขาซ้อนสาขา) · บล็อก `gh pr create` ที่ยังเหลือในตัว Task เป็น**ข้อความอ้างอิงของ controller** ไม่ใช่ขั้นตอนของ worker — ถ้าขัดกับบรรทัดนี้ ให้ยึดบรรทัดนี้ (เพิ่ม 12 ก.ย. 2569 หลัง re-review ส่วน B พบ Task 13 ยังเขียน `--base claude/audit-p2-c-migrator`)
 - **Dual-mode ตลอดระยะ 2**: ไฟล์ที่ `report-data.v === 2` (มี `values`) = ทาง v2 · ไฟล์อื่น = ทาง v1 **ทุกบรรทัดเหมือนเดิม** (ห้ามแก้พฤติกรรม v1 แม้เล็กน้อย — `update-prices-test.js`/`self-test.js` ชุดเดิมต้องผ่านโดยไม่แก้ค่าคาดหวัง) · โค้ด v1 ลบทิ้งได้เมื่อ v1 ในคลัง = 0 เท่านั้น (ระยะ 3)
 - **ตัวเลขใน `values` เก็บดิบ (number) ไม่เก็บสตริงที่พิมพ์แล้ว** — render รูปมาตรฐานตอน build (`fmtPrice` 2 ตำแหน่ง+comma ≥1000 · `fmtMos` เครื่องหมาย + / − (U+2212) · วันที่ พ.ศ. เดือนย่อ · Market Cap หน่วยตามสกุล) · ยอมให้ข้อความที่มองเห็นเปลี่ยน**เฉพาะรูป** (ทศนิยม/comma/เครื่องหมาย/ศักราช) ไม่ใช่ค่า
 - **สำเนาเดียวใน JSON ด้วย**: v2 ห้ามมี `gauge.cur` / `gauge.fair` / `chart.fairLine` (engine ใช้ `values.px` / `fv`) · `stock-meta` ยังเป็น**กระจก**สำหรับ index (cron เขียน price/mos/upside/pe/dividendYield จากค่า derive · E30/E41/W10 ตรวจกระจกเทียบ JSON)
@@ -1120,13 +1121,13 @@ git commit -m "test(v2-path): พิสูจน์ทาง v2 ไม่ใช�
 - Modify: `docs/quality-gate.md` (marker gen: `gen:healers` ถ้าตารางมี healer column · ไม่งั้น prose 1 บรรทัด: "healer `build` = render จาก values (ใบ v2)")
 
 - [ ] **Step 1**: เพิ่มใน `self-test.js` บล็อก E-policy: `const HEALERS = new Set(['patchReport', 'build', ...])` · เคส: `convV2('W22', (d) => { d.values.fvLow = d.fv * 2; }, 'fvLow > fv ใน JSON')` — ต้องยืนยันก่อนว่า f54 pair `how:'range'` ยิงเมื่อ low > fv (ถ้าไม่ ให้เลือกคู่ที่ยิงแน่ เช่น f69 stock-meta.fairValue vs f44: `mutJson('stock-meta', d => d.fairValue *= 1.5)` → W22 ยิง · แก้กลับ → เงียบ) · `convV2('W21', (d) => { delete d.values.px; }, …)` → expand throw (EXPAND) — W21 ไม่ยิงเพราะ expand ล้ม ⇒ ใช้เคส "ช่องบังคับ literal หาย" แทน (ลบ `<div class="sub">` → f67 required หาย → W21) · healer = worker (ไม่ใช่ build) ⇒ **W21 ยังคง healer null · ยกเป็น E ไม่ได้ในระยะนี้ — จดใน report + Task 16 ตัดสินเฉพาะ W22**
-- [ ] **Step 2**: `npm run verify` 17/17
+- [ ] **Step 2**: `npm run verify` 18/18
 - [ ] **Step 3: Commit + PR ส่วน D → merge เข้า main (หลัง A/B/C) ก่อนเริ่มส่วน E**
 
 ```bash
 git add test/self-test.js docs/quality-gate.md
 git commit -m "test(self-test): E-policy รู้จัก healer build (render จาก values) + convergence ทาง v2 ของ W22 (ระยะ 2 ส่วน D)"
-gh pr create --base claude/audit-p2-c-migrator --head claude/audit-p2-d-dual-mode --title "audit ระยะ 2 ส่วน D — cron/gate dual-mode (v2 อ่าน/เขียน JSON เท่านั้น) + v2-path-test + E-policy build" --body "…
+gh pr create --base main --head claude/audit-p2-d-dual-mode --title "audit ระยะ 2 ส่วน D — cron/gate dual-mode (v2 อ่าน/เขียน JSON เท่านั้น) + v2-path-test + E-policy build" --body "…
 
 🤖 Generated with [Claude Code](https://claude.com/claude-code)"
 ```
@@ -1143,7 +1144,7 @@ gh pr create --base claude/audit-p2-c-migrator --head claude/audit-p2-d-dual-mod
 - Modify: `reports/*.html` (เฉพาะใบที่ migrator ผ่าน) · `reports.json` (build เขียน — `updated` ต้องไม่ขยับ)
 - Create: `docs/superpowers/audit/2026-09-11-stock-analyzer/migration-v2-census.json` · `.md` (migrator `--census`)
 
-- [ ] **Step 0: ก่อนเขียนอะไร** — (1) `git fetch && git merge --ff-only origin/main` (รับ cron push ล่าสุด) · (2) `gh workflow disable update-prices.yml` แล้ว `gh workflow list` ยืนยัน (ledger: "cron หยุด <เวลา>") · (3) `npm run verify` 17/17 บนสถานะเริ่ม · (4) จด baseline: `node -e "const j=require('./reports.json');console.log(JSON.stringify(Object.fromEntries((j.reports||j).map(r=>[r.symbol,r.updated]))))" > <scratch>/updated-before.json` (ดูรูป reports.json จริงก่อน) · (5) `rtk proxy node test/check-reports.js | tail -3` จด error/warning รวม
+- [ ] **Step 0: ก่อนเขียนอะไร** — (1) `git fetch && git merge --ff-only origin/main` (รับ cron push ล่าสุด) · (2) `gh workflow disable update-prices.yml` แล้ว `gh workflow list` ยืนยัน (ledger: "cron หยุด <เวลา>") · (3) `npm run verify` 18/18 บนสถานะเริ่ม · (4) จด baseline: `node -e "const j=require('./reports.json');console.log(JSON.stringify(Object.fromEntries((j.reports||j).map(r=>[r.symbol,r.updated]))))" > <scratch>/updated-before.json` (ดูรูป reports.json จริงก่อน) · (5) `rtk proxy node test/check-reports.js | tail -3` จด error/warning รวม
 - [ ] **Step 1: dry-run ทั้งคลังอีกครั้งบนโค้ด main** — `rtk proxy node tools/migrate-v2.js --census <scratch>/ | tail -5` · ตัวเลขต้องไม่แย่กว่า Task 7 (ถ้าแย่กว่า = คลังเปลี่ยนจาก cron หลัง C — ดูเหตุผลก่อน)
 - [ ] **Step 2: วนแบตช์** (ขนาด 100 · 10 แบตช์ · ทีละคำสั่ง ห้าม background · timeout 600 s ต่อคำสั่ง):
 
@@ -1162,7 +1163,7 @@ git commit -m "migrate(v2): แบตช์ i/10 (<SYM แรก>–<SYM ท้�
 
 ### Task 15: PR ส่วน E → merge → เปิด cron · ตรวจ cron รอบแรกบน v2
 
-- [ ] **Step 1**: `gh pr create --base main --head claude/audit-p2-e-migrate --title "audit ระยะ 2 ส่วน E — ย้ายคลังเป็น report-data v2 (N/908 · residue M)" --body "…ตาราง census · updated ไม่ขยับ 908/908 · verify 17/17 ทุกแบตช์ · **cron ถูก disable ตั้งแต่ <เวลา> — เปิดคืนทันทีหลัง merge**
+- [ ] **Step 1**: `gh pr create --base main --head claude/audit-p2-e-migrate --title "audit ระยะ 2 ส่วน E — ย้ายคลังเป็น report-data v2 (N/908 · residue M)" --body "…ตาราง census · updated ไม่ขยับ 908/908 · verify 18/18 ทุกแบตช์ · **cron ถูก disable ตั้งแต่ <เวลา> — เปิดคืนทันทีหลัง merge**
 
 🤖 Generated with [Claude Code](https://claude.com/claude-code)"` · รอ CI (`gh pr checks N --watch`) · merge (`--merge`)
 - [ ] **Step 2**: `gh workflow enable update-prices.yml` · `gh workflow run update-prices.yml` (ถ้าเป็นเวลาตลาดเปิด US จะเห็น "ข้ามเพราะตลาดเปิด" — ไม่ใช่ของเสีย · ใบไทยได้ patch) · `gh run watch` จนจบ → ต้อง success · อ่าน log: จำนวน patch ✓ / freeze ตาม reason · **`patch-failed` ต้อง 0 บนใบ v2** (ถ้าไม่ 0 = บั๊กทาง v2 → แก้ก่อนปิด task · ledger)
@@ -1172,7 +1173,7 @@ git commit -m "migrate(v2): แบตช์ i/10 (<SYM แรก>–<SYM ท้�
 
 **Files:** `test/check-reports.js` · `test/self-test.js` · `docs/open-items.md` · (docs ผ่าน gen-docs)
 
-- [ ] **Step 1**: นับ v1 ในคลังหลัง merge E · **ถ้า v1 = 0**: W22 `level: 'error'` (คงชื่อ · healer `'build'` · ปลดล็อกบรรทัด self-test "W21/W22/W23 ต้องเป็น warn" เฉพาะ W22 · convergence จาก Task 13) · `node tools/gen-docs.js` (นับ error/warn เปลี่ยน 47+18 → 48+17) · verify 17/17 · **ถ้า v1 > 0**: ไม่แตะ level · เขียน open-item ใหม่ "#36 W22 → E รอ v1 = 0 (residue M ใบ: <รายชื่อสั้น/ชนิด>)" · W21 คง warn ทั้งสองกรณี (healer = worker · จดใน open-item เดียวกัน)
+- [ ] **Step 1**: นับ v1 ในคลังหลัง merge E · **ถ้า v1 = 0**: W22 `level: 'error'` (คงชื่อ · healer `'build'` · ปลดล็อกบรรทัด self-test "W21/W22/W23 ต้องเป็น warn" เฉพาะ W22 · convergence จาก Task 13) · `node tools/gen-docs.js` (นับ error/warn เปลี่ยน 47+18 → 48+17) · verify 18/18 · **ถ้า v1 > 0**: ไม่แตะ level · เขียน open-item ใหม่ "#36 W22 → E รอ v1 = 0 (residue M ใบ: <รายชื่อสั้น/ชนิด>)" · W21 คง warn ทั้งสองกรณี (healer = worker · จดใน open-item เดียวกัน)
 - [ ] **Step 2**: `docs/open-items.md` ปิด/อัปเดตข้อที่ระยะ 2 แก้ (อย่างน้อย #14 f14 roe rule — ตรวจว่า f57 rule ทำงานบน v2 ไหม · #13/#33 ไม่เกี่ยว)
 - [ ] **Step 3: Commit** (สาขา `claude/audit-p2-f-prose` — task นี้ commit บนสาขา F เพื่อไม่เปิด PR เพิ่ม)
 
@@ -1194,7 +1195,7 @@ git commit -m "migrate(v2): แบตช์ i/10 (<SYM แรก>–<SYM ท้�
 - E44: `fn: (c) => { if (!c.v2) return null; const f = footerDate(c.source); if (!f || f.iso < RV.PROSE_TOKEN_SINCE) return null; const hits = RV.proseBoundHits(c.source); return hits.length ? \`prose ผูกราคา ${hits.length} จุด (ใบวิเคราะห์หลัง ${RV.PROSE_TOKEN_SINCE} ต้องใช้ {{rd:…}}): ${hits.slice(0,3).map(h=>h.text).join(' · ')}\` : null; }` · `level: 'error'` · `healer: 'proseTokens'` · ใบ v1/ใบเก่า = W15 เหมือนเดิม
 
 - [ ] **Step 1: เทสก่อน** — `test/report-values-test.js`: `proseBoundHits('<p>ราคาปัจจุบัน $188.00 สูงกว่า FV $195</p>')` = 2 hits · `proseTokens` บน fixture v2 ที่แทรก `<p>ราคาปัจจุบัน ฿<px จริง> … มูลค่าเหมาะสม ฿<fv จริง> … เป้า ฿999 (+400%)</p>` → 2 จุดถูกแทน (px/fv) · เป้า 999 ไม่แตะ (ไม่ตรง values) · รันซ้ำ = ไม่เปลี่ยน · `self-test`: conv E44: mutate source (แทรก `<p>` ข้างบน + ตั้ง footer date = วันนี้) → E44 ยิง → `proseTokens` → เงียบ + idempotent · ใบ footer เก่ากว่า SINCE → E44 เงียบ (W15 ยิงแทนถ้าเข้าเกณฑ์)
-- [ ] **Step 2: รันให้ตก → เขียน → ผ่าน** · `npm run verify` 17/17 (E44 ต้องไม่ยิงบนคลัง: ใบทั้งหมด footer < SINCE) · `gen-docs` (48 error)
+- [ ] **Step 2: รันให้ตก → เขียน → ผ่าน** · `npm run verify` 18/18 (E44 ต้องไม่ยิงบนคลัง: ใบทั้งหมด footer < SINCE) · `gen-docs` (48 error)
 - [ ] **Step 3: Commit**
 
 ```bash
@@ -1214,7 +1215,7 @@ git commit -m "feat(gate): E44 prose ผูกราคาในใบใหม�
   3. **`--heal-derived` ไม่จำเป็น**: `node tools/update-prices.js --heal-derived` → `0 ใบมีค่าค้าง · ข้าม v2 N ใบ` (ถ้า v1 residue มีค่าค้าง = งานระยะ 3 ระบุจำนวน)
   - เพิ่ม: coverage `ช่องต่ำสุด` ก่อน/หลัง · warning รวม ก่อน/หลัง (W22/W23 ลดกี่ใบ) · residue M พร้อมชนิด · cron รอบแรกบน v2: patch ✓ N · patch-failed 0
 - [ ] **Step 2: docs** ตามรายการ Files · `node tools/gen-docs.js` · `node test/docs-test.js`
-- [ ] **Step 3: `npm run verify` 17/17 · Commit · PR ส่วน F → merge**
+- [ ] **Step 3: `npm run verify` 18/18 · Commit · PR ส่วน F → merge**
 
 ```bash
 git add docs CLAUDE.md
