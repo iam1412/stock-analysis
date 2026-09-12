@@ -36,7 +36,7 @@ git commit -F …                    # title: price: refresh N symbols (YYYY-MM-
 | MOS `.big` (section 5) | E16 |
 | ค่าตั้งต้นเครื่องคิดเลข `pxIn` | E23 |
 | `stock-meta` price/mos/upside (คีย์อื่นคงเดิม ยกเว้น `pe` · `dividendYield` — ดูแถวล่าง) | E29–E31 |
-| "ตัวเลข" ในช่องสรุป "ส่วนต่างจากราคา" + `class` ของกล่อง verdict (ไม่แตะ**คำ**บอกทิศ) | W06, W04 |
+| **ช่องสรุป "ส่วนต่างจากราคา" ทั้งช่อง** (12 ก.ย. 2569 ระยะ 1 ข้อ D — `summaryPlan` = `patchDerived#11`) + `class` ของกล่อง verdict | W06, W04 |
 | **P/E ที่โชว์ในการ์ด + `stock-meta.pe` + % ในการ์ดราคาเป้า** (19 ส.ค. 69 — `patchDerived`) | **E41, E42** |
 | **Market Cap (= ราคา × หุ้นที่พิมพ์) + P/S (= Market Cap ÷ รายได้ที่พิมพ์)** (19 ส.ค. 69) | **E43**, W16 |
 | **ผลตอบแทนฉาก 3 ปี หมวด 6 (Bear/Base/Bull) + ป้าย "จากจุดเข้า"** (20 ส.ค. 69 — `scenarioPlan`) | W17 |
