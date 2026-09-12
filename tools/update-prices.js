@@ -59,7 +59,7 @@ const FLAGS = path.join(__dirname, '..', 'price-flags.json');
 // ค่าที่ derive จากราคา (P/E · % ของราคาเป้า) — กติกาเดียวกับที่ gate ใช้ตรวจ E41/E42/W15 (ห้ามทำสำเนาความรู้)
 // fmtMos + MOS_BIG_RE = รูป/ที่อยู่ของ .big — เจ้าของเดียวอยู่ที่ derived-values.js เพราะ W06 และ patchDerived#11 ใช้ตัวเดียวกัน
 const { patchDerived, fmtMos, MOS_BIG_RE } = require('./derived-values.js');
-const { findPriceDate, findRestatedDate, findDiscPriceDate, renderThaiDate, THAI_MONTHS } = require('./price-date.js');
+const { findPriceDate, findRestatedDate, findDiscPriceDate, allDiscDates, renderThaiDate, THAI_MONTHS } = require('./price-date.js');
 const RV = require('./report-values.js');   // ระยะ 2: format/derive มาตรฐานอยู่ที่นี่ (เจ้าของเดียว) — cron ใช้ร่วมกับ build/gate
 const { mosBand, fmtPrice, annualChg, styledRD } = RV;
 const MAX_PTS = 13;          // กราฟรายเดือน ~1 ปี (E37)
@@ -408,13 +408,9 @@ function classifyStale(candidates, rows, probeMap) {
   return { dead, quiet };
 }
 
-/** ทุกจุด "ราคา ณ <วันที่>" ในบล็อก .disc (ตัวอ่านเดียวกับ f12 — วนจนหมดบล็อกเพราะบางใบเขียนซ้ำ 2 จุด
- *  เช่น "ราคา ณ …" + "ราคาปิดรายเดือน ณ …" · วัด 12 ก.ย. 69: 13/908 ใบมี ≥2 จุด) */
-function allDiscDates(discHtml) {
-  const out = [];
-  for (let from = 0, h; (h = findDiscPriceDate(discHtml, from)); from = h.index + h.length) out.push(h);
-  return out;
-}
+// `allDiscDates` (ทุกจุด "ราคา ณ …" ในบล็อก .disc) ย้ายไป tools/price-date.js แล้ว (ระยะ 2 ส่วน C) —
+// เจ้าของเดียวของ "วันที่ราคาใน .disc" ควรถือทั้งตัวหาจุดเดียวและตัวหาทุกจุด · migrator ใช้ตัวเดียวกัน
+// หา "จุดที่ต้องแทนด้วย {{rd:priceDate}}" ⇒ ที่ cron เขียนวันที่ตรงไหน token ลงตรงนั้นเป๊ะ (import ข้างบน)
 
 // ---------- patch รายงานหนึ่งไฟล์ ----------
 // คืน { html, changed } — ทุก pattern ต้อง match ไม่งั้น throw (ไป flag เป็น patch-failed)

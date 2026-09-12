@@ -842,7 +842,9 @@ function checkFile(fp) {
   return checkHtml(expanded, name);
 }
 
-module.exports = { checkHtml, checkFile, buildCtx, parseScenarios, firstNum, CHECKS, REPORTS_DIR, FISCAL_REF_SRC };
+// `visible` = ข้อความที่คนเห็น (ตัด script/style/แท็ก) — export ให้ tools/migrate-v2.js ใช้ตัวเดียวกับที่ gate ใช้
+// (ชั้น 2 ของ migrator เทียบ "ข้อความที่มองเห็น" ก่อน/หลังย้าย — ถ้าคนละนิยามกับ gate ก็เทียบคนละอย่างกัน)
+module.exports = { checkHtml, checkFile, buildCtx, parseScenarios, firstNum, visible, CHECKS, REPORTS_DIR, FISCAL_REF_SRC };
 
 // ---------- CLI ----------
 function main() {
