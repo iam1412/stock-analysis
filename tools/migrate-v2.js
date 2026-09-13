@@ -928,14 +928,16 @@ function visibleCronDiff(e1, e2, values, opt) {
   const statics = o.statics || new Map(), found = new Map(), used = new Map();
   const forms = [];
   let retClass = 0;
-  const out = (bad) => ({ bad, forms, retClass, statics: found });
+  // ข้อยกเว้นที่ถูกใช้จริงในการเทียบครั้งนี้ (นับครั้ง) — ไม่เปลี่ยนผลตัดสิน แค่ให้ census/รายงานเห็นว่า "ผ่าน" เพราะกติกาไหน
+  const relax = { static: 0, pyForm: 0, restate: 0, scale: 0, era: 0 };
+  const out = (bad) => ({ bad, forms, retClass, statics: found, relax });
   const stripBad = checkStripped(e1, e2, values, []);
   if (stripBad && !o.collect) return out(stripBad);
   // วงเล็บทวนวันที่ "ล้วน" ในหัวรายงาน — migrator ลบได้ (TOLERANCE.f11 · site restate) ⇒ ฝั่งที่ยังมีอยู่ฝั่งเดียวให้ตัดออกก่อนเทียบ
   //   ★ ตัดเฉพาะวงเล็บที่ **วันเดียวกับวันที่ราคา** (PD.findRestatedDate) และข้างในมีแต่วันที่ — วงเล็บค้างวันเก่า/มีคำขยาย = ไม่แตะ (ตรวจตามปกติ)
   const q1 = pureRestate(e1), q2 = pureRestate(e2);
-  if (q1 && !q2) e1 = q1.drop();
-  if (q2 && !q1) e2 = q2.drop();
+  if (q1 && !q2) { e1 = q1.drop(); relax.restate++; }
+  if (q2 && !q1) { e2 = q2.drop(); relax.restate++; }
   const DIV = / • รวมปันผล/g;
   // โหมดเก็บ statics (ก่อน patch): ใช้ stripVolatile ตัวเดียวกับชั้น 2 ตอนย้าย — ตัวที่ทำให้มาสก์เท่ากันจนย้ายผ่านได้
   //   (ช่องสรุป/.chg ของ v1 ก่อน patch อาจค้างคนละถ้อยคำ ⇒ ไม่ strip = จัดเรียงเลขไม่ได้ทั้งส่วน)
@@ -963,8 +965,10 @@ function visibleCronDiff(e1, e2, values, opt) {
         const P = x.pcts[q], Q = y.pcts[q];
         if (P.v === Q.v) continue;
         // ตัวแรก = รวม (ต้องอยู่ในรูป) · ตัวที่สอง = %/ปี (อยู่ในรูป หรืออธิบายได้ด้วยรูปของ "รวม" ทั้งสองฝั่ง — pyExplained)
-        const ok = withinForm(P.t, Q.t, P.v, Q.v) || (q === 1 && withinForm(x.pcts[0].t, y.pcts[0].t, x.pcts[0].v, y.pcts[0].v) && pyExplained(x.pcts[0], P, y.pcts[0], Q, basis));
+        const plain = withinForm(P.t, Q.t, P.v, Q.v);
+        const ok = plain || (q === 1 && withinForm(x.pcts[0].t, y.pcts[0].t, x.pcts[0].v, y.pcts[0].v) && pyExplained(x.pcts[0], P, y.pcts[0], Q, basis));
         if (!ok) { retBad = `ช่อง .ret คอลัมน์ ${c + 1}: v1 ${P.t}% ≠ v2 ${Q.t}%`; break; }
+        if (!plain) relax.pyForm++;
         forms.push({ part: 'ret', before: P.t + '%', after: Q.t + '%' });      // ช่อง .ret (หมวด 6) — แถว "รูปทศนิยมหมวด 6" ของ census
       }
     }
@@ -994,15 +998,16 @@ function visibleCronDiff(e1, e2, values, opt) {
         //   ⇒ เทียบค่าเต็มภายใต้ครึ่งหน่วยของความละเอียดที่หยาบกว่า (ทศนิยม × หน่วย) · หน่วยหายฝั่งเดียว = ต่างจริง
         form = fin && !!u1.mult && !!u2.mult
           && Math.abs(vx * u1.mult - vy * u2.mult) <= Math.max(halfUnit(x) * u1.mult, halfUnit(y) * u2.mult) + 1e-6;
+        if (form && !o.collect) relax.scale++;
       } else {
         exact = fin && vx === vy && sameMoney(x, y);                                    // ศูนย์ท้าย/คอมมา — ค่าเท่ากันเป๊ะ
         form = fin && withinForm(x, y, vx, vy);
         // ปีคนละศักราช (2569 ↔ 2026) = วันเดียวกัน — migrator ทำให้ .disc ตามศักราชของหัวรายงาน (note `dateEra normalize`)
-        if (!form && fin && /^\d{4}$/.test(x) && /^\d{4}$/.test(y) && Math.abs(vx - vy) === 543) { form = true; part = 'era'; }
+        if (!form && fin && /^\d{4}$/.test(x) && /^\d{4}$/.test(y) && Math.abs(vx - vy) === 543) { form = true; part = 'era'; if (!o.collect) relax.era++; }
       }
       const key = `${a[j].part}|${bf}|${af}`;
       const isStatic = !o.collect && (statics.get(key) || 0) > (used.get(key) || 0);
-      if (isStatic) used.set(key, (used.get(key) || 0) + 1);
+      if (isStatic) { used.set(key, (used.get(key) || 0) + 1); relax.static++; }
       if (!exact && !form) {
         if (!o.collect && !isStatic) {
           const ctx = t1.slice(Math.max(0, n1[i].index - 40), n1[i].index).replace(/\s+/g, ' ').trim();
@@ -1041,11 +1046,13 @@ function cronGate(html, name) {
  *   formOnly: ตัวเลขที่ cron ทำให้ต่างแค่รูป (ไม่ซ้ำตามคู่ part/before→after · part ละไม่เกิน 10 · ไม่รวมศูนย์ท้าย/คอมมา
  *     และไม่รวมผลต่างที่มีอยู่ก่อน patch) — ไม่ใช่ความล้มเหลว แต่ census ต้องเปิดเผย (part 'ret' = แถวรูปทศนิยมหมวด 6)
  *   retClass: จำนวนจุด grid ที่ v2 แก้สีช่อง .ret ค้างของ v1 (เปิดเผยเท่านั้น)
+ *   relax: จำนวนจุด grid ที่ข้อยกเว้นแต่ละตัวถูกใช้ (static ผลต่างก่อน patch · pyForm %/ปี ตามรูปของรวม · restate วงเล็บทวนล้วน ·
+ *     scale หน่วยใหญ่ของเงิน · era ศักราช) — ไม่เปลี่ยนผลตัดสิน ให้คนตรวจเห็นว่าใบไหน "ผ่านเพราะข้อยกเว้น"
  */
 function cronDiff(srcV1, outV2, name, opts) {
   const o = opts || {};
   const UP = require('./update-prices.js');     // lazy: update-prices → check-reports → update-prices (cycle ตอนโหลด)
-  const res = { ok: true, kinds: [], k: null, detail: [], formOnly: [], points: 0, retClass: 0 };
+  const res = { ok: true, kinds: [], k: null, detail: [], formOnly: [], points: 0, retClass: 0, relax: { static: 0, pyForm: 0, restate: 0, scale: 0, era: 0 } };
   const fail = (k, kinds, detail) => Object.assign(res, { ok: false, k, kinds: [...new Set(kinds)], detail });
   const rd2 = RM.readReportData(outV2);
   const vals = rd2.ok && RV.isV2(rd2.data) ? rd2.data.values : null;
@@ -1090,6 +1097,7 @@ function cronDiff(srcV1, outV2, name, opts) {
         const v = visibleCronDiff(g1.exp, g2.exp, vals, { statics });
         if (v.bad) { kinds.push('visible'); detail.push(`×${k} ราคา ${newPrice}: ${v.bad}`); }
         if (v.retClass) res.retClass++;
+        for (const key of Object.keys(res.relax)) if (v.relax[key]) res.relax[key]++;   // นับเป็น "จำนวนจุด grid ที่ใช้ข้อยกเว้นนั้น"
         for (const f of v.forms) {
           const key = f.part + ':' + f.before + '→' + f.after;
           if (seen.has(key) || res.formOnly.filter((x) => x.part === f.part).length >= 10) continue;
@@ -1116,7 +1124,7 @@ function cronDiff(srcV1, outV2, name, opts) {
 function planWrite(sym, r, cd) {
   const entry = { sym, ok: !!r.ok, reason: r.reason || null, tokenised: r.sites.tokenised, literal: r.sites.literal, notes: r.notes, pyChanges: r.pyChanges || [] };
   if (cd) {
-    entry.cronDiff = { ok: cd.ok, kinds: cd.kinds, k: cd.k, detail: cd.detail.slice(0, 3), formOnly: cd.formOnly, retClass: cd.retClass || 0, points: cd.points };
+    entry.cronDiff = { ok: cd.ok, kinds: cd.kinds, k: cd.k, detail: cd.detail.slice(0, 3), formOnly: cd.formOnly, retClass: cd.retClass || 0, relax: cd.relax, points: cd.points };
     if (r.ok && !cd.ok) { entry.ok = false; entry.reason = `cron-diff ${cd.kinds.join(',')}`; }
   }
   const write = entry.ok && typeof r.out === 'string';
@@ -1126,7 +1134,7 @@ function planWrite(sym, r, cd) {
 /** สรุป cron differential จาก entries ของ census (คิดใหม่จาก bySym ทุกครั้ง ⇒ รีรันแบตช์เดิมไม่นับซ้ำ) */
 function summarizeCronDiff(entries) {
   const checked = entries.filter((e) => e.cronDiff);
-  const failByKind = {}, sec6Form = [], otherForm = [], retClass = [];
+  const failByKind = {}, sec6Form = [], otherForm = [], retClass = [], relaxFiles = { static: [], pyForm: [], restate: [], scale: [], era: [] };
   for (const e of checked) {
     const c = e.cronDiff;
     if (!c.ok) for (const k of c.kinds) (failByKind[k] = failByKind[k] || []).push(e.sym);
@@ -1136,12 +1144,14 @@ function summarizeCronDiff(entries) {
       if ((c.formOnly || []).some((f) => f.part !== 'ret')) otherForm.push(e.sym);
     }
     if (c.retClass) retClass.push(e.sym);
+    if (c.ok) for (const k of Object.keys(relaxFiles)) if (c.relax && c.relax[k]) relaxFiles[k].push(e.sym);
   }
+  for (const k of Object.keys(relaxFiles)) relaxFiles[k].sort();
   for (const k of Object.keys(failByKind)) failByKind[k].sort();
   return {
     checked: checked.length, pass: checked.filter((e) => e.cronDiff.ok).length, fail: checked.filter((e) => !e.cronDiff.ok).map((e) => e.sym).sort(),
     failByKind, formOnly: checked.filter((e) => e.cronDiff.ok && (e.cronDiff.formOnly || []).length).map((e) => e.sym).sort(),
-    sec6Form: sec6Form.sort((a, b) => a.sym.localeCompare(b.sym)), otherForm: otherForm.sort(), retClass: retClass.sort(),
+    sec6Form: sec6Form.sort((a, b) => a.sym.localeCompare(b.sym)), otherForm: otherForm.sort(), retClass: retClass.sort(), relaxFiles,
     failDetail: checked.filter((e) => !e.cronDiff.ok).sort((a, b) => a.sym.localeCompare(b.sym))
       .map((e) => ({ sym: e.sym, kinds: e.cronDiff.kinds, k: e.cronDiff.k, detail: (e.cronDiff.detail || []).join(' || ').slice(0, 400) })),
   };
@@ -1216,6 +1226,13 @@ function cronDiffMd(cd) {
     `| รูปทศนิยมหมวด 6 เปลี่ยน (เช่น 3.5→3) | ${cd.sec6Form.length} | ${cd.sec6Form.map((x) => x.sym).join(' ')} |`,
     `| รูปตัวเลขอื่น (เช่น ราคา 278→277.58 · หน่วย ล้านล้าน→แสนล้าน · ศักราช) | ${cd.otherForm.length} | ${cd.otherForm.join(' ')} |`,
     `| สีช่อง .ret ของ v1 ค้าง — v2 คิดสีตามเครื่องหมาย | ${cd.retClass.length} | ${cd.retClass.join(' ')} |`,
+    '',
+    '### ใบที่ผ่านโดยใช้ข้อยกเว้นของตัวเทียบ (ไม่เปลี่ยนผลตัดสิน — เปิดเผยให้ตรวจ)', '', '| ข้อยกเว้น | ใบ | รายชื่อ |', '|---|---|---|',
+    `| ผลต่างที่มีก่อน patch (≤ GAP_REL — ชั้น 1 ยอมไว้แล้ว) | ${cd.relaxFiles.static.length} | ${cd.relaxFiles.static.join(' ')} |`,
+    `| %/ปี ต่างตามรูปของ "รวม" (ทั้งสองฝั่ง = f(รวมที่โชว์)) | ${cd.relaxFiles.pyForm.length} | ${cd.relaxFiles.pyForm.join(' ')} |`,
+    `| วงเล็บทวนวันที่ล้วน (migrator ลบ · f11) | ${cd.relaxFiles.restate.length} | ${cd.relaxFiles.restate.join(' ')} |`,
+    `| หน่วยใหญ่ของเงินต่างกัน ค่าเดียวกัน | ${cd.relaxFiles.scale.length} | ${cd.relaxFiles.scale.join(' ')} |`,
+    `| ปีคนละศักราช (2569 ↔ 2026) | ${cd.relaxFiles.era.length} | ${cd.relaxFiles.era.join(' ')} |`,
     '',
     ...(cd.fail.length ? ['### รายละเอียดใบที่ตก (ตัวคูณแรกที่ต่าง)', '', ...cd.failDetail.map((x) => `- ${x.sym} [${x.kinds.join(', ')}] ${x.detail}`), ''] : []),
     ...(cd.sec6Form.length ? ['<details><summary>ตัวอย่างรูปทศนิยมหมวด 6 ต่อใบ (v1 → v2 ที่ตัวคูณแรกที่พบ)</summary>', '', ...cd.sec6Form.map((x) => `- ${x.sym}: ${x.example}`), '', '</details>', ''] : []),

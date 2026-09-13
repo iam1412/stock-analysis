@@ -416,11 +416,21 @@ const cmp = (r, f) => r.compare.find((c) => c.field === f);
     // ปีคนละศักราช (เคสคลัง APH: .disc v1 พ.ศ. · v2 ตามศักราชหัวรายงาน) = รูป · ปีต่างจริง = ตก
     ok(MG.visibleCronDiff('<p>ราคา ณ 2 ต.ค. 2569</p>', '<p>ราคา ณ 2 ต.ค. 2026</p>', {}).bad === null, '14a: 2569 ↔ 2026 (วันเดียวกันคนละศักราช) = รูป');
     ok(MG.visibleCronDiff('<p>ราคา ณ 2 ต.ค. 2569</p>', '<p>ราคา ณ 2 ต.ค. 2025</p>', {}).bad !== null, '14a: 2569 ↔ 2025 = ตก');
+    ok(u.relax.scale === 1 && MG.visibleCronDiff('<p>ราคา ณ 2 ต.ค. 2569</p>', '<p>ราคา ณ 2 ต.ค. 2026</p>', {}).relax.era === 1, '14a: ข้อยกเว้นหน่วย/ศักราชถูกนับใน relax (census เปิดเผย)');
+    // static = ผลต่างที่มีก่อน patch ≤ GAP_REL (เคสคลัง CHAYO/IIG/LPH: การ์ด MOS30 ฿1.02 vs ฿1.01) — เกินเพดานไม่นับเป็น static
+    const card = (t) => `<p>จุดซื้อ MOS 30% ฿${t}</p>`;
+    const st = MG.visibleCronDiff(card('1.02'), card('1.01'), {}, { collect: true }).statics;
+    const hit = MG.visibleCronDiff(card('1.02'), card('1.01'), {}, { statics: st });
+    ok(st.size === 1 && hit.bad === null && hit.relax.static === 1, '14a: คู่ที่ต่างอยู่แล้วก่อน patch (≤ GAP_REL) = ข้าม + นับ relax.static', JSON.stringify([...st]));
+    ok(MG.visibleCronDiff(card('1.02'), card('1.01'), {}).bad !== null, '14a: คู่เดียวกันโดยไม่มี statics = ตก (ข้อยกเว้นมาจาก statics จริง)');
+    const big = MG.visibleCronDiff(card('1.02'), card('1.10'), {}, { collect: true }).statics;
+    ok(big.size === 0 && MG.visibleCronDiff(card('1.02'), card('1.10'), {}, { statics: big }).bad !== null, '14a: ผลต่างก่อน patch เกิน GAP_REL ไม่เป็น static (ตก)');
   }
   // ── วงเล็บทวนวันที่ล้วนที่ migrator ลบ (เคสคลัง AZN) — ตัดได้เฉพาะวันเดียวกับวันที่ราคา · ค้างวันเก่า = ตก ──
   {
     const hd = (paren) => `<header><div class="px-meta">ราคา ณ 2 ต.ค. 2569${paren}<br>กรอบ 52 สัปดาห์</div></header>`;
-    ok(MG.visibleCronDiff(hd(' (2 ต.ค. 2026)'), hd(''), {}).bad === null, '14a: วงเล็บทวนวันเดียวกัน (ต่างศักราช) ฝั่ง v1 เท่านั้น = ตัดก่อนเทียบ (ผ่าน)');
+    const rs = MG.visibleCronDiff(hd(' (2 ต.ค. 2026)'), hd(''), {});
+    ok(rs.bad === null && rs.relax.restate === 1, '14a: วงเล็บทวนวันเดียวกัน (ต่างศักราช) ฝั่ง v1 เท่านั้น = ตัดก่อนเทียบ (ผ่าน · นับ relax.restate)');
     ok(MG.visibleCronDiff(hd(' (11 ก.ย. 2026)'), hd(''), {}).bad !== null, '14a: วงเล็บทวนที่ค้างวันเก่า = ไม่ตัด (ตก)');
     ok(MG.visibleCronDiff(hd(' (2 ต.ค. 2569 ตลาดปิด)'), hd(''), {}).bad !== null, '14a: วงเล็บที่มีคำขยาย = ไม่ตัด (ตก)');
   }
