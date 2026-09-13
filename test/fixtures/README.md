@@ -28,6 +28,29 @@
 
 ---
 
+## รูปคลังจริงของ cron ทาง v2 (ระยะ 2 ส่วน D · fix wave M10)
+
+final review ส่วน D พบว่าเทส cron ทาง v2 ทั้งหมดยืนบน AAPL/BBL เท่านั้น ⇒ ไม่มี fixture ไหนครอบรูปที่ทำให้พังจริงบนคลัง
+ชุดนี้คัดจากใบที่ simulation ของ review ชี้ตรง ๆ — v1 = `cp reports/<SYM>.html` · v2 = migrator สร้างเอง
+
+| v1 / v2 | รูปที่ครอบ | แช่แข็งเมื่อ | วันที่ราคาในไฟล์ | TODAY |
+|---|---|---|---|---|
+| DDOG.html / DDOG-v2.html | `stock-meta.pe` 75 ยืนบนฐาน adjusted ขณะ `values.eps` = GAAP (px/eps ≈ 450) — F1 | 14 ก.ย. 2569 | 2026-09-11 | 2026-09-12 |
+| SRE.html / SRE-v2.html | การ์ดปันผลพิมพ์ DPS `$2.38→$2.48→$2.58` (ฐาน W19) ≠ `values.dps` 2.58 — F1 | 14 ก.ย. 2569 | 2026-09-11 | 2026-09-12 |
+| FTV.html / FTV-v2.html | หมวด 6 รวมปันผล (`scnBasis.divIncluded:true`) — การอนุมานพลิกฐานที่ราคา ×1.005/×0.995/×1.09 — F2 | 14 ก.ย. 2569 | 2026-09-11 | 2026-09-12 |
+| CASY.html / CASY-v2.html | หมวด 6 ไม่รวมปันผล (`divIncluded:false`) — พลิกที่ ×0.995/×0.915/×1.045 — F2 | 14 ก.ย. 2569 | 2026-09-11 | 2026-09-12 |
+| DPZ.html / DPZ-v2.html | วงเล็บทวนวันที่มีคำขยาย `(11 ก.ย. 2569 ตลาดปิด)` ที่ migrator คง literal — F3 | 14 ก.ย. 2569 | 2026-09-11 | 2026-09-12 |
+
+- คำสั่งที่ใช้จริง (อ่าน `test/fixtures/<SYM>.html` → เขียน `<SYM>-v2.html` ข้าง ๆ · all-or-nothing):
+  ```bash
+  node tools/migrate-v2.js --fixture DDOG SRE FTV DPZ CASY
+  ```
+  ไม่ระบุ symbol = `AAPL BBL` เหมือนเดิม · symbol ต้องลงทะเบียนใน `index.js` (`SYMS` + `TODAY_OF`) ก่อน
+- `test/migrate-v2-test.js` ยืนยัน `migrateOne(v1).out === <SYM>-v2.html` เป๊ะไบต์ (แบบ AAPL/BBL) + ตรึง "รูป" ของแต่ละใบไว้
+  (รูปหาย = เทสของ fix wave ผ่านลอย ๆ) · แช่แข็งใหม่ = cp + รันคำสั่งเดิม + อัปเดตตารางนี้
+
+---
+
 ## `vendor/` — payload ดิบของแหล่งข้อมูล (ให้เทส parser รันแบบ offline)
 
 | ไฟล์ | ที่มา (URL) | probe เมื่อ | ตัดเหลือ |

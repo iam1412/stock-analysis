@@ -870,14 +870,18 @@ function renderCensusMd(entries) {
 // "legend แสดง 74 แต่ FV = 80" คือเหตุผลเดียวกัน) ไม่งั้นตารางกลายเป็นรายชื่อไฟล์ที่นับอะไรไม่ได้
 const shortReason = (r) => String(r || '').split(/[:(]/)[0].replace(/-?[0-9][0-9.,]*/g, 'N').trim().slice(0, 80);
 
-// ── --fixture: แช่แข็ง v2 ของ fixture v1 (test/fixtures/{AAPL,BBL}.html) — ไม่แตะ reports/ ไม่แตะ v1 fixture ──
-// ★ migrator เขียนไฟล์เองแทนการ copy/แก้มือ (Task 9) — อ่านจาก test/fixtures/{AAPL,BBL}.html เขียน `-v2.html` ข้าง ๆ
-// ★ all-or-nothing จริง (review F-อะตอมมิก): สร้างทั้งคู่ใน memory ก่อน เขียนไฟล์ก็ต่อเมื่อ **ทั้งคู่** ผ่าน
+// ── --fixture: แช่แข็ง v2 ของ fixture v1 (test/fixtures/<SYM>.html) — ไม่แตะ reports/ ไม่แตะ v1 fixture ──
+// ★ migrator เขียนไฟล์เองแทนการ copy/แก้มือ (Task 9) — อ่านจาก test/fixtures/<SYM>.html เขียน `<SYM>-v2.html` ข้าง ๆ
+// ★ all-or-nothing จริง (review F-อะตอมมิก): สร้างทุกตัวใน memory ก่อน เขียนไฟล์ก็ต่อเมื่อ **ทุกตัว** ผ่าน
 //   เดิมเขียน AAPL-v2 เสร็จก่อนจะลองย้าย BBL — ถ้า BBL ตก ข้อความ "ไม่เขียนไฟล์ที่เหลือ" จะโกหก (AAPL-v2 เขียนไปแล้ว)
-function runFixture() {
+// ★ fix wave M10: รับรายชื่อ symbol ได้ (`--fixture DDOG SRE FTV DPZ CASY`) · ไม่ระบุ = AAPL BBL (คำสั่งเดิมให้ผลเดิมทุก byte)
+//   ต้องเป็น symbol ที่ลงทะเบียนใน test/fixtures/index.js (SYMS) · "วันนี้" ต่อไฟล์จาก FX.TODAY_OF (ไม่มี = FX.TODAY)
+function runFixture(argSyms) {
   const FX = require('../test/fixtures');
-  const syms = ['AAPL', 'BBL'];
-  const results = syms.map((sym) => ({ sym, r: migrateOne(FX[sym](), sym + '.html', { today: FX.TODAY }) }));
+  const syms = argSyms && argSyms.length ? argSyms : ['AAPL', 'BBL'];
+  const unknown = syms.filter((s) => !(FX.SYMS || []).includes(s) || typeof FX[s] !== 'function');
+  if (unknown.length) { console.log(`✗ --fixture: ไม่รู้จัก ${unknown.join(', ')} — ลงทะเบียนใน test/fixtures/index.js (SYMS/TODAY_OF) + วาง <SYM>.html ก่อน`); return 1; }
+  const results = syms.map((sym) => ({ sym, r: migrateOne(FX[sym](), sym + '.html', { today: (FX.TODAY_OF && FX.TODAY_OF[sym]) || FX.TODAY }) }));
   const bad = results.filter((x) => !x.r.ok);
   if (bad.length) {
     for (const { sym, r } of results) console.log(r.ok ? `✓ ${sym} (ยังไม่เขียน — all-or-nothing)` : `✗ ${sym}: ${r.reason}`);
@@ -908,7 +912,7 @@ function mergeCensus(prevRaw, batch, entries, at) {
 }
 
 function main(argv) {
-  if (argv.includes('--fixture')) return runFixture();
+  if (argv.includes('--fixture')) return runFixture(argv.filter((a) => !a.startsWith('--')).map((a) => a.replace(/\.html$/i, '').toUpperCase()));
   const write = argv.includes('--write');
   const idx = (k) => { const i = argv.indexOf(k); return i < 0 ? null : argv[i + 1]; };
   const batch = idx('--batch') != null ? parseInt(idx('--batch'), 10) : null;

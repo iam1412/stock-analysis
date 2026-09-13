@@ -283,6 +283,19 @@ const cmp = (r, f) => r.compare.find((c) => c.field === f);
   ok(rAAPL.ok && rAAPL.out === FX.AAPL_V2(), 'item4: migrateOne(AAPL v1).out === AAPL-v2.html เป๊ะไบต์ต่อไบต์', rAAPL.ok ? '(ไม่เท่ากัน)' : rAAPL.reason);
   const rBBL = migrateOne(FX.BBL(), 'BBL.html', { today: FX.TODAY });
   ok(rBBL.ok && rBBL.out === FX.BBL_V2(), 'item4: migrateOne(BBL v1).out === BBL-v2.html เป๊ะไบต์ต่อไบต์', rBBL.ok ? '(ไม่เท่ากัน)' : rBBL.reason);
+  // ระยะ 2 ส่วน D fix wave M10 — fixture รูปคลังจริง (DDOG/SRE/FTV/DPZ/CASY) ต้องเป็นผลของ migrator เป๊ะไบต์เหมือนกัน
+  //   (สร้างด้วย `node tools/migrate-v2.js --fixture DDOG SRE FTV DPZ CASY` · วันนี้ต่อไฟล์ = FX.TODAY_OF)
+  for (const sym of ['DDOG', 'SRE', 'FTV', 'DPZ', 'CASY']) {
+    const r = migrateOne(FX[sym](), sym + '.html', { today: FX.TODAY_OF[sym] });
+    ok(r.ok && r.out === FX[sym + '_V2'](), `M10: migrateOne(${sym} v1).out === ${sym}-v2.html เป๊ะไบต์ต่อไบต์`, r.ok ? '(ไม่เท่ากัน)' : r.reason);
+  }
+  // รูปที่ fixture แต่ละใบถูกเลือกมาครอบ — ถ้า migrator เปลี่ยนจนรูปหาย เทสของ fix wave จะผ่านลอย ๆ ⇒ ตรึงไว้ที่นี่
+  const RMm = require('../tools/report-meta.js');
+  const vOf = (k) => RMm.readReportData(FX[k]()).data.values;
+  ok(Math.abs(RMm.readStockMeta(FX.DDOG_V2()).pe - vOf('DDOG_V2').px / vOf('DDOG_V2').eps) / RMm.readStockMeta(FX.DDOG_V2()).pe > 1, 'M10 รูป DDOG: stock-meta.pe ห่าง px/values.eps เกินเท่าตัว (หลายฐาน P/E)');
+  ok(/\$2\.38/.test(FX.SRE_V2()) && vOf('SRE_V2').dps === 2.58, 'M10 รูป SRE: การ์ดปันผลมี DPS $2.38 (ฐาน W19) ≠ values.dps 2.58');
+  ok(vOf('FTV_V2').scnBasis.divIncluded === true && vOf('CASY_V2').scnBasis.divIncluded === false, 'M10 รูป FTV/CASY: scnBasis.divIncluded true/false');
+  ok(FX.DPZ_V2().includes('{{rd:priceDate}} (11 ก.ย. 2569 ตลาดปิด)'), 'M10 รูป DPZ: วงเล็บทวนวันที่มีคำขยายเป็น literal');
 }
 
 // ══════════════════════════════════════════════════════════════════════════════
