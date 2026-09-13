@@ -1151,7 +1151,7 @@ gh pr create --base main --head claude/audit-p2-d-dual-mode --title "audit ร�
 
 ### Task 14: หยุด cron · ย้ายคลังเป็นแบตช์ · วันที่ไม่ขยับ
 
-> ★★ **แก้ 13 ก.ย. 2569 (ruling Task 11 fix round 1 — จำลอง cron ทั้งคลัง):** ก่อนเขียนแต่ละแบตช์ ใบที่ migrator ผ่านต้อง**ผ่าน gate หลังจำลอง cron ทาง v2** ด้วย `UP.patchReport` ที่ราคา ×0.97/×1.03/×1.1/×1.5 (ในหน่วยความจำ) — ใบที่ตก (วัดบน 81645c44: 7 ครั้งใน 3476 รอบ · W19 SRE/PB = `values.dps` ไม่ตรงการ์ดปันผล · W17 WWD/CHE/FTV/VG/WPM = ผลตอบแทนหมวด 6 ของ `derive` ไม่ตรง `scenarioPlan`) ต้อง (ก) migrator retry คงหมวด 6 / ปันผลเป็น literal ถ้ารอบนั้นผ่านการจำลอง หรือ (ข) เข้า residue พร้อมเหตุผล `cron-sim <code>` ใน census — **ห้ามเขียนใบที่รู้อยู่แล้วว่าจะ patch-rejected ในรอบ cron แรก** · เพิ่มเทสใน `test/migrate-v2-test.js` ให้ครอบทางนี้
+> ★★ **แก้ 14 ก.ย. 2569 (ruling Part D final review — แทนกล่องจำลอง 4 ตัวคูณของ 13 ก.ย. ที่พิสูจน์แล้วว่าไม่พอ):** ก่อนเขียนแต่ละแบตช์ ใบที่ migrator ผ่านต้องผ่าน **differential v1-vs-v2 ของ cron บน grid ละเอียด** (ราคา ×0.85–×1.15 ทีละ 0.005 · ในหน่วยความจำ): เทียบ `stock-meta.{pe,dividendYield,mos,upside,fairValue}` (ภายใต้ความคลาดเคลื่อนของรูป) · ตัวเลขที่มองเห็น (`expandReport` → ข้อความ ภายใต้ความคลาดเคลื่อนของรูป) · **warning** และ error ของ gate · ใบที่ต่าง = residue พร้อมเหตุผล `cron-diff <ชนิด>` ใน census (ห้ามเขียนใบที่ v2 ให้ผลต่างจาก v1 นอกเหนือรูป) · หลังแก้ final review ส่วน D (F1 mirror ไม่เขียน pe/yield · F2 scnBasis · F3 วันที่ literal) ขั้นนี้เป็น **canary** ไม่ใช่ตัวกรอง — คาดว่าเกือบ 0 · สคริปต์ต้นแบบ: `scratchpad/finalD/sim1–sim6` (ย้ายเป็น `tools/migrate-v2.js --cron-diff` + เทสใน `test/migrate-v2-test.js`) · census ต้องมีแถวแยก **"รูปทศนิยมหมวด 6 เปลี่ยน (เช่น 3.5→3)"** พร้อมรายชื่อ — เจ้าของตัดสินว่าเป็นรูปหรือค่า
 
 **Files:**
 - Modify: `reports/*.html` (เฉพาะใบที่ migrator ผ่าน) · `reports.json` (build เขียน — `updated` ต้องไม่ขยับ)
@@ -1217,6 +1217,8 @@ git commit -m "feat(gate): E44 prose ผูกราคาในใบใหม�
 ```
 
 ### Task 18: ผลวัดเกณฑ์จบระยะ 2 · docs · PR ส่วน F
+
+> ★★ **แก้ 14 ก.ย. 2569 (carry จาก Part D final review):** (1) **check โครงสร้าง v2 ถาวร** (F6 latent): เมื่อ `ctx.v2` source ต้องมี `{{rd:px}}` ใน `.px` · `{{rd:mos}}` ใน `.big` · `{{rd:mosClass}}` ใน class verdict · `{{rd:chg}}` ใน `.chg` · `{{rd:pxNum}}` ใน `pxIn` · `{{rd:priceDate}}` ใน header — ไม่งั้นยก pseudo-error `V2TOKENS` (แบบเดียวกับ `V2SCHEMA`) + เคส self-test mutate (แทน token ด้วย literal → ยิง) · นับ corpus ก่อนเปิด = 0 ใบ (census 869/869 tokenise ช่องหลักครบ) · เกณฑ์จบ "สำเนาต่อค่า = 1" ข้อ 1 ใช้ check นี้วัด (2) **`docs/price-refresh.md` + CLAUDE.md §9** อธิบายทาง cron v2: pass derived บน view ที่ render · keep-map (token เป็นเจ้าของ) · tripwire → `patch-failed` · กระจก stock-meta (price/mos/upside/fairValue จาก report-data · pe/dividendYield เป็นของ pass derived เหมือน v1) · ถ้อยคำ "regex = 0" ห้ามใช้ ใช้คำแคบตาม ruling Task 12 R5
 
 **Files:**
 - Create: `docs/superpowers/audit/2026-09-11-stock-analyzer/phase2-exit.md`
