@@ -1219,6 +1219,7 @@ git commit -m "feat(gate): E44 prose ผูกราคาในใบใหม�
 ### Task 18: ผลวัดเกณฑ์จบระยะ 2 · docs · PR ส่วน F
 
 > ★★ **แก้ 14 ก.ย. 2569 (carry จาก Part D final review):** (1) **check โครงสร้าง v2 ถาวร** (F6 latent): เมื่อ `ctx.v2` source ต้องมี `{{rd:px}}` ใน `.px` · `{{rd:mos}}` ใน `.big` · `{{rd:mosClass}}` ใน class verdict · `{{rd:chg}}` ใน `.chg` · `{{rd:pxNum}}` ใน `pxIn` · `{{rd:priceDate}}` ใน header — ไม่งั้นยก pseudo-error `V2TOKENS` (แบบเดียวกับ `V2SCHEMA`) + เคส self-test mutate (แทน token ด้วย literal → ยิง) · นับ corpus ก่อนเปิด = 0 ใบ (census 869/869 tokenise ช่องหลักครบ) · เกณฑ์จบ "สำเนาต่อค่า = 1" ข้อ 1 ใช้ check นี้วัด (2) **`docs/price-refresh.md` + CLAUDE.md §9** อธิบายทาง cron v2: pass derived บน view ที่ render · keep-map (token เป็นเจ้าของ) · tripwire → `patch-failed` · กระจก stock-meta (price/mos/upside/fairValue จาก report-data · pe/dividendYield เป็นของ pass derived เหมือน v1) · ถ้อยคำ "regex = 0" ห้ามใช้ ใช้คำแคบตาม ruling Task 12 R5
+> ★★ **เพิ่ม 14 ก.ย. 2569 (residual จาก re-review fix wave ส่วน D):** (3) เทส `healDerived` ทาง v2 ต้องตรึงว่า stock-meta ที่ pass derived เขียน (pe/dividendYield) **ไม่ถูกกระจกทับ** — mutant ที่ทับแล้ว update-prices-test ยังผ่าน 399/399 (ใช้ fixture SRE: heal แล้ว E41/W19 ต้องหาย) (4) tripwire วันที่ทวนซ้ำบน v2 ต้องจับรูปที่ parser อ่านไม่ออก (`(11 กย. 2569 ตลาดปิด)`) อย่างน้อยเป็น note แบบเดียวกับ v1 — ไม่งั้นค้างเงียบ · 0 ใบในคลังวันนี้
 
 **Files:**
 - Create: `docs/superpowers/audit/2026-09-11-stock-analyzer/phase2-exit.md`
