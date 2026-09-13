@@ -121,6 +121,25 @@ const conv = (id, h, desc) => {
   CONVERGED.add(id);
 };
 
+// convV2 (E-policy ระยะ 2 ส่วน D Task 13): เคส convergence ของ healer 'build' บนไฟล์ v2 —
+// ไฟล์ v2 render (expandReport) จาก JSON (report-data/stock-meta) เดียวกันเสมอ ⇒ "ตัวซ่อม" ไม่ใช่ฟังก์ชันแยก
+// เหมือน patchDerived แต่คือ "expand ใหม่จาก JSON ที่ถูกต้อง" — ไม่มีอะไรต้องทำนอกจากนั้น
+// mutHtmlFn: mutate JSON บน **ไฟล์ v2 ดิบ (ก่อน expand)** — ใช้ mutJson(scriptId, fn) จากด้านบน (ต้อง mutate
+// ก่อน expand เสมอ ไม่งั้น HTML ที่ render แล้วยังถือค่าเดิม — บทเรียนเดียวกับ review Task 10 ข้อ 2 บรรทัด ~1160)
+const convV2 = (id, mutHtmlFn, desc) => {
+  const raw = FX.BBL_V2();
+  const broken = mutHtmlFn(raw);
+  if (broken === raw) { ok(false, `${desc} → mutation ไม่เปลี่ยนอะไร (anchor ไม่ match — โครง BBL-v2 เปลี่ยน?)`); return; }
+  const brokenExpanded = expandReport(broken);
+  ok(allIds(checkHtml(brokenExpanded, 'BBL.html')).has(id), `${desc} → ${id} ยิง (v2 JSON เสีย)`);
+  // healer 'build' = แก้ JSON กลับ (fixture เดิม) แล้ว expand ใหม่ — ไม่เรียกฟังก์ชันซ่อมใด ๆ
+  const healedOnce = expandReport(raw);
+  const healedTwice = expandReport(raw);
+  ok(!allIds(checkHtml(healedOnce, 'BBL.html')).has(id) && healedOnce === healedTwice,
+    `${desc} → JSON ถูกต้อง + expand (healer 'build') → ${id} เงียบ + idempotent`);
+  CONVERGED.add(id);
+};
+
 console.log('\n🧪 self-test: ความถูกต้องของ check-reports.js\n');
 
 // 1) ของดีต้องผ่าน (ไม่ false-positive)
@@ -1130,7 +1149,9 @@ require('./parser-lint.js')(ok);
 {
   const E_GRANDFATHERED = new Set(Array.from({ length: 43 }, (_, i) => 'E' + String(i + 1).padStart(2, '0')));   // E01–E43 ที่มีก่อนระยะ 1 — ห้ามเพิ่มชื่อในนี้
   // patchDerived#4 = พาสเขียน prose (opt-in `{prose:true}`) — cron ไม่รันพาสนี้เอง จึงไม่นับเป็น healer มาตรฐานที่ E-policy ยอมรับ
-  const HEALERS = new Set(['patchReport', ...[1, 2, 3, 5, 6, 7, 8, 9, 10, 11].map((n) => 'patchDerived#' + n)]);
+  // 'build' (ระยะ 2 ส่วน D Task 13) = ไม่ใช่ฟังก์ชันซ่อมแยก แต่คือ render (expandReport) จาก JSON (report-data/
+  // stock-meta/values) — ใช้กับ error/warning ของไฟล์ v2 ที่ตัวตั้งเป็นสำเนาใน JSON ล้วน ๆ (เคส convergence: convV2())
+  const HEALERS = new Set(['patchReport', 'build', ...[1, 2, 3, 5, 6, 7, 8, 9, 10, 11].map((n) => 'patchDerived#' + n)]);
   for (const id of ['W16', 'W17', 'W19', 'W20']) ok(CHECKS.find((c) => c.id === id).level === 'error', `ระยะ 1: ${id} ต้องเป็น error (ยกจาก warn 12 ก.ย. 2569 — คงชื่อ)`);
   const errs = CHECKS.filter((c) => c.level === 'error');
   ok(errs.length >= 43, `E-policy: มี error ≥43 ตัว (ได้ ${errs.length})`);
@@ -1218,6 +1239,26 @@ require('./parser-lint.js')(ok);
   }
   // ctx.source: checkHtml ส่ง opts.source ต่อ · ไม่ส่ง = html เดียวกัน
   ok(c.source === base2 && buildCtx(base2, 'BBL.html', { source: FX.BBL_V2() }).source === FX.BBL_V2(), 'ctx.source = opts.source หรือ html เดิม');
+}
+
+// ── ระยะ 2 ส่วน D Task 13: E-policy รู้จัก healer 'build' + เคส convergence ทาง v2 ของ W22 ──
+// เตรียมให้ Task 16 ตัดสินว่าจะยก W22 เป็น error (healer:'build') ได้ไหม — ที่นี่ **ไม่ยกระดับ**
+// (level/healer ของ W22 ใน CHECKS ยังเป็น warn/null เหมือนเดิม ตามที่ยืนยันไว้แล้วในบล็อก W21/W22/W23 ด้านบน)
+// แค่พิสูจน์ว่า "healer build" (= render จาก JSON ที่ถูกต้อง ไม่มีฟังก์ชันซ่อมแยก) ใช้ได้จริงกับ W22
+{
+  // เลือกคู่ f69 (stock-meta.fairValue) ↔ f44 (report-data.fv) แทน f54 (vcell กรอบ) ↔ f43 (.fv-box) ตามที่ brief
+  // เตือนให้ยืนยันก่อน — ทดลองจริงแล้ว: f54 how:'range' เทียบข้อความ "กรอบ" สองจุดที่ render จาก **token เดียวกัน**
+  // {{rd:fvLow}}/{{rd:fvHigh}} (fv-box บรรทัด .l + vcell "มูลค่าเหมาะสม") ⇒ mutate values.fvLow ก่อน expand ทำให้
+  // ทั้งสองจุดขยับพร้อมกันเสมอ ไม่มีวันไม่ตรงกัน (ผลจริง: ยิง E20 "FV อยู่นอกกรอบ" ไม่ใช่ W22 — render invariant
+  // ไม่ใช่ของเสีย 2 จุด) · f69/f44 อยู่คนละ script (id="stock-meta" กับ id="report-data") จึง mutate ตัวเดียวพังได้จริง
+  convV2('W22', mutJson('stock-meta', (d) => { d.fairValue *= 1.5; }), 'v2: stock-meta.fairValue ×1.5 (ไม่ผ่าน report-data.fv)');
+
+  // W21 (v2): ลบ <div class="sub"> (f67 .sub คำโปรย — required:true) → extractor อ่านไม่ได้ → W21
+  // f67 เป็น cadence write-once/owner worker (cron ไม่แตะ) ⇒ healer ของมัน = null คนละคลาสกับ 'build' ที่ render
+  // จาก JSON ⇒ **ไม่ลงทะเบียน CONVERGED('W21')** — ยังยกเป็น error ไม่ได้ในระยะนี้ (บันทึกไว้ให้ Task 16: ตัดสิน
+  // ได้เฉพาะ W22 เพราะมีเคส convergence ทาง build แล้ว ส่วน W21 ต้องรอตัวซ่อมของ worker)
+  const v2Base = expandReport(FX.BBL_V2());
+  expect('W21', 'warn', (h) => h.replace('<div class="sub">', ''), 'v2: ลบ <div class="sub"> (f67 required) → W21', v2Base);
 }
 
 console.log('\n' + '─'.repeat(50));
