@@ -8,8 +8,6 @@
 const FX = require('./fixtures');
 process.env.STALE_TODAY = FX.TODAY;   // E27/W09 วัดจากวันนี้ที่ตรึงไว้ ไม่ใช่ปฏิทินจริง
 
-let n = 0, fails = 0;
-const ok = (c, m, d) => { n++; if (c) return; fails++; console.error('✗ ' + m + (d ? ' — ' + d : '')); };
 const { migrateOne, COPY_FIELDS } = require('../tools/migrate-v2.js');
 const { expandReport } = require('../build.js');
 const { checkHtml } = require('../test/check-reports.js');
@@ -17,6 +15,13 @@ const RM = require('../tools/report-meta.js');
 const RV = require('../tools/report-values.js');
 const { footerDate } = require('../tools/queue/footer-date.js');
 
+/**
+ * run(ok) — เนื้อเทสทั้งหมดของไฟล์นี้ ห่อเป็นฟังก์ชันเดียว รับ `ok` เข้ามาจากผู้เรียก
+ * (test/v2-path-test.js require ไฟล์นี้เข้าไปรันเป็นขั้นย่อยของมันแทนที่จะเป็นขั้น verify ของตัวเอง —
+ * ผลรวม n/fails จึงต้องสะสมเข้า accumulator ของผู้เรียก ไม่ใช่ของไฟล์นี้เอง)
+ * รันตรง ๆ ก็ยังทำงานเหมือนเดิมทุกอย่างผ่าน guard `require.main === module` ด้านล่าง
+ */
+function run(ok) {
 for (const sym of ['AAPL', 'BBL']) {
   const src = FX[sym]();
   const r = migrateOne(src, sym + '.html', { today: FX.TODAY });
@@ -344,6 +349,14 @@ const cmp = (r, f) => r.compare.find((c) => c.field === f);
   // จุด) — ยืนยันด้วยมือระหว่างพัฒนา (ดู part-c-fixwave2-report.md) แต่ห้ามอ่าน reports/ จากเทสนี้ (fixture-lint.js
   // บังคับ) จึงจำลองกลไกเดียวกันผ่าน BBL fixture ข้างบนแทน
 }
+}
 
-console.log(`migrate-v2-test: ${n - fails}/${n} ผ่าน`);
-process.exit(fails ? 1 : 0);
+module.exports = { run };
+
+if (require.main === module) {
+  let n = 0, fails = 0;
+  const ok = (c, m, d) => { n++; if (c) return; fails++; console.error('✗ ' + m + (d ? ' — ' + d : '')); };
+  run(ok);
+  console.log(`migrate-v2-test: ${n - fails}/${n} ผ่าน`);
+  process.exit(fails ? 1 : 0);
+}

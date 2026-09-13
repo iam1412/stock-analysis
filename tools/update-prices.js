@@ -58,7 +58,11 @@ const FLAGS = path.join(__dirname, '..', 'price-flags.json');
 // ชื่อเดือน + ตัวหา "วันที่ราคา" มาจาก tools/price-date.js ที่เดียว (ใช้ร่วมกับ gate — อย่าทำสำเนา)
 // ค่าที่ derive จากราคา (P/E · % ของราคาเป้า) — กติกาเดียวกับที่ gate ใช้ตรวจ E41/E42/W15 (ห้ามทำสำเนาความรู้)
 // fmtMos + MOS_BIG_RE = รูป/ที่อยู่ของ .big — เจ้าของเดียวอยู่ที่ derived-values.js เพราะ W06 และ patchDerived#11 ใช้ตัวเดียวกัน
-const { patchDerived, yieldPlan, fmtMos, MOS_BIG_RE } = require('./derived-values.js');
+// ★ MOS_BIG_RE ต้องอ่านผ่าน DV.MOS_BIG_RE ณ จุดใช้ (ห้าม destructure) — test/v2-path-test.js สตับ export
+//   นี้ให้ throw/ไม่ match เพื่อพิสูจน์ว่าทาง v2 ไม่เรียกมัน (patchReport คืนค่าก่อนถึงจุดใช้อยู่แล้ว แต่ destructure
+//   ตอนโหลดจะจับค่าเดิมไว้ตายตัว ทำให้การแทนภายหลังไม่มีผล — ดู task-12-brief.md "ข้อควรระวัง")
+const DV = require('./derived-values.js');
+const { patchDerived, yieldPlan, fmtMos } = DV;
 const { findPriceDate, findRestatedDate, findDiscPriceDate, allDiscDates, renderThaiDate, THAI_MONTHS } = require('./price-date.js');
 const RV = require('./report-values.js');   // ระยะ 2: format/derive มาตรฐานอยู่ที่นี่ (เจ้าของเดียว) — cron ใช้ร่วมกับ build/gate
 const { mosBand, fmtPrice, annualChg, styledRD } = RV;
@@ -585,9 +589,9 @@ function patchReport(html, p) {
   // --- MOS .big (เครื่องหมายเดิม −/+ · sign flip ถูก freeze ก่อนถึงจุดนี้) ---
   // ★ regex + รูปตัวเลข = ของ derived-values.js (MOS_BIG_RE/fmtMos) เจ้าของเดียว — W06 และ patchDerived#11
   //   อ่านช่องนี้ด้วยความรู้ก้อนเดียวกัน ⇒ ย้ายสำเนาที่เคยฝังไว้ตรงนี้ออกไปแล้ว
-  need(MOS_BIG_RE, 'MOS .big');
+  need(DV.MOS_BIG_RE, 'MOS .big');
   const mosTxt = fmtMos(mos);
-  out = out.replace(MOS_BIG_RE, () => '<div class="big">' + mosTxt + '</div>');
+  out = out.replace(DV.MOS_BIG_RE, () => '<div class="big">' + mosTxt + '</div>');
 
   // --- ช่องสรุป "ส่วนต่างจากราคา" — ตัวเขียนอยู่ที่ patchDerived#11 (ระยะ 1 ข้อ D) ---
   // เดิมตรงนี้ patch เฉพาะ "ตัวเลข" แบบมีเงื่อนไข (คำบอกทิศต้องตรงกับ MOS ใหม่ ไม่งั้นไม่แตะ)
