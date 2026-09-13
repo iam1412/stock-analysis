@@ -407,15 +407,19 @@ const cmp = (r, f) => r.compare.find((c) => c.field === f);
       && MG.visibleCronDiff('<div class="ret neg">+2%</div>', '<div class="ret neg">+2%</div>', {}).retClass === 0
       && MG.visibleCronDiff('<div class="ret neg">+2%</div>', '<div class="ret pos">+2%</div>', {}).retClass === 1, '14a: สีช่อง .ret v1 ค้าง (neg บน +2%) · v2 ถูก (pos) = ไม่ตก แต่นับ retClass');
     ok(MG.visibleCronDiff('<div class="ret pos">+2%</div>', '<div class="ret neg">+2%</div>', {}).bad !== null, '14a: v2 สีขัดเครื่องหมายตัวเอง = ตก');
-    // หน่วยใหญ่ของเงินต่างกัน (เคสคลัง ADVANC: v1 คงหน่วยผู้เขียน · v2 fmtBig เลือกหน่วยใหม่) — ค่าเดียวกัน = รูป · ค่าต่าง = ตก
+    // หน่วยใหญ่ของเงินต่างกัน (v1 คงหน่วยผู้เขียน · v2 fmtBig เลือกหน่วยใหม่) — ★ fix1 R4: รูปก็ต่อเมื่อค่าเต็มตรงกันที่ความละเอียดของฝั่งละเอียดกว่า
     const cap = (t) => `<p>Market Cap ~฿${t} ~2.97 พันล้านหุ้น</p>`;
-    const u = MG.visibleCronDiff(cap('0.89 ล้านล้าน'), cap('8.94 แสนล้าน'), {});
-    ok(u.bad === null && u.forms.some((f) => /ล้านล้าน/.test(f.before) && /แสนล้าน/.test(f.after)), '14a: ฿0.89 ล้านล้าน ~ ฿8.94 แสนล้าน = รูป (บันทึก formOnly)', JSON.stringify(u));
-    ok(MG.visibleCronDiff(cap('0.89 ล้านล้าน'), cap('7.94 แสนล้าน'), {}).bad !== null, '14a: ฿0.89 ล้านล้าน ≠ ฿7.94 แสนล้าน = ตก');
-    ok(MG.visibleCronDiff('<p>cap $1.00T</p>', '<p>cap $999B</p>', {}).bad === null && MG.visibleCronDiff('<p>cap $1.2T</p>', '<p>cap $999B</p>', {}).bad !== null, '14a: หน่วย T/B ของ USD ใช้กติกาเดียวกัน');
+    const u = MG.visibleCronDiff(cap('0.894 ล้านล้าน'), cap('8.94 แสนล้าน'), {});
+    ok(u.bad === null && u.forms.some((f) => /ล้านล้าน/.test(f.before) && /แสนล้าน/.test(f.after)), '14a R4: ฿0.894 ล้านล้าน ~ ฿8.94 แสนล้าน (ตรงที่ความละเอียดฝั่งละเอียด) = รูป', JSON.stringify(u));
+    ok(MG.visibleCronDiff(cap('1 ล้านล้าน'), cap('5.1 แสนล้าน'), {}).bad !== null, '14a R4: ฿1 ล้านล้าน vs ฿5.1 แสนล้าน = ค่าต่าง (เดิมผ่านเพราะใช้ครึ่งหน่วยฝั่งหยาบ)');
+    ok(MG.visibleCronDiff(cap('0.89 ล้านล้าน'), cap('8.94 แสนล้าน'), {}).bad !== null, '14a R4: ฿0.89 ล้านล้าน vs ฿8.94 แสนล้าน (รูป ADVANC) = ค่าต่างตามกติกาฝั่งละเอียด');
+    ok(MG.visibleCronDiff('<p>cap $0.999T</p>', '<p>cap $999B</p>', {}).bad === null && MG.visibleCronDiff('<p>cap $1.00T</p>', '<p>cap $999B</p>', {}).bad !== null, '14a R4: หน่วย T/B ของ USD ใช้กติกาเดียวกัน');
     // ปีคนละศักราช (เคสคลัง APH: .disc v1 พ.ศ. · v2 ตามศักราชหัวรายงาน) = รูป · ปีต่างจริง = ตก
     ok(MG.visibleCronDiff('<p>ราคา ณ 2 ต.ค. 2569</p>', '<p>ราคา ณ 2 ต.ค. 2026</p>', {}).bad === null, '14a: 2569 ↔ 2026 (วันเดียวกันคนละศักราช) = รูป');
     ok(MG.visibleCronDiff('<p>ราคา ณ 2 ต.ค. 2569</p>', '<p>ราคา ณ 2 ต.ค. 2025</p>', {}).bad !== null, '14a: 2569 ↔ 2025 = ตก');
+    ok(MG.visibleCronDiff('<p>ข้อมูล ณ ตุลาคม 2569</p>', '<p>ข้อมูล ณ ตุลาคม 2026</p>', {}).bad === null, '14a R3: ชื่อเดือนเต็มติดหน้าปี = บริบทวันที่ (รูป)');
+    ok(MG.visibleCronDiff('<p>กำไร 2569 ล้าน</p>', '<p>กำไร 2026 ล้าน</p>', {}).bad !== null, '14a R3: "2569 ล้าน" vs "2026 ล้าน" (ไม่มีชื่อเดือนติดหน้า) = ไม่ใช่รูป');
+    ok(MG.visibleCronDiff('<p>เป้า $2569</p>', '<p>เป้า $2026</p>', {}).bad !== null, '14a R3: "$2569" vs "$2026" = ไม่ใช่รูป');
     ok(u.relax.scale === 1 && MG.visibleCronDiff('<p>ราคา ณ 2 ต.ค. 2569</p>', '<p>ราคา ณ 2 ต.ค. 2026</p>', {}).relax.era === 1, '14a: ข้อยกเว้นหน่วย/ศักราชถูกนับใน relax (census เปิดเผย)');
     // static = ผลต่างที่มีก่อน patch ≤ GAP_REL (เคสคลัง CHAYO/IIG/LPH: การ์ด MOS30 ฿1.02 vs ฿1.01) — เกินเพดานไม่นับเป็น static
     const card = (t) => `<p>จุดซื้อ MOS 30% ฿${t}</p>`;
@@ -434,7 +438,7 @@ const cmp = (r, f) => r.compare.find((c) => c.field === f);
     ok(MG.visibleCronDiff(hd(' (11 ก.ย. 2026)'), hd(''), {}).bad !== null, '14a: วงเล็บทวนที่ค้างวันเก่า = ไม่ตัด (ตก)');
     ok(MG.visibleCronDiff(hd(' (2 ต.ค. 2569 ตลาดปิด)'), hd(''), {}).bad !== null, '14a: วงเล็บที่มีคำขยาย = ไม่ตัด (ตก)');
   }
-  // ── gate ของ cronDiff = UP.gateAfterPatch (expand ครั้งเดียวใช้ร่วม — ต้องได้ชุด error code เดียวกัน) ──
+  // ── gate ของ cronDiff = UP.gateCheck ตัวเดียวกับ gateAfterPatch (fix1 R7 — ไม่มีสำเนา · เทสนี้คงไว้เป็นกระจกเพิ่ม) ──
   {
     const vals = RM.readReportData(FX.AAPL_V2()).data.values;
     const p = { newPrice: Math.round(vals.px * 0.9 * 100) / 100, dateParts: MG.cronDateParts(vals.priceDate), chartData: null };
@@ -505,8 +509,143 @@ const cmp = (r, f) => r.compare.find((c) => c.field === f);
     ok(c2.cronDiff.sec6Form.length === 1 && c2.cronDiff.sec6Form[0].sym === 'FTV', '14a: census JSON แยกรายชื่อรูปทศนิยมหมวด 6', JSON.stringify(c2.cronDiff.sec6Form));
     const md = renderMd(Object.values(c2.bySym));
     ok(/\| รูปทศนิยมหมวด 6 เปลี่ยน \(เช่น 3\.5→3\) \| 1 \| FTV /.test(md), '14a: census.md มีแถวแยก "รูปทศนิยมหมวด 6 เปลี่ยน (เช่น 3.5→3)" พร้อมรายชื่อ', md.split('\n').find((l) => /รูปทศนิยม/.test(l)));
-    ok(/\| meta:pe \| 1 \| DDOG \|/.test(md) && /\| cron-diff meta \| 1 \| DDOG \|/.test(md), '14a: census.md แสดงใบที่ตกตามชนิด + เป็นแถว residue', md.split('\n').filter((l) => /meta/.test(l)).join(' / '));
+    ok(/\| meta:pe \| 1 \| DDOG \|/.test(md) && /\| cron-diff meta:pe \| 1 \| DDOG \|/.test(md), '14a: census.md แสดงใบที่ตกตามชนิด + แถว residue ใช้เหตุผลเต็ม (ไม่ยุบ)', md.split('\n').filter((l) => /meta/.test(l)).join(' / '));
     ok(!/cron differential/.test(renderMd([{ sym: 'A', ok: true, reason: null, tokenised: [], literal: [], notes: [], pyChanges: [] }])), '14a: ไม่ได้รัน --cron-diff = census.md ไม่มีส่วน cron differential');
+  }
+
+  // ════════════════════════════════════════════════════════════════════════════
+  // Task 14a fix round 1 (task-14a-fix1.md R1–R10) — ทุกเคสต้องตกเมื่อการเทียบชนิดนั้นถูกปิด (mutant runs ใน task-14a-report.md)
+  // ════════════════════════════════════════════════════════════════════════════
+  const BBL1 = FX.BBL(), BBL2 = FX.BBL_V2();
+  const kindsOf = (cd) => JSON.stringify({ kinds: cd.kinds, k: cd.k, detail: cd.detail });
+  // ── R2 · gate-warn (ชนิดของ PTG/THCOM): stock-meta.roe ของ v2 ×3 → warning W10 ฝั่ง v2 เท่านั้น ──
+  {
+    const roe = RM.readStockMeta(BBL2).roe;
+    const mut = BBL2.replace(new RegExp('("roe":)' + String(roe).replace('.', '\\.') + '(?=[,}])'), '$1' + (roe * 3).toFixed(1));
+    ok(mut !== BBL2, 'R2: mutation stock-meta.roe ×3 ไม่เป็น no-op');
+    const cd = MG.cronDiff(BBL1, mut, 'BBL.html', { grid: [1] });
+    ok(!cd.ok && cd.kinds.includes('gate-warn:W10') && /v2 W10/.test(cd.detail.join(' ')), 'R2: warning ต่างฝั่งเดียว → kind gate-warn:W10 + detail บอกฝั่ง', kindsOf(cd));
+  }
+  // ── R2 · gate-error (ชนิดของ W17/W19 ใน negative control): values.dps ของ v2 ×1.05 → W19 ฝั่ง v2 ──
+  {
+    const dps = RM.readReportData(BBL2).data.values.dps;
+    const mut = BBL2.replace(new RegExp('("dps":\\s*)' + dps + '(?=[,\\s}])'), '$1' + (dps * 1.05).toFixed(2));
+    ok(mut !== BBL2, 'R2: mutation values.dps ×1.05 ไม่เป็น no-op');
+    const cd = MG.cronDiff(BBL1, mut, 'BBL.html', { grid: [0.85] });
+    ok(!cd.ok && cd.kinds.includes('gate-error') && /W19/.test(cd.detail.join(' ')), 'R2: error ต่างฝั่งเดียว → kind gate-error (W19)', kindsOf(cd));
+  }
+  // ── R2 · meta:dividendYield (ชนิดของ BNY): stock-meta.dividendYield ของ v2 ×2 (หลุดย่านที่ patchDerived ตัดสิน — ไม่ถูกเขียนทับ) ──
+  {
+    const y = RM.readStockMeta(BBL2).dividendYield;
+    const mut = BBL2.replace(new RegExp('("dividendYield":)' + String(y).replace('.', '\\.') + '(?=[,}])'), '$1' + (y * 2).toFixed(1));
+    ok(mut !== BBL2, 'R2: mutation stock-meta.dividendYield ×2 ไม่เป็น no-op');
+    const cd = MG.cronDiff(BBL1, mut, 'BBL.html', { grid: [1] });
+    ok(!cd.ok && cd.kinds.includes('meta:dividendYield'), 'R2: stock-meta.dividendYield ต่าง → kind meta:dividendYield', kindsOf(cd));
+  }
+  // ── R2 · ข้อความเปลี่ยน (คำ ไม่ใช่ตัวเลข) → visible ──
+  {
+    const mut = BBL2.replace('สถานการณ์', 'สถานการณ์ใหม่');
+    ok(mut !== BBL2, 'R2: mutation คำในหมวด 6 ไม่เป็น no-op');
+    const cd = MG.cronDiff(BBL1, mut, 'BBL.html', { grid: [1] });
+    ok(!cd.ok && cd.kinds.includes('visible') && /ข้อความ \(/.test(cd.detail.join(' ')), 'R2: คำที่มองเห็นเปลี่ยน → kind visible (มาสก์)', kindsOf(cd));
+  }
+  // ── R2 · จำนวนตัวเลขในช่อง .ret เปลี่ยน (v2 perYear → null: ไม่ render %/ปี) → visible ──
+  {
+    const mut = BBL2.replace(/("perYear":\s*)"cagr"/, '$1null');
+    ok(mut !== BBL2, 'R2: mutation scnBasis.perYear → null ไม่เป็น no-op');
+    const cd = MG.cronDiff(BBL1, mut, 'BBL.html', { grid: [1] });
+    ok(!cd.ok && cd.kinds.includes('visible') && /จำนวนตัวเลข %/.test(cd.detail.join(' ')), 'R2: จำนวน % ในช่อง .ret ต่าง → kind visible', kindsOf(cd));
+  }
+  // ── R2 · " • รวมปันผล" งอกในฝั่ง v2 → visible (checkStripped) ──
+  {
+    const mut = BBL2.replace('สถานการณ์', 'สถานการณ์ • รวมปันผล');
+    const cd = MG.cronDiff(BBL1, mut, 'BBL.html', { grid: [1] });
+    ok(!cd.ok && cd.kinds.includes('visible') && /งอก/.test(cd.detail.join(' ')), 'R2: " • รวมปันผล" งอกใน v2 → kind visible (checkStripped)', kindsOf(cd));
+  }
+  // ── R2 + R1 · statics ต่อสายจริงใน cronDiff: การ์ด MOS30 ของ **v1** ห่าง 1 tick → ผ่าน + เปิดเผย valueDiff · ห่าง 2% → ตก ──
+  {
+    const MOS30 = /(จุดซื้อ MOS 30%<\/div>\s*<div class="v[^"]*">\s*฿?)([\d.,]+)/;
+    const orig = MOS30.exec(BBL1);
+    ok(!!orig, 'R2: BBL v1 มีการ์ด MOS30 ให้แก้');
+    const fv = RM.readReportData(BBL2).data.fv, want = Math.round(fv * 0.7 * 100) / 100;
+    const near = (want - 0.1).toFixed(1), far = (want * 0.98).toFixed(1);
+    const cdNear = MG.cronDiff(BBL1.replace(MOS30, '$1' + near), BBL2, 'BBL.html', { grid: [1, 0.9] });
+    ok(cdNear.ok && cdNear.relax.static > 0, 'R2: ค่าต่างก่อน patch ≤ GAP_REL ที่ cron ไม่แตะ = ข้าม (statics ต่อสายใน cronDiff)', kindsOf(cdNear));
+    const vd = cdNear.valueDiff.find((x) => x.v1 === near);
+    ok(!!vd && /MOS 30%/.test(vd.label) && vd.v2 === want.toFixed(2) && vd.relPct > 0 && vd.relPct <= 1.2, 'R1: valueDiff เปิดเผยป้าย + v1→v2 + % สัมพัทธ์', JSON.stringify(cdNear.valueDiff));
+    const cdFar = MG.cronDiff(BBL1.replace(MOS30, '$1' + far), BBL2, 'BBL.html', { grid: [1] });
+    ok(!cdFar.ok && cdFar.kinds.includes('visible'), 'R2: ค่าต่างก่อน patch 2% (เกิน GAP_REL) = ตก', kindsOf(cdFar));
+  }
+  // ── R2 · ความกว้างของ tolerance ถูกตรึง (budget ของ static · part · sameMetaForm) ──
+  {
+    const two = (a, b) => `<p>MOS30 ฿${a}</p><p>MOS20 ฿${b}</p>`;
+    const st = MG.visibleCronDiff('<p>MOS30 ฿1.02</p><p>MOS20 ฿9.00</p>', '<p>MOS30 ฿1.01</p><p>MOS20 ฿9.00</p>', {}, { collect: true }).statics;
+    ok(MG.visibleCronDiff(two('1.02', '1.02'), two('1.01', '1.01'), {}, { statics: st }).bad !== null, 'R2: static ข้ามได้ไม่เกินจำนวนที่มีก่อน patch (คู่ซ้ำตัวที่สอง = ตก)');
+    ok(!MG.sameMetaForm(75, 75.9) && MG.sameMetaForm(75, 75.5), 'R2: sameMetaForm กว้างครึ่งหน่วย (75 ~ 75.5 · 75 ≠ 75.9)');
+    // จำนวนช่อง .ret ต่างกัน — ช่องถูก blank ก่อนมาสก์ ⇒ มาสก์มองไม่เห็น ต้องมีตัวนับของมันเอง
+    ok(MG.visibleCronDiff('<div class="ret pos">+2%</div>', '<div class="ret pos">+2%</div><div class="ret pos">+3%</div>', {}).bad !== null, 'R2: v2 มีช่อง .ret งอก (มาสก์มองไม่เห็น) = ตก');
+  }
+  // ── R5 · สองฝั่ง throw ทุกจุด = throw-both (ไม่ใช่ ok) ──
+  {
+    const noSm = (h) => h.replace(RM.STOCK_META_PARTS_RE, '');
+    const cd = MG.cronDiff(noSm(BBL1), noSm(BBL2), 'BBL.html', { grid: [0.9, 1] });
+    ok(!cd.ok && JSON.stringify(cd.kinds) === '["throw-both"]' && cd.compared === 0, 'R5: ไม่มีจุดที่เทียบได้ → kind throw-both', kindsOf(cd));
+  }
+  // ── R6 · ฝั่งของความล้มเหลว (กติกา: เทียบจุดที่ตกกับจุดผ่านข้างเคียง — ฝั่งที่เปลี่ยนชั้น/ฐานเพียงฝั่งเดียว) ──
+  {
+    const G = (warns, codes) => ({ warns: warns || [], codes: codes || [], exp: null });
+    const P = { k: 0.855, s1: { dividendYield: 1.2 }, s2: { dividendYield: 1.2 }, g1: G(), g2: G() };
+    ok(MG.failSide(null, P, ['visible'], null).side === 'unknown', 'R6: ตกที่จุดแรกของ grid = unknown');
+    ok(MG.failSide(P, { k: 0.86, s1: {}, s2: {}, g1: G(['W22']), g2: G() }, ['gate-warn:W22']).side === 'v1', 'R6: warning งอกฝั่ง v1 เท่านั้น → v1 (รูป PTG/THCOM)');
+    ok(MG.failSide(P, { k: 0.86, s1: {}, s2: {}, g1: G(), g2: G([], ['W17']) }, ['gate-error']).side === 'v2', 'R6: error งอกฝั่ง v2 เท่านั้น → v2 (รูป FTV/CASY ก่อน fix wave)');
+    ok(MG.failSide(P, { k: 1.095, s1: { dividendYield: 1.4 }, s2: { dividendYield: 1.2 }, g1: G(), g2: G() }, ['meta:dividendYield']).side === 'v1', 'R6: v1 กระโดด 1.2→1.4 ขณะ v2 นิ่ง → v1 (รูป BNY)');
+    ok(MG.failSide(P, { k: 1.095, s1: { dividendYield: 1.1 }, s2: { dividendYield: 1.1 } , g1: G(), g2: G() }, ['meta:dividendYield']).side === 'unknown', 'R6: สองฝั่งขยับเท่ากัน → unknown');
+    const ret = (t) => `<p><div class="ret neg">${t}</div></p>`;
+    const at = { type: 'ret-val', j: 0, c: 0, q: 0, drop1: false, drop2: false, whole: false };
+    const prevR = { k: 1.135, s1: {}, s2: {}, g1: { exp: ret('−28.8%') }, g2: { exp: ret('−29%') } };
+    const curR = { k: 1.14, s1: {}, s2: {}, g1: { exp: ret('−30.1%') }, g2: { exp: ret('−29%') } };
+    ok(MG.failSide(prevR, curR, ['visible'], at).side === 'v1', 'R6: ช่อง .ret v1 กระโดด −28.8→−30.1 ขณะ v2 −29→−29 → v1 (รูป WWD)');
+    ok(MG.failSide(P, { k: 0.86, s1: { dividendYield: 1.4 }, s2: { dividendYield: 1.2 }, g1: G(['W22']), g2: G([], ['W19']) }, ['meta:dividendYield', 'gate-error']).side === 'unknown', 'R6: ชนิดให้ฝั่งขัดกัน → unknown');
+    ok(MG.cronDiffReason({ kinds: ['gate-warn:W22'], side: 'v1' }) === 'cron-diff v1-unstable gate-warn:W22'
+      && MG.cronDiffReason({ kinds: ['meta:dividendYield', 'visible'], side: 'v2' }) === 'cron-diff v2-diff meta:dividendYield,visible'
+      && MG.cronDiffReason({ kinds: ['meta:pe'], side: 'unknown' }) === 'cron-diff meta:pe', 'R6: ข้อความ reason ตามฝั่ง (v1-unstable / v2-diff / ไม่ระบุ)');
+    const md = MG.renderCensusMd([{ sym: 'PTG', ok: false, reason: 'cron-diff v1-unstable gate-warn:W22', tokenised: [], literal: [], notes: [], pyChanges: [],
+      cronDiff: { ok: false, kinds: ['gate-warn:W22'], k: 0.86, side: 'v1', sideWhy: 'x', detail: ['d'], formOnly: [], formParts: [], valueDiff: [], relax: {} } }]);
+    ok(/\| cron-diff v1-unstable gate-warn:W22 \| 1 \| PTG \|/.test(md) && /PTG — `cron-diff v1-unstable gate-warn:W22` · side v1/.test(md), 'R6: census.md แสดง reason เต็มทุกตัวอักษร + ฝั่ง');
+  }
+  // ── R7 · cronGate เรียก UP.gateCheck ตัวเดียวกับ gateAfterPatch (ไม่มีสำเนา) ──
+  {
+    const orig = UP.gateCheck;
+    let calls = 0;
+    UP.gateCheck = (...a) => { calls++; return orig(...a); };
+    try { MG.cronGate(BBL2, 'BBL.html'); } finally { UP.gateCheck = orig; }
+    ok(calls === 1, 'R7: cronGate ใช้ UP.gateCheck (เรียก 1 ครั้ง)', String(calls));
+    const g = UP.gateAfterPatch(BBL2, 'BBL.html'), c = UP.gateCheck(BBL2, 'BBL.html');
+    ok(JSON.stringify(g) === JSON.stringify({ ok: c.ok, codes: c.codes, detail: c.detail }), 'R7: gateAfterPatch = gateCheck ตัดเหลือ ok/codes/detail');
+  }
+  // ── R8 · exit code: residue ไม่ใช่ความล้มเหลว ──
+  ok(MG.exitCode({ errors: 0, residue: 5, strict: false }) === 0 && MG.exitCode({ errors: 0, residue: 0, strict: true }) === 0, 'R8: residue อย่างเดียว = exit 0');
+  ok(MG.exitCode({ errors: 0, residue: 5, strict: true }) === 1 && MG.exitCode({ errors: 1, residue: 0, strict: false }) === 1, 'R8: --strict + residue = 1 · ข้อผิดพลาดไม่คาดคิด = 1');
+  // ── R9 · รันแบตช์ซ้ำหลัง --write: ใบที่กลายเป็น v2 คงแถวเดิม ไม่ซ้ำ ไม่หาย ──
+  {
+    const rF = migrateOne(FX.FTV(), 'FTV.html', { today: FX.TODAY_OF.FTV });
+    const cdF = MG.cronDiff(FX.FTV(), rF.out, 'FTV.html', { grid: [0.85] });
+    const e1 = MG.planWrite('FTV', rF, cdF).entry;
+    const eBad = { sym: 'PTG', ok: false, reason: 'cron-diff v1-unstable gate-warn:W22', tokenised: [], literal: [], notes: [], pyChanges: [], cronDiff: { ok: false, kinds: ['gate-warn:W22'], side: 'v1', detail: [], formOnly: [], formParts: [], valueDiff: [], relax: {} } };
+    const c1 = MG.mergeCensus(null, 2, [e1, eBad], '2026-09-14T00:00:00.000Z');
+    const skipped = migrateOne(rF.out, 'FTV.html', { today: FX.TODAY_OF.FTV });           // จำลอง: เขียนแล้ว → รอบสองเจอไฟล์ v2
+    ok(!skipped.ok && skipped.reason === MG.ALREADY_V2, 'R9: รอบสองบนไฟล์ที่เขียนแล้ว = "เป็น v2 แล้ว"', skipped.reason);
+    const e2 = MG.planWrite('FTV', skipped, null).entry;
+    const c2 = MG.mergeCensus(c1, 2, [e2, eBad], '2026-09-14T01:00:00.000Z');
+    ok(JSON.stringify(c2.bySym.FTV) === JSON.stringify(c1.bySym.FTV) && Object.keys(c2.bySym).length === 2, 'R9: แถว FTV (cronDiff/รูป) คงเดิม ไม่ซ้ำ');
+    ok(JSON.stringify(c2.cronDiff.sec6Form) === JSON.stringify(c1.cronDiff.sec6Form) && c2.cronDiff.checked === c1.cronDiff.checked, 'R9: สรุป cronDiff ไม่หายหลังรันซ้ำ');
+    const c3 = MG.mergeCensus(c2, 3, [Object.assign({}, e2, { sym: 'NEWV2' })], '2026-09-14T02:00:00.000Z');
+    ok(c3.bySym.NEWV2 && c3.bySym.NEWV2.reason === MG.ALREADY_V2, 'R9: ใบ v2 ที่ไม่เคยมีแถว = บันทึกตามปกติ');
+  }
+  // ── R10 · ตัวอย่างรูป ≤3 ต่อใบ · formParts ครบ ──
+  {
+    const cd = MG.cronDiff(FX.AAPL(), FX.AAPL_V2(), 'AAPL.html');
+    ok(cd.ok && cd.formOnly.length <= 3 && cd.formParts.includes('ret') && cd.formParts.includes('page'), 'R10: formOnly ≤3 ตัวอย่าง · formParts ครบทุก part', JSON.stringify({ n: cd.formOnly.length, parts: cd.formParts }));
   }
 }
 }
