@@ -6,9 +6,11 @@
  * เดิมตัวเลขเดียวกันมีสำเนา 7–10 จุดใน HTML (ราคา ×7 · FV ×9 · MOS ×3) แล้ว cron ต้อง regex-replace ทีละจุด
  * ⇒ ว2: เก็บดิบใน values ที่เดียว · render ตอน build · cron แก้ JSON · gate อ่าน JSON
  * ★ ห้าม require build.js / update-prices.js / check-reports.js (กัน cycle — ทั้งสามชั้น require ไฟล์นี้)
+ *   (report-meta.js require ได้ — มันไม่ require อะไรในรีโปเลย · ใช้ใน mirrorStockMeta)
  */
 const DV = require('./derived-values.js');
 const PD = require('./price-date.js');
+const RM = require('./report-meta.js');   // ไม่ require อะไรในรีโป (ไม่มี cycle) — mirrorStockMeta อ่าน/เขียนบล็อก stock-meta
 
 const CUR_SYMBOL = { USD: '$', THB: '฿' };
 const FLAT_PP = 0.75;        // |% รอบปี| < 0.75 → "ทรงตัว" (ย้ายจาก update-prices.js — ค่าเดิม ห้ามเปลี่ยน)
@@ -194,5 +196,30 @@ function renderValues(html, rd, sm) {
   if (left) throw new Error(`เหลือ token {{rd:…}} ที่ render ไม่ได้: ${left[0]}`);
   return out;
 }
+// ── กระจก stock-meta ของไฟล์ v2 (เจ้าของเดียว — ระยะ 2 ส่วน D fix wave F1/F4) ──
+// เขียน **4 คีย์เท่านั้น**: price/mos/upside/fairValue = ฟังก์ชันล้วนของ values.px + report-data.fv (derive)
+// ★ ไม่แตะ pe/dividendYield (final review ข้อ 1 · Critical): สองคีย์นี้เป็นกระจกของ "การ์ดที่ผู้เขียนเลือกโชว์"
+//   (ฐาน EPS/DPS ที่ค่าเดิมยืนอยู่ — adjusted/forward/การ์ด DPS) ไม่ใช่ values.eps/dps ที่เป็นแค่ตัวตั้งของ token
+//   ⇒ เจ้าของคือ pass derived (patchDerived#2/#9 บน view ที่ render — ทาง v2 ใน tools/update-prices.js) เหมือน v1 ทุกประการ
+//   เดิมคำนวณจาก values ⇒ index P/E กระโดดเงียบ 37/869 ใบ (DDOG 75 → 453.7) + SRE/PB W19 patch-rejected
+// ★ อ่าน stock-meta จาก `html` ที่รับมาเสมอ (ผลของ pass derived) — ไม่รับ object ก่อน pass ⇒ ย้อนค่าที่ pass เพิ่งเขียนไม่ได้โดยโครงสร้าง
+// ★ ไม่มีอะไรเปลี่ยน = คืน `html` เดิมทุก byte (idempotent · heal นับ "แตะ" ได้จาก html !== เดิม) · เขียนกลับคงช่องว่างคร่อม JSON เดิม
+// ผู้เรียก: cron patchReport + healDerived (tools/update-prices.js) · tools/apply-edits.js หลัง --set/--del บนไฟล์ v2
+const MIRROR_KEYS = ['price', 'mos', 'upside', 'fairValue'];
+function mirrorStockMeta(html) {
+  const rdS = RM.readReportData(html);
+  if (!rdS.ok || !isV2(rdS.data)) throw new Error('mirrorStockMeta: report-data ไม่ใช่ v2');
+  const m = String(html).match(RM.STOCK_META_PARTS_RE);
+  if (!m) throw new Error('ไม่มีบล็อก stock-meta');
+  const sm = JSON.parse(m[2]);
+  validateValues(rdS.data, sm);
+  const d = derive(rdS.data, sm);
+  const want = { price: d.px, mos: round(d.mos, 1), upside: round(d.upside, 1), fairValue: d.fv };
+  if (MIRROR_KEYS.every((k) => sm[k] === want[k])) return html;
+  for (const k of MIRROR_KEYS) sm[k] = want[k];
+  const lead = (m[2].match(/^\s*/) || [''])[0], trail = (m[2].match(/\s*$/) || [''])[0];
+  return String(html).replace(RM.STOCK_META_PARTS_RE, (x, a, b, z) => a + lead + JSON.stringify(sm) + trail + z);
+}
+
 module.exports = { CUR_SYMBOL, FLAT_PP, VALUE_KEYS, CHG_SUFFIX, isV2, validateValues, derive, TOKENS, COPY_TOKENS: Object.keys(TOKENS), renderValues,
-  fmtPrice, fmtBig, annualChg, mosBand, isoOf, parseIso, styledRD };
+  fmtPrice, fmtBig, annualChg, mosBand, isoOf, parseIso, styledRD, MIRROR_KEYS, mirrorStockMeta };

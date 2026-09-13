@@ -735,7 +735,9 @@ const CHECKS = [
   //   (126 ใบ: 84 ใบสามคอลัมน์ไม่สอดคล้องกันเอง = ของที่คนต้องดู · 27 ใบปันผลกำกวม · 15 ใบรูป % ไม่ชัด)
   { id: 'W17', level: 'error', healer: 'patchDerived#7', label: 'ผลตอบแทนฉาก 3 ปี = วัดจากราคาปัจจุบัน', fn: (c) => {
     if (!(c.px > 0)) return null;
-    const plan = DV.scenarioPlan(c.html, c.px);
+    // v2: ฐานหมวด 6 ที่ประกาศใน values.scnBasis ชนะการอนุมานจากเลขที่ปัดแล้ว (ระยะ 2 ส่วน D fix wave F2 — ตัวซ่อม
+    //   derivedPassV2 ส่งฐานเดียวกันให้ patchDerived#7 ⇒ ขอบเขตตัวตรวจ = ตัวซ่อม) · v1 = undefined → เดิมทุก byte
+    const plan = DV.scenarioPlan(c.html, c.px, undefined, c.v2 && c.dv ? (c.dv.scnBasis || undefined) : undefined);
     if (!plan) return null;                        // อ่านไม่ชัด/ตัดสินสมมติฐานปันผลไม่ได้ → ตัวซ่อมก็ไม่แตะ ต้องเงียบ
     const bad = [];
     const div = plan.conv === 'div' ? ' (รวมปันผล)' : '';

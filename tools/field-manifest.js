@@ -31,6 +31,8 @@ const disc = (html) => grab(/(<div class="disc">[\s\S]*?<\/div>)/i, html) || '';
 const vcell = (html, k) => grab(new RegExp('<div class="k">' + k + '</div>\\s*<div class="v"[^>]*>([\\s\\S]*?)</div>'), html);
 /** หัวรายงาน — buildCtx แยกไว้ให้แล้ว (ctx.header) ⇒ ไม่ match <header> ซ้ำในไฟล์นี้ */
 const head = (ctx) => (ctx && ctx.header) || '';
+// f34/f35 (หมวด 6) ถาม DV.scenarioPlan ตัวเดียวกับ W17 — v2 ส่งฐานที่ประกาศ (values.scnBasis) · v1 = undefined (เดิมทุก byte)
+const scnBasisOf = (ctx) => (ctx && ctx.v2 && ctx.dv && ctx.dv.scnBasis) || undefined;
 // f63b — % ส่วนต่างจาก ATH ในร้อยแก้ว · คลังจริงเขียนสองลำดับ: "~−34% จาก ATH" (7 ใบ) · "ต่ำกว่า ATH ~50%" (2 ใบ)
 // ★ วัด 12 ก.ย. 69: รูป "จาก ATH −X%" (เลขหลัง) ไม่มีในคลังเลย (0/908) ⇒ ต้องจับสองทาง
 const ATH_PCT_RE = /([+\-−–]?\s*[\d.]+)\s*%\s*จาก\s*ATH|(?:จาก|ต่ำกว่า)\s*ATH\s*~?\s*([+\-−–]?\s*[\d.]+)\s*%/;
@@ -81,8 +83,8 @@ const FIELDS = [
   F('f31', 'การ์ด P/BV', { cadence: 'daily', owner: 'cron', gate: ['W20'], healer: 'patchDerived#10', binding: 'cron', required: false, extract: (h, c) => { const p = c.px > 0 ? DV.pbvPlan(h, c.px, c.cur)[0] : null; return R(p && p.items && p.items[0] ? p.items[0].shown : null); } }),   // fix round 1 finding 2/R2
   F('f32', 'การ์ด BVPS', { cadence: 'write-once', owner: 'worker', gate: [], healer: null, binding: 'presence', required: false, extract: (h, c) => R(cardNum(c, /^BVPS/i)) }),
   F('f33', 'การ์ด EPS (TTM)', { cadence: 'write-once', owner: 'worker', gate: [], healer: null, binding: 'presence', required: false, extract: (h, c) => R(cardNum(c, /^EPS/i)) }),
-  F('f34', 'หมวด 6 ผลตอบแทนรวม %', { cadence: 'daily', owner: 'cron', gate: ['W17'], healer: 'patchDerived#7', binding: 'cron', required: false, extract: (h, c) => { const p = c.px > 0 ? DV.scenarioPlan(h, c.px) : null; return R(p ? p.items.map((it) => it.total ? DV.retShown(it.total.token) : null) : null); } }),
-  F('f35', 'หมวด 6 %/ปี', { cadence: 'daily', owner: 'cron', gate: ['W17'], healer: 'patchDerived#7', binding: 'cron', required: false, extract: (h, c) => { const p = c.px > 0 ? DV.scenarioPlan(h, c.px) : null; return R(p && p.items.some((it) => it.py) ? p.items.map((it) => it.py ? DV.retShown(it.py.token) : null) : null); } }),
+  F('f34', 'หมวด 6 ผลตอบแทนรวม %', { cadence: 'daily', owner: 'cron', gate: ['W17'], healer: 'patchDerived#7', binding: 'cron', required: false, extract: (h, c) => { const p = c.px > 0 ? DV.scenarioPlan(h, c.px, undefined, scnBasisOf(c)) : null; return R(p ? p.items.map((it) => it.total ? DV.retShown(it.total.token) : null) : null); } }),
+  F('f35', 'หมวด 6 %/ปี', { cadence: 'daily', owner: 'cron', gate: ['W17'], healer: 'patchDerived#7', binding: 'cron', required: false, extract: (h, c) => { const p = c.px > 0 ? DV.scenarioPlan(h, c.px, undefined, scnBasisOf(c)) : null; return R(p && p.items.some((it) => it.py) ? p.items.map((it) => it.py ? DV.retShown(it.py.token) : null) : null); } }),
   F('f36', 'หมวด 6 "จากจุดเข้า"', { cadence: 'daily', owner: 'cron', gate: ['W17'], healer: 'patchDerived#7', binding: 'cron', required: false, extract: (h) => { const b = DV.scenarioBlock(h); return R(b && b.hint ? b.hint.value : null); } }),  // census 12 ก.ย. 69: 99.9% แต่คง false — ช่อง opt-in ของหมวด 6 (hint "จากจุดเข้า") — ใบที่ไม่เขียน hint ไม่ใช่ของเสีย
   F('f37', 'หมวด 6 ราคาเป้า 3 ฉาก', { cadence: 'write-once', owner: 'worker', gate: ['W01'], healer: null, binding: 'gate', required: true, extract: (h, c) => R(c.scenarios.length === 3 && c.scenarios.every((s) => s.tgt > 0) ? c.scenarios.map((s) => s.tgt) : null) }),  // census 12 ก.ย. 69: 100.0%
   F('f38', 'หมวด 6 class ret pos/neg', { cadence: 'never', owner: 'worker', gate: [], healer: null, binding: 'presence', required: false, extract: (h) => { const m = h.match(/class="ret (pos|neg)"/g); return R(m ? m.length : null); } }),  // census 12 ก.ย. 69: 100.0% แต่คง false — นับ class ret pos/neg = ของตกแต่งที่ build ใส่ ไม่ใช่ค่าที่ผู้เขียนต้องกรอก
@@ -120,7 +122,9 @@ const FIELDS = [
   F('f67', '.sub คำโปรย', { cadence: 'write-once', owner: 'worker', gate: ['E32'], healer: null, binding: 'gate', required: true, extract: (h, c) => R(c.sub || null) }),  // census 12 ก.ย. 69: 100.0%
   F('f68', 'tags (sidecar)', { cadence: 'out-of-band', owner: 'sidecar', gate: ['E40', 'W13'], healer: null, binding: 'gate', required: false, extract: (h, c) => { const T = require('./tag-lib.js'); const t = T.tagsOf(c.symbol, c.tagData !== undefined && c.tagData !== null ? c.tagData : T.loadTags()); return R(t.length ? t : null); } }),  // census 12 ก.ย. 69: 100.0% แต่คง false — tag อยู่ sidecar (out-of-band) ไม่ได้อยู่ในไฟล์รายงาน — ใบที่ยังไม่ติดแท็กไม่ใช่ของเสีย
   // f69 (ระยะ 2 ส่วน D): กระจก stock-meta.fairValue — E30 ตรวจอยู่แล้ว แต่ manifest ไม่มีแถว ⇒ v2 ที่ FV มีที่เดียวใน report-data.fv ต้องเห็นคู่นี้
-  F('f69', 'stock-meta.fairValue', { cadence: 'write-once', owner: 'worker', gate: ['E30'], healer: null, binding: 'pair', pair: { with: 'f44', how: 'money' }, required: true, extract: (h, c) => R(sm(c) && sm(c).fairValue) }),
+  // ★ fix wave M9: v2 = กระจกที่ cron เขียนทุกรอบ (RV.mirrorStockMeta ใน patchReport/healDerived · apply-edits --set/--del ด้วย)
+  //   ⇒ cadence daily / owner cron / healer patchReport (เดิม write-once/worker/null ค้างจากก่อน Task 13 fix round 1)
+  F('f69', 'stock-meta.fairValue', { cadence: 'daily', owner: 'cron', gate: ['E30'], healer: 'patchReport', binding: 'pair', pair: { with: 'f44', how: 'money' }, required: true, extract: (h, c) => R(sm(c) && sm(c).fairValue) }),
 ];
 // ★ code-audit §1.1 มี **70 แถว** — เลขแถวเดินถึง #68 แต่มี #25b/#63b แทรก ⇒ คำว่า "68 ช่อง" ในสเปค/แผน
 //   คือ "เลขแถวสูงสุด" ไม่ใช่จำนวนแถว (นับแถวในตารางจริง 12 ก.ย. 69 = 70 แถว)

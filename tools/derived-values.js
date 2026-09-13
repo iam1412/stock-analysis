@@ -449,11 +449,25 @@ function anchorOf(col, years) {
  * คืน null เมื่อ **ตัดสินไม่ได้** — ตัวตรวจต้องเงียบตรงไหน ตัวเขียนต้องไม่แตะตรงนั้นเป๊ะ ๆ
  * (บทเรียนเดียวกับ MCAP_ULP: ตัวตรวจฟ้องในที่ที่ตัวซ่อมเอื้อมไม่ถึง = error ที่เคลียร์ไม่ได้ → cron ตาย)
  */
-function scenarioPlan(html, price, why) {
+/**
+ * @param {string[]} [why]  เหตุผลที่ตัดสินไม่ได้ (migrator ใช้)
+ * @param {{years:number, divIncluded:boolean, perYear:'cagr'|'linear'|null}} [basis]
+ *   ระยะ 2 ส่วน D fix wave F2 — ไฟล์ v2 **ประกาศ** ฐานของหมวด 6 ไว้แล้วที่ `report-data.values.scnBasis`
+ *   (ตัวเลขที่ render มาจาก RV.derive ด้วยฐานนั้น) ⇒ ส่งมา = ใช้ฐานที่ประกาศ **ชนะการอนุมาน** ทุกข้อ:
+ *   ปีจาก basis.years · สมมติฐานปันผลจาก basis.divIncluded (ข้ามเสียง spread/hint + เกณฑ์เกาะกลุ่ม SCN_TIGHT)
+ *   · สูตร %/ปี จาก basis.perYear (null = ไม่มี %/ปี ให้ตัดสิน → ถอยไปใช้ผลอนุมานตามเดิม)
+ *   เหตุ (final review ข้อ 2): การอนุมานจากเลขที่ปัดแล้ว "เดาอีกฐาน" ได้ที่บางราคา ⇒ W17 ยิงบนไฟล์ที่ถูกต้องตามฐาน
+ *   ที่ประกาศ = patch-rejected ขึ้นกับราคา (ALC CASY CHE EHC FTV MCK MOG-A TMO TW VG WWD บนกริด 0.85–1.15)
+ *   ★ ยามอ่านโครง/รูป % (scenarioBlock · anchorOf · คู่ที่ไม่เข้าสูตรไหน) ยังทำงานเหมือนเดิม — basis ตัดสินแค่ "ฐาน"
+ *   ★ ไม่ส่ง (ทาง v1 ทั้งหมด + migrator) = พฤติกรรมเดิมทุก byte
+ */
+function scenarioPlan(html, price, why, basis) {
   const no = (r) => { if (why) why.push(r); return null; };
   if (!(price > 0)) return no('ไม่มีราคา');
-  const b = scenarioBlock(html);
-  if (!b) return no('อ่านโครงหมวด 6 ไม่ได้');
+  const b0 = scenarioBlock(html);
+  if (!b0) return no('อ่านโครงหมวด 6 ไม่ได้');
+  const B = basis && typeof basis === 'object' ? basis : null;
+  const b = B ? Object.assign({}, b0, { years: B.years }) : b0;
   const anchors = b.cols.map((c) => anchorOf(c, b.years));
   if (anchors.some((x) => !x)) return no('รูป % ในช่อง ret ไม่ชัด');
 
@@ -468,7 +482,12 @@ function scenarioPlan(html, price, why) {
 
   let conv = null;
   const gapPP = hasD ? mean(b.cols.map((c) => c.dps)) / price * 100 : 0;
-  if (!hasD || gapPP <= TOL_RET_PP) {
+  if (B) {
+    // ฐานที่ประกาศ (v2) — ไม่โหวต · รวมปันผลแต่อ่านแถวปันผลในคอลัมน์ไม่ครบ = ตัดสินไม่ได้ (ตัวตรวจ/ตัวเขียนเงียบพร้อมกัน)
+    //   (ปันผล 0 ในบางฉากใช้ได้ — schema ยอม div ≥ 0 · ต่างจากทางอนุมานที่ต้อง > 0 ถึงจะมีสองสมมติฐานให้แยก)
+    if (B.divIncluded && !b.cols.every((c) => c.dps != null && c.dps >= 0)) return no('scnBasis รวมปันผล แต่อ่านปันผลในคอลัมน์ไม่ครบ');
+    conv = B.divIncluded ? 'div' : 'plain';
+  } else if (!hasD || gapPP <= TOL_RET_PP) {
     // ไม่มีแถวปันผล หรือปันผลเล็กจนสองสมมติฐานให้ผลเท่ากันในเกณฑ์ ⇒ ไม่มีอะไรต้องตัดสิน
     conv = spP <= SCN_TIGHT ? 'plain' : null;
   } else {
@@ -538,7 +557,7 @@ function scenarioPlan(html, price, why) {
   });
   if (cls.includes('bad')) return no('คู่ (total, %/ปี) ไม่เข้าสูตรไหนเลย');   // อ่านผิดรูป → ไม่แตะทั้งใบ
   const bestSep = (k) => Math.max(0, ...cls.filter((x) => x && x.conv === k).map((x) => x.sep));
-  const pyConv = bestSep('linear') > bestSep('cagr') * PY_VOTE_RATIO ? 'linear' : 'cagr';
+  const pyConv = B && B.perYear ? B.perYear : bestSep('linear') > bestSep('cagr') * PY_VOTE_RATIO ? 'linear' : 'cagr';
 
   const items = [];
   b.cols.forEach((c, i) => {
@@ -915,7 +934,8 @@ function patchDerived(html, price, opts) {
   //    ★ ขอบเขต = เท่ากับที่ `scenarioPlan` ตัดสินได้เท่านั้น — ตัดสินไม่ได้ (ปันผลกำกวม/ใบเพี้ยนในตัวเอง)
   //      คือ "ไม่แตะ" ทั้งตัวเขียนและตัวตรวจ (W17) · เขียนทับด้วยการเดา = ทำลายเลขที่คนตั้งใจเขียน
   {
-    const plan = scenarioPlan(out, price);
+    // o.scnBasis (ทาง v2 — derivedPassV2 ส่ง report-data.values.scnBasis มาเอง): ฐานที่ประกาศชนะการอนุมาน · v1 ไม่ส่ง = เดิมทุก byte
+    const plan = scenarioPlan(out, price, undefined, o.scnBasis);
     if (plan) {
       // ชนิดขีดลบตามที่ใบนั้นใช้อยู่ (คลังใช้ − มากกว่า - ราว 6:1) — ใช้ตอนต้องเติมเครื่องหมายให้ค่าที่เดิมไม่มี
       const negChar = /−/.test(plan.block.sec) ? '−' : '-';

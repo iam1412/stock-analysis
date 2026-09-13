@@ -959,6 +959,42 @@ catch (e) { nFail++; console.error('✗ earnings-calendar-test ระเบิ�
     ok(fs.readFileSync(tmp, 'utf8') === V2_HTML, 'apply-edits --set fv + --set-meta fairValue พร้อมกัน (v2): ไม่เขียนไฟล์เลย (all-or-nothing)');
   }
 
+  // (e4) fix wave F4 (final review ข้อ 4): บน fixture v2 จริง `--set fv=300` คำเดียว → กระจก stock-meta ครบ 4 คีย์
+  //   (price/mos/upside/fairValue จาก RV.mirrorStockMeta ตัวเดียวกับ cron) ⇒ gate ไม่มี E30/E31
+  //   (เดิมซิงก์แค่ fairValue: stock-meta mos −26.8 ขณะ MOS ที่โชว์ −11% → E30+E31 ทันที)
+  {
+    const FXq = require('./fixtures');
+    const { expandReport } = require('../build.js');
+    const { checkHtml } = require('./check-reports.js');
+    const src = FXq.AAPL_V2();
+    const tmp = writeTmp('fv300.html', src);
+    const r = sh.run('node', ['tools/apply-edits.js', tmp, '--set', 'fv=300']);
+    ok(r.code === 0, 'F4 apply-edits --set fv=300 (AAPL_V2): exit 0', r.err || r.out);
+    const out = fs.readFileSync(tmp, 'utf8');
+    const sm = readBlock(out, 'stock-meta'), rd = readBlock(out, 'report-data');
+    const want = { mos: Math.round((300 - rd.values.px) / 300 * 1000) / 10, upside: Math.round((300 - rd.values.px) / rd.values.px * 1000) / 10 };
+    ok(sm.fairValue === 300 && sm.price === rd.values.px && sm.mos === want.mos && sm.upside === want.upside, 'F4 --set fv=300: stock-meta.price/mos/upside/fairValue = กระจกของ values.px/fv', JSON.stringify(sm));
+    const smSrc = readBlock(src, 'stock-meta');
+    ok(sm.pe === smSrc.pe && sm.dividendYield === smSrc.dividendYield && sm.roe === smSrc.roe, 'F4 --set fv=300: ไม่แตะ pe/dividendYield/roe', JSON.stringify(sm));
+    const savedToday = process.env.STALE_TODAY;
+    process.env.STALE_TODAY = FXq.TODAY;
+    let ids;
+    try { ids = checkHtml(expandReport(out), 'AAPL.html').errors.map((e) => e.id); } finally { if (savedToday === undefined) delete process.env.STALE_TODAY; else process.env.STALE_TODAY = savedToday; }
+    ok(!ids.includes('E30') && !ids.includes('E31'), 'F4 --set fv=300: checkHtml(expandReport) ไม่มี E30/E31', ids.join(','));
+    // --del บน v2 ก็รันกระจก (ค่าสุดท้ายหลังทุก op) · --set-meta คีย์กระจกอื่นบน v2 ถูกปฏิเสธ · คีย์ไม่ใช่กระจก (pe) ใช้ได้
+    const tmp2 = writeTmp('mirror-del.html', src.replace(/("mos":)(-?[0-9.]+)/, '$199'));
+    const r2 = sh.run('node', ['tools/apply-edits.js', tmp2, '--del', 'values.dps']);   // AAPL_V2: dps ไม่มี token อ้าง
+    ok(r2.code === 0 && readBlock(fs.readFileSync(tmp2, 'utf8'), 'stock-meta').mos === readBlock(src, 'stock-meta').mos, 'F4 --del บน v2: กระจกรันด้วย (stock-meta.mos ที่ถูกทำให้ค้าง 99 กลับเป็นค่าจาก values.px/fv)', r2.err || r2.out);
+    for (const key of ['mos', 'upside', 'price']) {
+      const t = writeTmp(`setmeta-${key}.html`, src);
+      const rr = sh.run('node', ['tools/apply-edits.js', t, '--set-meta', `${key}=1`]);
+      ok(rr.code !== 0 && new RegExp(`--set-meta ${key} ใช้ไม่ได้กับไฟล์ v2`).test(rr.out + rr.err) && fs.readFileSync(t, 'utf8') === src, `F4 --set-meta ${key} บนไฟล์ v2: ปฏิเสธ + ไม่เขียนไฟล์`, rr.out + rr.err);
+    }
+    const tpe = writeTmp('setmeta-pe.html', src);
+    const rpe = sh.run('node', ['tools/apply-edits.js', tpe, '--set-meta', 'pe=41.2']);
+    ok(rpe.code === 0 && readBlock(fs.readFileSync(tpe, 'utf8'), 'stock-meta').pe === 41.2, 'F4 --set-meta pe บนไฟล์ v2: ใช้ได้ (ไม่ใช่กระจก)', rpe.err || rpe.out);
+  }
+
   // (f) ไม่มีทั้งบล็อก @@ และ --set/--del/--set-meta → ยัง exit ≠ 0 เหมือนของเดิม (STEP 5C ยังใช้ได้ปกติ)
   {
     const tmp = writeTmp('empty.html', V2_HTML);
