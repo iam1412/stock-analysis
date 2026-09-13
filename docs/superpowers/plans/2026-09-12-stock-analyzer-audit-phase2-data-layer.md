@@ -1151,6 +1151,8 @@ gh pr create --base main --head claude/audit-p2-d-dual-mode --title "audit ร�
 
 ### Task 14: หยุด cron · ย้ายคลังเป็นแบตช์ · วันที่ไม่ขยับ
 
+> ★★ **แก้ 13 ก.ย. 2569 (ruling Task 11 fix round 1 — จำลอง cron ทั้งคลัง):** ก่อนเขียนแต่ละแบตช์ ใบที่ migrator ผ่านต้อง**ผ่าน gate หลังจำลอง cron ทาง v2** ด้วย `UP.patchReport` ที่ราคา ×0.97/×1.03/×1.1/×1.5 (ในหน่วยความจำ) — ใบที่ตก (วัดบน 81645c44: 7 ครั้งใน 3476 รอบ · W19 SRE/PB = `values.dps` ไม่ตรงการ์ดปันผล · W17 WWD/CHE/FTV/VG/WPM = ผลตอบแทนหมวด 6 ของ `derive` ไม่ตรง `scenarioPlan`) ต้อง (ก) migrator retry คงหมวด 6 / ปันผลเป็น literal ถ้ารอบนั้นผ่านการจำลอง หรือ (ข) เข้า residue พร้อมเหตุผล `cron-sim <code>` ใน census — **ห้ามเขียนใบที่รู้อยู่แล้วว่าจะ patch-rejected ในรอบ cron แรก** · เพิ่มเทสใน `test/migrate-v2-test.js` ให้ครอบทางนี้
+
 **Files:**
 - Modify: `reports/*.html` (เฉพาะใบที่ migrator ผ่าน) · `reports.json` (build เขียน — `updated` ต้องไม่ขยับ)
 - Create: `docs/superpowers/audit/2026-09-11-stock-analyzer/migration-v2-census.json` · `.md` (migrator `--census`)
@@ -1178,7 +1180,7 @@ git commit -m "migrate(v2): แบตช์ i/10 (<SYM แรก>–<SYM ท้�
 
 🤖 Generated with [Claude Code](https://claude.com/claude-code)"` · รอ CI (`gh pr checks N --watch`) · merge (`--merge`)
 - [ ] **Step 2**: `gh workflow enable update-prices.yml` · `gh workflow run update-prices.yml` (ถ้าเป็นเวลาตลาดเปิด US จะเห็น "ข้ามเพราะตลาดเปิด" — ไม่ใช่ของเสีย · ใบไทยได้ patch) · `gh run watch` จนจบ → ต้อง success · อ่าน log: จำนวน patch ✓ / freeze ตาม reason · **`patch-failed` ต้อง 0 บนใบ v2** (ถ้าไม่ 0 = บั๊กทาง v2 → แก้ก่อนปิด task · ledger)
-- [ ] **Step 3**: หลัง cron push → `git fetch && git merge --ff-only origin/main` ในสาขาถัดไป · ตรวจสุ่ม 5 ใบ v2 ที่ถูก patch: `git show HEAD -- reports/<SYM>.html | rtk proxy grep '^[+-]' | rtk proxy grep -v '^[+-][+-]'` ต้องเห็น**เฉพาะ**บรรทัดใน report-data/stock-meta (ไม่มี `.px`/`.big`/`.chg` ใน diff) — จดใน report
+- [ ] **Step 3** (★★ แก้ 13 ก.ย. 2569 — v2 cron **ตั้งใจ**แตะการ์ด literal ที่ derive จากราคา (P/E · mcap · P/S · ปันผล % · P/BV · % เป้า · ช่องสรุป) ผ่าน pass derived บน view ⇒ diff ที่ถูกต้อง = บรรทัด report-data/stock-meta **+ เฉพาะการ์ด literal เหล่านั้น** · สิ่งที่ต้องไม่เห็น: `.px` · `.big` · `.chg` · วันที่ header · label `#mCur` · class verdict (ช่องสำเนาที่ render จาก token) · `patch-failed` บนใบ v2 ต้อง 0 และ `patch-rejected` บนใบ v2 ≤ รายชื่อที่ census เปิดเผย): หลัง cron push → `git fetch && git merge --ff-only origin/main` ในสาขาถัดไป · ตรวจสุ่ม 5 ใบ v2 ที่ถูก patch: `git show HEAD -- reports/<SYM>.html | rtk proxy grep '^[+-]' | rtk proxy grep -v '^[+-][+-]'` ต้องเห็น**เฉพาะ**บรรทัดใน report-data/stock-meta (ไม่มี `.px`/`.big`/`.chg` ใน diff) — จดใน report
 
 ### Task 16: W22 → E (เฉพาะเมื่อ v1 = 0) · ไม่งั้น open-item
 
