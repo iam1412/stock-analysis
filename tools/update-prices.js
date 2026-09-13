@@ -58,7 +58,7 @@ const FLAGS = path.join(__dirname, '..', 'price-flags.json');
 // ชื่อเดือน + ตัวหา "วันที่ราคา" มาจาก tools/price-date.js ที่เดียว (ใช้ร่วมกับ gate — อย่าทำสำเนา)
 // ค่าที่ derive จากราคา (P/E · % ของราคาเป้า) — กติกาเดียวกับที่ gate ใช้ตรวจ E41/E42/W15 (ห้ามทำสำเนาความรู้)
 // fmtMos + MOS_BIG_RE = รูป/ที่อยู่ของ .big — เจ้าของเดียวอยู่ที่ derived-values.js เพราะ W06 และ patchDerived#11 ใช้ตัวเดียวกัน
-const { patchDerived, fmtMos, MOS_BIG_RE } = require('./derived-values.js');
+const { patchDerived, yieldPlan, fmtMos, MOS_BIG_RE } = require('./derived-values.js');
 const { findPriceDate, findRestatedDate, findDiscPriceDate, allDiscDates, renderThaiDate, THAI_MONTHS } = require('./price-date.js');
 const RV = require('./report-values.js');   // ระยะ 2: format/derive มาตรฐานอยู่ที่นี่ (เจ้าของเดียว) — cron ใช้ร่วมกับ build/gate
 const { mosBand, fmtPrice, annualChg, styledRD } = RV;
@@ -621,10 +621,20 @@ function patchReport(html, p) {
 // ทำไมไม่เรียก patchDerived บนต้นฉบับตรง ๆ: ตัวอ่านของมันต้องเห็นค่าที่ render (currencyOf อ่าน .px = "{{rd:px}}" → null ·
 // ช่องผสม "~{{rd:analystTgt}} (-3%)" ต้องรู้ราคาเป้า) · วิธี: render token ทีละตัว → view + span ต่อ token →
 // patchDerived(view) → keepMap(view, patched) → วาง token กลับที่ขอบที่ map ได้
-//   · span ที่อักขระคงอยู่ครบและต่อเนื่อง = วาง token ตรงตำแหน่งนั้น
-//   · span ที่ถูกแก้ (หรือ render ว่างแล้วมีของแทรกตรงนั้น) = **token ชนะ**: ตัดส่วนที่ pass เขียนทับทิ้ง นับ overridden
+//   · span ไม่ว่างที่ "คงเดิม" (intact) = อักขระของมันคงอยู่ครบ + ต่อเนื่อง **และไม่มีอักขระแทรกชิดขอบทั้งสองฝั่ง**
+//     (ขอบซ้าย: before(s) === map[s] · ขอบขวา: after(e) === map[e-1]+1) → วาง token ตรงตำแหน่งนั้น
+//     ★ เงื่อนไขขอบ (fix round 1 · F1): LCS เก็บ "326.57" ไว้ใน "1326.57" ได้ครบและต่อเนื่อง ⇒ ถ้าตรวจแค่ตัว span
+//       ตัวอักษรที่แทรกชิดขอบจะถูกนับเป็น literal แล้ว **ติดกับ token** ("1{{rd:pxNum}}" · "~{{rd:baseEps}}5")
+//       รอบราคาถัดไปเลขค้างนั้นเกาะค่าใหม่เงียบ ๆ · แทรกชิดขอบ = กำกวมว่าเป็นของ token หรือ literal ⇒ ไปทาง token ชนะ
+//       (ลบชิดขอบโดยไม่แทรกอะไร = ไม่กำกวม ยังนับ intact — ผลลัพธ์เท่ากับทาง override ทุก byte แค่ไม่นับเป็น override)
+//   · span ไม่ว่างที่ถูกแก้ = **token ชนะ**: ตัด [before(s), after(e)) ของ pv ทิ้ง (ค่าที่ pass เขียนทับ + ของที่แทรกชิดขอบ) นับ overridden
 //     (ค่าที่ token ถือมาจาก values — JSON เป็นเจ้าของ · regex บน literal ไม่มีสิทธิ์เขียนทับ)
-// invariant: ลำดับ token ก่อน/หลังต้องเหมือนกันทุกตัว ไม่งั้น throw → patch-failed (เห็นในคิว ไม่เงียบ)
+//   · span ว่าง (render = "" เช่น scnNote) **ไม่เคย override** (F3): ไม่มีอักขระของตัวเองให้ตัด ⇒ แทรก token ที่ before(s)
+//     ไม่ทิ้งอักขระใดของ pv — literal ที่ pass แก้/แทรกชิด token ว่างต้องอยู่รอด (เดิมถูกกลืน เช่น "•"/"◦" หายทั้งตัว)
+//   · ขอบซ้ายทุกทาง clamp ≥ pos (ตำแหน่งที่ประกอบไปแล้ว) — ช่วงกำกวมของ span ที่ override ก่อนหน้าอาจกินมาถึงขอบ
+//     ของ token ถัดไปที่ชิดกัน (เดิม throw "ทับ token ก่อนหน้า" เมื่อ override ชิด {{rd:scnNote}})
+// invariant (throw → patch-failed เห็นในคิว ไม่เงียบ): ลำดับ token ก่อน/หลังเหมือนกันทุกตัว · และเมื่อไม่มี override
+// render(ผล) ต้องเท่ากับ view ที่ patch แล้วทุก byte (tripwire ของการวาง token ผิดที่แบบที่ F1 เจอ)
 // วัดทั้งคลังในหน่วยความจำ (ราคา ×1.03/×0.97/×1.1 · 869 ใบที่ย้ายได้): gate ตก 2/2607 (v1 วันนี้ 28/2607)
 const RD_TOKEN_SPLIT_RE = /(\{\{rd:[A-Za-z0-9]+\}\})/;
 function derivedPassV2(html, price, opts) {
@@ -649,28 +659,37 @@ function derivedPassV2(html, price, opts) {
   const after = (i) => { for (let j = i; j < view.length; j++) if (map[j] >= 0) return map[j]; return pv.length; };
   let out = '', pos = 0, overridden = 0;
   for (const [s, e, tok] of spans) {
-    let intact = e > s;
-    for (let i = s; intact && i < e; i++) if (map[i] < 0 || (i > s && map[i] !== map[i - 1] + 1)) intact = false;
     let ns, ne;
-    if (intact) { ns = map[s]; ne = map[e - 1] + 1; }
-    else {
-      ns = before(s); ne = after(e);
-      // span ว่างที่ไม่มีอะไรแทรก (ns === ne) = ไม่มีอะไรให้ตัด ไม่นับ
-      if (e > s || ne > ns) overridden++;
+    if (e === s) {
+      // span ว่าง: ไม่มีอะไรให้ตัด ไม่นับ override — แทรกที่ขอบซ้ายของช่องว่าง (อักขระที่แทรกตรงนั้นอยู่ต่อท้าย token)
+      ns = ne = Math.max(before(s), pos);
+    } else {
+      let intact = map[s] >= 0 && before(s) === map[s] && after(e) === map[e - 1] + 1;
+      for (let i = s + 1; intact && i < e; i++) if (map[i] !== map[i - 1] + 1) intact = false;
+      if (intact) { ns = map[s]; ne = map[e - 1] + 1; }
+      else { ns = Math.max(before(s), pos); ne = Math.max(after(e), ns); overridden++; }
     }
-    if (ns < pos) throw new Error(`derivedPassV2: ขอบของ ${tok} ทับ token ก่อนหน้า — วางกลับไม่ได้`);
     out += pv.slice(pos, ns) + tok;
-    pos = Math.max(ns, ne);
+    pos = Math.max(pos, ne);
   }
   out += pv.slice(pos);
   const back = out.split(RD_TOKEN_SPLIT_RE).filter((_, i) => i % 2);
   if (back.length !== tokens.length || back.some((t, i) => t !== tokens[i]))
     throw new Error(`derivedPassV2: ลำดับ token หลังประกอบกลับไม่ตรงต้นฉบับ (${tokens.length} → ${back.length})`);
+  if (!overridden && RV.renderValues(out, rd, sm) !== pv)
+    throw new Error('derivedPassV2: ไม่มี override แต่ render(ผล) ≠ view ที่ patch แล้ว — วาง token ผิดที่');
   return { html: out, changes: dv.changes, overridden };
 }
 
 // v2: stock-meta เป็นกระจกของ values/fv — เขียน **หลัง** pass derived (JSON เป็นเจ้าของ ชนะค่าที่ patchDerived อ่านจากการ์ด)
 // pe/dividendYield แตะเฉพาะเมื่อเดิม (smOrig — ก่อน patch) ไม่ใช่ null: ใบขาดทุนตั้งใจ pe:null ต้องคง null
+// ★ ทศนิยม (fix round 1 · F2): เปลี่ยนได้แค่ "รูป" ไม่ใช่ "ค่า" — ใช้กติกาเดียวกับตัวเขียน v1 (derived-values.js)
+//   · pe = ทศนิยมของค่าเดิม clamp 1–2 (กติกา stock-meta.pe ใน patchDerived)
+//   · dividendYield = yieldMetaPlan(...).dec (ตามการ์ดที่เป็นฐาน · นิ่งไม่หดตาม JSON ที่ตัด 0 ท้าย) · ตัดสินไม่ได้ = ทศนิยมค่าเดิม clamp 1–2
+//   · yield บวกห้ามปัดเป็น 0 (0 = "ไม่จ่าย/ไม่ประกาศ" ของ yieldMetaPlan + index) — ถอยไป 2 ตำแหน่ง ต่ำสุด 0.01
+//   เดิมปัด 1 ตำแหน่งตายตัว: PWR 0.07 → 0.1 (+50%) · ราคา ×1.5 → 0 ทั้งที่ gate ผ่าน
+const decOfNum = (v) => (String(v).split('.')[1] || '').length;
+const clampDec12 = (v) => Math.min(2, Math.max(decOfNum(v), 1));
 function mirrorStockMetaV2(html, smOrig) {
   const rd = RM.readReportData(html).data;
   const m = html.match(RM.STOCK_META_PARTS_RE);
@@ -678,8 +697,15 @@ function mirrorStockMetaV2(html, smOrig) {
   const sm = JSON.parse(m[2]);
   const d = RV.derive(rd, sm);
   sm.price = d.px; sm.mos = round(d.mos, 1); sm.upside = round(d.upside, 1);
-  if (d.pe != null && smOrig.pe != null) sm.pe = round(d.pe, 2);
-  if (d.yield != null && smOrig.dividendYield != null) sm.dividendYield = round(d.yield, 1);
+  if (d.pe != null && smOrig.pe != null) sm.pe = round(d.pe, clampDec12(smOrig.pe));
+  if (d.yield != null && smOrig.dividendYield != null) {
+    // แผนของ v1 อ่าน stock-meta "ก่อน patch" คู่กับการ์ดที่ patch แล้ว — จำลองให้ตรง: view ที่ render แล้ว + smOrig
+    const orig = html.replace(RM.STOCK_META_PARTS_RE, (x, a, b, z) => a + '\n' + JSON.stringify(smOrig) + '\n' + z);
+    const plan = yieldPlan(RV.renderValues(orig, rd, smOrig), d.px).meta;
+    let y = round(d.yield, plan ? plan.dec : clampDec12(smOrig.dividendYield));
+    if (y === 0 && d.yield > 0) y = round(d.yield, 2) || 0.01;
+    sm.dividendYield = y;
+  }
   return html.replace(RM.STOCK_META_PARTS_RE, (x, a, b, z) => a + '\n' + JSON.stringify(sm) + '\n' + z);
 }
 
@@ -777,44 +803,55 @@ function commitBody(updated, frozen) {
 //   node tools/update-prices.js --heal-derived --prose --write   # + % ของราคาเป้าที่เขียนในย่อหน้า (ต้องรีวิว diff)
 // ★ หลังเขียน: npm run build → node tools/preserve-dates.js → npm run build (คืนวันที่ "อัปเดตล่าสุด" เดิม —
 //   ซ่อมค่า derive ไม่ใช่ re-analysis จึงห้ามดันทั้งคลังขึ้นหน้าแรก)
+// ★ รายไฟล์ try/catch (fix round 1 · F6): ทาง v2 (derivedPassV2/keepMap/renderValues) throw ได้ — เดิมไฟล์เดียว throw
+//   = ทั้งรอบ --heal-derived ล้มกลางคลัง · ตอนนี้พิมพ์ "⛔ <ไฟล์> <ข้อความ>" แล้วไปต่อ · สรุปนับจำนวน · exit ≠ 0 เมื่อมีตัวล้ม
+//   (opts.dir = โฟลเดอร์รายงาน สำหรับเทส · คืน { touched, total, failed } ให้ main ตั้ง exit code)
 function healDerived(opts) {
-  const files = fs.readdirSync(REPORTS).filter((f) => /\.html$/i.test(f)).sort()
+  const dir = opts.dir || REPORTS;
+  const files = fs.readdirSync(dir).filter((f) => /\.html$/i.test(f)).sort()
     .filter((f) => !opts.only.size || opts.only.has(f.replace(/\.html$/i, '').toUpperCase()));
   let touched = 0, total = 0, noPrice = 0;
+  const failed = [];
   for (const f of files) {
-    const fp = path.join(REPORTS, f);
-    const html = fs.readFileSync(fp, 'utf8');
-    const rdH = (RM.readReportData(html) || {}).data;
-    let px, r;
-    if (RV.isV2(rdH)) {
-      // v2: ราคาตัวตั้ง = values.px (header เป็น {{rd:px}}) · pass เดียวกับ cron (derivedPassV2) + กระจก stock-meta
-      px = rdH.values && rdH.values.px;
-      if (!(px > 0)) { noPrice++; continue; }
-      const smH = RM.readStockMeta(html);
-      if (!smH) { noPrice++; continue; }
-      const p2 = derivedPassV2(html, px, { prose: opts.prose });
-      r = { html: mirrorStockMetaV2(p2.html, smH), changes: p2.changes.concat(p2.overridden ? [`token ชนะ ${p2.overridden} span`] : []) };
-    } else {
-      // ราคาที่ใช้เป็นตัวตั้ง = ราคาใน header (.px) — ตัวเดียวกับที่ gate ใช้เทียบ (E41/E42) ไม่ใช่ stock-meta
-      const hp = RM.readHeaderPrice(html);
-      px = hp ? hp.price : null;
-      if (!(px > 0)) { noPrice++; continue; }
-      r = patchDerived(html, px, { prose: opts.prose });
-    }
-    if (!r.changes.length || r.html === html) continue;
-    touched++; total += r.changes.length;
-    console.log(`${opts.write ? '✎' : '·'} ${f.replace(/\.html$/i, '').padEnd(10)} ราคา ${px}`);
-    for (const c of r.changes) console.log(`    ${c}`);
-    if (opts.write) {
-      const g = gateAfterPatch(r.html, f);
-      if (!g.ok) { console.log(`    ⛔ ไม่เขียน — gate ตก ${g.codes.join(',')} (${g.detail.slice(0, 120)})`); continue; }
-      fs.writeFileSync(fp, r.html);
+    const fp = path.join(dir, f);
+    try {
+      const html = fs.readFileSync(fp, 'utf8');
+      const rdH = (RM.readReportData(html) || {}).data;
+      let px, r;
+      if (RV.isV2(rdH)) {
+        // v2: ราคาตัวตั้ง = values.px (header เป็น {{rd:px}}) · pass เดียวกับ cron (derivedPassV2) + กระจก stock-meta
+        px = rdH.values && rdH.values.px;
+        if (!(px > 0)) { noPrice++; continue; }
+        const smH = RM.readStockMeta(html);
+        if (!smH) { noPrice++; continue; }
+        const p2 = derivedPassV2(html, px, { prose: opts.prose });
+        r = { html: mirrorStockMetaV2(p2.html, smH), changes: p2.changes.concat(p2.overridden ? [`token ชนะ ${p2.overridden} span`] : []) };
+      } else {
+        // ราคาที่ใช้เป็นตัวตั้ง = ราคาใน header (.px) — ตัวเดียวกับที่ gate ใช้เทียบ (E41/E42) ไม่ใช่ stock-meta
+        const hp = RM.readHeaderPrice(html);
+        px = hp ? hp.price : null;
+        if (!(px > 0)) { noPrice++; continue; }
+        r = patchDerived(html, px, { prose: opts.prose });
+      }
+      if (!r.changes.length || r.html === html) continue;
+      touched++; total += r.changes.length;
+      console.log(`${opts.write ? '✎' : '·'} ${f.replace(/\.html$/i, '').padEnd(10)} ราคา ${px}`);
+      for (const c of r.changes) console.log(`    ${c}`);
+      if (opts.write) {
+        const g = gateAfterPatch(r.html, f);
+        if (!g.ok) { console.log(`    ⛔ ไม่เขียน — gate ตก ${g.codes.join(',')} (${g.detail.slice(0, 120)})`); continue; }
+        fs.writeFileSync(fp, r.html);
+      }
+    } catch (e) {
+      failed.push(f);
+      console.log(`⛔ ${f} ${e.message}`);
     }
   }
   console.log('\n' + '─'.repeat(50));
-  console.log(`heal-derived: ${touched}/${files.length} ไฟล์มีค่าค้าง • แก้ ${total} จุด${opts.prose ? ' (รวม prose)' : ''}${noPrice ? ` • ข้าม ${noPrice} ไฟล์ (อ่านราคาไม่ได้)` : ''}`);
+  console.log(`heal-derived: ${touched}/${files.length} ไฟล์มีค่าค้าง • แก้ ${total} จุด${opts.prose ? ' (รวม prose)' : ''}${noPrice ? ` • ข้าม ${noPrice} ไฟล์ (อ่านราคาไม่ได้)` : ''}${failed.length ? ` • ⛔ ล้ม ${failed.length} ไฟล์` : ''}`);
   if (!opts.write) console.log('(dry-run — ใส่ --write เพื่อเขียนจริง)');
   console.log('');
+  return { touched, total, failed };
 }
 
 async function main() {
@@ -828,7 +865,8 @@ async function main() {
   const ONLY = new Set(process.argv.slice(2).filter((a) => !a.startsWith('--')).map((s) => s.replace(/\.html$/i, '').toUpperCase()));
   // โหมดซ่อมค่าที่ derive จากราคา — คนละทางเดินกับ cron (ไม่ fetch ไม่แตะราคา/วันที่/กราฟ/คิว flags)
   if (process.argv.includes('--heal-derived')) {
-    healDerived({ write: WRITE, prose: process.argv.includes('--prose'), only: ONLY });
+    const h = healDerived({ write: WRITE, prose: process.argv.includes('--prose'), only: ONLY });
+    if (h.failed.length) process.exitCode = 1;   // ไฟล์ที่ล้มต้องไม่ผ่านเงียบ (CI/คนสั่งเห็นจาก exit code)
     return;
   }
   if (FORCE && !ONLY.size) { console.error('✗ --force ต้องระบุ SYMBOL ชัด ๆ (กันข้าม freeze ทั้งรีโป)'); process.exit(1); }
@@ -1051,6 +1089,6 @@ function fvOf(html, sm) {
   return r && RV.isV2(r.data) ? r.data.fv : sm.fairValue;
 }
 
-module.exports = { derivedPassV2, mirrorStockMetaV2, fvOf, mosBand, fmtPrice, fmtLike, toYahooSymbol, fetchChart, buildChartData, niceBounds, annualChg, decide, currencyMatches, isIntradayQuote, detectMixedBasis, detectStaleQuotes, missedSessions, probeCap, capByCohort, controlTickers, unverifiedCohorts, classifyStale, patchReport, gateAfterPatch, mergeFlags, commitFlags, styledRD, commitBody, THAI_MONTHS, MOS_FLIP_DEADBAND_PP };
+module.exports = { derivedPassV2, mirrorStockMetaV2, healDerived, fvOf, mosBand, fmtPrice, fmtLike, toYahooSymbol, fetchChart, buildChartData, niceBounds, annualChg, decide, currencyMatches, isIntradayQuote, detectMixedBasis, detectStaleQuotes, missedSessions, probeCap, capByCohort, controlTickers, unverifiedCohorts, classifyStale, patchReport, gateAfterPatch, mergeFlags, commitFlags, styledRD, commitBody, THAI_MONTHS, MOS_FLIP_DEADBAND_PP };
 
 if (require.main === module) main().catch((e) => { console.error(e); process.exit(1); });

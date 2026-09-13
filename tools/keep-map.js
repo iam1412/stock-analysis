@@ -9,9 +9,11 @@
  * patchDerived (regex บน HTML ที่ render แล้ว) แก้การ์ด literal · keep-map บอกว่า span ของ token แต่ละตัว
  * ถูกแตะหรือไม่ และขอบของมันไปอยู่ตรงไหนใน view ที่ patch แล้ว เพื่อวาง token กลับที่เดิม
  * ★ D (จำนวนอักขระที่ต่าง) ใหญ่เกิน MAX_D = throw — trace ของ Myers กินหน่วยความจำ O(D²)
- *   cron เปลี่ยนแค่ตัวเลขในการ์ดไม่กี่ใบ (D หลักสิบ) · D ใหญ่ = มีอะไรผิดปกติ ให้ไปเป็น patch-failed ดีกว่าเดา
+ *   cron เปลี่ยนแค่ตัวเลขในการ์ดไม่กี่ใบ (D หลักสิบ · จำลองทั้งคลัง: view ใหญ่สุด 33 KB) · D ใหญ่ = มีอะไรผิดปกติ
+ *   ให้ไปเป็น patch-failed ดีกว่าเดา · วัดบนสตริง 33 KB (review Task 11 F5): D≈2000 = 13 ms / 70 MB ·
+ *   D≈8000 = 158 ms / 288 MB · D≈19000 = 904 ms / 598 MB ⇒ เพดาน 4000 (เดิม 20000 ปล่อยให้จองเกือบ 1.6 GB ก่อน throw)
  */
-const MAX_D = 20000;
+const MAX_D = 4000;
 
 function keepMap(a, b) {
   const n0 = a.length, m0 = b.length;
