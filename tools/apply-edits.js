@@ -27,13 +27,18 @@
  *   — `@@` apply ก่อนเสมอ แล้วค่อยทำ JSON ops ต่อบนผลลัพธ์นั้น ก่อนเขียนไฟล์ครั้งเดียวรวมกัน):
  *   --set <path>=<json>   ตั้งค่าใน report-data ตาม path จุด (`a.b.c` · array index ใช้เลขล้วนเช่น `scenarios.0.tgt`)
  *   --del <path>          ลบคีย์ใน report-data ตาม path
- *   --set-meta <path>=<json>   ตั้งค่าใน stock-meta (path ระดับเดียว เช่น `fairValue`)
+ *   --set-meta <path>=<json>   ตั้งค่าใน stock-meta (path ระดับเดียว เช่น `roe`)
  *   ตัวอย่าง:  node tools/apply-edits.js reports/<SYM>.html --set fv=210 --set values.eps=9.57 --del values.analystTgt
  *   <json> parse ด้วย JSON.parse ก่อน (ตัวเลข/boolean/null/สตริงที่ quote แล้วผ่านอยู่แล้ว) — parse ไม่ผ่านค่อยลอง
  *   ตีความเป็น number/true/false/null ตรง ๆ · ไม่ผ่านทั้งคู่ = error ไม่เขียนไฟล์
  *   --set/--del ใช้ได้เฉพาะรายงาน **v2** (`report-data.v === 2` มี `values`) — ไฟล์ v1 ต้อง error "ไฟล์ v1" ทันที
  *   ไม่แตะไฟล์เลย (ใบ v1 แก้เลขผูกราคาด้วยบล็อก `@@` ตามเดิม) · `--set-meta` ใช้ได้ทั้ง v1/v2 (บล็อก stock-meta
  *   ไม่ขึ้นกับ schema v2) · หลังแก้เสร็จ validate ด้วย `RV.validateValues` (เมื่อเป็น v2) ก่อนเขียนไฟล์จริงเสมอ
+ *   ★ fix round 1 (R1): บนไฟล์ v2 เท่านั้น `report-data.fv` เป็นเจ้าของเดียวของ Fair Value —
+ *   `--set fv=<n>` ซิงก์ `stock-meta.fairValue` ให้เองในคำสั่งเดียวกัน (กระจกที่ `tools/update-prices.js`
+ *   (`mirrorStockMetaV2`) เขียนซ้ำทุกรอบ cron/healDerived อยู่แล้ว) ส่วน `--set-meta fairValue=…` บนไฟล์ v2
+ *   ถูกปฏิเสธ (error ชี้ไปใช้ `--set fv` แทน) กันไม่ให้เขียนกระจกตรง ๆ แล้วไม่มีอะไรซิงก์ให้ตรงกับ report-data.fv
+ *   อีก — บนไฟล์ **v1** `--set-meta fairValue=…` ยังใช้ได้ปกติ (v1 ไม่มีกระจก stock-meta.fairValue คือเจ้าของเดียวเอง)
  *
  * ★★★ stdin: ผู้เรียก**ประกาศ**ว่าจะส่ง stdin มาไหม แทนที่จะให้สคริปต์เดาจากจังหวะ — ห้ามย้อนกลับไปสองทางที่
  *   เคยลองแล้วพังทั้งคู่ (เก็บไว้เป็นบทเรียน):
@@ -224,6 +229,13 @@ if (ops.length) {
   if ((setOps.length || delOps.length) && !RV.isV2(rd))
     die(`✗ ${file} เป็นไฟล์ v1 (ไม่มี report-data.v = 2 / values) — --set/--del ใช้ได้เฉพาะรายงาน v2 เท่านั้น (ไฟล์ v1 แก้เลขผูกราคาด้วยบล็อก @@ ตามเดิม)`);
 
+  // fix round 1 · R1: ไฟล์ v2 report-data.fv เป็นเจ้าของเดียวของ Fair Value — stock-meta.fairValue เป็นแค่กระจก
+  // (tools/update-prices.js: mirrorStockMetaV2 เขียนให้อัตโนมัติทุกรอบ cron/healDerived) ⇒ ห้ามแก้กระจกตรง ๆ ด้วย
+  // --set-meta เพราะจะสร้างค่าที่ไม่มีอะไรมาซิงก์ให้ตรงกับ report-data.fv อีก (ค้างจนกว่าจะมีคน --set fv ทับ)
+  const setsMirroredFV = setMetaOps.find((o) => o.path === 'fairValue');
+  if (setsMirroredFV && RV.isV2(rd))
+    die(`✗ --set-meta fairValue ใช้ไม่ได้กับไฟล์ v2 (${file}) — report-data.fv เป็นเจ้าของเดียวของ Fair Value ส่วน stock-meta.fairValue เป็นกระจกที่ cron เขียนให้เองเสมอ ใช้ --set fv=<n> แทน (mirror stock-meta.fairValue ให้อัตโนมัติในคำสั่งเดียวกัน)`);
+
   // path แบบ a.b.c — segment ที่เป็นตัวเลขล้วนตีความเป็น array index (เช่น scenarios.0.tgt)
   const keyOf = (seg) => (/^\d+$/.test(seg) ? Number(seg) : seg);
   function parentOf(root, path) {
@@ -260,6 +272,12 @@ if (ops.length) {
     }
   }
 
+  // fix round 1 · R1: --set fv=<n> บนไฟล์ v2 ต้องซิงก์กระจก stock-meta.fairValue ในคำสั่งเดียวกัน (ค่าสุดท้ายของ
+  // rd.fv หลัง apply ทุก op ข้างบนแล้ว — ไม่ใช่แค่ค่าที่พิมพ์ใน --set fv=<n> เผื่อมีหลาย op แก้ path เดียวกัน)
+  // ไม่แตะ stock-meta เลยถ้าไม่มี --set fv ในคำสั่งนี้ (setMetaOps อื่น ๆ ยังทำงานตามเดิมทุกอย่าง)
+  const mirroredFV = RV.isV2(rd) && setOps.some((o) => o.path === 'fv');
+  if (mirroredFV) sm.fairValue = rd.fv;
+
   // validate เฉพาะไฟล์ v2 — ต้องผ่านก่อนเขียนเสมอ (fv:0/priceDate เพี้ยน/คีย์แปลกใน values ฯลฯ ต้องจับที่นี่ ไม่ใช่ตอน build)
   if (RV.isV2(rd)) {
     try { RV.validateValues(rd, sm); }
@@ -267,7 +285,7 @@ if (ops.length) {
   }
 
   if (setOps.length || delOps.length) work = work.replace(RM.REPORT_DATA_PARTS_RE, (m, a, body, z) => a + '\n' + RV.styledRD(rd) + '\n' + z);
-  if (setMetaOps.length) work = work.replace(RM.STOCK_META_PARTS_RE, (m, a, b, z) => a + '\n' + JSON.stringify(sm) + '\n' + z);
+  if (setMetaOps.length || mirroredFV) work = work.replace(RM.STOCK_META_PARTS_RE, (m, a, b, z) => a + '\n' + JSON.stringify(sm) + '\n' + z);
 }
 
 fs.writeFileSync(file, work);

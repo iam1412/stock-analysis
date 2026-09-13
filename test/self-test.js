@@ -121,22 +121,24 @@ const conv = (id, h, desc) => {
   CONVERGED.add(id);
 };
 
-// convV2 (E-policy ระยะ 2 ส่วน D Task 13): เคส convergence ของ healer 'build' บนไฟล์ v2 —
-// ไฟล์ v2 render (expandReport) จาก JSON (report-data/stock-meta) เดียวกันเสมอ ⇒ "ตัวซ่อม" ไม่ใช่ฟังก์ชันแยก
-// เหมือน patchDerived แต่คือ "expand ใหม่จาก JSON ที่ถูกต้อง" — ไม่มีอะไรต้องทำนอกจากนั้น
-// mutHtmlFn: mutate JSON บน **ไฟล์ v2 ดิบ (ก่อน expand)** — ใช้ mutJson(scriptId, fn) จากด้านบน (ต้อง mutate
-// ก่อน expand เสมอ ไม่งั้น HTML ที่ render แล้วยังถือค่าเดิม — บทเรียนเดียวกับ review Task 10 ข้อ 2 บรรทัด ~1160)
-const convV2 = (id, mutHtmlFn, desc) => {
+// convV2 (E-policy ระยะ 2 ส่วน D Task 13 · แก้ตาม review รอบ 1 Finding 1/R2): เคส convergence ของไฟล์ v2 ที่ "ซ่อมจริง"
+// ★ เวอร์ชันเดิม (ก่อน fix round 1) reset ไป expand fixture ที่ "ไม่เคยเสีย" แทนการซ่อม `broken` ตัวเดิม — พิสูจน์แค่
+//   "ไฟล์ที่ไม่เคยเสีย ไม่เสีย" (เกือบ tautology) ไม่ใช่ "มีตัวซ่อมอัตโนมัติจริง" ตามที่ review ชี้ — เวอร์ชันนี้แก้แล้ว:
+//   healFn ต้องเป็นฟังก์ชันจริงที่ production เรียก (เช่น mirrorStockMetaV2 ที่ patchReport/healDerived ทาง v2 เรียก)
+//   รับ/คืน **raw HTML ก่อน expand** แล้วซ่อม `broken` ตัวเดิมจริง ๆ (ไม่ใช่ตัวจำลอง/ไม่ใช่ reset ไปใช้ของสด)
+// mutRawFn: mutate JSON บนไฟล์ v2 ดิบ (ก่อน expand) ให้เสีย — ใช้ mutJson(scriptId, fn) จากด้านบน
+const convV2 = (id, mutRawFn, healFn, desc) => {
   const raw = FX.BBL_V2();
-  const broken = mutHtmlFn(raw);
+  const broken = mutRawFn(raw);
   if (broken === raw) { ok(false, `${desc} → mutation ไม่เปลี่ยนอะไร (anchor ไม่ match — โครง BBL-v2 เปลี่ยน?)`); return; }
   const brokenExpanded = expandReport(broken);
   ok(allIds(checkHtml(brokenExpanded, 'BBL.html')).has(id), `${desc} → ${id} ยิง (v2 JSON เสีย)`);
-  // healer 'build' = แก้ JSON กลับ (fixture เดิม) แล้ว expand ใหม่ — ไม่เรียกฟังก์ชันซ่อมใด ๆ
-  const healedOnce = expandReport(raw);
-  const healedTwice = expandReport(raw);
-  ok(!allIds(checkHtml(healedOnce, 'BBL.html')).has(id) && healedOnce === healedTwice,
-    `${desc} → JSON ถูกต้อง + expand (healer 'build') → ${id} เงียบ + idempotent`);
+  const healedRaw = healFn(broken);
+  ok(healedRaw !== broken, `${desc} → ตัวซ่อมแก้ไฟล์จริง (ไม่ใช่ no-op)`);
+  const healedExpanded = expandReport(healedRaw);
+  ok(!allIds(checkHtml(healedExpanded, 'BBL.html')).has(id), `${desc} → ตัวซ่อมจริงทำให้ ${id} เงียบ`);
+  const healedTwice = expandReport(healFn(healedRaw));
+  ok(healedExpanded === healedTwice, `${desc} → ซ่อมซ้ำไม่เปลี่ยน (idempotent)`);
   CONVERGED.add(id);
 };
 
@@ -1149,9 +1151,13 @@ require('./parser-lint.js')(ok);
 {
   const E_GRANDFATHERED = new Set(Array.from({ length: 43 }, (_, i) => 'E' + String(i + 1).padStart(2, '0')));   // E01–E43 ที่มีก่อนระยะ 1 — ห้ามเพิ่มชื่อในนี้
   // patchDerived#4 = พาสเขียน prose (opt-in `{prose:true}`) — cron ไม่รันพาสนี้เอง จึงไม่นับเป็น healer มาตรฐานที่ E-policy ยอมรับ
-  // 'build' (ระยะ 2 ส่วน D Task 13) = ไม่ใช่ฟังก์ชันซ่อมแยก แต่คือ render (expandReport) จาก JSON (report-data/
-  // stock-meta/values) — ใช้กับ error/warning ของไฟล์ v2 ที่ตัวตั้งเป็นสำเนาใน JSON ล้วน ๆ (เคส convergence: convV2())
-  const HEALERS = new Set(['patchReport', 'build', ...[1, 2, 3, 5, 6, 7, 8, 9, 10, 11].map((n) => 'patchDerived#' + n)]);
+  // ★ 'build' เคยอยู่ในเซ็ตนี้ (Task 13 ก่อน fix round 1) — ถอดออกแล้วตาม review รอบ 1 Finding 1/R2: ไม่มี check
+  //   ไหนที่ "เสียเฉพาะเพราะ HTML render ค้างจาก JSON" แล้วซ่อมได้ด้วยการ expand ใหม่เฉย ๆ โดยไม่มีฟังก์ชันซ่อมจริง —
+  //   ไฟล์ v2 ที่ commit ไว้ (reports/) เป็น content-only template ที่มี token {{rd:…}} ค้างอยู่เสมอจนกว่าจะ build
+  //   (ไม่เคยมี "เลขที่ render ไปแล้วค้าง" ในไฟล์ต้นฉบับเอง) ⇒ คู่ f69/f44 ที่เคยใช้สาธิต 'build' จริง ๆ ไม่ตรงกันได้
+  //   เฉพาะตอน JSON สองจุดขัดกัน (JSON-vs-JSON) ซึ่งต้องมีฟังก์ชันซ่อมจริง (mirrorStockMetaV2 ที่ patchReport เรียก)
+  //   ไม่ใช่แค่ "expand ใหม่" ⇒ healer ที่ถูกต้องของเคสนั้นคือ 'patchReport' (มีอยู่แล้วในเซ็ตนี้) ไม่ใช่ 'build'
+  const HEALERS = new Set(['patchReport', ...[1, 2, 3, 5, 6, 7, 8, 9, 10, 11].map((n) => 'patchDerived#' + n)]);
   for (const id of ['W16', 'W17', 'W19', 'W20']) ok(CHECKS.find((c) => c.id === id).level === 'error', `ระยะ 1: ${id} ต้องเป็น error (ยกจาก warn 12 ก.ย. 2569 — คงชื่อ)`);
   const errs = CHECKS.filter((c) => c.level === 'error');
   ok(errs.length >= 43, `E-policy: มี error ≥43 ตัว (ได้ ${errs.length})`);
@@ -1241,22 +1247,48 @@ require('./parser-lint.js')(ok);
   ok(c.source === base2 && buildCtx(base2, 'BBL.html', { source: FX.BBL_V2() }).source === FX.BBL_V2(), 'ctx.source = opts.source หรือ html เดิม');
 }
 
-// ── ระยะ 2 ส่วน D Task 13: E-policy รู้จัก healer 'build' + เคส convergence ทาง v2 ของ W22 ──
-// เตรียมให้ Task 16 ตัดสินว่าจะยก W22 เป็น error (healer:'build') ได้ไหม — ที่นี่ **ไม่ยกระดับ**
-// (level/healer ของ W22 ใน CHECKS ยังเป็น warn/null เหมือนเดิม ตามที่ยืนยันไว้แล้วในบล็อก W21/W22/W23 ด้านบน)
-// แค่พิสูจน์ว่า "healer build" (= render จาก JSON ที่ถูกต้อง ไม่มีฟังก์ชันซ่อมแยก) ใช้ได้จริงกับ W22
+// ── ระยะ 2 ส่วน D Task 13 (แก้ตาม review รอบ 1 Finding 1/R1/R2): E-policy รู้จัก healer 'patchReport' บนไฟล์ v2
+// (mirrorStockMetaV2) + เคส convergence จริงของ W22 — เตรียมให้ Task 16 ตัดสินว่าจะยก W22 เป็น error ได้ไหม —
+// ที่นี่ **ไม่ยกระดับ** (level/healer ของ W22 ใน CHECKS ยังเป็น warn/null เหมือนเดิม ตามที่ยืนยันไว้แล้วในบล็อก
+// W21/W22/W23 ด้านบน) แค่พิสูจน์ว่ามีฟังก์ชันซ่อมจริงสำหรับคู่ f69 (stock-meta.fairValue) ↔ f44 (report-data.fv)
 {
+  const UP = require('../tools/update-prices.js');   // อ้างผ่าน object เสมอ (UP.mirrorStockMetaV2) ไม่ destructure —
+  // ต้อง monkey-patch ได้จริงตอนพิสูจน์ discriminate ด้านล่าง (destructure จะจับ closure เดิมไว้ตายตัว — บทเรียน
+  // เดียวกับที่ review Task 12 finding 1 เจอ: RM/DV ที่ derived-values.js/report-meta.js เรียกผ่าน const ภายในเอง)
+
   // เลือกคู่ f69 (stock-meta.fairValue) ↔ f44 (report-data.fv) แทน f54 (vcell กรอบ) ↔ f43 (.fv-box) ตามที่ brief
   // เตือนให้ยืนยันก่อน — ทดลองจริงแล้ว: f54 how:'range' เทียบข้อความ "กรอบ" สองจุดที่ render จาก **token เดียวกัน**
   // {{rd:fvLow}}/{{rd:fvHigh}} (fv-box บรรทัด .l + vcell "มูลค่าเหมาะสม") ⇒ mutate values.fvLow ก่อน expand ทำให้
   // ทั้งสองจุดขยับพร้อมกันเสมอ ไม่มีวันไม่ตรงกัน (ผลจริง: ยิง E20 "FV อยู่นอกกรอบ" ไม่ใช่ W22 — render invariant
   // ไม่ใช่ของเสีย 2 จุด) · f69/f44 อยู่คนละ script (id="stock-meta" กับ id="report-data") จึง mutate ตัวเดียวพังได้จริง
-  convV2('W22', mutJson('stock-meta', (d) => { d.fairValue *= 1.5; }), 'v2: stock-meta.fairValue ×1.5 (ไม่ผ่าน report-data.fv)');
+  // ★ ตัวซ่อม = mirrorStockMetaV2 (fix round 1 · R1 เพิ่ม sm.fairValue = rd.fv ในฟังก์ชันนี้) — โค้ดเดียวกับที่
+  // patchReport (v2 branch, ~line 508) และ healDerived (v2 branch, ~line 835) เรียกจริงตอน cron/heal-derived
+  // ไม่ใช่ตัวจำลอง ⇒ ซ่อม `broken` ตัวเดิมจริง ๆ (แก้ Finding 1 — เดิม reset ไปใช้ fixture ที่ไม่เคยเสีย)
+  const fvMirrorMut = mutJson('stock-meta', (d) => { d.fairValue *= 1.5; });
+  convV2('W22', fvMirrorMut, (h) => UP.mirrorStockMetaV2(h, RM.readStockMeta(h)),
+    'v2: stock-meta.fairValue ×1.5 (ไม่ผ่าน report-data.fv) → healer patchReport (mirrorStockMetaV2)');
+
+  // พิสูจน์ discriminate จริง (review รอบ 1 R2 สั่งชัดเจน): mutant ที่ mirror "ไม่เขียน fairValue" (จำลองด้วยการ
+  // ห่อ mirrorStockMetaV2 จริงแล้วบังคับ fairValue กลับเป็นค่าที่ยังเสียเสมอ) ต้องทำให้เคสข้างบน fail ที่ขั้นตอน
+  // "ซ่อมแล้วเงียบ" — ไม่ใช่ผ่านลอย ๆ ไม่ว่ามีตัวซ่อมจริงหรือไม่
+  {
+    const real = UP.mirrorStockMetaV2;
+    const broken2 = fvMirrorMut(FX.BBL_V2());
+    const brokenFV = RM.readStockMeta(broken2).fairValue;
+    UP.mirrorStockMetaV2 = (h, smOrig) => mutJson('stock-meta', (d) => { d.fairValue = brokenFV; })(real(h, smOrig));
+    let stillFires;
+    try {
+      const healedMutant = expandReport(UP.mirrorStockMetaV2(broken2, RM.readStockMeta(broken2)));
+      stillFires = allIds(checkHtml(healedMutant, 'BBL.html')).has('W22');
+    } finally { UP.mirrorStockMetaV2 = real; }
+    ok(stillFires, 'v2: mutant "mirror ไม่เขียน fairValue" (คืนค่าที่เสียกลับเสมอ) → W22 ยังยิงอยู่หลัง "ซ่อม" — พิสูจน์ว่าเคส convergence ข้างบน discriminate จริง ไม่ใช่ผ่านลอย ๆ');
+    ok(UP.mirrorStockMetaV2 === real, 'v2: คืน UP.mirrorStockMetaV2 เดิมแล้วหลังพิสูจน์ mutant');
+  }
 
   // W21 (v2): ลบ <div class="sub"> (f67 .sub คำโปรย — required:true) → extractor อ่านไม่ได้ → W21
-  // f67 เป็น cadence write-once/owner worker (cron ไม่แตะ) ⇒ healer ของมัน = null คนละคลาสกับ 'build' ที่ render
-  // จาก JSON ⇒ **ไม่ลงทะเบียน CONVERGED('W21')** — ยังยกเป็น error ไม่ได้ในระยะนี้ (บันทึกไว้ให้ Task 16: ตัดสิน
-  // ได้เฉพาะ W22 เพราะมีเคส convergence ทาง build แล้ว ส่วน W21 ต้องรอตัวซ่อมของ worker)
+  // f67 เป็น cadence write-once/owner worker (cron ไม่แตะ — ไม่มีอะไรเทียบเท่า mirrorStockMetaV2 ให้เรียก) ⇒
+  // healer ของมันยังเป็น null ⇒ **ไม่ลงทะเบียน CONVERGED('W21')** — ยังยกเป็น error ไม่ได้ในระยะนี้ (บันทึกไว้ให้
+  // Task 16: ตัดสินได้เฉพาะ W22 เพราะมีเคส convergence จริงแล้ว ส่วน W21 ต้องรอตัวซ่อมของ worker)
   const v2Base = expandReport(FX.BBL_V2());
   expect('W21', 'warn', (h) => h.replace('<div class="sub">', ''), 'v2: ลบ <div class="sub"> (f67 required) → W21', v2Base);
 }

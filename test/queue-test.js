@@ -893,6 +893,9 @@ catch (e) { nFail++; console.error('✗ earnings-calendar-test ระเบิ�
     ok(rd.fv === 210, 'apply-edits --set: fv (top-level) เปลี่ยนจริง', String(rd.fv));
     ok(!('analystTgt' in rd.values), 'apply-edits --del: values.analystTgt หายจริง', JSON.stringify(rd.values));
     ok(out.includes('["ม.ค.26", 90]'), 'apply-edits: เขียนกลับด้วย styledRD (จุดกราฟบรรทัดเดียว)', out);
+    // fix round 1 · R1: --set fv=<n> บนไฟล์ v2 ต้องซิงก์กระจก stock-meta.fairValue ให้เองในคำสั่งเดียวกัน
+    const sm = readBlock(out, 'stock-meta');
+    ok(sm.fairValue === 210, 'apply-edits --set fv: stock-meta.fairValue ซิงก์ตาม rd.fv อัตโนมัติ (mirror)', String(sm.fairValue));
   }
 
   // (a2) path แบบ a.b.c รองรับ array index เป็นเลขล้วน (scenarios.N.field) ตามที่ Step 2 ระบุไว้
@@ -928,13 +931,32 @@ catch (e) { nFail++; console.error('✗ earnings-calendar-test ระเบิ�
     ok(fs.readFileSync(tmp, 'utf8') === V1_HTML, 'apply-edits --set บนไฟล์ v1: ไม่เขียนไฟล์เลย (v1 ยังแก้ด้วยบล็อก @@ เท่านั้น)');
   }
 
-  // (e) --set-meta fairValue=<ใหม่> — บล็อก stock-meta ใช้ได้ทั้ง v1/v2 (ไม่ผูกกับ schema v2)
+  // (e) fix round 1 · R1: --set-meta fairValue=<ใหม่> บนไฟล์ **v2** ต้องถูกปฏิเสธ — report-data.fv เป็นเจ้าของเดียว
+  //   ส่วน stock-meta.fairValue เป็นกระจกที่ cron (mirrorStockMetaV2) เขียนให้เองเสมอ แก้ตรง ๆ ด้วย --set-meta จะ
+  //   สร้างค่าที่ไม่มีอะไรมาซิงก์ให้ตรงกับ report-data.fv อีก (เดิม test นี้ทดสอบว่า "ใช้ได้" — พฤติกรรมเดิมนั้นคือ
+  //   ช่องโหว่ที่ review รอบ 1 (Finding 1) ชี้ให้แก้)
   {
     const tmp = writeTmp('setmeta.html', V2_HTML);
     const r = sh.run('node', ['tools/apply-edits.js', tmp, '--set-meta', 'fairValue=250']);
-    ok(r.code === 0, 'apply-edits --set-meta: exit 0', r.err || r.out);
+    ok(r.code !== 0 && /--set fv/.test(r.out + r.err), 'apply-edits --set-meta fairValue บนไฟล์ v2: exit ≠ 0 + ชี้ไปใช้ --set fv', r.out + r.err);
+    ok(fs.readFileSync(tmp, 'utf8') === V2_HTML, 'apply-edits --set-meta fairValue บนไฟล์ v2: ไม่เขียนไฟล์เลย');
+  }
+
+  // (e2) fix round 1 · R1: ไฟล์ **v1** ไม่มีกระจก stock-meta.fairValue (มันคือเจ้าของเดียวเอง) → --set-meta ยังใช้ได้ปกติ
+  {
+    const tmp = writeTmp('setmeta-v1.html', V1_HTML);
+    const r = sh.run('node', ['tools/apply-edits.js', tmp, '--set-meta', 'fairValue=250']);
+    ok(r.code === 0, 'apply-edits --set-meta fairValue บนไฟล์ v1: exit 0 (ยังใช้ได้ปกติ)', r.err || r.out);
     const sm = readBlock(fs.readFileSync(tmp, 'utf8'), 'stock-meta');
-    ok(sm.fairValue === 250, 'apply-edits --set-meta: stock-meta.fairValue เปลี่ยนจริง', String(sm.fairValue));
+    ok(sm.fairValue === 250, 'apply-edits --set-meta fairValue บนไฟล์ v1: stock-meta.fairValue เปลี่ยนจริง', String(sm.fairValue));
+  }
+
+  // (e3) fix round 1 · R1: --set fv + --set-meta fairValue พร้อมกันบนไฟล์ v2 → ยังถูกปฏิเสธ (ไม่ว่าจะมี --set fv ด้วยหรือไม่)
+  {
+    const tmp = writeTmp('setmeta-combo.html', V2_HTML);
+    const r = sh.run('node', ['tools/apply-edits.js', tmp, '--set', 'fv=210', '--set-meta', 'fairValue=250']);
+    ok(r.code !== 0 && /--set fv/.test(r.out + r.err), 'apply-edits --set fv + --set-meta fairValue พร้อมกัน (v2): exit ≠ 0', r.out + r.err);
+    ok(fs.readFileSync(tmp, 'utf8') === V2_HTML, 'apply-edits --set fv + --set-meta fairValue พร้อมกัน (v2): ไม่เขียนไฟล์เลย (all-or-nothing)');
   }
 
   // (f) ไม่มีทั้งบล็อก @@ และ --set/--del/--set-meta → ยัง exit ≠ 0 เหมือนของเดิม (STEP 5C ยังใช้ได้ปกติ)

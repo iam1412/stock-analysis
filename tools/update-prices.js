@@ -688,6 +688,10 @@ function derivedPassV2(html, price, opts) {
 }
 
 // v2: stock-meta เป็นกระจกของ values/fv — เขียน **หลัง** pass derived (JSON เป็นเจ้าของ ชนะค่าที่ patchDerived อ่านจากการ์ด)
+// ★ fairValue เป็นกระจกของ report-data.fv เสมอ (fix round 1 · R1 — review รอบแรกชี้ว่าเดิมไม่มีอะไรเขียนกลับเลย
+//   ทั้งที่คอมเมนต์ในไฟล์นี้เรียกมันว่า "กระจก" มาตั้งแต่แรก ⇒ ถ้า worker พิมพ์สองค่าไม่ตรงกัน ไม่มีอะไรซ่อมให้อัตโนมัติ) —
+//   เขียนแบบไม่มีเงื่อนไข (เหมือน price/mos/upside) ต่างจาก pe/dividendYield ที่แตะเฉพาะตอนเดิมไม่ null เพราะ fv
+//   เป็นช่องบังคับของ v2 เสมอ (validateValues ปฏิเสธไฟล์ที่ rd.fv ไม่ใช่ตัวเลข > 0)
 // pe/dividendYield แตะเฉพาะเมื่อเดิม (smOrig — ก่อน patch) ไม่ใช่ null: ใบขาดทุนตั้งใจ pe:null ต้องคง null
 // ★ ทศนิยม (fix round 1 · F2): เปลี่ยนได้แค่ "รูป" ไม่ใช่ "ค่า" — ใช้กติกาเดียวกับตัวเขียน v1 (derived-values.js)
 //   · pe = ทศนิยมของค่าเดิม clamp 1–2 (กติกา stock-meta.pe ใน patchDerived)
@@ -702,7 +706,7 @@ function mirrorStockMetaV2(html, smOrig) {
   if (!m) throw new Error('ไม่มีบล็อก stock-meta');
   const sm = JSON.parse(m[2]);
   const d = RV.derive(rd, sm);
-  sm.price = d.px; sm.mos = round(d.mos, 1); sm.upside = round(d.upside, 1);
+  sm.price = d.px; sm.mos = round(d.mos, 1); sm.upside = round(d.upside, 1); sm.fairValue = d.fv;
   if (d.pe != null && smOrig.pe != null) sm.pe = round(d.pe, clampDec12(smOrig.pe));
   if (d.yield != null && smOrig.dividendYield != null) {
     // แผนของ v1 อ่าน stock-meta "ก่อน patch" คู่กับการ์ดที่ patch แล้ว — จำลองให้ตรง: view ที่ render แล้ว + smOrig
