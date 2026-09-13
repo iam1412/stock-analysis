@@ -407,13 +407,22 @@ const cmp = (r, f) => r.compare.find((c) => c.field === f);
       && MG.visibleCronDiff('<div class="ret neg">+2%</div>', '<div class="ret neg">+2%</div>', {}).retClass === 0
       && MG.visibleCronDiff('<div class="ret neg">+2%</div>', '<div class="ret pos">+2%</div>', {}).retClass === 1, '14a: สีช่อง .ret v1 ค้าง (neg บน +2%) · v2 ถูก (pos) = ไม่ตก แต่นับ retClass');
     ok(MG.visibleCronDiff('<div class="ret pos">+2%</div>', '<div class="ret neg">+2%</div>', {}).bad !== null, '14a: v2 สีขัดเครื่องหมายตัวเอง = ตก');
-    // หน่วยใหญ่ของเงินต่างกัน (v1 คงหน่วยผู้เขียน · v2 fmtBig เลือกหน่วยใหม่) — ★ fix1 R4: รูปก็ต่อเมื่อค่าเต็มตรงกันที่ความละเอียดของฝั่งละเอียดกว่า
+    // หน่วยใหญ่ของเงินต่างกัน (v1 คงหน่วยผู้เขียน · v2 fmtBig เลือกหน่วยใหม่) — ★ fix round 2: กติกาเลขนัยสำคัญ (unitForm)
+    //   ปัดฝั่งละเอียดไปที่หลักสุดท้ายของฝั่งหยาบแล้วต้องเท่ากัน · ฝั่งละเอียดต้องเหลือเลขนัยสำคัญ ≥1 หลักที่ตำแหน่งนั้น
     const cap = (t) => `<p>Market Cap ~฿${t} ~2.97 พันล้านหุ้น</p>`;
     const u = MG.visibleCronDiff(cap('0.894 ล้านล้าน'), cap('8.94 แสนล้าน'), {});
-    ok(u.bad === null && u.forms.some((f) => /ล้านล้าน/.test(f.before) && /แสนล้าน/.test(f.after)), '14a R4: ฿0.894 ล้านล้าน ~ ฿8.94 แสนล้าน (ตรงที่ความละเอียดฝั่งละเอียด) = รูป', JSON.stringify(u));
-    ok(MG.visibleCronDiff(cap('1 ล้านล้าน'), cap('5.1 แสนล้าน'), {}).bad !== null, '14a R4: ฿1 ล้านล้าน vs ฿5.1 แสนล้าน = ค่าต่าง (เดิมผ่านเพราะใช้ครึ่งหน่วยฝั่งหยาบ)');
-    ok(MG.visibleCronDiff(cap('0.89 ล้านล้าน'), cap('8.94 แสนล้าน'), {}).bad !== null, '14a R4: ฿0.89 ล้านล้าน vs ฿8.94 แสนล้าน (รูป ADVANC) = ค่าต่างตามกติกาฝั่งละเอียด');
-    ok(MG.visibleCronDiff('<p>cap $0.999T</p>', '<p>cap $999B</p>', {}).bad === null && MG.visibleCronDiff('<p>cap $1.00T</p>', '<p>cap $999B</p>', {}).bad !== null, '14a R4: หน่วย T/B ของ USD ใช้กติกาเดียวกัน');
+    ok(u.bad === null && u.forms.some((f) => /ล้านล้าน/.test(f.before) && /แสนล้าน/.test(f.after)), 'fix2: ฿0.894 ล้านล้าน ~ ฿8.94 แสนล้าน = รูป (บันทึก formOnly)', JSON.stringify(u));
+    ok(MG.visibleCronDiff(cap('1 ล้านล้าน'), cap('5.1 แสนล้าน'), {}).bad !== null, 'fix2: ฿1 ล้านล้าน vs ฿5.1 แสนล้าน = ค่าต่าง (ต้องคงไว้ — 5.1e11 ไม่เหลือเลขนัยสำคัญที่หลัก 1e12)');
+    ok(MG.visibleCronDiff(cap('0.89 ล้านล้าน'), cap('8.94 แสนล้าน'), {}).bad === null, 'fix2: ฿0.89 ล้านล้าน vs ฿8.94 แสนล้าน = รูป (ADVANC · 8.94 ปัด 2 หลัก = 8.9)');
+    ok(MG.visibleCronDiff('<p>cap $0.99 B</p>', '<p>cap $986 M</p>', {}).bad === null, 'fix2: $0.99 B vs $986 M = รูป (PRCT ×0.85)');
+    ok(MG.visibleCronDiff('<p>cap $1.00 B</p>', '<p>cap $998 M</p>', {}).bad === null, 'fix2: $1.00 B vs $998 M = รูป (PRCT ×0.86 — ปัดข้ามหลักสิบ 0.998 → 1.00)');
+    ok(MG.visibleCronDiff('<p>cap $2 B</p>', '<p>cap $1,450 M</p>', {}).bad !== null && MG.visibleCronDiff(cap('1 ล้านล้าน'), cap('8.4 แสนล้าน'), {}).bad !== null,
+      'fix2: ต่างจริงที่เลขนัยสำคัญ 1 หลัก ($2 B vs $1,450 M · ฿1 ล้านล้าน vs ฿8.4 แสนล้าน) = ค่าต่าง');
+    ok(MG.visibleCronDiff(cap('0.89 ล้านล้าน'), cap('8.84 แสนล้าน'), {}).bad !== null, 'fix2: ฿0.89 ล้านล้าน vs ฿8.84 แสนล้าน (ปัดได้ 8.8 ≠ 8.9) = ค่าต่าง');
+    ok(MG.visibleCronDiff(cap('0.91 ล้านล้าน'), cap('9.15 แสนล้าน'), {}).bad === null, 'fix2: ฿0.91 ล้านล้าน vs ฿9.15 แสนล้าน = รูป (ADVANC ×0.87 — 9.15 ปัดมาแล้ว ค่าจริง 9.145–9.155 ปัดได้ 9.1)');
+    ok(MG.visibleCronDiff(cap('0.91 ล้านล้าน'), cap('9.16 แสนล้าน'), {}).bad !== null, 'fix2: ฿0.91 ล้านล้าน vs ฿9.16 แสนล้าน = ค่าต่าง (ค่าจริง ≥9.155 ปัดได้ 9.2)');
+    ok(MG.visibleCronDiff('<p>cap $0.999T</p>', '<p>cap $999B</p>', {}).bad === null && MG.visibleCronDiff('<p>cap $1.00T</p>', '<p>cap $999B</p>', {}).bad === null
+      && MG.visibleCronDiff('<p>cap $1.2T</p>', '<p>cap $999B</p>', {}).bad !== null, 'fix2: หน่วย T/B ของ USD ใช้กติกาเดียวกัน ($1.00T ~ $999B · $1.2T ≠ $999B)');
     // ปีคนละศักราช (เคสคลัง APH: .disc v1 พ.ศ. · v2 ตามศักราชหัวรายงาน) = รูป · ปีต่างจริง = ตก
     ok(MG.visibleCronDiff('<p>ราคา ณ 2 ต.ค. 2569</p>', '<p>ราคา ณ 2 ต.ค. 2026</p>', {}).bad === null, '14a: 2569 ↔ 2026 (วันเดียวกันคนละศักราช) = รูป');
     ok(MG.visibleCronDiff('<p>ราคา ณ 2 ต.ค. 2569</p>', '<p>ราคา ณ 2 ต.ค. 2025</p>', {}).bad !== null, '14a: 2569 ↔ 2025 = ตก');
@@ -612,6 +621,7 @@ const cmp = (r, f) => r.compare.find((c) => c.field === f);
     const md = MG.renderCensusMd([{ sym: 'PTG', ok: false, reason: 'cron-diff v1-unstable gate-warn:W22', tokenised: [], literal: [], notes: [], pyChanges: [],
       cronDiff: { ok: false, kinds: ['gate-warn:W22'], k: 0.86, side: 'v1', sideWhy: 'x', detail: ['d'], formOnly: [], formParts: [], valueDiff: [], relax: {} } }]);
     ok(/\| cron-diff v1-unstable gate-warn:W22 \| 1 \| PTG \|/.test(md) && /PTG — `cron-diff v1-unstable gate-warn:W22` · side v1/.test(md), 'R6: census.md แสดง reason เต็มทุกตัวอักษร + ฝั่ง');
+    ok(md.includes('v1-unstable = ผลของ v1 เปลี่ยนชนิด/ฐานระหว่างจุด grid ติดกันขณะ v2 นิ่ง — ไม่ใช่คำตัดสินว่าฝั่งไหนถูก'), 'fix2: census.md มีบรรทัดความหมายของ v1-unstable');
   }
   // ── R7 · cronGate เรียก UP.gateCheck ตัวเดียวกับ gateAfterPatch (ไม่มีสำเนา) ──
   {

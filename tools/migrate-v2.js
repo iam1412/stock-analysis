@@ -932,6 +932,26 @@ function partText(html) {
   const t = numText(h);
   return { t, masked: maskText(h.replace(SCALE_AFTER_NUM_RE, '$1§')), nums: [...t.matchAll(NUM_RUN_RE)] };
 }
+/**
+ * หน่วยใหญ่ของเงินต่างกันสองฝั่ง = "รูป" หรือไม่ — กติกาเลขนัยสำคัญ (Task 14a fix round 2 · แทน "ครึ่งหน่วยฝั่งละเอียด" ของ fix1 R4)
+ *   ฝั่งหยาบ C = ฝั่งที่ตำแหน่งหลักสุดท้ายที่พิมพ์ p (ทศนิยม × หน่วย) ใหญ่กว่า · ปัดค่าฝั่งละเอียด F ไปที่ตำแหน่ง p แล้วต้อง **เท่ากับ C**
+ *   ★ F ต้องเหลือเลขนัยสำคัญ ≥ 1 หลักที่ตำแหน่ง p — "฿1 ล้านล้าน" vs "฿5.1 แสนล้าน": หลัก 1e12 ใหญ่กว่าหลักนำของ 5.1e11
+ *     (เหลือ 0 หลัก) ⇒ ต่างจริง ไม่ใช่ "0.51 ปัดเป็น 1"
+ *   ★ F ที่เห็นถูกปัดมาแล้วที่ตำแหน่งของมันเอง pF ⇒ "ปัด F" = ปัดค่าจริงช่วง [F−pF/2, F+pF/2] — มีค่าในช่วงนั้นที่ปัดได้ C ก็เท่ากัน
+ *     (ADVANC ×0.87: v1 "0.91 ล้านล้าน" · v2 "9.15 แสนล้าน" จากค่าจริง 9.148 → ปัดข้อความ 9.15 ซ้ำได้ 9.2 แต่ค่าจริงปัดได้ 9.1)
+ *   ตัวอย่าง: "฿0.89 ล้านล้าน" vs "฿8.94 แสนล้าน" → 8.9e11 รูป · "$0.99 B" vs "$986 M" → 9.9e8 รูป · "$1.00 B" vs "$998 M" → ปัดข้ามหลัก
+ *     1.00e9 รูป (PRCT ×0.86 — ถ้านับเลขนัยสำคัญในหลักของ F เองจะได้ 998 ≠ 1000 ทั้งที่ v1 พิมพ์ 0.998 ด้วยทศนิยม 2 ตำแหน่ง) ·
+ *     "$2 B" vs "$1,450 M" → 1e9 ≠ 2e9 ต่างจริง · "฿0.89 ล้านล้าน" vs "฿8.84 แสนล้าน" → 8.8e11 ≠ 8.9e11 ต่างจริง
+ */
+function unitForm(X, Y) {
+  if (!X.u.mult || !Y.u.mult || !(X.V > 0) || !(Y.V > 0)) return false;
+  const pX = Math.pow(10, -decOf(X.x)) * X.u.mult, pY = Math.pow(10, -decOf(Y.x)) * Y.u.mult;
+  const [C, F, p, pF] = pX >= pY ? [X, Y, pX, pY] : [Y, X, pY, pX];
+  const keep = Math.floor(Math.log10(F.V) + 1e-9) - Math.round(Math.log10(p)) + 1;     // เลขนัยสำคัญของ F ที่ตำแหน่ง p
+  if (keep < 1) return false;
+  // ช่วงค่าจริงของ F ตัดกับช่วงที่ปัดที่ตำแหน่ง p แล้วได้ C  ⇔  |F − C| ≤ (p + pF) / 2
+  return Math.abs(F.V - C.V) <= (p + pF) / 2 + p * 1e-6;
+}
 /** ตัวเลขลำดับ i ของส่วน (คูณหน่วยใหญ่แล้ว) — ใช้ทั้งตัวเทียบและตัวตัดสินฝั่ง */
 function numAt(pt, i) {
   const m = pt.nums[i];
@@ -945,7 +965,8 @@ function numAt(pt, i) {
  * ตัวเลขที่มองเห็นของผล cron สองฝั่ง — **ชั้น 2 ของ migrator ตัวเดิม** (maskText + ข้อยกเว้น " • รวมปันผล" ของ checkStripped)
  * แล้วเทียบเลขทีละตัวตามลำดับ: ข้อความเท่ากัน = ผ่าน · ค่าเท่ากันเป๊ะ (ศูนย์ท้าย/คอมมา — sameMoney) = ผ่านเงียบ ·
  * ห่างไม่เกินครึ่งหน่วยของทศนิยมที่หยาบกว่า (roundsTo/scnPyDiffs 'form') = "รูป" (บันทึก ไม่ตก) · นอกนั้น = ค่าที่คนเห็นต่างจริง
- * ★ หน่วยใหญ่ของเงินต่างกัน (fix1 R4) = รูปก็ต่อเมื่อค่าเต็มตรงกันที่ความละเอียดของฝั่ง **ละเอียดกว่า** (฿1 ล้านล้าน ≠ ฿5.1 แสนล้าน)
+ * ★ หน่วยใหญ่ของเงินต่างกัน = รูปตามกติกาเลขนัยสำคัญ (unitForm · fix round 2): ปัดฝั่งละเอียดไปที่หลักสุดท้ายของฝั่งหยาบแล้วต้องเท่ากัน
+ *   (฿0.89 ล้านล้าน ~ ฿8.94 แสนล้าน · ฿1 ล้านล้าน ≠ ฿5.1 แสนล้าน)
  * ★ statics = คู่ข้อความตัวเลข (part|v1|v2) ที่ต่างกันอยู่แล้ว **ก่อน** patch (ผลต่างที่ migrator ชั้น 1 ยอมรับไว้
  *   เช่น MOS30 ฿1.99→฿2.00 ใต้ GAP_REL) — cron ไม่แตะสองฝั่งของคู่นั้น ⇒ ไม่ใช่ "พฤติกรรม cron" ข้ามได้ไม่เกินจำนวนที่มีก่อน patch
  *   ★ ไม่ผูกลำดับ (index) — ราคาข้ามหลัก/gauge ขยายขอบทำให้ลำดับเลื่อนได้ · ถ้า cron ขยับฝั่งใดฝั่งหนึ่ง ข้อความคู่จะไม่ตรง = ตรวจตามปกติ
@@ -1024,9 +1045,8 @@ function visibleCronDiff(e1, e2, values, opt) {
       let exact = false, form = false, part = a[j].part;
       if (X.u.word !== Y.u.word) {
         // หน่วยใหญ่ต่างกัน (v1 คงหน่วยของผู้เขียน "฿0.89 ล้านล้าน" · v2 fmtBig เลือกหน่วยใหม่ "฿8.94 แสนล้าน")
-        //   ★ fix1 R4: รูปก็ต่อเมื่อค่าเต็มห่างไม่เกินครึ่งหน่วยของฝั่งที่ **ละเอียดกว่า** — เดิมใช้ฝั่งหยาบ ⇒ ฿1 ล้านล้าน ~ ฿5.1 แสนล้าน (49%) ผ่าน
-        //   หน่วยหายฝั่งเดียว = ต่างจริง
-        form = fin && !!X.u.mult && !!Y.u.mult && Math.abs(X.V - Y.V) <= Math.min(X.H, Y.H) + 1e-6;
+        //   ★ fix2: กติกาเลขนัยสำคัญ (unitForm) — หน่วยหายฝั่งเดียว = ต่างจริง
+        form = fin && unitForm(X, Y);
         if (form && !o.collect) relax.scale++;
       } else {
         exact = fin && X.v === Y.v && sameMoney(X.x, Y.x);                                // ศูนย์ท้าย/คอมมา — ค่าเท่ากันเป๊ะ
@@ -1154,7 +1174,9 @@ function failSide(prev, cur, kinds, at) {
  * @returns {{ok:boolean, kinds:string[], k:number|null, detail:string[], side:'v1'|'v2'|'unknown'|null, sideWhy:string, formOnly:object[],
  *            formParts:string[], valueDiff:object[], points:number, compared:number, retClass:number, relax:object}}
  *   kinds: throw · throw-both · meta:<key> · visible · gate-error · gate-warn:<id> · (setup = อ่าน values.px/priceDate ของ v2 ไม่ได้)
- *   side: ฝั่งที่ไม่นิ่งเมื่อตก (ดู failSide) · null เมื่อผ่าน
+ *   side: ฝั่งที่ไม่นิ่งเมื่อตก (ดู failSide) · null เมื่อผ่าน — ★ v1-unstable = ผลของ v1 เปลี่ยนชนิด/ฐานระหว่างจุด grid ติดกันขณะ v2 นิ่ง
+ *     **ไม่ใช่คำตัดสินว่าฝั่งไหนถูก** (negative control: cron ก่อน fix wave ส่วน D ได้ v1-unstable 43 ใบ meta:pe ทั้งที่บั๊กอยู่ฝั่ง v2
+ *     ที่นิ่งบนฐานผิด) · v2-diff = กลับด้าน · unknown = ตกที่จุดแรกของ grid หรือชนิดให้ฝั่งขัดกัน
  *   formOnly: ตัวอย่างตัวเลขที่ cron ทำให้ต่างแค่รูป ≤3 ตัวอย่างต่อใบ (fix1 R10 — ขนาด census) · formParts = ชุด part ที่พบรูปทั้งหมด
  *     (ไม่รวมศูนย์ท้าย/คอมมา และไม่รวมผลต่างที่มีอยู่ก่อน patch) — ไม่ใช่ความล้มเหลว แต่ census ต้องเปิดเผย (part 'ret' = แถวรูปทศนิยมหมวด 6)
  *   valueDiff: คู่ "ค่าต่างที่มีอยู่ก่อน patch" ที่ถูกข้ามจริงบน grid {part,label,v1,v2,relPct} (fix1 R1 — census เปิดเผยรายใบ)
@@ -1385,6 +1407,7 @@ function cronDiffMd(cd) {
     `| ปีคนละศักราช (2569 ↔ 2026) | ${cd.relaxFiles.era.length} | ${cd.relaxFiles.era.join(' ')} |`,
     '',
     ...(cd.fail.length ? ['### รายละเอียดใบที่ตก (ตัวคูณแรกที่ต่าง · ฝั่งที่ไม่นิ่ง)', '',
+      'v1-unstable = ผลของ v1 เปลี่ยนชนิด/ฐานระหว่างจุด grid ติดกันขณะ v2 นิ่ง — ไม่ใช่คำตัดสินว่าฝั่งไหนถูก', '',
       ...cd.failDetail.map((x) => `- ${x.sym} — \`${x.reason}\` · side ${x.side} (${x.sideWhy}) · ${x.detail}`), ''] : []),
     ...(cd.sec6Form.length ? ['<details><summary>ตัวอย่างรูปทศนิยมหมวด 6 ต่อใบ (v1 → v2 ที่ตัวคูณแรกที่พบ)</summary>', '', ...cd.sec6Form.map((x) => `- ${x.sym}: ${x.example}`), '', '</details>', ''] : []),
   ];
@@ -1516,7 +1539,7 @@ function exitCode({ errors, residue, strict }) {
 
 module.exports = {
   migrateOne, extractValues, tokenise, buildRd, verifyPair, checkStripped, sameMoney, scnPyDiffs, scnPyCountGuard,
-  cronDiff, cronGate, CRON_GRID, CRON_META_KEYS, sameMetaForm, cronDateParts, visibleCronDiff, pyExplained, planWrite, summarizeCronDiff,
+  cronDiff, cronGate, CRON_GRID, CRON_META_KEYS, sameMetaForm, cronDateParts, visibleCronDiff, pyExplained, planWrite, summarizeCronDiff, unitForm,
   failSide, cronDiffReason, exitCode, ALREADY_V2,
   COPY_FIELDS, REQUIRED_SITES, TOLERANCE, GAP_REL, renderCensusMd, mergeCensus,
 };
