@@ -137,6 +137,23 @@ function mk(index, text, day, monName, yearStr, hasDay) {
  * @returns {{index:number,length:number,isBE:boolean}|null}
  */
 function findRestatedDate(headerHtml, hit) {
+  const h2 = parenDateAfter(headerHtml, hit);
+  if (!h2) return null;
+  const ce = (x) => (x.isBE ? x.year - 543 : x.year);
+  if (h2.monIdx < 0 || h2.day !== hit.day || h2.monIdx !== hit.monIdx || ce(h2) !== ce(hit)) return null;
+  return h2;
+}
+
+/**
+ * แกนของ findRestatedDate **โดยไม่มีเงื่อนไข (2) "วันเดียวกัน"** — วงเล็บวันที่ที่ติดกับ token ราคาเลย (ข้อ 1 เท่านั้น)
+ * แยกออกมาเพื่อทาง v2 ของ cron (ระยะ 2 ส่วน D fix wave F3): บน view ที่ render แล้ว token วันที่ราคาขึ้นวันใหม่
+ * ไปก่อน ⇒ วงเล็บทวนที่ยังเป็น literal ถือวันเก่า ⇒ findRestatedDate (ต้องวันเดียวกัน) มองไม่เห็นมันโดยโครงสร้าง
+ * ทั้งตัวเขียนและ tripwire ของ v2 จึงต้องอ่านวงเล็บนี้ก่อน แล้วตัดสินเรื่องวันเองจากวันที่ใน values
+ * (วัด 12 ก.ย. 69: วงเล็บวันที่ "ติดกัน" ที่ไม่ใช่การทวนซ้ำ = 0/908 ใบ — ดูคอมเมนต์ใน tools/update-prices.js)
+ * ★ findRestatedDate เรียกตัวนี้แล้วกรองวันต่อ — พฤติกรรมเดิมทุก byte (ย้ายโค้ดเฉย ๆ)
+ * @returns {{index:number,length:number,text:string,day:number,monIdx:number,year:number,isBE:boolean,hasDay:boolean}|null}
+ */
+function parenDateAfter(headerHtml, hit) {
   const after = String(headerHtml).slice(hit.index + hit.length);
   const pre = /^(?:\s|<[^>]*>)*\(\s*/.exec(after);
   if (!pre) return null;
@@ -146,8 +163,6 @@ function findRestatedDate(headerHtml, hit) {
   if (!d && !mo) return null;
   const h2 = d ? mk(0, d[0], parseInt(d[2] || d[1], 10), d[3], d[4], true)
     : mk(0, mo[0], 1, mo[1], mo[2], false);
-  const ce = (x) => (x.isBE ? x.year - 543 : x.year);
-  if (h2.monIdx < 0 || h2.day !== hit.day || h2.monIdx !== hit.monIdx || ce(h2) !== ce(hit)) return null;
   return { ...h2, index: hit.index + hit.length + pre[0].length };
 }
 
@@ -240,4 +255,4 @@ function parsePriceDate(headerHtml) {
   return dateIso(findPriceDate(headerHtml));
 }
 
-module.exports = { findPriceDate, findRestatedDate, findDiscPriceDate, allDiscDates, parsePriceDate, dateIso, renderThaiDate, THAI_MONTHS, THAI_MONTHS_FULL, MONTH_ALT };
+module.exports = { findPriceDate, findRestatedDate, parenDateAfter, findDiscPriceDate, allDiscDates, parsePriceDate, dateIso, renderThaiDate, THAI_MONTHS, THAI_MONTHS_FULL, MONTH_ALT };

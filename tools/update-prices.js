@@ -58,10 +58,15 @@ const FLAGS = path.join(__dirname, '..', 'price-flags.json');
 // ชื่อเดือน + ตัวหา "วันที่ราคา" มาจาก tools/price-date.js ที่เดียว (ใช้ร่วมกับ gate — อย่าทำสำเนา)
 // ค่าที่ derive จากราคา (P/E · % ของราคาเป้า) — กติกาเดียวกับที่ gate ใช้ตรวจ E41/E42/W15 (ห้ามทำสำเนาความรู้)
 // fmtMos + MOS_BIG_RE = รูป/ที่อยู่ของ .big — เจ้าของเดียวอยู่ที่ derived-values.js เพราะ W06 และ patchDerived#11 ใช้ตัวเดียวกัน
-const { patchDerived, fmtMos, MOS_BIG_RE } = require('./derived-values.js');
-const { findPriceDate, findRestatedDate, findDiscPriceDate, allDiscDates, renderThaiDate, THAI_MONTHS } = require('./price-date.js');
+// ★ MOS_BIG_RE ต้องอ่านผ่าน DV.MOS_BIG_RE ณ จุดใช้ (ห้าม destructure) — test/v2-path-test.js สตับ export
+//   นี้ให้ throw/ไม่ match เพื่อพิสูจน์ว่าทาง v2 ไม่เรียกมัน (patchReport คืนค่าก่อนถึงจุดใช้อยู่แล้ว แต่ destructure
+//   ตอนโหลดจะจับค่าเดิมไว้ตายตัว ทำให้การแทนภายหลังไม่มีผล — ดู task-12-brief.md "ข้อควรระวัง")
+const DV = require('./derived-values.js');
+const { patchDerived, fmtMos } = DV;
+const { findPriceDate, findRestatedDate, parenDateAfter, allDiscDates, renderThaiDate, THAI_MONTHS } = require('./price-date.js');
 const RV = require('./report-values.js');   // ระยะ 2: format/derive มาตรฐานอยู่ที่นี่ (เจ้าของเดียว) — cron ใช้ร่วมกับ build/gate
 const { mosBand, fmtPrice, annualChg, styledRD } = RV;
+const { keepMap } = require('./keep-map.js');   // ระยะ 2 ส่วน D: วาง token {{rd:…}} กลับหลัง pass derived บน view ที่ render
 const MAX_PTS = 13;          // กราฟรายเดือน ~1 ปี (E37)
 const DRIFT_FREEZE = 0.15;   // ราคาใหม่ต่างจากในรายงาน > 15% → freeze (prose จะผิดความหมาย · เดิม 10% — ขยับขึ้นลดภาระ re-analysis)
 const SUSPECT_FREEZE = 0.25; // ต่าง > 25% → สงสัย split/ticker เปลี่ยน/ข้อมูลเพี้ยน
@@ -427,16 +432,18 @@ function patchReport(html, p) {
   const smM = html.match(RM.STOCK_META_PARTS_RE);
   if (!smM) throw new Error('ไม่มีบล็อก stock-meta');
   const sm = JSON.parse(smM[2]);
-  const fv = sm.fairValue;
-  if (!Number.isFinite(fv) || fv <= 0) throw new Error('stock-meta.fairValue ใช้ไม่ได้');
-  const mos = (fv - newPrice) / fv * 100;
-  const upside = (fv - newPrice) / newPrice * 100;
 
   // --- report-data: กราฟใหม่ทั้งเส้น + bounds + highlight + gauge.cur + สีป้ายตามทิศ ---
   const rdM = html.match(RM.REPORT_DATA_PARTS_RE);
   if (!rdM) throw new Error('ไม่มีบล็อก report-data');
   const rd = JSON.parse(rdM[2]);
   if (!rd.chart || !Array.isArray(rd.chart.data)) throw new Error('report-data.chart ใช้ไม่ได้');
+  const V2 = RV.isV2(rd);
+  // v2: FV เจ้าของเดียว = report-data.fv (stock-meta.fairValue เป็นกระจก) · v1: stock-meta.fairValue เหมือนเดิม
+  const fv = V2 ? rd.fv : sm.fairValue;
+  if (!Number.isFinite(fv) || fv <= 0) throw new Error(V2 ? 'report-data.fv ใช้ไม่ได้' : 'stock-meta.fairValue ใช้ไม่ได้');
+  const mos = (fv - newPrice) / fv * 100;
+  const upside = (fv - newPrice) / newPrice * 100;
 
   // price-only fallback: Yahoo ไม่มีประวัติพอ (ล้างประวัติ/IPO ใหม่มาก) → คงกราฟเดิม อัปเดตเฉพาะจุดท้ายเป็นราคาปัจจุบัน
   // (เดือนท้ายกราฟตรงเดือนราคา → แทนค่า · คนละเดือน → ต่อจุดใหม่แล้วตัดหัวให้ ≤MAX_PTS)
@@ -449,34 +456,63 @@ function patchReport(html, p) {
     else chartData = chartData.concat([[lab, round(newPrice, 2)]]).slice(-MAX_PTS);
   }
 
-  const oldChg = (html.match(/<div class="chg"[^>]*>([\s\S]*?)<\/div>/i) || [, ''])[1].replace(/<[^>]*>/g, ' ').trim();
-  const title2 = (html.match(/<div class="n">2<\/div><h2>([\s\S]*?)<\/h2>/) || [, ''])[1];
-  const suffix = (/IPO/i.test(oldChg) || /IPO/i.test(title2)) ? '(ตั้งแต่ IPO)' : '(รอบปี)';
+  // v2: .chg เป็น {{rd:chg}} (อ่านคำ IPO จาก HTML ไม่ได้) — ส่วนท้ายเป็นข้อมูลของไฟล์ที่ values.chgSuffix
+  let suffix;
+  if (V2) suffix = '(' + rd.values.chgSuffix + ')';
+  else {
+    const oldChg = (html.match(/<div class="chg"[^>]*>([\s\S]*?)<\/div>/i) || [, ''])[1].replace(/<[^>]*>/g, ' ').trim();
+    const title2 = (html.match(/<div class="n">2<\/div><h2>([\s\S]*?)<\/h2>/) || [, ''])[1];
+    suffix = (/IPO/i.test(oldChg) || /IPO/i.test(title2)) ? '(ตั้งแต่ IPO)' : '(รอบปี)';
+  }
   const chg = annualChg(chartData, suffix);
 
   rd.chart.data = chartData;
   const prices = chartData.map((d) => d[1]);
-  const b = niceBounds(prices, Number.isFinite(rd.chart.fairLine) ? rd.chart.fairLine : null);
+  // v2 ไม่มี chart.fairLine (ยุบเข้า fv) — engine วาดเส้น FV จาก fv ⇒ bounds ต้องครอบ fv เหมือน v1 ครอบ fairLine
+  const b = niceBounds(prices, V2 ? rd.fv : Number.isFinite(rd.chart.fairLine) ? rd.chart.fairLine : null);
   rd.chart.min = b.min; rd.chart.max = b.max; rd.chart.grid = b.grid;
   let iMin = 0, iMax = 0;
   prices.forEach((v, i) => { if (v < prices[iMin]) iMin = i; if (v > prices[iMax]) iMax = i; });
   rd.chart.highlight = [...new Set([iMin, iMax])].sort((x, y) => x - y);
   if (rd.gauge) {
-    rd.gauge.cur = round(newPrice, 2);
+    // v2 ห้ามมี gauge.cur (engine ใช้ values.px) — ขอบ gauge เทียบกับราคาใหม่ตัวเดียวกัน
+    const curPx = round(newPrice, 2);
+    if (!V2) rd.gauge.cur = curPx;
     // ราคาหลุด/ชิดขอบ gauge → ขยายขอบฝั่งนั้นเป็น ราคา±GAUGE_PAD (คงจำนวนทศนิยมเดิมของขอบ · ขยายอย่างเดียว ไม่หด)
     // check-site เตือนเมื่อ marker ชิดขอบ (v >= gmax / v <= gmin) — ×(1±5%) วางราคาไว้ในขอบแบบ strict เสมอ
     const decOf = (v) => (String(v).split('.')[1] || '').length;
-    if (Number.isFinite(rd.gauge.max) && rd.gauge.cur >= rd.gauge.max) {
+    if (Number.isFinite(rd.gauge.max) && curPx >= rd.gauge.max) {
       const k = Math.pow(10, decOf(rd.gauge.max));
-      rd.gauge.max = Math.ceil(rd.gauge.cur * (1 + GAUGE_PAD) * k) / k;
+      rd.gauge.max = Math.ceil(curPx * (1 + GAUGE_PAD) * k) / k;
     }
-    if (Number.isFinite(rd.gauge.min) && rd.gauge.cur <= rd.gauge.min) {
+    if (Number.isFinite(rd.gauge.min) && curPx <= rd.gauge.min) {
       const k = Math.pow(10, decOf(rd.gauge.min));
-      rd.gauge.min = Math.max(0, Math.floor(rd.gauge.cur * (1 - GAUGE_PAD) * k) / k);
+      rd.gauge.min = Math.max(0, Math.floor(curPx * (1 - GAUGE_PAD) * k) / k);
     }
   }
   const theme = chg.dir === 'up' ? UP : chg.dir === 'down' ? DOWN : null;
   if (theme && rd.theme) { rd.theme.chgBg = theme.bg; rd.theme.chgColor = theme.col; }
+
+  if (V2) {
+    // ── ทาง v2 (ระยะ 2 ส่วน D): สำเนาราคา/วันที่/MOS/.chg/verdict/pxIn ทุกจุดเป็น token render ตอน build จาก values
+    //    ⇒ เขียน values.px/priceDate แล้ว **return ก่อนตัวเขียนสำเนา HTML ของ v1** (PX/MCUR/VERDICT/MOS_BIG ไม่ถูกเรียก)
+    //    แต่การ์ดที่ derive จากราคา (P/E · Market Cap · P/S · ปันผล % · P/BV · % เป้า · หมวด 6 ที่ยังเป็น literal)
+    //    ยังต้องผ่าน patchDerived — ทำบน view ที่ render แล้ว (derivedPassV2) ไม่งั้น gate ตก 446–790/869 ใบ
+    // วันที่ราคาก่อน patch — ตัวเขียนวงเล็บทวนวันที่ที่เป็น literal (derivedPassV2 · fix wave F3) ใช้ระบุ "วงเล็บที่ทวนวันเดิม"
+    const prevPriceDate = rd.values.priceDate;
+    rd.values.px = round(newPrice, 2);
+    rd.values.priceDate = RV.isoOf(dateParts);
+    need(RM.STOCK_META_PARTS_RE, 'stock-meta (เขียนกลับ)');
+    const out2 = html.replace(RM.REPORT_DATA_PARTS_RE, (m, a, body, z) => a + '\n' + styledRD(rd) + '\n' + z);
+    // ตัวตั้ง = values.px (ปัด 2 ตำแหน่ง) ตัวเดียวกับที่ token render — ราคาดิบทำให้ช่องอย่าง "จากจุดเข้า {{rd:px}}" ถูกแก้ต่าง 1 สตางค์แล้ว token ต้องชนะเปล่า ๆ
+    const dv2 = derivedPassV2(out2, rd.values.px, { prevPriceDate });
+    if (dv2.overridden) notes.push(`derived v2: token ชนะ ${dv2.overridden} span (pass derived พยายามแก้ช่องที่เป็น {{rd:…}} — ตัดทิ้ง)`);
+    // กระจก stock-meta เขียน **หลัง** pass และอ่าน stock-meta จากผลของ pass (fix wave F1) — แตะแค่ price/mos/upside/fairValue
+    // pe/dividendYield เป็นของ pass derived (patchDerived#2/#9 บน view) เหมือน v1 ⇒ กระจกย้อนค่าที่ pass เพิ่งเขียนไม่ได้
+    const out3 = RV.mirrorStockMeta(dv2.html);
+    const d = RV.derive(rd, sm);
+    return { html: out3, changed: out3 !== html, chg, mos: round(d.mos, 1), derived: dv2.changes, notes };
+  }
 
   let out = html.replace(RM.REPORT_DATA_PARTS_RE,
     (m, a, body, z) => a + '\n' + styledRD(rd) + '\n' + z);   // 3 กลุ่ม: หัว/เนื้อ/ท้าย
@@ -557,9 +593,9 @@ function patchReport(html, p) {
   // --- MOS .big (เครื่องหมายเดิม −/+ · sign flip ถูก freeze ก่อนถึงจุดนี้) ---
   // ★ regex + รูปตัวเลข = ของ derived-values.js (MOS_BIG_RE/fmtMos) เจ้าของเดียว — W06 และ patchDerived#11
   //   อ่านช่องนี้ด้วยความรู้ก้อนเดียวกัน ⇒ ย้ายสำเนาที่เคยฝังไว้ตรงนี้ออกไปแล้ว
-  need(MOS_BIG_RE, 'MOS .big');
+  need(DV.MOS_BIG_RE, 'MOS .big');
   const mosTxt = fmtMos(mos);
-  out = out.replace(MOS_BIG_RE, () => '<div class="big">' + mosTxt + '</div>');
+  out = out.replace(DV.MOS_BIG_RE, () => '<div class="big">' + mosTxt + '</div>');
 
   // --- ช่องสรุป "ส่วนต่างจากราคา" — ตัวเขียนอยู่ที่ patchDerived#11 (ระยะ 1 ข้อ D) ---
   // เดิมตรงนี้ patch เฉพาะ "ตัวเลข" แบบมีเงื่อนไข (คำบอกทิศต้องตรงกับ MOS ใหม่ ไม่งั้นไม่แตะ)
@@ -588,6 +624,147 @@ function patchReport(html, p) {
 
   return { html: out, changed: out !== html, chg, mos: round(mos, 1), derived: dv.changes, notes };
 }
+
+// ── fix wave F3 (final review ข้อ 3): วันที่ราคาที่ยังเป็น literal บน v2 ─────────────────────────────────
+// migrator คง literal ไว้ 2 จุดเมื่อแทน token ไม่ได้: วงเล็บทวนวันที่ที่มีคำขยาย (DPZ "(11 ก.ย. 2569 ตลาดปิด)" · HIG)
+// และวันที่ระดับเดือนใน .disc ("ราคา ณ ก.ย. 2569" — AMATAV CKP DOHOME FNF PRINC RAM RLI TOST UTHR) · เดิมทาง v2 return
+// ก่อนตัวเขียนวันที่ของ v1 ⇒ ค้างเงียบ (DPZ หลัง patch: "ราคา ณ 2 ต.ค. 2569 (11 ก.ย. 2569 ตลาดปิด)" gate 0/0)
+// ⇒ derivedPassV2 เขียนสองจุดนี้บน view ที่ render แล้ว (ตัวเดียวกับ v1: renderThaiDate คงศักราช/รูปวันหรือเดือนของเดิม)
+//   keep-map พากลับต้นฉบับเพราะอยู่นอก span ของ token · hit ที่ทับ span ของ token = token ชนะ (render วันใหม่อยู่แล้ว ห้ามเขียนซ้ำ)
+// ★ วงเล็บทวน: บน view token ขึ้นวันใหม่ไปก่อน ⇒ findRestatedDate (ต้อง "วันเดียวกับวันที่ราคา") มองไม่เห็นวงเล็บวันเก่า
+//   โดยโครงสร้าง ⇒ อ่านด้วย parenDateAfter (แกนเดียวกัน ไม่มีเงื่อนไขวัน) แล้วเขียนเฉพาะเมื่อวงเล็บถือ **วันก่อน patch**
+//   (opts.prevPriceDate = คู่ของมันใน v1) หรือวันใหม่อยู่แล้ว (no-op) — วันอื่น = ไม่ใช่การทวนที่รู้จัก → ไม่เดา ปล่อยให้ tripwire
+// ★ tripwire (ห้ามเงียบ): หลังประกอบกลับ render ผลแล้วอ่านทุกจุดวันที่ราคาใน header (findPriceDate + วงเล็บติดกัน) และ .disc
+//   (allDiscDates) — วันไหน ≠ values.priceDate (ระดับเดือนเทียบแค่เดือน/ปี) → throw → main loop = patch-failed เห็นในคิว
+const V2_HEADER_RE = /<header[\s\S]*?<\/header>/i;
+const V2_DISC_RE = /<div class="disc">[\s\S]*?<\/div>/i;
+const hitCE = (h) => (h.isBE ? h.year - 543 : h.year);
+const hitIs = (h, pd) => !!h && h.monIdx >= 0 && !!pd && hitCE(h) === pd.yearCE && h.monIdx === pd.monIdx && (h.hasDay === false || h.day === pd.day);
+/** จุดเขียนวันที่ literal บน view (เรียงจากท้ายไปหน้า) — [{at, len, text, what}] */
+function v2DateEdits(view, spans, pd, prev) {
+  const inTok = (a, z) => spans.some(([s, e]) => e > s && a < e && z > s);
+  const edits = [];
+  const headM = view.match(V2_HEADER_RE);
+  if (headM) {
+    const hit = findPriceDate(headM[0]);
+    const r = hit && hit.monIdx >= 0 ? parenDateAfter(headM[0], hit) : null;
+    if (r && r.monIdx >= 0) {
+      const at = headM.index + r.index;
+      // v1 เขียนหัวรายงานแบบมีวันเสมอ (parsePriceAge อ่านเฉพาะรูปมีวัน) — คงกติกาเดียวกัน
+      const text = renderThaiDate(pd.day, pd.monIdx, pd.yearCE, r.isBE);
+      if (!inTok(at, at + r.length) && (hitIs(r, prev) || hitIs(r, pd)) && text !== r.text) edits.push({ at, len: r.length, text, what: 'restate' });
+    }
+  }
+  const discM = view.match(V2_DISC_RE);
+  if (discM) for (const t of allDiscDates(discM[0])) {
+    const at = discM.index + t.index;
+    if (inTok(at, at + t.length)) continue;
+    const text = renderThaiDate(pd.day, pd.monIdx, pd.yearCE, t.isBE, t.hasDay);
+    if (text !== t.text) edits.push({ at, len: t.length, text, what: 'disc' });
+  }
+  return edits.sort((x, y) => y.at - x.at);
+}
+function v2DateTripwire(rendered, pd, iso) {
+  const bad = [];
+  const headM = rendered.match(V2_HEADER_RE);
+  const hit = headM ? findPriceDate(headM[0]) : null;
+  if (hit && hit.monIdx >= 0) {
+    if (!hitIs(hit, pd)) bad.push(`header "${hit.text}"`);
+    const r = parenDateAfter(headM[0], hit);
+    if (r && !hitIs(r, pd)) bad.push(`วงเล็บทวนใน header "${r.text}"`);
+  }
+  const discM = rendered.match(V2_DISC_RE);
+  if (discM) for (const t of allDiscDates(discM[0])) if (!hitIs(t, pd)) bad.push(`disclaimer "${t.text}"`);
+  if (bad.length) throw new Error(`derivedPassV2: วันที่ราคาที่โชว์ ≠ values.priceDate ${iso} — ${bad.join(' · ')} (เขียนกลับไม่ได้)`);
+}
+
+// ---------- v2: pass derived บน view ที่ render แล้ว (token เป็นเจ้าของ) — ระยะ 2 ส่วน D ----------
+// ทำไมไม่เรียก patchDerived บนต้นฉบับตรง ๆ: ตัวอ่านของมันต้องเห็นค่าที่ render (currencyOf อ่าน .px = "{{rd:px}}" → null ·
+// ช่องผสม "~{{rd:analystTgt}} (-3%)" ต้องรู้ราคาเป้า) · วิธี: render token ทีละตัว → view + span ต่อ token →
+// patchDerived(view) → keepMap(view, patched) → วาง token กลับที่ขอบที่ map ได้
+//   · span ไม่ว่างที่ "คงเดิม" (intact) = อักขระของมันคงอยู่ครบ + ต่อเนื่อง **และไม่มีอักขระแทรกชิดขอบทั้งสองฝั่ง**
+//     (ขอบซ้าย: before(s) === map[s] · ขอบขวา: after(e) === map[e-1]+1) → วาง token ตรงตำแหน่งนั้น
+//     ★ เงื่อนไขขอบ (fix round 1 · F1): LCS เก็บ "326.57" ไว้ใน "1326.57" ได้ครบและต่อเนื่อง ⇒ ถ้าตรวจแค่ตัว span
+//       ตัวอักษรที่แทรกชิดขอบจะถูกนับเป็น literal แล้ว **ติดกับ token** ("1{{rd:pxNum}}" · "~{{rd:baseEps}}5")
+//       รอบราคาถัดไปเลขค้างนั้นเกาะค่าใหม่เงียบ ๆ · แทรกชิดขอบ = กำกวมว่าเป็นของ token หรือ literal ⇒ ไปทาง token ชนะ
+//       (ลบชิดขอบโดยไม่แทรกอะไร = ไม่กำกวม ยังนับ intact — ผลลัพธ์เท่ากับทาง override ทุก byte แค่ไม่นับเป็น override)
+//   · span ไม่ว่างที่ถูกแก้ = **token ชนะ**: ตัด [before(s), after(e)) ของ pv ทิ้ง (ค่าที่ pass เขียนทับ + ของที่แทรกชิดขอบ) นับ overridden
+//     (ค่าที่ token ถือมาจาก values — JSON เป็นเจ้าของ · regex บน literal ไม่มีสิทธิ์เขียนทับ)
+//   · span ว่าง (render = "" เช่น scnNote) **ไม่เคย override** (F3): ไม่มีอักขระของตัวเองให้ตัด ⇒ แทรก token ที่ before(s)
+//     ไม่ทิ้งอักขระใดของ pv — literal ที่ pass แก้/แทรกชิด token ว่างต้องอยู่รอด (เดิมถูกกลืน เช่น "•"/"◦" หายทั้งตัว)
+//   · ขอบซ้ายทุกทาง clamp ≥ pos (ตำแหน่งที่ประกอบไปแล้ว) — ช่วงกำกวมของ span ที่ override ก่อนหน้าอาจกินมาถึงขอบ
+//     ของ token ถัดไปที่ชิดกัน (เดิม throw "ทับ token ก่อนหน้า" เมื่อ override ชิด {{rd:scnNote}})
+// invariant (throw → patch-failed เห็นในคิว ไม่เงียบ): ลำดับ token ก่อน/หลังเหมือนกันทุกตัว · และเมื่อไม่มี override
+// render(ผล) ต้องเท่ากับ view ที่ patch แล้วทุก byte (tripwire ของการวาง token ผิดที่แบบที่ F1 เจอ)
+// วัดทั้งคลังในหน่วยความจำ (ราคา ×1.03/×0.97/×1.1 · 869 ใบที่ย้ายได้): gate ตก 2/2607 (v1 วันนี้ 28/2607)
+// fix wave (final review ส่วน D · 14 ก.ย. 2569): + scnBasis ของไฟล์ส่งให้ patchDerived#7 (F2) + วันที่ literal/tripwire (F3 ข้างบน)
+//   วัดซ้ำ: 869 ใบ × 10 ราคา gate ตก 0 · กริด 0.85–1.15 ทีละ 0.005 ตก 0 ใบ (เดิม 14) · เดิน 20 วัน ±2% ตก 0 (เดิม 11) · throw 0
+const RD_TOKEN_SPLIT_RE = /(\{\{rd:[A-Za-z0-9]+\}\})/;
+function derivedPassV2(html, price, opts) {
+  const rd = RM.readReportData(html).data, sm = RM.readStockMeta(html);
+  if (!RV.isV2(rd)) throw new Error('derivedPassV2: report-data ไม่ใช่ v2');
+  const { prevPriceDate, ...passOpts } = opts || {};
+  const parts = html.split(RD_TOKEN_SPLIT_RE);   // คู่ = ข้อความ · คี่ = token
+  const tokens = parts.filter((_, i) => i % 2);
+  const spans = [];
+  let view = '';
+  parts.forEach((part, i) => {
+    if (i % 2 === 0) { view += part; return; }
+    const r = RV.renderValues(part, rd, sm);
+    spans.push([view.length, view.length + r.length, part]);
+    view += r;
+  });
+  // fix wave F3: วันที่ literal (วงเล็บทวน · .disc ระดับเดือน) เขียนบน view ก่อน pass derived — keep-map พากลับพร้อมกัน
+  const pd = RV.parseIso(rd.values.priceDate);
+  const prev = prevPriceDate ? RV.parseIso(prevPriceDate) : null;
+  let dated = view;
+  const dateChanges = [];
+  for (const e of v2DateEdits(view, spans, pd, prev)) {
+    dated = dated.slice(0, e.at) + e.text + dated.slice(e.at + e.len);
+    dateChanges.push(`วันที่ ${e.what === 'restate' ? 'วงเล็บทวนใน header' : 'disclaimer'}: ${view.slice(e.at, e.at + e.len)} → ${e.text}`);
+  }
+  // fix round 1 finding 2/R2: cur มาจาก sm.currency (JSON, อ่านจาก `html` ต้นฉบับก่อน render — ไม่ใช่ view)
+  //   ผ่าน RV.CUR_SYMBOL ตรง ๆ — ห้ามให้ patchDerived (ส่วน 8–10 ปันผล %/P-BV) ตกไปอ่าน .px ที่ view เพิ่ง render
+  // fix wave F2: scnBasis มาจาก values ของไฟล์เอง (ห้ามรับจาก opts) — patchDerived#7 ใช้ฐานที่ประกาศแทนการอนุมาน
+  const dv = patchDerived(dated, price, Object.assign({}, passOpts, { cur: RV.CUR_SYMBOL[sm.currency], scnBasis: rd.values.scnBasis || undefined }));
+  const changes = dateChanges.concat(dv.changes);
+  if (dv.html === view) { v2DateTripwire(view, pd, rd.values.priceDate); return { html, changes, overridden: 0 }; }
+  const pv = dv.html;
+  const map = keepMap(view, pv);
+  // ขอบซ้าย/ขวาใน pv ของตำแหน่งแทรก i ใน view: หลังอักขระคงอยู่ตัวสุดท้ายก่อน i · ก่อนอักขระคงอยู่ตัวแรกตั้งแต่ i
+  const before = (i) => { for (let j = i - 1; j >= 0; j--) if (map[j] >= 0) return map[j] + 1; return 0; };
+  const after = (i) => { for (let j = i; j < view.length; j++) if (map[j] >= 0) return map[j]; return pv.length; };
+  let out = '', pos = 0, overridden = 0;
+  for (const [s, e, tok] of spans) {
+    let ns, ne;
+    if (e === s) {
+      // span ว่าง: ไม่มีอะไรให้ตัด ไม่นับ override — แทรกที่ขอบซ้ายของช่องว่าง (อักขระที่แทรกตรงนั้นอยู่ต่อท้าย token)
+      ns = ne = Math.max(before(s), pos);
+    } else {
+      let intact = map[s] >= 0 && before(s) === map[s] && after(e) === map[e - 1] + 1;
+      for (let i = s + 1; intact && i < e; i++) if (map[i] !== map[i - 1] + 1) intact = false;
+      if (intact) { ns = map[s]; ne = map[e - 1] + 1; }
+      else { ns = Math.max(before(s), pos); ne = Math.max(after(e), ns); overridden++; }
+    }
+    out += pv.slice(pos, ns) + tok;
+    pos = Math.max(pos, ne);
+  }
+  out += pv.slice(pos);
+  const back = out.split(RD_TOKEN_SPLIT_RE).filter((_, i) => i % 2);
+  if (back.length !== tokens.length || back.some((t, i) => t !== tokens[i]))
+    throw new Error(`derivedPassV2: ลำดับ token หลังประกอบกลับไม่ตรงต้นฉบับ (${tokens.length} → ${back.length})`);
+  const rendered = RV.renderValues(out, rd, sm);
+  if (!overridden && rendered !== pv)
+    throw new Error('derivedPassV2: ไม่มี override แต่ render(ผล) ≠ view ที่ patch แล้ว — วาง token ผิดที่');
+  v2DateTripwire(rendered, pd, rd.values.priceDate);
+  return { html: out, changes, overridden };
+}
+
+// v2: กระจก stock-meta — ย้ายไปเป็นเจ้าของเดียวที่ tools/report-values.js (`RV.mirrorStockMeta` · fix wave F1/F4)
+// เพื่อให้ tools/apply-edits.js เรียกตัวเดียวกันได้โดยไม่ require ไฟล์ cron · เขียนแค่ price/mos/upside/fairValue
+// ★ ชื่อ mirrorStockMetaV2 คงไว้เป็น alias (self-test E-policy W22 อ้างผ่าน UP.mirrorStockMetaV2) · อาร์กิวเมนต์ที่ 2 เดิม
+//   (stock-meta ก่อน patch) ถูกเมินโดยตั้งใจ — กระจกต้องเริ่มจาก stock-meta **หลัง** pass derived เสมอ (ห้ามย้อน pe/dividendYield)
+function mirrorStockMetaV2(html) { return RV.mirrorStockMeta(html); }
 
 // ---------- quarantine รายไฟล์ (WS2 ข้อ 1) ----------
 // เดิม: patch 908 ไฟล์ → npm run verify ทั้งรีโป → ไฟล์เดียวตก = ทิ้ง patch ดีทั้งวัน (cron ล้ม 22–24 ส.ค. · 2 ก.ย. 69)
@@ -683,32 +860,61 @@ function commitBody(updated, frozen) {
 //   node tools/update-prices.js --heal-derived --prose --write   # + % ของราคาเป้าที่เขียนในย่อหน้า (ต้องรีวิว diff)
 // ★ หลังเขียน: npm run build → node tools/preserve-dates.js → npm run build (คืนวันที่ "อัปเดตล่าสุด" เดิม —
 //   ซ่อมค่า derive ไม่ใช่ re-analysis จึงห้ามดันทั้งคลังขึ้นหน้าแรก)
+// ★ รายไฟล์ try/catch (fix round 1 · F6): ทาง v2 (derivedPassV2/keepMap/renderValues) throw ได้ — เดิมไฟล์เดียว throw
+//   = ทั้งรอบ --heal-derived ล้มกลางคลัง · ตอนนี้พิมพ์ "⛔ <ไฟล์> <ข้อความ>" แล้วไปต่อ · สรุปนับจำนวน · exit ≠ 0 เมื่อมีตัวล้ม
+//   (opts.dir = โฟลเดอร์รายงาน สำหรับเทส · คืน { touched, total, failed } ให้ main ตั้ง exit code)
 function healDerived(opts) {
-  const files = fs.readdirSync(REPORTS).filter((f) => /\.html$/i.test(f)).sort()
+  const dir = opts.dir || REPORTS;
+  const files = fs.readdirSync(dir).filter((f) => /\.html$/i.test(f)).sort()
     .filter((f) => !opts.only.size || opts.only.has(f.replace(/\.html$/i, '').toUpperCase()));
   let touched = 0, total = 0, noPrice = 0;
+  const failed = [];
   for (const f of files) {
-    const fp = path.join(REPORTS, f);
-    const html = fs.readFileSync(fp, 'utf8');
-    // ราคาที่ใช้เป็นตัวตั้ง = ราคาใน header (.px) — ตัวเดียวกับที่ gate ใช้เทียบ (E41/E42) ไม่ใช่ stock-meta
-    const hp = RM.readHeaderPrice(html);
-    const px = hp ? hp.price : null;
-    if (!(px > 0)) { noPrice++; continue; }
-    const r = patchDerived(html, px, { prose: opts.prose });
-    if (!r.changes.length || r.html === html) continue;
-    touched++; total += r.changes.length;
-    console.log(`${opts.write ? '✎' : '·'} ${f.replace(/\.html$/i, '').padEnd(10)} ราคา ${px}`);
-    for (const c of r.changes) console.log(`    ${c}`);
-    if (opts.write) {
-      const g = gateAfterPatch(r.html, f);
-      if (!g.ok) { console.log(`    ⛔ ไม่เขียน — gate ตก ${g.codes.join(',')} (${g.detail.slice(0, 120)})`); continue; }
-      fs.writeFileSync(fp, r.html);
+    const fp = path.join(dir, f);
+    try {
+      const html = fs.readFileSync(fp, 'utf8');
+      const rdH = (RM.readReportData(html) || {}).data;
+      let px, r;
+      if (RV.isV2(rdH)) {
+        // v2: ราคาตัวตั้ง = values.px (header เป็น {{rd:px}}) · pass เดียวกับ cron (derivedPassV2) + กระจก stock-meta
+        px = rdH.values && rdH.values.px;
+        if (!(px > 0)) { noPrice++; continue; }
+        const smH = RM.readStockMeta(html);
+        if (!smH) { noPrice++; continue; }
+        const p2 = derivedPassV2(html, px, { prose: opts.prose });
+        const mirrored = RV.mirrorStockMeta(p2.html);
+        // fix wave M7: ซ่อมที่กระจกอย่างเดียว (pass ไม่เปลี่ยนอะไร แต่ stock-meta.price/mos/upside/fairValue ไม่ตรง values/fv)
+        //   ต้องนับว่า "แตะ" ด้วย — เดิมนับเฉพาะ changes ของ pass ⇒ BBL fairValue ×1.2 (E30/E31) ถูกข้ามเงียบ ไม่เขียน
+        const smM = RM.readStockMeta(mirrored);
+        const mirrorLine = mirrored !== p2.html ? [`stock-meta กระจก ${RV.MIRROR_KEYS.filter((k) => smH[k] !== smM[k]).map((k) => `${k} ${smH[k]} → ${smM[k]}`).join(' · ')} (จาก values.px/fv)`] : [];
+        r = { html: mirrored, changes: p2.changes.concat(p2.overridden ? [`token ชนะ ${p2.overridden} span`] : [], mirrorLine), v2: true };
+      } else {
+        // ราคาที่ใช้เป็นตัวตั้ง = ราคาใน header (.px) — ตัวเดียวกับที่ gate ใช้เทียบ (E41/E42) ไม่ใช่ stock-meta
+        const hp = RM.readHeaderPrice(html);
+        px = hp ? hp.price : null;
+        if (!(px > 0)) { noPrice++; continue; }
+        r = patchDerived(html, px, { prose: opts.prose });
+      }
+      // v2: ตัดสินจาก html เปลี่ยนจริง (รวมกระจกล้วน — M7) · v1: เดิมทุก byte (ต้องมี changes และ html เปลี่ยน)
+      if (r.v2 ? r.html === html : (!r.changes.length || r.html === html)) continue;
+      touched++; total += r.changes.length;
+      console.log(`${opts.write ? '✎' : '·'} ${f.replace(/\.html$/i, '').padEnd(10)} ราคา ${px}`);
+      for (const c of r.changes) console.log(`    ${c}`);
+      if (opts.write) {
+        const g = gateAfterPatch(r.html, f);
+        if (!g.ok) { console.log(`    ⛔ ไม่เขียน — gate ตก ${g.codes.join(',')} (${g.detail.slice(0, 120)})`); continue; }
+        fs.writeFileSync(fp, r.html);
+      }
+    } catch (e) {
+      failed.push(f);
+      console.log(`⛔ ${f} ${e.message}`);
     }
   }
   console.log('\n' + '─'.repeat(50));
-  console.log(`heal-derived: ${touched}/${files.length} ไฟล์มีค่าค้าง • แก้ ${total} จุด${opts.prose ? ' (รวม prose)' : ''}${noPrice ? ` • ข้าม ${noPrice} ไฟล์ (อ่านราคาไม่ได้)` : ''}`);
+  console.log(`heal-derived: ${touched}/${files.length} ไฟล์มีค่าค้าง • แก้ ${total} จุด${opts.prose ? ' (รวม prose)' : ''}${noPrice ? ` • ข้าม ${noPrice} ไฟล์ (อ่านราคาไม่ได้)` : ''}${failed.length ? ` • ⛔ ล้ม ${failed.length} ไฟล์` : ''}`);
   if (!opts.write) console.log('(dry-run — ใส่ --write เพื่อเขียนจริง)');
   console.log('');
+  return { touched, total, failed };
 }
 
 async function main() {
@@ -722,7 +928,8 @@ async function main() {
   const ONLY = new Set(process.argv.slice(2).filter((a) => !a.startsWith('--')).map((s) => s.replace(/\.html$/i, '').toUpperCase()));
   // โหมดซ่อมค่าที่ derive จากราคา — คนละทางเดินกับ cron (ไม่ fetch ไม่แตะราคา/วันที่/กราฟ/คิว flags)
   if (process.argv.includes('--heal-derived')) {
-    healDerived({ write: WRITE, prose: process.argv.includes('--prose'), only: ONLY });
+    const h = healDerived({ write: WRITE, prose: process.argv.includes('--prose'), only: ONLY });
+    if (h.failed.length) process.exitCode = 1;   // ไฟล์ที่ล้มต้องไม่ผ่านเงียบ (CI/คนสั่งเห็นจาก exit code)
     return;
   }
   if (FORCE && !ONLY.size) { console.error('✗ --force ต้องระบุ SYMBOL ชัด ๆ (กันข้าม freeze ทั้งรีโป)'); process.exit(1); }
@@ -758,7 +965,7 @@ async function main() {
       consecFails = 0;   // ยิงผ่าน = ต้นทางยังดี → เริ่มนับใหม่ (ยามจับ "พังติดกัน" ไม่ใช่ยอดรวมทั้งรอบ)
       await sleep(FETCH_DELAY_MS);
     } catch (e) {
-      frozen.push({ symbol, reason: 'fetch-failed', detail: e.message, reportPrice: sm.price, marketPrice: null, diffPct: null });
+      frozen.push({ symbol, reason: 'fetch-failed', detail: e.message, reportPrice: pxOf(html, sm), marketPrice: null, diffPct: null });
       console.log(`⚠ ${symbol.padEnd(10)} fetch fail: ${e.message}`);
       // ยกเลิกทั้งรอบเมื่อพังติดกันครบเกณฑ์ — ยิงต่อได้แต่จะได้ flag fetch-failed ผิด ๆ ทั้งรีโป
       // และ retry backoff ของ fetchChart กินงบ job จนหมดก่อนถึงตัวสุดท้าย (เช็คตรงนี้ = จับ outage
@@ -781,16 +988,20 @@ async function main() {
       continue;
     }
 
+    // v2: ราคาในรายงาน = values.px (เจ้าของ) ไม่ใช่กระจก sm.price (fix wave M8 — กระจกค้างได้ เช่นหลัง apply-edits แก้ values.px)
+    //   ใช้ทั้ง decide (drift/MOS-flip) และ reportPrice/diffPct ใน log/flag · v1 = sm.price เดิมทุก byte
+    const reportPrice = pxOf(html, sm);
     const d = decide({
-      oldPrice: sm.price, newPrice: q.price, fv: sm.fairValue,
+      // v2: FV เจ้าของเดียว = report-data.fv (stock-meta.fairValue เป็นกระจก) · ราคา = pxOf (values.px บน v2)
+      oldPrice: reportPrice, newPrice: q.price, fv: fvOf(html, sm),
       currencyOk: currencyMatches(q.currency, sm.currency),
       force: FORCE,
     });
-    const diffPct = sm.price > 0 ? round((q.price - sm.price) / sm.price * 100, 1) : null; // sm.price ≤ 0 (corrupt) → null ไม่ให้ Infinity/NaN ซ่อน magnitude ใน triage
+    const diffPct = reportPrice > 0 ? round((q.price - reportPrice) / reportPrice * 100, 1) : null; // ราคาในรายงาน ≤ 0 (corrupt) → null ไม่ให้ Infinity/NaN ซ่อน magnitude ใน triage
     // เก็บก่อนแยกทาง freeze/patch — canary ต้องเห็นทุกตัวที่ fetch ได้ ไม่ใช่แค่ตัวที่ patch
     quotes.push({
       symbol, currency: q.currency || sm.currency, marketTime: q.marketTime, gmtoffset: q.gmtoffset,
-      reportPrice: sm.price, marketPrice: round(q.price, 2), diffPct,
+      reportPrice, marketPrice: round(q.price, 2), diffPct,
     });
 
     // หุ้นที่ยืนยันแล้วว่าไม่อยู่บนกระดาน: หยุด patch ทันที — ราคาเป็น no-op จริง แต่ **หน้าต่างกราฟ 1 ปี
@@ -808,8 +1019,8 @@ async function main() {
     if (deadAlready.has(symbol)) console.log(`↻ ${symbol.padEnd(10)} --alive ทับ flag not-on-exchange — patch ต่อแล้วปลด flag (ยืนยันด้วยมือแล้ว)`);
 
     if (d.freeze) {
-      frozen.push({ symbol, reason: d.freeze, reportPrice: sm.price, marketPrice: round(q.price, 2), diffPct });
-      console.log(`❄ ${symbol.padEnd(10)} freeze [${d.freeze}] ${sm.price} → ${round(q.price, 2)} (${diffPct > 0 ? '+' : ''}${diffPct}%)`);
+      frozen.push({ symbol, reason: d.freeze, reportPrice, marketPrice: round(q.price, 2), diffPct });
+      console.log(`❄ ${symbol.padEnd(10)} freeze [${d.freeze}] ${reportPrice} → ${round(q.price, 2)} (${diffPct > 0 ? '+' : ''}${diffPct}%)`);
       continue;
     }
 
@@ -840,7 +1051,7 @@ async function main() {
       // แต่ยัง **ห้ามเขียนกราฟจากซีรีส์นี้** → chartData = null = ทาง price-only ที่คงกราฟเดิมในไฟล์
       // (SKILL STEP 1 สั่ง `--write --force <SYM>` เป็นคำสั่งประจำ ถ้า hard-block ทางนี้ UPDATE จะทำต่อไม่ได้เลย)
       if (!FORCE) {
-        frozen.push({ symbol, reason: 'bad-chart', detail: basis.text, reportPrice: sm.price, marketPrice: round(q.price, 2), diffPct });
+        frozen.push({ symbol, reason: 'bad-chart', detail: basis.text, reportPrice, marketPrice: round(q.price, 2), diffPct });
         console.log(`❄ ${symbol.padEnd(10)} freeze [bad-chart] ${basis.text}`);
         continue;
       }
@@ -860,16 +1071,16 @@ async function main() {
           // re-analysis/controller สั่งเอง: เขียนต่อ (verify ก่อน push จะจับ) แต่ต้องเห็นชัด ๆ ไม่ใช่เงียบ
           console.log(`⚠ ${symbol.padEnd(10)} gate ตก ${g.codes.join(',')}${preExisting ? ' (ค้างอยู่ก่อน patch)' : ''} — --force เขียนต่อ แต่ npm run verify จะไม่ผ่านจนกว่าจะแก้`);
         } else {
-          frozen.push({ symbol, reason: 'patch-rejected', detail: `${g.codes.join(',')}${preExisting ? ' (ค้างก่อน patch)' : ' (patch ทำให้ตก)'} — ${g.detail}`, reportPrice: sm.price, marketPrice: round(q.price, 2), diffPct });
+          frozen.push({ symbol, reason: 'patch-rejected', detail: `${g.codes.join(',')}${preExisting ? ' (ค้างก่อน patch)' : ' (patch ทำให้ตก)'} — ${g.detail}`, reportPrice, marketPrice: round(q.price, 2), diffPct });
           console.log(`❄ ${symbol.padEnd(10)} freeze [patch-rejected] ${g.codes.join(',')}${preExisting ? ' (ค้างอยู่ก่อนแล้ว)' : ''} — ไม่เขียนไฟล์`);
           continue;
         }
       }
       if (WRITE) fs.writeFileSync(fp, r.html);
-      updated.push({ symbol, old: sm.price, new: round(q.price, 2), diffPct });
-      console.log(`${WRITE ? '✓' : '·'} ${symbol.padEnd(10)} ${sm.price} → ${round(q.price, 2)} (${diffPct > 0 ? '+' : ''}${diffPct}%) · ${r.chg.text} · MOS ${r.mos}%${chartSrc !== '1mo' ? ` · chart:${chartSrc}` : ''}${r.notes && r.notes.length ? ` · ⚠ ${r.notes.join(' · ')}` : ''}`);
+      updated.push({ symbol, old: reportPrice, new: round(q.price, 2), diffPct });
+      console.log(`${WRITE ? '✓' : '·'} ${symbol.padEnd(10)} ${reportPrice} → ${round(q.price, 2)} (${diffPct > 0 ? '+' : ''}${diffPct}%) · ${r.chg.text} · MOS ${r.mos}%${chartSrc !== '1mo' ? ` · chart:${chartSrc}` : ''}${r.notes && r.notes.length ? ` · ⚠ ${r.notes.join(' · ')}` : ''}`);
     } catch (e) {
-      frozen.push({ symbol, reason: 'patch-failed', detail: e.message, reportPrice: sm.price, marketPrice: round(q.price, 2), diffPct });
+      frozen.push({ symbol, reason: 'patch-failed', detail: e.message, reportPrice, marketPrice: round(q.price, 2), diffPct });
       console.log(`⚠ ${symbol.padEnd(10)} patch fail: ${e.message}`);
     }
   }
@@ -938,6 +1149,17 @@ async function main() {
   if (!WRITE) console.log('ใส่ --write เพื่อเขียนจริง');
 }
 
-module.exports = { mosBand, fmtPrice, fmtLike, toYahooSymbol, fetchChart, buildChartData, niceBounds, annualChg, decide, currencyMatches, isIntradayQuote, detectMixedBasis, detectStaleQuotes, missedSessions, probeCap, capByCohort, controlTickers, unverifiedCohorts, classifyStale, patchReport, gateAfterPatch, mergeFlags, commitFlags, styledRD, commitBody, THAI_MONTHS, MOS_FLIP_DEADBAND_PP };
+// fv สำหรับ decide(): v2 อ่าน report-data.fv · v1 (หรืออ่าน report-data ไม่ได้) = stock-meta.fairValue เดิม
+function fvOf(html, sm) {
+  const r = RM.readReportData(html);
+  return r && RV.isV2(r.data) ? r.data.fv : sm.fairValue;
+}
+// ราคาในรายงานสำหรับ decide()/log/flag (fix wave M8): v2 อ่าน report-data.values.px (เจ้าของ) · v1 (หรืออ่านไม่ได้) = stock-meta.price เดิม
+function pxOf(html, sm) {
+  const r = RM.readReportData(html);
+  return r && RV.isV2(r.data) && r.data.values && Number.isFinite(r.data.values.px) ? r.data.values.px : sm.price;
+}
+
+module.exports = { derivedPassV2, mirrorStockMetaV2, healDerived, fvOf, pxOf, mosBand, fmtPrice, fmtLike, toYahooSymbol, fetchChart, buildChartData, niceBounds, annualChg, decide, currencyMatches, isIntradayQuote, detectMixedBasis, detectStaleQuotes, missedSessions, probeCap, capByCohort, controlTickers, unverifiedCohorts, classifyStale, patchReport, gateAfterPatch, mergeFlags, commitFlags, styledRD, commitBody, THAI_MONTHS, MOS_FLIP_DEADBAND_PP };
 
 if (require.main === module) main().catch((e) => { console.error(e); process.exit(1); });

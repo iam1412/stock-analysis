@@ -225,3 +225,21 @@ f68 tag อยู่ sidecar นอกไฟล์รายงาน ⇒ ทั�
 ทั้งสองขา**ไม่มีเคสใน self-test ที่เดินเส้นทางจริงบนคลังวันนี้** — ขา f55 มีเคสที่บังคับให้ทำงานด้วยการเปลี่ยน label
 กราฟเป็นปี 4 หลักก่อน (โค้ดถูกเดินจริง) · กฎ roe ยังไม่มีเคสเลย เพราะ fixture BBL/AAPL กำไรทั้งคู่ — ต้องมี fixture
 ขาดทุนก่อน ซึ่งเป็นงานของ Task 26
+
+## ระยะ 2 ส่วน D (13 ก.ย. 2569) — f69 + ความหมายของฟิลด์ `v2` ต่อแถว
+
+- **เพิ่มแถว f69 `stock-meta.fairValue`** (required · pair `money` กับ f44 `const FV` · gate E30) ⇒ **จำนวนช่อง 70 → 71**
+  (`N_FIELDS = 71` · `required` true 33 / false 38) · เหตุผล: บนไฟล์ v2 FV มีสำเนาเดียวใน `report-data.fv` —
+  กระจก stock-meta ต้องมีแถวใน manifest ไม่งั้น coverage/W22 มองไม่เห็นคู่นี้
+  - census ทั้งคลังตอนเพิ่ม: พบ **908/908 (100%)** · คู่ f69↔f44 ไม่ตรง **1 ใบ (TT: 447 ≠ 443)** — ไปต่อท้ายข้อความ W22
+    ที่ TT ยิงอยู่แล้ว (legend/mFair/การ์ดโซนสะสมก็ 447 เหมือนกัน) ⇒ **จำนวน W22 ทั้งคลังไม่ขยับ (24)** · E30 ไม่ยิงเพราะ
+    ทนต่างได้ในเกณฑ์ของตัวเอง — เป็นของเสียจริงรอ fix-on-touch ไม่ใช่ false positive
+- **ฟิลด์ `v2` ต่อแถว** (มีผลเฉพาะไฟล์ที่ `ctx.v2 === true` · ไฟล์ v1 ไม่แตะเลย):
+  - `undefined` = ใช้ `extract` เดิมบน HTML ที่ build render แล้ว (แถวส่วนใหญ่)
+  - `null` = ช่องนี้**ไม่มีในไฟล์ v2 โดยสคีมา** → `extractAll` ข้าม นับใน `omitted` (ไม่ใช่ missing/skipped) และ
+    coverage `n = 71 − omitted` · ตอนนี้ **f11** (วันที่ทวนในวงเล็บ) · **f45** `gauge.fair` · **f46** `chart.fairLine`
+    (`validateValues` ห้ามสองตัวหลังบน v2 — engine ใช้ `fv`)
+  - `fn(h, c)` = ตัวอ่านทาง v2 ใช้แทน `extract` · **f03** `gauge.cur` → `c.dv.px` · **f10** → `c.priceAge.iso` (ctx มาจาก `values.priceDate`)
+- วัดก่อน/หลังบนคลัง v1 ทั้ง 908 ใบ: error 0 / warning 241 เท่ากัน รายโค้ดเท่ากัน (W05 1 · W15 96 · W21 11 · W22 24 · W23 109) ·
+  ค่าจาก `buildCtx` (px/fvBox/mosBig/pxInput/chg/priceAge/scaleNums/baseEPS) และทุกช่อง manifest เดิมเท่ากันทุกใบ ·
+  ต่างเฉพาะ coverage +1 (f69) และข้อความ W22 ของ TT ข้างบน

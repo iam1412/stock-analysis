@@ -985,6 +985,376 @@ ok(U.commitBody([], []) === '', 'commitBody: ว่างเมื่อไม�
   ok(!gw.ok && gw.codes.includes('W17'), 'gateAfterPatch: W17 (ยกเป็น error) ที่ตกหลัง patch → ok=false + patch-rejected ไม่ throw', gw.codes.join(','));
 }
 
+// ---------- ระยะ 2 ส่วน D: keepMap (tools/keep-map.js) ----------
+{
+  const { keepMap } = require('../tools/keep-map.js');
+  // ความถูกต้องของ map: เพิ่มขึ้นเคร่งครัด · อักขระตรงกัน · จำนวน = ความยาว LCS (DP อ้างอิง)
+  const lcsLen = (a, b) => { const d = Array.from({ length: a.length + 1 }, () => new Int32Array(b.length + 1)); for (let i = 1; i <= a.length; i++) for (let j = 1; j <= b.length; j++) d[i][j] = a[i - 1] === b[j - 1] ? d[i - 1][j - 1] + 1 : Math.max(d[i - 1][j], d[i][j - 1]); return d[a.length][b.length]; };
+  const valid = (a, b, m) => { let last = -1, c = 0; for (let i = 0; i < a.length; i++) { if (m[i] < 0) continue; if (m[i] <= last || a[i] !== b[m[i]]) return false; last = m[i]; c++; } return c === lcsLen(a, b); };
+  const a1 = 'P/E ~40x ราคา', b1 = 'P/E ~44x ราคา', m1 = keepMap(a1, b1);
+  ok(m1.length === a1.length && valid(a1, b1, m1), 'keepMap: แทนที่กลางสตริง → map ถูกต้อง (LCS)');
+  ok(m1[a1.indexOf('0')] === -1 && m1[0] === 0 && m1[a1.length - 1] === b1.length - 1, 'keepMap: อักขระที่ถูกแทน = -1 · prefix/suffix map ตรงตัว');
+  // ตัวเลขซ้ำ: "$121" อยู่ใน "$121.20" — แทรก ".20" ต่อท้ายต้องคง $121 ทั้ง 4 ตัวที่ index เดิม
+  const a2 = 'เป้า $121 (+3%)', b2 = 'เป้า $121.20 (+3%)', m2 = keepMap(a2, b2);
+  ok(valid(a2, b2, m2) && [0, 1, 2, 3].every((i) => m2[a2.indexOf('$') + i] === b2.indexOf('$') + i), 'keepMap: ตัวเลขซ้ำ $121 ใน $121.20 → map คงอยู่ครบ');
+  ok(valid('abc', 'abc', keepMap('abc', 'abc')) && keepMap('abc', 'abc').every((v, i) => v === i), 'keepMap: เหมือนกันทั้งสตริง → identity');
+  ok(keepMap('abcdef', 'abXYef').join() === '0,1,-1,-1,4,5', 'keepMap: prefix/suffix ร่วม + แทนกลาง');
+  ok(keepMap('abc', '').every((v) => v === -1) && keepMap('', 'abc').length === 0, 'keepMap: สตริงว่าง');
+  let fuzzBad = 0, seed = 7;
+  const rnd = () => (seed = (seed * 1103515245 + 12345) % 2147483648) / 2147483648;
+  const rs = (n) => Array.from({ length: n }, () => 'ab1'[Math.floor(rnd() * 3)]).join('');
+  for (let t = 0; t < 2000; t++) { const a = rs(Math.floor(rnd() * 12)), b = rs(Math.floor(rnd() * 12)); if (!valid(a, b, keepMap(a, b))) fuzzBad++; }
+  ok(fuzzBad === 0, 'keepMap: fuzz 2000 คู่ (seed คงที่) ตรง LCS ทุกคู่', String(fuzzBad));
+}
+
+// ---------- ระยะ 2 ส่วน D: patchReport ทาง v2 = เขียน JSON + pass derived บน view ที่ render (token เป็นเจ้าของ) ----------
+{
+  const RV = require('../tools/report-values.js');
+  const { expandReport } = require('../build.js');
+  const TOK = /\{\{rd:[A-Za-z0-9]+\}\}/g;
+  const toks = (h) => h.match(TOK) || [];
+  const sameToks = (a, b) => { const x = toks(a), y = toks(b); return x.length === y.length && x.every((t, i) => t === y[i]); };
+  const src = FX.AAPL_V2();
+  const rd0 = RM.readReportData(src).data;
+  const dateParts = { day: 12, monIdx: 8, yearCE: 2026 };
+  for (const k of [1.1, 0.9]) {
+    const newPrice = rd0.values.px * k;
+    const chartData = rd0.chart.data.map((d) => [d[0], d[1]]); chartData[chartData.length - 1][1] = Math.round(newPrice * 100) / 100;
+    const r = U.patchReport(src, { newPrice, dateParts, chartData });
+    const rd1 = RM.readReportData(r.html).data, sm1 = RM.readStockMeta(r.html);
+    const px1 = Math.round(newPrice * 100) / 100;
+    ok(rd1.values.px === px1 && rd1.values.priceDate === '2026-09-12', `v2 ×${k}: values.px/priceDate ถูกเขียน`);
+    ok(rd1.gauge.cur === undefined && rd1.gauge.fair === undefined && rd1.chart.fairLine === undefined, `v2 ×${k}: ไม่สร้าง gauge.cur/fair/fairLine กลับมา`);
+    ok(sm1.price === px1 && Math.abs(sm1.mos - Math.round((rd1.fv - px1) / rd1.fv * 1000) / 10) < 1e-9, `v2 ×${k}: stock-meta.price/mos กระจกจาก values/fv`);
+    // fix wave F1 (แทน Task 11 F2/F4): pe/dividendYield เป็นของ pass derived (ฐานการ์ดที่ค่าเดิมยืนอยู่) เหมือน v1 ทุกประการ
+    //   ⇒ v2 ต้องได้ค่าเท่ากับ v1 patchReport ที่ราคาเดียวกัน (ราคาปัด 2 ตำแหน่งให้ตัวตั้งตรงกัน — v2 ใช้ values.px)
+    const smV1 = RM.readStockMeta(U.patchReport(FX.AAPL(), { newPrice: px1, dateParts, chartData }).html);
+    ok(sm1.pe === smV1.pe && sm1.dividendYield === smV1.dividendYield, `v2 ×${k}: stock-meta.pe/dividendYield = ผลของ v1 ที่ราคาเดียวกัน (pass derived เป็นเจ้าของ)`, `v2 ${sm1.pe}/${sm1.dividendYield} v1 ${smV1.pe}/${smV1.dividendYield}`);
+    // (ก) ลำดับ token เท่าต้นฉบับทุกตัว
+    ok(sameToks(src, r.html), `v2 ×${k}: ลำดับ token {{rd:…}} เท่าต้นฉบับ`);
+    // (ข) การ์ด literal ถูก pass derived เขียนตามราคาใหม่ — ปันผล % ของ AAPL_V2 ("0.32%" 2 ตำแหน่ง)
+    const yCard = (r.html.match(/<div class="k">เงินปันผล<\/div><div class="v">([^<]*)</) || [])[1];
+    ok(yCard === (1.04 / px1 * 100).toFixed(2) + '%', `v2 ×${k}: การ์ดปันผล % literal ถูกเขียนตามราคาใหม่`, yCard);
+    ok(r.derived.length > 0, `v2 ×${k}: derived ไม่ว่าง (การ์ด literal ถูกแก้)`);
+    ok(r.chg && r.chg.dir && typeof r.mos === 'number', `v2 ×${k}: คืน chg/mos สำหรับ log/freeze เหมือน v1`);
+    ok(expandReport(r.html).includes('<div class="px">$' + RV.fmtPrice(newPrice)), `v2 ×${k}: ราคาใหม่ render ใน header`);
+    // (ค) กันถดถอย defect "เขียน JSON อย่างเดียว ⇒ E41/E42/E43/W19/W20" — ห้ามผ่อน
+    const g = U.gateAfterPatch(r.html, 'AAPL.html');
+    ok(g.ok, `v2 ×${k}: gateAfterPatch ผ่านหลัง patch`, g.detail);
+  }
+  // IPO: suffix มาจาก values.chgSuffix (HTML เป็น {{rd:chg}} อ่านคำ IPO ไม่ได้)
+  const ipo = src.replace('"chgSuffix": "รอบปี"', '"chgSuffix": "ตั้งแต่ IPO"');
+  ok(ipo !== src && /IPO/.test(U.patchReport(ipo, { newPrice: rd0.values.px, dateParts, chartData: null }).chg.text), 'v2: suffix .chg จาก values.chgSuffix');
+  // ราคาหลุดขอบ gauge → ขยายขอบ (ใช้ values.px)
+  const big = U.patchReport(src, { newPrice: rd0.gauge.max * 1.2, dateParts, chartData: null });
+  ok(RM.readReportData(big.html).data.gauge.max > rd0.gauge.max && RM.readReportData(big.html).data.gauge.cur === undefined, 'v2: gauge auto-rescale ใช้ values.px (ไม่สร้าง gauge.cur)');
+  // pe:null ตั้งใจ (ขาดทุน) ต้องคง null แม้ values มี eps
+  const peNull = src.replace(/"pe":\s*[0-9.]+/, '"pe":null');
+  ok(RM.readStockMeta(U.patchReport(peNull, { newPrice: rd0.values.px * 1.05, dateParts, chartData: null }).html).pe === null, 'v2: stock-meta.pe เดิม null → คง null');
+  // BBL_V2 (THB · มี {{rd:yield}}) — gate ผ่านทั้งสองทาง
+  const bbl = FX.BBL_V2(), bpx = RM.readReportData(bbl).data.values.px;
+  for (const k of [1.1, 0.9]) {
+    const rb = U.patchReport(bbl, { newPrice: bpx * k, dateParts, chartData: null });
+    ok(sameToks(bbl, rb.html) && U.gateAfterPatch(rb.html, 'BBL.html').ok, `v2 BBL ×${k}: token คงลำดับ + gate ผ่าน`);
+  }
+  // main loop: decide() ใช้ fv ของ v2 = report-data.fv (stock-meta.fairValue เป็นกระจก)
+  const smFv = src.replace(/"fairValue":\s*[0-9.]+/, '"fairValue":99999');
+  ok(U.fvOf(smFv, RM.readStockMeta(smFv)) === rd0.fv && U.fvOf(FX.AAPL(), RM.readStockMeta(FX.AAPL())) === RM.readStockMeta(FX.AAPL()).fairValue, 'fvOf: v2 = report-data.fv · v1 = stock-meta.fairValue');
+
+  // (ง) override: span ของ token ที่ pass derived พยายามแก้ ⇒ token คงอยู่ (token ชนะ)
+  //     การ์ด P/E เป็น ~{{rd:pe}}x แล้วเรียก pass ด้วยราคาคนละค่ากับ values.px ⇒ patchDerived อยากเขียนเลขใหม่ลง span ของ token
+  const peTok = src.replace(/(<div class="k">P\/E \(TTM\)<\/div><div class="v neu">)~40x/, '$1~{{rd:pe}}x');
+  ok(peTok !== src, '(ตั้งฉาก) ใส่ {{rd:pe}} ในการ์ด P/E ได้');
+  const ov = U.derivedPassV2(peTok, rd0.values.px * 1.1);
+  ok(ov.overridden >= 1 && ov.html.includes('<div class="v neu">~{{rd:pe}}x</div>') && sameToks(peTok, ov.html), 'derivedPassV2: span ที่ถูกแก้ → token ชนะ + นับ overridden', String(ov.overridden));
+  ok(ov.changes.some((c) => /P\/E \[P\/E \(TTM\)\]/.test(c)), '(ตั้งฉาก) patchDerived พยายามแก้การ์ด P/E นั้นจริง');
+  // (จ) token render ว่าง ({{rd:scnNote}} เมื่อ divIncluded:false) — ไม่มี span ให้ map แต่ token ต้องอยู่ที่เดิม
+  const noteTok = src.replace(/(EPS ฐาน ~\{\{rd:baseEps\}\})/, '$1{{rd:scnNote}}');
+  ok(noteTok !== src && RV.renderValues('{{rd:scnNote}}', rd0, RM.readStockMeta(src)) === '', '(ตั้งฉาก) scnNote render ว่าง');
+  const rn = U.patchReport(noteTok, { newPrice: rd0.values.px * 1.1, dateParts, chartData: null });
+  ok(sameToks(noteTok, rn.html) && rn.html.includes('{{rd:baseEps}}{{rd:scnNote}}'), 'v2: token render ว่างคงตำแหน่ง + ลำดับ');
+  ok(U.gateAfterPatch(rn.html, 'AAPL.html').ok, 'v2: token render ว่าง → gate ผ่าน');
+  // ไม่มีอะไรให้แก้ = คืนต้นฉบับทุก byte
+  const same = U.derivedPassV2(src, rd0.values.px);
+  ok(same.overridden === 0 && same.html === src, 'derivedPassV2: ราคาเดิม → คืนต้นฉบับทุก byte ไม่ override');
+  ok(/ไม่ใช่ v2/.test((() => { try { U.derivedPassV2(FX.AAPL(), 300); return ''; } catch (e) { return e.message; } })()), 'derivedPassV2: v1 → throw');
+}
+
+// ---------- ระยะ 2 ส่วน D · Task 11 fix round 1: derivedPassV2 ขอบ/ช่องว่าง · กระจก stock-meta · MAX_D · healDerived ----------
+// stub patchDerived ผ่าน require.cache บนสำเนา update-prices ที่โหลดใหม่ (ตัวจริง U ไม่ถูกแตะ) — edit(view) = pv ที่ต้องการ
+{
+  const os = require('os');
+  const RV = require('../tools/report-values.js');
+  const KM = require('../tools/keep-map.js');
+  const DVpath = require.resolve('../tools/derived-values.js'), UPpath = require.resolve('../tools/update-prices.js');
+  const realDV = require(DVpath), savedUP = require.cache[UPpath];
+  let edit = null;
+  require.cache[DVpath].exports = { ...realDV, patchDerived: (h, p, o) => (edit ? { html: edit(h), changes: ['stub'] } : realDV.patchDerived(h, p, o)) };
+  delete require.cache[UPpath];
+  const US = require(UPpath);
+  require.cache[DVpath].exports = realDV;
+  require.cache[UPpath] = savedUP;
+
+  const TOK = /\{\{rd:[A-Za-z0-9]+\}\}/g;
+  const sameToks = (a, b) => { const x = a.match(TOK) || [], y = b.match(TOK) || []; return x.length === y.length && x.every((t, i) => t === y[i]); };
+  const errOf = (f) => { try { f(); return ''; } catch (e) { return e.message || String(e); } };
+  const renderOf = (h) => RV.renderValues(h, RM.readReportData(h).data, RM.readStockMeta(h));
+  // ผลของ pass ด้วย stub + pv ที่ stub สร้าง (ไว้เทียบ render)
+  const pass = (h, fn) => {
+    edit = fn;
+    try { const r = US.derivedPassV2(h, RM.readReportData(h).data.values.px); return { ...r, pv: fn(renderOf(h)), err: '' }; }
+    catch (e) { return { err: e.message, overridden: -1, html: '' }; }
+    finally { edit = null; }
+  };
+  const src = FX.AAPL_V2();
+  const rd0 = RM.readReportData(src).data;
+  const dateParts = { day: 12, monIdx: 8, yearCE: 2026 };
+
+  // F1 — แทรกชิดขอบ span ของ token = กำกวม ⇒ token ชนะ (ห้ามเลขติด token เงียบ ๆ)
+  //      กันถดถอยต่อ mutation "ถอดเงื่อนไขขอบ before(s)===map[s] / after(e)===map[e-1]+1" (เดิมได้ "~{{rd:baseEps}}5" · "1{{rd:pxNum}}")
+  const f1a = pass(src, (v) => v.replace('EPS ฐาน ~$8.26<', 'EPS ฐาน ~$8.265<'));
+  ok(!f1a.err && f1a.overridden === 1 && f1a.html.includes('EPS ฐาน ~{{rd:baseEps}}</div>') && sameToks(src, f1a.html), 'F1: $8.26→$8.265 (แทรกขอบขวา) → token ชนะ ไม่มี "5" ติด token', f1a.err || (f1a.html.match(/EPS ฐาน ~[^<]*/) || [])[0]);
+  const f1b = pass(src, (v) => v.replace('value="326.57"', 'value="1326.57"'));
+  ok(!f1b.err && f1b.overridden === 1 && f1b.html.includes('value="{{rd:pxNum}}"') && sameToks(src, f1b.html), 'F1: 326.57→1326.57 (แทรกขอบซ้าย) → token ชนะ ไม่มี "1" ติด token', f1b.err || (f1b.html.match(/type="number" value="[^"]*"/) || [])[0]);
+  const f1c = pass(src, (v) => v.replace('value="326.57"', 'value="326.570"'));
+  ok(!f1c.err && f1c.overridden === 1 && f1c.html.includes('value="{{rd:pxNum}}"'), 'F1: 326.57→326.570 → token ชนะ ไม่มี "0" ติด token', f1c.err);
+  // แก้ literal ที่ไม่ชิดขอบ (มีอักขระคงอยู่คั่น) = ไม่ override และ render(ผล) === pv
+  const f1d = pass(src, (v) => v.replace('~$318.00 (-3%)', '~$318.00 (-13%)'));
+  ok(!f1d.err && f1d.overridden === 0 && renderOf(f1d.html) === f1d.pv && f1d.html.includes('~{{rd:analystTgt}} (-13%)'), 'F1: แก้ literal ห่างขอบ token 2 อักขระ → ไม่ override + render(ผล) === pv', f1d.err);
+
+  // F3 — token render ว่างไม่เคย override: literal ที่ถูกแก้/แทรกชิด token ว่างอยู่รอด
+  const bullet = src.replace('จากจุดเข้า {{rd:px}} • EPS', 'จากจุดเข้า {{rd:px}} •{{rd:scnNote}} EPS');
+  ok(bullet !== src, '(ตั้งฉาก) วาง {{rd:scnNote}} ชิด "•" ได้');
+  const f3a = pass(bullet, (v) => v.replace('$326.57 • EPS', '$326.57 ◦ EPS'));
+  ok(!f3a.err && f3a.overridden === 0 && /จากจุดเข้า \{\{rd:px\}\} (?:◦\{\{rd:scnNote\}\}|\{\{rd:scnNote\}\}◦) EPS/.test(f3a.html) && renderOf(f3a.html) === f3a.pv && sameToks(bullet, f3a.html),
+    'F3: แทน "•"→"◦" ชิด token ว่าง → "◦" อยู่รอด · ไม่ override · render(ผล) === pv', f3a.err || (f3a.html.match(/จากจุดเข้า [^<]*/) || [])[0]);
+  const f3b = pass(bullet, (v) => v.replace('$326.57 • EPS', '$326.57 • (x) EPS'));
+  ok(!f3b.err && f3b.overridden === 0 && f3b.html.includes('•{{rd:scnNote}} (x) EPS') && renderOf(f3b.html) === f3b.pv,
+    'F3/F4: แทรกตรงตำแหน่ง token ว่าง → คงของที่แทรก (ต่อท้าย token) และไม่นับ override', f3b.err || String(f3b.overridden));
+  const noteTok = src.replace(/(EPS ฐาน ~\{\{rd:baseEps\}\})/, '$1{{rd:scnNote}}');
+  const f3c = pass(noteTok, (v) => v.replace('EPS ฐาน ~$8.26<', 'EPS ฐาน ~$8.27<'));
+  ok(!f3c.err && f3c.overridden === 1 && f3c.html.includes('EPS ฐาน ~{{rd:baseEps}}{{rd:scnNote}}</div>') && sameToks(noteTok, f3c.html),
+    'F3: override ชิด {{rd:scnNote}} (render ว่าง) → ไม่ throw + ลำดับคงเดิม', f3c.err);
+
+  // F4 — ตรึงข้อกำหนดที่ mutant เคยรอด
+  // ลำดับ token: pv มีข้อความรูป token งอกมา ⇒ throw "ลำดับ token" (ไม่ใช่ tripwire render ที่ตามมาทีหลัง)
+  const f4order = pass(src, (v) => v.replace('<div class="k">เงินปันผล</div>', '<div class="k">เงินปันผล{{rd:fv}}</div>'));
+  ok(/ลำดับ token/.test(f4order.err), 'F4: token งอก/สลับหลังประกอบ → throw "ลำดับ token" (→ patch-failed)', f4order.err);
+  // ความต่อเนื่องใน span: แทรกกลาง span (อักขระของ token คงอยู่ครบแต่ไม่ติดกัน) ⇒ token ชนะ นับ override ไม่ throw
+  const f4contig = pass(src, (v) => v.replace('EPS ฐาน ~$8.26<', 'EPS ฐาน ~$8.X26<'));
+  ok(!f4contig.err && f4contig.overridden === 1 && f4contig.html.includes('EPS ฐาน ~{{rd:baseEps}}</div>'), 'F4: แทรกกลาง span → token ชนะ (overridden 1 · ตัด "X")', f4contig.err || String(f4contig.overridden));
+  // ตัวตั้งของ pass = values.px (ปัดแล้ว) ไม่ใช่ราคาดิบ — BBL ×0.97 ราคาดิบทำให้ "จากจุดเข้า {{rd:px}}" ถูกแก้ต่าง 1 สตางค์ (override 2 span เปล่า ๆ)
+  {
+    const bbl = FX.BBL_V2(), bpx = RM.readReportData(bbl).data.values.px;
+    const rb = U.patchReport(bbl, { newPrice: bpx * 0.97, dateParts, chartData: null });
+    ok(!rb.notes.some((n) => /token ชนะ/.test(n)) && U.gateAfterPatch(rb.html, 'BBL.html').ok, 'F4: BBL ×0.97 → pass ใช้ values.px ไม่มี override', rb.notes.join(' ; '));
+  }
+  // fix wave F1 (i) (แทน Task 11 F4 "JSON ชนะการ์ด"): ฐานการ์ด (DPS 1.04) ≠ values.dps (1.10) · การ์ด P/E (EPS 8.26) ≠ values.eps
+  //   ⇒ pass derived เขียน stock-meta.pe/dividendYield บน view จากฐานการ์ด แล้ว **กระจกต้องไม่ย้อน** (อ่าน stock-meta จากผลของ pass)
+  {
+    const dpsSrc = src.replace('"dps": 1.04', '"dps": 1.1').replace('"eps": 8.26', '"eps": 5');
+    ok(dpsSrc !== src && /"eps": 5,/.test(dpsSrc), '(ตั้งฉาก) แก้ values.dps/eps ให้ต่างจากฐานการ์ดได้');
+    const np = rd0.values.px * 1.1, px1 = Math.round(np * 100) / 100;
+    const r = U.patchReport(dpsSrc, { newPrice: np, dateParts, chartData: null });
+    const smR = RM.readStockMeta(r.html);
+    ok(r.derived.some((c) => /stock-meta\.dividendYield .*DPS 1\.04/.test(c)) && r.derived.some((c) => /stock-meta\.pe .*EPS 8\.26/.test(c)), '(ตั้งฉาก) patchDerived เขียน dividendYield/pe จากฐานการ์ด (1.04 · 8.26) จริง', r.derived.join(' ; '));
+    ok(smR.dividendYield === Math.round(1.04 / px1 * 10000) / 100, 'F1(i): stock-meta.dividendYield = ฐานการ์ด 1.04/px — กระจกไม่ย้อนเป็น values.dps 1.1', String(smR.dividendYield));
+    ok(smR.pe === Math.round(px1 / 8.26 * 10) / 10, 'F1(i): stock-meta.pe = px/ฐานการ์ด 8.26 — กระจกไม่ย้อนเป็น px/values.eps 5', String(smR.pe));
+    ok(smR.price === px1 && smR.fairValue === RM.readReportData(r.html).data.fv, 'F1(i): กระจกยังเขียน price/fairValue ตาม values/fv');
+  }
+  // ขอบกราฟครอบ fv (v2 ไม่มี chart.fairLine)
+  {
+    const fvHi = src.replace('"fv": 262', '"fv": 500');
+    ok(fvHi !== src, '(ตั้งฉาก) แก้ fv ได้');
+    const r = U.patchReport(fvHi, { newPrice: rd0.values.px * 0.9, dateParts, chartData: null });
+    const c = RM.readReportData(r.html).data.chart;
+    ok(Math.max(...c.data.map((d) => d[1])) < 500 && c.max >= 500, 'F4: v2 chart.max ครอบ rd.fv เมื่อ fv สูงกว่าทุกราคา', String(c.max));
+  }
+
+  // fix wave F1/F4 (แทน Task 11 F2 ทศนิยม pe/yield ที่กระจกเคยคิดเอง): RV.mirrorStockMeta เขียน 4 คีย์เท่านั้น
+  {
+    const RVm = require('../tools/report-values.js');
+    const drift = src.replace('"px": 326.57', '"px": 359.23').replace('"dividendYield":0.32', '"dividendYield":0.07').replace('"pe":39.5', '"pe":12.34');
+    ok(drift !== src && /"pe":12\.34/.test(drift), '(ตั้งฉาก) values.px ขยับ + pe/dividendYield ใน stock-meta เป็นค่าแปลก');
+    const m = RM.readStockMeta(RVm.mirrorStockMeta(drift)), fv = rd0.fv;
+    ok(m.price === 359.23 && m.fairValue === fv && m.mos === Math.round((fv - 359.23) / fv * 1000) / 10 && m.upside === Math.round((fv - 359.23) / 359.23 * 1000) / 10, 'F1: mirrorStockMeta เขียน price/mos/upside/fairValue จาก values.px/fv', JSON.stringify(m));
+    ok(m.pe === 12.34 && m.dividendYield === 0.07, 'F1: mirrorStockMeta ไม่แตะ pe/dividendYield (ของ pass derived)', `${m.pe} ${m.dividendYield}`);
+    ok(RVm.mirrorStockMeta(src) === src, 'F1: ไม่มีอะไรเปลี่ยน → คืน html เดิมทุก byte (idempotent)');
+    ok(U.mirrorStockMetaV2(drift, { pe: 1, dividendYield: 1 }) === RVm.mirrorStockMeta(drift), 'F1: alias mirrorStockMetaV2 = RV.mirrorStockMeta (อาร์กิวเมนต์ stock-meta ก่อน pass ถูกเมิน)');
+    ok(/ไม่ใช่ v2/.test(errOf(() => RVm.mirrorStockMeta(FX.AAPL()))), 'F1: mirrorStockMeta บน v1 → throw');
+  }
+
+  // fix wave F1 (ii)/(iii) — fixture รูปคลังจริง (M10): DDOG stock-meta.pe ยืนบนฐาน adjusted (75) ขณะ values.eps = GAAP
+  //   · SRE DPS ในการ์ดปันผล ($2.38→$2.48→$2.58 · ฐาน W19) ≠ values.dps 2.58 — ทั้งคู่ต้องเท่ากับ v1 และผ่าน gate
+  {
+    const px2 = (h, k) => Math.round(RM.readReportData(h).data.values.px * k * 100) / 100;
+    const saved = process.env.STALE_TODAY;
+    process.env.STALE_TODAY = '2026-09-13';
+    try {
+      const dp2 = { day: 12, monIdx: 8, yearCE: 2026 };
+      for (const k of [1.005, 0.9, 1.1]) {
+        const np = px2(FX.DDOG_V2(), k);
+        const r2 = U.patchReport(FX.DDOG_V2(), { newPrice: np, dateParts: dp2, chartData: null });
+        const r1 = U.patchReport(FX.DDOG(), { newPrice: np, dateParts: dp2, chartData: null });
+        const a2 = RM.readStockMeta(r2.html), a1 = RM.readStockMeta(r1.html);
+        ok(a2.pe === a1.pe && a2.dividendYield === a1.dividendYield && Math.abs(a2.pe - 75 * k) / (75 * k) < 0.05, `F1(ii) DDOG ×${k}: stock-meta.pe/dividendYield v2 = v1 (ฐาน adjusted ~75 ไม่กระโดดเป็น px/values.eps)`, `v2 ${a2.pe}/${a2.dividendYield} v1 ${a1.pe}/${a1.dividendYield} · px/eps=${(np / RM.readReportData(FX.DDOG_V2()).data.values.eps).toFixed(1)}`);
+        const g = U.gateAfterPatch(r2.html, 'DDOG.html');
+        ok(g.ok, `F1(ii) DDOG ×${k}: gateAfterPatch ผ่าน`, g.detail);
+      }
+      for (const k of [0.9, 0.95, 0.97]) {
+        const np = px2(FX.SRE_V2(), k);
+        const r2 = U.patchReport(FX.SRE_V2(), { newPrice: np, dateParts: dp2, chartData: null });
+        const r1 = U.patchReport(FX.SRE(), { newPrice: np, dateParts: dp2, chartData: null });
+        const g = U.gateAfterPatch(r2.html, 'SRE.html');
+        ok(g.ok, `F1(iii) SRE ×${k}: gateAfterPatch ผ่าน (เดิม W19 dividendYield จาก values.dps)`, g.detail);
+        ok(RM.readStockMeta(r2.html).dividendYield === RM.readStockMeta(r1.html).dividendYield, `F1(iii) SRE ×${k}: stock-meta.dividendYield v2 = v1`, `${RM.readStockMeta(r2.html).dividendYield} vs ${RM.readStockMeta(r1.html).dividendYield}`);
+      }
+    } finally { process.env.STALE_TODAY = saved; }
+  }
+
+  // F5 — MAX_D = 4000: เกิน = throw (→ patch-failed) · D = 4000 พอดียัง map ได้
+  ok(KM.MAX_D === 4000, 'F5: keepMap MAX_D = 4000', String(KM.MAX_D));
+  ok(errOf(() => KM.keepMap('a'.repeat(2000), 'b'.repeat(2000))) === '' && /เกิน 4000/.test(errOf(() => KM.keepMap('a'.repeat(2001), 'b'.repeat(2001)))), 'F5: D=4000 map ได้ · D=4002 throw');
+  // สองจุดห่างกัน (ตัด prefix/suffix ร่วมแล้วยังเหลือช่วงกลาง) แทรกรวม 4200 อักขระ ⇒ D > 4000
+  edit = (v) => v.replace('<div class="k">เงินปันผล</div>', '<div class="k">เงินปันผล' + 'x'.repeat(2100) + '</div>').replace('EPS ฐาน ~$8.26<', 'EPS ฐาน ~$8.26' + 'y'.repeat(2100) + '<');
+  const f5 = errOf(() => US.patchReport(src, { newPrice: rd0.values.px * 1.1, dateParts, chartData: null }));
+  edit = null;
+  ok(/keepMap: ต่างกันเกิน 4000/.test(f5), 'F5: patchReport ต่างเกิน MAX_D → throw (main loop จับเป็น patch-failed)', f5);
+
+  // F6 — healDerived: ไฟล์ throw ไม่ล้มทั้งรอบ · พิมพ์ชื่อไฟล์ · คืน failed ให้ main ตั้ง exit code
+  {
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'heal-v2-'));
+    try {
+      fs.writeFileSync(path.join(dir, 'AAPL.html'), src.replace('"px": 326.57', '"px": 359.23'));   // ค่าค้างจริง → ต้องถูกนับ
+      fs.writeFileSync(path.join(dir, 'BAD.html'), src.replace('EPS ฐาน ~{{rd:baseEps}}', 'EPS ฐาน ~{{rd:bogusTok}}'));
+      const logs = [], orig = console.log;
+      console.log = (...a) => logs.push(a.join(' '));
+      let h;
+      try { h = U.healDerived({ dir, only: new Set(), write: false, prose: false }); } catch (e) { h = { thrown: e.message, failed: [] }; } finally { console.log = orig; }
+      const txt = logs.join('\n');
+      ok(h && h.failed.length === 1 && h.failed[0] === 'BAD.html' && h.touched === 1, 'F6: healDerived ไฟล์ throw 1 ใบ → ไปต่อ ใบดียังถูกประมวล', JSON.stringify(h));
+      ok(/⛔ BAD\.html .*bogusTok/.test(txt) && /heal-derived: 1\/2 .*ล้ม 1 ไฟล์/.test(txt), 'F6: พิมพ์ ⛔ <ไฟล์> <ข้อความ> + สรุปนับตัวล้ม', txt.slice(-300));
+    } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+  }
+}
+
+// ---------- ระยะ 2 ส่วน D · fix wave (final review): F2 scnBasis · F3 วันที่ literal + tripwire · M7 heal กระจกล้วน · M8 pxOf ----------
+// fixture รูปคลังจริง (test/fixtures — M10 · ไม่อ่าน reports/) · STALE_TODAY ตั้งตามวันที่ที่ patch ลงไป (คืนค่าเดิมเสมอ)
+{
+  const os = require('os');
+  const RV = require('../tools/report-values.js');
+  const DV = require('../tools/derived-values.js');
+  const CR = require('./check-reports.js');
+  const { expandReport } = require('../build.js');
+  const saved = process.env.STALE_TODAY;
+  const errOf = (f) => { try { f(); return ''; } catch (e) { return e.message || String(e); } };
+  const pxK = (h, k) => Math.round(RM.readReportData(h).data.values.px * k * 100) / 100;
+  const TOK = /\{\{rd:[A-Za-z0-9]+\}\}/g;
+  const sameToks = (a, b) => { const x = a.match(TOK) || [], y = b.match(TOK) || []; return x.length === y.length && x.every((t, i) => t === y[i]); };
+  try {
+    process.env.STALE_TODAY = '2026-09-13';
+    const dp12 = { day: 12, monIdx: 8, yearCE: 2026 };
+
+    // F2 — W17/patchDerived#7 ใช้ values.scnBasis ที่ประกาศ แทนการอนุมานจากเลขที่ปัดแล้ว
+    //   FTV (divIncluded:true) พลิกที่ ×1.005/×0.995/×1.09 · CASY (divIncluded:false) พลิกที่ ×0.995/×0.915/×1.045 (กริด 0.005 ของ final review)
+    for (const [sym, ks, div] of [['FTV', [1.005, 0.995, 1.09], true], ['CASY', [0.995, 0.915, 1.045], false]]) {
+      const v2 = FX[sym + '_V2']();
+      ok(RM.readReportData(v2).data.values.scnBasis.divIncluded === div, `(ตั้งฉาก) ${sym}_V2 scnBasis.divIncluded = ${div}`);
+      for (const k of ks) {
+        const r = U.patchReport(v2, { newPrice: pxK(v2, k), dateParts: dp12, chartData: null });
+        const g = U.gateAfterPatch(r.html, sym + '.html');
+        ok(g.ok, `F2 ${sym} ×${k}: gateAfterPatch ผ่าน (W17 ใช้ฐานที่ประกาศ)`, g.detail);
+        ok(!r.notes.some((n) => /token ชนะ/.test(n)), `F2 ${sym} ×${k}: pass derived ไม่พยายามเขียนหมวด 6 ทับ token (ไม่มี override)`, r.notes.join(' ; '));
+        // ตั้งฉาก: การอนุมาน (ไม่ส่ง basis) บน view เดียวกันเดาอีกฐาน = บั๊กเดิมยังอยู่จริงที่ราคานี้
+        const exp = expandReport(r.html), px = RM.readReportData(r.html).data.values.px;
+        const guess = DV.scenarioPlan(exp, px), declared = DV.scenarioPlan(exp, px, undefined, RM.readReportData(r.html).data.values.scnBasis);
+        ok(declared && declared.conv === (div ? 'div' : 'plain') && (!guess || guess.conv !== declared.conv || guess.items.some((it, i) => it.total && Math.abs(it.total.want - declared.items[i].total.want) > 0.5)),
+          `(ตั้งฉาก) ${sym} ×${k}: ไม่ส่ง basis → อนุมานผิดฐาน/ตัดสินไม่ได้ · ส่ง basis → conv ตามที่ประกาศ`, `guess=${guess && guess.conv} declared=${declared && declared.conv}`);
+      }
+      // ฐานที่ประกาศไม่ได้ปิดปาก W17: หมวด 6 ค้างจริง (post-expand: values.px ×1.3 หลัง render) → W17 ยังยิง
+      const exp = expandReport(v2);
+      const stale = exp.replace(/("px":\s*)([0-9.]+)/, (m, a, n) => a + (parseFloat(n) * 1.3).toFixed(2));
+      ok(stale !== exp && CR.checkHtml(stale, sym + '.html').errors.some((e) => e.id === 'W17'), `F2 ${sym}: หมวด 6 ค้างจริง (JSON ขยับหลัง render) → W17 ยังยิงภายใต้ฐานที่ประกาศ`);
+    }
+    ok(DV.scenarioPlan(expandReport(FX.AAPL()), 326.57) !== undefined && JSON.stringify(DV.scenarioPlan(FX.AAPL(), 330)) === JSON.stringify(DV.scenarioPlan(FX.AAPL(), 330, undefined, undefined)), 'F2: ไม่ส่ง basis (v1) = ผลเดิม');
+
+    // F3 — วงเล็บทวนวันที่ที่มีคำขยาย (DPZ · migrator คง literal) ต้องขยับตามวันที่ราคา
+    const dpz = FX.DPZ_V2();
+    ok(dpz.includes('{{rd:priceDate}} (11 ก.ย. 2569 ตลาดปิด)'), '(ตั้งฉาก) DPZ_V2 วงเล็บทวนเป็น literal ต่อท้าย token');
+    process.env.STALE_TODAY = '2026-10-03';
+    const dOct = { day: 2, monIdx: 9, yearCE: 2026 };
+    const rd = U.patchReport(dpz, { newPrice: pxK(dpz, 1.01), dateParts: dOct, chartData: null });
+    ok(rd.html.includes('{{rd:priceDate}} (2 ต.ค. 2569 ตลาดปิด)') && sameToks(dpz, rd.html), 'F3 DPZ: วงเล็บทวน literal → "(2 ต.ค. 2569 ตลาดปิด)" (keep-map พากลับต้นฉบับ · token คงลำดับ)', (rd.html.match(/\{\{rd:priceDate\}\}[^<]{0,40}/) || [])[0]);
+    ok(expandReport(rd.html).includes('ราคา ณ 2 ต.ค. 2569 (2 ต.ค. 2569 ตลาดปิด)'), 'F3 DPZ: หัวรายงานที่ render แล้วตรงกับ v1 ("ราคา ณ 2 ต.ค. 2569 (2 ต.ค. 2569 ตลาดปิด)")');
+    ok(rd.derived.some((c) => /วงเล็บทวน/.test(c)), 'F3 DPZ: changes บอกการเขียนวงเล็บทวน', rd.derived.join(' ; '));
+    const g3 = U.gateAfterPatch(rd.html, 'DPZ.html');
+    ok(g3.ok, 'F3 DPZ: gateAfterPatch ผ่าน', g3.detail);
+    ok(!U.patchReport(rd.html, { newPrice: pxK(dpz, 1.01), dateParts: dOct, chartData: null }).changed, 'F3 DPZ: patch ซ้ำวันเดิมราคาเดิม → ไม่เปลี่ยน (idempotent)');
+    // วงเล็บถือวันที่ที่ไม่ใช่ทั้ง "วันก่อน patch" และ "วันใหม่" = เขียนไม่ได้ (ไม่เดา) → tripwire throw (main loop = patch-failed)
+    const odd = dpz.replace('(11 ก.ย. 2569 ตลาดปิด)', '(3 ส.ค. 2569 ตลาดปิด)');
+    ok(odd !== dpz && /วันที่ราคาที่โชว์ ≠ values\.priceDate 2026-10-02 — วงเล็บทวนใน header "3 ส\.ค\. 2569"/.test(errOf(() => U.patchReport(odd, { newPrice: pxK(dpz, 1.01), dateParts: dOct, chartData: null }))),
+      'F3: วงเล็บทวนวันที่แปลก (ไม่ใช่วันเดิม/วันใหม่) → throw "วันที่ราคาที่โชว์ ≠ values.priceDate" ไม่เงียบ', errOf(() => U.patchReport(odd, { newPrice: pxK(dpz, 1.01), dateParts: dOct, chartData: null })));
+    // healDerived (ไม่มีวันก่อน patch) บนไฟล์ที่วงเล็บค้าง → throw เหมือนกัน (ห้ามเงียบ)
+    ok(/วันที่ราคาที่โชว์/.test(errOf(() => U.derivedPassV2(odd, RM.readReportData(odd).data.values.px))), 'F3: derivedPassV2 (ทาง heal) บนวงเล็บค้าง → throw');
+    // .disc ระดับเดือน (migrator คง literal · RAM/TOST รูปเดียวกัน) → เดือนใหม่ คงรูประดับเดือน + ศักราชเดิม
+    const aapl = FX.AAPL_V2();
+    const monthDisc = aapl.replace('ข้อมูลราคา ณ {{rd:priceDate}}', 'ข้อมูลราคา ณ ก.ย. 2569');
+    ok(monthDisc !== aapl, '(ตั้งฉาก) AAPL_V2 disclaimer → literal ระดับเดือน "ราคา ณ ก.ย. 2569"');
+    const rm = U.patchReport(monthDisc, { newPrice: pxK(aapl, 1.01), dateParts: dOct, chartData: null });
+    ok(rm.html.includes('ข้อมูลราคา ณ ต.ค. 2569'), 'F3: disclaimer ระดับเดือน literal → "ราคา ณ ต.ค. 2569" (ไม่เติมวัน)', (rm.html.match(/ข้อมูลราคา ณ [^<]{0,20}/) || [])[0]);
+    const gm = U.gateAfterPatch(rm.html, 'AAPL.html');
+    ok(gm.ok && !CR.checkHtml(expandReport(rm.html), 'AAPL.html').warnings.some((w) => w.id === 'W22'), 'F3: disclaimer ระดับเดือนหลัง patch → gate ผ่าน + ไม่มี W22', gm.detail);
+    // hit ที่อยู่ใน span ของ token = token ชนะ (ไม่เขียนซ้ำ) — AAPL_V2 disclaimer เป็น {{rd:priceDate}}
+    const rt = U.patchReport(aapl, { newPrice: pxK(aapl, 1.01), dateParts: dOct, chartData: null });
+    ok(sameToks(aapl, rt.html) && rt.html.includes('ข้อมูลราคา ณ {{rd:priceDate}}') && !rt.derived.some((c) => /^วันที่/.test(c)), 'F3: วันที่ที่เป็น token ไม่ถูกเขียนซ้ำ (token render วันใหม่เอง)', rt.derived.join(' ; '));
+    // .disc ระดับวันที่เป็น literal (migrator แทน token เสมอ แต่ worker v2 เขียนมือได้) → ตัวเขียนเขียนวันใหม่ให้ ไม่ throw
+    const dayDisc = aapl.replace('ข้อมูลราคา ณ {{rd:priceDate}}', 'ข้อมูลราคา ณ 5 ก.ย. 2569');
+    const rdd = U.patchReport(dayDisc, { newPrice: pxK(aapl, 1.01), dateParts: dOct, chartData: null });
+    ok(rdd.html.includes('ข้อมูลราคา ณ 2 ต.ค. 2569'), 'F3: disclaimer ระดับวัน literal (worker เขียนมือ) → ถูกเขียนเป็นวันใหม่', (rdd.html.match(/ข้อมูลราคา ณ [^<]{0,20}/) || [])[0]);
+
+    // M7 — healDerived v2 นับ/เขียนการซ่อมที่กระจกอย่างเดียว (BBL_V2 stock-meta.fairValue ×1.2 → E30/E31)
+    process.env.STALE_TODAY = FX.TODAY;
+    {
+      const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'heal-m7-'));
+      try {
+        const bbl = FX.BBL_V2();
+        const broken = bbl.replace(/("fairValue":)([0-9.]+)/, (m, a, n) => a + Math.round(parseFloat(n) * 1.2 * 100) / 100);
+        ok(broken !== bbl, '(ตั้งฉาก) BBL_V2 stock-meta.fairValue ×1.2');
+        const before = CR.checkHtml(expandReport(broken), 'BBL.html').errors.map((e) => e.id);
+        ok(before.includes('E30') || before.includes('E31'), '(ตั้งฉาก) ก่อนซ่อม E30/E31 ยิง', before.join(','));
+        fs.writeFileSync(path.join(dir, 'BBL.html'), broken);
+        const logs = [], orig = console.log;
+        console.log = (...x) => logs.push(x.join(' '));
+        let h;
+        try { h = U.healDerived({ dir, only: new Set(), write: true, prose: false }); } finally { console.log = orig; }
+        const after = fs.readFileSync(path.join(dir, 'BBL.html'), 'utf8');
+        ok(h.touched === 1 && after !== broken, 'M7: healDerived v2 ซ่อมกระจกล้วน → touched 1 + เขียนไฟล์', JSON.stringify(h));
+        ok(/stock-meta กระจก .*fairValue/.test(logs.join('\n')), 'M7: มีบรรทัด change "stock-meta กระจก … fairValue …"', logs.join(' | ').slice(0, 300));
+        const errsAfter = CR.checkHtml(expandReport(after), 'BBL.html').errors.map((e) => e.id);
+        ok(!errsAfter.includes('E30') && !errsAfter.includes('E31') && after === bbl, 'M7: หลังซ่อม E30/E31 เงียบ + ไฟล์กลับเท่า fixture เดิมทุก byte', errsAfter.join(','));
+        // ไฟล์ที่ไม่มีอะไรค้าง → ไม่นับ
+        const logs2 = []; console.log = (...x) => logs2.push(x.join(' '));
+        let h2; try { h2 = U.healDerived({ dir, only: new Set(), write: false, prose: false }); } finally { console.log = orig; }
+        ok(h2.touched === 0, 'M7: รันซ้ำบนไฟล์ที่ซ่อมแล้ว → touched 0 (converged)', JSON.stringify(h2));
+      } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+    }
+
+    // M8 — pxOf: v2 = values.px (เจ้าของ) แม้กระจก stock-meta.price ค้าง · v1 = stock-meta.price
+    {
+      const src = FX.AAPL_V2();
+      const staleSm = src.replace(/("price":)([0-9.]+)/, '$1111.11');
+      ok(staleSm !== src && RM.readStockMeta(staleSm).price === 111.11, '(ตั้งฉาก) stock-meta.price ค้าง 111.11');
+      ok(U.pxOf(staleSm, RM.readStockMeta(staleSm)) === RM.readReportData(src).data.values.px, 'M8: pxOf v2 = values.px (ไม่ใช่กระจกที่ค้าง)');
+      ok(U.pxOf(FX.AAPL(), RM.readStockMeta(FX.AAPL())) === RM.readStockMeta(FX.AAPL()).price, 'M8: pxOf v1 = stock-meta.price');
+      // decide ที่ใช้ pxOf: กระจกค้าง 111.11 จะทำให้ราคาเดิม "ต่าง >25%" (suspect) ทั้งที่ values.px ขยับแค่ 1%
+      const np = RM.readReportData(src).data.values.px * 1.01;
+      ok(!U.decide({ oldPrice: U.pxOf(staleSm, RM.readStockMeta(staleSm)), newPrice: np, fv: U.fvOf(staleSm, RM.readStockMeta(staleSm)), currencyOk: true }).freeze
+        && !!U.decide({ oldPrice: RM.readStockMeta(staleSm).price, newPrice: np, fv: U.fvOf(staleSm, RM.readStockMeta(staleSm)), currencyOk: true }).freeze,
+        'M8: decide(oldPrice=pxOf) ไม่ freeze · (ตั้งฉาก) oldPrice=กระจกค้าง → freeze ผิด ๆ');
+    }
+  } finally { process.env.STALE_TODAY = saved; }
+}
+
 Promise.resolve(pending).then(() => {
   console.log(nFail ? `\n✗ update-prices-test: ${nFail} failed / ${nOK} passed` : `\n✓ update-prices-test: ${nOK} passed`);
   process.exit(nFail ? 1 : 0);

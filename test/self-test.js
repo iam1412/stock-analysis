@@ -121,6 +121,27 @@ const conv = (id, h, desc) => {
   CONVERGED.add(id);
 };
 
+// convV2 (E-policy ระยะ 2 ส่วน D Task 13 · แก้ตาม review รอบ 1 Finding 1/R2): เคส convergence ของไฟล์ v2 ที่ "ซ่อมจริง"
+// ★ เวอร์ชันเดิม (ก่อน fix round 1) reset ไป expand fixture ที่ "ไม่เคยเสีย" แทนการซ่อม `broken` ตัวเดิม — พิสูจน์แค่
+//   "ไฟล์ที่ไม่เคยเสีย ไม่เสีย" (เกือบ tautology) ไม่ใช่ "มีตัวซ่อมอัตโนมัติจริง" ตามที่ review ชี้ — เวอร์ชันนี้แก้แล้ว:
+//   healFn ต้องเป็นฟังก์ชันจริงที่ production เรียก (เช่น mirrorStockMetaV2 ที่ patchReport/healDerived ทาง v2 เรียก)
+//   รับ/คืน **raw HTML ก่อน expand** แล้วซ่อม `broken` ตัวเดิมจริง ๆ (ไม่ใช่ตัวจำลอง/ไม่ใช่ reset ไปใช้ของสด)
+// mutRawFn: mutate JSON บนไฟล์ v2 ดิบ (ก่อน expand) ให้เสีย — ใช้ mutJson(scriptId, fn) จากด้านบน
+const convV2 = (id, mutRawFn, healFn, desc) => {
+  const raw = FX.BBL_V2();
+  const broken = mutRawFn(raw);
+  if (broken === raw) { ok(false, `${desc} → mutation ไม่เปลี่ยนอะไร (anchor ไม่ match — โครง BBL-v2 เปลี่ยน?)`); return; }
+  const brokenExpanded = expandReport(broken);
+  ok(allIds(checkHtml(brokenExpanded, 'BBL.html')).has(id), `${desc} → ${id} ยิง (v2 JSON เสีย)`);
+  const healedRaw = healFn(broken);
+  ok(healedRaw !== broken, `${desc} → ตัวซ่อมแก้ไฟล์จริง (ไม่ใช่ no-op)`);
+  const healedExpanded = expandReport(healedRaw);
+  ok(!allIds(checkHtml(healedExpanded, 'BBL.html')).has(id), `${desc} → ตัวซ่อมจริงทำให้ ${id} เงียบ`);
+  const healedTwice = expandReport(healFn(healedRaw));
+  ok(healedExpanded === healedTwice, `${desc} → ซ่อมซ้ำไม่เปลี่ยน (idempotent)`);
+  CONVERGED.add(id);
+};
+
 console.log('\n🧪 self-test: ความถูกต้องของ check-reports.js\n');
 
 // 1) ของดีต้องผ่าน (ไม่ false-positive)
@@ -981,11 +1002,11 @@ require('./fixture-lint.js')(ok);
 require('./parser-lint.js')(ok);
 
 // ── field manifest (ระยะ 1 WS1): ทุกช่องตัวเลข · ห่อ extractor เดิม · บน BBL fixture ต้องพบช่อง cron ครบ ──
-// ★ จำนวนช่อง = **70** ไม่ใช่ 68: code-audit §1.1 เดินเลขแถว #1–#68 แล้วแทรก #25b/#63b
+// ★ จำนวนช่อง = **71** (70 แถวของ code-audit §1.1 + f69 stock-meta.fairValue ระยะ 2 ส่วน D) ไม่ใช่ 68: §1.1 เดินเลขแถว #1–#68 แล้วแทรก #25b/#63b
 //   (นับแถวในตารางจริง 12 ก.ย. 69 = 70) ⇒ "68 ช่อง" ในสเปคคือเลขแถวสูงสุด ห้ามตัดช่องทิ้งให้ครบ 68
 {
   const MF = require('../tools/field-manifest.js');
-  ok(MF.FIELDS.length === 70 && new Set(MF.FIELDS.map((f) => f.id)).size === 70, `manifest: 70 ช่อง id ไม่ซ้ำ (ได้ ${MF.FIELDS.length})`);
+  ok(MF.FIELDS.length === 71 && new Set(MF.FIELDS.map((f) => f.id)).size === 71, `manifest: 71 ช่อง id ไม่ซ้ำ (ได้ ${MF.FIELDS.length})`);
   ok(MF.FIELDS.every((f) => typeof f.extract === 'function' && ['cron', 'gate', 'pair', 'presence', 'tool', 'deferred'].includes(f.binding)), 'manifest: ทุกช่องมี extract + binding ที่รู้จัก');
   ok(MF.FIELDS.filter((f) => f.pair).every((f) => MF.FIELDS.some((g) => g.id === f.pair.with)), 'manifest: pair.with ชี้ไป id ที่มีจริง');
   // NEITHER 18 แถว (code-audit §1.1) ต้องมีทุกแถวใน manifest และต้องได้ binding ที่ผูกกับของจริง (เกณฑ์จบ "NEITHER 18 → 0")
@@ -1009,7 +1030,7 @@ require('./parser-lint.js')(ok);
   for (const f of MF.FIELDS) { try { f.extract('<!DOCTYPE html><html><body></body></html>', bareCtx); } catch (e) { threw = `${f.id}: ${e.message}`; break; } }
   ok(threw === null, 'manifest: ไฟล์เปล่า — ไม่มี extractor ไหน throw' + (threw ? ` (${threw})` : ''));
   const cov = MF.coverage(base, C);
-  ok(cov.n === 70 && cov.found === r.found.size, `manifest: coverage() สอดคล้องกับ extractAll() (พบ ${cov.found}/${cov.n})`);
+  ok(cov.n === 71 && cov.found === r.found.size, `manifest: coverage() สอดคล้องกับ extractAll() (พบ ${cov.found}/${cov.n})`);
 }
 
 // ── W21/W22/W23 + coverage (ระยะ 1 WS1 ข้อ 2): gate ต้องรู้ว่าตัวเองอ่านอะไรไม่ได้ ──
@@ -1114,7 +1135,7 @@ require('./parser-lint.js')(ok);
     const w21e = [...rEx.errors, ...rEx.warnings].find((x) => x.id === 'W21');
     ok(!!w21e && /extractor ระเบิด/.test(w21e.msg) && /fZZ/.test(w21e.msg),
       'W21: extractor ราย field ระเบิด → W21 บอกชื่อช่อง (เดิม extractAll กลืนเป็น found:false เงียบ)', w21e && w21e.msg);
-    ok(MF.FIELDS.length === 70 && MF.FIELDS[MF.FIELDS.length - 1].id !== 'fZZ', 'W21: ถอดช่องจำลองออกครบ (manifest กลับเป็น 70 ช่อง)');
+    ok(MF.FIELDS.length === 71 && MF.FIELDS[MF.FIELDS.length - 1].id !== 'fZZ', 'W21: ถอดช่องจำลองออกครบ (manifest กลับเป็น 71 ช่อง)');
   }
 
   // W21/W22/W23 ต้องเป็น warn และไม่มี healer (ระยะ 1 — จะยกเป็น E เมื่อมีตัวซ่อมในระยะ 2)
@@ -1130,6 +1151,12 @@ require('./parser-lint.js')(ok);
 {
   const E_GRANDFATHERED = new Set(Array.from({ length: 43 }, (_, i) => 'E' + String(i + 1).padStart(2, '0')));   // E01–E43 ที่มีก่อนระยะ 1 — ห้ามเพิ่มชื่อในนี้
   // patchDerived#4 = พาสเขียน prose (opt-in `{prose:true}`) — cron ไม่รันพาสนี้เอง จึงไม่นับเป็น healer มาตรฐานที่ E-policy ยอมรับ
+  // ★ 'build' เคยอยู่ในเซ็ตนี้ (Task 13 ก่อน fix round 1) — ถอดออกแล้วตาม review รอบ 1 Finding 1/R2: ไม่มี check
+  //   ไหนที่ "เสียเฉพาะเพราะ HTML render ค้างจาก JSON" แล้วซ่อมได้ด้วยการ expand ใหม่เฉย ๆ โดยไม่มีฟังก์ชันซ่อมจริง —
+  //   ไฟล์ v2 ที่ commit ไว้ (reports/) เป็น content-only template ที่มี token {{rd:…}} ค้างอยู่เสมอจนกว่าจะ build
+  //   (ไม่เคยมี "เลขที่ render ไปแล้วค้าง" ในไฟล์ต้นฉบับเอง) ⇒ คู่ f69/f44 ที่เคยใช้สาธิต 'build' จริง ๆ ไม่ตรงกันได้
+  //   เฉพาะตอน JSON สองจุดขัดกัน (JSON-vs-JSON) ซึ่งต้องมีฟังก์ชันซ่อมจริง (mirrorStockMetaV2 ที่ patchReport เรียก)
+  //   ไม่ใช่แค่ "expand ใหม่" ⇒ healer ที่ถูกต้องของเคสนั้นคือ 'patchReport' (มีอยู่แล้วในเซ็ตนี้) ไม่ใช่ 'build'
   const HEALERS = new Set(['patchReport', ...[1, 2, 3, 5, 6, 7, 8, 9, 10, 11].map((n) => 'patchDerived#' + n)]);
   for (const id of ['W16', 'W17', 'W19', 'W20']) ok(CHECKS.find((c) => c.id === id).level === 'error', `ระยะ 1: ${id} ต้องเป็น error (ยกจาก warn 12 ก.ย. 2569 — คงชื่อ)`);
   const errs = CHECKS.filter((c) => c.level === 'error');
@@ -1140,6 +1167,130 @@ require('./parser-lint.js')(ok);
   }
   for (const c of CHECKS.filter((c) => c.healer != null))
     ok(HEALERS.has(c.healer), `healer ของ ${c.id} = ${c.healer} ต้องอยู่ในรายการที่รู้จัก`);
+}
+
+// ── ระยะ 2: gate ทาง v2 ──
+// buildCtx บนไฟล์ v2 อ่านสำเนา (px/fvBox/mosBig/pxInput/chg/priceAge) จาก report-data.values ผ่าน RV.derive
+// ไม่ใช่จาก HTML — mutate JSON แล้ว check ต้องยิง เป็นหลักฐานว่าอ่าน JSON จริง
+{
+  const RV = require('../tools/report-values.js');
+  const MF = require('../tools/field-manifest.js');
+  const base2 = expandReport(FX.BBL_V2());
+  const FX_V2_PX = RM.readReportData(FX.BBL_V2()).data.values.px;
+  const c = buildCtx(base2, 'BBL.html');
+  ok(c.v2 === true && c.dv && c.px === c.dv.px && c.fvBox === c.dv.fv && c.mosBig === c.dv.mosShown && c.pxInput === c.dv.px, 'v2: ctx.px/fvBox/mosBig/pxInput มาจาก values (derive)');
+  ok(c.priceAge && c.priceAge.iso === RM.readReportData(FX.BBL_V2()).data.values.priceDate, 'v2: ctx.priceAge จาก values.priceDate');
+  ok(c.chg === c.dv.chg.text, 'v2: ctx.chg จาก chart.data');
+  const r = checkHtml(base2, 'BBL.html');
+  ok(r.errors.length === 0, 'v2 fixture ผ่าน gate', r.errors.map((e) => e.id).join(','));
+  ok(r.coverage.n === 71 - MF.FIELDS.filter((f) => f.v2 === null).length, 'v2: coverage denominator ตัดแถวที่ไม่มีใน v2');
+  // ★ mutate JSON **หลัง** expand (review Task 10 ข้อ 2) — HTML ที่ render แล้วยังถือค่าเดิม ขณะที่ values เปลี่ยน
+  //   ⇒ gate ที่อ่าน JSON ต้องเห็นความต่าง · gate ที่อ่าน HTML (โค้ดก่อนระยะ 2 ส่วน D) จะเงียบ — เทสจึงแยกสองแบบออกจริง
+  //   (mutate ก่อน expand = HTML render จากค่าที่ mutate แล้ว สองทางได้ค่าเท่ากัน เทสผ่านทั้งโค้ดเก่าและใหม่ ⇒ พิสูจน์อะไรไม่ได้)
+  const m1 = mutJson('report-data', (d) => { d.values.px = d.values.px * 1.5; })(base2);
+  const r1 = checkHtml(m1, 'BBL.html');
+  ok(r1.ctx.px === FX_V2_PX * 1.5 && errIds(r1).has('E30'), 'v2: values.px ×1.5 หลัง render → ctx.px ตาม JSON + E30 (stock-meta ≠ values.px)', [...errIds(r1)].join(','));
+  const m2 = mutJson('report-data', (d) => { d.values.px = d.values.px * 0.5; })(base2);
+  const r2 = checkHtml(m2, 'BBL.html');
+  ok(['E19', 'E30', 'E43'].every((id) => errIds(r2).has(id)) && !errIds(r2).has('E16') && !errIds(r2).has('E23'),
+    'v2: values.px ×0.5 หลัง render → E19/E30/E43 ยิง (อ่าน JSON) · E16/E23 เงียบ (.big/pxIn ใน ctx มาจาก derive ค่าเดียวกัน)', [...errIds(r2)].join(','));
+  const m4 = mutJson('report-data', (d) => { d.values.priceDate = '2026-01-01'; })(base2);
+  const r4 = checkHtml(m4, 'BBL.html');
+  ok(r4.ctx.priceAge.iso === '2026-01-01' && errIds(r4).has('E27'), 'v2: values.priceDate เก่า หลัง render → ctx.priceAge ตาม JSON + E27', [...errIds(r4)].join(','));
+  // render invariant (ไม่ใช่หลักฐานอ่าน JSON): ไฟล์ที่ render จาก values เดียวกัน W04/W06 เงียบเสมอ
+  const mR = expandReport(mutJson('report-data', (d) => { d.values.px = d.values.px * 0.5; })(FX.BBL_V2()));
+  ok(!allIds(checkHtml(mR, 'BBL.html')).has('W04') && !allIds(checkHtml(mR, 'BBL.html')).has('W06'), 'v2 render: W04/W06 เงียบ (class/ช่องสรุป render จาก MOS เดียวกัน)');
+  // W21 บนไฟล์ v2: แถว `v2: null` (gauge.fair/chart.fairLine/วันที่ในวงเล็บ) ไม่มีในไฟล์โดยสคีมา → ไม่นับว่า "หาย"
+  const nullRows = MF.FIELDS.filter((f) => f.v2 === null).map((f) => f.id);
+  ok(nullRows.length > 0 && nullRows.every((id) => !r.ctx.mf.missing.includes(id) && !r.ctx.mf.skipped.includes(id) && !r.ctx.mf.found.has(id)) && !allIds(r).has('W21'),
+    `v2: แถว v2:null (${nullRows.join(' ')}) ไม่อยู่ใน found/missing/skipped + W21 เงียบ`, r.warnings.map((w) => w.id + ' ' + w.msg).join(' | '));
+  ok(r.ctx.mf.omitted === nullRows.length, `v2: extractAll นับแถวที่ข้ามใน omitted (${r.ctx.mf.omitted})`);
+  // v1 ต้องไม่แตะทาง v2 เลย
+  const c1 = buildCtx(base, 'BBL.html');
+  ok(c1.v2 === false && c1.dv === null && c1.mf.omitted === 0, 'v1: ctx.v2=false · dv=null · ไม่ข้ามแถวใด');
+  // ★ ไฟล์ประกาศ v:2 แต่สคีมาเสีย → error V2SCHEMA (review Task 10 ข้อ 1) — ห้ามถอยเป็น v1 เงียบ ๆ
+  //   ไฟล์ที่ไม่มี template marker: expandReport คืนเดิมโดยไม่ validate ⇒ gate ต้องตรวจเอง
+  {
+    const os = require('os');
+    const bad = mutJson('report-data', (d) => { d.values.bogus = 1; d.gauge = { ...(d.gauge || {}), cur: 1, fair: 1 }; })(base2);
+    ok(expandReport(bad) === bad, 'V2SCHEMA: fixture ไม่มี template marker (expandReport = identity ไม่ validate)');
+    const tmp = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'cr-v2-')), 'BBL.html');
+    fs.writeFileSync(tmp, bad);
+    const rb = require('./check-reports').checkFile(tmp);
+    ok(errIds(rb).has('V2SCHEMA') && /bogus/.test(rb.errors.find((e) => e.id === 'V2SCHEMA').msg), 'V2SCHEMA: v2 ไร้ marker + คีย์นอกสคีมา/gauge.cur → checkFile ได้ error (เดิมผ่าน 0 error)', rb.errors.map((e) => e.id + ' ' + e.msg).join(' | '));
+    const m3 = mutJson('report-data', (d) => { delete d.values.scnBasis; })(base2);   // scenarios มีแต่ scnBasis หาย
+    let c3 = null, threw3 = null; try { c3 = buildCtx(m3, 'BBL.html'); } catch (e) { threw3 = e.message; }
+    ok(threw3 === null && c3 && c3.v2 === false && c3.dv === null && /scnBasis/.test(c3.v2Err || '') && errIds(checkHtml(m3, 'BBL.html')).has('V2SCHEMA'),
+      'V2SCHEMA: scnBasis หาย → ไม่ throw · อ่าน HTML ต่อ · แต่ยก error', threw3 || (c3 && `v2=${c3.v2} v2Err=${c3.v2Err}`));
+    const realDerive = RV.derive;
+    RV.derive = () => { throw new Error('derive ระเบิดจำลอง'); };
+    let rd3; try { rd3 = checkHtml(base2, 'BBL.html'); } finally { RV.derive = realDerive; }
+    ok(errIds(rd3).has('V2SCHEMA') && rd3.ctx.v2 === false, 'V2SCHEMA: validateValues ผ่านแต่ derive throw → error (ไม่ถอยเป็น v1 เงียบ)', rd3.errors.map((e) => e.id).join(','));
+    ok(checkHtml(base2, 'BBL.html').errors.length === 0 && !buildCtx(base, 'BBL.html').v2Err, 'V2SCHEMA: คืน derive แล้ว v2 ดีผ่าน · v1 ไม่มี v2Err');
+  }
+  // census (review ข้อ 3) + spotcheck (ข้อ 4): แถว v2:null บนใบ v2 ไม่อยู่ในตัวหาร · v2 fn ถูกใช้แทน extract
+  {
+    const os = require('os');
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'census-v2-'));
+    fs.writeFileSync(path.join(dir, 'BBL.html'), FX.BBL());
+    fs.writeFileSync(path.join(dir, 'BBLV.html'), FX.BBL_V2());
+    const cs = MF.census(dir, buildCtx, expandReport);
+    const row = (id) => cs.rows.find((x) => x.id === id);
+    ok(row('f45').applicable === 1 && row('f45').rate === 1 && row('f46').applicable === 1 && row('f46').rate === 1,
+      `census: f45/f46 บนคลังผสม v1+v2 ตัวหาร 1 อัตรา 100% (ได้ ${JSON.stringify([row('f45'), row('f46')].map((x) => [x.found, x.applicable]))})`);
+    ok(row('f03').applicable === 2 && row('f03').found === 2 && row('f10').found === 2, `census: f03 (v2 fn → values.px) พบทั้ง 2 ใบ (ได้ ${row('f03').found}/${row('f03').applicable})`);
+    const { spotcheck } = require('../tools/spotcheck.js');
+    const line = spotcheck(base2, 'BBL.html', true)[0];
+    ok(new RegExp(`/${71 - nullRows.length} `).test(line), `spotcheck: ตัวหารช่อง manifest บน v2 = ${71 - nullRows.length}`, line);
+  }
+  // ctx.source: checkHtml ส่ง opts.source ต่อ · ไม่ส่ง = html เดียวกัน
+  ok(c.source === base2 && buildCtx(base2, 'BBL.html', { source: FX.BBL_V2() }).source === FX.BBL_V2(), 'ctx.source = opts.source หรือ html เดิม');
+}
+
+// ── ระยะ 2 ส่วน D Task 13 (แก้ตาม review รอบ 1 Finding 1/R1/R2): E-policy รู้จัก healer 'patchReport' บนไฟล์ v2
+// (mirrorStockMetaV2) + เคส convergence จริงของ W22 — เตรียมให้ Task 16 ตัดสินว่าจะยก W22 เป็น error ได้ไหม —
+// ที่นี่ **ไม่ยกระดับ** (level/healer ของ W22 ใน CHECKS ยังเป็น warn/null เหมือนเดิม ตามที่ยืนยันไว้แล้วในบล็อก
+// W21/W22/W23 ด้านบน) แค่พิสูจน์ว่ามีฟังก์ชันซ่อมจริงสำหรับคู่ f69 (stock-meta.fairValue) ↔ f44 (report-data.fv)
+{
+  const UP = require('../tools/update-prices.js');   // อ้างผ่าน object เสมอ (UP.mirrorStockMetaV2) ไม่ destructure —
+  // ต้อง monkey-patch ได้จริงตอนพิสูจน์ discriminate ด้านล่าง (destructure จะจับ closure เดิมไว้ตายตัว — บทเรียน
+  // เดียวกับที่ review Task 12 finding 1 เจอ: RM/DV ที่ derived-values.js/report-meta.js เรียกผ่าน const ภายในเอง)
+
+  // เลือกคู่ f69 (stock-meta.fairValue) ↔ f44 (report-data.fv) แทน f54 (vcell กรอบ) ↔ f43 (.fv-box) ตามที่ brief
+  // เตือนให้ยืนยันก่อน — ทดลองจริงแล้ว: f54 how:'range' เทียบข้อความ "กรอบ" สองจุดที่ render จาก **token เดียวกัน**
+  // {{rd:fvLow}}/{{rd:fvHigh}} (fv-box บรรทัด .l + vcell "มูลค่าเหมาะสม") ⇒ mutate values.fvLow ก่อน expand ทำให้
+  // ทั้งสองจุดขยับพร้อมกันเสมอ ไม่มีวันไม่ตรงกัน (ผลจริง: ยิง E20 "FV อยู่นอกกรอบ" ไม่ใช่ W22 — render invariant
+  // ไม่ใช่ของเสีย 2 จุด) · f69/f44 อยู่คนละ script (id="stock-meta" กับ id="report-data") จึง mutate ตัวเดียวพังได้จริง
+  // ★ ตัวซ่อม = mirrorStockMetaV2 (fix round 1 · R1 เพิ่ม sm.fairValue = rd.fv ในฟังก์ชันนี้) — โค้ดเดียวกับที่
+  // patchReport (v2 branch, ~line 508) และ healDerived (v2 branch, ~line 835) เรียกจริงตอน cron/heal-derived
+  // ไม่ใช่ตัวจำลอง ⇒ ซ่อม `broken` ตัวเดิมจริง ๆ (แก้ Finding 1 — เดิม reset ไปใช้ fixture ที่ไม่เคยเสีย)
+  const fvMirrorMut = mutJson('stock-meta', (d) => { d.fairValue *= 1.5; });
+  convV2('W22', fvMirrorMut, (h) => UP.mirrorStockMetaV2(h, RM.readStockMeta(h)),
+    'v2: stock-meta.fairValue ×1.5 (ไม่ผ่าน report-data.fv) → healer patchReport (mirrorStockMetaV2)');
+
+  // พิสูจน์ discriminate จริง (review รอบ 1 R2 สั่งชัดเจน): mutant ที่ mirror "ไม่เขียน fairValue" (จำลองด้วยการ
+  // ห่อ mirrorStockMetaV2 จริงแล้วบังคับ fairValue กลับเป็นค่าที่ยังเสียเสมอ) ต้องทำให้เคสข้างบน fail ที่ขั้นตอน
+  // "ซ่อมแล้วเงียบ" — ไม่ใช่ผ่านลอย ๆ ไม่ว่ามีตัวซ่อมจริงหรือไม่
+  {
+    const real = UP.mirrorStockMetaV2;
+    const broken2 = fvMirrorMut(FX.BBL_V2());
+    const brokenFV = RM.readStockMeta(broken2).fairValue;
+    UP.mirrorStockMetaV2 = (h, smOrig) => mutJson('stock-meta', (d) => { d.fairValue = brokenFV; })(real(h, smOrig));
+    let stillFires;
+    try {
+      const healedMutant = expandReport(UP.mirrorStockMetaV2(broken2, RM.readStockMeta(broken2)));
+      stillFires = allIds(checkHtml(healedMutant, 'BBL.html')).has('W22');
+    } finally { UP.mirrorStockMetaV2 = real; }
+    ok(stillFires, 'v2: mutant "mirror ไม่เขียน fairValue" (คืนค่าที่เสียกลับเสมอ) → W22 ยังยิงอยู่หลัง "ซ่อม" — พิสูจน์ว่าเคส convergence ข้างบน discriminate จริง ไม่ใช่ผ่านลอย ๆ');
+    ok(UP.mirrorStockMetaV2 === real, 'v2: คืน UP.mirrorStockMetaV2 เดิมแล้วหลังพิสูจน์ mutant');
+  }
+
+  // W21 (v2): ลบ <div class="sub"> (f67 .sub คำโปรย — required:true) → extractor อ่านไม่ได้ → W21
+  // f67 เป็น cadence write-once/owner worker (cron ไม่แตะ — ไม่มีอะไรเทียบเท่า mirrorStockMetaV2 ให้เรียก) ⇒
+  // healer ของมันยังเป็น null ⇒ **ไม่ลงทะเบียน CONVERGED('W21')** — ยังยกเป็น error ไม่ได้ในระยะนี้ (บันทึกไว้ให้
+  // Task 16: ตัดสินได้เฉพาะ W22 เพราะมีเคส convergence จริงแล้ว ส่วน W21 ต้องรอตัวซ่อมของ worker)
+  const v2Base = expandReport(FX.BBL_V2());
+  expect('W21', 'warn', (h) => h.replace('<div class="sub">', ''), 'v2: ลบ <div class="sub"> (f67 required) → W21', v2Base);
 }
 
 console.log('\n' + '─'.repeat(50));

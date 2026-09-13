@@ -948,7 +948,16 @@ git add test/check-reports.js tools/field-manifest.js test/self-test.js docs/sup
 git commit -m "feat(gate): buildCtx dual-mode — v2 อ่านสำเนาจาก values (derive) · V1_READ แยกตัวอ่าน HTML · ctx.source · manifest v2 (f69 · N_FIELDS 71 · แถวที่ไม่มีใน v2) (ระยะ 2 ส่วน D)"
 ```
 
-### Task 11: cron — `patchReport` ทาง v2 เขียนเฉพาะ JSON · `healDerived` ข้าม v2
+### Task 11: cron — `patchReport` ทาง v2 เขียน JSON + pass derived บน view ที่ render แล้ว (token เป็นเจ้าของ) · `healDerived` รองรับ v2
+
+> ★★ **แก้ 13 ก.ย. 2569 (controller ruling ก่อน dispatch — ledger "Ruling (Task 11/12 redesign)") — ข้อความในกล่องนี้ชนะ Step 1/3 ด้านล่างทุกจุดที่ขัดกัน**
+> **สมมติฐานเดิมผิด:** "v2 ไม่มีอะไรให้ regex" — การ์ดที่ derive จากราคา (P/E · Market Cap · P/S · ปันผล % · P/BV · % เป้านักวิเคราะห์) ยังเป็น literal ใน **869/869** ใบที่ย้ายได้ (Task 7 ตั้งใจคงไว้) · จำลองทั้งคลังในหน่วยความจำ (ราคา ×1.03/×0.97/×1.1): เขียน JSON อย่างเดียว ⇒ `gateAfterPatch` ตก **446/590/790 จาก 869** (E41/E42/E43/W19/W20 = error) · เรียก `patchDerived` บนต้นฉบับที่มี token ตรง ๆ ไม่พอ (`currencyOf` อ่าน `.px` = `{{rd:px}}` → null · ช่องผสม `~{{rd:analystTgt}} (-3%)`) · ทางที่วัดแล้วผ่าน: **2/2607** ตก (v1 วันนี้ 28/2607) — ต้นแบบ `.superpowers/sdd/2026-09-12-stock-analyzer-audit-phase2-data-layer/proto-task11/{myers.js,diffmap.js}`
+> **ออกแบบใหม่ (บังคับ):**
+> 1. Create `tools/keep-map.js` (zero-dep) — `keepMap(a, b) → Int32Array` ยาว `a.length`: index ใน `b` ของอักขระที่คงอยู่ (Myers O(ND) + ตัด prefix/suffix ร่วม) หรือ `-1` · unit test ใน `test/update-prices-test.js`
+> 2. `patchReport` ทาง v2: เขียน `values.px`/`priceDate` (+ gauge rescale ใช้ `values.px`) → **`derivedPassV2(html, price)`**: แยก token `{{rd:…}}` → render ทีละตัวด้วย `RV.renderValues` ได้ view + span ต่อ token → `DV.patchDerived(view, price)` → `keepMap(view, patched)` → ประกอบกลับ: span ที่อักขระคงอยู่ครบและต่อเนื่อง = วาง token ที่ตำแหน่ง map · span ที่ถูกแก้/ว่าง (render = "" เช่น `scnNote`) = **token ชนะ** ตัดส่วนที่ถูกแก้ทิ้ง วาง token ที่ขอบที่ map ได้ (นับเป็น `overridden`) · invariant: ลำดับ token ก่อน/หลังเหมือนกันทุกตัว ไม่งั้น throw (→ `patch-failed` เห็นในคิว ไม่เงียบ) → เขียน stock-meta กระจกจาก `RV.derive` **หลัง** pass derived (JSON เป็นเจ้าของ · `pe`/`dividendYield` แตะเฉพาะเมื่อเดิมไม่ใช่ null) → คืน `{ html, changed, chg, mos, derived: changes, notes }` (`derived` ไม่ว่างได้ตามปกติ)
+> 3. `healDerived`: **ห้ามข้าม v2** — ใช้ `derivedPassV2` ตัวเดียวกัน ราคา = `values.px`
+> 4. เทส Step 1 แทนที่: ~~"นอกบล็อก JSON ไม่ถูกแตะ"~~ ~~"`r.derived.length === 0`"~~ → (ก) ลำดับ token ใน `r.html` เท่ากับต้นฉบับ (ข) การ์ด literal อย่างน้อยหนึ่งใบ (เช่น ปันผล % ของ AAPL_V2) ถูกเขียนเป็นค่าที่ถูกต้องตามราคาใหม่ (ค) **คง** `gateAfterPatch(r.html).ok` ที่ ×1.1 และเพิ่ม ×0.9 (นี่คือเทสกันถดถอยของ defect นี้ — ห้ามผ่อน) (ง) เคส override: span ของ token ที่ pass derived พยายามแก้ ⇒ token คงอยู่ · (จ) เคส token render ว่าง · (ฉ) `keepMap` unit (แทนที่กลางสตริง · ตัวเลขซ้ำ `$121` ใน `$121.20` · prefix/suffix)
+> 5. Step 4 (`--heal-derived` dry-run ทั้งคลัง) คงเดิม — คลังยังเป็น v1 จนส่วน E
 
 **Files:**
 - Modify: `tools/update-prices.js` (`patchReport` · `healDerived` · main loop ส่วน freeze `mos-sign-flip` ใช้ fv ของ v2)
@@ -1027,6 +1036,8 @@ git commit -m "feat(cron): patchReport dual-mode — v2 เขียน values.p
 ```
 
 ### Task 12: `test/v2-path-test.js` — พิสูจน์ regex สำเนา = 0 บนทาง v2 · verify 17→18 ขั้น
+
+> ★★ **แก้ 13 ก.ย. 2569 (ruling Task 11/12 redesign — ชนะโค้ด Step 1 ส่วน cron):** ห้าม `DV.patchDerived = boom(...)` — ทาง v2 **ตั้งใจ**รัน pass derived บน view ที่ render แล้ว (การ์ด literal 869/869 ใบต้องการมัน) · บล็อก cron stub เฉพาะตัวเขียน **ช่องสำเนา**: `RM.PX_PARTS_RE` · `RM.MCUR_LABEL_PARTS_RE` · `RM.VERDICT_CLASS_RE` · `DV.MOS_BIG_RE` = `NEVER` แล้ว assert `!err && r.changed` **และ** `UP.gateAfterPatch(r.html, 'AAPL.html').ok` · ชื่อ assertion/หัวไฟล์ปรับเป็น "ทาง v2 ไม่มีช่องสำเนาที่เขียนด้วย regex" (ไม่ใช่ "regex = 0") · ถ้อยคำเกณฑ์จบใน Part F (`phase2-exit.md`) ต้องใช้คำที่แคบลงนี้
 
 > ★ **แก้ 12 ก.ย. 2569 (Part B final review, fix wave):** ย่อหน้า Files เดิมของ Task นี้สมมติว่า verify วันนี้ยังเป็น 16
 > ขั้นและ `report-values-test.js` ยังไม่เข้า chain — ทั้งสองข้อไม่จริงแล้ว: `report-values-test.js` ถูกย้ายเข้า
@@ -1140,6 +1151,8 @@ gh pr create --base main --head claude/audit-p2-d-dual-mode --title "audit ร�
 
 ### Task 14: หยุด cron · ย้ายคลังเป็นแบตช์ · วันที่ไม่ขยับ
 
+> ★★ **แก้ 14 ก.ย. 2569 (ruling Part D final review — แทนกล่องจำลอง 4 ตัวคูณของ 13 ก.ย. ที่พิสูจน์แล้วว่าไม่พอ):** ก่อนเขียนแต่ละแบตช์ ใบที่ migrator ผ่านต้องผ่าน **differential v1-vs-v2 ของ cron บน grid ละเอียด** (ราคา ×0.85–×1.15 ทีละ 0.005 · ในหน่วยความจำ): เทียบ `stock-meta.{pe,dividendYield,mos,upside,fairValue}` (ภายใต้ความคลาดเคลื่อนของรูป) · ตัวเลขที่มองเห็น (`expandReport` → ข้อความ ภายใต้ความคลาดเคลื่อนของรูป) · **warning** และ error ของ gate · ใบที่ต่าง = residue พร้อมเหตุผล `cron-diff <ชนิด>` ใน census (ห้ามเขียนใบที่ v2 ให้ผลต่างจาก v1 นอกเหนือรูป) · หลังแก้ final review ส่วน D (F1 mirror ไม่เขียน pe/yield · F2 scnBasis · F3 วันที่ literal) ขั้นนี้เป็น **canary** ไม่ใช่ตัวกรอง — คาดว่าเกือบ 0 · สคริปต์ต้นแบบ: `scratchpad/finalD/sim1–sim6` (ย้ายเป็น `tools/migrate-v2.js --cron-diff` + เทสใน `test/migrate-v2-test.js`) · census ต้องมีแถวแยก **"รูปทศนิยมหมวด 6 เปลี่ยน (เช่น 3.5→3)"** พร้อมรายชื่อ — เจ้าของตัดสินว่าเป็นรูปหรือค่า
+
 **Files:**
 - Modify: `reports/*.html` (เฉพาะใบที่ migrator ผ่าน) · `reports.json` (build เขียน — `updated` ต้องไม่ขยับ)
 - Create: `docs/superpowers/audit/2026-09-11-stock-analyzer/migration-v2-census.json` · `.md` (migrator `--census`)
@@ -1167,7 +1180,7 @@ git commit -m "migrate(v2): แบตช์ i/10 (<SYM แรก>–<SYM ท้�
 
 🤖 Generated with [Claude Code](https://claude.com/claude-code)"` · รอ CI (`gh pr checks N --watch`) · merge (`--merge`)
 - [ ] **Step 2**: `gh workflow enable update-prices.yml` · `gh workflow run update-prices.yml` (ถ้าเป็นเวลาตลาดเปิด US จะเห็น "ข้ามเพราะตลาดเปิด" — ไม่ใช่ของเสีย · ใบไทยได้ patch) · `gh run watch` จนจบ → ต้อง success · อ่าน log: จำนวน patch ✓ / freeze ตาม reason · **`patch-failed` ต้อง 0 บนใบ v2** (ถ้าไม่ 0 = บั๊กทาง v2 → แก้ก่อนปิด task · ledger)
-- [ ] **Step 3**: หลัง cron push → `git fetch && git merge --ff-only origin/main` ในสาขาถัดไป · ตรวจสุ่ม 5 ใบ v2 ที่ถูก patch: `git show HEAD -- reports/<SYM>.html | rtk proxy grep '^[+-]' | rtk proxy grep -v '^[+-][+-]'` ต้องเห็น**เฉพาะ**บรรทัดใน report-data/stock-meta (ไม่มี `.px`/`.big`/`.chg` ใน diff) — จดใน report
+- [ ] **Step 3** (★★ แก้ 13 ก.ย. 2569 — v2 cron **ตั้งใจ**แตะการ์ด literal ที่ derive จากราคา (P/E · mcap · P/S · ปันผล % · P/BV · % เป้า · ช่องสรุป) ผ่าน pass derived บน view ⇒ diff ที่ถูกต้อง = บรรทัด report-data/stock-meta **+ เฉพาะการ์ด literal เหล่านั้น** · สิ่งที่ต้องไม่เห็น: `.px` · `.big` · `.chg` · วันที่ header · label `#mCur` · class verdict (ช่องสำเนาที่ render จาก token) · `patch-failed` บนใบ v2 ต้อง 0 และ `patch-rejected` บนใบ v2 ≤ รายชื่อที่ census เปิดเผย): หลัง cron push → `git fetch && git merge --ff-only origin/main` ในสาขาถัดไป · ตรวจสุ่ม 5 ใบ v2 ที่ถูก patch: `git show HEAD -- reports/<SYM>.html | rtk proxy grep '^[+-]' | rtk proxy grep -v '^[+-][+-]'` ต้องเห็น**เฉพาะ**บรรทัดใน report-data/stock-meta (ไม่มี `.px`/`.big`/`.chg` ใน diff) — จดใน report
 
 ### Task 16: W22 → E (เฉพาะเมื่อ v1 = 0) · ไม่งั้น open-item
 
@@ -1204,6 +1217,9 @@ git commit -m "feat(gate): E44 prose ผูกราคาในใบใหม�
 ```
 
 ### Task 18: ผลวัดเกณฑ์จบระยะ 2 · docs · PR ส่วน F
+
+> ★★ **แก้ 14 ก.ย. 2569 (carry จาก Part D final review):** (1) **check โครงสร้าง v2 ถาวร** (F6 latent): เมื่อ `ctx.v2` source ต้องมี `{{rd:px}}` ใน `.px` · `{{rd:mos}}` ใน `.big` · `{{rd:mosClass}}` ใน class verdict · `{{rd:chg}}` ใน `.chg` · `{{rd:pxNum}}` ใน `pxIn` · `{{rd:priceDate}}` ใน header — ไม่งั้นยก pseudo-error `V2TOKENS` (แบบเดียวกับ `V2SCHEMA`) + เคส self-test mutate (แทน token ด้วย literal → ยิง) · นับ corpus ก่อนเปิด = 0 ใบ (census 869/869 tokenise ช่องหลักครบ) · เกณฑ์จบ "สำเนาต่อค่า = 1" ข้อ 1 ใช้ check นี้วัด (2) **`docs/price-refresh.md` + CLAUDE.md §9** อธิบายทาง cron v2: pass derived บน view ที่ render · keep-map (token เป็นเจ้าของ) · tripwire → `patch-failed` · กระจก stock-meta (price/mos/upside/fairValue จาก report-data · pe/dividendYield เป็นของ pass derived เหมือน v1) · ถ้อยคำ "regex = 0" ห้ามใช้ ใช้คำแคบตาม ruling Task 12 R5
+> ★★ **เพิ่ม 14 ก.ย. 2569 (residual จาก re-review fix wave ส่วน D):** (3) เทส `healDerived` ทาง v2 ต้องตรึงว่า stock-meta ที่ pass derived เขียน (pe/dividendYield) **ไม่ถูกกระจกทับ** — mutant ที่ทับแล้ว update-prices-test ยังผ่าน 399/399 (ใช้ fixture SRE: heal แล้ว E41/W19 ต้องหาย) (4) tripwire วันที่ทวนซ้ำบน v2 ต้องจับรูปที่ parser อ่านไม่ออก (`(11 กย. 2569 ตลาดปิด)`) อย่างน้อยเป็น note แบบเดียวกับ v1 — ไม่งั้นค้างเงียบ · 0 ใบในคลังวันนี้
 
 **Files:**
 - Create: `docs/superpowers/audit/2026-09-11-stock-analyzer/phase2-exit.md`

@@ -27,13 +27,20 @@
  *   — `@@` apply ก่อนเสมอ แล้วค่อยทำ JSON ops ต่อบนผลลัพธ์นั้น ก่อนเขียนไฟล์ครั้งเดียวรวมกัน):
  *   --set <path>=<json>   ตั้งค่าใน report-data ตาม path จุด (`a.b.c` · array index ใช้เลขล้วนเช่น `scenarios.0.tgt`)
  *   --del <path>          ลบคีย์ใน report-data ตาม path
- *   --set-meta <path>=<json>   ตั้งค่าใน stock-meta (path ระดับเดียว เช่น `fairValue`)
+ *   --set-meta <path>=<json>   ตั้งค่าใน stock-meta (path ระดับเดียว เช่น `roe`)
  *   ตัวอย่าง:  node tools/apply-edits.js reports/<SYM>.html --set fv=210 --set values.eps=9.57 --del values.analystTgt
  *   <json> parse ด้วย JSON.parse ก่อน (ตัวเลข/boolean/null/สตริงที่ quote แล้วผ่านอยู่แล้ว) — parse ไม่ผ่านค่อยลอง
  *   ตีความเป็น number/true/false/null ตรง ๆ · ไม่ผ่านทั้งคู่ = error ไม่เขียนไฟล์
  *   --set/--del ใช้ได้เฉพาะรายงาน **v2** (`report-data.v === 2` มี `values`) — ไฟล์ v1 ต้อง error "ไฟล์ v1" ทันที
  *   ไม่แตะไฟล์เลย (ใบ v1 แก้เลขผูกราคาด้วยบล็อก `@@` ตามเดิม) · `--set-meta` ใช้ได้ทั้ง v1/v2 (บล็อก stock-meta
  *   ไม่ขึ้นกับ schema v2) · หลังแก้เสร็จ validate ด้วย `RV.validateValues` (เมื่อเป็น v2) ก่อนเขียนไฟล์จริงเสมอ
+ *   ★ fix wave F4 (แทน fix round 1 · R1): บนไฟล์ v2 `report-data.values.px` + `report-data.fv` เป็นเจ้าของ —
+ *   หลัง `--set`/`--del` **ใดก็ตาม** บนไฟล์ v2 จะรันกระจก stock-meta ตัวเดียวกับ cron (`RV.mirrorStockMeta` ใน
+ *   `tools/report-values.js`) ⇒ `stock-meta.price/mos/upside/fairValue` ตรงกับ values/fv ในคำสั่งเดียวกันเสมอ
+ *   (เดิมซิงก์แค่ fairValue ⇒ `--set fv=300` ทิ้ง mos/upside ค้าง = E30+E31 ทันที — final review ข้อ 4)
+ *   · `--set-meta price|mos|upside|fairValue=…` บนไฟล์ v2 ถูกปฏิเสธ (สี่คีย์นี้เป็นกระจก — เขียนตรงแล้วไม่มีอะไรซิงก์กลับ)
+ *   · `--set-meta` บนไฟล์ v2 ใช้กับคีย์ที่ไม่ใช่กระจก เช่น roe/pe/dividendYield (pe/dividendYield = กระจกของการ์ดที่
+ *     ผู้เขียนเลือกโชว์ — cron/pass derived ดูแลต่อจากค่าที่ตั้ง) · บนไฟล์ **v1** `--set-meta` ใช้ได้ทุกคีย์ตามเดิม
  *
  * ★★★ stdin: ผู้เรียก**ประกาศ**ว่าจะส่ง stdin มาไหม แทนที่จะให้สคริปต์เดาจากจังหวะ — ห้ามย้อนกลับไปสองทางที่
  *   เคยลองแล้วพังทั้งคู่ (เก็บไว้เป็นบทเรียน):
@@ -224,6 +231,14 @@ if (ops.length) {
   if ((setOps.length || delOps.length) && !RV.isV2(rd))
     die(`✗ ${file} เป็นไฟล์ v1 (ไม่มี report-data.v = 2 / values) — --set/--del ใช้ได้เฉพาะรายงาน v2 เท่านั้น (ไฟล์ v1 แก้เลขผูกราคาด้วยบล็อก @@ ตามเดิม)`);
 
+  // fix wave F4: ไฟล์ v2 stock-meta.price/mos/upside/fairValue เป็นกระจกของ values.px/fv (RV.mirrorStockMeta — ตัวเดียวกับ
+  // cron patchReport/healDerived) ⇒ ห้ามแก้กระจกตรง ๆ ด้วย --set-meta เพราะจะสร้างค่าที่ไม่มีอะไรมาซิงก์ให้ตรงกับเจ้าของอีก
+  const setsMirror = setMetaOps.find((o) => RV.MIRROR_KEYS.includes(o.path));
+  if (setsMirror && RV.isV2(rd)) {
+    const fix = setsMirror.path === 'fairValue' ? 'ใช้ --set fv=<n> แทน' : setsMirror.path === 'price' ? 'ใช้ --set values.px=<n> แทน' : 'แก้ที่ --set fv=<n> / --set values.px=<n> แล้วค่านี้ตามเอง';
+    die(`✗ --set-meta ${setsMirror.path} ใช้ไม่ได้กับไฟล์ v2 (${file}) — stock-meta.${setsMirror.path} เป็นกระจกของ report-data (values.px/fv) ที่ apply-edits/cron เขียนให้เองเสมอ · ${fix} (stock-meta ซิงก์ให้อัตโนมัติในคำสั่งเดียวกัน)`);
+  }
+
   // path แบบ a.b.c — segment ที่เป็นตัวเลขล้วนตีความเป็น array index (เช่น scenarios.0.tgt)
   const keyOf = (seg) => (/^\d+$/.test(seg) ? Number(seg) : seg);
   function parentOf(root, path) {
@@ -268,6 +283,12 @@ if (ops.length) {
 
   if (setOps.length || delOps.length) work = work.replace(RM.REPORT_DATA_PARTS_RE, (m, a, body, z) => a + '\n' + RV.styledRD(rd) + '\n' + z);
   if (setMetaOps.length) work = work.replace(RM.STOCK_META_PARTS_RE, (m, a, b, z) => a + '\n' + JSON.stringify(sm) + '\n' + z);
+  // fix wave F4: หลัง --set/--del ใด ๆ บนไฟล์ v2 → กระจก stock-meta ตัวเดียวกับ cron (price/mos/upside/fairValue จาก RV.derive)
+  //   ค่าสุดท้ายหลัง apply ทุก op แล้ว (ไม่ใช่แค่ค่าที่พิมพ์) · ไม่แตะ pe/dividendYield (ของ pass derived — final review ข้อ 1)
+  if (RV.isV2(rd) && (setOps.length || delOps.length)) {
+    try { work = RV.mirrorStockMeta(work); }
+    catch (e) { die(`✗ กระจก stock-meta ไม่สำเร็จ (ไม่ได้เขียนไฟล์): ${e.message}`); }
+  }
 }
 
 fs.writeFileSync(file, work);

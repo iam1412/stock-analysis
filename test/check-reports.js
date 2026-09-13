@@ -32,6 +32,8 @@ const TAG = require('../tools/tag-lib.js');
 const RM = require('../tools/report-meta.js');   // เจ้าของเดียวของ regex stock-meta/report-data/.px
 // ทะเบียนช่องตัวเลขทุกช่องในรายงาน (ระยะ 1 WS1) — gate ใช้เพื่อรู้ว่า "ตัวเองอ่านอะไรไม่ได้" (W21) และคู่ไหนไม่ตรงกัน (W22/W23)
 const MF = require('../tools/field-manifest.js');
+// ระยะ 2 (ส่วน D): ไฟล์ v2 เก็บตัวเลขราคา/FV/MOS ที่เดียวใน report-data.values — gate อ่านสำเนาจากที่นั่นผ่าน derive (เจ้าของเดียว)
+const RV = require('../tools/report-values.js');
 // โหลดครั้งเดียวต่อ process — self-test จะฉีดของปลอมผ่าน opts.tagData แทน
 let _tagCache = null;
 function tagDefaults() {
@@ -197,6 +199,27 @@ function parsePriceAge(header) {
   const dt = Date.UTC(d.yearCE, d.monIdx, d.day);
   return { iso: d.iso, ageDays: Math.round((now - dt) / 86400000) };
 }
+/** v2: values.priceDate (ISO ค.ศ. "YYYY-MM-DD") → object รูปเดียวกับ parsePriceAge ({iso, ageDays}) — E27/W09/f10 ใช้ */
+function priceAgeFromIso(iso) {
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(iso == null ? '' : iso));
+  if (!m) return null;
+  const now = process.env.STALE_TODAY ? Date.parse(process.env.STALE_TODAY) : Date.now();
+  const dt = Date.UTC(+m[1], +m[2] - 1, +m[3]);
+  return { iso: m[0], ageDays: Math.round((now - dt) / 86400000) };
+}
+
+// ระยะ 2: ตัวอ่าน "สำเนาใน HTML" ของไฟล์ v1 — ทาง v2 ไม่เรียกตัวไหนในนี้ (ยกเว้น scaleNums ที่ยังอ่าน HTML ทั้งสองทาง)
+// ★ ย้ายมาจาก object literal ของ ctx ทีละตัว **โค้ดเดิม ไม่แก้ regex** — v1 ต้องได้ผลเท่าเดิมทุกไบต์ (คลัง 908 ใบยังเป็น v1)
+const V1_READ = {
+  px: (html) => { const p = RM.readHeaderPrice(html); return p ? p.price : null; },
+  fvBox: (html) => { const fvIdx = html.indexOf('class="fv-box"'); return fvIdx === -1 ? null : firstNum(grab(/class="r">([\s\S]*?)<\/div>/, html.slice(fvIdx))); },
+  mosBig: (html) => firstNum(grab(/class="big">([\s\S]*?)<\/div>/, html)),
+  pxInput: (html) => firstNum(grab(/id="pxIn"[^>]*value="([^"]*)"/, html)),
+  chg: (html) => { const m = html.match(/<div class="chg"[^>]*>([\s\S]*?)<\/div>/i); return m ? stripTags(m[1]).replace(/\s+/g, ' ').trim() : null; },
+  priceAge: (header) => parsePriceAge(header),
+  scaleNums: (html) => { const seg = grab(/<div class="scale">([\s\S]*?)<\/div>\s*<\/div>/, html); if (!seg) return []; return seg.split('<span').slice(1).map((s) => firstNum(s)).filter((v) => v != null); },
+  baseEPS: (html) => firstNum(grab(/EPS ฐาน\s*~?\s*[฿$]?\s*([0-9.]+)/, norm(html))),
+};
 
 // ดึง key metric (ค่าในการ์ด .metric) ตามชื่อ label
 // เก็บ "ทุกตัวเลข" จากการ์ด metric ที่ป้ายตรง labelRe — รายงานหลายใบโชว์สองฐานโดยตั้งใจ
@@ -247,7 +270,22 @@ function buildCtx(html, name, opts) {
   const vocab = o.vocab !== undefined ? o.vocab : d.vocab;
   const text = visible(html);
   const headerM = html.match(/<header[\s\S]*?<\/header>/i);
-  const fvIdx = html.indexOf('class="fv-box"');
+  const rdS = RM.readReportData(html), smS = RM.readStockMetaState(html);
+  // ไฟล์ที่ประกาศ v2 (report-data.v === 2) ต้องผ่าน validateValues + derive **ที่นี่เอง** — ห้ามพึ่งว่า expandReport
+  //   ตรวจให้แล้ว: ไฟล์ที่ไม่มี template marker (render แล้ว/เขียนมือ) expandReport คืนเดิมโดยไม่ validate
+  //   ⇒ เดิมสคีมาเสียจะถอยไปอ่านเป็น v1 เงียบ ๆ (หรือข้าม f45/f46 จน W21/W22 หาย) แล้วผ่าน 0 error (review Task 10 ข้อ 1)
+  //   ⇒ ตอนนี้ throw = `v2Err` → checkHtml ยก error `V2SCHEMA` (pseudo-id แบบเดียวกับ EXPAND ไม่อยู่ใน CHECKS) · ตัวอ่านถอยไป HTML เพื่อให้ check อื่นยังพูดได้
+  //   ไฟล์ v1 (ไม่มี v:2) ไม่เข้ากิ่งนี้เลย
+  let dv = null, v2Err = null;
+  if (rdS.ok && RV.isV2(rdS.data)) {
+    try { RV.validateValues(rdS.data, smS.ok ? smS.data : null); dv = RV.derive(rdS.data, smS.data); }
+    catch (e) { dv = null; v2Err = e.message; }
+  }
+  const V2 = !!dv;
+  // fix round 1 finding 2/R2: สกุลเงินทาง v2 มาจาก stock-meta.currency (JSON, ผ่าน RV.CUR_SYMBOL) ตรง ๆ —
+  //   ห้ามอ่านจาก .px ที่ render แล้ว (ช่องสำเนา) · v1 = undefined → isTHB/currencyOf ยังอ่าน .px เหมือนเดิมทุกไบต์
+  //   (smS.data.currency รับประกันอยู่ใน RV.CUR_SYMBOL แล้วเมื่อ V2=true — RV.derive ข้างบน throw ไปแล้วถ้าไม่ใช่)
+  const cur = V2 ? RV.CUR_SYMBOL[smS.data.currency] : undefined;
   const ctx = {
     html,
     name,
@@ -262,20 +300,22 @@ function buildCtx(html, name, opts) {
     aiModel: (() => { const m = html.match(/<meta\s+name=["']ai-model["']\s+content=["']([^"']*)["']/i); return m ? m[1].trim() : null; })(),
     // คำโปรยธุรกิจใต้ <h1> = <div class="sub"> — build.js ดึงไปเป็น desc โชว์บนการ์ดหน้า index (สรุปว่าบริษัททำธุรกิจอะไร)
     sub: (() => { const m = html.match(/<h1[^>]*>[\s\S]*?<\/h1>\s*<div[^>]*\bclass=["'][^"']*\bsub\b[^"']*["'][^>]*>([\s\S]*?)<\/div>/i); return m ? stripTags(m[1]).trim() : ''; })(),
-    px: (() => { const p = RM.readHeaderPrice(html); return p ? p.price : null; })(),
+    px: V2 ? dv.px : V1_READ.px(html),
     constFV: (() => { const m = html.match(/const\s+FV\s*=\s*([0-9]+(?:\.[0-9]+)?)/); return m ? parseFloat(m[1]) : null; })(),
-    fvBox: fvIdx === -1 ? null : firstNum(grab(/class="r">([\s\S]*?)<\/div>/, html.slice(fvIdx))),
-    mosBig: firstNum(grab(/class="big">([\s\S]*?)<\/div>/, html)),
+    fvBox: V2 ? dv.fv : V1_READ.fvBox(html),
+    mosBig: V2 ? dv.mosShown : V1_READ.mosBig(html),
+    cur,   // fix round 1 finding 2/R2: v2 = stock-meta.currency (JSON) · v1 = undefined (ยังไม่รู้จนกว่าจะอ่าน .px)
     // สกุลเงินหลัก = สัญลักษณ์หน้าราคาใน header (.px) — ไม่ใช่แค่ "มี ฿ ที่ไหนสักแห่ง"
     // (กัน USD report ที่อ้างอิงค่าเงินบาทในข้อความ ไม่ให้ถูกตีว่าเป็นรายงานบาท)
-    isTHB: (() => { const p = RM.readHeaderPrice(html); return p ? p.currency === '฿' : (text.includes('฿') && !text.includes('$')); })(),
+    // ★ v2: ต้องมาจาก stock-meta.currency (cur ข้างบน) ตรง ๆ — ห้ามอ่าน .px ที่ render แล้ว (fix round 1 finding 2/R2)
+    isTHB: V2 ? cur === '฿' : (() => { const p = RM.readHeaderPrice(html); return p ? p.currency === '฿' : (text.includes('฿') && !text.includes('$')); })(),
     scenarios: parseScenarios(html),
     methods: parseMethods(html),
-    pxInput: firstNum(grab(/id="pxIn"[^>]*value="([^"]*)"/, html)),
-    baseEPS: firstNum(grab(/EPS ฐาน\s*~?\s*[฿$]?\s*([0-9.]+)/, norm(html))),
+    pxInput: V2 ? dv.px : V1_READ.pxInput(html),
+    baseEPS: V2 && dv.values.baseEps != null ? dv.values.baseEps : V1_READ.baseEPS(html),
     vgridFV: (() => { const i = html.indexOf('class="vgrid"'); if (i === -1) return null; return firstNum(grab(/มูลค่าเหมาะสม<\/div>\s*<div class="v">([\s\S]*?)<\/div>/, html.slice(i))); })(),
-    scaleNums: (() => { const seg = grab(/<div class="scale">([\s\S]*?)<\/div>\s*<\/div>/, html); if (!seg) return []; return seg.split('<span').slice(1).map((s) => firstNum(s)).filter((v) => v != null); })(),
-    priceAge: parsePriceAge(headerM ? headerM[0] : ''),
+    scaleNums: V1_READ.scaleNums(html),
+    priceAge: V2 ? priceAgeFromIso(rdS.data.values.priceDate) : V1_READ.priceAge(headerM ? headerM[0] : ''),
     cards: parseKVCards(html),                                  // การ์ด k/v/d ทุกใบ — ใช้โดย E41, E42
     // ทุกค่าที่โชว์ของ P/E และ ROE (ทุกการ์ดที่ป้ายมีคำนั้น) — ใช้โดย W10 เท่านั้น
     metricsAll: { pe: metricNumsAll(html, 'P/(?:E|DE)'), roe: metricNumsAll(html, 'ROE') },   // P/DE = ตัวคูณต่อ Distributable Earnings ของ alternative asset manager (BX) — มาตรฐานอุตสาหกรรมที่รายงานประกาศไว้ว่าใช้แทน GAAP EPS
@@ -286,11 +326,17 @@ function buildCtx(html, name, opts) {
       roe: (() => { const m = norm(html).match(/ROE[^<]*<\/div>\s*<div class="v[^"]*">\s*~?\s*([0-9.]+)\s*%/); return m ? parseFloat(m[1]) : null; })(),
     },
     // บล็อก stock-meta (JSON ตัวเลขสำหรับเรียง index) — present/ok/data ใช้โดย E29–31, W10
-    sm: RM.readStockMetaState(html),
+    sm: smS,
     // ป้าย change ใน header (.chg) — เช่น "▲ +72.1% (รอบปี)" / "▼ −5% (รอบปี)" (ทิศทาง + %) — ใช้โดย E34 (สี↔ทิศทาง), E35 (รูปแบบรอบปี), E36 (กราฟ↔headline)
-    chg: (() => { const m = html.match(/<div class="chg"[^>]*>([\s\S]*?)<\/div>/i); return m ? stripTags(m[1]).replace(/\s+/g, ' ').trim() : null; })(),
+    chg: V2 ? dv.chg.text : V1_READ.chg(html),
     // บล็อก report-data (chart/gauge/theme ต่อหุ้น) — ใช้โดย E34 (theme.chgBg/chgColor), E36 (chart.data↔headline), E37 (≤13 จุด), W12 (label ว่าง)
-    rd: RM.readReportData(html),
+    rd: rdS,
+    // ระยะ 2 (ส่วน D): v2 = report-data.v===2 + stock-meta อ่านได้ + derive สำเร็จ · dv = ผล RV.derive (null บน v1)
+    // source = HTML ก่อน expandReport (checkFile ส่ง raw มา) — ไม่ส่ง = html เดียวกัน
+    v2: V2,
+    dv: V2 ? dv : null,
+    v2Err,
+    source: (o.source != null ? o.source : html),
   };
   // ★ manifest ต้องได้ ctx ที่ "ครบทุกฟิลด์แล้ว" (f41 ใช้ px · f50 ใช้ cards · f68 ใช้ tagData) ⇒ ต่อท้ายสุดเสมอ
   //   คิดคู่ที่ไม่ตรงกันไว้ที่นี่ครั้งเดียว แล้ว W22/W23 แค่กรองด้วย stale (ไม่ต้องเดินช่องซ้ำสองรอบ)
@@ -302,7 +348,7 @@ function buildCtx(html, name, opts) {
     ctx.mf = MF.extractAll(html, ctx);
     ctx.mf.pairs = MF.checkPairs(ctx.mf.values, ctx);
   } catch (e) {
-    ctx.mf = { values: {}, found: new Set(), missing: [], skipped: [], pairs: [], errors: [], err: e.message };
+    ctx.mf = { values: {}, found: new Set(), missing: [], skipped: [], pairs: [], errors: [], omitted: 0, err: e.message };
   }
   return ctx;
 }
@@ -689,7 +735,9 @@ const CHECKS = [
   //   (126 ใบ: 84 ใบสามคอลัมน์ไม่สอดคล้องกันเอง = ของที่คนต้องดู · 27 ใบปันผลกำกวม · 15 ใบรูป % ไม่ชัด)
   { id: 'W17', level: 'error', healer: 'patchDerived#7', label: 'ผลตอบแทนฉาก 3 ปี = วัดจากราคาปัจจุบัน', fn: (c) => {
     if (!(c.px > 0)) return null;
-    const plan = DV.scenarioPlan(c.html, c.px);
+    // v2: ฐานหมวด 6 ที่ประกาศใน values.scnBasis ชนะการอนุมานจากเลขที่ปัดแล้ว (ระยะ 2 ส่วน D fix wave F2 — ตัวซ่อม
+    //   derivedPassV2 ส่งฐานเดียวกันให้ patchDerived#7 ⇒ ขอบเขตตัวตรวจ = ตัวซ่อม) · v1 = undefined → เดิมทุก byte
+    const plan = DV.scenarioPlan(c.html, c.px, undefined, c.v2 && c.dv ? (c.dv.scnBasis || undefined) : undefined);
     if (!plan) return null;                        // อ่านไม่ชัด/ตัดสินสมมติฐานปันผลไม่ได้ → ตัวซ่อมก็ไม่แตะ ต้องเงียบ
     const bad = [];
     const div = plan.conv === 'div' ? ' (รวมปันผล)' : '';
@@ -744,7 +792,7 @@ const CHECKS = [
   //   เกณฑ์ = max(3%, ครึ่งหลักสุดท้ายที่เขียน) — ไม่งั้นการ์ด "~5%" จะเตือนค้างขณะตัวซ่อมปัดแล้วเขียน "5" เดิมกลับ
   { id: 'W19', level: 'error', healer: 'patchDerived#8', label: 'ปันผล % = DPS ที่พิมพ์ ÷ ราคา (การ์ด + stock-meta)', fn: (c) => {
     if (!(c.px > 0)) return null;
-    const p = DV.yieldPlan(c.html, c.px);
+    const p = DV.yieldPlan(c.html, c.px, c.cur);   // fix round 1 finding 2/R2: v2 ส่ง c.cur (stock-meta.currency)
     const bad = [];
     for (const it of p.cards)
       if (DV.denomOff(it.want, it.shown, it.num)) bad.push(`[${it.label}] โชว์ ${it.shown}% แต่ DPS ${it.base} ÷ ราคา ${c.px} = ${it.want.toFixed(2)}%`);
@@ -760,7 +808,7 @@ const CHECKS = [
   { id: 'W20', level: 'error', healer: 'patchDerived#10', label: 'P/BV = ราคา ÷ BVPS ที่พิมพ์', fn: (c) => {
     if (!(c.px > 0)) return null;
     const bad = [];
-    for (const card of DV.pbvPlan(c.html, c.px))
+    for (const card of DV.pbvPlan(c.html, c.px, c.cur))   // fix round 1 finding 2/R2: v2 ส่ง c.cur (stock-meta.currency)
       for (const it of card.items)
         if (DV.denomOff(it.want, it.shown, it.num)) bad.push(`[${card.label}] โชว์ ${it.shown}x แต่ ราคา ${c.px} ÷ BVPS ${it.base} = ${it.want.toFixed(2)}x`);
     return bad.length ? bad.join(' ; ') : null;
@@ -823,9 +871,10 @@ function checkHtml(html, name, opts) {
     try { res = chk.fn(ctx); } catch (e) { res = 'ตรวจไม่สำเร็จ: ' + e.message; }
     if (res) (chk.level === 'error' ? errors : warnings).push({ id: chk.id, label: chk.label, msg: res });
   }
+  if (ctx.v2Err) errors.unshift({ id: 'V2SCHEMA', label: 'report-data v2 (validateValues/derive)', msg: `ไฟล์ประกาศ v:2 แต่สคีมาใช้ไม่ได้: ${ctx.v2Err}` });
   const errTotal = CHECKS.filter((c) => c.level === 'error').length;
   // coverage = "gate อ่านช่องไหนได้/ไม่ได้ในใบนี้" — ตัวเลขคู่กับผล error/warning เสมอ (ระยะ 1 WS1 ข้อ 2)
-  const coverage = { n: MF.FIELDS.length, found: ctx.mf.found.size, missingRequired: ctx.mf.missing, skippedOptional: ctx.mf.skipped };
+  const coverage = { n: MF.FIELDS.length - (ctx.mf.omitted || 0), found: ctx.mf.found.size, missingRequired: ctx.mf.missing, skippedOptional: ctx.mf.skipped };
   return { name, symbol: ctx.symbol, ctx, errors, warnings, errTotal, errPass: errTotal - errors.length, coverage };
 }
 
@@ -833,18 +882,18 @@ function checkHtml(html, name, opts) {
  *  (เดิม expandReport อยู่นอก try ของ main ⇒ ไฟล์เดียวที่ report-data เสียทำ cron ทั้งวันล้ม — code-audit §6.A) */
 function checkFile(fp) {
   const name = path.basename(fp);
-  let expanded;
-  try { expanded = expandReport(fs.readFileSync(fp, 'utf8')); }
+  let expanded, raw;
+  try { raw = fs.readFileSync(fp, 'utf8'); expanded = expandReport(raw); }
   catch (e) {
     const errTotal = CHECKS.filter((c) => c.level === 'error').length;
     return { name, symbol: name.replace(/\.html$/i, ''), ctx: null, errors: [{ id: 'EXPAND', label: 'expandReport', msg: e.message }], warnings: [], errTotal, errPass: errTotal - 1 };
   }
-  return checkHtml(expanded, name);
+  return checkHtml(expanded, name, { source: raw });   // ctx.source = ต้นฉบับก่อน expand (ระยะ 2 ส่วน D)
 }
 
 // `visible` = ข้อความที่คนเห็น (ตัด script/style/แท็ก) — export ให้ tools/migrate-v2.js ใช้ตัวเดียวกับที่ gate ใช้
 // (ชั้น 2 ของ migrator เทียบ "ข้อความที่มองเห็น" ก่อน/หลังย้าย — ถ้าคนละนิยามกับ gate ก็เทียบคนละอย่างกัน)
-module.exports = { checkHtml, checkFile, buildCtx, parseScenarios, firstNum, visible, CHECKS, REPORTS_DIR, FISCAL_REF_SRC };
+module.exports = { checkHtml, checkFile, buildCtx, parseScenarios, firstNum, visible, V1_READ, CHECKS, REPORTS_DIR, FISCAL_REF_SRC };
 
 // ---------- CLI ----------
 function main() {
