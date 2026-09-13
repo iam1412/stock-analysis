@@ -654,7 +654,9 @@ function derivedPassV2(html, price, opts) {
     spans.push([view.length, view.length + r.length, part]);
     view += r;
   });
-  const dv = patchDerived(view, price, opts);
+  // fix round 1 finding 2/R2: cur มาจาก sm.currency (JSON, อ่านจาก `html` ต้นฉบับก่อน render — ไม่ใช่ view)
+  //   ผ่าน RV.CUR_SYMBOL ตรง ๆ — ห้ามให้ patchDerived (ส่วน 8–10 ปันผล %/P-BV) ตกไปอ่าน .px ที่ view เพิ่ง render
+  const dv = patchDerived(view, price, Object.assign({}, opts, { cur: RV.CUR_SYMBOL[sm.currency] }));
   if (dv.html === view) return { html, changes: dv.changes, overridden: 0 };
   const pv = dv.html;
   const map = keepMap(view, pv);
@@ -705,7 +707,8 @@ function mirrorStockMetaV2(html, smOrig) {
   if (d.yield != null && smOrig.dividendYield != null) {
     // แผนของ v1 อ่าน stock-meta "ก่อน patch" คู่กับการ์ดที่ patch แล้ว — จำลองให้ตรง: view ที่ render แล้ว + smOrig
     const orig = html.replace(RM.STOCK_META_PARTS_RE, (x, a, b, z) => a + '\n' + JSON.stringify(smOrig) + '\n' + z);
-    const plan = yieldPlan(RV.renderValues(orig, rd, smOrig), d.px).meta;
+    // fix round 1 finding 2/R2: cur มาจาก smOrig.currency (JSON) ตรง ๆ ห้ามให้ yieldPlan ไปอ่าน .px ที่ render แล้ว
+    const plan = yieldPlan(RV.renderValues(orig, rd, smOrig), d.px, RV.CUR_SYMBOL[smOrig.currency]).meta;
     let y = round(d.yield, plan ? plan.dec : clampDec12(smOrig.dividendYield));
     if (y === 0 && d.yield > 0) y = round(d.yield, 2) || 0.01;
     sm.dividendYield = y;

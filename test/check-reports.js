@@ -282,6 +282,10 @@ function buildCtx(html, name, opts) {
     catch (e) { dv = null; v2Err = e.message; }
   }
   const V2 = !!dv;
+  // fix round 1 finding 2/R2: สกุลเงินทาง v2 มาจาก stock-meta.currency (JSON, ผ่าน RV.CUR_SYMBOL) ตรง ๆ —
+  //   ห้ามอ่านจาก .px ที่ render แล้ว (ช่องสำเนา) · v1 = undefined → isTHB/currencyOf ยังอ่าน .px เหมือนเดิมทุกไบต์
+  //   (smS.data.currency รับประกันอยู่ใน RV.CUR_SYMBOL แล้วเมื่อ V2=true — RV.derive ข้างบน throw ไปแล้วถ้าไม่ใช่)
+  const cur = V2 ? RV.CUR_SYMBOL[smS.data.currency] : undefined;
   const ctx = {
     html,
     name,
@@ -300,9 +304,11 @@ function buildCtx(html, name, opts) {
     constFV: (() => { const m = html.match(/const\s+FV\s*=\s*([0-9]+(?:\.[0-9]+)?)/); return m ? parseFloat(m[1]) : null; })(),
     fvBox: V2 ? dv.fv : V1_READ.fvBox(html),
     mosBig: V2 ? dv.mosShown : V1_READ.mosBig(html),
+    cur,   // fix round 1 finding 2/R2: v2 = stock-meta.currency (JSON) · v1 = undefined (ยังไม่รู้จนกว่าจะอ่าน .px)
     // สกุลเงินหลัก = สัญลักษณ์หน้าราคาใน header (.px) — ไม่ใช่แค่ "มี ฿ ที่ไหนสักแห่ง"
     // (กัน USD report ที่อ้างอิงค่าเงินบาทในข้อความ ไม่ให้ถูกตีว่าเป็นรายงานบาท)
-    isTHB: (() => { const p = RM.readHeaderPrice(html); return p ? p.currency === '฿' : (text.includes('฿') && !text.includes('$')); })(),
+    // ★ v2: ต้องมาจาก stock-meta.currency (cur ข้างบน) ตรง ๆ — ห้ามอ่าน .px ที่ render แล้ว (fix round 1 finding 2/R2)
+    isTHB: V2 ? cur === '฿' : (() => { const p = RM.readHeaderPrice(html); return p ? p.currency === '฿' : (text.includes('฿') && !text.includes('$')); })(),
     scenarios: parseScenarios(html),
     methods: parseMethods(html),
     pxInput: V2 ? dv.px : V1_READ.pxInput(html),
@@ -784,7 +790,7 @@ const CHECKS = [
   //   เกณฑ์ = max(3%, ครึ่งหลักสุดท้ายที่เขียน) — ไม่งั้นการ์ด "~5%" จะเตือนค้างขณะตัวซ่อมปัดแล้วเขียน "5" เดิมกลับ
   { id: 'W19', level: 'error', healer: 'patchDerived#8', label: 'ปันผล % = DPS ที่พิมพ์ ÷ ราคา (การ์ด + stock-meta)', fn: (c) => {
     if (!(c.px > 0)) return null;
-    const p = DV.yieldPlan(c.html, c.px);
+    const p = DV.yieldPlan(c.html, c.px, c.cur);   // fix round 1 finding 2/R2: v2 ส่ง c.cur (stock-meta.currency)
     const bad = [];
     for (const it of p.cards)
       if (DV.denomOff(it.want, it.shown, it.num)) bad.push(`[${it.label}] โชว์ ${it.shown}% แต่ DPS ${it.base} ÷ ราคา ${c.px} = ${it.want.toFixed(2)}%`);
@@ -800,7 +806,7 @@ const CHECKS = [
   { id: 'W20', level: 'error', healer: 'patchDerived#10', label: 'P/BV = ราคา ÷ BVPS ที่พิมพ์', fn: (c) => {
     if (!(c.px > 0)) return null;
     const bad = [];
-    for (const card of DV.pbvPlan(c.html, c.px))
+    for (const card of DV.pbvPlan(c.html, c.px, c.cur))   // fix round 1 finding 2/R2: v2 ส่ง c.cur (stock-meta.currency)
       for (const it of card.items)
         if (DV.denomOff(it.want, it.shown, it.num)) bad.push(`[${card.label}] โชว์ ${it.shown}x แต่ ราคา ${c.px} ÷ BVPS ${it.base} = ${it.want.toFixed(2)}x`);
     return bad.length ? bad.join(' ; ') : null;

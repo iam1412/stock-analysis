@@ -284,6 +284,8 @@ function basisFor(pe, price, bases) {
  *
  * แตะเฉพาะ **ตัวเลขที่ derive ได้จากของที่พิมพ์อยู่แล้วในไฟล์** — ไม่แตะ EPS, ราคาเป้า, prose, คำบอกทิศ
  * (`opts.prose` = true → แตะ % ของราคาเป้าในเนื้อความด้วย: ใช้เฉพาะ heal ที่คนสั่งเอง ไม่ใช่ cron ตาม §9)
+ * (`opts.cur` — fix round 1 finding 2/R2: ทาง v2 ต้องส่งสัญลักษณ์สกุลเงินจาก stock-meta.currency มาตรง ๆ
+ * (ดู derivedPassV2) ห้ามปล่อยให้ปันผล %/P-BV ส่วน 8–10 อ่านจาก `.px` ที่ render แล้ว — v1 ไม่ส่งจึงอ่าน `.px` เหมือนเดิม)
  *
  * @returns {{ html: string, changes: string[] }}
  */
@@ -625,10 +627,16 @@ const COMP_BEFORE = /[+×]\s*$/;
 const BV_KW = /(?<!T)BVPS|(?<!T)BV\s*\/\s*(?:หุ้น|share|sh|S)\b|book\s*value|มูลค่า(?:ทาง|ตาม)บัญชี|ส่วน(?:ของ)?ผู้ถือหุ้น|ส่วนทุน|\bequity\b/i;
 const TBV_KW = /TBV|tangible/i;
 
-/** สกุลของราคา = สัญลักษณ์หน้า .px (ตัวเดียวกับที่ gate/heal ใช้เป็นตัวตั้ง) — ไม่มี = ไม่ตรวจ ไม่เขียน */
-// ★ ตั้งแต่ย้ายมาใช้ `RM.readHeaderPrice` ตัวนี้ต้องการ "ราคาที่ parse เป็นตัวเลขได้" ต่อจากสัญลักษณ์ด้วย —
+/** สกุลของราคา = สัญลักษณ์หน้า .px (ตัวเดียวกับที่ gate/heal ใช้เป็นตัวตั้ง) — ไม่มี = ไม่ตรวจ ไม่เขียน
+ * @param {string} html
+ * @param {string} [cur] — ให้ตรง ๆ เมื่อรู้แล้ว (ทาง v2 — fix round 1 finding 2/R2: ห้ามอ่านจาก `.px` ที่ render
+ *   แล้ว เพราะเป็นช่องสำเนา ต้องมาจาก `stock-meta.currency` (JSON, ผ่าน `RV.CUR_SYMBOL`) เท่านั้น) —
+ *   ให้มา = ชนะทันที ไม่แตะ `html` เลย · v1 ไม่ส่ง (undefined) จึงอ่านจาก `.px` เหมือนเดิมทุกไบต์
+ */
+// ★ ตั้งแต่ย้ายมาใช้ `RM.readHeaderPrice` ตัวนี้ต้องการ "ราคาที่ parse เป็นตัวเลขได้" ต่อจากสัญลักษณ์ด้วย (v1 เท่านั้น —
+//   ทาง v2 ไม่เรียกเส้นทางนี้เลยเมื่อมี cur มาให้) —
 //   `.px` ที่เขียน "$—" (ยังไม่มีราคา) จึงคืน null ⇒ ใบนั้นหลุดออกจาก W19/W20 และจากตัวซ่อม (ตั้งใจ: ไม่มีราคา = คำนวณ yield/P-BV ไม่ได้)
-const currencyOf = (html) => { const p = RM.readHeaderPrice(html); return p ? p.currency : null; };
+const currencyOf = (html, cur) => { if (cur != null) return cur; const p = RM.readHeaderPrice(html); return p ? p.currency : null; };
 
 /** ข้อความในประโยคเดียวกันก่อน token (ตัดที่ตัวคั่นล่าสุด) */
 function clauseBefore(t, at) {
@@ -735,18 +743,22 @@ function yieldMetaPlan(html, price, cards) {
   return { shown, want, base: pick[0], dec: Math.min(2, Math.max(decOf(String(shown)), decOf(card.num), 1)) };
 }
 
-/** ทุกการ์ดปันผลที่ตัดสินได้ + แผนของ stock-meta.dividendYield — ใช้ร่วมทั้ง W19 และ patchDerived */
-function yieldPlan(html, price) {
-  const cur = currencyOf(html), cards = [];
+/** ทุกการ์ดปันผลที่ตัดสินได้ + แผนของ stock-meta.dividendYield — ใช้ร่วมทั้ง W19 และ patchDerived
+ * @param {string} [cur] — ทาง v2 ต้องส่งมาจาก stock-meta.currency (ดู currencyOf) v1 ไม่ส่ง */
+function yieldPlan(html, price, cur) {
+  cur = currencyOf(html, cur);
+  const cards = [];
   const re = cardRe();
   let m;
   while ((m = re.exec(html))) { const p = yieldCardPlan(m[1], m[3], m[5], price, cur); if (p) cards.push(p); }
   return { cards, meta: yieldMetaPlan(html, price, cards) };
 }
 
-/** ทุกการ์ด P/BV ที่ตัดสินได้ — ใช้ร่วมทั้ง W20 และ patchDerived */
-function pbvPlan(html, price) {
-  const cur = currencyOf(html), out = [];
+/** ทุกการ์ด P/BV ที่ตัดสินได้ — ใช้ร่วมทั้ง W20 และ patchDerived
+ * @param {string} [cur] — ทาง v2 ต้องส่งมาจาก stock-meta.currency (ดู currencyOf) v1 ไม่ส่ง */
+function pbvPlan(html, price, cur) {
+  cur = currencyOf(html, cur);
+  const out = [];
   const re = cardRe();
   let m;
   while ((m = re.exec(html))) { const p = pbvCardPlan(m[1], m[3], m[5], price, cur); if (p) out.push(p); }
@@ -855,7 +867,9 @@ function patchDerived(html, price, opts) {
   //    ตัวหารพิมพ์อยู่ในบรรทัด .d ของการ์ดเอง ⇒ เหตุผลเดียวกับ P/E · ตัดสินไม่ได้ = ไม่แตะ (ขอบเขตเท่ากับตัวตรวจเป๊ะ
   //    เพราะทั้งคู่ถาม yieldCardPlan/pbvCardPlan ตัวเดียวกัน) · แตะเฉพาะตัวเลขใน .v — ไม่แตะ .d แม้จะมีตัวเลขค้างในนั้น
   {
-    const cur = currencyOf(out);
+    // fix round 1 finding 2/R2: o.cur (ทาง v2 = stock-meta.currency ผ่าน RV.CUR_SYMBOL — ดู derivedPassV2)
+    // ชนะการอ่าน .px ที่ render แล้วเสมอ · v1 ไม่ส่ง o.cur จึงอ่านจาก .px เหมือนเดิมทุกไบต์
+    const cur = currencyOf(out, o.cur);
     const yCards = [];
     out = out.replace(cardRe(), (m, k, vOpen, vBody, tail, dBody) => {
       const p = yieldCardPlan(k, vBody, dBody, price, cur);
