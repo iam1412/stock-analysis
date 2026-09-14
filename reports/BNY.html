@@ -10,6 +10,39 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 127,
+  "values": {
+    "px": 162.66,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 121,
+    "fvHigh": 135,
+    "eps": 8.07,
+    "shares": 686000000,
+    "dps": 2.12,
+    "baseEps": 8.07,
+    "scenarios": [
+      {
+        "tgt": 106,
+        "div": 7.15
+      },
+      {
+        "tgt": 157,
+        "div": 7.15
+      },
+      {
+        "tgt": 221,
+        "div": 7.15
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": true,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#1C2C6B",
     "accentDark": "#142050",
@@ -41,18 +74,14 @@
     "min": 100,
     "max": 180,
     "grid": [120, 140, 160],
-    "fairLine": 127,
     "currency": "$",
     "highlight": [0, 11]
   },
   "gauge": {
     "min": 75,
     "max": 175,
-    "cur": 162.66,
-    "fair": 127,
     "fairLabelTop": true
-  },
-  "fv": 127
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +101,11 @@
     <div class="sub">Bank of New York Mellon: World's largest asset custodian (~$53T AUC/A) • Pershing (clearing/custody for wealth advisors &amp; broker-dealers) + Treasury services + FX • Dreyfus mutual funds + Mellon Investments • Berkshire Hathaway holding (~8.4%) • Robin Vince CEO: tech modernization + cost control • ~1.4% dividend yield + buybacks</div>
     <div class="price-row">
       <div>
-        <div class="px">$162.66<small>(BNY)</small></div>
+        <div class="px">{{rd:px}}<small>(BNY)</small></div>
       </div>
-      <div class="chg">▲ +50.7% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569 (ปิดตลาด)<br>
+        ราคา ณ {{rd:priceDate}} (ปิดตลาด)<br>
         กรอบ 52 สัปดาห์ $92.66 – $155.08<br>
         ⚠️ NYSE เปลี่ยนสัญลักษณ์หุ้นจาก <b>BK</b> เป็น <b>BNY</b> มีผล 21 พ.ค. 2569 — ไฟล์รายงานนี้เปลี่ยนชื่อตามเป็น BNY.html แล้ว<br>
         ที่มา: StockAnalysis.com, Yahoo Finance, NYSE/BNY press release
@@ -89,7 +118,7 @@
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ก.ค. 2569</div></div>
     <div class="grid g4">
       <div class="metric"><div class="k">Market Cap</div><div class="v">~$111.6B</div><div class="d">686M shares out.</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~20.2x</div><div class="d">GAAP EPS $8.07 TTM</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">GAAP EPS $8.07 TTM</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">12–17x</div><div class="d">Re-rating สูงขึ้นต่อเนื่อง 2024–2026</div></div>
       <div class="metric"><div class="k">P/BV / P/TBV</div><div class="v neu">2.58x / 4.57x</div><div class="d">BVPS $63.16 · TBVPS $35.60</div></div>
 
@@ -100,7 +129,7 @@
 
       <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$20.75B</div><div class="d">Fee ~75% + NII ~25%</div></div>
       <div class="metric"><div class="k">AUC/A</div><div class="v">~$53T+</div><div class="d">World's largest asset custodian</div></div>
-      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~1.3%</div><div class="d">$2.12/yr จริง · ประกาศขึ้น 19% → $2.52 fwd (ยังไม่มีผล)</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~{{rd:yield}}</div><div class="d">$2.12/yr จริง · ประกาศขึ้น 19% → $2.52 fwd (ยังไม่มีผล)</div></div>
       <div class="metric"><div class="k">Beta</div><div class="v">1.06</div><div class="d">ใกล้เคียงตลาด · ผูกกับ equity mkt</div></div>
     </div>
   </section>
@@ -114,7 +143,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#1C2C6B"></i>ราคา BNY</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $127</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -140,8 +169,8 @@
         <div class="mval">$121</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $121 – $135</span></div>
-        <div class="r">$127</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         ทั้ง 3 วิธีให้ผลใกล้เคียงกัน ($121–$135) สะท้อนภาพที่สอดคล้องกันว่า BNY มีมูลค่าเหมาะสมที่ ~$127 ในกรณีฐาน — ต่ำกว่าราคาปัจจุบัน $151.92 อยู่ราว 20% P/E ปัจจุบัน 18.8x สูงกว่าฐาน แต่ตลาดให้ premium เพราะ: (1) momentum กำไรเร่งตัว (Q1 2569 EPS +42% YoY) (2) AUC/A ทำ new high ทุกปีตาม equity market (3) Berkshire Hathaway ถืออยู่ = signal คุณภาพ (4) ROTCE พุ่งขึ้นถึง 29.3% ใน Q1 2569 จาก transformation ของ Robin Vince กรอบ FV $121–$135 สะท้อนความไม่แน่นอนว่า ROTCE ระดับ Q1 (29.3%) จะยั่งยืนแค่ไหน และทิศทางดอกเบี้ย (ลดดอกเบี้ย = NII ลด แต่ equity market ขึ้น = AUC/A และ fee income โต)
@@ -155,14 +184,14 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $162.66</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $127</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$88.90<br><small>MOS 30%</small></span>
-          <span>$101.60<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$127<br><small>Fair Value</small></span>
-          <span style="text-align:right">$135<br><small>กรอบบน FV</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
           <span style="text-align:right">$149.93<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
@@ -176,19 +205,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">−28%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">ราคาปัจจุบันสูงกว่ามูลค่าเหมาะสม — ยังไม่มี Margin of Safety</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$101.60</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$88.90</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $127</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="162.66" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -197,17 +226,17 @@
 
   <!-- ===== 6. RETURN PROJECTION ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $162.66 • EPS ฐาน ~$8.07 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}}{{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS +3%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$106</div>
-          <div class="ret neg">-30.4%</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$8.82</span></li>
             <li><span>P/E ออก</span><span>12x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$7.15</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>Equity bear + NII กดดัน</span></li>
           </ul>
         </div>
@@ -215,12 +244,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +9%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$157</div>
-          <div class="ret pos">+0.9%</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$10.45</span></li>
             <li><span>P/E ออก</span><span>15x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$7.15</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>AUC/A โต, transformation ดำเนินต่อ</span></li>
           </ul>
         </div>
@@ -228,12 +257,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +15%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$221</div>
-          <div class="ret pos">+40.3%</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$12.27</span></li>
             <li><span>P/E ออก</span><span>18x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$7.15</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>Tech modernization เต็มรูป + bull market</span></li>
           </ul>
         </div>
@@ -281,8 +310,8 @@
       <h2>BNY Mellon — Franchise คุณภาพระดับโลก แต่ราคาปัจจุบันสะท้อนข่าวดีส่วนใหญ่แล้ว</h2>
       <p>BNY Mellon (เปลี่ยนสัญลักษณ์จาก BK เป็น BNY ที่ NYSE 21 พ.ค. 2569) เป็น custodian bank คุณภาพสูงสุดในโลก — AUC/A $53T+ คือ "สาธารณูปโภค" ของระบบการเงินโลก ธุรกิจ Pershing ครองตลาด clearing สำหรับ RIA/wealth advisor, Robin Vince transform องค์กรด้วยผลที่จับต้องได้ยิ่งขึ้น (ROTCE พุ่งถึง 29.3% ใน Q1 2569, EPS +42% YoY), และ Berkshire Hathaway ถือ 8.4% เป็น stamp of approval จาก Warren Buffett อย่างไรก็ตาม ราคา $151.92 ซื้อขายเหนือ FV $127 อยู่ราว 20% และ P/E ~18.8x อยู่เหนือ historical range มากขึ้น — นักลงทุน value ควรรอโอกาสราคาอ่อนตัว สำหรับนักลงทุนระยะยาวที่ยอมรับ premium price เพื่อ quality, BNY ยังเป็นหุ้นที่ถือได้สบายใจ</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$127 <span style="font-size:12px;color:#cab9a8">($121–$135)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −28%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$149.93 (Buy, 16 analysts)</div></div>
       </div>
       <div class="zone">
