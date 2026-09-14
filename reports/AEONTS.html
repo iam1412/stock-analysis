@@ -10,6 +10,18 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 129,
+  "values": {
+    "px": 96,
+    "priceDate": "2026-09-14",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 94,
+    "fvHigh": 153,
+    "shares": 247500000,
+    "dps": 5.5
+  },
   "theme": {
     "accent": "#e53935",
     "accentDark": "#c62828",
@@ -41,18 +53,14 @@
     "min": 80,
     "max": 140,
     "grid": [90, 100, 110, 120, 130],
-    "fairLine": 129,
     "currency": "฿",
     "highlight": [2, 5]
   },
   "gauge": {
     "min": 0,
     "max": 180,
-    "cur": 96,
-    "fair": 129,
     "fairLabelTop": true
-  },
-  "fv": 129
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +80,11 @@
     <div class="sub">บัตรเครดิต AEON • สินเชื่อส่วนบุคคล • เช่าซื้อ • ฐานลูกค้ากว่า 2 ล้านราย • เครือ AEON Financial Service Japan</div>
     <div class="price-row">
       <div>
-        <div class="px">฿96.00<small>(AEONTS)</small></div>
+        <div class="px">{{rd:px}}<small>(AEONTS)</small></div>
       </div>
-      <div class="chg">▼ −9.0% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 14 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ ฿86.5 – ฿122.5<br>
         ที่มา: Yahoo Finance, Investing.com, AEON IR
       </div>
@@ -113,7 +121,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#e53935"></i>ราคา AEONTS</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿129</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -142,8 +150,8 @@
         <div class="mval">฿153</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿94 – ฿153</span></div>
-        <div class="r">฿129</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         P/E Valuation ให้ ฿139 สะท้อน Re-rating กลับสู่ระดับเฉลี่ยประวัติศาสตร์หาก NPL คงที่
@@ -160,15 +168,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿96.0</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿129</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>฿90<br><small>MOS 30%</small></span>
-          <span>฿103<br><small>MOS 20%</small></span>
-          <span style="text-align:center">฿129<br><small>Fair Value</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">฿133.5<br><small>เป้าเฉลี่ย Analyst</small></span>
-          <span style="text-align:right">฿153<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -183,19 +191,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict good">
-        <div class="big">+26%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">ราคาพอใช้ — ทยอยสะสมได้ใกล้โซน MOS 20%</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿103</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿90</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿129</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="96" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -294,8 +302,8 @@
       หาก NPL คงที่และ credit cost กลับลง AEONTS มีศักยภาพ Re-rate กลับสู่ P/E 10–11x
       เงินปันผล ฿5.50/ปี Yield ~5.4% เป็น "ค่าอดทนรอ" ที่น่าดึงดูดขณะรอการฟื้นตัวของคุณภาพสินทรัพย์</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿129 <span style="font-size:12px;color:#cab9a8">(฿94–฿153)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +26%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿133.5 (Buy ×8)</div></div>
       </div>
       <div class="zone">
@@ -310,7 +318,7 @@
     <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
     ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ •
-    แหล่งข้อมูล: Yahoo Finance (ราคา + กราฟย้อนหลัง ก.ค.2568–ก.ค.2569), Investing.com (ปันผลย้อนหลัง 5 ปี + ราคาเครื่อง), AEON Investor Relations / investor.aeon.co.th (ราคา 14 ก.ย. 2569), StockAnalysis.com (งบการเงิน EPS/BVPS/ROE อัตราส่วน FY2022–FY2026), รายงานนักวิเคราะห์ MBKET, FNSYRUS, TISCO (2025–2026)
+    แหล่งข้อมูล: Yahoo Finance (ราคา + กราฟย้อนหลัง ก.ค.2568–ก.ค.2569), Investing.com (ปันผลย้อนหลัง 5 ปี + ราคาเครื่อง), AEON Investor Relations / investor.aeon.co.th (ราคา {{rd:priceDate}}), StockAnalysis.com (งบการเงิน EPS/BVPS/ROE อัตราส่วน FY2022–FY2026), รายงานนักวิเคราะห์ MBKET, FNSYRUS, TISCO (2025–2026)
   </div>
   <footer>Stock Analysis Dashboard • ข้อมูล ณ 2 ก.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 

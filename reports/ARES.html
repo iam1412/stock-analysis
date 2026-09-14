@@ -10,6 +10,38 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 120,
+  "values": {
+    "px": 131.64,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 98,
+    "fvHigh": 142,
+    "eps": 2.15,
+    "shares": 329500000,
+    "dps": 5.4,
+    "scenarios": [
+      {
+        "tgt": 115,
+        "div": 18.22
+      },
+      {
+        "tgt": 176.72,
+        "div": 21.17
+      },
+      {
+        "tgt": 255.19,
+        "div": 23.59
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": false,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#1E3A8A",
     "accentDark": "#122466",
@@ -41,18 +73,14 @@
     "min": 100,
     "max": 180,
     "grid": [120, 140, 160],
-    "fairLine": 120,
     "currency": "$",
     "highlight": [2, 5]
   },
   "gauge": {
     "min": 80,
     "max": 150,
-    "cur": 131.64,
-    "fair": 120,
     "fairLabelTop": false
-  },
-  "fv": 120
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +100,11 @@
     <div class="sub">Private Credit (~75% ของ AUM) • Real Estate • Private Equity • Infrastructure &amp; Secondaries • Aspida (insurance capital) — ผู้จัดการสินทรัพย์ทางเลือกสาย credit ใหญ่ที่สุดในโลก AUM $644B+</div>
     <div class="price-row">
       <div>
-        <div class="px">$131.64<small>(ARES)</small></div>
+        <div class="px">{{rd:px}}<small>(ARES)</small></div>
       </div>
-      <div class="chg">▼ −11.5% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $95.80 / $195.26<br>
         ที่มา: StockAnalysis.com / Yahoo Finance / Ares Management Investor Relations (Q1 2026 8-K) / SEC 10-Q
       </div>
@@ -87,10 +115,10 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">Alternative Asset Manager — ใช้ Fee-Related Earnings (FRE) / Distributable Earnings (DE) แทน GAAP EPS</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">~$43.4B</div><div class="d">~329.5M shares (ทุก class รวมกัน)</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~{{rd:mcap}}</div><div class="d">~329.5M shares (ทุก class รวมกัน)</div></div>
       <div class="metric"><div class="k">Price/FRE (TTM)</div><div class="v neu">~21.4x</div><div class="d">FRE/share $5.68 (total-share basis)</div></div>
       <div class="metric"><div class="k">Price/DE (TTM)</div><div class="v neu">~24.8x</div><div class="d">Realized Income/share $4.91 (Class A diluted)</div></div>
-      <div class="metric"><div class="k">GAAP P/E (TTM)</div><div class="v neu">~61.2x</div><div class="d">GAAP EPS $2.15 — บิดเบือนสูงจาก unrealized MTM ของพอร์ตลงทุน ไม่ใช่ multiple หลัก</div></div>
+      <div class="metric"><div class="k">GAAP P/E (TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">GAAP EPS $2.15 — บิดเบือนสูงจาก unrealized MTM ของพอร์ตลงทุน ไม่ใช่ multiple หลัก</div></div>
 
       <div class="metric"><div class="k">AUM รวม</div><div class="v pos">$644.3B</div><div class="d">+18% YoY · Fee-paying AUM $399.6B (+19% YoY)</div></div>
       <div class="metric"><div class="k">FRE/Share (TTM)</div><div class="v pos">$5.68</div><div class="d">FRE รวม 4 ไตรมาสล่าสุด ~$1.87B</div></div>
@@ -113,7 +141,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#1E3A8A"></i>ราคา ARES</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $120</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -140,8 +168,8 @@
         <div class="mval">$120.00</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $98 – $142</span></div>
-        <div class="r">$120</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         Price/FRE ให้ค่าสูงสุด ($142) เพราะ FRE (management fee ล้วน) เป็นกำไรที่มั่นคง/คาดการณ์ได้สูงสุดของธุรกิจ — สมควรได้ multiple ที่สูงกว่า
@@ -157,14 +185,14 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $131.64</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $120</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$84.00<br><small>MOS 30%</small></span>
-          <span>$96.00<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$120<br><small>Fair Value</small></span>
-          <span style="text-align:right">$142<br><small>กรอบบน FV</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
           <span style="text-align:right">$144.65<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
@@ -179,19 +207,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">−10%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">MOS ติดลบ — ราคาปัจจุบันสูงกว่ามูลค่าเหมาะสมแบบอนุรักษ์นิยมเล็กน้อยแล้ว ไม่ใช่จุดเข้าที่มี margin of safety</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$96.00</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$84.00</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $120</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="131.64" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -200,17 +228,17 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $131.64 • FRE/share ฐาน ~$5.68 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • FRE/share ฐาน ~$5.68{{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>FRE +6%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$115.00</div>
-          <div class="ret neg">−12.6%</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>FRE/share ปี 3</span><span>~$6.76</span></li>
             <li><span>Price/FRE ออก</span><span>17x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$18.22</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>Credit cycle เสื่อม, spread compression, multiple หดตัว</span></li>
           </ul>
         </div>
@@ -218,12 +246,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>FRE +14%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$176.72</div>
-          <div class="ret pos">+34.2%</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>FRE/share ปี 3</span><span>~$8.42</span></li>
             <li><span>Price/FRE ออก</span><span>21x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$21.17</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>FRE โตใกล้เคียง run-rate ปัจจุบัน multiple ทรงตัว</span></li>
           </ul>
         </div>
@@ -231,12 +259,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>FRE +20%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$255.19</div>
-          <div class="ret pos">+93.9%</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>FRE/share ปี 3</span><span>~$9.82</span></li>
             <li><span>Price/FRE ออก</span><span>26x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$23.59</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>AUM เร่งตัว, Aspida ขยายทุนประกัน, multiple re-rate กลับสู่ค่าเฉลี่ยประวัติศาสตร์</span></li>
           </ul>
         </div>
@@ -287,8 +315,8 @@
         อย่างไรก็ตาม ราคาปัจจุบันได้แซง Fair Value อนุรักษ์นิยม $120 ขึ้นไปแล้วเล็กน้อย (MOS −1.5%) จึงไม่เหลือ margin of safety ในกรอบประเมินของเรา — เหมาะสำหรับผู้ที่ถือครองอยู่แล้วและเชื่อมั่นธีม private credit ระยะยาว มากกว่าจุดเข้าใหม่สำหรับนักลงทุนที่เน้น margin of safety
       </p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$120 <span style="font-size:12px;color:#cab9a8">($98–$142)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ff8a80">MOS ~ −10%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ff8a80">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$144.65 (Buy)</div></div>
       </div>
       <div class="zone">

@@ -10,6 +10,38 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 369,
+  "values": {
+    "px": 354,
+    "priceDate": "2026-09-14",
+    "dateEra": "CE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 342,
+    "fvHigh": 389,
+    "shares": 2970000000,
+    "dps": 16.82,
+    "baseEps": 17.08,
+    "scenarios": [
+      {
+        "tgt": 326,
+        "div": 50
+      },
+      {
+        "tgt": 403,
+        "div": 50
+      },
+      {
+        "tgt": 481,
+        "div": 50
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": true,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#51a125",
     "accentDark": "#3a741b",
@@ -41,7 +73,6 @@
     "min": 280,
     "max": 400,
     "grid": [300, 320, 340, 360, 380],
-    "fairLine": 369,
     "currency": "฿",
     "highlight": [0, 4],
     "gridFmt": "v.toFixed(0)",
@@ -50,11 +81,8 @@
   "gauge": {
     "min": 250,
     "max": 400,
-    "cur": 354,
-    "fair": 369,
     "fairLabelTop": true
-  },
-  "fv": 369
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -74,11 +102,11 @@
     <div class="sub">ผู้ให้บริการมือถืออันดับ 1 ของไทย (5G 18.4 ล้านราย) • เน็ตบ้าน AIS Fibre • ลูกค้าองค์กร &amp; Data Center • กระแสเงินสดแกร่ง ปันผลสูงสม่ำเสมอ • ผู้ถือหุ้นใหญ่ Gulf/Intouch</div>
     <div class="price-row">
       <div>
-        <div class="px">฿354.00<small>(ADVANC)</small></div>
+        <div class="px">{{rd:px}}<small>(ADVANC)</small></div>
       </div>
-      <div class="chg">▲ +17.2% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 14 ก.ย. 2026<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ ฿282 – ฿410<br>
         ที่มา: StockAnalysis.com • TradingView • Yahoo Finance
       </div>
@@ -89,7 +117,7 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">TTM / FY2025 • Q1/2026</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">~฿1.05 ล้านล้าน</div><div class="d">~2.97 พันล้านหุ้น</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~{{rd:mcap}}</div><div class="d">~2.97 พันล้านหุ้น</div></div>
       <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~21.84x</div><div class="d">Forward P/E ~20.68x</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~22–23x</div><div class="d">ใกล้เคียงค่าเฉลี่ยแล้ว</div></div>
       <div class="metric"><div class="k">P/BV</div><div class="v neu">~9.21</div><div class="d">สูงตามธรรมชาติ (ROE สูง/ปันผลมาก)</div></div>
@@ -115,7 +143,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#6ed138"></i>ราคา ADVANC</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿369</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -141,8 +169,8 @@
         <div class="mval">฿342.26</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿342 – ฿389</span></div>
-        <div class="r">฿369</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         DDM ให้ค่าสูงสุด (฿389) เพราะปันผลสูงสม่ำเสมอและ r–g แคบ • EV/EBITDA ให้ค่าต่ำสุด (฿342) เพราะหักภาระหนี้สุทธิจากการลงทุน 5G/ไฟเบอร์ • <b>ไม่ใช้ Justified P/BV</b> เพราะ ROE สูงผิดปกติ (~48% จากส่วนทุนที่ถูกปันผลกดให้บาง) จะทำให้ตัวเลขบิดเบือนสูงเกินจริง — ค่ากลาง ฿369 จึงถ่วงน้ำหนักวิธีที่เหมาะกับ cash cow โทรคมนาคม
@@ -156,14 +184,14 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿354</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿369</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>฿258.30<br><small>MOS 30%</small></span>
-          <span>฿295.20<br><small>MOS 20%</small></span>
-          <span style="text-align:center">฿369<br><small>Fair Value</small></span>
-          <span style="text-align:right">฿389<br><small>กรอบบน FV</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
           <span style="text-align:right">฿399.67<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
@@ -177,19 +205,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">+4%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">ราคาแซงมูลค่าเหมาะสมไปเล็กน้อยแล้ว — แทบไม่เหลือส่วนเผื่อความปลอดภัย เหมาะ "ถือ" รับปันผล ~4.5% มากกว่าซื้อเพิ่ม ควรรอย่อก่อนเข้าใหม่</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿295.20</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿258.30</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿369</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="354" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -198,17 +226,17 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿354 • EPS ฐาน ~฿17.08 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}}{{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS +2%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿326</div>
-          <div class="ret neg">+6.2%</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿18.13</span></li>
             <li><span>P/E ออก</span><span>18x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿50</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>แข่งราคา/กดดันมาร์จิน</span></li>
           </ul>
         </div>
@@ -216,12 +244,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +4%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿403</div>
-          <div class="ret pos">+28.0%</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿19.21</span></li>
             <li><span>P/E ออก</span><span>21x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿50</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>ARPU โต + เน็ตบ้าน/องค์กรหนุน</span></li>
           </ul>
         </div>
@@ -229,12 +257,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +7%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿481</div>
-          <div class="ret pos">+50.0%</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿20.92</span></li>
             <li><span>P/E ออก</span><span>23x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿50</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>Data center/AI + virtual bank ติดลม</span></li>
           </ul>
         </div>
@@ -281,8 +309,8 @@
       <h2>หุ้น Blue Chip ปันผลคุณภาพ — ราคาแซงมูลค่าเหมาะสมแล้ว "ถือ"</h2>
       <p>ADVANC คือผู้นำโทรคมนาคมไทยที่มีคุณภาพกิจการสูง: ส่วนแบ่งตลาดอันดับ 1, กระแสเงินสดแกร่ง, ปันผล ~4.5% สม่ำเสมอ และ beta ต่ำมาก (~0.04) เหมาะกับพอร์ตเน้นความมั่นคง+ปันผล จุดอ่อนคือการเติบโตต่ำและราคาปัจจุบัน ฿373 ขึ้นมาแซงมูลค่าเหมาะสม ฿369 ไปเล็กน้อยแล้ว (MOS ~−1.1%) แทบไม่เหลือส่วนเผื่อความปลอดภัย — น่าซื้อเพิ่มเมื่อย่อกลับมาต่ำกว่ามูลค่าเหมาะสม หรือลงมาใกล้/ต่ำกว่า ฿295</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿369 <span style="font-size:12px;color:#cab9a8">(฿342–฿389)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +4%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿399.67 (Buy)</div></div>
       </div>
       <div class="zone">

@@ -10,6 +10,19 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 106.55,
+  "values": {
+    "px": 104.9,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 105.5,
+    "fvHigh": 107.6,
+    "shares": 276750000,
+    "dps": 3,
+    "bvps": 49.23
+  },
   "theme": {
     "accent": "#0e9f6e",
     "accentDark": "#0b7854",
@@ -41,18 +54,14 @@
     "min": 95,
     "max": 115,
     "grid": [100, 105, 110],
-    "fairLine": 106.55,
     "currency": "$",
     "highlight": [2, 6]
   },
   "gauge": {
     "min": 70,
     "max": 130,
-    "cur": 104.9,
-    "fair": 106.55,
     "fairLabelTop": false
-  },
-  "fv": 106.55
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +81,11 @@
     <div class="sub">Ameren Missouri • Ameren Illinois • Electric & Natural Gas • Wind & Solar Buildout • Grid Modernization</div>
     <div class="price-row">
       <div>
-        <div class="px">$104.90<small>(AEE)</small></div>
+        <div class="px">{{rd:px}}<small>(AEE)</small></div>
       </div>
-      <div class="chg">▲ +2.8% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569 (StockAnalysis.com, 12:57 น. EDT)<br>
+        ราคา ณ {{rd:priceDate}} (StockAnalysis.com, 12:57 น. EDT)<br>
         กรอบ 52 สัปดาห์ $94.23 – $118.32<br>
         ที่มา: StockAnalysis.com, Yahoo Finance, Digrin.com
       </div>
@@ -90,7 +99,7 @@
       <div class="metric"><div class="k">Market Cap</div><div class="v">~$29.03B</div><div class="d">~276.75M shares outstanding</div></div>
       <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~19.50x</div><div class="d">EPS TTM $5.56 (StockAnalysis) · Yahoo $5.63 · Forward P/E ~20.9–21.4x (EPS 2026F consensus $5.38)</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~18–20x</div><div class="d">กลุ่ม regulated electric utility มักเทรด 17–21x — AEE อยู่ขอบบนจาก renewables/rate-base growth premium</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">2.13x</div><div class="d">BVPS $49.23 (FY2025) · ROE (EPS/BVPS) ~11.3%</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS $49.23 (FY2025) · ROE (EPS/BVPS) ~11.3%</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">$1,461M</div><div class="d">+23.2% YoY · EPS diluted FY2025 $5.35 (+21.0% YoY)</div></div>
       <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$5.56</div><div class="d">FY2025 diluted $5.35 · TTM รวม Q1 2569 $5.56 · Consensus 2026F $5.38 / 2027F $5.81</div></div>
@@ -113,7 +122,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#0e9f6e"></i>ราคา AEE</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $106.55</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -135,8 +144,8 @@
         <div class="mval">$107.60</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $105.50 – $107.60 · ถ่วงน้ำหนักเท่ากัน DDM 50% + P/E 50%</span></div>
-        <div class="r">$106.55</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}} · ถ่วงน้ำหนักเท่ากัน DDM 50% + P/E 50%</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         วิธี P/E ($107.60) ให้ค่าสูงกว่าเล็กน้อยเพราะอิง EPS ปี 2569 (consensus) ที่ตลาดคาดเติบโตต่อเนื่องคูณ P/E เป้าหมายใกล้เคียงราคาตลาดปัจจุบัน ส่วนวิธี DDM ($105.50) อนุรักษ์นิยมกว่าเล็กน้อยเพราะอิง dividend growth 5.5%/ปีที่คำนวณจาก sustainable growth rate (ROE×retention) มากกว่า guidance บริษัทที่สูงกว่า (6–8%) Fair Value เฉลี่ย $106.55 ต่ำกว่าราคาตลาดปัจจุบัน $112.59 ~5.4% และต่ำกว่าเป้าเฉลี่ยนักวิเคราะห์ $120.80 ค่อนข้างมาก สะท้อนว่าตลาดให้ premium กับ AEE จาก renewables/data-center growth story มากกว่าที่โมเดลอนุรักษ์นิยมนี้ประเมิน
@@ -150,14 +159,14 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $104.90</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $106.55</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$74.59<br><small>MOS 30%</small></span>
-          <span>$85.24<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$106.55<br><small>Fair Value</small></span>
-          <span style="text-align:right">$107.60<br><small>กรอบบน FV</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
           <span style="text-align:right">$120.80<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
@@ -171,19 +180,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">+1.5%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">ราคาปัจจุบันสูงกว่า Fair Value ~5.4–5.7% — ไม่มี Margin of Safety ณ ราคานี้ (Overvalued เล็กน้อย)</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$85.24</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$74.59</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $106.55</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="104.9" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -275,8 +284,8 @@
       <h2>AEE: Regulated Utility มั่นคง แต่ราคาปัจจุบันตึงตัวกว่าพื้นฐานเล็กน้อย</h2>
       <p>Ameren เป็น regulated electric & gas utility ครบวงจรใน Missouri (Ameren Missouri) และ Illinois (Ameren Illinois) รายได้เกือบทั้งหมดมาจากธุรกิจกำกับดูแลที่คาดการณ์กระแสเงินสดได้สูง หนุนด้วยแผนลงทุน renewables (wind/solar ตาม Missouri Clean Energy Plan) และ grid modernization มูลค่าหลายหมื่นล้านดอลลาร์ที่ผลักดัน rate base และ EPS/dividend growth ต่อเนื่อง 6–8%/ปี ราคาปัจจุบัน $112.59 สูงกว่า Fair Value $106.55 (จากโมเดล DDM+P/E อนุรักษ์นิยม) ประมาณ 5.4% สะท้อนว่าตลาดให้ premium กับเรื่องราวการเติบโตจาก renewables/data-center demand มากกว่าที่โมเดลนี้ประเมิน ความเสี่ยงหลักคือ regulatory lag ในทั้งสองรัฐและความอ่อนไหวต่อดอกเบี้ยระยะยาวจาก leverage ที่ค่อนข้างสูง (D/E 1.47x) นักลงทุนเน้น income/defensive ที่ถือหุ้นอยู่แล้วสามารถถือต่อเพื่อรับปันผลเติบโต ~6%/ปีได้ ส่วนนักลงทุนใหม่ควรรอจังหวะราคาย่อลงมาใกล้ $100–105 ก่อนเข้าซื้อเพื่อให้มี margin of safety ที่เหมาะสมกว่า</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$106.55 <span style="font-size:12px;color:#cab9a8">($105.50–$107.60)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +1.5%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$120.80 (Buy)</div></div>
       </div>
       <div class="zone">

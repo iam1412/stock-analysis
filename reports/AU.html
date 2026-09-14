@@ -10,6 +10,19 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 4.77,
+  "values": {
+    "px": 4.28,
+    "priceDate": "2026-09-14",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 3.5,
+    "fvHigh": 5.65,
+    "shares": 815620000,
+    "dps": 0.25,
+    "bvps": 1.33
+  },
   "theme": {
     "accent": "#e91e63",
     "accentDark": "#880e4f",
@@ -41,7 +54,6 @@
     "min": 4,
     "max": 5.5,
     "grid": [4.25, 4.5, 4.75, 5, 5.25],
-    "fairLine": 4.77,
     "currency": "฿",
     "highlight": [4, 11],
     "gridFmt": "v.toFixed(2)",
@@ -50,11 +62,8 @@
   "gauge": {
     "min": 2.5,
     "max": 7,
-    "cur": 4.28,
-    "fair": 4.77,
     "fairLabelTop": false
-  },
-  "fv": 4.77
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -74,11 +83,11 @@
     <div class="sub">ร้านของหวาน After You • Kakigori Bingsu • Toast หอม • Lukka Café • Mikka Coffee Roaster • ขยายแฟรนไชส์ต่างประเทศ • Brand Loyalty สูง</div>
     <div class="price-row">
       <div>
-        <div class="px">฿4.28<small>(AU)</small></div>
+        <div class="px">{{rd:px}}<small>(AU)</small></div>
       </div>
-      <div class="chg">▼ −14.1% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 14 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ ฿4.22 – ฿6.55<br>
         ที่มา: Yahoo Finance, StockAnalysis.com, Google Finance, BrandBuffet.in.th
       </div>
@@ -92,7 +101,7 @@
       <div class="metric"><div class="k">Market Cap</div><div class="v">฿3,491 ลบ.</div><div class="d">815.62 ล้านหุ้น</div></div>
       <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~20.4x</div><div class="d">Forward P/E ~15.3x</div></div>
       <div class="metric"><div class="k">P/E มัธยฐาน FY67–68</div><div class="v">~26.9x</div><div class="d">วัดจริงรายปี: FY65=70.8x · FY66=47.1x · FY67=25.8x · FY68=28.0x</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">3.22x</div><div class="d">BVPS ฿1.33 (TTM มี.ค. 69)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS ฿1.33 (TTM มี.ค. 69)</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ TTM</div><div class="v neg">฿176 ลบ.</div><div class="d">FY68 ฿204 ลบ. −31% YoY (FY67: ฿296 ลบ.)</div></div>
       <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿0.21</div><div class="d">FY2568=฿0.25 · FY2567=฿0.36</div></div>
@@ -115,7 +124,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#e91e63"></i>ราคา AU</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿4.77</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -144,8 +153,8 @@
         <div class="mval">฿3.50</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿3.50 – ฿5.65</span></div>
-        <div class="r">฿4.77</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         ขา P/E ยึดสมอที่วัดจริง — P/E ย้อนหลังของ AU เอง (ราคาเฉลี่ยของงวด ÷ EPS diluted ของงวดนั้น): FY2565 70.8x · FY2566 47.1x · FY2567 25.8x · FY2568 28.0x (FY2564 ตัดทิ้ง เพราะ EPS ฿0.01 ทำให้ตัวคูณพุ่งถึง 2,074x) — เลือกเฉพาะ FY2567–68 เป็นสมอ ค่ากลาง 26.9x เพราะเป็นสองปีที่รายได้ ~1,600 ลบ. เท่าระดับ TTM ปัจจุบัน ส่วน FY2565–66 ตลาดจ่าย 47–71x ให้ธุรกิจที่เล็กกว่า 25–42% และกำลังโตปีละ 29–52% ซึ่งไม่ใช่สภาพของ AU วันนี้ (รายได้ TTM −3.6%) · ตัวคูณปัจจุบัน ~20.4x เป็นบริบทเปรียบเทียบเท่านั้น ไม่ใช่ที่มาของเป้า
@@ -161,14 +170,14 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿4.28</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿4.77</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>฿3.34<br><small>MOS 30%</small></span>
-          <span>฿3.82<br><small>MOS 20%</small></span>
-          <span style="text-align:center">฿4.77<br><small>Fair Value</small></span>
-          <span style="text-align:right">฿5.65<br><small>กรอบบน FV</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
           <span style="text-align:right">฿5.70<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
@@ -185,19 +194,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict ok">
-        <div class="big">+10%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">ราคาต่ำกว่ามูลค่าเหมาะสม ~10% — เพิ่งเข้าโซน MOS พอประมาณ (10–20%) · ทยอยสะสมได้บางส่วน รอ ฿3.82 (MOS 20%) ก่อนเข้าเต็มไม้</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿3.82</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿3.34</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿4.77</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="4.28" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -298,8 +307,8 @@
         กลยุทธ์ที่เหมาะคือทยอยสะสมบางส่วนได้ที่ระดับปัจจุบัน และรอสะสมเพิ่มที่ ฿3.82 (MOS 20%) ก่อนเข้าเต็มไม้
       </p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿4.77 <span style="font-size:12px;color:#cab9a8">(฿3.50–฿5.65)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#a5d6a7">MOS ~ +10%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#a5d6a7">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿5.70 (Buy · 3 สำนัก · +33.2%)</div></div>
       </div>
       <div class="zone">

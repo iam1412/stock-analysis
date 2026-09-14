@@ -10,6 +10,19 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 87,
+  "values": {
+    "px": 75.33,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 81,
+    "fvHigh": 93,
+    "eps": 8.03,
+    "shares": 530000000,
+    "bvps": 75.82
+  },
   "theme": {
     "accent": "#1a5276",
     "accentDark": "#0e2e43",
@@ -41,18 +54,14 @@
     "min": 70,
     "max": 90,
     "grid": [75, 80, 85],
-    "fairLine": 87,
     "currency": "$",
     "highlight": [2, 7]
   },
   "gauge": {
     "min": 55,
     "max": 95,
-    "cur": 75.33,
-    "fair": 87,
     "fairLabelTop": true
-  },
-  "fv": 87
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +81,11 @@
     <div class="sub">ประกันภัยธุรกิจ (Commercial P&amp;C) — Global Commercial, North America Commercial, International Commercial • เดิมเป็นกลุ่มประกันครบวงจร ปัจจุบันปรับโครงสร้างเสร็จสมบูรณ์: แยก Corebridge Financial (ประกันชีวิต/เกษียณ) ออก IPO 2565 + ขาย Validus Re (reinsurance) ให้ RenaissanceRe 2566 • ซีอีโอ Peter Zaffino นำทัพ turnaround ตั้งแต่ 2564</div>
     <div class="price-row">
       <div>
-        <div class="px">$75.33<small>(AIG)</small></div>
+        <div class="px">{{rd:px}}<small>(AIG)</small></div>
       </div>
-      <div class="chg">▼ −4.6% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $71.25 – $87.29<br>
         ที่มา: StockAnalysis.com, AIG Q1 2026 Earnings Release (SEC 8-K), StatMuse
       </div>
@@ -88,9 +97,9 @@
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ณ ก.ค. 2569 · ตรวจสอบ ≥2 แหล่ง</div></div>
     <div class="grid g4">
       <div class="metric"><div class="k">Market Cap</div><div class="v">$39.9 B</div><div class="d">~530M หุ้น</div></div>
-      <div class="metric"><div class="k">P/E (adj. TTM)</div><div class="v neu">~9.4x</div><div class="d">Adjusted EPS $8.03 TTM</div></div>
+      <div class="metric"><div class="k">P/E (adj. TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">Adjusted EPS $8.03 TTM</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">9–13x</div><div class="d">Discount ต่อ CB/TRV (12–13x) จาก turnaround</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">0.99x</div><div class="d">BVPS $75.82 · ต่ำกว่าคู่แข่งชัดเจน</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS $75.82 · ต่ำกว่าคู่แข่งชัดเจน</div></div>
 
       <div class="metric"><div class="k">Adjusted EPS FY2025</div><div class="v">$7.09</div><div class="d">Diluted, หลังหักรายการพิเศษ/legacy</div></div>
       <div class="metric"><div class="k">Adjusted EPS (TTM)</div><div class="v">~$8.03</div><div class="d">FY25 $7.09 − Q1'25 $1.17 + Q1'26 $2.11</div></div>
@@ -113,7 +122,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#1a5276"></i>ราคา AIG</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $87</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -143,8 +152,8 @@
         <div class="mval">$81</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $81 – $93</span></div>
-        <div class="r">$87</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         วิธี Justified P/BV ให้ค่าสูงสุด $93 สะท้อน ROE ที่กำลังฟื้นตัวเร่งขึ้นชัดเจน (10.9% ล่าสุด จาก 6.4% ปีก่อน);
@@ -161,15 +170,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $75.33</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $87</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$60.90<br><small>MOS 30%</small></span>
-          <span>$69.60<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$87<br><small>Fair Value</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">$87.44<br><small>เป้าเฉลี่ย Analyst</small></span>
-          <span style="text-align:right">$93<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -186,19 +195,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict ok">
-        <div class="big">+13%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">มี margin of safety พอสมควร — น่าสนใจสำหรับทยอยสะสม</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$69.60</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$60.90</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $87</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="75.33" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -300,8 +309,8 @@
         MOS ~8.7% ถือว่าอยู่ในโซนที่น่าสนใจสำหรับการทยอยสะสม โดยเฉพาะหากราคาย่อลงมาใกล้ $70–$75
       </p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$87 <span style="font-size:12px;color:#cab9a8">($81–$93)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +13%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$87.44 (Moderate Buy)</div></div>
       </div>
       <div class="zone">

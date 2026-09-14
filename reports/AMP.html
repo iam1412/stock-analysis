@@ -10,6 +10,39 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 521,
+  "values": {
+    "px": 557.61,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 511,
+    "fvHigh": 531,
+    "eps": 39.29,
+    "shares": 88900000,
+    "dps": 6.8,
+    "baseEps": 39.29,
+    "scenarios": [
+      {
+        "tgt": 514.69,
+        "div": 20.4
+      },
+      {
+        "tgt": 661.44,
+        "div": 22.1
+      },
+      {
+        "tgt": 772.8,
+        "div": 23.8
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": true,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#0B4DA2",
     "accentDark": "#073676",
@@ -41,18 +74,14 @@
     "min": 400,
     "max": 600,
     "grid": [450, 500, 550],
-    "fairLine": 521,
     "currency": "$",
     "highlight": [5, 11]
   },
   "gauge": {
     "min": 430,
     "max": 574,
-    "cur": 557.61,
-    "fair": 521,
     "fairLabelTop": false
-  },
-  "fv": 521
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +101,11 @@
     <div class="sub">บริการการเงิน/บริหารความมั่งคั่ง • Advice &amp; Wealth Management (ที่ปรึกษา fee-based ~65% กำไร) • Asset Management (Columbia Threadneedle) • Retirement &amp; Protection (annuity/ประกัน)</div>
     <div class="price-row">
       <div>
-        <div class="px">$557.61<small>(AMP)</small></div>
+        <div class="px">{{rd:px}}<small>(AMP)</small></div>
       </div>
-      <div class="chg">▲ +23.2% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $422.37 / $550.18<br>
         ที่มา: StockAnalysis.com / Yahoo Finance / Ameriprise Investor Relations
       </div>
@@ -87,8 +116,8 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">FY2025 (ปีงบประมาณสิ้นสุด ธ.ค. 2568)</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">~$49.6B</div><div class="d">~88.9M หุ้น (diluted)</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~14.2x</div><div class="d">adj op EPS $39.29 (TTM)</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~{{rd:mcap}}</div><div class="d">~88.9M หุ้น (diluted)</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">adj op EPS $39.29 (TTM)</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~12–14x</div><div class="d">ปัจจุบันใกล้ขอบบนของช่วง</div></div>
       <div class="metric"><div class="k">P/BV</div><div class="v neu">~7.8x</div><div class="d">book equity ต่ำจาก buyback ดุดัน</div></div>
 
@@ -113,7 +142,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#0B4DA2"></i>ราคา AMP</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $521</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -139,8 +168,8 @@
         <div class="mval">$519.98</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $511 – $531</span></div>
-        <div class="r">$521</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         วิธี P/E (adj) ให้ $510.77 (ต่ำสุด — conservative, adj EPS สะท้อนธุรกิจแท้จริงดีกว่า GAAP) · Forward P/E ให้ $531.25 (สูงสุด — รวม EPS growth FY26 ที่ consensus คาด) · DCF ให้ $519.98 (กลาง — franchise value recurring fee-based) · เฉลี่ย 3 วิธี ≈ $520.67 → ปัดเป็น <b>$521</b> สอดคล้อง consensus analyst เป้า $540 (มีส่วนเผื่อ upside) · DDM เป็นอ้างอิงรอง (yield 1.49% ต่ำ — AMP คืนทุนผ่าน buyback เป็นหลัก)
@@ -154,14 +183,14 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $557.61</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $521</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$364.70<br><small>MOS 30%</small></span>
-          <span>$416.80<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$521<br><small>Fair Value</small></span>
-          <span style="text-align:right">$531<br><small>กรอบบน FV</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
           <span style="text-align:right">$551<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
@@ -175,19 +204,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">−7%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">MOS ติดลบเล็กน้อย — ราคาสูงกว่า Fair Value $521 อยู่ ~1.2% เกือบเต็มมูลค่าแล้ว ไม่มี margin of safety เหลือสำหรับเข้าใหม่ ควรรอราคาย่อ</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$416.80</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$364.70</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $521</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="557.61" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -196,17 +225,17 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $557.61 • EPS ฐาน ~$39.29 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}}{{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS +6%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$514.69</div>
-          <div class="ret neg">-4%</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$46.79</span></li>
             <li><span>P/E ออก</span><span>11x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$20.40</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>ดอกเบี้ยลดกด NII + AUM outflow</span></li>
           </ul>
         </div>
@@ -214,12 +243,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +9%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$661.44</div>
-          <div class="ret pos">+23%</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$50.88</span></li>
             <li><span>P/E ออก</span><span>13x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$22.10</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>AWM fee-based เติบโต + buyback ต่อเนื่อง</span></li>
           </ul>
         </div>
@@ -227,12 +256,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +12%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$772.80</div>
-          <div class="ret pos">+43%</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$55.20</span></li>
             <li><span>P/E ออก</span><span>14x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$23.80</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>rate stable + AUM surge + multiple re-rating</span></li>
           </ul>
         </div>
@@ -279,8 +308,8 @@
       <h2>Wealth Franchise คุณภาพสูง — ราคาใกล้เคียงมูลค่าเหมาะสมแล้ว</h2>
       <p>Ameriprise Financial เป็น wealth management คุณภาพสูง (AWM fee-based recurring ~65% กำไร) พร้อม adj EPS CAGR ~15% ย้อนหลัง 5 ปี, ROE ~61%, buyback ดุดันคืนกำไรผู้ถือหุ้นต่อเนื่อง — ราคาฟื้นตัวแรง +2.4% ในรอบปีหลังจุดต่ำสุดช่วงต้นปี ดัน P/E ขยับขึ้นมาที่ ~13.4x ใกล้ขอบบนค่าเฉลี่ย 5 ปี ราคาปัจจุบัน $527.28 สูงกว่า Fair Value $521 เล็กน้อย (MOS −1.2%) แทบไม่เหลือส่วนเผื่อความปลอดภัย เหมาะกับผู้ถือเดิมมากกว่าเข้าใหม่ ควรรอจังหวะย่อ</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$521 <span style="font-size:12px;color:#cab9a8">($511–$531)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ff8a65">MOS ~ −7%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ff8a65">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$551 (Hold)</div></div>
       </div>
       <div class="zone">

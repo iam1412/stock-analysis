@@ -12,6 +12,20 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 5.03,
+  "values": {
+    "px": 4.08,
+    "priceDate": "2026-09-14",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 3.98,
+    "fvHigh": 6.86,
+    "eps": 0.29,
+    "shares": 2125000000,
+    "dps": 0.33,
+    "bvps": 2.34
+  },
   "theme": {
     "accent": "#bf360c",
     "accentDark": "#870000",
@@ -43,7 +57,6 @@
     "min": 3,
     "max": 5.5,
     "grid": [3.5, 4, 4.5, 5],
-    "fairLine": 5.03,
     "currency": "฿",
     "highlight": [0, 5],
     "gridFmt": "v.toFixed(1)",
@@ -52,11 +65,8 @@
   "gauge": {
     "min": 2.5,
     "max": 6.5,
-    "cur": 4.08,
-    "fair": 5.03,
     "fairLabelTop": true
-  },
-  "fv": 5.03
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -76,11 +86,11 @@
     <div class="sub">อาหารสัตว์เลี้ยงแบบเปียก OEM/ODM ส่งออก • ทูน่ากระป๋องและอาหารทะเล B2B • แบรนด์ monchou · Hajiko · PRO • ตลาดหลัก: ยุโรป ตะวันออกกลาง ญี่ปุ่น สหรัฐฯ</div>
     <div class="price-row">
       <div>
-        <div class="px">฿4.08<small>(AAI)</small></div>
+        <div class="px">{{rd:px}}<small>(AAI)</small></div>
       </div>
-      <div class="chg">▼ −20.8% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 14 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ ฿3.32 – ฿5.50<br>
         ที่มา: SET Factsheet (ก.ค. 2569), StockAnalysis.com, Yahoo Finance · งบ FY2568/Q1/2569
       </div>
@@ -92,9 +102,9 @@
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ก.ค. 2569 · อิงงบ TTM (Q1/2569)</div></div>
     <div class="grid g4">
       <div class="metric"><div class="k">Market Cap</div><div class="v">฿8,670 ล้าน</div><div class="d">หุ้น 2,125 ล้านหุ้น (Par ฿1)</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~14.1x</div><div class="d">EPS TTM ฿0.29 · ค่าเฉลี่ยเซกเตอร์ ~15–18x</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">EPS TTM ฿0.29 · ค่าเฉลี่ยเซกเตอร์ ~15–18x</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~16x</div><div class="d">ช่วง 8–25x (ผันผวนตามวัฏจักรราคาวัตถุดิบ)</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">1.74x</div><div class="d">BVPS ฿2.34 · ซื้อขายเหนือ Book Value</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS ฿2.34 · ซื้อขายเหนือ Book Value</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ FY2568</div><div class="v">฿741 ล้าน</div><div class="d">−26.2% YoY (FY2567: ฿1,003 ล้าน)</div></div>
       <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿0.29</div><div class="d">FY2567: ฿0.47 · FY2566: ฿0.18 · FY2565: ฿0.48</div></div>
@@ -103,7 +113,7 @@
 
       <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">฿6,797 ล้าน</div><div class="d">FY2568: ฿7,105M (+2.6% YoY)</div></div>
       <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">14.8% (TTM)</div><div class="d">FY2568: 16.3% · FY2567: 21.3% (จุดสูงสุด)</div></div>
-      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~8.1%</div><div class="d">฿0.33/หุ้น (12 ด.) · นโยบาย ≥50% net profit</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~{{rd:yield}}</div><div class="d">฿0.33/หุ้น (12 ด.) · นโยบาย ≥50% net profit</div></div>
       <div class="metric"><div class="k">Beta</div><div class="v">0.25</div><div class="d">ความผันผวนต่ำ — หุ้น defensive export</div></div>
     </div>
   </section>
@@ -117,7 +127,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#bf360c"></i>ราคา AAI</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿5.03</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -143,8 +153,8 @@
         <div class="mval">฿3.98</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿3.98 – ฿6.86</span></div>
-        <div class="r">฿5.03</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         DDM ให้ค่าสูงสุด (฿6.86) เพราะ dividend yield ปัจจุบัน ~8.5% สูงผิดปกติสำหรับหุ้นเติบโต สะท้อนว่าตลาดยัง underprice ปันผล วิธี Justified P/BV ให้ค่าต่ำสุด (฿3.98) เพราะ ROE ปัจจุบัน (12.5%) ต่ำกว่าจุดสูงสุด (19.6% ใน FY2567) ซึ่งเป็นผลชั่วคราวจากมาร์จิ้นถูกกดจากต้นทุนวัตถุดิบ P/E valuation (฿4.64) เป็นค่ากลางที่สมเหตุสมผล · <b>วิธีถ่วงน้ำหนัก:</b> DDM กับ Justified P/BV ใช้สมมติฐาน (r 9%, g 4%) ชุดเดียวกัน จึงนับเป็น "เสียงเดียว" (เฉลี่ยกันได้ ฿5.42) แล้วจึงเฉลี่ยกับขา P/E ที่ยึดตลาด → FV = (฿4.64 + ฿5.42)/2 = ฿5.03 ไม่ใช่ค่าเฉลี่ยตรงของทั้งสามวิธี (฿5.16) ซึ่งจะทำให้สมมติฐาน r/g ชุดเดียวถ่วงน้ำหนัก 2 ต่อ 1 เหนือขาที่ยึดตลาด (กฎถ่วงตามตระกูลสมมติฐาน) Fair Value ฿5.03 ให้ upside ~23.9% จากราคาปัจจุบัน
@@ -158,15 +168,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿4.08</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿5.03</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>฿3.52<br><small>MOS 30%</small></span>
-          <span>฿4.02<br><small>MOS 20%</small></span>
-          <span style="text-align:center">฿5.03<br><small>Fair Value</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">฿6.15<br><small>เป้าเฉลี่ย Analyst</small></span>
-          <span style="text-align:right">฿6.86<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -179,19 +189,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict ok">
-        <div class="big">+19%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">โซนน่าสนใจ — ราคาต่ำกว่ามูลค่าเหมาะสม ~19% เหมาะทยอยสะสม (เพิ่งหลุดเกณฑ์ MOS 20%)</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿4.02</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿3.52</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿5.03</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="4.08" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -283,8 +293,8 @@
       <h2>AAI — Pet Food Export Champion ที่ถูก Underprice ช่วง Earnings Trough</h2>
       <p>Asian Alliance International เป็นผู้นำการส่งออกอาหารสัตว์เลี้ยง OEM/ODM และทูน่ากระป๋องของไทย มีฐานลูกค้า B2B ระยะยาวในยุโรป ตะวันออกกลาง และญี่ปุ่น ปัจจุบันราคาหุ้นอยู่ในช่วง earnings trough หลังมาร์จิ้นถูกกดจากต้นทุนทูน่าสูงใน FY2568 แต่งบดุลแข็งแกร่ง (D/E &lt;0.05) และปันผล 8.5% เป็น downside cushion ที่ดี ธุรกิจไม่ได้แย่ลงเชิงโครงสร้าง เพียงแต่อยู่ใน trough ของ earnings cycle เมื่อต้นทุนวัตถุดิบปรับเป็นปกติ EPS ควรฟื้นตัวสู่ ฿0.40–0.47 ระดับ FY2567 ทำให้ Fair Value อยู่ที่ ~฿5.03 หรือ upside ~23.9% จากราคาปัจจุบัน</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿5.03 <span style="font-size:12px;color:#cab9a8">(฿3.98–฿6.86)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +19%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿6.15 consensus (TradingView)</div></div>
       </div>
       <div class="zone">

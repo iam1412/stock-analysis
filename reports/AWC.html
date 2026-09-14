@@ -10,6 +10,18 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 2.64,
+  "values": {
+    "px": 3,
+    "priceDate": "2026-09-14",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 1.87,
+    "fvHigh": 3.4,
+    "shares": 32013000000,
+    "bvps": 3
+  },
   "theme": {
     "accent": "#b8860b",
     "accentDark": "#826213",
@@ -41,7 +53,6 @@
     "min": 1.5,
     "max": 3.5,
     "grid": [2, 2.5, 3],
-    "fairLine": 2.64,
     "currency": "฿",
     "highlight": [1, 10],
     "gridFmt": "v.toFixed(2)",
@@ -50,11 +61,8 @@
   "gauge": {
     "min": 1.2,
     "max": 3.6,
-    "cur": 3,
-    "fair": 2.64,
     "fairLabelTop": true
-  },
-  "fv": 2.64
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -74,11 +82,11 @@
     <div class="sub">โรงแรม 5 ดาว Marriott · Hilton · Sheraton · Le Méridien • ค้าปลีก Asiatique · EmSphere · EmQuartier • เครือ TCC / Charoen Sirivadhanabhakdi • Luxury Hospitality &amp; Mixed-Use Thailand</div>
     <div class="price-row">
       <div>
-        <div class="px">฿3.00<small>(AWC)</small></div>
+        <div class="px">{{rd:px}}<small>(AWC)</small></div>
       </div>
-      <div class="chg">▲ +36.4% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 14 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ ฿1.80 – ฿2.80<br>
         ที่มา: Yahoo Finance / Investing.com / StockAnalysis
       </div>
@@ -92,7 +100,7 @@
       <div class="metric"><div class="k">Market Cap</div><div class="v">฿96,039 ล้าน</div><div class="d">32,013 ล้านหุ้น</div></div>
       <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~13.1x</div><div class="d">ต่ำกว่าค่าเฉลี่ยเซกเตอร์</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~49x (บิดเบือน)</div><div class="d">2021–2022 P/E สูงผิดปกติ (COVID)</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">1.00x</div><div class="d">ต่ำกว่า Book Value (BVPS ฿3.00)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">ต่ำกว่า Book Value (BVPS ฿3.00)</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">฿6,388 ล้าน</div><div class="d">+9.2% YoY · ฟื้นตัวต่อเนื่อง</div></div>
       <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿0.20</div><div class="d">FY2025 · ยืนยัน 2 แหล่ง</div></div>
@@ -115,7 +123,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#b8860b"></i>ราคา AWC</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿2.64</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -143,8 +151,8 @@
         <div class="mval">฿1.20</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿1.87 – ฿3.40</span></div>
-        <div class="r">฿2.64</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         วิธี P/E (฿3.40) เป็นขายึดตลาดเพียงขาเดียวในรายงานนี้ จึงเป็นสมอ (anchor) ของกรอบ FV · วิธี DDM (฿1.87) อยู่ในช่วง [สมอ/2, สมอ×2] จึงรวมเป็นตระกูล r/g
@@ -160,15 +168,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿3.00</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿2.64</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>฿1.85<br><small>MOS 30%</small></span>
-          <span>฿2.11<br><small>MOS 20%</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
           <span style="text-align:center">฿2.43<br><small>เป้าเฉลี่ย Analyst</small></span>
-          <span style="text-align:right">฿2.64<br><small>Fair Value</small></span>
-          <span style="text-align:right">฿3.40<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -183,19 +191,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">−14%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">ราคาสูงกว่า Fair Value — ยังไม่มี Margin of Safety · รอจังหวะราคาถอยลงสู่โซน FV</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿2.11</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿1.85</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿2.64</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="3" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -290,8 +298,8 @@
       <h2>AWC — Recovery Story แต่ราคาล่วงหน้าไปแล้ว · รอจังหวะราคาย่อ</h2>
       <p>AWC เป็นผู้นำ Luxury Hospitality &amp; Mixed-Use Real Estate ไทย ภายใต้เครือ TCC อสังหาริมทรัพย์หลักประกอบด้วยโรงแรม Marriott/Hilton/Sheraton และศูนย์การค้า EmSphere/Asiatique ซึ่งล้วนตั้งอยู่บนทำเลพรีเมียม รายได้เติบโต +282% และกำไร +511% ตั้งแต่ปี 2564 สะท้อนการฟื้นตัวจาก COVID ที่แข็งแกร่ง อย่างไรก็ตาม ราคาปัจจุบัน ฿3.02 สูงกว่า Fair Value เฉลี่ย ฿2.64 (~14%) บ่งชี้ว่าตลาดได้ price-in recovery แล้ว — นักลงทุน conservative ควรรอจังหวะราคาย่อลงสู่โซน ฿2.40–2.70 ก่อนสะสม</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿2.64 <span style="font-size:12px;color:#cab9a8">(฿1.87–฿3.40)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −14%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿2.43 (Buy consensus)</div></div>
       </div>
       <div class="zone">

@@ -10,6 +10,39 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 103.63,
+  "values": {
+    "px": 106.79,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 77.28,
+    "fvHigh": 120.87,
+    "eps": 7.17,
+    "shares": 145400000,
+    "bvps": 33.73,
+    "baseEps": 2.76,
+    "scenarios": [
+      {
+        "tgt": 75.4,
+        "div": 0
+      },
+      {
+        "tgt": 124.06,
+        "div": 0
+      },
+      {
+        "tgt": 188.68,
+        "div": 0
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": false,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#2b9bdf",
     "accentDark": "#1a73a8",
@@ -41,17 +74,13 @@
     "min": 60,
     "max": 160,
     "grid": [80, 100, 120, 140],
-    "fairLine": 103.63,
     "currency": "$",
     "highlight": [0, 7]
   },
   "gauge": {
     "min": 75,
-    "max": 130,
-    "cur": 106.79,
-    "fair": 103.63
-  },
-  "fv": 103.63
+    "max": 130
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -71,11 +100,11 @@
     <div class="sub">CDN เบอร์ 1 โลก • Cybersecurity — Zero Trust, Guardicore, App & API Protection • Akamai Cloud (Linode) • รายได้ security แซงหน้า delivery แล้ว</div>
     <div class="price-row">
       <div>
-        <div class="px">$106.79<small>(AKAM)</small></div>
+        <div class="px">{{rd:px}}<small>(AKAM)</small></div>
       </div>
-      <div class="chg">▲ +42.2% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $69.78 – $165.45<br>
         ที่มา: Yahoo Finance, Google Finance, Akamai Newsroom/IR
       </div>
@@ -88,8 +117,8 @@
     <div class="grid g4">
       <div class="metric"><div class="k">Market Cap</div><div class="v">$15.53B</div><div class="d">145.4M หุ้น (ลดลง ~3.9% YoY จาก buyback)</div></div>
       <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~40.1x</div><div class="d">GAAP EPS ถูกกดจากต้นทุน M&A integration</div></div>
-      <div class="metric"><div class="k">P/E (Forward)</div><div class="v">~14.9x</div><div class="d">EPS ปีหน้า (consensus) ~$7.17</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">3.17x</div><div class="d">BVPS $33.73</div></div>
+      <div class="metric"><div class="k">P/E (Forward)</div><div class="v">~{{rd:pe}}x</div><div class="d">EPS ปีหน้า (consensus) ~$7.17</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS $33.73</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ TTM</div><div class="v">~$401M</div><div class="d">EPS TTM $2.76 หลังงบ Q2 2569 (6 ส.ค. 69)</div></div>
       <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$2.76</div><div class="d">GAAP diluted; กดจากต้นทุน Guardicore/LayerX ต่อเนื่อง</div></div>
@@ -112,7 +141,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#2b9bdf"></i>ราคา AKAM</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $103.63</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -141,8 +170,8 @@
         <div class="mval">$95.48</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $77.28 – $120.87 · ถ่วงตระกูล 0.4c-bis</span></div>
-        <div class="r">$103.63</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}} · ถ่วงตระกูล 0.4c-bis</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         ขา 1 (P/E บน EPS TTM) และขา 3 (P/E บน EPS เฉลี่ย 5 ปี) เป็นตระกูลเดียวกัน — ใช้มัธยฐาน P/E ย้อนหลังของ AKAM เอง ~28.0x ชุดเดียว จึงเฉลี่ยกันก่อนเป็นเสียงเดียว ($77.28 กับ $95.48 → $86.38) แล้วถ่วงกับขา 2 EV/Revenue ($120.87) อีกเสียงตามกฎ 0.4c-bis (กันตระกูลเดียวถ่วง 2 ต่อ 1 เหนือขาที่ยึดฐานต่างออกไป) = Fair Value $103.63
@@ -161,14 +190,14 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $106.79</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $103.63</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$72.54<br><small>MOS 30%</small></span>
-          <span>$82.90<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$103.63<br><small>Fair Value</small></span>
-          <span style="text-align:right">$120.87<br><small>กรอบบน FV</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
           <span style="text-align:right">$159.30<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
@@ -184,19 +213,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">−3%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">ราคาปัจจุบันแพงกว่ามูลค่าเหมาะสมเล็กน้อย (MOS −1.9%) ไม่เหลือส่วนเผื่อความปลอดภัยเลย — ยังไม่ใช่จังหวะเข้าซื้อเชิง Value แม้ปัจจัยพื้นฐานเปลี่ยนผ่านสู่ security/cloud จะแข็งแรงขึ้นต่อเนื่อง ควรรอราคาย่อลงเข้าโซน MOS 15-20% (ประมาณ $83–$88) ก่อนทยอยสะสม</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$82.90</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$72.54</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $103.63</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="106.79" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -205,17 +234,17 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $106.79 • EPS ฐาน ~$2.76 • ไม่มีปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}} • ไม่มีปันผล</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS +3%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$75.40</div>
-          <div class="ret neg">-29.4%</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$3.02</span></li>
             <li><span>P/E ออก</span><span>25x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$0</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>ต้นทุน integration ยืดเยื้อ + CDN delivery โดนกดราคาต่อเนื่อง + multiple de-rate</span></li>
           </ul>
         </div>
@@ -223,12 +252,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +12%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$124.06</div>
-          <div class="ret pos">+16.2%</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$3.88</span></li>
             <li><span>P/E ออก</span><span>32x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$0</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>EPS ฟื้นตัวจากฐานที่ถูกกด + security/cloud มี margin ดีขึ้นต่อเนื่อง</span></li>
           </ul>
         </div>
@@ -236,12 +265,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +25%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$188.68</div>
-          <div class="ret pos">+76.7%</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$5.39</span></li>
             <li><span>P/E ออก</span><span>35x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$0</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>Akamai Cloud เร่งตัวจาก AI workload + security เติบโตเร่ง + re-rating multiple</span></li>
           </ul>
         </div>
@@ -293,8 +322,8 @@
       แม้เป้าเฉลี่ยนักวิเคราะห์ Wall Street จะยังสูงถึง $159.30 (+51% จากราคาปัจจุบัน) ซึ่งสะท้อนมุมมองบวกต่อการเติบโตระยะยาวของธุรกิจ cloud/security
       ที่ยังไม่ปรากฏชัดในตัวเลขงบการเงินปัจจุบัน (EPS แบบ GAAP ยังหดตัว YoY จากต้นทุนควบรวมกิจการ)</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$103.63 <span style="font-size:12px;color:#cab9a8">($77.28–$120.87)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#a5d6a7">MOS ~ −3%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#a5d6a7">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$159.30 (เฉลี่ยนักวิเคราะห์)</div></div>
       </div>
       <div class="zone">

@@ -10,6 +10,19 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 3.45,
+  "values": {
+    "px": 2.2,
+    "priceDate": "2026-09-14",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 3.09,
+    "fvHigh": 3.88,
+    "eps": 0.43,
+    "shares": 1065800000,
+    "bvps": 4.75
+  },
   "theme": {
     "accent": "#d84315",
     "accentDark": "#bf360c",
@@ -41,7 +54,6 @@
     "min": 1.5,
     "max": 4,
     "grid": [2, 2.5, 3, 3.5],
-    "fairLine": 3.45,
     "currency": "฿",
     "highlight": [2, 4],
     "gridFmt": "v.toFixed(2)",
@@ -50,11 +62,8 @@
   "gauge": {
     "min": 1.5,
     "max": 4.2,
-    "cur": 2.2,
-    "fair": 3.45,
     "fairLabelTop": false
-  },
-  "fv": 3.45
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -74,11 +83,11 @@
     <div class="sub">นิคมอุตสาหกรรมในเวียดนาม • Amata City Bien Hoa (Đồng Nai) • Amata City Long Thanh • Amata City Ha Long • พัฒนาที่ดินอุตสาหกรรม ขายและให้เช่า • สาธารณูปโภคครบวงจร (ไฟฟ้า น้ำ ระบายน้ำ) • โรงงานสำเร็จรูป</div>
     <div class="price-row">
       <div>
-        <div class="px">฿2.20<small>(AMATAV)</small></div>
+        <div class="px">{{rd:px}}<small>(AMATAV)</small></div>
       </div>
-      <div class="chg">▲ +0.9% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 14 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ ฿1.76–฿2.60<br>
         ที่มา: Yahoo Finance, Investing.com, StockAnalysis.com
       </div>
@@ -90,8 +99,8 @@
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ FY2025 / ม.ค. 2569</div></div>
     <div class="grid g4">
       <div class="metric"><div class="k">Market Cap</div><div class="v">฿2.34 พัน ล.</div><div class="d">1,065.8 ล้านหุ้น (SET)</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~5.1x</div><div class="d">EPS FY2025 ฿0.43 (กำไรฟื้นตัว)</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">0.46x</div><div class="d">BVPS ฿4.75 — ต่ำกว่าบุ๊คมาก</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">EPS FY2025 ฿0.43 (กำไรฟื้นตัว)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS ฿4.75 — ต่ำกว่าบุ๊คมาก</div></div>
       <div class="metric"><div class="k">ROE / ROA</div><div class="v pos">~8.9% / 3.5%</div><div class="d">FY2025 ฟื้นจาก 1.9% ปี 2567</div></div>
 
       <div class="metric"><div class="k">รายได้ FY2025</div><div class="v neu">฿4,023 ล้าน</div><div class="d">ลด 25% YoY (ขายที่ดินน้อยลง)</div></div>
@@ -115,7 +124,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#d84315"></i>ราคา AMATAV</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿3.45</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -144,8 +153,8 @@
         <div class="mval">฿3.38</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿3.09 – ฿3.88</span></div>
-        <div class="r">฿3.45</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         งดใช้ P/E Valuation มาตรฐานและ DDM เนื่องจากกำไร AMATAV ผันผวนสูงมาก (EPS ฿0.07 ปี 2567 vs ฿0.98 ปี 2565 vs ฿0.43 ปี 2568)
@@ -163,15 +172,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿2.20</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿3.45</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>฿2.42<br><small>MOS 30%</small></span>
-          <span>฿2.76<br><small>MOS 20%</small></span>
-          <span style="text-align:center">฿3.45<br><small>Fair Value</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">฿3.50<br><small>เป้าเฉลี่ย</small></span>
-          <span style="text-align:right">฿3.88<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -187,19 +196,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict good">
-        <div class="big">+36%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">MOS สูง — โซน Deep Value · ราคา ฿2.02 vs Fair Value ฿3.45</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿2.76</div><div class="d">โซนน่าสนใจสำหรับ value investor</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿2.42</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿3.45</div><div class="d">ราคาปัจจุบันต่ำกว่า FV 41%</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value investor</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ราคาปัจจุบันต่ำกว่า FV 41%</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="2.2" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -299,8 +308,8 @@
       กำไร FY2025 ฟื้นตัว +355% YoY ยืนยันพื้นฐานธุรกิจยังดี เพียงแต่กำไรผันผวนตามปริมาณที่ดินที่ขายได้แต่ละปี
       เหมาะสำหรับนักลงทุน VI ระยะยาว 3–5 ปีที่รับความผันผวนระยะสั้นได้ และมองเวียดนามเป็น long-term growth story</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿3.45 <span style="font-size:12px;color:#cab9a8">(฿3.09–฿3.88)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +36%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿3.50 (เก็งกำไร)</div></div>
       </div>
       <div class="zone">

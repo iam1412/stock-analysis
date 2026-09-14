@@ -10,6 +10,40 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 187.1,
+  "values": {
+    "px": 169.38,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 177.6,
+    "fvHigh": 191.9,
+    "eps": 8.88,
+    "shares": 76490000,
+    "dps": 3.76,
+    "bvps": 30.08,
+    "baseEps": 10.03,
+    "scenarios": [
+      {
+        "tgt": 134.3,
+        "div": 11.3
+      },
+      {
+        "tgt": 208.9,
+        "div": 12
+      },
+      {
+        "tgt": 281.8,
+        "div": 12.3
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": true,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#4f46e5",
     "accentDark": "#3730a3",
@@ -41,17 +75,13 @@
     "min": 150,
     "max": 200,
     "grid": [160, 170, 180, 190],
-    "fairLine": 187.1,
     "currency": "$",
     "highlight": [4, 7]
   },
   "gauge": {
     "min": 115,
-    "max": 215,
-    "cur": 169.38,
-    "fair": 187.1
-  },
-  "fv": 187.1
+    "max": 215
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -71,11 +101,11 @@
     <div class="sub">Pressure-Sensitive Labels • RFID Intelligent Labels • Packaging Solutions • Industrial Tapes & Graphics</div>
     <div class="price-row">
       <div>
-        <div class="px">$169.38<small>(AVY)</small></div>
+        <div class="px">{{rd:px}}<small>(AVY)</small></div>
       </div>
-      <div class="chg">▼ −3.2% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569 (ปิดตลาด NYSE 16:00 EDT)<br>
+        ราคา ณ {{rd:priceDate}} (ปิดตลาด NYSE 16:00 EDT)<br>
         กรอบ 52 สัปดาห์ $152.42 – $199.54<br>
         ที่มา: StockAnalysis.com, Yahoo Finance, Finviz.com (7 ส.ค. 2569)
       </div>
@@ -87,9 +117,9 @@
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">TTM / FY2025 · ณ ก.ค. 2569</div></div>
     <div class="grid g4">
       <div class="metric"><div class="k">Market Cap</div><div class="v">~$12.96B</div><div class="d">76.49M หุ้น</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~19.1x</div><div class="d">EPS TTM GAAP $8.88 · Forward P/E FY26E ~16.0x</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">EPS TTM GAAP $8.88 · Forward P/E FY26E ~16.0x</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~19–20x</div><div class="d">ประมาณ 15x–25x รวมช่วง sell-off ปี 2565</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">5.63x</div><div class="d">BVPS $30.08 · equity $2,301M</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS $30.08 · equity $2,301M</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">$688M</div><div class="d">−2.4% YoY (FY2024 $704.9M)</div></div>
       <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$8.88</div><div class="d">FY2025 diluted EPS $8.79 · Fwd FY26E $10.03 (+13% YoY)</div></div>
@@ -118,7 +148,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#4f46e5"></i>ราคา AVY</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $187.1</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -147,8 +177,8 @@
         <div class="mval">$191.90</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $177.6 – $191.9</span></div>
-        <div class="r">$187.1</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         P/E Valuation ให้ค่าต่ำสุด ($177.60) เพราะอิง EPS TTM GAAP ปัจจุบันที่ยังไม่รวม upside จาก Intelligent Labels
@@ -166,14 +196,14 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $169.38</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $187.1</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$131.0<br><small>MOS 30%</small></span>
-          <span>$149.7<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$187.1<br><small>Fair Value</small></span>
-          <span style="text-align:right">$191.9<br><small>กรอบบน FV</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
           <span style="text-align:right">$200.0<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
@@ -189,20 +219,20 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">+9%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">มี margin of safety ระดับปานกลาง เหมาะสำหรับทยอยสะสมระยะยาว แต่ยังไม่ถึงโซนถูกมาก (MOS 30%
         ที่ $131.0) นักลงทุนที่ต้องการความปลอดภัยสูงสุดอาจรอจังหวะราคาย่อตัวเพิ่มเติมก่อนเพิ่มน้ำหนัก</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$149.7</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$131.0</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $187.1</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="169.38" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -211,17 +241,17 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $169.38 • EPS ฐาน ~$10.03 (FY26E) • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}} (FY26E){{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS 1%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$134.30</div>
-          <div class="ret neg">−14.0% (3 ปี)</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$10.33</span></li>
             <li><span>P/E ออก</span><span>13x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$11.3</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>อุปสงค์ค้าปลีก/เครื่องนุ่งห่มชะลอ ต้นทุนวัตถุดิบกดดัน margin</span></li>
           </ul>
         </div>
@@ -229,12 +259,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +7%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$208.90</div>
-          <div class="ret pos">+30.4% (3 ปี)</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$12.29</span></li>
             <li><span>P/E ออก</span><span>17x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$12.0</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>Intelligent Labels โตต่อเนื่อง core PSM ทรงตัว multiple คงที่</span></li>
           </ul>
         </div>
@@ -242,12 +272,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +12%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$281.80</div>
-          <div class="ret pos">+73.6% (3 ปี)</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$14.09</span></li>
             <li><span>P/E ออก</span><span>20x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$12.3</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>RFID adoption เร่งตัวเร็วกว่าคาด margin ขยายเต็มที่ multiple ขยายตาม</span></li>
           </ul>
         </div>
@@ -315,8 +345,8 @@
       $187.1 (กรอบ $177.6–$191.9) ราว 14% ยังไม่ถึงโซน MOS 30% ที่น่าสนใจที่สุด แต่ถือเป็นจุดเริ่มทยอยสะสมที่มีเหตุผล
       สำหรับนักลงทุนระยะยาวที่เชื่อมั่นในธีม RFID/Intelligent Labels</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$187.1 <span style="font-size:12px;color:#cab9a8">($177.6–$191.9)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +9%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$200.00 (Buy)</div></div>
       </div>
       <div class="zone">

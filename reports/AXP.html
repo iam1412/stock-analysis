@@ -10,6 +10,40 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 347,
+  "values": {
+    "px": 324.69,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 296,
+    "fvHigh": 417,
+    "eps": 16.47,
+    "shares": 679000000,
+    "dps": 3.8,
+    "bvps": 50.49,
+    "baseEps": 16.47,
+    "scenarios": [
+      {
+        "tgt": 334,
+        "div": 12.58
+      },
+      {
+        "tgt": 451,
+        "div": 12.58
+      },
+      {
+        "tgt": 551,
+        "div": 12.58
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": true,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#016FD0",
     "accentDark": "#0050A0",
@@ -41,18 +75,14 @@
     "min": 280,
     "max": 380,
     "grid": [300, 320, 340, 360],
-    "fairLine": 347,
     "currency": "$",
     "highlight": [2, 5]
   },
   "gauge": {
     "min": 220,
     "max": 430,
-    "cur": 324.69,
-    "fair": 347,
     "fairLabelTop": true
-  },
-  "fv": 347
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +102,11 @@
     <div class="sub">Premium charge &amp; credit cards (Platinum, Gold, Blue) • Closed-loop payment network • Card member loans &amp; services • Business travel &amp; merchant services • Berkshire Hathaway ~20% owner</div>
     <div class="price-row">
       <div>
-        <div class="px">$324.69<small>(AXP)</small></div>
+        <div class="px">{{rd:px}}<small>(AXP)</small></div>
       </div>
-      <div class="chg">▼ −10.0% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $288.34 – $387.49<br>
         ที่มา: StockAnalysis.com, Yahoo Finance, AXP Q2 2026 Press Release
       </div>
@@ -88,9 +118,9 @@
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ก.ค. 2569 · TTM = Trailing Twelve Months</div></div>
     <div class="grid g4">
       <div class="metric"><div class="k">Market Cap</div><div class="v">$220.5B</div><div class="d">679 ล้านหุ้น (NYSE)</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~19.7x</div><div class="d">EPS TTM $16.47 · Forward P/E 17.48x</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">EPS TTM $16.47 · Forward P/E 17.48x</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~18–22x</div><div class="d">ปัจจุบันอยู่กลางช่วงปกติ</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">6.43x</div><div class="d">BVPS ~$50.49 · ROE สูงทำให้ P/BV แพง</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS ~$50.49 · ROE สูงทำให้ P/BV แพง</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">$10.8B</div><div class="d">+7% YoY · Net margin 19.7%</div></div>
       <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$16.47</div><div class="d">FY2025 $15.38 · Q2 2026 $4.53 (+11%, beat)</div></div>
@@ -121,7 +151,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#016FD0"></i>ราคา AXP</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $347</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -152,8 +182,8 @@
         <div class="mval">$417</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $296 – $417</span></div>
-        <div class="r">$347</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         P/E Valuation (น้ำหนัก 55%) ให้ $338 — สะท้อนมูลค่าพื้นฐาน EPS-based.
@@ -171,15 +201,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $324.69</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $347</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$243<br><small>MOS 30%</small></span>
-          <span>$278<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$347<br><small>Fair Value</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">$375<br><small>เป้าเฉลี่ย Analyst</small></span>
-          <span style="text-align:right">$417<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -195,19 +225,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">+6%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">ต่ำกว่า Fair Value เพียงเล็กน้อย ยังไม่ลึกพอสำหรับ value investor ที่ต้องการ 20–30% แต่เหมาะสำหรับ growth investor ที่มีขอบฟ้าการลงทุน 3–5 ปี</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$278</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$243</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $347</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="324.69" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -216,17 +246,17 @@
 
   <!-- ===== 6. RETURN PROJECTION ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $324.69 • EPS ฐาน ~$16.47 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}}{{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS +6%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$334</div>
-          <div class="ret pos">+6.7%</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$19.62</span></li>
             <li><span>P/E ออก</span><span>17x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$12.58</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>เศรษฐกิจถดถอย credit losses พุ่ง</span></li>
           </ul>
         </div>
@@ -234,12 +264,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +11%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$451</div>
-          <div class="ret pos">+42.8%</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$22.53</span></li>
             <li><span>P/E ออก</span><span>20x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$12.58</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>Guidance revenue +10% ทำได้ + card fees ขยาย</span></li>
           </ul>
         </div>
@@ -247,12 +277,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +15%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$551</div>
-          <div class="ret pos">+73.6%</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$25.05</span></li>
             <li><span>P/E ออก</span><span>22x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$12.58</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>Net card fees + Gen-Z acquisition เร่งตัว</span></li>
           </ul>
         </div>
@@ -307,8 +337,8 @@
       ด้วย MOS ~6% ราคาปัจจุบันยังไม่มีส่วนเผื่อความปลอดภัยลึกพอสำหรับ value investor
       นักลงทุน value ควรรอโซน &lt;$278 (MOS 20%) นักลงทุน growth ที่ถือยาว 3–5 ปีสามารถทยอยสะสมได้</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$347 <span style="font-size:12px;color:#cab9a8">($296–$417)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +6%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$375 (Buy)</div></div>
       </div>
       <div class="zone">

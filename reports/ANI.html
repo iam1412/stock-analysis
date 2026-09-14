@@ -10,6 +10,38 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 3.65,
+  "values": {
+    "px": 3.48,
+    "priceDate": "2026-09-14",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 3.15,
+    "fvHigh": 3.89,
+    "shares": 1848000000,
+    "dps": 0.2,
+    "baseEps": 0.34,
+    "scenarios": [
+      {
+        "tgt": 2.38,
+        "div": 0.35
+      },
+      {
+        "tgt": 3.3,
+        "div": 0.58
+      },
+      {
+        "tgt": 4.45,
+        "div": 0.65
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": true,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#3842d1",
     "accentDark": "#242c9e",
@@ -40,17 +72,13 @@
     "min": 2,
     "max": 4,
     "grid": [2.5, 3, 3.5],
-    "fairLine": 3.65,
     "currency": "฿",
     "highlight": [7, 10]
   },
   "gauge": {
     "min": 2.25,
-    "max": 4,
-    "cur": 3.48,
-    "fair": 3.65
-  },
-  "fv": 3.65
+    "max": 4
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -70,11 +98,11 @@
     <div class="sub">ตัวแทนขายระวางสินค้าทางอากาศ (Cargo GSA) ให้สายการบิน 20+ ราย • ครอบคลุม 8-9 ประเทศเอเชียแปซิฟิก • ส่วนแบ่งตลาด GSA กว่า 23%</div>
     <div class="price-row">
       <div>
-        <div class="px">฿3.48<small>(ANI)</small></div>
+        <div class="px">{{rd:px}}<small>(ANI)</small></div>
       </div>
-      <div class="chg">▲ +14.5% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 14 ก.ย. 2569 (พ.ศ.)<br>
+        ราคา ณ {{rd:priceDate}} (พ.ศ.)<br>
         กรอบ 52 สัปดาห์ ฿2.42 – ฿3.86<br>
         ที่มา: StockAnalysis.com, Yahoo Finance, ตลาดหลักทรัพย์แห่งประเทศไทย (SET)
       </div>
@@ -111,7 +139,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#3842d1"></i>ราคา ANI</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿3.65</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -138,8 +166,8 @@
         <div class="mval">฿3.89</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿3.15 – ฿3.89</span></div>
-        <div class="r">฿3.65</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         DDM (฿3.15) และ Justified P/BV (฿3.89) ใช้สมมติฐาน (r, g) ชุดเดียวกัน จึงนับเป็น "ตระกูลเดียว" ตามกฎ dispersion 0.4c-bis — เฉลี่ยกันเองก่อนเป็น 1 เสียง (฿3.52) แล้วถ่วงกับขา P/E ที่ยึดตัวคูณตลาดของตัวเองอีก 1 เสียง ⇒ FV = (3.78+3.52)/2 = ฿3.65
@@ -154,15 +182,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿3.48</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿3.65</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>฿2.56<br><small>MOS 30%</small></span>
-          <span>฿2.92<br><small>MOS 20%</small></span>
-          <span style="text-align:center">฿3.65<br><small>Fair Value</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">N/A<br><small>เป้าเฉลี่ย Analyst (ไม่มีข้อมูล)</small></span>
-          <span style="text-align:right">฿3.89<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -175,19 +203,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">+5%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt"><b>มี Margin of Safety บางเพียงเล็กน้อย (ต่ำกว่าเกณฑ์ 10%)</b><br>ที่ราคา ฿3.30 เทียบ FV ฿3.65 นักลงทุนใหม่มีส่วนเผื่อความปลอดภัยแคบ ยังไม่ถึงระดับที่สบายใจ ควรรอจังหวะราคาย่อลงมาใกล้โซน MOS 20% (~฿2.92) ก่อนทยอยสะสมเพิ่ม</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿2.92</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿2.56</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿3.65</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="3.48" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -196,17 +224,17 @@
 
   <!-- ===== 6. RETURN PROJECTION ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿3.48 • EPS ฐาน ~฿0.34 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}}{{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS −8%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿2.38</div>
-          <div class="ret neg">−21.6% (3 ปี)</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿0.26</span></li>
             <li><span>P/E ออก</span><span>9.0x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.35</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>เสียสัญญาสายการบินรายใหญ่ 1-2 ราย + ค่าระวางอ่อนตัวต่อ ตลาด de-rate P/E เหลือ 9x</span></li>
           </ul>
         </div>
@@ -214,12 +242,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +0%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿3.30</div>
-          <div class="ret pos">+11.5% (3 ปี)</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿0.34</span></li>
             <li><span>P/E ออก</span><span>9.2x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.58</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>รักษาฐานสัญญาเดิม ปริมาณ/อัตราค่าระวางทรงตัวใกล้ TTM P/E คงที่ ~9.2x</span></li>
           </ul>
         </div>
@@ -227,12 +255,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +6%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿4.45</div>
-          <div class="ret pos">+46.6% (3 ปี)</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿0.40</span></li>
             <li><span>P/E ออก</span><span>11.0x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿0.65</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>คว้าสัญญาสายการบินใหม่/ขยายประเทศ + ปริมาณระวางฟื้นตามท่องเที่ยว-การค้าเอเชีย P/E ขยับสู่ 11x</span></li>
           </ul>
         </div>
@@ -277,8 +305,8 @@
       <h2>มี Margin of Safety บางเพียงเล็กน้อย — เข้าซื้อระมัดระวังหรือรอย่อเพิ่ม</h2>
       <p>ANI เป็นผู้นำตลาดตัวแทนขายระวางสินค้าทางอากาศ (Cargo GSA) ในเอเชียแปซิฟิก ธุรกิจใช้เงินทุนต่ำและจ่ายปันผลสูง (~6.1%) กำไร/ROE ชะลอตัวจากพีคหลังโควิด (FY2565) แต่เริ่มทรงตัว/กระเตื้องขึ้นเล็กน้อยใน TTM ล่าสุด (ROE 8.4% เทียบ FY2568 ที่ 7.6%) ราคาฟื้นตัวจากจุดต่ำสุดของรอบในช่วง มิ.ย.-ส.ค. 2569 (+3.1% รอบปี) ทำให้ปัจจุบันเทรดต่ำกว่ามูลค่าเหมาะสมเฉลี่ยเล็กน้อย (฿3.15–3.89) ความเสี่ยงหลักคือการกระจุกตัวของรายได้ในสัญญาตัวแทนสายการบินแต่ละราย ซึ่งต่อสัญญาเป็นรอบและไม่เปิดเผยสัดส่วนต่อรายในแหล่งข้อมูลสาธารณะที่ตรวจสอบได้</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿3.65 <span style="font-size:12px;color:#cab9a8">(฿3.15–฿3.89)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#a5d6a7">MOS ~ +5%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#a5d6a7">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">ไม่มีข้อมูล (นักวิเคราะห์ไม่ครอบคลุมต่อเนื่อง)</div></div>
       </div>
       <div class="zone">
@@ -291,7 +319,7 @@
   <div class="disc">
     <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
-    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ราคา ณ 14 ก.ย. 2569 จาก StockAnalysis.com (cross-check กับ Yahoo Finance ตรงกัน 0%) • EPS TTM ระหว่าง Yahoo (฿0.30) กับ StockAnalysis.com (฿0.36) ต่างกัน ~17% จากคนละฐานคำนวณ — ยึด StockAnalysis.com ที่ตรงกับตารางงบการเงินย้อนหลัง • ข้อมูลงบการเงิน/อัตราส่วนจาก StockAnalysis.com (financials/ratios, financials/balance-sheet) • ข้อมูลธุรกิจ/โครงสร้างสัญญาตัวแทนจากตลาดหลักทรัพย์แห่งประเทศไทย (SET) และบทวิเคราะห์ช่วง IPO (eFinanceThai, Mao Investor, Kaohoon)
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ราคา ณ {{rd:priceDate}} จาก StockAnalysis.com (cross-check กับ Yahoo Finance ตรงกัน 0%) • EPS TTM ระหว่าง Yahoo (฿0.30) กับ StockAnalysis.com (฿0.36) ต่างกัน ~17% จากคนละฐานคำนวณ — ยึด StockAnalysis.com ที่ตรงกับตารางงบการเงินย้อนหลัง • ข้อมูลงบการเงิน/อัตราส่วนจาก StockAnalysis.com (financials/ratios, financials/balance-sheet) • ข้อมูลธุรกิจ/โครงสร้างสัญญาตัวแทนจากตลาดหลักทรัพย์แห่งประเทศไทย (SET) และบทวิเคราะห์ช่วง IPO (eFinanceThai, Mao Investor, Kaohoon)
   </div>
   <footer>Stock Analysis Dashboard • ข้อมูล ณ 17 ส.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 

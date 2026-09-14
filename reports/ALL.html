@@ -12,6 +12,40 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 275,
+  "values": {
+    "px": 253.71,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 217,
+    "fvHigh": 324,
+    "eps": 45.33,
+    "shares": 257399999.99999997,
+    "dps": 4.32,
+    "bvps": 113.52,
+    "baseEps": 27,
+    "scenarios": [
+      {
+        "tgt": 221,
+        "div": 13
+      },
+      {
+        "tgt": 326,
+        "div": 13
+      },
+      {
+        "tgt": 421,
+        "div": 13
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": false,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#003DA5",
     "accentDark": "#002580",
@@ -43,18 +77,14 @@
     "min": 175,
     "max": 300,
     "grid": [200, 225, 250, 275],
-    "fairLine": 275,
     "currency": "$",
     "highlight": [0, 9]
   },
   "gauge": {
     "min": 130,
     "max": 380,
-    "cur": 253.71,
-    "fair": 275,
     "fairLabelTop": false
-  },
-  "fv": 275
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -75,12 +105,12 @@
     <div class="sub">3rd largest US personal lines insurer (auto + home) • 50%+ auto rate increases 2022-24 → combined ratio recovery • Life/retirement divested 2022 → pure P&C focus • LA wildfire Jan 2025 exposure • Investment income tailwind (higher rates) • Customer retention post-hike key metric</div>
     <div class="price-row">
       <div>
-        <div class="px">$253.71<small>(ALL)</small></div>
+        <div class="px">{{rd:px}}<small>(ALL)</small></div>
       </div>
       <!-- ★ ป้าย % รอบปี (gate E35/E36) — annual return จากกราฟ จุดแรก $203.25 → ท้าย $241.20 = +18.7% -->
-      <div class="chg">▲ +32.5% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $188.08 – $241.78<br>
         ที่มา: Yahoo Finance, Finviz, StockAnalysis
       </div>
@@ -91,10 +121,10 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ มิ.ย. 2569 · ปรับแต่งสำหรับบริษัทประกัน P&amp;C</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">$65.3B</div><div class="d">257.4 ล้านหุ้น · NYSE: ALL</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~5.6x</div><div class="d">EPS TTM $45.33 (GAAP) · สูงผิดปกติจากปีกำไรสูงสุด 2025</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">{{rd:mcap}}</div><div class="d">257.4 ล้านหุ้น · NYSE: ALL</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">EPS TTM $45.33 (GAAP) · สูงผิดปกติจากปีกำไรสูงสุด 2025</div></div>
       <div class="metric"><div class="k">Forward P/E (FY26E)</div><div class="v">~9.4x</div><div class="d">EPS FY26E ~$27 · สะท้อนการ normalize กลับสู่ระดับปกติ</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">2.23x</div><div class="d">BVPS $113.52 (Q1'26) · เหมาะสมกับ ROE สูง 44%</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS $113.52 (Q1'26) · เหมาะสมกับ ROE สูง 44%</div></div>
 
       <div class="metric"><div class="k">Combined Ratio (FY25)</div><div class="v pos">84.4%</div><div class="d">Q4'25: 72.9% · Q1'26: 82.0% · &lt;100% = Underwriting profit</div></div>
       <div class="metric"><div class="k">EPS adj. FY2025</div><div class="v">$34.83</div><div class="d">กำไรสุทธิปรับปรุง $9.3B · FY24: $16.99 · FY23: −$1.20</div></div>
@@ -117,7 +147,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#003DA5"></i>ราคา ALL</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $275</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -145,8 +175,8 @@
         <div class="mval">$217</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $217 – $324</span></div>
-        <div class="r">$275</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         วิธี P/E ให้ค่าสูงสุด $324 เพราะ EPS adj. $27 × P/E 12x — อาจสูงเกินหาก EPS ยังปรับลดต่อ
@@ -163,15 +193,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $253.71</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $275</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$193<br><small>MOS 30%</small></span>
-          <span>$220<br><small>MOS 20%</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
           <span style="text-align:center">$242<br><small>เป้าเฉลี่ย Analyst</small></span>
-          <span style="text-align:right">$275<br><small>Fair Value</small></span>
-          <span style="text-align:right">$324<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -186,19 +216,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">+8%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">MOS พอประมาณ — ยังไม่ถึงโซนน่าสนใจมาก</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$220</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$193</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $275</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="253.71" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -207,17 +237,17 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $253.71 • EPS ฐาน ~$27 (FY26E adj.) • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}} (FY26E adj.){{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS −5%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$221</div>
-          <div class="ret neg">−13%</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$23.15</span></li>
             <li><span>P/E ออก</span><span>9x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$13</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>Cat losses พุ่ง / CR กลับสู่ 95%+</span></li>
           </ul>
         </div>
@@ -225,12 +255,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +5%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$326</div>
-          <div class="ret pos">+28%</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$31.26</span></li>
             <li><span>P/E ออก</span><span>10x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$13</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>Underwriting ปกติ / CR 88-93%</span></li>
           </ul>
         </div>
@@ -238,12 +268,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +8%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$421</div>
-          <div class="ret pos">+66%</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$34.01</span></li>
             <li><span>P/E ออก</span><span>12x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$13</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>Growth ฟื้น / CR 82-87% ต่อเนื่อง</span></li>
           </ul>
         </div>
@@ -292,8 +322,8 @@
       <h2>ALL — P&amp;C Recovery Play ที่ Priced Near Fair Value</h2>
       <p>Allstate ผ่านจุดต่ำสุดของวงจรประกัน P&amp;C แล้ว — การขึ้นเบี้ยสะสม 50%+ ตั้งแต่ปี 2565 ส่งผลให้ Combined Ratio ดีขึ้นอย่างชัดเจน (FY25: 84.4%, Q4'25: 72.9%) กำไรสุทธิ FY25 $10.2B สูงสุดเป็นประวัติการณ์ อย่างไรก็ตาม ราคาหุ้นสะท้อนการฟื้นตัวนี้ไปมากแล้ว — เป้านักวิเคราะห์เฉลี่ย $242 เกือบเท่าราคาปัจจุบัน ทำให้ upside ระยะสั้นจำกัด การลงทุนใน ALL เหมาะสำหรับนักลงทุนที่มองหา Defensive yield + Mid-cycle P/E re-rating story มากกว่า momentum play</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$275 <span style="font-size:12px;color:#cab9a8">($217–$324)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +8%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$242 (Buy 48%)</div></div>
       </div>
       <div class="zone">

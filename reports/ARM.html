@@ -10,6 +10,38 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 267,
+  "values": {
+    "px": 264.79,
+    "priceDate": "2026-09-11",
+    "dateEra": "CE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 258,
+    "fvHigh": 276,
+    "analystTgt": 287.79,
+    "eps": 0.98,
+    "baseEps": 1.77,
+    "scenarios": [
+      {
+        "tgt": 201,
+        "div": null
+      },
+      {
+        "tgt": 386,
+        "div": null
+      },
+      {
+        "tgt": 653,
+        "div": null
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": false,
+      "perYear": "cagr"
+    }
+  },
   "theme": {
     "accent": "#1a73e8",
     "accentDark": "#1557b0",
@@ -41,18 +73,14 @@
     "min": 0,
     "max": 400,
     "grid": [100, 200, 300],
-    "fairLine": 267,
     "currency": "$",
     "highlight": [3, 8]
   },
   "gauge": {
     "min": 160,
     "max": 530,
-    "cur": 264.79,
-    "fair": 267,
     "fairLabelTop": "-58px"
-  },
-  "fv": 267
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +100,11 @@
     <div class="sub">เจ้าของสถาปัตยกรรม CPU ที่อยู่ในชิปมือถือเกือบทุกตัว • โมเดล Royalty + License • รุกตลาด AI / Data Center</div>
     <div class="price-row">
       <div>
-        <div class="px">$264.79<small>(ARM)</small></div>
+        <div class="px">{{rd:px}}<small>(ARM)</small></div>
       </div>
-      <div class="chg">▲ +55.9% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคาปิด 11 ก.ย. 2026 ที่ $253.32 — ร่วง −10.3% จากระดับก่อนหน้า ($282.57) ตามแรงขายทั้งกลุ่มชิป/ฮาร์ดแวร์ AI ที่ de-rate พร้อมกันทั้งเซกเตอร์ในวันเดียว ไม่ใช่ข่าวเฉพาะตัว ยังต่ำกว่าจุดสูงสุด $452.70 (พ.ค. 2026) ราว −44.0%<br>
+        ราคาปิด {{rd:priceDate}} ที่ $253.32 — ร่วง −10.3% จากระดับก่อนหน้า ($282.57) ตามแรงขายทั้งกลุ่มชิป/ฮาร์ดแวร์ AI ที่ de-rate พร้อมกันทั้งเซกเตอร์ในวันเดียว ไม่ใช่ข่าวเฉพาะตัว ยังต่ำกว่าจุดสูงสุด $452.70 (พ.ค. 2026) ราว −44.0%<br>
         พื้นฐานธุรกิจ (royalty data center + Armv9/CSS) ยังแข็งแกร่ง แต่ราคาถูกกดจากแรงขายเทกลุ่ม AI hardware ทั้งตลาด<br>
         ที่มา: StockAnalysis / Nasdaq / Yahoo Finance
       </div>
@@ -113,7 +141,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#1a73e8"></i>ราคา ARM</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $267</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -142,8 +170,8 @@
         <div class="mval">$268</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $258 – $276</span></div>
-        <div class="r">$267</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         <b>หมายเหตุ:</b> ข้าม DDM เพราะ ARM <b>ไม่จ่ายปันผล</b> • หลังแรงขายทั้งกลุ่ม AI/semis 18 ส.ค. 2026 ราคาร่วงมาที่ $253.32 ต่ำกว่า
@@ -159,13 +187,13 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $265</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $267</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$187<br><small>MOS 30%</small></span>
-          <span>$214<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$267<br><small>Fair Value</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">$283<br><small>ราคาตลาด</small></span>
           <span style="text-align:right">$500<br><small>เป้าสูงสุด</small></span>
         </div>
@@ -183,19 +211,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">+0.8%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt"><b>MOS ยังน้อยกว่าเกณฑ์</b><br>ราคาปัจจุบัน $253.32 ต่ำกว่ามูลค่าเหมาะสม $267 อยู่ราว 5.1% → หลังแรงขายทั้งกลุ่มชิป/AI hardware 18 ส.ค. 2026 ราคากลับมาต่ำกว่ามูลค่าเหมาะสมอีกครั้ง แต่ยังไม่ถึงเกณฑ์ value investor ที่ต้องการส่วนเผื่อ <b>≥20-30%</b></div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$214</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$187</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $267</div><div class="d">ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="264.79" step="1">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="1">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -204,13 +232,13 @@
 
   <!-- ===== RETURN PROJECTION ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $264.79 (18 ส.ค. 2026) • EPS ฐาน ~$1.77 (non-GAAP)</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} (18 ส.ค. 2026) • EPS ฐาน ~{{rd:baseEps}} (non-GAAP)</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS +8%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$201</div>
-          <div class="ret neg">รวม ~ −24% (≈ −9%/ปี)</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>$2.2</span></li>
             <li><span>P/E ออก</span><span>90x</span></li>
@@ -221,8 +249,8 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +22%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$386</div>
-          <div class="ret pos">รวม ~ +46% (≈ +13%/ปี)</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>$3.2</span></li>
             <li><span>P/E ออก</span><span>120x</span></li>
@@ -233,8 +261,8 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +35%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$653</div>
-          <div class="ret pos">รวม ~ +147% (≈ +35%/ปี)</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>$4.4</span></li>
             <li><span>P/E ออก</span><span>150x</span></li>
@@ -287,9 +315,9 @@
       <h2>ธุรกิจ IP ชั้นยอด ราคาย่อแรงแต่ยังไม่ถึงมูลค่าเหมาะสม</h2>
       <p>Arm คือเจ้าของสถาปัตยกรรมที่อยู่ใจกลางชิปเกือบทุกตัวบนโลก โตเร็ว มาร์จิ้นสูง และกำลังรุก AI/data center ได้ดี — แม้พื้นฐานธุรกิจ (งบ Q1 FY2027, 29 ก.ค. 2026 ดีกว่าคาด) ยังแข็งแกร่ง แต่ราคาร่วง −10.3% มาที่ $253.32 (18 ส.ค. 2026) ตามแรงขายทั้งกลุ่มชิป/AI hardware ทั้งเซกเตอร์ (ยังต่ำกว่าจุดสูงสุด $452.70 ราว −44.0%) ราคาตอนนี้ต่ำกว่ามูลค่าเหมาะสมเล็กน้อยราว 5.1% แต่ P/E ระดับ 258x (TTM) ยังทำให้แทบไม่มีส่วนเผื่อความปลอดภัยที่แท้จริงในเชิงเปรียบเทียบกลุ่ม semis base case ให้ผลตอบแทนที่น่าสนใจขึ้น แต่ downside จาก P/E ที่หดตัวต่อยังมีนัยสำคัญ</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$267 <span style="font-size:12px;color:#a8b6cc">($258–$276)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#81c995">MOS ~ +0.8%</div></div>
-        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#ffcc80">เฉลี่ย ~$287.79 (+8.7%)</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#a8b6cc">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#81c995">MOS ~ {{rd:mos}}</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#ffcc80">เฉลี่ย ~{{rd:analystTgt}} ({{rd:analystPct}})</div></div>
       </div>
       <div class="zone">
         💡 <b>กลยุทธ์:</b> สาย value — ราคาต่ำกว่า fair value ~$267 อยู่แล้วราว 5.1% หลังแรงขายทั้งกลุ่มชิป/AI hardware 18 ส.ค. 2026 เริ่มมี MOS เล็กน้อยแต่ยังไม่ถึงเกณฑ์ ≥20-30% รอทยอยสะสมเมื่อราคา <b>ต่ำกว่า ~$267</b> (น่าสนใจที่ &lt;$214) • สาย growth — หากเชื่อเรื่อง AI ให้ใช้ DCA ขนาดเล็กและยอมรับความผันผวนสูงมาก โดยติดตาม <b>อัตราการเติบโต royalty/data center</b>, <b>งบไตรมาสถัดไป</b> และ <b>การขยายตัวของ EPS จริง</b> เป็นตัวชี้วัดหลัก

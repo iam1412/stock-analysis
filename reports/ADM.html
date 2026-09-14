@@ -12,6 +12,20 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 54,
+  "values": {
+    "px": 86.72,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 42,
+    "fvHigh": 63,
+    "eps": 2.23,
+    "shares": 484000000,
+    "dps": 2.05,
+    "bvps": 47.31
+  },
   "theme": {
     "accent": "#b48814",
     "accentDark": "#84630d",
@@ -43,7 +57,6 @@
     "min": 50,
     "max": 90,
     "grid": [60, 70, 80],
-    "fairLine": 54,
     "currency": "$",
     "highlight": [2, 11],
     "gridFmt": "v.toFixed(0)",
@@ -52,11 +65,8 @@
   "gauge": {
     "min": 35,
     "max": 95,
-    "cur": 86.72,
-    "fair": 54,
     "fairLabelTop": false
-  },
-  "fv": 54
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -76,11 +86,11 @@
     <div class="sub">แปรรูปธัญพืชและน้ำมันพืชระดับโลก • Ag Services &amp; Oilseeds (สกัดถั่วเหลือง/คาโนลา) • Carbohydrate Solutions (เอทานอล/ข้าวโพดเปียก) • Nutrition (โปรตีน/แต่งกลิ่น/สุขภาพ) • เครือข่ายท่าเรือ/ไซโลทั่วโลก</div>
     <div class="price-row">
       <div>
-        <div class="px">$86.72<small>(ADM)</small></div>
+        <div class="px">{{rd:px}}<small>(ADM)</small></div>
       </div>
-      <div class="chg">▲ +43.3% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $52.23 – $85.37<br>
         ที่มา: Yahoo Finance, StockAnalysis.com, MarketBeat
       </div>
@@ -92,9 +102,9 @@
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ มิถุนายน 2569 — ตัวเลข restated หลังปรับปรุงบัญชี Nutrition segment</div></div>
     <div class="grid g4">
       <div class="metric"><div class="k">Market Cap</div><div class="v">~$42.0 B</div><div class="d">~484 ล้านหุ้น (diluted)</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neg">38.9x</div><div class="d">EPS TTM $2.23 — ปีกำไรต่ำผิดปกติ</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neg">{{rd:pe}}x</div><div class="d">EPS TTM $2.23 — ปีกำไรต่ำผิดปกติ</div></div>
       <div class="metric"><div class="k">P/E (Forward FY2026E)</div><div class="v neu">~18x</div><div class="d">Adj. EPS guidance $4.15–$4.70</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">1.83x</div><div class="d">BVPS ~$47.31</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS ~$47.31</div></div>
 
       <div class="metric"><div class="k">EPS TTM (restated)</div><div class="v neg">~$2.23</div><div class="d">ต่ำสุดรอบทศวรรษ อยู่ในโซนฟื้นตัว</div></div>
       <div class="metric"><div class="k">EPS Adj. FY2026E</div><div class="v pos">~$4.43</div><div class="d">Guidance midpoint; Q1 26 adj. $0.71</div></div>
@@ -117,7 +127,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#D4A017"></i>ราคา ADM</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $54.00</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -143,8 +153,8 @@
         <div class="mval">$42.00</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $42.00 – $63.00</span></div>
-        <div class="r">$54.00</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         วิธี P/E ให้ค่าสูงสุด ($63) สะท้อนการฟื้นตัวของกำไร FY2569 วิธี EV/EBITDA ให้ค่ากลาง ($56.40) อิง multiple ประวัติศาสตร์ ส่วน DDM ให้ค่าต่ำสุด ($42) เพราะ ADM เป็น commodity processor margin บาง ปันผลปัจจุบันเทียบกับ required return 8% ไม่สูงพอ ค่าเฉลี่ย 3 วิธี = $54 สะท้อนความไม่แน่นอนจาก investor lawsuit ที่ยังค้าง + governance ที่ต้องพิสูจน์ — ราคาปัจจุบัน $76.40 อยู่เหนือ FV ทุกวิธีประเมิน ที่มา: Yahoo Finance (ราคา), StockAnalysis.com (EPS/BS), MarketBeat (guidance), SEC.gov (fine)
@@ -158,14 +168,14 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $86.72</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $54.00</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$37.80<br><small>MOS 30%</small></span>
-          <span>$43.20<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$54.00<br><small>Fair Value</small></span>
-          <span style="text-align:right">$63.00<br><small>กรอบบน FV</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
           <span style="text-align:right">$74.60<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
@@ -179,19 +189,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">−61%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">ราคาปัจจุบัน $76.40 สูงกว่า Fair Value $54.00 อยู่ 41.5% — ไม่มี Margin of Safety ณ ราคานี้</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$43.20</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$37.80</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
         <div class="metric"><div class="k">โซนเริ่มพิจารณา</div><div class="v neu">&lt; $54.00</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="86.72" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -283,8 +293,8 @@
       <h2>ADM: Turnaround Story ที่ราคาวิ่งนำกำไรไปแล้ว — รอโอกาส</h2>
       <p>Archer-Daniels-Midland ผ่านพ้นวิกฤติ Nutrition accounting scandal — SEC ปรับ $40 M (ม.ค. 2569) DOJ ยุติอาญา และกำไรกำลังฟื้นตัวชัดเจน Adj. EPS guidance FY2569 ที่ $4.15–$4.70 เป็นสัญญาณบวก อย่างไรก็ดี ราคา $76.40 วิ่งขึ้น +45.5% ในรอบปีจนเกิน Fair Value $54 ทุกวิธีประเมิน (MOS = −41.5%) นักลงทุน value ควรรอ consolidation หรือ guidance miss ก่อน Investor lawsuit ยังค้างและ governance ต้องพิสูจน์ต่อ สำหรับ Income investor ปันผล 53 ปีต่อเนื่อง yield 2.72% ยังคงน่าสนใจ</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$54.00 <span style="font-size:12px;color:#cab9a8">($42–$63)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −61%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$74.60 (Hold — 11 นักวิเคราะห์)</div></div>
       </div>
       <div class="zone">

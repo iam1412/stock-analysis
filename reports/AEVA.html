@@ -10,6 +10,36 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 3.68,
+  "values": {
+    "px": 15.52,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 3.42,
+    "fvHigh": 3.93,
+    "shares": 63040000,
+    "scenarios": [
+      {
+        "tgt": 2.1,
+        "div": 0
+      },
+      {
+        "tgt": 7.67,
+        "div": 0
+      },
+      {
+        "tgt": 15.89,
+        "div": 0
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": false,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#5335d4",
     "accentDark": "#3922a0",
@@ -40,17 +70,13 @@
     "min": 0,
     "max": 40,
     "grid": [10, 20, 30],
-    "fairLine": 3.68,
     "currency": "$",
     "highlight": [1, 8]
   },
   "gauge": {
     "min": 0,
-    "max": 28,
-    "cur": 15.52,
-    "fair": 3.68
-  },
-  "fv": 3.68
+    "max": 28
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -70,11 +96,11 @@
     <div class="sub">FMCW 4D LiDAR-on-chip (Silicon Photonics) • Automotive ADAS/AV • Robotics & Industrial Sensing</div>
     <div class="price-row">
       <div>
-        <div class="px">$15.52<small>(AEVA)</small></div>
+        <div class="px">{{rd:px}}<small>(AEVA)</small></div>
       </div>
-      <div class="chg">▼ −5.0% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569 (Yahoo Finance $26.62 / StockAnalysis.com $26.62 — Δ 0.00%)<br>
+        ราคา ณ {{rd:priceDate}} (Yahoo Finance $26.62 / StockAnalysis.com $26.62 — Δ 0.00%)<br>
         กรอบ 52 สัปดาห์ $8.83 – $31.30<br>
         ที่มา: StockAnalysis.com, Google Finance, SEC EDGAR (8-K/10-K), The Motley Fool
       </div>
@@ -111,7 +137,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#5335d4"></i>ราคา AEVA</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $3.68</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -133,8 +159,8 @@
         <div class="mval">$3.42</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $3.42 – $3.93</span></div>
-        <div class="r">$3.68</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         AEVA ยังขาดทุนสุทธิและส่วนของผู้ถือหุ้นติดลบ (equity deficit) ทำให้วิธี P/E, DDM และ Justified P/BV ใช้ไม่ได้ จึงประเมินด้วย Forward EV/Sales หลังหักผลเจือจางหุ้นและคิดลดความเสี่ยง execution ~25%/ปี ทั้งสองวิธีให้ค่าใกล้เคียงกันเพราะใช้สมมติฐานเดียวกัน ต่างกันที่การถ่วงน้ำหนัก scenario เท่านั้น ⚠️ EV/Sales ปัจจุบันของ AEVA สูงถึง ~78x (mcap $1.68B ÷ TTM revenue $21.6M) สูงกว่ากรอบ FV ที่ประเมินได้มาก สะท้อนว่าราคาตลาด "ราคาไปล่วงหน้ามาก" (priced for perfection) โดยตั้งอยู่บนสมมติฐานเติบโตที่สูงกว่า Bull case ของเราเองแล้ว
@@ -148,14 +174,14 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $15.52</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $3.68</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$2.58<br><small>MOS 30%</small></span>
-          <span>$2.94<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$3.68<br><small>Fair Value</small></span>
-          <span style="text-align:right">$3.93<br><small>กรอบบน FV</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
           <span style="text-align:right">$32.50<br><small>เป้าเฉลี่ย Analyst (n=4)</small></span>
         </div>
       </div>
@@ -169,19 +195,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">−322%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt"><b>ไม่มี Margin of Safety เลย (ราคาแพงกว่ามูลค่าเหมาะสมมาก)</b><br>ราคาตลาดสูงกว่ามูลค่าที่ประเมินได้จากกระแสรายได้ปัจจุบันหลายเท่า ผู้ที่เข้าซื้อ ณ ราคานี้กำลังจ่ายเงินล่วงหน้าสำหรับการเติบโตที่ยังไม่เกิดขึ้นจริง ควรรอราคาย่อลงมากหรือรอสัญญาณรายได้เชิงพาณิชย์ที่ชัดเจนกว่านี้</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$2.94</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$2.58</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $3.68</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="15.52" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -190,17 +216,17 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $15.52 • EPS ฐาน (รายได้/หุ้น) ~$0.34 • ไม่มีปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน (รายได้/หุ้น) ~$0.34 • ไม่มีปันผล</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS 22.1%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$2.10</div>
-          <div class="ret neg">−86.5%</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$0.61</span></li>
             <li><span>P/E ออก</span><span>3.5x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$0.00</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>รายได้โต ~40%/ปี แต่ dilution กดต่อหุ้นเหลือโต ~22%/ปี ตลาดกลับสู่ multiple ต่ำ (3-4x) จาก sentiment แย่ลง</span></li>
           </ul>
         </div>
@@ -208,12 +234,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +52.7%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$7.67</div>
-          <div class="ret neg">−50.6%</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$1.18</span></li>
             <li><span>P/E ออก</span><span>6.5x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$0.00</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>รายได้โตต่อเนื่อง ~75%/ปี ตามแนวโน้ม TTM ดีล OEM ทยอย ramp แต่ยังเจือจางหุ้นตามแผน</span></li>
           </ul>
         </div>
@@ -221,12 +247,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +74.2%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$15.89</div>
-          <div class="ret neg">+2.4%</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$1.77</span></li>
             <li><span>P/E ออก</span><span>9.0x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$0.00</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>รายได้โต ~100%/ปี พันธมิตร NVIDIA/OEM แปลงเป็นรายได้จริงเร็ว ตลาดให้ multiple สูงต่อเนื่อง (8-10x)</span></li>
           </ul>
         </div>
@@ -273,8 +299,8 @@
       <h2>เทคโนโลยี LiDAR น่าสนใจ แต่ราคาวิ่งนำหน้าปัจจัยพื้นฐานไปมาก</h2>
       <p>AEVA เป็นหนึ่งในผู้เล่น FMCW 4D LiDAR ที่มีเทคโนโลยีโดดเด่นและกำลังขยายฐานลูกค้าโดยเฉพาะพันธมิตร NVIDIA แต่บริษัทยังขาดทุนหนัก ส่วนของผู้ถือหุ้นติดลบ และต้องเจือจางหุ้นต่อเนื่องเพื่อประคองธุรกิจ เมื่อประเมินด้วยกรอบ Forward EV/Sales ที่ระมัดระวัง มูลค่าที่เหมาะสมต่ำกว่าราคาตลาดปัจจุบันมาก บ่งชี้ว่าราคาหุ้นได้สะท้อนสถานการณ์ที่ดีกว่า Bull case ของโมเดลนี้ไปแล้ว นักลงทุนควรรับความเสี่ยงสูงและพิจารณาเป็นการเก็งกำไรเชิงเทคโนโลยีมากกว่าการลงทุนตามมูลค่าพื้นฐาน</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$3.68 <span style="font-size:12px;color:#cab9a8">($3.42–$3.93)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −322%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$32.50 (Buy, n=4)</div></div>
       </div>
       <div class="zone">
@@ -287,7 +313,7 @@
   <div class="disc">
     <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะอัตราการเติบโตของรายได้, multiple ที่ตลาดให้ในอนาคต, อัตราคิดลดความเสี่ยง execution และอัตราการเจือจางหุ้น
-    ราคาหุ้นมีความผันผวนสูงและมีความเสี่ยงสูญเสียเงินลงทุนทั้งหมด (total-loss) โดยเฉพาะบริษัทที่ยังขาดทุนและมีส่วนของผู้ถือหุ้นติดลบเช่น AEVA ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ราคา ณ 11 ก.ย. 2569 จาก Yahoo Finance / StockAnalysis.com (ตรงกันทั้งสองแหล่ง) • ข้อมูลงบการเงิน/ประมาณการ 5 ปี+TTM จาก StockAnalysis.com • ข้อมูลตราสารหนี้แปลงสภาพจาก SEC 8-K และ White & Case press release (พ.ย. 2568) • ข้อมูลการขายหุ้นผู้บริหารจาก SEC Form 4 ผ่าน The Motley Fool (ก.ค. 2569)
+    ราคาหุ้นมีความผันผวนสูงและมีความเสี่ยงสูญเสียเงินลงทุนทั้งหมด (total-loss) โดยเฉพาะบริษัทที่ยังขาดทุนและมีส่วนของผู้ถือหุ้นติดลบเช่น AEVA ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ราคา ณ {{rd:priceDate}} จาก Yahoo Finance / StockAnalysis.com (ตรงกันทั้งสองแหล่ง) • ข้อมูลงบการเงิน/ประมาณการ 5 ปี+TTM จาก StockAnalysis.com • ข้อมูลตราสารหนี้แปลงสภาพจาก SEC 8-K และ White & Case press release (พ.ย. 2568) • ข้อมูลการขายหุ้นผู้บริหารจาก SEC Form 4 ผ่าน The Motley Fool (ก.ค. 2569)
   </div>
   <footer>Stock Analysis Dashboard • ข้อมูล ณ 9 ส.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 

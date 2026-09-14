@@ -10,6 +10,38 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 155,
+  "values": {
+    "px": 105.36,
+    "priceDate": "2026-09-11",
+    "dateEra": "CE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 140,
+    "fvHigh": 175,
+    "analystTgt": 163.4,
+    "shares": 84570000,
+    "revenue": 596000000,
+    "scenarios": [
+      {
+        "tgt": 104,
+        "div": null
+      },
+      {
+        "tgt": 173,
+        "div": null
+      },
+      {
+        "tgt": 260,
+        "div": null
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": false,
+      "perYear": "cagr"
+    }
+  },
   "theme": {
     "accent": "#0da1a1",
     "accentDark": "#097171",
@@ -41,18 +73,14 @@
     "min": 0,
     "max": 200,
     "grid": [50, 100, 150],
-    "fairLine": 155,
     "currency": "$",
     "highlight": [1, 6]
   },
   "gauge": {
     "min": 70,
     "max": 240,
-    "cur": 105.36,
-    "fair": 155,
     "fairLabelTop": "-58px"
-  },
-  "fv": 155
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +100,11 @@
     <div class="sub">ผู้ผลิต optical transceiver และ laser components แบบครบวงจร (vertically-integrated) สำหรับ data center 400G/800G + co-packaged optics (CPO) และ cable-TV (CATV)</div>
     <div class="price-row">
       <div>
-        <div class="px">$105.36<small>(AAOI)</small></div>
+        <div class="px">{{rd:px}}<small>(AAOI)</small></div>
       </div>
-      <div class="chg">▲ +196.3% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2026 (ปิดตลาด)<br>
+        ราคา ณ {{rd:priceDate}} (ปิดตลาด)<br>
         52 สัปดาห์ $18.50 – $233.67 • ผันผวนสูงมาก<br>
         ที่มา: StockAnalysis.com / Yahoo Finance / StockInvest.us
       </div>
@@ -87,9 +115,9 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">งบ FY2025 + TTM (รีเฟรชหลังประกาศงบ 6 ส.ค. 2569)</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">~$8.91B</div><div class="d">~84.57 ล้านหุ้น (Shares Outstanding)</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~{{rd:mcap}}</div><div class="d">~84.57 ล้านหุ้น (Shares Outstanding)</div></div>
       <div class="metric"><div class="k">P/E (TTM)</div><div class="v neg">N/A</div><div class="d">ขาดทุน — ไม่มี P/E <span class="pill r">loss-making</span></div></div>
-      <div class="metric"><div class="k">P/S (TTM)</div><div class="v neu">~15.0x</div><div class="d">รายได้ TTM ~$596M (+61.8% YoY) • ย่อลงหลังแรงขายทั้งกลุ่ม AI</div></div>
+      <div class="metric"><div class="k">P/S (TTM)</div><div class="v neu">~{{rd:ps}}x</div><div class="d">รายได้ TTM ~$596M (+61.8% YoY) • ย่อลงหลังแรงขายทั้งกลุ่ม AI</div></div>
       <div class="metric"><div class="k">EPS (TTM, GAAP)</div><div class="v neg">−$0.77</div><div class="d">ขาดทุนสุทธิ TTM ~$57M (Yahoo −$0.77 / SA −$0.79)</div></div>
 
       <div class="metric"><div class="k">รายได้ FY2025</div><div class="v">$455.7M</div><div class="d pos">▲ +83% YoY</div></div>
@@ -113,7 +141,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#1a73e8"></i>ราคา AAOI</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $155</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -143,7 +171,7 @@
       </div>
       <div class="fv-box">
         <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบกว้าง $140 – $175 (ความไม่แน่นอนสูง)</span></div>
-        <div class="r">$155</div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         <b>หมายเหตุ:</b> ข้าม <b>DDM/P/BV</b> และ <b>P/E</b> เพราะ <b>ไม่จ่ายปันผล</b> และ <b>ยังขาดทุน (EPS TTM −$0.77 Yahoo)</b> — ประเมินด้วย <b>ยอดขาย</b> แทน
@@ -160,14 +188,14 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $105</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $155</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$109<br><small>MOS 30%</small></span>
-          <span>$124<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$155<br><small>Fair Value</small></span>
-          <span style="text-align:right">$163<br><small>เป้า Analyst (StockAnalysis)</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:analystTgt}}<br><small>เป้า Analyst (StockAnalysis)</small></span>
           <span style="text-align:right">$220<br><small>เป้าสูงสุด</small></span>
         </div>
       </div>
@@ -182,19 +210,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict good">
-        <div class="big">+32%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt"><b>MOS ระดับปานกลาง</b><br>ราคาปัจจุบัน $131.41 (18 ส.ค. 2026) ต่ำกว่ามูลค่าเหมาะสม $155 ราว 15% หลังหุ้นกลุ่มชิป/ฮาร์ดแวร์ AI ถูกเทขายพร้อมกันทั้งกลุ่มเมื่อ 18 ส.ค. 2026 (de-rating ทั้งเซกเตอร์ ไม่ใช่ข่าวเฉพาะตัว) ราคาร่วงกลับเข้าสู่โซน MOS 10–20% ยังไม่ถึงโซนน่าสนใจ 20% ($124) และบริษัทยังขาดทุนพร้อม valuation อิงยอดขายอนาคตเป็นหลัก จึงเหมาะเฉพาะผู้รับความเสี่ยงสูงและจำกัดขนาดสถานะ</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$124</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$109</div><div class="d">โซนถูก (เผื่อความเสี่ยงสูง)</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูก (เผื่อความเสี่ยงสูง)</div></div>
         <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $145</div><div class="d">เริ่มมี MOS ที่มีความหมาย (~6%)</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="105.36" step="1">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="1">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -203,13 +231,13 @@
 
   <!-- ===== RETURN PROJECTION ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $105.36 • รายได้/หุ้นฐาน ~$13.0 (FY2026E, 84.57M หุ้น)</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • รายได้/หุ้นฐาน ~$13.0 (FY2026E, 84.57M หุ้น)</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>ยอดขาย +10%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$104</div>
-          <div class="ret neg">รวม ~ −1.3% (≈ −0.4%/ปี)</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>รายได้/หุ้น ปี 3</span><span>$17.3</span></li>
             <li><span>P/S ออก</span><span>6x</span></li>
@@ -220,8 +248,8 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>ยอดขาย +25%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$173</div>
-          <div class="ret pos">รวม ~ +64.2% (≈ +18.0%/ปี)</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>รายได้/หุ้น ปี 3</span><span>$25.4</span></li>
             <li><span>P/S ออก</span><span>6.8x</span></li>
@@ -232,8 +260,8 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>ยอดขาย +40%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$260</div>
-          <div class="ret pos">รวม ~ +146.8% (≈ +35.1%/ปี)</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>รายได้/หุ้น ปี 3</span><span>$35.7</span></li>
             <li><span>P/S ออก</span><span>7.3x</span></li>
@@ -285,9 +313,9 @@
       <h2>เดิมพัน AI optics ความเสี่ยงสูง — ร่วงตามแรงขายกลุ่มชิป AI ยัง "ขาดทุน" MOS กลับมาราว 15%</h2>
       <p>Applied Optoelectronics เป็น small-cap ผู้ผลิต optical transceiver/laser แบบครบวงจร ที่ได้อานิสงส์เต็มจากคลื่น 800G/1.6T และ CPO ใน data center AI — รายได้กระโดด +83% (FY2025, TTM ล่าสุดโต 61.8% เป็น $596M) และ guide ทะลุ $1.1B ปี 2026 แต่ยัง <b>ขาดทุน GAAP</b> (EPS TTM −$0.77 Yahoo / −$0.79 StockAnalysis) ลูกค้ากระจุกตัวสูงมาก (3 ราย = 91%) margin บาง และระดมทุนบ่อย หลังหุ้นกลุ่ม optics ถูกเทขายแรงต่อเนื่องตั้งแต่ต้น ก.ค. 2026 ("photonics reset") ราคาร่วงจากจุดสูงสุด $233.67 ไปแตะ ~$86 ปลาย ก.ค. ก่อนเด้งกลับแรง <b>+43.8% เป็น $135.63</b> (7 ส.ค. 2026) ทันทีหลังประกาศงบ 6 ส.ค. 2026 แล้วไต่ขึ้นแตะ <b>$150.28</b> (14 ส.ค. 2026) ก่อนร่วงกลับมาที่ <b>$131.41</b> (18 ส.ค. 2026) ตามแรงเทขายทั้งกลุ่มชิป/ฮาร์ดแวร์ AI (de-rating ทั้งเซกเตอร์ในวันเดียว ไม่ใช่ข่าวเฉพาะตัว) — ยังต่ำกว่าทั้ง fair value $155 (~15%) และเป้านักวิเคราะห์เฉลี่ย ~$163 (~19.6%) ยืนยันแล้วว่าเป็นการเคลื่อนไหวราคาจริงของตลาด <b>ไม่ใช่ stock split หรือความผิดพลาดของข้อมูล</b> เหมาะกับสายรับความเสี่ยงสูงและขนาดสถานะเล็กเท่านั้น</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$155 <span style="font-size:12px;color:#a8b6cc">($140–$175)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#66bb6a">MOS ~ +32%</div></div>
-        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#ffcc80">$163.4 (+55.1%)</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#a8b6cc">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#66bb6a">MOS ~ {{rd:mos}}</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#ffcc80">{{rd:analystTgt}} (+55.1%)</div></div>
       </div>
       <div class="zone">
         💡 <b>กลยุทธ์:</b> สาย value — ราคาปัจจุบัน $131.41 อยู่ในโซน MOS ปานกลาง ~15% ยังไม่ถึงโซนน่าสนใจ 20% ($124) ยังไม่ใช่จุดเข้าที่มี MOS สูง ควรรอย่อกลับสู่โซน MOS 20–30% ($109–$124) หรือทยอยสะสมเบา ๆ หากรับความเสี่ยงสูงได้ • สาย growth/เก็งกำไร — เข้าได้แต่คุมความเสี่ยง โดยติดตาม <b>การพลิกกำไร (non-GAAP op income)</b>, <b>gross margin</b>, <b>การกระจุกตัวลูกค้า</b> และ <b>การออกหุ้นเพิ่ม (dilution)</b> เป็นตัวชี้วัดหลัก

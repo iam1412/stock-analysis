@@ -10,6 +10,39 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 44.77,
+  "values": {
+    "px": 40.52,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 44.6,
+    "fvHigh": 44.94,
+    "eps": 2.14,
+    "shares": 554000000,
+    "bvps": 23.93,
+    "baseEps": 2.14,
+    "scenarios": [
+      {
+        "tgt": 37.4,
+        "div": 1.65
+      },
+      {
+        "tgt": 53.55,
+        "div": 1.85
+      },
+      {
+        "tgt": 70.32,
+        "div": 2.05
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": false,
+      "perYear": "cagr"
+    }
+  },
   "theme": {
     "accent": "#91922a",
     "accentDark": "#6a6b1f",
@@ -40,17 +73,13 @@
     "min": 30,
     "max": 70,
     "grid": [40, 50, 60],
-    "fairLine": 44.77,
     "currency": "$",
     "highlight": [4, 11]
   },
   "gauge": {
     "min": 30,
-    "max": 55,
-    "cur": 40.52,
-    "fair": 44.77
-  },
-  "fv": 44.77
+    "max": 55
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -70,11 +99,11 @@
     <div class="sub">ปูนซีเมนต์ • มวลรวม (หิน/ทราย) • คอนกรีตผสมเสร็จ • แอสฟัลต์ • วัสดุมุงหลังคา (Solutions &amp; Products) — ผู้นำวัสดุก่อสร้างอเมริกาเหนือ แยกตัวจาก Holcim 23 มิ.ย. 2568</div>
     <div class="price-row">
       <div>
-        <div class="px">$40.52<small>(AMRZ)</small></div>
+        <div class="px">{{rd:px}}<small>(AMRZ)</small></div>
       </div>
-      <div class="chg">▼ −21.8% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569 (StockAnalysis.com, ตรงกับ Yahoo Finance ต่าง 0%)<br>
+        ราคา ณ {{rd:priceDate}} (StockAnalysis.com, ตรงกับ Yahoo Finance ต่าง 0%)<br>
         กรอบ 52 สัปดาห์ $44.12 – $65.94<br>
         ที่มา: Yahoo Finance, StockAnalysis.com, Amrize Investor Relations (SEC filings)
       </div>
@@ -86,9 +115,9 @@
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">Yahoo Finance + StockAnalysis.com ณ 7 ส.ค. 2569</div></div>
     <div class="grid g4">
       <div class="metric"><div class="k">Market Cap</div><div class="v">$22.45B</div><div class="d">554M หุ้น</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~18.9x</div><div class="d">ใช้ EPS ปกติ FY2568 $2.14 (TTM vendor เพี้ยน — ดู full-disclosure ข้อ 3)</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">ใช้ EPS ปกติ FY2568 $2.14 (TTM vendor เพี้ยน — ดู full-disclosure ข้อ 3)</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">N/A</div><div class="d">spin-off จาก Holcim &lt;18 เดือน — เทียบ P/E ปิดปี 2568 25.3x กับ CRH 17.7x / MLM,VMC ~33.5–35.6x แทน</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">~1.69x</div><div class="d">BVPS ประมาณ $23.93 (ย้อนจาก P/B ปี 2568) — บริบทเท่านั้น ไม่ใช้เป็นขา FV (กฎหุ้นวัฏจักร 0.4b)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">~{{rd:pbv}}x</div><div class="d">BVPS ประมาณ $23.93 (ย้อนจาก P/B ปี 2568) — บริบทเท่านั้น ไม่ใช้เป็นขา FV (กฎหุ้นวัฏจักร 0.4b)</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ FY2568</div><div class="v">$1.19B</div><div class="d">−7.0% YoY (จาก $1.27B ปี 2567)</div></div>
       <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$2.14</div><div class="d">GAAP diluted FY2568 — reconcile แล้ว (ดู full-disclosure ข้อ 3)</div></div>
@@ -111,7 +140,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#91922a"></i>ราคา AMRZ</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $44.77</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -133,8 +162,8 @@
         <div class="mval">$44.60</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $44.60 – $44.94</span></div>
-        <div class="r">$44.77</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         <b>หมายเหตุความโปร่งใส (full-disclosure):</b><br>
@@ -152,14 +181,14 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $40.52</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $44.77</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$31.34<br><small>MOS 30%</small></span>
-          <span>$35.82<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$44.77<br><small>Fair Value</small></span>
-          <span style="text-align:right">$44.94<br><small>กรอบบน FV</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
           <span style="text-align:right">$62.00<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
@@ -173,19 +202,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">+9%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt"><b>ไม่มี Margin of Safety (ราคาแพงกว่ามูลค่าเหมาะสมเล็กน้อย ~4%)</b><br>แม้ราคาจะร่วงจากจุดสูงสุด ก.พ. 2569 ($64.99) มาแล้วเกือบ 28% แต่ FV ที่ปรับลดมาร์จิ้นตามการตัดเป้า EBITDA ปี 2569 ก็ลดลงตามไปด้วย — ยังไม่ใช่จังหวะเข้าซื้อตาม MOS แนะนำรอสะสมโซน MOS 20% ($35.82) หรือต่ำกว่า</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$35.82</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$31.34</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $44.77</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="40.52" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -194,17 +223,17 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $40.52 • EPS ฐาน ~$2.14 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}}{{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS +1%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$37.40</div>
-          <div class="ret neg">−7.7% (3 ปี, ~−3%/ปี)</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$2.20</span></li>
             <li><span>P/E ออก</span><span>17x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$1.65</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>ต้นทุนพลังงาน/ขนส่งค้างระดับสูงเกินกว่าที่บริษัทให้เป้า price-over-cost ไม่กลับมาเป็นบวกในไตรมาส 4/2569 ตามแผน + Building Envelope อ่อนตัวต่อเนื่องจากดีมานด์ปรับปรุงบ้านชะลอ + ก่อสร้างสหรัฐฯ ชะลอตามดอกเบี้ยสูงต่อเนื่อง → มัลติเปิลลดสู่ระดับ CRH</span></li>
           </ul>
         </div>
@@ -212,12 +241,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +6%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$53.55</div>
-          <div class="ret pos">+32.2% (3 ปี, ~+9.8%/ปี)</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$2.55</span></li>
             <li><span>P/E ออก</span><span>21x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$1.85</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>price-over-cost กลับเป็นบวกไตรมาส 4/2569 ตามเป้าบริษัท แกน Building Materials (ปูน/มวลรวม) โตต่อเนื่องหนุนด้วยงบโครงสร้างพื้นฐาน IIJA + M&amp;A (PB Materials) ส่วน Building Envelope ทรงตัว อัตราภาษีขึ้นสู่ 23–25% ตามเป้า</span></li>
           </ul>
         </div>
@@ -225,12 +254,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +11%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$70.32</div>
-          <div class="ret pos">+73.5% (3 ปี, ~+20.2%/ปี)</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$2.93</span></li>
             <li><span>P/E ออก</span><span>24x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$2.05</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>วัฏจักรก่อสร้างสหรัฐฯ ฟื้นแรง (ดอกเบี้ยลด หนุนที่อยู่อาศัย + data center/reshoring capex ต่อเนื่อง) ราคาปูนต่อตันปรับขึ้นตามดีมานด์ ประหยัดต้นทุน ASPIRE เกินเป้า $250M ก่อนกำหนด (2571) + price-over-cost ฟื้นเร็วกว่าคาด → มัลติเปิลไล่ขึ้นใกล้กลุ่ม MLM/VMC</span></li>
           </ul>
         </div>
@@ -276,8 +305,8 @@
       <h2>แฟร์ถึงตึงตัวเล็กน้อย — รอราคาย่อสู่โซน MOS 20% ก่อนเพิ่มน้ำหนัก</h2>
       <p>Amrize เป็นผู้นำวัสดุก่อสร้างอเมริกาเหนือที่เพิ่งแยกตัวจาก Holcim (23 มิ.ย. 2568) ด้วยพอร์ตปูนซีเมนต์-มวลรวม-คอนกรีตผสมเสร็จที่แข็งแรง (Segment EBITDA +41.7% YoY ไตรมาส 1/2569) ผสมกับธุรกิจ Solutions &amp; Products/Roofing ที่ผันผวนกว่า ราคาหุ้นร่วงเกือบ 28% จากจุดสูงสุด ก.พ. 2569 หลังตัดเป้า Adjusted EBITDA ปี 2569 จากต้นทุนพลังงาน-ขนส่งที่สูงขึ้น (6 ส.ค. 2569) เมื่อประเมินด้วยมัลติเปิลที่ discount จากระดับ AMRZ เองก่อนตัดเป้า (สะท้อนความเสี่ยง margin) และเทียบกรอบกลุ่ม CRH–MLM/VMC ราคาปัจจุบันแพงกว่ามูลค่าเหมาะสมที่ประเมินไว้เล็กน้อย (~4%) — ยังไม่ใช่จังหวะเข้าซื้อใหม่ แต่ก็ไม่ได้แพงเกินเหตุเมื่อเทียบกับโมเมนตัมแกนธุรกิจหลักที่ยังแข็งแรง</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$44.77 <span style="font-size:12px;color:#cab9a8">($44.60–$44.94)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +9%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$62.00 (Buy)</div></div>
       </div>
       <div class="zone">
@@ -290,7 +319,7 @@
   <div class="disc">
     <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต — โดยเฉพาะ AMRZ ที่เพิ่งแยกตัวจาก Holcim และมีงบ carve-out ย้อนหลังที่ไม่ใช่ผลดำเนินงานจริงของบริษัทเดี่ยว
-    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ราคา ณ 11 ก.ย. 2569 จาก StockAnalysis.com (cross-check Yahoo Finance ตรงกัน 0%) • ข้อมูลงบการเงิน/EBITDA guidance จาก Amrize Q4/FY2568 และ Q2/2569 earnings release, SEC Form 10 (carve-out financials), 8-K filings, investors.amrize.com • ตัวคูณอ้างอิงจาก stockanalysis.com/stocks/AMRZ,MLM,VMC,CRH/financials/ratios/
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ราคา ณ {{rd:priceDate}} จาก StockAnalysis.com (cross-check Yahoo Finance ตรงกัน 0%) • ข้อมูลงบการเงิน/EBITDA guidance จาก Amrize Q4/FY2568 และ Q2/2569 earnings release, SEC Form 10 (carve-out financials), 8-K filings, investors.amrize.com • ตัวคูณอ้างอิงจาก stockanalysis.com/stocks/AMRZ,MLM,VMC,CRH/financials/ratios/
   </div>
   <footer>Stock Analysis Dashboard • ข้อมูล ณ 8 ส.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 
