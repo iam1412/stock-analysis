@@ -1274,7 +1274,7 @@ ok(U.commitBody([], []) === '', 'commitBody: ว่างเมื่อไม�
       // ฐานที่ประกาศไม่ได้ปิดปาก W17: หมวด 6 ค้างจริง (post-expand: values.px ×1.3 หลัง render) → W17 ยังยิง
       const exp = expandReport(v2);
       const stale = exp.replace(/("px":\s*)([0-9.]+)/, (m, a, n) => a + (parseFloat(n) * 1.3).toFixed(2));
-      ok(stale !== exp && CR.checkHtml(stale, sym + '.html').errors.some((e) => e.id === 'W17'), `F2 ${sym}: หมวด 6 ค้างจริง (JSON ขยับหลัง render) → W17 ยังยิงภายใต้ฐานที่ประกาศ`);
+      ok(stale !== exp && CR.checkHtml(stale, sym + '.html', { source: v2 }).errors.some((e) => e.id === 'W17'), `F2 ${sym}: หมวด 6 ค้างจริง (JSON ขยับหลัง render) → W17 ยังยิงภายใต้ฐานที่ประกาศ`);
     }
     ok(DV.scenarioPlan(expandReport(FX.AAPL()), 326.57) !== undefined && JSON.stringify(DV.scenarioPlan(FX.AAPL(), 330)) === JSON.stringify(DV.scenarioPlan(FX.AAPL(), 330, undefined, undefined)), 'F2: ไม่ส่ง basis (v1) = ผลเดิม');
 
@@ -1303,7 +1303,7 @@ ok(U.commitBody([], []) === '', 'commitBody: ว่างเมื่อไม�
     const rm = U.patchReport(monthDisc, { newPrice: pxK(aapl, 1.01), dateParts: dOct, chartData: null });
     ok(rm.html.includes('ข้อมูลราคา ณ ต.ค. 2569'), 'F3: disclaimer ระดับเดือน literal → "ราคา ณ ต.ค. 2569" (ไม่เติมวัน)', (rm.html.match(/ข้อมูลราคา ณ [^<]{0,20}/) || [])[0]);
     const gm = U.gateAfterPatch(rm.html, 'AAPL.html');
-    ok(gm.ok && !CR.checkHtml(expandReport(rm.html), 'AAPL.html').warnings.some((w) => w.id === 'W22'), 'F3: disclaimer ระดับเดือนหลัง patch → gate ผ่าน + ไม่มี W22', gm.detail);
+    ok(gm.ok && !CR.checkHtml(expandReport(rm.html), 'AAPL.html', { source: rm.html }).warnings.some((w) => w.id === 'W22'), 'F3: disclaimer ระดับเดือนหลัง patch → gate ผ่าน + ไม่มี W22', gm.detail);
     // hit ที่อยู่ใน span ของ token = token ชนะ (ไม่เขียนซ้ำ) — AAPL_V2 disclaimer เป็น {{rd:priceDate}}
     const rt = U.patchReport(aapl, { newPrice: pxK(aapl, 1.01), dateParts: dOct, chartData: null });
     ok(sameToks(aapl, rt.html) && rt.html.includes('ข้อมูลราคา ณ {{rd:priceDate}}') && !rt.derived.some((c) => /^วันที่/.test(c)), 'F3: วันที่ที่เป็น token ไม่ถูกเขียนซ้ำ (token render วันใหม่เอง)', rt.derived.join(' ; '));
@@ -1320,7 +1320,7 @@ ok(U.commitBody([], []) === '', 'commitBody: ว่างเมื่อไม�
         const bbl = FX.BBL_V2();
         const broken = bbl.replace(/("fairValue":)([0-9.]+)/, (m, a, n) => a + Math.round(parseFloat(n) * 1.2 * 100) / 100);
         ok(broken !== bbl, '(ตั้งฉาก) BBL_V2 stock-meta.fairValue ×1.2');
-        const before = CR.checkHtml(expandReport(broken), 'BBL.html').errors.map((e) => e.id);
+        const before = CR.checkHtml(expandReport(broken), 'BBL.html', { source: broken }).errors.map((e) => e.id);
         ok(before.includes('E30') || before.includes('E31'), '(ตั้งฉาก) ก่อนซ่อม E30/E31 ยิง', before.join(','));
         fs.writeFileSync(path.join(dir, 'BBL.html'), broken);
         const logs = [], orig = console.log;
@@ -1330,7 +1330,7 @@ ok(U.commitBody([], []) === '', 'commitBody: ว่างเมื่อไม�
         const after = fs.readFileSync(path.join(dir, 'BBL.html'), 'utf8');
         ok(h.touched === 1 && after !== broken, 'M7: healDerived v2 ซ่อมกระจกล้วน → touched 1 + เขียนไฟล์', JSON.stringify(h));
         ok(/stock-meta กระจก .*fairValue/.test(logs.join('\n')), 'M7: มีบรรทัด change "stock-meta กระจก … fairValue …"', logs.join(' | ').slice(0, 300));
-        const errsAfter = CR.checkHtml(expandReport(after), 'BBL.html').errors.map((e) => e.id);
+        const errsAfter = CR.checkHtml(expandReport(after), 'BBL.html', { source: after }).errors.map((e) => e.id);
         ok(!errsAfter.includes('E30') && !errsAfter.includes('E31') && after === bbl, 'M7: หลังซ่อม E30/E31 เงียบ + ไฟล์กลับเท่า fixture เดิมทุก byte', errsAfter.join(','));
         // ไฟล์ที่ไม่มีอะไรค้าง → ไม่นับ
         const logs2 = []; console.log = (...x) => logs2.push(x.join(' '));
@@ -1351,6 +1351,184 @@ ok(U.commitBody([], []) === '', 'commitBody: ว่างเมื่อไม�
       ok(!U.decide({ oldPrice: U.pxOf(staleSm, RM.readStockMeta(staleSm)), newPrice: np, fv: U.fvOf(staleSm, RM.readStockMeta(staleSm)), currencyOk: true }).freeze
         && !!U.decide({ oldPrice: RM.readStockMeta(staleSm).price, newPrice: np, fv: U.fvOf(staleSm, RM.readStockMeta(staleSm)), currencyOk: true }).freeze,
         'M8: decide(oldPrice=pxOf) ไม่ freeze · (ตั้งฉาก) oldPrice=กระจกค้าง → freeze ผิด ๆ');
+    }
+
+    // ── N1 (ระยะ 2 ส่วน F · residual จาก re-review fix wave ส่วน D): กระจก stock-meta ของ healDerived
+    //    **ห้ามทับ pe/dividendYield ที่ pass derived เพิ่งเขียน** — mutant ที่ทับเคยผ่าน update-prices-test ครบทุกเคส
+    //    (ทางเดิน --heal-derived ไม่มีเทสไหนเดินจนถึงกระจกบนไฟล์จริง) · pin ด้วย 2 ชั้น:
+    //    (ก) fixture สะอาด → heal ต้อง touched 0 + ไฟล์เท่าเดิมทุก byte (mutant: DDOG pe 75 → ~451 ⇒ touched 1)
+    //    (ข) fixture ที่ค่าเสีย (SRE ตาม brief) → E41/W19 ยิง → heal --write → หายและ **คงหาย** (heal ซ้ำ touched 0)
+    //        ค่าที่ได้คืนต้องเป็นฐานของการ์ด (pe 24.1) ไม่ใช่ราคา÷values.eps (SRE ไม่มี eps ⇒ mutant เขียน null)
+    {
+      const healOf = (dir) => { const o = console.log; console.log = () => {}; try { return U.healDerived({ dir, only: new Set(), write: true, prose: false }); } finally { console.log = o; } };
+      const idsOf = (h, n) => { const r = CR.checkHtml(expandReport(h), n, { source: h }); return r.errors.map((e) => e.id).concat(r.warnings.map((w) => w.id)); };
+      const savedN1 = process.env.STALE_TODAY;
+      try {
+        // (ก) ทุก fixture v2 สะอาด: heal = no-op
+        for (const s of FX.SYMS) {
+          process.env.STALE_TODAY = FX.TODAY_OF[s];
+          const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'healv2-'));
+          try {
+            const src9 = FX[`${s}_V2`]();
+            fs.writeFileSync(path.join(dir, `${s}.html`), src9);
+            const h = healOf(dir);
+            ok(h.touched === 0 && h.failed.length === 0 && fs.readFileSync(path.join(dir, `${s}.html`), 'utf8') === src9,
+              `N1(ก) ${s}: --heal-derived บน fixture v2 สะอาด = no-op (กระจกไม่ทับ pe/dividendYield ของ pass derived)`, JSON.stringify(h));
+          } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+        }
+        // (ข) SRE: pe/dividendYield เสีย **ในย่านที่ตัวตรวจยอมตัดสิน** (ต่างเกิน tolerance แต่ยังไม่หลุดย่านฐานต่างกัน)
+        process.env.STALE_TODAY = FX.TODAY_OF.SRE;
+        const dir9 = fs.mkdtempSync(path.join(os.tmpdir(), 'healv2-sre-'));
+        try {
+          const src9 = FX.SRE_V2(), sm9 = RM.readStockMeta(src9);
+          const broken = src9.replace(/("pe":)[0-9.]+/, '$120.5').replace(/("dividendYield":)[0-9.]+/, '$12.2');
+          ok(broken !== src9 && RM.readStockMeta(broken).pe === 20.5, '(ตั้งฉาก M9ข) SRE stock-meta.pe/dividendYield เสีย');
+          const pre = idsOf(broken, 'SRE.html');
+          ok(pre.includes('E41') && pre.includes('W19'), 'N1(ข) SRE เสีย → E41 + W19 ยิง', pre.join(','));
+          const fp9 = path.join(dir9, 'SRE.html');
+          fs.writeFileSync(fp9, broken);
+          const h1 = healOf(dir9), after = fs.readFileSync(fp9, 'utf8'), smA = RM.readStockMeta(after);
+          const post = idsOf(after, 'SRE.html');
+          ok(h1.touched === 1 && !post.includes('E41') && !post.includes('W19'), 'N1(ข) SRE: heal --write → E41/W19 หาย', `${JSON.stringify(h1)} ${post.join(',')}`);
+          ok(smA.pe === sm9.pe && smA.dividendYield === sm9.dividendYield,
+            `N1(ข) SRE: ค่าที่ heal คืนมา = ฐานของการ์ดเดิม (pe ${sm9.pe} · yield ${sm9.dividendYield}) ไม่ใช่ค่าที่ derive จาก values`, `${smA.pe} / ${smA.dividendYield}`);
+          ok(RM.readReportData(after).data.values.eps == null,
+            'N1(ข) SRE: values ไม่มี eps ⇒ กระจกที่เขียน pe จาก values จะได้ null — ตัวชี้ว่าเคสนี้ discriminate mutant ได้จริง');
+          const h2 = healOf(dir9), post2 = idsOf(fs.readFileSync(fp9, 'utf8'), 'SRE.html');
+          ok(h2.touched === 0 && !post2.includes('E41') && !post2.includes('W19'), 'N1(ข) SRE: heal ซ้ำ → touched 0 · E41/W19 ยัง**คง**หาย (converged)', `${JSON.stringify(h2)} ${post2.join(',')}`);
+        } finally { fs.rmSync(dir9, { recursive: true, force: true }); }
+      } finally { process.env.STALE_TODAY = savedN1; }
+    }
+
+    // ── N2 (ระยะ 2 ส่วน F · item 4): วงเล็บทวนวันที่ที่ parser อ่านไม่ออก → **note** แบบเดียวกับ v1
+    //    เดิมทาง v2 เงียบสนิท: parenDateAfter คืน null ⇒ ไม่มี edit **และ** tripwire ก็ข้าม ⇒ วันเก่าค้างในวงเล็บถาวร
+    //    (คลังวันนี้ 0 ใบ — ปิดช่องว่าง ไม่ใช่แก้บั๊กที่กำลังเกิด) · DPZ = ใบเดียวใน fixture ที่วงเล็บทวนเป็น literal
+    {
+      const savedN2 = process.env.STALE_TODAY;
+      process.env.STALE_TODAY = FX.TODAY_OF.DPZ;
+      try {
+        const okSrc = FX.DPZ_V2();
+        const badSrc = okSrc.replace('(11 ก.ย. 2569 ตลาดปิด)', '(11 กย. 2569 ตลาดปิด)');   // "กย." ไม่อยู่ในคลังชื่อเดือน
+        // ตรวจบน **view ที่ render แล้ว** (ต้นฉบับ v2 มีแต่ token — findPriceDate อ่านวันที่ไม่ได้โดยโครงสร้าง)
+        const headOf = (h) => RV.renderValues(h, RM.readReportData(h).data, RM.readStockMeta(h)).match(/<header[\s\S]*?<\/header>/i)[0];
+        const parenOf = (h) => { const hd = headOf(h); return PD.parenDateAfter(hd, PD.findPriceDate(hd)); };
+        ok(badSrc !== okSrc && !!parenOf(okSrc) && parenOf(badSrc) === null,
+          '(ตั้งฉาก N2) "(11 กย. 2569 …)" → parenDateAfter อ่านไม่ออกจริง ขณะรูปเดิมอ่านออก');
+        const dpN2 = { day: 12, monIdx: 8, yearCE: 2026 };
+        const run = (h) => U.patchReport(h, { newPrice: Math.round(RM.readReportData(h).data.values.px * 1.02 * 100) / 100, dateParts: dpN2, chartData: null });
+        const rOk = run(okSrc), rBad = run(badSrc);
+        const NOTE = /วันที่ทวนในวงเล็บ \(v2\)/;
+        ok(!rOk.notes.some((n) => NOTE.test(n)), 'N2: วงเล็บที่อ่านออก → ไม่มี note (เขียนวันใหม่ให้ตามปกติ)', rOk.notes.join(' | '));
+        ok(rBad.notes.some((n) => NOTE.test(n)), 'N2: วงเล็บที่อ่านไม่ออก → มี note (ไม่ค้างเงียบ · cron พิมพ์ note ในบรรทัดสรุปของใบนั้น)', rBad.notes.join(' | '));
+        ok(rBad.changed && U.gateAfterPatch(rBad.html, 'DPZ.html').ok,
+          'N2: เป็น note ไม่ใช่ throw — ใบยัง patch/ผ่าน gate ได้ (เขียนวงเล็บไม่ได้ ≠ ทั้งใบใช้ไม่ได้)');
+        ok(rBad.html.includes('(11 กย. 2569 ตลาดปิด)'), 'N2: ไม่เดา — วงเล็บที่อ่านไม่ออกถูกคงไว้ทุก byte');
+      } finally { process.env.STALE_TODAY = savedN2; }
+    }
+
+    // ── N3 (final review ส่วน F · I1): **รอยต่อ cron ทาง v2 ครบสายในการรันเดียว** ──
+    // ช่องว่างที่ปิด: เดิมไม่มีเทสไหนเดิน `patchReport` ทาง v2 บนใบที่ **footer ≥ PROSE_TOKEN_SINCE พร้อมกับราคาขยับ**
+    //   ⇒ `proseTokensIfNew` เป็น no-op ในทุกเคสที่มีอยู่ (N2 ใช้ fixture footer 29 ส.ค. < SINCE · self-test เรียก healer ตรง ๆ ไม่มีราคาขยับ)
+    //   ⇒ ถ้ามีคนสลับลำดับไปทำ prose **หลัง** `derivedPassV2` · เทียบกับค่า **ก่อน** patch · หรือลืม `pt.changes.concat(...)`
+    //   เทสเดิมผ่านหมด (พิสูจน์แล้วด้วย mutant ทั้ง 5 ตัว — ดู task-18-report.md "Final review fix")
+    // ลำดับที่ตรึง: เขียน values → proseTokensIfNew → derivedPassV2 (keep-map) → mirrorStockMeta
+    // ★ ใช้ fixture 2 ใบคนละสกุล/คนละจุดแข็ง: BBL (THB · prose 6 จุด) · DDOG (USD · การ์ดเยอะ + ฐาน P/E ต่างจาก values.eps ชัด)
+    {
+      const { footerDate } = require('../tools/queue/footer-date.js');   // ตัวอ่านวันวิเคราะห์ตัวเดียวกับที่ E44/cron ใช้
+      const savedN3 = process.env.STALE_TODAY;
+      const dpN3 = { day: 12, monIdx: 8, yearCE: 2026 };
+      const TH_MON_N3 = U.THAI_MONTHS;
+      const setFooterN3 = (h, iso) => {
+        const p = RV.parseIso(iso);
+        return h.replace(/(ข้อมูล\s*ณ\s*)\d{1,2}\s*[ก-๙.]+\s*\d{4}/, (m, a) => `${a}${p.day} ${TH_MON_N3[p.monIdx]} ${p.yearCE}`);
+      };
+      const r1 = (v) => Math.round(v * 10) / 10;
+      const r2 = (v) => Math.round(v * 100) / 100;
+      try {
+        for (const S of ['BBL', 'DDOG']) {
+          process.env.STALE_TODAY = '2026-09-15';
+          const src0 = FX[`${S}_V2`]();
+          const rd0 = RM.readReportData(src0).data, sm0 = RM.readStockMeta(src0);
+          const newPx = r2(rd0.values.px * 1.05);
+          const rdN = JSON.parse(JSON.stringify(rd0)); rdN.values.px = newPx;
+          const dPost = RV.derive(rdN, sm0), dPre = RV.derive(rd0, sm0);
+          // prose ของ fixture เขียนเลขแบบปัดไว้ ("฿191" · "~2%") ⇒ healer แตะไม่ได้ตามกติกา byte-equality
+          //   ⇒ ปรับให้เป็น "รูปที่ token จะ render **หลัง** patch" เพื่อให้เคสนี้ได้ทดสอบรอยต่อจริง ๆ
+          //   (นี่คือสาระของลำดับที่ตรึง: ถ้าเทียบกับค่า **ก่อน** patch จุดพวกนี้จะไม่ถูกแทนเลย)
+          let src = src0;
+          for (const h of [...RV.proseBoundHits(src0, dPre)].reverse()) {
+            let w; try { w = String(RV.TOKENS[h.token](dPost)); } catch { continue; }
+            src = src.slice(0, h.at) + w + src.slice(h.at + h.len);
+          }
+          src = setFooterN3(src, RV.PROSE_TOKEN_SINCE);
+          // ★ ยาม setup: `setFooterN3` เงียบได้ถ้ารูป footer ไม่ตรง (AAPL_V2 = ช่วงวัน "22–23 มิ.ย. 2026" ⇒ ไม่แมตช์
+          //   แล้วทั้งเคสจะกลายเป็น no-op ที่ "ผ่าน" โดยไม่ได้ทดสอบอะไร) — ต้องยืนยันว่าเลื่อนวันได้จริงก่อนเสมอ
+          const fN3 = footerDate(src);
+          ok(!!fN3 && fN3.iso === RV.PROSE_TOKEN_SINCE, `(ตั้งฉาก N3 ${S}) footer = PROSE_TOKEN_SINCE จริง`, fN3 && fN3.iso);
+          const nPre = RV.proseBoundHits(src, dPost).length;
+          ok(nPre > 0, `(ตั้งฉาก N3 ${S}) มี prose ผูกราคา ${nPre} จุดให้ healer แทน (ไม่งั้นเคสนี้ว่างเปล่า)`);
+
+          const r = U.patchReport(src, { newPrice: newPx, dateParts: dpN3, chartData: null });
+          const rdA = RM.readReportData(r.html).data, smA = RM.readStockMeta(r.html);
+          const dA = RV.derive(rdA, smA);
+          const proseCh = r.derived.filter((c) => /^prose:/.test(c));
+          const cardCh = r.derived.filter((c) => !/^prose:/.test(c));
+
+          // (a) prose ที่เข้าเกณฑ์กลายเป็น token ครบ — และ **ข้อความที่คนอ่านเห็นไม่เปลี่ยน** (render-neutral)
+          ok(proseCh.length === nPre && RV.proseBoundHits(r.html, dA).length === 0,
+            `N3 ${S} (a) prose ผูกราคาถูกแทนด้วย token ครบ ${nPre} จุด · ไม่เหลือ literal`, `changes ${proseCh.length} · เหลือ ${RV.proseBoundHits(r.html, dA).length}`);
+          ok(RV.renderValues(r.html, rdA, smA).includes(String(RV.TOKENS.px(dA))),
+            `N3 ${S} (a') หน้าที่ render แล้วยังมีราคาใหม่ที่จุด prose (แทน token แล้วคนอ่านเห็นเลขเดิมของรอบนี้)`);
+
+          // (b) pass derived เขียนการ์ดที่ผูกราคาครบ — วัดด้วย **convergence ของ pass เอง** (ไม่พึ่ง gate)
+          ok(cardCh.length > 0, `N3 ${S} (b) มีการเขียนการ์ด/stock-meta ที่ผูกราคาอย่างน้อย 1 จุด`, cardCh.join(' | '));
+          const again = U.derivedPassV2(r.html, newPx, {});
+          ok(again.changes.length === 0 && again.html === r.html,
+            `N3 ${S} (b) รัน derivedPassV2 ซ้ำที่ราคาเดิม → ไม่มีอะไรให้แก้อีก (pass เขียนครบในรอบเดียว)`, again.changes.join(' | '));
+
+          // (c) กระจก stock-meta **ไม่ทับ** pe/dividendYield ที่ pass derived เพิ่งเขียน
+          //     ตัวชี้ = ค่าที่ได้ต้อง **ต่างจาก** ค่าที่กระจกจะเขียนถ้ามันคำนวณจาก values (ฐานของการ์ด ≠ values.eps/dps)
+          const mirrorPe = dA.pe == null ? null : r1(dA.pe);
+          const mirrorYld = dA.yield == null ? null : r2(dA.yield);
+          ok(smA.pe !== mirrorPe, `N3 ${S} (c) stock-meta.pe = ฐานการ์ด ${smA.pe} ≠ ค่าที่กระจกจาก values จะเขียน ${mirrorPe}`);
+          ok(smA.dividendYield !== mirrorYld, `N3 ${S} (c) stock-meta.dividendYield = ฐานการ์ด ${smA.dividendYield} ≠ ค่าจาก values ${mirrorYld}`);
+          ok(smA.price === newPx && smA.fairValue === rdA.fv && smA.mos === r1(dA.mos),
+            `N3 ${S} (c) กระจกเขียน 4 คีย์ของตัวเองถูกต้อง (price/fairValue/mos)`, `${smA.price}/${smA.fairValue}/${smA.mos}`);
+
+          // (d) ผลรวมทั้งหมดผ่าน gate จริง (ประตูเดียวกับที่ cron ใช้ตัดสิน patch-rejected)
+          const gN3 = U.gateAfterPatch(r.html, `${S}.html`);
+          ok(gN3.ok, `N3 ${S} (d) gateAfterPatch ผ่าน (E44 เงียบเพราะ prose เป็น token แล้ว)`, `${(gN3.codes || []).join(',')} ${(gN3.detail || '').slice(0, 160)}`);
+
+          // (e) รันซ้ำที่ราคาเดิม = ไม่มีอะไรเปลี่ยน (ไม่มีการเขียนวนทุกวัน)
+          const rAgain = U.patchReport(r.html, { newPrice: newPx, dateParts: dpN3, chartData: null });
+          ok(rAgain.changed === false && rAgain.derived.length === 0,
+            `N3 ${S} (e) patchReport ซ้ำที่ราคาเดิม → changed=false · 0 การเปลี่ยนแปลง (idempotent)`, `${rAgain.changed} · ${rAgain.derived.join(' | ')}`);
+        }
+
+        // N3(ข) — ฐานเปรียบเทียบของ healer ต้องเป็นค่า **หลัง** patch: literal ที่เท่ากับราคา **เก่า** ห้ามถูกแตะ
+        //   (ถ้าเทียบกับค่าก่อน patch ระบบจะกลายเป็น "cron เขียนตัวเลขในย่อหน้า" ซึ่ง CLAUDE.md §9 ห้าม)
+        //   ★ ผลพลอยได้ที่ตั้งใจเปิดเผย: จุดนั้นยังเป็น literal ⇒ **E44 ยังฟ้อง** ⇒ cron กัก `patch-rejected` รายไฟล์
+        //   ตามที่ open-item #37 อธิบายไว้ (ใบแบบนี้เข้าถึง cron ไม่ได้อยู่แล้วเพราะ verify/pre-push บล็อกตั้งแต่ push)
+        {
+          process.env.STALE_TODAY = '2026-09-15';
+          const src0 = FX.BBL_V2();
+          const rd0 = RM.readReportData(src0).data, sm0 = RM.readStockMeta(src0);
+          const newPx = r2(rd0.values.px * 1.05);
+          const dPre = RV.derive(rd0, sm0);
+          const oldTxt = String(RV.TOKENS.px(dPre));            // ราคา **ก่อน** patch ในรูปที่ token เคย render
+          let src = setFooterN3(src0, RV.PROSE_TOKEN_SINCE)
+            .replace('<div class="disc">', `<p>ราคาล่าสุด ${oldTxt} เมื่อวานนี้</p><div class="disc">`);
+          ok(footerDate(src).iso === RV.PROSE_TOKEN_SINCE && src.includes(`ราคาล่าสุด ${oldTxt}`), '(ตั้งฉาก N3ข) แทรกประโยคที่ถือราคาเก่าได้');
+          const r = U.patchReport(src, { newPrice: newPx, dateParts: dpN3, chartData: null });
+          ok(r.html.includes(`ราคาล่าสุด ${oldTxt}`),
+            `N3(ข) literal ที่เท่ากับราคาเก่า (${oldTxt}) ไม่ถูกแตะ — ฐานเทียบของ healer คือค่าหลัง patch ไม่ใช่ก่อน patch`);
+          ok(!r.derived.some((c) => c.includes(`${oldTxt} → `)), 'N3(ข) ไม่มี prose change ของจุดนั้นใน changes');
+          const gBad = U.gateAfterPatch(r.html, 'BBL.html');
+          ok(!gBad.ok && (gBad.codes || []).includes('E44'),
+            'N3(ข) จุดที่ยังเป็น literal ⇒ E44 ฟ้อง ⇒ cron กักเป็น patch-rejected (พฤติกรรมที่ประกาศไว้ ไม่ใช่การเขียนทับเงียบ ๆ)',
+            `${(gBad.codes || []).join(',')}`);
+        }
+      } finally { process.env.STALE_TODAY = savedN3; }
     }
   } finally { process.env.STALE_TODAY = saved; }
 }

@@ -61,7 +61,9 @@ const FIELDS = [
   //   ตัวอ่านตัวนี้กับตัวเขียนของ cron เป็นตัวเดียวกันแล้ว (12 ก.ย. 69) ⇒ ที่นี่อ่านเจอ = ที่นั่นเขียนได้เสมอ
   //   (snapshot ของแหล่ง "(ราคา $79.39 · 2 ก.ค. 2569 …)" ไม่ใช่วันที่ราคา ⇒ คืน null โดยตั้งใจ)
   F('f12', 'disclaimer "ราคา ณ"', { cadence: 'daily', owner: 'cron', gate: [], healer: 'patchReport', binding: 'pair', pair: { with: 'f10', how: 'date' }, required: false, extract: (h) => R(PD.findDiscPriceDate(disc(h))) }),  // census 12 ก.ย. 69: 46.4% <99% → optional (421/908 ใบ)
-  F('f13', 'footer "ข้อมูล ณ"', { cadence: 'write-once', owner: 'worker', gate: [], healer: null, binding: 'presence', required: false, extract: (h) => { const f = footerDate(h); return R(f && f.iso); } }),  // census 12 ก.ย. 69: 98.7% <99% → optional
+  // gate: E44 ใช้ช่องนี้ตัดสินว่า "ใบใหม่" ไหม (ระยะ 2 ส่วน F) · อ่านไม่ได้ = E44 ข้ามใบนั้น แล้ว W24 ฟ้องแทน
+  // required ยังเป็น false ตามกติกาของ manifest (census 98.7% < 99%) — ห้ามพลิกเพื่อยืม W21 มาฟ้อง
+  F('f13', 'footer "ข้อมูล ณ"', { cadence: 'write-once', owner: 'worker', gate: ['E44', 'W24'], healer: null, binding: 'presence', required: false, extract: (h) => { const f = footerDate(h); return R(f && f.iso); } }),  // census 12 ก.ย. 69: 98.7% <99% → optional
   F('f14', 'pxIn value', { cadence: 'daily', owner: 'cron', gate: ['E23'], healer: 'patchReport', binding: 'cron', required: true, extract: (h, c) => R(c.pxInput) }),  // census 12 ก.ย. 69: 100.0%
   F('f15', 'MOS .big', { cadence: 'daily', owner: 'cron', gate: ['E16', 'E30'], healer: 'patchReport', binding: 'cron', required: true, extract: (h, c) => R(c.mosBig) }),  // census 12 ก.ย. 69: 100.0%
   F('f16', 'stock-meta.mos/upside', { cadence: 'daily', owner: 'cron', gate: ['E30', 'E31'], healer: 'patchReport', binding: 'cron', required: true, extract: (h, c) => R(sm(c) && has(sm(c).mos) && has(sm(c).upside) ? [sm(c).mos, sm(c).upside] : null) }),  // census 12 ก.ย. 69: 100.0%

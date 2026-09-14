@@ -27,6 +27,9 @@ git commit -F …                    # title: price: refresh N symbols (YYYY-MM-
 
 ## จุดที่ script แตะ (เฉพาะตัวเลขโครงสร้างที่ gate คุม)
 
+> ตารางนี้คือทาง **v1** (43 ใบที่เหลือ) · ใบ **v2** (865 ใบ) เขียนราคา/วันที่/MOS/verdict/`pxIn`/`.chg` ลง `report-data.values` **ที่เดียว**
+> แล้วให้ `build` render — ดูหัวข้อ "ใบ v2" ท้ายตารางนี้
+
 | จุด | gate ที่บังคับ |
 |---|---|
 | `.px` ราคา header + วันที่ราคาใน `<header>` และ "ราคา ณ …" ใน disclaimer | E12, E27 |
@@ -41,6 +44,39 @@ git commit -F …                    # title: price: refresh N symbols (YYYY-MM-
 | **Market Cap (= ราคา × หุ้นที่พิมพ์) + P/S (= Market Cap ÷ รายได้ที่พิมพ์)** (19 ส.ค. 69) | **E43**, W16 |
 | **ผลตอบแทนฉาก 3 ปี หมวด 6 (Bear/Base/Bull) + ป้าย "จากจุดเข้า"** (20 ส.ค. 69 — `scenarioPlan`) | W17 |
 | **ปันผล % ในการ์ด + `stock-meta.dividendYield` (= DPS ที่พิมพ์ ÷ ราคา) · P/BV (= ราคา ÷ BVPS ที่พิมพ์)** (11 ก.ย. 69 — `yieldPlan`/`pbvPlan`) | W19, W20 |
+
+### ใบ v2 — cron เขียน `report-data.values` ไม่ได้เขียนสำเนาใน HTML (14 ก.ย. 2569 · ระยะ 2)
+
+คลังวันนี้ **865 ใบเป็น v2** (`report-data.v = 2`) · **43 ใบยังเป็น v1** (residue — ดู `docs/superpowers/audit/2026-09-11-stock-analyzer/phase2-exit.md`)
+ตารางข้างบนคือทาง **v1** · ใบ v2 เดินคนละทางในครึ่งแรกแล้วมาบรรจบกันที่ `patchDerived`:
+
+1. **ราคา/วันที่ = เขียนลง JSON ที่เดียว** — `patchReport` เขียน `values.px` + `values.priceDate` แล้ว **return ก่อนตัวเขียนสำเนา HTML ของ v1**
+   (`.px` · `#mCur` · `.big` · verdict class · `#pxIn` · `.chg` · วันที่ในหัว **ไม่ถูกแตะเลย** — ทั้งหมดเป็น `{{rd:…}}` ที่ `build` render ให้)
+   ⇒ ช่องพวกนี้ต้องเป็น token เสมอ มิฉะนั้นค่าจะค้างถาวรเพราะไม่มีตัวเขียนไหนเอื้อมถึง — บังคับด้วย pseudo-error **`V2TOKENS`**
+   (`test/check-reports.js` · รายการ **7 ช่อง** อยู่ที่ `RV.REQUIRED_TOKEN_SITES` ใน `tools/report-values.js` — ตรงกับวงเล็บข้างบนทุกช่อง
+   · คลัง 14 ก.ย. 69 ยิง **0/908** · ขอบเขต/ข้อจำกัดที่ตรวจไม่ได้ → `docs/quality-gate.md` หัวข้อ "pseudo-error ที่อยู่นอกตาราง `CHECKS`")
+2. **pass derived ทำงานบน "view ที่ render แล้ว"** (`derivedPassV2`) — การ์ด P/E · Market Cap · P/S · ปันผล % · P/BV · % ของราคาเป้า ·
+   หมวด 6 ที่ยังเป็น literal ยังต้องผ่าน `patchDerived` ตัวเดียวกับ v1 แต่ตัวอ่านของมันต้องเห็น **ค่าที่ render แล้ว** ไม่ใช่ `{{rd:px}}`
+   ⇒ render token ทีละตัวเป็น view + จำ span ของแต่ละ token → `patchDerived(view)` → **keep-map** พาผลกลับมาวาง token คืนที่ขอบเดิม
+3. **keep-map: token เป็นเจ้าของช่องของตัวเอง** — span ที่ pass ไปแก้ = **token ชนะ** (ตัดสิ่งที่ pass เขียนทับทิ้ง แล้วนับ `overridden`)
+   เพราะค่าที่ token ถือมาจาก `values` ซึ่งเป็นเจ้าของเดียว · span ที่ไม่ถูกแตะ = วางคืนที่เดิมทุก byte
+4. **tripwire (ไม่เงียบ)** — หลังประกอบกลับ: ลำดับ token ต้องเท่าต้นฉบับทุกตัว · เมื่อไม่มี override `render(ผล)` ต้องเท่ากับ view ที่ patch แล้วทุก byte ·
+   วันที่ราคาที่โชว์ทุกจุด (หัว · วงเล็บทวน · `.disc`) ต้องตรง `values.priceDate` — ผิดข้อไหน = **throw → `patch-failed`** เห็นในคิว ไม่ใช่เขียนผิดเงียบ ๆ
+   · วงเล็บทวนวันที่ที่ตัวอ่านไม่รู้จัก (เดือนสะกดนอกคลัง เช่น `(11 กย. 2569 ตลาดปิด)`) = เขียนไม่ได้ แต่ต้อง **บันทึกเป็น `note`** ในบรรทัด log ของใบนั้น
+   แบบเดียวกับ v1 (คลังวันนี้ 0 ใบ — ปิดช่องว่าง ไม่ใช่แก้บั๊กที่กำลังเกิด)
+   ★ **ขอบเขตของ note**: ตัวจับรู้จักเฉพาะรูป "เลขอารบิก + ชื่อเดือนไทย + ปี 4 หลัก" ⇒ รูปเลขไทย (`(๑๑ ก.ย. ๒๕๖๙ …)`) หรือตัวเลขล้วน
+   (`(11/09/2569 …)`) ยัง **เงียบทั้ง v1 และ v2** (regex เดียวกันทุก byte — parity ตั้งใจ ไม่ใช่ช่องว่างใหม่) · 0 ใบในคลังวันนี้
+5. **กระจก `stock-meta`** (`RV.mirrorStockMeta`) — เขียน **4 คีย์เท่านั้น**: `price` · `mos` · `upside` · `fairValue` ซึ่งเป็นฟังก์ชันล้วนของ `values.px` + `report-data.fv`
+   ★ **`pe` กับ `dividendYield` ไม่ใช่ของกระจก** — สองคีย์นี้เป็นกระจกของ *การ์ดที่ผู้เขียนเลือกโชว์* (ฐาน adjusted/forward/DPS ของการ์ด)
+   จึงเป็นของ **pass derived** (`patchDerived#2/#9`) เหมือน v1 ทุกประการ · กระจกรันหลัง pass และอ่าน `stock-meta` จากผลของ pass ⇒ ย้อนค่าที่ pass เพิ่งเขียนไม่ได้โดยโครงสร้าง
+   (เดิมคำนวณจาก `values` ⇒ index P/E กระโดดเงียบ 37/869 ใบ — DDOG 75 → 453.7)
+
+> **ขอบเขตของคำว่า "ไม่ใช้ regex"** (ruling Task 12 R5 — ห้ามเขียนว่า "regex = 0"): บนใบ v2 **ค่าของช่องสำเนามาจาก JSON**
+> และ **cron ไม่ได้เขียนช่องสำเนาด้วย regex** · การอ่านหน้าที่ render แล้วด้วย regex **ยังมีอยู่** (pass derived · tripwire วันที่ · คู่ manifest ของ gate)
+> แต่เป็น **ตัวตรวจความสอดคล้อง** เท่านั้น ไม่ใช่วิธีตัดสินค่า
+
+> `--heal-derived` **ใช้ได้ทั้ง v1 และ v2** (ไม่ใช่ v1 อย่างเดียว): ทาง v2 เดินลำดับเดียวกับ cron — `proseTokensIfNew` → `derivedPassV2` → กระจก `stock-meta` —
+> โดยใช้ `values.px` เดิมเป็นตัวตั้ง (ไม่ fetch ไม่แตะราคา/วันที่/กราฟ/คิว flags) · เป็นทางที่ worker/controller ใช้เคลียร์ **E44** ตอนเขียนใบใหม่
 
 ### ค่าที่ derive จากราคา — `patchDerived` (19 ส.ค. 2569)
 
@@ -167,6 +203,9 @@ node tools/update-prices.js --write --force AAPL  # ข้าม freeze drift/mo
                                          # re-analysis UPDATE mode ที่ agent ยืนยัน cross-source แล้ว
                                          # (ต้องระบุ SYMBOL · currency-mismatch/bad-price/bad-report-price ยัง freeze · หลุดขอบ gauge = patcher ขยายขอบให้เอง)
 node tools/update-prices.js --write      # เต็มชุด ~763 ตัว (~7-8 นาที)
+node tools/update-prices.js --heal-derived        # dry-run: ซ่อมค่าที่ derive จากราคาให้ตรงฐานที่ไฟล์พิมพ์เอง
+                                         # (ทั้ง v1 และ v2 · ไม่ fetch ไม่แตะราคา/วันที่/กราฟ/flags · ทาง v2 เคลียร์ E44 ให้ด้วย)
+node tools/update-prices.js --heal-derived --write --prose   # + % ของราคาเป้าในย่อหน้า (ต้องรีวิว diff)
 node tools/fetch-facts.js AAPL           # พิมพ์ ราคา+วันที่+chart 13 จุด+ป้าย %+bounds พร้อมวาง (หุ้นใหม่ · ไทยเติม --th)
 npm run test:prices                      # unit test offline (fixture AAPL + mock Yahoo)
 node tools/dead-ticker-canary.js         # dry-run ทั้งรีโป (~3 request, ไม่เขียนไฟล์)

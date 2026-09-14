@@ -132,11 +132,11 @@ const convV2 = (id, mutRawFn, healFn, desc) => {
   const broken = mutRawFn(raw);
   if (broken === raw) { ok(false, `${desc} → mutation ไม่เปลี่ยนอะไร (anchor ไม่ match — โครง BBL-v2 เปลี่ยน?)`); return; }
   const brokenExpanded = expandReport(broken);
-  ok(allIds(checkHtml(brokenExpanded, 'BBL.html')).has(id), `${desc} → ${id} ยิง (v2 JSON เสีย)`);
+  ok(allIds(checkHtml(brokenExpanded, 'BBL.html', { source: broken })).has(id), `${desc} → ${id} ยิง (v2 JSON เสีย)`);
   const healedRaw = healFn(broken);
   ok(healedRaw !== broken, `${desc} → ตัวซ่อมแก้ไฟล์จริง (ไม่ใช่ no-op)`);
   const healedExpanded = expandReport(healedRaw);
-  ok(!allIds(checkHtml(healedExpanded, 'BBL.html')).has(id), `${desc} → ตัวซ่อมจริงทำให้ ${id} เงียบ`);
+  ok(!allIds(checkHtml(healedExpanded, 'BBL.html', { source: healedRaw })).has(id), `${desc} → ตัวซ่อมจริงทำให้ ${id} เงียบ`);
   const healedTwice = expandReport(healFn(healedRaw));
   ok(healedExpanded === healedTwice, `${desc} → ซ่อมซ้ำไม่เปลี่ยน (idempotent)`);
   CONVERGED.add(id);
@@ -1145,6 +1145,78 @@ require('./parser-lint.js')(ok);
   }
 }
 
+// ── E44 (ระยะ 2 ส่วน F · spec B(ข)): ใบใหม่ห้ามพิมพ์ตัวเลขผูกราคาเป็น literal ใน prose + healer proseTokens ──
+// ★ ต้องอยู่ **ก่อน** บล็อก E-policy ข้างล่าง — CONVERGED ถูกอ่านที่นั่น
+// ★ เคสนี้พิสูจน์ 4 อย่าง: (1) ใบใหม่ที่มี literal → ยิง (2) healer จริง (RV.proseTokens ที่ cron/heal เรียก) ทำให้เงียบ
+//   + idempotent + **ข้อความที่ render ไม่เปลี่ยนแม้แต่ไบต์เดียว** (3) ใบเก่า (footer < SINCE) เงียบทั้งที่เนื้อหาเหมือนกันเป๊ะ
+//   (4) ต้องอ่าน ctx.source ไม่ใช่หน้าที่ render แล้ว — ไม่งั้นใบที่เขียนถูก (ใช้ token ครบ) จะตกทุกใบ
+{
+  const RVp = require('../tools/report-values.js');
+  const UPp = require('../tools/update-prices.js');
+  const { footerDate } = require('../tools/queue/footer-date.js');
+  const TH_MON = ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'];
+  const rawV2 = FX.BBL_V2();
+  const rdV2 = RM.readReportData(rawV2).data, smV2 = RM.readStockMeta(rawV2);
+  const dV2 = RVp.derive(rdV2, smV2);
+  // วันที่ footer = ข้อมูลของไฟล์ (ค.ศ. ตามที่ fixture ใช้) — คำนวณจาก PROSE_TOKEN_SINCE เพื่อไม่ให้เทสเน่าเมื่อเลื่อนวัน
+  const setFooter = (h, iso) => {
+    const p = RVp.parseIso(iso);
+    return h.replace(/(ข้อมูล\s*ณ\s*)\d{1,2}\s*[ก-๙.]+\s*\d{4}/, (m, a) => `${a}${p.day} ${TH_MON[p.monIdx]} ${p.yearCE}`);
+  };
+  // "ใบที่คนเขียนตัวเลขเป็น literal" — ปรับ literal ที่มีอยู่แล้วใน fixture ให้ตรงรูปที่ token render (ไม่งั้น healer
+  // แตะไม่ได้ตามกติกา "ต้องเท่ากันทุก byte" แล้วเคส convergence จะพิสูจน์อะไรไม่ได้)
+  const literalise = (h) => {
+    let out = h;
+    for (const x of [...RVp.proseBoundHits(h, dV2)].reverse()) out = out.slice(0, x.at) + RVp.TOKENS[x.token](dV2) + out.slice(x.at + x.len);
+    return out;
+  };
+  const fires44 = (h) => allIds(checkHtml(expandReport(h), 'BBL.html', { source: h })).has('E44');
+
+  const oldSrc = literalise(rawV2);                                  // footer เดิม (24 ก.ค. 2026 < SINCE)
+  const newSrc = setFooter(oldSrc, RVp.PROSE_TOKEN_SINCE);           // ใบใหม่ (footer = SINCE พอดี)
+  const hits = RVp.proseBoundHits(newSrc, dV2);
+  ok(newSrc !== oldSrc && footerDate(newSrc).iso === RVp.PROSE_TOKEN_SINCE, 'E44: ตั้ง footer เป็นวัน SINCE ได้จริง', footerDate(newSrc) && footerDate(newSrc).iso);
+  ok(hits.length >= 4, `E44: fixture (literalise แล้ว) มี prose ผูกราคา ${hits.length} จุด`, hits.map((h) => h.token + ':' + h.text).join(' '));
+  ok(!fires44(rawV2) && !fires44(oldSrc), 'E44: ใบเก่า (footer < SINCE) เงียบ แม้ prose จะเป็น literal ทั้งใบ — ของเก่าเป็นงานระยะ 3');
+  ok(fires44(newSrc), 'E44: ใบใหม่ที่ prose เป็น literal → ยิง');
+
+  const healed44 = RVp.proseTokens(newSrc, rdV2, smV2);
+  ok(healed44.changes.length === hits.length && healed44.html !== newSrc, `E44: healer แทนครบทุกจุด (${healed44.changes.length}/${hits.length})`, healed44.changes.join(' | '));
+  ok(!fires44(healed44.html), 'E44: หลัง proseTokens → เงียบ');
+  ok(RVp.proseTokens(healed44.html, rdV2, smV2).html === healed44.html, 'E44: healer idempotent');
+  ok(RVp.renderValues(healed44.html, rdV2, smV2) === RVp.renderValues(newSrc, rdV2, smV2),
+    'E44: healer ไม่เปลี่ยนข้อความที่คนอ่านเห็นแม้แต่ไบต์เดียว (cron จึงรันได้ทั้งที่ §9 ห้ามแตะ prose)');
+  CONVERGED.add('E44');
+
+  // ตัวตรวจต้องอ่าน source ก่อน expand — บนหน้าที่ render แล้ว ใบที่ "เขียนถูกทุกจุด" จะกลายเป็น literal ทั้งใบ
+  const renderedOk = RVp.renderValues(healed44.html, rdV2, smV2);
+  ok(allIds(checkHtml(renderedOk, 'BBL.html')).has('E44'), 'E44: หน้าที่ render แล้ว + ไม่ส่ง opts.source → ยิง (นี่คือเหตุผลที่ gateCheck/migrate ต้องส่ง source)');
+  ok(!allIds(checkHtml(renderedOk, 'BBL.html', { source: healed44.html })).has('E44'), 'E44: ส่ง source (ต้นฉบับที่เป็น token) → เงียบ');
+
+  // W24 (fix round 1 · finding 2): อ่าน footer ไม่ได้ = ตัดสินไม่ได้ ⇒ **ห้ามเงียบ** (CLAUDE.md §8 กฎข้อ 1)
+  // คลังจริงมีคลาสนี้ 12 ใบ (เดือนล้วน "มิถุนายน 2569" · ช่วงข้ามเดือน "31 ก.ค. – 2 ส.ค. 2026")
+  {
+    const ids = (h) => allIds(checkHtml(expandReport(h), 'BBL.html', { source: h }));
+    const setRaw = (h, txt) => h.replace(/(ข้อมูล\s*ณ\s*)\d{1,2}\s*[ก-๙.]+\s*\d{4}/, (m, a) => a + txt);
+    for (const [txt, why] of [['มิถุนายน 2569', 'เดือนล้วน'], ['31 ก.ค. – 2 ส.ค. 2026', 'ช่วงข้ามเดือน']]) {
+      const bad = setRaw(newSrc, txt);
+      ok(bad !== newSrc && footerDate(bad) === null, `W24: footer "${txt}" (${why}) → footerDate อ่านไม่ได้จริง`);
+      const set = ids(bad);
+      ok(set.has('W24') && !set.has('E44'), `W24: ${why} → W24 ยิงแทน E44 (ไม่เงียบทั้งคู่)`, [...set].join(','));
+    }
+    ok(!ids(oldSrc).has('W24') && !ids(newSrc).has('W24'), 'W24: footer อ่านได้ → เงียบ (ทั้งใบเก่า/ใบใหม่)');
+    const v1Bad = setRaw(base, 'มิถุนายน 2569');
+    ok(v1Bad !== base && !ids(v1Bad).has('W24'), 'W24: ใบ v1 ไม่แตะ (ไม่มี token ให้ใช้ ⇒ E44 ไม่เกี่ยว)');
+    ok(CHECKS.find((c) => c.id === 'W24').level === 'warn' && CHECKS.find((c) => c.id === 'W24').healer == null,
+      'W24: เป็น warn + ไม่มี healer (ยก E44 ให้ยิงแทน = บล็อก push ใบเก่า 11 ใบที่ประตูวันที่ตั้งใจยกเว้น)');
+  }
+
+  // ทาง cron/heal (tools/update-prices.js) ต้องมีประตูวันที่เดียวกับ E44 เป๊ะ
+  ok(UPp.proseTokensIfNew(newSrc, rdV2, smV2).changes.length === hits.length, 'E44: cron/heal (proseTokensIfNew) แปลงให้บนใบใหม่');
+  ok(UPp.proseTokensIfNew(oldSrc, rdV2, smV2).changes.length === 0 && UPp.proseTokensIfNew(oldSrc, rdV2, smV2).html === oldSrc,
+    'E44: cron/heal ไม่แตะใบเก่าเลย (ขอบเขตตัวซ่อม = ขอบเขตตัวตรวจ · คลัง 908 ใบวันนี้ไม่ถูกเขียนแม้ไฟล์เดียว)');
+}
+
 // ── E-policy (spec WS2 ข้อ 3 · แผนระยะ 1 Global Constraints): error ที่ไม่อยู่ในรายการ grandfather ต้อง
 //    (ก) ประกาศ healer ที่รู้จัก และ (ข) มีเคส convergence ในไฟล์นี้ (mutate → check ยิง → healer → check เงียบ)
 //    ไม่งั้น E ใหม่ = cron ล้มทั้งวันแบบเคลียร์ไม่ได้ (บทเรียน 22–24 ส.ค. 69 / run #54) ──
@@ -1157,7 +1229,9 @@ require('./parser-lint.js')(ok);
   //   (ไม่เคยมี "เลขที่ render ไปแล้วค้าง" ในไฟล์ต้นฉบับเอง) ⇒ คู่ f69/f44 ที่เคยใช้สาธิต 'build' จริง ๆ ไม่ตรงกันได้
   //   เฉพาะตอน JSON สองจุดขัดกัน (JSON-vs-JSON) ซึ่งต้องมีฟังก์ชันซ่อมจริง (mirrorStockMetaV2 ที่ patchReport เรียก)
   //   ไม่ใช่แค่ "expand ใหม่" ⇒ healer ที่ถูกต้องของเคสนั้นคือ 'patchReport' (มีอยู่แล้วในเซ็ตนี้) ไม่ใช่ 'build'
-  const HEALERS = new Set(['patchReport', ...[1, 2, 3, 5, 6, 7, 8, 9, 10, 11].map((n) => 'patchDerived#' + n)]);
+  // 'proseTokens' (ระยะ 2 ส่วน F) = RV.proseTokens ที่ cron (patchReport ทาง v2) และ --heal-derived เรียกผ่าน
+  //   proseTokensIfNew — ประตูวันที่เดียวกับ E44 ⇒ ทุก error ที่ E44 ยิงมีตัวซ่อมที่รันอัตโนมัติจริง
+  const HEALERS = new Set(['patchReport', 'proseTokens', ...[1, 2, 3, 5, 6, 7, 8, 9, 10, 11].map((n) => 'patchDerived#' + n)]);
   for (const id of ['W16', 'W17', 'W19', 'W20']) ok(CHECKS.find((c) => c.id === id).level === 'error', `ระยะ 1: ${id} ต้องเป็น error (ยกจาก warn 12 ก.ย. 2569 — คงชื่อ)`);
   const errs = CHECKS.filter((c) => c.level === 'error');
   ok(errs.length >= 43, `E-policy: มี error ≥43 ตัว (ได้ ${errs.length})`);
@@ -1175,31 +1249,36 @@ require('./parser-lint.js')(ok);
 {
   const RV = require('../tools/report-values.js');
   const MF = require('../tools/field-manifest.js');
-  const base2 = expandReport(FX.BBL_V2());
-  const FX_V2_PX = RM.readReportData(FX.BBL_V2()).data.values.px;
-  const c = buildCtx(base2, 'BBL.html');
+  // ★ fix round 2 (m2): ทุก checkHtml ในบล็อกนี้เดินบน **หน้าที่ expand แล้ว** ของ fixture v2 ⇒ ต้องส่ง
+  //   opts.source = ต้นฉบับก่อน expand (srcV2) ทุกครั้ง ไม่งั้น E44/W24 จะอ่านหน้าที่ render แล้วเป็น "source"
+  //   วันนี้เงียบเพราะ footer ของ fixture < PROSE_TOKEN_SINCE — แต่วันที่ใครต่ออายุ fixture เทสชุดนี้จะ false-fail พร้อมกัน
+  const srcV2 = FX.BBL_V2();
+  const base2 = expandReport(srcV2);
+  const FX_V2_PX = RM.readReportData(srcV2).data.values.px;
+  const c = buildCtx(base2, 'BBL.html', { source: srcV2 });
   ok(c.v2 === true && c.dv && c.px === c.dv.px && c.fvBox === c.dv.fv && c.mosBig === c.dv.mosShown && c.pxInput === c.dv.px, 'v2: ctx.px/fvBox/mosBig/pxInput มาจาก values (derive)');
-  ok(c.priceAge && c.priceAge.iso === RM.readReportData(FX.BBL_V2()).data.values.priceDate, 'v2: ctx.priceAge จาก values.priceDate');
+  ok(c.priceAge && c.priceAge.iso === RM.readReportData(srcV2).data.values.priceDate, 'v2: ctx.priceAge จาก values.priceDate');
   ok(c.chg === c.dv.chg.text, 'v2: ctx.chg จาก chart.data');
-  const r = checkHtml(base2, 'BBL.html');
+  const r = checkHtml(base2, 'BBL.html', { source: srcV2 });
   ok(r.errors.length === 0, 'v2 fixture ผ่าน gate', r.errors.map((e) => e.id).join(','));
   ok(r.coverage.n === 71 - MF.FIELDS.filter((f) => f.v2 === null).length, 'v2: coverage denominator ตัดแถวที่ไม่มีใน v2');
   // ★ mutate JSON **หลัง** expand (review Task 10 ข้อ 2) — HTML ที่ render แล้วยังถือค่าเดิม ขณะที่ values เปลี่ยน
   //   ⇒ gate ที่อ่าน JSON ต้องเห็นความต่าง · gate ที่อ่าน HTML (โค้ดก่อนระยะ 2 ส่วน D) จะเงียบ — เทสจึงแยกสองแบบออกจริง
   //   (mutate ก่อน expand = HTML render จากค่าที่ mutate แล้ว สองทางได้ค่าเท่ากัน เทสผ่านทั้งโค้ดเก่าและใหม่ ⇒ พิสูจน์อะไรไม่ได้)
   const m1 = mutJson('report-data', (d) => { d.values.px = d.values.px * 1.5; })(base2);
-  const r1 = checkHtml(m1, 'BBL.html');
+  const r1 = checkHtml(m1, 'BBL.html', { source: srcV2 });
   ok(r1.ctx.px === FX_V2_PX * 1.5 && errIds(r1).has('E30'), 'v2: values.px ×1.5 หลัง render → ctx.px ตาม JSON + E30 (stock-meta ≠ values.px)', [...errIds(r1)].join(','));
   const m2 = mutJson('report-data', (d) => { d.values.px = d.values.px * 0.5; })(base2);
-  const r2 = checkHtml(m2, 'BBL.html');
+  const r2 = checkHtml(m2, 'BBL.html', { source: srcV2 });
   ok(['E19', 'E30', 'E43'].every((id) => errIds(r2).has(id)) && !errIds(r2).has('E16') && !errIds(r2).has('E23'),
     'v2: values.px ×0.5 หลัง render → E19/E30/E43 ยิง (อ่าน JSON) · E16/E23 เงียบ (.big/pxIn ใน ctx มาจาก derive ค่าเดียวกัน)', [...errIds(r2)].join(','));
   const m4 = mutJson('report-data', (d) => { d.values.priceDate = '2026-01-01'; })(base2);
-  const r4 = checkHtml(m4, 'BBL.html');
+  const r4 = checkHtml(m4, 'BBL.html', { source: srcV2 });
   ok(r4.ctx.priceAge.iso === '2026-01-01' && errIds(r4).has('E27'), 'v2: values.priceDate เก่า หลัง render → ctx.priceAge ตาม JSON + E27', [...errIds(r4)].join(','));
   // render invariant (ไม่ใช่หลักฐานอ่าน JSON): ไฟล์ที่ render จาก values เดียวกัน W04/W06 เงียบเสมอ
-  const mR = expandReport(mutJson('report-data', (d) => { d.values.px = d.values.px * 0.5; })(FX.BBL_V2()));
-  ok(!allIds(checkHtml(mR, 'BBL.html')).has('W04') && !allIds(checkHtml(mR, 'BBL.html')).has('W06'), 'v2 render: W04/W06 เงียบ (class/ช่องสรุป render จาก MOS เดียวกัน)');
+  const mRsrc = mutJson('report-data', (d) => { d.values.px = d.values.px * 0.5; })(srcV2);
+  const mR = expandReport(mRsrc);
+  ok(!allIds(checkHtml(mR, 'BBL.html', { source: mRsrc })).has('W04') && !allIds(checkHtml(mR, 'BBL.html', { source: mRsrc })).has('W06'), 'v2 render: W04/W06 เงียบ (class/ช่องสรุป render จาก MOS เดียวกัน)');
   // W21 บนไฟล์ v2: แถว `v2: null` (gauge.fair/chart.fairLine/วันที่ในวงเล็บ) ไม่มีในไฟล์โดยสคีมา → ไม่นับว่า "หาย"
   const nullRows = MF.FIELDS.filter((f) => f.v2 === null).map((f) => f.id);
   ok(nullRows.length > 0 && nullRows.every((id) => !r.ctx.mf.missing.includes(id) && !r.ctx.mf.skipped.includes(id) && !r.ctx.mf.found.has(id)) && !allIds(r).has('W21'),
@@ -1220,13 +1299,47 @@ require('./parser-lint.js')(ok);
     ok(errIds(rb).has('V2SCHEMA') && /bogus/.test(rb.errors.find((e) => e.id === 'V2SCHEMA').msg), 'V2SCHEMA: v2 ไร้ marker + คีย์นอกสคีมา/gauge.cur → checkFile ได้ error (เดิมผ่าน 0 error)', rb.errors.map((e) => e.id + ' ' + e.msg).join(' | '));
     const m3 = mutJson('report-data', (d) => { delete d.values.scnBasis; })(base2);   // scenarios มีแต่ scnBasis หาย
     let c3 = null, threw3 = null; try { c3 = buildCtx(m3, 'BBL.html'); } catch (e) { threw3 = e.message; }
-    ok(threw3 === null && c3 && c3.v2 === false && c3.dv === null && /scnBasis/.test(c3.v2Err || '') && errIds(checkHtml(m3, 'BBL.html')).has('V2SCHEMA'),
+    ok(threw3 === null && c3 && c3.v2 === false && c3.dv === null && /scnBasis/.test(c3.v2Err || '') && errIds(checkHtml(m3, 'BBL.html', { source: srcV2 })).has('V2SCHEMA'),
       'V2SCHEMA: scnBasis หาย → ไม่ throw · อ่าน HTML ต่อ · แต่ยก error', threw3 || (c3 && `v2=${c3.v2} v2Err=${c3.v2Err}`));
     const realDerive = RV.derive;
     RV.derive = () => { throw new Error('derive ระเบิดจำลอง'); };
-    let rd3; try { rd3 = checkHtml(base2, 'BBL.html'); } finally { RV.derive = realDerive; }
+    let rd3; try { rd3 = checkHtml(base2, 'BBL.html', { source: srcV2 }); } finally { RV.derive = realDerive; }
     ok(errIds(rd3).has('V2SCHEMA') && rd3.ctx.v2 === false, 'V2SCHEMA: validateValues ผ่านแต่ derive throw → error (ไม่ถอยเป็น v1 เงียบ)', rd3.errors.map((e) => e.id).join(','));
-    ok(checkHtml(base2, 'BBL.html').errors.length === 0 && !buildCtx(base, 'BBL.html').v2Err, 'V2SCHEMA: คืน derive แล้ว v2 ดีผ่าน · v1 ไม่มี v2Err');
+    ok(checkHtml(base2, 'BBL.html', { source: srcV2 }).errors.length === 0 && !buildCtx(base, 'BBL.html').v2Err, 'V2SCHEMA: คืน derive แล้ว v2 ดีผ่าน · v1 ไม่มี v2Err');
+  }
+  // ★ V2TOKENS (ระยะ 2 ส่วน F · carry จาก final review ส่วน D): site บังคับของใบ v2 กลับเป็น literal = ต้องยิง
+  //   เดิม check ทุกตัวอ่านค่าจาก ctx.dv (JSON) ⇒ หัวรายงานที่เป็น literal ผ่านเงียบสนิท แล้วค้างถาวร
+  //   (cron ทาง v2 เขียนแต่ values · patchReport return ก่อนตัวเขียนสำเนา HTML ของ v1)
+  {
+    const idsOf = (src) => errIds(checkHtml(expandReport(src), 'BBL.html', { source: src }));
+    ok(!idsOf(srcV2).has('V2TOKENS'), 'V2TOKENS: fixture v2 ที่ token ครบ → เงียบ');
+    ok(!errIds(checkHtml(base, 'BBL.html')).has('V2TOKENS'), 'V2TOKENS: ใบ v1 ไม่แตะ (ไม่มี token ให้ใช้)');
+    ok(RV.REQUIRED_TOKEN_SITES.length === 7, `V2TOKENS: site บังคับ 7 ช่อง (มี ${RV.REQUIRED_TOKEN_SITES.length})`,
+      RV.REQUIRED_TOKEN_SITES.map((s) => s.id).join(','));
+    // mutate ทีละ site: แทน token ด้วย literal รูปที่ token นั้น render ออกมาจริง (ใบยัง render/gate ได้ปกติ
+    // ⇒ พิสูจน์ว่าเดิม "ผ่านเงียบ" ไม่ใช่ล้มด้วยเหตุอื่น) — ต้องยิง V2TOKENS และข้อความต้องระบุ site ที่หาย
+    const MUT = {
+      px: [RM.PX_TOKEN_RE, '<div class="px">฿999.00'],   // regex ของ .px ต้องมาจากเจ้าของเดียว (parser-lint)
+      // fix round 1 R1: ป้าย gauge #mCur — คืนเป็น literal รูปที่ token render จริง (cron ทาง v2 ไม่มีตัวเขียนช่องนี้ ⇒ ค้างถาวร)
+      mCur: [/(id="mCur"><div class="lab">ปัจจุบัน )\{\{rd:px\}\}/, '$1฿999.00'],
+      chg: [/<div class="chg">\{\{rd:chg\}\}<\/div>/, '<div class="chg">▲ +9.9% (รอบปี)</div>'],
+      priceDate: [/\{\{rd:priceDate\}\}/, '14 ก.ย. 2569'],
+      pxIn: [/value="\{\{rd:pxNum\}\}"/, 'value="999"'],
+      big: [/<div class="big">\{\{rd:mos\}\}<\/div>/, '<div class="big">+9.9%</div>'],
+      verdict: [/class="mos-verdict \{\{rd:mosClass\}\}"/, 'class="mos-verdict ok"'],
+    };
+    for (const site of RV.REQUIRED_TOKEN_SITES) {
+      const [re, lit] = MUT[site.id];
+      const mut = srcV2.replace(re, lit);
+      ok(mut !== srcV2, `V2TOKENS: เตรียม mutant ${site.id} ได้จริง (regex แตะโดน)`);
+      const miss = RV.missingTokenSites(mut).map((m) => m.id);
+      ok(miss.length === 1 && miss[0] === site.id, `V2TOKENS: mutant ${site.id} → ขาดเฉพาะ site นั้น`, miss.join(','));
+      const e = checkHtml(expandReport(mut), 'BBL.html', { source: mut }).errors;
+      const hit = e.find((x) => x.id === 'V2TOKENS');
+      ok(!!hit && hit.msg.includes(site.where), `V2TOKENS: mutant ${site.id} → ยิง + ข้อความระบุช่อง "${site.where}"`, e.map((x) => x.id).join(','));
+    }
+    // ไม่ส่ง opts.source บนหน้าที่ render แล้ว = ทุก site เป็น literal (เหตุผลเดียวกับ E44 — production ส่ง source ครบแล้ว)
+    ok(errIds(checkHtml(base2, 'BBL.html')).has('V2TOKENS'), 'V2TOKENS: หน้าที่ render แล้ว + ไม่ส่ง opts.source → ยิง');
   }
   // census (review ข้อ 3) + spotcheck (ข้อ 4): แถว v2:null บนใบ v2 ไม่อยู่ในตัวหาร · v2 fn ถูกใช้แทน extract
   {
@@ -1244,7 +1357,7 @@ require('./parser-lint.js')(ok);
     ok(new RegExp(`/${71 - nullRows.length} `).test(line), `spotcheck: ตัวหารช่อง manifest บน v2 = ${71 - nullRows.length}`, line);
   }
   // ctx.source: checkHtml ส่ง opts.source ต่อ · ไม่ส่ง = html เดียวกัน
-  ok(c.source === base2 && buildCtx(base2, 'BBL.html', { source: FX.BBL_V2() }).source === FX.BBL_V2(), 'ctx.source = opts.source หรือ html เดิม');
+  ok(buildCtx(base2, 'BBL.html').source === base2 && c.source === srcV2, 'ctx.source = opts.source หรือ html เดิมเมื่อไม่ส่ง');
 }
 
 // ── ระยะ 2 ส่วน D Task 13 (แก้ตาม review รอบ 1 Finding 1/R1/R2): E-policy รู้จัก healer 'patchReport' บนไฟล์ v2
@@ -1278,8 +1391,8 @@ require('./parser-lint.js')(ok);
     UP.mirrorStockMetaV2 = (h, smOrig) => mutJson('stock-meta', (d) => { d.fairValue = brokenFV; })(real(h, smOrig));
     let stillFires;
     try {
-      const healedMutant = expandReport(UP.mirrorStockMetaV2(broken2, RM.readStockMeta(broken2)));
-      stillFires = allIds(checkHtml(healedMutant, 'BBL.html')).has('W22');
+      const healedMutantRaw = UP.mirrorStockMetaV2(broken2, RM.readStockMeta(broken2));
+      stillFires = allIds(checkHtml(expandReport(healedMutantRaw), 'BBL.html', { source: healedMutantRaw })).has('W22');
     } finally { UP.mirrorStockMetaV2 = real; }
     ok(stillFires, 'v2: mutant "mirror ไม่เขียน fairValue" (คืนค่าที่เสียกลับเสมอ) → W22 ยังยิงอยู่หลัง "ซ่อม" — พิสูจน์ว่าเคส convergence ข้างบน discriminate จริง ไม่ใช่ผ่านลอย ๆ');
     ok(UP.mirrorStockMetaV2 === real, 'v2: คืน UP.mirrorStockMetaV2 เดิมแล้วหลังพิสูจน์ mutant');
@@ -1289,8 +1402,12 @@ require('./parser-lint.js')(ok);
   // f67 เป็น cadence write-once/owner worker (cron ไม่แตะ — ไม่มีอะไรเทียบเท่า mirrorStockMetaV2 ให้เรียก) ⇒
   // healer ของมันยังเป็น null ⇒ **ไม่ลงทะเบียน CONVERGED('W21')** — ยังยกเป็น error ไม่ได้ในระยะนี้ (บันทึกไว้ให้
   // Task 16: ตัดสินได้เฉพาะ W22 เพราะมีเคส convergence จริงแล้ว ส่วน W21 ต้องรอตัวซ่อมของ worker)
-  const v2Base = expandReport(FX.BBL_V2());
-  expect('W21', 'warn', (h) => h.replace('<div class="sub">', ''), 'v2: ลบ <div class="sub"> (f67 required) → W21', v2Base);
+  // ★ fix round 2 (m2): เรียก checkHtml ตรงแทน expect() — helper รับแต่ html ที่ mutate แล้ว จึงส่ง source ที่ถูกต้องไม่ได้
+  //   ที่นี่ mutate "ทั้งสองฝั่ง" (ต้นฉบับ + หน้าที่ expand) ด้วยการแทนเดียวกัน ⇒ source ตรงกับ html จริง
+  const noSubSrc = FX.BBL_V2().replace('<div class="sub">', '');
+  const noSubExp = expandReport(FX.BBL_V2()).replace('<div class="sub">', '');
+  ok(noSubSrc !== FX.BBL_V2() && allIds(checkHtml(noSubExp, 'BBL.html', { source: noSubSrc })).has('W21'),
+    'v2: ลบ <div class="sub"> (f67 required) → W21');
 }
 
 console.log('\n' + '─'.repeat(50));

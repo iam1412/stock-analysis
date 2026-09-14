@@ -37,7 +37,7 @@ for (const sym of ['AAPL', 'BBL']) {
   ok(/id="pxIn"[^>]*value="\{\{rd:pxNum\}\}"/.test(r.out), `${sym}: pxIn เป็น token`);
   const exp = expandReport(r.out);
   ok(!/\{\{rd:/.test(exp), `${sym}: expand แล้วไม่เหลือ token`);
-  const g = checkHtml(exp, sym + '.html', { today: FX.TODAY });
+  const g = checkHtml(exp, sym + '.html', { today: FX.TODAY, source: r.out });   // source = ต้นฉบับ v2 (มี token) — E44 อ่าน ctx.source
   ok(g.errors.length === 0, `${sym}: gate หลัง migrate error 0`, g.errors.map((e) => e.id + ' ' + e.msg).join(' | '));
   ok(r.compare.every((c) => c.ok), `${sym}: ค่าทุกช่องใน COPY_FIELDS ตรงกัน (ชั้น 1)`, r.compare.filter((c) => !c.ok).map((c) => `${c.field} ${c.a}→${c.b}`).join(' | '));
   ok(r.masked === true, `${sym}: ข้อความที่มองเห็นต่างเฉพาะรูปตัวเลข (ชั้น 2)`, r.maskedDiff);
@@ -274,7 +274,7 @@ const cmp = (r, f) => r.compare.find((c) => c.field === f);
   ok(rd2.values.px === RM.readStockMeta(FX.BBL()).price, 'Task 9: values.px ของ BBL-v2 = stock-meta.price ของ BBL v1 เดิม (ตัวเลขรอดการย้าย)', String(rd2.values.px));
   const exp2 = expandReport(v2);
   ok(!/\{\{rd:/.test(exp2), 'Task 9: BBL-v2 expand แล้วไม่เหลือ token');
-  const g2 = checkHtml(exp2, 'BBL.html', { today: FX.TODAY });
+  const g2 = checkHtml(exp2, 'BBL.html', { today: FX.TODAY, source: v2 });
   ok(g2.errors.length === 0, 'Task 9: BBL-v2 expand แล้ว gate error 0', g2.errors.map((e) => e.id + ' ' + e.msg).join(' | '));
 }
 

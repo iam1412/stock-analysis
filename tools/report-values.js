@@ -196,6 +196,220 @@ function renderValues(html, rd, sm) {
   if (left) throw new Error(`เหลือ token {{rd:…}} ที่ render ไม่ได้: ${left[0]}`);
   return out;
 }
+// ── V2TOKENS: site บังคับของใบ v2 ต้องเป็น token ไม่ใช่ literal (ระยะ 2 ส่วน F · carry จาก final review ส่วน D) ──
+// เกณฑ์จบระยะ 2 ข้อ 1 คือ "สำเนาต่อค่า = 1" — migrator บังคับเรื่องนี้ตอน**ย้าย** (`REQUIRED_SITES` ใน
+// tools/migrate-v2.js) แต่หลังย้ายแล้วไม่มีใครกันไม่ให้ใครเขียน literal ทับกลับเข้าไป: ใบ v2 ที่หัวรายงานเป็น
+// `<div class="px">฿150.00` จะ **ผ่าน gate เงียบ ๆ** (E30/E41 อ่านค่าจาก JSON ทาง ctx.dv แล้ว ไม่ได้อ่าน .px อีก)
+// แล้วราคาที่คนเห็นก็ค้างตลอดไปเพราะ cron ทาง v2 เขียนแต่ JSON ⇒ กลับไปเป็นโรคเดิมที่ระยะ 2 ทั้งระยะมาแก้
+// ⇒ check โครงสร้างถาวร: ใบที่ประกาศ v2 **ต้องมี token ที่ทุก site บังคับ** ใน *ต้นฉบับก่อน expand*
+// ★ นับคลังก่อนเปิด (14 ก.ย. 2569): 865 ใบ v2 · ขาด 0 ใบ · skeleton th/us ผ่านทั้งคู่
+// ★ ทำไม 7 site นี้: เป็นช่องที่ **cron ทาง v2 ไม่มีตัวเขียน HTML ให้แล้ว** (patchReport return ก่อนตัวเขียนสำเนา v1)
+//   ⇒ ถ้าช่องไหนกลับเป็น literal ค่าจะค้างโดยไม่มีตัวซ่อมไหนเอื้อมถึง · ช่องอื่น (การ์ด P/E · ปันผล · หมวด 6 ·
+//   **ช่องสรุป "ส่วนต่างจากราคา"**) ยังมี pass derived เขียนทับได้อยู่ จึงไม่อยู่ในรายการบังคับ
+//   (วัดด้วย mutation รอบรีวิว: ช่องสรุปที่ถูกเปลี่ยนเป็น literal ถูก `patchDerived` เขียนทับให้ในรอบถัดไป ⇒ ไม่ค้าง ·
+//    ส่วน `#mCur` ที่ถูกเปลี่ยนเป็น literal **ไม่มีใครเขียนทับ** เหลือแค่ W22 ซึ่งเป็น warn ⇒ ต้องอยู่ในรายการ — fix round 1 R1)
+// ★★ **อย่าสับสนกับ `REQUIRED_SITES` (14 ช่อง) ใน tools/migrate-v2.js** — คนละรายการ คนละหน้าที่:
+//   · `REQUIRED_SITES` (migrator) = ช่องที่ **ต้อง tokenise สำเร็จตอนย้าย** ไม่งั้นไม่ย้ายทั้งใบ (กว้างกว่า: รวม fvBox/legend/mFair/การ์ด MOS/vcell)
+//     ช่องพวกนั้นผูกกับ **FV** ซึ่งไม่ขยับตามราคา ⇒ ค้างแล้วไม่อันตรายเท่า และมี W22 ดูแลความสอดคล้องอยู่
+//   · `REQUIRED_TOKEN_SITES` (ที่นี่) = ช่องที่ **ต้องคงเป็น token ตลอดไป** เพราะผูกกับ **ราคา/วันที่ราคา** ที่ cron ต้องเขียนทุกวัน
+// ★★★ **ขอบเขตที่ตรวจ = "มี token อยู่" ไม่ใช่ "ช่องนี้เป็น token ทั้งช่อง"** (fix round 1 R3 · m2): literal ที่ **เพิ่มมา
+//   ข้าง ๆ** token ที่ถูกต้อง (เช่นมี `<div class="big">` สองอัน) จะผ่านเงียบ — คลัง 14 ก.ย. 69 ไม่มีเคสนี้ (ใบ v2 ที่
+//   `<div class="big">` ปรากฏ ≠ 1 ครั้ง = 0 ใบ) · ไม่เพิ่ม uniqueness check โดยตั้งใจ: การนับจำนวนครั้งของมาร์กอัป
+//   จะทำให้ error ระดับ gate ผูกกับโครง HTML (ใบที่จัดมาร์กอัปใหม่โดยไม่มีอะไรเสียจะตก) — แลกไม่คุ้มกับเคสที่ยังไม่เกิด
+const V2T_HEADER_RE = /<header[\s\S]*?<\/header>/i;
+const REQUIRED_TOKEN_SITES = [
+  { id: 'px', token: 'px', where: 'หัวรายงาน .px', has: (s) => RM.PX_TOKEN_RE.test(s) },
+  // ป้าย gauge "ปัจจุบัน $X" — ตัวเขียนของ v1 คือ RM.MCUR_LABEL_PARTS_RE ซึ่ง patchReport **ไม่เรียกแล้วเมื่อเป็น v2**
+  { id: 'mCur', token: 'px', where: 'ป้าย gauge #mCur ("ปัจจุบัน …")', has: (s) => RM.MCUR_TOKEN_RE.test(s) },
+  { id: 'chg', token: 'chg', where: 'ป้าย % รอบปี .chg', has: (s) => /<div class="chg">\s*\{\{rd:chg\}\}\s*<\/div>/.test(s) },
+  { id: 'priceDate', token: 'priceDate', where: 'วันที่ราคาใน <header>', has: (s) => { const m = s.match(V2T_HEADER_RE); return !!m && m[0].includes('{{rd:priceDate}}'); } },
+  { id: 'pxIn', token: 'pxNum', where: 'ช่องกรอกราคา #pxIn', has: (s) => /id="pxIn"[^>]*\bvalue="\{\{rd:pxNum\}\}"/.test(s) },
+  { id: 'big', token: 'mos', where: 'MOS ตัวใหญ่ .big', has: (s) => /<div class="big">\s*\{\{rd:mos\}\}\s*<\/div>/.test(s) },
+  { id: 'verdict', token: 'mosClass', where: 'คลาสกล่อง verdict', has: (s) => /class="mos-verdict \{\{rd:mosClass\}\}"/.test(s) },
+];
+/** site บังคับที่ **ไม่ได้** เป็น token ในต้นฉบับ → [{id, token, where}] · ว่าง = ครบ
+ *  ★ รับ **source ก่อน expand** เสมอ (ctx.source) เหมือน proseBoundHits — ส่ง HTML ที่ render แล้วมา = ขาดทุก site */
+function missingTokenSites(src) {
+  const s = String(src);
+  return REQUIRED_TOKEN_SITES.filter((x) => !x.has(s)).map(({ id, token, where }) => ({ id, token, where }));
+}
+
+// ── prose ที่ผูกกับราคา (E44 · ระยะ 2 ส่วน F · spec B(ข)) ──────────────────────────────────
+// ปัญหา: cron **แตะ prose ไม่ได้** (CLAUDE.md §9) ⇒ ตัวเลขที่ derive จากราคาซึ่งถูกพิมพ์เป็น literal ในย่อหน้า
+// ค้างอยู่กับราคาเก่าตลอดไป โดยไม่มีตัวซ่อมไหนเอื้อมถึง (W15 เตือนได้แค่ "% ของราคาเป้า" อย่างเดียว)
+// ทางแก้เชิงโครงสร้าง: **ใบที่วิเคราะห์ตั้งแต่ PROSE_TOKEN_SINCE เป็นต้นไป ห้ามพิมพ์ค่าพวกนี้เป็น literal**
+// ต้องเขียนเป็น token `{{rd:…}}` ให้ build render ⇒ ค่าเดินตาม values เสมอ ไม่มีวันค้าง
+// ★ วันตัดสิน = footer "ข้อมูล ณ" ของ **ไฟล์** (tools/queue/footer-date.js) ไม่ใช่วันที่รัน gate —
+//   ใบเก่าจึงไม่ถูกยกเป็น error ย้อนหลัง (คลัง 14 ก.ย. 69: footer ทุกใบ < SINCE ⇒ E44 ยิง 0 ครั้ง)
+//   ใบเก่าที่ยังเป็น literal = งานของระยะ 3 (fix-on-touch แบบเดียวกับที่ W23 ประกาศไว้)
+const PROSE_TOKEN_SINCE = '2026-09-14';
+
+// ขอบเขตที่นับว่าเป็น "prose" = เนื้อใน <p> · <li> · <div class="txt"> · <div class="hint">
+// (นับความลึกของแท็กชื่อเดียวกัน เพราะ <li> ห่อ <div> ได้) — การ์ด (.v/.d/.mval) กับบล็อก JSON อยู่**นอก**ขอบเขต
+// โดยตั้งใจ: E41/E42/E43/W16/W19/W20 + pass derived คุมส่วนนั้นอยู่แล้ว และ cron เขียนทับได้เอง
+const PROSE_OPEN_RE = /<(p|li|div)\b([^>]*)>/gi;
+const PROSE_DIV_CLASS = /\bclass\s*=\s*["'][^"']*\b(?:txt|hint)\b/;
+function proseSpans(src) {
+  const s = String(src);
+  const found = [];
+  const open = new RegExp(PROSE_OPEN_RE.source, 'gi');
+  let m;
+  while ((m = open.exec(s))) {
+    const tag = m[1].toLowerCase(), attrs = m[2] || '';
+    if (tag === 'div' && !PROSE_DIV_CLASS.test(attrs)) continue;
+    const start = m.index + m[0].length;
+    const pair = new RegExp(`<${tag}\\b[^>]*>|</${tag}\\s*>`, 'gi');
+    pair.lastIndex = start;
+    let depth = 1, mm, end = -1;
+    while ((mm = pair.exec(s))) { if (mm[0][1] === '/') { if (!--depth) { end = mm.index; break; } } else depth++; }
+    if (end < 0) continue;   // เปิดแล้วไม่ปิด = อ่านขอบเขตไม่ได้ → ไม่เดา (เงียบ)
+    found.push([start, end]);
+  }
+  found.sort((a, b) => a[0] - b[0] || b[1] - a[1]);
+  const out = [];
+  for (const sp of found) {
+    const last = out[out.length - 1];
+    if (last && sp[0] <= last[1]) last[1] = Math.max(last[1], sp[1]);   // ซ้อนกัน (<li><div class="txt">) = ช่วงเดียว
+    else out.push([...sp]);
+  }
+  return out;
+}
+
+// จำนวนเงิน (สกุลนำหน้าเสมอ เหมือนที่ token render) — กลุ่มเดียวเพื่อให้ตัดข้อความมาเทียบกับค่าที่ render ได้ตรง ๆ
+const PB_MONEY = '((?:C\\$|[฿$])\\s*[0-9][0-9,]*(?:\\.[0-9]+)?)';
+// คำที่ "เปลี่ยนเจ้าของตัวเลข" — ห้ามให้ช่องว่างระหว่างป้ายกับตัวเลขข้ามคำพวกนี้
+// (วัดคลัง 908 ใบ 14 ก.ย. 69: ไม่กัน → "ราคาปัจจุบัน · EPS ฐาน ฿2.69" ถูกจับเป็นราคา · "มูลค่าเหมาะสมต่ำกว่าราคา ฿X" ถูกจับเป็น FV)
+const PB_STOP = 'ราคา|เป้า|มูลค่าเหมาะสม|Fair|FV|EPS|ปันผล|BVPS|ต่อหุ้น|P/';
+const pbGap = (n) => `((?:(?!${PB_STOP})[^0-9<{}%]){0,${n}}?)`;
+const pbLen = (...xs) => xs.reduce((a, x) => a + x.length, 0);
+const stripT = (s) => String(s).replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ');
+// ตัวเลขที่พิมพ์ (มีสกุล/เครื่องหมาย/คอมมา/%) → { n, dec } · null = อ่านไม่ออก
+function pbNum(text) {
+  const t = String(text).replace(/[,\s]/g, '').replace(/−/g, '-');
+  const m = t.match(/(-?)(\d+(?:\.\d+)?)/);
+  if (!m) return null;
+  const dot = m[2].indexOf('.');
+  return { n: parseFloat(m[1] + m[2]), dec: dot < 0 ? 0 : m[2].length - dot - 1 };
+}
+// "เลขที่พิมพ์ = ค่าที่ไฟล์ประกาศไว้" — เผื่อครึ่งหลักสุดท้ายของความละเอียดที่พิมพ์ ("฿21" ครอบ 20.5–21.5)
+// ★ ใช้ **เฉพาะฝั่งตรวจ** (ยอมรับการปัด) ไม่ใช่ฝั่งเขียน (ฝั่งเขียนต้องเท่ากันทุก byte — ดู proseTokens)
+function pbOwns(shown, want) {
+  const p = pbNum(shown);
+  return !!p && Number.isFinite(want) && Math.abs(p.n - want) <= 0.5 * Math.pow(10, -p.dec);
+}
+
+// ★ ทำไมต้อง "ป้ายชิดตัวเลข" ไม่ใช่ "มีเลขเงินอยู่ในย่อหน้า": วัดบนคลังจริงแล้วแบบหลังจับประโยคที่ไม่ใช่ค่าผูกราคา
+//   เต็มไปหมด (MRNA "ที่ราคา ~$220,000" = ราคายา · SCGP "ที่ราคาเข้า ฿28") ⇒ **ตัด "ที่ราคา" ทิ้งทั้งคำ** (177 จุดในคลัง
+//   กำกวมจนตัดสินไม่ได้)
+// ★★ สองชั้นของ "ความเป็นเจ้าของ" (วัดคลัง 908 ใบ 14 ก.ย. 69):
+//   (ก) ป้ายที่**ปักความหมายไว้แล้ว** (ราคาปัจจุบัน · MOS ปัจจุบัน) = ตัวเลขตรงนั้นคือค่าที่ JSON เป็นเจ้าของเสมอ
+//       ไม่ว่าจะเขียนเลขอะไรไว้ (เลขไม่ตรง = ค้าง/ผิด ยิ่งต้องฟ้อง) ⇒ ฟ้องทุกจุด · ผลไม่ขึ้นกับราคาวันนี้
+//   (ข) ป้ายที่**ชี้ได้หลายค่า** (Fair Value ของฉากไหน · เป้าของนักวิเคราะห์คนไหน · โซน MOS ของ FV ชุดไหน)
+//       ⇒ ฟ้องเฉพาะเมื่อเลขนั้น **เท่ากับค่าที่ไฟล์ประกาศไว้** (มี token ที่ render ออกมาได้เป๊ะ) — ไม่งั้นการบังคับ
+//       ให้ใช้ token จะเขียนเลข "ผิด" ทับของที่ถูก (CNQ "WTI $77 → FV ~$34.84" = ตาราง sensitivity ไม่ใช่ FV หัวเรื่อง)
+//       ★ ค่ากลุ่มนี้ (fv · mos20/30 · analystTgt) **ไม่ขยับตามราคา** ⇒ เกณฑ์ยังนิ่งข้ามรอบ cron เหมือนกลุ่ม (ก)
+//         (บทเรียน W18: error ที่กระพริบตามราคา = ใบที่ผ่านเมื่อวานตกวันนี้โดยไม่มีใครแก้อะไร)
+// ★★★ ลำดับในอาร์เรย์ = ลำดับชนะเมื่อจุดเดียวกันเข้าได้หลาย pattern (proseBoundHits sort เสถียร แล้วตัดตัวที่ซ้อน)
+//   ⇒ **เจาะจงก่อนกว้าง**: "จุดเข้าซื้อใกล้ ฿136.50 (MOS 30%)" ต้องเป็น mos30 ไม่ใช่ px (ป้าย "จุดเข้า" อยู่ซ้ายมือ
+//   ของเลขเดียวกัน) — ถ้า px ชนะแล้วเลขนั้นบังเอิญเท่าราคาวันนี้ healer จะผูกโซน MOS ให้วิ่งตามราคาตลอดไป
+const PROSE_BOUND = [
+  // "MOS 20% ที่ ฿4.02" / "MOS20 $99" — ราคา = FV×0.8 / FV×0.7 (token mos20/mos30)
+  { id: 'mosZone', label: 'โซน MOS 20/30%',
+    re: () => new RegExp(`(MOS\\s*(20|30)\\s*%?)${pbGap(20)}${PB_MONEY}`, 'gi'),
+    hits: (m, seg, d) => {
+      const token = m[2] === '30' ? 'mos30' : 'mos20';
+      return d && pbOwns(m[4], d[token]) ? [{ at: m.index + pbLen(m[1], m[3]), text: m[4], token }] : [];
+    } },
+  // ทางกลับ "…ใกล้ $103.20 (MOS 20%)" — ต้องชิดกันจริง ([\s(]{0,3}) ไม่งั้น "…$92 และ MOS 30%…" จะจับคู่ผิดข้าง
+  { id: 'mosZoneRev', label: 'ราคา (MOS 20/30%)',
+    re: () => new RegExp(`${PB_MONEY}([\\s(]{0,3}MOS\\s*(20|30))`, 'gi'),
+    hits: (m, seg, d) => {
+      const token = m[3] === '30' ? 'mos30' : 'mos20';
+      return d && pbOwns(m[1], d[token]) ? [{ at: m.index, text: m[1], token }] : [];
+    } },
+  { id: 'px', label: 'ราคาปัจจุบัน/จุดเข้า',
+    re: () => new RegExp(`(ราคา(?:ปัจจุบัน|ล่าสุด|ตลาด|ปิด)|จุดเข้า)${pbGap(10)}${PB_MONEY}`, 'g'),
+    hits: (m) => [{ at: m.index + pbLen(m[1], m[2]), text: m[3], token: 'px' }] },
+  { id: 'fv', label: 'มูลค่าเหมาะสม/Fair Value',
+    re: () => new RegExp(`(มูลค่าเหมาะสม|Fair\\s*Value|FV)${pbGap(14)}${PB_MONEY}`, 'g'),
+    hits: (m, seg, d) => (d && pbOwns(m[3], d.fv) ? [{ at: m.index + pbLen(m[1], m[2]), text: m[3], token: 'fv' }] : []) },
+  // MOS ปัจจุบัน — **ต้องมีเครื่องหมาย/คำประมาณ** ("MOS −4.7%" · "MOS ~19%" · "MOS ราว 15%")
+  // ไม่งั้นจะกิน "โซน MOS 20%" ที่เป็น **เกณฑ์คงที่ ไม่ใช่ค่าที่ derive จากราคา** (วัดคลัง: 1,835 → 731 จุดเมื่อบังคับข้อนี้)
+  { id: 'mos', label: 'MOS ปัจจุบัน',
+    re: () => /(MOS|ส่วนเผื่อ(?:ความปลอดภัย)?|margin\s*of\s*safety)((?:(?!ราคา|เป้า)[^<0-9%{}]){0,16}?)((?:[+\-−]|~|ราว\s|ประมาณ\s)\s*[0-9]+(?:\.[0-9]+)?\s*%)/gi,
+    hits: (m) => [{ at: m.index + pbLen(m[1], m[2]), text: m[3], token: 'mos' }] },
+  // "เป้าเฉลี่ย $553.00 (+32.27%)" — % วัดจากราคาปัจจุบัน ⇒ ผูกราคาทั้งคู่ (token analystTgt/analystPct)
+  // ยาม 3 ชั้นชุดเดียวกับ W15 + patchDerived#4 (เจ้าของเกณฑ์อยู่ที่ derived-values.js ที่เดียว)
+  // ★ ตัวชี้ขาดคือ "เป้าที่พิมพ์ = values.analystTgt ไหม" — เป้าสูงสุด/ต่ำสุดของช่วง ($600 ขณะ analystTgt $553)
+  //   ไม่มี token ไหน render ได้ ⇒ ไม่ฟ้อง (ค้างได้ ยังเป็นเขต W15 เหมือนเดิม ไม่ถอยหลัง)
+  { id: 'tgt', label: 'ราคาเป้า (±%)',
+    re: () => new RegExp(DV.MONEY_PCT_SRC, 'g'),
+    hits: (m, seg, d) => {
+      if (!d || !pbOwns(m[1] + m[2], d.values.analystTgt)) return [];
+      const before = stripT(seg.slice(Math.max(0, m.index - 220), m.index)).slice(-100);
+      if (!DV.TGT_LABEL_STRICT.test(before) || DV.QUOTE_CONTEXT.test(before)) return [];
+      const after = stripT(seg.slice(m.index, m.index + 200));
+      const close = after.indexOf(')');
+      if (DV.PCT_NOT_VS_PRICE.test(after.slice(0, close === -1 ? 60 : close))) return [];
+      return [
+        { at: m.index, text: m[1] + m[2], token: 'analystTgt' },
+        { at: m.index + pbLen(m[1], m[2], m[3]), text: m[4] + m[5] + m[6], token: 'analystPct' },
+      ];
+    } },
+];
+
+/** จุดที่ prose พิมพ์ค่าผูกราคาเป็น literal → [{ at, len, text, token, label }] เรียงตามตำแหน่ง ไม่ซ้อนกัน
+ *  ★ รับ **source ก่อน expand** เสมอ (ctx.source) — ถ้าส่ง HTML ที่ render แล้วมา token ทุกตัวจะกลายเป็น literal
+ *    แล้วนับเป็น "ผิด" ทั้งใบ (ตัวเรียกใน cron/migrator จึงต้องส่ง opts.source ให้ checkHtml)
+ *  ★ `d` = ผล derive() ของไฟล์ (ctx.dv) — ไม่ส่ง = ข้ามกลุ่ม (ข) ที่ต้องยืนยันว่าเลขนั้นเป็นค่าที่ไฟล์ประกาศ */
+function proseBoundHits(src, d) {
+  const s = String(src);
+  const raw = [];
+  for (const [a, b] of proseSpans(s)) {
+    const seg = s.slice(a, b);
+    for (const p of PROSE_BOUND) {
+      const re = p.re();
+      let m;
+      while ((m = re.exec(seg))) {
+        for (const h of p.hits(m, seg, d)) raw.push({ at: a + h.at, len: h.text.length, text: h.text, token: h.token, label: p.label });
+        if (re.lastIndex === m.index) re.lastIndex++;   // กันลูปไม่รู้จบถ้ามีใครเติม pattern ที่แมตช์ความยาว 0
+      }
+    }
+  }
+  raw.sort((x, y) => x.at - y.at || y.len - x.len);   // sort เสถียร: เสมอกัน = ลำดับใน PROSE_BOUND ชนะ (mosZone ก่อน mosZoneRev)
+  const out = [];
+  let end = -1;
+  for (const h of raw) { if (h.at < end) continue; out.push(h); end = h.at + h.len; }
+  return out;
+}
+
+/** healer ของ E44: แทน literal ที่ **เท่ากับข้อความที่ token render ณ ตอนนี้ทุก byte** ด้วย `{{rd:<token>}}`
+ *  → { html, changes } · idempotent (แทนแล้วไม่เหลือตัวเลขให้จับ)
+ *  ★ เกณฑ์ "เท่ากันทุก byte" ไม่ใช่ "เท่ากันเชิงตัวเลข" โดยตั้งใจ — คลังเขียน "฿191"/"฿156" ขณะ token render
+ *    "฿191.00"/"฿156.00" ⇒ ถ้ายอมให้ต่างรูป การแทนจะ **เขียนตัวเลขในย่อหน้าใหม่** ซึ่งเป็นสิ่งที่ §9 ห้าม cron ทำ
+ *    (ยิ่งกว่านั้น tolerance ครึ่งหน่วยจะเปลี่ยน "฿191" เป็น "฿191.40" ได้เงียบ ๆ) · ต่างรูป = ไม่แตะ แต่ E44 ยังฟ้อง
+ *    ให้คนแก้เป็น token เอง (ข้อความ error บอกวิธี)
+ *  ★ tripwire: render(ผล) ต้องเท่ากับ render(ต้นฉบับ) ทุก byte — กันบั๊ก offset/ช่วงที่ทำให้เนื้อหาที่คนเห็นเปลี่ยน */
+function proseTokens(src, rd, sm) {
+  const s = String(src);
+  validateValues(rd, sm);
+  const d = derive(rd, sm);
+  const hits = proseBoundHits(s, d);
+  if (!hits.length) return { html: s, changes: [] };
+  let out = s;
+  const changes = [];
+  for (const h of [...hits].reverse()) {   // ท้าย → หน้า: ตำแหน่งที่ถอดไว้ไม่เลื่อน
+    let want = null;
+    try { want = String(TOKENS[h.token](d)); } catch { continue; }   // token ที่ค่าเป็น null (ไม่มี analystTgt/scnBasis) = ไม่แตะ
+    if (want !== h.text) continue;
+    out = out.slice(0, h.at) + `{{rd:${h.token}}}` + out.slice(h.at + h.len);
+    changes.push(`prose: ${h.label} ${h.text} → {{rd:${h.token}}}`);
+  }
+  if (changes.length && renderValues(out, rd, sm) !== renderValues(s, rd, sm))
+    throw new Error('proseTokens: ข้อความที่ render เปลี่ยนหลังแทน token — ห้ามเขียน (ตัวแทนที่วางผิดช่วง)');
+  return { html: out, changes: changes.reverse() };
+}
+
 // ── กระจก stock-meta ของไฟล์ v2 (เจ้าของเดียว — ระยะ 2 ส่วน D fix wave F1/F4) ──
 // เขียน **4 คีย์เท่านั้น**: price/mos/upside/fairValue = ฟังก์ชันล้วนของ values.px + report-data.fv (derive)
 // ★ ไม่แตะ pe/dividendYield (final review ข้อ 1 · Critical): สองคีย์นี้เป็นกระจกของ "การ์ดที่ผู้เขียนเลือกโชว์"
@@ -222,4 +436,8 @@ function mirrorStockMeta(html) {
 }
 
 module.exports = { CUR_SYMBOL, FLAT_PP, VALUE_KEYS, CHG_SUFFIX, isV2, validateValues, derive, TOKENS, COPY_TOKENS: Object.keys(TOKENS), renderValues,
-  fmtPrice, fmtBig, annualChg, mosBand, isoOf, parseIso, styledRD, MIRROR_KEYS, mirrorStockMeta };
+  fmtPrice, fmtBig, annualChg, mosBand, isoOf, parseIso, styledRD, MIRROR_KEYS, mirrorStockMeta,
+  // E44 (ระยะ 2 ส่วน F · spec B(ข)) — prose ผูกราคาในใบใหม่ + healer
+  PROSE_TOKEN_SINCE, PROSE_BOUND, proseSpans, proseBoundHits, proseTokens,
+  // V2TOKENS (ระยะ 2 ส่วน F) — site บังคับของใบ v2 ต้องเป็น token
+  REQUIRED_TOKEN_SITES, missingTokenSites };

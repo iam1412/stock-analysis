@@ -245,7 +245,9 @@ for (const cs of CASES) {
   const fakeVocabList = [{ slug: 'skeleton-test-sector', label: 'Skeleton Test Sector', aliases: [], desc: 'd', kind: 'business' }];
   const fakeVocab = { version: 1, list: fakeVocabList, bySlug: new Map(fakeVocabList.map((e) => [e.slug, e])) };
   const fakeTagData = { vocabVersion: 1, tags: { [b.symbol]: ['skeleton-test-sector'] }, requests: [] };
-  const res = checkHtml(expanded, b.symbol + '.html', { tagData: fakeTagData, vocab: fakeVocab });
+  // ★ ต้องส่ง source (ต้นฉบับก่อน expand) เสมอ — E44 อ่าน ctx.source · ไม่ส่ง = หน้าที่ render แล้วดูเหมือน literal ทั้งใบ
+  //   (วันนี้เงียบเพราะ fixture ตรึง footer 24 มิ.ย. 2569 < PROSE_TOKEN_SINCE แต่โครงต้นแบบควรจำลอง 'ใบใหม่' ได้)
+  const res = checkHtml(expanded, b.symbol + '.html', { tagData: fakeTagData, vocab: fakeVocab, source: filled });
   ok(res.errors.length === 0, `${cs.file}: รายงานที่เติมแล้วผ่าน check-reports (0 error)` + (res.errors.length ? ' — ' + res.errors.map((e) => e.id + ':' + e.msg).join(' | ') : ''));
 
   const body = extractEngine(expanded);
@@ -283,7 +285,8 @@ for (const cs of CASES) {
     const leanTpl = tpl.replace(/\n\s*<div class="metric"><div class="k">เงินปันผล<\/div>[\s\S]*?<\/div><\/div>/, '');
     ok(!/\{\{rd:yield\}\}/.test(leanTpl) && leanTpl.length < tpl.length, `${cs.file}: lean — ตัดการ์ดเงินปันผล (ช่อง {{rd:yield}}) ออกจากโครงแล้ว`);
     let leanExp = null;
-    try { leanExp = expandReport(fill(leanTpl, buildFill({ ...b, dps: null, scnDivIncluded: false, scnPerYear: 'linear' }))); }
+    const lean = fill(leanTpl, buildFill({ ...b, dps: null, scnDivIncluded: false, scnPerYear: 'linear' }));
+    try { leanExp = expandReport(lean); }
     catch (e) { ok(false, `${cs.file}: lean — expandReport throw: ${e.message}`); }
     if (leanExp) {
       ok(!/\{\{rd:/.test(leanExp) && !/\{\{\s*\w+\s*\}\}/.test(leanExp), `${cs.file}: lean — expand ครบ ไม่เหลือ token (dps=null + ตัดการ์ด = ไม่ throw)`);
@@ -292,7 +295,7 @@ for (const cs of CASES) {
       const tot = (b.sc[0].tgt - b.price) / b.price * 100;
       const want = DV.fmtMos(tot) + ' (' + DV.fmtMos(tot / 3) + '/ปี)';
       ok(leanExp.includes(want), `${cs.file}: lean — ฉาก Bear = linear ไม่รวมปันผล → "${want}"`);
-      const leanRes = checkHtml(leanExp, b.symbol + '.html', { tagData: fakeTagData, vocab: fakeVocab });
+      const leanRes = checkHtml(leanExp, b.symbol + '.html', { tagData: fakeTagData, vocab: fakeVocab, source: lean });
       ok(leanRes.errors.length === 0, `${cs.file}: lean — ผ่าน check-reports (0 error)`
         + (leanRes.errors.length ? ' — ' + leanRes.errors.map((e) => e.id + ':' + e.msg).join(' | ') : ''));
     }

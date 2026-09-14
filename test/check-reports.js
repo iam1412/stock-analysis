@@ -34,6 +34,8 @@ const RM = require('../tools/report-meta.js');   // เจ้าของเด�
 const MF = require('../tools/field-manifest.js');
 // ระยะ 2 (ส่วน D): ไฟล์ v2 เก็บตัวเลขราคา/FV/MOS ที่เดียวใน report-data.values — gate อ่านสำเนาจากที่นั่นผ่าน derive (เจ้าของเดียว)
 const RV = require('../tools/report-values.js');
+// วันที่วิเคราะห์ = footer "ข้อมูล ณ" — ตัวอ่านชุดเดียวกับ runbook/preserve-dates (E44 ใช้ตัดสินว่า "ใบใหม่" ไหม)
+const { footerDate } = require('../tools/queue/footer-date.js');
 // โหลดครั้งเดียวต่อ process — self-test จะฉีดของปลอมผ่าน opts.tagData แทน
 let _tagCache = null;
 function tagDefaults() {
@@ -842,6 +844,52 @@ const CHECKS = [
     return bad.length ? [...new Set(bad)].join(' ; ') : null;
   } },
 
+  // ── E44 (ระยะ 2 ส่วน F · spec B(ข)): ใบใหม่ห้ามพิมพ์ตัวเลขผูกราคาเป็น literal ใน prose ──
+  // W15 เตือนได้แค่ "% ของราคาเป้า" และ cron แตะ prose ไม่ได้เลย (CLAUDE.md §9) ⇒ ราคา/FV/MOS/โซน MOS ที่พิมพ์
+  // ไว้ในย่อหน้าค้างกับราคาเก่าไปตลอด โดยไม่มีตัวซ่อมไหนเอื้อมถึง (วัดคลัง 14 ก.ย. 69: 5,293 จุดใน 907 ใบ)
+  // ★ เลิกไล่ซ่อมของเก่า — **ปิดทางเกิดใหม่แทน**: ใบที่วิเคราะห์ตั้งแต่ RV.PROSE_TOKEN_SINCE ต้องเขียนเป็น {{rd:…}}
+  //   ใบเก่า (footer < SINCE) เงียบสนิท = W15 ดูแลเหมือนเดิม · ของเก่าเป็นงานระยะ 3 (fix-on-touch แบบ W23)
+  // ★ อ่าน `c.source` (ก่อน expand) เสมอ — บน HTML ที่ render แล้ว token ทุกตัวจะกลายเป็น literal แล้วฟ้องทั้งใบ
+  //   (ผู้เรียกที่ไม่ส่ง opts.source จึงต้องแก้: tools/update-prices.js gateCheck · tools/migrate-v2.js)
+  // ★ ขอบเขต = `RV.proseBoundHits` ตัวเดียวกับที่ healer (`RV.proseTokens`) ใช้ — ตัวตรวจกับตัวซ่อมถามคำถามเดียวกัน
+  //   ต่างกันแค่ "ยอมรับการปัด" (ตรวจ) vs "ต้องเท่ากันทุก byte" (เขียน) — ดูเหตุผลใน tools/report-values.js
+  { id: 'E44', level: 'error', healer: 'proseTokens', label: 'prose ของใบใหม่: ตัวเลขผูกราคาต้องเป็น {{rd:…}}', fn: (c) => {
+    if (!c.v2) return null;                       // v1 = ไม่มี token ให้ใช้ (ใบเก่าทั้งหมด) → เงียบ
+    const f = footerDate(c.source);
+    // อ่านวันที่ไม่ได้ = ตัดสินไม่ได้ → ข้ามที่นี่ แต่ **ไม่เงียบ**: W24 ข้างล่างฟ้องแทน (fix round 1 · finding 2)
+    if (!f || f.iso < RV.PROSE_TOKEN_SINCE) return null;
+    const hits = RV.proseBoundHits(c.source, c.dv);
+    if (!hits.length) return null;
+    return `prose ผูกราคา ${hits.length} จุด (ใบวิเคราะห์ ${f.iso} ≥ ${RV.PROSE_TOKEN_SINCE} ต้องเขียนเป็น {{rd:…}} ให้ build render): `
+      + hits.slice(0, 3).map((h) => `${h.label} "${h.text}" → {{rd:${h.token}}}`).join(' · ')
+      + (hits.length > 3 ? ` · (อีก ${hits.length - 3} จุด)` : '');
+  } },
+
+  // ── W24 (fix round 1 · finding 2): ประตูวันที่ของ E44 fail-open เมื่ออ่าน footer ไม่ได้ — ต้องไม่เงียบ ──
+  // CLAUDE.md §8 กฎข้อ (1): check ที่ดึงค่าด้วย regex ต้องฟ้องเมื่อ **หาไม่เจอ** ไม่ใช่ปล่อยผ่าน
+  // `footerDate()` คืน null เมื่อวันที่เป็นช่วงข้ามเดือน ("31 ก.ค. – 2 ส.ค. 2026") หรือเดือนล้วน ("มิถุนายน 2569")
+  // ⇒ ทั้ง E44 และตัวซ่อม (`proseTokensIfNew`) ข้ามไฟล์นั้นทั้งใบ (คลัง 14 ก.ย. 69: **11 ใบ v2** — AMATAV AMZN
+  //   CHD CI FNF ILM MFEC PPG SABINA TKN TOST · MU เป็น v1 จึงนอกขอบเขตโดยดีไซน์ ไม่มี token ให้ใช้)
+  // ★ **เป็น warn ไม่ใช่ error โดยจำเป็น ไม่ใช่เพื่อความสะดวก**: ยก E44 ให้ยิงบนใบอ่านวันที่ไม่ได้ =
+  //   บล็อก push ของ 11 ใบเก่าที่ประตูวันที่ตั้งใจยกเว้นไว้ตั้งแต่ต้น (ทั้ง 11 ใบเขียนวันที่ที่คนอ่านออกว่า
+  //   ก่อน SINCE ชัดเจน — ไม่มีอะไรถูกซ่อน)
+  // ★ **สิ่งที่กันใบใหม่จริง** (แก้ข้อความรอบแรกที่อ้าง postcheck เกินจริง — fix round 2): โครง skeleton เขียน footer
+  //   รูปที่ parse ได้มาให้ (worker ต้องแก้ทับถึงจะเสีย) + กติกาใน SKILL 5A/5B + W24 บรรทัดนี้ที่เห็นใน `npm run verify`
+  //   ⛔ **`postcheck` ไม่ใช่ gate**: ไม่อยู่ใน verify/pre-push · เดินเฉพาะเส้นทาง `npm run queue -- ship` (ข้ามได้ด้วย --force)
+  //   ⇒ residual ที่ยอมรับ: ใบใหม่ที่ footer ผิดรูปผ่าน gate ด้วย "warning ที่มองเห็น" ไม่ใช่ "ผ่านเงียบ" (แบบเดียวกับ
+  //   W21/W22/W23 ที่รีโปนี้ใช้กับเคสขอบที่เกิดน้อยแต่ซ่อมอัตโนมัติไม่ได้) · 12 ใบในคลังคือหลักฐานว่าเกิดได้จริง
+  // ★ **ห้ามขยาย FOOTER_RE เป็นของแถม** — เป็นตัวอ่านร่วมของ preflight(triage)/preserve-dates/postcheck
+  //   ขยายแล้ว 12 ใบนี้จะเปลี่ยน bucket ของรอบคิวทันที และ "เดือนล้วน" ต้องตัดสินเองว่าใช้วันที่ 1 หรือวันสุดท้าย
+  //   ⇒ แยกเป็น task ของตัวเอง (open-items #38)
+  { id: 'W24', level: 'warn', healer: null, label: 'footer "ข้อมูล ณ" อ่านไม่ได้ → E44 ตัดสินไม่ได้', fn: (c) => {
+    if (!c.v2 || footerDate(c.source)) return null;
+    const s = String(c.source), fi = s.lastIndexOf('<footer');
+    const raw = fi < 0 ? '(ไม่มี <footer>)' : ((s.slice(fi).match(/ข้อมูล\s*ณ[^<•]{0,40}/) || ['(ไม่มีวลี "ข้อมูล ณ")'])[0]).trim();
+    const n = RV.proseBoundHits(s, c.dv).length;
+    return `อ่านวันที่วิเคราะห์จาก footer ไม่ได้ — "${raw}" ⇒ E44 ตัดสินไม่ได้ว่าเป็นใบใหม่ (ข้ามทั้งใบ) · ใบนี้มี prose ผูกราคา ${n} จุด`
+      + ' · แก้เป็นวันที่เดียวที่ parse ได้ ("14 ก.ย. 2569") — ช่วงข้ามเดือน/เดือนล้วน ตัวอ่านไม่รับ';
+  } },
+
   // ── W21/W22/W23 (ระยะ 1 WS1 ข้อ 2): manifest ทำให้ "เงียบ" ไม่เท่ากับ "สะอาด" อีกต่อไป ──
   // เดิม gate ตรวจเฉพาะสิ่งที่ตัวเองอ่านเจอ ⇒ ไฟล์ที่โครงหายทั้งช่องจะ "ผ่าน 47/47" อย่างเงียบ ๆ
   // W21 = ช่องที่ census บอกว่าคลัง ≥99% มี แต่ใบนี้อ่านไม่ได้ · W22/W23 = ค่าเดียวกันที่เขียนไว้หลายที่แล้วไม่ตรง
@@ -872,6 +920,20 @@ function checkHtml(html, name, opts) {
     if (res) (chk.level === 'error' ? errors : warnings).push({ id: chk.id, label: chk.label, msg: res });
   }
   if (ctx.v2Err) errors.unshift({ id: 'V2SCHEMA', label: 'report-data v2 (validateValues/derive)', msg: `ไฟล์ประกาศ v:2 แต่สคีมาใช้ไม่ได้: ${ctx.v2Err}` });
+  // ★ V2TOKENS (ระยะ 2 ส่วน F · carry จาก final review ส่วน D): ใบ v2 ที่ site บังคับกลับเป็น literal
+  //   = ค่าที่คนเห็นหลุดออกจาก JSON โดยไม่มีตัวซ่อมไหนเอื้อมถึง (cron ทาง v2 เขียนแต่ values) และ **gate เดิมเงียบสนิท**
+  //   เพราะ check อื่นอ่านค่าจาก ctx.dv (JSON) ไม่ได้อ่าน HTML แล้ว ⇒ นี่คือกลไกบังคับของเกณฑ์จบ "สำเนาต่อค่า = 1"
+  //   pseudo-id แบบเดียวกับ V2SCHEMA/EXPAND (ไม่อยู่ใน CHECKS ⇒ ไม่มี E-code ใหม่ · ไม่ขยับ 48/19 ที่ gen-docs นับ
+  //   · ไม่นับใน "N/48" ของไฟล์ — residual ที่ยอมรับเหมือน V2SCHEMA) · เจ้าของรายการ site = tools/report-values.js
+  //   ★ อ่าน ctx.source (ก่อน expand) — ผู้เรียกที่ไม่ส่ง opts.source จะเห็นทุก site เป็น literal แล้วยิงทั้งใบ
+  //     (พฤติกรรมเดียวกับ E44 โดยตั้งใจ: ทาง production ทุกเส้น — checkFile · cron gateCheck · migrator — ส่ง source ครบแล้ว)
+  //   ★ v2Err = ตัดสินไม่ได้ว่าเป็นใบ v2 ที่ใช้ได้ไหม → V2SCHEMA พูดแทน (ctx.v2 เป็น false อยู่แล้ว ไม่ยิงซ้อน)
+  if (ctx.v2) {
+    const miss = RV.missingTokenSites(ctx.source);
+    if (miss.length) errors.unshift({ id: 'V2TOKENS', label: 'ใบ v2: site บังคับต้องเป็น {{rd:…}}', msg:
+      `ต้นฉบับใบ v2 มี literal ในช่องที่ต้องเป็น token ${miss.length} ช่อง: ` + miss.map((m) => `${m.where} → {{rd:${m.token}}}`).join(' · ')
+      + ' (cron ทาง v2 เขียนเฉพาะ report-data.values ⇒ ช่องที่เป็น literal จะค้างถาวร)' });
+  }
   const errTotal = CHECKS.filter((c) => c.level === 'error').length;
   // coverage = "gate อ่านช่องไหนได้/ไม่ได้ในใบนี้" — ตัวเลขคู่กับผล error/warning เสมอ (ระยะ 1 WS1 ข้อ 2)
   const coverage = { n: MF.FIELDS.length - (ctx.mf.omitted || 0), found: ctx.mf.found.size, missingRequired: ctx.mf.missing, skippedOptional: ctx.mf.skipped };
