@@ -1031,6 +1031,64 @@ const cmp = (r, f) => r.compare.find((c) => c.field === f);
     ok(MG.planWrite('X', R, cdF('v1'), { v2Baseline: true, stab: null }).write === false, 'T5: ไม่มีผล v2Stability → ไม่เขียน (ไม่ใช่ผ่านเพราะยังไม่ได้วัด)');
   }
 }
+
+// ══════════════════════════════════════════════════════════════════════════════
+// ระยะ 3 Task 6 — สำมะโนต้องไม่โกหกสองทาง (F1 ของรีวิว Task 5) + แถว residue ที่ค้างหลังรอบที่ไม่ได้ --census
+// ══════════════════════════════════════════════════════════════════════════════
+{
+  const MG = require('../tools/migrate-v2.js');
+  const mkCd = (extra) => Object.assign({ ok: false, kinds: ['gate-warn:W22'], k: 0.86, side: 'v1', sideWhy: '×0.855→×0.86: gate-warn:W22=v1',
+    detail: ['…'], formOnly: [], formParts: ['ret'], valueDiff: [], retClass: 0, relax: { static: true }, points: 61, compared: 61 }, extra || {});
+  const pair = [{ part: 'page', label: 'ราคาเป้า', v1: '8.02', v2: '8.01', relPct: 0.12 }];
+
+  // ── (ก) F1 repro: entry ที่เขียนด้วยเกณฑ์ v2-baseline ต้องไม่อยู่ใน fail และ valueDiff ต้องไม่หาย ──
+  {
+    const e = { sym: 'THCOM', ok: true, reason: null, tokenised: [], literal: [], notes: [], pyChanges: [],
+      v2Baseline: { was: 'cron-diff v1-unstable gate-warn:W22', sideWhy: 'x', points: 61, patched: 61, mosRange: [-1.4, 25.1], warnIds: [] },
+      cronDiff: mkCd({ valueDiff: pair }) };
+    const s = MG.summarizeCronDiff([e]);
+    ok(s.fail.length === 0 && s.failDetail.length === 0 && Object.keys(s.failByKind).length === 0, 'T6: v2-baseline ไม่ใช่ fail ของสำมะโน', JSON.stringify(s.fail));
+    ok(s.baselined.join() === 'THCOM' && s.baselineDetail[0].how === 'v2-baseline' && s.baselineDetail[0].was === 'cron-diff v1-unstable gate-warn:W22',
+      'T6: แยก bucket "ยอมรับทั้งที่ตัวเทียบไม่ผ่าน" พร้อมเหตุผลเดิม', JSON.stringify(s.baselineDetail));
+    ok(s.valueDiff.length === 1 && s.valueDiff[0].sym === 'THCOM' && s.valueDiffMaxPct === 0.12,
+      'T6: ค่าต่างที่คนเห็น (฿8.02→฿8.01) ยังอยู่ในตารางเปิดเผย ไม่ตกจาก branch c.ok', JSON.stringify(s.valueDiff));
+    ok(s.sec6Form.length === 1 && s.formOnly.join() === 'THCOM' && s.relaxFiles.static.join() === 'THCOM',
+      'T6: รูป/ข้อยกเว้นของใบที่เขียนแล้วก็ถูกเปิดเผย', JSON.stringify({ f: s.formOnly, r: s.relaxFiles.static }));
+  }
+  // ── (ข) residue จริง (ok:false ไม่มีป้าย v2Baseline) ยังต้องเป็น fail เหมือนเดิม — ยามไม่ถูกผ่อนเป็นวงกว้าง ──
+  {
+    const e = { sym: 'PTG', ok: false, reason: 'cron-diff v1-unstable gate-warn:W22', tokenised: [], literal: [], notes: [], pyChanges: [], cronDiff: mkCd({ valueDiff: pair }) };
+    const s = MG.summarizeCronDiff([e]);
+    ok(s.fail.join() === 'PTG' && s.baselined.length === 0 && s.valueDiff.length === 0 && s.failByKind['gate-warn:W22'].join() === 'PTG',
+      'T6: residue จริงยังเป็น fail (และไม่เอา valueDiff ของใบที่ไม่ได้เขียนมาปน)', JSON.stringify({ f: s.fail, b: s.baselined }));
+    ok(MG.cronAccepted(e) === false && MG.cronAccepted({ ok: true, cronDiff: mkCd() }) === true, 'T6: cronAccepted ยึด entry.ok ไม่ใช่ cronDiff.ok');
+  }
+  // ── (ค) mergeCensus: แถว residue เดิม + ไฟล์บนดิสก์เป็น v2 แล้ว ⇒ พลิกเป็น "ย้ายแล้ว" ไม่ค้างเป็น v1 ──
+  {
+    const skipped = { sym: 'MPC', ok: false, reason: MG.ALREADY_V2, tokenised: [], literal: [], notes: [], pyChanges: [] };
+    const oldMigFail = { sym: 'MPC', ok: false, reason: 'site legend match ≠ 1 (0)', tokenised: ['px', 'chg'], literal: ['legend'], notes: ['literal legend: x'], pyChanges: [{ col: 'bear', kind: 'form' }] };
+    const c1 = MG.mergeCensus(null, 1, [oldMigFail], '2026-09-14T00:00:00.000Z');
+    const c2 = MG.mergeCensus(c1, 2, [skipped], '2026-09-15T00:00:00.000Z');
+    ok(c2.bySym.MPC.ok === true && c2.bySym.MPC.reason === null && c2.bySym.MPC.migratedLater.was === 'site legend match ≠ 1 (0)',
+      'T6: แถว residue ที่ไฟล์กลายเป็น v2 แล้ว = ย้ายแล้ว (สำมะโนนับ v1 จากไฟล์จริง)', JSON.stringify(c2.bySym.MPC.migratedLater));
+    ok(c2.bySym.MPC.literal.length === 0 && c2.bySym.MPC.tokenised.length === 0 && c2.bySym.MPC.pyChanges.length === 0
+      && c2.bySym.MPC.migratedLater.keptDisclosure === false && c2.bySym.MPC.notes.some((n) => /ย้ายเป็น v2 ภายหลัง/.test(n)),
+      'T6: ตกที่ชั้น migrator → ล้างการเปิดเผยของความพยายามเดิม (migrator คนละรุ่น) เหลือหมายเหตุ', JSON.stringify(c2.bySym.MPC.notes));
+    const oldCronFail = Object.assign({}, oldMigFail, { sym: 'THCOM', reason: 'cron-diff v1-unstable gate-warn:W22', cronDiff: mkCd({ valueDiff: pair }) });
+    const c3 = MG.mergeCensus(c2, 2, [oldCronFail], '2026-09-15T00:00:00.000Z');
+    const c4 = MG.mergeCensus(c3, 3, [Object.assign({}, skipped, { sym: 'THCOM' })], '2026-09-15T01:00:00.000Z');
+    ok(c4.bySym.THCOM.ok === true && c4.bySym.THCOM.migratedLater.keptDisclosure === true && c4.bySym.THCOM.literal.join() === 'legend',
+      'T6: ตกที่ชั้น cron differential → migrateOne ผ่านแล้ว การเปิดเผยยังตรงไฟล์ ⇒ เก็บไว้', JSON.stringify(c4.bySym.THCOM.migratedLater));
+    ok(c4.cronDiff.fail.length === 0 && c4.cronDiff.baselined.join() === 'THCOM' && c4.cronDiff.baselineDetail[0].how === 'ย้ายภายหลังนอกสำมะโน'
+      && c4.cronDiff.valueDiff.length === 1, 'T6: สรุปหลังพลิกแถว = ไม่มี fail ค้าง · valueDiff ยังอยู่', JSON.stringify(c4.cronDiff.baselined));
+    // แถวที่ "ย้ายสำเร็จ" อยู่แล้ว ยังต้องคงเดิมทุก byte (เจตนาเดิมของ fix1 R9 — ห้าม last-write-wins ลบการเปิดเผยทิ้ง)
+    const c5 = MG.mergeCensus(c4, 4, [{ sym: 'AEM', ok: true, reason: null, tokenised: ['px'], literal: [], notes: [], pyChanges: [] }], '2026-09-15T02:00:00.000Z');
+    const c6 = MG.mergeCensus(c5, 5, [Object.assign({}, skipped, { sym: 'AEM' })], '2026-09-15T03:00:00.000Z');
+    ok(JSON.stringify(c6.bySym.AEM) === JSON.stringify(c5.bySym.AEM) && !c6.bySym.AEM.migratedLater, 'T6: แถวที่ย้ายสำเร็จอยู่แล้วไม่ถูกแตะ (fix1 R9 ยังมีผล)');
+    const md = MG.renderCensusMd(Object.values(c6.bySym));
+    ok(/ย้ายภายหลังโดยรอบที่ไม่ได้บันทึกสำมะโน \| \*\*2\*\*/.test(md) && /MPC THCOM/.test(md), 'T6: census.md เปิดเผยใบที่ย้ายภายหลังนอกสำมะโน', (md.split('\n').find((l) => /ย้ายภายหลัง/.test(l)) || '').slice(0, 120));
+  }
+}
 }
 
 module.exports = { run };

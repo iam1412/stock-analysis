@@ -1544,34 +1544,52 @@ function cronDiffReason(cd) {
   return cd.side === 'v1' ? `cron-diff v1-unstable ${k}` : cd.side === 'v2' ? `cron-diff v2-diff ${k}` : `cron-diff ${k}`;
 }
 
+/**
+ * "แถวนี้ถูกเขียนลง reports/ แล้วหรือไม่" — คำถามที่สรุป cron differential ต้องใช้แยก fail ออกจากที่เหลือ
+ * ★ ระยะ 3 Task 6 (F1 ของรีวิว Task 5): `cd.ok` **ไม่ใช่** คำตอบนั้นอีกต่อไป — ตั้งแต่ `--v2-baseline`
+ *   (ระยะ 3 Task 5) ใบที่ `cd.ok === false` ถูกเขียนได้เมื่อฝั่งที่ไม่นิ่งคือ v1 และ v2 เองเสถียร
+ *   ⇒ ยึด `entry.ok` เป็นผู้ตัดสิน (planWrite เขียน `ok:false` ให้เฉพาะ residue จริง) และใช้ `entry.v2Baseline`
+ *   เป็นป้ายบอก "ยอมรับด้วยเกณฑ์ v2-as-baseline" เท่านั้น · ใบที่ mergeCensus ปั๊ม `migratedLater` ให้
+ *   (ย้ายภายหลังโดยรอบที่ไม่ได้บันทึกสำมะโน) ก็เข้าทางเดียวกันเพราะ `ok:true`
+ */
+function cronAccepted(e) { return e.ok !== false || !!e.v2Baseline; }
+
 /** สรุป cron differential จาก entries ของ census (คิดใหม่จาก bySym ทุกครั้ง ⇒ รีรันแบตช์เดิมไม่นับซ้ำ) */
 function summarizeCronDiff(entries) {
   const checked = entries.filter((e) => e.cronDiff);
   const failByKind = {}, sec6Form = [], otherForm = [], retClass = [], valueDiff = [], relaxFiles = { static: [], pyForm: [], restate: [], scale: [], era: [] };
   for (const e of checked) {
     const c = e.cronDiff;
-    if (!c.ok) for (const k of c.kinds) (failByKind[k] = failByKind[k] || []).push(e.sym);
+    if (!cronAccepted(e)) for (const k of c.kinds) (failByKind[k] = failByKind[k] || []).push(e.sym);
     else {
       // formParts = ชุด part ที่พบรูปทั้งหมด (ตัวอย่างใน formOnly ถูกตัดเหลือ ≤3) · census เก่าไม่มี formParts → ถอยไปดูตัวอย่าง
       const partsOf = c.formParts || [...new Set((c.formOnly || []).map((f) => f.part))];
       const ret = (c.formOnly || []).find((f) => f.part === 'ret');
       if (partsOf.includes('ret')) sec6Form.push({ sym: e.sym, example: ret ? `${ret.before}→${ret.after} (×${ret.k})` : '' });
       if (partsOf.some((x) => x !== 'ret')) otherForm.push(e.sym);
+      // ★ F1: `valueDiff` เคยอยู่ใต้ branch `c.ok` เท่านั้น ⇒ ค่าที่คนเห็นเปลี่ยนของใบที่เขียนด้วยเกณฑ์ v2-baseline
+      //   (เช่น THCOM ฿8.02→฿8.01) หลุดจากตารางเปิดเผยทั้งที่ไฟล์ถูกเขียนไปแล้ว
       if ((c.valueDiff || []).length) valueDiff.push({ sym: e.sym, pairs: c.valueDiff });
     }
     if (c.retClass) retClass.push(e.sym);
-    if (c.ok) for (const k of Object.keys(relaxFiles)) if (c.relax && c.relax[k]) relaxFiles[k].push(e.sym);
+    if (cronAccepted(e)) for (const k of Object.keys(relaxFiles)) if (c.relax && c.relax[k]) relaxFiles[k].push(e.sym);
   }
   for (const k of Object.keys(relaxFiles)) relaxFiles[k].sort();
   for (const k of Object.keys(failByKind)) failByKind[k].sort();
+  const accepted = checked.filter(cronAccepted);
   return {
-    checked: checked.length, pass: checked.filter((e) => e.cronDiff.ok).length, fail: checked.filter((e) => !e.cronDiff.ok).map((e) => e.sym).sort(),
-    failByKind, formOnly: checked.filter((e) => e.cronDiff.ok && ((e.cronDiff.formParts || []).length || (e.cronDiff.formOnly || []).length)).map((e) => e.sym).sort(),
+    checked: checked.length, pass: accepted.filter((e) => e.cronDiff.ok).length, fail: checked.filter((e) => !cronAccepted(e)).map((e) => e.sym).sort(),
+    // ยอมรับทั้งที่ตัวเทียบไม่ผ่าน (v2-as-baseline ระยะ 3 Task 5 · หรือย้ายภายหลังนอกสำมะโน) — แยก bucket ไม่ปนกับ pass
+    baselined: accepted.filter((e) => !e.cronDiff.ok).map((e) => e.sym).sort(),
+    baselineDetail: accepted.filter((e) => !e.cronDiff.ok).sort((a, b) => a.sym.localeCompare(b.sym)).map((e) => ({
+      sym: e.sym, was: (e.v2Baseline && e.v2Baseline.was) || (e.migratedLater && e.migratedLater.was) || cronDiffReason(e.cronDiff),
+      how: e.v2Baseline ? 'v2-baseline' : 'ย้ายภายหลังนอกสำมะโน', sideWhy: (e.v2Baseline && e.v2Baseline.sideWhy) || e.cronDiff.sideWhy || '' })),
+    failByKind, formOnly: accepted.filter((e) => (e.cronDiff.formParts || []).length || (e.cronDiff.formOnly || []).length).map((e) => e.sym).sort(),
     // fix1 R1: ค่าต่างที่มีอยู่ก่อน patch ที่ตัวเทียบข้าม (migration ชั้น 1 ยอมรับ ≤ GAP_REL) — รายใบ + ค่ามากสุดที่พบ
     valueDiff: valueDiff.sort((a, b) => a.sym.localeCompare(b.sym)),
     valueDiffMaxPct: valueDiff.reduce((m, x) => Math.max(m, ...x.pairs.map((p) => p.relPct || 0)), 0),
     sec6Form: sec6Form.sort((a, b) => a.sym.localeCompare(b.sym)), otherForm: otherForm.sort(), retClass: retClass.sort(), relaxFiles,
-    failDetail: checked.filter((e) => !e.cronDiff.ok).sort((a, b) => a.sym.localeCompare(b.sym))
+    failDetail: checked.filter((e) => !cronAccepted(e)).sort((a, b) => a.sym.localeCompare(b.sym))
       .map((e) => ({ sym: e.sym, reason: e.reason, kinds: e.cronDiff.kinds, k: e.cronDiff.k, side: e.cronDiff.side || 'unknown', sideWhy: e.cronDiff.sideWhy || '',
         detail: (e.cronDiff.detail || []).join(' || ').slice(0, 400) })),
   };
@@ -1710,6 +1728,7 @@ function clauseMd(entries) {
 function finalSummaryMd(entries) {
   const okE = entries.filter((e) => e.ok);
   const res = entries.filter((e) => !e.ok);
+  const later = entries.filter((e) => e.migratedLater);
   const cronRes = res.filter((e) => /^cron-diff /.test(String(e.reason || '')));
   const byReason = new Map();
   for (const e of res) { const k = shortReason(e.reason); const v = byReason.get(k) || []; v.push(e.sym); byReason.set(k, v); }
@@ -1733,6 +1752,10 @@ function finalSummaryMd(entries) {
     '| ผล | ใบ |', '|---|---|',
     `| ย้ายเป็น v2 | **${okE.length}/${entries.length}** |`,
     `| residue (คง v1) | **${res.length}** = migrator ${res.length - cronRes.length} + cron-diff ${cronRes.length} |`,
+    // ★ ระยะ 3 Task 6: ใบที่รอบหลังย้ายไปโดยไม่ได้สั่ง --census (สำมะโนรู้จากไฟล์จริงตอนรีรัน ไม่ใช่จากผลการย้าย)
+    ...(later.length ? [`| ในนั้น: ย้ายภายหลังโดยรอบที่ไม่ได้บันทึกสำมะโน | **${later.length}** — ${later.map((e) => e.sym).sort().join(' ')} |`,
+      // ผลตามมาที่ต้องบอกเอง ไม่งั้น "ย้าย N" กับ "cron differential ตรวจ M" ของสองตารางกระทบยอดกันไม่ได้
+      `| ในนั้น: ไม่มีบันทึก cron differential (รอบที่ย้ายไม่ได้เขียนสำมะโน) | **${later.filter((e) => !e.cronDiff).length}** — ${later.filter((e) => !e.cronDiff).map((e) => e.sym).sort().join(' ') || '—'} |`] : []),
     `| แบตช์ที่บันทึก | ${[...byBatch.entries()].sort((a, b) => (parseInt(a[0], 10) || 0) - (parseInt(b[0], 10) || 0)).map(([k, v]) => `${k}:${v}`).join(' · ')} |`,
     '',
     '### residue ต่อชนิด (รายชื่อครบ — input ระยะ 3)',
@@ -1756,6 +1779,7 @@ function finalSummaryMd(entries) {
     // ★ แถวที่มาจาก --cron-diff มีได้ก็ต่อเมื่อรัน --cron-diff จริง (ไม่งั้น .md จะพูดถึงสิ่งที่ไม่เคยตรวจ)
     ...(cd.checked ? [
       `| cron differential: ตรวจ / ผ่าน / ตก | ${cd.checked} / ${cd.pass} / ${cd.fail.length} | ตก = ${cd.fail.join(' ') || '—'} (ไม่เขียน · รายละเอียดในหัวข้อด้านบน) |`,
+      `| ยอมรับทั้งที่ตัวเทียบไม่ผ่าน (v2-as-baseline / ย้ายภายหลัง) | ${(cd.baselined || []).length} | ${(cd.baselined || []).join(' ') || '—'} |`,
       `| ค่าต่างที่มีอยู่ก่อน patch (migration ยอมรับ) | ${vd.length} | มากสุด ${(cd.valueDiffMaxPct || 0).toFixed(2)}% · ${vd.map((x) => x.sym).join(' ')} |`,
       `| รูปทศนิยมหมวด 6 เปลี่ยน (เช่น 3.5→3) | ${cd.sec6Form.length} | รอเจ้าของตัดสินว่าเป็นรูปหรือค่า (นโยบายปัด fmtMos เดียว) · รายชื่อด้านล่าง |`,
     ] : []),
@@ -1779,8 +1803,14 @@ function cronDiffMd(cd) {
     'เทียบผล `patchReport` ของ v1 ต้นฉบับกับ v2 ที่ราคา/วันที่เดียวกัน: stock-meta (price/mos/upside/fairValue/pe/dividendYield) ·',
     'ตัวเลขที่มองเห็น · error/warning ของ gate — ใบที่ต่างนอกเหนือ "รูป" = residue (ไม่เขียน)',
     '',
-    '| ผล | ใบ |', '|---|---|', `| ตรวจ | ${cd.checked} |`, `| ผ่าน | ${cd.pass} |`, `| ตก (ไม่เขียน) | ${cd.fail.length} |`, `| ผ่านแต่ต่างแค่รูป | ${cd.formOnly.length} |`,
+    '| ผล | ใบ |', '|---|---|', `| ตรวจ | ${cd.checked} |`, `| ผ่าน | ${cd.pass} |`, `| ตก (ไม่เขียน) | ${cd.fail.length} |`,
+    `| ยอมรับทั้งที่ตัวเทียบไม่ผ่าน (v2-as-baseline / ย้ายภายหลัง) | ${(cd.baselined || []).length} |`, `| ผ่านแต่ต่างแค่รูป | ${cd.formOnly.length} |`,
     '',
+    ...((cd.baselined || []).length ? ['### ยอมรับทั้งที่ตัวเทียบไม่ผ่าน — `--v2-baseline` (ระยะ 3 Task 5) หรือย้ายภายหลังนอกสำมะโน', '',
+      'เกณฑ์ "v2 = v1" ใช้ไม่ได้เมื่อฝั่งที่ไม่นิ่งคือ v1 ⇒ แทนด้วย "v2 เองเสถียรบนกริดเดิม" (`v2Stability`) — เขียนแล้ว ไม่ใช่ residue',
+      '(คอลัมน์ "ทาง" = `v2-baseline` เมื่อรอบที่ย้ายบันทึกสำมะโนไว้เอง · `ย้ายภายหลังนอกสำมะโน` เมื่อรู้จากไฟล์จริงตอนรีรัน)', '',
+      '| ใบ | เหตุผลเดิมของตัวเทียบ | ทาง | ฝั่งที่ไม่นิ่ง |', '|---|---|---|---|',
+      ...(cd.baselineDetail || []).map((x) => `| ${x.sym} | \`${x.was}\` | ${x.how} | ${x.sideWhy || '—'} |`), ''] : []),
     '### ตกตามชนิด', '', '| ชนิด | ใบ | รายชื่อ |', '|---|---|---|',
     kinds.length ? kinds.map(([k, v]) => `| ${k} | ${v.length} | ${v.join(' ')} |`).join('\n') : '| — | 0 | |',
     '',
@@ -1856,7 +1886,23 @@ function mergeCensus(prevRaw, batch, entries, at) {
   //   ไม่งั้น last-write-wins ลบการเปิดเผยของใบที่ย้ายสำเร็จทิ้ง · ใบที่ไม่เคยมีแถวมาก่อนยังบันทึกตามปกติ
   for (const e of entries) {
     const old = bySym[e.sym];
-    if (old && e.reason === ALREADY_V2 && old.reason !== ALREADY_V2) continue;
+    if (old && e.reason === ALREADY_V2 && old.reason !== ALREADY_V2) {
+      if (old.ok) continue;                        // แถวเดิม = ใบที่ย้ายสำเร็จ (การเปิดเผยครบ) — คงไว้ตามเจตนาเดิมของ fix1 R9
+      // ★ ระยะ 3 Task 6: แถวเดิมเป็น **residue** แต่ไฟล์บนดิสก์เป็น v2 แล้ว ⇒ มีรอบหลังย้ายไปโดยไม่ได้สั่ง --census
+      //   (ระยะ 3 Task 2–5 ย้าย 18 ใบแบบนี้) · คงแถว residue ไว้ = สำมะโนรายงาน v1 มากกว่าความจริง (43 แทน 25)
+      //   ตัวเลขต้องมาจากไฟล์จริงเสมอ จึงพลิกเป็น "ย้ายแล้ว" พร้อมบันทึกเหตุผล residue เดิมไว้ใน `migratedLater`
+      //   ▸ การเปิดเผย (tokenised/literal/pyChanges) เก็บไว้ได้เฉพาะแถวที่ตกที่ **ชั้น cron differential** (มี `cronDiff`
+      //     ⇒ migrateOne ผ่าน ผลที่บันทึกตรงกับสิ่งที่เขียนจริง) · แถวที่ตกที่ **ชั้น migrator** บันทึกไว้จากความพยายาม
+      //     ที่ล้มเหลวด้วย migrator คนละรุ่น (ระยะ 3 แก้ตัวค้นหา site แล้ว) ⇒ ล้างทิ้ง ไม่เก็บของที่รู้ว่าไม่ตรงไฟล์
+      const keep = !!old.cronDiff;
+      bySym[e.sym] = Object.assign({}, old, keep ? {} : { tokenised: [], literal: [], pyChanges: [] }, {
+        ok: true, reason: null, batch, at,
+        migratedLater: { was: old.reason, batch: old.batch == null ? null : old.batch, at: old.at || null, keptDisclosure: keep },
+        notes: (keep ? old.notes || [] : []).concat([`ย้ายเป็น v2 ภายหลังโดยรอบที่ไม่ได้บันทึกสำมะโน (เหตุผล residue เดิม: ${old.reason})`
+          + (keep ? '' : ' · ล้างรายการ tokenised/literal/pyChanges ของความพยายามเดิมทิ้ง — migrator คนละรุ่น')]),
+      });
+      continue;
+    }
     bySym[e.sym] = Object.assign({}, e, { batch, at });
   }
   const batches = (prev.batches || []).filter((b) => b.batch !== batch);
@@ -1999,7 +2045,7 @@ module.exports = {
   SITE_RE, siteHits,
   migrateOne, extractValues, tokenise, buildRd, verifyPair, checkStripped, sameMoney, scnPyDiffs, scnPyCountGuard, pyCell, pyUnitCount, main, noteTailOf, tailHitsOtherSite, HINT_NOTE_TAIL_RE,
   cronDiff, v2Stability, mosDirViolations, cronGate, CRON_GRID, CRON_META_KEYS, sameMetaForm, cronDateParts, visibleCronDiff, pyExplained, planWrite, summarizeCronDiff, unitForm,
-  failSide, cronDiffReason, exitCode, ALREADY_V2,
+  failSide, cronDiffReason, exitCode, ALREADY_V2, cronAccepted,
   COPY_FIELDS, REQUIRED_SITES, TOLERANCE, GAP_REL, renderCensusMd, mergeCensus,
 };
 if (require.main === module) process.exit(main(process.argv.slice(2)));
