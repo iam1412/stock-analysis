@@ -1352,6 +1352,79 @@ ok(U.commitBody([], []) === '', 'commitBody: ว่างเมื่อไม�
         && !!U.decide({ oldPrice: RM.readStockMeta(staleSm).price, newPrice: np, fv: U.fvOf(staleSm, RM.readStockMeta(staleSm)), currencyOk: true }).freeze,
         'M8: decide(oldPrice=pxOf) ไม่ freeze · (ตั้งฉาก) oldPrice=กระจกค้าง → freeze ผิด ๆ');
     }
+
+    // ── N1 (ระยะ 2 ส่วน F · residual จาก re-review fix wave ส่วน D): กระจก stock-meta ของ healDerived
+    //    **ห้ามทับ pe/dividendYield ที่ pass derived เพิ่งเขียน** — mutant ที่ทับเคยผ่าน update-prices-test ครบทุกเคส
+    //    (ทางเดิน --heal-derived ไม่มีเทสไหนเดินจนถึงกระจกบนไฟล์จริง) · pin ด้วย 2 ชั้น:
+    //    (ก) fixture สะอาด → heal ต้อง touched 0 + ไฟล์เท่าเดิมทุก byte (mutant: DDOG pe 75 → ~451 ⇒ touched 1)
+    //    (ข) fixture ที่ค่าเสีย (SRE ตาม brief) → E41/W19 ยิง → heal --write → หายและ **คงหาย** (heal ซ้ำ touched 0)
+    //        ค่าที่ได้คืนต้องเป็นฐานของการ์ด (pe 24.1) ไม่ใช่ราคา÷values.eps (SRE ไม่มี eps ⇒ mutant เขียน null)
+    {
+      const healOf = (dir) => { const o = console.log; console.log = () => {}; try { return U.healDerived({ dir, only: new Set(), write: true, prose: false }); } finally { console.log = o; } };
+      const idsOf = (h, n) => { const r = CR.checkHtml(expandReport(h), n, { source: h }); return r.errors.map((e) => e.id).concat(r.warnings.map((w) => w.id)); };
+      const savedN1 = process.env.STALE_TODAY;
+      try {
+        // (ก) ทุก fixture v2 สะอาด: heal = no-op
+        for (const s of FX.SYMS) {
+          process.env.STALE_TODAY = FX.TODAY_OF[s];
+          const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'healv2-'));
+          try {
+            const src9 = FX[`${s}_V2`]();
+            fs.writeFileSync(path.join(dir, `${s}.html`), src9);
+            const h = healOf(dir);
+            ok(h.touched === 0 && h.failed.length === 0 && fs.readFileSync(path.join(dir, `${s}.html`), 'utf8') === src9,
+              `N1(ก) ${s}: --heal-derived บน fixture v2 สะอาด = no-op (กระจกไม่ทับ pe/dividendYield ของ pass derived)`, JSON.stringify(h));
+          } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+        }
+        // (ข) SRE: pe/dividendYield เสีย **ในย่านที่ตัวตรวจยอมตัดสิน** (ต่างเกิน tolerance แต่ยังไม่หลุดย่านฐานต่างกัน)
+        process.env.STALE_TODAY = FX.TODAY_OF.SRE;
+        const dir9 = fs.mkdtempSync(path.join(os.tmpdir(), 'healv2-sre-'));
+        try {
+          const src9 = FX.SRE_V2(), sm9 = RM.readStockMeta(src9);
+          const broken = src9.replace(/("pe":)[0-9.]+/, '$120.5').replace(/("dividendYield":)[0-9.]+/, '$12.2');
+          ok(broken !== src9 && RM.readStockMeta(broken).pe === 20.5, '(ตั้งฉาก M9ข) SRE stock-meta.pe/dividendYield เสีย');
+          const pre = idsOf(broken, 'SRE.html');
+          ok(pre.includes('E41') && pre.includes('W19'), 'N1(ข) SRE เสีย → E41 + W19 ยิง', pre.join(','));
+          const fp9 = path.join(dir9, 'SRE.html');
+          fs.writeFileSync(fp9, broken);
+          const h1 = healOf(dir9), after = fs.readFileSync(fp9, 'utf8'), smA = RM.readStockMeta(after);
+          const post = idsOf(after, 'SRE.html');
+          ok(h1.touched === 1 && !post.includes('E41') && !post.includes('W19'), 'N1(ข) SRE: heal --write → E41/W19 หาย', `${JSON.stringify(h1)} ${post.join(',')}`);
+          ok(smA.pe === sm9.pe && smA.dividendYield === sm9.dividendYield,
+            `N1(ข) SRE: ค่าที่ heal คืนมา = ฐานของการ์ดเดิม (pe ${sm9.pe} · yield ${sm9.dividendYield}) ไม่ใช่ค่าที่ derive จาก values`, `${smA.pe} / ${smA.dividendYield}`);
+          ok(RM.readReportData(after).data.values.eps == null,
+            'N1(ข) SRE: values ไม่มี eps ⇒ กระจกที่เขียน pe จาก values จะได้ null — ตัวชี้ว่าเคสนี้ discriminate mutant ได้จริง');
+          const h2 = healOf(dir9), post2 = idsOf(fs.readFileSync(fp9, 'utf8'), 'SRE.html');
+          ok(h2.touched === 0 && !post2.includes('E41') && !post2.includes('W19'), 'N1(ข) SRE: heal ซ้ำ → touched 0 · E41/W19 ยัง**คง**หาย (converged)', `${JSON.stringify(h2)} ${post2.join(',')}`);
+        } finally { fs.rmSync(dir9, { recursive: true, force: true }); }
+      } finally { process.env.STALE_TODAY = savedN1; }
+    }
+
+    // ── N2 (ระยะ 2 ส่วน F · item 4): วงเล็บทวนวันที่ที่ parser อ่านไม่ออก → **note** แบบเดียวกับ v1
+    //    เดิมทาง v2 เงียบสนิท: parenDateAfter คืน null ⇒ ไม่มี edit **และ** tripwire ก็ข้าม ⇒ วันเก่าค้างในวงเล็บถาวร
+    //    (คลังวันนี้ 0 ใบ — ปิดช่องว่าง ไม่ใช่แก้บั๊กที่กำลังเกิด) · DPZ = ใบเดียวใน fixture ที่วงเล็บทวนเป็น literal
+    {
+      const savedN2 = process.env.STALE_TODAY;
+      process.env.STALE_TODAY = FX.TODAY_OF.DPZ;
+      try {
+        const okSrc = FX.DPZ_V2();
+        const badSrc = okSrc.replace('(11 ก.ย. 2569 ตลาดปิด)', '(11 กย. 2569 ตลาดปิด)');   // "กย." ไม่อยู่ในคลังชื่อเดือน
+        // ตรวจบน **view ที่ render แล้ว** (ต้นฉบับ v2 มีแต่ token — findPriceDate อ่านวันที่ไม่ได้โดยโครงสร้าง)
+        const headOf = (h) => RV.renderValues(h, RM.readReportData(h).data, RM.readStockMeta(h)).match(/<header[\s\S]*?<\/header>/i)[0];
+        const parenOf = (h) => { const hd = headOf(h); return PD.parenDateAfter(hd, PD.findPriceDate(hd)); };
+        ok(badSrc !== okSrc && !!parenOf(okSrc) && parenOf(badSrc) === null,
+          '(ตั้งฉาก N2) "(11 กย. 2569 …)" → parenDateAfter อ่านไม่ออกจริง ขณะรูปเดิมอ่านออก');
+        const dpN2 = { day: 12, monIdx: 8, yearCE: 2026 };
+        const run = (h) => U.patchReport(h, { newPrice: Math.round(RM.readReportData(h).data.values.px * 1.02 * 100) / 100, dateParts: dpN2, chartData: null });
+        const rOk = run(okSrc), rBad = run(badSrc);
+        const NOTE = /วันที่ทวนในวงเล็บ \(v2\)/;
+        ok(!rOk.notes.some((n) => NOTE.test(n)), 'N2: วงเล็บที่อ่านออก → ไม่มี note (เขียนวันใหม่ให้ตามปกติ)', rOk.notes.join(' | '));
+        ok(rBad.notes.some((n) => NOTE.test(n)), 'N2: วงเล็บที่อ่านไม่ออก → มี note (ไม่ค้างเงียบ · cron พิมพ์ note ในบรรทัดสรุปของใบนั้น)', rBad.notes.join(' | '));
+        ok(rBad.changed && U.gateAfterPatch(rBad.html, 'DPZ.html').ok,
+          'N2: เป็น note ไม่ใช่ throw — ใบยัง patch/ผ่าน gate ได้ (เขียนวงเล็บไม่ได้ ≠ ทั้งใบใช้ไม่ได้)');
+        ok(rBad.html.includes('(11 กย. 2569 ตลาดปิด)'), 'N2: ไม่เดา — วงเล็บที่อ่านไม่ออกถูกคงไว้ทุก byte');
+      } finally { process.env.STALE_TODAY = savedN2; }
+    }
   } finally { process.env.STALE_TODAY = saved; }
 }
 

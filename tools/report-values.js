@@ -196,6 +196,32 @@ function renderValues(html, rd, sm) {
   if (left) throw new Error(`เหลือ token {{rd:…}} ที่ render ไม่ได้: ${left[0]}`);
   return out;
 }
+// ── V2TOKENS: site บังคับของใบ v2 ต้องเป็น token ไม่ใช่ literal (ระยะ 2 ส่วน F · carry จาก final review ส่วน D) ──
+// เกณฑ์จบระยะ 2 ข้อ 1 คือ "สำเนาต่อค่า = 1" — migrator บังคับเรื่องนี้ตอน**ย้าย** (`REQUIRED_SITES` ใน
+// tools/migrate-v2.js) แต่หลังย้ายแล้วไม่มีใครกันไม่ให้ใครเขียน literal ทับกลับเข้าไป: ใบ v2 ที่หัวรายงานเป็น
+// `<div class="px">฿150.00` จะ **ผ่าน gate เงียบ ๆ** (E30/E41 อ่านค่าจาก JSON ทาง ctx.dv แล้ว ไม่ได้อ่าน .px อีก)
+// แล้วราคาที่คนเห็นก็ค้างตลอดไปเพราะ cron ทาง v2 เขียนแต่ JSON ⇒ กลับไปเป็นโรคเดิมที่ระยะ 2 ทั้งระยะมาแก้
+// ⇒ check โครงสร้างถาวร: ใบที่ประกาศ v2 **ต้องมี token ที่ทุก site บังคับ** ใน *ต้นฉบับก่อน expand*
+// ★ นับคลังก่อนเปิด (14 ก.ย. 2569): 865 ใบ v2 · ขาด 0 ใบ (migrator บังคับ 6 site นี้อยู่แล้ว) · skeleton th/us ผ่านทั้งคู่
+// ★ ทำไม 6 site นี้: เป็นช่องที่ **cron ทาง v2 ไม่มีตัวเขียน HTML ให้แล้ว** (patchReport return ก่อนตัวเขียนสำเนา v1)
+//   ⇒ ถ้าช่องไหนกลับเป็น literal ค่าจะค้างโดยไม่มีตัวซ่อมไหนเอื้อมถึง · ช่องอื่น (การ์ด P/E · ปันผล · หมวด 6)
+//   ยังมี pass derived เขียนทับได้อยู่ จึงไม่อยู่ในรายการบังคับ (คลังจริงก็คง literal ไว้หลายใบโดยตั้งใจ)
+const V2T_HEADER_RE = /<header[\s\S]*?<\/header>/i;
+const REQUIRED_TOKEN_SITES = [
+  { id: 'px', token: 'px', where: 'หัวรายงาน .px', has: (s) => RM.PX_TOKEN_RE.test(s) },
+  { id: 'chg', token: 'chg', where: 'ป้าย % รอบปี .chg', has: (s) => /<div class="chg">\s*\{\{rd:chg\}\}\s*<\/div>/.test(s) },
+  { id: 'priceDate', token: 'priceDate', where: 'วันที่ราคาใน <header>', has: (s) => { const m = s.match(V2T_HEADER_RE); return !!m && m[0].includes('{{rd:priceDate}}'); } },
+  { id: 'pxIn', token: 'pxNum', where: 'ช่องกรอกราคา #pxIn', has: (s) => /id="pxIn"[^>]*\bvalue="\{\{rd:pxNum\}\}"/.test(s) },
+  { id: 'big', token: 'mos', where: 'MOS ตัวใหญ่ .big', has: (s) => /<div class="big">\s*\{\{rd:mos\}\}\s*<\/div>/.test(s) },
+  { id: 'verdict', token: 'mosClass', where: 'คลาสกล่อง verdict', has: (s) => /class="mos-verdict \{\{rd:mosClass\}\}"/.test(s) },
+];
+/** site บังคับที่ **ไม่ได้** เป็น token ในต้นฉบับ → [{id, token, where}] · ว่าง = ครบ
+ *  ★ รับ **source ก่อน expand** เสมอ (ctx.source) เหมือน proseBoundHits — ส่ง HTML ที่ render แล้วมา = ขาดทุก site */
+function missingTokenSites(src) {
+  const s = String(src);
+  return REQUIRED_TOKEN_SITES.filter((x) => !x.has(s)).map(({ id, token, where }) => ({ id, token, where }));
+}
+
 // ── prose ที่ผูกกับราคา (E44 · ระยะ 2 ส่วน F · spec B(ข)) ──────────────────────────────────
 // ปัญหา: cron **แตะ prose ไม่ได้** (CLAUDE.md §9) ⇒ ตัวเลขที่ derive จากราคาซึ่งถูกพิมพ์เป็น literal ในย่อหน้า
 // ค้างอยู่กับราคาเก่าตลอดไป โดยไม่มีตัวซ่อมไหนเอื้อมถึง (W15 เตือนได้แค่ "% ของราคาเป้า" อย่างเดียว)
@@ -400,4 +426,6 @@ function mirrorStockMeta(html) {
 module.exports = { CUR_SYMBOL, FLAT_PP, VALUE_KEYS, CHG_SUFFIX, isV2, validateValues, derive, TOKENS, COPY_TOKENS: Object.keys(TOKENS), renderValues,
   fmtPrice, fmtBig, annualChg, mosBand, isoOf, parseIso, styledRD, MIRROR_KEYS, mirrorStockMeta,
   // E44 (ระยะ 2 ส่วน F · spec B(ข)) — prose ผูกราคาในใบใหม่ + healer
-  PROSE_TOKEN_SINCE, PROSE_BOUND, proseSpans, proseBoundHits, proseTokens };
+  PROSE_TOKEN_SINCE, PROSE_BOUND, proseSpans, proseBoundHits, proseTokens,
+  // V2TOKENS (ระยะ 2 ส่วน F) — site บังคับของใบ v2 ต้องเป็น token
+  REQUIRED_TOKEN_SITES, missingTokenSites };

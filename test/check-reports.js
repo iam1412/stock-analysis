@@ -920,6 +920,20 @@ function checkHtml(html, name, opts) {
     if (res) (chk.level === 'error' ? errors : warnings).push({ id: chk.id, label: chk.label, msg: res });
   }
   if (ctx.v2Err) errors.unshift({ id: 'V2SCHEMA', label: 'report-data v2 (validateValues/derive)', msg: `ไฟล์ประกาศ v:2 แต่สคีมาใช้ไม่ได้: ${ctx.v2Err}` });
+  // ★ V2TOKENS (ระยะ 2 ส่วน F · carry จาก final review ส่วน D): ใบ v2 ที่ site บังคับกลับเป็น literal
+  //   = ค่าที่คนเห็นหลุดออกจาก JSON โดยไม่มีตัวซ่อมไหนเอื้อมถึง (cron ทาง v2 เขียนแต่ values) และ **gate เดิมเงียบสนิท**
+  //   เพราะ check อื่นอ่านค่าจาก ctx.dv (JSON) ไม่ได้อ่าน HTML แล้ว ⇒ นี่คือกลไกบังคับของเกณฑ์จบ "สำเนาต่อค่า = 1"
+  //   pseudo-id แบบเดียวกับ V2SCHEMA/EXPAND (ไม่อยู่ใน CHECKS ⇒ ไม่มี E-code ใหม่ · ไม่ขยับ 48/19 ที่ gen-docs นับ
+  //   · ไม่นับใน "N/48" ของไฟล์ — residual ที่ยอมรับเหมือน V2SCHEMA) · เจ้าของรายการ site = tools/report-values.js
+  //   ★ อ่าน ctx.source (ก่อน expand) — ผู้เรียกที่ไม่ส่ง opts.source จะเห็นทุก site เป็น literal แล้วยิงทั้งใบ
+  //     (พฤติกรรมเดียวกับ E44 โดยตั้งใจ: ทาง production ทุกเส้น — checkFile · cron gateCheck · migrator — ส่ง source ครบแล้ว)
+  //   ★ v2Err = ตัดสินไม่ได้ว่าเป็นใบ v2 ที่ใช้ได้ไหม → V2SCHEMA พูดแทน (ctx.v2 เป็น false อยู่แล้ว ไม่ยิงซ้อน)
+  if (ctx.v2) {
+    const miss = RV.missingTokenSites(ctx.source);
+    if (miss.length) errors.unshift({ id: 'V2TOKENS', label: 'ใบ v2: site บังคับต้องเป็น {{rd:…}}', msg:
+      `ต้นฉบับใบ v2 มี literal ในช่องที่ต้องเป็น token ${miss.length} ช่อง: ` + miss.map((m) => `${m.where} → {{rd:${m.token}}}`).join(' · ')
+      + ' (cron ทาง v2 เขียนเฉพาะ report-data.values ⇒ ช่องที่เป็น literal จะค้างถาวร)' });
+  }
   const errTotal = CHECKS.filter((c) => c.level === 'error').length;
   // coverage = "gate อ่านช่องไหนได้/ไม่ได้ในใบนี้" — ตัวเลขคู่กับผล error/warning เสมอ (ระยะ 1 WS1 ข้อ 2)
   const coverage = { n: MF.FIELDS.length - (ctx.mf.omitted || 0), found: ctx.mf.found.size, missingRequired: ctx.mf.missing, skippedOptional: ctx.mf.skipped };

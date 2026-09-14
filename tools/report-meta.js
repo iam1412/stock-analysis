@@ -26,6 +26,9 @@ const CUR_SRC = '(?:C\\$|[฿$])';
 //   ห้ามเติม `\s*` ให้ตัวเขียนโดยไม่ทบทวนพร้อมกันทั้งคู่ — ตัวเขียนที่กว้างกว่าตัวอ่านคือด้านที่อันตราย
 const PX_RE = new RegExp('<div class="px">\\s*(' + CUR_SRC + ')\\s*([\\d.,]+)');
 const PX_PARTS_RE = new RegExp('(<div class="px">\\s*' + CUR_SRC + ')([\\d.,]+)');
+// ★ รูป **token** ของช่องเดียวกันบนใบ v2 (`<div class="px">{{rd:px}}`) — อยู่ที่นี่เพราะ parser-lint บังคับว่า
+//   regex ของ `.px` มีเจ้าของเดียวคือไฟล์นี้ (ระยะ 2 ส่วน F · V2TOKENS ใน tools/report-values.js เรียกใช้)
+const PX_TOKEN_RE = new RegExp('<div class="px">\\s*\\{\\{rd:px\\}\\}');
 // ป้าย gauge marker #mCur ("ปัจจุบัน $193.50") — ตัวอ่าน (gate f50) กับตัวเขียน (cron) ต้องชี้ token เดียวกัน
 // ★ ตัวเขียนต้องเก็บช่องว่างหลังสกุลเงินไว้ใน **กลุ่มหัว** (ต่างจาก .px ข้างบน) — วัด 12 ก.ย. 69:
 //   คลัง 908 ใบให้ผลเท่ากันทั้งสองรูป (ไม่มีใบไหนเว้นวรรคหลังสัญลักษณ์) ⇒ รวมคำศัพท์ไม่เปลี่ยนพฤติกรรม
@@ -61,5 +64,5 @@ function readHeaderPrice(html) {
 const stripStockMeta = (html) => String(html).replace(new RegExp('\\n?' + STOCK_META_RE.source, 'i'), '');
 
 module.exports = { readStockMeta, readStockMetaState, readReportData, readHeaderPrice, stripStockMeta,
-  STOCK_META_RE, STOCK_META_PARTS_RE, REPORT_DATA_RE, REPORT_DATA_PARTS_RE, CUR_SRC, PX_RE, PX_PARTS_RE, RANGE52_RE,
+  STOCK_META_RE, STOCK_META_PARTS_RE, REPORT_DATA_RE, REPORT_DATA_PARTS_RE, CUR_SRC, PX_RE, PX_PARTS_RE, PX_TOKEN_RE, RANGE52_RE,
   MCUR_LABEL_RE, MCUR_LABEL_PARTS_RE, VERDICT_CLASS_RE };

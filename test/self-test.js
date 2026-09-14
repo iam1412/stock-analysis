@@ -1307,6 +1307,38 @@ require('./parser-lint.js')(ok);
     ok(errIds(rd3).has('V2SCHEMA') && rd3.ctx.v2 === false, 'V2SCHEMA: validateValues ผ่านแต่ derive throw → error (ไม่ถอยเป็น v1 เงียบ)', rd3.errors.map((e) => e.id).join(','));
     ok(checkHtml(base2, 'BBL.html', { source: srcV2 }).errors.length === 0 && !buildCtx(base, 'BBL.html').v2Err, 'V2SCHEMA: คืน derive แล้ว v2 ดีผ่าน · v1 ไม่มี v2Err');
   }
+  // ★ V2TOKENS (ระยะ 2 ส่วน F · carry จาก final review ส่วน D): site บังคับของใบ v2 กลับเป็น literal = ต้องยิง
+  //   เดิม check ทุกตัวอ่านค่าจาก ctx.dv (JSON) ⇒ หัวรายงานที่เป็น literal ผ่านเงียบสนิท แล้วค้างถาวร
+  //   (cron ทาง v2 เขียนแต่ values · patchReport return ก่อนตัวเขียนสำเนา HTML ของ v1)
+  {
+    const idsOf = (src) => errIds(checkHtml(expandReport(src), 'BBL.html', { source: src }));
+    ok(!idsOf(srcV2).has('V2TOKENS'), 'V2TOKENS: fixture v2 ที่ token ครบ → เงียบ');
+    ok(!errIds(checkHtml(base, 'BBL.html')).has('V2TOKENS'), 'V2TOKENS: ใบ v1 ไม่แตะ (ไม่มี token ให้ใช้)');
+    ok(RV.REQUIRED_TOKEN_SITES.length === 6, `V2TOKENS: site บังคับ 6 ช่อง (มี ${RV.REQUIRED_TOKEN_SITES.length})`,
+      RV.REQUIRED_TOKEN_SITES.map((s) => s.id).join(','));
+    // mutate ทีละ site: แทน token ด้วย literal รูปที่ token นั้น render ออกมาจริง (ใบยัง render/gate ได้ปกติ
+    // ⇒ พิสูจน์ว่าเดิม "ผ่านเงียบ" ไม่ใช่ล้มด้วยเหตุอื่น) — ต้องยิง V2TOKENS และข้อความต้องระบุ site ที่หาย
+    const MUT = {
+      px: [RM.PX_TOKEN_RE, '<div class="px">฿999.00'],   // regex ของ .px ต้องมาจากเจ้าของเดียว (parser-lint)
+      chg: [/<div class="chg">\{\{rd:chg\}\}<\/div>/, '<div class="chg">▲ +9.9% (รอบปี)</div>'],
+      priceDate: [/\{\{rd:priceDate\}\}/, '14 ก.ย. 2569'],
+      pxIn: [/value="\{\{rd:pxNum\}\}"/, 'value="999"'],
+      big: [/<div class="big">\{\{rd:mos\}\}<\/div>/, '<div class="big">+9.9%</div>'],
+      verdict: [/class="mos-verdict \{\{rd:mosClass\}\}"/, 'class="mos-verdict ok"'],
+    };
+    for (const site of RV.REQUIRED_TOKEN_SITES) {
+      const [re, lit] = MUT[site.id];
+      const mut = srcV2.replace(re, lit);
+      ok(mut !== srcV2, `V2TOKENS: เตรียม mutant ${site.id} ได้จริง (regex แตะโดน)`);
+      const miss = RV.missingTokenSites(mut).map((m) => m.id);
+      ok(miss.length === 1 && miss[0] === site.id, `V2TOKENS: mutant ${site.id} → ขาดเฉพาะ site นั้น`, miss.join(','));
+      const e = checkHtml(expandReport(mut), 'BBL.html', { source: mut }).errors;
+      const hit = e.find((x) => x.id === 'V2TOKENS');
+      ok(!!hit && hit.msg.includes(site.where), `V2TOKENS: mutant ${site.id} → ยิง + ข้อความระบุช่อง "${site.where}"`, e.map((x) => x.id).join(','));
+    }
+    // ไม่ส่ง opts.source บนหน้าที่ render แล้ว = ทุก site เป็น literal (เหตุผลเดียวกับ E44 — production ส่ง source ครบแล้ว)
+    ok(errIds(checkHtml(base2, 'BBL.html')).has('V2TOKENS'), 'V2TOKENS: หน้าที่ render แล้ว + ไม่ส่ง opts.source → ยิง');
+  }
   // census (review ข้อ 3) + spotcheck (ข้อ 4): แถว v2:null บนใบ v2 ไม่อยู่ในตัวหาร · v2 fn ถูกใช้แทน extract
   {
     const os = require('os');

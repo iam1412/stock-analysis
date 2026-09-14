@@ -518,6 +518,8 @@ function patchReport(html, p) {
     const pt = proseTokensIfNew(out2, rd, sm);
     const dv2 = derivedPassV2(pt.html, rd.values.px, { prevPriceDate });
     if (dv2.overridden) notes.push(`derived v2: token ชนะ ${dv2.overridden} span (pass derived พยายามแก้ช่องที่เป็น {{rd:…}} — ตัดทิ้ง)`);
+    // item (4): วงเล็บทวนวันที่ที่ parser อ่านไม่ออก → note เดียวกับทาง v1 (ไม่งั้นค้างเงียบ — cron log บรรทัดเดียวกัน)
+    for (const n of dv2.notes || []) notes.push(n);
     // กระจก stock-meta เขียน **หลัง** pass และอ่าน stock-meta จากผลของ pass (fix wave F1) — แตะแค่ price/mos/upside/fairValue
     // pe/dividendYield เป็นของ pass derived (patchDerived#2/#9 บน view) เหมือน v1 ⇒ กระจกย้อนค่าที่ pass เพิ่งเขียนไม่ได้
     const out3 = RV.mirrorStockMeta(dv2.html);
@@ -651,14 +653,23 @@ const V2_HEADER_RE = /<header[\s\S]*?<\/header>/i;
 const V2_DISC_RE = /<div class="disc">[\s\S]*?<\/div>/i;
 const hitCE = (h) => (h.isBE ? h.year - 543 : h.year);
 const hitIs = (h, pd) => !!h && h.monIdx >= 0 && !!pd && hitCE(h) === pd.yearCE && h.monIdx === pd.monIdx && (h.hasDay === false || h.day === pd.day);
-/** จุดเขียนวันที่ literal บน view (เรียงจากท้ายไปหน้า) — [{at, len, text, what}] */
-function v2DateEdits(view, spans, pd, prev) {
+// รูป "วงเล็บวันที่ติดกับวันที่ราคา" แบบหลวม — ใช้เฉพาะเพื่อ **ฟ้อง** ว่ามีของที่ parser อ่านไม่ออก
+// (คำศัพท์เดียวกับ v1 ที่ patchReport ใช้อยู่แล้ว — ดูบรรทัด notes.push 'วันที่ทวนในวงเล็บ' ในตัวเขียน v1)
+const PAREN_DATEISH_RE = /^(?:\s|<[^>]*>)*\(\s*\d{1,2}\s*[ก-๙.]+\s*\d{4}/;
+/** จุดเขียนวันที่ literal บน view (เรียงจากท้ายไปหน้า) — [{at, len, text, what}]
+ *  @param {string[]} [notes] — ★ item (4) ระยะ 2 ส่วน F: วงเล็บทวนวันที่ที่ `parenDateAfter` อ่านไม่ออก
+ *    (เดือนสะกดนอกคลัง เช่น "(11 กย. 2569 ตลาดปิด)") ทาง v2 เดิม **เงียบสนิท**: ไม่มี edit (r = null) และ
+ *    tripwire ก็ข้ามด้วยเหตุเดียวกัน ⇒ วันเก่าค้างในวงเล็บตลอดไปโดยไม่มีใครเห็น · v1 ฟ้องเป็น note มาตลอด
+ *    ⇒ ทาง v2 ต้องฟ้องอย่างน้อยเท่ากัน (note ไม่ใช่ throw — เขียนไม่ได้ ≠ patch ทั้งใบใช้ไม่ได้ · คลังวันนี้ 0 ใบ) */
+function v2DateEdits(view, spans, pd, prev, notes) {
   const inTok = (a, z) => spans.some(([s, e]) => e > s && a < e && z > s);
   const edits = [];
   const headM = view.match(V2_HEADER_RE);
   if (headM) {
     const hit = findPriceDate(headM[0]);
     const r = hit && hit.monIdx >= 0 ? parenDateAfter(headM[0], hit) : null;
+    if (!r && hit && notes && PAREN_DATEISH_RE.test(headM[0].slice(hit.index + hit.length)))
+      notes.push('วันที่ทวนในวงเล็บ (v2): มีวงเล็บวันที่ต่อท้ายวันที่ราคา แต่อ่านไม่ออก — ไม่ได้เขียน (found:false)');
     if (r && r.monIdx >= 0) {
       const at = headM.index + r.index;
       // v1 เขียนหัวรายงานแบบมีวันเสมอ (parsePriceAge อ่านเฉพาะรูปมีวัน) — คงกติกาเดียวกัน
@@ -740,7 +751,8 @@ function derivedPassV2(html, price, opts) {
   const prev = prevPriceDate ? RV.parseIso(prevPriceDate) : null;
   let dated = view;
   const dateChanges = [];
-  for (const e of v2DateEdits(view, spans, pd, prev)) {
+  const notes = [];
+  for (const e of v2DateEdits(view, spans, pd, prev, notes)) {
     dated = dated.slice(0, e.at) + e.text + dated.slice(e.at + e.len);
     dateChanges.push(`วันที่ ${e.what === 'restate' ? 'วงเล็บทวนใน header' : 'disclaimer'}: ${view.slice(e.at, e.at + e.len)} → ${e.text}`);
   }
@@ -749,7 +761,7 @@ function derivedPassV2(html, price, opts) {
   // fix wave F2: scnBasis มาจาก values ของไฟล์เอง (ห้ามรับจาก opts) — patchDerived#7 ใช้ฐานที่ประกาศแทนการอนุมาน
   const dv = patchDerived(dated, price, Object.assign({}, passOpts, { cur: RV.CUR_SYMBOL[sm.currency], scnBasis: rd.values.scnBasis || undefined }));
   const changes = dateChanges.concat(dv.changes);
-  if (dv.html === view) { v2DateTripwire(view, pd, rd.values.priceDate); return { html, changes, overridden: 0 }; }
+  if (dv.html === view) { v2DateTripwire(view, pd, rd.values.priceDate); return { html, changes, overridden: 0, notes }; }
   const pv = dv.html;
   const map = keepMap(view, pv);
   // ขอบซ้าย/ขวาใน pv ของตำแหน่งแทรก i ใน view: หลังอักขระคงอยู่ตัวสุดท้ายก่อน i · ก่อนอักขระคงอยู่ตัวแรกตั้งแต่ i
@@ -778,7 +790,7 @@ function derivedPassV2(html, price, opts) {
   if (!overridden && rendered !== pv)
     throw new Error('derivedPassV2: ไม่มี override แต่ render(ผล) ≠ view ที่ patch แล้ว — วาง token ผิดที่');
   v2DateTripwire(rendered, pd, rd.values.priceDate);
-  return { html: out, changes, overridden };
+  return { html: out, changes, overridden, notes };
 }
 
 // v2: กระจก stock-meta — ย้ายไปเป็นเจ้าของเดียวที่ tools/report-values.js (`RV.mirrorStockMeta` · fix wave F1/F4)
