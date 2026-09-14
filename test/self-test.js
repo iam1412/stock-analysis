@@ -132,11 +132,11 @@ const convV2 = (id, mutRawFn, healFn, desc) => {
   const broken = mutRawFn(raw);
   if (broken === raw) { ok(false, `${desc} → mutation ไม่เปลี่ยนอะไร (anchor ไม่ match — โครง BBL-v2 เปลี่ยน?)`); return; }
   const brokenExpanded = expandReport(broken);
-  ok(allIds(checkHtml(brokenExpanded, 'BBL.html')).has(id), `${desc} → ${id} ยิง (v2 JSON เสีย)`);
+  ok(allIds(checkHtml(brokenExpanded, 'BBL.html', { source: broken })).has(id), `${desc} → ${id} ยิง (v2 JSON เสีย)`);
   const healedRaw = healFn(broken);
   ok(healedRaw !== broken, `${desc} → ตัวซ่อมแก้ไฟล์จริง (ไม่ใช่ no-op)`);
   const healedExpanded = expandReport(healedRaw);
-  ok(!allIds(checkHtml(healedExpanded, 'BBL.html')).has(id), `${desc} → ตัวซ่อมจริงทำให้ ${id} เงียบ`);
+  ok(!allIds(checkHtml(healedExpanded, 'BBL.html', { source: healedRaw })).has(id), `${desc} → ตัวซ่อมจริงทำให้ ${id} เงียบ`);
   const healedTwice = expandReport(healFn(healedRaw));
   ok(healedExpanded === healedTwice, `${desc} → ซ่อมซ้ำไม่เปลี่ยน (idempotent)`);
   CONVERGED.add(id);
@@ -1249,31 +1249,36 @@ require('./parser-lint.js')(ok);
 {
   const RV = require('../tools/report-values.js');
   const MF = require('../tools/field-manifest.js');
-  const base2 = expandReport(FX.BBL_V2());
-  const FX_V2_PX = RM.readReportData(FX.BBL_V2()).data.values.px;
-  const c = buildCtx(base2, 'BBL.html');
+  // ★ fix round 2 (m2): ทุก checkHtml ในบล็อกนี้เดินบน **หน้าที่ expand แล้ว** ของ fixture v2 ⇒ ต้องส่ง
+  //   opts.source = ต้นฉบับก่อน expand (srcV2) ทุกครั้ง ไม่งั้น E44/W24 จะอ่านหน้าที่ render แล้วเป็น "source"
+  //   วันนี้เงียบเพราะ footer ของ fixture < PROSE_TOKEN_SINCE — แต่วันที่ใครต่ออายุ fixture เทสชุดนี้จะ false-fail พร้อมกัน
+  const srcV2 = FX.BBL_V2();
+  const base2 = expandReport(srcV2);
+  const FX_V2_PX = RM.readReportData(srcV2).data.values.px;
+  const c = buildCtx(base2, 'BBL.html', { source: srcV2 });
   ok(c.v2 === true && c.dv && c.px === c.dv.px && c.fvBox === c.dv.fv && c.mosBig === c.dv.mosShown && c.pxInput === c.dv.px, 'v2: ctx.px/fvBox/mosBig/pxInput มาจาก values (derive)');
-  ok(c.priceAge && c.priceAge.iso === RM.readReportData(FX.BBL_V2()).data.values.priceDate, 'v2: ctx.priceAge จาก values.priceDate');
+  ok(c.priceAge && c.priceAge.iso === RM.readReportData(srcV2).data.values.priceDate, 'v2: ctx.priceAge จาก values.priceDate');
   ok(c.chg === c.dv.chg.text, 'v2: ctx.chg จาก chart.data');
-  const r = checkHtml(base2, 'BBL.html');
+  const r = checkHtml(base2, 'BBL.html', { source: srcV2 });
   ok(r.errors.length === 0, 'v2 fixture ผ่าน gate', r.errors.map((e) => e.id).join(','));
   ok(r.coverage.n === 71 - MF.FIELDS.filter((f) => f.v2 === null).length, 'v2: coverage denominator ตัดแถวที่ไม่มีใน v2');
   // ★ mutate JSON **หลัง** expand (review Task 10 ข้อ 2) — HTML ที่ render แล้วยังถือค่าเดิม ขณะที่ values เปลี่ยน
   //   ⇒ gate ที่อ่าน JSON ต้องเห็นความต่าง · gate ที่อ่าน HTML (โค้ดก่อนระยะ 2 ส่วน D) จะเงียบ — เทสจึงแยกสองแบบออกจริง
   //   (mutate ก่อน expand = HTML render จากค่าที่ mutate แล้ว สองทางได้ค่าเท่ากัน เทสผ่านทั้งโค้ดเก่าและใหม่ ⇒ พิสูจน์อะไรไม่ได้)
   const m1 = mutJson('report-data', (d) => { d.values.px = d.values.px * 1.5; })(base2);
-  const r1 = checkHtml(m1, 'BBL.html');
+  const r1 = checkHtml(m1, 'BBL.html', { source: srcV2 });
   ok(r1.ctx.px === FX_V2_PX * 1.5 && errIds(r1).has('E30'), 'v2: values.px ×1.5 หลัง render → ctx.px ตาม JSON + E30 (stock-meta ≠ values.px)', [...errIds(r1)].join(','));
   const m2 = mutJson('report-data', (d) => { d.values.px = d.values.px * 0.5; })(base2);
-  const r2 = checkHtml(m2, 'BBL.html');
+  const r2 = checkHtml(m2, 'BBL.html', { source: srcV2 });
   ok(['E19', 'E30', 'E43'].every((id) => errIds(r2).has(id)) && !errIds(r2).has('E16') && !errIds(r2).has('E23'),
     'v2: values.px ×0.5 หลัง render → E19/E30/E43 ยิง (อ่าน JSON) · E16/E23 เงียบ (.big/pxIn ใน ctx มาจาก derive ค่าเดียวกัน)', [...errIds(r2)].join(','));
   const m4 = mutJson('report-data', (d) => { d.values.priceDate = '2026-01-01'; })(base2);
-  const r4 = checkHtml(m4, 'BBL.html');
+  const r4 = checkHtml(m4, 'BBL.html', { source: srcV2 });
   ok(r4.ctx.priceAge.iso === '2026-01-01' && errIds(r4).has('E27'), 'v2: values.priceDate เก่า หลัง render → ctx.priceAge ตาม JSON + E27', [...errIds(r4)].join(','));
   // render invariant (ไม่ใช่หลักฐานอ่าน JSON): ไฟล์ที่ render จาก values เดียวกัน W04/W06 เงียบเสมอ
-  const mR = expandReport(mutJson('report-data', (d) => { d.values.px = d.values.px * 0.5; })(FX.BBL_V2()));
-  ok(!allIds(checkHtml(mR, 'BBL.html')).has('W04') && !allIds(checkHtml(mR, 'BBL.html')).has('W06'), 'v2 render: W04/W06 เงียบ (class/ช่องสรุป render จาก MOS เดียวกัน)');
+  const mRsrc = mutJson('report-data', (d) => { d.values.px = d.values.px * 0.5; })(srcV2);
+  const mR = expandReport(mRsrc);
+  ok(!allIds(checkHtml(mR, 'BBL.html', { source: mRsrc })).has('W04') && !allIds(checkHtml(mR, 'BBL.html', { source: mRsrc })).has('W06'), 'v2 render: W04/W06 เงียบ (class/ช่องสรุป render จาก MOS เดียวกัน)');
   // W21 บนไฟล์ v2: แถว `v2: null` (gauge.fair/chart.fairLine/วันที่ในวงเล็บ) ไม่มีในไฟล์โดยสคีมา → ไม่นับว่า "หาย"
   const nullRows = MF.FIELDS.filter((f) => f.v2 === null).map((f) => f.id);
   ok(nullRows.length > 0 && nullRows.every((id) => !r.ctx.mf.missing.includes(id) && !r.ctx.mf.skipped.includes(id) && !r.ctx.mf.found.has(id)) && !allIds(r).has('W21'),
@@ -1294,13 +1299,13 @@ require('./parser-lint.js')(ok);
     ok(errIds(rb).has('V2SCHEMA') && /bogus/.test(rb.errors.find((e) => e.id === 'V2SCHEMA').msg), 'V2SCHEMA: v2 ไร้ marker + คีย์นอกสคีมา/gauge.cur → checkFile ได้ error (เดิมผ่าน 0 error)', rb.errors.map((e) => e.id + ' ' + e.msg).join(' | '));
     const m3 = mutJson('report-data', (d) => { delete d.values.scnBasis; })(base2);   // scenarios มีแต่ scnBasis หาย
     let c3 = null, threw3 = null; try { c3 = buildCtx(m3, 'BBL.html'); } catch (e) { threw3 = e.message; }
-    ok(threw3 === null && c3 && c3.v2 === false && c3.dv === null && /scnBasis/.test(c3.v2Err || '') && errIds(checkHtml(m3, 'BBL.html')).has('V2SCHEMA'),
+    ok(threw3 === null && c3 && c3.v2 === false && c3.dv === null && /scnBasis/.test(c3.v2Err || '') && errIds(checkHtml(m3, 'BBL.html', { source: srcV2 })).has('V2SCHEMA'),
       'V2SCHEMA: scnBasis หาย → ไม่ throw · อ่าน HTML ต่อ · แต่ยก error', threw3 || (c3 && `v2=${c3.v2} v2Err=${c3.v2Err}`));
     const realDerive = RV.derive;
     RV.derive = () => { throw new Error('derive ระเบิดจำลอง'); };
-    let rd3; try { rd3 = checkHtml(base2, 'BBL.html'); } finally { RV.derive = realDerive; }
+    let rd3; try { rd3 = checkHtml(base2, 'BBL.html', { source: srcV2 }); } finally { RV.derive = realDerive; }
     ok(errIds(rd3).has('V2SCHEMA') && rd3.ctx.v2 === false, 'V2SCHEMA: validateValues ผ่านแต่ derive throw → error (ไม่ถอยเป็น v1 เงียบ)', rd3.errors.map((e) => e.id).join(','));
-    ok(checkHtml(base2, 'BBL.html').errors.length === 0 && !buildCtx(base, 'BBL.html').v2Err, 'V2SCHEMA: คืน derive แล้ว v2 ดีผ่าน · v1 ไม่มี v2Err');
+    ok(checkHtml(base2, 'BBL.html', { source: srcV2 }).errors.length === 0 && !buildCtx(base, 'BBL.html').v2Err, 'V2SCHEMA: คืน derive แล้ว v2 ดีผ่าน · v1 ไม่มี v2Err');
   }
   // census (review ข้อ 3) + spotcheck (ข้อ 4): แถว v2:null บนใบ v2 ไม่อยู่ในตัวหาร · v2 fn ถูกใช้แทน extract
   {
@@ -1318,7 +1323,7 @@ require('./parser-lint.js')(ok);
     ok(new RegExp(`/${71 - nullRows.length} `).test(line), `spotcheck: ตัวหารช่อง manifest บน v2 = ${71 - nullRows.length}`, line);
   }
   // ctx.source: checkHtml ส่ง opts.source ต่อ · ไม่ส่ง = html เดียวกัน
-  ok(c.source === base2 && buildCtx(base2, 'BBL.html', { source: FX.BBL_V2() }).source === FX.BBL_V2(), 'ctx.source = opts.source หรือ html เดิม');
+  ok(buildCtx(base2, 'BBL.html').source === base2 && c.source === srcV2, 'ctx.source = opts.source หรือ html เดิมเมื่อไม่ส่ง');
 }
 
 // ── ระยะ 2 ส่วน D Task 13 (แก้ตาม review รอบ 1 Finding 1/R1/R2): E-policy รู้จัก healer 'patchReport' บนไฟล์ v2
@@ -1352,8 +1357,8 @@ require('./parser-lint.js')(ok);
     UP.mirrorStockMetaV2 = (h, smOrig) => mutJson('stock-meta', (d) => { d.fairValue = brokenFV; })(real(h, smOrig));
     let stillFires;
     try {
-      const healedMutant = expandReport(UP.mirrorStockMetaV2(broken2, RM.readStockMeta(broken2)));
-      stillFires = allIds(checkHtml(healedMutant, 'BBL.html')).has('W22');
+      const healedMutantRaw = UP.mirrorStockMetaV2(broken2, RM.readStockMeta(broken2));
+      stillFires = allIds(checkHtml(expandReport(healedMutantRaw), 'BBL.html', { source: healedMutantRaw })).has('W22');
     } finally { UP.mirrorStockMetaV2 = real; }
     ok(stillFires, 'v2: mutant "mirror ไม่เขียน fairValue" (คืนค่าที่เสียกลับเสมอ) → W22 ยังยิงอยู่หลัง "ซ่อม" — พิสูจน์ว่าเคส convergence ข้างบน discriminate จริง ไม่ใช่ผ่านลอย ๆ');
     ok(UP.mirrorStockMetaV2 === real, 'v2: คืน UP.mirrorStockMetaV2 เดิมแล้วหลังพิสูจน์ mutant');
@@ -1363,8 +1368,12 @@ require('./parser-lint.js')(ok);
   // f67 เป็น cadence write-once/owner worker (cron ไม่แตะ — ไม่มีอะไรเทียบเท่า mirrorStockMetaV2 ให้เรียก) ⇒
   // healer ของมันยังเป็น null ⇒ **ไม่ลงทะเบียน CONVERGED('W21')** — ยังยกเป็น error ไม่ได้ในระยะนี้ (บันทึกไว้ให้
   // Task 16: ตัดสินได้เฉพาะ W22 เพราะมีเคส convergence จริงแล้ว ส่วน W21 ต้องรอตัวซ่อมของ worker)
-  const v2Base = expandReport(FX.BBL_V2());
-  expect('W21', 'warn', (h) => h.replace('<div class="sub">', ''), 'v2: ลบ <div class="sub"> (f67 required) → W21', v2Base);
+  // ★ fix round 2 (m2): เรียก checkHtml ตรงแทน expect() — helper รับแต่ html ที่ mutate แล้ว จึงส่ง source ที่ถูกต้องไม่ได้
+  //   ที่นี่ mutate "ทั้งสองฝั่ง" (ต้นฉบับ + หน้าที่ expand) ด้วยการแทนเดียวกัน ⇒ source ตรงกับ html จริง
+  const noSubSrc = FX.BBL_V2().replace('<div class="sub">', '');
+  const noSubExp = expandReport(FX.BBL_V2()).replace('<div class="sub">', '');
+  ok(noSubSrc !== FX.BBL_V2() && allIds(checkHtml(noSubExp, 'BBL.html', { source: noSubSrc })).has('W21'),
+    'v2: ลบ <div class="sub"> (f67 required) → W21');
 }
 
 console.log('\n' + '─'.repeat(50));

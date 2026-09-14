@@ -52,7 +52,8 @@ const dp = (html, price) => UP.patchReport(html, { newPrice: price, dateParts: {
     //   เขียนตามราคา เป็นตัวเลขโครงสร้างคงที่ที่อ่านจาก HTML เสมอไม่ว่า schema ไหน ⇒ ต้องไม่ถูก boom ที่นี่
     //   (ยืนยันแล้ว: boom ตัวนี้ด้วย ทำให้ gate ทาง v2 พัง — ตรงตามที่คอมเมนต์บอกไว้ — Task 10 report item 4)
     for (const k of Object.keys(CR.V1_READ)) if (k !== 'scaleNums') CR.V1_READ[k] = boom('V1_READ.' + k);
-    try { r = CR.checkHtml(expandReport(FX.BBL_V2()), 'BBL.html'); } catch (e) { err = e.message; }
+    const v2src = FX.BBL_V2();   // fix round 2 (m2): ส่ง source = ต้นฉบับก่อน expand (E44/W24 อ่าน ctx.source)
+    try { r = CR.checkHtml(expandReport(v2src), 'BBL.html', { source: v2src }); } catch (e) { err = e.message; }
     ok(!err, 'gate ทาง v2 ไม่เรียก V1_READ (ตัวอ่านสำเนาของไฟล์ v1)', err);
     ok(r && r.errors.length === 0, 'gate ทาง v2 error 0 โดยไม่มี V1_READ', r && r.errors.map((e) => e.id + ' ' + e.msg).join(' | '));
     ok(r && r.ctx.px > 0 && r.ctx.fvBox > 0 && r.ctx.mosBig != null && r.ctx.pxInput > 0 && r.ctx.chg && r.ctx.priceAge, 'ctx สำเนาทุกตัวมีค่า (มาจาก JSON)');

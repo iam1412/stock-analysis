@@ -1274,7 +1274,7 @@ ok(U.commitBody([], []) === '', 'commitBody: ว่างเมื่อไม�
       // ฐานที่ประกาศไม่ได้ปิดปาก W17: หมวด 6 ค้างจริง (post-expand: values.px ×1.3 หลัง render) → W17 ยังยิง
       const exp = expandReport(v2);
       const stale = exp.replace(/("px":\s*)([0-9.]+)/, (m, a, n) => a + (parseFloat(n) * 1.3).toFixed(2));
-      ok(stale !== exp && CR.checkHtml(stale, sym + '.html').errors.some((e) => e.id === 'W17'), `F2 ${sym}: หมวด 6 ค้างจริง (JSON ขยับหลัง render) → W17 ยังยิงภายใต้ฐานที่ประกาศ`);
+      ok(stale !== exp && CR.checkHtml(stale, sym + '.html', { source: v2 }).errors.some((e) => e.id === 'W17'), `F2 ${sym}: หมวด 6 ค้างจริง (JSON ขยับหลัง render) → W17 ยังยิงภายใต้ฐานที่ประกาศ`);
     }
     ok(DV.scenarioPlan(expandReport(FX.AAPL()), 326.57) !== undefined && JSON.stringify(DV.scenarioPlan(FX.AAPL(), 330)) === JSON.stringify(DV.scenarioPlan(FX.AAPL(), 330, undefined, undefined)), 'F2: ไม่ส่ง basis (v1) = ผลเดิม');
 
@@ -1303,7 +1303,7 @@ ok(U.commitBody([], []) === '', 'commitBody: ว่างเมื่อไม�
     const rm = U.patchReport(monthDisc, { newPrice: pxK(aapl, 1.01), dateParts: dOct, chartData: null });
     ok(rm.html.includes('ข้อมูลราคา ณ ต.ค. 2569'), 'F3: disclaimer ระดับเดือน literal → "ราคา ณ ต.ค. 2569" (ไม่เติมวัน)', (rm.html.match(/ข้อมูลราคา ณ [^<]{0,20}/) || [])[0]);
     const gm = U.gateAfterPatch(rm.html, 'AAPL.html');
-    ok(gm.ok && !CR.checkHtml(expandReport(rm.html), 'AAPL.html').warnings.some((w) => w.id === 'W22'), 'F3: disclaimer ระดับเดือนหลัง patch → gate ผ่าน + ไม่มี W22', gm.detail);
+    ok(gm.ok && !CR.checkHtml(expandReport(rm.html), 'AAPL.html', { source: rm.html }).warnings.some((w) => w.id === 'W22'), 'F3: disclaimer ระดับเดือนหลัง patch → gate ผ่าน + ไม่มี W22', gm.detail);
     // hit ที่อยู่ใน span ของ token = token ชนะ (ไม่เขียนซ้ำ) — AAPL_V2 disclaimer เป็น {{rd:priceDate}}
     const rt = U.patchReport(aapl, { newPrice: pxK(aapl, 1.01), dateParts: dOct, chartData: null });
     ok(sameToks(aapl, rt.html) && rt.html.includes('ข้อมูลราคา ณ {{rd:priceDate}}') && !rt.derived.some((c) => /^วันที่/.test(c)), 'F3: วันที่ที่เป็น token ไม่ถูกเขียนซ้ำ (token render วันใหม่เอง)', rt.derived.join(' ; '));
@@ -1320,7 +1320,7 @@ ok(U.commitBody([], []) === '', 'commitBody: ว่างเมื่อไม�
         const bbl = FX.BBL_V2();
         const broken = bbl.replace(/("fairValue":)([0-9.]+)/, (m, a, n) => a + Math.round(parseFloat(n) * 1.2 * 100) / 100);
         ok(broken !== bbl, '(ตั้งฉาก) BBL_V2 stock-meta.fairValue ×1.2');
-        const before = CR.checkHtml(expandReport(broken), 'BBL.html').errors.map((e) => e.id);
+        const before = CR.checkHtml(expandReport(broken), 'BBL.html', { source: broken }).errors.map((e) => e.id);
         ok(before.includes('E30') || before.includes('E31'), '(ตั้งฉาก) ก่อนซ่อม E30/E31 ยิง', before.join(','));
         fs.writeFileSync(path.join(dir, 'BBL.html'), broken);
         const logs = [], orig = console.log;
@@ -1330,7 +1330,7 @@ ok(U.commitBody([], []) === '', 'commitBody: ว่างเมื่อไม�
         const after = fs.readFileSync(path.join(dir, 'BBL.html'), 'utf8');
         ok(h.touched === 1 && after !== broken, 'M7: healDerived v2 ซ่อมกระจกล้วน → touched 1 + เขียนไฟล์', JSON.stringify(h));
         ok(/stock-meta กระจก .*fairValue/.test(logs.join('\n')), 'M7: มีบรรทัด change "stock-meta กระจก … fairValue …"', logs.join(' | ').slice(0, 300));
-        const errsAfter = CR.checkHtml(expandReport(after), 'BBL.html').errors.map((e) => e.id);
+        const errsAfter = CR.checkHtml(expandReport(after), 'BBL.html', { source: after }).errors.map((e) => e.id);
         ok(!errsAfter.includes('E30') && !errsAfter.includes('E31') && after === bbl, 'M7: หลังซ่อม E30/E31 เงียบ + ไฟล์กลับเท่า fixture เดิมทุก byte', errsAfter.join(','));
         // ไฟล์ที่ไม่มีอะไรค้าง → ไม่นับ
         const logs2 = []; console.log = (...x) => logs2.push(x.join(' '));
