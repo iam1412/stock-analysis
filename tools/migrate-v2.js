@@ -15,8 +15,13 @@
  *     ภายใต้ "รูป" (stock-meta · ตัวเลขที่มองเห็น · error/warning ของ gate) — ต่าง = residue `cron-diff <ชนิด>` → จึงเขียน
  * ตัดสินไม่ได้ (ฐานการ์ดหลายตัว/หมวด 6 อ่านไม่ชัด) = การ์ดนั้นคง literal (สถานะเดิม) · ช่องบังคับหาย/ไม่ตรง = ไม่ย้ายทั้งใบ (residue)
  *
+ *   → (`--v2-grid` · ระยะ 3 Task 5) โหมดวินิจฉัย "v2 เองเสถียรไหม" บนกริดเดียวกัน โดยไม่เทียบกับ v1 เลย
+ *     (gate error 0 · ไม่ throw/patch-rejected · MOS สวนทางราคาทุกช่วง) — อ่านอย่างเดียว ไม่เขียนอะไร
+ *
  *   node tools/migrate-v2.js AAPL BBL            # dry-run รายตัว
  *   node tools/migrate-v2.js --batch 0 --size 100 --write --cron-diff --census docs/superpowers/audit/2026-09-11-stock-analyzer/
+ *   node tools/migrate-v2.js --v2-grid PTG                          # วินิจฉัยเสถียรภาพฝั่ง v2 (ไม่เขียน)
+ *   node tools/migrate-v2.js --cron-diff --v2-baseline BNY PTG …    # ใช้เกณฑ์ v2-as-baseline กับใบที่ระบุชื่อ (ดู planWrite)
  *   ★ exit 0 แม้มี residue (1 = ข้อผิดพลาดไม่คาดคิดเท่านั้น · `--strict` = residue ⇒ 1 แบบเดิม)
  * ★ หลัง --write: npm run build → node tools/preserve-dates.js → npm run build → npm run verify → commit (1 commit = 1 แบตช์)
  *
@@ -1425,21 +1430,108 @@ function cronDiff(srcV1, outV2, name, opts) {
   }
 }
 
+// ── เสถียรภาพของ v2 เอง บนกริดเดิม (ระยะ 3 Task 5 · `--v2-grid`) ─────────────────────────────
+// ★ ทำไมต้องมีทั้งที่มี `--cron-diff` อยู่แล้ว: `cronDiff` ตอบคำถาม "v2 ให้ผลเท่ากับ v1 ไหม" ซึ่งใช้ตัดสิน
+//   ไม่ได้อีกต่อไปเมื่อ **ฝั่งที่ไม่นิ่งคือ v1** (`side:'v1'` — BNY PTG THCOM WWD ทั้งสี่ใบ) : v1 เป็น baseline
+//   เปรียบเทียบตอนระยะ 2 เท่านั้น หลัง merge แล้ว v2 คือ baseline ของระบบ ⇒ คำถามที่ถูกต้องคือ "v2 เองนิ่งไหม"
+// ★ ไม่ใช่ "รันซ้ำสองรอบแล้วต้องเหมือนกัน" (โค้ด deterministic ⇒ เทสนั้นไม่มีความหมาย) — เกณฑ์คือสมบัติของ **ผลลัพธ์**
+//   ที่ราคาต่างกัน 61 จุด: (ก) gate error = 0 ทุกจุด (ข) ไม่มี throw/patch-rejected (ค) MOS ขยับสวนทางราคาเสมอ
+//   (ค) คือเกณฑ์เดียวที่จับ "ฐานพลิก" ได้จริง — MOS = (FV−px)/FV ⇒ ราคาขึ้น MOS ต้องไม่เพิ่ม ถ้าเพิ่ม = ตัวหาร/ฐานเปลี่ยนกลางกริด
+// ★ ใช้บล็อกเดิมทั้งหมด (CRON_GRID · cronDateParts · UP.patchReport · cronGate · RM.readStockMeta) — ไม่มีสำเนาตรรกะ
+//   ต่างจาก cronDiff แค่ "อ่านคอลัมน์ v2 อย่างเดียว ไม่เทียบกับ v1"
+/**
+ * (ค) ทิศทาง MOS ↔ ราคา — กริดเรียงราคาขึ้น ⇒ MOS ต้อง **ไม่เพิ่ม** · เท่ากันได้ (MOS ที่โชว์ปัดเศษ 1 ตำแหน่ง)
+ * ★ อ่าน MOS ไม่ได้ที่จุดไหน = ตัดสินไม่ได้ ⇒ นับเป็นการละเมิด (ไม่ใช่ข้ามเงียบ — กติกาเดียวกับ check-site
+ *   "regex หาไม่เจอต้องฟ้อง ไม่ใช่ปล่อยผ่าน")
+ * @param {{k:number,price:number,mos:number|null}[]} series  เรียงตามลำดับกริด (ราคาขึ้น)
+ * @returns {string[]} ข้อความละเมิด (ว่าง = ทิศทางถูกทุกช่วง)
+ */
+function mosDirViolations(series) {
+  const out = [], mosOf = [];
+  for (const pt of series || []) {
+    if (pt.mos == null) { out.push(`×${pt.k} ราคา ${pt.price}: อ่าน MOS หลัง patch ไม่ได้`); continue; }
+    mosOf.push(pt);
+  }
+  for (let i = 1; i < mosOf.length; i++) {
+    const a = mosOf[i - 1], b = mosOf[i];
+    if (b.price <= a.price) continue;                      // ราคาไม่ได้ขึ้นจริง (กริดปัด 2 ตำแหน่งชนกันได้) = ไม่ตัดสิน
+    if (b.mos > a.mos + 1e-9) out.push(`×${a.k}→×${b.k} ราคา ${a.price}→${b.price}: MOS ${a.mos} → ${b.mos} (ขึ้นตามราคา = ผิดทิศ)`);
+  }
+  return out;
+}
+
+/**
+ * @param {string} outV2  HTML v2 (migrateOne(srcV1).out หรือไฟล์ที่ย้ายแล้ว)
+ * @param {string} name   ชื่อไฟล์ เช่น "PTG.html"
+ * @param {{grid?:number[]}} [opts]
+ * @returns {{ok:boolean, points:number, patched:number, setup:string|null, throws:string[], gateErr:string[], dirViol:string[],
+ *            warnIds:string[], mosRange:[number,number]|null, series:{k:number,price:number,mos:number|null,warns:string[]}[]}}
+ */
+function v2Stability(outV2, name, opts) {
+  const o = opts || {};
+  const UP = require('./update-prices.js');     // lazy: เหตุผลเดียวกับ cronDiff (วงจรตอนโหลด)
+  const res = { ok: true, points: 0, patched: 0, setup: null, throws: [], gateErr: [], dirViol: [], warnIds: [], mosRange: null, series: [] };
+  const rd2 = RM.readReportData(outV2);
+  const vals = rd2.ok && RV.isV2(rd2.data) ? rd2.data.values : null;
+  const dateParts = vals ? cronDateParts(vals.priceDate) : null;
+  if (!vals || !Number.isFinite(vals.px) || !dateParts) { res.ok = false; res.setup = 'v2 ไม่มี values.px/priceDate ที่ใช้ได้'; return res; }
+  const prevToday = process.env.STALE_TODAY;
+  process.env.STALE_TODAY = RV.isoOf(dateParts);
+  try {
+    for (const k of (o.grid || CRON_GRID)) {
+      res.points++;
+      const newPrice = Math.round(vals.px * k * 100) / 100;
+      let r = null;
+      try { r = UP.patchReport(outV2, { newPrice, dateParts, chartData: null }); }
+      catch (e) { res.throws.push(`×${k} ราคา ${newPrice}: throw — ${String(e.message).slice(0, 200)}`); continue; }
+      res.patched++;
+      const g = cronGate(r.html, name);
+      // patch-rejected ของ cron ตัวจริง = "patch แล้ว gate ตก" ⇒ ที่นี่วัดด้วยชุด error ของ gate หลัง patch (ตัวเดียวกับ gateAfterPatch)
+      if (g.codes.length) res.gateErr.push(`×${k} ราคา ${newPrice}: error [${g.codes}] — ${String(g.detail).slice(0, 200)}`);
+      const meta = RM.readStockMeta(r.html) || {};
+      const rdv = RM.readReportData(r.html);
+      const mosMeta = typeof meta.mos === 'number' ? meta.mos
+        : (rdv.ok && rdv.data && rdv.data.values && typeof rdv.data.values.mos === 'number' ? rdv.data.values.mos : null);
+      for (const w of g.warns) if (!res.warnIds.includes(w)) res.warnIds.push(w);
+      res.series.push({ k, price: newPrice, mos: mosMeta, warns: g.warns.slice() });
+    }
+  } finally {
+    if (prevToday === undefined) delete process.env.STALE_TODAY; else process.env.STALE_TODAY = prevToday;
+  }
+  res.dirViol = mosDirViolations(res.series);
+  const mosOf = res.series.filter((p) => p.mos != null);
+  if (mosOf.length) res.mosRange = [Math.min(...mosOf.map((x) => x.mos)), Math.max(...mosOf.map((x) => x.mos))];
+  res.ok = res.throws.length === 0 && res.gateErr.length === 0 && res.dirViol.length === 0 && res.patched === res.points;
+  return res;
+}
+
 /**
  * ตัดสิน "เขียนไหม" ต่อไฟล์ (ใช้ทั้ง dry-run และ --write — census ของสองโหมดจึงตรงกันเสมอ)
  * ★ แยกเป็นฟังก์ชันให้เทสตรึงได้โดยไม่ต้องเขียน reports/ (CLI ไม่มีตัวเลือกชี้ไดเรกทอรีอื่น — ตั้งใจ)
  * @param {string} sym
  * @param {object} r   ผล migrateOne
  * @param {object|null} cd  ผล cronDiff (null = ไม่ได้สั่ง --cron-diff หรือ migrate ไม่ผ่าน)
+ * @param {{v2Baseline?:boolean, stab?:object|null}} [opts]  ระยะ 3 Task 5 — ดูบล็อก "v2 เป็น baseline" ข้างล่าง
  * @returns {{write:boolean, out:string|null, entry:object}}  cron-diff ตก ⇒ write:false + entry.ok:false + reason `cron-diff <kinds>`
  *   cron-diff ผ่านแต่มี formOnly ⇒ ยังเขียน (บันทึกลง entry.cronDiff ให้ census แสดงรายชื่อ)
  */
-function planWrite(sym, r, cd) {
+function planWrite(sym, r, cd, opts) {
+  const o = opts || {};
   const entry = { sym, ok: !!r.ok, reason: r.reason || null, tokenised: r.sites.tokenised, literal: r.sites.literal, notes: r.notes, pyChanges: r.pyChanges || [] };
   if (cd) {
     entry.cronDiff = { ok: cd.ok, kinds: cd.kinds, k: cd.k, side: cd.side, sideWhy: cd.sideWhy, detail: cd.detail.slice(0, 3), formOnly: cd.formOnly,
       formParts: cd.formParts || [], valueDiff: cd.valueDiff || [], retClass: cd.retClass || 0, relax: cd.relax, points: cd.points, compared: cd.compared };
-    if (r.ok && !cd.ok) { entry.ok = false; entry.reason = cronDiffReason(cd); }
+    // ★ v2 เป็น baseline (ระยะ 3 Task 5 · `--v2-baseline`): cron differential ตัดสินด้วยคำถาม "v2 เท่ากับ v1 ไหม"
+    //   ซึ่งใช้ไม่ได้เมื่อ `failSide` ชี้ว่า **ฝั่งที่ไม่นิ่งคือ v1** — v1 เป็น baseline เปรียบเทียบของระยะ 2 เท่านั้น
+    //   หลัง merge แล้ว v2 คือ baseline ของระบบ ⇒ แทนที่ด้วยเกณฑ์ "v2 เองเสถียรบนกริดเดิมไหม" (v2Stability)
+    //   เงื่อนไขครบทั้งสามข้อเท่านั้นจึงเขียน: (1) สั่ง `--v2-baseline` พร้อมระบุชื่อใบชัดเจน (2) side === 'v1'
+    //   (3) v2Stability ผ่านทุกข้อ — side 'v2'/'unknown' หรือ v2 ไม่เสถียร = residue ตามเดิม ไม่มีทางลัด
+    const stab = o.v2Baseline ? o.stab : null;
+    if (r.ok && !cd.ok && o.v2Baseline && cd.side === 'v1' && stab && stab.ok) {
+      entry.v2Baseline = { was: cronDiffReason(cd), sideWhy: cd.sideWhy, points: stab.points, patched: stab.patched, mosRange: stab.mosRange, warnIds: stab.warnIds };
+      entry.notes = entry.notes.concat([`v2-baseline (ระยะ 3 Task 5): เดิม "${cronDiffReason(cd)}" — ฝั่งที่ไม่นิ่งคือ v1 `
+        + `(${cd.sideWhy}) · v2 เองเสถียร ${stab.patched}/${stab.points} จุด (gate error 0 · ไม่ throw · MOS สวนทางราคาทุกช่วง)`]);
+    } else if (r.ok && !cd.ok) { entry.ok = false; entry.reason = cronDiffReason(cd); }
   }
   const write = entry.ok && typeof r.out === 'string';
   return { write, out: write ? r.out : null, entry };
@@ -1772,6 +1864,30 @@ function mergeCensus(prevRaw, batch, entries, at) {
   return { bySym, batches, cronDiff: summarizeCronDiff(Object.values(bySym)) };
 }
 
+/** `--v2-grid`: พิมพ์ผล `v2Stability` ต่อใบ (ใบที่ยังเป็น v1 → ทดสอบบน draft ของ migrateOne · ใบที่เป็น v2 แล้ว → ทดสอบไฟล์จริง) */
+function runV2Grid(files) {
+  let bad = 0;
+  for (const f of files) {
+    const sym = f.replace(/\.html$/i, '');
+    const src = fs.readFileSync(path.join(REPORTS_DIR, f), 'utf8');
+    const rd = RM.readReportData(src);
+    const already = rd.ok && RV.isV2(rd.data);
+    const r = already ? { ok: true, out: src } : migrateOne(src, f);
+    if (!r.ok) { bad++; console.log(`✗ ${sym}: อ่านฝั่ง v2 ไม่ได้ (migrateOne ไม่ผ่าน) — ${r.reason}`); continue; }
+    const s = v2Stability(r.out, f);
+    if (!s.ok) bad++;
+    const head = `${s.ok ? '✓' : '✗'} ${sym}${already ? ' (v2 อยู่แล้ว)' : ' (draft)'}: patch ${s.patched}/${s.points} จุด`
+      + (s.mosRange ? ` · MOS ${s.mosRange[0]} … ${s.mosRange[1]}` : '') + (s.warnIds.length ? ` · warning ${s.warnIds.join(',')}` : ' · warning 0');
+    console.log(head);
+    if (s.setup) console.log(`   setup: ${s.setup}`);
+    for (const m of s.throws.slice(0, 3)) console.log(`   throw: ${m}`);
+    for (const m of s.gateErr.slice(0, 3)) console.log(`   gate-error: ${m}`);
+    for (const m of s.dirViol.slice(0, 3)) console.log(`   ทิศทาง: ${m}`);
+  }
+  console.log(`\nv2-grid: เสถียร ${files.length - bad}/${files.length}`);
+  return bad ? 1 : 0;
+}
+
 function main(argv) {
   const write = argv.includes('--write');
   const cronFlag = argv.includes('--cron-diff');
@@ -1793,9 +1909,20 @@ function main(argv) {
   let files = fs.readdirSync(REPORTS_DIR).filter((f) => /\.html$/i.test(f)).sort();
   if (syms.length) files = files.filter((f) => syms.includes(f.replace(/\.html$/i, '').toUpperCase()));
   if (batch != null && size != null) files = files.slice(batch * size, (batch + 1) * size);
+  // ★ `--v2-grid` (ระยะ 3 Task 5) = โหมดวินิจฉัยอย่างเดียว อ่านไฟล์อย่างเดียว ไม่เขียน reports/ ไม่เขียน census
+  //   ⇒ ไม่ผ่านยาม `--write ต้องมาคู่กับ --cron-diff` เพราะไม่มีเส้นทางเขียนให้ข้าม
+  if (argv.includes('--v2-grid')) return runV2Grid(files);
+  // ★ `--v2-baseline` (ระยะ 3 Task 5): เปลี่ยนเกณฑ์ของ cron differential จาก "v2 = v1" เป็น "v2 เองเสถียร"
+  //   **เฉพาะใบที่ failSide ชี้ว่า v1 คือฝั่งที่ไม่นิ่ง** — บังคับให้ระบุชื่อใบเสมอ (ห้ามกวาดทั้งคลัง) ด้วยเหตุผลเดียวกับยาม M1:
+  //   เกณฑ์ที่ผ่อนแล้วกวาดทั้งคลังได้ = ใบที่ยังไม่มีใครดูจะถูกย้ายเงียบ ๆ · ต้องมาคู่ `--cron-diff` เพราะต้องมีผล cd ให้ดูฝั่ง
+  const v2Baseline = argv.includes('--v2-baseline');
+  if (v2Baseline && (!cronFlag || !syms.length)) {
+    console.log('✗ --v2-baseline ต้องมาคู่กับ --cron-diff และต้องระบุชื่อใบชัดเจน (ห้ามใช้กับการกวาดทั้งคลัง/--batch)');
+    return 1;
+  }
   const strict = argv.includes('--strict');
   const entries = [];
-  let ok = 0, cdFail = 0, cdForm = 0;
+  let ok = 0, cdFail = 0, cdForm = 0, cdBase = 0;
   const errors = [];
   const t0 = Date.now();
   for (const f of files) {
@@ -1807,14 +1934,19 @@ function main(argv) {
       // migrateOne จับ throw ข้างในเป็นเหตุผล "migrator ระเบิด" — เป็น residue ของ census แต่เป็น **ความผิดพลาด** ของการรัน (exit 1)
       if (!r.ok && /^migrator ระเบิด/.test(r.reason || '')) errors.push(`${sym}: ${r.reason}`);
       const cd = cronFlag && r.ok ? cronDiff(src, r.out, f) : null;
-      const plan = planWrite(sym, r, cd);
+      // เกณฑ์ v2-as-baseline คิดเฉพาะใบที่ cron differential ตกโดยฝั่ง v1 (ไม่เสียเวลา 61 จุดกับใบอื่น)
+      const stab = v2Baseline && cd && !cd.ok && cd.side === 'v1' ? v2Stability(r.out, f) : null;
+      const plan = planWrite(sym, r, cd, { v2Baseline, stab });
       entries.push(plan.entry);
-      if (cd && !cd.ok) cdFail++;
+      if (cd && !cd.ok) { if (plan.entry.v2Baseline) cdBase++; else cdFail++; }
       if (cd && cd.ok && (cd.formParts || []).length) cdForm++;
+      if (stab) console.log(`   v2-grid ${sym}: ${stab.ok ? 'เสถียร' : 'ไม่เสถียร'} ${stab.patched}/${stab.points} จุด`
+        + (stab.mosRange ? ` · MOS ${stab.mosRange[0]} … ${stab.mosRange[1]}` : '')
+        + [...stab.throws, ...stab.gateErr, ...stab.dirViol].slice(0, 2).map((m) => `\n     ${m}`).join(''));
       if (plan.write) {
         if (write) fs.writeFileSync(p, plan.out);
         ok++;
-        console.log(`✓ ${sym} (tokenised ${r.sites.tokenised.length}${r.sites.literal.length ? ' · literal ' + r.sites.literal.length + ': ' + [...new Set(r.sites.literal)].join(',') : ''})${cd ? ` · cron-diff ผ่าน ${cd.compared}/${cd.points} จุด${cd.formParts.length ? ' · รูป ' + cd.formParts.join(',') : ''}${cd.valueDiff.length ? ' · ค่าต่างก่อน patch ' + cd.valueDiff.length : ''}` : ''}`);
+        console.log(`✓ ${sym} (tokenised ${r.sites.tokenised.length}${r.sites.literal.length ? ' · literal ' + r.sites.literal.length + ': ' + [...new Set(r.sites.literal)].join(',') : ''})${cd ? (cd.ok ? ` · cron-diff ผ่าน ${cd.compared}/${cd.points} จุด` : ` · v2-baseline (เดิม ${cronDiffReason(cd)})`) + `${cd.formParts.length ? ' · รูป ' + cd.formParts.join(',') : ''}${cd.valueDiff.length ? ' · ค่าต่างก่อน patch ' + cd.valueDiff.length : ''}` : ''}`);
       } else console.log(`✗ ${sym}: ${plan.entry.reason}${cd && !cd.ok ? ' — ' + (cd.detail[0] || '') : ''}`);
     } catch (e) {
       // throw ของ cronDiff / อ่านหรือเขียนไฟล์ไม่ได้ — ไม่เขียนใบนั้น (ถ้ายังไม่เขียน) · บันทึกลง census · exit 1
@@ -1824,7 +1956,7 @@ function main(argv) {
     }
   }
   console.log(`\nรวม: ย้ายได้ ${ok}/${files.length}${write ? ' (เขียนแล้ว)' : ' (dry-run)'} · residue ${files.length - ok}`
-    + (cronFlag ? ` · cron-diff ตก ${cdFail} (ไม่เขียน) · ต่างแค่รูป ${cdForm} · ${((Date.now() - t0) / 1000).toFixed(1)} วิ` : ''));
+    + (cronFlag ? ` · cron-diff ตก ${cdFail} (ไม่เขียน)${cdBase ? ` · v2-baseline ${cdBase} (v1 ไม่นิ่ง + v2 เสถียร ⇒ เขียน)` : ''} · ต่างแค่รูป ${cdForm} · ${((Date.now() - t0) / 1000).toFixed(1)} วิ` : ''));
   if (census) {
     try {
       fs.mkdirSync(census, { recursive: true });
@@ -1865,7 +1997,7 @@ function siteHits(html, site) {
 module.exports = {
   SITE_RE, siteHits,
   migrateOne, extractValues, tokenise, buildRd, verifyPair, checkStripped, sameMoney, scnPyDiffs, scnPyCountGuard, pyCell, pyUnitCount, main, noteTailOf, tailHitsOtherSite, HINT_NOTE_TAIL_RE,
-  cronDiff, cronGate, CRON_GRID, CRON_META_KEYS, sameMetaForm, cronDateParts, visibleCronDiff, pyExplained, planWrite, summarizeCronDiff, unitForm,
+  cronDiff, v2Stability, mosDirViolations, cronGate, CRON_GRID, CRON_META_KEYS, sameMetaForm, cronDateParts, visibleCronDiff, pyExplained, planWrite, summarizeCronDiff, unitForm,
   failSide, cronDiffReason, exitCode, ALREADY_V2,
   COPY_FIELDS, REQUIRED_SITES, TOLERANCE, GAP_REL, renderCensusMd, mergeCensus,
 };

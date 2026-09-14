@@ -973,6 +973,64 @@ const cmp = (r, f) => r.compare.find((c) => c.field === f);
   }
 }
 
+// ══════════════════════════════════════════════════════════════════════════════
+// T5 (ระยะ 3 Task 5) — `v2Stability` / `--v2-grid`: เสถียรภาพของ **v2 เอง** บนกริดเดิม
+// ★ เกณฑ์ไม่ใช่ "รันซ้ำแล้วเหมือนเดิม" (deterministic ⇒ ไร้ความหมาย) แต่เป็นสมบัติของผลลัพธ์ข้ามราคา 61 จุด:
+//   (ก) gate error 0 (ข) ไม่ throw/patch-rejected (ค) MOS สวนทางราคาเสมอ — เทสนี้ยิงทั้งสามข้อให้ "ตกได้จริง"
+// ══════════════════════════════════════════════════════════════════════════════
+{
+  const MG = require('../tools/migrate-v2.js');
+  const envBefore = process.env.STALE_TODAY;
+  // ── (ค) ตัวตัดสินทิศทาง = ฟังก์ชันบริสุทธิ์ ⇒ ยิงตรงได้ทั้งสองด้าน ──
+  const dv = MG.mosDirViolations;
+  ok(dv([{ k: 0.9, price: 90, mos: 10.7 }, { k: 1, price: 100, mos: 0 }, { k: 1.1, price: 110, mos: -9.2 }]).length === 0,
+    'T5: ราคาขึ้น → MOS ลด = ไม่มีการละเมิด');
+  ok(dv([{ k: 0.9, price: 90, mos: 3 }, { k: 1, price: 100, mos: 3 }]).length === 0, 'T5: MOS เท่าเดิม (ปัดเศษ) = ยอมได้');
+  ok(dv([{ k: 0.9, price: 90, mos: 3 }, { k: 1, price: 100, mos: 3.1 }]).length === 1, 'T5: MOS ขึ้นตามราคา = ละเมิด 1 ช่วง (ฐานพลิก)');
+  ok(dv([{ k: 1, price: 100, mos: null }]).length === 1, 'T5: อ่าน MOS ไม่ได้ = ละเมิด (ไม่ใช่ข้ามเงียบ)');
+  ok(dv([{ k: 1, price: 100, mos: 5 }, { k: 1.005, price: 100, mos: 6 }]).length === 0, 'T5: ราคาชนกันหลังปัด 2 ตำแหน่ง = ไม่ตัดสินช่วงนั้น');
+  // ── คู่สะอาด: fixture v2 ที่ระยะ 2 แช่แข็งไว้ ต้องเสถียรทุกข้อ **บนกริดตั้งต้น** (ไม่ส่ง opts — กริดเดียวกับ cron differential) ──
+  {
+    const s = MG.v2Stability(FX.BBL_V2(), 'BBL.html');
+    ok(s.ok && s.patched === s.points && s.points === MG.CRON_GRID.length && s.points === 61,
+      'T5: fixture v2 สะอาด → เสถียรครบ 61 จุดของกริดตั้งต้น', JSON.stringify({ points: s.points, gateErr: s.gateErr, dirViol: s.dirViol, throws: s.throws }));
+    ok(s.gateErr.length === 0 && s.dirViol.length === 0 && s.throws.length === 0, 'T5: ไม่มี gate error / ผิดทิศ / throw');
+    ok(s.mosRange && s.mosRange[0] < s.mosRange[1], 'T5: MOS ขยับจริงตลอดกริด (ถ้านิ่งสนิท = ราคาไม่ได้ถูก patch)', JSON.stringify(s.mosRange));
+  }
+  // ── (ก) gate error ต้องทำให้ตก: ใบ v2 ที่มี literal ในช่องที่ต้องเป็น token → V2TOKENS ──
+  {
+    const bad = FX.BBL_V2().replace('<div class="px">{{rd:px}}', '<div class="px">฿999.00');
+    ok(bad !== FX.BBL_V2(), 'T5: mutation ไม่เป็น no-op (มี site .px ให้ทำลาย)');
+    const s = MG.v2Stability(bad, 'BBL.html', { grid: [1.0] });
+    ok(!s.ok && s.gateErr.length === 1 && /V2TOKENS/.test(s.gateErr[0]), 'T5: gate error หลัง patch = ไม่เสถียร (ตกข้อ ก)', JSON.stringify(s.gateErr));
+  }
+  // ── setup: ส่ง v1 เข้ามา = ตัดสินไม่ได้ ต้องตก ไม่ใช่ "ผ่านเพราะไม่มีอะไรให้ตรวจ" ──
+  {
+    const s = MG.v2Stability(FX.BBL(), 'BBL.html', { grid: [1.0] });
+    ok(!s.ok && /values\.px/.test(s.setup || ''), 'T5: อินพุตไม่ใช่ v2 → ok:false พร้อมเหตุผล setup', JSON.stringify({ ok: s.ok, setup: s.setup }));
+  }
+  ok(process.env.STALE_TODAY === envBefore, 'T5: v2Stability คืน STALE_TODAY ค่าเดิมหลังรัน', String(process.env.STALE_TODAY));
+  // ── ยามของ `--v2-baseline` ใน planWrite: ผ่อนเกณฑ์ได้เฉพาะ side==='v1' + v2 เสถียร เท่านั้น ──
+  {
+    const R = { ok: true, out: '<html>v2</html>', sites: { tokenised: [], literal: [] }, notes: [], pyChanges: [] };
+    const cdF = (side) => ({ ok: false, kinds: ['gate-warn:W22'], k: 0.86, side, sideWhy: `×0.855→×0.86: gate-warn:W22=${side}`,
+      detail: ['…'], formOnly: [], formParts: [], valueDiff: [], retClass: 0, relax: {}, points: 61, compared: 61 });
+    const stabOk = { ok: true, points: 61, patched: 61, mosRange: [-41.8, -4.8], warnIds: [] };
+    const stabBad = { ok: false, points: 61, patched: 61, mosRange: [-41.8, -4.8], warnIds: [], dirViol: ['ผิดทิศ'] };
+    const p0 = MG.planWrite('PTG', R, cdF('v1'));
+    ok(p0.write === false && p0.entry.reason === 'cron-diff v1-unstable gate-warn:W22', 'T5: ไม่สั่ง --v2-baseline = residue ตามเดิม', String(p0.entry.reason));
+    const p1 = MG.planWrite('PTG', R, cdF('v1'), { v2Baseline: true, stab: stabOk });
+    ok(p1.write === true && p1.entry.ok === true && p1.entry.reason === null, 'T5: --v2-baseline + side v1 + v2 เสถียร → เขียนได้', JSON.stringify(p1.entry.reason));
+    ok(p1.entry.v2Baseline && p1.entry.v2Baseline.was === 'cron-diff v1-unstable gate-warn:W22' && p1.entry.v2Baseline.patched === 61
+      && p1.entry.notes.some((n) => /v2-baseline \(ระยะ 3 Task 5\)/.test(n)), 'T5: บันทึกเหตุผลเดิม + หลักฐานเสถียรภาพลง census (ไม่ผ่อนเงียบ)', JSON.stringify(p1.entry.v2Baseline));
+    for (const side of ['v2', 'unknown']) {
+      const p = MG.planWrite('X', R, cdF(side), { v2Baseline: true, stab: stabOk });
+      ok(p.write === false && /^cron-diff /.test(p.entry.reason || ''), `T5: side '${side}' ไม่เข้าข่าย v2-baseline (ยังเป็น residue)`, String(p.entry.reason));
+    }
+    ok(MG.planWrite('X', R, cdF('v1'), { v2Baseline: true, stab: stabBad }).write === false, 'T5: v2 เองไม่เสถียร → ไม่เขียน แม้ side v1');
+    ok(MG.planWrite('X', R, cdF('v1'), { v2Baseline: true, stab: null }).write === false, 'T5: ไม่มีผล v2Stability → ไม่เขียน (ไม่ใช่ผ่านเพราะยังไม่ได้วัด)');
+  }
+}
 }
 
 module.exports = { run };
