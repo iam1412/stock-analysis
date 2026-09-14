@@ -36,7 +36,7 @@ tools/                  # prep-stock.js (pre-fetch pack + CROSS-VERIFY) · fetch
 test/                   # quality gate ทุกชั้น: update-prices-test · dead-ticker-test · check-reports · ohlc-test · ta-engine-test · build-test · engine-exec · skeleton-test · check-site · prep-stock-test
                         #   + self-test (meta-test ของ check-reports — เข้า gate ตั้งแต่ 12 ส.ค. 69 เหมือนกัน)
 docs/                   # รายละเอียดเชิงลึก: quality-gate.md · templates.md · counters.md · price-refresh.md · ta-chart.md · orchestration.md
-.github/workflows/update-prices.yml        # cron อัปเดตราคาทุกวัน 07:17 น. ไทย
+.github/workflows/update-prices.yml        # cron อัปเดตราคาทุกวัน 04:00 น. ไทย (config 21:00 UTC)
 .github/workflows/fundamentals-canary.yml  # canary รายสัปดาห์ (จันทร์ 09:00 น. ไทย) — จับแหล่งข้อมูลเปลี่ยนโครง
 .githooks/pre-push      # บล็อก git push อัตโนมัติถ้า gate ไม่ผ่าน
 src/worker.js src/ohlc.js  # Worker + Durable Object (ตัวนับวิว/ไลก์) + route /api/ohlc (ข้อมูลกราฟ TA) — ดู 🏗️ สถาปัตยกรรม
@@ -126,7 +126,7 @@ npm run verify && git add -A && git commit -m "analyze: add AAPL stock analysis"
 
 ## 🔄 อัปเดตราคาอัตโนมัติทุกวัน (cron)
 
-GitHub Actions ([`update-prices.yml`](.github/workflows/update-prices.yml)) รันทุกวัน **07:17 น. ไทย** — ดึงราคาจริงจาก Yahoo
+GitHub Actions ([`update-prices.yml`](.github/workflows/update-prices.yml)) ตั้ง cron ไว้ **04:00 น. ไทย** (21:00 UTC — GitHub มักรันช้ากว่า config 4.3–4.6 ชม. จึงลงจริงราว 08:18–08:37 น. ไทย · เหตุผลที่ต้องเป็นเวลานี้ดู [`docs/price-refresh.md`](docs/price-refresh.md)) — ดึงราคาจริงจาก Yahoo
 (ยิงเดียวต่อหุ้น: `?range=1y&interval=1mo`) แล้ว patch **เฉพาะตัวเลขโครงสร้าง** ลงทุกรายงาน:
 ราคา header + วันที่ราคา + กราฟ 13 จุด (~1 ปี) + ป้าย % รอบปี + เข็ม gauge + MOS + เครื่องคิดเลข + `stock-meta`
 → ผ่าน `npm run verify:cron` (ประตู cron <!-- gen:verify-cron-steps -->5<!-- /gen:verify-cron-steps --> ขั้น) แล้วจึง commit + push เอง (Cloudflare deploy ต่อ)

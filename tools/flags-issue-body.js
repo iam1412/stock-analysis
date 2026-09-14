@@ -47,7 +47,7 @@ const list = (arr) => (arr.length > MAX_LISTED ? `${arr.slice(0, MAX_LISTED).joi
 
 // ประวัติ: แถวของวันนี้ทับแถววันเดียวกันเสมอ (workflow_dispatch รันซ้ำวันเดิมได้) แล้วเก็บ N รอบล่าสุด
 // ★ แต่ต้อง **บวกสะสม** ไม่ใช่ทับทิ้ง — ตั้งแต่ 8 ส.ค. 2569 มีสอง workflow เขียน issue ใบนี้ในวันเดียวกัน
-// (price-refresh 07:17 น. · dead-ticker-canary จันทร์ 09:23 น. = วันไทยเดียวกัน) และ added/removed วัดจาก
+// (price-refresh ~08:18–08:37 น. · dead-ticker-canary จันทร์ 09:23 น. = วันไทยเดียวกัน) และ added/removed วัดจาก
 // PREV_BODY ที่ตัวแรกเพิ่งเขียนไป ⇒ ถ้าทับ แถววันจันทร์จะเหลือแค่ส่วนต่างของ canary และยอดเข้าใหม่จริง
 // ของ price-refresh หายจากตารางถาวร (คงเหลือขยับแต่ +N ไม่ตรง — ตารางไม่ reconcile)
 const prevHistoryAll = (between(prev, '<!--history-->', '<!--/history-->') || '')
