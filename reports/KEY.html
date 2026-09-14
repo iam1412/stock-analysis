@@ -10,6 +10,39 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 22,
+  "values": {
+    "px": 21.84,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 19,
+    "fvHigh": 27,
+    "eps": 1.63,
+    "shares": 1080000000,
+    "dps": 0.82,
+    "baseEps": 1.82,
+    "scenarios": [
+      {
+        "tgt": 18.2,
+        "div": 2.46
+      },
+      {
+        "tgt": 30.72,
+        "div": 2.7
+      },
+      {
+        "tgt": 42,
+        "div": 2.8
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": true,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#008542",
     "accentDark": "#005c2e",
@@ -41,7 +74,6 @@
     "min": 16,
     "max": 24,
     "grid": [18, 20, 22],
-    "fairLine": 22,
     "currency": "$",
     "highlight": [0, 8],
     "gridFmt": "v.toFixed(0)",
@@ -50,11 +82,8 @@
   "gauge": {
     "min": 13,
     "max": 30,
-    "cur": 21.84,
-    "fair": 22,
     "fairLabelTop": false
-  },
-  "fv": 22
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -74,11 +103,11 @@
     <div class="sub">KeyCorp: Top-15 US bank (~$188B assets, 15 states, ~1,000 branches) • Ohio + Pacific Northwest + Colorado + Alaska footprint • Scotiabank ~14.9% stake ($2.8B, 2024) → balance sheet recapitalized, HTM losses addressed • Commercial (middle-market C&I, CRE) + Investment Banking (KeyBanc Capital Markets — TMT, healthcare) + Consumer • NIM recovery 2.87% → ~3.05% target 2026 • ROTCE 13%+ → 15%+ target 2027 • ~3.5% dividend yield</div>
     <div class="price-row">
       <div>
-        <div class="px">$21.84<small>(KEY)</small></div>
+        <div class="px">{{rd:px}}<small>(KEY)</small></div>
       </div>
-      <div class="chg">▲ +24.2% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $16.47 – $23.72<br>
         ที่มา: StockAnalysis, Yahoo Finance, PR Newswire (KeyCorp IR)
       </div>
@@ -89,8 +118,8 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">Q1 2026 / TTM ณ มิ.ย. 2569</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">~$23.6B</div><div class="d">~1.08B shares outstanding</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~13.4x</div><div class="d">EPS TTM $1.63 · ฟื้นตัวจากขาดทุน FY2024</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~{{rd:mcap}}</div><div class="d">~1.08B shares outstanding</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">EPS TTM $1.63 · ฟื้นตัวจากขาดทุน FY2024</div></div>
       <div class="metric"><div class="k">P/BV / P/TBV</div><div class="v neu">1.35x / 1.61x</div><div class="d">BVPS $16.13 · TBVPS $13.60 (Q1 2026)</div></div>
       <div class="metric"><div class="k">NIM</div><div class="v pos">2.87%</div><div class="d">Q1 2026 · เป้าหมาย ~3.05% ปลายปี 2569</div></div>
 
@@ -115,7 +144,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#008542"></i>ราคา KEY</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $22.00</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -145,8 +174,8 @@
         <div class="mval">$27.42</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $19.00 – $27.00</span></div>
-        <div class="r">$22.00</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         DDM ให้ค่าต่ำสุด ($17.06) สะท้อนข้อจำกัดของวิธีนี้กับธนาคารที่กำลังฟื้นตัว — payout ratio ยังต่ำ เพราะธนาคารกันทุนไว้เสริม BVPS
@@ -163,15 +192,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $21.84</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $22.00</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$15.40<br><small>MOS 30%</small></span>
-          <span>$17.60<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$22.00<br><small>Fair Value</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">$25.27<br><small>เป้าเฉลี่ย Analyst</small></span>
-          <span style="text-align:right">$27.00<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -187,19 +216,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">+0.7%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">ราคาเกิน Fair Value เล็กน้อย — ซื้อขายที่ Premium ~5% เหนือ FV เฉลี่ย • ยังไม่ถึงโซน MOS ที่ชัดเจน</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$17.60</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$15.40</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $22.00</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="21.84" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -208,17 +237,17 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $21.84 • EPS ฐาน ~$1.82 (FY2026E) • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}} (FY2026E){{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS 0%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$18.20</div>
-          <div class="ret neg">−5.4%</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$1.82</span></li>
             <li><span>P/E ออก</span><span>10x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$2.46</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>NIM ชะงัก · credit ตึง</span></li>
           </ul>
         </div>
@@ -226,12 +255,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +12%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$30.72</div>
-          <div class="ret pos">+53.0%</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$2.56</span></li>
             <li><span>P/E ออก</span><span>12x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$2.70</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>NIM 3.1% · ROTCE 15%</span></li>
           </ul>
         </div>
@@ -239,12 +268,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +18%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$42.00</div>
-          <div class="ret pos">+105.1%</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$3.00</span></li>
             <li><span>P/E ออก</span><span>14x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$2.80</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>NIM 3.3% · buyback หนุน EPS</span></li>
           </ul>
         </div>
@@ -294,8 +323,8 @@
       <h2>Fairly Valued — Recovery Story ยังไม่เสร็จ หากบรรลุ ROTCE 15% มี Upside ชัดเจน</h2>
       <p>KeyCorp ผ่านจุดต่ำสุดมาแล้วด้วยการระดมทุนจาก Scotiabank ($2.8B) ซึ่งแก้ปัญหา HTM bond losses และเสริมความแข็งแกร่งของงบดุล NIM กำลังขยายตัวสู่เป้าหมาย ROTCE 13% Q1 2569 มุ่งสู่ 15%+ ปี 2570 ราคา $23.15 ซื้อขายที่ ~5% เหนือ FV เฉลี่ย $22.00 ของเรา สะท้อนว่าตลาดเริ่ม "price in" recovery แล้วบางส่วน อย่างไรก็ดี upside ยังมีหาก NIM บรรลุ 3.05%+ และ earnings momentum ต่อเนื่อง — analyst 19 คน consensus Buy $25.27 สอดรับ</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$22.00 <span style="font-size:12px;color:#cab9a8">($19.00–$27.00)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +0.7%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$25.27 (Buy · 19 คน)</div></div>
       </div>
       <div class="zone">

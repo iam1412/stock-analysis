@@ -10,6 +10,38 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 144,
+  "values": {
+    "px": 124.79,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 135,
+    "fvHigh": 158,
+    "shares": 119300000,
+    "dps": 6.12,
+    "bvps": 48.72,
+    "scenarios": [
+      {
+        "tgt": 138,
+        "div": 18.36
+      },
+      {
+        "tgt": 171,
+        "div": 19.55
+      },
+      {
+        "tgt": 204,
+        "div": 20.5
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": false,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#2E5F1F",
     "accentDark": "#1A3D0E",
@@ -41,18 +73,14 @@
     "min": 120,
     "max": 150,
     "grid": [130, 140],
-    "fairLine": 144,
     "currency": "$",
     "highlight": [5, 8]
   },
   "gauge": {
     "min": 95,
     "max": 175,
-    "cur": 124.79,
-    "fair": 144,
     "fairLabelTop": true
-  },
-  "fv": 144
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +100,11 @@
     <div class="sub">Mid-America Apartment Communities: Largest Sun Belt apartment REIT (~102K units, 16+ states) • Markets: Atlanta, Dallas, Houston, Charlotte, Nashville, Raleigh, Tampa, Phoenix, Austin • Sun Belt migration tailwind vs 2024-2025 supply wave • Same-store NOI recovery as development pipeline peaks • ~4-5% dividend yield • pe:null — REIT values on P/AFFO/NAV</div>
     <div class="price-row">
       <div>
-        <div class="px">$124.79<small>(MAA)</small></div>
+        <div class="px">{{rd:px}}<small>(MAA)</small></div>
       </div>
-      <div class="chg">▼ −2.7% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $120.30 – $153.93<br>
         ที่มา: StockAnalysis.com, Investing.com, MarketBeat
       </div>
@@ -87,10 +115,10 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ มิ.ย. 2569 | ตัวเลข REIT อิง FFO/AFFO ไม่ใช่ EPS GAAP</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">~$14.9B</div><div class="d">119.3M shares outstanding</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~{{rd:mcap}}</div><div class="d">119.3M shares outstanding</div></div>
       <div class="metric"><div class="k">P/AFFO (2026E)</div><div class="v neu">~18.7x</div><div class="d">Core AFFO/sh 2026E: $7.50 · ลดจากพีค 25x+</div></div>
       <div class="metric"><div class="k">P/FFO (2026E)</div><div class="v">~16.4x</div><div class="d">Core FFO/sh 2026E: $8.53 · Compressed ช่วง supply peak</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">2.56x</div><div class="d">BVPS $48.72 (ธ.ค. 2568)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS $48.72 (ธ.ค. 2568)</div></div>
 
       <div class="metric"><div class="k">Core FFO/sh 2025A</div><div class="v pos">$8.74</div><div class="d">Core AFFO/sh 2025A: $7.61</div></div>
       <div class="metric"><div class="k">Core FFO/sh 2026E</div><div class="v">$8.53</div><div class="d">Core AFFO/sh 2026E: $7.50 (guidance midpoint)</div></div>
@@ -113,7 +141,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#2E5F1F"></i>ราคา MAA</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $144</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -139,8 +167,8 @@
         <div class="mval">$158</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $135 – $158</span></div>
-        <div class="r">$144</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         วิธี P/AFFO ให้มูลค่าต่ำสุด ($135) สะท้อนความกังวลตลาดระยะสั้นเรื่อง supply พีค; DDM ($140) อยู่กลาง; NAV ($158) สูงสุดสะท้อนมูลค่า portfolio ที่แท้จริงหาก cap rate กลับสู่ระดับปกติ 5.0% ราคาปัจจุบัน $140 อยู่ใกล้ค่า DDM และต่ำกว่า NAV สะท้อน discount ที่ตลาดให้เพราะ supply headwind — แต่ MOS ยังแคบ (2.8%) บ่งชี้ว่ายังไม่ถูกอย่างมีนัย
@@ -154,15 +182,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $124.79</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $144</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$100.80<br><small>MOS 30%</small></span>
-          <span>$115.20<br><small>MOS 20%</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
           <span style="text-align:center">$143<br><small>เป้าเฉลี่ย Analyst</small></span>
-          <span style="text-align:right">$144<br><small>Fair Value</small></span>
-          <span style="text-align:right">$158<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -175,19 +203,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict ok">
-        <div class="big">+13%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">MOS แคบ — ราคาใกล้ Fair Value; รอโอกาสดีกว่านี้</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$115.20</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$100.80</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
         <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $135</div><div class="d">P/AFFO &lt;18x · ใกล้ DDM FV</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="124.79" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -196,17 +224,17 @@
 
   <!-- ===== 6. RETURN PROJECTION ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $124.79 • Core AFFO ฐาน ~$7.50/sh • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • Core AFFO ฐาน ~$7.50/sh{{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>AFFO +0%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$138</div>
-          <div class="ret neg">+10.6% (รวมปันผล)</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>AFFO ปี 3</span><span>~$7.50</span></li>
             <li><span>P/AFFO ออก</span><span>16x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$18.36</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>Supply กดต่อเนื่อง · AFFO flat · ตลาดให้ discount</span></li>
           </ul>
         </div>
@@ -214,12 +242,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>AFFO +4%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$171</div>
-          <div class="ret pos">+37.0% (รวมปันผล)</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>AFFO ปี 3</span><span>~$8.44</span></li>
             <li><span>P/AFFO ออก</span><span>18x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$19.55</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>Supply rolloff ปลาย 2569 · rent growth กลับมา · NOI ฟื้น</span></li>
           </ul>
         </div>
@@ -227,12 +255,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>AFFO +7%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$204</div>
-          <div class="ret pos">+63.5% (รวมปันผล)</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>AFFO ปี 3</span><span>~$9.19</span></li>
             <li><span>P/AFFO ออก</span><span>20x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$20.50</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>Sun Belt migration accelerates · rate cut ดัน P/AFFO re-rate · NOI growth 4%+</span></li>
           </ul>
         </div>
@@ -279,8 +307,8 @@
       <h2>MAA — Fairly Valued · รอจังหวะซื้อที่ดีกว่า</h2>
       <p>MAA เป็น REIT คุณภาพสูงและเป็นผู้นำตลาดอพาร์ทเมนต์ Sun Belt ที่มี moat แข็งแกร่งจาก scale (~102K units), diversification (16+ รัฐ), และ track record การบริหาร Portfolio ที่ยอดเยี่ยม ปันผล 4.37% ที่เติบโต 16 ปีต่อเนื่องเป็นจุดแข็ง อย่างไรก็ตาม ราคา $140 ซื้อขายใกล้ Fair Value ที่ประเมินไว้ $144 มาก (MOS เพียง ~2.8%) และ same-store NOI ยังติดลบต่อเนื่อง (-1.4% ปี 2568, -0.7% ปี 2569E) จากภาวะ supply wave ที่ยังไม่ผ่านพ้น นักลงทุนระยะยาวที่เชื่อใน Sun Belt thesis สามารถ initiate position ขนาดเล็กได้ แต่การรอโอกาสที่ราคาต่ำกว่า $135 (P/AFFO &lt;18x) จะให้ risk/reward ที่ดีกว่าอย่างมีนัย</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$144 <span style="font-size:12px;color:#cab9a8">($135–$158)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +13%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$143 (Buy/Hold)</div></div>
       </div>
       <div class="zone">

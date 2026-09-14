@@ -10,6 +10,40 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 594,
+  "values": {
+    "px": 366.04,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 565,
+    "fvHigh": 631,
+    "eps": 22.55,
+    "shares": 35200000,
+    "dps": 5.44,
+    "bvps": 34.49,
+    "baseEps": 22.55,
+    "scenarios": [
+      {
+        "tgt": 428,
+        "div": 16.32
+      },
+      {
+        "tgt": 755,
+        "div": 16.32
+      },
+      {
+        "tgt": 992,
+        "div": 16.32
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": true,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#E8001A",
     "accentDark": "#b50015",
@@ -41,18 +75,14 @@
     "min": 300,
     "max": 700,
     "grid": [400, 500, 600],
-    "fairLine": 594,
     "currency": "$",
     "highlight": [8, 11]
   },
   "gauge": {
     "min": 350,
     "max": 750,
-    "cur": 366.04,
-    "fair": 594,
     "fairLabelTop": true
-  },
-  "fv": 594
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +102,11 @@
     <div class="sub">ผู้นำ HVAC ระดับพรีเมียมในอเมริกาเหนือ • HCS (~70%): เครื่องทำความร้อน-เย็น-ปั๊มความร้อนที่บ้าน แบรนด์ Lennox / Armstrong Air + IRA incentives ดันฮีตปั๊ม • BCS (~30%): HVAC เชิงพาณิชย์ + Data Center cooling • เปลี่ยนสารทำความเย็น R-454B หนุนการเปลี่ยนอุปกรณ์ • รายได้ aftermarket/บริการ recurring • ซื้อหุ้นคืนเชิงรุก ~1% yield</div>
     <div class="price-row">
       <div>
-        <div class="px">$366.04<small>(LII)</small></div>
+        <div class="px">{{rd:px}}<small>(LII)</small></div>
       </div>
-      <div class="chg">▼ −27.5% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $434.06 – $689.44<br>
         ที่มา: StockAnalysis.com, Yahoo Finance, Lennox IR
       </div>
@@ -87,8 +117,8 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ก.ค. 2569 | TTM = Trailing 12 Months</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">$12.9B</div><div class="d">~35.2M หุ้น diluted</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~16.2x</div><div class="d">EPS TTM $22.55 | ต่ำกว่าค่าเฉลี่ย 5 ปีมาก</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">{{rd:mcap}}</div><div class="d">~35.2M หุ้น diluted</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">EPS TTM $22.55 | ต่ำกว่าค่าเฉลี่ย 5 ปีมาก</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~28–32x</div><div class="d">ปัจจุบัน de-rate จากจุดสูง 35x</div></div>
       <div class="metric"><div class="k">P/BV</div><div class="v neu">10.6x</div><div class="d">BVPS $34.49 | สูงจาก buyback leverage</div></div>
 
@@ -113,7 +143,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#E8001A"></i>ราคา LII</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $594</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -142,8 +172,8 @@
         <div class="mval">$587</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $565 – $631</span></div>
-        <div class="r">$594</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         P/E ให้ค่าสูงสุด $631 สะท้อน multiple re-rate เต็มกลับสู่ค่าเฉลี่ยประวัติศาสตร์ EV/EBITDA $565 อนุรักษ์นิยมกว่า
@@ -160,15 +190,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $366</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $594</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$416<br><small>MOS 30%</small></span>
-          <span>$475<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$594<br><small>Fair Value</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">$610<br><small>52W High/3</small></span>
-          <span style="text-align:right">$631<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -184,19 +214,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict good">
-        <div class="big">+38%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">ราคาต่ำกว่ามูลค่าเหมาะสมมาก — เข้าใกล้โซน deep value ($416, MOS 30%)</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$475</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$416</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $594</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="366.04" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -205,17 +235,17 @@
 
   <!-- ===== 6. RETURN PROJECTION ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $366.04 • EPS ฐาน ~$22.55 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}}{{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS −3%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$428</div>
-          <div class="ret pos">+21.4%</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$20.58</span></li>
             <li><span>P/E ออก</span><span>20x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$16.32</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>ตลาดที่อยู่อาศัยหดตัว ภาษีนำเข้าเพิ่ม margin ชน</span></li>
           </ul>
         </div>
@@ -223,12 +253,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +8%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$755</div>
-          <div class="ret pos">+110.7%</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$28.41</span></li>
             <li><span>P/E ออก</span><span>26x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$16.32</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>IRA ดันฮีตปั๊ม + HVAC replacement cycle ต่อเนื่อง</span></li>
           </ul>
         </div>
@@ -236,12 +266,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +13%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$992</div>
-          <div class="ret pos">+175.5%</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$32.54</span></li>
             <li><span>P/E ออก</span><span>30x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$16.32</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>Data center cooling boom + R-454B transition surge + margin expansion</span></div>
           </ul>
         </div>
@@ -301,8 +331,8 @@
       สำหรับนักลงทุนเน้น quality compounder นี่คือโซนสะสมที่น่าสนใจสำหรับ HVAC cycle + IRA tailwind ระยะยาว
       นักวิเคราะห์ consensus Buy (19 คน) เป้า $553 บ่งชี้ upside +32.3% จากราคาตลาด</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$594 <span style="font-size:12px;color:#cab9a8">($565–$631)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#a5d6a7">MOS ~ +38%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#a5d6a7">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$553 (Buy)</div></div>
       </div>
       <div class="zone">

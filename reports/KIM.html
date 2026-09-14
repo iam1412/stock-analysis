@@ -10,6 +10,38 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 30,
+  "values": {
+    "px": 23.19,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 27,
+    "fvHigh": 32.76,
+    "shares": 676000000,
+    "dps": 1.04,
+    "bvps": 15.53,
+    "scenarios": [
+      {
+        "tgt": 26.78,
+        "div": 3.12
+      },
+      {
+        "tgt": 36.83,
+        "div": 3.12
+      },
+      {
+        "tgt": 43.25,
+        "div": 3.12
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": false,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#006FA6",
     "accentDark": "#004F7C",
@@ -41,18 +73,14 @@
     "min": 17.5,
     "max": 32.5,
     "grid": [20, 22.5, 25, 27.5, 30],
-    "fairLine": 30,
     "currency": "$",
     "highlight": [2, 9]
   },
   "gauge": {
     "min": 16,
     "max": 36,
-    "cur": 23.19,
-    "fair": 30,
     "fairLabelTop": true
-  },
-  "fv": 30
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +100,11 @@
     <div class="sub">Largest grocery-anchored shopping center REIT (US) • ~570 open-air centers, ~100M sq ft, Sun Belt + coastal focus • Merged with Weingarten Realty (2021, ~$3.8B) → dominant Sun Belt grocery REIT • Anchors: Kroger, Publix, Whole Foods, Trader Joe's, Aldi + TJX/Home Depot/PetSmart • Mixed-use redevelopment (residential entitlements above/adjacent to retail) • ~4% dividend yield • pe:null — REIT valued on P/FFO/NAV</div>
     <div class="price-row">
       <div>
-        <div class="px">$23.19<small>(KIM)</small></div>
+        <div class="px">{{rd:px}}<small>(KIM)</small></div>
       </div>
-      <div class="chg">▲ +12.2% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $19.76 – $26.08<br>
         ที่มา: StockAnalysis.com, Yahoo Finance, Kimco Realty IR
       </div>
@@ -87,7 +115,7 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ มิ.ย. 2569 — REIT ใช้ FFO/AFFO แทน EPS/P/E</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">~$15.7B</div><div class="d">676M หุ้น (diluted)</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~{{rd:mcap}}</div><div class="d">676M หุ้น (diluted)</div></div>
       <div class="metric"><div class="k">FFO/sh (2025A)</div><div class="v pos">$1.76</div><div class="d">+6.7% YoY — primary REIT metric</div></div>
       <div class="metric"><div class="k">FFO/sh (2026E)</div><div class="v neu">$1.81–$1.84</div><div class="d">Guidance midpoint ~$1.82/sh</div></div>
       <div class="metric"><div class="k">P/FFO (2026E)</div><div class="v neu">~13.9x</div><div class="d">ส่วนลดต่อ peer เฉลี่ย 16-18x</div></div>
@@ -95,11 +123,11 @@
       <div class="metric"><div class="k">Occupancy Rate</div><div class="v pos">96.4%</div><div class="d">All-time high; shop 92.7% (record)</div></div>
       <div class="metric"><div class="k">Same-Store NOI Growth</div><div class="v pos">+3.0%</div><div class="d">FY2025 YoY — above sector avg</div></div>
       <div class="metric"><div class="k">Leasing Spreads</div><div class="v pos">+11.3%</div><div class="d">Blended cash rent spread Q1 2026</div></div>
-      <div class="metric"><div class="k">เงินปันผล (Yield)</div><div class="v pos">~4.5%</div><div class="d">$1.04/sh ปี ($0.26/qtr) +4% YoY</div></div>
+      <div class="metric"><div class="k">เงินปันผล (Yield)</div><div class="v pos">~{{rd:yield}}</div><div class="d">$1.04/sh ปี ($0.26/qtr) +4% YoY</div></div>
 
       <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">$2.16B</div><div class="d">+4.4% YoY; FY2025 ~$2.14B</div></div>
       <div class="metric"><div class="k">Net Debt / EBITDA</div><div class="v neu">~6.5x</div><div class="d">Net debt ~$7.1B; A3 Moody's rated</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">~1.49x</div><div class="d">BVPS ~$15.53; equity $10.5B</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">~{{rd:pbv}}x</div><div class="d">BVPS ~$15.53; equity $10.5B</div></div>
       <div class="metric"><div class="k">Beta</div><div class="v">0.98</div><div class="d">ใกล้ตลาด; defensive-income profile</div></div>
     </div>
   </section>
@@ -113,7 +141,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#006FA6"></i>ราคา KIM</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $30.00</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -142,8 +170,8 @@
         <div class="mval">$27.00</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $27.00 – $32.76</span></div>
-        <div class="r">$30.00</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         <b>หมายเหตุวิธี valuation:</b> KIM เป็น REIT จึงใช้ P/FFO และ DDM แทน P/E — GAAP EPS สะท้อนภาพบิดเบือนเพราะ depreciation อสังหาฯ สูง
@@ -160,15 +188,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $23.19</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $30.00</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$21.00<br><small>MOS 30%</small></span>
-          <span>$24.00<br><small>MOS 20%</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
           <span style="text-align:center">$26.04<br><small>เป้า Analyst</small></span>
-          <span style="text-align:right">$30.00<br><small>Fair Value</small></span>
-          <span style="text-align:right">$32.76<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -183,19 +211,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict good">
-        <div class="big">+23%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">MOS ปานกลาง — ราคาต่ำกว่า fair value แต่ยังไม่ถึง deep value zone; เหมาะทยอยสะสม</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$24.00</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$21.00</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $30.00</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="23.19" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -204,17 +232,17 @@
 
   <!-- ===== 6. RETURN PROJECTION ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $23.19 • FFO ฐาน ~$1.82 • รวมปันผล ~$1.04/ปี</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • FFO ฐาน ~$1.82{{rd:scnNote}} ~$1.04/ปี</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>FFO 0%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$26.78</div>
-          <div class="ret neg">+15.5% (3 ปี)</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>FFO ปี 3</span><span>~$1.82</span></li>
             <li><span>P/FFO ออก</span><span>13x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$3.12</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>Rate สูงต่อ, NOI ชะลอ, discount</span></li>
           </ul>
         </div>
@@ -222,12 +250,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>FFO +5%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$36.83</div>
-          <div class="ret pos">+58.8% (3 ปี)</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>FFO ปี 3</span><span>~$2.11</span></li>
             <li><span>P/FFO ออก</span><span>16x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$3.12</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>Same-store NOI +3%, rate ลด, re-rate</span></li>
           </ul>
         </div>
@@ -235,12 +263,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>FFO +7%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$43.25</div>
-          <div class="ret pos">+86.5% (3 ปี)</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>FFO ปี 3</span><span>~$2.23</span></li>
             <li><span>P/FFO ออก</span><span>18x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$3.12</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>Mixed-use upcycle, M&amp;A synergy, rate ลดแรง</span></li>
           </ul>
         </div>
@@ -292,8 +320,8 @@
       จุดแข็งหลักคือ grocery-anchored business model ที่สร้าง foot traffic necessity-based ทนต่อ e-commerce และ recession ได้ดี ประกอบกับ mixed-use pipeline ที่ยังไม่ถูก price in และ A3 credit ที่เปิดทางเข้าถึงทุน
       ความเสี่ยงหลักคือ leverage ระดับ ~6.5x ที่ rate-sensitive และ analyst consensus เป้าหมายใกล้ราคาปัจจุบัน ($26.04) — แปลว่า near-term upside จาก street จำกัด แต่ valuation-based (P/FFO re-rating) upside ยังมีนัยสำคัญ</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$30.00 <span style="font-size:12px;color:#cab9a8">($27.00–$32.76)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +23%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$26.04 (Buy — 25 คน)</div></div>
       </div>
       <div class="zone">

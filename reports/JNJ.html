@@ -10,6 +10,39 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 218.39,
+  "values": {
+    "px": 265.58,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 205.01,
+    "fvHigh": 226.19,
+    "shares": 2410000000,
+    "dps": 5.36,
+    "bvps": 33.73,
+    "baseEps": 11.15,
+    "scenarios": [
+      {
+        "tgt": 201.15,
+        "div": 16.24
+      },
+      {
+        "tgt": 252.32,
+        "div": 16.56
+      },
+      {
+        "tgt": 303.23,
+        "div": 16.8
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": true,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#d10000",
     "accentDark": "#9c0000",
@@ -41,18 +74,14 @@
     "min": 180,
     "max": 280,
     "grid": [200, 220, 240, 260],
-    "fairLine": 218.39,
     "currency": "$",
     "highlight": [0, 10]
   },
   "gauge": {
     "min": 140,
     "max": 280,
-    "cur": 265.58,
-    "fair": 218.39,
     "fairLabelTop": true
-  },
-  "fv": 218.39
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +101,11 @@
     <div class="sub">Innovative Medicine: Darzalex, Tremfya, Erleada, Carvykti, Stelara • MedTech: Abiomed (heart pumps), Shockwave (IVL catheters), DePuy Synthes (orthopedics), electrophysiology • Dividend King 64 ปีติดต่อกัน</div>
     <div class="price-row">
       <div>
-        <div class="px">$265.58<small>(JNJ)</small></div>
+        <div class="px">{{rd:px}}<small>(JNJ)</small></div>
       </div>
-      <div class="chg">▲ +40.6% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569 (Jul 2, 2026)<br>
+        ราคา ณ {{rd:priceDate}} (Jul 2, 2026)<br>
         กรอบ 52 สัปดาห์ $154.21 – $263.10<br>
         ที่มา: StockAnalysis.com, Yahoo Finance, Johnson &amp; Johnson Investor Relations
       </div>
@@ -113,7 +142,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#d10000"></i>ราคา JNJ</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $218.39</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -139,8 +168,8 @@
         <div class="mval">$223.97</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $205.01 – $226.19</span></div>
-        <div class="r">$218.39</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         ทั้ง 3 วิธีให้ค่าใกล้เคียงกัน ($205–$226) เพราะ JNJ เป็นหุ้นคุณภาพสูง โตช้าแต่สม่ำเสมอ — P/E วิธีให้ค่าต่ำสุดเพราะใช้ P/E ระมัดระวังใกล้ค่าเฉลี่ยยาว ขณะที่ DDM และ Justified P/BV ให้ค่าสูงกว่าเล็กน้อยเพราะ ROE สูง (~25%) ชดเชยการเติบโตที่ช้าลงจาก Stelara patent cliff ราคาปัจจุบัน $263.04 สูงกว่า FV เฉลี่ยนี้ราว 20% สะท้อนว่าตลาดให้พรีเมียมกับความปลอดภัย/ปันผลของ JNJ ค่อนข้างมากในช่วงนี้
@@ -154,14 +183,14 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $265.58</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $218.39</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$152.87<br><small>MOS 30%</small></span>
-          <span>$174.71<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$218.39<br><small>Fair Value</small></span>
-          <span style="text-align:right">$226.19<br><small>กรอบบน FV</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
           <span style="text-align:right">$257.50<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
@@ -175,19 +204,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">−22%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">MOS ติดลบ — ราคาปัจจุบันสูงกว่ามูลค่าเหมาะสมโดยประมาณ ~20% (overvalued ตามโมเดลนี้) ไม่ใช่ "ราคาถูก" ในเชิง value investing แม้พื้นฐานธุรกิจยังแข็งแรง</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$174.71</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$152.87</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $218.39</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="265.58" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -196,17 +225,17 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $265.58 • EPS ฐาน ~$11.15 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}}{{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS 2%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$201.15</div>
-          <div class="ret neg">−18.1%</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$11.83</span></li>
             <li><span>P/E ออก</span><span>17x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$16.24</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>Stelara cliff ลากยาว, talc litigation แพ้คดีเพิ่ม, multiple หด</span></li>
           </ul>
         </div>
@@ -214,12 +243,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +6%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$252.32</div>
-          <div class="ret pos">+1.2%</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$13.28</span></li>
             <li><span>P/E ออก</span><span>19x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$16.56</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>Darzalex/MedTech ชดเชย Stelara ได้ตามแผน, multiple ย่อลงใกล้ค่าเฉลี่ย</span></li>
           </ul>
         </div>
@@ -227,12 +256,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +9%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$303.23</div>
-          <div class="ret pos">+20.5%</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$14.44</span></li>
             <li><span>P/E ออก</span><span>21x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$16.80</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>MedTech หัวใจ-หลอดเลือดโตเร่ง, ไปป์ไลน์ยาใหม่ปล่อยแรง, ยุติ talc litigation ชัดเจน</span></li>
           </ul>
         </div>
@@ -277,8 +306,8 @@
       <h2>คุณภาพดีเยี่ยม แต่ราคาแพงกว่ามูลค่าที่ประเมินได้ — เหมาะกับ "ถือ" มากกว่า "ซื้อใหม่"</h2>
       <p>Johnson &amp; Johnson ยังเป็นหุ้น Healthcare คุณภาพสูงระดับต้น ๆ ของตลาด ด้วยสถานะ Dividend King 64 ปี งบดุลแข็งแกร่ง และธุรกิจ MedTech (Abiomed, Shockwave) ที่กำลังเป็นเครื่องยนต์เติบโตใหม่ชดเชยแรงกดดันจาก Stelara patent cliff ได้ดีกว่าที่ตลาดเคยกังวล อย่างไรก็ตาม ราคาหุ้นที่วิ่งขึ้น +63.7% ในรอบปีจนใกล้ทำ all-time high ทำให้ valuation ตึงตัวมาก — โมเดล Fair Value เฉลี่ย 3 วิธี ($218.39) ต่ำกว่าราคาตลาดปัจจุบัน ($263.04) ราว 20% สะท้อนว่าตลาดให้พรีเมียมสูงกับความปลอดภัย/ความสม่ำเสมอของกระแสเงินสดและปันผลในภาวะที่นักลงทุนหันหาสินทรัพย์ defensive คดีความ talc ที่ยังไม่จบและ Stelara ที่ยังลดลงต่อเนื่องเป็นความเสี่ยงที่ต้องติดตาม</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$218.39 <span style="font-size:12px;color:#cab9a8">($205.01–$226.19)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −22%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$257.50 (Buy)</div></div>
       </div>
       <div class="zone">

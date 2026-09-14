@@ -10,6 +10,39 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 93,
+  "values": {
+    "px": 72.93,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 89,
+    "fvHigh": 98,
+    "eps": 3.39,
+    "shares": 391000000,
+    "bvps": 32,
+    "baseEps": 3.39,
+    "scenarios": [
+      {
+        "tgt": 81.74,
+        "div": 0.24
+      },
+      {
+        "tgt": 111.27,
+        "div": 0.24
+      },
+      {
+        "tgt": 146.98,
+        "div": 0.24
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": false,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#006E7F",
     "accentDark": "#004D5C",
@@ -41,18 +74,14 @@
     "min": 70,
     "max": 100,
     "grid": [80, 90],
-    "fairLine": 93,
     "currency": "$",
     "highlight": [4, 7]
   },
   "gauge": {
     "min": 55,
     "max": 115,
-    "cur": 72.93,
-    "fair": 93,
     "fairLabelTop": false
-  },
-  "fv": 93
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +101,11 @@
     <div class="sub">Air compressors, blowers, fluid management &amp; industrial tech • Gardner Denver + IR industrial merger 2020 • IRX operating system (continuous improvement) • Life science &amp; pharma pumps (Precision &amp; Science) • 15-20 bolt-on acquisitions per year • Industrial automation tailwind</div>
     <div class="price-row">
       <div>
-        <div class="px">$72.93<small>(IR)</small></div>
+        <div class="px">{{rd:px}}<small>(IR)</small></div>
       </div>
-      <div class="chg">▼ −4.5% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $68.07 – $100.96<br>
         ที่มา: Yahoo Finance, StockAnalysis.com, IR Investor Relations
       </div>
@@ -87,8 +116,8 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ มิ.ย. 2569 · Adj EPS = ตัวเลขปรับปรุงก่อนหักค่าตัดจำหน่าย M&amp;A</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">$28.5B</div><div class="d">391M shares · NYSE: IR</div></div>
-      <div class="metric"><div class="k">P/E (Adj TTM)</div><div class="v neu">~21.5x</div><div class="d">Adj EPS TTM $3.39 · Fwd P/E 23.2x</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">{{rd:mcap}}</div><div class="d">391M shares · NYSE: IR</div></div>
+      <div class="metric"><div class="k">P/E (Adj TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">Adj EPS TTM $3.39 · Fwd P/E 23.2x</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~27–32x</div><div class="d">ระดับ premium quality industrial</div></div>
       <div class="metric"><div class="k">P/BV</div><div class="v neu">~2.3x</div><div class="d">BVPS ~$32 · Goodwill สูงจาก M&amp;A</div></div>
 
@@ -113,7 +142,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#006E7F"></i>ราคา IR</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $93</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -139,8 +168,8 @@
         <div class="mval">$88.9</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $89 – $98</span></div>
-        <div class="r">$93</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         วิธี EV/EBITDA ให้ค่าสูงสุด ($98) สะท้อน margin expansion ของ IRX system ที่ต่อเนื่อง วิธี FCF ให้ค่าต่ำสุด ($89) เนื่องจาก FCF ถูกกดด้วยการลงทุน M&amp;A ต่อเนื่อง วิธี P/E กลาง ($91.5) สอดคล้องกับ forward guidance $3.45-3.57 ที่ P/E 25-27x ค่าเฉลี่ย $93 เหมาะสมในฐานะ IRX quality compounder ที่มี pricing power + M&amp;A pipeline ต่อเนื่อง แต่ต้องระวัง GAAP EPS ต่ำกว่า Adj EPS มาก เพราะ goodwill amortization จาก M&amp;A ขนาดใหญ่
@@ -154,15 +183,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $72.93</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $93</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$65.10<br><small>MOS 30%</small></span>
-          <span>$74.40<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$93<br><small>Fair Value</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">$93.07<br><small>เป้าเฉลี่ย Analyst</small></span>
-          <span style="text-align:right">$98<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -175,19 +204,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict good">
-        <div class="big">+22%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">MOS พอใช้ — ราคาต่ำกว่า Fair Value แต่ยังไม่ถึงโซน "ถูกมาก" · รอจังหวะย่อสู่ $74–78 เพื่อ MOS ที่ดีขึ้น</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$74.40</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$65.10</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $93</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="72.93" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -196,17 +225,17 @@
 
   <!-- ===== 6. RETURN PROJECTION ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $72.93 • EPS ฐาน ~$3.39 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}}{{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS +3%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$81.74</div>
-          <div class="ret neg">~12%</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$3.70</span></li>
             <li><span>P/E ออก</span><span>22x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$0.24</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>อุตสาหกรรมชะลอ, M&amp;A ล้มเหลว, ภาษีนำเข้ากระทบ</span></li>
           </ul>
         </div>
@@ -214,12 +243,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +8%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$111.27</div>
-          <div class="ret pos">+53%</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$4.27</span></li>
             <li><span>P/E ออก</span><span>26x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$0.24</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>IRX ขับเคลื่อน margin + organic growth 4-5% + M&amp;A bolt-on ต่อเนื่อง</span></li>
           </ul>
         </div>
@@ -227,12 +256,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +13%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$146.98</div>
-          <div class="ret pos">+102%</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$4.89</span></li>
             <li><span>P/E ออก</span><span>30x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$0.24</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>Industrial automation boom + AI cooling demand + M&amp;A re-rating; re-rate ขึ้นสู่ Roper/Danaher multiple</span></li>
           </ul>
         </div>
@@ -278,8 +307,8 @@
       <h2>IR — Quality IRX Compounder ราคาสมเหตุสมผล, MOS ~12%</h2>
       <p>Ingersoll Rand เป็น "quality compounder" ที่มีระบบ IRX ขับเคลื่อน margin expansion อย่างต่อเนื่อง (EBITDA margin 19% → 27.4% ใน 4 ปี) รายได้ $7.8B เติบโต organic ~4%/ปีบวก M&amp;A bolt-on 15-20 ดีลต่อปี portfolio ครอบคลุม compressed air (industrial) และ fluid management (life science/pharma) ซึ่งทั้งสองมี tailwind ที่ชัดเจนจาก industrial automation และ drug manufacturing boom ราคาปัจจุบัน $81.56 อยู่ต่ำกว่า Fair Value $93 ประมาณ 12% และ discount vs peers IDEX/Roper ที่มีคุณภาพใกล้เคียง ความเสี่ยงหลักคือ goodwill สูงและ GAAP vs Adj EPS gap ที่ใหญ่ สำหรับ long-term investor รอซื้อในโซน $74-78 (MOS 20%) จะได้ margin of safety ที่ดีขึ้น</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$93 <span style="font-size:12px;color:#cab9a8">($89–$98)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +22%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$93 (Moderate Buy)</div></div>
       </div>
       <div class="zone">

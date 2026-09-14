@@ -10,6 +10,19 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 174,
+  "values": {
+    "px": 161.12,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 157,
+    "fvHigh": 185,
+    "shares": 54300000,
+    "dps": 2.44,
+    "bvps": 30
+  },
   "theme": {
     "accent": "#1A3A6B",
     "accentDark": "#0F2347",
@@ -41,17 +54,13 @@
     "min": 120,
     "max": 200,
     "grid": [140, 160, 180],
-    "fairLine": 174,
     "currency": "$",
     "highlight": [2, 7]
   },
   "gauge": {
     "min": 110,
-    "max": 210,
-    "cur": 161.12,
-    "fair": 174
-  },
-  "fv": 174
+    "max": 210
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -71,11 +80,11 @@
     <div class="sub">Community/regional bank tech platform · ~7,500 FI clients · Core banking · Digital banking · Payments (JHA PayCenter) · 75%+ recurring revenue · SaaS migration · Monett MO</div>
     <div class="price-row">
       <div>
-        <div class="px">$161.12<small>(JKHY)</small></div>
+        <div class="px">{{rd:px}}<small>(JKHY)</small></div>
       </div>
-      <div class="chg">▲ +8.2% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $121.04 – $193.39<br>
         ที่มา: StockAnalysis.com, Digrin.com, Finviz.com
       </div>
@@ -89,7 +98,7 @@
       <div class="metric"><div class="k">Market Cap</div><div class="v">~$8.7B</div><div class="d">~54.3 ล้านหุ้น</div></div>
       <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~19.5x</div><div class="d">ต่ำกว่าค่าเฉลี่ย 5 ปี ~28x</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~27–30x</div><div class="d">ช่วง COVID peak ~45x</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">5.37x</div><div class="d">BVPS ~$30.0</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS ~$30.0</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ FY2025</div><div class="v">$519M</div><div class="d">+21.8% YoY (TTM)</div></div>
       <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$7.16</div><div class="d">GAAP · FY2026E $6.57</div></div>
@@ -112,7 +121,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#1A3A6B"></i>ราคา JKHY</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $174</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -138,8 +147,8 @@
         <div class="mval">$178.68</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $157 – $185</span></div>
-        <div class="r">$174</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         P/E ให้ค่าต่ำสุด ($158) เพราะใช้ P/E อนุรักษ์นิยม 22x — หากใช้ค่าเฉลี่ย historical 27x จะได้ ~$193 P/S ให้ค่าสูงสุด ($185) สะท้อน recurring revenue premium ของโมเดล SaaS Justified P/BV ($179) สอดคล้องกับ ROE สูง 25% ที่ยั่งยืน ค่าเฉลี่ย $174 ใกล้เคียงกับ consensus analyst ~$187 และสะท้อนการเติบโตที่ระมัดระวัง
@@ -153,14 +162,14 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $161.12</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $174</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$121.80<br><small>MOS 30%</small></span>
-          <span>$139.20<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$174<br><small>Fair Value</small></span>
-          <span style="text-align:right">$185<br><small>กรอบบน FV</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
           <span style="text-align:right">$187<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
@@ -174,19 +183,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">+7%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">โซนน่าสนใจ — ใกล้ MOS 20% สำหรับ value investor ที่มองระยะยาว</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$139.20</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$121.80</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $174</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="161.12" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -277,8 +286,8 @@
       <h2>Defensive Fintech ที่ถูก de-rated — MOS ใกล้ 20% น่าสะสม</h2>
       <p>Jack Henry &amp; Associates คือ "infrastructure play" ของวงการธนาคาร community bank ใน US — ธุรกิจที่ switching cost สูงมาก, 75%+ recurring revenue, ROE ~25% และงบดุลแข็งแกร่ง แทบไม่มีหนี้ หุ้นถูก de-rated จาก P/E ~45x (COVID peak) ลงมาสู่ ~19.5x ในปัจจุบัน ส่วนหนึ่งเพราะ EPS FY2026 ชั่วคราวปรับลง (SaaS transition) แต่ long-term thesis ยังสมบูรณ์ ราคาปัจจุบัน $139.50 ให้ MOS ~20% เทียบกับ Fair Value $174 — โซนที่ value investor ระยะยาวสามารถทยอยสะสมได้</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$174 <span style="font-size:12px;color:#cab9a8">($157–$185)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +7%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$187 (Buy consensus)</div></div>
       </div>
       <div class="zone">

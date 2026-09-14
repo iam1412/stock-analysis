@@ -12,6 +12,19 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 65,
+  "values": {
+    "px": 68.52,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 54,
+    "fvHigh": 74,
+    "eps": 4.04,
+    "shares": 210000000,
+    "dps": 1.28
+  },
   "theme": {
     "accent": "#1565C0",
     "accentDark": "#0D47A1",
@@ -43,18 +56,14 @@
     "min": 50,
     "max": 90,
     "grid": [60, 70, 80],
-    "fairLine": 65,
     "currency": "$",
     "highlight": [5, 8]
   },
   "gauge": {
     "min": 45,
     "max": 100,
-    "cur": 68.52,
-    "fair": 65,
     "fairLabelTop": true
-  },
-  "fv": 65
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -74,11 +83,11 @@
     <div class="sub">Delta Faucet • Behr Paint • Liberty Hardware • Hansgrohe — ผลิตภัณฑ์ประปา, สี, อุปกรณ์ตกแต่งบ้าน • R&amp;R-focused (80%+ รายได้จาก Repair &amp; Remodel) • NYSE</div>
     <div class="price-row">
       <div>
-        <div class="px">$68.52<small>(MAS)</small></div>
+        <div class="px">{{rd:px}}<small>(MAS)</small></div>
       </div>
-      <div class="chg">▲ +5.8% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $58.16 – $81.82<br>
         ที่มา: Yahoo Finance, StockAnalysis.com, Digrin.com
       </div>
@@ -89,8 +98,8 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ มิ.ย. 2569 • TTM = Trailing Twelve Months</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">~$14.4B</div><div class="d">210M shares diluted</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~17.0x</div><div class="d">EPS TTM $4.04 (diluted)</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~{{rd:mcap}}</div><div class="d">210M shares diluted</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">EPS TTM $4.04 (diluted)</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~4 ปี</div><div class="v">~18.1x</div><div class="d">ช่วง 16.4x – 20.1x</div></div>
       <div class="metric"><div class="k">P/BV</div><div class="v neu">N/A</div><div class="d">Equity ติดลบ (buyback-driven)</div></div>
 
@@ -115,7 +124,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#1565C0"></i>ราคา MAS</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $65</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -141,8 +150,8 @@
         <div class="mval">$65.24</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $54 – $74</span></div>
-        <div class="r">$65</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         P/E ให้ค่าสูงสุด $74 เพราะ EPS ฟื้นตัวดีและ P/E 19x ไม่แพงสำหรับธุรกิจ R&amp;R คุณภาพสูง DDM ให้ค่าต่ำสุด $54 เพราะ payout ratio ต่ำ (28%) — Masco เน้น buyback มากกว่าปันผล EV/EBITDA กลาง $65 น่าเชื่อถือที่สุดเพราะไม่ขึ้นกับ book equity ที่ถูกบิดเบือนจาก aggressive buyback Fair Value เฉลี่ย $65 แสดงว่าราคาปัจจุบัน $81.37 ซื้อขายที่ premium ~25% เหนือมูลค่าเหมาะสม
@@ -156,14 +165,14 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $68.52</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $65</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$45.50<br><small>MOS 30%</small></span>
-          <span>$52.00<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$65<br><small>Fair Value</small></span>
-          <span style="text-align:right">$74<br><small>กรอบบน FV</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
           <span style="text-align:right">$81<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
@@ -177,19 +186,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">−5%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">ราคาแพงกว่ามูลค่าเหมาะสม — ยังไม่มี MOS ณ ราคาปัจจุบัน</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$52.00</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$45.50</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $65</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="68.52" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -279,8 +288,8 @@
       <h2>คุณภาพสูง แต่ราคาแพงกว่ามูลค่าเหมาะสม — รอโซน $65 ก่อนเข้าซื้อ</h2>
       <p>Masco Corporation เป็นธุรกิจ Repair &amp; Remodel ชั้นนำที่มีแบรนด์แข็งแกร่ง (Delta, Behr, Hansgrohe) ROIC 30.7% และ FCF ที่แข็งแกร่ง $943M/ปี สะท้อนคุณภาพธุรกิจชั้น 1 อย่างไรก็ดี ราคาปัจจุบัน $81.37 อยู่เหนือ Fair Value $65 ประมาณ 25% โดย EV/EBITDA TTM 15.6x สูงกว่า historical average 12x มาก บ่งชี้ว่าตลาดได้ price in การฟื้นตัวของ R&amp;R ไว้แล้ว ผู้ถือหุ้นเดิม hold ต่อไปได้ แต่สำหรับนักลงทุนใหม่ควรรอโซน Fair Value $65 หรือต่ำกว่าเพื่อ upside ที่เหมาะสม</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$65 <span style="font-size:12px;color:#cab9a8">($54–$74)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −5%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$81 (Buy 7/Hold 12/Sell 1)</div></div>
       </div>
       <div class="zone">

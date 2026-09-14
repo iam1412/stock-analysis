@@ -10,6 +10,39 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 561,
+  "values": {
+    "px": 524.19,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 483,
+    "fvHigh": 624,
+    "shares": 230600000,
+    "dps": 13.8,
+    "bvps": 38.06,
+    "baseEps": 31.2,
+    "scenarios": [
+      {
+        "tgt": 468,
+        "div": 41
+      },
+      {
+        "tgt": 688,
+        "div": 44
+      },
+      {
+        "tgt": 921,
+        "div": 47
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": true,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#003591",
     "accentDark": "#002268",
@@ -41,18 +74,14 @@
     "min": 400,
     "max": 700,
     "grid": [500, 600],
-    "fairLine": 561,
     "currency": "$",
     "highlight": [1, 4]
   },
   "gauge": {
     "min": 393,
     "max": 650,
-    "cur": 524.19,
-    "fair": 561,
     "fairLabelTop": true
-  },
-  "fv": 561
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +101,11 @@
     <div class="sub">F-35 fighter jets • Missiles &amp; Fire Control (HIMARS, PAC-3) • Rotary &amp; Mission Systems (Sikorsky helicopters) • Space systems &amp; satellites • ผู้รับเหมาอาวุธยุทโธปกรณ์รายใหญ่ที่สุดในสหรัฐฯ</div>
     <div class="price-row">
       <div>
-        <div class="px">$524.19<small>(LMT)</small></div>
+        <div class="px">{{rd:px}}<small>(LMT)</small></div>
       </div>
-      <div class="chg">▲ +6.6% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $410.11 – $692.00<br>
         ที่มา: Yahoo Finance, StockAnalysis.com, Macrotrends
       </div>
@@ -113,7 +142,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#003591"></i>ราคา LMT</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $561</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ (Jan–Feb 26 peak)</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -139,8 +168,8 @@
         <div class="mval">$546</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $483 – $624</span></div>
-        <div class="r">$561</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         P/E วิธีให้ค่าสูงสุด ($624) สะท้อน EPS FY2026 ที่ฟื้นตัวเต็มที่แล้วหลัง Q2'26 beat ($7.94) และ guidance ปรับขึ้นเป็น $29.95–$30.65 DDM ให้ค่าต่ำสุด ($483) เนื่องจาก payout ratio ของ LMT ค่อนข้างต่ำ (~33%) โดย FCF ส่วนใหญ่ไปหนุน buyback และลงทุน CAPEX FCF Yield ($546) สะท้อนกระแสเงินสดจริงที่แข็งแกร่งและสม่ำเสมอ (~$5.7B TTM) ซึ่งถือเป็น anchor valuation ที่น่าเชื่อถือที่สุดสำหรับ defense contractor ที่มี cost-plus contract revenue model
@@ -154,13 +183,13 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $524.19</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $561</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$393<br><small>MOS 30%</small></span>
-          <span>$449<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$561<br><small>Fair Value</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">$624<br><small>เป้าเฉลี่ย Analyst</small></span>
           <span style="text-align:right">$650<br><small>กรอบบน FV</small></span>
         </div>
@@ -175,19 +204,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">+7%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt"><b>ไม่มี Margin of Safety (ราคาแพงกว่ามูลค่าเหมาะสม)</b><br>ราคาพุ่งขึ้นรับข่าว Q2'26 beat แซงหน้า Fair Value ไปแล้ว — รอจังหวะปรับฐานสู่โซน MOS 20–30% ก่อนเข้าซื้อเพิ่ม</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$449</div><div class="d">โซนน่าสนใจสำหรับ value investor</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$393</div><div class="d">โซนถูกมาก (deep value) — ใกล้ 52w low</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $561</div><div class="d">ต่ำกว่า Fair Value — เริ่มมี MOS</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value investor</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value) — ใกล้ 52w low</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ต่ำกว่า Fair Value — เริ่มมี MOS</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="524.19" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -196,17 +225,17 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $524.19 • EPS ฐาน ~$31.20 (FY2026E) • รวมปันผล ~$13.80/ปี</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}} (FY2026E){{rd:scnNote}} ~$13.80/ปี</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS 0%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$468</div>
-          <div class="ret neg">−2.9%</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$31.20</span></li>
             <li><span>P/E ออก</span><span>15x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$41</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>งบกลาโหมถูกตัด Sequester ใหม่</span></li>
           </ul>
         </div>
@@ -214,12 +243,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +7%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$688</div>
-          <div class="ret pos">+39.6%</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$38.22</span></li>
             <li><span>P/E ออก</span><span>18x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$44</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>F-35 delivery +5–10%/ปี, backlog แข็งแกร่ง</span></li>
           </ul>
         </div>
@@ -227,12 +256,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +12%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$921</div>
-          <div class="ret pos">+84.7%</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$43.83</span></li>
             <li><span>P/E ออก</span><span>21x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$47</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>NATO re-arm เต็มสูบ, hypersonic, NGAD contracts</span></li>
           </ul>
         </div>
@@ -279,8 +308,8 @@
       <h2>Quality Defense Titan — ซื้อขายสูงกว่า Fair Value ราว 4% หลัง Q2'26 beat • ไม่มี MOS ขณะนี้</h2>
       <p>Lockheed Martin คือ "ป้อมปราการแห่งกลาโหม" ของสหรัฐฯ ที่ครองตลาดอาวุธยุทโธปกรณ์ระดับโลก ด้วย backlog สถิติใหม่ $230B (รวมสัญญา THAAD $35B) และโปรแกรม F-35 ที่ยังต้องส่งมอบอีก 2,000+ ลำในทศวรรษหน้า ธุรกิจมีความสม่ำเสมอและ predictability สูงมากจาก government contracts ระยะยาว EPS TTM ฟื้นตัวเต็มที่แล้วที่ $27.14 หลัง Q2'25 one-off charge (F-35 TR-3) roll off ออกจาก TTM — Q2'26 ที่รายงาน 23 ก.ค. 2569 ทำ EPS $7.94 เหนือ consensus $7.22 พร้อมปรับ guidance FY2026 ขึ้นเป็น $29.95–$30.65 ราคาปัจจุบัน $582.60 พุ่งขึ้นแรงหลังงบจนสูงกว่า Fair Value $561 ไปแล้ว ~4% (ไม่มี MOS) แม้ยังต่ำกว่าเป้านักวิเคราะห์เฉลี่ย $623.74 (Hold) อยู่ ~7% — เหมาะสำหรับนักลงทุนที่ต้องการหุ้นกลาโหมคุณภาพสูง Beta ต่ำ และปันผลเติบโตต่อเนื่อง แต่ควรรอจังหวะปรับฐานก่อนเข้าซื้อเพิ่ม</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$561 <span style="font-size:12px;color:#cab9a8">($483–$624)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#f28b82">MOS ~ +7%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#f28b82">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$623.74 (Hold)</div></div>
       </div>
       <div class="zone">
@@ -292,7 +321,7 @@
   <!-- ===== DISCLAIMER ===== -->
   <div class="disc">
     <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
-    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ EPS FY2026 guidance ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ราคา ณ 11 ก.ย. 2569 จาก StockAnalysis.com (cross-check กับ Google Finance ตรงกันที่ $582.60, P/E 21.47x) • งบการเงิน/EPS/FY2026 guidance จาก StockAnalysis.com • ข่าว Q2'26 earnings 23 ก.ค. 2569 (ChartMill.com, TradingKey.com — EPS beat $7.94, guidance ปรับขึ้นเป็น $29.95–$30.65, backlog สถิติใหม่ $230B)
+    ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ EPS FY2026 guidance ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ราคา ณ {{rd:priceDate}} จาก StockAnalysis.com (cross-check กับ Google Finance ตรงกันที่ $582.60, P/E 21.47x) • งบการเงิน/EPS/FY2026 guidance จาก StockAnalysis.com • ข่าว Q2'26 earnings 23 ก.ค. 2569 (ChartMill.com, TradingKey.com — EPS beat $7.94, guidance ปรับขึ้นเป็น $29.95–$30.65, backlog สถิติใหม่ $230B)
   </div>
   <footer>Stock Analysis Dashboard • ข้อมูล ณ 25 กรกฎาคม 2569 • สร้างด้วย stock-analyzer workflow</footer>
 

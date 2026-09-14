@@ -10,6 +10,36 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 30,
+  "values": {
+    "px": 32.53,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "ตั้งแต่ IPO",
+    "fvLow": 26,
+    "fvHigh": 34,
+    "shares": 877000000,
+    "scenarios": [
+      {
+        "tgt": 22.72,
+        "div": 0
+      },
+      {
+        "tgt": 38.3,
+        "div": 0
+      },
+      {
+        "tgt": 48.14,
+        "div": 0
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": false,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#483dcc",
     "accentDark": "#31289a",
@@ -37,17 +67,13 @@
     "min": 25,
     "max": 50,
     "grid": [30, 35, 40, 45],
-    "fairLine": 30,
     "currency": "$",
     "highlight": [1, 8]
   },
   "gauge": {
     "min": 15,
-    "max": 55,
-    "cur": 32.53,
-    "fair": 30
-  },
-  "fv": 30
+    "max": 55
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -67,11 +93,11 @@
     <div class="sub">เวชภัณฑ์สิ้นเปลืองทางการแพทย์ • อุปกรณ์ป้องกันส่วนบุคคล (PPE) • เครื่องมือแพทย์ใช้ครั้งเดียว • Supply Chain โรงพยาบาล/คลินิก/บ้านพักคนชรา</div>
     <div class="price-row">
       <div>
-        <div class="px">$32.53<small>(MDLN)</small></div>
+        <div class="px">{{rd:px}}<small>(MDLN)</small></div>
       </div>
-      <div class="chg">▼ −26.4% (ตั้งแต่ IPO)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569 (StockAnalysis.com, ตรงกับ Yahoo Finance ที่ราคาเดียวกัน)<br>
+        ราคา ณ {{rd:priceDate}} (StockAnalysis.com, ตรงกับ Yahoo Finance ที่ราคาเดียวกัน)<br>
         กรอบ 52 สัปดาห์ $32.81 – $50.88<br>
         ที่มา: Yahoo Finance, StockAnalysis.com, SEC EDGAR (Medline 10-K/S-1), Medline Investor Relations
       </div>
@@ -82,7 +108,7 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">IPO ธ.ค. 2568 — งบยังอยู่ระหว่างเปลี่ยนผ่านจากโครงสร้าง LBO</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">~$28.5B</div><div class="d">~877M หุ้น (diluted, TTM)</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~{{rd:mcap}}</div><div class="d">~877M หุ้น (diluted, TTM)</div></div>
       <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~44x</div><div class="d">GAAP ยังไม่ปรับ — ดูวิธี P/E ปรับฐานใน section 3</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">N/A</div><div class="d">เพิ่งเข้าตลาด ธ.ค. 2568 ไม่มีประวัติซื้อขาย 5 ปี</div></div>
       <div class="metric"><div class="k">P/BV</div><div class="v neu">N/A</div><div class="d">ส่วนของผู้ถือหุ้นเพิ่งพลิกบวกหลัง IPO ยังไม่นิ่งพอใช้อ้างอิง</div></div>
@@ -108,7 +134,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#483dcc"></i>ราคา MDLN</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $30.00</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -130,8 +156,8 @@
         <div class="mval">$56.46</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสม (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $26.00 – $34.00 (sensitivity P/E 16.25x–21.25x บนวิธีที่ 1)</span></div>
-        <div class="r">$30.00</div>
+        <div class="l">มูลค่าเหมาะสม (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}} (sensitivity P/E 16.25x–21.25x บนวิธีที่ 1)</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         <b>ทำไม FV ≠ ค่าเฉลี่ยของ 2 วิธี (ตาม gate 0.4c):</b> วิธี 1/วิธี 2 ต่างกัน 1.88 เท่า (< 2.0 เท่าเทคนิคัลผ่าน แต่ทิศทางขัดกันสิ้นเชิง — วิธี 1 บอกแพง วิธี 2 บอกถูก) จึงห้ามเฉลี่ยตรง ๆ ตาม dispersion gate — <b>ใช้วิธี P/E เป็น headline</b> เพราะ EV/EBITDA ของ MDLN ถูกพองด้วยค่าตัดจำหน่ายสินทรัพย์ไม่มีตัวตนจาก purchase accounting ยุค LBO 2564 (D&A รันเรทหลัง H1/2569 ≈ $1.02B/ปี) ซึ่งกลุ่มเทียบ MCK/CAH/COR ไม่มีดีลลักษณะนี้ ทำให้ EBITDA ของ MDLN "พอง" เทียบกับกลุ่มโดยไม่ได้มาจากกำไรดำเนินงานที่แข็งแรงกว่าจริง — เลข $56.46 จึงเป็นเพดานบนบริบทเท่านั้น <br><b>full-disclosure ฐานกำไรที่ใช้:</b> EPS ปรับฐาน $1.60 มาจาก EBIT ที่คำนวณด้วยอัตรากำไรดำเนินงานปี FY2568 ที่ 7.8% (สะอาดกว่า TTM 6.1% ที่ส่วนหนึ่งถูกกดจากรายการพิเศษ Q2/2569 ตามที่บริษัทเปิดเผย) × รายได้ TTM $29,939M = EBIT $2,335M หักดอกเบี้ยเงินสดที่อัตราหลัง IPO (รันเรทจริงจากงบ 6 เดือนแรกปี 2569 $255M×2 ≈ $510M/ปี) หักภาษีเงินสด 24% แล้วหารหุ้น 877M — ได้ $1.58 ใกล้เคียงกับ EPS forward consensus ของนักวิเคราะห์ $1.62 (26 ราย, อิสระจากโมเดลนี้) ภายใน 2.5% ถือเป็นการยืนยันไขว้ (cross-check) ที่ดี จึงปัดใช้ $1.60 <br><b>add-back ที่ปฏิเสธ (เกณฑ์ 4 ข้อจาก advisor):</b> ปฏิเสธ Adjusted EBITDA ของบริษัทเอง ($3.5B FY2568) ทั้งก้อน เพราะสูงกว่า GAAP operating income ($2,218M FY2568) ถึง +57.8% เกินเกณฑ์ธง 30% — ปฏิเสธการบวกกลับ stock-based compensation ($52M/6mo), รายการ "other non-core charges" ($397M/6mo ซึ่ง $389M กระจุกใน Q2/2569 เดือนเดียวกับการรีไฟแนนซ์หนี้ 28 พ.ค. 2569 — ตรวจแล้วเป็นครั้งแรกที่เกิด ยังไม่มีข้อมูล ≥2 ปีมายืนยันว่าไม่ใช่รายการซ้ำ) และ inventory-related adjustment ($32M/6mo) — ยึด GAAP margin (FY2568 7.8%) เป็นฐานแทน
@@ -145,14 +171,14 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $32.53</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $30.00</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$21.00<br><small>MOS 30%</small></span>
-          <span>$24.00<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$30.00<br><small>Fair Value</small></span>
-          <span style="text-align:right">$34.00<br><small>กรอบบน FV</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
           <span style="text-align:right">$46.40<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
@@ -166,19 +192,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">−8%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt"><b>ไม่มี Margin of Safety (ราคาแพงกว่ามูลค่าเหมาะสมที่ปรับฐาน GAAP)</b><br>ราคาปัจจุบัน $35.23 สูงกว่า FV $30.00 อยู่ราว 17.4% ของมูลค่าเหมาะสม — นักลงทุนที่เน้น margin of safety ควรรอราคาย่อลงมาใกล้โซน MOS 20% ก่อนเพิ่มน้ำหนัก ไม่ใช่ไล่ซื้อที่ราคาปัจจุบัน</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$24.00</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$21.00</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $30.00</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="32.53" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -187,17 +213,17 @@
 
   <!-- ===== 6. RETURN PROJECTION ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $32.53 • EPS ฐานปรับฐาน ~$1.60 • ไม่มีปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐานปรับฐาน ~$1.60 • ไม่มีปันผล</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS +3%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$22.72</div>
-          <div class="ret neg">−30.2% (3 ปี)</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$1.75</span></li>
             <li><span>P/E ออก</span><span>13.0x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$0</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>สมมติฐานฟื้นมาร์จิ้นไม่เป็นจริง หนี้ยังกดดัน P/E de-rate ลงต่ำกว่ากลุ่มมาก</span></li>
           </ul>
         </div>
@@ -205,12 +231,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +8%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$38.30</div>
-          <div class="ret pos">+17.7% (3 ปี)</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$2.02</span></li>
             <li><span>P/E ออก</span><span>19.0x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$0</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>มาร์จิ้นฟื้นตามแผน รายได้โตตามเทรนด์ ~8-11%/ปี ตลาดค่อยๆให้เครดิต track record หลัง IPO</span></li>
           </ul>
         </div>
@@ -218,12 +244,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +11%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$48.14</div>
-          <div class="ret pos">+48.0% (3 ปี)</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$2.19</span></li>
             <li><span>P/E ออก</span><span>22.0x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~$0</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>ลดหนี้ต่อเนื่อง มาร์จิ้นฟื้นเกินคาด รายได้โตแรงต่อเนื่อง 11%/ปี ตลาดให้ P/E premium ใกล้เคียง CAH</span></li>
           </ul>
         </div>
@@ -269,8 +295,8 @@
       <h2>ธุรกิจมั่นคง แต่ราคาวิ่งนำหน้ากำไรที่พิสูจน์แล้ว — รอจังหวะที่ดีกว่า</h2>
       <p>Medline เป็นธุรกิจจัดจำหน่าย/ผลิตเวชภัณฑ์สิ้นเปลืองที่คาดการณ์ได้ดีและมี demand จำเป็น แต่เพิ่ง IPO ออกจากโครงสร้าง LBO ปี 2564 ได้ไม่ถึง 8 เดือน งบยังมีหนี้สูง (net debt/EBITDA ~3.1x) และตัวเลข "Adjusted EBITDA" ที่บริษัทประกาศสูงกว่า GAAP operating income เกิน 30% (เข้าเกณฑ์ธงของรายงานนี้) จึงยึดฐานกำไรแบบ GAAP-anchored เป็นหลัก ได้ EPS ปรับฐานหลัง IPO ~$1.60 ซึ่งใกล้เคียงกับ consensus forward EPS ของนักวิเคราะห์ ($1.62) เป็นการยืนยันไขว้ที่ดี — เมื่อคูณ P/E มัธยฐานกลุ่มจัดจำหน่ายเวชภัณฑ์ (MCK/CAH/COR) ได้ FV ราว $30 ต่ำกว่าราคาตลาดปัจจุบัน $35.23 ประมาณ 17.4% (ไม่มี Margin of Safety) แม้เป้าเฉลี่ยนักวิเคราะห์จะสูงกว่ามากที่ $46.4 ก็ตาม สะท้อนว่าตลาดให้เครดิตสมมติฐานการฟื้นตัวของมาร์จิ้นและการลดหนี้ล่วงหน้าไปมากแล้ว</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$30.00 <span style="font-size:12px;color:#cab9a8">($26.00–$34.00)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ −8%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$46.4 (Buy)</div></div>
       </div>
       <div class="zone">
@@ -283,7 +309,7 @@
   <div class="disc">
     <b>⚠️ คำเตือน:</b> รายงานนี้จัดทำเพื่อการศึกษาและเป็นข้อมูลประกอบการตัดสินใจเท่านั้น <b>ไม่ใช่คำแนะนำให้ซื้อหรือขายหลักทรัพย์</b>
     ตัวเลข valuation อิงสมมติฐานที่อาจคลาดเคลื่อน โดยเฉพาะ P/E เป้าหมาย, อัตราเติบโต (g), ผลตอบแทนที่ต้องการ (r) และ ROE ในอนาคต
-    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ราคา ณ 11 ก.ย. 2569 จาก StockAnalysis.com (cross-check กับ Yahoo Finance ตรงกัน) • ข้อมูลงบการเงิน/reconciliation จาก SEC EDGAR (Medline 10-K FY2568, S-1) และ Globenewswire (ผลประกอบการ Q2/2569, 5 ส.ค. 2569) • ตัวคูณกลุ่มเทียบจาก StockAnalysis.com (MCK/CAH/COR) • หุ้น IPO ใหม่ (ธ.ค. 2568) โครงสร้างทุน/มาร์จิ้นยังไม่นิ่ง ตัวเลขปรับฐานในรายงานนี้มีความไม่แน่นอนสูงกว่าหุ้นทั่วไป
+    ราคาหุ้นมีความผันผวนสูง ผู้ลงทุนควรศึกษาข้อมูลเพิ่มเติมและพิจารณาความเสี่ยงของตนเองก่อนตัดสินใจ • ราคา ณ {{rd:priceDate}} จาก StockAnalysis.com (cross-check กับ Yahoo Finance ตรงกัน) • ข้อมูลงบการเงิน/reconciliation จาก SEC EDGAR (Medline 10-K FY2568, S-1) และ Globenewswire (ผลประกอบการ Q2/2569, 5 ส.ค. 2569) • ตัวคูณกลุ่มเทียบจาก StockAnalysis.com (MCK/CAH/COR) • หุ้น IPO ใหม่ (ธ.ค. 2568) โครงสร้างทุน/มาร์จิ้นยังไม่นิ่ง ตัวเลขปรับฐานในรายงานนี้มีความไม่แน่นอนสูงกว่าหุ้นทั่วไป
   </div>
   <footer>Stock Analysis Dashboard • ข้อมูล ณ 8 ส.ค. 2569 • สร้างด้วย stock-analyzer workflow</footer>
 

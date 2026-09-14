@@ -1,22 +1,22 @@
 # census การย้าย v1 → v2 (ระยะ 2 ส่วน C)
 
-อัปเดต: 14/9/2569 18:16:44 (Asia/Bangkok)
+อัปเดต: 14/9/2569 18:18:12 (Asia/Bangkok)
 
 | ผล | ใบ |
 |---|---|
-| ย้ายได้ | 385 |
-| ยังไม่ได้ (residue) | 15 |
-| รวม | 400 |
+| ย้ายได้ | 482 |
+| ยังไม่ได้ (residue) | 18 |
+| รวม | 500 |
 
 ## เหตุผล residue (นับต่อชนิด)
 
 | เหตุผล | ใบ | ตัวอย่าง (≤10) |
 |---|---|---|
-| legend แสดง N แต่ FV = N | 7 | COHU CTAS DTM DXCM FORM GNTX HMPRO |
+| legend แสดง N แต่ FV = N | 8 | COHU CTAS DTM DXCM FORM GNTX HMPRO LPLA |
+| จำนวนช่อง %/ปี ไม่เท่าเดิม | 2 | ACN JMT |
 | site vcellFv match ≠ N | 2 | AEM BTG |
-| จำนวนช่อง %/ปี ไม่เท่าเดิม | 1 | ACN |
+| ค่าไม่ตรงชั้น N | 2 | AMKR LWLG |
 | กรอบ FV สองที่ไม่ตรงกัน | 1 | ALLE |
-| ค่าไม่ตรงชั้น N | 1 | AMKR |
 | site vcellTgt match ≠ N | 1 | BABA |
 | cron-diff v1-unstable meta:dividendYield,visible | 1 | BNY |
 | site legend match ≠ N | 1 | FANG |
@@ -25,49 +25,50 @@
 
 | site | ใบ | ตัวอย่าง (≤10) |
 |---|---|---|
-| psCard — ไม่มีการ์ดที่ตัดสินได้ | 382 | A AAI AAON AAPL ABBNY ABBV ABNB ABT ACE ACMR … |
-| yieldCard — รูปตัวเลขต่าง ("N%" ≠ "N%") | 228 | A AAON AAPL ABBNY ABBV ABT ACN ADI ADM ADP … |
-| peCard — ไม่มีการ์ดที่ตัดสินได้ | 195 | A AAOI ABNB ABT ACE ADP ADVANC ADVICE AEE AEHR … |
-| pbvCard — ไม่มีการ์ดที่ตัดสินได้ | 171 | AAOI AAPL ABBNY ABBV ACE ACMR ACN ADBE ADI ADP … |
-| mcapCard — รูปตัวเลขต่าง ("$NB" ≠ "$NB") | 119 | AAON ABBNY ABBV ABNB ACMR ACN ADBE ADP AEE AIT … |
-| yieldCard — ไม่มีการ์ดที่ตัดสินได้ | 107 | AAOI ABNB ACE ACMR ADBE ADSK AEHR AEVA AIG AKAM … |
-| scnNote — ไม่พบ | 103 | AAOI AAPL ABNB ACMR ACN ADBE ADI ADSK AEHR AEVA … |
-| pbvCard — รูปตัวเลขต่าง ("N" ≠ "N") | 64 | A AAON ABNB ABT AEP AME AMGN AON AOS APD … |
-| scn | 64 | AAI ADM ADVICE AEE AEONTS AFL AIG AMATAV AME AON … |
-| peCard — รูปตัวเลขต่าง ("N" ≠ "N") | 54 | AAPL ABBNY ACMR ACN ADI ADSK AMAT AMD ANET AOT … |
-| tgtCard — ไม่พบรูป "เป้า (+%)" | 46 | AAOI AAPL ABBNY ACMR ACN ADBE ADI ADSK AEHR ALAB … |
-| zone — ราคาโซนสะสม N ≠ FV N (ผู้เขียนตั้งเอง) | 41 | AAOI ACMR ACN ADBE ADI ADSK ALAB AMKR ANET APH … |
-| mcapCard — รูปตัวเลขต่าง ("฿N ล้าน" ≠ "฿N พันล้าน") | 24 | AAI AHC ANI APURE ASIAN ASK ASW BAFS BBIK BE8 … |
-| mcapCard — รูปตัวเลขต่าง ("฿N ล้าน" ≠ "฿N หมื่นล้าน") | 16 | ACE AURA AWC AYUD BAM BCH BKI BLA CHG CK … |
-| mcapCard — ไม่มีการ์ดที่ตัดสินได้ | 16 | ARM ASML AVGO BIDU BNS BRK-B CB DB DEO EPD … |
-| mcapCard — รูปตัวเลขต่าง ("฿N พันล้าน" ≠ "฿N หมื่นล้าน") | 12 | AP BCP BCPG BEM BGRIM CBG CENTEL EGCO EPG GLOBAL … |
-| mcapCard — รูปตัวเลขต่าง ("$N" ≠ "$NB") | 6 | B DTE EIX ES EVRG FE |
+| psCard — ไม่มีการ์ดที่ตัดสินได้ | 479 | A AAI AAON AAPL ABBNY ABBV ABNB ABT ACE ACMR … |
+| yieldCard — รูปตัวเลขต่าง ("N%" ≠ "N%") | 290 | A AAON AAPL ABBNY ABBV ABT ACN ADI ADM ADP … |
+| peCard — ไม่มีการ์ดที่ตัดสินได้ | 242 | A AAOI ABNB ABT ACE ADP ADVANC ADVICE AEE AEHR … |
+| pbvCard — ไม่มีการ์ดที่ตัดสินได้ | 213 | AAOI AAPL ABBNY ABBV ACE ACMR ACN ADBE ADI ADP … |
+| mcapCard — รูปตัวเลขต่าง ("$NB" ≠ "$NB") | 135 | AAON ABBNY ABBV ABNB ACMR ACN ADBE ADP AEE AIT … |
+| yieldCard — ไม่มีการ์ดที่ตัดสินได้ | 131 | AAOI ABNB ACE ACMR ADBE ADSK AEHR AEVA AIG AKAM … |
+| scnNote — ไม่พบ | 126 | AAOI AAPL ABNB ACMR ACN ADBE ADI ADSK AEHR AEVA … |
+| pbvCard — รูปตัวเลขต่าง ("N" ≠ "N") | 86 | A AAON ABNB ABT AEP AME AMGN AON AOS APD … |
+| scn | 74 | AAI ADM ADVICE AEE AEONTS AFL AIG AMATAV AME AON … |
+| peCard — รูปตัวเลขต่าง ("N" ≠ "N") | 70 | AAPL ABBNY ACMR ACN ADI ADSK AMAT AMD ANET AOT … |
+| tgtCard — ไม่พบรูป "เป้า (+%)" | 58 | AAOI AAPL ABBNY ACMR ACN ADBE ADI ADSK AEHR ALAB … |
+| zone — ราคาโซนสะสม N ≠ FV N (ผู้เขียนตั้งเอง) | 52 | AAOI ACMR ACN ADBE ADI ADSK ALAB AMKR ANET APH … |
+| mcapCard — รูปตัวเลขต่าง ("฿N ล้าน" ≠ "฿N พันล้าน") | 35 | AAI AHC ANI APURE ASIAN ASK ASW BAFS BBIK BE8 … |
+| mcapCard — รูปตัวเลขต่าง ("฿N ล้าน" ≠ "฿N หมื่นล้าน") | 19 | ACE AURA AWC AYUD BAM BCH BKI BLA CHG CK … |
+| mcapCard — ไม่มีการ์ดที่ตัดสินได้ | 19 | ARM ASML AVGO BIDU BNS BRK-B CB DB DEO EPD … |
+| mcapCard — รูปตัวเลขต่าง ("฿N พันล้าน" ≠ "฿N หมื่นล้าน") | 15 | AP BCP BCPG BEM BGRIM CBG CENTEL EGCO EPG GLOBAL … |
+| mcapCard — รูปตัวเลขต่าง ("฿NB" ≠ "฿N หมื่นล้าน") | 7 | AMATA BJC BTS DOHOME JMT KTC M |
+| mcapCard — รูปตัวเลขต่าง ("$N" ≠ "$NB") | 7 | B DTE EIX ES EVRG FE LNT |
+| mcapCard — รูปตัวเลขต่าง ("฿N พันล้าน" ≠ "฿N แสนล้าน") | 6 | BAY CPALL CPAXT GULF IVL MINT |
+| psCard — รูปตัวเลขต่าง ("N" ≠ "N") | 5 | AEHR CPW DRS EXPE IVL |
+| fvBoxRange — กรอบใน fv-box ไม่ตรง values/ไม่มีสัญลักษณ์สกุลเงินครบ | 4 | AAOI BGC CAT LWLG |
+| mcapCard — รูปตัวเลขต่าง ("$N ล้านล้าน" ≠ "$NT") | 4 | AAPL AMZN GOOGL META |
 | mcapCard — รูปตัวเลขต่าง ("$N B" ≠ "$NB") | 4 | ADM AIG BG C |
 | mcapCard — รูปตัวเลขต่าง ("฿N" ≠ "฿N พันล้าน") | 4 | ADVICE AMATAV AU INSET |
-| psCard — รูปตัวเลขต่าง ("N" ≠ "N") | 4 | AEHR CPW DRS EXPE |
-| mcapCard — รูปตัวเลขต่าง ("฿NB" ≠ "฿N หมื่นล้าน") | 4 | AMATA BJC BTS DOHOME |
 | disc | 4 | AMATAV CKP DOHOME FNF |
-| mcapCard — รูปตัวเลขต่าง ("฿N พันล้าน" ≠ "฿N แสนล้าน") | 4 | BAY CPALL CPAXT GULF |
-| fvBoxRange — กรอบใน fv-box ไม่ตรง values/ไม่มีสัญลักษณ์สกุลเงินครบ | 3 | AAOI BGC CAT |
-| mcapCard — รูปตัวเลขต่าง ("$N ล้านล้าน" ≠ "$NT") | 3 | AAPL AMZN GOOGL |
+| mcapCard — รูปตัวเลขต่าง ("$N พันล้าน" ≠ "$NB") | 4 | BMO FTS IMO KGC |
 | mcapCard — รูปตัวเลขต่าง ("฿N" ≠ "฿N หมื่นล้าน") | 3 | AEONTS COM7 DCC |
 | mcapCard — รูปตัวเลขต่าง ("฿NB" ≠ "฿N พันล้าน") | 3 | BGC DITTO ILM |
-| mcapCard — รูปตัวเลขต่าง ("$N พันล้าน" ≠ "$NB") | 3 | BMO FTS IMO |
+| mcapCard — รูปตัวเลขต่าง ("$NB" ≠ "$NM") | 2 | AEVA LWLG |
 | mcapCard — รูปตัวเลขต่าง ("฿N" ≠ "฿N แสนล้าน") | 2 | BDMS BH |
 | hintEps — รูปเงินต่าง ("฿N" ≠ "฿N") | 2 | CCET CHG |
 | scn3div — รูปเงินต่าง ("฿N" ≠ "฿N") | 2 | CKP DOHOME |
 | scn2div — รูปเงินต่าง ("฿N" ≠ "฿N") | 2 | CKP DOHOME |
 | scn1div — รูปเงินต่าง ("฿N" ≠ "฿N") | 2 | CKP DOHOME |
+| mcapCard — รูปตัวเลขต่าง ("฿N ล้าน" ≠ "฿N แสนล้าน") | 2 | CRC KKP |
 | hintEps — รูปเงินต่าง ("$N" ≠ "$N") | 2 | CRWD ES |
 | hintEps — ไม่พบ | 1 | AER |
-| mcapCard — รูปตัวเลขต่าง ("$NB" ≠ "$NM") | 1 | AEVA |
 | mcapCard — รูปตัวเลขต่าง ("฿N ล้านล้าน" ≠ "฿N แสนล้าน") | 1 | AOT |
 | mcapCard — รูปตัวเลขต่าง ("฿NM" ≠ "฿N หมื่นล้าน") | 1 | CCET |
-| mcapCard — รูปตัวเลขต่าง ("฿N ล้าน" ≠ "฿N แสนล้าน") | 1 | CRC |
 | restate — ในวงเล็บมีคำขยาย ("N ก.ย. N ตลาดปิด") | 1 | DPZ |
 | mcapCard — รูปตัวเลขต่าง ("฿N พันล้าน" ≠ "฿N พันล้าน") | 1 | DRT |
 | mcapCard — รูปตัวเลขต่าง ("N" ≠ "฿N หมื่นล้าน") | 1 | FPT |
 | restate — ในวงเล็บมีคำขยาย ("N ก.ย. N เวลาไทย") | 1 | HIG |
+| mcapCard — รูปตัวเลขต่าง ("$N ล้านล้าน" ≠ "$NB") | 1 | LLY |
 
 ## ใบที่ศักราชของ .disc ต่างจากหัวรายงาน (note `dateEra normalize`)
 
@@ -81,8 +82,8 @@
 
 | ชนิด | จุด (คอลัมน์) | ใบ |
 |---|---|---|
-| รูปเลขเปลี่ยนแต่ค่าเท่าเดิม (form) | 182 | — |
-| ค่าจริงขยับ (value) | 41 | 26 |
+| รูปเลขเปลี่ยนแต่ค่าเท่าเดิม (form) | 216 | — |
+| ค่าจริงขยับ (value) | 49 | 33 |
 
 ### ใบที่ %/ปี ขยับค่าจริง (ก่อน → หลัง ต่อคอลัมน์)
 
@@ -112,6 +113,13 @@
 - ICLR: base +1.5%/ปี → +1.6%/ปี
 - III: bear -1.3%/ปี → −1.4%/ปี · base null → +26%/ปี · bull null → +38%/ปี
 - INTC: bull +23.5%/ปี → +23%/ปี
+- JBL: bear -1%/ปี → −1.4%/ปี
+- KKP: base −1.3%/ปี → −1.4%/ปี
+- KLINIQ: bear +1.4%/ปี → +1.3%/ปี
+- KTB: base +1.4%/ปี → +1.3%/ปี
+- M: base null → +3%/ปี · bull null → +19%/ปี
+- MCK: bear -1.3%/ปี → −1.4%/ปี
+- MKSI: bear +1%/ปี → +1.3%/ปี
 
 ## cron differential v1 ↔ v2 (`--cron-diff` · grid ราคา ×0.85–×1.15 ทีละ 0.005 · 61 จุด)
 
@@ -120,10 +128,10 @@
 
 | ผล | ใบ |
 |---|---|
-| ตรวจ | 386 |
-| ผ่าน | 385 |
+| ตรวจ | 483 |
+| ผ่าน | 482 |
 | ตก (ไม่เขียน) | 1 |
-| ผ่านแต่ต่างแค่รูป | 314 |
+| ผ่านแต่ต่างแค่รูป | 397 |
 
 ### ตกตามชนิด
 
@@ -136,9 +144,9 @@
 
 | ชนิด | ใบ | รายชื่อ |
 |---|---|---|
-| รูปทศนิยมหมวด 6 เปลี่ยน (เช่น 3.5→3) | 306 | A AAOI AAON AAPL ABBNY ABBV ABNB ABT ACE ADBE ADI ADP ADVANC AEHR AEP AER AEVA AHC AIT AJG AKAM ALAB ALC ALGN ALL ALNY AMAT AMATA AMCR AMD AMGN AMP AMRZ AMT AMZN ANET ANI AOS AP APD APG APH APP APURE AR ARE ARES AS ASIAN ASW ATO ATS AUR AURA AVAV AVGO AVY AWK AWR AXON AXP AYUD AZN AZO BAC BALL BAX BAY BBIK BBL BCH BCP BDX BG BGC BGRIM BH BIDU BIIB BIZ BJC BKI BKNG BKR BLK BMO BMY BN BNS BOL BR BRK-B BSX BWXT BX BXP C CACI CAH CAMT CARR CART CASY CAT CBG CBOE CBRE CBRS CCEP CCET CCI CCJ CDNS CDW CEG CENTEL CF CFG CG CGNX CHD CHE CHG CI CIEN CKP CL CLH CLS CM CMCSA CME CMG CMI CMS CNC CNI CNQ COCOCO COF COHR COM7 COO COP COST CP CPALL CPAXT CPF CPN CPNG CPRT CPT CPW CRC CRDO CREDIT CRH CRL CRM CRWD CRWV CSCO CSGP CSL CSX CTSH CTVA CVX CW D DASH DB DCI DD DDOG DE DECK DELL DELTA DEO DGX DHI DHR DIS DITTO DLR DMT DOC DOHOME DOW DPZ DRI DRS DUK DUSIT DVA DY EASTW EBAY ECL ED EFX EG EGCO EGP EHC EL ELV EMA EME EMR ENB ENTG EQIX ERW ES ESLT ESNT ESS ETN ETR EVR EW EWBC EXC EXE EXEL EXPD EXPE EXPO EXR FANUY FAST FCX FDS FDX FE FER FICO FISV FIVE FLEX FN FNV FORTH FPT FR FSMART FTNT FTS FTV GD GE GEHC GEV GFPT GFS GGG GILD GIS GLOBAL GLW GMED GNRC GOOGL GPSC GRAB GRMN GS GWRE GWW HAL HANA HARN HCA HD HEI HIG HON HRL HST HSY HTC HUBB HUM HUMAN IBM ICE ICHI ICLR IDXX IESC IEX IFF IIG III ILMN IMO INCY INSM INTC INTU INVH IP IPGP |
-| รูปตัวเลขอื่น (เช่น ราคา 278→277.58 · หน่วย ล้านล้าน→แสนล้าน · ศักราช) | 70 | AAOI AAPL ACMR ADBE ADI ADSK ADVANC AEONTS ALAB ALGN AMAT AMD AMZN ANET APH APP ARE ARM ASML AVGO AYUD BBL BKI BRO CAMT CAT CCJ CDNS CEG CGNX CHE CIEN CLH CLS CLX CMCSA CME CMG COHR COO CPF CPT CRDO CRM CRWD CSX DDOG DELL DELTA DRS DVA DY EGCO ELV ENTG ETN EVR FDS FLEX FN FRT FTNT GD GEV GOOGL HRL IBM ICE INTU IPGP |
-| สีช่อง .ret ของ v1 ค้าง — v2 คิดสีตามเครื่องหมาย | 215 | A AAOI AAPL ABBNY ABBV ABNB ABT ADBE ADI ADVANC AEP AEVA AHC AIT AJG ALAB ALL ALNY AMAT AMATA AMCR AMD AMGN AMP AMRZ AMT AMZN ANET ANI AOS AP APD APURE AR ARE ARES ASW ATO AVY AWK AWR AXP AYUD AZO BAC BALL BAY BBIK BBL BCH BCP BDX BG BGRIM BH BIDU BIIB BIZ BKI BKNG BKR BLK BMY BN BNS BNY BR BRK-B BX BXP CACI CARR CART CASY CBG CBOE CBRS CCET CCI CDNS CEG CENTEL CFG CG CGNX CHD CHE CHG CI CIEN CKP CL CLH CM CMCSA CME CMG CMI CMS CNC CNI COF COHR COM7 COO COP COST CPALL CPAXT CPN CPRT CPT CRC CREDIT CRH CRL CSGP CSX CTSH CTVA CVX CW D DB DCI DD DECK DELL DGX DHI DITTO DMT DOC DPZ DRI DRS DVA ECL ED EG EGCO EGP EHC EMA EME EMR ENB ENTG EQIX ERW ES ESLT ESNT ESS ETN ETR EW EXC EXE EXEL EXPD EXPO EXR FANUY FAST FCX FE FER FICO FIVE FMC FN FNV FPT FR FTNT FTS FTV GD GE GFPT GFS GILD GLOBAL GLW GMED GPSC GRMN GS GWW HAL HANA HARN HCA HD HEI HON HRL HST HTC HUBB IBM ICE ICHI ICLR IDXX IEX III IMO INCY INSM INTU INVH IP IPGP |
+| รูปทศนิยมหมวด 6 เปลี่ยน (เช่น 3.5→3) | 388 | A AAOI AAON AAPL ABBNY ABBV ABNB ABT ACE ADBE ADI ADP ADVANC AEHR AEP AER AEVA AHC AIT AJG AKAM ALAB ALC ALGN ALL ALNY AMAT AMATA AMCR AMD AMGN AMP AMRZ AMT AMZN ANET ANI AOS AP APD APG APH APP APURE AR ARE ARES AS ASIAN ASW ATO ATS AUR AURA AVAV AVGO AVY AWK AWR AXON AXP AYUD AZN AZO BAC BALL BAX BAY BBIK BBL BCH BCP BDX BG BGC BGRIM BH BIDU BIIB BIZ BJC BKI BKNG BKR BLK BMO BMY BN BNS BOL BR BRK-B BSX BWXT BX BXP C CACI CAH CAMT CARR CART CASY CAT CBG CBOE CBRE CBRS CCEP CCET CCI CCJ CDNS CDW CEG CENTEL CF CFG CG CGNX CHD CHE CHG CI CIEN CKP CL CLH CLS CM CMCSA CME CMG CMI CMS CNC CNI CNQ COCOCO COF COHR COM7 COO COP COST CP CPALL CPAXT CPF CPN CPNG CPRT CPT CPW CRC CRDO CREDIT CRH CRL CRM CRWD CRWV CSCO CSGP CSL CSX CTSH CTVA CVX CW D DASH DB DCI DD DDOG DE DECK DELL DELTA DEO DGX DHI DHR DIS DITTO DLR DMT DOC DOHOME DOW DPZ DRI DRS DUK DUSIT DVA DY EASTW EBAY ECL ED EFX EG EGCO EGP EHC EL ELV EMA EME EMR ENB ENTG EQIX ERW ES ESLT ESNT ESS ETN ETR EVR EW EWBC EXC EXE EXEL EXPD EXPE EXPO EXR FANUY FAST FCX FDS FDX FE FER FICO FISV FIVE FLEX FN FNV FORTH FPT FR FSMART FTNT FTS FTV GD GE GEHC GEV GFPT GFS GGG GILD GIS GLOBAL GLW GMED GNRC GOOGL GPSC GRAB GRMN GS GWRE GWW HAL HANA HARN HCA HD HEI HIG HON HRL HST HSY HTC HUBB HUM HUMAN IBM ICE ICHI ICLR IDXX IESC IEX IFF IIG III ILMN IMO INCY INSM INTC INTU INVH IP IPGP IQV IR IRM ISRG IT ITC ITEL ITT ITW IVL JAZZ JBHT JBL JCI JD JNJ KAMART KCG KDP KEY KEYS KGC KIM KKP KKR KLAC KLINIQ KMB KMI KNSL KO KR KTB KTC KTOS KVUE KYCCF L LANC LDOS LECO LEN LEO LH LHFG LHX LII LIN LITE LMT LNG LOW LPH LRCX LSCC LULU LYV M MA MAA MANH MAR MBK MBLY MC MCD MCK MCO MDLN MDT MEB MEDEZE MEGA MELI MET META MFC MFEC MICRO MINT MKL MKSI |
+| รูปตัวเลขอื่น (เช่น ราคา 278→277.58 · หน่วย ล้านล้าน→แสนล้าน · ศักราช) | 88 | AAOI AAPL ACMR ADBE ADI ADSK ADVANC AEONTS ALAB ALGN AMAT AMD AMZN ANET APH APP ARE ARM ASML AVGO AYUD BBL BKI BRO CAMT CAT CCJ CDNS CEG CGNX CHE CIEN CLH CLS CLX CMCSA CME CMG COHR COO CPF CPT CRDO CRM CRWD CSX DDOG DELL DELTA DRS DVA DY EGCO ELV ENTG ETN EVR FDS FLEX FN FRT FTNT GD GEV GOOGL HRL IBM ICE INTU IPGP ISRG JBL JCI KBANK KEYS KKR KLAC KYCCF LII LITE LOW LRCX LSCC MAR MBK MELI META MKSI |
+| สีช่อง .ret ของ v1 ค้าง — v2 คิดสีตามเครื่องหมาย | 280 | A AAOI AAPL ABBNY ABBV ABNB ABT ADBE ADI ADVANC AEP AEVA AHC AIT AJG ALAB ALL ALNY AMAT AMATA AMCR AMD AMGN AMP AMRZ AMT AMZN ANET ANI AOS AP APD APURE AR ARE ARES ASW ATO AVY AWK AWR AXP AYUD AZO BAC BALL BAY BBIK BBL BCH BCP BDX BG BGRIM BH BIDU BIIB BIZ BKI BKNG BKR BLK BMY BN BNS BNY BR BRK-B BX BXP CACI CARR CART CASY CBG CBOE CBRS CCET CCI CDNS CEG CENTEL CFG CG CGNX CHD CHE CHG CI CIEN CKP CL CLH CM CMCSA CME CMG CMI CMS CNC CNI COF COHR COM7 COO COP COST CPALL CPAXT CPN CPRT CPT CRC CREDIT CRH CRL CSGP CSX CTSH CTVA CVX CW D DB DCI DD DECK DELL DGX DHI DITTO DMT DOC DPZ DRI DRS DVA ECL ED EG EGCO EGP EHC EMA EME EMR ENB ENTG EQIX ERW ES ESLT ESNT ESS ETN ETR EW EXC EXE EXEL EXPD EXPO EXR FANUY FAST FCX FE FER FICO FIVE FMC FN FNV FPT FR FTNT FTS FTV GD GE GFPT GFS GILD GLOBAL GLW GMED GPSC GRMN GS GWW HAL HANA HARN HCA HD HEI HON HRL HST HTC HUBB IBM ICE ICHI ICLR IDXX IEX III IMO INCY INSM INTU INVH IP IPGP IR IRM ISRG IT ITC ITT ITW IVL JAZZ JBHT JBL JCI JD JNJ KDP KEY KEYS KIM KKP KKR KLAC KLINIQ KMB KNSL KO KR KTB KTC KTOS KVUE KYCCF LANC LDOS LEN LH LHFG LHX LIN LITE LMT LOW M MA MAA MANH MAR MBK MC MCD MCK MCO MDT MEB MEDEZE MEGA MELI MET META MFC MFEC MICRO MINT MKC MKL MKSI |
 
 ### ค่าต่างที่มีอยู่ก่อน patch (migration ยอมรับ)
 
@@ -146,7 +154,7 @@
 
 | ชนิด | ใบ | มากสุด | รายชื่อ |
 |---|---|---|---|
-| ค่าต่างที่มีอยู่ก่อน patch (migration ยอมรับ) | 16 | 0.99% | AEE ANI BF-B BWXT CBOE CHAYO CMS DD DUK EPG EQIX EXE FDS GLOBAL HSY IIG |
+| ค่าต่างที่มีอยู่ก่อน patch (migration ยอมรับ) | 21 | 0.99% | AEE ANI BF-B BWXT CBOE CHAYO CMS DD DUK EPG EQIX EXE FDS GLOBAL HSY IIG IVL JAZZ LDOS LPH MFC |
 
 - AEE: «เหมาะสม $106.55 $ ▯ MOS 30% $85.24 MOS 20% $» 74.59 → 74.58 (0.01%)
 - ANI: «เหมาะสม ฿3.65 ฿ ▯ MOS 30% ฿2.92 MOS 20% ฿3» 2.56 → 2.55 (0.39%)
@@ -164,13 +172,18 @@
 - GLOBAL: «เหมาะสม ฿6.15 ฿ ▯ MOS 30% ฿4.92 MOS 20% ฿6» 4.30 → 4.31 (0.23%)
 - HSY: «OS 20% $146 Fair Value $ ▯ กรอบบน FV $205.81 เป้าเฉ» 168.36 → 168.00 (0.21%)
 - IIG: « value จุดซื้อ MOS 30% ฿ ▯ โซนถูกมาก (deep value) โ» 1.02 → 1.01 (0.99%)
+- IVL: «เหมาะสม ฿23.8 ฿ ▯ MOS 30% ฿19.00 MOS 20% ฿» 16.70 → 16.66 (0.24%) · «฿16.70 MOS 30% ฿ ▯ MOS 20% ฿23.80 Fair Valu» 19.00 → 19.04 (0.21%)
+- JAZZ: «เหมาะสม $232.75 $ ▯ MOS 30% $186.20 MOS 20% » 162.93 → 162.92 (0.01%)
+- LDOS: «.27 เป้าเฉลี่ย Analyst $ ▯ กรอบบน FV ราคาปัจจุบัน» 197.05 → 197.00 (0.03%)
+- LPH: «เหมาะสม ฿4.05 ฿ ▯ MOS 30% ฿3.24 MOS 20% ฿4» 2.84 → 2.83 (0.35%)
+- MFC: «เหมาะสม $34.55 $ ▯ MOS 30% $27.64 MOS 20% $» 24.19 → 24.18 (0.04%)
 
 ### ใบที่ผ่านโดยใช้ข้อยกเว้นของตัวเทียบ (ไม่เปลี่ยนผลตัดสิน — เปิดเผยให้ตรวจ)
 
 | ข้อยกเว้น | ใบ | รายชื่อ |
 |---|---|---|
-| ผลต่างที่มีก่อน patch — รูปหรือค่า (≤ GAP_REL · ค่าต่างรายใบอยู่ในหมวดด้านบน) | 90 | AAOI AAPL ACMR ADBE ADI ADSK AEE AEONTS AFL ALAB ALL AMAT AMD AMZN ANET ANI APH APP ARM ASML AVGO AVY AXP BBL BDX BF-B BIIB BJC BKI BLK BMI BWXT CAMT CASY CAT CBOE CCJ CDNS CEG CHAYO CHE CIEN CLH CLS CMS COF COHR COST CRDO CRM CRWD CSCO CVS DD DDOG DE DELL DGX DUK DVA ECL EL EME ENTG EOG EPG EQIX ERIE ESS ETN EVR EXE FCX FDS FDX FLEX FN FTNT GEV GLOBAL GNRC GOOGL GULF HD HSY IBM IIG INTC INTU IPGP |
-| %/ปี ต่างตามรูปของ "รวม" (ทั้งสองฝั่ง = f(รวมที่โชว์)) | 70 | AAOI ABT ADBE AEHR ALC ALNY AMATA AMRZ AMZN ASW AUR AVAV AVGO AZN BALL BAY BBIK BBL BJC BKI BMO BNS BWXT CBRS CCEP CDNS CEG CKP CM CNQ COCOCO COHR CPF CPN CRDO CREDIT CRM CRWV CSL DELL DITTO DMT DOHOME EMA ENB ERW ES ETN FER FICO FN FNV FORTH FSMART FTS GFPT GLW GOOGL GRMN HON HUMAN IBM ICHI ICLR IIG III IMO INSM INTC IP |
+| ผลต่างที่มีก่อน patch — รูปหรือค่า (≤ GAP_REL · ค่าต่างรายใบอยู่ในหมวดด้านบน) | 117 | AAOI AAPL ACMR ADBE ADI ADSK AEE AEONTS AFL ALAB ALL AMAT AMD AMZN ANET ANI APH APP ARM ASML AVGO AVY AXP BBL BDX BF-B BIIB BJC BKI BLK BMI BWXT CAMT CASY CAT CBOE CCJ CDNS CEG CHAYO CHE CIEN CLH CLS CMS COF COHR COST CRDO CRM CRWD CSCO CVS DD DDOG DE DELL DGX DUK DVA ECL EL EME ENTG EOG EPG EQIX ERIE ESS ETN EVR EXE FCX FDS FDX FLEX FN FTNT GEV GLOBAL GNRC GOOGL GULF HD HSY IBM IIG INTC INTU IPGP IQV ISRG IVL JAZZ JBL KBANK KEYS KLAC KMB KTB KYCCF LDOS LHX LII LITE LMT LOW LPH LRCX LSCC LULU MCK MCO MELI META MFC MKSI |
+| %/ปี ต่างตามรูปของ "รวม" (ทั้งสองฝั่ง = f(รวมที่โชว์)) | 82 | AAOI ABT ADBE AEHR ALC ALNY AMATA AMRZ AMZN ASW AUR AVAV AVGO AZN BALL BAY BBIK BBL BJC BKI BMO BNS BWXT CBRS CCEP CDNS CEG CKP CM CNQ COCOCO COHR CPF CPN CRDO CREDIT CRM CRWV CSL DELL DITTO DMT DOHOME EMA ENB ERW ES ETN FER FICO FN FNV FORTH FSMART FTS GFPT GLW GOOGL GRMN HON HUMAN IBM ICHI ICLR IIG III IMO INSM INTC IP KKP KLAC KLINIQ KTB KTOS LEO LITE M MCK MELI META MFEC |
 | วงเล็บทวนวันที่ล้วน (migrator ลบ · f11) | 2 | AZN CSGP |
 | หน่วยใหญ่ของเงินต่างกัน ค่าเดียวกัน | 1 | ADVANC |
 | ปีคนละศักราช (2569 ↔ 2026) | 5 | APH BRO CGNX CLS EGCO |
@@ -489,5 +502,87 @@ v1-unstable = ผลของ v1 เปลี่ยนชนิด/ฐานร�
 - INVH: +17.3%→+17% (×0.85)
 - IP: -8.7%→-9% (×0.85)
 - IPGP: +1%→+0.7% (×0.855)
+- IQV: -8.3%→-8% (×0.85)
+- IR: 2%→+1.9% (×1.1)
+- IRM: +2%→+1.7% (×0.93)
+- ISRG: +20.5%→+21% (×0.85)
+- IT: -31.3%→-31% (×0.85)
+- ITC: +1%→+1.4% (×1.045)
+- ITEL: +19.8%→+20% (×0.85)
+- ITT: +2%→+1.8% (×1.095)
+- ITW: +1%→+1.5% (×0.865)
+- IVL: +2%→+1.6% (×1.015)
+- JAZZ: -51.4%→-51% (×0.85)
+- JBHT: -10.8%→-11% (×0.85)
+- JBL: +2%→+1.6% (×0.91)
+- JCI: +2%→+1.9% (×0.86)
+- JD: +1%→+1.3% (×0.85)
+- JNJ: -3.7%→-4% (×0.85)
+- KAMART: -7.8%→-8% (×0.85)
+- KCG: +81.5%→+81% (×0.85)
+- KDP: +24.3%→+24% (×0.85)
+- KEY: +11.3%→+11% (×0.85)
+- KEYS: +1%→+0.8% (×0.85)
+- KGC: -75.7%→-76% (×0.85)
+- KIM: +35.9%→+36% (×0.85)
+- KKP: -9.5%→-9% (×0.85)
+- KKR: +2%→+1.8% (×1.07)
+- KLAC: +10.2%→+10% (×0.85)
+- KLINIQ: +22.8%→+23% (×0.85)
+- KMB: +25.9%→+26% (×0.85)
+- KMI: -3.9%→-4% (×0.85)
+- KNSL: +21.2%→+21% (×0.85)
+- KO: +2%→+1.8% (×0.89)
+- KR: +1%→+1.5% (×0.89)
+- KTB: -9.6%→-10% (×0.85)
+- KTC: +2%→+1.9% (×0.885)
+- KTOS: -46.3%→-46% (×0.85)
+- KVUE: +3.3%→+3% (×0.85)
+- KYCCF: -13.2%→-13% (×0.85)
+- L: -12.4%→-12% (×0.85)
+- LANC: +2%→+1.9% (×1.075)
+- LDOS: +24.6%→+25% (×0.85)
+- LECO: -5.6%→-6% (×0.85)
+- LEN: -35.4%→-35% (×0.85)
+- LEO: -5.6%→-6% (×0.85)
+- LH: +1%→+0.6% (×0.85)
+- LHFG: +4.9%→+5% (×0.85)
+- LHX: +12.6%→+13% (×0.85)
+- LII: +42.8%→+43% (×0.85)
+- LIN: +2%→+1.6% (×1.04)
+- LITE: -44.2%→-44% (×0.85)
+- LMT: +14.2%→+14% (×0.85)
+- LNG: -19.2%→-19% (×0.85)
+- LOW: 2%→+1.7% (×1.1)
+- LPH: -5.2%→-5% (×0.85)
+- LRCX: -6.4%→-6% (×0.85)
+- LSCC: -1%→-1.4% (×0.85)
+- LULU: -15.6%→-16% (×0.85)
+- LYV: -22.4%→-22% (×0.85)
+- M: -15.1%→-15% (×0.85)
+- MA: +5.8%→+6% (×0.85)
+- MAA: +30.1%→+30% (×0.85)
+- MANH: -22.1%→-22% (×0.85)
+- MAR: +1%→+1.4% (×0.875)
+- MBK: +129.3%→+129% (×0.85)
+- MBLY: -50.1%→-50% (×0.85)
+- MC: +6.1%→+6% (×0.85)
+- MCD: +2%→+1.5% (×1.15)
+- MCK: +13.2%→+13% (×0.85)
+- MCO: +19.3%→+19% (×0.855)
+- MDLN: -17.8%→-18% (×0.85)
+- MDT: +2%→+1.9% (×1)
+- MEB: +129.6%→+130% (×0.85)
+- MEDEZE: -77.6%→-78% (×0.85)
+- MEGA: +60.3%→+60% (×0.85)
+- MELI: +7.1%→+7% (×0.85)
+- MET: +5.4%→+5% (×0.85)
+- META: -26.3%→-26% (×0.85)
+- MFC: +78.5%→+79% (×0.85)
+- MFEC: +22.2%→+22% (×0.85)
+- MICRO: -51.3%→-51% (×0.85)
+- MINT: +45.3%→+45% (×0.85)
+- MKL: +21.5%→+21% (×0.85)
+- MKSI: +2%→+1.7% (×0.99)
 
 </details>

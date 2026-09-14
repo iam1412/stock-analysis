@@ -12,6 +12,38 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 248,
+  "values": {
+    "px": 261.77,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 218,
+    "fvHigh": 285,
+    "shares": 167000000,
+    "bvps": 37.27,
+    "baseEps": 12.46,
+    "scenarios": [
+      {
+        "tgt": 204,
+        "div": 0
+      },
+      {
+        "tgt": 314,
+        "div": 0
+      },
+      {
+        "tgt": 432,
+        "div": 0
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": false,
+      "perYear": null
+    }
+  },
   "theme": {
     "accent": "#00355F",
     "accentDark": "#001f3d",
@@ -43,18 +75,14 @@
     "min": 150,
     "max": 300,
     "grid": [200, 250],
-    "fairLine": 248,
     "currency": "$",
     "highlight": [6, 11]
   },
   "gauge": {
     "min": 130,
     "max": 290,
-    "cur": 261.77,
-    "fair": 248,
     "fairLabelTop": false
-  },
-  "fv": 248
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -74,11 +102,11 @@
     <div class="sub">World's largest CRO + healthcare data platform (IMS Health × Quintiles 2016) • Clinical trials management (R&amp;D Solutions) • TAS: pharma data, real-world evidence, AI analytics • Backlog $34.2B record high • IQVIA.ai — 192 AI agents deployed • ไม่จ่ายปันผล (reinvests FCF)</div>
     <div class="price-row">
       <div>
-        <div class="px">$261.77<small>(IQV)</small></div>
+        <div class="px">{{rd:px}}<small>(IQV)</small></div>
       </div>
-      <div class="chg">▲ +20.9% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ $154.50 – $251.36<br>
         ที่มา: Yahoo Finance, StockAnalysis.com, IQVIA Investor Relations (ir.iqvia.com)
       </div>
@@ -89,7 +117,7 @@
   <section>
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ กรกฎาคม 2569 (หลังงบ Q2 2026)</div></div>
     <div class="grid g4">
-      <div class="metric"><div class="k">Market Cap</div><div class="v">~$43.7B</div><div class="d">~167M shares outstanding</div></div>
+      <div class="metric"><div class="k">Market Cap</div><div class="v">~{{rd:mcap}}</div><div class="d">~167M shares outstanding</div></div>
       <div class="metric"><div class="k">P/E (TTM adj.)</div><div class="v neu">~19.0x</div><div class="d">Fwd P/E 18.4x (vs ประวัติ 5 ปี ~22x)</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~22x</div><div class="d">ช่วง 15x–32x (sector เคยเฟื่อง)</div></div>
       <div class="metric"><div class="k">P/BV</div><div class="v neu">7.0x</div><div class="d">BVPS ~$37.27 (leverage สูง)</div></div>
@@ -120,7 +148,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#00355F"></i>ราคา IQV</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $248</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -150,8 +178,8 @@
         <div class="mval">$218</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $218 – $285</span></div>
-        <div class="r">$248</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         วิธี EV/EBITDA ให้ค่าสูงสุด ($285) เพราะ EBITDA margin ~20% แข็งแกร่งแม้ net debt เพิ่มเป็น $14.1B
@@ -168,15 +196,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $261.77</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $248</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$174<br><small>MOS 30%</small></span>
-          <span>$198<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$248<br><small>Fair Value</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
           <span style="text-align:right">$269<br><small>เป้าเฉลี่ย Analyst</small></span>
-          <span style="text-align:right">$285<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -192,19 +220,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">−6%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">MOS ต่ำ — ราคาใกล้เคียง Fair Value หลัง Q2 beat-and-raise ยังไม่มีส่วนเผื่อความปลอดภัยเพียงพอ; รอราคาอ่อนตัวสู่โซน MOS 20% ($198) ก่อนเข้าซื้อ</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$198</div><div class="d">โซนน่าสนใจสำหรับ value — ต่ำกว่าราคาปัจจุบัน ~16%</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$174</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $248</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value — ต่ำกว่าราคาปัจจุบัน ~16%</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="261.77" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -213,17 +241,17 @@
 
   <!-- ===== 6. RETURN PROJECTION (3 ปี) ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า $261.77 • EPS ฐาน ~$12.46 (adj. TTM) • ไม่มีปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}} (adj. TTM) • ไม่มีปันผล</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS +3%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$204</div>
-          <div class="ret neg">−22.1% (3 ปี)</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$13.62</span></li>
             <li><span>P/E ออก</span><span>15x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>$0</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>momentum จาก Q2 beat จางหาย + CRO ซบเซาอีกรอบ P/E de-rate</span></li>
           </ul>
         </div>
@@ -231,12 +259,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +8%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$314</div>
-          <div class="ret pos">+20.0% (3 ปี)</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$15.70</span></li>
             <li><span>P/E ออก</span><span>20x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>$0</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>CRO ฟื้นต่อเนื่อง + AI analytics ขยาย TAS margin ตาม guidance ที่ raise</span></li>
           </ul>
         </div>
@@ -244,12 +272,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +13%/ปี</span></div>
         <div class="body">
-          <div class="tgt">$432</div>
-          <div class="ret pos">+65.0% (3 ปี)</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~$17.98</span></li>
             <li><span>P/E ออก</span><span>24x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>$0</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>AI drug discovery + biotech boom + re-rating ต่อเนื่องจาก book-to-bill 1.22x</span></li>
           </ul>
         </div>
@@ -303,8 +331,8 @@
       FV $248 บนสมมติฐาน conservative (20x fwd P/E) ให้ MOS เพียง ~-0.5% (ราคาสูงกว่า FV เล็กน้อย) — <b>"ยังไม่เข้าโซนน่าสนใจ"</b> สำหรับนักลงทุนที่เน้น margin of safety แม้ fundamentals จะแข็งแกร่งขึ้นจริง
       นักลงทุน conservative ควรรอแนวรับ $198 (MOS 20%) หรือ $174 (MOS 30%) ก่อนทยอยสะสม</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$248 <span style="font-size:12px;color:#cab9a8">($218–$285)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffab91">MOS ~ −6%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffab91">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$269 (Strong Buy — StockAnalysis.com)</div></div>
       </div>
       <div class="zone">

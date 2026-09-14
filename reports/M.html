@@ -10,6 +10,40 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 16.91,
+  "values": {
+    "px": 21,
+    "priceDate": "2026-09-14",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 11.66,
+    "fvHigh": 18.98,
+    "eps": 0.85,
+    "shares": 903630000,
+    "dps": 0.8,
+    "bvps": 14.6,
+    "baseEps": 0.85,
+    "scenarios": [
+      {
+        "tgt": 12.75,
+        "div": 2.4
+      },
+      {
+        "tgt": 20.34,
+        "div": 2.4
+      },
+      {
+        "tgt": 32.34,
+        "div": 2.7
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": true,
+      "perYear": "cagr"
+    }
+  },
   "theme": {
     "accent": "#d32f2f",
     "accentDark": "#b71c1c",
@@ -41,7 +75,6 @@
     "min": 15,
     "max": 35,
     "grid": [20, 25, 30],
-    "fairLine": 16.91,
     "currency": "฿",
     "highlight": [0, 2],
     "gridFmt": "v.toFixed(0)",
@@ -50,11 +83,8 @@
   "gauge": {
     "min": 10,
     "max": 30,
-    "cur": 21,
-    "fair": 16.91,
     "fairLabelTop": true
-  },
-  "fv": 16.91
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -74,11 +104,11 @@
     <div class="sub">MK Suki ชั้นนำไทย · Yayoi · Bonus Suki · Hikiniku to Come · กว่า 700 สาขา · ปันผลสม่ำเสมอ · Family dining leader</div>
     <div class="price-row">
       <div>
-        <div class="px">฿21.00<small>(M)</small></div>
+        <div class="px">{{rd:px}}<small>(M)</small></div>
       </div>
-      <div class="chg">▼ −35.9% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 14 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ ฿16.20 – ฿35.25<br>
         ที่มา: Yahoo Finance, StockAnalysis, SET
       </div>
@@ -90,9 +120,9 @@
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ 18 ส.ค. 2569 · ที่มา Yahoo Finance / StockAnalysis / investor.mkrestaurant.com</div></div>
     <div class="grid g4">
       <div class="metric"><div class="k">Market Cap</div><div class="v">฿18.98B</div><div class="d">903.63 ล้านหุ้น · SET</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~24.7x</div><div class="d">บนฐาน EPS ฿0.85 · สูงกว่า industry avg ~16x</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">บนฐาน EPS ฿0.85 · สูงกว่า industry avg ~16x</div></div>
       <div class="metric"><div class="k">P/E เป้าหมาย (ตัด COVID)</div><div class="v">21.76x</div><div class="d">มัธยฐาน FY2566 21.76x/FY2567 15.42x/Forward 25.56x</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">1.44x</div><div class="d">BVPS ฿14.60 · ต่ำกว่ามัธยฐาน 3.28x</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS ฿14.60 · ต่ำกว่ามัธยฐาน 3.28x</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ TTM</div><div class="v">฿768M</div><div class="d">ลดจาก ฿1,442M (FY2567) · Q2/69 −20% YoY</div></div>
       <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿0.85</div><div class="d">ถึง Q2/2569 · ลดลงจาก ฿1.57 (FY2567)</div></div>
@@ -115,7 +145,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#d32f2f"></i>ราคา M</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿16.91</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ (ก.ย.–ธ.ค. 2568)</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -144,8 +174,8 @@
         <div class="mval">฿18.98</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿11.66 – ฿18.98 · ถ่วงตามตระกูล (0.4c-bis): P/E + เฉลี่ย DDM/JPBV</span></div>
-        <div class="r">฿16.91</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}} · ถ่วงตามตระกูล (0.4c-bis): P/E + เฉลี่ย DDM/JPBV</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         วิธี P/E (฿18.50) เป็นขายึดตลาด ใช้ P/E มัธยฐานที่วัดจริงจากงวดปกติ (ตัดปี COVID FY2564/FY2565 ที่บิดเบือน) คูณกับ EPS TTM ฿0.85 จริง ไม่ใช่ค่า normalized เดา
@@ -162,14 +192,14 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿21.00</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿16.91</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>฿11.84<br><small>MOS 30%</small></span>
-          <span>฿13.53<br><small>MOS 20%</small></span>
-          <span style="text-align:center">฿16.91<br><small>Fair Value</small></span>
-          <span style="text-align:right">฿18.98<br><small>กรอบบน FV</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
           <span style="text-align:right">฿23.25<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
@@ -185,19 +215,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">−24%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">ราคาสูงกว่ามูลค่าเหมาะสมมาก — ยังไม่มี Margin of Safety</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿13.53</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿11.84</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿16.91</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="21" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -206,17 +236,17 @@
 
   <!-- ===== 6. RETURN PROJECTION ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿21.00 • EPS ฐาน ~฿0.85 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}}{{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS 0%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿12.75</div>
-          <div class="ret neg">−27.9% รวม · ~−10.3%/ปี</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿0.85</span></li>
             <li><span>P/E ออก</span><span>15x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿2.40</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>กำไรทรงตัวต่ำ ผู้บริโภคซบเซาต่อเนื่อง</span></li>
           </ul>
         </div>
@@ -224,12 +254,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +10%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿20.34</div>
-          <div class="ret pos">+8.3% รวม · ~2.7%/ปี</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿1.13</span></li>
             <li><span>P/E ออก</span><span>18x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿2.40</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>ฟื้นตัว same-store ต่อเนื่อง แต่ราคาตั้งต้นสูงกว่า FV มาก</span></li>
           </ul>
         </div>
@@ -237,12 +267,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +20%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿32.34</div>
-          <div class="ret pos">+66.9% รวม · ~18.6%/ปี</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿1.47</span></li>
             <li><span>P/E ออก</span><span>22x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿2.70</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>ฟื้นตัวแรง แบรนด์ใหม่ขยายตัวดี กำไรกลับใกล้ระดับ FY2566</span></li>
           </ul>
         </div>
@@ -295,8 +325,8 @@
       กำไรที่ลดลงต่อเนื่อง 3 ปีและ Q2/69 ที่เพิ่งประกาศ (18 ส.ค. 69) ยัง −20% YoY ทำให้ราคาปัจจุบันไม่มี Margin of Safety เลย
       นักลงทุน Value ควรรอราคาลงสู่โซน MOS 20% (฿13.53) หรือต่ำกว่าก่อนสะสม Catalyst ที่ต้องติดตามคือ same-store sales ที่พลิกบวกใน Q3/68 จะต่อเนื่องพอชดเชยกำไรที่อ่อนตัวหรือไม่</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿16.91 <span style="font-size:12px;color:#cab9a8">(฿11.66–฿18.98)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ff8a80">MOS ~ −24%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ff8a80">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿23.25 (Hold/Buy)</div></div>
       </div>
       <div class="zone">

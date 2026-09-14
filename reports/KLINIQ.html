@@ -12,6 +12,40 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 32.7,
+  "values": {
+    "px": 28.5,
+    "priceDate": "2026-09-14",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 31.44,
+    "fvHigh": 33.83,
+    "eps": 1.82,
+    "shares": 220000000,
+    "dps": 1.45,
+    "bvps": 8.52,
+    "baseEps": 1.82,
+    "scenarios": [
+      {
+        "tgt": 25.32,
+        "div": 4.44
+      },
+      {
+        "tgt": 40.96,
+        "div": 4.57
+      },
+      {
+        "tgt": 59.8,
+        "div": 4.7
+      }
+    ],
+    "scnBasis": {
+      "years": 3,
+      "divIncluded": true,
+      "perYear": "cagr"
+    }
+  },
   "theme": {
     "accent": "#e91e63",
     "accentDark": "#880e4f",
@@ -43,7 +77,6 @@
     "min": 20,
     "max": 35,
     "grid": [25, 30],
-    "fairLine": 32.7,
     "currency": "฿",
     "highlight": [1, 10],
     "gridFmt": "v.toFixed(0)",
@@ -52,11 +85,8 @@
   "gauge": {
     "min": 18,
     "max": 40,
-    "cur": 28.5,
-    "fair": 32.7,
     "fairLabelTop": true
-  },
-  "fv": 32.7
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -76,11 +106,11 @@
     <div class="sub">คลินิกผิวหนัง-ความงาม-เลเซอร์-ศัลยกรรม • แบรนด์ The Klinique · L.A.B.X · L'Clinic · KLINIQ Spa • 82+ สาขาทั่วไทย • Recurring customers · Anti-aging · Wellness</div>
     <div class="price-row">
       <div>
-        <div class="px">฿28.50<small>(KLINIQ)</small></div>
+        <div class="px">{{rd:px}}<small>(KLINIQ)</small></div>
       </div>
-      <div class="chg">▲ +11.8% (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 14 ก.ย. 2569<br>
+        ราคา ณ {{rd:priceDate}}<br>
         กรอบ 52 สัปดาห์ ฿19.60 – ฿30.00<br>
         ที่มา: SET / StockAnalysis / Investing.com
       </div>
@@ -92,9 +122,9 @@
     <div class="s-head"><div class="n">1</div><h2>ข้อมูลสำคัญ (Key Metrics)</h2><div class="hint">ข้อมูล ณ ก.ค. 2569 · TTM</div></div>
     <div class="grid g4">
       <div class="metric"><div class="k">Market Cap</div><div class="v">฿6,270 ล้าน</div><div class="d">220 ล้านหุ้น · Par ฿0.50</div></div>
-      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~15.7x</div><div class="d">EPS TTM ฿1.82 · จดทะเบียน พ.ย. 2565</div></div>
+      <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~{{rd:pe}}x</div><div class="d">EPS TTM ฿1.82 · จดทะเบียน พ.ย. 2565</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย Sector</div><div class="v">~20–25x</div><div class="d">Healthcare Aesthetics ไทย</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">3.35x</div><div class="d">BVPS ~฿8.52 · สุขภาพดี</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">{{rd:pbv}}x</div><div class="d">BVPS ~฿8.52 · สุขภาพดี</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ FY2568</div><div class="v">฿363.7 ล้าน</div><div class="d">+12.9% YoY vs FY2567 ฿322 ล้าน</div></div>
       <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~฿1.82</div><div class="d">FY2568 ฿1.65 · Q1/2569 ฿0.55</div></div>
@@ -103,7 +133,7 @@
 
       <div class="metric"><div class="k">รายได้ TTM</div><div class="v neu">฿3,830 ล้าน</div><div class="d">+23% YoY · FY2568 ฿3,556 ล้าน</div></div>
       <div class="metric"><div class="k">อัตรากำไรขั้นต้น</div><div class="v">~51.6%</div><div class="d">Q1/2569 · FY2568 ~50.5%</div></div>
-      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~5.1%</div><div class="d">฿1.45/หุ้น FY2568 · Semi-annual</div></div>
+      <div class="metric"><div class="k">เงินปันผล</div><div class="v">~{{rd:yield}}</div><div class="d">฿1.45/หุ้น FY2568 · Semi-annual</div></div>
       <div class="metric"><div class="k">Beta</div><div class="v">0.61</div><div class="d">ความผันผวนต่ำกว่าตลาด</div></div>
     </div>
   </section>
@@ -117,7 +147,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#e91e63"></i>ราคา KLINIQ</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม ฿32.70</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -147,8 +177,8 @@
         <div class="mval">฿31.44</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ ฿31.44 – ฿33.83</span></div>
-        <div class="r">฿32.70</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         วิธี DDM ให้ค่าสูงที่สุด (฿33.83) เพราะ Payout ratio 87% สูงมาก สะท้อนกระแสเงินสดจริงที่ส่งคืนผู้ถือหุ้น
@@ -166,15 +196,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน ฿28.50</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม ฿32.70</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>฿22.89<br><small>MOS 30%</small></span>
-          <span>฿26.16<br><small>MOS 20%</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
           <span style="text-align:center">฿30.50<br><small>เป้าเฉลี่ย Analyst</small></span>
-          <span style="text-align:right">฿32.70<br><small>Fair Value</small></span>
-          <span style="text-align:right">฿33.83<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -190,19 +220,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict ok">
-        <div class="big">+13%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">ราคาต่ำกว่ามูลค่าเหมาะสม ~20.5% — อยู่ในโซน Value Investor น่าทยอยสะสม</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">฿26.16</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">฿22.89</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; ฿32.70</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (บาท)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="28.5" step="0.05">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.05">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -211,17 +241,17 @@
 
   <!-- ===== 6. RETURN PROJECTION ===== -->
   <section>
-    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า ฿28.50 • EPS ฐาน ~฿1.82 • รวมปันผล</div></div>
+    <div class="s-head"><div class="n">6</div><h2>คาดการณ์ผลตอบแทน 3 ปี</h2><div class="hint">จากจุดเข้า {{rd:px}} • EPS ฐาน ~{{rd:baseEps}}{{rd:scnNote}}</div></div>
     <div class="scn">
       <div class="col bear">
         <div class="top"><span>🐻 Bear</span><span>EPS +5%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿25.32</div>
-          <div class="ret neg">+4.4% (3ปี) / +1.4%/ปี</div>
+          <div class="tgt">{{rd:sc1tgt}}</div>
+          <div class="ret {{rd:sc1retClass}}">{{rd:sc1ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿2.11</span></li>
             <li><span>P/E ออก</span><span>12x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿4.44</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc1div}}</span></li>
             <li><span>สถานการณ์</span><span>การแข่งขันสูง กำไรโตช้า</span></li>
           </ul>
         </div>
@@ -229,12 +259,12 @@
       <div class="col base">
         <div class="top"><span>⚖️ Base</span><span>EPS +12%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿40.96</div>
-          <div class="ret pos">+59.8% (3ปี) / +16.9%/ปี</div>
+          <div class="tgt">{{rd:sc2tgt}}</div>
+          <div class="ret {{rd:sc2retClass}}">{{rd:sc2ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿2.56</span></li>
             <li><span>P/E ออก</span><span>16x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿4.57</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc2div}}</span></li>
             <li><span>สถานการณ์</span><span>ขยายสาขา 10/ปี กำไรโตดี</span></li>
           </ul>
         </div>
@@ -242,12 +272,12 @@
       <div class="col bull">
         <div class="top"><span>🚀 Bull</span><span>EPS +18%/ปี</span></div>
         <div class="body">
-          <div class="tgt">฿59.80</div>
-          <div class="ret pos">+126.3% (3ปี) / +31.3%/ปี</div>
+          <div class="tgt">{{rd:sc3tgt}}</div>
+          <div class="ret {{rd:sc3retClass}}">{{rd:sc3ret}}</div>
           <ul>
             <li><span>EPS ปี 3</span><span>~฿2.99</span></li>
             <li><span>P/E ออก</span><span>20x</span></li>
-            <li><span>ปันผลรวม 3 ปี</span><span>~฿4.70</span></li>
+            <li><span>ปันผลรวม 3 ปี</span><span>~{{rd:sc3div}}</span></li>
             <li><span>สถานการณ์</span><span>ขยายเร็ว SSSG สูง RE-rating</span></li>
           </ul>
         </div>
@@ -303,8 +333,8 @@
          ราคาปัจจุบัน ฿26.00 ซื้อขายที่ P/E 14.3x ต่ำกว่า Sector peer (20-25x) ชัดเจน มี MOS ~20.5%
          ความเสี่ยงหลักคือการแข่งขันและ Gross margin ที่ค่อยๆ ลดลง ต้องติดตามใกล้ชิด</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">฿32.70 <span style="font-size:12px;color:#cab9a8">(฿31.44–฿33.83)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ +13%</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#ffd180">MOS ~ {{rd:mos}}</div></div>
         <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~฿30.50 (Strong Buy)</div></div>
       </div>
       <div class="zone">

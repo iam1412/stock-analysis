@@ -10,6 +10,20 @@
 </script>
 <script type="application/json" id="report-data">
 {
+  "v": 2,
+  "fv": 72.61,
+  "values": {
+    "px": 67.26,
+    "priceDate": "2026-09-11",
+    "dateEra": "BE",
+    "chgSuffix": "รอบปี",
+    "fvLow": 69.6,
+    "fvHigh": 75.61,
+    "analystTgt": 79.27,
+    "shares": 258279999.99999997,
+    "dps": 2.14,
+    "bvps": 28.59
+  },
   "theme": {
     "accent": "#d97706",
     "accentDark": "#aa4f09",
@@ -41,18 +55,14 @@
     "min": 60,
     "max": 80,
     "grid": [65, 70, 75],
-    "fairLine": 72.61,
     "currency": "$",
     "highlight": [2, 8]
   },
   "gauge": {
     "min": 45,
     "max": 85,
-    "cur": 67.26,
-    "fair": 72.61,
     "fairLabelTop": false
-  },
-  "fv": 72.61
+  }
 }
 </script>
 <!--TEMPLATE:STYLE-->
@@ -72,11 +82,11 @@
     <div class="sub">Wisconsin Power &amp; Light (WPL) • Interstate Power &amp; Light (IPL) • Wind &amp; Solar Growth Leader • Consistent Dividend Grower</div>
     <div class="price-row">
       <div>
-        <div class="px">$67.26<small>(LNT)</small></div>
+        <div class="px">{{rd:px}}<small>(LNT)</small></div>
       </div>
-      <div class="chg">≈ ทรงตัว (รอบปี)</div>
+      <div class="chg">{{rd:chg}}</div>
       <div class="px-meta">
-        ราคา ณ 11 ก.ย. 2569 (งวดล่าสุด ไตรมาส 1 ปี 2569 / Q1 2026)<br>
+        ราคา ณ {{rd:priceDate}} (งวดล่าสุด ไตรมาส 1 ปี 2569 / Q1 2026)<br>
         กรอบ 52 สัปดาห์ $60.91 – $78.81<br>
         ที่มา: StockAnalysis.com, Yahoo Finance, Digrin.com
       </div>
@@ -90,7 +100,7 @@
       <div class="metric"><div class="k">Market Cap</div><div class="v">~$17.37 พัน ล.</div><div class="d">~258.28 ล้านหุ้น</div></div>
       <div class="metric"><div class="k">P/E (TTM)</div><div class="v neu">~21.2x</div><div class="d">EPS TTM $3.18 · Forward P/E ~20.56x (EPS ~$3.48 est.)</div></div>
       <div class="metric"><div class="k">P/E เฉลี่ย ~5 ปี</div><div class="v">~19–22x</div><div class="d">กรอบ utility premium ทั่วไปสำหรับผู้เล่น rate-base growth</div></div>
-      <div class="metric"><div class="k">P/BV</div><div class="v neu">~2.35x</div><div class="d">BVPS ~$28.59 (TTM)</div></div>
+      <div class="metric"><div class="k">P/BV</div><div class="v neu">~{{rd:pbv}}x</div><div class="d">BVPS ~$28.59 (TTM)</div></div>
 
       <div class="metric"><div class="k">กำไรสุทธิ (TTM)</div><div class="v">$821 ล้าน</div><div class="d">+17.4% YoY</div></div>
       <div class="metric"><div class="k">EPS (TTM)</div><div class="v">~$3.18</div><div class="d">StockAnalysis $3.18 · Yahoo Finance $3.18 (ตรงกัน)</div></div>
@@ -113,7 +123,7 @@
       </div>
       <div class="legend">
         <span><i style="background:#d97706"></i>ราคา LNT</span>
-        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม $72.61</span>
+        <span><i style="background:#1e8e3e"></i>มูลค่าเหมาะสม {{rd:fv}}</span>
         <span><i style="background:#ea4335;height:8px;width:8px;border-radius:50%"></i>จุดสำคัญ</span>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6">
@@ -139,8 +149,8 @@
         <div class="mval">$69.60</div>
       </div>
       <div class="fv-box">
-        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ $69.60 – $75.61</span></div>
-        <div class="r">$72.61</div>
+        <div class="l">มูลค่าเหมาะสมเฉลี่ย (Fair Value)<br><span style="font-weight:400;font-size:12px;color:var(--muted)">กรอบ {{rd:fvLow}} – {{rd:fvHigh}}</span></div>
+        <div class="r">{{rd:fv}}</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
         DDM ให้ค่าสูงกว่า ($75.61) เพราะสะท้อนกระแสเงินสด/ปันผลที่มั่นคงเติบโตต่อเนื่องของ regulated utility
@@ -156,15 +166,15 @@
     <div class="card">
       <div class="gauge">
         <div class="gbar" id="gbar">
-          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน $67.26</div></div>
-          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม $72.61</div></div>
+          <div class="marker cur" id="mCur"><div class="lab">ปัจจุบัน {{rd:px}}</div></div>
+          <div class="marker" id="mFair"><div class="lab" style="background:#137333">เหมาะสม {{rd:fv}}</div></div>
         </div>
         <div class="scale">
-          <span>$50.83<br><small>MOS 30%</small></span>
-          <span>$58.09<br><small>MOS 20%</small></span>
-          <span style="text-align:center">$72.61<br><small>Fair Value</small></span>
-          <span style="text-align:right">$75.61<br><small>กรอบบน FV</small></span>
-          <span style="text-align:right">$79.27<br><small>เป้าเฉลี่ย Analyst</small></span>
+          <span>{{rd:mos30}}<br><small>MOS 30%</small></span>
+          <span>{{rd:mos20}}<br><small>MOS 20%</small></span>
+          <span style="text-align:center">{{rd:fv}}<br><small>Fair Value</small></span>
+          <span style="text-align:right">{{rd:fvHigh}}<br><small>กรอบบน FV</small></span>
+          <span style="text-align:right">{{rd:analystTgt}}<br><small>เป้าเฉลี่ย Analyst</small></span>
         </div>
       </div>
       <p style="font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.6">
@@ -179,19 +189,19 @@
   <section>
     <div class="s-head"><div class="n">5</div><h2>Margin of Safety (ส่วนเผื่อความปลอดภัย)</h2></div>
     <div class="card">
-      <div class="mos-verdict bad">
-        <div class="big">+7%</div>
+      <div class="mos-verdict {{rd:mosClass}}">
+        <div class="big">{{rd:mos}}</div>
         <div class="txt">ราคาปัจจุบันต่ำกว่า Fair Value เล็กน้อยประมาณ 2.1% (MOS ~2%) ยังไม่ถึงระดับ MOS ที่น่าสนใจ (20–30%) เหมาะรอจังหวะราคาย่อตัวลงมาใกล้ $58–$65 ก่อนเข้าสะสมเต็มไม้ มากกว่าการซื้อไล่ราคาที่จุดปัจจุบัน</div>
       </div>
       <div class="grid g3">
-        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">$58.09</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
-        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">$50.83</div><div class="d">โซนถูกมาก (deep value)</div></div>
-        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; $72.61</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 20%</div><div class="v pos">{{rd:mos20}}</div><div class="d">โซนน่าสนใจสำหรับ value</div></div>
+        <div class="metric"><div class="k">จุดซื้อ MOS 30%</div><div class="v pos">{{rd:mos30}}</div><div class="d">โซนถูกมาก (deep value)</div></div>
+        <div class="metric"><div class="k">โซนเริ่มทยอยสะสม</div><div class="v neu">&lt; {{rd:fv}}</div><div class="d">ใกล้/ต่ำกว่ามูลค่าเหมาะสม</div></div>
       </div>
       <div class="calc">
         <label>🧮 ลองคำนวณ MOS เอง — ใส่ราคาที่สนใจ (USD)</label>
         <div class="calc-row">
-          <input id="pxIn" class="mono" type="number" value="67.26" step="0.5">
+          <input id="pxIn" class="mono" type="number" value="{{rd:pxNum}}" step="0.5">
           <div class="calc-out" id="mosOut"></div>
         </div>
       </div>
@@ -290,9 +300,9 @@
         เหมาะกับนักลงทุนที่เน้น income/defensive มากกว่า value investor ที่ต้องการส่วนเผื่อความปลอดภัยสูง
         ผู้ที่สนใจสะสมควรรอจังหวะราคาย่อตัวลงมาใกล้ $58–$65 เพื่อได้ Margin of Safety ที่มากขึ้น</p>
       <div class="vgrid">
-        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">$72.61 <span style="font-size:12px;color:#cab9a8">($69.60–$75.61)</span></div></div>
-        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#a5d6a7">MOS ~ +7%</div></div>
-        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~$79.27 (+17.9%)</div></div>
+        <div class="vcell"><div class="k">มูลค่าเหมาะสม</div><div class="v">{{rd:fv}} <span style="font-size:12px;color:#cab9a8">({{rd:fvLow}}–{{rd:fvHigh}})</span></div></div>
+        <div class="vcell"><div class="k">ส่วนต่างจากราคา</div><div class="v" style="color:#a5d6a7">MOS ~ {{rd:mos}}</div></div>
+        <div class="vcell"><div class="k">เป้านักวิเคราะห์ 12 ด.</div><div class="v" style="color:#a5d6a7">~{{rd:analystTgt}} (+17.9%)</div></div>
       </div>
       <div class="zone">
         💡 <b>กลยุทธ์:</b> รอจังหวะราคาย่อตัวลงมาโซน $58–$65 (MOS 20–30%) ก่อนเข้าสะสมเต็มไม้
