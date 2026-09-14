@@ -948,3 +948,123 @@ v1-unstable = ผลของ v1 เปลี่ยนชนิด/ฐานร�
 - ZS: +2%→+1.6% (×1.085)
 
 </details>
+
+---
+
+## สรุปสุดท้าย — Task 14 (ระยะ 2 ส่วน E · ย้ายคลังครบ 10 แบตช์)
+
+> สร้างจาก `migration-v2-census.json` หลังแบตช์สุดท้าย ด้วย `node summary.js <census.json> >> <census.md>` (สคริปต์อยู่ใน task-14-report.md) —
+> คิดจาก JSON อย่างเดียว · migrator ที่รัน `--census` ซ้ำจะเขียน .md ใหม่ทั้งไฟล์ (บล็อกนี้หาย ต้องต่อท้ายใหม่)
+
+| ผล | ใบ |
+|---|---|
+| ย้ายเป็น v2 | **865/908** |
+| residue (คง v1) | **43** = migrator 39 + cron-diff 4 |
+| แบตช์ที่บันทึก | 0:100 · 1:100 · 2:100 · 3:100 · 4:100 · 5:100 · 6:100 · 7:100 · 8:100 · 9:8 |
+
+### residue ต่อชนิด (รายชื่อครบ — input ระยะ 3)
+
+| ชนิด | ใบ | รายชื่อ |
+|---|---|---|
+| legend แสดง N แต่ FV = N | 16 | COHU CTAS DTM DXCM FORM GNTX HMPRO LPLA RELX SHANG SWK TER TT VLTO VRTX WFC |
+| จำนวนช่อง %/ปี ไม่เท่าเดิม | 5 | ACN JMT RS SCGD SNNP |
+| ค่าไม่ตรงชั้น N | 4 | AMKR LWLG MTI TMAN |
+| site legend match ≠ N | 3 | FANG MPC MU |
+| site vcellTgt match ≠ N | 3 | BABA STX VRT |
+| FV ไม่ตรงกันเอง | 2 | PNC TEAM |
+| site vcellFv match ≠ N | 2 | AEM BTG |
+| กรอบ FV สองที่ไม่ตรงกัน | 2 | ALLE POET |
+| mFair แสดง N แต่ FV = N | 1 | SAPPE |
+| site summary match ≠ N | 1 | MXL |
+| cron-diff v1-unstable gate-warn:W22 | 2 | PTG THCOM |
+| cron-diff v1-unstable meta:dividendYield,visible | 1 | BNY |
+| cron-diff v1-unstable visible | 1 | WWD |
+
+<details><summary>เหตุผล residue เต็มรายใบ (43)</summary>
+
+| ใบ | เหตุผล |
+|---|---|
+| ACN | จำนวนช่อง %/ปี ไม่เท่าเดิม (v1 4 → v2 3) |
+| AEM | site vcellFv match ≠ 1 (0) |
+| ALLE | กรอบ FV สองที่ไม่ตรงกัน (vcell 158,168 vs fv-box 150,170) |
+| AMKR | ค่าไม่ตรงชั้น 1: f50 52→51.73 |
+| BABA | site vcellTgt match ≠ 1 (2) |
+| BNY | cron-diff v1-unstable meta:dividendYield,visible |
+| BTG | site vcellFv match ≠ 1 (0) |
+| COHU | legend แสดง 53 แต่ FV = 56 (ต่างเกิน 0.5%) |
+| CTAS | legend แสดง 188 แต่ FV = 190 (ต่างเกิน 0.5%) |
+| DTM | legend แสดง 120.65 แต่ FV = 97.11 (ต่างเกิน 0.5%) |
+| DXCM | legend แสดง 74 แต่ FV = 80 (ต่างเกิน 0.5%) |
+| FANG | site legend match ≠ 1 (0) |
+| FORM | legend แสดง 142 แต่ FV = 138 (ต่างเกิน 0.5%) |
+| GNTX | legend แสดง 32 แต่ FV = 33.67 (ต่างเกิน 0.5%) |
+| HMPRO | legend แสดง 6.9 แต่ FV = 7.54 (ต่างเกิน 0.5%) |
+| JMT | จำนวนช่อง %/ปี ไม่เท่าเดิม (v1 4 → v2 7) |
+| LPLA | legend แสดง 334.08 แต่ FV = 288.31 (ต่างเกิน 0.5%) |
+| LWLG | ค่าไม่ตรงชั้น 1: f50 5.2→5.23 |
+| MPC | site legend match ≠ 1 (0) |
+| MTI | ค่าไม่ตรงชั้น 1: f36 19→18.9 ; f50 19→18.9 |
+| MU | site legend match ≠ 1 (0) |
+| MXL | site summary match ≠ 1 (0) |
+| PNC | FV ไม่ตรงกันเอง: chart.fairLine = 220 แต่ report-data.fv = 201 |
+| POET | กรอบ FV สองที่ไม่ตรงกัน (vcell 3,20 vs fv-box 8.1,18.4) |
+| PTG | cron-diff v1-unstable gate-warn:W22 |
+| RELX | legend แสดง 38 แต่ FV = 44 (ต่างเกิน 0.5%) |
+| RS | จำนวนช่อง %/ปี ไม่เท่าเดิม (v1 0 → v2 3) |
+| SAPPE | mFair แสดง 35 แต่ FV = 34.2 (ต่างเกิน 0.5%) |
+| SCGD | จำนวนช่อง %/ปี ไม่เท่าเดิม (v1 3 → v2 6) |
+| SHANG | legend แสดง 44.35 แต่ FV = 39.6 (ต่างเกิน 0.5%) |
+| SNNP | จำนวนช่อง %/ปี ไม่เท่าเดิม (v1 3 → v2 6) |
+| STX | site vcellTgt match ≠ 1 (2) |
+| SWK | legend แสดง 95 แต่ FV = 100 (ต่างเกิน 0.5%) |
+| TEAM | FV ไม่ตรงกันเอง: chart.fairLine = 115 แต่ report-data.fv = 133 |
+| TER | legend แสดง 340 แต่ FV = 365 (ต่างเกิน 0.5%) |
+| THCOM | cron-diff v1-unstable gate-warn:W22 |
+| TMAN | ค่าไม่ตรงชั้น 1: f36 10→10.3 ; f50 10→10.3 |
+| TT | legend แสดง 447 แต่ FV = 443 (ต่างเกิน 0.5%) |
+| VLTO | legend แสดง 96.5 แต่ FV = 97.66 (ต่างเกิน 0.5%) |
+| VRT | site vcellTgt match ≠ 1 (2) |
+| VRTX | legend แสดง 520 แต่ FV = 480 (ต่างเกิน 0.5%) |
+| WFC | legend แสดง 87 แต่ FV = 89 (ต่างเกิน 0.5%) |
+| WWD | cron-diff v1-unstable visible |
+
+</details>
+
+### site ที่คง literal ต่อชนิด (เฉพาะ 865 ใบที่ย้าย · รวมทุกเหตุผลย่อย — เหตุผลย่อยดูตาราง "site ที่คง literal" ด้านบน ซึ่งนับรวมใบ residue ด้วย)
+
+| site | ใบ |
+|---|---|
+| psCard | 860 |
+| yieldCard | 757 |
+| peCard | 559 |
+| pbvCard | 510 |
+| mcapCard | 485 |
+| scnNote | 218 |
+| scn | 138 |
+| tgtCard | 100 |
+| zone | 87 |
+| disc | 9 |
+| hintEps | 6 |
+| fvBoxRange | 5 |
+| scn2div | 3 |
+| scn3div | 3 |
+| restate | 2 |
+| scn1div | 2 |
+| hint | 1 |
+
+### การเปิดเผย (ใบที่ย้าย)
+
+| หมวด | ใบ | หมายเหตุ |
+|---|---|---|
+| cron differential: ตรวจ / ผ่าน / ตก | 869 / 865 / 4 | ตก = BNY PTG THCOM WWD (ไม่เขียน · รายละเอียดในหัวข้อ cron differential) |
+| ค่าต่างที่มีอยู่ก่อน patch (migration ยอมรับ) | 34 | มากสุด 0.99% · AEE ANI BF-B BWXT CBOE CHAYO CMS DD DUK EPG EQIX EXE FDS GLOBAL HSY IIG IVL JAZZ LDOS LPH MFC MMS PRINC RYAN SBAC SECURE SKR SNX SPCX SYM TGH TRMB TRU WICE (ป้ายและค่า v1 → v2 รายใบอยู่ด้านบน) |
+| รูปทศนิยมหมวด 6 เปลี่ยน (เช่น 3.5→3) | 692 | รอเจ้าของตัดสินว่าเป็นรูปหรือค่า (นโยบายปัด fmtMos เดียว) · รายชื่อด้านล่าง |
+| %/ปี หมวด 6 ค่าขยับ (v2 คิด %/ปี จาก "รวม" ที่ปัดแล้ว) | 62 | 93 คอลัมน์ · รูปอย่างเดียว 372 คอลัมน์ · รายใบอยู่ในหัวข้อ %/ปี ด้านบน · ไปพร้อมคำถาม fmtMos |
+| รูปตัวเลขอื่น (ราคา/หน่วยเงิน/ศักราช) | 147 | |
+| สีช่อง .ret ของ v1 ค้าง — v2 คิดสีตามเครื่องหมาย | 491 | |
+
+<details><summary>รูปทศนิยมหมวด 6 เปลี่ยน — 692 ใบ</summary>
+
+A AAOI AAON AAPL ABBNY ABBV ABNB ABT ACE ADBE ADI ADP ADVANC AEHR AEP AER AEVA AHC AIT AJG AKAM ALAB ALC ALGN ALL ALNY AMAT AMATA AMCR AMD AMGN AMP AMRZ AMT AMZN ANET ANI AOS AP APD APG APH APP APURE AR ARE ARES AS ASIAN ASW ATO ATS AUR AURA AVAV AVGO AVY AWK AWR AXON AXP AYUD AZN AZO BAC BALL BAX BAY BBIK BBL BCH BCP BDX BG BGC BGRIM BH BIDU BIIB BIZ BJC BKI BKNG BKR BLK BMO BMY BN BNS BOL BR BRK-B BSX BWXT BX BXP C CACI CAH CAMT CARR CART CASY CAT CBG CBOE CBRE CBRS CCEP CCET CCI CCJ CDNS CDW CEG CENTEL CF CFG CG CGNX CHD CHE CHG CI CIEN CKP CL CLH CLS CM CMCSA CME CMG CMI CMS CNC CNI CNQ COCOCO COF COHR COM7 COO COP COST CP CPALL CPAXT CPF CPN CPNG CPRT CPT CPW CRC CRDO CREDIT CRH CRL CRM CRWD CRWV CSCO CSGP CSL CSX CTSH CTVA CVX CW D DASH DB DCI DD DDOG DE DECK DELL DELTA DEO DGX DHI DHR DIS DITTO DLR DMT DOC DOHOME DOW DPZ DRI DRS DUK DUSIT DVA DY EASTW EBAY ECL ED EFX EG EGCO EGP EHC EL ELV EMA EME EMR ENB ENTG EQIX ERW ES ESLT ESNT ESS ETN ETR EVR EW EWBC EXC EXE EXEL EXPD EXPE EXPO EXR FANUY FAST FCX FDS FDX FE FER FICO FISV FIVE FLEX FN FNV FORTH FPT FR FSMART FTNT FTS FTV GD GE GEHC GEV GFPT GFS GGG GILD GIS GLOBAL GLW GMED GNRC GOOGL GPSC GRAB GRMN GS GWRE GWW HAL HANA HARN HCA HD HEI HIG HON HRL HST HSY HTC HUBB HUM HUMAN IBM ICE ICHI ICLR IDXX IESC IEX IFF IIG III ILMN IMO INCY INSM INTC INTU INVH IP IPGP IQV IR IRM ISRG IT ITC ITEL ITT ITW IVL JAZZ JBHT JBL JCI JD JNJ KAMART KCG KDP KEY KEYS KGC KIM KKP KKR KLAC KLINIQ KMB KMI KNSL KO KR KTB KTC KTOS KVUE KYCCF L LANC LDOS LECO LEN LEO LH LHFG LHX LII LIN LITE LMT LNG LOW LPH LRCX LSCC LULU LYV M MA MAA MANH MAR MBK MBLY MC MCD MCK MCO MDLN MDT MEB MEDEZE MEGA MELI MET META MFC MFEC MICRO MINT MKL MKSI MLI MO MOG-A MOH MPLX MPWR MRDIYT MRNA MRSH MRVL MS MSA MSCI MSFT MSI MTB MTC MTSI MTZ NBIS NBIX NCAP NDAQ NEE NEM NEO NET NETBAY NFG NNN NOC NOK NOVT NOW NRF NRG NSC NSL NTAP NTES NTRA NTRS NTV NUE NVDA NVMI NVO NVR NXPI NYT O ODFL OHTL OKE OKJ OMCL ON ONEE ONTO OR ORCL ORLY OSP OUST OWL OXY PAAS PANW PATH PAYX PB PBA PCAR PDYN PEG PEN PFE PFG PFGC PG PGR PH PHM PKG PLANB PLD PLUS PLXS PM PNFP PNW PONY PPG PR9 PRCT PRG PRU PSA PSP PSX PWR PYPL Q-CON QCOM RACE RAM RATCH RBC RBF RCAT RDDT REG REGN RF RGA RGLD RJF RL RMD RNR ROJNA ROK ROL ROP ROST RPH RPRX RR RSG RTX RY RYAN SAIA SAP SAV SAWAD SBAC SBUX SCAP SCCC SCGP SCHW SCI SE SECURE SERV SFM SFT SGC SHOP SHR SHW SICT SIRI SITM SJM SKR SKY SLB SLF SMCI SMPC SMTC SN SNA SNOW SNP SNPS SNX SO SONIC SORKON SPA SPALI SPC SPCG SPCX SPGI SPI SPOT SPVI SRE SSNC SSP STEC STM STRL STT STZ SU SUN SUNB SYM SYNEX TACC TAP TASCO TCAP TD TDG TDY TEL TFC TFG TFM TFX TGH TGT THAI THREL TIDLOR TISCO TJX TKS TLN TMO TMUS TNH TNP TOA TOG TOP TOST TPG TPIPP TPL TPR TQM TRGP TRMB TROW TRP TRU TRUE TSCO TSEM TSLA TSM TSN TTB TTD TTE TTW TTWO TU TVO TW TXN TXRH TYL UBER UBS UFPI UI UL ULS ULTA UPS URI USB USFD UTHR V VECO VEEV VG VIAV VIBHA VLO VMRK VRANDA VRSK VRSN VST VTR WAT WCC WCN WDAY WHA WHAUP WICE WM WMB WMT WORK WPC WPH WPM WRB WSM WST WTRG WTW WY XO XOM XPO XYL YUM ZBH ZBRA ZEN ZS
+
+</details>
