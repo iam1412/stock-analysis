@@ -1194,19 +1194,38 @@ require('./parser-lint.js')(ok);
   ok(!allIds(checkHtml(renderedOk, 'BBL.html', { source: healed44.html })).has('E44'), 'E44: ส่ง source (ต้นฉบับที่เป็น token) → เงียบ');
 
   // W24 (fix round 1 · finding 2): อ่าน footer ไม่ได้ = ตัดสินไม่ได้ ⇒ **ห้ามเงียบ** (CLAUDE.md §8 กฎข้อ 1)
-  // คลังจริงมีคลาสนี้ 12 ใบ (เดือนล้วน "มิถุนายน 2569" · ช่วงข้ามเดือน "31 ก.ค. – 2 ส.ค. 2026")
+  // ★ #38 (ระยะ 3 Task 8): เดือนล้วน "มิถุนายน 2569" + ช่วงข้ามเดือน "31 ก.ค. – 2 ส.ค. 2026" = **อ่านออกแล้ว**
+  //   (12 ใบในคลังหลุดจาก W24 หมด) ⇒ เคสของ W24 ต้องเป็นรูปที่ตัวอ่านไม่รับจริง ๆ (ไม่ใช่ชื่อเดือน)
+  //   สองเคสเก่าถูกยกไปเป็น **regression lock** ข้างล่างแทน — ต้องพิสูจน์ว่า E44 ตัดสินได้และ W24 เงียบ
   {
     const ids = (h) => allIds(checkHtml(expandReport(h), 'BBL.html', { source: h }));
     const setRaw = (h, txt) => h.replace(/(ข้อมูล\s*ณ\s*)\d{1,2}\s*[ก-๙.]+\s*\d{4}/, (m, a) => a + txt);
-    for (const [txt, why] of [['มิถุนายน 2569', 'เดือนล้วน'], ['31 ก.ค. – 2 ส.ค. 2026', 'ช่วงข้ามเดือน']]) {
+    for (const [txt, why] of [['ไตรมาส 2 ปี 2569', 'ไตรมาส ไม่ใช่ชื่อเดือน'], ['FY2568', 'ปีงบ ไม่มีเดือน']]) {
       const bad = setRaw(newSrc, txt);
       ok(bad !== newSrc && footerDate(bad) === null, `W24: footer "${txt}" (${why}) → footerDate อ่านไม่ได้จริง`);
       const set = ids(bad);
       ok(set.has('W24') && !set.has('E44'), `W24: ${why} → W24 ยิงแทน E44 (ไม่เงียบทั้งคู่)`, [...set].join(','));
     }
     ok(!ids(oldSrc).has('W24') && !ids(newSrc).has('W24'), 'W24: footer อ่านได้ → เงียบ (ทั้งใบเก่า/ใบใหม่)');
-    const v1Bad = setRaw(base, 'มิถุนายน 2569');
+    const v1Bad = setRaw(base, 'ไตรมาส 2 ปี 2569');
     ok(v1Bad !== base && !ids(v1Bad).has('W24'), 'W24: ใบ v1 ไม่แตะ (ไม่มี token ให้ใช้ ⇒ E44 ไม่เกี่ยว)');
+
+    // ── #38 regression lock: รูปที่เคยทำให้ประตูวันที่ fail-open ต้อง "ตัดสินได้" แล้ว ──────────────
+    // เดือนล้วน → วันที่ 1 ของเดือน (ระมัดระวัง: เก่ากว่าจริง ไม่ใช่ใหม่กว่า) · ช่วงข้ามเดือน → วันแรก
+    // ทั้งสองรูปในเคสนี้เป็นวันก่อน SINCE ⇒ E44 ต้องเงียบ **เพราะตัดสินแล้วว่าเป็นใบเก่า** ไม่ใช่เพราะอ่านไม่ออก
+    for (const [txt, iso, why] of [['มิถุนายน 2569', '2026-06-01', 'เดือนล้วน → วันที่ 1'], ['31 ก.ค. – 2 ส.ค. 2026', '2026-07-31', 'ช่วงข้ามเดือน → วันแรก']]) {
+      const fixed = setRaw(newSrc, txt);
+      const fd = footerDate(fixed);
+      ok(fd && fd.iso === iso, `#38: footer "${txt}" (${why}) → อ่านออกเป็น ${iso}`, fd && fd.iso);
+      const set = ids(fixed);
+      ok(!set.has('W24') && !set.has('E44'), `#38: "${txt}" → W24 เงียบ (อ่านออกแล้ว) และ E44 เงียบเพราะ ${iso} < ${RVp.PROSE_TOKEN_SINCE}`, [...set].join(','));
+    }
+    // และถ้าวันที่ที่อ่านได้จากรูปใหม่ ≥ SINCE จริง E44 ต้องยิง (ประตูวันที่ทำงาน ไม่ใช่แค่เงียบไปหมด)
+    {
+      const sinceMon = ['มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'][RVp.parseIso(RVp.PROSE_TOKEN_SINCE).monIdx];
+      const nextMon = setRaw(newSrc, `${sinceMon} ${RVp.parseIso(RVp.PROSE_TOKEN_SINCE).yearCE + 1}`);   // เดือนล้วนของปีถัดไป = หลัง SINCE แน่นอน
+      ok(!ids(nextMon).has('W24') && ids(nextMon).has('E44'), '#38: เดือนล้วนที่ตกหลัง SINCE → E44 ยิงได้จริง (ประตูวันที่ไม่ fail-open อีก)', [...ids(nextMon)].join(','));
+    }
     ok(CHECKS.find((c) => c.id === 'W24').level === 'warn' && CHECKS.find((c) => c.id === 'W24').healer == null,
       'W24: เป็น warn + ไม่มี healer (ยก E44 ให้ยิงแทน = บล็อก push ใบเก่า 11 ใบที่ประตูวันที่ตั้งใจยกเว้น)');
   }
